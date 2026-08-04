@@ -1,83 +1,83 @@
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612313382CD
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 04:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4736332D0FC
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 04:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785817938; cv=pass; b=X/EKNabjQjj31uuwRmH29aGllz88rd9sr6IKYYIuERtH231KBcCUg9/te6Wg/qdasVO07BfzSj1UGt88RbjmyCdfTl4oA2KMlms5EBjEO9e6CK7dHuxpzJ3SEgAesQ7xthB5MLJyCWboN+9l++SW5pv0uxMThVaZjsAA+kd9F4s=
+	t=1785818284; cv=pass; b=aGQEXP0hLQO4DeQUN3al1I+9y/Z78I2gL0vicmhD1LD0ppKM+Pz50i5bn+PLaueVJPcl1e7kpOE/7b2LFAa1fRt1B0jsqOLieJYaXC8HdRZEqCqk3DX+s+5PanmnCSMiWq2ocSLtOjn/2RpZlnd+6cN7sxmnFUq3VRgdbyE0GW0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785817938; c=relaxed/simple;
-	bh=GiIFhUl7eFI3+MXUktDiqoIE9NJ1C/ZSCqWdRAOmTaM=;
+	s=arc-20240116; t=1785818284; c=relaxed/simple;
+	bh=KCujiFsubPppZdIzZBFgzB0FHL+kaNCYcrxKl9k6kYk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ct0fjaTTm8JVjW8d/cQbPxJi0CUYBSyimyqLg3+k4OLnT1tRWSAReMvLks8KZ74mp9a6VVJhWJOuBsN1Uk1tdq8T25gIFkxqBBB4n8gYwNkhD80xBxHsGdGXg+L3nznTQgaAdio9VSp34fYr8HdD6wgbQkkW+kh24S/s7qASrbw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ecEDPy5i; arc=pass smtp.client-ip=209.85.221.181
+	 To:Cc:Content-Type; b=B6v19ZryoZnqJdbO0S+Mx+dXO7FskSo5RXJzVVNldt/gPXgRp8zj6HUL1Z36btJPErkSe0uAJ7FPBG40c/35P5O40WzZz7AkXq+7cKeF24OBu2QIi684AIryGZAHA9TMI7KtYDs1g/SxBHhH/lsX/Z7B+ZT+IU8GM4nMxqNrjHI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=liNCeUs4; arc=pass smtp.client-ip=209.85.217.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ecEDPy5i"
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5bf95ade656so1666209e0c.1
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 21:32:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785817935; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="liNCeUs4"
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-74d55dac06dso916656137.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 21:38:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785818282; cv=none;
         d=google.com; s=arc-20260327;
-        b=gf1ktKv387RcIviDQ7mI0Te3HDNJG848nZz6zVQjBazQ1aSjKVtj9lAarluhNOBGwt
-         WNcAnV50n6IOZSD0ZKhbUFPK1uf+dfYmVikfvZGPbt2WRK9OR2LqSQZ58TkM53damj1u
-         bSgQlIKTDGJxnwpXF7K0P6GiMMRBWYFQ/1s3R/R31rD0OtIzJVfFzhbASoUDktOFmiG4
-         fCQ4z2NW4uI+udD6Bw3klBT1Na6IKOekqtuWqaZcag2DAq3AwkP3wdD8vt6uqgZdWvuR
-         BhD9ocG2Sfsr+VO6+exkNXeh5IGqz1RC1Bjnq/beq9EyIWT4eiiwNDNqOGfo5Om9pf3D
-         mHog==
+        b=c5O7+YE70IbXI7UKX4hvEn5DaN5OiZnTvR9J6P6hNWoITtSSPt3IFMC4WyCCxWMzJj
+         abP74pmzEWztB8XXo+huKW1CIG2X/Et/RyVcmA4mWd0Qsg2JT4+LHHlUiDm3PvlS4lf1
+         GIXNh6zdrcwjiKWXpW3OX3zdQfJAjG8c8vonqBIb5meHp9ED2zqKyCivwk6p6Uj6o94x
+         I6UNqGYUubaELBWa+Qok59al8Z6ippszi77107S9DqLu+K0F5F0Ll07CWCkzRXAhl34n
+         qWFDt75jM3ia1atyYyspibcMvbHMD7mVzH2KO99cFyR5NgTNlEK8zo/rmORszcMAB1iS
+         yeYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=LUfG70xuwTFgcp+8i3Kan+grkhw/1qDG9gV+zT/fD6Q=;
-        fh=I5KlBf6R7LEhHx5kpMqyPF7zYMiZmcCB7R0uQBcZHj8=;
-        b=DjPFc7H2gtHpK2UpL2UuZbaORtM+xCFDYxE83nDJaET/Nf2mOXlXACCOOIpfaRurgF
-         hAA1O14qnrgSV9n3CDDxOrxGBNmlv/LhsQi/NNYe0gRlDJ6ubha4vbgIdcZt2hXTnHsa
-         DBngIPNHRXBegq1UT5xqrGGOxNLioBNi0mpYHb+bfc48ydu0uJGF0HiY495Qtr36U1Fo
-         tQ/Y6kTrRoLNb+7f6durw/oCJ/96cOdC9FxxFR65Ee1kXKLjmnmu0qPaLlF/5GD6Mz4g
-         o/2NuQOy6w9zvEmzBed8sD+cksNAAHv3p6Lb8aheMGOMpGxzKrafykm3c31JiVUCLBCN
-         VqgA==;
+        bh=KCujiFsubPppZdIzZBFgzB0FHL+kaNCYcrxKl9k6kYk=;
+        fh=c8yxI+oVyYVI3BfphdkLCV+TQ4OqmcxqP9OGZATa8Z0=;
+        b=KZMNBkw/4SwGQyNEi6pJUEZHAKAvjWbixV6qLjN329mNCKdHXy0EuDk/fmkfKBWiT5
+         M05m37Tnw1KOLCn+KFMWW+HGuxflwYuWxXd/1cBSC45KT9sbehBEmz5Z0HeBIz1Wf/xM
+         ZBr8u66/M7xwiiI8eoONPp1a/BTCK1xJma1nF7uw+9259KQxODIsW5VRlXrjIEUDdkVn
+         dMe/z+Ie/+E4Wcqkm96ufZkJV6NnPtQ2W5kVZ3CDt0D0mzijo49s77HOm4dbCimkRNeM
+         2Fl7j1DuqdoetvRsVxvNRwYqw2ZFAgvXSPFEXU0A7faHGk1U2zmYrjm2I0P241t7sxW3
+         vhrw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785817935; x=1786422735; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785818282; x=1786423082; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=LUfG70xuwTFgcp+8i3Kan+grkhw/1qDG9gV+zT/fD6Q=;
-        b=ecEDPy5iAhpVTwsa6wEoo8WMAvzMX7UuivammsLWC/ZJxD+SDjqioKBq7YTEAYcjbr
-         8ZtkAkY3hO5GuFQ3nU2pTUA5ntC5zdzzPRxhqHA9Euk0Hjl2b749a7EvCLCWLGHfLjb7
-         nAwJ0vBAqePSYZeh6nhzTCmBvK/PNoqfm7NMyby26EX+2OMjCU0mq8dSvLQpRbgRklwP
-         7OhaBWVnHmaBENAh50nuu2CSRo7KBiyoryVEo8iyqHHKR0hMR5NPD6C3PUxw3O7MgBDz
-         dZnI3gRMi01frserumU7GfhIsfroT450ToZ5UWPrQDF9P2kbsdH3IETDhqxLcR7f9by6
-         Qc5w==
+        bh=KCujiFsubPppZdIzZBFgzB0FHL+kaNCYcrxKl9k6kYk=;
+        b=liNCeUs4ECDJvcEZ4Rc0Abd4lQbDzvcu7iOIFYL9wXpzEvtDs2yKblPq4exJb/iLVw
+         eDCmk7AHckSRnc+1K5xQ43URrohTb+uNgiHt6PEQ4r5rJBqZmdLTdL/8Djn3WTHYzZtA
+         X9TC3QSLxfg905jpGEvTaY7nQ8GcyMsadgbm5R9pbZIHXgONSDcoYWAoirSK7bXwv9fc
+         s3BY8/wWskDBTM2zXwqq+cCH4u4FDn89YsSGOzJ7Gi1hhpoEumm3JPvDpWVkrEOnJWiJ
+         xLhv1i4xZJpofa4T198bCQBrrpG6lATK8IGztX5pFZ3a7iCqtI7SHfn8c9t525JdoigM
+         CvFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785817935; x=1786422735;
+        d=1e100.net; s=20251104; t=1785818282; x=1786423082;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LUfG70xuwTFgcp+8i3Kan+grkhw/1qDG9gV+zT/fD6Q=;
-        b=hByoTDtJRHYigBkdBMXi5s2TCmjUdisZFUjS7Ka623dDBcUPG2/3YIddh6ImozIn7W
-         6txfkg/SryJWwJ4CgqP02ceGMbKYKf//TJckJKY2mJJIYiMaeZPZPDR3FFA+58fzDMH0
-         4r7P5LldAsCzN0Kg7fdTmovatiKp27uvsdp3WT8pMw0MVPCRa3Es1VWsWwM2ihqHWWCr
-         5d+BWd58ANo9+W0UMmsZenCgN5yFJBJ8MZkvQu+S38CYiTrUpY57XRqh+WtkIxaX7jrT
-         mUX991wcWiNuBlD1Uq5JxF9LW9qPFho23gJQRZBddmBLLMz5UoS5/S96FWml6loCx8J1
-         R0fQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoRff0FNah/AdKjs+cx08Fx5u3tQHqnJuNDSFTmM/ScEXf1BGNsbzAkW/094Cbf1QuFTiTGu7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5u0kNwRvPG8NK6XEVCmYuiGuprkDpBZ4x0qkHjjy30kDUbsxO
-	vqpOCY1Xb2QzK5DUxYi90TubQr5eVNlU9PP454ikt3tXTKQlEpjlMvjnK6kSihtIiwMhDvVwD1f
-	hvGypOMU0IiEnj7oWHdCQ9trCEebxidY=
-X-Gm-Gg: AR+sD135gG98USsxfH9KnCfuh5UM+4OrZ08Om9pqaLxFH4EM+pzW0Ks5HNDzo7/GJvK
-	iZ3vbz5VQHUuf9WuJ9hscAF0ufe4omOkDgOVwiDac07mqrSahB6koo6lVmo0+XeHwNjkkz2Pej1
-	VelOHaOkEDFzCbPPKHc1GcUf6omcv8c5cdH3pPe2Rw3ZKuuBbpfG1DgBmRqIly+PAKowkVKI4eD
-	UObX5W1Tbl+dUyKhb72jqOeUIGC6ZkqWb21Gtnzdld3bjWImF48fnuk3PJzYXANqIgScLG3kVCV
-	sjM3OS92mo7EVe51xd1kxrQFXNJemOglIiW0PTzLbc+jjC+ose9PlWvM4Jjm4O7D+AVXXaQoLBW
-	35WzIlyCvLwHcf9YYtxOshsK6ULoQ1HEzA+Xmwur+c79VOV7vnTn40kv9quOganFAmQSl9cXlew
-	b6gdbvYgO1n3b45ydLjK7GjKxHnDtD1064wq73
-X-Received: by 2002:a05:6102:15a3:b0:738:be73:55e0 with SMTP id
- ada2fe7eead31-75b237677ffmr8262959137.12.1785817935136; Mon, 03 Aug 2026
- 21:32:15 -0700 (PDT)
+        bh=KCujiFsubPppZdIzZBFgzB0FHL+kaNCYcrxKl9k6kYk=;
+        b=TzPS5O3a/zlhiJH+aooEoZ8N+ksex0VzItl7dgcI0SVwnG2Aqd7qTVI+oGkSS52vDk
+         PFaYUlGAFTRrzTc2oh0+IW/Io4pFfKkRwifj2cbdTQe99XA91FYF9WpsUlc0hn50Q+9G
+         2skogeMebXWl2qqoBNrG85MAPePbI9yN33Ot7MDagvVlVHTzEtq+jY0rITsaG+9hyK9f
+         iE32r/uUAlrJlVJRA18iiR13N6QV3uBGxH56PWupmDycv/0WJ4vRRmV39ktWxqcLpK5/
+         nSeFhbtZKUwlY3IchzCNfNI2XKXF+UxgOdQO9SjiJP3fBd4YdtGEqh+OUARlaU3w+BVW
+         sugQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr5WjUpXOtoxDjL8ivxBr+g/Ub9Ejk+7NOnroihDV0lJ23+oXF7S4gIyQl8cif7AGGLPOoLbP8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9U2lkmqg6zbg72rOgQ/y7c6nxBUcmsL/SgkY+NrOlhub4AKUb
+	zuc57hY+GJT5bRCsmDpPUQ73UV4ZT2ef6s2Zpv8WmmDJGGgAppnytLQnGXG5T9cKoRse6jc8l0p
+	SOrfy0kjo16WruBHcOEgWaft6q0XYzAI=
+X-Gm-Gg: AR+sD11ULPmqMNBYHd2oeDLBbB1gIya62qq8H2TkhbUHdZ1/FLUexvuAvpiLGh1r2dM
+	3fyz5NrTFtCDsAteji4GPHX4PUORhRYSnXbbKgXMeYDnO7B8syX9zLGbr4Z8Lo6NnrS/XaH4g+5
+	x6UqQLT3tF+iFOy9l1xoRA64AbzimTnen2gXEzMFEKeoPx+rVr8PN40VHxbFMmhXuUdJRcG+wYL
+	wgycFYfg/K/omzeabe34go4UIR5KM4G9toQKbj3OZWV4/TiDgR+iUSOcJBfkJgCFO6GiQebTN1T
+	DPbruhrsQDi+Xg3c7haavp7NzofvuQIMChdGNfisaQzzxLSLnj4/sc8OwwyF5XuuP9IkAAUpWKD
+	2R9Qx7TpyyV+So4ERhTLh9+34XICFu0y5C+mQ19AifCoPkzTzIMnFkUoWUiPeHi4STwlHLAEeg6
+	n55YJXaqmcrQrKsyHtnBXf2Gcsh73ap/VcZEijN+YqUoYLYu9w
+X-Received: by 2002:a05:6102:1492:b0:745:78d4:4856 with SMTP id
+ ada2fe7eead31-75b2226b36dmr8916982137.7.1785818282020; Mon, 03 Aug 2026
+ 21:38:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,76 +88,33 @@ References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
  <20260802-submit-acx00-of-dynamic-v1-v1-10-0a53cd9e21cc@gmail.com>
  <05b1e6a2-725e-4b8e-8629-249637bbcb81@lunn.ch> <CADvTj4o0JdjoO+FC4pO=qnjEQ8MRyzQdKp2Hxy9NsPU-gym5OQ@mail.gmail.com>
  <9b8be475-1fde-409c-a82e-be4b2e402650@lunn.ch> <CADvTj4pBovti19MXgQjFpxm=7aRm0sYQz9jxfo8bu3txH94THQ@mail.gmail.com>
- <CAGb2v64U9ZQxfb7M3VfoGH60iMHL01XDy6tjs8VbFPLfyaJWgw@mail.gmail.com>
-In-Reply-To: <CAGb2v64U9ZQxfb7M3VfoGH60iMHL01XDy6tjs8VbFPLfyaJWgw@mail.gmail.com>
+ <a9ce53dd-0873-41c0-ad6a-fb42e6cc7aaa@lunn.ch>
+In-Reply-To: <a9ce53dd-0873-41c0-ad6a-fb42e6cc7aaa@lunn.ch>
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 3 Aug 2026 22:32:04 -0600
-X-Gm-Features: AUfX_mzUkHY4di871Z-oeEmg1mv3oYLeo3scVGxNss1cbpF1OmuFzb1N7ZoUB_U
-Message-ID: <CADvTj4rCaL+Kf5C_Sd8-p5nJHxF8GR2i8oHFJd1Nz=egx9RcYg@mail.gmail.com>
+Date: Mon, 3 Aug 2026 22:37:51 -0600
+X-Gm-Features: AUfX_my4YsBDZd6K0e5M7YLW68aLI1B4Ub2Wc8OS8k7km2q52f4ciX_OEuUghsE
+Message-ID: <CADvTj4qpHU3F0DrEmc0vFi+JiwTNERniiMHKo1LmBd8sg58wJA@mail.gmail.com>
 Subject: Re: [PATCH 10/21] net: phy: add X-Powers AC200 EPHY control driver
-To: wens@kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Andre Przywara <andre.przywara@arm.com>, Richard Genoud <richard.genoud@bootlin.com>, 
-	Maxime Ripard <mripard@kernel.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Andre Przywara <andre.przywara@arm.com>, 
+	Richard Genoud <richard.genoud@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
 	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 3, 2026 at 8:07=E2=80=AFPM Chen-Yu Tsai <wens@kernel.org> wrote=
-:
+On Mon, Aug 3, 2026 at 8:22=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> On Tue, Aug 4, 2026 at 2:45=E2=80=AFAM James Hilliard <james.hilliard1@gm=
-ail.com> wrote:
-> >
-> > On Mon, Aug 3, 2026 at 11:57=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wr=
-ote:
-> > >
-> > > On Mon, Aug 03, 2026 at 10:09:01AM -0600, James Hilliard wrote:
-> > > > On Mon, Aug 3, 2026 at 7:51=E2=80=AFAM Andrew Lunn <andrew@lunn.ch>=
- wrote:
-> > > > >
-> > > > > > +static int
-> > > > > > +ac200_ephy_ctl_set_led_outputs(struct acx00_ephy_control *cont=
-rol,
-> > > > > > +                            unsigned long outputs)
-> > > > > > +{
-> > > > > > +}
-> > > > >
-> > > > > > +static int
-> > > > > > +ac200_ephy_ctl_set_led_polarity(struct acx00_ephy_control *con=
-trol,
-> > > > > > +                             bool active_low)
-> > > > > > +{
-> > > > > > +}
-> > > > >
-> > > > > I've not looked into the details, but these look like pinmux. Doe=
-s
-> > > > > this I2C device have a GPIO controller? Can these pins be used fo=
-r
-> > > > > other things than LEDs? Maybe you should be implementing a GPIO a=
-nd
-> > > > > pinmux driver. The Ethernet PHY driver can then just select the
-> > > > > correct pinmux configuration.
-> > > >
-> > > > These do not appear to be GPIO or muxable pins. The AC200
-> > > > documentation describes them as three dedicated EPHY LED
-> > > > outputs: link/activity, speed, and duplex. The bits in SYS_EPHY_CTL=
-1
-> > > > enable those output pads, while EPHY_CTL provides their shared
-> > > > polarity setting. I have not found any documented GPIO data
-> > > > registers or alternative functions for these pins.
-> > >
 > > > So what i'm trying to do with both of these is make it look more like
 > > > standard Linux building blocks.
 > > >
@@ -183,97 +140,42 @@ O
 > > control endpoint. That would mix the package-specific control transport=
 s
 > > with the otherwise common Clause 22 implementation.
-> >
-> > The current split uses standard subsystems wherever they provide a
-> > matching abstraction: MFD, regmap, MDIO devices, clocks, regulators,
-> > NVMEM, device links, and the PHY LED framework. The narrow private
-> > interface covers only the compound operation which those frameworks
-> > cannot express: calibrating, addressing, configuring, and sequencing th=
-e
-> > package control block before the Clause 22 interface becomes usable.
-> >
-> > The link address is an important example. It is defined once by
-> > phydev->mdio.addr. AC200 must program that value through its I2C contro=
-l
-> > interface, while AC300 must validate it against the address of its MDIO
-> > control endpoint. Generic PHY operations do not carry a consumer MDIO
-> > address. Encoding it in a phys specifier or control-node property would
-> > duplicate the PHY node's reg value. Giving the common PHY driver a raw
-> > regmap avoids passing the address only by moving the provider-specific
-> > implementation across the driver boundary.
-> >
-> > The LED pad-enable and polarity bits are similarly part of the package
-> > control function. They control dedicated EPHY outputs rather than GPIOs
-> > or muxable pins. The common PHY driver still owns the PHY LED semantics=
-,
-> > while the selected control driver performs the package-specific registe=
-r
-> > access.
-> >
-> > For those reasons, I think keeping the transport-specific control drive=
-rs
-> > and the common Clause 22 PHY driver separate is the cleaner division.
 >
-> I think what Andrew is saying is that you can expose the regmap from the
-> MFD node, which you then reference from the PHY node with a custom phandl=
-e.
->
-> In the PHY driver, the first thing to do is retrieve the syscon, and if i=
-t
-> is not available yet, return -EPROBE_DEFER. Then you program all the bits
-> you currently do, just without going through a layer of redirection.
-> You can fetch the PHY address to program from the device tree. The downsi=
-de
-> to doing all the setup in the PHY driver is that the PHY node has to have
-> the PHY ID in the compatible, as it is no longer generic. But you already
-> have that.
+> Given how messy this hardware is, i doubt it is discoverable. We have
+> been pushing back on hacks to enable various things before probe in
+> order to make it discoverable. So you are going to end up putting IDs
+> in DT so that the driver probes without it being discovered. That
+> means you can put any ID you want in DT, and the driver. So you have
+> two different phy driver structs, two different probe functions, etc.
 
-I agree that direct regmap access would be reasonable for an
-AC200-only driver, but I do not think it is a good fit for the
-combined AC200/AC300 case.
+I agree that the link PHY cannot be identified by reading its
+registers before the package control sequence has run. I do not agree
+that this means an arbitrary ID should be placed in DT, though.
 
-The proposed phandle only models AC200. AC300 has no corresponding
-MFD regmap: its control block is a separate non-PHY Clause 22
-endpoint, with its own clock, regulator and sequencing requirements.
-Folding everything into the link-PHY driver would therefore still
-require two transport-specific implementations -- raw AC200 I2C
-regmap access and raw AC300 MDIO access -- plus conditional resource
-acquisition and cleanup. It would remove the function-pointer calls,
-but merely replace them with AC200/AC300 branches throughout the
-common driver.
+The Ethernet PHY binding explicitly defines
+ethernet-phy-idAAAA.BBBB as the correct contents of the PHY identifier
+registers. It also documents using that compatible when clocks,
+resets, supplies, or another initialization sequence must be applied
+before those registers can be read. That is exactly our situation, so
+ethernet-phy-id0044.1400 lets phylib create the phy_device without an
+initial MDIO read. Once the selected control provider has powered the
+hardware, the driver can read MII_PHYSID1 and MII_PHYSID2 and validate
+that ID.
 
-This also matters for boards sharing one board identity but
-containing either package, as selected by SID. Fixed boards can
-reference one control provider, while variant boards can reference
-both and let the common link-PHY driver select exactly one. The
-selected provider then owns its transport-specific resources and
-lifetime. That avoids making an MDIO PHY driver directly manage an
-I2C MFD function on one system and a second MDIO device on another.
+Both AC200 and AC300 expose the same link-side PHY ID and register
+layout. The package choice changes how that PHY is initialized, not
+the identity of the link PHY itself. Inventing separate IDs would turn
+the compatible into a Linux driver selector and would describe values
+which the hardware never reports.
 
-The control interface is also used for more than initial probe. It
-participates in suspend/resume and reset sequencing, interface-mode
-changes once the MAC attaches, and package LED-pad configuration.
-Consequently, exposing a raw regmap would not reduce this to a
-one-time register setup; the common driver would still need
-package-specific implementations of all those operations.
+The package variant is discoverable independently through the SID
+configuration field. Fixed boards can reference one control provider,
+while boards shipped with either package can use SID to select between
+the AC200 I2C control provider and the AC300 MDIO control provider.
 
-The PHY address should not be read from firmware again. The MDIO core
-has already parsed reg, and the authoritative address is
-phydev->mdio.addr. Passing that address to the selected provider
-avoids duplicating or independently interpreting the firmware
-description. Similarly, the forced ethernet-phy-id0044.1400
-compatible is required in either design because the identification
-registers are inaccessible until the package control block has been
-initialized; it is not a consequence of using a separate control
-driver.
-
-Also, AC200 is an I2C MFD rather than a syscon. Exposing its regmap as
-a syscon solely so another bus device can perform raw accesses would
-blur the ownership of the AC200 function.
-
-The private interface is intentionally narrow: it contains only the
-operations whose implementation differs between the two packages,
-while all normal Clause 22 behavior remains in one shared PHY driver.
-Given the AC200-only, AC300-only and runtime-selected board
-configurations, I think that separation provides a cleaner boundary
-than moving both control backends into the common link-PHY driver.
+For that reason, I do not think two phy_driver structures and two PHY
+probe functions model the hardware correctly. There is one common
+link PHY, so its Clause 22 implementation should remain in one PHY
+driver. The two different implementations belong at the control
+endpoints, where AC200 and AC300 genuinely differ in transport,
+resources, and lifetime.
