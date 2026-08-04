@@ -1,114 +1,290 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4562119C54E;
-	Tue,  4 Aug 2026 09:06:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39233AC0E9;
+	Tue,  4 Aug 2026 09:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785834418; cv=none; b=LeC3WiVwIuvDdtUFpJ0dKmDr6hqEaB66nsIaHjGFwSiwNtMK4dZsvQgcvuHVLDTQf4PNdZwGeBfbrXbOd4Cbd2SkQHuDF/4N/FSOWbiMBH6nb2xaspIsMuTMdx0D//hrvt0IYZ9WstgGJdzPmO9THv1A73Wd1Y705k3B6yMuQAQ=
+	t=1785834530; cv=none; b=GZAJp7zTvvswix2Uw2d1FFFQcvG5oldDguyWz3T2vlZtgHMcqA5bWHrU8jnhsUM7Rfurr/Q7/wiSzQwuulSj6lU83jr/4PG2zAFNtFMPAUPGHDNBr1VgmSdTqLkU5M+5yF+9wavPV3KgXb+/FyKEZSBs8kbahAyD29jp7T2Y5W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785834418; c=relaxed/simple;
-	bh=df+DOL0/9v4TwWJ1M6w1vmdVop1R5r/pkY6mwFdjfa4=;
+	s=arc-20240116; t=1785834530; c=relaxed/simple;
+	bh=GRY1Ds3A8MFWd4d0EtWx+pcGpVVdpswUeJqyoMzzfFg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b0DbVAvujKnRB6K5o12f2YozvYeWjS68/pSAA4iEtYm06EhdedbnQ+BWOA52k9SnsV+A78IvUGUzv3POVK6qHl5C2NdO5y0eyGGjSHPbtc9aBbDdeazzfgcY5HeDu96NlN8sCo4N4rReCpK+hqwl00kE3xlcaE7pLzdvQ5X7R+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=n8yGjivz; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=bDW3SyhNpMcuzk7orBhbNOYgsDaDMD3bDqNfc623JP9FSRvB6OIiG4ufl6DgnHur1b2KvqXo3HXNHasTDuu36SLG3YWtIpvSPxup1K1G0XNvzkXB7TzB33OhTJ9/cuoVvPNva9DGgQdYCOATzjqf2L9+x5yGLBuPT/yz0+LKUVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hO4M/Yzb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="n8yGjivz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4vIzy7HGPsfFjjZzDsRgRTYSfhAGUKbY42f9YiF8ZKo=; b=n8yGjivzu0lrlMCERRIZ9Jl2me
-	sbwyxwAFQLZiULIyoXCWRKdWka2XOOsU5beLa87DHVb29mWuLvxecfYtopejch5oW/qhjjDS61xpD
-	wQt8KTTKQx2LGumGHp9tO5yqrR29JKo9aTbM9MRtrC/0+GJUyFdywz/MD8jMT8iRknu+tP4kKKDwz
-	Udye2NrBcv56NU7dUARE5QWGqJ6fwTDOaMU4yL2jlPRkvlasFhlr5jrx3/VuoBWVZbvBP6TnUCp87
-	T4WmWZBxNCrYKZr47IlhBlhtFysLe6UiwmPx+oSo+HOqJom+vWGWYFe32BBIhW2spw49Cmq+pe7Dg
-	dCCSM37Q==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wrB6e-00D1xN-01;
-	Tue, 04 Aug 2026 09:06:40 +0000
-Date: Tue, 4 Aug 2026 02:06:33 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Hidayath Khan <hidayath@linux.ibm.com>
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com, 
-	sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch, 
-	tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	pasic@linux.ibm.com, linux-s390@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net] net/smc: fix socket refcount leak in
- smc_switch_conns()
-Message-ID: <anGqEX1JOYlTczQ6@gmail.com>
-References: <20260804082800.498672-1-hidayath@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hO4M/Yzb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC6E1F000E9;
+	Tue,  4 Aug 2026 09:08:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785834528;
+	bh=ghBwXEKKsascxtgo5NYN/flgQoV8CthULaYum+SUvio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hO4M/Yzbf533RydwxUx8sqbaepXbrR8okDyPy92W/TVXS9xMvVRbC+ly9wFja7anP
+	 K2T3tfniAmzxaa+tbg7ZxlUDL8qXdtZGLDebX/s7kr3uteb3JIyDpcunNXI7H5cHP4
+	 fCcYRy/XD9I+qotWvuRjPmzUR59Vs9DrDwzVWlB9q4EfjL1VbZimVieywq4dL78cJg
+	 oZQgd8O9WSMhgXCrU/uh4qfzmVfUT1cIhfHzzGge2u7MsJO8UyyqbolULxKK3QnRKu
+	 +oLza8u1+40F0zlINmHfLQaDnuWOf5sV6LYYOzhTsXSdFkbybgUVZSpdUC/tvrO8Zq
+	 feUmg+UMcUSXg==
+Date: Tue, 4 Aug 2026 10:08:29 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <anGpvW6XwgWH1t6D@lucifer>
+References: <20260802215459.2769283-1-surenb@google.com>
+ <20260802215459.2769283-3-surenb@google.com>
+ <anByp6uVW77uofKx@lucifer>
+ <CAJuCfpHPcE0=7825xiusBN0MmCp1hrnsDuYrfTKwGM43ozmmOQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260804082800.498672-1-hidayath@linux.ibm.com>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpHPcE0=7825xiusBN0MmCp1hrnsDuYrfTKwGM43ozmmOQ@mail.gmail.com>
 
-On Tue, Aug 04, 2026 at 10:28:00AM +0200, Hidayath Khan wrote:
-> smc_switch_conns() takes a reference on the SMC socket before dropping
-> lgr->conns_lock, so the connection stays alive while the CDC slot is
-> fetched:
-> 
->         sock_hold(&smc->sk);
->         read_unlock_bh(&lgr->conns_lock);
->         /* pre-fetch buffer outside of send_lock, might sleep */
->         rc = smc_cdc_get_free_slot(conn, to_lnk, &wr_buf, NULL, &pend);
->         if (rc)
->                 goto err_out;
-> 
-> The err_out label only drops the wr_tx link reference, so this early exit
-> returns without the matching sock_put().  The second error exit is not
-> affected because sock_put() has already run by then:
-> 
->         rc = smc_switch_cursor(smc, pend, wr_buf);
->         spin_unlock_bh(&conn->send_lock);
->         sock_put(&smc->sk);
->         if (rc)
->                 goto err_out;
-> 
-> A leaked sk_refcnt means the smc_sock is never destroyed.  Its send and
-> receive buffers stay allocated, and for a user socket the reference held
-> on the network namespace is never released, so the netns can no longer be
-> torn down.
-> 
-> smc_cdc_get_free_slot() fails when the target link goes down or when the
-> connection has been killed while the switch is in progress.  Both are
-> reachable during the link failover this function implements, so the leak
-> is triggered by the same hardware events that make smc_switch_conns() run
-> in the first place.
-> 
-> Drop the reference on the early error path.
-> 
-> Fixes: 95f7f3e7dc6b ("net/smc: improved fix wait on already cleared link")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-> Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+On Mon, Aug 03, 2026 at 11:31:14AM -0700, Suren Baghdasaryan wrote:
+> On Mon, Aug 3, 2026 at 4:10 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >
+> > On Sun, Aug 02, 2026 at 02:54:56PM -0700, Suren Baghdasaryan wrote:
+> > > From: Dave Hansen <dave.hansen@linux.intel.com>
+> > >
+> > > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> > > it and mmap_read_trylock().
+> > >
+> > > Long Version:
+> > >
+> > > == Background ==
+> > >
+> > > Historically, binder used an mmap_read_trylock() in its shrinker code.
+> > > This ensures that reclaim is not blocked on an mmap_lock. Commit
+> > > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> > > support for the per-VMA lock, but left mmap_read_trylock() as a
+> > > fallback.
+> > >
+> > > This was presumably because the per-VMA locking can fail for several
+> > > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> > > to mmap_read_trylock().
+> > >
+> > > == Problem ==
+> > >
+> > > The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> > > essentially already a non-blocking trylock. The main reason it fails
+> > > is also the reason mmap_read_trylock() fails: something is holding
+> > > mmap_write_lock().
+> > >
+> > > The only remedy for a collision with mmap_write_lock() is to wait,
+> > > which this code can not do. So the "fallback" after
+> > > lock_vma_under_rcu() failure is not really a fallback: it is really
+> > > likely to just be retrying in vain. That retry in an of itself isn't
+> > > horrible. But it adds complexity.
+> > >
+> > > == Solution ==
+> > >
+> > > Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> > > will not persistently fail. Rely on it alone and simplify the code.
+> > >
+> > > Full disclosure: I originally tried to do this with
+> > > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> > > trylock semantics. Claude caught this in a review and suggested the
+> > > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> > > I guess.
+> > >
+> > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> > > Cc: linux-mm@kvack.org
+> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > Cc: Arve Hjønnevåg <arve@android.com>
+> > > Cc: Todd Kjos <tkjos@android.com>
+> > > Cc: Christian Brauner <christian@brauner.io>
+> > > Cc: Carlos Llamas <cmllamas@google.com>
+> > > Cc: Alice Ryhl <aliceryhl@google.com>
+> > > Cc: "David S. Miller" <davem@davemloft.net>
+> > > Cc: David Ahern <dsahern@kernel.org>
+> > > Cc: netdev@vger.kernel.org
+> > > ---
+> > >  drivers/android/binder_alloc.c | 29 +++++++++++++++--------------
+> > >  1 file changed, 15 insertions(+), 14 deletions(-)
+> > >
+> > > diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+> > > index e4488ad86a65..84104ba04e30 100644
+> > > --- a/drivers/android/binder_alloc.c
+> > > +++ b/drivers/android/binder_alloc.c
+> > > @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+> > >       struct vm_area_struct *vma;
+> > >       struct page *page_to_free;
+> > >       unsigned long page_addr;
+> > > -     int mm_locked = 0;
+> > >       size_t index;
+> > >
+> > >       if (!mmget_not_zero(mm))
+> > > @@ -1151,14 +1150,20 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+> > >       index = mdata->page_index;
+> > >       page_addr = alloc->vm_start + index * PAGE_SIZE;
+> > >
+> > > -     /* attempt per-vma lock first */
+> > > +     /*
+> > > +      * Attempt per-vma lock. This is essentially a
+> > > +      * "trylock". It can fail even if the VMA exists
+> > > +      * for 'page_addr'.
+> > > +      */
+> >
+> > This makes me wonder whether lock_vma_under_rcu() should really become
+> > vma_trylock() at some point in time? :)
+> >
+> > Or at least have 'trylock' in the name.
+>
+> Makes sense. I think I'll postpone renames until after the series are
+> merged. Don't want to mix too many changes together.
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Yeah absolutely :) this isn't for this series, just thinking out loud!
 
-> ---
->  net/smc/smc_core.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-> index b4208cb186c5..c0027d2fe4e8 100644
-> --- a/net/smc/smc_core.c
-> +++ b/net/smc/smc_core.c
-> @@ -1148,8 +1148,10 @@ struct smc_link *smc_switch_conns(struct smc_link_group *lgr,
->  		read_unlock_bh(&lgr->conns_lock);
->  		/* pre-fetch buffer outside of send_lock, might sleep */
->  		rc = smc_cdc_get_free_slot(conn, to_lnk, &wr_buf, NULL, &pend);
+>
+> >
+> > >       vma = lock_vma_under_rcu(mm, page_addr);
+> > >       if (!vma) {
+> > > -             /* fall back to mmap_lock */
+> > > -             if (!mmap_read_trylock(mm))
+> > > -                     goto err_mmap_read_lock_failed;
+> > > -             mm_locked = 1;
+> > > -             vma = vma_lookup(mm, page_addr);
+> > > +             /*
+> > > +              * If the vma exists, we can't continue because we cannot
+> > > +              * remove the page from the vma. However, if the vma was
+> > > +              * unmapped, it's okay to continue.
+> > > +              */
+> > > +             if (binder_alloc_is_mapped(alloc))
+> > > +                     goto err_vma_lock_failed;
+> >
+> > Hmm, it seems a bit odd to me that you also have:
+> >
+> >         if (vma && !binder_alloc_is_mapped(alloc))
+> >                 goto err_invalid_vma;
+> >
+> > Below?
+> >
+> > So you have:
+> >
+> > Before:
+> >
+> >                                 |binder_alloc_is_mapped()?
+> >                                 |yes    no
+> >                         --------|-----------------
+> >         vma is mapped?  yes     |OK     abort
+> >                         no      |OK     OK
+> >
+> > Now:
+> >
+> >                                 |binder_alloc_is_mapped()?
+> >                                 |yes    no
+> >                         --------|-----------------
+> >         vma is mapped? maybe    |abort  OK
+> >                         yes     |OK     abort
+> >                         no      |OK     OK
+> >
+> > The 'maybe' is because the VMA trylock failed.
+>
+> The case you are considering is lock_vma_under_rcu() failed for some
+> reason other than lock contention (say seqno overflow). In that case
 
-Do you need sock_hold(smc->sk) to call smc_cdc_get_free_slot ? Otherwise
-you can move the sock_hold() after the exit.
+Well it could also be due to lock contention right?
+
+> we get vma==NULL and binder_alloc_is_mapped() is called without any
+> lock (VMA or mmap lock) being held. I'm not sure if this is a real
+> problem since I see other places calling binder_alloc_is_mapped()
+> without locking. Alice, Carlos, is this a problem?
+
+There seems to be a contradiction here though in that - the
+binder_alloc_is_mapped() call below is predicated on vma != NULL.
+
+But here lock contention could mean the VMA is mapped, but then
+binder_alloc_is_mapped() returns false but you still proceed.
+
+Anyway I don't really understand the semantics here so will leave it to you guys
+as to whether this is actually an issue :)
+
+>
+> >
+> > So the issue is you might have a case where the VMA _is_ mapped but
+> > !binder_alloc_is_mapped(), which previously aborted because of the vma &&
+> > !binder_alloc_is_mapped() check.
+> >
+> > It seems like:
+> >
+> >         /*
+> >          * Since a binder_alloc can only be mapped once, we ensure
+> >          * the vma corresponds to this mapping by checking whether
+> >          * the binder_alloc is still mapped.
+> >          */
+> >         if (vma && !binder_alloc_is_mapped(alloc))
+> >                 goto err_invalid_vma;
+> >
+> > Is testing for a specific scenario 'we found a VMA but it turns out it's
+> > invalid' and aborting if so.
+> >
+> > So either this check should be removed or you should uncondtionally abort if
+> > !vma I think?
+>
+> I think this check is fine because it basically checks
+> binder_alloc_is_mapped() after stabilizing the address range.
+> Unconditionally aborting if !vma would prevent us from freeing the
+> page if the VMA was already unmapped. The ultimate question is whether
+> we can rely on binder_alloc_is_mapped() alone when freeing that page.
+> IOW, VMA might still be in the VMA tree but
+> binder_alloc_is_mapped()==false, can we free the page?
+>
+
+Yeah.
+
+> >
+> >
+> > >       }
+> > >
+> > >       if (!mutex_trylock(&alloc->mutex))
+> > > @@ -1191,9 +1196,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+> > >       }
+> > >
+> > >       mutex_unlock(&alloc->mutex);
+> > > -     if (mm_locked)
+> > > -             mmap_read_unlock(mm);
+> > > -     else
+> > > +     if (vma)
+> > >               vma_end_read(vma);
+> > >       mmput_async(mm);
+> > >       binder_free_page(page_to_free);
+> > > @@ -1203,11 +1206,9 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+> > >  err_invalid_vma:
+> > >       mutex_unlock(&alloc->mutex);
+> > >  err_get_alloc_mutex_failed:
+> > > -     if (mm_locked)
+> > > -             mmap_read_unlock(mm);
+> > > -     else
+> > > +     if (vma)
+> > >               vma_end_read(vma);
+> > > -err_mmap_read_lock_failed:
+> > > +err_vma_lock_failed:
+> > >       mmput_async(mm);
+> > >  err_mmget:
+> > >       return LRU_SKIP;
+> > > --
+> > > 2.55.0.508.g3f0d502094-goog
+> > >
+> >
+> > --
+> > Cheers, Lorenzo
+
+--
+Cheers, Lorenzo
