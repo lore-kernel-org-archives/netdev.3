@@ -1,203 +1,132 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469903F9F38
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 18:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8109371860
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 18:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785868349; cv=none; b=r32AmUHc1PAjbhz5EUL9eaHT9phA00ziVWWxW7QqwutatH4iqZfg4+pZaTb5o+64+6uoPeNNFBV5A2nUZ08QTqopZ6Oki13MT1n74F5DI1IUtn6pqSZCZnD67GBGD8SWLa7bEJDwUi1GM3nfYbDs0/ZEBiRzjxs+fxBuVhy4u4Y=
+	t=1785868368; cv=none; b=K2gy6OomQkcp6v0Nb8VcERdqH0mAInMCBWuV/jBsrybQcv5v4XkNHfBsklYYx2AGKIxYsTTUL0HKEuIunC5XfSddMnYlZMD/dg5LzeYQWEBgc0fZHvh+EEZxf/lgjRNNBHV+vSVXIBo/jV9NK/bnKQPV3MIY+azd6K/k1WQ1y2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785868349; c=relaxed/simple;
-	bh=IXB6vUiKWJEdqW1TTD5ocjjjxNWpstJkub6JSbsNZSc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jN7Ly61JEqogSEV2Z6dbbWtKSsdWvpk1bpMF7itibxnrVFgEpHAyFSVdVmXLpCbSzb6tWtJGHg7Xsn9wGo6ibay7abQUDVwwNuquoNU7QK4+S/KnlU8oEgh//HoxvymSRnWcsOqQ7IqtiVlVNG7B7Q4O5c11DJmM469/H+ExdrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hifKAnrq; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BFRa6z3Y; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785868368; c=relaxed/simple;
+	bh=RZ2UBfczD/1R4n+p2pN7umHlT0/VqSZbWqI1U5UVaS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=puwbHgmHSwqsXAoIKcpoo9sAxeB/PyQ+gOWprPNREz7MP0TNqVT/L8snut3Liw2z5ufhkrV5RVDbK/9rnLnYDYKE2EM4P7NRRogqv1Qlgr0fP5GybWRcnCBpidELKp1s5ynZ5/woVxkKNnGu0utf6S2hmgBqxFD/dwPcTW1rudQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PBKEYcbR; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hifKAnrq";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BFRa6z3Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785868345;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=juuGOVrGLpk4gW02kqE7+bIl9ZXIQiTKpjejvwij5xI=;
-	b=hifKAnrq02bPIj2t3ZPj2hMYjcXdKCZF9o6c5rKlDC3u+ZGU0TStc0OpXmpQel1NWiDnM5
-	i7oKamgr1EyagF7ankwD/gZ0MMQyxOERpjc4JQpMNItUEkVE8YP4B5kVZ/S8Ydfgsec95g
-	oEapHlS1/jEfsxb3expV4QmyxV6tWE8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-92-N228fBADM1uQdbqFCuSQ8A-1; Tue, 04 Aug 2026 14:32:24 -0400
-X-MC-Unique: N228fBADM1uQdbqFCuSQ8A-1
-X-Mimecast-MFC-AGG-ID: N228fBADM1uQdbqFCuSQ8A_1785868343
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47fecbb553bso73056f8f.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 11:32:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PBKEYcbR"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so101554a91.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 11:32:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785868343; x=1786473143; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=juuGOVrGLpk4gW02kqE7+bIl9ZXIQiTKpjejvwij5xI=;
-        b=BFRa6z3YUO7Vystjy48OpEN3NeRx7Y8tKDN7i+9WJ92v2pXxzo+4pAJTtiSEWOPmvP
-         ZGxGCRtpPAIm7wLCGLDPM8tfj1LHCjeFvHQtUOF0pVYQ4oyIXEuYqQNz6o07F1OAb/1N
-         lvwEUP9Tttuj2tji7ye72KjPE/8CCsP+N1VmLXEIwvPWyME2t3UiYItDbmW4l/bajTNb
-         8eStGpVVr8cUk2lATrjUqpXqNeiaA46qFwrE2xjCrEZmeq0kuBfj+mAJAIrvMJv/6rR5
-         Ptx1rqhT/iv6UMnxodVAdGBJKZG6lR2F3+lSQHAX7ZQRM1Z783cDP5DS9BjtmUQQQnC6
-         xjdA==
+        d=gmail.com; s=20251104; t=1785868367; x=1786473167; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=T46aT6b6jrcEqP7BKbyuJ+Dqx/tXTl32zZ60csvLnD8=;
+        b=PBKEYcbR0PvT1zeXts34GIlYiHL3q5pnqDhgG4ltjJA5tu8fhM2N3LGGp1TPT5GUM1
+         PEJNliQktkqVNYcV3yu11EZ2lJyuiES6kyqtsgWoVrjgpUs9CycCtJS00W2A7USnJWdZ
+         3KY4GpNCHVROWLGmTnTRHlnkWRfmiuqh76UawMRmT4HetY7JXFzurWcstZwE7s2OLO6k
+         DVbWsRYaksm5bURGklSIxUUBVwJBYJIQ33E1CwnUz00IsJ8D+hY9sSqZMJlBFKE420EM
+         beUCb2PRuIDTRDSyXtHdf3Hz+EZZ8M5H8RGZOF/9msErfpR71zwM1nx/QYgdOyPAviAf
+         UddA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785868343; x=1786473143;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=juuGOVrGLpk4gW02kqE7+bIl9ZXIQiTKpjejvwij5xI=;
-        b=lQBDQcEU6RlZCYk029XDWXij5We9L0xS8/ti/5ig4dnvm1JLq09TTeJtLn1cmsj+Rv
-         PNR8zbT082V1023jgXSe/NtOptmyYf/9O8ISXSOq0VSlcltGhdD0UCnfVBVL17vPnCvr
-         V9/z5c400e9HYd6RNWz1S51f52qeuCxCtUMpP5D2hCAIy5jBcvnoAFSPA2NGVy7CEqht
-         twrVfNCRTYNBJJYuoMyHqAcN7fhQUtds4CaolFZ/vslbVHzf2MTK8yTzUlCseOwioPxe
-         0ZiUJDS/eb9f+Oiv8/+oEShUZcboinpKybvy7AE0BewyYMpydmhZm7gkWrY408u9tnzO
-         zVfw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr2EB3ldQuOiyx7A4Czu2V7AItp54ds9sbVhJh5vBfh3IBvnboeOIgHrDYmW5vtOc90KFEyy08=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeBjQq8F9oA2GlwGixV0FKes+nL0bXhp9hTxgfBXKoqwxnYrsj
-	jOeE3GBz9tBoIGB/bbWf1O3kFQ5/eZufrnZbv+2MpBHXVfkPhzmFLBATFj+DI1nNPnlRWAytgVc
-	agQ/mfLDcOX3bcoJb7xPN0P2a53nKK9ZVRd5s70xSco5bc9NQhRF9j4RDmQ==
-X-Gm-Gg: AR+sD12UoZpMnOtgaVke/Sy6omubrpyE4lkd3Y5xRJooylRxLW3UZ5LCQA7VW5RlHQZ
-	Q1heW/ug+sxwe9iSpGF3yofAfqmngMefHeeEY30lOuH+Gu/U9y2+UnUjT2jipCMi1tL1i7R9j0J
-	KgLSbl7l0ngEn8ThfqPLo2GN7p+xVwHXiSqqw4hJL91HnXzD7bYZsRvrfvO/Z/QfvfWWoJi0YCt
-	c29CRexSWzRyOOnfNnfULx77VnOOzBdiSpaglNYdRyVbWA0K9YlWD7Y7zHwUnqpqhS8d/uzdJpb
-	ZvKIKM+cJx2Dgv3RIN9jbMp8gCxFwp7yp7PHS/nVSRrOU4Fi0cN3mWxC+xB1Rp23iVoKO06FcFn
-	W5a1MR0dWGXuUbDAwd8DP0NluhgvO3amJuB+xYnCEoI2sL2LLkIbBqZ9nGYgi3hZ1MX/kAMTuJb
-	4=
-X-Received: by 2002:adf:fec7:0:b0:47e:81aa:3832 with SMTP id ffacd0b85a97d-47fec519ff8mr1867057f8f.16.1785868343490;
-        Tue, 04 Aug 2026 11:32:23 -0700 (PDT)
-X-Received: by 2002:adf:fec7:0:b0:47e:81aa:3832 with SMTP id ffacd0b85a97d-47fec519ff8mr1866989f8f.16.1785868342939;
-        Tue, 04 Aug 2026 11:32:22 -0700 (PDT)
-Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec23e5efsm1936070f8f.27.2026.08.04.11.32.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 11:32:22 -0700 (PDT)
-Message-ID: <dbd0dc17-d097-4254-b6f0-59eeb6e69579@redhat.com>
-Date: Tue, 4 Aug 2026 20:32:21 +0200
+        d=1e100.net; s=20251104; t=1785868367; x=1786473167;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=T46aT6b6jrcEqP7BKbyuJ+Dqx/tXTl32zZ60csvLnD8=;
+        b=TDND0P90OawdkAX8qVA+rZCAaWMAzW7A5vrwIffhr5m1EhDD/uhMJF4mnQhp+QV04d
+         7BIuxWsGYe5RtXlNC3dkR56WUAcIZgFwefrIfjhYRUUGhvs4TOhSm38Fxvtq1/akqJVQ
+         Rtk0sMSYU1n47qkhtdnAkzHY7cXLPmZgHS47kxslB/L9iF9/A5+SriOxK4LZYdol7EBw
+         T+/LzirzTWZIflDdgw+Nr3Yh3BNuWZhIkkigBfheQ5hPT/d6kl7Uky+0oT+UdnrhFLcd
+         EiUlo/yYFtCLo2dG1TUTlfv1+xMRHbDPPf6JzSATNqeU0UARyAClAqrKlCd+vtn51mwB
+         iG0A==
+X-Forwarded-Encrypted: i=1; AHgh+Rrt1CflA6XUNiYLRU2Fw/A4ErzwyAnpzvdFGuKreerEkfiJFPFJcYqqyI2/Zj5+ut0y8WWX95w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsXoqs2U5i2Tc73So/UwpE9e3kcwLcTSTwxRJ2o9b45eC95YcW
+	Fm7vbuRoBAFEzqNFgtVlDtDPCy7Bq3hjtOekQ3U6Cc8z80aBBNDoxWWm
+X-Gm-Gg: AR+sD13W2MLg87qJ2MJwBEnoEzdd8sZiadeB80sUWb3Oj/ZggFI2c5xqqm9be2bEN90
+	2ndMwVoQOa3VV9rUR0k/gJmJg0w3mhhRYnA5QoSkzZ/4H0P6gcF++6nvLUELcaZNuehISvOsbPI
+	V48jNrP7ma6yAY8sjiWHfooiLgC0wIlLz0zIu2/G6H2pnR6yp69oZI0saLnlVrXd/cmzWIvHF5o
+	o5r09+fs0CX9JTVizwzmJHbitG0Zb6c3CSY8bGZZDysOzlU8mM7GuDufNjgWJs4DYaATIpeSgXT
+	OUJnEKlqJYfwRAEzaaEdBAxQXeQJO7+3Pei7dFjyxtDeQLiGarfQ8Z2iERQwlW7QsLp9tBzBy2T
+	IvR4+5TDS86ia6Zio6ufhJnQXPQWUyqcjRpAPK6bVZ2apE2/vJjWHV08QoKDaGMiHDvEwsfgKDv
+	RbT63coQ709aIspzniINkSWpoFBrVpM9npePGbLApPxzmM/jcNnJiaj3OKUQbr224dGfjSEqlnp
+	SZb
+X-Received: by 2002:a17:90b:224e:b0:38e:9ef9:eb97 with SMTP id 98e67ed59e1d1-3903c5c443dmr636262a91.16.1785868366824;
+        Tue, 04 Aug 2026 11:32:46 -0700 (PDT)
+Received: from DESKTOP-TIT0J8O.localdomain ([49.47.198.15])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca926c0bsm5440864c88.14.2026.08.04.11.32.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 11:32:46 -0700 (PDT)
+Date: Tue, 4 Aug 2026 22:32:38 +0400
+From: Ahmed Naseef <naseefkm@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Ahmed Naseef <naseefkm@gmail.com>, netdev@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>, Qingfang Deng <dqfext@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	SkyLake Huang <SkyLake.Huang@mediatek.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net] net: phy: mediatek: fix TX blink masks using the RX
+ bits
+Message-ID: <anIwRrQT9qMD89v5@DESKTOP-TIT0J8O.localdomain>
+References: <20260804113511.3371248-1-naseefkm@gmail.com>
+ <ab2f7f4f-0f46-4c6e-b3b1-ea713dbd08c6@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 00/15] pull request for net-next: batman-adv
- 2026-07-28
-To: Sven Eckelmann <sven@narfation.org>, Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>,
- netdev@vger.kernel.org
-References: <20260728133918.643267-1-sw@simonwunderlich.de>
- <5248054.31r3eYUQgx@sven-desktop>
- <37153ad1-5c96-49fc-adee-2a7678414428@redhat.com>
- <4072288.fW5hKsROvD@sven-l14>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <4072288.fW5hKsROvD@sven-l14>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ab2f7f4f-0f46-4c6e-b3b1-ea713dbd08c6@lunn.ch>
 
-On 8/4/26 5:05 PM, Sven Eckelmann wrote:
-> On Tuesday, 4 August 2026 15:08:01 CEST Paolo Abeni wrote:
-> [...]
->>>> Note that it's preferred to avoid fixes and stable tags for changes
->>>> targeting the net-next tree. If the fixes are really minor, both could
->>>> possibly safely dropped. If there is some real problem behind, such
->>>> changes should instead target the net tree.
->>>>
->>>> Can you easily rebase your tree and adjust the PR vs the above?
->>>
->>> I have a different statement from Linus:
->>> https://lore.kernel.org/lkml/CAHk-=wjt1NiKOdyAMz_DT7NmZ++SizPOhRSi492ukdTnpDzHQw@mail.gmail.com/T/#u
->>>
->>> This is why we started to not send out net.git fixes PRs for things which 
->>> aren't highly critical or for Linus' "just merged for this release commits"  
->>> late in the development process.
->> I actually think netdev preference is consistent with Linus'ask: move
->> the "fixlet" to net-next.
->>
->> The additional twist is the ask to drop the stable and fixes tag
->> (otherwise stable will be flooded, too).
+On Tue, Aug 04, 2026 at 08:11:21PM +0200, Andrew Lunn wrote:
+> On Tue, Aug 04, 2026 at 03:35:11PM +0400, Ahmed Naseef wrote:
+> > MTK_GPHY_LED_TX_BLINK_SET and MTK_2P5GPHY_LED_TX_BLINK_SET are built
+> > from the RX blink bits instead of the TX ones, so both TX masks are
+> > identical to their RX counterparts. The TX bits they should be using,
+> > MTK_PHY_LED_BLINK_{10,100,1000,2500}TX, are otherwise only referenced
+> > by the per-speed branch of mtk_phy_led_hw_ctrl_set().
+> > 
+> > A TX trigger selected without a link trigger therefore programs the RX
+> > blink bits, and the LED blinks on received traffic. The masks are also
+> > used to decode the blink register in mtk_phy_led_hw_ctrl_get(), which
+> > as a result cannot tell the two triggers apart: an RX-only
+> > configuration reads back as RX and TX, and a TX-only configuration
+> > reads back as neither.
+> > 
+> > Fixes: 7f9c320c98db ("net: phy: mediatek: Move LED helper functions into mtk phy lib")
 > 
-> I find it quite unusual to drop the fixes and stable tags - just so Greg+Sasha 
-> have to use their tools to figure out that these were maybe fixes and need to 
-> be backported? This already caused problems in the past and had then go 
-> manually through literally years of changes (LTS releases!!!) to figure out 
-> what was lost in the backporting process. Yes, the years in which it was 
-> disallowed to use Cc stable@
-> 
-> But to be honest, I have no idea what "fixlet" means here. Is for example 
-> https://patchwork.open-mesh.org/project/b.a.t.m.a.n./patch/20260731023333.70727-1-heminhong@kylinos.cn/
-> meant by it? Because this is for example something i don't consider worth 
-> backporting. It is definitely fixing something but I never was interested 
-> enough to do it myself when two or three other people tried to send 
-> incorrect/incomplete patches for it and then disappeared after promising a v2. 
-> Which at least makes me think that it isn't worth the effort.
-> 
-> But maybe you are talking about something completely different.
-> 
->> PR are a bit apart from plain series, hence my initial questions WRT how
->> problematic would be stripping such tags and how impactful are actually
->> the things addressed in the first 6 patches.
-> 
-> Sorry, I am lost. There is stuff for which people have actual PoC code. Afaik, 
-> nothing for an RCE but enough to locally be a minor annoyance. The things 
-> which have no "Reported-by" are things which I have problems with on my 
-> installations.
-> 
-> And about the others: The "bla: avoid CRC corruption due to parallel claim 
-> add" + "prevent CRC corruptions after claim flush" were a problems I had (next 
-> to another which was not yet posted to netdev) but has a "Reported-by: 
-> Sashiko" because it was also reported by Sashiko when posting other bla 
-> patches and I think I've stolen the example from the commit message partially 
-> from the Sashiko report.
+> Was this bug introduced in this commit, or did this commit just move
+> the code around and it was broken before? The Fixes should go back to
+> where the bug was added, which could be earlier.
 
-I'm sorry this is getting more complicated than really intended. The
-rule of thumb is that real problems actually bothering users go into the
-'net' tree, and other stuff goes into net-next without the fixes tag.
+It was introduced by that commit. Before it, mtk-ge-soc.c correctly had:
 
-Jakub is actually the one usually more strict about the 'no fixes in
-net-next patches' mandate, but he actually did not raise the point here.
-If he is fine with here, I'll not insist.
+  #define   MTK_PHY_LED_BLINK_TX      (MTK_PHY_LED_BLINK_10TX |\
+                                       MTK_PHY_LED_BLINK_100TX |\
+                                       MTK_PHY_LED_BLINK_1000TX)
 
-> On Tuesday, 4 August 2026 15:16:54 CEST Paolo Abeni wrote:
->> Please be aware of net-next commit c82ff94592fb: the expectation is that
->> submitters reply proactively to AI review comments.
->>
->> Specifically it would be helpful an evaluation of how critical is
->> problem reported and if it could safely addressed with a follow-up.
-> 
-> The LLM situation is really starting to get 	unbearable. It is like cutting of 
-> the hydra's head - it will directly bombard you with 20 more "and now for 
-> something completely different" reports. But preparing proper fixes is now 
-> also not ok... And at the same time, LLM tools are becoming a must-have for 
-> posting patches and now I even have to start to write rebuttals/explanations 
-> for these reports. I get why it is helpful for you do see comments from 
-> authors/submitters about the Sashiko reports - otherwise you have to go 
-> through the reports and figure out if it is unfunded or even already fixed in 
-> one of the next patches in the series.
+which 7f9c320c98db removed, adding to mtk.h in the same commit:
 
-You are not alone in this painful situation. AI reviews are striking to
-everyone. LLMs improvements make every day harder get "all green" reports.
+  #define MTK_GPHY_LED_TX_BLINK_SET   (MTK_PHY_LED_BLINK_1000RX | \
+                                       MTK_PHY_LED_BLINK_100RX | \
+                                       MTK_PHY_LED_BLINK_10RX)
 
-From maintainer's perspective the most difficult and time-consuming part
-is assess the impact of the AI findings, especially for code
-subjectively less-known. It's not a matter of simply reading through the
-AI report text, is requires context information and analysis that should
-be more easily at hands to the patch's author.
-
-Providing feedback there really helps a lot with patch processing.
 
 Thanks,
+Ahmed
 
-Paolo
-
+> 
+> 	Andrew
