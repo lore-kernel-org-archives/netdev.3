@@ -1,85 +1,80 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A493F45D5D1
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 13:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094773E168C
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 13:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785849429; cv=none; b=ObJ9T6T+GigAKFzQzgqSyBxqlzwZ+sWCItZQcoz0WeMnvQ90zDp0jHlRySodZnEGqzqFuIB0kXFE259pcrwzJrF+pinFbQFwLI4pmIN3q8hKyc5IWhNjzh/bK9jjU20AoIKsUySoJWat3r29Ag1ONccATkrr2FrPdA0OZPgqcvU=
+	t=1785849556; cv=none; b=QHuvr0Ap9HRS+taHd/wzaxaljcF16l0wKOzAcKlYH4V2nyu0fYAiM0WJcoB5iSMqW2GujQ0JDtPYTz57PFzrr1TtBW+vFEqvVt/ogfjOUaWmnOZkOtbHYwGADnFYyEPWzkL0Tih6JdyqVnHsxnVIM2Yc28XEiqV9Ce7SXbLsrAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785849429; c=relaxed/simple;
-	bh=h7uY72MFN3ZCqO+ejtJMF2ouulPOzx4A4RyVX1xWRRw=;
+	s=arc-20240116; t=1785849556; c=relaxed/simple;
+	bh=FSwPjx5kfkAW/WL/1x6EsAJx1SJiL/uEmmUU44ib9bE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gBSFnrVN93SpGBZVYSKDh8NW8F3fWNJoemrbZjy1wLAC4mj4b9ViB2XpYduV/YBBRANniQHwQbVKu6thCQppMFKWh3fFcXKgL3C9E4BcdEAfLcCmiL2mxUnXmZbps16JA4p3sP5OH3dA7f5is7baQk6zptes84L1AeaFGaOzHE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xq8cMZYN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AoDWjOW6; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=rpd0Nq0+Sl/UY22kVesYYBCRUgkV59krr/uUhb3JsAk8HlxQ18s7IxtmxK9olxHxg9SuDZv0mPTzGc2z5i6MRkfKKUj7W56TsAHlaw3Urldx1cgM/n4M0YhHQJrkPee8SAQMauIH323JjjKNEC5BxNZangG5JG4RL9MuGGakQsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DBk4/scb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8HemeNTS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BRAT7DOz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Fq/fA7Rc; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xq8cMZYN";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AoDWjOW6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785849421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DBk4/scb";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8HemeNTS";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BRAT7DOz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Fq/fA7Rc"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C91D340C7;
+	Tue,  4 Aug 2026 13:19:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1785849548; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kgKDAwfYkCsBa1/O9slq+N/Od4IInZ7YxbXYIKaLNVI=;
-	b=Xq8cMZYNwiPsjvbOKV4/B6WH8Pb7nfhCpyx4cc2bzf1z85kQb3JWvs4jVzXVegJfpn7B1W
-	s3F1L3UoalxBIAyBoV4bY2PkuV4of0LSb27sL+gpOq7/D82K6Us5fIUEkbYr5y2oM495h7
-	BixE60R7/GooZbXa2qTpv83QCCQ8rwI=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-q4XahpWhOLOfbHgQes8F3Q-1; Tue, 04 Aug 2026 09:16:57 -0400
-X-MC-Unique: q4XahpWhOLOfbHgQes8F3Q-1
-X-Mimecast-MFC-AGG-ID: q4XahpWhOLOfbHgQes8F3Q_1785849416
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c15fc5a1b7eso315519566b.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 06:16:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785849416; x=1786454216; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kgKDAwfYkCsBa1/O9slq+N/Od4IInZ7YxbXYIKaLNVI=;
-        b=AoDWjOW6iMGh0jz4uFV1E9kiE1Pj3BA8whB/efCin2LWW2maVthNRIEVqYa64qYyAN
-         rXGREcIarbw6ena6wmZNfHpqKFUSNuJux6/qYHSEPXwacAoSy1TQ1MWPZZXghuGxeSXU
-         yts/FeuFepzbre5ecGxSWFb27ZF4wCv10+eocTWfp/rNWu1EJDyV4AESRQO4lB+O75wT
-         4z58v9iFu2ZHv2/BMXtmpx46Mb5+E/EflSr9Y2ItQbFimO8WPXXOfKFFXJZB4Zv3RgCi
-         N0YXoAMWYxJtVt47QdsSnTIzgX2SoDagu4gjw8wplEEgjqFnejxYbf06T6iaQlSMH1DM
-         Vs8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785849416; x=1786454216;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kgKDAwfYkCsBa1/O9slq+N/Od4IInZ7YxbXYIKaLNVI=;
-        b=A4mvxOeyrr1CdiUzMrsnjUYTl2Pf0XYstBrkIGCl/LMrZbWM5ylK6LwCxJp+UYYH4o
-         GsMz7dlSe2KzUv3FCk4uv/PV4+XKPn+7kgUWMmoK54x/iBKvqPWKTpbn9WVv7V5DIr3b
-         YbbckKWRamEzUltDfO7fi8Ny2kJE63GT2bqCVadbV3rlbuJ12lykcLlhlI1yZ58NpgpE
-         sdN/Vd8OzDPEsJ8Y7vvD84Kn+u2YFqU37Ae9Px0FUd5vHgFgQ49aXOjxvDuYm8mTGXUE
-         EOj491+2pBoKQN6kH+3mUPPb/ph5e72WFsvhcPq0ap/y5DzEQNqDgUir6sqUtIGHolRn
-         GM9g==
-X-Gm-Message-State: AOJu0YxyZEPugUfPtQREIlRD5Y0E5xEhQ3TRe6jMABQxhUcdX01dUQ/F
-	k2us2cGqGd74qvKw4+eaGbp8YBrAq8931IJTvQIv416ZAsPJvWgQdQt1usdCtYSAsee7IRbLai6
-	wkOUWOtY7/ryj8jSeNQ3fOFMZjjWTOFs2Kq7aOU1mw9RaTWWvE8EgplfvEA==
-X-Gm-Gg: AR+sD13/KaQXq4qRa3aa+agZpgInzi7sysXHqGcObiC3QzIeP667rau135rKx+pakYc
-	YBLvmSyQDBDO/cTXPc7+dYSomH7Mir8aRM/iU6wvHnWmV87+qM5xLHPwVadvDSBpNdq/yT4f8GI
-	F+IMYn5j+On2gAq33dYRPFfZ9oVgUOStKqeKAsAvUWtPmUgnEIqJJBEBcplXpKL57gcA6RlvQs7
-	+hm41yGs/TTIus4ES7hs43fMNJEtqejEcWTo3JsLz4G3o9nxRHYLI6k0mGcVCmScvyWKNoON6ZQ
-	7UJv+zFJAfUAJV6XS2QjM0nOcA4xRWoMADR3unLpAi88m04rch96Jzi3aUSLZ81imwTsG5VTOgz
-	88ARIbz7VeBrxJTZTOEhPzEsaRIw3oxX9LS+m2ij1FAnol1E8VIJ84hp5pU/n61rP0Dl4OGhBfM
-	w=
-X-Received: by 2002:a17:906:34c3:b0:c16:209f:d48e with SMTP id a640c23a62f3a-c1fe8250ff3mr1087594066b.30.1785849416432;
-        Tue, 04 Aug 2026 06:16:56 -0700 (PDT)
-X-Received: by 2002:a17:906:34c3:b0:c16:209f:d48e with SMTP id a640c23a62f3a-c1fe8250ff3mr1087589966b.30.1785849415843;
-        Tue, 04 Aug 2026 06:16:55 -0700 (PDT)
-Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c20361312eesm12924466b.4.2026.08.04.06.16.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 06:16:55 -0700 (PDT)
-Message-ID: <991957eb-65d1-4b3b-b903-76459127c124@redhat.com>
-Date: Tue, 4 Aug 2026 15:16:54 +0200
+	bh=CFyC/lT41fB0pzLhZsiFwN3y4eTGyvCQsxacjWaSaxY=;
+	b=DBk4/scb6GehawqvUAvg5ONR9D7noUlbU9BxkXQTbrBsE8zm6FDUzfXiXvC6Pp+3xgHtN4
+	bOBxJfgRk8Th0zvFBKzpraVIYrk/pugPBNK4a0YSRgb2hV1NmRxZwq7gF+XF9CUG9O3r6e
+	2A2YZ1DzPeJ/SQ9DjVpewZJ7FRt/B6o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1785849548;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CFyC/lT41fB0pzLhZsiFwN3y4eTGyvCQsxacjWaSaxY=;
+	b=8HemeNTSdaivBVXh1z4qxN1vsvsBcfs20u6wud91JyKE+N8wjPbQRqexjF/nsIs3HATl9r
+	Wzbow2IK0jaBmBDA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1785849544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CFyC/lT41fB0pzLhZsiFwN3y4eTGyvCQsxacjWaSaxY=;
+	b=BRAT7DOzqBIXH9Nrh/GleOHcZ4KVfN5IeMoxwj04QH2sYzh6SmF6bHAIVS5bQ8EySocuRv
+	QmDXb+m1W2+/ws045Y4saAL7M6RsD5aT1CaZoeCFLqXOEabx3JZ2cra5BkqJuwuWAxxAW9
+	/eXXbTV6v8xUxwW7KMOWp/j11CuDeFo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1785849544;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CFyC/lT41fB0pzLhZsiFwN3y4eTGyvCQsxacjWaSaxY=;
+	b=Fq/fA7RctZuB5fpgFKWtqNIIQEDs7/vjRZ5/eGeeThlnbyqabj3qEJgs9ICVbqLJnL3gft
+	7dBI6VA08ygmxlBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C04D8779BB;
+	Tue,  4 Aug 2026 13:19:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id BB6OK8fmcWowfgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 04 Aug 2026 13:19:03 +0000
+Message-ID: <c414bba7-761f-4bf2-a440-7dc401a03fd0@suse.de>
+Date: Tue, 4 Aug 2026 15:18:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,51 +82,138 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 00/15] pull request for net-next: batman-adv
- 2026-07-28
-To: Sven Eckelmann <sven@narfation.org>,
- Simon Wunderlich <sw@simonwunderlich.de>, b.a.t.m.a.n@lists.open-mesh.org
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>
-References: <20260728133918.643267-1-sw@simonwunderlich.de>
- <20260803191920.0e6c5a2c@kernel.org> <3386526.aV6nBDHxoP@sven-l14>
-From: Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [RFC net-next 0/2] hsr: Use only one MAC address per node
+To: Felix Maurer <fmaurer@redhat.com>, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org
+Cc: bigeasy@linutronix.de, liuhangbin@gmail.com, luka.gejak@linux.dev,
+ xiaoliang.yang_1@nxp.com, kexinsun@smail.nju.edu.cn,
+ ssrane_b23@ee.vjti.ac.in, michael.bommarito@gmail.com,
+ 2022090917019@std.uestc.edu.cn, yury.norov@gmail.com, jvaclav@redhat.com,
+ maoyixie.tju@gmail.com
+References: <cover.1784024900.git.fmaurer@redhat.com>
 Content-Language: en-US
-In-Reply-To: <3386526.aV6nBDHxoP@sven-l14>
-Content-Type: text/plain; charset=UTF-8
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <cover.1784024900.git.fmaurer@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,linutronix.de:email];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linutronix.de,gmail.com,linux.dev,nxp.com,smail.nju.edu.cn,ee.vjti.ac.in,std.uestc.edu.cn,redhat.com];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,linutronix.de:email]
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
 
-On 8/4/26 8:55 AM, Sven Eckelmann wrote:
-> On Tuesday, 4 August 2026 04:19:20 CEST Jakub Kicinski wrote:
->> On Tue, 28 Jul 2026 15:39:03 +0200 Simon Wunderlich wrote:
->>> here is a minor bugfix/cleanup pull request of batman-adv to go into net-next.
->>
->> Can you look thru the Sashiko comments here (especially Medium+
->> severity)?
->>
->> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260728133918.643267-11-sw@simonwunderlich.de
+On 7/14/26 12:52 PM, Felix Maurer wrote:
+> Many places in the hsr module assumed that a single node could be using
+> multiple MAC addresses to communicate in the network. The standard is
+> explicit that PRP nodes should use the same MAC for frames on both
+> ports and commit b65999e7238e ("net: hsr: sync hw addr of slave2
+> according to slave1 hw addr on PRP") made this clear. For HSR, the
+> standard is less explicit. But after quite some discussions and reading
+> standards, Fernando, Sebastian, and I concluded that it never mentions
+> different MAC addresses for HSR either and instead often suggests using
+> equal addresses for both ports and this should be what hsr interfaces
+> do.
 > 
-> https://patchwork.open-mesh.org/bundle/ecsv/pu-main/
+> A short history of how this assumption formed in the kernel supports
+> this as well: the original HSRv0 code implemented IEC 62439-3:2010 where
+> node tables had two MAC addresses per node. It was an optional feature
+> to support an unspecified address substitution mechanism for _PRP_, also
+> referred to as PICS_SUBS. Note that we never even supported PRPv0 from
+> the :2010 standard. In IEC 62439-3:2012, the feature was explicitly
+> removed. But with two addresses per node in the node table and selftests
+> setting different addresses for both interfaces, the assumption emerged
+> that all nodes can have two addresses. In :2010, this was optional and
+> the standard is written so that a node not supporting PICS_SUBS could
+> just ignore it. Since 2012:, nodes must use the same address for both
+> ports in the ring.
 > 
-> We were just waiting for a verdict. I am guessing it it a "no, will not 
-> merge", correct?
-
-Please be aware of net-next commit c82ff94592fb: the expectation is that
-submitters reply proactively to AI review comments.
-
-Specifically it would be helpful an evaluation of how critical is
-problem reported and if it could safely addressed with a follow-up.
-
->> At a glance patch 14 does not inspire confidence. I guess patch 15
->> removes the worst part - but is there a real reason not to use locking?
+> To prevent misconfiguration and simplify the hsr code, this patchset
+> removes the notion of two different MAC addresses for one node in the
+> network entirely. The first patch sets equal addresses on both ports so
+> that we are not running in invalid configurations. I also updates the
+> selftest to not use/expect different addresses on the two ports. The
+> second patch removes MAC address B from the node table and thereby
+> eliminates a lot of code, including the node merging.
 > 
-> In its current state, you would need spinlocks over larger (op-count) portions 
-> of code in the hot-path. 
+> I am posting as an RFC for now mostly for two reasons: First, I want to
+> make sure it's generally accepted to have only a single MAC address per
+> node and give everyone the chance to speak up against this.
+> 
+> Second, I adapted the PRP address handling to HSR as well, i.e., to copy
+> the address from port A to port B and master, mostly because it is low
+> effort. I am not sure though if this is the best approach now that we
+> touch this part of the code anyways. I have two alternative ideas how
+> addresses should be handled:
+> 
+> 1) Make the master control the port MAC addresses: when the hsr
+>     interface is created, generate a MAC address and assign it to both
+>     ports. Changing the address afterwards would also only go through the
+>     hsr interface which would update both ports.
+> 2) Don't change the MAC addresses of the port interfaces at all. Instead
+>     behave similar to bridge where the ports keep their addresses and
+>     traffic from the bridge/master gets its own MAC address assigned.
+> 
+> What do you think? Do you prefer any of these approaches?
+> 
 
-I'm not sure if the following is well known/helps, but performance wise
-slightly lager critical regions are usually preferable to a larger
-number of atomic operations,
+Hi Felix, thank you very much for this work. I agree with the overall 
+analysis you provided here.
 
-/P
+I would try to go for the same solution in both PRP and HSR. Why the 
+current approach isn't suitable? If we are going to change the approach 
+(for a good reason) I would go for 1).
+
+FWIW, I didn't test this yet.
+
+> Thanks,
+>     Felix
+> 
+> 
+> Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> 
+> Felix Maurer (2):
+>    hsr: Set equal MAC addresses on port A and B for HSR
+>    hsr: Remove second MAC address from node table
+> 
+>   net/hsr/hsr_debugfs.c                         |   9 +-
+>   net/hsr/hsr_device.c                          |  23 +-
+>   net/hsr/hsr_forward.c                         |   8 +-
+>   net/hsr/hsr_framereg.c                        | 250 ++----------------
+>   net/hsr/hsr_framereg.h                        |  14 +-
+>   net/hsr/hsr_main.c                            |  18 +-
+>   net/hsr/hsr_main.h                            |   5 +-
+>   net/hsr/hsr_netlink.c                         |  18 +-
+>   tools/testing/selftests/net/hsr/hsr_ping.sh   |  33 +--
+>   tools/testing/selftests/net/hsr/hsr_redbox.sh |  13 +-
+>   .../testing/selftests/net/hsr/link_faults.sh  |  26 --
+>   11 files changed, 62 insertions(+), 355 deletions(-)
+> 
+> 
+> base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+> --
+> 2.55.0
+> 
 
