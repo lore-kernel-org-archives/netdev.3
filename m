@@ -1,100 +1,247 @@
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDB0344DBB
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 15:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785856852; cv=none; b=ky3OR/9TGWsJabJsd/rjzZ8dwQAP2Qpj7P1JKLT+R1dbxgm6rh1G1T9EIfLu3rCd7d5Mdb3SRqY7e9P9ChBZmVU4j2Ls57d4ER2SVaFemf4VUG38x2yXu/7lZcSy9B9E89wuwW3yFQvpQtRmq1TxrREw89L+9dBFOjhPkCZN/6Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785856852; c=relaxed/simple;
-	bh=S+T5o2sQd27ef7/PPd4xw6GTuaSFG2Dg+orl5Xtrfp4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cxqU7TSE2/KbCdH0nz2O2ZQ8gxMIpR/651LxSQTZgEQd+Y8HTeCT20SKaS1Js5Nm921ptCpAYIcMJL6b+lfzZeatu5nHeGyi3e9npqzsiI6vbHFSJq89CSkuvAHdG5KwYGVDIFOZUW2bWsNouu6bRbgOKpShFRS0aNAFeafqp9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DUbMSN9v; arc=none smtp.client-ip=209.85.222.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77B846AF10
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 15:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785857079; cv=pass; b=HDSO904kqFUoRras3VvDVTSvEVrW42RvviWGGCkeY5wgzFxNpjwkS8+Jsoq5gPXKR9X7rw5rvzbtn64Rx93R3JqdICXXeJx4LtINtZYpAgZdDB7rA69/tPJ/mWNJ5i8HPrqVAuEdqzH84f05izMb1CcqR3JE3s0wOd7kwduoCfU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785857079; c=relaxed/simple;
+	bh=Tjm0yDQYlrH8X6N6E9I9ZGiI+Lm92WeCfGZhIDCgUp8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uWsgthtMYp/FgOkmD9nXL8Y8rm7s4+KSihG/xSK2pWhzPT4L2HTTDzNUtuoc4BdbrhElpxIvb48ojeZ1ZAFU7Fwc9ZeRA7d2Qlqyvo5qzCEcm4pagQT+ZGXbXMQy6EGNhfMu+egwjRUSufGPi2flKpkGg0OlYqCwzRTNFbo4V7M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bV/eNJ4J; arc=pass smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DUbMSN9v"
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-930f5da3467so447841785a.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 08:20:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bV/eNJ4J"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84862b0d5aeso5682371b3a.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 08:24:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785857077; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rCFTTYQzwbAbHqPeyv16ltOcXOzDWupvgzaE3z4e55S4p4NF5BSdhBIhPDkSnp8tNn
+         0/SZj5SW/Dw6XugdI2WmMDiKvc4rEkX91AQ/9M6sMS4gfi4Vt3XmSihsohnORaJRsyMC
+         IRJ5SB2QvvAxUza08l3lkfCdwwwwRJ1ESjN4Esi1U0sX50eDm0TG374//9BVYIURxqv8
+         9cN7kH3S5zlRcvugwQZyj44kt0V5ESzLUsMEWMkhrJLzjZUbUKV/lLki5CMRPxSHoo44
+         sh0aicmHloGr9xFZcqXRjkLhx832d99NxrpP4Eo4VQR5p0oxdvYNT8PedF6A2uLntLr+
+         4DNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fDD1em8JG1NbNzy8g2mfMsu5ZDnxM+Ezbp7dHoWAl+Q=;
+        fh=TDDZIr+F9BgXOOVmnfkSGFAxZ+N9+nmygnveSJnmKE4=;
+        b=rrCoVyTaqHdxqpyrMqaqeDjhvoDCB2ysi4+swu4MWV4NWb5IoY/XOQJ9XWlP03DhU8
+         nch8s9gSU7osteuZIOy4VjZ69bcX7gemQC8zT2Dkop3Kf2SgtXozanucnmRSf8CiVFfN
+         MpR0e7r1sDmVIcHfiMA1YSll8l15ORxov7aaAM6ElP8vKxs9chZ+E5bU3iBvmx2QMCmK
+         vWzH/RDWyxlME7oGBA3xyArquZUik1DmQRjvFzeZRVM0H48QOJEajf77cnUNzca0fXbJ
+         tXbiZ3PS1aZHuIQdGmQsaLpyGAYxkPpBhPUJBfFWSG7nPaHnLv4dkB90RDwx7KqPoHLt
+         suOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785856849; x=1786461649; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hsrDM6cHFgDCcftCKwVBi09aO7huvb3tC/nRdMq9zCo=;
-        b=DUbMSN9vSxnarqPCxYyj5OA1OOdqaw7+gKTzfr584t/itsqp7cX8k6ibjrW8llqxYX
-         vQtRYXpp5X+HnAUlQQZYBIAmWuQLjBP1EmjP4HuUInZ/D8GLgcQScLW1Zi2fAgW2FkiG
-         AK33DOxHGuFTF428l+xktC2mEq5hTgv9sEclRonSE36WGyBqyO3+k975x+rcTGsvGPcs
-         p76J5FNOgg+7kI/HtrmKaeT2KLQGUpYckUi47Z3UzWwlhiJZDl4dyE7kWV0Fk/EoD0mT
-         1WGiK31i8/E53Oor/F0HWVHf1xSkyfz5jV//0+Umikq0eV1yMzKfO84BV3Epg+YCHt63
-         b1Uw==
+        d=google.com; s=20251104; t=1785857077; x=1786461877; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fDD1em8JG1NbNzy8g2mfMsu5ZDnxM+Ezbp7dHoWAl+Q=;
+        b=bV/eNJ4Js24pBwgtvjRNyPhAhBC0MdtgA59ZmSdu3v19joU2W++lYIr44NbXqcCUSs
+         ZEXx7v+h1sjmpsgL1Oo/G8tzmAqO3jw4nIjWy3ufuDDNkWAhfq8Hn08+pjoMILMPiZ1+
+         mnvgVaJE5LiqKKaCv4j3L7GWFHXexiJBmzQ0XtnAVitLCd6pQRh6VjhiGswbwAoP3cfH
+         uS3vC1vL24ft+aSsOaVXy6oDZbuUf+01h+1NGk8kYLHE8Yrq7m17XjtMr2/cdVaspcn5
+         MWdVr00/V7bs2y/nA9Q2ASFsMW792LmhPtGmn0qmtbkpldNO/qPtRixtgRQ19jF4BCXL
+         2yYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785856849; x=1786461649;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20251104; t=1785857077; x=1786461877;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hsrDM6cHFgDCcftCKwVBi09aO7huvb3tC/nRdMq9zCo=;
-        b=mMANP3UBxO6Bhwp9E2a8QIvBSHwH7bnTxZHv1LXgiXW37d7u2e2iVQ8AfubMqm8A4N
-         mI+DHkrb1jZKQFlMUjisTrCKmHWi+dvadr4gWWv669NLgzZdwUjS7c64TlkGwlm6OU6S
-         P//OjXIPqTuYNs1QjrOj9Kie4bLWnf+AqwFXUKcDrD1ElHw5D0AdZPDnSnfjmSQjA78O
-         LH/5rxksjhZz1q6IybHxrXwmLpTC1AtXI/mpDCd+CfXajHkMteHOxPkxft7dVfNLXg3t
-         WVixDRygKurwCQ4Aau4UdEuFSOFCuleHAf/AXg5ZwRInM6kqLHCooiQx6qNljsLMoFAE
-         UyiA==
-X-Forwarded-Encrypted: i=1; AHgh+RrDEvUF5vVBAlk5xuiyFw8KbXgP/kRRMQgOxcOn1pq2CC6Pzz4mE68C7CTIdlx6dYdfN34GJOQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiqB1pJwdwAGqCTkkHRqcczuFvHTO7R1o3WNvWdMQcF6TOqVSQ
-	O0ARu0Te2lYax1TFM/I+BWsTkFB+xrNLtF2qF7U4KMGMjDsif5jl4/d/x5bBDNiC40HB4GGB1aj
-	StvazVQM0A9EkAg==
-X-Received: from qkg6.prod.google.com ([2002:a05:620a:9506:b0:92e:9011:92f])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:9142:b0:92e:e1d1:49dd with SMTP id af79cd13be357-934a078e741mr2185104585a.21.1785856849018;
- Tue, 04 Aug 2026 08:20:49 -0700 (PDT)
-Date: Tue,  4 Aug 2026 15:20:48 +0000
+        bh=fDD1em8JG1NbNzy8g2mfMsu5ZDnxM+Ezbp7dHoWAl+Q=;
+        b=PqlebgtkU+Ajj4H4i75QL+uu+qhTaPhtbVq9hBAZ+UfguaEw5GAufDStBdv/Jw+C/w
+         aN+z1jaAcYklLSagPPdfOV3Ta77JXs6DXFp8pWfuZOrvLNbvQb3aIQGYb4spsc15dFgZ
+         6YyRRgyW1Edbvefca0jZM5VmhaAAFy0SDtCInhFCbE2Qm8SRsjHbOgnWwUS1uXSEhBkr
+         lL2nKxVo7nB+HyX3V0rusxEkfwBC8vP0dvXAv5miwEloLWMbgn6ohh54vrsBR+rilQe4
+         ERkuFgJ8yiNj03L2cc9fqbW1q5gorL+eL2o4oIu/f/IcfA4oZCWJheUkacOQ/YKJEVKC
+         jJmA==
+X-Forwarded-Encrypted: i=1; AHgh+RoMHsnfA+5pfl63OMgVgbemxAMURMoFRE/ppS6670Fv65uObWVvwd/ssUFoLZiwMXpYDwj8IK0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI+vG+e6biEoj0pi2uX+1NwAV9s9DuqHCeHJcJc5cjHw8ToOnQ
+	iG+bXjmeVYMKrk11+m5MY4pEj1eeGaBAwT29Jj47GfmsnAp1wf1Bpdl3JsWymlixvqYjSlTyeZP
+	DDgzAnWawkGyC3kXZAv1mjdrllaiOChLTOXJYCMH0
+X-Gm-Gg: AR+sD12ZC1OD0wxH17VtiHNqwiQBNzWZJi76Jzvk5sY1r0ErsXm+BEgkZdBQhba6dRV
+	HFU00/dE5JgxySvYmq4lYBqmLwvkoH2nlkMml0Kf0FNsSbxETGdZbfNk/HMxjIJLv8cR4hXHqbF
+	tvPjftM2S6u9tfzilpVaJ4aUZsGx5+a1ZSc2wMNTU4jH00Vs5WuY7hKkfwvvHSssMOPAu3shf5/
+	fI9EQs+qBnTd8viOaAf5rHQc4YzSO0sR1DpZbaR4ASK+WSXZhNk4ngVtZ+mWBuh/NWKgVBbEWC1
+	F9MI1PoE+zsG4TlGacbWgNrlKxz5ATkRCoN7N2d29q/h5JRUwmuPR6tp4F8e0qwV2uweNrfJqgU
+	TuIXBH+Z6Z9A40uIhfbVZki6cwHtzS/+Arp5Om2ZaeGEBlxdY9KkEGZwb/pQHbGY2EG4=
+X-Received: by 2002:a05:6a20:54a1:b0:3b3:f46:1efa with SMTP id
+ adf61e73a8af0-3c92a8134eamr15448119637.42.1785857076459; Tue, 04 Aug 2026
+ 08:24:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804152048.2134341-1-edumazet@google.com>
-Subject: [PATCH net] net: remove WARN_ON_ONCE() from sk_mc_loop()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+22c3218a6fa219e47321@syzkaller.appspotmail.com
+MIME-Version: 1.0
+References: <20260731164612.2148830-1-kuniyu@google.com> <20260731164612.2148830-4-kuniyu@google.com>
+ <bfa765c2-a3e7-42b7-90c5-9757d8392687@redhat.com>
+In-Reply-To: <bfa765c2-a3e7-42b7-90c5-9757d8392687@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 4 Aug 2026 08:24:25 -0700
+X-Gm-Features: AUfX_mwTl5e82BD-5cS-IVeo7O_hExYrG7Q4ypm_qBbMDp6b_IieMMA5_hyL97o
+Message-ID: <CAAVpQUDmZEaQNDSySLayqexgTrUbhBaL7XPCt9XNQzh+NGQ=UQ@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 3/3] geneve: Support per-netns netdev unregistration.
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, i.maximets@ovn.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-sk_mc_loop() can be called for sockets that are neither AF_INET
-nor AF_INET6 (e.g. AF_PACKET sockets when sending packets via raw/packet
-socket over virtual devices such as VRF or ipvlan).
+On Tue, Aug 4, 2026 at 6:47=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wrot=
+e:
+>
+> On 7/31/26 6:45 PM, Kuniyuki Iwashima wrote:
+> > geneve_exit_rtnl_net() iterates geneve devices whose sockets
+> > are in the dying netns and queues them for destruction.
+> >
+> > So the devices may reside in different netns.
+> >
+> > Let's use unregister_netdevice_queue_net() to support per-netns
+> > device unregistration.
+> >
+> > list_del() is changed to list_del_init() to avoid queueing the
+> > same device twice.
+> >
+> > Even after geneve_exit_rtnl_net() queues a cross-netns geneve
+> > device, geneve_dellink() can be called concurrently for it.
+> > In such a case, __rtnl_net_unlock() will perform the unregistration.
+> >
+> > Note that geneve uses register_pernet_subsys() instead of _device(),
+> > so default_device_exit_batch() guarantees that the async per-netns
+> > works are flushed before ->exit().
+> >
+> > Tested:
+> >
+> > 1. Create geneve device across two netns.
+> >
+> >   # ip netns add ns1
+> >   # ip netns add ns2
+> >   # ip -n ns1 link add geneve0 link-netns ns2 type geneve external
+> >
+> > 2. Run bpftrace to check that geneve_uninit() is called between
+> >    ->exit_rtnl() and ->exit().
+> >
+> >   # bpftrace -e '#include <linux/netdevice.h>
+> >   kprobe:geneve_uninit {
+> >       $dev =3D (struct net_device *)arg0;
+> >       printf("PID: %d | DEV: %s%s\n", pid, $dev->name, kstack());
+> >   }
+> >   kprobe:geneve_exit_rtnl_net,
+> >   kprobe:geneve_exit_net {
+> >       printf("PID: %d%s\n", pid, kstack());
+> >   }'
+> >
+> > 3. Remove the netns where the geneve socket resides
+> >
+> >   # ip netns del ns2
+> >
+> > Now, we can see geneve0 is unregistered by per-netns work
+> > instead of cleanup_net() and it finishes before ->exit() to
+> > avoid WARN_ON_ONCE(!list_empty(&gn->sock_list)) there.
+> >
+> >   PID: 571
+> >           geneve_exit_rtnl_net+5
+> >           ops_undo_list+702
+> >           cleanup_net+1122
+> >           process_scheduled_works+2538
+> >   ...
+> >   PID: 1047 | DEV: geneve0
+> >           geneve_uninit+5
+> >           unregister_netdevice_many_notify+7129
+> >           unregister_netdevice_many_net+1050
+> >           rtnl_net_work_func+136
+> >           process_scheduled_works+2538
+> >   ...
+> >   PID: 571
+> >           geneve_exit_net+5
+> >           ops_undo_list+1064
+> >           cleanup_net+1122
+> >           process_scheduled_works+2538
+> >   ...
+> >
+> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > ---
+> >  drivers/net/geneve.c | 12 +++++++-----
+> >  1 file changed, 7 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+> > index f456a85dca77..a6a8978e3b81 100644
+> > --- a/drivers/net/geneve.c
+> > +++ b/drivers/net/geneve.c
+> > @@ -2502,12 +2502,13 @@ static int geneve_changelink(struct net_device =
+*dev, struct nlattr *tb[],
+> >       return err;
+> >  }
+> >
+> > -static void __geneve_dellink(struct net_device *dev, struct list_head =
+*head)
+> > +static void __geneve_dellink(struct net *net, struct net_device *dev,
+> > +                          struct list_head *head)
+> >  {
+> >       struct geneve_dev *geneve =3D netdev_priv(dev);
+> >
+> > -     list_del(&geneve->next);
+> > -     unregister_netdevice_queue(dev, head);
+> > +     list_del_init(&geneve->next);
+> > +     unregister_netdevice_queue_net(net, dev, head);
+> >  }
+> >
+> >  static void geneve_dellink(struct net_device *dev, struct list_head *h=
+ead)
+> > @@ -2518,7 +2519,8 @@ static void geneve_dellink(struct net_device *dev=
+, struct list_head *head)
+> >       gn =3D net_generic(geneve->net, geneve_net_id);
+> >
+> >       mutex_lock(&gn->lock);
+> > -     __geneve_dellink(dev, head);
+> > +     if (!list_empty(&geneve->next))
+> > +             __geneve_dellink(dev_net(dev), dev, head);
+>
+> Sashiko noted that the lockdep chain between dev->lock, utn->loc and
+> gn->lock is not trivial, possibly a documentation follow-up would be usef=
+ul
+>
+> >       mutex_unlock(&gn->lock);
+> >  }
+> >
+> > @@ -2754,7 +2756,7 @@ static void __net_exit geneve_exit_rtnl_net(struc=
+t net *net,
+> >       mutex_lock(&gn->lock);
+> >
+> >       list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
+> > -             __geneve_dellink(geneve->dev, dev_to_kill);
+> > +             __geneve_dellink(net, geneve->dev, dev_to_kill);
+>
+> Here sashiko foresees some problem with CONFIG_DEBUG_NET_SMALL_RTNL
+> before full conversion to per netns lock even of ovs. Just more
+> follow-up, I guess.
 
-In such cases, sk_family is not AF_INET/AF_INET6 and sk_mc_loop() falls
-through the switch statement and triggers WARN_ON_ONCE(1).
+Is it Sashiko-nipa output ?
+I can't find the comments from patchwork.
+https://patchwork.kernel.org/project/netdevbpf/patch/20260731164612.2148830=
+-2-kuniyu@google.com/
+https://sashiko.dev/#/patchset/20260731164612.2148830-1-kuniyu@google.com
 
-Non-INET sockets do not support IP_MULTICAST_LOOP or IPV6_MULTICAST_LOOP
-options, so loopback should default to true without generating a warning.
+btw, I was hoping this series would land upstream so that
+I don't need to care about OVS :)
+https://lore.kernel.org/netdev/20260513183559.2141010-1-i.maximets@ovn.org/
 
-Fixes: f60e5990d9c1 ("ipv6: protect skb->sk accesses from recursive dereference inside the stack")
-Reported-by: syzbot+22c3218a6fa219e47321@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a72024c.13623e66.bdc14.0019.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/core/sock.c | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index ffa73594c13c7557d011730676edc887ec1de5cb..1ad41904db25b48a914640f538760686f40eb100 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -779,7 +779,6 @@ bool sk_mc_loop(const struct sock *sk)
- 		return inet6_test_bit(MC6_LOOP, sk);
- #endif
- 	}
--	WARN_ON_ONCE(1);
- 	return true;
- }
- EXPORT_SYMBOL(sk_mc_loop);
--- 
-2.55.0.571.g244d577d93-goog
-
+>
+> /P
+>
+> >
+> >       mutex_unlock(&gn->lock);
+> >  }
+>
