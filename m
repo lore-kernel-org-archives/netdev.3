@@ -1,106 +1,282 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3012A463B6D;
-	Tue,  4 Aug 2026 16:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204D5474263
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 16:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785859512; cv=none; b=PzvDOCA2ytCcdMgB0ajoSLpkbS3R1BHw7lxH7UeVlyXEjzBtBPgQN+Ndg8qExzKjJ5TL0wPf1ZiMZNixvpn1sf2AXKmCNKPpd1NIc5QacdY6Op9Vb8Bx9MzNAGme9DeM/B4e8PIN3+733JrwZoeV02cU8W5h3n79HhJWaZcWdY4=
+	t=1785860828; cv=none; b=NVawKxih1F4Z/PjSJlRairCe6bn1mXVOuK+G19fBajL0s/VidmGOHu+yRn80XUh5b0YER2l8RaCX1q/BmOESZsQoCeplLarIv0guywjQwd+jo8RWHRwVCIxZk/nBGC7OhfD91+wUJ/+YUoY8QHEMMW5e5HsTH7zSnJ11azvosuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785859512; c=relaxed/simple;
-	bh=ayczpbs10IRaGQSyxSkR7xRoVkbToh4EoscVg0eS5dk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FSAjCWga2CN7pi6kZ46K3feowtHi6Dh7Nse98yvnfM142NOecSq//av4oo5VdG69kDSTCxX7UsU0r9VX3iIA5qrtd3pBVtQwYpH8ES7CRb5iIwipsq6S1BaJA5LJldvruOFMnBjx0G9cNzdMhIYOazwhonGR+8EGo4YMsSOvE58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VJHCF3OX; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1785860828; c=relaxed/simple;
+	bh=6nq9wg3ZlgWakpDv03xBSov9XPXM+5rO2amKO4hb/QQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sHP2cyfbVuXWrJZtC0yQnxVBl8UFa7gDwnBr+wmpZRPBhgnTzLqUHly3ECENbeuauhFv3J9QxgfBMG0qezZtXKX1NnzPtdcxRWzeq9WjL3UVtnR4F+X66M/8EQyhJwKPz8q8wPdzWotTx2i/YEixHk5ljht2Q5Zn8IWCp7lu/T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=gH07Ni6B; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FzBcgoFL; arc=none smtp.client-ip=103.168.172.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VJHCF3OX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785859509; x=1817395509;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ayczpbs10IRaGQSyxSkR7xRoVkbToh4EoscVg0eS5dk=;
-  b=VJHCF3OXYK9b2OMR4kIXFnJN+MxWEVysxdNi0oi3Ljj0hoVQjmkJd75j
-   bWMYY6aqJ3cqqYCHiaQHTJjuSM0yDVvvHYzSpAk45rOeaq6Tp+vav4SR4
-   4bp7XJcqPagVjXyjm2qtp83NgTLQE6/5RpGbGI9IZwtAYUQAF1ChtMl9k
-   1G0z5Dp3jtCAor7VwnmU/Tu+Rl71rJTveFFRe9QxzHLbkLorIhBWXuq7Q
-   TH7L3orT3r5RD3ULTDwBy6E1xGJfKqlXzjbvPuQYMWFw2QVnxfq/K4WWE
-   9lIvkgxBtTS/wCNHn7f2JndGKvvtJ929unkee+fQ9GgSarkWfRPW/YRIa
-   A==;
-X-CSE-ConnectionGUID: LClTc+bMSmS3tLoB5uRLlw==
-X-CSE-MsgGUID: 7f1Mnq68T72RREGadQ9WtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="103955489"
-X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
-   d="scan'208";a="103955489"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 09:05:03 -0700
-X-CSE-ConnectionGUID: 6OWvW/zEQlamFuZ/OHC/ow==
-X-CSE-MsgGUID: qmjsC0YGS3aGztoeLNJPPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
-   d="scan'208";a="255252961"
-Received: from mszycik-mobl1.ger.corp.intel.com (HELO [10.94.248.216]) ([10.94.248.216])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 09:04:59 -0700
-Message-ID: <0e4bdc1a-48ce-4860-a0f0-201bebf6d716@linux.intel.com>
-Date: Tue, 4 Aug 2026 18:04:53 +0200
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="gH07Ni6B";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FzBcgoFL"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id 3F119138016D;
+	Tue,  4 Aug 2026 12:27:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Tue, 04 Aug 2026 12:27:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1785860826; x=1785868026; bh=EkjZtRvDtn
+	m6mdVaZuCkwu6UOZpZ62jbro04w4BBT9M=; b=gH07Ni6BbJNLwOfPWorWH8bisE
+	Lw8ZonIi5l3PRRGeZfsrLI00c/xwpeanMgycHyg+SCKdNNA0aAicsRzQZ/R2NpOG
+	wfW8Yqn5/1QJwRJmeZTwEWU2fTG8Tr2Cz2MVRQbhuzmYKlR4cLGamvxlGnSkoBL0
+	2hC6l4H3Z0muldPZIvcB1m1zkR3/mG3xQX/bLquL12f4Ucdto8X84vAuCFGM4Po/
+	sNnBQnJw8rz8OgLH8cdq7+rSgJNKqc86ThQCqJ0etM+zK0S80kRP9AZOp80YKgc2
+	fFc6KApUESUw790gzgf7p0yWG+J75csab8GmnJW/57c/yh6WC+No7/7DhoUQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1785860826; x=1785868026; bh=EkjZtRvDtnm6mdVaZuCkwu6UOZpZ62jbro0
+	4w4BBT9M=; b=FzBcgoFL5+lO5IYG4SBW6WVmnB2dpGazVbhiMGARNLW+7HG3MdR
+	t/gzUWUFz74lsM4GHVFH49cI5W1r1lN5cbe+c0huSNlUksSIWLu+KL7zikFVXMyd
+	clD0kaMg3ghhZidq+JAlEqKmtAzoI51n+nXb7r3sEpMez1bLVqRW69VIvtcxzSyK
+	DImsrvGcpLWK89K56wtUmpWH7rhDLCtnmXqaQtCbMeQ6nlnntP4qRAvc22Tru++u
+	hcJN6HxIJeB4ec/FIIQ66cd1qYRo74k/naqk7gJ59US4aqV0Lrt5/FeIvky/K0oC
+	qHdQAXqPabk010hntDUf+yTfno5Bk+Ec0Ww==
+X-ME-Sender: <xms:2hJyalchAulRMF7Yto5C9VTsS1Nu06wXcuQwVkXQLDNUhOmNgYFHqg>
+    <xme:2hJyaqFCPWkvOy33ssLXtOu1N7ZIhtqg799w4F8DLqi_0KQ8NL6ewczbU3QlCSJTg
+    ZQp4hJPapR2_i-YdwTj787y5URQz9Nc0g6q9JT8WVw71UbTrITdVLw>
+X-ME-Received: <xmr:2hJyam2XcIY3mQKdjzWSaHH14t1E7myHqi8RgZu1TI7_VFB47yHoOqtZnBefHjvwOQCzEF4wy7ocZbIjoBGcKOBI91FoiD8>
+X-ME-Proxy-Cause: dmFkZTEGTPSaCUmwRn74Fyr8roSC20OVVsAzD2bH5sbpg0iFBBp3ePU8DYupnj+UJSztSG
+    3wr1KiFiBNOWOMjJWGL6tYW7X1NKG/lmwOcFxxuZeaFdGkq7J7xP0t/xx2dCJqK3aGDaPI
+    J+vyS6WcyO2ALjarsWZP378ZKpHAuXXrDpoMX9z8jvZMP3txrkobPJn+aZn9P50F2125y8
+    XSZodc3ljv8oT4xuCpMk/k2qLBqq+iTRnbi2JKFMo7fvCmh1Czsfo5EQ0pcnnH9scuB/Lr
+    n3mMfwl+S+gLk81jWebIrOdAzLJlsQW4+21R/vWAsjVfLuBu37UL53vV8EyTdBbTkKczks
+    3JEFBM611wCmoejas+FRB74RGDaY4Sj4hHbdwcVMnIavo4pmNG6JEU72WURrFHRXRqhpMX
+    JstFFyqMFopDSZ+dAgNuh/RRd/FGblabUM0Vp3VVbttmsjHyuCTi53OEj9b6VojHFJrvoe
+    a1qwLVUFL2kXcALqz08Cz5kLweTyqle23Z02QBmhYl/Zk24kQLeJ1UoMPB+wQbS+2Fi/2c
+    NrvckCUaZ5jSFS0iBCajXV0sJi52NHP0nIhX9d0w9YwR/SZVhCLf0HaTiZmccfA6dsiIHT
+    EIsf+Sw68meguqaOlViYOfg4uQXmP5wWxP7IPsec6hMapeERUhDGq4ANN5tA
+X-ME-Proxy: <xmx:2hJyaqmRGQqX_HvDVTl7kEzXUiBhYRS5SluydT2g3l5g5M8-bh2t-A>
+    <xmx:2hJyau-XolCOHN5BYAEYSyLAwuMqKO64FNckK2BKcsPwDsjNIC1woQ>
+    <xmx:2hJyanrEC8DOOYSQhNCp9fGwChBGM6UV4zTzP2wyOVCoPUNJzmcwIw>
+    <xmx:2hJyavmLOZoydD5mdq7WXxHdkVQFaWfgDuiKyJxu9IWgzfru7EvFqA>
+    <xmx:2hJyagMsZMlT-VHv1ib7sv1dGbGZ0uOAlo-gpWltMe4eactpvpfHay0A>
+Feedback-ID: i80b64ba7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 4 Aug 2026 12:27:05 -0400 (EDT)
+Date: Tue, 4 Aug 2026 11:27:05 -0500
+From: Juanlu Herrero <juanlu@fastmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: David Wei <dw@davidwei.uk>, netdev@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, Pavel Begunkov <asml.silence@gmail.com>
+Subject: Re: [PATCH net-next v4 5/6] selftests: net: add multithread server
+ support to iou-zcrx
+Message-ID: <anISNwUQeVl1YNwn@jlhe0197-mac>
+References: <20260729221825.42773-1-juanlu@fastmail.com>
+ <20260729221825.42773-6-juanlu@fastmail.com>
+ <812e3fc9-c8dd-4d9e-93c6-585597422718@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl v4] ice: acquire NVM lock around
- each flash read
-To: Robert Malz <robert.malz@canonical.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Jesse Brandeburg <jbrandeb@kernel.org>,
- Jacob Keller <jacob.e.keller@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260804083537.3997889-1-robert.malz@canonical.com>
-Content-Language: en-US
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
-In-Reply-To: <20260804083537.3997889-1-robert.malz@canonical.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <812e3fc9-c8dd-4d9e-93c6-585597422718@redhat.com>
 
-
-
-On 04.08.2026 10:35, Robert Malz via Intel-wired-lan wrote:
-> FW caps the NVM read lock at a maximum of 3000ms regardless of the timeout
-> requested via ice_acquire_nvm(). ice_read_flat_nvm() splits a read into
-> multiple ice_aq_read_nvm() commands, one per 4KB sector, all issued under a
-> single lock taken by the caller. Reading a large region can exceed 3000ms,
-> so FW reclaims the lock mid-read and the remaining commands might fail.
+On Tue, Aug 04, 2026 at 12:42:41PM -0600, Paolo Abeni wrote:
 > 
-> Move the lock acquire/release into ice_read_flat_nvm() so it brackets each
-> individual ice_aq_read_nvm() command, ensuring the lock is never held
-> across more than one FW read.
 > 
-> ice_release_nvm() issues its own AQ command and overwrites
-> hw->adminq.sq_last_status, which some callers inspect after a failed read.
-> Add an optional read_aq_err output parameter to ice_read_flat_nvm() to
-> capture the failing read's AQ error before the release; callers that need
-> it (ice_discover_flash_size() and the ethtool/devlink log paths) use it
-> instead of sq_last_status, others pass NULL.
+> On 7/30/26 12:18 AM, Juanlu Herrero wrote:
+> > Run the iou-zcrx server as N worker threads, each owning one receive
+> > queue with its own io_uring and zero-copy receive (zcrx) ifq, so the
+> > test can exercise multi-queue zero-copy receive.
+> > 
+> > The main thread owns the listening socket, accepts connections, and
+> > dispatches each to the worker owning the queue it landed on by matching
+> > SO_INCOMING_NAPI_ID against per-queue NAPI IDs.
+> > 
+> > Assisted-by: Claude:claude-opus-4-8
+> > Signed-off-by: Juanlu Herrero <juanlu@fastmail.com>
+> > ---
+> >  .../testing/selftests/drivers/net/hw/Makefile |   5 +-
+> >  .../selftests/drivers/net/hw/iou-zcrx.c       | 290 ++++++++++++++----
+> >  2 files changed, 226 insertions(+), 69 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
+> > index 3cab3b4adbb2e..035581b58bc66 100644
+> > --- a/tools/testing/selftests/drivers/net/hw/Makefile
+> > +++ b/tools/testing/selftests/drivers/net/hw/Makefile
+> > @@ -13,10 +13,6 @@ else
+> >  $(warning excluding iouring tests, liburing not installed or too old)
+> >  endif
+> >  
+> > -TEST_GEN_FILES := \
+> > -	$(COND_GEN_FILES) \
+> > -# end of TEST_GEN_FILES
+> > -
+> >  TEST_PROGS = \
+> >  	csum.py \
+> >  	devlink_port_split.py \
+> > @@ -71,6 +67,7 @@ TEST_INCLUDES := \
+> >  YNL_GEN_FILES := \
+> >  	ncdevmem \
+> >  	toeplitz \
+> > +	$(COND_GEN_FILES) \
+> >  # end of YNL_GEN_FILES
+> >  TEST_GEN_FILES += $(YNL_GEN_FILES)
+> >  TEST_GEN_FILES += $(patsubst %.c,%.o,$(wildcard *.bpf.c))
+> > diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+> > index 7bc61f3b70ca6..16259129df46d 100644
+> > --- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+> > +++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+> > @@ -27,6 +27,7 @@
+> >  #include <netinet/tcp.h>
+> >  #include <netinet/udp.h>
+> >  #include <sys/epoll.h>
+> > +#include <sys/eventfd.h>
+> >  #include <sys/ioctl.h>
+> >  #include <sys/mman.h>
+> >  #include <sys/resource.h>
+> > @@ -38,6 +39,8 @@
+> >  #include <sys/wait.h>
+> >  
+> >  #include <liburing.h>
+> > +#include <ynl.h>
+> > +#include "netdev-user.h"
+> >  
+> >  #define SKIP_CODE	42
+> >  
+> > @@ -91,6 +94,7 @@ static int cfg_num_threads = 1;
+> >  static char *payload;
+> >  
+> >  #define CONNS_PER_THREAD	4
+> > +#define MAX_CONNS_PER_THREAD	64
+> >  
+> >  struct thread_ctx {
+> >  	struct io_uring		ring;
+> > @@ -99,9 +103,14 @@ struct thread_ctx {
+> >  	size_t			ring_size;
+> >  	struct io_uring_zcrx_rq	rq_ring;
+> >  	unsigned long		area_token;
+> > -	int			connfd;
+> > -	bool			stop;
+> > -	size_t			received;
+> > +	int			queue_id;
+> > +	int			napi_id;
+> > +	int			ready_fd;
+> > +	int			start_fd;
+> > +
+> > +	int			connfds[MAX_CONNS_PER_THREAD];
+> > +	size_t			received[MAX_CONNS_PER_THREAD];
+> > +	int			nr_conns;
+> >  };
+> >  
+> >  static unsigned long gettimeofday_ms(void)
+> > @@ -201,7 +210,7 @@ static void setup_zcrx(struct thread_ctx *ctx)
+> >  
+> >  	struct t_io_uring_zcrx_ifq_reg reg = {
+> >  		.if_idx = ifindex,
+> > -		.if_rxq = cfg_queue_id,
+> > +		.if_rxq = ctx->queue_id,
+> >  		.rq_entries = rq_entries,
+> >  		.area_ptr = (__u64)(unsigned long)&area_reg,
+> >  		.region_ptr = (__u64)(unsigned long)&region_reg,
+> > @@ -226,53 +235,32 @@ static void setup_zcrx(struct thread_ctx *ctx)
+> >  	ctx->area_token = area_reg.rq_area_token;
+> >  }
+> >  
+> > -static void add_accept(struct thread_ctx *ctx, int sockfd)
+> > +static void add_recvzc(struct thread_ctx *ctx, int conn_idx)
+> >  {
+> >  	struct io_uring_sqe *sqe;
+> >  
+> >  	sqe = io_uring_get_sqe(&ctx->ring);
+> >  
+> > -	io_uring_prep_accept(sqe, sockfd, NULL, NULL, 0);
+> > -	sqe->user_data = 1;
+> > -}
+> > -
+> > -static void add_recvzc(struct thread_ctx *ctx, int sockfd)
+> > -{
+> > -	struct io_uring_sqe *sqe;
+> > -
+> > -	sqe = io_uring_get_sqe(&ctx->ring);
+> > -
+> > -	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, sockfd, NULL, 0, 0);
+> > +	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, ctx->connfds[conn_idx],
+> > +			 NULL, 0, 0);
+> >  	sqe->ioprio |= IORING_RECV_MULTISHOT;
+> > -	sqe->user_data = 2;
+> > +	sqe->user_data = conn_idx;
+> >  }
+> >  
+> > -static void add_recvzc_oneshot(struct thread_ctx *ctx, int sockfd, size_t len)
+> > +static void add_recvzc_oneshot(struct thread_ctx *ctx, int conn_idx, size_t len)
+> >  {
+> >  	struct io_uring_sqe *sqe;
+> >  
+> >  	sqe = io_uring_get_sqe(&ctx->ring);
+> >  
+> > -	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, sockfd, NULL, len, 0);
+> > +	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, ctx->connfds[conn_idx],
+> > +			 NULL, len, 0);
+> >  	sqe->ioprio |= IORING_RECV_MULTISHOT;
+> > -	sqe->user_data = 2;
+> > +	sqe->user_data = conn_idx;
+> >  }
+> >  
+> > -static void process_accept(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
+> > -{
+> > -	if (cqe->res < 0)
+> > -		error(1, 0, "accept()");
+> > -	if (ctx->connfd)
+> > -		error(1, 0, "Unexpected second connection");
+> > -
+> > -	ctx->connfd = cqe->res;
+> > -	if (cfg_oneshot)
+> > -		add_recvzc_oneshot(ctx, ctx->connfd, page_size);
+> > -	else
+> > -		add_recvzc(ctx, ctx->connfd);
+> > -}
+> > -
+> > -static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
+> > +static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe,
+> > +			   int conn_idx)
+> >  {
+> >  	unsigned int rq_mask = ctx->rq_ring.ring_entries - 1;
+> >  	struct io_uring_zcrx_cqe *rcqe;
+> > @@ -283,7 +271,7 @@ static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
+> >  	int i;
+> >  
+> >  	if (cqe->res == 0 && cqe->flags == 0 && cfg_oneshot_recvs == 0) {
+> > -		ctx->stop = true;
+> > +		ctx->nr_conns--;
+> >  		return;
+> >  	}
+> >  
+> > @@ -292,11 +280,11 @@ static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
+> >  
+> >  	if (cfg_oneshot) {
+> >  		if (cqe->res == 0 && cqe->flags == 0 && cfg_oneshot_recvs) {
+> > -			add_recvzc_oneshot(ctx, ctx->connfd, page_size);
+> > +			add_recvzc_oneshot(ctx, conn_idx, page_size);
+> >  			cfg_oneshot_recvs--;
 > 
-> Callers that previously took the lock around ice_read_flat_nvm(),
-> ice_read_sr_word() or ice_read_flash_module() now call them without it.
-> The now-redundant per-block locking in ice_devlink_nvm_snapshot() is
-> dropped. ice_read_sr_word() is now a thin wrapper, so ice_read_sr_word_aq()
-> is folded into it.
+> Sashiko noted that the above update is now racy in multithread tests:
 > 
-> Fixes: e94509906d6b ("ice: create function to read a section of the NVM and Shadow RAM")
-> Signed-off-by: Robert Malz <robert.malz@canonical.com>
+> https://sashiko.dev/#/patchset/20260729221825.42773-1-juanlu%40fastmail.com
+> 
+> Also please respect the reverse christmas tree order consistently.
+> 
+> /P
+>
 
-Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+I will look into the potential race and fix the reverse christmas tree
+ordering in v5. Thanks for the review
 
----8<---
+Best,
+Juanlu
