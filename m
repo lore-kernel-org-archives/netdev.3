@@ -1,80 +1,75 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69063F1AC6
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 02:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901483F4DD6
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 02:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785812189; cv=none; b=Ckd8VvNZA+sPioeNWoIWeAgQhRYoGZLDXXemKIfxnaMwDmH2T5JHuwmC3tH3iUqQlZxGOG9Ieemh6FiisDbCLWikzM+fM4TPAxDgYLb05uAolxdyI7+JZmyjMFxU2qgm1BbQ9oUfSS9NM3ziUjqevI5fB8gpegtVaXu412rFoNg=
+	t=1785812370; cv=none; b=dRvx4mPy2xN+5KakkDAtpxbTyPikaQlC9s1IL00yhbsusue6qN4v5z9ydhjvS0cnI/RkeflX9Sifqq4k5YEJ6aieTzLN3XNSj93+nbGMMFzrr4AOM2jKrYxZMHo9bEVxPTI3bJPUHI8O3jJdJUWQmKfW9lCELNgh/srA8rAMnqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785812189; c=relaxed/simple;
-	bh=zqrmGtNYwoSSlb1WHgT3h/cWLH0pWZUE4OokQlWtRek=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hC0/wOHI/Bfx6ZPqFOLyQoXdoWsvM1iLMBucS61MSjrnpNZz/Gn1XKCfqNJLCQGnKJxjVNLI8CT51/34fJHZ7GX65aMpbDscvk2EnhXHEJ+KFh9+Cryf28ALCWYNc4F32ScNpU4pV3s2gi33HZLUQbOHaUJ+2/9ojkhj6W0pZlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L7yQpDaG; arc=none smtp.client-ip=209.85.216.49
+	s=arc-20240116; t=1785812370; c=relaxed/simple;
+	bh=Mdp4dHp9ElITnJAkU5a96KDXLwBwbM8y6FoOZ41QR4s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BQe9mtmQQIoBVU7b+W9MzH+7TCtFfm082fKiLIC7wZ8ngoLOSpIVJtz26RQds1EyTxWHFFWBYdyxFbnhqmJDtLukocw5wOBzPbX12DRG8HjdkXmoLvDLdCuby9hmDamIyhFglVEe6sD0iy2HdF7Iw3qTE/r0Gzsi4gSti+xh4eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1pbkyGS; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L7yQpDaG"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso4974765a91.2
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 19:56:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1pbkyGS"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-ca957432c7fso2806140a12.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 19:59:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785812187; x=1786416987; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=z1yxnvuZRVlxtf+BJKMZxwYjNsgm5M4Tjb/ynOLuWlk=;
-        b=L7yQpDaGnaM95Z2wqzD1DbzPkNt69swtGsm/6n3ch9JPzF4qqe/UsgMJMQbnqpc1nh
-         hcGYUyZgk4YbVzghGlIxg00VGx+48vPWp/+c03ZasT46QFT4pRmEaE4jnPz9qAAo71sE
-         Dm/IoJDix2qqSamn70MXZUGU4RngOT2io3oV8CEnRgq+STsMjsuTAQIVIBre/GjZQOhb
-         8lOZOx15CXt9tAby49Ug3r2x5xahMU8/0upRBaQVTdmbDSyxcYBhY3iPfYYFgkcI/6Kz
-         hkHCC3CveF22HtuYV/3qaLgKrDe0fdEG91c32L/npGBP97aipW/Ok3j7CrX/Q+FyD2lQ
-         SOcQ==
+        d=gmail.com; s=20251104; t=1785812369; x=1786417169; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eEfsGt9zPkqCVw+2RikdWiSpY/gxVUvhARG2RcmaJAA=;
+        b=i1pbkyGSLT6STFxwXLR9X1SzuHhHEz1A1f/+wDPJuzBzl3tNVAe4BUr5dqJ2qV73+/
+         CbE5OvqtrmRgrGpT1qBUn8nnCzaZvFX2ojBffAk5vhEL3Dzu3uu3quWLzcBueA1LBXlc
+         /drLcGsfdOpycxb6RX893Cwf/7wZdmDnwZmfoQMyV5sQGeKxs9QqGJjAbTNH91a4Iql6
+         jtnz+EJuSqdm9wReKDGEDEYw5R2TEeXfXPz9T29TtaVF4H28JZxJ8aQaIb5QeaLkft2L
+         iDaeeuFwnozaawLLzYUMcXmIzCMd4RQVxif5rgg+tpABnRYt6aiBKdlMvHBqvIyHHLPu
+         Z5+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785812187; x=1786416987;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=z1yxnvuZRVlxtf+BJKMZxwYjNsgm5M4Tjb/ynOLuWlk=;
-        b=n/5d35vUkwUHeESPYSmFKiwsw2YfNJQzQRqT5PbPX+LJcipHxnuZ3Pw3c96lTWkAbI
-         n2j582T1bCLENc1CJKDavIG/OsRUOnafPjU0RIYQwuJOnc8t5RHS0w+gDfTWterw0E/l
-         T/CMZK3fBUwpDdF0GnmlbWyV25pjAL8IulFV5WHJDT3eRz5wcOYiOjWtFoQnGT8sYZqQ
-         TdtfV8Ht2qoWJZkjzB8M/EORyYovXXO3IaND0oAce4to3kRp9WzTYB6WITgiS9ZM/44U
-         VVFtFlOTT9q6qmstayv9Bn2xh6vXZKhmjFTSRDWZDdjtpVnDhpTie4uzKoKhOtwnSvRM
-         QqhQ==
-X-Gm-Message-State: AOJu0YyG88rp8cHEOBmYQvKJEVCpMmWJnsedQrAoRQ2QC+wiYYvMDzUS
-	BNtdPZUgE6WiToLjNMm07FBkl2M0vpa/5TjFKSrPIAEiRrt9GHtzNIfU9cwPTgPFJO0I0WV6
-X-Gm-Gg: AR+sD102NxqZQAkFsng4AHkRK+5/6muhg/fvGLIOYZFIaT/h6UNyai5JqvXRjBw5zXY
-	CI7g+zWweGNK+yALWyLWLiYjVY3CBF1QO0wGw3Hzb6CMZmJUNU6jqG4NXcOOJ/Y54HPIwyQ/+7V
-	umHtbAzS+KlbnbeMqhjYOtWH+/b02QI68SrrZ8s1pT68fi7+d/bdHq1YEecAeJBKMk5sVJ6TDM9
-	MWerNNeYSoLcsWhHwxHi2A7JWmxThjMQ8qBfYggUNcj4gvoOvRFqVvPxBRf/ClyZY++Ld64vmQn
-	yxhc2fLpyG+6Gn58AfxoSRHsdF1mNs6zFYsIvWMItPIBI5Gow5AnlFNjb0smseAOH02/auuRvTx
-	XkJMICi6YisMkUYr0eohgEQ9844dexPM84x4cxTFRqIupMwFSG97ay+i40EY+XuijGNgEvNlfA6
-	mnqmQUh1KAFFkuCDV3i9ocQ6K77T/TTnsaZVqPVsNuG7jFLQUEpCFsdjcrsNvALyfLRLQQwOuBx
-	AmbQRqONJxXtzlQDiba9W9h4dQ=
-X-Received: by 2002:a17:90b:590c:b0:387:e0db:3fb1 with SMTP id 98e67ed59e1d1-38fbc59b1aamr11609901a91.42.1785812187080;
-        Mon, 03 Aug 2026 19:56:27 -0700 (PDT)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae19ef2sm45373175ad.4.2026.08.03.19.56.24
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 03 Aug 2026 19:56:26 -0700 (PDT)
-From: Jun Yang <juny24602@gmail.com>
+        d=1e100.net; s=20251104; t=1785812369; x=1786417169;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eEfsGt9zPkqCVw+2RikdWiSpY/gxVUvhARG2RcmaJAA=;
+        b=j+7DBl97fnHyvGIe43DjOzIZwEA/Fcpkeq5v5Qnyvl1pXHacSVo9Lw5FJlgK565SZy
+         j5MaGuOwGfNyf+Swlvhe/K4f/mjPO45dLHFcPza7znLQ8wpctC1Y+0F31LiuTgXa4vjA
+         Ogyg+XAv5ZRoIWyAjSKXXQBCuMkuzjP9YAmn9ylycfwArAQfoZCTg+qBmHcg/yaWbd4f
+         FBU18l24GpIH/IGzvx3czpaBID3nzpiPdh3HhPiccFQMlBR9N+oMNZxezwKOEZnwBOZT
+         EOWPP8Yxr0qn9gIqB8NdanS7xlW6mMGm1TVYNM4M9jQ5WYBRWqj/IWOY/iolgxK2y6cP
+         79dA==
+X-Gm-Message-State: AOJu0YxBh+DeSRfRrhEwBADL1sVddITKnn5Gqa0sg4t5WV9+vCdSZJ/T
+	5tuvd5ijwB2aYqXjUzQ2X+F4oAQFfH5nxQf/cudQ2QmhRFZLkIOl9oheTH6Tef+Q
+X-Gm-Gg: AR+sD11HPX97hLHJ1mckiKGNJYOia0o7WJVDn//oi43fSz3kY3L+bXfMVDnS3EB3e2w
+	Hsak/5HjaxUK3d4HWi76ShqID0JOwjQMNl8UZGGpfmlLDFbSbQhhXU1d1tYONrvcMFzHWk2LBzN
+	N4TZ+dDoYszLW0kE3Ay4lZLW/+d3T2sHtH/kNrdQgRHi8KRVUbcNfrxV3E2t/Z7Ns2G22z+Q6s7
+	AAuxVXfpS2O0Q7VGU9slRpUOuUYlAaC+45QEXF/EX9fQx0xPtpGgtTN6fwlvXDgIWS3ACVFadIi
+	AwiO8hZ7ERxF7ckdS+m1RdRZ9hF5U4RRo7OFpwNk4pkB4X41zNyOi9IcuBpNGP0RMuDT6MEkSa/
+	gb+qkbXCdoRzISJM1S/0vlt4jZGCAQjFy0eISEwV9Yugn5dOH+KmyJxCvyobOObpeBImX5nkbko
+	AmG+zo4LSiTjo0aAEOGhMYTwCtpGTcnegR3mVZ+AyrhTNm1LFCyR8NmoXsTvzjNYtiRw==
+X-Received: by 2002:a05:6a21:3390:b0:3c4:3ada:384d with SMTP id adf61e73a8af0-3c92a57baf2mr11133346637.30.1785812368880;
+        Mon, 03 Aug 2026 19:59:28 -0700 (PDT)
+Received: from fedora ([2804:1b3:a8c3:8ee5:1c39:64d9:e257:73dc])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fab2530c0sm35974758c88.8.2026.08.03.19.59.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 19:59:28 -0700 (PDT)
+From: Marcelo Mendes Spessoto Junior <marcelomspessoto@gmail.com>
 To: netdev@vger.kernel.org
-Cc: Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] vhost: reset the vring metadata cache on vring reconfiguration
-Date: Tue,  4 Aug 2026 10:55:29 +0800
-Message-ID: <20260804025621.16580-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260803014823.68623-1-juny24602@gmail.com>
-References: <20260803014823.68623-1-juny24602@gmail.com>
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Marcelo Mendes Spessoto Junior <marcelomspessoto@gmail.com>
+Subject: [PATCH net-next v2 0/4] net: selftests: adjustments to ipv6_flowlabel_mgr
+Date: Mon,  3 Aug 2026 23:59:06 -0300
+Message-ID: <20260804025910.50145-1-marcelomspessoto@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,70 +78,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jun Yang <junvyyang@tencent.com>
+The ipv6_flowlabel_mgr test file was lacking coverage for the IPV6_FL_A_RENEW
+action, and the IPV6_FL_F_REMOTE and IPV6_FL_F_REFLECT flags. The first
+three patches from this set aim to add a proper test case for each.
 
-vq->meta_iotlb[] caches the vhost_iotlb_map that backs each vring
-metadata region, and iotlb_access_ok() returns early on a cache hit,
-taking the hit as proof that the region has already been validated:
+The fourth patch proposes the adoption of "kselftest_harness.h" helpers,
+improving code readability and conforming to the implementation of the most
+recent selftests.
 
-	if (vhost_vq_meta_fetch(vq, addr, len, type))
-		return true;
-
-The cache is reset on VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE, on
-device IOTLB (re)initialisation and on vq reset, but not when
-VHOST_SET_VRING_ADDR replaces vq->desc, vq->avail and vq->used, nor when
-VHOST_SET_VRING_NUM changes the region sizes.
-
-With a device IOTLB attached both ioctls are accepted while the vq is
-live, and neither validates the addresses at ioctl time: vq_access_ok()
-and vq_log_used_access_ok() return true early because the addresses are
-GIOVAs, deferring validation to prefetch time.  Once the cache has been
-populated that deferred validation no longer runs -- vq_meta_prefetch()
-hits the stale entry and returns true -- and vhost_vq_meta_fetch() keeps
-translating through the old mapping as
-
-	map->addr + addr - map->start
-
-for an address the mapping no longer covers.  vhost_copy_to_user() and
-vhost_copy_from_user() consume the result with __copy_to_user() and
-__copy_from_user(), which do not check it either, so a subsequent used
-ring update or descriptor fetch accesses memory outside the region the
-IOTLB actually maps.
-
-Reset the metadata cache whenever the vring is reconfigured, so the new
-addresses are pushed back through iotlb_access_ok()'s slow path.
-
-Fixes: f88949138058 ("vhost: introduce O(1) vq metadata cache")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:kimi-k3
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
-v2: add Assisted-by and Acked-by tags
+v2:
+- Apply missing scripts/checkpath.pl fixes and other formatting
+  enhancements
+- Add new basic IPV6_FL_A_RENEW tests
+- Put label after IPV6_FL_F_REMOTE test, freeing the value for a
+  subsequent test
+- Delegate flowlabel_consistency configuration to wrapper sh script
+  instead of doing it on the main test code
+- Skip IPV6_FL_F_REFLECT tests if flowlabel_consistency is set,
+  instead of failing the test or attempting to change it
+- Compare resulting error for failure assertions
+v1:
+- https://lore.kernel.org/all/20260727043516.93101-1-marcelospe@proton.me/
 
- drivers/vhost/vhost.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Marcelo Mendes Spessoto Junior (4):
+  selftests: net: test IPV6_FL_A_RENEW
+  selftests: net: test IPV6_FL_F_REMOTE
+  selftests: net: test IPV6_FL_F_REFLECT
+  selftests: net: adopt harness for flow label mgr
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 4c525b3e16ea..77c96993100b 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2126,6 +2126,14 @@ static long vhost_vring_set_num_addr(struct vhost_dev *d,
- 		BUG();
- 	}
- 
-+	/*
-+	 * The metadata cache holds the IOTLB mapping that backed the previous
-+	 * desc/avail/used addresses and vring size, both of which are being
-+	 * replaced here.  iotlb_access_ok() takes a cache hit as proof that the
-+	 * region was validated, so the stale entries have to go.
-+	 */
-+	__vhost_vq_meta_reset(vq);
-+
- 	mutex_unlock(&vq->mutex);
- 
- 	return r;
+ tools/testing/selftests/net/ipv6_flowlabel.sh |   3 +-
+ .../selftests/net/ipv6_flowlabel_mgr.c        | 504 +++++++++++++-----
+ 2 files changed, 387 insertions(+), 120 deletions(-)
+
 -- 
-2.50.1 (Apple Git-155)
+2.55.0
 
