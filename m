@@ -1,317 +1,294 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013021.outbound.protection.outlook.com [40.93.201.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9D043C7DD
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 08:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EE943CE5A;
+	Tue,  4 Aug 2026 08:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785832665; cv=pass; b=WpGrZG0+HquFTFJIrJp7tGrqsvRHsqhbe2Ohvx/HWv12vDTvNDB5Fx/HD2t4NhAjjpKzm8HaGXOWk55ylKqbpwIcHDHJQXvgFpe1rnoVXDXO9msO0cTE7GAxecGBJJhxlJi/Wm8hh8q8JrR3l+uIMwpEvDmZJ+s7i50fLk5Gzhg=
+	t=1785832669; cv=fail; b=NZCa0yosSFw+Y9swluoVPugHEKF21qPr/oeXh6I88tryENB4BGktlkQwoLl29x144Uz6Nwk7ly5yh8kU0eVUhXpMJvmR4PczcaWTTc83J1AHGdn/VVFENqcu4SNiY0WyZEopu8Aq55RA77fwDXex2lZcKOSmszaZI2KWyhngw/8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785832665; c=relaxed/simple;
-	bh=g13WE+ZHZNFUd7bHV6icamQv5+p7zEb2iX96VPgdsVA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pWR8kEFkRAnSfrbPgAN+W+1oVT8VnsRZ1BN9aujfyzoW1M/kRu6ppG/G/UbJfC8q+YOSNT1dYy1JWluYzGOWTkYeA18T4E1bqqw1/nJHv4bC2n8/cNS+uU1hxKVHAjapNTDA/CP2IwZR4Mm728fKXP5V1gFLlrhnb2gopV+tBpM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=jH6oseHL; arc=pass smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	s=arc-20240116; t=1785832669; c=relaxed/simple;
+	bh=QMQ6SgZtjcAEDVTjNWx0BF7ZyeuPaaJ3iRHfn+zY/zg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D2wH4+UIAdFW8vZieXWV2dX5C0LYyZSVKYJZLvNRenwuE2GSy64q1Vl4Dl45jWm31vPr/1KeXbW8RN5qKRc1FG8wxrvoP/e+lW+qu5Iu1jg6xK9KM1iogdl4kEGMNRyHBIdMkm34oyjY/b7VoqbjdCFQL508d7idYhc5TSYO3dw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ieGHE6wu; arc=fail smtp.client-ip=40.93.201.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="jH6oseHL"
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 440C93F978
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 08:37:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1785832660;
-	bh=QK2XXQQ2ltf6JIJm9pr2aAQX19gqEISwvzdd/qkFtXk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=jH6oseHLZD0nW+2AezxIfZwnVA0jwJNEuhMVpefIdrzNXgco5bG2wuE0bMtY2MQhQ
-	 HpU0LjADgfTetREkiKwgBQL1ULc5G85zrIBVB19kSmaVyV7uzz3hHaOyKVV8IAjJa1
-	 IVc2tZ00adqmKgCkHQEt/Z7ICrFYy0fxmy+BRyz8ZPS/bCGpKP2DMTDD6UHrEPLAXT
-	 XVK9Xd2AReQBY1+cSpEMp8LFPZ/JWJ+hWR8HfvbneWYI/k3T1KlVSLgl1UnOIy9Lp0
-	 cAeuGhRK2P9WVORd3v7YJO8ZFSpX/+cMCNuQy33ff31LJM7B66Dhwk8/jc9EGH4Txe
-	 Y26AdJ7gzp/PcugTwJfwZacNf9nSsG7yOgvUSvCTInldxma2aDZRN3spHYm9bIPTxU
-	 vhiPJAkCPhQjznJJe93BqBGpQRyTkjktI3ALWRzPwRCN4BG9A6zmXlEUx7x0kAeY0g
-	 zWKQLIPpAsG78FjFD++X9OIITe4wVyCMX+HAvcltVXiturcIYg2ektwU/ilUI9N8kU
-	 OfdFNlg8jWgzbfqEJPE4LeXs/CaWFvJd1IWfBMJptTxlVolSSnIx1ux/LoYd150WKs
-	 VVMPqX/JzUtzmbhSi0giCiKfCS9dpgaZ6iuZjEC7DgZCMI/jkelVdEdTPbS0jT7xHq
-	 pRy28K6qph+aDg7jQE2Q7j0g=
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c15d4224f9dso329952566b.3
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 01:37:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785832660; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YwX33Y+bTUMPa5J/aT4ghnc1pMwNt/0INCDoEVmbwX08H/dOEwNRqxgEmXxHucQ1O6
-         6IUVEv2uzrKWougUE6fIaGd5Gjlscl3emIafUeom8G5p4nlSvTsrNguKNIwL7Wt+bMPM
-         OzH6vlxfq002ROUWaERzt8mVhfEmueuUNb2dzHx5ekb/CQhoyEleUhzYCAnnBbIOlX2/
-         KOUhrRqmUM0Q92xgUeLIUVcfxUyTGqvCFEZbS17QdaUKmgngMYi5kZrq9RRV4scsH3VA
-         u7VGNMsp9IG/P/VCevxH5mogebXrMyQPlDyZ9GZhwlaYE0eCgL39yB+F0BN/HuXlc0Hu
-         lRYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=QK2XXQQ2ltf6JIJm9pr2aAQX19gqEISwvzdd/qkFtXk=;
-        fh=bFNbSeVKcDCdVasMXCg4MuCR7/1lrCRGtPL/RCDbLEo=;
-        b=UbmPxI/lf9VkemwZr0AEfe27fsEIZcs8sOoyHHB3/ghli+L44eynYNPK//xKblFTsa
-         6xOIafyyjV0h8V46+JEptyskxgHk7uXwlMe887AILGci43eiadosZ9cQedmjO4D8drnI
-         5nkXCmoVFhqS0gw7+I3/OvsY2ApKgB9WQ5rZacFD0zIAlErrM4PUR/OXfcEkbzJLG3TT
-         3861z87NcK9n0k4sSuz/k6n9AzfO3PcR1xKfcG+/Z8qa3vvI548Ephr4qEoj0ZeyvmFZ
-         unhwFu6zS3OqO2Xo4mayWQ9vLYmyofOZ3U2zWdiHIX9VTcMITKfVpeElHewhgMJDszln
-         zn8w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785832660; x=1786437460;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QK2XXQQ2ltf6JIJm9pr2aAQX19gqEISwvzdd/qkFtXk=;
-        b=H55+j4y5dyLiKJ3Z5UqScqLOJ/x6GWQziteTtmMU+/ucJhaAA8SlKxd+LjkK0iA/qC
-         GmmbNrlEXY98Jm3KhnOQsMz7MrgElVCbOCutJ+JQS/cWxlaJP+o20SyThD+Tn3kIxpkg
-         iqSIkMuTF01l/LccVXdXBHA7bkukJAAbbencP5+bZ61iYfb7G16K5Y8/W/kPHGZPP1zq
-         SQ4qH8sQgOpSQRsyNymCGMcWj/nalHP9z6fxYySKwjDzONNPudaMCTrjVvQiTBnzK6lR
-         1HDlC9JSaz71FmSeNDKDSrlG61dLp6zwXfWpXCvNhu9E9FhvhbZxvbBMvja32sNPjhwg
-         MX5w==
-X-Forwarded-Encrypted: i=1; AHgh+Rrt9LsvNn4XQ+N45A37S0iSm2WIMHzIYjOl30XDz2Uz3JweEkdnlrWRI1P4RL2D83WR59nhfV0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/rvTk/s+PU2vfTwUoyBEmpmuk9ukUGjSgyZnjTCM9LsshwDrL
-	G/gg7shdKjmp9uVPA8aPD5ogXmQzHrE1bGVJlpnWckWH9G4CQGigqWQqasP7pR+bgxU8ZUaGctn
-	Vsm2OI5CbLPrju2sGbYkiX33EbQR5JMIQG/CTF9KEyNrmQBwD5/vdyUWx6CQJasjlKhJ4R8Szhs
-	Sy3aIkimsLmpUeHewpnrembeH0OZ1Xj6KFuFbE1nW9ZtisE6Gr
-X-Gm-Gg: AR+sD13Q5yIJJKuBfDPURoIR1hqw7C+BUfd92l/iwA6UD3R/fvcFwRprkORVOllKZFz
-	r3VXZGFbjNj6K4D2u9R+IZ/VmKtJLzABFiKDht9mHLhypWwd3iWbywhGMRLn2aylRpONTpIBRNF
-	Za7CQCMnWcJ0gmsGc9dm0lQJohZBLASHb2jwGo09AwiopTewBzPaIOAzY=
-X-Received: by 2002:a17:906:3c1:b0:c16:581a:2a51 with SMTP id a640c23a62f3a-c1fe80c6321mr881100466b.12.1785832659698;
-        Tue, 04 Aug 2026 01:37:39 -0700 (PDT)
-X-Received: by 2002:a17:906:3c1:b0:c16:581a:2a51 with SMTP id
- a640c23a62f3a-c1fe80c6321mr881097366b.12.1785832659261; Tue, 04 Aug 2026
- 01:37:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ieGHE6wu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YsydT5zFjvMNCKdHfRwzODwDtzNdGTHzR6FsYV0SbvvsvpsvPxnCCPTAjcGzqNr4XWE2jG6gQLtSLss9TJ0+yZyPU5WAdD7OsJ7r/o4SlyRwcfyL1pgWR2X1tqA8ar/geDUy8YL9SyEvmMrRDmTRpaEkrDa9IBNwuNBQ9HD1MDN2IwWgvkwtx6meWEnBQce+SOQ7vbdl80/Vhv+bHqcXSPMNzg44prM+mlDNEom6CckrqKmhAJ0xNwga9v4gtO6s6ieW9WYNZtk2NiI9i92NOyW/1t/nU33ZrYOXUAFN3bogYlJACOBlBkmvV4BaP0D8T0bonjmGa0BjCK7BceV5NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0T3kHu5Dxp8P1gSH1YIztIlTioNvLdwxtGqJt+SeVos=;
+ b=m14T7Tg1LsZPtuDctX+v5h7vh2D2sqO5DZHfZsYW9RLNFMU0QgdhyGMBr52MyYZNvuOaSCuLaXgqu5yzffr2MsmzHtpGKS5/avlGmtcFdzkty4ZxrNsQypRdIHztBVNZfu/0h9TtpIxVPAzFlhRJ1U82s46pZ4RZ3mRtn26DIc0Ev+bH5GIAdqhgvRB/bvc6ueox63URyoMj+mfFVWC2LigB29CuMxd2izLlGDqbdSp7M9GjvjQiG6oD9TdWYtFYbZ8OB/i1k5YIyMziTx8l6xi4h5o5wORz2l9W0qhqIDwvCP8Ks2Erlxsv6SOA9mby03h0JjbDy8WqRhIm5wOHRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0T3kHu5Dxp8P1gSH1YIztIlTioNvLdwxtGqJt+SeVos=;
+ b=ieGHE6wu5Knb0RHwKW/Cm9L8A0rdMd0UxsQpazbj9DZSCfzf/e4gHFlCTdOEHWWWz4x2zob6s6UInQkLG0USW6tbTLAVKViJuSjzmR4LJKC996VvnoWRxiYoYW7tNefGtQdrxJl4VDDyJFW4X4XjGzReFnpJQM6XEk/P9e+fDyyvtw7GdqtHiyCOeG5CdynpQcUMZsG7RxMVvcBvI4vvTwCWd7RgY035YV1PU4rKwZyF5aaRrtg6MV6neLZUimu0M2H1XzAbxZYd+0PDPPdf77CMxvbuVdzou93u1q0SzB2IfqBjkGAbYhUstA1k1vgmMFJ2mJsdZTLwfri34CWNeQ==
+Received: from BL1PR13CA0378.namprd13.prod.outlook.com (2603:10b6:208:2c0::23)
+ by SA1PR12MB8163.namprd12.prod.outlook.com (2603:10b6:806:332::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Tue, 4 Aug
+ 2026 08:37:40 +0000
+Received: from BL6PEPF00020E65.namprd04.prod.outlook.com
+ (2603:10b6:208:2c0:cafe::73) by BL1PR13CA0378.outlook.office365.com
+ (2603:10b6:208:2c0::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.13 via Frontend Transport; Tue, 4
+ Aug 2026 08:37:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BL6PEPF00020E65.mail.protection.outlook.com (10.167.249.26) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.8 via Frontend Transport; Tue, 4 Aug 2026 08:37:40 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 4 Aug
+ 2026 01:37:26 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 4 Aug 2026 01:37:26 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Tue, 4 Aug 2026 01:37:18 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>
+CC: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Alexei Lazar
+	<alazar@nvidia.com>, Boris Pismenny <borisp@nvidia.com>, Carolina Jubran
+	<cjubran@nvidia.com>, Chris Mi <cmi@nvidia.com>, Cosmin Ratiu
+	<cratiu@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>, Doruk Tan Ozturk
+	<doruk@0sec.ai>, Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman
+	<gal@nvidia.com>, Jacob Keller <Jacob.e.keller@intel.com>, Jianbo Liu
+	<jianbol@nvidia.com>, Kees Cook <kees@kernel.org>, Lama Kayal
+	<lkayal@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, "Patrisious
+ Haddad" <phaddad@nvidia.com>, Raed Salem <raeds@nvidia.com>, Rahul Rameshbabu
+	<rrameshbabu@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan
+	<shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Simon Horman
+	<horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Stanislav Fomichev
+	<sdf.kernel@gmail.com>, Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH net-next V2 05/13] net/mlx5e: psp: Move RX marker from ft_metadata to flow_tag
+Date: Tue, 4 Aug 2026 11:35:27 +0300
+Message-ID: <20260804083535.2946459-6-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20260804083535.2946459-1-tariqt@nvidia.com>
+References: <20260804083535.2946459-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731111008.1266444-1-robert.malz@canonical.com> <2e3101ea-13ab-4c9a-913c-999eb15207be@linux.intel.com>
-In-Reply-To: <2e3101ea-13ab-4c9a-913c-999eb15207be@linux.intel.com>
-From: Robert Malz <robert.malz@canonical.com>
-Date: Tue, 4 Aug 2026 10:37:27 +0200
-X-Gm-Features: AUfX_mz_Jae7dMx4vYi_J6NQ-TLRVLNHOrhEpeKex3aI5IX41UDwspVk9wh0tZM
-Message-ID: <CADcc-bzeA2CeWUttUcPTOhS=4e0k3=NMFS7i4=EgJHe-w=1j4A@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH iwl v3] ice: acquire NVM lock around
- each flash read
-To: Marcin Szycik <marcin.szycik@linux.intel.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Jesse Brandeburg <jbrandeb@kernel.org>, 
-	Jacob Keller <jacob.e.keller@intel.com>, intel-wired-lan@lists.osuosl.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E65:EE_|SA1PR12MB8163:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb68771e-6e9e-4e94-490b-08def203a535
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|23010399003|376014|7416014|18002099003|22082099003|11063799006|56012099006|3023799007|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	Ts2MAj/5lJwBu8CVboPEccMHaGI34/gL9+UsPyMqrbyyU0dz+utxonvq2vTS1I9EfLjbqrfoq3RkImA6HQAPgwryNIxAIqhr2s5y9KEoGb43Ac7vCqmsRjE5qSzqmq4j0cqzyQaZ8A+qwmpHGVMxFNVNUZZlyEzgEOeb+GCcq0sUqFpjAk3AvcbGAInVNiyMt8eNVagkSDg4XG+dd5HiDThFjKMYLrF2JESmjIzaLShX/80LVAbUSRMkUVsVxBaG0lN5OEJOCh6AGSm899+xB2flANRCv8O44pbK4fO6050WmUsM7HqxPZpBeiHByByBvKLXEXNzmkWRoWzsWqGRXCIwVXOPX7vrSjgnz4w24C7raHCqqMdAEe0rQ22YjuJ/dQEML0ZzwPSCJzq6oq8j6shCtGsE/X97zaDBjDCQoVBs0v30ZFc24JHBjAJqHC4WEnMatHjemMaf328uBQA5Gjgo7h/aeDBUAHk9ECXw2rro5WaEMWhHOoXi05uAJRab4Mo0xgGe/CfijiKHSiGbMmaSulblOOdpXc5kiyLzw1s5quVRdnXiq2INcAvYFjyak8yKnfI+o7ZGQ9ZmoSn9kwFqVP/nBIw8py4CLkq5Qf8MxptcR2xZ3+ZN70WOdjX/GHkHbqYn4iVZw5PiB+sfojEKETJm/76yNKLEdKf+pmQwKK7FgMXtuwnGRP7mRi1sLhgaxuHui8lSue/QQIXOeA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(23010399003)(376014)(7416014)(18002099003)(22082099003)(11063799006)(56012099006)(3023799007)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ED2hA1gh8TiNrJ7ThARuSIKyIssl3AsPYY9U2DyguQMd2tVg6HOKdZu6gM8fKk0wIMsZngBU2p/sCDErQuUueGgUn8fp1++jWt2E8E1QPZWlORunqwIe7fjv/LbJu6B6mUZ7f7Q4t3LlfcIiEPXBWvCtJkIuntmaTmBpjO7vK3zxbO51fORYCcZB7Cj83eRVx38JG/lmYthcDXXA5a9KMI61iQArgHJm2ivx09DKZk9yqr9X5DAb9C1w7Y7r+MQGI22Qe5mlHryDeFjFuJCcM8ve+XR7SmUE1EXwG//vqptYhZ0PsrcgW+o9kwGPRVxtpd6wChNTm+Hy+C8XFcSRCvzR5kao4smPKiN4gw1gWwwd+aOxZLseDxekVfNWqgokmiuL0sMNJh7Fa/ECqh0SnO2fFUb29RBmSq+NEEFkAmUmehYGc9PGFLek+hPZsY4S
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 08:37:40.1844
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb68771e-6e9e-4e94-490b-08def203a535
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00020E65.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8163
 
-Hey Marcin,
-Thanks for the review. Changes applied in v4.
-I removed ice_read_sr_word_aq instead of ice_read_sr_word as callers
-already are using ice_read_sr_word.
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-v4 ref: https://lists.osuosl.org/pipermail/intel-wired-lan/Week-of-Mon-2026=
-0803/056281.html
+Move PSP RX marker from ft_metadata (set via modify_hdr action) to
+flow_tag (set via flow_context). This frees ft_metadata for storing
+SPI for future decapsulated PSP packets.
 
-Thanks,
-Robert
+All mlx5e accel protos have to move to avoid misinterpreting packets
+with high bits of ft_metadata as IPsec or Macsec. This patch is the
+first step, defining a new header, bit layout and macros.
 
-On Mon, Aug 3, 2026 at 12:05=E2=80=AFPM Marcin Szycik
-<marcin.szycik@linux.intel.com> wrote:
->
->
->
-> On 31/07/2026 13:10, Robert Malz via Intel-wired-lan wrote:
-> > FW caps the NVM read lock at a maximum of 3000ms regardless of the time=
-out
-> > requested via ice_acquire_nvm(). ice_read_flat_nvm() splits a read into
-> > multiple ice_aq_read_nvm() commands, one per 4KB sector, all issued und=
-er a
-> > single lock taken by the caller. Reading a large region can exceed 3000=
-ms,
-> > so FW reclaims the lock mid-read and the remaining commands might fail.
-> >
-> > Move the lock acquire/release into ice_read_flat_nvm() so it brackets e=
-ach
-> > individual ice_aq_read_nvm() command, ensuring the lock is never held
-> > across more than one FW read.
-> >
-> > ice_release_nvm() issues its own AQ command and overwrites
-> > hw->adminq.sq_last_status, which some callers inspect after a failed re=
-ad.
-> > Add an optional read_aq_err output parameter to ice_read_flat_nvm() to
-> > capture the failing read's AQ error before the release; callers that ne=
-ed
-> > it (ice_discover_flash_size() and the ethtool/devlink log paths) use it
-> > instead of sq_last_status, others pass NULL.
-> >
-> > Callers that previously took the lock around ice_read_flat_nvm(),
-> > ice_read_sr_word() or ice_read_flash_module() now call them without it.
-> > The now-redundant per-block locking in ice_devlink_nvm_snapshot() is
-> > dropped.
-> >
-> > Fixes: e94509906d6b ("ice: create function to read a section of the NVM=
- and Shadow RAM")
-> > Signed-off-by: Robert Malz <robert.malz@canonical.com>
-> > ---
-> > v3:
-> > - Log the failure via ice_debug() when ice_acquire_nvm() fails inside
-> >   ice_read_flat_nvm(), rather than silently aborting the read.
-> > v2:
-> > - Replace the save/restore of sq_last_status across ice_release_nvm(),
-> >   which could race with a concurrent AdminQ command, with a new optiona=
-l
-> >   read_aq_err output parameter.
-> > - Add missing "Return:" kdoc to ice_read_sr_word().
-> > ---
-> >  .../net/ethernet/intel/ice/devlink/devlink.c  | 32 ++------
-> >  drivers/net/ethernet/intel/ice/ice_ethtool.c  | 16 +---
-> >  drivers/net/ethernet/intel/ice/ice_nvm.c      | 79 +++++++++++--------
-> >  drivers/net/ethernet/intel/ice/ice_nvm.h      |  2 +-
-> >  4 files changed, 59 insertions(+), 70 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers=
-/net/ethernet/intel/ice/devlink/devlink.c
-> > index 22b7d8e6bd9e..5a1ab9654fb8 100644
-> > --- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-> > +++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-> > @@ -1856,6 +1856,7 @@ static int ice_devlink_nvm_snapshot(struct devlin=
-k *devlink,
-> >  {
-> >       struct ice_pf *pf =3D devlink_priv(devlink);
-> >       struct device *dev =3D ice_pf_to_dev(pf);
-> > +     enum libie_aq_err read_aq_err =3D LIBIE_AQ_RC_OK;
->
-> RCT
-> Also scope can be reduced.
->
-> >       struct ice_hw *hw =3D &pf->hw;
-> >       bool read_shadow_ram;
-> >       u8 *nvm_data, *tmp, i;
-> > @@ -1891,26 +1892,16 @@ static int ice_devlink_nvm_snapshot(struct devl=
-ink *devlink,
-> >       for (i =3D 0; i < num_blks; i++) {
-> >               u32 read_sz =3D min_t(u32, ICE_DEVLINK_READ_BLK_SIZE, lef=
-t);
-> >
-> > -             status =3D ice_acquire_nvm(hw, ICE_RES_READ);
-> > -             if (status) {
-> > -                     dev_dbg(dev, "ice_acquire_nvm failed, err %d aq_e=
-rr %d\n",
-> > -                             status, hw->adminq.sq_last_status);
-> > -                     NL_SET_ERR_MSG_MOD(extack, "Failed to acquire NVM=
- semaphore");
-> > -                     vfree(nvm_data);
-> > -                     return -EIO;
-> > -             }
-> > -
-> >               status =3D ice_read_flat_nvm(hw, i * ICE_DEVLINK_READ_BLK=
-_SIZE,
-> > -                                        &read_sz, tmp, read_shadow_ram=
-);
-> > +                                        &read_sz, tmp, read_shadow_ram=
-,
-> > +                                        &read_aq_err);
-> >               if (status) {
-> >                       dev_dbg(dev, "ice_read_flat_nvm failed after read=
-ing %u bytes, err %d aq_err %d\n",
-> > -                             read_sz, status, hw->adminq.sq_last_statu=
-s);
-> > +                             read_sz, status, read_aq_err);
-> >                       NL_SET_ERR_MSG_MOD(extack, "Failed to read NVM co=
-ntents");
-> > -                     ice_release_nvm(hw);
-> >                       vfree(nvm_data);
-> >                       return -EIO;
-> >               }
-> > -             ice_release_nvm(hw);
-> >
-> >               tmp +=3D read_sz;
-> >               left -=3D read_sz;
-> > @@ -1945,6 +1936,7 @@ static int ice_devlink_nvm_read(struct devlink *d=
-evlink,
-> >  {
-> >       struct ice_pf *pf =3D devlink_priv(devlink);
-> >       struct device *dev =3D ice_pf_to_dev(pf);
-> > +     enum libie_aq_err read_aq_err =3D LIBIE_AQ_RC_OK;
->
-> RCT
->
-> >       struct ice_hw *hw =3D &pf->hw;
-> >       bool read_shadow_ram;
-> >       u64 nvm_size;
->
-> ...
->
-> >  /**
-> > - * ice_read_sr_word - Reads Shadow RAM word and acquire NVM if necessa=
-ry
-> > + * ice_read_sr_word - Reads Shadow RAM word
-> >   * @hw: pointer to the HW structure
-> >   * @offset: offset of the Shadow RAM word to read (0x000000 - 0x001FFF=
-)
-> >   * @data: word read from the Shadow RAM
-> >   *
-> > - * Reads one 16 bit word from the Shadow RAM using the ice_read_sr_wor=
-d_aq.
-> > + * Reads one 16 bit word from the Shadow RAM using ice_read_sr_word_aq=
-.
-> > + *
-> > + * The NVM lock is acquired and released internally by ice_read_flat_n=
-vm()
-> > + * around the FW read, so this function must be called without the loc=
-k held.
-> > + *
-> > + * Return: zero on success, or a negative error code on failure.
-> >   */
-> >  int ice_read_sr_word(struct ice_hw *hw, u16 offset, u16 *data)
-> >  {
-> > -     int status;
-> > -
-> > -     status =3D ice_acquire_nvm(hw, ICE_RES_READ);
-> > -     if (!status) {
-> > -             status =3D ice_read_sr_word_aq(hw, offset, data);
-> > -             ice_release_nvm(hw);
-> > -     }
-> > -
-> > -     return status;
-> > +     return ice_read_sr_word_aq(hw, offset, data);
->
-> ice_read_sr_word() is now a wrapper - can we remove it and use
-> ice_read_sr_word_aq() directly?
->
-> >  }
-> >
-> >  /**
-> > @@ -856,20 +876,18 @@ int ice_get_inactive_netlist_ver(struct ice_hw *h=
-w, struct ice_netlist_info *net
-> >  static int ice_discover_flash_size(struct ice_hw *hw)
-> >  {
-> >       u32 min_size =3D 0, max_size =3D ICE_AQC_NVM_MAX_OFFSET + 1;
-> > -     int status;
-> > -
-> > -     status =3D ice_acquire_nvm(hw, ICE_RES_READ);
-> > -     if (status)
-> > -             return status;
-> > +     int status =3D 0;
-> >
-> >       while ((max_size - min_size) > 1) {
-> >               u32 offset =3D (max_size + min_size) / 2;
-> > +             enum libie_aq_err read_aq_err =3D LIBIE_AQ_RC_OK;
->
-> RCT
->
-> >               u32 len =3D 1;
-> >               u8 data;
->
-> ---8<---
->
-> Thanks,
-> Marcin
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ .../mellanox/mlx5/core/en_accel/flow_tag.h    | 35 +++++++++++++++++++
+ .../mellanox/mlx5/core/en_accel/psp.c         | 34 ++++--------------
+ .../mellanox/mlx5/core/en_accel/psp_rxtx.h    | 10 +++---
+ 3 files changed, 47 insertions(+), 32 deletions(-)
+ create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/en_accel/flow_tag.h
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/flow_tag.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/flow_tag.h
+new file mode 100644
+index 000000000000..67f048ff7afe
+--- /dev/null
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/flow_tag.h
+@@ -0,0 +1,35 @@
++/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
++/* Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved. */
++
++#ifndef __MLX5E_FLOW_TAG_H__
++#define __MLX5E_FLOW_TAG_H__
++
++#include <linux/bits.h>
++#include <linux/kernel.h>
++#include <linux/types.h>
++#include <linux/mlx5/device.h>
++
++/* Unified accel flow_tag layout in CQE sop_drop_qpn [23:0]:
++ *
++ *   [23:21] = protocol ID (3 bits):
++ *              0 = none (default)
++ *              3 = PSP (HW decrypted, PSP header present)
++ *              1,2,4-7 = reserved
++ *   [20:16] = reserved
++ *   [15:0]  = used by other subsystems (e.g. TC).
++ */
++#define MLX5E_ACCEL_FLOW_TAG_PROTO_MASK		GENMASK(23, 21)
++#define MLX5E_ACCEL_FLOW_TAG_PROTO_NONE		(0 << 21)
++#define MLX5E_ACCEL_FLOW_TAG_PROTO_PSP		(3 << 21)
++
++static inline u32 mlx5e_accel_flow_tag(struct mlx5_cqe64 *cqe)
++{
++	return be32_to_cpu(cqe->sop_drop_qpn) & 0xFFFFFF;
++}
++
++static inline u32 mlx5e_accel_flow_tag_proto(struct mlx5_cqe64 *cqe)
++{
++	return mlx5e_accel_flow_tag(cqe) & MLX5E_ACCEL_FLOW_TAG_PROTO_MASK;
++}
++
++#endif /* __MLX5E_FLOW_TAG_H__ */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+index 6cc4b9d54f6e..ca5bb60f6d16 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+@@ -8,6 +8,7 @@
+ #include "lib/crypto.h"
+ #include "en_accel/en_accel.h"
+ #include "en_accel/psp.h"
++#include "en_accel/psp_rxtx.h"
+ #include "fs_core.h"
+ 
+ enum accel_fs_psp_type {
+@@ -42,7 +43,6 @@ struct mlx5e_psp_rx_decrypt_table {
+ 	struct mlx5_flow_table *ft;
+ 	struct mlx5_flow_group *miss_group;
+ 	struct mlx5_flow_handle *miss_rule;
+-	struct mlx5_modify_hdr *rx_modify_hdr;
+ 	struct mlx5_flow_handle *rule;
+ };
+ 
+@@ -408,10 +408,6 @@ accel_psp_fs_rx_decrypt_ft_destroy(struct mlx5e_psp_fs *fs,
+ 				   struct mlx5e_psp_rx_decrypt_table *decrypt)
+ {
+ 	accel_psp_fs_del_flow_rule(&decrypt->rule);
+-	if (decrypt->rx_modify_hdr) {
+-		mlx5_modify_header_dealloc(fs->mdev, decrypt->rx_modify_hdr);
+-		decrypt->rx_modify_hdr = NULL;
+-	}
+ 	accel_psp_fs_del_flow_rule(&decrypt->miss_rule);
+ 	accel_psp_fs_destroy_flow_group(&decrypt->miss_group);
+ 	accel_psp_fs_destroy_ft(&decrypt->ft);
+@@ -431,8 +427,6 @@ accel_psp_fs_rx_decrypt_ft_create(struct mlx5e_psp_fs *fs,
+ 				  struct mlx5e_psp_rx_decrypt_table *decrypt,
+ 				  struct mlx5_flow_destination *default_dest)
+ {
+-	u8 action[MLX5_UN_SZ_BYTES(set_add_copy_action_in_auto)] = {};
+-	struct mlx5_modify_hdr *modify_hdr = NULL;
+ 	struct mlx5_flow_table_attr ft_attr = {};
+ 	struct mlx5_flow_destination dest = {};
+ 	struct mlx5_core_dev *mdev = fs->mdev;
+@@ -482,28 +476,14 @@ accel_psp_fs_rx_decrypt_ft_create(struct mlx5e_psp_fs *fs,
+ 
+ 	/* Add PSP RX decrypt rule */
+ 	setup_fte_udp_psp(spec, PSP_DEFAULT_UDP_PORT);
+-	flow_act.crypto.type = MLX5_FLOW_CONTEXT_ENCRYPT_DECRYPT_TYPE_PSP;
+-	/* Set bit[31, 30] PSP marker */
+-#define MLX5E_PSP_MARKER_BIT (BIT(30) | BIT(31))
+-	MLX5_SET(set_action_in, action, action_type, MLX5_ACTION_TYPE_SET);
+-	MLX5_SET(set_action_in, action, field, MLX5_ACTION_IN_FIELD_METADATA_REG_B);
+-	MLX5_SET(set_action_in, action, data, MLX5E_PSP_MARKER_BIT);
+-	MLX5_SET(set_action_in, action, offset, 0);
+-	MLX5_SET(set_action_in, action, length, 32);
+-
+-	modify_hdr = mlx5_modify_header_alloc(mdev, MLX5_FLOW_NAMESPACE_KERNEL, 1, action);
+-	if (IS_ERR(modify_hdr)) {
+-		err = PTR_ERR(modify_hdr);
+-		mlx5_core_err(mdev, "fail to alloc psp set modify_header_id err=%d\n", err);
+-		modify_hdr = NULL;
+-		goto out_err;
+-	}
+-	decrypt->rx_modify_hdr = modify_hdr;
+ 
++	/* Set PSP marker via flow_tag */
++	spec->flow_context.flags = FLOW_CONTEXT_HAS_TAG;
++	spec->flow_context.flow_tag = MLX5E_ACCEL_FLOW_TAG_PROTO_PSP;
++
++	flow_act.crypto.type = MLX5_FLOW_CONTEXT_ENCRYPT_DECRYPT_TYPE_PSP;
+ 	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_FWD_DEST |
+-			  MLX5_FLOW_CONTEXT_ACTION_CRYPTO_DECRYPT |
+-			  MLX5_FLOW_CONTEXT_ACTION_MOD_HDR;
+-	flow_act.modify_hdr = modify_hdr;
++			  MLX5_FLOW_CONTEXT_ACTION_CRYPTO_DECRYPT;
+ 	dest.type = MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
+ 	dest.ft = fs->check.ft;
+ 	rule = mlx5_add_flow_rules(decrypt->ft, spec, &flow_act, &dest, 1);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
+index 2b080c39cc37..a26faf7cfc27 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
+@@ -9,10 +9,7 @@
+ #include <net/psp.h>
+ #include "en.h"
+ #include "en/txrx.h"
+-
+-/* Bit30: PSP marker, Bit22-0: PSP obj id */
+-#define MLX5_PSP_METADATA_MARKER(metadata)  ((((metadata) >> 30) & 0x3) == 0x3)
+-#define MLX5_PSP_METADATA_HANDLE(metadata)  ((metadata) & GENMASK(22, 0))
++#include "en_accel/flow_tag.h"
+ 
+ struct mlx5e_accel_tx_psp_state {
+ 	u32 tailen;
+@@ -82,7 +79,10 @@ static inline unsigned int mlx5e_psp_tx_ids_len(struct mlx5e_accel_tx_psp_state
+ 
+ static inline bool mlx5e_psp_is_rx_flow(struct mlx5_cqe64 *cqe)
+ {
+-	return MLX5_PSP_METADATA_MARKER(be32_to_cpu(cqe->ft_metadata));
++	u32 proto = mlx5e_accel_flow_tag_proto(cqe);
++
++	return proto == MLX5E_ACCEL_FLOW_TAG_PROTO_PSP;
++
+ }
+ 
+ bool mlx5e_psp_offload_handle_rx_skb(struct net_device *netdev, struct sk_buff *skb,
+-- 
+2.44.0
+
