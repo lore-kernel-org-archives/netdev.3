@@ -1,89 +1,102 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E68F44AB93;
-	Tue,  4 Aug 2026 08:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA1C3AC0E9;
+	Tue,  4 Aug 2026 08:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785833627; cv=none; b=i55h/jV4TUA7h0Nrv57EioYppdbe8Px8AP9DXBz1Hqy8OVqkelyp0472ZAqvU9DyJ2s38/7LkI20Tz3U/xu6w3J4k8Gw/wddFyYfM4EsFbuCTt5Q4/dv9Ve5kc9CRDtgfIqjyETczH3K/SEhh1bAoV3JI0h8YoANyYOBzBjhMjs=
+	t=1785833815; cv=none; b=W5cqJCTc06ggBoCYDruifdBkk8lNgFQ6CKID2Q5ktlOoXxEhOmBF+k8dJ8CST9a0Hix1pnEFvvtuoJa0Bwg1ji/Wzoyl+IlKBCeUjITJmOGXp4rmFjTzB8pM0H+bHZtZ/Fh1K/m0qRtyBiZWkkJYei3hw6sM6Lb/TRZeYkTryzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785833627; c=relaxed/simple;
-	bh=bI9DSAx9i2trTWDFpDQycQ+t1GEDr+ijrs/abY7OQxs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRHkacdpPMmLlXiHYPQTAWZcJYxWZ7MVeQHJVXE4MnBFt3wTrChl6JeIvx/iGscFWo2Qs0Nw70bZK50SBmYpix5aefOUAi0zW5f5QHFCd31SxRECcCX6pqICy4fZ1I/gIAZWdtd6PTwBkHBo8nCWDtCNPqvRuE2c/tq+Bx7M9ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: fa1ac9d08fe111f1aa26b74ffac11d73-20260804
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:fb2e1267-91ea-421d-8b84-2a1e59dce126,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:20
-X-CID-META: VersionHash:e7bac3a,CLOUDID:8420ec9cc404768254ab90c5e6112968,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|136|865|898,TC:nil,Content:0|1
-	5|50,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
-	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: fa1ac9d08fe111f1aa26b74ffac11d73-20260804
-X-User: xiongweimin@kylinos.cn
-Received: from xwm-tianyi510pro-14imb.. [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiongweimin@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 420533143; Tue, 04 Aug 2026 16:53:35 +0800
-From: Xiong Weimin <xiongweimin@kylinos.cn>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Xiong Weimin <xiongweimin@kylinos.cn>
-Subject: [PATCH net 2/2] virtio_net: unmap AF_XDP header with tx virtqueue
-Date: Tue,  4 Aug 2026 16:53:29 +0800
-Message-ID: <20260804085330.1333242-2-xiongweimin@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260804085330.1333242-1-xiongweimin@kylinos.cn>
-References: <20260804085330.1333242-1-xiongweimin@kylinos.cn>
+	s=arc-20240116; t=1785833815; c=relaxed/simple;
+	bh=ubXfL0rzbSyg6V2JnF/YC54T0gsZzcZX8CNA/0rAIKg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sRBomMJ/upo976O40Ss/yBRJXDlE8NpP23rthsXcEeY6j47MCvY2trqM3Ip0FEEMMXyppGGcID7GeUe3KFdVMMTb8w/430JApAefXV4sqqhV7L15o1EjU1hbMHZ7hRiXb8V4JJj2L0w1dZGdlo4BjtLEeaLn491NNLWuBXFhVYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I91AfSWq; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I91AfSWq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661511F000E9;
+	Tue,  4 Aug 2026 08:56:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785833813;
+	bh=77k8mska7791WRTBcjbz7kzkZl1qe52YABFJt536kjI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=I91AfSWqbeSgI3mhe7mPgsKw5R1AMrTbEzVmLrSjQQbMLVR2u7VRFhRz7z94eKW19
+	 yFGexphgqj8s4pNulwCW99infoxMJ9Y1mkuC1GgEta0Do/lZ9ASe0GfzRJksc0tIUs
+	 BZCYTMl+kHPw6U8/UgEbl3l2OMo4o7gVOuNZgDed67OLQSdd+/tnFGtgQJygNrN9hR
+	 b2Y/U3OKEEMAbELFZcxI3tvO49pTj4/QP963KBTDDmraT9O9gMktJyLzdTVqr0yByQ
+	 OfIe9eTmQ9XLeV7ZmvTglhZfrObUmx1MZqDKCqqvFNAt63N1CjP/B7e/qQlWyaFJmS
+	 9cWVSW3jaDHqA==
+Date: Tue, 4 Aug 2026 09:56:34 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
+	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
+	shakeel.butt@linux.dev, vbabka@kernel.org, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] mm: Make per-VMA locks available universally
+Message-ID: <anGnOHgOd1q1jYXK@lucifer>
+References: <20260802215459.2769283-1-surenb@google.com>
+ <20260802215459.2769283-2-surenb@google.com>
+ <CAJuCfpGezxdaSme_QpHVq-QVeZAUaF360_Ajvkrn3QqDcSQVog@mail.gmail.com>
+ <anC1iE21eonDK06n@lucifer>
+ <CAG48ez1=_O0g7rArdpoVwg84jOJuELEAXu5sw=TO_CWBsK=T7w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez1=_O0g7rArdpoVwg84jOJuELEAXu5sw=TO_CWBsK=T7w@mail.gmail.com>
 
-virtnet_xsk_pool_enable() maps the shared AF_XDP transmit header with
-the send virtqueue, and the disable path unmaps it with the same queue.
-Use sq->vq on the setup error path as well so the DMA unmap matches the
-mapping side.
+On Mon, Aug 03, 2026 at 11:12:01PM +0200, Jann Horn wrote:
+> On Mon, Aug 3, 2026 at 6:08 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> > On Mon, Aug 03, 2026 at 08:24:44AM -0700, Suren Baghdasaryan wrote:
+> > > On Sun, Aug 2, 2026 at 2:55 PM Suren Baghdasaryan <surenb@google.com> wrote:
+> > > > -#endif /* CONFIG_PER_VMA_LOCK */
+> > >
+> > > Now that I'm looking closer into this, I think we would break NOMMU
+> > > case because nommu.c does not take VMA write locks at all. So,
+> > > lock_vma_under_rcu() for example would always succeed.
+> >
+> > I don't think anything's broken actually.
+> >
+> > Per-VMA locks was gated on CONFIG_MMU so nothing there assumes per-VMA flags,
+> > but now you have stuff that happens that didn't before but:
+> >
+> > * vm_area_free() -> vma_assert_detached() - fine - it's always detached in nommu.
+>
+> I don't think that's true, AFAICS vma_mark_attached() is called from
+> vma_iter_store_new() which is called from the nommu version of
+> do_mmap(). But I think you're right that one blunt workaround for this
+> would be to add a hack that prevents ever marking VMAs in nommu as
+> attached...
 
-Signed-off-by: Xiong Weimin <xiongweimin@kylinos.cn>
----
- drivers/net/virtio_net.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks Jann, though also ugh god at that :)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 6160aa8ba..a6f90f579 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -5959,7 +5959,7 @@ static int virtnet_xsk_pool_enable(struct net_device *dev,
- err_rq:
- 	xsk_pool_dma_unmap(pool, 0);
- err_xsk_map:
--	virtqueue_unmap_single_attrs(rq->vq, hdr_dma, vi->hdr_len,
-+	virtqueue_unmap_single_attrs(sq->vq, hdr_dma, vi->hdr_len,
- 				     DMA_TO_DEVICE, 0);
- err_free_buffs:
- 	kvfree(rq->xsk_buffs);
--- 
-2.43.0
+(Really the ideal solution for nommu would be a 'virtual' MMU with noops for
+everything IMO.)
 
+Anyway, I think we could fix this with a:
+
+static inline void vma_mark_attached(struct vm_area_struct *vma)
+{
++	if (!IS_ENBLED(CONFIG_MMU))
++		return;
+
+	vma_assert_write_locked(vma);
+	vma_assert_detached(vma);
+	refcount_set_release(&vma->vm_refcnt, 1);
+}
+
+Here?
+
+>
+> > * vm_area_dup() -> vma_lock_init() - no asserts, just sets refcount to 0 (correct).
+
+--
+Cheers, Lorenzo
