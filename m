@@ -1,105 +1,76 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCC046C850
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 10:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C333284B2F
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 10:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785838047; cv=none; b=AE5ohJAcfoS+WyjjlVZ88Y4bHIZQq2vB3LomuQNYgGkD1+WQelChcA8NmKoqGn2neksjwBTGISr0hCEv494vib4pCtJVF6pGMuiNdJie9pF2djs+xuR3ZFKfkkcAYRbOT0jbXOGQZ0sqjmsweE9IFUfogbjs9ToXNrfBr97Pevw=
+	t=1785838247; cv=none; b=ZPJLbChXFdMIqw6konxxpviQZhc4spXIeWlNsmPH+Ysrw2NjgCo8fxb+zPL4jrIoLBl9vFi5iWWZFMmUJ57Fh/GlK8njymqmoZ2YcymQNv5WBm0JMsKIEtKD6ytDo3rAv4Dex3HQ6RS3ML5/1ouwU46fFXFD58R5nHZlq8Knj9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785838047; c=relaxed/simple;
-	bh=jepb+VUTDpbcYOcoiP3c8KCXVj2f5l9bEEJUCWbsoek=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KaGEPTuDvXhdaj+pUuPC6smDRS04c8mYJNRAUvq+wBwjaKTEcNgOnGcjcKQK7kbK9fJk2ipCf8nwe7k4vru7zxCGuNMCTzWHYl1K1oxuC9xiHY6bj+CbauGw1PSQ0P2yfDeu/Invhjw/80SKfsC91lh2GRAIBzlZZz6awBdjzKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=NgUpmUg7; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1785838247; c=relaxed/simple;
+	bh=+xIVvbU7++sFxKZf836M9T4C55YapKXkTO5mClsb2u0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=M6HZZKg6CjEtUPDM69D9jYBoVCY8KomSKy/BYC4SGQoTO86KOZ6Ko24kFUtB4Y/mAfdLfut2whdUH+mw4sRh2ndP06U18SKpq/TTeunf2nt4o4UfPW+DAPdc+gFOLiV+2NWpDwjXiXW00svz5E/99EUWAiagi2OHPK/xksw7V2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWQSTxbs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="NgUpmUg7"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a051b73866so7071573a12.0
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 03:07:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1785838044; x=1786442844; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=jepb+VUTDpbcYOcoiP3c8KCXVj2f5l9bEEJUCWbsoek=;
-        b=NgUpmUg7cQii/IkFbGxBuBK00C8eBks2U+xWy0LE9cz//yNS9Zz/F280DcPWxnm/ds
-         75ubtCxGsi8bohJvB/I+V4vYGsOI/qNd29uEiNj0G5vsWXFTYhcyZb8zSepxNGxGLTwS
-         k1L18HbNKW72YJeOu5FPXDyn0f3M6K5rgdq5QnxPJrHBdt82WgNi+xxUZUQa2cLWxzC0
-         zVg+psjfgLhJFCVnefQF7Px6r/JxnxQ+z9x7R7Aht0Wg6aeMsnX1X8ZBnWtRHgDnZ9yy
-         NDkCqFysjUJzedLAYsFn24GKqPnwc+auWtmMsQ+2r6LCH/aHiRVw92CGEB5URnD9brhG
-         jgAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785838044; x=1786442844;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=jepb+VUTDpbcYOcoiP3c8KCXVj2f5l9bEEJUCWbsoek=;
-        b=ima1ZgmJvgKm+04Z3hAN5NbqihXjG5ATSmVGwuqWDZgigFXi7yMYNBpOGKqZj/YLbt
-         R98lfi6m1jJkVdpDIxRoEEaIIoTxPPXf3AWFi6RE8JG4ssKpOwgHn8IZv/y2e+q5wfx0
-         uADDegrZQCd/sg67h+d0Tobuf7tILbu1tN74zC0lXeuO3TO4EkWbIzHG8jrl6NRnGxxb
-         S2odMC4ovoDCn5Ey2k44/PLSluSGdwFv0gOBxzPXopO14B+kTowHGn2lyiaWF6RBCRoQ
-         6RycOgA1QHK9y6tP02nAN6zXnpvxVTXJwky2xFdmFm+efOK8MqrQXZsDJjdNWM1uLjUf
-         bZOA==
-X-Forwarded-Encrypted: i=1; AHgh+RpkWJ+QgfbRWNArsk27JkP0cIQZNmR6d1XyziFNViuJy43MnsHxRA/HxQ7HKXQveIzjGJMDWXc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxS22LjpZ2djzjp30k0H6oR3gX6ULqp82K1qGzyshUX5gr+I245
-	UIQ+5RQajsKIdonmNzrsg4XH5iT4u2f8jcml8Hv+G4P6nPTsm2G5KSGe9PC+nKsZRFw=
-X-Gm-Gg: AR+sD10M1/RNv5bppLP5fQ8t+PQADbC3gx/gLkU7ZqERaXwFtgp/LM5t5hbXn6D954Q
-	LLPGZwR5VF8K7EN8Fzy2G5IpHoeyOKjg/DhuvdvYrFyNlOSSwT4w6VNmZd1tO4yMQlKm37Vou0s
-	Xj/5i8uGUVLZ2f9/YteX20+aasx9GBjxX1NZEVFTcqSO7d9Rdikw5wWoWdbfqJyGG6oHndFuW7S
-	Eb2p1xxE6ArNiuMKhh+6QMTrw9KjS77jx6+MEGvWkBuPuB75lLQhCWToCdCZs+Xge0kny3nFuK7
-	1p9UTA+Qes9iU8i90C2TnKMzuLO3U//GTrZVu0acV4h5ZJ+rXB4Vuh9PZf58D2kml/tTJO24BNj
-	JZoQrB29zEQvC8Z1Ld2aEl9HQ+e9GygFp7D7rXm9V4novDlL0C+E6YOkQwb5wU3WNtBK8ghTtrg
-	qnK6P1vscsLRpuSNA9QUQoSI7EyBsgmZXMb0wjxjR2CIh7AdeB3SX1XYEddHHNx98=
-X-Received: by 2002:a05:6402:24c7:b0:698:428e:9177 with SMTP id 4fb4d7f45d1cf-6a0a7c899c3mr9512823a12.11.1785838044186;
-        Tue, 04 Aug 2026 03:07:24 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a09c5a09acsm6317456a12.4.2026.08.04.03.07.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 03:07:22 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
- <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
- Zingerman <eddyz87@gmail.com>,  Kumar Kartikeya Dwivedi
- <memxor@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
- <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  Jiri Olsa
- <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>,  John
- Fastabend <john.fastabend@gmail.com>,  Stanislav Fomichev
- <sdf@fomichev.me>,  "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Kuniyuki Iwashima
- <kuniyu@google.com>,  Willem de Bruijn <willemb@google.com>,  Jiayuan Chen
- <jiayuan.chen@linux.dev>,  Joe Stringer <joe@wand.net.nz>,
-  bpf@vger.kernel.org,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf v2 1/2] bpf: Extract shared reqsk-to-listener upgrade
-In-Reply-To: <20260803-sockmap-lookup-tcp-leak-v2-1-306e025bfe66@rbox.co>
-	(Michal Luczaj's message of "Mon, 03 Aug 2026 11:00:42 +0200")
-References: <20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co>
-	<20260803-sockmap-lookup-tcp-leak-v2-1-306e025bfe66@rbox.co>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Tue, 04 Aug 2026 12:07:21 +0200
-Message-ID: <87bjbiyzae.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWQSTxbs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93BD1F000E9;
+	Tue,  4 Aug 2026 10:10:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785838245;
+	bh=kD9tyF89NnfoWOCKhjUwI6dp7OpA8CEKcQEUAvVR/EE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ZWQSTxbsTunaLd4Il+5LP3g/nIcGNZbUMugpo6d8jW9lvA+a+lR7YeJDOC8SjCUi2
+	 cduUA+gPmjcJNGrzDBwHzteucgg194koYcbxEZqeF4S5pCAZLzZ83HWHA7fcuB9m3m
+	 /9I8M4KN2jo5nGVJ2jrhOdJ3HMch1Uw6u1HcnjxsE1+c8ioDYpAjkDpA6pXQyGT5SR
+	 HzcFubN4sHHm38/I0RFQOsBAn91SoQg2tDDdqmo1XbWa3xSo0rht8PdHd9Vg796SPq
+	 +5gSKKobfObL5Cq9+lJkysiFnLZVKZqrAf0YOpFM4SiHuA4xBR3W2PlrPpiSBzHFFX
+	 VAIq+9VNGuq4g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93C693924FC7;
+	Tue,  4 Aug 2026 10:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 0/1] packet: fix stale ring mode race
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178583820614.3079067.12649393810230740659.git-patchwork-notify@kernel.org>
+Date: Tue, 04 Aug 2026 10:10:06 +0000
+References: <cover.1785247446.git.zihanx@nebusec.ai>
+In-Reply-To: <cover.1785247446.git.zihanx@nebusec.ai>
+To: Zihan Xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, vega@nebusec.ai
 
-On Mon, Aug 03, 2026 at 11:00 AM +02, Michal Luczaj wrote:
-> __bpf_sk_lookup() and bpf_sk_lookup() duplicate the same sk_to_full_sk()
-> reqsk-to-listener upgrade. Extract it into a helper.
->
-> Leave the currently unreachable WARN_ONCE as a defensive assert.
->
-> No functional change.
->
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
-> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-> ---
+Hello:
 
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed, 29 Jul 2026 09:16:52 +0000 you wrote:
+> Hi Linux kernel maintainers,
+> 
+> We found and validated an issue in net/packet/af_packet.c. The bug is
+> reachable by a non-root user via user and net namespace, with
+> CAP_NET_RAW in the target network namespace, through PACKET_RX_RING
+> reconfiguration on an AF_PACKET socket.
+> We've tested it, and it should not affect any other functionality.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3,1/1] packet: synchronize pressure clearing with ring reconfiguration
+    https://git.kernel.org/netdev/net/c/1a35da325cac
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
