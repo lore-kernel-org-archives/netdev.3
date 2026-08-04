@@ -1,219 +1,139 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013049.outbound.protection.outlook.com [40.107.162.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094773E168C
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 13:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785849556; cv=none; b=QHuvr0Ap9HRS+taHd/wzaxaljcF16l0wKOzAcKlYH4V2nyu0fYAiM0WJcoB5iSMqW2GujQ0JDtPYTz57PFzrr1TtBW+vFEqvVt/ogfjOUaWmnOZkOtbHYwGADnFYyEPWzkL0Tih6JdyqVnHsxnVIM2Yc28XEiqV9Ce7SXbLsrAM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785849556; c=relaxed/simple;
-	bh=FSwPjx5kfkAW/WL/1x6EsAJx1SJiL/uEmmUU44ib9bE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rpd0Nq0+Sl/UY22kVesYYBCRUgkV59krr/uUhb3JsAk8HlxQ18s7IxtmxK9olxHxg9SuDZv0mPTzGc2z5i6MRkfKKUj7W56TsAHlaw3Urldx1cgM/n4M0YhHQJrkPee8SAQMauIH323JjjKNEC5BxNZangG5JG4RL9MuGGakQsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DBk4/scb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8HemeNTS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BRAT7DOz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Fq/fA7Rc; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31213E49C5;
+	Tue,  4 Aug 2026 13:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785849671; cv=fail; b=bcnq8fgO2ncm7zdIJarTsw/ro9jj2qZKXpTYb7PVFlG0DsJARuwQfnPU83xGiXESgMrUodB+ckDJ7ftvRb3K8xsviWx5WrqMmJ58VgkLqz/AYMmZrYyYPTc8+S+zJdA0vwZE0jWGCDno+YD0ApG93wCdM7ypp2dgy2lISAa6CwI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785849671; c=relaxed/simple;
+	bh=LOGyBiY93MlRwT4U+sn0g06I5mR0WD4gonjEVrL12Dk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bLqfbt7+3ZT5vu7yIODWi50jl5f8U/Wy0iOYUjYVgRQ+JfypSktO3G4TcPc9XGLF+n0CaoLAczNC0pFoP+EtAYtvL8dxumtj4oPpKo4XCP1FNz0qZoVPW2LW8KOem0RnQuAoPD9r7qi2k4GlRGoPA4GkdT/OqeVc75asViEQHbE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Bf04mgXU; arc=fail smtp.client-ip=40.107.162.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DBk4/scb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8HemeNTS";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BRAT7DOz";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Fq/fA7Rc"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C91D340C7;
-	Tue,  4 Aug 2026 13:19:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785849548; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CFyC/lT41fB0pzLhZsiFwN3y4eTGyvCQsxacjWaSaxY=;
-	b=DBk4/scb6GehawqvUAvg5ONR9D7noUlbU9BxkXQTbrBsE8zm6FDUzfXiXvC6Pp+3xgHtN4
-	bOBxJfgRk8Th0zvFBKzpraVIYrk/pugPBNK4a0YSRgb2hV1NmRxZwq7gF+XF9CUG9O3r6e
-	2A2YZ1DzPeJ/SQ9DjVpewZJ7FRt/B6o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785849548;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CFyC/lT41fB0pzLhZsiFwN3y4eTGyvCQsxacjWaSaxY=;
-	b=8HemeNTSdaivBVXh1z4qxN1vsvsBcfs20u6wud91JyKE+N8wjPbQRqexjF/nsIs3HATl9r
-	Wzbow2IK0jaBmBDA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785849544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CFyC/lT41fB0pzLhZsiFwN3y4eTGyvCQsxacjWaSaxY=;
-	b=BRAT7DOzqBIXH9Nrh/GleOHcZ4KVfN5IeMoxwj04QH2sYzh6SmF6bHAIVS5bQ8EySocuRv
-	QmDXb+m1W2+/ws045Y4saAL7M6RsD5aT1CaZoeCFLqXOEabx3JZ2cra5BkqJuwuWAxxAW9
-	/eXXbTV6v8xUxwW7KMOWp/j11CuDeFo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785849544;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CFyC/lT41fB0pzLhZsiFwN3y4eTGyvCQsxacjWaSaxY=;
-	b=Fq/fA7RctZuB5fpgFKWtqNIIQEDs7/vjRZ5/eGeeThlnbyqabj3qEJgs9ICVbqLJnL3gft
-	7dBI6VA08ygmxlBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C04D8779BB;
-	Tue,  4 Aug 2026 13:19:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BB6OK8fmcWowfgAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 04 Aug 2026 13:19:03 +0000
-Message-ID: <c414bba7-761f-4bf2-a440-7dc401a03fd0@suse.de>
-Date: Tue, 4 Aug 2026 15:18:42 +0200
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Bf04mgXU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wWeIqlIA4y0W7PhkDIqV9TRnoBgbL9olkD5mMg43rc82GtPkqDZU6MIOW2qDi795hm269RT8AZ580HhNvtl3ghErvnsQxKhiCeCap5Ph5v898oLD5OFLzwEEnAuVZS488QlUfe0Yr8KO/t4LsPPecAS8g208ToMl7CCcDjwdYu3CLMjFcnRXRinM7yUMyVwketnWBbfFsEh55RJ4ZL9FyESPAV4q2xvnoOZDHKgNsHz79Uf/McGPyH8KPu6/QD/T0jWOsqQTL+f59pnfxbsS7jAWhBhzNd3w8xFzZdgA2XqKOdQaCcDdfmwAUFm4GOPsHB9kKhOvX3OIfWNHwQybAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K1+3Xl/LvEsHpsuuIQyCRhwtoW1+jd+HCRIxs4HZPvw=;
+ b=vBBvXOdbPvL1NcIaDHQuB3hU/rVZJGSuWctxwlahefOpqNr1YS0HFXO+l20VZ/G4dkqZWMffFoHl8hHHZXKktUyYpkeCgVKBcoRNOu90XHErZIKziUWEmSilVHpN4TlfO6OiiMMCEkvcQQ/2Amm4vD+PbkTBVKAzT35dSB5LKfPyei3dCO72a/F7OXxywhi+k8zkUbBAefxSehb0RZQZKGbsafAveNyzvWE7qssdegfVAr0uzYa8vCfNiUckwNKKgHRIGiwJsARTzCenMf6euLGDxjY2X2lQqJABcOPpY5bfJj+S4sdnu/eZI1SQW594v2NgPwv+QBJ+8JWeJdFBwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.60) smtp.rcpttodomain=lunn.ch smtp.mailfrom=foss.st.com; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K1+3Xl/LvEsHpsuuIQyCRhwtoW1+jd+HCRIxs4HZPvw=;
+ b=Bf04mgXUpvJnb5Lr8QHkkV2RZ0nXnSBjnuxdqf0o81ksaMXn7xvdDy0oZTBJjglO6rxYnJuXAQCrTC/76+uMY4tSzsLh4ZYNLS4ULaDQQgFZegmZpDiClAHPAyGTWMswCGAe/gdVIycGMgI+PTMtwkL21UyP9ZyBQJDcs1D08AKc1WmEaXOKjsVAETcd4Rm220i3P0qUcT3JueK2yt00GhDp5I4jiX1qSDDpxXOzh55zdBc6IDiKGZqmpx4EvUVMKpRt1yyEAz7LwrfYh0nQZSMtrM1Q6NzjOMrlN45XkYkcvoBS6Ue4gd4Df9guOa+39IOx16J1Hsor6hpWY+auLQ==
+Received: from DB9PR01CA0024.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:1d8::29) by VI0PR10MB9349.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:800:2b9::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.15; Tue, 4 Aug
+ 2026 13:21:05 +0000
+Received: from DU2PEPF0001E9C5.eurprd03.prod.outlook.com
+ (2603:10a6:10:1d8:cafe::55) by DB9PR01CA0024.outlook.office365.com
+ (2603:10a6:10:1d8::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.18 via Frontend Transport; Tue, 4
+ Aug 2026 13:21:05 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.60)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.60 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.60; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.60) by
+ DU2PEPF0001E9C5.mail.protection.outlook.com (10.167.8.74) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Tue, 4 Aug 2026 13:21:04 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpO365.st.com
+ (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 4 Aug
+ 2026 15:25:56 +0200
+Received: from localhost (10.48.87.235) by STKDAG1NODE2.st.com (10.75.128.133)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 4 Aug
+ 2026 15:21:04 +0200
+From: Christophe Roullier <christophe.roullier@foss.st.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>, <linusw@kernel.org>,
+	<antonio.borneo@foss.st.com>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Christophe Roullier <christophe.roullier@foss.st.com>
+CC: <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 2/4] arm64: dts: st: add 3v3 regulator to ethernet on stm32mp257f-dk
+Date: Tue, 4 Aug 2026 15:20:50 +0200
+Message-ID: <20260804132052.205273-3-christophe.roullier@foss.st.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260804132052.205273-1-christophe.roullier@foss.st.com>
+References: <20260804132052.205273-1-christophe.roullier@foss.st.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC net-next 0/2] hsr: Use only one MAC address per node
-To: Felix Maurer <fmaurer@redhat.com>, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org
-Cc: bigeasy@linutronix.de, liuhangbin@gmail.com, luka.gejak@linux.dev,
- xiaoliang.yang_1@nxp.com, kexinsun@smail.nju.edu.cn,
- ssrane_b23@ee.vjti.ac.in, michael.bommarito@gmail.com,
- 2022090917019@std.uestc.edu.cn, yury.norov@gmail.com, jvaclav@redhat.com,
- maoyixie.tju@gmail.com
-References: <cover.1784024900.git.fmaurer@redhat.com>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <cover.1784024900.git.fmaurer@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,linutronix.de:email];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linutronix.de,gmail.com,linux.dev,nxp.com,smail.nju.edu.cn,ee.vjti.ac.in,std.uestc.edu.cn,redhat.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,linutronix.de:email]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PEPF0001E9C5:EE_|VI0PR10MB9349:EE_
+X-MS-Office365-Filtering-Correlation-Id: de734e86-6c9a-450f-4caf-08def22b3cbe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|376014|7416014|1800799024|82310400026|10067099003|921020|11063799006|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	AySw0D4H1Bf+9lk9UIAOSlstGklXhsj5RMQobQp+m8A9Nd0uLleRBhl1cdiTyZTuyC0So/+6a7diEOOc7q9gVAio2HXO5iVyNd9MmepmJcuf1niEwGESiyUYoI4qWAua1lNhXXMmkBCnlUsF8wpffU2QlK98BA978td7TIZIb1uSevHVwfosaMx6KQjyqrSvfu4IWAXcmBCO5TBhlhHS6ykgC3VJpadvMW7nMHtDDRVso4Djft/REU9qzjJtoHKq4lP7Fg6/mbfCP4gsvvuIKOGv+Qu06gKQN2HtLddXh6bgXE/h4ENRejIJxPpCIavX20ETnAtmAbThkkeX9JCQcEhVpfLCfGsKc4EABgESpT1E0GVch1qUH/KZW8TY2MdfkPpEi4q0w5mS7KGw3fofSBWht2rjOrpJHPlcq/Q6kvCrT5tf8U4EEBJyOvDxaUZ1mMHX3D/Vkkp5RSmt4Z3OoKKq7b100WjdFyP94Ita7CV5i63V4ak95AOIVZQExRPclCmbmCl4G3jPGxLjUhwTA8JwPassjtUsYQRxAlDHHlnasF9gFmhiKBpczGShu/rrylvAMeOaVMZ4Gya6w3OS2oPAJObGYQobmlpemRj6WY2Y3kv01/m0msx7/wEDPJrYR2X7v2amFjA1T/blxjGJAmTrNIyy9gP3K61Z3YsRD0kTX7IIZOCkHSMHPxXuFNsJDlVzetkkFDU5no1iZAwZ+usuFMicCzhNALWdjnUoy1cxxLYN7/qVB3lEoOR8/hzw
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(376014)(7416014)(1800799024)(82310400026)(10067099003)(921020)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	WIifp8ucfcBPbGS5eE9PPjy9rs+ZhtjzO0y8lgYha5HRslZY7uje+ycRUqmPihqOuMdD6BJczGmCkB5jorXTLPriis/TcqwV/XtW9yUnR+APqptknngUaca+zAFavOIMMFL/icR9meDrN/S/ba1KFZWFOYZOIaELM4gl2KzeBtI0QaM0/8kMrABXQU9zPHrWysqIpESJjsyGf6UHID+OSiKQEY8WO18xWr2OuuzZjpu9LnFBj/lDxAORl/LdcnmWCezbpb0NyS8wIUNGFQvdkn5uW1KU0Lx/ChmwiO3MFEMxQJbh4Q13UGq+vGkvzhiF9+tqfSimIVNFohm16UNq9IurP40GDIvIiXkY62Aj3MoKHhnZuZJfUcLjMaiQtCRZCGDYIPs2OfiMq4djOq/9qI4/pU4HcC9u7hx78D/XikMvEcgMtXTLdVui8p1zjdf9
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 13:21:04.8467
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: de734e86-6c9a-450f-4caf-08def22b3cbe
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF0001E9C5.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR10MB9349
 
-On 7/14/26 12:52 PM, Felix Maurer wrote:
-> Many places in the hsr module assumed that a single node could be using
-> multiple MAC addresses to communicate in the network. The standard is
-> explicit that PRP nodes should use the same MAC for frames on both
-> ports and commit b65999e7238e ("net: hsr: sync hw addr of slave2
-> according to slave1 hw addr on PRP") made this clear. For HSR, the
-> standard is less explicit. But after quite some discussions and reading
-> standards, Fernando, Sebastian, and I concluded that it never mentions
-> different MAC addresses for HSR either and instead often suggests using
-> equal addresses for both ports and this should be what hsr interfaces
-> do.
-> 
-> A short history of how this assumption formed in the kernel supports
-> this as well: the original HSRv0 code implemented IEC 62439-3:2010 where
-> node tables had two MAC addresses per node. It was an optional feature
-> to support an unspecified address substitution mechanism for _PRP_, also
-> referred to as PICS_SUBS. Note that we never even supported PRPv0 from
-> the :2010 standard. In IEC 62439-3:2012, the feature was explicitly
-> removed. But with two addresses per node in the node table and selftests
-> setting different addresses for both interfaces, the assumption emerged
-> that all nodes can have two addresses. In :2010, this was optional and
-> the standard is written so that a node not supporting PICS_SUBS could
-> just ignore it. Since 2012:, nodes must use the same address for both
-> ports in the ring.
-> 
-> To prevent misconfiguration and simplify the hsr code, this patchset
-> removes the notion of two different MAC addresses for one node in the
-> network entirely. The first patch sets equal addresses on both ports so
-> that we are not running in invalid configurations. I also updates the
-> selftest to not use/expect different addresses on the two ports. The
-> second patch removes MAC address B from the node table and thereby
-> eliminates a lot of code, including the node merging.
-> 
-> I am posting as an RFC for now mostly for two reasons: First, I want to
-> make sure it's generally accepted to have only a single MAC address per
-> node and give everyone the chance to speak up against this.
-> 
-> Second, I adapted the PRP address handling to HSR as well, i.e., to copy
-> the address from port A to port B and master, mostly because it is low
-> effort. I am not sure though if this is the best approach now that we
-> touch this part of the code anyways. I have two alternative ideas how
-> addresses should be handled:
-> 
-> 1) Make the master control the port MAC addresses: when the hsr
->     interface is created, generate a MAC address and assign it to both
->     ports. Changing the address afterwards would also only go through the
->     hsr interface which would update both ports.
-> 2) Don't change the MAC addresses of the port interfaces at all. Instead
->     behave similar to bridge where the ports keep their addresses and
->     traffic from the bridge/master gets its own MAC address assigned.
-> 
-> What do you think? Do you prefer any of these approaches?
-> 
+The Ethernet PHY is supplied by 3v3 PMIC regulator, add it to Ethernet
+node.
 
-Hi Felix, thank you very much for this work. I agree with the overall 
-analysis you provided here.
+Signed-off-by: Christophe Roullier <christophe.roullier@foss.st.com>
+---
+ arch/arm64/boot/dts/st/stm32mp257f-dk.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-I would try to go for the same solution in both PRP and HSR. Why the 
-current approach isn't suitable? If we are going to change the approach 
-(for a good reason) I would go for 1).
-
-FWIW, I didn't test this yet.
-
-> Thanks,
->     Felix
-> 
-> 
-> Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
-> Felix Maurer (2):
->    hsr: Set equal MAC addresses on port A and B for HSR
->    hsr: Remove second MAC address from node table
-> 
->   net/hsr/hsr_debugfs.c                         |   9 +-
->   net/hsr/hsr_device.c                          |  23 +-
->   net/hsr/hsr_forward.c                         |   8 +-
->   net/hsr/hsr_framereg.c                        | 250 ++----------------
->   net/hsr/hsr_framereg.h                        |  14 +-
->   net/hsr/hsr_main.c                            |  18 +-
->   net/hsr/hsr_main.h                            |   5 +-
->   net/hsr/hsr_netlink.c                         |  18 +-
->   tools/testing/selftests/net/hsr/hsr_ping.sh   |  33 +--
->   tools/testing/selftests/net/hsr/hsr_redbox.sh |  13 +-
->   .../testing/selftests/net/hsr/link_faults.sh  |  26 --
->   11 files changed, 62 insertions(+), 355 deletions(-)
-> 
-> 
-> base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
-> --
-> 2.55.0
-> 
+diff --git a/arch/arm64/boot/dts/st/stm32mp257f-dk.dts b/arch/arm64/boot/dts/st/stm32mp257f-dk.dts
+index 8daf3dfd5133..e98a773448ee 100644
+--- a/arch/arm64/boot/dts/st/stm32mp257f-dk.dts
++++ b/arch/arm64/boot/dts/st/stm32mp257f-dk.dts
+@@ -144,6 +144,7 @@ &ethernet1 {
+ 	pinctrl-names = "default", "sleep";
+ 	phy-handle = <&phy1_eth1>;
+ 	phy-mode = "rgmii-id";
++	phy-supply = <&scmi_v3v3>;
+ 	status = "okay";
+ 
+ 	mdio {
+-- 
+2.43.0
 
