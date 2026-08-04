@@ -1,108 +1,114 @@
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9AE3EDE40
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1C835AC37
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785853283; cv=none; b=ajov3hbVxZB1io7Onj53oN0H84E+Ues1sVBLjdiyVA++k1u+aOPrwUiXHbIPklQq9DGhScXFGvn6GG8Ft+VfBiKQmrIc8ulgyfDb0nCmY4d7gvT6P6Wz2+uGTTqnX+8CGx0/TW1NI39C9CUHMoajxvi12o9bUFhFwLtxH4OcjjI=
+	t=1785853535; cv=none; b=prniXa/eDrp5YIRAxX7I3+q+iRflLeFBk2rcqRDu/0zJ/9cR2+C4odvmZp9qoO/LGL3IiG42WeEfWiHq+RckWoSRhbh5I3hSD/lAp08a0BrziEuZ7cckBpebYqFiD8AclZye1vkcajlB/YbRcaOLAX59oTH5ECulIiDHIysQ0BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785853283; c=relaxed/simple;
-	bh=OJ/HJEV95zbKoYJ3mdTiTc7gPIW1tf2Lw+OdLjlWXmo=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=js1dXcQWPKMVb66aBcP5Y7zyzniSgKr7dS7N0Gqh5c4rq3l2khh9U3OEWQN1ox4puHuhLVmEm2/CVUGZxp8IT7GWQScMhbW5cA1feN9e4/zcAo7yH5jkLxXSdzN5+PebNgBKxhkkz2IcGYSk+WFxqTzvUy2X1PYcQt36O/MwKhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y4pbGpSh; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785853535; c=relaxed/simple;
+	bh=MDGAkHHlRIhff1ANj/67CPpQ5jP+R+JdxKnBwIvyFFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YTdqQA47LlVvptfq4ySKheMSbmkudH+nUVGQYAe4Iz2xoUYan0YZe77cpS86Vr+BoscWCRZuB0P69NK7uAR0jZl75hWPshY47i/Gs9GZmx16IshvMRmKcGjtvb5pKS3dUNx9AwA7z5BGpawmDCm9RMSyXeogNdT/hcks7cxDzyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UgGRfwy+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y4pbGpSh"
-Message-ID: <fca5745a-dfa4-4e90-99fb-483536c94591@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785853264;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UmaqVfZmEPNNHuq2gS+2tfkTJb121im81Q+j52YT7hY=;
-	b=Y4pbGpShvNJJsLG3uUF0TaJUryc3Q69KXqScBXe1H7/FQtyzBXC9+vG2/rLrQz/JYScNWt
-	SGt777tjofzz2jF4BScIkz/6+AfS7kgxlvlAw/aZ6eCvygsRv6V9MEySiePlQiKzZUCNVz
-	pRloTSNZ13vjQvTru7653lY/B0WfAcA=
-Date: Tue, 4 Aug 2026 22:20:53 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UgGRfwy+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212CA1F000E9;
+	Tue,  4 Aug 2026 14:25:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785853523;
+	bh=cZTha9q5ZYgiPmJqb/0erQitqhdQIofMhjLsEUg9Hw0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UgGRfwy+pXdAaZD5mkm4c/B4AaowoRY/48wkzaKt1RUqmD9/XpF1Lt9F1tMo0wfgW
+	 5bYfhLsRlgMhIdiE9Mjw2T9Brq49c/ngOm2O8q/lu3fq9m/v3EBUDvE4T/3ssa4wkl
+	 Ubi0faXXm8xTHOy1K3h2DjBuGZ0Nzg0K9PCOxjcH8o/sN+/DLysxu5vt1yxhNf4EIz
+	 sQ7ofdKmzgmPhDP1LLqmqUzWn71pvRZFQq1KoqBy1tAx9/msUgL2rLQm/BdWhvXiEq
+	 +ncGtwrSEtWg4hQuBugXe2TTVFEE4Mi3D6gC3u9hwuepymO4xHaxEDPhHTIDBrW8PX
+	 FT32aWnIMP45Q==
+Date: Tue, 4 Aug 2026 07:25:22 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sheena Mohan <sheenamo@google.com>
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org,
+ Willem de Bruijn <willemb@google.com>
+Subject: Re: [TEST] google runner needs nested cases
+Message-ID: <20260804072522.784ead37@kernel.org>
+In-Reply-To: <CADWJPTs6G7zy+9aLxz9QD9Fk1szZK0b-vEFUm2jxTMtxt+t1uQ@mail.gmail.com>
+References: <20260721063829.7d9e6c7f@kernel.org>
+	<CADWJPTsP=2=JFE9Oh5ym_wz4vROEFOCqa+dyCLRymyYLRB1BSg@mail.gmail.com>
+	<20260723103607.55debff2@kernel.org>
+	<CADWJPTs6G7zy+9aLxz9QD9Fk1szZK0b-vEFUm2jxTMtxt+t1uQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] net: pppoe: check register_netdevice_notifier() error
- in pppoe_init()
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Minhong He <heminhong@kylinos.cn>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>, Eric Woudstra <ericwouds@gmail.com>,
- Felix Fietkau <nbd@nbd.name>, linux-kernel@vger.kernel.org
-References: <20260803085957.142386-1-heminhong@kylinos.cn>
- <ae705a66-95b2-4721-9a41-a14f39cbfa92@linux.dev>
-Content-Language: en-US
-In-Reply-To: <ae705a66-95b2-4721-9a41-a14f39cbfa92@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 8/4/2026 4:28 PM, Qingfang Deng wrote:
-> On 2026/8/3 16:59, Minhong He wrote:
->> pppoe_init() ignores register_netdevice_notifier() errors and always
->> returns success after installing packet handlers, which can leave the
->> module loaded without its netdev notifier registered.
->>
->> Check the error and unwind the packet handlers and protocol registration
->> on failure.
-> 
-> A patch for the net tree requires a Fixes tag. As the notifier has been 
-> present since day 1 of the Linux git repository, you can use:
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> 
->> Signed-off-by: Minhong He <heminhong@kylinos.cn>
->> ---
->>   drivers/net/ppp/pppoe.c | 11 ++++++++++-
->>   1 file changed, 10 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
->> index 4a018acb5262..035795b120e0 100644
->> --- a/drivers/net/ppp/pppoe.c
->> +++ b/drivers/net/ppp/pppoe.c
->> @@ -1278,10 +1278,19 @@ static int __init pppoe_init(void)
->>           dev_add_offload(&pppoe_packet_offload);
->>       dev_add_pack(&pppoes_ptype);
->>       dev_add_pack(&pppoed_ptype);
->> -    register_netdevice_notifier(&pppoe_notifier);
->> +
->> +    err = register_netdevice_notifier(&pppoe_notifier);
->> +    if (err)
->> +        goto out_unregister_packs;
-> 
-> You can move the registration above the dev_add_offload(), so that the 
-> unwind path is cleaner.
-> 
+On Tue, 28 Jul 2026 10:07:15 -0700 Sheena Mohan wrote:
+> The recent updates have been merged, and the tests should now report
+> sub-case results.
+> Please let us know if any further improvements are needed.
 
-AI-review found a use-after-free. To avoid that, this needs to be placed 
-between register_pernet_device() and proto_register().
+It doesn't look right.
 
->>       return 0;
->> +out_unregister_packs:
->> +    dev_remove_pack(&pppoed_ptype);
->> +    dev_remove_pack(&pppoes_ptype);
->> +    if (IS_ENABLED(CONFIG_INET))
->> +        dev_remove_offload(&pppoe_packet_offload);
->> +    unregister_pppox_proto(PX_PROTO_OE);
->>   out_unregister_pppoe_proto:
->>       proto_unregister(&pppoe_sk_proto);
->>   out_unregister_net_ops:
+https://gve-netdev-nipa.static.usercontent.goog/json/results-202608040108-88cb54ab-ca48-426b-9c9a-50bfbb0de32a.json
 
-Best regards,
+test	"napi-threaded-py"
+group	"selftests-drivers-net"
+result	"pass"
+^^^^^^^^^^^^^
+link	"https://gve-netdev-nipa.static.usercontent.goog/results/202608040108-88cb54ab-ca48-426b-9c9a-50bfbb0de32a/napi-threaded-py/logs.html"
+time	20.788391
 
-Qingfang
+# selftests: drivers/net: napi_threaded.py
+not ok 1 selftests: drivers/net: napi_threaded.py # exit=1
+# Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
+# not ok 1 napi_threaded.napi_init
+# not ok 2 napi_threaded.change_num_queues
+# not ok 3 napi_threaded.enable_dev_threaded_disable_napi_threaded
+
+Does not look like a pass at all. Subcases not in JSON.
+Not sure why the subcases are listed under the main return 
+in the output, I've never seen that.
+
+
+test	"psp-py"
+group	"selftests-drivers-net"
+result	"pass"
+link	"https://gve-netdev-nipa.static.usercontent.goog/results/202608040108-88cb54ab-ca48-426b-9c9a-50bfbb0de32a/psp-py/logs.html"
+time	341.833939
+
+# selftests: drivers/net: psp.py
+not ok 1 selftests: drivers/net: psp.py # exit=1
+# Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
+
+Again, doesn't seem to be a pass??
+
+
+test	"queues-py"
+group	"selftests-drivers-net"
+result	"pass"
+link	"https://gve-netdev-nipa.static.usercontent.goog/results/202608040108-88cb54ab-ca48-426b-9c9a-50bfbb0de32a/queues-py/logs.html"
+time	686.483495
+results	
+	test	"queues-check-xsk"
+	result	"pass"
+
+Okay, here we have a subcase..
+
+# selftests: drivers/net: queues.py
+ok 1 selftests: drivers/net: queues.py
+# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+check_down
+# ok 4 queues.check_xsk
+# # Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+But why only one? What happened to the other 3 that ksft clearly saw
+since it enumerated check_xsk as the fourth??
+
+
+Something is mangling the output on your runner, it seems.
+And the parsing seems off.
