@@ -1,114 +1,133 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E993240C5D4
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 07:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785827681; cv=pass; b=dWZpAiQeaJHCZdazeV8UDSma9zUr53hxS7dzdPTIgwZP+xsZlm0xtEtQ/xMbQIhTDeEiEYGKiQNEs7OrjPErg4cOcy9OA1KyKp/i9CC08AzmUzLIk3mbwVhLEzQJY0gj0VUOSdxQWtNMUsBdOvAUfMJSzYmlfnuVskvTQB3I7N0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785827681; c=relaxed/simple;
-	bh=kICgOv5/2iXexPp7bGaZdZg6kq1kQTHrVyw4nr3vLtI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k6HyB2g3ErlfaOY7LMGRLnEn5chHEt8s/tbX1SbQubRGzJLyESOGCRbY4DQzdmuQ3bp8uzmJ5Oo0rHphy6FbKH4mAExuf5U+ZlKNZC7+j73einXZQYqBs980WHwiVqDPq656coToITTikU8oTABuSFkLap6TMibpvmDx4uybzLU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VN+6uH8T; arc=pass smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30644427FBB
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 07:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785828109; cv=none; b=MlBakqv3x/6chXYaprFF63HH9fMg9woxRuuzEeAYvyiPNmF4gj8vUG9T4urzOQo+aOfEQMiHqFHXTZNUjP+2b8QCv4V6xOqn9WUEjKKXg84E3RBjBf6ppBrL1BSiW30Sz2FUCm/zs1tHsN574VU5kD70CIA4rvgjPwU4NRKCi7c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785828109; c=relaxed/simple;
+	bh=CSYP6Io4DRAEop9lfgOCE/wj06+2PTEfgqOlW5OlE9g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T2QgCjzvttwFvqiOmIjscuKvIVDHZZWKjQgZ6KMLgpU737uCkBncJrAX4mV0oyuoltkBgphHDpAch89nlw/iC+S6h6BlAb3kmBiYGhdmnTkpADUNMkHYPqAzp+y1812AJhfHf8iAU6iX1W3Sj5SuLsyBJyQIVb46JvSt0kq4foM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dD2Otqy2; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VN+6uH8T"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c15cf78d1a2so490386566b.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 00:14:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785827678; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PU/tl7x1hk3e6Jo5qpHSEVT+Xmi9U9zYw0ecQOdlhOLVeajbaBl1a6t5h8Wtd9+Jsl
-         Oh/q7Fv1YVWwe68RXk7W5KPNPNXkGLjAlFD1+ZUxMkShADTEohAmTIzaTFya9YQb+rsi
-         9zC2nwACErnT3rsrz4VVM5q9bBYArRVN9XyeAQWgJHZRkYIqsAV1P9sFh7OP2fYgbr5O
-         RCPzMu07xxlMMQzd7xwfoZBuAI1lK9sNpWLUIeOkLX6NJpnsvptaHWuOXhhriZVGpa6A
-         HZjtxLubhbX7pejcfMJhcxLkre0Kma0NGtiXGXziVeTn/LPv7lonODmWPzB4H8LHctLT
-         0BZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kICgOv5/2iXexPp7bGaZdZg6kq1kQTHrVyw4nr3vLtI=;
-        fh=QPOUND/uVXplYCsrGmL2GNW815I5zpWOlcfrdt7yIfM=;
-        b=HdN8Z/iF2x16799ICGWyAw5EAxlcKMSPc3FV44Mr3unB6seLHCsk4l2bPmqsfyQrGm
-         hKPDzUzy90v3IQ5evGmKYw66HuRiDfmS5FK0h3ocDJwFpA5zyuhQfYlJd8UTAdzG4qE8
-         JIFaUvyvef5u8W9gXmUcmLRc/u7qLrX1mRqktdJSnYb1WZOv8wjDo4eUiNuiJfwAew7e
-         7kMafo5tsSBcvHyr7tB8v9Bi46DRmUqmSsLTV8CWHwGQOO63fE2YoF/VrqBPYOAIOlhm
-         OsvDas3y6klvfmm9nMv8fwmKE54U1uIHCRXZPFVM8ozOjOgF7xJLlpSZo9U+evMlbwyX
-         wMiQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785827678; x=1786432478; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kICgOv5/2iXexPp7bGaZdZg6kq1kQTHrVyw4nr3vLtI=;
-        b=VN+6uH8TrFyO4fxC57spffa9ggzdgj+M11JwDhZZE62BUWUQGI7tuFQZCNCBS2Lhe4
-         n1jkXQuIIm4OsK2CAyAQSuQNLnkOXhPCP3APpAYbolJutGjVmtkPSWrYsAR0K91gc7VH
-         U+h6cT1G2i5qQRYBhsKSQrPiCA80p71GrCVoCwxRmYPPcfQNq+KCVGnFQ/mhUHQUhwkI
-         DfPzoa5Fsu+RHU368uvUmBrAvlundmUnU1Zhoieex9J+NX8kGAdPDDzAf7esoFzxcXJx
-         XenDDWl2iFSjlWZTr2RSRp9KyZ7injfNT+gOzlIG8hFYhOE2Xvzib5dWZO4plNIvTHY/
-         iQQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785827678; x=1786432478;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kICgOv5/2iXexPp7bGaZdZg6kq1kQTHrVyw4nr3vLtI=;
-        b=ipgWZKi9kI0Dnq4ljgb11FUarAd4RICqDKHMH1XlX1SVrZd/iHPM5b/NgtaDgnC4Fj
-         7J7CSCQVNiI5lV22FhNwHDBehD5JciPvypvGXLJcxk8oYCCn67X+A81+IjVPUltv2RNL
-         i162cBAwUpIZtpF1ODsRQSBOjVRiNjrU8nQ08b7Drn/ABse1vqVIeFKaPzpx6121Ss2k
-         6rfJNOja5Co5OML2q0QZIyv4R6hjGBJqXcd7JJcn7AAQrPZdMZMTz57IaEBp9/k3bEC9
-         Q4eDHRf8/cRn9x9OJ77dpXn6SblWhk2Bz0HjTejXSQ3emxA0PcOCXW20Qm+bduVPRD29
-         K9hA==
-X-Gm-Message-State: AOJu0Yx0raoAvAu0aWqr100YWleJXDIDJ4PsKKCx43FENpcmGbD8kFk5
-	C7q4PQbBccFfed8umpri6phxGJeQ/bFGXHYw2ZTA+98JKGOa1fQhGvJw8BQpX3Z9bUrFU0VatZE
-	JuuWfNLbITcWhwXMo9CkNBSzdH3mb2Bo=
-X-Gm-Gg: AR+sD10hSQNxMGuIo3gJlM3gCZAkuDxIvLPgoiOouI7pZKLGyo80t8Ohc082cdlFmhb
-	tlOIMiA77BaQ/gmspwDDYN1gY3NOZDftUOrFgp1mit8J2PvdRzKZ1Kd8NSr71EbNExRay/7nCQQ
-	2/e7XDI/O/PBNpG57YgjeFcH7txmbrlASDolEfZiok3DypRKecKCwIxb6uYw/6L3itNzYSQb96N
-	ZwyYSVGjpPR1JovBYUeBjMW+sqQ3y53/ycY5ZGLeq+Jl+Zp8Iy4i5FcVdB3OpEqZ/rPh231RWg2
-	0s3YVqM6AnjZ/YdojWXiqDk3sD3IS4dTP2q7nQanaymsUGVWVcfZIPcJ
-X-Received: by 2002:a17:907:6d12:b0:c16:7414:4c29 with SMTP id
- a640c23a62f3a-c1fe81e0d11mr1024079366b.25.1785827677958; Tue, 04 Aug 2026
- 00:14:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dD2Otqy2"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 5384B4E410CB;
+	Tue,  4 Aug 2026 07:21:44 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1C1D86029E;
+	Tue,  4 Aug 2026 07:21:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4FD7311C323E2;
+	Tue,  4 Aug 2026 09:21:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785828102; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=GVt/k3WsbW8BGM9REjtRXzCwiVcIn92ftdHj2akMofI=;
+	b=dD2Otqy2ZvfPFp6kaEB4jvvpubX+6uyTYj1jm6nSeGKwVmI6Ff2plvXdEbEIT5pVMMoMgi
+	KENVTxTU7j1q9zIlzZ3h2ePhA+bo4R6viRox1iGWVDeYY6bOPbdwrbrCsTO9RfWd1Jk3zD
+	ehX+4n+OzYw6LWc9TI1W3jv2NhdXx/amg4xfwSkcPG/pUNy3q/5TybwY2XcmdzPb/dzZfK
+	s7QQ+uMTWrmSjRM/HrVof94nVdvZzFhvaK/QZUX7S07iSdmmx1ozkenWkIzB3nUkwnBIzB
+	lz2XBl0CTa8WEDiiq4WeID6O4hDImDCVBIxzRteTvfq0V+hs11ovm9OPuXIDUA==
+Message-ID: <5c1b3bdd-37a9-45d0-90d2-1afc78125972@bootlin.com>
+Date: Tue, 4 Aug 2026 09:21:33 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260803101734.270821-1-a.shimko.dev@gmail.com>
- <20260803101734.270821-2-a.shimko.dev@gmail.com> <20260804-affable-warthog-of-contentment-b3f09b@quoll>
-In-Reply-To: <20260804-affable-warthog-of-contentment-b3f09b@quoll>
-From: Artem Shimko <a.shimko.dev@gmail.com>
-Date: Tue, 4 Aug 2026 10:14:26 +0300
-X-Gm-Features: AUfX_mx_eWsELjCGsOWZC41KbKW65u5Y6L50ulKMLIBcNP7R1jvdMrvS-GuB200
-Message-ID: <CAOPX744=Bo2LqT=jSmO7L4uQr3eMuhZ4WCSVFkvxz_dtfTMUTA@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 1/3] dt-bindings: vendor-prefixes: add
- Guangdong Dapu Telecom Co., Ltd.
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v15 00/10] net: phy_port: SFP modules
+ representation and phy_port listing
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
+ =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
+ Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ Daniel Golle <daniel@makrotopia.org>,
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+ Frank Wunderlich <frank.wunderlich@linux.dev>,
+ Pietro Ameruoso <p.ameruoso@live.it>
+References: <20260801074332.98755-1-maxime.chevallier@bootlin.com>
+ <20260803140431.2bbe2949@kernel.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260803140431.2bbe2949@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Krzysztof,
+Hi,
 
-On Tue, Aug 4, 2026 at 9:46=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
-> So the prefix should be dptel, not dapu.
+On 8/3/26 23:04, Jakub Kicinski wrote:
+> On Sat,  1 Aug 2026 09:43:21 +0200 Maxime Chevallier wrote:
+>> Here's V15 for the phy_port improved SFP support and netlink interface.
+> 
+> Breaks YNL build:
+> 
+>   In file included from ethtool-user.c:10:
+>   ethtool-user.h:8523:42: error: field 'obj' has incomplete type
+>    8523 |         struct ethtool_port_get_rsp_dump obj __attribute__((aligned(8)));
+>         |                                          ^~~
+>   ethtool-user.c: In function 'ethtool_port_get_dump':
+>   ethtool-user.c:8833:18: error: 'ethtool_port_get_rsp_dump_parse' undeclared
+>         (first use in this function); did you mean 'ethtool_port_get_rsp_parse'?
+>   ethtool-user.c:8847:19: error: returning 'void *' from a function with return
+>         type 'int' makes integer from pointer without a cast
+>   ethtool-user.c:8851:16: error: returning 'void *' from a function with return
+>         type 'int' makes integer from pointer without a cast
+>   make[1]: *** [Makefile:52: ethtool-user.o] Error 1
+>   make: *** [Makefile:57: ../generated/protos.a] Error 2
+> 
+> You need to specify the reply for dump, I didn't check if it matches do
+> but if it does:
 
-Got it, thank you.
+Ah correct, that's my bad I disabled ynl build temporarily as it doesn't
+play well with cross-compile, let me fix this issue and see what I can
+do with the ynl build in itself
 
---
-Best regards,
-Artem
+Maxime
+
+> 
+> --- a/Documentation/netlink/specs/ethtool.yaml
+> +++ b/Documentation/netlink/specs/ethtool.yaml
+> @@ -2896,12 +2896,12 @@ c-version-name: ethtool-genl-version
+>  
+>        attribute-set: port
+>  
+> -      do: &port-get-op
+> +      do:
+>          request:
+>            attributes:
+>              - header
+>              - id
+> -        reply:
+> +        reply: &port-get-op-reply
+>            attributes:
+>              - header
+>              - id
+> @@ -2913,6 +2913,7 @@ c-version-name: ethtool-genl-version
+>          request:
+>            attributes:
+>              - header
+> +        reply: *port-get-op-reply
+>  
+>  mcast-groups:
+>    list:
+
