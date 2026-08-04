@@ -1,82 +1,79 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A573546C0
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 11:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A6536308F
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 11:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785843339; cv=none; b=mcRzPKtVMrcW/Lq6t2DebXz0yuZRr8V/6bL9ERvJc/qe3qkuB4x1Im8ouSOYBOQFr+e1U63A5vD3kvXzlHnP3JgmrumUNRKzgwpPYqJZA5HtN35z7LWOt13flLIh0OV6sfzN+5m1QOgjwl0nEMafWDbupb8Uyg9ksizOZgWmibE=
+	t=1785843434; cv=none; b=kg5p/TBOL+OvfWbO4+XpxCNFQySrFx7D/kfFJ8lYtZ2yTlrDzh9V9ayByW8/nnSo9U6XcBX6hKn/K4oMzqxn7X9juQkcbkOYx25NddiZAMy7OuGk/JMnSQA6AuXlSTFphEmU/Q6r4jY0pgr3Hg0GtDo48Osp/uXX+aPmdLLcR5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785843339; c=relaxed/simple;
-	bh=eG0RFUZjcwUsngo8jMc0RSRwUDp+/m+lU3rnsR26qXA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Io1cGh/0xf8Ak4vWDZXDPAPJ667WWmy++3JfCkD/ANlYu+4yqnQdcU0o9axVMtpspfrNqKxaBfKjGFrXG5RUdx5IcQeOEp9pGBgeCNPAdrtrac+M3+jeg1nQn0pwGGohMFafQtiVsTm7Uyfg2FT5+xLDM52KfAONKqwHkpA2/vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BKs1Woo5; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1785843434; c=relaxed/simple;
+	bh=J9EO5u6alNER3gWkRpSxFbxQr0R5xUb+Hi7pDsjGVRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LlRs1Jzv847WTGTccRZv0c4phMiYGxKyfW+BuKkp6DoT++UcRvEO7WN7sSyNIo94k1qxCLp6XYFSSZd7VyKHqRbEuJCq9zPnx6SkOG+KBlsgP2LvIEv1pbvuYH5e/nLof8e9HntM336sUzrS3VAHJTXT/XD+vZdThvW1Ryw0+XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BHxQ7beb; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BKs1Woo5"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cacf197759so65994445ad.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 04:35:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BHxQ7beb"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cc61541f8cso10312715ad.0
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 04:37:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785843337; x=1786448137; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785843432; x=1786448232; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uNVTFfdfEZG90+jAE3BzNE+piQiVWzc95vgbhLXgILA=;
-        b=BKs1Woo5URfJ5kDfQ+z9YbJslopDx79/r+BcbYYD/dQPqz95ZTZL73ys300wr6nBh/
-         Ma8Zlz4u4C5fIdt2qkiOtDMngAP+e0szg+KNxoQ+NwEVn3JwhixRIzxcV4yJDlHpvlPQ
-         aPnh5/RvvF8U9snS8IRvGm6SCZyqYlRttgb0x9vEWlYZBaenu5+ySTEfDyoiAn3HF6GL
-         WaHy7eRx2zdmp787lO+18bbuEZwJseJO6ZuK9FVwO9H+6xh5z1EmjCxHzzXwkobjfuUx
-         b8VXeVMeVc/+3rA6CX7Rq+mhyzTRzqurD3KEcXbdnrYdC4uvwm77V8/Ld2lcLYG7CDdR
-         zHvg==
+        bh=PyVRapuBdfN3KzSgfWTRP6Piniiymmw+PtB2Y0jNT9A=;
+        b=BHxQ7bebDaOYuo4U6b2dEbhgCVDBV7ckOHe6p75uyujtnKbS1sEJ1X6fJp8s+1mdjR
+         4G5VR9dZAgmgDgBMJZw/IWIPZDCDW0MPSZ4mhMYn8qtd0B/SR3AQv6YzTGXfSjoinx39
+         6spXvZLSpgx5c7yEKsi8djVFytgy5oQrxJ4LpfWLX+BQdytFy9IBYNlbQMnIdbcKO3ve
+         x0JF2nvpBbBKDYFE1aM9R7KPhcqTVmHx4nhKghLAUSFiEnBBg3qE64tL6y99vuBIq5bq
+         LtmzfpiVifc+En6Dic+HAFWIlg/ozx5veaIK6FPEcZPCTd5sd590rZ+3S23hYKyqXF7R
+         j2Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785843337; x=1786448137;
+        d=1e100.net; s=20251104; t=1785843432; x=1786448232;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uNVTFfdfEZG90+jAE3BzNE+piQiVWzc95vgbhLXgILA=;
-        b=Hxa/9OvUimslSneZNsYIrqcmQw06cfV8SRMql1CbYVFH7aWAtgomYRLm3kmL0wl4+r
-         XhHxSGv/1APqOvIoMPWqAaGhJjI2ykoZkxqZHYvgcTAnkXbqL9Sv7LFbJzq5K8LpD2m3
-         UmfJy3czH3LMExiAYF3nITi5goJFPXgYwsup2KBKRaws4oaobJr65F41bEIPv6Tki/h5
-         ttgW/JA2uh7xU/ucUMGEC69G5TQpl0aq+vy/U+xCV8J85UU/athJLvxlIt59FKsX8mxn
-         gjIV+baPEB2+IjmzDXjYBqI6YahFLuttSCO5/CWFXOhzWjpvpz8Kp64qAlevms2BNlwZ
-         I+Ow==
-X-Gm-Message-State: AOJu0YzJQwBvgWfJiewjsQ0e66VkX6DC5xecJg7D2jQLLMjBNLspX0u1
-	t1sMmx+1C8ak7QInO0R5HrNRQ1sSdl3TpaPsQik3BGwYfeemlmiA/g1TsUjLo6VA
-X-Gm-Gg: AR+sD12adnkbF9b7vwdwsXCVIaPkvu8tjoN0yPN9T5lPv3c9B+ZGeEqUV43jTh6wmAF
-	6d+/1KGbfzbD7k/SP4OP0kpyEZj6Cm2KA6jrQNeM3NWxvpQYG4qx0qaUj9trMSCNs0ebLlqQ7Jl
-	17EUbt4ZY0OYY0/5pP3Tl9QoLbXwZwqq2WrappZ7ivVDkXQ5ZiecbfdBkwn7pcDVnQ1hmqQ9hnr
-	L3JCczcPQf3uUdccu0lWjHPSSLOTd0u6e41oiT4FLmYdPkRkOLAAhwTJpW8/6szGPz/Y4/yzJri
-	LwmbSs/jBJWc9jzUw3vNU+GDStZRiFXv5Jj89aWvareGHy6GeFknNt3W39YjMtqvv27ALqqCeaQ
-	uRHfLivpgMYC5nlaE/v/vT7TKEf7L7NCONuTZKpfmds2m8hzJQGzXbzvsrhyuiSGF8jE3lrVmxV
-	TbYEmPPfHVddhX13PrxIdfNwPn0DmIMFv3D4vmTS7NKgwKByKO0xTJMZWP1e/oJ6cc1wwJ
-X-Received: by 2002:a05:6a21:3a47:b0:3c0:278c:6a31 with SMTP id adf61e73a8af0-3c92a51df73mr13770829637.11.1785843337304;
-        Tue, 04 Aug 2026 04:35:37 -0700 (PDT)
-Received: from DESKTOP-TIT0J8O.dm.ae ([49.47.198.15])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca63ce12sm3569493c88.5.2026.08.04.04.35.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 04:35:36 -0700 (PDT)
-From: Ahmed Naseef <naseefkm@gmail.com>
+        bh=PyVRapuBdfN3KzSgfWTRP6Piniiymmw+PtB2Y0jNT9A=;
+        b=QfyUTLgUQzCiqJX4fXpuM9vRVapCZf1xw6Zt5k2o7WkdGOgZMM+YRk+26fS+VugpD1
+         NuWF/A+lyx8isoZ2hUWuM7unsAovHF42x8AAbqzBDn+PsMns69hklIUwcCxmRWsdV+PA
+         h7W5cy/lKd2XcClVLEUtzWnpk8uaZ3FobsB0ssb0teB0ViDk6oo9tCqSeIidswkMWh8S
+         p1KJ9IHoDfoqs3PWoTLK3zoBZygr4VfhPKkjRp1ZLLhkCTTzltYe1rQzVrd96z+Cbzqn
+         MZW9n231Vx6a8ZhC1M/k/UGtoFh7xtPYfBD/fv6XRKxGm/gqao+lkNo3Q/lbEXOBKjbL
+         TMCA==
+X-Gm-Message-State: AOJu0YxNXyN67Krd1BFzrT7qo2hyUoIsV1QSizuOSA22fzRs6Z2J6EU/
+	scrgjThxxxEGvn5jMxduqUY7eOoYlVKiphR69NKYcVRicXdtcHxEtbT7xpyFfUd1UYL4y8yH
+X-Gm-Gg: AR+sD13vD0Jju44a6MSOp6YASLJT2WMMu0edkJr6zmWEiL+8mbv81NuQrw7FRccGStC
+	bF2XZ47Sbrp2zGLZiAZRXLWRWtTfGAtpEEt/0jQzUMWRuzrnaHzJG9e7nmBgYf5AFBAPwnEBcRI
+	kHFaVPq4sAA775UBePpjAVC6SfVSApCDWk4XYkwVsza+QoFwHn4EezUnjXyebUlsVO3yv+p//+c
+	aWPfiTQZTPOd5JQbz2evZagdBxvVcZ840XfArwiiizXRdt+zs8LYvrBXi83cKmoKuRgbVdi2iLl
+	3Zc7S1iQl+Twbg8SXFWeHalFDCxD1ffab7KYYarv81j3rxmHAiCLICI3t5hwu1xL3ym6S5XTFwZ
+	Aak9w/Sffd8BWvukpZcrTBo48ejQs4xcVBz0bllzcjG00ddQ/w1bZg9e3USYVopaFPaaL8UQqBw
+	ATTvPN+/94BoefuzLOfKHWaTof6Vx2yUwzKqir/b6nHM558FqLqoG0BghnFmsMpggcTKWAuBEDs
+	mWNKVi9ulg+/mmF9xsYg3KsPaA=
+X-Received: by 2002:a17:90b:4a4d:b0:384:927f:3db9 with SMTP id 98e67ed59e1d1-38febfcab02mr2446887a91.1.1785843431564;
+        Tue, 04 Aug 2026 04:37:11 -0700 (PDT)
+Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38febfd8fecsm1217217a91.2.2026.08.04.04.37.08
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 04 Aug 2026 04:37:10 -0700 (PDT)
+From: Jun Yang <juny24602@gmail.com>
 To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Golle <daniel@makrotopia.org>,
+Cc: Jun Yang <junvyyang@tencent.com>,
+	stable@kernel.org,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <dqfext@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Ahmed Naseef <naseefkm@gmail.com>
-Subject: [PATCH net] net: phy: mediatek: fix TX blink masks using the RX bits
-Date: Tue,  4 Aug 2026 15:35:11 +0400
-Message-Id: <20260804113511.3371248-1-naseefkm@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	Simon Horman <horms@kernel.org>,
+	linux-sctp@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] sctp: re-point retained control chunks on association migration
+Date: Tue,  4 Aug 2026 19:37:03 +0800
+Message-ID: <20260804113705.45754-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,52 +82,186 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-MTK_GPHY_LED_TX_BLINK_SET and MTK_2P5GPHY_LED_TX_BLINK_SET are built
-from the RX blink bits instead of the TX ones, so both TX masks are
-identical to their RX counterparts. The TX bits they should be using,
-MTK_PHY_LED_BLINK_{10,100,1000,2500}TX, are otherwise only referenced
-by the per-speed branch of mtk_phy_led_hw_ctrl_set().
+From: Jun Yang <junvyyang@tencent.com>
 
-A TX trigger selected without a link trigger therefore programs the RX
-blink bits, and the LED blinks on received traffic. The masks are also
-used to decode the blink register in mtk_phy_led_hw_ctrl_get(), which
-as a result cannot tell the two triggers apart: an RX-only
-configuration reads back as RX and TX, and a TX-only configuration
-reads back as neither.
+sctp_control_set_owner_w() records the owning socket in a control chunk's
+skb->sk.  sctp_sock_migrate() re-owns the association's DATA chunks via
+sctp_for_each_tx_datachunk(), but that walk keys off chunk->msg and so
+skips control chunks: any control chunk the association still holds (for
+example the saved stream-reset request asoc->strreset_chunk, the ASCONF
+request/ack lists, or asoc->addip_last_asconf) keeps pointing at the old
+socket after the association is moved to the new one.
 
-Fixes: 7f9c320c98db ("net: phy: mediatek: Move LED helper functions into mtk phy lib")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ahmed Naseef <naseefkm@gmail.com>
+Once the old socket is freed, a later retransmit reaches
+sctp_packet_transmit() -> skb_set_owner_w(head, chunk->skb->sk) and
+operates on the freed socket -- refcount_add() on its sk_wmem_alloc,
+then sk->sk_write_space() from sock_wfree() -- a use-after-free of
+struct sock.
+
+Rename sctp_for_each_tx_datachunk() to sctp_for_each_tx_chunk() and walk
+the control chunks the association retains there as well, so migration
+re-owns them with the same clear/set bracketing already used for DATA
+chunks.  sctp_set_owner_w_migrate() picks the right owner helper by
+testing chunk->msg, which is NULL for control chunks.
+
+The per-chunk owner test that traverse_and_process() already applies is
+split out into sctp_process_tx_chunk() and reused for the control lists.
+A chunk can sit on two of them at once -- asoc->strreset_chunk and
+asoc->addip_last_asconf both stay queued on outqueue.control_chunk_list
+until they are flushed -- and the test keeps such a chunk from being
+cleared or re-owned twice, which would otherwise leak an shkey reference.
+
+sctp_control_set_owner_w() re-reads chunk->shkey from asoc->shkey, so
+sctp_set_owner_w_migrate() releases the reference sctp_clear_owner_w()
+took by value instead of re-reading chunk->shkey, which would drop the
+wrong key if the active key changed while the chunk was queued.
+
+Fixes: d04adf1b3551 ("sctp: reset owner sk for data chunks on out queues when migrating a sock")
+Cc: stable@kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Assisted-by: tencentos-corvus-ai:kimi-k3
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
 ---
- drivers/net/phy/mediatek/mtk.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+This is based on David Lee's
 
-diff --git a/drivers/net/phy/mediatek/mtk.h b/drivers/net/phy/mediatek/mtk.h
-index 320f76ffa81f..79e09727b81b 100644
---- a/drivers/net/phy/mediatek/mtk.h
-+++ b/drivers/net/phy/mediatek/mtk.h
-@@ -53,15 +53,15 @@
- #define MTK_GPHY_LED_RX_BLINK_SET		(MTK_PHY_LED_BLINK_1000RX | \
- 						 MTK_PHY_LED_BLINK_100RX | \
- 						 MTK_PHY_LED_BLINK_10RX)
--#define MTK_GPHY_LED_TX_BLINK_SET		(MTK_PHY_LED_BLINK_1000RX | \
--						 MTK_PHY_LED_BLINK_100RX | \
--						 MTK_PHY_LED_BLINK_10RX)
-+#define MTK_GPHY_LED_TX_BLINK_SET		(MTK_PHY_LED_BLINK_1000TX | \
-+						 MTK_PHY_LED_BLINK_100TX | \
-+						 MTK_PHY_LED_BLINK_10TX)
- 
- #define MTK_2P5GPHY_LED_ON_SET			(MTK_PHY_LED_ON_LINK2500 | \
- 						 MTK_GPHY_LED_ON_SET)
- #define MTK_2P5GPHY_LED_RX_BLINK_SET		(MTK_PHY_LED_BLINK_2500RX | \
- 						 MTK_GPHY_LED_RX_BLINK_SET)
--#define MTK_2P5GPHY_LED_TX_BLINK_SET		(MTK_PHY_LED_BLINK_2500RX | \
-+#define MTK_2P5GPHY_LED_TX_BLINK_SET		(MTK_PHY_LED_BLINK_2500TX | \
- 						 MTK_GPHY_LED_TX_BLINK_SET)
- 
- #define MTK_PHY_LED_STATE_FORCE_ON	0
+  [PATCH] sctp: hold shkey across socket migration
+  https://lore.kernel.org/netdev/20260731120558.558957-1-david.lee@trailofbits.com/
 
-base-commit: 1a35da325cac4d5bcad76a2aa943408a6f1d9000
+which adds sctp_set_owner_w_migrate()
+
+v2:
+ - Rename sctp_for_each_tx_datachunk() to sctp_for_each_tx_chunk() and
+   move the control-chunk traversal into it, rather than adding a
+   separate sctp_for_each_tx_ctrlchunk() helper (Xin Long).
+ - Handle control chunks in sctp_set_owner_w_migrate() by testing
+   chunk->msg, dropping the sctp_ctrl_set_owner_w() helper (Xin Long).
+   Control chunks now go through the full clear/set bracketing instead of
+   a bare skb->sk store, so sctp_control_set_owner_w() is no longer
+   static.
+ - Factor the existing owner test out of traverse_and_process() into
+   sctp_process_tx_chunk() so the control lists get it too.
+
+v1: https://lore.kernel.org/netdev/20260730090537.27629-1-juny24602@gmail.com/
+
+ include/net/sctp/sm.h    |  1 +
+ net/sctp/sm_make_chunk.c |  2 +-
+ net/sctp/socket.c        | 53 ++++++++++++++++++++++++++++++----------
+ 3 files changed, 42 insertions(+), 14 deletions(-)
+
+diff --git a/include/net/sctp/sm.h b/include/net/sctp/sm.h
+index 3bfd261a53cc..76605d1ee839 100644
+--- a/include/net/sctp/sm.h
++++ b/include/net/sctp/sm.h
+@@ -252,6 +252,7 @@ struct sctp_chunk *sctp_make_fwdtsn(const struct sctp_association *asoc,
+ 				    struct sctp_fwdtsn_skip *skiplist);
+ struct sctp_chunk *sctp_make_auth(const struct sctp_association *asoc,
+ 				  __u16 key_id);
++void sctp_control_set_owner_w(struct sctp_chunk *chunk);
+ struct sctp_chunk *sctp_make_strreset_req(const struct sctp_association *asoc,
+ 					  __u16 stream_num, __be16 *stream_list,
+ 					  bool out, bool in);
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 0ae30c3c8913..7684686798cf 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -94,7 +94,7 @@ static void sctp_control_release_owner(struct sk_buff *skb)
+ 	}
+ }
+ 
+-static void sctp_control_set_owner_w(struct sctp_chunk *chunk)
++void sctp_control_set_owner_w(struct sctp_chunk *chunk)
+ {
+ 	struct sctp_association *asoc = chunk->asoc;
+ 	struct sk_buff *skb = chunk->skb;
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 4a08023d52aa..d09b9f139070 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -155,9 +155,24 @@ static void sctp_clear_owner_w(struct sctp_chunk *chunk)
+ 
+ static void sctp_set_owner_w_migrate(struct sctp_chunk *chunk)
+ {
+-	sctp_set_owner_w(chunk);
+-	if (chunk->shkey)
+-		sctp_auth_shkey_release(chunk->shkey);
++	struct sctp_shared_key *shkey = chunk->shkey;
++
++	if (chunk->msg)
++		sctp_set_owner_w(chunk);
++	else
++		sctp_control_set_owner_w(chunk);
++
++	if (shkey)
++		sctp_auth_shkey_release(shkey);
++}
++
++static void sctp_process_tx_chunk(struct sctp_association *asoc,
++				  struct sctp_chunk *chunk, bool clear,
++				  void (*cb)(struct sctp_chunk *))
++{
++	if ((clear && asoc->base.sk == chunk->skb->sk) ||
++	    (!clear && asoc->base.sk != chunk->skb->sk))
++		cb(chunk);
+ }
+ 
+ #define traverse_and_process()	\
+@@ -165,17 +180,14 @@ do {				\
+ 	msg = chunk->msg;	\
+ 	if (msg == prev_msg)	\
+ 		continue;	\
+-	list_for_each_entry(c, &msg->chunks, frag_list) {	\
+-		if ((clear && asoc->base.sk == c->skb->sk) ||	\
+-		    (!clear && asoc->base.sk != c->skb->sk))	\
+-			cb(c);	\
+-	}			\
++	list_for_each_entry(c, &msg->chunks, frag_list)	\
++		sctp_process_tx_chunk(asoc, c, clear, cb);	\
+ 	prev_msg = msg;		\
+ } while (0)
+ 
+-static void sctp_for_each_tx_datachunk(struct sctp_association *asoc,
+-				       bool clear,
+-				       void (*cb)(struct sctp_chunk *))
++static void sctp_for_each_tx_chunk(struct sctp_association *asoc,
++				   bool clear,
++				   void (*cb)(struct sctp_chunk *))
+ 
+ {
+ 	struct sctp_datamsg *msg, *prev_msg = NULL;
+@@ -198,6 +210,21 @@ static void sctp_for_each_tx_datachunk(struct sctp_association *asoc,
+ 
+ 	list_for_each_entry(chunk, &q->out_chunk_list, list)
+ 		traverse_and_process();
++
++	list_for_each_entry(chunk, &q->control_chunk_list, list)
++		sctp_process_tx_chunk(asoc, chunk, clear, cb);
++
++	list_for_each_entry(chunk, &asoc->asconf_ack_list, transmitted_list)
++		sctp_process_tx_chunk(asoc, chunk, clear, cb);
++
++	list_for_each_entry(chunk, &asoc->addip_chunk_list, list)
++		sctp_process_tx_chunk(asoc, chunk, clear, cb);
++
++	if (asoc->strreset_chunk)
++		sctp_process_tx_chunk(asoc, asoc->strreset_chunk, clear, cb);
++
++	if (asoc->addip_last_asconf)
++		sctp_process_tx_chunk(asoc, asoc->addip_last_asconf, clear, cb);
+ }
+ 
+ static void sctp_for_each_rx_skb(struct sctp_association *asoc, struct sock *sk,
+@@ -9640,9 +9667,9 @@ static int sctp_sock_migrate(struct sock *oldsk, struct sock *newsk,
+ 	 * paths won't try to lock it and then oldsk.
+ 	 */
+ 	lock_sock_nested(newsk, SINGLE_DEPTH_NESTING);
+-	sctp_for_each_tx_datachunk(assoc, true, sctp_clear_owner_w);
++	sctp_for_each_tx_chunk(assoc, true, sctp_clear_owner_w);
+ 	sctp_assoc_migrate(assoc, newsk);
+-	sctp_for_each_tx_datachunk(assoc, false, sctp_set_owner_w_migrate);
++	sctp_for_each_tx_chunk(assoc, false, sctp_set_owner_w_migrate);
+ 
+ 	/* If the association on the newsk is already closed before accept()
+ 	 * is called, set RCV_SHUTDOWN flag.
 -- 
-2.34.1
+2.55.0
 
