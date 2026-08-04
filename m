@@ -1,123 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BEE43CE47;
-	Tue,  4 Aug 2026 09:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50C543BDAC
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 09:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785834957; cv=none; b=NAF4ZlgtUTlJC13cZlTv4vsnBvPtQRAtygpqMJF7tosYmvzkG0MtqsuXbmcH9jIahAnNCsyXHENtgCfUd7LoCz62HpJnPSCodO4ERIbZ2cysw9hIcGW8sMEMVB9wBep9DXRA9JBegQVgpRtb0cvFIYleMbgXkypUnnrOZ3MPp9A=
+	t=1785835635; cv=none; b=ZBT8mAJIgYI8EwG1qiSykoJ0DZgRWIVUd+LLdV2PFQUa3jPNnMIy4mNagqZl/A79uHovr1jbYiB2XYlvywU/n8JToC/ycMwhZRmmOUGpYa+BQmAMScrrUF+gWG8c4kBnkfFjs9ryFFTvr26VPtWIzlIYSrztGAfRjQBi7vOcdvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785834957; c=relaxed/simple;
-	bh=N+8lOiPK/zx1hLf2lsaNjsg7FWoUVWAFnoajIOzPEio=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a3zft1UXDlJFlhkFtTplvXrBki7JeTpZiNRbMcXAynKPiGdN2Ju7oB2pm1iZymq1JTaONf2+xDlI25KGXtxjDQx1aDmoFyF9ncLhi077N0qbyMIdnJa/sywhHsUnMdagbyk6JkRaBoj8JejZ3pCJ/W2PusdJIT29BoLk64To+O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IP77FCNl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785835635; c=relaxed/simple;
+	bh=skB/VTMTVWUWweeYibtmz/vwh56rk9b9WsCTp4BOFYo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QyoD8fhr8/Pukc8h6zZs8oyyIZZWCqf7ta/aJS1K7pMhRBr56mV8Fgqr7lvGkB+Cgnpqk0b8098++1G9Jyhk8vw6RBjXrkggpHFz6QH2EedHACQowBbYtmn8Hc7cjmfK7LX6flkvz9bXmU2RBAtSTMz1eY1ivGDngxAXT86I/p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Go52nQ7X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Yb6JF4gi; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IP77FCNl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 950531F000E9;
-	Tue,  4 Aug 2026 09:15:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785834956;
-	bh=N+8lOiPK/zx1hLf2lsaNjsg7FWoUVWAFnoajIOzPEio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IP77FCNlujLEZJxBpA1To4wJJrfrBZJ8ili1VbgkD0dIE4al2SH744rzn1B1gnBs7
-	 nHD57ielGtxCer28m/Dql3HHTnvjClXL0hBR/e857l5RxOizXFJUTsC+zADB9xZy9z
-	 /q/DVrR/gmGLGhtv8qg2wcI4dNOtEz08s7c0+SC9PcYcsleZASCMErq0ly4YnRdcR4
-	 D1gzK3hp08iT3hWMOoyEO2BSJeue4dZRe5YVxMpZloQLYvExBY2MePtqX4lxiBV4+7
-	 hHvIyQ3Y8gtccpOrnCGjyv83CkwKn6AfmJeUoJgTwRr3xXUqEeLqCfBRaMDENillRJ
-	 Od7C64eOAXJTg==
-Date: Tue, 4 Aug 2026 10:15:36 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, akpm@linux-foundation.org, 
-	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, arve@android.com, 
-	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] binder: Make shrinker rely solely on per-VMA lock
-Message-ID: <anGtsbfmlJ-HmpkZ@lucifer>
-References: <20260802215459.2769283-1-surenb@google.com>
- <20260802215459.2769283-3-surenb@google.com>
- <anBj40CVAhcGMnQ4@google.com>
- <anByayBh6Ed2bXox@lucifer>
- <CAJuCfpFTqK0jkhm6FQ8Q7DrPG+VSeKufV4Wyny-a3bDi-7R-iw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Go52nQ7X";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Yb6JF4gi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785835628;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PNJ/sXRmHkTmqxpE76MJtCuijUeyDT/yfL/oohXB45Y=;
+	b=Go52nQ7XTbCNrceaPL9IQOBOp8TnSFBMlN0VkLt+FjGEO9WWfrLENDPOfmTtuF7YAsmCZX
+	bJUWUwI291m6xVlNzH3kavK1/8K23UKR7SRAJ7DGAE3lKn08fiNAWIjP4kIZQHHI8jKnp5
+	5x9l0gf5gvVcwN7WPriEmzSxwBmVXhI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-216-kdcy8n0pPS6MChY3ratoGw-1; Tue, 04 Aug 2026 05:27:02 -0400
+X-MC-Unique: kdcy8n0pPS6MChY3ratoGw-1
+X-Mimecast-MFC-AGG-ID: kdcy8n0pPS6MChY3ratoGw_1785835621
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49561facb1dso20116345e9.3
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 02:27:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785835621; x=1786440421; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PNJ/sXRmHkTmqxpE76MJtCuijUeyDT/yfL/oohXB45Y=;
+        b=Yb6JF4giNJ5nuF2X+uHuBqhlymBhBSOanPAQwviLafHEO1dHhPCcPlqoaOzdXgrwnK
+         B+ubcHJlSQ03C+4+bI03+OQ7bqIGGm/xGCcyYeclvZoUXHk0LHnt+ahAPJ/M8R7OBlQG
+         NZoPvLv/MsIbqAcjWE9mPVCBJatC55KpoRPKriRyLIOhSv3M59tl80uwBv6+yc0TZYdR
+         zNsusKApAdDd0deiucNbcDXpLfbAdoRXKW4c5nuSgMregtnUn0pOITvn/jm2ImXwFIRm
+         rC5PlU8SfiHxmuSne5Aj2o/mtf44bSoNOGgQbTzpJ/S3CqNKcBoRIlldRWrMEOmMmRm8
+         cfcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785835621; x=1786440421;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PNJ/sXRmHkTmqxpE76MJtCuijUeyDT/yfL/oohXB45Y=;
+        b=a38btu/Dg3HGIhOisa0HFjbV5M27OzJ6FKwhjc90HMdTJO63bV8dPREdX6QsRlmcg9
+         JUsAtesUx5qwoeVAn/AoCSncNn+bbXwXdb0xSOlmEqkMJGREE5j87dqdDshrFnPfFVEj
+         mg/+jb1ZX4FzPxAsNirffI8pLl+pPkf39MDf+UC1GliuoKprfsdEelSGho5c485xoHr7
+         5KG6XXgTDPHdaG6nJgcShnyROu8nNuJjb34Ce4Nrfv1u8Nr7i7t6NviqW6BJvzV1wW4f
+         mbi2uEhAWmUIEODUalDzSWqag7F7YsMEhu03aXBwvS3t0oaaSq2aLxMi+GoIZdwoi02I
+         h4/w==
+X-Forwarded-Encrypted: i=1; AHgh+Rp49BMpGA1xSRFhbtdjx6MAQXozogmCfn9UlAYvp6iRVKE6qF+os4Ii5Hj63gj4bblTp3VwvtY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsJmWRwKXTMhtppKBawmGcX5yDaA17HD1dPW9eJkVhfsPD/WFJ
+	C0O3HFwu2HmS5PBTxHfHtNRwZEmOP9cmCGYag2w4BcAwB2NYeCtN6JYwoX9vVSQI1kx1A7xkyXJ
+	rxQrOuCl3UTreQNpXx3XxvOmGgbmWrk6geQSSj9RERiAbc9R8bsbqoRtW1w==
+X-Gm-Gg: AR+sD110Lzhrfc8ezVrsaxTazUNJDkIYabpwp6UbRjZ3/xgI60Aen0vVENg+8IRVyGb
+	SaYxG2cBVLW3qhQP1ZlIDxBill3i/tBWceNi6xZkqjS9X9yspUN3Rz980WF6sDd0+GI93bvDPhR
+	5OyzalKEY+iZx8EGnY+1+2kMg8nqA+O7/CH9vTx/L5KJgVWkvtosMUIfm96WJ4xpyHgaCN4AXny
+	kFTzfoLpZ9PtMo0UHpyD5Y9htFXy4DCxsSfq0+rri4r8LvGQMSohBDXYCcMtAj0Txa1n7bNfHNp
+	evDcbAu8lkyLF3WvoEGP1Pd7Xm72ziYNvrWhClLhqMUBZRUNn4lEdXjEyaCsXcp2wCR/HefCrr8
+	VlVFAjVvrEr1IgNYxIuPXzgbUxo33Ow4Ug8B6M8bTu1+H+2yWnK1KlIQtqrO0CajhMcbkTmN/+E
+	M=
+X-Received: by 2002:a05:600c:811b:b0:495:6934:414c with SMTP id 5b1f17b1804b1-4980c696c7emr309462225e9.19.1785835620730;
+        Tue, 04 Aug 2026 02:27:00 -0700 (PDT)
+X-Received: by 2002:a05:600c:811b:b0:495:6934:414c with SMTP id 5b1f17b1804b1-4980c696c7emr309461645e9.19.1785835620292;
+        Tue, 04 Aug 2026 02:27:00 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994a0f7bf4sm69568615e9.11.2026.08.04.02.26.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Aug 2026 02:26:59 -0700 (PDT)
+Message-ID: <6a2958d9-5d16-404a-ac02-21940e90162d@redhat.com>
+Date: Tue, 4 Aug 2026 11:26:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpFTqK0jkhm6FQ8Q7DrPG+VSeKufV4Wyny-a3bDi-7R-iw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] vsock: use sock_error() to consume sk_err after a
+ failed connect
+To: phind.uet@gmail.com, Stefano Garzarella <sgarzare@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Andy King <acking@vmware.com>, George Zhang <georgezhang@vmware.com>,
+ Dmitry Torokhov <dtor@vmware.com>
+Cc: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
+ Wupeng Ma <mawupeng1@huawei.com>, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260730081843.287563-1-phind.uet@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260730081843.287563-1-phind.uet@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 03, 2026 at 11:02:06AM -0700, Suren Baghdasaryan wrote:
-> On Mon, Aug 3, 2026 at 3:50 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> >
-> > On Mon, Aug 03, 2026 at 09:48:19AM +0000, Alice Ryhl wrote:
-> > > On Sun, Aug 02, 2026 at 02:54:56PM -0700, Suren Baghdasaryan wrote:
-> > > > From: Dave Hansen <dave.hansen@linux.intel.com>
-> > > >
-> > > > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
-> > > > it and mmap_read_trylock().
-> > > >
-> > > > Long Version:
-> > > >
-> > > > == Background ==
-> > > >
-> > > > Historically, binder used an mmap_read_trylock() in its shrinker code.
-> > > > This ensures that reclaim is not blocked on an mmap_lock. Commit
-> > > > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-> > > > support for the per-VMA lock, but left mmap_read_trylock() as a
-> > > > fallback.
-> > > >
-> > > > This was presumably because the per-VMA locking can fail for several
-> > > > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
-> > > > to mmap_read_trylock().
-> > > >
-> > > > == Problem ==
-> > > >
-> > > > The fallback is not worth the complexity here. lock_vma_under_rcu() is
-> > > > essentially already a non-blocking trylock. The main reason it fails
-> > > > is also the reason mmap_read_trylock() fails: something is holding
-> > > > mmap_write_lock().
-> > > >
-> > > > The only remedy for a collision with mmap_write_lock() is to wait,
-> > > > which this code can not do. So the "fallback" after
-> > > > lock_vma_under_rcu() failure is not really a fallback: it is really
-> > > > likely to just be retrying in vain. That retry in an of itself isn't
-> > > > horrible. But it adds complexity.
-> > > >
-> > > > == Solution ==
-> > > >
-> > > > Now that per-VMA locks are universally available, lock_vma_under_rcu()
-> > > > will not persistently fail. Rely on it alone and simplify the code.
-> > > >
-> > > > Full disclosure: I originally tried to do this with
-> > > > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
-> > > > trylock semantics. Claude caught this in a review and suggested the
-> > > > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
-> > > > I guess.
-> > > >
-> > > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > >
-> > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> >
-> > Is there anything on the rust side that needs to be changed also?
->
-> No. I think the corresponding function is rust_shrink_free_page() and
-> it does not have mmap_fallback logic. IIUC, it just returns LRU_SKIP
-> on failure.
 
-OK great thanks :)
 
->
-> >
-> > --
-> > Cheers, Lorenzo
+On 7/30/26 10:18 AM, phind.uet@gmail.com wrote:
+> From: Nguyen Dinh Phi <phind.uet@gmail.com>
+> 
+> Syzbot report an issue which can be reproduced with these steps:
+> 
+>    r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>    bind(r0, {VMADDR_CID_ANY, PORT})
+>    connect(r0, {VMADDR_CID_LOCAL, PORT})   -> -1, EPROTO  (self-connect)
+>    listen(r0, backlog)                     -> 0
+>    r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>    connect(r1, {VMADDR_CID_LOCAL, PORT})   -> 0
+>    accept(r0)                              -> -1, EPROTO  (stale sk_err)
+> 
+> Basically, it creates a socket (r0) and triggers a self-connect after
+> binding it. This self-connect fails with EPROTO because it loops back to
+> r0 while the socket is still in the TCP_SYN_SENT state, causing it to be
+> incorrectly dispatched to the connecting-client path. The unexpected
+> packet type encountered there sets sk_err to EPROTO.
+> 
+> After that, it invokes a listen() call on the same socket. This listen()
+> call succeeds because the kernel's listening path never inspects or
+> clears sk_err. Then, a new socket (r1) is created as a normal client and
+> connects to r0. However, vsock_accept() rejects this incoming connection
+> because the listener's sk_err still holds the EPROTO error from the
+> earlier failed self-connect.
+> 
+> This rejection causes the child socket created for r1's connection to
+> never be freed on virtio or hyperv transports; only the VMCI transport
+> implements pending_work to revisit and clean up a rejected socket
+> 
+> Fix the issue by using sock_error() to read the sk_err to prevent the
+> rejection branch from occurring  in this scenario.
+> 
+> sock_error() atomically reads and clears sk_err, ensuring the error is
+> consumed when vsock_connect() returns and cannot affect subsequent
+> operations on the same socket. This matches the established pattern
+> used by other protocol connect() implementations in the network
+> stack like __inet_stream_connect(), tipc_wait_for_connect()...
+> 
+> Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+> Fixes: d021c344051af ("VSOCK: Introduce VM Sockets")
+> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+> Tested-by: Wupeng Ma <mawupeng1@huawei.com>
+Sashiko nipa points out that the race still exits:
 
---
-Cheers, Lorenzo
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260730081843.287563-1-phind.uet%40gmail.com
+
+/P
+
