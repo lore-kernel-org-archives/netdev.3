@@ -1,206 +1,163 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010059.outbound.protection.outlook.com [52.101.46.59])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1A93E558E;
-	Tue,  4 Aug 2026 08:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785831847; cv=fail; b=Yi8tgdiVEXIhoalF6KCbeqBZeWf6ueD2A/YIsYvAh8TBXk6uizmdDiVlk/n7ujT+fUoxxTBs2Arf2SBKr0zuWNqKgUGEt5tPYeVqHrYQQV6PorLUEk2z5RaYQXGFmNbMvGFoRKUGUAF0lo3CbAEh6eQafmW0C3sHjvdGVpXeOzo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785831847; c=relaxed/simple;
-	bh=5kI31accWe/8EyL/sAnoolMwvxfUGIQQk8SgwMgSYkc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=sgLx59li4tnXILQ6M9BYuf1A0s/dEq8A0ip0vevbuiZ73gTaB7xJlQZX3hBKCD/ju45Bfp4Xs4mm9KGD4fsFIzhYCFY+w8DkSoJAgs6P1JpUF8wNyUJxxeC/7BeyAmbWeVXpqmxk2IgkATNB7gLvHSCCEpM3KxzK4DBAPnffOPk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IAKqjala; arc=fail smtp.client-ip=52.101.46.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A981743B6CE;
+	Tue,  4 Aug 2026 08:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785832105; cv=none; b=JF9njeBCF+03WJWt1PUqBf/DUToRYpQo9IUgJx8PuHveB3XXZfdGZsPBNff+3ulcHaclb7B+F5OU7TtJ7fMt+RmeIH2Rw2VALJThujW+7sgmsKEcUFow4vOhdFnpRGsWuqHyxMzlsJkysSLr4YgcNqXHimeBCMcAKhgu8thAA/s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785832105; c=relaxed/simple;
+	bh=upXELchte961i1B5LCMRw3HKSrJ3ve0mw525dlsYJeU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qiPj9Hffw9N7i1mHtN1ISqoVG2NNIhtkXL07ZutsaMoI4cqZ9ca9GmEJHJ5NfR8p6gW5Yytpj9rQCgt+fDj3srFv/MMo3Q5eLk+b64M/R5hRbnRBw9Z/+oAA8+doe3uR+dbJxtb30gsRYm36fsIYMytfs3u5/oqYpuL2JHrVZYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mXntV2cH; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IAKqjala"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HZHi/6/ZcKc7ueXbs6LpxOGfNb5EguMK68Vv7YYENYkW2Lx1gpbldU2Pf8OleVm7dJBJ+hcaSgKneflRg6v48zyQnrok29bO463N6XPOSM9vpMgRdL1O+q1dQZe2qW6HYqePEpmUrfwSePz3LAz8P2wHq8HI3ojcU95zPCw8jEOCKfj2svNtBxEhzQ/oRlqybd7QhinY4ICHaXw/aVI6XzpxMtJOXNlIHV1okjUGejnAPM1ra+Ogu6KsIweOrwVZKEpj9T6bLDDT4/tUEiYcdNuLtlGLVFrkhkDii4ycXYoR2uACJ42IcupQBzedj9f5/bFpDtuUN249NgCL+n3FDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wvdrmateK7pio8Cr3bWXjEv634ZNsIViiPMZOD4NQbQ=;
- b=tZLYQRB3xCzWumdTY/j9/So0dQcoBZHWx7VY88SCW3TrJBJVK4HRwhwsJ16zgmvsQ79aPJQPLGPBCL15KUdbA1Phbm1CXvnG8mtKZAc4ox9nsfens6HuJv7uqkwI68hDIigPZz849S5oJTJG2qoAU+tpfHPe65fDqawRqgGUa+vp2vdbDwBsDq9++nxt7HS1C5w8nvmad7pAp991YWFr0b6R+NwE57Qgsbv247xv6gpMIUyd1zmmRcgRV0N9m7+0eN3+BChJjdUgWDhgm+ybUe7eYom1M7BuBtDFnRA1G5+suQQUDj59Q+Wc/y8zjrzHrLqVve8S4gE663K4uKMNww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wvdrmateK7pio8Cr3bWXjEv634ZNsIViiPMZOD4NQbQ=;
- b=IAKqjalaS1MDHubYuy4HzqGITKxMrjK1XbrXst2Et5nEtxvWSQpTkBSj3q9Z2yuoP3fExRbVrA/5saQ441/MsLE71NPK/zvUdugpy2kqb/p3txld4BMFQLVpnt17G0uOrvD5GFkQMwKR87myzzLjtFWW5Po2cMk8hbOmaKZCZ2By5R6UvEqT0tCAXYs9Pep3UTUq56FyhKABVEQa4efY9111a3gev0rjnM2ii1IFdUf9MlIV9C2ZwKih4y6PWKrAWQZVaEmh4XDXVjF4eRULR/bxhQywCQhPw0BxLm9a3qZAps+1dcXkQ9MxSfdN7XbU8pV0ZvHvfIY/IjFnebUteQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW6PR12MB7086.namprd12.prod.outlook.com (2603:10b6:303:238::20)
- by PH0PR12MB8128.namprd12.prod.outlook.com (2603:10b6:510:294::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Tue, 4 Aug
- 2026 08:24:00 +0000
-Received: from MW6PR12MB7086.namprd12.prod.outlook.com
- ([fe80::4eb8:7fcb:fe8d:e95e]) by MW6PR12MB7086.namprd12.prod.outlook.com
- ([fe80::4eb8:7fcb:fe8d:e95e%6]) with mapi id 15.21.0270.017; Tue, 4 Aug 2026
- 08:24:00 +0000
-Message-ID: <6ac643bf-c6f4-4ff2-ba57-964a645d9323@nvidia.com>
-Date: Tue, 4 Aug 2026 11:23:53 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] net/mlx5e: fix BQL reset on SQ re-activation
-To: Bobby Eshleman <bobbyeshleman@gmail.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Dragos Tatulea <dtatulea@nvidia.com>, Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, Bobby Eshleman <bobbyeshleman@meta.com>
-References: <20260803-mlx5-bql-v3-1-a30d4c66fe1d@meta.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <20260803-mlx5-bql-v3-1-a30d4c66fe1d@meta.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0011.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c8::8) To MW6PR12MB7086.namprd12.prod.outlook.com
- (2603:10b6:303:238::20)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mXntV2cH"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6748IAoK2641931;
+	Tue, 4 Aug 2026 08:28:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=gwxiBwgSXoZcJs8DyireIoJ0S6YjdPJ6t3DLJK8L7
+	Uk=; b=mXntV2cHztcbWem8OUdAF7HlCR/HNQ3lYVGXemQDN6XVDjgBVf5828RdO
+	ABGYs35EAyI7u6DHJk07vGyVhrJxdacyoG9B51hd2F9YBMj+EO8EBlO2wCignx17
+	4DZjDa2ZRIx6gEkqUqIJA84XSLYmkIJUWyr5TxvklqqbsfL0cIhUI5vWWswGN7aQ
+	OIQZTxLUkeqNrG54A3s5sibv9kWb/n+1RWpYnEEYUwEkxZYykdRDRowaswU3B3KX
+	+SVVpbU3QFpENVYUNHi9OJyEkN2PTfQYsaFHXJbAXksTd+v/Y7uFei/cEt/gshCh
+	7XjmVFbwbgHUrhWnvDl+dl6I+RP1w==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqmv1b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 08:28:06 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6748QQlA009928;
+	Tue, 4 Aug 2026 08:28:05 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsv4k14fh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 08:28:04 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6748S0QX28836336
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 08:28:01 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D947020043;
+	Tue,  4 Aug 2026 08:28:00 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A613B20040;
+	Tue,  4 Aug 2026 08:28:00 +0000 (GMT)
+Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Aug 2026 08:28:00 +0000 (GMT)
+From: Hidayath Khan <hidayath@linux.ibm.com>
+To: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
+        sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch
+Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        horms@kernel.org, pasic@linux.ibm.com, hidayath@linux.ibm.com,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH net] net/smc: fix socket refcount leak in smc_switch_conns()
+Date: Tue,  4 Aug 2026 10:28:00 +0200
+Message-ID: <20260804082800.498672-1-hidayath@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR12MB7086:EE_|PH0PR12MB8128:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91e4d46f-a7bb-4848-0f2b-08def201bc13
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|23010399003|921020|18002099003|22082099003|11063799006|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	RxlNr5mNDnTAagQvMcN3RH3u7gFkc6UrHaVRiaK2NB6HSQiPQzPFPmYwjxepbTr0C83VG7cJuwbo2+JkByw0VK5conbYg4K/v6Tb/+YFXuYwdsTiGTbFvGwt9GawCRTapj7dEFZecvBNzNhc/ZFWr0rYJGy37mDOtnm63ybZpIG1B2Mg9ceB7gF+hinyUjvaOwadwjP2TH/JShH8Gj7j5rs6aNWh2m2w19YMZwGYyhbxW0VfTx251wnOR/YtDZDhx6vGq2UB1jISh3y6yjuH/uu1nhHb2sXJmxT+uQjUYdeiA8DAfELzvUjsejVZZGUFXdVxS+kEFlbBnnTwsNlo8ZLK/s8q0/aC4+XdpcSWiImRq5kMrwEmTce2IeCIotK7L8HUcklVSti9vvUpcrTlWrwmxg7xco+EzNFnrYaoYXsPHt/DxuFJbjSpmSpfV6jsJfWJIM+dCOhooxMhjfrabKxQxFapCGBATA0Q3Bupy9mMAN05DknKa8MprRFqzhqOrV5d44hIcof09McCXiNiOuCsSTTBzdvadPizfdsYi7O+urrgKg8BtFGP0kkzybUrM7mXuPX4+XTL/R0I2mx0xr/2uh4/lWMBXiul7ZukiYvLPcCenQURrVtTnUJ78S6o6Jt15YdpSvGcUOQ8ZFu4Tcz41F7Kkxvgt3rOgEV34PHL9O8E8abznlcob8frsR4Jr7vWOBuXUR+n0fk+MZYDjQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB7086.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(23010399003)(921020)(18002099003)(22082099003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZG1UVUhRdUd5R3RNZzFCcmN1S3QvTmMxWWV2RmJGM2xMNElLeDhTcSthNjQ2?=
- =?utf-8?B?U2d3emVDU0tLd0ltY0lNUlJrN1dUbUZsMW53aDU5WWlvc1AzVFRHNlphK3I4?=
- =?utf-8?B?QW9JdGFSdUdER3lNdE5tbjU3dmtQTDQrZXgxTWZvNk5JWXdLaHJIWi9CWTZP?=
- =?utf-8?B?VWZ6M0V5VjB2TngvejBhU285UXZjOTZPcnJMZWl0dElKZW9tdDRnY3JCRHpS?=
- =?utf-8?B?eVBjOVFtS3NhVHQ3UG1OcUJuVFRLa1JydGszMFVNT2RwMlVSbHIvdW1RK0Yr?=
- =?utf-8?B?MzduOHNqWHNRRStMK2I3Y3orOEQ0K0R5WHc4MjNRVDdxaWdjUmNkN3dlSDBq?=
- =?utf-8?B?OWtNVVRMUUNBMjgwaWNGN0FtOWNiRzRxYXZjdlhEaDVwWGpKTHUyM045aldp?=
- =?utf-8?B?cTdpdVNpQTNCUmVha0FHdHVuTDdTdXMvSzNFaEYxcU4wK3NEalh4RkFpRHZL?=
- =?utf-8?B?cFAvQjY3dlQvdzRyR1ZxVHVTdDBOWGhPRTNPV004aXMyZEtjT3czQTdPRnV1?=
- =?utf-8?B?WW9BODNPOU5zQVovSW9QTmlqMFFid1FKWVdCdWFEdVJiVGZBKzFiNm9oRHRM?=
- =?utf-8?B?VUJzZEhYa29aUTl5bW1TdU91d3FsK1RQeEo1YitLcHlFNVI4bTYvSDM2c2Rz?=
- =?utf-8?B?ckpNZFQwT0JXZnA1UXR6N1JhaFZ6Vjd2OVJjbkVnK2xSRm1Xa2RGK1Qyay9J?=
- =?utf-8?B?dnU2Z201K25sVUlTaU5wM3FxR3o2UCtpdEQrVFd3SEJlSXpaZ3ZtN2dETFlY?=
- =?utf-8?B?NUVNVFg5N3Q3L3ZMcXlhT2RtTmw1elk0TkE3bnJkRHJ6YjhQbGIvaXhnelM0?=
- =?utf-8?B?cnJYSTZqMlRsYWVHNG5yNERPa1VtWExvRDhBcXRGaUtnelNRY2NCL2FZdDVp?=
- =?utf-8?B?NlZ1dkNBMWVGWFNwTkJGWS9TaDFIeCthcXA3RTVDeldQRDRDc0hwWDlFL3h4?=
- =?utf-8?B?R3pBRkpMZDV2cTJsMlJvTXluQ1hlRUVTb0NFZVBMaW4wN3JORTRIbTF2MFgw?=
- =?utf-8?B?OHJTVGUxQXUzUXBGY1htaVRHR0FwcFhreExDM3RXb1RrVDR5ekFlUEcxdENL?=
- =?utf-8?B?SDFhSVVuNkdabUltU1Z6eTE5YzJLQ01zK2Q2RUJoQnFNdFdBTTVWQzJISUZt?=
- =?utf-8?B?OS9tZjcxM3NERlhJYXAybmQ4a0lPdXlKNll2SmJCb3BCemIxaXNPb2VKS3N1?=
- =?utf-8?B?UTBkMnR2aW0wc3lPMCtoYTFGMnlBRUdJa1B4RHFmMkNkSlRZZ3YzM21sSjZm?=
- =?utf-8?B?ekxQcGFhbGpqeWFOY1ppcHBId3RSV3loVFF6RVk3TWYwU05zK1pWakpEMnM4?=
- =?utf-8?B?R0NHalFBYVpqTEg3MFppdGdYVDZNQ3dJVDhQLy9ZL0NJc1BNMEZocm1xeFV6?=
- =?utf-8?B?UEpZcUxSUllpbllybVIzWGErcXk4WmZqTFd3RVJPOS9iVHJpemgvODl1eDlv?=
- =?utf-8?B?M2NtNUJmRUFpQTFmTTl2OEVrY2ZsRlprNExQSTZaTmxhcU42a2xiam80UnhZ?=
- =?utf-8?B?RXJMQjBMU0hqQU1XY0tIcllqWHJ3dVlYelBpRmtpTnQvaEZzYXVjZlpYS0tw?=
- =?utf-8?B?TDRDaVhXcWNJdGJIQzMzZm9HK3ZnMFUrOS9XdFZCeGt4MzVIYUg1VXl4QVJJ?=
- =?utf-8?B?MjlrR3dlL3diTnVOSU5ZREJVR21UWEpHdXNCL1RyeG1lM2oyZlR4c3JFN0g0?=
- =?utf-8?B?ajdxRzAvbnpaNi9LWkZuU3lyOHhWaForZFoyRW9GNE1FVTM1dUUrT0xGUWww?=
- =?utf-8?B?U3FVb1RDUWFDWlNHMWdObUd3eGpnS0lVRzMyOWphR2tpTVc2V3R1M0NINXh4?=
- =?utf-8?B?WVV3MVlnS1FCZGV4b1Y4eG02SWVCT3hVbDBGMlZVeGcxQzRGNC93eHFIelpk?=
- =?utf-8?B?dnkxcnVBbmtWTG9peWlnSy9nbUhOQXdzdFRHQUdBTVhYYmxVTDdaU0dabyto?=
- =?utf-8?B?TE43VkNmeXE3VVF1cWpEUmF1ekN4NmlxYlQ1Zkh0L2M5ZEFBZ3J3TjFoQUJT?=
- =?utf-8?B?WW5GU2thN1I0YzhSbERWTHNCR1dMemNURXQ2aU1aNGZGMEd3NXJsMGdRdDJV?=
- =?utf-8?B?dFlqY013K29WZVZrSUZWUmd2VjA2Um1BNUhqalN6N1loVjZCU2htdENmN1JE?=
- =?utf-8?B?MlVJbkMyT0grYWpCU3ByTm9wRDVtTkh5cStsRXJkbUJtWk1ySzYrWGczeVRh?=
- =?utf-8?B?czF2YTRySUdPNkVYeW5lWUNRbUx0VFN4K0U4MmF1N1lOdEZJMzZDRkJFZ01y?=
- =?utf-8?B?SnZtUzczV3kyREI2OThtbEM0dEdGdVh6MENscVR1ZXhyZUVsbnNZUlZmY2Zs?=
- =?utf-8?B?SFlGazU3MG50ZzQ4b1pVakpLUDNVQjBqYkx6ajdwSS9tK3JQWXBhZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91e4d46f-a7bb-4848-0f2b-08def201bc13
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB7086.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 08:24:00.0767
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OTvZUA8hdRHwM5Wxw6BgxAmLPwKvFuOZFIWy1s2NyGNCDosMEGoLvR/ln/j38ZSI7+H9F8WJWX0eJyg34TpFZg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8128
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: IjvAAhz18_gPhiZFpPeVhnM70ceXBTgk
+X-Proofpoint-ORIG-GUID: WcIJt3RnmNTDjD3Yt3xlRNhNuZlKpNzf
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDA2NCBTYWx0ZWRfX/vSMt2VCdLXc
+ zuGIisBx+qAaHxVmtTsktVrMlBhem9ti+WNg9UtBy9PoxKZPEson2sVDVJh4qXGaPLS7mas9oFg
+ 7KYsChkdQjx9gwGevwqXwWtMmwFWMH8=
+X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a71a296 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=QgwSWOpKMeOadBk2rDcA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDA2NCBTYWx0ZWRfX7YXV+r1rNCdJ
+ VAUsUOKPAGTpVqCgkZzQWwfO8euSxfhrKADdrn1Mx1f7pLht6BaJLAytP62AnRUPnLYay6P4Kks
+ 6AqyXNruPgrYn1uC3S0M80q3CoZ1kZZTVQ0DqHxaERPBplyBRk7Dbl5Vro/2IkgbQaul2oK/+0b
+ RsyoFOHcpXU0tzTtnKNfgQFLZlpQ3Wa4Zv9jmVtU+lka+jRUzwpDvFSHCh+Cd0brwSwDlsFTQx1
+ /r4sOlmeHiJLLGLcJ/wbBNnlFFxuvW4O27dZT0JBaaguEaeFjTfc/nEhwQ0x+XMVxyik/EravH2
+ 0MJeZLzDyTx9C35oDMNIWKahS+qghNA+qSrJeBYE5uX6w1WKsr+yoFlBwjZfxMI7op1PfT/r6p+
+ /fI3bF1ihsemVBIpwkXFZfm5H6VD7rIPiId3egsQEAp1pMKq8/3Q+nsNIwAHvHp1Mig41JPhPhW
+ gmWNrQgZJRAu1WYEjpA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_02,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040064
 
+smc_switch_conns() takes a reference on the SMC socket before dropping
+lgr->conns_lock, so the connection stays alive while the CDC slot is
+fetched:
 
+        sock_hold(&smc->sk);
+        read_unlock_bh(&lgr->conns_lock);
+        /* pre-fetch buffer outside of send_lock, might sleep */
+        rc = smc_cdc_get_free_slot(conn, to_lnk, &wr_buf, NULL, &pend);
+        if (rc)
+                goto err_out;
 
-On 04/08/2026 2:47, Bobby Eshleman wrote:
-> From: Bobby Eshleman <bobbyeshleman@meta.com>
-> 
-> mlx5e_queue_start() deactivates and re-activates all channels but closes
-> only the queue being restarted. mlx5e_activate_txqsq() then
-> unconditionally calls netdev_tx_reset_queue(), zeroing the BQL counters
-> of channels that kept their in-flight TX WQEs. The next completion then
-> over-charges and trips the BUG_ON() in dql_completed():
-> 
->    kernel BUG at lib/dynamic_queue_limits.c:99!
->    RIP: 0010:dql_completed+0x23d/0x280
->    Call Trace:
->     <IRQ>
->     mlx5e_poll_tx_cq+0x668/0xa60
->     mlx5e_napi_poll+0x5b/0x7b0
->     net_rx_action+0x15a/0x580
-> 
-> Reset BQL only when the SQ has no bytes in flight (sq->cc == sq->pc).
-> 
-> In the case that reset is skipped, the outstanding WQEs will eventually
-> complete and rebalance the dql. The dql->limit is carried across the
-> reset.
-> 
-> Fixes: b2588ea40ec9 ("net/mlx5e: Implement queue mgmt ops and single channel swap")
-> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+The err_out label only drops the wr_tx link reference, so this early exit
+returns without the matching sock_put().  The second error exit is not
+affected because sock_put() has already run by then:
 
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+        rc = smc_switch_cursor(smc, pend, wr_buf);
+        spin_unlock_bh(&conn->send_lock);
+        sock_put(&smc->sk);
+        if (rc)
+                goto err_out;
 
-Thanks.
+A leaked sk_refcnt means the smc_sock is never destroyed.  Its send and
+receive buffers stay allocated, and for a user socket the reference held
+on the network namespace is never released, so the netns can no longer be
+torn down.
 
-> ---
-> Changes in v3:
-> - Sample sq->cc/sq->pc before setting MLX5E_SQ_STATE_ENABLED, so a
->    concurrent mlx5e_poll_tx_cq() cannot un-charge BQL between the check
->    and netdev_tx_reset_queue() (Sashiko:
->    https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260729-mlx5-bql-v2-1-cdf285e586df@meta.com)
-> - Link to v2: https://lore.kernel.org/r/20260729-mlx5-bql-v2-1-cdf285e586df@meta.com
-> 
-> Changes in v2:
-> - remove misleading comment (Tariq)
-> - Link to v1: https://lore.kernel.org/r/20260728-mlx5-bql-v1-1-99a0ab77ede7@meta.com
-> ---
->   drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> index 7d47a1da8b6b..f0407a850ea8 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> @@ -1939,8 +1939,10 @@ int mlx5e_open_txqsq(struct mlx5e_channel *c, u32 tisn, int txq_ix,
->   void mlx5e_activate_txqsq(struct mlx5e_txqsq *sq)
->   {
->   	sq->txq = netdev_get_tx_queue(sq->netdev, sq->txq_ix);
-> +	/* Reset BQL only when the SQ has no bytes in flight. */
-> +	if (sq->cc == sq->pc)
-> +		netdev_tx_reset_queue(sq->txq);
->   	set_bit(MLX5E_SQ_STATE_ENABLED, &sq->state);
-> -	netdev_tx_reset_queue(sq->txq);
->   	netif_tx_start_queue(sq->txq);
->   	netif_queue_set_napi(sq->netdev, sq->txq_ix, NETDEV_QUEUE_TYPE_TX, sq->cq.napi);
->   }
-> 
-> ---
-> base-commit: d1000fd7995e51deec872d154e0a40d82f7a539f
-> change-id: 20260728-mlx5-bql-84e02a5a46c8
-> 
-> Best regards,
+smc_cdc_get_free_slot() fails when the target link goes down or when the
+connection has been killed while the switch is in progress.  Both are
+reachable during the link failover this function implements, so the leak
+is triggered by the same hardware events that make smc_switch_conns() run
+in the first place.
+
+Drop the reference on the early error path.
+
+Fixes: 95f7f3e7dc6b ("net/smc: improved fix wait on already cleared link")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+---
+ net/smc/smc_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index b4208cb186c5..c0027d2fe4e8 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1148,8 +1148,10 @@ struct smc_link *smc_switch_conns(struct smc_link_group *lgr,
+ 		read_unlock_bh(&lgr->conns_lock);
+ 		/* pre-fetch buffer outside of send_lock, might sleep */
+ 		rc = smc_cdc_get_free_slot(conn, to_lnk, &wr_buf, NULL, &pend);
+-		if (rc)
++		if (rc) {
++			sock_put(&smc->sk);
+ 			goto err_out;
++		}
+ 		/* avoid race with smcr_tx_sndbuf_nonempty() */
+ 		spin_lock_bh(&conn->send_lock);
+ 		smc_switch_link_and_count(conn, to_lnk);
+
+base-commit: e18c8f801a5aa6c1d26af3b359234f11c13ef2c0
+-- 
+2.52.0
 
