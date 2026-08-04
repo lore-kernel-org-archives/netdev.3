@@ -1,53 +1,72 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A17484226;
-	Tue,  4 Aug 2026 19:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC7F412C0C;
+	Tue,  4 Aug 2026 19:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785871604; cv=none; b=FX7JsMTPICIEN0XaU1ivv7Ds5DsHjIMlJGmvBww5CQsDvavql/x4W7Bkm7Fs9uJ52z2bn1qZMKsPvtwY2WJ0iWk7h0RnZypZWo3wgnZi+Fvs7nUEyWbUr6AKF4Y0B3EZ9aRyV27I5AsQZacG80K+XUwVvEDAxwnXp4xRMIhyaLE=
+	t=1785872673; cv=none; b=i5QeAE7D+NRytmRN7Hbtp2tA/zQOKinBL9WLxHPD4HJ9OLxMZUab0bk2MD4MP7dENgcOFi5A6iqSCjSwypAYHlI5cdKL/FC7p55/uGXnX5eiDtkv4TL8qQqI1C5z77EtYqr8JBLgu28OekT0ZIbwNT/lqg6zucZeIZUjxhGZ31I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785871604; c=relaxed/simple;
-	bh=rkIIfeTMLjZhN/6l5nIdY+rVhSMW/NkhEMyv9brdIT4=;
+	s=arc-20240116; t=1785872673; c=relaxed/simple;
+	bh=j3+K4h1wrpUIVVhL+z3lvViBQkniwHOhXJr+jcUmteI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iz5aVnXrikdh29OlhPcw7P/lXlyYo9DG7rRtnpL7ay+ukARhGFBV926QCb7y2iSfSouM0BNxiaTrlBYOJi9WTOyKviIy/1Co1f9afmy4PAxLz6xOWQm5g5aoLOve4MhnYLW6q0V9FGywRHkXZ4hq5gDhZLN+eKKMLAVbKVPqnxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Ct51M5DX; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=MyaWryVrg+CRx4nbctDUDONBrxLat3Fn3g2PL62n5VHX2S7S2X15xgX1eDVU8G2/GIygasIUpv7byjVB+Am7N/+0UAL1KBRNyar02q/Cthlu7CWhsVuru/ymGT8ICxonlq0DIgUZtf5m1VNvq4tVgvcNIntt5i+2+73TvJJIPRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=wZvbJyPQ; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Ct51M5DX"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wZvbJyPQ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0rGRx8OaJNzRAz1WOh3NNt3mZINuXm/v8BSSbIGxWRE=; b=Ct51M5DXYzZwqiaUq3vOl6E0Yu
-	nyFFkmbwUjXEEjJsqJTHVAirm/33GvlgwI1ttgkBUoOhJUmdrP+et7WndcCwkIktuioBAFyVOCUnE
-	LLE7alckuKRhcuOO1NjFYBqOGtX7Q+VlvPwkQCtQbgcfm/HIWdnYrquXRApByi1XPOik=;
+	bh=kfMWIjz06sn4XEVpzbsEA+MT9XMJpOofhYIonsVdqUE=; b=wZvbJyPQqM/v0df4gh/qeWP1AM
+	CNyjsrV0dEBeBzsN0EA5fVwLpZPkJo+Y0EWu4YFXyHaxDcMpuRQiLee31C3bIeAFsK3nlURlXVXhr
+	X72cTVsUzoTDdJ3AWJWQufHm4+Hr3DOWGy65GgA35/EnkzIEKx2GaU2ZI34FqoYhEELA=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wrKmF-00G2yY-HM; Tue, 04 Aug 2026 21:26:15 +0200
-Date: Tue, 4 Aug 2026 21:26:15 +0200
+	id 1wrL3g-00G358-11; Tue, 04 Aug 2026 21:44:16 +0200
+Date: Tue, 4 Aug 2026 21:44:15 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Ahmed Naseef <naseefkm@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Golle <daniel@makrotopia.org>,
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>, Qingfang Deng <dqfext@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net] net: phy: mediatek: fix TX blink masks using the RX
- bits
-Message-ID: <a12116a7-a25c-4048-9558-9171550d72f2@lunn.ch>
-References: <20260804113511.3371248-1-naseefkm@gmail.com>
- <ab2f7f4f-0f46-4c6e-b3b1-ea713dbd08c6@lunn.ch>
- <anIwRrQT9qMD89v5@DESKTOP-TIT0J8O.localdomain>
+	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com, mfd@lists.linux.dev,
+	linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH 10/21] net: phy: add X-Powers AC200 EPHY control driver
+Message-ID: <62591c23-87c5-4dd5-bf3b-d9adba3ae2cb@lunn.ch>
+References: <05b1e6a2-725e-4b8e-8629-249637bbcb81@lunn.ch>
+ <CADvTj4o0JdjoO+FC4pO=qnjEQ8MRyzQdKp2Hxy9NsPU-gym5OQ@mail.gmail.com>
+ <9b8be475-1fde-409c-a82e-be4b2e402650@lunn.ch>
+ <CADvTj4pBovti19MXgQjFpxm=7aRm0sYQz9jxfo8bu3txH94THQ@mail.gmail.com>
+ <a9ce53dd-0873-41c0-ad6a-fb42e6cc7aaa@lunn.ch>
+ <CADvTj4qpHU3F0DrEmc0vFi+JiwTNERniiMHKo1LmBd8sg58wJA@mail.gmail.com>
+ <205e9051-8e43-44bb-a4b5-4ec69a192fa3@lunn.ch>
+ <CADvTj4qmXWbDsc-vigcSrF1N=zpxmZWGp3YaZ9PFcWK551h3mg@mail.gmail.com>
+ <fb6f8065-a655-4d53-acfb-8171b2e003dc@lunn.ch>
+ <CADvTj4pdZN4Jmx0D4Yh0KDPkh_-zJ5iXCM=vUybGn0aFAAqAgg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,38 +75,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <anIwRrQT9qMD89v5@DESKTOP-TIT0J8O.localdomain>
+In-Reply-To: <CADvTj4pdZN4Jmx0D4Yh0KDPkh_-zJ5iXCM=vUybGn0aFAAqAgg@mail.gmail.com>
 
-On Tue, Aug 04, 2026 at 10:32:38PM +0400, Ahmed Naseef wrote:
-> On Tue, Aug 04, 2026 at 08:11:21PM +0200, Andrew Lunn wrote:
-> > On Tue, Aug 04, 2026 at 03:35:11PM +0400, Ahmed Naseef wrote:
-> > > MTK_GPHY_LED_TX_BLINK_SET and MTK_2P5GPHY_LED_TX_BLINK_SET are built
-> > > from the RX blink bits instead of the TX ones, so both TX masks are
-> > > identical to their RX counterparts. The TX bits they should be using,
-> > > MTK_PHY_LED_BLINK_{10,100,1000,2500}TX, are otherwise only referenced
-> > > by the per-speed branch of mtk_phy_led_hw_ctrl_set().
-> > > 
-> > > A TX trigger selected without a link trigger therefore programs the RX
-> > > blink bits, and the LED blinks on received traffic. The masks are also
-> > > used to decode the blink register in mtk_phy_led_hw_ctrl_get(), which
-> > > as a result cannot tell the two triggers apart: an RX-only
-> > > configuration reads back as RX and TX, and a TX-only configuration
-> > > reads back as neither.
-> > > 
-> > > Fixes: 7f9c320c98db ("net: phy: mediatek: Move LED helper functions into mtk phy lib")
-> > 
-> > Was this bug introduced in this commit, or did this commit just move
-> > the code around and it was broken before? The Fixes should go back to
-> > where the bug was added, which could be earlier.
-> 
-> It was introduced by that commit. Before it, mtk-ge-soc.c correctly had:
-> 
->   #define   MTK_PHY_LED_BLINK_TX      (MTK_PHY_LED_BLINK_10TX |\
->                                        MTK_PHY_LED_BLINK_100TX |\
->                                        MTK_PHY_LED_BLINK_1000TX)
+> However, the MFD and networking portions necessarily meet at the AC200
+> EPHY function. I do not think the correct way to avoid that
+> cross-subsystem dependency is to make a driver bound to an MDIO
+> phy_device take ownership of registers and resources belonging to an
+> MFD device.
 
-Thanks for checking.
+We can pull the MFD Maintainer into this, but an MFD core driver
+typically just provides methods to access the shared registers, and
+instantiates drivers to make use of those shared registers. In this
+case, we don't need the instantiate part, that happens via the MDIO
+bus model. But we do need access to the shared registers. I personally
+don't care too much how that is done, but regmap would be normal.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+The PHY driver should then drive the whole, entire PHY, using both
+MDIO and whatever method the MFD exports to give access to the
+registers.
 
-    Andrew
+	Andrew
