@@ -1,92 +1,87 @@
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from out198-27.us.a.mail.aliyun.com (out198-27.us.a.mail.aliyun.com [47.90.198.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B4736E484
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 11:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E8E36167F;
+	Tue,  4 Aug 2026 11:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785843653; cv=none; b=Ah7EUsVYu2xDBdpkiBo8DZjycw7galJ9PHN0OlnU5Yskz29CgBYpmLs1kLBjVbbMmmQvgIdgH4uuNqTBFKtxnpCRhlqKuYqTH5YL4yrQgx+6Az7hjFmmL0zrORUvbpP5XUsTz3kFfbwJNjTcYKZ2cJx2BTWdsvxLEuOA9f21U3E=
+	t=1785843845; cv=none; b=XA7kEn3HE5K4Vb/V0A+IdQX74x0J5p5tRnahZG9pdmUnNN13agDwpnyef5UYW9M13ZNhsp5i0QHkn6TekxlcuLHH0oNa7PzYKsW0rWIxXu3PJwzotQZjODppekXFAYwrTO+Y8S04UKNRc8dSQOTJOKHWxxHy/AOkUc9u9cEZllE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785843653; c=relaxed/simple;
-	bh=N9rHm4Wpgn9uZspKF3hqZ82JDWaIfZq5rRKp+x4f7Wg=;
+	s=arc-20240116; t=1785843845; c=relaxed/simple;
+	bh=ti3Duy4rA6W1jj2Xmti4fPitrh18w/Jbz4O3kVl/RHY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BOBf97x92Ckgl8K0BPvhbvJgPKh/XZ5JcUGWvas8JI1GBKRA4PYwZFSJ2bY6ln497nIGpR3z7u7ee1AXtVL2S5lZ2E+o+0mtqxW6JMbkGccWPGZrjB9ejBt7f/aVyd0JJl3ivu0zQV0ymvhbIHjdTkIrcYkBEmUABIDyqrc+YcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hTfvsuMZ; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hTfvsuMZ"
-Message-ID: <18c4a794-49f7-49db-bfef-a0e018972f74@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785843638;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CsGPl9NXcf2VLsWt32/ibEgh4Ed8PyEs3/w7+z6s80U=;
-	b=hTfvsuMZTzj4wxeXtpBYj13OvQFFphFvDKUvbXvXf4HHt0cm9KSJ729U5gjK8QqagGCw7w
-	rhjI+f2pjcbiUyLpME9u0zDflQS4DC7uyoUVurXYkD7p8VhR/3NyOmszcnUK5w/iOhcIJx
-	Pwh5U5LSJ3a0U5Cgp5QR0Q54NdgOwlg=
-Date: Tue, 4 Aug 2026 12:40:10 +0100
+	 In-Reply-To:Content-Type; b=cVg+tFYj7dqfCkDiGSLTslPnkJGDhOT2pcQSUykATJlw8ipmUMZvCrSEzwtx5b4FIx/d2x1UtLy4YUwNctpgj6othPCT2yGSFfy3UZlhqioZyKLDMrOje9cIWK4qFzomCBU7GuqNV9zw52MQ/aOo5C/5WHASDfUzDwmtSQy2SJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07975866|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.116667-0.000224523-0.883108;FP=11247112880801763570|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam011083013073;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.idWJpQ-_1785843816;
+Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.idWJpQ-_1785843816 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 04 Aug 2026 19:43:41 +0800
+Message-ID: <c8544727-853d-4513-9025-b3260044c930@motor-comm.com>
+Date: Tue, 4 Aug 2026 19:43:33 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v9] ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
-To: Sagi Maimon <maimon.sagi@gmail.com>, jonathan.lemon@gmail.com,
- richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260803142830.5020-1-maimon.sagi@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, jie.han@motor-comm.com
+References: <20260801035236.3560015-1-kyle.switch@motor-comm.com>
+ <50f7c213-0791-41e3-9eac-049ce87ee260@lunn.ch>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260803142830.5020-1-maimon.sagi@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <50f7c213-0791-41e3-9eac-049ce87ee260@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 03/08/2026 15:28, Sagi Maimon wrote:
-> The ADVA TimeCard X1 (PCI device 0x0410) uses a Lattice MachXO3 CPLD
-> that is programmed over I2C using in-system programming (ISP).
-> 
-> The CPLD is connected to a secondary I2C bus shared with the onboard
-> MicroBlaze soft CPU.
-> 
-> Add support for CPLD access and firmware updates on the ADVA TimeCard X1
-> board by arbitration of the shared I2C bus, CPLD ISP command handling,
-> status polling, and firmware upload operations using the firmware-upload
-> subsystem.
-> 
-> Add the following X1-only user-visible interfaces:
-> 
->    /sys/class/timecard/ocpN/cpld_device_id
->          report the 32-bit Lattice MachXO3 CPLD device ID
-> 
->    /sys/class/timecard/ocpN/cpld_status
->          report the CPLD status register, including the DONE,
->          BUSY, and FAILED indicators
-> 
-> Firmware updates are performed through the firmware-upload framework,
-> which acquires ownership of the shared I2C bus, erases the CPLD
-> configuration flash, programs the image page-by-page, and activates
-> the new image using the MachXO3 REFRESH command.
-> 
-> All CPLD operations are serialized and coordinated with the MicroBlaze
-> firmware to ensure exclusive access to the shared I2C bus. The added
-> interfaces are available only on ADVA TimeCard X1 boards.
-> 
-> Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
-> ---
->   
->   Changes since v8:
->   - Use dedicated MicroBlaze handshake values instead of 0xffffffff,
->     which may be returned by failed PCI reads.
 
-Please, combine it with comments on v8
 
---
-pw-bot: cr
+On 8/4/26 04:49, Andrew Lunn wrote:
+>> +static int yt8824_config_aneg(struct phy_device *phydev)
+>> +{
+>> +	int phy_ctrl = 0;
+>> +	int ret = 0;
+>> +
+>> +	ret = phy8824_page_write_with_lock(phydev, YT8824_RSSR_UTP_SPACE);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	if (linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
+>> +			      phydev->advertising))
+>> +		phy_ctrl = MDIO_AN_10GBT_CTRL_ADV2_5G;
+>> +
+>> +	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_AN,
+>> +				     MDIO_AN_10GBT_CTRL,
+>> +				     MDIO_AN_10GBT_CTRL_ADV2_5G,
+>> +				     phy_ctrl);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	return genphy_config_aneg(phydev);
+>> +}
+> 
+> What i'm missing now is some explanation why this is safe. What is
+> stopping something from changing the page after the call to
+> phy8824_page_write_with_lock() before genphy_config_aneg() completes?
 
+Ans: The assumption that there is no problem here is based on the handling of 
+     the USXGMII reg space being error-free, especially that the swap back to 
+     the old reg space has no errors. However, this may not be correct. 
+     For example, if yt8824_sds_isolate_paged() completes its processing, but 
+     an error occurs when swapping back to old_page—meaning the switch to the 
+     UTP reg space does not happen—then this assumption would be incorrect. I
+     miss this scenario.
+     You may be right that a high-level lock is needed to ensure that UTPs do 
+     not interfere with each other. I will update it in v9.
+
+> 
+> 	Andrew
