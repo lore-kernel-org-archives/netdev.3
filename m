@@ -1,127 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01754570FF;
-	Wed,  5 Aug 2026 12:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF204570FF;
+	Wed,  5 Aug 2026 12:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785932813; cv=none; b=T9BSijRmySmls9R4z2302/581TqyoifuontZm3yAXXdAb7xrDG4LgEaRSctwsR/P+kZu7hmSfdtzAQ9PIxR6eRQi8L6AbbR9tdVGQGTZv89ezNfEGudwIdiyWB+ZDoiupA5K9UtkP70K4RqNA0m0RXDgFDEQbXWKwuj+LfQT1RU=
+	t=1785932926; cv=none; b=S0pwVvnIZuwEqF6x1URNeFvUoN6I2Ufja9gzmYDxmVgM1BjA7wU+oSazzdafzD5fOtKHEl8SDsCx6KMya7WfTMKVXx3gCruXwpxAdfCrqR60IrapI50b9/yOji3SgCiMGqfNRgLCRQOOVs0vgWpnvkln0Tuxd/BbrrUk90Q8N1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785932813; c=relaxed/simple;
-	bh=uqmQXf9AW6etaZgYbZKcqE3mPAZ2aOwMC8yLbR19ebQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=skAA4wDezvpOMT47KXBJ0xqb0z4hv7J9kA9sRdiERETlWNwk8yTcmAXiwG/fIi2hgCN+3/V7B3Qasur72ys4ep/b5bcixANJgdEhAoqNmFHEVEek4u8JXexe3QkPNC6TWtqikPxzCiU9ItWa7zHtAUzkCmriTugad1kTPY54/Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YOw48LHh; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785932926; c=relaxed/simple;
+	bh=SRktwtXgb3YSXW0K+R9Wmo9up/n4pu6tIXj5BCqaKbo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NERKd+/EJEx/yByliasqEWTYcnWkbwES5ci3mgrSeGG+li5s2mEwEm6PLhq7AVfyi+tCeZhSMHsCJS/kAytWLuo3Rg3v2UFt9wQdUjagjbIX8cxR1KOycSLfXDGOqz6fF8GxMUx3iCZoJsCDSBfd+fuO2B+z5JEfJ2xr0wAqxhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NSqwCE9N; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wHX0isOW; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YOw48LHh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785932812; x=1817468812;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uqmQXf9AW6etaZgYbZKcqE3mPAZ2aOwMC8yLbR19ebQ=;
-  b=YOw48LHhwkcx6Lfx66I6UeB030ynVASBYK4CgdPkQBks5+2D4snyF6O7
-   sgkuJHsjIj2x9pmMwIEMqiyvKVPjMoeabghuoedmPpvrxpqYw6Nq+Ye1M
-   GkaV/mzuv4OEbewWE86LxoInwbAWVB+Yxi6YEws4cZL31q4CCo0pu0JI9
-   FYhLFlY74aApXnYSGBOMIq1mtDeTjJ95G1BGH1iCE+BRASR1buB3LXcvQ
-   mEmSfkl6f1XK0BO4m3PRXaRJAgzx2/Vtw1Tvb7Mr+zA1ABMZYk6iG1ETt
-   1lLZUWpn9B2Q7lzBQv+9CgMOGBfJoetG54HqmZxOvDWXFDHhUyFQpHd1f
-   A==;
-X-CSE-ConnectionGUID: vreUpdsNQsuFPyDC2xMVYA==
-X-CSE-MsgGUID: OFrZDzcxRZqN5tUZdSmWrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="90320140"
-X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
-   d="scan'208";a="90320140"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 05:26:42 -0700
-X-CSE-ConnectionGUID: YgxTbfAySVysgKcM9hBq1w==
-X-CSE-MsgGUID: DOZ7DtYTQJiKyve5zv5HgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
-   d="scan'208";a="265635846"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 05 Aug 2026 05:26:39 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wrahg-00000000CRR-2i0j;
-	Wed, 05 Aug 2026 12:26:36 +0000
-Date: Wed, 5 Aug 2026 20:26:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kyle Switch <kyle.switch@motor-comm.com>, Frank.Sae@motor-comm.com,
-	andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jianmin.wang@motor-comm.com,
-	ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
-	jie.han@motor-comm.com
-Subject: Re: [PATCH] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
-Message-ID: <202608052037.5FzKDBji-lkp@intel.com>
-References: <20260714111203.3852126-1-kyle.switch@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NSqwCE9N";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wHX0isOW"
+Message-ID: <65d78f24c081ee21ab64ba4160629b85a30527ff.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785932923;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iDnHUZ8OIWAMi/Q1xd1jN+X6uQh2K/tLoMklY5H9Nj8=;
+	b=NSqwCE9NzRifaa8r/gf/dS1/HdqpxdLsd0WXjnvZ28rMeIocLq7S1/LYlvNZ03RSaPthKI
+	LKW1Hk6iZUBWKOQcMbU8hKRC9ZH2ccNVIWhgY5q7fDZEM6UBHyte3jBSX13deGcPV9B2sF
+	PcAW20h4F9fwB3wApS5bb3XY1qtlJl+CspEEv/nd/5sjI43+ChhRi3Vshu6fW8Sm2onIbL
+	lq5p8IAYOEtTfoVLO5DGCLfzz6YSmu3WIWGrA9fba8QLXs2tfO6QYKTvSbyg0jq2AZk9Ef
+	aZU07F75glh0Ixnn1OFzrxRIALQ2/2zpl6NU2Gi+u8K+a8wK/ujj8lie+gm4Ag==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785932923;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iDnHUZ8OIWAMi/Q1xd1jN+X6uQh2K/tLoMklY5H9Nj8=;
+	b=wHX0isOWk5C88dgFxZ2GJnzYEwvvq8JMxWhkfLsuc7JD8QWWAVL2f/LKOsvt7f6sb8S4b/
+	QwU4XsSIqoHA/qAg==
+Subject: Re: [PATCH 0/4] net: dsa: Add SoC-e DSA driver
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>
+Date: Wed, 05 Aug 2026 14:28:41 +0200
+In-Reply-To: <a79b951c-9635-412e-8103-0e40fe49bc48@lunn.ch>
+References: 
+	<20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	 <50e4f195-f810-470b-b05a-97f622e6efc4@lunn.ch>
+	 <8a5ec5c7d76d634293bd8c78a078d536ed516c08.camel@linutronix.de>
+	 <a79b951c-9635-412e-8103-0e40fe49bc48@lunn.ch>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714111203.3852126-1-kyle.switch@motor-comm.com>
 
-Hi Kyle,
+On Mon, 2026-08-03 at 18:32 +0200, Andrew Lunn wrote:
+> On Mon, Aug 03, 2026 at 05:22:35PM +0200, Vasilij Strassheim wrote:
+> > On Wed, 2026-07-29 at 18:56 +0200, Andrew Lunn wrote:
+> > > On Wed, Jul 29, 2026 at 06:36:53PM +0200, Vasilij Strassheim wrote:
+> > > > Add initial support for the DSA driver for SoC-e FPGA-based (IP cor=
+e)
+> > > > Ethernet switches.
+> > >=20
+> > > Let me start with a dumb question. Is this a true soft core switch,
+> > > which is synthesised and running in the FPGA? Or is it hardware at th=
+e
+> > > edge of the FPGA SoC?
+> >=20
+> > I should have made that clearer right away. This is a true soft-core
+> > switch that is synthesized and runs in AMD FPGAs.
+>=20
+> Only AMD FPGAs? Or you have only used it with AMD FPGS?
 
-kernel test robot noticed the following build warnings:
+That's what the documentation says. However the webpage says:=20
+	AMD/Xilinx and Microchip supported. Other vendors to be
+	supported in the future.
+I don't know any more details than that.
 
-[auto build test WARNING on net/main]
-[also build test WARNING on linus/master v7.2-rc6 next-20260804]
-[cannot apply to net-next/main]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>=20
+> > I have a version in which both the MAC and the switch are synthesized
+> > in FPGA, and two hardware PHYs are connected to the switch. The switch
+> > provides an MDIO bus for the PHYs.
+> >=20
+> > >=20
+> > > If it is synthesised, do we have to deal with different synthesis
+> > > options? Are there registers which indicate what these options are?
+> >=20
+> > While setting up the switch, users will need to explore various
+> > synthesis options. Once it's up and running, it should be possible to
+> > load a preconfigured bitstream into the FPGA without having to deal wit=
+h
+> > these options in the DSA driver. The device Tree should then match the
+> > configuration.
+>=20
+> This is where we often run into issues. The driver sometimes makes
+> assumptions about how the device has been synthesised. Somebody
+> synthesise it differently, it breaks, and the driver has to be changed
+> without breaking backwards compatibility.
+>=20
+> If the hardware actually enumerates itself, tells us how it has been
+> configured for synthesis, and the driver looks at these registers, you
+> tend to have less assumptions and so less issues later.
+>=20
+> This is also one area what DT is not so great. You are not actually
+> describing hardware. Clearly, it is not software, but it is malleable,
+> jellyware. The less you put in DT, the more you get from the jellywere
+> itself, the better.
+>=20
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kyle-Switch/net-phy-Add-driver-for-Motorcomm-Quad-2-5GbE-phy/20260805-175843
-base:   net/main
-patch link:    https://lore.kernel.org/r/20260714111203.3852126-1-kyle.switch%40motor-comm.com
-patch subject: [PATCH] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
-config: alpha-allmodconfig (https://download.01.org/0day-ci/archive/20260805/202608052037.5FzKDBji-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260805/202608052037.5FzKDBji-lkp@intel.com/reproduce)
+Yes, that makes sense. With this v1, I had to work around a few
+non-technical limitations. I will try to resolve these and come up with
+a new version where as much as necessary is read out from the jellyware.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608052037.5FzKDBji-lkp@intel.com/
+With further adjustments, the dt-bindings should then contain only the
+bare essentials. Not more that any other DSA driver would need.
 
-All warnings (new ones prefixed by >>):
+> 	Andrew
 
->> Warning: drivers/net/phy/motorcomm.c:519 function parameter 'val' not described in 'ytphy_write_top_ext'
->> Warning: drivers/net/phy/motorcomm.c:3230 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
-    * configuration YT8824 to one template test mode.
-   Warning: drivers/net/phy/motorcomm.c:3255 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
-    * enable YT8824 serdes isolate.
-   Warning: drivers/net/phy/motorcomm.c:3284 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
-    * do YT8824 UTP softreset.
-   Warning: drivers/net/phy/motorcomm.c:3321 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
-    * disable YT8824 template test mode.
-   Warning: drivers/net/phy/motorcomm.c:3356 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
-    * disable YT8824 serdes isolate.
-   Warning: drivers/net/phy/motorcomm.c:3464 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
-    * external YT8824 init
-   Warning: drivers/net/phy/motorcomm.c:3933 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
-    * internal YT8824 init
->> Warning: drivers/net/phy/motorcomm.c:4351 expecting prototype for yt8824_config_aneg(). Prototype was for yt8824_aneg_done() instead
->> Warning: drivers/net/phy/motorcomm.c:4380 function parameter 'status' not described in 'yt8824_read_status_paged'
->> Warning: drivers/net/phy/motorcomm.c:4380 function parameter 'lpa' not described in 'yt8824_read_status_paged'
->> Warning: drivers/net/phy/motorcomm.c:4454 function parameter 'reg_space' not described in 'yt8824_utp_power_on'
->> Warning: drivers/net/phy/motorcomm.c:4487 function parameter 'reg_space' not described in 'yt8824_utp_power_down'
->> Warning: drivers/net/phy/motorcomm.c:519 function parameter 'val' not described in 'ytphy_write_top_ext'
->> Warning: drivers/net/phy/motorcomm.c:4380 function parameter 'status' not described in 'yt8824_read_status_paged'
->> Warning: drivers/net/phy/motorcomm.c:4380 function parameter 'lpa' not described in 'yt8824_read_status_paged'
->> Warning: drivers/net/phy/motorcomm.c:4454 function parameter 'reg_space' not described in 'yt8824_utp_power_on'
->> Warning: drivers/net/phy/motorcomm.c:4487 function parameter 'reg_space' not described in 'yt8824_utp_power_down'
+Thanks,
+Vasilij
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
