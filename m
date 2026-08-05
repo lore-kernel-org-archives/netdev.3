@@ -1,78 +1,78 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD1B4156EC
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 09:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F534156FE
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 09:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785923737; cv=none; b=k+4pHeWqLATIzWsQC2kSAx9QltLQ/eWzBRyezmJT1k9+QHRjQm4R/zbAQREQu9Vdi+YSIPY+wOY+O3yRYJzXGhHzCcvpJIJ85mUUaopEbCecuRRE/EkZLz08N4njyf//A83E4GyEsir6uq4Aa9jHtZ5+vLjPx5nLlxHUhgEEQNg=
+	t=1785923748; cv=none; b=Gz5m/fhaZ2OG2Rz+qEfVVgCMY3UQOePWUFPmYIoRJjXUWm6gFeQoRm2A36SbbpaJTLvLbEfKUujFoxbDwAi0rYAJnNeJ3DAteYT8cdEdbr+nzIfOQAZGpOZG/DnEIDa3WJoct4eUBijIRcyw7CD+GzzIGmpoMFQu2CshTg+boss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785923737; c=relaxed/simple;
-	bh=laFDajcbsTqcT6ZcbK37Ex1BDVWiUC0e7NghyynrKYo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HUBpCo0HOqYV6Yb4QMq6K3s/2VButa0WJbtrg3jx2Nv5zFMG7GwAMn/kzNoLsPJO24bTyHUHddYxk5aG/jkHlKSqradKGYVYpjyvHStYojaVzi7nUl6P1hzycFeOCDxZPqF57boKcisqu7SxJ9UvLUsSly0s0EnIjJndjfgOqi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IBHKZE7W; arc=none smtp.client-ip=209.85.210.170
+	s=arc-20240116; t=1785923748; c=relaxed/simple;
+	bh=S3jAes5Vwu16hn3Ows2pLgWHj4lYq7+xJmgG0qu2avQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XZTvrO/Uonyt14mpX24+r+xyLPOoe5lyoBKxIc4ihkjDJvSXUGHVnscoImH1brzVGuo0ViHaIPQIatAeAdypFALyl1xB9Ns5PrrKUONm+jp5G9aySrqbzU/eZb7J/vC3a9uaf/NWt2btMFauESsfyjs8/Ytv7VCTCpvpO1X/fpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D0TER37D; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IBHKZE7W"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84536ecfc5bso935130b3a.2
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 02:55:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D0TER37D"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38e3617ba36so760950a91.3
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 02:55:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785923735; x=1786528535; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785923746; x=1786528546; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fkkkeE2AhcVlDMOIzDVMCAo0rWWKAmZ5F7iC5BAAoSk=;
-        b=IBHKZE7WpBtkAdHl20jF9LUUG+uPFNT6tnMI/BEZaQPLEJtMs7JZJmC0RSLj6ytoAL
-         lcqYOJJBl9xgDWQqMNNtLcGRlasHcqUHV3ckefSah50bETPe1HA5DLDUErjteVO1xJ0E
-         z5CX23kpK09j+qf/qbfH/fmxRkE6XApdm/YyGE4MmJnYtNMUYsRiLJmLmguB33BICugA
-         LHiFoLYGMaTtlWaPxQcS9DF96rZ87L+0xnc6itIJD94y9tb3ZcUdGhwFAyQ52P1eY/5m
-         6g9fo7S5q1wk42772Z/W10vrbqcXlhc3qvfxR5eViIUCzI9zZHEzl3+9TNHGSWMWUyTN
-         kC8Q==
+        bh=/N7OqRJx+Yy9AA2X5acYkU9CpPQnRCTgU5dHMwvshPo=;
+        b=D0TER37DT+4gvhv4oLcMQZc1U1sTQEbDJp1aLlZzKnNQ5HN2srKRnWxtd413qAhKH3
+         d5+8rdnn2lxTER2Zj6MMTn8uAEOoFdW9AERsZWOals3DWUijdQ8gU3sRBxlnxH+yV+nP
+         ZAVDMunxTPZyLY2kzpZwYLsu4YyFjyMTEH5QMOTawu8TzzVxj1sVJ89uUBnmCMQG1vMm
+         18Oiq2SmtDZhWuukehi14PebOn8eiQn6WUy++XxMTA1ygdoqNkE3C5SPpKjp7tZtprcS
+         tw7PSvoTYr3C6GpprSrx4b8A58CDIX51r/JJlm8aoR2LTiQPPQwaxRCjzgOVSBYE7NBR
+         Iyhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785923735; x=1786528535;
+        d=1e100.net; s=20251104; t=1785923746; x=1786528546;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fkkkeE2AhcVlDMOIzDVMCAo0rWWKAmZ5F7iC5BAAoSk=;
-        b=KcApfmJJZc7QLP3xocw+Kd85QFnStUosaYhtMT22eeQYOsorvWDcluzqnDoUJ5erWr
-         XUiZiilQKNQ07O01xsxqsjfe/3EWCqksv0VE8JK/bR0LNa9jjyOeBPyL/e/sKBftykNU
-         +0qkw8RCmYz2fNU6cRcn7d3TduLt2pwOB5TZ2dlSMtjPh9jCW+0VDfvK2ZlNcIrhwCuy
-         rxevSVRAr9md3gD3FykmqNtDculN9zRqHfA5irqPi0cDQx6j1FhR8W8+3qU3ID281m3y
-         xdRd4d6t3Bo5bjoqiTm0cJIBj4eOQBzKxeSR8Q7dWVwxLwKViBkXMJjI7DULOyFoRoLq
-         l1Lw==
-X-Forwarded-Encrypted: i=1; AHgh+RphgesvOHmJGxGOYke0fLhJR/4mBkBa7SP2WvA/qZLPgPr2sAgR2cy0MMrKfRMLArHkFPTOUA8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrnzCL6suQfIx4i7P9Yzb/Od6a9MhOHkcYQUAxLtFzbIdMa3HE
-	Rrhm2FCGwvqDyTzWaLb6okMDMKSiHL/odat0duWSPoUKCGMD3mqBHTND
-X-Gm-Gg: AR+sD11H5nlUEljTgrt9PJ1FWc4Is6dB4KgP0YwOFMfezRknUWWY5MwYvmplLkTef3M
-	XSIQCPBR6od5976/CiRYfSW1CS/P4J1ANMcCNx94i/1WmqZYcYICN11A3oBZM0tLs1DslDZmaHM
-	s3WCls2AH9tnUQQSyYpL+6TgSKf0++RmozA7+m8sy7fOCCNM3WhmL12h3n1/11x0BpRPM6GIQda
-	ZB6lzwKq2PBPcACN23/nwyC8YzejeAQnhOrB4x7UdBomG1WFCVbBhiG6XX5EMFZuQyJkLLN2BYh
-	tHVXHOkcwreBIc+0p2tSQWa1kZPTOq3Tt8UPq+t8CkfHQjNnPhdEm3AK8I2qG4IwKhoOTz8ZqXp
-	DXrmSo4MKT+Hf6Abzmp7sio9k0wTwTkdxTQ8cicRAmSzDpjlzLyn3b4nT1svAjQBIWfMmwk8mc3
-	6FLOfSsMCq0Rvr24+IcC//4FMmKuu41TshaVVrtcHYPahfMAHuu/oZlhOJfaiEv+ieciisqcabL
-	a8vLZW45X4SonJNRxx299cHYA89K5cQNWJpEI4=
-X-Received: by 2002:a05:6a00:b93:b0:842:5da3:9b89 with SMTP id d2e1a72fcca58-84f2e13a50cmr5858638b3a.38.1785923734663;
-        Wed, 05 Aug 2026 02:55:34 -0700 (PDT)
+        bh=/N7OqRJx+Yy9AA2X5acYkU9CpPQnRCTgU5dHMwvshPo=;
+        b=PPTaG190K3LEvR/jjEGZBVphw6mZk17ygvNMTSTpfLl1ukoAl//SUuzkKXOBUU8Y+V
+         GIq5tiuyM0e159c8pVWytBf9hoxRIMg0Gfzx5zXxDvUVT9zUYu2QozWP6zgqYXM2q8WY
+         uVRw1Npa8HE+Z5xOuhRhftXjxRjJvyYrXdRIx0t/3BWWgYFVnXTC+9j9zdmw0l6nwHW5
+         2Lr/a5Xhik2cuOllFObst/no3LzZvfdegFaU7hQcnjgoMPF2KtEq3SlFRUvXDvQzQKp9
+         15IWtWtMBAHrDHMknfMCPVl3y3pFsAEZCj+Sdkz4MRzaNarNRbJ//s4tiCgRGDwhxWNj
+         D5Gw==
+X-Forwarded-Encrypted: i=1; AHgh+RpkzFJNfqvKBw7S9bkO9eWmW2Fa/k2NlivhzDRyPyRAbUwtJsZGCGbsjJL+41dcjd8xqNaLAu0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUHbhqYqow5Xz830EkL+Gax2LlfY+/IypZfNn3mLE5gr1TdxFg
+	qqNqDKU6eUXUse4/zxsdW0Mparso4oYFj6KfEAEVYUjv21J0gxlcbtWl
+X-Gm-Gg: AR+sD13Q0rAtZ4OifblRX4X+Lp9ARESRAJUi/RiEs7Cwhb9iQEvUJvRGuNQnugmvJWw
+	D/eqq1PUAEpnKfRwUpXppFQUwUW2G/zCHV/p1ADNGl18MBr1b/rCngKO8j/BKvdDxxe0h+on+FS
+	Twk3nJIF0T0i72oLASYFUzs1b74iAYjtjRIWTaKts/UQrRPV/rWfRsF+GNnr0hK0YIKkgzZvdTM
+	E/hzQO9cVmvIRqMhowV6bOOKrg47xhOaatC49hEOsYLs5HGxYbgs368RZXaLNENlxGUud+uZdRw
+	pXAY60R5w2i/pp4wT9iC+qb+6/FgvfO62obdn3Z4PCAPYUQqRteELoTMXP0FRXxwRuafDfRTWo0
+	wVCjSWsh3vAj/UhVHOGuX3RJGaNp+ImQAUEX8ilWzaJ4wunM3cw/xuoozC1X0w6dKTYHg3nBT8M
+	3b0rF/C7jY4NJ4ws2iyFGhrA2s53RVW32/WmhBEQVrnuURGjLmqeTMvpJuV6YxxqF1RKKv7auaW
+	M33Nmh+IScqg+4w5nm4tKUN3EZF03auX0qtIFg=
+X-Received: by 2002:a17:90b:5203:b0:37d:f206:a2ac with SMTP id 98e67ed59e1d1-3903c598ce5mr6015939a91.7.1785923746041;
+        Wed, 05 Aug 2026 02:55:46 -0700 (PDT)
 Received: from BOOK-P74QMIQ7E8.localdomain ([163.239.22.31])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe708be545sm1189839a12.16.2026.08.05.02.55.31
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3903927dddbsm2672970a91.9.2026.08.05.02.55.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 02:55:34 -0700 (PDT)
+        Wed, 05 Aug 2026 02:55:45 -0700 (PDT)
 From: hyunjungg <hj351016@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
+To: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	John Hurley <john.hurley@netronome.com>,
+	Tao Liu <taoliu828@163.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Hyunjung Ko <hj351016@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net] net/sched: act_gact, act_police: range check the fallback control action
-Date: Wed,  5 Aug 2026 18:55:27 +0900
-Message-Id: <20260805095527.204088-1-hj351016@gmail.com>
+Subject: [PATCH net] net/sched: act_ct: fix sk_buff leak when the header checks reject a packet
+Date: Wed,  5 Aug 2026 18:55:39 +0900
+Message-Id: <20260805095539.204356-1-hj351016@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -84,69 +84,75 @@ Content-Transfer-Encoding: 8bit
 
 From: Hyunjung Ko <hj351016@gmail.com>
 
-tcf_action_check_ctrlact() range checks the primary control action:
+tcf_ct_handle_fragments() runs its header sanity checks before handing
+anything to the defragmentation engine:
 
-	if (!opcode)
-		ret = action > TC_ACT_VALUE_MAX ? -EINVAL : 0;
+	if (family == NFPROTO_IPV4)
+		err = tcf_ct_ipv4_is_fragment(skb, &frag);
+	else
+		err = tcf_ct_ipv6_is_fragment(skb, &frag);
+	if (err || !frag)
+		return err;
 
-TC_ACT_VALUE_MAX is TC_ACT_TRAP, so kernel-internal verdicts above it
-cannot be set that way. But act_gact and act_police each carry a second,
-independent control action supplied by user space that never reaches that
-helper - TCA_GACT_PROB.paction and TCA_POLICE_RESULT. Both only reject
-TC_ACT_GOTO_CHAIN, so any other value is stored verbatim and returned
-verbatim from the action.
+tcf_ct_ipv4_is_fragment() returns -EINVAL or -ENOMEM;
+tcf_ct_ipv6_is_fragment() adds -EPROTO when ipv6_find_hdr() fails. None of
+them frees or queues the skb, so on that path the caller still owns it.
 
-In particular user space can store TC_ACT_CONSUMED, which is
-TC_ACT_VALUE_MAX + 1 and is deliberately not part of the UAPI value
-range. That verdict tells every caller the action took ownership of the
-skb, so nobody frees it: sch_handle_ingress(), sch_handle_egress() and
-tcf_qevent_handle() all deliberately skip the free for it. The result is
-one leaked sk_buff plus its data buffer per packet traversing the filter,
-unbounded, for all traffic on the chain including kernel-generated
-packets.
+tcf_ct_act() however funnels every non-zero return into the
+ownership-transfer exit:
 
-Both are trivially deterministic. act_gact clamps tcfg_pval to >= 1, so
-with pval = 1 gact_determ() returns the fallback for every packet.
-act_police has no mandatory rate, so rate = 0 leaves tcfp_mtu = ~0 and
-tcf_police_mtu_check() always passes.
+	err = tcf_ct_handle_fragments(net, skb, family, p->zone, &defrag);
+	if (err)
+		goto out_frag;
+	...
+out_frag:
+	if (err != -EINPROGRESS)
+		tcf_action_inc_drop_qstats(&c->common);
+	return TC_ACT_CONSUMED;
 
-TC_ACT_CONSUMED was added by commit 720f22fed81b, after both goto-chain
-guards were written (9469f375ab09 and c08f5ed5d625, Oct 2018); neither
-guard was widened when the new verdict appeared.
+TC_ACT_CONSUMED means the action took ownership of the skb, so no caller
+frees it - sch_handle_ingress(), sch_handle_egress() and
+tcf_qevent_handle() all deliberately skip the free for that verdict. The
+skb is therefore orphaned: one sk_buff plus its data buffer is leaked per
+malformed packet, unbounded. Note the drop counter is already incremented
+for these errors, so the statistics claim a drop that never happens.
 
-Factor the existing range test out of tcf_action_check_ctrlact() as
-tcf_action_valid() and apply it to both fallbacks. The helper cannot call
-tcf_action_check_ctrlact() directly because that also allocates a
-goto_chain, which is exactly what these two sites must not do.
+Three different ownership states reach out_frag: today - the skb may be
+queued by the defrag engine (-EINPROGRESS), already freed by
+nf_ct_handle_fragments(), or still owned by us. Tell the caller which of
+those it is, and free the packet ourselves in the last case, which
+restores the TC_ACT_SHOT behaviour that predated the Fixes: commit.
 
-Reproduced on v7.2-rc6: kmemleak reports one leaked 232-byte
-skbuff_head_cache object plus its 704-byte data buffer per packet. With
-this patch both configurations are rejected with -EINVAL and kmemleak
-reports none.
+Reproduced on v7.2-rc6 with a 54-byte frame carrying a 40-byte IPv6
+header with nexthdr = 0 (hop-by-hop) and nothing after it, on a
+clsact ingress chain with "action ct". kmemleak reports one leaked
+232-byte skbuff_head_cache object plus its 704-byte data buffer per
+packet; with this patch it reports none.
 
-Fixes: 720f22fed81b ("net: sched: refactor reinsert action")
-Cc: stable@vger.kernel.org # v5.3+
+Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
+Cc: stable@vger.kernel.org # v6.8+
 Signed-off-by: Hyunjung Ko <hj351016@gmail.com>
 ---
- include/net/act_api.h  | 19 +++++++++++++++++++
- net/sched/act_gact.c   |  5 +++++
- net/sched/act_police.c |  6 ++++++
- 3 files changed, 30 insertions(+)
+ net/sched/act_ct.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-Reproducer needs CONFIG_NET_ACT_GACT + CONFIG_GACT_PROB and
-CONFIG_NET_ACT_POLICE, plus CONFIG_DEBUG_KMEMLEAK and kmemleak=on to
-observe it.
+Reproducer needs CONFIG_NET_ACT_CT, plus CONFIG_DEBUG_KMEMLEAK and
+kmemleak=on to observe it:
 
-The bad value cannot be set with tc(8) - iproute2 only parses symbolic
-action names - so the fallback has to be planted over raw netlink:
-TCA_GACT_PROB.paction = 9 with ptype = PGACT_DETERM and pval = 1, or
-TCA_POLICE_RESULT = 9 with rate = 0. Attach either to a clsact ingress
-chain and every packet leaks its skb.
+  ip link add veth0 type veth peer name veth1
+  ip link set veth0 up; ip link set veth1 up
+  tc qdisc add dev veth0 clsact
+  tc filter add dev veth0 ingress matchall action ct
+
+then inject at veth1 a 54-byte frame: ethertype 0x86DD, a 40-byte IPv6
+header with nexthdr = 0 (hop-by-hop) and nothing after it, so
+ipv6_find_hdr() fails with -EBADMSG and tcf_ct_ipv6_is_fragment()
+returns -EPROTO.
 
 Before, one sk_buff plus its data buffer per packet:
 
-  kmemleak: 166 new suspected memory leaks
-  unreferenced object 0xffff888103baadc0 (size 232):
+  kmemleak: 50 new suspected memory leaks
+  unreferenced object 0xffff888103ed13c0 (size 232):
     kmem_cache_alloc_node_noprof+0x2f1/0x3e0
     __alloc_skb+0xe5/0x860
     alloc_skb_with_frags+0x82/0x750
@@ -155,76 +161,79 @@ Before, one sk_buff plus its data buffer per packet:
     __x64_sys_sendto+0xe0/0x1c0
     do_syscall_64+0x102/0x5a0
 
-After: both configurations are rejected at netlink time with -EINVAL
-and "invalid fallback control action", and kmemleak reports no
-unreferenced objects.
+After: kmemleak reports no unreferenced objects.
 
-For the same reason tdc cannot express the bad configuration, so no
-selftest accompanies this patch. A self-contained C reproducer is
-available on request.
+Note /proc/slabinfo is not a usable check here on a KASAN build -
+skbuff_head_cache active_objs still grows because the quarantine holds
+the freed objects. kmemleak is the reliable signal.
 
-diff --git a/include/net/act_api.h b/include/net/act_api.h
-index 20d9e55f8564..fd03f6319e88 100644
---- a/include/net/act_api.h
-+++ b/include/net/act_api.h
-@@ -270,6 +270,25 @@ int tcf_action_check_ctrlact(int action, struct tcf_proto *tp,
- struct tcf_chain *tcf_action_set_ctrlact(struct tc_action *a, int action,
- 					 struct tcf_chain *newchain);
+No selftest accompanies this: tdc drives tc(8) only and cannot inject
+the malformed frame. A self-contained C reproducer is available on
+request.
+
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index be535a261fa0..e250969c84ac 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -840,8 +840,15 @@ static int tcf_ct_ipv6_is_fragment(struct sk_buff *skb, bool *frag)
+ 	return 0;
+ }
  
-+/* Range check for a control action supplied by user space.
-+ *
-+ * This is the same test tcf_action_check_ctrlact() applies to the primary
-+ * control action, factored out for the *fallback* control actions
-+ * (act_gact's TCA_GACT_PROB.paction and act_police's TCA_POLICE_RESULT),
-+ * which must not reach tcf_action_check_ctrlact() because they have no
-+ * goto_chain to allocate.  Without it, user space can store kernel-internal
-+ * verdicts such as TC_ACT_CONSUMED, which is TC_ACT_VALUE_MAX + 1 and is
-+ * deliberately not part of the UAPI value range.
++/* On error, tells the caller whether it still owns @skb and must free it
++ * itself.  @skb is ours only when the header checks below reject the packet
++ * before it is handed to the defragmentation engine; once nf_ct_handle_
++ * fragments() has been called the skb is either queued (-EINPROGRESS) or has
++ * already been freed by it.
 + */
-+static inline bool tcf_action_valid(int action)
-+{
-+	int opcode = TC_ACT_EXT_OPCODE(action);
-+
-+	if (!opcode)
-+		return action <= TC_ACT_VALUE_MAX;
-+	return opcode <= TC_ACT_EXT_OPCODE_MAX || action == TC_ACT_UNSPEC;
-+}
-+
- #ifdef CONFIG_INET
- DECLARE_STATIC_KEY_FALSE(tcf_frag_xmit_count);
- #endif
-diff --git a/net/sched/act_gact.c b/net/sched/act_gact.c
-index e949280eb800..565860cccba6 100644
---- a/net/sched/act_gact.c
-+++ b/net/sched/act_gact.c
-@@ -89,6 +89,11 @@ static int tcf_gact_init(struct net *net, struct nlattr *nla,
- 		p_parm = nla_data(tb[TCA_GACT_PROB]);
- 		if (p_parm->ptype >= MAX_RAND)
- 			return -EINVAL;
-+		if (!tcf_action_valid(p_parm->paction)) {
-+			NL_SET_ERR_MSG(extack,
-+				       "invalid fallback control action");
-+			return -EINVAL;
-+		}
- 		if (TC_ACT_EXT_CMP(p_parm->paction, TC_ACT_GOTO_CHAIN)) {
- 			NL_SET_ERR_MSG(extack,
- 				       "goto chain not allowed on fallback");
-diff --git a/net/sched/act_police.c b/net/sched/act_police.c
-index b16468a98c55..ce08f6840ef7 100644
---- a/net/sched/act_police.c
-+++ b/net/sched/act_police.c
-@@ -128,6 +128,12 @@ static int tcf_police_init(struct net *net, struct nlattr *nla,
+ static int tcf_ct_handle_fragments(struct net *net, struct sk_buff *skb,
+-				   u8 family, u16 zone, bool *defrag)
++				   u8 family, u16 zone, bool *defrag,
++				   bool *skb_is_ours)
+ {
+ 	enum ip_conntrack_info ctinfo;
+ 	struct tc_skb_cb cb;
+@@ -859,8 +866,12 @@ static int tcf_ct_handle_fragments(struct net *net, struct sk_buff *skb,
+ 		err = tcf_ct_ipv4_is_fragment(skb, &frag);
+ 	else
+ 		err = tcf_ct_ipv6_is_fragment(skb, &frag);
+-	if (err || !frag)
++	if (err) {
++		*skb_is_ours = true;
+ 		return err;
++	}
++	if (!frag)
++		return 0;
  
- 	if (tb[TCA_POLICE_RESULT]) {
- 		tcfp_result = nla_get_u32(tb[TCA_POLICE_RESULT]);
-+		if (!tcf_action_valid(tcfp_result)) {
-+			NL_SET_ERR_MSG(extack,
-+				       "invalid fallback control action");
-+			err = -EINVAL;
-+			goto failure;
-+		}
- 		if (TC_ACT_EXT_CMP(tcfp_result, TC_ACT_GOTO_CHAIN)) {
- 			NL_SET_ERR_MSG(extack,
- 				       "goto chain not allowed on fallback");
+ 	cb = *tc_skb_cb(skb);
+ 	err = nf_ct_handle_fragments(net, skb, zone, family, &proto, &cb.mru);
+@@ -977,6 +988,7 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 	int nh_ofs, err, retval;
+ 	struct tcf_ct_params *p;
+ 	bool add_helper = false;
++	bool skb_is_ours = false;
+ 	bool skip_add = false;
+ 	bool defrag = false;
+ 	struct nf_conn *ct;
+@@ -1012,9 +1024,18 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 	 */
+ 	nh_ofs = skb_network_offset(skb);
+ 	skb_pull_rcsum(skb, nh_ofs);
+-	err = tcf_ct_handle_fragments(net, skb, family, p->zone, &defrag);
+-	if (err)
++	err = tcf_ct_handle_fragments(net, skb, family, p->zone, &defrag,
++				      &skb_is_ours);
++	if (err) {
++		/* The skb is still ours only when the header checks rejected
++		 * it; returning TC_ACT_CONSUMED for such a packet would leak
++		 * it, since no caller frees an skb it was told it no longer
++		 * owns.
++		 */
++		if (skb_is_ours)
++			goto drop;
+ 		goto out_frag;
++	}
+ 
+ 	err = nf_ct_skb_network_trim(skb, family);
+ 	if (err)
 --
 2.43.0
