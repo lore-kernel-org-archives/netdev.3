@@ -1,66 +1,106 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B843D7D67;
-	Wed,  5 Aug 2026 19:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FDA3D1CA5
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 19:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785957479; cv=none; b=sRmHSBF+Ue9IXS7sOTQoFsE8njKjFQoR2EbsmVFBeyWvn2kAPdduPpqBW6Wy0NCv8Kp0WTXNk899dpju7Z79itk5EyWMMTwoDdviwtCZnWLz/2g4VEVj1dSWPRMWn9hAF940hOx4jncp1bz5dTAEYdT069oZF/BtQUy16nZEnFQ=
+	t=1785958996; cv=none; b=b+gR9FqUw+BCnWUMI7vOmy47zWffARC5pdSA/JJTFiFzcNeC8bYT7OTtjy0E1v8WE0nyQgP24CuIemKB3TwlVO/BGTkn5Eeh5fxOePdBRPRum2OpzR0T+98L6F7BGlaW3mubvkDDPCIb1AADFoN2QEwg697W2HcvQzeBo9/ydI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785957479; c=relaxed/simple;
-	bh=N3LfiXUtgKYWagMvr3ExeRVkwop8Rz4/Vns0n+q7Lw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n+7dYpQUPfXx4DSlaA1vjglDeZ3bmYKeWJXxBl8T9//rZ28JwcdOrSvc5lHn+t2oMOTOzmS6X6gE8/nnF76pnMubU+LkzHhmBU7VROUHo28MYd98Sk8Wmc3Lpe4VQajjyjOxc+dKTHI/V+MFeFv/pFNlnNWt2ooV1XG28HhpiVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id E68E8602AB; Wed, 05 Aug 2026 21:17:52 +0200 (CEST)
-Date: Wed, 5 Aug 2026 21:17:51 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, netfilter-devel@vger.kernel.org,
-	davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com,
-	edumazet@google.com, horms@kernel.org
-Subject: Re: [PATCH net 03/10] netfilter: ipset: rework cidr bookkeeping
-Message-ID: <anOMX-mBjTcG23WX@strlen.de>
-References: <20260731151806.849724-4-pablo@netfilter.org>
- <20260805001531.3978750-1-kuba@kernel.org>
- <anNwo7eKRm5HqOOD@chamomile>
+	s=arc-20240116; t=1785958996; c=relaxed/simple;
+	bh=rbBsVuKLCmrsZL7ItLz2B6mXnD4jnBfd7ukVYSE6UkE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=qVhjRESICvgCoHM+JAUzkb7L4gLh49peTbQi3now6oJONpYAtqW4xxxD+KYsqF77d2N32DHmH2oAv+ffbQ6OCTovj3710PyK6zjMHsMaHeVukM6IDarCt2XoeBUbmgKCGDqrJXRLeDP3eYnuTJkM79MKML54+LLXDlZwcnQkyfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ggg8R7ss; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ggg8R7ss"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 1AD614E410FD;
+	Wed,  5 Aug 2026 19:43:11 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E30E5602AB;
+	Wed,  5 Aug 2026 19:43:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D65E911C34D71;
+	Wed,  5 Aug 2026 21:43:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785958986; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=FSNibwG2W6FhqvWZ3S9upC7eG69NTSaHltnAWfgT70M=;
+	b=ggg8R7ss8/JW5rAhr+Qr4hv5VkwkdGcmvctv9iYv8IDDTknlR1lFF/KzueYjjdM+sQN0l5
+	qh3KnlCYKPdaQ5NzdrhvzzsL0ulr31kFMTt1qT0pymx/TGFyXqYr9+GStStVNJW0ysi1S1
+	i7/UAyrfrfdJQmIkXnSACbOYrQCpLzqtjlch8wOwTJurimYE97tenhaKoRQ1++ay2xHOgQ
+	XFizKARMwBYxQLTdCsG0i1+3d8fS8vRSvOT28A4tZ/K6gam20mlDPZL8kTW5mEUiFUXazz
+	cYgVXZ6eeDoFxIMYJM7IFrz49Qc0fRwS7nEtAr9r24jSESH8iWu0DcpMLoN7Iw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anNwo7eKRm5HqOOD@chamomile>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 05 Aug 2026 21:43:03 +0200
+Message-Id: <DKH9MEANKO19.1B5B9Y1V1YEXY@bootlin.com>
+Cc: <conor.dooley@microchip.com>, <charles.perry@microchip.com>,
+ <andrew@lunn.ch>
+To: "Nathan Whitehorn" <nwhitehorn@pa.msu.edu>, <netdev@vger.kernel.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net-next v3 1/2] net: macb: Poll for link state changes
+ when using the internal PCS.
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260729192748.6928-1-nwhitehorn@pa.msu.edu>
+ <20260729192748.6928-2-nwhitehorn@pa.msu.edu>
+In-Reply-To: <20260729192748.6928-2-nwhitehorn@pa.msu.edu>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Pablo Neira Ayuso <pablo@netfilter.org> wrote:
-> Florian needs these starter ipset patches to follow with more fixes to
-> move ipset hash to use rhashtable.
+Hello Nathan,
+
+On Wed Jul 29, 2026 at 9:21 PM CEST, Nathan Whitehorn wrote:
+> When used with an offboard transceiver (e.g. an SFP), link state needs
+> to be measured at the PCS rather than an onboard PHY. Poll the link
+> state when the PCS is active to allow the kernel to detect link state
+> changes in this case.
 >
-> For his workflow, he considers it better to do this incrementally.
+> Signed-off-by: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
+> ---
+>  drivers/net/ethernet/cadence/macb_main.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> index d394f1f43b68..c15a9c7e69d3 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -1025,6 +1025,7 @@ static int macb_mii_probe(struct net_device *dev)
+>  	struct macb *bp =3D netdev_priv(dev);
+> =20
+>  	bp->phylink_sgmii_pcs.ops =3D &macb_phylink_pcs_ops;
+> +	bp->phylink_sgmii_pcs.poll =3D true;
+>  	bp->phylink_usx_pcs.ops =3D &macb_phylink_usx_pcs_ops;
+> =20
+>  	bp->phylink_config.dev =3D &dev->dev;
 
-Some things I can squash and resend, but in other cases it would indeed
-be better to keep it extra to avoid too large commits and better
-document which patch is fixing what issue.
+Hardware has an IRQ for that, would you want to use it instead of
+polling? The user guide contains more info.
 
-Many of these (new) LLM findings have root causes in older, different
-problems.
+   /* Bitfields in ISR/IER/IDR/IMR */
+   ...
+   #define MACB_ISR_LINK_OFFSET  9 /* Enable link change interrupt */
+   #define MACB_ISR_LINK_SIZE 1
+   ...
 
-> While this is not perfect, we prefer this path to address the existing
-> issues that LLMs have reported in ipset.
+I've checked with an on-board SGMII PHY and I get an IRQ once unmasked.
 
-Yes, we continue to get bug reports in code that is on the chopping
-block, so the more I changes I have to squash and then send new version
-the longer it will take to get the real conversion patches in.
+If you don't care, then:
 
-Around half of the LLM issues I already knew and deliberately did not
-fix in this first series to keep diff size smaller.
+Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
 
-Paolo linked to an unrelated patch having a 'sashiko: ' comment
-in the diffstat section to suppress known benign reports, I will
-try to remember and make use of this for future submissions that
-have known warts.
+Regards,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
