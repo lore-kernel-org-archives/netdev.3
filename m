@@ -1,229 +1,224 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094BA42BE89
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB8D3F6613;
+	Wed,  5 Aug 2026 22:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785965768; cv=none; b=BLqVrmbKoYTQx6RUVoI7Tvb8eW36PMyPOUjNh/QHb33T1ED9WbNmpWtUPu/d8cZ+5rffT5hmtRW1jAD8jZr41kzE4yYUgGChx+cHM+soeVWg5fCJb6n5GFwASL+JWvuNVqaqIspRgwLlGRvQde2P8usauhYxxHcFIfGLBKSZC/4=
+	t=1785968951; cv=none; b=aVsuItkzAonRlp30wiDze9RDSnVxoerGbUJ5285pTEXXqUiX1W+om+5xcKSTf1IckRe23gytAeyCy7jJObfii/5J+BtLLP6FH4rIDu9gZXz0tk4aU9/gGXR1Wh/cyjg1DO7k/GzrOYDBFj1csdoFBB1yUZMDhS49tdYqYF7QLv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785965768; c=relaxed/simple;
-	bh=9mci65arxAv8Fw1TDpSPToFsSq5AHZFy8aj7yMn9dL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=umRUOUFZvKunNFz131ZxIp4w6mgoywXvt8hrvTZPyASKRsj/iEyv6FCDo3pl5l7d1W/fLxC7Do89LbOmhxjNgs0EjAbgEZG9rNteePTqhP3VzW4u6p01tqUuVNBaxN95JrvPRaf0cttU/Fo/8AWweY4ErKvXQTcMaPospHuk0yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EMiPueBw; arc=none smtp.client-ip=198.175.65.9
+	s=arc-20240116; t=1785968951; c=relaxed/simple;
+	bh=p+tGgJjfDf+QExfIl3EY8iwwECUib4YEAIdONJSPpjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U7GGz/i6EM58VqzsWuxCNKTHKn0C0YEQURmQGXWDMWQT4YFYi37L4jaUprBmxU2ElJ7Lm/HyMumpmpAfKnKXhcTxnupSCjdBzWNyXu+6GH/u198HtfaR2Ef4WgXGM1KI9jznMWVJEMeyn9xWduTYl8WSk1/Nr5GKH2Z2Tbjg2VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WL5bsVtS; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EMiPueBw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WL5bsVtS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785965765; x=1817501765;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=9mci65arxAv8Fw1TDpSPToFsSq5AHZFy8aj7yMn9dL0=;
-  b=EMiPueBwphI66AXVJiKaxr/b3qQFK6LmWc+43OKonbOuGyYlmbIQufzA
-   KikI7aOF/DTJFej1r1qbGbnicFvDV/3JuTWlQiU0D2v02RwnT08+yglUN
-   ymSCobBffCFvGBVSaFW3Xv7RWbMCkdRgPmDCgsX+RzqG2BkX+1nCwvZfO
-   KSsv9X2N+hIlHHuYbWyS5GFZrpo4/8tKLxbLENWoKdl2u+vK9nim/R5uX
-   8G+oW6mr9Uvj4MQJ8SiEuGeaWve0cjxdSKMtHrXoslhkx2qJKL8xqfhXG
-   a3/l14kPv94/SfMn2Wv1b9wYB7RZXbJVnTtX0eWLDElHBWFZFRH5nIcPP
-   Q==;
-X-CSE-ConnectionGUID: Fo9fToTQSA6bnsZVAa4RCA==
-X-CSE-MsgGUID: LQj2HoVmRFOwi+DfxPJVpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109343649"
+  t=1785968948; x=1817504948;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=p+tGgJjfDf+QExfIl3EY8iwwECUib4YEAIdONJSPpjE=;
+  b=WL5bsVtSl9bSxKln+O3ibQPXA/BzqK04A195qTZ1C6ulLESGi4+xH8kl
+   GLSR49qXm9iSWlXcVdbJkqKNPBZw0KBVXb+zlaYSRKXUCeSdfIf+goj8v
+   UyGBifFVYmKAHKi38YTDdBu3UYqk4lAl6GgSk/dxk64JCY7PLaW1EWe7L
+   a+0Ax7sE+IBk35HCx3s0KEjQ2Pvc+SfIfLwVqukWMvGAQaQez4Tdwxa9W
+   V4Jiidv3R50plI650G8VeKSVgu2REfhJQ3CUSLje9YLIh38qIrE7LUl4A
+   jWyV+alJJ+T/SE/7GpjlFjg0gJJ14mThxDczWEhTLWJWaYs274JOsV8jc
+   w==;
+X-CSE-ConnectionGUID: 3ekwGT1iTVqNYD/J4JrZXA==
+X-CSE-MsgGUID: +jy61pjJQK6VTxnI8uO1Jg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="97713325"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="109343649"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 14:35:55 -0700
-X-CSE-ConnectionGUID: X8Anv8BARj2j8zAeZZLmhw==
-X-CSE-MsgGUID: Rx0+L21dTVCHGTEurldqWA==
+   d="scan'208";a="97713325"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 15:29:06 -0700
+X-CSE-ConnectionGUID: NmwiC6myTPu6zWOTTx11KQ==
+X-CSE-MsgGUID: BJGd6Ak0Rjqat4sLydi/YQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="286576172"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa001.fm.intel.com with ESMTP; 05 Aug 2026 14:35:54 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Matt Vollrath <tactii@gmail.com>,
-	anthony.l.nguyen@intel.com,
-	dima.ruinskiy@intel.com,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Michal Cohen <michalx.cohen@intel.com>
-Subject: [PATCH net-next 15/15] e1000e: Avoid DMA re-mapping on RX copybreak
-Date: Wed,  5 Aug 2026 14:35:40 -0700
-Message-ID: <20260805213541.2281287-16-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
-References: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
+   d="scan'208";a="261989405"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 05 Aug 2026 15:29:03 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wrk6e-00000000Dan-209A;
+	Wed, 05 Aug 2026 22:29:00 +0000
+Date: Thu, 6 Aug 2026 06:28:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kyle Switch <kyle.switch@motor-comm.com>, Frank.Sae@motor-comm.com,
+	andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jianmin.wang@motor-comm.com, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jie.han@motor-comm.com
+Subject: Re: [PATCH] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+Message-ID: <202608060635.338Kkf6r-lkp@intel.com>
+References: <20260714111203.3852126-1-kyle.switch@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714111203.3852126-1-kyle.switch@motor-comm.com>
 
-From: Matt Vollrath <tactii@gmail.com>
+Hi Kyle,
 
-This patch factors out DMA re-mapping for skbs which were recycled in
-the RX path due to copybreak or errors. There is only one path out of
-the e1000_clean_rx_irq() loop where the skb is consumed and DMA needs
-to be re-mapped, so don't unmap it before checking the conditions.
+kernel test robot noticed the following build warnings:
 
-The buffer allocation loop is adjusted to not assume that DMA is
-unmapped, handling mapping errors gracefully.
+[auto build test WARNING on net/main]
+[also build test WARNING on linus/master v7.2-rc6 next-20260805]
+[cannot apply to net-next/main]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-On systems with IOMMU enabled, the cost of re-mapping DMA is greater
-than the cost of copying data out of the ring buffer. When I use this
-patch and configure e1000e with copybreak=2048, my system with IOMMU
-completes RX roughly twice as fast under load.
+url:    https://github.com/intel-lab-lkp/linux/commits/Kyle-Switch/net-phy-Add-driver-for-Motorcomm-Quad-2-5GbE-phy/20260805-175843
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260714111203.3852126-1-kyle.switch%40motor-comm.com
+patch subject: [PATCH] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+config: powerpc64-randconfig-002-20260806 (https://download.01.org/0day-ci/archive/20260806/202608060635.338Kkf6r-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260806/202608060635.338Kkf6r-lkp@intel.com/reproduce)
 
-Informal performance comparisons were based on Asus Gryphon Z97 which
-includes an I218-V and with a Xeon E3-1240 v3 in the socket. ktime_get()
-measurement was injected into e1000e_poll() wrapping the
-adapter->clean_rx() call. The total time spent in clean_rx() was divided
-by work_done to print the average time spent per buffer. iperf3 -R was
-used to saturate the RX path and awk was used for statistics. Control
-revision was set to 7.1-rc1 because iwl-next hadn't been updated yet.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608060635.338Kkf6r-lkp@intel.com/
 
-  rev     | iommu | copybreak | samples | mean (ns) |   stdev
-  7.1-rc1 |   off |         0 |    4748 |    453.72 |  155.82
-  7.1-rc1 |   off |      2048 |    4743 |    554.83 |  103.67
-  7.1-rc1 |    on |         0 |    4751 |   1139.22 |  150.56
-* 7.1-rc1 |    on |      2048 |    4737 |   1267.02 |  184.62
-   +patch |   off |         0 |    4739 |    456.30 |  146.33
-   +patch |   off |      2048 |    4739 |    538.56 |  132.97
-   +patch |    on |         0 |    4769 |   1165.97 |  140.19
-*  +patch |    on |      2048 |    4745 |    562.25 |  171.80
+All warnings (new ones prefixed by >>):
 
-No surprises here, IOMMU DMA ops are known to be expensive. For most
-users the kernel default is iommu=on and driver default is
-copybreak=256, so unless the workload is small packets, some tuning of
-either knob would be needed to see the full benefit of this change.
+>> drivers/net/phy/motorcomm.c:3336:7: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    3336 |                 if (reg_space == YT8824_RSSR_UTP_SPACE) {
+         |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:3353:44: note: uninitialized use occurs here
+    3353 |         return phy_restore_page(phydev, old_page, ret);
+         |                                                   ^~~
+   drivers/net/phy/motorcomm.c:3336:3: note: remove the 'if' if its condition is always true
+    3336 |                 if (reg_space == YT8824_RSSR_UTP_SPACE) {
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:3335:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    3335 |         if (old_page >= 0) {
+         |             ^~~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:3353:44: note: uninitialized use occurs here
+    3353 |         return phy_restore_page(phydev, old_page, ret);
+         |                                                   ^~~
+   drivers/net/phy/motorcomm.c:3335:2: note: remove the 'if' if its condition is always true
+    3335 |         if (old_page >= 0) {
+         |         ^~~~~~~~~~~~~~~~~~
+>> drivers/net/phy/motorcomm.c:3332:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    3332 |         if (old_page < 0)
+         |             ^~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:3353:44: note: uninitialized use occurs here
+    3353 |         return phy_restore_page(phydev, old_page, ret);
+         |                                                   ^~~
+   drivers/net/phy/motorcomm.c:3332:2: note: remove the 'if' if its condition is always false
+    3332 |         if (old_page < 0)
+         |         ^~~~~~~~~~~~~~~~~
+    3333 |                 goto err_restore_page;
+         |                 ~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:3329:9: note: initialize the variable 'ret' to silence this warning
+    3329 |         int ret;
+         |                ^
+         |                 = 0
+>> drivers/net/phy/motorcomm.c:3341:8: warning: variable 'port' is uninitialized when used here [-Wuninitialized]
+    3341 |                         if (port == 0 || port == 2) {
+         |                             ^~~~
+   drivers/net/phy/motorcomm.c:3328:10: note: initialize the variable 'port' to silence this warning
+    3328 |         int port;
+         |                 ^
+         |                  = 0
+   drivers/net/phy/motorcomm.c:4464:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    4464 |         if (old_page < 0)
+         |             ^~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:4477:44: note: uninitialized use occurs here
+    4477 |         return phy_restore_page(phydev, old_page, ret);
+         |                                                   ^~~
+   drivers/net/phy/motorcomm.c:4464:2: note: remove the 'if' if its condition is always false
+    4464 |         if (old_page < 0)
+         |         ^~~~~~~~~~~~~~~~~
+    4465 |                 goto err_restore_page;
+         |                 ~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:4460:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    4460 |         if (old_page < 0)
+         |             ^~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:4477:44: note: uninitialized use occurs here
+    4477 |         return phy_restore_page(phydev, old_page, ret);
+         |                                                   ^~~
+   drivers/net/phy/motorcomm.c:4460:2: note: remove the 'if' if its condition is always false
+    4460 |         if (old_page < 0)
+         |         ^~~~~~~~~~~~~~~~~
+    4461 |                 goto err_restore_page;
+         |                 ~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:4457:9: note: initialize the variable 'ret' to silence this warning
+    4457 |         int ret;
+         |                ^
+         |                 = 0
+   drivers/net/phy/motorcomm.c:4641:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    4641 |         if (old_page < 0)
+         |             ^~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:4660:44: note: uninitialized use occurs here
+    4660 |         return phy_restore_page(phydev, old_page, ret);
+         |                                                   ^~~
+   drivers/net/phy/motorcomm.c:4641:2: note: remove the 'if' if its condition is always false
+    4641 |         if (old_page < 0)
+         |         ^~~~~~~~~~~~~~~~~
+    4642 |                 goto err_restore_page;
+         |                 ~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/phy/motorcomm.c:4638:9: note: initialize the variable 'ret' to silence this warning
+    4638 |         int ret;
+         |                ^
+         |                 = 0
+   7 warnings generated.
 
-The kludge of unconditional unmapping has existed since this driver was
-introduced in 2007[1], inherited from the e1000 driver which has since
-factored it out[2]. IOMMU tech was new at the time.
 
-[1] Commit bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-[2] Commit 2b294b18689c ("e1000: perform copybreak ahead of DMA unmap")
+vim +3336 drivers/net/phy/motorcomm.c
 
-Assisted-by: Claude:claude-4-7-opus
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Michal Cohen <michalx.cohen@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/e1000e/netdev.c | 32 ++++++++++++++--------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+  3320	
+  3321	/**
+  3322	 * disable YT8824 template test mode.
+  3323	 */
+  3324	static int yt8824_soft_reset_step4_paged(struct phy_device *phydev,
+  3325						 int reg_space)
+  3326	{
+  3327		int old_page;
+  3328		int port;
+  3329		int ret;
+  3330	
+  3331		old_page = phy_select_page(phydev, reg_space);
+> 3332		if (old_page < 0)
+  3333			goto err_restore_page;
+  3334	
+  3335		if (old_page >= 0) {
+> 3336			if (reg_space == YT8824_RSSR_UTP_SPACE) {
+  3337				/* normal mode */
+  3338				ret = ytphy_write_mmd(phydev, 0x1, 0x0084, 0x0000);
+  3339				if (ret < 0)
+  3340					goto err_restore_page;
+> 3341				if (port == 0 || port == 2) {
+  3342					/* read the calibration val of band after power on,
+  3343					 * * only for recording.
+  3344					 */
+  3345					ret = ytphy_read_ext(phydev, 0x043e);
+  3346					if (ret < 0)
+  3347						goto err_restore_page;
+  3348				}
+  3349			}
+  3350		}
+  3351	
+  3352	err_restore_page:
+  3353		return phy_restore_page(phydev, old_page, ret);
+  3354	}
+  3355	
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 844f31ab37ad..b08bcbdb19d9 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -675,6 +675,8 @@ static void e1000_alloc_rx_buffers(struct e1000_ring *rx_ring,
- 		skb = buffer_info->skb;
- 		if (skb) {
- 			skb_trim(skb, 0);
-+			if (likely(buffer_info->dma))
-+				goto write_desc;
- 			goto map_skb;
- 		}
- 
-@@ -692,10 +694,12 @@ static void e1000_alloc_rx_buffers(struct e1000_ring *rx_ring,
- 						  DMA_FROM_DEVICE);
- 		if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
- 			dev_err(&pdev->dev, "Rx DMA map failed\n");
-+			buffer_info->dma = 0;
- 			adapter->rx_dma_failed++;
- 			break;
- 		}
- 
-+write_desc:
- 		rx_desc = E1000_RX_DESC_EXT(*rx_ring, i);
- 		rx_desc->read.buffer_addr = cpu_to_le64(buffer_info->dma);
- 
-@@ -953,7 +957,6 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
- 		dma_rmb();	/* read descriptor and rx_buffer_info after status DD */
- 
- 		skb = buffer_info->skb;
--		buffer_info->skb = NULL;
- 
- 		prefetch(skb->data - NET_IP_ALIGN);
- 
-@@ -967,9 +970,6 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
- 
- 		cleaned = true;
- 		cleaned_count++;
--		dma_unmap_single(&pdev->dev, buffer_info->dma,
--				 adapter->rx_buffer_len, DMA_FROM_DEVICE);
--		buffer_info->dma = 0;
- 
- 		length = le16_to_cpu(rx_desc->wb.upper.length);
- 
-@@ -985,8 +985,6 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
- 		if (adapter->flags2 & FLAG2_IS_DISCARDING) {
- 			/* All receives must fit into a single buffer */
- 			e_dbg("Receive packet consumed multiple buffers\n");
--			/* recycle */
--			buffer_info->skb = skb;
- 			if (staterr & E1000_RXD_STAT_EOP)
- 				adapter->flags2 &= ~FLAG2_IS_DISCARDING;
- 			goto next_desc;
-@@ -994,8 +992,6 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
- 
- 		if (unlikely((staterr & E1000_RXDEXT_ERR_FRAME_ERR_MASK) &&
- 			     !(netdev->features & NETIF_F_RXALL))) {
--			/* recycle */
--			buffer_info->skb = skb;
- 			goto next_desc;
- 		}
- 
-@@ -1022,19 +1018,33 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
- 			struct sk_buff *new_skb =
- 				napi_alloc_skb(&adapter->napi, length);
- 			if (new_skb) {
-+				dma_sync_single_for_cpu(&pdev->dev,
-+							buffer_info->dma,
-+							adapter->rx_buffer_len,
-+							DMA_FROM_DEVICE);
- 				skb_copy_to_linear_data_offset(new_skb,
- 							       -NET_IP_ALIGN,
- 							       (skb->data -
- 								NET_IP_ALIGN),
- 							       (length +
- 								NET_IP_ALIGN));
--				/* save the skb in buffer_info as good */
--				buffer_info->skb = skb;
-+				dma_sync_single_for_device(&pdev->dev,
-+							   buffer_info->dma,
-+							   adapter->rx_buffer_len,
-+							   DMA_FROM_DEVICE);
- 				skb = new_skb;
-+				goto copybreak_done;
- 			}
- 			/* else just continue with the old one */
- 		}
--		/* end copybreak code */
-+
-+		buffer_info->skb = NULL;
-+		dma_unmap_single(&pdev->dev, buffer_info->dma,
-+				 adapter->rx_buffer_len,
-+				 DMA_FROM_DEVICE);
-+		buffer_info->dma = 0;
-+
-+copybreak_done:
- 		skb_put(skb, length);
- 
- 		/* Receive Checksum Offload */
--- 
-2.47.1
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
