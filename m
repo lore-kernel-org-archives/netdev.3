@@ -1,107 +1,115 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57DA3E7BB4;
-	Wed,  5 Aug 2026 08:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A6430566A
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 08:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785918283; cv=none; b=UjCpcXpMqIXoJvpIPXBvQvwm+Cxr6Uw2Sa7p4GsNxETaxdf9PPLGS9UZBwycWrclN9fz+pjTkSw008805Yr4rm5Uda7+AKjFq5aMAQSrhoovJZWK/TBSk22KSy+56TNKF+PtVpbIkBsN1iFBBkLeczLrua89lcXwYykJjT1qRvY=
+	t=1785918326; cv=none; b=b2P6Ly+5+TMJgW3FwlNfSWnopY00ShiBaZoyjGncAQydR2i8aTGcHC8hA5LRZ1L/D6Qgqjs1gq8y2kJLiM6c7OJn/OGFynHOyglVGQAYBOrYDS4+tIkO7tZbN7btRNAabh9WZgukaSxHqKyqEceY/xDsANsCuVxooWR9UgVcqVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785918283; c=relaxed/simple;
-	bh=CruObnqRrJmN9xH+FaUBUUO8FmbeKTNyP///uGb6bcg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n9g9Qlz8srhdjFWmzXPwqx49p9NfSz27/EA1k9wjpy11+2W3PRb2RM5bII+WJutpctv575ciheDyQ9PdO3kcui/VkWWQp2NmzpFccgm6QNQKMLoqyFaF+oDmQSxRZAD62K3jlUMoQEBXphQravXIfnwVmO9UA1sGemMBQV44siM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=BbuKFdH+; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1785918326; c=relaxed/simple;
+	bh=1vBX4q7ojpcugGpkY4PDpKLUTwdTY4Y0bm+vJswlm4Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g0O9Hkh3f3GhBdbodL5Ay8+cKDIfTCkju/q55rTps1yJDZ3Hk1be8Fjndbf5T9i2m5ySWCoPRDH/pxrIyu5VRB/RlcfD1EfHr/sykVxTLZaDc7m7tparrehsm+xD+DdviXjTmy5VXbIHHxTi0T6KfGeWLfZcBrL0T6+5kW34+ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PPRF1Euo; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="BbuKFdH+"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 76A4960191;
-	Wed,  5 Aug 2026 10:24:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1785918275;
-	bh=8Q7gwHkeDPOt6ZXrXrZGh7P8pcldqb2u/9akUBDhfq4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BbuKFdH+fBy8LtOYuFE0wX8AVC4JySyK15LmJGnKhd0qiA7UvJw4u2/XNEsvriw6D
-	 Irn5Scvbmxkqttt1OOiG217vafzdKuJk9SBcoxSyZeciNwhykTE03wLnslX3V8TvCf
-	 LQfNegcoop0ouXJGnXen4NYoBvSZKtUltLzJdu/8vFL71tkpJHWbD8U3yLJir1ZWAV
-	 LWd3l2ZIiHhLsCI/FB5pBsNTOWHo7UjOGEn71LMfaqddXkYSrno5aYNeT6OUMqbbp5
-	 f7+xcBF/TtpK4wM5Nt+I6lGzpI2sJC5ZkDBzHlV5BZTUAcfMbKPF+11+4pxQVNdHL3
-	 1yr3V491UjUGg==
-Date: Wed, 5 Aug 2026 10:24:33 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
-Cc: coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
-	edumazet@google.com, alexandre.ferrieux@orange.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net] netfilter: nf_dup_netdev: scrub duplicates to
- preserve the direct path
-Message-ID: <anLzQeYulW2CQItC@chamomile>
-References: <20260804201150.16364-1-alexandre.ferrieux@orange.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PPRF1Euo"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38dc69c74b8so764303a91.0
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 01:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785918325; x=1786523125; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sO8zLVEA2ZltNWuNfjgzJEFi3mOfQQ23YawfcZLxY7w=;
+        b=PPRF1EuoV6E/4fMkUyT8Ym5e4xdAM/LMuwev31mjii4iyN7CKKiWyTDnkTctZErdqy
+         nQRPHYxY8TQK5ANkutJIrh6XqgThMQTSR6dEUxKqtkZI3antH2kO7jWX6RBLE8FgsFM4
+         IuZiKl+7GlRmJQkcFiH6kzE/7wHOxs+IvFF7O6KgaC2tiFqOyBpBlw/AF74qFU5I/uAC
+         L8iN/9y75PsGfFn8GmcnAYdooL1XYeo9oAjHNrMRnljuBELvsoH4928WPJLMKUmrX8Dr
+         qw02nnoFV/h9Y18WShMbTg7EaPIEJFVhe+tTfT8r5vu1j2+5siN6co4p4cPCfLdww/HB
+         hfPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785918325; x=1786523125;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sO8zLVEA2ZltNWuNfjgzJEFi3mOfQQ23YawfcZLxY7w=;
+        b=cdBwxlbuN2DhZq7GkszLRw8OHEULLTB5pvMZ4wpO/d9HPjPRrFN81tE1irtSTlGsBZ
+         5w2T4TRxP68UK3vZrW+HsuFS3bxHNNf/tiBcXpabX2mukVmn1Pq8GIBbX1qwRE/AQovW
+         KrWy7gofDBw090KdwDZA25XeMUhfOzZiK56dPtqMKr8+Frh/B8EHUNJz1zaaRipbKnW+
+         j/mz/6lqkbCVlA+BThw6x2rqXF/UDBzljd6Nu7XCklRviZfgAVrCf89/yY8ZGZGrVsbU
+         Z9ic7Ov4StMoiDa/rnz4MRSKfXpUKkL2XnFGLqyEaf7Z5xlYKiCWBjwd4MRRriK9SUjW
+         0uTA==
+X-Forwarded-Encrypted: i=1; AHgh+RrMtJNw6T/DIMMAC2gCybqgzs1o23HgAgteoYZEWtEXhaC2fUDW0WVgWX5zh0aQYvfdy/HoocI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzWbFuGDs0yHXcNG15cY4IYIouqH4fXHW3pxMl87GBHvd1KXiW
+	SzwFY9sAMF5Et5MhB8p3sR16qJRJ7k9Fsvqwk19wj7Y4PFoO5+wYkNIX
+X-Gm-Gg: AR+sD11KjUCDKPvUpuYap6O9mOERTjcTB1JOgYs9J1YO1GIObg+rISfvdXAot5Alwhk
+	h0xlNTyuMo5TVeZahFgcKFvN2yW2YVHU92kLI6KET5wrU+1G6+q+KFpd2MoXYO5Cf+EGK2Hpxt0
+	Y+R//pFi4fR/G1SurdKPn3c7ju3Rne9uwGFOYBstzApV4onX3eqNYOWqot7wQCw8NvPFYpTZynn
+	nuL8Cjd8aU4yQ9i9FPulLU4jLAyxEJyhhXlSBWHYHDX0kMcuLQgTZwBonpgWWe0IRNn80csTa+v
+	Qakqn5YKZ5S/635YdF041SLI04LBKeHqRSUH9y8OJzZc9bLelSEaDhHK2AVU6V8aheUB4ITmUVd
+	VGTy2Ym6odAwpomrhXTmPrWLd1tb0mEscPjt9MMtjZLxGrYFLX+t74FucwHgayAZSd+yr+uvCBb
+	5Ju5SWaPMTosQ53SXJ0bRehCjQdfd33TL+izQgC2EVEl1EDeRVBVPsOSwodBnuw1eeTIYcuGin
+X-Received: by 2002:a17:90b:5683:b0:381:26f:8f05 with SMTP id 98e67ed59e1d1-3903c5380f7mr4999150a91.3.1785918324995;
+        Wed, 05 Aug 2026 01:25:24 -0700 (PDT)
+Received: from osman.mioffice.cn ([43.224.245.178])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3903f5fdfe5sm1263278a91.4.2026.08.05.01.25.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 01:25:24 -0700 (PDT)
+From: Zhan Xusheng <zhanxusheng1024@gmail.com>
+X-Google-Original-From: Zhan Xusheng <zhanxusheng@xiaomi.com>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhanxusheng@xiaomi.com
+Subject: [PATCH 0/2] wifi: iwlwifi: Fix GP2 to nanoseconds overflow on 32-bit
+Date: Wed,  5 Aug 2026 16:25:13 +0800
+Message-ID: <20260805082515.4136842-1-zhanxusheng@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260804201150.16364-1-alexandre.ferrieux@orange.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+GP2 is a free-running 32-bit microsecond hardware counter. Both the mvm
+and mld PTP code convert a u32 GP2 value to nanoseconds with
 
-On Tue, Aug 04, 2026 at 10:11:50PM +0200, Alexandre Ferrieux wrote:
-> The nftables 'dup' action clones the skb with its full glory of
-> metadata, including references to its destination and conntrack
-> information. As a consequence, a link failure on the duplicate's
-> egress path ends up doing the same as it would for the direct path,
-> for example invalidating the original packet's destination, which
-> typically breaks all TCP connections to that address.
->
-> In other words, the "dup" path has the potential to wreak havoc
-> in the direct path as a consequence of secondary link failures. This
-> is very bad behavior for a monitoring tool, which is the most
-> obvious application of 'dup'.
+	gp2 * NSEC_PER_USEC
 
-Can you describe your use-case a bit and how it breaks?
+NSEC_PER_USEC is a plain 'long' (1000L), so on 32-bit builds the
+multiplication is performed in 32-bit arithmetic and overflows once the
+GP2 value exceeds ~4.29 million microseconds (~4.3 s). Since GP2 wraps
+only every 2^32 microseconds (~71.5 min), the product is truncated for
+almost the entire counter range, producing bogus PTP timestamps.
 
-> This patch fixes all similar scenarii by calling skb_scrub_pkt()
-> on the clone, severing its link to precious direct-path state.
+Most conversions in the same files already cast to u64 first
+((u64)gp2 * NSEC_PER_USEC); a handful of sites (the adjfine path, the
+stored scale_update_gp2 and the monitor/RX timestamp path) simply missed
+the cast. These patches add the missing u64 casts so the multiplications
+are done in 64-bit, matching the existing call sites. 64-bit builds are
+unaffected. The mld driver inherited the same pattern (and bug) from
+mvm, so it is fixed in a separate patch with its own Fixes: tags.
 
-This patch is targetted at the net tree, but nf.git is preferred.
+Found by code inspection; not tested on 32-bit hardware. The change is a
+straightforward u64 cast matching the surrounding code.
 
-> Note: the second argument of skb_scrub_pkt(), the boolean "packet
-> is crossing netns", is intentionally set to 'false', as a 'true'
-> involves exaggerate scrubbing, e.g. of the timestamp, which a
-> monitoring 'dup' typically wants to preserve.
 
-Yes, the skb->mark should really remain in place for the duplication.
-As for the conntrack and dst, you have to explain what it breaks on
-your end.
+Zhan Xusheng (2):
+  wifi: iwlwifi: mvm: Fix GP2 to nanoseconds overflow on 32-bit
+  wifi: iwlwifi: mld: Fix GP2 to nanoseconds overflow on 32-bit
 
-> Signed-off-by: Alexandre Ferrieux <alexandre.ferrieux@orange.com>
-> ---
->  net/netfilter/nf_dup_netdev.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/netfilter/nf_dup_netdev.c b/net/netfilter/nf_dup_netdev.c
-> index c6bd5c29bed6..0f47a2135955 100644
-> --- a/net/netfilter/nf_dup_netdev.c
-> +++ b/net/netfilter/nf_dup_netdev.c
-> @@ -63,8 +63,10 @@ void nf_dup_netdev_egress(const struct nft_pktinfo *pkt, int oif)
->  		return;
->  
->  	skb = skb_clone(pkt->skb, GFP_ATOMIC);
-> -	if (skb)
-> +	if (skb) {
-> +		skb_scrub_packet(skb, false);
->  		nf_do_netdev_egress(skb, dev, nft_hook(pkt));
-> +	}
->  }
->  EXPORT_SYMBOL_GPL(nf_dup_netdev_egress);
->  
-> -- 
-> 2.47.3
-> 
-> 
+ drivers/net/wireless/intel/iwlwifi/mld/ptp.c  | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c   | 6 ++----
+ drivers/net/wireless/intel/iwlwifi/mvm/ptp.c  | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 4 ++--
+ 4 files changed, 8 insertions(+), 10 deletions(-)
+
+-- 
+2.43.0
+
