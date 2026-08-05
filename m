@@ -1,223 +1,260 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774E93E559A
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 07:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785915907; cv=pass; b=nvDN+QTBSdSTHlB3KlbBiMaOavionxMPaiPb+icLOMInyXwyI4vzZxiSqQwhSQyMK0TdIQPIrMREAMswQp/YRxAm0de8lLLNmLgNgaXIWMgdxsEqNPRrOxYJ4+UFga4TKS9IpRh6smU1XOKMPq9J4PbJEwz/kAVlxyAoGEGIWdA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785915907; c=relaxed/simple;
-	bh=cSKW22zS0viRZU9Wns0Vjta9wVxQschF3Gt+aJ6N61I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aLoqqrsOSe8Bs7y3JZMrmX1HDf27bcHcY9duI0xReiG79JBzxcKY1tTI/YPzrTVgQvdbAB/nzE1Y7I7ZPc8aWiUo0ijz2cHBlOMdMze7CIMn7vO7ZiBZanJIdtbd2WywJSC+45pshFh2JKPOQo2Or+2iKu9OGE2bx+IOacjeJAo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LkUwr31w; arc=pass smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569BC346A08;
+	Wed,  5 Aug 2026 07:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785916497; cv=none; b=cpRNsapdRN15/CzMA0LUhifJvtQN5HywczD89JoCy7705Qt+6uZvWoQADLCEV2BpiD8DhmJFfT3OAToxOpYCb1b4EcG8Mq+2i09QbdkwbriPg9HkTPgT0ir+jfTO4bwrj+KAjpgd9irQE+D+woJoUenqI+NQTaPv3MnS6vTsoHE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785916497; c=relaxed/simple;
+	bh=ztqjl2VKqqZcC14N6ZqMSQKSZq3tND6243n8qDNTEyc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K73YEwZ7Wp955pq7ONRAs1uVB41ccw9lSz8hBHAHq5gmjYtIBU46GQ9Q4DSf8mMCRHf5y1dwBmU02v/7+DRRYu2o1iupIOgI9ieZAUbDQv1XgyX57pbAJgsfC5xIElzFc5t6ylCq4GNh9YtD9RnJstXNAabrHSM+WRJZoAFQcw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=i8/TpTPi; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LkUwr31w"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-81ea0b7d137so5978597b3.2
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 00:45:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785915904; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KutBDOHUvygSVZv/urYAnTU+aYVufXlKohVK1GB44Sa16LFym5rA/eB44X6K7/EC/0
-         Y4I5bRp+8SZT4oSf2BnvtJtylAjRb726MLRHR64MGicIKLPZN/JlVsb+jPLLIqbtVuK5
-         d+irbxp9KINO9tnKAz4yVMkf4GnJHmllKB0W4nLw4aYVcSdHPA7Elt09Z9/inUqKqSIa
-         bih4nYKT1rSBbqN+39lYl+K3KdkAGtwdYsqgtqU9Q54BwxeJl+IdnV8ado5xA7zJCYH4
-         IZxTq0jEc65b3FRpnXNpp+nYklsgvkIr3LBnPvhUK7GmHWQVhpCOOrfBA8cKlmADwTp2
-         sH2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2rGXNqt3olm1f1RfVY6dZfAgmsFSria9Q6AIZRsuLBM=;
-        fh=m1NBN8KF7u/gD/OhF/Msla+39RISNgng+1PlUYZHlf0=;
-        b=ARlOA+QYwMyq28Aaj2ATeodtNDuGQxHQhUTwEme1PcWNuLtnyZi7aSaLKCYFwbKOcP
-         2EVDYRc1NOTKC8IG7H8F8jg43ox32cABdGM4LP3C+JM8qGABcQiotyPV4uq4C5/NLBBg
-         H2/rSUT8EVuxIuYh1rOdyehj6kEBYlstrFFUnv8/j2DeuumOcNTBxhaZGm3aaWKHgIBN
-         tk2bB3Ax7zaOyExnKdu0memY3zk+qtYkkg/LP4LTGW5H7eo7VBcf/x+1lCaBq/0ratw4
-         PpYz1Lcid8LAy7OmGaL2e88W0SIT7LgKwloPn8YK4qVaUOJ3yZ4Cw4wbsObO77Omv175
-         BblA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785915904; x=1786520704; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2rGXNqt3olm1f1RfVY6dZfAgmsFSria9Q6AIZRsuLBM=;
-        b=LkUwr31wYrIZb6vEkbCj8Z5FkBMW1TLhmCjnS+lhBBm+ecjAi7/8JR6OapHW+YuBed
-         7ZXfBvetFg993A0cBBvW7ZhF/WYS9ZcXEAVMM+Ibmu292kAatcZgkw8vHIVqgy/h+g2Y
-         Y3IYwvrOXmKELIsdts2FmOXZOjA2WCM5L7bXuTt6MNazjSbAuHuFx4unuxi7s5LcOlZP
-         eNHPNVCZ/z7ktHlabgPqvG2zbSc68j/qd3PHOSoT55IhFsvp80aZq8TT97/gwDzciP9V
-         1Aiz6L0j91J+LEYGvmg2guyAAZ8cJqxya7rwdQtnpe1WRkfiwzpXgF9DvEMzd0lZwzGE
-         l8NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785915904; x=1786520704;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2rGXNqt3olm1f1RfVY6dZfAgmsFSria9Q6AIZRsuLBM=;
-        b=sd4jNbmnk/9sGRc45xF9u7FPUYohw6FLi9yxZouZNFN39myuJjgger4PIlbilHA3Gl
-         i0Ny9s/n7V5ApwGViVBYT02FthkCieqc5d7BxOZ92j/V9E/Ntm4NqrJF40sIs8RlxBss
-         8JQLjdNnc0ATfGktItVavoSi5EpFIAhJJN3zG7FfOvN21dDEQqHAwBIsBSR0XN2ixRGm
-         rEaqnoceDSs+LQY95v8cD3r/KYE8fmc0ys3u1RiwwxuBrAhQSHj3squYJpZ9GMbewHMc
-         o3ZQsJM6hbi7iKRscGSUMGdozsn7QnlD8jX3IiLoNJfPCH5goS0xH02QLhbYr+OPZR3G
-         yR2g==
-X-Forwarded-Encrypted: i=1; AHgh+Rre0Kp3o+mLDHdWj+qCsOvGX0oXN/aMbS/4DaIRVL90P6S0fSlocdxLvjiljwI0gWOISra3spI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzn/p4eszJkWEq4l2TgwvBADro50LhtAjmoj8aP6045zgvbAIbT
-	rdGSVoudQHWEM0TguNkOxi35POBkDQ9sub+be0hjeXuF8SGEPSBJzb4+UKydhFJgvywXj9v1B7w
-	MAw0Wj12IQ8xQOSevYOv5Wke6xqzClTk=
-X-Gm-Gg: AR+sD11Pq+KUhawcTOCD+/DOkj1XGpcqXxeShtjrH5JpvEvNtGSYimaX5O3Wa7Gzr28
-	/i8pxk3ApZErO+oICBbRQ7mU1n/CiS9pITAA3WYGOcTWOS5NcL1SvQ9u5PP8/06nycWfRX17amK
-	97TtG3FjusSDFMc80L/OwQ3TjJC22gmDHLzO5o98v5qlheb+Q0U6rphRT4/X45zqGfSMDTOOtjk
-	AaHIMGFqHKAh15bHsogqSMEFDFNA0HY+w4pD1mL3H3e8ZeBTG5zfrxttQ9a8eZHF6TnzbeTwOSK
-	Sw1O/6El38BthWi3dkANTKBCGX0RpW4Ubhl+IeMTtW729K1seaL7+zPFas25tUloHFmS3XylOTJ
-	6Nm8Zp5XPLLtXYTwlA8dAskeNmRGilW6/Vl3K5fVeAEDlB4jsHZF5znyaxqpuaYMxQfIgkR23g9
-	EDkvvcid11QUgopwgBhhs=
-X-Received: by 2002:a05:690c:f14:b0:80f:9998:e614 with SMTP id
- 00721157ae682-8202288040fmr23399527b3.28.1785915904277; Wed, 05 Aug 2026
- 00:45:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="i8/TpTPi"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id CA7A760191;
+	Wed,  5 Aug 2026 09:54:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1785916490;
+	bh=Er2zS5UkHfHOubMZBQiKBoNpLnX86mYzJTCX2onIuk0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i8/TpTPi0DuJi7SbeUWwcRBwyVxpYE9XAvqXX1FKozsFHgbLNmPdQYxkykhvgkXED
+	 +5y9py1H1PiYZk1NFEg4xGoew+4IgA91WgG/wgY5YFLSsbws8GM9kaAzt7PyOncHCc
+	 VzENF4abrARRb+aRCIzTGQ398mmWvUk0huX3VQ3aqQlubhfdtHPdW9gIN3h2ZO/Gm3
+	 EicA4Pc+URPhVQQDnfBqN/6HMXecJ/UofiGiVtlnfmn2cJHRPJuO6EVCc6QN3IhcIE
+	 xXTDv0zFrfWZrd/GYJU2J0vbUDh2WCZKvO627dE0N4ODjojdJSL+Cfvngk4dEO1lU/
+	 6oLOus/YlZ/6A==
+Date: Wed, 5 Aug 2026 09:54:47 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+	fw@strlen.de, horms@kernel.org
+Subject: Re: [PATCH net-next 9/9] netfilter: conntrack: tcp: use UNACK
+ timeout for non-closing RST packets
+Message-ID: <anLsR4y_VcrFFYL2@chamomile>
+References: <20260731153402.851224-10-pablo@netfilter.org>
+ <20260805001908.3985938-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260805072641.402-1-strst.gs@gmail.com>
-In-Reply-To: <20260805072641.402-1-strst.gs@gmail.com>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Wed, 5 Aug 2026 09:44:51 +0200
-X-Gm-Features: AUfX_myrGIQyVV9evrnT_b_tEPoSOY1KUbDquZDbjrl-N_eE4aXbFiExSsnvbbs
-Message-ID: <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
-Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
-To: Semih Baskan <strst.gs@gmail.com>
-Cc: florian.fainelli@broadcom.com, andrew@lunn.ch, olteanv@gmail.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	vladimir.oltean@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260805001908.3985938-1-kuba@kernel.org>
 
-Hi,
-
-On Wed, Aug 5, 2026 at 9:27=E2=80=AFAM Semih Baskan <strst.gs@gmail.com> wr=
-ote:
->
-> b53 keeps the VLAN table enabled at all times, so a tagged frame whose VI=
-D
-> is not in the table resolves to an empty member set and is dropped before
-> it reaches the CPU. Documentation/networking/switchdev.rst requires a
-> standalone port to keep every VLAN configured on top of it working, and a
-> port that is not filtering to forward frames whose VID is absent from the
-> table.
->
-> Turn the table off in that case. It also selects shared VLAN learning,
-> which b53_arl_rw_op() already ties to the same flag. Switches with no tag
-> protocol keep the CPU port tagged in every VLAN and identify the source
-> port from that tag, so they stay VLAN aware.
->
-> b53_configure_vlan() has to stop passing dev->vlan_enabled back in as the
-> requested state. b53_enable_vlan() stores its result there, so the disabl=
-ed
-> state latches and enabling VLAN filtering later would not re-enable the
-> table.
->
-> An 8021q upper on a standalone port is the case that breaks, for example =
-a
-> PPPoE WAN on VLAN 35. The PADO comes back tagged and is dropped, so no
-> session comes up and there is no default route.
->
-> Tested on an Asus RT-N18U (BCM53011 rev 5) against a PPPoE concentrator o=
-n
-> a VLAN 35 subinterface. pppd timed out waiting for PADO before, and the
-> session establishes after. With VLAN filtering enabled the table is still
-> programmed and still enforces port membership.
->
-> Fixes: 06cfb2df7eb0 ("net: dsa: don't advertise 'rx-vlan-filter' when not=
- needed")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Semih Baskan <strst.gs@gmail.com>
+On Tue, Aug 04, 2026 at 05:19:07PM -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > ---
-> I tried setting ds->needs_standalone_vlan_filtering on hardware first. It=
- is
-> not sufficient on b53: f089652b6b16 ("net: dsa: b53: do not program vlans
-> when vlan filtering is off") makes .port_vlan_add return before the hardw=
-are
-> write while filtering is off, so the VID still never reaches the table.
-> rx-vlan-filter flipped to on and tagged frames were still dropped, 0 of 5=
-.
+> netfilter: conntrack: tcp: use UNACK timeout for non-closing RST packets
+> 
+> This changes the timeout selection in nf_conntrack_tcp_packet() so that an
+> RST which leaves the entry in TCP_CONNTRACK_ESTABLISHED (the non-exact
+> sequence case from be0502a3f2e9) gets timeouts[TCP_CONNTRACK_UNACK] instead
+> of timeouts[TCP_CONNTRACK_CLOSE].  RSTs that conntrack accepts as closing
+> the flow are meant to keep using timeouts[new_state].
+> 
+> A few questions below.
+> 
+> >     Use the UNACK timeout for RST packets that leave the conntrack entry in
+> >     TCP_CONNTRACK_ESTABLISHED.  Exact-match RSTs and accepted RST packet
+> >     trains still fall through to timeouts[new_state], which preserves the
+> >     CLOSE timeout when conntrack accepts the RST as closing the flow.
+> 
+> [Severity: Low]
+> Should this carry a Fixes: tag?
+ 
+No, and it is intentional.
+
+We do not want updates on the conntrack state machine to automatically
+end up in -stable.
+
+Do we have to write this in the cover letter from this time on?
+
+> [...] The changelog describes a user-visible
+> failure (an ESTABLISHED entry expiring after 10 seconds while both TCP
+> endpoints stay established), and it names be0502a3f2e9 in prose only, so
+> stable tooling has nothing machine-readable to key on.
 >
-> Relaxing that check instead also works, but only together with the opt-in
-> above, since without the feature bit 8021q never calls .port_vlan_add at
-> all. Making the port VLAN unaware follows the same switchdev rule that
-> commit cites.
->
-> I also checked the case where another bridge on the same chip has
-> vlan_filtering=3D1, since b53 sets vlan_filtering_is_global. DSA offloads=
- the
-> uppers on the standalone port too, so rx-vlan-filter goes on there and th=
-e
-> tagged frames keep arriving. This patch cannot execute in that state.
->
->  drivers/net/dsa/b53/b53_common.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_c=
-ommon.c
-> index 3f5b9592794d..76378afe4993 100644
-> --- a/drivers/net/dsa/b53/b53_common.c
-> +++ b/drivers/net/dsa/b53/b53_common.c
-> @@ -385,6 +385,9 @@ static void b53_enable_vlan(struct b53_device *dev, i=
-nt port, bool enable,
->  {
->         u8 mgmt, vc0, vc1, vc4 =3D 0, vc5;
->
-> +       if (!enable_filtering && dev->tag_protocol !=3D DSA_TAG_PROTO_NON=
-E)
-> +               enable =3D false;
-> +
->         b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_MODE, &mgmt);
->         b53_read8(dev, B53_VLAN_PAGE, B53_VLAN_CTRL0, &vc0);
->         b53_read8(dev, B53_VLAN_PAGE, B53_VLAN_CTRL1, &vc1);
-> @@ -916,7 +919,7 @@ int b53_configure_vlan(struct dsa_switch *ds)
->                 b53_do_vlan_op(dev, VTA_CMD_CLEAR);
->         }
->
-> -       b53_enable_vlan(dev, -1, dev->vlan_enabled, dev->vlan_filtering);
-> +       b53_enable_vlan(dev, -1, true, dev->vlan_filtering);
->
->         /* Create an untagged VLAN entry for the default PVID in case
->          * CONFIG_VLAN_8021Q is disabled and there are no calls to
+> There is also a wording tension: be0502a3f2e9's own changelog presented the
+> CLOSE timeout for non-exact RSTs as intentional ("With patch, timeout is
+> lowered like CLOSE, but connection stays in ESTABLISHED state" / "If no
+> challenge ACK is received, the connection will time out after CLOSE
+> seconds").  Either adding
+> 
+>     Fixes: be0502a3f2e94211 ("netfilter: conntrack: tcp: only close if RST matches exact sequence")
+> 
+> or rewording this as a deliberate policy refinement rather than a bug fix
+> would make the two consistent.
+> 
+> [Severity: Low]
+> Is there a test that observes this change?
 
-Unfortunately what this does is break modifying ARL entries with VID
-!=3D 0, which is why I haven't added this.
+No, it is just a timeout update in conntrack, there is nothing the
+packetdrill test can do about this.
 
-While SVL is active, any ARL add/remove operations ignore the VID
-field/register and force it to 0, making existing static ARL entries
-with VID !=3D 0 inaccessible, and any (static) ARL entries added will
-have their VID set to 0, regardless what the software entry said.
+> The only in-tree artifact covering the inexact in-window RST path,
+> tools/testing/selftests/net/netfilter/packetdrill/conntrack_rst_invalid.pkt,
+> checks only the state string:
+> 
+>     // in-window but not exact match
+>     +0.0 < R	42:42(0)	win 0
+>     +0 `conntrack -f $NFCT_IP_VERSION -L -p tcp --dport 8080 2>/dev/null |grep -q ESTABLISHED`
+> 
+> The timeout is now the sole observable difference for that scenario, and it
+> is never inspected.
+> 
+> On top of that, the segment labelled "in-window but not exact match" has seq
+> before seen[!dir].td_maxack (the peer had acked 3001), so
+> nf_conntrack_tcp_packet() rejects it at the "invalid rst" check and never
+> reaches the patched timeout selection.  The test's own counter assertion
+> agrees:
+> 
+>     // Expect four invalid RSTs
+>     +0 `$xtables -v -S INPUT  | grep INVALID | grep -q -- "-c 4 "`
+> 
+> So the suite passes identically with and without this change.
 
-This causes the ARL hardware table to go out of sync with the bridge
-fdb/mdb software tables, and will lead to potentially hard to debug
-network issues.
+Yes, that is expected.
 
-The options to remedy this are:
+> > diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
+> > index ceeed3d7fe520..723e946a78f40 100644
+> > --- a/net/netfilter/nf_conntrack_proto_tcp.c
+> > +++ b/net/netfilter/nf_conntrack_proto_tcp.c
+> > @@ -1281,8 +1281,9 @@ int nf_conntrack_tcp_packet(struct nf_conn *ct,
+> >  	if (ct->proto.tcp.retrans >= tn->tcp_max_retrans &&
+> >  	    timeouts[new_state] > timeouts[TCP_CONNTRACK_RETRANS])
+> >  		timeout = timeouts[TCP_CONNTRACK_RETRANS];
+> > -	else if (unlikely(index == TCP_RST_SET))
+> > -		timeout = timeouts[TCP_CONNTRACK_CLOSE];
+> > +	else if (unlikely(index == TCP_RST_SET &&
+> > +			  new_state == TCP_CONNTRACK_ESTABLISHED))
+> > +		timeout = timeouts[TCP_CONNTRACK_UNACK];
+> 
+> [Severity: Medium]
+> Can this new branch lengthen an entry's lifetime rather than shorten it?
 
-1. keep track of all static fdb (and mdb) entries added to the
-hardware table, so we "sync" it on switching vlan filtering on/off (or
-find a way to do so without having a copy), or
-2. while vlan filtering is off, have static vlan table entries for all
-possible VIDs, or
-3. use direct memory access registers to directly modify the ARL table
-memory instead of going through default registers while SVL is
-enabled.
+Yes, it is indeed extending the timeout rather intentionally.
 
-Neither one is a quick and easy fix.
+> Every sibling branch in this chain only assigns when the replacement is
+> smaller, for example the RETRANS branch just above and the UNACK branch just
+> below:
+> 
+>     if (ct->proto.tcp.retrans >= tn->tcp_max_retrans &&
+>         timeouts[new_state] > timeouts[TCP_CONNTRACK_RETRANS])
+>         timeout = timeouts[TCP_CONNTRACK_RETRANS];
+>     ...
+>     else if ((ct->proto.tcp.seen[0].flags | ct->proto.tcp.seen[1].flags) &
+>          IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED &&
+>          timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
+>         timeout = timeouts[TCP_CONNTRACK_UNACK];
+> 
+> The new branch has no such guard.  Since this branch is only reachable via
+> "new_state = old_state;" in case TCP_CONNTRACK_CLOSE, new_state is
+> ESTABLISHED here, so the effective comparison is timeouts[UNACK] against
+> timeouts[ESTABLISHED].
+> 
+> With the defaults in tcp_timeouts (ESTABLISHED 5 DAYS, UNACK 5 MINS) this is
+> always a lowering.
 
-1/2 make switching vlan filtering likely a costly operation (I test
-implemented 2, and it takes several seconds for SPI connected switches
-- not sure if this is acceptable). 3 requires knowing the in-memory
-formats for each switch chip, which aren't publicly documented.
+Yes, and it is intentional, this is lowering the timeout indeed.
 
-Best regards,
-Jonas
+Actually, it is lowering it in a less "aggressive" way, instead of
+using CLOSE timeout it uses the UNACK timeout (5 MINS) to avoid
+
+> But both values are independently tunable with no cross-validation:
+> 
+>     net/netfilter/nf_conntrack_standalone.c:
+>     [NF_SYSCTL_CT_PROTO_TIMEOUT_TCP_ESTABLISHED] = {
+>         .procname	= "nf_conntrack_tcp_timeout_established",
+>         .maxlen		= sizeof(unsigned int),
+>         .mode		= 0644,
+>         .proc_handler	= proc_dointvec_jiffies,
+>     },
+> 
+> and tcp_timeout_nlattr_to_obj() copies CTA_TIMEOUT_TCP_* verbatim.  So an
+> administrator lowering nf_conntrack_tcp_timeout_established (120 s is a
+> common hardening/NAT-appliance setting) inverts the relation.
+> 
+> __nf_ct_refresh_acct() then writes the expiry absolutely rather than
+> clamping it:
+> 
+>     net/netfilter/nf_conntrack_core.c:__nf_ct_refresh_acct() {
+>         ...
+>         if (nf_ct_is_confirmed(ct))
+>             extra_jiffies += nfct_time_stamp;
+> 
+>         if (READ_ONCE(ct->timeout) != extra_jiffies)
+>             WRITE_ONCE(ct->timeout, extra_jiffies);
+>         ...
+>     }
+> 
+> In that configuration, an in-window RST whose sequence does not match
+> td_maxack pushes the entry past the configured ESTABLISHED policy, and a
+> periodic stream of such RSTs can renew it indefinitely, holding entries
+> against nf_conntrack_max.  Would the usual form keep the intent while
+> avoiding this?
+> 
+>     timeout = min(timeouts[new_state], timeouts[TCP_CONNTRACK_UNACK]);
+> 
+> or the matching guard:
+> 
+>     else if (unlikely(index == TCP_RST_SET &&
+>                       new_state == TCP_CONNTRACK_ESTABLISHED) &&
+>              timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
+> 
+> >  	else if ((ct->proto.tcp.seen[0].flags | ct->proto.tcp.seen[1].flags) &
+> >  		 IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED &&
+> >  		 timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
+> 
+> [Severity: Low]
+> For an RST that conntrack does accept as closing the flow, is the CLOSE
+> timeout really preserved?
+
+No, and it is intentional. We are changing to the UNACK timeout which
+is less aggresive.
+
+> Previously such packets took the unconditional
+> timeouts[TCP_CONNTRACK_CLOSE] assignment; now they fall through into the
+> DATA_UNACKNOWLEDGED and last_win == 0 branches:
+> 
+>     else if ((ct->proto.tcp.seen[0].flags | ct->proto.tcp.seen[1].flags) &
+>          IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED &&
+>          timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
+>         timeout = timeouts[TCP_CONNTRACK_UNACK];
+>     else if (ct->proto.tcp.last_win == 0 &&
+>          timeouts[new_state] > timeouts[TCP_CONNTRACK_RETRANS])
+>         timeout = timeouts[TCP_CONNTRACK_RETRANS];
+> 
+> Those fire precisely when nf_conntrack_tcp_timeout_close is raised above
+> nf_conntrack_tcp_timeout_unacknowledged or the retrans timeout, and both
+> preconditions are reachable for a closing RST: IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED
+> is commonly set on a flow that carried data, and ct->proto.tcp.last_win is
+> sticky since it is only refreshed for ACK-only segments.
+> 
+> This also diverges from the other closing path in the same file, which does
+> not cap:
+> 
+>     nf_conntrack_tcp_set_closing() {
+>         ...
+>         timeout = timeouts[TCP_CONNTRACK_CLOSE];
+>         WRITE_ONCE(ct->timeout, timeout + nfct_time_stamp);
+>         ...
+>     }
+> 
+> Given that, is the changelog sentence "Exact-match RSTs and accepted RST
+> packet trains still fall through to timeouts[new_state], which preserves the
+> CLOSE timeout when conntrack accepts the RST as closing the flow" accurate
+> for non-default close timeouts?  Restoring an explicit CLOSE assignment for
+> new_state == TCP_CONNTRACK_CLOSE, or adjusting the wording, would resolve
+> it.
+
+Not sure what wording adjustment need to be done here.
