@@ -1,132 +1,252 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE0A3E49EA
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 10:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024E941D139
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 10:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785925518; cv=none; b=tCldaP4RvSe0v024DlenSMPE383hnHDHpKRiIj4kTgzTSb+5jumFrNQK/asz+VyV1XQBMzUavpheh6oFQKoZZdGAD4R1J+tfUzi6DzaF0T8fFJme6DuPPClbWE/xbju6TAPSmtU3Q+dCRGUzZD9H3nebc1PcHp2otkjIXM7Uflw=
+	t=1785925788; cv=none; b=CuiHLDYAUxFDxCBN2U7oady5wmKm8ovlyO/nOxxCijbFCvTr9F7ljWiMu0xzjZhCK0AHodbQ4LH9JcuLTnTsZ5raJa3zCBQayebdGWjTPNoSgVylQuFjr3e1poCI3dpVsAyXma3BXKe+CQjm6/7FPbTy7LwoFeLIbRhlXr4yY2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785925518; c=relaxed/simple;
-	bh=Ar2VSFfOX9Y3NHy+gCdt76XnYbYIFnThMiDcS2J/SHk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fehi0yU+oAEL/5XEG/+uRnyeG/fS9ylrz5foFIZAkUay6sqMPNb8oJanKBsgMkXz1eJ3mljdVFRofqULYxs82rM/D65xOC3Ava6sEt77lEwbYhGzKd+HnHAGrCDrqLsRLbWfU/gNT48bycL6dafd9BvfDS8mgSy7CUFtfnHuvRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=PYhp1sGQ; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1785925788; c=relaxed/simple;
+	bh=uZIfQ2ep+zKP+NQDe+F559/YOsSB/WrZVinoZfDAncw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KCWXuphusSTTsBQbik004z6/XOl2hTVj3Sp6yonGsbSPZzuMzU/TPCyBnZhpBCE7AUtdsaLuWXsl8HPfrZnuRyPqu75uhTsi7BG/lHlAuToim+6pBRWIJoE+oCFb/13RJ8CurJonWEyo6L5K6q+Uan6ojLuMkq2sd/BoEuTFheM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jp3zuuOT; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="PYhp1sGQ"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-930f618435cso48924085a.3
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 03:25:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jp3zuuOT"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-381b831d535so951414a91.0
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 03:29:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1785925516; x=1786530316; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uBFdOOeUVBY1Qp0eWq07UF7DoGLXPhkRtG5vT8+QMKs=;
-        b=PYhp1sGQtJ3DEZAoUlztW08B9vnfubJCd4+6Uw5GxN94Zb2T/0rsk+HrCnReeRS302
-         Jp13zLSDGFi+R3Ua69l2YBHPbg3ZEKsVAng9BmiRHhu2aGh05ExLiHNQSd8Pbpe5W6ry
-         bPGSoTTi2ceGQDr3l1tbeA0xQNrKDmdMSdyQs6hLHI9b5ePICr7HHshkeicBiZvLhL/f
-         uUpjv6UH3ge0AIwZgJ1tQitF0C7Z6gbAO0t7s7EpCNGFQSpRH9zuuKtkkEFJq5Gida6w
-         MeOw/shCCIKK8zK62+N/+mDR/8bD9yMfpr/GqvwKDVMNvIhBu4Vrd8ycLMq71zdlJhT4
-         lS+w==
+        d=gmail.com; s=20251104; t=1785925782; x=1786530582; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3CobWGezPJ1jiz14fyzEAXpAWQpNHtzLmWbtrjHOhKU=;
+        b=jp3zuuOToTs1Ja0zQ60LpeVbx3LKIylwusVdHmiRAdLDahU+N+hZClLSlLtbvrTMT3
+         fUVKUfjRU12P1rlRAjGCt2Eouubm34gYaoEYvq2BMcfldaVM0P1GlKoyU0ue9L7fcnLS
+         9g/kNjqRN586Z4xR07ttO66L6aNANPLZbCtspyZroKf7V0lHKQW0IChG3UW1N/zc3USz
+         sc6mFmQsc6K0YUFMuFGV+LEPvZk4AsK8l5yklh5RK17rpYUiCDC+oyk5MX29XbMsK79Z
+         Qz0/ABE0mSJ3luPLTg/hGtmQmlrdMStRvPbeJ5qoQP3OsuHFRwW03uXYYuUiak0O7UZe
+         XNFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785925516; x=1786530316;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1785925782; x=1786530582;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uBFdOOeUVBY1Qp0eWq07UF7DoGLXPhkRtG5vT8+QMKs=;
-        b=dgj4dyiKm4Cou7n0E2oVZlbl/b9XifpmXAqDDpZdS6Iat3cVtHBCn9nJl25++1anqb
-         McEhJtBYty/Q+Rzc/EnQME0IsMP79N2MCsoUBbfOll10TPO5j+e4u+T+2r8atrz8UK6r
-         6lLxC8GDsbrBoNt4sqNKLM9Ib0afu1GGcEPSCku1Nk3BUu5Tp6wDNRU0+ACXOax21w8X
-         CsvKFkw+otC8bjgT9S009oILxj20y6z8WPd5jBN+Q7lf74w0sV/4kuxIynq+ObCYwRcI
-         yTTWf2w5mW6Jddv3PtVSyB+ek5QjbCDz/2d99UobcejQ9TRZQOOA2+wXejXfWdFZ86ak
-         vA7w==
-X-Forwarded-Encrypted: i=1; AHgh+RoyAu0olvDgno6TQntKybUsJTb2SWd1JBam1szo7ylWliIOjsvDbDzQz6o4TGShxWb/mZ3IMGY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQ2Tl5xf9tBLA/lqHQCH3oivSCP1xF2LSRmI/l9hLiD/XiXBlA
-	OVqDkZn3S4Wja0xt9Whir2DiSwKhg4XTHnmJpfmibzc0fMibYHS/wOP27PZ3xrKiSkQ=
-X-Gm-Gg: AR+sD120q5IRChXgaP7QPmIFHCcoExVTaO55YEGpiWlzlii2qvgr5lRUxBGnvXhefen
-	HT300UG2acbqbu6N07nRCb5s0OR8av6TYFF/nQ2JccOznar3cWEptvXXQaJ62ChgoPxfkbB89R+
-	v3/ixC6rg1Cb0dDUfjb7NJi5z+qEecy/7xCgTg8w+WAjhh5uc3kxNq9PNSmRKGdqjLvGqgsXHd8
-	FrR/7egjOQU2JvCW+P0dpWJut7mUutw8qxcwspHOvBFS/Evs36/x3er1Q1xVemsoD2ms7Gbn/Ao
-	eP++9OqrmDEz+Izo6y6BzD2s6U5ljlYk2wClJtmcodPlWrmaJwZeuEvIXujww9BTohmgKYUk472
-	3D4uAe/HD3y8Z/349W37v+t1LjEdgEqJOdHayn7D+rsPhJDxMSN2NEzM53hYNMeYqjyRSsWpXAo
-	C0SAH9IJRxem7ExHu+89q3dhldhkc/eiU//A6WVpRkHHk4arhU7N3zxykGSQKa4PNX/A==
-X-Received: by 2002:a05:620a:a003:b0:932:fd59:3e57 with SMTP id af79cd13be357-93649148855mr447772285a.41.1785925516159;
-        Wed, 05 Aug 2026 03:25:16 -0700 (PDT)
-Received: from localhost ([146.190.222.192])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-9364a597e2asm119983285a.43.2026.08.05.03.25.15
+        bh=3CobWGezPJ1jiz14fyzEAXpAWQpNHtzLmWbtrjHOhKU=;
+        b=CFN/Ee0nhhQxGrJsMqPX1/9hEly5xyvl9Vn7aQR8X5gl8K0YnsjXFVKnl4ByAEu5eh
+         tmsCY2zilqU/X5YA7A4H9hAkVXl/u4DqBU1gVGWNuMhv/yfisbyd2QtJnvs9aEJYcWDi
+         GMnc/8oKowmkMWesATyMUCd+cLPdJnjfhUrGgZINqKeUQN327D+8JHfRMnA98/zpY36m
+         ltmyRxDALubED7ypjQ9wqGvUiPMZpaG/B4ziq+GSApOMT/pdwgSyBejaWFb0PR0xFZAX
+         5eEeJT0FFTdq31OsEnoQ8nBRHMoLIG8DBSMHlH2gbEtY7D6R0PeM/9ImJnYM3gwW7a1A
+         351w==
+X-Forwarded-Encrypted: i=1; AHgh+RoyUQ27o0s7dAYWXhBG6PMCSTAdAYFiNLpGoHCe8fTZpYa7ar9JcMh6p7vjdtEv5rlfA6RJMmw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR4hFSPhlzYjBB7ryDvcx2fn9RpWQRUsec3FjXJYyl4Li8aXkm
+	ZXn1m1AonMRFWsm81ggKFUokLIEPWy3muzSjUPqL88x3OvsIQLO7sDba
+X-Gm-Gg: AR+sD13XO8KJ0nhENJc6QEZzQQJf/8iN2FTdgW8bb+pNYaymh+6AgX5WQn2dgvRJ4yS
+	ZGDpZ52GpbfNhrUcRtFKHHRPlwtEM1MsVG8rkPqYlwmdWVldaMAdd6ua3BUWenRw6NXjg1rzUbQ
+	KH7rj8Cb5CvB2RkGHBNf4OYiuVFU9w5bFJolpXXyn2C47Lw2itEURKl3II1lj4vfF5lEuQ4wdy3
+	iK6Jx4BmxNImA2wt7vy71SrKuyBBkCCRAMTKmHq9FB3ycePTHpwrPfDf2zcq/8dygqdmZccwaE0
+	wr0shOeR1WEUR9GsDkRrJb7YxB597PrQjm30pX1NJsCkKLGkVAbDcSHRAfOWdrOX057uJuH7zRe
+	lyfDCLyqk6YT8cnxfCA+aIkB3/ir8/waObxhdWIf0VDrtSfcOMepKy0WPsv0Ka6vyxrEUBXpfDJ
+	Q9Q0wIjt4U/+FFUwGcOIvzw2AD/a/xSYd/xuQ1U4QDRAoRFfNjJuwbWbI/eNZD3E1FmKfToVKLA
+	IdVgzfGWzRsADsVlg==
+X-Received: by 2002:a17:90b:57cf:b0:38e:4f41:83df with SMTP id 98e67ed59e1d1-3903c5b34edmr6522051a91.15.1785925782493;
+        Wed, 05 Aug 2026 03:29:42 -0700 (PDT)
+Received: from [10.22.76.20] ([118.201.124.118])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-390392aee23sm2798253a91.15.2026.08.05.03.29.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Aug 2026 03:25:15 -0700 (PDT)
-From: David Lee <david.lee@trailofbits.com>
-To: vinicius.gomes@intel.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Kyle Zeng <kylebot@openai.com>,
-	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	David Lee <david.lee@trailofbits.com>
-Subject: [PATCH net] net/sched: sch_taprio: do not requeue a deactivated qdisc
-Date: Wed,  5 Aug 2026 10:25:14 +0000
-Message-ID: <20260805102514.740834-1-david.lee@trailofbits.com>
-X-Mailer: git-send-email 2.43.0
+        Wed, 05 Aug 2026 03:29:42 -0700 (PDT)
+Message-ID: <b64dde64-8ae0-4b97-bd65-14da8d9cb5eb@gmail.com>
+Date: Wed, 5 Aug 2026 18:29:36 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] vsock: use sock_error() to consume sk_err after a
+ failed connect
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Andy King <acking@vmware.com>, George Zhang <georgezhang@vmware.com>,
+ Dmitry Torokhov <dtor@vmware.com>,
+ syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
+ Michal Luczaj <mhal@rbox.co>, Wupeng Ma <mawupeng1@huawei.com>,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260804135238.386417-1-phind.uet@gmail.com>
+ <anLuRE4ix5-BZ7-t@sgarzare-redhat>
+Content-Language: en-GB
+From: "Nguyen Dinh Phi [SG]" <phind.uet@gmail.com>
+In-Reply-To: <anLuRE4ix5-BZ7-t@sgarzare-redhat>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Kyle Zeng <kylebot@openai.com>
+On 5/8/26 16:34, Stefano Garzarella wrote:
+> On Tue, Aug 04, 2026 at 09:52:36PM +0800, phind.uet@gmail.com wrote:
+>> From: Nguyen Dinh Phi <phind.uet@gmail.com>
+>>
+>> Syzbot reported an issue which can be reproduced with these steps:
+>>
+>>   r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>>   bind(r0, {VMADDR_CID_ANY, PORT})
+>>   connect(r0, {VMADDR_CID_LOCAL, PORT})   -> -1, EPROTO  (self-connect)
+>>   listen(r0, backlog)                     -> 0
+>>   r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>>   connect(r1, {VMADDR_CID_LOCAL, PORT})   -> 0
+>>   accept(r0)                              -> -1, EPROTO  (stale sk_err)
+>>
+>> Basically, it creates a socket (r0) and triggers a self-connect after
+>> binding it. This self-connect fails with EPROTO because it loops back to
+>> r0 while the socket is still in the TCP_SYN_SENT state, causing it to be
+>> incorrectly dispatched to the connecting-client path. The unexpected
+>> packet type encountered there sets sk_err to EPROTO.
+>>
+>> After that, it invokes a listen() call on the same socket. This listen()
+>> call succeeds because the kernel's listening path never inspects or
+>> clears sk_err. Then, a new socket (r1) is created as a normal client and
+>> connects to r0. However, vsock_accept() rejects this incoming connection
+>> because the listener's sk_err still holds the EPROTO error from the
+>> earlier failed self-connect.
+>>
+>> This rejection causes the child socket created for r1's connection to
+>> never be freed on virtio or hyperv transports; only the VMCI transport
+>> implements pending_work to revisit and clean up a rejected socket.
+>>
+>> Fix the issue in blocking connect() by using sock_error() to read the
+>> sk_err to prevent the rejection branch from occurring in this scenario.
+>>
+>> sock_error() atomically reads and clears sk_err, ensuring the error is
+>> consumed when vsock_connect() returns and cannot affect subsequent
+>> operations on the same socket. This matches the established pattern
+>> used by other protocol connect() implementations in the network
+>> stack like __inet_stream_connect(), tipc_wait_for_connect()...
+>>
+>> For non-blocking connection, vsock_connect_timeout() may set
+>> sk->sk_err after vsock_connect() has returned. To handle it, we also
+>> remove the sk_err checks from vsock_accept(). Nothing in vsock sets
+>> sk_err on a listening socket, so accept() has no reason to inspect it
+>> at all.
+>>
+>> Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+>> Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+>> Fixes: d021c344051af ("VSOCK: Introduce VM Sockets")
+>> Suggested-by: Michal Luczaj <mhal@rbox.co>
+>> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+>> Tested-by: Wupeng Ma <mawupeng1@huawei.com>
+>> ---
+>> V2: Add reproducer steps to commit message.
+>> V3: Fix truncated title and add annotations to reproducer steps.
+>> V4: Remove sk_err checks from vsock_accept()
+>>
+>> net/vmw_vsock/af_vsock.c | 13 ++++---------
+>> 1 file changed, 4 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>> index 622dbd046799..594fe27d2ebe 100644
+>> --- a/net/vmw_vsock/af_vsock.c
+>> +++ b/net/vmw_vsock/af_vsock.c
+>> @@ -1847,12 +1847,10 @@ static int vsock_connect(struct socket *sock, 
+>> struct sockaddr_unsized *addr,
+>>         prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+>>     }
+>>
+>> -    if (sk->sk_err) {
+>> -        err = -sk->sk_err;
+>> +    err = sock_error(sk);
+>> +    if (err) {
+>>         sk->sk_state = TCP_CLOSE;
+>>         sock->state = SS_UNCONNECTED;
+>> -    } else {
+>> -        err = 0;
+>>     }
+>>
+>> out_wait:
+>> @@ -1893,7 +1891,7 @@ static int vsock_accept(struct socket *sock, 
+>> struct socket *newsock,
+>>     timeout = sock_rcvtimeo(listener, arg->flags & O_NONBLOCK);
+>>
+>>     while ((connected = vsock_dequeue_accept(listener)) == NULL &&
+>> -           listener->sk_err == 0 && timeout != 0) {
+>> +           timeout != 0) {
+>>         prepare_to_wait(sk_sleep(listener), &wait, TASK_INTERRUPTIBLE);
+>>         release_sock(listener);
+>>         timeout = schedule_timeout(timeout);
+>> @@ -1906,11 +1904,8 @@ static int vsock_accept(struct socket *sock, 
+>> struct socket *newsock,
+>>         }
+>>     }
+>>
+>> -    if (listener->sk_err) {
+>> -        err = -listener->sk_err;
+>> -    } else if (!connected) {
+>> +    if (!connected)
+>>         err = -EAGAIN;
+>> -    }
+>>
+>>     if (connected) {
+> 
+> Can this become an `} else {` ?
+> 
+> Or just add a `goto out` when setting `err = -EAGAIN`.
+> 
 
-Root qdisc replacement and deletion call dev_deactivate() without
-resetting the old qdisc. This marks the qdisc deactivated and waits for
-existing runs to finish, but leaves TAPRIO's private hrtimer active.
-advance_sched() can therefore requeue the old root after the final busy
-check, allowing a new run to overlap reset and destruction.
+I will update it.
 
-Do not schedule TAPRIO after its root has been deactivated. Keep the
-test in the existing RCU read-side critical section so that it pairs
-with the synchronize_net() in dev_deactivate_many(): a callback which
-observes an active qdisc must finish before the final busy check, while
-a later callback observes the deactivated state and skips the requeue.
+>>         sk_acceptq_removed(listener);
+> 
+>          lock_sock_nested(connected, SINGLE_DEPTH_NESTING);
+>          vconnected = vsock_sk(connected);
+> 
+>          /* If the listener socket has received an error, then we should
+>           * reject this socket and return.  Note that we simply mark the
+>           * socket rejected, drop our reference, and let the cleanup
+>           * function handle the cleanup; the fact that we found it in
+>           * the listener's accept queue guarantees that the cleanup
+>           * function hasn't run yet.
+>           */
+>          if (err) {
+>              vconnected->rejected = true;
+>          } else {
+> 
+> 
+> Should we update this comment too and maybe remove the `if (err)` at
+> all. With that change I guess `rejected` is never set at the end and
+> maybe we can remove it at all from `struct vsock_sock`.
+> 
+> Looking at commit d021c344051a ("VSOCK: Introduce VM Sockets") where
+> `rejected` was introduced, I can't see any path where sk_err is set on
+> a listener socket, so I guess that path was dead since the beginning.
+> 
 
-Fixes: 5a781ccbd19e ("tc: Add support for configuring the taprio scheduler")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Co-developed-by: David Lee <david.lee@trailofbits.com>
-Signed-off-by: David Lee <david.lee@trailofbits.com>
----
-Bug found and triaged by OpenAI Security Research and
-validated by Trail of Bits.
+That seems true, let me verify it.
 
-The supplied v7.2-rc3 trace contains a KASAN use-after-free. The
-reproducer did not trigger a sanitizer report in the current v7.2-rc5
-campaign and can be shared if needed.
+> So now I'm thinking if it's better to split in 2 patches (both with the
+> same Fixes tag):
+> - Patch 1: "vsock: remove stale sk_err checks from vsock_accept()"
+>    Where we can also remove `rejected` since it's never set to true since
+>    the beginning
+> - Patch 2: "vsock: use sock_error() to consume sk_err after a failed
+>    connect"
+> 
+> WDYT?
+> 
 
- net/sched/sch_taprio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Yes, I felt the same when I was writing the commit message, but honestly I
+didn't know that I could split it into a series when sending the new 
+version.
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 299234a5f..2cf76df43 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -990,7 +990,8 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 	hrtimer_set_expires(&q->advance_timer, end_time);
- 
- 	rcu_read_lock();
--	__netif_schedule(sch);
-+	if (!test_bit(__QDISC_STATE_DEACTIVATED, &sch->state))
-+		__netif_schedule(sch);
- 	rcu_read_unlock();
- 
- 	return HRTIMER_RESTART;
--- 
-2.53.0
+So, it may contain 3 patches, if the rejected flag can be removed from 
+vsock_sock.
+
+Thanks,
+Phi
+
