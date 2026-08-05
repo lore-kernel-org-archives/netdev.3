@@ -1,42 +1,70 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B19E38F63D
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 17:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61B63CF1F2
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 17:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785951846; cv=none; b=r9nIBqDa7zFXdVMvwHrFDh0j15FfC5k5pa3qmQfTldoNHfk7EQkclxwZFQ3FwS9lh+mFzbfTdO/tZgM7dpul0we4QSuDlrY0NpXMmJKbpI8RKECGcfTZsJbW23QYmfQNj1cVH1GwE1MPnk5zGJrdl/UtJCqqE95MoK+bIlA5crg=
+	t=1785952166; cv=none; b=IMNqJHSs22ONjzQZd7P1kXUlPAWolQ3dHKTcvlIu0bsNciHIFtIbBDqX41roQWBsTLnh8QnNtip9h9vUIJmCClAm/rS63bL/UGW9V+Rx6vDZhqxRk3R14WCaDqJ+wM8qq2bZTReh170qiGYfTFrflGADvGzBCS+Frg9FHBdGPQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785951846; c=relaxed/simple;
-	bh=8UWpnnLNlMTuBb1RjtrUw213V6LMdmF5GUmRYg9Y6AE=;
+	s=arc-20240116; t=1785952166; c=relaxed/simple;
+	bh=X5btDcfQTdSHcpvlsmHeLvFsZZ7Fot+driL4QSWR/S8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YAzFcyuBbqbQuneaSHiBoAplSmqDUOYTPWq94S2VSe/n3Hr5TrqkHjrR8v1GwdNJbF3DY5gIJ1gWhES/URrM9Q0nV1PeHL2rV0Z91kih/P/EdxEtDPas0MmFJSmyF01adGyCP8XY4yrIDkUtI6TlRhu+nkPY54sp1+GBViirsjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JRkM1rBT; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:To:Cc; b=WE1LKEA2gI4eZ7Ujy/lN7rmg0GYPKxFpGc3cHwhLl7b8Zu9k61dSluE9uuEBcdelu43wMPSP5LtWYSdBc9yRxE1t7ptuhHc28MnzkukazOuv8vsQ6/ympVHVVyls0TqhwYA5XCac13bhSfNc13gjA45EPHt07pnHodHuy+zKtys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y+acojAo; arc=none smtp.client-ip=209.85.160.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JRkM1rBT"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9E3F31A1445;
-	Wed,  5 Aug 2026 17:44:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 71918602AB;
-	Wed,  5 Aug 2026 17:44:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A956D11C35095;
-	Wed,  5 Aug 2026 19:44:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785951842; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=4IA4IRSLI69Af07xdFz7rSO8dFETuWxVSuFIVuAkZD0=;
-	b=JRkM1rBT9fGjeLqmOgo06C6Di0Xbvw9g69dC7AW2YBuKmm7wKJCXrQHkUB6tBsP5sdGjiy
-	QiLJom1jgiZ5nRAYImybKOgaV4Vn1pZy4lJa2D/wgISa68eK/8rEIMblG2O+pDUSG51WdW
-	d9ikTX2kA5CM5gYxI/ErYnQKCMggl/rUjISx2nbdyoEVoV1Bh9+i3ZplT1Uxm5S8xVtsiV
-	reGXelMhHML9pcaQi9gp0Ry8vpceZpvIys0LahmcyFurmjXvr7Oa/Ax7VGYU8rmqcluIfH
-	AkhBdS5jniAyFrvh7jQ8dVSTbouJEOyNcejPAQjTm4O8Y/EFgxOJaBbluTe7XQ==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Wed, 05 Aug 2026 19:42:46 +0200
-Subject: [PATCH net-next v8 17/17] net: macb: use context swapping in
- .ndo_change_mtu()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y+acojAo"
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-43b7e186a0cso472926fac.0
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 10:49:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785952164; x=1786556964; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RNdkQ7aeXS5MjicAGAJeJZ2Ggh2c8nR9nvPFAS2N1c8=;
+        b=Y+acojAor+hsyzhnx5PUipQaOk8Spjy42Z38oRQxRawJ+d3a89RdkO3H6WOBA/dHmx
+         S9W9WTqz2qx/6gYNsFq2BrHImbpKFybzE9r4WPbtG2UWDtK6337jnxWdRsDXOLz0/iC2
+         SPtKuym/NDpLZ3SzkpAWdWESZP1UCjNxu6cXaaj5teYsPyrwxdK0g7Vr9tVQJG2oUuX1
+         quHsluiVvS5V4wapN1c1YOrua7wic4IHthZX+CeEVjTOCzJzM8ZOqG8qDDoV3ebUOBUN
+         xkxXnAG1YRS7DN11hSkraNrJsUMxPZp0us/L2RbCfdLh8YuHEQh/Bw3iJWzVEi+KucNO
+         SVdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785952164; x=1786556964;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RNdkQ7aeXS5MjicAGAJeJZ2Ggh2c8nR9nvPFAS2N1c8=;
+        b=GK0ZO2zeFmnZAYZhTqPvETN/6ioPrEZGU4srow8SH4pN/viCdiOM54LqX4tNN7EIst
+         lZ8AC4PduYAE5ejnyZtqBRl5DHnHiwPQd95mlEtPBISVRKPom0AgtElo/TZXqcgwd8b7
+         Ece7LA3nYKuf50X+/dP+HZJzfOxrCo8CW1U0GSxLD9Rdx7Ty+R4O6PoM1vMAojWONmoP
+         6PH7898xMaztA9gPi7HhUMQ+Y4F3J6DhOVDm3Z84Oa8HsdcUYQpTnHs5RvkzVxPknCX0
+         l6HRdtgbCkJwIR41j58aPKwqk2I/s8hxjCrlTiivugr3phlflwCY5nMnprLHIh2hZOPl
+         FSJw==
+X-Gm-Message-State: AOJu0YxLl7PW3LZVYf3oo4VMP0bMnW9c3nj38SXRgeYBY9hV4v4QO8EH
+	x0VIouZUWQEohyWKLN4xpfq/AxqOr1r7hkQw7NwFYRwhZezrejB7I11I
+X-Gm-Gg: AR+sD128b/7sdoZ1vwNW/3MuesnjXqdNrkNi1fGn6zfIYUHxyu8INH4CY05v2qXEkW/
+	nVnFnnMTT9bnAe/US+mqRAyMEz/QeP/xcP9z/3tEQeMFvyZHqxTNI12r03thaOCVtg4JF9UcHDu
+	E/YEDqEC2cb9k86ZcQ/VBre7Ms1RsoFvq/Bp9rbtHyvFRd38qVgTFXXbzhVHRUpepGmxOXvwjXo
+	L0HnJ8Ux1iqxR5JnWkPBv/SbP789K2CnW3Xw2KWoj58N+Ho42ZeyOzNEjkZ/vdU74xa0AIePzbo
+	EUH9WAV0hhX61bBgs7ftsvm+TNGRGn/9U3OBuYNZEuRavxne5a67l/5odG3YjpCXMrqSC3aJvSy
+	Jqoup/HboAVy2Pmt24yh+7tDd9aQkm/3PqkfrpW9g0ebxTCzpf6Xpi02nAqzr585Y34pjgRArjO
+	H6p7XNhSRddI72vpaYFtceLo/9iTOTzzg87F5nzhy5ucOMquH0blBYSYF9D4nW8b31Nlg1o4kjh
+	kxVLNEHiZhbV+NL1YrHZcq4csFsR8S7RfsVKleIYVhcjMwnEg/6M1jMzGCa/AMmw3jYii9Ia3h2
+	ofy1Ek/UBLsUdsQezM65Jv5+nHnOlgEU2pbqaTRU0dos/7Feq+F/FnZ6IG/xVF8WkIVVpwNViep
+	bT2Bb7MdAY65ku/Rw
+X-Received: by 2002:a05:6870:a40c:b0:456:3973:5a89 with SMTP id 586e51a60fabf-4599eda5c51mr4077499fac.8.1785952163618;
+        Wed, 05 Aug 2026 10:49:23 -0700 (PDT)
+Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4599dd615ecsm3281704fac.0.2026.08.05.10.49.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 10:49:22 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Wed, 05 Aug 2026 11:49:12 -0600
+Subject: [PATCH net-next v3 1/4] net: phy: cache MDIO bus owner before
+ dropping PHY reference
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,84 +72,100 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260805-macb-context-v8-17-bc302ffd1174@bootlin.com>
-References: <20260805-macb-context-v8-0-bc302ffd1174@bootlin.com>
-In-Reply-To: <20260805-macb-context-v8-0-bc302ffd1174@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260805-submit-mdio-of-dynamic-v2-v3-1-16f3cc893b0e@gmail.com>
+References: <20260805-submit-mdio-of-dynamic-v2-v3-0-16f3cc893b0e@gmail.com>
+In-Reply-To: <20260805-submit-mdio-of-dynamic-v2-v3-0-16f3cc893b0e@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Russell King <linux@armlinux.org.uk>
+ Florian Fainelli <f.fainelli@gmail.com>, 
+ Richard Cochran <richardcochran@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Saravana Kannan <saravanak@kernel.org>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Paolo Valerio <pvalerio@redhat.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>
+ devicetree@vger.kernel.org, James Hilliard <james.hilliard1@gmail.com>
 X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
 
-Use newly introduced context buffer management to implement
-.ndo_change_mtu() as a context swap: allocate new context ->
-reconfigure HW -> free old context.
+phy_attach_direct() and phy_detach() cache the MDIO bus pointer, drop their
+PHY device reference, and then read bus->owner. If the put releases the PHY
+during concurrent teardown, the cached pointer does not itself keep the
+parent bus alive.
 
-This resists memory pressure well by failing without closing the
-interface and it is much faster by avoiding PHY reinit.
+Cache the module pointer before dropping the PHY reference. The existing
+module reference protects the cached pointer whenever the MDIO bus and
+network device have different owners.
 
-AT91 EMAC is handled differently as their buffer management is separate
-and they don't do NAPI. They cannot land in macb_change_mtu as they use
-a different ndo struct. We still defensively protect against it in code.
-
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Fixes: ec988ad78ed6 ("phy: Don't increment MDIO bus refcount unless it's a different owner")
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/net/phy/phy_device.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 4e004a5345b3..b3d84a65078f 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -3533,11 +3533,29 @@ static int macb_close(struct net_device *netdev)
- 
- static int macb_change_mtu(struct net_device *netdev, int new_mtu)
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 94b2e85e00a3..d65f28dd5773 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1752,7 +1752,7 @@ static bool phy_drv_supports_irq(const struct phy_driver *phydrv)
+ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 		      u32 flags, phy_interface_t interface)
  {
--	if (netif_running(netdev))
--		return -EBUSY;
-+	struct macb *bp = netdev_priv(netdev);
-+	bool running = netif_running(netdev);
-+	struct macb_context *new_ctx;
-+
-+	if (running) {
-+		/* Context swapping is not supported for AT91. */
-+		if (bp->caps & MACB_CAPS_MACB_IS_EMAC)
-+			return -EBUSY;
-+
-+		new_ctx = macb_context_alloc(bp, new_mtu,
-+					     bp->configured_rx_ring_size,
-+					     bp->configured_tx_ring_size);
-+		if (IS_ERR(new_ctx))
-+			return PTR_ERR(new_ctx);
-+
-+		macb_context_swap_start(bp);
-+	}
- 
- 	WRITE_ONCE(netdev->mtu, new_mtu);
- 
-+	if (running)
-+		macb_context_swap_end(bp, new_ctx);
-+
- 	return 0;
+-	struct mii_bus *bus = phydev->mdio.bus;
++	struct module *bus_owner = phydev->mdio.bus->owner;
+ 	struct device *d = &phydev->mdio.dev;
+ 	struct module *ndev_owner = NULL;
+ 	int err;
+@@ -1764,7 +1764,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	 */
+ 	if (dev)
+ 		ndev_owner = dev->dev.parent->driver->owner;
+-	if (ndev_owner != bus->owner && !try_module_get(bus->owner)) {
++	if (ndev_owner != bus_owner && !try_module_get(bus_owner)) {
+ 		phydev_err(phydev, "failed to get the bus module\n");
+ 		return -EIO;
+ 	}
+@@ -1900,8 +1900,8 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	d->driver = NULL;
+ error_put_device:
+ 	put_device(d);
+-	if (ndev_owner != bus->owner)
+-		module_put(bus->owner);
++	if (ndev_owner != bus_owner)
++		module_put(bus_owner);
+ 	return err;
  }
+ EXPORT_SYMBOL(phy_attach_direct);
+@@ -1917,6 +1917,7 @@ void phy_detach(struct phy_device *phydev)
+ {
+ 	struct net_device *dev = phydev->attached_dev;
+ 	struct module *ndev_owner = NULL;
++	struct module *bus_owner;
+ 	struct mii_bus *bus;
+ 
+ 	if (phydev->devlink) {
+@@ -1972,17 +1973,15 @@ void phy_detach(struct phy_device *phydev)
+ 	/* Assert the reset signal */
+ 	phy_device_reset(phydev, 1);
+ 
+-	/*
+-	 * The phydev might go away on the put_device() below, so avoid
+-	 * a use-after-free bug by reading the underlying bus first.
+-	 */
++	/* The PHY and its parent bus may be released by put_device() below. */
+ 	bus = phydev->mdio.bus;
++	bus_owner = bus->owner;
+ 
+ 	put_device(&phydev->mdio.dev);
+ 	if (dev)
+ 		ndev_owner = dev->dev.parent->driver->owner;
+-	if (ndev_owner != bus->owner)
+-		module_put(bus->owner);
++	if (ndev_owner != bus_owner)
++		module_put(bus_owner);
+ }
+ EXPORT_SYMBOL(phy_detach);
  
 
 -- 
-2.55.0
+2.53.0
 
