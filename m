@@ -1,226 +1,582 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazolkn19013078.outbound.protection.outlook.com [52.103.7.78])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9D63839B9;
-	Wed,  5 Aug 2026 17:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.7.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785951422; cv=fail; b=V8o6RfRTn4kJs4T2PzdrOU0mWYHiJUFBuSLH1aa3o/Xn+PcYinB3H7XbgP5BLN1NL0SQL46YssK9O6KWm0Pm6Bs3Lg3xpxfVf/+dYdKvA7xr2UGTXemNSQWoxb3Or7UvTXO4JFjeJQMSEmCh+tI8yTHJi4qtG9mpBPEeU+/Cm7k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785951422; c=relaxed/simple;
-	bh=IvonBErXFrJC2SfxRNJX+Wwvn7hCxeKWXg2EtlVmsF8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=urVk0AgCJyqMFdKRsil2wHMbwtN+dBHsSiMSTVb1UDxtfkFgQoQWnyIeDUMi9CXpZJ6ors65zQp6QLzMp0wLk9Nqj3nQvkaHfmxPNOhBT3paftEr/P37+i5JrwvXDg5w8hLbG7zyARaqHJrwxc+HpDw+2FjP7mzxzKA2OiIo4jk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=kJ84UXN6; arc=fail smtp.client-ip=52.103.7.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D973D091D;
+	Wed,  5 Aug 2026 17:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785951495; cv=none; b=dlhQ7teNxFeRfJwp3KLS92d70WW8p9y0XYZ8v1jioCNXcszxWSjJrGNHUwcrdgkzoCxltbhIwmMz0tfIlrav0DOZ4xTb5xAmiLkJB7bpz9M9ef4hCzbBiFBQn90FoWIhfTZ99lQx1lmhiZyNeM9jkuEwjZkcMfB+wBt3KwjSL0M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785951495; c=relaxed/simple;
+	bh=07SpsHbVcfDlgU5Y4gcCebTfPHC7g1P2gtreF9TBGsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N5zxDS3F2K4WyQZIwnp6O2Gq+1LKOu6JK+QDibo7FCwtmr9mjXrc5OD+F6XvLaIJepyWukUjpgQqWUT/ZRSoxWcwEAW+wfItMXKcmC0E4rJ3546BVUUUJaNeRPee1Ul/oBm3W08vEkaWNo+b1LRNrIb8RYentNb2dcnR2043miA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=ZE8WDzKm; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="kJ84UXN6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zKgMiP/7kzoU3dTsbg+mUw6GE0mqLpHtAy0P15pR5tQQUNrrAzxU+lHn0q62FzXbgGCwjM+j8DTQp4WxdBmtvgAljTeBajl8HmffJGms6dFIN/5+6DB3lpgIhiXcgDj95eEfnWBBJIqooZd8Akb8g+T6W32Azc2G5uZo1vQdfGITg6jfHVwj0YdCLG2Ko0A5WtQy1P9kka2bplKxfcWAtrwtG4mdQORh4wPoFFW58g8IwutXwsl5Xt41sokPWVQwaoLkaV6cUN5eu8kHdNfobJdGJ2Ong7SCX9snJyQoB1WEqWSXj2ieli2xtmyzNsAjbEG7F2Q71X2HkyQHGmKDHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MADbn026VoFzVEcC0N96CCfjtgT/v/EDHtRJqPvaExc=;
- b=ebz90AE22bpu9Riob9hHVMQ8dVXrvhFiIeW2hlzJIlwiLhjUS0lmO2yInysoZCq+wpxcLqO78oabZWkYkPOsjQ4aibq5otbKKeSde8WX2cMfjK6pLuFqf5GH8TToNBO12lR4Y3bILyfg6H882bMosl1LEHWWvw6K3M6bJD9t9QjnlGLBKS4oPpZdRH8QAqjaXry+jTZkxKoBsfHLb+SHfMUculzrbrEx2IPfujs653eglJ1vz68Xbo4ZFLA2pJJBdtF6r5iqD2pmawUk/7mzc3pbaSL0I4xrlfb8T55GysB0gaCqRSIcxcmN8nddCeVF0wHP/bUlPsVNh96NnW90iA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MADbn026VoFzVEcC0N96CCfjtgT/v/EDHtRJqPvaExc=;
- b=kJ84UXN6yulbS6/au+iirbjcOij7OaUhwJoZ3yCdfspEG+XCDpzCbAuQ65WWrBVG4hVtd5mbcT9sTuHuE92ZWOra2Jj3VixmAm5eIM4WwEuiHlMWsXSKIvlWB10DKb8HVsG0Ov/Slt1gHf5I5zT7v+lRbEtWcSEVnxdKJzt/w+uB+wJrhL8C2t/sdfk6zEIJn8LMAwYUp0+AFP947SjbyaR3SgHi4wNJHcZEjQLzXbj7jssEh+AWrFF1wT+Xipj3N1ytNv+EPpApSxYWgU4XY2bNA2CVBbrjJJ6d2hXcQ3UVdLsnDlX1zycaoarL/25dmLKLHuDjJESTz4k9ETGQVQ==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by LV8PR02MB9951.namprd02.prod.outlook.com (2603:10b6:408:18c::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Wed, 5 Aug
- 2026 17:36:57 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::900:1ccf:2b1e:52b6]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::900:1ccf:2b1e:52b6%3]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 17:36:57 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Kameron Carr <kameroncarr@linux.microsoft.com>, "decui@microsoft.com"
-	<decui@microsoft.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"kys@microsoft.com" <kys@microsoft.com>, "longli@microsoft.com"
-	<longli@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [RFC PATCH 2/2] hv_netvsc: back GPADL buffers with kmalloc +
- decrypt + vmap
-Thread-Topic: [RFC PATCH 2/2] hv_netvsc: back GPADL buffers with kmalloc +
- decrypt + vmap
-Thread-Index:
- AQHdGUstWmkWeQ5MbUqxHXCQQLfsQ7Z9FO5wgAr30ACAAiw0cIACcsCAgABwYBCAAq2agIAABMuA
-Date: Wed, 5 Aug 2026 17:36:57 +0000
-Message-ID:
- <SN6PR02MB4157446A0CCB6FD10E30308FD4D32@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20260721195633.1438361-1-kameroncarr@linux.microsoft.com>
- <20260721195633.1438361-3-kameroncarr@linux.microsoft.com>
- <SN6PR02MB41576F1E9A4F0AC3D6AB8C18D4CF2@SN6PR02MB4157.namprd02.prod.outlook.com>
- <000901dd211f$b119be20$134d3a60$@linux.microsoft.com>
- <SN6PR02MB4157514D8AFB06FB6F2ED9BED4D62@SN6PR02MB4157.namprd02.prod.outlook.com>
- <000a01dd236f$2a24f4f0$7e6eded0$@linux.microsoft.com>
- <SN6PR02MB415720DFAAC7EF9106D5B684D4D42@SN6PR02MB4157.namprd02.prod.outlook.com>
- <000a01dd24fe$26f311a0$74d934e0$@linux.microsoft.com>
-In-Reply-To: <000a01dd24fe$26f311a0$74d934e0$@linux.microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|LV8PR02MB9951:EE_
-x-ms-office365-filtering-correlation-id: 65b488c9-b428-4c82-91a8-08def318262b
-x-ms-exchange-slblob-mailprops:
- vuaKsetfIZn9IFDOZRHBr3PkJ6iE+FIkRKMXo7bTFqCFAO4sGWGp1kE19k5I/lOXaA4+m/4BMJRgzIzPW3fV1NDrngoUXFzeBKQeRu2GPfz/PfMZdrUlTVS+tolOspFVME72p53XOAZYubiWXWB6Cx8D7RgMVbh/fUcEgcygE71Vsd1V0d3R2uYVR2xwOFZCPcx+7Mp/hFyODD+Fjr00uMHtiSnQVenX/ixLE1ldlPbtL9/NUaErDwA7bsUTKVQwGTHYTbJ/z5NAWbj7oTml4Gp1i/jLcF7+bnMG9/l2dpm2Lz1/IjHN5prumOiCaSJSH8LnCh5CM0CeQ01RZE4fnoEhRp0xXyDPpO/B30w6BNLMMGRko/X+CmiEwQVEjqRmr1ON20xYtIxZFw+Z9vTV2BxNP6i5+xyB9zWQaDlFg3Z7asvCMXvM5iC2ousM/+S+RSQGdq2A3mmuydQnbw9/6AcD9/qi7YEnXQpXpddf//r7/cT08BRJjcz7+XGcte2W9XFCbaaqUjWAjEBoMUeN1Kb0nvNP9GjHT0pJ0f9mnvVbX62r4TwmlMCnvj4/P/2yaibX1JHWuxTIr4UieJKujZIgwQ4N49gHCGxlQNS0SbOyRKSM3/d/cDNoU5aJwLK3e+z/sAL5kksrP7S8OU88tTFtahet7U3f56HggfzT77dBNfOtPgkkMFhBGCEGj6fbByxt65VdsPaOgivE07PBHmGDkWcDWtu0TGSOjlWvjKGyrlBN3klmudm0nypUwcLtyVemhI8HuxEbWoKOR/hzZELxrQDQzFgmlNRq4PGoYHTXdBBMiKGgWsG2hGjKOR8t
-x-microsoft-antispam:
- BCL:0;ARA:14566002|31061999003|51005399006|15080799012|13091999003|8062599012|8060799015|19110799012|37011999003|55001999006|24021099003|25010399006|13031999006|40105399003|10035399007|1602099012|2607281247196008|102099032|4302099013|440099028|3412199025;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?aW4fRTej1/1oQJqHnXYO7T/NMYW7yDY4/tgjEx3q/QBI1k1sQ97VZIlSXtyI?=
- =?us-ascii?Q?Z28Jpetcobh63mweV67IXX1X+v3h4MqaPUVNqz8lqCxkzYW1W41av1dLvLBk?=
- =?us-ascii?Q?//bLD0faUCshURJEEr6+H34ogZfqXr7CabB1hGbdT9ZJ94yoU6/FwSg3FO/r?=
- =?us-ascii?Q?kwLL324ubHBJPcSD0R92Nm8yNJaCWA90re085obKufMsj9Li7HsyDeRlbFry?=
- =?us-ascii?Q?+upyN/1TsbzkXfinJwts/GoyUCB6rZO4EuothjZp4V2nP/XCgwLdEduTJYxb?=
- =?us-ascii?Q?/ERNAXxz4qdI/NFKQX6DLBK9O64jIyaKsiEp37wZshDyYXIXKGIFADqbWyeX?=
- =?us-ascii?Q?04rpsLAbSZ4Z+pHFPw0tACvW1XQEKhscmPF+3uEXsgeFIDTUoDeuA6X2yX0K?=
- =?us-ascii?Q?WWbauTLvKXCPNsT7HG2o7R8M7NBCardo6lmm31HT+/Wj627hqSSKSqh8Plk+?=
- =?us-ascii?Q?eyGJ7Fw+DxWpm+gjUM/rk8xs76tKLuVYTm3sV3O2c1keuNitnIzSMai5zBIn?=
- =?us-ascii?Q?ZdLoG8JgxAi1j+m1xiqmByS0ipwhu8SKn+RruKqan5DxCA0TNESKAMtFeBkL?=
- =?us-ascii?Q?dnvhOtKcKL2Y4RkSyBg61tT792of6DrsOLNy+eQgocl69h8b3MvGrytEFEzV?=
- =?us-ascii?Q?ZCOrPUjiF3VPTpkgLQ2044BriVpsU4BpBAVL/TxuxuUkRD8PTiIE6AschgJe?=
- =?us-ascii?Q?wpbTNQjRoDUBRxMMyV+L5uoYf9JB2G7ARdfCncLUCwljmSasgqgu9F5zJ+NK?=
- =?us-ascii?Q?cD3jMqGOEmBd7ibmDIeaEOYvV/KsGdRElbzrvLS0fGkiDV7t4Pc6lUyTlZGW?=
- =?us-ascii?Q?qGZnqseHt+le6NgVE14/ZRAcFrQjvHHdUk7BjTE+cAsFQ4IF1a8Tm53Vnz3L?=
- =?us-ascii?Q?xfCLAwXQw0Yht7bkC7wtD5EVfgqfeycVz65gEzwBNnCM7Y7y/6SUBdKMmC83?=
- =?us-ascii?Q?A1GIdkN+BkAKDLtRgDhHlAQ2hk8bD1O1Y5cCfyoEyJ+EyjUqYPJQyWWrIkjU?=
- =?us-ascii?Q?iNIjzMf8pWrJ7ZuH7Jt2eUPRublXSRD6Zw3xVaRojC1cMAMyrYmHoArC+QHo?=
- =?us-ascii?Q?nWjoCFEK8qagW51vOP5Jr07RQQoMW3/AnQnPJP9W4ID4TqojDpVuL0OrwzhD?=
- =?us-ascii?Q?8JCpv8qfpyOGZKDK/XSF10wapWWZfjlFqfUwe28xVmbfi3ldz1XabAM=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?mdsN1CK/4rdmVQ7K9yWCsBv9sAnY4hvAiycCUE1iEqdX/bzCBTdBuF4mfYv6?=
- =?us-ascii?Q?GAId+t9mP/vQkNk8uPTdBMBnWipa1StHXp17XbH0ZaLJlEju2I8jmiNyyoRE?=
- =?us-ascii?Q?5f5PS/l8qp8/eKtc7I4yLq4fEd1Ct6Fg159uj9AbCkdbwxKRahUGXEjUuojB?=
- =?us-ascii?Q?fpGJPbFJ9L+1LY/rA7TbSy7bivsyUoeWGTaCAUWs7EUhz0n8rHt2WOK/GUyH?=
- =?us-ascii?Q?S5n7icYsNyEUhTsnI5UzV3r306NnN3SFqE3L0Ggf3rJcLm6OzlyDRrAkoVQi?=
- =?us-ascii?Q?MMM4jeUU8s7omiCk2afUCFwZtJhrY7S+8+wM3gtr0C7IF9X7M37y6bClcR7u?=
- =?us-ascii?Q?KCAO7sOZ8qogryVP0cLfyGu/fIP1hefDX7DQKZhuxXSdz8ysZ1X9YtLbleYd?=
- =?us-ascii?Q?39/N6CeXuo+gfPqtV1WXwn7hReYb5I6wCcvmqwyKKoSxaKKwzcNhCQ9hijTJ?=
- =?us-ascii?Q?oJukSR3E9lWj/GQhkRjtXLhvKQRf8Jb+6VxZmwNwGUiUnV1MpIJZoEdV+BKB?=
- =?us-ascii?Q?7LGkmZFhdXAyxPeW27uyVYIfDV+kPOOqRcG/4IVpd264X2GA6wiBXyv2sJEp?=
- =?us-ascii?Q?rmNOvEWNud4UtpRi+y2cv9+GopBqdUucx92oUbM7ae/pF7AxJaYlCfspWJ3r?=
- =?us-ascii?Q?MYwRlW2BiajZGfgpAbtvth2gUujuzsK1RkyLAWct2IQZCcq5ojXzGiT5swk3?=
- =?us-ascii?Q?kqT3Wnb3xPJq9FyFMtgDe5hNgiCoijlgI/Ms2OZJW9XtR0VF+WQiHR5t3WNg?=
- =?us-ascii?Q?U19NUBEjaAlC10lajCY0+r9+jkWXJq5YL/G68TC4TKYeZhIHBvCXwJQ3GOyg?=
- =?us-ascii?Q?/GTQtT8xY4nDXpSB85wZAGde7HDXOJX/6t5PRQXLEV2/CbJmNXHH2Rp6etcj?=
- =?us-ascii?Q?V46NpuHZV9nris+AxJ1CDRIYGdDmRAPFnrD3iC+PcHruOK3mZNjZs9X/10a7?=
- =?us-ascii?Q?BJLchmkXGG5DPckKRtOKuPvFxBKijeUfRiwAw6VJiTD40wlf/l1dIbZkAPZo?=
- =?us-ascii?Q?6sDtR+BzpzG2FhbhHu9S7VYZIClXj3mnsNQGZWJJ50mFa2gLs/CJ4FYxzQg+?=
- =?us-ascii?Q?2sEwDwZQX1qEmRWfJVJqTqOgzqwI+DENDEgQ2durGOtuRgUAAESK+5bQZQmO?=
- =?us-ascii?Q?CEYco5BM6kcG0GmSm5vLJ9e5Y0IG01lMEgvjzB3oncHydXTlq/YC7UfeI6mC?=
- =?us-ascii?Q?e1o7LQOhC1B0rFgOCHg/44OQsCVATHskH/pBuW7EwVhlWdQX8nfiUZ/9KyFO?=
- =?us-ascii?Q?VNLwVus/UG08bHg3nsrT8ITv0vu04qhtw8UZHcV+LXRddWr/P3xBR20GeArm?=
- =?us-ascii?Q?376DbvKvDI41loK17L8Krw4OHReVotGIBud5m/B3AdOQ3bcwHne0wMWI1kjR?=
- =?us-ascii?Q?J/6vav4=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="ZE8WDzKm"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 4CD56601A2;
+	Wed,  5 Aug 2026 19:38:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1785951489;
+	bh=15ntrr/u1wGo70+Th2zOofBqRN9HQdRDR1jPUN8GGIw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZE8WDzKm2NwVzAIM8esKCn/aaXhGM8yWantQCvFer8Fa9FplOI0lfMjT05dxT477T
+	 KKi0AqBis+vM/0TNOEJCKXv279k3HguQQib6B12/nw/U/6XmmOPt1DbyM9wHDPSFkh
+	 ce8yucAoeQ6DFiKaZ7OeAUpuK5kep7OOmP6M7OaKLKGO5UhUVdG83qJnCIAZGMrN+t
+	 pIkNrv/OTagU1sYqBO6pbR5MZfOB9szeORelZSVjUqho/G3p/jP+45e9CKirkV+73/
+	 7v9ZJNLUhcYHONrR4Wv/qU00bvawguO4AM4zffaUfcgyqRbCYBM6RFfoShNq2QHxt/
+	 kNDn+A4ejoOog==
+Date: Wed, 5 Aug 2026 19:38:06 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+	fw@strlen.de, horms@kernel.org
+Subject: Re: [PATCH net 10/10] netfilter: nft_ct: move custom expectation
+ support to helper
+Message-ID: <anN0_uChV0fwKklt@chamomile>
+References: <20260731151806.849724-11-pablo@netfilter.org>
+ <20260805001535.3978948-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65b488c9-b428-4c82-91a8-08def318262b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 17:36:57.7801
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR02MB9951
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260805001535.3978948-1-kuba@kernel.org>
 
-From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent: Wednesday, Augus=
-t 5, 2026 10:16 AM
+Hi Jakub,
 
-[snip]
+TLDR; Will you accept to take this nf.git PR excluding this patch #10?
 
-> > > > >
-> > > > > Using min() compiled fine on ARM, but x86 is throwing a compile e=
-rror.
-> > > > >
-> > > > >     drivers/hv/channel.c: In function 'vmbus_alloc_buffer':
-> > > > >     ././include/linux/compiler_types.h:699:45: error: call to
-> > > > >     '__compiletime_assert_518' declared with attribute error: min=
-(order, (
-> > > > >     __builtin_constant_p(remaining) ? ((remaining) < 2 ? 0 : 63 -
-> > > > >     __builtin_clzll(remaining)) : (sizeof(remaining) <=3D 4) ?
-> > > > >     __ilog2_u32(remaining) : __ilog2_u64(remaining) )) signedness=
- error
-> > > > >
-> > > > > In my v3 I may go back to using min_t. Please let me know if a ca=
-st (or
-> > > > > some other method) is preferred.
-> > > >
-> > > > Hmmm. I don't get the same compile error on x86/x64. Maybe it is
-> > > > related to compiler and version, or the kernel code base against wh=
-ich
-> > > > the patch is being built. Probably you didn't see a problem on arm6=
-4
-> > > > because of some such difference. FWIW, I built with gcc 11.4.0 agai=
-nst
-> > > > linux-next20260726.  What is the compiler and base kernel info wher=
-e
-> > > > you saw the error and on arm64 where you didn't?
-> > >
-> > > In both cases, I built against hyperv-next (a4ffc59).
-> > > On ARM64 I used gcc 13.2.0; on x86 I used 13.3.0.
-> > >
-> > > To do a fair comparison, I
-> > >  * downgraded my x86 environment to gcc 13.2.0
-> > >  * started with `make defconfig`
-> > >  * enabled Hyper-V and NetVSC in the config (=3Dy)
-> > >
-> > > I saw the same behavior where there was no error on ARM and compile f=
-ailure
-> > > on x86.
-> > >
-> >
-> > Really weird. I compiled on x86/x64 with gcc 13.3.0, and saw no
-> > problem. This was against the official 7.1.0 release source code.
-> > Then I grabbed hyperv-next (the tag "hyperv-next-signed-20260621"
-> > specifically), added your patches, and again using gcc 13.3.0 I
-> > built with no problem. Are you using the same local copy of the
-> > source code for arm64 and x86/x64 builds? If not, I wonder if
-> > your local x86/x64 source code tree is somehow corrupt or not
-> > what you think it is.
-> >
-> > My .config file is different from yours. I did not try starting fresh
-> > with make defconfig and then enable Hyper-V and netvsc.
->=20
-> Automated testing is picking up the same compiler error
-> https://lore.kernel.org/all/6a6dc0b6.1aa927e4.17d4bf.000d.GAE@google.com/=
-=20
->=20
->     tree:      net-next
->     arch:      amd64
->     compiler:  Debian clang version 22.1.8
->=20
-> This points to a real issue, not a corruption issue.
->=20
-> I believe the right course is to explicitly do an unsigned comparison
-> instead of relying on the compiler to allow a comparison between a
-> signed and unsigned value.
->=20
+Main issue here is that this will trigger a conflict with net-next,
+which will be hairy including follow up to fix this. Maybe I can
+repurpose this patch to net-next.
 
-Agreed.  I don't have any ideas at the moment on how to
-further investigate why it's OK sometimes and other times not.
+Longer read: The original author of this feature added a stub with
+limitations that were not addressed over time so its usecase is very
+limited. But several of the LLM reports are correct and I can post an
+improved version of this patch.
 
-Michael
+On Tue, Aug 04, 2026 at 05:15:35PM -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> netfilter: nft_ct: move custom expectation support to helper
+> 
+> This reworks the nftables ct expectation object so that the expectation is
+> no longer created directly from the rule evaluation, but from an internal
+> conntrack helper that is allocated per object and attached to the conntrack
+> entry. nf_conntrack_helper_free() is split out of
+> nf_conntrack_helper_unregister() and exported so the internal helper can be
+> released when the object goes away.
+> 
+> Link: https://patch.msgid.link/20260715144755.00ea7dfcd9f@proton.me
+> 
+> A few questions about the commit message first.
+> 
+> > Originally, the ct expectation support called nf_ct_helper_ext_add() for
+> > confirmed conntracks, which is invalid, triggering a splat. This was
+> > fixed by commit 1710eb913bdc ("netfilter: nft_ct: skip expectations for
+> > confirmed conntrack") which restricted it to confirmed conntracks.
+> 
+> [Severity: Low]
+> Is this description inverted?  That commit skips confirmed conntracks, so
+> it restricted the feature to unconfirmed ones, which is also the guard this
+> patch keeps in nft_ct_expect_obj_eval():
+> 
+> 	if (!ct || nf_ct_is_template(ct) || nf_ct_is_confirmed(ct)) {
+> 		regs->verdict.code = NFT_BREAK;
+> 		return;
+> 	}
+> 
+> > Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
+> 
+> [Severity: Low]
+> The Fixes tag points at the 2019 feature commit, but the implementation
+> relies on struct nf_conntrack_helper::ct_refcnt, which git blame on
+> include/net/netfilter/nf_conntrack_helper.h attributes to commit
+> ac46f3f35b6e68 (2026-06-04), on the refcount_inc_not_zero() guarded
+> help->helper assignment in __nf_ct_try_assign_helper(), and on the
+> kzalloc_obj() slab macro.
+> 
+> Would a note about stable applicability be worth adding, since a tree
+> without the ct_refcnt rework would not build this and has no equivalent
+> lifetime scheme for an unregistered helper?
 
+The ct_refcnt is a dependency.
+
+But the issue that this patch address is really related to
+1710eb913bdc where this custom ct expectation infrastructure was
+introduced.
+
+> > diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+> > index 500509b17663e..1197e8793494b 100644
+> > --- a/net/netfilter/nf_conntrack_helper.c
+> > +++ b/net/netfilter/nf_conntrack_helper.c
+> > @@ -456,13 +456,8 @@ static bool expect_iter_me(struct nf_conntrack_expect *exp, void *data)
+> >  	return this == me;
+> >  }
+> >  
+> > -void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
+> > +void nf_conntrack_helper_free(struct nf_conntrack_helper *me)
+> >  {
+> > -	mutex_lock(&nf_ct_helper_mutex);
+> > -	hlist_del_rcu(&me->hnode);
+> > -	nf_ct_helper_count--;
+> > -	mutex_unlock(&nf_ct_helper_mutex);
+> > -
+> >  	/* This helper is going away, disable it. */
+> >  	rcu_assign_pointer(me->help, NULL);
+> >  
+> > @@ -476,6 +471,17 @@ void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
+> >  	if (refcount_dec_and_test(&me->ct_refcnt))
+> >  		kfree_rcu(me, rcu);
+> >  }
+> > +EXPORT_SYMBOL_GPL(nf_conntrack_helper_free);
+> > +
+> > +void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
+> > +{
+> > +	mutex_lock(&nf_ct_helper_mutex);
+> > +	hlist_del_rcu(&me->hnode);
+> > +	nf_ct_helper_count--;
+> > +	mutex_unlock(&nf_ct_helper_mutex);
+> > +
+> > +	nf_conntrack_helper_free(me);
+> > +}
+> >  EXPORT_SYMBOL_GPL(nf_conntrack_helper_unregister);
+> >  
+> >  void nf_ct_helper_init(struct nf_conntrack_helper *helper,
+> 
+> [ ... ]
+> 
+> > diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
+> > index 03a88c77e0f02..30c9358dbf48a 100644
+> > --- a/net/netfilter/nft_ct.c
+> > +++ b/net/netfilter/nft_ct.c
+> > @@ -1226,6 +1228,73 @@ static int nft_ct_expect_timeout_get(const struct nlattr *attr, u32 *val)
+> >  	return 0;
+> >  }
+> >  
+> > +struct nft_ct_expect_data {
+> > +	struct nft_ct_expect_obj	obj;
+> > +	enum ip_conntrack_dir		dir;
+> > +	atomic_t			num_expects;
+> > +};
+> > +
+> > +static int ct_expect_help(struct sk_buff *skb, unsigned int protoff,
+> > +			  struct nf_conn *ct, enum ip_conntrack_info ctinfo)
+> > +{
+> > +	enum ip_conntrack_dir dir = CTINFO2DIR(ctinfo);
+> > +	struct nft_ct_expect_data *expect_data;
+> > +	struct nf_conntrack_expect *exp;
+> > +	int ret = NF_ACCEPT;
+> > +
+> > +	expect_data = nfct_help_data(ct);
+> > +	if (!expect_data)
+> > +		return NF_ACCEPT;
+> > +
+> > +	if (expect_data->dir != dir)
+> > +		return NF_ACCEPT;
+> > +
+> > +	if (!atomic_add_unless(&expect_data->num_expects, 1, expect_data->obj.size))
+> > +		return NF_ACCEPT;
+> 
+> [Severity: Medium]
+> Does this change the meaning of NFTA_CT_EXPECT_SIZE?
+
+This is a pre-existing issue.
+
+This has only worked with NFTA_CT_EXPECT_SIZE == 1
+
+This is because this creates over and over again the same expectation,
+which results in expect_clash() returning -EBUSY.
+
+> The old gate in nft_ct_expect_obj_eval() was:
+> 
+> 	if (help->expecting[NF_CT_EXPECT_CLASS_DEFAULT] >= priv->size) {
+> 
+> that is a limit on live expectations, and nf_ct_unlink_expect() decrements
+> expecting[] once an expectation is consumed or times out.
+> 
+> num_expects here is only ever decremented on failure, so it looks like a
+> cumulative lifetime cap instead: after size expectations have been created,
+> no further expectation is created for that conntrack even when the previous
+> ones are long gone.
+> 
+> The other difference is when the callback runs.  nf_confirm() calls
+> helper_cb() for every packet of the flow once nfct_help(ct) is set, so with
+> size >= 2 the first packets of an already established connection re-enter
+> ct_expect_help() and re-insert the same expectation through the refresh
+> path in __nf_ct_expect_check():
+> 
+> 	if (master_matches(i, expect, flags) && expect_matches(i, expect)) {
+> 		...
+> 		nf_ct_unlink_expect(i);
+> 		break;
+> 
+> Should the commit message describe these two behaviour changes, since it
+> presents the patch as only moving the feature into a helper?
+
+There is no change in the behaviour, the LLM here is just missing
+previous context on the status of this custom ct expectactation
+feature.
+
+> > +
+> > +	exp = nf_ct_expect_alloc(ct);
+> > +	if (!exp) {
+> > +		atomic_dec(&expect_data->num_expects);
+> > +		return NF_DROP;
+> > +	}
+> > +
+> > +	nf_ct_expect_init(exp, NF_CT_EXPECT_CLASS_DEFAULT, nf_ct_l3num(ct),
+> > +			  &ct->tuplehash[!dir].tuple.src.u3,
+> > +			  &ct->tuplehash[!dir].tuple.dst.u3,
+> > +			  expect_data->obj.l4proto, NULL, &expect_data->obj.dport);
+> 
+> [Severity: Low]
+> Does NFTA_CT_EXPECT_L3PROTO still do anything after this?  The old eval
+> passed the configured value:
+> 
+> 	u16 l3num = priv->l3num;
+> 	...
+> 	if (l3num == NFPROTO_INET)
+> 		l3num = nf_ct_l3num(ct);
+> 
+> Here nf_ct_l3num(ct) is used unconditionally and priv->l3num is not read by
+> any datapath code, while nft_ct_expect_obj_init() still parses and
+> range-checks the attribute and nft_ct_expect_obj_dump() still echoes it
+> back.  In an inet table, which is the one case where priv->l3num is allowed
+> to differ from ctx->family, "l3proto ipv4" now has no effect on which
+> conntracks get expectations.
+
+This can be addressed in a follow up, but it is not a big deal.
+
+> > +	exp->timeout += expect_data->obj.timeout;
+> > +
+> > +	if (nf_ct_expect_related(exp, 0) != 0) {
+> > +		atomic_dec(&expect_data->num_expects);
+> > +		ret = NF_DROP;
+> > +	}
+> 
+> [Severity: Medium]
+> Can this blackhole an established flow?
+
+This is a pre-existing issue, this drops packets when
+nf_ct_expect_related() fails with -EBUSY with clashes which is likely
+to happen as explained above.
+
+> The budget is given back on failure and nf_confirm() runs the
+> callback for every packet:
+> 
+> 	ret = helper_cb(skb, protoff, ct, ctinfo);
+> 	if (ret != NF_ACCEPT)
+> 		return ret;
+> 
+> So for a persistent failure the retry happens per packet and each retry
+> drops the packet.  A persistent failure looks reachable: once expectation E
+> has been consumed or expired, another conntrack creating a byte-identical
+> tuple takes the clash path in __nf_ct_expect_check() rather than the
+> replace path:
+> 
+> 	} else if (expect_clash(i, expect)) {
+> 		ret = -EBUSY;
+> 		goto out;
+> 
+> A full expect table (-EMFILE) has the same shape.  Before this patch the
+> NF_DROP could only happen for the unconfirmed first packet; now every
+> subsequent packet of the confirmed connection in that direction is dropped
+> for as long as the clash lasts.
+> 
+> > +
+> > +	nf_ct_expect_put(exp);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int nft_ct_expect_helper_alloc(struct nft_ct_expect_obj *priv)
+> > +{
+> > +	struct nf_conntrack_helper *ct_expect_helper;
+> > +
+> > +	ct_expect_helper = kzalloc_obj(struct nf_conntrack_helper);
+> 
+> [Severity: Low]
+> Should this be accounted to the memcg?  kzalloc_obj() with no gfp argument
+> is GFP_KERNEL, while the equivalent allocation of the same struct in
+> nf_conntrack_helper_register() uses:
+> 
+> 	new_helper = kzalloc_obj(*new_helper, GFP_KERNEL_ACCOUNT);
+
+Yes, that is better.
+
+> as do the nfnetlink_cthelper allocations.  The object is created from an
+> NFT_MSG_NEWOBJ request and can outlive the ruleset, since every conntrack
+> that got the helper assigned holds an extra ct_refcnt.
+> 
+> > +	if (!ct_expect_helper)
+> > +		return -ENOMEM;
+> > +
+> > +	snprintf(ct_expect_helper->name, sizeof(ct_expect_helper->name), "%s",
+> > +		 "nft_ct_expect");
+> > +	ct_expect_helper->me = THIS_MODULE;
+> > +	ct_expect_helper->expect_policy[NF_CT_EXPECT_CLASS_DEFAULT].max_expected = priv->size;
+> 
+> [Severity: Low]
+> This assignment skips the normalization that every registered helper gets
+> in __nf_conntrack_helper_register():
+> 
+> 	if (!me->expect_policy[i].max_expected)
+> 		me->expect_policy[i].max_expected = NF_CT_EXPECT_MAX_CNT;
+> 
+> With "size 0", which nft_ct_expect_obj_init() accepts, the attached helper
+> ends up with max_expected == 0.  __nf_ct_expect_check() then evaluates:
+> 
+> 	p = &helper->expect_policy[expect->class];
+> 	if (master_help->expecting[expect->class] >= p->max_expected)
+> 		evict_oldest_expect(master_help, expect, p);
+> 
+> as always true, so any other creator of an expectation for that master
+> (ctnetlink, for instance) takes the eviction path every time.  Is
+> max_expected == 0 intended here?
+
+Yes, this should use max_expected = size.
+
+But since this only works with NFTA_CT_EXPECT_SIZE == 1, so it is not
+a big deal to run the eviction logic to remove the previous
+expectation.
+
+> There is also a mismatch of meaning: max_expected is a refillable
+> concurrent limit against master_help->expecting[], whereas the num_expects
+> gate in ct_expect_help() treats the same configured value as a cumulative
+> cap.
+> 
+> > +	rcu_assign_pointer(ct_expect_helper->help, ct_expect_help);
+> > +	refcount_set(&ct_expect_helper->ct_refcnt, 1);
+> > +
+> > +	/* No need to register this helper, this is internal. */
+> > +	priv->helper = ct_expect_helper;
+> 
+> [Severity: Low]
+> The helper's tuple stays zeroed here, so tuple.dst.protonum == 0, unlike
+> every helper built by nf_ct_helper_init() which sets a real IPPROTO_*.
+> The two dispatchers of ->help() disagree about that value.  nf_confirm()
+> calls the callback unconditionally, while nf_ct_helper() used by act_ct and
+> openvswitch filters first:
+> 
+> 	if (helper->tuple.dst.protonum != proto)
+> 		return NF_ACCEPT;
+> 
+> which can never match protonum 0.  So on the act_ct/OVS path this helper is
+> silently skipped and no expectation is ever created.
+
+This does not work with act_ct/OVS and this tuple.dst.protonum has
+been removed in net-next.
+
+> I could not construct a concrete hook ordering where nf_ct_helper() runs
+> before nf_confirm() has already created the expectation, so this may be
+> harmless today, but what protonum is intended for this helper?
+> NFTA_CT_EXPECT_L4PROTO describes the expected child connection, not the
+> master, so no obvious value is available at object init time.
+> 
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
+> >  				  const struct nlattr * const tb[],
+> >  				  struct nft_object *obj)
+> 
+> [ ... ]
+> 
+> > @@ -1273,13 +1344,26 @@ static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
+> >  	priv->dport = nla_get_be16(tb[NFTA_CT_EXPECT_DPORT]);
+> >  	priv->size = nla_get_u8(tb[NFTA_CT_EXPECT_SIZE]);
+> >  
+> > -	return nf_ct_netns_get(ctx->net, ctx->family);
+> > +	err = nf_ct_netns_get(ctx->net, ctx->family);
+> > +	if (err < 0)
+> > +		return err;
+> > +
+> > +	err = nft_ct_expect_helper_alloc(priv);
+> > +	if (err < 0) {
+> > +		nf_ct_netns_put(ctx->net, ctx->family);
+> > +		return err;
+> > +	}
+> > +
+> > +	return err;
+> >  }
+> >  
+> >  static void nft_ct_expect_obj_destroy(const struct nft_ctx *ctx,
+> > -				       struct nft_object *obj)
+> > +				      struct nft_object *obj)
+> >  {
+> > +	const struct nft_ct_expect_obj *priv = nft_obj_data(obj);
+> > +
+> >  	nf_ct_netns_put(ctx->net, ctx->family);
+> > +	nf_conntrack_helper_free(priv->helper);
+> >  }
+> 
+> [Severity: High]
+> Is it acceptable to run nf_conntrack_helper_free() once per destroyed
+> object here?  It does:
+> 
+> 	rcu_assign_pointer(me->help, NULL);
+> 	synchronize_rcu();
+> 	nf_ct_expect_iterate_destroy(expect_iter_me, me);
+> 
+> so one full RCU grace period plus a walk of the entire global expectation
+> hash under spin_lock_bh(&nf_conntrack_expect_lock), work that previously
+> only happened on helper module unregistration.
+
+I can remove this synchronize_rcu(), it is not needed since the
+ct_refcnt has been added.
+
+Basically, removal of expectations is best effort to retain the
+existing behaviour users know, but master conntrack is responsible to
+remove it if it goes away.
+
+If an packets races to create an expectation of this type, it should
+not be an issue.
+
+> In the abort path this runs from __nf_tables_abort():
+> 
+> 	synchronize_rcu();
+> 
+> 	list_for_each_entry_safe_reverse(trans, next, &nft_net->commit_list, list) {
+> 		nft_trans_list_del(trans);
+> 		nf_tables_abort_release(trans);
+> 	}
+> 
+> which reaches nft_obj_destroy() -> nft_ct_expect_obj_destroy() while
+> nft_net->commit_mutex and nfnl_lock are still held.  A batch that creates N
+> ct expect objects and then fails therefore serializes N grace periods under
+> the per-netns nftables mutex, with N chosen by the caller.
+> __nft_release_table() on netns exit has the same property.
+> 
+> The commit-release path already does one synchronize_rcu() for the whole
+> batch, and nf_tables_commit_release() carries the comment "Memory reclaim
+> happens asynchronously from work queue to prevent expensive
+> synchronize_rcu() in commit phase".  Could the helper release be deferred
+> to that work queue instead?
+> 
+> >  
+> >  static int nft_ct_expect_obj_dump(struct sk_buff *skb,
+> > @@ -1302,50 +1386,39 @@ static void nft_ct_expect_obj_eval(struct nft_object *obj,
+> >  				   const struct nft_pktinfo *pkt)
+> >  {
+> >  	const struct nft_ct_expect_obj *priv = nft_obj_data(obj);
+> > -	struct nf_conntrack_expect *exp;
+> > +	struct nft_ct_expect_data *expect_data;
+> >  	enum ip_conntrack_info ctinfo;
+> >  	struct nf_conn_help *help;
+> > -	enum ip_conntrack_dir dir;
+> > -	u16 l3num = priv->l3num;
+> >  	struct nf_conn *ct;
+> >  
+> >  	ct = nf_ct_get(pkt->skb, &ctinfo);
+> > -	if (!ct || nf_ct_is_confirmed(ct) || nf_ct_is_template(ct)) {
+> > +	if (!ct || nf_ct_is_template(ct) || nf_ct_is_confirmed(ct)) {
+> >  		regs->verdict.code = NFT_BREAK;
+> >  		return;
+> >  	}
+> > -	dir = CTINFO2DIR(ctinfo);
+> >  
+> >  	help = nfct_help(ct);
+> > -	if (!help)
+> > -		help = nf_ct_helper_ext_add(ct, GFP_ATOMIC);
+> > -	if (!help) {
+> > -		regs->verdict.code = NF_DROP;
+> > -		return;
+> > -	}
+> > -
+> > -	if (help->expecting[NF_CT_EXPECT_CLASS_DEFAULT] >= priv->size) {
+> > +	if (help) {
+> >  		regs->verdict.code = NFT_BREAK;
+> >  		return;
+> >  	}
+> 
+> [Severity: High]
+> Does this permanently disable the statement for conntracks that already
+> carry a helper extension?
+
+Yes, and it is intentional.
+
+> The old code reused an existing extension:
+> 
+> 	help = nfct_help(ct);
+> 	if (!help)
+> 		help = nf_ct_helper_ext_add(ct, GFP_ATOMIC);
+> 
+> and created the expectation either way.  Now any conntrack with
+> nfct_help(ct) != NULL takes NFT_BREAK, which also aborts the remainder of
+> the rule, so "ct expect set e counter accept" no longer reaches accept and
+> the chain policy applies instead.
+> 
+> Three in-tree ways to be in that state before nft rules run:
+> 
+>   init_conntrack() for a conntrack born from an expectation with
+>   assign_helper set:
+> 
+> 	help = nf_ct_helper_ext_add(ct, GFP_ATOMIC);
+> 	if (help && refcount_inc_not_zero(&assign_helper->ct_refcnt))
+> 		rcu_assign_pointer(help->helper, assign_helper);
+> 
+>   __nf_ct_try_assign_helper() during nf_conntrack_in() when the template
+>   carries a helper:
+> 
+> 	if (help == NULL) {
+> 		help = nf_ct_helper_ext_add(ct, flags);
+> 
+>   and a ruleset that runs "ct helper set" (nft_ct_helper_obj_eval()) or a
+>   second ct expect object on the same connection.
+> 
+> Should this case fall back to attaching the expectation data anyway, or at
+> least be documented?
+> 
+> >  
+> > -	exp = nf_ct_expect_alloc(ct);
+> > -	if (exp == NULL) {
+> > +	help = nf_ct_helper_ext_add(ct, GFP_ATOMIC);
+> > +	if (!help) {
+> >  		regs->verdict.code = NF_DROP;
+> >  		return;
+> >  	}
+> >  
+> > +	expect_data = nfct_help_data(ct);
+> > +	if (!expect_data) {
+> > +		regs->verdict.code = NFT_BREAK;
+> > +		return;
+> > +	}
+> > +	expect_data->obj = *priv;
+> 
+> [Severity: Low]
+> This copies the whole struct nft_ct_expect_obj, which now includes the raw
+> struct nf_conntrack_helper *helper pointer, into the conntrack helper
+> extension private area, without taking a reference for that copy.  Only
+> help->helper, referenced on the next line, is a valid handle.
+
+This pointer is not used, I can just copy what it is needed.
+
+> Since the conntrack extension can outlive the nft object,
+> expect_data->obj.helper becomes stale once nft_ct_expect_obj_destroy() ->
+> nf_conntrack_helper_free() drops the last reference and kfree_rcu() runs.
+> Nothing reads it today, so this is latent, but would it be clearer to copy
+> only the fields ct_expect_help() uses?
+> 
+> It also spends 8 of the 32 bytes available in nf_conn_help->data, and
+> struct nft_ct_expect_data is already at the NF_CT_HELPER_BUILD_BUG_ON
+> limit.
+> 
+> > +	expect_data->dir = CTINFO2DIR(ctinfo);
+> >  
+> > -	nf_ct_expect_put(exp);
+> > +	if (help && refcount_inc_not_zero(&priv->helper->ct_refcnt))
+> > +		rcu_assign_pointer(help->helper, priv->helper);
+> >  }
+> 
+> [ ... ]
