@@ -1,118 +1,105 @@
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C05C3F661D
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 09:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785923375; cv=none; b=l+NHLhrqkOQX5tu4ketAlVGYovFEXkjwp/+O/wGPnwCvhLv51234399OaXza/XRC5h2zlmpuD5XuHFEIYCBc2kSvQVehOr08txv0CfQyLDi7kBNbYdaFRGBvVPG4rxjrjWXskSdAO+2cSrMSBqUK97rAlL69QfZgrPHGOxMgX64=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785923375; c=relaxed/simple;
-	bh=5iH3jDtbpElr0PbAtYvR/rW6BHXbMmYMz8Usu24v5RA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bW/vtS6p+7qHy9sm9IQoBK4sG7/GXUeeTpZYPHpfwtdIdGP64SXMolDpIWkK07BSj3aNA/vupdh4DX2uW85SW9i+M3QXFSwbvmWN+Ve35GS+nAT4QX9U1tGfz0bYSkVTa9nlyitiY7Taee3z3UQjb139clbajSe9AWqNMvuSdw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QNgzYa4b; arc=none smtp.client-ip=91.218.175.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6333FF1B9
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 09:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785923416; cv=pass; b=Ivoqsd6+4O7NeW6+sNymFFXVWLCASYQzxY7jfcVrUg1XAWl9eOE1ic02VmlVC/7GBlg/VLkbRGkzoeq7iV7THTVxFMjhYFZCjcM8AxzO7PMTSinQ67FbWmGTcIEb9BF1LPO+C9udUL3fTFAf+2jCmFoK9rh+Mmd6Tb1XocN5/Ng=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785923416; c=relaxed/simple;
+	bh=jHUPJCgYA1KN5A6tvLYjd3m9HsBysMmEkVy6GuEua7w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IxemW5BjbWcKq3XTc28eQ9D7guoMMEnjFFSYcRJ02F5sFv6o5IpKkOlw2rtYf2Wn7tSMssc+ngJR4O8lN6hdao0k92lrirKxvT86m0inhRAaAikctq1V4/sNVST8b6ziptEcQwYR/15ZF2pxY1A8qoiT796eJp3FGoZ3fsa3teQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y7CBDH5I; arc=pass smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QNgzYa4b"
-Message-ID: <0ba725ce-93a2-4616-a854-f1ff95e7bdd7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785923369;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NojVNnVq91doXEpC4NRBIsbrB0D73g+roZrJn17Ay9E=;
-	b=QNgzYa4bm3diyOBpVbd5u43+x85Lio3jnTMvn5AkRodwQXVqZSFCUdjiF/OsXE3AeM8CZt
-	p2Zj7FbghA3UU1LZfNj7fJBScs5nBG2Mpy+tjoL50NifnD4Sj8llBodJxscMSqwfkAfGqU
-	IkNJtc1EQB65xJIB7AjuNVWr4MpI6bk=
-Date: Wed, 5 Aug 2026 10:49:23 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y7CBDH5I"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-383cb94f742so802622a91.3
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 02:50:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785923414; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qixxXwaSEUHD3jFml2MFEapX91/avxxpWcpEtCh+aBv6GUM8OEX+KFFNol7rbUTm9x
+         uvB7mhAadHJHn7CUGTVC+6oDmtP/R7ovBGn/2I2ih6rcRrHw/e4EbBS6jS5XqDfXmqjJ
+         Cg3mbmt4D0PLaS0Wwwh61mfk0CJVgtGaPGhc3+6MF8iyzIQJVwym7gik3PXDzxkx1O2c
+         Jlw4/f5NgBlC1NAdn5DeIHLWaZwkUflLO4L2uPwxqBadOKWBTQwvBpOpQRsh6A9hHLfK
+         buiosHT+Z3ltWr/4639vtjtObsnmPB9UxJ4CmP+SVPmTyhD4c7c9QPzYPkwW0ToETjyV
+         F8oQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=jHUPJCgYA1KN5A6tvLYjd3m9HsBysMmEkVy6GuEua7w=;
+        fh=ShQfhseWFbzzyHxEtXvsjJ1YTg4p2PJruEDuXpA2Y0I=;
+        b=NcZtQlOc8lXlXsDRoiueU6lYFG700ktI5HYBo6cAPbA7mO/ddBtIdAjTg5tpBDJoiV
+         OirI/coAXWOP5Zo9VnBC98PQXWSS3WnvNQdJFfTQAdTbs/1XSVVe2Q8tOdYbpeSpfSGg
+         wRNQOgINQmyij0Mm18jDjqmFZ6r98H2cOSGzt3NswZAy8VAtMg0ShEkeig/LO00HJBSv
+         KvfoTYkz6Flha3sEbP58MjDQSStm5BApAEulqt4MD14KnFjHICSuBzlta3myiU8vZctX
+         9nExcfe6tfUBV0JExEbHv7CGILv7tdwAe3K61zIFnnhXdshWv0A3eC6VWaAAfn8vI61+
+         SESA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785923414; x=1786528214; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jHUPJCgYA1KN5A6tvLYjd3m9HsBysMmEkVy6GuEua7w=;
+        b=Y7CBDH5I6Cs26obPGj05mdofUx86rLNxZ0J/7BxGG+ZZ8WDEuGU+iw2QcsbJmxolxS
+         dpQ6LT2ED67ynNT0FJ6U3vI9xusw48zducdoScX/v9+zvngSkzJR72gYdEGBZ7hkQjVw
+         nTbUE2o5Fky9DK7AmhXfHwTUuXmwF6YzKDCqNpFMXlEw+weq//GAUobUzx6+zLdpvMzx
+         IJDjhDFk87Nf5bFoByht8t+PFeIE+bJdCu4DfTRoIJtIQTU3N1NTSk0TnYFG/e9kW2WI
+         73yD79iNUYx1BSWF8lHg/oJjdqeDIuwa7U/F5G4t2lL1fSgaagLWznbs0YbvykIBh/HO
+         1wkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785923414; x=1786528214;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jHUPJCgYA1KN5A6tvLYjd3m9HsBysMmEkVy6GuEua7w=;
+        b=kP2JLWyJls/SEZ5SUAehbE2iSccsIR3yI2Kk3ZKxudC9Ec4usrvqWwHO1xxthtnunC
+         C8cmxsNPgW4yEmBg7jdUPNmzAgjS/uJivcXfDruSjK0ANx7jYg0HoOzUlHC/Gk9TBCyP
+         kcmO+O762OQl4VZxNl6puuM58xYXzaasRhT94heWXKIOLFmqoYXMrAWugwIMen5gov+V
+         eQlnDaek9jKSzBA01DOo0xKZUC7AVgJnGVwJz1xj5R1HxyQ0KPeNmimWck2zLdxexkgq
+         Ll2cF3gKLoZ6NK/35CMKS+38vGvvuOd578PSQge4DXv54jw8XUAQcJF3P5Tj5ssYF/9O
+         NJmw==
+X-Forwarded-Encrypted: i=1; AHgh+Rryy8mb0LqKoOu+stKDrD5OIsu6R/d2YVafWG8vAdxTionecC0He6R7QtI0CKqvs4zMPFxZEGM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybuXi5NbOxcqA+bWW5t4BieGCgCSVO3qmRm1BAPkeZ4xp6Djjp
+	uwScwVjT8NeRZ7e0Qbx/KtM9nnHipkoCKj9kbtC23B4wy1jPFkEWLM2gUqYAwo+DHDLCTGL3IKX
+	AISm7iwFmzeSLXIVDHOkdOOb5sPvvzhOtpy5iBeaumw==
+X-Gm-Gg: AR+sD13efcmnEz+bJy9WHnJSioB9BV1QhWdQ7ueHmh6J6JEfPXbGHalawkv03aPWyRM
+	nt9NvP8xYT8Km9w1AMS6Cx/GA5bLKM18OCGwvlvjvDaQh0Kqjct3h32OVj7o1wYOf2fedNFMERL
+	m2RMD4kIuzajORkBU4qGNYGsaEHFnzxXDktixYw7QoRlCDlM2otxby4gZyqDZWqgxgGSMXQtUW9
+	K9dC9VwefmU9TsVzlCGIQ20KEMCgY6P2CIJmYbg8rVOM/smkkpUNmMNSBWs31NwXOG6TwdrSPnr
+	u499U3F49/MlMFkuBhP6px6K70H6pa/l0Ep3fdk2BktH6gycOT3E3C7O
+X-Received: by 2002:a17:90a:d010:b0:38d:eaec:4396 with SMTP id
+ 98e67ed59e1d1-3903c58bdd2mr5494382a91.11.1785923413872; Wed, 05 Aug 2026
+ 02:50:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH iwl-net v1] i40e: fix races in PTP external timestamp work
- handling
-To: luoxuanqiang <xuanqiang.luo@linux.dev>, intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- richardcochran@gmail.com, piotr.kwapulinski@intel.com,
- arkadiusz.kubalewski@intel.com, aleksandr.loktionov@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-References: <20260724093448.63154-1-xuanqiang.luo@linux.dev>
- <dce23bb6-138b-4a53-9447-26e81c86c292@linux.dev>
- <ea295e13-6a35-4ce5-b289-f9f37b67dcf8@linux.dev>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <ea295e13-6a35-4ce5-b289-f9f37b67dcf8@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260805072641.402-1-strst.gs@gmail.com> <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
+In-Reply-To: <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
+From: Semih Baskan <strst.gs@gmail.com>
+Date: Wed, 5 Aug 2026 12:50:02 +0300
+X-Gm-Features: AUfX_mxQJkvH6gd7UiyLtdgKCnC3T2t0k7d1o6KFDYDhAGu7VIA0zM6ypCj23Dc
+Message-ID: <CAAsRjR=bQaZD+_VQONWeAp1z=1SGWXj1pnFRPRks4sFggfKYaQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Cc: florian.fainelli@broadcom.com, andrew@lunn.ch, olteanv@gmail.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	vladimir.oltean@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 05/08/2026 08:13, luoxuanqiang wrote:
-> 
-> 在 2026/8/5 05:33, Vadim Fedorenko 写道:
->> On 24/07/2026 10:34, xuanqiang.luo@linux.dev wrote:
->>>
->>> diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/ 
->>> net/ethernet/intel/i40e/i40e_ptp.c
->>> index ff62b5f2c8150..fd51ab8c10c20 100644
->>> --- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
->>> +++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
->>> @@ -169,6 +169,17 @@ static void i40e_ptp_extts0_work(struct 
->>> work_struct *work)
->>>       ptp_clock_event(pf->ptp_clock, &event);
->>>   }
->>>   +/**
->>> + * i40e_ptp_init_work - Initialize PTP work for a PF
->>> + * @pf: Board private structure
->>> + *
->>> + * Initialize work which must remain valid for the lifetime of the PF.
->>> + */
->>> +void i40e_ptp_init_work(struct i40e_pf *pf)
->>> +{
->>> +    INIT_WORK(&pf->ptp_extts0_work, i40e_ptp_extts0_work);
->>> +}
->>> +
->>
->> why do you need extra function for a single line of code? why cannot 
->> you put it into i40e_ptp_init?
->>
->>
-> Thanks for pointing this out.
-> 
-> i40e_ptp_init() is also called from the reset/rebuild path:
-> 
->    i40e_service_task()
->      -> i40e_reset_subtask()
->        -> i40e_reset_and_rebuild()
->          -> i40e_rebuild()
->            -> i40e_setup_pf_switch()
->              -> i40e_ptp_init()
-> 
-> Putting INIT_WORK() there would reinitialize the work item during reset or
-> recovery. If the work is pending or running, this races with the workqueue,
-> resets its bookkeeping, and breaks the workqueue's non-reentrance
-> guarantee.
+On 8/5/26 09:44, Jonas Gorski wrote:
+> Unfortunately what this does is break modifying ARL entries with VID
+> != 0, which is why I haven't added this.
 
-ok, but then this driver has bigger problem. the same i40e_ptp_init()
-re-inits tmreg_lock mutex and ptp_rx_lock spinlock. While latter might
-be ok during reset (hopefully no traffic processed while the nic is in
-reset), tmreg_lock mutex can be used for adjfine/adjtime/gettimex64/
-settime64 callbacks as ptp device is still visible to user space.
+Thank you for the review, your concerns are justified. I will drop this
+patch and let you know if I find a way to address them.
 
-I believe ptp part of the driver has to be redesigned properly.
-
-> 
-> The work item is therefore initialized once per PF from i40e_sw_init().
-> The helper also keeps the work callback private to i40e_ptp.c.
-
-
-
-
-
+Best regards,
+Semih
