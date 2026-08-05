@@ -1,88 +1,58 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3A23A9DB9
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 01:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4D13A2543;
+	Wed,  5 Aug 2026 01:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785894799; cv=none; b=bVRnYXRli8FO4Yp3F/ccJaobkr+Ylg5+rV/freKkLq9XcAaDuju7yM9BOAsUcWl30CUevjUcwOTwDrQiD0C3R1c+qeuVWY+iyH4uE7Cpb6n0SxWc+3URoH01LGfi9MXEIPWv6EvbQ0Kp9oV/5kEQykaZVbvpyxolFZU3KyjTRx8=
+	t=1785894907; cv=none; b=TP60kEEf8kZ3szVr2F0y1dtHHpcB5IP6tGStmDFEfFI/0pKvAYVNy1+OzhaO+jCpV0sZ4M3YjypiVekMDgdQ4w27AIVoIqGU7JMgGgTaT2oMotx+aT46UqSp8g6MgJ+quTUbZUG3UldyfkGsQRnjmPWNdRx0gE4VyvKHXQXq+Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785894799; c=relaxed/simple;
-	bh=p+yt+NMYZiDZtNW7V1ocafNfHODM07sVNNvQH4cw2lg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KXJxX05BwcExL4fcZnS+Qk5N6bwQg2T9HKSZMSRHhREchr0t9+uzSsebwmzdVn8sCTMfynYTEIeNpfjGz0M6JTir6NvVTIIlnzFTWcfJmVj9LUR2a22FYngZyI4IR1gxfRTdkNKDsHc5g8Da6efU0dEE7B4daPDcnZJu7pTYDRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=apDTIqy5; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785894907; c=relaxed/simple;
+	bh=m8hoBr4X7GLT++iMYi6Nz1HbIbdpei0miK7qPOL4kCU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C3a3QGOALAxI4+Iuag8VwQD7festF7RmvjpRn2oIkS6GdPRey6gRyeoVlXi0qsORabapilsZ2kuG6l3TGN1iL9uSEpRbT7ht4psEjqAb5WmxDshC47HnfJA53eo+477cfe34Q4JHURRpmbwJzWjywqgZFcUbbq8ozp7OlBK55+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3AvGIS4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="apDTIqy5"
-Message-ID: <2bae8670-3b95-4baf-a61f-fe1600ed9ad6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785894783;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MqZFARE4/jTJNM90sWjl4ngmCPDnLA3TQRiLkSPh6Q4=;
-	b=apDTIqy5eKfvCaBvCwhrA2HO8tBo1kaBCR3B3m1nX/X5akElNIMNfLjEWLgOhYmmk6iCAP
-	IP8oQEi97rab1929hq1QF+Aj5vBOtcokkhS4a45CSVlhoC0c8XgwzFSPzREzYZtaR+UQlD
-	cuIEplPHm1NjcEkjrq7GFO3OyLL/vTc=
-Date: Wed, 5 Aug 2026 09:52:39 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3AvGIS4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007DC1F000E9;
+	Wed,  5 Aug 2026 01:55:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785894905;
+	bh=m8hoBr4X7GLT++iMYi6Nz1HbIbdpei0miK7qPOL4kCU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=L3AvGIS4lDUvRq5vwWwR3q4Xsk5XaVXdHsg0U9VwDKHURdwx2PWOnHA1Hpem83dWu
+	 dTBLOBO9sVjD00YGTk8xt4BZ/OcfpslLBqWjXsn7Dg2qfJQ5CEQamJbrmpPXcXZDY8
+	 38klbp4SSO3YbCLGVyQatlwS6gCfzgRZO5dLfBjXKh4VsqagZjusgpq/Xd84+iwjsw
+	 EE8AOL5WCMUW5wnH3mPVRUgXZ9Ts0HSPdP/UyK9Evedp5AAFmXcm3NQyG4tRdzYWr1
+	 mMeK76LEbdNpX3cxKtD7XOMuCAMRbBBpO7su46/eInkkOYMzIkC5/DPN/hhFDd/w6R
+	 AEIkOVotaN0rQ==
+Date: Tue, 4 Aug 2026 18:55:04 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: David Ahern <dsahern@kernel.org>
+Cc: Minhong He <heminhong@kylinos.cn>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: vrf: check register_netdevice_notifier() error
+ in vrf_init_module()
+Message-ID: <20260804185504.270ab5e7@kernel.org>
+In-Reply-To: <f8b967f3-238e-4402-89a3-95d8ac0bbe3f@kernel.org>
+References: <20260803090002.142453-1-heminhong@kylinos.cn>
+	<f8b967f3-238e-4402-89a3-95d8ac0bbe3f@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next v3 1/2] bpf: Fix sleepable check for tracing prog
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>,
- Sechang Lim <rhkrqnwk98@gmail.com>, Varun R Mallya <varunrmallya@gmail.com>,
- Viktor Malik <vmalik@redhat.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-References: <20260804145710.43062-1-leon.hwang@linux.dev>
- <20260804145710.43062-2-leon.hwang@linux.dev>
- <CAEf4BzY0=ZL5MD9j-tLewfuLhRVMipAYnRJ2CD5Biji9iiZG7Q@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <CAEf4BzY0=ZL5MD9j-tLewfuLhRVMipAYnRJ2CD5Biji9iiZG7Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 5/8/26 07:39, Andrii Nakryiko wrote:
-> On Tue, Aug 4, 2026 at 7:57 AM Leon Hwang <leon.hwang@linux.dev> wrote:
-[...]
->> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
->> index b274004fccfd..7bb541e343b2 100644
->> --- a/kernel/bpf/verifier.c
->> +++ b/kernel/bpf/verifier.c
->> @@ -19019,6 +19019,9 @@ static int btf_id_allow_sleepable(u32 btf_id, unsigned long addr, const struct b
->>
->>         switch (prog->type) {
->>         case BPF_PROG_TYPE_TRACING:
->> +               if (!btf_is_kernel(btf))
->> +                       return -EINVAL;
->> +
-> 
-> see sashiko reply, just move it outside of switch and disallow
-> sleepable for anything that is not kernel/module BTF, regardless of
-> program type
-> 
+On Mon, 3 Aug 2026 10:59:47 -0600 David Ahern wrote:
+> Fixes: 193125dbd8eb ("net: Introduce VRF device driver")
 
-Ack.
+Thanks for the tag and the review!
 
-I think another Fixes tag is needed for the LSM case.
-
-Thanks,
-Leon
-
+In this case I'm going to skip and take this via net-next
+'cause register_netdevice_notifier() is guaranteed not
+to fail today.
