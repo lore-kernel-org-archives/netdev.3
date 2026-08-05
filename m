@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35923C9EE6;
-	Wed,  5 Aug 2026 16:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4A83C8194;
+	Wed,  5 Aug 2026 16:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785948751; cv=none; b=kSjRZ5WmygzzDueUwI+GVN8hxSZcs7/1DhMSxrppEuLyGV+/2Btw3n3NHQPGPXGEEMVu5WIuMLSeBvm9NUSxSMd/SvxWTghJmDXubenvbMbdKpESJ6qhED/gNP5JlFYrkpicus0ndsoLY6gydxvH95152dfUFySHvqcaZXpUjKs=
+	t=1785948759; cv=none; b=slNycfonZrssa9eRZmGtKAD4nRB1oR5DpAjP0oF61EatwpgT9bqacRh6qlhoEn89cPYKV5veCJDJ83MUm0iRWtbOU6LLa4FldhPd4ol8OCz1IJbgdTEpVY2Ns3o55Whxpm/cJx9mQMBIEDcdMdppXsFcw+KvYq5fzM5sYpGDAiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785948751; c=relaxed/simple;
-	bh=SjWG/e9JsFftod5QMkfxOHYiaCQw949R+sQ6XRHUQKg=;
+	s=arc-20240116; t=1785948759; c=relaxed/simple;
+	bh=4JEFjYhL0kchkl5WjQI/Ll0F2pcfE3hbIJh85azAxZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcIO7+gc88IwTcnqvUFctRuBoC+g9jVwsLZ/aDSdFCE2l2pmLPUYbbufO2s6CkAFWw26zhYyk5FP7CekpaKSMh8TC0dBHqVcUmZs7I9/AJBVXyiLjhTe+oaJahHhTzXVU9jeAsvUuP5PDP88pwMeGi0dojcPo4C0a/pUyOtYllw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJp+3HC6; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=MFQjySBeWmkJQyTIfLiZ+19RfkkzHmxS9clr5d1x7c4FfEvL4iHKrTOLMbGMPCNXr4XWn+XfrnfZohfnmAVhxq4z6wEXq4oQHJn3QBIRs7EA8K/yXBLmw1LqygEP8W6zapPw2hlfVCEpzd9j6lRZ5bRwQ5orZ2WYkVsQfR49LGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ez3BC1NT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJp+3HC6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017F01F000E9;
-	Wed,  5 Aug 2026 16:52:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ez3BC1NT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1621F000E9;
+	Wed,  5 Aug 2026 16:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785948749;
-	bh=VvKjb1Ht0TmVMC+kyNtnHRJCc6afvYyetizuH4/ckL8=;
+	s=k20260515; t=1785948755;
+	bh=JziJVmM8RLxbOD762dm4Ciqqq+HAv5kKIdyBdoNkWts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IJp+3HC6rodfwrd0M9RlVhBofdFa3w1JeWyfBuixRncQIOWVuAlOb4IXz3H6X7EMu
-	 LwzrrLCLXhaLyrSnbm2lJWfvb4/g+Bf8ApNChQ1w0P/Zxm7dMe0KVNSvMg9WRv8E9g
-	 fXSrJ/TCd9cjTtu+Vcqzza18I1/c2xFh0Bbsfjet3eZ9gTMgYrLIYasBsd3Fu0igwX
-	 bq2DVYV3zfy5peD6e94Wf5Wl2Y41VXSgvLa6fguJuu657jzuGYQZu1YTDMFHvzB29i
-	 Yu/p2LDk/tU1TghbgO0ISUF/NwmUPQ1Cldw8r6CMHwAfx0ENtYKj6kuu2T6MWMafe1
-	 0kN1aeKGGpQnA==
+	b=ez3BC1NTgq1dF7TjpdkOkHOpoW4zPgkfch9xJQohVgR4QBn9eI5d+lmR0m0LoBl1n
+	 XMuZoD2xclM+Hrt91tC+EgUzfZXR+mFdux96C8wVy6Ccnwkz7XxDb2WzF0dM3pOwPS
+	 C3gOEyIhg51ojheDVnWxpjmC+WPZL3eyYCxrUEacCWAxDOiSfEKGjS4GEwplk2hvOi
+	 Rnr1qwF1WByKAcecvc7Js/ZLk2tw3QuSJYyWPn/dP+XVNMgRg353I7tbAkMTpEBgz+
+	 K0tzINbwKLlmUJVcjLdtzs9tdUKxUuqJrciNIvrKexILrUcuV7XJ5ZdjH8lxtIZ5gw
+	 LdmEVInx6i2ew==
 From: Simon Horman <horms@kernel.org>
 To: shaojijie@huawei.com
 Cc: Simon Horman <horms@kernel.org>,
@@ -41,12 +41,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	ningwei15@huawei.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] net: hns3: set msg->desc to NULL after kfree in hclge_query_reg_info()
-Date: Wed,  5 Aug 2026 17:52:14 +0100
-Message-ID: <20260805165214.606778-1-horms@kernel.org>
+Subject: Re: [PATCH net-next 2/3] net: hns3: add missing const qualifier to hclge_log_error() reg parameter
+Date: Wed,  5 Aug 2026 17:52:29 +0100
+Message-ID: <20260805165229.606837-1-horms@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260804130933.880552-2-shaojijie@huawei.com>
-References: <20260804130933.880552-2-shaojijie@huawei.com>
+In-Reply-To: <20260804130933.880552-3-shaojijie@huawei.com>
+References: <20260804130933.880552-3-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,60 +57,59 @@ Content-Transfer-Encoding: 8bit
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260804130933.880552-2-shaojijie@huawei.com?part=1
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260804130933.880552-2-shaojijie@huawei.com?part=2
 ---
---- Patch [1]: [PATCH net-next 1/3] net: hns3: set msg->desc to NULL after kfree in hclge_query_reg_info() ---
-commit ba3e282274aa0911fb278f48937385c06cc8f3a1
-Author: Jian Shen <shenjian15@huawei.com>
+--- Patch [2]: [PATCH net-next 2/3] net: hns3: add missing const qualifier to hclge_log_error() reg parameter ---
+commit c77e6cbb6d302d584ade8cd89a76f4750fe00694
+Author: Jijie Shao <shaojijie@huawei.com>
 
-net: hns3: set msg->desc to NULL after kfree in hclge_query_reg_info()
+net: hns3: add missing const qualifier to hclge_log_error() reg parameter
 
-This adds msg->desc = NULL after the kfree(msg->desc) at the end of
-hclge_query_reg_info() in the hns3 PF error handling code, described as
-avoiding a dangling pointer in a struct that the caller reuses.
+This adds a const qualifier to the reg parameter of hclge_log_error() in
+the hns3 PF error handling code. The parameter is only read inside the
+function, so the change itself is a straightforward const-correctness
+cleanup.
 
 > diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
-> index dac051e798da2..7e124e2c718da 100644
+> index 7e124e2c718da..6093a60d257b1 100644
 > --- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
 > +++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
-> @@ -1592,6 +1592,7 @@ hclge_query_reg_info(struct hclge_dev *hdev,
->  	}
+> @@ -1762,7 +1762,7 @@ static const struct hclge_hw_type_id hclge_hw_type_id_st[] = {
+>  	},
+>  };
 >  
->  	kfree(msg->desc);
-> +	msg->desc = NULL;
+> -static void hclge_log_error(struct device *dev, char *reg,
+> +static void hclge_log_error(struct device *dev, const char *reg,
+>  			    const struct hclge_hw_error *err,
+>  			    u32 err_sts, unsigned long *reset_requests)
+>  {
 
 [Severity: Low]
 [Finding: main-1-0]
 [Sources: opus-5]
-Is the commit message description accurate here?  It says:
+This isn't a bug in the code, but is the justification in the changelog
+accurate?  The commit message says:
 
-    In hclge_query_reg_info(), msg->desc is freed by kfree(), but the
-    caller continues to use msg across loop iterations. Set msg->desc
-    to NULL to avoid leaving a dangling pointer in the reused struct.
+    Callers pass const strings, causing a compiler warning about
+    discarding the 'const' qualifier.
 
-The only caller is hclge_query_reg_info_of_ssu(), and it re-initializes the
-whole stack struct from the static template at the top of every iteration:
+hclge_log_error() is static, and every call site is in hclge_err.c.  They
+all pass a bare string literal, for example in hclge_handle_mpf_ras_error():
 
-	for (i = 0; i < num; i++) {
-		msg = hclge_ssu_reg_common_msg[i];
-		...
-		hclge_query_reg_info(hdev, &msg, loop_time, loop_para);
-	}
+    hclge_log_error(dev, "IMP_TCM_ECC_INT_STS",
+                    &hclge_imp_tcm_ecc_int[0], status,
+                    &ae_dev->hw_err_reset_req);
 
-None of the hclge_ssu_reg_common_msg[] entries initialize .desc, so msg.desc
-is NULL again on each pass.
+and similarly for "SSU_ECC_MULTI_BIT_INT_0" and the remaining register
+names down to "PPU_PF_ABNORMAL_INT_ST" in the MSI-X handlers.
 
-Even without that, hclge_query_reg_info() overwrites msg->desc before any
-read of it:
+In C a string literal has type char[N] rather than const char[N], so
+passing one to a char *reg parameter does not discard a qualifier, and the
+kernel build does not enable -Wwrite-strings.  None of the call sites pass
+a value held in a const char * lvalue (such as
+struct hclge_mod_reg_info::reg_name), which is the case that would produce
+the described diagnostic.
 
-	msg->desc = kzalloc(desc_len, GFP_KERNEL);
-	if (!msg->desc) {
-		...
-		return;
-	}
-
-so the freed pointer is never dereferenced or freed a second time.
-
-Would it be worth rewording the message to describe this as defensive
-cleanup rather than a dangling pointer fix, so a stable backporter does not
-read it as a use-after-free fix?  The patch correctly carries no Fixes: tag.
+Could the changelog be reworded to describe this as a const-correctness
+cleanup instead of a build warning fix?  As written it suggests a broken
+build and reads like a stable backport candidate.
