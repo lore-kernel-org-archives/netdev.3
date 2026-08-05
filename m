@@ -1,300 +1,132 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77AB37F303
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 18:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785953231; cv=pass; b=HUEZWkTu7hGqx1Ak72AMxgG1Z5ROD/102mCVDVgEj8oZSUBsirafrlXJRsJpjqVXNfZRYGZizLZSvFIA1SIq/vCqNYqYJohykCIQbNS/w/eAySqM6fLZdLswAg5iaaliEaEQxqiuHPdki20fBLTKHu2/er9G+9ktSbXmtMOSNx0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785953231; c=relaxed/simple;
-	bh=RDzGscm0X3YxJSsPbUghpZ2/iTgonupjuK3hHZUzURY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VqeOGlBwylPR5efNfFje0G7DCJV2GBe2GbWoN65wih0oQnsgC8jlDDi9Lv9z99bztuOSv9hi9qXkxbm+8Y2Z9MoprdBxPZ3U8znTwEJg51dy9BMJEBvHarMkHok/6L3KWJ9Sh77xrZ7oaBiK0nxn8KSN/tgwz7/WpC8+E3P8L9w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SjJGmjT+; arc=pass smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE1D3D332B
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 18:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785954464; cv=none; b=IdT84oOxIcuKxQxn49lTtrfgXHUBfc4p8F/fqmwnbKicNUHowSCmMDl7+Od00+tsx3L+v6zecr/kn9t5Xo8iyG+RbhOo6cvMK/SeFR+y++vkkPzXW4PawjYA2ZjMbJri60moeEB6wPACUeUvLeZL+5iOflJe5PFTU0r1ghqqSNw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785954464; c=relaxed/simple;
+	bh=D80ENpUfW4QvugcwsDaQo9rQ3VT0nERraW1zaHCo3FY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=bZ9TypXIqpTTKSAtKr0p2M8bjNBYBZo5LiiVJkMHFMe8BBljiMQSOxQX5ddYoKLVUpRCswyHDSzXorHMdbYmRmK/5EDMuNPFugMNcV7uEJSfk3AgevjBZNbvGt/vzfwdhKaNyRvMjmPCkq5NPI7F9SmYTMTc+ZLSBLrddQ1FCdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=XGOr2sCj; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SjJGmjT+"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8485bd28dd0so1596159b3a.2
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 11:07:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785953229; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ft4w4YfZ9CYWOqxHJgCJ4zPO96qHo5eMBhFVclM+HEAQBMdNsp4MUaRApSDhtKG7mu
-         LQKTmTnmhKShRmQEkcrLKNmUl4qhLezZYyU5iOPC7SIpsXV99B1J4esDAxG+RUExfDZj
-         h9YqA+7jRis7/NQ3grXKW/cPNx48IBwqYyUbUU2I3gcmDtrSlCKPF/1W5ogJKDPxn3d1
-         DNseYffW0IH8ulRxh+SJj0HodchhZAGRZlbVRabgrI6argGumufh0PGIBLe0sU3PxR5T
-         AceyxG+gp9jgcRyrIeN3uNtQH4D/4qi4lQs1mZuXl6y2X0PBanZDoAVUHHTl/GxLWy9B
-         YNPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=z/60jsXozMozOdmDAKiYW/857TDcNo0le3GW6i4YHHc=;
-        fh=vbk2mE18lKencUKCox5AHn4nHJfng11e5u8tJTuFTCY=;
-        b=awfeJnMJw6UDts7eClylZAkm+tW+a0WKP3EPVKynEk8LJlptXsSxNUUwRcShj8uEar
-         9oTyHIOM6rBzqRzvObvOmBipfb3sJtMstQwkFXFD5AV+p2anst+9lk1nZuNGxvSfhzoi
-         +aqJXmQkwffCLAciuFqooq32+L2cODUu8s+pV+B+WOCG8AqyofNEYsJ7f9SEyVvYIZvd
-         kMtkJL34n1A/RyKMiYwiYdSFpfdnrOANWDxdccJ4aYQd3me5PPPlZW6LdZM3C//Tk4TI
-         mgdfWLnVjGx9sFmPftMr8T3OY0oNRVQhI7UGq0hdbey6nkCLlyBeYuCvRUrpCuY0zbJs
-         Kqow==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="XGOr2sCj"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c15e2dab83eso217407866b.1
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 11:27:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785953229; x=1786558029; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=z/60jsXozMozOdmDAKiYW/857TDcNo0le3GW6i4YHHc=;
-        b=SjJGmjT+Z6jYNbPy8W7UIlHco4JlTSrD448Nv363snYBZjB1XxfdUzKc+Ss1bqPvaO
-         9ydCBDLdwDmi4qqCrschoqx3C3YdUaQV2RJyqhkZVRQFCRRClO6s8o8kSBsWDINvVlkW
-         PcSzwIqQqYETy908PcB7B4D9IZKx23+D84pVBHi9J7TUCZdBot1eelEr3JL+QOIJBHit
-         GxnjQ3Rnmy29WYU/nFh9YmxaQgdX9H+tTeb4HVd2uE2NfWWcN9rcEOuwFc2cvdy9vMgw
-         gxZzJj1N7yv+hw8b83FKQUNOen/HKjz9mLSjwNKkplH1DFz02XkI4NQvK/FZiqn7PNB9
-         tXIw==
+        d=cloudflare.com; s=google09082023; t=1785954459; x=1786559259; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=RQvUfHBgP2cWCg3xbn5qxeCgrthmPBmHR+/z9WzFaXg=;
+        b=XGOr2sCjwR1DuM9tHgx5gyZQabR98pBqaPwKy7xuE7UFnCL2N9UUMCktzkLnPndFei
+         qkXz5BlMaujSEvZMiXoUbkR5Vn5wNn02S7Je+3tYv30MJKEodBfkeqzP7K/KboO3vyXJ
+         PSzPAJy8GT7uf+m8z+ZomG3vP4MwbYPeJ+IsWmUKnOn3R0KPAtAEl0s7kMQNvP4XqJbB
+         uDkHiB77bF7dh+tpEi40BS7rffe/cRBwHa1G+nLUHAI4n2KQHM9yuMlLS+iPPC/5DmH1
+         P6ejA1iMS9MFjUkqhPApFvNXGrdTyJAWoO4BJfYqt2lGrcQyQURg+z1bmiEktSi6AxIJ
+         sfug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785953229; x=1786558029;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=z/60jsXozMozOdmDAKiYW/857TDcNo0le3GW6i4YHHc=;
-        b=ajnBbnkr8a8yid/ks6t+PIFA3H56Xa0hpWuKjRWedWoagRW2tEeub4r4mlKRbhVP5i
-         SfiWBEQuW8mC9hvoN1v4EH3081ICuDKQVRUhmhzHo/Erg9xk3LnBFGFIVKGk1B022nGE
-         ynr23/OK2OPW1SJbqnTARGij7ietTOyxQYywPTNuKpoXRQXu4tGUge/lXSS5Gh60UtIN
-         iX/+3qu4gqQEgYf5BAbDNeVtgBOOTSIvWyitEhT+Qlmhfhiy+B2AQHi0QaIvwNsy6o8R
-         zMe1OJQ/cjtFJpht7D7tnIq6Db7jzUejlXp1+saa3+VMo1/S64FB1XN0kjtRIOk+gH0B
-         E+mw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqd1opMplNZG9bACZXWMAEXakPGJEO09Db3XadYlN0HMXhASwto+6EnHPAdj5WGQjPmi5Bil0c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7wcRmm7iQmTwh63Mqz9Z+uZaAw8OkGc3lRgaaiXgwOfPunaY9
-	FUq3mcyHD8QNfzM9bqPlQxfPaXot+jLyj+PrvASfNPMqQP8YL3tAwubVwg2cnxOxqOxuUpXza8s
-	7jQOyWHt5DN/xxFHIVb2rttYNoLDyw83Xv7Ovwnw=
-X-Gm-Gg: AR+sD11iXszmgpUai8Kjv33dhFJVM1e5AT+m7Eg6kuvOgskuy/2hErpu3SrEZmWaK2T
-	nI08mLvNKuWym9e5E7dvXChw3nDjo4Kfi4Er2s337vNlcE4chaRG1Dqk8vsyR8Cqazm89fZElSX
-	ZpJ2hqlcoz/FEOBpa8rA24Xgbki3NvIiATZoU0bwoTU1kI4pG8c6Mge+peYhlYZYsiVqXKuoMAY
-	ENr2etrlcxzGwycF6mIbHPOEPfWDRX0yHY6kgATCAkRR/GQqi4/m0P2piLhADisj1yiziTiY/jp
-	qb3qGtnQy+2OWeWoBaPwBVHmtQjPpfB+HDdQo9e2rZv7+Qq56APG+NIil3EFWBL8fvJKoTkXHOy
-	qP9NwW0x/ccaRVGFsIu1gHq++BY8JcR5XjcR1FG32pqVjXWSHo49ipDaFq9pgdB9LhtAUFqgO0Z
-	WQ39vD/1bYUtM=
-X-Received: by 2002:a05:6a00:230a:b0:848:2e7e:353a with SMTP id
- d2e1a72fcca58-84f2dea7014mr9138898b3a.0.1785953229192; Wed, 05 Aug 2026
- 11:07:09 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785954459; x=1786559259;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=RQvUfHBgP2cWCg3xbn5qxeCgrthmPBmHR+/z9WzFaXg=;
+        b=UQg9FWM8cOWEd85pvYiM+W6+bwY7gMv7T2NML3OouGnri4/qVwRPncQd7GB2A4et1i
+         nMjZyQaaL/QUGh3UO4GpL6KmpXsL5a4i6iK3EHZ6/LFtsFqi0LrJNhXBoMxQte757sq+
+         Z01n5HSmcnQus8BRmh6KcjnsSqNcBvU3N1Cb/B6Zj4dwGDjynWCjNjvmIjUyeVB2WKPa
+         wOOixSGbst4pMWSB8hzCKfiF+a+9afjLeJQ+4M+Gowgst7P4apgiEWd5FI4dzDVgQCKn
+         hE8DkFgtu2aew+uLwWhz0if1cp2kRYMUUnyhfZhi9cz90xQDB+l78c+rTA/kimXBujOr
+         cuUw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro8NKZi5FBoZU83TMLJP8lO7u29lUWA6v4fZLsa2A0YPpMjaS0WdYVLK/NFi/QlT+IkcST3yyg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsVFewfKxdJ9YLoR10c8FZuy0LQKk13ZJOjbZsh+DmhboSvz/J
+	sad834EJZpMWzOzqPG599Rq2p9kFyHuDOASBaGfg5zWUbnBKnVKUzCF6bX7k8QJ/hPQ=
+X-Gm-Gg: AR+sD11dUGFU0Xf21KaRBEfus2MKDnprz9ixk9Kugd/+E+3O7JFNUV9uXI+2OClDoFH
+	1UaRADamfRSIVFH4k3xlUtXoSM/nLFBBVuLKPdbsfc1O8ZroSWycJSOIkpHQf5sV+4a5w42chUe
+	JK4b0bM24VQGPX7j9u7GjVfjxPC8Wf95Q1h2KVLESoc0vc22WfTFGre08flKdMysTbkdka+NbbU
+	MAR4E+6HuIqjLX+2PjiyjxpunJOl/BopeqEYvCps9XWEsJNjoqMyw8ByCw6wer8S2QTujd1SYY+
+	/9gjVe0aALX6jn5RAnOqw4Moon/7hNrDKjYyKfOcWbPwFwpSFPo6xV7eJi4Zn/NdzA8OTjwV4xj
+	XSx8TIEdKDgktJFnSTZVpELLoPLePAv4FUw5I1LqMTJuqzhwjRCvGpiPeqgm+Fbd8aWiIv3QazL
+	UjbuQqpzPGwY1fTAVKAnIMZVlAkvZc0D1cwCIEEIIgDARsSQh99VupUdOQR1OkPT8/
+X-Received: by 2002:a17:907:9481:b0:c1f:c061:569a with SMTP id a640c23a62f3a-c2039ae6a0amr437892166b.7.1785954458887;
+        Wed, 05 Aug 2026 11:27:38 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2036426ca8sm149119266b.50.2026.08.05.11.27.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 11:27:37 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
+ Zingerman <eddyz87@gmail.com>,  Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
+ <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  Jiri Olsa
+ <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>,  John
+ Fastabend <john.fastabend@gmail.com>,  Stanislav Fomichev
+ <sdf@fomichev.me>,  "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Kuniyuki Iwashima
+ <kuniyu@google.com>,  Willem de Bruijn <willemb@google.com>,  Jiayuan Chen
+ <jiayuan.chen@linux.dev>,  Joe Stringer <joe@wand.net.nz>,
+  bpf@vger.kernel.org,  netdev@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH bpf v2 2/2] bpf: Unconditionally take socket references
+ in lookup helpers
+In-Reply-To: <f131ac25-24c2-40b7-ad3a-f5a283b39e7f@rbox.co> (Michal Luczaj's
+	message of "Wed, 5 Aug 2026 17:00:14 +0200")
+References: <20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co>
+	<20260803-sockmap-lookup-tcp-leak-v2-2-306e025bfe66@rbox.co>
+	<875x1qyyyx.fsf@cloudflare.com>
+	<f131ac25-24c2-40b7-ad3a-f5a283b39e7f@rbox.co>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Wed, 05 Aug 2026 20:27:37 +0200
+Message-ID: <87o6fg8lt2.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260804065036.618869-1-l1138897701@163.com> <20260804085827.843042-1-l1138897701@163.com>
-In-Reply-To: <20260804085827.843042-1-l1138897701@163.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 5 Aug 2026 14:06:57 -0400
-X-Gm-Features: AUfX_myvFevMg8AB45U41YP_SpJTG3EQGWrftIDNW1KNT6kkpq0k3Ip4EYD5nbM
-Message-ID: <CADvbK_f24Ci-ffmwdegyJnbPS5rdAfmQJH5GxQ60SUEmPA3QNw@mail.gmail.com>
-Subject: Re: [PATCH net v3] sctp: auth: propagate HMAC calculation errors to callers
-To: luoqing <l1138897701@163.com>
-Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, marcelo.leitner@gmail.com, 
-	vladislav.yasevich@hp.com, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Tue, Aug 4, 2026 at 4:59=E2=80=AFAM luoqing <l1138897701@163.com> wrote:
+On Wed, Aug 05, 2026 at 05:00 PM +02, Michal Luczaj wrote:
+> On 8/4/26 12:14, Jakub Sitnicki wrote:
+>> On Mon, Aug 03, 2026 at 11:00 AM +02, Michal Luczaj wrote:
+>>> Lookup helpers gate whether to acquire a socket reference on
+>>> sk_is_refcounted(), a check re-evaluated at release. An established socket
+>>> refcounted at acquire time can gain SOCK_RCU_FREE via
+>>> connect(AF_UNSPEC)+listen() before release runs; the release-side re-check
+>>> then reads sk_is_refcounted() == false and skips the put. The reference
+>>> leaks.
+>>>
+>>> Make acquire and release unconditional and symmetric: always take a
+>>> reference, always put it. Adapt sk_select_reuseport().
+>>>
+>>> Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+>>> Fixes: 64d85290d79c ("bpf: Allow bpf_map_lookup_elem for SOCKMAP and SOCKHASH")
+>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>>> Closes: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.kernel.org/
+>>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>>> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+>>> ---
+>>> TC bpf_sk_assign() has the same issue; it takes a reference only when
+>>> sk_is_refcounted() is true at assign time, but sock_pfree() (the skb
+>>> destructor it installs) re-checks sk_is_refcounted() independently at
+>>> release time. The same connect(AF_UNSPEC)+listen() transition leaks the
+>>> socket here too. I'd welcome suggestions on the right way to handle this.
+>> 
+>> Can we make this scenario unsupported?
+>> 
+>> listen() could return EBUSY if called on a socket that is refcounted.
+>> 
+>> WDYT?
 >
-> From: Qing Luo <luoqing@kylinos.cn>
->
-> sctp_auth_calculate_hmac() can fail when building the association secret
-> under memory pressure, but its void return silently leaves the HMAC diges=
-t
-> zeroed.  On the receive path, sctp_sf_authenticate() compares this zeroed
-> digest against the peer-supplied one using crypto_memneq(), potentially
-> accepting an all-zero HMAC from the peer if the allocation failed.  A pee=
-r
-> can reach this path with a configured but non-active shared key id, so
-> association setup is affected too.  Although the allocation failure itsel=
-f
-> is not attacker controlled, the incorrect acceptance is a security issue.
->
-> Fix this by making sctp_auth_calculate_hmac() return int:
-> - sctp_sf_authenticate() returns SCTP_IERROR_NOMEM instead of accepting
->   a zero HMAC.
-> - sctp_auth_chunk_verify() propagates the ierror so delayed COOKIE ECHO
->   and other paths see NOMEM vs BAD_SIG correctly.
-> - sctp_packet_pack() drops the packet on failure instead of transmitting
->   a zeroed HMAC that the peer would reject.
->
-> Update the declaration in auth.h accordingly.
->
-> Fixes: 1f485649f529 ("[SCTP]: Implement SCTP-AUTH internals")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM:code-review
-> Signed-off-by: Qing Luo <luoqing@kylinos.cn>
-> ---
-Please add a revision changelog here describing the changes since the
-previous version, similar to:
+> I'm not sure I understand. Isn't a freshly created socket already
+> refcounted?
 
-https://lore.kernel.org/netdev/20260729160028.54546-1-baul.lee@xbow.com/
-
-
->  include/net/sctp/auth.h |  6 ++---
->  net/sctp/auth.c         | 10 ++++----
->  net/sctp/output.c       | 12 +++++++---
->  net/sctp/sm_statefuns.c | 51 ++++++++++++++++++++++++++++++-----------
->  4 files changed, 56 insertions(+), 23 deletions(-)
->
-> diff --git a/include/net/sctp/auth.h b/include/net/sctp/auth.h
-> index 6f2cd562b1de..eeb3297fe97d 100644
-> --- a/include/net/sctp/auth.h
-> +++ b/include/net/sctp/auth.h
-> @@ -83,9 +83,9 @@ int sctp_auth_send_cid(enum sctp_cid chunk,
->                        const struct sctp_association *asoc);
->  int sctp_auth_recv_cid(enum sctp_cid chunk,
->                        const struct sctp_association *asoc);
-> -void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
-> -                             struct sk_buff *skb, struct sctp_auth_chunk=
- *auth,
-> -                             struct sctp_shared_key *ep_key, gfp_t gfp);
-> +int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
-> +                            struct sk_buff *skb, struct sctp_auth_chunk =
-*auth,
-> +                            struct sctp_shared_key *ep_key, gfp_t gfp);
->  void sctp_auth_shkey_release(struct sctp_shared_key *sh_key);
->  void sctp_auth_shkey_hold(struct sctp_shared_key *sh_key);
->
-> diff --git a/net/sctp/auth.c b/net/sctp/auth.c
-> index c901d373af80..6de66f56c41c 100644
-> --- a/net/sctp/auth.c
-> +++ b/net/sctp/auth.c
-> @@ -613,9 +613,9 @@ int sctp_auth_recv_cid(enum sctp_cid chunk, const str=
-uct sctp_association *asoc)
->   *    zero (as shown in Figure 6) followed by all chunks that are placed
->   *    after the AUTH chunk in the SCTP packet.
->   */
-> -void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
-> -                             struct sk_buff *skb, struct sctp_auth_chunk=
- *auth,
-> -                             struct sctp_shared_key *ep_key, gfp_t gfp)
-> +int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
-> +                            struct sk_buff *skb, struct sctp_auth_chunk =
-*auth,
-> +                            struct sctp_shared_key *ep_key, gfp_t gfp)
->  {
->         struct sctp_auth_bytes *asoc_key;
->         __u16 key_id, hmac_id;
-> @@ -636,7 +636,7 @@ void sctp_auth_calculate_hmac(const struct sctp_assoc=
-iation *asoc,
->                 /* ep_key can't be NULL here */
->                 asoc_key =3D sctp_auth_asoc_create_secret(asoc, ep_key, g=
-fp);
->                 if (!asoc_key)
-> -                       return;
-> +                       return -ENOMEM;
->
->                 free_key =3D 1;
->         }
-> @@ -654,6 +654,8 @@ void sctp_auth_calculate_hmac(const struct sctp_assoc=
-iation *asoc,
->
->         if (free_key)
->                 sctp_auth_key_put(asoc_key);
-> +
-> +       return 0;
->  }
->
->  /* API Helpers */
-> diff --git a/net/sctp/output.c b/net/sctp/output.c
-> index 23e96305cad7..3d7ead9d40e1 100644
-> --- a/net/sctp/output.c
-> +++ b/net/sctp/output.c
-> @@ -517,8 +517,14 @@ static int sctp_packet_pack(struct sctp_packet *pack=
-et,
->                 }
->
->                 if (auth) {
-> -                       sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
-> -                                                packet->auth->shkey, gfp=
-);
-> +                       if (sctp_auth_calculate_hmac(tp->asoc, nskb, auth=
-,
-> +                                                    packet->auth->shkey,=
- gfp)) {
-> +                               sctp_chunk_free(packet->auth);
-> +                               packet->auth =3D NULL;
-> +                               if (gso)
-> +                                       kfree_skb(nskb);
-> +                               return -ENOMEM;
-Returning 0 here is fine, as its only caller, sctp_packet_transmit(),
-currently always returns 0. sctp_packet_pack(), on the other hand, returns
-the number of packets it builds.
-
-If you'd like to improve the return value for sctp_packet_transmit(),
-that can be done in a separate patch targeting net-next.
-
-> +                       }
->                         /* free auth if no more chunks, or add it back */
->                         if (list_empty(&packet->chunk_list))
->                                 sctp_chunk_free(packet->auth);
-> @@ -619,7 +625,7 @@ int sctp_packet_transmit(struct sctp_packet *packet, =
-gfp_t gfp)
->
->         /* pack up chunks */
->         pkt_count =3D sctp_packet_pack(packet, head, gso, gfp);
-> -       if (!pkt_count) {
-> +       if (pkt_count <=3D 0) {
->                 kfree_skb(head);
->                 goto out;
->         }
-> diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-> index 708fa07d5fff..e19881c90b49 100644
-> --- a/net/sctp/sm_statefuns.c
-> +++ b/net/sctp/sm_statefuns.c
-> @@ -637,13 +637,17 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct ne=
-t *net,
->         return SCTP_DISPOSITION_CONSUME;
->  }
->
-> -static bool sctp_auth_chunk_verify(struct net *net, struct sctp_chunk *c=
-hunk,
-> -                                  const struct sctp_association *asoc)
-> +static enum sctp_ierror sctp_auth_chunk_verify(struct net *net,
-> +                                              struct sctp_chunk *chunk,
-> +                                              const struct sctp_associat=
-ion *asoc)
->  {
->         struct sctp_chunk auth;
->
-> -       if (!chunk->auth_chunk)
-> -               return !sctp_auth_recv_cid(chunk->chunk_hdr->type, asoc);
-> +       if (!chunk->auth_chunk) {
-> +               if (sctp_auth_recv_cid(chunk->chunk_hdr->type, asoc))
-> +                       return SCTP_IERROR_BAD_SIG;
-> +               return SCTP_IERROR_NO_ERROR;
-> +       }
->
->         /* SCTP-AUTH:  auth_chunk pointer is only set when the cookie-ech=
-o
->          * is supposed to be authenticated and we have to do delayed
-> @@ -654,7 +658,7 @@ static bool sctp_auth_chunk_verify(struct net *net, s=
-truct sctp_chunk *chunk,
->
->         /* Make sure that we and the peer are AUTH capable */
->         if (!net->sctp.auth_enable || !asoc->peer.auth_capable)
-> -               return false;
-> +               return SCTP_IERROR_BAD_SIG;
->
->         /* set-up our fake chunk so that we can process it */
->         auth.skb =3D chunk->auth_chunk;
-> @@ -666,7 +670,7 @@ static bool sctp_auth_chunk_verify(struct net *net, s=
-truct sctp_chunk *chunk,
->         skb_pull(chunk->auth_chunk, sizeof(struct sctp_chunkhdr));
->         auth.transport =3D chunk->transport;
->
-> -       return sctp_sf_authenticate(asoc, &auth) =3D=3D SCTP_IERROR_NO_ER=
-ROR;
-> +       return sctp_sf_authenticate(asoc, &auth);
->  }
->
-Please drop the change to sctp_auth_chunk_verify(). This patch is intended
-as a fix, and code improvements should be submitted separately to net-next.
-
-Thanks.
+Yeah, it's just me not thinking this through. We don't have any state
+today to check if a socket was an established socket before.
