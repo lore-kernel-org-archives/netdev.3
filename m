@@ -1,132 +1,127 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE1D3D332B
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 18:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780A03D410C;
+	Wed,  5 Aug 2026 18:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785954464; cv=none; b=IdT84oOxIcuKxQxn49lTtrfgXHUBfc4p8F/fqmwnbKicNUHowSCmMDl7+Od00+tsx3L+v6zecr/kn9t5Xo8iyG+RbhOo6cvMK/SeFR+y++vkkPzXW4PawjYA2ZjMbJri60moeEB6wPACUeUvLeZL+5iOflJe5PFTU0r1ghqqSNw=
+	t=1785954670; cv=none; b=Oqzb1Xr8TpXHVEzzdRMTvG2/MGm2GN4MbsWDzU9GZymjOPak3CSkaK9u5GnKJPGWpGlcmjXmovLNzd41nMIYWbpAyxyBo8QG9k/+YQpWjHQb4zTAFd/B94gyKdy2LbZKRwdfgqkvOpY8ZxoAxJdq7zp+xj6dXAPtVHponerdE+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785954464; c=relaxed/simple;
-	bh=D80ENpUfW4QvugcwsDaQo9rQ3VT0nERraW1zaHCo3FY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bZ9TypXIqpTTKSAtKr0p2M8bjNBYBZo5LiiVJkMHFMe8BBljiMQSOxQX5ddYoKLVUpRCswyHDSzXorHMdbYmRmK/5EDMuNPFugMNcV7uEJSfk3AgevjBZNbvGt/vzfwdhKaNyRvMjmPCkq5NPI7F9SmYTMTc+ZLSBLrddQ1FCdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=XGOr2sCj; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1785954670; c=relaxed/simple;
+	bh=fKBa5gJQfZoIOv3IpC0fParVB+kQ4VdskMRPggxUFbs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HhtEt3sLyegpn7ZgK/Cq8PS/PjwMnQCbFxX9HtMqpYGprntIY++gqqaBTKvSRzj4QQiX4UEgBCOFkJR+NAL5eum+WftGBjGczluxDtMnGbEzhsMRxSY/PrQ/EfEdMjIfvAlzU/ah/gyhpTqx6oJKgtXoxbNnA2OJEpKjD1n9au8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RngofCK/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="XGOr2sCj"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c15e2dab83eso217407866b.1
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 11:27:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1785954459; x=1786559259; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=RQvUfHBgP2cWCg3xbn5qxeCgrthmPBmHR+/z9WzFaXg=;
-        b=XGOr2sCjwR1DuM9tHgx5gyZQabR98pBqaPwKy7xuE7UFnCL2N9UUMCktzkLnPndFei
-         qkXz5BlMaujSEvZMiXoUbkR5Vn5wNn02S7Je+3tYv30MJKEodBfkeqzP7K/KboO3vyXJ
-         PSzPAJy8GT7uf+m8z+ZomG3vP4MwbYPeJ+IsWmUKnOn3R0KPAtAEl0s7kMQNvP4XqJbB
-         uDkHiB77bF7dh+tpEi40BS7rffe/cRBwHa1G+nLUHAI4n2KQHM9yuMlLS+iPPC/5DmH1
-         P6ejA1iMS9MFjUkqhPApFvNXGrdTyJAWoO4BJfYqt2lGrcQyQURg+z1bmiEktSi6AxIJ
-         sfug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785954459; x=1786559259;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=RQvUfHBgP2cWCg3xbn5qxeCgrthmPBmHR+/z9WzFaXg=;
-        b=UQg9FWM8cOWEd85pvYiM+W6+bwY7gMv7T2NML3OouGnri4/qVwRPncQd7GB2A4et1i
-         nMjZyQaaL/QUGh3UO4GpL6KmpXsL5a4i6iK3EHZ6/LFtsFqi0LrJNhXBoMxQte757sq+
-         Z01n5HSmcnQus8BRmh6KcjnsSqNcBvU3N1Cb/B6Zj4dwGDjynWCjNjvmIjUyeVB2WKPa
-         wOOixSGbst4pMWSB8hzCKfiF+a+9afjLeJQ+4M+Gowgst7P4apgiEWd5FI4dzDVgQCKn
-         hE8DkFgtu2aew+uLwWhz0if1cp2kRYMUUnyhfZhi9cz90xQDB+l78c+rTA/kimXBujOr
-         cuUw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8NKZi5FBoZU83TMLJP8lO7u29lUWA6v4fZLsa2A0YPpMjaS0WdYVLK/NFi/QlT+IkcST3yyg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsVFewfKxdJ9YLoR10c8FZuy0LQKk13ZJOjbZsh+DmhboSvz/J
-	sad834EJZpMWzOzqPG599Rq2p9kFyHuDOASBaGfg5zWUbnBKnVKUzCF6bX7k8QJ/hPQ=
-X-Gm-Gg: AR+sD11dUGFU0Xf21KaRBEfus2MKDnprz9ixk9Kugd/+E+3O7JFNUV9uXI+2OClDoFH
-	1UaRADamfRSIVFH4k3xlUtXoSM/nLFBBVuLKPdbsfc1O8ZroSWycJSOIkpHQf5sV+4a5w42chUe
-	JK4b0bM24VQGPX7j9u7GjVfjxPC8Wf95Q1h2KVLESoc0vc22WfTFGre08flKdMysTbkdka+NbbU
-	MAR4E+6HuIqjLX+2PjiyjxpunJOl/BopeqEYvCps9XWEsJNjoqMyw8ByCw6wer8S2QTujd1SYY+
-	/9gjVe0aALX6jn5RAnOqw4Moon/7hNrDKjYyKfOcWbPwFwpSFPo6xV7eJi4Zn/NdzA8OTjwV4xj
-	XSx8TIEdKDgktJFnSTZVpELLoPLePAv4FUw5I1LqMTJuqzhwjRCvGpiPeqgm+Fbd8aWiIv3QazL
-	UjbuQqpzPGwY1fTAVKAnIMZVlAkvZc0D1cwCIEEIIgDARsSQh99VupUdOQR1OkPT8/
-X-Received: by 2002:a17:907:9481:b0:c1f:c061:569a with SMTP id a640c23a62f3a-c2039ae6a0amr437892166b.7.1785954458887;
-        Wed, 05 Aug 2026 11:27:38 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2036426ca8sm149119266b.50.2026.08.05.11.27.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 11:27:37 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
- <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
- Zingerman <eddyz87@gmail.com>,  Kumar Kartikeya Dwivedi
- <memxor@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
- <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  Jiri Olsa
- <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>,  John
- Fastabend <john.fastabend@gmail.com>,  Stanislav Fomichev
- <sdf@fomichev.me>,  "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Kuniyuki Iwashima
- <kuniyu@google.com>,  Willem de Bruijn <willemb@google.com>,  Jiayuan Chen
- <jiayuan.chen@linux.dev>,  Joe Stringer <joe@wand.net.nz>,
-  bpf@vger.kernel.org,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH bpf v2 2/2] bpf: Unconditionally take socket references
- in lookup helpers
-In-Reply-To: <f131ac25-24c2-40b7-ad3a-f5a283b39e7f@rbox.co> (Michal Luczaj's
-	message of "Wed, 5 Aug 2026 17:00:14 +0200")
-References: <20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co>
-	<20260803-sockmap-lookup-tcp-leak-v2-2-306e025bfe66@rbox.co>
-	<875x1qyyyx.fsf@cloudflare.com>
-	<f131ac25-24c2-40b7-ad3a-f5a283b39e7f@rbox.co>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Wed, 05 Aug 2026 20:27:37 +0200
-Message-ID: <87o6fg8lt2.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RngofCK/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382941F000E9;
+	Wed,  5 Aug 2026 18:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785954669;
+	bh=7OmWCSXRriBmXvN269dcHHOnjc1Kdk4mUYYRsP4h9C8=;
+	h=From:Subject:Date:To:Cc;
+	b=RngofCK/iTZaXb8cC2z/Uy58EGoAU8bPUUmbQPDl9C/cj5g0jldOTVGUDY8lJROuK
+	 xaC0TWXV4Mqk1ym3JNY0c+Ns3Y+TQoZHqrYwuSqEXKslEWvKl1MxeqKa9TTcUa/UX4
+	 81AGL2QhwAcn5uwCO3eSgiYgCrZ13nieRvEjODAJwIxKbbZmQwaui15JIMB3NCFImt
+	 2iGEiOkpBc3qJXin1kKB0P4gf/0sxHuW2G4dCr/R8plqGJuqIlCLAQv1HL5xxHhqcI
+	 kYu4JQ0RqI7Sl80FEEF4qYZu0akBCVBe1w0SlikyjVA9SUAD9RB47Eilu65s4qFBVW
+	 5dIwReL+NsJyg==
+From: Chuck Lever <cel@kernel.org>
+Subject: [PATCH 0/8] SUNRPC: Fix TLS control record handling
+Date: Wed, 05 Aug 2026 14:30:51 -0400
+Message-Id: <20260805-svcsock-cmsg-fixes-v1-0-43514a32da9b@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM2w7CIBBEf6XZZzfSJiXVXzE+wLJQvFDDYmPS9
+ N8FfTwzc2YD4RxZ4NxtkHmNEpdUoT90QLNJgTG6yjCoQatJjSgryUJ3pKcE9PHDgqdej16TtZN
+ jqOIr86+o3uX6Z3nbG1NpT21hjTDabBLNLSJ+HJMXh4WlxBRg379zYE2umQAAAA==
+X-Change-ID: 20260805-svcsock-cmsg-fixes-9165f6cbb8de
+To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>
+Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org
+X-Mailer: b4 0.16-dev-da966
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3145; i=cel@kernel.org;
+ h=from:subject:message-id; bh=fKBa5gJQfZoIOv3IpC0fParVB+kQ4VdskMRPggxUFbs=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqc4FjZHzhk6I11MagRI9U5rkKdDEEIeZVxZDWq
+ Fi11efHVuOJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCanOBYwAKCRAzarMzb2Z/
+ l0dnD/wIG7YlQRCTWrBr2y4XRRYL5WDsvr5Or2Tg03hyXwZCb+N2ir1pv5GCPawlLCBG6Pz+0NN
+ lT9oWxbj/a+whTirWWkR5HNGBJ+lcbiZIvyFhB7uKMBNLKIrDmP6g028NgBtnLH0K/5EUxt1okN
+ xCzaMiNAuNkmnlqerMeQefQcKKH+QDKwOSclAUWjQIO5EsDSawqXox0SmYYNs5S5qBP2WYMEPGy
+ CXRViwbCNLdBjjjnN1fmnal3k9Brj67x+QUETBD20VNGxqEScXMjhmO/pLv0N6l2U+jbAFng2MZ
+ 6spi4nmOe6yycUR3V788FymvIVOsgQ7zTdMOvV3gxhSNEPB0pFrXuT81YSCZebNARLpeXP1bMDO
+ Cq/dFXjcBzpx66jJ4AX7jH8S+SVnfPreQ5UZJWyt1qUg7LuK7TG2fzVbEYyS/MnSWG2a+dGHX4Z
+ a+w9d/AkBUHWa0IV/yM4GTtu2MTPHAkoa0AkuMp1d64wRxry6snMhaP4veideLnVzEb5J89rTCK
+ xUGoE98RZDuxHfuF5gocbILzuo8ERGYQoA5o3jDEg72CxzUEAkQJW8N4Aq4bdwXo52UIxxAB/RQ
+ ibHLdEz7qLRoOd9XdGSumw5bzpgGAOVOAii7YfcSsJTh7xDv4PbWo4b9syHkXlaiVxDMvggvnzW
+ wp1GZ6ip5J9cQ0A==
+X-Developer-Key: i=cel@kernel.org; a=openpgp;
+ fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-On Wed, Aug 05, 2026 at 05:00 PM +02, Michal Luczaj wrote:
-> On 8/4/26 12:14, Jakub Sitnicki wrote:
->> On Mon, Aug 03, 2026 at 11:00 AM +02, Michal Luczaj wrote:
->>> Lookup helpers gate whether to acquire a socket reference on
->>> sk_is_refcounted(), a check re-evaluated at release. An established socket
->>> refcounted at acquire time can gain SOCK_RCU_FREE via
->>> connect(AF_UNSPEC)+listen() before release runs; the release-side re-check
->>> then reads sk_is_refcounted() == false and skips the put. The reference
->>> leaks.
->>>
->>> Make acquire and release unconditional and symmetric: always take a
->>> reference, always put it. Adapt sk_select_reuseport().
->>>
->>> Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
->>> Fixes: 64d85290d79c ("bpf: Allow bpf_map_lookup_elem for SOCKMAP and SOCKHASH")
->>> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>> Closes: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.kernel.org/
->>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
->>> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
->>> ---
->>> TC bpf_sk_assign() has the same issue; it takes a reference only when
->>> sk_is_refcounted() is true at assign time, but sock_pfree() (the skb
->>> destructor it installs) re-checks sk_is_refcounted() independently at
->>> release time. The same connect(AF_UNSPEC)+listen() transition leaks the
->>> socket here too. I'd welcome suggestions on the right way to handle this.
->> 
->> Can we make this scenario unsupported?
->> 
->> listen() could return EBUSY if called on a socket that is refcounted.
->> 
->> WDYT?
->
-> I'm not sure I understand. Isn't a freshly created socket already
-> refcounted?
+The read_sock_rectype proto_ops method is not going forward. Designing
+its replacement meant another pass over the receive path it was meant to
+replace, and that pass turned up the defects fixed here. None arrived as
+a bug report.
 
-Yeah, it's just me not thinking this through. We don't have any state
-today to check if a socket was an established socket before.
+The code path that handles TLS Alerts on behalf of in-kernel kTLS
+consumers has been reworked twice already. For the record: 5e052dda121e
+added control message recognition, and 39067dda1d86 moved the parsing
+into the net/handshake helpers. bee47cb026e7 and cc5d59081fa2 then
+reworked both sides after Scott Mayhew reported that kTLS was writing
+alert bodies into the RPC receive buffer. Mounts against a FreeBSD
+server over mutual TLS broke, and 9559d2fffd4f restored the other cmsg
+types. The same rework moved the receive into a local buffer, but the
+length accounting did not follow. A control record's octets are credited
+to the RPC stream, and a consumed control record leaves the server
+transport unmarked. The peer still controls the alert body's length, and
+nothing checks it before tls_alert_recv() reads two octets. A peer that
+aborts with an error alert while leaving that octet set to warning
+currently leaves a dead TLS session attached to a live transport.
+
+These accounting defects do not have a trigger today. Both need a peer
+that sends a post-handshake control record (e.g., KeyUpdate). However,
+no existing RPC-with-TLS implementation does this today. Therefore these
+patches are posted as individual fixes that can be backported if LTS
+kernels should need to interoperate when KeyUpdate subsequently arrives
+in clients and servers.
+
+Eagle-eyed reviewers might notice that the two call sites this series
+touches are the last consumers of <net/tls_prot.h> in net/sunrpc/. Both
+sites now state the same record-type test, the same two-octet rule, and
+the same closure classification. A helper in net/handshake/alert.c
+could hold all three and return a verdict, which would let net/sunrpc/
+drop the header and keep only the transport policy. That is deferred to
+a next step rather than included as part of this series to keep LTS
+backports practical.
+
+I'd appreciate an Acked-by from the client maintainers for the three
+patches that touch xprtsock.c.
+
+---
+Chuck Lever (8):
+      SUNRPC: treat every TLS error alert as fatal
+      SUNRPC: do not credit control-record octets to the RPC stream
+      SUNRPC: reject a TLS alert record that is not two octets
+      SUNRPC: resume receiving after a TLS control record
+      SUNRPC: fold svc_tcp_sock_process_cmsg() into its only caller
+      SUNRPC: treat every client-side TLS error alert as fatal
+      SUNRPC: reject a client-side TLS alert record that is not two octets
+      SUNRPC: fold xs_sock_process_cmsg() into its only caller
+
+ net/sunrpc/svcsock.c  | 108 +++++++++++++++++++++++++++++++++++++-------------
+ net/sunrpc/xprtsock.c |  69 ++++++++++++++++----------------
+ 2 files changed, 115 insertions(+), 62 deletions(-)
+---
+base-commit: 0b6d2c7e3abca8d17fddeecb6e4c32a8438ec2fb
+change-id: 20260805-svcsock-cmsg-fixes-9165f6cbb8de
+
+Best regards,
+--  
+Chuck Lever <cel@kernel.org>
+
