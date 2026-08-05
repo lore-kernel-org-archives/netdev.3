@@ -1,668 +1,229 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295FE3D3499
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 17:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785952172; cv=none; b=pkEm49Woox2qQXCtl9FBr22Qkxhk3bguXiaObHLBso8LtNgbr7mTw9BxrV3CHvaC9GYHLbNuZa+vanfww6dNplfp3qkTENjjtCXZrZ32JsTx/aehhOMqwvnWFlyayxqSw7V1v2VZrEJf1GHgHivBs1Cr9n4Xh5sLfNUkdQgKmBs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785952172; c=relaxed/simple;
-	bh=44yWujm+x/aZTFO3cmEryslEoFL9xGUIzr6Fnj/EYtk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ChbN8LR9flJsirSd6sgr421afw9eAdKAJRqK/cLSo080uXES45/XeblYYd02W1SwLjjIIISU+MTjD9+VyeerQxeOGQo0FH3zBKjqRwtESiMG1n8KuTgFUUcrkwH+qJnq8d2fTS3+qthOgBAOanaWlpG3d0tbPxRpfu71lFyeVVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GIm1rDVW; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA12139EF0F
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 17:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785952359; cv=pass; b=WU5oW1+PjLydeXFW0mbf5ZufvwmmR/abcIBehApb7JE7huaKKicYC3mE2+Yzqlu9fcEUnbeMCVmw4Tgss5ABZ1l9NRcKsdGGoffHee0HeY6qStLBe0I+CHqVkilJrUaTyDfqYsjEmFxfhzTZeBiKu0IAGsyrabyGrRX5WL4AfbI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785952359; c=relaxed/simple;
+	bh=e2bnPWY93k3ciIefhfr1b5YgN5w/0NJ3BEUrJi7PVO8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bO16edvRyOyRsPMS0Wm1g701AY4iBhe6briLpZLHeyf9Vi79zZUBEDwyaNwoGIt9NWETlX7kH5Whlsdewa3yBSVTGdUQn3BkozBsnd+G2xrWGpztL2l1eKUdcFGxw8IRx8mb9XfepdbR1y3pg41rqIVZtb/yjdBqKGUeLHIpy+0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Oe5Sc147; arc=pass smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GIm1rDVW"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-44cedfaab6bso675717fac.3
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 10:49:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Oe5Sc147"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8453427d3f4so1614752b3a.3
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 10:52:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785952356; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qyVIwMzczUW3Walr18SwoAwKh/aW4ZWYe9AuCcsVBwOLEhtEw+Lk2+D31vGUtitkh3
+         Hh18rOsl/QqDtJ9CV320sYNDlCCoM/d87nlJ6tBdXYEiZbVJy6ZANtxA4QUg3R8F6mYY
+         QeslN183IFE2WynA93jpWinMJWQ2vE0VEZXIB7JGvSh5SaKIbsDPpvEQK0bLaYYsWtIj
+         9KZIXULRQmA/fsUdW6NKNpUg5pPyLoUyC7FKgYO2MM4FZPadOLSu1qZ05wOYbnxEM4n+
+         PMsh1T4wospMwsOhsvDygaimQC8osl+5FxT63RM0nC4c1iQkk40pwfbEcm5imv3jPFJi
+         gP/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lCVzpfkfKQIXBFv6AstqW5VlxzaL5u0+36TYufuC33M=;
+        fh=ZLlDrKEBXETI5lOx4n1fCZtsarZY+kh2+kU/ySXWisw=;
+        b=YZIp2GXBRUCI8+qWrqb0xrBg+fAy5+BJZIm8UgUUl1s9jLDIqa5HutH18szJghPCxm
+         +M4/ZkGvRRgcpK3wEx6Oy/Hc/VFTGqeYUcuer3h0sWY2PERfzwde92uwB1y9mGgadwME
+         Tmr/d7jjfNfpWd0nteyWogDju1kUTz0b5d+ZRZqkhSE64gZHFR4XHB2k42N8aVi8IjAk
+         TfrAlBtRHXm2zN8VQwBAkdKRPScSWrWKG1/PyVl81j60+M55S9geJ8OZUKHWgs08nqmv
+         Vl3UcjjkeR88r5OdbiMnXkzpNv7hQ95G9aRITGEqb02ApJvRXXSdgzWNE4Jq3k/lRn2t
+         b3tQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785952167; x=1786556967; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Td1cIZN7YLfxZHzUpSNhyT7BsW7i4wxaTFJpOHLFZQk=;
-        b=GIm1rDVWEZ5lP6fnNErl4DXxywN24pS92CmaPK0YckGCcTPMbYRuQiFSKOmiScCXzo
-         dVdeE3LvQNAMujR8jHcRlsj5/p0vDjQVD3xrX1F/bRxK6T6AkDFWPUhQTG9gU/5KS2u4
-         l+pyA4nqsC8P8QXUY5aPPf4f2G0eKyB7qN5B0/dRRdpz6GP9uJUXky26EPzuIhhvfsht
-         jZ2vibv2wmPGBWqLm13YnGs8+HmnLthPqVqEwE/cnpxrrhTG9A92XeCGScJ8KrwBb8go
-         bKmaNDKfTcGneLPVMPbRkW7WRDU8x3hFyE1Yt+n+VJ4fGldP8KS2F+4vbPHqTFVabEAV
-         JuGg==
+        d=mojatatu.com; s=google; t=1785952356; x=1786557156; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lCVzpfkfKQIXBFv6AstqW5VlxzaL5u0+36TYufuC33M=;
+        b=Oe5Sc147+JBEKr76hEsjlXkz/+LIF2zjo40oac4IzWO2oIFfZuiccbwNvYh/LLxmWa
+         LJYP/ee+59WEvrH1ecBwlr0wKkYD3wFBZXRHy9U+NRgv2TO6cHQYe3sxwX6RTGk6gsyq
+         cCViq12zANEAblEWPLIrYaAes6lhELX9NSPyk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785952167; x=1786556967;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1785952356; x=1786557156;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Td1cIZN7YLfxZHzUpSNhyT7BsW7i4wxaTFJpOHLFZQk=;
-        b=I9YmKtYpQ5eVddupGRDZ2mOf+E7y9YMDQJUBPag6Ij8TVlZUu4IsafdpQTXI/Yy2uw
-         MQdMeLJq0bRPA4/DEd+WuYXPxCsVTEnW8q9MZHYIeh6Fo+r/lx/WGEXi0RvNoaDu+dsx
-         ROUg1ME6J1Y9InxZVNJD4cYyEGht96+MiURfa++bt0JTTirXdZgKmIcfZM3E+ZzBpPSz
-         W8tNxdaozTs0LNJ2X28Q+IBg4Tklkyif7ItPvpdGSphQTlPuqFJUtfj5wvL0msnj82UO
-         b1rLltJkccLEGJnIJCiCsgXmPE0Eu/clYMMmrdFDJo+/wu6qkQfbe2Hhd5VptixTbMZz
-         vEMQ==
-X-Gm-Message-State: AOJu0Yzl2cQypRP6HEQFwy2Cp2b0HdZ8L4PDj38TAtI9MLiBtJHY4rI2
-	AjfSUGDwnmUoIsLUxhJmHGwEirLENY6coplUYfC7Dji4fjLf9huBJnI0
-X-Gm-Gg: AR+sD12crAHx/c1P96bXf7bjZXSga1mjA5idzJctrO0H1Q5RHT1udKx2L7lHwypHrot
-	pRogbn6C+FijvM5t220wAjZopKn5k5QjWRaiRTu/kfX/NSvAHnBGSNQ/1v157lBd+Vc7KaADkIE
-	02HVz0tzBPMLkU5RYlscWBVcNeJfrxzOhYT76GnTFJ5MsaModRIAqoMjN157Bz3oz7FDDfgENSX
-	piPidALaKCvNwMVSCPXvj+UG+1z7om2z/K/Py05PLT/NZZW6CMtzXviEmRjX/YR5Z+UIZYSR42S
-	zLwZ9mfCWv6/mSJNRDlJ66DieNHgbJX6N8bsuY7Fkz+D8aXce/kESug0UmUtcZEY6c4OuQzRcxi
-	pc1t6UjJQCwzdiexZe6RHaHedIrt2dfWx4mi9nqQvVtdezQyKGokZTSxQjL+bXZStEM2rNHaGZP
-	ApgVLB8vLbjnQzGLE5TCpFG8dOJR9hoh2fJBfpd+li/sl2w4DdO27lvbIoNR1cE1fQxJa6gDxl5
-	VJjqT7pJ5EsrGy1AqeWyg8Cu7n2hFMWMmjBhclxZakAF5Tnmm9E1YfUk7+GW2oqLR2WuCe7U7G5
-	fAHqZFeDXIbR8tRmdR6bnKuYMrjWUFr0JGzIyXsq9vyUN4BVN+QLBOjwf0vPwApj/kHRGxbfGGt
-	YmE76ZVMt7XVoaoGM
-X-Received: by 2002:a05:6870:d290:b0:456:1edc:86f8 with SMTP id 586e51a60fabf-4599f117053mr4289358fac.15.1785952166703;
-        Wed, 05 Aug 2026 10:49:26 -0700 (PDT)
-Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4599dd615ecsm3281704fac.0.2026.08.05.10.49.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 10:49:26 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Wed, 05 Aug 2026 11:49:15 -0600
-Subject: [PATCH net-next v3 4/4] net: mdio: support dynamic OF device
- changes
+        bh=lCVzpfkfKQIXBFv6AstqW5VlxzaL5u0+36TYufuC33M=;
+        b=ptAPolqlknQSwJwRi065pK0LvY+dLJWyvb9Z7FBNvEQOYo7aqnSex2sY+WRL9zXruh
+         rSC3fHUjusAVa9wW7S3axJjUhXmFDJHFYDhiwz1cTZGf8N25vAgc3hbd5KYD9VfK61xq
+         AYLmYlBHchSeQz0OBP8ev/fOL5iQP2jTfhOicVubNsqro+d3y1s6RmgiJXhk2d04Ebw6
+         Nqc3HGX+AclLvgnI20yUz4NQInCsaTGf2uGmI66a8jyYqoLsH9VsDAGkuD859U/zO/mK
+         bYyzRCjgXCr0iUs7qaWsnzTc+vUfKSsTNYtZvN6NZucpuduljEstiBms7wF+jeHCGypl
+         XYVQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqNoy41H82lZdzC/rkoiY/lQYmRl81jLBFzkS5A96bY7SIt/FAYU8DBjju2aVaCnQz2Ob7I1Is=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBLO3FV07d2RGQ9qE/HQb3E40vljtDipw/G5c9HRtAksIy2RrL
+	XDFlIbYHN6QRRyxBnTJo3Pv0Qb0mPV2Dyli0AAFYaa/UMb0BVTik6Z7Y/0A4HHi9AZiHR9SIGZh
+	ab1NORvZ7Ia2NlpXsTsZG+tAomamT9cg49uKx/AAU
+X-Gm-Gg: AR+sD10lxFyMBW5ZGprBwBGQt+T1ziR7eNXMN41karF6Re/sX+gb6w3HT2Yc7pEkH5n
+	bHA+vgQ1g85nIYJyFWyb0obssFiVMVflaETkOiZ9tAgqG2dWg2Xv81XUPxS6xZW6iEcY8KC90/1
+	k84yGkqQlYs6VYtwknFI9eASi9NcEHoO+myAkx3sq4TrjTGZv9gIa6m9jZtMAJ1h4SMQ6/NWhJU
+	KpMfrWxPq8GADyFwN1mf1zCU1KzaCQVF/BTfAVHaMHZG/CJr/5xirCaeM1tPBicejys/ZZhDmgG
+	uZUg03JT8DplucOwnKX7owjEhJPuYnEvVm2pbZj7Ml6qSmu8y/m5IO6mgw==
+X-Received: by 2002:a05:6a00:348d:b0:842:706e:ad43 with SMTP id
+ d2e1a72fcca58-84f2e0ccba3mr10352497b3a.33.1785952355982; Wed, 05 Aug 2026
+ 10:52:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260805-submit-mdio-of-dynamic-v2-v3-4-16f3cc893b0e@gmail.com>
-References: <20260805-submit-mdio-of-dynamic-v2-v3-0-16f3cc893b0e@gmail.com>
-In-Reply-To: <20260805-submit-mdio-of-dynamic-v2-v3-0-16f3cc893b0e@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Florian Fainelli <f.fainelli@gmail.com>, 
- Richard Cochran <richardcochran@gmail.com>, Rob Herring <robh@kernel.org>, 
- Saravana Kannan <saravanak@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
+References: <20260805093012.95155-1-henrymei@tencent.com>
+In-Reply-To: <20260805093012.95155-1-henrymei@tencent.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 5 Aug 2026 13:52:24 -0400
+X-Gm-Features: AUfX_mzwZqW7-itfrTSXTC_surhIBVhCfhDT6bwPIQqR54fbSSGBf_cXDQQD1NA
+Message-ID: <CAM0EoMmZGXhHL2v=AyjR9xSs8-s9EfkA9FkpULqtFBEOUxHQQA@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: cls_api: fix tp_created race losing
+ existing tcf_proto
+To: Aohan Mei <ljp1205831794@gmail.com>
+Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	corvus@tencent.com, henrymei@tencent.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-MDIO buses enumerate firmware children only when the bus is registered.
-A later DT overlay or status transition is ignored, unlike I2C and SPI.
+On Wed, Aug 5, 2026 at 5:30=E2=80=AFAM Aohan Mei <ljp1205831794@gmail.com> =
+wrote:
+>
+> tc_new_tfilter() attaches a filter to a chain. When no
+> tcf_proto (tp) exists for the given (protocol, prio), it creates one
+> with tcf_proto_create(), marks tp_created so the error path can clean
+> it up, and inserts it with tcf_chain_tp_insert_unique().
+>
+> However, tcf_proto_create() can sleep, opening a race window in which a
+> concurrent thread may insert a tp with the same (protocol, prio). In
+> that case tcf_chain_tp_insert_unique() destroys tp_new and returns the
+> *existing* tp, but tp_created is never reset. If the request then fails
+> (e.g. kind mismatch), the errout path calls
+> tcf_chain_tp_delete_empty() on a tp this thread never created. For
+> classifiers without a delete_empty callback (all but cls_flower),
+> tcf_proto_check_delete() removes the tp unconditionally: a live tp and
+> all its filters are silently lost while the owner's change() still
+> reports success. The race is reachable because cls_flower on
+> ingress/clsact qdiscs runs without rtnl_lock and can interleave with
+> rtnl_lock-holding classifiers such as u32.
+>
+> Fix this by making tcf_chain_tp_insert_unique() report through a new
+> "inserted" out-parameter whether tp_new was actually inserted, and
+> gate the errout delete_empty call on it instead of tp_created.
+> tp_created itself must stay set on this path: the chain reference was
+> consumed by the destroyed tp_new, and errout_tp relies on tp_created
+> to decide whether to tcf_chain_put(), so resetting it would underflow
+> the chain refcount.
+>
+> Fixes: 8b64678e0af8 ("net: sched: refactor tp insert/delete for concurren=
+t execution")
+> Cc: stable@vger.kernel.org
+> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+> Signed-off-by: Aohan Mei <henrymei@tencent.com>
 
-Add an OF reconfiguration notifier. On addition, create fixed-address
-PHYs and generic MDIO devices, scan free addresses for legacy PHY nodes
-without reg, and recurse into Ethernet PHY packages. Track populated
-nodes so static enumeration, address scanning and notifier-driven
-enumeration cannot create duplicates. Walk every package child and report
-the first population error without undoing devices which may already have
-acquired consumers. Only scan nodes which omit reg; reject malformed fixed
-addresses instead of treating them as legacy addressless PHYs.
+This is the same issue Sashiko found. A patch is here:
 
-Serialize static and notifier-driven population while allowing a PHY
-probe to enable another node on the same bus. Check the node's current
-state after taking that lock so an older notification cannot override a
-newer status change.
+https://lore.kernel.org/netdev/20260805134049.927864-1-victor@mojatatu.com/
 
-On removal, refuse to unregister attached or in-flight PHYs and find the
-object by its OF node. This also covers PHYs found by address scanning.
-Treat all PHYs in a package as one removal scope, so removing one member
-cannot invalidate state used by an attached peer. Preflight overlay
-removal while it can still be refused; normal changeset errors are
-propagated so the caller can restore the previous state. Ignore unrelated
-nodes and MDIO buses which have already disappeared when the global
-overlay preflight walks a changeset.
+Also, please add assisted-by: tags going forward if this was ai generated.
 
-Keep overlay preflight outside the global MDIO reconfiguration lock. The
-OF core invokes PRE_REMOVE while holding its own mutex, and an MDIO device
-probe running under the reconfiguration lock may apply an OF changeset.
-Use a per-bus removal transaction to block new registration and attachment
-while checking the map. Starting that exclusive transaction fails when
-another map operation is active, so refuse the overlay removal rather than
-waiting under the OF mutex; the caller can retry after that operation
-finishes.
+cheers,
+jamal
 
-Hold a core MDIO change transaction across discovery and registration so
-bus teardown cannot race the MDIO reads used to identify a PHY. Compile
-the notifier only with CONFIG_OF_DYNAMIC and the overlay preflight only
-with CONFIG_OF_OVERLAY.
-
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
-Changes v2 -> v3:
-  - do not block overlays containing unrelated non-MDIO nodes
-  - do not block overlays whose MDIO bus is no longer present
-  - use READ_ONCE() and WRITE_ONCE() for recursive lock-owner accesses
-  - use the common checked MDIO device-removal callback
-  - avoid an OF/MDIO lock inversion during overlay preflight
-  - refuse overlay removal while another MDIO map change is active
-  - propagate removal-transaction conflicts from the OF notifier
-  - do not scan nodes with a malformed reg property
-  - treat a populated node associated with another MDIO bus as busy
-
-Changes v1 -> v2:
-  - split from the ACx00 series
-  - move the PHY declaration to function scope for netdev style
----
- drivers/net/mdio/of_mdio.c | 454 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 445 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
-index 051e449bbe7c..9e0b2f29959e 100644
---- a/drivers/net/mdio/of_mdio.c
-+++ b/drivers/net/mdio/of_mdio.c
-@@ -13,6 +13,7 @@
- #include <linux/fwnode_mdio.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/netdevice.h>
- #include <linux/of.h>
- #include <linux/of_irq.h>
-@@ -20,6 +21,8 @@
- #include <linux/of_net.h>
- #include <linux/phy.h>
- #include <linux/phy_fixed.h>
-+#include <linux/sched.h>
-+#include <linux/string.h>
- 
- #define DEFAULT_GPIO_RESET_DELAY	10	/* in microseconds */
- 
-@@ -27,6 +30,52 @@ MODULE_AUTHOR("Grant Likely <grant.likely@secretlab.ca>");
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("OpenFirmware MDIO bus (Ethernet PHY) accessors");
- 
-+#if IS_ENABLED(CONFIG_OF_DYNAMIC)
-+/*
-+ * OF changes can nest when probing one MDIO device enables another node on
-+ * the same bus. Serialize independent changes while allowing that nesting.
-+ */
-+static DEFINE_MUTEX(of_mdio_reconfig_mutex);
-+static struct task_struct *of_mdio_reconfig_owner;
-+static unsigned int of_mdio_reconfig_depth;
-+
-+static void of_mdio_reconfig_lock(void)
-+{
-+	if (!mutex_trylock(&of_mdio_reconfig_mutex)) {
-+		if (READ_ONCE(of_mdio_reconfig_owner) == current) {
-+			of_mdio_reconfig_depth++;
-+			return;
-+		}
-+		mutex_lock(&of_mdio_reconfig_mutex);
-+	}
-+
-+	WARN_ON_ONCE(READ_ONCE(of_mdio_reconfig_owner));
-+	WARN_ON_ONCE(of_mdio_reconfig_depth);
-+	WRITE_ONCE(of_mdio_reconfig_owner, current);
-+	of_mdio_reconfig_depth = 1;
-+}
-+
-+static void of_mdio_reconfig_unlock(void)
-+{
-+	WARN_ON_ONCE(READ_ONCE(of_mdio_reconfig_owner) != current);
-+	WARN_ON_ONCE(!of_mdio_reconfig_depth);
-+
-+	if (--of_mdio_reconfig_depth)
-+		return;
-+
-+	WRITE_ONCE(of_mdio_reconfig_owner, NULL);
-+	mutex_unlock(&of_mdio_reconfig_mutex);
-+}
-+#else
-+static inline void of_mdio_reconfig_lock(void)
-+{
-+}
-+
-+static inline void of_mdio_reconfig_unlock(void)
-+{
-+}
-+#endif
-+
- /* Extract the clause 22 phy ID from the compatible string of the form
-  * ethernet-phy-idAAAA.BBBB */
- static int of_get_phy_id(struct device_node *device, u32 *phy_id)
-@@ -80,10 +129,20 @@ static int of_mdiobus_register_device(struct mii_bus *mdio,
- static int of_mdiobus_register_child(struct mii_bus *mdio,
- 				     struct device_node *child, u32 addr)
- {
-+	int rc;
-+
-+	if (of_node_test_and_set_flag(child, OF_POPULATED))
-+		return 0;
-+
- 	if (of_mdiobus_child_is_phy(child))
--		return of_mdiobus_register_phy(mdio, child, addr);
-+		rc = of_mdiobus_register_phy(mdio, child, addr);
-+	else
-+		rc = of_mdiobus_register_device(mdio, child, addr);
-+
-+	if (rc)
-+		of_node_clear_flag(child, OF_POPULATED);
- 
--	return of_mdiobus_register_device(mdio, child, addr);
-+	return rc;
- }
- 
- /* The following is a list of PHY compatible strings which appear in
-@@ -255,13 +314,21 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
- 	if (rc)
- 		return rc;
- 
-+	of_mdio_reconfig_lock();
-+	rc = mdiobus_device_change_begin(mdio, false);
-+	if (rc) {
-+		of_mdio_reconfig_unlock();
-+		mdiobus_unregister(mdio);
-+		return rc;
-+	}
-+
- 	/* Loop over the child nodes and register a phy_device for each phy */
- 	rc = __of_mdiobus_parse_phys(mdio, np, &scanphys);
- 	if (rc)
--		goto unregister;
-+		goto out_change;
- 
- 	if (!scanphys)
--		return 0;
-+		goto out_change;
- 
- 	/* auto scan for PHYs with empty reg property */
- 	for_each_available_child_of_node(np, child) {
-@@ -272,19 +339,388 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
- 
- 		rc = of_mdiobus_scan_phy(mdio, child);
- 		if (rc && rc != -ENODEV)
--			goto put_unregister;
-+			goto put_child;
-+		rc = 0;
- 	}
- 
--	return 0;
-+out_change:
-+	mdiobus_device_change_end(mdio, false);
-+	of_mdio_reconfig_unlock();
-+	if (!rc)
-+		return 0;
- 
--put_unregister:
--	of_node_put(child);
--unregister:
- 	mdiobus_unregister(mdio);
- 	return rc;
-+
-+put_child:
-+	of_node_put(child);
-+	goto out_change;
- }
- EXPORT_SYMBOL(__of_mdiobus_register);
- 
-+#if IS_ENABLED(CONFIG_OF_DYNAMIC)
-+static bool of_mdiobus_node_is_available(struct device_node *node)
-+{
-+	return !of_node_check_flag(node, OF_DETACHED) &&
-+	       of_device_is_available(node);
-+}
-+
-+static int of_mdiobus_add_node(struct mii_bus *mdio,
-+			       struct device_node *node)
-+{
-+	struct device_node *child;
-+	int addr, rc, ret = 0;
-+
-+	if (!of_mdiobus_node_is_available(node))
-+		return 0;
-+
-+	if (of_node_name_eq(node, "ethernet-phy-package")) {
-+		if (!of_property_present(node, "reg"))
-+			return 0;
-+
-+		for_each_available_child_of_node(node, child) {
-+			rc = of_mdiobus_add_node(mdio, child);
-+			if (rc && rc != -ENODEV && !ret)
-+				ret = rc;
-+		}
-+
-+		return ret;
-+	}
-+
-+	addr = of_mdio_parse_addr(&mdio->dev, node);
-+	if (addr < 0) {
-+		if (of_property_present(node, "reg"))
-+			return addr;
-+
-+		rc = of_mdiobus_scan_phy(mdio, node);
-+	} else {
-+		rc = of_mdiobus_register_child(mdio, node, addr);
-+	}
-+
-+	if (rc == -ENODEV && addr >= 0)
-+		dev_err(&mdio->dev,
-+			"MDIO device at address %d is missing.\n", addr);
-+
-+	return rc;
-+}
-+
-+static bool of_mdiobus_node_is_busy(struct mii_bus *mdio,
-+				    struct device_node *node)
-+{
-+	struct mdio_device *mdiodev;
-+	struct phy_device *phydev;
-+	bool busy = false;
-+
-+	if (of_node_name_eq(node, "ethernet-phy-package")) {
-+		for_each_child_of_node_scoped(node, child) {
-+			if (of_mdiobus_node_is_busy(mdio, child))
-+				return true;
-+		}
-+
-+		return false;
-+	}
-+
-+	if (!of_node_check_flag(node, OF_POPULATED))
-+		return false;
-+
-+	mdiodev = of_mdio_find_device(node);
-+	if (!mdiodev)
-+		return true;
-+	if (mdiodev->bus != mdio) {
-+		put_device(&mdiodev->dev);
-+		return true;
-+	}
-+
-+	mutex_lock(&mdio->mdio_map_lock);
-+	busy = mdio->mdio_map[mdiodev->addr] != mdiodev ||
-+	       (mdio->mdio_map_pending & BIT(mdiodev->addr));
-+	if (mdiodev->flags & MDIO_DEVICE_FLAG_PHY) {
-+		phydev = to_phy_device(&mdiodev->dev);
-+		if (phydev->attached) {
-+			busy = true;
-+			dev_warn(&mdiodev->dev,
-+				 "cannot remove an attached PHY; remove its consumer first\n");
-+		}
-+	}
-+	mutex_unlock(&mdio->mdio_map_lock);
-+	put_device(&mdiodev->dev);
-+
-+	return busy;
-+}
-+
-+static struct device_node *
-+of_mdiobus_get_removal_scope(struct device_node *node)
-+{
-+	struct device_node *parent;
-+
-+	if (of_node_name_eq(node, "ethernet-phy-package"))
-+		return of_node_get(node);
-+
-+	parent = of_get_parent(node);
-+	if (of_node_name_eq(parent, "ethernet-phy-package"))
-+		return parent;
-+
-+	of_node_put(parent);
-+	return of_node_get(node);
-+}
-+
-+static int of_mdiobus_remove_node(struct mii_bus *mdio,
-+				  struct device_node *node)
-+{
-+	struct mdio_device *mdiodev;
-+	struct device_node *child;
-+	int ret;
-+
-+	if (of_node_name_eq(node, "ethernet-phy-package")) {
-+		for_each_child_of_node(node, child) {
-+			ret = of_mdiobus_remove_node(mdio, child);
-+			if (ret) {
-+				of_node_put(child);
-+				return ret;
-+			}
-+		}
-+		return 0;
-+	}
-+
-+	if (!of_node_check_flag(node, OF_POPULATED))
-+		return 0;
-+
-+	/* The OF node lookup also covers PHYs found by address scanning. */
-+	mdiodev = of_mdio_find_device(node);
-+	if (!mdiodev)
-+		return -EBUSY;
-+	if (mdiodev->bus != mdio) {
-+		put_device(&mdiodev->dev);
-+		return -ENODEV;
-+	}
-+
-+	ret = mdiodev->device_remove(mdiodev, true);
-+	if (!ret)
-+		mdiodev->device_free(mdiodev);
-+	put_device(&mdiodev->dev);
-+
-+	return ret == -ENODEV ? 0 : ret;
-+}
-+
-+static struct mii_bus *of_mdiobus_find_parent(struct device_node *node)
-+{
-+	struct device_node *parent, *bus_node;
-+	struct mii_bus *mdio;
-+
-+	parent = of_get_parent(node);
-+	if (!parent)
-+		return NULL;
-+
-+	if (of_node_name_eq(parent, "ethernet-phy-package")) {
-+		if (!of_device_is_available(parent) ||
-+		    !of_property_present(parent, "reg")) {
-+			of_node_put(parent);
-+			return NULL;
-+		}
-+
-+		bus_node = of_get_parent(parent);
-+		of_node_put(parent);
-+	} else {
-+		bus_node = parent;
-+	}
-+
-+	mdio = of_mdio_find_bus(bus_node);
-+	of_node_put(bus_node);
-+
-+	return mdio;
-+}
-+
-+#if IS_ENABLED(CONFIG_OF_OVERLAY)
-+/* Overlay entry notifier errors cannot stop removal after the tree changed. */
-+static bool of_mdiobus_live_node_is_busy(struct device_node *node)
-+{
-+	struct device_node *scope;
-+	struct mii_bus *mdio;
-+	bool busy;
-+
-+	scope = of_mdiobus_get_removal_scope(node);
-+	mdio = of_mdiobus_find_parent(scope);
-+	/* Non-MDIO nodes and buses already removed cannot block an overlay. */
-+	if (!mdio) {
-+		busy = false;
-+		goto out_put_scope;
-+	}
-+
-+	busy = true;
-+	if (!mdiobus_device_change_begin(mdio, true)) {
-+		busy = of_mdiobus_node_is_busy(mdio, scope);
-+		mdiobus_device_change_end(mdio, true);
-+	}
-+	put_device(&mdio->dev);
-+
-+out_put_scope:
-+	of_node_put(scope);
-+	return busy;
-+}
-+
-+static struct device_node *
-+of_mdiobus_overlay_target_child(struct device_node *target,
-+				struct device_node *overlay_child)
-+{
-+	const char *name = kbasename(overlay_child->full_name);
-+	struct device_node *child;
-+
-+	for_each_child_of_node(target, child) {
-+		if (!of_node_cmp(kbasename(child->full_name), name))
-+			return child;
-+	}
-+
-+	return NULL;
-+}
-+
-+static bool of_mdiobus_overlay_node_is_busy(struct device_node *overlay,
-+					    struct device_node *target,
-+					    bool added)
-+{
-+	struct device_node *overlay_child, *target_child;
-+	bool busy, child_added;
-+
-+	if ((added || of_property_present(overlay, "status")) &&
-+	    of_mdiobus_live_node_is_busy(target))
-+		return true;
-+
-+	for_each_child_of_node(overlay, overlay_child) {
-+		target_child = of_mdiobus_overlay_target_child(target,
-+							       overlay_child);
-+		if (!target_child)
-+			continue;
-+
-+		child_added = of_node_check_flag(target_child, OF_OVERLAY);
-+		busy = of_mdiobus_overlay_node_is_busy(overlay_child,
-+						       target_child, child_added);
-+		of_node_put(target_child);
-+		if (busy) {
-+			of_node_put(overlay_child);
-+			return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
-+static int of_mdiobus_overlay_notify(struct notifier_block *nb,
-+				     unsigned long action, void *arg)
-+{
-+	struct of_overlay_notify_data *nd = arg;
-+	bool busy;
-+
-+	if (action != OF_OVERLAY_PRE_REMOVE)
-+		return NOTIFY_OK;
-+
-+	busy = of_mdiobus_overlay_node_is_busy(nd->overlay, nd->target,
-+					       false);
-+
-+	return busy ? notifier_from_errno(-EBUSY) : NOTIFY_OK;
-+}
-+
-+static struct notifier_block of_mdio_overlay_notifier = {
-+	.notifier_call = of_mdiobus_overlay_notify,
-+};
-+#endif
-+
-+static int of_mdiobus_notify(struct notifier_block *nb, unsigned long action,
-+			     void *arg)
-+{
-+	struct of_reconfig_data *rd = arg;
-+	struct device_node *scope;
-+	struct mii_bus *mdio;
-+	enum of_reconfig_change change;
-+	bool removing;
-+	int rc, ret = NOTIFY_OK;
-+
-+	of_mdio_reconfig_lock();
-+	change = of_reconfig_get_state_change(action, rd);
-+	switch (change) {
-+	case OF_RECONFIG_CHANGE_ADD:
-+		/* A newer change may have made this notification stale. */
-+		if (!of_mdiobus_node_is_available(rd->dn))
-+			goto out_unlock;
-+		removing = false;
-+		break;
-+	case OF_RECONFIG_CHANGE_REMOVE:
-+		/* A newer change may have made this notification stale. */
-+		if (of_mdiobus_node_is_available(rd->dn))
-+			goto out_unlock;
-+		removing = true;
-+		break;
-+	default:
-+		goto out_unlock;
-+	}
-+
-+	mdio = of_mdiobus_find_parent(rd->dn);
-+	if (!mdio)
-+		goto out_unlock;
-+
-+	rc = mdiobus_device_change_begin(mdio, removing);
-+	if (rc) {
-+		if (!removing)
-+			ret = notifier_from_errno(-EPROBE_DEFER);
-+		else if (rc != -ENODEV)
-+			ret = notifier_from_errno(rc);
-+		goto out_put_mdio;
-+	}
-+
-+	if (!removing) {
-+		rc = of_mdiobus_add_node(mdio, rd->dn);
-+	} else {
-+		/* The node may already be detached from its parent hierarchy. */
-+		scope = of_mdiobus_get_removal_scope(rd->dn);
-+		if (of_mdiobus_node_is_busy(mdio, scope))
-+			rc = -EBUSY;
-+		else
-+			rc = of_mdiobus_remove_node(mdio, rd->dn);
-+		of_node_put(scope);
-+	}
-+
-+	mdiobus_device_change_end(mdio, removing);
-+	if (rc && (removing || rc != -ENODEV))
-+		ret = notifier_from_errno(rc);
-+
-+out_put_mdio:
-+	put_device(&mdio->dev);
-+out_unlock:
-+	of_mdio_reconfig_unlock();
-+
-+	return ret;
-+}
-+
-+static struct notifier_block of_mdio_notifier = {
-+	.notifier_call = of_mdiobus_notify,
-+};
-+
-+static int __init of_mdio_init(void)
-+{
-+	int ret;
-+
-+	ret = of_reconfig_notifier_register(&of_mdio_notifier);
-+	if (ret)
-+		return ret;
-+
-+#if IS_ENABLED(CONFIG_OF_OVERLAY)
-+	ret = of_overlay_notifier_register(&of_mdio_overlay_notifier);
-+	if (ret)
-+		of_reconfig_notifier_unregister(&of_mdio_notifier);
-+#endif
-+
-+	return ret;
-+}
-+module_init(of_mdio_init);
-+
-+static void __exit of_mdio_exit(void)
-+{
-+#if IS_ENABLED(CONFIG_OF_OVERLAY)
-+	of_overlay_notifier_unregister(&of_mdio_overlay_notifier);
-+#endif
-+	of_reconfig_notifier_unregister(&of_mdio_notifier);
-+}
-+module_exit(of_mdio_exit);
-+#endif /* CONFIG_OF_DYNAMIC */
-+
- /**
-  * of_mdio_find_device - Given a device tree node, find the mdio_device
-  * @np: pointer to the mdio_device's device tree node
-
--- 
-2.53.0
-
+> ---
+>  net/sched/cls_api.c | 21 ++++++++++++++++++---
+>  1 file changed, 18 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+> index fee4524ad..9ceb2b538 100644
+> --- a/net/sched/cls_api.c
+> +++ b/net/sched/cls_api.c
+> @@ -1937,7 +1937,8 @@ static struct tcf_proto *tcf_chain_tp_find(struct t=
+cf_chain *chain,
+>  static struct tcf_proto *tcf_chain_tp_insert_unique(struct tcf_chain *ch=
+ain,
+>                                                     struct tcf_proto *tp_=
+new,
+>                                                     u32 protocol, u32 pri=
+o,
+> -                                                   bool rtnl_held)
+> +                                                   bool rtnl_held,
+> +                                                   bool *inserted)
+>  {
+>         struct tcf_chain_info chain_info;
+>         struct tcf_proto *tp;
+> @@ -1948,6 +1949,7 @@ static struct tcf_proto *tcf_chain_tp_insert_unique=
+(struct tcf_chain *chain,
+>         if (tcf_proto_exists_destroying(chain, tp_new)) {
+>                 mutex_unlock(&chain->filter_chain_lock);
+>                 tcf_proto_destroy(tp_new, rtnl_held, false, NULL);
+> +               *inserted =3D false;
+>                 return ERR_PTR(-EAGAIN);
+>         }
+>
+> @@ -1964,6 +1966,11 @@ static struct tcf_proto *tcf_chain_tp_insert_uniqu=
+e(struct tcf_chain *chain,
+>                 tp_new =3D ERR_PTR(err);
+>         }
+>
+> +       /* Tell the caller whether tp_new was actually inserted, or an
+> +        * already existing tp is being returned instead.
+> +        */
+> +       *inserted =3D !tp && !err;
+> +
+>         return tp_new;
+>  }
+>
+> @@ -2254,11 +2261,13 @@ static int tc_new_tfilter(struct sk_buff *skb, st=
+ruct nlmsghdr *n,
+>         void *fh;
+>         int err;
+>         int tp_created;
+> +       bool tp_inserted;
+>         bool rtnl_held =3D false;
+>         u32 flags;
+>
+>  replay:
+>         tp_created =3D 0;
+> +       tp_inserted =3D false;
+>
+>         err =3D nlmsg_parse_deprecated(n, sizeof(*t), tca, TCA_MAX,
+>                                      rtm_tca_policy, extack);
+> @@ -2382,7 +2391,7 @@ static int tc_new_tfilter(struct sk_buff *skb, stru=
+ct nlmsghdr *n,
+>
+>                 tp_created =3D 1;
+>                 tp =3D tcf_chain_tp_insert_unique(chain, tp_new, protocol=
+, prio,
+> -                                               rtnl_held);
+> +                                               rtnl_held, &tp_inserted);
+>                 if (IS_ERR(tp)) {
+>                         err =3D PTR_ERR(tp);
+>                         goto errout_tp;
+> @@ -2440,7 +2449,13 @@ static int tc_new_tfilter(struct sk_buff *skb, str=
+uct nlmsghdr *n,
+>         }
+>
+>  errout:
+> -       if (err && tp_created)
+> +       /* Only delete a tp that we actually inserted ourselves. When
+> +        * tcf_chain_tp_insert_unique() raced with a concurrent insertion
+> +        * it returns the existing tp; tp_created must stay set then (the
+> +        * chain reference was consumed by the destroyed tp_new), but the
+> +        * existing tp must not be deleted.
+> +        */
+> +       if (err && tp_inserted)
+>                 tcf_chain_tp_delete_empty(chain, tp, rtnl_held, NULL);
+>  errout_tp:
+>         if (chain) {
+> --
+> 2.50.1 (Apple Git-155)
+>
