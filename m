@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9FA46AF08;
-	Wed,  5 Aug 2026 17:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95164772AB;
+	Wed,  5 Aug 2026 17:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785951840; cv=none; b=oze6YRe46fdqAjOujSxXK1mrGxMs819m6fgdy0YP/L8XF1H31lSDDzva0D+PLipsVMeQACCx53zGPeyotEgktBuoi61PkRjHWaDbPCz4un3X13H4JzYqlPRQ42YZTW9m4UPXTPwWkqWLRqbecIDn0eT2SE+k7SgEmnbnIpHXmxM=
+	t=1785951842; cv=none; b=oWAIMFpqgd85hX6+Y/kLgU6wrhaczQ4OBuDvQSAxJq6RlnPxmeKCJB3X5zecNdQb0MFqb05MBg1NJ8C+GV24w3u9tpXvSl8DSWC1xrJ0OBFIeW3QeS3PFpvxucoXGKCI42y0UHgYwgYgtQg3t9LDJ97Qf90ZXrDSoCyv3knYQkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785951840; c=relaxed/simple;
-	bh=VLOKyEkTkC82z4zhZN0nCfeG4Yuhc4sNCu11zIvQfvY=;
+	s=arc-20240116; t=1785951842; c=relaxed/simple;
+	bh=DHHEIaCxhlCy4AmCEd/cLwIwxkfQPWL5yOcJP5IQWEc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VfKYUG3dwO1j64GFfjGiXOmPTiZX+3+HraUko6X5ZTQRMlZaz6JfJIKJcXSMNaqAK47QikHlzYp5sPh1TWiXozn2TYYqKfUS+dJPRV8gCzTJF4yGW6+1oISlecEplv8CkSi6mo1srlTe57Pe/OFCj/+v5QNRVqwXektnAOI1x7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Z+WbhaVn; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=T1uOsDiplVZcLGRYYnY2ygZt6+ogCQAtD8ia3K++LAqe+mrFE4F72A+qJ2tNvZ72XsvgNPql4dJF4+BIMXxROksd9+ugP+0yQNsWEEOWpAyurBNb8NiUvatI33TGooWqPwpfg1/xkDqCaJkAgdjJL61tCTRMy4fO+VdxjFr8HUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LDyWx8wg; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Z+WbhaVn"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LDyWx8wg"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E82AA1A1443;
-	Wed,  5 Aug 2026 17:43:56 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 5A9B41A1445;
+	Wed,  5 Aug 2026 17:43:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BBD79603D7;
-	Wed,  5 Aug 2026 17:43:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 148E611C3507F;
-	Wed,  5 Aug 2026 19:43:54 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F34D602AB;
+	Wed,  5 Aug 2026 17:43:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2508611C35090;
+	Wed,  5 Aug 2026 19:43:56 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785951835; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1785951837; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=dkcd0uBSOQrsr2dbhyDtoRnFhZc2suQ3I2fIiNKIVgI=;
-	b=Z+WbhaVnLuksiU+YL3U7nlLwQbv+7dOJxQoiW01rnEWARmWBDZKtyLKdR/My6F+G0d0XKv
-	9R9ANtvI0hgyV+g6wuh+XyI2PzklO3GW+JTUmtaXLd0bq5WfELsuiEpeI2ouM1Sg4Fv7Gs
-	e75Zow91vIpezcv+8pK09bH/jJBh39qdrvQbBpk4YhYxSADca0sav56qJZHf8lAMuZ7p42
-	WTkUUDxcHMzR/d6sN2/alEzCxcX4wQinxm6+vHmvMMpSZp+9KqQ6shlJBiGp4yUd5eh542
-	l7R9ebWQyPmIkjCiMt44s7h8KW4cHUjb384tqSBrleG59Ehy/fYcz4C4UvSWyA==
+	bh=tjkUKHuyq+gyC9RyRpkwMIOtaqVq3yK4Mv8j4SWqMgA=;
+	b=LDyWx8wgLal7WT+970P624RxOAfGks1S3n1CtKxYJnUVmsqBrQUIwK9NvVLdbkPLYJdum2
+	aO6NPhZhWmVL/8blO3rpQbezEks5BHPrJ3+tycGnO9R8xgA8q2kqX4HxeK3T9Pxb8GmX6x
+	YtPFp65NsLVqbkZNoeczL6gjjrrkCSviZ0FYoA9/8w2g+KRdSxLixrc6kWKZJ2w81XodS0
+	AE6DmFeJ22S+5qfXHVd1FuleVXh6GG4U7ZWMUnFJHKN6TALxv3BXjVJh0Jk/BWPrcwqcPd
+	2yV5GbcDqz8bwrww5riV6EKHb+BeLqf7zWFYTiusuVPGy6t31YqFVJJMbjxLrw==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Wed, 05 Aug 2026 19:42:43 +0200
-Subject: [PATCH net-next v8 14/17] net: macb: move printk() calls out of
- bp->lock critical section
+Date: Wed, 05 Aug 2026 19:42:44 +0200
+Subject: [PATCH net-next v8 15/17] net: macb: read ISR inside bp->lock
+ critical section
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260805-macb-context-v8-14-bc302ffd1174@bootlin.com>
+Message-Id: <20260805-macb-context-v8-15-bc302ffd1174@bootlin.com>
 References: <20260805-macb-context-v8-0-bc302ffd1174@bootlin.com>
 In-Reply-To: <20260805-macb-context-v8-0-bc302ffd1174@bootlin.com>
 To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
@@ -68,133 +68,56 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-printk() while bp->lock is acquired is dangerous if netconsole is active
-on the interface. In that setup, we might land in macb_poll_controller()
--> macb_interrupt() -> spin_lock(&bp->lock) but bp->lock is already
-acquired.
+The IRQ handler reads ISR register into the `status` stack variable.
+If empty, it early returns. Else, it grabs bp->lock and iterates on
+the status bits.
 
-This is not an issue currently because macb_interrupt() first checks IRQ
-status, potentially early returns, then grabs lock. This early exit is
-expected in netpoll scenario.
+We risk a race on spinlock acquire; status might have changed.
+Move the readl(ISR) inside the bp->lock critical section.
 
-However if we came to reading the status inside the bp->lock critical
-section (as it should be to avoid races), then this would turn into a
-deadlock. And we will.
+In practice, we protect ourselves from interpreting the same ISR status
+twice. To understand issues, read macb_interrupt() body and imagine
+each codepath being performed twice:
+ - Two napi_schedule_irqoff() are idempotent *if fast enough*.
+ - Two schedule_work(tx_error_task) are idempotent *if fast enough*.
+ - Double increment of rx_overruns.
+ - Two queue_work(hresp_err_bh_work) are idempotent *if fast enough*.
+ - Two pm_wakeup_event() is safe.
 
-Solution: move printk() calls out of the critical section, to ensure we
-can never netpoll under bp->lock's reign. Added benefit is a smaller
-and simpler atomic section.
+One risk remains with spurious interrupts that would, in addition to
+taking excessive CPU time, also create lock contention. How bad is it?
+Probably not too bad.
 
---
-
-In macb_tx_error_task(), defer netdev_err("halt tx timed out") call to
-after the critical section. Update the message to highlight it occurred
-in the past. Inherit the buffer exhaustion boolean variable name from
-the old code comment.
-
-In macb_tx_error_task(), defer the netdev_err("TX buffers exhausted
-mid-frame") call out of the loop. This also means it goes from
-1-per-error to 1-per-task-invocation.
-
-In IRQ handling, move HRESP error printing out of macb_interrupt_misc()
-into macb_interrupt(). Again, it means we dedup error reporting if
-status is read multiple times in a row with HRESP bit set. This is fine
-as from past instances I've seen, this message spams our log if it
-occurs.
-
-Notice we *ignore* debug printks; if you are debugging MACB maybe don't
-use netconsole...
-
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 5a4eb87f5a97..4bf55994420f 100644
+index 4bf55994420f..100159662336 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1303,6 +1303,7 @@ static void macb_tx_error_task(struct work_struct *work)
- 	struct macb_tx_skb *tx_skb;
- 	struct macb_dma_desc *desc;
- 	bool halt_timeout = false;
-+	bool buggy_driver = false;
- 	struct sk_buff *skb;
- 	unsigned long flags;
- 	unsigned int tail;
-@@ -1329,7 +1330,6 @@ static void macb_tx_error_task(struct work_struct *work)
- 	 * macb/gem must be halted to write TBQP register
- 	 */
- 	if (macb_halt_tx(bp)) {
--		netdev_err(bp->netdev, "BUG: halt tx timed out\n");
- 		macb_writel(bp, NCR, macb_readl(bp, NCR) & (~MACB_BIT(TE)));
- 		halt_timeout = true;
- 	}
-@@ -1374,8 +1374,7 @@ static void macb_tx_error_task(struct work_struct *work)
- 			 * those. Statistics are updated by hardware.
- 			 */
- 			if (ctrl & MACB_BIT(TX_BUF_EXHAUSTED))
--				netdev_err(bp->netdev,
--					   "BUG: TX buffers exhausted mid-frame\n");
-+				buggy_driver = true;
- 
- 			desc->ctrl = ctrl | MACB_BIT(TX_USED);
- 		}
-@@ -1412,7 +1411,14 @@ static void macb_tx_error_task(struct work_struct *work)
- 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
- 
- 	spin_unlock_irqrestore(&bp->lock, flags);
-+
- 	napi_enable(&queue->napi_tx);
-+
-+	if (halt_timeout)
-+		netdev_err(bp->netdev, "BUG: halt tx timed out, we ignored it\n");
-+
-+	if (buggy_driver)
-+		netdev_err(bp->netdev, "BUG: TX buffers exhausted mid-frame\n");
- }
- 
- static bool ptp_one_step_sync(struct sk_buff *skb)
-@@ -2165,7 +2171,6 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
- 
- 	if (status & MACB_BIT(HRESP)) {
- 		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
--		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
- 		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
- 	}
- 
-@@ -2185,6 +2190,7 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
- 	struct macb_queue *queue = dev_id;
- 	struct macb *bp = queue->bp;
- 	struct net_device *netdev = bp->netdev;
-+	bool hresp_err = false;
+@@ -2193,13 +2193,14 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+ 	bool hresp_err = false;
  	u32 status;
  
- 	status = queue_readl(queue, ISR);
-@@ -2231,15 +2237,22 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
- 			napi_schedule_irqoff(&queue->napi_tx);
- 		}
+-	status = queue_readl(queue, ISR);
+-
+-	if (unlikely(!status))
+-		return IRQ_NONE;
+-
+ 	spin_lock(&bp->lock);
  
--		if (unlikely(status & MACB_INT_MISC_FLAGS))
-+		if (unlikely(status & MACB_INT_MISC_FLAGS)) {
- 			if (macb_interrupt_misc(queue, status))
- 				break;
- 
-+			if (status & MACB_BIT(HRESP))
-+				hresp_err = true;
-+		}
++	status = queue_readl(queue, ISR);
++	if (unlikely(!status)) {
++		spin_unlock(&bp->lock);
++		return IRQ_NONE;
++	}
 +
- 		status = queue_readl(queue, ISR);
- 	}
- 
- 	spin_unlock(&bp->lock);
- 
-+	if (hresp_err)
-+		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
-+
- 	return IRQ_HANDLED;
- }
- 
+ 	while (status) {
+ 		/* close possible race with dev_close */
+ 		if (unlikely(!netif_running(netdev))) {
 
 -- 
 2.55.0
