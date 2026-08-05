@@ -1,188 +1,143 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C80D37F322;
-	Wed,  5 Aug 2026 03:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785901567; cv=none; b=bp7jYGG8Y4pwlRLVkmspbZHtuAIA30CF8IIhZLa/fa+XRq+D4x/djfaLazZkgHsH6YhC8WVIpaYszQWxPLuZo9Gkt/VTlDVDD3m9KhKgAdbwiqEQfAFfDVewSheGFuAUgNPM2086aeaqiRihxLZkyY0Cgx3ro1jopHC0Ob2dI9k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785901567; c=relaxed/simple;
-	bh=UPAjB0BdsiGVSp/QBakciyTb0Cb2PgDPRyhiNB6yjbg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ORP8wt0IUkr/VTOxX/XbkT96UhKmB2ubAjJbOc94lOgZppReHPRkxq8HgAKNgyiic0D7FWqwekgSLw6TWey0TOHHMUf2xZkv8wykdPtSW4qyVsoMuTNDkK2MV/RtwyouilNUR3da7BmcpZ3ieM289XqTiyMMCbi2oBjRIeWYZYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Tp0/Var9; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58921DC198
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 03:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785901862; cv=pass; b=ow2c/Kc55gwsk2pZ2ywhe20fM7QClLEjrx1PLlJfRNeET0skumc5uF7GtaH0x9wtqvEowI0bl3CN7jb6MaNZEsx7z4v6+/gby1TRkrdIZX/kV8tfh+flCK/DYl9pMTS2J0VipJK45ejj0nBbWieE1Ip+Jzyv/3X9dk4ltS+Xsls=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785901862; c=relaxed/simple;
+	bh=RT0hDIqN75cmywbHP2fDE8uW020jzwTzWkeUpaNFKd8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MOp7zhizWd/zmDtuTZ1uRsNeMcHbY8fc+ItRG/gJOQgipzizuaX4d0ygsnrPW1I4enh+WdbYWAa/3oVEqJ7ZMCFEHFHwHCfuCURktw3BF1f8vgRLsr6CLEqZNiBiRbhyALAntssPKwKqqjs5u//LHHIPzokNawPT4VisrPEhVpU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mk/O3vs6; arc=pass smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Tp0/Var9"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=cmpSACpQmSDOvkCsslSgBCvhphPrgzodOLZTrWWOAUY=;
-	b=Tp0/Var93VcbMnNN/DXf5t3Qwl9TbSqrL6DVz1Mmr38m/M3Yqmtm11CWu20dFVskW8sl/gzBe
-	9mitCO1ZFNe2Leu7zofD3tG05KcR4ruf0j7/cqAgDgoPf5yaXFjztC/lFXGwpvKz8lOufXI/haO
-	0kIl9iGHsO61/UVxWGM/i+0=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hFGKq3hP4zmVWY;
-	Wed,  5 Aug 2026 11:36:31 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id E01CE40586;
-	Wed,  5 Aug 2026 11:46:02 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 5 Aug 2026 11:46:01 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: Fan Gong <gongfan1@huawei.com>, Teng Peisen <tengpeisen@huawei.com>, Wu Di
-	<wudi234@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Larysa Zaremba
-	<larysa.zaremba@intel.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chen Anwen
-	<chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>, Zhang Min
-	<zhangmin548@huawei.com>, luosifu <luosifu@huawei.com>, Xin Guo
-	<guoxin09@huawei.com>, Zhou Shuai <zhoushuai28@huawei.com>, Wu Like
-	<wulike1@huawei.com>, Shi Jing <shijing34@huawei.com>
-Subject: [PATCH net] hinic3: Fix SKB linearization mismatch and silent TX drops
-Date: Wed, 5 Aug 2026 11:45:55 +0800
-Message-ID: <ca8f219dd1eac99e41e22477bd0902b92ec7628e.1785899557.git.tengpeisen@huawei.com>
-X-Mailer: git-send-email 2.50.1.windows.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mk/O3vs6"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cede6375caso63895ad.0
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 20:51:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785901860; cv=none;
+        d=google.com; s=arc-20260327;
+        b=o2q9qUucicW8NVsl7R2K+6jAFHk/FuKj9os2aojxLrYavWajs5MEhB2xu1AVITce18
+         qzd12PEX/Y6S8T3O5QyyMkxUk3Su+dPJTqP9O8phpuEjqT0wWOHhz1FCZD8+JavUipXq
+         vCQCZatsZb0wWkxyvrw23LQvb6kbL82Gmy9cS83fgz72SKRYkLxyeiyGUgxdsQ7FPa51
+         SMPsxeDOuEewDq2U2BHgMYQndvGJwY935/KPIbpR9sseOYvKnLcTCIXfPuCh+g8Mw69E
+         hdCekbWUalKAlSddKj95aaFlDnDTfoWUSIn6ng7YMBqJhAwRZma1PxTcPbUhbHv/hMvE
+         mz5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fmi7y/J+AnH4wZb4ZPK6SvsLYlD8bbyAIu61k4b59H8=;
+        fh=3uBQ4Cd7oMNHNFAcWlTqa6gIL22JqH3ViRPvlu4NddY=;
+        b=NMeQh08thrAn7LTmfw0J0ageMvGqm3SvFolru39spBGFFFmt8jj4KrJq1KXtQlde1S
+         1s3QelYrOFHYoe4Y4v7xd9GEjzUW0u5CSC7b+F7W+oYFL4fsRriTRq/KuVJNs3NDla1m
+         sXmdvJj/nK3QHzCtSxlh0eCLmld5sxRVF5MTnFexEs3ulGvzOAJjCuENc/TiiB1Y51xp
+         8cRTAGhFj96uZzDXMwTSOA22KLa0LmhsWiGL9Ql0ktl2n5jWxBLBSeabIMiXavnO2OH5
+         oCap/MH+GOT2eTIVeFCqKwoZDTbkPpPwhMCK+wbr5G6oYvznlyuuboRKEUuuaQNfnjJn
+         jPVw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785901860; x=1786506660; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fmi7y/J+AnH4wZb4ZPK6SvsLYlD8bbyAIu61k4b59H8=;
+        b=Mk/O3vs6A+/MhlxGEAw8y2WfukSO+bmZCx1kFfYHkZ/NPPgJayEkHvEwO1IibJ7py4
+         g4UYnsyn+j/YZVRVN0zaTRzQGc9r4Rjz2/dkG83QKxJKfD9isLAC3bIkITsLdEDA/arT
+         oFSF/aEqG1CrH8ZhaiH6GlSy56737EQzsxpS8i0xW54XD00yCwztgyAJTGST9ZWWhelr
+         KWrgN1nsFsmvO4L0S5bAvQoN2meVFyNnUBvj8BUenBHcQL5rqv3tAmed4l/vEOyMBlBn
+         +vFa8u1UTm4dYDPiUuuo4fT4+ChLhdy+Th0Yp7s0tekvleywQO1ZLsgUYwjLE/5zWOrH
+         Nrig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785901860; x=1786506660;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fmi7y/J+AnH4wZb4ZPK6SvsLYlD8bbyAIu61k4b59H8=;
+        b=R5VwghxNmvf1h3i/gU50rSSS7BzZ6rkqQUUdkHWrO2MT4NKEPG08THLgE+mVFWSdQF
+         b90sik6Nf4+uxGwtC8rVOLGFhbm2j+iG6kx+GJ4i1PWaym8TRexmnprd1ZNKXnTBftbG
+         Yzqudzb6B2P0BZwp3hBYrp14lsufMqIZNsY7rRjGSkNgC7PRJSmGuq/v+zGpocZ9jHfE
+         bFb2g0au0TaJW5ewP9YcOxnv3CdO97itFycqN61GaP+UgOXIj/b3tFe7c8eBY3yd9FsS
+         8bRDJuiEqTsKzso0LwToVZLppmKBqwYbgBcPe2SVy98Ix0LY7aEnFP9Z7r/aMtRdI52f
+         4t1w==
+X-Forwarded-Encrypted: i=1; AHgh+RryXUs8Tp7ZXdDirOZRli10aAecTVR7h0puXh2M19Ba38utVNqw6jDA6HL/0LREK4M6vpUvw48=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWAy0sry86LZII4lgszsPn8lWgABVsX5FXcdtKDhs7KZ7hbyBo
+	wvNadwS10aWZCbguQwVXsJlf4GdXDeesgqObmHDcII0QoOW591EfAf20ih5pkf5CYyniE7UjTQf
+	UDbtrOLttdmAxq4OQuSjjpaUR6UlkObtQg5wdRs8L
+X-Gm-Gg: AR+sD122l71cS8JMXVgJpKuZfoG6z/qfNfMaKq4IBEHpKxt/J9/iu+CD6FAGwmY9Ued
+	e8lNAggfwZMQE/gvIoCdYyNWHlNAYcYCvbPAp/VuHOufn3ISCVLuS271R0EhTwP8WU2KytPlg9D
+	7o8z3QGAIT4owf5CDgQSYUwjzygQ+H10c6tshbGdUJs5VbZzH7UQC/freNqN4lqtrEUXQH5F6j6
+	noR+d5WcVuR0qia/BkvHOfCZPS3z7E2G2jTZfSudRn8TPx4tI1kzjmFfbS8AOX6ke4EXlu8qBjc
+	LJ4jSiGymOzzK9oGXqUxrEy7rny7PIUzTCSs0+c2EqMr0Z5N+t8t6uwP
+X-Received: by 2002:a17:903:384d:b0:2c7:f0cc:dafa with SMTP id
+ d9443c01a7336-2d0d0702da5mr5773225ad.5.1785901859579; Tue, 04 Aug 2026
+ 20:50:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+References: <20260731111507.2355601-1-shaojijie@huawei.com>
+ <CAHS8izPpwz=swSXJZhnVFvTeu43WBhtRv7PmC_OQ0XzG8no8bQ@mail.gmail.com> <20260804191628.762ec7eb@kernel.org>
+In-Reply-To: <20260804191628.762ec7eb@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Tue, 4 Aug 2026 20:50:46 -0700
+X-Gm-Features: AUfX_mxjUTDLa3RYzoYG80F8I31Eoy11lwHA9PZzsLvT730uyu0bLmqw3WiRd58
+Message-ID: <CAHS8izMVqidVkiVHNWZMqP4Eoi5N_M3Wv1Cnn4jjxHf3=cWNQA@mail.gmail.com>
+Subject: Re: [PATCH v4 net] net: page_pool: fix UAF in __page_pool_release_netmem_dma
+ on xa_cmpxchg race
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jijie Shao <shaojijie@huawei.com>, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, hawk@kernel.org, 
+	ilias.apalodimas@linaro.org, toke@redhat.com, shenjian15@huawei.com, 
+	liuyonglong@huawei.com, chenhao418@huawei.com, yangshuaisong@h-partners.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Previously, hinic3_send_one_skb() cached the SKB fragment count before
-calling hinic3_tx_offload(). If hinic3_tx_csum() falls back to
-skb_checksum_help() for unsupported tunnel packets, the SKB may be
-linearized. Continuing to build the TX descriptor with the stale
-fragment count leads to a descriptor mismatch, which can trigge
-out-of-bounds DMA reads or IOMMU faults.
+On Tue, Aug 4, 2026 at 7:16=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Fri, 31 Jul 2026 10:37:58 -0700 Mina Almasry wrote:
+> > > +       __page_pool_unmap_netmem_dma(pool, netmem);
+> > >         page_pool_set_dma_addr_netmem(netmem, 0);
+> > > +       if (likely(PP_DMA_INDEX_BITS))
+> > > +               netmem_set_dma_index(netmem, 0);
+> >
+> > I now notice that maybe another cleanup we could have done is open
+> > code __page_pool_unmap_netmem_dma() in this function to cut down 1
+> > helper, and just have the scrub function call
+> > __page_pool_release_netmem_dma() to reduce some code. But this is more
+> > than fine too I think, especially since this is a fix the stable trees
+> > are going to want I guess.
+>
+> Not sure this is a good idea? scrub is trying to touch just the DMA
+> mapping, right? It shouldn't try to update the page itself because
+> it has no reference to the page, the page may get freed in parallel.
+> Hopefully DMA unmap on a freed page is legal..
 
-Furthermore, the old code ignored the return value of skb_checksum_help(),
-transmitting corrupted packets with incomplete checksums upon failure. It
-also failed to increment drop statistics across various TX error paths,
-causing packets to be dropped silently without notifying the user.
+Scrub actually frees the page in the loop in
+page_pool_empty_ring(pool), so it's not true AFAIU that it 'shouldn't
+try to update the page'.
 
-Fix this by:
-1. Moving the hinic3_tx_offload() call before calculating 'num_sge' to
-   ensure the correct fragment count is used if the SKB is linearized.
-2. Propagating skb_checksum_help() errors and returning
-   HINIC3_TX_OFFLOAD_INVALID to properly drop the skb.
-3. Adding missing statistics increments (dropped, map_frag_err,
-   unknown_tunnel_pkt, skb_pad_err) across the TX error paths so these
-   events are correctly reflected in interface statistics.
+My mental model (roughly) is that the pp has a ref and that single
+last ref can be dropped in the page_pool_destroy() path or the
+page_pool_put_netmem() path, but the ref can't be dropped twice and
+the same goes for dma unmapping.
 
-Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
-Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
-Co-developed-by: Wu Di <wudi234@huawei.com>
-Signed-off-by: Wu Di <wudi234@huawei.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
----
- .../net/ethernet/huawei/hinic3/hinic3_tx.c    | 31 ++++++++++++++++---
- 1 file changed, 26 insertions(+), 5 deletions(-)
+Now that i look closer at the code I have no idea why we didn't 'just'
+put the dma-unmapping inside of page_pool_return_netmem(). That code
+path is already common between scrub() and put_netmem() and does the
+synchronization between these 2 paths.
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-index 9306bf0020ca..45effdddb434 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-@@ -97,8 +97,12 @@ static int hinic3_tx_map_skb(struct net_device *netdev, struct sk_buff *skb,
+When I have time I'll take a look to see if an LLM can find a better
+way to do this.
 
- 	dma_info[0].dma = dma_map_single(&pdev->dev, skb->data,
- 					 skb_headlen(skb), DMA_TO_DEVICE);
--	if (dma_mapping_error(&pdev->dev, dma_info[0].dma))
-+	if (dma_mapping_error(&pdev->dev, dma_info[0].dma)) {
-+		u64_stats_update_begin(&txq->txq_stats.syncp);
-+		txq->txq_stats.map_frag_err++;
-+		u64_stats_update_end(&txq->txq_stats.syncp);
- 		return -EFAULT;
-+	}
-
- 	dma_info[0].len = skb_headlen(skb);
-
-@@ -117,6 +121,9 @@ static int hinic3_tx_map_skb(struct net_device *netdev, struct sk_buff *skb,
- 						     skb_frag_size(frag),
- 						     DMA_TO_DEVICE);
- 		if (dma_mapping_error(&pdev->dev, dma_info[idx].dma)) {
-+			u64_stats_update_begin(&txq->txq_stats.syncp);
-+			txq->txq_stats.map_frag_err++;
-+			u64_stats_update_end(&txq->txq_stats.syncp);
- 			err = -EFAULT;
- 			goto err_unmap_page;
- 		}
-@@ -260,9 +267,11 @@ static int hinic3_tx_csum(struct hinic3_txq *txq, struct hinic3_sq_task *task,
- 		if (l4_proto != IPPROTO_UDP ||
- 		    ((struct udphdr *)skb_transport_header(skb))->dest !=
- 		    VXLAN_OFFLOAD_PORT_LE) {
-+			u64_stats_update_begin(&txq->txq_stats.syncp);
-+			txq->txq_stats.unknown_tunnel_pkt++;
-+			u64_stats_update_end(&txq->txq_stats.syncp);
- 			/* Unsupported tunnel packet, disable csum offload */
--			skb_checksum_help(skb);
--			return 0;
-+			return skb_checksum_help(skb);
- 		}
- 	}
-
-@@ -412,6 +421,10 @@ static u32 hinic3_tx_offload(struct sk_buff *skb, struct hinic3_sq_task *task,
- 		offload |= HINIC3_TX_OFFLOAD_TSO;
- 	} else {
- 		tso_cs_en = hinic3_tx_csum(txq, task, skb);
-+		if (tso_cs_en < 0) {
-+			offload = HINIC3_TX_OFFLOAD_INVALID;
-+			return offload;
-+		}
- 		if (tso_cs_en)
- 			offload |= HINIC3_TX_OFFLOAD_CSUM;
- 	}
-@@ -539,12 +552,17 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- 	int err;
-
- 	if (unlikely(skb->len < MIN_SKB_LEN)) {
--		if (skb_pad(skb, MIN_SKB_LEN - skb->len))
-+		if (skb_pad(skb, MIN_SKB_LEN - skb->len)) {
-+			u64_stats_update_begin(&txq->txq_stats.syncp);
-+			txq->txq_stats.skb_pad_err++;
-+			u64_stats_update_end(&txq->txq_stats.syncp);
- 			goto err_out;
-+		}
-
- 		skb->len = MIN_SKB_LEN;
- 	}
-
-+	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
- 	num_sge = skb_shinfo(skb)->nr_frags + 1;
- 	/* assume normal wqe format + 1 wqebb for task info */
- 	wqebb_cnt = num_sge + 1;
-@@ -560,7 +578,6 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- 		return NETDEV_TX_BUSY;
- 	}
-
--	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
- 	if (unlikely(offload == HINIC3_TX_OFFLOAD_INVALID)) {
- 		goto err_drop_pkt;
- 	} else if (!offload) {
-@@ -604,6 +621,10 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- err_drop_pkt:
- 	dev_kfree_skb_any(skb);
- err_out:
-+	u64_stats_update_begin(&txq->txq_stats.syncp);
-+	txq->txq_stats.dropped++;
-+	u64_stats_update_end(&txq->txq_stats.syncp);
-+
- 	return NETDEV_TX_OK;
- }
-
-
-base-commit: 2195424c3da2ef1829a63b807e3a900a90e57d85
 --
-2.54.0
-
+Thanks,
+Mina
