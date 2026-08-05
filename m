@@ -1,170 +1,195 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC98C3E0732
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 06:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C8131E846
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 06:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785912786; cv=none; b=pG9x+l5yqN0gBx12MprgzqYyNgFc2tYaWX+X3wLfE6BPaUcGXisBhPiZzUsFmS92DG12SrmTPWnHyRBJcdZfga887XgHQv+L3DujD1gv75aMtm4j7F8vhrFqwKmvMXGFHNR30FgVx6CTNKNwUefnxm4s6Xxi0vQWQSXvzf0Af+s=
+	t=1785912983; cv=none; b=MbDQ5XNo1Ctnr3VkO8ijwIqbo301tyXsmqeJy+TlFxJ2eZlKSzAEZR86mkbyrxcC+DcWhA2+LdasP8mCHIMMXTwBpCmSKXKFGF5bUeVtbahC6+lNI6YSe7t2QXJ1e/rHWc/Go8DG3HjfX//Ts+H9BGwlInWvSLLirVpgJH3rFtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785912786; c=relaxed/simple;
-	bh=UWh8p8c9Bx5Mot/mVtEsBdsA0FooCdrKhDS6oRIkoLg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFqg4a6RSPRMf9FxGaJYXh8x150BUlJl5XrgXWvQeAgPjk72oih+shyY6WswkKV6dMPppX47kMDvAAyljCFnTwDmihc06FtYdMILUXP8ELaCSe0sqJaXgMrd4ic0C7IAcfv4SjUccf4FYtYyOm5HPBAGvVVZ5LHbiPH2qzx8q1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=X9gdgtbA; arc=none smtp.client-ip=95.215.58.176
+	s=arc-20240116; t=1785912983; c=relaxed/simple;
+	bh=M/SunkTtc+TH2cQ0Gyi9NDFJoMPUscPt7OUseMyx0mw=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=E/9+wH9pf3E8rQqLLA0uXj76m/wWoetrzePOlgi4ExWBZyA0fQdNIATUoYqcF/Q/IOfoxwMVnjOcpo8KtP4dYjCTMMvxL/kqHlq3loDNMwR5gi+xjfT2ptHxaCEhfvq23y12jwOzbXZ2Uu4Z58YejS6HKVqUJesFnMgmHM4Vnho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DwNnnuD8; arc=none smtp.client-ip=91.218.175.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="X9gdgtbA"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DwNnnuD8"
+Message-ID: <12f927af-4fd1-40fe-9abd-559d14e833e7@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785912779;
+	t=1785912971;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+EQTtWgrsaKUEW5GmngOUgOvaosfIxELLzA0tSOpboA=;
-	b=X9gdgtbAHDOHcJD7LZ8khRbKH3lPNb/Hp6VX1wNFDxK74t3E1AN3u6lO9O1m7wBfphdgWe
-	vyV8iTkAufGtZacL0w04rOEP6LVV8/lnutjO4SVEeyu+aT4RdpkyBF3iqHNpsN1ON/8pOR
-	uEZ57ObN4QbwZpIX6s4+S9OfukQySv8=
-From: xuanqiang.luo@linux.dev
-To: intel-wired-lan@lists.osuosl.org,
-	horms@kernel.org
-Cc: vadim.fedorenko@linux.dev,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	piotr.kwapulinski@intel.com,
-	arkadiusz.kubalewski@intel.com,
-	aleksandr.loktionov@intel.com,
-	netdev@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH iwl-net v2 5/5] i40e: fix races in PTP external timestamp work handling
-Date: Wed,  5 Aug 2026 14:51:32 +0800
-Message-ID: <20260805065132.148625-6-xuanqiang.luo@linux.dev>
-In-Reply-To: <20260805065132.148625-1-xuanqiang.luo@linux.dev>
-References: <20260805065132.148625-1-xuanqiang.luo@linux.dev>
+	bh=9zvDle/lCKcOusPHIQ4M6DhX/BBhD62GYhSX80jnqOo=;
+	b=DwNnnuD8QrVKWLNN68bjgX/Hq20OAilBiVpvvGln2Fuo6eMTDRB02xt+pcLXsmKvxvtmch
+	6/KSTo80xm+92mulxDZ6+W7kyPgbDfz7j6KfXpry4puKJYE29K/IoaaoldDtogXG2BNZ7Q
+	a577xqm/Fv8nVIYnDBXok8h40KPb4qc=
+Date: Wed, 5 Aug 2026 14:55:14 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: luoxuanqiang <xuanqiang.luo@linux.dev>
+Subject: Re: [PATCH iwl-net v1] i40e: fix races in PTP external timestamp work
+ handling
+To: Simon Horman <horms@kernel.org>
+Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, richardcochran@gmail.com,
+ piotr.kwapulinski@intel.com, arkadiusz.kubalewski@intel.com,
+ aleksandr.loktionov@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20260724093448.63154-1-xuanqiang.luo@linux.dev>
+ <20260730122550.GA51943@horms.kernel.org>
+In-Reply-To: <20260730122550.GA51943@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Thanks Simon for the review and Sashiko for the detailed findings!
 
-The time sync interrupt queues ptp_extts0_work, which reads device
-registers and reports events through pf->ptp_clock. i40e_ptp_stop()
-unregisters the PHC before disabling the event source or draining the
-work. The worker can therefore use the clock or PF after either has been
-freed.
+I have posted v2 addressing these concerns as follows.
 
-Move the event-source shutdown before PHC unregister. i40e_ptp_stop()
-first clears I40E_FLAG_PTP_ENA under ptp_config_lock, so timestamp
-configuration cannot re-enable the source after the lock is released.
-Then call disable_work_sync() to reject later queue attempts and drain
-work already pending or running.
+在 2026/7/30 20:25, Simon Horman 写道:
 
-INIT_WORK() is currently called from i40e_ptp_set_timestamp_mode(), which
-runs on reset and whenever timestamping is reconfigured. Reinitializing
-pending or running work can corrupt its workqueue state. Initialize the
-work once from i40e_sw_init() instead.
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at:https://sashiko.dev/#/patchset/20260724093448.63154-1-xuanqiang.luo@linux.dev?part=1
+> ---
+> --- Patch [1]: [PATCH iwl-net v1] i40e: fix races in PTP external timestamp work handling ---
+> commit 4359cf206cb2602e153fdeac3151f8d4bacf9195
+> Author: Xuanqiang Luo<luoxuanqiang@kylinos.cn>
+>
+> i40e: fix races in PTP external timestamp work handling
+>
+> This commit disables external timestamp events and drains the work
+> queue before unregistering the PHC to fix a use-after-free, and
+> moves the work initialization to device init instead of reset. It also
+> excludes reset recovery during teardown to avoid concurrent rebuilds.
+>
+>> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+>> index a04683004a567..2909a58d57562 100644
+>> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
+>> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> [ ... ]
+>> @@ -16157,14 +16158,6 @@ static void i40e_remove(struct pci_dev *pdev)
+>>   
+>>   	i40e_devlink_unregister(pf);
+>>   
+>> -	i40e_dbg_pf_exit(pf);
+>> -
+>> -	i40e_ptp_stop(pf);
+>> -
+>> -	/* Disable RSS in hw */
+>> -	i40e_write_rx_ctl(hw, I40E_PFQF_HENA(0), 0);
+>> -	i40e_write_rx_ctl(hw, I40E_PFQF_HENA(1), 0);
+>> -
+>>   	/* Grab __I40E_RESET_RECOVERY_PENDING and set __I40E_IN_REMOVE
+>>   	 * flags, once they are set, i40e_rebuild should not be called as
+>>   	 * i40e_prep_for_reset always returns early.
+>> @@ -16173,6 +16166,14 @@ static void i40e_remove(struct pci_dev *pdev)
+>>   		usleep_range(1000, 2000);
+> Simon says: I think the issue flagged below is somewhat orthogonal to
+>              this patch and can be considered in the context of possible
+> 	    follow-up.
+>
+> [Severity: High]
+> This is a pre-existing issue, but does this ad-hoc polling loop violate core
+> networking synchronization rules?
+>
+> The subsystem guidelines state that using retry/poll loops on flags to guard
+> code sections is a bug, as it evades lockdep deadlock detection and lacks
+> proper memory ordering guarantees.
+>
+> i40e_remove() spins on __I40E_RESET_RECOVERY_PENDING with a sleep instead of
+> using a standard lock or workqueue synchronization, which exposes the teardown
+> path to races during hotplug or PCIe AER unbinds.
 
-Fixes: 1050713026a0 ("i40e: add support for PTP external synchronization clock")
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
----
- drivers/net/ethernet/intel/i40e/i40e.h      |  1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c |  1 +
- drivers/net/ethernet/intel/i40e/i40e_ptp.c  | 25 +++++++++++++++------
- 3 files changed, 20 insertions(+), 7 deletions(-)
+For this pre-existing issue, I included a wait-bit based fix in v2
+as Patch 4.
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 84564d747d09a..18452f9aa74e1 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1318,6 +1318,7 @@ int i40e_ptp_hwtstamp_set(struct net_device *netdev,
- 			  struct netlink_ext_ack *extack);
- void i40e_ptp_save_hw_time(struct i40e_pf *pf);
- void i40e_ptp_restore_hw_time(struct i40e_pf *pf);
-+void i40e_ptp_init_work(struct i40e_pf *pf);
- void i40e_ptp_init(struct i40e_pf *pf);
- void i40e_ptp_stop(struct i40e_pf *pf);
- int i40e_ptp_alloc_pins(struct i40e_pf *pf);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index c19d4c81d6532..48ba38a452d0b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -12822,6 +12822,7 @@ static int i40e_sw_init(struct i40e_pf *pf)
- 	}
- 	mutex_init(&pf->switch_mutex);
- 	mutex_init(&pf->ptp_config_lock);
-+	i40e_ptp_init_work(pf);
- 	spin_lock_init(&pf->ptp_tx_lock);
- 
- sw_init_done:
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-index f194869947124..5f15a3d4a91ed 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-@@ -169,6 +169,17 @@ static void i40e_ptp_extts0_work(struct work_struct *work)
- 	ptp_clock_event(pf->ptp_clock, &event);
- }
- 
-+/**
-+ * i40e_ptp_init_work - Initialize PTP work for a PF
-+ * @pf: Board private structure
-+ *
-+ * Initialize work which must remain valid for the lifetime of the PF.
-+ */
-+void i40e_ptp_init_work(struct i40e_pf *pf)
-+{
-+	INIT_WORK(&pf->ptp_extts0_work, i40e_ptp_extts0_work);
-+}
-+
- /**
-  * i40e_is_ptp_pin_dev - check if device supports PTP pins
-  * @hw: pointer to the hardware structure
-@@ -1201,8 +1212,6 @@ static int i40e_ptp_set_timestamp_mode(struct i40e_pf *pf,
- 	regval |= 1 << I40E_PRTTSYN_CTL0_EVENT_INT_ENA_SHIFT;
- 	wr32(hw, I40E_PRTTSYN_CTL0, regval);
- 
--	INIT_WORK(&pf->ptp_extts0_work, i40e_ptp_extts0_work);
--
- 	switch (config->tx_type) {
- 	case HWTSTAMP_TX_OFF:
- 		pf->ptp_tx = false;
-@@ -1576,6 +1585,13 @@ void i40e_ptp_stop(struct i40e_pf *pf)
- 	pf->ptp_rx = false;
- 	mutex_unlock(&pf->ptp_config_lock);
- 
-+	/* Stop external timestamp events before unregistering the clock. */
-+	regval = rd32(hw, I40E_PRTTSYN_CTL0);
-+	regval &= ~I40E_PRTTSYN_CTL0_EVENT_INT_ENA_MASK;
-+	wr32(hw, I40E_PRTTSYN_CTL0, regval);
-+
-+	disable_work_sync(&pf->ptp_extts0_work);
-+
- 	if (skb)
- 		dev_kfree_skb_any(skb);
- 
-@@ -1596,10 +1612,5 @@ void i40e_ptp_stop(struct i40e_pf *pf)
- 	regval &= ~I40E_PRTTSYN_AUX_0_PTPFLAG_MASK;
- 	wr32(hw, I40E_PRTTSYN_AUX_0(0), regval);
- 
--	/* Disable interrupts */
--	regval = rd32(hw, I40E_PRTTSYN_CTL0);
--	regval &= ~I40E_PRTTSYN_CTL0_EVENT_INT_ENA_MASK;
--	wr32(hw, I40E_PRTTSYN_CTL0, regval);
--
- 	i40e_ptp_free_pins(pf);
- }
--- 
-2.43.0
+>>   	set_bit(__I40E_IN_REMOVE, pf->state);
+>>   
+>> +	i40e_dbg_pf_exit(pf);
+>> +
+>> +	i40e_ptp_stop(pf);
+> [ ... ]
+>> diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+>> index ff62b5f2c8150..fd51ab8c10c20 100644
+>> --- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+>> +++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+> [ ... ]
+>> @@ -1541,6 +1550,13 @@ void i40e_ptp_stop(struct i40e_pf *pf)
+>>   	struct i40e_hw *hw = &pf->hw;
+>>   	u32 regval;
+>>   
+>> +	/* Stop external timestamp events before unregistering the clock. */
+>> +	regval = rd32(hw, I40E_PRTTSYN_CTL0);
+>> +	regval &= ~I40E_PRTTSYN_CTL0_EVENT_INT_ENA_MASK;
+>> +	wr32(hw, I40E_PRTTSYN_CTL0, regval);
+>> +
+>> +	disable_work_sync(&pf->ptp_extts0_work);
+>> +
+> [Severity: Medium]
+> Does this reordering introduce a TOCTOU race condition with the PTP ioctl?
+>
+> The flag I40E_FLAG_PTP_ENA is still set here while we disable the workqueue.
+> Because i40e_remove() does not hold the rtnl_lock(), a concurrent
+> SIOCSHWTSTAMP ioctl could execute i40e_ptp_hwtstamp_set().
+>
+> Since the ioctl checks I40E_FLAG_PTP_ENA, it might observe it as still set
+> and call i40e_ptp_set_timestamp_mode(). This would overwrite I40E_PRTTSYN_CTL0
+> and re-enable hardware interrupts immediately after i40e_ptp_stop() just
+> disabled them, leaving the device generating events for a disabled workqueue.
+
+I agree. Patch 2 serializes timestamp configuration and PTP teardown
+with ptp_config_lock.
+
+>>   	clear_bit(I40E_FLAG_PTP_ENA, pf->flags);
+>>   	pf->ptp_tx = false;
+>>   	pf->ptp_rx = false;
+>>   
+>>   	if (pf->ptp_tx_skb) {
+>>   		struct sk_buff *skb = pf->ptp_tx_skb;
+>>   
+>>   		pf->ptp_tx_skb = NULL;
+>>   		clear_bit_unlock(__I40E_PTP_TX_IN_PROGRESS, pf->state);
+>>   		dev_kfree_skb_any(skb);
+>>   	}
+> Simon says: Although the issue flagged below is flagged as pre-existing
+>              I am concerned that it is exacerbated by this patch.
+>
+> [Severity: High]
+> This is a pre-existing issue, but could this freeing pattern result in a
+> double-free or use-after-free?
+>
+> A user configuring PTP and transmitting a packet sets pf->ptp_tx_skb.
+> The watchdog task in i40e_ptp_tx_hang() checks the timeout and reads
+> pf->ptp_tx_skb without an atomic test-and-set claim.
+>
+> If a hardware interrupt arrives at this exact time, i40e_ptp_tx_hwtstamp()
+> can preempt the watchdog, read the exact same pointer, set it to NULL,
+> call skb_tstamp_tx() and then dev_kfree_skb_any().
+>
+> When the interrupt returns, the watchdog task resumes and frees the exact
+> same SKB pointer again. This teardown path in i40e_ptp_stop() also forcibly
+> frees ptp_tx_skb without atomic protections against the interrupt handler,
+> compounding the race.
+>
+> [ ... ]
+
+I agree. Patch 1 adds ptp_tx_lock to protect the Tx timestamp slot
+across transmit, watchdog, interrupt, error, and stop paths.
+
+The lock uses spin_lock_irqsave() for the hard IRQ path and is only
+taken for SKBTX_HW_TSTAMP packets.
+
+Thanks,
+Xuanqiang
 
