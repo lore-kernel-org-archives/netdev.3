@@ -1,203 +1,206 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA6C3EB0FA
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 08:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785919869; cv=none; b=n57hx7o1mubZwrcCCobHIbtXkNiky5eqgd4dunZFdvpeL68hSt933dAX9pD877Qmyiactp2K4cAOjZnSSwhJNcMhz6eSlrwuvzfzRinoVJC71BNW2FIaFsK2wTFUXswxydR6OzBPOPlvz8P/rbmzKYkp0VD9WAI2GWahQSBllt0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785919869; c=relaxed/simple;
-	bh=/vNz4l5mVBXMp/4PH3TwZUItUxW2xvaKbwVX+IlWgcQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Fu0pWx7+GWD0/iyo3+c9vRtiHcFmtj5z8R2rtZ0Wb68BB3bqlfmscvKhmUY/sNNmvuHOaqu5WVK9J+d5pg5cpCN0xAlpGM7t4z+zXw+TUW6buHqi9q+aDyOTYdJlUAXVJj6mQL7CjDxNiWXC7NgnVPmtgv2KODE9Haeztj8B3dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ha4k84BV; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54C53EB0FA
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 08:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785919944; cv=pass; b=djGuUz525cVP2+3GIbPGVqNnJdq2FjkP7oILdP8CPJ6jHDYme508YRFWAa7ZIc9711d9IUm1k1fJGg3tBc4Ar3Xlj5notZ0ujhyEXf/7/GLwl4DHe5NK5cC2jgG99MqXlFMtXUypGCDgN5cyCaJYmIHL/Q+ynfP6GJaN3lqf+04=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785919944; c=relaxed/simple;
+	bh=j6DXQFZPqoJxKT6AqBIKO6CcGnuuFezI7MlEPU5EqfQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kdMpBclVQLva7zX9R6WWy+JgTw4ZRONLj1Jh/pVX3R2c8ao7gE+RRnw+QedFcQSIfwyz5XU8aBs83hoVL4kmcE8lhb84n9VrhTuxrMv7Ow8kjeRn8J5aXb8vA+P+TXyvYfeERPTlPxMcWMDD/dOKO+v74PS2W3v+Jmb3izmc2e8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c9NQDysY; arc=pass smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ha4k84BV"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47fe377a217so448242f8f.1
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 01:51:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c9NQDysY"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-52b4e988c77so3909531cf.3
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 01:52:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785919941; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MEAQlJvcPLc+ip/YN8Yne15+EayZNs29zV25IvASS0PaJJBOcy26/KfFePmiQ6s9qe
+         wJkx39wpVrsrRS0/9NWmyTgu73go6LW9x+uIN3z6e4fcndnCuqTyofXrIr3mYh4oMcl1
+         tI3NNNSe4WACYGXQvDVVAZwO9Mgn/NdX2CYG1JSmTpRDnCvnbonSxbl5PiDdVW5kcO3d
+         NW04mRTYQ0Y606HPrmdLvNxNo0YaOTOjDm4OoEcJvolZzwQ0nBys4jA6FwtnrJVkOpbN
+         Zs+jkXyMb6qehrIMAWOggB4c6UlhY8coO5Ppj8jclbGK66W3TjfcHheM/aZLs1pJxVSQ
+         KlEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ndI7WpQKsMazS/qdplorjx+o/2tpreiwv2UGpHfpCdw=;
+        fh=UnMPx8OhKEvvyg0GTQkk6BrjpBwT8xG6mxX+W7N6V6w=;
+        b=sFh29in24DDBorqllgIvSAt8XOwG6rmwUhZDt6TFSABb5h7WjKytyH8bdeuzZw1zn8
+         Df/qvZ2CsfCfecDWti5Nx4vAgI5VIGJzAdn9eF2JXVWPMuPEjuBwzW1/AiegCJ0XFhOT
+         8xiHYdC4iYya9GxRiEBGM0e0UmfAUm3arO1qr3ZR+dMDBHfHnKPy2nTIQIPgNsVq6TO+
+         vSvJ9zelppm4I72HmUc/L8Is/UaPWCNWTNiDjHKYwI5a2Z23a5KWeig846Ef0TdQlQIH
+         W3UF+xJXkVJgP/Fh6P+GspIYq9dDypgHpH+ncy4JQ1JM2Pf65MFp0UXYWstPxkNREvk5
+         C/6w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785919865; x=1786524665; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ekeQUweNW8T1ePcvlKq4eWssEHW2Oh8NqmSu+siabRQ=;
-        b=ha4k84BVKbdb8JK+m2gkAi00KKrtVMHlsLNiun1gdR3NRcqO8f3T2ykQWn1L7/uK/n
-         fWug3ynwxEve6F7SkhWHJH6AzxAm4AofvaTXIMUMHdXIESimRicp1a+AYWOogqx9mjOm
-         TdqSDECzug0yTP0MorXcF+euJZU95j47gFu/rOWdhO7q5RVSF3KO+usJcrh1FBMRZ98B
-         BbWIcF21lnF9c2iUuMAfJ84gOjZ3EhDs8IpSFbu4L3LM2oT4Py2Lcd2mS10wUq62/Jsq
-         +QRO8wD4JiQnP02ptxMNsMV6K0gUhT6ecDCFYgScScNRezqVvJt/uwLP5YqzzZ3rTgfQ
-         R1cQ==
+        d=gmail.com; s=20251104; t=1785919941; x=1786524741; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ndI7WpQKsMazS/qdplorjx+o/2tpreiwv2UGpHfpCdw=;
+        b=c9NQDysYwMbQ0WI27HcXuTZraau/G/TH7mbu/OARtSRdKbogjhRT5fqr/Y9G+QU0/z
+         Rymkq8035w6WyzCap+lbbT/K74k7GACfwj2oDjDxlYZE6Eksf12kudTbRS6yUbjlScWC
+         G2W5SiS4L/y5sz0z+Y3I/maVauZUr4RDBfedQPAAuW7Aj2Ud9zXvIQeirC4urNbgq+4I
+         vQSM+pJTPjVBgeAw9VtUZ4BJfZp2LlelED51yyRxw+N7ECEnh54NAHNhEJtDEvYNMgwb
+         ka5G01gTOiG/2+NmQaCMgRkvp1ytf+A3mYSvG5A+BqryWDqrJjSpwOtUUsRhNa8euk1Y
+         prWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785919865; x=1786524665;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ekeQUweNW8T1ePcvlKq4eWssEHW2Oh8NqmSu+siabRQ=;
-        b=Py7kOO/YAwVyiiI7vguMQjc77FmO2dLy5cd1p5ChhzTKLYzJU1PViY1VkdPJck31p4
-         1xQxfQ/GoTn6tgudTlsKOlXtml1hIN3GITI43k9iW8kdJ5ZTI2cIo7Qkwi13GbSfMg8e
-         oL1Hjho4U3MCREzovURw1T3oZckbj/KOeSgcl/oxKScfb75LIxj3zKXDs0nCcSGut1Yr
-         rhS1PdT5r/lSqWCsgE1LN3YUHSdHspqrx03Undn+A2IpitVkrHzEMQgMzEWEqnUwytph
-         5McpELZETvCqtC8PQC+cdGIU75kNl8Zm2aToJuSZm45XvW8DsOIZF6XGs9yjWPpYNOQO
-         POdQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqMjW8gYGhIXW7hFmbF93OjonfXz2jEqJc6TQWSOcsUbiNIzGY3pckvMuEfW7EAwuTLZ3/iipU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxqc7MRTPKGudN3sQqK3e3tVon0O205WtK74BD1tWtZnTFIHfVN
-	3luk7EeS2lfc1rSaD1KMSvf/1bbYKbNX6/sg5BIvafrohjcAaQd0htzT
-X-Gm-Gg: AR+sD10xpA0nsddV4iLkA1FqYBOrJThG4mA5Lhl5ELsdK/eHfj1Ye6/n7FEdD3F+4sd
-	xN8GMnt7v96LY+XGuPTvt5utZLIunVf8FSCB7QrPNMHPgRtGUy26faZ0zYB9H6Ff6dDFrikyvXM
-	9FB5Vz7131CV7p8aEfdacB/ELtqHaCLT5RaUuW5K9p5mEeBEmDOnAfFwpd6d2yFIA5fEiHAUI+1
-	yUt7APC1mnGJFeLFlCBtIpQd0/kw0oGsQjxVrpUH+RVt5d/9BsJFxWwNxMt2mlCv9oxmTciw+il
-	zmX5iLg8TjBhKqjQwgxg79rhTF+Z3/RbQeAEMWOCYCfuPY2+rPIMZaiKjouKIHcTlNS4eSsnpHP
-	xtf4vgHInquHJQNXFf2CqWC8XqiK+gZOOAi+k/KUlgKQWCZVJoGKOuvtVl+vqG61o0Fxw5M0kdz
-	6NUP1eBGUDC4JMOWcgzBLvcemJj2To8haNebgDLAC+yV9+UBUpa3EQQJUCPKSmxoStSB9Eg2OLx
-	1iFbl6yG35LmatRjJg5cws+CZpV8iKkpHTdY9Su+zi+K62Zjft1bwCXe9g7IQFvJC8JDdzaNWGS
-	JZuP79s7GOYboxFGjWVrtpuffWAu0ksXhITv4yhlQNdjNb3Q
-X-Received: by 2002:a5d:5e08:0:b0:47f:8488:50f0 with SMTP id ffacd0b85a97d-47fec4e419emr8609795f8f.4.1785919865291;
-        Wed, 05 Aug 2026 01:51:05 -0700 (PDT)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232e40sm8347489f8f.19.2026.08.05.01.51.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Aug 2026 01:51:04 -0700 (PDT)
-Message-ID: <0a419b0b-18d6-42a4-962d-301ddd9d4498@gmail.com>
-Date: Wed, 5 Aug 2026 09:51:10 +0100
+        d=1e100.net; s=20251104; t=1785919941; x=1786524741;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ndI7WpQKsMazS/qdplorjx+o/2tpreiwv2UGpHfpCdw=;
+        b=fvIYYhQwifdhHvc3Ae40WfNawWJxOglfrkGDFxsLcY4Hqw0AHNw65X7DEa0XWiAIGN
+         hq2QZ+W1nONNG300BWuxi0hP5WAKz//qRP9OjsNgwLvzpSPKKuRHaImEdU+GaTZtFNxj
+         U94TO2woHB3DN8T3l//81q37pxysue4bUEWKbjEdZ1vKr5Y/ECAFXYn45+rlrSYmgOTh
+         oAGRL3NupyUJfD+SJVEDWXD9T3oJ5icT63W6FcqxWbr69G1x3+cR5n0J1Zl9ZWCLMf/b
+         mTmEf5IKfakuTcpp79thuaoygke8JqdcDHluKz9evsL8vFFdBM9ifg7hTJDegXdSHQCw
+         nBww==
+X-Forwarded-Encrypted: i=1; AHgh+RpCxVjfkN4GZm4Vk1vF50Hmuo/e2Q1wKKKU4yM/RSYcgR5SSBlKwA5GayhEtAtsMk8e7Sn3dCc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkefX4KwuFe25ySKXgKCLmQPDcoKaUzWjUKUTKTs9keG6LiUxZ
+	pF1i8MOARL6Z7gA4Z2NyUDfnq/bgJhHxmfKL8kl1sEbHN3ReGhah8OSOxosvPkCKcCOeoK4tZmL
+	uaatCU8jzj/1gEsKpiL837DO4z15oVSA=
+X-Gm-Gg: AR+sD12/fLwl2yaLsqQJa6iiCDaubkYKGoZxnQdRCAG//O5P2jBawA2OGorEWihtgkR
+	CO4nKsJtmRvMp++khi/rprCElFipJ5WDQJEcwAwpm3ExPHjYzBDGVqA486Qaj6oS8NEg6kZ/tCE
+	zHt8bzhDAOz79ioESve6WJm59g04jeREF5pPQUVp+88xfmQJBbm80rQ9+Ude7ShD8Qw0yH3ko9G
+	3FYY3pJbJlvur2R6Iep9rcJDAhUdmKo75wMcz7eidLELbxSZw/ILXoBvMPd8NtKghHJnoS8rLjp
+	aMqXQFZTy76QplgBtf2SFyGu9ZyJ9E5CpwH4JbfaOiO4TjRGCnocMoH2kk1g3zOorFmVf61GiPg
+	1i8U=
+X-Received: by 2002:a05:622a:1e12:b0:516:dda7:51e0 with SMTP id
+ d75a77b69052e-52ce5ff11acmr52330181cf.17.1785919941452; Wed, 05 Aug 2026
+ 01:52:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [net?] WARNING in netdev_queue_get_dma_dev
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: syzbot <syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com>,
- davem@davemloft.net, edumazet@google.com, horms@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- syzkaller-bugs@googlegroups.com
-References: <6a71f80c.40259c87.584f4.04b9.GAE@google.com>
- <20260804140006.0210f6ca@kernel.org>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20260804140006.0210f6ca@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260804095051.715355-1-david.lee@trailofbits.com> <ec043cd9-ffc5-4a16-a80e-b736ea50bf3f@kernel.org>
+In-Reply-To: <ec043cd9-ffc5-4a16-a80e-b736ea50bf3f@kernel.org>
+From: Yuan Tan <yuantan098@gmail.com>
+Date: Wed, 5 Aug 2026 01:52:10 -0700
+X-Gm-Features: AUfX_mx8a4ogrmDGIJBdqb1hUA7WGigHW93m5FaPqnH_UvGOCPhqWGAgYlL8EvI
+Message-ID: <CAPuPA7KZhv39w=nCG71WBLOcPRrrpb=CvDdVcnCRbfu+z9ZELg@mail.gmail.com>
+Subject: Re: [PATCH net] mptcp: hold msk reference when cloning request sockets
+To: Matthieu Baerts <matttbe@kernel.org>, Kyle Zeng <kylebot@openai.com>, 
+	David Lee <david.lee@trailofbits.com>
+Cc: "Dominik 'Disconnect3d' Czarnota" <dominik.czarnota@trailofbits.com>, geliang@kernel.org, horms@kernel.org, 
+	kuniyu@google.com, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Ren Wei <n05ec@lzu.edu.cn>, yifanwucs@gmail.com, tomapufckgml@gmail.com, 
+	bird@lzu.edu.cn, caoruide123@gmail.com, enjou1224z@gmail.com, 
+	Vega <vega@nebusec.ai>, martineau@kernel.org, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ncardwell@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/4/26 22:00, Jakub Kicinski wrote:
-> Hi Pavel, could you TAL?
+On Tue, Aug 4, 2026 at 11:00=E2=80=AFAM Matthieu Baerts <matttbe@kernel.org=
+> wrote:
+>
+> Hi David, Kyle,
+>
+> (+cc Vega's people)
+>
+> On 04/08/2026 11:50, David Lee wrote:
+> > From: Kyle Zeng <kylebot@openai.com>
+> >
+> > An MP_JOIN request owns the reference stored in subflow_req->msk.
+> > inet_reqsk_clone() byte-copies that pointer when migrating a request,
+> > but does not acquire a reference for the clone.  The original and clone=
+d
+> > request destructors can consequently drop the same reference, leaving
+> > one request with a dangling msk pointer.
+> >
+> > Let cloned MPTCP requests take their own msk reference.  The source
+> > request still owns its reference while it is being cloned, so sock_hold=
+()
+> > is safe.  The clone's normal destructor balances the new reference on
+> > both successful and failed migration paths.
+> >
+> > Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retrans=
+mitting SYN+ACKs.")
+>
+> Thank you for this patch. It looks like it is similar to this one sent a
+> few months ago, but where changes have been requested:
+>
+>   https://lore.kernel.org/40fd38e7a368e5b7bc9bc83364a32241f977d53f.177840=
+4619.git.caoruide123@gmail.com
+>
+> Do you mind checking what they did, and explaining the different approach=
+, please?
+>
+> It seems there are two issues the Vega's team tried to solve: one with
+> MP_JOIN requests (what you are trying to fix here) and with MP_CAPABLE.
+> For me, it is fine to split that in two patches. I also don't mind who
+> is writing the final patch(es), as long as credits are given. If you,
+> David/Kyle, are doing that, it might be OK to add a:
+>
+>   Reported-by: Vega <vega@nebusec.ai>
+>   Closes: https://lore.kernel.org/40fd38e7a368e5b7bc9bc83364a32241f977d53=
+f.1778404619.git.caoruide123@gmail.com
+>
+> @Vega's team: OK with that? Or are you actively working on a v3?
 
-It complains on not holding rtnl, so the netdev should be not
-qops-enabled, and we acquire it with netdev_get_by_index_lock().
-It's going to be rejected later, but not sure whether netdev->lock
-protects its device and leasing logic well in this case.
+We seem to have lost track of this patch, and we sincerely apologize.
 
-As a quick fix, let's fail it early in zcrx if there is no qops.
+Our patch addresses two issues: one involving MP_JOIN requests and the
+other involving MP_CAPABLE.
 
+I reviewed Kyle and David=E2=80=99s fix for the MP_JOIN issue, and it looks
+reasonable to me.
 
-> On Tue, 04 Aug 2026 07:32:44 -0700 syzbot wrote:
->> Hello,
->>
->> syzbot found the following issue on:
->>
->> HEAD commit:    075b74841bd0 Linux 7.2-rc6
->> git tree:       upstream
->> console+strace: https://syzkaller.appspot.com/x/log.txt?x=176a7db9580000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
->> dashboard link: https://syzkaller.appspot.com/bug?extid=a78926bdac2adb52dc0e
->> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
->> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16225db9580000
->> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17bade32580000
->>
->> Downloadable assets:
->> disk image: https://storage.googleapis.com/syzbot-assets/1dc04730d019/disk-075b7484.raw.xz
->> vmlinux: https://storage.googleapis.com/syzbot-assets/d76da42271f4/vmlinux-075b7484.xz
->> kernel image: https://storage.googleapis.com/syzbot-assets/07b1cdbcbe45/bzImage-075b7484.xz
->>
->> IMPORTANT: if you fix the issue, please add the following tag to the commit:
->> Reported-by: syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com
->>
->> ------------[ cut here ]------------
->> RTNL: assertion failed at ./include/net/netdev_lock.h (72)
->> WARNING: ./include/net/netdev_lock.h:72 at netdev_assert_locked_ops_compat include/net/netdev_lock.h:72 [inline], CPU#1: syz-executor223/5620
->> WARNING: ./include/net/netdev_lock.h:72 at netdev_queue_get_dma_dev+0x52e/0x660 net/core/netdev_queues.c:43, CPU#1: syz-executor223/5620
->> Modules linked in:
->> CPU: 1 UID: 0 PID: 5620 Comm: syz-executor223 Not tainted syzkaller #0 PREEMPT(full)
->> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
->> RIP: 0010:netdev_assert_locked_ops_compat include/net/netdev_lock.h:72 [inline]
->> RIP: 0010:netdev_queue_get_dma_dev+0x53a/0x660 net/core/netdev_queues.c:43
->> Code: 89 c5 89 c6 e8 27 f7 68 f8 45 85 ed 0f 85 be fb ff ff e8 a9 fc 68 f8 48 8d 3d 12 0e 90 07 ba 48 00 00 00 48 c7 c6 a0 88 18 8d <67> 48 0f b9 3a e9 9c fb ff ff e8 87 fc 68 f8 48 8d bd 00 08 00 00
->> RSP: 0018:ffffc90003b47a80 EFLAGS: 00010293
->> RAX: 0000000000000000 RBX: ffff888029874000 RCX: ffffffff89a16569
->> RDX: 0000000000000048 RSI: ffffffff8d1888a0 RDI: ffffffff91317390
->> RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
->> R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
->> R13: 0000000000000000 R14: ffff88807b3f2568 R15: ffffc90003b47be0
->> FS:  00005555885ac400(0000) GS:ffff888123ed8000(0000) knlGS:0000000000000000
->> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> CR2: 0000200000001000 CR3: 000000006f8b6000 CR4: 00000000003526f0
->> Call Trace:
->>   <TASK>
->>   zcrx_register_netdev io_uring/zcrx.c:831 [inline]
->>   io_register_zcrx+0xe94/0x1d30 io_uring/zcrx.c:983
->>   __io_uring_register io_uring/register.c:942 [inline]
->>   __do_sys_io_uring_register+0x1193/0x1bc0 io_uring/register.c:1040
->>   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->>   do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
->>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
->> RIP: 0033:0x7fd0b54bbcb9
->> Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
->> RSP: 002b:00007ffe25f0a7f8 EFLAGS: 00000246 ORIG_RAX: 00000000000001ab
->> RAX: ffffffffffffffda RBX: 00007ffe25f0a928 RCX: 00007fd0b54bbcb9
->> RDX: 0000200000000400 RSI: 0000000000000020 RDI: 0000000000000003
->> RBP: 0000000000000001 R08: 0000000000000000 R09: 00007ffe25f0a928
->> R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffe25f0a918
->> R13: 0000000000000002 R14: 00007fd0b554cca0 R15: 0000000000000002
->>   </TASK>
->> ----------------
->> Code disassembly (best guess):
->>     0:	89 c5                	mov    %eax,%ebp
->>     2:	89 c6                	mov    %eax,%esi
->>     4:	e8 27 f7 68 f8       	call   0xf868f730
->>     9:	45 85 ed             	test   %r13d,%r13d
->>     c:	0f 85 be fb ff ff    	jne    0xfffffbd0
->>    12:	e8 a9 fc 68 f8       	call   0xf868fcc0
->>    17:	48 8d 3d 12 0e 90 07 	lea    0x7900e12(%rip),%rdi        # 0x7900e30
->>    1e:	ba 48 00 00 00       	mov    $0x48,%edx
->>    23:	48 c7 c6 a0 88 18 8d 	mov    $0xffffffff8d1888a0,%rsi
->> * 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
->>    2f:	e9 9c fb ff ff       	jmp    0xfffffbd0
->>    34:	e8 87 fc 68 f8       	call   0xf868fcc0
->>    39:	48 8d bd 00 08 00 00 	lea    0x800(%rbp),%rdi
->>
->>
->> ---
->> This report is generated by a bot. It may contain errors.
->> See https://goo.gl/tpsmEJ for more information about syzbot.
->> syzbot engineers can be reached at syzkaller@googlegroups.com.
->>
->> syzbot will keep track of this issue. See:
->> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->>
->> If the report is already addressed, let syzbot know by replying with:
->> #syz fix: exact-commit-title
->>
->> If you want syzbot to run the reproducer, reply with:
->> #syz test: git://repo/address.git branch-or-commit-hash
->> If you attach or paste a git patch, syzbot will apply it before testing.
->>
->> If you want to overwrite report's subsystems, reply with:
->> #syz set subsystems: new-subsystem
->> (See the list of subsystem names on the web dashboard)
->>
->> If the report is a duplicate of another one, reply with:
->> #syz dup: exact-subject-of-another-report
->>
->> If you want to undo deduplication, reply with:
->> #syz undup
-> 
+Ruide and I also do not have a preference regarding whose patch is accepted=
+.
 
--- 
-Pavel Begunkov
+If David/Kyle' patch is accepted, please add:
 
+Reported-by: Vega <vega@nebusec.ai>
+Reported-by: Ruide Cao <caoruide123@gmail.com>
+Closes: https://lore.kernel.org/40fd38e7a368e5b7bc9bc83364a32241f977d53f.17=
+78404619.git.caoruide123@gmail.com
+
+Btw, Kyle and David, would you be open to collaborating with us on
+Linux kernel patches? Over the past few months, our team has fixed
+more than 100 high-severity vulnerabilities in the kernel. We=E2=80=99ve
+learned a great deal from maintainers=E2=80=99 feedback and have built up
+extensive experience. We=E2=80=99d love to help improve kernel security whi=
+le
+minimizing the burden on maintainers as much as possible.
+
+>
+> One last thing: it looks like your patch is conflicting with this one:
+>
+>   https://lore.kernel.org/netdev/20260803061739.134737-1-jiayuan.chen@lin=
+ux.dev/
+>
+> > Cc: stable@vger.kernel.org
+> > Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
+> > Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> > Co-developed-by: David Lee <david.lee@trailofbits.com>
+> > Signed-off-by: David Lee <david.lee@trailofbits.com>
+> > ---
+> > Bug found and triaged by OpenAI Security Research and
+> > validated by Trail of Bits.
+> >
+> > Trail of Bits has a reproducer for this bug that triggers a
+> > KASAN use-after-free and can share if needed.
+>
+> I think it would be good to include the (decoded) KASAN warning in the
+> commit message. Regarding the reproducer, if it is with packetdrill, I
+> think it is always useful to share it. For others, don't hesitate to
+> share it to the same people: it can help better understanding the issue.
+> Maybe remove the mailing list when doing that if it is security related?
+>
+> Cheers,
+> Matt
+> --
+> Sponsored by the NGI0 Core fund.
+>
