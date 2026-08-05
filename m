@@ -1,115 +1,91 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A6430566A
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 08:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE40C246784;
+	Wed,  5 Aug 2026 08:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785918326; cv=none; b=b2P6Ly+5+TMJgW3FwlNfSWnopY00ShiBaZoyjGncAQydR2i8aTGcHC8hA5LRZ1L/D6Qgqjs1gq8y2kJLiM6c7OJn/OGFynHOyglVGQAYBOrYDS4+tIkO7tZbN7btRNAabh9WZgukaSxHqKyqEceY/xDsANsCuVxooWR9UgVcqVY=
+	t=1785918364; cv=none; b=OB6ZdvDBRzybeWkRlC4l1F/R1UCtJd6P1E/8EYWirjT3Gkj/DBsxukgWOc/pXc+ofAT9EanLx5V3/w9ueU8nIrsny06+XO06kumqX+ZdUKTkiKal/GE3c8BNXHeeN9Bh4B3Q/Jl2tgDnc6jiLMScb6caSEUZbVG1lzze3fmevro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785918326; c=relaxed/simple;
-	bh=1vBX4q7ojpcugGpkY4PDpKLUTwdTY4Y0bm+vJswlm4Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g0O9Hkh3f3GhBdbodL5Ay8+cKDIfTCkju/q55rTps1yJDZ3Hk1be8Fjndbf5T9i2m5ySWCoPRDH/pxrIyu5VRB/RlcfD1EfHr/sykVxTLZaDc7m7tparrehsm+xD+DdviXjTmy5VXbIHHxTi0T6KfGeWLfZcBrL0T6+5kW34+ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PPRF1Euo; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785918364; c=relaxed/simple;
+	bh=jdNVwwJQY+ckL6kJ8Tj7UyLROjjvMVrs/XkN06eWAYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CPV68LieJ3vPScEM5K7pieiEPVUkmB+F3gLebxn7jW15mo6LYSUWGl0CwVm9kJjtSRvkg7JgvHpud504RKJWNjJwrSjCMIs1HAotRLVMkItih2qU9XsuHIeJ6j8hxBbkLW2wxQUWRw+Ony8ovtzBSZbhh3+6j3a+lCfFaI+0myY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=m8EyoIp0; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PPRF1Euo"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38dc69c74b8so764303a91.0
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 01:25:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785918325; x=1786523125; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sO8zLVEA2ZltNWuNfjgzJEFi3mOfQQ23YawfcZLxY7w=;
-        b=PPRF1EuoV6E/4fMkUyT8Ym5e4xdAM/LMuwev31mjii4iyN7CKKiWyTDnkTctZErdqy
-         nQRPHYxY8TQK5ANkutJIrh6XqgThMQTSR6dEUxKqtkZI3antH2kO7jWX6RBLE8FgsFM4
-         IuZiKl+7GlRmJQkcFiH6kzE/7wHOxs+IvFF7O6KgaC2tiFqOyBpBlw/AF74qFU5I/uAC
-         L8iN/9y75PsGfFn8GmcnAYdooL1XYeo9oAjHNrMRnljuBELvsoH4928WPJLMKUmrX8Dr
-         qw02nnoFV/h9Y18WShMbTg7EaPIEJFVhe+tTfT8r5vu1j2+5siN6co4p4cPCfLdww/HB
-         hfPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785918325; x=1786523125;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sO8zLVEA2ZltNWuNfjgzJEFi3mOfQQ23YawfcZLxY7w=;
-        b=cdBwxlbuN2DhZq7GkszLRw8OHEULLTB5pvMZ4wpO/d9HPjPRrFN81tE1irtSTlGsBZ
-         5w2T4TRxP68UK3vZrW+HsuFS3bxHNNf/tiBcXpabX2mukVmn1Pq8GIBbX1qwRE/AQovW
-         KrWy7gofDBw090KdwDZA25XeMUhfOzZiK56dPtqMKr8+Frh/B8EHUNJz1zaaRipbKnW+
-         j/mz/6lqkbCVlA+BThw6x2rqXF/UDBzljd6Nu7XCklRviZfgAVrCf89/yY8ZGZGrVsbU
-         Z9ic7Ov4StMoiDa/rnz4MRSKfXpUKkL2XnFGLqyEaf7Z5xlYKiCWBjwd4MRRriK9SUjW
-         0uTA==
-X-Forwarded-Encrypted: i=1; AHgh+RrMtJNw6T/DIMMAC2gCybqgzs1o23HgAgteoYZEWtEXhaC2fUDW0WVgWX5zh0aQYvfdy/HoocI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzWbFuGDs0yHXcNG15cY4IYIouqH4fXHW3pxMl87GBHvd1KXiW
-	SzwFY9sAMF5Et5MhB8p3sR16qJRJ7k9Fsvqwk19wj7Y4PFoO5+wYkNIX
-X-Gm-Gg: AR+sD11KjUCDKPvUpuYap6O9mOERTjcTB1JOgYs9J1YO1GIObg+rISfvdXAot5Alwhk
-	h0xlNTyuMo5TVeZahFgcKFvN2yW2YVHU92kLI6KET5wrU+1G6+q+KFpd2MoXYO5Cf+EGK2Hpxt0
-	Y+R//pFi4fR/G1SurdKPn3c7ju3Rne9uwGFOYBstzApV4onX3eqNYOWqot7wQCw8NvPFYpTZynn
-	nuL8Cjd8aU4yQ9i9FPulLU4jLAyxEJyhhXlSBWHYHDX0kMcuLQgTZwBonpgWWe0IRNn80csTa+v
-	Qakqn5YKZ5S/635YdF041SLI04LBKeHqRSUH9y8OJzZc9bLelSEaDhHK2AVU6V8aheUB4ITmUVd
-	VGTy2Ym6odAwpomrhXTmPrWLd1tb0mEscPjt9MMtjZLxGrYFLX+t74FucwHgayAZSd+yr+uvCBb
-	5Ju5SWaPMTosQ53SXJ0bRehCjQdfd33TL+izQgC2EVEl1EDeRVBVPsOSwodBnuw1eeTIYcuGin
-X-Received: by 2002:a17:90b:5683:b0:381:26f:8f05 with SMTP id 98e67ed59e1d1-3903c5380f7mr4999150a91.3.1785918324995;
-        Wed, 05 Aug 2026 01:25:24 -0700 (PDT)
-Received: from osman.mioffice.cn ([43.224.245.178])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3903f5fdfe5sm1263278a91.4.2026.08.05.01.25.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 01:25:24 -0700 (PDT)
-From: Zhan Xusheng <zhanxusheng1024@gmail.com>
-X-Google-Original-From: Zhan Xusheng <zhanxusheng@xiaomi.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zhanxusheng@xiaomi.com
-Subject: [PATCH 0/2] wifi: iwlwifi: Fix GP2 to nanoseconds overflow on 32-bit
-Date: Wed,  5 Aug 2026 16:25:13 +0800
-Message-ID: <20260805082515.4136842-1-zhanxusheng@xiaomi.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="m8EyoIp0"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8BF703EBCA;
+	Wed,  5 Aug 2026 08:25:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1785918359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NbHmjTmZQfaX9I+BqpADjh7NOh5VxYpTnMMdG04HFtY=;
+	b=m8EyoIp07y7wKl7DCfWzOzX7NoV52LsHfIOJNILlbVSDqfX9xNy1UXEAENyc4qzMmsgoGj
+	hADxdZrZ7MWlFZ0injQ0rIUrXeznn857CPxQGff3zfzFQ30rztdvZuREWzcMYkLqR4uBS3
+	pW6nGEGOz9PB74eSRGpp0SaxCrc7oO50F5YeWpO/+gotQn/z5Tj/Ip2Q8QgugkWZUyuDuD
+	wiOlNTz5S+hZRsTildGlK0+JvaFP8AgsW7ZglQmerSQfY+ZSlyoTE0kmNQ9F4ztXAgFVH2
+	NwWqbweZAjCSVbzywRqr/pn6SIvVf0DWA6XSdhBsxUQE/xoSYDovuu9VDYXJJw==
+Date: Wed, 5 Aug 2026 10:25:52 +0200
+From: Arthur =?utf-8?Q?Cr=C3=A9pin?= Leblond <arthur@marmottus.net>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] w5100: restore GPIO-based link detection
+Message-ID: <anLzkNOBMvn7_0d3@pc-du-fromage>
+References: <20260804-wiznet-link-gpio-v1-1-b626fd4f7ccb@marmottus.net>
+ <d762ff5f-30ba-42fc-bf58-500f807483ad@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <d762ff5f-30ba-42fc-bf58-500f807483ad@lunn.ch>
+X-GND-Sasl: arthur@marmottus.net
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTGedFxA1DxmVgniXAyrblc2qturyZNzK18xk1YpaSqkwFNCmV3VuwI5rbYnTtaISHoMx9SXNLrcXCFpo4M91UAW8j+taKmaDYl3Ko0aZavlF3INaaA6/j3TXTFEtvHaxha8dVHelnHZHpMQfmKMnqCJRIvzMSE0UA3ONKX2i/Og10ACDNJYKfGRHMzudPLeJBMjNfTLD2wZXjYYTP1fm88njpkuZ0sFhobtXvzgoT8ZcePZtEUMBR0pGdpfOWV0ktbwupD47ljaGluECwD7HE4zrkCrWT8nG+FQh2vXk91Ns0419wj7EFlOI20XN2YCrI8eQuIAXgybFlbXc+EajZDYX7Sovw08pNCDGiHexhAoanzlczxjpjU8gxqIbZej4Lff70zgUdF1mG59wZTEv99bRkEKZ0QdxsV4vwUT9JdBiv4TVbMeS/SjfM7R4g2fQEhVEUWdmPU4d08/n8l0k0IUz2gFfX2urLjTflAAfTNYCli+5HwRKyEh1l/S9m/vdU9rSuNucyauI8+3xVBqNjz2BE06Op1TrbeHTBv6db7hyah+rrACJW89IB4gVETcxEFInd9/WrvTRJLLDpgQPma2MiBwSdcnKCjbRTgvLiwJX22Cl85hem5RqCsqPi0MRAaJ2C3ZQQZj/Fwf+d3sggxqb42lKqhVBArQw8FPVUSyVQ
 
-GP2 is a free-running 32-bit microsecond hardware counter. Both the mvm
-and mld PTP code convert a u32 GP2 value to nanoseconds with
+On Tue, Aug 04, 2026 at 07:54:29PM +0200, Andrew Lunn wrote:
+>On Tue, Aug 04, 2026 at 04:38:35PM +0200, Arthur Crépin Leblond wrote:
+>> Commit dacf281771a9 ("w5100: remove unused gpio link detection")
+>> dropped the link_gpio/link_irq handling on the grounds that no
+>> devicetree user passed a "link" GPIO at the time.
+>>
+>> Signed-off-by: Arthur Crépin Leblond <arthur@marmottus.net>
+>
+>Hi Arthur
+>
+>Do you understand the architecture of this device? What exactly is on
+>the other end of this GPIO?
+>
+>https://wiznet.io/products/ethernet-chips/w5100
+>
+>suggests it has an integrated PHY. So why is a GPIO needed to report
+>link?
+>
+>Thanks
+>	Andrew
 
-	gp2 * NSEC_PER_USEC
+Hi Andrew,
 
-NSEC_PER_USEC is a plain 'long' (1000L), so on 32-bit builds the
-multiplication is performed in 32-bit arithmetic and overflows once the
-GP2 value exceeds ~4.29 million microseconds (~4.3 s). Since GP2 wraps
-only every 2^32 microseconds (~71.5 min), the product is truncated for
-almost the entire counter range, producing bogus PTP timestamps.
+the W5100/W5500 exposes directly a LINKLED pin for the carrier status.
+On my board (RPi), that pin is wired to a GPIO to detect changes on the host
+directly via an interrupt.
 
-Most conversions in the same files already cast to u64 first
-((u64)gp2 * NSEC_PER_USEC); a handful of sites (the adjfine path, the
-stored scale_update_gp2 and the monitor/RX timestamp path) simply missed
-the cast. These patches add the missing u64 casts so the multiplications
-are done in 64-bit, matching the existing call sites. 64-bit builds are
-unaffected. The mld driver inherited the same pattern (and bug) from
-mvm, so it is fixed in a separate patch with its own Fixes: tags.
-
-Found by code inspection; not tested on 32-bit hardware. The change is a
-straightforward u64 cast matching the surrounding code.
-
-
-Zhan Xusheng (2):
-  wifi: iwlwifi: mvm: Fix GP2 to nanoseconds overflow on 32-bit
-  wifi: iwlwifi: mld: Fix GP2 to nanoseconds overflow on 32-bit
-
- drivers/net/wireless/intel/iwlwifi/mld/ptp.c  | 4 ++--
- drivers/net/wireless/intel/iwlwifi/mld/rx.c   | 6 ++----
- drivers/net/wireless/intel/iwlwifi/mvm/ptp.c  | 4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 4 ++--
- 4 files changed, 8 insertions(+), 10 deletions(-)
-
--- 
-2.43.0
-
+Arthur
