@@ -1,150 +1,199 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B67641B8F3
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 10:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785926482; cv=pass; b=RcfGmbqSSSZTg3Psg0K7hCJ7wFu+dcnASBhbHvOeIf+neGbImuRF7UFptH77yK2AKtPgW/kMs2+Q1lm37yOpvRcht7aWTJL9BjYCwnoytlkwFm6y48/8j2tCHYqamBDYpYJgTcT+BF5avk3+Mfkc6gJMsj9JC7uz4HQd3JmDevk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785926482; c=relaxed/simple;
-	bh=5niBt8DyKkV5MwxSbrsZ3eqRRMmoyzmdPFe+ZCtEli8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P9LzNFJL11J/p9lj3nnjgK95OA3hVu/+gsAjmYhfPcn7s43TPtuRfyVHkYWm3Meoot4V/zHfFV7EnzE3NazT0PayjE2pLYlieKZmX8U06DalwbCeUAwxsLsXopyr51gWuHgWvjlllhF85fd31lumvayDwFUf2VRRgljn497UFa4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qPSABqIG; arc=pass smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D823436F42D
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 10:46:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785926785; cv=none; b=UezmB5tpubld+bokGU6E8p/bB08FQs7pHTSSHDDvgbASyc0BVkKsLg8scd1HynaO7u0KnsfufbNYW9FFkvEXr89lBkfPMsS6eYjORx1DvN1JTQ2qZAQWYWOwzxyPnSGgnq0KsrfW7mix/aZ3Op1gWSwflOikZKkCD2XbZv042aY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785926785; c=relaxed/simple;
+	bh=kbVs+FmFCjQ3hfPyF/yxTShzmDkjl0zM5IPKc6rOaxg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qyR/9zKwADlIkozxoe14tJOmBJSHAysZbQ5YA4g6/fzKjK1FLUoXH+vGVnLYS1/K8BkJFvKskqVsU+WJdbq1Jq+t4qIFOL8JJ1C3Fl5QPo9HD/d8xynkW/tE/ey15mvHy7+1mOvkWh5ZEGPgkCyc8A7ZCBNHgYYLuzjO12VJI8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gv+96amm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qPSABqIG"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-39db07589caso7660481fa.2
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 03:41:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785926478; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bxeuV3b3juo5CTw02lcYxaW0qTso4Zr4kVi1lCvO1OVt/Mvf9qGqXl8kePaGWld7RW
-         J8H0dBZXjTfY4Zt/Y9EovN2rlAzljr1MoGCx3oQ9GsxdsYXVl3t4JDlPrpS2TKzdVXU2
-         +PLcdt8b+CshTjKczkx5E9C/7SSwENKj1NPeUbxihBTps4L2uT2Knsf/eXHxjpDeYT2w
-         6SUiSbke0GMuw7op1zkyXSzDV5dEzFh7NwtcsD7FmvMkRUIZPavFU/SB/SieYmLq64Ev
-         J12kbJMacuyKuH1Upe65UCXil5qsW2+/aLSodtoDeUO0uv7OKZ/OS9tjhd+qXVEhOP04
-         iCZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=5niBt8DyKkV5MwxSbrsZ3eqRRMmoyzmdPFe+ZCtEli8=;
-        fh=uEPGPrhv1l2nvicVkdZTQUQDgJjpNGX+O8ecStP6Ii4=;
-        b=c6hafaYEgCGvf8Xl8UA74GCncazL+0CVnDhR7p8l+Du+IdHHVHGJSXLjKyYtIK9Grh
-         ahLP35GSbwEomVDJns2xll+WxY281SynkoX8Y3dJg0DsLZRmeuubnqlhCZGZpTE8DcYU
-         9QEgQX2SsqALFeZzuf2DqfqyiNtQ+w5no+0hwtkBmpowbgur/pnFk1kj68NQl5+F3leY
-         cwc6HvIIJ+LDtbENqy+j1gLrxf16wdODnZZiWGOBwguE37K6D7GBdRry/sjdq419qiXE
-         RCDs53fZgUegyeZQn3r4+9l6COosyWeV3FReCkcdMRZmJBpcNYGQTM03EEzgSmr6Tm71
-         s5CQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785926478; x=1786531278; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5niBt8DyKkV5MwxSbrsZ3eqRRMmoyzmdPFe+ZCtEli8=;
-        b=qPSABqIGps0T6TKTjNDT4h28762RiQMmdmQiZcjqtABYlDnnIhj+j5rYozCj4RurXN
-         UrNLziAORRnMfleTLqEnj4EA28Atu9GluXGZma3Pu+aNs8igXtVJCrV6Y/Eg5FeVOncu
-         5qkLYsxKElvyL/Z8RLZWhbokmu5ved1m5zE4B5E/bElfAfUu8/AQJCAptPh68Qg8O2zi
-         MTAZbvbWR/cx3cOOkvA63+x75vkRpGF+8cuQ6K9w27tjx6NIUOrJnb1pqc1O8zwp3LWv
-         rS8VlOomIeHwgzKeM7PeZvdKkybuVkYzCm6t1Fe9m74zLgrAf0bB93+Ol6byjI4ukC18
-         UEEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785926478; x=1786531278;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=5niBt8DyKkV5MwxSbrsZ3eqRRMmoyzmdPFe+ZCtEli8=;
-        b=iNO3ZzkMbYAzIp0mjtGhO+aRgT2ixmX2tiCbOduJHyrrafZPZ24JxnWLYfCU/15tSQ
-         Cc28vniOgiEx0+GaTmmpf5TyMCj96an+vwzHdF6s+5FbUVlj5z0AqIdZ97G87u2h7H5u
-         2lNhTJp8/4Uer3FQgARt1F+xzpFrPckzi6dZcuNLoia6RBTRCOdWWMP1ROSfs+D3Rx/u
-         NMLGu0BDEGrdKQ5blKMtLMVOZm9/kx+vTET5QF79seIRCz+6iO4yBgKAVGWFfERkcElT
-         l+VuAPFZ4QdA68pq2Lgw4sqT76xUkjP6XmcRA4LN4dKHvIXqLszMMWKmbr/QqoucVPYD
-         fdQg==
-X-Forwarded-Encrypted: i=1; AHgh+RopOA5IjUxR8SWq7YoSn5XygKtaVI0kVfLyWEiSGlzQJIswjaA+tnU0W1TSyzfnNRp8Ms1qO+M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqUopjnxhmaiCowLLPQM3zOulMkdkZH2o7Elj1zanxGcC5rQ+m
-	QRC5LdfjhBA6mGR7YZKu1PNLWOjRIPi4WvfVkLFa0Q67Ius/GhOy/6puXHcqJjVEWx+wBd8Gk5R
-	DDEJuRoSdaC1FrDWzNy5KGllnimzUJ/w=
-X-Gm-Gg: AR+sD10qzbPMwtV+6NNZmzMAcCfjqnQHajbocWvHv1jD13bzJmxUAMccq2QnSs+EJxW
-	tk+b0bxmmHu/LPK3zdtCJaMjiEqU7uQE8rcrMbZRsyXBApI53ROxxHzPaThpAMG10WeDfVtMw9l
-	1ydJYVvFIFb7RlYF41dVT1orhgI2qaJ1kG9m6UlyZjqXmWcVoMRnhw3PpnPvwO4lkyVPIJVdlv9
-	yuxMVKJ8qwOxuHbdxvGO+7v6qN8toMpbNxu2atqJavMSLbTDNxQM+AiMVcMOMyOlO7KUbBkJk06
-	RS2NF8MVDlsILsC4VSK5AR0L2ErX5NOLaBrWNzWqof+jXfW9hxBjkaW7gb9mYrmABMveelCOuKz
-	sANUSj2p/jOmhFuoXpbUaMXd1mPH5P2ec3hulZAEA4aKkOQ==
-X-Received: by 2002:a05:651c:a20f:10b0:39a:fa7c:b152 with SMTP id
- 38308e7fff4ca-39fbb1a6880mr5507661fa.4.1785926478218; Wed, 05 Aug 2026
- 03:41:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gv+96amm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785926782;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wtntRxA6O/rhXYFEshwuz+YgvPBzndTokOGzB8BnW3M=;
+	b=gv+96amm+01ISntUnkcqIBQNisNkMaMc0VeWWpiXc+oCUr3CIX4tPtu93P49K+p5C+5zjA
+	AIOffMnPITLzFQBhVjGmjBYsH0ftVLEAtilnI9meNhqZHjSf031ZaJ4MoJwb9+4qh8L7MF
+	QM6GHe6BmMaGGMFR1ktP9F1umd6OAYY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-1jANVDrnPOGmdZlo748Krw-1; Wed,
+ 05 Aug 2026 06:46:19 -0400
+X-MC-Unique: 1jANVDrnPOGmdZlo748Krw-1
+X-Mimecast-MFC-AGG-ID: 1jANVDrnPOGmdZlo748Krw_1785926778
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 26E4B1956040;
+	Wed,  5 Aug 2026 10:46:17 +0000 (UTC)
+Received: from [10.44.32.154] (unknown [10.44.32.154])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2A29F1800598;
+	Wed,  5 Aug 2026 10:46:13 +0000 (UTC)
+Message-ID: <ce492b1d-b31e-4695-ab5d-4107491fd59d@redhat.com>
+Date: Wed, 5 Aug 2026 12:46:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260804014714.4362-1-sigefriedhyy@gmail.com>
-In-Reply-To: <20260804014714.4362-1-sigefriedhyy@gmail.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Wed, 5 Aug 2026 19:41:06 +0900
-X-Gm-Features: AUfX_myaYvRXHpMPIXlPqkonD5M3Gijs2W5bvZsdGfZVgRcOCjHXYxfLchXmdwU
-Message-ID: <CA+7S2vKRASitG1pK_RPG1L-hDsJyev1q-+ViRhCppBg9aFuZvQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 00/10] ipv6: report why a route was deleted in RTM_DELROUTE
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Chris J Arges <carges@cloudflare.com>, Daniel Zahka <daniel.zahka@gmail.com>, 
-	David Ahern <dsahern@kernel.org>, David Wei <dw@davidwei.uk>, 
-	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, Donald Hunter <donald.hunter@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, Gal Pressman <gal@nvidia.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Nimrod Oren <noren@nvidia.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 1/2] dpll: zl3073x: add channel ToD, phase
+ step and TIE operations
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+ Chris du Quesnay <Chris.duQuesnay@microchip.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Prathosh Satish <Prathosh.Satish@microchip.com>,
+ Richard Cochran <richardcochran@gmail.com>, linux-kernel@vger.kernel.org
+References: <20260803140637.102339-1-ivecera@redhat.com>
+ <20260803140637.102339-2-ivecera@redhat.com>
+ <bc5060c8-7709-4354-aa48-7f64b857c00c@linux.dev>
+ <14086fc7-b8f3-47a4-87a4-5e02882b6bf1@redhat.com>
+ <9124c698-2506-4fe6-893a-60e9f0cb241d@linux.dev>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <9124c698-2506-4fe6-893a-60e9f0cb241d@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-I checked the sashiko's comment:
-https://patchwork.kernel.org/project/netdevbpf/patch/20260804014714.4362-10-sigefriedhyy@gmail.com/
+On 8/5/26 12:03 PM, Vadim Fedorenko wrote:
+> On 05/08/2026 10:48, Ivan Vecera wrote:
+>> On 8/5/26 1:07 AM, Vadim Fedorenko wrote:
+>>> On 03/08/2026 15:06, Ivan Vecera wrote:
+>>>> Add low-level DPLL channel operations for ToD read/write/adjust,
+>>>> output phase step, delta frequency offset write and TIE (Time
+>>>> Interval Error) write. These serve as building blocks for the PTP
+>>>> clock callbacks added in the next patch.
+>>>>
+>>>> ToD operations use a wait-before-write pattern to avoid blocking
+>>>> after each operation.
+>>>>
+>>>> The tod_ready_wait helper selects the poll timeout based on the
+>>>> current ToD command - write operations use a longer timeout (1000 ms)
+>>>> than reads (30 ms).
+>>>>
+>>>> The ToD read captures system timestamps (ptp_system_timestamp) around
+>>>> the HW command and completion poll to support cross-timestamping.
+>>>>
+>>>> The TIE write operation provides sub-picosecond resolution phase
+>>>> adjustment for modes where the DPLL is tracking a reference
+>>>> (AUTO and REFLOCK).
+>>>>
+>>>> Add output step-time mask to struct zl3073x_dev and
+>>>> zl3073x_dev_out_is_stepped() helper to check if an output
+>>>> participates in step-time operations.
+>>>>
+>>>> Reviewed-by: Petr Oros <poros@redhat.com>
+>>>> Tested-by: Chris du Quesnay <Chris.duQuesnay@microchip.com>
+>>>> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+>>>> ---
+>>>>   drivers/dpll/zl3073x/chan.c | 310 ++++++++++++++++++++++++++++++++ 
+>>>> +++-
+>>>>   drivers/dpll/zl3073x/chan.h |  32 ++++
+>>>>   drivers/dpll/zl3073x/core.c |  13 ++
+>>>>   drivers/dpll/zl3073x/core.h |  23 +++
+>>>>   drivers/dpll/zl3073x/regs.h |  52 ++++++
+>>>>   5 files changed, 428 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/dpll/zl3073x/chan.c b/drivers/dpll/zl3073x/chan.c
+>>>> index 4ec2cf53dad468..79874a9fdb4962 100644
+>>>> --- a/drivers/dpll/zl3073x/chan.c
+>>>> +++ b/drivers/dpll/zl3073x/chan.c
+>>>> @@ -3,6 +3,7 @@
+>>>>   #include <linux/cleanup.h>
+>>>>   #include <linux/delay.h>
+>>>>   #include <linux/dev_printk.h>
+>>>> +#include <linux/ptp_clock_kernel.h>
+>>>>   #include <linux/string.h>
+>>>>   #include <linux/types.h>
+>>>> @@ -162,8 +163,8 @@ int zl3073x_chan_nco_mode_set(struct zl3073x_dev 
+>>>> *zldev, u8 index)
+>>>>    * @zldev: pointer to zl3073x_dev structure
+>>>>    * @index: DPLL channel index to fetch state for
+>>>>    *
+>>>> - * Reads the mode_refsel register and reference priority registers for
+>>>> - * the given DPLL channel and stores the raw values for later use.
+>>>> + * Reads the mode_refsel, status and reference priority registers for
+>>>> + * the given DPLL channel and stores the values for later use.
+>>>>    *
+>>>>    * Return: 0 on success, <0 on error
+>>>>    */
+>>>> @@ -234,6 +235,311 @@ const struct zl3073x_chan 
+>>>> *zl3073x_chan_state_get(struct zl3073x_dev *zldev,
+>>>>       return &zldev->chan[index];
+>>>>   }
+>>>> +/**
+>>>> + * zl3073x_chan_tod_ready_wait - wait for ToD semaphore to clear
+>>>> + * @zldev: pointer to zl3073x device
+>>>> + * @ch: DPLL channel index
+>>>> + *
+>>>> + * Polls the ToD control register until the semaphore bit is cleared,
+>>>> + * indicating the device has completed the previous ToD operation.
+>>>> + *
+>>>> + * Return: 0 on success, -EBUSY if semaphore not cleared, <0 on error
+>>>> + */
+>>>> +int zl3073x_chan_tod_ready_wait(struct zl3073x_dev *zldev, u8 ch)
+>>>> +{
+>>>> +    unsigned int timeout;
+>>>> +    u8 tod_ctrl;
+>>>> +    int rc;
+>>>> +
+>>>> +    rc = zl3073x_read_u8(zldev, ZL_REG_DPLL_TOD_CTRL(ch), &tod_ctrl);
+>>>> +    if (rc)
+>>>> +        return rc;
+>>>> +
+>>>> +    switch (FIELD_GET(ZL_DPLL_TOD_CTRL_CMD, tod_ctrl)) {
+>>>> +    case ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ:
+>>>> +        timeout = ZL_POLL_TOD_WR_TIMEOUT_US;
+>>>> +        break;
+>>>> +    default:
+>>>> +        timeout = ZL_POLL_TOD_RD_TIMEOUT_US;
+>>>> +        break;
+>>>> +    }
+>>>
+>>> there are 3 cmds defined, but FIELD_GET(ZL_DPLL_TOD_CTRL_CMD) can return
+>>> up to 16 possible values. I would explicitly put defined commands in
+>>> cases and make default to ENOTSUPP..
+>>
+>> Hi Vadim,
+>> the ZL_DPLL_TOD_CTRL_CMD bits are never filled by firmware (only the
+>> semaphore bit) so the driver knows what it writes. So such check is not
+>> necessary but if you want it I can add something like:
+>>
+>> ...
+>>      case ZL_DPLL_TOD_CTRL_CMD_RD_CURRENT:
+>>      case ZL_DPLL_TOD_CTRL_CMD_RD_NEXT_1HZ:
+>>          timeout = ZL_POLL_TOD_RD_TIMEOUT_US;
+>>          break;
+>>      default:
+>>          WARN_ON(1); /* this is really unexpected */
+>>          return -ENOTSUPP;
+>> ...
+> 
+> This looks a bit more safe, especially now while the driver is in active
+> development. Let's add this part.
+> 
+> Thanks
 
-> Should this new UAPI attribute also be added to the Netlink YAML
-> specification?
-
-> Is this new attribute missing from the netlink YAML
-> specification?
-> should this new attribute be documented in
-> Documentation/netlink/specs/rt-route.yaml
-
-> Is the del-reason (RTA_DEL_REASON) attribute missing from the YAML
-> specification?
-
-> Is there a missing patch in this series to actually report the
-> deletion reason?
-
-> Does this del_reason actually get passed from the deletion path?
-
-These are answered by later patches in the same series.
-
-> This is a pre-existing issue, but could this RTM_NEWROUTE be emitted
-> out of order with respect to an RTM_DELROUTE?
-
-Not related to the current series but might be worth sending a follow
-up separately.
-
-> Should this new enum and its entries include doc properties to
-> describe the specific deletion reasons for the uAPI documentation?
-
-Agreed, but it is a nit. If I need to send out patch series 6 due to
-adjusting later review comments, I will include the fix for this
-comment as well.
-
-> Is RTA_DEL_REASON missing from rtm_ipv6_policy and rtm_ipv4_policy?
-> [...] Should it be added to the policies as NLA_IGNORE or
-> NLA_REJECT?
-> Will the new RTA_DEL_REASON attribute be rejected if user space
-> echoes it back? [...] causing an ABI breakage.
-
-The comment seems wrong. The attribute is kernel to user space
-notification-only, user space code should never set it.
-
+OK, will update in v5.
 
 Thanks,
+Ivan
 
-Yuyang
