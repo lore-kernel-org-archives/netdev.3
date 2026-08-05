@@ -1,77 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3B43630BA;
-	Wed,  5 Aug 2026 13:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1A846F480;
+	Wed,  5 Aug 2026 13:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785934863; cv=none; b=DYtF8J4iq1Rqn/SheY8cOi/8dlxDIAbXC203rbBDDnzGyIlz2bXdqnTfxj1rpfl30MvoDJ/jy7FpxekIWW6p7Sk7wW/a6gT8taBwWIu3EYqSAYs7lJSmF/yA2pn/yEJPGPoz7bs0ydWQS6XQ9dS5QPV+NWhcvpoZg/quKmASyi0=
+	t=1785935022; cv=none; b=KZnRqUmZMp9jlrsGHam8xKp9R7pGPwN/OMfeiJ/eTcwk80HtWKbAOYvd+bGbs6tyU3/9kORWxWEsA6YhYwZhf5yIxpB2iypsFOl2To8yk1FpHe6n9BUCAdkdl50VRmzJmHd8Rgy3U9ITGitmZL74mFlqdSTZ3z5YX0jugXBLdtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785934863; c=relaxed/simple;
-	bh=6797O8UsSKfdiClm/nJAofvUkK03lUBj0ZZOnQ7J9lQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FeCzZJXyEEarXM3rcVDvZexpMBaISH7vp3WvcZCT3Fr/lKmtACBUncDFcoVtRfT5tpdBOoQJcohDxbqvWzsmU99uU4mx3/LGaQjjhzu2tK+65ZwKDX644w+Ri9eACwAUa100GfghO1tMeIyue/DpoIxZj/riUCeFsYvNw4RFtLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cakbcGte; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785935022; c=relaxed/simple;
+	bh=CmhzK8f7jTERlsXgrosoh4Xxb6XQlUqSzOcfz493/2Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ijqi7uU7M/UMvsc4UarMigpYdoRVflK1TLUvC9F3PqMj0l4ITzMfCum8wc0xogSAEtNb2+yrLIpOtoAf+dz/T5OlmG1H18lQkP/AxPiUQYTV8fWr30OsoZwpsQor9NzXXyEe8rICXO2JlRR536LXv3yd6K6qlrSivBZ98fzGkR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hF0qV4na; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eOeijInh; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cakbcGte"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536041F000E9;
-	Wed,  5 Aug 2026 13:00:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785934862;
-	bh=Ct2K7CjxRHwzwAT9YlsGpjJ4XovutUH2Zu47WlBGjIc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cakbcGtexVEpJZAEU/aL6SeW1kYHr8a25veIcXoWDSYimqhamrcms0Aqc8PrVGQ+Z
-	 0jmfnE72j9U/yK8kGoGIeFNYquioXng+GepCHRGZGJZ1/QzsQf6zCx5ZIgzMutg9Ll
-	 VcjfGBr2yViprkNmtv8d7UtPpKZT7FG1IMMFl3TqV7ky8AU41n84rB/FbqFu6egdZN
-	 6ueugtfcl7OR2qSZSKd7crevqJGOWGEjWWPxME5SYuD2QJUf/i5nFlnrdOYb+MDffh
-	 NFZrNvgaJFmx4YJuqUHRzbemZTesds+4SCkJQi0z2pf3PWkepMfM4DGQgT0Zu7UXhL
-	 XLI1njJfDG0/A==
-Date: Wed, 5 Aug 2026 14:00:58 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, shuah@kernel.org,
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
-	bobbyeshleman@meta.com, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next] selftests: drv-net: hw: reset HDS mode after
- netkit devmem tests
-Message-ID: <20260805130058.GU51943@horms.kernel.org>
-References: <20260804151040.2755153-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hF0qV4na";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eOeijInh"
+Message-ID: <852a08e0723b03977b8ab255671b2fb52f643c50.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785935013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RzUMMreM0sLkjDQl7tX4hz6OauOIvWzk9kEl6byrcjA=;
+	b=hF0qV4naZUp/eNTZYld5+YX0wi4hkwpdHU1jLFb+6MRx/kJHVxCxbOZkz5Vrs9Q2As7Fg5
+	bxxu7Pxd2JpJ9wROAmTioCfyaRC1SVuHgFVH+C2EJwOOCqFaXrDIvVzZanOij542e0mEP3
+	ks+zHTVIiLPWst1tlNOOxN5h/Y3J6XNlTPZHAhahe9wIN0xpURYkjFpWfllxFb3xvmhbj6
+	1lovXnSC3loxWmr3cqgjQh7Xpn1j3hbD3eI1JEQFy80j4Fq9y7vjXer4y6KbrhL6W0YHOf
+	0y5d959I1JAnUVgKM7mFH5bnZ+3tjZWzqdTh2VhD8679/zhtcGxpCF8vvGAkpA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785935013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RzUMMreM0sLkjDQl7tX4hz6OauOIvWzk9kEl6byrcjA=;
+	b=eOeijInhhFZnSyl3faK1XIxD7WJM4L4MqT8keSy4PkDz8HsvSRp6r7f20/OGKNv6wcCe7S
+	5yLx36ByY3g1ylBQ==
+Subject: Re: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
+ bindings
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir
+ Oltean <olteanv@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>
+Date: Wed, 05 Aug 2026 15:03:32 +0200
+In-Reply-To: <60ef0086-6137-4e8c-b61b-64e3c833893d@kernel.org>
+References: 
+	<20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	 <20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
+	 <20260730-loutish-labrador-of-joviality-6e6c79@quoll>
+	 <411ec84fd55e152e94ac1f4edba497eac3a5623d.camel@linutronix.de>
+	 <60ef0086-6137-4e8c-b61b-64e3c833893d@kernel.org>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804151040.2755153-1-kuba@kernel.org>
 
-On Tue, Aug 04, 2026 at 08:10:40AM -0700, Jakub Kicinski wrote:
-> HDS mode has confusing semantics. On GET kernel reports
-> effective mode. On SET kernel expects explicit config.
-> Effective mode on GET means that we know the current
-> state, but we don't know if it's a driver default
-> or user setting. This matter because driver default
-> can change automatically when e.g. XDP is attached.
-> Explicit user setting must not be lost.
-> 
-> With that in mind, we can't restore the HDS setting
-> like we restore other NIC config. We should always
-> reset to default ("unknown").
-> 
-> This fixes an issue with tests running after the devmem
-> test not being able to attach XDP, e.g.
-> 
->    Exception|   File "./xdp_metadata.py", line 105, in test_xdp_rss_hash
->    [...]
->    Exception| net.lib.py.utils.CmdExitFailure: Command failed
->    Exception| CMD: ip link set dev ens9np0 xdpdrv pinned /sys/fs/bpf/xdp_metadata_test/xdp_rss_hash
->    Exception|   EXIT: 2
->    Exception|   STDERR: Error: unable to install XDP to device using tcp-data-split.
->    not ok 1 xdp_metadata.test_xdp_rss_hash.tcp
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On Tue, 2026-08-04 at 08:25 +0200, Krzysztof Kozlowski wrote:
+> On 03/08/2026 18:15, Vasilij Strassheim wrote:
+> > On Thu, 2026-07-30 at 10:56 +0200, Krzysztof Kozlowski wrote:
+> > > On Wed, Jul 29, 2026 at 06:36:55PM +0200, Vasilij Strassheim wrote:
+> > > > Add DT schema documentation for SoC-e FPGA switch devices.
+> > > > The binding is split into:
+> > > >  - a switch IP node describing the MMIO register block
+> > > >  - a DSA MDIO node describing the DSA-facing switch instance
+> > > > Both nodes are linked through the soce,switch-ip phandle.
+> > > >=20
+> > > > Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
+> > > > ---
+> > > >  .../bindings/net/dsa/soce,switch-dsa.yaml          | 195 +++++++++=
+++++++++++++
+> > > >  .../bindings/net/dsa/soce,switch-ip.yaml           |  54 ++++++
+> > > >  2 files changed, 249 insertions(+)
+> > > >=20
+> > > > diff --git a/Documentation/devicetree/bindings/net/dsa/soce,switch-=
+dsa.yaml b/Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..a04e2838d14e
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.yam=
+l
+> > >=20
+[...]
+> > > > +
+> > > > +  compatible:
+> > > > +    const: soce,switch-dsa
+> > >=20
+> > > Way too generic. I understand that SoCe will NEVER - and you certify
+> > > that - develop a second, different "switch-dsa" model and they call t=
+his
+> > > one like this?
+> >=20
+> > It is intentionally generic to cover the common basics of all variants =
+and
+> > configurations of the synthesized switch in DSA.
+>=20
+> Compatible must not be generic, as expressed hundreds times and
+> documented in writing bindings.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+I probably misunderstood a few concepts around bindings, and I apologize
+for that. For the next version, I would base it on the existing SoC-e IP
+core families. Single DT binding file should then be sufficient.
+
+I think a suitable filename would be something like soce,switch.yaml. That'=
+s
+roughly in line with the existing nxp,netc-switch.yaml.
+Or soce,swip.yaml, as in lantiq,gswip.yaml.
+
+>=20
+> > I'm not sure what kind of guarantee I'm supposed to provide here regard=
+ing
+> > SoCe. If switch-dsa is already mainline in the future, then a different
+> > compatible will be needed for incompatible new models.
+>=20
+> I also don't know what guarantee you must provide, it's you who wants to
+> add an exception.
+
+Okay, there's no need to make an exception for this case, I will change
+the compatible to something suitable.
+
+I also understand now, that the DT bindings are not necessarily used
+only in Linux. However, I would like to use them for the DSA driver of the
+Soft IP Core Switch. The driver can be adapted so that it reads a
+wide variety of configurations and versions from the synthesized switch
+and deal with them without any additional properties.
+
+Would =E2=80=9Csoce,mrs=E2=80=9D be suitable as =E2=80=9Ccompatible=E2=80=
+=9D in this case? If that's
+still too generic maybe =E2=80=9Csoce,mrs-switch-v1.0=E2=80=9D
+I will think more about it in the next few weeks, before I submit the
+new version. Would be happy to hear any better suggestions that you, or
+someone else, might have.
+
+> ...
+>=20
+> > > > +
+> > > > +examples:
+> > > > +  - |
+> > > > +    switch_ip: switch@80020000 {
+> > >=20
+> > > ethernet-switch
+> > >=20
+> > > And drop unused label.
+> >=20
+> > I will adjust it.
+> >=20
+> > >=20
+> > > Considering this wasn't tested I should not even give here review...
+> > >=20
+> > Thank you very much for the review!
+> > I'm not sure what you mean by not tested. I ran make dt_binding_check` =
+few
+> > times, but forgot to do it after making the latest adjustments.
+>=20
+> Untested as it has an obvious failure as reported by bot.
+
+I know better now, that should not happen again in the future.
+
+>=20
+> Best regards,
+> Krzysztof
+
+Thanks,
+Vasilij
 
