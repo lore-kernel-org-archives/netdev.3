@@ -1,54 +1,36 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B2E2931F1;
-	Wed,  5 Aug 2026 01:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.237.72.81])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BE3305678;
+	Wed,  5 Aug 2026 01:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.237.72.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785892423; cv=none; b=gpeRwSj04BHa52Px7uq4t4MAmhZJqc2jJXt6HgL7lOGlT5jmE7xuFk46PHUA9kyt7vDrUw5+TU5TdMvF5gfmZC9WnWgQvz5pUKJPCJTAVZuYAHPOPVZRqRfKdhEhqRXTD6kIE5HB+dh448q5hnOtFqj0jh/zb6bywg+zaenxmEg=
+	t=1785892601; cv=none; b=Iko8o4GI8US+fVKPWzhcp1PVbNr5zpgzngBStT9xdYOfQqeCl1JVjfGRwNA8suTJ0EW2+GSTEHO6EoqjP1E0zioUGXGMe1OX4i7VqpVz9Q6FGOH3RUacV+cLdu1fkVS0lUkeVJaU5u23Q0HA9mBXOQ05Sap5CWmhDN1ArGI/pjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785892423; c=relaxed/simple;
-	bh=w+CRlIlmrAPMumYyXiXoWIgMbJJ8ZuofClrSDhS4h/I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffmIhCzF//8jUx7ZkvMaIeLwaAjHoyuw30T2xmf2PesrGLc+PL5ZEAd8gQAjfqR5sAHY+EdrHGwZrZco7Jmh+XLepy4t3Ir2voPspRQ4VGisSLJxfqQMcfd7UK7UH7yEACmv5DzX6nHpS8I/RqnWMKCZCkTJA4hyMXy4h033gRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTt7hYuT; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTt7hYuT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF451F000E9;
-	Wed,  5 Aug 2026 01:13:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785892422;
-	bh=o2Q1r7x0ih9Fqkq1mWeYbjC9mRstGVVs1Y3aP7h87bU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XTt7hYuTh7ul2d7evYIdu9qdojNy9qqbQeYi28oSe3uB0M1soLZoejgM6ZQ8y+qAa
-	 B17GssDT2OOj/i4VJ5Vk8FrnHrB75VgCbMXJPIyWdlsBKgkUZfi5K6/6gNZPymlFYM
-	 J4fpifVp6w0XPeHBSFhv10VcTph/RAK7wXxiKaljpBLwJSWFNGR10RROsazGxjIum8
-	 g7XB8cW7v2YP7O+qp3O5XVHXzBIeFZBaN7PXuQ92ktk4lRDpgfYfeZcqPxY5x7qkFN
-	 ZFICmLA3aHJsa+iGhrRhX87Lz23Ozw+yOvvjgVbiA2oEucwodwmTONvFV9fIRo5ujH
-	 dcf5w5CwNSc0Q==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	kernel-team@android.com,
-	Lee Jones <lee@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	He Zhe <zhe.he@windriver.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Todd Kjos <tkjos@google.com>
-Subject: Re: [PATCH 1/2 5.10.y] Bluetooth: SCO: Fix UAF on sco_sock_timeout
-Date: Tue,  4 Aug 2026 21:13:29 -0400
-Message-ID: <20260805011006.stable-0007@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260804214406.750710-1-tkjos@google.com>
-References: <20260804214406.750710-1-tkjos@google.com>
+	s=arc-20240116; t=1785892601; c=relaxed/simple;
+	bh=XxZiliwWMsjRBj6o7LvGEYht/qOzQr8nbQOzvAS6Nss=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UrynLL0RPFis7YLp2q8Pxfu1+nCT8oQIa/Pg41nRWdf7W3WvIDTYN5MUIoqyo/AUBW3DouqIW7SfnTbyCdR+2jzCU6LM9AFF9RWOeOhJ5W5UkuoZ3uH/h2eI6Wk3ItRDLXpsG7im79zYZ4/T5QSS6vU2FJ3vESIsr9xsh/cs+8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=52.237.72.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [10.98.66.117])
+	by mtasvr (Coremail) with SMTP id _____wD3_z_bjnJqH_JmAA--.15572S3;
+	Wed, 05 Aug 2026 09:16:12 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.98.66.117])
+	by mail-app3 (Coremail) with SMTP id zS_KCgB3j3HajnJqnhH2Aw--.48215S2;
+	Wed, 05 Aug 2026 09:16:10 +0800 (CST)
+From: Fan Wu <fanwu01@zju.edu.cn>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Fan Wu <fanwu01@zju.edu.cn>
+Subject: [PATCH net 1/2] fjes: unregister the netdev before destroying the workqueues
+Date: Wed,  5 Aug 2026 01:14:09 +0000
+Message-Id: <20260805011410.414431-1-fanwu01@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,45 +38,73 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zS_KCgB3j3HajnJqnhH2Aw--.48215S2
+X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
+X-CM-DELIVERINFO: =?B?P5ek3gXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
+	sfnZPoDCNGYdHSfuFmYJL54WNtc0XRFDKAgP1T1yFwOxJk4pbhgJdp6eiUdl/s9fmIWYxP
+	t0qCEI3EXzpTlIvTfXGp9E6mavGmQbzmcFsnzP86
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cr47GF4fJF1rWr47CFyDurX_yoW8AFWfpF
+	45Ga4UtrWktF45K39rJa18tFy8GF4xK3yjk3yUJa1fu3sIyr1UZ34YkFy0qF1rWF95ZF4a
+	vFn0v3yDW3s8GrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Gb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
+	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
+	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
+	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s02
+	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
+	I_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v2
+	6r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj4
+	0_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8
+	JrUvcSsGvfC2KfnxnUUI43ZEXa7IU85l1PUUUUU==
 
-On Tue, Aug 04, 2026 at 09:44:05PM +0000, Todd Kjos wrote:
-> @@ -192,7 +200,7 @@ static void sco_conn_del(struct hci_conn *hcon, int err)
->
->  	/* Kill socket */
->  	sco_conn_lock(conn);
-> -	sk = conn->sk;
-> +	sk = sco_sock_hold(conn);
->  	sco_conn_unlock(conn);
->
->  	if (sk) {
+fjes_remove() destroys the driver workqueues before unregistering the
+netdev. The interrupt handler queues work on them, but the IRQ is only
+freed from fjes_close() under unregister_netdev(), so an interrupt in that
+window can queue work once the workqueues are gone.
 
-I think that this hunk leaks a struct sock reference on 5.10.
+Unregister the netdev first so fjes_close() frees the IRQ and cancels the
+workers before the workqueues are destroyed. force_close_task, which the
+workers arm on the system workqueue, is handled in the next patch.
 
-Unlike upstream and the 5.15/6.1 backports, where the sock_hold(sk) sits
-just before sco_conn_unlock() and the upstream hunk deletes it, 5.10 keeps
-its sock_hold(sk) inside the condition:
+This issue was found by an in-house static analysis tool.
 
-	sco_conn_lock(conn);
-	sk = conn->sk;
-	sco_conn_unlock(conn);
+Fixes: 658d439b2292 ("fjes: Introduce FUJITSU Extended Socket Network Device driver")
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-5.6
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+---
+ drivers/net/fjes/fjes_main.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-	if (sk) {
-		sock_hold(sk);
-		bh_lock_sock(sk);
-		sco_sock_clear_timer(sk);
-		sco_chan_del(sk, err);
-		bh_unlock_sock(sk);
-		sock_put(sk);
-	}
-
-So after this patch the function takes two references (one in
-sco_sock_hold(), one from the surviving sock_hold(sk)) and drops only one.
-That is a permanent struct sock leak on every SCO teardown, reachable by
-any user with repeated connect/disconnect.
-
-While respinning, please also drop the Change-Id: trailers from both
-patches.
-
+diff --git a/drivers/net/fjes/fjes_main.c b/drivers/net/fjes/fjes_main.c
+index 1f0f38980..cddabc965 100644
+--- a/drivers/net/fjes/fjes_main.c
++++ b/drivers/net/fjes/fjes_main.c
+@@ -1394,17 +1394,14 @@ static void fjes_remove(struct platform_device *plat_dev)
+ 
+ 	fjes_dbg_adapter_exit(adapter);
+ 
+-	cancel_delayed_work_sync(&adapter->interrupt_watch_task);
+-	cancel_work_sync(&adapter->unshare_watch_task);
+-	cancel_work_sync(&adapter->raise_intr_rxdata_task);
+-	cancel_work_sync(&adapter->tx_stall_task);
++	/* Unregister first: .ndo_stop frees the IRQ and cancels the workers. */
++	unregister_netdev(netdev);
++
+ 	if (adapter->control_wq)
+ 		destroy_workqueue(adapter->control_wq);
+ 	if (adapter->txrx_wq)
+ 		destroy_workqueue(adapter->txrx_wq);
+ 
+-	unregister_netdev(netdev);
+-
+ 	fjes_hw_exit(hw);
+ 
+ 	netif_napi_del(&adapter->napi);
 -- 
-Thanks,
-Sasha
+2.34.1
+
