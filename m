@@ -1,80 +1,53 @@
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64AF39060C
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 03:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C80D37F322;
+	Wed,  5 Aug 2026 03:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785901513; cv=none; b=MbivM1HHnRMSbB4rTIPJGUhvORwFj6Zbo9zPz405EMEprjQ2PQsDR72ziPhZKmNG9Ln8hAN2XxrYTDSBz/rdhaLZExHsWRzby/zLQrMShnMw0WObQMt5y5mmxtOcI/l2DfIK76Y8ySdmERemvA8Yfj/+60ZkLTcmqpWDoKwHFT0=
+	t=1785901567; cv=none; b=bp7jYGG8Y4pwlRLVkmspbZHtuAIA30CF8IIhZLa/fa+XRq+D4x/djfaLazZkgHsH6YhC8WVIpaYszQWxPLuZo9Gkt/VTlDVDD3m9KhKgAdbwiqEQfAFfDVewSheGFuAUgNPM2086aeaqiRihxLZkyY0Cgx3ro1jopHC0Ob2dI9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785901513; c=relaxed/simple;
-	bh=U+z/4iF7dLn7wGHOoBz5qUFcqiQYdBXkAO1mR5snXRU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oY47f4Xgm5QwkuoW2FifUZ0hpwHEwyohqfagY2LXQRdYTnYa1HoDDSVsSuyf6eH91twyeipaB1lExlmKU8iBpYbYgpMOy1Gmmg3e4IWcd6gVyzHH6+nBnhvhT/kF/emwzbBFv//53Ty8g0gHIibQ4sk9GvXF6f/QJEy2pYVwUpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FB3Lq59X; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785901567; c=relaxed/simple;
+	bh=UPAjB0BdsiGVSp/QBakciyTb0Cb2PgDPRyhiNB6yjbg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ORP8wt0IUkr/VTOxX/XbkT96UhKmB2ubAjJbOc94lOgZppReHPRkxq8HgAKNgyiic0D7FWqwekgSLw6TWey0TOHHMUf2xZkv8wykdPtSW4qyVsoMuTNDkK2MV/RtwyouilNUR3da7BmcpZ3ieM289XqTiyMMCbi2oBjRIeWYZYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Tp0/Var9; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FB3Lq59X"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4ab8cb2a6e4so355152b6e.0
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 20:45:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785901509; x=1786506309; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PHpDSgHOxnQkt6S9yu1hrAJQyOFDAQp/KapLQ0XCJPY=;
-        b=FB3Lq59XQiH9AKjU2LiitFEOPs4f6i2zRe7Q0kbLG7FOE55t+oJfELHePIhxN8RWvd
-         +v1WmxFSGi9cJ/WaLt5QT1xn3J2CsPRJcxo/JOloVNehf3IIqDj9pPI6BeIK9cb8nkj/
-         2PRuHIJfJZwCEBjDVZydTSnUFVq61E8TKAdMm4g9fk4nHyENawFhfTWNMI7fW2V+gtPd
-         viAhep50xhKnXsHxM+9iZ3uFYlOrj+h8hHfsCkA0OohSKAqTagcix+ga6SHZ2DpuNqRN
-         jANlSCe5jIMWZQSnbzQ/3+eiH0z/uV3Kz+DcboplaBGJLSBcR3WSTrXCtW32Dgbw37g6
-         VODA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785901509; x=1786506309;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PHpDSgHOxnQkt6S9yu1hrAJQyOFDAQp/KapLQ0XCJPY=;
-        b=nDbRn4qz5/yK+6Vi3Epcj79hhDBRYpTLPSB1+OInGwTYKpmgFIGBDDfcUaCQ6KOrLQ
-         u0yE3vpEzsAOucQ6nlQRJ2pPWtkFxByyS0PHJy25KkwjeMfaT2j4WmA2v8jlqJfueePl
-         fgmZJIXy1dnuw/fwfvevBz/Ftk2yIGrcqN+L5spDu6ePx7Fzaf/Ox3DGTd1l0TU5eFQY
-         rq1sK1CUiq0eUN6BzyX+LYm9owBjcvFym4SYXUmCMIHyjlpd9jqthAViWjzyB0yflm1x
-         L93OxDq/WuqSyjL5m8d6s3yU9EUALZ/JzaKtZeaJruqK+0ZUaQ+RhX2XXGEPoI3yu9Zc
-         p3wg==
-X-Gm-Message-State: AOJu0Yy92NY5AlesZmnnqGxx0gU1VwfExwNBuBPuwQK1rYTWfY8mjcSU
-	T9ZnDxG2Gw0wKMwbgcf7jf+zbQ+YAx6RUB8uek7N/igU0qGOQkkQZoMLy1O4wr8qnic=
-X-Gm-Gg: AR+sD12Ql38aXcrPEb37j5dkQYnwolT57Yk1dE06B8zzMFyvo3rPVXqoNgD+NWYCv4v
-	yS2hsiCKZrwBRV9IxLHtYHsKZE6bxTvQDkUeL6lOokZqlYuFSH8IvFzGLBvbODQlXgBQiTzzBxQ
-	onxVcEtXgflRC9DgsgjHUsAIlvLw6fGp8CXFxGsKUjzqeTlmxNiDMil4VmKWLRyOr6t+eXtAAIY
-	xl7W+3SrfAQXc5Qca7PS8qaG/zd5vqTIYC3C10jrzK+XQAiHOxfOluIKHF8AnNyPlwYY+WaeYrM
-	bzVPzxwOFSGlbVVerlMg647QKMB8jsr4KyFDMsfV5X6HYUkPZ40euKIuKQysyWLJ8rsc3msa07Q
-	fR0GOGkFPVU4ccoXgbDNKupJkIXXO5JSXdpjjcA74L3j/JY3UJh9YvF8jvl4s7MxdpCqSZJzgQ2
-	md0+QBiy6U5sZCQnyfYUsxhVqum87kIDXfzjuwDXFdKaBPcAdGoAo3xqMcQZ5tztrZ
-X-Received: by 2002:a05:6808:3a0f:b0:495:fecb:bf9c with SMTP id 5614622812f47-4afadf2df58mr2216612b6e.6.1785901509343;
-        Tue, 04 Aug 2026 20:45:09 -0700 (PDT)
-Received: from houminxi ([72.244.37.221])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f1df2fd13fsm2005505a34.4.2026.08.04.20.45.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 20:45:07 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: aconole@redhat.com,
-	davem@davemloft.net,
-	dev@openvswitch.org,
-	echaudro@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	i.maximets@ovn.org,
-	i.maximets@redhat.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	Minxi Hou <houminxi@gmail.com>
-Subject: [PATCH net-next v9] selftests/net/openvswitch: add SCTP flow key support and test
-Date: Tue,  4 Aug 2026 23:44:59 -0400
-Message-ID: <20260805034459.1460015-1-houminxi@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Tp0/Var9"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=cmpSACpQmSDOvkCsslSgBCvhphPrgzodOLZTrWWOAUY=;
+	b=Tp0/Var93VcbMnNN/DXf5t3Qwl9TbSqrL6DVz1Mmr38m/M3Yqmtm11CWu20dFVskW8sl/gzBe
+	9mitCO1ZFNe2Leu7zofD3tG05KcR4ruf0j7/cqAgDgoPf5yaXFjztC/lFXGwpvKz8lOufXI/haO
+	0kIl9iGHsO61/UVxWGM/i+0=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hFGKq3hP4zmVWY;
+	Wed,  5 Aug 2026 11:36:31 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id E01CE40586;
+	Wed,  5 Aug 2026 11:46:02 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 5 Aug 2026 11:46:01 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Teng Peisen <tengpeisen@huawei.com>, Wu Di
+	<wudi234@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Larysa Zaremba
+	<larysa.zaremba@intel.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chen Anwen
+	<chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>, Zhang Min
+	<zhangmin548@huawei.com>, luosifu <luosifu@huawei.com>, Xin Guo
+	<guoxin09@huawei.com>, Zhou Shuai <zhoushuai28@huawei.com>, Wu Like
+	<wulike1@huawei.com>, Shi Jing <shijing34@huawei.com>
+Subject: [PATCH net] hinic3: Fix SKB linearization mismatch and silent TX drops
+Date: Wed, 5 Aug 2026 11:45:55 +0800
+Message-ID: <ca8f219dd1eac99e41e22477bd0902b92ec7628e.1785899557.git.tengpeisen@huawei.com>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,233 +55,134 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
-The ovskey flow-string parser has no OVS_KEY_ATTR_SCTP entry, so a
-flow string containing sctp(src=.../dst=...) parses without error but
-silently drops the L4 key. The resulting flow carries only
-ipv4(proto=132), and the kernel rejects it: match_validate() in
-flow_netlink.c requires OVS_KEY_ATTR_SCTP when the IP protocol is
-IPPROTO_SCTP and returns -EINVAL for the missing key.
+Previously, hinic3_send_one_skb() cached the SKB fragment count before
+calling hinic3_tx_offload(). If hinic3_tx_csum() falls back to
+skb_checksum_help() for unsupported tunnel packets, the SKB may be
+linearized. Continuing to build the TX descriptor with the stale
+fragment count leads to a descriptor mismatch, which can trigge
+out-of-bounds DMA reads or IOMMU faults.
 
-Register OVS_KEY_ATTR_SCTP in the parse table and add a matching
-selftest that verifies SCTP flow key matching (sctp src/dst port).
+Furthermore, the old code ignored the return value of skb_checksum_help(),
+transmitting corrupted packets with incomplete checksums upon failure. It
+also failed to increment drop statistics across various TX error paths,
+causing packets to be dropped silently without notifying the user.
 
-One listener serves the whole test. socat's fork option handles each
-association in a child, so the flow rules are the only thing that
-changes between the three phases and the listener is never restarted
-underneath them.
+Fix this by:
+1. Moving the hinic3_tx_offload() call before calculating 'num_sge' to
+   ensure the correct fragment count is used if the SKB is linearized.
+2. Propagating skb_checksum_help() errors and returning
+   HINIC3_TX_OFFLOAD_INVALID to properly drop the skb.
+3. Adding missing statistics increments (dropped, map_frag_err,
+   unknown_tunnel_pkt, skb_pad_err) across the TX error paths so these
+   events are correctly reflected in interface statistics.
 
-A forking daemon outlives the pid ovs_netns_spawn_daemon captures,
-because the child handling an association is not signalled when only
-that pid is killed. Start spawned daemons in their own session so
-each leads its own process group, and signal the group on cleanup.
-setsid ships in util-linux-core; selftests/vsock/vmtest.sh already
-calls it unconditionally in this same tree, so this isn't a new class
-of dependency for a kselftest shell script.
-
-Also enable CONFIG_IP_SCTP in the selftest kernel config. The config
-checker strips underscores before comparing keys, so the entry sorts
-before CONFIG_IPV6 rather than after it.
-
-Signed-off-by: Minxi Hou <houminxi@gmail.com>
+Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
+Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
+Co-developed-by: Wu Di <wudi234@huawei.com>
+Signed-off-by: Wu Di <wudi234@huawei.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
 ---
-v9:
-  - one forking listener for the whole test instead of restarting it
-    between phases (Aaron)
-  - signal the daemon's process group on cleanup so the children a
-    forking listener leaves behind are reaped
-  - sort CONFIG_IP_SCTP the way the config checker compares keys
+ .../net/ethernet/huawei/hinic3/hinic3_tx.c    | 31 ++++++++++++++++---
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-One property of the test worth stating, found by removing the
-parse-table hunk and re-running. The probe at the top of
-test_sctp_connect_v4 adds a flow with an sctp() key and skips when
-that fails. A parser that drops the key gives the same -EINVAL as a
-kernel without SCTP flow key support, so a missing parse-table entry
-makes this test skip rather than fail: v5 dropped the ovs-dpctl.py
-hunk while keeping the test, and that gap is exactly why the loss
-did not show up as a failure. dec_ttl, icmpv6, psample and
-drop_reason probe the same way, so I kept the pattern rather than
-diverge from them here.
-v8: https://lore.kernel.org/netdev/20260731062655.4088575-1-houminxi@gmail.com/
-v7: https://lore.kernel.org/netdev/20260729064549.3647518-1-houminxi@gmail.com/
-v6: https://lore.kernel.org/netdev/20260724150624.3457427-1-houminxi@gmail.com/
-v5: https://lore.kernel.org/netdev/20260723084203.3483560-1-houminxi@gmail.com/
-v4: https://lore.kernel.org/netdev/20260719162657.3263089-1-houminxi@gmail.com/
-v3: https://lore.kernel.org/netdev/20260715015446.530018-1-houminxi@gmail.com/
-v2: https://lore.kernel.org/netdev/20260707034718.2717982-1-houminxi@gmail.com/
-v1: https://lore.kernel.org/netdev/20260702090908.1253688-1-houminxi@gmail.com/
----
- .../testing/selftests/net/openvswitch/config  |   1 +
- .../selftests/net/openvswitch/openvswitch.sh  | 110 +++++++++++++++++-
- .../selftests/net/openvswitch/ovs-dpctl.py    |   5 +
- 3 files changed, 113 insertions(+), 3 deletions(-)
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+index 9306bf0020ca..45effdddb434 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+@@ -97,8 +97,12 @@ static int hinic3_tx_map_skb(struct net_device *netdev, struct sk_buff *skb,
 
-diff --git a/tools/testing/selftests/net/openvswitch/config b/tools/testing/selftests/net/openvswitch/config
-index c659749cd086..1c8f0a51905c 100644
---- a/tools/testing/selftests/net/openvswitch/config
-+++ b/tools/testing/selftests/net/openvswitch/config
-@@ -1,5 +1,6 @@
- CONFIG_GENEVE=m
- CONFIG_INET_DIAG=y
-+CONFIG_IP_SCTP=y
- CONFIG_IPV6=y
- CONFIG_NETFILTER=y
- CONFIG_NET_IPGRE=m
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index 853dbc1b00d7..d11e89b54312 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -34,6 +34,7 @@ tests="
- 	action_set				set: SET action rewrites fields
- 	trunc					trunc: output truncation
- 	icmpv6					icmpv6: ICMPv6 echo type match
-+	sctp_connect_v4				sctp: SCTP flow key matching
- 	psample					psample: Sampling packets with psample"
- 
- info() {
-@@ -143,13 +144,17 @@ ovs_netns_spawn_daemon() {
- 	shift
- 	netns=$1
- 	shift
-+	# Give the daemon its own process group. A daemon that forks a
-+	# child per connection leaves those children running when only the
-+	# pid captured here is signalled.
- 	if [ "$netns" == "_default" ]; then
--		$*  >> $ovs_dir/stdout  2>> $ovs_dir/stderr &
-+		setsid $*  >> $ovs_dir/stdout  2>> $ovs_dir/stderr &
- 	else
--		ip netns exec $netns $*  >> $ovs_dir/stdout  2>> $ovs_dir/stderr &
-+		setsid ip netns exec $netns $* \
-+		    >> $ovs_dir/stdout  2>> $ovs_dir/stderr &
- 	fi
- 	pid=$!
--	ovs_sbx "$sbx" on_exit "kill -TERM $pid 2>/dev/null"
-+	ovs_sbx "$sbx" on_exit "kill -TERM -$pid 2>/dev/null"
+ 	dma_info[0].dma = dma_map_single(&pdev->dev, skb->data,
+ 					 skb_headlen(skb), DMA_TO_DEVICE);
+-	if (dma_mapping_error(&pdev->dev, dma_info[0].dma))
++	if (dma_mapping_error(&pdev->dev, dma_info[0].dma)) {
++		u64_stats_update_begin(&txq->txq_stats.syncp);
++		txq->txq_stats.map_frag_err++;
++		u64_stats_update_end(&txq->txq_stats.syncp);
+ 		return -EFAULT;
++	}
+
+ 	dma_info[0].len = skb_headlen(skb);
+
+@@ -117,6 +121,9 @@ static int hinic3_tx_map_skb(struct net_device *netdev, struct sk_buff *skb,
+ 						     skb_frag_size(frag),
+ 						     DMA_TO_DEVICE);
+ 		if (dma_mapping_error(&pdev->dev, dma_info[idx].dma)) {
++			u64_stats_update_begin(&txq->txq_stats.syncp);
++			txq->txq_stats.map_frag_err++;
++			u64_stats_update_end(&txq->txq_stats.syncp);
+ 			err = -EFAULT;
+ 			goto err_unmap_page;
+ 		}
+@@ -260,9 +267,11 @@ static int hinic3_tx_csum(struct hinic3_txq *txq, struct hinic3_sq_task *task,
+ 		if (l4_proto != IPPROTO_UDP ||
+ 		    ((struct udphdr *)skb_transport_header(skb))->dest !=
+ 		    VXLAN_OFFLOAD_PORT_LE) {
++			u64_stats_update_begin(&txq->txq_stats.syncp);
++			txq->txq_stats.unknown_tunnel_pkt++;
++			u64_stats_update_end(&txq->txq_stats.syncp);
+ 			/* Unsupported tunnel packet, disable csum offload */
+-			skb_checksum_help(skb);
+-			return 0;
++			return skb_checksum_help(skb);
+ 		}
+ 	}
+
+@@ -412,6 +421,10 @@ static u32 hinic3_tx_offload(struct sk_buff *skb, struct hinic3_sq_task *task,
+ 		offload |= HINIC3_TX_OFFLOAD_TSO;
+ 	} else {
+ 		tso_cs_en = hinic3_tx_csum(txq, task, skb);
++		if (tso_cs_en < 0) {
++			offload = HINIC3_TX_OFFLOAD_INVALID;
++			return offload;
++		}
+ 		if (tso_cs_en)
+ 			offload |= HINIC3_TX_OFFLOAD_CSUM;
+ 	}
+@@ -539,12 +552,17 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
+ 	int err;
+
+ 	if (unlikely(skb->len < MIN_SKB_LEN)) {
+-		if (skb_pad(skb, MIN_SKB_LEN - skb->len))
++		if (skb_pad(skb, MIN_SKB_LEN - skb->len)) {
++			u64_stats_update_begin(&txq->txq_stats.syncp);
++			txq->txq_stats.skb_pad_err++;
++			u64_stats_update_end(&txq->txq_stats.syncp);
+ 			goto err_out;
++		}
+
+ 		skb->len = MIN_SKB_LEN;
+ 	}
+
++	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
+ 	num_sge = skb_shinfo(skb)->nr_frags + 1;
+ 	/* assume normal wqe format + 1 wqebb for task info */
+ 	wqebb_cnt = num_sge + 1;
+@@ -560,7 +578,6 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
+ 		return NETDEV_TX_BUSY;
+ 	}
+
+-	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
+ 	if (unlikely(offload == HINIC3_TX_OFFLOAD_INVALID)) {
+ 		goto err_drop_pkt;
+ 	} else if (!offload) {
+@@ -604,6 +621,10 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
+ err_drop_pkt:
+ 	dev_kfree_skb_any(skb);
+ err_out:
++	u64_stats_update_begin(&txq->txq_stats.syncp);
++	txq->txq_stats.dropped++;
++	u64_stats_update_end(&txq->txq_stats.syncp);
++
+ 	return NETDEV_TX_OK;
  }
- 
- ovs_spawn_daemon() {
-@@ -611,6 +616,105 @@ test_icmpv6() {
- 	return 0
- }
- 
-+# Check for an SCTP endpoint via /proc, which works without sctp_diag.
-+sctp_eps_has() {
-+	ip netns exec "$1" awk -v p="$2" '$6==p' /proc/net/sctp/eps | grep -q .
-+}
-+
-+# sctp_connect_v4 test
-+# - sctp(dst=4443) matches client-to-server INIT
-+# - sctp(src=4443) matches server-to-client INIT-ACK
-+# - remove flows and verify connection fails, reinstall and recover
-+test_sctp_connect_v4() {
-+	local t="test_sctp_connect_v4"
-+	local srv_ip=172.31.110.20
-+
-+	modprobe -q sctp 2>/dev/null || return "$ksft_skip"
-+	socat -V 2>&1 | grep -q "define WITH_SCTP" || return "$ksft_skip"
-+
-+	sbx_add "$t" || return $?
-+	ovs_add_dp "$t" sctp4 || return 1
-+
-+	info "create namespaces"
-+	for ns in client server; do
-+		ovs_add_netns_and_veths "$t" "sctp4" "$ns" \
-+		    "${ns:0:1}0" "${ns:0:1}1" || return 1
-+	done
-+
-+	ip netns exec client ip addr add 172.31.110.10/24 dev c1
-+	ip netns exec client ip link set c1 up
-+	ip netns exec server ip addr add "${srv_ip}/24" dev s1
-+	ip netns exec server ip link set s1 up
-+
-+	# Probe: check if kernel supports sctp flow key.
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
-+	    '2' &>/dev/null
-+	if [ $? -ne 0 ]; then
-+		info "no support for sctp key - skipping"
-+		ovs_exit_sig
-+		return $ksft_skip
-+	fi
-+	ovs_del_flows "$t" sctp4
-+
-+	# ARP forwarding
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0806),arp()' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0806),arp()' \
-+	    '1' || return 1
-+
-+	# SCTP port matching: dst for request, src for reply
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
-+	    '1' || return 1
-+
-+	# The listener forks a child per association, so one instance serves
-+	# the whole test and the flows stay the only variable.
-+	ovs_netns_spawn_daemon "$t" "server" \
-+	    socat -u SCTP4-LISTEN:4443,fork STDOUT
-+	ovs_wait sctp_eps_has server 4443 || return 1
-+
-+	info "verify SCTP association with port-keyed flows"
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
-+	    || return 1
-+
-+	ovs_del_flows "$t" sctp4
-+
-+	info "verify connection fails without flows"
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0806),arp()' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0806),arp()' \
-+	    '1' || return 1
-+
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
-+	    >/dev/null 2>&1 \
-+	    && { info "connection should fail without flows"
-+	         return 1; }
-+
-+	info "reinstall flows and verify recovery"
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
-+	    '1' || return 1
-+
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
-+	    || return 1
-+
-+	return 0
-+}
-+
- # psample test
- # - use psample to observe packets
- test_psample() {
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index f3edd198223f..ce790d936832 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -1984,6 +1984,11 @@ class ovskey(nla):
-                 "udp",
-                 ovskey.ovs_key_udp,
-             ),
-+            (
-+                "OVS_KEY_ATTR_SCTP",
-+                "sctp",
-+                ovskey.ovs_key_sctp,
-+            ),
-             (
-                 "OVS_KEY_ATTR_ICMP",
-                 "icmp",
--- 
-2.55.0
+
+
+base-commit: 2195424c3da2ef1829a63b807e3a900a90e57d85
+--
+2.54.0
 
