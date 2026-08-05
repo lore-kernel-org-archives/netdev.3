@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3233F65EA;
-	Wed,  5 Aug 2026 21:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1BC425873
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785965765; cv=none; b=H1ulHbU5L2PsInNgJr83cAfeP8ZXauVHb+z7mtQEBmPh12Ae7W1TMzUNV/fEmkXz/m5xTbl53s7YgzKkRTL2mUZcn27yU1gbykAsRY20c2c78ZHqyuip+FqOJ1vrC6xxcDxNx1KpTvrRA1edwD8DVoxR6znlBqHN7XkPxryBUrg=
+	t=1785965765; cv=none; b=eE574aZGTvkjnQGRi7rLEWouKXNgJUs9MtQZl27ePKqpb2nVcVKqavCNE8iAM/GZC4EZDO5PfRCb8o/hZtlu4WZzZtaJu5/Xes5hcsFBWhxJaggn9NepxbkmAPFMr3CDsZFcbp+lMHg+Ki+2yF92hNZj7zve1uKzQC5omOz3lBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785965765; c=relaxed/simple;
-	bh=l53vH96oBxDrKf3F+DaJU5jUopwYKXsTsTUvDa/ClKc=;
+	bh=OoYLorxG3EsbwK3FAcPvGsjn7rBgsAnbNxmThzLHJbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTgfeN1K9xi3QD9RV3GvM9MQ1NnJCK/XaswpgPQawfWs0vvi2DVWodd+QngJKMWcp5dPSxL/wTvoh/JYLKc8jrkPSsghWiSJnNm9X1kau6DjQZnfgCoc/+B3uRQmaSk8ntDteX13Gp+zRrygwTxSk/X5Zn/2Bkprp2irA01Buy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IEsLtvS/; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=YS9zVzrtVQERcGOBvupBzPmzQH2wcV+hkA8QmGkmEaFGa2so3cNpan4Un8GTJ1Ty9Q2sgIH77suRh4AMKl72WiZ5C5SQM/AcK0KRhqogLhbl4EcGHkkdmcFYNU2V1gL3Tg88Apv+NhCOXgxoJ8geoD9knqv/CuknJsfCEXqqTYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mffonLXO; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IEsLtvS/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mffonLXO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785965762; x=1817501762;
+  t=1785965763; x=1817501763;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=l53vH96oBxDrKf3F+DaJU5jUopwYKXsTsTUvDa/ClKc=;
-  b=IEsLtvS/D35ik6Um3QjNH4YOlcT/k5nsDb5/o37hw50o8Km/610HpQ39
-   lwgyvTm9xhTcCZLqQEX0/YdUyVmkolS3xcufZiM+u4Riz4ZK5zR66umzf
-   1hN6ZBsTUuf8PluehLbRsPD2XS4RESt1EHA2/eC3bTRju0GQjaWGYTFCR
-   Lr8u8uSFuJ6ip999z1yhVHTmiqJU/DkejFFomkEj0yQJSAoDNOR/SU3OL
-   3FA7OKwF9jWnAiil/eEdhsCPFRqcduZeyF2E2J0iJEHUwmSN4sXRvCF/Y
-   QH5ynDRvOecjDLoBCBsYYRZmVK0OQZBilrWY/bzrKmH5wF/QdvTB+R3M+
-   A==;
-X-CSE-ConnectionGUID: CRXDElLDRACcS7BRwl9NQw==
-X-CSE-MsgGUID: lSjATBweQ2WziJ5cXDpw3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109343626"
+  bh=OoYLorxG3EsbwK3FAcPvGsjn7rBgsAnbNxmThzLHJbU=;
+  b=mffonLXOHss5LgmszvYxumxtueKbzD0ohKCtTJc0YSEiq7Ell2Rf3Mex
+   oeG1xP0L9XMsNS6Ab9loJaS+IJGULZN6vYJyIw7p9/MhHMPBygFJJjNjC
+   Qfpg+apfdB3t2qtkyFv2jkt51SdB2k+JAh7wGngNhqfSoPf4Pf9ZBpwsk
+   RmmqVIBry8fY7nAdO1B9B1cXAIAnSfagg0Tb16Gpp2ruTarNca3y27YCr
+   ZRPFoIc+DQ5k150Nc6RcyWolYb6SmVAFZFFdX1TLjQ8k529MbvqH5lLYt
+   PtzCu2wL/Ek6LYXR4ph4W6WYtwfs+0gUImtSxiQjbVf3nNyl20g425Fk/
+   g==;
+X-CSE-ConnectionGUID: +/n3PPHnSWiIu83/JumCeA==
+X-CSE-MsgGUID: OEPI4hn4TouskGRjmodebA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109343640"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="109343626"
+   d="scan'208";a="109343640"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 14:35:53 -0700
-X-CSE-ConnectionGUID: zfVGIdnWSaSanj4rku0dDQ==
-X-CSE-MsgGUID: QXDV75CcS+Wv5DCZWTKTvg==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 14:35:54 -0700
+X-CSE-ConnectionGUID: DoDQZtJTT+yi14a07HMvVw==
+X-CSE-MsgGUID: mSvXtG1eQFWCdpfDoXvgWQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="286576159"
+   d="scan'208";a="286576167"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa001.fm.intel.com with ESMTP; 05 Aug 2026 14:35:52 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 05 Aug 2026 14:35:54 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,23 +50,13 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Kohei Enju <kohei@enjuk.jp>,
+Cc: Dima Ruinskiy <dima.ruinskiy@intel.com>,
 	anthony.l.nguyen@intel.com,
-	kohei.enju@gmail.com,
-	przemyslaw.kitszel@intel.com,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	bpf@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Patryk Holda <patryk.holda@intel.com>
-Subject: [PATCH net-next 12/15] i40e: add support for bpf_xdp_metadata_rx_vlan_tag()
-Date: Wed,  5 Aug 2026 14:35:37 -0700
-Message-ID: <20260805213541.2281287-13-anthony.l.nguyen@intel.com>
+	allen.lan@intel.com,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>
+Subject: [PATCH net-next 14/15] igc: Support ACPI-based MAC pass-through
+Date: Wed,  5 Aug 2026 14:35:39 -0700
+Message-ID: <20260805213541.2281287-15-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
 References: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
@@ -78,56 +68,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Dima Ruinskiy <dima.ruinskiy@intel.com>
 
-Introduce i40e_xdp_rx_vlan_tag() which takes the same approach as
-i40e_process_skb_fields() to extract the VLAN tag from the RX
-descriptor.
+Some systems implement a system MAC address object in the ACPI table,
+using either \\_SB.AMAC or \\MACA object names. This system MAC address,
+when enabled, is intended to override the permanent MAC address of the
+network controller.
 
-Tested with X710 adapter using xdp_hw_metadata, and confirmed that VLAN
-tags match between bpf_xdp_metadata_rx_vlan_tag() and
-skb->vlan_proto/vlan_tci.
+Implement lookup of the relevant ACPI object names and use them to
+initialize the MAC address.
 
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Patryk Holda <patryk.holda@intel.com>
+On systems where the feature is disabled or unsupported, the ACPI objects
+do not exist or do not contain a valid Ethernet MAC, causing a fallback
+to the existing MAC address initialization path.
+
+Assisted-by: GitHub-Copilot:claude-opus-4.7
+Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 64 ++++++++++++++++++++++-
+ 1 file changed, 62 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index e487d697a634..719f45b5cb40 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -13607,8 +13607,27 @@ static int i40e_xdp_rx_hash(const struct xdp_md *_ctx, u32 *hash,
- 	return 0;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 21d2fe38a41a..424c12c0394a 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -11,6 +11,8 @@
+ #include <net/pkt_sched.h>
+ #include <linux/bpf_trace.h>
+ #include <net/xdp_sock_drv.h>
++#include <linux/acpi.h>
++#include <linux/hex.h>
+ #include <linux/pci.h>
+ #include <linux/mdio.h>
+ 
+@@ -7105,6 +7107,57 @@ static enum hrtimer_restart igc_qbv_scheduling_timer(struct hrtimer *timer)
+ 	return HRTIMER_NORESTART;
  }
  
-+static int i40e_xdp_rx_vlan_tag(const struct xdp_md *_ctx, __be16 *vlan_proto,
-+				u16 *vlan_tci)
++static bool igc_get_acpi_mac_passthru(u8 *mac)
 +{
-+	const struct i40e_xdp_buff *ctx = (const void *)_ctx;
-+	const union i40e_rx_desc *desc = ctx->desc;
-+	u64 status;
++	static const struct {
++		const char *name;
++		acpi_object_type type;
++		u32 length;
++	} sources[] = {
++		{ "\\_SB.AMAC", ACPI_TYPE_BUFFER, 23 },
++		{ "\\MACA",     ACPI_TYPE_STRING, 22 },
++	};
++	struct acpi_buffer buffer;
++	union acpi_object *obj;
++	bool mac_found = false;
++	acpi_status status;
++	u8 buf[ETH_ALEN];
++	int i;
 +
-+	status = le64_to_cpu(desc->wb.qword1.status_error_len);
++	if (!IS_ENABLED(CONFIG_ACPI))
++		return false;
 +
-+	if (!(status & BIT(I40E_RX_DESC_STATUS_L2TAG1P_SHIFT)))
-+		return -ENODATA;
++	for (i = 0; i < ARRAY_SIZE(sources) && !mac_found; i++) {
++		buffer.length = ACPI_ALLOCATE_BUFFER;
++		buffer.pointer = NULL;
 +
-+	*vlan_proto = cpu_to_be16(ETH_P_8021Q);
-+	*vlan_tci = le16_to_cpu(desc->wb.qword0.lo_dword.l2tag1);
++		status = acpi_evaluate_object(NULL, (char *)sources[i].name,
++					      NULL, &buffer);
++		if (ACPI_FAILURE(status))
++			continue;
 +
-+	return 0;
++		obj = buffer.pointer;
++		if (!obj || obj->type != sources[i].type ||
++		    obj->string.length != sources[i].length)
++			goto free_obj;
++
++		if (strncmp(obj->string.pointer, "_AUXMAC_#", 9) ||
++		    obj->string.pointer[21] != '#')
++			goto free_obj;
++
++		if (hex2bin(buf, obj->string.pointer + 9, ETH_ALEN) ||
++		    !is_valid_ether_addr(buf))
++			goto free_obj;
++
++		ether_addr_copy(mac, buf);
++		mac_found = true;
++free_obj:
++		kfree(obj);
++	}
++
++	return mac_found;
 +}
 +
- static const struct xdp_metadata_ops i40e_xdp_metadata_ops = {
- 	.xmo_rx_hash		= i40e_xdp_rx_hash,
-+	.xmo_rx_vlan_tag	= i40e_xdp_rx_vlan_tag,
- };
+ /**
+  * igc_probe - Device Initialization Routine
+  * @pdev: PCI device information struct
+@@ -7268,9 +7321,16 @@ static int igc_probe(struct pci_dev *pdev,
+ 	}
  
- static const struct net_device_ops i40e_netdev_ops = {
+ 	if (eth_platform_get_mac_address(&pdev->dev, hw->mac.addr)) {
+-		/* copy the MAC address out of the NVM */
+-		if (hw->mac.ops.read_mac_addr(hw))
++		/* Look for a system-provided MAC in the ACPI table before
++		 * falling back to reading the address from the NVM.
++		 */
++		if (igc_get_acpi_mac_passthru(hw->mac.addr)) {
++			netdev->addr_assign_type = NET_ADDR_STOLEN;
++			dev_info(&pdev->dev, "Using ACPI pass-through MAC addr %pM\n",
++				 hw->mac.addr);
++		} else if (hw->mac.ops.read_mac_addr(hw)) {
+ 			dev_err(&pdev->dev, "NVM Read Error\n");
++		}
+ 	}
+ 
+ 	eth_hw_addr_set(netdev, hw->mac.addr);
 -- 
 2.47.1
 
