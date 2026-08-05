@@ -1,193 +1,133 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118DF3EB0F7
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CE33CF1F9
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785965097; cv=none; b=SsaApZcIgTos6h5CPWTcNNOKeXmRVqWPUvgFyB/MePUEapA+WuWqxvtc1MSZh97blesHDYIC9JMQpp91QTBHk00kLs3VhAGRtd9+5LJT09itGyFYwwhjM3guMWn0J0g7YU8OtbRmMUxEfUy9L74a6JLxp1jqvNNuF2Qgnh6X+Z0=
+	t=1785965104; cv=none; b=RwM29GkZniQAwLmzDRo1sdR+v3IOJ2TPhF34KmdwdJhjltuHFhzfHEtaI+r8Fuv4ACbiUQQQpcsYJ504M/9rgKIBiUgRH+zXQarwcyqe51LZjKikfKZutIu2RI4lbZYAdq2xGNTmsyD2XArE7bRS+cZfmvQ7gQXqoJR59dWL2aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785965097; c=relaxed/simple;
-	bh=OoDmUc/8XtCceK9p+h+/SE9QHPZ6p/OJ7DDwunZIJxM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=td7pv3wDTeMzEB52koCvwOscO9te/shb6iueLftcXWxFz4f9CL7MyV9VoNKpx4GbDhpjmNpRsbbh+vGzAvubVo/h7ZEwk5g10spX6jKss3ngkaylBwvG9eF+cXIA4VTqUgKPmgoXM2kwNnhUYe8vcu038GMFx49KMSu6vdOA93o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tkjos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qCCDx1TP; arc=none smtp.client-ip=209.85.214.197
+	s=arc-20240116; t=1785965104; c=relaxed/simple;
+	bh=G2Gb8ryU9CB/tkIoI6Nf0ZbyezD1MDOliNvGtQxweb0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NjoHegyGwLnwtLoDGxhS3Wkt8n6UyyXS4hx13dx/5Gh+n2cglahokrk7kX1q8fP3QKP9g1JX1WuUHH191kkmhJ7NZ81QMtBNKu2yt7dGAkwInHEYC9qpKvvcPHTAG3yuPY8iIXoCAf/Yxw5QNg5LxQs4tmcveiuNC/lAKuoTluQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tkjos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XSn3muos; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tkjos.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qCCDx1TP"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cc86a9ef97so24609465ad.3
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 14:24:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XSn3muos"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8486c3411c8so1846000b3a.2
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 14:24:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785965087; x=1786569887; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OEee5sfGqkAQFl6GZPGNdx0Fm2VSIMtcRUsGRdoNGMg=;
-        b=qCCDx1TPDdJml2ne5nwDLwWBNQqi8SLcGVU+rBAgIZ9Rg5oMAZVYkk1Y1xDiJ90Dcn
-         +xjc0qom6aU42s2U4wXyTcnRaH4Ltkl9UlbABBoCwSloqUevRQcXWHygh+j8Nr3y3qUW
-         lFwJCtWKivs0byqd98XySNG7ympI2IXeeIV5WscsOfVaki8bCb/A2dd5mdPJ79g8jaoq
-         1RaC1hVBPfvT2ZQoYfk3/i4VqIKkdFyKbFiVly+SPyp/38ZaxZ50hbLB+zxc/eBE0fuG
-         RaguvjJ78LDDy0t8X4q/0HQ8n4VpzNIy1pM9c17jXVNJO4Ty3XvvbOYZZLXmJHvzoSg1
-         QEZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785965087; x=1786569887;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785965092; x=1786569892; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OEee5sfGqkAQFl6GZPGNdx0Fm2VSIMtcRUsGRdoNGMg=;
-        b=Uz2hgcSRS/FdlK2xCzKbkNK7MTrgKw1Iq77GWh4wdGdv8eRXazSbZAZEfrnqe+Ig5b
-         BsVOwm466SKZ3q4dtG8jLqj9RgxcODnI+3y1+oli19UHtnHjxIda62Q43XtxrhIOomzq
-         mnywRzzpBMVLJkJ09X6RNTBWaX2TO/XGfb+RTjWk+MmHryPJtCsn0t/PkTdYxRtqRiKO
-         JF7FDz+JmXakn+2H/VvVNPIzOAC+NxPvxJsVyJnSF8/ZllksXpiOoKTNzbsDX6Tw/tyS
-         nhuCicKJsKpxSrMuifu3IEGzPqikNzqmIUJQTqpbOcz856Rr/KdCxVXN1Or/Es3BvoiH
-         qwGw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqk9JCgghNAdnwWO5fkeW9wxeZsXEL2Tok3yXnMN+k+U63a/wO1QSPWFs9oJ1KFmPAnyetVDR8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy04ClMk0GGlDRVJndH6pjzCRoN5ZAd9fDWqhEk0PEgq4HUgYYF
-	jZr3Zi4EDEuh4XriCgCMS/DyDKUez24A42PnC6rHMnhhceLx5ulrnXoytg2IbCM4GVrtWQl8vg9
-	uQA==
-X-Received: from plao6.prod.google.com ([2002:a17:903:3006:b0:2ca:d6d7:6943])
- (user=tkjos job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c10:b0:2c7:f4bd:91b5
- with SMTP id d9443c01a7336-2d0ca15d0a1mr118249685ad.0.1785965086682; Wed, 05
- Aug 2026 14:24:46 -0700 (PDT)
-Date: Wed,  5 Aug 2026 21:24:34 +0000
+        bh=40ts9A4u96ZUBLDRq3LwUF/0mcwzqzGt7HKamq8DGIs=;
+        b=XSn3muosSmxaYnU/p4J+DHvncxprTsDDCmpzmHDXSGZJrv3t9gb6bktHbdAHHnSiSP
+         vUOI9/QXXHlLzTIsXiPqM5/gO5fxuS9Oqxexpwewts+3PtcmdbvYFVL+xHicpRCbRDHG
+         vfIto1aGbDaNcjPnsMBq94vz7AhTftb+oLYr4Y/v/TQuIRgObFwsS3PPlifI7bIaMdNK
+         7wI3kh5OJaLC/cl2IHgyQdooBld2xzA0X/PO1Cju0WLUTTW/LblEZR11s6xV6yGbsSfy
+         V8Rp7djdbDlFyQlqhRAc/nuZJ/P6r9ud0KxF/m6cJJg8bPDIeLDBY0Bffp1lz4iV2KYT
+         XDdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785965092; x=1786569892;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=40ts9A4u96ZUBLDRq3LwUF/0mcwzqzGt7HKamq8DGIs=;
+        b=SE7O4ANW3HIOiknkE2un80zNfwcB2rQ+OlDIivzkfcTENmtRqGG0mAu2oy7rugl8i5
+         ZefZWDWW89mhtYSxZdZ6+hWOJwlbO4pRz/su9fEToXcbw5jAD6iKQ+mg5/w7i/bsGIr2
+         J0NawPj1RgcGlsc2wQuIXroPGTYEKaz/EIPdkWzB8FtZHqh5kXt9MGjCVSawgBaw+4nl
+         0UMCLERamfWUKu5qsUFxr3MfQv2airqRVYLUDJy+0grGWMPQs8Lvb3CZvW9Gh47Ti6IW
+         MyAa3EWHNn2avHDO/iMYDnTg5vCLnm5v1ucNldlrfJFS4d+xYXp6Fn3dje8rpmcoZfL3
+         9vug==
+X-Forwarded-Encrypted: i=1; AHgh+RpLoIwNLNLmE4vNz1rpqlyI+lYqxSDNTU74atQsX0O14+w3AdRFmpQQTgXA9FA8PW+J5yH0n6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLi/7Hrh1ip17dBxwFmo53KoFeZYt2E3VMnTy1rdYc0q3vhVf9
+	xSnFDiRle6d315L0fwI9m8eTkfoppxBy+FYybdSaMCqFpClox+QudOot10X6PBBoU4nnknYoHiZ
+	UpQ==
+X-Received: from pgbeu25.prod.google.com ([2002:a05:6a02:4799:b0:cb3:9a4d:501])
+ (user=tkjos job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:414a:b0:84e:2f2e:8c4b
+ with SMTP id d2e1a72fcca58-84f2e0ccecfmr10983412b3a.32.1785965092256; Wed, 05
+ Aug 2026 14:24:52 -0700 (PDT)
+Date: Wed,  5 Aug 2026 21:24:35 +0000
+In-Reply-To: <20260805212435.48618-1-tkjos@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260805212435.48618-1-tkjos@google.com>
 X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
-Message-ID: <20260805212435.48618-1-tkjos@google.com>
-Subject: [PATCH v2 1/2 5.10.y] Bluetooth: SCO: Fix UAF on sco_sock_timeout
+Message-ID: <20260805212435.48618-2-tkjos@google.com>
+Subject: [PATCH v2 2/2 5.10.y] Bluetooth: SCO: Fix use-after-free in
+ sco_recv_frame() due to missing sock_hold
 From: Todd Kjos <tkjos@google.com>
 To: stable@vger.kernel.org
 Cc: kernel-team@android.com, Lee Jones <lee@kernel.org>, 
 	Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
 	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, 
-	syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com, 
-	Xiangyu Chen <xiangyu.chen@windriver.com>, He Zhe <zhe.he@windriver.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Todd Kjos <tkjos@google.com>
+	netdev@vger.kernel.org, Hyunwoo Kim <imv4bel@gmail.com>, 
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, Sasha Levin <sashal@kernel.org>, 
+	Todd Kjos <tkjos@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-commit 1bf4470a3939c678fb822073e9ea77a0560bc6bb upstream.
+[ Upstream commit 598dbba9919c5e36c54fe1709b557d64120cb94b ]
 
-conn->sk maybe have been unlinked/freed while waiting for sco_conn_lock
-so this checks if the conn->sk is still valid by checking if it part of
-sco_sk_list.
+sco_recv_frame() reads conn->sk under sco_conn_lock() but immediately
+releases the lock without holding a reference to the socket. A concurrent
+close() can free the socket between the lock release and the subsequent
+sk->sk_state access, resulting in a use-after-free.
 
-Reported-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
-Tested-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4c0d0c4cde787116d465
-Fixes: ba316be1b6a0 ("Bluetooth: schedule SCO timeouts with delayed_work")
+Other functions in the same file (sco_sock_timeout(), sco_conn_del())
+correctly use sco_sock_hold() to safely hold a reference under the lock.
+
+Fix by using sco_sock_hold() to take a reference before releasing the
+lock, and adding sock_put() on all exit paths.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Resolved trivial conflicts in net/bluetooth/sco.c, removed
-extra reference on sk ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Todd Kjos <tkjos@google.com>
 ---
-Changes in v2:
-- Removed redundant reference on struct sock
-- Removed Change-Id tags
+ net/bluetooth/sco.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
- include/net/bluetooth/bluetooth.h |  1 +
- net/bluetooth/af_bluetooth.c      | 22 ++++++++++++++++++++++
- net/bluetooth/sco.c               | 17 ++++++++++++-----
- 3 files changed, 35 insertions(+), 5 deletions(-)
-
-diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-index 43b4386018e26c41c914f87e050a0fe958700135..85bab90a6921ce1e9b9025647e23fafd97117ece 100644
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -317,6 +317,7 @@ void bt_sock_link(struct bt_sock_list *l, struct sock *s);
- void bt_sock_unlink(struct bt_sock_list *l, struct sock *s);
- struct sock *bt_sock_alloc(struct net *net, struct socket *sock,
- 			   struct proto *prot, int proto, gfp_t prio, int kern);
-+bool bt_sock_linked(struct bt_sock_list *l, struct sock *s);
- int  bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 		     int flags);
- int  bt_sock_stream_recvmsg(struct socket *sock, struct msghdr *msg,
-diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
-index bef5b6330dd807504292671301c860b96c2ed18e..0af14e3318e7e02173970a1af8e183723bef2c50 100644
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -184,6 +184,28 @@ void bt_sock_unlink(struct bt_sock_list *l, struct sock *sk)
- }
- EXPORT_SYMBOL(bt_sock_unlink);
- 
-+bool bt_sock_linked(struct bt_sock_list *l, struct sock *s)
-+{
-+	struct sock *sk;
-+
-+	if (!l || !s)
-+		return false;
-+
-+	read_lock(&l->lock);
-+
-+	sk_for_each(sk, &l->head) {
-+		if (s == sk) {
-+			read_unlock(&l->lock);
-+			return true;
-+		}
-+	}
-+
-+	read_unlock(&l->lock);
-+
-+	return false;
-+}
-+EXPORT_SYMBOL(bt_sock_linked);
-+
- void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
- {
- 	const struct cred *old_cred;
 diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index 01a01d6f01c309a6333859784261d97335dda413..2fbd9c93440ce4936d47b3bd47aa1dc28da82c20 100644
+index 2fbd9c93440ce4936d47b3bd47aa1dc28da82c20..b49b2d6bb778e8956d4a297c9feecadd1557a3b9 100644
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -76,6 +76,16 @@ struct sco_pinfo {
- #define SCO_CONN_TIMEOUT	(HZ * 40)
- #define SCO_DISCONN_TIMEOUT	(HZ * 2)
+@@ -312,7 +312,7 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
+ 	struct sock *sk;
  
-+static struct sock *sco_sock_hold(struct sco_conn *conn)
-+{
-+	if (!conn || !bt_sock_linked(&sco_sk_list, conn->sk))
-+		return NULL;
-+
-+	sock_hold(conn->sk);
-+
-+	return conn->sk;
-+}
-+
- static void sco_sock_timeout(struct work_struct *work)
- {
- 	struct sco_conn *conn = container_of(work, struct sco_conn,
-@@ -87,9 +97,7 @@ static void sco_sock_timeout(struct work_struct *work)
- 		sco_conn_unlock(conn);
- 		return;
- 	}
--	sk = conn->sk;
--	if (sk)
--		sock_hold(sk);
-+	sk = sco_sock_hold(conn);
- 	sco_conn_unlock(conn);
- 
- 	if (!sk)
-@@ -192,11 +200,10 @@ static void sco_conn_del(struct hci_conn *hcon, int err)
- 
- 	/* Kill socket */
  	sco_conn_lock(conn);
 -	sk = conn->sk;
 +	sk = sco_sock_hold(conn);
  	sco_conn_unlock(conn);
  
- 	if (sk) {
--		sock_hold(sk);
- 		bh_lock_sock(sk);
- 		sco_sock_clear_timer(sk);
- 		sco_chan_del(sk, err);
+ 	if (!sk)
+@@ -321,11 +321,15 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
+ 	BT_DBG("sk %p len %d", sk, skb->len);
+ 
+ 	if (sk->sk_state != BT_CONNECTED)
+-		goto drop;
++		goto drop_put;
+ 
+-	if (!sock_queue_rcv_skb(sk, skb))
++	if (!sock_queue_rcv_skb(sk, skb)) {
++		sock_put(sk);
+ 		return;
++	}
+ 
++drop_put:
++	sock_put(sk);
+ drop:
+ 	kfree_skb(skb);
+ }
 -- 
 2.55.0.629.g250fe7f194-goog
 
