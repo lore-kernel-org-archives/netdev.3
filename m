@@ -1,179 +1,230 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624EE38D3FC
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 14:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FA6386C21
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 14:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785940960; cv=none; b=tykwbXh04YbTFp3L5ltdaYZUpTcp4VIctWQJtusiZUWdDKR8WQbmJJ0HEQjR0xUEcgBNHC6JStvGYuCmJDxoJ1rW1yZsDsMEDvQpSWzwTR2fh9JZprGkb5HVS2GbD4U+ox9bOsSbmDCxNBWJ0WMAu+fRxLeuoDPuzw+fS+51/Eg=
+	t=1785941151; cv=none; b=AG5OGAl6ADw1C9YzYkgYeOx9+kgWg8ge6Sieb67vjbn39aM13gsGsqk6oQGgEQYjOAIiqQgSubWgD7RWx5aNM/LS9T5N71REtScmrZrxvJV14a32onb+BG09LbzXsCBdMb59UrS2ErfmSUR/g11TZ/emzrwN/t827/NLvZT9als=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785940960; c=relaxed/simple;
-	bh=NUxmVYrEfPKo+i8Q+bqh/D8r8C7Tr65MGzn7Zu0UeGQ=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=WCn9+kaQz4pPA8mEbe6ljxPFLmh2DEKvQ3aa3VhS7hL6BsQ0hfI5/yYLScmPAD4jwtdN1HhxoMu1Zz6QErsqFrzdTQ/+bLuDbJcDO0OroBaHVLndqjo9gbESwadDQg13w6mGro7Qnm0pZs8K0NosTwgDM1526LgJLNwSdJEa3KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-49ab6a82cd5so1154036b6e.2
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 07:42:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785940953; x=1786545753;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=DKMAEk7ixO/3UhOr8REpRipHtC42IVpmhe/7vaT9QaE=;
-        b=Qz+/O+ML2uSAbaIFqw+bBYXa/qOv9520f0jKMjkXx9T0V7o+pniZ/GdDaXEJOdrJSP
-         k4TZkE8XzMWyzRB5vrNKZn3/TWdodfwiKvzU7Hp2Ibg4YcStSSNVCd7m1nynB+pofaAe
-         0TuowyCYGincvYIn7AM9wELods7OXUS0tPWVUq1oM/6lzf2CsQhrZinbgh9q7AQALytW
-         FnpO3bSt1LpxtGLe+AQ9eaDNSK255+tY+KZnRxnMGrdczq7fnVdBKgsKdS1PNY7qtSwM
-         9CpprbTs3h/dVSpnQ8p9oU6SY9vFjg5+Y+1AkWKTEeFuQevMZj2Q+ZA4qF0zQkKlQ4jO
-         Cs6Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrGI7WecVnywU/ePrlW6p+PxGi0pgzDuK+3+BgIVA49q9TcELuUzQcJkl1YOtFNMQMmAXiTGFk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywjcDVoskgdiBPd1aAF+rvSogCH/PjsGFRzlLVz6ZhUpmVfteP
-	2Gh9AEFdhrVFPnkJmRD69Xb82NaM1oFwxYqw6ufDswec8zubMR4LSskvDYn/9E1wqNTfiAiPllf
-	2SCeYvvN+UwLFjNIPabKIPBRq0bXODv/Jz4iLMQOXUT3mgHi1/qO+b2SPqMM=
+	s=arc-20240116; t=1785941151; c=relaxed/simple;
+	bh=w7NwY1Uyw82KURybqUKacCjwlpxNPqAxfgQSYqNOyhE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=GYcRPhehs5X4tSxzQBv7HkEGJhMR+/cCBsUiKpijUM+G1G1mf8hO+ySQDdpP+1+wG8CUnnXVUKhwy7LnUFhDqWs+YTqzUGlwg4vVyCyDtBQTGyXFKpYUFd8UoF8niLcZRV8LAU0ECbhIRhqhbBWI7C8uh7pYySrVST0CLCI6uao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fehIGs7g; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fehIGs7g"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D5E0C4E4104F;
+	Wed,  5 Aug 2026 14:45:43 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8C2F2602AB;
+	Wed,  5 Aug 2026 14:45:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E640B11C34C9C;
+	Wed,  5 Aug 2026 16:45:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785941142; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=5BxmzXboJPx9oNcM1dLfpj/z5tixcHt1471uC5LreXo=;
+	b=fehIGs7gBfzub0WlDaK0U8iQSwpx22Iv5hQ6rQfbynaS6IDIgosZFgDt+oI7arVCOIJZdN
+	ddqeQ5OEftU+MMyTuEJzNL/kNVgRg7hMuOm10WkmZLGwfHYhToJkjFripuu4mPHkxMtffW
+	tWqevm4QIelsWp98oF5jIj1rOM4uaakjyvOuGtMD66O6cgADmUImtLQ5oFGg4ryyTyAlRd
+	zgzKPcygtC/HNNrrWnMSagSeBKiXujpdH0YVBlxSltKNGSWSyc3LWnWEosi3QsoUEgokUj
+	INDa0QPb4/sCkNOl2MmTVhAIRTBNbjSQp+ABhTT1pa27cEBO3j3TkzHzXBorHg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1a0f:b0:6ac:9729:6710 with SMTP id
- 006d021491bc7-6ae96ecc61fmr4258233eaf.18.1785940952706; Wed, 05 Aug 2026
- 07:42:32 -0700 (PDT)
-Date: Wed, 05 Aug 2026 07:42:32 -0700
-In-Reply-To: <69572c91.050a0220.a1b6.034b.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a734bd8.d1b4d54b.5552d.001d.GAE@google.com>
-Subject: Re: [syzbot] [netfilter?] INFO: task hung in nfnetlink_rcv_msg (5)
-From: syzbot <syzbot+c4b20b80ee6a7a2f5012@syzkaller.appspotmail.com>
-To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
-	fw@strlen.de, horms@kernel.org, kadlec@netfilter.org, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	netfilter-devel@vger.kernel.org, pabeni@redhat.com, pablo@netfilter.org, 
-	phil@nwl.cc, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 05 Aug 2026 16:45:39 +0200
+Message-Id: <DKH3AOWRPUDD.1IOVFERUUNC1J@bootlin.com>
+Cc: "conor.dooley@microchip.com" <conor.dooley@microchip.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "Polak, Leszek" <LPolak@arri.de>, "andrew+netdev@lunn.ch"
+ <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+ <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH] net: macb: fix stale data returned by MDIO reads
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <PA1PR03MB11059B8723E1C212E5801A52DC8D32@PA1PR03MB11059.eurprd03.prod.outlook.com>
+In-Reply-To: <PA1PR03MB11059B8723E1C212E5801A52DC8D32@PA1PR03MB11059.eurprd03.prod.outlook.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-syzbot has found a reproducer for the following issue on:
+Hello Leszek,
 
-HEAD commit:    c21bb4193868 Merge tag 'for_linus' of git://git.kernel.org..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14723bb9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=db2a459b73b0bd7c
-dashboard link: https://syzkaller.appspot.com/bug?extid=c4b20b80ee6a7a2f5012
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13c353b9580000
+Your subject is missing the [PATCH net] prefix.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c4b20b80ee6a7a2f5012@syzkaller.appspotmail.com
+On Wed Aug 5, 2026 at 2:01 PM CEST, Polak, Leszek wrote:
+> macb_mdio_wait_for_idle() samples NSR.IDLE with no delay after MAN has be=
+en
+> written. readx_poll_timeout() expands to read_poll_timeout() with
+> sleep_before_read =3D false, so the very first NSR read is issued immedia=
+tely
+> after the register write.
+>
+> The controller does not deassert NSR.IDLE until its MDIO state machine
+> actually begins the frame, which takes up to one MDC period. Neither
+> macb_mdc_clk_div() nor gem_mdc_clk_div() ever selects an MDC above 2.5 MH=
+z,
+> so one period is up to ~400 ns - on the order of a hundred pclk cycles, a=
+nd
+> far longer than a back-to-back register access. The poll therefore observ=
+es
+> IDLE still set from the *previous* operation and returns success before t=
+he
+> operation just issued has started.
 
-INFO: task syz-executor189:6036 blocked for more than 5 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor189 state:D stack:24232 pid:6036  tgid:6036  ppid:154    task_flags:0x400100 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x17e7/0x5630 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7326
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7383
- __mutex_lock_common kernel/locking/mutex.c:726 [inline]
- __mutex_lock+0x7bf/0x1550 kernel/locking/mutex.c:821
- nfnl_lock net/netfilter/nfnetlink.c:96 [inline]
- nfnetlink_rcv_msg+0xa69/0x12b0 net/netfilter/nfnetlink.c:293
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- nfnetlink_rcv+0x2b9/0x28c0 net/netfilter/nfnetlink.c:667
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
- __sock_sendmsg net/socket.c:790 [inline]
- __sys_sendto+0x408/0x5a0 net/socket.c:2252
- __do_sys_sendto net/socket.c:2259 [inline]
- __se_sys_sendto net/socket.c:2255 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2255
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f581fdbc037
-RSP: 002b:00007fff5c0188a0 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 000055556b6f4400 RCX: 00007f581fdbc037
-RDX: 0000000000000014 RSI: 00007fff5c018900 RDI: 0000000000000000
-RBP: 0000000000000004 R08: 00007fff5c0188f4 R09: 000000000000000c
-R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff5c019f68
-R13: 0000000000000002 R14: 00007f581fe22c80 R15: 0000000000000002
- </TASK>
+You (or rather the LLM) say that with confidence. How do you know about
+this MDIO state machine implying some delay inbetween the MAN writel
+(which triggers a MDIO management frame) and the time at which NSR.IDLE
+starts becoming 0?
 
-Showing all locks held in the system:
-1 lock held by khungtaskd/31:
- #0: ffffffff8e759c20 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #0: ffffffff8e759c20 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #0: ffffffff8e759c20 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x2e/0x180 kernel/locking/lockdep.c:6775
-2 locks held by kworker/u8:5/154:
- #0: ffff88813fe4c140 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3297 [inline]
- #0: ffff88813fe4c140 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_scheduled_works+0xa20/0x14e0 kernel/workqueue.c:3405
- #1: ffffc90002f5fc40 ((work_completion)(&sub_info->work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3297 [inline]
- #1: ffffc90002f5fc40 ((work_completion)(&sub_info->work)){+.+.}-{0:0}, at: process_scheduled_works+0xa20/0x14e0 kernel/workqueue.c:3405
-2 locks held by getty/5372:
- #0: ffff888035e180a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
- #1: ffffc900032332e8 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x45a/0x1360 drivers/tty/n_tty.c:2211
-1 lock held by syz-executor189/6035:
- #0: ffffffff9a7a3cb0 (nfnl_subsys_ctnetlink){+.+.}-{4:4}, at: nfnl_lock net/netfilter/nfnetlink.c:96 [inline]
- #0: ffffffff9a7a3cb0 (nfnl_subsys_ctnetlink){+.+.}-{4:4}, at: nfnetlink_rcv_msg+0xa69/0x12b0 net/netfilter/nfnetlink.c:293
-1 lock held by syz-executor189/6036:
- #0: ffffffff9a7a3cb0 (nfnl_subsys_ctnetlink){+.+.}-{4:4}, at: nfnl_lock net/netfilter/nfnetlink.c:96 [inline]
- #0: ffffffff9a7a3cb0 (nfnl_subsys_ctnetlink){+.+.}-{4:4}, at: nfnetlink_rcv_msg+0xa69/0x12b0 net/netfilter/nfnetlink.c:293
+The doc doesn't mention anything of the sort. It explicitely mentions
+NSR.IDLE as being there to signal for completion.
 
-=============================================
+Also it sounds like a massive bug, wouldn't others have discovered it
+before? Just checked and nothing out of the ordinary on EyeQ (first NSR
+is always 0x2 after writel to MAN). Patch at the end, which should
+trigger error logs on your system from what I understood. Please report
+back on that.
 
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 31 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- nmi_cpu_backtrace+0x274/0x2d0 lib/nmi_backtrace.c:122
- nmi_trigger_cpumask_backtrace+0x17a/0x380 lib/nmi_backtrace.c:65
- trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline]
- __sys_info lib/sys_info.c:157 [inline]
- sys_info+0x135/0x170 lib/sys_info.c:165
- check_hung_uninterruptible_tasks kernel/hung_task.c:353 [inline]
- watchdog+0xfd7/0x1030 kernel/hung_task.c:561
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:pv_native_safe_halt+0xf/0x20 arch/x86/kernel/paravirt.c:64
-Code: ec 71 02 e9 d3 02 03 00 cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d d3 ca 0f 00 fb f4 <c3> cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90
-RSP: 0018:ffffc90000197e40 EFLAGS: 00000242
-RAX: 0000000000052637 RBX: ffffffff8199752c RCX: 0000000080000001
-RDX: 0000000000000001 RSI: ffffffff8ddfd062 RDI: ffffffff8c0b0280
-RBP: ffffc90000197f10 R08: ffff8880b87338db R09: 1ffff110170e671b
-R10: dffffc0000000000 R11: ffffed10170e671c R12: 0000000000000000
-R13: 1ffff11003ada000 R14: 1ffff92000032fd0 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff888125546000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055c1e9808200 CR3: 000000007a26e000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- arch_safe_halt arch/x86/kernel/process.c:767 [inline]
- default_idle+0x9/0x20 arch/x86/kernel/process.c:768
- default_idle_call+0x72/0xb0 kernel/sched/idle.c:122
- cpuidle_idle_call kernel/sched/idle.c:199 [inline]
- do_idle+0x1cc/0x540 kernel/sched/idle.c:355
- cpu_startup_entry+0x43/0x60 kernel/sched/idle.c:454
- start_secondary+0x101/0x110 arch/x86/kernel/smpboot.c:312
- common_startup_64+0x13e/0x157
- </TASK>
+> The caller then reads a MAN DATA field that still holds the result of
+> whatever completed before, so every read returns the data of the previous=
+ly
+> accessed register. For clause 45 the race occurs three times per access: =
+the
+> address operation is still in flight when the read operation is written, =
+and
+> the final MACB_BFEXT(DATA, macb_readl(bp, MAN)) picks up a stale value.
+>
+> Observed on a Versal board with a Marvell 88Q1111 on GEM1, where reading =
+each
+> MMD register twice showed the first read returning the preceding register=
+'s
+> value:
+>
+>   31.8002: 0x0149 then 0x002b   (0x0149 is 31.8001)
+>   31.8004: 0x0b21 then 0x1401   (0x0b21 is 31.8003)
+>   31.8011: 0x400e then 0x6000   (0x400e is 31.8010)
+>   31.8010: 0x6000 then 0x400e   (0x6000 is 31.8011)
 
+I don't understand those logs? Can you provide the code that generated
+them and more context? You probably faced some terrible bugs if all
+MDIO reads returned the value from the previous read.
+
+> The lag persists across callers and across driver entry points, so it is =
+a
+> property of the controller path rather than of any PHY driver. It silentl=
+y
+> corrupts every MMD read. Latch-high, clear-on-read registers are worse th=
+an
+> corrupted: their content cannot be recovered by retrying, because the fir=
+st
+> read still reaches the PHY and clears the latch.
+>
+> Sleep before the first NSR sample so that an operation issued immediately
+> beforehand is guaranteed to be underway. The pre-operation bus-free check
+> pays the same delay, which is immaterial - a single MDIO frame takes over
+> 25 us at 2.5 MHz MDC, so this is well under the cost of the transfer itse=
+lf.
+>
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Polak, Leszek <LPolak@arri.de>
+
+If this bug gets confirmed it needs (1) to go into net and
+(2) have `Cc: stable...` and `Fixes: ...` trailers.
+
+Docs on (1) are
+Documentation/process/maintainer-netdev.rst
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+
+Docs on (2) are
+sources are in: Documentation/process/stable-kernel-rules.rst
+https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
+> ---
+>  drivers/net/ethernet/cadence/macb_main.c | 20 ++++++++++++++++++--
+>  1 file changed, 18 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -340,10 +340,26 @@ static void macb_get_hwaddr(struct macb *bp)
+> =20
+>  static int macb_mdio_wait_for_idle(struct macb *bp)
+>  {
+> +	/*
+> +	 * NSR.IDLE is not deasserted until the MDIO state machine begins the
+> +	 * frame, which takes up to one MDC period after MAN is written. MDC is
+> +	 * never clocked above 2.5 MHz, so one period is at most ~400 ns; allow
+> +	 * an order of magnitude of margin. read_poll_timeout() sleeps at least
+> +	 * (sleep_us >> 2) + 1 us, so the guaranteed minimum here is 6 us.
+> +	 */
+> +	const unsigned int start_delay_us =3D 20;
+>  	u32 val;
+> =20
+> -	return readx_poll_timeout(MACB_READ_NSR, bp, val, val & MACB_BIT(IDLE),
+> -				  1, MACB_MDIO_TIMEOUT);
+> +	/*
+> +	 * Do not sample NSR.IDLE immediately. When this is called straight
+> +	 * after a MAN write, IDLE is still set from the previous operation,
+> +	 * so the poll would return at once and the caller would go on to read
+> +	 * a MAN DATA field that still holds the previous transaction's
+> +	 * result. Sleeping first guarantees the new operation has started and
+> +	 * IDLE has gone low before it is sampled.
+> +	 */
+> +	return read_poll_timeout(MACB_READ_NSR, val, val & MACB_BIT(IDLE),
+> +				 start_delay_us, MACB_MDIO_TIMEOUT, true, bp);
+>  }
+
+Your code is not just adding a 20=C2=B5s start delay, it changes all delays
+from 1=C2=B5s to 20=C2=B5s. I don't think we want that.
+Before: readl(NSR) -> usleep(1) ->  readl(NSR) -> usleep(1)  -> ...
+After:  usleep(20) -> readl(NSR) -> usleep(20) -> readl(NSR) -> ...
+
+Your introduced variable start_delay_us is not needed.
+
+There are way too many comment lines. Your LLM hasn't read enough kernel
+code! Rare comments, mostly terse. Commit messages can be relied upon.
 
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+
+pr_err() should trigger on your system from what I understood.
+Can you confirm?
+
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/etherne=
+t/cadence/macb_main.c
+index d58430fe9c41..1eaee3e1f735 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -304,6 +304,12 @@ static int macb_mdio_wait_for_idle(struct macb *bp)
+ {
+        u32 val;
+
++       val =3D macb_readl(bp, NSR);
++       if (val & MACB_BIT(IDLE)) {
++               pr_err("PHY IDLE after writel(MAN): NSR %#x MAN %#x\n", val=
+, macb_readl(bp, MAN));
++               fsleep(20);
++       }
++
+        return readx_poll_timeout(MACB_READ_NSR, bp, val, val & MACB_BIT(ID=
+LE),
+                                  1, MACB_MDIO_TIMEOUT);
+ }
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
