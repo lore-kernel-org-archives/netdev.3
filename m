@@ -1,145 +1,227 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E25E41A51C
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 09:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82329406817;
+	Wed,  5 Aug 2026 09:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785923958; cv=none; b=CDHwqNNZGHiluVkh/oac4S8+7JeAWG9JWRs3o67wUOFuGqSQc82Aln0gYg21VwmXXLBeGjOS1TYrCSLZwMXyaj2WlnT15Q5+eGaOA7Kl5BpCujtkdE7gU/6g7KS+enQVSI+mPcYWT/8PXv58UaNShLysBh2vRz5Rq03zy+HOVzQ=
+	t=1785923971; cv=none; b=Zb5rWTdDeinVdRLd5aydxJya07qI/F0ntUnDKlUVcRjvYVPNXCjYQkSiub3YCUjluI3Q11+38LEBK8xmp7cOUZl0iZJ4byoVsmGdFVqSigPfKa/7bkmR7t3Bgp5qmspRwCenkskHuQrMKsaQYUGC2cAYa4dntytwCoq86i89yPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785923958; c=relaxed/simple;
-	bh=6z14D7RpE9yxiB+tVWfo1lCmJEVbFyAS6GrJFiDKLhs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SMQiHm13a84IOBbV9zQ5dW0CXdRlMYELARNPOh6YdLlVDPBiuPsnqgHbgDtnyksp5K5FlHezim8TQMFVhqxRnH1uTK3RvvC+n2qw9gBPyZTXfFke1OBYeCNn6aEzkJ2lyKLby6ojRYKrC3//sVnlCMQX2GEjsaC8K6jx7eA/LWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FiBxFpzt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785923971; c=relaxed/simple;
+	bh=isXwDE5de2G+plTKAIzMVH0tySnFsZoP7is7/AXEdWk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=obx4AUR10F9CjXnThK7QipURLOQS1Ko9c06vMJbZx7gZtYzHh2xA2FH+47C5G9SQzNU7cf85OXb3a0MjLZsWCqQXRh3Lq9/wskXJJt7UGtuiY6B/83HTOqLTW/K9Czs6idiGbJLld4u7pCSVsIJFnUtSCQYbjrN9iULOGEOV6o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WG5Svriv; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FiBxFpzt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5F21F000E9;
-	Wed,  5 Aug 2026 09:59:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785923957;
-	bh=ghtUzlFRWUUGu8ZsJmgzWJeSIDOJKHfpz5iFtgTk1jY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FiBxFpztljXX18c2a222ItNUCA7gRkrA5EdoZb+yMDPOeKqmYWaTHflTPRlfijc7x
-	 pbm2E2PHyHSvIEbXqYJi0aBzIvXUDTP4lQVl2FaBFXKQLwx6t5rhwEdZ1tmJE8SFmk
-	 IKa0rW5DJ0pP2fOTCQyuBSBgTYFIEqoR2oFbRvdduH2J4/dJ12Y8k+DpKw9Pn7Xr3P
-	 P6B7kcHxJINZi1xj9FKO8i/eZPJipJKM36za3uDU2b0nMLX0EMdaNHpdAMa9ifY6EV
-	 RCcseK/nDSTnqQltrbaQN2lW2afLgMzlI3IHXeE2xFeogBvsNfMVaZ3Gd4kLkGoy7h
-	 aagIS05dIdgyQ==
-Date: Wed, 5 Aug 2026 11:59:14 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Daniel Pawlik <pawlik.dan@gmail.com>
-Cc: netdev@vger.kernel.org, win847@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] net: airoha: npu: use coherent DMA for mailbox messages
-Message-ID: <anMJcp-R17Hx6DQL@lore-desk>
-References: <20260805070851.2885888-1-pawlik.dan@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WG5Svriv"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6758m0cf3355049;
+	Wed, 5 Aug 2026 09:59:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PQXItv
+	payZ42iimDhJf9JUftHo6Gt1R0S9oG2gytQ84=; b=WG5SvrivwCKWTrf4H6wEUH
+	tgmaWohTA3ODT5UDlM3QvlOSowsAdwGrCFrnHumSYvV8iTorv/UGAVpGllj3fUrX
+	FlIi2lBSB5ie9Jh/Nj1XE6RxVnYRBH08s3hXULlSDi75y0EeBLznCR31MvtBlDhg
+	5oJmFSf7uS4at6RVW6PGzEyKAEg8TF7+JhqU/utzfFJNX3jrB5DlufHeo7y/Jf+6
+	LXpNiyABtXLQt4Ei+nI2bX8h3+WcSR+fsDIQch0dlMsQYjnOiiJtsTy6k6UcTj75
+	Arah6gYzC6h8a1a8l8QUbtvs0e6iqoB2rSN7zGk7MjLBEc2yK0TMPUxdHhZ+lAIg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a42ey5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 09:59:23 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6759uRHh032183;
+	Wed, 5 Aug 2026 09:59:22 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsugw64ah-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 09:59:21 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6759xHgi51708248
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Aug 2026 09:59:18 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D19CB2004E;
+	Wed,  5 Aug 2026 09:59:17 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1AD1020043;
+	Wed,  5 Aug 2026 09:59:17 +0000 (GMT)
+Received: from [9.111.207.139] (unknown [9.111.207.139])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  5 Aug 2026 09:59:17 +0000 (GMT)
+Message-ID: <0ac0c8ec-f955-4921-933d-1310800ca002@linux.ibm.com>
+Date: Wed, 5 Aug 2026 11:59:16 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Ex/oSxVbmvjUCGv9"
-Content-Disposition: inline
-In-Reply-To: <20260805070851.2885888-1-pawlik.dan@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] dibs: fix double free of dmb_clientid_arr
+To: Simon Horman <horms@kernel.org>, hidayath@linux.ibm.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com,
+        mjambigi@linux.ibm.com, tonylu@linux.alibaba.com,
+        guwen@linux.alibaba.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        pasic@linux.ibm.com, gbayer@linux.ibm.com, andrew+netdev@lunn.ch,
+        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260730075624.114778-1-hidayath@linux.ibm.com>
+ <20260804165217.525335-1-horms@kernel.org>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260804165217.525335-1-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a73097b cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=9R54UkLUAAAA:8
+ a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=47v8NvyK2iWT-m1jnbwA:9 a=QEXdDO2ut3YA:10
+ a=YTcpBFlVQWkNscrzJ_Dz:22
+X-Proofpoint-ORIG-GUID: Cuz7d9M9JqNyW9ntI3AAq5vSdOhjlyA1
+X-Proofpoint-GUID: zDDJpA_ayjBrs2ICrzPDAZHh8gKfgbq4
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA3NyBTYWx0ZWRfX7gB5z2tylk2o
+ ELTq/86Tc0lx+7PRolCBiiGx5goX3cu3OutcAfPGu6X0ptN6oY/MnXUSwpei/XKd0xFE6GjnQOn
+ ITc9XPeADX6iCagwHjJBZuOVedsge84=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA3NyBTYWx0ZWRfXxgSpC0Hrul6N
+ VxhyRtoxwZv8Mp9U25z21QfQw9/Mw2GimU4oi7FFjvgz77S9jDh48vg9P4vCqndP+CPssSZN3JP
+ me02AFZZIBzCy02J7GVctbqRhNRx1nmCkroTLPOZ8VJaciUg3TKBh652PcCQqRq8mGb3Xa7rd69
+ pE46Kxdv+IOFVSstm2SdG8RpDtZdaln6esZpw+8Ufmjhdin05r4o7n0kndMsp/2OdX0IsA7JsoU
+ N3gqIh6ZmGOfxPmBcsCte5Fqqg32D/lstb4MjKHvefiz4nFvsMvyYnAP258VOUYZPqFSZvOvxOh
+ BiImy/j1UeO8LI/i4mGwkmDy2kW34QUW0YrSijS4XvB3KJ4EzxXxh1c+3Utr7LuaAWSFFrqudUy
+ M71TRQoObnwx8k2uhkDfB/Eq+SDv7YOFvx/t89WNkmtsdtcp2/0qzU6sG+BgdP/UFmuJtBSx3q+
+ T9PMgkYxzY6nQXhhF2A==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_03,2026-08-04_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608050077
 
---Ex/oSxVbmvjUCGv9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-> Commit 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox
-> buffer") switched airoha_npu_send_msg() to DMA_BIDIRECTIONAL so
-> non-coherent CPUs invalidate caches before reading NPU GET responses.
->=20
-> On EN7581 + MT7996 that change regresses probe: the mailbox completes
-> successfully, but WLAN_FUNC_GET_WAIT_NPU_VERSION still reads as 0.0 and
-> mt76 never binds NPU offload. Healthy boards report 0.1111.
->=20
-> Mailbox messages are tiny and already copied by the caller. Bounce
-> through dma_alloc_coherent() so the CPU observes the NPU-written
-> response without relying on streaming DMA direction.
->=20
-> Verified on Quantum Fiber W1700K (EN7581 + MT7996).
->=20
-> Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buff=
-er")
-> Assisted-by: Cursor:composer-2
-> Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
+
+On 04.08.26 18:52, Simon Horman wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260730075624.114778-1-hidayath@linux.ibm.com?part=1
 > ---
->  drivers/net/ethernet/airoha/airoha_npu.c | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ether=
-net/airoha/airoha_npu.c
-> index b679bed952de..d2f6c9c084b8 100644
-> --- a/drivers/net/ethernet/airoha/airoha_npu.c
-> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
-> @@ -166,12 +166,21 @@ static int airoha_npu_send_msg(struct airoha_npu *n=
-pu, int func_id,
->  	u16 core =3D 0; /* FIXME */
->  	u32 val, offset =3D core << 4;
->  	dma_addr_t dma_addr;
-> +	void *dma_buf;
->  	int ret;
-> =20
-> -	dma_addr =3D dma_map_single(npu->dev, p, size, DMA_BIDIRECTIONAL);
-> -	ret =3D dma_mapping_error(npu->dev, dma_addr);
-> -	if (ret)
-> -		return ret;
-> +	/*
-> +	 * Mailbox payloads are small and bidirectional (CPU sets the
-> +	 * request, NPU writes the response). Streaming DMA_BIDIRECTIONAL
-> +	 * mapping regresses EN7581+MT7996: MBOX reports success but
-> +	 * WLAN_FUNC_GET_WAIT_NPU_VERSION still reads as 0.0. Use a
-> +	 * coherent bounce buffer so the CPU always sees the NPU response.
-> +	 */
-> +	dma_buf =3D dma_alloc_coherent(npu->dev, size, &dma_addr, GFP_ATOMIC);
-> +	if (!dma_buf)
-> +		return -ENOMEM;
+> --- Patch [1]: [PATCH net] dibs: fix double free of dmb_clientid_arr ---
+> commit d9da866ee3cff93c660daf037f85b099a2326866
+> Author: Hidayath Khan <hidayath@linux.ibm.com>
+> 
+> dibs: fix double free of dmb_clientid_arr
+> 
+> This drops the kfree(dibs->dmb_clientid_arr) from the err_reg path of
+> dibs_lo_dev_probe(), since dibs_dev_add() already frees that buffer on
+> both of its own failure paths without clearing the pointer.
+> 
+> Two questions below, one about the commit message tags and one about the
+> lifetime of the same buffer on the removal path.
+> 
+>> dibs: fix double free of dmb_clientid_arr
+>>
+>> dibs_dev_add() frees dibs->dmb_clientid_arr on both of its failure
+>> paths, but does not clear the pointer. dibs_lo_dev_probe() then frees
+>> the same pointer again in its err_reg path, so a failing device_add()
+>> or sysfs_create_group() results in a double free.
+>>
+>> Drop the kfree() from dibs_lo_dev_probe().
+>>
+>> Note: commit cc21191b584c ("dibs: Move data path to dibs layer") moved
+>> the code to its current location; the race was introduced earlier by
+>> commit c3a910f2380f ("net/smc: implement DMB-merged operations of
+>> loopback-ism").
+>>
+>> Fixes: c3a910f2380f ("net/smc: implement DMB-merged operations of loopback-ism")
+>> Cc: stable@vger.kernel.org
+> 
+> [Severity: Medium]
+> [Finding: main-1-0]
+> [Sources: opus-5]
+> Is c3a910f2380f the right commit to blame here?
+> 
+> That commit only touches net/smc/smc_loopback.c and net/smc/smc_loopback.h,
+> adding DMB refcounting plus attach/detach/nocopy support. It creates no
+> client-id array, and it adds no kfree() on any probe error path. At
+> c3a910f2380f^ the only matching array in the tree is ISM's private
+> sba_client_arr in drivers/s390/net/ism_drv.c and include/linux/ism.h.
+> 
+> Blame instead points both halves of the double free at cc21191b584c
+> ("dibs: Move data path to dibs layer"): the allocation and the free in
+> dibs_dev_add(),
+> 
+> 	dibs->dmb_clientid_arr = kzalloc(max_dmbs, GFP_KERNEL);
+> 	...
+> 	free_client_arr:
+> 		kfree(dibs->dmb_clientid_arr);
+> 
+> and the duplicate kfree() in dibs_lo_dev_probe()'s err_reg path that this
+> patch removes. Would it be more accurate to say cc21191b584c introduced the
+> problem, rather than that it "moved the code to its current location; the
+> race was introduced earlier"?
+> 
 
-I tried to reproduce the issue locally, but it does not occur for me.
-Moreover, I guess dma_alloc_coherent() is not the right approach since it is
-usually used for long-standing descriptors (e.g. tx/rx DMA descriptor rings=
-).
-Can you please provide more details about the hw you are running?
+Hidayath,
+I think, AI is right here, the original smc_loopback.c did not have such a construct.
+Only cc21191b584c is to blame.
+(Seems you errounously copied this from your other patch
+a10ea943356b ("dibs: fix use-after-free of dmb_node in loopback attach/detach/unregister")
+Please send a v2
 
-Regards,
-Lorenzo
 
-> +
-> +	memcpy(dma_buf, p, size);
-> =20
->  	spin_lock_bh(&npu->cores[core].lock);
-> =20
-> @@ -191,7 +200,9 @@ static int airoha_npu_send_msg(struct airoha_npu *npu=
-, int func_id,
-> =20
->  	spin_unlock_bh(&npu->cores[core].lock);
-> =20
-> -	dma_unmap_single(npu->dev, dma_addr, size, DMA_BIDIRECTIONAL);
-> +	if (!ret)
-> +		memcpy(p, dma_buf, size);
-> +	dma_free_coherent(npu->dev, size, dma_buf, dma_addr);
-> =20
->  	return ret;
->  }
-> --=20
-> 2.55.0
->=20
 
---Ex/oSxVbmvjUCGv9
-Content-Type: application/pgp-signature; name=signature.asc
+> With Cc: stable@vger.kernel.org present, a Fixes tag naming a v6.10-era
+> net/smc commit points backports at trees where neither drivers/dibs/ nor
+> dmb_clientid_arr exists, so the patch cannot apply there.
+> 
+> Also, the note calls this a "race", but the double free happens
+> unconditionally on a deterministic error path when device_add() or
+> sysfs_create_group() fails. Would "double free" be the better wording?
+> 
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCanMJcgAKCRA6cBh0uS2t
-rKWZAQCujgPJTZmcbTNA0/ICmZK2kc73Mi+wEdDGBnP49Ka4iQD+ONR1+zHNLbXx
-445U0plbBScvVOcAFOFBID5pan51xws=
-=gjZ7
------END PGP SIGNATURE-----
+Correct (but moot, if this paragraph is removed)
 
---Ex/oSxVbmvjUCGv9--
+
+>> diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
+>> index fd5caf1e19a8f..649e4e375be33 100644
+>> --- a/drivers/dibs/dibs_loopback.c
+>> +++ b/drivers/dibs/dibs_loopback.c
+>> @@ -335,7 +335,6 @@ static int dibs_lo_dev_probe(void)
+>>  	return 0;
+>>  
+>>  err_reg:
+>> -	kfree(dibs->dmb_clientid_arr);
+>>  	/* pairs with dibs_dev_alloc() */
+>>  	put_device(&dibs->dev);
+>>  	kfree(ldev);
+> 
+> [Severity: High]
+> [Finding: main-5-4]
+> [Sources: opus-5]
+> This isn't a bug introduced by this patch, but while looking at the
+> lifetime of dmb_clientid_arr: does the removal path have the same missing
+> NULL assignment, and can the ISM interrupt handler read the buffer after it
+> is freed?
+> 
+
+
+[PATCH net] net/dibs: Fix UAF of dmb_clientid_arr after dibs_dev_del()
+is currently discussed on the netdev mailing list to fix this.
+
+
+
+
