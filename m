@@ -1,77 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A37B3D9DAA
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 23:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8D238DC47;
+	Wed,  5 Aug 2026 23:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785973876; cv=none; b=mMRQfL6Ori5IAzZytzh6y7NqOXQ4uG4b7z0M1i/VjugabqmeBu3a2YI2v7VBpm/eTVz/EJKPIjrzc6sZw0KOv3m28Y5jWbKXwYgOswYemeZdV7cFPP1ED2ZPLOR++Z0HZ6EwRSLj0IwdU0xkjx7x2sJQ66RhuQE7JXKcJ83vsFg=
+	t=1785974300; cv=none; b=i+0qsIE0TujnwV3dTmt2H9d/agZZ/Gqi58U/8M5sUhk/8F1/wT9kJzsoOGnOOXMZv7yxOqnT04Tj9hB6Gh9eQI/CcAMlNHUfQw6H8z5qJuQqhXg/NbkI/h3meo2CQC/tku1jzU5SzdK1qIMYJr+atrHeqEgDp0CKYNgJfbjaPtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785973876; c=relaxed/simple;
-	bh=9Wq/nYgHCfajGNgyeER1VTVyL1Y6C/gzdIbB3oN9LCk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VTd216fTVvzWjb/ZmOAuaC6iqqN0zchNB591KsiKpylSceCK2BmJSGwTjpGuWupHZcNAE6OxY7d9ouMsEQzYXszuVCfwg/mEXZLF43F9XROnun4mj98lMv0ydxsnWMsVqV8O05jXHFy3mYn1ZgC3RtNd6/ARkTbMnKi+kOhkXjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPLG0+6Z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785974300; c=relaxed/simple;
+	bh=MIVuTk333BYqIbXd67FKdW/CrRrL1m38lPBg9y5T3vo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WBtNpJUha8w/RGvQw8+S173znhCBsT3zHu+0rI/v/NEIUaYkc6IM7H/IOxKyiKpKHibu2y3LgysxQ828xyA3YuaJwKUgq7S2+QLIBaDzmkn6SRxhwUI0e1OakrB1iOjyUYsxeAbHoYjTPX8Wfkxg44OtlNU47oEXABG9UARY3kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=defL41jO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPLG0+6Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27E71F00A3A;
-	Wed,  5 Aug 2026 23:51:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="defL41jO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF7F1F000E9;
+	Wed,  5 Aug 2026 23:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785973874;
-	bh=2VGI/ACrhcxiKqiD4wr3+aYFOBFjZ6UPEh7IWgvTeOY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=KPLG0+6ZM61wa16TK2b5fDWBqpmnyCM4iIBe1aM95nIA+uNJQxzHD9WLskwZ+UFne
-	 24OJnX46AlPNC/F9+XX7k99WT5auiwN6hwrLNWCqJh6Ua6O0kOdbEzswP9zo3coV/h
-	 4riRReDwIzvI7k5BvfO6diI+OskaNbnCq6FO2CgVZg4V8WR2avaubiKfke8ICf2to9
-	 8dX2OrUbh+44ykHcBS0PyX8wwHAc9+3PQvf/3x/4L//N/E1bTB54ZtRqnC7wHDGPwh
-	 UgjBx3ImMFbwLtrjj7we3MX+Zkrx3M6Ez3+iSsFUR08faoz9yQo+2ErJYSYDJKV7cK
-	 TeQ4UxumpY6qA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A76392FFD8;
-	Wed,  5 Aug 2026 23:50:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785974298;
+	bh=LK3LpL5DIfHsv7p4kHelM9RD9rQo0Pv3wEFsj5+wCAI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=defL41jOxBfreL/isZ+EY3kDdQazNw1iNl/M0QWeusMc9hLEOhpxd8c+Jxxpf5F79
+	 to3zRiI1J7VpKA3vDpAGZnnBVi8lHEGz0hCkwPSGhWIu8Qb2oJb5+38DO2JT+9epiG
+	 dPV+eLFjg5qRZ88Q06PZudU9aZr/vddI+sZrLlxJ0hgLijAHc4HGUygHsL7vidG45e
+	 uIaVSXb6ifSB5h2tdxSUGe+nhxEoNB3M8p1FI3e2abcgS3xnTHb0BC2C1+re1uId0u
+	 xbCvFt7wvkNubHGZqCsWlltAj6LzS1VTN96zjgGKuZqGSSMDmaOSvv1iHtKOFsVAsS
+	 a9UQA6jSbgFRw==
+Date: Wed, 5 Aug 2026 16:58:17 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: syzbot <syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com>,
+ davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] WARNING in netdev_queue_get_dma_dev
+Message-ID: <20260805165817.7e1fc367@kernel.org>
+In-Reply-To: <0a419b0b-18d6-42a4-962d-301ddd9d4498@gmail.com>
+References: <6a71f80c.40259c87.584f4.04b9.GAE@google.com>
+	<20260804140006.0210f6ca@kernel.org>
+	<0a419b0b-18d6-42a4-962d-301ddd9d4498@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] devlink: Expose external flag for PCI SF ports
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178597383413.567483.16197150306455051560.git-patchwork-notify@kernel.org>
-Date: Wed, 05 Aug 2026 23:50:34 +0000
-References: <20260803090012.257242-1-shayd@nvidia.com>
-In-Reply-To: <20260803090012.257242-1-shayd@nvidia.com>
-To: Shay Drory <shayd@nvidia.com>
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, kuba@kernel.org,
- edumazet@google.com, davem@davemloft.net, pabeni@redhat.com,
- horms@kernel.org, parav@nvidia.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 3 Aug 2026 12:00:12 +0300 you wrote:
-> The external flag is part of the PCI SF port attributes, but unlike the
-> PCI PF and PCI VF flavours it was never filled into the port dump, so
-> userspace could not query it directly.
+On Wed, 5 Aug 2026 09:51:10 +0100 Pavel Begunkov wrote:
+> On 8/4/26 22:00, Jakub Kicinski wrote:
+> > Hi Pavel, could you TAL?  
 > 
-> Reporting of the external flag was missed for SF ports. Hence, put
-> DEVLINK_ATTR_PORT_EXTERNAL for the PCI SF flavour as well, matching what
-> PCI PF and PCI VF ports already report.
-> 
-> [...]
+> It complains on not holding rtnl, so the netdev should be not
+> qops-enabled, and we acquire it with netdev_get_by_index_lock().
+> It's going to be rejected later, but not sure whether netdev->lock
+> protects its device and leasing logic well in this case.
 
-Here is the summary with links:
-  - [net] devlink: Expose external flag for PCI SF ports
-    https://git.kernel.org/netdev/net-next/c/cb59bfd419d0
+Hm, I see.
+ 
+> As a quick fix, let's fail it early in zcrx if there is no qops.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+I think we can switch the lockdep check in netdev_queue_get_dma_dev()
+to netdev_assert_locked(dev)?  Nothing should be calling that function
+under rtnl_lock so the _compat() is a brainfart.
