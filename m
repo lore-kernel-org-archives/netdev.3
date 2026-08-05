@@ -1,35 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC433A1C9;
-	Wed,  5 Aug 2026 02:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86503C1F45;
+	Wed,  5 Aug 2026 02:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785897046; cv=none; b=EGD8HymLTfyFQqleB3Gpg+Q2j5ebG8C2PSTRfHYW6GzxldSE7WV5Otw3iXTXVw950SXLEqlM6ke++vwR60Osa3ZjLali8cXps/IXL716i8pBAJoBQ5btVCeLcLMc/ammqgdPIhaSlF4CGoMWAP8+dZJDxl2jTT4iGL+7ubeukyg=
+	t=1785897073; cv=none; b=Qt+uReXFm/7DDImQo7Cjb12csg0gpKs0dRNJEMWIuFuDKZiCZWcjQ6trsDMwrsNDJE0SnyWrUULMYstXlc5H/fczuI9bh4wtE42WnfuhFslarddZvSDxnkCtiwCaWXEAWukL2S9+VBUA8cXomMQVIVaUlli11e51UG2LnbOZakM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785897046; c=relaxed/simple;
-	bh=/nyC35CZsnj3F+uNxslimiltB1Rebboj1tePpRdJsJc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IzwU/rvNtct4qc9pEXPZeSiJs92KLUrmdAJe8C2Smk8Ncx2VupMGZyC55ruwvW0Swmc6lotCY6l5/gog8nlmLCB2sIeshmbGDeAGtDpwQAk/kSeFuDT/IvfrggIStjYc1QJDO5jkVz51ETwxWz03PurOIhJdIT6czuyRKptLtWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oy0oknDy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785897073; c=relaxed/simple;
+	bh=DIr2Q04lO8c7g5YifszBX/tgpihSNW2RkZlQuLJQbaE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aX4tuhcJc3j1AAhz84W0wXhHJxX781E1fPZ+LjbJVL26zKtx6JwTnVxc+c8Fb3Vrbw2keXrN2dID4HRyjYAJVemh6Dc+wdgDtRAVE1gL6/WDzlxYHR4gVxc2vcatCb4n5brSHuH2Qo45nwQA8DYSqyNWnZpOBlOLQdlHok/BMXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=MIW9R9Ro; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oy0oknDy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1571F000E9;
-	Wed,  5 Aug 2026 02:30:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785897045;
-	bh=nFcMsLsV/jsKseSOOqELWn2P4wAKKeGU4iN4a8UsJFc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oy0oknDyHA+OAlOzhYAX9hoUX3RLHMDGXKloFEv7KZ4vUbIGxYwUZs3XzUk3oQN8n
-	 ig4Wb3ng2IEUCSbfm1R7NFyictZwaBcU1h91pGu2sGbm3ixKw1IbPdgPlHn21N353+
-	 JgFt1rDtUCH9fjnNfLsDKN5dgzz0xjXU/7aKaWH4sBVIiCE53ikzq189uRqTF2Bm9L
-	 qJP20tScKA6kRTBhMUzSE27/yiFclV4BwqczZz+PFSt+/heowhPHtyBZg2y8YDdghi
-	 59HOyQJ3UwSWx6OONYT2f3mndgxyDe9bVuXWFHXvPlM2EocrF4DgfaXYfHaj7m2j8J
-	 aYiHGJhd+Opng==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0921392446E;
-	Wed,  5 Aug 2026 02:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="MIW9R9Ro"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=DIr2Q04lO8c7g5YifszBX/tgpihSNW2RkZlQuLJQbaE=;
+	b=MIW9R9RoQtNs6HtlH8+86sD/BsdftwDHxgRE/Ju1UOKnErGjslFzc4ApY7vYh1wwj1jI+vdon
+	VHcpdFJQ2NIbuxltNxPpgD+YSBKR3kANi/3vb9X3k+YI+h3kcQxb5PEQgFb9RKyQhpFe6zGtWQG
+	wbm13UUB2Ew8cIuCK0b9Zmg=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hFDgB5BP7z1T4LH;
+	Wed,  5 Aug 2026 10:21:26 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id BD13E2025F;
+	Wed,  5 Aug 2026 10:31:06 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 5 Aug 2026 10:31:05 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: <kuba@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <august.hewei@huawei.com>,
+	<chenanwen@huawei.com>, <davem@davemloft.net>,
+	<dimitri.daskalakis1@gmail.com>, <edumazet@google.com>,
+	<gongfan1@huawei.com>, <guoxin09@huawei.com>, <horms@kernel.org>,
+	<hramamurthy@google.com>, <ioana.ciornei@nxp.com>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<luosifu@huawei.com>, <maxime.chevallier@bootlin.com>,
+	<mohsin.bashr@gmail.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+	<shijing34@huawei.com>, <tengpeisen@huawei.com>, <wudi234@huawei.com>,
+	<wulike1@huawei.com>, <zhengjiezhen@h-partners.com>, <zhoushuai28@huawei.com>
+Subject: Re: Re: [PATCH net-next v12 1/8] hinic3: Fix drop skb when
+Date: Wed, 5 Aug 2026 10:30:55 +0800
+Message-ID: <20260805023055.2188-1-gongfan1@huawei.com>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20260803230745.2291141-2-kuba@kernel.org>
+References: <20260803230745.2291141-2-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +58,14 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net/mlx5e: fix BQL reset on SQ re-activation
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178589700540.3883535.9164170371503603124.git-patchwork-notify@kernel.org>
-Date: Wed, 05 Aug 2026 02:30:05 +0000
-References: <20260803-mlx5-bql-v3-1-a30d4c66fe1d@meta.com>
-In-Reply-To: <20260803-mlx5-bql-v3-1-a30d4c66fe1d@meta.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, leon@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, dtatulea@nvidia.com,
- almasrymina@google.com, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, bobbyeshleman@meta.com
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
-Hello:
+> This is an AI-generated review of your patch. Larysa is right, this patch
+> looks like a fix. And there seems to be more bugs in the csum handling
+> according to AI.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 03 Aug 2026 16:47:29 -0700 you wrote:
-> From: Bobby Eshleman <bobbyeshleman@meta.com>
-> 
-> mlx5e_queue_start() deactivates and re-activates all channels but closes
-> only the queue being restarted. mlx5e_activate_txqsq() then
-> unconditionally calls netdev_tx_reset_queue(), zeroing the BQL counters
-> of channels that kept their in-flight TX WQEs. The next completion then
-> over-charges and trips the BUG_ON() in dql_completed():
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v3] net/mlx5e: fix BQL reset on SQ re-activation
-    https://git.kernel.org/netdev/net/c/e7386770be1b
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks for the review. We will drop this patch from the current series and
+submit it separately to the net tree as a bug fix. We will also revise the
+commit message according to your feedback.
