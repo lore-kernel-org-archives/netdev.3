@@ -1,224 +1,181 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB8D3F6613;
-	Wed,  5 Aug 2026 22:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B1C402BB7
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 22:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785968951; cv=none; b=aVsuItkzAonRlp30wiDze9RDSnVxoerGbUJ5285pTEXXqUiX1W+om+5xcKSTf1IckRe23gytAeyCy7jJObfii/5J+BtLLP6FH4rIDu9gZXz0tk4aU9/gGXR1Wh/cyjg1DO7k/GzrOYDBFj1csdoFBB1yUZMDhS49tdYqYF7QLv4=
+	t=1785969809; cv=none; b=qV3/ABUllsLmUUJQ/X4mpcbAGScxVuGU7wX0nhvRoktjyQu0TIS9wmIgjNfVFqKl/CDy94RVFQ84aOSpcMKK6h9aMb3DXd3K/tXSDqKx2ZyyRjiRwaTIh+xOFMrkgDBhLChPfttzJSRDTRVl6uj8hyKjO5RslhN7ZSQhuKSq0RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785968951; c=relaxed/simple;
-	bh=p+tGgJjfDf+QExfIl3EY8iwwECUib4YEAIdONJSPpjE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U7GGz/i6EM58VqzsWuxCNKTHKn0C0YEQURmQGXWDMWQT4YFYi37L4jaUprBmxU2ElJ7Lm/HyMumpmpAfKnKXhcTxnupSCjdBzWNyXu+6GH/u198HtfaR2Ef4WgXGM1KI9jznMWVJEMeyn9xWduTYl8WSk1/Nr5GKH2Z2Tbjg2VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WL5bsVtS; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WL5bsVtS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785968948; x=1817504948;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=p+tGgJjfDf+QExfIl3EY8iwwECUib4YEAIdONJSPpjE=;
-  b=WL5bsVtSl9bSxKln+O3ibQPXA/BzqK04A195qTZ1C6ulLESGi4+xH8kl
-   GLSR49qXm9iSWlXcVdbJkqKNPBZw0KBVXb+zlaYSRKXUCeSdfIf+goj8v
-   UyGBifFVYmKAHKi38YTDdBu3UYqk4lAl6GgSk/dxk64JCY7PLaW1EWe7L
-   a+0Ax7sE+IBk35HCx3s0KEjQ2Pvc+SfIfLwVqukWMvGAQaQez4Tdwxa9W
-   V4Jiidv3R50plI650G8VeKSVgu2REfhJQ3CUSLje9YLIh38qIrE7LUl4A
-   jWyV+alJJ+T/SE/7GpjlFjg0gJJ14mThxDczWEhTLWJWaYs274JOsV8jc
-   w==;
-X-CSE-ConnectionGUID: 3ekwGT1iTVqNYD/J4JrZXA==
-X-CSE-MsgGUID: +jy61pjJQK6VTxnI8uO1Jg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="97713325"
-X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="97713325"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 15:29:06 -0700
-X-CSE-ConnectionGUID: NmwiC6myTPu6zWOTTx11KQ==
-X-CSE-MsgGUID: BJGd6Ak0Rjqat4sLydi/YQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="261989405"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 05 Aug 2026 15:29:03 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wrk6e-00000000Dan-209A;
-	Wed, 05 Aug 2026 22:29:00 +0000
-Date: Thu, 6 Aug 2026 06:28:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kyle Switch <kyle.switch@motor-comm.com>, Frank.Sae@motor-comm.com,
-	andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jianmin.wang@motor-comm.com, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jie.han@motor-comm.com
-Subject: Re: [PATCH] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
-Message-ID: <202608060635.338Kkf6r-lkp@intel.com>
-References: <20260714111203.3852126-1-kyle.switch@motor-comm.com>
+	s=arc-20240116; t=1785969809; c=relaxed/simple;
+	bh=na3yIUd+O3pGlWpdKlxph375UnKcqAExGP1+FDilZEQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=sBs6ovotJCpRRzMPvWY5yrgDiouig7SAcsXpCuF1O8ciX6R88utZ/Q4tHuoLopLLDlOTbMYke7dFf1b0q1UIoRbU5rxiYeT80/ppmWdekw9c1jf8+5PPbHB5z264BGgyQQK5dVxltIYxDJLFe28DsCGGwzIXzIMgJ/oTegQlIKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-6a17dafd042so1366089eaf.2
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 15:43:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785969807; x=1786574607;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F1P2VLQ2OGmrNLyOIICCNXArMMWwzzWcKgjBWnmKSUc=;
+        b=svaybUy3ATH28wGJQrAnl6yC9eYZ4PkvcocDBrV8TjC+DNvILh+RR27dJFJWfZpbRM
+         1v7DCFApRQn9gpejz3U40dxCs5dqnYd0F3/C9zJVHrmEXFVuQDyj4wzr0S+HKXAqYdgz
+         ipMlEzZfe7zl6KgP7aPvDr69+NmoIPjv87pjT07uY8JgOYtaN5NaSGJuLcRnNoZCez3+
+         38DaHBrmj4NlNYykVHYpFVHKFENPjqAi4Gbdki9IS4KmznZXRwJDYSe76Ki1534NXV21
+         9m7YW3xGAys1BNj5MtwD+fgkn22WloubLaYbPJtc5LY3vQ9xPWW0JCJNN2iBQQwCcuD+
+         U+JA==
+X-Forwarded-Encrypted: i=1; AHgh+RrHesnuQeH4ZHmEzcibJYj6GLZpHbIl5SItZRtm7zmS+GL+kfH53saXUDS0dBN9WeYyIvirctU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOw9Z9gi3LE81/AtE8gm9yrwgLGxLisWWwrgS9TQMCPgOIHeX/
+	ULqjwwgNX+cyHdCKz2MxWnID0bGj6x90qdT652T8OupS1o4WpDBzcTBBY61ylP7EFaqDR6c+08x
+	Ro2sEDoAqGT1Rl0xBlGlSI/UPb+70pIQDMcg9n0rNJAS0ij7aTMWgMRXhyk0=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714111203.3852126-1-kyle.switch@motor-comm.com>
+X-Received: by 2002:a05:6820:199a:b0:6aa:f172:3094 with SMTP id
+ 006d021491bc7-6ae96cb428bmr5074098eaf.10.1785969807042; Wed, 05 Aug 2026
+ 15:43:27 -0700 (PDT)
+Date: Wed, 05 Aug 2026 15:43:27 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a73bc8f.5aeeccc9.207e63.0001.GAE@google.com>
+Subject: [syzbot] [nfc?] WARNING in port100_send_cmd_async/usb_submit_urb (3)
+From: syzbot <syzbot+89f5f8143d8e62af2b61@syzkaller.appspotmail.com>
+To: david@ixit.cz, krzk@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Kyle,
+Hello,
 
-kernel test robot noticed the following build warnings:
+syzbot found the following issue on:
 
-[auto build test WARNING on net/main]
-[also build test WARNING on linus/master v7.2-rc6 next-20260805]
-[cannot apply to net-next/main]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+HEAD commit:    848acc8ffe1b Merge tag 'fsverity-for-linus' of git://git.k..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15b613b9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
+dashboard link: https://syzkaller.appspot.com/bug?extid=89f5f8143d8e62af2b61
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17379bb9580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1073be32580000
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kyle-Switch/net-phy-Add-driver-for-Motorcomm-Quad-2-5GbE-phy/20260805-175843
-base:   net/main
-patch link:    https://lore.kernel.org/r/20260714111203.3852126-1-kyle.switch%40motor-comm.com
-patch subject: [PATCH] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
-config: powerpc64-randconfig-002-20260806 (https://download.01.org/0day-ci/archive/20260806/202608060635.338Kkf6r-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260806/202608060635.338Kkf6r-lkp@intel.com/reproduce)
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-848acc8f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/6fb497cc0c8d/vmlinux-848acc8f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/663ccee34982/bzImage-848acc8f.xz
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608060635.338Kkf6r-lkp@intel.com/
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+89f5f8143d8e62af2b61@syzkaller.appspotmail.com
 
-All warnings (new ones prefixed by >>):
-
->> drivers/net/phy/motorcomm.c:3336:7: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-    3336 |                 if (reg_space == YT8824_RSSR_UTP_SPACE) {
-         |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:3353:44: note: uninitialized use occurs here
-    3353 |         return phy_restore_page(phydev, old_page, ret);
-         |                                                   ^~~
-   drivers/net/phy/motorcomm.c:3336:3: note: remove the 'if' if its condition is always true
-    3336 |                 if (reg_space == YT8824_RSSR_UTP_SPACE) {
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:3335:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-    3335 |         if (old_page >= 0) {
-         |             ^~~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:3353:44: note: uninitialized use occurs here
-    3353 |         return phy_restore_page(phydev, old_page, ret);
-         |                                                   ^~~
-   drivers/net/phy/motorcomm.c:3335:2: note: remove the 'if' if its condition is always true
-    3335 |         if (old_page >= 0) {
-         |         ^~~~~~~~~~~~~~~~~~
->> drivers/net/phy/motorcomm.c:3332:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-    3332 |         if (old_page < 0)
-         |             ^~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:3353:44: note: uninitialized use occurs here
-    3353 |         return phy_restore_page(phydev, old_page, ret);
-         |                                                   ^~~
-   drivers/net/phy/motorcomm.c:3332:2: note: remove the 'if' if its condition is always false
-    3332 |         if (old_page < 0)
-         |         ^~~~~~~~~~~~~~~~~
-    3333 |                 goto err_restore_page;
-         |                 ~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:3329:9: note: initialize the variable 'ret' to silence this warning
-    3329 |         int ret;
-         |                ^
-         |                 = 0
->> drivers/net/phy/motorcomm.c:3341:8: warning: variable 'port' is uninitialized when used here [-Wuninitialized]
-    3341 |                         if (port == 0 || port == 2) {
-         |                             ^~~~
-   drivers/net/phy/motorcomm.c:3328:10: note: initialize the variable 'port' to silence this warning
-    3328 |         int port;
-         |                 ^
-         |                  = 0
-   drivers/net/phy/motorcomm.c:4464:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-    4464 |         if (old_page < 0)
-         |             ^~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:4477:44: note: uninitialized use occurs here
-    4477 |         return phy_restore_page(phydev, old_page, ret);
-         |                                                   ^~~
-   drivers/net/phy/motorcomm.c:4464:2: note: remove the 'if' if its condition is always false
-    4464 |         if (old_page < 0)
-         |         ^~~~~~~~~~~~~~~~~
-    4465 |                 goto err_restore_page;
-         |                 ~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:4460:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-    4460 |         if (old_page < 0)
-         |             ^~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:4477:44: note: uninitialized use occurs here
-    4477 |         return phy_restore_page(phydev, old_page, ret);
-         |                                                   ^~~
-   drivers/net/phy/motorcomm.c:4460:2: note: remove the 'if' if its condition is always false
-    4460 |         if (old_page < 0)
-         |         ^~~~~~~~~~~~~~~~~
-    4461 |                 goto err_restore_page;
-         |                 ~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:4457:9: note: initialize the variable 'ret' to silence this warning
-    4457 |         int ret;
-         |                ^
-         |                 = 0
-   drivers/net/phy/motorcomm.c:4641:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-    4641 |         if (old_page < 0)
-         |             ^~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:4660:44: note: uninitialized use occurs here
-    4660 |         return phy_restore_page(phydev, old_page, ret);
-         |                                                   ^~~
-   drivers/net/phy/motorcomm.c:4641:2: note: remove the 'if' if its condition is always false
-    4641 |         if (old_page < 0)
-         |         ^~~~~~~~~~~~~~~~~
-    4642 |                 goto err_restore_page;
-         |                 ~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/phy/motorcomm.c:4638:9: note: initialize the variable 'ret' to silence this warning
-    4638 |         int ret;
-         |                ^
-         |                 = 0
-   7 warnings generated.
+usb 5-1: Product: syz
+usb 5-1: Manufacturer: syz
+usb 5-1: SerialNumber: syz
+------------[ cut here ]------------
+URB ffff88803435b300 submitted while active
+WARNING: drivers/usb/core/urb.c:379 at usb_submit_urb+0x1689/0x19b0 drivers/usb/core/urb.c:379, CPU#1: kworker/1:0/29
+Modules linked in:
+CPU: 1 UID: 0 PID: 29 Comm: kworker/1:0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0x168c/0x19b0 drivers/usb/core/urb.c:379
+Code: 00 48 8b 04 24 48 8b 90 b0 00 00 00 e9 70 ff ff ff bb ed ff ff ff e9 ac f1 ff ff e8 9e ed 89 fa 48 8d 3d a7 6d af 09 48 89 de <67> 48 0f b9 3a bb f0 ff ff ff e9 8e f1 ff ff c7 44 24 30 00 00 00
+RSP: 0018:ffffc90000686e38 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff88803435b300 RCX: 1ffff1100686b7d1
+RDX: ffff88801f6c2540 RSI: ffff88803435b300 RDI: ffffffff912fe4f0
+RBP: ffff8880350c0c68 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff8880350c0c38
+R13: ffff88802ef4fe00 R14: ffff88803823bcc0 R15: ffff8880350c0c60
+FS:  0000000000000000(0000) GS:ffff8880d5ed8000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b33463fff CR3: 000000003f4ce000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ port100_send_frame_async drivers/nfc/port100.c:783 [inline]
+ port100_send_cmd_async+0x7f7/0xc60 drivers/nfc/port100.c:879
+ port100_send_cmd_sync drivers/nfc/port100.c:919 [inline]
+ port100_set_command_type drivers/nfc/port100.c:990 [inline]
+ port100_probe+0xb4c/0x1190 drivers/nfc/port100.c:1555
+ usb_probe_interface+0x303/0x8f0 drivers/usb/core/driver.c:396
+ call_driver_probe drivers/base/dd.c:628 [inline]
+ really_probe+0x241/0xa60 drivers/base/dd.c:706
+ __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
+ driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
+ __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
+ bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
+ __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
+ device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
+ bus_probe_device+0x64/0x160 drivers/base/bus.c:620
+ device_add+0x121d/0x1970 drivers/base/core.c:3772
+ usb_set_configuration+0xd97/0x1c60 drivers/usb/core/message.c:2268
+ usb_generic_driver_probe+0xa1/0xe0 drivers/usb/core/generic.c:250
+ usb_probe_device+0xef/0x400 drivers/usb/core/driver.c:291
+ call_driver_probe drivers/base/dd.c:628 [inline]
+ really_probe+0x241/0xa60 drivers/base/dd.c:706
+ __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
+ driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
+ __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
+ bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
+ __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
+ device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
+ bus_probe_device+0x64/0x160 drivers/base/bus.c:620
+ device_add+0x121d/0x1970 drivers/base/core.c:3772
+ usb_new_device.cold+0x685/0x115c drivers/usb/core/hub.c:2695
+ hub_port_connect drivers/usb/core/hub.c:5567 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5707 [inline]
+ port_event drivers/usb/core/hub.c:5871 [inline]
+ hub_event+0x30a3/0x4a60 drivers/usb/core/hub.c:5953
+ process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
+ process_scheduled_works kernel/workqueue.c:3405 [inline]
+ worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	00 48 8b             	add    %cl,-0x75(%rax)
+   3:	04 24                	add    $0x24,%al
+   5:	48 8b 90 b0 00 00 00 	mov    0xb0(%rax),%rdx
+   c:	e9 70 ff ff ff       	jmp    0xffffff81
+  11:	bb ed ff ff ff       	mov    $0xffffffed,%ebx
+  16:	e9 ac f1 ff ff       	jmp    0xfffff1c7
+  1b:	e8 9e ed 89 fa       	call   0xfa89edbe
+  20:	48 8d 3d a7 6d af 09 	lea    0x9af6da7(%rip),%rdi        # 0x9af6dce
+  27:	48 89 de             	mov    %rbx,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	bb f0 ff ff ff       	mov    $0xfffffff0,%ebx
+  34:	e9 8e f1 ff ff       	jmp    0xfffff1c7
+  39:	c7                   	.byte 0xc7
+  3a:	44 24 30             	rex.R and $0x30,%al
+  3d:	00 00                	add    %al,(%rax)
 
 
-vim +3336 drivers/net/phy/motorcomm.c
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-  3320	
-  3321	/**
-  3322	 * disable YT8824 template test mode.
-  3323	 */
-  3324	static int yt8824_soft_reset_step4_paged(struct phy_device *phydev,
-  3325						 int reg_space)
-  3326	{
-  3327		int old_page;
-  3328		int port;
-  3329		int ret;
-  3330	
-  3331		old_page = phy_select_page(phydev, reg_space);
-> 3332		if (old_page < 0)
-  3333			goto err_restore_page;
-  3334	
-  3335		if (old_page >= 0) {
-> 3336			if (reg_space == YT8824_RSSR_UTP_SPACE) {
-  3337				/* normal mode */
-  3338				ret = ytphy_write_mmd(phydev, 0x1, 0x0084, 0x0000);
-  3339				if (ret < 0)
-  3340					goto err_restore_page;
-> 3341				if (port == 0 || port == 2) {
-  3342					/* read the calibration val of band after power on,
-  3343					 * * only for recording.
-  3344					 */
-  3345					ret = ytphy_read_ext(phydev, 0x043e);
-  3346					if (ret < 0)
-  3347						goto err_restore_page;
-  3348				}
-  3349			}
-  3350		}
-  3351	
-  3352	err_restore_page:
-  3353		return phy_restore_page(phydev, old_page, ret);
-  3354	}
-  3355	
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
