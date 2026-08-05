@@ -1,131 +1,109 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917883DEFF3
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 13:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7918447127F;
+	Wed,  5 Aug 2026 13:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785937951; cv=none; b=RHd0FctaoKkc4YWlDKmxu88DdTeYghJCfn1oBBKjALrGO9MrQqiYbRJGrG/Apyu2Rp8yvRvRkihwG962fhVdW5/xzcFgIaT0Sflvhh799eAln2lPHZCrDQ5qOrZRvJ4iVpmuk8fc8D8uL/WwRAocgELzb7x+zVG6A8EAC4dCHho=
+	t=1785938052; cv=none; b=exKk4DSFfltrLTrvjs8UAH552jKzqgAJ8VuAhF/4+fPUNSe8KgES2u2TowsrZzQwbRZRzmIZ9miGFWZ/FMcmbT4niLC0YLwmVo9ww0HolV4W6/AqCa13l9F9utK/zPkEGqxBTyryaygsoQ86Aw/PixQOBkeu/NmDujoXXg4mYZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785937951; c=relaxed/simple;
-	bh=XHk6Ttlf3Cenmtx2/Sxl+qub7u69P3r7NTE/N1QZlR0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=HrSxeZklG9rxDU7wJev5jSSSgTPtqaZGmxagBHP4JoVMYnnVDpAU/X/xh8rRbJV+bsLYf07s3Gc8hZmDygAp64kUjExx9adA6xV2KRN4AJlspK7i9KBINyvMucWcOCBYNo4jpMmDXujdnP5iBu9m7H37CeEwuLa8zCUyaheYggo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=N4ABZtf/; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785938052; c=relaxed/simple;
+	bh=1i6cLqiq5fKoAG2DxsPLcgj1hvCQ6gFCDmFL+wghbjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bft22pnl7UldMdVC8V6uLhqZlTYtyvZeWlwkfCHtk4tsyUdfbDYdd7IjdCEtqJ3z98dfxs77kjynwKRdR/GMnUAXXH9PV7pxEpA+1agRRi8GkwxMCH5R6zVV2Qry+flUZU0lASRsNgXta/G7RJ2aIIT/lwOIX/26cezdQyAUbMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=iQYhJUkR; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="N4ABZtf/"
-Message-ID: <2dd05325-9e13-4494-b2f5-5ccffc1d3005@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785937936;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r7zCFnZ19lfLuiyQPj5cL0DwiHc2BsO0Vf/zdyzgGkQ=;
-	b=N4ABZtf/tPb1HOATGOUxxLJg1NUU+QqC85v3yMX7erZB3iyYt4ieyuHkaiLKW+qTcixdkO
-	5lpSBWOAwSfWLxLUhGxdSugCNe860Ve4GqIcrlf7ZOU9rnOqLhZY6FkF/0/Ra2J1d6Kl+p
-	ens9oyAXItFcLQj0HUc9Zbn2TnqVH4Q=
-Date: Wed, 5 Aug 2026 21:51:49 +0800
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="iQYhJUkR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=DuiO1OPXdAlYbES1EQ0pzMKTK574ghniz0vyq4qAkBM=; b=iQYhJUkRNRGsgTDi4UNXTVZhri
+	0nD7kqsjJA2g6DcKv06apMX40w+3rYm2t0WcSNVdn/bV79JkJoROwfU9kxLSFYBawaEZFHbk3DFRT
+	hkWK10aYNUA20Mxhs5/yNBsZ0SPaR1KC8avJ8yRspTkefQLuV7TK6Dl34mHI4eGwCZMQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wrc4F-00GBJF-5a; Wed, 05 Aug 2026 15:53:59 +0200
+Date: Wed, 5 Aug 2026 15:53:59 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Benedikt Spranger <b.spranger@linutronix.de>
+Cc: Vasilij Strassheim <v.strassheim@linutronix.de>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Martin Kaistra <martin.kaistra@linutronix.de>
+Subject: Re: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
+ bindings
+Message-ID: <9f8ac30b-6579-4e48-abe3-823302a3da0e@lunn.ch>
+References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+ <20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
+ <20260730-loutish-labrador-of-joviality-6e6c79@quoll>
+ <411ec84fd55e152e94ac1f4edba497eac3a5623d.camel@linutronix.de>
+ <590a933f-85af-4eaa-b9ee-be689dc15c69@lunn.ch>
+ <20260805153220.3860b262@mitra>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v7 0/2] bpf, sockmap: handle spurious tcp_msg_wait_data()
- wakeup
-To: Nnamdi Onyeyiri <nnamdio@gmail.com>, bpf@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, horms@kernel.org,
- jakub@cloudflare.com, jiayuan.chen@linux.dev, john.fastabend@gmail.com,
- kuba@kernel.org, kuniyu@google.com, ncardwell@google.com,
- netdev@vger.kernel.org, pabeni@redhat.com, sashiko-reviews@lists.linux.dev,
- linux-kernel@vger.kernel.org, emil@etsalapatis.com
-References: <20260721223807.75101-1-nnamdio@gmail.com>
- <anLyIzAs9JBhZnhe@localhost.localdomain>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <anLyIzAs9JBhZnhe@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260805153220.3860b262@mitra>
 
+On Wed, Aug 05, 2026 at 03:32:20PM +0200, Benedikt Spranger wrote:
+> On Mon, 3 Aug 2026 18:43:23 +0200
+> Andrew Lunn <andrew@lunn.ch> wrote:
+> 
+> > If it is not compatible, it needs a different compatible.
+> This is quite tricky here - namewise. 
 
-On 8/5/26 4:22 PM, Nnamdi Onyeyiri wrote:
-> On Tue, Jul 21, 2026 at 11:38:05PM +0100, Nnamdi Onyeyiri wrote:
->> Spurious wakeups in tcp_msg_wait_data() aren't being handled by
->> tcp_bpf_recvmsg() and tcp_bpf_recvmsg_parser(), leading to unexpected
->> EAGAIN errors returned by recvfrom()/recv().  Adding handling for the
->> wakeup and a selftest.
->>
->> This issue was first discovered in an application that adds sockets to
->> a sockmap as a way to view the received data.  No redirects or any
->> other operations are performed.
->>
->> Sashiko has noted a few other pre-existing issues in the same area
->> (https://patch.msgid.link/20260714205118.17DB11F000E9@smtp.kernel.org)
->> that can lead to EAGAIN in tcp_bpf_recvmsg() and
->> tcp_bpf_recvmsg_parser().  A local run of Sashiko also identified a
->> potential issue in tcp_bpf_recvmsg() handling zero-data FIN packets when
->> the MSG_PEEK flag is set.  To prevent this patchset from growing too
->> large, I intend to submit follow up patches to address these once this
->> one has been accepted.
->>
->> Changes in v7:
->> - In tcp_bpf_recvmsg check for data in the TCP_CLOSE, !timeo and
->>    signal_pending branches.
->> - Refactored changes to tcp_bpf_recvmsg to reduce duplication.
->> - Increase the number of iterations in the selftests.
->> - Documented selftests numeric constants.
->> - Link to v6: https://patch.msgid.link/20260720171535.67867-1-nnamdio@gmail.com
->>
->> Changes in v6:
->> - Closing the file descriptor in the selftest worker thread.
->> - Ensuring the selftest loop breaks early for an error in the worker
->>    thread.
->> - Added comments to selftest regarding focus on EAGAIN error.
->> - Updated selftest commit message to imperative mood.
->> - Link to v5: https://patch.msgid.link/20260717155348.54975-1-nnamdio@gmail.com
->>
->> Changes in v5:
->> - Move selftest from net into bpf/prog_tests/sockmap_basic.c
->> - Link to v4: https://patch.msgid.link/20260715213538.37229-1-nnamdio@gmail.com
->>
->> Changes in v4:
->> - Fix potential data loss in tcp_bpf_recvmsg() when a FIN or RST has
->>    been received.
->> - Check the return code of pthread_create() in the selftest.
->> - Fix race caused by using EXPECT macros in a thread in selftest.
->> - Link to v3: https://patch.msgid.link/20260714203927.32289-1-nnamdio@gmail.com
->>
->> Changes in v3:
->> - Added the sockmap_recvfrom selftest.
->> - Link to v2: https://patch.msgid.link/alFRK66z45eDNZA7@localhost.localdomain
->>
->> Changes in v2:
->> - In tcp_bpf_recvmsg, handle signals and the socket closing in the loop.
->> - Fix spurious wakeups when SO_RCVTIMEO has been set on the socket.
->> - Link to v1: https://patch.msgid.link/ak_rR-Skd8Mvn4mH@localhost.localdomain
->>
->> Signed-off-by: Nnamdi Onyeyiri <nnamdio@gmail.com>
->> ---
->> Nnamdi Onyeyiri (2):
->>    bpf, sockmap: handle spurious tcp_msg_wait_data() wakeup
->>    selftests/bpf: add sockmap recvfrom EAGAIN selftest
->>
->>   net/ipv4/tcp_bpf.c                            |  72 ++++++++--
->>   .../selftests/bpf/prog_tests/sockmap_basic.c  | 136 ++++++++++++++++++
->>   2 files changed, 199 insertions(+), 9 deletions(-)
->>
->> -- 
->> 2.52.0
->>
-> Hi all, just wondering if you need anything more from me on this?
+Yep.
 
+> 
+> > It gets interesting with something you synthesizer, something where
+> > there are a number of different synthesise options. How do you define
+> > compatible? You might want a very specific compatible, for your
+> > synthesise configuration, and a more generic compatible which might
+> > work for other synthesise configurations, but maybe not?
+> 
+> SOC-E sells quite a bunch of switch IPs (MES, MRS, NTS to name some).
+> As far as we know for now, these different IP cores can be determined
+> by reading specific registers, which seem to be on the same spot across
+> different IPs. You may wonder about "It seems". Since we have only a
+> limited access for information about different IPs, we have examined the
+> vendor linux DSA driver and the surrounding configuration software.
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Take a look at the mv88e6xxx driver. Marvell switches have an ID
+register. But Marvell keep moving it around. So the compatible is just
+about where to find the ID register.
 
+However, that is silicon. For licensed IP, you are not driving just
+the licensed IP, but also what has been put around it for integration
+into the system as a whole. Regulator, clocks, etc. The stmmac driver
+is an example of that, the driver has a core which covers the licensed
+IP, and then a number of glue drivers which extend that to cover all
+the integration logic. Another example i've worked on is the Open
+Cores I2C driver, i2c-ocores.c. It has a generic compatible
+"opencores,i2c-ocores", plus some integration specific compatibles,
+"aeroflexgaisler,i2cmst", "sifive,fu540-c000-i2c", "sifive,i2c0".
 
-targeting bpf-next without Fixes tags seems fine given the scope
+So i suspect you will need to support integration specific
+compatibles.
 
+One way to consider this. Look at your FPGA design. Delete the
+licensed core. What do you have left? Does it need software to drive
+it?
+
+	Andrew
