@@ -1,139 +1,126 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2E846F4BE
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 13:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82796471254;
+	Wed,  5 Aug 2026 13:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785936418; cv=none; b=i0YeWePkcxdFvlS9vVZjtCNZlvGbGmLdpusMSm6uTHY2jlkBM7hwQ8Tmrxlh5CPwTiu7BpLNEf2kGbhYxlRjQKf/mHUCNzn7bvaoFzFCcKtX74KC1v4GSha9Vtw82/pEB7SBXmpzi5m8gMHBsmFZSjJ96/PZHhCY/Cqduug+diY=
+	t=1785936599; cv=none; b=um8igZFDNOBPUSgse/InIQwV5Q/VpSr7XM536SQkpBwGbLrWmIambTxjNwNlGcNLpI1Z85T+QFHe/fgZhjsrOkmSky4T9dIoHtphVcjZUGyCkBZPk6MuTOyYpH9lAshqFi+adNDT8OZgqyCbEJrFR01JlJCVF3F/cJi1o7JLbTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785936418; c=relaxed/simple;
-	bh=KOlvn9KLgNOrUC4aWU+rneHxps6VoGtGDWKEGWMf8EQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HS6KTBTttLjSzpGn540y/EGrt/6Ul/2z031D3PtHpMJ09Y+RbLLVOYQyEwGkSNAZTqzCm8E0A2WNVNWgckoo4VgBEoCTZ693KDGadtSbSGG2qXl0+szT0t56E+UvS4OvEqoyjU9WN80VuKJYfivS9Ha2AatGaW6UoWsrItJDPBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NLas026N; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785936599; c=relaxed/simple;
+	bh=nxNZx4pWR5hEwJxzhHjx+TcFKGhspkCBDsCHMnWUyCU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ll85cq/F5jtNhoZs4uKN3jgS8lRd/dg9dEEbswg9KZLX9JJOy0p2kzNWm2Iv8u0++dg1RVNUJqJumbZsMioHUbbyxxQn8eR5crC3wMH8UOYazthB8R/31i7jQOncmuUEgk+1A3snAaQTAEKVKQi+TZGES48vXU7XI/T+1I1VjzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RYR13pz4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NLas026N"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38deea72eebso817912a91.1
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 06:26:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785936417; x=1786541217; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xsFym2wB6sfkREOLcuGpzPcVf1eCsaKWwrcVrgYBab0=;
-        b=NLas026NwpR2Sb+0YLZLrJfai98stU121xSMsYgfCPuthF3ODb4FoBtGu+GckZw9Ty
-         n5YKx2V1Q75ZYBS8QWYrM6arCoAomRZg35+n6fsgz2xzJPN+C/48Hg0WMayGVCzJZbaE
-         D87mcMOuXUKsOC028Qd/MePU5XEOkWOBQnu35kDtwFYRbOq0FJOZsKIJpp82urJc5nyH
-         EYyN/OovbTi+tNm75xMfkwNorbRe8clnmGZGtjcMScwRri4Tel5eWjUd8Fahii9Wie/V
-         Gk/kO/0i/EColEJV+/K90LczXnUo1ezkaVRWzc5zsSoFYmdluJf0Cn8geyhRAktZXopl
-         CZOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785936417; x=1786541217;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xsFym2wB6sfkREOLcuGpzPcVf1eCsaKWwrcVrgYBab0=;
-        b=EHl/wIKnqkZfPsTk8QqlW9YZxNtopQiDFd7kIoEYnCZ9Gx50drGejfK82BVNFxe7MF
-         /UF5CubgruEpu+c86GOBLRna6JRwZfEppQEFVLWwH8AZrunHEh+uBpuDELDp56UCB3Sf
-         z/sHH5TfaJn+U8UYHrd/MY2CmGEShcdEPBzMsgxFwC09QFq/OaVmBUo3Vi36O4xwv0Sj
-         +7S6OkAt6Zz6X/QtvSQSO0RKDGZuteThXAXIjcg5ZFX62SM5FDnSsjntLtjIkszJMB44
-         E2g3Gk0xwQ2z/nro6Y/QiguBcTgdy12x+iROmxAia4FVMr/LWPC1btol03Uez9cw7IjW
-         TXKw==
-X-Forwarded-Encrypted: i=1; AHgh+Rrdc+UNQU1LRrz0Gv4PtiZ/H3wNDX7IFubBsSE4FceO1CWB9lvuCc8Sg4t6LoYwoqS3iOsoEaA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzmg3iNRZxsrcdEsiG6V2IXjU9YHG1BmyGNOZkdnnV2mRS29Pnj
-	zrBneN97DXdXjdXn2N0SKC+m1hd9MsKv6BnUzlcA4mP70ztbPEAPOgOr
-X-Gm-Gg: AR+sD11TseoROrCSkkzXFUGlIJ5C29IBqp7i/BIWH9Q0iA1v/saeTKWVE7hrBArIjmN
-	DeSKLXa1IZ6k/buNyIWikwYUtACI4oVehajiOR/v1Q/cyBXOQYL25P4tJhhm2VXBiN9WE8Esf0O
-	7c6PiX+lk4P7GjQr4ctHQTKeiVpQpmFhex3uKRN+0KRMlPxDLmW6JnkLT3VwBWY4QPzPlrTBdL6
-	GhcLJeePuGQZ1anzpZtJKgXCVCsBVZMz6EWGaqf08utuFpDMOfwqk/tZIXCeCQl0v+g+BVw3twL
-	u1lp7OylNsdFZBsoRQRBVbEFR1MfIr1SBs2StLR6Ldkw/cv6+F+v4kcOb7Kq3qbgoejNnjXn8Kw
-	OhVyawQs5e7lQ27UCbdYNQGhwf6CF5o5OBE7U+ztExh+3MDu6QhIXP6NP5RLUzDf75qo+L/2OWb
-	LGT+Pwr6cy3iZW03vTSj2mHi5uMVV+xUyjoTIv2GVD7sOcNAGhDvQRn16Ya107oMDer5Zu
-X-Received: by 2002:a17:90b:3f43:b0:38f:57f3:4dc6 with SMTP id 98e67ed59e1d1-3903c6798bdmr7804649a91.21.1785936416848;
-        Wed, 05 Aug 2026 06:26:56 -0700 (PDT)
-Received: from user.. ([2405:201:c052:b00b:ee23:9c43:db25:effa])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca9111b6sm14107231c88.13.2026.08.05.06.26.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 06:26:55 -0700 (PDT)
-From: pavankumaryalagada@gmail.com
-To: syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	syzkaller-bugs@googlegroups.com,
-	Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
-Subject: [PATCH] io_uring/zcrx: reject netdevices without ops lock support
-Date: Wed,  5 Aug 2026 18:54:50 +0530
-Message-ID: <20260805132634.12646-1-pavankumaryalagada@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6a71f80c.40259c87.584f4.04b9.GAE@google.com>
-References: <6a71f80c.40259c87.584f4.04b9.GAE@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RYR13pz4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 24C5CC2BCB9;
+	Wed,  5 Aug 2026 13:29:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785936599;
+	bh=nxNZx4pWR5hEwJxzhHjx+TcFKGhspkCBDsCHMnWUyCU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=RYR13pz4DFdDoy4DaRblAmkHwnF5RyKHLn5SZhVdA/hXjeRqv46v7uExo1tcYHjyM
+	 V6bCLhrKhUsd/APv4P82lNAytRJG44LTe4XPaH+uBw+1o0YUN/lE58E7ZhH6hj0cPN
+	 ozrFzC16LEWGSGjseToreOn81z41sf1b02PmA26273qAlhFMJhrqzb2XmiVpmoOIKJ
+	 4NfTsj+gMRZuuLictAAlIs4vLUbcTgvG3PpJ5Y7ZaZpVbRiAhxEHQV70BY3aW/QyYg
+	 nxSnnO3/P2bVszrJcXzvS2U4tZAUZ50AJzMKp++4Ha2+OuTapC1mf8GQhttblP43rd
+	 E5r552LmJ/dRg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 077E5C55ABA;
+	Wed,  5 Aug 2026 13:29:59 +0000 (UTC)
+From: Junrui Luo via B4 Relay <devnull+moonafterrain.outlook.com@kernel.org>
+Date: Wed, 05 Aug 2026 21:29:36 +0800
+Subject: [PATCH net 1/2] ovpn: don't deref NULL key slot in
+ ovpn_crypto_kill_key()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260805-ovpn-fixes-v1-1-763f8c237fb9@outlook.com>
+References: <20260805-ovpn-fixes-v1-0-763f8c237fb9@outlook.com>
+In-Reply-To: <20260805-ovpn-fixes-v1-0-763f8c237fb9@outlook.com>
+To: Antonio Quartulli <antonio@openvpn.net>, 
+ Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Junrui Luo <moonafterrain@outlook.com>, Yuhao Jiang <danisjiang@gmail.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2265;
+ i=moonafterrain@outlook.com; h=from:subject:message-id;
+ bh=+hGqRph43hI3EHGuSRr41Hxklz8QgbQe6xejFC8nD6M=;
+ b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGrGKrq+bzZ1za/uR7WKBIdV648vGfem4OZ3e3RTixn
+ TKvkZnzpaWjlIVBjItBVkyR5XjBpW8Wvlt0t/hsSYaZw8oEMoSBi1MAJtL5geGv4MEPbu4BBvpu
+ CT8DTn1h1Pn0L3Cny/WtV41aNS+yymysYfinVNTwdt7Do2ffrFrp2lolu2PtsqecEw+KcTudc/O
+ NmmPDDgAw3E0t
+X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
+ fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
+X-Endpoint-Received: by B4 Relay for moonafterrain@outlook.com/default with
+ auth_id=909
+X-Original-From: Junrui Luo <moonafterrain@outlook.com>
+Reply-To: moonafterrain@outlook.com
 
-From: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-zcrx registration can fail for netdevices that do not support the
-required ops locking model.
+ovpn_crypto_kill_key() is reached from ovpn_encrypt_post() when the
+packet ID space of the key in use has been exhausted and
+ovpn_pktid_xmit_next() returns -ERANGE. It locates the slot holding the
+given key ID by reading cs->slots[0] and cs->slots[1] and comparing
+->key_id, but it dereferences both pointers without first checking them
+for NULL.
 
-netdev_queue_get_dma_dev() requires ops locking support.
-Calling it for devices without ops lock support triggers
-netdev_assert_locked_ops_compat().
+An empty key slot is a perfectly normal state. Both
+ovpn_crypto_key_slot_delete() and ovpn_crypto_state_release() install
+NULL, and the ordinary rekeying sequence - install a new key in the
+secondary slot, swap, then delete the retired one - leaves primary_idx
+at 1 with slots[0] empty. In that state the very first comparison
+dereferences NULL. key_id sits at offset 0 of struct
+ovpn_crypto_key_slot, so this faults on a read of address 0.
 
-Check netdev_need_ops_lock() before accessing queue DMA information
-and return -EOPNOTSUPP for unsupported devices.
+Every other slot accessor in this file already guards the pointer before
+touching it, e.g. ovpn_crypto_key_id_to_slot():
 
-Reported-by: syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=a78926bdac2adb52dc0e
-Signed-off-by: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
+	ks = rcu_dereference(cs->slots[idx]);
+	if (ks && ks->key_id == key_id)
 
+Use the same NULL-safe form here.
+
+Fixes: 89d3c0e4612a ("ovpn: kill key and notify userspace in case of IV exhaustion")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Assisted-by: Claude:claude-opus-5
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 ---
-Testing:
- - Verified the reported reproducer in a VM.
----
- io_uring/zcrx.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ovpn/crypto.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index f1464ea8ca64..2eba7d4e4483 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -17,6 +17,7 @@
- #include <net/netdev_rx_queue.h>
- #include <net/tcp.h>
- #include <net/rps.h>
-+#include <net/netdev_lock.h>
+diff --git a/drivers/net/ovpn/crypto.c b/drivers/net/ovpn/crypto.c
+index 90580e32052f..2c56fb180ed8 100644
+--- a/drivers/net/ovpn/crypto.c
++++ b/drivers/net/ovpn/crypto.c
+@@ -60,10 +60,12 @@ bool ovpn_crypto_kill_key(struct ovpn_crypto_state *cs, u8 key_id)
+ 	struct ovpn_crypto_key_slot *ks = NULL;
  
- #include <trace/events/page_pool.h>
- 
-@@ -828,6 +829,15 @@ static int zcrx_register_netdev(struct io_zcrx_ifq *ifq,
- 
- 	netdev_hold(ifq->netdev, &ifq->netdev_tracker, GFP_KERNEL);
- 
-+	/*
-+	 * netdev_queue_get_dma_dev() requires the netdev ops locking
-+	 * model. Reject devices which do not support it.
-+	 */
-+	if (!netdev_need_ops_lock(ifq->netdev)) {
-+		ret = -EOPNOTSUPP;
-+		goto netdev_put_unlock;
-+	}
-+
- 	ifq->dev = netdev_queue_get_dma_dev(ifq->netdev, if_rxq, NETDEV_QUEUE_TYPE_RX);
- 	if (!ifq->dev) {
- 		ret = -EOPNOTSUPP;
+ 	spin_lock_bh(&cs->lock);
+-	if (rcu_access_pointer(cs->slots[0])->key_id == key_id) {
++	if (rcu_access_pointer(cs->slots[0]) &&
++	    rcu_access_pointer(cs->slots[0])->key_id == key_id) {
+ 		ks = rcu_replace_pointer(cs->slots[0], NULL,
+ 					 lockdep_is_held(&cs->lock));
+-	} else if (rcu_access_pointer(cs->slots[1])->key_id == key_id) {
++	} else if (rcu_access_pointer(cs->slots[1]) &&
++		   rcu_access_pointer(cs->slots[1])->key_id == key_id) {
+ 		ks = rcu_replace_pointer(cs->slots[1], NULL,
+ 					 lockdep_is_held(&cs->lock));
+ 	}
+
 -- 
-2.43.0
+2.51.2
+
 
