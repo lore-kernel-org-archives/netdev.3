@@ -1,138 +1,137 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012070.outbound.protection.outlook.com [52.101.66.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878E43C3442;
-	Wed,  5 Aug 2026 06:31:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785911485; cv=none; b=jo/Vw5aS7fiV1GsC3syyHFQlj5cfd3Esr+2V1V+LW75tt/Ic3OYbDZYdmX9XRIizxbls8JCUws9zLclwfH1jqU1U0173goLei2PzKbKoG0pVjwckWEd55DPZ76QLnglmeXbqn9cQazoH/cENPaJdGznHcyXNYkSp/YjmvjE9ex0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785911485; c=relaxed/simple;
-	bh=qTDJmNUaz1iB6sRgZI3zIwe3p/3tbGwqZvwB9t+qVhw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=VQpPeJ+X7YqZoTp+uBDveaxkahXkkvaOmHD4AS1lfaWTNcQjnCTUYWSfdyCUjVAqWXuXDUcMfIG1RwhU2OnuEJizLKm6APi89YXoYMwx3uAhYpJ7enSmA5TPNQ6K1qB3W65DyMvFkebc91cktW0zqq41SEowbLCDs2+p9YDXBwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=No3aEWan; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774C23DDDC3;
+	Wed,  5 Aug 2026 06:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785911978; cv=fail; b=t9ZX/Vcn8BtiKb9CArZT85J6sC5Cr2q41q4qceP8TRgCVOLyaVrq6fTJN2zpvaaAiNKHSk0VYVLsLxMZL4txDtkvZLAsvJkHjdWyBEwJfpXjgIWFNpSwE6EHDMLiLnnAkid+q512jRZx9qoJu5/UkUqXiFhAPXNFMaLjRfbtPss=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785911978; c=relaxed/simple;
+	bh=mZoqlQz8lCY7mLrNVfp6I73rEQHwm9+iwSm9/mkFG+Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=mWTqDmNFbwEH6CKwlc4mZS32/ndy/Z+d5Os/Eg66ugSxEDdU+P5/TA8Pa48ZIQUIAuoY6XHQFbLh2vPVXOZ+Wv99i/jeI2wf9RTCGFUcTiNSW2vNQNKQdABlBSzcMVrE11Jjivl0nCnBtLnf2AG8I27Y5D/BQtg/TRzX54+8hFw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=NE3oJ8S2; arc=fail smtp.client-ip=52.101.66.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="No3aEWan"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6755mRkc2910531;
-	Wed, 5 Aug 2026 06:31:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=imWz3HUGoZYSP9GjY636p1lN2zhZ/Pe+2PGdM1xbL
-	8o=; b=No3aEWanJMz2azTshhxcqerhKVwIGRJs/quJlhj8dBtLHe7qKlQnfwU38
-	M/1fNE2Y31Wo1Zo+FeYxX/JLd//J6Ao2bYiUHuYWFhpHqHBD1UG+OKQ7NQBHTdKq
-	82JcqZ9tyYDa003LuuLVNR4ZB9lNNdLOxEUGyyD6yn40RnT1zhhCRNARalEZ4obq
-	8zZD+4TrphcVfHgeWgkKfFTrlrEv3IXaBlCQyxF2c8jjD7KxAZr9uwWU6V1haray
-	jU2Chao9v3NoYa1jWP0XJueFyp2AGR0Sg1LWcB61kZa9hAB77bZrGdVZb6I7+GBb
-	EhjkLbIjYGnR1St5umILbncK/qnFw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77g9a3x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 06:31:17 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6756QHt1019924;
-	Wed, 5 Aug 2026 06:31:16 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhd95m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 06:31:16 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6756VCc728836538
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Aug 2026 06:31:12 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7B0F420043;
-	Wed,  5 Aug 2026 06:31:12 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6BD0D2004B;
-	Wed,  5 Aug 2026 06:31:11 +0000 (GMT)
-Received: from li-fa2166e9-1f7d-4f1a-8ca5-7ccf0f022c25.ibm.com.com (unknown [9.87.142.61])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Aug 2026 06:31:11 +0000 (GMT)
-From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-To: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        svens@linux.ibm.com, brueckner@linux.ibm.com,
-        ben.coddington@hammerspace.com
-Subject: [PATCH net v2] tls: don't abort the connection on signal-interrupted sends
-Date: Wed,  5 Aug 2026 08:22:48 +0200
-Message-ID: <20260805063109.1772314-1-maxbr@linux.ibm.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="NE3oJ8S2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wLIavur49PJfBw8cGwB2BcCnLFXX1Bx4L8A4C5oSSozsQxH8Mr5nLr3ACDaBN/uZJ1dF0Z/diDdF1dxgKV4+o4LYipDUOeqj6gTj241DvFmNA50IB8+GipPmHdd9V7wR8jcFqkGjEhM00oT7MttzOIZgiOYS0JLWrqetsN0WPplK2U9ec0VnD23lpHyJhC1QufrJhm6hRtLucf72s9h0VS7NsRwXYS6BIUfHjyP02FnYjF+1ckECnYa6dKi2I8x1NtO9YIqMeMuUrBjzAety5fdNGA6QIV1jaH/bQAWpwIdFctl7jIrpHqHe75ILsvDiym10//5r0MLdHLQeWobSsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Snw8UQ2uKVRQw9alsnFu4CmKiKnOFJek0i71AkCPVEc=;
+ b=pSl+MgQUnIIz8b1SklF1qHlaNLvLppR/xnq0K6qKgBRxDBc4JUeCZ6/Ypo6p88jtDRXz/yDrvsdZf5av6GuhJFptdo1jiA3jBZQYJPSMVBnWuK1ok85H30IZChDyrg4jAahqYSQ61dgnxu+3ngOCkCTGqUIV2k3h7KuanfP0zGgp3K4Cx2/kcJYv03tX7NIO3PtDe2Pfjlg4mJSn063xYjHtDYzZ/fyr2auDkI+voaEyKO1k2hV+x6+VN2LLzh9PvMD71kOn4A3ZFG8I4Q1EyEnD4akJSF27M2PngQyOvLn952Hv4umn5DmzsNEG1qlE1zYO1ezfUcHlGKaysmNdeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.60) smtp.rcpttodomain=lunn.ch smtp.mailfrom=foss.st.com; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Snw8UQ2uKVRQw9alsnFu4CmKiKnOFJek0i71AkCPVEc=;
+ b=NE3oJ8S2Wp1esEBtWsAr5tiPF13C+z23cmAVSF508Ernmdfc2xykqH1rRmRRy9ldjpUjSOY30rH1NBWaXoJoslBz77+6kJzNBGp7SLpn56Yss5CghYkCd9c6yJUcxqktcKsqill+/QPf+YxneO2n0aEL7+YCtYsUZfiKQklJZXsmX6fqqAAw8JIle3w+1rE2bH4qx671u/0jrqcISVfenkJ31Jt9c2QVGY2lPV3S6b+RX2IKWfqfkYkEJND9ZJPwY4GurduLOTcXear8VRkh4r3kXT7kBOI3m9t4QbfGk5yVdjpxsFKPwL+Oz6Hqc3AQqHKR8Qhx31uC2DRNjeWMdg==
+Received: from AM0PR02CA0119.eurprd02.prod.outlook.com (2603:10a6:20b:28c::16)
+ by VI0PR10MB9744.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:339::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.15; Wed, 5 Aug
+ 2026 06:39:32 +0000
+Received: from AM3PEPF00009BA0.eurprd04.prod.outlook.com
+ (2603:10a6:20b:28c:cafe::55) by AM0PR02CA0119.outlook.office365.com
+ (2603:10a6:20b:28c::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.15 via Frontend Transport; Wed, 5
+ Aug 2026 06:39:32 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.60)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.60 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.60; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.60) by
+ AM3PEPF00009BA0.mail.protection.outlook.com (10.167.16.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.8 via Frontend Transport; Wed, 5 Aug 2026 06:39:31 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpO365.st.com
+ (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Wed, 5 Aug
+ 2026 08:44:23 +0200
+Received: from [10.252.17.63] (10.252.17.63) by STKDAG1NODE2.st.com
+ (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Wed, 5 Aug
+ 2026 08:39:30 +0200
+Message-ID: <080e5ac0-cb7a-4871-a312-1b60459ab5d2@foss.st.com>
+Date: Wed, 5 Aug 2026 08:39:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] net: stmmac: manage error case during
+ stmmac_dvr_probe
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>, <linusw@kernel.org>,
+	<antonio.borneo@foss.st.com>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20260804132052.205273-1-christophe.roullier@foss.st.com>
+ <20260804132052.205273-5-christophe.roullier@foss.st.com>
+ <17bdf6d8-a31d-4601-bbc9-4d7b78897272@lunn.ch>
+Content-Language: fr
+From: Christophe ROULLIER <christophe.roullier@foss.st.com>
+In-Reply-To: <17bdf6d8-a31d-4601-bbc9-4d7b78897272@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX6MZw16YXH91t
- hB1e9H1UmrQufY23ydnhHf8QTsGC/4iZIOjaUgWys9avVxxq+7/z2L1Gh0gXhrv0CoLfon4N4EK
- hnvEciLYSPJDK88NNLJjI85kol/MMhgmYhes0CDDsW5veqRlSRTtlyDzqJ21f2GwrPtL3gsgB+E
- EELXMZekGcmZvdL+J2zKLH+OEt+6u4EslEVhdIz5aB9Sc9jebDlEpf/ltLEcbQaR71B3rOGxASx
- 7ek16OlF6k0ITLNxvfvpicXacci/NBljrEuzxuF8O8AbMFAUdjCz6RHz0sESNmodNj/fBGu/bVO
- AGJyD2eVFA4HyiW9KwoCVwtLngbA/D5y6WflgO9ljrg4PA7r7xi8wmxIeBGNbQncsyAhK5JcY3P
- c2syjn9iE+AcvplukrM9nERJ0K0pG7RfqlIxCPhj4ic06NUMFCBuPQUCZdEU95NDHi9RH5+iPCu
- /XEV0yeiwZmOu8lr9vQ==
-X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a72d8b5 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=82jE9IMOl7yLyLrd4k4A:9
-X-Proofpoint-GUID: i8Pu67qn8XYUlLka1LFNqlEQKs046uzw
-X-Proofpoint-ORIG-GUID: wXI2Q_2XxmIqst5aA88VJSULFHTdRorQ
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA0NyBTYWx0ZWRfX9E4gQEzoC8Sg
- aiUbW3v8d8A4vNCUAmMjoYCYxgv+LFeMLoE9YORMx/oI91UNZp7MEeQ5L0eOawrr8GjqTTldp9j
- Lpx+4nBVCRC99uUgnymuyXw6o6c3wr0=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_02,2026-08-04_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050047
+X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF00009BA0:EE_|VI0PR10MB9744:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26676093-53e8-4345-de95-08def2bc4e82
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|82310400026|1800799024|36860700016|13003099007|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	wnpyS/MLTvPba3dMJDwYTUsiUDwbs5tv8gDF4nyC6/3+Y51lW63gvxyLWaugO+KLK+F00Z0cy2sPxHhbfh0Nh+bvphF1X7ngB8ibyopu1HbuWvu4sJay1P2en9y/wUgMBUndk5M3k7qIAEEtEd+k8WCFC3CB5PET8BmCzmwNsc8naAy8xGgqE3gd9vfHEjLoT3SRXZRyUlVT7jKjX0ET+V4tqZsPGM5mWY9px6MpbmBqfIs9xGOdzsQjH2ejfeemNdsqYdQBjBf6oerZVtjQHgA21lIMnHWIzuwKGzFWJ7mfdmhynHPH6Mk3HTdMSVky0A2E0GiZA2i6Ng3H5LJnv1JuBWOI0siBYLEYk2LgUhNYSHI1TkX7O6577xpoFc85NPhkDBUgLAnmFM9yd89bl5AzChPIZSR/FRGlcHVtB0skbDkynX38q6ndyvvFWNh73GqZM+nF/1DSku4cMG2s7wlxY3AvJmR/8abm0X+NQzeqHdCSxo9Kz29QgPFw4JxGrsVfdlqhG3zZkm20zlpE3Q7piEjX4X8Tw9uEbmoxHUdIVHTPbCZMdj/Z4uwmIu/l9QTNUW5IKUJSB/bKKaaMjniCtEm00Ora3TQiwXL2BauIZ9CpLemXY54VoJxBFk0U5dAG8Z2zmOavZHzKNw8SrGn5PVLKCwsB2i0CTolXlsw=
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(82310400026)(1800799024)(36860700016)(13003099007)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	IzsSawp58E5cFjJuE2rs8UrQ9KBeZahF2Cw60Y7dNGJwJb6A5bXnKBlNyhLBdJtGM/3PaVzSIrwygnpL5HkmGuq9JSktCN/StHDgkrw+3X0w0nmitYKzmtzSh+ZOh3R+DMi8Geelo9M/HMNl0XeRdjo0J36oS6/mFYxuiXj0kDlQC+rQuFhxyTJA4LM7HrFN3Wj1iocPRdonIJb/Na5Ox5k6OQVFDned0owWdOjCghVqY3rY3bIcfX5CfTzwrnQZi6BuaSMZQOKb/1dUzsHyzES1izWY0tIQB35dmebsNcFOCt5QVoRZwjG3ucpKiIsyHlg0R3GMsyPhvIdjvay6bo7FSp2qHrVhGdT+pPC2aswJBWUgR4WVWQ5eYNbOjSox1jqU4YaGSnL+TkQEMDaf2xIXa0LRx3saMnn99eUFX0jjOl0Xq5LmaL5HToFuZgg+
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 06:39:31.7280
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26676093-53e8-4345-de95-08def2bc4e82
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF00009BA0.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR10MB9744
 
-When a signal interrupts a blocking send, tls_tx_records() treats the
-resulting -ERESTARTSYS as a transmission failure and marks the socket
-errored via tls_err_abort() with the raw error code. Later syscalls
-return the kernel-internal errno 512 (ERESTARTSYS) to userspace, as the
-signal it stems from is no longer pending during syscall exit and thus
-never translated.
+No problem Andrew.
 
-An interrupted send is not a connection error: the partially sent record
-stays queued and is resent later. Interrupt error codes are therefore
-excluded from the abort in the same way as -EAGAIN.
+https://lkml.iu.edu/2602.2/02822.html
 
-Fixes: b341ca51d267 ("tls: Fix tls_sw_sendmsg error handling")
-Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
----
-Changes in v2:
-- remove checks for unused restart error codes
-- check error codes inline
-
-Tested on top of net commit 3f1f75536668 ("net: openvswitch: reject
-oversized nested action attrs").
----
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index d4afc90fd796..4d1fa9b04181 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -458,7 +458,7 @@ int tls_tx_records(struct sock *sk, int flags)
- 	}
- 
- tx_err:
--	if (rc < 0 && rc != -EAGAIN)
-+	if (rc < 0 && rc != -EAGAIN && rc != -EINTR && rc != -ERESTARTSYS)
- 		tls_err_abort(sk, rc);
- 
- 	return rc;
--- 
-2.55.0
-
+Le 04/08/2026 à 19:45, Andrew Lunn a écrit :
+> On Tue, Aug 04, 2026 at 03:20:52PM +0200, Christophe Roullier wrote:
+>> In case of error during stmmac_mdio_register, pm_runtime is not
+>> cleaning before exit probe.
+>>
+>> Signed-off-by: Christophe Roullier <christophe.roullier@foss.st.com>
+>> Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> I don't want to accuse you of anything, but Russell has not been
+> active for a while, this is v1 of a patchset, so seeing a Reviewed-by:
+> by Russell jumped out at me. Can you point me at the archived email
+> from Russell. Just doing my due diligence, trust but verify etc.
+>
+>       Andrew
