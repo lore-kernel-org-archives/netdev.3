@@ -1,91 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D723C553A;
-	Wed,  5 Aug 2026 21:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118DF3EB0F7
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785963783; cv=none; b=gCxpQGPoInurzu1hSz1F2cBZJOoSpwuisyEyehz+e42NubaOTdM/AS16fl/KzAof2eQR3VhwznSeYo/1itVEpUaVWpaSxMrGKdrT36ea/n6UGQD2JLXslRIsirKJLB0Q4pRNX6OAjnUyoLnmVrAUJ9XAZJCxqLr1vbsOXLAigMQ=
+	t=1785965097; cv=none; b=SsaApZcIgTos6h5CPWTcNNOKeXmRVqWPUvgFyB/MePUEapA+WuWqxvtc1MSZh97blesHDYIC9JMQpp91QTBHk00kLs3VhAGRtd9+5LJT09itGyFYwwhjM3guMWn0J0g7YU8OtbRmMUxEfUy9L74a6JLxp1jqvNNuF2Qgnh6X+Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785963783; c=relaxed/simple;
-	bh=LMdYLlZL+CVGccdyTJ0bY2lMW//xkuB55hgbYwiwdM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AJvaSG5zTdg4/2U0oAXnLKd3GhQCi9+FDZTxetqQfBMx+rQIdfZHcyvqTmb9JAhfXhnbHYXYZTY20BAzQ0IWSrUPNIg3bnGZPfycTpYmed9Zy63xxsitWOHvCDMsGr2H/dCCsfDCJqfS8uY2Ts1nu+E+cdp+EIh6wpxh57jbH+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b0QTtP7Y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785965097; c=relaxed/simple;
+	bh=OoDmUc/8XtCceK9p+h+/SE9QHPZ6p/OJ7DDwunZIJxM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=td7pv3wDTeMzEB52koCvwOscO9te/shb6iueLftcXWxFz4f9CL7MyV9VoNKpx4GbDhpjmNpRsbbh+vGzAvubVo/h7ZEwk5g10spX6jKss3ngkaylBwvG9eF+cXIA4VTqUgKPmgoXM2kwNnhUYe8vcu038GMFx49KMSu6vdOA93o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tkjos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qCCDx1TP; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tkjos.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b0QTtP7Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57F41F000E9;
-	Wed,  5 Aug 2026 21:03:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785963781;
-	bh=SxvK5a03FJ38wuKC1pxvo0LtEV/wyHVsi85zctMEBuY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=b0QTtP7Yf6C5L8fiVy+r5DqnQMRutxqeJeK4Tx7mo+L9cInVx/1OafiF/+ZHTYgwW
-	 03UVJ+PyWZBuqMKGjreSzsZ2wTPeiys8oXn1DQFLitmBhy5C8d7gko8F9Yn2YIOtKh
-	 3xAGF8F4h9AQ11cGgF0w7ttlBeGZ+E819XuBEpSHscm8st6zConhloUvlqqcMebPUt
-	 tpzAKULB7bMwWanimH7LVuwiI5anoQPjxd1LlyxhNNXBXHGMmcpP5Kem2NmeqBN+d3
-	 VgoP8Sxq9YzpXiKMF/fLXp5Wd1ekvWt+Ksn7et8f8RuVxSXsizVrXds2U79FfNsLg7
-	 7QhXMPhRRyxCg==
-Date: Wed, 5 Aug 2026 14:02:59 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH 3/6] net/tcp-ao: clear the aes_cmac_key when done
-Message-ID: <20260805210259.GI3438@quark>
-References: <20260805143611.818559-1-thuth@redhat.com>
- <20260805143611.818559-4-thuth@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qCCDx1TP"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cc86a9ef97so24609465ad.3
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 14:24:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785965087; x=1786569887; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OEee5sfGqkAQFl6GZPGNdx0Fm2VSIMtcRUsGRdoNGMg=;
+        b=qCCDx1TPDdJml2ne5nwDLwWBNQqi8SLcGVU+rBAgIZ9Rg5oMAZVYkk1Y1xDiJ90Dcn
+         +xjc0qom6aU42s2U4wXyTcnRaH4Ltkl9UlbABBoCwSloqUevRQcXWHygh+j8Nr3y3qUW
+         lFwJCtWKivs0byqd98XySNG7ympI2IXeeIV5WscsOfVaki8bCb/A2dd5mdPJ79g8jaoq
+         1RaC1hVBPfvT2ZQoYfk3/i4VqIKkdFyKbFiVly+SPyp/38ZaxZ50hbLB+zxc/eBE0fuG
+         RaguvjJ78LDDy0t8X4q/0HQ8n4VpzNIy1pM9c17jXVNJO4Ty3XvvbOYZZLXmJHvzoSg1
+         QEZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785965087; x=1786569887;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OEee5sfGqkAQFl6GZPGNdx0Fm2VSIMtcRUsGRdoNGMg=;
+        b=Uz2hgcSRS/FdlK2xCzKbkNK7MTrgKw1Iq77GWh4wdGdv8eRXazSbZAZEfrnqe+Ig5b
+         BsVOwm466SKZ3q4dtG8jLqj9RgxcODnI+3y1+oli19UHtnHjxIda62Q43XtxrhIOomzq
+         mnywRzzpBMVLJkJ09X6RNTBWaX2TO/XGfb+RTjWk+MmHryPJtCsn0t/PkTdYxRtqRiKO
+         JF7FDz+JmXakn+2H/VvVNPIzOAC+NxPvxJsVyJnSF8/ZllksXpiOoKTNzbsDX6Tw/tyS
+         nhuCicKJsKpxSrMuifu3IEGzPqikNzqmIUJQTqpbOcz856Rr/KdCxVXN1Or/Es3BvoiH
+         qwGw==
+X-Forwarded-Encrypted: i=1; AHgh+Rqk9JCgghNAdnwWO5fkeW9wxeZsXEL2Tok3yXnMN+k+U63a/wO1QSPWFs9oJ1KFmPAnyetVDR8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy04ClMk0GGlDRVJndH6pjzCRoN5ZAd9fDWqhEk0PEgq4HUgYYF
+	jZr3Zi4EDEuh4XriCgCMS/DyDKUez24A42PnC6rHMnhhceLx5ulrnXoytg2IbCM4GVrtWQl8vg9
+	uQA==
+X-Received: from plao6.prod.google.com ([2002:a17:903:3006:b0:2ca:d6d7:6943])
+ (user=tkjos job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c10:b0:2c7:f4bd:91b5
+ with SMTP id d9443c01a7336-2d0ca15d0a1mr118249685ad.0.1785965086682; Wed, 05
+ Aug 2026 14:24:46 -0700 (PDT)
+Date: Wed,  5 Aug 2026 21:24:34 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805143611.818559-4-thuth@redhat.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
+Message-ID: <20260805212435.48618-1-tkjos@google.com>
+Subject: [PATCH v2 1/2 5.10.y] Bluetooth: SCO: Fix UAF on sco_sock_timeout
+From: Todd Kjos <tkjos@google.com>
+To: stable@vger.kernel.org
+Cc: kernel-team@android.com, Lee Jones <lee@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, 
+	syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com, 
+	Xiangyu Chen <xiangyu.chen@windriver.com>, He Zhe <zhe.he@windriver.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Todd Kjos <tkjos@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Aug 05, 2026 at 04:36:06PM +0200, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
-> 
-> Clear the local aes_cmac_key structure via __cleanup() function
-> when we're done with it to avoid that sensitive data could leak on
-> the stack.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  net/ipv4/tcp_ao.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
-> index a56bb79e15e0e..12c724fed8a26 100644
-> --- a/net/ipv4/tcp_ao.c
-> +++ b/net/ipv4/tcp_ao.c
-> @@ -141,7 +141,7 @@ void tcp_ao_calc_traffic_key(const struct tcp_ao_key *mkt, u8 *traffic_key,
->  					traffic_key);
->  		return;
->  	case TCP_AO_ALGO_AES_128_CMAC: {
-> -		struct aes_cmac_key k;
-> +		struct aes_cmac_key k __cleanup(aes_cmac_zeroize_key);
->  
->  		aes_cmac_preparekey(&k, mkt->key, AES_KEYSIZE_128);
->  		aes_cmac(&k, input, input_len, traffic_key);
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-Similar to the bluetooth patch: This is okay, but it seems the TCP-AO
-code has never really tried to do key zeroization, which is why I didn't
-include a memzero_explicit() here.  Lots of cases, like the various
-traffic key buffers, have never been zeroized and still aren't.
+commit 1bf4470a3939c678fb822073e9ea77a0560bc6bb upstream.
 
-The '__cleanup' trick makes this specific case trivial enough that sure,
-it might as well be done anyway.  But it would be nice to have a more
-comprehensive patch that actually tried to zeroize all TCP-AO keys.
-Otherwise random individual fixes like this trickle in over time and it
-takes a lot longer.
+conn->sk maybe have been unlinked/freed while waiting for sco_conn_lock
+so this checks if the conn->sk is still valid by checking if it part of
+sco_sk_list.
 
-- Eric
+Reported-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
+Tested-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4c0d0c4cde787116d465
+Fixes: ba316be1b6a0 ("Bluetooth: schedule SCO timeouts with delayed_work")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Resolved trivial conflicts in net/bluetooth/sco.c, removed
+extra reference on sk ]
+Signed-off-by: Todd Kjos <tkjos@google.com>
+---
+Changes in v2:
+- Removed redundant reference on struct sock
+- Removed Change-Id tags
+
+ include/net/bluetooth/bluetooth.h |  1 +
+ net/bluetooth/af_bluetooth.c      | 22 ++++++++++++++++++++++
+ net/bluetooth/sco.c               | 17 ++++++++++++-----
+ 3 files changed, 35 insertions(+), 5 deletions(-)
+
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index 43b4386018e26c41c914f87e050a0fe958700135..85bab90a6921ce1e9b9025647e23fafd97117ece 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -317,6 +317,7 @@ void bt_sock_link(struct bt_sock_list *l, struct sock *s);
+ void bt_sock_unlink(struct bt_sock_list *l, struct sock *s);
+ struct sock *bt_sock_alloc(struct net *net, struct socket *sock,
+ 			   struct proto *prot, int proto, gfp_t prio, int kern);
++bool bt_sock_linked(struct bt_sock_list *l, struct sock *s);
+ int  bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 		     int flags);
+ int  bt_sock_stream_recvmsg(struct socket *sock, struct msghdr *msg,
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index bef5b6330dd807504292671301c860b96c2ed18e..0af14e3318e7e02173970a1af8e183723bef2c50 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -184,6 +184,28 @@ void bt_sock_unlink(struct bt_sock_list *l, struct sock *sk)
+ }
+ EXPORT_SYMBOL(bt_sock_unlink);
+ 
++bool bt_sock_linked(struct bt_sock_list *l, struct sock *s)
++{
++	struct sock *sk;
++
++	if (!l || !s)
++		return false;
++
++	read_lock(&l->lock);
++
++	sk_for_each(sk, &l->head) {
++		if (s == sk) {
++			read_unlock(&l->lock);
++			return true;
++		}
++	}
++
++	read_unlock(&l->lock);
++
++	return false;
++}
++EXPORT_SYMBOL(bt_sock_linked);
++
+ void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
+ {
+ 	const struct cred *old_cred;
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index 01a01d6f01c309a6333859784261d97335dda413..2fbd9c93440ce4936d47b3bd47aa1dc28da82c20 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -76,6 +76,16 @@ struct sco_pinfo {
+ #define SCO_CONN_TIMEOUT	(HZ * 40)
+ #define SCO_DISCONN_TIMEOUT	(HZ * 2)
+ 
++static struct sock *sco_sock_hold(struct sco_conn *conn)
++{
++	if (!conn || !bt_sock_linked(&sco_sk_list, conn->sk))
++		return NULL;
++
++	sock_hold(conn->sk);
++
++	return conn->sk;
++}
++
+ static void sco_sock_timeout(struct work_struct *work)
+ {
+ 	struct sco_conn *conn = container_of(work, struct sco_conn,
+@@ -87,9 +97,7 @@ static void sco_sock_timeout(struct work_struct *work)
+ 		sco_conn_unlock(conn);
+ 		return;
+ 	}
+-	sk = conn->sk;
+-	if (sk)
+-		sock_hold(sk);
++	sk = sco_sock_hold(conn);
+ 	sco_conn_unlock(conn);
+ 
+ 	if (!sk)
+@@ -192,11 +200,10 @@ static void sco_conn_del(struct hci_conn *hcon, int err)
+ 
+ 	/* Kill socket */
+ 	sco_conn_lock(conn);
+-	sk = conn->sk;
++	sk = sco_sock_hold(conn);
+ 	sco_conn_unlock(conn);
+ 
+ 	if (sk) {
+-		sock_hold(sk);
+ 		bh_lock_sock(sk);
+ 		sco_sock_clear_timer(sk);
+ 		sco_chan_del(sk, err);
+-- 
+2.55.0.629.g250fe7f194-goog
+
