@@ -1,321 +1,110 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EC037B40A;
-	Wed,  5 Aug 2026 15:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FEC38889B
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 15:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785942337; cv=none; b=GzR92FCnBf47fpBN+mgU2qXBDCrl1s6zhl80boMH4nyTnpyYRYQVeBJw6L2etTfCiDfFZshSr7sIs2BnQWz9ZY4EHQA8rkqLZPaU7mXIbgI26633747t96AZNLCyH2BFFkVYjPgpXZD2O3zNoBVnQXS4UK2vJtzDFJ47nD+QmHI=
+	t=1785942522; cv=none; b=X9MpP70rx81FDDdNAncE3xePmI7nX7ljJUyNPcmLLFosGA56BquVLr6UAIkiN3gOi4PRP60p/edz/QNKubgSMcd6tU7t0NAB0SuhKJU+2InU1YTfbrXkK4RHFSiKsq/bdfjhoPtuwOoD/gAufQz+0QfFmeVxtSdj7iLCgnLBmcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785942337; c=relaxed/simple;
-	bh=yPxPzus+UeJKwydh+tIvdA6yVjrPZN8MyCjk2t13mA4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=U7bYSj/QOinWgsZXnHgsBgQ7Bc8Cpa0MrcUpIZ14aze0uC62und5NtfC0F6fE6WTSpG7zOObXGpgifyD5TgnlOwEsCW5EgP/OGKpA+t69gp3wproqQatVgRYIcWtGCuVo0cIorW/uBZaWH1bBSe4wIZGBiv2iTEv/50/BgyaoKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eE0aMbPz; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785942522; c=relaxed/simple;
+	bh=IQfLQdClZMPZWBWuUP7MTmaessUwzjFwaPvlNJSzg54=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IejB1y4XeTTT2b1YsXUthKZl7EWtkp52LL7v0lD7HtbL0nkv/LQnvD5INgICQHrymPpgxAwfZj0hdwxg9qAKfKpfgDh3tcsyaQ8qQmU5GalEC1sfAnJjtXAOF3ZCyvmT9aVfdfgh15oFdxSSTLhS6b6IZaZaY3NpdxSU6IXmFUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aJywKU/R; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eE0aMbPz"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E78B04E410FC;
-	Wed,  5 Aug 2026 15:05:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AC98F602AB;
-	Wed,  5 Aug 2026 15:05:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6D26C11C34D51;
-	Wed,  5 Aug 2026 17:05:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785942325; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=gBzPE+g28sq9CE5UUyl6UGQ1/ako7hXr8dp2+cu81r0=;
-	b=eE0aMbPzun5iJiCWWF0KnAcZFdB6z2Nq6Ef6cvE9mKYFLQXgg/l+zgaARX4v2P2+LQDcu+
-	KmrtiZ5SZE7lOd0fDrW62pY0P1Ba8GBz5+dO/NXdH9FIT/CBOC3VmQjjd+UDHnVQpnmIeP
-	wPclzlgeosTPCpHq4OgMLEIPC+8OWa+XphFNyA6CCxgiCjeNeTgaN16RHtgu7ifMoAJLfi
-	lLk/dXRKFotFOnUiE87pNWp5r2JxAGnlI9ZQKa0CnmmiM7v5MeYBjMWFSv13G6ARrIQZaf
-	BWvfSmIG4jD3WuCc2s832+CoDdBmaP8Cjw4G0Oxmo6TMf7kBOWFREJC3jG7RCQ==
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aJywKU/R"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785942513;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ARFtpgOT454Lo9ITBNeyHQKUU++b3Gc1sMwAfKESuoA=;
+	b=aJywKU/RoubdNLur0gS5E0MRYqQUCEtlr47i7RrioDXJ8ry6AW4GzACLap8lC9o3XTj5mv
+	XgVOjhZul1HKmuJO5MaRB0y5tRTUWKN1FQKZoLyY3f4/ilw53jr+PNZig2uVEC5ivWsk5I
+	ZP3lpA3ypwZpA1wq8KIUnslB6hKzSA4=
+From: Leon Hwang <leon.hwang@linux.dev>
+To: bpf@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Shuah Khan <shuah@kernel.org>,
+	Sechang Lim <rhkrqnwk98@gmail.com>,
+	Varun R Mallya <varunrmallya@gmail.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Viktor Malik <vmalik@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH bpf-next v4 0/2] bpf: Fix sleepable check for tracing/lsm prog
+Date: Wed,  5 Aug 2026 23:08:08 +0800
+Message-ID: <20260805150810.34907-1-leon.hwang@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 05 Aug 2026 17:05:22 +0200
-Message-Id: <DKH3PSLM2LJ8.1S1B51A95T75M@bootlin.com>
-Subject: Re: [PATCH] net: macb: fix stale data returned by MDIO reads
-Cc: "conor.dooley@microchip.com" <conor.dooley@microchip.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Polak, Leszek" <LPolak@arri.de>, "andrew+netdev@lunn.ch"
- <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
- <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <PA1PR03MB11059B8723E1C212E5801A52DC8D32@PA1PR03MB11059.eurprd03.prod.outlook.com> <DKH3AOWRPUDD.1IOVFERUUNC1J@bootlin.com> <DKH3G9J1MI8G.24Q6WY2SU93I9@bootlin.com>
-In-Reply-To: <DKH3G9J1MI8G.24Q6WY2SU93I9@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed Aug 5, 2026 at 4:52 PM CEST, Th=C3=A9o Lebrun wrote:
-> On Wed Aug 5, 2026 at 4:45 PM CEST, Th=C3=A9o Lebrun wrote:
->> Hello Leszek,
->>
->> Your subject is missing the [PATCH net] prefix.
->>
->> On Wed Aug 5, 2026 at 2:01 PM CEST, Polak, Leszek wrote:
->>> macb_mdio_wait_for_idle() samples NSR.IDLE with no delay after MAN has =
-been
->>> written. readx_poll_timeout() expands to read_poll_timeout() with
->>> sleep_before_read =3D false, so the very first NSR read is issued immed=
-iately
->>> after the register write.
->>>
->>> The controller does not deassert NSR.IDLE until its MDIO state machine
->>> actually begins the frame, which takes up to one MDC period. Neither
->>> macb_mdc_clk_div() nor gem_mdc_clk_div() ever selects an MDC above 2.5 =
-MHz,
->>> so one period is up to ~400 ns - on the order of a hundred pclk cycles,=
- and
->>> far longer than a back-to-back register access. The poll therefore obse=
-rves
->>> IDLE still set from the *previous* operation and returns success before=
- the
->>> operation just issued has started.
->>
->> You (or rather the LLM) say that with confidence. How do you know about
->> this MDIO state machine implying some delay inbetween the MAN writel
->> (which triggers a MDIO management frame) and the time at which NSR.IDLE
->> starts becoming 0?
->>
->> The doc doesn't mention anything of the sort. It explicitely mentions
->> NSR.IDLE as being there to signal for completion.
->>
->> Also it sounds like a massive bug, wouldn't others have discovered it
->> before? Just checked and nothing out of the ordinary on EyeQ (first NSR
->> is always 0x2 after writel to MAN). Patch at the end, which should
->> trigger error logs on your system from what I understood. Please report
->> back on that.
->>
->>> The caller then reads a MAN DATA field that still holds the result of
->>> whatever completed before, so every read returns the data of the previo=
-usly
->>> accessed register. For clause 45 the race occurs three times per access=
-: the
->>> address operation is still in flight when the read operation is written=
-, and
->>> the final MACB_BFEXT(DATA, macb_readl(bp, MAN)) picks up a stale value.
->>>
->>> Observed on a Versal board with a Marvell 88Q1111 on GEM1, where readin=
-g each
->>> MMD register twice showed the first read returning the preceding regist=
-er's
->>> value:
->>>
->>>   31.8002: 0x0149 then 0x002b   (0x0149 is 31.8001)
->>>   31.8004: 0x0b21 then 0x1401   (0x0b21 is 31.8003)
->>>   31.8011: 0x400e then 0x6000   (0x400e is 31.8010)
->>>   31.8010: 0x6000 then 0x400e   (0x6000 is 31.8011)
->>
->> I don't understand those logs? Can you provide the code that generated
->> them and more context? You probably faced some terrible bugs if all
->> MDIO reads returned the value from the previous read.
->>
->>> The lag persists across callers and across driver entry points, so it i=
-s a
->>> property of the controller path rather than of any PHY driver. It silen=
-tly
->>> corrupts every MMD read. Latch-high, clear-on-read registers are worse =
-than
->>> corrupted: their content cannot be recovered by retrying, because the f=
-irst
->>> read still reaches the PHY and clears the latch.
->>>
->>> Sleep before the first NSR sample so that an operation issued immediate=
-ly
->>> beforehand is guaranteed to be underway. The pre-operation bus-free che=
-ck
->>> pays the same delay, which is immaterial - a single MDIO frame takes ov=
-er
->>> 25 us at 2.5 MHz MDC, so this is well under the cost of the transfer it=
-self.
->>>
->>> Assisted-by: Claude:claude-opus-5
->>> Signed-off-by: Polak, Leszek <LPolak@arri.de>
->>
->> If this bug gets confirmed it needs (1) to go into net and
->> (2) have `Cc: stable...` and `Fixes: ...` trailers.
->>
->> Docs on (1) are
->> Documentation/process/maintainer-netdev.rst
->> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
->>
->> Docs on (2) are
->> sources are in: Documentation/process/stable-kernel-rules.rst
->> https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
->>
->>> ---
->>>  drivers/net/ethernet/cadence/macb_main.c | 20 ++++++++++++++++++--
->>>  1 file changed, 18 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
-ernet/cadence/macb_main.c
->>> --- a/drivers/net/ethernet/cadence/macb_main.c
->>> +++ b/drivers/net/ethernet/cadence/macb_main.c
->>> @@ -340,10 +340,26 @@ static void macb_get_hwaddr(struct macb *bp)
->>> =20
->>>  static int macb_mdio_wait_for_idle(struct macb *bp)
->>>  {
->>> +	/*
->>> +	 * NSR.IDLE is not deasserted until the MDIO state machine begins the
->>> +	 * frame, which takes up to one MDC period after MAN is written. MDC =
-is
->>> +	 * never clocked above 2.5 MHz, so one period is at most ~400 ns; all=
-ow
->>> +	 * an order of magnitude of margin. read_poll_timeout() sleeps at lea=
-st
->>> +	 * (sleep_us >> 2) + 1 us, so the guaranteed minimum here is 6 us.
->>> +	 */
->>> +	const unsigned int start_delay_us =3D 20;
->>>  	u32 val;
->>> =20
->>> -	return readx_poll_timeout(MACB_READ_NSR, bp, val, val & MACB_BIT(IDLE=
-),
->>> -				  1, MACB_MDIO_TIMEOUT);
->>> +	/*
->>> +	 * Do not sample NSR.IDLE immediately. When this is called straight
->>> +	 * after a MAN write, IDLE is still set from the previous operation,
->>> +	 * so the poll would return at once and the caller would go on to rea=
-d
->>> +	 * a MAN DATA field that still holds the previous transaction's
->>> +	 * result. Sleeping first guarantees the new operation has started an=
-d
->>> +	 * IDLE has gone low before it is sampled.
->>> +	 */
->>> +	return read_poll_timeout(MACB_READ_NSR, val, val & MACB_BIT(IDLE),
->>> +				 start_delay_us, MACB_MDIO_TIMEOUT, true, bp);
->>>  }
->>
->> Your code is not just adding a 20=C2=B5s start delay, it changes all del=
-ays
->> from 1=C2=B5s to 20=C2=B5s. I don't think we want that.
->> Before: readl(NSR) -> usleep(1) ->  readl(NSR) -> usleep(1)  -> ...
->> After:  usleep(20) -> readl(NSR) -> usleep(20) -> readl(NSR) -> ...
->>
->> Your introduced variable start_delay_us is not needed.
->>
->> There are way too many comment lines. Your LLM hasn't read enough kernel
->> code! Rare comments, mostly terse. Commit messages can be relied upon.
+When CONFIG_FUNCTION_ERROR_INJECTION is disabled, a sleepable tracing prog
+is allowed to attach to '__x64_'-alike prefix symbols.
 
-One more thing to add, sorry for the stuttering.
+It is because the verifier does not verify whether the symbol is a kernel
+function or a bpf prog. That said, a sleepable tracing prog is allowed to
+attach to a bpf prog target whose name has '__x64_'-alike prefix.
 
-A proper solution would use the IRQ as detection source rather than
-sleep-polling. See BIT 0, called MFD in driver.
+For example, a sleepable fentry prog attaches to a '__x64_sys_nop' XDP
+prog, and copies buffer from a user pointer with bpf_copy_from_user()
+helper. After attaching the XDP prog to lo interface, the kernel BUG
+could be triggered by 'ping -c 1 -W 1 127.0.0.1':
 
->>
->> ---
->>
->> pr_err() should trigger on your system from what I understood.
->> Can you confirm?
->>
->> [...]
->
-> Oops this test triggers on the pre-check macb_mdio_wait_for_idle() calls.
-> Instead this:
->
->
->
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
-net/cadence/macb_main.c
-> index d58430fe9c41..98e0cafb0de1 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -308,6 +308,20 @@ static int macb_mdio_wait_for_idle(struct macb *bp)
->               1, MACB_MDIO_TIMEOUT);
->  }
->
-> +static int macb_mdio_wait_for_idle_busy(struct macb *bp)
-> +{
-> +  u32 val;
-> +
-> +  val =3D macb_readl(bp, NSR);
-> +  if (val & MACB_BIT(IDLE)) {
-> +     pr_err("PHY IDLE after writel(MAN): NSR %#x MAN %#x\n",
-> +            val, macb_readl(bp, MAN));
-> +     fsleep(20);
-> +  }
-> +
-> +  return macb_mdio_wait_for_idle(bp);
-> +}
-> +
->  static int macb_mdio_read_c22(struct mii_bus *bus, int mii_id, int regnu=
-m)
->  {
->    struct macb *bp =3D bus->priv;
-> @@ -327,7 +341,7 @@ static int macb_mdio_read_c22(struct mii_bus *bus, in=
-t mii_id, int regnum)
->                | MACB_BF(REGA, regnum)
->                | MACB_BF(CODE, MACB_MAN_C22_CODE)));
->
-> -  status =3D macb_mdio_wait_for_idle(bp);
-> +  status =3D macb_mdio_wait_for_idle_busy(bp);
->    if (status < 0)
->       goto mdio_read_exit;
->
-> @@ -362,7 +376,7 @@ static int macb_mdio_read_c45(struct mii_bus *bus, in=
-t mii_id, int devad,
->                | MACB_BF(DATA, regnum & 0xFFFF)
->                | MACB_BF(CODE, MACB_MAN_C45_CODE)));
->
-> -  status =3D macb_mdio_wait_for_idle(bp);
-> +  status =3D macb_mdio_wait_for_idle_busy(bp);
->    if (status < 0)
->       goto mdio_read_exit;
->
-> @@ -372,7 +386,7 @@ static int macb_mdio_read_c45(struct mii_bus *bus, in=
-t mii_id, int devad,
->                | MACB_BF(REGA, devad & 0x1F)
->                | MACB_BF(CODE, MACB_MAN_C45_CODE)));
->
-> -  status =3D macb_mdio_wait_for_idle(bp);
-> +  status =3D macb_mdio_wait_for_idle_busy(bp);
->    if (status < 0)
->       goto mdio_read_exit;
->
-> @@ -405,7 +419,7 @@ static int macb_mdio_write_c22(struct mii_bus *bus, i=
-nt mii_id, int regnum,
->                | MACB_BF(CODE, MACB_MAN_C22_CODE)
->                | MACB_BF(DATA, value)));
->
-> -  status =3D macb_mdio_wait_for_idle(bp);
-> +  status =3D macb_mdio_wait_for_idle_busy(bp);
->    if (status < 0)
->       goto mdio_write_exit;
->
-> @@ -439,7 +453,7 @@ static int macb_mdio_write_c45(struct mii_bus *bus, i=
-nt mii_id,
->                | MACB_BF(DATA, regnum & 0xFFFF)
->                | MACB_BF(CODE, MACB_MAN_C45_CODE)));
->
-> -  status =3D macb_mdio_wait_for_idle(bp);
-> +  status =3D macb_mdio_wait_for_idle_busy(bp);
->    if (status < 0)
->       goto mdio_write_exit;
->
-> @@ -450,7 +464,7 @@ static int macb_mdio_write_c45(struct mii_bus *bus, i=
-nt mii_id,
->                | MACB_BF(CODE, MACB_MAN_C45_CODE)
->                | MACB_BF(DATA, value)));
->
-> -  status =3D macb_mdio_wait_for_idle(bp);
-> +  status =3D macb_mdio_wait_for_idle_busy(bp);
->    if (status < 0)
->       goto mdio_write_exit;
+[    3.460756] BUG: sleeping function called from invalid context at kernel/bpf/trampoline.c:1324
 
-Thanks,
+Similar issue could be applied to lsm prog, when the
+prog->aux->attach_btf_id is in the LSM allowing list but the attach_btf is
+a malicious bpf prog's btf.
+
+Fix it by disallowing sleepable tracing/lsm prog always when its target
+btf is not kernel's btf.
+
+Changes:
+v3 -> v4:
+* Add Fixes tag for sleepable LSM case.
+* Move btf check outside of 'switch (prog->type)'. (per Andrii)
+* v3: https://lore.kernel.org/bpf/20260804145710.43062-1-leon.hwang@linux.dev/
+
+v2 -> v3:
+* Use btf_is_kernel() instead of passing 'tgt_prog'. (per Andrii)
+* v2: https://lore.kernel.org/bpf/20260725132624.78373-1-leon.hwang@linux.dev/
+
+v1 -> v2:
+* Drop redundant 'prog->sleepable' check. (per Viktor)
+* Collect Acked-by from Viktor, Thanks.
+* v1: https://lore.kernel.org/bpf/20260724141422.10463-1-leon.hwang@linux.dev/
+
+Leon Hwang (2):
+  bpf: Fix sleepable check for tracing/lsm prog
+  selftests/bpf: Verify rejection of sleepable tracing prog
+
+ kernel/bpf/verifier.c                         |  3 +
+ .../selftests/bpf/prog_tests/fexit_bpf2bpf.c  | 57 +++++++++++++++++++
+ .../selftests/bpf/progs/fentry_sleepable.c    | 18 ++++++
+ tools/testing/selftests/bpf/progs/xdp_dummy.c |  6 ++
+ 4 files changed, 84 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/progs/fentry_sleepable.c
 
 --
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+2.55.0
