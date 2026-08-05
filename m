@@ -1,79 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAE0286425;
-	Wed,  5 Aug 2026 01:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C343A48CA;
+	Wed,  5 Aug 2026 01:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785894647; cv=none; b=LswiF/Ojr2kN9xd/aowIi1TSvI0E/N9+Oj0TXaQ5eNFrZVyUJkl2zRb5nfsXEO+uo76JAaYG1X41xm0eg71WicczfXWLl5Gg3qU66LgcfWBX8AqdmH1CS9hE6EM3dguykOGhYBFf1kM0u+lJxLoduLhpaIZnkqdqaZAZ+vIduVY=
+	t=1785894773; cv=none; b=CTIGwqKTdv7oLTQKNbdCVj9HUddKIHQVo/f687Ed7ame7QVmq0icnQvo9LOO3O37qn+9jbSTj3ke7aEtCp0zaoBDtnZsN9oODsL3yQOmeR+RI0t4kW25ty4Wf3zOfkgFZLbtJH+OTPGMaoyEJSlaeP5zCETQ+9uLd5IiVAbvEeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785894647; c=relaxed/simple;
-	bh=ErluoVwqzoafeTgsCxjkBDZO0bL9xN1QZ01zxZdkWl8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Y5WCueMbkmdBVqvuUK64PNjnZ7AMxCs7DmG8E5z1249EZBp6EofjBqgiNX7m+2PZpexXsXkAgmlxZuTe4CRyUONfJznzeaSI5EEcPLs48NCO59d+2QdHfVYACwodJxJ6SaTg8LJYZsUpZtvhA7e+ZwuXTeuhE4r4o1fRaT63S/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E5buW8GT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785894773; c=relaxed/simple;
+	bh=AmCCtjdqpaZpu6rowKYqlHqwqRsMK/4tAeYQMN/s8CE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c/hj9tx4yKYFtnSlSOW8T9kHiT/c6pc9vc8mxL8vwtF2tn4vt3tcf74bpphHutt90I1KjK2ikhPqiTbEfzJTxYJKo3K2Ng8CiVdZkSkVKj7OCeC2/+zXu0XHUx9NajWQX5t7odDqJHE+IsW5C34Fup7Hq2hxFopohxGMXjgPStc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kY4G6RSF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E5buW8GT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BA71F000E9;
-	Wed,  5 Aug 2026 01:50:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kY4G6RSF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8CC1F000E9;
+	Wed,  5 Aug 2026 01:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785894645;
-	bh=6dBBdt8/+6GDoxZMWl+juzNM+hGF1wXGPtksPjYUM10=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=E5buW8GTWa701CIYzFkMHef1385SKQtQIUlu1Usrf84wGMmRW7l8JJhbTzmoN6x7U
-	 tjUW1Y1JmVe3tb4n6XYrSpt96tc6nRoiry6Csu5Sr+IKDhfigRDbNIEx6VzXhT6Anq
-	 u+DyOpTipD0wpGuaQZIseQED8skrJz9lRa0+D3Vdqj+yXejE11+s487QZ2XRphCdqG
-	 FhTZjV1SArWrZ8+ttX+nhnlBzsWJZjTQH0fUkP1DA0bkk/iReDX8G+pxzcVr9FJocE
-	 Vw6wOKsnbpjpMQ18agm3LpXjPNiqLLhYlFLp9nYzs8XZfi2XZZrXH6uBetdrmEkqEq
-	 CAYLp7lNKqW0A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568733926667;
-	Wed,  5 Aug 2026 01:50:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785894762;
+	bh=jFbBtQm/7HHZ2HPO6M2Dc5C/6vMMluZSSPO9xmEvDU0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kY4G6RSF18f9OEr0l6EN55EohdxUG+VZsmXwZlIcJhqNmZUj6+ebBo0f5Cy+b4xIl
+	 YfCDjCiq7/c5ksxddkLJz7XxBSonnrdD3S10D7q9gct2mAF1XyQTNEt+zIf4TfDvE2
+	 9eMVdcqZ1YnHlmUbEp/8niqwWOtGs0Hp2TJ+cpI8y01RVqSha58T+80Zq7hAWDxC90
+	 DRu+QgNcQ/8McndUJ8Ekl5JSuyzg7aluabCNbwDB97XBmm9KVy+iSH+zARG8473QYP
+	 2qSKs7spex/Sl5SJQ71nUfxjafumDsj2WOihmqifNUE/pVGQirAY8sXwxq+ZWr/pwr
+	 HFOAzeA+jLBhw==
+Date: Tue, 4 Aug 2026 18:52:41 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: Minhong He <heminhong@kylinos.cn>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, Kees Cook <kees@kernel.org>, Eric Woudstra
+ <ericwouds@gmail.com>, Felix Fietkau <nbd@nbd.name>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: pppoe: check register_netdevice_notifier()
+ error in pppoe_init()
+Message-ID: <20260804185241.605ec90c@kernel.org>
+In-Reply-To: <fca5745a-dfa4-4e90-99fb-483536c94591@linux.dev>
+References: <20260803085957.142386-1-heminhong@kylinos.cn>
+	<ae705a66-95b2-4721-9a41-a14f39cbfa92@linux.dev>
+	<fca5745a-dfa4-4e90-99fb-483536c94591@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] ipv4: nexthop: handle errors in
- nexthop_init()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178589460589.3871126.9086068460518250575.git-patchwork-notify@kernel.org>
-Date: Wed, 05 Aug 2026 01:50:05 +0000
-References: <20260731025249.80026-1-heminhong@kylinos.cn>
-In-Reply-To: <20260731025249.80026-1-heminhong@kylinos.cn>
-To: Minhong He <heminhong@kylinos.cn>
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Tue, 4 Aug 2026 22:20:53 +0800 Qingfang Deng wrote:
+> >> +=C2=A0=C2=A0=C2=A0 err =3D register_netdevice_notifier(&pppoe_notifie=
+r);
+> >> +=C2=A0=C2=A0=C2=A0 if (err)
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto out_unregister_packs;=
+ =20
+> >=20
+> > You can move the registration above the dev_add_offload(), so that the=
+=20
+> > unwind path is cleaner.
+> >  =20
+>=20
+> AI-review found a use-after-free. To avoid that, this needs to be placed=
+=20
+> between register_pernet_device() and proto_register().
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+SG, but please note that register_netdevice_notifier()
+cannot actually fail unless the notifier that's getting
+registered fails.
 
-On Fri, 31 Jul 2026 10:52:49 +0800 you wrote:
-> nexthop_init() ignores errors from register_pernet_subsys() and
-> register_netdevice_notifier(), so a partial initialization can appear
-> successful.
-> 
-> Check those steps and unwind prior registrations on failure.
-> 
-> Do not check rtnl_register_many(): for built-in code it panics on
-> failure, so the call cannot return an error to nexthop_init().
-> 
-> [...]
+Please do not add the Fixes tag, re-target this at net-next
+and add something like:
 
-Here is the summary with links:
-  - [net-next,v2] ipv4: nexthop: handle errors in nexthop_init()
-    https://git.kernel.org/netdev/net-next/c/c0fd47726c94
+   This is a future looking check, register_netdevice_notifier()
+   only fails on double registration or if the registered notifier
+   itself returns an error.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+to the commit msg
