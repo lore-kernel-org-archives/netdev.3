@@ -1,158 +1,111 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27434376A12
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 14:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEEC3BADAA;
+	Wed,  5 Aug 2026 15:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785941788; cv=none; b=idw8pzwdGdGEfdySIYeRQR3rY+RQZW3f2IsJ8jWTu4WcHoNxZKdYv6WflYJFYOfBbqOD6xERQTvwXYLgSVrNCboCa/qLuBplaOsxepeuHnEfibf3L9tHm9KtQLAUiKKvL3bPRi2BHWBUaXY4y0CP9nBjcflMGXS6PHc8dEikbEI=
+	t=1785942052; cv=none; b=P61sraqgNDPxcSpMhFpzA+e0TBpQ3pOfHZRCzr2A/GSN22EbU0ovX+g/0G2KDuYw48hdqZQ0BiJ8LHgZM9zjTaSLeBGPxvCoQx1WEAaz2dRyezQmwTMXF+b4osOBopeoR0mEHRbuYa5ic3K5W7rJ2E6/siWlo006VWjQA7PEmtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785941788; c=relaxed/simple;
-	bh=cQni9s3yOzuEp9q6GhuwuSOtDUtduzqUlTtBJG+VcAM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RJWpOUvnlMasqQro9CE7SJLu43I1F7Je0h7QRnKJ6P4d8JY5Jfuwd/d2OXgvJFw6FVYD5Rm3yY+dKWo30IIhgSPnuhx43R1cS7EU+LFV79WrBaLEtI6kXnUAmnpbiiVDb60d9K8ovuusLiP3GdGvHGx845yHsc1RzSaFCIkga7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=JsHX+92i; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1785942052; c=relaxed/simple;
+	bh=BpM6LcH6JMBUFl9Yn0UsTvy1li+uJZz7INVMq56n7x8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=n90s1/WOCg+Hls6PZin5PIQMzeJjDKVJlmpUEzInw71ugTlTLhKIczj40gZf2o5opgVRkpYhTwshVWADyF2IeGlLycrNnIeUNO7IQ0gDOXHKxRlUp6SCEPHBOxI5w/OyRQWwF88IWeaSsSEDhzGsozJ7ZFTlyw9uSsQ880pl2i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=StozFnBs; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="JsHX+92i"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a14f118a46so1536121a12.2
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 07:56:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1785941785; x=1786546585; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :user-agent:references:in-reply-to:subject:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cQni9s3yOzuEp9q6GhuwuSOtDUtduzqUlTtBJG+VcAM=;
-        b=JsHX+92i4CS+xexC2+BhYyEHSgfdUt60YSzPT7QZCAxWYzH3I6uLQ9I/kaHOZj5OR0
-         REbSGq7gNmsLaekCdTZeGZ25JKPrEXd+QMi2/uLVfyxs/DotCWlCm8zyTnkNyuKb1s6C
-         jrU2K9SCdQPLS5GTXpI+WzecSgbCiWqUbGJU8u+gfgnZUB2fJhzj57BoIsF7bFMxty8G
-         iDHVKzQejYzMDvCiEUD4doN5E56Fins9btm433NgEj6CZ336Z/aJn3+WgSGkVA6zgeSW
-         tMTwqE+qXZixpo6qPTn2sZMBIZAFKvcJuxpplcsjFNaBo9tc02ufkiOYtcelJdsEmbIz
-         Q+gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785941785; x=1786546585;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :user-agent:references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cQni9s3yOzuEp9q6GhuwuSOtDUtduzqUlTtBJG+VcAM=;
-        b=OwyLcRCEmcChv2eBrLvCpGQ6W2cK/ev5ARu53kU9jlWBd1l6cY7433sqHwDp7qukV6
-         vD7YMz7tS0D6JsL+C9luROA+ecFvTZh5yKuWyanDO8JgI600pzIzfRjJqKdvyPqcLQbC
-         33rTK4svx0n7ux0hhGWWnwvm1N6vZeuCOibw55hXp94wYO+1pl3TH5FlmTm5ceI21NN/
-         2hf5hVwy+fJUw3B7efCT9fe8pPMQ5T/M4va/0pflYqMEh9k97vOanFCaSWecGzUY9r2Z
-         uol3SNC8HS23sY5wvlZ7vjQUr5h63v5AAjYMMX9ZFwC06YNRYud/8RI8Hd3qqar62PMR
-         JYsg==
-X-Forwarded-Encrypted: i=1; AHgh+RpbbdFlWsyLcJKSGhPw05tye3jWTBbhiiFDWmUpXmEsAnkxANFKp8vdiirhARAjPukBOn4860k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvEJXcJyoT/bQ/AjBK/Pbtyz/n9948sjPmLyGKpIt9glL6S78e
-	0r9nhgVL6aMNBRSvM8sjItLDue/grK288avrsg/rv4DGPMyc91lFBijLDEDqYA/Vy6M=
-X-Gm-Gg: AR+sD135yzZQif1NE5Wrctztqll4pi4CxNHAdpz/tDiVX5Wuji9PK0HqLT5s6WCYjXb
-	CZA9IWlAQolWDhwjRwlIgIMBDinG18+Md8qcl6g/gwCLiEqr5/p788cCAyA6vEmcTcvysQfq53U
-	yeLMnytvYBS7dO8sxwK3DVfxOyi2FQ7XO/483GeyMCWJV0ui3O60f1yVU0g7FBaETAtIKa81W8T
-	SQTBSDKaUOxcecbNPysEKBHWIwsBpnoJ+cJw1Mp2y+githgcWRJaAgqOoWBrlptOCsj6sC7Jn2L
-	tjCx1HFmibXctC5QuMQ53aK76dAEKmYI45dEXNcB99EaqVoONFlmC1hdcolOmBpuqu9TmCIJq7Z
-	NVpG/pflgStWb+LwkkkqEzkwkkxLSbMHw4y7Qj8HcvJaBsNaHexwjbNPXhB0tXChH6ph0BdwPR9
-	4CGR9heRHNLzl9KZowJpgl9CCM/9+l5QRD5SWuFkNKUxB3t29XhVe3SCldXXxEmvQ=
-X-Received: by 2002:a05:6938:a087:10b0:c20:53c7:48a8 with SMTP id a640c23a62f3a-c2053c74c67mr98894466b.17.1785941785127;
-        Wed, 05 Aug 2026 07:56:25 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c205047ceefsm52082866b.35.2026.08.05.07.56.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 07:56:24 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Michal Luczaj <mhal@rbox.co>,  Alexei Starovoitov <ast@kernel.org>,
-  Daniel Borkmann <daniel@iogearbox.net>,  Andrii Nakryiko
- <andrii@kernel.org>,  Eduard Zingerman <eddyz87@gmail.com>,  Kumar
- Kartikeya Dwivedi <memxor@gmail.com>,  Martin KaFai Lau
- <martin.lau@linux.dev>,  Song Liu <song@kernel.org>,  Yonghong Song
- <yonghong.song@linux.dev>,  Jiri Olsa <jolsa@kernel.org>,  Emil Tsalapatis
- <emil@etsalapatis.com>,  John Fastabend <john.fastabend@gmail.com>,
-  Stanislav Fomichev <sdf@fomichev.me>,  "David S. Miller"
- <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Willem de Bruijn
- <willemb@google.com>,  Jiayuan Chen <jiayuan.chen@linux.dev>,  Joe
- Stringer <joe@wand.net.nz>,  bpf@vger.kernel.org,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH bpf v2 2/2] bpf: Unconditionally take socket references
- in lookup helpers
-In-Reply-To: <CAAVpQUBcDGX42Dyzo24U3iMKVyNajgOa5ZD7uX=DhSWf4Nb-qw@mail.gmail.com>
-	(Kuniyuki Iwashima's message of "Tue, 4 Aug 2026 21:01:43 -0700")
-References: <20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co>
-	<20260803-sockmap-lookup-tcp-leak-v2-2-306e025bfe66@rbox.co>
-	<875x1qyyyx.fsf@cloudflare.com>
-	<CAAVpQUBcDGX42Dyzo24U3iMKVyNajgOa5ZD7uX=DhSWf4Nb-qw@mail.gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Wed, 05 Aug 2026 16:56:23 +0200
-Message-ID: <87tsp88vl4.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="StozFnBs"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1wrd6Y-008Cww-0f; Wed, 05 Aug 2026 17:00:26 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=4wWm0XSavEASEIUg8MVDlPFq0X7NdXbC6ZWOPd2Q2Y0=; b=StozFnBsw3pZqF47PbT4ojCfCq
+	GO9RfHCf21r9bREXDYgmWnZudtY/ynSMj/pY6xHp9kHMuNfBEryGfiEarnSAMpWWlKUHF+Kx4NSO0
+	HpESNtzLYyVJyUkgQ6R3y93bVlzA+9sMnNjPTgD/rMik3xQpNuHZxvcWl5FgL/yF23K+A8RaRBs2f
+	QVaaHF46FUeuEWeODafLa5wmdwfhDqDJv9+xFqo1gA0OTMZVyrjZqfVyGeaVIuIZDrY8V2Nf6aNC9
+	Q7lioKiAJo5/6wHWDypWgvuGFDAyfHCcaeArSXStpMJxxJEn3immo+jnh6zhx3EauPt+1Vdkm2Su2
+	FwePau9Q==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1wrd6X-0004mA-1w; Wed, 05 Aug 2026 17:00:25 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1wrd6N-004B1a-Eh;
+	Wed, 05 Aug 2026 17:00:15 +0200
+Message-ID: <f131ac25-24c2-40b7-ad3a-f5a283b39e7f@rbox.co>
+Date: Wed, 5 Aug 2026 17:00:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH bpf v2 2/2] bpf: Unconditionally take socket references in
+ lookup helpers
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Willem de Bruijn <willemb@google.com>, Jiayuan Chen
+ <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Sashiko <sashiko-bot@kernel.org>
+References: <20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co>
+ <20260803-sockmap-lookup-tcp-leak-v2-2-306e025bfe66@rbox.co>
+ <875x1qyyyx.fsf@cloudflare.com>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <875x1qyyyx.fsf@cloudflare.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 04, 2026 at 09:01 PM -07, Kuniyuki Iwashima wrote:
-> On Tue, Aug 4, 2026 at 3:14=E2=80=AFAM Jakub Sitnicki <jakub@cloudflare.c=
-om> wrote:
+On 8/4/26 12:14, Jakub Sitnicki wrote:
+> On Mon, Aug 03, 2026 at 11:00 AM +02, Michal Luczaj wrote:
+>> Lookup helpers gate whether to acquire a socket reference on
+>> sk_is_refcounted(), a check re-evaluated at release. An established socket
+>> refcounted at acquire time can gain SOCK_RCU_FREE via
+>> connect(AF_UNSPEC)+listen() before release runs; the release-side re-check
+>> then reads sk_is_refcounted() == false and skips the put. The reference
+>> leaks.
 >>
->> On Mon, Aug 03, 2026 at 11:00 AM +02, Michal Luczaj wrote:
->> > Lookup helpers gate whether to acquire a socket reference on
->> > sk_is_refcounted(), a check re-evaluated at release. An established so=
-cket
->> > refcounted at acquire time can gain SOCK_RCU_FREE via
->> > connect(AF_UNSPEC)+listen() before release runs; the release-side re-c=
-heck
->> > then reads sk_is_refcounted() =3D=3D false and skips the put. The refe=
-rence
->> > leaks.
->> >
->> > Make acquire and release unconditional and symmetric: always take a
->> > reference, always put it. Adapt sk_select_reuseport().
->> >
->> > Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
->> > Fixes: 64d85290d79c ("bpf: Allow bpf_map_lookup_elem for SOCKMAP and S=
-OCKHASH")
->> > Reported-by: Sashiko <sashiko-bot@kernel.org>
->> > Closes: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.k=
-ernel.org/
->> > Signed-off-by: Michal Luczaj <mhal@rbox.co>
->> > Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
->> > ---
->> > TC bpf_sk_assign() has the same issue; it takes a reference only when
->> > sk_is_refcounted() is true at assign time, but sock_pfree() (the skb
->> > destructor it installs) re-checks sk_is_refcounted() independently at
->> > release time. The same connect(AF_UNSPEC)+listen() transition leaks the
->> > socket here too. I'd welcome suggestions on the right way to handle th=
-is.
+>> Make acquire and release unconditional and symmetric: always take a
+>> reference, always put it. Adapt sk_select_reuseport().
 >>
->> Can we make this scenario unsupported?
->>
->> listen() could return EBUSY if called on a socket that is refcounted.
->>
->> WDYT?
->
-> I discussed this kind of buggy rehash with Eric today.
->
-> We can't make it unsupported although it's super unlikely
-> that this is used by a real application.
+>> Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+>> Fixes: 64d85290d79c ("bpf: Allow bpf_map_lookup_elem for SOCKMAP and SOCKHASH")
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Closes: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.kernel.org/
+>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+>> ---
+>> TC bpf_sk_assign() has the same issue; it takes a reference only when
+>> sk_is_refcounted() is true at assign time, but sock_pfree() (the skb
+>> destructor it installs) re-checks sk_is_refcounted() independently at
+>> release time. The same connect(AF_UNSPEC)+listen() transition leaks the
+>> socket here too. I'd welcome suggestions on the right way to handle this.
+> 
+> Can we make this scenario unsupported?
+> 
+> listen() could return EBUSY if called on a socket that is refcounted.
+> 
+> WDYT?
 
-I'm just wondering why not?
+I'm not sure I understand. Isn't a freshly created socket already
+refcounted?
 
-First I thought is was due to POSIX compatibility but POSIX seems to
-define connect(AF_UNSPEC) only for connection-less sockets [1]:
-
-"""
-If he initiating socket is not connection-mode, then connect() shall set
-the socket's peer address [...] If the sa_family member of address is
-AF_UNSPEC, the socket's peer address shall be reset.
-"""
-
-So if this is Linux-specific behavior (?) and we don't exect any users
-to rely on it, why not change it and see if anyone complains?
-
-Seems like wasted effort to try to make it work properly.
-
-[1] https://man.archlinux.org/man/connect.3p
