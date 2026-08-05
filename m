@@ -1,205 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485CE3D3CFD;
-	Wed,  5 Aug 2026 18:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785954682; cv=none; b=pmkQ2TtFlmaYLkGUymxTVLMMQZ7Rio2EOsimKzRDQZ32ZpFpINTsoYWTQ2mwP/+QBUtOUL1yFIsSAvvyrZvctSVZJ/F76ZdkUz4usoloUm5ei9kkXY9QhAEKyHBVqrQ4nrXA3SGEBFLq4RzyYTZHFmQEUDIWFJcQUMHTvdJY+Fc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785954682; c=relaxed/simple;
-	bh=3oVNotWFtrAD9Xeka2+GhQHWAcGZfaj/Rdoma6xNEvE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=E37aCDjchx0GiBEBHU//Fhej0aRRJAZauMRXPIFQdra7+NE5MRgDEdJprfEbvEu0sXCVveXpCBFtHBpDnvwKBWQRdk30x14zug8R+H6jwBe8e8nwMHDvXjWK8KJsY9+lY/VUnII7G5k+/eGkx68KBNd2TZizJAZzQjYF/U2ySCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UZCPeDF1; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB9F353A64;
+	Wed,  5 Aug 2026 18:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785954717; cv=fail; b=HxYlA61PW9pxBcyAvFPRNhxJ5v87zM7ml4rf+nHA3B3EkGUmUVxd1/y6papC625gjjEgE6rlO+WVaOvJ5IW//fgO/tx9/xutICTr0Q7OOH6PQOOUgWP1SmakxzgzvXb98xHHj0zBG8NyqeKakWMFN0Cmk9KJk+LVKi6Z/XDryNQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785954717; c=relaxed/simple;
+	bh=dT0P02u+x8IdHtGy2ubrE2d5fXa7GzOTjGq7EPr/ulM=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=lTJeFf+Vwba9pAsE6IYze/pKGzqUcWv2CJwSJfHITX6Yddyi3qtsCB7IL5CqvgDxcHnizKSWU9FcF3usLczyIcRW/afQzTpuHuj8nv28Y2NiNF30DsQw1ECzgXKv8RFYiEze5f5C9Z73hVpKl+xWoNa+DGQhniv+zYTytQijbZ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EXfKCrsQ; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UZCPeDF1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCCA1F000E9;
-	Wed,  5 Aug 2026 18:31:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785954677;
-	bh=6MFLVkziX3hANiicO2h9CJB3xgQAuAMAQlVIbnpFQHw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=UZCPeDF1C61F/rPFYQHnu9dZe7Nga1HdlU+dZTl1XG6j7igroxu/E7sUmedvq9JRR
-	 IqhSyYJkJY6z7D/KfQony0Sx4RO/falwXWWDyGCmBXdQiJ3AuX3CyKsK+59JgFN5Xq
-	 I4hglJcgrxglYfDepWwla8XDf46ybWdW+esBlndF6vV5OjjDIzAE6z3gw/1W+eo5OE
-	 wiguV8PjWKmbWYazDt3Yb/2J970L99qeLGJqQclm9GoZmX8JMgY3yWZ5DSPiGPpvGe
-	 kMIHBCRoPfrrbUeR9vWZ2qZOyr0X5wokVctNTymhlzovS8DXwVkIdh9malpeBhG66q
-	 +2O31pYEbFB/g==
-From: Chuck Lever <cel@kernel.org>
-Date: Wed, 05 Aug 2026 14:30:59 -0400
-Subject: [PATCH 8/8] SUNRPC: fold xs_sock_process_cmsg() into its only
- caller
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EXfKCrsQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785954716; x=1817490716;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=dT0P02u+x8IdHtGy2ubrE2d5fXa7GzOTjGq7EPr/ulM=;
+  b=EXfKCrsQ3ZkrirBxUPpfs1QPczQHtJu+4Ei7/H1Q41x4HU6S8iO0KvSb
+   DgDdc9wJNcfz6ihm0NQwYG5tQV0i2xRoDbTp69VOPkGAqcjrtENo6+yTm
+   HOetwfccDQ0M49GMal6Py0xmo1bsg/Hx0uxv2uT1XQR35DvkRNHzFv+EM
+   8hOf6JLvctQ5j3sxAfQymL9oljAmtSRzKIK/I5wxGrx2fReuptXwCcikS
+   fzbE/An36TewKIDAc/RehSIq5lqaTTaojdn7Ta9vp5Azxg21K/fZ7JB6j
+   /FLyaLwnJ3VIJucCcj3MOHSVT1MApqX7aIn3ni1Mes4ZpvXacoVhmyrdp
+   w==;
+X-CSE-ConnectionGUID: sycS052sTGOGNTiXef5nQg==
+X-CSE-MsgGUID: iCDi2061S7uKcDx7vnL9ig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="112090287"
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
+   d="scan'208";a="112090287"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 11:31:54 -0700
+X-CSE-ConnectionGUID: tfMeA7jAQqmHi2DzZMSdnA==
+X-CSE-MsgGUID: LEjhj+KeRQqmDzPzZy3vKA==
+X-ExtLoop1: 1
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 11:31:53 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 5 Aug 2026 11:31:52 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Wed, 5 Aug 2026 11:31:52 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.0) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 5 Aug 2026 11:31:52 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kDTTHu6c0IGKkMDF9+pXsR7yaUW0VRPF8mMCtqQPnTPiQpr403zs6silMynevUSPKh9wHhHfSelhcPog7GPAnutfRBefGt+wn6xerGbaFL4i72Bg5GO9Yn2eOkOLnHpj1XSbPa+sncRq99DSrjZ2wEtUX77lcbQw/7LkLUda4QU2bvhIP0I8qVxgV/wSIeDQ6VJogfYtXXCCo4/uqefG9w1jtittFk06uxmyClNtiPuquzqKHYaQ1aI8tlkyYdOR1+5EZbYToItbZ1gVZ2Xti9rW4Vj/3eaY9+c/sO5fSEfxiwzQmQ0E1ySFHM2hANE5c3//kXllGDWcAvDAlOxbzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eJ2t4sMm0kVfH1iR1L3IYNUeTq+Q1yHM8PIjEBZjITs=;
+ b=Fd+LJD8dp05RIvVYmhIgcdRPOvJSNZftR5qQdagor2x+LcE/uiVeWWydqRNPFBRq3Y0uLtP35lGRxtijeeGG6jCM0WmHSmQ4nEUhQBGR4penI8NFOfcFvytMMfkxBYuYopYJD+IXc57AfTD2ybJJ6cIL+7l7LbFe1nRx1n5jmSNS4to8V6Qx7oiB2pGL6G5U/qAlQEB61XW1GiKFmnKDVplDxx+k6UqUPCibIAL5H/faWFUscgl1gnZeozzAwQl1hyj1wd+3+U46aCH2PGVq8vAzU26L7mtlJk+9u9BwB6AWi1+e/0vfQ2xU1KhhLqu9thfGUFqauPqMvdBN53C7xw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB7155.namprd11.prod.outlook.com (2603:10b6:a03:48d::6)
+ by PH0PR11MB9612.namprd11.prod.outlook.com (2603:10b6:510:3b0::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Wed, 5 Aug
+ 2026 18:31:45 +0000
+Received: from SJ0PR11MB7155.namprd11.prod.outlook.com
+ ([fe80::a279:5eee:c8d:31c9]) by SJ0PR11MB7155.namprd11.prod.outlook.com
+ ([fe80::a279:5eee:c8d:31c9%3]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
+ 18:31:44 +0000
+From: "Arland, ArpanaX" <arpanax.arland@intel.com>
+To: Thomas Bogendoerfer <tbogendoerfer@suse.de>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH net-next] ice: rephrase LLDP filter
+ fallback message
+Thread-Topic: [Intel-wired-lan] [PATCH net-next] ice: rephrase LLDP filter
+ fallback message
+Thread-Index: AQHdFclwL8YVEDFT2keZe7TrYw88WLaP5Oqw
+Date: Wed, 5 Aug 2026 18:31:44 +0000
+Message-ID: <SJ0PR11MB7155AD49375356611F25AC5080D32@SJ0PR11MB7155.namprd11.prod.outlook.com>
+References: <20260717084453.9521-1-tbogendoerfer@suse.de>
+In-Reply-To: <20260717084453.9521-1-tbogendoerfer@suse.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB7155:EE_|PH0PR11MB9612:EE_
+x-ms-office365-filtering-correlation-id: 0e10676d-98ee-4238-1207-08def31fcd73
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|6133799003|10067099003|11063799006|56012099006|921020|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info: jDEnvj2q4YYvA+WtOg6IvghFhXM6VvH7a4vNg8VKLk51v0ye4Y5NzOAw3+iwaoel3SdPfZ3Xd6gTECd/m7rSXOU8CNtL9ZOI8MVs80gCoPtUGsiiPYh8xr1ctMv6gVOU9kS7ZGB4ZUucbzRErs/QUYUcMjlwQpofKalMrFE5oNe/Z/I8Nvt6nydU9orgKGsJ5H5Td/2Cpilr2NTu4A8qVAGqNIZLZLsM9wV4fOt5XbGy1I7SZhwrSiVZ485I/WdNqh8EVhk6WDp59MB9r+ZsM1UwVbpkxY5VsGt2emFEXYkv/fNAfrgpdTTO+ZRceDEtqqo6CD2mqBOQHrEiTPaiRQ5v0jFI/f7N43sVRb5FbkSgYADvUQsLpq/nntHcsQPU5/Wgg70rR7KA+FHw6ir6/wm0Cvh+iqUvegAyIlQ9ffeD2+TF8A0J5+EvJ4Nzx/k0T/UKpTWHA0jytAwzCRqIioEYAT9mqSrfGuEZDi3saI0l/ifsnyc8VSo3lNrUBqHH1BTDR/jzhRhPE7HRI4v+YCJU/Io4+CvYcks6VegZnBt/ZRhzqE0rVw9Z+9HQv7FGXPjfNwhbLJLb0sYnqZRUbVrDSWsDk0HKSqH4t1lhbs6gFauvvFyPpXJfYJLVxdMM/gglZskyd8kp5ihpqpVFRpub4GddbazTpIDvmLnOW4HlZiv5iOmVM8POfHrWG7Y+OA7oUaF6Mky32143dw2hB4VwiA55pc1xSxU2KPcLdIQ=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB7155.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(6133799003)(10067099003)(11063799006)(56012099006)(921020)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?sEYhBXgGX/li9kkNL8cRZSGzxrMLh5FRMzb/KjBM//6YUkj6FqJn09GcD5Uy?=
+ =?us-ascii?Q?OiFlcfeffTkIMldBVUJ5MfMW3e8Kf/mk2+0q6ewMVmafF7oKpy8DlwEIXQev?=
+ =?us-ascii?Q?CHOxsV2956+ilVUPyLbltMwjT7ul+oDHmyT3qNTHw9kWVJPqAWZPwU0wkPYx?=
+ =?us-ascii?Q?AtL8DgC+aDRDexAn20X1sXTAQ3c/8/6aTou9Xeq/LaIWKCwbFdlnwEr8XXRF?=
+ =?us-ascii?Q?suTJTWIA7EX3Qic1aGBGDsrx9a5pFKA7WhQ2IuY8EP7qAxeoZcV8TETVdW/p?=
+ =?us-ascii?Q?8RQR5C/BnvCxHRTt/Yog+2KCnilJDOn8hP6OJ2K7Z7xLwwR3MWPgAL+5BJWC?=
+ =?us-ascii?Q?zEKzko9yAIN3/gpXxTBfUjaFd8N7Lyllj/jVUyKVTKcK0HX7rhcMGXOk2oy+?=
+ =?us-ascii?Q?ce+9JwrIU9COBMIcEDcEUHDjwnQXbnuoHd1+ooP+xK2E8KOovWUa0rQpgc6V?=
+ =?us-ascii?Q?vocgJJXgSpIgVimr+L7V64JctY1Lmx8Xcy6NbzwE7vFSgAoo1upNTiQVpYAj?=
+ =?us-ascii?Q?dXxjO2L4AFLPTggNlB6uOWc1AK2GqNubhAROkzEeo35IX1ZZW1px61xILpRb?=
+ =?us-ascii?Q?z8P6a2bMQABNVYbLf+7JIWipPcODTyvgxdxUxF86FjhMkaQf4KqiZtYONcG1?=
+ =?us-ascii?Q?7/dnBTJtkx3hPDV5MxRhyPoyfFkfX9EDqDMGuEiaOirNC8+dJmVutdAckZWn?=
+ =?us-ascii?Q?Q1sSKC+ebLp9P6kV2EUuVvYjXBPmDf68tYaWTMl3zn0/PuVxVbHX0gvBQv7U?=
+ =?us-ascii?Q?Wj/FxPCCu1uRbAEF3cItFYNM21mf4GiOruFztcb9MsUMQ3s7okSOEanpyyVT?=
+ =?us-ascii?Q?dpm3qnVds/9HndJlEi+Ps+xw2ucoKBocx1Xm9keg6Pk6oGRX5L1kHkABJoW4?=
+ =?us-ascii?Q?VeHmsZIXJvxLCRbBOvKVITARJOYRSV+OOS6XFrm5JSfJL8BXCPTVbbkqVyA+?=
+ =?us-ascii?Q?zKCo1qKWOPOQlCHOXgjoPobWBsSyNuKPTzLn7SHV3dskEtzdD/GyyZ6/r9pl?=
+ =?us-ascii?Q?rrXxdT1yqoWkMeOYB1yorZuUuFmMx+qS+bKR8g3hr59BVgb0qMSDMSUwrTaQ?=
+ =?us-ascii?Q?xMvMOfC6cG3SP08o6+4cwfkkC+8M499F3YGZ9qOfSdznVuaSXZ4jbHFBJVhF?=
+ =?us-ascii?Q?o6FxIJGbbkpcMgTCwAiVEyB2Dqbvf0ldqLo9/9fpK28zEReyh44mu1OdFgYL?=
+ =?us-ascii?Q?vFdw3oKMTZolnrcrLp0Xgfqce59iyhP76WauwvWkJeweI+vDD32Gylw0egQI?=
+ =?us-ascii?Q?RD02LDKCSUoea9sMXYFNKLAwh7uQMCoqMvYEPqCNNuYXrdm3jtpQZmuy5e5e?=
+ =?us-ascii?Q?nDTjjEvKku3YV37hbALOzgfbZPMFm7CgqQ4DiJnxINw1LyFWG+h5yMJ/Rh5J?=
+ =?us-ascii?Q?qG8G7uAFRlEylw6JXqjGsRnh2XeIrCQeUrHu9V3kCDuyl+biKYTpNQE6qhQB?=
+ =?us-ascii?Q?ZEgbizbgWcjmzW/d9bDSy559dpoPe0dg9r66JLTxNsvAlOEG+G/P3g4NWtAl?=
+ =?us-ascii?Q?y9L/VhoognM/cVvjhiwVK/MHCFIDsCocImbGwR/fe2zVs6oPxdUJXReDLiFJ?=
+ =?us-ascii?Q?QYX6pLztdHETxMTpHeF7imNkEsIQgazcR1EkzpHq7nQtphik4RlSChnOsIyL?=
+ =?us-ascii?Q?OlHoL+JJ9Rtuz3q0HYfgRIH65iy1kdEYTqV9Y8lFKiJoKBObtuQxBvJOwte9?=
+ =?us-ascii?Q?mVquUeRstw2l357X6SkDzNuPNDzenTAWqvnp5rvtEVWwTm0Xq67sSrBAZtCe?=
+ =?us-ascii?Q?VLesZDPb+w=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260805-svcsock-cmsg-fixes-v1-8-43514a32da9b@kernel.org>
-References: <20260805-svcsock-cmsg-fixes-v1-0-43514a32da9b@kernel.org>
-In-Reply-To: <20260805-svcsock-cmsg-fixes-v1-0-43514a32da9b@kernel.org>
-To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>
-Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org
-X-Mailer: b4 0.16-dev-da966
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4767; i=cel@kernel.org;
- h=from:subject:message-id; bh=3oVNotWFtrAD9Xeka2+GhQHWAcGZfaj/Rdoma6xNEvE=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqc4Fspouxp5p/KhrCamK9ZYwdhriXxsNUNPAn4
- bDqxSENAGGJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCanOBbAAKCRAzarMzb2Z/
- lyQsD/0TFdaepNsyWDafKfVLsE/5nGhGA5h8hRR2x5OwX0ldr/DSbxTMhpnBITsWBt15Mo9hEJD
- 7QDFaXu8xHZHQIdT82vtyAiAY6bVfB1iiE78Y/YulQY8ft18RbePQjlNz1XWiI0AdX/RE099fnC
- r0WZQspOfUfB00kzgxQ53ZobAJtB4s+lE8kD/jY/2zJ53aP/rWPlHKVbq1mophf9KgQj1KgY7Rr
- bUOSb/AZ1jpOKyGmppy0jIpe9emhOV/+988s510u8MzevoLamSVva1wMUwOjMLQ+6VuZUZquapv
- oGyKOLm4zFMdSBgRmeu/SliPDeADs2C1BY8LyqGImGimYKw3KKwNYH7QAh7yYzTA+URzVVZJpGH
- OsE0sAcwT7zsL9uHPQ3vyX/GzkCWmmebT036UzbuxYX4vM0ZhfqNDBVz7uKU25ochnk7MTG06xt
- 19i8qNGCC0Y8N7FIiFfmXtkU24AOXCv6W4CGAKSHUltnm5XxTOtTNkswV62f2St/WEppFlMILR+
- t2/1qtnfQTf4cxuUVSIVtBOviU2+bX2pcOLvYIOJRihBzqFuIlkoxCN91QLx49YixFiVCep1KCs
- 1jd+aqhNCVT2OT1re1QplU0lkIcZlqpm4MU6RoMATptXUP4lzTXAWtqP910mGV5PegT7tevEXNR
- Bz4ZZeQDJlgAlLA==
-X-Developer-Key: i=cel@kernel.org; a=openpgp;
- fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
+X-Exchange-RoutingPolicyChecked: dNkprAZZ4BargJACseruaVAaE6lu8O2edeWp7FrsLpqoCyCu0LJnSytc7CESADWLQhz6BHrTirWv5dwWWKGb/7F0n+wUfCaM/DId0aFDE7ktKAaZbSUppblHr+spX7/RBswvNrWdkppvdSBG9aYx1bOAFvqU1+JgbZ3ufZIjnhjIwuJGhG615K5E2/FaLsoYCDaLXapzYDQmpCnEYM/FbyUaNlkS0C5rdmf2SKywxXlS19Z4mk4kVLfa3j6rcPwQ7NeswQ/uW3CB6nftBvUSD1Rvt4uJkyYAyEn3TnEwOCvc8p50NKWWYldu9fvhFQ3QI9NN6565wWIaw6Kj0M4p4w==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB7155.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e10676d-98ee-4238-1207-08def31fcd73
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 18:31:44.8923
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8TKRtCjHg5evXxz3dVzKzkZ1miPuVPItKFYF/B2OhlERjv/a+wRBouJoIrSPoSMngckXEBEpU2TS23v+EAZzb+c8u1jrgdwHJMoUxKvsAlY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB9612
+X-OriginatorOrg: intel.com
 
-xs_sock_process_cmsg() switches on the TLS record type, and every arm
-but TLS_RECORD_TYPE_ALERT returns the -EAGAIN its caller passed in.
-The DATA arm clears MSG_EOR in the caller's msghdr, but
-xs_sock_recvmsg() has already cleared that flag before the call.
-Deriving the record type a second time inside the helper also fires
-trace_tls_contenttype() twice for every alert.
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of T=
+homas Bogendoerfer
+> Sent: Friday, July 17, 2026 2:15 PM
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw <=
+przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>; David S=
+. Miller <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub K=
+icinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; intel-wired-lan=
+@lists.osuosl.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH net-next] ice: rephrase LLDP filter fal=
+lback message
+>
+> Seeing an error message in a logfile triggers scripts/admins thinking of =
+problems. The LLDP fallback message itself is not an error, it just indicat=
+es it's using a different filter mechanism. So rephrase to a less "scary" m=
+essage.
+>
+> Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+> ---
+>  drivers/net/ethernet/intel/ice/ice_lib.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
 
-Move the alert handling into xs_sock_recv_cmsg() and delete the
-helper. Every other record type still returns -EAGAIN. The DATA arm's
-account of MSG_EOR moves to xs_sock_recvmsg(), where the flag is
-cleared.
-
-Signed-off-by: Chuck Lever <cel@kernel.org>
----
- net/sunrpc/xprtsock.c | 85 ++++++++++++++++++---------------------------------
- 1 file changed, 30 insertions(+), 55 deletions(-)
-
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 5527f7f8a185..38dd75a23af7 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -356,45 +356,6 @@ xs_alloc_sparse_pages(struct xdr_buf *buf, size_t want, gfp_t gfp)
- 	return want;
- }
- 
--static int
--xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
--		     unsigned int *msg_flags, struct cmsghdr *cmsg, int ret)
--{
--	u8 content_type = tls_get_record_type(sock->sk, cmsg);
--	u8 level, description;
--
--	switch (content_type) {
--	case 0:
--		break;
--	case TLS_RECORD_TYPE_DATA:
--		/* TLS sets EOR at the end of each application data
--		 * record, even though there might be more frames
--		 * waiting to be decrypted.
--		 */
--		*msg_flags &= ~MSG_EOR;
--		break;
--	case TLS_RECORD_TYPE_ALERT:
--		tls_alert_recv(sock->sk, msg, &level, &description);
--		/* RFC 8446 Section 6: every alert but a closure alert is
--		 * an error alert, whatever the legacy AlertLevel octet
--		 * says.
--		 */
--		switch (description) {
--		case TLS_ALERT_DESC_CLOSE_NOTIFY:
--		case TLS_ALERT_DESC_USER_CANCELED:
--			ret = -EAGAIN;
--			break;
--		default:
--			ret = -EACCES;
--		}
--		break;
--	default:
--		/* discard this record type */
--		ret = -EAGAIN;
--	}
--	return ret;
--}
--
- static int
- xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- {
-@@ -412,6 +373,7 @@ xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- 		.msg_control = &u,
- 		.msg_controllen = sizeof(u),
- 	};
-+	u8 level, description;
- 	int ret;
- 
- 	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &alert_kvec, 1,
-@@ -421,23 +383,32 @@ xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- 	 * kTLS filled in u.cmsg.
- 	 */
- 	if (ret >= 0 && msg.msg_controllen < sizeof(u)) {
--		if (tls_get_record_type(sock->sk, &u.cmsg) ==
--		    TLS_RECORD_TYPE_ALERT) {
--			/* RFC 8446 Section 5.1 requires a record with an
--			 * Alert type to carry exactly one message. An alert
--			 * is two octets. tls_alert_recv() reads both without
--			 * checking the length. alert_kvec caps the count at
--			 * two, so a longer record fills it as well. kTLS
--			 * sets MSG_EOR only once the record has been
--			 * drained.
--			 */
--			if (ret != sizeof(alert) ||
--			    !(msg.msg_flags & MSG_EOR))
--				return -EACCES;
--			iov_iter_revert(&msg.msg_iter, ret);
-+		if (tls_get_record_type(sock->sk, &u.cmsg) !=
-+		    TLS_RECORD_TYPE_ALERT)
-+			return -EAGAIN;
-+		/* RFC 8446 Section 5.1: a record with an Alert type carries
-+		 * exactly one message, and an alert is two octets.
-+		 * tls_alert_recv() reads both without checking the length.
-+		 * alert_kvec caps the count at two, so a longer record
-+		 * fills it as well. kTLS sets MSG_EOR only once the
-+		 * record has been drained.
-+		 */
-+		if (ret != sizeof(alert) || !(msg.msg_flags & MSG_EOR))
-+			return -EACCES;
-+		iov_iter_revert(&msg.msg_iter, ret);
-+		tls_alert_recv(sock->sk, &msg, &level, &description);
-+		/* RFC 8446 Section 6: every alert but a closure alert is
-+		 * an error alert, whatever the legacy AlertLevel octet
-+		 * says.
-+		 */
-+		switch (description) {
-+		case TLS_ALERT_DESC_CLOSE_NOTIFY:
-+		case TLS_ALERT_DESC_USER_CANCELED:
-+			ret = -EAGAIN;
-+			break;
-+		default:
-+			ret = -EACCES;
- 		}
--		ret = xs_sock_process_cmsg(sock, &msg, msg_flags, &u.cmsg,
--					   -EAGAIN);
- 	}
- 	return ret;
- }
-@@ -451,6 +422,10 @@ xs_sock_recvmsg(struct socket *sock, struct msghdr *msg, int flags, size_t seek)
- 	ret = sock_recvmsg(sock, msg, flags);
- 	/* Handle TLS inband control message lazily */
- 	if (msg->msg_flags & MSG_CTRUNC) {
-+		/* TLS sets EOR at the end of each application data
-+		 * record, even though there might be more frames
-+		 * waiting to be decrypted.
-+		 */
- 		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
- 		if (ret == 0 || ret == -EIO)
- 			ret = xs_sock_recv_cmsg(sock, &msg->msg_flags, flags);
-
--- 
-2.54.0
-
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at=
+ Intel)
