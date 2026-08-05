@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317183F44EB;
-	Wed,  5 Aug 2026 21:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606BE41CB5E
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785965763; cv=none; b=UkFicnoKuiga2zxHGGp6HYuT4wEsMi/zMTqU+DsNV00fNtotjXbP0Zh3yKelTmrqSrhCLbeAWRMq8DoXPq6tq0zvW9ZQ/FY6nowAWgTuxeSm5X9+7EWiyNAbbhHX3j0rVil4slF4gn5abLJJrljjLVHAzMUzhDMImPor9JZRLao=
+	t=1785965764; cv=none; b=nn1bno451L2SeF/ceYXs8O0MFNbhRylFWvgCm/UTX2DyeBnK/+080dfqmfQoWj3nSDp64rWoohsiiv9mvRmM0B0xLl0QK9WYePKr6ovbQV3KoEe2m++5k2oOHrlVe+W8GFrBY5HIGq64kt7U9w0WJ/1j9r1/Vh7idmzbd5WnGJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785965763; c=relaxed/simple;
-	bh=+dANJpsQx5HL34vpMlzYVNbwhlqabJCBaNqb2C53gIc=;
+	s=arc-20240116; t=1785965764; c=relaxed/simple;
+	bh=ogGcDOG1SVS9gY0603tIYZGDKfXpYnc+f7C9UbaeK20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZ6P9KzVuosAl2V4n7rDybTImjZ94msM7dXuTe0QUL0Koi7PET+f2zQbFbtE0UjJ7W44df1qRkDrcl4AOfbL7YYh5DF4fPlIQrwsaRb0oHL3CgK8/nyY37oQRoXDIn/IES1OFKrV7jz42J2g2/mkK7NR3RZd24cla1xfQvBA4mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NbXj/+sI; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=O4zU4yvVkm/XTLj2tCdj1Dtf9GA1cSjgsXmAJWWNZMNVYrJIEZnoCALwK7cRxycts8y0jAeOU6af0Uufhah7f84iuYKqRcfXap3KO7IFmToEqbw11zfiYiaGJ5TrC1+ua5F0m1Kp9qson+lcyyhHJrD3lX39zxU6vuhebSek5mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=edJi67f1; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NbXj/+sI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="edJi67f1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785965762; x=1817501762;
+  t=1785965763; x=1817501763;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+dANJpsQx5HL34vpMlzYVNbwhlqabJCBaNqb2C53gIc=;
-  b=NbXj/+sIAn6Se6ivr9RQLDNPiZu3/O4cXz6qvlCO0mm1H2J2ho+4JGkk
-   DOg1tWUw4n/eltW/N6a1Aki8LiLd3tadsqBqPrwUKqJKU5WwjEgeGG5YN
-   C/iuhGDJlcw0fzNlYPdtBGiimXfv/Pt3twhA4B/HgdR/KpWjz1bh8cVu+
-   THRyZwHjt1hU06wKJPp8I7yFM34ETy6BD3MCnyGPx1UH3sarE7COeYVTG
-   Bl6BiJL/6pHVI66tK/A5yIVe+rmFcIq1MkapvRS5MXfz/Z/kCyIV0Ohs+
-   DX7ksgxp32LRQ3u+WieyCa4YyyIBXJP+hYhgGsS2S+Pdn4SnnrNUNj5Io
-   Q==;
-X-CSE-ConnectionGUID: DewsAoLhSM2Y9mYgcaNTig==
-X-CSE-MsgGUID: EmSCr9mzQlyeBl+F1k/2lQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109343614"
+  bh=ogGcDOG1SVS9gY0603tIYZGDKfXpYnc+f7C9UbaeK20=;
+  b=edJi67f1r3uRRCMIkRW1quBhK7Iguv6EcN5eg7NNTrd1DE6PhJqlfJJa
+   YxPJ7OkEOQkkqOcvO6OC7hKD4/XVdi6hffhHTj5UWhmZSBg0kQrmtz+oS
+   CjOjeEXZKkNl048/Ex91vOIGaaQIEnCJLRtVc7CCyAgtia333k1xM7Uqs
+   S/TtHCMqPE0JMciJkxrzAfuJlv2TfI71XpkHwhSmm+9EFu5A+0S8wUHx0
+   6kFt6n+2aYVeDAE9GxJrivskgvm7R5kktjSEuGGCYa6GolvGfwqEqUgcL
+   PqTZQb6cA1IIZvtmYOIMm4zPLM6QIYcrWsclhq+EGg5VCwNXM8ZPIf7Mz
+   w==;
+X-CSE-ConnectionGUID: yasm9oISTRSyLOfyvD/dzg==
+X-CSE-MsgGUID: lyQuwZfDQ7OiAlb6ehi8EQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109343634"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="109343614"
+   d="scan'208";a="109343634"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 14:35:53 -0700
-X-CSE-ConnectionGUID: rsmYxLkpTeaYimK9DqA0wA==
-X-CSE-MsgGUID: a4PxspHGTMy5BM0xPvaZlw==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 14:35:54 -0700
+X-CSE-ConnectionGUID: A9PQE4THT7ubML/n3ABIxA==
+X-CSE-MsgGUID: ai5RurXpS+G8o+7JY/8UiA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="286576155"
+   d="scan'208";a="286576164"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa001.fm.intel.com with ESMTP; 05 Aug 2026 14:35:52 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 05 Aug 2026 14:35:53 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,23 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Kohei Enju <kohei@enjuk.jp>,
+Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>,
 	anthony.l.nguyen@intel.com,
-	kohei.enju@gmail.com,
 	przemyslaw.kitszel@intel.com,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	bpf@vger.kernel.org,
+	blair.steven@alliedtelesis.co.nz,
+	carl.smith@alliedtelesis.co.nz,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Patryk Holda <patryk.holda@intel.com>
-Subject: [PATCH net-next 11/15] i40e: add support for bpf_xdp_metadata_rx_hash()
-Date: Wed,  5 Aug 2026 14:35:36 -0700
-Message-ID: <20260805213541.2281287-12-anthony.l.nguyen@intel.com>
+	Simon Horman <horms@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH net-next 13/15] i40e: Avoid repeating RX filter warning
+Date: Wed,  5 Aug 2026 14:35:38 -0700
+Message-ID: <20260805213541.2281287-14-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
 References: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
@@ -78,101 +72,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 
-Introduce i40e_xdp_rx_hash() which takes the same approach as
-i40e_rx_hash() to extract the hash from RX descriptors.
+When the i40e runs out of space for RX filters the driver switches to
+promiscuous mode and warns that it has done so. In scenarios with a
+large number of these filters this can generate a lot of warnings. For
+example:
 
-Tested with X710 adapter using xdp_hw_metadata, and verified hash
-consistency between bpf_xdp_metadata_rx_hash() and skb->hash.
+  $ dmesg -c > /dev/null
+  $ ip link add dev br0 type bridge vlan_filtering 1 vlan_default_pvid 1
+  $ ip link set dev eth7 master br0
+  $ bridge vlan add vid 1 dev eth7 pvid untagged self
+  $ bridge vlan add vid 2-4094 dev eth7 tagged
+  $ dmesg
+  [   25.601705] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
+  [   25.601833] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
+  [   25.601961] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
+  [   25.602088] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
+  [   25.602216] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
+  [   25.602344] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
+  ...
 
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Use test_and_set_bit() so that the warning is only issued when the
+driver enables promiscuous mode and not on the addition of subsequent RX
+filters.
+
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Patryk Holda <patryk.holda@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 30 +++++++++++++++++++++
- drivers/net/ethernet/intel/i40e/i40e_type.h |  5 ++++
- 2 files changed, 35 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 4b11ae9ed8d5..e487d697a634 100644
+index 719f45b5cb40..abbc71e815ae 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -4,6 +4,7 @@
- #include <generated/utsrelease.h>
- #include <linux/crash_dump.h>
- #include <linux/net/intel/libie/pctype.h>
-+#include <linux/net/intel/libie/rx.h>
- #include <linux/if_bridge.h>
- #include <linux/if_macvlan.h>
- #include <linux/module.h>
-@@ -13582,6 +13583,34 @@ static int i40e_xdp(struct net_device *dev,
+@@ -2412,10 +2412,12 @@ void i40e_aqc_add_filters(struct i40e_vsi *vsi, const char *vsi_name,
+ 
+ 	if (fcnt != num_add) {
+ 		if (vsi->type == I40E_VSI_MAIN) {
+-			set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
+-			dev_warn(&vsi->back->pdev->dev,
+-				 "Error %s adding RX filters on %s, promiscuous mode forced on\n",
+-				 libie_aq_str(aq_status), vsi_name);
++			if (!test_and_set_bit(__I40E_VSI_OVERFLOW_PROMISC,
++					      vsi->state)) {
++				dev_warn(&vsi->back->pdev->dev,
++					 "Error %s adding RX filters on %s, promiscuous mode forced on\n",
++					 libie_aq_str(aq_status), vsi_name);
++			}
+ 		} else if (vsi->type == I40E_VSI_SRIOV ||
+ 			   vsi->type == I40E_VSI_VMDQ1 ||
+ 			   vsi->type == I40E_VSI_VMDQ2) {
+@@ -2465,10 +2467,11 @@ i40e_aqc_broadcast_filter(struct i40e_vsi *vsi, const char *vsi_name,
  	}
- }
  
-+static int i40e_xdp_rx_hash(const struct xdp_md *_ctx, u32 *hash,
-+			    enum xdp_rss_hash_type *rss_type)
-+{
-+	const struct i40e_xdp_buff *ctx = (const void *)_ctx;
-+	const union i40e_rx_desc *desc = ctx->desc;
-+	struct libeth_rx_pt rx_ptype;
-+	u8 raw_rx_ptype;
-+	u64 status;
-+
-+	status = le64_to_cpu(desc->wb.qword1.status_error_len);
-+	raw_rx_ptype = FIELD_GET(I40E_RXD_QW1_PTYPE_MASK, status);
-+	rx_ptype = libie_rx_pt_parse(raw_rx_ptype);
-+
-+	if (!libeth_rx_pt_has_hash(ctx->xdp.rxq->dev, rx_ptype) ||
-+	    FIELD_GET(I40E_RX_DESC_STATUS_FLTSTAT_MASK, status) !=
-+		    I40E_RX_DESC_FLTSTAT_RSS_HASH)
-+		return -ENODATA;
-+
-+	*hash = le32_to_cpu(desc->wb.qword0.hi_dword.rss);
-+	*rss_type = rx_ptype.hash_type;
-+
-+	return 0;
-+}
-+
-+static const struct xdp_metadata_ops i40e_xdp_metadata_ops = {
-+	.xmo_rx_hash		= i40e_xdp_rx_hash,
-+};
-+
- static const struct net_device_ops i40e_netdev_ops = {
- 	.ndo_open		= i40e_open,
- 	.ndo_stop		= i40e_close,
-@@ -13784,6 +13813,7 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
- 	i40e_vsi_config_netdev_tc(vsi, vsi->tc_config.enabled_tc);
+ 	if (aq_ret) {
+-		set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
+-		dev_warn(&vsi->back->pdev->dev,
+-			 "Error %s, forcing overflow promiscuous on %s\n",
+-			 libie_aq_str(hw->aq.asq_last_status), vsi_name);
++		if (!test_and_set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state)) {
++			dev_warn(&vsi->back->pdev->dev,
++				 "Error %s, forcing overflow promiscuous on %s\n",
++				 libie_aq_str(hw->aq.asq_last_status), vsi_name);
++		}
+ 	}
  
- 	netdev->netdev_ops = &i40e_netdev_ops;
-+	netdev->xdp_metadata_ops = &i40e_xdp_metadata_ops;
- 	netdev->watchdog_timeo = 5 * HZ;
- 	i40e_set_ethtool_ops(netdev);
- 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_type.h b/drivers/net/ethernet/intel/i40e/i40e_type.h
-index ed8bbdb586da..16a65c6e5153 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_type.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_type.h
-@@ -4,6 +4,7 @@
- #ifndef _I40E_TYPE_H_
- #define _I40E_TYPE_H_
- 
-+#include <linux/bits.h>
- #include <uapi/linux/if_ether.h>
- #include "i40e_adminq.h"
- #include "i40e_hmc.h"
-@@ -699,6 +700,10 @@ enum i40e_rx_desc_status_bits {
- 	I40E_RX_DESC_STATUS_LAST /* this entry must be last!!! */
- };
- 
-+#define I40E_RX_DESC_STATUS_FLTSTAT_MASK                   \
-+	GENMASK_ULL(I40E_RX_DESC_STATUS_FLTSTAT_SHIFT + 1, \
-+		    I40E_RX_DESC_STATUS_FLTSTAT_SHIFT)
-+
- #define I40E_RXD_QW1_STATUS_SHIFT	0
- #define I40E_RXD_QW1_STATUS_MASK	((BIT(I40E_RX_DESC_STATUS_LAST) - 1) \
- 					 << I40E_RXD_QW1_STATUS_SHIFT)
+ 	return aq_ret;
 -- 
 2.47.1
 
