@@ -1,70 +1,87 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C973E4C99
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 09:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875CD3F326C
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 09:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785920595; cv=none; b=Fh/mYtlrg1xO80xyz1Laj8Fh1T+YCyGNJCTCfHK6r5rc6JLFe9eF2I8Qq1KUma51BtmjmyTIHIz0hNOwUXcuVBvgy1CRWFb7/ulCGD/0iX1Mf/SIAQCkTlc+mIeWc5iuCCGHu9WZLs4A2TZtJQHbDLYiAp00mqX0SEnRVYrm8xY=
+	t=1785920758; cv=none; b=Y3laRygIY+dNqmTNe/6kH5l+Tn83ytX4UyQDyAryFOEUOFJf9KIjx1EhE4R6a4LxaNUk2koQaDSUnyH9GyLl+HpWFZK8ZhYjyH1nn8hcqhjKTv8m5QBepXeclu3MZ15wcXbpEdBiGquIlBjlrKDqwyerNHzWF9SFx6rhHuTgAdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785920595; c=relaxed/simple;
-	bh=3okNddUNMMKJLxYEvGq4To4XewtsNzzsNOGi+EcxEJM=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=N20Gozp8aEjWtRThQ1iXl/qmNjneAAmktFBl3Xg2sRiLCt52f2ClZ3L3DIFKPb5Zgz1/udvu9GRticiM4ucvpyYJXpQIf8qahJyY2XsdJ5cvXBE3peJ3RcHZXO0naakc/JvAQvSo9jgRk0gMn1eZdy4tYfljok6g4G+UFUJZUNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O6U0eF5J; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785920758; c=relaxed/simple;
+	bh=SXldiWeSBHh/RUC+pz/Z3pn8xriVxkGMlcAH6wkwwtQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=crHBZv7t2z2+qFexosAk3zJ0RlWTt9JnJbxtS5ahL5Sy6UOTIUaCOciHzRnmP2N5Ii9K9OxLLN53RXAD5ea5kDwIe5GEDS/tvAttuEtfQLVon240Gw7vEPR70fE2btASlqcJEm1eHat4ziIITclhR397+lz1vi4vD8GtoI/RfmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FVDb8ACi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ox4dwB+P; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O6U0eF5J"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47f9ab7ee38so357151f8f.2
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 02:03:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FVDb8ACi";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ox4dwB+P"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785920750;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AJv5koF079AhpRKjQRIs6WVbtzHWEnWNzOeKXg3GqUM=;
+	b=FVDb8ACi6tKK/a3SG0YAtKt8OlC0PFwrBIMz4t4OGbAr8MgS+gt3Fl5TLFkSG1ymVGMbx3
+	xYTAz5+qFzEU8iLjO4V27bsGVkeL38mM3hWAjG5/7J8bnmhRSY5qI1TEtqaxB/fYRoaIuf
+	BSf4VHlyNG8XLwuK+OulUNchArekeUs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-674-ASKOui4tMa6T8IDjz9OBww-1; Wed, 05 Aug 2026 05:05:48 -0400
+X-MC-Unique: ASKOui4tMa6T8IDjz9OBww-1
+X-Mimecast-MFC-AGG-ID: ASKOui4tMa6T8IDjz9OBww_1785920748
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49545071724so7642985e9.0
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 02:05:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785920592; x=1786525392; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
+        d=redhat.com; s=google; t=1785920747; x=1786525547; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:from:to:cc:subject:date:message-id:reply-to
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tCjs3K798zUAHJS4Im4IiN0IAqAb0cx8X6grJLzTFKg=;
-        b=O6U0eF5JiVZ2usxoeGpE+FavXe3+gM3xAxS9XEuVBKdKYAj8mBroWXzVEOVcZXKdNw
-         c3ZBoFvecYSlurRptz+fJjDyxe9VRFiYPr6Yad18BL4Hr4E86iG2v6Sn6Oq2EspN3eOE
-         m9LrEppzXEZGw/S0yuDR8PkyXHNdWidK3xZP6E7hSnfgq71poKObjHVanmNuzeCi7IqW
-         4tlD+qsVA4vk86hSNyuxlW/5hC1zvM6ixJnLXnHqdx67mlYcd6sZ8XhyM9vfAF84cNYD
-         DAfzmgX2iN104EzDBCYxMQvgVpfslQTwwRBHAr1jPJS/oBkEKUuy/k1IAvYtCQttHAAu
-         6oxA==
+        bh=AJv5koF079AhpRKjQRIs6WVbtzHWEnWNzOeKXg3GqUM=;
+        b=ox4dwB+P1H0fEf1LGg8ho9mLY1t7YF5+hzS8FgbRsuGOQj0cRU0dLAi3Ggq8SWjaXT
+         9v1xPcFSMFn4sHF1TVGP6ACP1j/zlJb1WLvkWC3TJ8n4HyhlonMz5cUm9xiiMRGZeQBc
+         bU7s2QI5y6D143L2xos0Wi1y9qbFlKn8sCGGBxEW+aBuJ0bXgRKFTaEudScZGHUjZhnK
+         01CjGKbkXKdINUYRMYp/WodNlzLMnO3n03sbcbU3zsU0jf8q3d2LN/WjSsH9+9eNR6PP
+         iGY29sbJpuHh8+7BpDCE6Z2pzoMruUxTyN9e6+Xzqyt7hkJA4PR7YmNTG3Uu/sK50D5Z
+         5hwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785920592; x=1786525392;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
+        d=1e100.net; s=20251104; t=1785920747; x=1786525547;
+        h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tCjs3K798zUAHJS4Im4IiN0IAqAb0cx8X6grJLzTFKg=;
-        b=QadHJB4+zqKaBVlYLizb7GTPysjXAi+iCLEt7nNP6PxqAxeMyd5UsQSISdP20IBeWT
-         Km/+1Fop8XK2WQywcqyUuWyPexeACjMfsIUYHlaAD6Dhen0UVMvaXH7DzjKufx1o+Dwd
-         TVu3o24DMBWKOv/Q1SRtQTAuJDRlcZ8k6oLf8Xq6x3V6jquJuQf+QlVErSXoOgd1hs/9
-         tqIZbh9rad7PQLMRMSgvOfIEmkYz7Im7k7aM/Zdf5FfjKWAezV6hrpCkq7ENkDrSps1i
-         s1MqoxbuvT8tXiUguEryTs9WLF5US4UXOdKtobeF9SY4NcmCqQ1Nliq1eMY3g52iM6lz
-         yCOw==
-X-Forwarded-Encrypted: i=1; AHgh+Ror4XQtUZIdkuiDJu0FROjwa9SIqEGj+bV+O+J91oY3sd+noqhmZTny6n7caLUKUegG0C/nwXE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxoSUSghpVx9Do0p27FkAskgm4DkIP/o0iN/XrJLvMw6KH+z8A
-	t5MFuv4WFKMXcu/vlckE/Q6b9bV0gqN9fewlmz8JkK/yeX1CX+ysWoxD
-X-Gm-Gg: AR+sD13Wmb46JUcFVSdmMTkPVw0qVMXMNIpJI3qm0JlGdbnUPpvGzk+33Yz92gGDJPe
-	1YVwQEYdxdFIxZirf1r/SFJxAq0rKXsRb+Z7SN9wqZuA5GDALDAZVGr3p3mlfzzg2qZLZbzAIXW
-	q04qsj4QiPQrL3bO2gAKqOYa05dlbl3pXzHNyMcuraFzN+x9tuzhb/E/9cGarRa7AcZh/OK6JAl
-	nWO69tUNvYufbBAlif0ETbDx0Sp2jyuOHli6EKzajgvVJyerJHgTUyK77P8MJc9vBu0ubPgAbKv
-	g9Wn48MeKKNWKdsuEaoxPtyrwIIdh5BStL0eH4r6MG4cs1GPHR8SSgdqyKpkSUK2JsBWAyfGRLN
-	JznwTa496XwVnjRhbq84i/D8dCXhCBpDuTAC3Vhp2VBVOzhGNBucccWDYIxTMNZNUiRbjQCxdsL
-	TcD9o2ldvhXHDjBPvzV49YoEAqftyGiy5q1nK42clc3cNa1SjVDB6QMjfqgEu8HCqnc63sDbYtI
-	H7bDHeIdHJNiseccaCcvzXIXKlxQfI=
-X-Received: by 2002:a05:6000:41d3:b0:45e:e1a4:c4c3 with SMTP id ffacd0b85a97d-47fec628b57mr8844522f8f.15.1785920591607;
-        Wed, 05 Aug 2026 02:03:11 -0700 (PDT)
-Received: from [127.0.0.1] ([193.252.113.11])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232d7fsm7175258f8f.20.2026.08.05.02.03.09
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AJv5koF079AhpRKjQRIs6WVbtzHWEnWNzOeKXg3GqUM=;
+        b=pvgUEAFk7zbkAX1dN1yH06WzSqokt0MmRYAIh50jYEnglc42OPeNb9JF7zigKX8iCH
+         w8laP4RBMhpgAPgV7JNuiMfDkMu8Afpd/GRdXng7tTxIKR9HfDlxlN3Gu/EZKf0XniYp
+         y8GUHE6XTTwG7l9ZgQ23PrdxftTI+wtaPFnbGXGswad52dqk3a1l7pOlmTUqOt6/CsJU
+         vpR3y6dCrLvc+6jYieh6wDepfhwzAfzLdtc8oQMMpCDTWWz8ofS5d6M6bSbRqexFSjtO
+         r0EIOWEx0PIqqhl5mHY8RJGspAU21AwtqH4vfrRLMH1vUUf7jTFngkSy1nOMMfng59HU
+         bW6w==
+X-Forwarded-Encrypted: i=1; AHgh+RoIC56z+HdxFVk9KeMD+iq2VhqwhDGvlfkb5LZ5P8y25bq1Nz5FT9yLq02Hung9mDCHZM0IGkI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6dpFFW3AN+IE3Bl03wZL1rsvJdMcCW4Tl3UmVbzJBzI7j6ZvZ
+	eWzT01DUA0HaODt6GyWUir2iTQf1FJWODfpgIklL00F5aadwUKQIB5nJJOeFCp7QqBvOHEYZZWt
+	A3o1XxEZJ/iD6xwjZufyK+uvZd1HwtcUAc6OL3zU9UW/rk5DNNQI3C5eKNA==
+X-Gm-Gg: AR+sD13iM7Bf8izEffNfIthS/RilI7GBlELaKMiuBvl5qKwETcJmexrYjbZ12zcstg7
+	KistIqYMFLCX7mIa60fa1GbcCJD+IoJFtXXkvyyk/f25At+coFjwE8E0ZJGtf2I2DvDfN1pIrr7
+	0OopJj0Umy97wGMePGGNpc/GrHV6/upMvTcR7ckHHa+vNTIUT6owiApmPZ6bN2/ipL/m0ROr3hu
+	kz0YpfnLbcH3iLP7bPLp9yI/L0a9Xmc/BzJWYDTuypAFjTX7D+fhSoyawgUvjP01sSsBy3Iaxyk
+	NuvyBUhWeHYeV/CKM/k7vRGRU/3a6FZcH7D6TgEDkKKwAfmPO5szKA/YDWQdcQnu6HGXMmc9Xc2
+	1bkd1he59Fjr/vitOqV6cLaSTbfWlY1N44QELn8Z0UGN8nRtTZtm9gHZhHB8qhCNMgZrcfsraa5
+	o=
+X-Received: by 2002:a05:600c:c490:b0:493:c337:db0e with SMTP id 5b1f17b1804b1-4994e7ece20mr57702835e9.18.1785920747606;
+        Wed, 05 Aug 2026 02:05:47 -0700 (PDT)
+X-Received: by 2002:a05:600c:c490:b0:493:c337:db0e with SMTP id 5b1f17b1804b1-4994e7ece20mr57701825e9.18.1785920747044;
+        Wed, 05 Aug 2026 02:05:47 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994e04db3asm84916885e9.15.2026.08.05.02.05.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Aug 2026 02:03:10 -0700 (PDT)
-From: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
-X-Google-Original-From: Alexandre Ferrieux <alexandre.ferrieux@orange.com>
-Message-ID: <7b7fbe75-1531-49f9-8134-033c34fa13cb@orange.com>
-Date: Wed, 5 Aug 2026 11:02:48 +0200
+        Wed, 05 Aug 2026 02:05:46 -0700 (PDT)
+Message-ID: <14b8701a-44a6-40dc-b46a-46096ea5bca2@redhat.com>
+Date: Wed, 5 Aug 2026 11:05:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,97 +89,110 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] netfilter: nf_dup_netdev: scrub duplicates to
- preserve the direct path
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
- Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
-Cc: coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
- edumazet@google.com, netdev@vger.kernel.org
-References: <20260804201150.16364-1-alexandre.ferrieux@orange.com>
- <anLzQeYulW2CQItC@chamomile>
-Content-Language: fr, en-US
-Organization: Orange
-In-Reply-To: <anLzQeYulW2CQItC@chamomile>
+Subject: Re: [PATCH] netdevsim: fix deadlock in nsim_bus_dev_max_vfs_write()
+To: Slawomir Stepien <sst@poczta.fm>
+Cc: syzbot <syzbot@kernel.org>, syzkaller-bugs@googlegroups.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
+References: <b7bf56ea-7522-4163-acd5-aaa69ad03b3a@mail.kernel.org>
+ <c74a0579-dc37-4f3b-8dba-8380223b361c@redhat.com> <anL6nNIJDqWOynzw@nr200>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <anL6nNIJDqWOynzw@nr200>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/5/26 10:24 AM, Pablo Neira Ayuso wrote:
-> Hi,
->
-> On Tue, Aug 04, 2026 at 10:11:50PM +0200, Alexandre Ferrieux wrote:
->> The nftables 'dup' action clones the skb with its full glory of
->> metadata, including references to its destination and conntrack
->> information. As a consequence, a link failure on the duplicate's
->> egress path ends up doing the same as it would for the direct path,
->> for example invalidating the original packet's destination, which
->> typically breaks all TCP connections to that address.
+On 8/5/26 10:55 AM, Slawomir Stepien wrote:
+> On sie 04, 2026 16:33, Paolo Abeni wrote:
+>> On 7/31/26 11:55 AM, syzbot wrote:
+>>> From: Slawomir Stepien <sst@poczta.fm>
+>>>
+>>> There is an ABBA deadlock between the devlink instance lock and the debugfs
+>>> active file reference mechanism.
+>>>
+>>> When a device is being removed (e.g., via nsim_drv_remove()), the driver
+>>> acquires the devlink instance lock and then calls
+>>> debugfs_remove_recursive(). This function blocks waiting for all active
+>>> file operations on the debugfs files to complete.
+>>>
+>>> Concurrently, if a user writes to the "max_vfs" debugfs file, the VFS layer
+>>> acquires an active reference to the file. The write handler,
+>>> nsim_bus_dev_max_vfs_write(), then attempts to acquire the devlink instance
+>>> lock, which is already held by the removal task.
+>>>
+>>> This creates a circular dependency resulting in a deadlock:
+>>>
+>>> INFO: task blocked for more than 143 seconds.
+>>> Call Trace:
+>>>  wait_for_completion+0x2ca/0x5e0 kernel/sched/completion.c:153
+>>>  __debugfs_file_removed fs/debugfs/inode.c:751 [inline]
+>>>  remove_one+0x2df/0x3b0 fs/debugfs/inode.c:758
+>>>  __simple_recursive_removal+0x215/0x520 fs/libfs.c:623
+>>>  debugfs_remove+0x5b/0x70 fs/debugfs/inode.c:781
+>>>  nsim_dev_debugfs_exit drivers/net/netdevsim/dev.c:372 [inline]
+>>>  nsim_drv_remove+0xc0/0x170 drivers/net/netdevsim/dev.c:1803
+>>>
+>>> INFO: task blocked for more than 143 seconds.
+>>> Call Trace:
+>>>  __mutex_lock+0x7bf/0x1550 kernel/locking/mutex.c:821
+>>>  nsim_bus_dev_max_vfs_write+0x229/0x3d0 drivers/net/netdevsim/dev.c:276
+>>>  full_proxy_write+0x127/0x1f0 fs/debugfs/file.c:388
+>>>  vfs_write+0x296/0xba0 fs/read_write.c:685
+>>>
+>>> To fix this, use devl_trylock() in nsim_bus_dev_max_vfs_write() instead of
+>>> devl_lock(). If the lock cannot be acquired, return -EBUSY. This aborts the
+>>> write operation, releases the debugfs active file reference, and allows the
+>>> pending debugfs_remove_recursive() to proceed.
+>>>
+>>> Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
+>>> Reported-by: syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
+>>> Closes: https://syzkaller.appspot.com/bug?extid=3147c5de186107ffc7a1
+>>> Link: https://syzkaller.appspot.com/ai_job?id=fcdda182-bebf-49ab-ada0-d4d2e814ebf7
+>>> Signed-off-by: Slawomir Stepien <sst@poczta.fm>
+>>>
+>>> ---
+>>> diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+>>> index aed9ad5f1..421cd7327 100644
+>>> --- a/drivers/net/netdevsim/dev.c
+>>> +++ b/drivers/net/netdevsim/dev.c
+>>> @@ -273,7 +273,11 @@ static ssize_t nsim_bus_dev_max_vfs_write(struct file *file,
+>>>  		return -ENOMEM;
+>>>  
+>>>  	nsim_dev = file->private_data;
+>>> -	devl_lock(priv_to_devlink(nsim_dev));
+>>> +	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
+>>> +		ret = -EBUSY;
 >>
->> In other words, the "dup" path has the potential to wreak havoc
->> in the direct path as a consequence of secondary link failures. This
->> is very bad behavior for a monitoring tool, which is the most
->> obvious application of 'dup'.
->
-> Can you describe your use-case a bit and how it breaks?
-Sure:
+>> I think this should return restart_syscall(). This kind of schema is
+>> calling for trouble, but for netdevsim should be okish.
+> 
+> Thanks Paolo for your comment!
+> 
+> Can you explain a bit more? What is your reasoning here? Is it, that we expect that we could have
+> the lock in e.g. 1ns, so it is worth restarting without bothering userspace[1]?
+> 
+> I see a lot of:
+> 
+> if (!rtnl_trylock())
+> 	return restart_syscall();
+> 
+> Why this pattern is so popular? Is it for the same reason as above?
+> 
+> [1] https://kernel-internals.org/syscalls/restart-block/
+If you don't restart, the write will randomly fail when the lock is
+contended, as reported by sashiko gemini:
 
- - assume hosts A.eth0 and B.eth0 have active production traffic (say TCP)
- - assume we have a monitoring tool on A that dups eth0's egress to some other
-interface $MON
+https://sashiko.dev/#/patchset/b7bf56ea-7522-4163-acd5-aaa69ad03b3a%40mail.kernel.org
 
-    nft add chain netdev ta ch '{type filter hook egress device "eth0" priority
-filter ; policy accept ; }'
-    nft add rule netdev ta ch dup to $MON
+the user-experience will be terrible at best.
 
- - assume something goes wrong on $MON generating link failures. In my case it
-was a GRETAP with L3 destination suddenly unreachable.
+Also, I missed this other report initially:
 
- - The next A->B packet goes through normally, but its duplicate hits
-ipv4_link_failure(), hence the dst (which is B) is expired.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/b7bf56ea-7522-4163-acd5-aaa69ad03b3a%40mail.kernel.org
 
- - As a result, (say) TCP disruptions occur. The thermometer killed the patient :)
+it looks like the above is not a complete fix.
 
-Note: as a straightforward repro, you can simply witness "noise" in simple ping
-sessions, with ghost unreach reports muxed with normal measurement:
-
-    ip link add gre1 type gretap remote 192.168.1.99 ;# on the LAN, nonexistent
-IP => will generate link failures
-    ip link set dev gre1 up
-    nft add table netdev ta
-    nft add chain netdev ta ch '{type filter hook egress device "eth0" priority
-filter ; policy accept ; }'
-    nft add rule netdev ta ch counter dup to gre1
-    ping -n 8.8.8.8
- =>
-    PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
-    64 bytes from 8.8.8.8: icmp_seq=1 ttl=115 time=19.9 ms
-    64 bytes from 8.8.8.8: icmp_seq=2 ttl=115 time=12.8 ms
-    64 bytes from 8.8.8.8: icmp_seq=3 ttl=115 time=36.0 ms
-    64 bytes from 8.8.8.8: icmp_seq=4 ttl=115 time=30.3 ms
-    From 192.168.1.13 icmp_seq=5 Destination Host Unreachable
-    64 bytes from 8.8.8.8: icmp_seq=5 ttl=115 time=31.0 ms
-    From 192.168.1.13 icmp_seq=6 Destination Host Unreachable
-    64 bytes from 8.8.8.8: icmp_seq=6 ttl=115 time=38.0 ms
-    From 192.168.1.13 icmp_seq=7 Destination Host Unreachable
-    64 bytes from 8.8.8.8: icmp_seq=7 ttl=115 time=36.8 ms
-    From 192.168.1.13 icmp_seq=8 Destination Host Unreachable
-    64 bytes from 8.8.8.8: icmp_seq=8 ttl=115 time=23.5 ms
-    ^C
-
-
->
->> This patch fixes all similar scenarii by calling skb_scrub_pkt()
->> on the clone, severing its link to precious direct-path state.
->
-> This patch is targetted at the net tree, but nf.git is preferred.
-Okay, will retarget :)
-
-> As for the conntrack and dst, you have to explain what it breaks on
-> your end.
-Dst as shown above. Conntrack is more speculation, but my take is that in any
-case the dup path should *never* have any kind of retroaction on the observed
-path, so any "complex state" attached to the direct path should be absolutely
-isolated from "whatever happens on the dup path". Am I mistaken ?
-
--Alex
-
+/P
 
