@@ -1,161 +1,125 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC63371065;
-	Wed,  5 Aug 2026 05:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785906105; cv=none; b=Wu/n4q1HJcfO0ZQfiymXdecyvyswDO60KH/h9S8lqmTCZaUvL9jY7j/LMyz+AJaUeFkrkLbfp/PzxV5+Ch9wY+GieHrPKFghaZ5jVAFlm8P5hgtw9h5rF1riEFtyDxiG1JvYkQURckdeoHzmGp4rcjKP3F3SvaeLR5RTKNYg5AY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785906105; c=relaxed/simple;
-	bh=0hyzE+nMpJqVenIOIKcFfFYqWCUe3o50WG/11fX85+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=srsJz/PRCy9xBNE96T8KGXj9qBygyg6VWPUpdyL1hkWd82wh5ttXQsmtIDPQ80lbwg1YemWHFZNletmA/SWU1fPRGg43rEsKDUmWJ2cIqzBaJpb+zHjZ7OHV0ENuPXk6oGbOvCe7+GLneuu7qYL2+Uas8RzBaf1JB14FaSGvXls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S3CRwlBx; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2049F5A79B
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 05:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785906930; cv=pass; b=XvY416JmPw8II1IG5lbAZf1rz40joY/Uv3RT9tPtDWFlhdBeKOCkBOL9NZOHnHIk0HcJ/oCChEWQb/tfqMGMbFWw3s0ElWhiHD+XWW8LcJbgrdJJkuQXX0ioq+ETNxka0IYsN1ooU0nYRPKHTtvQWbP1jFJ9NtV9WuWGBZVBmm8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785906930; c=relaxed/simple;
+	bh=Cv91Q5KG9Qlh4InOrwZvyCGwnt54f+chCcW/ClvGp3s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XEzGBTgK/jO6bCQZS+nLYXBZ1Me26Ap0BmomnN5eCFn7SxUKy+Bz73e0AlYvgFH9YzAQsndnR0eO5nTH30rD7EcXL1KiMlFHNynPKi6hCA+FPZMTaV5RdzXpHOAKIq3Q9TmbS22gNOy7tM9mjYJFPReVUNRHB0Rx5VCtEn8m9Sc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BGmMLL/S; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S3CRwlBx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785906102; x=1817442102;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0hyzE+nMpJqVenIOIKcFfFYqWCUe3o50WG/11fX85+w=;
-  b=S3CRwlBxHJJhgNHZESEZooBvviPYQKTADjjVjhvIWm9Tcclk4RVp7qiy
-   wu3mw8XeTXL7DaNHZYbTXQKJVN4ZG49zU+a0TnrJtwVbnjPhA7xZERgey
-   rdvIwr2Vj5t4V3J68++NGCjAcW9GYURSptXCRuBzUnjfUfnqWg8VQ5i4r
-   TSzj8WAWyayoTElaOezQ8cXaNwarx7bXstDhtflzlpp1tOLzrn5ZfdPhB
-   IqzljnXUVAlMN+DOkWwNHeiXmqOCXT2UK7bHkquN7uap9jbTzCrpot0xj
-   9u18fE5MBjlA8cbkgdl+q32QObgjkC1gyhOpEa+mHn3DYV3CsK+SSrWQp
-   g==;
-X-CSE-ConnectionGUID: OaMKOEisQt2TaExgJYJPmg==
-X-CSE-MsgGUID: Vks0VNhDS0aTCK7Bjg7THA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="86670768"
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="86670768"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 22:01:30 -0700
-X-CSE-ConnectionGUID: WWHqbFdIRZuHBrxqs2rfuA==
-X-CSE-MsgGUID: v5AICPlRSNa3uSrnvB1HYg==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 04 Aug 2026 22:01:26 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wrTkp-00000000BZt-3gbX;
-	Wed, 05 Aug 2026 05:01:23 +0000
-Date: Wed, 5 Aug 2026 13:00:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chenguang Zhao <chenguang.zhao@linux.dev>, leon@kernel.org,
-	jgg@ziepe.ca, saeedm@nvidia.com, tariqt@nvidia.com,
-	mbloch@nvidia.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org, chenguang.zhao@linux.dev,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>
-Subject: Re: [PATCH v2] RDMA/core: quiesce CQ polling before device shutdown
- on reboot
-Message-ID: <202608051205.y2QczkvS-lkp@intel.com>
-References: <20260714075558.1420384-1-chenguang.zhao@linux.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BGmMLL/S"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-383cb94f742so584456a91.3
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 22:15:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785906928; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FxzkX4rosjZ8EaIrrnUfySXX9V6HR9g2+QESkkDSoBMVRf/6FRO6GhFoKpyTNpJCLs
+         EhctLIoPB9j2SqKrM2waCwVQsRBYWerQlvcLfnoYYPVWp2VxgBkv+A8aVeObOrH1S4PU
+         apQ8Guu39RF1LvI/vBu+zWT473L4rcw2XEKUY0sAaV/zOQtfGDowXZ3AQKRTF67GDnEf
+         Pykn6fpfGyqPNyA+yN9OAwd4ybAd3SjlKhrJMcD5XG7RCIZpW0gof65S78wveATRc4u/
+         +qyzYM22ZdnoW1yTQxUEbOPFBJoxGOkTV6uPM8Pl61chEPnY8XfUyPuy5M2jTqAdV9JD
+         Ay5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zD5Y/bMG7jyFHCeefmncNfBOipowYXYouSx/pSuqb9s=;
+        fh=SQlKo18ON3T28h9R6SGyvyqN5ZfZZLe+qKKt+YAnmHw=;
+        b=LqNOa7VTztY92JQbeza3EDVT5512rZQBvyjVSevrxzngUJzvA6BQ7IejjIO2Etdmso
+         7o187N6K3oduiB4W7aJ/Lmusebq9SafBv8srV6FfiVYggiqxCDkDbRureGHZmXMrP6wX
+         4ic49mPapJDSF7iZ2npsKKRPb4dzaelGlNBpS2cdboKTLJ3e0Ti28AgLZodCt/yi/f97
+         5YR8GswCoT5KNsV+/dL6jg2uGR7qhVa53djLOaA4m+qbxv9kGT5df7uQAKOmRRrw3esm
+         3OG7zYInD7EX1o7FAueVHusrqRyIdsLLohkthbbsD82rz0EqLCWSvvfsVuyyj07VjaEQ
+         MNzg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785906928; x=1786511728; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zD5Y/bMG7jyFHCeefmncNfBOipowYXYouSx/pSuqb9s=;
+        b=BGmMLL/SCi60rFnuTaL1nVCuyOLHg9S7XlMlDbt0iBjXkik9ZITk3/wXJvHR1wR4Bc
+         sz6GkDVtNOnx+R8Y5k4pFMdSIE+UuAqEkyjCVgOHfGMWANczuC47wzN856DL2emLO05N
+         IQ+JhESfeejEorRbv6+cc7kAR2p6nDB/Ek3yIp7JpvCKBA7s+/hiNdPiFIfE6sL2/fkM
+         x+wz9lSCgrM+PfsWdNHgaQVQtADkHFtjuGnxpdhopuZaNr35OP2OiiFnwk7h4Jjrlw0o
+         n02EUkamgo8SXhEnpe8nY0fdMQTc82sRv36UgyzR6Y0+/VmMWSOtr0Q7oS0yWYgvAgWe
+         me3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785906928; x=1786511728;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zD5Y/bMG7jyFHCeefmncNfBOipowYXYouSx/pSuqb9s=;
+        b=Nhpgpp8RU00CXAARhePb7yKluJm9L/0NZ04R1BG1QmJ25eSM1tG5mpXwqZR5wjYnbK
+         vo6KhoIaJnXToT5tYzzSs9+oB/VKF3c/P9CD8GM6HpV3EZPhEBTcFCWkdaSf9YJsu8oi
+         BAFX8FLAY1nvSPYXOhHYXmVPQk67WJ/jzeHx4eX8YOMi4glQBmvSTf6W8aF87/jDbxiq
+         30eYzVtIxO7EoBI1MQ2IXARvIhqgK7T5u5r+r2S2kbxlSz5CxiYxfhfAZAZC1/Ppqd+a
+         Xj1ISxeQnYLeiTAhEcHJ6KyJFDWt35A/nIRQKlVVZzgWXYQmU83H7A6KHuQnaex6LPVA
+         A0Aw==
+X-Gm-Message-State: AOJu0YzW2zz7nL99+Z4Fx2r63XrrTy9utZK9SK2Dlz8WNJQVtOPVcVy9
+	gAQiiaB/auExMBzUbhbD7p2ac2iMtLnbfx3JysU7vVH7sI9dSw84LXvS9qu8/2yYcP9Gig9WKQe
+	h8JI7eHow24duyYv91l6fT4KZ9WrJlWykOi1CaK75HnPGgJCb+BVfb56ktJ8=
+X-Gm-Gg: AR+sD12Jl02WnS97vVN6sgB1ge0AR4kw/F23x+aomJdt01rXmZ1CXhk6VKvdtxfwx4M
+	xaguhDBC658DRN5Q9QqUJahVoT+J1mepTuarv9L1fsG5YHn3svJURPGVjiONgh5s0EV2w2nSO+l
+	Ck9hggSYlFyOSG+3nC1YOkI0fU7qrnXjKCY6swZyGCa5gEEsuH49+bFbBkqZMf193szvfFN7bVQ
+	KlXX5y360c9W31nAtKIknGRe18anwHhxsLrBETVy5+CzJdB2hCg6WsiDAp6viFsZ1ePMS4yx/cm
+	LBpj5zAdtU9Qx9hypRK02HCPOSBMLkRmV3JjYim2DeFpm7wWT9yNuljYet+2ZTvLe26R637TCj5
+	pGrawN8k3EUnOQnWeutGo8WSt66hq2GC9w3kpq8EvXSnfvBsuUnBI5GcsOcudoV9IBDtvUzyTdf
+	ktrqVN11thaOs=
+X-Received: by 2002:a17:90b:1c84:b0:38f:5828:857e with SMTP id
+ 98e67ed59e1d1-3903c5b4c5emr3730648a91.16.1785906927812; Tue, 04 Aug 2026
+ 22:15:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714075558.1420384-1-chenguang.zhao@linux.dev>
+References: <20260803061739.134737-1-jiayuan.chen@linux.dev>
+In-Reply-To: <20260803061739.134737-1-jiayuan.chen@linux.dev>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 4 Aug 2026 22:15:16 -0700
+X-Gm-Features: AUfX_mwhhvr6Q5m6FFApFT8durAkIm0kN7jttZvB8q7qQLXYF2Zvt09seNWHZ_0
+Message-ID: <CAAVpQUD4X+TpL+tTc3Gn4Uz8Yc7qbtXHA=u=UHjbhbXyt7dxdA@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: fix TFO max_qlen accounting across reuseport migration
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Martin KaFai Lau <kafai@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Chenguang,
+On Sun, Aug 2, 2026 at 11:18=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+>
+> A listener's TCP_FASTOPEN max_qlen stops being accurate and lets through
+> far more pending Fast Open requests than it was configured for.
+>
+> This only shows up with SO_REUSEPORT listener migration, where closing a
+> listener hands its still-pending TFO children over to a surviving one.
+>
+> fastopenq.qlen is charged in tcp_fastopen_create_child() when the child
+> is created and uncharged in reqsk_fastopen_remove() when the handshake
+> completes.  The uncharge follows rsk_listener of the request the child
+> points at, and inet_reqsk_clone() has repointed the child at a new
+> request owned by the new listener, so the ++ and the -- land on two
+> different sockets.  The new listener's qlen drifts negative and its
+> limit no longer binds.
+>
+> Charge the new listener during migration, like reqsk_queue_migrated()
+> already does for queue->young and queue->qlen.
+>
+> Fixes: 54b92e841937 ("tcp: Migrate TCP_ESTABLISHED/TCP_SYN_RECV sockets i=
+n accept queues.")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on linus/master]
-[also build test WARNING on v7.2-rc6 next-20260804]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Chenguang-Zhao/RDMA-core-quiesce-CQ-polling-before-device-shutdown-on-reboot/20260805-044210
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20260714075558.1420384-1-chenguang.zhao%40linux.dev
-patch subject: [PATCH v2] RDMA/core: quiesce CQ polling before device shutdown on reboot
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20260805/202608051205.y2QczkvS-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260805/202608051205.y2QczkvS-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608051205.y2QczkvS-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/linux/kernel.h:23,
-                    from drivers/net/ethernet/mellanox/mlx5/core/health.c:33:
-   include/linux/mlx5/driver.h: In function 'mlx5_core_is_shutting_down':
-   include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                                                                 ^~
-   include/linux/bitops.h:44:44: note: in definition of macro 'bitop'
-      44 |           __builtin_constant_p((uintptr_t)(addr) != (uintptr_t)NULL) && \
-         |                                            ^~~~
-   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                ^~~~~~~~
-   include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                                                                 ^~
-   include/linux/bitops.h:45:23: note: in definition of macro 'bitop'
-      45 |           (uintptr_t)(addr) != (uintptr_t)NULL &&                       \
-         |                       ^~~~
-   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                ^~~~~~~~
-   include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                                                                 ^~
-   include/linux/bitops.h:46:57: note: in definition of macro 'bitop'
-      46 |           __builtin_constant_p(*(const unsigned long *)(addr))) ?       \
-         |                                                         ^~~~
-   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                ^~~~~~~~
-   include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                                                                 ^~
-   include/linux/bitops.h:47:24: note: in definition of macro 'bitop'
-      47 |          const##op(nr, addr) : op(nr, addr))
-         |                        ^~~~
-   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                ^~~~~~~~
-   include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                                                                 ^~
-   include/linux/bitops.h:47:39: note: in definition of macro 'bitop'
-      47 |          const##op(nr, addr) : op(nr, addr))
-         |                                       ^~~~
-   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
-     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
-         |                ^~~~~~~~
-   In file included from drivers/net/ethernet/mellanox/mlx5/core/health.c:37:
->> include/linux/mlx5/driver.h:662:1: warning: control reaches end of non-void function [-Wreturn-type]
-     662 | }
-         | ^
-
-
-vim +662 include/linux/mlx5/driver.h
-
-   658	
-   659	static inline bool mlx5_core_is_shutting_down(struct mlx5_core_dev *dev)
-   660	{
-   661		return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
- > 662	}
-   663	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
