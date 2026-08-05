@@ -1,62 +1,62 @@
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EED73C2B8F
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 03:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E622E34D926
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 03:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785899393; cv=none; b=s/FLzpZ8bOPauQIY2WJfCgSPQ+59iGCKfEL1/jRVPbNjWYMK25NguyKDC5iEhW5Ah5DTvh8SUJkrAaVsSL0oqGvs4rjDq+s3JPAS2qy4R9N4nysLsyBkQSPazLvz+Z72KAwM4QrWQTJHxQEwy0NdDBjku/Xpz2eDt2xE2317xpU=
+	t=1785899395; cv=none; b=FGRZxTSVZUBFfuG/H0GGSoxGzQgOMfn2v5M9FHTGGkhuuz6R/f8r4H+OvxZDnwl7tgRZIK4zkxtRkyKVilMq9ypUhIp+POO46rupkT3gR5CkE+eh8PBVOpnWa1RrItZ9aGN1G7n0cvesoUqZRmiXTX++yDfiZ4SJJWa3PvIDgZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785899393; c=relaxed/simple;
-	bh=XRFbGwBPH+VhcUUJQun7WEUilFRIAXetdV49cKT2ZsY=;
+	s=arc-20240116; t=1785899395; c=relaxed/simple;
+	bh=PE7ifyCGoFgRy7ddoLf7ecEm718DOJWN2jboMYBlwCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL6NBYoyKuRNq4sJ/9K0dgt53/LEsTN0Sgsht7m9AFpuCXZsFq1eBQ4mVkt7je3FHYzZp8p2etamlIEh8I39OtXteuXktBafUCB0a/1q33LtsEALp6ChwQqnWHwj0oyKyOvCzgaPsQiX5PHGKVm/zsRxmEk2EF4gx5e5OhrbIEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a02UEEks; arc=none smtp.client-ip=209.85.167.178
+	 MIME-Version; b=E6prhpr84wwHIIxNAhkZeHD0B6lXt2ANWD0K9W9ZMyXolM+vo7HSaloVh3smbejMdu/Ba/5NMelfC7J1KMq8uaZD82XZcKO8+6suueCM9xp/fw5v5WbXi2Ct2A52A9jKvmAvk3SIrHesTc18d9agFx1V8twtrFkoW4twTUHba+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HBb7gtoj; arc=none smtp.client-ip=209.85.161.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a02UEEks"
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4a43c2a126fso222057b6e.3
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 20:09:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HBb7gtoj"
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6acb63301acso458892eaf.0
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 20:09:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785899388; x=1786504188; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785899391; x=1786504191; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kHy5sGAOZy1JqOYJk5ores2aowoHjNjgJFZMFnGPHyE=;
-        b=a02UEEksFWf7VoDG6peKCswahEDu+Wxlm73XYa/rya/kgotgyu+48nd4LcTn+5fHAg
-         3QeQTwesRn+/azVHmspQsD4sX7qYmsHxrfBYO6AgmCt4SzJxzRX8zy4rldbFkrqpMao3
-         Z+ledxb8IW+POtEO6Mq7PXPsAfChCzGc3oTpadsAcdHT4MtUXpHvi+6w47uTB+8Ll87g
-         pIC9H0dsABLeGdL7VuKrtis5dcygVumpQNuJbcirb1KaV0s6J9V3QTr8DxVZh1hnyWic
-         CKBI4XaCs7Pn+2FFR4wNLnYh0Oad+Xwg02MFJ662PcuMflD+CbCa9QmI1daY5lC4w5Ta
-         Dl6Q==
+        bh=Lf+95Lv9aBLdQ2fxeuuLQftB8DvcOe6MQ4BDksXA8qc=;
+        b=HBb7gtojsfYlAkR1l0hQQZN5GlTdFPTu30bKeB6GWNVz7aYoEdx2pleAntMWnkYOZo
+         fXrVRSixOCjqGcA3orqqd2VjtkaICVXB8CG7tvNKt+g5WgCwjUJFwwCR5V8hkFJxEJjZ
+         uAUA2GIqwITDBtTNSn7arbs8hB+XezdcDpBdvW1gmSd7gTqYo9fDr+jEws/OC3JOgnhe
+         W+qMBjLf9vqv2G9E+9NODTkQ5xLToGSPZz8Il5sCPYctaxErHc8uyaPKa5FVi2MpZ1o2
+         aPhjEbKF8gdEYd9duNFBVpiy/sgVKJ5OA30H4Z9+cDPzxWrjXpbr6k9AjEDEEe8qwpC1
+         snGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785899388; x=1786504188;
+        d=1e100.net; s=20251104; t=1785899391; x=1786504191;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kHy5sGAOZy1JqOYJk5ores2aowoHjNjgJFZMFnGPHyE=;
-        b=ErJ6ttn6hkZT3OpiY4zHxy6bCA//Tfxlp6yD6iXnklT0Q26sZQBxgEGHJeaUnH+f6o
-         VWvec3jojo2eD0llPbe+qckLTyoa987CY5CJYhEUzm9w2xe8smkKLDhYaVTBE2I615QF
-         PDgUvl900vL3BaQGfx8b70pJwWW0A8tbPJ87s1MwyVrt7Q+OZ2CR7vMnPGc6eD++2JH0
-         ZVl7i/WQtyKXq6lFLTNPOJlwAEPznQPTQu9YkxGH8/0xHledjQ/1QFxaoaxBHKJS/pQH
-         98DOqRYuXUr4Gm4NuB1eyGr5nWVv8s6i8nh86jXM2cePLS/Bzj0vM4/RzdPqH1MpbKh2
-         z0QA==
-X-Gm-Message-State: AOJu0YxYRGmGQLe2KvmCnBnQ7NXuvfC47NWOR+3JunmKwG4IJmGSQUay
-	xmuVp/0fWQ0g3RlyjyBbBr/B7d6Poh/bumuvoSkvyc3PWLCTl1cES/AFOpV8Ap2P
-X-Gm-Gg: AR+sD139SRPlWkmqZuPBQJo4h/JTG8i8EAI0cCRdsDav8TpwBK4chLoEZDM2lbBwC48
-	TFOWsWfGe57fsls+l5m9sLTY2JDdZHLX8I4posingQdGMnFlMWPy2yH5h6IMe94JTkD0ZsMZzr/
-	3X4OH6IBXnVCaZdzUuKnx+4i8ZH67FtX/b24R9iQfdIbiSWuJZ9q2c5U1Y10hDXNbfqbnC29gp+
-	I0e3lwPWDafYxXlyzuD9d7+oZ9cxAarxxutJjHiaiXV55oRg4SKEtRDMoCbPravBQa1HxuFIe+J
-	p2AiChRk0KltSAtMZd8gN0tdIupQVGN0xaPiRSCKy9o2uEd0uZjEFYA9iaarB6aLh/+A9JzcOwV
-	Nnh6gotCjuGNO7Dp7fGtOu4+Ln6wzTNBtdtKSO+fM/EKvc1MZAFQe/A9ahx2TGWSBn+FG8BDs0K
-	Eu+p+gcxyZfg39MYRp29C9Nhk2b/vDJ/0Z+L+F1u9HkgHwbZfvqnbUpylTRg==
-X-Received: by 2002:a05:6820:f012:b0:6ae:87e3:e306 with SMTP id 006d021491bc7-6ae96ecc5e5mr1905385eaf.20.1785899388158;
-        Tue, 04 Aug 2026 20:09:48 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:46::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f1df5a4f9bsm2087653a34.23.2026.08.04.20.09.47
+        bh=Lf+95Lv9aBLdQ2fxeuuLQftB8DvcOe6MQ4BDksXA8qc=;
+        b=LR7i8Os82ocQUI2u5n/n+ESrmfOGrXfAf4F01i7tzBR10H7pVY0Ac9YVv2FJqSLwv9
+         DRmmh1oQpDYTfPgoZum5hFJWbfKYv1ddtDdAef+FnPpKeALvq0toRYDiidjXISx/qRzF
+         sxLNf/PoIWSsi1dwPO+6QNDQbHjNBoR3BkCgntsJ/Tmt1ROdl9q6Sz8wdT3HLICHWFPM
+         YkT6IGXXPgGAXxe2W2xkt+x+Nw/iSCpS1wu7nSTrASmvzSuFPxcWz5G+2H8AKU78CFxl
+         MgRevADpDtYYKWCF7DPL11X6eeuJ5iBl6TeHCBQgNQzYd9U6NYA76tvmw5Hv6GfwXKoH
+         cYEQ==
+X-Gm-Message-State: AOJu0YxMRHjltuPS/1ajkRDvE7jpAsYJAcivwztA55k5Wrw4i0CGzpWS
+	LbfGbWPRX5o0Sb521kMf7WZLSo1mwWu1b1v8bu3MP7XuM3dz7wD38/zEhOTpAFQP
+X-Gm-Gg: AR+sD13lvaT4jyphnokngJnHwgKDvDPWdnuX3Gx18NgPm97dJjM7Y6yh7Gs/271NjYE
+	x8gQ46t9o7NEAcCzh4IDIOxwTL60x/2YLbdev04UrrbnRw+WlwCDivUOfWT4HEPu5Ovt7l5lUaj
+	YP+OiQejpw4vj9XSxl7XkU3JmG7Gd1yHmsA263YeoLi0aknl2m7lfnkkO3dhCva74bEV/pgQytY
+	EPHZOAv5hWe9+gEI14xcqVcgbWCDHli+O9QHBD4zqOdsQ1ILu8mqSvvARKf2VMzidQqVJf8P9rL
+	hXqmVL7JwD23ad+gioMCfPbxAOb8Q7caHG3qjIYSDgXXm0J6v2Mai6J43ahBEz9/mX3H2uqrow9
+	zrK+zNq62+2p00trPDSrOhx+i+a5kf7uKTwcZMWygm07vgvBx7VLVCj0W5UThTEhX9bcGiU3Awl
+	08xU667CeCDRoNWnR0Bv6uKkcoq+KuXn/b6hBU9g78mfNVzuAnJjUp9MfQ
+X-Received: by 2002:a4a:edca:0:b0:6ae:7f68:22f3 with SMTP id 006d021491bc7-6ae82a9ea9amr7666929eaf.16.1785899391072;
+        Tue, 04 Aug 2026 20:09:51 -0700 (PDT)
+Received: from localhost ([2a03:2880:31ff:8::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f1df5a4f9bsm2087676a34.23.2026.08.04.20.09.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 20:09:47 -0700 (PDT)
+        Tue, 04 Aug 2026 20:09:50 -0700 (PDT)
 From: Mohsin Bashir <mohsin.bashr@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -68,9 +68,9 @@ Cc: andrew+netdev@lunn.ch,
 	pabeni@redhat.com,
 	shuah@kernel.org,
 	alexander.duyck@gmail.com
-Subject: [PATCH net-next 03/14] selftests: net: shaper: Decouple basic_groups from netdev rate limiting
-Date: Tue,  4 Aug 2026 20:09:25 -0700
-Message-ID: <20260805030936.1092907-4-mohsin.bashr@gmail.com>
+Subject: [PATCH net-next 04/14] selftests: net: shaper: Add basic_groups_with_rate test
+Date: Tue,  4 Aug 2026 20:09:26 -0700
+Message-ID: <20260805030936.1092907-5-mohsin.bashr@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260805030936.1092907-1-mohsin.bashr@gmail.com>
 References: <20260805030936.1092907-1-mohsin.bashr@gmail.com>
@@ -84,94 +84,138 @@ Content-Transfer-Encoding: 8bit
 
 From: Mohsin Bashir <hmohsin@meta.com>
 
-Decouple basic_groups from the set_nshapers test dependency. The
-test was gated on cfg.netdev which is set by set_nshapers. Replace
-with direct capability checks: netdev scope support (required for
-grouping under netdev handle) and queue scope nesting + weight.
+Add a test that groups queues under the netdev parent with rate
+limiting enabled. Extract the common group-under-netdev flow into
+_group_under_netdev helper to share with basic_groups.
 
-Remove bw-max and metric from the .group call so the test validates
-pure queue grouping without rate limiting. The rate-limited variant is
-restored in the following patch, which adds a dedicated
-basic_groups_with_rate test.
+The test independently checks for netdev scope bw_max and metric
+capabilities before proceeding, and verifies that the netdev
+shaper persists after leaf deletion.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
 ---
- tools/testing/selftests/drivers/net/shaper.py | 40 ++++++++-----------
- 1 file changed, 16 insertions(+), 24 deletions(-)
+ tools/testing/selftests/drivers/net/shaper.py | 83 +++++++++++++++----
+ 1 file changed, 68 insertions(+), 15 deletions(-)
 
 diff --git a/tools/testing/selftests/drivers/net/shaper.py b/tools/testing/selftests/drivers/net/shaper.py
-index 1954f3263f25..45a4bf42995e 100755
+index 45a4bf42995e..168a8dd057e5 100755
 --- a/tools/testing/selftests/drivers/net/shaper.py
 +++ b/tools/testing/selftests/drivers/net/shaper.py
-@@ -168,19 +168,11 @@ def del_nshapers(cfg, nl_shaper) -> None:
+@@ -167,20 +167,25 @@ def del_nshapers(cfg, nl_shaper) -> None:
+     shapers = nl_shaper.get({'ifindex': cfg.ifindex}, dump=True)
      ksft_eq(len(shapers), 0)
  
- def basic_groups(cfg, nl_shaper) -> None:
--    if not cfg.netdev:
--        raise KsftSkipEx("netdev shaper not supported by the device")
-     _require_queues(cfg, 3)
- 
--    try:
--        caps = nl_shaper.cap_get({'ifindex': cfg.ifindex,
--                                  'scope':'queue'})
--    except NlError as e:
--        if e.error == 95:
--            raise KsftSkipEx("shapers not supported by the device")
--        raise
--    if not 'support-weight' in caps:
--        raise KsftSkipEx("device does not support queue scope shapers with weight")
-+    _require_caps(cfg, nl_shaper, 'netdev', [], "netdev scope not supported by the device")
-+    _require_caps(cfg, nl_shaper, 'queue', ['support-nesting', 'support-weight'],
-+                  "queue scope not supported with nesting and weight")
- 
-     node_handle = nl_shaper.group({
-                         'ifindex': cfg.ifindex,
-@@ -188,31 +180,31 @@ def basic_groups(cfg, nl_shaper) -> None:
-                                    'weight': 1},
-                                   {'handle': {'scope': 'queue', 'id': 2},
-                                    'weight': 2}],
--                         'handle': {'scope':'netdev'},
--                         'metric': 'bps',
--                         'bw-max': 10000})
-+                         'handle': {'scope':'netdev'}})
+-def basic_groups(cfg, nl_shaper) -> None:
+-    _require_queues(cfg, 3)
+-
+-    _require_caps(cfg, nl_shaper, 'netdev', [], "netdev scope not supported by the device")
+-    _require_caps(cfg, nl_shaper, 'queue', ['support-nesting', 'support-weight'],
+-                  "queue scope not supported with nesting and weight")
+-
+-    node_handle = nl_shaper.group({
+-                        'ifindex': cfg.ifindex,
+-                        'leaves':[{'handle': {'scope': 'queue', 'id': 1},
+-                                   'weight': 1},
+-                                  {'handle': {'scope': 'queue', 'id': 2},
+-                                   'weight': 2}],
+-                         'handle': {'scope':'netdev'}})
++def _group_under_netdev(cfg, nl_shaper, bw_max=None):
++    r"""Group queues under a netdev-scope node; caller owns node teardown.
++
++        netdev               netdev
++         /  \      del Q1,Q2
++        Q1  Q2     ------->   (netdev node persists)
++    """
++    group_args = {
++        'ifindex': cfg.ifindex,
++        'leaves': [{'handle': {'scope': 'queue', 'id': 1},
++                    'weight': 1},
++                   {'handle': {'scope': 'queue', 'id': 2},
++                    'weight': 2}],
++        'handle': {'scope': 'netdev'}}
++    if bw_max:
++        group_args['metric'] = 'bps'
++        group_args['bw-max'] = bw_max
++
++    node_handle = nl_shaper.group(group_args)
      ksft_eq(node_handle, {'ifindex': cfg.ifindex,
                            'handle': {'scope': 'netdev'}})
  
-+    del_node = defer(_delete_shaper, cfg, nl_shaper, {'scope': 'netdev'})
-+    del_queues = [defer(_delete_shaper, cfg, nl_shaper,
-+                        {'scope': 'queue', 'id': qid})
-+                  for qid in (1, 2)]
-+
-     shaper = nl_shaper.get({'ifindex': cfg.ifindex,
-                             'handle': {'scope': 'queue', 'id': 1}})
+@@ -194,10 +199,29 @@ def basic_groups(cfg, nl_shaper) -> None:
      ksft_eq(shaper, {'ifindex': cfg.ifindex,
                       'parent': {'scope': 'netdev'},
                       'handle': {'scope': 'queue', 'id': 1},
-                      'weight': 1 })
-+    for dq in del_queues:
-+        dq.exec()
+-                     'weight': 1 })
++                     'weight': 1})
+     for dq in del_queues:
+         dq.exec()
  
--    nl_shaper.delete({'ifindex': cfg.ifindex,
--                      'handle': {'scope': 'queue', 'id': 2}})
--    nl_shaper.delete({'ifindex': cfg.ifindex,
--                      'handle': {'scope': 'queue', 'id': 1}})
--
--    # Deleting all the leaves shaper does not affect the node one
--    # when the latter has 'netdev' scope.
++    # Caller owns the node teardown so it can verify the netdev-scope node
++    # survives leaf deletion before removing it.
++    return del_node
++
++def basic_groups(cfg, nl_shaper) -> None:
++    r"""Group queues under a netdev-scope node, then tear it down.
++
++        netdev
++         /  \
++        Q1  Q2
++    """
++    _require_queues(cfg, 3)
++
++    _require_caps(cfg, nl_shaper, 'netdev', [], "netdev scope not supported by the device")
++    _require_caps(cfg, nl_shaper, 'queue', ['support-nesting', 'support-weight'],
++                  "queue scope not supported with nesting and weight")
++
++    del_node = _group_under_netdev(cfg, nl_shaper)
++
      shapers = nl_shaper.get({'ifindex': cfg.ifindex}, dump=True)
--    ksft_eq(len(shapers), 1)
-+    ksft_eq(shapers, [{'ifindex': cfg.ifindex,
-+                       'handle': {'scope': 'netdev'}}])
+     ksft_eq(shapers, [{'ifindex': cfg.ifindex,
+                        'handle': {'scope': 'netdev'}}])
+@@ -206,6 +230,34 @@ def basic_groups(cfg, nl_shaper) -> None:
+     shapers = nl_shaper.get({'ifindex': cfg.ifindex}, dump=True)
+     ksft_eq(len(shapers), 0)
  
--    nl_shaper.delete({'ifindex': cfg.ifindex,
--                      'handle': {'scope': 'netdev'}})
-+    del_node.exec()
++def basic_groups_with_rate(cfg, nl_shaper) -> None:
++    r"""Rate-limited netdev-scope node outlives deletion of its leaves.
++
++        netdev[10kbps]          netdev[10kbps]
++          /  \       del Q1,Q2
++        Q1    Q2     ------->    (node persists)
++    """
++    bw_max = 10000
++
++    _require_queues(cfg, 3)
++
++    _require_caps(cfg, nl_shaper, 'netdev', ['support-bw-max', 'support-metric-bps'],
++                  "device does not support netdev scope rate limiting")
++    _require_caps(cfg, nl_shaper, 'queue', ['support-nesting', 'support-weight'],
++                  "device does not support queue scope shapers with nesting and weight")
++
++    del_node = _group_under_netdev(cfg, nl_shaper, bw_max=bw_max)
++
++    # Deleting all the leaves shaper does not affect the node one
++    # when the latter has 'netdev' scope.
 +    shapers = nl_shaper.get({'ifindex': cfg.ifindex}, dump=True)
-+    ksft_eq(len(shapers), 0)
- 
++    ksft_eq(shapers, [{'ifindex': cfg.ifindex,
++                       'handle': {'scope': 'netdev'},
++                       'metric': 'bps',
++                       'bw-max': bw_max}])
++
++    del_node.exec()
++
  def qgroups(cfg, nl_shaper) -> None:
      _require_queues(cfg, 4)
+     _require_caps(cfg, nl_shaper, 'node',
+@@ -488,6 +540,7 @@ def main() -> None:
+                   set_nshapers,
+                   del_nshapers,
+                   basic_groups,
++                  basic_groups_with_rate,
+                   qgroups,
+                   delegation,
+                   dup_leaves,
 -- 
 2.53.0-Meta
 
