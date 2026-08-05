@@ -1,57 +1,57 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B8A42B73B
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 22:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21395478E57
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 22:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785969880; cv=none; b=O8I5jH40wkNdd3EjpAXUDMz4nSa1kpWmGwGgcRxLsKTDa+q44RTR43lhp1NyOh3Rc37oVLiHJ34gch0Yn2hD/j/I1Q6NVy3k+p2Cszl3tIiO7iEsz7eAQtrdLIsLC653TVKmXcpyTWdg+XnuYeImu3SkXIb5NbP9SFQXBTlM2PQ=
+	t=1785969883; cv=none; b=FTaRv+KY/cFoUMwrmhYdbGnjQR1UpiL+z8nH5vqql4gpf2h1zF7sbzsj6rn+nkD18iKA6KYWpLUt26DB9pDbSUDqyD+/JP5qrxlEu3R5hPA13YP8o4OP4iur9OLT48ka6KvyiQ/OR0oIPAp0NrCwMsFL+OVWPa4pZ7pJPTdK0uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785969880; c=relaxed/simple;
-	bh=1mojQo/yRXo1PCdKozlXf6rgC8SXD5dOULdsWCw6KCE=;
+	s=arc-20240116; t=1785969883; c=relaxed/simple;
+	bh=5QRYdaHzYLMd1OIi/FeuqvpDMR7ho4y3kN+D+5uMtKU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LlibM0ER2TutPTOsINCsP6WmF6TjrkcPjWK4GQXwlAYNLiw5I17L0/p0PAobKvEkADuVp6v5EnBJU7DZWBkfVgRJqUEDerRXsC0gzt8Z8fWARQAP+zOqNP9odimyW6S2zqXpYpygbNBG28Q/VMTDg8P3L8ZlzISGuPWe7MvGzW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gu6bkDY3; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=DIyzY4laOz//ihK1CfdxmqOAVU+Zfo2kXB/gXjjAhnZNGgZxE2FmJyFgLatmrRFjuS4jA8qF/wZ4svaWt+em4DkHnvfuQt9lv9hnTVzb7o9nibiXpzkm7ptkBc669pLkKBL9qrkF+dBB/UzZkQuFHi5EW27gadiSURs+PGhZF9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=l/QqwisH; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gu6bkDY3"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675Hlfo52655400;
-	Wed, 5 Aug 2026 22:44:30 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="l/QqwisH"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675HlrjN316157;
+	Wed, 5 Aug 2026 22:44:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=ZOd588qmGjKj4oBr3
-	gd51bTpFU1ocvtcZNhqs5H3brw=; b=gu6bkDY3m0G/OgVLK4wGfaDMnKEcLcLPj
-	RDKOChNm4fGFA79qI5ANzPvePI9HB1YmRTYTbFBd9BPexdud8l9JUwdluORiZXwE
-	OBCNNLc+eT5nheF0lWaB8uUDUdwIXmGIon+Un4N3cfNj9OwwLmYftbdx3ws5o+KD
-	OdHH59TRKv2SbRAyEMLwFKC6nKFgkWd5UNGDO9NRobrLFHxQpY5TnunufVeQq61U
-	9M60g2JM6opcfVjdDzif/utDSGbkCv4UgHif38GUr6NU5h6a3zmv4mhfLxnmOkQD
-	PYspVcRWVTx3KxejY10UGnTydY0f/hhPKeGFqD8V1X+Mf1BvseSEw==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqwad0-1
+	:mime-version:references:subject:to; s=pp1; bh=ehEmUC7YmgNmZI//a
+	LROybic21o28hl65gzZpo7wk+c=; b=l/QqwisH+3rN7PKl4tJ1GeWMCGkwa65E5
+	uHUXlKJwR4PlHI/6CJS8eXqubJikPqIGTHUE6bat1VpSTjEmHmD64Ga7Rb29v7Bd
+	E6M9g3zZUMqhCvaquq3PwP9V/pp3sJ3Z8IfaLqGIk1fQn7FmXkp1qoBguTzuezpV
+	/AT9r5iXVWuoOOxCp9087Ml5u8lgdMo//AuGHQbOUFjpMi5utUU0B6FNEvUFApgh
+	gR1JrVqGK0U8ypxJMEcszJUxqLKcD5k4cXQO9pmjhAbI/WhiiG3lr2YekB02myIm
+	BRBo3hi3OhcBgephVd57eLL1djvM39tnk+/DB4fK4R+0yyH6PNqGQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a45d26-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 22:44:29 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 675MfJB9016743;
-	Wed, 5 Aug 2026 22:44:28 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qrs1h-1
+	Wed, 05 Aug 2026 22:44:33 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 675MfJSY022281;
+	Wed, 5 Aug 2026 22:44:32 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsv4k8nf7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 22:44:28 +0000 (GMT)
+	Wed, 05 Aug 2026 22:44:32 +0000 (GMT)
 Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 675MiRbY26411610
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 675MiUKN53936464
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Aug 2026 22:44:27 GMT
+	Wed, 5 Aug 2026 22:44:30 GMT
 Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DB1CC58054;
-	Wed,  5 Aug 2026 22:44:26 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2E7EA5805C;
+	Wed,  5 Aug 2026 22:44:30 +0000 (GMT)
 Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ABA105805A;
-	Wed,  5 Aug 2026 22:44:24 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0FCE158054;
+	Wed,  5 Aug 2026 22:44:28 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.67.135.24])
 	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Aug 2026 22:44:24 +0000 (GMT)
+	Wed,  5 Aug 2026 22:44:27 +0000 (GMT)
 From: Mingming Cao <mmc@linux.ibm.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
@@ -59,9 +59,9 @@ Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
         ricklind@linux.ibm.com, nnac123@linux.ibm.com, davemarq@linux.ibm.com,
         vaishnavi@linux.ibm.com, bjking1@linux.ibm.com,
         linuxppc-dev@lists.ozlabs.org, mmc@linux.ibm.com
-Subject: [PATCH net-next v1 4/6] ibmvnic: allocate new buffer pools before releasing the old ones
-Date: Wed,  5 Aug 2026 15:43:59 -0700
-Message-Id: <20260805224401.58791-5-mmc@linux.ibm.com>
+Subject: [PATCH net-next v1 5/6] ibmvnic: allocate a new long term buffer before freeing the old one
+Date: Wed,  5 Aug 2026 15:44:00 -0700
+Message-Id: <20260805224401.58791-6-mmc@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260805224401.58791-1-mmc@linux.ibm.com>
 References: <20260805224401.58791-1-mmc@linux.ibm.com>
@@ -74,147 +74,135 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: oSLV7owBPu5Pw8R-S9e0coTCFU0W_fnM
-X-Proofpoint-ORIG-GUID: QGvzNl445bZsCxLXHJPEvdGo05ihxwD7
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDE4MyBTYWx0ZWRfX6XoQOXk/Datr
- cp+C7VmyIbCw09i2HPZ8DAHIudF9kkfItVdvMveECUeAY3OQaGNgNu96Fp3MXHV9B83Y7NJiM1s
- xBkicvck9rL7MIXgrHxuo7N8P8ejlwo=
-X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a73bccd cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=F51oz-FX4hxmwhorfIgA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDE4MyBTYWx0ZWRfX7paYWYAN6SaJ
- 2QwnA9OD+ZBpgKVYG8NP1Ogh8Labw6IK/OQQHL6AHLX5uDeabDLydBFL4gzKkv+K3/jdD9V9/kW
- QEkXVh7LhRc/5DiEhk13vFzM3ueDYSbXJkh8COwz4pycUrBi+nv7c/OcRMlSKiCiSOYZ7oGHnjF
- LmSY4NA1xtgyDoaKYsea2V2JOH2y0z89/71LJDUfEnZefcnV925/pd6tYEfa69dMJ3Dedl2bhuC
- 9tL7JuK8e4Vx2S3opjlRNZGw10MvD5UHhwbMVamuX/L22u8Yhix9OCp2s85VZ5tK+5xPSCftdN/
- /jd2whg+C+cW9RXEe3TbS/2KmL41/xT2lGj2lNiGdywfP0lJllQjj4Z75UWkF9yawggvz2a74Mz
- vsE2cSDr33h7MqikPTEj3fJ8HbeBwzxqj/d2kBZDDvBmzSQaBlepikibUiX1+rcodYj4r/CCsby
- YTHMURSyOo7rr+YfMSw==
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a73bcd1 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=Yp8KHkDamDrUkzBX:21 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=Jd2wlpY-SieSRpusQl4A:9
+X-Proofpoint-ORIG-GUID: XGHon8NxhBVABKrYKLvE2ZZDxvM0h8PQ
+X-Proofpoint-GUID: 510HcwuozjuAiZZk-pbUNzZna2fqWqgK
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDE4MyBTYWx0ZWRfXxvRzJ2qQehVx
+ tDNtpgr5ET9gTBSfU4Oz/jJoRB5DlwqkmMOg2kJ64ZyUCWOMqILc8grvtBDi2YoDNgXI9J7Q3NZ
+ pDQvdr9YD3qS/dIj/AAGuUzz5NXduHs=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDE4MyBTYWx0ZWRfXyrqKj17NIuta
+ sVWmSiUUwSYyYZKfouicYBxqTSlXI3/+z7F3Sj+Qg6xBAqlYyLllIkBNV/ZSVpJxht+seZYUc/Q
+ HJCPXs2wUvdeGpNgxtw/GnugRL32FAvt2+AJ2z2wOaxZB6bvdcARmvWWsjk5gAxoyFzkdEikDUc
+ jlX3CWckSu5DHqCClcbRuy8/PempuLYe7UPO79NfyoHKsXrTc//PsUNHkWhnpx9ngA1llnietDb
+ 2GVFLw1+U+dnGsxHqXM+Steyi4+cEpzph6fXEDB21x16c7hbLr0gDwZVNTR5Kwfisd/CxIu7VIm
+ vBiUblJTp/VgFv+CV2bSf4DlizmhtFx3/pfPfwJ0srC2T3o1rSJ2h9pHdTYnLuqjLHqJl6/Wn/c
+ DiP6ObWi715GbbFCr3Stqc44mWW1isXDzewoxnVz5tFogMdU4fY9VztJLofHEkzx51cfvlUaZtI
+ xvhuF5+myD/gjvJi5pQ==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-05_05,2026-08-05_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050183
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608050183
 
-An mtu change goes through wait_for_reset() and then init_rx_pools() /
-init_tx_pools(). Those helpers release the existing pools before
-allocating their replacements:
+When an mtu change grows the pools, alloc_long_term_buff() releases the
+existing buffer as soon as it knows the size has changed, and only then
+asks for the replacement:
 
-  release_rx_pools(adapter);
-
-  adapter->rx_pool = kzalloc_objs(struct ibmvnic_rx_pool, num_pools);
-  if (!adapter->rx_pool) {
-          dev_err(dev, "Failed to allocate rx pools\n");
-          return -ENOMEM;
+  if (!reuse_ltb(ltb, size)) {
+          prev = ltb->size;
+          free_long_term_buff(adapter, ltb);
   }
 
-If that allocation fails mid-reset the interface is left with no pools
-and stays down after what should have been a refused mtu change, when
-it could have kept running with the pools it still had.
+  if (ltb->buff) {
+          ...
+  } else {
+          ltb->buff = dma_alloc_coherent(dev, size, &ltb->addr,
+                                         GFP_KERNEL);
+          if (!ltb->buff) {
+                  dev_err(dev, "Couldn't alloc long term buffer\n");
+                  return -ENOMEM;
+          }
 
-Allocate first and only release once the allocation has succeeded. The
-tx side has to swap ->tx_pool and ->tso_pool in together, so that
-release_tx_pools() never sees one set without the other.
+This one is megabytes of physically contiguous memory, so it can fail
+while there is plenty free. By then the old buffer is gone and the pool
+it belongs to has nothing, which takes the interface down.
 
-These are small allocations and failing them is unlikely, so this is
-about the ordering rather than about any failure seen in the field.
-alloc_long_term_buff() has the same shape for a much larger allocation
-on the mtu-grow path and is dealt with next.
+Allocate into a local buffer and only commit it once the allocation has
+succeeded. A failure now returns with the old buffer still in place, so
+the mtu change is refused and the interface keeps running at the size
+it had.
 
-Fixes: 489de956e7a2 ("ibmvnic: Reuse rx pools when possible")
-Fixes: bbd809305bc7 ("ibmvnic: Reuse tx pools when possible")
+Both buffers are live across the swap, so an mtu increase now needs the
+old and the new at once. That makes the allocation somewhat more likely
+to fail in the low memory conditions this is meant to survive, but
+failing with the old buffer intact is still the better outcome: the
+caller can decline the change instead of losing the interface.
+
+The new map id is taken before the old one is released, so the two
+differ across the swap. That is harmless with 255 of them.
+
+Fixes: f8ac0bfa7d7a ("ibmvnic: Reuse LTB when possible")
 Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
 Tested-by: Vaishnavi Bhat <vaishnavi@linux.ibm.com>
 Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 37 ++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index e875f43a1ea1..24c8acc42a93 100644
+index 24c8acc42a93..88d0c231a74f 100644
 --- a/drivers/net/ethernet/ibm/ibmvnic.c
 +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1098,6 +1098,7 @@ static int init_rx_pools(struct net_device *netdev)
+@@ -455,6 +455,7 @@ static bool reuse_ltb(struct ibmvnic_long_term_buff *ltb, int size)
+ static int alloc_long_term_buff(struct ibmvnic_adapter *adapter,
+ 				struct ibmvnic_long_term_buff *ltb, int size)
  {
- 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
++	struct ibmvnic_long_term_buff new_ltb = {};
  	struct device *dev = &adapter->vdev->dev;
-+	struct ibmvnic_rx_pool *new_rx_pool;
- 	struct ibmvnic_rx_pool *rx_pool;
- 	u64 num_pools;
- 	u64 pool_size;		/* # of buffers in one pool */
-@@ -1113,15 +1114,16 @@ static int init_rx_pools(struct net_device *netdev)
- 		goto update_ltb;
- 	}
+ 	u64 prev = 0;
+ 	int rc;
+@@ -464,28 +465,29 @@ static int alloc_long_term_buff(struct ibmvnic_adapter *adapter,
+ 			"LTB size changed from 0x%llx to 0x%x, reallocating\n",
+ 			 ltb->size, size);
+ 		prev = ltb->size;
+-		free_long_term_buff(adapter, ltb);
+-	}
  
--	/* Allocate/populate the pools. */
--	release_rx_pools(adapter);
--
--	adapter->rx_pool = kzalloc_objs(struct ibmvnic_rx_pool, num_pools);
--	if (!adapter->rx_pool) {
-+	/* Allocate before release so a failure keeps the old pools. */
-+	new_rx_pool = kzalloc_objs(struct ibmvnic_rx_pool, num_pools);
-+	if (!new_rx_pool) {
- 		dev_err(dev, "Failed to allocate rx pools\n");
- 		return -ENOMEM;
- 	}
+-	if (ltb->buff) {
+-		dev_dbg(dev, "Reusing LTB [map %d, size 0x%llx]\n",
+-			ltb->map_id, ltb->size);
+-	} else {
+-		ltb->buff = dma_alloc_coherent(dev, size, &ltb->addr,
+-					       GFP_KERNEL);
+-		if (!ltb->buff) {
++		/* Allocate first so failure leaves the old buffer in place. */
++		new_ltb.buff = dma_alloc_coherent(dev, size, &new_ltb.addr,
++						  GFP_KERNEL);
++		if (!new_ltb.buff) {
+ 			dev_err(dev, "Couldn't alloc long term buffer\n");
+ 			return -ENOMEM;
+ 		}
+-		ltb->size = size;
++		new_ltb.size = size;
  
-+	release_rx_pools(adapter);
-+	adapter->rx_pool = new_rx_pool;
+-		ltb->map_id = find_first_zero_bit(adapter->map_ids,
+-						  MAX_MAP_ID);
+-		bitmap_set(adapter->map_ids, ltb->map_id, 1);
++		new_ltb.map_id = find_first_zero_bit(adapter->map_ids,
++						     MAX_MAP_ID);
++		bitmap_set(adapter->map_ids, new_ltb.map_id, 1);
+ 
+ 		dev_dbg(dev,
+ 			"Allocated new LTB [map %d, size 0x%llx was 0x%llx]\n",
+-			 ltb->map_id, ltb->size, prev);
++			 new_ltb.map_id, new_ltb.size, prev);
 +
- 	/* Set num_active_rx_pools early. If we fail below after partial
- 	 * allocation, release_rx_pools() will know how many to look for.
- 	 */
-@@ -1333,6 +1335,8 @@ static int init_tx_pools(struct net_device *netdev)
- {
- 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
- 	struct device *dev = &adapter->vdev->dev;
-+	struct ibmvnic_tx_pool *new_tso_pool;
-+	struct ibmvnic_tx_pool *new_tx_pool;
- 	int num_pools;
- 	u64 pool_size;		/* # of buffers in pool */
- 	u64 buff_size;
-@@ -1349,26 +1353,25 @@ static int init_tx_pools(struct net_device *netdev)
- 		goto update_ltb;
++		free_long_term_buff(adapter, ltb);
++		*ltb = new_ltb;
++	} else {
++		dev_dbg(dev, "Reusing LTB [map %d, size 0x%llx]\n",
++			ltb->map_id, ltb->size);
  	}
  
--	/* Allocate/populate the pools. */
--	release_tx_pools(adapter);
--
-+	/* Allocate before release so a failure keeps the old pools. */
- 	pool_size = adapter->req_tx_entries_per_subcrq;
- 	num_pools = adapter->num_active_tx_scrqs;
- 
--	adapter->tx_pool = kzalloc_objs(struct ibmvnic_tx_pool, num_pools);
--	if (!adapter->tx_pool)
-+	new_tx_pool = kzalloc_objs(struct ibmvnic_tx_pool, num_pools);
-+	if (!new_tx_pool)
- 		return -ENOMEM;
- 
--	adapter->tso_pool = kzalloc_objs(struct ibmvnic_tx_pool, num_pools);
--	/* To simplify release_tx_pools() ensure that ->tx_pool and
--	 * ->tso_pool are either both NULL or both non-NULL.
--	 */
--	if (!adapter->tso_pool) {
--		kfree(adapter->tx_pool);
--		adapter->tx_pool = NULL;
-+	new_tso_pool = kzalloc_objs(struct ibmvnic_tx_pool, num_pools);
-+	if (!new_tso_pool) {
-+		kfree(new_tx_pool);
- 		return -ENOMEM;
- 	}
- 
-+	/* Swap both in together for release_tx_pools(). */
-+	release_tx_pools(adapter);
-+	adapter->tx_pool = new_tx_pool;
-+	adapter->tso_pool = new_tso_pool;
-+
- 	/* Set num_active_tx_pools early. If we fail below after partial
- 	 * allocation, release_tx_pools() will know how many to look for.
- 	 */
+ 	/* Ensure ltb is zeroed - specially when reusing it. */
 -- 
 2.50.1 (Apple Git-155)
 
