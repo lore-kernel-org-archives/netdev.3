@@ -1,79 +1,35 @@
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4A53CFF6B
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 03:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3A417B418;
+	Wed,  5 Aug 2026 03:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785899422; cv=none; b=hCs6P6oFtLKVIYtY/tiwIMHuER+0LkVqcbcwJbbxh/uDJSoEP9KH/66qjPoti2nKvt62CzjdfsALNp8EV/deLDfCeOpc+q4FDEVoO/ThBra2EkuuD/gxRSzkeMB2tiwfxVF6kj7W+F1Iv6nOwVhw/vYtCmFO9K/p2Pmk3gb+wmI=
+	t=1785899447; cv=none; b=FFnfSBHgxEOhup9PvRf9TwW/6/hwAgUUA7BM/hf5T+eWzNh9qlsRGeqbFypOIXCYMMZH6tzeJMwyLHamzgJEeAE6kCfNRo8jOzbHnyaHeBW4X1PIGZHQ/myXfQzjuYnCOiiF0fIqG14hFfmM/55Vn08BqkkTtGqfIR52lmg47no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785899422; c=relaxed/simple;
-	bh=Ew9kqnx7gNLh63gLTyVSPNRcNPey74+hcBLknh/TAH0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIAa0JsHyoyb0c4rd/xk9IFLdSfR7m62DTY9Xje2Lrtg77auBLKfoXNab8ZtjSDhXnakj2kDMV3CwXjEihn8N0w66uXoT58E7vVYKmbYGG+v86ju3hFBGn2164wLyq37fom6KbZqWKU0lxgmKqpeB3c0xRpGern/7/mD3hIAr04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fffVNSwF; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785899447; c=relaxed/simple;
+	bh=2ZqXvLW/woc8rRZsq+nPVmNHiKeDlXfvIXwmDi7YDFo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FgwglROJJ8oOb0p4xEgmiN/8DjKd9XazxVaQjPDZQnTIxnhQPLGOMygia8o1ZaPspVdtmTaGbtnlr/Na3qLvGy8+7jYufbGFujurlBLJ1mYHemZGFIj34HHlQ+JxqxW07CczgMVAhncDcW+4lGWTXP/NeuOr5m7M6d/zxKXooxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MlYPIRO+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fffVNSwF"
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7e6b554044fso563711a34.0
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 20:10:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785899419; x=1786504219; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lcsQyfByd70EchMKWRKdanf3VR0eB6+yq95Jw1CGYPw=;
-        b=fffVNSwF35pnScmiJy0Gp4fzCbMgu5G1uZpHPxqqfBMgi6BoUoCLdsXE6xAPkCf2XG
-         EP/RIs1SOuKK/HoGfZkTK03EAtzHBcIncvj3uamJoLrAGOKJF9Sq2qrCJz98CpZw9uj2
-         0p5Xaw1yjrdKMG68bG7IYHKySFHtPIZlO5oNpsFT15xMXA6Ces2p1e90+Dx78CLjua9m
-         KfiQijfAR+6jzxTbxYaZFBsM94xVyQs80yWStyg+32wpjzWYhN4tZEngokyoBFnTraRX
-         x3mUQkIa20ex0jSqsrc8ZXZ4zgkBP16dAxqybfRjuRZVMIPynxxePap1O+Ze3vLg5nLw
-         bCBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785899419; x=1786504219;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lcsQyfByd70EchMKWRKdanf3VR0eB6+yq95Jw1CGYPw=;
-        b=PFPqxf9i3cF/LgkHJgIbxCEqTamy6zrlkm9ESYg57MsgAB+HyD86T3nJyeM5HKTGCO
-         lMOGl6GehklgU8kwOGsjcKZLUXOVk4cYYcYkVVjSmtKat8PVngQV13jspz+z/4evMOEk
-         pg14lxoZ9w1++uVLQKLSYgNiypnWkyH6am5D2vZVE41ZvtUxQ/DuMxwvkxHvQBAf0oJt
-         IIQtfoQDEv+9+GawgwRm9hXbPmMBgC4YOnl68aB0Dg5+iSX2SGcuHNF0evv3DyPgY+wQ
-         onD0CYXl8AATBBY9OeCbzNYOlhOItwGbYlSA8dAuQWS+UfmXBhpk7NioEwzQcQneqF8P
-         mxUQ==
-X-Gm-Message-State: AOJu0Yy7wkVvaymuFINvAcJITIToF28nhC4THXPkOP3j/y3IraBbjayX
-	W52FpuxBXdnr3da9nUG+evNnbPXEej/7rLCeBOiAI0P1o/emNfxt06SFqPrfsydz
-X-Gm-Gg: AR+sD10F3Kc2cCvYkVKtpTvcBx9ABvgZdTbbfNRmIznA+6u6V7LGr2uQyINf7L8OeB8
-	5iarAXlYD3JdjtLam60l7Lw8wtW9wsHy5qg/BB+/HLbywRnCtSyTLaj289ELD+WgquAR30LyEcN
-	wt4H2Uib6cDJz8f64PeUcyv6hChlrTHhcPvL7mDtGQzJAlQS0NaI9pBC/YZ/nawka3mBf8MwEQR
-	ewFP99DOxWc02bew0wbWRUbwaz8C2ds5ba3lUAZLEX0Ej2HLMYgw/mNOY1OiZOuymMBWAxwHD14
-	gx+pp0lWA6gXoMC1bnU/voiip7awWV5RlxzdXo8iKo5JOyl11BFg36OWKYbfDgDkcoUURja7+90
-	Tha4fMlk6tRIgwIcULzCY31d/+F9QuLu7a8F8zLsSH1m2ZSMjQlNKyu7uPs4nQoJvirVCOhT+l1
-	H6LvbxIg9F97N5ZVIgTeHN1EATqSpxZ8apL0tyuTQjvgiZSltvweSbBZfsZQU=
-X-Received: by 2002:a05:6820:1990:b0:69d:e4c8:86f6 with SMTP id 006d021491bc7-6ae96e3b5afmr1985507eaf.15.1785899419557;
-        Tue, 04 Aug 2026 20:10:19 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:3a::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6ae93cbf7a9sm1632805eaf.2.2026.08.04.20.10.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 20:10:18 -0700 (PDT)
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	alexander.duyck@gmail.com
-Subject: [PATCH net-next 14/14] selftests: net: shaper: Cover recursive node cleanup
-Date: Tue,  4 Aug 2026 20:09:36 -0700
-Message-ID: <20260805030936.1092907-15-mohsin.bashr@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260805030936.1092907-1-mohsin.bashr@gmail.com>
-References: <20260805030936.1092907-1-mohsin.bashr@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MlYPIRO+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8761F000E9;
+	Wed,  5 Aug 2026 03:10:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785899445;
+	bh=bAd+KNzvws+WJv+IEKjgTMtYXw4jVNu1Mj6pVj3+BVw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=MlYPIRO+mJcmTlZ6wJYn8pNi3xo6mohGnWihLEzi8EDgV4+nCVReQt+jl13p8kJbu
+	 mvpromW7jbpZTVNSuM1gI4YE9eTYon1IruAjv+orZcwe4FaiCRmAQ3FKuEPWKVVJqt
+	 vlDeBR5SPtLqlDpcJMT9D9fkyklUIgNrIfOJE5/qTy/s++Dajzzap0RDxw/xV1WEC9
+	 S6SoxnsSsTIT3b6mWmVZdkERlLYKM6tjHY/5xFKtd2kR/K4uCywF+O5qQv2UyMJG3a
+	 xOAltspnUC6gK1wDzY3T5VD69jJYshZd1AacRRMXndGCd569/ynnAOkq9yQEK2GVnH
+	 7oHgY6l1yY1Aw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19837392666B;
+	Wed,  5 Aug 2026 03:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,96 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] sctp: fix addip_serial increment on ASCONF_ACK
+ allocation failure
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178589940564.3895134.7592284619866823646.git-patchwork-notify@kernel.org>
+Date: Wed, 05 Aug 2026 03:10:05 +0000
+References: <20260804025514.241767-1-l1138897701@163.com>
+In-Reply-To: <20260804025514.241767-1-l1138897701@163.com>
+To: luoqing <l1138897701@163.com>
+Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+ kuba@kernel.org, linux-sctp@vger.kernel.org, lucien.xin@gmail.com,
+ marcelo.leitner@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com
 
-From: Mohsin Bashir <hmohsin@meta.com>
+Hello:
 
-Exercise cleanup of nested nodes after deleting their last queue leaf. The
-test builds a two-level node hierarchy and checks that removing the queue
-also removes both now-empty node shapers.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
----
- tools/testing/selftests/drivers/net/shaper.py | 59 +++++++++++++++++++
- 1 file changed, 59 insertions(+)
+On Tue,  4 Aug 2026 10:55:14 +0800 you wrote:
+> From: Qing Luo <luoqing@kylinos.cn>
+> 
+> In sctp_process_asconf(), when sctp_make_asconf_ack() fails to allocate
+> the ASCONF_ACK chunk due to memory pressure, the code jumps to the
+> done label where asoc->peer.addip_serial is unconditionally incremented.
+> 
+> This leaves the peer's ASCONF (serial N) unacknowledged while the local
+> endpoint now expects serial N+1. When the peer retransmits serial N, it
+> falls into the serial < addip_serial + 1 branch ,
+> which attempts to look up a cached ACK for serial N. No cached ACK
+> exists since the allocation failed, so the retransmission is silently
+> discarded. The peer eventually times out and ABORTs the association.
+> 
+> [...]
 
-diff --git a/tools/testing/selftests/drivers/net/shaper.py b/tools/testing/selftests/drivers/net/shaper.py
-index 9264aeb74a7a..a53316726f69 100755
---- a/tools/testing/selftests/drivers/net/shaper.py
-+++ b/tools/testing/selftests/drivers/net/shaper.py
-@@ -374,6 +374,64 @@ def mixed_parent_group_requires_parent(cfg, nl_shaper) -> None:
-     shapers = nl_shaper.get({'ifindex': cfg.ifindex}, dump=True)
-     ksft_eq(len(shapers), 0)
- 
-+def recursive_empty_node_cleanup(cfg, nl_shaper) -> None:
-+    r"""Deleting the last leaf recursively removes the emptied ancestors.
-+
-+        netdev             netdev
-+          |       del Q0
-+         N1       ------>   (N1 and N2 removed too)
-+          |
-+         N2
-+          |
-+         Q0
-+    """
-+    _require_queues(cfg, 1)
-+    _require_caps(cfg, nl_shaper, 'node',
-+                  ['support-bw-max', 'support-metric-bps', 'support-nesting'],
-+                  "device does not support nested node scope shapers")
-+    _require_caps(cfg, nl_shaper, 'queue',
-+                  ['support-nesting', 'support-weight'],
-+                  "device does not support nested queue scope shapers with weight")
-+
-+    n1_handle = nl_shaper.group({
-+                   'ifindex': cfg.ifindex,
-+                   'leaves':[{'handle': {'scope': 'queue', 'id': 0},
-+                              'weight': 1}],
-+                   'handle': {'scope':'node'},
-+                   'metric': 'bps',
-+                   'bw-max': 10000})
-+    n1_id = n1_handle['handle']['id']
-+    defer(_delete_shaper, cfg, nl_shaper, {'scope': 'queue', 'id': 0})
-+
-+    n2_handle = nl_shaper.group({
-+                   'ifindex': cfg.ifindex,
-+                   'leaves':[{'handle': {'scope': 'queue', 'id': 0},
-+                              'weight': 1}],
-+                   'handle': {'scope':'node'},
-+                   'parent': {'scope': 'node', 'id': n1_id},
-+                   'metric': 'bps',
-+                   'bw-max': 5000})
-+    n2_id = n2_handle['handle']['id']
-+
-+    shaper_q0 = nl_shaper.get({'ifindex': cfg.ifindex,
-+                               'handle': {'scope': 'queue', 'id': 0}})
-+    ksft_eq(shaper_q0, {'ifindex': cfg.ifindex,
-+                        'parent': {'scope': 'node', 'id': n2_id},
-+                        'handle': {'scope': 'queue', 'id': 0},
-+                        'weight': 1})
-+
-+    nl_shaper.delete({'ifindex': cfg.ifindex,
-+                      'handle': {'scope': 'queue', 'id': 0}})
-+
-+    for handle in ({'scope': 'queue', 'id': 0},
-+                   {'scope': 'node', 'id': n2_id},
-+                   {'scope': 'node', 'id': n1_id}):
-+        with ksft_raises(NlError):
-+            nl_shaper.get({'ifindex': cfg.ifindex, 'handle': handle})
-+
-+    shapers = nl_shaper.get({'ifindex': cfg.ifindex}, dump=True)
-+    ksft_eq(len(shapers), 0)
-+
- def _group_under_netdev(cfg, nl_shaper, bw_max=None):
-     r"""Group queues under a netdev-scope node; caller owns node teardown.
- 
-@@ -1293,6 +1351,7 @@ def main() -> None:
-                   set_all_supported_attrs,
-                   invalid_set_preserves_state,
-                   mixed_parent_group_requires_parent,
-+                  recursive_empty_node_cleanup,
-                   basic_groups,
-                   basic_groups_with_rate,
-                   qgroups,
+Here is the summary with links:
+  - [net,v2] sctp: fix addip_serial increment on ASCONF_ACK allocation failure
+    https://git.kernel.org/netdev/net/c/aa2e13ae8d3c
+
+You are awesome, thank you!
 -- 
-2.53.0-Meta
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
