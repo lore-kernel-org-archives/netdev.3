@@ -1,60 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6492F8E99;
-	Wed,  5 Aug 2026 01:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0455A39934C;
+	Wed,  5 Aug 2026 02:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785895028; cv=none; b=ETUMRegPBfGc64HMRiNAalusvzpvRqWExu0/8coeJBWCNLXbUFrZs05wGzCbYVSG/lceOWbkt+W4UFfWXui8PnwzUkxLyT1WzFJAg503p7S5YH4VgyotTUz7m8EqXiKC/oqcr3XoUPNdXtPG213mk+C6l78KFcNQTOI++eYgW9I=
+	t=1785895253; cv=none; b=L5ZbwsfP5d5A3ybZaf0HCz0KyHwlOjvD7oIJR89qz6eKzeMd7L2ZGEyGP5JxWrKE/5HcABWpD1bmORltcc6T3IQ6Ox6ivf06Kvvv06YGvl5GBi1uZgE6WCW8AP3gajil+T5kwWYx6v0KbLJZTSLkIQ15riB3Mj90xKhy34WP7LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785895028; c=relaxed/simple;
-	bh=M3MVCXVMJYy4hgvbkILKhPoEXsVweNVT1+kmnRrxUrA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XAWWCQt66h1HAlsNA4HysiqZc3DRoVtKspVxzyF/UWaYmEDgKp9IRXcG8sKq6IjcopIC3JfvjLdw4Zvy7h6cXpfbKY+5oj0tsApnLkZu6sOxBgWqeN4KtQhsW5LYm73FYCofyw+US/QdQw21gaOyxuTdZMBZ06wOLuxp+/Dn2bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aX3pjgr5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785895253; c=relaxed/simple;
+	bh=DmVsiv+tSFv9CMTDxDlboykZNzn8p/vjDX8gWvgwmeA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ODbAtd//wl5nPc3gU/YL4uPITeBh50wlsgM5Th0F2vwJocOptx/DNPniHW6ho0uvO73htu1d6OTo7eSv6VXF1VKiDT76PzmRQmsu+AlK6aZG9USeAfCh1d2GcZqVTxfPSpi8A4NQc+BQa8Nls0rQk2wufb2QvKqCOW3MCO/oItk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xs5ew/6e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aX3pjgr5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67B51F000E9;
-	Wed,  5 Aug 2026 01:57:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xs5ew/6e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AF21F000E9;
+	Wed,  5 Aug 2026 02:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785895027;
-	bh=7ij/6JhyxuIBKG2aLSNGBxpyckpbChyM9TYkrksBZhc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aX3pjgr5f+Pe+eLzwPJVLoM0oCvvc0rKrutiRS+pSzrZk1ROwBHDpuOvwMPj2nk3S
-	 VOM7yunbq9sNH45BqIiXiOGk7e6FfZxai/wuacL59pVP516Nvtr3/S423rHSThX3Zu
-	 BSmkLitkqRt5q7CYImzCUsknyMxvqwvCOn1p4aaOX4c6zADgGXqcGvfSov+JY+RVKX
-	 elJVg6FnYK+ijyHwCABJaXaSvXs9B9WuPnQTDT9Be/z6PhqGuCbxdJZTsb9LigD7bi
-	 EwPhx/ULr31tXB1i/hHf1+zvU+paAwmUnMQX+/hTCeuKOYlFNXJY9fga2f6gqQIyqe
-	 LTI/n+C/QK4hQ==
-Date: Tue, 4 Aug 2026 18:57:06 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Minhong He <heminhong@kylinos.cn>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org, Dmitry Skorodumov
- <dskr99@gmail.com>, Kees Cook <kees@kernel.org>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: ipvlan: check register_netdevice_notifier()
- error in ipvlan_init_module()
-Message-ID: <20260804185706.49149c53@kernel.org>
-In-Reply-To: <20260803090007.142517-1-heminhong@kylinos.cn>
-References: <20260803090007.142517-1-heminhong@kylinos.cn>
+	s=k20260515; t=1785895251;
+	bh=u+r0VuiMYKrU4ZQUcqVkPTKNhNmr/6D2CqrBJ5bL01k=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Xs5ew/6e6LmSsqAQehghlFUGtlbac1v99tjBgpjEgFumtuIDFi4Eqn2cjfT1e9rl5
+	 9KdlxBnxOhVsb2x7izwMmax35lDFfkQQnUVzEGKUi+htRxLYOVkVJ5EdRO8AlYxex2
+	 MNDhPVAUFPaVbpThp2m5fSJ3pQwaMs4/1YbT7zyQK7cR7EnyZ/UP8+vgm/inNNHsff
+	 SmureWHcN3+tTEEKNZX6Zoxyv6SPrGPOWLsHnkP7xSyae0EZMUHnnxfmZEi01JXGaS
+	 OM1eUICeDE4rwJJEtd1kYzKnJQTCte3fJEQBD6cNeCPlKSlD2MBHUMng4vdse3hr+Q
+	 YLCEtqeXVAreQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199D03926667;
+	Wed,  5 Aug 2026 02:00:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: failover: check register_netdevice_notifier()
+ error in failover_init()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178589521165.3873994.10881764707390746725.git-patchwork-notify@kernel.org>
+Date: Wed, 05 Aug 2026 02:00:11 +0000
+References: <20260731030338.82508-1-heminhong@kylinos.cn>
+In-Reply-To: <20260731030338.82508-1-heminhong@kylinos.cn>
+To: Minhong He <heminhong@kylinos.cn>
+Cc: sridhar.samudrala@intel.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Mon,  3 Aug 2026 17:00:07 +0800 Minhong He wrote:
-> -	register_netdevice_notifier(&ipvlan_notifier_block);
-> +	err = register_netdevice_notifier(&ipvlan_notifier_block);
-> +	if (err)
-> +		return err;
->  #if IS_ENABLED(CONFIG_IPV6)
->  	register_inet6addr_notifier(&ipvlan_addr6_notifier_block);
->  	register_inet6addr_validator_notifier(
+Hello:
 
-You should error check these as well while at it?
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 31 Jul 2026 11:03:38 +0800 you wrote:
+> failover_init() ignores register_netdevice_notifier() errors and always
+> returns success, which can leave the failover module loaded without its
+> netdev notifier registered.
+> 
+> Return the notifier registration result directly so module initialization
+> fails when registration fails.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] net: failover: check register_netdevice_notifier() error in failover_init()
+    https://git.kernel.org/netdev/net-next/c/d13bb65dd2dd
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
