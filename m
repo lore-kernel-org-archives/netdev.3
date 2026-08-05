@@ -1,173 +1,141 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0392748097B
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 15:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12705480DF0;
+	Wed,  5 Aug 2026 15:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785944895; cv=none; b=rZjFIyVjOI0n/RqjiAEpCY0JFj0z8bVuBUSlsZSGFuUH+BhgTSRbRkNWF/wo+Zn2UYQ1ALTur0V5dSbF07XzhL/Erp8DhM6KTu9daTx+SopCVUGeCmzvTyUf+02dQIpL6ak6eEY9USmkgiM8A5UsR93+UnROknZlzrXl64WmvpM=
+	t=1785945059; cv=none; b=EWUiuF1zLdSXe5VPC2QuAlGbwIbDnYEn7RS5if3lA+Q9HwsKB1mXqraA/sK4r7Vt1k1yhhn6ziThjSgLB8dd7Uc0H6Mz2pHG1giR4rq2dNWtkT03SvdR0AFRD7PD6ZKemTdVrr4QoJf79L8IbZuY4r+jJW+gtF9MiQephqT2iyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785944895; c=relaxed/simple;
-	bh=68qYbczBueHVv/P6+UWfWaOWkPxS/jHnPq9HGdYVNCc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hN5p7ZZT/s8xpH0woXbPXp1yU8H0fUSjnIalIjVR5ZfkmkZWFNSrTF2xYPo+m1OSF2ljcKV0c6W2kYl11L072C4Hf/awtv9EtgSTAPQaMw2sHtlek/SRQK0yhmOl07hK4yp4Lo+ZBCyb7uXVVHf+WOlF7FsSHZaDwdwR1GxmSLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=hfum0goS; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1785945059; c=relaxed/simple;
+	bh=T71dU0Pf1E3mV2ot5oMDFULKlJ+UP7HO41aS2E7VY/w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FS0qJNag0vQI/cBge8oONsDcnNF2mCAneIKY7lzn7txIfCO2hrLgLhPyVMIHpeB5hvtcb7Jphds6AgdT6nJn6x8hyOvx60+3MuI5wtvJUnLyqnJrzpzoUCFvA7K68fuFIq4gELLpaSarS7KdqNV6MZFgEuHvrz+3umuLLNoYpxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LvKQ7UuV; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="hfum0goS"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-81ed073fed0so15640587b3.0
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 08:48:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1785944891; x=1786549691; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9L9rwIOD/mR/CCIK6jMEVGbHhQt3xSkLQZawApQTovE=;
-        b=hfum0goS38xCiaNrnoqIzBZ5BA+/NB/PXKbWPhZr1PvTblCARiHnjPf4pIWP5tNR56
-         7NW4bUBHVbqVfLGvhWfdruYHo1b1S1xLPGJxl6nQ4PvRJqIGUVnJyJJZsLkXZL9RLj4m
-         uP996GeIMop5FvNqVIjNAo/jfZC4Af3jkBKxxtTC6Dg05SLkK64NQJwkV5yn6fX1dwMh
-         jkJVBKdn7YFRWClFWZAQ8B4ZJq+0mVnrUx6gZUPdEmKsYXISGjSNS1KoHdl7UthpTf0u
-         sL8ggXZxsLNBcBazd9+2GxbteLh1uW5ywfvrSnIwf71SafdbXcMr4et9PLvHnBZYnaek
-         jk4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785944891; x=1786549691;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9L9rwIOD/mR/CCIK6jMEVGbHhQt3xSkLQZawApQTovE=;
-        b=pRcywEmQr7jplTFoBbO96GSDTa/iYhKU9XRMfIJbDVp/0mO2P3G3xBDJBpy65xtuuI
-         i99oo8qaNVK+f5oUs1zwhPN1Gy6CcJVBBTixBj+6Z41hYCOnchCs3xJby3qSCh8SrFYf
-         4CvLk/yAUf8vFJqzW9+SFUX1HUGAZVuPZ/xy6p6J9avynINaWS1cbmLslqNTtMDGdvh5
-         cucdoCVDKRZ30Jba9hhedk7DkaxBHsRpBUsSV9OI27kwbuT5xCNYgM57XwprZ8A4Woib
-         6Yc6a1GhoHH22axYDITJPJQmoZguxd87mV3ZEYJYbR6TJv5mC2nXKOjTQH5ehY4y6AJp
-         kwyg==
-X-Gm-Message-State: AOJu0YwnZ9DQOVICjHj7vNRke0rGL9WXOdTABMThItL0mqpa3T/meuj6
-	5K1BW3YMAN0aHPTCC2Einipg6Lfdy5FSQJpZt78JNJlMMs4Cxw/pJp7Zy9zfLESYWPUqk+GddEa
-	i2DCS
-X-Gm-Gg: AR+sD12hFdmXewtL5Ylja5rxc6UZ456XyvjOQytO77Ta4mAQM+Mt30w+DGQ4b5GV4ZW
-	rGTW5htF7nt4dzECMhAhVInynHMhFu8bybBH9NW4lxwd3uAQcvLuSoL9fQVKQ8aFZGVSGe24Nb3
-	xmbw/cGGuPDQ/2bCyq8xVZO6AEp7vnBiES1Y4ASyTsaUHw2Ec5VKyeT36OuQ7++P7a38O0J5fXq
-	jwLCcD8xbtWfQseHXMskyPtbPAN1U/qg1zr9oNCIhO08KIGj/CZferK18gDyjzBY7oYuCYe7rm5
-	N5O+wWR2MCzTs1ai7R9VFJFDlzVfqQpZD/XSo+W9T6T4D8KHsWj/qaRZIg9f5YVJyU5MimQZzY9
-	j80L3TVborl8UtMJ899+pfBcTdZwI4XQCrkjYgyAciYhzVi5fYOnqkmJ1F20MqGoA9Ox2zBiBBZ
-	6WFxDWWVnAQ9m7fLUqQ+EH+dQiTd5Hma0Rs/nEdm2RH54R09OocVx0U3AFwUu7X4VpvtS75oBQY
-	n30HI3zQwZocOisZ6+5kfZ+mjU=
-X-Received: by 2002:a05:690c:e0ca:b0:821:e0a:6cd9 with SMTP id 00721157ae682-8210e0a7c2bmr9742477b3.17.1785944891012;
-        Wed, 05 Aug 2026 08:48:11 -0700 (PDT)
-Received: from phoenix.lan (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-82012f4ea2esm23436957b3.0.2026.08.05.08.48.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 08:48:10 -0700 (PDT)
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Cc: dsahern@gmail.com,
-	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2] SECURITY: add threat model
-Date: Wed,  5 Aug 2026 08:48:07 -0700
-Message-ID: <20260805154807.48866-1-stephen@networkplumber.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LvKQ7UuV"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675Flio0137773;
+	Wed, 5 Aug 2026 15:50:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=pdL/87
+	HbrXT57ShNxBphfnUqFHx4yweJgwBFBnb8xP8=; b=LvKQ7UuVGE8i6Q9an6JWfF
+	waDX2rfRyRoo+xcL1Xnl7vgJ9tXyFpDZOUxXXiRwlNNfYlF37ayHFkjPP/cQOWdo
+	5lSj/tndUgCXkDtumBIKoPzGPTql2/AqQx6ELVffVbGV2P45zYL7K6Bk1KBRcPcP
+	+nIsJa7X/nZEHWMXtHW3XL+mCp/X551ifQCUvRbNZSPeHmYdh+mF1Mf9vq6cC7Fb
+	O9ATNk9GjpPikDlRMHyDaL/H44GxuLon/Xcb/ny/Pnb4SSAceNM/AEFZsPwkdLa2
+	NB6k7dGrVUdEWRRgUbTZxaZpedjD850THLrqE+iYEKkJuXXSvX6NJ1qde7z3rJhQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8euu9t2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 15:50:44 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 675Ffc5D002350;
+	Wed, 5 Aug 2026 15:50:43 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qqb9c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 15:50:43 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 675Foc9516253272
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Aug 2026 15:50:38 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BCBA12004B;
+	Wed,  5 Aug 2026 15:50:38 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D74B20040;
+	Wed,  5 Aug 2026 15:50:38 +0000 (GMT)
+Received: from [9.111.207.139] (unknown [9.111.207.139])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  5 Aug 2026 15:50:38 +0000 (GMT)
+Message-ID: <510a8130-847d-46dd-bc64-6b42279d2af3@linux.ibm.com>
+Date: Wed, 5 Aug 2026 17:50:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/2] drivers/s390/net: Enable CONTEXT_ANALYSIS
+To: Heiko Carstens <hca@linux.ibm.com>, Aswin Karuvally
+ <aswin@linux.ibm.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc: linux-s390@vger.kernel.org, netdev@vger.kernel.org
+References: <20260805145032.1409325-1-hca@linux.ibm.com>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260805145032.1409325-1-hca@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: An2SqaTKnpreczmCTaO798ZFAZcfkOJx
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDEyOCBTYWx0ZWRfXxgxQi1ingLRK
+ UmwQWCXZCIJycTEq1+iMI6TJIldfsKukn2LAj1wx5pQ1cID4H2UCT/HXS//MvMDoZmtQTHhXLfH
+ kMA7d9d2d2pbo6VI29lA1BWw9J1xocU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDEyOCBTYWx0ZWRfX/ccjv9HLa7oV
+ AQqvX0znMlgzTYs2KAOz8iQ8JuimetZvGH5KNB8PyCdk+Ott1/jpikoxGecjAsZwJaTwAo21ehj
+ wYy/rpYxqvpnx4S9ajpVqrAM7R/myxpGE9m4uLZshdf5a/s9c+fFdS01khKN0UVUoa9uummt/qg
+ r+M1vwpWJ33QOS4+IGtJF08UpID/FpH3tD371+DexpiK9g3TRiZaZjqo+2LngeYX0ong2dMhxD3
+ 6YKl/tXhFQWjgK4jsZtEK5mTUlDH+t73cIyivjMxyTB7XaSdTwEzAXDXQMRbo6kjC0FwL3mGtFn
+ U7lf8KMUfKybE0iloM9/slyBrvcc91df5r7hlOqnKNpS4Gz+i9yXScXTGE8zsuZcYdghoFj718W
+ NseuDebeixf+BiYN9RD6IoXpbO+4SwfKDSQeKROo/S8Mbl8LFObJ/RDhpvkZCJncUxzdG2pozGA
+ nw2C64hRda1XRa4SHeg==
+X-Proofpoint-GUID: qBNsiRKXO1j-VnDQpgTizEgZo7nYg_4j
+X-Authority-Analysis: v=2.4 cv=KfzidwYD c=1 sm=1 tr=0 ts=6a735bd4 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=gP54STInbiGPwzblvxgA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_05,2026-08-04_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 suspectscore=0 malwarescore=0
+ adultscore=0 clxscore=1015 priorityscore=1501 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050128
 
-Add some new paragraphs to the SECURITY file describing the
-threat model. This may help reduce bogus security vulnerability
-reports generated by AI.
 
-This text is AI generated mostly for AI consumption.
 
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
----
- SECURITY.md | 73 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 73 insertions(+)
+On 05.08.26 16:50, Heiko Carstens wrote:
+> Enable CONTEXT_ANALYSYS for drivers/s390/net.
+> 
+> Static code checking for acquiring and releasing locks used to be done
+> with sparse. That was removed with [1] and replaced with a clang based
+> approach [2]. The new approach requires that each subsystem needs to be
+> explicitly enabled for checking.
+> 
+> Do that for drivers/s390/net. In order to avoid false positives due to
+> conditional locking, disable context analysis for specific functions of
+> the ctcm driver. All comments in ctcm indicate that the code should stay
+> as it is, and that such warnings should be ignored.
+> 
+> Disabling context analysis for specific functions keeps analysis enabled
+> for the rest of a file.
+> 
+> [1] 5b63d0ae94cc ("compiler-context-analysis: Remove Sparse support")
+> [2] 3269701cb256 ("compiler-context-analysis: Add infrastructure for Context Analysis with Clang")
+> 
+> Heiko Carstens (2):
+>   s390/ctcm: Add __context_unsafe() attribute to various functions
+>   drivers/s390/net: Enable CONTEXT_ANALYSIS
+> 
+>  drivers/s390/net/Makefile    |  2 ++
+>  drivers/s390/net/ctcm_fsms.c | 20 +++++++-------------
+>  drivers/s390/net/ctcm_mpc.c  |  6 ++----
+>  3 files changed, 11 insertions(+), 17 deletions(-)
+> 
 
-diff --git a/SECURITY.md b/SECURITY.md
-index d5a7775f..7e771275 100644
---- a/SECURITY.md
-+++ b/SECURITY.md
-@@ -12,6 +12,79 @@ and are best handled via
- For other issues please report bugs to netdev@vger.kernel.org
- and include an example script.
- 
-+Please read the threat model below first. A report should say which
-+version or commit was used, and which privilege boundary is crossed:
-+who the attacker is, and what they gain that they did not already have.
-+Reports that do not identify a boundary will be handled as ordinary bugs
-+on the mailing list.
-+
-+## Threat model
-+
-+The iproute2 utilities (ip, tc, ss, bridge, devlink, rdma, dcb and the
-+rest) are ordinary command line programs. They run with the credentials
-+of the invoking user, and they should not be installed setuid or setgid.
-+
-+Privileged operations are not performed by these programs. They are
-+performed by the kernel, which does its own capability check
-+(CAP_NET_ADMIN and friends) on the netlink socket. There is no privilege
-+boundary inside any iproute2 binary. Anything a user can make iproute2 do
-+through command line arguments, environment variables, or its own
-+configuration files, that user could already do with a program they wrote
-+themselves.
-+
-+The boundary that does exist is data arriving from the kernel: netlink
-+replies and dumps, and procfs and sysfs content. That data may be
-+truncated, of unexpected type or length, or contain names chosen by
-+unprivileged users in another namespace.
-+
-+### In scope
-+
-+- Out of bounds access, memory corruption, or unbounded allocation while
-+  parsing netlink, procfs or sysfs data.
-+- Unsafe file handling (symlink following, TOCTOU) on paths that a less
-+  privileged user can influence, for example under the netns run
-+  directory.
-+
-+### Serious, but not usually a vulnerability
-+
-+These are fixed with priority, and are reported to netdev like any other
-+bug. A CVE is unlikely because no privilege boundary is crossed.
-+
-+- A command that misreports state, or that silently applies something
-+  other than what was requested. An operator may believe a route, rule or
-+  filter is installed when it is not. The case where the result is more
-+  permissive than requested gets the most attention.
-+- "ip netns exec", "ip vrf exec" and similar failing to establish the
-+  intended environment before exec, so the child runs somewhere other
-+  than where the operator expected. The caller was already privileged, so
-+  this is a containment failure rather than an escalation.
-+- Monitor commands (ip monitor, tc monitor, bridge monitor, ss) aborting
-+  or looping on unexpected, truncated or unknown netlink messages. These
-+  are long lived and consume events generated elsewhere on the system, so
-+  losing one is a monitoring gap.
-+
-+### Not in scope
-+
-+- Anything reached only through the command line. Crashes, overflows,
-+  assertion failures and format string issues reached through argv are
-+  bugs to be fixed, not vulnerabilities, because the caller already has
-+  the privileges of the process.
-+- Anything requiring root or CAP_NET_ADMIN to trigger. That is a trusted
-+  caller.
-+- Anything requiring write access to /etc/iproute2, to the binaries, or
-+  to the library path. That is root already.
-+- Memory not freed before exit. These are short lived processes.
-+- sudo or doas rules that grant ip, tc or bridge. Granting those is
-+  equivalent to granting root by design: "ip netns exec" and "tc exec"
-+  run arbitrary commands, and the -batch option reads a file of them.
-+- File capabilities applied to iproute2 binaries. This creates a
-+  privilege boundary that does not otherwise exist and is not supported.
-+- Terminal escape sequences in names originating from the kernel. Output
-+  is not sanitized for terminals. Use -json if the consumer is not a
-+  human.
-+- Static analysis or language model output with no reproducer and no
-+  identified attacker.
-+
- ## Supported Versions
- 
- There are no official "Long Term Support" versions for iproute2.
--- 
-2.53.0
+Acked-by: Alexandra Winter <wintera@linux.ibm.com>
 
