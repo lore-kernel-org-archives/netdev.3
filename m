@@ -1,115 +1,76 @@
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDE241D13F
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 10:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F7D381EA8;
+	Wed,  5 Aug 2026 10:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785925140; cv=none; b=BKUB8jYK4luMjal8PMIfWuQNKKJUKXeH8qh9d+3wraDGrjA2T8RhF0mjKhSy2ERaxZiuJ3a4jZr4Y0ARs1IYMUlpRSoRlkovktBfQIow6MvZoseKKkpkZ/xG3LPg0FKNlxduqvQlJ5McfeSzrYIholDBQOmfdMg/3vLocKC2GkU=
+	t=1785925290; cv=none; b=lXMx4Q3yoWY0ji0DHmZ9QqZZr15qb0qdFw+MKIFzEO1bKie5jTnXqvHBKsXcmruWVUXfQI2EdBI9oxqX1qQpvRe2elNOhsc9pAzAzHfND+NHsdru0r+2oJRkmo9yq3ovG/UMX1UBs21NwgMsUGvQxVV9iBM1bqN7HZtdr3a0yeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785925140; c=relaxed/simple;
-	bh=5LPdUY8vOD7tCOgpEMmMuLSpVOvHw1/BZwcBrOcaa5w=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=TFdCcQ9G0K4JFMp4nuLJBcD47PfCig+6QSEs8hLems8SVN0GXEJKBt00K9JZtJeKGpzXJcHGh1+V3mPkq/BnyKPbYX2xb5d7nMRoEliNWYib2/DC0zhZPlQeVRFqF/k7rIAEki1zZ6z8QYJDbFnjQx6XwTdqL2YNC2kAnJrw+UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=PxI7Q62T; arc=none smtp.client-ip=195.121.94.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+	s=arc-20240116; t=1785925290; c=relaxed/simple;
+	bh=jFcJk6iBFQOwQedR2Pf2NTocslgF6McpwPTGXC2OmbA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mDCMv9bV1GEusS0fEjFtg3+DZM24AdXujT5L8hsJykdfKF0geIg4sHanhtZj+rSsBuS2agJSRQjbV34BdAUAzxHgdVsg49WwcPfuoxaRgh6QtCH8dqZ5h39WRG1blV3ooHbb93XPzXVufWnIxSKWQDe6//oTVSCz+DX31i+tu7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GngL/tec; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="PxI7Q62T"
-X-KPN-MessageId: 0d599585-90b7-11f1-8f54-005056992ed3
-Received: from mta.kpnmail.nl (unknown [10.31.161.191])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 0d599585-90b7-11f1-8f54-005056992ed3;
-	Wed, 05 Aug 2026 12:18:50 +0200 (CEST)
-Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.190])
-	by mta.kpnmail.nl (Halon) with ESMTP
-	id 0d5279f6-90b7-11f1-91d4-00505699891e;
-	Wed, 05 Aug 2026 12:18:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:subject:message-id:to:from:date;
-	bh=ziogFb0ci+ueCyC4nXoTI8IVCsO4t3uaJI6BsJKR554=;
-	b=PxI7Q62Te1qdEYFdgM7FXqkKvqp/j4CAdTBJfNzCPYoC6TimqKRgZH/Xj/K01Wiz9r1CeJNyLozFQ
-	 LXKeCcT5uj6IDWEJ3Bzx0xatipX1pzqTrbDkq4kbKCGzBXyXHH+juUhUJGr8D5zhooGpULgmPQhH0O
-	 ToX7u+EBOJTF9Z0an1HNjDyNNluHlzg3g2EJYXVeOBB7Q082JoG9c6AbcpGkAXox/4EOj55u4AF5N5
-	 1ILnGDan0H+ctXSpVYjJ/zOeakUp7yJpYQ5+vCDaKaBiuoqvrBkDQMX6Yu4WeG0ItPw+Hig3uofsij
-	 VtV5cNdprhVgCVjCmVsypwdUzOjxSNQ==
-X-KPN-MID: 33|Tjcm3NSn66GJSZI9e7XFO9Nvaj3eSYKJK2AUMSxwvh6SgA1PzgEzNGyKhiq1Wi4
- GkhW2CxfXhZO9ndUhJQoTUVwHaefRT05cEoEgAQG0Smo=
-X-CMASSUN: 33|OyO4csm3fn0ePujKOoZ5lESdzTI2BjzEi02ST2IdNORCu713/x9e1pLmST6IyRM
- CNTu9DfZyrjF8Zo1YcG+t0Q==
-X-KPN-VerifiedSender: Yes
-Received: from cpxoxapps-mh02 (cpxoxapps-mh02.personalcloud.so.kpn.org [10.128.135.208])
-	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
-	id 0d46a492-90b7-11f1-916a-005056995d6c;
-	Wed, 05 Aug 2026 12:18:50 +0200 (CEST)
-Date: Wed, 5 Aug 2026 12:18:50 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: brauner@kernel.org, cyphar@cyphar.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <1227047202.267333.1785925130131@kpc.webmail.kpnmail.nl>
-In-Reply-To: <CAAVpQUC7O1yiKQ+3FcGWbDkmcd-LeFc5tCC0vF7QgioVOXvb5Q@mail.gmail.com>
-References: <20260802151212.3294591-1-jkoolstra@xs4all.nl>
- <20260802151212.3294591-5-jkoolstra@xs4all.nl>
- <CAAVpQUC7O1yiKQ+3FcGWbDkmcd-LeFc5tCC0vF7QgioVOXvb5Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 4/4] selftest: Add tests for useful handling
- of LSM denials on SCM_RIGHTS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GngL/tec"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE9A1F00A3A;
+	Wed,  5 Aug 2026 10:21:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785925289;
+	bh=c0FOiFH+JxLfeNTDXOvG818sv5+LuE1N+I4iZ85EToA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GngL/teclGLxJZDCqVqG7DjNeF3A3ohWdCh9Upt2IBGOuCesoBIc0YYtUt+Uh6bKV
+	 Zn5FN0xk3fUoDq6Tfugbarvva/JPiHKohXYGhK3kc17k0YF9e6YhjfJrTa2vMYqowl
+	 DtWXOHUsUXOJZo90wEUW2E1mB2NNn9hCX5i+lJBvicvPb6rxf++XtAQGamqVFeHeEQ
+	 SQ4CZc5L5s8SU/atGeijyQxdvYW4e0vFk96PShfPe/yZY9ovVFdB7uJOJip2SUmkrv
+	 67D7LRBmxMh8Ia4YJqC5sDqrtpwceUpG5UiPC3UEEogvRmC+k07DFjTbNgs/MmzpOI
+	 J6SbxOP3qEOFQ==
+Date: Wed, 5 Aug 2026 11:21:23 +0100
+From: Simon Horman <horms@kernel.org>
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Breno Leitao <leitao@debian.org>, linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, paulros@microsoft.com
+Subject: Re: [PATCH net-next v2] net: mana: Extend RX CQE coalescing up to 8
+ packets
+Message-ID: <20260805102123.GP51943@horms.kernel.org>
+References: <20260731212306.4098773-1-haiyangz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260731212306.4098773-1-haiyangz@linux.microsoft.com>
 
-
-> Op 04-08-2026 19:26 CEST schreef Kuniyuki Iwashima <kuniyu@google.com>:
+On Fri, Jul 31, 2026 at 02:22:53PM -0700, Haiyang Zhang wrote:
+> From: Haiyang Zhang <haiyangz@microsoft.com>
 > 
-> > +TEST_GEN_FILES := scm_rights_denial_lsm.bpf.o
-> > +
-> >  include ../../lib.mk
-> > +include ../bpf.mk
-> > +
-> > +$(OUTPUT)/scm_rights_denial_lsm: $(BPFOBJ)
-> > +$(OUTPUT)/scm_rights_denial_lsm: CFLAGS += -I$(SCRATCH_DIR)/include
-> > +$(OUTPUT)/scm_rights_denial_lsm: LDLIBS += -lelf -lz
-> > diff --git a/tools/testing/selftests/net/af_unix/config b/tools/testing/selftests/net/af_unix/config
-> > index 41dbb03c747e..468f7a0bb64e 100644
-> > --- a/tools/testing/selftests/net/af_unix/config
-> > +++ b/tools/testing/selftests/net/af_unix/config
-> > @@ -2,3 +2,10 @@ CONFIG_AF_UNIX_OOB=y
-> >  CONFIG_UNIX=y
-> >  CONFIG_UNIX_DIAG=m
-> >  CONFIG_USER_NS=y
-> > +CONFIG_BPF=y
-> > +CONFIG_BPF_SYSCALL=y
-> > +CONFIG_BPF_EVENTS=y
-> > +CONFIG_BPF_JIT=y
-> > +CONFIG_SECURITY=y
-> > +CONFIG_BPF_LSM=y
-> > +CONFIG_DEBUG_INFO_BTF=y
+> To support up to 8 packets per CQE, update related CQE processing
+> code and structures.
+> Update ethtool handlers to set this feature.
+> Update per queue stat to show the coalesced CQE counters.
+> This feature is supported on NIC hardware showing the relevant
+> PF flag.
 > 
-> Please sort configs as CI complains.
-> https://patchwork.kernel.org/project/netdevbpf/patch/20260802151212.3294591-5-jkoolstra@xs4all.nl/
-> 
-> 
+> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+> ---
+> v2:
+>   Updated PF flag hanlding, and comments based on AI review.
 
-Oh that is pretty neat!
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-I wasn't aware there was a canonical sorting for the config. This should fix it,
-
-LC_ALL=C sort -c tools/testing/selftests/net/af_unix/config
-
-correct?
-
-If I fix these issues today, any chance we can still get this in before the merge window
-starts again?
-
-Best,
-Jori.
