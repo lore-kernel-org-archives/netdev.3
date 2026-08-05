@@ -1,228 +1,209 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012033.outbound.protection.outlook.com [40.93.195.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EC0360ECF;
-	Wed,  5 Aug 2026 00:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785889150; cv=none; b=cRRsF7V66adHilVwekO4ifMikmqqppuyDiwJGadgtfx6VSxUM0pglNnVopvGuuZdLbEVxbk1clfjLNeqs80myacucJ9U6v9+6PKvGWq0k7X+B+FelH4zEwVDeGS3jxMdI8O1vHwHLJkm4zpRkV2w+4vvj6GKr9i1lEWd5T5kCJI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785889150; c=relaxed/simple;
-	bh=EOvmf++v2273tqKXMyBZXJDCxChTwbTgMGkiL6l16ZI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aj1Q+clCKsYsmt1b0TImpwovxeP8opcpF+Yt25bfeVLbAofH7aqPjPZ05qvfcIirWCVICsSM1D5IVpQ4Ap4LB74hFUtYNvM30b5hiRuwGMTxA0Cs9j33OQOnE3CTcRhtm68LtbK+GTlFcFbRODJ39HJas2uwvvVeqqyISpigFhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VkPSYTiV; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586FE361656
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 00:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785889689; cv=fail; b=IPhwhlOX2gG/BNTmXPBjTKsqHYW2mn1AuDnFfdxLW9CC5pQNDOeSkE7urlcdC0DcrzAj0698AnsQwnUeaUDUpPRKPUbVrTnciy2tX6VTxoP79O/H5GjGCwrvIT6Qaor8eTRkV6zo3X/gkwObVGQUbTuAaFDPvNa/Hbgk+VwEAy0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785889689; c=relaxed/simple;
+	bh=52AuUdu0COjVQNOCGo5J/uhNCfWjer2niINHGkLsAR0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=N57IQzFkQh3MFwABHuW0FjOEJcqORbNtozDNtFDn5vLevsItDtmvUJQ3LiYTtQNt7FryPmndDujsI1fHsW/Dj9ccK2Eu4iibgrmEcYBNJgtHkm7ntWyZd3bAzIhW/oeAIWBp5cpHAd4Lg5uEe7+0SuRqqBSiBzPVw0J+rljA28g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1YbCRuzC; arc=fail smtp.client-ip=40.93.195.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VkPSYTiV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05401F00A3A;
-	Wed,  5 Aug 2026 00:19:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785889149;
-	bh=2Rz3sso58TKbpy+4UEb41C1sF/WgqRYzR7UBDWjF9EQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VkPSYTiVGVisBO34csTTbQUyiSEMsNN0eQ91gEc60I4nc+crUfxqTTdg58X7WpyOr
-	 E89+mJmr7ganS5e87fEkuDPncASHXLCPQwJKI15A4xusRAwagYoLrUL7aHfuZoP38Z
-	 FmzsHMOdV3GW4VNSaJrksvk4auaD03UkVUAI5io5mvh1dDMAVwlBYNW5MeoqEfoujW
-	 u28tZ4dgTdlTHE2driNjsl4EHuuqiIMbOghAFyS1n3qq2EIU/dCciqF9CfJMY9l5rL
-	 XrKPTK5At2RJXsyLH2jX88Xw6ijnsK/j6f+BVeJFdqMg7RH0vhqJsHxvikVYL8sdMG
-	 D4rlfa1G8Wdsg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: pablo@netfilter.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de,
-	horms@kernel.org
-Subject: Re: [PATCH net-next 9/9] netfilter: conntrack: tcp: use UNACK timeout for non-closing RST packets
-Date: Tue,  4 Aug 2026 17:19:07 -0700
-Message-ID: <20260805001908.3985938-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260731153402.851224-10-pablo@netfilter.org>
-References: <20260731153402.851224-10-pablo@netfilter.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1YbCRuzC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FTAwY5I1C53UEWMhNEy8AJVRCi+0UyKH8Tk0a0uqncLYd2XxfC7rdrOHJaXJqgOVelac9V3oh//NfRziWc4JcM2Qfn0NhOanDY4BhP7a5QR6sGXt9TESQDPvBt2VZUjdSsPdn83Pcfl0AYJJfIg0C/7cwlZKfRVEDkRaVO+ubVZQ7wZRGw9cnYkjhBeK99OcDB1QMmvdKy8+lxkw4C+0PX1ND9KFPOARjBvfstK9Od2Q/cc30rahNUgRKv2cd196iuN3x4Ofr1ukfoAfQlUZwyCCU6lrXrueiomCDsang0234XMJ8/E2kYHwQzcmi2fefFEHzUKFdw0p0CIenpuwBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jhU3MRzl+FMo4LfBwEKXknH5XNVfWpJK0xqp+GeV6m0=;
+ b=fdwABIBhAdWCL9Uj+o2/LTUmqIBGdmIuA2bxQk+9as0ULM4XQWDE1T8RazFJXfsoVTjZk+rwGeO9heEZeV9n7hf62YfRIla73Tb41+Z3a3rHgrjIcNHcOZD88weeBvuwVX0nqPfegzv1NYi7oXRX1RcPrZEGNqzf8WlaLyOPlDuxJHW3lbMwuzeN9TbdbXFhphN5zTppXo+cegNfhghBb7HrputF/5hI8nOIc9NfVGRbCkaR0jL286CgP8aJ01YbkGkbm2nnr4fdKug1j6/BC/y7spHgNKDNS+zRxafA6u7YBEuLRz0xgIgXekdBovymGa2sI0xMlm1RNhxLp8AZOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jhU3MRzl+FMo4LfBwEKXknH5XNVfWpJK0xqp+GeV6m0=;
+ b=1YbCRuzCHPqsaGfdgaeKnQsngb8ZN6VyCvqrifHOP2K6RA7vejDs8d0d5E0kuj/OK4XbgzbKSiEQspCnCFi7b85UTcli0E++C1OFlz7uSmcQVSPy00ukkcEekfHPOLGh6VZC4JIKVo7xtXsWU2/qIM46VNSXym8XdCgofOPre/E=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN2PR12MB3485.namprd12.prod.outlook.com (2603:10b6:208:c9::22)
+ by SA3PR12MB7950.namprd12.prod.outlook.com (2603:10b6:806:31c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.16; Wed, 5 Aug
+ 2026 00:28:02 +0000
+Received: from MN2PR12MB3485.namprd12.prod.outlook.com
+ ([fe80::7ac:5acc:f8b7:65c9]) by MN2PR12MB3485.namprd12.prod.outlook.com
+ ([fe80::7ac:5acc:f8b7:65c9%4]) with mapi id 15.21.0270.017; Wed, 5 Aug 2026
+ 00:28:02 +0000
+Message-ID: <1c2694d9-3d4e-4dca-b8be-40cc7f59f594@amd.com>
+Date: Tue, 4 Aug 2026 17:28:00 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] pds_core: fix cmd_regs access racing BAR unmap on
+ reset
+To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Cc: kuba@kernel.org, brett.creeley@amd.com, eric.joyner@amd.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ "Nikhil P. Rao" <nikhil.rao@amd.com>
+References: <20260729055258.1416225-1-nikhil.rao@amd.com>
+ <917affb8-f750-4e11-aade-e4ebf13e96ce@redhat.com>
+Content-Language: en-US
+From: "Rao, Nikhil" <nikhirao@amd.com>
+In-Reply-To: <917affb8-f750-4e11-aade-e4ebf13e96ce@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ2P221CA0002.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5db::12) To MN2PR12MB3485.namprd12.prod.outlook.com
+ (2603:10b6:208:c9::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3485:EE_|SA3PR12MB7950:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5dfff61b-9a3a-43ff-cea7-08def28868fc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|22082099003|18002099003|11063799006|4143699003|10067099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	qXKcuWblOFUMKZcQKc69sw+0WV0VsUj6iojDHEFe7FDj2ijYu21Aylpz83Ng1ccRiZhMjpSWPekQWQyRPopQSasKB/og5ELp7pdguPcfYzsiFydnuYKSCrDbhw5G3vswIViQeB769dDAgFIK8YYbuNK2amf2FxtVs1SXHH+6uebmM+i7inPN8xex0P6BFpyoaxUw3+EJPCm2A/yssEdTGtJ9L4oL1DlAehVVpvUnGawJ60cMqElID7SPKa+gxOpcxeSHp9yAfin1uKzfhxaOLgBjxDkeT6dJDVSaRelwDtQ9n3PaH+CthAlvRWAndTbMwC2TUWrWtNfBLG5wxWvDHYPYq8yxKzhzLqqdkRXZ9+45q4i2X/duHjejPoDHtYoBs4+MsMnbbgdf9NAOFC6MCnTDezAUiSDcS46INdCCRyIfTwsBt0+qg+JoYu7NhjKMMbGhCckWHRvLAsO8a1OllTOxwAiBnI2kCrWJfvRv4OQg9YQkWeu+jkibAX8J2sz8V7H+ZVL88hGF+/NXC5LEFfnor3mnhUK44tLgcXQLCv9vg8wwE+HD/jq5Dvp7M5t0R0CcdyQZrqln6Py025dsCZa/eWta5c1lpCnM7T6EVs0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3485.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(11063799006)(4143699003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OXdtMzEvR0dMQytxN0xqTDIyeE1iS01WdVNhZXMyNFZJQmw3UU51ZmtoenZK?=
+ =?utf-8?B?cjNrVGoyRHFOd3JzUEFyU2R6OU16azNSV0hTclJEU2x6cmtnem1OY2JkN21p?=
+ =?utf-8?B?Y2liZ0wvdDBnUU9SSWk3MDd2amRwR1IrZjA3N25UdDJVVlp2Y2dDanE0SkZL?=
+ =?utf-8?B?SlpXOS9iSEJuL0VHZG1OemJld3FuWWpaSHdwOXkwVWFyZlVyaVJ5L01DNDFv?=
+ =?utf-8?B?TkZoTCtndDZsUmNWSk5EY20vL3diN0Q2OVVSNGJpNURTN1NzNlE1WUcwRjFy?=
+ =?utf-8?B?TXVIK1JWRGZONWt2am9OUlRFVlpmZllVTm4xTS9DWDhwUTVrbW0wRE9SZGRT?=
+ =?utf-8?B?T3ZMQTk3V2pHOXMwSWNrL0U4bnNhN1BPbW5HeEpSN3kyV21RZkhXYm5icXMy?=
+ =?utf-8?B?SHJybjhKbHpJN2ExZE5xNWx6UEVDQzFSMVJ5K3VaQmRqYXpRbWRHSW1SWSsw?=
+ =?utf-8?B?UTliOStjZ2JaRGsrNjVLZ3RvRWc4bEZoZVdLcVRnc3UxYXpQLzJIWW82Qkw3?=
+ =?utf-8?B?a2xYVVM3QldBVlJPbDFJS2tnengvYmlzRXpHY1RvazhacEwvUSt0UHA4NHRI?=
+ =?utf-8?B?Q3ZWOTA3ZVQrZ3dGYXZJSFAxU2E5UU9LSzlGUVl0RGM0TUJ4WXVNS2xWMHJ2?=
+ =?utf-8?B?V1J5QVFUa2lxOU03YnM0c2RYa1o5cXFiNGR1cTZZRmVwaVFrV3NSMFlsQ1FP?=
+ =?utf-8?B?Y3crMDNXOUQzUmRWV0pWLzdqc3E0TkZPYVVGNy9uK2hheWpjQndTcU9kRkk3?=
+ =?utf-8?B?TElxZW5SVHBmUUFUMzVqczQ5MVdqVmFXYnhkNU1XbkFPMUtSU2VPaUNLTXhZ?=
+ =?utf-8?B?UUtRVzh3NFNDa1hOLzgvdDVaTGpKYXA3Q2NFcUZPQkdvYmVyblZJS04zY2Ji?=
+ =?utf-8?B?OFpldnJiZmFWc2RncjZsOU9yZnhJWS9KTDFVcFpDSXJYSURhN1ZPQ2lPQXZM?=
+ =?utf-8?B?eUlhTVgyck9YVUtKY0dIK1JGOUh5RXFyZVcwaUdKK0h1a2dzeGVKRUtRTTJP?=
+ =?utf-8?B?MklWbC9Ebnd0YlN0NkFrNU95cHZtVFd2WXBISDFsNmtGN3VLaS81MHAvem1W?=
+ =?utf-8?B?YTRLNmdDOHJEVnQ3ZjIrbTdtV2Z5NzhrZS9XeW9LLzlLRUNtNndEdGpLcVdp?=
+ =?utf-8?B?NXFCNkZBQXI0WXRJaHlsbC8zSEVYcWx4Q1M5M1d3NnMvcmlGVUg0dUc4MjVy?=
+ =?utf-8?B?NFMrbUx1MGRmTW50UllFQ2l3dnl3UUtZRXFyRUZtWDFWNEloM3dJTHpncHEz?=
+ =?utf-8?B?N0pSMGpIUG9wZ0FMZCs4Q1IxcWFydGMwdGs5dU5EVmk5b3Z2TUpxQWJLcjhQ?=
+ =?utf-8?B?RUwvZkFDNjFXTlRNMk94YlUzdUNqaWptbFZsMG12c29ZRFFpeEc4bTd6ZWYw?=
+ =?utf-8?B?YWo0b2pJdWloeFVPamszbnpmRlJYWkUrdHd1VGx0am14dHZRVFNTTlZPVWta?=
+ =?utf-8?B?VHZsVEY5c0s0OTZDdjJZenJIM1BwZnNOYWJ6eWVDRjdibXJFUG0wUjdqdnA4?=
+ =?utf-8?B?RkxPUlFkK0JNSStwcjJPa2N5N2MwRXVTSUU5ZVYyTmdLbnJiZXRSNFI3SE5l?=
+ =?utf-8?B?VmxpMWYzUmFJTXRBcmRMMG84WUt5dTA1VGZrY2E3c2txUEhUNWtCWUdERjNY?=
+ =?utf-8?B?eUE1dWtCeFl5RSttVHAwZEhVSnZLV1lHcU5Ia1p0aUkwRS82OVdpa21GSG40?=
+ =?utf-8?B?Y3pQZEJOS3hwZ2liWFk0NDN2R2MzbkxhSFFuaUsrTnRoNHdrYkg2WEw0dzNH?=
+ =?utf-8?B?NHhRRURxMWYvaG5qeS9vZzgxcjNjb3JqSy9LNFliSERMVmhPUXAzdnZqSHp5?=
+ =?utf-8?B?V2hXR0VmbURvK1h1OTEvMzBYcXJLZ0p2RU4wanMySXdoS3hGUmJCT0dKK1JP?=
+ =?utf-8?B?bXRaOVhZNHV6YzFWSnZWL0dFYlJ0Qkx0RmxwTGZwd3E2MjZqbk15Z2wxWlA1?=
+ =?utf-8?B?NTVlbCt5Um5QSFRxSzEzOUdtQjhLWXdHbGtSWk10ekdhaDZ0aDVHTk5HSmRN?=
+ =?utf-8?B?TS9TeDdBbk42eXJaWCtPQ1RlV3hTcmtaQkFTRGtMRWM1UjY5bHkvUDB1bXZW?=
+ =?utf-8?B?bTNKNGhvN3FPNzJIS3AxSStUTHN6OC9hTVV5M0JyOG9Yc0VQZFIxc2hjd3JL?=
+ =?utf-8?B?Y3ZtUnYwemkxNmZzMi93TXpIMEt4MW1CU3dBSk1XYW5EeHorMjFGajNXNTVo?=
+ =?utf-8?B?ekVBZlAyL1dOVU80K3dmUE1Ud1BZRXpHTmlwZisyVVdjbkpucWVGMmhodG9R?=
+ =?utf-8?B?NHU0NGErU0ZQeTRUZUtLeEVaZ1l4RDU5ZG9lcHNCb2o0TmNLazIreHhTV0sv?=
+ =?utf-8?B?cURjdWJhZHByUGJSK0pQSCtjZGVsbDNvc2lGMFM3amg2WUlCTmczUT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5dfff61b-9a3a-43ff-cea7-08def28868fc
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3485.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 00:28:02.6350
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nLGEwlqPEXZfDLdwqN7HJYRTiijuCmGpA3w4uSDfXK8ZhBvWl+rfvIss9m/nY5Uw5HZFF6HSpxLrrafd+o5kyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7950
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-netfilter: conntrack: tcp: use UNACK timeout for non-closing RST packets
+On 8/4/2026 3:26 AM, Paolo Abeni wrote:
+> 
+> On 7/29/26 7:52 AM, Nikhil P. Rao wrote:
+>> pdsc_reset_prepare() and pdsc_reset_done()'s pdsc_map_bars() error path
+>> clear/iounmap cmd_regs without devcmd_lock, and pdsc_firmware_update()'s
+>> download loop derefs cmd_regs after dropping and retaking the lock
+>> without re-checking. An FLR concurrent with a devlink flash can unmap
+>> cmd_regs under an in-flight devcmd, causing a NULL deref or a write to
+>> unmapped MMIO.
+>>
+>> Take devcmd_lock across the BAR unmap/remap. Only the PF maps cmd_regs
+>> and runs devcmd, so guard the locking to the PF.
+>>
+>> pdsc_unmap_bars() also clears info_regs, which has its own readers under
+>> config_lock (and a lockless debugfs reader); that teardown race is
+>> pre-existing and handled separately.
+>>
+>> Fixes: e96094c1d11c ("pds_core: Clear BARs on reset")
+>> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+>> Closes: https://sashiko.dev/#/patchset/20260708212222.296202-1-nikhil.rao%40amd.com?part=3
+>> Assisted-by: Claude:claude-opus-4.8
+>> Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+>> ---
+>>   drivers/net/ethernet/amd/pds_core/fw.c   |  6 ++++++
+>>   drivers/net/ethernet/amd/pds_core/main.c | 10 +++++++++-
+>>   2 files changed, 15 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/amd/pds_core/fw.c b/drivers/net/ethernet/amd/pds_core/fw.c
+>> index fa626719e68d..cd7616ed9ef3 100644
+>> --- a/drivers/net/ethernet/amd/pds_core/fw.c
+>> +++ b/drivers/net/ethernet/amd/pds_core/fw.c
+>> @@ -134,6 +134,12 @@ int pdsc_firmware_update(struct pdsc *pdsc, const struct firmware *fw,
+>>
+>>                copy_sz = min_t(unsigned int, buf_sz, fw->size - offset);
+>>                mutex_lock(&pdsc->devcmd_lock);
+>> +             if (!pdsc->cmd_regs) {
+> 
+> Sashiko notes this is still racy:
+> 
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260729055258.1416225-1-nikhil.rao%40amd.com
+> 
+> The issue is marked as a pre-existing one, but IMHO is so strictly
+> related that deserve fixing in the same change.
+Agreed, v2 folds in the cmd_regs part:
 
-This changes the timeout selection in nf_conntrack_tcp_packet() so that an
-RST which leaves the entry in TCP_CONNTRACK_ESTABLISHED (the non-exact
-sequence case from be0502a3f2e9) gets timeouts[TCP_CONNTRACK_UNACK] instead
-of timeouts[TCP_CONNTRACK_CLOSE].  RSTs that conntrack accepts as closing
-the flow are meant to keep using timeouts[new_state].
+https://lore.kernel.org/netdev/20260804235946.177762-1-nikhil.rao@amd.com/T/#u
 
-A few questions below.
+A note on reachability: the path the review describes 
+(pdsc_devcmd_locked() re-arming the health worker during reset, the 
+worker then running pdsc_fw_up() -> pdsc_setup() -> pdsc_identify()) is 
+no longer reachable since cd09971dcc1c ("pds_core: keep the health 
+thread stopped during reset"), which disables the work item across the 
+reset instead of cancelling it.
 
->     Use the UNACK timeout for RST packets that leave the conntrack entry in
->     TCP_CONNTRACK_ESTABLISHED.  Exact-match RSTs and accepted RST packet
->     trains still fall through to timeouts[new_state], which preserves the
->     CLOSE timeout when conntrack accepts the RST as closing the flow.
+I left the download loop alone. An interrupted download is not committed
+to flash: a reset clears the device's update session so a resumed
+download is rejected, and the device verifies the staged image before 
+writing it to a flash slot, reports PDS_RC_BAD_FW rather than activating it.
 
-[Severity: Low]
-Should this carry a Fixes: tag?  The changelog describes a user-visible
-failure (an ESTABLISHED entry expiring after 10 seconds while both TCP
-endpoints stay established), and it names be0502a3f2e9 in prose only, so
-stable tooling has nothing machine-readable to key on.
+On centralizing the check, pdsc_devcmd_with_data() in the
+PLDM series under review for net-next does exactly that. It isn't in
+net, I'll convert pdsc_identify() and pdsc_core_init() to it once that 
+series lands.
 
-There is also a wording tension: be0502a3f2e9's own changelog presented the
-CLOSE timeout for non-exact RSTs as intentional ("With patch, timeout is
-lowered like CLOSE, but connection stays in ESTABLISHED state" / "If no
-challenge ACK is received, the connection will time out after CLOSE
-seconds").  Either adding
+On intr_ctrl, intr_status and db_pages: the readers are quiesced before 
+the unmap -- pdsc_fw_down() runs pdsc_teardown() -> pdsc_dev_uninit(), 
+which frees the interrupts and the queues, so the interrupt and 
+start/stop paths cannot run by then. v2 says this in the commit message.
 
-    Fixes: be0502a3f2e94211 ("netfilter: conntrack: tcp: only close if RST matches exact sequence")
+What is left is debugfs, which outlives a reset: identity_show() reads
+info_regs with no lock or NULL check, and the intr_ctrl regset reads
+through a base captured at file creation. I have not posted a fix for
+those; v2 says they are out of scope rather than claiming they are
+handled elsewhere, as v1 did.
 
-or rewording this as a deliberate policy refinement rather than a bug fix
-would make the two consistent.
-
-[Severity: Low]
-Is there a test that observes this change?  The only in-tree artifact
-covering the inexact in-window RST path,
-tools/testing/selftests/net/netfilter/packetdrill/conntrack_rst_invalid.pkt,
-checks only the state string:
-
-    // in-window but not exact match
-    +0.0 < R	42:42(0)	win 0
-    +0 `conntrack -f $NFCT_IP_VERSION -L -p tcp --dport 8080 2>/dev/null |grep -q ESTABLISHED`
-
-The timeout is now the sole observable difference for that scenario, and it
-is never inspected.
-
-On top of that, the segment labelled "in-window but not exact match" has seq
-before seen[!dir].td_maxack (the peer had acked 3001), so
-nf_conntrack_tcp_packet() rejects it at the "invalid rst" check and never
-reaches the patched timeout selection.  The test's own counter assertion
-agrees:
-
-    // Expect four invalid RSTs
-    +0 `$xtables -v -S INPUT  | grep INVALID | grep -q -- "-c 4 "`
-
-So the suite passes identically with and without this change.
-
-> diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
-> index ceeed3d7fe520..723e946a78f40 100644
-> --- a/net/netfilter/nf_conntrack_proto_tcp.c
-> +++ b/net/netfilter/nf_conntrack_proto_tcp.c
-> @@ -1281,8 +1281,9 @@ int nf_conntrack_tcp_packet(struct nf_conn *ct,
->  	if (ct->proto.tcp.retrans >= tn->tcp_max_retrans &&
->  	    timeouts[new_state] > timeouts[TCP_CONNTRACK_RETRANS])
->  		timeout = timeouts[TCP_CONNTRACK_RETRANS];
-> -	else if (unlikely(index == TCP_RST_SET))
-> -		timeout = timeouts[TCP_CONNTRACK_CLOSE];
-> +	else if (unlikely(index == TCP_RST_SET &&
-> +			  new_state == TCP_CONNTRACK_ESTABLISHED))
-> +		timeout = timeouts[TCP_CONNTRACK_UNACK];
-
-[Severity: Medium]
-Can this new branch lengthen an entry's lifetime rather than shorten it?
-Every sibling branch in this chain only assigns when the replacement is
-smaller, for example the RETRANS branch just above and the UNACK branch just
-below:
-
-    if (ct->proto.tcp.retrans >= tn->tcp_max_retrans &&
-        timeouts[new_state] > timeouts[TCP_CONNTRACK_RETRANS])
-        timeout = timeouts[TCP_CONNTRACK_RETRANS];
-    ...
-    else if ((ct->proto.tcp.seen[0].flags | ct->proto.tcp.seen[1].flags) &
-         IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED &&
-         timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
-        timeout = timeouts[TCP_CONNTRACK_UNACK];
-
-The new branch has no such guard.  Since this branch is only reachable via
-"new_state = old_state;" in case TCP_CONNTRACK_CLOSE, new_state is
-ESTABLISHED here, so the effective comparison is timeouts[UNACK] against
-timeouts[ESTABLISHED].
-
-With the defaults in tcp_timeouts (ESTABLISHED 5 DAYS, UNACK 5 MINS) this is
-always a lowering.  But both values are independently tunable with no
-cross-validation:
-
-    net/netfilter/nf_conntrack_standalone.c:
-    [NF_SYSCTL_CT_PROTO_TIMEOUT_TCP_ESTABLISHED] = {
-        .procname	= "nf_conntrack_tcp_timeout_established",
-        .maxlen		= sizeof(unsigned int),
-        .mode		= 0644,
-        .proc_handler	= proc_dointvec_jiffies,
-    },
-
-and tcp_timeout_nlattr_to_obj() copies CTA_TIMEOUT_TCP_* verbatim.  So an
-administrator lowering nf_conntrack_tcp_timeout_established (120 s is a
-common hardening/NAT-appliance setting) inverts the relation.
-
-__nf_ct_refresh_acct() then writes the expiry absolutely rather than
-clamping it:
-
-    net/netfilter/nf_conntrack_core.c:__nf_ct_refresh_acct() {
-        ...
-        if (nf_ct_is_confirmed(ct))
-            extra_jiffies += nfct_time_stamp;
-
-        if (READ_ONCE(ct->timeout) != extra_jiffies)
-            WRITE_ONCE(ct->timeout, extra_jiffies);
-        ...
-    }
-
-In that configuration, an in-window RST whose sequence does not match
-td_maxack pushes the entry past the configured ESTABLISHED policy, and a
-periodic stream of such RSTs can renew it indefinitely, holding entries
-against nf_conntrack_max.  Would the usual form keep the intent while
-avoiding this?
-
-    timeout = min(timeouts[new_state], timeouts[TCP_CONNTRACK_UNACK]);
-
-or the matching guard:
-
-    else if (unlikely(index == TCP_RST_SET &&
-                      new_state == TCP_CONNTRACK_ESTABLISHED) &&
-             timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
-
->  	else if ((ct->proto.tcp.seen[0].flags | ct->proto.tcp.seen[1].flags) &
->  		 IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED &&
->  		 timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
-
-[Severity: Low]
-For an RST that conntrack does accept as closing the flow, is the CLOSE
-timeout really preserved?  Previously such packets took the unconditional
-timeouts[TCP_CONNTRACK_CLOSE] assignment; now they fall through into the
-DATA_UNACKNOWLEDGED and last_win == 0 branches:
-
-    else if ((ct->proto.tcp.seen[0].flags | ct->proto.tcp.seen[1].flags) &
-         IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED &&
-         timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
-        timeout = timeouts[TCP_CONNTRACK_UNACK];
-    else if (ct->proto.tcp.last_win == 0 &&
-         timeouts[new_state] > timeouts[TCP_CONNTRACK_RETRANS])
-        timeout = timeouts[TCP_CONNTRACK_RETRANS];
-
-Those fire precisely when nf_conntrack_tcp_timeout_close is raised above
-nf_conntrack_tcp_timeout_unacknowledged or the retrans timeout, and both
-preconditions are reachable for a closing RST: IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED
-is commonly set on a flow that carried data, and ct->proto.tcp.last_win is
-sticky since it is only refreshed for ACK-only segments.
-
-This also diverges from the other closing path in the same file, which does
-not cap:
-
-    nf_conntrack_tcp_set_closing() {
-        ...
-        timeout = timeouts[TCP_CONNTRACK_CLOSE];
-        WRITE_ONCE(ct->timeout, timeout + nfct_time_stamp);
-        ...
-    }
-
-Given that, is the changelog sentence "Exact-match RSTs and accepted RST
-packet trains still fall through to timeouts[new_state], which preserves the
-CLOSE timeout when conntrack accepts the RST as closing the flow" accurate
-for non-default close timeouts?  Restoring an explicit CLOSE assignment for
-new_state == TCP_CONNTRACK_CLOSE, or adjusting the wording, would resolve
-it.
+Thanks,
+Nikhil
