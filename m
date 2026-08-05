@@ -1,445 +1,464 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB24A426693
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 16:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785947204; cv=none; b=dzFdDEQq8TXJ26lvP35rX+rfQdnR6MAMgAS16xUokLBfJ09avkpaUQTPI/jveEk04v8RkkdKl9kehoZJS9NRk1PIW5bLcMexWDCh3YQX8Y53y9bfJUddPGs5hNq6TVEpbrh1wfv+UW2bh2s7r6SHqjg1BugIVbjPfSJsBeZgCkY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785947204; c=relaxed/simple;
-	bh=q35q+LY150jSVHsFwjrnCG7oOAAXl4pRFS6xdakSuaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2OPUG/xraK30OyaYUMcZSiMS8wyzDq3QrP1E9usXlTCthrmWdfErvpEvfWdRMS4hSwVNvEGgFtXsGsgV7HRN0G30B8JfnRxThjh7phAywL1W0wT0NN5hIJk+923gZ7UyyIxloYLiE3Nr7M6cXa3ovGYu6ytzNQaJA2JyYFt8ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SkNabz+i; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511D147ACE9
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 16:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785947241; cv=pass; b=IQrEJe5vp70+AlUlJG4qryNrYJdSrEwKz0V9/GlqMZBamkDBDEYzpX9OlQPgbd9jfvs2YTCULUJ9r5x98vf1j/y4v49RylkY4YPiX7oUkITaxDhglPxt5xCs9LWj4Hxdxz8RpEIAqVFTzv9XM7W5hYAkQIqA1WRFYwIxJ5WAQKU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785947241; c=relaxed/simple;
+	bh=SdNoYP4kfEK8orMVcUiXp7J4eXyxN8hmPOSUqD1HSFA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rlS/XzKOcFSvmXvClo1TqfbcCWnu5tOattsExVChDflM43Uip8Yh5VXTNuoFwStiYBZ6qowTyiUAfbvVHzgCylPiyHZgJChtAx1VtgDkvqDB89GCJfzNBad1Gk1jYeYDprVJ6cUA41IKBlL9RXxzHZt6h1jjeSdMdsDhi9SdCVs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CdJzmSPn; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SkNabz+i"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47f904e80eeso1007043f8f.1
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 09:26:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CdJzmSPn"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38e58034d05so1113421a91.2
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 09:27:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785947239; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AcIvGzcI2kWFSGSZYyrCkfOsz7qTZFSFNoKduj0RWZM4zO9cMguF9/arF0FVB4m5hG
+         rMqiokcaM9JwE5Qp2UruyPX1rGEGH5Ypy9JU5n7Q6VScD8ud/FvUk8MeGjHLDX2c9nCz
+         zLQ9xyJCXJ+/h2iyKdhYXGCCG94upPr0PdTSbAiNppjZId7xwUQp9u0Z2l/noLsbI9zd
+         Upw1dgYWXnEWNCQxRtMRFlAEpO4IzGPRdCKe+SvPNF7seB87fX7TSuP/8pDxR5NpjMhz
+         g+BfmNsm+qbGHgfGkMJY344bjXNoJTBKPOmP91YjX/Hk95GcQbCX1g3xVb8pHmRnR/kl
+         virw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=iCFCFzMiEWF4C2Y6A8wT17S8wnGmqWmDkHPtF1Szg2g=;
+        fh=CUL4y2n5JHRW/WQ/+1eo68ofIBCccb/kqJwTWIm2lxI=;
+        b=B4lQw3jYdKpDETZJhLi1hKJHzezo9wkBJ4NqZYXoaI6Lz2MsvFYBlq1Av22k3kCTs/
+         13cJJmdzOaJP4WLVeHterG2AL1am/0gwIeZGDsrVoUFOwNSuy6hnoen1O2WEQdVRr+M2
+         zBGoJSDBTSRwTYfGBQJpLSTG8WlBaxE6m0Sr4um8AzCZRpWmid0vgs7sxPN9vwX62A4Z
+         LCevsYMe7v6WZZC76nmcgdaBcuhZMGcg9Ho2gSvNMwCJCaMVs+gNxyYnrTcKRHu58cXD
+         x/k13UjDvxSC91VReeHgfY44Dx2/+gBOuth5c+DeafxC+3ZyJhtDnh5TaRIC3/TZeNwt
+         xpgA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785947201; x=1786552001; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EABr6wCnu6l+kQ/YHeq0QtFK6yV81xCKsevivpwiuvQ=;
-        b=SkNabz+idpLKorhsyXtVVbnmSYgkUmSu2vU35b96rIF3+Iv85eizVQ50G2p2f3Ie7N
-         sseOqCpRajd34k8IjLFu3LOPRB0OPJJKpM/8Y4fkS9AbW+gGpjdi3jTW7/Fn4sA3W+ce
-         XgL1cSg+Xvqby/zIOL/MqUjysiavPClhmMn56ONQi/LWG6QFGHG0Qi8SCj4Wr6R8tZ4Y
-         kLVTMcUZni+79TrDbtrW6NpOVeIQ1QscQ0GIZY63HJZe6R/LdVRqaU9C8ZYxitR8t4P9
-         tbk6uHdsRIc6IwwGg8eofuGMQ0TjbZDyTRQM63smIcKVzhB8Y5Ulrz0kERsdBjnTh7f1
-         EKiA==
+        d=google.com; s=20251104; t=1785947239; x=1786552039; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=iCFCFzMiEWF4C2Y6A8wT17S8wnGmqWmDkHPtF1Szg2g=;
+        b=CdJzmSPnUvsVahhSFyUPXvokg1E6P0dZwenloYNUwgXUKgXupamvJEpZLbKOdi1GwS
+         g4Gukm0Ccv+Ct2t9bzDUyAswGO1fqM6fwbqWc2aF45xMkbMecuNcQmcn+BJD8Gbklpi+
+         427HR5Sl5fD/4ry5a7mWeaRCKGXzkKJ68uhS98EYmG3SUsAKrtPGYGDB9baJy5p8hfnR
+         S65yBdxCgQ0orW/IZk7jiPfLZpDlMuKFtBpL6vz5SbD2iYRR79k7JQ9+9RVwSi/RahdD
+         +Hs3N922oEeYFvgK+tCCXWmWZLhj7ZwF0mp/KzWmtbicDGWfJ1Rm4dkX1G5Xy63x5dXo
+         5jZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785947201; x=1786552001;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EABr6wCnu6l+kQ/YHeq0QtFK6yV81xCKsevivpwiuvQ=;
-        b=kCVuclbNawDBnkAbvavyJBBz7Z5eGmmcExD2Qg176Y1HvHdaf1fmNGU67zvSCAOy8X
-         PcdtJwkhYlGX3qqjDN5n7fHPSWpc8khWKsi5q8pdz419oGLWCYmdUqn2dxCZ3R0zwBcw
-         Rg0jgsR7hvAkvzEPl9Z6uiKGSxSUzqoSkVJUfoqw5K55zHqmf3g/p9JBfe3HtKxRTLW0
-         lHDw52c0aC2cV7ayob0Ogxm/ACbv2gNy4LrzVWIxcW/BqrxLbE9eLEuJKHqMdI8g+EyC
-         zLKc4IVDLeC22CQot5AWIBZj5qIUli9TUIrJOeYe3y72EFWwboGzqhD7LUNJOAj6upC4
-         Xu9w==
-X-Gm-Message-State: AOJu0YyO9+3IBtMU/WcNz4nj0EC9RHUFCFJg4roSzgqh17a4LwIWzD9X
-	HkIhztIfD0oV3uoOWkKTJp7SJZq01/oDcu89xkmihL/IjNRzYIosm2fPrU7I8Bbrv1w=
-X-Gm-Gg: AR+sD12hkX9gp/6+v/y6QUlFYQD+7+Ckr1ShX/OmyQvSynOJFF+GmiImDvnzJit9Doq
-	zRYNI2WRLj6pFOETaPIyJpQU4jL2bcVl9puK5jF3bofBqSk/3LNcB3yt+lKt27kbiQA2Fo1WHxA
-	7OZj58fagaoX/fp0+nUOhsb2Zkezr7p7QdWzYmUVEs6b8e99TEB0aU5eUp77r8sS3yb2XVFesDs
-	e3K4zhsbQUv2fAG9YOukitThDicB51KZVGbAWG/QY+RJBGBMQRIEk/LaV56JghzuSx2EPT5KtDW
-	xG0BahVFpO6KmA0mpsFHKOo51JHyaw3VEFgu6eA8bL0qHLQSlEWYFbi9itVb+lOzhz29ihpeHip
-	8UosxrJAtCB9VYcal0Q+bODkHuaPU3dLZnm0HHQ0n64IBPdoyy9EOaKhfpQcH8zA7HS99LTz0mZ
-	y5uVNC3ovaVAJo9R+lgpr/gkiOXCJkb4O1upRV9PNYzQP31DyfbtK6M5OK8+Nd0ku/MkyI2N+C1
-	Sph+BiESfr8exL8ktnapg==
-X-Received: by 2002:a5d:48c9:0:b0:47f:8f8f:db74 with SMTP id ffacd0b85a97d-47fec4fc37fmr10713241f8f.12.1785947200770;
-        Wed, 05 Aug 2026 09:26:40 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([194.156.154.185])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec23ede6sm11051703f8f.30.2026.08.05.09.26.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 09:26:40 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: netdev@vger.kernel.org,
-	dev@openvswitch.org
-Cc: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	yihung.wei@gmail.com,
-	pshelar@ovn.org,
-	vega@nebusec.ai,
-	tonanli66@gmail.com,
-	xuyuqiabc@gmail.com,
-	enjou1224z@gmail.com
-Subject: [PATCH net v4 1/1] openvswitch: Fix CT limit teardown use-after-free
-Date: Thu,  6 Aug 2026 00:26:13 +0800
-Message-ID: <07a1967fb56f2b38465cc5b611343827d636f77b.1785908366.git.xuyuqiabc@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1785908366.git.xuyuqiabc@gmail.com>
-References: <cover.1785908366.git.xuyuqiabc@gmail.com>
+        d=1e100.net; s=20251104; t=1785947239; x=1786552039;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iCFCFzMiEWF4C2Y6A8wT17S8wnGmqWmDkHPtF1Szg2g=;
+        b=QrgcauzY1iihBDDzvLxys0aY69XAq26/sY4f4TE5uJv4wfHbNwwRymCe+kBR3HA9Ov
+         hBMU6q6sE5UPsAXY9m6y37mNmjCSfgroXz/oh164hJNNQSk4Yk7pJ6rcjjHj1qRj8+WZ
+         2wuvrGhnZXyogFe4GeseNiztjMPnqGVCSPLwzYkcWtQAALEHj36D5CUBsnlTZMRY775x
+         NdnncCrwH4IB53iA1iqjdzdsLD45DYH8JINQ0jIqJUhveWqLOpcUVWEvS0ePxqdXOpkw
+         1Rm8FPLpo04sgEPuLpsSwZRWnC1vv67aOrZYhAFIMSvTnc2eHEdgOLa97pXRcZHxpESu
+         Qpxw==
+X-Forwarded-Encrypted: i=1; AHgh+RrZRiUAt2AfmyWWtmWvFPQhHaJd0/e3XBVWNnXWu6+apo7eEUXmxHrcTI1zGwSqg4fe6M4ZwXU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5OFMiLxY5Bzqszh9mgmhkChcF7+5yZo4cW3HoSVfnuCye2p4z
+	LWbWZ6eNjL7y/BmuDVa3IswDUWfCkAztl2JkoqeyDSYwUaL+9NZM3nx/2SrzGrnn3Dwzcy/jgD9
+	02vCrqQK0kRI6L+M5rmeubB0wEAZEmOFdLNxu0YKP
+X-Gm-Gg: AR+sD12IzZqd4EK8Fg+vQXWTNDOHUZy1FV+ymCRR2WW6skJaIO+VKX1CIbcloKsLD7O
+	AjEPCMXQREaZ5bkqzhxbRhOTFywXbPeqVeqLyegRsa1UZOUKqXuZUedAOvSPsrLMe55IcmfCiZl
+	hgsH3AoezanoAMXFM8jN4oOG5yO9L+mMRPFlPIjrS1e+tYq5FCLTM7EUuQhNPmTjJ1Cq2xRkAv8
+	2YoXAyEsKkEi8Az2fTzkArutm4YBp2GeKqMbWAuXVvUw6P1aRfRCM0tWDV4m2gMBoadAhEFnx8b
+	M3VsBJl4tS3Vt4kY4acvyCSIO2nEo/5QUkLvgTKGIYsqAX2v7yBhNwDE++gk68e+2QT730boz4D
+	B+RO7i4TMnIYwbzeyQI03Ewm7AdiZMo3JHanSyiNaDtcqsCoQCHUOj19cYq8fmoOo/3fEz1p4Rd
+	ozKrWZfo3zbLwQr/ejdSLnGQ==
+X-Received: by 2002:a17:90b:1d02:b0:37f:fdc8:71b4 with SMTP id
+ 98e67ed59e1d1-3903c599356mr8358635a91.2.1785947237778; Wed, 05 Aug 2026
+ 09:27:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260802151212.3294591-1-jkoolstra@xs4all.nl> <20260802151212.3294591-4-jkoolstra@xs4all.nl>
+ <CAAVpQUCo0r+DDRJ9BT1_2JYmPcsUNnk6aS+oqPvOrO9ruCPUKw@mail.gmail.com> <728282285.265641.1785924552245@kpc.webmail.kpnmail.nl>
+In-Reply-To: <728282285.265641.1785924552245@kpc.webmail.kpnmail.nl>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 5 Aug 2026 09:27:04 -0700
+X-Gm-Features: AUfX_mxhQohYzWGfA7Lqq8SfvJ6zGLNz0BQh7tQjxZv2kLYVFkg8ueyPbUMcRU4
+Message-ID: <CAAVpQUAeNx-_tn7DX8Ah35zv6nzHruSxHcujqSY3r4xS6shcoA@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 3/4] net: af_unix: useful handling of LSM
+ denials on SCM_RIGHTS
+To: Jori Koolstra <jkoolstra@xs4all.nl>
+Cc: brauner@kernel.org, cyphar@cyphar.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Yuqi Xu <xuyuqiabc@gmail.com>
+On Wed, Aug 5, 2026 at 3:09=E2=80=AFAM Jori Koolstra <jkoolstra@xs4all.nl> =
+wrote:
+>
+>
+> > Op 04-08-2026 19:16 CEST schreef Kuniyuki Iwashima <kuniyu@google.com>:
+> >
+> >
+> > On Sun, Aug 2, 2026 at 8:11=E2=80=AFAM Jori Koolstra <jkoolstra@xs4all.=
+nl> wrote:
+> > >
+> > > Right now if some LSM such as Smack denies an AF_UNIX socket peer to
+> > > receive an SCM_RIGHTS fd, the SCM_RIGHTS fd array will be cut short a=
+t
+> > > that point, and MSG_CTRUNC is set on return of recvmsg(). This is
+> > > highly problematic behaviour, because it leaves the receiver
+> > > wondering what happened. As per man page MSG_CTRUNC is supposed to
+> > > indicate that the control buffer was sized too short, but suddenly
+> > > a permission error might result in the exact same flag being set.
+> > > Moreover, the receiver has no chance to determine how many fds got
+> > > originally sent and how many were suppressed.[1]
+> > >
+> > > Add a SO_RIGHTS_NOTRUNC option to UNIX sockets to enable more useful
+> > > handling of LSM denials when receiving SCM_RIGHTS messages: instead o=
+f
+> > > truncating the message at the first blocked fd, keep every fd slot
+> > > and store the LSM errno in the blocked slot. The socket option is
+> > > inherited by the child accept() socket if set on the listen() socket.
+> > >
+> > > [1]: https://github.com/uapi-group/kernel-features#useful-handling-of=
+-lsm-denials-on-scm_rights
+> > >
+> > > Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> > > Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
+> > > ---
+> > >  arch/alpha/include/uapi/asm/socket.h  |  2 ++
+> > >  arch/mips/include/uapi/asm/socket.h   |  2 ++
+> > >  arch/parisc/include/uapi/asm/socket.h |  2 ++
+> > >  arch/sparc/include/uapi/asm/socket.h  |  2 ++
+> > >  include/net/af_unix.h                 |  1 +
+> > >  include/net/scm.h                     | 13 +++------
+> > >  include/uapi/asm-generic/socket.h     |  2 ++
+> > >  net/compat.c                          |  4 +--
+> > >  net/core/scm.c                        | 38 +++++++++++++++++++++++--=
+--
+> > >  net/unix/af_unix.c                    | 12 ++++++++-
+> > >  10 files changed, 61 insertions(+), 17 deletions(-)
+> > >
+> > > diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/includ=
+e/uapi/asm/socket.h
+> > > index 5ef57f88df6b..946a5fad2691 100644
+> > > --- a/arch/alpha/include/uapi/asm/socket.h
+> > > +++ b/arch/alpha/include/uapi/asm/socket.h
+> > > @@ -155,6 +155,8 @@
+> > >  #define SO_INQ                 84
+> > >  #define SCM_INQ                        SO_INQ
+> > >
+> > > +#define SO_RIGHTS_NOTRUNC      85
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >  #if __BITS_PER_LONG =3D=3D 64
+> > > diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/=
+uapi/asm/socket.h
+> > > index 72fb1b006da9..f1641dde135f 100644
+> > > --- a/arch/mips/include/uapi/asm/socket.h
+> > > +++ b/arch/mips/include/uapi/asm/socket.h
+> > > @@ -166,6 +166,8 @@
+> > >  #define SO_INQ                 84
+> > >  #define SCM_INQ                        SO_INQ
+> > >
+> > > +#define SO_RIGHTS_NOTRUNC      85
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >  #if __BITS_PER_LONG =3D=3D 64
+> > > diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/incl=
+ude/uapi/asm/socket.h
+> > > index c16ec36dfee6..f3a3815c7dc2 100644
+> > > --- a/arch/parisc/include/uapi/asm/socket.h
+> > > +++ b/arch/parisc/include/uapi/asm/socket.h
+> > > @@ -147,6 +147,8 @@
+> > >  #define SO_INQ                 0x4052
+> > >  #define SCM_INQ                        SO_INQ
+> > >
+> > > +#define SO_RIGHTS_NOTRUNC      0x4053
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >  #if __BITS_PER_LONG =3D=3D 64
+> > > diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/includ=
+e/uapi/asm/socket.h
+> > > index 71befa109e1c..7907f3b1f0ee 100644
+> > > --- a/arch/sparc/include/uapi/asm/socket.h
+> > > +++ b/arch/sparc/include/uapi/asm/socket.h
+> > > @@ -148,6 +148,8 @@
+> > >  #define SO_INQ                   0x005d
+> > >  #define SCM_INQ                  SO_INQ
+> > >
+> > > +#define SO_RIGHTS_NOTRUNC        0x005e
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >
+> > > diff --git a/include/net/af_unix.h b/include/net/af_unix.h
+> > > index 34f53dde65ce..bb1b3dee02e8 100644
+> > > --- a/include/net/af_unix.h
+> > > +++ b/include/net/af_unix.h
+> > > @@ -49,6 +49,7 @@ struct unix_sock {
+> > >         struct scm_stat         scm_stat;
+> > >         int                     inq_len;
+> > >         bool                    recvmsg_inq;
+> > > +       bool                    scm_rights_notrunc;
+> > >  #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+> > >         struct sk_buff          *oob_skb;
+> > >  #endif
+> > > diff --git a/include/net/scm.h b/include/net/scm.h
+> > > index c52519669349..86ae6bc109ec 100644
+> > > --- a/include/net/scm.h
+> > > +++ b/include/net/scm.h
+> > > @@ -50,8 +50,8 @@ struct scm_cookie {
+> > >  #endif
+> > >  };
+> > >
+> > > -void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm);
+> > > -void scm_detach_fds_compat(struct msghdr *msg, struct scm_cookie *sc=
+m);
+> > > +void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm, bool=
+ notrunc);
+> > > +void scm_detach_fds_compat(struct msghdr *msg, struct scm_cookie *sc=
+m, bool notrunc);
+> > >  int __scm_send(struct socket *sock, struct msghdr *msg, struct scm_c=
+ookie *scm);
+> > >  void __scm_destroy(struct scm_cookie *scm);
+> > >  struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl);
+> > > @@ -107,13 +107,8 @@ void scm_recv(struct socket *sock, struct msghdr=
+ *msg,
+> > >  void scm_recv_unix(struct socket *sock, struct msghdr *msg,
+> > >                    struct scm_cookie *scm, int flags);
+> > >
+> > > -static inline int scm_recv_one_fd(struct file *f, int __user *ufd,
+> > > -                                 unsigned int flags)
+> > > -{
+> > > -       if (!ufd)
+> > > -               return -EFAULT;
+> > > -       return receive_fd(f, ufd, flags);
+> > > -}
+> > > +int scm_recv_one_fd(struct file *f, int __user *ufd, unsigned int fl=
+ags,
+> > > +                   bool notrunc);
+> > >
+> > >  #endif /* __LINUX_NET_SCM_H */
+> > >
+> > > diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-gen=
+eric/socket.h
+> > > index 53b5a8c002b1..84ea7b92936e 100644
+> > > --- a/include/uapi/asm-generic/socket.h
+> > > +++ b/include/uapi/asm-generic/socket.h
+> > > @@ -150,6 +150,8 @@
+> > >  #define SO_INQ                 84
+> > >  #define SCM_INQ                        SO_INQ
+> > >
+> > > +#define SO_RIGHTS_NOTRUNC      85
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >  #if __BITS_PER_LONG =3D=3D 64 || (defined(__x86_64__) && defined(__I=
+LP32__))
+> > > diff --git a/net/compat.c b/net/compat.c
+> > > index d68cf9c3aad5..6bdf4a2c9077 100644
+> > > --- a/net/compat.c
+> > > +++ b/net/compat.c
+> > > @@ -286,7 +286,7 @@ static int scm_max_fds_compat(struct msghdr *msg)
+> > >         return (msg->msg_controllen - sizeof(struct compat_cmsghdr)) =
+/ sizeof(int);
+> > >  }
+> > >
+> > > -void scm_detach_fds_compat(struct msghdr *msg, struct scm_cookie *sc=
+m)
+> > > +void scm_detach_fds_compat(struct msghdr *msg, struct scm_cookie *sc=
+m, bool notrunc)
+> > >  {
+> > >         struct compat_cmsghdr __user *cm =3D
+> > >                 (struct compat_cmsghdr __user *)msg->msg_control_user=
+;
+> > > @@ -296,7 +296,7 @@ void scm_detach_fds_compat(struct msghdr *msg, st=
+ruct scm_cookie *scm)
+> > >         int err =3D 0, i;
+> > >
+> > >         for (i =3D 0; i < fdmax; i++) {
+> > > -               err =3D scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i=
+, o_flags);
+> > > +               err =3D scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i=
+, o_flags, notrunc);
+> > >                 if (err < 0)
+> > >                         break;
+> > >         }
+> > > diff --git a/net/core/scm.c b/net/core/scm.c
+> > > index a73b1eb30fd2..f0d44ecdb11f 100644
+> > > --- a/net/core/scm.c
+> > > +++ b/net/core/scm.c
+> > > @@ -351,7 +351,31 @@ static int scm_max_fds(struct msghdr *msg)
+> > >         return (msg->msg_controllen - sizeof(struct cmsghdr)) / sizeo=
+f(int);
+> > >  }
+> > >
+> > > -void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm)
+> > > +int scm_recv_one_fd(struct file *f, int __user *ufd, unsigned int fl=
+ags,
+> > > +                   bool notrunc)
+> > > +{
+> > > +       int error;
+> > > +
+> > > +       if (!ufd)
+> > > +               return -EFAULT;
+> > > +
+> > > +       error =3D security_file_receive(f);
+> > > +       if (error)
+> > > +               return notrunc ? put_user(error, ufd) : error;
+> > > +
+> > > +       FD_PREPARE(fdf, flags, get_file(f));
+> > > +       if (fdf.err)
+> > > +               return fdf.err;
+> > > +
+> > > +       error =3D put_user(fd_prepare_fd(fdf), ufd);
+> > > +       if (error)
+> > > +               return error;
+> > > +
+> > > +       __receive_sock(fd_prepare_file(fdf));
+> > > +       return fd_publish(fdf);
+> > > +}
+> > > +
+> > > +void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm, bool=
+ notrunc)
+> > >  {
+> > >         struct cmsghdr __user *cm =3D
+> > >                 (__force struct cmsghdr __user *)msg->msg_control_use=
+r;
+> > > @@ -365,12 +389,12 @@ void scm_detach_fds(struct msghdr *msg, struct =
+scm_cookie *scm)
+> > >                 return;
+> > >
+> > >         if (msg->msg_flags & MSG_CMSG_COMPAT) {
+> > > -               scm_detach_fds_compat(msg, scm);
+> > > +               scm_detach_fds_compat(msg, scm, notrunc);
+> > >                 return;
+> > >         }
+> > >
+> > >         for (i =3D 0; i < fdmax; i++) {
+> > > -               err =3D scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i=
+, o_flags);
+> > > +               err =3D scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i=
+, o_flags, notrunc);
+> > >                 if (err < 0)
+> > >                         break;
+> > >         }
+> > > @@ -542,8 +566,12 @@ void scm_recv_unix(struct socket *sock, struct m=
+sghdr *msg,
+> > >         if (!__scm_recv_common(sock->sk, msg, scm, flags))
+> > >                 return;
+> > >
+> > > -       if (scm->fp)
+> > > -               scm_detach_fds(msg, scm);
+> > > +       if (scm->fp) {
+> > > +               struct unix_sock *u;
+> > > +
+> > > +               u =3D unix_sk(sock->sk);
+> > > +               scm_detach_fds(msg, scm, READ_ONCE(u->scm_rights_notr=
+unc));
+> > > +       }
+> > >
+> > >         if (sock->sk->sk_scm_pidfd)
+> > >                 scm_pidfd_recv(msg, scm);
+> > > diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+> > > index 51cbf920130d..03ce23a4ebee 100644
+> > > --- a/net/unix/af_unix.c
+> > > +++ b/net/unix/af_unix.c
+> > > @@ -922,6 +922,7 @@ static bool unix_custom_sockopt(int optname)
+> > >  {
+> > >         switch (optname) {
+> > >         case SO_INQ:
+> > > +       case SO_RIGHTS_NOTRUNC:
+> > >                 return true;
+> > >         default:
+> > >                 return false;
+> > > @@ -957,6 +958,14 @@ static int unix_setsockopt(struct socket *sock, =
+int level, int optname,
+> > >
+> > >                 WRITE_ONCE(u->recvmsg_inq, val);
+> > >                 break;
+> > > +
+> > > +       case SO_RIGHTS_NOTRUNC:
+> > > +               if (val > 1 || val < 0)
+> > > +                       return -EINVAL;
+> > > +
+> > > +               WRITE_ONCE(u->scm_rights_notrunc, val);
+> > > +               break;
+> > > +
+> > >         default:
+> > >                 return -ENOPROTOOPT;
+> > >         }
+> > > @@ -1746,9 +1755,10 @@ static int unix_stream_connect(struct socket *=
+sock, struct sockaddr_unsized *uad
+> > >         init_peercred(newsk, &peercred);
+> > >
+> > >         newu =3D unix_sk(newsk);
+> > > +       otheru =3D unix_sk(other);
+> > >         newu->listener =3D other;
+> > > +       newu->scm_rights_notrunc =3D otheru->scm_rights_notrunc;
+> >
+> > nit: READ_ONCE() is needed here.
+> >
+>
+> Yeah, I was thinking whether to add that or not. We have
+>
+>         newsk->sk_scm_recv_flags =3D other->sk_scm_recv_flags;
+>
+> earlier, so without READ_ONCE(), and earlier there is
+>
+>         unix_state_lock(other);
+>
+> which should make this assignment safe.
 
-Packet processing uses CT limit state under RCU, while netns teardown
-frees that state under ovs_mutex. The CT limit pointer was neither removed
-from readers nor protected by a grace period, allowing packet processing to
-dereference the freed state.
+unix_setsockopt() is called without any lock, and unix_state_lock()
+does not protect the values, so that's why we need WRITE_ONCE()
+and READ_ONCE().
 
-An unprivileged user can trigger this bug from a user and network
-namespace, causing a slab-use-after-free in ovs_ct_execute() when the
-netns is torn down.
+> However, that does not protect necessarily
+> against compiler mangling. Then again, we are reading a bool here, so isn=
+'t this
+> a theoretical concern mostly?
 
-Replace the pointer before freeing the CT limit state, and wait for RCU
-readers before freeing its contents. Keep ovs_mutex only around individual
-CT limit updates, while GET uses the RCU read-side lock for the lifetime of
-the lookup.
+Yes, but KCSAN will detect it (and syzbot will complain).
 
-When netns teardown has already removed the CT limit state, SET and DEL
-complete successfully without changing it. SET frees an allocation that
-could not be installed because teardown won the race.
 
-Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:GPT-5.4
-Co-developed-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
----
-Changes in v4:
+>
+> I am happy to change it though (if only to signal intent), but then the a=
+ccess to
+> sk_scm_recv_flags should also be READ_ONCE(),
 
-- Restore per-entry ovs_mutex locking for CT limit SET and DEL.
-- Treat CT limit updates racing with netns teardown as successful no-ops.
-- Free an uninstalled CT limit allocation and document GET helpers' RCU contract.
-- v3 Link: https://lore.kernel.org/all/cover.1784866791.git.xuyuqiabc@gmail.com/
+This has a bit different context as its actual value, each
+sk_scm_XXX in union, is a bit field, so we don't need to care
+about any load-tearing even though the writer is under yet another
+lock, lock_sock().
 
-Changes in v3:
 
-- Use RCU dereference and a NULL check for CT limit GET requests.
-- Limit ovs_mutex to CT limit updates; do not hold it while preparing replies.
-- Use ovsl_dereference() for update paths and clarify the RCU grace-period comment.
-- v2 Link: https://lore.kernel.org/all/cover.1784711445.git.xuyuqiabc@gmail.com
-
-Changes in v2:
-
-- Sort local declarations modified by this patch in reverse
-  Christmas-tree order.
-- v1 Link: https://lore.kernel.org/all/aa8a1d8dcbac8a13dbdf077a642a66f4c5d81e4b.1784355642.git.xuyuqiabc@gmail.com/
-
- net/openvswitch/conntrack.c | 106 ++++++++++++++++++++++--------------
- net/openvswitch/datapath.h  |   2 +-
- 2 files changed, 65 insertions(+), 43 deletions(-)
-
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index 95697d4e16e6..5fe64bff254a 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -933,10 +933,14 @@ static int ovs_ct_check_limit(struct net *net,
- 			      const struct ovs_conntrack_info *info)
- {
- 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
--	const struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
-+	const struct ovs_ct_limit_info *ct_limit_info;
- 	u32 per_zone_limit, connections;
- 	u32 conncount_key;
- 
-+	ct_limit_info = rcu_dereference(ovs_net->ct_limit_info);
-+	if (!ct_limit_info)
-+		return 0;
-+
- 	conncount_key = info->zone.id;
- 
- 	per_zone_limit = ct_limit_get(ct_limit_info, info->zone.id);
-@@ -1585,40 +1589,47 @@ static void __ovs_ct_free_action(struct ovs_conntrack_info *ct_info)
- #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
- static int ovs_ct_limit_init(struct net *net, struct ovs_net *ovs_net)
- {
-+	struct ovs_ct_limit_info *info;
- 	int i, err;
- 
--	ovs_net->ct_limit_info = kmalloc_obj(*ovs_net->ct_limit_info);
--	if (!ovs_net->ct_limit_info)
-+	info = kmalloc_obj(*info);
-+	if (!info)
- 		return -ENOMEM;
- 
--	ovs_net->ct_limit_info->default_limit = OVS_CT_LIMIT_DEFAULT;
--	ovs_net->ct_limit_info->limits =
-+	info->default_limit = OVS_CT_LIMIT_DEFAULT;
-+	info->limits =
- 		kmalloc_objs(struct hlist_head, CT_LIMIT_HASH_BUCKETS);
--	if (!ovs_net->ct_limit_info->limits) {
--		kfree(ovs_net->ct_limit_info);
-+	if (!info->limits) {
-+		kfree(info);
- 		return -ENOMEM;
- 	}
- 
- 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; i++)
--		INIT_HLIST_HEAD(&ovs_net->ct_limit_info->limits[i]);
-+		INIT_HLIST_HEAD(&info->limits[i]);
- 
--	ovs_net->ct_limit_info->data = nf_conncount_init(net, sizeof(u32));
-+	info->data = nf_conncount_init(net, sizeof(u32));
- 
--	if (IS_ERR(ovs_net->ct_limit_info->data)) {
--		err = PTR_ERR(ovs_net->ct_limit_info->data);
--		kfree(ovs_net->ct_limit_info->limits);
--		kfree(ovs_net->ct_limit_info);
-+	if (IS_ERR(info->data)) {
-+		err = PTR_ERR(info->data);
-+		kfree(info->limits);
-+		kfree(info);
- 		pr_err("openvswitch: failed to init nf_conncount %d\n", err);
- 		return err;
- 	}
-+	rcu_assign_pointer(ovs_net->ct_limit_info, info);
- 	return 0;
- }
- 
- static void ovs_ct_limit_exit(struct net *net, struct ovs_net *ovs_net)
- {
--	const struct ovs_ct_limit_info *info = ovs_net->ct_limit_info;
-+	const struct ovs_ct_limit_info *info;
- 	int i;
- 
-+	info = rcu_replace_pointer(ovs_net->ct_limit_info, NULL,
-+				   lockdep_ovsl_is_held());
-+	/* Wait for RCU readers to stop using the CT limits. */
-+	synchronize_rcu();
-+
- 	nf_conncount_destroy(net, info->data);
- 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
- 		struct hlist_head *head = &info->limits[i];
-@@ -1665,12 +1676,13 @@ static bool check_zone_id(int zone_id, u16 *pzone)
- 	return false;
- }
- 
--static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
--				       struct ovs_ct_limit_info *info)
-+static int ovs_ct_limit_set_zone_limit(struct ovs_net *ovs_net,
-+				       struct nlattr *nla_zone_limit)
- {
- 	struct ovs_zone_limit *zone_limit;
--	int rem;
-+	struct ovs_ct_limit_info *info;
- 	u16 zone;
-+	int rem;
- 
- 	rem = NLA_ALIGN(nla_len(nla_zone_limit));
- 	zone_limit = (struct ovs_zone_limit *)nla_data(nla_zone_limit);
-@@ -1679,7 +1691,9 @@ static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
- 		if (unlikely(zone_limit->zone_id ==
- 				OVS_ZONE_LIMIT_DEFAULT_ZONE)) {
- 			ovs_lock();
--			info->default_limit = zone_limit->limit;
-+			info = ovsl_dereference(ovs_net->ct_limit_info);
-+			if (likely(info))
-+				info->default_limit = zone_limit->limit;
- 			ovs_unlock();
- 		} else if (unlikely(!check_zone_id(
- 				zone_limit->zone_id, &zone))) {
-@@ -1695,8 +1709,13 @@ static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
- 			ct_limit->limit = zone_limit->limit;
- 
- 			ovs_lock();
--			ct_limit_set(info, ct_limit);
-+			info = ovsl_dereference(ovs_net->ct_limit_info);
-+			if (likely(info))
-+				ct_limit_set(info, ct_limit);
- 			ovs_unlock();
-+
-+			if (unlikely(!info))
-+				kfree(ct_limit);
- 		}
- 		rem -= NLA_ALIGN(sizeof(*zone_limit));
- 		zone_limit = (struct ovs_zone_limit *)((u8 *)zone_limit +
-@@ -1709,12 +1728,13 @@ static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
- 	return 0;
- }
- 
--static int ovs_ct_limit_del_zone_limit(struct nlattr *nla_zone_limit,
--				       struct ovs_ct_limit_info *info)
-+static int ovs_ct_limit_del_zone_limit(struct ovs_net *ovs_net,
-+				       struct nlattr *nla_zone_limit)
- {
- 	struct ovs_zone_limit *zone_limit;
--	int rem;
-+	struct ovs_ct_limit_info *info;
- 	u16 zone;
-+	int rem;
- 
- 	rem = NLA_ALIGN(nla_len(nla_zone_limit));
- 	zone_limit = (struct ovs_zone_limit *)nla_data(nla_zone_limit);
-@@ -1723,14 +1743,18 @@ static int ovs_ct_limit_del_zone_limit(struct nlattr *nla_zone_limit,
- 		if (unlikely(zone_limit->zone_id ==
- 				OVS_ZONE_LIMIT_DEFAULT_ZONE)) {
- 			ovs_lock();
--			info->default_limit = OVS_CT_LIMIT_DEFAULT;
-+			info = ovsl_dereference(ovs_net->ct_limit_info);
-+			if (likely(info))
-+				info->default_limit = OVS_CT_LIMIT_DEFAULT;
- 			ovs_unlock();
- 		} else if (unlikely(!check_zone_id(
- 				zone_limit->zone_id, &zone))) {
- 			OVS_NLERR(true, "zone id is out of range");
- 		} else {
- 			ovs_lock();
--			ct_limit_del(info, zone);
-+			info = ovsl_dereference(ovs_net->ct_limit_info);
-+			if (likely(info))
-+				ct_limit_del(info, zone);
- 			ovs_unlock();
- 		}
- 		rem -= NLA_ALIGN(sizeof(*zone_limit));
-@@ -1773,6 +1797,7 @@ static int __ovs_ct_limit_get_zone_limit(struct net *net,
- 	return nla_put_nohdr(reply, sizeof(zone_limit), &zone_limit);
- }
- 
-+/* Called with RCU read lock held. */
- static int ovs_ct_limit_get_zone_limit(struct net *net,
- 				       struct nlattr *nla_zone_limit,
- 				       struct ovs_ct_limit_info *info,
-@@ -1796,12 +1821,10 @@ static int ovs_ct_limit_get_zone_limit(struct net *net,
- 							&zone))) {
- 			OVS_NLERR(true, "zone id is out of range");
- 		} else {
--			rcu_read_lock();
- 			limit = ct_limit_get(info, zone);
- 
- 			err = __ovs_ct_limit_get_zone_limit(
- 				net, info->data, zone, limit, reply);
--			rcu_read_unlock();
- 			if (err)
- 				return err;
- 		}
-@@ -1816,6 +1839,7 @@ static int ovs_ct_limit_get_zone_limit(struct net *net,
- 	return 0;
- }
- 
-+/* Called with RCU read lock held. */
- static int ovs_ct_limit_get_all_zone_limit(struct net *net,
- 					   struct ovs_ct_limit_info *info,
- 					   struct sk_buff *reply)
-@@ -1828,19 +1852,16 @@ static int ovs_ct_limit_get_all_zone_limit(struct net *net,
- 	if (err)
- 		return err;
- 
--	rcu_read_lock();
- 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
- 		head = &info->limits[i];
- 		hlist_for_each_entry_rcu(ct_limit, head, hlist_node) {
- 			err = __ovs_ct_limit_get_zone_limit(net, info->data,
- 				ct_limit->zone, ct_limit->limit, reply);
- 			if (err)
--				goto exit_err;
-+				return err;
- 		}
- 	}
- 
--exit_err:
--	rcu_read_unlock();
- 	return err;
- }
- 
-@@ -1850,7 +1871,6 @@ static int ovs_ct_limit_cmd_set(struct sk_buff *skb, struct genl_info *info)
- 	struct sk_buff *reply;
- 	struct ovs_header *ovs_reply_header;
- 	struct ovs_net *ovs_net = net_generic(sock_net(skb->sk), ovs_net_id);
--	struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
- 	int err;
- 
- 	reply = ovs_ct_limit_cmd_reply_start(info, OVS_CT_LIMIT_CMD_SET,
-@@ -1863,8 +1883,8 @@ static int ovs_ct_limit_cmd_set(struct sk_buff *skb, struct genl_info *info)
- 		goto exit_err;
- 	}
- 
--	err = ovs_ct_limit_set_zone_limit(a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT],
--					  ct_limit_info);
-+	err = ovs_ct_limit_set_zone_limit(ovs_net,
-+					  a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]);
- 	if (err)
- 		goto exit_err;
- 
-@@ -1884,7 +1904,6 @@ static int ovs_ct_limit_cmd_del(struct sk_buff *skb, struct genl_info *info)
- 	struct sk_buff *reply;
- 	struct ovs_header *ovs_reply_header;
- 	struct ovs_net *ovs_net = net_generic(sock_net(skb->sk), ovs_net_id);
--	struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
- 	int err;
- 
- 	reply = ovs_ct_limit_cmd_reply_start(info, OVS_CT_LIMIT_CMD_DEL,
-@@ -1897,8 +1916,8 @@ static int ovs_ct_limit_cmd_del(struct sk_buff *skb, struct genl_info *info)
- 		goto exit_err;
- 	}
- 
--	err = ovs_ct_limit_del_zone_limit(a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT],
--					  ct_limit_info);
-+	err = ovs_ct_limit_del_zone_limit(ovs_net,
-+					  a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]);
- 	if (err)
- 		goto exit_err;
- 
-@@ -1918,7 +1937,7 @@ static int ovs_ct_limit_cmd_get(struct sk_buff *skb, struct genl_info *info)
- 	struct ovs_header *ovs_reply_header;
- 	struct net *net = sock_net(skb->sk);
- 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
--	struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
-+	struct ovs_ct_limit_info *ct_limit_info;
- 	int err;
- 
- 	reply = ovs_ct_limit_cmd_reply_start(info, OVS_CT_LIMIT_CMD_GET,
-@@ -1932,18 +1951,21 @@ static int ovs_ct_limit_cmd_get(struct sk_buff *skb, struct genl_info *info)
- 		goto exit_err;
- 	}
- 
--	if (a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]) {
-+	rcu_read_lock();
-+	ct_limit_info = rcu_dereference(ovs_net->ct_limit_info);
-+	if (!ct_limit_info) {
-+		err = -ENOENT;
-+	} else if (a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]) {
- 		err = ovs_ct_limit_get_zone_limit(
- 			net, a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT], ct_limit_info,
- 			reply);
--		if (err)
--			goto exit_err;
- 	} else {
- 		err = ovs_ct_limit_get_all_zone_limit(net, ct_limit_info,
- 						      reply);
--		if (err)
--			goto exit_err;
- 	}
-+	rcu_read_unlock();
-+	if (err)
-+		goto exit_err;
- 
- 	nla_nest_end(reply, nla_reply);
- 	genlmsg_end(reply, ovs_reply_header);
-diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
-index 696640e88fa7..93e11e468d17 100644
---- a/net/openvswitch/datapath.h
-+++ b/net/openvswitch/datapath.h
-@@ -172,7 +172,7 @@ struct ovs_net {
- 	struct work_struct dp_notify_work;
- 	struct delayed_work masks_rebalance;
- #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
--	struct ovs_ct_limit_info *ct_limit_info;
-+	struct ovs_ct_limit_info __rcu *ct_limit_info;
- #endif
- 	bool xt_label;
- };
--- 
-2.54.0
+> I believe, or it will be needlessly
+> confusing why it is there for one access but not the other.
+>
+> Thanks,
+> Jori.
+>
+> >
+> >
+> > >         RCU_INIT_POINTER(newsk->sk_wq, &newu->peer_wq);
+> > > -       otheru =3D unix_sk(other);
+> > >
+> > >         /* copy address information from listening to new sock
+> > >          *
+> > > --
+> > > 2.55.0
+> > >
