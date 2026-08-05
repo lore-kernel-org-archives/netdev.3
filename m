@@ -1,39 +1,37 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD8B394792
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 14:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130203911D3
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 14:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785940813; cv=none; b=O4eDoogZjC4yKG3SW/UvQbZTTr9mJLGTPWHLg/99QvP5AIr4O2CnfRigT6RmQm4OtoywVAKP5ZZ12HZi13AdOY4BcweXcuAUIXREwbmvfLKrUmcIP+dN1pg6WWqVJkiYCI+yuSCat5q/DmCZQx9HtB3vj8Y9kpfx8bCD4ywBYnw=
+	t=1785940809; cv=none; b=tHcuDUkin4GN7H+YOzjzQYsfn+EhZIqmry+KQ4im/w0iLA6RWw7XvFqV1eKOciLfqLmO/Rg3wS4OrBXsdIbBRBEhMgEkT20+bwfPODKxLSFO3HLIY/9KEpoJfxbnn1fx+1gZkwaFJCBWfsyC8ABzYdIrMqFRPgr3+DozoMUobC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785940813; c=relaxed/simple;
-	bh=JPhZ17j6fWfUE+XhKqrj+B/rza9Wn5Ab1ej9/9m4cCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKBaxPSuYokEqd5y++RYdy+FhxWTma0snTC0o/4rYm33KOfkQITtQiVxj3I1EEzBie0cH3M7Xtu0YEZxqaeJ1nmMypT0N0rzcKuS/tfXybYMnwZK8f6++47jMRtQwwsMeZNBeeg1v+f+4PFgLb9GP9h/CFVatDKmNAVjfmYV1HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=xzMl3a2x; arc=none smtp.client-ip=23.88.38.48
+	s=arc-20240116; t=1785940809; c=relaxed/simple;
+	bh=xWT0z+TEpUWeoSg6kK3/ff/821aREG5NMq9pRVDtkWM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oFuOrhEb/elSpKxwFbn9EfoQMFRWd5jPQbKBXUl+xIyewalsINaFzrD1C7xeKVUV2kn4naWxe9sfLA2MuZKwELdnoH2jZyvStn9+JTDHfJgn2InfXrPc8vfCOC6jcs5R0EPs+dkZFEjBPQE2Vupn7JDs/3bsd89qRdg3TjAFV0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=wQYuQwJy; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="xzMl3a2x"
-Received: from kero.packetmixer.de (p200300c5970b56d88Eebac4310d100Aa.dip0.t-ipconnect.de [IPv6:2003:c5:970b:56d8:8eeb:ac43:10d1:aa])
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="wQYuQwJy"
+Received: from kero.packetmixer.de (p200300C5970B56D88eEBAC4310D100aa.dip0.t-ipconnect.de [IPv6:2003:c5:970b:56d8:8eeb:ac43:10d1:aa])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 0313BFA1DA;
-	Wed, 05 Aug 2026 16:32:07 +0200 (CEST)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 10559FA1BF;
+	Wed, 05 Aug 2026 16:32:05 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1785940328;
+	s=09092022; t=1785940325;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Howpo1a3QB5x6OHOeonqhkoLDqgr8XPk8OtZIK1fu6A=;
-	b=xzMl3a2xgR194p32kbuQcYrYeCVtS4bkWe0BdXJ08w+T87hF3GDcRs49m39WBXoEr1Hujl
-	3noZXxRAFYvr5jT4GRrxazxs52Thd4B2ZoamywO9FEiNBOyHwyHmkW7buA8JDh0wDpC6sa
-	vv3TIRAm6XeVsmbDudb4JzY7/UIZ+QmZq1FS0N94i0CuF6hiHYwhvYQRXmNq6SeTr2oIUM
-	rNsVZ+XgnGlRLsBYJWCTmfs9ta+a6Za4dgAoQP8obKDykbE4D2P50gIAwscWKV9rpBxfNL
-	PmEELCIZrEcH4uVnkMBPatcz7Ad60EfMyarrTNPmXAqkk2Q2LFMrHYpbDwmz8g==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9uzEweOhEpBINPGk4fnNm5R3TblxhZJTHxrpnEQqsi4=;
+	b=wQYuQwJyCrMKxv6tibmy/71pITO7sBIwwd48/cL+kpQjVDZMamHBHA4gYvdD+m4Ei0iG0a
+	/a7mWcqgtLN0lJYWDNfp+cyBJ1pmgCI4onAEDkrFB+QFUJIDW3v/E4+ntEggmJHBQ6jyqU
+	Q8KZxfPg+0BX7CNWLoe4twZQqFkGZzjJkdGS+Q7UuleLlRKq3REviBqPGe7cvGKEKhdhAA
+	fJk+Vas3B0S+SGV9ahe17dit+wR4TJ1n3OZ9av/mGlSKzP+rdi/2efQx9WU8UERJ7mNe7A
+	b2B/a1iH1b+/Ms2LkbhsrzoeYAvnImaCnkwMviC1YYTXYXaCP88K/lV767Cg5g==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -42,14 +40,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 04/10] batman-adv: fix kernel-doc for functions holding skb ownership
-Date: Wed,  5 Aug 2026 16:27:18 +0200
-Message-ID: <20260805143200.722098-5-sw@simonwunderlich.de>
+Subject: [PATCH net-next 00/10] pull request for net-next: batman-adv 2026-08-05
+Date: Wed,  5 Aug 2026 16:27:14 +0200
+Message-ID: <20260805143200.722098-1-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260805143200.722098-1-sw@simonwunderlich.de>
-References: <20260805143200.722098-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,63 +53,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sven Eckelmann <sven@narfation.org>
+Dear net maintainers,
 
-Most functions in batman-adv will take the ownership of an skb when they
-receive it as argument.  Their NET_RX_DROP return value is only indicating
-whether there was direct visible problem while processing it. The caller
-must not try to also free the skb when such a negative return code was
-received.
+here is a cleanup pull request of batman-adv to go into net-next. It
+replaces my previous pull request as of 2026-07-28 [1]. We're including
+only cleanups patches of the previous pull request - some of them revised
+- plus some new cleanup patches. We've dropped the fix patches from the
+previous pull request and will submit those separately, later.
 
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/routing.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+Please pull or let me know of any problem!
 
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index b62a984e73dc0..de0848cce98ab 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -263,8 +263,7 @@ static bool batadv_skb_decrement_ttl(struct sk_buff *skb)
-  * @bat_priv: the bat priv with all the mesh interface information
-  * @skb: icmp packet to process
-  *
-- * Return: NET_RX_SUCCESS if the packet has been consumed or NET_RX_DROP
-- * otherwise.
-+ * Return: NET_RX_SUCCESS on success or NET_RX_DROP in case of failure
-  */
- static int batadv_recv_my_icmp_packet(struct batadv_priv *bat_priv,
- 				      struct sk_buff *skb)
-@@ -986,8 +985,7 @@ static bool batadv_check_unicast_ttvn(struct batadv_priv *bat_priv,
-  * @skb: unicast tvlv packet to process
-  * @recv_if: pointer to interface this packet was received on
-  *
-- * Return: NET_RX_SUCCESS if the packet has been consumed or NET_RX_DROP
-- * otherwise.
-+ * Return: NET_RX_SUCCESS on success or NET_RX_DROP in case of failure
-  */
- int batadv_recv_unhandled_unicast_packet(struct sk_buff *skb,
- 					 struct batadv_hard_iface *recv_if)
-@@ -1120,8 +1118,7 @@ int batadv_recv_unicast_packet(struct sk_buff *skb,
-  * @skb: unicast tvlv packet to process
-  * @recv_if: pointer to interface this packet was received on
-  *
-- * Return: NET_RX_SUCCESS if the packet has been consumed or NET_RX_DROP
-- * otherwise.
-+ * Return: NET_RX_SUCCESS on success or NET_RX_DROP in case of failure
-  */
- int batadv_recv_unicast_tvlv(struct sk_buff *skb,
- 			     struct batadv_hard_iface *recv_if)
-@@ -1177,7 +1174,7 @@ int batadv_recv_unicast_tvlv(struct sk_buff *skb,
-  * the assembled packet will exceed our MTU; 2) Buffer fragment, if we still
-  * lack further fragments; 3) Merge fragments, if we have all needed parts.
-  *
-- * Return: NET_RX_DROP if the skb is not consumed, NET_RX_SUCCESS otherwise.
-+ * Return: NET_RX_SUCCESS on success or NET_RX_DROP in case of failure
-  */
- int batadv_recv_frag_packet(struct sk_buff *skb,
- 			    struct batadv_hard_iface *recv_if)
--- 
-2.47.3
+Thank you,
+      Simon
 
+[1] https://lore.kernel.org/netdev/20260728133918.643267-1-sw@simonwunderlich.de/
+
+The following changes since commit b470fde8f77b56ff273c5527484b99499b894e16:
+
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-07-10 10:20:05 +0200)
+
+are available in the Git repository at:
+
+  https://git.open-mesh.org/batadv.git tags/batadv-next-pullrequest-20260805
+
+for you to fetch changes up to 02aee8ebea3a714d92b27da9a9d8791d8c8c9a4f:
+
+  batman-adv: remove negative returns for batadv_send_skb_unicast (2026-08-05 10:00:16 +0200)
+
+----------------------------------------------------------------
+This cleanup patchset includes the following patches:
+
+ - dat: drop non-4addr backwards compatibility, by Sven Eckelmann
+
+ - tvlv: handle negative tvlv processing return codes,
+   by Sven Eckelmann
+
+ - improve kernel-doc, add comments and warnings,
+   by Sven Eckelmann (3 patches)
+
+ - coding style: split declarations, reverse x-mas tree,
+   by Sven Eckelmann (2 patches)
+
+ - handle errors in batadv_init(), by Minhong He
+
+ - correct NET_RX_* NET_XMIT_* confusion, by Sven Eckelmann
+
+ - remove negative returns for batadv_send_skb_unicast,
+   by Sven Eckelmann
+
+----------------------------------------------------------------
+Minhong He (1):
+      batman-adv: handle errors in batadv_init()
+
+Sven Eckelmann (9):
+      batman-adv: dat: drop non-4addr backwards compatibility
+      batman-adv: tvlv: handle negative tvlv processing return codes
+      batman-adv: add missing kernel-doc comments
+      batman-adv: fix kernel-doc for functions holding skb ownership
+      batman-adv: annotate functions which may reallocate the skbuff
+      batman-adv: split multiple declarations per line
+      batman-adv: switch var declarations to reverse x-mas tree order
+      batman-adv: correct NET_RX_* NET_XMIT_* confusion
+      batman-adv: remove negative returns for batadv_send_skb_unicast
+
+ include/uapi/linux/batadv_packet.h     |  16 +-
+ net/batman-adv/bat_algo.c              |  16 +-
+ net/batman-adv/bat_iv_ogm.c            | 311 ++++++++++++++++++++------
+ net/batman-adv/bat_iv_ogm.h            |   1 +
+ net/batman-adv/bat_v.c                 |  96 +++++++--
+ net/batman-adv/bat_v.h                 |   5 +
+ net/batman-adv/bat_v_elp.c             |  19 +-
+ net/batman-adv/bat_v_ogm.c             |  34 +--
+ net/batman-adv/bitarray.c              |   9 +-
+ net/batman-adv/bridge_loop_avoidance.c | 109 ++++++----
+ net/batman-adv/distributed-arp-table.c | 239 ++++++++++++++------
+ net/batman-adv/fragmentation.c         |  35 +--
+ net/batman-adv/gateway_client.c        |  46 ++--
+ net/batman-adv/gateway_common.c        |   6 +-
+ net/batman-adv/hard-interface.c        |  94 +++++++-
+ net/batman-adv/hash.c                  |   5 +-
+ net/batman-adv/hash.h                  |  42 ++--
+ net/batman-adv/log.h                   |  16 +-
+ net/batman-adv/main.c                  | 104 +++++++--
+ net/batman-adv/mesh-interface.c        | 109 ++++++++--
+ net/batman-adv/multicast.c             |  43 ++--
+ net/batman-adv/multicast_forw.c        |  26 ++-
+ net/batman-adv/netlink.c               |  20 +-
+ net/batman-adv/netlink.h               |   2 +-
+ net/batman-adv/originator.c            |  64 +++---
+ net/batman-adv/routing.c               | 121 ++++++++---
+ net/batman-adv/send.c                  |  13 +-
+ net/batman-adv/tp_meter.c              |  41 ++--
+ net/batman-adv/translation-table.c     | 383 +++++++++++++++++++++++++--------
+ net/batman-adv/tvlv.c                  |  46 ++--
+ net/batman-adv/types.h                 |   4 +-
+ 31 files changed, 1541 insertions(+), 534 deletions(-)
