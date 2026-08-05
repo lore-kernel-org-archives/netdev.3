@@ -1,161 +1,230 @@
-Received: from mail-ot1-f78.google.com (mail-ot1-f78.google.com [209.85.210.78])
+Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0329B156F45
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 05:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B3C26D4C3
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 06:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785908368; cv=none; b=Wp7/bh7+8E7NGVjvNxNuTka4W5adx8LmRWdyEY/AH0NHl0YFVH7Em8XBMQOetC5K4OF13ujzNvmoNMZHXEsl3cbytk1Hn9dnj4wqtfaoilWlzgCoQodtJWK2xXg3r12X3ezhRSoym4tcDt2UgA06fKR+fa4mBTtqobeBPAhw3Gg=
+	t=1785909776; cv=none; b=nxzJthAaH0FrFmUMEJ2Vf9RJI5258o75Ux3+nu/cLwaangWIsR47jOjhluBxp2hON/NfAyBpY9HY6abtJS39zcHIsMiXF58r6RuGNl9iQFFZyzsXPUSIvBBYhNncpC/DRb9bavIc6iVylfQ6nLPWr39PsWaos14oxmdRVwYbIjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785908368; c=relaxed/simple;
-	bh=5dkO/+MHHbLNQVuquxJBRi2O+U/g3DDfmq2qnK0XN9U=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=AdYXd235+CMoHbeRtdZaGI2qBtysuZuRQKkqAUzf900JxDbfGS7Jg7o2fkTJleDQXeqADtO3gNN+gE1FrBo5rEpo7W/claMS8DO7PJl5x+abbTvaKwzUAAf2Aq0ugb9JJWZo7SVy04PS53SfnuS1gb3U7I32MAkl3murc3hNVpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f78.google.com with SMTP id 46e09a7af769-7e99ff505c2so400421a34.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 22:39:26 -0700 (PDT)
+	s=arc-20240116; t=1785909776; c=relaxed/simple;
+	bh=uPH/VLZhlnHyHYhv0gU25CaOTAYK5reGd8d9C9D39gk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fUk8183T3CzDGF9xieHp6qjvcRumxiEPLr39KPJwEZWpdeflBx/izykpBbP5IoPTekbKAALxVWeICt029xj69f2cUW4Z/oI/Ot3runckjqUSvIONuauG35etyR5B+QMLJT6jQBorQVrrgdlI+SGuAfNKnPCryaXt34IYqRHlicQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Wzikbj68; arc=none smtp.client-ip=209.85.216.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Wzikbj68"
+Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-38125cebfdaso717109a91.1
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 23:02:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785908366; x=1786513166;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=HLAjEQo6xRfqW4g5SgiyVPySEm6vIHHokNUrcSuFS/s=;
-        b=KzJ+gSQay2HeJJrgS35bxec9x347GgvpprZZfWMSJHjAnKsnhdVNjSZkg/cmv4jMCK
-         HV8V14PJoYC7cuozy1eCx4jRfDoMnQRM6iUaYoB7VrGu3jr4E8tgA5rJvaQ6qJm+E5D0
-         e0PmLS5qWyTPiloduADUr06Z9Dxhba/6THjUlZJ2sVUVCetzMOzjz1RGrC5p0gWeqtzw
-         asv8g1zd6fDw/jJ7DL+CEzZ5lIXKpediUQSq9S6o4Nl5zA+eQf+PZZu/u/cNJdpwEi09
-         F8/Mt0y6bGb8V4afiIgxvW1aZsMIXmbqaaw0mReqv+EtnqPd/ClExAvpVw3fl/AcENBT
-         pRUg==
-X-Forwarded-Encrypted: i=1; AHgh+RpVNjFWZzHKa1P9vmeB1IfSLz5Un7AEjr2lXYJRR82NRgtrDgB1VE1m0JbfrSR9B2otdsItDTI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVBqI4lEE5eDuopzp9Io3negQ5sItPfJ79UFYQ7DHQ6j7YQ4NM
-	0EE3wT+v6kI4b2uyEYDml35yr9hoObUBJr8VnllG/pKpibl/dGwvS1hz01Hi74KF/Qkc5BxQbhb
-	l4wBvXjFYY9v3s28JrHAazc4EARsLOQ4b2jhiJuW5uhjxr4UrbyZ/+UK88BQ=
+        d=1e100.net; s=20251104; t=1785909774; x=1786514574;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qSWm8erDkMdqn2vK00vAqeQwRIm1DJv5B4tfEJjKMGg=;
+        b=DGqZ5/DCmkMcHWQc6G9V3Mak43MFaThjtRcScYW4absBme5kk63GaD0eVUq4aQXMGH
+         SN3hJ0jeUFY6Jzw/TjicBQIQVKcL+DAvghaLPMMdOmcvv9x0ShmhRDAE+epJMmGBVrGM
+         p4+v5e+MA9xqQahmH4+W5vuNFw77UW9GAX+oFw+YYi9/9phS0KpqJ6wvZasjQbuKPc/3
+         WNGENvl2FgbACZs8bcOFQBjWnWFsBCrjJf+EB0TAczSYMoo9bzylscchRxP9Fb19iP18
+         dV4v1OOof7/PtUFycJi3nIYnhJVDoD9QCJQJS1WnxaRnUyUup2hpUuezTluoKnoenXh3
+         b8yw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr31txDUAErU6W9pet5hRvo7YqmShkPwb7Lty1md4aU01454lpxDEi1wrApCOdBiqovo4v/dXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOK4ckWHSmuTfkHjZ0yu3WGhWuAe6iu6nTTl2kfqIivIlNkQ3a
+	2l3UekjU1opvM5zSjICqKGMwb6JMhs/8+NKVV+v89MfyNN4MTOKPSyR0p+t0zOyuA0BlXclpc59
+	SjRfmq4M3ZzULBEtdNYOehi0mhuXiT9IASMhADdyaOHc+m6biXBqre5NkZRbKEq/yOoO3ezS+fm
+	49dxyE8o0M8ytEqZ7Fir0VHR9PyaJQShpdpUTogtQmjIPQtxo1TXSAHJefpopWtQluSj99B/H9o
+	5X5VtBGB34=
+X-Gm-Gg: AR+sD11t8NqWrk3D0OalIbl/En4IKwxcvmoxverDFJ+hN/kCmUGlCZUdOwz1KPGSxwM
+	fvjzrkIYw9SgWqS5hCqWiGtd/85GxiOQf4fASUypbgDyl2vRZQT5N/ghjbRv33jPdOyz+pyDLh9
+	f7s3LeLNpu6yC/c7O4sBg4iYIXW5JV3Uj1sJTcdMAfyGjFaLsQM2qw4V/GGj2ey7GgY7JaS0EpL
+	KVvi2IeTCiJ2pJP2X1nNVHE/IzDI8gcwJvdZOUrh9Rs2e0SQzepToBuTqomv9Lu9sktcyATi145
+	SUksLGpToXWqhpDOMjiHu5pfd9+AwMeAXjAwNUDdmZeFx6ESsmcorxBCH3PR/YDOYg6fmAm5VRA
+	mEwK5WwpH544srL1k8KsJkRcuS5t4LmtF+DVVmHCatbvyqsywDF1UMOknBkZlRlLfjLnrLh2ck0
+	2zMCrT3BocWKlSVlF4mknExZ+C6lDThgYVwQ0=
+X-Received: by 2002:a17:90a:c107:b0:38e:6f90:eabd with SMTP id 98e67ed59e1d1-3903c53783cmr5138898a91.5.1785909774222;
+        Tue, 04 Aug 2026 23:02:54 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3903925a998sm534661a91.3.2026.08.04.23.02.52
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Aug 2026 23:02:54 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6a178080182so309175a12.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 23:02:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1785909771; x=1786514571; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qSWm8erDkMdqn2vK00vAqeQwRIm1DJv5B4tfEJjKMGg=;
+        b=Wzikbj68W5Q+U+Uwr1EvAOTXj2BSOmFCWfpTX/Xd8P1YolXdlMXdK1G9ECYs7r1Snl
+         HNfoIVAndrtTbKOkd4zfD/uLTD9cyy2zTVJa+GD4V2MTNs409p+g8CVmv2oqBD/GthBu
+         rfabIfsz+oNfu2PVaQ2FjZZwCg+AKbwDFXGb8=
+X-Forwarded-Encrypted: i=1; AHgh+RpiZNsawaF/BTwmZQC+d+Hhl3ZxObzLXc7h6lI6yF6DfiYSHqwrcQTk3RYnxg9oGVvSet4UNXs=@vger.kernel.org
+X-Received: by 2002:a17:907:3d46:b0:c15:ce72:935e with SMTP id a640c23a62f3a-c2039c26fbcmr172304866b.17.1785909770861;
+        Tue, 04 Aug 2026 23:02:50 -0700 (PDT)
+X-Received: by 2002:a17:907:3d46:b0:c15:ce72:935e with SMTP id
+ a640c23a62f3a-c2039c26fbcmr172295466b.17.1785909769302; Tue, 04 Aug 2026
+ 23:02:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:8384:b0:6a0:ff94:df7b with SMTP id
- 006d021491bc7-6ae970be67amr1965539eaf.35.1785908365950; Tue, 04 Aug 2026
- 22:39:25 -0700 (PDT)
-Date: Tue, 04 Aug 2026 22:39:25 -0700
-In-Reply-To: <6a71fd31.9511d2ce.1fc5b9.033c.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a72cc8d.13623e66.bdc14.004e.GAE@google.com>
-Subject: Re: [syzbot] [net?] KASAN: slab-out-of-bounds Read in copy_from_sockptr
-From: syzbot <syzbot+6c98d6eb7aabb6b1ad39@syzkaller.appspotmail.com>
-To: 3chas3@gmail.com, davem@davemloft.net, edumazet@google.com, 
-	eric.dumazet@gmail.com, horms@kernel.org, kuba@kernel.org, 
-	linux-atm-general-owner@lists.sourceforge.net, 
-	linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+References: <20260803193135.2030368-1-kuba@kernel.org> <20260803193135.2030368-5-kuba@kernel.org>
+In-Reply-To: <20260803193135.2030368-5-kuba@kernel.org>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Tue, 4 Aug 2026 23:02:36 -0700
+X-Gm-Features: AUfX_mzVebmpqn9O4mU1TZMG3CS50KRAQNAyWQYj8KBLXKglZTE6LLBfSq7oUiI
+Message-ID: <CACKFLin+Gi8t=5spT6dPrByN2NqS8XFUp+kU_+YZ89t0Qu3Qtg@mail.gmail.com>
+Subject: Re: [PATCH net 4/4] eth: bnxt: avoid deadlock when canceling IRQ
+ affinity notifier
+To: Jakub Kicinski <kuba@kernel.org>, Vishvambar Panth S <vishvambar.panth-s@broadcom.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
+	pavan.chebbi@broadcom.com, manoj.panicker2@amd.com, 
+	somnath.kotur@broadcom.com, andrew.gospodarek@broadcom.com, 
+	wei.huang2@amd.com
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000082abe006584685a6"
+
+--00000000000082abe006584685a6
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-syzbot has found a reproducer for the following issue on:
+On Mon, Aug 3, 2026 at 12:31=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> Unregistering IRQ affinity notifiers waits for the callback synchronously=
+.
+> bnxt takes the netdev instance lock in the notifier (to restart the queue=
+)
+> and cancels the work under the same lock. This may obviously deadlock.
+>
+> Move the restart to the async service task. The queue restart isn't
+> super time sensitive. Store the new TPH tag, schedule the task.
+> Safely canceling the service task is already ironed out.
+>
+> In bnxt_request_irq() the order of registering notifier, affinity and
+> initial TPH programming has to be inverted. I think it was racy
+> previously since user may trigger an update as soon as notifier
+> is installed.
+>
+> There's a small known gap - if pcie_tph_get_cpu_st() fails at init
+> and the target tag is 0 we may miss programming the entry.
+> This does not seem worth fixing, the code has skip-on-failure
+> all over the place, anyway.
+>
+> Fixes: c214410c47d6 ("bnxt_en: Add TPH support in BNXT driver")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-HEAD commit:    7235a3e71949 Merge branch 'for-next/core' into for-kernelci
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=1596dbb9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=ccf4bea59f67007
-dashboard link: https://syzkaller.appspot.com/bug?extid=6c98d6eb7aabb6b1ad39
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-userspace arch: arm64
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=167ecbb9580000
+Thanks for the patches.  We'll get the patches tested in our lab.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/fd45635beaae/disk-7235a3e7.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d7d2e6507223/vmlinux-7235a3e7.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b5b5d8de4cea/Image-7235a3e7.gz.xz
+--00000000000082abe006584685a6
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+6c98d6eb7aabb6b1ad39@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr+0x44/0x1b8 include/linux/sockptr.h:61
-Read of size 84 at addr ffff0000d23743a0 by task syz.0.17/4925
-
-CPU: 0 UID: 0 PID: 4925 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/02/2026
-Call trace:
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
- __dump_stack+0x30/0x40 lib/dump_stack.c:94
- dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
- print_address_description+0xb0/0x238 mm/kasan/report.c:378
- print_report+0x68/0x84 mm/kasan/report.c:482
- kasan_report+0x8c/0xc4 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:-1 [inline]
- kasan_check_range+0x17c/0x1ac mm/kasan/generic.c:200
- __asan_memcpy+0x3c/0x84 mm/kasan/shadow.c:105
- copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
- copy_from_sockptr+0x44/0x1b8 include/linux/sockptr.h:61
- vcc_setsockopt+0x174/0x450 net/atm/common.c:725
- pvc_setsockopt+0x84/0xb0 net/atm/pvc.c:72
- do_sock_setsockopt+0x1f0/0x330 net/socket.c:2368
- __sys_setsockopt+0x104/0x170 net/socket.c:2393
- __do_sys_setsockopt net/socket.c:2399 [inline]
- __se_sys_setsockopt net/socket.c:2396 [inline]
- __arm64_sys_setsockopt+0xc8/0xe4 net/socket.c:2396
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
- do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
- el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:736
- el0t_64_sync_handler+0x48/0x148 arch/arm64/kernel/entry-common.c:755
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:594
-
-Allocated by task 4925:
- kasan_save_stack mm/kasan/common.c:57 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:78
- kasan_save_alloc_info+0x44/0x54 mm/kasan/generic.c:570
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0x9c/0xb4 mm/kasan/common.c:415
- kasan_kmalloc include/linux/kasan.h:263 [inline]
- __do_kmalloc_node mm/slub.c:5334 [inline]
- __kmalloc_noprof+0x340/0x6b8 mm/slub.c:5359
- _kmalloc_noprof include/linux/slab.h:992 [inline]
- __cgroup_bpf_run_filter_setsockopt+0x990/0xbbc kernel/bpf/cgroup.c:2103
- do_sock_setsockopt+0x2e8/0x330 net/socket.c:2350
- __sys_setsockopt+0x104/0x170 net/socket.c:2393
- __do_sys_setsockopt net/socket.c:2399 [inline]
- __se_sys_setsockopt net/socket.c:2396 [inline]
- __arm64_sys_setsockopt+0xc8/0xe4 net/socket.c:2396
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
- do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
- el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:736
- el0t_64_sync_handler+0x48/0x148 arch/arm64/kernel/entry-common.c:755
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:594
-
-The buggy address belongs to the object at ffff0000d23743a0
- which belongs to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes inside of
- allocated 4-byte region [ffff0000d23743a0, ffff0000d23743a4)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff0000d2374460 pfn:0x112374
-flags: 0x5ffc00000000200(workingset|node=0|zone=2|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 05ffc00000000200 ffff0000c0001500 ffff0000c0000348 fffffdffc32f1f10
-raw: ffff0000d2374460 0000000800800041 00000000f5000000 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff0000d2374280: 07 fc fc fc 07 fc fc fc 07 fc fc fc 07 fc fc fc
- ffff0000d2374300: 07 fc fc fc 07 fc fc fc 05 fc fc fc 05 fc fc fc
->ffff0000d2374380: fa fc fc fc 04 fc fc fc fa fc fc fc fa fc fc fc
-                               ^
- ffff0000d2374400: fa fc fc fc 00 fc fc fc fa fc fc fc fa fc fc fc
- ffff0000d2374480: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
-==================================================================
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+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
+DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
+qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
+5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
+rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
+qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
+2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
+K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
+H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
+Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
+WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
+q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
+2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
+bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
+R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCBGcpTf
+1cRSzahworHKC2CVNAHcJmFJK2pTVYAMpZQE2TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjA4MDUwNjAyNTFaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQA1ZMA+Bo1tZoVu1N7F5pO9WqL2N+TTZCduk03rYawt
+kughOeFnwePYd5FexXtCHX7twAf5Ab74Wgqu3iHYBOJ8PRCBVTtLlhxnHuzduxB/EO4O3kIfffnh
+UgIb3RCie5OPr5mD0ly7T5MbwQipaMDwhAhgPuDpfaKKFCMHSxQh7/wvUrZiiI9E1gIWg8R8Iizt
+9p03jUEzvJH/dLDMpFXGMzrHdHriWpOWasE9XQfA+3rGDm+dGt1z5Z8FsrQKznBfTClVqqVG8cF2
+1QUAcBW2pY1Pmdo+EhYq9J1Oa6Mpq8+bG/a9se4F5NJ8DSNdMEEJVvXP8yV9iYh7Y5gWmLhV
+--00000000000082abe006584685a6--
