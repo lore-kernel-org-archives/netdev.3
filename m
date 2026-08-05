@@ -1,169 +1,322 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012009.outbound.protection.outlook.com [52.101.48.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBB9456E1E
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 16:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE80936196A
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 17:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785949055; cv=fail; b=f2MNT8srJtqQ+pXeaEH0QbblqJsRqp/Cinz2763H+NLm71NY/vUdsSV+SA7+EtFfteqMI7IWNhOgQqVDucRKj48W/fpist6v4JYr667NSiKJBEkE06yoCPH2WvXKNzUfLx0noyK1wCCJRzfhc3mBi77zPWTgyDjvHQTle1VpATE=
+	t=1785949483; cv=pass; b=dWeP/H0e2GFlc9wgtu+UOWZ1VvHnFghp6Sxu4CyMsnSNKRNmD5fBWS4AWtl7py7ks1BDfnO7rCc56hVkW7h8+Dcp1gxfI3tsEKMESpHyfuidinabK99yBLIg6HUzJGEFAEmBOv/bvIt6sR59Msg0hxWlxY6SrJPpcdAYnOlPZMY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785949055; c=relaxed/simple;
-	bh=wEL2K2vMUtkHVub4sS/dVCstmQQxROkED5Or0RWx6Eg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=oJGvpYqd2O7a+aR3HPo04QOcDmv1TbQsG9yCNQqNhDWegAEoRj0XWyYTr3y8MIxD60CenFAZp9l6tWu6Ui8c6/woyRP+EkRdd9QDdLJb6e9AL/Pvo4JL/U9o4LRdNVLz7hAEX4PBl+z3PppVG7j2xtSkSJt8oTLBAKxecRRrcCA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gsNXIaBR; arc=fail smtp.client-ip=52.101.48.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1785949483; c=relaxed/simple;
+	bh=hEaMNJ9Xh7CC3r72jXWLy5D2DhPAfOAofizWpuMULBU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sI1avF/dCgTq/gAmev954HR3gamVItIuBFyKF8uFXTGoSGdRaPvZKqBm949Mw4IsWwYyiupA35c/urw++Fq0zy+ckey2hSLbjxXbdzH7QR34KGPWdX+0iVi7dzBQTqzTxf1VX5xKnOtQVVFDS+GD15ZMoLh9lkIWnbHRPJN6K6o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njk2AJCJ; arc=pass smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gsNXIaBR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b25Fpnka71F09gV5bTiuwz+XEsY/RsY5sMUDp6uNieFsbfSV0uAP5Dq/bTM7jzpBQYCpftcjkhY50v9wb+Lb8flkJDIlrTkOMFN4uI4LNrR4vx+WAk50xnDsJ3zsr3FSyIIqzRhANzB2cXK4YYUDwN/8MT5bVziS9BygQLnGGiGJ9JMYoEGCenEWtkkgc1YJScgI8r1LhP1c0MH+msr90ICbXlhmWuYBdBwg7SlPUKV9C4ye3vXXz5GcBae/gPRcBehhNFsVkMgr1h+oPf6gyDRW7FY7H6W6CwEHPL2hinerbnrMKjmonwPTEWUc333iASvBYKZAmu+TGg368hECaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gi9fL0TqHW1mIkuR0zmEjNTQ/GZtCYI7Ot1DZD6K8KQ=;
- b=Jf56nnwwTPhp+rcKopsfFY5W36teMIQehct4OkqzvQedHZllKIpjgMVw7YQHp5jYn4OXiuJ37DVJgRZv3i1ayfyKNXQzYjwyAeYC6cHSfYlQQWCeK+0PRH+UmEjTGIPWjek7LyL96FQ+8j/ymenpB8IHo/RH/Jq6iAQyZ1Ve6DML3kJsIDZ3A+fkay6jgqLD8v7TtjFQaP/4emIY2FZKh4/v8As7FafhLv1T/rHzb6Hz2+ssocya7gOifeDCq+DWyob8U2QgVbY0MV5ciRlmmSFzwEot1BZSf1kH5nMuLVC1aERdO6+vH5cJ1yKg5tmw/090XjyO01k25mfVcmkaVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gi9fL0TqHW1mIkuR0zmEjNTQ/GZtCYI7Ot1DZD6K8KQ=;
- b=gsNXIaBRsVrBXGQS8PTYLXnJ9okxdSYI1lC0Lbetmv4xox54ED39AtA2BKmM6YqqnXCVPpdzj8dnVk9S8AOh/ecT4WqjuwhRE2b6xtHAnnBn8YFo+bg0/dC2A+sxvgfKqzJ+h/2NyyqKaZKks5eipxvvpEfgEwcV1/QnTT3lsIftuncm5ZsAm3Nl3+k0CUwlPyUjadrQfgNicdaIDF/xrmZbhckZ0Otz3t0fv+Kk/VhVge6/Iu8xAtui5wWmj6nYZYLsW1woWzIyA6GIvvXvYu4N+hyCO+2rnsGWjTOPlKy8gp1I7F4VwWCu6uFiN9oDYn/dQtZO8wOugI5vJR8g1A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by CY5PR12MB6598.namprd12.prod.outlook.com (2603:10b6:930:42::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Wed, 5 Aug
- 2026 16:57:26 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 16:57:26 +0000
-Date: Wed, 5 Aug 2026 19:57:09 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Zhiling Zou <zhilinz@nebusec.ai>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, yoshfuji@linux-ipv6.org,
-	yasuyuki.kozakai@toshiba.co.jp, vega@nebusec.ai
-Subject: Re: [PATCH net 1/1] ip6_tunnel: clear skb2->cb[] in ip6ip6_err()
-Message-ID: <20260805165709.GA1600318@shredder>
-References: <cover.1785736562.git.zhilinz@nebusec.ai>
- <fe1a5e765fbca88d69391887f0ed26a19e3e4d39.1785736562.git.zhilinz@nebusec.ai>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fe1a5e765fbca88d69391887f0ed26a19e3e4d39.1785736562.git.zhilinz@nebusec.ai>
-X-ClientProxiedBy: TL2P290CA0026.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::13) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njk2AJCJ"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8487088510aso1705680b3a.0
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 10:04:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785949481; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M4NjxWpLGdY1n0W3DjXeqhMX6op4dUkJkKKDo6GPqEBbbt4aEnp2gmoamKa7jRdViR
+         yycKRnHo5zFmKcLRjZvJAoa4K3ALJvlpTZCVfS9kULyVCgm1Yr/Zf8XUzQMFS6LAapJS
+         U47Gi52zjA+5dZWcSFrGJK3i2Gi9v8OgdQBfqOA6BzV3AVbK7N5xfxnUxuAhVYQLtkor
+         6GXDhuWN0NYFC1SkgTGlj2wDgGuJdjIxSHiIzRwGIe9vu79CjRVtvKjf7Ys5zg3W5DhZ
+         bDOOWKxzDOx8qUBbHq3nOavnJBe8AK/pjSs7cfuROSH/PIIsMm6YQWlFLiDRhMTc/o46
+         l8WA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NJOvIGrSb5wJVdwnJ7v6vOCU6Ncw91UV9YASCJk36Pg=;
+        fh=oLJUBoLeaCOIW1r707ZKh7+DNyVjyd8Nzfhd3TPyZMo=;
+        b=m9psO/+Iqv/Q/AXkzbWhNHjUy8tGRSIKA9od6lTg0wNNSOlSokUA7sc4shnPpscLDY
+         /1Y96vKyDiQ4warPvT3fJxK+oVcG0dFTW/XD06ISXRbxPe8xA4Fv9fQDzFPl8nQZYWmN
+         56Isyn1ZwQC2O1IdqIVviDPMOWg7aYuJyIRPqqVd71cFQyG86T2ZRCpluY321ZF6DF9/
+         wi0+/DrPqWkzpWrSsk2PVhuqK2Bp2/0Hr8/bJLx1xep0W/v0DVVIiKqFjWllYLzUwyfc
+         BLjXYaIXSzz1Kf+K2CcKqFVbsqdkkDofLG1qow4R+kE+m0RS0Oujgyt+WtU34ReveR3B
+         mjSA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785949481; x=1786554281; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NJOvIGrSb5wJVdwnJ7v6vOCU6Ncw91UV9YASCJk36Pg=;
+        b=njk2AJCJuJxqNHpNWr+eKwBHwCojHx+PBKZlMUVZ7JO9hl/9fgcT32AExm6kilu47L
+         DimNDAxI67Ou6rj2Dpmfl0bIENUEjuMjE1vXMg2K5UtBzUCUN0/0NmTTbDRVeJP+93Pb
+         ODqrD6Byt2bfM2l1xkRCP9fXoSfQ/W2dKgAt77KlDZjNyZp7I0Q10Xc1zN0CY1Lw2RJq
+         wQvjCB5ZoQMTkps1CfNJXAboNxf3m+F5GkyH7WbTOZoCXrXNrQiky8WvHXIpRPEC8avC
+         RrHnDdb34jeG5WP4F0ZuUWO4wXVGpw6XfpKiFd2viE7t2BKM6lKJflMtnUKYCWozbrlf
+         8F2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785949481; x=1786554281;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NJOvIGrSb5wJVdwnJ7v6vOCU6Ncw91UV9YASCJk36Pg=;
+        b=fkqYJBrwXNUMk+TH0ncxxzh5RnwWkY8+SejmRWuAQsq2nl0WFracvgpl6nRaSIJi4Q
+         AOGEwUQtYCG0fkRRhjubhy97leu4mzY/42ueIfhajeo0BuHswX/BbcDXLddMXoD75OFk
+         9nIMJQaiY61azSimFdoOndAQd8W2B5louQu+3dmyertnXDplyjJfCml2aQjKqH7/CSOc
+         2mU5oXtWy2/j9roXx5g17f9bjO+4XLrVr60YamKv1uIwqa4kBobCK1Rkc5o7PfrMhlHR
+         gvMhKtQW1ewWzFqYNlHlDYz/Vv0CrAkLIhINkZxSZBQkciOuVzVPT6CaQNiV6qb9ATKs
+         HE2A==
+X-Gm-Message-State: AOJu0Yx1AvrSU6Y2NM15A4xOnqOOkysmfWfrD9TP7mNvd4FYfGAO19o4
+	vrGvxHYbRa8Az3Lc9rV7+62aTwnQrqQ05LwIgv/eWmizG3KDVEaxJhhX2Gve1R4M+Z9y6qIQReL
+	yh7M/XJy9AunERSdfPkZpIKaIS502gLk=
+X-Gm-Gg: AR+sD10J7tLI8MaoxRzT6y2o5Po+waI2chLQP8EkZynbRbztSkgvHXuwH9tZj1Ab+Cd
+	lBnfWqYTWuTuv9DGJiY27FOTJkukIens5xlOkUSRnqAHN0xgfNJNfejRy0eVvfdCYaQ0rc/X1aN
+	WUkjGeU+adcNn0PxowJ9stdiqMVOWERqWtjjw/VKangKY1cKXVA5PAWu5jrDXj9MwJvvDYdkhb0
+	9gEg2HUsM3utFo0iApknOLJ2c5hwBpvAGvmzdMzluMAtp8Xknt5Ls2O1cxBsTQ5XbxJLuz8KB5J
+	NqLSyl2r0Bx64xbZSYdHlBkBlrjvbVjVlzeDM+rHtdGuYUz4idLxI67V2D8kPV0hACd7c/ndaBE
+	FjnQR1TVHY/5fXPqJCkNndv8gDFxAw+F4x4YxqThx0L3/E1V+ouAA5pEZN/RBfmorS5/T3BWp3o
+	7s
+X-Received: by 2002:a05:6a00:4b48:b0:847:8910:ad76 with SMTP id
+ d2e1a72fcca58-84f2e12cd46mr8895774b3a.37.1785949481124; Wed, 05 Aug 2026
+ 10:04:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CY5PR12MB6598:EE_
-X-MS-Office365-Filtering-Correlation-Id: dec7b7f6-f381-4702-c63e-08def312a05a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|18002099003|22082099003|4143699003|11063799006|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	Ag5MIg70oPV2Dm93Vyyg0XHFrK3GLt4usyiR5nrQfmz32DIWcMAU98Rme18cj61FYw0kuobYzHqACgdJbpYD4gyZ3vSfZisByPC/4SJCMTEB2JJaZPG2PbIRWBiqgeRDd2DASZ/Fly/NDgSnwB6lgoy69mh2l3nzXcJreF1f+WkalykVQovKHlxodm++HfxKmU3MxpPP0GkmIKiYxv5qq86s/sjkOJiS6OqDgubTh6mG2ZAzTFf8CGU6XFyPkbcHEt8sy0LZ+G/i2l9kPqpj67fbObeGskxoA8HCZFwrkTuGSfLieS689O26nyiKzU/eLen4I1Q+rqJanGTdDoZizf9JjDFItWXigiclfdNGkT2RJgTtohjF2v5ly/N+7rr+69adUKifrhvtWC16T+Mv9CPOwpn/y0AzVIC2XvphDtnDQ62xmI3fzlBtf81/b32CUQyf4eTVVKpcv5xfFYpPRG30Xcghg87TmQBUaQ2OuJbwSWV8KO0GquTN+7fwasQcqOVAy0VS5bdnnd6x8oa1H+JEZPWbaskg0hx/sn/LphaY1ArSi7y0YtWkFhgvlCDclAagVZAZi87lrPIaQOPdOQte+CJ33/LdmGhSOzKOhrfUUN2eKjfPTKcCKeJa9GJf1JfpLPA8IyYTZmao5nusHpK0bgTDVnl6WQRQ/oEmeSU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6YGT9ht1mIAbI5YzQb3+IJzzs+z7RNn7jpfrftTnc9XBtNBM5PDsXl6pN2vv?=
- =?us-ascii?Q?Mpbsbrus5NEIQwLgzPSf7drPuQcmPRJyBYeddS+zyz8dzgKxw9gTeD0c0GYH?=
- =?us-ascii?Q?bPGqRwbomkfg0rGytAwfpRln69buOVQCoWVVQwIvGEH61BU5YkRYU28G7jU4?=
- =?us-ascii?Q?JlWUR3Nt8+xe836S0ogBVv0Ug0+vvr6pS8YRa5SXURu3Qcu06tDY2gj+a7HD?=
- =?us-ascii?Q?X9a0PWBUXHKtKXfrKI8s3lKPYi5gf8wvqkYJ4/2tbe5pcE1j+vXnrxTrPWYC?=
- =?us-ascii?Q?A3Nu4k8PWLtYXgd3snfM1h0xAPz2QgKImPmizP1C5xkEBZSMmEFG7vu5aWkA?=
- =?us-ascii?Q?7lCDW9NCmAel5H16YmMSr+T9CB/24134+i/TgbixLpPeWn+nlqhedqQqaxmj?=
- =?us-ascii?Q?BexxlSBnj23ULPq4MWFiLMvsGJAl2UzguK2KhwCHG0eatzDTzFu7jQzwnSOU?=
- =?us-ascii?Q?vOmI+uotbpywuqc+5PwYJP0Gt+z2jUFo3g9rd2GY4D3mVaD3tBccRhvzr/gw?=
- =?us-ascii?Q?fXBw5X7nEY5LkgxdTx7M9P18uXsCIOsSrxKuoF8OFWRGN2Q5S1/8yYSL01p4?=
- =?us-ascii?Q?wIusXZqyANvJk1nA7ggk6NCM/nX0GlGWmHaDrfZYNmOSUMmDl6QIXF6VrWMu?=
- =?us-ascii?Q?M4SxwCr976OrERpfj6WU/EEEvDuvp+KubbxmOJnrPd+TyR/WBtWWDM78klB0?=
- =?us-ascii?Q?C3oOZxeUZratEhNzL8NOuTa24mopYthwhUkw/HFGUIbyXhq3amM9gDytqkRB?=
- =?us-ascii?Q?hYF6Jmbe2eNtnkx9iq3JeGVDqpkpvY+1uAPCqTHRup+cBEtVcsiopTEAQg8M?=
- =?us-ascii?Q?h6YcAr3eOqKBHmvbmt/jwpy20ICsQ9VpHJ5A8+pL5MUoNbdC4ABUt/Q8cZlZ?=
- =?us-ascii?Q?zMeBYvJUpbMMpqwP7zSlvx+RprwfwpYVY5px3zlg6nDuKqZVS3iSpwCx1a+p?=
- =?us-ascii?Q?yZgQerDyL4pI1gSXGcCwWwOtuS+0nW6sk7WT7WEO2y6GfTNYMePD1Hl4ZOwP?=
- =?us-ascii?Q?PY2pjGCY8Aw1U/yNLrl47tY+TJleQl3P9U5nbwzfmVrhh8zOgu86FeZ45L5I?=
- =?us-ascii?Q?IJWeZS6fbsqSoTBz5S1fjeG0CaAtwZoBJdhvlVDuOTxT8jKy8NK3jFV+AWEu?=
- =?us-ascii?Q?0z+WXE1yLp+JzJShF4tsehsqdUGyvdMacYmsiqIaj1ABC88DgmZJd+eEpu4G?=
- =?us-ascii?Q?dAW2+5GgmR51DHu4MmCBnQokglVSHv5ihPasSYQl49O1uTg4Z3uJBrtM6EkF?=
- =?us-ascii?Q?GiPgAGkBIulBJeHlCos5Q9Rarsk7UkygBWppeH+ihYYuRiq38Qkdtx8/UYSh?=
- =?us-ascii?Q?ampNpc8Yymfgp6HSITcTCYdDNFun+Fk+4ePGsNn5VfOvld7oXzg1GKHsNASW?=
- =?us-ascii?Q?hWTpjPL2BSaCef36+EdfrUe2bN+tsmpKSJ7YtwBKvlcU+VF3YYZZmpYThYTT?=
- =?us-ascii?Q?Q9Prilet3dTYpdmz+f6F9qNbz7rcXzUFHSqdIQS/eQyLSEoGafyAcQAxI5dp?=
- =?us-ascii?Q?ze79Iiky9SiZh+nxr1LkVti4+CvsE3tFAr20bg00GzjIkk2gBvsXy5eRwB45?=
- =?us-ascii?Q?O9OGkdTouWXrpqqBvOiOd4TTNLUFNcui6vdKEBm2IfL39IxkcU42lkISSQp7?=
- =?us-ascii?Q?y9iu4lrzIx6QrrV0POm3XWuYx+8LwhNSfJaiVEuG6ljRuxvfTpaCbAvDPEcp?=
- =?us-ascii?Q?9DEInyHu1hQELP0SpI9sTwWXiPwJfRJd1NTS1CwUfqK+9yhlwDH1Q476TJ8e?=
- =?us-ascii?Q?F7GjQrTf1Q=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dec7b7f6-f381-4702-c63e-08def312a05a
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 16:57:26.2330
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8fqOd8+JGkzkL5W0ouEHPT56MkLFyAW9liiGr6BaNUlQJtuTigXV9tYBUYm72mU6JtTqgzY8tbBqty4keRGwrg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6598
+References: <20260804113705.45754-1-juny24602@gmail.com>
+In-Reply-To: <20260804113705.45754-1-juny24602@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Wed, 5 Aug 2026 13:04:29 -0400
+X-Gm-Features: AUfX_mxtust7OUQLeeLV0KcfKTIV_UXzI2qx_uHcr75hmLv6Y6k_XrpQkenvoBk
+Message-ID: <CADvbK_fUdKDT11-H44yhKxv8_hgToRUnjggjm71HbFZ5A+HeeQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] sctp: re-point retained control chunks on
+ association migration
+To: Jun Yang <juny24602@gmail.com>
+Cc: netdev@vger.kernel.org, Jun Yang <junvyyang@tencent.com>, stable@kernel.org, 
+	TencentOS Corvus AI <corvus@tencent.com>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-sctp@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 03, 2026 at 02:12:33PM +0800, Zhiling Zou wrote:
-> ip6ip6_err() clones an outer IPv6 ICMP error skb, pulls it to the
-> quoted inner IPv6 packet, and then passes the clone to icmpv6_send().
-> The clone still carries the outer packet's inet6_skb_parm in skb->cb.
-> 
-> If the outer packet had a Home Address Option, IP6CB(skb2)->dsthao
-> remains non-zero after skb_pull(). icmpv6_send() later calls
-> mip6_addr_swap(), which uses that stale dsthao offset against the quoted
-> inner packet. A malformed inner destination-options header can then make
-> the HAO lookup and address swap run past the end of the quoted packet
-> and corrupt skb_shared_info.
-> 
-> Clear skb2->cb[] before pulling the quoted inner IPv6 packet so the
-> reply path does not reuse metadata left by the outer IPv6 stack.
-> 
-> Fixes: e490d1d85cf5 ("[IPV6] IP6TUNNEL: Split out generic routine in ip6ip6_err().")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+On Tue, Aug 4, 2026 at 7:37=E2=80=AFAM Jun Yang <juny24602@gmail.com> wrote=
+:
+>
+> From: Jun Yang <junvyyang@tencent.com>
+>
+> sctp_control_set_owner_w() records the owning socket in a control chunk's
+> skb->sk.  sctp_sock_migrate() re-owns the association's DATA chunks via
+> sctp_for_each_tx_datachunk(), but that walk keys off chunk->msg and so
+> skips control chunks: any control chunk the association still holds (for
+> example the saved stream-reset request asoc->strreset_chunk, the ASCONF
+> request/ack lists, or asoc->addip_last_asconf) keeps pointing at the old
+> socket after the association is moved to the new one.
+>
+> Once the old socket is freed, a later retransmit reaches
+> sctp_packet_transmit() -> skb_set_owner_w(head, chunk->skb->sk) and
+> operates on the freed socket -- refcount_add() on its sk_wmem_alloc,
+> then sk->sk_write_space() from sock_wfree() -- a use-after-free of
+> struct sock.
+>
+> Rename sctp_for_each_tx_datachunk() to sctp_for_each_tx_chunk() and walk
+> the control chunks the association retains there as well, so migration
+> re-owns them with the same clear/set bracketing already used for DATA
+> chunks.  sctp_set_owner_w_migrate() picks the right owner helper by
+> testing chunk->msg, which is NULL for control chunks.
+>
+> The per-chunk owner test that traverse_and_process() already applies is
+> split out into sctp_process_tx_chunk() and reused for the control lists.
+> A chunk can sit on two of them at once -- asoc->strreset_chunk and
+> asoc->addip_last_asconf both stay queued on outqueue.control_chunk_list
+> until they are flushed -- and the test keeps such a chunk from being
+> cleared or re-owned twice, which would otherwise leak an shkey reference.
+>
+> sctp_control_set_owner_w() re-reads chunk->shkey from asoc->shkey, so
+> sctp_set_owner_w_migrate() releases the reference sctp_clear_owner_w()
+> took by value instead of re-reading chunk->shkey, which would drop the
+> wrong key if the active key changed while the chunk was queued.
+>
+> Fixes: d04adf1b3551 ("sctp: reset owner sk for data chunks on out queues =
+when migrating a sock")
+> Cc: stable@kernel.org
+> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+> Assisted-by: tencentos-corvus-ai:kimi-k3
+> Signed-off-by: Jun Yang <junvyyang@tencent.com>
+> ---
+> This is based on David Lee's
+>
+>   [PATCH] sctp: hold shkey across socket migration
+>   https://lore.kernel.org/netdev/20260731120558.558957-1-david.lee@trailo=
+fbits.com/
+>
+> which adds sctp_set_owner_w_migrate()
+>
+> v2:
+>  - Rename sctp_for_each_tx_datachunk() to sctp_for_each_tx_chunk() and
+>    move the control-chunk traversal into it, rather than adding a
+>    separate sctp_for_each_tx_ctrlchunk() helper (Xin Long).
+>  - Handle control chunks in sctp_set_owner_w_migrate() by testing
+>    chunk->msg, dropping the sctp_ctrl_set_owner_w() helper (Xin Long).
+>    Control chunks now go through the full clear/set bracketing instead of
+>    a bare skb->sk store, so sctp_control_set_owner_w() is no longer
+>    static.
+>  - Factor the existing owner test out of traverse_and_process() into
+>    sctp_process_tx_chunk() so the control lists get it too.
+>
+> v1: https://lore.kernel.org/netdev/20260730090537.27629-1-juny24602@gmail=
+.com/
+>
+>  include/net/sctp/sm.h    |  1 +
+>  net/sctp/sm_make_chunk.c |  2 +-
+>  net/sctp/socket.c        | 53 ++++++++++++++++++++++++++++++----------
+>  3 files changed, 42 insertions(+), 14 deletions(-)
+>
+> diff --git a/include/net/sctp/sm.h b/include/net/sctp/sm.h
+> index 3bfd261a53cc..76605d1ee839 100644
+> --- a/include/net/sctp/sm.h
+> +++ b/include/net/sctp/sm.h
+> @@ -252,6 +252,7 @@ struct sctp_chunk *sctp_make_fwdtsn(const struct sctp=
+_association *asoc,
+>                                     struct sctp_fwdtsn_skip *skiplist);
+>  struct sctp_chunk *sctp_make_auth(const struct sctp_association *asoc,
+>                                   __u16 key_id);
+> +void sctp_control_set_owner_w(struct sctp_chunk *chunk);
+>  struct sctp_chunk *sctp_make_strreset_req(const struct sctp_association =
+*asoc,
+>                                           __u16 stream_num, __be16 *strea=
+m_list,
+>                                           bool out, bool in);
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index 0ae30c3c8913..7684686798cf 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+> @@ -94,7 +94,7 @@ static void sctp_control_release_owner(struct sk_buff *=
+skb)
+>         }
+>  }
+>
+> -static void sctp_control_set_owner_w(struct sctp_chunk *chunk)
+> +void sctp_control_set_owner_w(struct sctp_chunk *chunk)
+>  {
+>         struct sctp_association *asoc =3D chunk->asoc;
+>         struct sk_buff *skb =3D chunk->skb;
+> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> index 4a08023d52aa..d09b9f139070 100644
+> --- a/net/sctp/socket.c
+> +++ b/net/sctp/socket.c
+> @@ -155,9 +155,24 @@ static void sctp_clear_owner_w(struct sctp_chunk *ch=
+unk)
+>
+>  static void sctp_set_owner_w_migrate(struct sctp_chunk *chunk)
+>  {
+> -       sctp_set_owner_w(chunk);
+> -       if (chunk->shkey)
+> -               sctp_auth_shkey_release(chunk->shkey);
+> +       struct sctp_shared_key *shkey =3D chunk->shkey;
+> +
+> +       if (chunk->msg)
+> +               sctp_set_owner_w(chunk);
+> +       else
+> +               sctp_control_set_owner_w(chunk);
+> +
+> +       if (shkey)
+> +               sctp_auth_shkey_release(shkey);
+> +}
+> +
+> +static void sctp_process_tx_chunk(struct sctp_association *asoc,
+> +                                 struct sctp_chunk *chunk, bool clear,
+> +                                 void (*cb)(struct sctp_chunk *))
+> +{
+> +       if ((clear && asoc->base.sk =3D=3D chunk->skb->sk) ||
+> +           (!clear && asoc->base.sk !=3D chunk->skb->sk))
+> +               cb(chunk);
+>  }
+>
+>  #define traverse_and_process() \
+> @@ -165,17 +180,14 @@ do {                              \
+>         msg =3D chunk->msg;       \
+>         if (msg =3D=3D prev_msg)    \
+>                 continue;       \
+> -       list_for_each_entry(c, &msg->chunks, frag_list) {       \
+> -               if ((clear && asoc->base.sk =3D=3D c->skb->sk) ||   \
+> -                   (!clear && asoc->base.sk !=3D c->skb->sk))    \
+> -                       cb(c);  \
+> -       }                       \
+> +       list_for_each_entry(c, &msg->chunks, frag_list) \
+> +               sctp_process_tx_chunk(asoc, c, clear, cb);      \
+>         prev_msg =3D msg;         \
+>  } while (0)
+>
+> -static void sctp_for_each_tx_datachunk(struct sctp_association *asoc,
+> -                                      bool clear,
+> -                                      void (*cb)(struct sctp_chunk *))
+> +static void sctp_for_each_tx_chunk(struct sctp_association *asoc,
+> +                                  bool clear,
+> +                                  void (*cb)(struct sctp_chunk *))
+>
+>  {
+>         struct sctp_datamsg *msg, *prev_msg =3D NULL;
+> @@ -198,6 +210,21 @@ static void sctp_for_each_tx_datachunk(struct sctp_a=
+ssociation *asoc,
+>
+>         list_for_each_entry(chunk, &q->out_chunk_list, list)
+>                 traverse_and_process();
+> +
+> +       list_for_each_entry(chunk, &q->control_chunk_list, list)
+> +               sctp_process_tx_chunk(asoc, chunk, clear, cb);
+> +
+> +       list_for_each_entry(chunk, &asoc->asconf_ack_list, transmitted_li=
+st)
+> +               sctp_process_tx_chunk(asoc, chunk, clear, cb);
+> +
+> +       list_for_each_entry(chunk, &asoc->addip_chunk_list, list)
+> +               sctp_process_tx_chunk(asoc, chunk, clear, cb);
+> +
+> +       if (asoc->strreset_chunk)
+> +               sctp_process_tx_chunk(asoc, asoc->strreset_chunk, clear, =
+cb);
+> +
+> +       if (asoc->addip_last_asconf)
+> +               sctp_process_tx_chunk(asoc, asoc->addip_last_asconf, clea=
+r, cb);
+>  }
+You can just use cb(...) here, no need to extract sctp_process_tx_chunk().
 
-Regarding:
+These checks of clear and asoc->base.sk were introduced by:
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/fe1a5e765fbca88d69391887f0ed26a19e3e4d39.1785736562.git.zhilinz%40nebusec.ai
+5c3e82fe1596 ("sctp: fix refcount bug in sctp_wfree")
 
-1. "Could this description be tightened up, given it is going to
-stable?"
+The issue only existed on DATA chunks.
 
-Nitpick.
+Also, please hold this patch until upstream applies the dependence:
 
-2. "Is this the right commit to blame?"
+https://lore.kernel.org/netdev/20260731120558.558957-1-david.lee@trailofbit=
+s.com/
 
-Nitpick. We can blame 793832361fe7 ("[IPV6] MIP6: Revert address to send
-ICMPv6 error."), but it doesn't matter in practice.
+Otherwise, your patch will fail on these sashiko reviews as "Failed To Appl=
+y".
 
-3. "Does clearing the whole inet6_skb_parm here also throw away IP6CB->iif,
-which was valid and is still consumed by the reply path?"
+Thanks.
 
-Yes and it's fine. It needs to encode the iif of the packet that
-icmpv6_send() is going to quote and it's not IP6CB->iif. It's
-rt->dst.dev->ifindex, but passing 0 is legitimate.
-
-4. "This isn't a bug introduced by this patch, but should the consumer be
-hardened as well, rather than only this call site?"
-
-Separate issue.
-
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+>
+>  static void sctp_for_each_rx_skb(struct sctp_association *asoc, struct s=
+ock *sk,
+> @@ -9640,9 +9667,9 @@ static int sctp_sock_migrate(struct sock *oldsk, st=
+ruct sock *newsk,
+>          * paths won't try to lock it and then oldsk.
+>          */
+>         lock_sock_nested(newsk, SINGLE_DEPTH_NESTING);
+> -       sctp_for_each_tx_datachunk(assoc, true, sctp_clear_owner_w);
+> +       sctp_for_each_tx_chunk(assoc, true, sctp_clear_owner_w);
+>         sctp_assoc_migrate(assoc, newsk);
+> -       sctp_for_each_tx_datachunk(assoc, false, sctp_set_owner_w_migrate=
+);
+> +       sctp_for_each_tx_chunk(assoc, false, sctp_set_owner_w_migrate);
+>
+>         /* If the association on the newsk is already closed before accep=
+t()
+>          * is called, set RCV_SHUTDOWN flag.
+> --
+> 2.55.0
+>
