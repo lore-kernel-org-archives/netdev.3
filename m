@@ -1,171 +1,107 @@
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760F4466B0C
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 12:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1511446D2B2;
+	Wed,  5 Aug 2026 12:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785934139; cv=none; b=MA8E3nKH6r2XNM6xbFp0130uqb0XQXEhGvAKW06g1iH9sO1yVUGPzM0tDWKvXZyGMp3z2dw9258jzv8LccT8AsOKPPN8FfIz0KXmGwy+d4UZrZYBncUh9grT1qjQc63FUa+pFu2Kr5FxRNlvpB9hZxTvp4CAiy17QnHzS2kGCjc=
+	t=1785934410; cv=none; b=Mqj4n8R0r16ypUa4PNAfIMYjQ0njBzWeEMdgtLK+tKmWz6FKY1SGYu7zoHjHFho3Uwi5arfYbeS21aOPZ+JLm9CyOdja6XqRdODu/91EdBMG1ddsoSNewvBc7GjLjkThnXadR3gf9YFLhJLbBxRuyi+SwKNk2C6HMzL0Bx7zjLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785934139; c=relaxed/simple;
-	bh=kM470gmL33Iv9aSAOr0xztTIhSMUcmHJisJS6g9iA4U=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=FVv89LAkeCvxFXZ6YZFcyy2RhxRGButxnDPKlgJRPmLi5OzQmnCv2SzupZBkEmXmgVwdbEjD4qWpAYaAsni39C0sdpu8LkOFClu+WH2Pyf6UeERJlWvIuhS35aLqNJqpsNS/0pQZzyEB11pXJ+Q6CkZsqKwIIVpygGVBY93ZYeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RRAu6Hwo; arc=none smtp.client-ip=74.125.224.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785934410; c=relaxed/simple;
+	bh=NiH4LgVUBcWmck3fotLR0p126xuuJUHvpyzJerZy4mA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jIjeDOVMiZh0NhReKqaPqFAzcIXxs9PdtIFoxYuP58ztPJPxN6F45L2AbIHE3Wdl5hSGW/5KCKX/IU4VmSlZLj8eEdN+YR+DmdupYP43x4GjqzcRszZk3DalxCMRAcAcusvPOoUbVXVUDC0Ouu3c6um/gbrDS2JNODawscMo59Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LL3YpI+U; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RRAu6Hwo"
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-66804667af2so753511d50.0
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 05:48:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785934135; x=1786538935; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fDYKkUKm21fBzkrus0DJYqlBResm+tuLY/EKfmGA+zg=;
-        b=RRAu6HwotnhvqoUKmpcIkvV2RNe+APHPyRiKn2RBRveD4A9gDrzbx6icfbxWHL2l0c
-         JUzmK28yHo64ke7Hg7WON938v6kXsKctlWoc1TPkofPvjAODYSxcLeQe55/k4xnTyoiN
-         5EQ/NvD6kFvj5WJiPhe+JTs9sAIcI1zBPaLnPh84cClrKNsgy0tgrjFv9X399HYNHMnw
-         BNvMBENt18VSJfIdhPBKzJKLFU3oOZx1dAeETBNzPy+G+/hGTgCc3fctFoA8Z7mlojl3
-         sVgUbNc+hnzJR2+y01MwI1+mVuu/IZLhMXa24P0c3An0zFlyYcifYS8UGg53YayK2wbW
-         xmTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785934135; x=1786538935;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fDYKkUKm21fBzkrus0DJYqlBResm+tuLY/EKfmGA+zg=;
-        b=bmDrSJ/xms34GsmMKD3Qlm/gTR1UgmfuDJSSdRo9NxKC2D9MOOtHn3cPYafk9BIgZa
-         tdL6FbnQYUva1l1z/vL/UUbxQpt7sObYknyTJiK3MI0V2ET4cSdzcG6agV1o1ILckFFl
-         V2pvbql2pP8kwW1Bf3MVvTHVddHYk9HWHpc0rseYWsKq1QhrfiQpOks7QUtdkZe+AQA0
-         iqSiVqgjPonQtPu+/Eer9NI+QmoiEePGarcqqWGcT7PjNQSLSZTjQS7vgfdQYIe+IAKw
-         6EHVDtAD84UlVzRyTBlhNzNC7UJVqdQhNGgsSbiG2vUE+bVT6WQRvgBXBFpI7XySfoK9
-         xMBA==
-X-Forwarded-Encrypted: i=1; AHgh+RqYsXCv8NvfZ1XtcoYQRz7IItfngeBuelT/ERbYsREhIIajyKQCgN6gTubGlHCRhBhmkOr3mgY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm0YSXmljbLEPGWzzzwzvsaqq0tqGeSD92TwZHyq/sOO54tJhW
-	laajmi2C3WFC3aBlHFfqbzleAMHkYY8xdWpA7Yl/r0qw5PJm/qQefZPM
-X-Gm-Gg: AR+sD1169uBTFXgYJ+vIFfsqkIDTlVDHPYhTEphtJZzjTz/9+7ZTG3WarFOAsKeEJzt
-	tIuzMR9OT8nVApELSVCH/xkyJuFx6GVyE2i0sCZf+hh4uxbvafFMB2cENMcALACXyWmV4SCiA7Z
-	cTVGeLtC46TWnTsS9tDjhpFyX4t+x0HYsBB50GZdkNI2Vv5Yh5B2QPOxxHF36HFe+Yug0ZTaMWS
-	9/JVi0LYlgV8Gj1b4+7I1GVHZPLJMJHdPpE6P2XLFpxZFPI1LlEGlDqDvi8mgybcdBZgyFHUE/F
-	oNAozDqZkbmzQUmNt2Ts4lNv74Iqnl+X5do4cgAYrXyPxR9IcJcRIJh6eZhg80xYZMs2Io4LX1z
-	bnufU+ffsjFaSJKCWwgTi4dXWBT3M6eZTmtDft8Qr8UuSMCzd6WkQPjOq7sRiMhKRWoW/er2J9F
-	52Ri2FNlaEUB4DJCWEa8fuwd8olAahNsEewGKpNApsC3RjRENedJQNdeDj+lkcXYFBWfXkmH9+K
-	3iWK62V08lwm7UpAGjh2uElGHDcGY+b6cjq
-X-Received: by 2002:a53:bf01:0:b0:669:8f5f:fec7 with SMTP id 956f58d0204a3-6699a8ca5a6mr2644538d50.16.1785934134658;
-        Wed, 05 Aug 2026 05:48:54 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-669915f5a6asm2913336d50.12.2026.08.05.05.48.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 05:48:53 -0700 (PDT)
-Date: Wed, 05 Aug 2026 08:48:53 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: wei.fang@oss.nxp.com, 
- willemdebruijn.kernel@gmail.com, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- liuhangbin@gmail.com, 
- mst@redhat.com, 
- jasowangio@gmail.com, 
- andrew+netdev@lunn.ch, 
- ast@kernel.org, 
- daniel@iogearbox.net, 
- hawk@kernel.org, 
- john.fastabend@gmail.com, 
- sdf@fomichev.me
-Cc: wei.fang@nxp.com, 
- imx@lists.linux.dev, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.4a69732dc0a4@gmail.com>
-In-Reply-To: <20260805105314.3882595-3-wei.fang@oss.nxp.com>
-References: <20260805105314.3882595-1-wei.fang@oss.nxp.com>
- <20260805105314.3882595-3-wei.fang@oss.nxp.com>
-Subject: Re: [PATCH net 2/2] net: tap: fix skb->protocol not updated after
- VLAN network header adjustment
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LL3YpI+U"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Ue18Ig2prGxCvEwbVh+C6ugeIwImsiAHy857CfDdF7w=; b=LL3YpI+U1LvNPyuzGsL/Y2DKWj
+	tOMH7OADn/ukueznBqi5pVkn7v2d3gCWzZOJMyOR5tZgsVm1QVN7TSJWyCkqE0ofyFrjLdoVqdfYs
+	qX5Q9PR3nX4lI33aFR52wnTm2SSCLKQOCp9VKDGVTXLQKakycG8j0FnTY/dEOhg9FtVk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wrb7V-00GAVu-B7; Wed, 05 Aug 2026 14:53:17 +0200
+Date: Wed, 5 Aug 2026 14:53:17 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vasilij Strassheim <v.strassheim@linutronix.de>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Martin Kaistra <martin.kaistra@linutronix.de>
+Subject: Re: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
+ bindings
+Message-ID: <a60a207e-51ff-4332-b578-fbf032b8adfc@lunn.ch>
+References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+ <20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
+ <20260730-loutish-labrador-of-joviality-6e6c79@quoll>
+ <411ec84fd55e152e94ac1f4edba497eac3a5623d.camel@linutronix.de>
+ <590a933f-85af-4eaa-b9ee-be689dc15c69@lunn.ch>
+ <54035cef2167d81b43cbdd076b481db31d74e5d4.camel@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54035cef2167d81b43cbdd076b481db31d74e5d4.camel@linutronix.de>
 
-wei.fang@ wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> In tap_get_user_xdp(), when processing a VLAN-tagged frame,
-> skb_set_network_header() is called with the depth returned by
-> vlan_get_protocol_and_depth() to advance network_header past the VLAN
-> tag to the inner protocol header. However, skb->protocol was not updated
-> to reflect the inner EtherType, leaving it pointing to the outer VLAN
-> EtherType (e.g. ETH_P_8021Q).
-> 
-> This mismatch has two consequences. First, skb_probe_transport_header()
-> is called after the VLAN adjustment with proto=ETH_P_8021Q but nhoff
-> already pointing past the VLAN tag to the inner header. The flow
-> dissector interprets the inner header bytes as a VLAN header, fails to
-> find a recognizable encapsulated protocol, and returns false.
-> Consequently, transport_header is never set and remains at its
-> uninitialized sentinel value (~0U), causing any subsequent
-> skb_transport_header() or udp_hdr() call to dereference a pointer
-> 65535 bytes past skb->head, potentially corrupting arbitrary kernel
-> memory. Second, TC egress and eBPF programs that inspect skb->protocol
-> directly (e.g. bpf_skb_net_base_len(), bpf_skb_net_grow(),
-> __bpf_redirect_neigh()) will see ETH_P_8021Q instead of the inner
-> protocol and behave incorrectly.
-> 
-> Save the return value of vlan_get_protocol_and_depth(), which already
-> resolves the inner EtherType, and assign it to skb->protocol after
-> skb_set_network_header(). This keeps skb->protocol and network_header
-> consistent for all subsequent processing.
-> 
-> Fixes: 8c76e77f9069 ("tap: call skb_probe_transport_header after setting skb->dev")
-> Assisted-by: WChat:claude-opus-4-8
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
->  drivers/net/tap.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-> index fae115915c8e..afcc4919bd04 100644
-> --- a/drivers/net/tap.c
-> +++ b/drivers/net/tap.c
-> @@ -1081,9 +1081,15 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
->  	}
->  
->  	/* Move network header to the right position for VLAN tagged packets */
-> -	if (eth_type_vlan(skb->protocol) &&
-> -	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
-> -		skb_set_network_header(skb, depth);
-> +	if (eth_type_vlan(skb->protocol)) {
-> +		__be16 proto = vlan_get_protocol_and_depth(skb, skb->protocol,
-> +							   &depth);
-> +
-> +		if (proto != 0) {
-> +			skb_set_network_header(skb, depth);
-> +			skb->protocol = proto;
-> +		}
-> +	}
+On Wed, Aug 05, 2026 at 02:40:53PM +0200, Vasilij Strassheim wrote:
+> On Mon, 2026-08-03 at 18:43 +0200, Andrew Lunn wrote:
+> > > > > +  compatible:
+> > > > > +    const: soce,switch-dsa
+> > > > 
+> > > > Way too generic. I understand that SoCe will NEVER - and you certify
+> > > > that - develop a second, different "switch-dsa" model and they call this
+> > > > one like this?
+> > > 
+> > > It is intentionally generic to cover the common basics of all variants and
+> > > configurations of the synthesized switch in DSA.
+> > > I'm not sure what kind of guarantee I'm supposed to provide here regarding
+> > > SoCe. If switch-dsa is already mainline in the future, then a different
+> > > compatible will be needed for incompatible new models.
+> > 
+> > If it is not compatible, it needs a different compatible.
+> > 
+> > It gets interesting with something you synthesizer, something where
+> > there are a number of different synthesise options. How do you define
+> > compatible? You might want a very specific compatible, for your
+> > synthesise configuration, and a more generic compatible which might
+> > work for other synthesise configurations, but maybe not?
+> > 
+> Yes, that's not really satisfying.
 
-Does the same apply to the same call in tap_get_user?
+That is the problem with FPGAs and jellyware.
 
-And in general to other callers of vlan_get_protocol_and_depth,
-including through wrapper skb_network_protocol?
+> I will tweak the driver so that it reads as much as possible from
+> registers. Currently, I'm considering adopting SoC-e IP Core families as
+> the compatible option.
 
->  
->  	rcu_read_lock();
->  	tap = rcu_dereference(q->tap);
-> -- 
-> 2.34.1
-> 
+I would probably make that the fallback.
 
+Maybe look around at how IP licensed from Synopsys and other vendors
+of IP cores work. It is slightly different use case in that these are
+generally integrated into silicon, so are fixed, but the chip vendor
+often puts logic around the licensed core which needs driving, and
+they sometimes integrate the core wrongly, so need workarounds. So you
+often have a compatible for the specific vendors overall integration,
+and a fallback compatible for the IP core version.
 
+I would suggest something similar here, compatibles for each SoC-e IP
+core version, plus a compatible for your specific device.
+
+     Andrew
