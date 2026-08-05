@@ -1,220 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC1614A4F0;
-	Wed,  5 Aug 2026 10:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDE241D13F
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 10:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785924788; cv=none; b=UDJebl59Mnb+PfdWSdN1wRF6EeRpVKXjkvVzp6HJijnu6kRhITnc05zrZktLoKtE/XsRAZlO8ImHaQsgCs2xG9hirexspNOOJyh/dFpR1vxVG7hfi9mRBLVrtIh7JR0i3XqtGqVMhn39obgC+hRbvCSjV1suz2KXvEV66VSEIpY=
+	t=1785925140; cv=none; b=BKUB8jYK4luMjal8PMIfWuQNKKJUKXeH8qh9d+3wraDGrjA2T8RhF0mjKhSy2ERaxZiuJ3a4jZr4Y0ARs1IYMUlpRSoRlkovktBfQIow6MvZoseKKkpkZ/xG3LPg0FKNlxduqvQlJ5McfeSzrYIholDBQOmfdMg/3vLocKC2GkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785924788; c=relaxed/simple;
-	bh=5XP335Kp0fAarB1qj4xYbDS9ngajhtz3287JUoL2jY4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FD5qCkUQ14YVcJYCr2vlaXB6tOxOEFhkHEUSFBdCAiDgX8hvGORtSiWNKfELmIHSTHyi2kfL6HkZWP5Y/cL3RSU93sqmpa/SmZeU9ZoaKRvKPBqLBa1bkYdjzXmiDyaThz9W77rb6SW2CNx2egjql3Q/m2QugK7hV7HfWkKPrN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlzwWnU+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785925140; c=relaxed/simple;
+	bh=5LPdUY8vOD7tCOgpEMmMuLSpVOvHw1/BZwcBrOcaa5w=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=TFdCcQ9G0K4JFMp4nuLJBcD47PfCig+6QSEs8hLems8SVN0GXEJKBt00K9JZtJeKGpzXJcHGh1+V3mPkq/BnyKPbYX2xb5d7nMRoEliNWYib2/DC0zhZPlQeVRFqF/k7rIAEki1zZ6z8QYJDbFnjQx6XwTdqL2YNC2kAnJrw+UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=PxI7Q62T; arc=none smtp.client-ip=195.121.94.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlzwWnU+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2831E1F000E9;
-	Wed,  5 Aug 2026 10:13:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785924787;
-	bh=y98lk8nxN12M2eDqxPQhdvbQY5ROuC8ERV6faFQi+CI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AlzwWnU+N8H8OcBXwbfs48dulGHLrUhYGBdMQjvBHZ+MVuM9e2wZNi15oYai/kTiV
-	 LXV7KJo6LcUXubaXKGSmNiG+AuQ7ZrASQBSsTK2Cy0+D69BNVeDbMxqbta4M1CbGJw
-	 in4jJYd3mhE8GT9jYEDGMSFtqceU+Rtrdchl56At95XvSrfU31unuZZoAUXZbrG/Fx
-	 UawNqv4UqmcLdqEXCBmX8nEOCvQfj9L+hw5hTaAJdQ5Omqn2uFkSaqz0igLIIqp3M2
-	 27MtHfOIoAlAprQcPOAtPDdo8OOHY7R1N1iP1CadRFLgs8KQP563lfGaZKDlzqpR1O
-	 W7N8ejo9kPdMg==
-From: Simon Horman <horms@kernel.org>
-To: f3lix.dev@gmx.de
-Cc: Simon Horman <horms@kernel.org>,
-	linux-x25@vger.kernel.org,
-	ms@dev.tdt.de,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: x25: shut down T20 timer before freeing neighbour
-Date: Wed,  5 Aug 2026 11:12:44 +0100
-Message-ID: <20260805101244.551614-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260731173955.1601698-1-f3lix.dev@gmx.de>
-References: <20260731173955.1601698-1-f3lix.dev@gmx.de>
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="PxI7Q62T"
+X-KPN-MessageId: 0d599585-90b7-11f1-8f54-005056992ed3
+Received: from mta.kpnmail.nl (unknown [10.31.161.191])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id 0d599585-90b7-11f1-8f54-005056992ed3;
+	Wed, 05 Aug 2026 12:18:50 +0200 (CEST)
+Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.190])
+	by mta.kpnmail.nl (Halon) with ESMTP
+	id 0d5279f6-90b7-11f1-91d4-00505699891e;
+	Wed, 05 Aug 2026 12:18:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xs4all.nl; s=xs4all01;
+	h=content-type:mime-version:subject:message-id:to:from:date;
+	bh=ziogFb0ci+ueCyC4nXoTI8IVCsO4t3uaJI6BsJKR554=;
+	b=PxI7Q62Te1qdEYFdgM7FXqkKvqp/j4CAdTBJfNzCPYoC6TimqKRgZH/Xj/K01Wiz9r1CeJNyLozFQ
+	 LXKeCcT5uj6IDWEJ3Bzx0xatipX1pzqTrbDkq4kbKCGzBXyXHH+juUhUJGr8D5zhooGpULgmPQhH0O
+	 ToX7u+EBOJTF9Z0an1HNjDyNNluHlzg3g2EJYXVeOBB7Q082JoG9c6AbcpGkAXox/4EOj55u4AF5N5
+	 1ILnGDan0H+ctXSpVYjJ/zOeakUp7yJpYQ5+vCDaKaBiuoqvrBkDQMX6Yu4WeG0ItPw+Hig3uofsij
+	 VtV5cNdprhVgCVjCmVsypwdUzOjxSNQ==
+X-KPN-MID: 33|Tjcm3NSn66GJSZI9e7XFO9Nvaj3eSYKJK2AUMSxwvh6SgA1PzgEzNGyKhiq1Wi4
+ GkhW2CxfXhZO9ndUhJQoTUVwHaefRT05cEoEgAQG0Smo=
+X-CMASSUN: 33|OyO4csm3fn0ePujKOoZ5lESdzTI2BjzEi02ST2IdNORCu713/x9e1pLmST6IyRM
+ CNTu9DfZyrjF8Zo1YcG+t0Q==
+X-KPN-VerifiedSender: Yes
+Received: from cpxoxapps-mh02 (cpxoxapps-mh02.personalcloud.so.kpn.org [10.128.135.208])
+	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
+	id 0d46a492-90b7-11f1-916a-005056995d6c;
+	Wed, 05 Aug 2026 12:18:50 +0200 (CEST)
+Date: Wed, 5 Aug 2026 12:18:50 +0200 (CEST)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: brauner@kernel.org, cyphar@cyphar.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <1227047202.267333.1785925130131@kpc.webmail.kpnmail.nl>
+In-Reply-To: <CAAVpQUC7O1yiKQ+3FcGWbDkmcd-LeFc5tCC0vF7QgioVOXvb5Q@mail.gmail.com>
+References: <20260802151212.3294591-1-jkoolstra@xs4all.nl>
+ <20260802151212.3294591-5-jkoolstra@xs4all.nl>
+ <CAAVpQUC7O1yiKQ+3FcGWbDkmcd-LeFc5tCC0vF7QgioVOXvb5Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 4/4] selftest: Add tests for useful handling
+ of LSM denials on SCM_RIGHTS
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+Importance: Normal
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260731173955.1601698-1-f3lix.dev@gmx.de?part=1
----
---- Patch [1]: [PATCH net] net: x25: shut down T20 timer before freeing neighbour ---
-commit 918c9c3f4476f4a299dc5fd66bd610293c1355e6
-Author: Felix Hoffmann <f3lix.dev@gmx.de>
 
-net: x25: shut down T20 timer before freeing neighbour
+> Op 04-08-2026 19:26 CEST schreef Kuniyuki Iwashima <kuniyu@google.com>:
+> 
+> > +TEST_GEN_FILES := scm_rights_denial_lsm.bpf.o
+> > +
+> >  include ../../lib.mk
+> > +include ../bpf.mk
+> > +
+> > +$(OUTPUT)/scm_rights_denial_lsm: $(BPFOBJ)
+> > +$(OUTPUT)/scm_rights_denial_lsm: CFLAGS += -I$(SCRATCH_DIR)/include
+> > +$(OUTPUT)/scm_rights_denial_lsm: LDLIBS += -lelf -lz
+> > diff --git a/tools/testing/selftests/net/af_unix/config b/tools/testing/selftests/net/af_unix/config
+> > index 41dbb03c747e..468f7a0bb64e 100644
+> > --- a/tools/testing/selftests/net/af_unix/config
+> > +++ b/tools/testing/selftests/net/af_unix/config
+> > @@ -2,3 +2,10 @@ CONFIG_AF_UNIX_OOB=y
+> >  CONFIG_UNIX=y
+> >  CONFIG_UNIX_DIAG=m
+> >  CONFIG_USER_NS=y
+> > +CONFIG_BPF=y
+> > +CONFIG_BPF_SYSCALL=y
+> > +CONFIG_BPF_EVENTS=y
+> > +CONFIG_BPF_JIT=y
+> > +CONFIG_SECURITY=y
+> > +CONFIG_BPF_LSM=y
+> > +CONFIG_DEBUG_INFO_BTF=y
+> 
+> Please sort configs as CI complains.
+> https://patchwork.kernel.org/project/netdevbpf/patch/20260802151212.3294591-5-jkoolstra@xs4all.nl/
+> 
+> 
 
-This adds timer_shutdown_sync() on nb->t20timer and skb_queue_purge() on
-nb->queue in __x25_remove_neigh(), before the list-owned reference is
-dropped, to close a use-after-free where the T20 callback rearms the timer
-after x25_link_terminated() cancelled it with timer_delete(). It also
-restores the queue purge that commit 7eed751b3b2a removed.
+Oh that is pretty neat!
 
-A few questions about the placement of the new cleanup.
+I wasn't aware there was a canonical sorting for the config. This should fix it,
 
-> diff --git a/net/x25/x25_link.c b/net/x25/x25_link.c
-> index d1e8cd81c2143..876333cb16aee 100644
-> --- a/net/x25/x25_link.c
-> +++ b/net/x25/x25_link.c
-> @@ -298,6 +298,9 @@ void x25_link_device_up(struct net_device *dev)
->   */
->  static void __x25_remove_neigh(struct x25_neigh *nb)
->  {
-> +	timer_shutdown_sync(&nb->t20timer);
-> +	skb_queue_purge(&nb->queue);
-> +
+LC_ALL=C sort -c tools/testing/selftests/net/af_unix/config
 
-[Severity: High]
-[Finding: main-4-5]
-[Sources: opus-5]
-This isn't a bug introduced by this patch, but with the teardown now
-looking complete in __x25_remove_neigh(), is nb->dev still left dangling
-for neighbours that outlive their list membership?
+correct?
 
-x25_link_device_down() drops the device reference right after the removal
-helper returns, while __x25_remove_neigh() only releases the list-owned
-neighbour reference:
+If I fix these issues today, any chance we can still get this in before the merge window
+starts again?
 
-net/x25/x25_link.c:x25_link_device_down() {
-	if (nb->dev == dev) {
-		__x25_remove_neigh(nb);
-		dev_put(dev);
-	}
-}
-
-x25_link_device_down() does not call x25_kill_by_neigh(), so a socket that
-already holds its own reference keeps nb alive:
-
-net/x25/af_x25.c:x25_connect() {
-	x25->neighbour = x25_get_neigh(rt->dev);
-}
-
-and the same in x25_rx_call_request() via x25_neigh_hold(nb). The
-x25_kill_by_neigh() scan that runs on NETDEV_DOWN reads x25_sk(s)->neighbour
-under x25_list_lock only, so a socket that assigns x25->neighbour after the
-scan passed it is not evicted. NETDEV_UNREGISTER then removes the neighbour
-and drops the device reference, leaving nb->dev unheld.
-
-Once the netdev is freed, does the next transmit on that socket read freed
-memory here?
-
-net/x25/x25_dev.c:x25_establish_link() {
-	switch (nb->dev->type) {
-	...
-	skb->dev      = nb->dev;
-
-	dev_queue_xmit(skb);
-}
-
-x25_send_frame() dereferences nb->dev the same way, reached from
-x25_transmit_link() for X25_LINK_STATE_3. Would it make more sense to
-invalidate nb->dev (or evict socket references with x25_kill_by_neigh())
-at removal time rather than only dropping the device reference?
-
-[Severity: Medium]
-[Finding: main-1-0]
-[Sources: opus-5]
-This is a pre-existing issue, but does the purge belong at list removal
-rather than at the neighbour's release point?
-
-x25_neigh_put() frees the object with a bare kfree() and never touches
-nb->queue:
-
-include/net/x25.h:x25_neigh_put() {
-	if (refcount_dec_and_test(&nb->refcnt))
-		kfree(nb);
-}
-
-A socket holding its own reference (x25->neighbour) can still reach
-x25_transmit_link() through x25_kick()/x25_send_iframe()/x25_write_internal()
-after the neighbour has been unlinked and purged:
-
-net/x25/x25_link.c:x25_transmit_link() {
-	case X25_LINK_STATE_0:
-		skb_queue_tail(&nb->queue, skb);
-		nb->state = X25_LINK_STATE_1;
-		x25_establish_link(nb);
-	case X25_LINK_STATE_1:
-	case X25_LINK_STATE_2:
-		skb_queue_tail(&nb->queue, skb);
-}
-
-No lock is held there, and the remaining drain/purge sites
-(x25_link_control(), x25_link_established(), x25_link_terminated()) are only
-reachable with a neighbour obtained from x25_get_neigh(), i.e. one that is
-still on x25_neigh_list. With the T20 timer now permanently shut down, can
-those frames ever be drained again, or do they leak together with the socket
-references they carry from sock_alloc_send_skb() in x25_output() when
-kfree(nb) runs?
-
-Would moving the purge and the timer shutdown into a release helper called
-when the refcount hits zero avoid this, and also avoid leaving a
-backporter with the impression that nb->queue is empty at free time?
-
-[Severity: Low]
-[Finding: main-2-1]
-[Sources: opus-5, opus-4-7]
-This isn't a bug, but the kernel-doc immediately above the function now
-describes less than the function does:
-
-net/x25/x25_link.c
-/**
- *	__x25_remove_neigh - remove neighbour from x25_neigh_list
- *	@nb: - neigh to remove
- *
- *	Remove neighbour from x25_neigh_list. If it was there.
- *	Caller must hold x25_neigh_list_lock.
- */
-
-The function is no longer only a list operation. timer_shutdown_sync() is
-irreversible per its own documentation in kernel/time/timer.c ("@timer
-cannot be enqueued again. Any attempt to rearm @timer is silently
-ignored"), which __mod_timer() implements with:
-
-kernel/time/timer.c:__mod_timer() {
-	if (!timer->function)
-		goto out_unlock;
-}
-
-and skb_queue_purge() destroys frames that x25_transmit_link() queued for
-later transmission. The helper also now spin-waits for a callback that may
-be running on another CPU, while both callers hold the lock with BH
-disabled:
-
-net/x25/x25_link.c:x25_link_device_down() {
-	write_lock_bh(&x25_neigh_list_lock);
-
-	list_for_each_safe(entry, tmp, &x25_neigh_list) {
-}
-
-x25_link_free() does the same. Could the comment be updated to describe the
-synchronous, irreversible teardown and the blocking behaviour under
-write_lock_bh()?
-
->  	if (nb->node.next) {
->  		list_del(&nb->node);
->  		x25_neigh_put(nb);
-
-Also, the two new operations sit before the if (nb->node.next) guard, so on
-the "it was not there" path documented in the comment the function drops no
-reference but still kills the T20 timer permanently and discards queued
-frames. Both current callers iterate x25_neigh_list, so that branch is
-always taken today; would moving the two steps inside the guard keep the
-helper consistent with its documented contract for any future caller?
+Best,
+Jori.
