@@ -1,151 +1,259 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770293CEB90;
-	Wed,  5 Aug 2026 17:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855243C0A0E;
+	Wed,  5 Aug 2026 17:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785950195; cv=none; b=TnB4uqIh1EwD62+O/J9f8JBhpxK8J7H/V4PCiZ3lC3u6mjU83c9tyvOM65hxNGC+8uEeZdiNoFFabzMLItIj54nV1jLYn6i0JEY5t6i/3AaAYiPW0DmkSJj/0tjqNHlfpyBiXpz21jnaXs9hd4LkeWu9GS+zqwuAQURBFrgxXH0=
+	t=1785950288; cv=none; b=rFjS72S8D7S1NE2TXrFqv+JGlQzKUxt6yUcUl0vxtgddk/0rZBtybEQBz51v92Kzh+Y7xjBDieAAO2jKWZrhV0SV04qxUEnSII8PZD80jz5ukFMWTSRxU3V+M7AM+FfFCaovCo4aUieXDfjUmcDFd42tjNT6Lbxa/yhiGgFmhT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785950195; c=relaxed/simple;
-	bh=5/x+yBltEA6/p9vGJ58LBjPT+vWF9PL/NCY3VCiR0+w=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=IWA2VkeIZ0D/fCv6cevJd4iuDAOTfdrSIAbyLmBildtQmNC/5Ssz6yq+S4Cpiu+ZgcXSpSKErQQaGmAkFbAcEVQNqxBCstIACBPDBpSeZUQaNmbAxqY5R2fnwjAJjEQE1b/og7szUXSRhh02aG4+XJjUDhrml0mgPoyp1rqnfUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=CU3U5kUe; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1785950288; c=relaxed/simple;
+	bh=3tQsLhgAqbh0vxBiPV0D1DFPN538lJd3MbOjhK6cFKg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ia0tLypp5G6huBYQYp1aifdZr9z+N5SLQj9qpdnXvhLEwWxpqQAaREnGfrojMgKxwbjQdaG/EwJwJ9kz2pDfeAOlQ8QWhgiEhubAwfMHEi/qKaucwp0fpTr5SHOACrZ2rIfmGXtM+uC2xQacxU6smuc3oEf08g7rkO4iYLwmKdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=lWMBRpGB; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="CU3U5kUe"
-Received: from DairyQueen (unknown [4.194.122.162])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C246B20B716A;
-	Wed,  5 Aug 2026 10:16:02 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C246B20B716A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785950168;
-	bh=zUd4Z56F750e/zfpxHZ+hCkFTeSEgJPpK53kX7O/SjY=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
-	b=CU3U5kUebiu0kMijyW+lERomndJV0oqEH5XEDV2hg3YGXjNXpwXA/lDMoQ2HOJ1dw
-	 EVfTTEcmeB6KSa01YlzKBjwQmqCpqefUSYg3cP8QGeANEOmSk2Fi07ayEADFYzN5Fe
-	 VHk5MJ5vl+zGkbuzs7A2yYtzuUqasRf9mPTXbcrA=
-From: "Kameron Carr" <kameroncarr@linux.microsoft.com>
-To: "'Michael Kelley'" <mhklinux@outlook.com>,
-	<decui@microsoft.com>,
-	<haiyangz@microsoft.com>,
-	<kys@microsoft.com>,
-	<longli@microsoft.com>,
-	<wei.liu@kernel.org>
-Cc: <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>,
-	<edumazet@google.com>,
-	<kuba@kernel.org>,
-	<pabeni@redhat.com>,
-	<linux-hyperv@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>
-References: <20260721195633.1438361-1-kameroncarr@linux.microsoft.com> <20260721195633.1438361-3-kameroncarr@linux.microsoft.com> <SN6PR02MB41576F1E9A4F0AC3D6AB8C18D4CF2@SN6PR02MB4157.namprd02.prod.outlook.com> <000901dd211f$b119be20$134d3a60$@linux.microsoft.com> <SN6PR02MB4157514D8AFB06FB6F2ED9BED4D62@SN6PR02MB4157.namprd02.prod.outlook.com> <000a01dd236f$2a24f4f0$7e6eded0$@linux.microsoft.com> <SN6PR02MB415720DFAAC7EF9106D5B684D4D42@SN6PR02MB4157.namprd02.prod.outlook.com>
-In-Reply-To: <SN6PR02MB415720DFAAC7EF9106D5B684D4D42@SN6PR02MB4157.namprd02.prod.outlook.com>
-Subject: RE: [RFC PATCH 2/2] hv_netvsc: back GPADL buffers with kmalloc + decrypt + vmap
-Date: Wed, 5 Aug 2026 10:16:19 -0700
-Message-ID: <000a01dd24fe$26f311a0$74d934e0$@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="lWMBRpGB"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 3AA5F601A7;
+	Wed,  5 Aug 2026 19:18:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1785950284;
+	bh=sQOVPwbBkWI6puFgu5XOW8Hq5WK83y6VEIfuo+ulkYA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lWMBRpGBTbrvpM2uSPSNjY+om8qXyEfsPBpYuBlEBLFxK2qaIUruMYUMGQgIqKW1f
+	 BKbvIdopR8UPFule9815yTpc4p/MS4iVWfPOvYaLBWwd3EvLZfppY0vjDxK/1Faj2Q
+	 beavjh0O0ZC4svHexBsAzE7MfmDyTuxHI9p4iWKCxD2kxdJL28uQYneJq7GpVZOClB
+	 YrVkUGhp4t28MvBeoY3qvgkhRoF8aCvU1pv9n4ZcYL2p512ynn5TrlccK37DIagFLv
+	 oLYnUISNU0g+d6Ah8CByjPndeb1rJoUI87eeKqEgNujCcMM/+hFq/+Dxx9xfryUKK1
+	 rtRZjL0P7LP8w==
+Date: Wed, 5 Aug 2026 19:18:01 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+	fw@strlen.de, horms@kernel.org
+Subject: Re: [PATCH net 02/10] netfilter: ebt_nflog: pin the NFLOG backend
+Message-ID: <anNwSVI29j5-FfwJ@chamomile>
+References: <20260731151806.849724-3-pablo@netfilter.org>
+ <20260805001529.3978646-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-us
-Thread-Index: AQNRsRip/0GPmGqK2zS6hqfVzZeToQIbF+Y6AtauNasB7oqiJQJivrRjAkfGIjMCEyDc4bM5qEaA
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260805001529.3978646-1-kuba@kernel.org>
 
-On Monday, August 3, 2026 5:23 PM, Michael Kelley wrote:
-> From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent: Monday, August
-3, 2026 10:40 AM
-> >
-> > On Saturday, August 1, 2026 9:17 PM, Michael Kelley wrote:
-> > > From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent: Friday,
-July 31, 2026 12:06 PM
-> > > >
-> > > > On Friday, July 24, 2026 12:37 PM, Michael Kelley wrote:
-> > > > > From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent:
-Tuesday, July 21, 2026 12:57 PM
-> > > > [...]
-> > > > > > +	/*
-> > > > > > +	 * @order monotonically decreases across iterations
-> > > > > > +	 *
-> > > > > > +	 * Use __GFP_NORETRY | __GFP_NOWARN to avoid OOM-killing,
-but try
-> > > > > > +	 * harder at order 0 since that is the final fallback.
-> > > > > > +	 */
-> > > > > > +	order = min_t(unsigned int, MAX_PAGE_ORDER,
-ilog2(nr_pages));
-> > > > >
-> > > > > Prefer using min() instead of min_t(). For normal integer values,
-> > > > > min() should work correctly.
-> > > >
-> > > > Using min() compiled fine on ARM, but x86 is throwing a compile
-error.
-> > > >
-> > > >     drivers/hv/channel.c: In function 'vmbus_alloc_buffer':
-> > > >     ././include/linux/compiler_types.h:699:45: error: call to
-> > > >     '__compiletime_assert_518' declared with attribute error:
-min(order,
-> > (
-> > > >     __builtin_constant_p(remaining) ? ((remaining) < 2 ? 0 : 63 -
-> > > >     __builtin_clzll(remaining)) : (sizeof(remaining) <= 4) ?
-> > > >     __ilog2_u32(remaining) : __ilog2_u64(remaining) )) signedness
-error
-> > > >
-> > > > In my v3 I may go back to using min_t. Please let me know if a cast
-(or
-> > > > some other method) is preferred.
-> > >
-> > > Hmmm. I don't get the same compile error on x86/x64. Maybe it is
-> > > related to compiler and version, or the kernel code base against which
-> > > the patch is being built. Probably you didn't see a problem on arm64
-> > > because of some such difference. FWIW, I built with gcc 11.4.0 against
-> > > linux-next20260726.  What is the compiler and base kernel info where
-> > > you saw the error and on arm64 where you didn't?
-> >
-> > In both cases, I built against hyperv-next (a4ffc59).
-> > On ARM64 I used gcc 13.2.0; on x86 I used 13.3.0.
-> >
-> > To do a fair comparison, I
-> >  * downgraded my x86 environment to gcc 13.2.0
-> >  * started with `make defconfig`
-> >  * enabled Hyper-V and NetVSC in the config (=y)
-> >
-> > I saw the same behavior where there was no error on ARM and compile
-failure
-> > on x86.
-> >
+Hi Jakub,
+
+This refers to pre-existing issue, it seems the model is now not
+indicating this for some reason, see below for details.
+
+On Tue, Aug 04, 2026 at 05:15:29PM -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> netfilter: ebt_nflog: pin the NFLOG backend
 > 
-> Really weird. I compiled on x86/x64 with gcc 13.3.0, and saw no
-> problem. This was against the official 7.1.0 release source code.
-> Then I grabbed hyperv-next (the tag "hyperv-next-signed-20260621"
-> specifically), added your patches, and again using gcc 13.3.0 I
-> built with no problem. Are you using the same local copy of the
-> source code for arm64 and x86/x64 builds? If not, I wonder if
-> your local x86/x64 source code tree is somehow corrupt or not
-> what you think it is.
+> This adds a module reference on the ULOG logger when an ebtables nflog
+> rule is validated, and drops it from a new .destroy callback, so that
+> nfnetlink_log cannot be unloaded while such a rule is installed.  It also
+> requests the nfnetlink_log module for legacy (non nft_compat) callers.
 > 
-> My .config file is different from yours. I did not try starting fresh
-> with make defconfig and then enable Hyper-V and netvsc.
+> A few questions about the change and the commit message.
 
-Automated testing is picking up the same compiler error
-https://lore.kernel.org/all/6a6dc0b6.1aa927e4.17d4bf.000d.GAE@google.com/
+This patch is doing exactly the same as xt_LOG and xt_NFLOG so it is
+needed.
 
-    tree:      net-next
-    arch:      amd64
-    compiler:  Debian clang version 22.1.8
+> > nf_log_unregister() runs after the per-net teardown so its final RCU
+> > grace period also drains readers that obtained the logger from a per-net
+> > binding.
+> 
+> [Severity: High]
+> Is this description accurate?  This isn't a bug introduced by this patch,
+> but the ordering seems to be the other way around.
+> 
+> nfnetlink_log_fini() frees the per-net state first:
+> 
+> net/netfilter/nfnetlink_log.c:nfnetlink_log_fini() {
+> 	...
+> 	unregister_pernet_subsys(&nfnl_log_net_ops);
+> 	nf_log_unregister(&nfulnl_logger);
+> 	...
+> }
+> 
+> unregister_pernet_subsys() reaches ops_undo_list(), where the only
+> synchronize_rcu() happens before the exit callbacks run, and the kfree
+> follows immediately after them:
+> 
+> net/core/net_namespace.c:ops_undo_list() {
+> 	...
+> 	list_for_each_entry_continue_reverse(ops, ops_list, list)
+> 		ops_exit_list(ops, net_exit_list);
+> 
+> 	ops = saved_ops;
+> 	list_for_each_entry_continue_reverse(ops, ops_list, list)
+> 		ops_free_list(ops, net_exit_list);
+> 	...
+> }
+> 
+> So the grace period inside nf_log_unregister() runs after struct
+> nfnl_log_net has already been freed, which would mean it protects the
+> module text rather than the per-net data.
+> 
+> Does the per-net binding path stay exposed after this patch?  A logger
+> bound per-net (sysctl /proc/sys/net/netfilter/nf_log/<pf>, or
+> nf_log_bind_pf()) is only cleared in the pernet exit hook:
+> 
+> net/netfilter/nfnetlink_log.c:nfnl_log_net_exit() {
+> 	nf_log_unset(net, &nfulnl_logger);
+> 	...
+> }
+> 
+> and nf_log_unset() does not wait for readers, since the grace period was
+> removed by the commit named in the Fixes: tag:
+> 
+> net/netfilter/nf_log.c:nf_log_unset() {
+> 	...
+> 			RCU_INIT_POINTER(net->nf.nf_loggers[i], NULL);
+> 	...
+> }
+> 
+> A reader that resolved the logger through the per-net branch of
+> nf_log_packet():
+> 
+> 	if (loginfo != NULL)
+> 		logger = rcu_dereference(loggers[pf][loginfo->type]);
+> 	else
+> 		logger = rcu_dereference(net->nf.nf_loggers[pf]);
+> 
+> can still be inside nfulnl_log_packet() -> nfnl_log_pernet(net) ->
+> instance_lookup_get_rcu() -> __instance_lookup() when ops_free_list()
+> frees the blob, which is the same KASAN signature quoted above with no
+> ebtables rule involved.  Reachable loginfo == NULL callers today include
+> nf_log_trace(), the conntrack helper log in net/netfilter/nf_conntrack_helper.c
+> and net/netfilter/nfnetlink_osf.c.
+> 
+> Would reordering nfnetlink_log_fini() so that nf_log_unregister() runs
+> before unregister_pernet_subsys() close all of the frontends at once?
 
-This points to a real issue, not a corruption issue.
+This sounds like a pre-existing issue.
 
-I believe the right course is to explicitly do an unsigned comparison
-instead of relying on the compiler to allow a comparison between a
-signed and unsigned value.
+This needs a follow up which does not belong to this patch IMO.
 
-Regards,
-Kameron
+> > diff --git a/net/bridge/netfilter/ebt_nflog.c b/net/bridge/netfilter/ebt_nflog.c
+> > index 61bf8f4465ab7..426f8adc912c7 100644
+> > --- a/net/bridge/netfilter/ebt_nflog.c
+> > +++ b/net/bridge/netfilter/ebt_nflog.c
+> > @@ -41,11 +41,25 @@ ebt_nflog_tg(struct sk_buff *skb, const struct xt_action_param *par)
+> >  static int ebt_nflog_tg_check(const struct xt_tgchk_param *par)
+> >  {
+> >  	struct ebt_nflog_info *info = par->targinfo;
+> > +	int ret;
+> >  
+> >  	if (info->flags & ~EBT_NFLOG_MASK)
+> >  		return -EINVAL;
+> >  	info->prefix[EBT_NFLOG_PREFIX_SIZE - 1] = '\0';
+> > -	return 0;
+> > +
+> > +	ret = nf_logger_find_get(par->family, NF_LOG_TYPE_ULOG);
+> 
+> [Severity: Medium]
+> Should the commit message mention that this can reject rulesets that used
+> to load?  ebt_nflog_tg_check() previously returned 0 unconditionally, so an
+> ebtables nflog rule installed fine and simply logged nothing when
+> loggers[pf][NF_LOG_TYPE_ULOG] was NULL.  Now the raw -ENOENT from
+> nf_logger_find_get() is propagated out through xt_check_target(), so
+> ebtables -A ... --nflog and ebtables-restore fail.  This seems worth
+> spelling out given the Cc: stable.
+> 
+> Also, is the stated parity with xt_NFLOG complete?  NETFILTER_XT_TARGET_NFLOG
+> carries select NETFILTER_NETLINK_LOG in net/netfilter/Kconfig, while
+> BRIDGE_EBT_NFLOG has no select or depends:
+> 
+> net/bridge/netfilter/Kconfig:
+> config BRIDGE_EBT_NFLOG
+> 	tristate "ebt: nflog support"
+> 	help
+> 	  This option enables the nflog watcher, which allows to LOG
+> 	  messages through the netfilter logging API, which can use
+> 	  either the old LOG target, the old ULOG target or nfnetlink_log
+> 	  as backend.
+> 
+> On a kernel with CONFIG_BRIDGE_EBT_NFLOG set and
+> CONFIG_NETFILTER_NETLINK_LOG=n, the request_module() fallback below can
+> never succeed, so the target becomes unusable.  Should a
+> select NETFILTER_NETLINK_LOG be added here?  The help text claiming the
+> watcher can use the old LOG or ULOG targets as backend also no longer
+> matches the code.
 
+This sounds again like a pre-existing issue in ebt_nflog's Kconfig.
 
+> 
+> > +	if (ret != 0 && !par->nft_compat) {
+> > +		request_module("%s", "nfnetlink_log");
+> > +
+> > +		ret = nf_logger_find_get(par->family, NF_LOG_TYPE_ULOG);
+> > +	}
+> > +
+> > +	return ret;
+> 
+> [Severity: Medium]
+> Who loads nfnetlink_log for the nft_compat case?
+
+This is again a pre-existing issue that should be handled in a follow
+up, it affects xt_LOG and xt_NFLOG too.
+
+> The !par->nft_compat skip is copied from xt_NFLOG, but xt_NFLOG also
+> declares MODULE_SOFTDEP("pre: nfnetlink_log"), and ebt_nflog.c has
+> no MODULE_SOFTDEP at all, so demand-loading ebt_nflog through
+> xt_request_find_target(NFPROTO_BRIDGE, "nflog", rev) does not bring
+> in the backend.
+> 
+> The -ENOENT recovery in nft_compat only matches the uppercase names:
+> 
+> net/netfilter/nft_compat.c:nft_target_init() {
+> 	...
+> 		if (ret == -ENOENT) {
+> 			const char *modname = NULL;
+> 
+> 			if (strcmp(target->name, "LOG") == 0)
+> 				modname = "nf_log_syslog";
+> 			else if (strcmp(target->name, "NFLOG") == 0)
+> 				modname = "nfnetlink_log";
+> 
+> 			if (modname &&
+> 			    nft_request_module(ctx->net, "%s", modname) == -EAGAIN)
+> 				return -EAGAIN;
+> 		}
+> 	...
+> }
+> 
+> The target registered here is .name = "nflog", so modname stays NULL, no
+> module is requested and there is no -EAGAIN retry.  Does an nftables
+> bridge-family compat rule using nflog now fail with -ENOENT unless
+> nfnetlink_log is already resident, where it succeeded before?  Adding
+> MODULE_SOFTDEP("pre: nfnetlink_log") to ebt_nflog.c, or extending the name
+> mapping in nft_target_init(), would seem to cover it.
+> 
+> > +}
+> > +
+> > +static void ebt_nflog_tg_destroy(const struct xt_tgdtor_param *par)
+> > +{
+> > +	nf_logger_put(par->family, NF_LOG_TYPE_ULOG);
+> >  }
+> >  
+> >  static struct xt_target ebt_nflog_tg_reg __read_mostly = {
+> > @@ -54,6 +68,7 @@ static struct xt_target ebt_nflog_tg_reg __read_mostly = {
+> >  	.family     = NFPROTO_BRIDGE,
+> >  	.target     = ebt_nflog_tg,
+> >  	.checkentry = ebt_nflog_tg_check,
+> > +	.destroy    = ebt_nflog_tg_destroy,
+> >  	.targetsize = sizeof(struct ebt_nflog_info),
+> >  	.me         = THIS_MODULE,
+> >  };
