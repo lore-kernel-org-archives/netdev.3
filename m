@@ -1,142 +1,139 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C45349CD6;
-	Wed,  5 Aug 2026 13:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C4F470EBD
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 13:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785935710; cv=none; b=f1aK3A4bPxms7IlMTpXdfLuomorfJnAK3Q6MOlZ8dxIYznpN4lggMJXWlf7nHMnMRqxlP0oQd4ylgHFR7jFFC2yiVKJzxm81gZPvpU1ZLEItoAqr9O2CmIMh8UgCQR0qp2kBI2fbYfTSSCnqaK9bgBAy8wQza+nL0I/Lb+X/lp4=
+	t=1785935713; cv=none; b=j9AJrPKXnFK7UjqWhcoeiz4GXXhHnQkfj3jbi/1xbsedoQy5gUTgH43xh1zw9E+BPAFeAaooD2nvoq23RiRlb0H7NQpK6Mdmh3EvssNSWPIwRFD12Zj2ui3bXzxWE416JWMTUBIkjQ/9u/GQrKKDEqkY9ThzUgMlY/NuYzKsIuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785935710; c=relaxed/simple;
-	bh=Yrg1ErwQQvfeFOROWOyJx0XM0IbSa9BL6q1B5tpim1s=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=CSF8BLM7WILPE/9f/u9seYghcj0G4sOfhj2wQjoHICmEDc7ZoWZbC9U6QuyKv5v33K55hC2B+qZA+TpAVkNNrq4NNRFCiVMugu4rlbrV8I3WaY0Q5pVoYRyPJ+cnJ/j5HySIRYkpkpSC9icRusdFWlIjpwWCX3SPzZrALrADEFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zoOkX+uT; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785935713; c=relaxed/simple;
+	bh=UPhpllrZamcQNZMJtZeoWoFQuApaJuhTwqaKdaUAHKg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IyjQIQZdg7Yw7PxZuecJCAwL1cPLM0YukTw1UNj6SfXKhTrCtyA0VC5FoUkE3DbUjru+8VIAIyZOd8wEdzXMflRD+Xq6HHYcDTr7BRDqDfdNUNCQUyabaNKIm/AnZ7P4trmcypITNIG4CzJEYjSZJMeSazWMIE4RvPj/4VfFxxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eB0mtfSV; arc=none smtp.client-ip=209.85.160.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zoOkX+uT"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id D8A244E4104F;
-	Wed,  5 Aug 2026 13:15:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id ABBC4602AB;
-	Wed,  5 Aug 2026 13:15:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 00D2211C349E7;
-	Wed,  5 Aug 2026 15:14:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785935699; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=uIHxcjJyQ0y8FabWacsLPaMO/+nPUzK4AJsBNIDdFIs=;
-	b=zoOkX+uTzInOyjkRfqVDeQ6qflmBLZWzl2vRGga0nrlumtL6UmnC3+oD0cw5B8IntY1yTp
-	hRTbKyDqbEfk406eFifx1gJtHdhNBylBOl9ED0nlZI0hXFAckCzV/WpgBIYe9Fv5jMgyT+
-	sDhdW3lyblEZTYKU+B4ehpnAGuM43n22hx0aKyK7ye5U+txWn9Pq4LskIznCgJpqJrmbw4
-	F/l2BiDNxbH/TDsDyecsF7tsC5fsghV+yC5W4rn6IZ1PnOlEMVjQ2baKbo/zlyVo1kq4nj
-	QV4BWc+enE0NbnqaYJnNT9TmROLjqG+ZclkrDUYAsP9oxiP64PiGNuKjeLLY+w==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eB0mtfSV"
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51ebdfceddcso10564641cf.3
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 06:15:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785935710; x=1786540510; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+iiR9tifk7fD8CAqxueTQWxAf7agC5Bth/Bv5SAURm4=;
+        b=eB0mtfSVDlKLJ88cpRRqedZfA/9gYbIwSaWHlMw7TD3NqcoxBrnGA20ivBY6JGvJ75
+         +/9o4rJHZ+1lpW1sV5YkFozcKeHAxGhW/S/kVTmlbqxKZRysPAl1eOleCCJDHsD0h7z6
+         0KiimzgLOjTeeNFMKBIUG1oG2K9rjakUyxluHKOlEQha4FWn9UXRYR6dJuRHVHsNTjkz
+         S/IUUyJGrdcq6g55bX+mcZmNBGbC3bJuPUDUkJwYKza15Lw0IPhT8wfs/IJLwgvFIoZP
+         nG1X9elwAudgMTLlr1HW+jrxnd3c427yoA4cR675qAFIDEetP88EAuI0rb7e93w+xo9h
+         Ktpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785935710; x=1786540510;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+iiR9tifk7fD8CAqxueTQWxAf7agC5Bth/Bv5SAURm4=;
+        b=L5Kb5UTWQI4PQqBoWNuH3RIMr7Ke1NYM6STxuUQ+5X/pnb5wqG6YhMVwRbjDjl8uR7
+         oirUnk0m1eCM/uipwXdqiJkzjgIM97iQep1f3n9pdFp0L0kG63PdXR647wFZvf2MUY/H
+         Hn0MO/JUMR6GlZtCT9UNIWKLJdEswCrjeJtH0nbez3vcY+vQdOilrBi7a9bn2XCtxrEB
+         0tfSPXMsWP7uyzlrIjV3BRxq5rX12ieDZBkrh/v2hLCOvA3vUg/nd/jZBuqSNrM3BoJd
+         t7MWDes6KWIqj5RwlBj12/3CIgjCGvzKM7clwwl8PD/hC8vyoDmvMiMGWf0Plu8854XN
+         /b6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RobT1rp9tXnM8eZtSVx2GCeVAqab/1mq39F0OWfsttaN0BG1jACOaujkvjGHZU9QJNjZdfafBk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKlaXPfGKTXVUpGP87VcFCOi+iOgkLF5ci5q5ydLCAPFwlTfMO
+	Ujh7X2u3PtOvnfQ0LgUP7v8LZPrxhgKXPTgVxdfqILp9J4/E5rMvrnlCFwdKmZ3XQVMF7zJPFwF
+	Qz/WACqyYsFTTGw==
+X-Received: from qto6.prod.google.com ([2002:a05:622a:a6c6:b0:517:58ba:db8c])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:8c:b0:519:fca2:346a with SMTP id d75a77b69052e-52ce610775fmr55916631cf.23.1785935709551;
+ Wed, 05 Aug 2026 06:15:09 -0700 (PDT)
+Date: Wed,  5 Aug 2026 13:15:08 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 05 Aug 2026 15:14:55 +0200
-Message-Id: <DKH1D7X1YSQY.3UOH4SJMIQ5QW@bootlin.com>
-Subject: Re: [PATCH net v2] net: macb: configure ENST registers for all
- queues
-Cc: <git@amd.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Vineeth Karumanchi" <vineeth.karumanchi@amd.com>,
- <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
- <pabeni@redhat.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260805044204.272989-1-vineeth.karumanchi@amd.com>
-In-Reply-To: <20260805044204.272989-1-vineeth.karumanchi@amd.com>
-X-Last-TLS-Session-Version: TLSv1.3
+X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
+Message-ID: <20260805131508.3227331-1-edumazet@google.com>
+Subject: [PATCH v2 net] net/atm: fix slab-out-of-bounds read in vcc_setsockopt()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+53ecc09fb81df10ef4de@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hello Vineeth,
+vcc_setsockopt() contained an ineffective optlen check:
+  if (__SO_LEVEL_MATCH(optname, level) && optlen != __SO_SIZE(optname))
+      return -EINVAL;
 
-On Wed Aug 5, 2026 at 6:42 AM CEST, Vineeth Karumanchi wrote:
-> When a taprio config only covered a subset of queues, the driver
-> programmed the ENST registers only for the queues named in the config
-> and left the remaining queues holding stale register values. This
-> produced an inconsistent hardware setup that affected the scheduling
-> of the configured queues.
->
-> This was observed on a GEM instance with four hardware queues, all
-> enabled:
->
-> Initial configuration:
-> - All four queues are enabled.
-> - enst_on_time_qX registers are left at their reset value (0x0001FFFF).
-> - Only q0 and q1 are configured with valid, non-overlapping ENST
->   schedules (T0 and T1 respectively).
-> - Traffic streams p0 and p1 are bound to q0 and q1.
-> - ENST is enabled only on q0 and q1.
->
-> Observed behavior:
-> - During T0 on-time, both p0 and p1 packets are transmitted.
-> - During T1 on-time, both p0 and p1 packets are transmitted.
->
-> With the unused queues (q2 and q3) explicitly programmed with
-> enst_on_time =3D 0x0:
-> - During T0 on-time, only p0 packets are transmitted.
-> - During T1 on-time, only p1 packets are transmitted.
+If __SO_LEVEL_MATCH(optname, level) evaluated to false (e.g. if the caller
+passed a mismatched level), the length check optlen != __SO_SIZE(optname)
+was short-circuited and bypassed. Execution then fell through to switch(optname),
+calling copy_from_sockptr() assuming optval contained sufficient space.
 
-Thanks for the expanded commit message.
+Furthermore, even if level matched, a cgroup BPF setsockopt filter could shrink
+optlen after entry. Because copy_from_sockptr() on kernel pointers uses memcpy(),
+this leads to a KASAN slab-out-of-bounds read when optlen is smaller than the
+expected structure size.
 
-> Leaving the ENST on-time registers of unused queues at their reset
-> value (0x0001FFFF) disrupts the scheduling of the configured queues,
-> whereas programming them with 0x0 yields the expected ENST operation.
->
-> Program the ENST registers for every queue unconditionally. The
-> per-queue configuration array is now allocated for bp->num_queues and
-> indexed directly by queue_id; unconfigured queues are left
-> zero-initialized by kcalloc(), so their registers are cleared.
-> Indexing the array by queue_id also makes the queue_id field in
-> struct macb_queue_enst_config redundant, so drop it.
->
-> Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
-> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-> ---
-> Changes in v2:
-> - Split the patches for net and net-next.
-> - Updated commit message
-> - Link to v1 : https://lore.kernel.org/netdev/20260724043257.2221030-1-vi=
-neeth.karumanchi@amd.com/
-> ---
->
-> [...]
->
-> @@ -4357,7 +4357,7 @@ static int macb_taprio_setup_replace(struct net_dev=
-ice *ndev,
->  		return -EINVAL;
->  	}
-> =20
-> -	enst_queue =3D kcalloc(conf->num_entries, sizeof(*enst_queue), GFP_KERN=
-EL);
-> +	enst_queue =3D kcalloc(bp->num_queues, sizeof(*enst_queue), GFP_KERNEL)=
-;
->  	if (unlikely(!enst_queue))
->  		return -ENOMEM;
+Fix this by using copy_safe_from_sockptr(), which unconditionally validates
+that optlen is at least the expected size before copying. Also change the local
+'value' variable type from 'unsigned long' to 'int' so that SO_SETCLP matches
+its sizeof(int) ABI encoding on 64-bit systems.
 
-My first reaction to this was that we should be using the new
-kzalloc_objs() API. But actually those 96 bytes are not worth the
-trouble of a kmalloc, it could be stack allocated.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+53ecc09fb81df10ef4de@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=53ecc09fb81df10ef4de
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+v2: change @value type to "int"
+v1: https://lore.kernel.org/netdev/20260804145806.2112004-1-edumazet@google.com/T/#u
 
-   struct macb_queue_enst_config enst_config[MACB_MAX_QUEUES] =3D {};
+ net/atm/common.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-Anyway this is a bit orthogonal to your change.
-Whether you change it or not:
-
-Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/net/atm/common.c b/net/atm/common.c
+index c7f92405daf050ecd2a507e41efdd622ab8dc6a8..81195727fa18ba4e6146c0c02cd3898d17fc436f 100644
+--- a/net/atm/common.c
++++ b/net/atm/common.c
+@@ -710,7 +710,7 @@ int vcc_setsockopt(struct socket *sock, int level, int optname,
+ 		   sockptr_t optval, unsigned int optlen)
+ {
+ 	struct atm_vcc *vcc;
+-	unsigned long value;
++	int value;
+ 	int error;
+ 
+ 	if (__SO_LEVEL_MATCH(optname, level) && optlen != __SO_SIZE(optname))
+@@ -722,8 +722,10 @@ int vcc_setsockopt(struct socket *sock, int level, int optname,
+ 	{
+ 		struct atm_qos qos;
+ 
+-		if (copy_from_sockptr(&qos, optval, sizeof(qos)))
+-			return -EFAULT;
++		error = copy_safe_from_sockptr(&qos, sizeof(qos), optval,
++					       optlen);
++		if (error)
++			return error;
+ 		error = check_qos(&qos);
+ 		if (error)
+ 			return error;
+@@ -737,8 +739,10 @@ int vcc_setsockopt(struct socket *sock, int level, int optname,
+ 		return 0;
+ 	}
+ 	case SO_SETCLP:
+-		if (copy_from_sockptr(&value, optval, sizeof(value)))
+-			return -EFAULT;
++		error = copy_safe_from_sockptr(&value, sizeof(value), optval,
++					       optlen);
++		if (error)
++			return error;
+ 		if (value)
+ 			vcc->atm_options |= ATM_ATMOPT_CLP;
+ 		else
+-- 
+2.55.0.571.g244d577d93-goog
 
