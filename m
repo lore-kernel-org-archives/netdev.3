@@ -1,49 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f97.google.com (mail-ot1-f97.google.com [209.85.210.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0F93FD121;
-	Wed,  5 Aug 2026 09:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADEB40097C
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 09:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785922808; cv=none; b=EWXByvWwV01B+a0NllzLYNo2sAMq8poW3xh7KH/JbmkVYG2f5GEQWc+zc1sjxlxX+Nmq6CiX8sGpzkwOelIZcesTvB7lHbfJkhMQZbUfrkgnT74Hg7SnD1RlaDYgwTtpm7IxvP/0uzhYdwes9UPms/pZim5K+C/n+6hJhSYd8kM=
+	t=1785922911; cv=none; b=obzBRYisPKqix8+E9bqRP3SzzfE9vXCo4+pVrSZl1VWCi4bTlQSX58wNibrJR0gLtMkuIrHc25ukSCY7lXqFDGphK8/LplOOaejYHQgex1Q6g3TO9pcJuT9llb5a5hfUQ5BRAHQl35gOojg0VaP4OQxWLAodKUUqXiGlzitZxZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785922808; c=relaxed/simple;
-	bh=cAmlNGNa7jN+AQzzzqGHoqY/xITpNfx43IoK9Z/xKoU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dilNtZAvToGghLXWOLJv8eHX4n0pgUiKduRbRhzFHoDIkY6Sl6OzY3Ghi+bSr93Q5cKtyANWrGRAJzo4bjqm30Qe1q9Uc/LjZB+TtZggreQNrlmmqmIomFtHRYauqKKyGSlsdfRRfvVhwA/yyGOlauT4TUZ/8lVygNKXQd5samk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZWFnMiR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785922911; c=relaxed/simple;
+	bh=gKhD9uzcTs6ZkGqBbh/L1p5FfLiWUK43uRNvxA1pEfA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K+xizv/7h5dfiEuRYnZSsMmxSu+aqrxXATRZNadbjL6039QMDR0XMcpwdZiKdiwF482GzssQbUZzjXuMbbQIv8hxO7jf2z3zLoDtvADcWsEDypyoFPS9SqK2VN9jKJfu02hUXnXid7QtpXf3QbWRF/fxE7tb9KEdzBqJ/wO8j9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=OPFtnBT/; arc=none smtp.client-ip=209.85.210.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZWFnMiR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBE31F00A3A;
-	Wed,  5 Aug 2026 09:40:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785922806;
-	bh=3f76ioy+yDAIqerzduE+uznQc1AoPKEL1r79knAWZ/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gZWFnMiRJ2ZIO1Yq/IlYInwFeHcByv6qz75SV2rc1uMB//F5vdnIqqSkmVAjvNn9C
-	 CXjL4s9ow2792oqrbeq9OcdY3RWqK0lcCD4n6EfOXL5NzrmIswlEdQbw5aYyk5vCee
-	 8SHfRcPwEc5RvoaAy7ietd6KyvBU1KVxNbmgxG0unzmXH9WUJmxOnKL2tr+3FQXTHc
-	 dKpkgpURkXjgtq21qVO3elU0XL+FhMjhw7NawZHR8H8LT5qjX3Tv637UobwvDfyM/D
-	 X/3Ooy4UK75RKGW277dnzGvZ2VXB8ScZXbOToekbkcvan+LDWZyvPWS8+gnRqIeoJD
-	 +fZ9EBMYxzXUg==
-From: Simon Horman <horms@kernel.org>
-To: dong100@mucse.com
-Cc: Simon Horman <horms@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="OPFtnBT/"
+Received: by mail-ot1-f97.google.com with SMTP id 46e09a7af769-7eb6573bd52so585350a34.3
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 02:41:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785922909; x=1786527709;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=qjJiLC9fkagfT2Fe4y8Vi9rY7+5d6Oe0cJwGKTVGzJY=;
+        b=btYZpMxz2wkMNe7VukdoVixyEcoX+SbUgRdNJ7MLfR2ep9bH/2MDlrXynYbDecgTqO
+         tjJe3+Mmqrz+7ashdLmGkxo8eyi2+I8k4DryafkXCNZBYA9ohTY3dpRgUUsgfVDROnLK
+         PXWL6uJcTJrvyNNFGb18RQKqEX6/WJbQp1riqoLQxOc+EhGsSmuJS3cIpl5GsAJiz37W
+         Tb1nlC374StGnjdx77W47AyLzJRGbX02SD1WeurA7E57oswzQh0+OXEOACu6CbsGTpAn
+         poENPCZMB9zewFgpKuY/V6ICShnLiwcrT3Wq/asyMTVwwPkLraq+9TMjS3yt3ZaRgT0H
+         lcgg==
+X-Gm-Message-State: AOJu0YxRE9LUbIFGTSdLXOjkVlMOBuQyD0tW43xW6G0amvFhSZxM3b8T
+	co9PCfY9WH+enZFJjWzv/jK47YvKAvn2RCg3kGsMrEL6tIpyA7+Gr2w8bjKDncTLpLH6oey2/4o
+	IwHBqV+1OhUFDSpj2SVN+2p2+Q1uQtqM+L1r5FHVNPUl+zwGJZQkU4AVInUBPOE6P6oW3KxXH8W
+	ctqYJ0ZSNtCPgk26Po/bEAc1sRf+lfSj7nUkFI/z4iIjYbCIlI1loFXB+ZRXMKn0bUoPkleC2PL
+	xmmyVkVnh7zwmG72Q==
+X-Gm-Gg: AR+sD13VEY3pvGG56a3v3gspe+02lXJC5GjIclbFJGWVIKQXFKzJs5exg83Uo/OZ3BG
+	lps4kL77cl/DAnBw6XrRt5JL2t5urLvr9ZPICpjLO/b3a5WejdNyEvh5e6DPkl3oQFpm6LXuBqr
+	g4ao0ojft6PGe0EemFzrWGgOf40SODYC48qo3k1f2vw9hWthpAQwwH7aW8oJGCprGlvI36aHOS+
+	foIDLC0/MNlt5hbds3CTh54GD4C/jdQoa3av8W3vXHdZlPJfIo5Y5MRmxReEmH8X5ugsIIzMJcK
+	Z1diBdg9zlo3SWTAlw00HZ3hsRjSGh4d478rtp3HCYj2Bi6sgO/F1cJk6wb6sLCqmyT9fl8yAN7
+	JE+leRa6TFMnrnPhpneYQSH17XjvAbk8t37Zu+bZlmZ3+bZD1f56sUg/HqSE+iCgoO0w35ocT/t
+	xU2lqJeWAwFKsN9IVCzmN4QEnOFPNu5lT4UTNEDU4JGg==
+X-Received: by 2002:a05:6830:3889:b0:7e9:adef:4fd4 with SMTP id 46e09a7af769-7f1e5e1e5c9mr3691180a34.11.1785922908961;
+        Wed, 05 Aug 2026 02:41:48 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-27.dlp.protect.broadcom.com. [144.49.247.27])
+        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-7f1df55e29esm415240a34.3.2026.08.05.02.41.48
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 05 Aug 2026 02:41:48 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38ce7fabf76so1323809a91.2
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 02:41:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1785922907; x=1786527707; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qjJiLC9fkagfT2Fe4y8Vi9rY7+5d6Oe0cJwGKTVGzJY=;
+        b=OPFtnBT/dBTlbKL4vg29cqOvjEVgpJ/Ydz2hMmHhbuUsL3r+tmQNSu9Kc5iug2yryi
+         awven/1zeES+pRTOH4rjhFWS6DR0MAfvFl97nMAtElLWh6yTn9gTaOWrSrsQGMuGyTkR
+         LKnPEDufqgziHJ7jZKiRemfIM4qkb/JBJhSNc=
+X-Received: by 2002:a17:90b:1e53:b0:38e:6d4c:14e6 with SMTP id 98e67ed59e1d1-3903c5501efmr4607404a91.3.1785922906943;
+        Wed, 05 Aug 2026 02:41:46 -0700 (PDT)
+X-Received: by 2002:a17:90b:1e53:b0:38e:6d4c:14e6 with SMTP id 98e67ed59e1d1-3903c5501efmr4607359a91.3.1785922906445;
+        Wed, 05 Aug 2026 02:41:46 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca92ada6sm12358662c88.15.2026.08.05.02.41.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 02:41:45 -0700 (PDT)
+From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+To: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	yaojun@mucse.com
-Subject: Re: [PATCH net-next v8 4/4] net: rnpgbe: Add link status handling support
-Date: Wed,  5 Aug 2026 10:39:17 +0100
-Message-ID: <20260805093917.547461-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260731120322.895955-5-dong100@mucse.com>
-References: <20260731120322.895955-5-dong100@mucse.com>
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	vikas.gupta@broadcom.com,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
+	Dharmender Garg <dharmender.garg@broadcom.com>,
+	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
+Subject: [PATCH net] bnge: Fix resource leak in bnge_init_nic() error path
+Date: Wed,  5 Aug 2026 15:10:22 +0530
+Message-ID: <20260805094022.15487-1-bhargava.marreddy@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,106 +95,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/20260731120322.895955-2-dong100@mucse.com?part=4
+If bnge_init_chip() fails, bnge_init_nic() jumps to err_free_ring_grps
+and returns immediately, skipping cleanup for RX ring pair buffers.
+
+Remove the early return so execution falls through to
+err_free_rx_ring_pair_bufs to properly free resources on error.
+
+Fixes: 23df6aebf803 ("bng_en: Allocate stat contexts")
+Signed-off-by: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
+Reviewed-by: Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
 ---
---- Patch [4]: [PATCH net-next v8 4/4] net: rnpgbe: Add link status handling support ---
-commit aaed18098b5cbd048578a3cab86657b190d37796
-Author: Dong Yibo <dong100@mucse.com>
+ drivers/net/ethernet/broadcom/bnge/bnge_netdev.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-net: rnpgbe: Add link status handling support
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+index c2e865f8d9c..a4288f0258f 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+@@ -2820,8 +2820,6 @@ static int bnge_init_nic(struct bnge_net *bn)
+ 
+ err_free_ring_grps:
+ 	bnge_free_ring_grps(bn);
+-	return rc;
+-
+ err_free_rx_ring_pair_bufs:
+ 	bnge_free_rx_ring_pair_bufs(bn);
+ 	return rc;
+-- 
+2.47.3
 
-Add link status management infrastructure to the rnpgbe driver:
-- Add link status related data structures (speed, duplex, link state)
-- Implement firmware link event handling via mailbox
-  (fw controls link states, does not support phylink)
-- Add service task for periodic link status monitoring
-- Implement carrier status management (netif_carrier_on/off)
-- Add port up/down notification to firmware
-
-This enables the driver to properly track and report link status changes.
-
-diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
---- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-+++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-[ ... ]
-> +static int rnpgbe_process_link_event(struct mucse *mucse)
-> +{
-> +	struct mucse_hw *hw = &mucse->hw;
-> +	unsigned long flags;
-> +	bool link;
-> +
-> +	/* Only event consumption needs a consistent link-state snapshot. */
-> +	if (!atomic_read(&mucse->link_pending) ||
-> +	    !atomic_xchg(&mucse->link_pending, 0))
-> +		return READ_ONCE(hw->link);
-> +
-> +	spin_lock_irqsave(&mucse->link_lock, flags);
-> +
-> +	link = hw->link;
-> +	spin_unlock_irqrestore(&mucse->link_lock, flags);
-> +
-> +	return link;
-> +}
-> +
-> +/**
-> + * rnpgbe_link_is_up - Update netif_carrier status and
-> + * print link up message
-> + * @mucse: pointer to the device private structure
-> + **/
-> +static void rnpgbe_link_is_up(struct mucse *mucse)
-> +{
-> +	struct net_device *netdev = mucse->netdev;
-> +	struct mucse_hw *hw = &mucse->hw;
-> +	unsigned long flags;
-> +	int speed;
-> +	u8 duplex;
-> +
-> +	/* Only continue if link was previously down */
-> +	if (netif_carrier_ok(netdev))
-> +		return;
-> +	spin_lock_irqsave(&mucse->link_lock, flags);
-> +	speed = hw->speed;
-> +	duplex = hw->duplex;
-> +	spin_unlock_irqrestore(&mucse->link_lock, flags);
-
-[Severity: Medium]
-Could this cause a torn link state snapshot if an interrupt fires between
-these critical sections?
-
-In rnpgbe_process_link_subtask(), the worker thread first reads the link state
-in rnpgbe_process_link_event() under the lock, and then drops the lock.
-If the link is true, it calls rnpgbe_link_is_up(), which re-acquires the lock
-to read the speed and duplex values.
-
-If a link-down event triggers an interrupt between these two lock acquisitions,
-could the worker thread end up reading newly zeroed speed and duplex values,
-incorrectly reporting "NIC Link is Up 0 Mbps", and turning the netif carrier
-ON while the physical link is actually DOWN?
-
-diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
---- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-+++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-[ ... ]
-> @@ -243,6 +249,8 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev,
->  	if (err)
->  		goto err_remove_mbx;
->  
-> +	netif_carrier_off(netdev);
-> +
->  	return 0;
-
-[Severity: Medium]
-Does calling netif_carrier_off() after register_netdev() expose a transient
-carrier up state to userspace?
-
-By default, the networking core assumes the carrier state is OK when a new
-network device is created. When register_netdev() is called earlier in
-rnpgbe_add_adapter(), the device is exposed to userspace and an RTM_NEWLINK
-netlink event is broadcast indicating the link is UP.
-
-Immediately calling netif_carrier_off() right after will emit another event
-indicating the carrier is DOWN. Can this spurious UP-then-DOWN transition
-confuse userspace network management daemons?
