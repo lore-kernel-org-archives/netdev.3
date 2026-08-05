@@ -1,155 +1,78 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832983F5BC5;
-	Wed,  5 Aug 2026 23:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369C6481255;
+	Wed,  5 Aug 2026 23:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785971464; cv=none; b=r5wLJQ4xb0hyIo5mKrzfMQXpVF5X1oGKef+zlPByeNUQ56U8LXnV0StVsRN8Qv5eO+B1ishRyn25SfaDYs3dh+b9HyWqj7o3R3OarOsnPBAeAXOz4IcfT47f9UeyMARCjMjzqxS3qsO8UfkA/QTFjrDo/aRKFQmHEL+5lOX2IZI=
+	t=1785971482; cv=none; b=FCN5lH+Z9rLEKCq8xZHUanaPL6+b681e2hXhjogbNAYBE8vJ8OGfbd1IxbuFm32RPNcOap7TgyS97HtaycCi5VuCbFbxKOgKGQw3n4NHENZK1fuVjJ93WQe3R5wlibsuEgiao647V2dePbD71RgX/lCk0fOjEUB+S+hvbcPt69E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785971464; c=relaxed/simple;
-	bh=uYzNSLJGSdyb5yvUy/AY7ZteAKWQVS6i1sP1EiovRh0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qtHgy8u5sICjRl1/c34hFj4b09PKi0cII8NOyhGy9/zHarZHkxm7LJswf89oYycJphsB88wXV/zwcH8a49wTkQphLRLZlW23vYKLGagrkySS4gydGpfT5czQ5woyF6hAcyxPxYx0TdJ8MZCwWd6qM/jyg26ARU5jkyb2bQIjyhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hE5Vn+L7; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785971482; c=relaxed/simple;
+	bh=xmYulstkJiGD0O9OitGUM5J/+5R83ZTMqaFD1Whu0kE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l8dB0AH5T3zprTv4NVJvrLoh0Yz3+AfGTG1Yy+YaMuuo9G0O0E9POvsAYfHHyXS1ExJw6oj+USeK1d0AtCvocVnDjwg5XO7jsJ9pbqkUx77QY03iqM3t+FMsc5oMSffYPikRQ6MGoVu5P1kQLtglfUtPOHvnKobhjzLYiFgMeOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8ufgtfo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hE5Vn+L7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785971461; x=1817507461;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uYzNSLJGSdyb5yvUy/AY7ZteAKWQVS6i1sP1EiovRh0=;
-  b=hE5Vn+L7vUXAe+ENAlGM7fHJAcRI5A9bt7mFYBI8bVQfoy/JP7q5tEW0
-   qc9YD+RDJT9o6nh+gsl7lOZB6K3CL0iqW+Fr0hqyIEAv4Q+nu7LFiReOq
-   ZJwxp9VYlPny1q0r5sh3nGSeT1Sqh/d7C6A3gkvisizlFX/RFnbNl8v65
-   9PcYMqxh+1DCS9O7CHo3PzwSvbVV8ZtJH4r9hH4CDhP+VtFcECfn4QdBq
-   J63UAdb+G/KpqnUjZYKxUyxNQkbgTKnv5uDAp2Egv/nL9NBdqG5OMCufN
-   zEDXNv4cgKGfr1EQKryyW82yIZuDYga69GAKeApqJDwyOthCqYgPruzLL
-   w==;
-X-CSE-ConnectionGUID: ThWZaJaJSZ+ZSF1mlQ5wtg==
-X-CSE-MsgGUID: LMqjig2XQh6Jy/Gj7ovBLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="90376918"
-X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="90376918"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 16:10:55 -0700
-X-CSE-ConnectionGUID: eyE7IjR7TS2Tn3OodI3uww==
-X-CSE-MsgGUID: p8Z6mGeETRytpSFJssjV1Q==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 05 Aug 2026 16:10:52 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wrkl7-00000000Ddh-29rN;
-	Wed, 05 Aug 2026 23:10:49 +0000
-Date: Thu, 6 Aug 2026 07:10:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lucas Poupeau <lucasp.linux@gmail.com>, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, horms@kernel.org,
-	kuniyu@google.com, sdf@fomichev.me, brauner@kernel.org,
-	krikku@gmail.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lucas Poupeau <lucasp.linux@gmail.com>
-Subject: Re: [PATCH] net: sysfs: cleanup coding style
-Message-ID: <202608060631.yZqGaOTZ-lkp@intel.com>
-References: <20260628185824.231250-1-lucasp.linux@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8ufgtfo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814581F00A3A;
+	Wed,  5 Aug 2026 23:11:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785971476;
+	bh=BB/30aWayO6B5yTBO+80Um1q25V7zjRPDDeWBSnzTQA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=h8ufgtfoCD0TIE9HhwapFmlTJ2jGiBY8i5qHS9k/FDpOsfd+KEg+tYqVDAxJyNrfT
+	 l58iGo+1uQPP+n0wtNAyJYQzNbloALY3ZUfJup7X+VV5rTTN89MZHw3ultUpU+C/J3
+	 JbUtxL6eebZsmx+7uU+57Q7py37gek8fo3j42wWSl+RiZkz84JOxe7y4KV1la8VeD7
+	 I0Ikyc5acHvFLY5CzH//+0IhjnoUwcuV4bXibzsnzWGChIyri8F7vHJqwnYhVyCgwe
+	 R5XDGU2gUQAA+faC8wvOBPriBMB3xOWTgFAo5J8S1u1C9iHw8ISQYIqNuI0j+S/nVT
+	 vT1AGigPqzpBQ==
+Date: Wed, 5 Aug 2026 16:11:14 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Jijie Shao <shaojijie@huawei.com>, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, hawk@kernel.org, ilias.apalodimas@linaro.org,
+ toke@redhat.com, shenjian15@huawei.com, liuyonglong@huawei.com,
+ chenhao418@huawei.com, yangshuaisong@h-partners.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 net] net: page_pool: fix UAF in
+ __page_pool_release_netmem_dma on xa_cmpxchg race
+Message-ID: <20260805161114.409b1d81@kernel.org>
+In-Reply-To: <CAHS8izMVqidVkiVHNWZMqP4Eoi5N_M3Wv1Cnn4jjxHf3=cWNQA@mail.gmail.com>
+References: <20260731111507.2355601-1-shaojijie@huawei.com>
+	<CAHS8izPpwz=swSXJZhnVFvTeu43WBhtRv7PmC_OQ0XzG8no8bQ@mail.gmail.com>
+	<20260804191628.762ec7eb@kernel.org>
+	<CAHS8izMVqidVkiVHNWZMqP4Eoi5N_M3Wv1Cnn4jjxHf3=cWNQA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260628185824.231250-1-lucasp.linux@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Lucas,
+On Tue, 4 Aug 2026 20:50:46 -0700 Mina Almasry wrote:
+> > Not sure this is a good idea? scrub is trying to touch just the DMA
+> > mapping, right? It shouldn't try to update the page itself because
+> > it has no reference to the page, the page may get freed in parallel.
+> > Hopefully DMA unmap on a freed page is legal..  
+> 
+> Scrub actually frees the page in the loop in
+> page_pool_empty_ring(pool), so it's not true AFAIU that it 'shouldn't
+> try to update the page'.
+> 
+> My mental model (roughly) is that the pp has a ref and that single
+> last ref can be dropped in the page_pool_destroy() path or the
+> page_pool_put_netmem() path, but the ref can't be dropped twice and
+> the same goes for dma unmapping.
+> 
+> Now that i look closer at the code I have no idea why we didn't 'just'
+> put the dma-unmapping inside of page_pool_return_netmem(). That code
+> path is already common between scrub() and put_netmem() and does the
+> synchronization between these 2 paths.
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on net-next/main]
-[also build test ERROR on net/main brauner-vfs/vfs.all linus/master v7.2-rc6 next-20260805]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Lucas-Poupeau/net-sysfs-cleanup-coding-style/20260805-152318
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260628185824.231250-1-lucasp.linux%40gmail.com
-patch subject: [PATCH] net: sysfs: cleanup coding style
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260806/202608060631.yZqGaOTZ-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260806/202608060631.yZqGaOTZ-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608060631.yZqGaOTZ-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> net/core/net-sysfs.c:622:8: error: use of undeclared identifier 'netdev_group_show'
-     622 | static DEVICE_ATTR_RW(netdev_group);
-         |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device.h:246:45: note: expanded from macro 'DEVICE_ATTR_RW'
-     246 |         struct device_attribute dev_attr_##_name = __DEVICE_ATTR_RW(_name)
-         |                                                    ^~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device.h:204:2: note: expanded from macro '__DEVICE_ATTR_RW'
-     204 |         __DEVICE_ATTR_RW_MODE(_name, 0644)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device.h:201:30: note: expanded from macro '__DEVICE_ATTR_RW_MODE'
-     201 |         __DEVICE_ATTR(_name, _mode, _name##_show, _name##_store)
-         |                                     ^~~~~~~~~~~~
-   <scratch space>:22:1: note: expanded from here
-      22 | netdev_group_show
-         | ^~~~~~~~~~~~~~~~~
->> net/core/net-sysfs.c:622:8: error: use of undeclared identifier 'netdev_group_store'; did you mean 'netdev_lock_store'?
-     622 | static DEVICE_ATTR_RW(netdev_group);
-         |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device.h:246:45: note: expanded from macro 'DEVICE_ATTR_RW'
-     246 |         struct device_attribute dev_attr_##_name = __DEVICE_ATTR_RW(_name)
-         |                                                    ^~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device.h:204:2: note: expanded from macro '__DEVICE_ATTR_RW'
-     204 |         __DEVICE_ATTR_RW_MODE(_name, 0644)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device.h:201:44: note: expanded from macro '__DEVICE_ATTR_RW_MODE'
-     201 |         __DEVICE_ATTR(_name, _mode, _name##_show, _name##_store)
-         |                                                   ^~~~~~~~~~~~~
-   <scratch space>:23:1: note: expanded from here
-      23 | netdev_group_store
-         | ^~~~~~~~~~~~~~~~~~
-   net/core/net-sysfs.c:189:1: note: 'netdev_lock_store' declared here
-     189 | netdev_lock_store(struct device *dev, struct device_attribute *attr,
-         | ^
-   net/core/net-sysfs.c:622:8: error: use of undeclared identifier 'netdev_group_store'
-     622 | static DEVICE_ATTR_RW(netdev_group);
-         |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device.h:246:45: note: expanded from macro 'DEVICE_ATTR_RW'
-     246 |         struct device_attribute dev_attr_##_name = __DEVICE_ATTR_RW(_name)
-         |                                                    ^~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device.h:204:2: note: expanded from macro '__DEVICE_ATTR_RW'
-     204 |         __DEVICE_ATTR_RW_MODE(_name, 0644)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device.h:201:44: note: expanded from macro '__DEVICE_ATTR_RW_MODE'
-     201 |         __DEVICE_ATTR(_name, _mode, _name##_show, _name##_store)
-         |                                                   ^~~~~~~~~~~~~
-   <scratch space>:23:1: note: expanded from here
-      23 | netdev_group_store
-         | ^~~~~~~~~~~~~~~~~~
-   3 errors generated.
-
-
-vim +/netdev_group_show +622 net/core/net-sysfs.c
-
-   620	
-   621	NETDEVICE_SHOW(group, fmt_dec);
- > 622	static DEVICE_ATTR_RW(netdev_group);
-   623	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+from memory so likely wrong -
+ring scrub is freeing pages from the cache
+DMA unamp is clearing _all_ mappings, including actively on used pages
+the are different sets
