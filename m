@@ -1,70 +1,86 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20A53603D5;
-	Wed,  5 Aug 2026 17:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C413CF1FD;
+	Wed,  5 Aug 2026 17:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785950439; cv=none; b=hpcOvFGpHJj+JunFhmcYBd4Ndz0mDPsTzxsIHf93fS3mUb/O0hJvxo2fFc/WUnH5eg/baI8RXRHNOi/b/bUjg13quvEfsRHAbfF9SvFAsbVR7mBDDICPHOVHp0zY7sPjx63g+GX51WDYcsLfB7sm3IFY2hz5pahwFwT3RVy4UuU=
+	t=1785950628; cv=none; b=EZCFNpGuevGCIb0gnFrqpnVzxJmVQlcbjmw5kqAGecDBL6q4RasX3mbx+XaE3SjgpszaE8024L0ICMAoKCMmtrObeCh0vVu9CPdsRDnrcbXozOjmlspwOeasXDH42kD/eCzNNu3O8xrhMDvaAgZvEivlq+kgyaQ6Kfapy+8/e+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785950439; c=relaxed/simple;
-	bh=PP9hhDek3h+Rr9ee/vFRxD3cH5poqgkbr10s3HY8dOU=;
+	s=arc-20240116; t=1785950628; c=relaxed/simple;
+	bh=9D6Q9mdlRQPkayQ1wzu3TfTVD++gDwLq96UPpl8fkJI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G166ziuDnMTWPeWU3G5DWpH/3vD76LbDKZNPoUtE+YA61QQ/h+bM/h61MdBmHiD6VQxDS1HI3VAoTBPYQ+hqV8zsVGoeQpcM7rSZedFa7Jgkm080hPeQ7R4VHVqLL02x+6wRAaiqLbWdpIcBeqQ9Z0Ibo3og85JYsDdjo2GlS7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=pPveyYMd; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=gmkHE7YaoJPT7zZXJdCjAwRnJrbfjPvX9/BDhrW/DiSedF6ek3kkncLRHKY/8WfYdipYVEj6tEJ7mNvoPX1U6edReJr06lmyv/SHAPT7bSt7QLSq62PQiMxTgvxOAXdzfhRzWiSf1DegBo6Qbl07ztsRikjBp0h6RvDDBKo0Z1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=fxTGfDYS; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="pPveyYMd"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 31992601A5;
-	Wed,  5 Aug 2026 19:20:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1785950436;
-	bh=wWHabixD7HuEg8x/uwGeoTvTPK6AdXYQvv7RSIfSwkM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pPveyYMdIJh/Ad3fPPQ7Kg2q45dXoEQfi50OrYamxHfOBxCy0lXTQRKjU+X6xAZ1r
-	 UhOupoKRszsEefr2gzPnLYMYM6I8RZhRDIgLrIB8sVrWqatoM4VKEK+j7oBFh8njuR
-	 UnlhSRhv+vLzKxxEfoqe9GQur/hcrwZHG5qQyB/FuCevt7CqF9tbJFN5K7alvU7t9v
-	 9UkPW7Xcck6ZwDUFLFJhW0Iub6ehp7OYTltGarXJhMvRR+nTcAwrpyvXOxKa9qS6+w
-	 xg0NbzDe/nDH93dD8uAnuiLGAR0UZEX7LZQMmVQ4egeRJGeGlwxNoeSg2K8noUgUvb
-	 XS0rmR/spPzHA==
-Date: Wed, 5 Aug 2026 19:20:33 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
-	fw@strlen.de, horms@kernel.org, ja@ssi.bg
-Subject: Re: [PATCH net 08/10] ipvs: avoid out-of-bounds write in
- ip_vs_nat_icmp
-Message-ID: <anNw4WG2wUiuatg5@chamomile>
-References: <20260731151806.849724-9-pablo@netfilter.org>
- <20260805001534.3978877-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="fxTGfDYS"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 47BAE3F563;
+	Wed,  5 Aug 2026 17:23:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1785950623;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9D6Q9mdlRQPkayQ1wzu3TfTVD++gDwLq96UPpl8fkJI=;
+	b=fxTGfDYSe4VoNUSNsffPxRCIi/GSGAcwtpklz+gU5RBscAqlYe8z0EIMuXzTY5nIVTRZTx
+	b/UxlwRXp09MRAtcfwIV3uFCa86DIY6st/M20tH5xKhkcgiOACsZYeqngnpJLnZwNxDt90
+	z5AgnH0mYxKwRUEhrKbzHcV0W1qtX3b/oggSZ/tcm+fzlXloHKATgQAJvQgSecWC7I/pbD
+	CUSkI0SK7QeI8Ytbwmv3ryks3IAkfO3Jdo+RKClqLxp2huKl9USUqkgmbIAcglJ7tUcx2V
+	bg46UHWg3nzCqxVz4prIBQPlr602wSwIMQIKn0kGhJfotxXSW2tMEvCuGe98uw==
+Date: Wed, 5 Aug 2026 19:23:36 +0200
+From: Arthur =?utf-8?Q?Cr=C3=A9pin?= Leblond <arthur@marmottus.net>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] dt-bindings: net: convert wiznet,w5x00 to YAML
+Message-ID: <anNxmAwfdJKlatSI@pc-du-fromage>
+References: <20260804-wiznet-link-gpio-v2-0-3b1d0c870f35@marmottus.net>
+ <20260804-wiznet-link-gpio-v2-2-3b1d0c870f35@marmottus.net>
+ <dd38875b-1df5-42d2-acc2-98fbe86ce3fa@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260805001534.3978877-1-kuba@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dd38875b-1df5-42d2-acc2-98fbe86ce3fa@kernel.org>
+X-GND-Sasl: arthur@marmottus.net
+X-GND-Cause: dmFkZTFs4UanMfmHEAPPY3h70JsU8HT7Z2h6RUJDGXMip8OaY3orJRiyy0Dke58K0IG3ATex/aVCOAcZf0SIkCfxGnFuLN4Ow2k/ryd18pxN1nTOaV/GpaHbkscHp4z/GDzb8lQiMjB307zBjyozqFpg1idc5LiygpAXHAuW1S4g2l6hgG0VRDK5zqIp7DBCLYyVTckVuB7SutChaTAanae/g/7ohdw6oqCLv+oTZiPqrFChbQKDetmgQ/83ujTY4XS0iy8IrjKDqnW1ejXJonuwTjoMdWotaexfVHzk1yzxyW4gHIyRwgmVXuIIIuNnVpjxUNovdYBdIpaNreBh/Jv+Eb9mNos0a/vLfbQnjQsXIpRJjlFy8vUDTK37dONbgDIfP8yAPFh49jqiC0OSqUPuUo5bojJWwxL13TYrWCaE7gx4NQlUoT85jBOdc8HvnsLv0/+EGgRVdm+XO5guY1a8XyRUVBd62I6O4zSSI4ainbyEiHr4ZFiPyKD4tmfVJPYauUhX41w6aMNuE4VXtPqM9OCFHop6Dja6v1MxTwhMkcdH7vltzZb0ERLxNQzExgcShSFhYVKt0h4J+VMlk3ZsT/z1N1yiqr1SEiG0FkJJLIX+xdOaAaG+G6PrNG9N78j8YfjDZudJSTw2uz/FEfIHoBl2I7bEJj64qVAmB7DDljHpZQ
+X-GND-State: clean
+X-GND-Score: -100
 
-Hi Jakub,
+On Wed, Aug 05, 2026 at 01:08:35PM +0200, Krzysztof Kozlowski wrote:
+>On 04/08/2026 19:40, Arthur Crépin Leblond wrote:
+>> Convert the Wiznet w5x00 SPI Ethernet controller binding from
+>> text to DT schema format.
+>
+>Limited review, to spare you one review cycle, as it was not tested.
+>
+>Subject: s/YAML/DT schema/
+>
+>See also:
+>https://elixir.bootlin.com/linux/v7.1-rc7/source/Documentation/devicetree/bindings/submitting-patches.rst#L23
+>
 
-On Tue, Aug 04, 2026 at 05:15:34PM -0700, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> ipvs: avoid out-of-bounds write in ip_vs_nat_icmp
-> 
-> This passes the already-parsed ip_vs_iphdr down into ip_vs_nat_icmp() so
-> the embedded transport header offset comes from ciph->len instead of a
-> second read of the inner IPv4 ihl field.  The IPv4 header sanity checks in
-> ip_vs_out_icmp() and ip_vs_in_icmp() are also reworked to read ihl only
-> once.
-> 
-> Link: https://sashiko.dev/#/patchset/20260722101517.36313-1-ja%40ssi.bg
+Hi Krzysztof,
 
-Julian (he's on Cc) is ready to follow to address the remaining
-comments mentioned here.
+Thank you for the review, I'll address all the changes in a new patch.
+Quick question, since there was no maintainer on that text file, who
+should I assign it to?
+
+Thanks
+
+Arthur
