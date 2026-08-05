@@ -1,112 +1,321 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFCC3E9C1C
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 15:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EC037B40A;
+	Wed,  5 Aug 2026 15:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785942052; cv=none; b=gd+/AYzy1YI3Z4eiWEX1feoOh1/xfh37URZ+wCubH8rWc2DVS0LQ5PeqjZNmoMFIvz9batkFcxnrjybD6Qz5sKhV04o/eixWba0CwqJxq0jNi+fkeovJlNRBFwtwdLWGaBYkrMIUWl4nZfScbk3gv2sQkYrFqrHgcqbC6wPI87U=
+	t=1785942337; cv=none; b=GzR92FCnBf47fpBN+mgU2qXBDCrl1s6zhl80boMH4nyTnpyYRYQVeBJw6L2etTfCiDfFZshSr7sIs2BnQWz9ZY4EHQA8rkqLZPaU7mXIbgI26633747t96AZNLCyH2BFFkVYjPgpXZD2O3zNoBVnQXS4UK2vJtzDFJ47nD+QmHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785942052; c=relaxed/simple;
-	bh=N3893h/r6Z0gF6m4miXNo0765GWN6vVESeutoQstSGk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=VdavU7ksbCDkqDm7f+jCVuDuFgPOT1CoDx6RD3jIZFekmFHR2GtWUbBmPjnD8pJKNPGxnRdpw9vchGdo7E8RmHg8AFqrroGN2XvekQqL7UltzculUHQJRi7X2aneA4jGzsIK1jj3RQY0N6IJqZIHuizGw15M1lUwiPMNTF1ORCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=BfK6zB90; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1785942337; c=relaxed/simple;
+	bh=yPxPzus+UeJKwydh+tIvdA6yVjrPZN8MyCjk2t13mA4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=U7bYSj/QOinWgsZXnHgsBgQ7Bc8Cpa0MrcUpIZ14aze0uC62und5NtfC0F6fE6WTSpG7zOObXGpgifyD5TgnlOwEsCW5EgP/OGKpA+t69gp3wproqQatVgRYIcWtGCuVo0cIorW/uBZaWH1bBSe4wIZGBiv2iTEv/50/BgyaoKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eE0aMbPz; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="BfK6zB90"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1wrd6Y-008Cwz-A1; Wed, 05 Aug 2026 17:00:26 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
-	bh=9trGoxeJgd1Trkehd6Bp7A7tXvcCGNPofiI3xG/mnmw=; b=BfK6zB90C0pHAHPdbm8eXeNA89
-	t71xdpWOYpuIi69/yEojsfAoq1F+XUGiAW7bA1EvUKrRhtCGHHgJdQqTmC3W+AF12EvdV5QhJrZfa
-	+cFA7RQyXC6TB0hfNVfATUG44MCO9VzixQq5OK6fivq+z/yAlS0MBL74i3eCx5IBf+ooTz3O3pKiG
-	HZe2HzYm3c5vrA4TrF3XmbGje/Kz5Hh7+eqR6LsHYUoKBTy4EQd57fNH+eJ0OeV/lZ01DewrM2TFJ
-	nP2ZxQ6JPeF24q41GHOk+89Qb9JBIXsUPN5px1QbcK1Xppn4Jv6AfoQyEbRdrA5xniXh2+7ZhOkrL
-	6fj3WOAg==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1wrd6V-0006Zr-A0; Wed, 05 Aug 2026 17:00:23 +0200
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1wrd6J-004B1a-2g;
-	Wed, 05 Aug 2026 17:00:11 +0200
-Message-ID: <244e1190-0621-4ef7-ba36-634540c2dfcc@rbox.co>
-Date: Wed, 5 Aug 2026 17:00:09 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eE0aMbPz"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E78B04E410FC;
+	Wed,  5 Aug 2026 15:05:31 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AC98F602AB;
+	Wed,  5 Aug 2026 15:05:31 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6D26C11C34D51;
+	Wed,  5 Aug 2026 17:05:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785942325; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=gBzPE+g28sq9CE5UUyl6UGQ1/ako7hXr8dp2+cu81r0=;
+	b=eE0aMbPzun5iJiCWWF0KnAcZFdB6z2Nq6Ef6cvE9mKYFLQXgg/l+zgaARX4v2P2+LQDcu+
+	KmrtiZ5SZE7lOd0fDrW62pY0P1Ba8GBz5+dO/NXdH9FIT/CBOC3VmQjjd+UDHnVQpnmIeP
+	wPclzlgeosTPCpHq4OgMLEIPC+8OWa+XphFNyA6CCxgiCjeNeTgaN16RHtgu7ifMoAJLfi
+	lLk/dXRKFotFOnUiE87pNWp5r2JxAGnlI9ZQKa0CnmmiM7v5MeYBjMWFSv13G6ARrIQZaf
+	BWvfSmIG4jD3WuCc2s832+CoDdBmaP8Cjw4G0Oxmo6TMf7kBOWFREJC3jG7RCQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Michal Luczaj <mhal@rbox.co>
-Subject: Re: [PATCH bpf v2 2/2] bpf: Unconditionally take socket references in
- lookup helpers
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan Chen
- <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>,
- bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Sashiko <sashiko-bot@kernel.org>
-References: <20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co>
- <20260803-sockmap-lookup-tcp-leak-v2-2-306e025bfe66@rbox.co>
- <CAAVpQUBKBfRm-XqqrMq0hGeOvWzZXLLmsBnDWKHhEEswmJoz+A@mail.gmail.com>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <CAAVpQUBKBfRm-XqqrMq0hGeOvWzZXLLmsBnDWKHhEEswmJoz+A@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Wed, 05 Aug 2026 17:05:22 +0200
+Message-Id: <DKH3PSLM2LJ8.1S1B51A95T75M@bootlin.com>
+Subject: Re: [PATCH] net: macb: fix stale data returned by MDIO reads
+Cc: "conor.dooley@microchip.com" <conor.dooley@microchip.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "Polak, Leszek" <LPolak@arri.de>, "andrew+netdev@lunn.ch"
+ <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+ <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <PA1PR03MB11059B8723E1C212E5801A52DC8D32@PA1PR03MB11059.eurprd03.prod.outlook.com> <DKH3AOWRPUDD.1IOVFERUUNC1J@bootlin.com> <DKH3G9J1MI8G.24Q6WY2SU93I9@bootlin.com>
+In-Reply-To: <DKH3G9J1MI8G.24Q6WY2SU93I9@bootlin.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 8/4/26 03:58, Kuniyuki Iwashima wrote:
-> On Mon, Aug 3, 2026 at 2:01 AM Michal Luczaj <mhal@rbox.co> wrote:
+On Wed Aug 5, 2026 at 4:52 PM CEST, Th=C3=A9o Lebrun wrote:
+> On Wed Aug 5, 2026 at 4:45 PM CEST, Th=C3=A9o Lebrun wrote:
+>> Hello Leszek,
 >>
->> Lookup helpers gate whether to acquire a socket reference on
->> sk_is_refcounted(), a check re-evaluated at release. An established socket
->> refcounted at acquire time can gain SOCK_RCU_FREE via
->> connect(AF_UNSPEC)+listen() before release runs; the release-side re-check
->> then reads sk_is_refcounted() == false and skips the put. The reference
->> leaks.
+>> Your subject is missing the [PATCH net] prefix.
 >>
->> Make acquire and release unconditional and symmetric: always take a
->> reference, always put it. Adapt sk_select_reuseport().
+>> On Wed Aug 5, 2026 at 2:01 PM CEST, Polak, Leszek wrote:
+>>> macb_mdio_wait_for_idle() samples NSR.IDLE with no delay after MAN has =
+been
+>>> written. readx_poll_timeout() expands to read_poll_timeout() with
+>>> sleep_before_read =3D false, so the very first NSR read is issued immed=
+iately
+>>> after the register write.
+>>>
+>>> The controller does not deassert NSR.IDLE until its MDIO state machine
+>>> actually begins the frame, which takes up to one MDC period. Neither
+>>> macb_mdc_clk_div() nor gem_mdc_clk_div() ever selects an MDC above 2.5 =
+MHz,
+>>> so one period is up to ~400 ns - on the order of a hundred pclk cycles,=
+ and
+>>> far longer than a back-to-back register access. The poll therefore obse=
+rves
+>>> IDLE still set from the *previous* operation and returns success before=
+ the
+>>> operation just issued has started.
 >>
->> Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
->> Fixes: 64d85290d79c ("bpf: Allow bpf_map_lookup_elem for SOCKMAP and SOCKHASH")
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Closes: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.kernel.org/
->> Signed-off-by: Michal Luczaj <mhal@rbox.co>
->> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+>> You (or rather the LLM) say that with confidence. How do you know about
+>> this MDIO state machine implying some delay inbetween the MAN writel
+>> (which triggers a MDIO management frame) and the time at which NSR.IDLE
+>> starts becoming 0?
+>>
+>> The doc doesn't mention anything of the sort. It explicitely mentions
+>> NSR.IDLE as being there to signal for completion.
+>>
+>> Also it sounds like a massive bug, wouldn't others have discovered it
+>> before? Just checked and nothing out of the ordinary on EyeQ (first NSR
+>> is always 0x2 after writel to MAN). Patch at the end, which should
+>> trigger error logs on your system from what I understood. Please report
+>> back on that.
+>>
+>>> The caller then reads a MAN DATA field that still holds the result of
+>>> whatever completed before, so every read returns the data of the previo=
+usly
+>>> accessed register. For clause 45 the race occurs three times per access=
+: the
+>>> address operation is still in flight when the read operation is written=
+, and
+>>> the final MACB_BFEXT(DATA, macb_readl(bp, MAN)) picks up a stale value.
+>>>
+>>> Observed on a Versal board with a Marvell 88Q1111 on GEM1, where readin=
+g each
+>>> MMD register twice showed the first read returning the preceding regist=
+er's
+>>> value:
+>>>
+>>>   31.8002: 0x0149 then 0x002b   (0x0149 is 31.8001)
+>>>   31.8004: 0x0b21 then 0x1401   (0x0b21 is 31.8003)
+>>>   31.8011: 0x400e then 0x6000   (0x400e is 31.8010)
+>>>   31.8010: 0x6000 then 0x400e   (0x6000 is 31.8011)
+>>
+>> I don't understand those logs? Can you provide the code that generated
+>> them and more context? You probably faced some terrible bugs if all
+>> MDIO reads returned the value from the previous read.
+>>
+>>> The lag persists across callers and across driver entry points, so it i=
+s a
+>>> property of the controller path rather than of any PHY driver. It silen=
+tly
+>>> corrupts every MMD read. Latch-high, clear-on-read registers are worse =
+than
+>>> corrupted: their content cannot be recovered by retrying, because the f=
+irst
+>>> read still reaches the PHY and clears the latch.
+>>>
+>>> Sleep before the first NSR sample so that an operation issued immediate=
+ly
+>>> beforehand is guaranteed to be underway. The pre-operation bus-free che=
+ck
+>>> pays the same delay, which is immaterial - a single MDIO frame takes ov=
+er
+>>> 25 us at 2.5 MHz MDC, so this is well under the cost of the transfer it=
+self.
+>>>
+>>> Assisted-by: Claude:claude-opus-5
+>>> Signed-off-by: Polak, Leszek <LPolak@arri.de>
+>>
+>> If this bug gets confirmed it needs (1) to go into net and
+>> (2) have `Cc: stable...` and `Fixes: ...` trailers.
+>>
+>> Docs on (1) are
+>> Documentation/process/maintainer-netdev.rst
+>> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+>>
+>> Docs on (2) are
+>> sources are in: Documentation/process/stable-kernel-rules.rst
+>> https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+>>
+>>> ---
+>>>  drivers/net/ethernet/cadence/macb_main.c | 20 ++++++++++++++++++--
+>>>  1 file changed, 18 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
+ernet/cadence/macb_main.c
+>>> --- a/drivers/net/ethernet/cadence/macb_main.c
+>>> +++ b/drivers/net/ethernet/cadence/macb_main.c
+>>> @@ -340,10 +340,26 @@ static void macb_get_hwaddr(struct macb *bp)
+>>> =20
+>>>  static int macb_mdio_wait_for_idle(struct macb *bp)
+>>>  {
+>>> +	/*
+>>> +	 * NSR.IDLE is not deasserted until the MDIO state machine begins the
+>>> +	 * frame, which takes up to one MDC period after MAN is written. MDC =
+is
+>>> +	 * never clocked above 2.5 MHz, so one period is at most ~400 ns; all=
+ow
+>>> +	 * an order of magnitude of margin. read_poll_timeout() sleeps at lea=
+st
+>>> +	 * (sleep_us >> 2) + 1 us, so the guaranteed minimum here is 6 us.
+>>> +	 */
+>>> +	const unsigned int start_delay_us =3D 20;
+>>>  	u32 val;
+>>> =20
+>>> -	return readx_poll_timeout(MACB_READ_NSR, bp, val, val & MACB_BIT(IDLE=
+),
+>>> -				  1, MACB_MDIO_TIMEOUT);
+>>> +	/*
+>>> +	 * Do not sample NSR.IDLE immediately. When this is called straight
+>>> +	 * after a MAN write, IDLE is still set from the previous operation,
+>>> +	 * so the poll would return at once and the caller would go on to rea=
+d
+>>> +	 * a MAN DATA field that still holds the previous transaction's
+>>> +	 * result. Sleeping first guarantees the new operation has started an=
+d
+>>> +	 * IDLE has gone low before it is sampled.
+>>> +	 */
+>>> +	return read_poll_timeout(MACB_READ_NSR, val, val & MACB_BIT(IDLE),
+>>> +				 start_delay_us, MACB_MDIO_TIMEOUT, true, bp);
+>>>  }
+>>
+>> Your code is not just adding a 20=C2=B5s start delay, it changes all del=
+ays
+>> from 1=C2=B5s to 20=C2=B5s. I don't think we want that.
+>> Before: readl(NSR) -> usleep(1) ->  readl(NSR) -> usleep(1)  -> ...
+>> After:  usleep(20) -> readl(NSR) -> usleep(20) -> readl(NSR) -> ...
+>>
+>> Your introduced variable start_delay_us is not needed.
+>>
+>> There are way too many comment lines. Your LLM hasn't read enough kernel
+>> code! Rare comments, mostly terse. Commit messages can be relied upon.
+
+One more thing to add, sorry for the stuttering.
+
+A proper solution would use the IRQ as detection source rather than
+sleep-polling. See BIT 0, called MFD in driver.
+
+>>
 >> ---
->> TC bpf_sk_assign() has the same issue; it takes a reference only when
->> sk_is_refcounted() is true at assign time, but sock_pfree() (the skb
->> destructor it installs) re-checks sk_is_refcounted() independently at
->> release time. The same connect(AF_UNSPEC)+listen() transition leaks the
->> socket here too. I'd welcome suggestions on the right way to handle this.
-> 
-> The same class of issue was reported by listen() + shutdown() + connect().
-> https://lore.kernel.org/netdev/20260804015349.2353056-1-kuniyu@google.com/
-> 
-> Can you test the diff in the thread ?
+>>
+>> pr_err() should trigger on your system from what I understood.
+>> Can you confirm?
+>>
+>> [...]
+>
+> Oops this test triggers on the pre-check macb_mdio_wait_for_idle() calls.
+> Instead this:
+>
+>
+>
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> index d58430fe9c41..98e0cafb0de1 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -308,6 +308,20 @@ static int macb_mdio_wait_for_idle(struct macb *bp)
+>               1, MACB_MDIO_TIMEOUT);
+>  }
+>
+> +static int macb_mdio_wait_for_idle_busy(struct macb *bp)
+> +{
+> +  u32 val;
+> +
+> +  val =3D macb_readl(bp, NSR);
+> +  if (val & MACB_BIT(IDLE)) {
+> +     pr_err("PHY IDLE after writel(MAN): NSR %#x MAN %#x\n",
+> +            val, macb_readl(bp, MAN));
+> +     fsleep(20);
+> +  }
+> +
+> +  return macb_mdio_wait_for_idle(bp);
+> +}
+> +
+>  static int macb_mdio_read_c22(struct mii_bus *bus, int mii_id, int regnu=
+m)
+>  {
+>    struct macb *bp =3D bus->priv;
+> @@ -327,7 +341,7 @@ static int macb_mdio_read_c22(struct mii_bus *bus, in=
+t mii_id, int regnum)
+>                | MACB_BF(REGA, regnum)
+>                | MACB_BF(CODE, MACB_MAN_C22_CODE)));
+>
+> -  status =3D macb_mdio_wait_for_idle(bp);
+> +  status =3D macb_mdio_wait_for_idle_busy(bp);
+>    if (status < 0)
+>       goto mdio_read_exit;
+>
+> @@ -362,7 +376,7 @@ static int macb_mdio_read_c45(struct mii_bus *bus, in=
+t mii_id, int devad,
+>                | MACB_BF(DATA, regnum & 0xFFFF)
+>                | MACB_BF(CODE, MACB_MAN_C45_CODE)));
+>
+> -  status =3D macb_mdio_wait_for_idle(bp);
+> +  status =3D macb_mdio_wait_for_idle_busy(bp);
+>    if (status < 0)
+>       goto mdio_read_exit;
+>
+> @@ -372,7 +386,7 @@ static int macb_mdio_read_c45(struct mii_bus *bus, in=
+t mii_id, int devad,
+>                | MACB_BF(REGA, devad & 0x1F)
+>                | MACB_BF(CODE, MACB_MAN_C45_CODE)));
+>
+> -  status =3D macb_mdio_wait_for_idle(bp);
+> +  status =3D macb_mdio_wait_for_idle_busy(bp);
+>    if (status < 0)
+>       goto mdio_read_exit;
+>
+> @@ -405,7 +419,7 @@ static int macb_mdio_write_c22(struct mii_bus *bus, i=
+nt mii_id, int regnum,
+>                | MACB_BF(CODE, MACB_MAN_C22_CODE)
+>                | MACB_BF(DATA, value)));
+>
+> -  status =3D macb_mdio_wait_for_idle(bp);
+> +  status =3D macb_mdio_wait_for_idle_busy(bp);
+>    if (status < 0)
+>       goto mdio_write_exit;
+>
+> @@ -439,7 +453,7 @@ static int macb_mdio_write_c45(struct mii_bus *bus, i=
+nt mii_id,
+>                | MACB_BF(DATA, regnum & 0xFFFF)
+>                | MACB_BF(CODE, MACB_MAN_C45_CODE)));
+>
+> -  status =3D macb_mdio_wait_for_idle(bp);
+> +  status =3D macb_mdio_wait_for_idle_busy(bp);
+>    if (status < 0)
+>       goto mdio_write_exit;
+>
+> @@ -450,7 +464,7 @@ static int macb_mdio_write_c45(struct mii_bus *bus, i=
+nt mii_id,
+>                | MACB_BF(CODE, MACB_MAN_C45_CODE)
+>                | MACB_BF(DATA, value)));
+>
+> -  status =3D macb_mdio_wait_for_idle(bp);
+> +  status =3D macb_mdio_wait_for_idle_busy(bp);
+>    if (status < 0)
+>       goto mdio_write_exit;
 
-Yeah, it does fix it for sk/sockmap lookups. But bpf_sk_assign() still
-leaks; LLM devised a testcase that puts skb into NFQUEUE. Another way of
-escaping the RCU section could probably involve bpf_skb_set_tstamp().
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
