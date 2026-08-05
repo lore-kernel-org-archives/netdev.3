@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B615B3F4DF8
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B673F58C2
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785965762; cv=none; b=Q0J2Pvw7qLpTIp6gIoWjEjBG5dZjC9K04KXH4EBYG+8AlCNVo5QsEsnYK6nZ844Ub59+yPSgDT4IUa1eSnA9QHZrEXddGsUulQG1LLZ3Pkk/uq0QKtzFKz+KXVCKB8Y8dsAk+hPmELDyBP8I4tGT9w6JUGVzMqIT5y+smAdWfT8=
+	t=1785965762; cv=none; b=IH2Xo6zRVzBJGMhyh+zmIAIlFYIgWLsHW4dsohNBdMZBNjbssrkVNieTW28u/X+JHZpY8VxVpZh1WrAWY7e35v/Hxswth5KfTzNZrCb49LDZbUuVOK0ZcQiMTm4GwQJ3N7dm3xqVB0nfgnHF34Hczt6srfNomzvyH4M35ainS4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785965762; c=relaxed/simple;
-	bh=c3v/0pXVJ3LHvSHduyEsiQyoPwrhjb4Z3NoaAw1QoTs=;
+	bh=ypMXXQ5fO86oWHzzDfilD1YSiNAtLjxqebpXXkG4V8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFXltgKwqB2XmBsryuGUfNlOM1gU3NDdwYn9cfKxooal9VJASJ4sdMxb5ae6E5yOMYE66nP5j5YrOJmAvPsPotN2JALg4wyFQy+yn/al0pNMnHFe0QKuOdy4p/P8Ufgthm6Rildaio0HeDu1FEWN+MjWvPzb+bQZvC+LkbsH02Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jr9zt6wF; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=tIiDri0Eg7mVAl1+3bb/n6JFnsWJNisCZy9Hjx2WK/gww7Y3G44dqrR9zkc6/u/Ir6fhdOj4R4tej/SjihxnL9spwfUrqZuQfSxHNjrzEp9xD17fR+haD5IVRBW3M3cjdl0em069LDKO9jJWRs/iANW87mu9K9mM8SKkMBCag8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AKaLElte; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jr9zt6wF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AKaLElte"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785965754; x=1817501754;
+  t=1785965755; x=1817501755;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=c3v/0pXVJ3LHvSHduyEsiQyoPwrhjb4Z3NoaAw1QoTs=;
-  b=Jr9zt6wFeytyyqHoujFeR3gz/Dh/gKuL/W4QKRMOt3NNFjQalwECOJ6P
-   HGeLEy4JeKYmp23XrdbBdV0BIpJ6FfZefC5dry7zK9R1vSAWxDvXE/Tqi
-   Rk6cCbF9P60qwc/EZCZtiEHj/qiPrMW5/PlXXj5WFtuj4Bgf6bAd5ujUJ
-   Wu0F/EIm/PdUVE9nKMwzySuKhiPifAcoylgiUpyzwqK0cUW67tB39gtjc
-   r0BEMmymxgpg/7aVq12HaAv5e4tQWPq2evXy/gKBZHvxfzXtK8Xo09duo
-   LZJZI6b/rLZtzRW/KcIYbQZLPXt64AvXvYb2UMuU+2IBFz6W7Sn/Ck91p
-   Q==;
-X-CSE-ConnectionGUID: zb4Wks0+S/6Nw5AcPih3QQ==
-X-CSE-MsgGUID: FQ4/LRg1R/Sng7xsU9T5cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109343578"
+  bh=ypMXXQ5fO86oWHzzDfilD1YSiNAtLjxqebpXXkG4V8M=;
+  b=AKaLElteBPK4n8clxZjIeqrIimrKHbXNeYzwcgB7dH4sYYraKxaSTzXn
+   E5P6XmJl02FCpuTUjHGDMmpye6ZfXUzIt/Q1LTx/xOzWEWFFkx11V37vp
+   SC1eSS1Xf6Tkwzk3nugCLrvnxFQjzgBgjvMGWeIU2GVYmms9o3kL/hcJz
+   rdEeSsnAw4glLnoxS8FiGkVHAG7NgSLCZlX0SxkJ5rWqiJ5vCwCa7H5hS
+   7RB/PtBd0jEwYo9ZTYN8GXp/V+eO2/KfFL+HSSLlFbVR0g9dQq9NbxN9f
+   UZQQNyPSiCabUqUBx8QpejAvmc4vl5huWDseiQx8SaPtNVXcd51saGKMT
+   A==;
+X-CSE-ConnectionGUID: 4AD8+cFJQgCMTpy4JMVxaw==
+X-CSE-MsgGUID: JTjhJGk1R5ymT4j7A5YXWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109343588"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="109343578"
+   d="scan'208";a="109343588"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 14:35:51 -0700
-X-CSE-ConnectionGUID: Htl4cuimTDyPvKHlgYKh0w==
-X-CSE-MsgGUID: qLTa15orSRiUaszKM8vPtg==
+X-CSE-ConnectionGUID: V6+Il8c3RXOKmLCSLWnMCA==
+X-CSE-MsgGUID: EOsOz7u4QuW6mwEjuz8WCg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="286576130"
+   d="scan'208";a="286576139"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa001.fm.intel.com with ESMTP; 05 Aug 2026 14:35:50 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 05 Aug 2026 14:35:51 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,16 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+Cc: Przemyslaw Korba <przemyslaw.korba@intel.com>,
 	anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
 	richardcochran@gmail.com,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net-next 08/15] ice: increase OICR interrupt moderation rate to 20K interrupts/sec
-Date: Wed,  5 Aug 2026 14:35:33 -0700
-Message-ID: <20260805213541.2281287-9-anthony.l.nguyen@intel.com>
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH net-next 09/15] ice: add rx timestamp tracepoint for debugging
+Date: Wed,  5 Aug 2026 14:35:34 -0700
+Message-ID: <20260805213541.2281287-10-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
 References: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
@@ -71,39 +70,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-The miscellaneous interrupt cause (OICR) is throttled to 8K
-interrupts per second (124 us minimum spacing). This interrupt
-handles VF mailbox messages and Tx timestamps, so the low rate
-imposes a minimum latency floor on both use-cases.
+Add ice_rx_hwtstamp trace event to help debug PTP rx timestamp issues.
+The trace captures cached_time, ts_high, and the extended ts_ns value in
+ice_ptp_get_rx_hwts().
 
-Raise the rate to 20K interrupts per second (50 us minimum
-spacing) to allow lower latency handling for Tx timestamp
-bursts and high VF message rates.
+Enable with:
+echo 1 > /sys/kernel/debug/tracing/events/ice/ice_rx_hwtstamp/enable
+cat /sys/kernel/debug/tracing/trace_pipe
 
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_ptp.c   |  2 ++
+ drivers/net/ethernet/intel/ice/ice_trace.h | 18 ++++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index a5e9c3114706..fefbc51c7190 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3428,7 +3428,7 @@ static int ice_req_irq_msix_misc(struct ice_pf *pf)
- 		     ((pf->ll_ts_irq.index + pf_intr_start_offset) &
- 		      PFINT_SB_CTL_MSIX_INDX_M) | PFINT_SB_CTL_CAUSE_ENA_M);
- 	wr32(hw, GLINT_ITR(ICE_RX_ITR, pf->oicr_irq.index),
--	     ITR_REG_ALIGN(ICE_ITR_8K) >> ICE_ITR_GRAN_S);
-+	     ITR_REG_ALIGN(ICE_ITR_20K) >> ICE_ITR_GRAN_S);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index eaec36ab6ae3..e8392ec4f134 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -2327,6 +2327,8 @@ u64 ice_ptp_get_rx_hwts(const union ice_32b_rx_flex_desc *rx_desc,
+ 	ts_high = le32_to_cpu(rx_desc->wb.flex_ts.ts_high);
+ 	ts_ns = ice_ptp_extend_32b_ts(cached_time, ts_high);
  
- 	ice_flush(hw);
- 	ice_irq_dynamic_ena(hw, NULL, NULL);
++	ice_trace(rx_hwtstamp, cached_time, ts_high, ts_ns);
++
+ 	return ts_ns;
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_trace.h b/drivers/net/ethernet/intel/ice/ice_trace.h
+index 4f35ef8d6b29..3cb8c6ea03cf 100644
+--- a/drivers/net/ethernet/intel/ice/ice_trace.h
++++ b/drivers/net/ethernet/intel/ice/ice_trace.h
+@@ -241,6 +241,24 @@ DEFINE_TX_TSTAMP_OP_EVENT(ice_tx_tstamp_fw_req);
+ DEFINE_TX_TSTAMP_OP_EVENT(ice_tx_tstamp_fw_done);
+ DEFINE_TX_TSTAMP_OP_EVENT(ice_tx_tstamp_complete);
+ 
++/* Trace event for Rx timestamp */
++TRACE_EVENT(ice_rx_hwtstamp,
++	    TP_PROTO(u64 cached_time, u32 ts_high, u64 ts_ns),
++
++	    TP_ARGS(cached_time, ts_high, ts_ns),
++
++	    TP_STRUCT__entry(__field(u64, cached_time)
++			     __field(u32, ts_high)
++			     __field(u64, ts_ns)),
++
++	    TP_fast_assign(__entry->cached_time = cached_time;
++			   __entry->ts_high = ts_high;
++			   __entry->ts_ns = ts_ns;),
++
++	    TP_printk("cached_time=%llu ts_high=%u ts_ns=%llu",
++		      __entry->cached_time, __entry->ts_high, __entry->ts_ns)
++);
++
+ DECLARE_EVENT_CLASS(ice_esw_br_fdb_template,
+ 		    TP_PROTO(struct ice_esw_br_fdb_entry *fdb),
+ 		    TP_ARGS(fdb),
 -- 
 2.47.1
 
