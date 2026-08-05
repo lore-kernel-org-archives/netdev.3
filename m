@@ -1,103 +1,84 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEB72E739D
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 02:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879622E414
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 03:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785898236; cv=none; b=eI3GCVJXEgDMHrQo+LZrxMY/eVTDVE6f9QrgOzwBnu3h9rE9i1f/emEoFwDZwyX2se810vC2uzw9bFRxe54DCIBSn2X02c/9Y9aHs25DOD4QA2D5hoMCgNRW7IEiJ35yWzFNrBoGkI4i0s0nBoKrFLsOWZwMwcqvM7JBjXr6zQ8=
+	t=1785898854; cv=none; b=HCP/IvUt0ZbDVbN8udTyBhZY1n2xD46TeQds/rJnsutjeDpE+UWFjXozN1odqspefYAdFtnPXf1iVeyxchS9tqX1gqt3cQGUeyUO5yzek0Zi9lDSOFIHA1PWZvz6N3zLdyB9MxGepkq4wpDV+XK3JqILLOT/u3+SndKsdpTSE2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785898236; c=relaxed/simple;
-	bh=BFXO9SAOEEJG0KDbQp94TzNEGH+p9W4HWbKQichJx6k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=awMu23N6TmaRIQyTe9IL0erdqYHps6nmzXh406PFKzLPrVi3wEP8GGVhHGX5y7mbbyuqpRB5uNq9UvAOaaF69+J8V9+EIer/Zq2bhsPpm5ksXCUb1t9+Hi30SaMi8nuxhnUamMAnSWpVxQp3Cykvj26swk8uJprEnCi2cgLH+jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rQR0u/l3; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785898854; c=relaxed/simple;
+	bh=mwhrfDEmPx0YXIa+S3iZ5LfSrwdqZ2P5rpKTtC+PD+w=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=u4GiyZ7QCkgPomXUBQM7GQlUjHzzVsh63+0JbVJG/a9HZPyZ6Y3yHRCr9Fi8XAlAP8evTtPzfGUaSbE1jctS6r6nTyG4mllEh/b44ky47ILsmGwbQFtsDoSoOP7MJJkA5kAWCPrMVvcaMweZUa+nOtq1iTugii6OpAC9+WqiS7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKduwOuu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rQR0u/l3"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3810c5d691bso387233a91.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 19:50:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785898234; x=1786503034; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BFXO9SAOEEJG0KDbQp94TzNEGH+p9W4HWbKQichJx6k=;
-        b=rQR0u/l3XCY8DoT+B6HM9aPn17DbQnTnfHWoN3pU6FNaxVveOAAGVU1teKryAFqJSg
-         M444UpkqRwFzy4f+y7+K3IPamtKwIsU7hS/YEo6UCUUXGjXcgtGMVGKfjROsO99CAVf1
-         iQb9qeZR0V6JY4nWrRWx9+AOBUQU5VWA0mO0zixRlXz6r+qx+HOlZ+C40hQp1CZC4N+M
-         pkAGs++bYGBus+8jxT3/gil79AX/OVZQ4Fjq0G7Xx7aflD2CJYAfKubM1cfzPyavRACs
-         iR7OQg0dl/zaK4WOhYF+IDpJLwLExyqkc3u9k6lvl62yXNJyH1DhKSs+I7OB5gnAGRkl
-         SsVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785898234; x=1786503034;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BFXO9SAOEEJG0KDbQp94TzNEGH+p9W4HWbKQichJx6k=;
-        b=DLJXWpkgAGRaHhK3FqGJ4nLyzRY4D/e8diIdscq6JkCtJBTylhT+YlUxIYCd9MDJRq
-         nwxyX9ZuzlsMa/G65eyju5NcVGmcWHcByamJDVtbxJ9IHI/oDHh5L3/6FLjCQAe2cdBe
-         MGgkJVzHUGBmbhTYG4RBEBhD8NYsyzDzojK1+heB/iQDGmxwPvRbZRjP7K5Fvnvh5la6
-         6xfVSZ2TXh+bPmx4djiZofowF+EdprTvoZzefvc/1kGhdQh+F0uFtE2+FNBx8m/MO4+E
-         LWkgMTQ+8qJJFIan8ORPrBlv7SFVZ5XlQotJaKkdcFyKi2reiZMOex7vagCXMwxk+SG3
-         6JXg==
-X-Gm-Message-State: AOJu0Yw1hQ9738TyDngtWQmzLA/YsLx5sm8S3qOrJF239RlrOf/wJeFJ
-	KiVcnJanDryCXl3uTVATz7wihZbsbIT/h175p6KK9emPUO55dtcyK5YC+rByIpsl
-X-Gm-Gg: AR+sD12XHExwmPMpyR7R3yWLFFiIp8gaa656+pQyLmzz0AnNVe0N0WoDD+9aZ/8B8og
-	HbJqbtF4LCFI5yXKIXz334lBCb358WO3sWblxqlzCHajfVMMs3UWrwiO/sxrIC5TcFH1qhb0fcC
-	k8XkJ+sMpuGVGj0DCr5NpabJS9DIBSuU923oQ5BC0q4Yzst4tP/UmS7jmrx8EM8eM8nKZ14l+i+
-	xgcJnnDZCMIYBPqgPDaWoF9QTDBmqK/N79sLkeo09QCSBlYlL0tol3eh+zwnpJEMolPSy2fNyhm
-	I3g1JoR6UFQ2VX8mXXHo8x4MV3IDQO0F9vPHzSi5szZZ2UDepFAPEJlqypcEo5GfA/sQcLHE0E8
-	mvd0+2ssgj/JsDOS+VB2MKyTAlwwfCCSvNJPRjeVpHqwE2D/lZswFQk4xyD48fxsOKzQWQoE1X9
-	CMYJL5OgYq9Nx+kFtyh45vlfgg7tcl4HvP3616cTVgHaKeDSwN0xdUQNdr
-X-Received: by 2002:a17:90b:4a8b:b0:37f:fb1d:63fa with SMTP id 98e67ed59e1d1-3903c5d317fmr2451810a91.15.1785898233993;
-        Tue, 04 Aug 2026 19:50:33 -0700 (PDT)
-Received: from fedora ([203.175.12.242])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38febfdae85sm2858413a91.3.2026.08.04.19.50.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 19:50:33 -0700 (PDT)
-Date: Wed, 5 Aug 2026 10:50:25 +0800
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Felix Maurer <fmaurer@redhat.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bigeasy@linutronix.de, 
-	fmancera@suse.de, luka.gejak@linux.dev, xiaoliang.yang_1@nxp.com, 
-	kexinsun@smail.nju.edu.cn, ssrane_b23@ee.vjti.ac.in, michael.bommarito@gmail.com, 
-	2022090917019@std.uestc.edu.cn, yury.norov@gmail.com, jvaclav@redhat.com, maoyixie.tju@gmail.com
-Subject: Re: [RFC net-next 0/2] hsr: Use only one MAC address per node
-Message-ID: <anKiHmSnUjBOw1f2@fedora>
-References: <cover.1784024900.git.fmaurer@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKduwOuu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2286F1F000E9;
+	Wed,  5 Aug 2026 03:00:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785898853;
+	bh=xZA1Qm1XqmDPFUocu4qo43kQrZYqDT11WESW8GHw0HY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=gKduwOuuCmXIQO7t71Z00nfLIVh06Adeeu4BCVJYeiFsjajb8GOPQhphmucVD1TZ3
+	 mRl6TjBB9HcuDB6n1Y6JYa9w2fEOuX905C36aRJCq8EnLe50mTwCVZ0QU/NyQInqcq
+	 PsDEIVYMboe3ThGbdW2vBXqRkJHPkYSZDlVI6LlLdd259zlj0H5O1kY7lPPADAFrVR
+	 /7nvwrGBZ3ygyq+LDUe/iQulrzG9Ono6Lli3AspdbqYREdZ1ElYNoB6lTQP3oqvxoH
+	 ererY52ZEfgzG1hqlJpUmOrObseGzxIqWZmO8wyyYRAJQAydBp2GqIhI6po01nerVn
+	 SKZeRTWkOeNTg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A44392666B;
+	Wed,  5 Aug 2026 03:00:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-In-Reply-To: <cover.1784024900.git.fmaurer@redhat.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/5] bnxt_en: Bug fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178589881313.3892316.12105671103564143961.git-patchwork-notify@kernel.org>
+Date: Wed, 05 Aug 2026 03:00:13 +0000
+References: <20260731190937.807270-1-michael.chan@broadcom.com>
+In-Reply-To: <20260731190937.807270-1-michael.chan@broadcom.com>
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ pavan.chebbi@broadcom.com
 
-Hi Felix,
-On 14.07.2026 12:52, Felix Maurer wrote:
->To prevent misconfiguration and simplify the hsr code, this patchset
->removes the notion of two different MAC addresses for one node in the
->network entirely. The first patch sets equal addresses on both ports so
->that we are not running in invalid configurations. I also updates the
->selftest to not use/expect different addresses on the two ports. The
->second patch removes MAC address B from the node table and thereby
->eliminates a lot of code, including the node merging.
->
->I am posting as an RFC for now mostly for two reasons: First, I want to
->make sure it's generally accepted to have only a single MAC address per
->node and give everyone the chance to speak up against this.
->
->Second, I adapted the PRP address handling to HSR as well, i.e., to copy
->the address from port A to port B and master, mostly because it is low
->effort. I am not sure though if this is the best approach now that we
+Hello:
 
-+1 for this behavior. Bonding also use this one as default behavior.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Thanks
-Hangbin
+On Fri, 31 Jul 2026 12:09:32 -0700 you wrote:
+> This series include 3 bug fixes:
+> 
+> 1. queue start bug fix on the VNIC's default ring.  2 refactoring
+> patches preceed the actual bug fix.
+> 2. Bug fix for TPA data corruption seen on some ARM systems.
+> 3. PTP PPS setting bug fix.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/5] bnxt_en: Move RSS table fill outside __bnxt_hwrm_vnic_set_rss()
+    https://git.kernel.org/netdev/net/c/1d0fc6c7ea49
+  - [net,2/5] bnxt_en: Determine and store default RX ring in vnic structure
+    https://git.kernel.org/netdev/net/c/53f01cd594e2
+  - [net,3/5] bnxt_en: Refresh VNIC default ring on queue restart if needed
+    https://git.kernel.org/netdev/net/c/0b137529a899
+  - [net,4/5] bnxt_en: Disable EOP for TPA on all chips to prevent data corruption
+    https://git.kernel.org/netdev/net/c/c3faf548a00f
+  - [net,5/5] bnxt_en: Fix PTP PPS setting bug
+    https://git.kernel.org/netdev/net/c/80eaf88efec3
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
