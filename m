@@ -1,94 +1,142 @@
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com [209.85.217.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B11746F498
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 13:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C45349CD6;
+	Wed,  5 Aug 2026 13:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785935697; cv=none; b=Wz1bmzjigNSWsjIbHFhaPDhTa0poWDUkL1ILMKnfuGV1f24AQ+TR1WF9FuINAaEzAWFYQus5psb39JJEpFfuTgdUfT0ImpIxojx5edUOi4RQy+4fABUQldcA1bdsWf80FEcTkwCXUklbi9lPjLc81YeyDIXFOq94NIhsFrB8iSg=
+	t=1785935710; cv=none; b=f1aK3A4bPxms7IlMTpXdfLuomorfJnAK3Q6MOlZ8dxIYznpN4lggMJXWlf7nHMnMRqxlP0oQd4ylgHFR7jFFC2yiVKJzxm81gZPvpU1ZLEItoAqr9O2CmIMh8UgCQR0qp2kBI2fbYfTSSCnqaK9bgBAy8wQza+nL0I/Lb+X/lp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785935697; c=relaxed/simple;
-	bh=ZokoVdp8dvwEP12aZUt+4rB79hewCz7GQRU5XuzFW2Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HE4SrBf/LAt6Qx8SVBdnuMHtO5YHnj9QNQk8s9bwXdsUTYvNP3ZWeHPtgXzAJYEhzWewPMrcUzixRVEyHoQEecx4rBGjmFen8Lk94FnT5S+NcmKqmmKzVukgrqchJLa6Q6gwoVYh9zABaDh2wse4F6evytDit5nfqDOsE88pGFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--thaisonphan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RPEl0CWf; arc=none smtp.client-ip=209.85.217.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--thaisonphan.bounces.google.com
+	s=arc-20240116; t=1785935710; c=relaxed/simple;
+	bh=Yrg1ErwQQvfeFOROWOyJx0XM0IbSa9BL6q1B5tpim1s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=CSF8BLM7WILPE/9f/u9seYghcj0G4sOfhj2wQjoHICmEDc7ZoWZbC9U6QuyKv5v33K55hC2B+qZA+TpAVkNNrq4NNRFCiVMugu4rlbrV8I3WaY0Q5pVoYRyPJ+cnJ/j5HySIRYkpkpSC9icRusdFWlIjpwWCX3SPzZrALrADEFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zoOkX+uT; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RPEl0CWf"
-Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-74583ddca14so173348137.1
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 06:14:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785935695; x=1786540495; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZokoVdp8dvwEP12aZUt+4rB79hewCz7GQRU5XuzFW2Q=;
-        b=RPEl0CWfye40iLr5bWqwuHYYwRLDKcFaAnrEcmpv6O8WJARVD9qdVviXcGRtnmDchN
-         wdEvDBhCjoh/LNZknC3f7JRcnjcSLxVbbPitMsb5Y3qfusHrTEoSSXtoIlna9VL0FxHM
-         GWJjICrNJSYm6A19peX1fEhoSjtEOHffuG93XesIhzHclRii5YwomYN/YxIZnqmJo9w7
-         uOo4Yzr3941EamIGH1/QKD6bBSVDRDf/RprewfXir58z8jzB0cm8zkJefVIRX7QT9VKq
-         W0W721/JdsUMzJr1yqiapU691VGcax63DqYrJUClE3bpbJPlIYH/Cw/mv+mLxwCIATE3
-         Axxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785935695; x=1786540495;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZokoVdp8dvwEP12aZUt+4rB79hewCz7GQRU5XuzFW2Q=;
-        b=idaSJA2y/AvESwMqxZQv4d1Ve8AE3yr4ROJiaVKyYHD++d77Feis9dnoytjnr9fylC
-         YD0yAktIDSxEpRraIgQxODp002/Ooi51++147ggwOm1cDwG91xZ5rFn1rOqjOA+pD4zI
-         sM82PcjIbgXx4QNdvklFA7nXD204MpLC1R7RQyFJO4af2OOq2OmtwHj+j7hLK379M8wV
-         sVMIqOlivF5RKDA6e+O7FVs/HQsHvIIndbV2pW5KJM8cc+hpEwKTzicvXfHAXIUAsjdT
-         Gkxlv0R9RCL/R6Wy/FtAYl8gZFdR6V8s5V4n6IXDJ4bph9nuJFCBVBrzdayVAtrpNQEs
-         Pd4A==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2TL49jA0PHchhHpdXtzrhxQZQdEZoG/aKYD6sowQBOcEB2BlVZj74sXomTcm9KK9kxPr662k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMOLPrhC5b6RYnFhS1foaB9ZLjMROqJtSeyQIHjgww4T2NohkR
-	YD2eo+R+Y9enrX0WswKi5TK96GHMZLp3rOxO03LdBxanxwfC6yYOQO35mKkT9I73/FowZ6xXSAS
-	rrR5dJe9byVuPNgW5xLNIyqD9Sw==
-X-Received: from uat5.prod.google.com ([2002:a05:6130:80c5:b0:977:3247:5473])
- (user=thaisonphan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6102:2c01:b0:631:23fa:38d7 with SMTP id ada2fe7eead31-760ed28ccf5mr1502921137.14.1785935694856;
- Wed, 05 Aug 2026 06:14:54 -0700 (PDT)
-Date: Wed,  5 Aug 2026 13:14:54 +0000
-In-Reply-To: <20260804142553.6a67fff0@kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zoOkX+uT"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D8A244E4104F;
+	Wed,  5 Aug 2026 13:15:03 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id ABBC4602AB;
+	Wed,  5 Aug 2026 13:15:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 00D2211C349E7;
+	Wed,  5 Aug 2026 15:14:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785935699; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=uIHxcjJyQ0y8FabWacsLPaMO/+nPUzK4AJsBNIDdFIs=;
+	b=zoOkX+uTzInOyjkRfqVDeQ6qflmBLZWzl2vRGga0nrlumtL6UmnC3+oD0cw5B8IntY1yTp
+	hRTbKyDqbEfk406eFifx1gJtHdhNBylBOl9ED0nlZI0hXFAckCzV/WpgBIYe9Fv5jMgyT+
+	sDhdW3lyblEZTYKU+B4ehpnAGuM43n22hx0aKyK7ye5U+txWn9Pq4LskIznCgJpqJrmbw4
+	F/l2BiDNxbH/TDsDyecsF7tsC5fsghV+yC5W4rn6IZ1PnOlEMVjQ2baKbo/zlyVo1kq4nj
+	QV4BWc+enE0NbnqaYJnNT9TmROLjqG+ZclkrDUYAsP9oxiP64PiGNuKjeLLY+w==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260804142553.6a67fff0@kernel.org>
-X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
-Message-ID: <20260805131454.3364094-1-thaisonphan@google.com>
-Subject: Re: [PATCH net-next 1/2] tools: ynl: check for null ptr on dump free
-From: Thaison Phan <thaisonphan@google.com>
-To: kuba@kernel.org
-Cc: ast@fiberby.net, davem@davemloft.net, donald.hunter@gmail.com, 
-	edumazet@google.com, gfengyuan@google.com, horms@kernel.org, 
-	linux-kernel@vger.kernel.org, matttbe@kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, stani@google.com, thaisonphan@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 05 Aug 2026 15:14:55 +0200
+Message-Id: <DKH1D7X1YSQY.3UOH4SJMIQ5QW@bootlin.com>
+Subject: Re: [PATCH net v2] net: macb: configure ENST registers for all
+ queues
+Cc: <git@amd.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Vineeth Karumanchi" <vineeth.karumanchi@amd.com>,
+ <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <pabeni@redhat.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260805044204.272989-1-vineeth.karumanchi@amd.com>
+In-Reply-To: <20260805044204.272989-1-vineeth.karumanchi@amd.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thanks for looking through this.
+Hello Vineeth,
 
-> What's the tool?
+On Wed Aug 5, 2026 at 6:42 AM CEST, Vineeth Karumanchi wrote:
+> When a taprio config only covered a subset of queues, the driver
+> programmed the ENST registers only for the queues named in the config
+> and left the remaining queues holding stale register values. This
+> produced an inconsistent hardware setup that affected the scheduling
+> of the configured queues.
+>
+> This was observed on a GEM instance with four hardware queues, all
+> enabled:
+>
+> Initial configuration:
+> - All four queues are enabled.
+> - enst_on_time_qX registers are left at their reset value (0x0001FFFF).
+> - Only q0 and q1 are configured with valid, non-overlapping ENST
+>   schedules (T0 and T1 respectively).
+> - Traffic streams p0 and p1 are bound to q0 and q1.
+> - ENST is enabled only on q0 and q1.
+>
+> Observed behavior:
+> - During T0 on-time, both p0 and p1 packets are transmitted.
+> - During T1 on-time, both p0 and p1 packets are transmitted.
+>
+> With the unused queues (q2 and q3) explicitly programmed with
+> enst_on_time =3D 0x0:
+> - During T0 on-time, only p0 packets are transmitted.
+> - During T1 on-time, only p1 packets are transmitted.
 
-Sashiko (LLM) reported the issue. The path it reported was based on code
-output by print_dump() where since the dump state is zero initialized
-struct ynl_dump_state yds = {}, yds.first would be NULL. It then pointed
-out that in the call to ynl_exec_dump() that there could be a failure in
-ynl_msg_end() or send() that would result in `yds.first` staying as NULL,
-and the code going to the free_list label where the dump list free would
-get passed NULL. I may be misunderstanding the code, but it seemed
-legitimate.
+Thanks for the expanded commit message.
 
-> I guess we can do this but I'd factor it out to a separate check at the
-> start of the function. Otherwise it reads as if there could be a NULL on
-> the list itself.
+> Leaving the ENST on-time registers of unused queues at their reset
+> value (0x0001FFFF) disrupts the scheduling of the configured queues,
+> whereas programming them with 0x0 yields the expected ENST operation.
+>
+> Program the ENST registers for every queue unconditionally. The
+> per-queue configuration array is now allocated for bp->num_queues and
+> indexed directly by queue_id; unconfigured queues are left
+> zero-initialized by kcalloc(), so their registers are cleared.
+> Indexing the array by queue_id also makes the queue_id field in
+> struct macb_queue_enst_config redundant, so drop it.
+>
+> Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
+> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+> ---
+> Changes in v2:
+> - Split the patches for net and net-next.
+> - Updated commit message
+> - Link to v1 : https://lore.kernel.org/netdev/20260724043257.2221030-1-vi=
+neeth.karumanchi@amd.com/
+> ---
+>
+> [...]
+>
+> @@ -4357,7 +4357,7 @@ static int macb_taprio_setup_replace(struct net_dev=
+ice *ndev,
+>  		return -EINVAL;
+>  	}
+> =20
+> -	enst_queue =3D kcalloc(conf->num_entries, sizeof(*enst_queue), GFP_KERN=
+EL);
+> +	enst_queue =3D kcalloc(bp->num_queues, sizeof(*enst_queue), GFP_KERNEL)=
+;
+>  	if (unlikely(!enst_queue))
+>  		return -ENOMEM;
 
-Factoring out the NULL to be a separate check makes more sense to me and
-better shows the intent of the check. I'll update that in v2.
+My first reaction to this was that we should be using the new
+kzalloc_objs() API. But actually those 96 bytes are not worth the
+trouble of a kmalloc, it could be stack allocated.
+
+   struct macb_queue_enst_config enst_config[MACB_MAX_QUEUES] =3D {};
+
+Anyway this is a bit orthogonal to your change.
+Whether you change it or not:
+
+Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
 
 Thanks,
-Thaison
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
