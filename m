@@ -1,111 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82912471407;
-	Wed,  5 Aug 2026 13:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975E9472521;
+	Wed,  5 Aug 2026 13:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785936599; cv=none; b=aC9fSCDSlL+ExdD2hOGm5ORu0ho7STUMY0OCHAqKhJ57aUhS0GJfnRDSqKALIqrlXhr67VWwbUxA2S4nKZn15LG3NYgOVCHHBvCdn/RpyF0S9buZim6lVpvDkZRRnCrarI5z/3wjSo8qPVuEhwL/hyfmtukvHjJ4+rF8R63Pa/8=
+	t=1785936749; cv=none; b=MVzlfKokP350L/5lJiZmQ/bu5TuiwL4aHjJTujYW++HiUw9T8qx9Zy/Ksu2Xy8HkrlJz8db+w7MlRBQb0i2gnIXI4HiPrcEnnkIKQCPEWrORwBiiIdboBDYwpzUhPumr2MJGRqY3W9M/9xz+UNeFor5jDjoTTSAQzmzh1X/nLKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785936599; c=relaxed/simple;
-	bh=3ONLOkCCikXZjvVxIR5WZoHWXthWoxkThJGRkJtifWc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=s/79HgkEFUtbTdLsRD7Ixo4n2ieNDRCxIPWoN/aaUtws+pSoak4b2y860fpxZ0VFhOgaBsxNQVHG4RQ5dE0/aPJQ4zxi71gnqV7of+uOmkU9tsGOj7rSNJZa+uw0linY4uTDaD0qE6Prp2/ERoRaK47WAiqIWVAM5Zqlc+WY9Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OhMdl5So; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1785936749; c=relaxed/simple;
+	bh=R2apSWBXSUirB/UtMUlvuAshDxiPYml/uIQKMcnebR8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k72Z3zgY5gtVBLpRlQasK3TCCrFyNE4Z4nnE+/1+/yI0MrMpszSOi12wUsC1KavS93F8fyaFb2tha2lSC4HcFD0dNQVfdz6K1FqTHJ9rVub9kdPoXuAr1YsGxTD+DEMwRFIB7T7VgrRk1+SXOpsY6hjGVCXOCBaI1ZTZzJqSLpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aCmQdTKj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IChQUx3m; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OhMdl5So"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 19872C19425;
-	Wed,  5 Aug 2026 13:29:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785936599;
-	bh=3ONLOkCCikXZjvVxIR5WZoHWXthWoxkThJGRkJtifWc=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=OhMdl5SoA1KA3D7f4ThuIwpq0lOBganlWQ307PueJCV2UVljEVOoi0jsewBonDbHC
-	 ja37BWXUSDNMbh9m/WleOIua20iQe2nzOmVpYEkGtNku03SDKk6ZPYtUPxoxEFj255
-	 LbuIRwSa7+6pJ5bDvWFu/qcrtE1JGOVhHv6xI+/o7pbGGuVeTSuM302ZtnBwgPObQI
-	 RgTVZtBtKtUOXmsLsaMsY7jK+8tObOf6QT+pvgcTpEvgmUWyUE6LY9N9MxkOVXu0Kv
-	 DVrnY+FUZVAVppKGPvi2x/oLN7ue6igliwf4qTpsJDU5mtpj3eQkA3SEIREDFhBsyf
-	 5MBh2Ez6g3Xfw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9C27C55ABF;
-	Wed,  5 Aug 2026 13:29:58 +0000 (UTC)
-From: Junrui Luo via B4 Relay <devnull+moonafterrain.outlook.com@kernel.org>
-Subject: [PATCH net 0/2] ovpn: fix peer float use-after-free and key slot
- NULL deref
-Date: Wed, 05 Aug 2026 21:29:35 +0800
-Message-Id: <20260805-ovpn-fixes-v1-0-763f8c237fb9@outlook.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aCmQdTKj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IChQUx3m"
+Date: Wed, 5 Aug 2026 15:32:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785936745;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LSUjXyojxYUstOoU9FinVpdu7Ze0HGj9+KlBRZ5mhu0=;
+	b=aCmQdTKjgZ5ZIdy/u1ZI3q75vIhLAgCQAv7pnzle55pQcJ9pznSfvwZVn9YBVO5wHOXPgc
+	ltII/sfKTrtOBkZOR0nTbheo0oT3lYapRs7aXRhckMf23n86gbT4yBfNijwFST7k8zjy7P
+	KIgXa1MBMqXDT0TzeKxQWqjCab/+sq0a/ofFRTqrphx10PbKeqxHum/nyqPxS/YqIqOqnp
+	D66Va+dvRJxDQbVzIwro2mAumYT/dWB9Rn32w+Pw6A1HQPwJ1wjq24TszE8D/eBfmwmASw
+	nh0+m4+ndkYGXNBliP9SCcTE0aE9dF8AvNQE7J7xD+rZD04FR6H7ymo+RSpxbw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785936745;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LSUjXyojxYUstOoU9FinVpdu7Ze0HGj9+KlBRZ5mhu0=;
+	b=IChQUx3mceLkOLFKFrXhguLxKwzQw/5yQTSO8fHoaoeM6abmERCOByyN38BuOwBdmUVJva
+	ZhEs0oInuR1tkrAA==
+From: Benedikt Spranger <b.spranger@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Vasilij Strassheim <v.strassheim@linutronix.de>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean
+ <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Martin Kaistra
+ <martin.kaistra@linutronix.de>
+Subject: Re: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
+ bindings
+Message-ID: <20260805153220.3860b262@mitra>
+In-Reply-To: <590a933f-85af-4eaa-b9ee-be689dc15c69@lunn.ch>
+References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	<20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
+	<20260730-loutish-labrador-of-joviality-6e6c79@quoll>
+	<411ec84fd55e152e94ac1f4edba497eac3a5623d.camel@linutronix.de>
+	<590a933f-85af-4eaa-b9ee-be689dc15c69@lunn.ch>
+Organization: Linutronix GmbH
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAL86c2oC/x2LQQqAIBAAvxJ7TlDJsL4SHcS22ouKhgTi31s6D
- jPToGAmLLAODTJWKhQDgxoH8LcLFwo6mEFLPUsrjYg1BXHSi0UY7dViJ2OddsBDyvgL7jcI+MD
- e+wcqScLJYQAAAA==
-X-Change-ID: 20260805-ovpn-fixes-52c198458a2a
-To: Antonio Quartulli <antonio@openvpn.net>, 
- Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Junrui Luo <moonafterrain@outlook.com>, Yuhao Jiang <danisjiang@gmail.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1819;
- i=moonafterrain@outlook.com; h=from:subject:message-id;
- bh=3ONLOkCCikXZjvVxIR5WZoHWXthWoxkThJGRkJtifWc=;
- b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGrGKrqz3nznC0rb8yq8Hla3LLstxLLFknOe+VBMmqK
- q84xubC39lRysIgxsUgK6bIcrzg0jcL3y26W3y2JMPMYWUCGcLAxSkAE3ktzvA/ZJta7NWEVzyf
- c9atK73w2HvLnaDZ5caapxjLI/gU/MNMGRn2Xdl+dNf0C1vyUxJm7HU4tOzsoe/sHiUXgw9393F
- 4ZnxjBAC5t0xf
-X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
- fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
-X-Endpoint-Received: by B4 Relay for moonafterrain@outlook.com/default with
- auth_id=909
-X-Original-From: Junrui Luo <moonafterrain@outlook.com>
-Reply-To: moonafterrain@outlook.com
 
-Two independent fixes for the ovpn driver, both in lifetime handling:
-one for a crypto key slot that can legitimately be empty, one for a peer
-that can be re-linked into a hash table after it has been removed.
+On Mon, 3 Aug 2026 18:43:23 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-Patch 1 fixes a NULL dereference in ovpn_crypto_kill_key(). It locates
-the slot holding a given key ID by reading both cs->slots[] entries and
-comparing ->key_id, without checking either pointer first. An empty slot
-is a normal state: the ordinary rekey sequence - install into the
-secondary slot, swap, delete the retired one - leaves primary_idx at 1
-with slots[0] empty, and key_id sits at offset 0, so the first
-comparison faults on a read of address 0.
+> If it is not compatible, it needs a different compatible.
+This is quite tricky here - namewise. 
 
-Patch 2 fixes a use-after-free in the peer float path.
-ovpn_peer_endpoints_update() releases peer->lock to send the float
-notification, then re-acquires ovpn->lock and re-links the peer into
-by_transp_addr unconditionally - even if ovpn_peer_remove() unlinked it
-while the lock was not held. The teardown path never unlinks hash nodes
-again, so the peer ends up freed while still on the chain, and every
-later datagram walks it in ovpn_peer_get_by_transp_addr(). Reproduced
-under KASAN on 7.0-rc3; the splat is included in the patch.
+> It gets interesting with something you synthesizer, something where
+> there are a number of different synthesise options. How do you define
+> compatible? You might want a very specific compatible, for your
+> synthesise configuration, and a more generic compatible which might
+> work for other synthesise configurations, but maybe not?
 
-The two patches are independent and touch different files; they can be
-applied in either order.
+SOC-E sells quite a bunch of switch IPs (MES, MRS, NTS to name some).
+As far as we know for now, these different IP cores can be determined
+by reading specific registers, which seem to be on the same spot across
+different IPs. You may wonder about "It seems". Since we have only a
+limited access for information about different IPs, we have examined the
+vendor linux DSA driver and the surrounding configuration software.
 
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
----
-Junrui Luo (2):
-      ovpn: don't deref NULL key slot in ovpn_crypto_kill_key()
-      ovpn: don't re-hash a removed peer on float
+So for now the different features can be read out at specific registers
+- an autoconfiguration of the DSA driver is therefor possible. Now to
+the compatible string. The easiest way is to name it after the IP core
+name: MES, MRS or NTS. But that's wishfull thinking:
 
- drivers/net/ovpn/crypto.c | 6 ++++--
- drivers/net/ovpn/peer.c   | 7 ++++++-
- 2 files changed, 10 insertions(+), 3 deletions(-)
----
-base-commit: 075b74841bd0065a3bda3440873c747938e69b68
-change-id: 20260805-ovpn-fixes-52c198458a2a
+You can use the MRS IP core an disable all management features. You
+have an unmanaged switch with an MDIO interface. Terefore you can not
+rely on the compatible string and have to verify the feature registers.
+Also you have to switch device trees for different IP cores for no good.
 
-Best regards,
--- 
-Junrui Luo <moonafterrain@outlook.com>
+The big plus for this solution is less struggle with the devicetree
+police.
 
+So in fact the compatible string should reflect a register layout
+nessesary to determine the switch IP and configuration. There is no
+such name in the documentation, as we can see so far.
 
+As a suggestion from my side: soce,switch-reg-layout-v1
+
+If this minimal set of registers changes in an incompatible way, the
+version number can be increased.
+
+Regards
+    Bene
