@@ -1,153 +1,126 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7353A37BE93;
-	Wed,  5 Aug 2026 14:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785939664; cv=none; b=lZnXvy306DoK8OcqujI8Th4J3rHZP1o/eQ1n2tjCd1kyFTu+e3U5tkuwZfCpeLJx8UzQj+A4ZLMXSjczHXX7j/92M9LmRDNxPF8atvkntWiPOrm0bqBTHXmg6UU0tZ595mtA74yd1+X+rtCGuevUOdtLDpx1tHcKBiOZTuVX/T4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785939664; c=relaxed/simple;
-	bh=XMBb6d/y1n/AwFvVUXVb8hKhKFloTDk1XVYh2Q2UY4k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SLdkZAT38/bet2XiOFqGpCZiAceJZeN8Z3sFnylETw9yN79IRGageWe63LoWCebuJTgqAzcG2N1Kikk4HCSIKaZhSxJ3wqfF8gM/ow+JRNJGZdpwPrYdWutoJHdxq7C1XXaNtzzD0jnYy+r6lcISPAhQDVWoSbsn12/+gdNDdHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wDHoX6+RnNqoadpAA--.24993S3;
-	Wed, 05 Aug 2026 22:20:46 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app2 (Coremail) with SMTP id zC_KCgDHFMm+RnNqKSyTAw--.13400S2;
-	Wed, 05 Aug 2026 22:20:46 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: netdev@vger.kernel.org
-Cc: "K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: mana: fix reset work race with device removal
-Date: Wed,  5 Aug 2026 14:19:37 +0000
-Message-Id: <20260805141937.217114-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9215737F74C
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 14:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785939748; cv=pass; b=E9cprNGqax5bfT+Q35gp4zuItHe43f4zAOJlMhc3PoqBv8oXAID6WeNjlV/15mKrPrSiQYr8afbRoFk8QQcmwpVQuuxQOCvGSMkxx5kGZ8YMzMon1RQ0OFuheG73iuUgvQpRYyZShzd4zZovnqldZhnpJIf5sS0TPKpTc+Ozag8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785939748; c=relaxed/simple;
+	bh=PBTXPiYdjm3vlQmsRzLNpMwqKaxNZRd51NNDLZRc90k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E6HNkKb7SionkUd3yM6lZ+o/UIiWfXdyU3ScU7upth1n289EBirerEmfoG0jib+iLZwr7yNADoc3TcJYx3FM7C7sB6M3AS+l4CqqxMWJei0iNL8dcmIlukgvb88pqwkR1Iazbl4+rdqpGmmx/gegtDJtaUTQGNrcytO9EUTYkzU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=COoO2U8O; arc=pass smtp.client-ip=209.85.167.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="COoO2U8O"
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-4afab06b734so61683b6e.3
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 07:22:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785939740; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GmytAYMaRjqr+dPemusNROJ1eeOPwZ/k0R3h5Ink5thvpyGo8ENJEzjIAAB/EN2vMu
+         C11MSjnGiHRfuhzpCcGcBwIHNDWv+sYhvHQoQPKDgsDsKsb/K4kgwN+WPsXPs1VchPXp
+         8OefEo5oxz5gyrcl0RYv2ZbL3WSI1ctZDFpxDFcRcciWq0WJDcs8+Mrjoj0zBTnv7pW9
+         fxxf+1KEVE4U7d03/lZYe4Z2WXwwpL6a0KmcYz9VXiDSTQte6eMx63e+9kAV66mTfGCa
+         NPdqhsIUEYi1GT9UcEwr9s4sNTOomEUldXDoPm3fBafgz99KA1/xVGgdqN30dQJA26pF
+         a74w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PBTXPiYdjm3vlQmsRzLNpMwqKaxNZRd51NNDLZRc90k=;
+        fh=GiLEaGK4nf8l4D+BDNX3CrGG/66Vkbjp2Dr1HhappQQ=;
+        b=UHw4BlUBoOx4jX74xv3tTk8mH+TB6RyzT1wj1GzhSD0OZDc8NbI5ap2F+Klcf0N60e
+         1OE14sbIGkfBoT33mLNzVTcNoBIThxLW3wecQCBbSxqbi4xGOgqeo5n7h3v/+qAxbGjj
+         /nIQ0KpMRycqtVdjddeJgtgp9Tufv2UvBXCyE70cTqxZnKB3MzAeo2V3RXIWJ6BymROW
+         Sus1BpwUxxqi7eXJOVlvoyZ+RT/x8o1NdzTKaFsz94DZq2YjG6axmVa1kscxcTOanvgM
+         YF54exbaP+ghtf3lt7rlTaAWqNi+J3/A8IR2EipINqRHmJ2K4l7Wlvy6/MZ/Qep96MPv
+         yL/Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785939740; x=1786544540; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PBTXPiYdjm3vlQmsRzLNpMwqKaxNZRd51NNDLZRc90k=;
+        b=COoO2U8OjkiVkhgfoS7++u5iBfYDAKH4nDzXzAdi/RivU8d4C9NnSJLYwFXgoFDq+y
+         O61Gwr1GNZjhOSOX/dKZo+7w1A9rU1mNBWnQy7TMG10C0niFzQ5isHs5K1xSvQu/27/T
+         ZySFyot/VDbOJ8lEMuag7404blne1uTLbhvFeuA4/95F6VJGm3H6vYZE0RKkqUsJLRSA
+         gJPyOpRRwtOEwk8U3hsx5ZAFiOqjmB/CO7xp9w9oE1iYtQJdM6R3xpUeHhxqRZ3KE+Zg
+         yJaGCQ4ZhIj+OQivYITgVfYpUF3FwAvEz/JYyu6kGubBTXV7AUgQJbZvulnUmgAKaduR
+         8mYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785939740; x=1786544540;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PBTXPiYdjm3vlQmsRzLNpMwqKaxNZRd51NNDLZRc90k=;
+        b=KBq2syGSnDorINLCnLb/KW5sqLOzi4pnAjTvxYUWRuOUFPoJ+/0eZnCr9mGEOyxEhV
+         LqISuZARD7IZFINgN8EJKJzhgS/AAQsGN71tELqLMjVeVGFJLCSnqlCQL4m4BeiB+aYz
+         hUHAhJYYl+JvLTNjgKVAC5mXTXgKxpDCvJMkicA5kDpfmFGzrjk7T7yPH1foV4Bdaes3
+         pPbmJMqZWIHUpqyCoeoHXxVMcuOT4wsn8G62g+sFn2I7CWyDe4SkMwYnegLEwiWsO2CG
+         Ogp+uQzpjipSvhlMKsdEfXihcUJpIUrKbR1ItWfae8zLxqfb9gdTV9yqY8TKjoJ+5oJL
+         v8ag==
+X-Forwarded-Encrypted: i=1; AHgh+Ro0c5116IqlmyxopkYLE7hSju2mjwmlu+uFzyAQmqgIPAHyJld5MS8mIhG7fXDPOIOILCZwZPc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4QXNKUCLgVsljjrmw3Fnw9n/exOsia6Bxd9fHrozDijLOoOLW
+	DsiO6bl2Tu6QKBk80g2crWAlo4R2tKD0tBi/qfOz64G4mXrrxcDnfDiir3g4YwcO5vtAlXOkP4z
+	wlpCjLIjiwYQdBdQyOfQgn+7zZFjqBHg=
+X-Gm-Gg: AR+sD12jssvJrrakNBCvoZEU5VV7nUt/+iuPap98p8sW9EZHdQMU1y+8cJefkBkbFoZ
+	7YxjAc8Yb5af/BGxYLYrvqLS9613wTfIZtAGPrwYhW5417gjTavMWGMaogQVsR6omRbHIDZk0pT
+	3qilupmytW99E9wwjYW5/Zeu4DezFWLwamDKewMXsTqIWC1dyntSVxpVa257weTEjEmLPuejZny
+	o2GzI/qJROgG+o/AOm+f++sJo1P363rROO2ey8Vt/NYUnsTpIuroqGD8pt0Uh0SaHYwPHnoF6J+
+	ltLolRNAAzVjRVysgRDPTGJIRM1yLmfc01ol4mstpgS/rv6BGMOdaRLPhIJg
+X-Received: by 2002:a05:6808:3082:b0:4a4:82b:2a35 with SMTP id
+ 5614622812f47-4afadefa686mr2996765b6e.1.1785939740248; Wed, 05 Aug 2026
+ 07:22:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zC_KCgDHFMm+RnNqKSyTAw--.13400S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?nVl1gAXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfncGSG+szpQCInt5Y8rbJUI1JaegsrYP5HYBdt5oM7HSW4wMYqaDAhteXpNQnYhTsXxI9
-	3Ub46l9QECHFwvNoaUfN5RPxYw6l01w8CbPzC/8w
-X-Coremail-Antispam: 1Uk129KBj93XoWxGF47Gw1rZFyrKr15GF4ftFc_yoW5AryDpF
-	W5Wa48KryDKF17ua1UXw48ZFy5ua9aq3yrCrWIk3ZIkwnIyw4kJrn5tFy2qrWfJrZ5tFnI
-	vFW8t3W5uFyqq3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPYb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
-	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
-	xVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
-	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0E
-	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
-	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAI
-	cVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07jn-B_UUUUU=
+References: <20260805-netcons-userdata-rcu-v2-0-c5e80f6a7a46@debian.org> <20260805-netcons-userdata-rcu-v2-1-c5e80f6a7a46@debian.org>
+In-Reply-To: <20260805-netcons-userdata-rcu-v2-1-c5e80f6a7a46@debian.org>
+From: Gustavo Luiz Duarte <gustavold@gmail.com>
+Date: Wed, 5 Aug 2026 15:22:07 +0100
+X-Gm-Features: AUfX_myEBJXrwCd_oNjePYEUGRCdQy9tXUD1opmu4-BqJqeTjHWmE-CrsEfGEVM
+Message-ID: <CAGSyskX-C3vyySs91KEUEUczGrwyxH36=UVN_chte+m-k_NAvA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/2] netconsole: publish the userdata payload
+ with RCU
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, asantostc@gmail.com, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The reset service work runs on the system workqueue and obtains the
-GDMA context through PCI drvdata.  It can race with device removal
-(mana_gd_remove()), which frees the context.  A reset work that runs
-after removal can therefore dereference the freed context.
+On Wed, Aug 5, 2026 at 11:59=E2=80=AFAM Breno Leitao <leitao@debian.org> wr=
+ote:
+>
+> update_userdata() takes target_list_lock to swap nt->userdata and
+> nt->userdata_length, then frees the old buffer. Since commit
+> 7eab73b18630 ("netconsole: convert to NBCON console infrastructure")
+> that lock is also the console's device_lock, so writing a userdata value
+> from configfs serialises against the printk core emitting messages.
+>
+> The buffer is immutable once published, which is what RCU is for. Move
+> the string and its length into a single netcons_userdata object and
+> publish it with rcu_replace_pointer(), freeing the old one with
+> kfree_rcu().
+>
+> New userdata design:
+>
+> 0) Unify the userdata fields into a struct netcons_userdata
+> 1) update_userdata() no longer needs target_list_lock.
+> 2) writers stay serialised by dynamic_netconsole_mutex.
+> 3) reading userdata needs an RCU read lock.
+>
+> No functional change intended.
+>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Serialize mana_serv_reset() with device removal by taking the PCI
-device lock across its drvdata access and reset sequence.  The driver
-core holds the same lock while invoking the remove callback, so remove
-waits for an in-progress reset.  Work that runs after remove observes
-the drvdata cleared before the context is freed.
-
-Drop the lock before rescanning, since the rescan path may remove the
-device and acquire the device lock again.  Also clear GC_IN_SERVICE
-before rescanning after a failed resume, so this exit follows the same
-service-state cleanup as the other reset exits.
-
-This issue was found by an in-house static analysis tool.
-
-Fixes: fbe346ce9d62 ("net: mana: Handle Reset Request from MANA NIC")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
----
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index e8b7ffb47eb9..ae03d7a53 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -591,15 +591,16 @@ static void mana_serv_fpga(struct pci_dev *pdev)
-
- static void mana_serv_reset(struct pci_dev *pdev)
- {
--	struct gdma_context *gc = pci_get_drvdata(pdev);
-+	struct gdma_context *gc;
- 	struct hw_channel_context *hwc;
- 	int ret;
-
-+	device_lock(&pdev->dev);
-+	gc = pci_get_drvdata(pdev);
- 	if (!gc) {
- 		/* Perform PCI rescan on device if GC is not set up */
- 		dev_err(&pdev->dev, "MANA service: GC not setup, rescanning\n");
--		mana_serv_rescan(pdev);
--		return;
-+		goto rescan;
- 	}
-
- 	hwc = gc->hwc.driver_data;
-@@ -621,8 +622,8 @@ static void mana_serv_reset(struct pci_dev *pdev)
- 	if (ret == -ETIMEDOUT || ret == -EPROTO) {
- 		/* Perform PCI rescan on device if we failed on HWC */
- 		dev_err(&pdev->dev, "MANA service: resume failed, rescanning\n");
--		mana_serv_rescan(pdev);
--		return;
-+		clear_bit(GC_IN_SERVICE, &gc->flags);
-+		goto rescan;
- 	}
-
- 	if (ret)
-@@ -632,6 +633,12 @@ static void mana_serv_reset(struct pci_dev *pdev)
-
- out:
- 	clear_bit(GC_IN_SERVICE, &gc->flags);
-+	device_unlock(&pdev->dev);
-+	return;
-+
-+rescan:
-+	device_unlock(&pdev->dev);
-+	mana_serv_rescan(pdev);
- }
-
- static void mana_do_service(enum gdma_eqe_type type, struct pci_dev *pdev)
-@@ -2436,6 +2443,7 @@ static void mana_gd_remove(struct pci_dev *pdev)
-
- 	pci_iounmap(pdev, gc->bar0_va);
-
-+	pci_set_drvdata(pdev, NULL);
- 	vfree(gc);
-
- 	pci_release_regions(pdev);
---
-2.34.1
-
+Reviewed-by: Gustavo Luiz Duarte <gustavold@gmail.com>
