@@ -1,257 +1,501 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276AB41F5DB
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 20:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07E047B42F
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 20:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785962421; cv=none; b=MMBzTjA33fuU5EmA8XwDOIQwvJPvK7VIFi0267kW01shytVZSaM6R/ncGPWd7QXvIJOyIkJrzQjjVnT1oO58S7mjypyezQDbbS6X3wf7Vz6PJz/B2sUroZWmI6U3QWVTbKyN5/jlB3DjY1F9qEzOE67CCMzb+/ePbDj3fsND3Po=
+	t=1785962597; cv=none; b=I3CILOUTxCqBbRN9zyQdkawKzhfkpMBqOL9Qh0F3lIhitI2K7+LfG3rk0xXHd4iTsnaSti+h+eQMwF4aClnNTGhW6kKDtUCog2BDizhqisJ1nWnqoC3QNOKuvhyDbzGdmcsn02TRj3FcGg+Y/uCk7zdSbZeX1FdCHi/1XI85kk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785962421; c=relaxed/simple;
-	bh=yQaBCeJX4iIOgtGSatzhMksHWRZ9BfWOqAnVI+31ysw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QlwVsWts7u9ohx8grWyNIz/rDxeYuG1p1cIa/YgVpxlX2BWZq9TDRKLV5AquMr5paHwEnJetQeyOU9ZoB6U1YGIV9CsK9ayRL0Lctp8OvwC9Fnhi8JBIO4cYGXkFL2kvGQzB0VeL3oF8w7wR0RJUXwNtqFLgLtVRPZ6yg0gzl90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aDSLw7HP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bFlV6oPc; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1785962597; c=relaxed/simple;
+	bh=3IREYeVwsdemb/dnB8KKObUFUDkkZIXecGTer41kNcw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FRi6Y7WwB7jz7Mgb/HJgBTEDKXkrkYkDXhGiK0ygPkTsoiJq7uDyB0WAD9QvfjdzR2gBSVUFuvuMrFS1Npv729az0VVldz1Bc3o6YbvERaXpXGxm2Zig33HrVR0Oi3DrAzxZgA6woxbwr7EuA3oM6ij8/UFJuzqVJ3P9UbEaJ1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+Kh27Py; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aDSLw7HP";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bFlV6oPc"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675HSC213888726
-	for <netdev@vger.kernel.org>; Wed, 5 Aug 2026 20:40:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=5LZuDa/NBmLZez6CPV0BSels
-	kEx0FfB09wzrO8qwC5Q=; b=aDSLw7HPQn+240k6hE37hqqjTT+GY/ZhUHnrSr80
-	ABYts9WsyXAw9M0QuRLpRJ5cra2uoz2KbpM8CNfZttNlpr24/u4gQiCFSVd1vOzP
-	snoWfB6c8FTuz/ZIfXHYOjFT2N56tHJrHHFoeVxQGWVn8TdOhWItE9wyUR01Latw
-	g0wFItOGcESe3emO8ypP6hdjBaVThtM1lem/EEzRH0vbp1pWpiANBtZJoGeSRHTU
-	q5Ay2zU2VGOkBMkcfR+wsE11aT1OPmUIZgJ8KOjBZpU/Aj0griG7JXxN8PUE0ZjT
-	KbphGuSFvrzcCgWpn1ca/5Vo4qonLFVo4DxHrHNBJE+/Fw==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fv5x5t1ct-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 20:40:16 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51c1b4d961dso2412631cf.1
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 13:40:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+Kh27Py"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cf27856f9cso18458895ad.2
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 13:43:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1785962414; x=1786567214; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5LZuDa/NBmLZez6CPV0BSelskEx0FfB09wzrO8qwC5Q=;
-        b=bFlV6oPcjguL7q9awJXp3rxLS0O0JxxQpMs7Fp7bbR6NaBM2uF5noIzGQg79Lfs0ii
-         uy0TMUjVjgtUK7yhktw04cBp8CssCYVZrXOE0WAG8HLF5+uWQB9jzb1YZTCr+gZ6GHcH
-         9crodjsQPt9tzNNPnjmrQJf1euS/oAS95gQEfbUWKFX3dApqFzcWUjsrIDER4NRlChBC
-         ExK6Fmlp91rpjs2Wc+Vo7Sm0/dUCZ/ywb0vO5it796Sq1RT8a6s1vaQEn5RQ8GDJFKu4
-         +ChFdKAe0OM8PEfFHCUtEXy7GP+H1VjjIbjb9PBjj/jfi/jQqfPQodN0/Fpe11GFo+/P
-         U2WQ==
+        d=gmail.com; s=20251104; t=1785962585; x=1786567385; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2K4H3UPgw3tGv5WudQmjsxRnE42MxKX+N5QsyYMK1TE=;
+        b=Z+Kh27PyGm1i+ylflwIeya812DMI0JoLCfegDRsWmEhikX6gQHkIkZvwgLWJtd1QDh
+         kSrqIX6rz/bTFIBsEqyg9FhrvAqElxqybFYG1XyufChcrcgQd/vQPXDqFBnYBuKRb5nR
+         +v+1SfrpBkLR+NkiSOvHUYUNKUqRvu9gTIMP7Ezp7/3qquesnQCWjBCUTlfcn8RlzBKX
+         oS8dWNlqyy2cdIX1rur2UCmwMPQ/qKIf556Mxnu9ExHp5/fC+5pCHwHUHiY60g6LQ4nB
+         Rt47GJVggJBVuAcTrF3ybYNCyjtAkaqyE8nBgKoFqRfjfLH05R7cVIo52iAXgsIb3H9D
+         RnAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785962414; x=1786567214;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1785962585; x=1786567385;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5LZuDa/NBmLZez6CPV0BSelskEx0FfB09wzrO8qwC5Q=;
-        b=AubcRbWLeZAIC0o7lZXPkOEsViRGbchd4dJHhPr59oS0nc169mNckmduA3rJ9BTv0L
-         zrqtJerOfzPCjncdJ/QUI/Nb0shhkGM5nQfJ6Y37LmW043OdZgg2+njsmn4f2EN+B4yk
-         ul7US2E7+HdlszblH0p+ElmCDVzSNfA+VEfDeXlKDFpSD34npS0M4uRoDxaMmIJzQWAA
-         d/TEXS3Ewu35yiT6EdvxDlDPFfT/NA3vSIlokneS+VWVyef5p4nMsP2LKN8viXvvLgR2
-         t6qnlB96jCjZ0tT0TrfYUz3/PaIZGkP6XD1v5X6OYeLKpfjnYvrNDqIwsC+A0OFZ2acv
-         9U2w==
-X-Forwarded-Encrypted: i=1; AHgh+RpL2iYr/vc78VvJWj9nR28b75+6WaKsgXjztGVe8O1O0QCC9WQlZig/h+3PFQw2pRgjwrOUtHA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmWKY71Tts9MiKUeQk1IYRyDxnQLeUmIVxlV4Y91bnwRd5YOfw
-	7+tUMMZPIPs7feGtkpNQVxjnejut6aq7BKEZYUvu8NUG/6M0vD5lo/ruOd9rEThm6C8A3yrVaQc
-	9p6ckhxW4h4Wd+fgQMLR4kEfw63flhdGQ0rDhX7/Rf7RN1yKczZFC8+c4DKA=
-X-Gm-Gg: AR+sD10vZPeINap0lWrD8j9hj5dyoWQJZOOJfyHtDYYxEbZMKqlsM//UTesvsu7rfhE
-	0lCZUwUg+e3++jf95/FQ5LETfDZRBFvQCB7M6DFKYLY7iatgvmDU4hPHkK58s2XfbhUeCXT4g5o
-	S46lNuUCK8qPHl7FTVw216QZ1cBURTYdz+OXDRPmdQe1QOi1tHPGN0yZ0uHpXWRf1ke3wXWbesv
-	baI8p3qFz3tn3oF3Ul7iFw9DsRZ+9MHwUsBf+4iyHZNHteaDL93uVYRfwl2VasmO8mU8ED7h2r6
-	I4Ayj0MIZeIErQBAQHg/pk74Zfzxb9edrJmputpi++pmAi+rEnnSIuwScerf4SbiPsv4qu8bfY4
-	chXhrOLZ9pzSLwRU=
-X-Received: by 2002:a05:622a:5145:b0:517:c65c:4987 with SMTP id d75a77b69052e-52cfb0a9111mr22805521cf.22.1785962414453;
-        Wed, 05 Aug 2026 13:40:14 -0700 (PDT)
-X-Received: by 2002:a05:622a:5145:b0:517:c65c:4987 with SMTP id d75a77b69052e-52cfb0a9111mr22804911cf.22.1785962413964;
-        Wed, 05 Aug 2026 13:40:13 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b31975sm97158f8f.33.2026.08.05.13.40.12
+        bh=2K4H3UPgw3tGv5WudQmjsxRnE42MxKX+N5QsyYMK1TE=;
+        b=biIGdqZ+9fCI5rGaxltIVvpAsP+UrSXgkVMs3+b0MqawIEe9gFnDhM8qjhcUQmU3me
+         kO8Pk1juEqQ477tygfO0Dz72fnXP/zFyh960gx9KNHqZRpu3j8GvphL0u+J8BCRH1qY9
+         tSo5hnuYfyy2l4/RnJp43FbndlizB67ZkPnXaFmE5qD/aBRO9HyxoxMr93gHVNGPQhNb
+         pkTCGL6OqEE+GLXFaTIIBw6DE1Y9EH4YCGtgD1N59tUpA3kBGu7OeqjUrILAHeDVBWLf
+         TPur+vkoIF/Tjg8RvMxl0d5walHUxc9evQrEZYZOOebdSCw9q1QjENmJnoLWPnavnxhC
+         Ht4g==
+X-Gm-Message-State: AOJu0Yw62jvoyL9LXx2VLvuOa6esnQz0jvigWzWCuSD7Y4ZWqM7f7EPx
+	SbQCzRgwDTI3kmN7R+lSZueWweW0O1WIU64BXr/n6wRvIMXSsJwBSRs2
+X-Gm-Gg: AR+sD13+MsYOOeiufUsZNTT3nYC7zrXOnzOOq3oXTdRnXazMFjgkmVdBWlnu+AQfzPf
+	Cfp8BULuCTwJiMQvO6HkmVzOgj7Qv+9ES/yqMAiwIF5jVDtkFQxHV5Xu0mhiUkaPk5lAXxRpVI7
+	5OtzRyhSFN3DB709cn1Lg64N+psA94XyWiG17gg1C8sdMlCcOhjHeKq5stcW/0OYGwpk4x/W8n0
+	9ssWaB2XZxojdBZJqD1xPncPPrV1DGHsSNbeFPnhYwUTvEY4UDkv/3pSoyewUCykDOdwV3Mp3qX
+	PSAqMB9Vw+hZt9KJVJBoMfM/jrSE9mVinq39bNMGxInqflQ4cANXWddJI+cLWaJZ6XIm4vY26wa
+	x3J3qd/gitrFIN0DAzP6BLst3nhU9wLssS6EZIE6pOycA2BzVb39XLGAPP3GclVDbg/YFuTJCWg
+	s+AeWLCL/8RNToZrbv9tt3DU0HaCpNhkv/v6LB1/FTCPIEcBBuTXBc4BmB
+X-Received: by 2002:a17:903:1b66:b0:2c9:e9db:8167 with SMTP id d9443c01a7336-2d0ca7125c0mr118316705ad.7.1785962585370;
+        Wed, 05 Aug 2026 13:43:05 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:4d::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa49325bsm21037275ad.40.2026.08.05.13.43.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 13:40:13 -0700 (PDT)
-Date: Wed, 5 Aug 2026 22:40:12 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Davide Caratti <dcaratti@redhat.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Daniel Thompson <daniel@riscstar.com>, Alex Elder <elder@riscstar.com>,
-        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next] net: stmmac: add tc-ets qdisc offload
-Message-ID: <anOfrP0IZPYnfzE3@lore-qca>
-References: <20260804-stmmac-ets-offload-v1-1-f3a09169d22b@oss.qualcomm.com>
- <anN6sHZt47dRZeaE@dcaratti.users.ipa.redhat.com>
+        Wed, 05 Aug 2026 13:43:04 -0700 (PDT)
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+Date: Wed, 05 Aug 2026 13:42:43 -0700
+Subject: [PATCH net-next v8 1/3] net: devmem: allow rx-page-size >
+ PAGE_SIZE per dmabuf binding
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="DmZsoeZb2q28/CCl"
-Content-Disposition: inline
-In-Reply-To: <anN6sHZt47dRZeaE@dcaratti.users.ipa.redhat.com>
-X-Authority-Analysis: v=2.4 cv=Xea5Co55 c=1 sm=1 tr=0 ts=6a739fb1 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=P-IC7800AAAA:8
- a=ivObySnqZvrQ93kweaYA:9 a=CjuIK1q_8ugA:10 a=WgJNjlqc4YYCZ52uAfgA:9
- a=kacYvNCVWA4VmyqE58fU:22 a=d3PnA9EDa4IxuAV0gXij:22
-X-Proofpoint-GUID: 7G1Q_gcOmzl2YMukJZ6iGlxJjValQK0q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDE2OSBTYWx0ZWRfX2DYWNd6VDglg
- fGKdsjGjuBGMJnw2PXLRpAvhvj3y42SHHISofKt4wn+gK+AcHe6L/EKU4TZLKpNLcG080lBE4Gm
- 83tkwc11FjeFNFiV3aRSPYdY71oGUwX+yjS6kV4/T6vAsqzwlxd39OjKrlTVO62qAhkTFebn5lD
- rAHj/sIB3fVczpiJCU4iD9Sqg5wQB06qdQpnFyC5sOcUu6YHfKFZHbGfWry8y+tbOJGNk0DWtRF
- 2QvK/BNDexOE0A/CNv0VohSZCxjAt4UwvMmXsTRgJwbrlsUOdpyQpWLvUl0YGPyTPyyi2c49qAs
- 9zF2hFcTc2+zFtDBv7q40zrR9PgeSR4bdQAffhGvWrYdIw5hF4EQHXnNaq6SQtO2cT1Rzjjo0pL
- C5CrMl23oRjOUXeAepPLhEzEKXmIvxxq/XFuXDGdeOsL7ld4aA3pUt8uLmBwnjho23ZvptPSZe2
- UuyxK0ny0G31Ba+7jRQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDE2OSBTYWx0ZWRfX2d9uOeqODfm7
- /xWtG+ZJvNXL4Cp21eLFruhmWq+Ysoh9KYfkpuPZtm2UC6kp5qzxLmYJqnuZQIQJKYVmuDSxgTn
- HQrZCKt/AUG6T+ctbUv+90ogo/Tm4a4=
-X-Proofpoint-ORIG-GUID: 7G1Q_gcOmzl2YMukJZ6iGlxJjValQK0q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_05,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0 adultscore=0
- priorityscore=1501 suspectscore=0 bulkscore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050169
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260805-tcpdm-large-niovs-v8-1-3e0225e2808c@meta.com>
+References: <20260805-tcpdm-large-niovs-v8-0-3e0225e2808c@meta.com>
+In-Reply-To: <20260805-tcpdm-large-niovs-v8-0-3e0225e2808c@meta.com>
+To: Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+ linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org, 
+ sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net, 
+ almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com, 
+ dw@davidwei.uk, Joe Damato <joe@dama.to>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>
+X-Mailer: b4 0.14.3
 
---DmZsoeZb2q28/CCl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-> On Tue, Aug 04, 2026 at 08:17:35PM +0200, Lorenzo Bianconi wrote:
->=20
-> [...]
->=20
-> > When all bands are strict priority, the MTL scheduler is programmed with
-> > SP scheduling;=20
->=20
-> ... and I replied too early _ sorry for the noise _ there is another smal=
-l thing
+Every devmem dmabuf binding today hands the page_pool PAGE_SIZE niovs.
+This caps a single RX descriptor at PAGE_SIZE, burning CPU on buffer
+churn for large flows.
 
-thx for the review :)
+Add a bind-time netlink attribute, NETDEV_A_DMABUF_RX_PAGE_SIZE, that
+lets userspace request a larger niov size. The value must be a power of
+two >= PAGE_SIZE.
 
-> w.r.t. SP scheduling:
->=20
-> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> > @@ -1210,6 +1210,73 @@ static int tc_setup_etf(struct stmmac_priv *priv,
-> >  	return 0;
-> >  }
-> > =20
-> > +static int tc_setup_sp_sched(struct stmmac_priv *priv)
-> > +{
-> > +	struct plat_stmmacenet_data *pdata =3D priv->plat;
-> > +	int i;
-> > +
-> > +	for (i =3D 0; i < pdata->tx_queues_to_use; i++)
-> > +		pdata->tx_queues_cfg[i].weight =3D 0;
-> > +	stmmac_set_tx_queue_weight(priv);
-> > +
-> > +	pdata->tx_sched_algorithm =3D MTL_TX_ALGORITHM_SP;
-> > +	stmmac_prog_mtl_tx_algorithms(priv, priv->hw,
-> > +				      pdata->tx_sched_algorithm);
-> > +
-> > +	return 0;
-> > +}
->=20
-> The above function configures the stmmac SP queues to a well-known state =
-where all
-> queues are SP. However,
->=20
-> [...]
->=20
-> > +
-> > +static int tc_setup_ets_sched(struct stmmac_priv *priv,
-> > +			      struct tc_ets_qopt_offload *qopt)
-> > +{
-> > +	struct tc_ets_qopt_offload_replace_params *p =3D &qopt->replace_param=
-s;
-> > +	struct plat_stmmacenet_data *pdata =3D priv->plat;
-> > +	int i, nstrict =3D 0;
-> > +
-> > +	if (p->bands > priv->plat->tx_queues_to_use)
-> > +		return -EOPNOTSUPP;
-> > +
-> > +	for (i =3D 0; i < p->bands; i++) {
-> > +		if (!p->quanta[i])
-> > +			nstrict++;
-> > +	}
-> > +
-> > +	if (p->bands && nstrict)
-> > +		return -EOPNOTSUPP;
-> > +
-> > +	if (nstrict) {
-> > +		tc_setup_sp_sched(priv);
->=20
-> This is not necessarily what the user wants when setting up the ETS qdisc.
-> The driver should parse 'priomap' (like in [1] or [2]) so that only 'nstr=
-ict'
-> queues are involved, and selected based on the packet priority. Otherwise=
-, the
-> offloaded ETS is going to behave very differently from its full-software
-> implementation _ which is something we probably want to avoid.
->=20
-> [1] https://elixir.bootlin.com/linux/v7.1.5/source/drivers/net/ethernet/m=
-icrochip/lan966x/lan966x_ets.c#L36
-> [2] https://elixir.bootlin.com/linux/v7.1.5/source/drivers/net/ethernet/a=
-iroha/airoha_eth.c#L2281
-> =09
-> WDYT? Any feedback appreciated!
+The TX path is changed to always pass PAGE_SIZE.
 
-ack, I agree. Since the hw assigns increasing priority to the sp queues (pr=
-io_n+1 > prio_n),
-we should check the priomap according to the following code:
+Measurements:
+Setup: kperf in devmem RX/TX cuda mode, 4 flows, 64 MB messages, 60s,
+dctcp, num-rx-queues=4, dmabuf-rx/tx-size-mb=2048, 10 runs per niov
+size, mlx5.
 
-	if (nstrict) {
-		if (nstrict !=3D p->bands)
-			return -EINVAL;
+CPU Util:
 
-		for (i =3D 0; i < p->bands; i++) {
-			if (p->priomap[p->bands - i - 1] !=3D i)
-				return -EINVAL;
-		}
-		...
-	}
+   niov        net sirq %        net idle %         app sys %        app idle %
+  -----  ----------------  ----------------  ----------------  ----------------
+     4K   62.38 +/-  8.27   33.40 +/-  7.51   54.15 +/- 10.23   43.67 +/- 10.53
+    16K   58.91 +/-  5.35   35.23 +/-  5.88   41.05 +/-  8.87   56.42 +/-  9.24
+    32K   64.12 +/-  0.68   31.09 +/-  1.48   44.54 +/-  3.51   52.63 +/-  3.65
+    64K   54.69 +/-  5.54   39.67 +/-  5.81   35.47 +/-  3.11   61.97 +/-  3.27
 
-Agree?
+RX app sys % drops ~19% from 4K to 64K.
 
-Regard,
-Lorenzo
+Throughput:
 
->=20
-> --=20
-> davide
->=20
+   niov       RX dev Gbps   RX flow avg Gbps
+  -----  ----------------  -----------------
+     4K  300.63 +/- 53.21    75.16 +/- 13.30
+    16K  321.35 +/- 28.20    80.34 +/-  7.05
+    32K  347.63 +/-  2.20    86.91 +/-  0.55
+    64K  332.11 +/- 14.26    83.03 +/-  3.56
 
---DmZsoeZb2q28/CCl
-Content-Type: application/pgp-signature; name=signature.asc
+Throughput seems to increase, but the stdev is pretty wide so could just
+be noise.
 
------BEGIN PGP SIGNATURE-----
+kperf support (not yet merged):
+https://github.com/facebookexperimental/kperf/commit/8837577f920876bce6986ec18869ac04439ebcd2
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCanOfrAAKCRA6cBh0uS2t
-rL4wAQDb78rIKeY8ylrviZj54UjKHnTb97dp/vkXS3Qr9qcgSQEA28BfSF9ibFLs
-EEVoTHxAuTnIYoUBUvdbgvhPNhdiDQ0=
-=jIeP
------END PGP SIGNATURE-----
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+---
+ Documentation/netlink/specs/netdev.yaml | 19 +++++++++++++++++
+ include/uapi/linux/netdev.h             |  1 +
+ net/core/devmem.c                       | 37 ++++++++++++++++++++-------------
+ net/core/devmem.h                       | 13 ++++++++----
+ net/core/netdev-genl-gen.c              | 11 ++++++++--
+ net/core/netdev-genl-gen.h              |  1 +
+ net/core/netdev-genl.c                  | 18 ++++++++++++++--
+ tools/include/uapi/linux/netdev.h       |  1 +
+ 8 files changed, 78 insertions(+), 23 deletions(-)
 
---DmZsoeZb2q28/CCl--
+diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+index 5f143da7458c..3e3f03bd5c29 100644
+--- a/Documentation/netlink/specs/netdev.yaml
++++ b/Documentation/netlink/specs/netdev.yaml
+@@ -6,6 +6,14 @@ doc: >-
+   netdev configuration over generic netlink.
+ 
+ definitions:
++  -
++    type: const
++    name: page-size
++    # Dummy value, codegen needs a number. The real value comes from
++    # the PAGE_SIZE macro in the header below.
++    value: 0
++    header: asm/page.h
++    scope: kernel
+   -
+     type: flags
+     name: xdp-act
+@@ -598,6 +606,16 @@ attribute-sets:
+         type: u32
+         checks:
+           min: 1
++      -
++        name: rx-page-size
++        doc: |
++          Size in bytes of each device page the NIC writes into from the bound
++          dmabuf. Must be a power of two and >= PAGE_SIZE; defaults to
++          PAGE_SIZE.
++        type: u32
++        checks:
++          min: page-size
++          max: u32-max
+ 
+ operations:
+   list:
+@@ -812,6 +830,7 @@ operations:
+             - ifindex
+             - fd
+             - queues
++            - rx-page-size
+         reply:
+           attributes:
+             - id
+diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
+index 2f3ab75e8cc0..35ff083221c7 100644
+--- a/include/uapi/linux/netdev.h
++++ b/include/uapi/linux/netdev.h
+@@ -219,6 +219,7 @@ enum {
+ 	NETDEV_A_DMABUF_QUEUES,
+ 	NETDEV_A_DMABUF_FD,
+ 	NETDEV_A_DMABUF_ID,
++	NETDEV_A_DMABUF_RX_PAGE_SIZE,
+ 
+ 	__NETDEV_A_DMABUF_MAX,
+ 	NETDEV_A_DMABUF_MAX = (__NETDEV_A_DMABUF_MAX - 1)
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index 957d6b96216b..f4d60654ce7f 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -46,7 +46,7 @@ static dma_addr_t net_devmem_get_dma_addr(const struct net_iov *niov)
+ 
+ 	owner = net_devmem_iov_to_chunk_owner(niov);
+ 	return owner->base_dma_addr +
+-	       ((dma_addr_t)net_iov_idx(niov) << PAGE_SHIFT);
++	       ((dma_addr_t)net_iov_idx(niov) << owner->binding->niov_shift);
+ }
+ 
+ static void net_devmem_dmabuf_binding_release(struct percpu_ref *ref)
+@@ -93,13 +93,14 @@ net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
+ 	ssize_t offset;
+ 	ssize_t index;
+ 
+-	dma_addr = gen_pool_alloc_owner(binding->chunk_pool, PAGE_SIZE,
++	dma_addr = gen_pool_alloc_owner(binding->chunk_pool,
++					1UL << binding->niov_shift,
+ 					(void **)&owner);
+ 	if (!dma_addr)
+ 		return NULL;
+ 
+ 	offset = dma_addr - owner->base_dma_addr;
+-	index = offset / PAGE_SIZE;
++	index = offset >> binding->niov_shift;
+ 	niov = &owner->area.niovs[index];
+ 
+ 	niov->desc.pp_magic = 0;
+@@ -113,12 +114,13 @@ void net_devmem_free_dmabuf(struct net_iov *niov)
+ {
+ 	struct net_devmem_dmabuf_binding *binding = net_devmem_iov_binding(niov);
+ 	unsigned long dma_addr = net_devmem_get_dma_addr(niov);
++	size_t niov_size = 1UL << binding->niov_shift;
+ 
+ 	if (WARN_ON(!gen_pool_has_addr(binding->chunk_pool, dma_addr,
+-				       PAGE_SIZE)))
++				       niov_size)))
+ 		return;
+ 
+-	gen_pool_free(binding->chunk_pool, dma_addr, PAGE_SIZE);
++	gen_pool_free(binding->chunk_pool, dma_addr, niov_size);
+ }
+ 
+ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
+@@ -163,6 +165,9 @@ int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
+ 	u32 xa_idx;
+ 	int err;
+ 
++	if (binding->niov_shift != PAGE_SHIFT)
++		mp_params.rx_page_size = 1U << binding->niov_shift;
++
+ 	err = netif_mp_open_rxq(dev, rxq_idx, &mp_params, extack);
+ 	if (err)
+ 		return err;
+@@ -184,10 +189,12 @@ struct net_devmem_dmabuf_binding *
+ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		       struct device *dma_dev,
+ 		       enum dma_data_direction direction,
+-		       unsigned int dmabuf_fd, struct netdev_nl_sock *priv,
++		       unsigned int dmabuf_fd, unsigned int niov_shift,
++		       struct netdev_nl_sock *priv,
+ 		       struct netlink_ext_ack *extack)
+ {
+ 	struct net_devmem_dmabuf_binding *binding;
++	size_t niov_size = 1UL << niov_shift;
+ 	static u32 id_alloc_next;
+ 	struct scatterlist *sg;
+ 	struct dma_buf *dmabuf;
+@@ -213,6 +220,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 
+ 	binding->dev = dev;
+ 	binding->vdev = vdev;
++	binding->niov_shift = niov_shift;
+ 	xa_init_flags(&binding->bound_rxqs, XA_FLAGS_ALLOC);
+ 
+ 	err = percpu_ref_init(&binding->ref,
+@@ -255,11 +263,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		}
+ 	}
+ 
+-	/* For simplicity we expect to make PAGE_SIZE allocations, but the
+-	 * binding can be much more flexible than that. We may be able to
+-	 * allocate MTU sized chunks here. Leave that for future work...
+-	 */
+-	binding->chunk_pool = gen_pool_create(PAGE_SHIFT,
++	binding->chunk_pool = gen_pool_create(niov_shift,
+ 					      dev_to_node(&dev->dev));
+ 	if (!binding->chunk_pool) {
+ 		err = -ENOMEM;
+@@ -273,9 +277,12 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		size_t len = sg_dma_len(sg);
+ 		struct net_iov *niov;
+ 
+-		if (!IS_ALIGNED(len, PAGE_SIZE)) {
++		if (!IS_ALIGNED(dma_addr, niov_size) ||
++		    !IS_ALIGNED(len, niov_size)) {
+ 			err = -EINVAL;
+-			NL_SET_ERR_MSG(extack, "dma-buf SG length must be PAGE_SIZE aligned");
++			NL_SET_ERR_MSG_FMT(extack,
++					   "dmabuf sg entry (addr=%pad, len=%zu) not aligned to niov size %zu",
++					   &dma_addr, len, niov_size);
+ 			goto err_free_chunks;
+ 		}
+ 
+@@ -288,7 +295,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 
+ 		owner->area.base_virtual = virtual;
+ 		owner->base_dma_addr = dma_addr;
+-		owner->area.num_niovs = len / PAGE_SIZE;
++		owner->area.num_niovs = len >> niov_shift;
+ 		owner->binding = binding;
+ 
+ 		err = gen_pool_add_owner(binding->chunk_pool, dma_addr,
+@@ -454,7 +461,7 @@ int mp_dmabuf_devmem_init(struct page_pool *pool)
+ 	pool->dma_sync = false;
+ 	pool->dma_sync_for_cpu = false;
+ 
+-	if (pool->p.order != 0)
++	if (pool->p.order != binding->niov_shift - PAGE_SHIFT)
+ 		return -E2BIG;
+ 
+ 	net_devmem_dmabuf_binding_get(binding);
+diff --git a/net/core/devmem.h b/net/core/devmem.h
+index 3852a56036cb..4a293a7d1149 100644
+--- a/net/core/devmem.h
++++ b/net/core/devmem.h
+@@ -71,6 +71,8 @@ struct net_devmem_dmabuf_binding {
+ 	 */
+ 	struct net_iov **tx_vec;
+ 
++	unsigned int niov_shift;
++
+ 	struct work_struct unbind_w;
+ };
+ 
+@@ -93,7 +95,8 @@ struct net_devmem_dmabuf_binding *
+ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		       struct device *dma_dev,
+ 		       enum dma_data_direction direction,
+-		       unsigned int dmabuf_fd, struct netdev_nl_sock *priv,
++		       unsigned int dmabuf_fd, unsigned int niov_shift,
++		       struct netdev_nl_sock *priv,
+ 		       struct netlink_ext_ack *extack);
+ struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id);
+ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding);
+@@ -122,10 +125,11 @@ static inline u32 net_devmem_iov_binding_id(const struct net_iov *niov)
+ 
+ static inline unsigned long net_iov_virtual_addr(const struct net_iov *niov)
+ {
+-	struct net_iov_area *owner = net_iov_owner(niov);
++	struct dmabuf_genpool_chunk_owner *co =
++		net_devmem_iov_to_chunk_owner(niov);
+ 
+-	return owner->base_virtual +
+-	       ((unsigned long)net_iov_idx(niov) << PAGE_SHIFT);
++	return net_iov_owner(niov)->base_virtual +
++	       ((unsigned long)net_iov_idx(niov) << co->binding->niov_shift);
+ }
+ 
+ static inline bool
+@@ -175,6 +179,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		       struct device *dma_dev,
+ 		       enum dma_data_direction direction,
+ 		       unsigned int dmabuf_fd,
++		       unsigned int niov_shift,
+ 		       struct netdev_nl_sock *priv,
+ 		       struct netlink_ext_ack *extack)
+ {
+diff --git a/net/core/netdev-genl-gen.c b/net/core/netdev-genl-gen.c
+index d18c89b5a6c7..f83790341eae 100644
+--- a/net/core/netdev-genl-gen.c
++++ b/net/core/netdev-genl-gen.c
+@@ -11,6 +11,7 @@
+ 
+ #include <uapi/linux/netdev.h>
+ #include <net/netdev_netlink.h>
++#include <asm/page.h>
+ 
+ /* Integer value ranges */
+ static const struct netlink_range_validation netdev_a_page_pool_id_range = {
+@@ -27,6 +28,11 @@ static const struct netlink_range_validation netdev_a_napi_defer_hard_irqs_range
+ 	.max	= S32_MAX,
+ };
+ 
++static const struct netlink_range_validation netdev_a_dmabuf_rx_page_size_range = {
++	.min	= PAGE_SIZE,
++	.max	= U32_MAX,
++};
++
+ /* Common nested types */
+ const struct nla_policy netdev_lease_nl_policy[NETDEV_A_LEASE_NETNS_ID + 1] = {
+ 	[NETDEV_A_LEASE_IFINDEX] = NLA_POLICY_MIN(NLA_U32, 1),
+@@ -106,10 +112,11 @@ static const struct nla_policy netdev_qstats_get_nl_policy[NETDEV_A_QSTATS_SCOPE
+ };
+ 
+ /* NETDEV_CMD_BIND_RX - do */
+-static const struct nla_policy netdev_bind_rx_nl_policy[NETDEV_A_DMABUF_FD + 1] = {
++static const struct nla_policy netdev_bind_rx_nl_policy[NETDEV_A_DMABUF_RX_PAGE_SIZE + 1] = {
+ 	[NETDEV_A_DMABUF_IFINDEX] = NLA_POLICY_MIN(NLA_U32, 1),
+ 	[NETDEV_A_DMABUF_FD] = { .type = NLA_U32, },
+ 	[NETDEV_A_DMABUF_QUEUES] = NLA_POLICY_NESTED(netdev_queue_id_nl_policy),
++	[NETDEV_A_DMABUF_RX_PAGE_SIZE] = NLA_POLICY_FULL_RANGE(NLA_U32, &netdev_a_dmabuf_rx_page_size_range),
+ };
+ 
+ /* NETDEV_CMD_NAPI_SET - do */
+@@ -219,7 +226,7 @@ static const struct genl_split_ops netdev_nl_ops[] = {
+ 		.cmd		= NETDEV_CMD_BIND_RX,
+ 		.doit		= netdev_nl_bind_rx_doit,
+ 		.policy		= netdev_bind_rx_nl_policy,
+-		.maxattr	= NETDEV_A_DMABUF_FD,
++		.maxattr	= NETDEV_A_DMABUF_RX_PAGE_SIZE,
+ 		.flags		= GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DO,
+ 	},
+ 	{
+diff --git a/net/core/netdev-genl-gen.h b/net/core/netdev-genl-gen.h
+index d71b435d72c1..3fae88e8f5c5 100644
+--- a/net/core/netdev-genl-gen.h
++++ b/net/core/netdev-genl-gen.h
+@@ -12,6 +12,7 @@
+ 
+ #include <uapi/linux/netdev.h>
+ #include <net/netdev_netlink.h>
++#include <asm/page.h>
+ 
+ /* Common nested types */
+ extern const struct nla_policy netdev_lease_nl_policy[NETDEV_A_LEASE_NETNS_ID + 1];
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index c15d8d4ca1f8..0eea4ee22f24 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -1013,6 +1013,7 @@ netdev_nl_get_dma_dev(struct net_device *netdev, unsigned long *rxq_bitmap,
+ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct net_devmem_dmabuf_binding *binding;
++	unsigned int niov_shift = PAGE_SHIFT;
+ 	u32 ifindex, dmabuf_fd, rxq_idx;
+ 	struct netdev_nl_sock *priv;
+ 	struct net_device *netdev;
+@@ -1030,6 +1031,18 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
+ 	ifindex = nla_get_u32(info->attrs[NETDEV_A_DEV_IFINDEX]);
+ 	dmabuf_fd = nla_get_u32(info->attrs[NETDEV_A_DMABUF_FD]);
+ 
++	if (info->attrs[NETDEV_A_DMABUF_RX_PAGE_SIZE]) {
++		u32 rx_page_size = nla_get_u32(info->attrs[NETDEV_A_DMABUF_RX_PAGE_SIZE]);
++
++		if (!is_power_of_2(rx_page_size)) {
++			NL_SET_ERR_MSG_ATTR(info->extack,
++					    info->attrs[NETDEV_A_DMABUF_RX_PAGE_SIZE],
++					    "rx-page-size must be a power of 2");
++			return -EINVAL;
++		}
++		niov_shift = ilog2(rx_page_size);
++	}
++
+ 	priv = genl_sk_priv_get(&netdev_nl_family, NETLINK_CB(skb).sk);
+ 	if (IS_ERR(priv))
+ 		return PTR_ERR(priv);
+@@ -1080,7 +1093,8 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
+ 	}
+ 
+ 	binding = net_devmem_bind_dmabuf(netdev, NULL, dma_dev, DMA_FROM_DEVICE,
+-					 dmabuf_fd, priv, info->extack);
++					 dmabuf_fd, niov_shift, priv,
++					 info->extack);
+ 	if (IS_ERR(binding)) {
+ 		err = PTR_ERR(binding);
+ 		goto err_rxq_bitmap;
+@@ -1221,7 +1235,7 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
+ 	binding = net_devmem_bind_dmabuf(bind_dev,
+ 					 bind_dev != netdev ? netdev : NULL,
+ 					 dma_dev, DMA_TO_DEVICE, dmabuf_fd,
+-					 priv, info->extack);
++					 PAGE_SHIFT, priv, info->extack);
+ 	if (IS_ERR(binding)) {
+ 		err = PTR_ERR(binding);
+ 		goto err_unlock_bind_dev;
+diff --git a/tools/include/uapi/linux/netdev.h b/tools/include/uapi/linux/netdev.h
+index 2f3ab75e8cc0..35ff083221c7 100644
+--- a/tools/include/uapi/linux/netdev.h
++++ b/tools/include/uapi/linux/netdev.h
+@@ -219,6 +219,7 @@ enum {
+ 	NETDEV_A_DMABUF_QUEUES,
+ 	NETDEV_A_DMABUF_FD,
+ 	NETDEV_A_DMABUF_ID,
++	NETDEV_A_DMABUF_RX_PAGE_SIZE,
+ 
+ 	__NETDEV_A_DMABUF_MAX,
+ 	NETDEV_A_DMABUF_MAX = (__NETDEV_A_DMABUF_MAX - 1)
+
+-- 
+2.53.0-Meta
+
