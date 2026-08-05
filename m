@@ -1,116 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFA84756B2;
-	Wed,  5 Aug 2026 12:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510D9352017;
+	Wed,  5 Aug 2026 12:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785933339; cv=none; b=dCi9c/jz3oT1grVAXJ5A7yWoBWTkCciQm0pEULtmGSFTp5D0MQyii/67SvWRF4vT2I2+gOregPRO9z6cWTNMsanWWowLN8MNXKMMrAzgi8/1lilrg+iDuY0QNt/L4+m0AsXl8MwkzDGnI2Ertr53+31Wp6ADABWMg3l1ZfmuzO8=
+	t=1785933490; cv=none; b=GeEn9R0VO65LZriN2QMuffJJNxiXrUw5Y7+qpxSsZQWMyDWrS8tlE7f2fkcK3HMcEzjh6hxRoFv6LafkEKTHgCo3YBuEJ405sQ5VvzVWFjq2jBf4+nOi97hqneWsJW3F5tgfDgVQw1NPE2O2vKXovJ3CXalS2GJy5HfXQLd5fsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785933339; c=relaxed/simple;
-	bh=1i+o+YR5ep/8AdzKp+ojS8afAGeMCtI9FNH+zSLiSGs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YckqXHFLT9PnrXMys2OF5BuP7M5oL2XklYKemD65HxndOUdrj7qs3DlPVZrIEV8MZhxEjqIJWlTHaAAKfEHD3Ii18Y/LhxAo6wB5xq+QJoxvq+Hs5HC6PI/zY67+5LmPJPYouGUTBet37i9taVo6yOrqGSYQcyOAmtcMQjhfj9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnyGSi7X; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785933490; c=relaxed/simple;
+	bh=P55yvfhriPt+xKh9vMo96RXHACUKtN5f9/r6mkc8X4E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GjJLTARNPDvHGRa6/ZgaBt11WPyk3WSxnaudPKPTR3RNT63py7qSdQFmMugcaqcBU0MQ9quTnJxGZh8x7lvTUVCxSWCT4op8z1Ebihkp17oVdOk1Srvdhh2QMyyvPsP5D+4sQmxFPdcC1G3HFzKxDp4EbS7eLvA+/0uZxT+Vwbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dYIAdTdW; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HnyGSi7X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DBE1F00A3D;
-	Wed,  5 Aug 2026 12:35:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785933337;
-	bh=i9Ym0jAKLrceLlkhNVC44kdENs/0Kse5nUlY5Q8Bm0s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HnyGSi7XKOQQIai1+vo+Vss7EnNNQn0JoiqMG/3fTz/xPfIHlo8GBYLS/2aDJI9IU
-	 SylgiYQyPp1B2iSzOpKI1jnL6qTQnmubUh19e+KErEaIo42BjPgAYbWXD0f9VuQSeC
-	 QIPOf68HBC5Gx5qkUvY9pvkGzs81KvrrdLqUwoIaPluverlTZeR76EZqhBv7r955YQ
-	 V9ySu2iZrS/TeEiM+sX8F6yYscvllEOq+eKEjU/OgUXy+oH3Gep9SvClzUu15LtkiW
-	 Kfn18lxw2w/L92bjOOnJX2z4po9av/uaijxpKD54It7mXFP92To6fsDvdLlvD+TaU+
-	 tRI/5Y1BWpsBw==
-From: Simon Horman <horms@kernel.org>
-To: juny24602@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	junvyyang@tencent.com,
-	stable@kernel.org,
-	corvus@tencent.com,
-	lucien.xin@gmail.com,
-	marcelo.leitner@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-sctp@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] sctp: fix stream->outcnt underflow on duplicate RECONF responses
-Date: Wed,  5 Aug 2026 13:35:25 +0100
-Message-ID: <20260805123525.571744-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260804113100.37840-1-juny24602@gmail.com>
-References: <20260804113100.37840-1-juny24602@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dYIAdTdW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=MIMQJmkPDn3nvMi1GhZGX+SdavJhQT13XOPhF8HYz0c=; b=dYIAdTdWn8at/e23MJphOglQxR
+	Kaf+LEAJsIG6pOqiS75PLVNwqDFgUsd37/X2bssbkk/nAfGOax3+pLUKc+aMYew6ncwYZPWNrcXOR
+	5MSyce9+rMW3ZQOweIsjJ2TNvhUi7NscaybzmC44+mpHVzMZarvt5t8RmmiT0uTeeKwg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wrash-00GAPS-HF; Wed, 05 Aug 2026 14:37:59 +0200
+Date: Wed, 5 Aug 2026 14:37:59 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	mfd@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH net-next v2 8/8] net: phy: add X-Powers AC200/AC300 EPHY
+ driver
+Message-ID: <30bab755-3356-4d4a-a939-8488aa487874@lunn.ch>
+References: <20260804-submit-acx00-of-dynamic-v1-v2-0-3eef49ff1d8c@gmail.com>
+ <20260804-submit-acx00-of-dynamic-v1-v2-8-3eef49ff1d8c@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260804-submit-acx00-of-dynamic-v1-v2-8-3eef49ff1d8c@gmail.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/20260804113100.37840-1-juny24602@gmail.com?part=1
----
---- Patch [1]: [PATCH net v2] sctp: fix stream->outcnt underflow on duplicate RECONF responses ---
-commit 9a827b81b27b219603b09c1f04c9dbc9a6dd2368
-Author: Jun Yang <junvyyang@tencent.com>
+> +static int acx00_ephy_disable_eee(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +
+> +	ret = phy_modify_paged(phydev, ACX00_PAGE_1,
+> +			       ACX00_PAGE1_INTELLIGENT_EEE_CONTROL_REG,
+> +			       ACX00_PAGE1_INTELLIGENT_EEE_ENABLE, 0);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return phy_clear_bits_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV,
+> +				  MDIO_EEE_100TX);
+> +}
 
-sctp: fix stream->outcnt underflow on duplicate RECONF responses
 
-This commit addresses a bug where duplicate RECONF responses could cause
-stream->outcnt to underflow. It converts strreset_outstanding into a bitmask
-to track request parameter types, ensuring duplicate responses are ignored.
+> +
+> +	/* Set the hardware default before phylib reads its EEE advertisement. */
+> +	ret = acx00_ephy_disable_eee(phydev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "failed to disable EEE\n");
 
-> diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-> index 34ffe6c945a4b..cb7543929d657 100644
-> --- a/net/sctp/stream.c
-> +++ b/net/sctp/stream.c
+If the PHY is capable of doing MAC based EEE, that should be the
+default.
 
-[ ... ]
+Why clear MDIO_AN_EEE_ADV? This does not stop the user from
+re-enabling EEE for this link mode. phy_disable_eee_mode().
 
-> @@ -928,7 +936,7 @@ struct sctp_chunk *sctp_process_strreset_resp(
->  	__u32 result;
->  
->  	req = sctp_chunk_lookup_strreset_param(asoc, resp->response_seq, 0);
-> -	if (!req)
-> +	if (!req || !SCTP_STRRESET_TEST(asoc, req->type))
->  		return NULL;
-
-[Severity: High]
-Could the new duplicate-drop logic permanently drop legitimate responses when
-the sequence number wraps to 0?
-
-If a user calls setsockopt(SCTP_ADD_STREAMS) with both incoming and outgoing
-streams when asoc->strreset_outseq is exactly 0xFFFFFFFF, it creates a RECONF
-chunk with request_seq = 0xFFFFFFFF for ADD_OUT and request_seq = 0 for
-ADD_IN.
-
-When the peer responds to the ADD_IN request with resp_seq = 0,
-sctp_chunk_lookup_strreset_param() handles it:
-
-net/sctp/stream.c:sctp_chunk_lookup_strreset_param() {
-    ...
-    if ((!resp_seq || req->request_seq == resp_seq) &&
-        (!type || type == req->param_hdr.type))
-            return param.v;
-    ...
-}
-
-Because resp_seq is 0, the !resp_seq check bypasses sequence matching and
-returns the first parameter in the chunk (ADD_OUT).
-
-Since the ADD_OUT bit was already cleared by the first response, the new
-!SCTP_STRRESET_TEST() check here would see the bit is cleared and drop the
-response as a duplicate.
-
-This would leave the ADD_IN bit set forever, preventing the RECONF chunk from
-being freed and causing the association to hang due to endless
-retransmissions.
+	Andrew
