@@ -1,195 +1,141 @@
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C8131E846
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 06:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3263DC85B
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 07:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785912983; cv=none; b=MbDQ5XNo1Ctnr3VkO8ijwIqbo301tyXsmqeJy+TlFxJ2eZlKSzAEZR86mkbyrxcC+DcWhA2+LdasP8mCHIMMXTwBpCmSKXKFGF5bUeVtbahC6+lNI6YSe7t2QXJ1e/rHWc/Go8DG3HjfX//Ts+H9BGwlInWvSLLirVpgJH3rFtI=
+	t=1785913787; cv=none; b=fOYbDdgPVQiGZPACMBXl0f1P/6dJWUPNwryet5L/wDoJ32B3YQOcxWf115hlplOWT/7oZ8qnevshCKhcLrrq+Xvm1U/Av0Ws8dLi206G01Iva6NJGBSpdcUKPcdsYbdDDlFNQ34IDJzhCDnOkSeWwCnySgh1G1jfhOAnkLvYGPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785912983; c=relaxed/simple;
-	bh=M/SunkTtc+TH2cQ0Gyi9NDFJoMPUscPt7OUseMyx0mw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=E/9+wH9pf3E8rQqLLA0uXj76m/wWoetrzePOlgi4ExWBZyA0fQdNIATUoYqcF/Q/IOfoxwMVnjOcpo8KtP4dYjCTMMvxL/kqHlq3loDNMwR5gi+xjfT2ptHxaCEhfvq23y12jwOzbXZ2Uu4Z58YejS6HKVqUJesFnMgmHM4Vnho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DwNnnuD8; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785913787; c=relaxed/simple;
+	bh=Zv6/lKdm2tI3sp9/ByOrepg/RYpUpIYOqgCI6gpKBDA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IGAFTr7cbUrJs03YmhYXaH7mFQTfnGnPENPqC5y4q/ycKScjnu92XA0CpGYCQHNL023SMARtFTM8yMbBWcVABl4tGYCSbIfGaysuMp+oXKYkJ02FBKoiEfxGm4a/2aL8lTRdpkSvTjPkL7qXB/x4uhkGhYUr08+r/NaB04pOQRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nxTdSOrE; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DwNnnuD8"
-Message-ID: <12f927af-4fd1-40fe-9abd-559d14e833e7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785912971;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9zvDle/lCKcOusPHIQ4M6DhX/BBhD62GYhSX80jnqOo=;
-	b=DwNnnuD8QrVKWLNN68bjgX/Hq20OAilBiVpvvGln2Fuo6eMTDRB02xt+pcLXsmKvxvtmch
-	6/KSTo80xm+92mulxDZ6+W7kyPgbDfz7j6KfXpry4puKJYE29K/IoaaoldDtogXG2BNZ7Q
-	a577xqm/Fv8nVIYnDBXok8h40KPb4qc=
-Date: Wed, 5 Aug 2026 14:55:14 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nxTdSOrE"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47362928f65so503328f8f.2
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 00:09:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785913784; x=1786518584; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AB188XGB4sbY3JcvO+RtPjAq1fA2l4207oGcIEuttd0=;
+        b=nxTdSOrE4Yw4wR0b0xAUW19TdwJYvfb278sOFTPV5ieO09L8iNooEmnFVBnZkpJTPJ
+         dWQk89yhEZdq+FB24LBXy2ohACkDHYaFajAa01oqChCynIjIpZfyQJ8us/pDPgW6+G1t
+         /o9JwtJ/2in7r7w8U2cFDRlBKxZhEsR0icVJoe3+MSarRtfz+4SrHZo4vNDMXhZixTT5
+         9W8KxNNz2gnFqY0ddaBGnBOwynsiWO85MqVFgQPYlN+2CY4vad5L7VQBspFlrUkPHjlM
+         7vWImym+xcHMumSweW9U0KF1SCoSSXNkxeO9vwTGMSvrDDe4zm2PxEjydjsagalGCswi
+         BVrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785913784; x=1786518584;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AB188XGB4sbY3JcvO+RtPjAq1fA2l4207oGcIEuttd0=;
+        b=P7cNx9nU/3OdQwBscoJg9BF9Tj1i7zf85IdWlkhXjCurZON18ljKNqR0ChjJzivPM4
+         HT7RGhZWhkgIiTWBphcf7ASP4imRix+c1kwUQ00y0nfbtTrNkXBuKyTYAD4ejhs9qP/L
+         aKb/IdjdfQF+Nxs7g5n8GAaU6wu4LqD2VOFO92GrND+cC6sa6oBA4ocXPXr7h0/QacPx
+         QAUqp6Whc5+Opwu4l8Pt+Xi9AmI+kQQXUNisjKFYKe0z8ezJqCBENaBniiWeGj54EJsM
+         zaGl7D0Rv1PzUh2CTZhEZFXl52AUJHMOUGWNCiK1yBgGWaRctQ/iU+PNFKQfCLs7jnXK
+         oDVA==
+X-Gm-Message-State: AOJu0Ywp3rsM5Sq7h5SIj8JDmiqhAvDZ1CRExwJ4tSHgNbcjOgqZO727
+	QSN6Sl63v29ryS7pBb0ctJSOyn2E4NzdIHNXDOF5OB1Ncbn08T+5l1OfvJZz4iuY
+X-Gm-Gg: AR+sD12BHx2pEw0m5xbOyys9dca67RCCqFuIqEL+eCvh9IJfOKGMNJFTV3XfC/I+Ypv
+	xo1FvWRhWv1bdYIOCDE9w2uL7I3mTvlyC2RQySggU6c2gLgOL1m/PSLT784kfrXN3uV4q9wRUQP
+	Hos0F2MgZEMmOWAOrmPvCL8ymfPrGTDP+aUqVVOUZYMqLLzHwqGpFfYP/LPXFCj9BV7OiPIkuaJ
+	0O9KbVQjoudZecIqrHAXrPkWmcuZs0QuEstzsqg61QAhbsC2SS91Y7iRArPFEsvNLfNVaLf8tWZ
+	c278YACckh2Lhuyqrx57zglk1IPnWIe2tXMYVZytPGMiaszqjMIC5IeseqQOrv3E23qPCN6pUR4
+	MNvyOhUACwyPiz/mnK0kiV5p9JC4wzMVt+t2fHnZC3JfRz+cVgP77M9kF5qy3cr8Wqcb3xbXwjl
+	O1maCiZ9O35ihjZWkZ1YRWPIt1VaJR5b93gwxcuryvWikfyKZOMEcvIEzAXfi26GYtaQ==
+X-Received: by 2002:a05:600c:138a:b0:498:943:ccc0 with SMTP id 5b1f17b1804b1-4994e714d8fmr46447075e9.6.1785913783962;
+        Wed, 05 Aug 2026 00:09:43 -0700 (PDT)
+Received: from fedora ([46.205.219.119])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994e4c32e0sm35567225e9.0.2026.08.05.00.09.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 00:09:43 -0700 (PDT)
+From: Daniel Pawlik <pawlik.dan@gmail.com>
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org,
+	win847@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Daniel Pawlik <pawlik.dan@gmail.com>
+Subject: [PATCH] net: airoha: npu: use coherent DMA for mailbox messages
+Date: Wed,  5 Aug 2026 09:08:51 +0200
+Message-ID: <20260805070851.2885888-1-pawlik.dan@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: luoxuanqiang <xuanqiang.luo@linux.dev>
-Subject: Re: [PATCH iwl-net v1] i40e: fix races in PTP external timestamp work
- handling
-To: Simon Horman <horms@kernel.org>
-Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, richardcochran@gmail.com,
- piotr.kwapulinski@intel.com, arkadiusz.kubalewski@intel.com,
- aleksandr.loktionov@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-References: <20260724093448.63154-1-xuanqiang.luo@linux.dev>
- <20260730122550.GA51943@horms.kernel.org>
-In-Reply-To: <20260730122550.GA51943@horms.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Thanks Simon for the review and Sashiko for the detailed findings!
+Commit 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox
+buffer") switched airoha_npu_send_msg() to DMA_BIDIRECTIONAL so
+non-coherent CPUs invalidate caches before reading NPU GET responses.
 
-I have posted v2 addressing these concerns as follows.
+On EN7581 + MT7996 that change regresses probe: the mailbox completes
+successfully, but WLAN_FUNC_GET_WAIT_NPU_VERSION still reads as 0.0 and
+mt76 never binds NPU offload. Healthy boards report 0.1111.
 
-在 2026/7/30 20:25, Simon Horman 写道:
+Mailbox messages are tiny and already copied by the caller. Bounce
+through dma_alloc_coherent() so the CPU observes the NPU-written
+response without relying on streaming DMA direction.
 
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at:https://sashiko.dev/#/patchset/20260724093448.63154-1-xuanqiang.luo@linux.dev?part=1
-> ---
-> --- Patch [1]: [PATCH iwl-net v1] i40e: fix races in PTP external timestamp work handling ---
-> commit 4359cf206cb2602e153fdeac3151f8d4bacf9195
-> Author: Xuanqiang Luo<luoxuanqiang@kylinos.cn>
->
-> i40e: fix races in PTP external timestamp work handling
->
-> This commit disables external timestamp events and drains the work
-> queue before unregistering the PHC to fix a use-after-free, and
-> moves the work initialization to device init instead of reset. It also
-> excludes reset recovery during teardown to avoid concurrent rebuilds.
->
->> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
->> index a04683004a567..2909a58d57562 100644
->> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
->> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-> [ ... ]
->> @@ -16157,14 +16158,6 @@ static void i40e_remove(struct pci_dev *pdev)
->>   
->>   	i40e_devlink_unregister(pf);
->>   
->> -	i40e_dbg_pf_exit(pf);
->> -
->> -	i40e_ptp_stop(pf);
->> -
->> -	/* Disable RSS in hw */
->> -	i40e_write_rx_ctl(hw, I40E_PFQF_HENA(0), 0);
->> -	i40e_write_rx_ctl(hw, I40E_PFQF_HENA(1), 0);
->> -
->>   	/* Grab __I40E_RESET_RECOVERY_PENDING and set __I40E_IN_REMOVE
->>   	 * flags, once they are set, i40e_rebuild should not be called as
->>   	 * i40e_prep_for_reset always returns early.
->> @@ -16173,6 +16166,14 @@ static void i40e_remove(struct pci_dev *pdev)
->>   		usleep_range(1000, 2000);
-> Simon says: I think the issue flagged below is somewhat orthogonal to
->              this patch and can be considered in the context of possible
-> 	    follow-up.
->
-> [Severity: High]
-> This is a pre-existing issue, but does this ad-hoc polling loop violate core
-> networking synchronization rules?
->
-> The subsystem guidelines state that using retry/poll loops on flags to guard
-> code sections is a bug, as it evades lockdep deadlock detection and lacks
-> proper memory ordering guarantees.
->
-> i40e_remove() spins on __I40E_RESET_RECOVERY_PENDING with a sleep instead of
-> using a standard lock or workqueue synchronization, which exposes the teardown
-> path to races during hotplug or PCIe AER unbinds.
+Verified on Quantum Fiber W1700K (EN7581 + MT7996).
 
-For this pre-existing issue, I included a wait-bit based fix in v2
-as Patch 4.
+Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buffer")
+Assisted-by: Cursor:composer-2
+Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
+---
+ drivers/net/ethernet/airoha/airoha_npu.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
->>   	set_bit(__I40E_IN_REMOVE, pf->state);
->>   
->> +	i40e_dbg_pf_exit(pf);
->> +
->> +	i40e_ptp_stop(pf);
-> [ ... ]
->> diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
->> index ff62b5f2c8150..fd51ab8c10c20 100644
->> --- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
->> +++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-> [ ... ]
->> @@ -1541,6 +1550,13 @@ void i40e_ptp_stop(struct i40e_pf *pf)
->>   	struct i40e_hw *hw = &pf->hw;
->>   	u32 regval;
->>   
->> +	/* Stop external timestamp events before unregistering the clock. */
->> +	regval = rd32(hw, I40E_PRTTSYN_CTL0);
->> +	regval &= ~I40E_PRTTSYN_CTL0_EVENT_INT_ENA_MASK;
->> +	wr32(hw, I40E_PRTTSYN_CTL0, regval);
->> +
->> +	disable_work_sync(&pf->ptp_extts0_work);
->> +
-> [Severity: Medium]
-> Does this reordering introduce a TOCTOU race condition with the PTP ioctl?
->
-> The flag I40E_FLAG_PTP_ENA is still set here while we disable the workqueue.
-> Because i40e_remove() does not hold the rtnl_lock(), a concurrent
-> SIOCSHWTSTAMP ioctl could execute i40e_ptp_hwtstamp_set().
->
-> Since the ioctl checks I40E_FLAG_PTP_ENA, it might observe it as still set
-> and call i40e_ptp_set_timestamp_mode(). This would overwrite I40E_PRTTSYN_CTL0
-> and re-enable hardware interrupts immediately after i40e_ptp_stop() just
-> disabled them, leaving the device generating events for a disabled workqueue.
-
-I agree. Patch 2 serializes timestamp configuration and PTP teardown
-with ptp_config_lock.
-
->>   	clear_bit(I40E_FLAG_PTP_ENA, pf->flags);
->>   	pf->ptp_tx = false;
->>   	pf->ptp_rx = false;
->>   
->>   	if (pf->ptp_tx_skb) {
->>   		struct sk_buff *skb = pf->ptp_tx_skb;
->>   
->>   		pf->ptp_tx_skb = NULL;
->>   		clear_bit_unlock(__I40E_PTP_TX_IN_PROGRESS, pf->state);
->>   		dev_kfree_skb_any(skb);
->>   	}
-> Simon says: Although the issue flagged below is flagged as pre-existing
->              I am concerned that it is exacerbated by this patch.
->
-> [Severity: High]
-> This is a pre-existing issue, but could this freeing pattern result in a
-> double-free or use-after-free?
->
-> A user configuring PTP and transmitting a packet sets pf->ptp_tx_skb.
-> The watchdog task in i40e_ptp_tx_hang() checks the timeout and reads
-> pf->ptp_tx_skb without an atomic test-and-set claim.
->
-> If a hardware interrupt arrives at this exact time, i40e_ptp_tx_hwtstamp()
-> can preempt the watchdog, read the exact same pointer, set it to NULL,
-> call skb_tstamp_tx() and then dev_kfree_skb_any().
->
-> When the interrupt returns, the watchdog task resumes and frees the exact
-> same SKB pointer again. This teardown path in i40e_ptp_stop() also forcibly
-> frees ptp_tx_skb without atomic protections against the interrupt handler,
-> compounding the race.
->
-> [ ... ]
-
-I agree. Patch 1 adds ptp_tx_lock to protect the Tx timestamp slot
-across transmit, watchdog, interrupt, error, and stop paths.
-
-The lock uses spin_lock_irqsave() for the hard IRQ path and is only
-taken for SKBTX_HW_TSTAMP packets.
-
-Thanks,
-Xuanqiang
+diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+index b679bed952de..d2f6c9c084b8 100644
+--- a/drivers/net/ethernet/airoha/airoha_npu.c
++++ b/drivers/net/ethernet/airoha/airoha_npu.c
+@@ -166,12 +166,21 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+ 	u16 core = 0; /* FIXME */
+ 	u32 val, offset = core << 4;
+ 	dma_addr_t dma_addr;
++	void *dma_buf;
+ 	int ret;
+ 
+-	dma_addr = dma_map_single(npu->dev, p, size, DMA_BIDIRECTIONAL);
+-	ret = dma_mapping_error(npu->dev, dma_addr);
+-	if (ret)
+-		return ret;
++	/*
++	 * Mailbox payloads are small and bidirectional (CPU sets the
++	 * request, NPU writes the response). Streaming DMA_BIDIRECTIONAL
++	 * mapping regresses EN7581+MT7996: MBOX reports success but
++	 * WLAN_FUNC_GET_WAIT_NPU_VERSION still reads as 0.0. Use a
++	 * coherent bounce buffer so the CPU always sees the NPU response.
++	 */
++	dma_buf = dma_alloc_coherent(npu->dev, size, &dma_addr, GFP_ATOMIC);
++	if (!dma_buf)
++		return -ENOMEM;
++
++	memcpy(dma_buf, p, size);
+ 
+ 	spin_lock_bh(&npu->cores[core].lock);
+ 
+@@ -191,7 +200,9 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+ 
+ 	spin_unlock_bh(&npu->cores[core].lock);
+ 
+-	dma_unmap_single(npu->dev, dma_addr, size, DMA_BIDIRECTIONAL);
++	if (!ret)
++		memcpy(p, dma_buf, size);
++	dma_free_coherent(npu->dev, size, dma_buf, dma_addr);
+ 
+ 	return ret;
+ }
+-- 
+2.55.0
 
