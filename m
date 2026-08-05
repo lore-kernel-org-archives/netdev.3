@@ -1,100 +1,92 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from out28-220.mail.aliyun.com (out28-220.mail.aliyun.com [115.124.28.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28A31B3925;
-	Wed,  5 Aug 2026 02:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDB53C10BE;
+	Wed,  5 Aug 2026 02:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785896543; cv=none; b=fqmtSV1PmTa00hILOhxKAK4zq+ynv8pzIdB894FNAPkIh+IMPbbx/FAIXsCJDeJsS2ReohYbVlUts+coJnFkXzl1J0nbNqYkPPMoc95XCmRB9KU9Dpe7PwfmDyPvGnAPzMmRx/7YWHa6oPWwiO7N/1+lq+ZMKLYTYREE6frOIsU=
+	t=1785896810; cv=none; b=XQe96hK/N5AaHIWLLEOs/Ub266GgC+tOQJh48vo2FDilP44MNcOsu0y4YWAj9S7uKywPTbIu+mT/TVk5gvAfU7CcV5FmlMS7B1o2knB7zD69FFkW+GCnIOVWRsmtBnqgGpD5EFN7X18FvF+bHefSWntxtODdz7xP9wsMztph5uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785896543; c=relaxed/simple;
-	bh=T4zRLFVRXeCQIb/+UUj9Xr5UNCNS2b12vW7JO4BgYjo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZymR6NvymlNpMc74gpsFBQB6naqyollyoa7suny0DgAahU64n9+1sqjP+KcaPUlciTqbPqr9O6TUz03qK2CzqS3z8l6WudZ6t9hEZG3oA81zHR0I4TloQy/CA3q2eymXFVkdrgO9sHFt5WwVUhxO+OJ0iahjxK02WidX1GDAEtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=t2hSuyN4; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="t2hSuyN4"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=LQlgvljLpgu1qw/OI40qw8oSFr13eKFGLTXpMAMjsRI=;
-	b=t2hSuyN4QiBHNITPlX9aIFADTxMJH8W09IIB41uefAkRcCNLaFxiaHcpK9QeL4u/TBTlXD7Ki
-	qJWxi6vCXH3V8MLYxjyHB4gw7slKcK3wVpjyB4clxiHvyO2m2JJTJPsEhcM+z+9yBeZBbg7ddzN
-	O2nWvmda5etn7c0ikqygtXg=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hFDS33dylz12LGW;
-	Wed,  5 Aug 2026 10:11:47 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id C225040561;
-	Wed,  5 Aug 2026 10:22:16 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 5 Aug 2026 10:22:15 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: <kuba@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <august.hewei@huawei.com>,
-	<chenanwen@huawei.com>, <davem@davemloft.net>,
-	<dimitri.daskalakis1@gmail.com>, <edumazet@google.com>,
-	<gongfan1@huawei.com>, <guoxin09@huawei.com>, <horms@kernel.org>,
-	<hramamurthy@google.com>, <ioana.ciornei@nxp.com>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<luosifu@huawei.com>, <maxime.chevallier@bootlin.com>,
-	<mohsin.bashr@gmail.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
-	<shijing34@huawei.com>, <tengpeisen@huawei.com>, <wudi234@huawei.com>,
-	<wulike1@huawei.com>, <zhengjiezhen@h-partners.com>, <zhoushuai28@huawei.com>
-Subject: Re: Re: [PATCH net-next v12 2/8] hinic3: Fix loose success check in rx buffer filling
-Date: Wed, 5 Aug 2026 10:22:12 +0800
-Message-ID: <20260805022213.2017-1-gongfan1@huawei.com>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260803161314.6d173920@kernel.org>
-References: <20260803161314.6d173920@kernel.org>
+	s=arc-20240116; t=1785896810; c=relaxed/simple;
+	bh=nrsSQ4hnB/xMHXEJQajdNQvd6O5sqbdHDRNmYQSg3yU=;
+	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:References:
+	 In-Reply-To:Content-Type; b=jUo7bManUhFaCyWOoBXK2LhTUpKKVKnHrTE3iZr2bKnRaNdIqk+bPOO3A0FJrqkAZBTbApa/8AKpXJMXMcnp0dOv7ObL2wEt5DtoBIJ3bYWlt+fUHq+iVH4ARLmRRrFCyoi7KDBRjsKTQMInqmzDBa26K4CZ5NiyXLfzZT9pmpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06669818|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0124756-0.00117969-0.986345;FP=10869237358135174870|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DW;RN=18;RT=18;SR=0;TI=W4_0.2.3_212D3FFB_1785896791226_o7001c181k;
+Received: from WS-web (Illusion.Wang@nebula-matrix.com[W4_0.2.3_212D3FFB_1785896791226_o7001c181k] cluster:ay29) at Wed, 05 Aug 2026 10:26:31 +0800
+Date: Wed, 05 Aug 2026 10:26:31 +0800
+From: "Illusion Wang" <Illusion.Wang@nebula-matrix.com>
+To: "Illusion Wang" <illusion.wang@nebula-matrix.com>,
+  "Dimon" <dimon.zhao@nebula-matrix.com>,
+  "Alvin" <alvin.wang@nebula-matrix.com>,
+  "Sam" <sam.chen@nebula-matrix.com>,
+  "netdev" <netdev@vger.kernel.org>
+Cc: "andrew+netdev" <andrew+netdev@lunn.ch>,
+  "corbet" <corbet@lwn.net>,
+  "kuba" <kuba@kernel.org>,
+  "horms" <horms@kernel.org>,
+  "linux-doc" <linux-doc@vger.kernel.org>,
+  "pabeni" <pabeni@redhat.com>,
+  "vadim.fedorenko" <vadim.fedorenko@linux.dev>,
+  "lukas.bulwahn" <lukas.bulwahn@redhat.com>,
+  "edumazet" <edumazet@google.com>,
+  "enelsonmoore" <enelsonmoore@gmail.com>,
+  "skhan" <skhan@linuxfoundation.org>,
+  "hkallweit1" <hkallweit1@gmail.com>,
+  "open list" <linux-kernel@vger.kernel.org>
+Reply-To: "Illusion Wang" <Illusion.Wang@nebula-matrix.com>
+Message-ID: <21f3dc71-fe1e-4f9a-a2a6-0840f25bdeec.Illusion.Wang@nebula-matrix.com>
+Subject: =?UTF-8?B?5Zue5aSN77yaW1BBVENIIHYyMyBuZXQtbmV4dCAwMi8xMl0gbmV0L25lYnVsYS1tYXRyaXg6?=
+  =?UTF-8?B?IGFkZCBjb3JlIGRyaXZlciBhcmNoaXRlY3R1cmUgYW5kIEhXIGxheWVyIGluaXRpYWxpemF0?=
+  =?UTF-8?B?aW9u?=
+X-Mailer: [Alimail-Mailagent revision 6][W4_0.2.3][null][Chrome]
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+x-aliyun-im-through: {"version":"v1.0"}
+References: <20260731094242.2655-1-illusion.wang@nebula-matrix.com>,<20260731094242.2655-3-illusion.wang@nebula-matrix.com>
+x-aliyun-mail-creator: W4_0.2.3_null_EuMTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEzMy4wLjY5NDMuMTQyIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4zLjQ1LVJlbGVhc2UuMjYwNzIwMDA1KSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAxMjAwIEFyY2hpdGVjdHVyZS94ODZfNjQgd2ViRHQvUEM=uL
+In-Reply-To: <20260731094242.2655-3-illusion.wang@nebula-matrix.com>
+x-aliyun-mailtrack: {"foreign-track":"0"}
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-> > > > diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-> > > > index 309ab5901379..389b1c2158be 100644
-> > > > --- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-> > > > +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-> > > > @@ -541,7 +541,7 @@ int hinic3_configure_rxqs(struct net_device *netdev, u16 num_rq,
-> > > >   		rq_associate_cqes(rxq);
-> > > >
-> > > >   		pkts = hinic3_rx_fill_buffers(rxq);
-> > > > -		if (!pkts) {
-> > > > +		if (pkts < rxq->q_mask) {
-> > > >   			netdev_err(netdev, "Failed to fill Rx buffer\n");
-> > > >   			return -ENOMEM;
-> > > >   		}
-> > >
-> > > Given the subject, curious if a partially populated ring result in any
-> > > functional failure? if so, then perhaps failure mode can be explained
-> > > and this specific change be sent to net tree?
-> >
-> > Thanks for the comment. It fixes a previous review comment of the patchset
-> > as the following quotes. To see the full review, visit
-> > https://lore.kernel.org/netdev/20260413171817.1e1eca30@kernel.org/
->
-> You misunderstood the comment there.
-> The concern was not about this function.
-> The concern is that hinic3_change_channel_settings() in the proposed
-> patch may fail after already tearing down the old configuration.
-> Driver should allocate memory and other resources for the queue
-> _before_ freeing the old memory. This limits the downtime and prevents
-> failed reconfiguration from bringing the device down.
->
-> IOW, when I said "this function may fail" I meant that you can't call
-> function which may fail after stopping the device and freeing mem.
-> Not that there is anything wrong with the function failing as it does..
-
-Thanks for your explaination. We indeed misunderstood your comment, so we
-made this change. We will remove it in the next patchset.
+UmV2aWV3IGNvbW1lbnRzIGZvciBWMjIKPk9uIFRodSwgMjMgSnVsIDIwMjYgMTI6MDA6NTQgKzA4
+MDAgaWxsdXNpb24ud2FuZyB3cm90ZToKPj4gKyBlcnIgPSBkbWFfc2V0X21hc2tfYW5kX2NvaGVy
+ZW50KGRldiwgRE1BX0JJVF9NQVNLKDY0KSk7Cj4+ICsgaWYgKGVycikgewo+PiArICBkZXZfZGJn
+KGRldiwgIkNvbmZpZ3VyZSBETUEgNjQgYml0IG1hc2sgZmFpbGVkLCBlcnIgPSAlZFxuIiwKPj4g
+KyAgIGVycik7Cj4+ICsgIGRtYV8zMl9lcnIgPSBkbWFfc2V0X21hc2tfYW5kX2NvaGVyZW50KGRl
+diwgRE1BX0JJVF9NQVNLKDMyKSk7Cj4+ICsgIGlmIChkbWFfMzJfZXJyKSB7Cgo+UmVhZCB0aGUg
+ZG9jdW1lbnRhdGlvbiBmb3IgdGhlIERNQSBBUEksIGRtYV9zZXRfbWFza19hbmRfY29oZXJlbnQo
+KQo+aXMgZ3VhcmFudGVlZCB0byBzdWNjZWVkIGluIHNvbWUgY2FzZXMuLgpBcyBkb2N1bWVudGVk
+OgpkbWFfc2V0X21hc2tfYW5kX2NvaGVyZW50KCkgbmV2ZXIgcmV0dXJuIGZhaWwgd2hlbiBETUFf
+QklUX01BU0soNjQpLiBUeXBpY2FsCmVycm9yIGNvZGUgbGlrZTo6CgoJLyogV3JvbmcgY29kZSAq
+LwoJaWYgKGRtYV9zZXRfbWFza19hbmRfY29oZXJlbnQoZGV2LCBETUFfQklUX01BU0soNjQpKSkK
+CQlkbWFfc2V0X21hc2tfYW5kX2NvaGVyZW50KGRldiwgRE1BX0JJVF9NQVNLKDMyKSkKCmRtYV9z
+ZXRfbWFza19hbmRfY29oZXJlbnQoKSB3aWxsIG5ldmVyIHJldHVybiBmYWlsdXJlIHdoZW4gYmln
+Z2VyIHRoYW4gMzIuClNvIHR5cGljYWwgY29kZSBsaWtlOjoKCgkvKiBSZWNvbW1lbmRlZCBjb2Rl
+ICovCglpZiAoc3VwcG9ydF82NGJpdCkKCQlkbWFfc2V0X21hc2tfYW5kX2NvaGVyZW50KGRldiwg
+RE1BX0JJVF9NQVNLKDY0KSk7CgllbHNlCgkJZG1hX3NldF9tYXNrX2FuZF9jb2hlcmVudChkZXYs
+IERNQV9CSVRfTUFTSygzMikpOwoKUmV2aWV3IGNvbW1lbnRzIGZvciBWMjMKPj4gKwllcnIgPSBk
+bWFfc2V0X21hc2tfYW5kX2NvaGVyZW50KGRldiwgRE1BX0JJVF9NQVNLKDY0KSk7Cj4+ICsJaWYg
+KGVycikgewo+PiArCQlkZXZfZGJnKGRldiwgIkNvbmZpZ3VyZSBETUEgNjQgYml0IG1hc2sgZmFp
+bGVkLCBlcnIgPSAlZFxuIiwKPj4gKwkJCWVycik7Cj4+ICsJCWRtYV9zZXRfbWFza19hbmRfY29o
+ZXJlbnQoZGV2LCBETUFfQklUX01BU0soMzIpKTsKPklmIHRoZSA2NC1iaXQgbWFzayBjb25maWd1
+cmF0aW9uIGZhaWxzIGluIG5ibF9wcm9iZSgpLCBhbmQgdGhpcyAzMi1iaXQKPmZhbGxiYWNrIGFs
+c28gZmFpbHMsIGRvZXMgcHJvYmUgc3VjY2VlZCBhbnl3YXkgbGVhdmluZyB0aGUgZGV2aWNlIHdp
+dGggYW4KPnVuY29uZmlndXJlZCBvciBpbnZhbGlkIERNQSBtYXNrPwo+U2luY2UgdGhlIHJldHVy
+biB2YWx1ZSBvZiB0aGUgZmFsbGJhY2sgZG1hX3NldF9tYXNrX2FuZF9jb2hlcmVudCgpIGlzCj5p
+Z25vcmVkLCB0aGUgcHJvYmUgcGF0aCB3aWxsIGNvbnRpbnVlIHdpdGhvdXQgYSB2YWxpZCBETUEg
+bWFzayBjb25maWd1cmF0aW9uLAo+d2hpY2ggY291bGQgY2F1c2Ugc3Vic2VxdWVudCBETUEgb3Bl
+cmF0aW9ucyB0byBmYWlsIG9yIG1pc2JlaGF2ZSBzaWxlbnRseS4KPj4gKwl9Cj4+ICsJcGNpX3Nl
+dF9tYXN0ZXIocGRldik7Cj4+ICsKPj4gKwlhZGFwdGVyID0gbmJsX2NvcmVfaW5pdChwZGV2LCAm
+cGFyYW0pOwoKU28gTXkgZml4IGltcGxlbWVudGF0aW9uIGlzIE9LPwpyZXQgPSBkbWFfc2V0X21h
+c2tfYW5kX2NvaGVyZW50KCZwZGV2LT5kZXYsIERNQV9CSVRfTUFTSyg2NCkpOwppZiAocmV0KSB7
+CglkZXZfZXJyKCZwZGV2LT5kZXYsICJTZXQgNjRiaXQgRE1BIG1hc2sgZmFpbGVkICVkLCBkZXZp
+Y2UgY2Fubm90IHdvcmtcbiIsIHJldCk7Cglnb3RvIGVycl9vdXQ7Cn0KLi4uCnBjaV9zZXRfbWFz
+dGVyKHBkZXYpOwphZGFwdGVyID0gbmJsX2NvcmVfaW5pdChwZGV2LCAmcGFyYW0pOwoK
