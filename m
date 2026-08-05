@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547BA3DB620
-	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F76346AE3
+	for <netdev@vger.kernel.org>; Wed,  5 Aug 2026 21:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785965752; cv=none; b=uEPos32HU7Dq2CnoKAL0EBZyI+LuPniv2MhINotkuphbYbJ2Yg452DHmWpAAW39OUwiRrZ4ANYJgT4oA592r/a9Jiy0JiscvnRb/5/wRxcabHXtzvVWDizA4LXrq42Ac7HO4qbm9pztB0akYuYFvyfRLprdt7NyZKb8VpVzLHwk=
+	t=1785965754; cv=none; b=YT4O7qMQE6AngxVzR4wVsEvvYUbwpAr0p6x47IwrITToPPegb7OKYsHIOm2CJi9Y/Z6i1RhxzxgiQzuV9TweNhRPfy4fqNhgddmZ4fNG6q8gJsYBrVP5qCO7zNE5KfNXwM7KiEzFf/iqRXLQ/EUeEoxgnzEUsnPkRw/BhBrhKKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785965752; c=relaxed/simple;
-	bh=o1njJp5ZUqbCDIWM9da7vz4exId0PE3GKWD8jGCOozU=;
+	s=arc-20240116; t=1785965754; c=relaxed/simple;
+	bh=b9RjjPBkTVAZsyYoXtKl+WlFu9H7N9xMiUnXQXIVnsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5yQ6m/GUb/uUDD+h0ebgfG/CjxjHf31dzn4iA7Z8bw0bXMO9e5LtpvZjiIidtxL33qmD1DNOUncJ4XYsSDJBm3d6fivETkRUlWZh1lsJz0eJn05xE2EpzCRP3LGBiNDE/XGBftkny9t6n5HhySEOzhCDs6hGir1krbUXuGVuDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JYemOuDU; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=CLqljs52kCiiEKtaEbF+hmNRKvAWyhjyTh9JfHGINRhxUFvO6OdMv+VoND9roHcRMe/jPATv+MuiPWM1ZrHOD1d0Jtdv0xGGebTc67Ddtmo2i+CGI0ZHzZGHlVuamWoku8kd65r0266Ww33qImJXK428Zrh3+QbKpHDzzA/FBZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WwRXyg4V; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JYemOuDU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WwRXyg4V"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785965750; x=1817501750;
+  t=1785965752; x=1817501752;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=o1njJp5ZUqbCDIWM9da7vz4exId0PE3GKWD8jGCOozU=;
-  b=JYemOuDUxHt3vAykbgETBKjF2c+74zT5YBPcB1VTC3Mq01cQqLP5dcYS
-   kKzqCucMHk00fkuYswSP2Zdud8qqFge2/lYsWem8zR3eHHf6wDlNKlTAM
-   LwjnJ3whXAxrkyYobdpd9vztrmntgcqjxDo13/ba/H1boZSJFo75Mzi2T
-   MG1NGKe/f40zfxAOwMmsEA8u2p5p5ClLQBmBvRsCGfRx3oSej0lhSSLtD
-   NxpcNCupPbhMdq8G+Kr/oQPfCmlU+ChUI/wCNHf3bW9kbAMbyx4wgEVs/
-   ngd99upSs0zIlniwUGRSpfzkAeXFXPF+WyN8cu6ezWq8idHJpc5m2H/D1
+  bh=b9RjjPBkTVAZsyYoXtKl+WlFu9H7N9xMiUnXQXIVnsg=;
+  b=WwRXyg4V9FpPTbuqVe+65Bcae0tRzSxAd+psGO124IzNHpln1+KwHSyZ
+   6vGiC1e324nvqutqxDXaW1yq3FlNhgDUSzEnpnRp3wF2J5yV5S7RI72bM
+   q9pRXUoAMVNhj/RanitObDOpfKMQdE849cVtTBuSS1IPaypguuGts/nQz
+   tmFlKrrKVaLGr6hNRYz+0TVP12Qmx9PC4cy1X5Av+DLuU2yOZoZ5SDaC3
+   kGu8KDvIAVTpK/dR796/Ym1+/tk9En/IWWSnCEbLWZFGgkv+owz7GvqmK
+   oi/fOO2P+W3rOo0BlOOkSyfJyHcsaB/YO+Ca93blz+8czV+sA0MKBb2Rr
    w==;
-X-CSE-ConnectionGUID: UF6WJeNrRRqIOSnLJHE5/Q==
-X-CSE-MsgGUID: cNlY/tbwTnynksbZxk7dFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109343516"
+X-CSE-ConnectionGUID: QwfeMLMgT5WL9fn6QlTC/A==
+X-CSE-MsgGUID: xpS/HJ4tTyGcDHGP7L0ubA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="109343539"
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="109343516"
+   d="scan'208";a="109343539"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 14:35:48 -0700
-X-CSE-ConnectionGUID: nmR9z7ZoT3K8xz4RLmsLRg==
-X-CSE-MsgGUID: OdSZFqOLRq2SrNnyVU/4+Q==
+X-CSE-ConnectionGUID: 7mpKGaR+Tf2wvT2rwhtfYw==
+X-CSE-MsgGUID: B5S3VtMWSpmNxAb0U+8PZg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,207,1779174000"; 
-   d="scan'208";a="286576067"
+   d="scan'208";a="286576086"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa001.fm.intel.com with ESMTP; 05 Aug 2026 14:35:47 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 05 Aug 2026 14:35:48 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,17 +50,13 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com,
 	przemyslaw.kitszel@intel.com,
-	benoit.monin@gmx.fr,
-	willemb@google.com,
-	jramaseu@redhat.com,
-	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net-next 03/15] ice: use NETIF_F_HW_CSUM instead of IP/IPV6
-Date: Wed,  5 Aug 2026 14:35:28 -0700
-Message-ID: <20260805213541.2281287-4-anthony.l.nguyen@intel.com>
+	Rafal Romanowski <rafal.romanowski@intel.com>
+Subject: [PATCH net-next 05/15] ice: add 0x88E7 handling to SW validation paths
+Date: Wed,  5 Aug 2026 14:35:30 -0700
+Message-ID: <20260805213541.2281287-6-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
 References: <20260805213541.2281287-1-anthony.l.nguyen@intel.com>
@@ -72,78 +68,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-The hardware is capable of calculating checksum for IPV6 packets with
-extension header. To not drop such packets switch from IP/IPV6 checksum
-to HW_CSUM.
+The virtchnl v2 VLAN capability handshake now includes the new
+VIRTCHNL_VLAN_ETHERTYPE_88E7 flag for IEEE 802.1ah B-TAG support.
+Wire up the corresponding software-path handling in ice so the PF
+correctly accepts and translates 0x88E7 (ETH_P_8021AH) VLAN filters
+requested by VFs.
 
-HW_CSUM is also used in previous generation (i40e).
+Three software-only changes, no hardware offload path affected:
 
-Previously HW_CSUM was used to indicate that hardware supports general
-checksum. Drop it assuming that if the hardware supports it, it is used.
+ - ice_check_supported_vlan_tpid() (ice_tc_lib.c): accept ETH_P_8021AH
+   in the TC VLAN TPID validation switch so 0x88E7-tagged flower filters
+   are not rejected early.
 
-Disabling offload for E830 in case of TSO isn't needed anymore as the
-check for TSO is done in Tx path just before preparation of the special
-GCS descriptor.
+ - validate_vlan() (ice_vsi_vlan_lib.c): allow ETH_P_8021AH as a valid
+   TPID when adding VLAN filters to a VSI, consistent with the other
+   accepted dot1q/dot1ad/QinQ1 TPIDs.
 
-Suggested-by: Jakub Ramaseuski <jramaseu@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+ - ice_vc_validate_vlan_tpid() / ice_vc_get_tpid() (virt/virtchnl.c):
+   bidirectional translation between ETH_P_8021AH and
+   VIRTCHNL_VLAN_ETHERTYPE_88E7 in the virtchnl VLAN v2 filter path.
+
+This does not add 0x88E7 hardware offload capability, does not change
+outer-tag programming, and does not alter any datapath.
+
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 21 +--------------------
- 1 file changed, 1 insertion(+), 20 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c       | 1 +
+ drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c | 3 ++-
+ drivers/net/ethernet/intel/ice/virt/virtchnl.c    | 6 ++++++
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index cc30d8c73a41..a5e9c3114706 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3491,9 +3491,8 @@ void ice_set_netdev_features(struct net_device *netdev)
- 			NETIF_F_RXHASH;
+diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+index d20357c04127..4560e55c8f9c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+@@ -174,6 +174,7 @@ static u16 ice_check_supported_vlan_tpid(u16 vlan_tpid)
+ 	case ETH_P_8021Q:
+ 	case ETH_P_8021AD:
+ 	case ETH_P_QINQ1:
++	case ETH_P_8021AH:
+ 		return vlan_tpid;
+ 	default:
+ 		return 0;
+diff --git a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
+index 54984966851d..b67272e2f603 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
+@@ -24,7 +24,8 @@ static void print_invalid_tpid(struct ice_vsi *vsi, u16 tpid)
+ static bool validate_vlan(struct ice_vsi *vsi, struct ice_vlan *vlan)
+ {
+ 	if (vlan->tpid != ETH_P_8021Q && vlan->tpid != ETH_P_8021AD &&
+-	    vlan->tpid != ETH_P_QINQ1 && (vlan->tpid || vlan->vid)) {
++	    vlan->tpid != ETH_P_QINQ1 && vlan->tpid != ETH_P_8021AH &&
++	    (vlan->tpid || vlan->vid)) {
+ 		print_invalid_tpid(vsi, vlan->tpid);
+ 		return false;
+ 	}
+diff --git a/drivers/net/ethernet/intel/ice/virt/virtchnl.c b/drivers/net/ethernet/intel/ice/virt/virtchnl.c
+index ca8018e3dd42..06d2f9be93ae 100644
+--- a/drivers/net/ethernet/intel/ice/virt/virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/virt/virtchnl.c
+@@ -1702,6 +1702,9 @@ static bool ice_vc_validate_vlan_tpid(u16 filtering_caps, u16 tpid)
+ 	case ETH_P_QINQ1:
+ 		vlan_ethertype = VIRTCHNL_VLAN_ETHERTYPE_9100;
+ 		break;
++	case ETH_P_8021AH:
++		vlan_ethertype = VIRTCHNL_VLAN_ETHERTYPE_88E7;
++		break;
+ 	}
  
- 	csumo_features = NETIF_F_RXCSUM	  |
--			 NETIF_F_IP_CSUM  |
- 			 NETIF_F_SCTP_CRC |
--			 NETIF_F_IPV6_CSUM;
-+			 NETIF_F_HW_CSUM;
- 
- 	vlano_features = NETIF_F_HW_VLAN_CTAG_FILTER |
- 			 NETIF_F_HW_VLAN_CTAG_TX     |
-@@ -3555,12 +3554,6 @@ void ice_set_netdev_features(struct net_device *netdev)
- 	/* Allow core to manage IRQs affinity */
- 	netif_set_affinity_auto(netdev);
- 
--	/* Mutual exclusivity for TSO and GCS is enforced by the set features
--	 * ndo callback.
--	 */
--	if (ice_is_feature_supported(pf, ICE_F_GCS))
--		netdev->hw_features |= NETIF_F_HW_CSUM;
--
- 	netif_set_tso_max_size(netdev, ICE_MAX_TSO_SIZE);
- }
- 
-@@ -6519,18 +6512,6 @@ ice_set_features(struct net_device *netdev, netdev_features_t features)
- 	if (changed & NETIF_F_LOOPBACK)
- 		ret = ice_set_loopback(vsi, !!(features & NETIF_F_LOOPBACK));
- 
--	/* Due to E830 hardware limitations, TSO (NETIF_F_ALL_TSO) with GCS
--	 * (NETIF_F_HW_CSUM) is not supported.
--	 */
--	if (ice_is_feature_supported(pf, ICE_F_GCS) &&
--	    ((features & NETIF_F_HW_CSUM) && (features & NETIF_F_ALL_TSO))) {
--		if (netdev->features & NETIF_F_HW_CSUM)
--			dev_err(ice_pf_to_dev(pf), "To enable TSO, you must first disable HW checksum.\n");
--		else
--			dev_err(ice_pf_to_dev(pf), "To enable HW checksum, you must first disable TSO.\n");
--		return -EIO;
--	}
--
- 	return ret;
- }
- 
+ 	if (!(filtering_caps & vlan_ethertype))
+@@ -2136,6 +2139,9 @@ static int ice_vc_get_tpid(u32 ethertype_setting, u16 *tpid)
+ 	case VIRTCHNL_VLAN_ETHERTYPE_9100:
+ 		*tpid = ETH_P_QINQ1;
+ 		break;
++	case VIRTCHNL_VLAN_ETHERTYPE_88E7:
++		*tpid = ETH_P_8021AH;
++		break;
+ 	default:
+ 		*tpid = 0;
+ 		return -EINVAL;
 -- 
 2.47.1
 
