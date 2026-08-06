@@ -1,71 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948613A6EE3;
-	Thu,  6 Aug 2026 01:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6CD2F5A36;
+	Thu,  6 Aug 2026 01:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785980234; cv=none; b=YoTKkJckI/l9TQygKZJlvi3SNMOIq2OKdbo3VJ8XdbvpOQOyJx+2DKn5RzKqFdd2WVdBzgN5IMNq+OrARR9SdYNIlwTJ9SgJXw1bSkWG9x5RKSaQwJSDPeSgfHaQxuzDLs5rC9rktLL8CZVxTJd5nqun936rMuRXgamu1SQeMf8=
+	t=1785980450; cv=none; b=bqIZsmYUvjm1mbxFrG8dQzTPbMI+hL5dDz0oiKDqcJ3GDnnEUV9GRXI/ZTIbRMhM7y+IOXrqNF0QqdVCEmmqhv9IAfzoGbcxzGuuBxntWdfT7HYz8/CwqXK2EuSGVY28NGcO2BBmr7O5xwc60grPdgM2i3IeDIU4fOs9ZrVq0uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785980234; c=relaxed/simple;
-	bh=7VFiNn1oZ2iK8gf2yzawo4CN+GIVXO/Dy++cb6o1OFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tzGpGBI4LzwKaXQFqTMNQCu0qeRxgunuNl7Cr5u1ucuPUQ7cVo7+tSUcDCNLzZcZBF0pf1WW2+gajNtrJpfpDI+m9KgEv9rki4QdJW+MSX8abVQs2ThdavUmtdZnci9OevUFa/UOBRMqWKcTYtRlzgYflTOsP3SSYrj71agUlu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AntI640x; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785980450; c=relaxed/simple;
+	bh=BoqJcEU00R6WLoT1rdDHWfwduCYFnb+SEE7uFRPbz3I=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ugbj4zmZnyemRz/HZG6RhbHwelGPute+YDUj2STjplqGy9/g09Ic8a1iO4V3flQZiSfngk5YHMPoAkjCJoy3Yeolf+wIQ6mlNErD2f4CaMzE0cynG/S5S/MzXeVl9745sK2QoUrGTfLcPdRQfJQ0xc3JWDYsPxyTEN8ukIhBvbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cyzB4mNG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AntI640x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8A61F000E9;
-	Thu,  6 Aug 2026 01:37:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cyzB4mNG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2EB1F000E9;
+	Thu,  6 Aug 2026 01:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785980233;
-	bh=OXMsYRbH+7jzznhDVgVDDek71MXeU29a607Dm+q8CVE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AntI640xXF2r8EClsgndc+AamwRa7pN10H/Y+qCA5h+HOoYiK3I+EUkdW7Sed2Psx
-	 QwV+W2qotVUky/grOuAuO8Q0DWS/lTLN5DTv8rFqend3/Zqr1LszbihB/1uYKoyPLn
-	 txdlr/LB7vvjodT7ndtt51Z8/nW/BB8b+rkN61GjzLro5ePsH7MOy/1FWlsf4H+onF
-	 xVBBNWnEeh2uj8EEoj/eYJNBI+TVbfp0ivNoh5+IydAz8PHpHb9SZBb7q5iN9Y5cQ9
-	 ITIviGGa1o5vchpteE8qxLN/4LUuF95tweYMUkLsKnE7dJ1Y94nxBsVRAyMQn7NlM0
-	 5b6E+4by0v02g==
-Date: Wed, 5 Aug 2026 18:37:11 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com,
- willemb@google.com, nktgrg@google.com, maolson@google.com,
- thostet@google.com, jacob.e.keller@intel.com, debarghyak@google.com,
- kees@kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 09/15] gve: simplify reset logic
-Message-ID: <20260805183711.2f31aa2d@kernel.org>
-In-Reply-To: <20260803184630.3813311-10-hramamurthy@google.com>
-References: <20260803184630.3813311-1-hramamurthy@google.com>
-	<20260803184630.3813311-10-hramamurthy@google.com>
+	s=k20260515; t=1785980449;
+	bh=P7WIeM8Rx7X2twfXGV91t1GSyzjePmrAq1NMknos9A0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=cyzB4mNG0ubuCbLGyyRC+tQiH7BT8f1WN7iSHgpxZ41zB+ZahC1wYeMutEc86hOA/
+	 rFGPlVjF/dR+YYXB4bmDxJMaSAJPLUlFUuArIc/qXbWx8Fr+dQKYJ0oFV0l8Xa2jFj
+	 CHVwy5GasMSqlR+nEoXuEJmFhRPZLeOOSUTdeQ0C98ryO2oqaGayCqcWUHIAkNwyB7
+	 6z90mgT1S/hCCkyHtwsg1fa0N4tQhkkA2Nf9KjcD3vBwq/hE1LoVMKhVwoEV0HShKb
+	 fGstJgJaQIALNXQAJzU+Po9yrVFyzW7JSLEyGbX0z2B080vyCxgslfTlaPz1tDSON+
+	 JuLEMi7A2Ywaw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A28392FFF3;
+	Thu,  6 Aug 2026 01:40:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: tulip: remove xircom_cb driver
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178598040839.599522.8669819859721166117.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 01:40:08 +0000
+References: <am48DR5FC-xTY3-D@ThinkPad-P15>
+In-Reply-To: <am48DR5FC-xTY3-D@ThinkPad-P15>
+To: =?utf-8?q?Pablo_Vallesp=C3=ADn_Aranguren_=3Cpablopva014=40gmail=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
+ gregkh@linuxfoundation.org
 
-On Mon,  3 Aug 2026 18:46:24 +0000 Harshitha Ramamurthy wrote:
-> -static void gve_trigger_reset(struct gve_priv *priv);
-> -
-> -static void gve_teardown_device_resources(struct gve_priv *priv)
-> +/**
-> + * Request the device to release any allocated shared resources.
-> + *
-> + * If any part of the teardown step fails, the failure is documented, but is
-> + * otherwise ignored. It is expected that a device reset is triggered
-> + * immediately after tearing down device resources, which would clear any
-> + * lingering state on the device.
-> + */
-> +static void gve_teardown_control_plane_resources(struct gve_priv *priv)
->  {
+Hello:
 
-Triggers a warning on W=1 builds:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Warning: drivers/net/ethernet/google/gve/gve_main.c:705 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
- * Request the device to release any allocated shared resources.
+On Sat, 1 Aug 2026 20:33:49 +0200 you wrote:
+> A possible bug was found in investigate_read_descriptor() and a fix was
+> proposed. Since this is an orphan driver for hardware that is old,
+> removing the driver was suggested instead. This patch removes the driver.
+> 
+> Link: https://lore.kernel.org/netdev/2026080158-next-diligent-b4ce@gregkh
+> Signed-off-by: Pablo Vallespín Aranguren <pablopva014@gmail.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - net: tulip: remove xircom_cb driver
+    https://git.kernel.org/netdev/net-next/c/ff3a8694c2e8
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
