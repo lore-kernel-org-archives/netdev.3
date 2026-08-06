@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32AF37F33F;
-	Thu,  6 Aug 2026 16:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A423845A6
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 16:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786035090; cv=none; b=HnZEQdi+zq0F3Lx8fG2cNbd+nTbBBKJG/aQ9cEluEdDHVlYs1rFSwREP2plBEz5dw9D8DPs8fdku3/Be7iu3wSYJr3o34DpwkkIYSa6HTdl4JuBHjrGn1HuHbCacUzQ73p9mwDSajQpVtQ6nHt6LWqVBhIulvQvH6stWD5K+w+U=
+	t=1786035092; cv=none; b=MiqUoStaWy0rk6jD0nWgjZiDI9HEKvSz+NPi9mqBf1LYAwM2oPzHBTflfL3FfJcXLJPkGcyghjbkdGBD27L7PbA313g3AgPkwdtAuCe+6rqLA0Kp0pJvnNa5la3sf6YE14+Et7kJ4Ae/xt2zbc7JdmpL1xZelFaFPc5bGc6MpD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786035090; c=relaxed/simple;
-	bh=45NAAedD7g5YQOH7dpDDYjiipzqsZkcyr1oeZGTxmM0=;
+	s=arc-20240116; t=1786035092; c=relaxed/simple;
+	bh=1DLjXD08DX5NrpydZ6t3+5KwCBc0fIaeLZvu1g42ycU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Uo4rzgET/s3tDQBNYASlZAq7/WE/3OxMOZtzFDRuAhPFRoLqyA6zysXTWJlNYpH98Y/7A6MYBEVuyXb6QLfEOF9d3f4gHZPSTB7TouPtnoRXYpeAiTmEc9H4/0aQ/lw/0Pzd0VWOEiE+HJxzydL3gqI9E/cAhNfpOpLyI8AhFLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FisnvbAe; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=G/DfNVxJVo5VdCzOCH6LkSUWrZjc1o4teIPr4ZX1loygL0IBJmg2YGVYk3pvsHmVX9uW1SrLH5mx+o/vh6m+ED1jBHO7dy+fqrugZMCLfTNXQHXU5SSXhcD+tDxNmVAd6yqjv/vTgyT/sWvkAK/8FSxJ4xqSeY8+0hA8WHKqJZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHlRPxKT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FisnvbAe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155821F00A3A;
-	Thu,  6 Aug 2026 16:51:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHlRPxKT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6A01F0155A;
+	Thu,  6 Aug 2026 16:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786035079;
-	bh=V0d9CVOXxDdjEJr3P6dHA3Zp9kfbflA+jBu+F9nto8E=;
+	s=k20260515; t=1786035073;
+	bh=nnTPp2jg0BIwpwPAr8YfULnn1BrP57yBl9tBxXa17/U=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=FisnvbAePHDRcw+b0+qIYZ/gdnEKt7uRu4uEwv2x9qMZDPhTpT/oxxZDdHIQeTxjb
-	 T1cS8Jem6Bp4rZpT7dPtCa+5k5n4IRLgTg+dOuOpcEg146ed44RrdDyXvF/F8gbzkY
-	 5+D+3kt/enzieBb8dAqNHjVCgnuq+PNoBuuKyWxRq4tncuC4W3dZ5xWug13V9IjMnV
-	 WCw+nZVXryyjx0PpouSGyuaQAdh+ty5NZ42WSzNTRqEpPzmM419aA8iUY+AGcW2nRe
-	 QRNlbGiOCwD+oRo9ueQAwkaLahwcPRm1+tNeqA9TnT5ILDLPr3ODsjUYwl9+b0FW7R
-	 YHJyUTwr9cmGg==
+	b=WHlRPxKT65Oo11zSWPW3xb11mpaZjJC1jV4ova6ljWEjFJWVqwccOp4Xe6059LcrC
+	 C7zUIaEn2yl5nRdNqzw0gKXcjBB7dkeC/f5t1xFWr9OZvTmfr0e2m/44meZ6RI7wqP
+	 FV28zTBMhhNc5cs42iYAhm1x4Hl4CEJXIuF4MQpxi6s5XYiTDeu2JlMs5eLckz2U7b
+	 XuLBRw8XWUgWo0ZocKWcP0PpZRpbObWni1GxjmMPzNM3xQh6PExq9G85xWtbv/S/II
+	 n3Tl12OFzKFSIedglaQ9H7M0yni5Xo1vNqS4gIr9NIesn+lrhWfZsQfFXoH/+0+LBE
+	 JzNcaJ1dU2mmw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939E4380820D;
-	Thu,  6 Aug 2026 16:50:39 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197DE380820D;
+	Thu,  6 Aug 2026 16:50:34 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/2] fjes: unregister the netdev before destroying the
- workqueues
+Subject: Re: [PATCH v2 net] net/atm: fix slab-out-of-bounds read in
+ vcc_setsockopt()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178603503813.1375455.12729853575409508362.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 16:50:38 +0000
-References: <20260805011410.414431-1-fanwu01@zju.edu.cn>
-In-Reply-To: <20260805011410.414431-1-fanwu01@zju.edu.cn>
-To: Fan Wu <fanwu01@zju.edu.cn>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <178603503263.1375455.12985449787644738517.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 16:50:32 +0000
+References: <20260805131508.3227331-1-edumazet@google.com>
+In-Reply-To: <20260805131508.3227331-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ syzbot+53ecc09fb81df10ef4de@syzkaller.appspotmail.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  5 Aug 2026 01:14:09 +0000 you wrote:
-> fjes_remove() destroys the driver workqueues before unregistering the
-> netdev. The interrupt handler queues work on them, but the IRQ is only
-> freed from fjes_close() under unregister_netdev(), so an interrupt in that
-> window can queue work once the workqueues are gone.
+On Wed,  5 Aug 2026 13:15:08 +0000 you wrote:
+> vcc_setsockopt() contained an ineffective optlen check:
+>   if (__SO_LEVEL_MATCH(optname, level) && optlen != __SO_SIZE(optname))
+>       return -EINVAL;
 > 
-> Unregister the netdev first so fjes_close() frees the IRQ and cancels the
-> workers before the workqueues are destroyed. force_close_task, which the
-> workers arm on the system workqueue, is handled in the next patch.
+> If __SO_LEVEL_MATCH(optname, level) evaluated to false (e.g. if the caller
+> passed a mismatched level), the length check optlen != __SO_SIZE(optname)
+> was short-circuited and bypassed. Execution then fell through to switch(optname),
+> calling copy_from_sockptr() assuming optval contained sufficient space.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] fjes: unregister the netdev before destroying the workqueues
-    https://git.kernel.org/netdev/net-next/c/f2473fbfc3fd
-  - [net,2/2] fjes: cancel force_close_task in fjes_remove()
-    https://git.kernel.org/netdev/net-next/c/c206fc0705d1
+  - [v2,net] net/atm: fix slab-out-of-bounds read in vcc_setsockopt()
+    https://git.kernel.org/netdev/net/c/d0c80dbb9704
 
 You are awesome, thank you!
 -- 
