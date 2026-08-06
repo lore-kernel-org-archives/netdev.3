@@ -1,524 +1,191 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1CD3A7F6E
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 16:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78133A5E7A;
+	Thu,  6 Aug 2026 16:04:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786032155; cv=none; b=PvlerIP4I+gXim4IOdIjS9juJJqGxCIM7xDNxR9SN1sblCoi2Y8kF3bgtv46WUXvPvNYiFNGqZ78nJo/g9m+5unBTE9OXAfTkYviaw3gQy+7TmnS0lpwy8VjpE8IxjTMp17i9OVdt06B7VDoZqOO/TftxRaJUMAm1JXUqFecUIA=
+	t=1786032253; cv=none; b=HkLXBIS/t72b7ppaFs1BUpbbKVw9C/00hy2F1z0GwBGggJfbbeNoFedgVdM1qXpJyxM3vTTiifzN/1l6aQOkfLRlCqbNHq935VFzOUcm5KJaQIx7HCeQ/gf3ZOd4dZFgtCn4gk3d9HEO4JInyzX0naDW8rJUi8ow1yg9WmaFtWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786032155; c=relaxed/simple;
-	bh=8ZHpJTOUstQZbVTqqiVNKPFNPYoqjDzc/9J7ynowRok=;
+	s=arc-20240116; t=1786032253; c=relaxed/simple;
+	bh=JA+f1SBJ0vX73iyDUgJmY52Xr8YlvdcqP3z/vMjhdP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e3lDHf2DRbwFkCVXJYBwb3u3saP7sY1DJDFVcbNw8LeHcaLBj5FDi3aOmK1tPd1V6BBMIN9l5qX6GwDttuS5iRkcqVHx81z+SIDfWXaqbRD2ZTIu32UKJWdDhN2xT17dRRiVmCqQoChnv9qiWo/u9r9m2F33kkb32ikWbbyZh0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=j+uI9yU4; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	 MIME-Version; b=F68yyvf+e73KYEyWV2Z8DPPRbAwlUP+F/Ujnu6V0Nb8Eqtq1IufA7a2w1jXyIpu14pZQnFxBXt2ZeeVYf0EWnmEvYkIqRrTD7TvTeBocTf9Co2mcnNqUzTx1bHUixPCyDhUppehFJ43raZ56D9SanBNff62DSPOSwDw5LR/htTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YzWRoBPI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="j+uI9yU4"
-Received: by dvalin.narfation.org (Postfix) id 2DBE92049B;
-	Thu, 06 Aug 2026 16:02:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1786032146;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h+v7fdLYRLY/mfW8T/A9/gsRMVxejYlstFTAF6GuefA=;
-	b=j+uI9yU4QN+bIeHHVGQsRKaf6XFhAuuZknB3Pt5tvPCs4OsPweJnrlXlOZqhdEvvzpygt7
-	VWfPZPaWSzsqwXueUKGBRdvBbHD+AWi4hhdHNDZdEAhOUASp1Ytd7aStSKr87W3YlOkWQD
-	z8WqPJL3Z9+g/j+FkuwlSVtcyMqJN6w=
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
-Subject:
- Re: [PATCH net-next 03/10] batman-adv: add missing kernel-doc comments
-Date: Thu, 06 Aug 2026 18:02:17 +0200
-Message-ID: <4118698.kQq0lBPeGt@sven-desktop>
-In-Reply-To: <20260805143200.722098-4-sw@simonwunderlich.de>
-References:
- <20260805143200.722098-1-sw@simonwunderlich.de>
- <20260805143200.722098-4-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YzWRoBPI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DAF1F00A3A;
+	Thu,  6 Aug 2026 16:04:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786032251;
+	bh=VwNctgsn7ev4d1iV7X14XkVZ4wfENwSBeCgpcUp54Ic=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YzWRoBPIBmIjbRVA5/V9B2/I+zdIyOVOMdaKcK9s1sDFKA4nhwW8ud3pp+ZvEDJy1
+	 z00/BH9PZhQEiR4ismfnYEV37DoPdp79nMMubbf5BJsu22QSy5tP70/CbMHCDvKIiM
+	 LdBciS7rvCcGFWPgMJ/33zx9fVQs0dUSKcSzCwRIrg8v4OMV00JulT72ZN3FWVN4pi
+	 06TfnC1v/kTSfxqZUuAscJdUyouhnj1NrX4PpejygdSaQG8WqXdZenage9jB/DDDc2
+	 SRCfashtq2CI1dF4ogSGkshv2Qul7O6kM8ghY9E80Hb/1me8J2V/0QNejoYwoPjm+t
+	 Yq4qV8wnIJqKA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: xiongweimin@kylinos.cn
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/2] virtio_net: check AF_XDP queue index before use
+Date: Thu,  6 Aug 2026 09:04:10 -0700
+Message-ID: <20260806160410.2689091-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260804085330.1333242-1-xiongweimin@kylinos.cn>
+References: <20260804085330.1333242-1-xiongweimin@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3863999.iIbC2pHGDl";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 
---nextPart3863999.iIbC2pHGDl
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Date: Thu, 06 Aug 2026 18:02:17 +0200
-Message-ID: <4118698.kQq0lBPeGt@sven-desktop>
-In-Reply-To: <20260805143200.722098-4-sw@simonwunderlich.de>
-MIME-Version: 1.0
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+virtio_net: check AF_XDP queue index before use
 
-> --- Patch [3]: [PATCH net-next 03/10] batman-adv: add missing kernel-doc =
-comments ---
-[...]
-> > diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-> > index 22622283f59b0..a9e80330fcb63 100644
-> > --- a/net/batman-adv/bat_iv_ogm.c
-> > +++ b/net/batman-adv/bat_iv_ogm.c
-> > @@ -171,6 +171,14 @@ batadv_iv_ogm_orig_get(struct batadv_priv *bat_pri=
-v, const u8 *addr)
-> >  	return NULL;
-> >  }
-> > =20
-> > +/**
-> > + * batadv_iv_ogm_neigh_new() - retrieve or create a B.A.T.M.A.N. IV ne=
-ighbour
-> > + * @hard_iface: the interface where the neighbour is connected to
-> > + * @neigh_addr: the mac address of the neighbour
-> > + * @orig_node: originator object representing the neighbour
-> > + *
-> > + * Return: pointer to the neigh_node or NULL in case of failure
-> > + */
-> >  static struct batadv_neigh_node *
-> >  batadv_iv_ogm_neigh_new(struct batadv_hard_iface *hard_iface,
-> >  			const u8 *neigh_addr,
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Should the Return: line mention that the neighbour comes back with an
-> elevated refcount?  batadv_iv_ogm_neigh_new() just forwards the result of
-> batadv_neigh_node_get_or_create(), so the caller owns a reference that has
-> to be released with batadv_neigh_node_put().
+This moves the qid >= vi->curr_queue_pairs test in
+virtnet_xsk_pool_enable() so that it runs before the vi->rq[qid].page_pool
+check instead of after it.  The rest of the function is unchanged.
 
-Often not done this way. Somebody interested in writing kernel-doc is free =
-to=20
-adjust this everywhere in batman-adv.
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index 3e2a5876c6c8c..6160aa8ba595e 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -5896,15 +5896,15 @@ static int virtnet_xsk_pool_enable(struct net_device *dev,
+>  	if (vi->hdr_len > xsk_pool_get_headroom(pool))
+>  		return -EINVAL;
+>  
+> +	if (qid >= vi->curr_queue_pairs)
+> +		return -EINVAL;
+> +
+>  	/* In big_packets mode, xdp cannot work, so there is no need to
+>  	 * initialize xsk of rq.
+>  	 */
+>  	if (!vi->rq[qid].page_pool)
+>  		return -ENOENT;
+>  
+> -	if (qid >= vi->curr_queue_pairs)
+> -		return -EINVAL;
+> -
 
-I will not submit directly a patch.
+[Severity: Medium]
+The changelog says this "keeps an out of range queue id from reaching
+vi->rq[qid] while checking page_pool".  Was an out of range qid actually
+reachable here?
 
->=20
-> [ ... ]
->=20
-> > @@ -1765,6 +1873,14 @@ static void batadv_iv_ogm_process(const struct s=
-k_buff *skb, int ogm_offset,
-> >  	batadv_orig_node_put(orig_node);
-> >  }
-> > =20
-> > +/**
-> > + * batadv_iv_send_outstanding_bat_ogm_packet() - work-queue helper to =
-emit a
-> > + *  queued forward packet
-> > + * @work: work item embedded in the forward packet
-> > + *
-> > + * Emit the queued OGM forward packet and, for own primary-interface p=
-ackets,
-> > + * schedule the next periodic OGM. The forward packet is freed afterwa=
-rds.
-> > + */
-> >  static void batadv_iv_send_outstanding_bat_ogm_packet(struct work_stru=
-ct *work)
-> >  {
-> >  	struct delayed_work *delayed_work;
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Is "for own primary-interface packets" the condition that is actually
-> implemented?  The body reads:
->=20
-> 	if (forw_packet->own &&
-> 	    forw_packet->if_incoming =3D=3D forw_packet->if_outgoing)
-> 		batadv_iv_ogm_schedule(forw_packet->if_incoming);
->=20
-> and batadv_iv_ogm_schedule_buff() queues own OGMs of secondary interfaces
-> with own =3D=3D 1 and if_incoming =3D=3D if_outgoing as well:
->=20
-> 	scheduled =3D batadv_iv_ogm_queue_add(bat_priv, ogm_buff->buf, ogm_buff-=
->len,
-> 					    hard_iface, hard_iface, 1, send_time);
->=20
-> so the re-schedule branch is taken for secondary interfaces too.
+vi->rq and vi->sq are sized max_queue_pairs in virtnet_alloc_queues():
 
-It is about the primary interface packets. See __batadv_forw_bcast_packet's=
-=20
-call of batadv_forw_bcast_packet_if. See parameters primary_if (incoming_if=
-)=20
-and hard_iface (outgoing_if). Check batadv_forw_bcast_packet_to_list() to f=
-ind=20
-the only place which sets own_packet.
+	vi->sq = kzalloc_objs(*vi->sq, vi->max_queue_pairs);
+	...
+	vi->rq = kzalloc_objs(*vi->rq, vi->max_queue_pairs);
 
-[...]
-> Separately, is "The forward packet is freed afterwards" true in all cases?
-> The free only happens when the steal succeeds:
->=20
-> 	if (batadv_forw_packet_steal(forw_packet,
-> 				     &bat_priv->forw_bat_list_lock))
-> 		batadv_forw_packet_free(forw_packet, dropped);
+and the netdev is created with alloc_etherdev_mq(..., max_queue_pairs), so
+dev->num_rx_queues == dev->num_tx_queues == max_queue_pairs.
 
-See documentation of batadv_forw_packet_steal. For the caller, the skb is n=
-o longer usable.
+The only path into virtnet_xsk_pool_enable() is
+xp_assign_dev() -> ndo_bpf(XDP_SETUP_XSK_POOL) -> virtnet_xsk_pool_setup(),
+and xp_assign_dev() first goes through xsk_reg_pool_at_qid() in
+net/xdp/xsk.c:
 
-> [ ... ]
->=20
-> > @@ -2328,6 +2461,14 @@ static void batadv_iv_init_sel_class(struct bata=
-dv_priv *bat_priv)
-> >  	WRITE_ONCE(bat_priv->gw.sel_class, 20);
-> >  }
-> > =20
-> > +/**
-> > + * batadv_iv_gw_get_best_gw_node() - retrieve the best gateway node ba=
-sed on
-> > + *  the B.A.T.M.A.N. IV metric and the configured GW selection class
-> > + * @bat_priv: the bat priv with all the mesh interface information
-> > + *
-> > + * Return: gateway node with the highest score for the current selecti=
-on class,
-> > + *  or NULL if no eligible gateway exists.
-> > + */
-> >  static struct batadv_gw_node *
-> >  batadv_iv_gw_get_best_gw_node(struct batadv_priv *bat_priv)
-> >  {
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Same question for the returned reference here: curr_gw is returned with an
-> extra kref taken inside the RCU loop:
->=20
-> 				curr_gw =3D gw_node;
-> 				kref_get(&curr_gw->refcount);
->=20
-> Should the Return: line say the gateway node is returned with increased
-> refcount, like batadv_gw_get_selected_orig() does?
+	if (queue_id >= max(dev->real_num_rx_queues,
+			    dev->real_num_tx_queues))
+		return -EINVAL;
 
-Often not done this way. Somebody interested in writing kernel-doc is free =
-to=20
-adjust this everywhere in batman-adv.
+real_num_rx_queues/real_num_tx_queues can never exceed num_rx_queues/
+num_tx_queues, so any qid that reaches the driver is already inside the
+allocated arrays and vi->rq[qid].page_pool was an in-bounds read.
 
-I will not submit directly a patch.
+For a qid in [curr_queue_pairs, max_queue_pairs) the old ordering still
+rejected the request before sq/rq were used, so the only visible difference
+after the reorder appears to be -EINVAL instead of -ENOENT.  Could the
+changelog describe this as a defensive reordering rather than as preventing
+an out of range dereference?  As written it reads like a memory safety fix
+and may attract a stable backport.
 
-> > diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-> > index db6f5bdcaa985..0068f0e238da6 100644
-> > --- a/net/batman-adv/bat_v.c
-> > +++ b/net/batman-adv/bat_v.c
->=20
-> [ ... ]
->=20
-> > @@ -444,6 +475,16 @@ batadv_v_orig_dump(struct sk_buff *msg, struct net=
-link_callback *cb,
-> >  	cb->args[2] =3D sub;
-> >  }
-> > =20
-> > +/**
-> > + * batadv_v_neigh_cmp() - compare two B.A.T.M.A.N. V neighbours by thr=
-oughput
-> > + * @neigh1: first neighbour to compare
-> > + * @if_outgoing1: outgoing interface to use for @neigh1
-> > + * @neigh2: second neighbour to compare
-> > + * @if_outgoing2: outgoing interface to use for @neigh2
-> > + *
-> > + * Return: a positive value if @neigh1 is better, a negative value if =
-@neigh2
-> > + *  is better and 0 if both have equal throughput
-> > + */
-> >  static int batadv_v_neigh_cmp(struct batadv_neigh_node *neigh1,
-> >  			      struct batadv_hard_iface *if_outgoing1,
-> >  			      struct batadv_neigh_node *neigh2,
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Is 0 only returned for equal throughput?  batadv_v_neigh_cmp() also retur=
-ns
-> the initial value on the error paths when the ifinfo lookup fails:
->=20
-> 	int ret =3D 0;
->=20
-> 	ifinfo1 =3D batadv_neigh_ifinfo_get(neigh1, if_outgoing1);
-> 	if (!ifinfo1)
-> 		goto err_ifinfo1;
->=20
-> 	ifinfo2 =3D batadv_neigh_ifinfo_get(neigh2, if_outgoing2);
-> 	if (!ifinfo2)
-> 		goto err_ifinfo2;
->=20
-> A caller cannot distinguish that from "both have equal throughput".  Shou=
-ld
-> the Return: description cover the failed lookup case?
+[Severity: High]
+This is a pre-existing issue and not something this patch introduces, but
+since the patch touches the enable-side qid test, is the symmetric test in
+virtnet_xsk_pool_disable() safe?
 
-A person more proficient in writing kernel-doc is free to do this and updat=
-e=20
-it everywhere. Will not submit a patch.
+	if (qid >= vi->curr_queue_pairs)
+		return -EINVAL;
 
+	sq = &vi->sq[qid];
+	rq = &vi->rq[qid];
 
-> > diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-inte=
-rface.c
-> > index b6867576bbafa..1950b8809d99f 100644
-> > --- a/net/batman-adv/hard-interface.c
-> > +++ b/net/batman-adv/hard-interface.c
->=20
-> [ ... ]
->=20
-> > @@ -467,6 +478,14 @@ int batadv_hardif_no_broadcast(struct batadv_hard_=
-iface *if_outgoing,
-> >  	return ret;
-> >  }
-> > =20
-> > +/**
-> > + * batadv_hardif_get_active() - retrieve an active hard interface for =
-a mesh
-> > + *  interface
-> > + * @mesh_iface: mesh interface to search
-> > + *
-> > + * Return: first hard interface in BATADV_IF_ACTIVE state attached to
-> > + *  @mesh_iface, or NULL if none is active.
-> > + */
-> >  static struct batadv_hard_iface *
-> >  batadv_hardif_get_active(struct net_device *mesh_iface)
-> >  {
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> The returned interface carries a reference taken in the loop:
->=20
-> 		if (hard_iface->if_status =3D=3D BATADV_IF_ACTIVE &&
-> 		    kref_get_unless_zero(&hard_iface->refcount))
-> 			goto out;
->=20
-> Should the Return: line state that the caller has to release it with
-> batadv_hardif_put()?
+On that path the early return skips virtnet_rq_bind_xsk_pool(vi, rq, NULL),
+virtnet_sq_bind_xsk_pool(vi, sq, NULL), xsk_pool_dma_unmap(pool, 0), the
+virtqueue_unmap_single_attrs() of sq->xsk_hdr_dma_addr and
+kvfree(rq->xsk_buffs).
 
-Often not done this way. Somebody interested in writing kernel-doc is free =
-to=20
-adjust this everywhere in batman-adv.
+Can curr_queue_pairs shrink below a qid that already has a pool bound?
+virtnet_xdp_set() raises it on attach:
 
-I will not submit directly a patch.
+	err = virtnet_set_queues(vi, curr_qp + xdp_qp);
+	if (err)
+		goto err;
+	netif_set_real_num_rx_queues(dev, curr_qp + xdp_qp);
+	vi->xdp_queue_pairs = xdp_qp;
 
-> [ ... ]
->=20
-> > @@ -502,6 +530,15 @@ static void batadv_primary_if_update_addr(struct b=
-atadv_priv *bat_priv,
-> >  	batadv_hardif_put(primary_if);
-> >  }
-> > =20
-> > +/**
-> > + * batadv_primary_if_select() - select the new primary interface
-> > + * @bat_priv: the bat priv with all the mesh interface information
-> > + * @new_hard_iface: new primary interface, may be NULL
-> > + *
-> > + * Replace the currently selected primary interface with @new_hard_ifa=
-ce,
-> > + * invoke the algorithm-specific primary_set hook and update the origi=
-nator
-> > + * MAC address.
-> > + */
-> >  static void batadv_primary_if_select(struct batadv_priv *bat_priv,
-> >  				     struct batadv_hard_iface *new_hard_iface)
-> >  {
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Would it be worth documenting the locking context here?  The writer
-> serialization of batadv_primary_if_select() comes from RTNL only:
->=20
-> 	ASSERT_RTNL();
->=20
-> 	if (new_hard_iface)
-> 		kref_get(&new_hard_iface->refcount);
->=20
-> 	curr_hard_iface =3D rcu_replace_pointer(bat_priv->primary_if,
-> 					      new_hard_iface, 1);
->=20
-> A contributor promoting this helper based on the new comment alone would =
-not
-> learn that RTNL has to be held.
+With max_queue_pairs=8, curr_qp=4 and xdp_qp=4 an XDP attach gives
+curr_queue_pairs = real_num_rx_queues = 8, so a zero-copy socket can bind
+to qid 5 (xsk_reg_pool_at_qid() accepts it, virtnet_xsk_pool_enable()
+accepts it, and rq[5].page_pool is non-NULL because
+virtnet_create_page_pools() covers all max_queue_pairs queues).  Detaching
+the program then goes back to virtnet_set_queues(vi, curr_qp) with no
+AF_XDP-in-use check, unlike the ethtool channel paths which are guarded by
+netdev_queue_busy().
 
-Often not done this way. Somebody interested in writing kernel-doc is free =
-to=20
-adjust this everywhere in batman-adv.
+When the socket is closed, xp_release_deferred() -> xp_clear_dev() ->
+xp_disable_drv_zc() calls ndo_bpf(XDP_SETUP_XSK_POOL, pool=NULL,
+queue_id=5), which now hits qid(5) >= curr_queue_pairs(4) and returns
+-EINVAL.  The core only warns:
 
-I will not submit directly a patch.
+	WARN(1, "Failed to disable zero-copy!");
 
+so does this leak the kvzalloc'ed rq->xsk_buffs array, the xsk pool DMA
+mapping and sq->xsk_hdr_dma_addr?
 
-> [ ... ]
->=20
-> > @@ -534,6 +578,15 @@ batadv_hardif_is_iface_up(const struct batadv_hard=
-_iface *hard_iface)
-> >  	return false;
-> >  }
-> > =20
-> > +/**
-> > + * batadv_check_known_mac_addr() - warn about duplicate hard interface=
- MAC
-> > + *  addresses
-> > + * @hard_iface: hard interface that was just added or had its MAC chan=
-ged
-> > + *
-> > + * Iterate over all hard interfaces of the same mesh interface and emi=
-t a
-> > + * warning if another in-use interface shares the same MAC address as
-> > + * @hard_iface.
-> > + */
-> >  static void batadv_check_known_mac_addr(const struct batadv_hard_iface=
- *hard_iface)
-> >  {
-> >  	struct net_device *mesh_iface =3D hard_iface->mesh_iface;
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Same question for this one: the lower device list is walked with the
-> non-RCU iterator, which requires RTNL:
->=20
-> 	netdev_for_each_lower_private(mesh_iface, tmp_hard_iface, iter) {
->=20
-> Should the new comment note that the caller must hold RTNL?
+Beyond the leak, rq[5]->xsk_pool and sq[5]->xsk_pool still point at the
+pool that xp_release_deferred() then frees via xp_destroy().  If the queue
+count is grown again (XDP re-attach, or ethtool -L back to 8, which is now
+allowed because xsk_clear_pool_at_qid() already cleared dev->_rx[5].pool),
+the datapath dereferences it unconditionally in try_fill_recv():
 
-Often not done this way. Somebody interested in writing kernel-doc is free =
-to adjust this everywhere in batman-adv.
+	if (rq->xsk_pool) {
+		err = virtnet_add_recvbuf_xsk(vi, rq, rq->xsk_pool, gfp);
+		goto kick;
+	}
 
-I will not submit directly a patch.
+and similarly in virtnet_receive() and virtnet_poll_tx().  Can that be a
+use-after-free of the freed pool?
 
-> > diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
-> > index 73becb0549488..78b81daaeff9a 100644
-> > --- a/net/batman-adv/main.c
-> > +++ b/net/batman-adv/main.c
->=20
-> [ ... ]
->=20
-> > @@ -492,6 +513,13 @@ int batadv_batman_skb_recv(struct sk_buff *skb, st=
-ruct net_device *dev,
-> >  	return NET_RX_DROP;
-> >  }
-> > =20
-> > +/**
-> > + * batadv_recv_handler_init() - initialise the RX handler dispatch tab=
-le
-> > + *
-> > + * Initialise all entries of the RX handler table as either "unhandled=
-" or with
-> > + * protocol indepentend handlers, and perform compile-time size sanity=
- checks on
->                     ^^^^^^^^^^^
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Typo, "indepentend" should be "independent".
+Related to that, rq->xsk_buffs is never set to NULL after kvfree() in
+either virtnet_xsk_pool_disable() or the err_free_buffs path of
+virtnet_xsk_pool_enable():
 
-Will not send a resent the patches because of thos. But an interested=20
-contributor can go through the whole code and fix various typos.
+err_free_buffs:
+	kvfree(rq->xsk_buffs);
+	return err;
 
->=20
-> > + * all on-wire packet structs.
-> > + */
-> >  static void batadv_recv_handler_init(void)
-> >  {
-> >  	int i;
->=20
-> > diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/transl=
-ation-table.c
-> > index dae5e1d8c0385..b12ec8d1b5451 100644
-> > --- a/net/batman-adv/translation-table.c
-> > +++ b/net/batman-adv/translation-table.c
->=20
-> [ ... ]
->=20
-> > @@ -1224,6 +1239,17 @@ int batadv_tt_local_dump(struct sk_buff *msg, st=
-ruct netlink_callback *cb)
-> >  	return ret;
-> >  }
-> > =20
-> > +/**
-> > + * batadv_tt_local_set_pending() - mark a local TT entry as pending re=
-moval
-> > + * @bat_priv: the bat priv with all the mesh interface information
-> > + * @tt_local_entry: local TT entry to mark
-> > + * @flags: TT change flags to announce together with the pending remov=
-al
-> > + * @message: debug message describing the reason for the change
-> > + *
-> > + * Schedule the TT change announcement and set BATADV_TT_CLIENT_PENDIN=
-G on the
-> > + * entry. The entry is kept in the local table until the next TTVN inc=
-rement
-> > + * so that a consistency-check response can still be answered.
-> > + */
-> >  static void
-> >  batadv_tt_local_set_pending(struct batadv_priv *bat_priv,
-> >  			    struct batadv_tt_local_entry *tt_local_entry,
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Should the calling context be part of this comment?  One caller runs it w=
-ith
-> the TT hash bucket lock held:
->=20
-> batadv_tt_local_purge() {
-> 	...
-> 		spin_lock_bh(list_lock);
-> 		batadv_tt_local_purge_list(bat_priv, head, timeout);
-> 		spin_unlock_bh(list_lock);
-> 	...
-> }
->=20
-> and batadv_tt_local_purge_list() then calls batadv_tt_local_set_pending(),
-> so the helper runs in atomic context with that spinlock held.
-
-Uhm, but the list_lock is there because of the list access in=20
-batadv_tt_local_purge_list() and not because of batadv_tt_local_set_pending=
-().
-
-And it is rather uncommon to document what callers do.
-
->=20
-> [ ... ]
->=20
-> > @@ -2338,6 +2419,16 @@ static void batadv_tt_global_table_free(struct b=
-atadv_priv *bat_priv)
-> >  	bat_priv->tt.global_hash =3D NULL;
-> >  }
-> > =20
-> > +/**
-> > + * _batadv_is_ap_isolated() - check whether two clients are AP-isolate=
-d from
-> > + *  each other
-> > + * @tt_local_entry: local TT entry of the sending client
-> > + * @tt_global_entry: global TT entry of the destination client
-> > + *
-> > + * Return: true if traffic between the two clients should be dropped b=
-ecause
-> > + *  either both are WiFi clients or both carry the ISOLATION flag; fal=
-se
-> > + *  otherwise
-> > + */
-> >  static bool
-> >  _batadv_is_ap_isolated(struct batadv_tt_local_entry *tt_local_entry,
-> >  		       struct batadv_tt_global_entry *tt_global_entry)
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Do the sending/destination roles hold for both call sites?
-> batadv_is_ap_isolated() passes the destination as the local entry and the
-> source as the global entry:
->=20
-> 	tt_local_entry =3D batadv_tt_local_hash_find(bat_priv, dst, vid);
-> 	...
-> 	tt_global_entry =3D batadv_tt_global_hash_find(bat_priv, src, vid);
-> 	...
-> 	if (_batadv_is_ap_isolated(tt_local_entry, tt_global_entry))
->=20
-> which is the reverse of the documented roles, while batadv_transtable_sea=
-rch()
-> matches them (local from src, global from addr).  The current test is
-> symmetric, so nothing misbehaves today; would a wording without the
-> sender/destination roles describe both callers?
-
-Might send a patch later because this can really be confusing.
-
-Regards,
-	Sven
---nextPart3863999.iIbC2pHGDl
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCanSwCQAKCRBND3cr0xT1
-yy0sAQDAoasTg1muYUe4tUl3/xZQffAwGXgW106MRYdnBxbT2QD/THue0XQZ3f8u
-XCC9vMUa2gOEOFmik0el7o0aKsxI0A4=
-=qbct
------END PGP SIGNATURE-----
-
---nextPart3863999.iIbC2pHGDl--
-
-
-
+so its safety depends entirely on rq->xsk_pool having been cleared first.
+Would it make sense to release the resources unconditionally in the
+disable path, or to block shrinking curr_queue_pairs while a pool is bound?
+-- 
+pw-bot: cr
