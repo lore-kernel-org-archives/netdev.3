@@ -1,98 +1,165 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D65C383987;
-	Thu,  6 Aug 2026 13:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87812F0661
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 13:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786023357; cv=none; b=Faq+HFnVn3+oruvCcLk0K2uRcPEdzZWrFfC8n2auidg4vUtfdBZKJkuqf/EjcGk84LUKU6aTNuve1A7La1HzyZX7brbnO1lFjjKgtYEuEgc9jwz+Hn5EismWIC+DiQPrvnlbcPU43r5Oez7vMTr8AbRFSaVuPFQ+iakywlIeDkE=
+	t=1786023354; cv=none; b=nBMu9XKDDVJamPamj3TUdeQ2dejSsORT23BjdFERNeA3Jli1xoFzcHFf1ye2gSvaLv9pTvbl0P+2Yg/mLH8eb4FajZk7Ly18LzOd5uyGHQbewbnEfjbX7Q2mXSVAAvVMHuCZE644GW7TuVzGnYgioKvJ2xgRMUjA3HFZaaBesGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786023357; c=relaxed/simple;
-	bh=KRYUIXbWpXe85W6pY4Oe5fd1QED4PCEDPNzBmk7DZ+8=;
+	s=arc-20240116; t=1786023354; c=relaxed/simple;
+	bh=ObD7bPWSxhbklQOHrMfvrjgdmbGQvAlacZ3UlKZDW7w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pXODjrd0jA/AY1lgAxV0MhWTL2/TeUQnh58QdjZHxdLB1xo4376oSworCyGzjhkT6w7zEBeBthtIhdJDi5tAMCi2eQw3QBZArv+JRZHf/G4gyQolutrtHrYuTf0gNQC5ak9NQthR5fovP+9tUV5mZaohzzhUjd5ex+hRlt6bnGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=u1Efov7U; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=qghcYuB1FotDWha6kraY9EnKs9uaZ+JTbGbgZ7ERK4XUnBqmXS/gjxRhgTzXV1HHH3XSsdpG96+dwBKOssK/U4srMtGhbNUy53GmGslvmxeM/uHNR9BLvQiQ5KPY4gy8a4LURDuuZ25plnHiek0+ihy27N7PaJFAXSBUMBVhG/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QurJ2UbO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VBW2twy3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="u1Efov7U"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=XlP+tUjsmu3AxOdXxNXi5cm6k+5WijPQpXHUrFwGtBI=; b=u1Efov7U/eclQ717qAmFBj7B/W
-	sJ36GpS+bBcIq/hP3r3S6JO3HqMRDzWDvi1mwAQagxL/TNVK5dwzZ4ngVy+d+rRjJwYkpuFAQaXnD
-	uCMkrfWWw/RmoGsVIfp14CQYTgXgi2JJq68Kc2kIH1aqIrBRXOr0vQ+HeLdu9B8Ypyus=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wryG0-00GNp2-2L; Thu, 06 Aug 2026 15:35:36 +0200
-Date: Thu, 6 Aug 2026 15:35:36 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Benedikt Spranger <b.spranger@linutronix.de>
-Cc: Vasilij Strassheim <v.strassheim@linutronix.de>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Martin Kaistra <martin.kaistra@linutronix.de>
-Subject: Re: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
- bindings
-Message-ID: <b47e0589-a3a2-4f88-ba90-72d176efccd3@lunn.ch>
-References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
- <20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
- <20260730-loutish-labrador-of-joviality-6e6c79@quoll>
- <411ec84fd55e152e94ac1f4edba497eac3a5623d.camel@linutronix.de>
- <590a933f-85af-4eaa-b9ee-be689dc15c69@lunn.ch>
- <20260805153220.3860b262@mitra>
- <9f8ac30b-6579-4e48-abe3-823302a3da0e@lunn.ch>
- <20260805162705.1a3467ea@mitra>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QurJ2UbO";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VBW2twy3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786023344;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rILtqoeBHE7LGqRbLxT9biwUTl88ABJkJnpfbIm4pB0=;
+	b=QurJ2UbOF1HYtVmHCrYoDvwocEG6Kiy3yJVCDLhEhKpqOIpYHaAARISi6ee3ZxDfwlwDlV
+	XdMJyYlyDDKvaMNF0D6AlnpP5jfvtnWCICNEXNezouV4z9y5r1/9SBE+ml5Pi+NMF5ayxn
+	Co3UJ5QhjW7kvvhTeD8RsV/gFiTRc1M=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-82-pJKocptwO6yC9VL-GrgrxA-1; Thu, 06 Aug 2026 09:35:37 -0400
+X-MC-Unique: pJKocptwO6yC9VL-GrgrxA-1
+X-Mimecast-MFC-AGG-ID: pJKocptwO6yC9VL-GrgrxA_1786023336
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49955a9dbcdso4664285e9.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 06:35:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786023336; x=1786628136; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rILtqoeBHE7LGqRbLxT9biwUTl88ABJkJnpfbIm4pB0=;
+        b=VBW2twy3z5dXVYruSZh4BbeqeNLSBAiXJuC2aBrZQVbuHUAYn7T2RGG+RVhjNf0Brx
+         UoFiXNpGoXbAxw+37uaBMv7SHD/RchK0VRAG5QuFgaXcCBlwonb/mzwizHqSCMRAMb0w
+         pDzK/07n+oaizJvClFilz2SfjNgYetiteux2LuGg4hIMT71uARvLVFbJORk+qXKpX8rK
+         tWJKhvE1l+Ixyu6xrDJ8tAKoLHNBknIMIEL9soFUBkYLXgewmEbm5SXomNDyzGQv0yUK
+         W7LD9ZBPr6UzFgj0G3lA1ggsOn6sbDMVmmNOVQZllh6dQYj+CB4LkeVUp7nLmkoFvY+c
+         bnVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786023336; x=1786628136;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rILtqoeBHE7LGqRbLxT9biwUTl88ABJkJnpfbIm4pB0=;
+        b=dXPzuK/+lB5Rl3KjCjbjfDSmTx6t6CJJhc4MAboJIEvyyvZAE+ucZ7mAa6B8imcOkf
+         atdySoKwz/fvDgffdpzmU6yV6e2OzpQwf+weTQ+h0XGgqfS4gu+r6X/0Ho4elXJPu4pZ
+         1AnSRcovC1pjjY0lvhl8e3+LQSjAkzqY7owwWW3e9fBdhpancUkxsj5JTawlLtW4eWEB
+         nrmzTldPMKmYcCD1r72DMiHd9744K+kSmO674AqnUiOjT256LmuuJ8QEo621MTXFZHjv
+         6Wzzd0F1TjXQd2kOq9si+tr5lmdsQ5CsWSgi8tZX9VVd7ywS0uI5/p1D7yNUwgUCGKmu
+         eLBA==
+X-Forwarded-Encrypted: i=1; AHgh+RofxitOTkJeqwZ0U9uhKQJddUHhpZIOnsyk75gnYZpkZvSqPiltGLCGMf/ub+0TqWyq0pjiWZ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4/6oQFgUOJHjF/NefZds7vnLEdbAiNw1tZi4ddufr7C91ncQa
+	biZTLFGBWO29QevCAMG2vo+JQp/FCGlkIvNEPTVDf1kpA3paWqEJcytk9WJSYpfsiu3l654j5KD
+	tDZx8Qd11ZSjlbTefWJ0dh34t8XwfLK6imvuvdvwvRzVtyObQ5N/W68eTNZCli9I3BA==
+X-Gm-Gg: AR+sD11agijB4+g2ybBMoHuhyY/q4a8C6BCfjT5d8YuXsZuZkCIB3aahAVmEQJCP4iZ
+	BRjbxbHMMs+E6HZgfx0Bdzj+9PFH9HCvdU/SavibvCNwyF91Q9OFrVBZja2nMy320Mr7Pyb2Xhl
+	WMYr5I9bJ52SlRVyoHlxycrNPxMaEQeZ+f4ZxB5pD7WnU4lR5egR2B/7GfUJ208EiL9WnmOuSeZ
+	UuGrwo8ApqSx/rwLkh091HptIHKN5enNp5aZuemWlwUy5+ssYktltGj6T+FxeGy2dj/dkMxjZMu
+	QlHcvNSbQ1EAoEmKPRz8CNhGdh2QGbn/OlVwaQ0MMi6JhhCVwyMyQNcc3hDE818oH1Ol/4JVFoF
+	fiw4=
+X-Received: by 2002:a05:600c:8485:b0:493:e974:41ac with SMTP id 5b1f17b1804b1-4994e7d646cmr224933965e9.16.1786023335692;
+        Thu, 06 Aug 2026 06:35:35 -0700 (PDT)
+X-Received: by 2002:a05:600c:8485:b0:493:e974:41ac with SMTP id 5b1f17b1804b1-4994e7d646cmr224932915e9.16.1786023335225;
+        Thu, 06 Aug 2026 06:35:35 -0700 (PDT)
+Received: from sgarzare-redhat ([5.77.117.129])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49954228a47sm95181535e9.12.2026.08.06.06.35.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 06:35:34 -0700 (PDT)
+Date: Thu, 6 Aug 2026 15:35:27 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	jasowangio@gmail.com, eperezma@redhat.com
+Subject: Re: [PATCH] vhost: clear vq->worker under vq->mutex when freeing
+ workers
+Message-ID: <anSMBpQJ8x-vXYy2@sgarzare-redhat>
+References: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260805162705.1a3467ea@mitra>
+In-Reply-To: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com>
 
-On Wed, Aug 05, 2026 at 04:27:05PM +0200, Benedikt Spranger wrote:
-> Am Wed, 5 Aug 2026 15:53:59 +0200
-> schrieb Andrew Lunn <andrew@lunn.ch>:
-> 
-> > So i suspect you will need to support integration specific
-> > compatibles.
-> 
-> Me too. But for *now* things are, better seem to be, simple. The aim is
-> not to plug forseeable future development.
-> 
-> > One way to consider this. Look at your FPGA design. Delete the
-> > licensed core. What do you have left? Does it need software to drive
-> > it?
+On Thu, Jul 23, 2026 at 06:33:10PM +0300, Andrey Drobyshev wrote:
+>Every other update of vq->worker is done under vq->mutex - the worker
+>attach/swap ioctls and vhost_worker_killed().  vhost_workers_free() is
+>the sole exception: it clears vq->worker without holding the lock.
 
-> The minimal IP core is an unmanaged switch. No need for a DSA driver
-> here. The IP core profides a MDIO bus, therefor a MDIO driver would be
-> good. The version register in combination with some feature register
-> can be determined to get the needed information to configure the DSA
-> driver, or in the minimal case to return -ENODEV.
+mmm, vhost_dev_cleanup() updates vq->worker without the mutex too IIUC.
 
-I think you misunderstood my comment. I expect the MDIO bus is part of
-the licensed core. So when you take your FPGA design, and delete the
-licensed part, that disappears as well. When you delete the licensed
-part, you should have a big hole in the middle of the design, leaving
-just what surrounds the switch. That is that logical? Clock dividers?
-Logic to map the switch registers to MMIO, so maybe a PCIe device
-core? Does any of this surrounding logic need software? If it does,
-that is probably specific to your design, and needs a compatible which
-covers both the licensed switch core, and the surrounding design
-specific logic.
+>
+>The effect is harmless in practice, as this only happens while the
+>owning process (and thus the whole device) is dying, but the lockless
+>write is inconsistent with the rest of the code.  Clear vq->worker under
+>vq->mutex, like everyone else, so that all writers of vq->worker follow
+>the same locking rule.
+>
+>This issue was found by Sashiko AI review.
 
-	Andrew
+Can you share a link to the review?
+
+I don't know if it's common or not, but having the link in the commit or 
+after --- will help the reviewers.
+
+>
+>Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>---
+> drivers/vhost/vhost.c | 10 ++++++++--
+> 1 file changed, 8 insertions(+), 2 deletions(-)
+>
+>diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>index 4c525b3e16ea..dbb6cb5eccea 100644
+>--- a/drivers/vhost/vhost.c
+>+++ b/drivers/vhost/vhost.c
+>@@ -722,13 +722,19 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
+> static void vhost_workers_free(struct vhost_dev *dev)
+> {
+> 	struct vhost_worker *worker;
+>+	struct vhost_virtqueue *vq;
+> 	unsigned long i;
+>
+> 	if (!dev->use_worker)
+> 		return;
+>
+>-	for (i = 0; i < dev->nvqs; i++)
+>-		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>+	for (i = 0; i < dev->nvqs; i++) {
+>+		vq = dev->vqs[i];
+>+
+>+		mutex_lock(&vq->mutex);
+>+		rcu_assign_pointer(vq->worker, NULL);
+>+		mutex_unlock(&vq->mutex);
+>+	}
+
+Pre-existing, but IIUC vhost_workers_free() is called only by 
+vhost_dev_cleanup() at the bottom, after a loop calls vhost_vq_reset() 
+on each virtqueue (without the mutex) where we already set `vq->worker` 
+to NULL, so IMO at this point it's already NULL, no?
+
+Thanks,
+Stefano
+
+> 	/*
+> 	 * Free the default worker we created and cleanup workers userspace
+> 	 * created but couldn't clean up (it forgot or crashed).
+>-- 
+>2.47.1
+>
+
