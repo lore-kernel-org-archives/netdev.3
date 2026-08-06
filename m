@@ -1,205 +1,136 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11CE481FCF
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 16:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E05480DCC;
+	Thu,  6 Aug 2026 16:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786032805; cv=none; b=HYpB7CpVRJjUSMH2dwrseK/DJBZOjWaXIpXBoZdlzfSY9JQDqfBTblQyxjw1s4sgN24T5kcis2SGuBGuQfFwr9K9etUtu/85Dy1V/49OiWwj+QL4Ao1xn12RKi9aoEVOPy6RHVKPnitivQ971l9hqmBPad4wi5R0gWuz0EvIZaE=
+	t=1786032824; cv=none; b=IJmPAtXHMkGezRyM6BhutPT4r9LoJINIODzPQzt2dDVFxAF8XuEG4s6uUgTPdkfPr0cBW/3fd06hyzBzwezlUbSeLRE2kwDT8IPzFNJQU2O/G0j4YMUxB33LtZdw5JzlUZ7+ObBqlyqAQrsO7c3L9mAMmfnFQMflo9qVOSvDKv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786032805; c=relaxed/simple;
-	bh=GncdFdXrJIhAgpTC6brrBR4dJW92SyoZwymrV1TZRqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UjlW4tHVAeqnz+JZpNZfRy3d2ZSCn2esurW/poCbxaJU/qQk7qC9J+aIbmdPu3HEJEx+rx+ziSM0WakqBbKhgeQkjd0D3lTxRvdVAylxab/6FsluwnFx8rFnwzaBHewy5f42tey5bAIUdZYU2NTBmwhv4s1L7m7nOhUvD26/h5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=M4PABhAw; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1786032824; c=relaxed/simple;
+	bh=G4Jf55pJTnxM+8U6Ce5+pMWPcNCfyJQmy8zPH8oPSsg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qhjvfXpFdMJw3euC+/OZxgbEwx9+KbihtTkwEzdBP5iPOoYcm0B37VvDOmcs1TYBS6yonV0NDw7o2nK/HhUtGA2q0XlZwIy024tVmVgPK7/goxfUzjf54pJ62fpn0MBcWWogrmghKf3KJ43vKt9pOKQsrHbGjovPZ5WLbVjgXs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fjwo4fga; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="M4PABhAw"
-Received: by dvalin.narfation.org (Postfix) id 5BA3E21002;
-	Thu, 06 Aug 2026 16:13:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1786032797;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FDnJjr6u5CI2FNAIvthxuWqMU0c59QUxaGduLMRi80k=;
-	b=M4PABhAwzeME3pAJ//y1LUuDSUdp8sDpbtiOoQoMiu+BsfFAqKKRw/EVx2sFGUS3D/zJUT
-	1Hgon80Q76fVkSS6owsAw+COavPvA8VI8YUWmxXmsF6xTKFG+CDZ4Bde7nAd79utOl6ANm
-	C/JDDLiKus3P3iZ+CeidHY71gaQxTaU=
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
-Subject:
- Re: [PATCH net-next 05/10] batman-adv: annotate functions which may
- reallocate the skbuff
-Date: Thu, 06 Aug 2026 18:13:14 +0200
-Message-ID: <5280888.31r3eYUQgx@sven-desktop>
-In-Reply-To: <20260805143200.722098-6-sw@simonwunderlich.de>
-References:
- <20260805143200.722098-1-sw@simonwunderlich.de>
- <20260805143200.722098-6-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fjwo4fga"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786032821; x=1817568821;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=G4Jf55pJTnxM+8U6Ce5+pMWPcNCfyJQmy8zPH8oPSsg=;
+  b=Fjwo4fgaJb2/Munv4yDybUxYWi3SUzRTIqyrTNCg9cY8VsHgGciYJri9
+   y0INAn0tJA/U/rhycpdHBrZSx5sLeE+rHe8ERGBGrvQrMMaBkag7LRNGu
+   CZlceArrXpKsNpZcKjejS5o9564rXF5k1hNbiI/XvyPG8z3DOfkVGE8IS
+   UvyhrgwqmvMFUtFIaTrfe6jpnfIAQ18tXHCT3fRs593HRPz6evYsVBviz
+   K9SXrnQ345okWs7P+cc4iA8mZLJnYRzyecO0MP/rGV6QJoUoxO2kP073L
+   s7eECaiMaAWdGhRX6qZR6sZ765zX4QG4xP9SVOunnVTlTE4RpKBeJ7xzV
+   w==;
+X-CSE-ConnectionGUID: O4OoSNmLRGakNvH5Er7o7g==
+X-CSE-MsgGUID: 3zRQLvkDQc2kWowQyucseg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="85755460"
+X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; 
+   d="scan'208";a="85755460"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 09:13:41 -0700
+X-CSE-ConnectionGUID: 7gdadwCoQFCVgY8JraL4Ow==
+X-CSE-MsgGUID: MNCGFfyRSJitnBkEYdFdbw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; 
+   d="scan'208";a="261625052"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.117]) ([10.125.109.117])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 09:13:40 -0700
+Message-ID: <8fff7c7b-726a-4d9b-b950-6968d07f54ca@intel.com>
+Date: Thu, 6 Aug 2026 09:13:38 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4913403.LvFx2qVVIh";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-
---nextPart4913403.LvFx2qVVIh
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Date: Thu, 06 Aug 2026 18:13:14 +0200
-Message-ID: <5280888.31r3eYUQgx@sven-desktop>
-In-Reply-To: <20260805143200.722098-6-sw@simonwunderlich.de>
-MIME-Version: 1.0
-
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805143200.722098-1=
-=2Dsw%40simonwunderlich.de?part=3D5
-
-> --- Patch [5]: [PATCH net-next 05/10] batman-adv: annotate functions whic=
-h may reallocate the skbuff ---
-[...]
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> This isn't a bug, but the ellipsis in the batadv_dat_snoop_outgoing_arp_r=
-equest()
-> annotation has an extra dot ("batadv_dat_get_vid()/....") compared to the
-> "/..." spelling used in the other hunks of this patch.
-
-=46eel free to use the extra dot for whatever you want. Will not resend the=
- PR=20
-or create a patch because of this.
-
->=20
-> > + * from skb->data or eth_hdr()) before this call must be considered
-> > + * invalid afterwards and has to be reacquired.
-> > + *
-> >   * Return: true if the message has been sent to the dht candidates, fa=
-lse
-> >   * otherwise. In case of a positive return value the message has to be=
- enqueued
-> >   * to permit the fallback.
-> > @@ -1271,6 +1286,11 @@ bool batadv_dat_snoop_outgoing_arp_request(struc=
-t batadv_priv *bat_priv,
-> >   * @skb: packet to check
-> >   * @hdr_size: size of the encapsulation header
-> >   *
-> > + * Warning: This function may reallocate the skb data buffer via
-> > + * batadv_dat_get_vid()/... Any pointer into the skb data (e.g. obtain=
-ed
-> > + * from skb->data or eth_hdr()) before this call must be considered
-> > + * invalid afterwards and has to be reacquired.
-> > + *
-> >   * Return: true if the request has been answered, false otherwise.
-> >   */
-> >  bool batadv_dat_snoop_incoming_arp_request(struct batadv_priv *bat_pri=
-v,
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Is the advice to reacquire the pointers correct for the true return path =
-of
-> batadv_dat_snoop_incoming_arp_request()?  On that path the skb is not just
-> reallocated, it is released:
->=20
-> net/batman-adv/distributed-arp-table.c:batadv_dat_snoop_incoming_arp_requ=
-est() {
-> 	...
-> out:
-> 	batadv_dat_entry_put(dat_entry);
-> 	if (ret)
-> 		kfree_skb(skb);
-> 	return ret;
-> }
-
-This is outside the scope of this patch. The WARNING is of course only vali=
-d=20
-when there is still an skb to use.
-
-> [ ... ]
->=20
-> > @@ -1788,6 +1818,11 @@ void batadv_dat_snoop_outgoing_dhcp_ack(struct b=
-atadv_priv *bat_priv,
-> >   * This function first checks whether the given skb is a valid DHCPACK=
-=2E If
-> >   * so then its source MAC and IP as well as its DHCP Client Hardware A=
-ddress
-> >   * field and DHCP Your IP Address field are added to the local DAT cac=
-he.
-> > + *
-> > + * Warning: This function may reallocate the skb data buffer via
-> > + * pskb_may_pull()/batadv_dat_get_vid()/... Any pointer into the skb d=
-ata
-> > + * (e.g.obtained from skb->data or eth_hdr()) before this call must be
->        ^^^^^^^^^^
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Missing space after "e.g." in the batadv_dat_snoop_incoming_dhcp_ack()
-> annotation.
-
-Will not resend the PR because of this.
-
-> [ ... ]
->=20
-> > diff --git a/net/batman-adv/multicast_forw.c b/net/batman-adv/multicast=
-_forw.c
-> > index 1404a3b7adfb1..60ec12805742c 100644
-> > --- a/net/batman-adv/multicast_forw.c
-> > +++ b/net/batman-adv/multicast_forw.c
-> > @@ -1080,6 +1080,11 @@ unsigned int batadv_mcast_forw_packet_hdrlen(uns=
-igned int num_dests)
-> >   * Tries to expand an skb's headroom so that its head to tail is 1298
-> >   * bytes (minimum IPv6 MTU + vlan ethernet header size) large.
-> >   *
-> > + * Warning: This function may reallocate the skb data buffer via
-> > + * skb_cow()/skb_linearize()/... Any pointer into the skb data (e.g.
-> > + * obtained from skb->data or eth_hdr()) before this call must be
-> > + * considered invalid afterwards and has to be reacquired.
-> > + *
->=20
-> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
-> Are skb_cow() and skb_linearize() the right helpers to name here?
-> batadv_mcast_forw_expand_head() calls neither of them; the only
-> reallocating primitive in its body is pskb_expand_head():
->=20
-> net/batman-adv/multicast_forw.c:batadv_mcast_forw_expand_head() {
-> 	...
-> 	if (skb_headroom(skb) < hdr_size &&
-> 	    pskb_expand_head(skb, hdr_size, 0, GFP_ATOMIC) < 0)
-> 		return -ENOMEM;
->=20
-> 	return 0;
-> }
-
-The relevant changes were lost when the fixes were removed from the PR. Wil=
-l=20
-not resend the PR without this line. The statement will be true when the fi=
-xes=20
-are added.
-
-Regards,
-	Sven
---nextPart4913403.LvFx2qVVIh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCanSymgAKCRBND3cr0xT1
-y5M4AQDtiv3xZfVq1t+gGMqETnnfR6iXthq5uJa6Vyuc4LVhvwEA6sCgsuW12hU/
-ssXA+bh+FDQterPz9a3EhE/ADtaFQgk=
-=H7jn
------END PGP SIGNATURE-----
-
---nextPart4913403.LvFx2qVVIh--
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] NTB: ntb_netdev: Preserve RX queue depth on
+ allocation failure
+To: Koichiro Den <den@valinux.co.jp>, Jon Mason <jdmason@kudzu.us>,
+ Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Nicholas Bellinger <nab@linux-iscsi.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260806032537.3526498-1-den@valinux.co.jp>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260806032537.3526498-1-den@valinux.co.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
+
+On 8/5/26 8:25 PM, Koichiro Den wrote:
+> ntb_netdev_rx_handler() hands the received skb to the network stack
+> before allocating its replacement. If the allocation fails, nothing is
+> reposted. Every failure therefore takes one buffer out of the RX queue
+> while the interface remains up, and enough failures eventually stall
+> reception.
+> 
+> A retry path could refill the queue later, but ntb_netdev has none.
+> Allocate the replacement first instead. If that fails, drop the packet
+> and repost the same skb. This keeps the queue full and lets packet
+> delivery resume as soon as memory is available again.
+> 
+> Fixes: 548c237c0a99 ("net: Add support for NTB virtual ethernet device")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Koichiro Den <den@valinux.co.jp>
+
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+
+> ---
+>  drivers/net/ntb_netdev.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
+> index c3a6ba96fc8a..029a4a532a10 100644
+> --- a/drivers/net/ntb_netdev.c
+> +++ b/drivers/net/ntb_netdev.c
+> @@ -127,8 +127,8 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+>  {
+>  	struct ntb_netdev_queue *q = qp_data;
+>  	struct ntb_netdev *dev = q->ntdev;
+> +	struct sk_buff *skb, *new_skb;
+>  	struct net_device *ndev;
+> -	struct sk_buff *skb;
+>  	int rc;
+>  
+>  	ndev = dev->ndev;
+> @@ -144,6 +144,12 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+>  		goto enqueue_again;
+>  	}
+>  
+> +	new_skb = netdev_alloc_skb(ndev, ndev->mtu + ETH_HLEN);
+> +	if (!new_skb) {
+> +		ndev->stats.rx_dropped++;
+> +		goto enqueue_again;
+> +	}
+> +
+>  	skb_put(skb, len);
+>  	skb->protocol = eth_type_trans(skb, ndev);
+>  	skb->ip_summed = CHECKSUM_NONE;
+> @@ -157,12 +163,7 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+>  		ndev->stats.rx_bytes += len;
+>  	}
+>  
+> -	skb = netdev_alloc_skb(ndev, ndev->mtu + ETH_HLEN);
+> -	if (!skb) {
+> -		ndev->stats.rx_errors++;
+> -		ndev->stats.rx_frame_errors++;
+> -		return;
+> -	}
+> +	skb = new_skb;
+>  
+>  enqueue_again:
+>  	rc = ntb_transport_rx_enqueue(qp, skb, skb->data, ndev->mtu + ETH_HLEN);
 
