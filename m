@@ -1,81 +1,40 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6941B375AA8
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 04:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB1434CFD0;
+	Thu,  6 Aug 2026 05:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785989633; cv=none; b=hVadzFu/jMTBIoe58wFc96BBoUYKCkjEcE+k1+5LqFHA42Zw9lz4e3c4s4Ae0+/ZV7SXexnK+4IgirLH642dbKW+JxNQ5xuda6djADul+MEiXvfU7GvzWdtnV988xhPiCiyAUpqcWlgIiBUN8xDC3vtyUjE8yZsKpijqz7I1ywQ=
+	t=1785992747; cv=none; b=eQTVJ/HZTS+G7cO6ZBret6ltsGwGNU8vuH0vcp7PaxRv33r9ZQ5Vdn3KzQFnteqe9txST0x/wiIs0x5tgSEtzVaEgQ8xQfzxclSts5qCHV+nmkOiPqTJO+eBweyUPGvk1SAZjR1H1AYbf/Wk6IXTGlhQlCGCTwP84hWbjbsm3Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785989633; c=relaxed/simple;
-	bh=PWbLl7/NjY1yNDVIg4XpNehMc1CfJea868Ft1HhmzEE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJyVLJjfzfVlY5lzU6jHRD1rkfQ3EFZNfMXyWLn2K4QqDuZI/LpS8sD7xpXVHvL9rCDeoNPfGOFwiLbJXZVIE3uQRm8emPDPLchrwd+RwghX6sqXGVXYRmxspno+Nx20FmAZglqVd4n2neArigX5fZshI7lrm8Ux/fEGaZYjLJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=pspRnF/T; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="pspRnF/T"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2d01663d816so15826765ad.1
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 21:13:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785989632; x=1786594432; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EdQXWhem+0pJKfeWyyElvWf5jpQ5mDNhNAFzw6qPrus=;
-        b=pspRnF/TaAUioQfmhAYLXtNukVbPkv9D9aBrYPIu1dx4UkFyFfxuBPkaueuMOae2b0
-         S53kcmKqshKT5yMhUPC1nCcfghax/DFNV3tOLaLCs2VTDoD+6DQXQxwuhOk2/TYx/Fat
-         Lb0wcxls+Nd19BFEvcp3773BRqBEQyEhUA+bqf/o93kMqlLA/wBVl3yszxhtouERyZ+z
-         r8K6aB+c7S7fRZ8/cRGWtBj97/Hh4jT4en0WrLqgZ3Mpuoaxprb3cxLvkCCI20ekdzyU
-         IWUa0ugnu3GzUou/iKo01oBMJ4sDpu1VujygVr6VitocHne9/ubuNq0RAxAidnJiN0qj
-         gf5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785989632; x=1786594432;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EdQXWhem+0pJKfeWyyElvWf5jpQ5mDNhNAFzw6qPrus=;
-        b=di8d231MMqmS03KZk4sCNMl3t0EkJspGJKwibmfilFeif0J2ykHV810uL2v94Op+AO
-         iztyYV5PTkZ3xJJUwNTUt9U0wOQBlXB9/GeGWx1CvvNMCnxOHUS0czLsSsRqyqcOOP06
-         Mfzdzl6HOhcu8SdXAPheerL7RNOpTt6T9nUVMCZchwgjJOar5FaU97u8ZXEfRpRCfz5E
-         Aix7Ib5c2P66p4tuXFNn/vfAidcRBveFqqU81rg934MraQBCGQxwxQNUh0RrghIqE4Re
-         DZRManxIOO3UQPeqL0ndS3Mvrdmx+ygWAE2/tvGccK9l1/oDyGGzcBbIFT+GuajXI4gT
-         0Emg==
-X-Gm-Message-State: AOJu0Ywfi0Xop2RxaHvQc586RBd7cykhQKaFGLKGZap4z/LyNlKtlGrf
-	mHM4Xl51PMXrCUFT4Hh2/v0Bk7s4MphGgdSmmLI/TYXA0TuTBPiHANc/bJjz3VpaBj0M88ZHM43
-	PjwhYpZwqG9efX0d6fL4=
-X-Gm-Gg: AR+sD10zaWXZ1pJkzNivNO+PVfllINITPrxNndfmgY4l6oa0jMjmtK4kMcbD6RQ88Mj
-	Lsf5A30WOm1U3VlOgws4GDRoYQR7ZyacxhrYb4HYSPbQfVPpJ/SYG4lkibF9IPTUib/UIFRo2zw
-	9vds9AlgjG8DEcb33Mzc3PQpoHxMrVgPag4njN0fHxShK7t4eYkw9deyrVhZk9EpJaK5w1ueBTD
-	HDTTvcf/6qz1wni61mKFvXxVi8nX2bpUDqouxPsoncTo7siZTwp6h0EUAjQiPZ+6lsQeH0abLe0
-	7XGFFdCJaInUizCSJrJFFXXW3bl4+Bcy8Aego4b72oZY1uOEk7Iva2ag0VL+vbsMMpFUDFTi9x5
-	BgUOv7iCk8fX5KwsOgM/s/kuB5CEa0bP/EqmdBLvyt86e6SVlaABEOz7eV3cOKXphLtlhitLoaF
-	4BYX1HsmqIOalSjr48Ox5S7szYJAH9J+175xNtTW4aQJ+756LQVrTHzZo=
-X-Received: by 2002:a17:903:37c5:b0:2cc:777f:d67c with SMTP id d9443c01a7336-2d0ca77f62emr149275185ad.13.1785989631480;
-        Wed, 05 Aug 2026 21:13:51 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4b6c66sm23954505ad.55.2026.08.05.21.13.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 21:13:51 -0700 (PDT)
-From: Ren Wei <weir@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	edragain@163.com,
-	weir@nebusec.ai
-Subject: [PATCH net RESEND 1/1] ipv4: reject RTAX_ADVMSS values below TCP_MIN_MSS
-Date: Thu,  6 Aug 2026 12:13:38 +0800
-Message-ID: <a2e93ae9003f33bf49b789dbd537f4a6c10f26fa.1784972917.git.edragain@163.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1784972917.git.edragain@163.com>
-References: <cover.1784972917.git.edragain@163.com>
+	s=arc-20240116; t=1785992747; c=relaxed/simple;
+	bh=mEj63TRaST/oKqFY1pmIZ6Sri3W/nvqY7ej7DXbr/ZI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=K58GOQEloQ8zGZsYVXPCd/ClTPpt6X3K+lkd7ce1TfPZo8axDjR3mlaULp4hUa8UJwbCJ3mDQ3nJi2gy4CX7SSuA+F4K2gbczU1MrHMHZbtcVFA9I64C6ZAnf7JFL+1KBb+Ak2TNW3N2YDUtnIqhf5fT6GMdUHKh6t4hB3SdSic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=206.189.79.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [10.98.66.117])
+	by mtasvr (Coremail) with SMTP id _____wDnv_wOFnRqf5lsAA--.30629S3;
+	Thu, 06 Aug 2026 13:05:19 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.98.66.117])
+	by mail-app1 (Coremail) with SMTP id yy_KCgBXyKENFnRqQGiSAw--.12767S2;
+	Thu, 06 Aug 2026 13:05:17 +0800 (CST)
+From: Fan Wu <fanwu01@zju.edu.cn>
+To: linux-wpan@vger.kernel.org
+Cc: Stefan Schmidt <stefan@datenfreihafen.org>,
+	Alexander Aring <alex.aring@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Varka Bhadram <varkab@cdac.in>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] ieee802154: cc2520: fix FIFOP work use-after-free
+Date: Thu,  6 Aug 2026 05:03:28 +0000
+Message-Id: <20260806050328.422480-1-fanwu01@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,52 +42,157 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Message-ID: <20260806041338.VU8oSmj2lIxnC-0fMyrfkPXLf3qi7nQjOrKtLuqVbbw@z>
+X-CM-TRANSID:yy_KCgBXyKENFnRqQGiSAw--.12767S2
+X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
+X-CM-DELIVERINFO: =?B?zD6DNgXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
+	sfnVCjTgEH9dVomQuWcozCBBHzRKAK4G0UH2H3fB4lQ+lr007xFaOoG+XTwS7zUjcLREga
+	4iWHFLcsO4Je6co+FqOp9E6mavGmQbzmcFsnzP86
+X-Coremail-Antispam: 1Uk129KBj93XoWxCw4UJw1fXw15Gw4rCFWUWrX_yoWrCF47pa
+	nxWa93Kry0qw40k39xJF18WFn5Ca18Kay8Ca4xGas7AwnxAr90qr1SyFy0vFWrJFyvvayS
+	9rs8Jr45uan8AFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
+	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
+	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
+	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
+	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
+	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0E
+	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
+	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAI
+	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU85l1PUUUUU==
 
-From: Yong Wang <edragain@163.com>
+The FIFOP interrupt handler queues cc2520_fifop_irqwork.  On
+removal, cc2520_remove() only flushes the work.  The devm-managed
+FIFOP IRQ remains active until after ->remove() returns and can queue
+the work again after that flush, allowing it to run after the private
+data is released.
 
-ip_metrics_convert() only caps RTAX_ADVMSS at the upper bound and
-still accepts undersized non-zero values from userspace.
+Release the FIFOP IRQ and cancel the work before unregistering and
+freeing the hardware.  Keep the SFD IRQ active while
+ieee802154_unregister_hw() flushes the mac802154 workqueue: synchronous
+TX waits in cc2520_tx() for the completion signalled by the SFD handler.
+Release the SFD IRQ afterwards.  Destroy buffer_mutex last, since
+unregistering can invoke the driver's stop callback, which uses it.
 
-A route installed with "advmss 12" can later reach the passive TCP
-open path. When SYN timestamps are enabled, tcp_openreq_init_rwin()
-subtracts TCPOLEN_TSTAMP_ALIGNED from the route advmss before calling
-tcp_select_initial_window(). This can reduce the effective MSS to
-zero and trigger a divide-by-zero in the rounddown(space, mss) path.
+Install the SFD IRQ before cc2520_register(), so it is available when
+the netdev becomes visible.  Install the FIFOP IRQ afterwards, so a
+registration failure cannot schedule RX work while its hardware is
+being released.  Move ieee802154_free_hw() to the probe cleanup.
 
-Reject non-zero RTAX_ADVMSS values smaller than TCP_MIN_MSS while
-keeping the existing "0 means use default advmss" behavior intact.
+Found by an in-house static analysis tool.
 
-This matches the existing TCP_MIN_MSS based validation used for
-TCP_MAXSEG and fixes the bug at the route metric input point rather
-than adding a redundant guard deeper in the TCP stack.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 0da6bc8cc341 ("ieee802154: cc2520: adds driver for TI CC2520 radio")
 Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Yong Wang <edragain@163.com>
-Signed-off-by: Ren Wei <weir@nebusec.ai>
+Assisted-by: Codex:gpt-5.6
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
 ---
- net/ipv4/metrics.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ieee802154/cc2520.c | 51 ++++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 21 deletions(-)
 
-diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
-index ad40762a8b38..b9b97a0a5126 100644
---- a/net/ipv4/metrics.c
-+++ b/net/ipv4/metrics.c
-@@ -44,6 +44,12 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
- 			}
- 			val = nla_get_u32(nla);
- 		}
-+		if (type == RTAX_ADVMSS && val && val < TCP_MIN_MSS) {
-+			NL_SET_ERR_MSG_ATTR_FMT(extack, nla,
-+						"Invalid advmss, must be 0 or >= %u",
-+						TCP_MIN_MSS);
-+			return -EINVAL;
-+		}
- 		if (type == RTAX_ADVMSS && val > 65535 - 40)
- 			val = 65535 - 40;
- 		if (type == RTAX_MTU && val > 65535 - 15)
--- 
-2.53.0
+diff --git a/drivers/net/ieee802154/cc2520.c b/drivers/net/ieee802154/cc2520.c
+index 2b7034193..464e896e3 100644
+--- a/drivers/net/ieee802154/cc2520.c
++++ b/drivers/net/ieee802154/cc2520.c
+@@ -206,6 +206,8 @@ struct cc2520_private {
+ 	bool is_tx;			/* Flag for sync b/w Tx and Rx */
+ 	bool amplified;			/* Flag for CC2591 */
+ 	struct gpio_desc *fifo_pin;	/* FIFO GPIO pin number */
++	int fifop_irq;
++	int sfd_irq;
+ 	struct work_struct fifop_irqwork;/* Workqueue for FIFOP */
+ 	spinlock_t lock;		/* Lock for is_tx*/
+ 	struct completion tx_complete;	/* Work completion for Tx */
+@@ -857,12 +859,10 @@ static int cc2520_register(struct cc2520_private *priv)
+ 	dev_vdbg(&priv->spi->dev, "registered cc2520\n");
+ 	ret = ieee802154_register_hw(priv->hw);
+ 	if (ret)
+-		goto err_free_device;
++		goto err_ret;
+ 
+ 	return 0;
+ 
+-err_free_device:
+-	ieee802154_free_hw(priv->hw);
+ err_ret:
+ 	return ret;
+ }
+@@ -1116,21 +1116,10 @@ static int cc2520_probe(struct spi_device *spi)
+ 	if (ret)
+ 		goto err_hw_init;
+ 
+-	/* Set up fifop interrupt */
++	/* SFD completes synchronous TX; install before cc2520_register(). */
++	priv->sfd_irq = gpiod_to_irq(sfd);
+ 	ret = devm_request_irq(&spi->dev,
+-			       gpiod_to_irq(fifop),
+-			       cc2520_fifop_isr,
+-			       IRQF_TRIGGER_RISING,
+-			       dev_name(&spi->dev),
+-			       priv);
+-	if (ret) {
+-		dev_err(&spi->dev, "could not get fifop irq\n");
+-		goto err_hw_init;
+-	}
+-
+-	/* Set up sfd interrupt */
+-	ret = devm_request_irq(&spi->dev,
+-			       gpiod_to_irq(sfd),
++			       priv->sfd_irq,
+ 			       cc2520_sfd_isr,
+ 			       IRQF_TRIGGER_FALLING,
+ 			       dev_name(&spi->dev),
+@@ -1142,13 +1131,31 @@ static int cc2520_probe(struct spi_device *spi)
+ 
+ 	ret = cc2520_register(priv);
+ 	if (ret)
+-		goto err_hw_init;
++		goto err_free_sfd;
++
++	/* FIFOP arms the RX work; install after cc2520_register(). */
++	priv->fifop_irq = gpiod_to_irq(fifop);
++	ret = devm_request_irq(&spi->dev,
++			       priv->fifop_irq,
++			       cc2520_fifop_isr,
++			       IRQF_TRIGGER_RISING,
++			       dev_name(&spi->dev),
++			       priv);
++	if (ret) {
++		dev_err(&spi->dev, "could not get fifop irq\n");
++		goto err_unregister;
++	}
+ 
+ 	return 0;
+ 
++err_unregister:
++	ieee802154_unregister_hw(priv->hw);
++err_free_sfd:
++	devm_free_irq(&spi->dev, priv->sfd_irq, priv);
++	if (priv->hw)
++		ieee802154_free_hw(priv->hw);
+ err_hw_init:
+ 	mutex_destroy(&priv->buffer_mutex);
+-	flush_work(&priv->fifop_irqwork);
+ 	return ret;
+ }
+ 
+@@ -1156,11 +1163,13 @@ static void cc2520_remove(struct spi_device *spi)
+ {
+ 	struct cc2520_private *priv = spi_get_drvdata(spi);
+ 
+-	mutex_destroy(&priv->buffer_mutex);
+-	flush_work(&priv->fifop_irqwork);
++	devm_free_irq(&spi->dev, priv->fifop_irq, priv);
++	cancel_work_sync(&priv->fifop_irqwork);
+ 
+ 	ieee802154_unregister_hw(priv->hw);
++	devm_free_irq(&spi->dev, priv->sfd_irq, priv);
+ 	ieee802154_free_hw(priv->hw);
++	mutex_destroy(&priv->buffer_mutex);
+ }
+ 
+ static const struct spi_device_id cc2520_ids[] = {
+
