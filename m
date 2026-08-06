@@ -1,232 +1,250 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94EB235BE2
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 08:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B59D3EB0FA;
+	Thu,  6 Aug 2026 08:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786003347; cv=none; b=LuiMJDFFZX8XR1/wNkgphr1/hBDQGYCD1xehnnbtcsxaFCe3OZLkh5oesgkab1QshRutqz9TBpxySG15x8u8idjhQWOgz9KnS9aFmWggkfeGUoawDPluFMCIdlaZWRih64DsMydAG2zrLdPyC1t7lOht7WKhtWsEBUeO0LD98JY=
+	t=1786003457; cv=none; b=qQ1BeDdijq3UtXBEWud71pPmy5uuz+FV8bkwAF9wg8goBHlA/ZWPFMtREO/di89jZ9QO53uKPyck+5qr4nh46A43BrL5Q71XuKey7zeUVnX/S6yXXia4R8RAAP+70LuqROf4KLQTiSCBlCEaKIOnzfMhR0ccqYWOzlp2dHAPsPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786003347; c=relaxed/simple;
-	bh=nJtkqluur3G0up+EVhrevKqANhzQ9aabw7RDIDHZCUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iyp8nESFuxAgaaabTYfaNTjxN6N/H3+kszc+hXJSDpuPBX87lbspNFlf49mJrT2WWeNRryLrTlsOeExxbh8p4CCzxpc4Tjt8EA9VNNpI8LCNl+AZ3ZrO4bASn2bsey+4Awuoedd+fStKvZMEfqBH4ctRbtjSYBtAkwGCdrOaL7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egYFd4uf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786003457; c=relaxed/simple;
+	bh=jhRd/dc6vKyDGVFtZj+miSXfDVBtQ0dgQU5SCl885HM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aSu1UwoUmLbMQbGcXOEEXMbdi2kqpZcxjUhcirSS5QGHwluQdNpv2JagDQxWUDCr47vdAE7cvUwdODVKMMS5Ex1+B9xYmbYlTOJ7K+VpSfHmloBMNKSeQYmkzWUOfBJepNsK/OoIre98KI2OM2/jSS5BuqCR6masUArK3IfI2UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LB+s1/Jf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egYFd4uf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84481F000E9;
-	Thu,  6 Aug 2026 08:02:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786003345;
-	bh=G4mBrcplMMkvLk0VtoqgZz3oJibjvqjIg0cwoQjSO8Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=egYFd4uftcou2OI3Py4pJ/G23qlqTVM4ey/w9Mi1+qLdnuY5sybr+2Yr5Habu9JP+
-	 79UxBnx0Rbe3bkI7Ne+gw1/g2HAm4rKTnVL5Ud6qSqG0PMzUqF6fUGXtK4Yi8Q6g/L
-	 wG7/QeFKeT3f99W1lT4EveCsdPILhDrMxXguOdftJ/2dpKPM1pId1tOvY0Z6453qpb
-	 k+Derjlv5TM/omVIzJN+R2H/rAwdPRBxaCBhqKxo3CzU46TbrYFQtqSHUwlp0Wu35E
-	 yR75vEMfLOCFMSYn0rNUfNL89WpSL2cZ4+3RFpyZjWkQMfX+blmgYD7O/UwDnklD5Y
-	 LUWS4yBbBVGBA==
-Date: Thu, 6 Aug 2026 10:02:23 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Daniel Pawlik <pawlik.dan@gmail.com>
-Cc: netdev@vger.kernel.org, win847@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Christian Marangi <ansuelsmth@gmail.com>
-Subject: Re: [PATCH v2] net: airoha: npu: use coherent DMA for mailbox
- messages
-Message-ID: <anQ_jxeuxFH4vf1i@lore-desk>
-References: <20260805070851.2885888-1-pawlik.dan@gmail.com>
- <20260806072601.1815487-1-pawlik.dan@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LB+s1/Jf"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 39EFEC2BCB9;
+	Thu,  6 Aug 2026 08:04:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786003456;
+	bh=jhRd/dc6vKyDGVFtZj+miSXfDVBtQ0dgQU5SCl885HM=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=LB+s1/JfUpvLA/a/MeqF2iPwVS7fsphM/MFxHAeIuDmvTK4Pa7MUvrn5NwuEcZCxG
+	 QxmZctH/Jy7vc9pWhREmCOoPCk1WiwynB2is7f2aj9sYgsJrzVGIEbHCIBEQuqB/90
+	 x/QNqV7L0ELdJF5im1rL4ai3X36n+BaNJD03iLA0/NzikWFWwjINBcq7bZhC0kNVPf
+	 UqJglfTRX2CO+rHg+kTBBWaQY6k5RvseorQj3QnSK2L7UrN5Elcr8/IM3um2GI5Fp7
+	 +VzfpWprrlTVpsPCUICaCoAbwxjXHq7sv9PEUwQY1sUSzfCKStzQ44B4FTehmxU4nF
+	 DNJe2HkK7X7YA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11525C561E6;
+	Thu,  6 Aug 2026 08:04:16 +0000 (UTC)
+From: Zxyan Zhu via B4 Relay <devnull+zxyan0222.gmail.com@kernel.org>
+Date: Thu, 06 Aug 2026 16:03:19 +0800
+Subject: [PATCH] net: stmmac: dwxgmac2: add XGMAC timestamp interrupt
+ support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9tofzTosBcZJpMvZ"
-Content-Disposition: inline
-In-Reply-To: <20260806072601.1815487-1-pawlik.dan@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAMY/dGoC/yXMywrCMBBG4Vcps3YgBgnWVxEXufzWEVJrJtVC6
+ bsbdfktzllJUQRKp26lgpeoPMaG/a6jePPjAJbUTNZYZ47GcXovQ/bRcpUMrT5PLOXJIRz6ZB3
+ QJ1CLp4KrLL/x+fK3zuGOWL832rYPLvoGynoAAAA=
+X-Change-ID: 20260806-dwxgmac2-timestamp-irq-bb49d26ee9de
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Zxyan Zhu <zxyan0222@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786003453; l=7574;
+ i=zxyan0222@gmail.com; s=20260806; h=from:subject:message-id;
+ bh=1H2uDk15GprK4olxaBElieXZeWUvadUaP0WjWNuFWEk=;
+ b=meVt0tD1QaLl1n1yEJbRwW09U1bM1wvqktb5GfdqoAOAFhOfewOgrO8Loq6GiMIR+p60D5/DI
+ AFTKMi0DU21DaYMEyYTfar2YUS5ED3tyFTg5eAAAv3kyHgnkT4GYynB
+X-Developer-Key: i=zxyan0222@gmail.com; a=ed25519;
+ pk=9n789MT3lKb996clw/h0V/qpdwGmJqHCQwKFogLsWRw=
+X-Endpoint-Received: by B4 Relay for zxyan0222@gmail.com/20260806 with
+ auth_id=922
+X-Original-From: Zxyan Zhu <zxyan0222@gmail.com>
+Reply-To: zxyan0222@gmail.com
 
---9tofzTosBcZJpMvZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+From: Zxyan Zhu <zxyan0222@gmail.com>
 
-On Aug 06, Daniel Pawlik wrote:
-> Commit 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox
-> buffer") switched airoha_npu_send_msg() to DMA_BIDIRECTIONAL so
-> non-coherent CPUs invalidate caches before reading NPU GET responses.
->=20
-> On EN7581 + MT7996 that change regresses probe: the mailbox completes
-> successfully, but WLAN_FUNC_GET_WAIT_NPU_VERSION still reads as 0.0 and
-> mt76 never binds NPU offload. Healthy boards report 0.1111.
->=20
-> airoha_npu_send_msg() is also used from PPE foe_commit under
-> spin_lock_bh(), so per-message dma_alloc_coherent(GFP_ATOMIC) is a poor
-> fit. Allocate one device-managed coherent bounce buffer at probe and
-> reuse it under the existing per-core mailbox lock. That also keeps the
-> buffer valid if the NPU completes a write after a mailbox timeout.
->=20
-> Verified on Quantum Fiber / Gemtek W1700K (EN7581 + MT7996).
+DWXGMAC2 uses different timestamp status registers and interrupt clear
+semantics from the generic stmmac PTP implementation. In particular,
+reading XGMAC_TIMESTAMP_STATUS clears the transient TSIS and AUXTSTRIG
+status bits that the generic timestamp interrupt handler relies on.
 
-Hi Daniel,
+The TX timestamp retrieval path polls XGMAC_TIMESTAMP_STATUS for TXTSC,
+which may consume TSIS and AUXTSTRIG before the generic interrupt handler
+executes. As a result, auxiliary snapshot events can be missed even
+though the hardware has recorded them.
 
-I tested the issue you reported on a very similar hw (reported below) and it
-works fine for me
-- EN7581-mmc
-- MT7996 SoC
+Unlike TSIS and AUXTSTRIG, the ATSNS field remains valid across status
+register reads and therefore survives TX timestamp polling. Use this
+persistent counter to determine the number of pending auxiliary snapshot
+events instead of relying on the transient interrupt status bits.
 
-@Christian: Is the issue occurring for you? I guess we should debug it a bit
-more.
+Implement a dedicated DWXGMAC2 timestamp interrupt handler that reads
+XGMAC_TIMESTAMP_STATUS directly, derives the pending snapshot count from
+ATSNS, and generates the corresponding PTP_CLOCK_EXTTS events. Also
+enable XGMAC timestamp interrupts and hook the new handler into the
+DWXGMAC2 hardware timestamp operations.
 
->=20
-> Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buff=
-er")
-> Link: https://patchwork.kernel.org/project/linux-mediatek/patch/202608050=
-70851.2885888-1-pawlik.dan@gmail.com/
-> Assisted-by: Cursor:composer-2
-> Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
-> ---
-> v2:
-> - allocate one coherent mailbox buffer at probe and reuse it under the
->   per-core lock instead of per-message dma_alloc_coherent(GFP_ATOMIC)
->=20
->  drivers/net/ethernet/airoha/airoha_npu.c  | 31 +++++++++++++++++------
->  include/linux/soc/airoha/airoha_offload.h |  4 +++
->  2 files changed, 27 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ether=
-net/airoha/airoha_npu.c
-> index b679bed952de..dfa09fed907e 100644
-> --- a/drivers/net/ethernet/airoha/airoha_npu.c
-> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
-> @@ -23,6 +23,8 @@
->  #define NPU_EN7581_FIRMWARE_RV32_MAX_SIZE	0x200000
->  #define NPU_EN7581_FIRMWARE_DATA_MAX_SIZE	0x10000
->  #define NPU_DUMP_SIZE				512
-> +/* Enough for struct ppe_mbox_data and small WLAN TLV payloads */
-> +#define AIROHA_NPU_MBOX_SIZE			256
+This avoids the race between TX timestamp polling and auxiliary snapshot
+interrupt handling, ensuring that external timestamp events are reported
+correctly on DWXGMAC2.
 
-Are you sure this is enough for all possible messages?
+Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h     |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    | 41 +++++++++++++++++++++-
+ drivers/net/ethernet/stmicro/stmmac/hwif.c         |  4 +--
+ drivers/net/ethernet/stmicro/stmmac/hwif.h         |  1 +
+ .../net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c  | 12 +++++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h   |  1 +
+ 6 files changed, 57 insertions(+), 4 deletions(-)
 
-> =20
->  #define REG_NPU_LOCAL_SRAM		0x0
-> =20
-> @@ -165,17 +167,24 @@ static int airoha_npu_send_msg(struct airoha_npu *n=
-pu, int func_id,
->  {
->  	u16 core =3D 0; /* FIXME */
->  	u32 val, offset =3D core << 4;
-> -	dma_addr_t dma_addr;
->  	int ret;
-> =20
-> -	dma_addr =3D dma_map_single(npu->dev, p, size, DMA_BIDIRECTIONAL);
-> -	ret =3D dma_mapping_error(npu->dev, dma_addr);
-> -	if (ret)
-> -		return ret;
-> +	if (size > AIROHA_NPU_MBOX_SIZE)
-> +		return -EINVAL;
-> =20
-> +	/*
-> +	 * Mailbox payloads are bidirectional (CPU request, NPU response).
-> +	 * On EN7581+MT7996, streaming DMA_BIDIRECTIONAL against the
-> +	 * caller kzalloc() buffer can leave WLAN_FUNC_GET_WAIT_NPU_VERSION
-> +	 * reading as 0.0 despite MBOX success. Reuse a probe-time coherent
-> +	 * bounce buffer under the per-core lock (also used from PPE
-> +	 * foe_commit under atomic context).
-> +	 */
->  	spin_lock_bh(&npu->cores[core].lock);
-> =20
-> -	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, dma_addr);
-> +	memcpy(npu->mbox_buf, p, size);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+index 61b6d45a02f5..76e2860a9517 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+@@ -87,7 +87,7 @@
+ #define XGMAC_TSIE			BIT(12)
+ #define XGMAC_LPIIE			BIT(5)
+ #define XGMAC_PMTIE			BIT(4)
+-#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE)
++#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE | XGMAC_TSIE)
+ #define XGMAC_Qx_TX_FLOW_CTRL(x)	(0x00000070 + (x) * 4)
+ #define XGMAC_PT			GENMASK(31, 16)
+ #define XGMAC_TFE			BIT(1)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index f02b434bbd50..daef5225200f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -1150,10 +1150,49 @@ static int dwxgmac2_get_mac_tx_timestamp(struct mac_device_info *hw, u64 *ts)
+ 		return -EBUSY;
+ 
+ 	*ts = readl(ioaddr + XGMAC_TXTIMESTAMP_NSEC) & XGMAC_TXTSSTSLO;
+-	*ts += readl(ioaddr + XGMAC_TXTIMESTAMP_SEC) * 1000000000ULL;
++	*ts += (u64)readl(ioaddr + XGMAC_TXTIMESTAMP_SEC) * 1000000000ULL;
+ 	return 0;
+ }
+ 
++void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv)
++{
++	u32 ts_status, pending_snapshots, acr_value, channel;
++	struct ptp_clock_event event;
++	unsigned long flags;
++	u64 ptp_time;
++	int i;
++
++	if (!(priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN))
++		return;
++
++	/* Read XGMAC_TIMESTAMP_STATUS unconditionally.
++	 * TX timestamp polling also reads this register and clears
++	 * TSIS/AUXTSTRIG, so rely on ATSNS instead.
++	 */
++	ts_status = readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
++
++	pending_snapshots = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, ts_status);
++	if (!pending_snapshots)
++		return;
++
++	acr_value = readl(priv->ptpaddr + PTP_ACR);
++	channel = FIELD_GET(PTP_ACR_MASK, acr_value);
++	if (!channel)
++		return;
++	channel = ilog2(channel);
++
++	for (i = 0; i < pending_snapshots; i++) {
++		read_lock_irqsave(&priv->ptp_lock, flags);
++		stmmac_get_ptptime(priv, priv->ptpaddr, &ptp_time);
++		read_unlock_irqrestore(&priv->ptp_lock, flags);
++
++		event.type = PTP_CLOCK_EXTTS;
++		event.index = channel;
++		event.timestamp = ptp_time;
++		ptp_clock_event(priv->ptp_clock, &event);
++	}
++}
++
+ static int dwxgmac2_flex_pps_config(void __iomem *ioaddr, int index,
+ 				    struct stmmac_pps_cfg *cfg, bool enable,
+ 				    u32 sub_second_inc, u32 systime_flags)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+index 511b0fd5e834..9718582b8480 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+@@ -258,7 +258,7 @@ static const struct stmmac_hwif_entry {
+ 		.dma = &dwxgmac210_dma_ops,
+ 		.mac = &dwxgmac210_ops,
+ 		.vlan = &dwxgmac210_vlan_ops,
+-		.hwtimestamp = &stmmac_ptp,
++		.hwtimestamp = &dwxgmac2_ptp,
+ 		.ptp = &stmmac_ptp_clock_ops,
+ 		.mode = NULL,
+ 		.tc = &dwmac510_tc_ops,
+@@ -280,7 +280,7 @@ static const struct stmmac_hwif_entry {
+ 		.dma = &dwxgmac210_dma_ops,
+ 		.mac = &dwxlgmac2_ops,
+ 		.vlan = &dwxlgmac2_vlan_ops,
+-		.hwtimestamp = &stmmac_ptp,
++		.hwtimestamp = &dwxgmac2_ptp,
+ 		.ptp = &stmmac_ptp_clock_ops,
+ 		.mode = NULL,
+ 		.tc = &dwmac510_tc_ops,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+index e6317b94fff7..818ab3daa91c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+@@ -671,6 +671,7 @@ extern const struct stmmac_desc_ops ndesc_ops;
+ 
+ extern const struct stmmac_hwtimestamp stmmac_ptp;
+ extern const struct stmmac_hwtimestamp dwmac1000_ptp;
++extern const struct stmmac_hwtimestamp dwxgmac2_ptp;
+ 
+ extern const struct stmmac_mode_ops ring_mode_ops;
+ extern const struct stmmac_mode_ops chain_mode_ops;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+index b9a985fa772c..9d7d24259abd 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+@@ -277,3 +277,15 @@ const struct stmmac_hwtimestamp dwmac1000_ptp = {
+ 	.get_ptptime = dwmac1000_get_ptptime,
+ 	.timestamp_interrupt = dwmac1000_timestamp_interrupt,
+ };
++
++const struct stmmac_hwtimestamp dwxgmac2_ptp = {
++	.config_hw_tstamping = config_hw_tstamping,
++	.init_systime = init_systime,
++	.config_sub_second_increment = config_sub_second_increment,
++	.config_addend = config_addend,
++	.adjust_systime = adjust_systime,
++	.get_systime = get_systime,
++	.get_ptptime = get_ptptime,
++	.timestamp_interrupt = dwxgmac2_timestamp_interrupt,
++	.hwtstamp_correct_latency = hwtstamp_correct_latency,
++};
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
+index 3fe0e3a80e80..dade09614163 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
+@@ -103,6 +103,7 @@ int dwmac1000_ptp_enable(struct ptp_clock_info *ptp,
+ 
+ void dwmac1000_get_ptptime(void __iomem *ptpaddr, u64 *ptp_time);
+ void dwmac1000_timestamp_interrupt(struct stmmac_priv *priv);
++void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv);
+ 
+ extern const struct ptp_clock_info stmmac_ptp_clock_ops;
+ extern const struct ptp_clock_info dwmac1000_ptp_clock_ops;
 
-Even if it is a just a theoretical issue (we just use core 0 at the moment)=
-, we
-should have a per-core buffer since we can theoretically have concurrent me=
-ssages
-on different cores.
+---
+base-commit: 1df10cef2d1e7f9f2fb7eddb67fc70d3abf101f9
+change-id: 20260806-dwxgmac2-timestamp-irq-bb49d26ee9de
 
-> +
-> +	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, npu->mbox_dma);
->  	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(1) + offset, size);
->  	regmap_read(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, &val);
->  	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, val + 1);
-> @@ -189,9 +198,10 @@ static int airoha_npu_send_msg(struct airoha_npu *np=
-u, int func_id,
->  	if (!ret && FIELD_GET(MBOX_MSG_STATUS, val) !=3D NPU_MBOX_SUCCESS)
->  		ret =3D -EINVAL;
-> =20
-> -	spin_unlock_bh(&npu->cores[core].lock);
-> +	if (!ret)
-> +		memcpy(p, npu->mbox_buf, size);
+Best regards,
+--  
+Zxyan Zhu <zxyan0222@gmail.com>
 
-I do not like this double copy here. I guess we could pass a pointer for the
-reply buffer to airoha_npu_send_msg() and avoid the copy in
-airoha_npu_wlan_msg_get(). What do you think?
 
-> =20
-> -	dma_unmap_single(npu->dev, dma_addr, size, DMA_BIDIRECTIONAL);
-> +	spin_unlock_bh(&npu->cores[core].lock);
-> =20
->  	return ret;
->  }
-> @@ -770,6 +780,11 @@ static int airoha_npu_probe(struct platform_device *=
-pdev)
->  	if (err)
->  		return err;
-> =20
-> +	npu->mbox_buf =3D dmam_alloc_coherent(dev, AIROHA_NPU_MBOX_SIZE,
-> +					    &npu->mbox_dma, GFP_KERNEL);
-> +	if (!npu->mbox_buf)
-> +		return -ENOMEM;
-> +
->  	err =3D airoha_npu_run_firmware(dev, base, &res);
->  	if (err)
->  		return dev_err_probe(dev, err, "failed to run npu firmware\n");
-> diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/so=
-c/airoha/airoha_offload.h
-> index 7589fccfeef6..afd481233489 100644
-> --- a/include/linux/soc/airoha/airoha_offload.h
-> +++ b/include/linux/soc/airoha/airoha_offload.h
-> @@ -179,6 +179,10 @@ struct airoha_npu {
-> =20
->  	struct airoha_foe_stats __iomem *stats;
-> =20
-> +	/* Coherent bounce buffer for mailbox cmd/rsp (airoha_npu_send_msg) */
-> +	void *mbox_buf;
-> +	dma_addr_t mbox_dma;
-
-you need to move them in airoha_npu_core struct. Please rename them to:
-
-	struct airoha_npu_core {
-		...
-		void *buf;
-		dma_addr_t addr;
-		...
-	};
-
-Regards,
-Lorenzo
-
-> +
->  	struct {
->  		int (*ppe_init)(struct airoha_npu *npu);
->  		int (*ppe_deinit)(struct airoha_npu *npu);
-> --=20
-> 2.55.0
->=20
-
---9tofzTosBcZJpMvZ
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCanQ/jwAKCRA6cBh0uS2t
-rEesAP9YwI3B8KcL0t7IuGBi4EsnYjyf9b2tfEZ1b4GfKQTmuwEAvsXTkH8KLaTN
-02bD6Xwo5rgejGryitnWS/humdqftwM=
-=Fp5W
------END PGP SIGNATURE-----
-
---9tofzTosBcZJpMvZ--
