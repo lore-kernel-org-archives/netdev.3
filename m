@@ -1,148 +1,119 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E6D25B2F4;
-	Thu,  6 Aug 2026 08:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D0B41F5EA
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 08:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786006239; cv=none; b=qg82M7KqETtbyeDxP8hZbJJSro2eE8Ul+SyBrbcMZewiXhh9AxN1LeBO2a/677rLkMBM9zGtWkvgVZuSWrbw8DUDOdAZJSuCWxHIn4DVC1Cxu9vEMUOioFM7r5GEOewEHGIR7OpVqVR8CqFx+6PuJRFleOBPKEhIey5Fmi9EelU=
+	t=1786006280; cv=none; b=Xt1incp+YuJuErHacTaBS3IeGQD0IUl9Le6blbD6geaLyGKm9dezh1Eltn8XKke4EK3OeEYYJPtNHbOZSol/XHqvC25HoMKZU00FEMoJUXMy6AIarrQT1X0QP24xEgRF3Js40S210Rky8aZadzpG5hvNa+GPtn57p0/NBWNuk88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786006239; c=relaxed/simple;
-	bh=vyzg7piNovw7zLe8IegZE+HcioBWNVQ+zkupiGhfNU8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hNVanRyk2j5UuvrLwtnjhJsddhOrb0SQjMHzVSZz0UCNc+wD03FdNtMCtI4gSI9rd8C1UjdAINOMhPb7jZ6U0RaJi+xzhceksWL4FO2RtOYNba0ZloPrlXGu1H3xwGjjxw2F/iqkEI6FgUHGyYZhGjMOhdoISXXguuGD/kU2+Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mTenKd7h; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786006280; c=relaxed/simple;
+	bh=VYNwMztRwRXx9k730Dk3Q56fjlxa2ePzx4k0C6SvVLE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MT3uSq4IjX16d4ywM2i8E2Y7LYh3Fq1VZ3yz0lzf7UQavnCrNxYj6Ehxw8CgxtLyCGh5HL2i1xBqzSsgWIn1WQ3PcAGhx1Q9EN7pFvuyQqkN0eD9HxIu04anm5vbEiorUow7weUGMA+eUf/BWc6hJYITbMAjiPXNZSBxhsMKzMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=evalinux.com; spf=pass smtp.mailfrom=evalinux.com; dkim=pass (2048-bit key) header.d=evalinux.com header.i=@evalinux.com header.b=AkmTgDro; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=evalinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=evalinux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mTenKd7h"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675NlgRS1066119;
-	Thu, 6 Aug 2026 08:50:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=W9qg6B
-	U5J2eP2WtS8IpkXouMPnmOqejfPhQHyKQJA8g=; b=mTenKd7hAqz4S8aXZbjOlu
-	wxaXadW3QskvO1IefQOGunFsC8q5ZbCaI/4sPyw4znT6/9MmxdOUEyFJ1fyAE7th
-	6Jnr7oPhcTvq7hkoygAfJabctfAN2FQ8g+jIxtIyLD3Qe+paG2jAoW7WfVqoF9dW
-	yAv7jCGpa0vUkP6ZYtnJ1t4gfuXoAHq9XuWsffpJxcpR98ANxqaIXeKxftr/gBsv
-	IrQWqBFhIO7Q+KG8uzLCUIaKEzQZ/kS9yTvxI7RYko9O4OKb9webtyowoQdkzWim
-	bUJrpokbKKJqQnThYrZF6d7S6gssGQOpzS4hi1aj5aa/vQqXCaTBAVnCd+KHZPRQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a478jq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 08:50:30 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6768fZgu002570;
-	Thu, 6 Aug 2026 08:50:29 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtyt6wa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 08:50:29 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6768oNwJ30081452
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 08:50:23 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C470620040;
-	Thu,  6 Aug 2026 08:50:23 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6925320043;
-	Thu,  6 Aug 2026 08:50:23 +0000 (GMT)
-Received: from [9.224.91.49] (unknown [9.224.91.49])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Aug 2026 08:50:23 +0000 (GMT)
-Message-ID: <b4dccacb-e129-47eb-9b17-aaac13d9fa9a@linux.ibm.com>
-Date: Thu, 6 Aug 2026 10:50:23 +0200
+	dkim=pass (2048-bit key) header.d=evalinux.com header.i=@evalinux.com header.b="AkmTgDro"
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7eb63dbd229so541818a34.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 01:51:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=evalinux.com; s=google; t=1786006277; x=1786611077; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+G8Jh3KWSQ+T8cmi2Vu2z+BX/sE34SkYPOmIBWZpXy8=;
+        b=AkmTgDroiFqKzWddz9MBrQtRi+MbfFu8Br6gqmNCsOkFZriAY1/U3fDLF9Tb9lsoNa
+         Vl19M45kEQBU+LAWrxw5p8hLrCtAXMvyJJvwsNzib+wLwB2j81LLX0jYlg87ZzoWJcoU
+         JJ8YZ3pEGlRftfvzcldTNQ++/j3T9NEWi93Xs0cdY+BwHGNXycuZytHb0pbIvoszxgaE
+         z49CjbVyhYSxt30agKilj3XlaGQDMgIWd1xPOq5XhOKefonp82fWASNQcOjDnVboyEAf
+         6mNgvfb2LzI5+6oKf3d07/C1gq1BuXaNdiSGai4bjEMvq2+zOpAx9s1KeNtB7Buy+ohP
+         Oa/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786006277; x=1786611077;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+G8Jh3KWSQ+T8cmi2Vu2z+BX/sE34SkYPOmIBWZpXy8=;
+        b=HiZGMjBgefqKRDeiVugSlOSGRBnLEA+KWcS4f+238vsWR1FQLaQ8sI3eaqXVdHrqhB
+         rokMbD52jKO51Tfk/MmFrZ29FrAYCQIPudP0zHG6AXBvohb+u7xE/QB76TmKSAlQIBFH
+         nJFp2QJ8mmDPmXSQomhh5grJ9qOm4tpOWbHguvU95JvCzYNNNS2Jomb9PhjchqdUffUD
+         XQJTq+LV23v2iUbg9vn5GXle/4DuN/qwu8wgezya5FNbZPhJjmi3GuVYXQ1jvGCiv7JB
+         m+j1AfK5n68o+bex9mbf0MIJbDPpU+rej0CZqHq355YDIhtVPbSiSJ4OCS5Nk2D6Y25D
+         BOIw==
+X-Gm-Message-State: AOJu0YyJho8/iqa9C6jWmt53NubVIQcwyQivD5lCDx4bjGy611x+7CRJ
+	IZsJt1x4mOo1RkQkV8c9LE6vMjBAdy8g45F69MmuAYXfUhF8j2TjoXIZoaE3dBVGQIcuwD4raCB
+	RTtFVXLng5w==
+X-Gm-Gg: AR+sD10LW/TzrBswP2YDQh+BZ1gaEaLvqlr+zBDgHUltzKw/v72W+L1s8BXfWX3jfIr
+	hza/gUSwTHdKXGhNl+eGX/of7dmROzQNWle+ANXcblUCS88c/XqM4lqnb0CfVf9GpD0AqEy3L1e
+	s7XbUblgzH4X6Ja6Eu3/bHI52IQSNLtbIm6ukdDhaF3hAsuOi0XdncV0f2GEbmqgub5JI0jbP94
+	4JjpXRqtNSGja4eCWrzpofEJ4r4SvQePccSF9sIXmqE/Tqjn0x+Xnp7MqD2TAxyhgU+5VmHzEST
+	YLtIEdTZrHudS8E4Y+gwRlDCLQhb0/klZwihNgVqmXMtchKDC9LXTKBe0sWJYVUvpgA35O2rT1d
+	g2ut/H0FRAJdcuVGjTnbVRpvIC+2YBGMN3kJRSco/B8xX/KKTS+0gyg3dxVnigpRTG5N/KDOHBH
+	Rg7rCvoOeipyC0u5Oqjg2p29Cu84zUdu8FFCOpAbLoSsLFVker8cWGSZjubT5sTS2g+MrEcXq0S
+	es7eVXxy+unbw3Nkviy5AoK1lDr+aY9dydUZZbgSbabPQAr7w==
+X-Received: by 2002:a05:6830:348c:b0:7e7:24f9:55c8 with SMTP id 46e09a7af769-7f344381203mr811596a34.5.1786006276977;
+        Thu, 06 Aug 2026 01:51:16 -0700 (PDT)
+Received: from desktop.casa.g02.org ([2001:470:1f0f:2e4:14ce:9fa2:a97a:cd20])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f1df2fd11dsm4088528a34.5.2026.08.06.01.51.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 01:51:15 -0700 (PDT)
+From: "=?UTF-8?q?R=C3=A9nich=20Bon=20=C4=86iri=C4=87?=" <renich@evalinux.com>
+X-Google-Original-From: =?UTF-8?q?R=C3=A9nich=20Bon=20=C4=86iri=C4=87?= <renich@woralelandia.com>
+To: netdev@vger.kernel.org
+Cc: Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	=?UTF-8?q?R=C3=A9nich=20Bon=20=C4=86iri=C4=87?= <renich@woralelandia.com>
+Subject: [PATCH net] gve: use gve_schedule_reset() on AdminQ flow rule timeout
+Date: Thu,  6 Aug 2026 02:51:12 -0600
+Message-ID: <20260806085112.385934-1-renich@woralelandia.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] dibs: fix use-after-free of dmb_node in loopback
- attach/detach/unregister
-To: Hidayath Khan <hidayath@linux.ibm.com>, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
-        sidraya@linux.ibm.com, wenjia@linux.ibm.com, mjambigi@linux.ibm.com
-Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, horms@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, pasic@linux.ibm.com,
-        gbayer@linux.ibm.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260727093530.968834-1-hidayath@linux.ibm.com>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <20260727093530.968834-1-hidayath@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a744ad6 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=1GTpPYFZVA6rkABA6Z4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 6aaULCIUy4kvxIy1XHVC1NmXXX0v7m4z
-X-Proofpoint-GUID: aY5aSJ1ETf1IZwi7RIyS2iq9e0OEtbae
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDA2OCBTYWx0ZWRfX2diKg/jQ6hbV
- +2W/lvMw7LwOmD+upst1rAZ0Y8L/zzoGGyI7xup04OhaX/jrJcQHRCaEuVAIeXFS+//yK66s0By
- cFym9MvRDtMemDqXhUujfiMb4nq0iSg=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDA2OCBTYWx0ZWRfX7bdPHelN8daI
- K2IVOf0iv+0pzLl2IH27ziDMPq2LyylnEi5gJjSxiVVs6CrWBk2+re+zvW9Qwwfjt+jhMuOgqnm
- zO6s+RE0v1LvLMU9y5vj9IWh0rNWRDLEIw3B2RjpcCoJHchM0Qe+t6kBOp30ypT2Hq3E/oMpVw6
- L41QTWhHeHYy3XOMDt86UIlZv/1LejH5CBlHtwb9fDVGVV4RpYmcloEeP0QbKigTAkxUHIP7fmq
- Gmu/00vgqg4o1UoB2XdBigJQPMXqAZSIbRdHyhiqV3jDJDv4LkCjB/IPerHhLEMWRg3FzyAcA0c
- ovMovE6J6FcjVeO3FTr919J/nwomVS1UY8dC78KqKCABSllLUh6YEdYBtNZY9OuS4evxAa70jkg
- jp57973iN1hQvfl2sc9QtbujFgC+8zEujE7lMW+3sMvsXtORvDlcvyz+LRhewZrF2SEcZw79OIh
- Vw1wEHoZ7+IxaA+8dXg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608060068
+Content-Transfer-Encoding: 8bit
 
+When an AdminQ command to configure a flow rule times out in
+gve_adminq_configure_flow_rule(), the driver currently calls
+gve_reset(priv, true) synchronously.
 
+When flow rule configuration is invoked under netlink or ethtool
+callbacks, gve_reset() attempts to acquire rtnl_lock while already
+executing within an inner driver lock context. This violates the driver's
+lock hierarchy and causes an AB-BA circular lock inversion deadlock.
 
-On 27.07.26 11:35, Hidayath Khan wrote:
-> dibs_lo_attach_dmb(), dibs_lo_detach_dmb() and dibs_lo_unregister_dmb()
-> look up the dmb_node under dmb_ht_lock, drop the lock and only then
-> operate on the node's refcount. Nothing keeps the node alive across
-> that window: __dibs_lo_unregister_dmb() removes the node from the hash
-> table under the write lock and immediately frees it.
-> 
-> A concurrent final put can therefore free the node between the lookup
-> and the refcount operation:
-> 
-> CPU0 (attach)                     CPU1 (owner unregisters)
-> 
-[...]
-> 
-> Note: commit cc21191b584c ("dibs: Move data path to dibs layer") moved
-> the code to its current location; the race was introduced earlier by
-> commit c3a910f2380f ("net/smc: implement DMB-merged operations of
-> loopback-ism").
-> 
-> Tested SMC-D via ISM and dibs loopback.
-> 
-> Fixes: c3a910f2380f ("net/smc: implement DMB-merged operations of loopback-ism")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
-> Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Resolve this lock inversion by replacing synchronous gve_reset() with
+gve_schedule_reset(). This defers reset execution safely to
+gve_service_task out-of-band under the proper lock ordering.
 
+Fixes: 8ffade77b633 ("gve: Flow steering trigger reset only for timeout error")
+Link: https://github.com/GoogleCloudPlatform/compute-virtual-ethernet-linux/issues/93
+Signed-off-by: Rénich Bon Ćirić <renich@woralelandia.com>
+---
+ drivers/net/ethernet/google/gve/gve_adminq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-For the records:
-Deeper analysis showed that there is no path in the SMC code that can lead to such
-a race. SMC currently is the only user of dibs_loopback and was the only user
-of loopback-ism.
-So the stable tag was not really necessary. Sorry for the noise.
-
-
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index 08587bf12345..2037b1767890 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -1322,7 +1322,7 @@ gve_adminq_configure_flow_rule(struct gve_priv *priv,
+ 
+ 	if (err == -ETIME) {
+ 		dev_err(&priv->pdev->dev, "Timeout to configure the flow rule, trigger reset");
+-		gve_reset(priv, true);
++		gve_schedule_reset(priv);
+ 	} else if (!err) {
+ 		priv->flow_rules_cache.rules_cache_synced = false;
+ 	}
+-- 
+2.45.2
