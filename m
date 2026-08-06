@@ -1,90 +1,128 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD96138332F
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 13:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786024396; cv=none; b=NJ6L59xboCM3XbAVMmwZy9swUaTBj9QIuXjlutJO9dQkvWxePz+7dUwXjDCi+0O1pBgpZV+o25mst6/Yp6AUOyISIuJGhCXiF6h6klXXgCsW7tCD49lquYf+1lvN4sz4NosJz7FA9P124ZlFMmr5lU49Ds1ocXoPMPY0yPrSJ8E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786024396; c=relaxed/simple;
-	bh=m2qiwyT0gBlgrPaEvfZGXkwH8PZ+oMXWE+y7LnPQMIc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l8J7k/Mk5IQhcKp4DaBL+JFVcbhk23brbE+cS67KFQNPMpa5RCtoKDZkPEuYAW/IxLmI4c+jboopCpIFb6mCmdUwMp9A+5cT4+ZYbwRg/aR8pT6L/kygv/g/AIpploGG+2e89RaRXrcsiLKIF32u088nYuJ2qQ4lSXyA/Z5BaDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d11aICYu; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45D73BB57
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 13:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786024672; cv=pass; b=kSy7ypc0iyrW3z9t0T9B1x4RtCnUzp/iAI7MkGwLzyH5DNAb0Hbgl1JaX2IMguBffuNaHe4apf4efyTUN3dKxuvJkQ8NcG8oGjk8Ux46rOwSeOdkej7b60Ax9RMV0TRVTaWduvImIFnqIZ0UiVYHZ0HfNxubtWSVcZvo+TvnxnA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786024672; c=relaxed/simple;
+	bh=2ya3i8zIbAEPcq2JCgLNEDHfkI8cLCbfbam0EgFIsxc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Axnlu1A83LVKjXQoRKXBhAYUb9QKZQkrqC8lVkjAIUGpMRzSr5RgW16A0lKbvzh0K7NrLBwF4KF9+4h08FKXzZ4nF4IvvWFvZp+uP2Inygc6iW5ZILB2uza1nX4UteY1Vjwoj4WlOcep+BcLGwtHlGhOGxl8igUhwHyfANwwThs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VvQ+wrFo; arc=pass smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d11aICYu"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cc88e22f92so47547895ad.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 06:53:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VvQ+wrFo"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-526f963372aso14308551cf.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 06:57:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786024665; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FTrJAkxHP9YtLW/FI8uvYImS1v/CnkmcaWcbCkIMCU5zRWeCvUaCv22lLcNWzA+NVP
+         NybDKHMaWLUC1CJYxGYXiHwyMAWSExJp7PORHb/t7kOcZ2BtcRlH6wrgXhowkUNPj0Y5
+         A2Csxa3cUoEdeEqDMOHT22I7mGpvqlUjMAzy0JymFholrq5twV8pf+7EUQNfR/JJ7Wmi
+         zyGX3q+WP0n1Vr+HT6qAeTfozjC9ARmvfAY0+jQDCmlJCRpsL7xCOEY0vXZAWEmKIilM
+         bMWJB6D6GCGVp8pIhe1R4ZOHeqhLzJVBmGacsISwOyDHMwIrLAdj3MUYUp0TDAAU3n21
+         McuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mr25bz4WYD908xln+GZjqSa00KUjLVD7uMNNkWz1EX8=;
+        fh=Lts30M8VImbvDvH0Vy98D6L9eyHhXhhDH1Tj6VtdDJY=;
+        b=fb+0ddmNPJJ4bqBwaaXHDQ6kTtuMkBDfCqortS9PQK1lvgi1sGJ+7AtKlelh31SwUV
+         LyN0DoSWwGk9uYevwbF7lp+0pxerJX+f1KpBPhhXGsNNdc2dGTzBakwu+CF26+oYl5gE
+         dOKJsGUEATTe7vUQ/zVY0ygvmRp2Beou8PlOOCdAtnRtsEArq7da+4AfX9WeJn0MYsgQ
+         jXgJWXQ0LN2Zono1iP/Zu8h1460NoeUvvQpjuT6tWE9JQTJvLq0Tni3UoiINuQDPkux9
+         1BzNFXonlnexBTWfNzCetTfRP84Jj/mEWbOu1lDrl5m9rB1cA7ngzi5Wg68fYzeSFw9O
+         WDkQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786024394; x=1786629194; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KurGLp5j0TRPb0GM1o+RkfUsTRyZPXyOf0pcclYokSw=;
-        b=d11aICYu7WC3NMAQesLKIyF3pFUcsgX5lOPiMsGAGsrIIYHz0V1+gOXIwZ/X0waLvA
-         f87YmyDWxFvRnj+f4OQ2OJC3E5GH+YkEOATcXe84KaKw8fGoDsvM48GDYOSPHe5AJod9
-         +MZAI/m1Wjtb8deX3teBA2S1ezrZXZ1p31aH3yDokfNEiXF2jVudJ/3OXwx/bU5q4eBC
-         aEIUZQiiJmft0gXdsblwvIav63zYdcilCdXryd8S4zBn8DrcI4iz7YDQMx/J8IJdrI+y
-         tW6N18k6RsLV9zLS8p0RuLWa7chCxFOrvW8OO5mH5d4H5fkqeAGLcBfS/TYJrDsbAhY/
-         ceAA==
+        d=google.com; s=20251104; t=1786024665; x=1786629465; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mr25bz4WYD908xln+GZjqSa00KUjLVD7uMNNkWz1EX8=;
+        b=VvQ+wrFofl6lK3aqzlRQLMso7TMqtlcoNhlkbgnC5Yeti22mDCRncbsYtQofrC58/L
+         7P6FJGBgPZb2nuSH8qgR/D+KT7/tnCnvxpkvRwS/XJtRpe28Y1i46FAaeDlPB0IiZCtc
+         Vxm5EnyJf3E6JPPDOq60N1M/nJjqMTlC2njKtQbXfVuovz4B7R8X9HaIy4MblaYIspUO
+         X5oXTiVndMizwc7F4FWg1Ryu2v3r58NidvyWOMjbxhYKY7Xqi6qy6XJi53atiWaOQA70
+         RdYucKJEGxJWt/vcIRwgBk9yzhYG02IyOJhjpTfdkhvv2bslwyjtQ9OZfE2egrVms8S1
+         +V8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786024394; x=1786629194;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KurGLp5j0TRPb0GM1o+RkfUsTRyZPXyOf0pcclYokSw=;
-        b=DRA+6JIYVB1lDiJqDWkCrOIhZB6Au+klFwEEYGifldqLEwF+3ReQqHRvr6N7j2N38Z
-         iE49pf1s7VidwUZmJHonlyNsPIwpYugHQXrzd3r0/x8IQtiZCt3/lccgxxqJzEofDGA1
-         j0/bi88wvEAogI6XEG0FLiy2mCnn13HfENUUBLOQXOleorWoa1TOOFjTKOM+bdjzv57J
-         NuPuB4V6QVevTZ90S1K4mVpV0/y08ltWz2O8fMbwD5YUgHRq03c8PZI1C/Yn6bk24/2b
-         wrg0hdlwfgfjfXj5llnCDOmShUkMqJy1hP2GZh67sSLTVK7aVg9x7XjlJQCt/MVOlzra
-         PEMA==
-X-Forwarded-Encrypted: i=1; AHgh+RpDPWUFgQMPwVN+zeIPxXeQkIFhs9izeG/HfhkV1/ws5m/zRkp+SNYb+ZKvWSUs1oWJ8QZnBjI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxctQHHCPVn4xR4RGJiIL2N2vquah8GreezT00VHn2YUz2KR1DT
-	EUg92DI3ChYFb84c7gK8Ldnun6EMPw7BlFcK7HkyJ6w3ed34CxjC3OW6LXx1HTSP5G5GGWWZVf5
-	StFeFIw==
-X-Received: from plao6.prod.google.com ([2002:a17:903:3006:b0:2ca:da0a:7296])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ebc5:b0:2cf:906c:7d1
- with SMTP id d9443c01a7336-2d0ca946776mr183858535ad.20.1786024393599; Thu, 06
- Aug 2026 06:53:13 -0700 (PDT)
-Date: Thu, 6 Aug 2026 06:53:12 -0700
-In-Reply-To: <anSMBpQJ8x-vXYy2@sgarzare-redhat>
+        d=1e100.net; s=20251104; t=1786024665; x=1786629465;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mr25bz4WYD908xln+GZjqSa00KUjLVD7uMNNkWz1EX8=;
+        b=rZI78j4gVc3Z2JosYw1Agzsdbkg8GTEjOLUNhyvJL+mFAuikilreCl1jQqG2Ns2Xdi
+         DFodr8po+wG9NNlsURW4rRvIsAkoGLBFqnKW6571lb/D1F7ZMh5wP5H0T0rXno3Qz/7C
+         IrC+gPnFK27SBiAppRMIv4Ras/I4O+rC65HPp0ZMffSoau05hvxvDrItQduiJADjY/T5
+         pULsAytcpk2SZse5Mts7JQk65GFR2aLZVic13w5QtdYQlnsjw/n6SgoFUXpyqmRuif6U
+         +YyhY+i1mizp0pNrLRPhQSUruWkGmMk7bbV+yIAFCIse5CwwLAtWPexH6ZfFNwt8FB+G
+         oLYg==
+X-Gm-Message-State: AOJu0YymfD0q1gk/RuUQdIpEvFjzSX2Y5j29WF83jJxFxUX47Las6ihB
+	sYEs2mhUQtSf1sTAjx73l3wpiDXP5aH15Eeiqt47fOIyGeXlca499CvL932ZK8Uilq7Pwl1BU5v
+	jGTN2ivAMn4J4xjOKqQKqa7EbfD9wD8+uPg7tOxuzn/l09catAT9hXfFgVLA=
+X-Gm-Gg: AR+sD11KLF3QjZG+ARhoiqnPYYb9IBCxwL+KWkkVpzbqaG2HPEu2sYbeNNegvlkqjuI
+	/1Ma3RpuwTkbDGkBBzc4O+GrBB0+liSzk+yxREjpBuG7CVwQm6X5bHlE4WFyeAzmYaV/IkimHAI
+	eP6u5paIR9Ig0CdE2RYMlQnnCpm9XZU/8kH68Fz7hezt74dk1QXsakXtwfF3BW+hFRdKK7EaHsU
+	fKN8eEW2XnBAKJFcbcrdujHTELb1h5c14dw66aPgIzKmRLnVzSghnizYKvGSnvFn0Wt0yMjfOYV
+	SJ7Dg9t0bCAm5vWRzFX8MLbroM6eNHVBkNDcLssHrdCqsNG93byXTA3zQ01iA/iNRZhy8y9QZWu
+	4qauFmoVX9NfphQhNyGxygGPL/FZcWp8E1rUqOyWYv1wxdV7kKPVe2CKJO05RPRdVrP0=
+X-Received: by 2002:a05:622a:428c:b0:51c:9193:fd9e with SMTP id
+ d75a77b69052e-52ce5ff10e7mr166286881cf.15.1786024664059; Thu, 06 Aug 2026
+ 06:57:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com> <anSMBpQJ8x-vXYy2@sgarzare-redhat>
-Message-ID: <anSRyFTNGC-XcFM1@google.com>
-Subject: Re: [PATCH] vhost: clear vq->worker under vq->mutex when freeing workers
-From: Sean Christopherson <seanjc@google.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	mst@redhat.com, stefanha@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <73ed3aa5-f6e1-47b6-9e5d-428ac1f4cbf3@I-love.SAKURA.ne.jp> <2175f74b-00c7-4868-aea5-ed9c171c41ee@I-love.SAKURA.ne.jp>
+In-Reply-To: <2175f74b-00c7-4868-aea5-ed9c171c41ee@I-love.SAKURA.ne.jp>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 6 Aug 2026 15:57:33 +0200
+X-Gm-Features: AUfX_myG8SCnGUBN5X8T9tgPA192vjaBFrk_7Cq04bhIr6BKnSomCuQHSJPzzVM
+Message-ID: <CANn89iL-ghxRFqSGeqpOfxNnOdyBRO_Nik+6chu6-eLw-wdTOw@mail.gmail.com>
+Subject: Re: [bug report] net: udp_tunnel_nic: reference count leak during
+ network namespace migration
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Network Development <netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 06, 2026, Stefano Garzarella wrote:
-> On Thu, Jul 23, 2026 at 06:33:10PM +0300, Andrey Drobyshev wrote:
-> > The effect is harmless in practice, as this only happens while the
-> > owning process (and thus the whole device) is dying, but the lockless
-> > write is inconsistent with the rest of the code.  Clear vq->worker under
-> > vq->mutex, like everyone else, so that all writers of vq->worker follow
-> > the same locking rule.
-> > 
-> > This issue was found by Sashiko AI review.
-> 
-> Can you share a link to the review?
-> 
-> I don't know if it's common or not, but having the link in the commit or
-> after --- will help the reviewers.
+On Thu, Aug 6, 2026 at 3:18=E2=80=AFPM Tetsuo Handa
+<penguin-kernel@i-love.sakura.ne.jp> wrote:
+>
+> Ping?
+>
 
-+1.  FWIW, I've been using and encouraging the "standard" Reported-by+Closes, e.g.
+Is this a dup of
+https://lore.kernel.org/netdev/6a632b15.dde6c935.cf6c8.0011.GAE@google.com/=
+T/#u
+?
 
-    Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-    Closes: https://lore.kernel.org/all/20260625212001.3B6561F000E9@smtp.kernel.org
+If not, please send a patch.
+
+> On 2026/07/18 21:03, Tetsuo Handa wrote:
+> > Description:
+> >
+> >   syzbot is reporting a reference count leak when a netdevsim device co=
+nfigured with
+> >   UDP tunnel offloads is moved to another network namespace, and then t=
+he target
+> >   namespace is destroyed.
+> >
+> > Cause of the Leak:
+> >
+> >   The root cause is a structural mismatch between the namespace migrati=
+on logic in
+> >   __dev_change_net_namespace() and the unregistration path in udp_tunne=
+l_nic_unregister().
+> (...snipped...)
+>
