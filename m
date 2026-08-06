@@ -1,243 +1,97 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta1.migadu.com (mta1.migadu.com [37.59.57.117])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8819E44E046
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 20:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3C4494805
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 20:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.59.57.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786046776; cv=none; b=lZZEOSzR2asi1ULiH5bKc6XWHqb5MCOUMFsxLGPP9PR7gu/GXhV6AHDG7n/yjOEact30CuGqXv95DGN2NvWYR8dpl+DzX2iU5h697O0gAgFPuFUvVYuSXypgaaCazZqk228J73hr9+AyrOhUGOxQMYN62YOq+FHPo0GZnm3g5i8=
+	t=1786046777; cv=none; b=owBbRuw1QIh/YktLij3/UUcetaToFJr9FUYzl0eOtp0qhojnGNAPceOWO2Tsmu0PohNsghpAmGqxpnUQ5DrLMxpjXzRbDSF3D6bV7IF8FCS/DPQesbTs0jMp5AOTSPQBNGciBhbhFsKDA4RQGTR8De8c3T0jtX+YhnIh6kUV3CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786046776; c=relaxed/simple;
-	bh=4yjw2zsE7pLA/X5wVKxsc5NH0WMSyFKwZIveFBbGQnc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iNYdwZaaqvVzkxs1FHmpq/Nuh6ckccpHC0ROJMaJlKYtHDKCvJTJ8IdqJeKgPVhD2zgt3K2SzgJR1rh9fOFNEg7yrRDJtC1oqCjKIHFHyQz6v332hoyARk3nGMLwMGQL/OVF/qIFHO2iYpjhW/b+AZtZjnrAcl8ArdTwvyPHQHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nsu7R9d3; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
+	s=arc-20240116; t=1786046777; c=relaxed/simple;
+	bh=/ru28ls5Ob9An0DGNn71eBrPlRAIK6ScDMc3dBMET14=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DB7gSYKGl/buI5tw0RMpDD3MXIy2G7C9KtE8MxmF4NuKZYpRm2UvnGpIu/LLZ++Mklry5W1ZSozOm8d/bhLWZ9X6Wv7OtKDDLs6N4lyevKbr97nht/Q0a374asR4IB6b/9DKoRBme5XFMGimbM0THYvU4FlJj8KF6/EEcZ21DAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tOMvjkWq; arc=none smtp.client-ip=37.59.57.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nsu7R9d3"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38ecc48b3c2so3674906a91.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 13:05:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786046756; x=1786651556; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=myw2oDUjCx3VpKcfHammnirgTkZxfVTM2uRSXVRFIyw=;
-        b=nsu7R9d3bYSUsNSYKO9jwj47dB1QV+W0VAZi+JivXuIxyODm7RO7AFWcssnaTRrwxx
-         Gg6c19gGOS1Wqi2qv5DUklx5Lo5Ivb8RYzbQa8Pen+8uPFYX9p+OT6SyoyepyIXq9u5c
-         m1weamEblrhO5J/vhdFVJcMCPVXJ0SraBjVp5qd/HBG0O+zTnB31trFp2yWj+cSfQxKa
-         95b5Pde8eUFHqkXaXIME0g2NsyyuNP2IX4yVKGNm6Af67wETsllF7XfFebFxd5YSZfYh
-         CMKAaRHZ6m6zjR3D5b+ITn5FZ/mi4x5n9DgnCI6URlYHLEO0LOGmJ9smUomntkEkFqmu
-         7HgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786046756; x=1786651556;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=myw2oDUjCx3VpKcfHammnirgTkZxfVTM2uRSXVRFIyw=;
-        b=GpgSimatefhvSOilAPS1dv6wGFL9t0yjO3G8GAVxkuhB0tHw5/5GIiyX+R9No/R1tU
-         2HY8D/AQARk4b8jKgsCbwQ5h3jcyuv/K8Hna/5vMq5LJoXFyFeBDx1mXJruEGcpNI1Rt
-         sdRHZ09wfAZ/Q2YKyFabPYjrWQCytNB0fr1OTT1pjzxrofN+5QK8dwTAaeTzq/3ol5oT
-         aPV8ItwfGwgC0i2MhCDbvp3E9fUlRSjFyHZk6fFcQi3LTJ17mEt+hl9hUlo6y0WZYecM
-         vN7r/y9bkPLCj1Ha9xKFf5kmsCDiA+d4mTYC6OHKdIVXE3RPPgDYyxnvvsDR6U4d1naG
-         vfMw==
-X-Forwarded-Encrypted: i=1; AHgh+RqJJi5YR+M1QWHJ1YtAGqQ4Tqv1E73iRx0JX4JnRi/P+Q//XBIoMX+1Wafg0SmKLzsqwEwxN1k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWaoR+FG5xnA091oB0gdjK1SBAokiv5q0sjlUJVGoB4BmyKNCa
-	oyieoMDxtWJH94ywQMD9CNmmSlYlj472gIs+oujVDP5LsaVxCOkt92BccKV8uDrM2ALDbflvjiC
-	N1HRHoA==
-X-Received: from dlam21-n2.prod.google.com ([2002:a05:701b:2095:20b0:13c:f3ec:de27])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2d50:b0:380:f34a:6ff1
- with SMTP id 98e67ed59e1d1-3903c5e0213mr17427991a91.17.1786046755489; Thu, 06
- Aug 2026 13:05:55 -0700 (PDT)
-Date: Thu,  6 Aug 2026 13:05:45 -0700
-In-Reply-To: <20260806200548.3124802-1-surenb@google.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tOMvjkWq"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786046765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DPZ6EhoGAQBMxKtS/LkhnDGi/nKr3/3ZLpLq4Cr8mik=;
+	b=tOMvjkWqthDUKFnGvG44QsM9RJ1u+rSJcf/RZm32xH5/JAE0Qx/r/U99VxE5ovV3vm4nIL
+	71VbWZ3NgwJHpXGZtTTS6T42VeQp9ZHisbzY9VGIMS9WErxOuvGiTGMW1qWJRCh5jwJfgj
+	njzow7IOQpytnbzk2TYPkCW0UpNLBOE=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Tim Bird <tim.bird@sony.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v4] keys, dns: Drop unused NUL terminator from upayload->data
+Date: Thu,  6 Aug 2026 22:04:54 +0200
+Message-ID: <20260806200454.245444-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260806200548.3124802-1-surenb@google.com>
-X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
-Message-ID: <20260806200548.3124802-3-surenb@google.com>
-Subject: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
-	david@kernel.org, willy@infradead.org, shakeel.butt@linux.dev, 
-	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
-	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
-	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	surenb@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1662; i=thorsten.blum@linux.dev; h=from:subject; bh=/ru28ls5Ob9An0DGNn71eBrPlRAIK6ScDMc3dBMET14=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFklL55N3LZ/yz4JrqMTLFYaHN8S/CX+9+nn7ne2sKveq Wquj/mW1VHKwiDGxSArpsjyYNaPGb6lNZWbTCJ2wsxhZQIZwsDFKQATCVJi+J/VI1qwxLdXYOrb Y1ue+yi2Wiv90C/47q/x1aXnz/9JbxMYGZZ6xOud/fwudGnjyZmrFvZeUb625vyJr2oam3s/lOm cdGADAA==
+X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+upayload->data includes an extra NUL terminator even though it is never
+used as a C string. In-tree users access only the first
+upayload->datalen bytes.
 
-tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
-it and mmap_read_trylock().
+Remove the redundant NUL terminator and allocate one byte less for
+upayload->data in dns_resolver_preparse().
 
-Long Version:
-
-=3D=3D Background =3D=3D
-
-Historically, binder used an mmap_read_trylock() in its shrinker code.
-This ensures that reclaim is not blocked on an mmap_lock. Commit
-95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-support for the per-VMA lock, but left mmap_read_trylock() as a
-fallback.
-
-This was presumably because the per-VMA locking can fail for several
-reasons and most (all?) lock_vma_under_rcu() callers have a fallback
-to mmap_read_trylock().
-
-=3D=3D Problem =3D=3D
-
-The fallback is not worth the complexity here. lock_vma_under_rcu() is
-essentially already a non-blocking trylock. The main reason it fails
-is also the reason mmap_read_trylock() fails: something is holding
-mmap_write_lock().
-
-The only remedy for a collision with mmap_write_lock() is to wait,
-which this code can not do. So the "fallback" after
-lock_vma_under_rcu() failure is not really a fallback: it is really
-likely to just be retrying in vain. That retry in an of itself isn't
-horrible. But it adds complexity.
-
-=3D=3D Solution =3D=3D
-
-Now that per-VMA locks are universally available, lock_vma_under_rcu()
-will not persistently fail. Rely on it alone and simplify the code.
-The removal of the fallback does not affect NOMMU case because binder
-driver depends on CONFIG_MMU.
-
-Full disclosure: I originally tried to do this with
-lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
-trylock semantics. Claude caught this in a review and suggested the
-approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
-I guess.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-Cc: Todd Kjos <tkjos@android.com>
-Cc: Christian Brauner <christian@brauner.io>
-Cc: Carlos Llamas <cmllamas@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: netdev@vger.kernel.org
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- drivers/android/binder_alloc.c | 45 ++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 24 deletions(-)
+Changes in v4:
+- Drop patch 2/2 from the series and submit 1/2 as a standalone patch
+- Reword subject and patch description
+- v3: https://lore.kernel.org/r/20260427114422.313356-3-thorsten.blum@linux.dev/
 
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.=
-c
-index e4488ad86a65..c13a588c37de 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct list_he=
-ad *item,
- 	struct vm_area_struct *vma;
- 	struct page *page_to_free;
- 	unsigned long page_addr;
--	int mm_locked =3D 0;
- 	size_t index;
-=20
- 	if (!mmget_not_zero(mm))
-@@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(struct list_=
-head *item,
- 	index =3D mdata->page_index;
- 	page_addr =3D alloc->vm_start + index * PAGE_SIZE;
-=20
--	/* attempt per-vma lock first */
-+	/*
-+	 * Attempt per-vma lock. This is essentially a
-+	 * "trylock". It can fail even if the VMA exists
-+	 * for 'page_addr'.
-+	 */
- 	vma =3D lock_vma_under_rcu(mm, page_addr);
- 	if (!vma) {
--		/* fall back to mmap_lock */
--		if (!mmap_read_trylock(mm))
--			goto err_mmap_read_lock_failed;
--		mm_locked =3D 1;
--		vma =3D vma_lookup(mm, page_addr);
-+		/*
-+		 * If the vma exists, we can't continue because we cannot
-+		 * remove the page from the vma. However, if the vma was
-+		 * unmapped, it's okay to continue.
-+		 */
-+		if (binder_alloc_is_mapped(alloc))
-+			goto err_vma_lock_failed;
- 	}
-=20
- 	if (!mutex_trylock(&alloc->mutex))
- 		goto err_get_alloc_mutex_failed;
-=20
--	/*
--	 * Since a binder_alloc can only be mapped once, we ensure
--	 * the vma corresponds to this mapping by checking whether
--	 * the binder_alloc is still mapped.
--	 */
--	if (vma && !binder_alloc_is_mapped(alloc))
--		goto err_invalid_vma;
--
- 	trace_binder_unmap_kernel_start(alloc, index);
-=20
- 	page_to_free =3D alloc->pages[index];
-@@ -1182,7 +1179,12 @@ enum lru_status binder_alloc_free_page(struct list_h=
-ead *item,
- 	list_lru_isolate(lru, item);
- 	spin_unlock(&lru->lock);
-=20
--	if (vma) {
-+	/*
-+	 * Since a binder_alloc can only be mapped once, we ensure
-+	 * the vma corresponds to this mapping by checking whether
-+	 * the binder_alloc is still mapped.
-+	 */
-+	if (vma && binder_alloc_is_mapped(alloc)) {
- 		trace_binder_unmap_user_start(alloc, index);
-=20
- 		zap_vma_range(vma, page_addr, PAGE_SIZE);
-@@ -1191,23 +1193,18 @@ enum lru_status binder_alloc_free_page(struct list_=
-head *item,
- 	}
-=20
- 	mutex_unlock(&alloc->mutex);
--	if (mm_locked)
--		mmap_read_unlock(mm);
--	else
-+	if (vma)
- 		vma_end_read(vma);
- 	mmput_async(mm);
- 	binder_free_page(page_to_free);
-=20
- 	return LRU_REMOVED_RETRY;
-=20
--err_invalid_vma:
- 	mutex_unlock(&alloc->mutex);
- err_get_alloc_mutex_failed:
--	if (mm_locked)
--		mmap_read_unlock(mm);
--	else
-+	if (vma)
- 		vma_end_read(vma);
--err_mmap_read_lock_failed:
-+err_vma_lock_failed:
- 	mmput_async(mm);
- err_mmget:
- 	return LRU_SKIP;
---=20
-2.55.0.654.g21b8a5bc05-goog
+Changes in v3:
+- Update commit message
+- v2: https://lore.kernel.org/r/20260409225703.158552-4-thorsten.blum@linux.dev/
 
+Changes in v2:
+- No changes in patch 1/2
+- v1: https://lore.kernel.org/r/20260406175810.1018681-3-thorsten.blum@linux.dev/
+---
+ net/dns_resolver/dns_key.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
+index c3c8c3240ef9..451247864a63 100644
+--- a/net/dns_resolver/dns_key.c
++++ b/net/dns_resolver/dns_key.c
+@@ -203,7 +203,7 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
+ 	kdebug("store result");
+ 	prep->quotalen = result_len;
+ 
+-	upayload = kmalloc_flex(*upayload, data, result_len + 1);
++	upayload = kmalloc_flex(*upayload, data, result_len);
+ 	if (!upayload) {
+ 		kleave(" = -ENOMEM");
+ 		return -ENOMEM;
+@@ -211,7 +211,6 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
+ 
+ 	upayload->datalen = result_len;
+ 	memcpy(upayload->data, data, result_len);
+-	upayload->data[result_len] = '\0';
+ 
+ 	prep->payload.data[dns_key_data] = upayload;
+ 	kleave(" = 0");
