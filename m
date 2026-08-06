@@ -1,80 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7EE480975;
-	Thu,  6 Aug 2026 15:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C468647ECFC;
+	Thu,  6 Aug 2026 15:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786031486; cv=none; b=eq/KxuyahDdhKNRsl7DsllR85BZ7alakW8/8qKGEZ+h/h1z8110u2bO1ej5HBIBjwGPSixCQl6BVF4AZGzbMOGuG39xeWz08dWNveldw+mAHoFfzY3rMsD7+DZqB5ddTGO8LWGqmK/d1Ci6S4BwDqIqb4EQ19af5UWexBBIcI9I=
+	t=1786031503; cv=none; b=FVTNgkL1j/OISK5fYdn+hrCYFUFOAASjcUtqCx+SMtV4HxKv4FCbXM+gvhg5Iq8dWOXQ4X/SQ4Bqgdy6DQCE5GHRw6I+Lmj7F/qF3SwPnZYuc2zEa3/Ja56utLYA9y65Kq0ZNQ2KybsNAMMsK68Wil5Iry/gKrrDc9fDilo2zHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786031486; c=relaxed/simple;
-	bh=bZJS0br1/u+dkalG1SFqNwknmyIg3aWdbDJXRe5qzec=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kY8kAKqG7GLqUOlBdZdxmO1QZ2KzwFZxwVvz+TSkh8qw4f/9vnPrI9a6jfLo50/LvsqTD9hBaQHakw62cKbQRxmkAGKz9MeBuphcxATT94COOE/F4GnwVgN4nXwDl+tasiu6Wf0gw2EIMtQoZfl1TYRQnKoEfo/ZGS5Y4AH2wUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQcubiwx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786031503; c=relaxed/simple;
+	bh=DHAMDofy0v0ZcqdESb/mXHKqW4bQ5ymTCqmmDZZ7XaQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kSwuO3VDkdlaKL4s+sbCiR5SblrZeqpMtMzhUCA/K1Og05hHMdVWdeaNICDtDsROIyHfku8AucrJSwJMsm9s13ll6jdRHrYn1dYTD5G2aSbKgS4793RQl5Iu2JcdVCrDfiMvA2viDl/FInIpEmv+RroPeylQ4yfs3eY181k5z70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0ElQMtM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQcubiwx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F3E1F00AC4;
-	Thu,  6 Aug 2026 15:51:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0ElQMtM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE2F1F000E9;
+	Thu,  6 Aug 2026 15:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786031475;
-	bh=TYR7zXdTELe6WmfkTY6j21tZSO0kCQddxLKncanvlc0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=NQcubiwxJkAlCVoQSZ1nd2jxeoRguWZLELfatNEdWvMaiExlygE7vON3VfTn+Hp9l
-	 7C3T/DobH0pvk3IuYDsaLjcaHJu95zNQOWC6+I84JoBRBQSU+rj5CjVkgGNi/QKiMX
-	 DoNFtjqpmmoz1ogefxLgX7yGxJvVxZ/ucfppkrCUm/hMFglErWCojHCdhMfGNMbzVu
-	 QJ3fFGMHWKtt4uGIOSz+i0r/a65N9K0SmxjQ/3n7pV20aEv9I0yDJqNtvYAkn0sZve
-	 UMtbdAVPfGBpTk7Z+UWhxZbrv4mcbR1SH/A1AM0ju552j0gSyrrHy1g9BEhtImTvEu
-	 JRM9V4WRxOzTQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9390A380820D;
-	Thu,  6 Aug 2026 15:50:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786031492;
+	bh=MGxT4UPnXoxBFzlEBm6kLfvcvlPDQNH9r2avYAVzCvQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=I0ElQMtMJ3PRcviykZlX2fLUJvVpLGQojBhk77L7HAoWWZrgM8dmmdS2ux3XOxPes
+	 5JtnKTXZLCDJskJM1S+CClOQeD55mg2zspELI5+pLGeUdU2AZlq7F0LTldGZ5mIQX/
+	 lbfFiSunLr8OXsZQFQk9uAhxkU7WnaoosfnUZwY4Phr6QdRewE4rja3t4fXO3VSolM
+	 oiF+h2OHLbf0cne8Sb60u9e7l2z/y5l4JVhhAA81qr2gcqJJLryPVvccDD+pNJb3JO
+	 hIBUwIDPBFOJwlavr8rsV69XJkJWI0h5ZlRDhmy4vNR5/To2Fnw/4t1XjQSMBX0Ax+
+	 RDw8U1Xsf6HVQ==
+Date: Thu, 6 Aug 2026 08:51:30 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Feng Tang <feng.tang@linux.alibaba.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Andi Kleen
+ <ak@linux.intel.com>, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
+Subject: Re: [PATCH net v2] selftests: net: reuseport_bpf_numa: consider
+ cpuless numa node
+Message-ID: <20260806085130.46d9e676@kernel.org>
+In-Reply-To: <20260803014214.80748-1-feng.tang@linux.alibaba.com>
+References: <20260803014214.80748-1-feng.tang@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] macvlan: require lower-netns admin for shared port
- settings
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178603143413.1348318.12932367688516790351.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 15:50:34 +0000
-References: <20260802130137.98105-1-doruk@0sec.ai>
-In-Reply-To: <20260802130137.98105-1-doruk@0sec.ai>
-To: Doruk Tan Ozturk <doruk@0sec.ai>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, xmei5@asu.edu, thomas.karlsson@paneda.se,
- herbert@gondor.apana.org.au, daniel@iogearbox.net, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Mon,  3 Aug 2026 09:42:14 +0800 Feng Tang wrote:
+> + * error (very unlikeyly) happens during the libnuma calls.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+spelling - "unlikeyly" instead of "unlikely"
 
-On Sun,  2 Aug 2026 15:01:37 +0200 you wrote:
-> struct macvlan_port is per lower device and is shared by every macvlan
-> upper on it, including uppers that live in other network namespaces.
-> Two of its fields are settable over rtnetlink by any upper on the port:
-> port->bc_cutoff, written by IFLA_MACVLAN_BC_CUTOFF, and
-> port->bc_queue_len_used, recomputed from IFLA_MACVLAN_BC_QUEUE_LEN.
-> (port->flags and port->perm_addr are also rtnetlink-settable, but only
-> in passthru mode, which requires port->count == 0 and so cannot be
-> reached from a second upper.)
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v2] macvlan: require lower-netns admin for shared port settings
-    https://git.kernel.org/netdev/net-next/c/5b782a811e73
-
-You are awesome, thank you!
+when you repost please tag as net-next, rather than net
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
