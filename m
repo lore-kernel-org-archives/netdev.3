@@ -1,154 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F5B471CF6
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786028503; cv=pass; b=U9rCtw3CE36jIMp+kRLG1zpX0Xd1N/Jz0BpzdDAR73UKXwNzXLKCIrd+dZxHVFSAyIzSNtLgyZYBT6g/IHuJETGaBilDu0xeA2kRC1nKnKgt0Kb6M65mRZay3+RsXjtfim/gcG6FN1mgVZFZRCZeOifizDmE6VsPNZgukxF7VDI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786028503; c=relaxed/simple;
-	bh=oOSqs1sW548/Cuc3dzU3OrV/5YuvuK8xDWGm4itDq7U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dusttwi/AVbfIw8p/dvO5YwAuJwaYTq92ssr0nT0sI5kUHk4Vfz9ykqwXtbFQHSTV+1qIKgONznmGbdUfLLJhWlBRoWrAUHeMktbBpqX2tjmGi4LEENyhNZlmjrSnaMYUNbRAH74607bv/KsGCewytn++tvWbadggdYifPHaf8k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HOT5JrvW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DLpcgRqE; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23969305E1F
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786028632; cv=none; b=n7Jg1w2m+7xX271OzYbbitfAHCHodA1s9dqBcXM15+zjOdaJsqm/GifjZ/EN8yZKbsZ7Z9MtC9NlAZw8cE51e/A7F3IzOSJKoleOiSDCR9hI3fAZ4UEXlyVHkIkqqJpqQ7EEXp0oh6CbIHE5vj6SIjcAjTjTsuG1PAx3giY2COQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786028632; c=relaxed/simple;
+	bh=U4enaZJU0Ag8XW5KixXcrTMBFhbFm+Rro2UuEalKp6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=chuk2IZQM6hMJWnF0ZHddzAN1Q2MOymRX4bse0JtgDRy2RxWLoIi9G3ibaffEHJkhKvOUAze8HZnIhjkMAk61bx6s5gxn4LNlSCNrFVF3L8NurkD97xp1Ve2vpjfM61UoRC4OYyWE3/3PqgD0UQiRmAxj2RRM+Sji5miJmvQHpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=JO1cmrW9; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HOT5JrvW";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DLpcgRqE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786028500;
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="JO1cmrW9"
+Received: by dvalin.narfation.org (Postfix) id D64BF200D8;
+	Thu, 06 Aug 2026 15:03:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1786028625;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oOSqs1sW548/Cuc3dzU3OrV/5YuvuK8xDWGm4itDq7U=;
-	b=HOT5JrvWcJzMURAzjT18Dls9m2FHPQ9nYjRruxHiRKSApZIiMNawQLrjE8d/qrsaLrkfFd
-	LBB4ihw7UUCKPpd4c6SreTIkd5VyNbqHRm1RCKzJTLtwwsK0G8xiDr9ItRUPFRFmTP0IOg
-	/KxNcwCQr8FXyLfxog01O3RNDQKkN7o=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-408-NOmKcmFROKWzGCwUTCTXTg-1; Thu, 06 Aug 2026 11:01:37 -0400
-X-MC-Unique: NOmKcmFROKWzGCwUTCTXTg-1
-X-Mimecast-MFC-AGG-ID: NOmKcmFROKWzGCwUTCTXTg_1786028495
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb5ea36f969so2347646a12.2
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:01:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786028495; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LZxlbyjhyxR7ZvP3t6qojrpHCfeTfed0cz8balI4/XvnS8W450uYuXP4XMxlgK5DZV
-         WHg6blS6IeP6XmjJBEfUsJM6zRLdpDmRT9w9JgNaXH0Qt1naIvx/NdiICTb9UOQ4PX3V
-         wD1ove6vwJ9CXxF3mVTYJob86SoLDxDD8/s9+LglKdQkfhdEpDh5jmjXGry0U4VgVmzK
-         0G8gkzUr60ihr8rWib7FIPSnec/IeMrOieGG4Jskp2vTOp5PD/CXN/3ZjgHdMh8Id1RI
-         WT9vgNabVgJukQjCCIX0bkUUtLy1o3+0aHVHkb1OpNeGpsFlv1m/h2PsN2N0MYp4j6AI
-         x3ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oOSqs1sW548/Cuc3dzU3OrV/5YuvuK8xDWGm4itDq7U=;
-        fh=rr13F9IHM3x/BsA+64nBn2NYubFZgJoFGwJcU0xtGwA=;
-        b=DSxaA5cuiRad/EogU9JV3G49xtRu0BwyDVui+k7R7I01od0NaDjVfS/+kJ2MMLOcjk
-         m9X6NQUFzzTpnn+HAsmTrRwvoYq+auGzo6TM1VNnDsxgmcwz3ko5NeOJdCDIWS/fQsCl
-         Cm1NiZa5jBjq3pRjUCzIMmKjsx8E6O/1ploed4rzAT1y6pj3ZtnIRroDkwmEpVRAR4TT
-         DR4h84pgXAwUi3pgDcQZKr7M64tdAB07GctX5a8DHdNh71GrA1nyVTG2WfW/hKDlBRZo
-         D7Us5S6Dpubv0Z3i5SSfS+XRvR1wbTDGACfoUtOouEBgJu36EayjBIrghxQY0ShU+1OY
-         po+w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786028495; x=1786633295; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oOSqs1sW548/Cuc3dzU3OrV/5YuvuK8xDWGm4itDq7U=;
-        b=DLpcgRqEturwBgFCU+HzWCub20IiyfMCHmud6ogHm3g+g1XROrZFP+bdKP2mvZpZhA
-         f+lVuU7DsUUCN9vne/c9qmBQ+SeGnbkFNhjI2VocXzjRQqrymWsG8yfhiubnQ0ZLfyPf
-         qqHm9mOhHGn37PRSwM1zleFmTP5km1+Tb4NJRi330H4BYNY0C1kfZoTIIe35f6aB/lcW
-         BrmiBR/6gsy0kMKsaF7vABfYe+byVFPHAOjZqLZBme8ubNAKgPwgOkSWeibvhL7ZFBul
-         r626d3FLtrUa58VQin9f6KZO8SmVOxSOPsvLIiBv/kcUxD3Ji2kE8p7DDv1GvVArnfdg
-         UqMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786028495; x=1786633295;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oOSqs1sW548/Cuc3dzU3OrV/5YuvuK8xDWGm4itDq7U=;
-        b=VXa8CV0fk/+W8YAtzkJdZ6JIVVh0lGn1RWdHPE3joPC8WBvAD0oUsPZb/ANTSpUK87
-         UtUYJuE7Dlzfw+0BFbpPIDyBH30M7D7dzTBngUJ5+sMnJHUv0Y3lBBw9CsaDOM74ewjM
-         PyR7kYoIH6MoFqOpLRTP8aqL5I4bvkG8+c5ErB86MbIkPI7Ex5+3VDo6xh9qhhkIrSIc
-         Krhtc3RAmuyHJNsDEuCY0SIfodT/LDOKcKODZoDEUn90ohjpDjt5naeoz7ScazgyXjJR
-         anBoSVoGlAfdR8FvyaUWcLciAo4CnlV0zeqV3HTjCg6h6GcESV6JySgFc+ia3noIncSG
-         344w==
-X-Gm-Message-State: AOJu0YwO3QeEbYng9bOmpTg/MC/etj3uJbGghiKYIeYl7OSxWQxXOTAb
-	nC9bWx9zIw7Yk9cJx1G8JAfVEnFksqXlhL+Kg9QjMPD0TPoGvfqVFob5+nCkq+9YdkqVUSR8LjR
-	fNBQiNKExXQTgy3mHXWW4qDBHIAeYy26HtzT8ObMA1mswOyC//gPqWQkbkaa+Q7v/QMhatoAbSa
-	xxLoab5aOoxKLSqdjTTkB4IMUyC9RR8OBX
-X-Gm-Gg: AR+sD13bXbMQ/TbG1EXnX69jj7l3LlD6aT1vQlAGNLgHLuzfqKg87eSL7Dv3LjqLzGS
-	/bm+Ug5K3XQKtC49Go0XR6vW+FCYdv89Mt47ggBwPLKHMCPEplSueEmoN1lMzPEGjOpwKdWWNsr
-	vAUOB72NnShkwAPiZzii7U6SfSHuGI0S5wX9TAtnFLCYFjEtPUNNigMszqEhx6k8ZrUT77YLgxD
-	6O6GSL7EmfsNkGhohm4F0ToQiepu03oyfp7QtAtde9+h8k=
-X-Received: by 2002:a05:6a21:4d8e:b0:3c3:875d:705e with SMTP id adf61e73a8af0-3cb85ef8469mr19361325637.19.1786028494739;
-        Thu, 06 Aug 2026 08:01:34 -0700 (PDT)
-X-Received: by 2002:a05:6a21:4d8e:b0:3c3:875d:705e with SMTP id
- adf61e73a8af0-3cb85ef8469mr19361176637.19.1786028494022; Thu, 06 Aug 2026
- 08:01:34 -0700 (PDT)
+	bh=JtwsqjhEg4/Ps2dJSppFH6CbIpUpKOfLmJgscIj5QtY=;
+	b=JO1cmrW9A9AKSxP95YtIx7zZY1BW277EKJe7z+xcF1B1ir3EmHI9NGxCot4wt4XP44GtAH
+	CMLSY1UL6lbzE9NQMOpXptAqclD/9n6BiFhcXT7lsS8TvC4HHZ5lTuF9ELcwAwNfldx7FZ
+	09ywjbnKM+P1smQT5rUdh9O/IHN1A/Q=
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ b.a.t.m.a.n@lists.open-mesh.org, Antonio Quartulli <antonio@mandelbit.com>,
+ Simon Wunderlich <sw@simonwunderlich.de>
+Subject:
+ Re: [PATCH net-next 01/10] batman-adv: dat: drop non-4addr backwards
+ compatibility
+Date: Thu, 06 Aug 2026 17:03:41 +0200
+Message-ID: <14211429.uLZWGnKmhe@sven-desktop>
+In-Reply-To: <20260805143200.722098-2-sw@simonwunderlich.de>
+References:
+ <20260805143200.722098-1-sw@simonwunderlich.de>
+ <20260805143200.722098-2-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731145914.4014912-1-bgrech@redhat.com> <20260804220108.1630366-1-bgrech@redhat.com>
- <20260806133051.GD51943@horms.kernel.org>
-In-Reply-To: <20260806133051.GD51943@horms.kernel.org>
-From: Brian Grech <bgrech@redhat.com>
-Date: Thu, 6 Aug 2026 10:01:17 -0500
-X-Gm-Features: AUfX_mwvYsIaD9uGBwjuzJQqIERzpiGCm3Z5i_KTeNOSR0wl2Rs3bglM_fQNHC4
-Message-ID: <CAA835F6Too3TDsPPjHBnYEM6ntxV+aJ8J=JPK-MSz_Hf6YERkA@mail.gmail.com>
-Subject: Re: [PATCH] selftests/net: fin_ack_lat: fix latency threshold typo
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, shuah@kernel.org, 
-	edumazet@google.com, pabeni@redhat.com, kuba@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="nextPart3201252.e9J7NaK4W3";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+
+--nextPart3201252.e9J7NaK4W3
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Date: Thu, 06 Aug 2026 17:03:41 +0200
+Message-ID: <14211429.uLZWGnKmhe@sven-desktop>
+In-Reply-To: <20260805143200.722098-2-sw@simonwunderlich.de>
+MIME-Version: 1.0
 
-Hi Simon,
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805143200.722098-1=
+=2Dsw%40simonwunderlich.de?part=3D1
 
-Thank you, yes I can fixup the message and resubmit.
+> --- Patch [1]: [PATCH net-next 01/10] batman-adv: dat: drop non-4addr bac=
+kwards compatibility ---
+[...]
+> Discovered by: opus-5 =C2=B7 Missed by: old-prompts, sashiko-gemini =C2=
+=B7 Confirmed by: old-prompts
+> Was the removed else branch really only reachable when talking to
+> pre-compat-15 nodes?
+
+This is a misrepresentation of the commit. The code was added in batman-adv=
+=20
+with compat 14 when not all nodes had support for 4-addr packets.=20
+With compat-15, all nodes must have support for 4addr packets and the=20
+backwards compatibility hack is no longer needed
+
+[...]
+> After this change those cache replies go out as BATADV_UNICAST_4ADDR, and=
+ on
+> the receiver batadv_recv_unicast_packet() now takes the is4addr path:
+>=20
+> 			subtype =3D unicast_4addr_packet->subtype;
+> 			batadv_dat_inc_counter(bat_priv, subtype);
+>=20
+> so BATADV_P_DAT_CACHE_REPLY RX accounting is incremented where it previou=
+sly
+> was not, and the encapsulation of these replies changes in packet capture=
+s.
+
+Yes, but what is wrong about the correct packets and correct accounting?
+
+[...]=20
+> Discovered by: opus-5 =C2=B7 Missed by: old-prompts, sashiko-gemini =C2=
+=B7 Confirmed by: old-prompts
+> This is a pre-existing issue and not introduced by this patch, but while
+> looking at the DAT subtype decoding: the default arm of the inner switch =
+in
+> batadv_dbg_arp() prints the packet type where the message says subtype:
+>=20
+> 		switch (unicast_4addr_packet->subtype) {
+> 		...
+> 		default:
+> 			batadv_dbg(BATADV_DBG_DAT, bat_priv, "* type: Unknown (%u)!\n",
+> 				   unicast_4addr_packet->u.packet_type);
+> 		}
+>=20
+> That arm is only reachable from case BATADV_UNICAST_4ADDR: of the outer
+> switch, so the value printed is always 0x42 rather than the unrecognized
+> value from enum batadv_subtype in include/uapi/linux/batadv_packet.h.
+
+Irrelevant for this patch but I've submitted a mini fix:
+https://patchwork.open-mesh.org/project/b.a.t.m.a.n./patch/20260806-4addr-u=
+nknown-subtype-print-v1-1-e906357a5895@narfation.org/
+
+Regards,
+	Sven
 
 
-On Thu, Aug 6, 2026 at 8:31=E2=80=AFAM Simon Horman <horms@kernel.org> wrot=
-e:
->
-> On Tue, Aug 04, 2026 at 05:01:08PM -0500, Brian Grech wrote:
-> > The FIN-ACK latency threshold was written as 100000 (100ms) instead
-> > of the intended 1000000 (1 second). Connections completing between
-> > 100ms and 1 second were incorrectly flagged as high-latency outliers
-> > and printed as failures on loaded systems.
-> >
-> > Add the missing zero to restore the intended 1 second threshold.
-> >
-> > Signed-off-by: Brian Grech <bgrech@redhat.com>
-> > ---
-> > v2: Added missing maintainer CCs
->
-> Hi Brian,
->
-> It might be nice to include some information on why 1s is intended.
-> But I don't think that is strictly necessary.
->
-> Also, if this is a fix to be backported (I am unsure) then
-> it should have a Fixes tag and be targeted at the net branch.
->
-> The above notwithstanding, this looks good to me.
->
-> Reviewed-by: Simon Horman <horms@kernel.org>
->
+--nextPart3201252.e9J7NaK4W3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCanSiTQAKCRBND3cr0xT1
+y6t8AQD84YyhEiTBB6riLKZaG7fUtJLbGi7SGzoDcxIdade7fAEA7pecsXc6V744
+BCmzGIuj+MzY9/64yJz9Z9ZFKcXOZAs=
+=DknP
+-----END PGP SIGNATURE-----
+
+--nextPart3201252.e9J7NaK4W3--
 
 
---=20
-
--Brian
 
