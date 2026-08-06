@@ -1,119 +1,126 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFB3371D1E
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 13:37:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786023428; cv=pass; b=hV6+i16QDgQeZksZdffhA2dUR5syUWxWE6g/actXvhw9GAITstoLxNWtqPplph+AoA8LGm8Vrmkl+qU73RSluq8WZT+Pi5Zr3+8y8h3vY1uVFMQ8cYMxIYKDFCv1BL2Ojkx9FxacFM/JhtHrOPg+69hqZnjFpAk22fhTnnnAY70=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786023428; c=relaxed/simple;
-	bh=vIo9KN/2F5hDvRyjDwzqZzAik3ta1riw0vF1bSwOf64=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XwmgO0YxgXs2in+/kzxlkb+KWxQDwaUZ0lYG53WWOryJWwBgFlvuxhRBOgsd/5xXDk9dvlLjl4EnrxL8wkQkapeBzvkxWUn4Aysiyi0nTWoX5t/oWhtEY++dBwfP+ueWeh/Ighn2TF8tLhfZPjrn/x9WTRQpE6Grtn8Q3rkanZM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aUh+GDp3; arc=pass smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EEA1465B4
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 13:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786023481; cv=none; b=X0XSa0j/1yDo+nUXxm58B3Oyfd6wUYlaZ9g5JSrHHnForjuj9g+IIdI4TXLrhYdTE95NsvSKBxizmzOyXT5gWg3Bfxbj5DAf3rMxG520mcoxs6JK+eKmLrDKNHT+4crgfTmwXA9ULZZCdQU7OyEG+am5+lDPVE404wnRtd5hh2s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786023481; c=relaxed/simple;
+	bh=Iuj8eEALz44CQqthTbjR76qCcfOgWSdYKv4kWbeBxAM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mQrOLQtAu7PEZqHi1LV6uDVS41NXUp0P3l1ySIfYqhhbLYeH5IQbC7EBFqDKE8bgIItTuQzdm7jvLzsGNp0dxhPQvdCJcnJgg7m+v9RyPHgLgInYVvnYQKp4Lg4p42K3K0XzDMQLa/gT4e3JapNqJridzxwUIG+dlvxc4BKWkfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rq4yHfjK; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aUh+GDp3"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-698aece3d7eso350908a12.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 06:37:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786023422; cv=none;
-        d=google.com; s=arc-20260327;
-        b=F7GihiHHogGa9+6Wdo8WGcUBuiWWbqMkHzyKTo5CVGxuVjEwCwZbXnCYnwI0s93OCA
-         l7Itjjas/S+xVz+BBLCGAhah0+lHOcMubKbwj+Bv+iVlaoA1od5yssZpeIJXcXvGGAMo
-         LMLMd9OWJor21k9dOYko0chiun1MSMPzOgrig9kJ3RsdlNguTPYPkG1AameMyVAYMEdc
-         VMcjWuNi42vStk8TpDSSf09ID5FJ0ZIThXmuHYv18VpX06JeFU/ibsiGA0tEgacviL8U
-         IVvMuahTetE0BTjnQLbQWMIHLM6pQYaSkAqMLlNHhmNO7iA97x3GDPxSovY8FUkyGhhE
-         +gyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vIo9KN/2F5hDvRyjDwzqZzAik3ta1riw0vF1bSwOf64=;
-        fh=TFuwVz/YGMKCotKr93k8pjK+AQfVflwE6tfIt7NLUwo=;
-        b=V/2NKsjBIygfmgwBDr/LIUS6gxVfR0IhuIjux0tlBSofsZ7edDFYO8ihYRC77PEzbY
-         UK88juS4cFt0HOp7f/1XPA8S4aRfQZMUeTt1efIGlOa/yq3YdR8WEzyqBhAdFv/P0h7F
-         NPgUBy9pun149BGxrGCTT/mGSWYbaVaz94jhBp3ME47I5Cf/P2K+5lnBHbUMZ8WtFGsj
-         12fmig7U03YR9PZwNA+fOfJFMeiTdOKa/XxFRWl9TqOrKAhb93pSS5abUkLZHzcXEyxZ
-         Yg3Wb6RZOD9WUcs4kG3lDN9v6gE4/PcsXjchsNy9iBMEMugTwVS5HiiTJgUHBtU+75uD
-         Xiog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786023422; x=1786628222; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vIo9KN/2F5hDvRyjDwzqZzAik3ta1riw0vF1bSwOf64=;
-        b=aUh+GDp301nAvelaJRFl8w7FZiAIPsQPEeBfFXoHkGlCTvukdLe8migAZKVQk+VDxk
-         SwN+dTBt9jqCnOSiV1xSOwOAjmqDMPoAPD7qBnuyIcqXKGfF1CNRyz2LBOSnI6+qkALz
-         GZeYFBHu0SLPpNuLeb8xzz0RfELwBU05qffbcefH54puSx3b32ImbIEEgvk8yVu/5G/M
-         O8Z/mpysLBCPBdcyej+3fcRkqEjy9TgFeugDKba1YeNyotJHWCCJdscBkq+92jiImpqQ
-         p42JWBq8VzSxWFxMvbViJypK6Zppu/M6YVSN851vgi2/0xCWlDrU9f7sOLGGGZg3N/1z
-         gzRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786023422; x=1786628222;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vIo9KN/2F5hDvRyjDwzqZzAik3ta1riw0vF1bSwOf64=;
-        b=tRXcwjQ5dnyTr5EFPeU4/ys/SuAoxOnCPIJqZCMXRMKeXr7plYt+f1Yh+IE3DVoCOe
-         qwbuC4Z5O4QZt0KY6BYIRLfRmr6npdkZeFOyYSYnBuGMQNt+E+wk9Qxq7++7mp+N/R+s
-         kLTclexw/J9pQfdshhpHscfzvLmYSCCXLCir5PE/l2zixDPCOHKuwyPRZIqU/KmxXpxy
-         /XWDzo7pvcevIHwRPDXvkYxiainQ9FUyqo+SpiGm2W6LbfYNi4pTEdPewdp+LlwXkGKR
-         Y6QkIqA4IXPGCIvvowi5Ia+2l6rsqIfhEkI7puRntkZv8DNl6uAu2gtilGRmejLwWsgo
-         VMQQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr+iGfhOP+CQ/GtyrVxTww7xpRjGpe890clZkmpUNzL510lwsGv0su/hr+KGuDbdl4I164WrXE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuSw3UewAiSoHsPOG4vtEJA3eVQX67rhmBdo3w5W84EBQ888YG
-	l0jLrmlE7SYvnVv7vom/ecqklBjYyIOE6YPOOWvSj3fgF0s+NuVdqJwPv0CpjJ1Ke2BY+QmqAVC
-	cxAFqLO3YmiM0ItteS5wMtOtH8CufX/M=
-X-Gm-Gg: AR+sD11r/7DbLa2SG64FQFp7oz8vueZsgFoY0pBZAZUnG+feJ8nmyjo9kzkbAkEukkh
-	CjoJP6BnZuP2OsPRm3M0u3G50AOCLrcxmU8+sumzLbH7DWBufN2owxiqfftLdWn+THk+ttQ/r0k
-	kPEYB5FqJU1RXvIKnyLU+2KQqyelFvKHvnYuVkOnTbdckWhNfmi/zw4BZSR8JIT1wllI6/Vr+ld
-	vnBmWRnA4431FIqzwNg+bf17amx81+wEK11SjcLUZwUKgo0S+B7/liuvyCSUVWUpWqatuc/vYlo
-	GSAACSlqUq/exQ9XjMZ2MM1k1oeyZP3BquQcmKx5EPYOJI/4Kr61olc8ORmNZuM5zEcWE602SQ=
-	=
-X-Received: by 2002:a05:6402:2743:b0:6a0:10c8:8f2 with SMTP id
- 4fb4d7f45d1cf-6a14f288d44mr4472220a12.3.1786023421887; Thu, 06 Aug 2026
- 06:37:01 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rq4yHfjK"
+Message-ID: <fa89cba0-e9e5-49af-beb9-13b2fa94ca19@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786023477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VqUxzqGOpPJdwXbsyUGY1DU6gotHKjUskbv5j+h3a64=;
+	b=rq4yHfjKRCJcj47tsl1w/fqvuc4Kiv9cg2v5m5FC+1+JigamKewQaFzq10TOPCiKi03ihE
+	rTdfmuRqbS0U3sL4oWua2eYFKz0wM9XpA3zFhlMZuoseavh51o8VmgCHEkO97A1pyLYmEd
+	iOcuUrBDrFwkqbWVWQ/TrP7ErM1XCzA=
+Date: Thu, 6 Aug 2026 14:37:32 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJzEm4pwK2rC=1YpA1XG3qCR5BPQ6O6oFY5=L5dDViKJN-jqbQ@mail.gmail.com>
- <20260806123212.GA1868331@shredder>
-In-Reply-To: <20260806123212.GA1868331@shredder>
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-Date: Thu, 6 Aug 2026 21:36:50 +0800
-X-Gm-Features: AUfX_mxGew0dyWnIVJh607pRs9RO_UIjAbyWZMPJFY5tFUOeaTwgnjIooAuJZYY
-Message-ID: <CAAo+4rWUpLVB=9KGfw-wz+-T_G-=1-3uOEBbGXoxhypM=X0QvQ@mail.gmail.com>
-Subject: Re: [BUG] ipv4: slab-use-after-free in fib_nhc_update_mtu() -
- unlocked walk of kfree_rcu'd fib_nh_exception on NETDEV_CHANGEMTU
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: =?UTF-8?B?7JWI64+E7ZiE?= <gomsoup@gmail.com>, dsahern@kernel.org, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	sd@queasysnail.net, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net v3 1/2] net: ravb: handle unavailable PTP clock
+To: xuanqiang.luo@linux.dev, linux-renesas-soc@vger.kernel.org,
+ netdev@vger.kernel.org, niklas.soderlund@ragnatech.se, kuba@kernel.org
+Cc: paul@pbarker.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, richardcochran@gmail.com,
+ masaru.nagai.vx@renesas.com, sergei.shtylyov@cogentembedded.com,
+ luoxuanqiang@kylinos.cn, stable@vger.kernel.org
+References: <20260806095126.57803-1-xuanqiang.luo@linux.dev>
+ <20260806095126.57803-2-xuanqiang.luo@linux.dev>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260806095126.57803-2-xuanqiang.luo@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Ido,
+On 06/08/2026 10:51, xuanqiang.luo@linux.dev wrote:
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> 
+> The PTP clock is registered by ravb_open(), not ravb_probe(). Therefore,
+> priv->ptp.clock is NULL between register_netdev() and the first open, and
+> ethtool -T triggers a NULL dereference in ptp_clock_index().
+> 
+> ptp_clock_register() may also return an error pointer, which can reach
+> ptp_clock_index() or ptp_clock_unregister().
+> 
+> Normalize registration errors to NULL and only query or unregister the
+> clock when it is present. Leave phc_index at -1 when no PHC is registered,
+> while preserving the static hardware timestamping capabilities.
+> 
+> Fixes: a0d2f20650e8 ("Renesas Ethernet AVB PTP clock driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> ---
+>   drivers/net/ethernet/renesas/ravb_main.c |  3 ++-
+>   drivers/net/ethernet/renesas/ravb_ptp.c  | 12 ++++++++++--
+>   2 files changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+> index 5f88733094d0f..3a9d9f8718216 100644
+> --- a/drivers/net/ethernet/renesas/ravb_main.c
+> +++ b/drivers/net/ethernet/renesas/ravb_main.c
+> @@ -1779,7 +1779,8 @@ static int ravb_get_ts_info(struct net_device *ndev,
+>   			(1 << HWTSTAMP_FILTER_NONE) |
+>   			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
+>   			(1 << HWTSTAMP_FILTER_ALL);
+> -		info->phc_index = ptp_clock_index(priv->ptp.clock);
+> +		if (priv->ptp.clock)
+> +			info->phc_index = ptp_clock_index(priv->ptp.clock);
+>   	}
+>   
+>   	return 0;
+> diff --git a/drivers/net/ethernet/renesas/ravb_ptp.c b/drivers/net/ethernet/renesas/ravb_ptp.c
+> index 226c6c0ab945b..eaf07cb8eadfa 100644
+> --- a/drivers/net/ethernet/renesas/ravb_ptp.c
+> +++ b/drivers/net/ethernet/renesas/ravb_ptp.c
+> @@ -315,6 +315,7 @@ void ravb_ptp_interrupt(struct net_device *ndev)
+>   void ravb_ptp_init(struct net_device *ndev, struct platform_device *pdev)
+>   {
+>   	struct ravb_private *priv = netdev_priv(ndev);
+> +	struct ptp_clock *clock;
+>   	unsigned long flags;
+>   
+>   	priv->ptp.info = ravb_ptp_info;
+> @@ -327,7 +328,13 @@ void ravb_ptp_init(struct net_device *ndev, struct platform_device *pdev)
+>   	ravb_modify(ndev, GCCR, GCCR_TCSS, GCCR_TCSS_ADJGPTP);
+>   	spin_unlock_irqrestore(&priv->lock, flags);
+>   
+> -	priv->ptp.clock = ptp_clock_register(&priv->ptp.info, &pdev->dev);
+> +	clock = ptp_clock_register(&priv->ptp.info, &pdev->dev);
+> +	if (IS_ERR(clock)) {
+> +		netdev_err(ndev, "failed to register PTP clock: %pe\n", clock);
+> +		clock = NULL;
+> +	}
+> +
+> +	priv->ptp.clock = clock;
+>   }
+>   
+>   void ravb_ptp_stop(struct net_device *ndev)
+> @@ -337,5 +344,6 @@ void ravb_ptp_stop(struct net_device *ndev)
+>   	ravb_write(ndev, 0, GIC);
+>   	ravb_write(ndev, 0, GIS);
+>   
+> -	ptp_clock_unregister(priv->ptp.clock);
+> +	if (priv->ptp.clock)
+> +		ptp_clock_unregister(priv->ptp.clock);
+>   }
 
-On Thu, Aug 6, 2026 at 8:32=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wro=
-te:
->
-> Chengfeng Ye sent a fix last week, but looks like we need v2 which
-> acquires fnhe_lock for the per-entry update (while still using RCU for
-> the traversal).
->
-> https://lore.kernel.org/netdev/20260731162938.3388534-1-nicoyip.dev@gmail=
-.com/
-
-The v2 is just sent.
-https://lore.kernel.org/netdev/20260806133309.731709-1-nicoyip.dev@gmail.co=
-m/
-
-Best regards,
-Chengfeng
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
