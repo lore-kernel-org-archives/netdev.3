@@ -1,51 +1,52 @@
-Received: from mail-oi1-f208.google.com (mail-oi1-f208.google.com [209.85.167.208])
+Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5E33264D5
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362D747CA64
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786030599; cv=none; b=EufyJkDKONbGBncN6RY8Lg9aIMJluy9KQ5HPV8zY0LE5/IR14FmKm4JKxwjVN2m34N3I6mtpfcE/LXMqllY67pCHIcAPC/s8h9aQiGYRSFxdKecFSPLuY0VBOWhzTil6AluWxAYzDCfkM8Zxy+TMER3t1M9ZW83/hIIfEtOy4wc=
+	t=1786030599; cv=none; b=Gh7MaVW1tiM/s6AlkzKodKGN5MpFpcFHxRpp0oLSCTnkU61zjqHD43q1M8ZS2geb0jklH4PJxSkF7tSfhYbut4Fg4p1FOZMTOMGp1ILK5diN965t5POPba+2WyQSZ07ydUrrplSZ166rAAooeqjpQK0MDEU4jKBXiyR0cMJvOYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786030599; c=relaxed/simple;
-	bh=X4b87L5ecjSjKnaUKSrQ5m2mVH/82ufWNzyMskRHz+4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=QY7Nw/VDQaiyIegJcnrE3MmyHPnFkgXWzfCGnuqqhSUmOBbin++n1VVbGWgBAdINMFUJ4EsKhT5dZii2UBZogOcMffZIlcMRa67CkJy4yHHLDklAndFyZR0+wtJexX08ap0en0a5CAdAbwe/InZt4oYpISNkGGd99vYkWcckd/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.208
+	bh=5FACC5e1ZtjaXDFfL86iuNJYEcdN9YlWw9UtFPexxYg=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=oLDEVXLx8AL6tHnFJ3V25fNl5osJRIDhu8c6kdp/edhB48JRMJnFuUwAfv2U8bEGIp6pdYdIeHeS3+bGeiZomQimpVXTFv657DzjasbNlGcHY+iYG38J29L22IZ0GmuHgJQuaOOs9n7PcyWhVHHVyOOcLCb2KtJ4PLJ9IGdfrUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.79
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f208.google.com with SMTP id 5614622812f47-49f3a97f1caso1174928b6e.0
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:36:37 -0700 (PDT)
+Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-6aae0178901so1575302eaf.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:36:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1786030597; x=1786635397;
         h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Yg5XgpDj8AgqqB0BK6OhjlrRk5Vk4TngM7ime0NiK3E=;
-        b=XOWkm3W9UJEu2k2OyieBqGKzhZ6Ko9ZxuepAyMorQ+2Rz/Z+5G2K7YW13A2r5it7lQ
-         HFMEzlvCW2EOnEe4hTIzIUUdNKGz5p+fie19S224f9mXA6DgqzlCW2C1gQ73zpRADWgA
-         F5XmVzbCbCtg0u3eaG7xKVW/dv2iM1lypVPhalSjKRdKNU5AftbaFdXTExmZmMyvLeoh
-         lSE0MzPrJjaj6cAuxfJ6ZrKKhey0tOG90+I6cwxMvvsgUlcZCnjMIot5muvLwKP9bWbU
-         NX/7x7PSkhC2XO+aZzUWVTSVFEjYrHskZVj2Or/muxiQnDnllnzRFOolnmabQAhyukXF
-         fnPw==
-X-Forwarded-Encrypted: i=1; AHgh+RpbNbFPH14acBH/XDp0bk1FRGw4S1MB/w1JmfsNp88K5qFgWWdgViKo/lsxXT7G+1XlCh3jfoo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf4sVaQzFgpnUrG1c7L+yZx5BoAYGL8NkYdwWCylrtFfFMcduy
-	02ATFi5gPymz/GCHE0dbbEtkbjKZegv/JEemQxF19vSL5pxGyWlTv9pw8dNkoXVE06YsCxS67aU
-	UzC+QFrhuW11VhTHpAWddh06XI84IiFqIQgPpd9xR5DqHYDVd4lZAF7/YvRc=
+        bh=4ltjwKw9xsNgldC8Auz2dE7yQ7zTtgu0hAxcZDOb6FA=;
+        b=gRLO9sBBede44YAIkpOiVZy9B8b2/EkJb88622cLj8QKvKfurWgwLsBB5DlgWODyRf
+         7Ia7PomyMD/aMuGjUPToFBvAONuPQG8GpQKnI20Lw5JFXuPiTCNz+xBheo7bTCr021Yj
+         xlBPuKSSI+dzlaSQaLPNwIe72im3ioHk/ejS0IDA+/6iFVYr0lN9A1affJ9sVozdRteO
+         g7A3xb/PD+46AcoLP1f6LXgqHIiFdD3+1O6PtyHKz1kss3jPRjEUnM/RpgLtQaOXzYsf
+         wXi4Z7Z/16zvXhWyRHC0xtw7xbpYOZMYy5hPkAlNEMCRbBoqicvvuL5lQ/8NqTa/fT4L
+         +gTg==
+X-Forwarded-Encrypted: i=1; AHgh+RrNLs65oQ67vo8NvrhpyIIyp+xTq8xH2/nhXeoe16JB3MYZw/N17Q9gKIl2I17+nU+H1Lx3XUg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjSBNMYyd9PdY9iH9uxG2RIS6RQfOettpGI/sMU+uosC9UWmXh
+	VvFqj1FoA3I6tCg5jy5d0IhyvbANwkAhxB2fk9EEAzqyANF7PNpBbebmk/AihBJtQqy5wb1qYMf
+	g9p0v+/aQf0SSIBp0nbCI9c0f/JOOUK8Zr9+AWzNrKdE3Z/vukUDFtxc5pIA=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1927:b0:497:d371:21c8 with SMTP id
- 5614622812f47-4afae27b56emr10300335b6e.19.1786030596845; Thu, 06 Aug 2026
- 08:36:36 -0700 (PDT)
-Date: Thu, 06 Aug 2026 08:36:36 -0700
+X-Received: by 2002:a05:6820:1792:b0:6a3:a335:1ccd with SMTP id
+ 006d021491bc7-6ae96c7e7c5mr7984217eaf.8.1786030597180; Thu, 06 Aug 2026
+ 08:36:37 -0700 (PDT)
+Date: Thu, 06 Aug 2026 08:36:37 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a74aa04.01d0871a.3a0d52.0025.GAE@google.com>
-Subject: [syzbot] [intel-wired-lan?] UBSAN: shift-out-of-bounds in e100_eeprom_load
-From: syzbot <syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com>
+Message-ID: <6a74aa05.01d0871a.3a0d52.0026.GAE@google.com>
+Subject: [syzbot] [intel-wired-lan?] BUG: unable to handle kernel paging
+ request in e1000_get_variants_82571
+From: syzbot <syzbot+0ddf1022b4d5c391c09b@syzkaller.appspotmail.com>
 To: andrew+netdev@lunn.ch, anthony.l.nguyen@intel.com, davem@davemloft.net, 
 	edumazet@google.com, intel-wired-lan@lists.osuosl.org, kuba@kernel.org, 
 	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
@@ -58,64 +59,94 @@ syzbot found the following issue on:
 
 HEAD commit:    848acc8ffe1b Merge tag 'fsverity-for-linus' of git://git.k..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15087e32580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=15ae93b9580000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
-dashboard link: https://syzkaller.appspot.com/bug?extid=e0abb1d45ac291ebebeb
+dashboard link: https://syzkaller.appspot.com/bug?extid=0ddf1022b4d5c391c09b
 compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17ed13b9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=162c5bb9580000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=178b7649580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=117c6cc6580000
 
 Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-848acc8f.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/6fb497cc0c8d/vmlinux-848acc8f.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/663ccee34982/bzImage-848acc8f.xz
+disk image: https://storage.googleapis.com/syzbot-assets/32c9dc084aaa/disk-848acc8f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b7604244b0a9/vmlinux-848acc8f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/4cd321f6fe47/bzImage-848acc8f.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
+Reported-by: syzbot+0ddf1022b4d5c391c09b@syzkaller.appspotmail.com
 
-e1000e 0000:00:02.0 eth1: removed PHC
-e1000e 0000:00:02.0 eth1: NIC Link is Down
-------------[ cut here ]------------
-UBSAN: shift-out-of-bounds in drivers/net/ethernet/intel/e100.c:768:21
-shift exponent 65529 is too large for 32-bit type 'int'
-CPU: 0 UID: 0 PID: 5934 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+e1000e 0000:00:03.0: Interrupt Throttling Rate (ints/sec) set to dynamic conservative mode
+e1000e 0000:00:03.0 0000:00:03.0 (uninitialized): Failed to initialize MSI interrupts.  Falling back to legacy interrupts.
+BUG: unable to handle page fault for address: ffffc900035b4b58
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 13fe5c067 P4D 13fe5c067 PUD 1cae3067 PMD 22725067 PTE 0
+Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
+Workqueue: sync_wq local_pci_probe_callback
+RIP: 0010:readl arch/x86/include/asm/io.h:59 [inline]
+RIP: 0010:__er32 drivers/net/ethernet/intel/e1000e/e1000.h:604 [inline]
+RIP: 0010:e1000_init_mac_params_82571 drivers/net/ethernet/intel/e1000e/82571.c:278 [inline]
+RIP: 0010:e1000_get_variants_82571+0xe08/0x1c30 drivers/net/ethernet/intel/e1000e/82571.c:320
+Code: f6 ff ff e8 da 1f 0f fb 4c 89 ea 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 f7 0b 00 00 49 8b 87 00 07 00 00 <8b> a8 58 5b 00 00 89 e8 31 ff 83 e0 02 89 c6 89 44 24 10 e8 10 1a
+RSP: 0018:ffffc900000f7a00 EFLAGS: 00010246
+RAX: ffffc900035af000 RBX: ffff88807ed91694 RCX: ffffffff86fb44f8
+RDX: 1ffff1100fdb22b8 RSI: ffffffff86fb4506 RDI: ffff88801eaa2540
+RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000001
+R10: 0000000000000000 R11: 0000000000000000 R12: 1ffff9200001ef45
+R13: ffff88807ed915c0 R14: ffff88807ed915b8 R15: ffff88807ed90ec0
+FS:  0000000000000000(0000) GS:ffff888123dd8000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc900035b4b58 CR3: 0000000073af9000 CR4: 00000000003526f0
 Call Trace:
  <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
- __ubsan_handle_shift_out_of_bounds+0x279/0x2a0 lib/ubsan.c:494
- e100_eeprom_load.cold+0x55/0x9e drivers/net/ethernet/intel/e100.c:768
- e100_probe+0xd07/0x1ab0 drivers/net/ethernet/intel/e100.c:2921
+ e1000_probe+0x1123/0x36b0 drivers/net/ethernet/intel/e1000e/netdev.c:7494
  local_pci_probe+0xdd/0x1b0 drivers/pci/pci-driver.c:332
- pci_call_probe+0x176/0x800 drivers/pci/pci-driver.c:394
- __pci_device_probe drivers/pci/pci-driver.c:455 [inline]
- pci_device_probe+0x1cd/0x370 drivers/pci/pci-driver.c:489
- call_driver_probe drivers/base/dd.c:628 [inline]
- really_probe+0x241/0xa60 drivers/base/dd.c:706
- __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
- device_driver_attach+0xd1/0x220 drivers/base/dd.c:1203
- bind_store+0xf4/0x190 drivers/base/bus.c:267
- drv_attr_store+0x74/0xb0 drivers/base/bus.c:125
- sysfs_kf_write+0xf2/0x150 fs/sysfs/file.c:145
- kernfs_fop_write_iter+0x3e0/0x5f0 fs/kernfs/file.c:345
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x6ac/0x1050 fs/read_write.c:687
- ksys_write+0x12a/0x250 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f60d819e019
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc13c52ae8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007f60d8425fa0 RCX: 00007f60d819e019
-RDX: 000000000000000c RSI: 0000200000000280 RDI: 0000000000000005
-RBP: 00007f60d823500c R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f60d8425fac R14: 00007f60d8425fa0 R15: 00007f60d8425fa0
+ local_pci_probe_callback+0x35/0x80 drivers/pci/pci-driver.c:361
+ process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
+ process_scheduled_works kernel/workqueue.c:3405 [inline]
+ worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
  </TASK>
----[ end trace ]---
+Modules linked in:
+CR2: ffffc900035b4b58
+---[ end trace 0000000000000000 ]---
+RIP: 0010:readl arch/x86/include/asm/io.h:59 [inline]
+RIP: 0010:__er32 drivers/net/ethernet/intel/e1000e/e1000.h:604 [inline]
+RIP: 0010:e1000_init_mac_params_82571 drivers/net/ethernet/intel/e1000e/82571.c:278 [inline]
+RIP: 0010:e1000_get_variants_82571+0xe08/0x1c30 drivers/net/ethernet/intel/e1000e/82571.c:320
+Code: f6 ff ff e8 da 1f 0f fb 4c 89 ea 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 f7 0b 00 00 49 8b 87 00 07 00 00 <8b> a8 58 5b 00 00 89 e8 31 ff 83 e0 02 89 c6 89 44 24 10 e8 10 1a
+RSP: 0018:ffffc900000f7a00 EFLAGS: 00010246
+RAX: ffffc900035af000 RBX: ffff88807ed91694 RCX: ffffffff86fb44f8
+RDX: 1ffff1100fdb22b8 RSI: ffffffff86fb4506 RDI: ffff88801eaa2540
+RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000001
+R10: 0000000000000000 R11: 0000000000000000 R12: 1ffff9200001ef45
+R13: ffff88807ed915c0 R14: ffff88807ed915b8 R15: ffff88807ed90ec0
+FS:  0000000000000000(0000) GS:ffff888123dd8000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc900035b4b58 CR3: 0000000073af9000 CR4: 00000000003526f0
+----------------
+Code disassembly (best guess):
+   0:	f6 ff                	idiv   %bh
+   2:	ff                   	ljmp   (bad)
+   3:	e8 da 1f 0f fb       	call   0xfb0f1fe2
+   8:	4c 89 ea             	mov    %r13,%rdx
+   b:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  12:	fc ff df
+  15:	48 c1 ea 03          	shr    $0x3,%rdx
+  19:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+  1d:	0f 85 f7 0b 00 00    	jne    0xc1a
+  23:	49 8b 87 00 07 00 00 	mov    0x700(%r15),%rax
+* 2a:	8b a8 58 5b 00 00    	mov    0x5b58(%rax),%ebp <-- trapping instruction
+  30:	89 e8                	mov    %ebp,%eax
+  32:	31 ff                	xor    %edi,%edi
+  34:	83 e0 02             	and    $0x2,%eax
+  37:	89 c6                	mov    %eax,%esi
+  39:	89 44 24 10          	mov    %eax,0x10(%rsp)
+  3d:	e8                   	.byte 0xe8
+  3e:	10 1a                	adc    %bl,(%rdx)
 
 
 ---
