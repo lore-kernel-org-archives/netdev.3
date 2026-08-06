@@ -1,108 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CBC3AEF45;
-	Thu,  6 Aug 2026 01:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3240738E8A6;
+	Thu,  6 Aug 2026 01:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785980451; cv=none; b=sTfEHpOGBUHnHpV/N0kNvkRQhiON9zPFFQqf38j/QVqOT6V4gn2/QrjOA99ZUFtsHGL56JMy+mMP+frsTlwoB6nIc/sZGBUd7SD3mmnznms/5VO1KlFgq3iz6qEJ5+q7TtQs51f7VKhfd5W7JtiEfDApVzEZV9R4xQf3gjAnuzQ=
+	t=1785980509; cv=none; b=IY5btviU7YsFxpuMvUzJEBzAUkotl9cwUMBOMuBDOX3BKHcSqgUY8I2HwX6XUOGrnwGaJSlnkwLWylF4RPxOvir6j38UBu6whd3NRW/KPK8Ae9e9/v8A6euYfVRokhzI6baGyX5/XznH6sqUb8r2IiyPe2h+KLpx0bkxXzL7jRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785980451; c=relaxed/simple;
-	bh=OqN7kXg/l2DJdmowLIU0xU8rxbLgBV9U9u3S9KVVeKc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=m4Rl2iesZxPJo3ZgnUHgd/ObqVUQa/+ifyqrWrZXDfw3g3lvJ6kRod6MM/4TyZqssDXVnUCmngUv9Xg9jInz6JmABZF3YZRr1mbDDmLlmv7a9HziEaio7ycyly8KHTWCXJ3S6ACf0T7pk9OAnahFPMXXchP/QxHmAE8luM3IyOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOA/qkrK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785980509; c=relaxed/simple;
+	bh=Z8pSafNOAqax5ZqdkdD0IPsp6BXNbwWWVegzB4VsHrY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=naI/TdmAoHObol3J8Wsyezw3zy8716X8GGfYAtzBJClgfMnpkO8OpEMRRcMjaw4zYcxmquF9dkU1vTJJfQr2o2dKhaoOI1BMj2E/dnXFfHBlvRHbpVgLu+RChqUAiLTpLmd5GJ5u+WhvXCCoZDqtTZXLZSq4LOiABwhVuKC1TAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JuHYMxio; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOA/qkrK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722CB1F000E9;
-	Thu,  6 Aug 2026 01:40:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JuHYMxio"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF0C1F000E9;
+	Thu,  6 Aug 2026 01:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785980450;
-	bh=pj94K1DL+x4lDby71m72BqfAv1swFYEJ8oAR31TnWaU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=iOA/qkrKLW/7DyNaPjvqTvrJ7tucSEPt3DuH9L+gH+KeBLtf+foUt0R4OQi2MW7eR
-	 H6G23Vq9mNIzxr8lfm8cPfeOQ/cYsO5stR58ijBrzBPS+SvyCxGfBG2U4lV/rAPBD2
-	 XfLD04boeavxEbtXff7boJyk2WibKu8xTys5muX3KQmo5AHBXDK4nCkvcrYMpSsYhq
-	 PNKRIP4OhsMAEYjrpcYXG+RoKENTI0tg3DLhE7HfiMibfjlLkle3aKq6n4ajmdYgRi
-	 qv6gCgfzMhX7VgLKopk29u+u0s47v7jO3OjL4UiCELah4c/971z543QEMVkvSmua5g
-	 J5m8rii/GDvgA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56920392FFF3;
-	Thu,  6 Aug 2026 01:40:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785980505;
+	bh=bbtX5EsCgoWc8LHUPXetPNhgykaNjaNNsuqwDq5Se4g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=JuHYMxio0ws7heIkoocL+39HVbWkdwhw+NkRMahBD5M1G3lGp+/xCgJ1mqAvS9Vai
+	 KiT7t+NbqEn9M/lG+gvR7NbIxtoEYK8MbIkP+XAAdftDnZVKET/PgOcVvjvpYYjTkL
+	 9mFMBstkKGGxAAfQrBu+32NH27sCoNrnkIR1bKYHz6X4zlLvhnIgweXNK8oic3qbBn
+	 SQso/u/eio0TUEVr5WuVddAxsuHyN3kB3CersFIxcs0Q5W9lG30dzrSE5X78Wuhk/n
+	 9a4rRw19a2icqWozb5ic6Y6PyobUl/g2JO1Q/FDLepLQ9hbGEtq4lWEQrM9RXLh7kb
+	 ssW35H7s8yX0Q==
+Date: Wed, 5 Aug 2026 18:41:44 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "illusion.wang" <illusion.wang@nebula-matrix.com>
+Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
+ sam.chen@nebula-matrix.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ corbet@lwn.net, horms@kernel.org, linux-doc@vger.kernel.org,
+ pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
+ edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
+ hkallweit1@gmail.com, linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH v23 net-next 05/12] net/nebula-matrix: add common
+ resource implementation
+Message-ID: <20260805184144.08c5b4c2@kernel.org>
+In-Reply-To: <20260731094242.2655-6-illusion.wang@nebula-matrix.com>
+References: <20260731094242.2655-1-illusion.wang@nebula-matrix.com>
+	<20260731094242.2655-6-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re:
- =?utf-8?q?=5BPATCH_net-next_v10_0/2=5D_Add_ZTE_DingHai_Ethernet_PF_?=
-	=?utf-8?q?driver?=
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178598040988.599522.8462097247667886071.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 01:40:09 +0000
-References: <20260802160048653KdUvSUgDsEs4zwYF9Ey0q@zte.com.cn>
-In-Reply-To: <20260802160048653KdUvSUgDsEs4zwYF9Ey0q@zte.com.cn>
-To: Junyang Han <han.junyang@zte.com.cn>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, ran.ming@zte.com.cn,
- han.chengfei@zte.com.cn, zhang.yanze@zte.com.cn
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 2 Aug 2026 16:00:48 +0800 (CST) you wrote:
-> From: Junyang Han <han.junyang@zte.com.cn>
+On Fri, 31 Jul 2026 17:42:28 +0800 illusion.wang wrote:
+> From: illusion wang <illusion.wang@nebula-matrix.com>
 > 
-> This series adds initial support for the ZTE DingHai Ethernet controller,
-> a high-performance PCIe Ethernet device supporting SR-IOV, hardware
-> offloading, and advanced virtualization features.
+> The Resource layer processes the entries/data of various modules within
+> the processing chip to accomplish specific entry management operations,
+> this describes the module business capabilities of the chip and the data
+> it manages.
+> The resource layer comprises the following sub-modules: common,
+> interrupt, and vsi(txrx,queue not contained this time)
 > 
-> Changes from v9:
-> - Makefile: remove unnecessary ccflags-y -I$(src).
-> - zxdh_pf_pci_init(): dma_set_mask_and_coherent() never fails for
->   DMA_BIT_MASK(64).Just call it once.
-> - zxdh_pf_probe(): reorder local variable declarations in reverse
->   xmas tree order.Don't print dev_err on devlink_alloc() failure.
-> - Remove redundant initialization of fields in kzalloc'ed structs
->   (bar_chan_valid, vepa).
-> - en_pf.h: drop unused includes,forward declaration of struct
->   devlink, unused enum zxdh_coredev_type, and unused struct fields
->   (bar_chan_valid, vepa, irq_lock, lock mutex, coredev_type).
-> - Reply to Sashiko's review comments:
->   (1) zxdh_pf_map_capability(): validate the BAR index against
->       ZXDH_PF_MAX_BAR_VAL right after re-reading it from config space.
->   (2) zxdh_pf_map_capability(): bound-check length + offset (instead of
->       minlen + offset) against the BAR size before mapping, so the reported
->       *len never exceeds the actually mapped region and later MMIO accesses
->       cannot run past the pci_iomap_range() boundary.
->   (3) Search capabilities with IORESOURCE_MEM only (common/notify/device
->       cfg), matching the pci_request_selected_regions(IORESOURCE_MEM) call,
->       so a capability located in an I/O BAR is never mapped without having
->       been requested.
->   (4) zxdh_pf_notify_cfg_init(): rewrite
->       "if (notify_length + (notify_offset % PAGE_SIZE) <= PAGE_SIZE)" as a
->       subtraction: notify_length <= PAGE_SIZE - (notify_offset % PAGE_SIZE).
->       This removes the addition, so there is no integer wrap a
->       malicious length could exploit to bypass the check.
+> This patch provides the common part, including the conversion
+> relationships among vsi_id, func_id, eth_id, and pf_id. These
+> relationships may be utilized in the upper layer or the resource layer.
 > 
-> [...]
+> Key Assumptions:
+> - nbl_res_start() initializes VSI/Eth/PF data structures **only for
+> control devices** (`common->has_ctrl == true`).
+> - APIs like nbl_res_func_id_to_vsi_id() **are guaranteed to be called
+>  only on control devices** by the framework's dispatch layer.
+> 
+> Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
 
-Here is the summary with links:
-  - [net-next,v10,1/2] dinghai: add ZTE network driver support
-    https://git.kernel.org/netdev/net-next/c/b8180f7977aa
-  - [net-next,v10,2/2] dinghai: add hardware register access and PCI capability scanning
-    (no matching commit)
+This generates a possibly transient warning when built with W=1
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c:68:2: warning: variable 'eth_bitmap' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+   68 |         NBL_OPS_CALL(hw_ops->get_fw_eth_map,
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   69 |                      (res_mgt->hw_ops_tbl->priv, &eth_bitmap));
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/../../nbl_include/nbl_include.h:39:6: note: expanded from macro 'NBL_OPS_CALL'
+   39 |         if (_func)                              \
+      |             ^~~~~
+../drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c:70:6: note: uninitialized use occurs here
+   70 |         if (eth_bitmap & ~((1 << NBL_MAX_ETHERNET) - 1)) {
+      |             ^~~~~~~~~~
+../drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c:68:2: note: remove the 'if' if its condition is always true
+   68 |         NBL_OPS_CALL(hw_ops->get_fw_eth_map,
+      |         ^
+../drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/../../nbl_include/nbl_include.h:39:2: note: expanded from macro 'NBL_OPS_CALL'
+   39 |         if (_func)                              \
+      |         ^
+../drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c:56:16: note: initialize the variable 'eth_bitmap' to silence this warning
+   56 |         u32 eth_bitmap, eth_id;
+      |                       ^
+      |                        = 0
