@@ -1,115 +1,129 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [40.65.178.148])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617AB36C597;
-	Thu,  6 Aug 2026 17:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=40.65.178.148
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C495647D448
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 17:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786036600; cv=none; b=Lz0EPRSsRztBfdkZvwo0QQlHy0er8MTfkjZfPkyraKzTeml+vKU55CZy1eiY/bu6CTb1uecnF1EWaC0v43DyBOjmMf5xCN5JPpu1FfU50kGGLzUs1n8uc8cymIEOu2QIKhF2UtQxu/hARqt1sqdPLyy/6hFbKcRTmlNknLPtT5g=
+	t=1786036711; cv=none; b=gEwORPfRyajVBEloW4Fq3wfNeipaCnjwE2VmGZyzHbOxfv3BwX1OpNblZ4jrYUyn6m0wyhL3ARnCb/4kik8WJ1g25m1Ppa1xuOnHYIqQtf3Pcvsw87KI7kbuJsr8BFCqetZVtcJpUHBdqHED0uUH8IpOjcroWwmYW16ESlEdT/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786036600; c=relaxed/simple;
-	bh=CwuWe3oIk4AzuGunWz+SP2Hs726ScsZkq/Uf4Lf1ouI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iDt2/57NGEeMkW4+uMPPlHpotiK1F7SLt7/CfEov1NXgu3QktCIoDSjkwU15DBjuhNUR++dKppdgXidRUQMWeBG7/oBisFDx24ncnMbYL+ykuTH74z+bQBWh99bd2QwtC9VNJ/ounp6dXcvQ9qwQpgf/JDc9QHTsAuD66DAt5/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=OwszU2L3; arc=none smtp.client-ip=40.65.178.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1786036711; c=relaxed/simple;
+	bh=qvL3nCCpR5lk9Hk8P+wRnrAYaQeYlVNsbJ6hCuqZZy8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SmGy9S9I3QdKtjBXCt0lAJVmYFIrF05J6HAhVaI0/lJUKtVHvreuRxQIJL81UY5jQKVcWut9o6CSjULEsvjKpc21sQ/08Nmfu+E0LjzgOggpfP0WXWDEWWVQlA7c2Z2GrHwaaKAeN4/mV2grH2Yg3d5sZCB8uPrRgMagEzdXxRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E6e+eXgU; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="OwszU2L3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E6e+eXgU"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-498028b3d5eso24678915e9.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 10:18:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-Id:MIME-Version:Content-Transfer-Encoding; bh=8Ptg1
-	mK2PwCN7Sdld8TRmpv3xMzurCdFmlSv2qo+IKs=; b=OwszU2L3q7fYOa6pQObbA
-	XHZp1hbKXDlAclWDXfLXFrzNpttuUurzVObzcfdQWCdb0qILDPdhA4prUFDWbSDD
-	n4KG8snUhlM1kj5BQxIvRTtY3tA3dSW6r+l2XAuWV8raQnp8Wl7NXB8w/8uTcH86
-	OOwqTI8WqSepdkrygyVb7c=
-Received: from gpu-server-2.tailcd67b0.ts.net (unknown [101.52.241.91])
-	by web1 (Coremail) with SMTP id yAQGZQCXO8tfwXRqRwFEAQ--.57940S2;
-	Fri, 07 Aug 2026 01:16:16 +0800 (CST)
-From: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-To: linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	stable@vger.kernel.org,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	yyxroy22@gmail.com
-Subject: [PATCH net] sctp: fix use-after-free of cached ASCONF chunk
-Date: Fri,  7 Aug 2026 01:16:14 +0800
-Message-Id: <20260806171614.945331-1-yangyx22@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.25.1
+        d=gmail.com; s=20251104; t=1786036708; x=1786641508; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qYLZD645akLQlKnPufmUkf56Es45Q9w4M4KndfohRRc=;
+        b=E6e+eXgUyt2NvGqh9EdDDlz5ZS1wkeDFgCH+T5QzN2BuTVhgdoq7+njAHez+nlhGHd
+         H4q8BdQXh6QV8nMm7nlVsI15ztmj9/tm9cTD8AmEu3+OQ6XvCu9ndG1U9RaUegZ1DktF
+         ebx4wTO7CHVBc8HNd/5xEwxX+Ltn24fl089y5x2ZimboFpylkVGzSU2iVLre+vHzvvM8
+         g067JLs+Sbd5Y1TD65jViwVmuaPbRrBI5b4wSzifS4kF+qsi2nquMY86WZjFH5IgQFCr
+         URtYZ4XqtBAkKiQVr34bMrc5MLEv2GhwRB5ywTwkn4wA9bquHVLr64fXXeZN8IUSn7Ah
+         c4lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786036708; x=1786641508;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=qYLZD645akLQlKnPufmUkf56Es45Q9w4M4KndfohRRc=;
+        b=fhUnoVWH23W5hiNrUc8H6RHRl4jU6xm28RRBLQK3kK8OTAXBuUKGabmMVtETdUPIo8
+         lW6kWPFOLoA7x8nTkHToVNzZ35b1OQxl7f/ZqnJ3GUv5R1hqdGqG81GBUKrTqebU6487
+         jOP5LNqLhLZTSKZaSONhBe63/2MoxsGzSC/0DLLrD2gWVkLYXimPMKCE9dX/4iWWFWo4
+         FQfAtfTGN00sZc1zgR9fuNsl4wWz5doNmKqeSLPx5cqknOdbVztQmKmcp/WycppK7cuu
+         A92cb/veVlNNVheHwXZP0m68T8RlFvW19kc89C7E7pyeta6Gzno14lzeSa9piBPGaToR
+         xBrA==
+X-Forwarded-Encrypted: i=1; AHgh+RoE6TUWRNTmi2njOrAgHvv67qTQOn9oK6NbDZVwdkwniefcaHRYYWvcE4QfDxx2u21pdfN1dlg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXK4F5eKvucg12yA70JMaF8ORhjX5nKYrXrOu1NSrSgRyXeEhU
+	CPPE0ITHYMC+SREQP6dEuQZqwjPdC9idqMo74zsN138Hk2y4OCce7SOq
+X-Gm-Gg: AR+sD12RW6EgwjvRhRJOOgwCdtWatfQWA7gICKXmuMohvfa3aKoI5esr0FCou1UdnGS
+	3EHvVcfD3lO4S8HBNmU6TchCqBKSFDT+JqDNyrxmx/R5ahzwoXWvW7YVoCrbU62FYini6IQ+nCR
+	KRPSYLufBqvJbU9fTrtvcvwm5pKsf342CvCTXZvdALctQMZ8snU/1v7Q1eq+T5xstgwNnvB1tbf
+	9EH9a2kucNwRzsuN+tzzenfT1tto/qZRoftCO2bqCJRpmWtcRaNQ2hqUpxiFEZD6SXDTZ68OInh
+	z2JoBiqthgFLWNTX+pefkWmE5TGJVtH31Lk1wx8rO2lJL+nIJlGwX8DDr+tiU78oc7Kpq4aWZC6
+	2HtpfMDWSynmIl0PZIsyZgBk4J/7BwaTPt3FD6i5vCyHtVE7F8nLR9qU1QVa5nNs1fSgxk/DiAJ
+	D2uXP6bVRbSk3Omy7shgJqVEA8CX4DhBnKodp+NTPVAV3DoBHMtIlgDrJPZ9iB5EcTwTLmPGBZV
+	q+phRleI6R67g75PR4n7Q==
+X-Received: by 2002:a05:600c:22ca:b0:498:ee7:e40a with SMTP id 5b1f17b1804b1-4994e7d2c19mr183148595e9.16.1786036707630;
+        Thu, 06 Aug 2026 10:18:27 -0700 (PDT)
+Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b329cbsm7813135f8f.37.2026.08.06.10.18.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 10:18:27 -0700 (PDT)
+Date: Thu, 6 Aug 2026 19:18:25 +0200
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: Song Liu <song@kernel.org>
+Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
+	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
+	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
+	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
+	pabeni@redhat.com, netdev@vger.kernel.org, sdf.kernel@gmail.com,
+	ameryhung@gmail.com, kuniyu@google.com
+Subject: Re: [PATCH bpf-next v3 1/5] net: Add __sys_connect_socket() helper
+Message-ID: <anTB4fYBFmmHcQpY@gmail.com>
+References: <20260804164652.296919-1-mahe.tardy@gmail.com>
+ <20260804164652.296919-2-mahe.tardy@gmail.com>
+ <CAPhsuW5ZTqfzpxNf=S6JbmGxWf2m9qPZGberdzRdLuvv2-Xwgw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yAQGZQCXO8tfwXRqRwFEAQ--.57940S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr15JFyUGF4UZFy7AF1DJrb_yoW8WFy8p3
-	98Zr4rtryUGr18ArZ3JFn0ga1Ikws3J39xKryqyw4fZFs8Xr1Yk347K3WUtr40kF4kAayS
-	grW3tF4UXF1qyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9C1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4U
-	JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I
-	0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIE
-	Y20_GrWkJr1UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjI
-	I2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5
-	MxkIecxEwVAFwVW8MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJw
-	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-	14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
-	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
-	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUyE__UUUUU=
-X-CM-SenderInfo: 51dqw5r0ssqzpdlo2hxwvl0wxkxdhvlgxou0/
+In-Reply-To: <CAPhsuW5ZTqfzpxNf=S6JbmGxWf2m9qPZGberdzRdLuvv2-Xwgw@mail.gmail.com>
 
-addip_last_asconf caches the outstanding outbound ASCONF chunk. The normal
-ASCONF-ACK completion path releases the chunk and clears the pointer.
+On Tue, Aug 04, 2026 at 09:05:28PM -0700, Song Liu wrote:
+> On Tue, Aug 4, 2026 at 9:47 AM Mahe Tardy <mahe.tardy@gmail.com> wrote:
+> >
+> > Add a helper that connects an existing socket while invoking the LSM
+> > hook. Reuse it in __sys_connect_file() to avoid duplicating the connect
+> > logic. Other socket operations have equivalent helpers that trigger the
+> > appropriate LSM hooks that can be reused, this one was the only one
+> > missing.
+> >
+> > Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+> > ---
+> >  include/linux/socket.h |  2 ++
+> >  net/socket.c           | 32 ++++++++++++++++++--------------
+> >  2 files changed, 20 insertions(+), 14 deletions(-)
+> >
+> > diff --git a/include/linux/socket.h b/include/linux/socket.h
+> > index 2a8d7b14f1d1..48f1eb8193de 100644
+> > --- a/include/linux/socket.h
+> > +++ b/include/linux/socket.h
+> > @@ -461,6 +461,8 @@ extern struct file *__sys_socket_file(int family, int type, int protocol);
+> >  extern int __sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
+> >  extern int __sys_bind_socket(struct socket *sock, struct sockaddr_storage *address,
+> >                              int addrlen);
+> > +extern int __sys_connect_socket(struct socket *sock, struct sockaddr_storage *addr,
+> > +                               int addrlen, int flags);
+> 
+> IIUC, __sys_ prefix is for functions behind syscalls. Do we really want this
+> prefix here?
 
-However, sctp_asconf_queue_teardown() releases the cached chunk without
-clearing addip_last_asconf. During peer restart handling,
-sctp_sf_do_dupcook_a() queues SCTP_CMD_PURGE_ASCONF_QUEUE, which invokes
-sctp_asconf_queue_teardown() while the association remains alive and leaves
-the pointer dangling.
+Yeah let's remove it.
 
-A delayed authenticated ASCONF-ACK can then reach sctp_sf_do_asconf_ack(),
-which accesses the stale chunk and passes it to sctp_process_asconf_ack(),
-causing a use-after-free and a second release.
-
-Clear addip_last_asconf after releasing the cached chunk. This restores the
-invariant that a non-NULL pointer always references a live chunk.
-
-Fixes: a000c01e60e4 ("sctp: stop pending timers and purge queues when peer restart asoc")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude-Code:GLM-5.2
-Signed-off-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
----
- net/sctp/associola.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-index b6ac096..cf3e807 100644
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -1709,6 +1709,8 @@ void sctp_asconf_queue_teardown(struct sctp_association *asoc)
- 	sctp_assoc_free_asconf_queue(asoc);
- 
- 	/* Free any cached ASCONF chunk. */
--	if (asoc->addip_last_asconf)
-+	if (asoc->addip_last_asconf) {
- 		sctp_chunk_free(asoc->addip_last_asconf);
-+		asoc->addip_last_asconf = NULL;
-+	}
- }
--- 
-2.25.1
-
+> 
+> Thanks,
+> Song
+> 
+> >  extern int __sys_connect_file(struct file *file, struct sockaddr_storage *addr,
+> >                               int addrlen, int file_flags);
+> >  extern int __sys_connect(int fd, struct sockaddr __user *uservaddr,
+> > diff --git a/net/socket.c b/net/socket.c
+> > index 63c69a0fa74e..c7427dd4dd52 100644
+> > --- a/net/socket.c
+> > +++ b/net/socket.c
