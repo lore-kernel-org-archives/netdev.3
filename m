@@ -1,250 +1,209 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013064.outbound.protection.outlook.com [40.93.196.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B59D3EB0FA;
-	Thu,  6 Aug 2026 08:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786003457; cv=none; b=qQ1BeDdijq3UtXBEWud71pPmy5uuz+FV8bkwAF9wg8goBHlA/ZWPFMtREO/di89jZ9QO53uKPyck+5qr4nh46A43BrL5Q71XuKey7zeUVnX/S6yXXia4R8RAAP+70LuqROf4KLQTiSCBlCEaKIOnzfMhR0ccqYWOzlp2dHAPsPE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786003457; c=relaxed/simple;
-	bh=jhRd/dc6vKyDGVFtZj+miSXfDVBtQ0dgQU5SCl885HM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aSu1UwoUmLbMQbGcXOEEXMbdi2kqpZcxjUhcirSS5QGHwluQdNpv2JagDQxWUDCr47vdAE7cvUwdODVKMMS5Ex1+B9xYmbYlTOJ7K+VpSfHmloBMNKSeQYmkzWUOfBJepNsK/OoIre98KI2OM2/jSS5BuqCR6masUArK3IfI2UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LB+s1/Jf; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A412777F3;
+	Thu,  6 Aug 2026 08:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786003728; cv=fail; b=uivF9w+mlRFp5Yrc7KlzX16qnrJ+X6BSgCxb87SdvASaFqS69QxN7/sSAbxZ5TtHj72WEccDxtJ6Bytj/UFok7iNOXxlEJijzUv+vizuK3cuKbNcF5yd5TD1IqpfxMgBiQYLtqA2Mlau2w7QlhEtvUzJ5Cy2EpQPZ6vFCg4WJM4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786003728; c=relaxed/simple;
+	bh=WDxba/13qoa8My/M0UGCG3isWGB3S6hh4gNABVy9PTw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SWGDAZ5cdtRavc3YvfU8ebUHL3TN3b6KP7yQKzVdo63YR1+YAt1025Jr6rz/w4BoG+qx8vFd+GNgwzhbg7c5uLk3ETs7iCDmL26xsW6QZIcojTCru+QwShMrL0Fl35SARZA3yjPriDewJ3Akj43uacBCjiKyq6A53uK8Xe1Z+LY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Rkoigl3H; arc=fail smtp.client-ip=40.93.196.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LB+s1/Jf"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 39EFEC2BCB9;
-	Thu,  6 Aug 2026 08:04:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786003456;
-	bh=jhRd/dc6vKyDGVFtZj+miSXfDVBtQ0dgQU5SCl885HM=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=LB+s1/JfUpvLA/a/MeqF2iPwVS7fsphM/MFxHAeIuDmvTK4Pa7MUvrn5NwuEcZCxG
-	 QxmZctH/Jy7vc9pWhREmCOoPCk1WiwynB2is7f2aj9sYgsJrzVGIEbHCIBEQuqB/90
-	 x/QNqV7L0ELdJF5im1rL4ai3X36n+BaNJD03iLA0/NzikWFWwjINBcq7bZhC0kNVPf
-	 UqJglfTRX2CO+rHg+kTBBWaQY6k5RvseorQj3QnSK2L7UrN5Elcr8/IM3um2GI5Fp7
-	 +VzfpWprrlTVpsPCUICaCoAbwxjXHq7sv9PEUwQY1sUSzfCKStzQ44B4FTehmxU4nF
-	 DNJe2HkK7X7YA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 11525C561E6;
-	Thu,  6 Aug 2026 08:04:16 +0000 (UTC)
-From: Zxyan Zhu via B4 Relay <devnull+zxyan0222.gmail.com@kernel.org>
-Date: Thu, 06 Aug 2026 16:03:19 +0800
-Subject: [PATCH] net: stmmac: dwxgmac2: add XGMAC timestamp interrupt
- support
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Rkoigl3H"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Bhge4uI+BWeN2kJhCHA4wcJQ256nFMSRg4YDJJk4fVTFQsnfkkqRqAmiq21TOc8jtcLae4qt3diS7jdy+sieMMkqkoqDBsVPTFR2TbYiL2013BzFUwtwumXHrmdsCbqF9nm42NWREaJvPJz5jZ8ALqI5q/FcG4/gLichH0E98sqeMIOuoghBaF66TCxGK7FxB0ckXmmvVElaEC+JZAqOIznyZvxeirxmeA+pOqlw7h7AkaR7Jwf+005XeD7G6mET42q+0eLfRGq30mys1lhs+gmmehCHsw6SuM738PQIDLQLklVyhpdCDxTwhUd4AMqCDaJ8MCxOi7YnXdFn+VOrrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZrRKT1ugaVbpxryMt4ywK1x603aOHQ9RTxKeur8UO20=;
+ b=HNKfdWGUgjgOtuAcm+jxWWadqtH0J9zjxOonPwse+qmglNRJJoFBXEQcWFxlfBmHBlX9o3bk+itJbV9S2AO0rk2wrHUWE62jjkT296M5z0W8Fj+VprKI8aKGALdZVEg19QjHrzZL8vI7242WxFjblN0QLgdevzrMbz2S4dbwDCgr9Pc1latuW99FWidTj0KQOgF3PhbwlwBm1YiIp8iI1O3Bx6c3kWJ6+YO1RxFLozimsDxs/d3v946PAyAfmU49a8yWoWpl0Y2wgkA6rmGJiITn9iQTF8fr8VVKAtttWUq9VMQnId2BnFd+yBhU5OGuDPJ6DhDsHd2lnEl6w8yi/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZrRKT1ugaVbpxryMt4ywK1x603aOHQ9RTxKeur8UO20=;
+ b=Rkoigl3HWhupkxlQ1s7jmQqFQqM1NyCKfab8JrV4aIovMzx6Ago2UmvhUVOmnoNUc1aWN2giW+fhzepXZ6IAxKeSbxSU4dROXny6o+JdmlXzN8YaOUsKZ2w1ST7FM4lj96hPtg3bgYe1ByO2ToQ9XD1sSkzqRj/MUK9yiNQAjPLr9lEmwbnHE1NXCbHS61R3YdqxteHk5DsnA52eplDJK8R8hKC3qus2JCHJvdSU2FPjGY5QgEIzqEhX+6ceEWVqubj0y4d+KCRr3QYYktOd1ibQEhIAyKl6Yn1R1ClKU7bzoq2a8D1/xSXS91QUo4h/MzHraMh5XnmlXP6Iwx78/g==
+Received: from CH0PR03CA0212.namprd03.prod.outlook.com (2603:10b6:610:e7::7)
+ by SJ5PPF4C71815F9.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::992) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Thu, 6 Aug
+ 2026 08:08:39 +0000
+Received: from CH1PEPF0000AD7C.namprd04.prod.outlook.com
+ (2603:10b6:610:e7:cafe::a) by CH0PR03CA0212.outlook.office365.com
+ (2603:10b6:610:e7::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.21 via Frontend Transport; Thu, 6
+ Aug 2026 08:08:37 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CH1PEPF0000AD7C.mail.protection.outlook.com (10.167.244.84) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.6 via Frontend Transport; Thu, 6 Aug 2026 08:08:36 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 6 Aug
+ 2026 01:08:25 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 6 Aug 2026 01:08:25 -0700
+Received: from c-237-113-220-225.mtl.nbulabs.nvidia.com (10.127.8.12) by
+ mail.nvidia.com (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20
+ via Frontend Transport; Thu, 6 Aug 2026 01:08:22 -0700
+From: Dragos Tatulea <dtatulea@nvidia.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jacob Keller
+	<jacob.e.keller@intel.com>, Stanislav Fomichev <sdf@fomichev.me>
+CC: Dragos Tatulea <dtatulea@nvidia.com>, <tariqt@nvidia.com>, Shahar Shitrit
+	<shshitrit@nvidia.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net v2] net: Defer netdev KOBJ_ADD uevent until the device is published
+Date: Thu, 6 Aug 2026 11:07:58 +0300
+Message-ID: <20260806080758.2039586-2-dtatulea@nvidia.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAMY/dGoC/yXMywrCMBBG4Vcps3YgBgnWVxEXufzWEVJrJtVC6
- bsbdfktzllJUQRKp26lgpeoPMaG/a6jePPjAJbUTNZYZ47GcXovQ/bRcpUMrT5PLOXJIRz6ZB3
- QJ1CLp4KrLL/x+fK3zuGOWL832rYPLvoGynoAAAA=
-X-Change-ID: 20260806-dwxgmac2-timestamp-irq-bb49d26ee9de
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Richard Cochran <richardcochran@gmail.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Zxyan Zhu <zxyan0222@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786003453; l=7574;
- i=zxyan0222@gmail.com; s=20260806; h=from:subject:message-id;
- bh=1H2uDk15GprK4olxaBElieXZeWUvadUaP0WjWNuFWEk=;
- b=meVt0tD1QaLl1n1yEJbRwW09U1bM1wvqktb5GfdqoAOAFhOfewOgrO8Loq6GiMIR+p60D5/DI
- AFTKMi0DU21DaYMEyYTfar2YUS5ED3tyFTg5eAAAv3kyHgnkT4GYynB
-X-Developer-Key: i=zxyan0222@gmail.com; a=ed25519;
- pk=9n789MT3lKb996clw/h0V/qpdwGmJqHCQwKFogLsWRw=
-X-Endpoint-Received: by B4 Relay for zxyan0222@gmail.com/20260806 with
- auth_id=922
-X-Original-From: Zxyan Zhu <zxyan0222@gmail.com>
-Reply-To: zxyan0222@gmail.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7C:EE_|SJ5PPF4C71815F9:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83e2c69e-dec4-4fcf-659c-08def391ea7d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|36860700016|82310400026|1800799024|13003099007|6133799003|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Tm8+0jligAY64i4I4Hnn+xgPKo5X1oB6rQhotqPTTW+391btP1B27tsdRVBoDR+lRV5LgmocUlSGfCkIfbVIzx6/mlzhgnQVWJ0HPvTQsKBdaVnedZxgpKdYFmSRaLh0Z6Man2QzszFqGX4lwzyiEPQCWchrIl9bH9m4dZ+kUYc4FnOCgmTq67Dm1I9Lok0ufnMWG+Gp9Z7AmQSonG630gcsmae0N+Xe6qlWtmI6/ybOWzf5cCn4byaDvacuiM+HFffNZFqATmkGrGcEmtgoPrTuhy6t0pRlPFNWKCSC5bnM4JPzfPxtKOLxD0ah0qcL4mACkwLkU9GdysQOtJ8z3Tg+AVjB5CFoo322VmAz7BiZ3hVvN2Emb1BqAnXUZCiwh3iJRcsefFXN2mfsvswtgVwFoCgTAZwey/ktvs1oGkb4C6KCBZSoZpPLoxcuV5mBhjRM2YX1yvB7k7LXGwQGzHIkm2FhvNH87+bROQD3Ax670xPdC4yilc9nu7GwBwRIs4KYc+ZakuQrd6LSE0qSSjMx+Ur13TRlznwyQAqOgMs1bFHzLXX8ztHgDBzSzUOder/LP9qSVRjDdw81N4M8fVc93piwAHDVc56CvKOkN0IId3LoMxQL/NM7F2AcTP0R8ysolVP8yG5VmMvGAZQQXZMjaEE2+6NaazoWYshwfgbZv8AXtR/9pYx8BfPpgLTrLwQ8Y6hRYuTXz0/FS1cuqw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(82310400026)(1800799024)(13003099007)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	yqn1h1v4MiarwrqZoMhpANWkkVt+8UItBPOplt5nft4Kwqz6RKFg0uiTpgsiVy156l76ZMO1On/4g0ECCl+MRj3m0MuD68W8eqWouKIadoFVp9pjkfVAOVBwUTRjneygSWv9sWweFYcCXjgZdxpBYwc8aqU3wMiWOqGGLBAK6qzUjpeeT81eqdgGcvd35+bhqWXuIPzQZlaIs8UG5MsifVaz+rN+YDIKYsFzclj7Pgmrc4ip4eo1m2WOrzjYhp6cpO6+qRsCuGK2sO014S4bohM9QbFqm3e8cQYoy07GfTgz2yk3xmFJl8epwC+ptq3igXjKjmZPcDqYNQL1wrFYfmV4Kr4kVrW13hHomgpzF0zYF7n14UYjbgRitVF/Nd9Nw8cAOVCTPHQWgoBkBs778B62tQ9nLhwd6GxmDjYTFokC85RNLsbf8nAOGlc5G42B
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 08:08:36.1712
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83e2c69e-dec4-4fcf-659c-08def391ea7d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000AD7C.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF4C71815F9
 
-From: Zxyan Zhu <zxyan0222@gmail.com>
+netdev_register_kobject() calls device_add(), which emits KOBJ_ADD and
+wakes udev, but register_netdevice() only makes the device findable by
+name later, in list_netdevice().  A udev worker that reacts to the uevent
+can therefore run against a device that no lookup can find yet.
 
-DWXGMAC2 uses different timestamp status registers and interrupt clear
-semantics from the generic stmmac PTP implementation. In particular,
-reading XGMAC_TIMESTAMP_STATUS clears the transient TSIS and AUXTSTRIG
-status bits that the generic timestamp interrupt handler relies on.
+This used to be harmless because the ethtool ioctl took the rtnl_lock
+when looking the device up, and register_netdevice() runs under rtnl, so
+the worker simply blocked until registration finished. The commit in the
+fixes tag moved the lookup out from under rtnl for ops-locked drivers.
+Now there is a short window in register_netdevice() between
+netdev_register_kobject() until list_netdevice() when the device is not
+findable by name.
 
-The TX timestamp retrieval path polls XGMAC_TIMESTAMP_STATUS for TXTSC,
-which may consume TSIS and AUXTSTRIG before the generic interrupt handler
-executes. As a result, auxiliary snapshot events can be missed even
-though the hardware has recorded them.
+This was reproduced with the mlx5 driver on a kernel with KASAN enabled
+during devlink reload: systemd-udevd's net_driver builtin gets -ENODEV
+from ETHTOOL_GDRVINFO, which was preventing interface renaming.
 
-Unlike TSIS and AUXTSTRIG, the ATSNS field remains valid across status
-register reads and therefore survives TX timestamp polling. Use this
-persistent counter to determine the number of pending auxiliary snapshot
-events instead of relying on the transient interrupt status bits.
+Suppress the uevent in netdev_register_kobject() and emit it from
+register_netdevice() next to rtmsg_ifinfo(). This is the last point in
+register_netdevice() where no error can happen, so only fully registered
+devices are announced: the registration error paths never reach it, and
+the device_del() that unwinds them stays silent as well, leaving
+userspace with neither an add nor a remove.
 
-Implement a dedicated DWXGMAC2 timestamp interrupt handler that reads
-XGMAC_TIMESTAMP_STATUS directly, derives the pending snapshot count from
-ATSNS, and generates the corresponding PTP_CLOCK_EXTTS events. Also
-enable XGMAC timestamp interrupts and hook the new handler into the
-DWXGMAC2 hardware timestamp operations.
-
-This avoids the race between TX timestamp polling and auxiliary snapshot
-interrupt handling, ensuring that external timestamp events are reported
-correctly on DWXGMAC2.
-
-Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+Fixes: f994752b1127 ("net: ethtool: optionally skip rtnl_lock on IOCTL path")
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h     |  2 +-
- .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    | 41 +++++++++++++++++++++-
- drivers/net/ethernet/stmicro/stmmac/hwif.c         |  4 +--
- drivers/net/ethernet/stmicro/stmmac/hwif.h         |  1 +
- .../net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c  | 12 +++++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h   |  1 +
- 6 files changed, 57 insertions(+), 4 deletions(-)
+Changes in v2:
+- Addressed Jakub's comments on code comments.
+- Link to v1: https://lore.kernel.org/all/20260804155103.742898-1-dtatulea@nvidia.com/
+---
+ net/core/dev.c       |  1 +
+ net/core/net-sysfs.c | 14 ++++++++++++++
+ net/core/net-sysfs.h |  1 +
+ 3 files changed, 16 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-index 61b6d45a02f5..76e2860a9517 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-@@ -87,7 +87,7 @@
- #define XGMAC_TSIE			BIT(12)
- #define XGMAC_LPIIE			BIT(5)
- #define XGMAC_PMTIE			BIT(4)
--#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE)
-+#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE | XGMAC_TSIE)
- #define XGMAC_Qx_TX_FLOW_CTRL(x)	(0x00000070 + (x) * 4)
- #define XGMAC_PT			GENMASK(31, 16)
- #define XGMAC_TFE			BIT(1)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index f02b434bbd50..daef5225200f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -1150,10 +1150,49 @@ static int dwxgmac2_get_mac_tx_timestamp(struct mac_device_info *hw, u64 *ts)
- 		return -EBUSY;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index c1c1be1a6962..32cc092d5d11 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -11499,6 +11499,7 @@ int register_netdevice(struct net_device *dev)
+ 	 *	Prevent userspace races by waiting until the network
+ 	 *	device is fully setup before sending notifications.
+ 	 */
++	netdev_uevent_add(dev);
+ 	if (!(dev->rtnl_link_ops && dev->rtnl_link_initializing))
+ 		rtmsg_ifinfo(RTM_NEWLINK, dev, ~0U, GFP_KERNEL, 0, NULL);
  
- 	*ts = readl(ioaddr + XGMAC_TXTIMESTAMP_NSEC) & XGMAC_TXTSSTSLO;
--	*ts += readl(ioaddr + XGMAC_TXTIMESTAMP_SEC) * 1000000000ULL;
-+	*ts += (u64)readl(ioaddr + XGMAC_TXTIMESTAMP_SEC) * 1000000000ULL;
- 	return 0;
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 0e71c9ed41e8..25546deacec8 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -2334,6 +2334,9 @@ int netdev_register_kobject(struct net_device *ndev)
+ 		*groups++ = &wireless_group;
+ #endif /* CONFIG_SYSFS */
+ 
++	/* Hold back the KOBJ_ADD uevent until the device is listed. */
++	dev_set_uevent_suppress(dev, 1);
++
+ 	error = device_add(dev);
+ 	if (error)
+ 		return error;
+@@ -2349,6 +2352,17 @@ int netdev_register_kobject(struct net_device *ndev)
+ 	return error;
  }
  
-+void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv)
++/* Announce a fully registered device to userspace. This pairs with the uevent
++ * suppression from netdev_register_kobject().
++ */
++void netdev_uevent_add(struct net_device *ndev)
 +{
-+	u32 ts_status, pending_snapshots, acr_value, channel;
-+	struct ptp_clock_event event;
-+	unsigned long flags;
-+	u64 ptp_time;
-+	int i;
++	struct device *dev = &ndev->dev;
 +
-+	if (!(priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN))
-+		return;
-+
-+	/* Read XGMAC_TIMESTAMP_STATUS unconditionally.
-+	 * TX timestamp polling also reads this register and clears
-+	 * TSIS/AUXTSTRIG, so rely on ATSNS instead.
-+	 */
-+	ts_status = readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
-+
-+	pending_snapshots = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, ts_status);
-+	if (!pending_snapshots)
-+		return;
-+
-+	acr_value = readl(priv->ptpaddr + PTP_ACR);
-+	channel = FIELD_GET(PTP_ACR_MASK, acr_value);
-+	if (!channel)
-+		return;
-+	channel = ilog2(channel);
-+
-+	for (i = 0; i < pending_snapshots; i++) {
-+		read_lock_irqsave(&priv->ptp_lock, flags);
-+		stmmac_get_ptptime(priv, priv->ptpaddr, &ptp_time);
-+		read_unlock_irqrestore(&priv->ptp_lock, flags);
-+
-+		event.type = PTP_CLOCK_EXTTS;
-+		event.index = channel;
-+		event.timestamp = ptp_time;
-+		ptp_clock_event(priv->ptp_clock, &event);
-+	}
++	dev_set_uevent_suppress(dev, 0);
++	kobject_uevent(&dev->kobj, KOBJ_ADD);
 +}
 +
- static int dwxgmac2_flex_pps_config(void __iomem *ioaddr, int index,
- 				    struct stmmac_pps_cfg *cfg, bool enable,
- 				    u32 sub_second_inc, u32 systime_flags)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-index 511b0fd5e834..9718582b8480 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-@@ -258,7 +258,7 @@ static const struct stmmac_hwif_entry {
- 		.dma = &dwxgmac210_dma_ops,
- 		.mac = &dwxgmac210_ops,
- 		.vlan = &dwxgmac210_vlan_ops,
--		.hwtimestamp = &stmmac_ptp,
-+		.hwtimestamp = &dwxgmac2_ptp,
- 		.ptp = &stmmac_ptp_clock_ops,
- 		.mode = NULL,
- 		.tc = &dwmac510_tc_ops,
-@@ -280,7 +280,7 @@ static const struct stmmac_hwif_entry {
- 		.dma = &dwxgmac210_dma_ops,
- 		.mac = &dwxlgmac2_ops,
- 		.vlan = &dwxlgmac2_vlan_ops,
--		.hwtimestamp = &stmmac_ptp,
-+		.hwtimestamp = &dwxgmac2_ptp,
- 		.ptp = &stmmac_ptp_clock_ops,
- 		.mode = NULL,
- 		.tc = &dwmac510_tc_ops,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index e6317b94fff7..818ab3daa91c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -671,6 +671,7 @@ extern const struct stmmac_desc_ops ndesc_ops;
+ /* Change owner for sysfs entries when moving network devices across network
+  * namespaces owned by different user namespaces.
+  */
+diff --git a/net/core/net-sysfs.h b/net/core/net-sysfs.h
+index 38e2e3ffd0bd..2f41a4dee866 100644
+--- a/net/core/net-sysfs.h
++++ b/net/core/net-sysfs.h
+@@ -4,6 +4,7 @@
  
- extern const struct stmmac_hwtimestamp stmmac_ptp;
- extern const struct stmmac_hwtimestamp dwmac1000_ptp;
-+extern const struct stmmac_hwtimestamp dwxgmac2_ptp;
- 
- extern const struct stmmac_mode_ops ring_mode_ops;
- extern const struct stmmac_mode_ops chain_mode_ops;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-index b9a985fa772c..9d7d24259abd 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-@@ -277,3 +277,15 @@ const struct stmmac_hwtimestamp dwmac1000_ptp = {
- 	.get_ptptime = dwmac1000_get_ptptime,
- 	.timestamp_interrupt = dwmac1000_timestamp_interrupt,
- };
-+
-+const struct stmmac_hwtimestamp dwxgmac2_ptp = {
-+	.config_hw_tstamping = config_hw_tstamping,
-+	.init_systime = init_systime,
-+	.config_sub_second_increment = config_sub_second_increment,
-+	.config_addend = config_addend,
-+	.adjust_systime = adjust_systime,
-+	.get_systime = get_systime,
-+	.get_ptptime = get_ptptime,
-+	.timestamp_interrupt = dwxgmac2_timestamp_interrupt,
-+	.hwtstamp_correct_latency = hwtstamp_correct_latency,
-+};
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
-index 3fe0e3a80e80..dade09614163 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
-@@ -103,6 +103,7 @@ int dwmac1000_ptp_enable(struct ptp_clock_info *ptp,
- 
- void dwmac1000_get_ptptime(void __iomem *ptpaddr, u64 *ptp_time);
- void dwmac1000_timestamp_interrupt(struct stmmac_priv *priv);
-+void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv);
- 
- extern const struct ptp_clock_info stmmac_ptp_clock_ops;
- extern const struct ptp_clock_info dwmac1000_ptp_clock_ops;
-
----
-base-commit: 1df10cef2d1e7f9f2fb7eddb67fc70d3abf101f9
-change-id: 20260806-dwxgmac2-timestamp-irq-bb49d26ee9de
-
-Best regards,
---  
-Zxyan Zhu <zxyan0222@gmail.com>
-
+ int __init netdev_kobject_init(void);
+ int netdev_register_kobject(struct net_device *);
++void netdev_uevent_add(struct net_device *dev);
+ void netdev_unregister_kobject(struct net_device *);
+ int net_rx_queue_update_kobjects(struct net_device *, int old_num, int new_num);
+ int netdev_queue_update_kobjects(struct net_device *net,
+-- 
+2.55.0
 
