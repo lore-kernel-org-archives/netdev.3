@@ -1,419 +1,273 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C726C38F259
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786041442; cv=none; b=eGGPBObcmuOOiarLTvm7ku+MgvroGWxn2PQFfZDWy1tkyVm9vMLrgqjeohXRgtdNQVXOWWAt7iSw31+ZZ1N+G1nx9HkOiBsyr4bnhqynQ2mdEgQkgsF1EWP0uIPKPSibNzAGtjgP9SRh9WTfb0zRR4S0XYD7JMYgv0fUFJJpKyM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786041442; c=relaxed/simple;
-	bh=8op7bEcBMlCyikCWLiq3qayArbhWMqZTythL8+64Nf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIgV7eoljVbpA2IlZfRjFY4RxoDnKEQjdzRHdaJns1hzqFrmKQYMYMKVNzM9SK3AG462OH0jWAvb4O8pA/16g2dAGgG+G7O36mudv9gY5gBZVqLyuhuQSCxez1vxxEoaD3dcZDFAIP3PdLM730otXniI39O2vldp6Pnf+3GHEG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XaDQaU73; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066D8371885
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786041519; cv=pass; b=hdcKhMe2lBexFADixHdw7/hOZpoAd29cJQmHGeEMsY+abJ0kyw2acfe6TtVPjZQqx/RHG8luRIb8IDa+6yKqlsMQPm07GjEqAhhafpfZln1lmhxHSBMZXcjfpnSZ7V5yO08U+jaF+VBEdEwBgqRXycMh7lyfsX0Wd6t3EfFXC48=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786041519; c=relaxed/simple;
+	bh=QS8nUk2MQLUFkRJi6/rRGSU1OrivXfXKT078jkhl5co=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OmOzNZOfg6WsD+j431uv8GU+QTqpUbLlsDnWNjsYBa3V1lP3lBOiDUbp4NyD48Bfko+8c3on7MBWpX0DQ2SuBaFh2QDmO0QWNCMnaGVrOt4QclgSU1p4ZunBLBg/1K7tQmaytJNVyS4BtiG3KEzApIetz3U7fpk/NTIePM8uiL4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=OFF/lH54; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XaDQaU73"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE0B1F00ACA;
-	Thu,  6 Aug 2026 18:37:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786041434;
-	bh=smMuZSDIJ0wT2ZIqbgfuuJTXpbe3gpE5hbVQdojJnpA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XaDQaU73FBWoBN3NaFBJZbXdmMbShnhJXrK01zh9oARAhA0A4+R4j2V1K1aR8SfzC
-	 SY2IrcjDQXsyJXNdK0esB/T2lXDixJcfyEUlHxdBwCoT7FQmGl1KjyPgsCLX8GJjGi
-	 WJqqQJOJEGTFXPeOy2UWCcTXrk3hcxFjfFkBdOe4ANrPuDO3xTsi3qtn+CmJP6oApU
-	 5Qn8x8hyGIoRNPhQeq3PzydQ8rstY07F4sJDclMF5pQLiDT2Ymgd1olkv04AulSl7N
-	 ezVtHlZS6itnHEWZKi2J+Gj5KQdV5UCL1DN0nDhHQPezml9H31MvjEAEv4LwQgOg3P
-	 yLi7g4w7buXfw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: mmc@linux.ibm.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	horms@kernel.org,
-	bjking1@linux.ibm.com,
-	haren@linux.ibm.com,
-	ricklind@linux.ibm.com,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	simon.horman@corigine.com,
-	shaik.abdulla1@ibm.com,
-	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v4 13/14] ibmveth: Wire ethtool set_channels to MQ RX queue resize
-Date: Thu,  6 Aug 2026 11:37:13 -0700
-Message-ID: <20260806183713.3175936-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <135011a5c18abead73784a587ed20d1518168a2d.1785457143.git.mmc@linux.ibm.com>
-References: <135011a5c18abead73784a587ed20d1518168a2d.1785457143.git.mmc@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="OFF/lH54"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84a4d8fd6ecso3119684b3a.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 11:38:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786041512; cv=none;
+        d=google.com; s=arc-20260327;
+        b=abQgrej4jftlcXvhogstX0MQmWM0LqfLp8upIKezgVxZxYFG3PE0VUKxP2xL+pCu27
+         HMAt+XuhK7pt6wusxTrUQ9lXFYAfi/TrSgYXdQiMhiTaap372eGf3XbH08cQgA4wxmWE
+         j11kY4lCZQkOHkz8pO5nuTflmBXDxvRCue5c94WQOY2ik1HEm/fjyTyXTAuop68R5QLi
+         e4736b7vyHCW9EC4l4kwEhPM+Xta99CAbi2mDxJFcG46KCITQaGyCW9KUp4nAfDbjgRi
+         ChXJXB9jLSUDTEAu3EVB0KSz6h8PVTzxo/rQ8p5GNIhPOfn4yBYa+UbKQE/hM3m/gqQ3
+         DkCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UzzSQ42c6CqUCkgPR4M9ccrX37Kn1FAe7+/9Junovp0=;
+        fh=S3sKelmZIMuGFSOf6P2YTYYCxDbvTIozFUiqgjLipVc=;
+        b=RdAQMzI9B8a576nosT9f756tD2WmOy7HympwKMVN9RCkUcutUG8h6drEgl1PRXc8Ol
+         uXqHCWUm93SBqxdGG4MQo2GYNrH4tm2KGvXgjuLJdjQWJBKhar+NtEXU6AH15rLeuLOe
+         vY7iiKnZ7BA0ilzPoem/fhxT604PpzgmyQl1YsbvSx6dd4XPsI3X3pTWsUU20PiTY3lx
+         p3OWBeeMq4diivxD2X73Nz1RD4rloek2A0nNIsnlN//sGOXiOC69mwV0xbBxl1dIbwnC
+         h0GvkNGBUrF7b8zRIod/yodzQcVmqnSz+Cy6vOvXSg01Nu/dlohqSakb1ha6BIwTqQ/x
+         pbKw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1786041512; x=1786646312; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UzzSQ42c6CqUCkgPR4M9ccrX37Kn1FAe7+/9Junovp0=;
+        b=OFF/lH54Dqglld7L3oT8dLouWySG2ob5FU3EErHVtg1Q6id1t41VF1DdKWMpLvUy2r
+         Agi/cJUU5mjPaPS6I6pFHb1BLmP966w7y1KQ1pAiaTX52cuUd78psEktS9E0sYzTvJML
+         08DvakAf0YFNwe/ULr9168ujMzS6HmBDaeZSM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786041512; x=1786646312;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UzzSQ42c6CqUCkgPR4M9ccrX37Kn1FAe7+/9Junovp0=;
+        b=i2Z+DJhmBt+g+paM3Pl6iTlbTzt5kTDLyyFvqc0g0Bnxwh2hVXyqEsbN1Oz9saKAJF
+         BeIX+Ma1MNac6RHHr20pCdUaTob8X6E85GpsF8Cdi1JOmMOLT4TRMdl7tjxjahi+mMJo
+         QOY8EluL6YpOz0O248CRczu+/KdZoYIlCT/XHKhq6K+zp/RY6NtaEnrFSL+tkDyX7cAp
+         14ojz1tBK5zotX/az4XAXXOtt5WbvFziR2+Z2exUy7SmAW9Q+71g6mNrnYI00pFgOSnv
+         CkR5Qq3Eac8YSzkb7Xv3683K1Sm0F/FOy4PNvCT76DXOD9bDoXCBUMCjKghMgfk0RIqx
+         JX/g==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0Ygqc20w02C+oVb/WFOrtQComb31+h8hQHSgr+O+6oFNXshkH+BcgA5Xfkw7Yns+ZuGAvEj8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1NgorwbJuWnUYP5VFqlB/3E/g29RY3OQTU4PBsBu59RItvdRN
+	gWekmalg/phXWouQLxC/7s5e1O8vRql377xLoAaQhgjyUxli1T0ipN7zfb0FJVZy/lhNsb/4AX5
+	AuCSa5GPNe1gZyzq+Q4gUMvwsfYrsPypGmQebD6Iyw4RGHWps/Ms=
+X-Gm-Gg: AR+sD13JihwjxUzwVANbckKIjoJ3jxEm7nIlct0NLxFQAugOkwvK4ipJO6Q1abU4Iav
+	h1P0o2QUa4cP4FvETSIAdBukTXKgl/HqLRRl/oQ+/z9wPdusC8/bLXt3RwQz+GXZVBMkknex2F+
+	+ZfRwg42ILs/n6YI0/XHigGFtkpLsdDhWhBv2qcV90LNww4WF31YjnT4DDIptj78nJQ9KtFvVDU
+	LNLB4itJYLJ3j2xLjYTwRPYNn+mGPK3Vxyz6UBKFsjXO3GrG1cTORG03JyrGopjJC0750c87gz1
+	T+cexG6MQDKqmaCxWNMHQK+Fjvqh76MWikBeB2UiyWMLjFCNtN9t1RAb
+X-Received: by 2002:a05:6a00:450b:b0:848:76af:db37 with SMTP id
+ d2e1a72fcca58-84f2e0147e9mr19156359b3a.7.1786041512054; Thu, 06 Aug 2026
+ 11:38:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-ibmveth: Wire ethtool set_channels to MQ RX queue resize
-
-This completes the RX side of ibmveth_set_channels(): when the interface is
-down the TX queue count is published and the desired RX count is stashed for
-the next open(), and when it is up the RX resize runs through
-ibmveth_resize_rx_channels() before the existing TX LTB alloc/free path. It
-also renames the TX bookkeeping variables to old_tx/goal_tx and adds an early
-return when the TX count is unchanged.
-
-A few questions below.
-
->       - Non-MQ firmware returns -EOPNOTSUPP for rx > 1.
->       - Validate rx_count within 1..IBMVETH_MAX_RX_QUEUES.
-
-[Severity: Low]
-Do these two bullets describe changes that are actually in this patch?
-
-Both checks live in ibmveth_resize_rx_channels() in
-drivers/net/ethernet/ibm/ibmveth.c:
-
-	if (goal_rx > 1 && !adapter->multi_queue) {
-		...
-		return -EOPNOTSUPP;
-	}
-
-	if (goal_rx < 1 || goal_rx > IBMVETH_MAX_RX_QUEUES) {
-		...
-		return -EINVAL;
-	}
-
-and they were added by the preceding patch "ibmveth: Implement incremental MQ
-RX queue resize". This patch neither adds nor changes them.
-
-Related to the split: the parent commit carried a comment in
-ibmveth_set_channels() that referred to the patch series itself, which this
-patch now deletes:
-
-	/* Resize RX first while UP so ibmveth_resize_rx_channels() is used
-	 * in this patch. !IFF_UP RX stash ordering lands next.
-	 */
-
-Could that comment be dropped from the parent instead, so no committed state
-of the tree describes an unfinished series?
-
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index b57c7df92853f..c99d8e8be7b37 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.c
-> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> @@ -2723,20 +2723,28 @@ static int ibmveth_set_channels(struct net_device *netdev,
->  				struct ethtool_channels *channels)
->  {
->  	struct ibmveth_adapter *adapter = netdev_priv(netdev);
-> -	unsigned int old = netdev->real_num_tx_queues,
-> -		     goal = channels->tx_count;
->  	unsigned int goal_rx = channels->rx_count;
-> +	unsigned int old_tx = netdev->real_num_tx_queues;
-> +	unsigned int goal_tx = channels->tx_count;
->  	int rc, i;
->  
->  	/* If ndo_open has not been called yet then don't allocate, just set
->  	 * desired netdev_queue's and return
->  	 */
-> -	if (!(netdev->flags & IFF_UP))
-> -		return netif_set_real_num_tx_queues(netdev, goal);
-> +	if (!(netdev->flags & IFF_UP)) {
-
-[Severity: High]
-Is netdev->flags & IFF_UP a reliable proxy here for "the driver holds RX
-resources"?
-
-ibmveth tears down and re-creates its resources internally while IFF_UP stays
-set. veth_pool_store() does:
-
-	ibmveth_close(netdev);
-	...
-	if (netif_running(netdev)) {
-		rc = ibmveth_open(netdev);
-		if (rc) {
-			pool->active = oldactive;
-			...
-			goto unlock_err;
-
-and ibmveth_change_mtu() does the same close/open dance. If the reopen fails,
-for example a GFP_KERNEL failure in ibmveth_alloc_rx_queues() or
-ibmveth_alloc_buffer_pools(), the error is returned without clearing
-dev->flags, so IFF_UP remains set while ibmveth_close() ->
-ibmveth_cleanup_rx_interrupts() has already run:
-
-	for (i = 0; i < adapter->num_rx_queues; i++)
-		napi_disable(&adapter->napi[i]);
-
-and ibmveth_cleanup_rx_resources() has set buffer_list_addr[i] and
-rx_queue[i].queue_addr to NULL, with adapter->num_rx_queues left unchanged.
-
-A later "ethtool -L ethX rx <smaller>" then takes the UP branch and the
-scale-down loop in ibmveth_resize_rx_queues_incremental() calls
-napi_disable(&adapter->napi[i]) a second time on an already-disabled NAPI.
-Does napi_disable_locked() ever return in that case?
-
-net/core/dev.c:napi_disable_locked() {
-	...
-	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
-		usleep_range(20, 200);
-		val = READ_ONCE(n->state);
-	}
-	...
-}
-
-That would be an unkillable spin with rtnl_lock held.
-
-The scale-up direction on the same stale state reaches
-ibmveth_replenish_task() -> ibmveth_update_rx_no_buffer(), which does:
-
-	for (i = 0; i < adapter->num_rx_queues; i++) {
-		__be64 *p = adapter->buffer_list_addr[i] + 4096 - 8;
-		u64 drops = be64_to_cpup(p);
-
-with buffer_list_addr[i] already NULL.
-
-This dispatch on IFF_UP came from the preceding patch, but this patch
-finalizes it as the user-visible interface. Would keying the decision on an
-explicit "RX resources allocated" state in the adapter avoid this?
-
-> +		if (goal_tx != old_tx) {
-> +			rc = netif_set_real_num_tx_queues(netdev, goal_tx);
-> +			if (rc)
-> +				return rc;
-> +		}
-> +
-> +		/* Stash desired RX count only after TX succeeds (or was
-> +		 * already correct); open() publishes it via
-> +		 * netif_set_real_num_rx_queues().
-> +		 */
-> +		return ibmveth_resize_rx_channels(adapter, goal_rx);
-> +	}
-
-[Severity: Medium]
-Does this path need to refresh the VIO CMO DMA entitlement?
-
-The stash branch of ibmveth_resize_rx_channels() just does:
-
-	if (!(netdev->flags & IFF_UP)) {
-		adapter->num_rx_queues = goal_rx;
-		return 0;
-	}
-
-and ibmveth_get_desired_dma() sizes the request per RX queue:
-
-	for (q = 0; q < adapter->num_rx_queues; q++) {
-
-The only two vio_cmo_set_dev_desired() call sites in the driver are the live
-resize path in ibmveth_resize_rx_queues_incremental():
-
-	if (firmware_has_feature(FW_FEATURE_CMO))
-		vio_cmo_set_dev_desired(adapter->vdev,
-					ibmveth_get_desired_dma(adapter->vdev));
-
-and ibmveth_change_mtu(), which refreshes it even while the interface is
-closed. ibmveth_open() does not call it.
-
-So on a CMO LPAR, after
-
-	ip link set dev ethX down
-	ethtool -L ethX rx 16
-	ip link set dev ethX up
-
-the entitlement is still sized for the old, smaller RX count while open()
-DMA-maps the larger footprint (per-queue buffer-list page, RX ring, buffer
-pools). Can vio_dma_iommu_map_page() -> vio_cmo_alloc() then fail and make
-the link fail to come up with -ENOMEM? Shrinking while down has the mirror
-effect of leaving entitlement reserved until the next MTU change or live
-resize.
-
-[Severity: Low]
-Should this branch also publish the RX count to the netdev?
-
-TX is published immediately with netif_set_real_num_tx_queues(), but RX only
-reaches the stash in ibmveth_resize_rx_channels(), so
-netdev->real_num_rx_queues keeps its old value until the next
-ibmveth_open(). Meanwhile ibmveth_get_channels() reports the private counter:
-
-	channels->rx_count = adapter->num_rx_queues;
-
-After "ip link set dev ethX down; ethtool -L ethX rx N", ethtool -l reports
-N while /sys/class/net/ethX/queues/rx-*, the RPS/RFS maps and netdev-genl
-queue enumeration still show the old count.
-
-netif_set_real_num_rx_queues() only touches kobjects and RPS maps and
-allocates no driver resources, and probe already sized the netdev with
-alloc_etherdev_mqs(..., IBMVETH_MAX_QUEUES, IBMVETH_MAX_RX_QUEUES), so is
-there a reason RX cannot be published here the way TX is?
-
->  
-> -	/* Resize RX first while UP so ibmveth_resize_rx_channels() is used
-> -	 * in this patch. !IFF_UP RX stash ordering lands next.
-> -	 */
->  	rc = ibmveth_resize_rx_channels(adapter, goal_rx);
->  	if (rc)
->  		return rc;
-
-[Severity: High]
-Can this live resize race with a surviving queue's NAPI poll?
-
-The scale-down branch of ibmveth_resize_rx_queues_incremental() takes its
-grace period before lowering the count, and the frees come after the store:
-
-	synchronize_net();
-
-	rc = netif_set_real_num_rx_queues(netdev, new_count);
-	...
-	adapter->num_rx_queues = new_count;
-
-	for (i = new_count; i < old_count; i++) {
-		ibmveth_cleanup_single_rx_interrupt(adapter, i);
-		ibmveth_deregister_single_rx_queue(adapter, i);
-		ibmveth_free_single_rx_queue(adapter, i);
-	}
-
-ibmveth_free_single_rx_queue() then does:
-
-	if (adapter->buffer_list_addr[queue_idx]) {
-		free_page((unsigned long)adapter->buffer_list_addr[queue_idx]);
-		adapter->buffer_list_addr[queue_idx] = NULL;
-	}
-
-A surviving queue's poll -> ibmveth_replenish_task() ->
-ibmveth_update_rx_no_buffer() uses the count as a lockless bound and
-dereferences the pointer without a NULL check:
-
-	for (i = 0; i < adapter->num_rx_queues; i++) {
-		__be64 *p = adapter->buffer_list_addr[i] + 4096 - 8;
-		u64 drops = be64_to_cpup(p);
-
-The reader holds only rx_queue[k].replenish_lock, the writer holds rtnl, so
-the locksets do not intersect and disabling the removed queues' NAPIs does
-not quiesce the surviving pollers. Can this read a freed page, or
-dereference NULL + 4088 if the pointer load lands after the NULL store?
-
-The scale-up side publishes the count with a plain store before the reader
-can see the pointer stores:
-
-	adapter->num_rx_queues = i + 1;
-	ibmveth_replenish_task(adapter, i);
-
-On PowerPC, can a reader observe the larger count with a stale NULL
-buffer_list_addr[i]?
-
-The resize helper and its UP-path caller came from the preceding patch
-"ibmveth: Implement incremental MQ RX queue resize", so this is not
-introduced here, but this patch completes the user-facing entry point that
-drives it. The later patch "ibmveth: Fix MQ RX poll and shutdown hangs after
-queue resize" only touches correlator validation and poll shutdown and leaves
-ibmveth_update_rx_no_buffer() and this ordering unchanged.
-
-[Severity: Medium]
-Can the adapter-wide rx_no_buffer counter lose updates once more than one RX
-queue is configured through this path?
-
-ibmveth_update_rx_no_buffer() resets and re-accumulates a shared counter and
-writes every queue's qstats entry:
-
-	adapter->rx_no_buffer = 0;
-	for (i = 0; i < adapter->num_rx_queues; i++) {
-		...
-		adapter->rx_no_buffer += drops;
-	}
-
-but it is called from ibmveth_replenish_task() while only that caller's
-per-queue lock is held:
-
-	spin_lock_irqsave(&rxq->replenish_lock, flags);
-	...
-	ibmveth_update_rx_no_buffer(adapter);
-
-	spin_unlock_irqrestore(&rxq->replenish_lock, flags);
-
-With polls for queue 0 and queue 1 running on different CPUs, the locksets
-are disjoint, so the "= 0" and the "+=" from both CPUs interleave and
-ethtool -S / ndo_get_stats64() can report a value near zero or well below
-the real one. This came in with the earlier per-queue aggregation and MQ RX
-patches rather than this one, and the later "ibmveth: Fix MQ RX poll and
-shutdown hangs after queue resize" patch does not touch this function.
-
-[Severity: Low]
-Is a partially applied configuration possible here?
-
-In the UP path the RX resize is committed first, including hypervisor
-registration, IRQ setup/teardown, buffer alloc/free and the update of
-adapter->num_rx_queues. If the later netif_set_real_num_tx_queues() fails,
-for example -ENOMEM out of netdev_queue_update_kobjects(), set_channels()
-returns that error with the RX count already changed, so the resulting
-configuration matches neither the old nor the requested one and nothing
-rolls RX back.
-
-The !IFF_UP branch above has the mirror ordering: TX is committed with
-netif_set_real_num_tx_queues() before any RX validation runs, since the
--EOPNOTSUPP and -EINVAL checks live inside ibmveth_resize_rx_channels(),
-which is called last. A rejected RX value would leave the TX count changed
-with no rollback. Today the ethtool core clamps rx_count against max_rx
-before the driver op runs, so this half is latent, but should the RX
-validation happen before TX is touched?
-
-> @@ -2744,10 +2752,17 @@ static int ibmveth_set_channels(struct net_device *netdev,
->  	/* We have IBMVETH_MAX_QUEUES netdev_queue's allocated
->  	 * but we may need to alloc/free the ltb's.
->  	 */
-> +	if (goal_tx == old_tx)
-> +		return 0;
-> +
->  	netif_tx_stop_all_queues(netdev);
->  
-> -	/* Allocate any queue that we need */
-> -	for (i = old; i < goal; i++) {
-> +	/* Allocate any queue that we need. Initialize i to old_tx so a
-> +	 * scale-down path that never enters the loop still has defined
-> +	 * bounds if set_real_num_tx_queues() fails.
-> +	 */
-> +	i = old_tx;
-> +	for (; i < goal_tx; i++) {
-
-[Severity: Low]
-Is there a case where i was undefined before this change?
-
-The previous form was:
-
-	for (i = old; i < goal; i++) {
-
-The init clause runs unconditionally before the first condition test, so i
-was already assigned even when the body never executes. Splitting it into
-"i = old_tx; for (; i < goal_tx; i++)" looks semantically identical, and the
-new comment suggests the idiomatic form was unsafe. Could the comment be
-dropped or reworded?
-
-The changelog bullet "Always return rc from set_channels()" also looks like a
-non-change, since the UP path already ended with "return rc;" and the down
-path already returned the netif_set_real_num_tx_queues() value.
-
-In the one case where an error is actually lost, the claim does not hold. On
-ibmveth_allocate_tx_ltb() failure the rewind runs:
-
-		goal_tx = old_tx;
-		old_tx = i;
-		break;
-	}
-	rc = netif_set_real_num_tx_queues(netdev, goal_tx);
-
-so the -ENOMEM is overwritten by a call that cannot fail because goal_tx now
-equals dev->real_num_tx_queues, and "ethtool -L ethX tx N" reports success
-after an allocation failure. That clobber is identical at the baseline and is
-not introduced here, it just means the hardening bullet does not describe it.
-
-Separately, the genuinely new TX behaviour in this hunk, "if (goal_tx ==
-old_tx) return 0;", which now skips netif_tx_stop_all_queues() and
-netif_tx_wake_all_queues() when only RX is resized, is not mentioned in the
-commit message. Could it be added there?
-
-[ ... ]
+References: <20260805093012.95155-1-henrymei@tencent.com> <CAM0EoMmZGXhHL2v=AyjR9xSs8-s9EfkA9FkpULqtFBEOUxHQQA@mail.gmail.com>
+ <aabdf499-20ad-4667-b289-626c09a56c0a@gmail.com>
+In-Reply-To: <aabdf499-20ad-4667-b289-626c09a56c0a@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Thu, 6 Aug 2026 14:38:19 -0400
+X-Gm-Features: AUfX_mz_-gI0Cyrp0J2uVmWaq9VzcXirckg30k-UyZYmHUgTiUNFzySpc73NRsA
+Message-ID: <CAM0EoMmM-7cphQGmfZa+H3p5HjQ71gJ=8J6-HhhRwzAv--74AA@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: cls_api: fix tp_created race losing
+ existing tcf_proto
+To: Aohan Mei <ljp1205831794@gmail.com>
+Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	corvus@tencent.com, henrymei@tencent.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Aug 5, 2026 at 11:28=E2=80=AFPM Aohan Mei <ljp1205831794@gmail.com>=
+ wrote:
+>
+>
+>
+> =E5=9C=A8 2026/8/6 01:52, Jamal Hadi Salim =E5=86=99=E9=81=93:
+> > On Wed, Aug 5, 2026 at 5:30=E2=80=AFAM Aohan Mei <ljp1205831794@gmail.c=
+om> wrote:
+> >>
+> >> tc_new_tfilter() attaches a filter to a chain. When no
+> >> tcf_proto (tp) exists for the given (protocol, prio), it creates one
+> >> with tcf_proto_create(), marks tp_created so the error path can clean
+> >> it up, and inserts it with tcf_chain_tp_insert_unique().
+> >>
+> >> However, tcf_proto_create() can sleep, opening a race window in which =
+a
+> >> concurrent thread may insert a tp with the same (protocol, prio). In
+> >> that case tcf_chain_tp_insert_unique() destroys tp_new and returns the
+> >> *existing* tp, but tp_created is never reset. If the request then fail=
+s
+> >> (e.g. kind mismatch), the errout path calls
+> >> tcf_chain_tp_delete_empty() on a tp this thread never created. For
+> >> classifiers without a delete_empty callback (all but cls_flower),
+> >> tcf_proto_check_delete() removes the tp unconditionally: a live tp and
+> >> all its filters are silently lost while the owner's change() still
+> >> reports success. The race is reachable because cls_flower on
+> >> ingress/clsact qdiscs runs without rtnl_lock and can interleave with
+> >> rtnl_lock-holding classifiers such as u32.
+> >>
+> >> Fix this by making tcf_chain_tp_insert_unique() report through a new
+> >> "inserted" out-parameter whether tp_new was actually inserted, and
+> >> gate the errout delete_empty call on it instead of tp_created.
+> >> tp_created itself must stay set on this path: the chain reference was
+> >> consumed by the destroyed tp_new, and errout_tp relies on tp_created
+> >> to decide whether to tcf_chain_put(), so resetting it would underflow
+> >> the chain refcount.
+> >>
+> >> Fixes: 8b64678e0af8 ("net: sched: refactor tp insert/delete for concur=
+rent execution")
+> >> Cc: stable@vger.kernel.org
+> >> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+> >> Signed-off-by: Aohan Mei <henrymei@tencent.com>
+> >
+> > This is the same issue Sashiko found. A patch is here:
+> >
+> > https://lore.kernel.org/netdev/20260805134049.927864-1-victor@mojatatu.=
+com/
+> >
+> > Also, please add assisted-by: tags going forward if this was ai generat=
+ed.
+> >
+> > cheers,
+> > jamal
+> >
+> >> ---
+> >>   net/sched/cls_api.c | 21 ++++++++++++++++++---
+> >>   1 file changed, 18 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+> >> index fee4524ad..9ceb2b538 100644
+> >> --- a/net/sched/cls_api.c
+> >> +++ b/net/sched/cls_api.c
+> >> @@ -1937,7 +1937,8 @@ static struct tcf_proto *tcf_chain_tp_find(struc=
+t tcf_chain *chain,
+> >>   static struct tcf_proto *tcf_chain_tp_insert_unique(struct tcf_chain=
+ *chain,
+> >>                                                      struct tcf_proto =
+*tp_new,
+> >>                                                      u32 protocol, u32=
+ prio,
+> >> -                                                   bool rtnl_held)
+> >> +                                                   bool rtnl_held,
+> >> +                                                   bool *inserted)
+> >>   {
+> >>          struct tcf_chain_info chain_info;
+> >>          struct tcf_proto *tp;
+> >> @@ -1948,6 +1949,7 @@ static struct tcf_proto *tcf_chain_tp_insert_uni=
+que(struct tcf_chain *chain,
+> >>          if (tcf_proto_exists_destroying(chain, tp_new)) {
+> >>                  mutex_unlock(&chain->filter_chain_lock);
+> >>                  tcf_proto_destroy(tp_new, rtnl_held, false, NULL);
+> >> +               *inserted =3D false;
+> >>                  return ERR_PTR(-EAGAIN);
+> >>          }
+> >>
+> >> @@ -1964,6 +1966,11 @@ static struct tcf_proto *tcf_chain_tp_insert_un=
+ique(struct tcf_chain *chain,
+> >>                  tp_new =3D ERR_PTR(err);
+> >>          }
+> >>
+> >> +       /* Tell the caller whether tp_new was actually inserted, or an
+> >> +        * already existing tp is being returned instead.
+> >> +        */
+> >> +       *inserted =3D !tp && !err;
+> >> +
+> >>          return tp_new;
+> >>   }
+> >>
+> >> @@ -2254,11 +2261,13 @@ static int tc_new_tfilter(struct sk_buff *skb,=
+ struct nlmsghdr *n,
+> >>          void *fh;
+> >>          int err;
+> >>          int tp_created;
+> >> +       bool tp_inserted;
+> >>          bool rtnl_held =3D false;
+> >>          u32 flags;
+> >>
+> >>   replay:
+> >>          tp_created =3D 0;
+> >> +       tp_inserted =3D false;
+> >>
+> >>          err =3D nlmsg_parse_deprecated(n, sizeof(*t), tca, TCA_MAX,
+> >>                                       rtm_tca_policy, extack);
+> >> @@ -2382,7 +2391,7 @@ static int tc_new_tfilter(struct sk_buff *skb, s=
+truct nlmsghdr *n,
+> >>
+> >>                  tp_created =3D 1;
+> >>                  tp =3D tcf_chain_tp_insert_unique(chain, tp_new, prot=
+ocol, prio,
+> >> -                                               rtnl_held);
+> >> +                                               rtnl_held, &tp_inserte=
+d);
+> >>                  if (IS_ERR(tp)) {
+> >>                          err =3D PTR_ERR(tp);
+> >>                          goto errout_tp;
+> >> @@ -2440,7 +2449,13 @@ static int tc_new_tfilter(struct sk_buff *skb, =
+struct nlmsghdr *n,
+> >>          }
+> >>
+> >>   errout:
+> >> -       if (err && tp_created)
+> >> +       /* Only delete a tp that we actually inserted ourselves. When
+> >> +        * tcf_chain_tp_insert_unique() raced with a concurrent insert=
+ion
+> >> +        * it returns the existing tp; tp_created must stay set then (=
+the
+> >> +        * chain reference was consumed by the destroyed tp_new), but =
+the
+> >> +        * existing tp must not be deleted.
+> >> +        */
+> >> +       if (err && tp_inserted)
+> >>                  tcf_chain_tp_delete_empty(chain, tp, rtnl_held, NULL)=
+;
+> >>   errout_tp:
+> >>          if (chain) {
+> >> --
+> >> 2.50.1 (Apple Git-155)
+> >>
+>
+> Thanks for the pointer. We tested Victor's patch locally and confirm it
+> is an equivalent fix for the same issue, happy to defer to his version.
+>
+
+Thanks. Please respond to that patch and add a tested-by tag
+
+> BTW, "TencentOS Corvus AI" found this bug; and the patch was mannualy
+
+Also add a reported-by tag to the patch response
+
+> written and validated, so no `assisted-by` tag here. Noted for future
+> submissions.
+
+It does look like there was some human touch to it (other than the
+verbose comment) - and is a reasonable patch except you missed one
+spot.
+I am wondering how you tested it. We had to craft printks to see the issue.
+
+I was kind of suprised how quickly you found the issue. Victor had
+something already based on what Sashiko said but i said to wait until
+the first patch made it in.
+Does Corvus AI watch what Sashiko comments on?
+
+cheers,
+jamal
+> Thanks,
+> Aohan Mei
