@@ -1,113 +1,185 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE88143A819
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 10:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786011814; cv=none; b=KeNs2rFOFlVzQNwoD7vIVC/lBC+AL7Dp4oi+g/GxdY2fOKhDuZHZKD4NqlahaY5h8JsAjVfk7JFPlGFwYLzNeAy1llDjdP58IR2NS2znmiGG0hzCc7MoqeqilRqsuows0S6AYZQrKA7TIGCYcQKrXBe/wsl6ZWq995Wo54QYA9E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786011814; c=relaxed/simple;
-	bh=DPPGMlhCK/Jt0HlEn24QqXQAUu9fpcor/f2kkCNnxOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rWeWXZeaO792Uk3IWikDf23MHinZT33eeLQKz3qeu5ZvrjNRQFAKret6vtvz9+ZdPX8ktuZUbWv0dIEyUdQ0/S9VBmUMCoM6oIqHYNb9Di99HzI99rhcnih0PaW07ceqNCL6OJ+mVjkP4zchwuZPY+KHTILNJqFUNpdstzTCElc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3YZNMQa; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC112BD022
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 10:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786012254; cv=pass; b=QKXY475SFRPw7zh/XSnVYBXn3WgIcDI0Jd6HlkWkHDxs1oN+5sl7yDPohBO99gfru8G5ux2eDx0vgXLqQvNQzxe6F1FCLwnqRqJi4jZ9ymbM1HRurIG9SXvBNguiG3p7AfAjulgXT2hmhMtaKunDejPnob25Vl92SBHVad0TCZI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786012254; c=relaxed/simple;
+	bh=yNODrHMOxqtsepyb3/L6hnh/XsDj3IikQhu/sC8GM7Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Dt6Vbl41X0E6BPORoCMRn1ymY/W4WqFe2dRQx4vlUlCTiWFqitp7RPLOpXKogGsqdkznWs3q7f3elIL4yzG5QObMkBBIMHVXU3X/0N7JZm9Yo/7KpjWO1y9c4KuduqAewhlyi/7HdRZiiH4yZucCdaZDkASVo7oTr1w0vCF2o9Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UXnif/gD; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3YZNMQa"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4957799b92fso1656875e9.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 03:23:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UXnif/gD"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-529a1ee0e62so13069841cf.2
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 03:30:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786012252; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Tk6gyB3oZIvYCZY24EpfeFHnwzCyWnlzyECF5+GgCyT7qg6uTPc/ly7LzJKf40csod
+         ACYW3Hg8IA53qH1ysHxgopWyHuO5LMTvCft+Jwim1OU0t8qvyhfx1RS3Ojkcco7u5m7S
+         qfntxvYWXxrvyyJLjVEANQSHDDbvDmfftBq2q5k+why771GrFiiHB33An82JJUBY2tRM
+         lLUXD6EDvFN9g1QTOH/4Q6n+9mSLD8szm4d9wBysAYxAy6+BL3Df5DpZ2jq8mc7h175y
+         nV5aG5Ov3zZPHFA/vYfLmpCFI2UaMGera9+tsQgQHD2CCY57wJjBq99sZFbpFySKusuG
+         afGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kpmfGa9DySgqH1p+t3aSoi4fYsVddD61gTFSw31rqcc=;
+        fh=11rvjRW6voaPKktfp638TcMvFDyng7+9kH2N8nHlEV8=;
+        b=a9AfRm/n3k7dedEi7WkCx9cMIEbmCQXeaCuP9IjTDAXIOu/QUDQYEd3A1hNS8kzmpw
+         vlf8CgiA9IBPN1eoptb3T/HVjM4tT5npcadDqhVdEzWdNnZnJD+mCm+SkShGja/nKn6u
+         DN1aTqTef4URs1CxuOPyC8GTqa5T0pjwUGlR5NeW95sP9RLRx6DPQUudjckrZciMnlkC
+         4FAL6+Hf93JWGGguqojfqHtl5KRPBndZ7TUxhFixR6YjrMVrtxDhpiEhhSLl1W4TLX4D
+         R0CV8Gss4AsIesluNLJ7kgecXpty0WXzXUYaUrfvE4wGOOS0qJIp5BBeG+mgF40r8YlW
+         fS3g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786011811; x=1786616611; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1786012252; x=1786617052; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=E08fZo9KB48N6tVhom0sp2LFhhwJahQDfyCHAaGb0WQ=;
-        b=A3YZNMQaqz+4ocB+uim8xCwr+IT7F0F5SF26EZtwevj3DREXF1fwd543eWbwv7da+U
-         dZfja/5T6+ofVQS1A11sDjICCnfuOo/8co7kv5199YOCKmeXn23g/I52ktdhcu/ZEJIK
-         ZyCYIMOGSjFSdvFmgpNdaUbad3fIe8mYpkvX+mypypNKjOsninqfKevidy0GExarWwuv
-         O64XBIO3twA4Qj3mDW4B5Xf54PpiVVdQAN/VidiQgj0X824KbQdiEVDAkOy685sW7KYr
-         9lKvZmc1DJHlby/4HM8shGki1m/pQC2Yu/JeQOwO+xMfegdG6GF3ecDcDdSsbTPnMXOp
-         92Xg==
+        bh=kpmfGa9DySgqH1p+t3aSoi4fYsVddD61gTFSw31rqcc=;
+        b=UXnif/gDI3vSAF58JTc6Cfy4QMeJc2GCbwZEvKZy1SteKajtmJU2uvdAKwj1yPfOY2
+         SusR/QbEKkJzmJ1sP99tWfo0DTy5AV9zXKQ48SFhgPJGFNJ9gVTk1VmUIfN+sthOsjoi
+         5fzewhJMJcNZv+IMXLNLIDjE45wok+2MFqUUNxmgAnXV/jchW9RGyPzh5MiTAnXJUYrO
+         cxAy+nR5sncSZxZYQ01XRZEFh9fOUSCer6xVXf1IrurRWmTo4LX2TKO6DwQGTsawejp+
+         e41TzwYFSF4kiOUSWXpEjsXvdOFpDQXdgBR54KYm5qO9b/gpQqcGEbbNzGBlwZpS5vkD
+         x81A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786011811; x=1786616611;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1786012252; x=1786617052;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=E08fZo9KB48N6tVhom0sp2LFhhwJahQDfyCHAaGb0WQ=;
-        b=Gz4H5lL79QiG7M966fDAYQB1ipfsAYdgvlB1IH/VdPZoLoLC7wVtNSM6dJfmgJQ45j
-         hiCOyGsE7bofDFf1c70rqef3y+13rIDUCB2E/XaP4XpPZOV53UJr4+x6NPl1tLxH6V4s
-         3nSpGCLnz00o0X++XCnhXbJaRM4cD0xYsVC3gbnj2qAHLFmZICM3BlYI6240X3HrWWow
-         DVKo557g6rd36jPJyqVqcJYj8ppWd9EykZcPs6TG/yZhj07xgpXXjAwHGkZAllgr2T4e
-         OsC7jmInR1va1P3sXYzLLBxTDWollohttYE+acJcuEsaxJ4+0yf/x94e3hoOU6281X0+
-         KQQw==
-X-Forwarded-Encrypted: i=1; AHgh+RoK8K9ZPMVQoH/KkieuQ/S9D66QsSCFDd83ieAqQydTcgnAQN5Br4vGMWXPI+6ADRhPzx5leYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yww6sUV140MY0pHP26Z2TPHl6xLxUMcMDodhVLmEZphuN5l6YoG
-	V+ekvyBhFm8kg9NsXl5N7te+qCWi4bZEXcQqaJHYwXBxlWipdZvZqh/4
-X-Gm-Gg: AR+sD117WphOYeknW6MPaj0U4qh4TCxA0VGo8gXCubLBCPitJI8u5jYg+y2nJMoQ6Z+
-	2EQmq12F18gnSjEmM0GCIB+Ml8hBye8ykJTlbKrOlo47XJ4ChP/R07OrZDyrZ/N/dVegkiuHQwb
-	PGRv1xCr7H1cVNsGcfcsaEMYJntBI1QOUGU4QxpCyujvdxO0FKAGEVbwG7+SGerKtQaGw1RtZJ5
-	H8xT8bAufAckHPj3V0jnIUjFf+2xcWkW3wpcizDdAVTjvsoqDBVZa6J7TKE7PjrluHjLyq6wiUH
-	7okds2rFNG71n69J9u9h1pzvL5trNyorw+B4Xc6WGb+f2mk5rpCpMkYEzZu4fl5Jqha93pxCXX8
-	NwKr7RPSAnsweTodjJKCRkW9RsNFEbY8ok2AECPLoac2GqrMOtDSEYi79qTmAnzLvVPvP9M+4R/
-	toidCGYcI93NyegzVdL6KHN5e2KOnivXNSy8GxQGQqAgcXG8Z/bGvj
-X-Received: by 2002:a05:600c:1c22:b0:495:71ff:598d with SMTP id 5b1f17b1804b1-4994edf895dmr82139575e9.1.1786011811067;
-        Thu, 06 Aug 2026 03:23:31 -0700 (PDT)
-Received: from skbuf ([2a02:2f04:d801:b100:3c1b:726e:a458:5bcf])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499542241c4sm49032335e9.11.2026.08.06.03.23.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 03:23:30 -0700 (PDT)
-Date: Thu, 6 Aug 2026 13:23:27 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Semih Baskan <strst.gs@gmail.com>, florian.fainelli@broadcom.com,
-	andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vladimir.oltean@nxp.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
-Message-ID: <20260806102327.wrig23oltjzogyi7@skbuf>
-References: <20260805072641.402-1-strst.gs@gmail.com>
- <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
+        bh=kpmfGa9DySgqH1p+t3aSoi4fYsVddD61gTFSw31rqcc=;
+        b=mzuqepB2vaoo+U0elRcwLbWGWd/wV1LefHjveSwCUXaFEtajVAkDqMCwYRM1PaDa6E
+         ZH2mzqXwyDMd9hXOQBTLh/EDUDlE6slEezncdTmJuAYKjrtlXM8fwnhhjLX9VVGdlFrY
+         pUyRvpzfnYyKiD1e/C3gkaiIId3wYUgSQZKJKTESnp4tpIIIF9gUwDKpjeKG7QB5CTFO
+         Bf+BG2sxfYsb6IM1qwTkacnORgx1FS+1Y/K+KNv5WwGAhPV8xUR4tafUSGAIUJCppu56
+         X3uDbLSyzjDuWOlLPJ+k9oywCREe9L2buc++XJOO1btyNM2hUz7wuSwW5ItH5VZz/g12
+         FVkQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqVhKf/2PHR45v71YGcPtOcARv9R2/PKHD3lG1VdhFmLcrirJvEFX2qAHt5XTfRmKsjyTzDyak=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdRS2bNPDegxPHp+AeU0idZSD0B6S8r00x1jmgUzYH51VCs3vH
+	jRqsa9Qstmamv+fZKhJOEA+vC/yP+yFj29T4Lx8ErdR5j249xDKLbrWVLLCWW/+L2LY9V+wgeGd
+	WBXNc9sHtcOBHh24shCMr6s65wlO5W2B+nD6u7FBp
+X-Gm-Gg: AR+sD13/2k8iEqLw/XC7CYmGE7KywtvJ/GMJtGELhspKYVh2RVGdml2Fh9u3DUAVqDL
+	sNAEp1SmvUrsv6wDqz3GVGIvOja1QPT9nd+FF5Pfxom+ENk8bmYBPE1HgCJUiIeaDKOoiLBRex8
+	HQr8k0WWrQvXJNpWQTW1WdG7Zxie7O/rVxYCL+Um4hxvoafyvx81CtZP2vDQ+kz1tEeeXhTrVPF
+	QSUgIrsEqav8xtizZRcehIYH6tbZBK8NhKKoQdfs/rIAn1YdDeMJg9xwFnP2inJv4fvU3XpD0ne
+	BABtHxHSxa0gDWUBMOdFeBghfECcOxld04nYEeDnJZ0DeXKYIGoqrkEM8tFqUtLt1iRLssflYs+
+	9b5l2khqi+LpojphSCMZhaL+NzyjzzzKOdYdulCjsL8tif7i1KIPieaAq2etLlPdgIzg9iZM7jh
+	1yOQ==
+X-Received: by 2002:a05:622a:4083:b0:51c:2190:3b56 with SMTP id
+ d75a77b69052e-52ce6144dc8mr150061011cf.21.1786012251418; Thu, 06 Aug 2026
+ 03:30:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
+References: <20260804155416.2168523-1-edumazet@google.com>
+In-Reply-To: <20260804155416.2168523-1-edumazet@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 6 Aug 2026 12:30:40 +0200
+X-Gm-Features: AUfX_mwDlha8y5wKNg_BJLLkzQR9LM5N4YybbebPTeMasjnVz6Z5VJCBy402zPs
+Message-ID: <CANn89iLr4EQxBAKikZCeXbXEk-pjmT4mq3d=D2P01MtNSUgwrg@mail.gmail.com>
+Subject: Re: [PATCH net] ipvlan: inherit needed_headroom from phy_dev
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com, 
+	Tangxin Xie <xietangxin@h-partners.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 05, 2026 at 09:44:51AM +0200, Jonas Gorski wrote:
-> While SVL is active, any ARL add/remove operations ignore the VID
-> field/register and force it to 0, making existing static ARL entries
-> with VID != 0 inaccessible, and any (static) ARL entries added will
-> have their VID set to 0, regardless what the software entry said.
+On Tue, Aug 4, 2026 at 5:54=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
+rote:
+>
+> ipvlan devices inherit hard_header_len from phy_dev during ipvlan_init(),
+> but leave needed_headroom set to 0.
+>
+> When the underlying phy_dev (or stacked lower device) requires extra head=
+room
+> for headers (e.g. macsec, ipsec, wireguard, tunnels, or veth with rx head=
+room),
+> upper layers calculating packet headroom via LL_RESERVED_SPACE(dev) fail =
+to
+> reserve sufficient headroom.
+>
+> This can result in reallocation failures, skb headroom underflows, or KAS=
+AN
+> slab-use-after-free crashes when dev_hard_header() / ipvlan_hard_header()
+> prepends header data.
+>
+> Fix this by:
+> 1. Inheriting needed_headroom from phy_dev in ipvlan_init().
+> 2. Propagating needed_headroom updates to attached ipvlans in
+>    ipvlan_device_event() when receiving NETDEV_FEAT_CHANGE events.
+>
+> Note that a similar issue exists in macvlan and will be handled in anothe=
+r
+> patch.
+>
+> Fixes: 2ad7bfab3016 ("ipvlan: Initial check-in of the IPVLAN driver.")
+> Reported-by: syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6a720a21.40259c87.584f4.04bb.GAE@g=
+oogle.com/T/#u
+> Reported-by: Tangxin Xie <xietangxin@h-partners.com>
+> Closes: https://lore.kernel.org/netdev/CANn89i+1EW-sFNK8xoq98gMbPCeLS7e=
+=3D+rs9gHfLg5Wj+4x0sw@mail.gmail.com/T/#mcc6307f115e500df23ea2980d5669fe95f=
+20b6b4
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+>  drivers/net/ipvlan/ipvlan_main.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan=
+_main.c
+> index ed46439a9f4eb1dd8bfaf6c83476ba4f2aff31bc..7513c005a5121676d3f8edb08=
+98492ad434a9fab 100644
+> --- a/drivers/net/ipvlan/ipvlan_main.c
+> +++ b/drivers/net/ipvlan/ipvlan_main.c
+> @@ -146,6 +146,7 @@ static int ipvlan_init(struct net_device *dev)
+>         dev->lltx =3D true;
+>         netif_inherit_tso_max(dev, phy_dev);
+>         dev->hard_header_len =3D phy_dev->hard_header_len;
+> +       dev->needed_headroom =3D phy_dev->needed_headroom;
+>
+>         netdev_lockdep_set_classes(dev);
+>
+> @@ -773,6 +774,7 @@ static int ipvlan_device_event(struct notifier_block =
+*unused,
+>         case NETDEV_FEAT_CHANGE:
+>                 list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
+>                         netif_inherit_tso_max(ipvlan->dev, dev);
+> +                       ipvlan->dev->needed_headroom =3D dev->needed_head=
+room;
+>                         netdev_update_features(ipvlan->dev);
+>                 }
+>                 break;
 
-Is this a hardware limitation, or is it because global state
-(dev->vlan_enabled) blinds b53_arl_rw_op()'s attempts to look at FDB
-entries of the other type?
+Sashiko suggests to also inherit  needed_tailroom.
 
-static int b53_arl_rw_op(struct b53_device *dev, unsigned int op)
-{
-	u8 reg;
+I will add this in V2, although I think devices having a non zero
+needed_tailroom handle the case just fine,
+since TCP never cared.
 
-	if (op > ARLTBL_RW)
-		return -EINVAL;
+This is a pre-existing issue, but since we are inheriting needed_headroom t=
+o
+avoid reallocation failures, should we also inherit needed_tailroom here?
+If the underlying device requires tailroom for trailers or ICVs (like MACse=
+c
+or IPsec), failing to set needed_tailroom will cause packets to be realloca=
+ted
+and copied on the fast path. It could also potentially trigger skb_over_pan=
+ic
+if the driver appends data without checking.
 
-	b53_read8(dev, B53_ARLIO_PAGE, B53_ARLTBL_RW_CTRL, &reg);
-	reg |= ARLTBL_START_DONE;
-	if (op)
-		reg |= ARLTBL_RW;
-	else
-		reg &= ~ARLTBL_RW;
-	if (dev->vlan_enabled)
-		reg &= ~ARLTBL_IVL_SVL_SELECT;
-	else
-		reg |= ARLTBL_IVL_SVL_SELECT;
-	b53_write8(dev, B53_ARLIO_PAGE, B53_ARLTBL_RW_CTRL, reg);
-
-	return b53_arl_op_wait(dev);
-}
+pw-bot: cr
