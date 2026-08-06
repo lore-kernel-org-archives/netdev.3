@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C7B3AC0ED;
-	Thu,  6 Aug 2026 02:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18943B6C0A;
+	Thu,  6 Aug 2026 02:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785982256; cv=none; b=tHpTGkaqx1dJHNeJZzSGiWj/3qy38rw4Xsi+o+Fqk2TyFoM+2tTjaz5vW7kMIudfHH1A5qBtHk90x4DnS5UylSpZugA+BfUdcBoLZ5jl/qsuYjeAIihDJIL102CjB5eskr+WwGWE8kUhppi2OJpmVaEVIXpe97uE4zbu5Oqj5Yw=
+	t=1785982258; cv=none; b=Ccl+XgH5SZd4uzJvNpWDk5+GXDuJAvhHtEvct5hKrxrIEUKQgo9UlITUv+IQ4RJ1PsFN1fZt3sUF2pLwmEgUdX4/K4LEVjSRsvv2VPV9darqstJ97kzsDoJTtsP8YDOM5X8Hy8evyy0Z3xc2hX0mFynJY48/mq2stWXOKhuNeTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785982256; c=relaxed/simple;
-	bh=+so+mQ1oShiTZOva51uqVaNr1VQhDdDomFlsaLqTFbU=;
+	s=arc-20240116; t=1785982258; c=relaxed/simple;
+	bh=tVp6hopkLoClBZHEuYEK03FImvUVLO+r+9mw28Qxszc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=sP4iPiUmGGKmo9aGXBLn4JxEjukQ+Zv2zY/sgmJCrVDwvPr9GNTNsxNMTLsO9eBwexw0ek9AS3/Bd+1hQue+cq28/df6jcH+fax4t+6pN38ael4PMCJHwQL9DmJhWkVB9JR+77DoNjxcSWhyvG6X1VHAYOWSfNPtH4jnGZs/FjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hf6vAOcb; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=g1RuhyjnBmKGV+zby9cWoMpvIsbLzcNykQ1CSMTXFuX1RPF/BJgJuMLtNw91WzIxcE6wzlcY1m55w+m2/Mn3l9AM/FLVxxicZ/baXk6PDHuqR9932YCHaPNDXsjKunbtGh4Sqwj1ROR/Kkl4bHKTA/Q1c8MqMRdMVLF1G7fKnrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gg3iw0r7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hf6vAOcb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6271F000E9;
-	Thu,  6 Aug 2026 02:10:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gg3iw0r7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B504D1F00A3A;
+	Thu,  6 Aug 2026 02:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785982255;
-	bh=CxX8VvPNyTfIWLpP0aK3UBxqKOLsZG7BCA2rd4b1LdM=;
+	s=k20260515; t=1785982256;
+	bh=fG8YyX5+FM3+qtg7vf2rwkr7TWZHBCe8tUbM58H/onM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hf6vAOcbxE3H0io0JtYjCbPJHo7jHx5WdA4AWDzY8a4bjeOO+38psQSYoaxyaMCEp
-	 F1cPfPPpXRlsdcazEwEt5tq21tWF6+cA3J1q8f2K2X32yQHotXYMklyJt1IBBT77BJ
-	 ArdSdUcBo6o3yg530Z5m2hoDNls6AwTv28TOEwGiFyo5v7aodHODLaNaEBXQw05NZt
-	 jmmJuETWDcuUda7i+V1N49esKnrZnkyCi3nVQfB7WAlCZ18vqtEaI24xLfgc1mDXci
-	 rPT81IMNYz+LYsemK00Jzzgt2Wb4jSi2X9HgAgTw29Rf9urbPIWYaMy9SoLON56glH
-	 KXSZcjHNoS1CQ==
+	b=gg3iw0r71uSxDDckoTEnrDwEPW97ytIRqLaIxjwbV3W4Xg8GKgEdL+pK87hSrkFYL
+	 rs4A7zMHJRlp3CqPl2ftn0rVH6x1aOgRqfTaQhzL6slVB1AhckDOYXGo3Z8htdO1db
+	 kG0H8PpMXJfBEL11DmBN1qIDc0/+WLewSpDPq1rYKYGWcXGSGufG2lzMew5cFOaFdr
+	 G9MXIHUEvPoIOZViDPRVaKdpXzreW1V8cvxCTscv1KWULzjaalRYueP+bPqd+zoecK
+	 VkTLiUm4pdYo8ARxCmwCv5XHCm0dQ/qxgBoF0lYcCzkk0Ye9MmL7b7aqn5O63UOV36
+	 040rhN+Oos2ng==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19934392FFF5;
-	Thu,  6 Aug 2026 02:10:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939C8392FFF5;
+	Thu,  6 Aug 2026 02:10:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 0/2] dpll: zl3073x: add Microchip ZL30643 support
+Subject: Re: [PATCH net-next V2 0/3] net/mlx5: allocate doorbells from dma
+ pools
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178598221489.607412.12370158005617212276.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 02:10:14 +0000
-References: <20260730-for-upstream-zl30643-v2-0-0ea0bbd03755@free.fr>
-In-Reply-To: <20260730-for-upstream-zl30643-v2-0-0ea0bbd03755@free.fr>
-To: Vincent Jardin <vjardin@free.fr>
-Cc: ivecera@redhat.com, Prathosh.Satish@microchip.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, vadim.fedorenko@linux.dev,
- arkadiusz.kubalewski@intel.com, jiri@resnulli.us, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178598221613.607412.5420802741029885207.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 02:10:16 +0000
+References: <20260803132520.2891860-1-tariqt@nvidia.com>
+In-Reply-To: <20260803132520.2891860-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ dtatulea@nvidia.com, gal@nvidia.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
+ noren@nvidia.com, saeedm@nvidia.com
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 30 Jul 2026 19:35:34 +0200 you wrote:
-> The Microchip ZL30643 (chip ID 0x0E3B) is a 3 DPLL channel member of
-> the ZL3064x timing family, register compatible with the
-> ZL30733 of the ZL3073x family.
+On Mon, 3 Aug 2026 16:25:17 +0300 you wrote:
+> Hi,
 > 
-> Patch 1 describes it in the binding as a fallback to the register-
->         equivalent microchip,zl30733.
-> Patch 2 adds the 0x0E3B runtime chip-ID table entry; no new match
->         strings, the fallback binds via the existing microchip,zl30733
->         entry.
+> This series by Nimrod extends the mlx5 internal DMA pool infrastructure
+> to doorbell objects.
+> 
+> Doorbell allocations currently use a separate pgdir allocator. Moving
+> them to the common mlx5 DMA pool implementation keeps the same coherent
+> DMA allocation model while sharing the pool code used by mlx5_frag_buf.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,1/2] dt-bindings: dpll: zl3073x: ZL30643 is compatible
-    https://git.kernel.org/netdev/net-next/c/d4b0ad9a8174
-  - [v2,2/2] dpll: zl3073x: recognize the ZL30643 chip ID (0x0E3B)
-    https://git.kernel.org/netdev/net-next/c/24e4aff8983f
+  - [net-next,V2,1/3] net/mlx5: initialize doorbell dma pools
+    https://git.kernel.org/netdev/net-next/c/46f636cd620e
+  - [net-next,V2,2/3] net/mlx5: allocate doorbells from dma pools
+    https://git.kernel.org/netdev/net-next/c/c29235677f5e
+  - [net-next,V2,3/3] net/mlx5: add debugfs stats for doorbell dma pools
+    https://git.kernel.org/netdev/net-next/c/b7cfcc9d3dfd
 
 You are awesome, thank you!
 -- 
