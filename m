@@ -1,70 +1,70 @@
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739923AC0DE
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 01:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3413AA9D8
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 01:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785979473; cv=none; b=QHrmYJpeVEhqgmPn8zh1G6g1rLix8SocJf1dgabmGRmeiH0PHfXwFNTLxNPQHZ+n3Dq34Cgrf+ciPxGIkgXvVRHpMkbtXplxQWxVcQ08IK2X3HoMUAPLX4JKgvoG/cCEdiyqs6IMgbZBLsG16tX1cYiMF2ql1rvC2b8a0q530oY=
+	t=1785979472; cv=none; b=brp7g/jgS5+vOPUgdukgOJgYrPwjIs4pU4uzORiweeDhTNNsWYqEXH1VdPF0OJ6RiCydQaxQVkNuVugzROWSC41rs5esSmGR1XEWm8JcJUrLNm3P8rubwwO17DSow/Axcp/RVenVcCmekQHKo1OnJ48GMjZ1YxZ1bWtLrk2/M5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785979473; c=relaxed/simple;
-	bh=akgH7FdSu8hkxoqBxRW5GrRYagY+QZDl3N0wKNP3Em8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cs9HKuUtiTmTHDF3KDmNDdR3PlskHspzEm7KLwTPgii+HDIf4BQDwxbjhWa+9E6/61EKuXi9jCJEUo6cBO1gluZtEY5E+e1CMnFrlLSabkNwMdvPMe7ZEmx/oPpL3PnUYkXedtiih/1VZoCf2C8FWV/M0q8KwFY4jKMpTkriAbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FyH7YJ7z; arc=none smtp.client-ip=209.85.167.181
+	s=arc-20240116; t=1785979472; c=relaxed/simple;
+	bh=qQFBJzFLMWyKwoFpmu6UQo1ju/fdD1C3Jwgv1sGJZkg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XbLih5Nb2gbV6RiPmg0iSBNcDvRl/2gjDrj4eFS+PvuwmseRKCOCDhO3pRhml5xfACyDKEAxoRVjDRNGGu6CFFUZX6XGeiVZEnUXVA0UeMggrpCon3Z0es/iYATtDOdWL1xZfVJFB6dnZIFbrimhFktqKEo6OHmTKu2Nra0vigs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aGERV3oG; arc=none smtp.client-ip=209.85.167.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FyH7YJ7z"
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-497e6956acfso384445b6e.1
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 18:24:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aGERV3oG"
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4a45b3f0becso1036892b6e.1
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 18:24:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785979470; x=1786584270; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+3lkDhLHoHy7Deukicju73PIuJo/3t9WiJOLY5QufbM=;
-        b=FyH7YJ7z9XFZ9jLRWWQt5bbMDPzoKOiyOPuH1KsokP/P8ItHnfmX6Jz0FE4kblJI1c
-         tB8mPGLz/O7rcKJDQom4XKPGQPqpqUtSO+ahxh0ygB7DBmtVhQYQeUhGYygxEvNTEpB3
-         Yyi+f8Q066znL4+ArZDgyDa3LQO8Q7SgC0VgSAhvAx9K659Bz/agD6JvOssN0oGkXpR9
-         MqKmyMammh2wosSYIONa7qJFxd4j0r5oU3/fcpqu9k6OmAgUEnT1dzMkrfUxy1C7P0Xz
-         trYN07LfqdkHe533UXs/qctN4LvKtEeLB6U5pkKwCmbu2Y1PNCHGVFkdLKb1WkKW4waK
-         2ouA==
+        d=gmail.com; s=20251104; t=1785979469; x=1786584269; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=hgNyPDmiWf2JyFcdGsGo7TCFxm1Nw/oDsN4ntI4YuJU=;
+        b=aGERV3oG7OB2HfVnKeynI/yanCQQMKZ6uMgEy4JmEEg5wLXhU3zky0Amjbp0s5tURz
+         cB7fu8DUNxak01HuSpN9ip007fYmoICSRMST3IeMibwZDRWN+PQjk+1O8FDUmuUsGM3x
+         kLf0c460mN5Jk1HgWd9D88cRHtWwkriXOpQ+GxhJDsN7+7yBUN9UKupj7RBuVpm58byR
+         Z7BAIFq1fdCZmHMtfUXzAsICdJohk2aihazuf2tsVYpMa2w6rv5qivra4oPBSPKe5T1C
+         T14gw/dFqQcd1KfmlyjVwfKMyAryJ2adNQUFuCI0VmFDOGm2+kWM1qikDrPauvmGt2Wh
+         u8ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785979470; x=1786584270;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+3lkDhLHoHy7Deukicju73PIuJo/3t9WiJOLY5QufbM=;
-        b=c28vCePyjSOAmv3WrMkJM1fKbCbcJyzlmR6hyB5VezjB+aAYKf2I3B0H0jiDolRdnA
-         Faw/j73/c3RvcjbpAF+GNCeUPHhwWR6PRC4zm9XUVpGgdWgEMpWxSy9BTIuPFpEWXQl0
-         kGDCcTisbAwTRX1WC09vbnPDNSSBykXlhTrkDqdIUGev2gNGqb+DkMvF23ng4H85wfrC
-         40Zb20yRGvKlPnMerw4CbtaFOTsGRGC9JAUbCn6MasaacOcAr//VJm5MshwbqIE1YF9f
-         QoLhv4fxPYi8h/zUcvKrchWs2d2ldvk91+FJTltCTledqRd+JGOScgj5ObxQLMmGmSti
-         1g6w==
-X-Forwarded-Encrypted: i=1; AHgh+Rpb7jSe/J0IaJFMAaGd65xFOt8Nd+ssboU5wvmnADyLfgsthUVHWSvaEXYIxV4abhgIziaTXQY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOzxL9EdOvTmrXkH7+87KHzX0/2XLQllb4T2vHVjQPs+9LIwjD
-	41m12HFkDRawHH/Y0KKqsqU4PU21wqY0SHctNIfiuRnLdpnDHc6Cj731DfTtNi4x
-X-Gm-Gg: AR+sD10oA1eg6Iw7R2J9XRGba7L1F2dxPYwyOCBB5jFBsgfv0yHQvrl2lD7M6orM+JF
-	Vh31TDWAIe+v2W8khcxgxhusCNi/AACydKT0cgxm3oFF7VaF9XbeQV5ptB9nUEOHWnkizBNZeq4
-	TfRXaWD/3BI1feFa88hN98pXUIqu+5XV0JUMscJP+NMracizlua6mnH9HznBnp4fGLwfO2GtnhE
-	UDAD0wVbDT/P7627QzQ18qvokC9UVaTIkdu9KleZNIYzTgwCdI8z34KHnbsZ5SxmU0vlMZLiKzW
-	Vsi8Qk3z6Lng+6MJmwNlTH/h0TT9K/F8gK850PTbxj6pel2vclFo/zxCvO+ZdgTvwBCL4Waq8Ci
-	XDC3sPbT9FWVLMkKI4Y7HV66QNg0Tt25/GDsxI17c/Fv26gzqTF/WWX3TdvdRAgz3fM8I/M6lgJ
-	B3DgIl3W12FxH601cjVtZgBbS8GlMrtgfP3zXXVmELLaCeGM+VS8WlVOVICmdeeeADFL+2ANnyn
-	JsAD82XO1JzUk0K6LHbUbobQMji8PfddbelZxFJLbVurLlajjzvV+SgBB2WrTl1QAMa1owPi3vu
-	dSf/OKeNDF08cU9QBTcxneq86zbIVy0e9SxI9fwSBiTZl4pNu2qNA4M2kYnoF615xKQZiEl7OQu
-	X9tV20r3rX1YZUBki
-X-Received: by 2002:a05:6808:19a2:b0:4af:58c9:2541 with SMTP id 5614622812f47-4afcc0278f1mr181689b6e.15.1785979470332;
-        Wed, 05 Aug 2026 18:24:30 -0700 (PDT)
-Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4afae75db20sm3274755b6e.14.2026.08.05.18.24.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        d=1e100.net; s=20251104; t=1785979469; x=1786584269;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hgNyPDmiWf2JyFcdGsGo7TCFxm1Nw/oDsN4ntI4YuJU=;
+        b=hWVZ0HA+NRi9aSYQStmJzx3jBm+ltO6jpYJLlN5P+qeR/xqrrNg5amTnEob+9a4FuZ
+         0l6zJ7FdVgJ1bNztwlJ+++gCKGVi26xHE2pNd2WHJQ0WrysiOxg4xcqbi72lez3dJvHq
+         FETB00kIhuwsAO1+VN/9GYlQN4V+1L22pZsNFnKVxeG/pwhvtY0FdesCh1yy9Kt9MbXG
+         lfQcCrKh7mlEovHAlzpK15lZWUY6/HB3z4aiJw9bT4sG/z1wXHOUVpboaFnFCxADWo0W
+         8DHMttgnzC4eq0cdqLfRRiwIp9I6r10TU8ru02FMh8seyLFa92gEsCkrRpdnA6sOX+Wn
+         FV+Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqxwkCSfUZvWT3pGGVBWkBIck2D4US+kRFAHvhi2TcdS4L+2DS+lZK35UuUgUIJkRFnDv1pJMU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnD/Ax9yK91iv/8oexJpLbTirHV/7JS5Ku/BfKUEj0Zw+yC9sj
+	6/8WNDlm58fz3BOeglqhrBJjott/g5XvqwzSrF443reLpMe85aTe8gjj
+X-Gm-Gg: AR+sD10o+4wnmRtLZsaAUjRAW+8NKU3c2VJuk19Z5dTIs2S7eeFI4N1X+eBKq72JSpO
+	qiCX12KRn76It1S70qOh8nkLhcNhKo5Tt6OZc65AY5kIop+6cQKZ2qPkq9sj/WRe1LerTFRDqFG
+	jawN0WsVQ9egOSIdoaPFOYo4Tk545eUM4GkWl8rYETCEUvJnkvfMojpEzlAP0uLztZndwYbNvGN
+	Qgoscf5xd/KANeFhqFCTzY5DAV4PyNyqS5TjUy6bBs787ECFbxYxREF+V7v4vdPhHn1uON/Mata
+	+2nyHnYQum7FSJOaoxdmV1dWkGUbj3CWbmazFxn7iAnXBzIDeZRbVcB5mi1+uDMY4oPqvXdG79A
+	oy7BRS26Nn76/m+DmcIqsEsU+c3XbxfEy8cFqjUbkwhO2t+a9mTXsBxIsF1zcSh/7wMRt+rPo2Z
+	rsmdH9Up0r1ywt6Fx5KCxJLtnCdOJpjiBJs6iXsGR4mqb9xQzMl45ORG110/xEgHSSuDeZAAHVZ
+	4EVDpR/P+eM29eTvJ8Nwz7uMLOVvmeb+ClWYHvmDzLlXWqaheG3hZ4kOOl1G0VH0o4Bq2rqxzKW
+	aKj9KfJJT7Nru4IP4oZUnTogGRzuIAtgfj8PqCSkFa+sMNX4g/MbiVs8wyDWzmI3WjCVsnb0uou
+	NLqupStxzIAz4gsHC
+X-Received: by 2002:a05:6808:c14a:b0:486:4892:d553 with SMTP id 5614622812f47-4afadc03178mr6289641b6e.0.1785979469032;
         Wed, 05 Aug 2026 18:24:29 -0700 (PDT)
+Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4afae75db20sm3274755b6e.14.2026.08.05.18.24.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 18:24:28 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Wed, 05 Aug 2026 19:24:18 -0600
-Subject: [PATCH net-next v3 1/4] dt-bindings: mfd: x-powers: add AC200
+Subject: [PATCH net-next v3 0/4] net: phy: add X-Powers AC200/AC300 EPHY
+ support
+Date: Wed, 05 Aug 2026 19:24:17 -0600
+Message-Id: <20260805-submit-acx00-of-dynamic-v1-v3-0-32c3210a6f25@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,9 +73,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260805-submit-acx00-of-dynamic-v1-v3-1-32c3210a6f25@gmail.com>
-References: <20260805-submit-acx00-of-dynamic-v1-v3-0-32c3210a6f25@gmail.com>
-In-Reply-To: <20260805-submit-acx00-of-dynamic-v1-v3-0-32c3210a6f25@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM3QrCMAxA4VcZuTaQxR+mryJe1DTVCOukraMy9
+ u5WvTwc+BbImkwznLoFks6WbYottpsO5O7iTdF8a2DiAw3EmF/X0Qo6qUQ4BfTv6EYTnHs87hx
+ 56feBB4YGPJMGqz/8DFELRq0FLv/TnIdK+dqwrh8UZN2iiAAAAA==
+X-Change-ID: 20260802-submit-acx00-of-dynamic-v1-94a0dc15f282
 To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
@@ -89,98 +90,123 @@ Cc: mfd@lists.linux.dev, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 X-Mailer: b4 0.15.2
 
-The AC200 is an I2C-controlled mixed-signal companion IC containing
-audio, video, RTC and Fast Ethernet PHY functions.
+The AC200 and AC300 contain compatible Fast Ethernet link PHYs which
+report the same Clause 22 identifier and use the same link-side register
+layout. The link endpoint is inaccessible until package-specific control
+registers have powered and configured it.
 
-Describe the parent device, its input clock and the four package
-supplies. The Ethernet PHY is represented by a PHY package on its MDIO
-bus, with a phandle back to this device for access to the package control
-registers, so it does not require an MFD child node.
+Version 2 represented those control ranges as separate devices. Following
+review, this revision instead models each variant as a standard Ethernet
+PHY package with one forced-ID link-PHY child. The package reg value is the
+link address. AC300's control range is a fixed package-relative offset of
+16 and is accessed with the PHY package helpers; it has no separate DT node
+or MDIO driver. AC200 references its I2C MFD because the corresponding
+control registers reside in that multi-function device.
 
-The input clock must run at 24 or 27 MHz when the Ethernet PHY is used,
-matching the rates encoded by its documented clock selector.
+Fixed hardware uses an AC200- or AC300-specific package compatible. Systems
+which can contain either package use the ACx00 package compatible and one
+packed SID configuration field. Bits 3 through 0 carry the analog
+calibration, bit 8 selects AC300, and bit 9 selects its low-calibration
+tuning. The driver chooses the backend before acquiring any backend-specific
+resource, so an AC300 system does not instantiate or access the AC200 I2C
+device.
 
+One xpowers-acx00 PHY module binds the link child, joins the parent package
+and runs the selected AC200 or AC300 backend. Only the link PHY registers a
+driver. The backend source files are linked into the same module and merely
+keep the I2C and MDIO implementations separate. Thus the PHY driver owns the
+complete Ethernet PHY while the AC200 MFD continues to own the shared
+mixed-signal chip and its regmap.
+
+The series contains no generic MDIO reconfiguration. It has no hard
+CONFIG_OF_DYNAMIC dependency: fixed descriptions work when their provider
+path is already enabled. When CONFIG_OF_DYNAMIC is available, the AC200
+backend can activate an explicitly marked fail-needs-probe I2C/MFD path
+after the packed field selects AC200. The AC300 path leaves that candidate
+disabled.
+
+The common link implementation performs the vendor analog initialization,
+supports MII and RMII, preserves automatic MDI/MDI-X, and restores package
+state across suspend and resume. It preserves standard MAC-managed EEE
+advertisement while disabling only the vendor PHY-autonomous Intelligent
+EEE mode.
+
+The four patches add the minimal AC200 MFD binding and regmap provider,
+then the AC200/AC300 PHY-package binding and combined PHY driver. Board
+Device Trees and optional PHY features remain outside this initial series.
+
+The AC200 portions build on earlier work by Jernej Skrabec and Andre
+Przywara:
+
+  https://github.com/jernejsk/linux-1/commits/ac200-v4
+
+Public AC200 and AC300 documentation is linked from:
+
+  https://linux-sunxi.org/AC200
+
+Validation completed for this revision:
+
+  - arm64 defconfig vmlinux and module builds with W=1;
+  - x86_64 allmodconfig object builds with W=1;
+  - a built-in AC300-only configuration with I2C disabled;
+  - dt_binding_check for both new schemas; and
+  - strict checkpatch checks for all new source files.
+
+Hardware-tested on an H616 board containing AC300. The generic package
+driver read the packed SID field as 0x106, selected AC300 without enabling
+the AC200 I2C path, accessed the control range at package base plus 16,
+bound the link PHY at address 0, applied RMII mode and negotiated a 100 Mbps
+full-duplex link. Bidirectional network traffic and cold-boot testing
+passed. The AC200 backend is build-tested but was not runtime-tested in
+this revision.
+
+Assisted-by: OpenAI Codex (gpt-5.6-sol, max)
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- .../devicetree/bindings/mfd/x-powers,ac200.yaml    | 69 ++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+Changes v2 -> v3:
+  - model AC200 and AC300 as standard Ethernet PHY packages
+  - remove the standalone AC200 and AC300 control bindings and drivers
+  - put the common link implementation and both private backends in one
+    xpowers-acx00 module
+  - access the AC300 control range at package base plus 16 with PHY package
+    helpers
+  - access AC200 package registers through its referenced MFD regmap and a
+    managed device link
+  - add an ACx00 package compatible which selects the backend from one
+    packed SID configuration field
+  - combine calibration, package selection and AC300 tuning into that field
+  - optionally activate only a selected fail-needs-probe AC200 path when
+    CONFIG_OF_DYNAMIC is available
+  - preserve standard MAC-managed EEE advertisement and disable only the
+    PHY-autonomous Intelligent EEE mode
+  - reduce the series from eight patches to four
+  - Link to v2:
+    https://patch.msgid.link/20260804-submit-acx00-of-dynamic-v1-v2-0-3eef49ff1d8c@gmail.com
 
-diff --git a/Documentation/devicetree/bindings/mfd/x-powers,ac200.yaml b/Documentation/devicetree/bindings/mfd/x-powers,ac200.yaml
-new file mode 100644
-index 000000000000..b7e8d9bd5661
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mfd/x-powers,ac200.yaml
-@@ -0,0 +1,69 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mfd/x-powers,ac200.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: X-Powers AC200 mixed-signal IC
-+
-+maintainers:
-+  - James Hilliard <james.hilliard1@gmail.com>
-+
-+description:
-+  The AC200 is a mixed-signal companion IC containing audio, video, RTC and
-+  Fast Ethernet PHY functions. Its control registers are accessed over I2C.
-+
-+properties:
-+  compatible:
-+    const: x-powers,ac200
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+    description:
-+      AC200 input clock. When using the Ethernet PHY, its configured rate must
-+      be 24 or 27 MHz, matching the rates encoded by the documented EPHY clock
-+      selector.
-+
-+  ac-ldoin-supply:
-+    description: 3.3 V supply for the audio-codec LDO input
-+
-+  ephy-vcc-supply:
-+    description: 3.3 V supply for the Ethernet PHY analog front end
-+
-+  rtc-vcc-supply:
-+    description: 3.3 V supply for the RTC
-+
-+  tv-vcc-supply:
-+    description: 3.3 V supply for the TV encoder DAC
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - ac-ldoin-supply
-+  - ephy-vcc-supply
-+  - rtc-vcc-supply
-+  - tv-vcc-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        mixed-signal@10 {
-+            compatible = "x-powers,ac200";
-+            reg = <0x10>;
-+            clocks = <&pwm 5>;
-+            ac-ldoin-supply = <&reg_3v3>;
-+            ephy-vcc-supply = <&reg_3v3>;
-+            rtc-vcc-supply = <&reg_3v3>;
-+            tv-vcc-supply = <&reg_3v3>;
-+        };
-+    };
-+...
+---
+James Hilliard (4):
+      dt-bindings: mfd: x-powers: add AC200
+      mfd: add X-Powers AC200 support
+      dt-bindings: net: x-powers: add AC200/AC300 EPHY packages
+      net: phy: add X-Powers AC200/AC300 EPHY driver
 
--- 
-2.53.0
+ .../devicetree/bindings/mfd/x-powers,ac200.yaml    |  69 +++
+ .../bindings/net/x-powers,acx00-ephy-package.yaml  | 208 ++++++++
+ drivers/mfd/Kconfig                                |  11 +
+ drivers/mfd/Makefile                               |   1 +
+ drivers/mfd/ac200.c                                | 184 +++++++
+ drivers/net/phy/Kconfig                            |  11 +
+ drivers/net/phy/Makefile                           |   3 +
+ drivers/net/phy/xpowers-acx00-ac200.c              | 374 ++++++++++++++
+ drivers/net/phy/xpowers-acx00-ac300.c              | 415 ++++++++++++++++
+ drivers/net/phy/xpowers-acx00-main.c               | 536 +++++++++++++++++++++
+ drivers/net/phy/xpowers-acx00.h                    |  28 ++
+ 11 files changed, 1840 insertions(+)
+---
+base-commit: a23b36233d4103def55dc8cf65698106d0bd1e62
+change-id: 20260802-submit-acx00-of-dynamic-v1-94a0dc15f282
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
