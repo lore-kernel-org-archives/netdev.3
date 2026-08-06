@@ -1,63 +1,63 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013015.outbound.protection.outlook.com [40.93.196.15])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011009.outbound.protection.outlook.com [52.101.57.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EF3239E60;
-	Thu,  6 Aug 2026 18:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DBB239E60;
+	Thu,  6 Aug 2026 18:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786039939; cv=fail; b=D5t277f3v6DvK0sQW87+2WIh4UBUdcZ5MQuPPE/jOdoF6HRSkI5WnnR0AVCkXU2BjgePiaVqAUaOnWu4bP+7bz5D4OQRbnEopwXgSmSaCHSYJ3yDHytCULIVQuA4THIn03icrL6/UioDDrDBTYXforXwKQFReoTtdju+4QMBj1A=
+	t=1786039953; cv=fail; b=DC9Zv+vsmyuAIY6dUB2nZ3mOGkCJ05IivFC9PBPHez/N4+KeaOBVg/b9asJbrVFem/54XL62Pb73A09Ljxrx6lhVr9VZrc8rmiRWFpPF1JZGE2Xc6Bt4C4pXgOY7Aph3fDP702IA7KEB/3+eDs7fD4qVRVXUO+tj/qxxKvHPRps=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786039939; c=relaxed/simple;
-	bh=myDxO/HqlSZCV/YQOVW06t9qj8ZFEzkW5Szo91Bi/Uw=;
+	s=arc-20240116; t=1786039953; c=relaxed/simple;
+	bh=u8ETwGFYW0RTArdZboEhfho14Mh9blXrrFXdiXdhYWU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XqpJ1gD3j9EDG0ajX8JFCP3ZjJ+4RcGEBTnmcZQWvnV7YtXAkSoZBxOk6JPAICDik5nvRoEBsNkhWgzSQMI51Pfun0C1x2zcgiPJ03YLSAsZ586OaTNnLZIYmXb+hAMMjCvQFaBdEGf7DpZiQNm6mrFghiSwb1m5OCsKlGxQbf4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=W+4wy311; arc=fail smtp.client-ip=40.93.196.15
+	 MIME-Version:Content-Type; b=VAvKaLXVzuGOP5TZ67ONcPCLlBeqUKvbhhNDHyuYdnMTz8DAj7ELIUYxLXF4geuuqWXoSWB/p9jkHtpaWOg7LPTqV1kGHS7SYk8b2BnzjjVJWAor6JopCL0jTWADeR7bJprPXn+26y0hr6WqDdunIG9B9u+rAxABQKZ06BJHQ9I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EB8GBR6F; arc=fail smtp.client-ip=52.101.57.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="W+4wy311"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EB8GBR6F"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G0DqtPeXBDqS5pOGM9VCrTuQk7q4F5+f1HXp1fnHRh5GAUNnSej94dMUd+Gemj4gnaBNgDJnMxcemCtdLEMevQnpnKPFGBnnhGTqdjxnd3fcioq23+K0o4knADmaj4soGCTLuaUM1gpc1kkTX7oENvdaXjF+6EA0OQ4Y7mJrbrNMyIAUTzaqkTfLb+hPIZFcWCAAP2+L+kEHu7dPkHig1g7erW13w6nSzdEhUuvoDRz8aOBblXOII5ZVLYgOxpJ6SkLVC6ymxHI6KG0bSaJdhXGaY4ywROy4/Wz70z4kTLpUiUZ4prDvec8WCMHDPY8N6/6YNiKUbW1/nC629EoD0g==
+ b=lZjxWYRfRJlpPmsQ4l40DbXEd1ZjY6YxDOKMxtXXArtyE+JopftDH2rGTz5u++fvHUesB3NOcRSebxTbWzw6JYaNR7Fc/0p4RUP7V23YGhIXULFwOAwcM5GRlCKCL6iFekK3c4e55RBThmtQ5brznqcEH6DBct7OMXcykHDvP2SsDFYaEkVK48EOXwSItvjyulZfVs2mxIpS5+6h70xTvHFLNeUseWuJhNmoMSgrjSwk0fcpSbOKF7grVJWsY4B3D2paQv517N0gXeK6X1lwr9L0+RBlUkWqJDfI59fppKNv5M5vQYmYUkCsYK18a23QiDo2ojtdG/9XSPhYHerOnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1kCFpQh+EQJQ0LCC3WIaX1KslN0Dp6DhUszXmPhw3Ds=;
- b=Zs1QVdS/LLIQPErbOWky3jDQzqMwDnkt48AfHaQnf0NUz0E3TM2ocWw1JYLetiuAimLxfsBsjzFWNWsoFAjveT5/yLrLYjN+Ut2PdUcYcfBOTLyiXYyY82OfseygjEN4DOb5f1zoSfu0t8FHXj7t6V86sik0JWdtRm7HuKq6cBVoH0yNp0zXDZecZ4eEEyIy8fgYpSheP1W5q82kGlhToY4XOIGB6O6yV/IyfF0Yu9o8+cbbGZtJAeFJPILhUPP9MrE1sm4Mrie6vgIgZ5hoJbretCFraNWNaSsLx2IVnRzENLkRdtuIsDVwjwx3+b3FqDRGzujj+b9xGoeYLaqXtw==
+ bh=82TTsPol7pywyMi5IzCCAEOAzelDKwD06oN9jnjHe1U=;
+ b=xWF/l2+xrYSw9MLkqdVH5lQ5wTbG90lK4yNoxE0xvGVJN9EVcV+ufNy4Nyn2NzyaD+SAotsTCIZ8ZvaHwWrgXvhpCL3Wh2vXpQm5e/+s/Dg0LaLJQzK8izyWoU3JecRYoNz4etAvyvTl2rGDUPAWX37X6KMxoJLJ7qKHy76vcyNlQJ4KTcGpVXkl+N8Ggo71+ozXWF7v4aXyINIYi+M+pI6P2G12RWyHCWedBAhzl6EgPYPYsfzhTH/7KjtemJtxiiZbj3YD2HHd/DhFvNQBCWmKB7U43lRSA64Hc6KVSvcEO4J+yBaZ+ZZQB7UiO0/Wl17iR34y3RkjIeLrA87gng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1kCFpQh+EQJQ0LCC3WIaX1KslN0Dp6DhUszXmPhw3Ds=;
- b=W+4wy311ez03W4O2nHpHfsRzcT49WWCqFn0vUgYKsEkjCfn9qIGUqBt5wlUqEVcTkffz884642qFuxoagODU7yEtXE7WLcexOHLsKCySqZ5I3LiAzLPq7XcPYH2kz8I7d1k8f2cArin4eTGA12tgqYcRq2ZQxPj+BUCI9S08HAY=
-Received: from BN0PR02CA0051.namprd02.prod.outlook.com (2603:10b6:408:e5::26)
- by CY8PR12MB8316.namprd12.prod.outlook.com (2603:10b6:930:7a::18) with
+ bh=82TTsPol7pywyMi5IzCCAEOAzelDKwD06oN9jnjHe1U=;
+ b=EB8GBR6FHZnJhTmTB1PifRUXCKlT5GGyiiLxqqYEZMFwk9nU4OwoOIGDF9P+fvN4ElDKJFLL6EPsuVNsVHfr7NLY/r4G0gQp5EGQjXflL6W2rSSeldfSkhepn8FtHZ3YoHmOypKHFIzAcTjz0d239H1pDCjNJKPXYdoGVbwTS5s=
+Received: from CH5P223CA0019.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:1f3::6)
+ by CH3PR12MB9123.namprd12.prod.outlook.com (2603:10b6:610:1a4::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Thu, 6 Aug
- 2026 18:12:10 +0000
-Received: from BN1PEPF00004682.namprd03.prod.outlook.com
- (2603:10b6:408:e5:cafe::23) by BN0PR02CA0051.outlook.office365.com
- (2603:10b6:408:e5::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.20; Thu, 6 Aug
+ 2026 18:12:25 +0000
+Received: from CH3PEPF0000000A.namprd04.prod.outlook.com
+ (2603:10b6:610:1f3:cafe::57) by CH5P223CA0019.outlook.office365.com
+ (2603:10b6:610:1f3::6) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.21 via Frontend Transport; Thu, 6
- Aug 2026 18:12:09 +0000
+ Aug 2026 18:12:25 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF00004682.mail.protection.outlook.com (10.167.243.88) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CH3PEPF0000000A.mail.protection.outlook.com (10.167.244.37) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Thu, 6 Aug 2026 18:12:09 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.315.6 via Frontend Transport; Thu, 6 Aug 2026 18:12:25 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 6 Aug
- 2026 13:12:05 -0500
+ 2026 13:12:12 -0500
 Received: from xhdsuragupt40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 6 Aug 2026 13:11:59 -0500
+ Transport; Thu, 6 Aug 2026 13:12:05 -0500
 From: Suraj Gupta <suraj.gupta2@amd.com>
 To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn
 	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
@@ -73,12 +73,13 @@ CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
  Turquette" <mturquette@baylibre.com>, "Rafael J . Wysocki"
 	<rafael@kernel.org>, Russell King <linux@armlinux.org.uk>, Shuah Khan
 	<skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH net-next v2 0/7] net: xilinx: axienet: Add 10G/25G (XXV) ethernet support
-Date: Thu, 6 Aug 2026 23:41:46 +0530
-Message-ID: <20260806181153.1213996-1-suraj.gupta2@amd.com>
+Subject: [PATCH net-next v2 1/7] clk: Add devm_clk_bulk_get_enable()
+Date: Thu, 6 Aug 2026 23:41:47 +0530
+Message-ID: <20260806181153.1213996-2-suraj.gupta2@amd.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260723123838.125145-1-suraj.gupta2@amd.com>
+In-Reply-To: <20260806181153.1213996-1-suraj.gupta2@amd.com>
 References: <20260723123838.125145-1-suraj.gupta2@amd.com>
+ <20260806181153.1213996-1-suraj.gupta2@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,101 +90,123 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004682:EE_|CY8PR12MB8316:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1cd23e06-f0f1-4671-b845-08def3e63b2e
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000A:EE_|CH3PR12MB9123:EE_
+X-MS-Office365-Filtering-Correlation-Id: fdb63567-1168-4a11-3c99-08def3e644a6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|23010399003|82310400026|7416014|376014|11063799006|56012099006|10067099003|18002099003|22082099003|3023799007|13003099007|921020;
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|7416014|376014|23010399003|22082099003|18002099003|4143699003|11063799006|56012099006|10067099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	L6U1TGZpDPTqiLDDhWz06IC5lKCxcFnwO7Rsc0Y4f/PGKrU25SfYMCN4eIP0zQxa1L0qWnuQm/ZaH2lBily2PQpEavGnknBW9QUkG8H5FXVqG5VJ4uOoiBbAkP2JPSSsulwCWRHfWI39uVw351QprQlBP/eWT7Sje39hdvoI8+lyxIOdVZIHV3eA4n9wEKLlcfHxyR+CXTXBYm3Ylw8J3Vn6636kxz9dc3078hws4nKoXebHuvMen+Kwu2BMicAHd3vZefoOQkEhu/bTIt/1TYXsAlZT8Eh5Uy90AC+D7gJGcEaRSgfSXiF7NEoYLfQawopN5cv3BaA9WJh3GkhREuZwHDxqqqyJJpx0Rr1SWpexEtIkXoRdasTkuNJFdXyyetevCoUyPuuhF30SVakW6l/M9UeNSBEDQsjy0jvmfE0LjImiipMdtnlR7OVee00D59PgLQdiIbmoeUJGfqky44b6beJB6kUfZhK+1OgzUd/3IRl8YDlAmp4xUX+DkLuZSKp2ZG0fQzr/lcKwtbZAZegLl81Ra/O/lks5Gxp9pGDAv+9YJBD/s7/wtkTTBnuIG3/sz/SelOjNoqy5Xqy7qNKDI8UD9WZlBqCMZRp8CZTTTbzY6CZ7pg9ua1sJgh9H6LvQZsJSHo9jH+d1OnmPkF1cKrWaAipC6Gk2PJ+TX4cJCLenF3PuUmbjoOy/LwJg4W39KQ18bqyZTfncvpxXKt+zCv8rqPfcOgyEs/5x7pS1TJebbtRbw4XIYMYPxyz1
+	r5qf5uBdLu4WmH19bbTFY7mSFXMzSQaBOjPJQPsgpE3dv3W0WVfQiT137/5UjIu+ZiRlpMNdMDpVIxT3hbG3FU7hUF0da86y3dKfpeSiFjn1YdmxXG+KR4qbYwgGdw0RL3+ufj02LQSmqrMyqp06RSotFykRANd19GaqrjjFrofYwcnqtFd+y06i99QP3KDBw+6BlkeUt1cYnd7H4QMZE3xQfYNTxy6PhKSq+5SQlGVbhSs19WzM4LPvBp76995yZGsOvIlwgYcXVEglTW7GgFvk8DBvA5RojKD5cKAjRY+bYU1fhGaKkIp2bLaQpdEiOrOybycx9ajF1AcR17bPbNSqxOa0xYGshlA2Y+uMPhS8HRFqybnMqnSQmziuaJSLYKMzNblhrJxSYg+T5HaJzXtC+nOEcq4HlMN8EHLvufPDadzeV8RcH1EYQuBGiF2dPPIj8xnEn/HtC9haQQ46grzQL9OtsdYU4JatZT5NDfP/cT9Rhbz8Q+FlH+zgzXFI++SbunvNxwBWiNzTIwRefWRCW27P92r2c6T3z79rhiWonuTd5k3BAEpTogrkUU83HwIAabFQ2DmWNoMLUy8xQ1AQTnmq0uGZAv9BNVHiIBxmxvQc0LYEZPjXsmxr6NbeKjbx9i6Xu0ZFoafjZPhP+lfL2369xwXUDgJavOlU6iM8Xpwjg658BphioBU/NCRUl6Sa+G0muh3SfPoaRUfchjnQTYXjMf6OFVaMyGEgBe8DGjvDJEysI+K3nALPaU8R
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(23010399003)(82310400026)(7416014)(376014)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003)(3023799007)(13003099007)(921020);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(7416014)(376014)(23010399003)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(10067099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	+xCmanH4r7ALOH2SOwx1E1dDg97ZuAO19gHopnetoX/JQxW+czoBkxcrkeGj2+wcPiZORQEsyMU015ey4qqB5eb1QKKULdPirzmrprQXde1Lkn5C1PUeVGueHO8zXTiGbWT0Vmcoob7qb0xyX+ctp93kYkgib7LpWlIbVYtwdEEa1jUA3wEjWFQijlZfqiLEvmpAJHLv+YBnWenv14BAzQT8APBU/PxjLFt72RFhSuwoHbFQ2hnr26G3+Gl2bNOc9DCCQ9gWiRxHiCnWtTG9h/5iC6HIkBDZWQn1XyWMgtuoPGCx+5ARbVo+GUHxw+9aBqe+NiybMnIrFsoClmAVM+Ffa3aLMMwPSkc3CyZRwidl/nGaeU5dCPmozspmjcbnF6B5xI7Czh9uBmDom+7dG0avaSyTSlM6IlSsq26Z64RqdpeWkX6tng50tojYX5gx
+	ixiIEXKdjDUnX0BKwix+UW8KpQo5pvjbDzR4yLLSgcjXIuAWRLXhNWK7PRl85kAkdbGjRymo40IuL19PO/ocoLJxUl3EjOL5M84q7Ob3+DQ4jKJn+JnTcH3xghOWcig880Gke75x28CE8ACCdr/eiNyAD41pD9Yn8UGQkHFeVIftb8U7pV8HBinxrZ+HIqyCc368A/bC4G4Jw8ZKiEnSk6E+XyYne+nVBnuoOXLw6xfCUzQjvHHDsn1jSPKuXVTbTEhOq5vr1v8t9XmQY0D7p7pvP7H12d9SJJDGcQHn//Ok4S5PBWWV4MP6PwIJUdP34pKN83D3YgcmeFJftQ0Ko8ZtFTmfrHuCh0nHZlXo0hEAFOJWbKxiNH+SDH2rM5XIg5V4icY8F9jtwSsp8upk+nvCWW3FL1/qrBVy4GprmRzpIWUpNrDUyOu/wZQaIKBC
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 18:12:09.3737
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 18:12:25.2280
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1cd23e06-f0f1-4671-b845-08def3e63b2e
+X-MS-Exchange-CrossTenant-Network-Message-Id: fdb63567-1168-4a11-3c99-08def3e644a6
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004682.namprd03.prod.outlook.com
+	CH3PEPF0000000A.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8316
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9123
 
-This patch series extends the AXI Ethernet driver to support the
-XXV Ethernet subsystem.
+devm_clk_bulk_get_optional_enable() gets, prepares and enables a set of
+clocks with device-managed cleanup, but treats every clock as optional:
+a missing clock is silently returned as NULL instead of failing.
 
-- Add a devm_clk_bulk_get_enable() helper for consumers that need a set
-  of mandatory clocks enabled with device-managed cleanup.
+Consumers that need a fixed set of mandatory clocks enabled for the
+lifetime of the device currently have to open-code devm_clk_bulk_get()
+followed by clk_bulk_prepare_enable(), which loses the managed disable on
+unbind, or fall back to per-clock devm_clk_get_enabled() calls.
 
-- Refactor through struct axienet_config so per-MAC behaviour is
-  expressed as capability flags and callbacks instead of runtime
-  MAC-type checks in the shared code.
+Add devm_clk_bulk_get_enable() as the non-optional counterpart. The
+underlying __devm_clk_bulk_get_enable() helper already supports the
+required (optional = false) path, so only export a thin wrapper for it.
 
-- Document the XXV IP in Devicetree.
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+---
+ .../driver-api/driver-model/devres.rst        |  1 +
+ drivers/clk/clk-devres.c                      |  7 ++++++
+ include/linux/clk.h                           | 23 +++++++++++++++++++
+ 3 files changed, 31 insertions(+)
 
-- Add support for the XXV Ethernet subsystem.
-
-- Add a preparatory RMON cleanup, a statistics-ops refactor of
-  struct axienet_config, and ethtool / ndo_get_stats64 counter reporting
-  for XXV.
-
-Notes:
-- This series depends on [1], which is sent as part of another series.
-  That change is required for this series to compile and is not included
-  here to avoid duplication.
-- "xlnx,rxmem" is a required property; driver changes for that are
-  handled in a separate patch series[2].
-- Due to phylink limitations, we aren't able to advertise both 10G and
-  25G base-r interfaces and switch between them using ethtool.
-  We are open to suggestions on how to handle this.
-
-[1]: https://lore.kernel.org/all/20260717090824.2364230-1-srinivas.neeli@amd.com/
-[2]: https://lore.kernel.org/all/20260806170253.1199749-1-suraj.gupta2@amd.com/
-
-Changes in v2:
-- Patch 1/7:
-  * Add Reviewed-by: Brian Masney <bmasney@redhat.com>. Thanks Brian!
-- Patch 3/7:
-  * Split the XXV binding into its own schema file
-    (xlnx,xxv-ethernet.yaml) instead of extending xlnx,axi-ethernet.yaml
-    with if/then branches, per Rob Herring's review.
-  * Add a multichannel (MCDMA) example.
-- Patch 4/7:
-  * Require both GT Wizard reset-done bits in axienet_xxv_poll_link_ready()
-    so polling does not exit before both the TX and RX resets complete.
-
-V1: https://lore.kernel.org/all/20260723123838.125145-1-suraj.gupta2@amd.com/
-
-Suraj Gupta (7):
-  clk: Add devm_clk_bulk_get_enable()
-  net: xilinx: axienet: Introduce axienet_config for MAC-specific ops
-  dt-bindings: net: xlnx,xxv-ethernet: Add Xilinx XXV 10G/25G Ethernet
-  net: xilinx: axienet: Add 10G/25G (XXV) ethernet support
-  net: xilinx: axienet: Make axienet_rmon_ranges non-static for reuse
-  net: xilinx: axienet: Dispatch statistics through axienet_config ops
-  net: xilinx: axienet: Add statistics support for XXV ethernet
-
- .../bindings/net/xlnx,xxv-ethernet.yaml       | 107 ++++
- .../driver-api/driver-model/devres.rst        |   1 +
- MAINTAINERS                                   |   1 +
- drivers/clk/clk-devres.c                      |   7 +
- drivers/net/ethernet/xilinx/Makefile          |   3 +-
- drivers/net/ethernet/xilinx/xilinx_axienet.h  |  90 +++
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 603 ++++++++++++------
- .../net/ethernet/xilinx/xilinx_axienet_xxv.c  | 595 +++++++++++++++++
- .../net/ethernet/xilinx/xilinx_axienet_xxv.h  | 141 ++++
- include/linux/clk.h                           |  23 +
- 10 files changed, 1389 insertions(+), 182 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml
- create mode 100644 drivers/net/ethernet/xilinx/xilinx_axienet_xxv.c
- create mode 100644 drivers/net/ethernet/xilinx/xilinx_axienet_xxv.h
-
-
-base-commit: 67ce33d8d0d166bc9e445d6e42a75b131ed23a7b
+diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
+index 017fb155a5bc..5067500ded5c 100644
+--- a/Documentation/driver-api/driver-model/devres.rst
++++ b/Documentation/driver-api/driver-model/devres.rst
+@@ -248,6 +248,7 @@ CLOCK
+   devm_clk_put()
+   devm_clk_bulk_get()
+   devm_clk_bulk_get_all()
++  devm_clk_bulk_get_enable()
+   devm_clk_bulk_get_optional()
+   devm_get_clk_from_child()
+   devm_clk_hw_register()
+diff --git a/drivers/clk/clk-devres.c b/drivers/clk/clk-devres.c
+index 994d5bc5168b..49d4782991eb 100644
+--- a/drivers/clk/clk-devres.c
++++ b/drivers/clk/clk-devres.c
+@@ -222,6 +222,13 @@ static int __devm_clk_bulk_get_enable(struct device *dev, int num_clks,
+ 	return ret;
+ }
+ 
++int __must_check devm_clk_bulk_get_enable(struct device *dev, int num_clks,
++					  struct clk_bulk_data *clks)
++{
++	return __devm_clk_bulk_get_enable(dev, num_clks, clks, false);
++}
++EXPORT_SYMBOL_GPL(devm_clk_bulk_get_enable);
++
+ int __must_check devm_clk_bulk_get_optional_enable(struct device *dev, int num_clks,
+ 						   struct clk_bulk_data *clks)
+ {
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 998ba3f261da..0289ac4c6e48 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -502,6 +502,22 @@ int __must_check devm_clk_bulk_get(struct device *dev, int num_clks,
+  */
+ int __must_check devm_clk_bulk_get_optional(struct device *dev, int num_clks,
+ 					    struct clk_bulk_data *clks);
++/**
++ * devm_clk_bulk_get_enable - Get and enable bulk clocks (managed)
++ * @dev: device for clock "consumer"
++ * @num_clks: the number of clk_bulk_data
++ * @clks: pointer to the clk_bulk_data table of consumer
++ *
++ * Behaves the same as devm_clk_bulk_get() but also prepares and enables the
++ * clocks in one operation with management. The clks will automatically be
++ * disabled, unprepared and freed when the device is unbound.
++ *
++ * Return: 0 if all clocks specified in clk_bulk_data table are obtained and
++ * enabled successfully. Otherwise returns valid IS_ERR() condition containing
++ * errno.
++ */
++int __must_check devm_clk_bulk_get_enable(struct device *dev, int num_clks,
++					  struct clk_bulk_data *clks);
+ /**
+  * devm_clk_bulk_get_optional_enable - Get and enable optional bulk clocks (managed)
+  * @dev: device for clock "consumer"
+@@ -1052,6 +1068,13 @@ static inline int __must_check devm_clk_bulk_get_optional(struct device *dev,
+ 	return 0;
+ }
+ 
++static inline int __must_check devm_clk_bulk_get_enable(struct device *dev,
++							int num_clks,
++							struct clk_bulk_data *clks)
++{
++	return 0;
++}
++
+ static inline int __must_check devm_clk_bulk_get_optional_enable(struct device *dev,
+ 								 int num_clks,
+ 								 struct clk_bulk_data *clks)
 -- 
 2.25.1
+
