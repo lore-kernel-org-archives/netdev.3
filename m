@@ -1,103 +1,141 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8359C2ED16D;
-	Thu,  6 Aug 2026 15:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6D343B48C
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786030517; cv=none; b=KHokbPNDCb6d1AY5GcLX7KLzQIcBhx+fY8H6P59fpvysbN3TCWohPxf8l0hnKNaVjnlgYztS+vqz8QA8qWvEnCbaBE1r5BrPAg1CoVSqDqI0w/30gCm01laju2PaM0pvxjHnzBWakhrUNQXuNXFljtPrn74UBpNBzCGOcvtrLUc=
+	t=1786030585; cv=none; b=Fi6Kxc3ncidpJHbrgUmJcS+9zpAwOP0YCgz4gKM5uN9Fj6AnIUEsFfzl6JAv7/bQ02UfhFJAIsQRgBpN1YsV7rZjUOs3qHI8fq+qwHoK52M/yJ/ra8G+EOuiyevF3Ej/baYAZwfyWr7zVQnz8LZkXlRR8LN5SMhf7iXUf8rhGLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786030517; c=relaxed/simple;
-	bh=f3zoXMAS9RW/51VlO+vmE3g3gPvyQ282BzGpTGSOBFg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ya/fuY6JFNDJRMT8gkUQ1ozG9Z3ZxGJKIKjfEVOeaZrs3knCbG6Ju8jlAM10zzMZC24JTtgRbcZYGWuzJ4TJAx7XCcvu27ZN9Yq+rUoGK3qUO2SG6NHpKi1YQV2+zSZR6eOh/fNbC36rVk4FzpjKPmAm2j+SNxVNRpkClgcFG48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vdans2AT; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786030585; c=relaxed/simple;
+	bh=d1lDI58yoVBFvQO1zG3mJiIg8DGTThPnJb8tOB0IkTs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dRx23VwFhACOjkrVborzBDZF1O9bzOifA7DxVznAAfaAxI2F4jGN057G1/dKeAz/D9341PhEhGhzyB6BkNzIuB3xGui8hDNHQiF7ApmpR20/jFqO9eEkFfoJn+j5ocB55q05muJqA8iVfof3NW1fdsaXl/+ifXrfi/DW7+4RW3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=cbpu+kEn; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vdans2AT"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Um4uJwo+61l9GQN7tUL4p/zVg0Gt+NRXDv5tuKIKmEQ=; b=vdans2ATBx1kHlHX57PnR7H1qP
-	l8PCQORhQNtfePVFE5UZim+QOhx2Yf/4keMRCfwOirKo8X66sDIuvK0fhrTU3xKYm5BswFwkF6O0v
-	mAOHtYcpKlOPfNJ/xUeSEFtZRQdh/EHpay1t23tUX1Q+DjSWZ54ty7/3Uz33WqBhzP+A=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1ws07Y-00GOuS-5E; Thu, 06 Aug 2026 17:35:00 +0200
-Date: Thu, 6 Aug 2026 17:35:00 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl83xx: add support
- for enabling supplies
-Message-ID: <f2260b02-621f-4b92-aade-85c403a8839d@lunn.ch>
-References: <20260806140239.3518906-1-o.rempel@pengutronix.de>
- <20260806140239.3518906-3-o.rempel@pengutronix.de>
- <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
- <anSj34TOZxYiG_ai@pengutronix.de>
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="cbpu+kEn"
+Received: by dvalin.narfation.org (Postfix) id 3CFA420E0D;
+	Thu, 06 Aug 2026 15:36:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1786030578;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gxOqj046lOlY9vx8KGzYwQr5rgbueGKyjX7Y1DhoNNw=;
+	b=cbpu+kEnQLOBOc0wQldpcDVwcgqH1fXjrfN9MiZWfNXvQm3cC5e9xRckSzVaA8jEv76HvH
+	IFuBA+zRenAHYPH/+TLN9gqC7chYFg0f7jtr8+R3SpUD3fzZmE7qyQ1jlVZ0F7hdtimyq0
+	J5rD0lqV6phxMROhLeDw4E2+6PJrVdU=
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
+Subject:
+ Re: [PATCH net-next 02/10] batman-adv: tvlv: handle negative tvlv processing
+ return codes
+Date: Thu, 06 Aug 2026 17:36:12 +0200
+Message-ID: <13100789.O9o76ZdvQC@sven-desktop>
+In-Reply-To: <20260805143200.722098-3-sw@simonwunderlich.de>
+References:
+ <20260805143200.722098-1-sw@simonwunderlich.de>
+ <20260805143200.722098-3-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anSj34TOZxYiG_ai@pengutronix.de>
+Content-Type: multipart/signed; boundary="nextPart6172109.DvuYhMxLoT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-On Thu, Aug 06, 2026 at 05:10:23PM +0200, Oleksij Rempel wrote:
-> On Thu, Aug 06, 2026 at 04:12:44PM +0200, Andrew Lunn wrote:
-> > > +static const char *const rtl8365mb_supplies[] = {
-> > > +	"avddh", "avddl", "dvddio", "dvddio1", "dvddl", "pllvddl", NULL,
-> > > +};
-> > > +
-> > 
-> > > +static int rtl83xx_enable_supplies(struct device *dev,
-> > > +				   const char *const *supplies)
-> > > +{
-> > > +	int i, ret, count = 0;
-> > > +
-> > > +	for (i = 0; supplies && supplies[i]; i++) {
-> > > +		ret = devm_regulator_get_enable_optional(dev, supplies[i]);
-> > > +		if (ret == -ENODEV)
-> > > +			continue;
-> > > +		if (ret)
-> > > +			return dev_err_probe(dev, ret, "failed to enable %s supply\n",
-> > > +					     supplies[i]);
-> > > +		count++;
-> > > +	}
-> > > +
-> > 
-> > I've never used it, i've no idea if it is applicable, but there does
-> > appear to be _bulk_ calls in the regulator API, maybe which is similar
-> > to the clk _bulk_ API?
-> 
-> Ack, in the first iteration of this patch we was using
-> devm_regulator_bulk_get_enable(). But it would print warnings on
-> existing boards without regulators in devicetree. Currently there are no
-> bulk helpers with _optional regulators, so I reworked it to hand made
-> optional bulk support.
+--nextPart6172109.DvuYhMxLoT
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Date: Thu, 06 Aug 2026 17:36:12 +0200
+Message-ID: <13100789.O9o76ZdvQC@sven-desktop>
+In-Reply-To: <20260805143200.722098-3-sw@simonwunderlich.de>
+MIME-Version: 1.0
 
-static inline int __must_check clk_bulk_get_optional(struct device *dev,
-static inline int __must_check devm_clk_bulk_get_optional(struct device *dev,
-static inline int __must_check devm_clk_bulk_get_optional_enable(struct device *dev,
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805143200.722098-1=
+=2Dsw%40simonwunderlich.de?part=3D2
 
-If clk has them, maybe regulators should as well?
+> --- Patch [2]: [PATCH net-next 02/10] batman-adv: tvlv: handle negative t=
+vlv=20
+processing return codes ---
+[...]
+> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
+> Does batadv_recv_mcast_packet() really match the new "NET_RX_SUCCESS if t=
+he
+> skb was locally received" wording?
+>=20
+> In net/batman-adv/routing.c, ret is assigned exactly once, from
+> batadv_tvlv_containers_process(), and the local delivery is gated by an
+> additional length test:
+>=20
+> 	ret =3D batadv_tvlv_containers_process(bat_priv, BATADV_MCAST, NULL,=20
+skb,
+> 					     tvlv_buff,=20
+tvlv_buff_len);
+> 	...
+> 	hdr_size +=3D tvlv_buff_len;
+>=20
+> 	if (ret =3D=3D NET_RX_SUCCESS && (skb->len - hdr_size >=3D ETH_HLEN)) {
+> 		...
+> 		batadv_interface_rx(bat_priv->mesh_iface, skb, hdr_size,=20
+NULL);
+> 		/* skb was consumed */
+> 		skb =3D NULL;
+> 	}
+>=20
+> free_skb:
+> 	kfree_skb(skb);
+>=20
+> 	return ret;
 
-   Andrew
+Yes, there are additional checks down the path. But it was still considered=
+ in=20
+the parsing of the TVLV as code which should be received locally. I am not =
+a=20
+person which writes documentation all day and I have no idea how to convey =
+all=20
+the details without repeating basically the whole code. At some point, we h=
+ave=20
+to use something which is just good enough or somebody has to be found whic=
+h=20
+is better than me in writing of documentation.
+
+I will not submit any patch for this.
+
+[..]
+> Since the stated goal here is to make these return values reliable for
+> future callers, should the wording be something like "NET_RX_SUCCESS if t=
+he
+> skb was processed successfully"
+
+No, this is not what is the (unfortunate) meaning of NET_RX_SUCCESS and=20
+NET_RX_DROP here.
+
+Regards,
+	Sven
+--nextPart6172109.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCanSp7AAKCRBND3cr0xT1
+y+3cAP9Bgos/68o4rtE36Mp1RREe0rZHjuc9O9x2dvk1ChHLRAEAi8ofm3b8zmuj
+wFad719lpRvDouBXIwMqgQDf4xtGuAQ=
+=4etA
+-----END PGP SIGNATURE-----
+
+--nextPart6172109.DvuYhMxLoT--
+
+
+
