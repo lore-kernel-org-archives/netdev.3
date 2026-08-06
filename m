@@ -1,326 +1,136 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D8C44C506
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 11:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E16F42AFA7
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 11:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786014905; cv=none; b=eFT863mSJb33bBMxm1wzuucI5VQBxLC+UfOOFlSMk5OgQyqMJ29zCh7bzP/pZf8IX4OfMU8QEEq3qANxkTh+q3vzHf5JsWk9szrsLWKe4t/KEh0SbNuu5rvue2yPbYveyfkZ+YDbiIWKY8RdampzxWe+Ozlo8LinIZ1h4HRKf6c=
+	t=1786014932; cv=none; b=vAQEVSJ3orq9i0P3IMd6BussuGfLhjh8GDv3AxSKJvpnZq7lXyuwF8KJScfafO4BpBGcGO7pXkn7LZMngbE/9tIInWdDMTWi7sKC1gMP/MUb/GOewfhzDCp6vKu1ZbICCwgXNc6xd4xhSijsSU4dSUBf4ykJBy5HwPnCDk2mykI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786014905; c=relaxed/simple;
-	bh=amyEg9s1SM6GN6svOrv3HLp1ySuyy+gLUZT+5HjBiDw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPoYxX1zwx3YNcsGthDzYGNjzboWeOdizaY79YZFo1MPx4iKlVjeI7M4wqsQFzMIxdMQWxt6gf0iHfbBSAQjZlTsskQwU50sM3KSTN///sC5KAdOnoYtRZmd4PtWW2aJNmjHsqiCBZQeaDZkSDfN1xSLVJifs5uxtxqX3z7UcOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=fz1cIMi3; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1786014932; c=relaxed/simple;
+	bh=iN8EWmEjJXaX2ge3xTz7IJX5lu/e440bMAEXubYhQ+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SfPboa+Mz3Z5QQEChPrLRg1eRyyb5KMQIMdp/4df+yc1qlC4ublqpzMS3bifE10cg8x8m57AGKsAcddJTamN3tvvLm+eW/gumDrK9ZccdzaJ9TRT8eToahYMu6XgQh725aEupRUd1XbcNeQxcPNPBsAPEu53a9ry9rjxHEuAabQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HHwY99fp; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="fz1cIMi3"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cbb7926836eso1530642a12.3
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 04:15:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HHwY99fp"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4994d41ceb9so2344385e9.2
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 04:15:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1786014903; x=1786619703; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5SvYcx4ai7A+LAhsWyrU62LuZiiW2rO6oOfRGjc++k4=;
-        b=fz1cIMi30Beqh+m7J9gIcIdHNDD+o9V9XoxhvXRTgY6kjjvTmd9UAuAnv4gJk4JGYS
-         yR6oAGI36/IugSlqY8UT32upe1Tra8PDG7SCAgj7ntgf0QEP2OrPFNkGLDmqecpm5XLk
-         Vm1wkkWRyPTEj8KbU8HxSSzwgH4bg/N90yxAo2331Nk31t0ejodo185kBd9PjMKniMEM
-         ZaNnbSSfAMR0+ekhAMsMzQsh6qxMU6n6mpnIGRLSIjabeAc9W+KW15rJ9ua3FDUsAgJR
-         tLFe4EaLk9proNYdmLX6iCgv6jKCufSbrVgfNLcboMd841SmIDYNzqym8XEi4ZUPpjnU
-         m5/Q==
+        d=gmail.com; s=20251104; t=1786014927; x=1786619727; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ucQVxY7Ip/OXB41QE9U0rwI6FZtaUd53QMHB1zAuAaU=;
+        b=HHwY99fpGo5J1kXTH83AvCR55t88s7nlOC5HbJHjPHrxLKVC3Lyre7dSWgUnreuGpC
+         QKr8l77C3uoRcH4mu5FP3yYyuFG+AWdIYScD4vbpORbjI271QjhANQW+ttA/HNAuFT/9
+         qt3GhroMWzf7OqrC7VX9tQ5ik8JI/2eXFLzbiAcQ589mhyR+wdlWj9nUz786mSu4KNcJ
+         MqKvS+mewwrurizzkR9iyO7xiRXXPU+JZu/ohCs6okjp4eJzc+ddWkqoLko/SgMhfO0w
+         MiD3CIz5YB8A1d4JzqVQ5LmJFeygyBcXj/C6v8ht0d1qcfUPmng51+aSi7wS0Hc9s2XL
+         2BrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786014903; x=1786619703;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5SvYcx4ai7A+LAhsWyrU62LuZiiW2rO6oOfRGjc++k4=;
-        b=OaIFLLHFEAlOWvU+w1Kxj2jxJdBxXO2Z+Ki8nEk8pRPecWUGDNvFL2sLYBtRUKB3OJ
-         oLbLqOP6x7hhJef7ivsMc1MSnk+79ZS5uPHgiWSTVSG/9lfHy4u4tqaZSaGyWZdW+Ehc
-         vW7BJi+MbRxfS2sVpvqEjb65gB0Q+8xP/mlUCGZvtF+Hn65tNYMn0VAdRWySqDFmwL58
-         TzHONEqIQj+q59LJcDEV0R+vY2NpIeQVSo9C+dppRP2Priug6jotaGupXbm1sRFViJKC
-         FsWMd1bOjx7oJmAnaZGnAM68lyWP/Y3bKU3wiI0QVwWt1dNaEpCZMX8VwSgVZmrBVUq6
-         HoPg==
-X-Gm-Message-State: AOJu0Yyyxvnt0nkilvJZ0dGPvl7wJACID8LMPApXSPH9nxC7p2nbMcFd
-	lUZig8wgyI8+o84aXHpgHcT2tr0J5M+WoeIcxWa3cv3KGSXv5wlrkFlLNL95wKAiH2SoE5oGUUL
-	fIy5AitQp/93RwQlb
-X-Gm-Gg: AR+sD12H5vbpdhbdB52e1XKXd5yECQB9I+6IXz7JsrcDlDnu/xRvsEQu+a7HikKO3mL
-	DERvupbIhDaqnJhG9qqIoVSFWK5BFDp7z03cZSI5OY1glA/2jvT03pay6ljxK/qWe9z/SpNPmRi
-	juomNIwTgJM9BwYKOyoq6tehiFR4C8y8ZiBIJh3xrCjKi4XbWWj/UeEQIbfxuI2/xCYEhPJiu9S
-	ahJbh+Ka+724IBguFocqUgAwvKJe8r4CHSKPSUz/4C+2Qf/bkz1aJB1k+IxmlSHG53P0gE5+K77
-	PHbiyqRHRKjA16LJEUYOSch0K0HL1WijpDy6RPE7GZlZlqlWQVgmjCtSMreHP3QvSvWGFC7JiLf
-	QpJJLDU+huVsH9fV+sPgm1ntUJcUenuCUT9nQN2wcaVw3ICn3TlUnEVCJZEVULPhZpWXIZhqnvY
-	xjPjMVzqnrrEhbzj+BqXnt/U7dyrvTKgtxuQzuwP/hucSlnPG+0E8Prkl5WU+uJK3F6tuHtAPNL
-	4681Q==
-X-Received: by 2002:a05:6a00:2d8d:b0:846:bc81:3e29 with SMTP id d2e1a72fcca58-84f2e0228aemr14866416b3a.2.1786014903269;
-        Thu, 06 Aug 2026 04:15:03 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f453b07cdsm1214705b3a.17.2026.08.06.04.14.53
+        d=1e100.net; s=20251104; t=1786014927; x=1786619727;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ucQVxY7Ip/OXB41QE9U0rwI6FZtaUd53QMHB1zAuAaU=;
+        b=qPPdajOe1d/QEY3RgKvavAF03Qegfz5bxaRU80sQcKMPKi68p0swxX/YwFLODQDXlG
+         jK6RD2mUaYr/32P711ebeKlKL1iWNO/JWLUxLPyYF2kVeSYpfrQVRNx/1gTUEzMvXCeR
+         2VurpRM+5F7YAaqGe0wqjU1ks1GiFjv9COzZwnYQ01CaoXAEx5Kj7VW6fdHerL8RFvLK
+         GwqPySVv4ut0NkCinFg5IHc2oBJpP+pz7vEKNGVYFftzOWO4G0q9hknPawooEcvFxg6q
+         SIllFLa8mEI7e6k1lSZYfZiN5DRqVmKUfqgsXDHwrAgDfLU4zVTVtkCbgzf0tNQ1XYZn
+         nibA==
+X-Forwarded-Encrypted: i=1; AHgh+RpYqtgirnhanArXQiylBwBvF0mAAvuBbrywnBZG19qbD/jiik/57O6pWnhbKsBh2iEqgGdnKYg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTcvGxesDfPRn4QxYyxuV5f5tw5usu6QCEIrjxEhKmxnSB+c75
+	zOSh0LMucaxk+5ClFgMNJHY5++Ivxz8Gxowt6bIWS4tGMoWwnY0a47c2
+X-Gm-Gg: AR+sD11ERJ9PnweYkOQcvLyj7wYB0JcIjwe9LJ6D90EWdky1cGqjSY77iZxaIBCLDQl
+	7AFCnC9uLd4wg4T1FF+IVKO95RkpHeUTRiprosj4TH7+r5PtXkBfqeAqk4FCXZdW8rq5jOCGeVa
+	L40vxVfzheI6RIKZE1F4fke0pjolyp8kDd+PZ12sEqMgzKscQBneyq5MsilSF6QdGGAwqGp4RtT
+	Dixt2zu5zhv6YyozZLLf7uTyIdVuKyySB44w5/fXJY9gYDSED7IQ7hSiG9oDrS3/yZyDnMLy6jj
+	QQaH+5XVuRjWDt/AmTXc0C9/DeZTgXYHGA4PC6LVSSzfNAYrnL3mIPnf6Z1A6nqBS4vHox16zab
+	c1yPKjwvaVf8tAgQJQS/V8ZBeKDI5EaR6C6n8AHpUn11a6w8h4aL3Xx5aVs3tvqji2viegEpNuz
+	2bxoUlqVlaiS9AHC1BiGn98G8SCURmd9O0qF7WMu7Wa0nU/1lB21+XGYUqIY/BD/c=
+X-Received: by 2002:a05:600c:b85:b0:495:4505:dad0 with SMTP id 5b1f17b1804b1-4994e7ba5efmr100741165e9.2.1786014927022;
+        Thu, 06 Aug 2026 04:15:27 -0700 (PDT)
+Received: from skbuf ([2a02:2f04:d801:b100:3c1b:726e:a458:5bcf])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994e4bf820sm95229065e9.0.2026.08.06.04.15.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 04:15:02 -0700 (PDT)
-From: Ren Wei <weir@nebusec.ai>
-To: netdev@vger.kernel.org,
-	mptcp@lists.linux.dev
-Cc: matttbe@kernel.org,
-	martineau@kernel.org,
-	geliang@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	daniel@iogearbox.net,
-	kafai@fb.com,
-	kylebot@openai.com,
-	david.lee@trailofbits.com,
-	vega@nebusec.ai,
-	caoruide123@gmail.com,
-	weir@nebusec.ai,
-	sashiko-bot@kernel.org
-Subject: [PATCH net v3 2/2] mptcp: fix MP_CAPABLE token migration when cloning reqsk
-Date: Thu,  6 Aug 2026 19:14:31 +0800
-Message-ID: <a12d76b7f2305b5a8d64c3d6c3585e39684ff792.1785995291.git.caoruide123@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1785995291.git.caoruide123@gmail.com>
-References: <cover.1785995291.git.caoruide123@gmail.com>
+        Thu, 06 Aug 2026 04:15:25 -0700 (PDT)
+Date: Thu, 6 Aug 2026 14:15:23 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Semih Baskan <strst.gs@gmail.com>
+Cc: florian.fainelli@broadcom.com, jonas.gorski@gmail.com, andrew@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, vladimir.oltean@nxp.com, horms@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/2] net: dsa: let drivers offload 8021q uppers on
+ standalone ports
+Message-ID: <20260806111523.gjlhjfmb526f2y4g@skbuf>
+References: <20260806073119.387-1-strst.gs@gmail.com>
+ <20260806073119.387-2-strst.gs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806073119.387-2-strst.gs@gmail.com>
 
-From: Ruide Cao <caoruide123@gmail.com>
+On Thu, Aug 06, 2026 at 10:31:18AM +0300, Semih Baskan wrote:
+> Some switches cannot deliver a tagged frame to the CPU while its VID is
+> absent from the VLAN table, not even with VLAN filtering turned off.
+> b53 is one of them: its VID lookup is always active, and disabling it
+> moves the ARL to shared VLAN learning, where ARL operations force VID 0
+> and the hardware table drifts away from the bridge fdb. On such
+> hardware a standalone port can only receive the traffic of its 8021q
+> uppers if their VIDs are programmed into the table.
 
-TCP request migration clones pending request sockets with
-inet_reqsk_clone().  For MPTCP MP_CAPABLE requests this byte-copies the
-token_node hlist state into the clone even though the token table still
-names the original request.
+Then their "vlan_filtering off" implementation is broken.
 
-Moving the token only after inet_ehash_insert() succeeds leaves a window
-where the cloned request is already globally visible from the ehash but
-the token table still points at the original request.  Reordering the
-move after clone but before ehash exposure closes that window, but
-concurrent RX can still race on the old request and observe that the
-token was already moved.
+BTW, how is the "standalone port" behaviour different than the
+vlan_filtering=0 bridge port case? If as you say, the switch must have
+the VID in the VLAN table to send the packet to the CPU, what is
+different when that port is under a VLAN-unaware bridge such that this
+presumably does work?
 
-Move MP_CAPABLE token request ownership during MPTCP request cloning
-under the token bucket lock.  Make mptcp_token_accept() and
-mptcp_token_destroy_request() re-check token_node under the same lock and
-treat an already moved or removed request as a normal race instead of
-warning.
+> The existing opt-in for this class of problem,
+> ds->needs_standalone_vlan_filtering, delivers those VIDs but does more:
+> dsa_port_reset_vlan_filtering() also forces vlan_filtering=1 on a port
+> that leaves a VLAN-unaware bridge. hellcreek wants exactly that. b53
+> must not have it, because it sets vlan_filtering_is_global, so the
+> forced flip would turn the whole switch into a VLAN filtering device
+> the first time any port leaves a VLAN-unaware bridge and change
+> behaviour for every other port.
 
-If the passive MP_CAPABLE socket cannot claim the token, fail
-mptcp_sk_clone_init() and let the subflow fall back instead of
-installing a socket with mismatched token ownership.
+If there is a problem with the vlan_filtering_is_global +
+needs_standalone_vlan_filtering combination, then hellcreek also suffers
+from it, because it does set both flags as well.
 
-Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/86e2514b533bf4d55d4aa2fdbf1404022e8c9430.1776149210.git.caoruide123%40gmail.com
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <weir@nebusec.ai>
----
- net/mptcp/protocol.c   | 12 +++++----
- net/mptcp/protocol.h   |  4 ++-
- net/mptcp/subflow.c    |  2 ++
- net/mptcp/token.c      | 61 +++++++++++++++++++++++++++++++++++++-----
- net/mptcp/token_test.c |  4 +--
- 5 files changed, 68 insertions(+), 15 deletions(-)
+> Add ds->needs_standalone_vlan_offload for the narrower need. It
+> advertises NETIF_F_HW_VLAN_CTAG_FILTER on user ports, so the 8021q
+> layer reports upper VIDs to .port_vlan_add, and it leaves the
+> vlan_filtering state alone.
+> 
+> Upper offload of such a switch never depends on vlan_filtering: every
+> VID was already delivered when the upper was created, since the
+> feature bit is always on. dsa_port_vlan_filtering() therefore skips
+> its ports entirely when a bridge toggles VLAN awareness. Restoring
+> them on the way up would add VIDs that were never cleared, and
+> clearing them on the way down would strip the driver's record of a
+> bridged port's uppers and the feature bit, leaving a port that later
+> leaves the bridge with uppers that cannot receive and no way to
+> re-offload them. The conduit change path keeps its explicit teardown
+> and restore of standalone VLANs, and now also runs it for a standalone
+> port of such a switch while VLAN filtering is off, because that port
+> has VLANs on the CPU port too.
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index ca644ec53eed..07eaa6858d05 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3608,17 +3608,19 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 	 */
- 	mptcp_set_state(nsk, TCP_ESTABLISHED);
- 
-+	if (!mptcp_token_accept(subflow_req, msk)) {
-+		mptcp_release_sched(msk);
-+		inet_csk_prepare_forced_close(nsk);
-+		tcp_done(nsk);
-+		return NULL;
-+	}
-+
- 	/* The msk maintain a ref to each subflow in the connections list */
- 	WRITE_ONCE(msk->first, ssk);
- 	subflow = mptcp_subflow_ctx(ssk);
- 	list_add(&subflow->node, &msk->conn_list);
- 	sock_hold(ssk);
- 
--	/* new mpc subflow takes ownership of the newly
--	 * created mptcp socket
--	 */
--	mptcp_token_accept(subflow_req, msk);
--
- 	/* set msk addresses early to ensure mptcp_pm_get_local_id()
- 	 * uses the correct data
- 	 */
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 4a2d40cd7b13..c58cfb1326b7 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1074,9 +1074,11 @@ static inline void mptcp_token_init_request(struct request_sock *req)
- }
- 
- int mptcp_token_new_request(struct request_sock *req);
-+void mptcp_token_move_request(struct request_sock *req,
-+			      struct request_sock *new_req);
- void mptcp_token_destroy_request(struct request_sock *req);
- int mptcp_token_new_connect(struct sock *ssk);
--void mptcp_token_accept(struct mptcp_subflow_request_sock *r,
-+bool mptcp_token_accept(struct mptcp_subflow_request_sock *r,
- 			struct mptcp_sock *msk);
- bool mptcp_token_exists(u32 token);
- struct mptcp_sock *mptcp_token_get_sock(struct net *net, u32 token);
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index be7260821566..65d876a08233 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -56,6 +56,8 @@ void mptcp_subflow_reqsk_clone(struct request_sock *req,
- 
- 	if (subflow_req->msk)
- 		sock_hold((struct sock *)subflow_req->msk);
-+
-+	mptcp_token_move_request(req, new_req);
- }
- 
- static void subflow_generate_hmac(u64 key1, u64 key2, u32 nonce1, u32 nonce2,
-diff --git a/net/mptcp/token.c b/net/mptcp/token.c
-index f1a50f367add..24877a2c3772 100644
---- a/net/mptcp/token.c
-+++ b/net/mptcp/token.c
-@@ -180,6 +180,36 @@ int mptcp_token_new_connect(struct sock *ssk)
- 	return 0;
- }
- 
-+void mptcp_token_move_request(struct request_sock *req,
-+			      struct request_sock *new_req)
-+{
-+	struct mptcp_subflow_request_sock *subflow_req = mptcp_subflow_rsk(req);
-+	struct mptcp_subflow_request_sock *new_subflow_req;
-+	struct mptcp_subflow_request_sock *pos;
-+	struct token_bucket *bucket;
-+
-+	new_subflow_req = mptcp_subflow_rsk(new_req);
-+
-+	if (hlist_nulls_unhashed_lockless(&subflow_req->token_node)) {
-+		mptcp_token_init_request(new_req);
-+		return;
-+	}
-+
-+	bucket = token_bucket(subflow_req->token);
-+	spin_lock_bh(&bucket->lock);
-+	if (hlist_nulls_unhashed(&subflow_req->token_node)) {
-+		mptcp_token_init_request(new_req);
-+	} else {
-+		pos = __token_lookup_req(bucket, subflow_req->token);
-+		if (pos == subflow_req)
-+			hlist_nulls_replace_init_rcu(&subflow_req->token_node,
-+						     &new_subflow_req->token_node);
-+		else
-+			mptcp_token_init_request(new_req);
-+	}
-+	spin_unlock_bh(&bucket->lock);
-+}
-+
- /**
-  * mptcp_token_accept - replace a req sk with full sock in token hash
-  * @req: the request socket to be removed
-@@ -187,24 +217,36 @@ int mptcp_token_new_connect(struct sock *ssk)
-  *
-  * Called when a SYN packet creates a new logical connection, i.e.
-  * is not a join request.
-+ *
-+ * Return: true on success.
-  */
--void mptcp_token_accept(struct mptcp_subflow_request_sock *req,
-+bool mptcp_token_accept(struct mptcp_subflow_request_sock *req,
- 			struct mptcp_sock *msk)
- {
- 	struct mptcp_subflow_request_sock *pos;
- 	struct sock *sk = (struct sock *)msk;
- 	struct token_bucket *bucket;
-+	bool ret = false;
- 
--	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
- 	bucket = token_bucket(req->token);
- 	spin_lock_bh(&bucket->lock);
-+	if (hlist_nulls_unhashed(&req->token_node))
-+		goto unlock;
- 
--	/* pedantic lookup check for the moved token */
- 	pos = __token_lookup_req(bucket, req->token);
--	if (!WARN_ON_ONCE(pos != req))
--		hlist_nulls_del_init_rcu(&req->token_node);
-+	if (pos != req)
-+		goto unlock;
-+
-+	hlist_nulls_del_init_rcu(&req->token_node);
- 	__sk_nulls_add_node_rcu((struct sock *)msk, &bucket->msk_chain);
-+	ret = true;
-+
-+unlock:
- 	spin_unlock_bh(&bucket->lock);
-+	if (ret)
-+		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
-+
-+	return ret;
- }
- 
- bool mptcp_token_exists(u32 token)
-@@ -355,16 +397,21 @@ void mptcp_token_destroy_request(struct request_sock *req)
- 	struct mptcp_subflow_request_sock *pos;
- 	struct token_bucket *bucket;
- 
--	if (hlist_nulls_unhashed(&subflow_req->token_node))
-+	if (hlist_nulls_unhashed_lockless(&subflow_req->token_node))
- 		return;
- 
- 	bucket = token_bucket(subflow_req->token);
- 	spin_lock_bh(&bucket->lock);
-+	if (hlist_nulls_unhashed(&subflow_req->token_node))
-+		goto unlock;
-+
- 	pos = __token_lookup_req(bucket, subflow_req->token);
--	if (!WARN_ON_ONCE(pos != subflow_req)) {
-+	if (pos == subflow_req) {
- 		hlist_nulls_del_init_rcu(&pos->token_node);
- 		bucket->chain_len--;
- 	}
-+
-+unlock:
- 	spin_unlock_bh(&bucket->lock);
- }
- 
-diff --git a/net/mptcp/token_test.c b/net/mptcp/token_test.c
-index 4fc39fa2e262..be9acce8a567 100644
---- a/net/mptcp/token_test.c
-+++ b/net/mptcp/token_test.c
-@@ -99,7 +99,7 @@ static void mptcp_token_test_accept(struct kunit *test)
- 	KUNIT_ASSERT_EQ(test, 0,
- 			mptcp_token_new_request((struct request_sock *)req));
- 	msk->token = req->token;
--	mptcp_token_accept(req, msk);
-+	KUNIT_EXPECT_TRUE(test, mptcp_token_accept(req, msk));
- 	KUNIT_EXPECT_PTR_EQ(test, msk, mptcp_token_get_sock(&init_net, msk->token));
- 
- 	/* this is now a no-op */
-@@ -122,7 +122,7 @@ static void mptcp_token_test_destroyed(struct kunit *test)
- 	KUNIT_ASSERT_EQ(test, 0,
- 			mptcp_token_new_request((struct request_sock *)req));
- 	msk->token = req->token;
--	mptcp_token_accept(req, msk);
-+	KUNIT_EXPECT_TRUE(test, mptcp_token_accept(req, msk));
- 
- 	/* simulate race on removal */
- 	refcount_set(&sk->sk_refcnt, 0);
--- 
-2.43.0
+I don't really understand the rest of the explanation for the "narrower
+need", as it relies on the false fact that hellcreek is somehow not in
+the same boat.
+
+Why can't standalone ports tolerate the .port_vlan_filtering() call?
