@@ -1,134 +1,164 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B0F190462
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 21:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786051744; cv=pass; b=KyDZxQqU2O4dPjjUNWzLdJbVRHFcxZTbGmBe4+puc4wVWyr72neub6JjflzPyMhHHHRpmgAQ1kRdB0pCCHrqN6EKVUFkuuM1jz/MOVFU5qYxJOjOSmSGguZVFzCyGSCqZ9ZOyVM4HMxKpAfIdzlgRKdNTuLXfk9cnlDDBpvSHwg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786051744; c=relaxed/simple;
-	bh=RaKjiYdpU+BhOXv99b5A9nBCxGzh7Gm6QxYIRWKV48s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=upRMZnLk2RyCiKJwmrx+bpHkWznAXkfx5Tiw6YTiT39bAw9BYb7xACEjQM9MKOAX8wvgxm7YLDTiDKRq4t6qhl97J9W/hjLgntBvaTxrj+w4o3dggG8h5+DZhjVNbjd6kDqKHuiCrYQV/HKFv7VT1+l/SCz/oylIwCxRv+Tcx+0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z+UcDofu; arc=pass smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA474386C13;
+	Thu,  6 Aug 2026 21:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786052057; cv=none; b=L3PGCLNzvPpfrK4mXeTSbbEtVCJCV4Tmv765roDvI/KKuCsXVN3MVyx+meoC2iO+npMZ4fOXsiOp7ipuA9VaFA2txE0ICkxScD+KwagJCQLM9PuIQ91f3pb5t/AnqQ9+p03lp/7eLhqY0F1jUs6QYyViMsbLjFTmeQUPmzLWqPs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786052057; c=relaxed/simple;
+	bh=z9IC3UaCT3kcUFx7/yXEBf/jScwzDKSxJVLbhjyQhIM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KKzacpVlTsCHCmeYziFFygMUzP/1Km59TaSx6bBdrqwiszToIsh8ZzX82cyHwVPk3sfhhECIJfJL7yt1lmr71dcjsPkPLMC/CtNIRD/3aITnXIlooSc8pisnZgOE5qQ++gh2r5KgU8FOJTwn0sJY/F7PYwGWJLUfk+l9QogOF6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=qdGVmK3v; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z+UcDofu"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cacef7d299so12665ad.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 14:29:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786051742; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cbtobKATLlORrXXDmkFViYhe4hHL/fReX/pbu2nlwd9vLvzLIzaNnGkkO7bp6FX6La
-         IE46yN/T1H8UNZl3mna38gUQ7uDaQsPNjf9KYOQomsHb4xMkycgI2jlnCw+TXVKSe24h
-         gI4spK1Cs2ICcpTYSe2blelnESn079Xmo5LiYhy2XKyYf7KqHrfO8JB+S13dDQLxfkJ6
-         CeVDOxNd1C0bFyVJ5m8yxSmCqkY9VAdYD+Hoa5ZXjLwaAszGun4/2x7nuH2a34fId/51
-         pJVFOJH/uHMqIkS83aE6VemMdP/mUC9vYGPZXa4fJfKaz2ZbPaEJLK6GGQFpO7EiIFgW
-         V8SQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RaKjiYdpU+BhOXv99b5A9nBCxGzh7Gm6QxYIRWKV48s=;
-        fh=pJPzFbHZ4tbbmlULhhfsAeEY55EVjtgtiAzm/b612vU=;
-        b=JCoF/n8DHwL2ppx0QECiOHD8SJD05as8Ny3dX66elCCMYEc0pwZppbeLWeU9/oaz1M
-         TwVZQBnvNJMKaGF8e3GdJGAmoZeX5+dnkxhFujwbibZuLVx/nJIVw7r/l8C9nPP7uct1
-         q3u0HDdYFBcXNuYhOkajm8N2fLFTfjb/e806PuCQ4TQIz/KbnWPpO0qgNJpht3RiPrUm
-         6Iyav8v1Y5lByHYDva7mI92PalJObT5ii6tWSzsNYAn9Gp8OWuue0S1xJszoNVTpKscM
-         Ex3mw03DCMDnGn45OK7OzsOHsS0oUqxXSI61fJuJfGe+3j0v1YdFGacjVTLSzEfCD+MA
-         mvgQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786051742; x=1786656542; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RaKjiYdpU+BhOXv99b5A9nBCxGzh7Gm6QxYIRWKV48s=;
-        b=Z+UcDofuTWDOZo6QhUlvMeX9u5hJ5VjEqd4xwHv4NCR74F0V6ahWvE9poKsWeaLQGP
-         iJ3Wy4fV0EVFYiNxyMb53745fzMbc5Hze2E18vq2Tyl5kszbTC4tjAvTF80cQcByvIqi
-         +XcialBt8eQZfAqKcSUI6PdvFJK2CxB50v/FHADgISbUGLiIav3fMN+jEzVuIyNCutHd
-         p6J9Logd3hnxn+zmrA1uyWHQKa3Fx0e3nG7Gk7/WRSlhAb34/P1J/ua/+K6Yj3/EjiAQ
-         DD4JX+sIYVfX+iCOqMPweGCvR1xiEO7yXh0XeudMmwn7Iwg2cVoQmlghq2JqVThUDgI9
-         cREw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786051742; x=1786656542;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RaKjiYdpU+BhOXv99b5A9nBCxGzh7Gm6QxYIRWKV48s=;
-        b=de3X3jVnDUqesa+hUAGkynhrpUegUFyDmF5X2WDe4TtpM3/FS28s/v1hQEUpDxoM7/
-         GsumDWKhxKpMUnE+IcL5Jt+MZuPDH0LquF+Pzpiy4aAmPxAqJWm2SHz5gtHpkOjWuVSC
-         EmILcFnFvk1eLFy3R4KqZCkY1yqHGM0S1R/zql5YuppjqbVRxw4J0ZWcCCIvEVFzSCbu
-         +qYCMpBml6uThVtisoM6PzrO7EQRdc0VeQ8r71N5S8cYOQw90/yGUZCH5eumFXs6XDX8
-         H3bsgtSU54mGjXU6TGIfGh/q4HtRHjGMqgZTqKebCstEyfaX6hu+6PX4IZ/jNGc10dtu
-         ttuQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpw7gox+nOfVOW1eIh78KTfTjXOUmPKq1NNUAmpjr0uWwqt/KoUaGLF9eXE+1MPtJkJ5cwA6fA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy59pp9yuHbxDEyh8iJARlzYxfxyO+GmECEO4IWcKCfdJVbssy4
-	r9hvydRI4HFllzyZ0Z0Eenx8ld9anVCtfWMjsK3rLIgR0byi/EnKqY+1ltob9JrqfwkPG5fbP2B
-	OFQhiZBTC8WEmj+qmYfIXK3hWR1qVdu+NzW7XcbRqKlrUIK75IglityRZdKw=
-X-Gm-Gg: AR+sD10VvHZbTw/HjHdYGHHbUWkcxGpWcRooetBwtJAITe+3iN5z/Yc7p9J703RgF/G
-	3MZEG1DmdZFEtKpclg3FkRShq7mOg6T9SJXEo9aMWpEfXfCKnw7aZFnPzXq12ePZb6Fe5vE4waS
-	JUb5e8V0dwCHe6XPVAWuRmnyCn9m5XAT8v8T3FPExzsMsly+KYlsDW385t/9DQv8SVj2sxxo3Sg
-	Qgbh/Ak5KeAk9V2rldIkHhsfuLpF/gL/XbF/jhiWycm4ePiza/OI4PnDgVwZ2vQh3ZNCXJZ6whK
-	CnUHaDst92gdwHOp5jFjOKv6lOs5cdYTTQByfp3WOZXm+dXRgKHVPUaTf8CkQsjHjj10Kge6hqE
-	zsIHR8tp3DFRWkqhaz8OQzlZ8E/uK0kgkT5jd14l6UzY=
-X-Received: by 2002:a17:902:fc44:b0:2c7:9e6a:1a8d with SMTP id
- d9443c01a7336-2d1203c4dffmr2257905ad.12.1786051741053; Thu, 06 Aug 2026
- 14:29:01 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="qdGVmK3v"
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 7789720B7128;
+	Thu,  6 Aug 2026 14:33:51 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7789720B7128
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1786052031;
+	bh=MYlBk5yNAwEn7cL0hMdoyVFC+wgS7cecv71nTRouSjs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qdGVmK3vDxczpxPLZ3+2B4Q2cFu62ZPPH7xxAtiyH7p8O2YbrzHJU+XGZLB9xMZZf
+	 PolLZW4a156dc4z4uFL3voWdPLZpvo/WFBr4xGvohXK1xwZ/yAI4ETTsaSrgT6hPfr
+	 uoQGhqLyhgEXnaCtFr/ZCi6rz6tDSELNC8+Z4Kwk=
+From: Kameron Carr <kameroncarr@linux.microsoft.com>
+To: decui@microsoft.com,
+	haiyangz@microsoft.com,
+	kys@microsoft.com,
+	longli@microsoft.com,
+	wei.liu@kernel.org,
+	mhklinux@outlook.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH v3 1/3] Drivers: hv: vmbus: add vmbus_establish_gpadl_caller_decrypted()
+Date: Thu,  6 Aug 2026 14:33:24 -0700
+Message-ID: <20260806213326.1425848-2-kameroncarr@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260806213326.1425848-1-kameroncarr@linux.microsoft.com>
+References: <20260806213326.1425848-1-kameroncarr@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <18c88903de19db1f.df50d089680ca23.c305d6e51002e357@desktop.casa.g02.org>
- <20260805170139.2ddb6216@kernel.org>
-In-Reply-To: <20260805170139.2ddb6216@kernel.org>
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-Date: Thu, 6 Aug 2026 14:28:48 -0700
-X-Gm-Features: AUfX_mxe8fH-UpfEEsCW1DvrbJfNXE1KYXSaczQrbPCFaLT4ntgs73qAl67B__Y
-Message-ID: <CAEAWyHfOrTrxdt-Bxw9-=WFtx3Abuyw1TONvZpSoba+p8hyrdQ@mail.gmail.com>
-Subject: Re: [PATCH net/gve] gve: fix early boot deadlock between rtnl_lock
- and service_task_mutex
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: =?UTF-8?B?UsOpbmljaCBCb24gxIZpcmnEhw==?= <renich@woralelandia.com>, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 5, 2026 at 5:01=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> On Tue, 4 Aug 2026 07:18:21 +0000 R=C3=A9nich Bon =C4=86iri=C4=87 wrote:
-> > We hit a reproducible hard deadlock (AB-BA circular lock inversion) dur=
-ing early boot on EL10 / RHEL 10 kernels when running Google Cloud Platform=
- VMs with the gve driver:
-> >
-> > 1. Thread A (NetworkManager): Holds rtnl_lock during __dev_open -> gve_=
-open -> gve_queues_start -> gve_add_napi, and attempts to acquire service_t=
-ask_mutex.
-> > 2. Thread B (gve_service_task worker): Holds service_task_mutex, and ca=
-lls reset recovery which attempts to acquire rtnl_lock.
-> >
-> > Serial Console Trace:
-> > "INFO: task NetworkManager:856 is blocked on a mutex likely owned by ta=
-sk NetworkManager:856" at RIP: copy_net_ns+0x1a4 / selinux_netlbl_sk_securi=
-ty_free.
+Add a new vmbus_establish_gpadl_caller_decrypted() for callers that want to
+decrypt their own buffers. Add a new hv_gpadl_type,
+HV_GPADL_BUFFER_DECRYPTED, to communicate the decryption status of the
+buffer.
 
-Hi,
+No functional change for existing callers.
 
-Thanks for the report. We've communicated re: this on the Github issue
-also but just an update that a fix is now merged for those kernels.
-Like Jakub mentioned, if you also see this issue on the upstream
-kernels, please let us know along with a splat and the exact kernel
-version or commit ID so we could look into it.
+Signed-off-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+---
+ drivers/hv/channel.c   | 27 +++++++++++++++++++++++++--
+ include/linux/hyperv.h |  8 +++++++-
+ 2 files changed, 32 insertions(+), 3 deletions(-)
 
-Thanks,
-Harshitha
+diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+index 6821f225248b1..4782f5070bba9 100644
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -40,6 +40,7 @@ static inline u32 hv_gpadl_size(enum hv_gpadl_type type, u32 size)
+ {
+ 	switch (type) {
+ 	case HV_GPADL_BUFFER:
++	case HV_GPADL_BUFFER_DECRYPTED:
+ 		return size;
+ 	case HV_GPADL_RING:
+ 		/* The size of a ringbuffer must be page-aligned */
+@@ -100,6 +101,7 @@ static inline u64 hv_gpadl_hvpfn(enum hv_gpadl_type type, void *kbuffer,
+ 
+ 	switch (type) {
+ 	case HV_GPADL_BUFFER:
++	case HV_GPADL_BUFFER_DECRYPTED:
+ 		break;
+ 	case HV_GPADL_RING:
+ 		if (i == 0)
+@@ -460,7 +462,8 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 	}
+ 
+ 	gpadl->decrypted = !((channel->co_external_memory && type == HV_GPADL_BUFFER) ||
+-		(channel->co_ring_buffer && type == HV_GPADL_RING));
++		(channel->co_ring_buffer && type == HV_GPADL_RING) ||
++		(type == HV_GPADL_BUFFER_DECRYPTED));
+ 	if (gpadl->decrypted) {
+ 		/*
+ 		 * The "decrypted" flag being true assumes that set_memory_decrypted() succeeds.
+@@ -575,7 +578,7 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+  * @channel: a channel
+  * @kbuffer: from kmalloc or vmalloc
+  * @size: page-size multiple
+- * @gpadl_handle: some funky thing
++ * @gpadl: output gpadl
+  */
+ int vmbus_establish_gpadl(struct vmbus_channel *channel, void *kbuffer,
+ 			  u32 size, struct vmbus_gpadl *gpadl)
+@@ -585,6 +588,26 @@ int vmbus_establish_gpadl(struct vmbus_channel *channel, void *kbuffer,
+ }
+ EXPORT_SYMBOL_GPL(vmbus_establish_gpadl);
+ 
++/*
++ * vmbus_establish_gpadl_caller_decrypted - Establish a GPADL for a buffer
++ * that has already been decrypted by the caller.
++ *
++ * @channel: a channel
++ * @kbuffer: from kmalloc or vmalloc; must already be decrypted by the caller
++ * @size: page-size multiple
++ * @gpadl: output gpadl
++ *
++ * The caller is responsible for re-encrypting the buffer before freeing it.
++ */
++int vmbus_establish_gpadl_caller_decrypted(struct vmbus_channel *channel,
++					   void *kbuffer, u32 size,
++					   struct vmbus_gpadl *gpadl)
++{
++	return __vmbus_establish_gpadl(channel, HV_GPADL_BUFFER_DECRYPTED,
++				       kbuffer, size, 0U, gpadl);
++}
++EXPORT_SYMBOL_GPL(vmbus_establish_gpadl_caller_decrypted);
++
+ /**
+  * request_arr_init - Allocates memory for the requestor array. Each slot
+  * keeps track of the next available slot in the array. Initially, each
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index 964f1be8150c5..1146addbb42c4 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -70,7 +70,8 @@
+  */
+ enum hv_gpadl_type {
+ 	HV_GPADL_BUFFER,
+-	HV_GPADL_RING
++	HV_GPADL_RING,
++	HV_GPADL_BUFFER_DECRYPTED
+ };
+ 
+ /* Single-page buffer */
+@@ -1205,6 +1206,11 @@ extern int vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 				      u32 size,
+ 				      struct vmbus_gpadl *gpadl);
+ 
++extern int vmbus_establish_gpadl_caller_decrypted(struct vmbus_channel *channel,
++						  void *kbuffer,
++						  u32 size,
++						  struct vmbus_gpadl *gpadl);
++
+ extern int vmbus_teardown_gpadl(struct vmbus_channel *channel,
+ 				     struct vmbus_gpadl *gpadl);
+ 
+-- 
+2.45.4
 
->
-> You emailed the upstream Linux list.
-> If the bug exists in the upstream kernel we will happily review the fix
-> - please post it to the list.
