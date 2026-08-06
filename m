@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387013B5E19;
-	Thu,  6 Aug 2026 15:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5AE456DF9;
+	Thu,  6 Aug 2026 15:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786030032; cv=none; b=b6ev8/+km9npLQ2w8TPG61J502n6BXfDbXtnKwcp2RpGUXVNSyhjJ7X0gcTsiYOrYPxTOUveo0myqaXPQjhoP5QudDMkWwPRh+tixqHSZSS3rh0NNNULD9g8XDG4/fdLeLqyY8cnh2agGC+5lnV8JAwyKcBLlVHRkZ3H5q/xDic=
+	t=1786030034; cv=none; b=Yg3VF//NOrV2RvoxCvtmlwqhTryPcRC3yJNSzabQ476WUjEDQ0cJ5uMhdN8AVsF8lvFfpcV32CCXuDLqkDCwDE4NNJ9UrZZnculYUqclFL0G/+wg3u17mzvLSETD9PHf01HvnkMK+Eo4BdlzbgsyIuxJkXc7bwgzg4/0xvDHzss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786030032; c=relaxed/simple;
-	bh=FdQauWWNSOG+WY1LrDPSbyl4wHVGHqZxjzNBTA8mqH8=;
+	s=arc-20240116; t=1786030034; c=relaxed/simple;
+	bh=qPON/Z5uhcnHqiSm1l0Tz9oy70F6ScFRp3jeb7jaUsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PuAlEjKF/xTEB2qNkL8kUHLcrKTq+wZ+IoO9eRDOA9sSgtZGCkIyZkSzWUkOn/EcRRzPG44NlYxBrQHBvmRpunZWKdTq4UzNymbuEIJJMzh0ztSsBEzmY81nvOug4HaoSsHKcWMtambaC020hlvYQsPi0x6/d7LK+N6aYOKIj3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iydbNOwx; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=gk49/06zJEBKB/PquA7rBZo/QKOXYLlK8cDBQobphajD49GvJJw2ZTbZ/DRVV3kS4XAat2vY9PSydd3BlUnM5zdpM5g5sw8157zLb1h5vlhGdsTere7FDAOP71ekpC/lurUlGKOuBE3K2X4xfd+qdR7F5c+WUsjuts6CAqanwUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuqsVscH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iydbNOwx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA561F000E9;
-	Thu,  6 Aug 2026 15:27:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuqsVscH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40B61F00A3D;
+	Thu,  6 Aug 2026 15:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786030030;
-	bh=qUsjF+YeeaxTVrvwtBqJiN5qQErPfQsUPkmhgat2qaw=;
+	s=k20260515; t=1786030032;
+	bh=F5zMoDFasjiGamJ8wX9BDOmshsSWACcBGG/zQJF3YAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iydbNOwxBVuuoq9As/rkpNCPM5fKR5Grdp4PLgxBPOoHAAga9palcMQ5GyF0eNkry
-	 flmvqn1ARmB7Y1UTik6ofr62X3hT8z7mu8GmLj8yDMZY9IDB3m4SUwxSFgkKS/hkHa
-	 /LuGrNIpfp4psEvQg3pADJ7nwJSRBYKt+vq9uyYrC18eIpWtE3Eego0eu4K1DPNgf7
-	 /OfDCge3gt9GyiFNIrApUeAsI4lfjN+TR6x7VQkWru1jWn08HA6zOSJfQxk382BDdz
-	 e9lImNrKX4MpqkdYQr/vaX+njo/U5WWrGRhlDSYAJgXjV01Tb4LBCAhyaesrkc94Sy
-	 mvKtLKp4YztYA==
+	b=PuqsVscHHC2LNjC/w6Lc63cO5IU7UpvCSpzb0nbliD3q9FmMLsu5kuMtOH0QIY1dg
+	 xoWQtGPlR/yTYLSdncbRsgUu/2pjM+L18Y+sOUyeWK2AunNgFUC7Cc5Cu7mVS4VYKd
+	 3CpL9r2CjC6NuYDr/gDpZXLmvWr9ckks8GoY7KWYHwVsqHhmn81bJ+14mW+luC9qJH
+	 ybbQx3HiOnr7YAt8gIAXsC8R8clKzTOiTGdAnSPcRrVUvzFbDmJFqIYWASzHujZ4YC
+	 dJPoJWLaUG9/8RtOInn2IxVd3AnXlz0dP//HO3d7SGhAz2q+KplVOYo+O4nwDwHQm4
+	 jTrK2ARvdnUVQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: subratp@marvell.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -39,12 +39,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	rkannoth@marvell.com,
 	gakula@marvell.com,
 	sgoutham@marvell.com
-Subject: Re: [PATCH net v2 1/2] octeontx2-pf: Fix aura BPID assignment when CONFIG_DCB is enabled
-Date: Thu,  6 Aug 2026 08:26:50 -0700
-Message-ID: <20260806152650.2562245-1-kuba@kernel.org>
+Subject: Re: [PATCH net v2 2/2] octeontx2-af: mcs: Fix SC resource cleanup loop
+Date: Thu,  6 Aug 2026 08:27:11 -0700
+Message-ID: <20260806152711.2563373-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260731055310.1229213-2-subratp@marvell.com>
-References: <20260731055310.1229213-2-subratp@marvell.com>
+In-Reply-To: <20260731055310.1229213-3-subratp@marvell.com>
+References: <20260731055310.1229213-3-subratp@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,167 +56,87 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-octeontx2-pf: Fix aura BPID assignment when CONFIG_DCB is enabled
+octeontx2-af: mcs: Fix SC resource cleanup loop
 
-This adds a NULL check on pfvf->queue_to_pfc_map before it is dereferenced
-in the aura and CQ context init paths, since SDP VFs never allocate the map.
-The BPID is now set to bpid[0] first and only overridden when CONFIG_DCB is
-enabled and the map exists.
+The SC cleanup loop in mcs_free_all_rsrc() was bounded by map->secy.max
+while indexing the SC arrays, and this changes the bound to map->sc.max.
+Since mcs_alloc_rsrc_bmap() sets secy.max = secy_entries - MCS_RSRC_RSVD_CNT
+and sc.max = sc_entries, the two bounds differ by one.
 
-No Link: tags in the commit header.
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
+> index a07e0b3d8d000..88658c07c391f 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
+> @@ -738,7 +738,7 @@ int mcs_free_all_rsrc(struct mcs *mcs, int dir, u16 pcifunc)
+>  	}
+>  
+>  	/* free sc entries */
+> -	for (id = 0; id < map->secy.max; id++) {
+> +	for (id = 0; id < map->sc.max; id++) {
 
-> Fixes: 184fb40f731b ("octeontx2-pf: Avoid adding dcbnl_ops for LBK and SDP vf").
+[Severity: Medium]
+This is a pre-existing issue and not introduced by this patch, but the same
+wrong bound still exists in mcs_clear_all_stats() in the same file, where the
+"Clear SC stats" loop indexes map->sc2pf_map[] and clears MCS_SC_STATS:
 
-[Severity: Low]
-This isn't a bug, but there is a trailing period after the closing
-parenthesis of the Fixes tag.  The expected form is:
-
-Fixes: 184fb40f731b ("octeontx2-pf: Avoid adding dcbnl_ops for LBK and SDP vf")
-
-The stray '.' can confuse the Fixes tag parsers used for stable backport
-selection.  Since this is a regression fix, would a [PATCH net] annotation
-on the subject also be appropriate?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
-> index dbf1731966082..f3903cce9bf78 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
-> @@ -245,10 +245,12 @@ int cn20k_register_pfvf_mbox_intr(struct otx2_nic *pf, int numvfs)
->  static u8 cn20k_aura_bpid_idx(struct otx2_nic *pfvf, int aura_id)
->  {
->  #ifdef CONFIG_DCB
-> -	return pfvf->queue_to_pfc_map[aura_id];
-> -#else
-> -	return 0;
-> +	if (pfvf->queue_to_pfc_map)
-> +		return pfvf->queue_to_pfc_map[aura_id];
-> +	else
-> +		return 0;
->  #endif
-> +	return 0;
->  }
-
-[Severity: Low]
-Is the else branch here needed?  With CONFIG_DCB=y both branches return, so
-the trailing return 0 after #endif is unreachable, and cn20k_aura_bpid_idx()
-does not follow the "default first, then conditionally override" shape the
-commit message describes for the other two hunks.  Would this be equivalent
-and match the rest of the patch?
-
-	static u8 cn20k_aura_bpid_idx(struct otx2_nic *pfvf, int aura_id)
-	{
-	#ifdef CONFIG_DCB
-		if (pfvf->queue_to_pfc_map)
-			return pfvf->queue_to_pfc_map[aura_id];
-	#endif
-		return 0;
+	/* Clear SC stats */
+	for (id = 0; id < map->secy.max; id++) {
+		if (map->sc2pf_map[id] != pcifunc)
+			continue;
+		mcs_clear_stats(mcs, MCS_SC_STATS, id, dir);
 	}
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-> index 3d253132a17f0..b4691472d2a3e 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-> @@ -1132,10 +1132,10 @@ int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
->  		if (!is_otx2_lbkvf(pfvf->pdev)) {
->  			/* Enable receive CQ backpressure */
->  			aq->cq.bp_ena = 1;
-> -#ifdef CONFIG_DCB
-> -			aq->cq.bpid = pfvf->bpid[pfvf->queue_to_pfc_map[qidx]];
-> -#else
->  			aq->cq.bpid = pfvf->bpid[0];
-> +#ifdef CONFIG_DCB
-> +			if (pfvf->queue_to_pfc_map)
-> +				aq->cq.bpid = pfvf->bpid[pfvf->queue_to_pfc_map[qidx]];
->  #endif
+With mcs_alloc_rsrc_bmap() setting:
+
+	res->secy.max = hw->secy_entries - MCS_RSRC_RSVD_CNT;
+	...
+	res->sc.max = hw->sc_entries;
+
+and MCS_RSRC_RSVD_CNT == 1 with secy_entries == sc_entries (128/128 on
+CN10K-B, 64/64 on CNF10K-B), secy.max == sc.max - 1, so SC id
+sc_entries-1 is never visited by the stats loop.
+
+Should this hunk also change the bound in mcs_clear_all_stats() to
+map->sc.max?
+
+Before this patch, SC id sc_entries-1 was never freed by
+mcs_free_all_rsrc(), so no other function could take it over. Now that it
+is freed and re-allocatable, can the next owner of that id read the
+previous owner's pkt/octet counters?
+
+The teardown path in cn10k_mcs_free_rsrc() always sends the clear-stats
+request with the same "all" flag just before the free-resources request:
+
+	clear_req = otx2_mbox_alloc_msg_mcs_clear_stats(mbox);
+	...
+	clear_req->all = all;
+	...
+	if (all)
+		req->all = 1;
+
+so with the stats loop still bounded by secy.max, MCS_GET_SC_STATS on the
+re-allocated id would return the departing owner's values.
 
 [Severity: Low]
-This isn't a bug, but the same #ifdef CONFIG_DCB plus NULL test idiom now
-appears in three places: cn20k_aura_bpid_idx(), otx2_cq_init() and
-otx2_aura_aq_init().  cn20k_aura_bpid_idx() already encapsulates exactly this
-logic.  Would it be cleaner to generalize it into a single accessor, say
-otx2_get_bpid_idx(pfvf, qidx), and use it from all three sites?
+Would a Fixes: tag be appropriate here? git blame on the pre-patch line
+shows the secy.max bound came from:
 
-Alternatively, could queue_to_pfc_map simply be allocated unconditionally
-(it is only pfvf->hw.rx_queues bytes) instead of being tied to dcbnl_ops
-registration in otx2_dcbnl_set_ops()?  That coupling is what broke in
-184fb40f731b.
+	Fixes: cfc14181d497 ("octeontx2-af: cn10k: mcs: Manage MCS block hardware resources")
 
-Note that otx2_update_bpid_in_rqctx() in otx2_dcbnl.c still dereferences the
-map with no NULL check:
+which is in released kernels since v6.1, so stable tooling can pick it up.
 
-	if (pfvf->queue_to_pfc_map[qidx] && pfc_enable) {
-	...
-	pfvf->queue_to_pfc_map[qidx] = vlan_prio;
+Could the changelog also state the user-visible impact? With the old bound,
+the sc bitmap bit and map->sc2pf_map[] ownership for id sc_entries-1 leak
+permanently (rvu_mcs_flr_handler() is the only other teardown path and
+calls nothing else), making that SC id unallocatable, and on RX the SC CAM
+entry stays enabled because mcs_ena_dis_sc_cam_entry(mcs, id, false) is
+skipped.
 
-That stays safe only because SDP/LBK VFs never register dcbnl_ops, so
-pfvf->pfc_en remains 0 and the PFC ntuple path is never taken for them.  Is
-that invariant worth documenting, or would the shared accessor make it moot?
+One wording note on the changelog:
 
-> @@ -1433,10 +1433,11 @@ int otx2_aura_aq_init(struct otx2_nic *pfvf, int aura_id,
->  		 */
->  		if (pfvf->nix_blkaddr == BLKADDR_NIX1)
->  			aq->aura.bp_ena = 1;
-> -#ifdef CONFIG_DCB
-> -		aq->aura.nix0_bpid = pfvf->bpid[pfvf->queue_to_pfc_map[aura_id]];
-> -#else
-> +
->  		aq->aura.nix0_bpid = pfvf->bpid[0];
-> +#ifdef CONFIG_DCB
-> +		if (pfvf->queue_to_pfc_map)
-> +			aq->aura.nix0_bpid = pfvf->bpid[pfvf->queue_to_pfc_map[aura_id]];
->  #endif
+> The SC resource cleanup loop was incorrectly iterating over secy.max
+> instead of sc.max. This patch fixes to use correct value.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but since the patch is hardening
-accesses to queue_to_pfc_map, is it worth fixing the bounds problem on the
-same array at the same time?
-
-The map is allocated with only pfvf->hw.rx_queues bytes in
-otx2_dcbnl_set_ops():
-
-	pfvf->queue_to_pfc_map = devm_kzalloc(pfvf->dev, pfvf->hw.rx_queues,
-					      GFP_KERNEL);
-
-and otx2_update_bpid_in_rqctx() in otx2_dcbnl.c indexes it with a queue
-index that comes from the ethtool ntuple ring_cookie:
-
-	if (pfvf->queue_to_pfc_map[qidx] && pfc_enable) {
-	...
-	pfvf->queue_to_pfc_map[qidx] = vlan_prio;
-
-Can qidx exceed hw.rx_queues here?  The range check in otx2_add_flow() is
-gated on the interface not being a VF:
-
-	if (!is_otx2_vf(pfvf->pcifunc) && !vf_num &&
-	    ring >= pfvf->hw.rx_queues && fsp->ring_cookie != RX_CLS_FLOW_DISC)
-		return -EINVAL;
-
-so for a VF netdev the ring index is not validated, and otx2_add_flow_msg()
-propagates it:
-
-	req->index = ethtool_get_flow_spec_ring(ring_cookie);
-	...
-			if (pfvf->pfc_en & BIT(vlan_prio)) {
-				pfc_rule = true;
-				qidx = req->index;
-			}
-	...
-	if (!err && pfc_rule)
-		otx2_update_bpid_in_rqctx(pfvf, vlan_prio, qidx, true);
-
-The AF handler in rvu_npc_fs.c assigns action.index = req->index without an
-RQ count check, so the mbox call succeeds and the helper runs.  That looks
-like an out-of-bounds read at a caller-chosen offset plus a one byte
-out-of-bounds write of the VLAN priority.  The delete path in
-otx2_remove_flow() passes the raw 64-bit ring_cookie into the same int qidx:
-
-	otx2_update_bpid_in_rqctx(pfvf, 0,
-				  flow->flow_spec.ring_cookie,
-				  false);
-
-Would adding the ring >= pfvf->hw.rx_queues check for VF netdevs, or bounds
-checking qidx inside otx2_update_bpid_in_rqctx(), be the right fix?  This
-requires CAP_NET_ADMIN on the VF netdev, which matters when the VF is handed
-to a container or guest owner.
--- 
-pw-bot: cr
+Documentation/process/submitting-patches.rst asks for imperative mood and
+discourages "This patch"; something like "Use sc.max as the loop bound"
+would match.
