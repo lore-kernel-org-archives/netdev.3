@@ -1,88 +1,84 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012057.outbound.protection.outlook.com [40.107.209.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7643822AA;
-	Thu,  6 Aug 2026 07:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786001501; cv=fail; b=j2Rs6ZjAoILrcfvpAOCKALhieGR/9HrkXFWM90cXnRw1gx8l3QdF8AT4o/Em8sfP/Lg6huWJJ8PcOBOgq0ZxZ3t33D1FAg3kROydQq9F57X0QOHKR7uDriR/hngIdOQYaPVDeOZldPwnDdXB4L2ek22K3gqdyD5Id74fkdxkiko=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E25A2777F3
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 07:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786001501; cv=none; b=ZxC/dSW8g1su6Zit5MobWk4ekIw6IKCRem4PbC50PsilG0vZFLxL2n3hDxlQ05d0/efmcAG/i0G+8wEdebjZAZG1k0zBdf/Aaw7feHmZbLCpqYu6CCx1X3Fo6YiumP9VgH9i8NY8c+aXdNNYbRjB2cDO8SM7DTVxHb6kzOSl/cY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786001501; c=relaxed/simple;
-	bh=+qrGhZIxr2PWcKVT8KWzRKp2s+Z6SEXVXun3XoTOnl0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kRQceEd+gJVskK/R7LuRFwo70RZQlfsdhVgS0E98bf7ORnw2VeAYHocIyLgCvve7XtVChWdu/3+9i5orK9+7gbhy+kNzFXnnr6Pd3r21+7L/q5ukAAV4G0CVMMslvdH2m+21Aej+d5LP77IiXgdB8xQcH/FgPOSuIptQ82kOR3E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Gehqnicj; arc=fail smtp.client-ip=40.107.209.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	bh=WJigues5/Zq//oA8yEj8xZ7mbFeDzXspYLRD/AhetSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=P6BhWmxH1fmGa5R3uFweFjScsJlxj6sp/I3rqOyNK2D/PBJseOkU++r/YpaGDhMKyG3snJv2Y30PArOR7g0AIEp4i8s40wS93cl3sIPmJqjsPZSFoH5WEi5AVDkYat/Ague7UND5PuQYzUDb1Pk6ugD6Hj2GNxGwCe56Nt407Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h+IT+WPv; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Gehqnicj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JNi1TaZi8eeCmctdzwn6ZMLKZrI61/FAMrg5KQ33lJ12qL9emXCkj49hIDuejBI7zBjYMXdtE7h1BJcQ3MkJIJ2Tp5BnTPKVqfejdVmw0NMGiaf0o+UxPEi/LWGd1kvH/sqes/WBrAM/O0BqDhtIM7W/j/S6Wah3p4VPLoobK3HaCKkg/iLL2loVDV0ug0LK5X6yIbg6Bif5AMT/CQ1TIABSPKjBIp3B8lSIoNTgRwdGPmZ/IpNX6k7u7Zt733BmZ54rkwWYc0IInUWnjvSh0Xx5LSDxGZkgfl4i+T49t8gNCkYpvAS4MnYt32ivovJYJjZWyGSvN2MM7bsEaJfW/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pwqtyR4AFEt34cmHK8Ee9FJcph73wuLOGkx5QI+45us=;
- b=dEcg7srnn3xPZwwpceY4JqvkgP7vlRWig0BvvEHnpA0f1OQXd0QEohXuiiGsZ1C7KGf8L3PpGrgG2pGA/KOwhWbIYXpN5FQXTleyYVYv58boOyqJLnz3SmYN96d6r9PLg2dtgH6R6jLghasIdrCj/OpY5mN7hfKSmdRvrO6Gg6XYjlnE6KRR4lev2w74npV/G2WY7guwYg9gJr/7jpQoV9s/4hGPvEVniHUFliVVvhMPJXonsuUYeDIMXcOkTQrTrPaotFq00xBjm7fFVv+XNXpZs+JNxm2lHUHhKCR5ZM+VaCGQgA0hEgqhfiGEku/MOLH1T6k2ZGmtpE5CHyKyCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pwqtyR4AFEt34cmHK8Ee9FJcph73wuLOGkx5QI+45us=;
- b=Gehqnicjn7hOtAangV0+Ipo0mqYG0I6glcMRF3F9XPFOMJWZpELRg5wm9MMgMawB71Sh+hA+90iDVcxOFdrB0P/o4Z2EZk0gu5ugW1ce+j/imTe4T9OR7ZwBpA2deiFwXEGR+TAILBT+xSN0KlLvEWOURnnnOsBK0bugryfmdOevW1jBBzabVg1/CzXUH2TvhxgUIIngxXEB3jeGWgQG8mqygUEd1QMf8DFFWR7eqRl51dw9wdgO8c6gDhES9Ll93lzsO3g7EKt9d6PEvpDiId6H2tIa1PqYtFr3q9J45T6O2dFE1CzJo1q99CTbnf4hYVG+UHk+acPzPNMd1FBGSA==
-Received: from SA1P222CA0062.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2c1::13)
- by DM4PR12MB8570.namprd12.prod.outlook.com (2603:10b6:8:18b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Thu, 6 Aug
- 2026 07:31:28 +0000
-Received: from SA2PEPF00003F64.namprd04.prod.outlook.com
- (2603:10b6:806:2c1:cafe::68) by SA1P222CA0062.outlook.office365.com
- (2603:10b6:806:2c1::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.19 via Frontend Transport; Thu, 6
- Aug 2026 07:31:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SA2PEPF00003F64.mail.protection.outlook.com (10.167.248.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Thu, 6 Aug 2026 07:31:26 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 6 Aug
- 2026 00:31:05 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Thu, 6 Aug 2026 00:31:05 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Thu, 6 Aug 2026 00:30:59 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Alexander Lobakin
-	<aleksander.lobakin@intel.com>, Arthur Kiyanovski <akiyano@amazon.com>,
-	Daniel Zahka <daniel.zahka@gmail.com>, David Ahern <dsahern@kernel.org>, "Gal
- Pressman" <gal@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, Jiri Pirko
-	<jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>, Leon Romanovsky
-	<leon@kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark Bloch
-	<mbloch@nvidia.com>, Nikolay Aleksandrov <nikolay@nvidia.com>, "Nikolay
- Aleksandrov" <razor@blackwall.org>, Petr Machata <petrm@nvidia.com>, "Przemek
- Kitszel" <przemyslaw.kitszel@intel.com>, Ratheesh Kannoth
-	<rkannoth@marvell.com>, Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan
-	<skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Subject: [PATCH net-next V5 0/2] devlink: add generic device max_sfs parameter
-Date: Thu, 6 Aug 2026 10:30:35 +0300
-Message-ID: <20260806073037.3001886-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h+IT+WPv"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-496b7622a83so14953365e9.2
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 00:31:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786001494; x=1786606294; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uDqsWTzMDLL3yPNgURcpCw3SFq7morA76M8ptW4qhcg=;
+        b=h+IT+WPvNsuwJ+crYFIV7Pz0nganmmtizLw4MIPYyQBDPQ33GYNiTuc4vBNLTbNQwb
+         76/CPaiITobzc7xWkSB2IwGqk2yq4bHUoCBw9q03U6mhmJ9E0dPDk5+HCgvnKVH7879l
+         0Oag2jjUXkgrYAmHddWxWKfsgqHtM16r8NIo9XZbTCV9MIEKo9CWv0b/58ROfbfkMWvc
+         GTeFduTDal+bIH3FfSstLNc+QP4zC5U8g12dWMAZjdxKIaUYYcH4aXtMP9RDLBXEFw0g
+         gZT4bCh8PaY5bnGG1Wm3Ha1A1NYLGs658Zx53E/I2NFxXuaogd0F3K/qlEEoZ+YvZcCj
+         RUzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786001494; x=1786606294;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uDqsWTzMDLL3yPNgURcpCw3SFq7morA76M8ptW4qhcg=;
+        b=GzhZnzYjV3tX2O/o+8FrMbeSfTXt0d2UnZ3nSEFf5G9LPST4ZOQmzx1mDKXs83x8I2
+         Dy/VFuLCta15WrabEmfsSMp/+DPF4mRFKausPS1JoDocYs92rMpikZWlEvw/SOkWgv0W
+         u4br5AYD/ZdtjKdwCeGO4Vd+w73H5fBBgbL4AeVzjTdbhd+kavgzSdv1EMS85GqIxxfH
+         wR+GnMulkuigI/YH+bydUiUauMHzIl+WTkK3KGwSYOX3fnzeSM+nl6vi3NtMTEyKDsvH
+         FvBq2lqRfa4BV8mOhJiPmi4tYHNalanw1l1zithPjTvDIKwkrbhvCOCf/uP6CirMrdY6
+         scMQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq2sURxdMuP3/B0urOYaloshdxmJv6kWQVHGCOqhjsLa9hSi9jl6KjHrQ2abPhrrEMCIW5JEQc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyx1Y8X9AmxgojRsnHOCh1aryiY+AuTt/KNAwWDJuQiJoMGzxSZ
+	oAe8GFCyn9cEeSvZxMy99BifcokuutYCON5m9wrW1EQQPFOJmWcKskjX
+X-Gm-Gg: AR+sD10A+MhMXKXlZmmszYcqZ8FIBLQJnIAgFcompf/DSID/9jH3D5qjFSrDYp/idyB
+	2EIiLfUURqzC42N8vcXMKmqSU5LSeRkQ37VISgefMCXZevyYemhctY+3FFeswqkbLHUXPlKxtmN
+	V5g+faJqN1DE+8CyRveDIXfUY+GKkOBjnYcGG20vhJPPP5PRy9SJAQ+sJVL0y6Y8OieACc/SlgK
+	ghdqRz+rLZP0lDtlP+NWS6fuW3Pg84iGq+1yqsRpoXa9HzyzPUMh/xIjrtCfP5oye6YkZaaXHpL
+	OGEN7sfaD853n/eRAsqv6NiCFBVFPNwjIxe3RLy6u6WVqzO2ZU8HyqQe/U610lrLcVZxRaFT/wk
+	XQ9eKkRlerrb5EOKRNiQCDZKNLj37p1TRgIuv1fMLIvTrifAYhk9EoAbnpY1xSFGO8nO8YkY4dS
+	bYhnh7P9ds55olZSm3RfNvjEqjVoqxVHaggqV3eUUv48MEanBBIqmTFFpvIDzVMg==
+X-Received: by 2002:a05:600d:4448:20b0:495:5e3d:15e1 with SMTP id 5b1f17b1804b1-4994e7d21fdmr145198385e9.16.1786001493858;
+        Thu, 06 Aug 2026 00:31:33 -0700 (PDT)
+Received: from SVR.localdomain ([86.106.74.249])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994e52d819sm79075085e9.1.2026.08.06.00.31.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 00:31:32 -0700 (PDT)
+Sender: Semih Baskan <strstgs@gmail.com>
+From: Semih Baskan <strst.gs@gmail.com>
+To: florian.fainelli@broadcom.com,
+	jonas.gorski@gmail.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: vladimir.oltean@nxp.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 2/2] net: dsa: b53: offload 8021q uppers on standalone ports
+Date: Thu,  6 Aug 2026 10:31:19 +0300
+Message-ID: <20260806073119.387-3-strst.gs@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260806073119.387-1-strst.gs@gmail.com>
+References: <20260806073119.387-1-strst.gs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,146 +86,286 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003F64:EE_|DM4PR12MB8570:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e973edd-771c-43e3-e0ee-08def38cb9b3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700016|1800799024|23010399003|82310400026|18002099003|11063799006|56012099006|3023799007|13003099007|10067099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	j3KON7ssvvOVn3sjykfKWTHg9G0wTFMIG4ax98GBjgywof9rmTG+UJLRFmn/A8iccFHUOfQKEB4PgodUCrO/sLNKTiVtIEjOx9EG9Sct2eqXzM5klbLSgGSk9uCaBlsLkphnJv+Aa0U3WQCM7JVtJIevnNKE7GCsfAYtg6P90OnM0l5V/T30Cx2EQOMjxUFRhWUdPNkY9GKiHqs9gMnW6pUuBydFuJv43H439wxtS3MMAj+/FIdY/JZCTqQ/2dqqM4vKozDA3usQP4GxTCdER4U4kiX+SeFiP/YLO/Knbdfp7l0lErWda1qT3ups5aJWqA0c0r/kgxCBe5fdi6+pSCmDmo6a8OsXbgG2jR3qutp78j4g9JkaCpEeM/6c2bYX1wPojzZ6NfGHmkgMX5EojrjmrehwWOzG9Qsuq1Sjv0yhev3P0P544dOoRWxEwtWl7WOhhD6iy9o7wloa1CW2NV3bpv4XRTpGFTbxlL9hHbPA7XVl6Se9KW2efF3o0lcVvWAw8mhBTHVEyAvs3U9xXAKtYMEXxkrhfOzNaWZFdpJ6s1YcIbiVUrlyZmoNEYv0LabJzu1rbt8UvoM0tGTfB9Jid47vt29aybPaW3HIO8Uh75xaMcWIKE91lzqIJonoL+GGt04PYU0vU5QcdzN//9r5yXYtq3lKtqG+iHSR/y/GWhQ07OwFOvwPXvf2rsRwjDHtYTMi7a0QJ3KdsSnsHw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(1800799024)(23010399003)(82310400026)(18002099003)(11063799006)(56012099006)(3023799007)(13003099007)(10067099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	awtpq20Gv4ESz9TeUv2XLOjB+2lKTqwvVzRKFiRomL7ALnSHt4+T2PSV3jTigvT+v1JKtz+SE0yc0FYyy54Gg0C3/w8XT4eVeY1HnU/ZCkbIjprxfy8HMCgTy9o38eaOrELrlZe0ihaVYNz6mWv8erQV0iiHyXtGmOkUPDeO2ORC7kR8xR+tMIFn7Ha/WB81KCG1FNOC6ELCPKq1XgaebGbj0sDb6a1zhSMy9oo0oeH+9Scvdrt7oSy1dq+ozfcSZ/qhp9DUJiwyLWdI6yJv0Fz9mxpfZm8s+Cixqq8Vxb7wCpTsuTCaKPgXR8ZkExrq9X7w4vTlzk2Ta5G7dG0ZkCUBwvYxwGILXHs4vS+LNRYAS1xqsSiPf6NYw5b1bo/lQ/l4w6K4iwXK7Gi30zMZL5jFd37o60W5k7jOW5Bf8iNXkIbaE9qG8HrSrXX7xRj+
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 07:31:26.8403
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e973edd-771c-43e3-e0ee-08def38cb9b3
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003F64.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8570
 
-Hi,
+b53 keeps the hardware VID lookup enabled at all times:
+b53_switch_alloc() sets dev->vlan_enabled and nothing ever clears it.
+A VID that is absent from the VLAN table resolves to an empty member
+set, so a tagged frame carrying it is discarded instead of reaching
+the CPU. Disabling the lookup is not an option either, because that
+moves the ARL to shared VLAN learning, where ARL operations force
+VID 0 and the hardware table drifts away from the bridge fdb.
 
-This series by Nikolay introduces a new generic devlink device
-parameter, max_sfs, to control the number of light-weight NIC
-subfunctions (SFs) that can be created on a device.
+Commit 06cfb2df7eb0 ("net: dsa: don't advertise 'rx-vlan-filter' when
+not needed") stopped advertising NETIF_F_HW_VLAN_CTAG_FILTER on ports
+that do not offload a VLAN-aware bridge, so creating an 8021q upper on
+a standalone port no longer reaches .ndo_vlan_rx_add_vid and the VID
+is never offloaded. Commit f089652b6b16 ("net: dsa: b53: do not
+program vlans when vlan filtering is off") then made .port_vlan_add
+skip the hardware write while dev->vlan_filtering is false, which it
+is for a standalone port. Together they leave standalone ports unable
+to receive their own tagged traffic.
 
-The first patch adds the generic devlink parameter and infrastructure
-support.
-The second patch implements support for the parameter in the mlx5
-driver.
+This breaks a common configuration, a VLAN-tagged WAN for a PPPoE ISP.
+The PADI leaves the port correctly tagged, the concentrator answers,
+and the switch discards the tagged PADO, so the session never
+establishes. Reported on an Asus RT-N18U in 2023 and still
+reproducible.
 
-With this addition, users can enable or disable SF creation directly via
-devlink, without relying on external vendor-specific tools.
+Take the new needs_standalone_vlan_offload opt-in so DSA reports upper
+VIDs again, and program VLAN entries that carry a standalone port even
+while not filtering. Only the standalone members and the CPU port are
+written to such an entry. A VID used by both an 8021q upper and a
+bridge VLAN therefore does not gain the bridged ports as members, so
+bridge VLANs keep having no effect while filtering is off, which is
+what Documentation/networking/switchdev.rst requires and what that
+commit implements. The PVID register writes stay gated on
+vlan_filtering for the same reason.
 
-Regards,
-Tariq
+b53_configure_vlan() used to restore entries only while filtering, so
+restore the standalone ones there as well, otherwise the next
+b53_apply_config() wipes them. Bridge join and leave rewrite the
+entries of the moved port, because its standalone state is part of the
+masking decision: joining removes the port from its uppers' entries,
+and leaving adds it back, including uppers that were created while the
+port was still bridged. When the last standalone member leaves a VID,
+the entry is written back empty, so deleting an upper or bridging its
+port returns the hardware to the state it had before the upper
+existed.
 
-Notes about a few items from a previous Sashiko review:
- > Should there be a validate callback analogous to
- > mlx5_devlink_total_vfs_validate() that reads the cap and rejects values
- > above the device-reported maximum, so the documented "device-specific
- > max" is actually enforced?
+Creating an upper whose VID the hardware cannot serve now fails
+loudly instead of producing an interface that cannot receive:
+b53_vlan_prepare() rejects VIDs beyond the VLAN table size on
+BCM5325/BCM5365, and any tagged VLAN on BCM7278 port 7, which
+cannot receive tagged frames. Previously the ndo was never called,
+so such uppers were silently created broken.
 
- N: I don't know of such cap, if there was I'd have added it.
+Measured on an Asus RT-N18U (BCM53011 rev 5) against a peer device. A
+probe over an 8021q upper on the standalone WAN port received 0 frames
+before and 7 of 7 after, with the outbound direction as a positive
+control and vlan_filtering staying 0 throughout. A static fdb entry
+with VID 100 survived a vlan_filtering 1->0 toggle in hardware, since
+dev->vlan_enabled is never touched and the ARL keeps using independent
+VLAN learning. The PPPoE session from the report establishes.
 
- > mlx5_devlink_total_vfs_set() rejects with -EOPNOTSUPP and an extack
- > "SRIOV is not per PF on this device" when sriov_support or
- > per_pf_total_vf_supported is clear, but no equivalent
- > per_pf_num_sf_supported (or any SF-related) capability bit is added to
- > nv_global_pci_cap_bits or queried here.  On hardware that lacks the
- > feature, the user only sees the generic firmware error "Failed to
- > change ... global PCI configuration".
+Fixes: 06cfb2df7eb0 ("net: dsa: don't advertise 'rx-vlan-filter' when not needed")
+Cc: stable@vger.kernel.org
+Signed-off-by: Semih Baskan <strst.gs@gmail.com>
+---
+ drivers/net/dsa/b53/b53_common.c | 118 ++++++++++++++++++++++++++-----
+ 1 file changed, 100 insertions(+), 18 deletions(-)
 
- N: I don't know of such bit, if there was such bit I'd have added it.
-
- > At this point, a successful write of per_pf_num_sf has already been
- > committed to non-volatile firmware storage.  If the subsequent
- > mlx5_nv_param_read_per_host_pf_conf() or the second mlx5_nv_param_write()
- > fails (for example, transient firmware/PCIe issue), is there a path that
- > rolls back per_pf_num_sf?
- >
- > Because these are permanent parameters that "require a reboot to take
- > effect", a half-applied state (e.g., per_pf_num_sf=1 but
- > pf_total_sf_en=0/total_sf=0) appears to persist across reboots until
- > the user issues another successful set.
-
- N: That is expected and in line with the rest of the code.
-
- > The commit message says max_sfs is to "control the total light-weight
- > NIC subfunctions"; the BAR-size side-effect is not mentioned, and any
- > previously configured log_sf_bar_size is overwritten on every
- > max_sfs set.  Should that behavior be documented or split out from the
- > count knob?
-
- N: It should be documented when it is split out, at present time - no.
-
- > Does this unconditionally overwrite any existing configuration for the
- > SubFunction BAR size?
- > When a user configures a custom log_sf_bar_size via firmware tools like
- > mlxconfig, and then later uses devlink to change max_sfs, it appears this
- > line discards any non-zero value already present in the configuration data
- > and forcibly replaces it with MLX5_DEFAULT_LOG_SF_BAR_SIZE.
- > Should this code preserve the existing log_sf_bar_size if it was already
- > configured?
-
- N: Yes, it does and it is expected and intentional.
-
-V5:
-- rebase again
-- patch 02: always enable per_pf_num_sf when setting SFs > 0 because other
-  PFs might be using SFs as well (sashiko)
-- patch 02: use NL_SET_ERR_MSG_MOD in max_sfs set
-
-V4:
-https://lore.kernel.org/netdev/20260723082643.1870844-1-tariqt@nvidia.com/
-- rebase due to build failure because of commit:
-  d603517771d8 ("devlink: pass param values by pointer")
-  fixed in patch 02
-- added Alexander Lobakin's reviewed-by tags (please let me know
-  if that is not ok, the change in patch 02 is minor and mechanical
-  due to the commit above)
-
-V3, all changes are in patch 02 (mlx5 implementation):
-https://lore.kernel.org/netdev/b087dc20-7398-4ad3-9787-efef883d81b1@blackwall.org
-- Cap max_sfs at U16_MAX using a validate callback (sashiko)
-- Change the warning message to match the docs (sashiko)
-- On get verify that per_pf_num_sf & pf_total_sf_en are set
-  otherwise return 0 since it means SFs are not properly enabled (sashiko)
-- Define the default log bar size and use it instead of raw value (sashiko)
-
-V2:
-https://lore.kernel.org/netdev/20260519200436.353249-1-tariqt@nvidia.com/
-- Add missing ` (Aleksandr Loktionov).
-- Add review tag to patch 1.
-
-V1:
-https://lore.kernel.org/all/20260517112700.343575-1-tariqt@nvidia.com/
-
-Nikolay Aleksandrov (2):
-  devlink: add generic device max_sfs parameter
-  net/mlx5: implement max_sfs parameter
-
- .../networking/devlink/devlink-params.rst     |   6 +
- Documentation/networking/devlink/mlx5.rst     |   7 +-
- .../mellanox/mlx5/core/lib/nv_param.c         | 125 +++++++++++++++++-
- include/net/devlink.h                         |   4 +
- net/devlink/param.c                           |   5 +
- 5 files changed, 143 insertions(+), 4 deletions(-)
-
-
-base-commit: b0057c68df711bf6a62033c072ac61c4f9d3cbc1
--- 
-2.44.0
-
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 3f5b9592794d..ba1266cd70c3 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -898,10 +898,52 @@ static bool b53_vlan_port_may_join_untagged(struct dsa_switch *ds, int port)
+ 	return dp->bridge == NULL;
+ }
+ 
++static bool b53_vlan_hw_entry(struct dsa_switch *ds, const struct b53_vlan *vl,
++			      struct b53_vlan *hw)
++{
++	struct b53_device *dev = ds->priv;
++	bool standalone = false;
++	struct dsa_port *dp;
++	unsigned int port;
++
++	*hw = *vl;
++
++	if (dev->vlan_filtering)
++		return true;
++
++	hw->members = 0;
++	hw->untag = 0;
++
++	b53_for_each_port(dev, port) {
++		if (!(vl->members & BIT(port)))
++			continue;
++
++		dp = dsa_to_port(ds, port);
++
++		if (!dsa_port_is_cpu(dp)) {
++			if (dp->bridge)
++				continue;
++
++			standalone = true;
++		}
++
++		hw->members |= BIT(port);
++		hw->untag |= vl->untag & BIT(port);
++	}
++
++	if (!standalone) {
++		hw->members = 0;
++		hw->untag = 0;
++	}
++
++	return standalone;
++}
++
+ int b53_configure_vlan(struct dsa_switch *ds)
+ {
+ 	struct b53_device *dev = ds->priv;
+ 	struct b53_vlan vl = { 0 };
++	struct b53_vlan hw;
+ 	struct b53_vlan *v;
+ 	int i, def_vid;
+ 	u16 vid;
+@@ -937,20 +979,23 @@ int b53_configure_vlan(struct dsa_switch *ds)
+ 	}
+ 	b53_set_vlan_entry(dev, def_vid, &vl);
+ 
+-	if (dev->vlan_filtering) {
+-		/* Upon initial call we have not set-up any VLANs, but upon
+-		 * system resume, we need to restore all VLAN entries.
+-		 */
+-		for (vid = def_vid + 1; vid < dev->num_vlans; vid++) {
+-			v = &dev->vlans[vid];
++	/* Upon initial call we have not set-up any VLANs, but upon
++	 * system resume, we need to restore all VLAN entries.
++	 */
++	for (vid = def_vid + 1; vid < dev->num_vlans; vid++) {
++		v = &dev->vlans[vid];
+ 
+-			if (!v->members)
+-				continue;
++		if (!v->members)
++			continue;
+ 
+-			b53_set_vlan_entry(dev, vid, v);
+-			b53_fast_age_vlan(dev, vid);
+-		}
++		if (!b53_vlan_hw_entry(ds, v, &hw))
++			continue;
+ 
++		b53_set_vlan_entry(dev, vid, &hw);
++		b53_fast_age_vlan(dev, vid);
++	}
++
++	if (dev->vlan_filtering) {
+ 		b53_for_each_port(dev, i) {
+ 			if (!dsa_is_cpu_port(ds, i))
+ 				b53_write16(dev, B53_VLAN_PAGE,
+@@ -1720,6 +1765,7 @@ int b53_vlan_add(struct dsa_switch *ds, int port,
+ 	struct b53_device *dev = ds->priv;
+ 	bool untagged = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
+ 	bool pvid = vlan->flags & BRIDGE_VLAN_INFO_PVID;
++	struct b53_vlan hw;
+ 	struct b53_vlan *vl;
+ 	u16 old_pvid, new_pvid;
+ 	int err;
+@@ -1751,13 +1797,14 @@ int b53_vlan_add(struct dsa_switch *ds, int port,
+ 	else
+ 		vl->untag &= ~BIT(port);
+ 
+-	if (!dev->vlan_filtering)
++	if (!b53_vlan_hw_entry(ds, vl, &hw))
+ 		return 0;
+ 
+-	b53_set_vlan_entry(dev, vlan->vid, vl);
++	b53_set_vlan_entry(dev, vlan->vid, &hw);
+ 	b53_fast_age_vlan(dev, vlan->vid);
+ 
+-	if (!dsa_is_cpu_port(ds, port) && new_pvid != old_pvid) {
++	if (dev->vlan_filtering &&
++	    !dsa_is_cpu_port(ds, port) && new_pvid != old_pvid) {
+ 		b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(port),
+ 			    new_pvid);
+ 		b53_fast_age_vlan(dev, old_pvid);
+@@ -1772,7 +1819,9 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
+ {
+ 	struct b53_device *dev = ds->priv;
+ 	bool untagged = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
++	struct b53_vlan hw;
+ 	struct b53_vlan *vl;
++	bool needs_hw;
+ 	u16 pvid;
+ 
+ 	if (vlan->vid == 0)
+@@ -1782,6 +1831,8 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
+ 
+ 	vl = &dev->vlans[vlan->vid];
+ 
++	needs_hw = b53_vlan_hw_entry(ds, vl, &hw);
++
+ 	vl->members &= ~BIT(port);
+ 
+ 	if (pvid == vlan->vid)
+@@ -1791,14 +1842,18 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
+ 	if (untagged && !b53_vlan_port_needs_forced_tagged(ds, port))
+ 		vl->untag &= ~(BIT(port));
+ 
+-	if (!dev->vlan_filtering)
++	if (!needs_hw)
+ 		return 0;
+ 
+-	b53_set_vlan_entry(dev, vlan->vid, vl);
++	b53_vlan_hw_entry(ds, vl, &hw);
++	b53_set_vlan_entry(dev, vlan->vid, &hw);
+ 	b53_fast_age_vlan(dev, vlan->vid);
+ 
+-	b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(port), pvid);
+-	b53_fast_age_vlan(dev, pvid);
++	if (dev->vlan_filtering) {
++		b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(port),
++			    pvid);
++		b53_fast_age_vlan(dev, pvid);
++	}
+ 
+ 	return 0;
+ }
+@@ -2261,6 +2316,28 @@ int b53_mdb_del(struct dsa_switch *ds, int port,
+ }
+ EXPORT_SYMBOL(b53_mdb_del);
+ 
++static void b53_standalone_vlan_resync(struct dsa_switch *ds, int port)
++{
++	struct b53_device *dev = ds->priv;
++	struct b53_vlan hw;
++	struct b53_vlan *vl;
++	u16 vid;
++
++	if (dev->vlan_filtering)
++		return;
++
++	for (vid = b53_default_pvid(dev) + 1; vid < dev->num_vlans; vid++) {
++		vl = &dev->vlans[vid];
++
++		if (!(vl->members & BIT(port)))
++			continue;
++
++		b53_vlan_hw_entry(ds, vl, &hw);
++		b53_set_vlan_entry(dev, vid, &hw);
++		b53_fast_age_vlan(dev, vid);
++	}
++}
++
+ int b53_br_join(struct dsa_switch *ds, int port, struct dsa_bridge bridge,
+ 		bool *tx_fwd_offload, struct netlink_ext_ack *extack)
+ {
+@@ -2324,6 +2401,8 @@ int b53_br_join(struct dsa_switch *ds, int port, struct dsa_bridge bridge,
+ 	b53_write16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(port), pvlan);
+ 	dev->ports[port].vlan_ctl_mask = pvlan;
+ 
++	b53_standalone_vlan_resync(ds, port);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(b53_br_join);
+@@ -2376,6 +2455,8 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct dsa_bridge bridge)
+ 		vl->members |= BIT(port);
+ 		b53_set_vlan_entry(dev, pvid, vl);
+ 	}
++
++	b53_standalone_vlan_resync(ds, port);
+ }
+ EXPORT_SYMBOL(b53_br_leave);
+ 
+@@ -3213,6 +3294,7 @@ struct b53_device *b53_switch_alloc(struct device *base,
+ 	 * devices. (not hardware supported)
+ 	 */
+ 	ds->vlan_filtering_is_global = true;
++	ds->needs_standalone_vlan_offload = true;
+ 
+ 	mutex_init(&dev->reg_mutex);
+ 	mutex_init(&dev->stats_mutex);
