@@ -1,123 +1,187 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11020141.outbound.protection.outlook.com [52.101.61.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EE73321A2
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 14:16:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786025819; cv=none; b=P84fwse8pICOBWJouTE9vIuf597rQI1HGqeT0jpYDgBvWESSolvpjFoe6UJR+wCrcKsQds8ESh8+wcP9C6K7EdeBScYg55fK9/KTscXph0ChGB3HnEm5VITIsCznyqK03qXbJlmgsH2qO+TXFs52fBD8k5GII0cKKQbKLaN7iFM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786025819; c=relaxed/simple;
-	bh=f63s5PNmjoIMbJJl64IcPFZQnQp36WdlKBpR00TZkdI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=fsYviKtsYtBdiXA2Sng8ss/cevSDiU4miicubv1v6aFeMeIB5xgdIruaCnYrps+B/d72Nin4R+okYdHkkdBSV8r6s2XB3w1PtjMe6M1M+RcRyeIx1WxCDCKCpmPejMtFJVQ1YGWwBA4tbL7SiEeWpEn5lQoNdnUnPESyWNMFg8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nz7smOTx; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98436442FCC;
+	Thu,  6 Aug 2026 14:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.141
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786025856; cv=fail; b=Tyu+89SA73qFjqlDhBml6x6YKUiMpIO3G0ROSXPOI3UvXCEZyMkuDC8H+xQBNmj9pSasUlmZY7CQ/vD4TQMycbvJ/UAIDawv53l7p0a7dmMJIurqLQ/DnaO1AwVIaOHE9aN9aZGftn3I7VUHZ4E5FUx3vFQjef5l43TR+Xpi3eM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786025856; c=relaxed/simple;
+	bh=VG7YaCdc7YsCUewZY3CzeUqQoap2zqDmZwswATXyHRU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=HS0BKAGbpA0EcqNYNxIMba96fFjEIvHo3FEp7ilGXy+5+svN/1vp0SMqNiQM6FwtAXN1XzVGns1KW1LxigZShGSOlOxSM32naZGU9gYOOC04zSHrSbX52FH2iPV3OUAdYXhzjUMYVTFHjOSE6vg892zR5+XTWtHqFoaa4thDZxE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=XNiIV0pu; arc=fail smtp.client-ip=52.101.61.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nz7smOTx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786025817;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D6cTxNBhBd5FGLMHGggNl1htRb7ff0y/rb4fu34/dVs=;
-	b=Nz7smOTx7LD1OFkFwccm+JUT7UTaNpw6YEXGV2+DEC32R1vmz0eivJgiviysH7E3yVPI7Q
-	pxA4VH84RBxxnBOHUK93JMRSLME8BW7xGjfJsCIPLi1XneDAkGGwNQZ4n7DQDskjPWC+Ne
-	FhxnESGRlEmQWvYRlymfCFXMJvPy1G8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-348-232Y23oZO6OSrRdJvF6zwQ-1; Thu,
- 06 Aug 2026 10:16:51 -0400
-X-MC-Unique: 232Y23oZO6OSrRdJvF6zwQ-1
-X-Mimecast-MFC-AGG-ID: 232Y23oZO6OSrRdJvF6zwQ_1786025808
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 28B2918001E3;
-	Thu,  6 Aug 2026 14:16:48 +0000 (UTC)
-Received: from [10.44.33.193] (unknown [10.44.33.193])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1D40E1956049;
-	Thu,  6 Aug 2026 14:16:44 +0000 (UTC)
-Message-ID: <c8af201a-c610-42fe-8941-b90da2d13664@redhat.com>
-Date: Thu, 6 Aug 2026 16:16:43 +0200
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="XNiIV0pu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tOEtgNIW5PBnTmRYu40K9PVHnV8+SGiTjwAiMj99I6+dHW3VlSFoJu8kJpYnlcbAVQGuAnZMgalJK2ea1NHRTK918n0JkclZ1xMTBm4xpUGr8IIn2gh4oBTePlcqB3/gFtkbYUuQy9oKJK7eZ19yFK48fnTyj3oj7soAd6nqladwnhEa/UL2aW0tbEA5NXByzlbyaD5xdC7PBmDOZ8VqGojHSkFkGP1MUFABZrnuZhmhP2LZ3p2kA32mZSeGIzTqnZ6XFNTHFW7CwN2TEIiyOSemwqr/zXla5M6lwjAelU5TH5NbXnoo9U8QXk/dxuq2Ccqpeja1g6YC1QdAAXfIiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HXZZKcB7D4UQic7+jNhaPgkQ1Q+MGQl5uTEz1ITLx30=;
+ b=mXvtKX2rgXbwHAYNiMfaieGbXuy9bC9OVJkGHcTm7/hQFMVfEYKlS7dCri8UTypXneThuFVANxXvBWYZraEM34WyCJRnsllUD92tNKGGNlOq9SgVyNd4S9EbS+Etesjkj3bJFGPESFEp1IRVQBmTTABcuCwfhBLcc0DrXaC4lH31rJNiFYGKhwUO68uaQEUPBD1FCKHjxZNzYR/5iCrZLOEJK4B1NkDIvFZCVUsnD/NmsnHJiGCGNMR3u2iED63SFQHT0jzgVAiAIABbjOED21z3lgRM7UQmYTHH97V8b52otYAMbd3FLIPVwomW3WeCL5ysPpSYgGltgivYuChjeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HXZZKcB7D4UQic7+jNhaPgkQ1Q+MGQl5uTEz1ITLx30=;
+ b=XNiIV0puhpkNdiPDs7AXshZcJ1ZkwT5Qh78/9FEwyiE49xLP37sjber2ojQtW88FcaEbaSYpP20+la2dznI4LMxQ+eFYKgN0iAYfwMhAkztEbu94TRokbVDPYn+IpO1of1YM3ngQfH9cOkkGkDaf8ZeGJ+lnrfpeGxOpPq2KKgc=
+Received: from LV5PR21MB4704.namprd21.prod.outlook.com (2603:10b6:408:307::7)
+ by LV9PR21MB5382.namprd21.prod.outlook.com (2603:10b6:408:2e9::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.3; Thu, 6 Aug 2026
+ 14:17:31 +0000
+Received: from LV5PR21MB4704.namprd21.prod.outlook.com
+ ([fe80::144b:98da:1262:2ebb]) by LV5PR21MB4704.namprd21.prod.outlook.com
+ ([fe80::144b:98da:1262:2ebb%6]) with mapi id 15.21.0315.001; Thu, 6 Aug 2026
+ 14:17:31 +0000
+From: Haiyang Zhang <haiyangz@microsoft.com>
+To: Fan Wu <fanwu01@zju.edu.cn>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, Dipayaan Roy <dipayanroy@microsoft.com>, Sahil
+ Chandna <sahilchandna@microsoft.com>
+CC: KY Srinivasan <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan
+ Cui <DECUI@microsoft.com>, Long Li <longli@microsoft.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [EXTERNAL] [PATCH net] net: mana: fix reset work race with device
+ removal
+Thread-Topic: [EXTERNAL] [PATCH net] net: mana: fix reset work race with
+ device removal
+Thread-Index: AQHdJOg2mtcqzdMGRU+fPvslDaSma7aREewA
+Date: Thu, 6 Aug 2026 14:17:31 +0000
+Message-ID:
+ <LV5PR21MB470447ECF9B18154AE2F2D66CAD22@LV5PR21MB4704.namprd21.prod.outlook.com>
+References: <20260805143812.220509-1-fanwu01@zju.edu.cn>
+In-Reply-To: <20260805143812.220509-1-fanwu01@zju.edu.cn>
+Accept-Language: en-US
+Content-Language: en-US
+X-Mentions: dipayanroy@microsoft.com,sahilchandna@microsoft.com
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=d3e2481a-0724-4161-9fe7-b061c267c8d6;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-08-06T14:14:18Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: LV5PR21MB4704:EE_|LV9PR21MB5382:EE_
+x-ms-office365-filtering-correlation-id: 646848bd-8484-4c7c-b33c-08def3c573f6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|38070700021|56012099006|11063799006|7146999003|10067099003|22082099003|18002099003|7053199004;
+x-microsoft-antispam-message-info:
+ 24yhdiL3oXACK0KpufXRdYnga3DLra3JhiCxu4riPFPcxZWSfGHwPCFaWmv2wFpEbdqtEnYdS7/oivi7/eWyIgn6ceAfJqH6QNKD9J6s59gRNTYFdYujRor4CfRgPbjFndUHGwaLPUg2iHXTCg7p/mtZEZiupa40nLBj0M/EGCZZlVuczM6X9bIbt9LNHQQfqRV3ULuD9v2CuTiEsIQ11L6xhKTYE3GE9d60omxKr58mY5M1VQRxJmQSJCCNEcZlM7gGhwuyNDa6liEMex0DcSJ6gH+AZNsjTxN0SAYCk/XAzaP60V6ebl3X2DQFlBihCOgcXVvpkTqlfvAG5vv20pXsZP/Xg1dXMHt5uOQxtWxO8AYdLctC1/MKeIsrpVEmDVqYtiBT6O6cFNGpxLjwCnBfxp/yUW5vBVRRhkjl0lr+XDX1/QHS2vcV3FxoKphfnecU6Son460akenoa1stB3sUaReDyQDInfTMjJQ6/ndjyFI6A7J/f1/yHnzDvsPLxUoiB8gZlktrMWyTroTBBy00OeEeXu7i4kkuWkpBn1X2N05svNG+3hFbdd4suvLEpD9qqtVJa1W77tAHlx+sD4acwIzor9ufu5p6YTvzp7KAU07dSVI08zBXiaoCP7RRvGdIg3Mcu3CFcaNVFOoUm8Zfj2XSvO0Kbw2i7RYUkRvn8Arv2U4orqJxyAEuH3fXxuAEyYVGb40uZfmblGWjV+6yNE3JxY1ShJhd6NcH/k4=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV5PR21MB4704.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(38070700021)(56012099006)(11063799006)(7146999003)(10067099003)(22082099003)(18002099003)(7053199004);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?5r4s+hc8CpHSVWqmiJdbDB60Y5qe2awrbYATOIe8UE4/h7cII47GQeZemzth?=
+ =?us-ascii?Q?8TCi2oiWRRMAd7222DidJ0bECMxs2NXrccGuW2J6KBqMIJMEzijX/yB8p+6I?=
+ =?us-ascii?Q?9m7GSpnTBdqq+X1UovZi7nyi37OR+++Qz1weGOo4hSr8N7iLlMnvKICheyT7?=
+ =?us-ascii?Q?dC4gJKvdzYelsKpU7SDGnc79Kc5dtO1w6tU5Ag5Zl6i69TOx8acJjngbZX15?=
+ =?us-ascii?Q?Ej7lSOlEoo0MIldJY2iX4B7gqDUnCVsba2zVqxg8n9zMvVRW8LzXifpmjg7n?=
+ =?us-ascii?Q?P6YEUtom/qoV0NOHG6s4DjDoVVDrXFSs0EuqYvrL5u2QTXLXxx07ht772/sE?=
+ =?us-ascii?Q?nRE2W75mAF2egGIGvLyjIi/sSzWd7HA5qwk3356bT4yf+TUOh5fiFSV4GOay?=
+ =?us-ascii?Q?7dS9gZSpLzcqvR3etswwtAGWyqKLF64+obrNd9XbcVxkkhDc6IL70i+5SBM2?=
+ =?us-ascii?Q?rJg3irhB0RUa9SWDw8kCB4xPNVR8h//XAx5D/cmQKA/0g1eJq0y1I+NH/Pgb?=
+ =?us-ascii?Q?lX9s/Ob7rEjkN41SgIXZM7CnkzcDPUS3/bsNqaWUnNkbyrPWx7Ra0AzcWTtK?=
+ =?us-ascii?Q?+kAIzB71t/fUL/G9FRtREBV5TRxhk8Hct4TpQu+QBnQGxLLD/b6jlfqCocwF?=
+ =?us-ascii?Q?oXOwVox5qY66ZuYjkb4Fv7c08r4tVxiPNj7WhJ1YH/x81TY24nMf0P+03smK?=
+ =?us-ascii?Q?V5K4cE45iDiNPsifAkrnc+Iu3LQgM0Q+m0iPYTCTezcRb4/4IskADHP/vAAF?=
+ =?us-ascii?Q?gG58W9EXWQWLNMXsH9OLA2v9a4kIwmM6nqTw3vogLuM9VleGZ85O55rkJaOL?=
+ =?us-ascii?Q?eo0yzQ3JhkTtuyvrDtYkWn/ghB8AoXk2XKSSByqsejJUCdf3Anl5XkZtRiu2?=
+ =?us-ascii?Q?15HZlhjM/ccrw8HoE4lCdycg7Y1e5Ljvp2azfHabRxaleYTPE/rzbbIWwqY7?=
+ =?us-ascii?Q?6eXxHkv+XGB387MRyIFKYmv8LgYXIZEg3xgphv01DxniA+0i52KWsrPKnI9h?=
+ =?us-ascii?Q?tttqvCoWcWKoCPHYS5FWDMJ3aeDdm3LhmJBOq/C7OG9Djl08XqgNlo2Z1vXl?=
+ =?us-ascii?Q?HryWJkMwvXYb+OuQNKFvRObA6jeoR6+lPxUEcVt/gc3hOoDzxF9jd4nZRuaH?=
+ =?us-ascii?Q?t1+7XSLboyD3GmgOn7zxY3WWV1s4uirMGoY4FN9th/rnuxvM0OM9rIxab198?=
+ =?us-ascii?Q?JrUozalBidjRId2uFVMWYsn10dc1KvSIP+rATfUmc7+Yg3sgo7zn8sR9t0DE?=
+ =?us-ascii?Q?7UZEdctDGwW2ZPOFaDv2hoLZPUkixrubMCWJR4bwl5fg+Ks3hJH1JDr9/RP+?=
+ =?us-ascii?Q?mHAGoPVZbgYh8rZbpEFjq+bdJbcI2wrw/jzhxaEzXoDKp9Ihe6hTfS1VEhiQ?=
+ =?us-ascii?Q?5fQmZ1cwHbJGwcC84kBuZBUGItE8ITOgFBLvH4n/fckh19TlQX3AmcN4e3b6?=
+ =?us-ascii?Q?+hbCojGI7BooTD7KKQHYPIt3zCJfl+v5WALC6eE4fECp9vtqTRHsfTz8kX0s?=
+ =?us-ascii?Q?QhatVebmZfV2AqVhwTnv8T1vc3jtHLzFs7yQeyg7/6d+hj3Ur6H2M+vAYsto?=
+ =?us-ascii?Q?6OevnBgOevWvRnf6lr1+2alZs2/f8i3x9mrw5jwPZb2/JYhXbtw8jMz4v8ke?=
+ =?us-ascii?Q?1Aij5wvKMKjUaTg5kATZa6GwytyIdmq+/U8rKC4T7TbaAWCqZHTHRtOyDfaO?=
+ =?us-ascii?Q?gi6f6W3Ao4/C/YReTZvQLrrfnsD6XGRTEWt9XejZbHATrvSaFI0EjzSoQwMF?=
+ =?us-ascii?Q?jNb5g9kDAA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 1/2] dpll: zl3073x: add channel ToD, phase
- step and TIE operations
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
- Chris du Quesnay <Chris.duQuesnay@microchip.com>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
- Paolo Abeni <pabeni@redhat.com>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org
-References: <20260803140637.102339-1-ivecera@redhat.com>
- <20260803140637.102339-2-ivecera@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260803140637.102339-2-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: LV5PR21MB4704.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 646848bd-8484-4c7c-b33c-08def3c573f6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Aug 2026 14:17:31.2234
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7sR1TL9sYawchxHOGhFuhQdMwq+dzdW9Vnr2hoVP7P2+317osZcYLFMHbazpMmidW3eQI8B0ya6a1UZ6AL0FMQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR21MB5382
 
-Sashiko findings with replies...
 
- > zl3073x_poll_zero_u8() hard-codes the interval:
- >
- > #define ZL_POLL_SLEEP_US 10
- >
- > so the new timeouts [...] all wait at a 10 us cadence. [...] giving on
- > the order of 10^5 bus reads while waiting out a WR_NEXT_1HZ command
- > [...]
- > Would a millisecond-scale interval variant be preferable for these
- > three cases, so the shared bus and the driver's monitor kworker are not
- > starved for up to a second?
 
-Good catch. I did some testing and found that even the existing
-registers typically clear within low hundreds of iterations, so the
-fixed 10 us sleep is already unnecessarily aggressive for all callers.
+> -----Original Message-----
+> From: Fan Wu <fanwu01@zju.edu.cn>
+> Sent: Wednesday, August 5, 2026 10:38 AM
+> To: netdev@vger.kernel.org
+> Cc: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang
+> <haiyangz@microsoft.com>; Wei Liu <wei.liu@kernel.org>; Dexuan Cui
+> <DECUI@microsoft.com>; Long Li <longli@microsoft.com>; Andrew Lunn
+> <andrew+netdev@lunn.ch>; David S . Miller <davem@davemloft.net>; Eric
+> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
+> Abeni <pabeni@redhat.com>; linux-hyperv@vger.kernel.org; linux-
+> kernel@vger.kernel.org; stable@vger.kernel.org
+> Subject: [EXTERNAL] [PATCH net] net: mana: fix reset work race with devic=
+e
+> removal
+>=20
+> [Some people who received this message don't often get email from
+> fanwu01@zju.edu.cn. Learn why this is important at
+> https://aka.ms/LearnAboutSenderIdentification ]
+>=20
+> The reset service work runs on the system workqueue and obtains the
+> GDMA context through PCI drvdata.  It can race with device removal
+> (mana_gd_remove()), which frees the context.  A reset work that runs
+> after removal can therefore dereference the freed context.
+>=20
+> Serialize mana_serv_reset() with device removal by taking the PCI
+> device lock across its drvdata access and reset sequence.  The driver
+> core holds the same lock while invoking the remove callback, so remove
+> waits for an in-progress reset.  Work that runs after remove observes
+> the drvdata cleared before the context is freed.
+>=20
+> Drop the lock before rescanning, since the rescan path may remove the
+> device and acquire the device lock again.  Also clear GC_IN_SERVICE
+> before rescanning after a failed resume, so this exit follows the same
+> service-state cleanup as the other reset exits.
+>=20
+> This issue was found by an in-house static analysis tool.
+>=20
+> Fixes: fbe346ce9d62 ("net: mana: Handle Reset Request from MANA NIC")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5.6
+> Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+> ---
+>  drivers/net/ethernet/microsoft/mana/gdma_main.c | 18 +++++++++++++-----
+>  1 file changed, 13 insertions(+), 5 deletions(-)
 
-I will add a prep patch that replaces the fixed ZL_POLL_SLEEP_US with
-timeout_us / 50 in zl3073x_poll_zero_u8(). This scales the sleep
-interval proportionally to the timeout, targeting ~50 iterations
-regardless of timeout magnitude:
-   - existing 30-50 ms timeouts: 600-1000 us sleep
-   - new 1000-3000 ms PTP timeouts: 20-60 ms sleep
+Adding some of my teammates: @Dipayaan Roy @Sahil Chandna
 
- > Can the tick-crossed branch skip the 20 ms rollover guard and shift the
- > applied time by one second?
- >
- > The margin test is gated on !diff.tv_sec, so when the 1 Hz tick crossed
- > between the two zl3073x_chan_tod_read() calls only the seconds get 
-fixed up
- > and the remaining margin is never compared against threshold_ns [...]
-
-Good point. Although this requires ~1 s delay between two consecutive
-register reads (practically unreachable), the fix is clean and costs
-nothing. I will restructure the guard to separate the tick-crossing
-fixup from the margin check so both apply independently:
-
-     diff = timespec64_sub(ts_next, ts_cur);
-
-     if (diff.tv_sec < 0)
-         ts_next.tv_sec -= diff.tv_sec;
-
-     if (diff.tv_sec <= 0 && diff.tv_nsec < threshold_ns) {
-         fsleep((unsigned long)diff.tv_nsec / NSEC_PER_USEC + 1);
-         ts_next.tv_sec++;
-     }
-
-Thanks,
-Ivan
-
+- Haiyang
