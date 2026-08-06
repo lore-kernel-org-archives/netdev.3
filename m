@@ -1,54 +1,45 @@
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605FC3E008A;
-	Thu,  6 Aug 2026 06:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352D978F2F;
+	Thu,  6 Aug 2026 06:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785998586; cv=none; b=tWhoujNy+K7JuZxri7Kkhn3IZvFHlMzHwfu2gUud8g4cexWzj0LZWPAnyFzUmVOAw5KozrKM03wgoERY6T3AlIpfiM+yNNkricd+/BOGlSjg6Jn1/2JU7weve7xQL8aL9dUOWchb2tpYdJuofUOy4YoxB0dHLtMDBvLTSnt/aG4=
+	t=1785998941; cv=none; b=hxNvDChT96NfSGsdNF2yKnOmzxylBX7Ikp3h59SOHz13yeAPpF3BYE5GmIVPvfT4mwOzLLN6Ilg4dKBEXaiX8uaz6/YdNUchNMJBnW/UVOS7WmTa7BSq/7iUBAg5RUvgpL7AIlnd/TGcvyb1jAjdpJmFbqQNOZpE9ZKrtCxkCFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785998586; c=relaxed/simple;
-	bh=W+1CoSEoBPpA8dQf/oy5HRhFMjfFy6nZl/a/iUFLlPU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2wa3LNgfs32gUbrdHZnp8tmQHluKzgPKhr+gyxszF1WKIHVujZlqPBZZ8bJADReomNlCWE64aUvocWLvpZMgF6CavE4NGUvwVCJTP/Iq5/iGRtcOjPipvfYmDcP/kTv47hMLIXNe2NvJ8RwZyTLCRPykugfbdGKrbGGXNQxaE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ugSPQnji; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1785998941; c=relaxed/simple;
+	bh=UlSxC/IGkFSyEWyf+H6ebBeCR5E2aPJizh7NpsgGceU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=fxWuYCQTS7dzislnABdtOkpQ/Jk9quyRJ7Dw5AI9hZFJKpjbTb+0RDObkfoNZSXgMo9OBRfmr0m5C5wxIh5b67jUQDB0WimxT47g5Ho0F3ZS1H8D5+ngk4lu0/gbhDlKvxWPNi6yJjBUTzpwjMB/IRGL02BNkhkipbxyrr1ZA+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jI5BYCug; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ugSPQnji"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785998578; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=FMhBn8i+MJ4J+7zg2V1VVy2pCY8m4AKaeeRJKx+wjJA=;
-	b=ugSPQnjiLznmNF0VuKYklA41zEhjDxK/ATpdnV9Vh8yxHxnnj/EyEM+TUUDv+0XcdOYVYSDR3yj+oEUk/7k1E0bJB7kl6Vu5Vw90Ev7S/4xiTjKAvd67IZrAgI+TYP7u2/O3PjLIKws8l4+eNJ0R4cFbwlw2HEdCcfefLvivG14=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=alibuda@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X8TC9te_1785998577;
-Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0X8TC9te_1785998577 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 06 Aug 2026 14:42:58 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com>
-To: mjambigi@linux.ibm.com,
-	wenjia@linux.ibm.com,
-	wintera@linux.ibm.com,
-	dust.li@linux.alibaba.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	leonro@nvidia.com,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jI5BYCug"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Pa
+	6OiqX1zb8L5xDXhjVSQYi7w3Th9fBmhxjtWgy3xM0=; b=jI5BYCugPDGGpsrCUl
+	lz7lduzxWVyY6RhVBHFoul2J8scQggPC2cmzs0LvkJlfb09RD5jykZmSCqy9E0x/
+	12361wF/hxKDsMzHL/0sQigXC63MG0Ey/YhK2UqYkr3k1cydLK5AS3gjQ8sufqzm
+	UAh35083LT3ls6QsahgAqDJqg=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgAX4vg_LnRq_fcuKA--.37967S2;
+	Thu, 06 Aug 2026 14:48:33 +0800 (CST)
+From: "rom.wang" <r4o5m6e8o@163.com>
+To: virtualization@lists.linux.dev
+Cc: eperezma@redhat.com,
+	mst@redhat.com,
+	jasowang@redhat.com,
 	pabeni@redhat.com,
-	edumazet@google.com,
-	sidraya@linux.ibm.com,
-	jaka@linux.ibm.com,
-	oliver.yang@linux.alibaba.com
-Subject: [PATCH net-next v1 2/2] net/smc: reduce TX slot contention with exclusive wait
-Date: Thu,  6 Aug 2026 14:42:52 +0800
-Message-ID: <20260806064252.39180-3-alibuda@linux.alibaba.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20260806064252.39180-1-alibuda@linux.alibaba.com>
-References: <20260806064252.39180-1-alibuda@linux.alibaba.com>
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] tools/virtio: add --features-array switch
+Date: Thu,  6 Aug 2026 14:48:31 +0800
+Message-Id: <20260806064831.45871-1-r4o5m6e8o@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260804080125.79403-4-r4o5m6e8o@163.com>
+References: <20260804080125.79403-4-r4o5m6e8o@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,91 +47,22 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgAX4vg_LnRq_fcuKA--.37967S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvj4R_J5FDUUUU
+X-CM-SenderInfo: 3uurkzkwhy0qqrwthudrp/xtbCzgJTyGp0LkKkTAAA3N
 
-smc_wr_tx_get_free_slot() waits for a free TX slot with
-wait_event_interruptible_timeout(). Since the wait_event family
-enqueues waiters as non-exclusive, wake_up() may wake multiple
-waiters even though only one can use the slot, causing
-thundering-herd contention when slots are scarce.
+This is expected, not a bug in the test.
 
-Use an exclusive wait loop with prepare_to_wait_exclusive() so
-wake_up() wakes only one waiter per freed slot.
-smc_wr_wakeup_tx_wait() still uses wake_up_all() during link
-teardown, so teardown behavior is unchanged.
+The clear_user() start-address issue in VHOST_GET_FEATURES_ARRAY is the
+pre-existing kernel bug that the separately posted fix [1] (Acked-by:
+Eugenio) addresses.  Patch 3 here is its regression test, so it
+intentionally aborts in verify_get_features_array() against an unfixed
+kernel and passes once [1] is applied; the dependency is noted in the
+cover letter.
 
-This also corrects the return value on a pending signal: the previous
-wait_event_interruptible_timeout() path fell through to the "no free
-slot" case and returned -EPIPE, masking the signal as a connection
-error. The open-coded loop now returns -ERESTARTSYS, matching the
-standard interruptible-wait semantics and letting the syscall restart
-machinery handle it.
+[1] https://lore.kernel.org/all/20260526080336.61296-1-r4o5m6e8o@163.com/
 
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
----
- net/smc/smc_wr.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
-
-diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
-index 6b5add922993..2cdd4063c13d 100644
---- a/net/smc/smc_wr.c
-+++ b/net/smc/smc_wr.c
-@@ -198,11 +198,13 @@ int smc_wr_tx_get_free_slot(struct smc_link *link,
- 			    struct smc_rdma_wr **wr_rdma_buf,
- 			    struct smc_wr_tx_pend_priv **wr_pend_priv)
- {
-+	unsigned long timeout = SMC_WR_TX_WAIT_FREE_SLOT_TIME;
- 	struct smc_link_group *lgr = smc_get_lgr(link);
- 	struct smc_wr_tx_pend *wr_pend;
- 	u32 idx = link->wr_tx_cnt;
- 	struct ib_send_wr *wr_ib;
- 	u64 wr_id;
-+	DEFINE_WAIT(wait);
- 	int rc;
- 
- 	*wr_buf = NULL;
-@@ -212,17 +214,31 @@ int smc_wr_tx_get_free_slot(struct smc_link *link,
- 		if (rc)
- 			return rc;
- 	} else {
--		rc = wait_event_interruptible_timeout(
--			link->wr_tx_wait,
--			!smc_link_sendable(link) ||
--			lgr->terminating ||
--			(smc_wr_tx_get_free_slot_index(link, &idx) != -EBUSY),
--			SMC_WR_TX_WAIT_FREE_SLOT_TIME);
--		if (!rc) {
--			/* timeout - terminate link */
--			smcr_link_down_cond_sched(link);
--			return -EPIPE;
-+		rc = 0;
-+		for (;;) {
-+			prepare_to_wait_exclusive(&link->wr_tx_wait, &wait,
-+						  TASK_INTERRUPTIBLE);
-+			if (!smc_link_sendable(link) || lgr->terminating ||
-+			    smc_wr_tx_get_free_slot_index(link, &idx) != -EBUSY)
-+				break;
-+			timeout = schedule_timeout(timeout);
-+			/* re-check */
-+			if (!smc_link_sendable(link) || lgr->terminating ||
-+			    smc_wr_tx_get_free_slot_index(link, &idx) != -EBUSY)
-+				break;
-+			if (!timeout) {
-+				/* timeout - terminate link */
-+				smcr_link_down_cond_sched(link);
-+				break;
-+			}
-+			if (signal_pending(current)) {
-+				rc = -ERESTARTSYS;
-+				break;
-+			}
- 		}
-+		finish_wait(&link->wr_tx_wait, &wait);
-+		if (rc)
-+			return rc;
- 		if (idx == link->wr_tx_cnt)
- 			return -EPIPE;
- 	}
--- 
-2.45.0
+No virus found
+		Checked by Hillstone Network AntiVirus
 
