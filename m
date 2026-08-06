@@ -1,50 +1,50 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6F7448BA1;
-	Thu,  6 Aug 2026 19:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5619E1C862D;
+	Thu,  6 Aug 2026 19:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786044867; cv=none; b=NN0NIeTQu/Fr7DhAk2AMgZfBSO0r4bTQPbkXdaIHRdIkXBy6p1YmvMn1MrZdsbhB286wXlHX88F7tamcszOaJkjnal4KtEE6H/YWlUVrPtw1y+J2FF9YjTGpzGt8sHSpH2JzTM2xaAXXw1uaKKPUHHCtUS7QndVrtGVc2bD50a4=
+	t=1786044956; cv=none; b=tWgTFRCC9800Wq/HK7PXg78Xjo07if/PBRfpJJItynO/09we4ZDU6MFM96oPndbiZx/X9dL/hOdEa1ibbzKV7hqvC9vXbVKartZ7gbHZ+z2gAmPW8Bjj/WQs0cOYOMB/pVgOKxCiehy7vxc0JyCk9bnASz11W7W1AyZsvpLz3k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786044867; c=relaxed/simple;
-	bh=VydPWl4Nqka+FiRyx/P1LllrkvwwwKvI2K25NeiVBBo=;
+	s=arc-20240116; t=1786044956; c=relaxed/simple;
+	bh=iKxn4qTydrWtZASAZozR09mJPNH+tjUJEHHVeM8GViQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kNM3QrlTPxytg/xIDLPhGh0Rvn5U/xCkete6R8IjvR/59lJgd6Yn/qmpCZsT2x/3GdJrVUyWyJ8zdi8Pzhkct0akG6YN3s5PWqmP72sxKoy3QqBYbcBZedyNZkRBZAGK6tkP9OfTnkeGf9JQziyf6ZdiygkzBKqec9rt4w0ebTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=opM0JMM/; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=mEovw9/i; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:Content-Type; b=mtK//ZDU90X0EsFtWAo0zaO8lDIDEOTNtdA2FoKahlcmsmIZkUPyv8syUVyqbkzFgDdySMsuA/yNyPYakHwack7zwM3LMwe1KK9DaYgjlcjePWOIFG0n4DKg4BOGlarPLmJdvCx+NzPluW1YzWwTOCYcVToeJq1k5wtgVKUUXTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=bdPoz1/F; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=LogfizhD; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="opM0JMM/";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="mEovw9/i"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="bdPoz1/F";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="LogfizhD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1786044864;
-	bh=VydPWl4Nqka+FiRyx/P1LllrkvwwwKvI2K25NeiVBBo=;
+	s=default; t=1786044953;
+	bh=iKxn4qTydrWtZASAZozR09mJPNH+tjUJEHHVeM8GViQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=opM0JMM/Lf/Ug3NIXpfyeJUwDkhVkDh1MQrAeqyD+j4/oLtyev603tXGl8waQ4ZVQ
-	 cau7Bo068ZZEd5J1bzx6DRwbolMojpMcrMvBLc6ZbMh9TfFmMDWEkhRv3gAryxVYU3
-	 XeUvrOy6eK/rvtTcVBXhB0U5JQ/hQ5Xo0mHpJ7BFLRGB6Jt3ejyDKV5tpJ5GKnx6ot
-	 Ibozjc6szVDbwOiBMHqQdHkxiFIaEOuRUTRvQwxjrs/507WH8K4yuHH/4hVn1jpMwF
-	 KUuRgBX0U4pfgXgxZ/JzZ4jXMHt/6fsee0LCmauHjKTVrENpMrTZuGvnc5/FUOCr32
-	 BJTtTBN5WBUww==
+	b=bdPoz1/F+s7vZwcz88cqQ5PAlGhdxlbtvWRsytIgkDbyvukr3YaEQzrHX1EzKLV8M
+	 FCn2L5nvKtKfJoFL/5XkZTb98fq/PqJj3BKaA3ntww6sdT5ECrjuoYnEHAnkWXr7gt
+	 ufLBSrhSBq3nom/iV9r+76SZcSmq2QNEZNYMLVW53+XizlUSILU6LrOwawxt7G/1Ch
+	 SmYYFVKoX3j9sErOSVanNxSQGvEXxjcwbpyO1DnhOTYZawTI3fbum0fiEAzEgxR1VW
+	 kQ39qEvY5NhwxMxPVRgs1eoCvbcN1kvCvu+i/10Sd7qdppbxpwBRsU78ZIrfTGjgYf
+	 w/BuUqOBI2WZg==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 395D9496F2; Thu,  6 Aug 2026 19:34:24 +0000 (UTC)
+	id 974E1496F9; Thu,  6 Aug 2026 19:35:53 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1786044863;
-	bh=VydPWl4Nqka+FiRyx/P1LllrkvwwwKvI2K25NeiVBBo=;
+	s=default; t=1786044949;
+	bh=iKxn4qTydrWtZASAZozR09mJPNH+tjUJEHHVeM8GViQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mEovw9/iq/Egz/RlWCtxtJ2TGCIjqVEbHmJy2WxVH8fdH9QFaeVBGZCwj9jZwT2G3
-	 EjOs5Gd6EZNj5lcmvsb2X1MX8K14V2rLIFaRW+k9LpxG45nraiX6zV6ToY2sExfBs3
-	 /3JHSjKpkiok8cWjSijuyOQz1rNIupNddzsT+kfx10uCzWDj/1bGTkWUdaE+cO4sdn
-	 7a1F5+wAG8KoagexBTa40H6qctz7GXPdecEks+QTZwhtttW3qGedYJBrseB/crX58c
-	 GoxWO8OtrN7c1BUsxcCestA//idFLu2eSWG4tZy9Rf2RXp83IRpSSt+s5vG9wUa7N4
-	 rZW1HbJaVuqRw==
+	b=LogfizhDkW9tynwfLAZ8rCE+GYHy9NLgHxoi19KMmC4BpSFq1fv8WAVua5lott2pa
+	 7GubE8iOcn9ox21TZJ4CM5m9kwALiZ6aiZvZJlI25DenFoSW5WstC5XXdJuy/xSMWr
+	 k4iBTWsITPGVL3GeAr4BAyojw6HeRMouK+qUSx7b47lOdu8b4JQK+RuSOdL6EvPbGA
+	 sLa+0tp7boMMk1KC0T7DVTjE1//xjTT1ENxA7YLfptxC/L+GCLVogWhbX5T7rdOhID
+	 j2s/LlCGp8C9+yR2tQomgvgzxYl8pwejnbQ6NNPAciysjcPnHx5WLGQ/YSo1ppnHHC
+	 hU388lFnoDzrg==
 Received: from [10.30.1.58] (unknown [213.80.50.14])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id C87AA496F2;
-	Thu,  6 Aug 2026 19:34:22 +0000 (UTC)
-Message-ID: <d54e7f90-2e74-498f-8794-5704f8193151@birger-koblitz.de>
-Date: Thu, 6 Aug 2026 21:34:22 +0200
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 916C6496F2;
+	Thu,  6 Aug 2026 19:35:49 +0000 (UTC)
+Message-ID: <4a203340-c2f1-48b3-b16f-93c31cbe2727@birger-koblitz.de>
+Date: Thu, 6 Aug 2026 21:35:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 04/13] ax88179_178a: Add HW support for
- AX179A-based chips
+Subject: Re: [PATCH net-next v5 13/13] ax88796b: Add support for AX88772D,
+ AX88179A and AX88279
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -62,48 +62,99 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
 References: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
- <20260802-ax88179a-v5-4-dcb9fea4acd4@birger-koblitz.de>
- <d7d319c8-9404-43fa-ab44-755c9e612c19@lunn.ch>
+ <20260802-ax88179a-v5-13-dcb9fea4acd4@birger-koblitz.de>
+ <5f32ac56-1c2f-474a-ab2a-f51464172d6d@lunn.ch>
 From: Birger Koblitz <mail@birger-koblitz.de>
 Content-Language: en-US
-In-Reply-To: <d7d319c8-9404-43fa-ab44-755c9e612c19@lunn.ch>
+In-Reply-To: <5f32ac56-1c2f-474a-ab2a-f51464172d6d@lunn.ch>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 02/08/2026 23:36, Andrew Lunn wrote:
->> +static void ax88179a_bulkin_config(struct usbnet *dev, u8 link_sts)
+
+
+On 02/08/2026 23:55, Andrew Lunn wrote:
+>> +static int asix_ax88279_read_status(struct phy_device *phydev)
 >> +{
->> +	struct ax88179_data *ax179_data = dev->driver_priv;
->> +	const struct ax_bulkin_settings *bulkin_data;
->> +	int index = 0;
+>> +	int ret, val;
 >> +
->> +	switch (ax179_data->speed) {
+>> +	ret = genphy_update_link(phydev);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	phydev->master_slave_get = MASTER_SLAVE_CFG_UNSUPPORTED;
+>> +	phydev->master_slave_state = MASTER_SLAVE_STATE_UNSUPPORTED;
+>> +	phydev->speed = SPEED_UNKNOWN;
+>> +	phydev->duplex = DUPLEX_UNKNOWN;
+>> +	phydev->pause = 0;
+>> +	phydev->asym_pause = 0;
+>> +	phydev->rate_matching = RATE_MATCH_PAUSE;
+>> +
+>> +	if (!phydev->link)
+>> +		return 0;
+>> +
+>> +	ret = genphy_read_master_slave(phydev);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	ret = genphy_read_lpa(phydev);
+>> +	if (ret < 0)
+>> +		return ret;
 > 
-> What is setting ->speed?
-A leftover from before refactoring, sorry!
-Fixed in v6.
+> This looks pretty similar to genphy_read_status(). Can you call that
+> here? And then the rest of the code here can deal with higher speeds.
+Changed in v5.
 
 > 
->> +static void ax88179a_mac_link_up(struct phylink_config *config,
->> +				 struct phy_device *phy,
->> +				 unsigned int phy_mode, phy_interface_t interface,
->> +				 int speed, int duplex,
->> +				 bool tx_pause, bool rx_pause)
+>> +	/* Read actual speed from vendor register */
+>> +	val = phy_read(phydev, AX_CTRL_STATUS);
+>> +	switch (val & AX_CTRL_STATUS_SPEED_MASK) {
+>> +	case AX_CTRL_STATUS_SPEED_2500:
+>> +		phydev->speed = SPEED_2500;
+>> +		break;
+>> +	case AX_CTRL_STATUS_SPEED_1000:
+>> +		phydev->speed = SPEED_1000;
+>> +		break;
+>> +	case AX_CTRL_STATUS_SPEED_100:
+>> +		phydev->speed = SPEED_100;
+>> +		break;
+>> +	case AX_CTRL_STATUS_SPEED_10:
+>> +		phydev->speed = SPEED_10;
+>> +	}
+>> +
+>> +	/* MDIO_AN_10GBT_STAT_LP2_5G is broken, but we can deduce that
+>> +	 * the link-partner advertised 2500M if remotely AN succceded
+>> +	 * for link speed > 1000M and we locally have a link speed of
+>> +	 * 2500M
+>> +	 */
+>> +	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_STAT);
+>> +	if (val >= 0 && val & MDIO_AN_10GBT_STAT_REMOK) {
+>> +		linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
+>> +				 phydev->lp_advertising,
+>> +				 phydev->speed == SPEED_2500);
+>> +	}
+>> +	/* Only supports full duplex */
+>> +	phydev->duplex = DUPLEX_FULL;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int asix_ax88279_config_aneg(struct phy_device *phydev)
 >> +{
+>> +	bool adv_2500;
+>> +	int ret;
+>> +
+>> +	if (phydev->autoneg == AUTONEG_DISABLE) {
+>> +		phydev_warn(phydev, "Disabling autoneg is not supported\n");
+>> +		return -EINVAL;
+>> +	}
 > 
-> It should be coming from there, but i don't see any code setting it.
+> Why is that? Now that phylink is driving the PHY, and reporting
+> speeds, duplex etc, you should have everything you need to program the
+> MAC when the link mode is forced.
 > 
->> +	ax88179_read_cmd(dev, AX_ACCESS_MAC, PHYSICAL_LINK_STATUS, 1, 1, &link_sts);
->> +	ax88179a_bulkin_config(dev, link_sts);
-> 
-> It might be better to pass speed as a parameter.
-> 
-> I would probably play with ethtool and set the advertised speeds to
-> only include slower speeds, like 10Half, and make sure the link works
-> correctly.
-Indeed. The speed now comes now from phylink. I tested all speeds (including
-unsupported ones) and the mac_link_up() implementationn now works
-as expected, including after suspend/resume.
+I tried forcing the PHY speed in the past, and it does not work.
+This is a limitation which is also acknowledged for the suspected underlying PHY
+hardware Airoha EN8811H, see the head of air_en8811h.c
 
 Birger
 
