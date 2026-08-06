@@ -1,172 +1,98 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8F8388E68
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 17:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99E5377AAF
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 17:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786037832; cv=none; b=WODusJunIXpl/vvNES1dqXc8nesQ31jwi94HZGJXC6MWL8pm50dggjG+pbDLn2rdP/9yIJVj4jqvWuBSFHbOek8UQXCqCXNnkVe2yswUCaBl/c9ymchyrZYE9OY2ENoWGbwLjZDVw6pcPwX+mFmYuMGzQHSq0wb4HHswOScD1q4=
+	t=1786038044; cv=none; b=Z87nbrdXLeK7zeqdcp+TKB6NQVBdkLcNgus00+EM6zJb/eNrPhasOZHFgUGuD4sH9hs185I8DnpsNucCaA6hs+1f7lOHx5+X+b/GPUCOFO5W70QXU5uKkxye8BqivCY5bzaP18wxeF9EJ0y7Q8UhS6vl+W/Ky+OfuPseGY/rwv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786037832; c=relaxed/simple;
-	bh=733+q3oLiMF4NUXP+xDaqRaTNCdZIqlu98u1eSIGdgA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oevGvYZ+WsyjcvbVzrEncEv64dOcbOZ+qqWXrXmTjlPli7Hjixkz6lCOweipN9Ju9mM/8/BlmZ0Eqpbqvr10NUTad7j3ejJp51u9PVfzYvRJYUUD8ITktXUZhYVplMiY1wH1y11jL2m16Rdib4wKwb3Q9d1xn2R+9CKxNC88Sb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WYk8LfKm; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786038044; c=relaxed/simple;
+	bh=trGClSl0pr/N9Uc/C8VxoOUzvPklFRvOAPQfs+5QAzI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LhzZPfmpcYUyP3aX9uys3lKLQ5c2q54HVRboH0+3bldIfaReh3erXLNmZea2lTl4kMoK0fu0I53wPhUbUoj3qDcW1oXRONgxOnLuuOmTg/pzWOj0fL3lOv60U6mQ6XGaeIztKCOf9qHSdgnh9GW6rZtpYse/wxOciMpX95GfMZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KigZhT9d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WYk8LfKm"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-7dbcb505578so24168477b3.3
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 10:37:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786037829; x=1786642629; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TZ868jygsgrf8t5w6NxHRJN5ScT5SxHgCIbdDERj1Qo=;
-        b=WYk8LfKmDv+i0f2DauED6w0mbUm/Td71jNyHmjFg7+WYtEcxepMGJCZDJzXV7lNe9d
-         oAZm5YzI3b5Dn80P+VFmU8+N8rrGxx+3Rseazvm5zp8QAbAn+RNycNs9vaECLXt+9CiQ
-         EdZlOeIcjS9dtaer2NbC3uZCUXk82JjvrmOzSa4bZRqsmBv0uXf3rHJjkTWQQlDLI0F/
-         0oASPn3OmLq1mLRYla1tBe5Kuf56JOoSfrLDRp4B7N0HURlrFk2PjUwU/liv4q6DxW7c
-         tQJyrm68gP2OMFc4Ac5liog4pDnt5mIQASeav5A6gxD+N7Y46LEfGYMW4b/UfMSYhHVa
-         JU1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786037829; x=1786642629;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TZ868jygsgrf8t5w6NxHRJN5ScT5SxHgCIbdDERj1Qo=;
-        b=PE3tmvGjobrc+zT9GaooHEgQca7V0qssGbnciZ0/HreiOxOispFSXj7tZXnBD/LYur
-         nvD/G0994Lp8s0VYq3EB3qi/CP4fnvwYHkyQ26RtcLKlA6s5f5v6OBwx9U4hKaUNueH7
-         IFh+H1LCraPyp9ps79NiyAB1IsXhqxHCCbyORN+qE09Git2JQukggUQ9SWHNuCcRSPnY
-         iefKSkDpZ+InEymdquvpKsupPzYvxlAe6iOTW5WvkElVcX+qJXKlewLTRmMF7qTSVd2m
-         fFQMOPJaUk3r938fz9nrhh95jxZr/1fKIhSQwtLKcIox/7QPea00B/zBkHdS2kfwaU6X
-         ctZg==
-X-Gm-Message-State: AOJu0Yzshv5oSMePLrogknk4V9y3bGlRmJqaZF0aYAcMCPg0vG7AKhE1
-	pW7o5i9Hgl9v9UKQQ5leuBQI3ZXtI/o+ZuJ4X6EYPMYNAOwB34Sc+a7sWSzq7w==
-X-Gm-Gg: AR+sD13W7PHP5FYG8t9nF2bMFPW4SYXGBl2l1P2dlK1a1m7WInXC5/ZHGbnU0P7wG18
-	sseMMBLTqom6Y58ux/YOy5nuBt5OowP1QPmVkR641aW2Omo8RCaRsOGHjnFXmMgRHCilOs5GoEu
-	wOQZfTwO/UtTbuiOZhi3rz88TwCNaB9Cy73onOBhutFOJ63t04LfjCMFqRJKyn097jz+VRY87C8
-	j2kxgnUE8BKZvzo23RxBtU7mZdo2n/BqZVyGi6wnFZ+tFiYLhBWgjys6cECw7Kxq7L506+De2PZ
-	efLrE5RwHZSaC2CmcCMPeJ6eNUuyKWZxo3tSEGe3Sq2KOgQ5I3oqrp40095HPyLM0BEIChqWp3u
-	UGaKZvd/XJhn/h0oCfd5bh0jQE7RKLi5pksBPG/RWC83XQEwtZKenOfWJfSd97xU1qSDrDx3f0E
-	Qj8sdseIfIv8z0aWrq6FAXG96P60BqHY8creqz7sInHfaDuT2P6XFG1HtxZGH/BKX5Cb/ZUsYJm
-	nejHdkrR3v7QL78QMV2PF/euL3z7uGaN+YLwKLtzvyeUpat3Tq2dkecpGLH7SJrA8FekYk=
-X-Received: by 2002:a05:690c:338a:b0:81d:4f4b:94be with SMTP id 00721157ae682-8202b070533mr103676217b3.32.1786037829297;
-        Thu, 06 Aug 2026 10:37:09 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8201447eb4fsm41608107b3.36.2026.08.06.10.37.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 10:37:08 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andrew@lunn.ch,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net] selftests: drv-net: so_txtime: only send test traffic to sch_etf
-Date: Thu,  6 Aug 2026 13:36:57 -0400
-Message-ID: <20260806173702.3857148-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KigZhT9d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6482D1F01558
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 17:40:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786038043;
+	bh=YONTwEGWeDAnnFSVnISdkri+5mtbbB3jPOrEWdeT+VI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=KigZhT9dsGae/QweZyCm2Dl14EvfD8Pw9BC96xB0Jzk1qFEKmwOtWHI9HkPx6PUKC
+	 mjoWnCeEL7EFsAldFJbwzU9vgi/fmwyy0TtSw8rTC5sPn78QGRVqTglCgCGmoLuDWx
+	 KZGfAF+wAyYKPK4bRUhOdPRqu/yCuZmysFy5EBIaO53nyAswSBbyiOVhGQIYzCuuF8
+	 FvWszXAgkPFCn90VdKtmgAEQmMWESwuoc3cVQcFRJ/90wZOQ/Wdo4C6t1SWRdMTRRj
+	 SQMV62T+2ZtutMjkXR8LsINdB+N0+1wK4rrPcaaYpJXgbJgE+njwm2yoNQM3FA52zR
+	 ZW1SsvY8gwcnA==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5b15c6fb864so2178734e87.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 10:40:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rrmw7YZHc28c3yitHKhltpOr9eExfOIeC6fNn6r4RwoPYSjB6kvbnP+x3OfOuL5mwz5BWmP9Wc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLauHIcUcMnDTmG6hW3LUl2enwuxUcK4hNIJKIkc7qyQRf3Mna
+	YqCRiZcNB5gh7hIVR0ODgjMmYjQA6U15edqKPF6HXupOugGjDCAl3llY0jCi/fWrVjZEhX9HjS8
+	A5exGz9FGmfrmxucAGi3iJqBeeHpyXD4=
+X-Received: by 2002:a05:6512:3245:b0:5b0:1516:8799 with SMTP id
+ 2adb3069b0e04-5b2f4b912b5mr1941029e87.17.1786038041967; Thu, 06 Aug 2026
+ 10:40:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260806140239.3518906-1-o.rempel@pengutronix.de>
+ <20260806140239.3518906-3-o.rempel@pengutronix.de> <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
+ <anSj34TOZxYiG_ai@pengutronix.de> <f2260b02-621f-4b92-aade-85c403a8839d@lunn.ch>
+ <02a51eff-3782-4012-8475-1047a9be4dd3@pengutronix.de>
+In-Reply-To: <02a51eff-3782-4012-8475-1047a9be4dd3@pengutronix.de>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 6 Aug 2026 19:40:29 +0200
+X-Gmail-Original-Message-ID: <CAD++jLk-5-_2x2scn2hNQ-aWBx=EKGYzvcaUwv5fS7k5Bq=KGA@mail.gmail.com>
+X-Gm-Features: AUfX_mw_JClSshRtAVXJ5UI-A-nYn2DgoeLKeAN6F90L8UP_8UoY-cKvuiRzu7c
+Message-ID: <CAD++jLk-5-_2x2scn2hNQ-aWBx=EKGYzvcaUwv5fS7k5Bq=KGA@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl83xx: add support
+ for enabling supplies
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Mark Brown <broonie@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, kernel@pengutronix.de, 
+	linux-kernel@vger.kernel.org, =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	Liam Girdwood <lgirdwood@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Willem de Bruijn <willemb@google.com>
+On Thu, Aug 6, 2026 at 5:56=E2=80=AFPM Ahmad Fatoum <a.fatoum@pengutronix.d=
+e> wrote:
 
-The ETF qdiscs drops traffic without a socket or txtime. Even with
-parameter skip_sock_check regular traffic is affected by ETF.
+[Andrew says]
+> > static inline int __must_check clk_bulk_get_optional(struct device *dev=
+,
+> > static inline int __must_check devm_clk_bulk_get_optional(struct device=
+ *dev,
+> > static inline int __must_check devm_clk_bulk_get_optional_enable(struct=
+ device *dev,
+> >
+> > If clk has them, maybe regulators should as well?
+>
+> clk and regulator have different interpretations of _optional
+> when encountering a non-existent resource:
+>
+> clk_get                 return error
+> clk_get_optional        return NULL
+> regulator_get           return handle dummy regulator
+> regulator_get_optional  return error code
+>
+> So devm_regulator_bulk_get() is already the "optional" variant, but it ca=
+uses
+> all existing users to get dummy supply warnings.
 
-This test ran fine when run manually in a pure software environment.
-But with drv-net across two hosts tests fail as early as when calling
-cfg.remote.deploy due to effectively losing connectivity.
+So is this a big problem? Does it cause any other issues than
+dmesg noise?
 
-Isolate the intended test traffic:
-- mark that with SO_MARK 100
-- install a regular permissive root prio qdisc for background traffic
-- install the ETF qdisc as leaf
-- install a filter that only directs SO_MARK 100 traffic to this leaf
-
-Technically other high prio traffic will map onto this leaf based on
-ToS band mapping too. But that is immaterial in practice.
-
-Fixes: 5c6baef3885c ("selftests: drv-net: convert so_txtime to drv-net")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
----
- tools/testing/selftests/drivers/net/config       |  2 ++
- tools/testing/selftests/drivers/net/so_txtime.py | 16 +++++++++++++---
- 2 files changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/config b/tools/testing/selftests/drivers/net/config
-index 2070e890e064..de7af08a188d 100644
---- a/tools/testing/selftests/drivers/net/config
-+++ b/tools/testing/selftests/drivers/net/config
-@@ -6,6 +6,7 @@ CONFIG_IPV6=y
- CONFIG_MACSEC=m
- CONFIG_NET_CLS_ACT=y
- CONFIG_NET_CLS_BPF=y
-+CONFIG_NET_CLS_FW=m
- CONFIG_NETCONSOLE=m
- CONFIG_NETCONSOLE_DYNAMIC=y
- CONFIG_NETCONSOLE_EXTENDED_LOG=y
-@@ -14,6 +15,7 @@ CONFIG_NETKIT=y
- CONFIG_NET_SCH_ETF=m
- CONFIG_NET_SCH_FQ=m
- CONFIG_NET_SCH_INGRESS=y
-+CONFIG_NET_SCH_PRIO=m
- CONFIG_PPP=y
- CONFIG_PPPOE=y
- CONFIG_VLAN_8021Q=m
-diff --git a/tools/testing/selftests/drivers/net/so_txtime.py b/tools/testing/selftests/drivers/net/so_txtime.py
-index adf6c848d6d8..9fbc0278d28b 100755
---- a/tools/testing/selftests/drivers/net/so_txtime.py
-+++ b/tools/testing/selftests/drivers/net/so_txtime.py
-@@ -27,7 +27,7 @@ def test_so_txtime(cfg, clockid, ipver, args_tx, args_rx, expect_success):
-     cmd_addr = f"-S {cfg.addr_v[ipver]} -D {cfg.remote_addr_v[ipver]}"
-     cmd_args = f"-{ipver} -c {clockid} -t {tstart} {cmd_addr}"
-     cmd_rx = f"{cfg.bin_remote} {cmd_args} {args_rx} -r"
--    cmd_tx = f"{cfg.bin_local} {cmd_args} {args_tx}"
-+    cmd_tx = f"{cfg.bin_local} -m 100 {cmd_args} {args_tx}"
- 
-     expect_fail = not expect_success
-     if slow_machine:
-@@ -45,7 +45,7 @@ def _qdisc_setup(ifname, qdisc, optargs=""):
-     """
-     orig = tc(f"qdisc show dev {ifname} root", json=True)[0].get("kind", None)
-     defer(tc, f"qdisc replace dev {ifname} root {orig}")
--    tc(f"qdisc replace dev {ifname} root {qdisc} {optargs}")
-+    tc(f"qdisc replace dev {ifname} root handle 1: {qdisc} {optargs}")
- 
- 
- def _test_variants_fq():
-@@ -96,11 +96,21 @@ def _test_variants_etf():
- def test_so_txtime_etf(cfg, ipver, args_tx, args_rx, expect_fail):
-     """Run all variants of etf tests."""
-     cfg.require_ipver(ipver)
-+
-+    # root qdisc for background traffic (e.g., bkg())
-+    _qdisc_setup(cfg.ifname, "prio")
-+
-+    # leaf ETF qdisc only for intended packets
-     try:
--        _qdisc_setup(cfg.ifname, "etf", "clockid CLOCK_TAI delta 400000")
-+        etf_args = "clockid CLOCK_TAI delta 400000"
-+        tc(f"qdisc add dev {cfg.ifname} parent 1:1 handle 10: etf {etf_args}")
-     except Exception as e:
-         raise KsftSkipEx("tc does not support qdisc etf. skipping") from e
- 
-+    # redirect mark 100 to leaf
-+    filter_args = "protocol all handle 100 fw flowid 1:1"
-+    tc(f"filter add dev {cfg.ifname} parent 1: {filter_args}")
-+
-     test_so_txtime(cfg, "tai", ipver, args_tx, args_rx, expect_fail)
- 
- 
--- 
-2.55.0.679.g6767b8d81c-goog
-
+Yours,
+Linus Walleij
