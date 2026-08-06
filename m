@@ -1,172 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF11C72630;
-	Thu,  6 Aug 2026 16:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA191485CCA
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 16:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786033564; cv=none; b=IYJaIK34kF1Eo/grWX90j/c2FxweVESHgyae+02AiMw06ul3HbikbcreE6RoC2ZGQNTq50aS8hhSP015qs6/qE9Iy2MBJKTyMIZAfwU6E/DCvsZfMoqI+ZY6r4T75G/5x4ebC2UPUREH9X7J0ChETlHL2IpPJ+AoAujwBr9HSiY=
+	t=1786033581; cv=none; b=uRCcYf//h1v8I/aae9FBJM+1+t15vk19VaBf7ji2uT2SUz3pA3xJ1UncYhd/rSI1GQ7sdte1jLTb8BsHUJcH4faIYqD+Umx6MYxK2qlTqWLytNW+PldYjNEd+St3jr++5uz/yvH7JEj7ys6It4d/hGHLXrIvpFBAA2dDNRaGRr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786033564; c=relaxed/simple;
-	bh=Zdz4AamfADr3XK46qmwzYaIUsXJGcIMU0hXb306ZFE4=;
+	s=arc-20240116; t=1786033581; c=relaxed/simple;
+	bh=3B1/gl1WnYqOyJrtllf4c6KbqTOe8zJQUfIk5b8s6Z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkQRSEvWxQGq5YpPeD+Vxn4p6qJMlwsbXGmEnHWxoPozrFOPSYM9IQUup8+XF1rwo/4nYX57pmfwpkTDgkn+ymRqRL5mQP/kV5HKzg8Ap8HsGJCSobTbehArh4gJFm1ZKGhsnVjYBUubAanOQ9WcEgRDdmLXlvPlhyND2O60C6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n2yW3w82; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=p4w2bKeT/4hX9DRCymupMhOtpuI8jsCpWdsOBAJOnmtv9Npjb//EEXtldFtwPU0fgwjhxN8x2wB+7X2EejLlaEGDg39jBJ8QcP19Y6d9ZlURLQAhK9V8g6ivvvZ6ibyPKPXhl5koviCduA70Y7yXp7/2o4j7bQbrHDCVsrsWkMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=1TzcCNwe; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n2yW3w82"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEA21F00A3A;
-	Thu,  6 Aug 2026 16:26:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786033561;
-	bh=u4RsgIZcu96S1X/MBHHiPJWkRkCreoY4QnQgdHmXRtE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n2yW3w82csDkz1uTa44CEDtpy2K29rkCFMGsuhxGfb4kFeOaR+Q1NdSSIqHlvEHON
-	 erMfm47Vc2Ps9oHnqCgMtNtDL/qQ7ldqXnQ+vJ8r3yxgZLSP2sP3KeqpCSxSeEfva/
-	 MAQBuSLB3PbWB8dYpq7uYqELz/KohQUveJMvw8ZNXE+4OHkAWwKhyxMxGUwLClSWcf
-	 o0ukSqXm+iafv7E4d0w39XXPbwZomF3vbXpelI0E0pocTcN3EcRE7B3uYNc/aATVT3
-	 B1/EEouQB8yjnUCLDuZJ3gXb92/pGxC92KweN7aM/EoeCODrTEYHrHyLOcgepClFpU
-	 LKNfVLcueNGRQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: vineeth.karumanchi@amd.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	theo.lebrun@bootlin.com,
-	conor.dooley@microchip.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	git@amd.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: macb: configure ENST registers for all queues
-Date: Thu,  6 Aug 2026 09:25:57 -0700
-Message-ID: <20260806162557.2762166-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805044204.272989-1-vineeth.karumanchi@amd.com>
-References: <20260805044204.272989-1-vineeth.karumanchi@amd.com>
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="1TzcCNwe"
+Received: by dvalin.narfation.org (Postfix) id 66A5120590;
+	Thu, 06 Aug 2026 16:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1786033573;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=w4H2yC6PQ2JDPAI14NORM1ZMyLk4eXcA18IFYJSe5x4=;
+	b=1TzcCNweAvClvrGEez+sywN2Dj2fVj889fNaWTYIRPuLPNf9gXft8Pjv6+fpVCWzNVm/17
+	o7O6qYcE1508LadKDLrGypBccePFntkyoWXm4MYBx8uYBqO/CVReDaDofdnUhbvqgUuWpT
+	mJzfQ/EUxX7GDq0XK8BGQdo0VTmz5CE=
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
+Subject:
+ Re: [PATCH net-next 10/10] batman-adv: remove negative returns for
+ batadv_send_skb_unicast
+Date: Thu, 06 Aug 2026 18:26:07 +0200
+Message-ID: <3216364.e9J7NaK4W3@sven-desktop>
+In-Reply-To: <20260805143200.722098-11-sw@simonwunderlich.de>
+References:
+ <20260805143200.722098-1-sw@simonwunderlich.de>
+ <20260805143200.722098-11-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart3584836.aeNJFYEL58";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-This is an AI-generated review of your patch. The human sending this
-email says "What's the expectation for the other queues?"
----
-net: macb: configure ENST registers for all queues
+--nextPart3584836.aeNJFYEL58
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Date: Thu, 06 Aug 2026 18:26:07 +0200
+Message-ID: <3216364.e9J7NaK4W3@sven-desktop>
+In-Reply-To: <20260805143200.722098-11-sw@simonwunderlich.de>
+MIME-Version: 1.0
 
-The per-queue ENST config array is now sized to bp->num_queues and indexed
-by queue_id, and the hardware programming loop writes ENST_START_TIME,
-ENST_ON_TIME and ENST_OFF_TIME for every queue instead of only the queues
-named in the taprio config. Queues absent from the config get the
-kcalloc()-zeroed slot, so their timing registers are written as 0.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805143200.722098-1=
+=2Dsw%40simonwunderlich.de?part=3D10
 
-Link: https://lore.kernel.org/netdev/20260724043257.2221030-1-vineeth.karumanchi@amd.com/
+> --- Patch [10]: [PATCH net-next 10/10] batman-adv: remove negative return=
+s for batadv_send_skb_unicast ---
+[...]
+> > @@ -360,7 +361,10 @@ int batadv_send_skb_unicast(struct batadv_priv *ba=
+t_priv,
+> >  	if (batadv_tt_global_client_is_roaming(bat_priv, ethhdr->h_dest, vid))
+> >  		unicast_packet->ttvn =3D unicast_packet->ttvn - 1;
+> > =20
+> > -	ret =3D batadv_send_skb_to_orig(skb, orig_node, NULL);
+> > +	res =3D batadv_send_skb_to_orig(skb, orig_node, NULL);
+> > +	if (res =3D=3D NET_XMIT_SUCCESS)
+> > +		ret =3D NET_XMIT_SUCCESS;
+> > +
+>=20
+> Discovered by: opus-5, old-prompts =C2=B7 Missed by: sashiko-gemini
+> Does this change more than the counter in
+> batadv_dat_snoop_incoming_arp_request()?
+>=20
+> In distributed-arp-table.c the same condition that bumps the counter also
+> sets the boolean return value:
+>=20
+> 	err =3D batadv_send_skb_via_tt_4addr(bat_priv, skb_new,
+> 					   BATADV_P_DAT_CACHE_REPLY,
+> 					   NULL, vid);
+> 	if (err !=3D NET_XMIT_DROP) {
+> 		batadv_inc_counter(bat_priv, BATADV_CNT_DAT_CACHED_REPLY_TX);
+> 		ret =3D true;
+> 	}
+> out:
+> 	batadv_dat_entry_put(dat_entry);
+> 	if (ret)
+> 		kfree_skb(skb);
+> 	return ret;
 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index d394f1f43b685..d58430fe9c41e 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
+[...]
+> Could the changelog also mention that the packet disposition changes, i.e.
+> that the snooped ARP request is now delivered locally instead of being
+> dropped when the cached reply cannot be sent?
 
-[ ... ]
+=46air enough, but not sure if it is worth sending the PR again to document=
+ that=20
+this is the correct behavior too.
 
-> @@ -4357,7 +4357,7 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
->  		return -EINVAL;
->  	}
->  
-> -	enst_queue = kcalloc(conf->num_entries, sizeof(*enst_queue), GFP_KERNEL);
-> +	enst_queue = kcalloc(bp->num_queues, sizeof(*enst_queue), GFP_KERNEL);
->  	if (unlikely(!enst_queue))
->  		return -ENOMEM;
->  
+Regards,
+	Sven
+--nextPart3584836.aeNJFYEL58
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-[ ... ]
+-----BEGIN PGP SIGNATURE-----
 
-> @@ -4448,15 +4447,14 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
->  		gem_writel(bp, ENST_CONTROL,
->  			   queue_mask << GEM_ENST_DISABLE_QUEUE_OFFSET);
->  
-> -		for (i = 0; i < conf->num_entries; i++) {
-> -			queue = &bp->queues[enst_queue[i].queue_id];
-> +		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
->  			/* Configure queue timing registers */
->  			queue_writel(queue, ENST_START_TIME,
-> -				     enst_queue[i].start_time_mask);
-> +				     enst_queue[q].start_time_mask);
->  			queue_writel(queue, ENST_ON_TIME,
-> -				     enst_queue[i].on_time_bytes);
-> +				     enst_queue[q].on_time_bytes);
->  			queue_writel(queue, ENST_OFF_TIME,
-> -				     enst_queue[i].off_time_bytes);
-> +				     enst_queue[q].off_time_bytes);
->  		}
->  
->  		/* Enable ENST for all configured queues in one write */
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCanS1nwAKCRBND3cr0xT1
+y7CvAQDMBvgESXFOmJfS2TUbdom9xSRdSCv5fy8cxYRiXvFVlwEAvSAvBEy1uAlu
++cteZTtC4bu4dF5Hsa+aXx3bkZnHHwc=
+=0ajW
+-----END PGP SIGNATURE-----
 
-[Severity: Medium]
-Can transmission on the queues left out of the taprio config stall after
-this change?
+--nextPart3584836.aeNJFYEL58--
 
-For a queue that does not appear in conf->entries, enst_queue[q] is the
-kcalloc()-zeroed slot, so macb_taprio_setup_replace() now writes
-ENST_ON_TIME = 0 for it, and the following write only arms the configured
-ones:
 
-	gem_writel(bp, ENST_CONTROL, configured_queues);
 
-The commit message argues the change is needed because the stale on-time of
-the unconfigured queues altered the gating of q0/q1:
-
-    Leaving the ENST on-time registers of unused queues at their reset
-    value (0x0001FFFF) disrupts the scheduling of the configured queues,
-    whereas programming them with 0x0 yields the expected ENST operation.
-
-If the hardware consults ENST_ON_TIME of a queue whose ENST enable bit in
-ENST_CONTROL is clear, then on_time = 0 in the 17-bit GEM_ON_TIME field is
-not obviously a neutral "cleared" value; it could read as an on-window that
-never opens.
-
-The reported measurements only cover p0 and p1 on the two configured queues:
-
-    With the unused queues (q2 and q3) explicitly programmed with
-    enst_on_time = 0x0:
-    - During T0 on-time, only p0 packets are transmitted.
-    - During T1 on-time, only p1 packets are transmitted.
-
-Was traffic on q2/q3 checked in that same experiment? All bp->num_queues
-queues are real netdev TX queues:
-
-drivers/net/ethernet/cadence/macb_main.c:macb_probe() {
-	...
-	dev = alloc_etherdev_mq(sizeof(*bp), num_queues);
-	...
-}
-
-so ordinary traffic is hashed onto q2/q3 while the taprio qdisc is
-installed.
-
-macb_taprio_destroy() writes the same zeros, but there ENST_CONTROL holds
-the disable mask for every queue and nothing is re-enabled afterwards:
-
-drivers/net/ethernet/cadence/macb_main.c:macb_taprio_destroy() {
-	...
-		gem_writel(bp, ENST_CONTROL,
-			   queue_mask << GEM_ENST_DISABLE_QUEUE_OFFSET);
-
-		/* Clear all queue ENST registers in batch */
-		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-			queue_writel(queue, ENST_START_TIME, 0);
-	...
-}
-
-That path leaves the engine globally quiescent, so it does not show that
-all-zero timing registers are inert for a non-enabled queue while ENST is
-running for other queues.
-
-Since this carries a Fixes: tag and is stable-bound, could the commit
-message state whether the non-scheduled queues still transmit normally, or
-cite the hardware rule that makes on_time = 0 inert for a queue whose ENST
-enable bit is clear? If the timing registers of disabled queues are in fact
-not honoured, the stated mechanism behind the fix would need reworking too.
