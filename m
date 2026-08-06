@@ -1,83 +1,87 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64F930274D;
-	Thu,  6 Aug 2026 13:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CC238F934;
+	Thu,  6 Aug 2026 13:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786024046; cv=none; b=C+1RyLWV5nTZ8ZDkEvHNfAg/yeGFukZjkNFvgjf7xaZ092zKb7bgKwufRTMWIqGjeidTGBLurfIrZTNwk4niJwbiMdkmNM2LlZO2VnfYNcmE/UdWh1p6KLlQoB4KcXDE4O5b8nkLujxEueWQRCmXOWDqsxzKpnXRuP1cWQEFIM8=
+	t=1786024201; cv=none; b=PlB4mLeMYfaf2blrf+AsCW1DKdPJEiS0D39ucNBm2p02hGPD40nf9RAR9mc/qtiqC00y7jm8CEbj2TGmbKah+e+pNahJoxKyfkndivZ/Pd+YO/9Ga375xKWkc2LrZ+CC/A1M35pY//SCdbRAe8YJHuVCdgMleZRUfr5qntN3bkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786024046; c=relaxed/simple;
-	bh=ZfFus2gnrcpxzpMZI+iDqOBje92JpVyy2X8JuRRk/Ek=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BWK/cVS/FvlvfBEAFVQJQ/F2v3L60PDfUZU4Q9ten6wKrOi+L+D1PmL4qCKvvCTfrmdrpV/S/42FGJMuUbcrNqQS28W3mtrDekW/6yvRkyTcf/Ubb31AhMW5ELbVhmRmBu0A66wU3x/AKZnJi6x+fy+0Nt1EKdAgrA5mex10LLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D2B41200F4F;
-	Thu, 06 Aug 2026 15:47:17 +0200 (CEST)
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wryRJ-0006EJ-2R;
-	Thu, 06 Aug 2026 15:47:17 +0200
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wryRJ-0000000Ejae-2nRZ;
-	Thu, 06 Aug 2026 15:47:17 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>,
-	netdev@vger.kernel.org
-Subject: [PATCH net v1 1/1] net: phy: realtek: fix EEE advertisement write on the internal PHY MMD path
-Date: Thu,  6 Aug 2026 15:47:16 +0200
-Message-ID: <20260806134716.3511821-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1786024201; c=relaxed/simple;
+	bh=ScSjWr/7rKFcbiKCKxHtB93pHBf4RtdpPkMyknhHogM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ssQYqFuvMy03l9XZozrOpHZ+W8rSloSxA4VcP34blZyTtERs/HG10f9WKjXNQvMqI0/0KkSFlc1nPP5S5bbJckR4nrpiZ1DLEfbsOD82Hsc4c9J4PuLFcN+9z73Aa9ELxDIgKaMQITu5wWHUUy25sMqvC0Ya0nyJjmh5LXVj69k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQQgItMF; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQQgItMF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886E11F000E9;
+	Thu,  6 Aug 2026 13:49:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786024199;
+	bh=uggi82GscbWlBKgAdg65ELmtfvTgIkSLrqlQb/L8iVA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eQQgItMFiILVFsshjUxGFdEmERg6cuhXoQL7ea4MuCQAMkAQsZOYlH2uGiq+tlv7i
+	 O7KxZhcRlj3g+zV/XzhWdlS8Qqd9Pn8bM7/Uuo4+NgCwepxwdqdAXQ7/HDkL1eYmCv
+	 8+9SzN769FQn+ExgIT1n6j0tcCML8s+GcpJRzn7oJKizh5KerubOdzn0KLxxAWiRED
+	 UYyFQNz5xEE9fCM4qGnC3zX5brbrGnvhoKDZTsxO3bN50o+OKdciIIXfEC/vPPM6up
+	 hKnyirZ4Ce5UxNBf7QUT9D25/UAZ5xTG8mzUL2u7XmY09gVpIA8cL/43oRS3PTcZZz
+	 HqCi5Aqhv3oMw==
+Date: Thu, 6 Aug 2026 06:49:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: io-uring@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH io_uring-7.2 1/1] io_uring/zcrx: fail non-qops netdevs
+ early
+Message-ID: <20260806064958.1b9ae431@kernel.org>
+In-Reply-To: <178601764913.2132084.3867669701970816639.b4-ty@b4>
+References: <23ae94da6725cac660652781b3533a20d0a1ad34.1786016493.git.asml.silence@gmail.com>
+	<178601764913.2132084.3867669701970816639.b4-ty@b4>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-In rtlgen_write_mmd(), the MDIO_AN_EEE_ADV case swaps the arguments to
-rtlgen_write_vend2(): it passes the MMD register number as the OCP address
-and the OCP address constant as the value. The caller's value is discarded
-and the write lands on the wrong register, so the EEE advertisement cannot
-be configured on the affected PHYs.
+On Thu, 06 Aug 2026 06:00:49 -0600 Jens Axboe wrote:
+> On Thu, 06 Aug 2026 12:42:33 +0100, Pavel Begunkov wrote:
+> > netdev_get_by_index_lock() might return a netdev that doesn't have qops
+> > and also relies on rtnl. We're going to reject it later when opening a
+> > queue, but netdev_queue_get_dma_dev() warns before that. Reject non-qops
+> > netdevs earlier for now.
+> > 
+> > RTNL: assertion failed at ./include/net/netdev_lock.h (72)
+> > WARNING: ./include/net/netdev_lock.h:72 at netdev_assert_locked_ops_compat
+> >     include/net/netdev_lock.h:72 [inline]
+> > WARNING: ./include/net/netdev_lock.h:72 at netdev_queue_get_dma_dev+0x52e/0x660
+> >     net/core/netdev_queues.c:43,
+> > RIP: 0010:netdev_assert_locked_ops_compat include/net/netdev_lock.h:72 [inline]
+> > RIP: 0010:netdev_queue_get_dma_dev+0x53a/0x660 net/core/netdev_queues.c:43
+> > Call Trace:
+> >  <TASK>
+> >  zcrx_register_netdev io_uring/zcrx.c:831 [inline]
+> >  io_register_zcrx+0xe94/0x1d30 io_uring/zcrx.c:983
+> >  __io_uring_register io_uring/register.c:942 [inline]
+> >  __do_sys_io_uring_register+0x1193/0x1bc0 io_uring/register.c:1040
+> >  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> >  do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> > 
+> > [...]  
+> 
+> Applied, thanks!
+> 
+> [1/1] io_uring/zcrx: fail non-qops netdevs early
+>       commit: cf7aa48151deb629022a8b0c61c139dbfa579933
 
-Mirror rtlgen_read_mmd() and write the value to RTL_MDIO_AN_EEE_ADV.
+I asked for a different fix :/
 
-Fixes: da681ed73fb9 ("net: phy: realtek: improve mmd register access for internal PHY's")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/net/phy/realtek/realtek_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+https://lore.kernel.org/all/20260805165817.7e1fc367@kernel.org/
 
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index a0a79192384e..177b62a7b2d1 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -1768,7 +1768,7 @@ static int rtlgen_write_mmd(struct phy_device *phydev, int devnum, u16 regnum,
- 	if (devnum == MDIO_MMD_VEND2)
- 		ret = rtlgen_write_vend2(phydev, regnum, val);
- 	else if (devnum == MDIO_MMD_AN && regnum == MDIO_AN_EEE_ADV)
--		ret = rtlgen_write_vend2(phydev, regnum, RTL_MDIO_AN_EEE_ADV);
-+		ret = rtlgen_write_vend2(phydev, RTL_MDIO_AN_EEE_ADV, val);
- 	else
- 		ret = -EOPNOTSUPP;
- 
--- 
-2.47.3
+Outside subsystems should not be poking at random fields and making
+guesses. The assert is simply wrong and should be changed.
 
+Jens, can you drop this please?
