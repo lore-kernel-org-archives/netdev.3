@@ -1,117 +1,184 @@
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E171436BFB
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 14:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7167C3F4104
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 14:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786025985; cv=none; b=BT19fhL9tI7SsEbVzLIRs6j7JQf9Uza5Nm8dCpwuax82/jblR80fW+qKkuVlWXMNgtllBjX6bdWTdPjVJS3JTTRwI5ptqL1VU84o6q/akrOU3RNFc5H+xcfThegO+LYaxxKxgKQ9yrO2lFDXqPjNb3Q3Ce3O43y2PVvR7XcsqVM=
+	t=1786026159; cv=none; b=PA6397ucLuXRHBoxS/cTqA3fBarh9081OtKsoDRLDUie9JvLkV0uaVVNF/G3A4GJTmdiZCn34wV0vTtpXrSavUqB1eaBi5TOyy7yRG++dZ+zT7CZs3bBfts8x48tS781Z5LwrZtIdgi/PHHC5mS4bP/hSdgCr5uZVtvQVNf7L9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786025985; c=relaxed/simple;
-	bh=z97Qfqex8NpflZjNYVB7Vnn8QTNKwPOMZRuZDYBeTBA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=VlIpWl9nafZSeBIMjjLeTNjfe21RkImT+EUn2lTjfaOYBGheqL0RMJTGC6cGEIcGB+unKt7+S0smUMXyAoDPPWiPRxRjirKd9TptNXYMb2WpMh3vvB9XGDp/YAyeI5k5BbDGmvQ8YFL2W2v9fx4wVdcVsHU3ZbpYKZ+82xc5tdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=epc8TWoW; arc=none smtp.client-ip=209.85.222.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1786026159; c=relaxed/simple;
+	bh=bzGQoiQkW8uI7NqC5arCnd2gaY9UmdXsas2LavsFtlM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=M/lVhDOoTnyFSINHqaSsT8ZXyq20Ry+NERl4H/njPYtAkgAgzDzNqGB0Hl6fGxgG3RbSG0HmTbErIIj7kZH7lb/Y+I4yeX1OVGaHaVw+L3uWj39EqnIlVc5eAsfxpBjfUfbqHkr5ItxluWsP21yEgtfzS/6iQnSwIQB3lxhwEVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duQ8gVKY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="epc8TWoW"
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-934993d0f39so270393885a.0
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 07:19:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786025981; x=1786630781; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BIzVNNdIwAy8zwOMLS8zSNTv9isqvZQjc53x2rVVBKg=;
-        b=epc8TWoWT7kkmipHv3d6TgY6GqS4DJZjUnvy1Casv1/OdRx7XFVnWuSTS5PHgcUQLJ
-         kEqvM4vo25M4GlQD+F+ADArubfNevVFPumPTrnTRnqKhFaLyy7GWdpXnGcsOP+zsfGqB
-         yReqVjqbDxBQspnqxN5XegSqJP/E6u/Et0qaG0J35tdxs9IT4yWvOonrTAaJ1BILWnI6
-         1CjPWUWjsqK4ygS0uvxN1iGavrL+Q9pZcIv7Q9/mTb73WhAckFylIj9pZsxsBLZrvjdJ
-         CudSpUsR2EoxCOEbeUBSc6faWlUNP41DjyQGcBRVaeGZrCU8Z3io4mABOy996iCxSl3B
-         OI4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786025981; x=1786630781;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BIzVNNdIwAy8zwOMLS8zSNTv9isqvZQjc53x2rVVBKg=;
-        b=nBU1TDt5/GSMYfkPLSarN1RhJoYOmForrZuRdFVs9lZ0EJxZRi+E0+HVeuL2wB/P7z
-         xYdsndhv0/frP+qh8hm6Yrxb6tlJqXHVK6z1Ejkq/NJFkROd9oDS3AkCuPq0VBjKUxmu
-         9/rz0SIp3bW1K6ew0oQqFnkxYuFzg2vdZRUdyW+a+W7mXaiAPO3NMxiBHenjWIvrx8p0
-         BzEDZHGGBoNqKoaRJ/Aq27nJ9lDol84VhsVSKSvmI4fVFH2soNCn7G1vuZch3vyrDrue
-         XzFyWZWZAtWZ6Uco1zpGvbGph4BrfYOpKKIBZqvxB/txRwEbc6trLxjNfKle7hWyO9vU
-         H/sQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro3PwOJMT64E9u9IQojZFYA+DzVxBOnhHu8Y0o82d9mbMqCJ6muxVuLa0WErBGhJXUklj0/YYU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxb0aYZKmbg9eLutXkr9giHxkiKs1YvWO53p6NKeFaqCJc1pEmF
-	XcIygRmxxGpU0bfjEnrRJDY5eByLzpP8RwX2HKnltfi8/pwO/BXe+K/lLXqW+wmt7ae9HV5uxIE
-	3jP9gZOp2CicwqA==
-X-Received: from qvxg13.prod.google.com ([2002:ad4:57ad:0:b0:908:6010:82b3])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:40c7:b0:930:cb79:ee65 with SMTP id af79cd13be357-936492066fdmr1476667985a.30.1786025980984;
- Thu, 06 Aug 2026 07:19:40 -0700 (PDT)
-Date: Thu,  6 Aug 2026 14:19:38 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duQ8gVKY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B9B1F00A3A;
+	Thu,  6 Aug 2026 14:22:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786026158;
+	bh=Ra1heKPyNQ3Fw6Q1EdV/5ge1UftVI9s8wvMITfn7+UU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=duQ8gVKYziyr/7QcK29EVeQdteeKBUSthakynxitfYnbn0/dlxs0w0uBjaGCfeWHK
+	 N4p/3DCdclffJEYTJapoWJTNTih9oNnpILwQTI7QRu9xh0B78Vv7B5govzUEZh369V
+	 cX+LjnCMcAtljUrXWA8aEv9XWscOG87at5usmGS/MLK6CMrbm42eFqwxhICKprfJCn
+	 ZHQ/ebs3+YRstAlfEmk624+/5Hx8jzHL/NFGUQjPOr+2ABMzXe9ztD9TJ+9N9sKTxo
+	 9RyZQjr6HhfbvKFMLYJgfnI2utpBp8GrZ1XzwgHo8DICr70HTRJ2CeoE1xC92pqj9e
+	 KWEklbfVNOidg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: manizada@pm.me
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com
+Subject: Re: [PATCH net v2] net: tun: bound receive headroom
+Date: Thu,  6 Aug 2026 07:22:36 -0700
+Message-ID: <20260806142236.2353282-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260805084504.953162-1-manizada@pm.me>
+References: <20260805084504.953162-1-manizada@pm.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
-Message-ID: <20260806141938.287660-1-edumazet@google.com>
-Subject: [PATCH net] macvlan: inherit needed_headroom and needed_tailroom from lowerdev
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Tangxin Xie <xietangxin@h-partners.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-macvlan devices inherit hard_header_len from lowerdev during macvlan_init(),
-but leave needed_headroom and needed_tailroom set to 0.
-
-When the underlying lowerdev requires extra headroom or tailroom for
-headers/trailers (e.g. macsec, ipsec, wireguard, tunnels, or veth with rx
-headroom), upper layers calculating packet headroom and tailroom fail to
-reserve sufficient space.
-
-This can result in reallocation overhead, skb headroom underflows, or KASAN
-slab-use-after-free crashes when dev_hard_header() / macvlan_hard_header()
-prepends header data or when lower devices append tailroom.
-
-Fix this by:
-1. Inheriting needed_headroom and needed_tailroom from lowerdev in macvlan_init().
-2. Propagating needed_headroom and needed_tailroom updates to attached macvlans
-   in macvlan_device_event() when receiving NETDEV_FEAT_CHANGE events.
-
-Fixes: b863ceb7ddce ("[NET]: Add macvlan driver")
-Reported-by: Tangxin Xie <xietangxin@h-partners.com>
-Closes: https://lore.kernel.org/netdev/CANn89i+1EW-sFNK8xoq98gMbPCeLS7e=+rs9gHfLg5Wj+4x0sw@mail.gmail.com/T/#m16adf0ff972cbfd8066c3a8e656e75eaeb12d021
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+This is an AI-generated review of your patch. The human sending this
+email says "This is what the bots think :)"
 ---
- drivers/net/macvlan.c | 4 ++++
- 1 file changed, 4 insertions(+)
+net: tun: bound receive headroom
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index c40fa331836bb2395267914807542ae5094e1a3c..ff2f4bb651b74cdb054f245ea0f4e8cfe2297193 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -950,6 +950,8 @@ static int macvlan_init(struct net_device *dev)
- 	dev->lltx		= true;
- 	netif_inherit_tso_max(dev, lowerdev);
- 	dev->hard_header_len	= lowerdev->hard_header_len;
-+	dev->needed_headroom	= lowerdev->needed_headroom;
-+	dev->needed_tailroom	= lowerdev->needed_tailroom;
- 	macvlan_set_lockdep_class(dev);
- 
- 	vlan->pcpu_stats = netdev_alloc_pcpu_stats(struct vlan_pcpu_stats);
-@@ -1824,6 +1826,8 @@ static int macvlan_device_event(struct notifier_block *unused,
- 	case NETDEV_FEAT_CHANGE:
- 		list_for_each_entry(vlan, &port->vlans, list) {
- 			netif_inherit_tso_max(vlan->dev, dev);
-+			vlan->dev->needed_headroom = dev->needed_headroom;
-+			vlan->dev->needed_tailroom = dev->needed_tailroom;
- 			netdev_update_features(vlan->dev);
- 		}
- 		break;
+This patch clamps the headroom that tun_set_headroom() stores in tun->align
+so that SKB_MAX_HEAD(align) in tun_get_user() cannot underflow, and it adds
+pskb_may_pull() calls before reading the raw-TUN first byte and the TAP
+Ethernet header.
+
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index fed9dfdfcc3bc..efd2e7d75c9ac 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -1107,11 +1107,16 @@ static netdev_features_t tun_net_fix_features(struct net_device *dev,
+>  static void tun_set_headroom(struct net_device *dev, int new_hr)
+>  {
+>  	struct tun_struct *tun = netdev_priv(dev);
+> +	size_t max_headroom;
+>  
+> -	if (new_hr < NET_SKB_PAD)
+> -		new_hr = NET_SKB_PAD;
+> +	max_headroom = min_t(size_t, SKB_MAX_HEAD(0), U16_MAX - 1);
+>  
+> -	tun->align = new_hr;
+> +	if ((tun->flags & TUN_TYPE_MASK) == IFF_TAP)
+> +		max_headroom -= ETH_HLEN + NET_IP_ALIGN;
+> +	else
+> +		max_headroom -= 1;
+> +
+> +	tun->align = clamp_t(int, new_hr, NET_SKB_PAD, max_headroom);
+>  }
+
+[Severity: Low]
+Is the upper bound intentionally this tight?  At the clamp maximum,
+tun_get_user() computes:
+
+	good_linear = SKB_MAX_HEAD(align);
+
+which evaluates to 1 for raw TUN and ETH_HLEN for TAP.  The non-zerocopy
+path then does:
+
+	copylen = len;
+	linear = min(hdr_len, good_linear);
+
+so the resulting skb has skb_headlen() of 1 (or 14) bytes.
+
+Does that make every write() carrying a virtio_net_hdr with
+VIRTIO_NET_HDR_F_NEEDS_CSUM or a GSO type fail?  The chain
+tun_vnet_hdr_tnl_to_skb() -> virtio_net_hdr_to_skb() ends in
+skb_partial_csum_set(), which requires the csum offsets to live inside the
+linear area:
+
+net/core/skbuff.c:skb_partial_csum_set() {
+	...
+	if (unlikely(csum_start >= U16_MAX || csum_end > skb_headlen(skb))) {
+		net_warn_ratelimited("bad partial csum: ...");
+		return false;
+	}
+	...
+}
+
+With a 1-byte or 14-byte headlen that check always fails, so tun_get_user()
+takes the err = -EINVAL path, bumps rx_frame_errors and drops the frame for
+all checksum-offloaded and GSO traffic while the headroom request is in
+effect.
+
+Note that for IFF_TUN, tun_can_build_skb() returns false, so the raw-TUN
+path always goes through tun_alloc_skb() and always sees good_linear == 1 at
+the bound.  tun_alloc_skb() only overrides linear when prepad + len <
+PAGE_SIZE, which is not the case for non-trivial packets at this prepad.
+
+Would reserving a usable linear area instead (for example GOODCOPY_LEN, or
+the maximum hdr_len the device can accept) give the same memory-safety
+guarantee without turning offloaded traffic into drops?  For a Cc: stable
+patch, could the commit message also mention this consequence?  Right now it
+only says:
+
+  "Leave one linear byte for raw TUN and a complete Ethernet header for TAP,
+   including NET_IP_ALIGN."
+
+> @@ -1822,7 +1827,13 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  	switch (tun->flags & TUN_TYPE_MASK) {
+>  	case IFF_TUN:
+>  		if (tun->flags & IFF_NO_PI) {
+> -			u8 ip_version = skb->len ? (skb->data[0] >> 4) : 0;
+> +			u8 ip_version;
+> +
+> +			if (skb->len && !pskb_may_pull(skb, 1)) {
+> +				err = -ENOMEM;
+> +				goto drop;
+> +			}
+
+[Severity: Low]
+Should this path set drop_reason too?  It jumps to drop without touching
+drop_reason, so the free_skb label in tun_get_user() reports the initial
+SKB_DROP_REASON_NOT_SPECIFIED:
+
+drivers/net/tun.c:tun_get_user() {
+	...
+free_skb:
+	if (!IS_ERR_OR_NULL(skb))
+		kfree_skb_reason(skb, drop_reason);
+	...
+}
+
+Since the call is guarded by skb->len, pskb_may_pull(skb, 1) can only fail
+via the GFP_ATOMIC allocation inside __pskb_pull_tail()/pskb_expand_head(),
+so SKB_DROP_REASON_NOMEM looks like the accurate value here.
+
+The IFF_TAP arm changed by the same hunk does set an explicit reason for its
+pull failure, so the two adjacent sites in the same switch end up reporting
+different things to the kfree_skb_reason() tracepoint.
+
+> +			ip_version = skb->len ? (skb->data[0] >> 4) : 0;
+>  
+>  			switch (ip_version) {
+>  			case 4:
+
+[ ... ]
+
+> @@ -1842,7 +1853,7 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  		skb->dev = tun->dev;
+>  		break;
+>  	case IFF_TAP:
+> -		if (frags && !pskb_may_pull(skb, ETH_HLEN)) {
+> +		if (!pskb_may_pull(skb, ETH_HLEN)) {
+>  			err = -ENOMEM;
+>  			drop_reason = SKB_DROP_REASON_HDR_TRUNC;
+>  			goto drop;
 -- 
-2.55.0.629.g250fe7f194-goog
-
+pw-bot: cr
