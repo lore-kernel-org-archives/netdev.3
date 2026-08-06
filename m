@@ -1,200 +1,295 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9C948F83D
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 20:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786046777; cv=pass; b=NskS+HVBP/O4fD/+++Ncv+9EYEmtsrNdCl/NWBt9Ab8fxbDivIdyCr3LU9kS0pookm8DKmd37QeDvlSnpR4snI5aysfkFFcuvr6hxxUn+A061IIdOwrFja/o4Y/YE+QFWW1ixWjCa48YVasQeaMI8njNUafJXhwM3vBsb52A0oA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786046777; c=relaxed/simple;
-	bh=cWIjQk6tXuRqy0/rZp7RucU+ui1cJYOShoNg1BxqglE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uLRyKiYEj69Ripa8QplC1urFpezUjHsrVtbF4nJFobZxgTnZOdKoxmCu/h2sPh0sxbsUJ32Yw1zUcZ7837IOMSip8BtbU3/7vQc7zXAachZkgLOOYeE99FZYFrpLENNjYeO9CwTTu87KewCHlOkSytOmKLypXEoZjRWtvnEegGA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DNU4V/Ki; arc=pass smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3146C480320;
+	Thu,  6 Aug 2026 20:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786046798; cv=none; b=QEnavgCG1Qc2Nd9Cbju+EgxlI7dTpsj83213IVpSip6UF9DQh/DHvvzLG8sb/sDwGxJK7f5a7OoLnIyUTRv0tmAGJ+KYkw52w5RDwsr98fYOEU0Ub4EABKlLlg+vI3pShRLEcuOTuhTnIqkrOUs/ro9VgXzaEmQB272e79c6vwc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786046798; c=relaxed/simple;
+	bh=Ap0Qmzmts3oLJZ105+phZogBJij9nWouUMEY0x1uZuk=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HYTqvXtzMHAytzbRhZM7kLvGYdiVqV6zLna6fU8tZNVWoGUW9oQVSvy7ZxIstt5jfsOzzU5vuQxhza0TRXHEPfqZctQvV+QHw23DrDaXMJu0HKblbFD00QSzoMl3IIZC1eT42J1xnF+Af+mWtIfbE8Nuj0GKteC3uyRd+7hPKBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=oAid7uyS; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DNU4V/Ki"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cede6375caso25925ad.0
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 13:06:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786046762; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mRVFi9Eask+Dig6DDZxi7MEOFGCk/K3QgN14LMaGtZfgVf9NV4OJ7f7c45fglTmBlN
-         KPqEY4JDPR+/27EKTk3CDWvMeyU2PzErjii5DvAEjFKmo03JAzoiRKKn0mQqcW8rFZuB
-         QlXA3QBIKM3abc/fp+tHglrxUfjN2qcviDLftIYghV8ji95o90u9gYX5t7lbRGaavnqF
-         J76XYlxIpWV1MmzfwGgjdaJ8uZ+2/mLlsz1qWiwuWcqtrOXFvM70ZxcoGoEl5Pw7E91d
-         h25bLsrXuRjh8+SuDLOgxa1R7qBSZI9V3locwewa4OmZDm6+g7Jrk6xAHngSWzbq5A8L
-         yZUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mrZ72r7FXiIcu7z3qD5APJpQvHiMgq47+3gOT5xv3/4=;
-        fh=yTYzHmnr1B5+GGzLzQABnUXmsXy/GUneDJ7UnyoZNkI=;
-        b=QLNEZjRz1Rk2i+JOhYzTUR/P79iMeEJtep7AuambKoXYduZ+eyRCCfAxz2WLZV4zc1
-         o68Cyb8thbJHwoWWZ0j35tGg11LCKkGCnYpPngsvoxtNDqeKcIuKNfoGky3nP1u71pwh
-         47Er+EutJJNDZIvvdm01mmA2izGenCZbdHf1HB+IzUSBzvf+Inap9Qp0rCq9RFrEGAmb
-         qCZ0F/QCRu8UZh4/nTqYg5KJqyH6q118JSycgdtYWoMXQ5dqZ0CKrB4CYQ0eIyCcfWWf
-         SeFRtTyyw4jcISUKJm+nFbiJfufLfTCGysC04MdwqbUiNK1nFTJIrBghfDOiYA3SzQfF
-         vajw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786046762; x=1786651562; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mrZ72r7FXiIcu7z3qD5APJpQvHiMgq47+3gOT5xv3/4=;
-        b=DNU4V/KieWIVELZmQzQQZ6oyKZ9ZT2hTa0D0Tsc+0dBcsz2fCcwju63a9cI9l9NapL
-         9nOLMdx6ok2kIQzr939ZBZUhfCEp8nAea4nzuYvmyV3TNIZ/aJLY6ZEhGTNSMZbj9IW6
-         4XfsTppQas+ghdqrGxzTCRDqNFKNjeNdz1WKP8YOMwvZGXhn+qIRVwZpz+HFLtsyoC28
-         1mdgwhwDpJ+JHO4QMbRzDBXu8BOy2mlnsnPpzDncgc5+h4BpaDcRgV8JRCqJzt6EGCBo
-         9RELnDHq68Xyzs/AMo1yiX6XExyl9T7F00m8I93HB39+200YeBd+PHb1pFJrEqan1tAi
-         dwyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786046762; x=1786651562;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mrZ72r7FXiIcu7z3qD5APJpQvHiMgq47+3gOT5xv3/4=;
-        b=izpolCyrV+V6yG5V5Tiew0IrnTdWmzpC8jXgpE+dGZeilnyvRNC5VhKSHfDnzlxUVk
-         Gw+r4lmbEh8wMoeOvJSxjGwvQR60hUAMdkqcRAQDNYAA7w8pCMkcVtzOerY3SH7OW/Y/
-         F18ZpagfcvsXCTH/USY8Ose1bopCgPiba9HHlx5oPyOFgownWU8V11+ujeHuIT5RUvbH
-         baK1F2ua0lgsZfCbolrVaVdzyEsxEJcVSTAJm8cJyadjq2w30vdvTHM80bLMiBcJlgOf
-         zQcnXIc4r/dgTD0TNwE/ool48N2mGZmSXfanDvO0uNtiXdOGYd836kBxRec1gv9RY3Xq
-         TIEQ==
-X-Gm-Message-State: AOJu0YzE6VyZ63anWgzkPy8ud7WkKRi7K4pwzeCcpIdpwir7UXa6tyfK
-	gaDCFoE5ZNaALKiAA+0yeO1TOWYQNzaU8fLKBQwkn+tNlLwh2WhCn6jOubaxKzXZoZpRQ92jXGj
-	+6GarR0+8SCBVyOgCvrfQiBzWJOP0LxA4Z9nhGyBn
-X-Gm-Gg: AR+sD100KptM0R5BLA8cCDYrRqxiLuyfilhTDFbogZrToRzD9l9sXvgt0gN+4lbQVzB
-	5BS/X0/w0Hb93MVxVyxHBdo0XbQyP7xDAV31HmzenVrK6tZaJcGrosGDP+HC9zXNXtoZoSj2eHf
-	V0OVIjrNiakLP6uIuXzuFnOuZyFHNf3CGGThUTcwX5czCsYzkH5viZQ4HkEKycWgeYeFkEzgiDs
-	VZ1XKHLHzYxlaGaTbiB2OEycux/04ynJYpzap6UzILyKfrMz6qwE//sQARLKOGH6UfKm22kgPqq
-	kvuNDGk6qAcUNU8detdlwZ64Hn4l5Opco1nJy1A82H/AwQGG35iWOUqY78V+mPvAFS5+3mnWOlN
-	NMqmi1rcq/A==
-X-Received: by 2002:a17:903:2350:b0:2c7:f688:f22f with SMTP id
- d9443c01a7336-2d1205564femr2194675ad.13.1786046761601; Thu, 06 Aug 2026
- 13:06:01 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="oAid7uyS"
+Received: from DairyQueen (unknown [52.172.102.222])
+	by linux.microsoft.com (Postfix) with ESMTPSA id ACD0F20B7128;
+	Thu,  6 Aug 2026 13:05:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com ACD0F20B7128
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1786046757;
+	bh=opTdFPaBV44HR5yoUGxKTjRAiPFf3Is0t+ryAsEWKGU=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
+	b=oAid7uySaLszQR1S02jcnghuKw+hOQlQQyA5o2OuFM1PXFqcceb/lqrO4tyPY7/ik
+	 bJYZhfiKekrqjS22mATGgM7GSDxbsVfEQzgBskHeO8IBaptje0GXPH2/uHuZ9FVl6A
+	 Pn2k9/hl9o6TmHwEB3BmQZ1Iq6R8YdOZYDQqr2Oo=
+From: "Kameron Carr" <kameroncarr@linux.microsoft.com>
+To: "'Michael Kelley'" <mhklinux@outlook.com>,
+	<decui@microsoft.com>,
+	<haiyangz@microsoft.com>,
+	<kys@microsoft.com>,
+	<longli@microsoft.com>,
+	<wei.liu@kernel.org>
+Cc: <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<kuba@kernel.org>,
+	<pabeni@redhat.com>,
+	<linux-hyperv@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>
+References: <20260730233359.3850612-1-kameroncarr@linux.microsoft.com> <20260730233359.3850612-3-kameroncarr@linux.microsoft.com> <SN6PR02MB41576627C0DBA40FA8BB49C7D4C82@SN6PR02MB4157.namprd02.prod.outlook.com>
+In-Reply-To: <SN6PR02MB41576627C0DBA40FA8BB49C7D4C82@SN6PR02MB4157.namprd02.prod.outlook.com>
+Subject: RE: [PATCH v2 2/2] hv_netvsc: Allocate host-visible GPADL buffers as decrypted contiguous chunks
+Date: Thu, 6 Aug 2026 13:06:08 -0700
+Message-ID: <002d01dd25df$0b94f8b0$22beea10$@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260803181852.491437-1-almasrymina@google.com> <20260806121631.13175f7e@kernel.org>
-In-Reply-To: <20260806121631.13175f7e@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Thu, 6 Aug 2026 13:05:49 -0700
-X-Gm-Features: AUfX_myorKqYSVpHdpwmyJKvjXu8z142wx6thhNEgv0V6JXyc0wA6AgbxkiuwFY
-Message-ID: <CAHS8izP=mgsdxv3AtjJo9JY5OHC17zeX-VbPPH_gFF=Ndb_qjw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/2] selftests: drv-net: devmem: fix 5-tuple
- flow steering
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Bobby Eshleman <bobbyeshleman@meta.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-us
+Thread-Index: AQIub+xPS5YiyaZvP24gK8Dc9/eqxgFfExjQAiIv4nu10VI0EA==
 
-On Thu, Aug 6, 2026 at 12:16=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Mon,  3 Aug 2026 18:18:25 +0000 Mina Almasry wrote:
-> > When configuring traffic for the devmem tests, 5-tuple flow steering ma=
-y
-> > be required if the environment does not provide network namespaces.
-> > Pass the correct remote address parameter and fall back to 5-tuple flow
-> > steering if netns is not available.
->
-> Could you clarify what existing upstream test / scenario needs this?
+On Friday, July 31, 2026 8:47 AM, Michael Kelley wrote:
+> From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent: Thursday, July
+30, 2026 4:34 PM
+> >
+> > On CoCo VMs without confidential VMBus, the netvsc send and receive
+buffers
+> > must be made host-visible by decrypting them. These buffers are
+vmalloc'ed,
+> > but set_memory_decrypted()/encrypted() do not work on vmalloc'ed memory.
+> > This use case is (so far) unique to netvsc, so solve it locally rather
+than
+> > changing the set_memory() or allocation APIs.
+> >
+> > Add vmbus_alloc_buffer()/vmbus_free_buffer() to the VMBus core. When the
+> > guest's isolation model requires it, allocate the buffer as a list of
+> > physically-contiguous chunks via alloc_pages_node(), starting at
+> > MAX_PAGE_ORDER and falling back to smaller orders so the allocation
+still
+> > succeeds under memory fragmentation. Each chunk is decrypted in place
+via
+> > set_memory_decrypted() on its direct-map address, and the chunks are
+then
+> > stitched into a single virtually-contiguous range with vmap(). Buffers
+that
+> > do not need decryption keep using vzalloc().
+> >
+> > This approach minimizes scattering of decrypted 4 KiB pages through the
+> > kernel direct map and the resulting shattering of large page mappings.
+> >
+> > Use vmbus_establish_gpadl_caller_decrypted() so there is no attempt
+> > to decrypt the virtual address. At teardown, vunmap() the range and
+> > re-encrypt and free each chunk individually; any chunk that fails
+> > re-encryption is leaked to prevent accidentally freeing decrypted
+memory.
+> >
+> > Because vunmap() and set_memory_encrypted() must run in process context,
+> > replace the rcu_head/call_rcu() pair used to defer free_netvsc_device()
+> > with rcu_work/queue_rcu_work(). This also fixes a small race condition
+> > where the buffers may be accessed while being re-encrypted by moving the
+> > re-encryption after the RCU grace period.
+> >
+> > Signed-off-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+> > ---
+> >  drivers/hv/channel.c            | 158 ++++++++++++++++++++++++++++++++
+> >  drivers/net/hyperv/hyperv_net.h |   8 +-
+> >  drivers/net/hyperv/netvsc.c     | 104 ++++++++++++++-------
+> >  drivers/net/hyperv/netvsc_drv.c |   6 ++
+> >  include/linux/hyperv.h          |   7 ++
+> >  5 files changed, 249 insertions(+), 34 deletions(-)
+> 
+> Arguably, this patch should be broken into two patches. One
+> patch adds the buffer allocation/free functions to the VMBus core.
+> The second updates netvsc to use the new allocation/free
+> functions and to call the free function in the required context.
 
-This is needed to give the check_rx_hds test a chance to pass on
-5-tuple flow steering driver, like GVE. Without this change:
+Ack.
 
-    # Exception| Traceback (most recent call last):
-    # Exception|   File
-"/usr/src/kernel/tools/testing/selftests/drivers/net/hw/devmem_lib.py",
-line 219, in run_rx_hds
-    # Exception|     wait_port_listen(port, proto=3D"tcp", ns=3Dnetns)
-    ...
-    # Exception| net.lib.py.utils.CmdExitFailure: Command failed
-    # Exception| CMD:
-/usr/src/kernel/tools/testing/selftests/drivers/net/hw/ncdevmem -l -f
-eth1 -s 192.168.1.84 -p 46391 -L
-    # Exception|   EXIT: 1
-    # Exception|   STDERR: using ifindex=3D3
-    # Exception|           using queues 15..16
-    # Exception|           TCP header split: on
-    # Exception|           Running: ethtool -X eth1 equal 15 >&2
-    # Exception|           Running: ethtool -N eth1 flow-type tcp4
-dst-ip 192.168.1.84   dst-port 46391 queue 15
-    # Exception|           rmgr: Cannot insert RX class rule: Invalid argum=
-ent
-    # Exception|           Cannot insert classification rule
-    # Exception|           Running: ethtool -N eth1 flow-type tcp4
-dst-ip 192.168.1.84 dst-port 46391 queue 15
-    # Exception|           rmgr: Cannot insert RX class rule: Invalid
-argument
-    # Exception|           Cannot insert classification rule
-    # Exception|           ncdevmem: Failed to configure flow steering
-    # Exception|           Running: ethtool -X eth1 default >&2
-    # Exception|
-    not ok 4 devmem.check_rx_hds
+> > diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+[...]
+> > +void *vmbus_alloc_buffer(struct vmbus_channel *channel,
+> > +			 u32 size,
+> > +			 struct page ***chunks_out,
+> > +			 u32 *chunk_cnt_out)
+> > +{
+> > +	u32 nr_pages = PFN_UP(size);
+> 
+> Is there a reason for nr_pages to be u32, and then cast it to unsigned
+long
+> a couple of places below? The first argument to kvmalloc_array() is of
+> type size_t.  Avoiding the casts would be incrementally cleaner.
 
-With this change:
+Ack.
 
-    ok 1 devmem.check_rx
-    ok 2 devmem.check_tx
-    ok 3 devmem.check_tx_chunks
-    # Exception| Traceback (most recent call last):
-    # Exception|   File
-"/usr/src/kernel/tools/testing/selftests/net/lib/py/ksft.py", line
-420, in ksft_run
-    # Exception|     func(*args)
-    # Exception|   File
-"/usr/src/kernel/tools/testing/selftests/drivers/net/hw/devmem.py",
-line 30, in check_rx_hds
-    # Exception|     run_rx_hds(cfg)
-    # Exception|   File
-"/usr/src/kernel/tools/testing/selftests/drivers/net/hw/devmem_lib.py",
-line 219, in run_rx_hds
-    # Exception|     wait_port_listen(port, proto=3D"tcp", ns=3Dnetns)
-    # Exception|   File
-"/usr/src/kernel/tools/testing/selftests/net/lib/py/utils.py", line
-356, in wait_port_listen
-    # Exception|     raise Exception("Waiting for port listen timed out")
-    # Exception| Exception: Waiting for port listen timed out
-    # Exception|
-    not ok 4 devmem.check_rx_hds
+> > +	struct page **chunks = NULL;
+> > +	struct page **pages = NULL;
+> > +	unsigned int order;
+> > +	u32 chunk_cnt = 0;
+> > +	u32 page_idx = 0;
+> > +	u32 remaining = nr_pages;
+> > +	void *addr;
+> > +	u32 i;
+> > +	int ret;
+> > +
+> > +	*chunks_out = NULL;
+> > +	*chunk_cnt_out = 0;
+> > +
+> > +	if (!nr_pages)
+> > +		return NULL;
+> > +
+> > +	/* If the buffer does not need to be decrypted, just use vzalloc()
+*/
+> > +	if (!hv_is_isolation_supported() || channel->co_external_memory)
+> > +		return vzalloc((unsigned long)nr_pages << PAGE_SHIFT);
+> > +
+> > +	/* Worst case: every chunk is a single page. */
+> > +	chunks = kvmalloc_array(nr_pages, sizeof(*chunks),
+> > +				GFP_KERNEL | __GFP_ZERO);
+> > +	if (!chunks)
+> > +		goto err;
+> > +
+> > +	pages = kvmalloc_array(nr_pages, sizeof(*pages), GFP_KERNEL);
+> > +	if (!pages)
+> > +		goto err;
+> > +
+> > +	/*
+> > +	 * @order monotonically decreases across iterations
+> > +	 *
+> > +	 * Use __GFP_NORETRY | __GFP_NOWARN to avoid OOM-killing, but try
+> > +	 * harder at order 0 since that is the final fallback.
+> > +	 */
+> > +	order = min(MAX_PAGE_ORDER, ilog2(nr_pages));
+> 
+> This works, but is more complex than needed. Just set order to
+> MAX_PAGE_ORDER, and the min() at the top of the while loop below
+> will do the right thing. And you could do order = MAX_PAGE_ORDER
+> where order is declared.
 
-Yes the test fails, but it gets past the flow steering configuration proble=
-m.
+Ack.
 
-And in the code, the change looks correct to me. If flow_steer is
-False, then we don't pass the -c arg to ncdevmem. ncdevmem is written
-so that if -c is not set, 5-tuple flow steering is not possible (the
-client side port is random), so it falls back to 3-tuple flow
-steering, which doesn't work on GVE or any other driver that supports
-only 5-tuple flow steering.
+> > +	while (remaining) {
+> > +		struct page *page;
+> > +		gfp_t gfp;
+> > +
+> > +		order = min(order, ilog2(remaining));
 
-run_rx (devmem.check_rx test case) doesn't have this problem because
-it does `flow_steer=3Dnot hasattr(cfg, 'netns')`, but run_rx_hds has
-this problem because it forgets to override flow_steer at all. This
-patch fixes that.
+Context: this fails to compile on x86 since order is unsigned and ilog2()
+is signed.
 
-To be honest while looking at this there were a few weird things. Like
-I'm not sure why the python arg is named `flow_steer` (it likely
-should be 5_tuple_flow_steer), and why flow_steer setting is tied to
-hasattr(cfg, 'netns'), it should be a proprety of the driver you're
-runing on (unless all in-netns drivers will support 3-tuple flow
-steering).
+Is it acceptable to avoid the min_t() by changing order to be a signed int?
 
-I am planning to debug the remaining failure running check_rx_hds on
-GVE and following up with another patch for that.
+> > +
+> > +		for (;;) {
+> > +			gfp = GFP_KERNEL | __GFP_ZERO;
+> > +			if (order)
+> > +				gfp |= __GFP_COMP | __GFP_NORETRY |
+__GFP_NOWARN;
+> > +			page =
+alloc_pages_node(cpu_to_node(channel->target_cpu),
+> > +						gfp, order);
+> > +			if (page)
+> > +				break;
+> > +			if (!order)
+> > +				goto err;
+> > +			order--;
+> > +		}
+> 
+> I think this nested for loop can be avoided. At this point in the outer
+while
+> loop, set the gfp flags and call alloc_pages_node() as you have here. The
+> good and normal path is that alloc_pages_node() succeeds. The exception
+> path is alloc_pages_node() failing, so you can do:
+> 
+> 		if (!page) {
+> 			if (!order--)
+> 				goto err;
+> 			continue;
+> 		}
+> 
+> The "continue" just restarts the outer while loop with the decremented
+> value of "order" and everything proceeds normally. To me avoiding the
+> nested loop is simpler, though "simpler" can be in the eye of the
+beholder,
+> so if you prefer to keep this as is, I'm OK with that.
 
---=20
-Thanks,
-Mina
+I agree. Thank you for the suggestion.
+
+> > +
+> > +		ret = set_memory_decrypted((unsigned
+long)page_address(page),
+> > +					   1U << order);
+> > +		if (ret) {
+> > +			/*
+> > +			 * set_memory_decrypted() failed; the page state is
+> > +			 * unknown so it must be leaked rather than freed.
+> > +			 */
+> > +			goto err;
+> > +		}
+> > +
+> > +		chunks[chunk_cnt++] = page;
+> > +
+> > +		for (i = 0; i < (1U << order); i++)
+> > +			pages[page_idx++] = page + i;
+> > +
+> > +		remaining -= 1U << order;
+> > +	}
+> > +
+> > +	addr = vmap(pages, nr_pages, VM_MAP, pgprot_decrypted(PAGE_KERNEL));
+> > +	if (!addr)
+> > +		goto err;
+> > +
+> > +	memset(addr, 0, (unsigned long)nr_pages << PAGE_SHIFT);
+> > +
+> > +	kvfree(pages);
+> > +	*chunks_out = chunks;
+> > +	*chunk_cnt_out = chunk_cnt;
+> > +	return addr;
+> > +
+> > +err:
+> > +	kvfree(pages);
+> > +	vmbus_free_buffer(NULL, chunks, chunk_cnt);
+> > +	return NULL;
+> > +}
+[...]
+> > diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
+> > index 59e95341f9b1e..1192929d93a86 100644
+> > --- a/drivers/net/hyperv/netvsc.c
+> > +++ b/drivers/net/hyperv/netvsc.c
+> > @@ -28,6 +28,8 @@
+> >  #include "hyperv_net.h"
+> >  #include "netvsc_trace.h"
+> >
+> > +static struct workqueue_struct *netvsc_wq;
+> > +
+> 
+> Does netvsc needs its own workqueue to do the "free" operation,
+> or would the system default workqueue (system_dfl_wq) be just
+> as good? At first glance, the system_dfl_wq seems like it would work,
+> since netvsc free operations are rare and don't have any strict
+> latency requirements. But I'm far from being expect in workqueues,
+> and there could be subtleties I'm not aware of.
+
+I have to drain the work queue before module unload.
+Currently this is handled by destroying the queue.
+
+Originally, I tried using a system wide queue, but I saw that there are
+compile time warnings, __warn_flushing_systemwide_wq(), which state:
+"WARNING: Flushing system-wide workqueues will be prohibited in near
+future."
+
+I got the impression that having a driver specific work queue is best
+practice.
+
+- Kameron
+
+
