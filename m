@@ -1,131 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AC83806AF;
-	Thu,  6 Aug 2026 13:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786023911; cv=none; b=DrfFg4cpuiv7i2TxPq6+SUJ5DgW4L94IJUgNsa8UvZghEhnsZUE2YDqSdQsHG54b/Ywc3N1g2FUGGqo6sJK//g2X22F/eDtfjiDC5/+8kXBEPLfEpE/H7wMkBzJ/mE+g8MTff7P5RgvB9nmIBePTzYIlOZ+7lvks1TkAwwTfBP8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786023911; c=relaxed/simple;
-	bh=IALA1uDNbf5o/p/rf8md9qS+0knKGXzgdb9SABzpomg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lD9qdP3XEDnS2M2V7/nliMSodaASKBwdvxQzZ1ap93+RNx+YgGgaB8oe5OvZPEeYYDHhgXedD1nmTqNGCyNAJ/DaieEcdgi7lfC+8IzvzJzls08ft8P2l5OCXfiQRZIiQVfszWi8n234poIGKzktt4sOnXzzVQBnXjClLYsbNBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhP7WZW8; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C793E390608
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 13:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786023937; cv=pass; b=m9K2ir1ystVxZ3fnKFgB9UG0FgKviEOA+2xvYXPzbYbqv4YyxxWrlvjie2tVctegoOU1vWrwB5/A1JM9vPQ6vx13YLFgv1QYc/h+2QrhyctXjrKZ7J2HZDxRCegi1Yg6XpUHVDGR5K5Mn/XBNwarYifn+v1u6AAUH9LYhMnp5aA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786023937; c=relaxed/simple;
+	bh=BKWJTReTdw+LMAVvVwFW5qLVtx7m6cVom+p9AYVg2D4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tBdkDDnuI9A8lGCse0P/crCkQLt7dcIodjoTc28yAFrYWTnNkImH1rmgc5GjG+xsZ+vCa4BiTGoZN0tZJ3qN7wcudH/XsbUG/o3j+lpBqikLrK9zZQDmdeOa7hfNHVq7J0srTB/eFulYRaGNTCs7Fioa85+zyCQ8hdeA8ls4WLQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DRpjGRsK; arc=pass smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhP7WZW8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91411F000E9;
-	Thu,  6 Aug 2026 13:45:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786023910;
-	bh=6+yrdkh0LONfegXmNoa1TtrTQpU550Mmd4StmWllggA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jhP7WZW8tV/xyfh3ZIQJGLkciveI9miLHarkXfQi2p3REHg3umQXD46QHw2V1+319
-	 yEtC0YdDyK/8mx/Ug4WeGvlMx1NllTEXh/sFj+rovSVO9qLIsNj4iUc0EVHzLlMYqh
-	 dzz73b5CIGikrO1uOweLdFlGGFQMb/YX9hQK/w1k7XnnugbkzVWlh8ADbb0sfeAe4v
-	 RN0Ad6EQBRpQAAIR1p9oWw3ziVNcmteaLpHXNi60UZ8uiXuSBB76KdlGJiOjlxZ59g
-	 XVPSQoeK11eHlvVmol4Z5/2/DN59udivLLGn+RY2+y06Tb0Uk8rJrvQ2RRtnarX24n
-	 +pPGGM994ebmA==
-Message-ID: <17f81247-ebe2-42ce-ac34-02f4779ccaef@kernel.org>
-Date: Thu, 6 Aug 2026 15:45:05 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DRpjGRsK"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92ea24a2dbfso173036785a.0
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 06:45:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786023934; cv=none;
+        d=google.com; s=arc-20260327;
+        b=m0YhO3yHdwGrkHg3u0J5SS87qwpk10ONRMiBJf/ekkhKP4UGoxDLw0LagijH9prUEi
+         N9OjcVFYQaUgO+QnlvkkQwRExB/aS4iWRtzV6hyJMgee3hQqhJbIcIxr5gU/+WdgRsqV
+         fijmRT12QD+K8CGyjAwcAsmR6JZjMOmgyYgaPg5ovyvJgT6xQHznZgIyrIah4m8Zc9rt
+         sL6qtNbhv/5DHMjg217va49aFndkNo1hmzaW3a9BsH1f3wC83AjZzV1Wm2wsp7SxNqPe
+         AINo5eftG0IYQaaQlrRiLltGlxqhRbJX6AnIgOR4GAXleoF/+GQZ9POptI0EOz+k4+FG
+         3ikw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BSeHeIOsrbYVt/cFGZ3Mudq1FYtZux95e0DZcHfkyoA=;
+        fh=1KLD+Hi9wxbkDb7L2kYioj/K7qshoNqjlOdF6txTMPw=;
+        b=kvSN+m1/SVUgfn/Th1hlhzjQh3jG3t6yMUPD/ybU5FTGiVhb3fyTaG3nU0hn24WNBM
+         6kpY4TlvnzXFYFgRWA3l6clzia+ksug8wWcnfYngC+rovv7X+39egK62/ruRGT/ajZqs
+         nv+4y0rWV2ZiK+dlFBrnNSfqe1evNqiisa1LajeuEbd3ALNDhp4wjzhOtYrQ3rmLtQCs
+         T90K4r4YqJ4MVRkTqJyadUEkRSwGa6k6+SvopJNSF9orbJj6r4eJyCo79y7wMm/InSic
+         0Jz7K6sSYroKuSa3byNsnPI1JvWpUbvhzFwIfrn5Kzaf0xXj4te00puU78ecexl1NHq2
+         KbBg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786023934; x=1786628734; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BSeHeIOsrbYVt/cFGZ3Mudq1FYtZux95e0DZcHfkyoA=;
+        b=DRpjGRsKij1Zv2TOXICX2Y+jS+L5ix3n4dYYEsYImr1ukZxDBFbEmbKNPXE2ZI3CGN
+         dkjK0bTdyF4OUOoE8FIeaYMdqEJs0lDCpajZ3WgfdtZOlazw24lDQHa4CRkOVKWkKCjX
+         FFZSXYx+Z1Zd9s1ZFBgcH7u69rgLj7xpjwGsEnGNNWOVCsUWo4RbMU89N7jcx8nbl8Aq
+         pWcLSzV+hpVBahbHr7H2+fb4BphXtGvuBStbNBZbUHcO1+/eIkSKmY6IZsNaaHdCLjWg
+         VmomLM99AexCJWdTA5jLpjamiL3xxbwI1V1cIQ4AVI4VoWZZa0+oSA/rCh+JFwd8Bd3D
+         Ccew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786023934; x=1786628734;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BSeHeIOsrbYVt/cFGZ3Mudq1FYtZux95e0DZcHfkyoA=;
+        b=YaARJRQF0aqbrdZxR+zuG1EDBEfd3YcFlMrQgmOuiEsxur/funXDShfwegtu18IsXn
+         /o/K1mJ7e48hbbXqpHbBKLqEImcwz6Yu8N/tWYfaihHL7Y3D1Qt7BR39M7NEagydBp49
+         QR1blkqj9fIGIAT+AJb5A5irhIWqjPoi65m3TR1C5C6+AOrDhwG2lu5mBkklGOTqkNGy
+         AUJJws/9mxgIAt0xf0G0K8YVS8xoM4mBA74SSQiqFKwyqp/+hoOHr00/kPZeN1VR9je/
+         8iEWne/iZxZl/a3pWUsssBKOGzCjkjeCo1LJxVvT0m6/JIN2vEtmyWLxjJ6SJWH9NEAy
+         n3/A==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6nE8aK4j8hVl6ZIj4j2Pr6hphho58T0N5hunj2bAQoE7AEeQ5N7HFrifzf4WInXKgncKpdkU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmUUkpXWZIMOrkDYBtYQRPS0aXPy565Qy05g2yviPBnEoTBMG3
+	WyTaX5vDxj8A/gvCX/eN7wEBLymNYyyPzXGxZKRDAIFRQuhCgAfWNY9ZOG7a5JHTM3aa7FYuqjb
+	M+YAfI2lk0hXB4X+FKUnmqCGiQ3RaldpqfX0A+WeK
+X-Gm-Gg: AR+sD11ThtjubV/EScjhoUiNY8nuhw95JrtOg2NbGi+NniVp2JpYaeDJ+MHX8nLEKVI
+	hv3JFiWDKX39Sm4qc6Lr4sKuuFdlTDL0RObgxKTumCuA+x2SMch05vpEaJLGJVHX25JpGBg4jru
+	KhvbJ38PK8p3+ZNyDIvbs0+DU3yK31cypcZaQv8e6kdcq/hh3oV5f2aMzLQiyX95yN1bSfIOsRy
+	9xuBUVFCu5th77fNEWO8LZd9KF0+FeH+if80nSgzBzcD/Y4l+r3A2ViPRPCwK690hrhrDuv8yYB
+	eAKBSmQYgAxxDLPRXJoQe/IT8ttFmF1EOajbNMuUQ2lZoQzfhBN0ZbNN8QzWjWKF/sFb8Xce9Qr
+	eXr47F6uhSbtZB9iJ7677KAXVI2yUJ63m03+ZaPD6xNUwBZV3yaU+jSo=
+X-Received: by 2002:a05:620a:8c89:b0:92e:541e:632b with SMTP id
+ af79cd13be357-93649056dc5mr1186003185a.2.1786023933857; Thu, 06 Aug 2026
+ 06:45:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] veth: fix queue index used to wake the peer txq in
- veth_poll
-To: =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- Toshiaki Makita <toshiaki.makita1@gmail.com>,
- Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, kernel-team <kernel-team@cloudflare.com>
-References: <20260806-veth-fix-poll-queue-idx-v1-1-c5357fb7573d@tu-berlin.de>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <20260806-veth-fix-poll-queue-idx-v1-1-c5357fb7573d@tu-berlin.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260730220055.2946171-1-tejasbirajdar@meta.com>
+ <20260731220124.B0C621F00AC4@smtp.kernel.org> <1f36d5be-906a-4ba5-8679-24cbcf899254@redhat.com>
+In-Reply-To: <1f36d5be-906a-4ba5-8679-24cbcf899254@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 6 Aug 2026 15:45:22 +0200
+X-Gm-Features: AUfX_mwdvTEom7e3WZw1jtKlW4Jx4hI_DGQwZjfU5OQKTgLw-QKbrPG4mz7zWVg
+Message-ID: <CANn89i+P6Y+uBSKa4S7CAqJWrZNqHOTKY2A2jaVs2iFG4_wRhA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3] tcp: honor BPF_SOCK_OPS_RWND_INIT on the
+ active connect path
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Tejas Birajdar <tejasbirajdar@meta.com>, bpf@vger.kernel.org, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, sashiko-reviews@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Aug 6, 2026 at 11:15=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 8/1/26 12:01 AM, sashiko-bot@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential is=
+sue(s) to consider:
+> >
+> > Pre-existing issues:
+> > - [Medium] The `SOCK_RCVBUF_LOCK` check executes before the BPF program=
+ runs and before `full_space` is inflated, silently defeating BPF-requested=
+ windows and bypassing dynamic `SO_RCVBUF` adjustments.
+> > --
+> >
+> > --- Patch [1]: [PATCH net-next v3] tcp: honor BPF_SOCK_OPS_RWND_INIT on=
+ the active connect path ---
+> > commit 2cf5d1d17ae1c7488533ecaa0fcbb83ae4591ec8
+> > Author: Tejas Birajdar <tejasbirajdar@meta.com>
+> >
+> > tcp: honor BPF_SOCK_OPS_RWND_INIT on the active connect path
+> >
+> > This commit updates tcp_connect_init() to honor the initial TCP receive
+> > window requested by a BPF_SOCK_OPS_RWND_INIT program on the active conn=
+ect
+> > path. It inflates full_space if the program returns a non-zero window,
+> > matching the listener path's behavior, and uses u64 arithmetic to preve=
+nt
+> > overflows.
+> >
+> > Link: https://lore.kernel.org/netdev/20260723214208.3655474-1-tejasbira=
+jdar@meta.com/
+> > Link: https://lore.kernel.org/netdev/20260722170033.2763794-1-tejasbira=
+jdar@meta.com/
+> >
+> >> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+> >> index d7c1444b5e304..fcaa04e65189b 100644
+> >> --- a/net/ipv4/tcp_output.c
+> >> +++ b/net/ipv4/tcp_output.c
+> >
+> > [ ... ]
+> >
+> >> @@ -4137,10 +4138,13 @@ static void tcp_connect_init(struct sock *sk)
+> >>              WRITE_ONCE(tp->window_clamp, tcp_full_space(sk));
+> >>
+> >>      rcv_wnd =3D tcp_rwnd_init_bpf(sk);
+> >> +    full_space =3D tcp_full_space(sk);
+> >>      if (rcv_wnd =3D=3D 0)
+> >>              rcv_wnd =3D dst_metric(dst, RTAX_INITRWND);
+> >> +    else if (full_space < (u64)rcv_wnd * tp->advmss)
+> >> +            full_space =3D min_t(u64, (u64)rcv_wnd * tp->advmss, INT_=
+MAX);
+> >
+> > [Severity: Medium]
+> > This is a pre-existing issue, but does the SOCK_RCVBUF_LOCK check happe=
+ning
+> > before the BPF program runs defeat the purpose of allowing BPF to adjus=
+t
+> > the receive window?
+> >
+> > If an application sets SO_RCVBUF prior to connect(), SOCK_RCVBUF_LOCK i=
+s
+> > set. In tcp_connect_init(), this caps tp->window_clamp to the old
+> > tcp_full_space() before tcp_rwnd_init_bpf() is invoked.
+> >
+> > When the BPF program returns a large requested window and full_space is
+> > inflated, tcp_select_initial_window() bounds space by
+> > min(window_clamp, space).
+> >
+> > This caps it right back to the pre-BPF full_space and discards the BPF
+> > request.
+> >
+> > Conversely, if the application did not set SO_RCVBUF but the BPF progra=
+m
+> > adjusts it dynamically (which sets SOCK_RCVBUF_LOCK),
+>
+> I read the above alike: 'a badly written bpf program could be
+> ineffective'; not much relevant.
+>
+> This version LGTM; Eric do you have some comments?
 
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-On 06/08/2026 13.43, Jonas Köppeler wrote:
-> veth_poll() derives the index of the peer TX queue to wake from
-> rq->xdp_rxq.queue_index. That field is only initialized by
-> xdp_rxq_info_reg() in veth_enable_xdp_range(), which runs only when an
-> XDP program is attached. On the plain GRO/NAPI path
-> (veth_napi_enable_range()) xdp_rxq_info_reg() is never called, so
-> queue_index stays 0 for every queue, as priv->rq is zero-allocated. The
-> same happens once an XDP program is detached while GRO stays enabled,
-> since xdp_rxq_info_unreg() clears the struct again.
-> 
-> So in a multi-queue setup with GRO enabled and no XDP program attached,
-> every NAPI instance looks at the peer's TX queue 0. If veth_xmit() stops
-> peer TX queue 1 because the ptr_ring is full (NETDEV_TX_BUSY), nothing
-> ever wakes it again: the poller draining queue 1 wakes queue 0 instead.
-> veth implements no ndo_tx_timeout, so the netdev watchdog does not kick
-> in either, and the queue stays stopped indefinitely.
-> 
-> Derive the index from the position of the rq within priv->rq instead,
-> which is correct regardless of whether XDP was ever enabled.
-> 
-> Scripts to reproduce the stall are available at
-> https://github.com/netoptimizer/veth-backpressure-performance-testing
-
-I've modified both the reproducer[12] and selftests[13] to detect this.
-Previously reproducer only had a 50% chance to catch this, and we didn't 
-notice, code have been changed to catch this 100% of the time.  The 
-selftests script never hit the bug as it always used one queue, this 
-have been changed to always use two queues, but force/steer traffic to 
-always hit queue index 1 via XPS config (as we want to see the queue 
-build up and ptr_ring HoL queuing effects in the latency measurements).
-
-
-- [12] 
-https://github.com/netoptimizer/veth-backpressure-performance-testing/pull/12
-- [13] 
-https://github.com/netoptimizer/veth-backpressure-performance-testing/pull/13
-
-> Fixes: dc82a33297fc ("veth: apply qdisc backpressure on full ptr_ring to reduce TX drops")
-> Signed-off-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
-> Tested-by: Jesper Dangaard Brouer <hawk@kernel.org>
-
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-
-> ---
->   drivers/net/veth.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-> index 00e34afd858e..e927ef3f47b3 100644
-> --- a/drivers/net/veth.c
-> +++ b/drivers/net/veth.c
-> @@ -961,7 +961,7 @@ static int veth_poll(struct napi_struct *napi, int budget)
->   	struct veth_rq *rq =
->   		container_of(napi, struct veth_rq, xdp_napi);
->   	struct veth_priv *priv = netdev_priv(rq->dev);
-> -	int queue_idx = rq->xdp_rxq.queue_index;
-> +	int queue_idx = rq - priv->rq;
-
-It took me a while to convince myself that this is correct via checking
-the data-structures and how they get allocated.
-
-This is a stable fix so it is good to keep this change as small as possible.
-
-I do feel like we should add a queue_idx to struct veth_rq, and init
-this in function veth_alloc_queues(). This could be a followup to net-
-next IMHO.
-
-
->   	struct netdev_queue *peer_txq;
->   	struct veth_stats stats = {};
->   	struct net_device *peer_dev;
-
+Thanks.
