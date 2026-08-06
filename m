@@ -1,209 +1,298 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395EA3264EA
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 14:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45ABA3D7D8E
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 14:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786026432; cv=none; b=HGggqcWKfcweLAqH+rVuMW9z4hjMVPlJivBD9IG1qpRxIx2wKP1rh2wDpLjTC+mhwOI6id9rNr6tt6VmQyK0M3J0bIYbxXPdebwlwkYuXGDyGLxav57DegEqConaknxEYnCpzcJgS5VsF7DPuBWnS+LX3TmPWd9xgVf7h/yVjTs=
+	t=1786026517; cv=none; b=Ecotlb4E6z/eEI92uS0YbKAn31d0SLUptFLwZAHmzC4BDQDyPnH8U9XSGCmLupbgwdUoqsX/Cv7PNAcVbd1M1YJra42eLqu+yUd9+UOQju/Et40oEGRae1+M3Juo2HATIBwLtW0LY/p5KIB1E7MAjKCQYwH4u3K6CC/vEmLXrh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786026432; c=relaxed/simple;
-	bh=OdYvo27cYJmTskeFS42f3AHx5tmQV7Xz+MWbEZm47A4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=aBjaKmenPV6duL+damRk0GNOmckvlj3F3khL2Qp7xFG/Ffw090E25CJGW7FSUz864YmNctYvbX6/oCSXESGc78ZtuOJEx0yUQL89aYLxzxjStSDKcJeGUqfYDb+cNLVxKBkCvi6BkhiBIm2QF/RbFt4dd2D31apWCYVJcUip1Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YAIh2uQ5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786026517; c=relaxed/simple;
+	bh=nQQlUsSZREMZmv/DBatiBecIEEQiHcUS0NnYho0Kh2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UpFV3FofM3fEmMpRhjfA0cK1cXXhS9VgImMytT4KkngR9aj7EiuJTqFtR+D25xPii99duJ7NET0Vgz5MeWo6kw2jS8ux7f0Huswk2igrBgDhcvlNc4JNfa5XTmGjxTp5/d+dIXrnrZT3xXm1La9aQg/26JwEk7B4SoW0YB5rTFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JOg8PUvc; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YAIh2uQ5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786026430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/C4nRa34lKyttedwF2kyD7o9MlTFizHhgzhDb4TIVHc=;
-	b=YAIh2uQ5PWPzIcwzpi5UsN7bZBRbMVhalI7ufZpnkas4Nap1kezkYn+nRw/UaeFK2chLnW
-	LFKpgNp1y8mUBrbssnlBRpO3puaZaHHqwWuUCVfraEG8vn3SbJY4nTlbjM/ZEfSzqJEBWH
-	WL3p4FK9XJZqmcVSy6gaPZecVwcA+kE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-45pxtHBJMP-kUBYt1l_zwQ-1; Thu,
- 06 Aug 2026 10:27:06 -0400
-X-MC-Unique: 45pxtHBJMP-kUBYt1l_zwQ-1
-X-Mimecast-MFC-AGG-ID: 45pxtHBJMP-kUBYt1l_zwQ_1786026425
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B2EAD1800879;
-	Thu,  6 Aug 2026 14:27:04 +0000 (UTC)
-Received: from [10.44.33.193] (unknown [10.44.33.193])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7E3C630002E9;
-	Thu,  6 Aug 2026 14:27:00 +0000 (UTC)
-Message-ID: <baa0fe21-4c07-49a3-b6c6-2071a59b2f55@redhat.com>
-Date: Thu, 6 Aug 2026 16:26:58 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JOg8PUvc"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-495590dde14so25997035e9.0
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 07:28:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786026513; x=1786631313; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=u9Cf19exgJUbhMN18jsPNMaqk2I9uUSBPntYyt77HUc=;
+        b=JOg8PUvc2z0oiszYefrzBKeatjVNKdKonVY44Dz+rQIkrBArwoOfpa1YzANNgi6Fz+
+         ReIuQvkOV4K6cEtDoZEFMRJjUypR79Gnz7CU9TTJUwPOtdEQP3495leFuG8ZdjGol1rX
+         jqZKCaV5XQ0b9sFvM9EThLAOdAq8x2pfgjkLYRiYyznbcQ2dE6ka4CwawQ5E6jc9jJYB
+         MHUvgDkrTzPUaOaNs96o+pg6s0/yE6Tx6Vuc99iWNbwWXifTkxgA7wcn4raOb/hHVsuo
+         mh/ooOgMPonbyTc3JwO9zXO0h5+QgaaN42rUxpSVmQldU8Xl5smbQ3zwYgvD56P7dE1t
+         zOKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786026513; x=1786631313;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=u9Cf19exgJUbhMN18jsPNMaqk2I9uUSBPntYyt77HUc=;
+        b=d8QQVQvsiHZNBYg//JKwrhumf18gNPjmRYD24UmOG2GR6GvIxZarUrRXVFpnoTa9g1
+         af+9js6G8IK7FVPjezGksAKW/rrAGLd36/pPoBIbyfqO7jxq2E8ZVB9nxWTST333nRG3
+         jWmXUpISIlqh6HTTfa8F8KGPgSy6dnUXY9ldG/SUV2EciFaOsqRF/CTVgWJWvqn+xJ6a
+         d77sFvpayvWog8KeOFV9rkSXacQUi1fidt27LF3BVvvjMZdlJkpX3omkqQz6Oj0CnUc9
+         BmQK+YsqdB2yUHSjP0zIv3q03PIn/zf1FPG/C2Fc35Ds/VKUw4xLyBmLXMyBSv1Vveoo
+         eq5A==
+X-Gm-Message-State: AOJu0YwLTVmul4mreb3/+JaUfsbXHepym6cOnuJERlhmj9vXjkltG9NH
+	k8fBEcJfcQOwgHxfSPQ1vvV3lnHc9LhULTFpjexC66pS/pK+lRempu81elYqt3L4
+X-Gm-Gg: AR+sD11dyhFrhwhIyeJ4APMn2ltCzigvAPaIH19k2334lEVy0yvPOtbETZklWmj1OUG
+	K25uCi3552YcUBlDidFlgnY9Ff0nbQOm7qnPi2elpaNPNSBOKh1WNEc1x2IfG5t6W4X5jPQo5pO
+	At1cs3AX0ugL74+aUFv03JIV+mHG8kVzQf2mmOjkBYMEsePnzSKdWivtW7zRRtmZbc70xDexJ/B
+	Al/Sh4uBPsII5m5pEEFfuRSaRFgZTeJz0WAepT9slxjcreQ3kkYGra01lLV4Ta8a1ogEGQBI3uG
+	5B7eNykLxDKMxu4WKYYOKzKWoh97gNI8GKJAo0g7X9PAmDu7ubE5Bh+rmuTP3fBFeiZeXRuhJwx
+	bOSIW/h4lFsFy/8n0T8vS3Sa5ePGBjHUl73nGClypDRzivY4QaUWimduy1S0qPbTP+FFHYPQjxO
+	t286K1gIq3IAgmCB6KKdBoDfmvCEeYgPZXuYhyGpHhuPXj7WXN2b4j0co=
+X-Received: by 2002:a05:600c:1913:b0:499:5282:f8d1 with SMTP id 5b1f17b1804b1-4995282f8dfmr99990265e9.12.1786026513176;
+        Thu, 06 Aug 2026 07:28:33 -0700 (PDT)
+Received: from fedora ([46.205.219.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995422b741sm72692255e9.14.2026.08.06.07.28.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 07:28:32 -0700 (PDT)
+From: Daniel Pawlik <pawlik.dan@gmail.com>
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org,
+	win847@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Daniel Pawlik <pawlik.dan@gmail.com>
+Subject: [PATCH v3] net: airoha: npu: use coherent DMA for mailbox messages
+Date: Thu,  6 Aug 2026 16:28:16 +0200
+Message-ID: <20260806142816.511515-1-pawlik.dan@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 2/2] dpll: zl3073x: add PTP clock support
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
- Chris du Quesnay <Chris.duQuesnay@microchip.com>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
- Paolo Abeni <pabeni@redhat.com>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org
-References: <20260803140637.102339-1-ivecera@redhat.com>
- <20260803140637.102339-3-ivecera@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260803140637.102339-3-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
 
-Sashiko findings with replies...
+Commit 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox
+buffer") switched airoha_npu_send_msg() to DMA_BIDIRECTIONAL so
+non-coherent CPUs invalidate caches before reading NPU GET responses.
 
- > Do these three depends on lines remove the driver from configurations 
-that
- > have CONFIG_PTP_1588_CLOCK=n? [...]
- > Is the hard dependency needed? [...] Would [PTP_1588_CLOCK_OPTIONAL] be a
- > better fit here?
+On EN7581 + MT7996 that change regresses probe: the mailbox completes
+successfully, but WLAN_FUNC_GET_WAIT_NPU_VERSION still reads as 0.0 and
+mt76 never binds NPU offload. Healthy boards report 0.1111.
 
-This was explicitly requested by Jakub in his v2 review [1]. The driver's
-PTP support is a core feature, not optional functionality.
+airoha_npu_send_msg() is also used from PPE foe_commit under
+spin_lock_bh(), so per-message dma_alloc_coherent(GFP_ATOMIC) is a poor
+fit. Allocate one device-managed coherent bounce buffer per NPU core at
+probe and reuse it under the existing per-core mailbox lock. That also
+keeps the buffer valid if the NPU completes a write after a mailbox
+timeout.
 
-[1] https://lore.kernel.org/netdev/20260722135848.2d401ada@kernel.org/
+Pass an optional reply buffer into airoha_npu_send_msg() so GET callers
+(e.g. airoha_npu_wlan_msg_get) copy the response payload once instead of
+bouncing through the request allocation.
 
- > div_s64() truncates toward zero [...] does a delta smaller than one synth
- > period end up as a 0-cycle step?
- >
- > For a 100 MHz synth, a 5 ns request gives step_cycles == 0 [...]
- > Would it make sense to route the truncated residual through one of 
-the finer
- > mechanisms [...]?
+Verified on Quantum Fiber / Gemtek W1700K (EN7581 + MT7996).
 
-The synthesizer frequency range is 187.5-750 MHz, giving a step
-resolution of 1.3-5.3 ns. The maximum truncation loss is therefore
-one synthesizer period (~5 ns worst case), which is well below the
-noise floor of any PTP servo. The servo will compensate for this
-residual in the next correction cycle. Adding a secondary adjustment
-path for a sub-5 ns residual would complicate the code for no
-practical benefit.
+Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buffer")
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260805070851.2885888-1-pawlik.dan@gmail.com/
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260806072601.1815487-1-pawlik.dan@gmail.com/
+Assisted-by: Cursor:composer-2
+Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
+---
+v3:
+- move coherent mailbox buffer into struct airoha_npu_core (buf/addr)
+- allocate one buffer per core at probe
+- add optional reply buffer to airoha_npu_send_msg() to avoid the extra
+  copy in airoha_npu_wlan_msg_get()
+- document AIROHA_NPU_MBOX_SIZE vs ppe_mbox_data / WLAN payloads
 
- > When the phase step for the second or a later synth group fails, this 
-returns
- > 0 after the warning. Does that leave the outputs of the remaining
- > synthesizers skewed from the ToD?
- >
- > [...] Would propagating the error, or retrying the remaining groups, be
- > preferable to reporting success here?
+v2:
+- allocate one coherent mailbox buffer at probe and reuse it under the
+  per-core lock instead of per-message dma_alloc_coherent(GFP_ATOMIC)
 
-This is intentional. At this point the seconds have already been
-committed via ToD and the first synth group has been stepped with
-tod_step=true. Propagating the error would cause the PTP servo to
-retry the full delta, applying the seconds component a second time -
-a much worse outcome than leaving some outputs with a sub-second skew.
-A regmap/bus error at this stage indicates a serious hardware problem
-that dev_warn() surfaces appropriately. Retrying would likely hit the
-same bus error.
+ drivers/net/ethernet/airoha/airoha_npu.c  | 67 ++++++++++++++++-------
+ include/linux/soc/airoha/airoha_offload.h |  3 +
+ 2 files changed, 51 insertions(+), 19 deletions(-)
 
- > Which synth period does the firmware really use for this ToD-only step?
- >
- > The doc block says "the FW uses the lowest-ID synth's period for the
- > conversion", but first_synth_freq is latched from the first synth 
-that is both
- > enabled and assigned to this channel [...]
-
-The comment is wrong, the code is right. first_synth_freq is the first
-enabled synth assigned to this DPLL channel, not the globally lowest-ID
-synth. I will fix the comment.
-
- > Is it intended that zldpll->lock is held across the multi-second hardware
- > waits that follow?
- >
- > [...] So one clock_adjtime() can park dpll_lock behind zldpll->lock 
-for up
- > to seconds, which blocks dpll netlink operations [...]
-
-This is intentional and follows the standard PTP driver pattern. The
-lock serializes all DPLL and PTP operations for a given channel. The
-timeouts are worst-case values - normal operations complete in
-milliseconds (ToD reads ~1 ms, phase step completes within one synth
-period). The tod_ready_wait for WR_NEXT_1HZ is the only one that
-genuinely waits up to ~500 ms on average, but this only occurs for
-multi-second adjtime calls (>= 1 s delta), which are rare one-shot
-corrections. Splitting the lock would require re-validating channel
-state between operations and introduce race conditions with mode
-changes.
-
- > Should sec_adjusted be set before this tod_ready_wait() error return?
- >
- > [...] ptp_clock_adjtime() passes the error to userspace unchanged, so a
- > servo or tool that retries the same offset applies the whole-seconds
- > component a second time and the clock jumps by twice the seconds part.
-
-The current ordering is correct. If tod_ready_wait() fails, we cannot
-be certain that the WR_NEXT_1HZ was actually applied - the semaphore
-timeout means we do not know whether the hardware committed the
-seconds or not. Returning the error and letting the servo handle the
-retry is the right behavior, because setting sec_adjusted = true
-before confirmation would mask a genuine hardware failure and silently
-report success when the adjustment may not have been applied at all.
-
- > Both mechanisms are asynchronous here, so can a gettimex64() right after
- > adjtime() observe a ToD that has not been stepped yet?
- >
- > [...] Should the phase step and TIE write get an equivalent wait before
- > success is returned to the PTP core?
-
-In practice this is not a problem. PTP servos wait for the next sync
-interval (typically 1-8 s) before reading the clock again. The phase
-step completes within one synthesizer period (1.3-5.3 ns) and TIE
-write settles within the DPLL loop bandwidth. A completion wait would
-add up to 3 seconds of latency to every adjtime call for no practical
-benefit - the sub-nanosecond residual from an in-flight phase step is
-orders of magnitude below the servo's measurement noise.
-
- > Can this multiplication overflow s64 for a value the core lets through?
- >
- > [...] Since 125 is invertible modulo 2^64, a tx->freq around 10^17 can be
- > chosen so the wrapped ppb passes the max_adj test.
-
-This is a pre-existing issue in the PTP core's scaled_ppm_to_ppb()
-helper, not in this driver. For in-range values (bounded by max_adj =
-10^7 ppb, |scaled_ppm| up to ~6.6e8), the product is ~4.4e16 which
-is well within s64 range. Exploiting the wrap in scaled_ppm_to_ppb()
-requires deliberately constructed tx->freq values around 10^17 and
-CAP_SYS_TIME privilege. A driver-side guard would be papering over
-a core bug.
-
- > The kernel-doc just above says "Return: 0 on success, -EOPNOTSUPP if 
-NCO pin
- > is not connected", but this returns 0 for a non-NCO channel whenever
- > scaled_ppm == 0. [...]
- >
- > zl3073x_dpll_ptp_adjphase() has the same mismatch [...]
-
-This is intentional - a zero adjustment is a no-op and succeeds
-regardless of mode. Will update the kernel-doc to reflect this
-behavior.
-
- > The name is built only from the per-device channel index, so two ZL3073x
- > chips in one system expose PTP clocks with identical ptp_clock_info.name
- > [...] Should dev_name(zldev->dev) be part of the PTP clock name too?
-
-Good catch. Will include dev_name() in the PTP clock name, consistent
-with the kworker naming pattern.
-
-Thanks,
-Ivan
+diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+index b679bed952de..e1e0ddb92f03 100644
+--- a/drivers/net/ethernet/airoha/airoha_npu.c
++++ b/drivers/net/ethernet/airoha/airoha_npu.c
+@@ -23,6 +23,12 @@
+ #define NPU_EN7581_FIRMWARE_RV32_MAX_SIZE	0x200000
+ #define NPU_EN7581_FIRMWARE_DATA_MAX_SIZE	0x10000
+ #define NPU_DUMP_SIZE				512
++/*
++ * Mailbox DMA payload size. Covers sizeof(struct ppe_mbox_data) (28) and
++ * WLAN TLV messages (header + payload); largest in-tree WLAN payload today
++ * is 16 bytes (INODE_TXRX_REG_ADDR). Keep headroom for future commands.
++ */
++#define AIROHA_NPU_MBOX_SIZE			256
+ 
+ #define REG_NPU_LOCAL_SRAM		0x0
+ 
+@@ -161,21 +167,32 @@ struct wlan_mbox_data {
+ };
+ 
+ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+-			       void *p, int size)
++			       const void *req, int size,
++			       void *rsp, int rsp_off, int rsp_len)
+ {
+ 	u16 core = 0; /* FIXME */
++	struct airoha_npu_core *c = &npu->cores[core];
+ 	u32 val, offset = core << 4;
+-	dma_addr_t dma_addr;
+ 	int ret;
+ 
+-	dma_addr = dma_map_single(npu->dev, p, size, DMA_BIDIRECTIONAL);
+-	ret = dma_mapping_error(npu->dev, dma_addr);
+-	if (ret)
+-		return ret;
++	if (size > AIROHA_NPU_MBOX_SIZE ||
++	    (rsp && (rsp_off < 0 || rsp_len < 0 ||
++		     rsp_off + rsp_len > size)))
++		return -EINVAL;
+ 
+-	spin_lock_bh(&npu->cores[core].lock);
++	/*
++	 * Mailbox payloads are bidirectional (CPU request, NPU response).
++	 * On EN7581+MT7996, streaming DMA_BIDIRECTIONAL against the
++	 * caller kzalloc() buffer can leave WLAN_FUNC_GET_WAIT_NPU_VERSION
++	 * reading as 0.0 despite MBOX success. Reuse a probe-time coherent
++	 * bounce buffer under the per-core lock (also used from PPE
++	 * foe_commit under atomic context).
++	 */
++	spin_lock_bh(&c->lock);
++
++	memcpy(c->buf, req, size);
+ 
+-	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, dma_addr);
++	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, c->addr);
+ 	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(1) + offset, size);
+ 	regmap_read(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, &val);
+ 	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, val + 1);
+@@ -189,9 +206,10 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+ 	if (!ret && FIELD_GET(MBOX_MSG_STATUS, val) != NPU_MBOX_SUCCESS)
+ 		ret = -EINVAL;
+ 
+-	spin_unlock_bh(&npu->cores[core].lock);
++	if (!ret && rsp)
++		memcpy(rsp, c->buf + rsp_off, rsp_len);
+ 
+-	dma_unmap_single(npu->dev, dma_addr, size, DMA_BIDIRECTIONAL);
++	spin_unlock_bh(&c->lock);
+ 
+ 	return ret;
+ }
+@@ -343,7 +361,7 @@ static int airoha_npu_ppe_init(struct airoha_npu *npu)
+ 	ppe_data->init_info.wan_mode = QDMA_WAN_ETHER;
+ 
+ 	err = airoha_npu_send_msg(npu, NPU_FUNC_PPE, ppe_data,
+-				  sizeof(*ppe_data));
++				  sizeof(*ppe_data), NULL, 0, 0);
+ 	kfree(ppe_data);
+ 
+ 	return err;
+@@ -362,7 +380,7 @@ static int airoha_npu_ppe_deinit(struct airoha_npu *npu)
+ 	ppe_data->func_id = PPE_FUNC_SET_WAIT_HWNAT_DEINIT;
+ 
+ 	err = airoha_npu_send_msg(npu, NPU_FUNC_PPE, ppe_data,
+-				  sizeof(*ppe_data));
++				  sizeof(*ppe_data), NULL, 0, 0);
+ 	kfree(ppe_data);
+ 
+ 	return err;
+@@ -386,7 +404,7 @@ static int airoha_npu_ppe_flush_sram_entries(struct airoha_npu *npu,
+ 	ppe_data->set_info.size = sram_num_entries;
+ 
+ 	err = airoha_npu_send_msg(npu, NPU_FUNC_PPE, ppe_data,
+-				  sizeof(*ppe_data));
++				  sizeof(*ppe_data), NULL, 0, 0);
+ 	kfree(ppe_data);
+ 
+ 	return err;
+@@ -411,7 +429,7 @@ static int airoha_npu_foe_commit_entry(struct airoha_npu *npu,
+ 					  : PPE_SRAM_SET_ENTRY;
+ 
+ 	err = airoha_npu_send_msg(npu, NPU_FUNC_PPE, ppe_data,
+-				  sizeof(*ppe_data));
++				  sizeof(*ppe_data), NULL, 0, 0);
+ 	if (err)
+ 		goto out;
+ 
+@@ -420,7 +438,7 @@ static int airoha_npu_foe_commit_entry(struct airoha_npu *npu,
+ 	ppe_data->set_info.size = sizeof(u32);
+ 
+ 	err = airoha_npu_send_msg(npu, NPU_FUNC_PPE, ppe_data,
+-				  sizeof(*ppe_data));
++				  sizeof(*ppe_data), NULL, 0, 0);
+ out:
+ 	kfree(ppe_data);
+ 
+@@ -443,6 +461,7 @@ static int airoha_npu_ppe_stats_setup(struct airoha_npu *npu,
+ 	ppe_data->stats_info.foe_stats_addr = foe_stats_addr;
+ 
+ 	err = airoha_npu_send_msg(npu, NPU_FUNC_PPE, ppe_data,
++				  sizeof(*ppe_data), ppe_data, 0,
+ 				  sizeof(*ppe_data));
+ 	if (err)
+ 		goto out;
+@@ -475,7 +494,8 @@ static int airoha_npu_wlan_msg_send(struct airoha_npu *npu, int ifindex,
+ 	wlan_data->func_id = func_id;
+ 	memcpy(wlan_data->d, data, data_len);
+ 
+-	err = airoha_npu_send_msg(npu, NPU_FUNC_WIFI, wlan_data, len);
++	err = airoha_npu_send_msg(npu, NPU_FUNC_WIFI, wlan_data, len,
++				  NULL, 0, 0);
+ 	kfree(wlan_data);
+ 
+ 	return err;
+@@ -497,9 +517,9 @@ static int airoha_npu_wlan_msg_get(struct airoha_npu *npu, int ifindex,
+ 	wlan_data->func_type = NPU_OP_GET;
+ 	wlan_data->func_id = func_id;
+ 
+-	err = airoha_npu_send_msg(npu, NPU_FUNC_WIFI, wlan_data, len);
+-	if (!err)
+-		memcpy(data, wlan_data->d, data_len);
++	err = airoha_npu_send_msg(npu, NPU_FUNC_WIFI, wlan_data, len,
++				  data, offsetof(struct wlan_mbox_data, d),
++				  data_len);
+ 	kfree(wlan_data);
+ 
+ 	return err;
+@@ -770,6 +790,15 @@ static int airoha_npu_probe(struct platform_device *pdev)
+ 	if (err)
+ 		return err;
+ 
++	for (i = 0; i < ARRAY_SIZE(npu->cores); i++) {
++		struct airoha_npu_core *core = &npu->cores[i];
++
++		core->buf = dmam_alloc_coherent(dev, AIROHA_NPU_MBOX_SIZE,
++						&core->addr, GFP_KERNEL);
++		if (!core->buf)
++			return -ENOMEM;
++	}
++
+ 	err = airoha_npu_run_firmware(dev, base, &res);
+ 	if (err)
+ 		return dev_err_probe(dev, err, "failed to run npu firmware\n");
+diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
+index 7589fccfeef6..16a988ad7467 100644
+--- a/include/linux/soc/airoha/airoha_offload.h
++++ b/include/linux/soc/airoha/airoha_offload.h
+@@ -173,6 +173,9 @@ struct airoha_npu {
+ 		/* protect concurrent npu memory accesses */
+ 		spinlock_t lock;
+ 		struct work_struct wdt_work;
++		/* Coherent bounce buffer for mailbox cmd/rsp */
++		void *buf;
++		dma_addr_t addr;
+ 	} cores[NPU_NUM_CORES];
+ 
+ 	int irqs[NPU_NUM_IRQ];
+-- 
+2.55.0
 
