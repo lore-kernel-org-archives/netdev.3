@@ -1,185 +1,183 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC112BD022
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 10:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786012254; cv=pass; b=QKXY475SFRPw7zh/XSnVYBXn3WgIcDI0Jd6HlkWkHDxs1oN+5sl7yDPohBO99gfru8G5ux2eDx0vgXLqQvNQzxe6F1FCLwnqRqJi4jZ9ymbM1HRurIG9SXvBNguiG3p7AfAjulgXT2hmhMtaKunDejPnob25Vl92SBHVad0TCZI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786012254; c=relaxed/simple;
-	bh=yNODrHMOxqtsepyb3/L6hnh/XsDj3IikQhu/sC8GM7Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dt6Vbl41X0E6BPORoCMRn1ymY/W4WqFe2dRQx4vlUlCTiWFqitp7RPLOpXKogGsqdkznWs3q7f3elIL4yzG5QObMkBBIMHVXU3X/0N7JZm9Yo/7KpjWO1y9c4KuduqAewhlyi/7HdRZiiH4yZucCdaZDkASVo7oTr1w0vCF2o9Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UXnif/gD; arc=pass smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6456E43DA31
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 10:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786012510; cv=none; b=oAYNxj9eSodbLum+kObf0Yich8Htr1MVc6otjCCu8pIEqKKL5DWsp1Z/7rHyodEVe4IVpiFrVaX/0km+3068aJCW9i8GftnrXpdOlvhyyNKbelFH8bRFs1YTg4sO+Mm/4eh/melGQPL+unA7yUxcYCAdDeKjfhYPU8uxqcUKprc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786012510; c=relaxed/simple;
+	bh=NIfmBcIS8AUrGupvQOZ7x2SRlwytFniaM+5zsSUMgVo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rk8FIhMb5ZsjUC2FsRU8zi04S5VWPZ7ErhIcQN7j11fQH/C7E7EluHFtKgjwaaEIlyqoI45paFKCHnN4LZv1wXoOr0OGf/SMZreIbKmlDJd4sBsgHcnAi9rYta4M+tuNY43GFo98HR1otVOnwhel6hUbsR44V56rDa+3vhB1MDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LQcn6qHT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iQqNCssb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UXnif/gD"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-529a1ee0e62so13069841cf.2
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 03:30:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786012252; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Tk6gyB3oZIvYCZY24EpfeFHnwzCyWnlzyECF5+GgCyT7qg6uTPc/ly7LzJKf40csod
-         ACYW3Hg8IA53qH1ysHxgopWyHuO5LMTvCft+Jwim1OU0t8qvyhfx1RS3Ojkcco7u5m7S
-         qfntxvYWXxrvyyJLjVEANQSHDDbvDmfftBq2q5k+why771GrFiiHB33An82JJUBY2tRM
-         lLUXD6EDvFN9g1QTOH/4Q6n+9mSLD8szm4d9wBysAYxAy6+BL3Df5DpZ2jq8mc7h175y
-         nV5aG5Ov3zZPHFA/vYfLmpCFI2UaMGera9+tsQgQHD2CCY57wJjBq99sZFbpFySKusuG
-         afGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kpmfGa9DySgqH1p+t3aSoi4fYsVddD61gTFSw31rqcc=;
-        fh=11rvjRW6voaPKktfp638TcMvFDyng7+9kH2N8nHlEV8=;
-        b=a9AfRm/n3k7dedEi7WkCx9cMIEbmCQXeaCuP9IjTDAXIOu/QUDQYEd3A1hNS8kzmpw
-         vlf8CgiA9IBPN1eoptb3T/HVjM4tT5npcadDqhVdEzWdNnZnJD+mCm+SkShGja/nKn6u
-         DN1aTqTef4URs1CxuOPyC8GTqa5T0pjwUGlR5NeW95sP9RLRx6DPQUudjckrZciMnlkC
-         4FAL6+Hf93JWGGguqojfqHtl5KRPBndZ7TUxhFixR6YjrMVrtxDhpiEhhSLl1W4TLX4D
-         R0CV8Gss4AsIesluNLJ7kgecXpty0WXzXUYaUrfvE4wGOOS0qJIp5BBeG+mgF40r8YlW
-         fS3g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LQcn6qHT";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iQqNCssb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786012507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DJYQ27Sjsp6jth/HjB+z5OpRp2AnhJkmpaIw+MV/sWQ=;
+	b=LQcn6qHTA1Pl+4mq+l6sLwVXjFqdjQydBHQa8fxCMy+yMtDObbrDQb62loFp7Y9JAsPW6E
+	ygL0WZdLE/zSoDwnL1NZCmHvSsqMuP/YPyZvc38KBfIacYEOQjfawm/gp6FZEPfa4Q1KZW
+	DdWEEIKiRe2O2ANK0pNerz5WVO7Stro=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-392-mxGtJHxCMKK696G9Xo0tsA-1; Thu, 06 Aug 2026 06:35:06 -0400
+X-MC-Unique: mxGtJHxCMKK696G9Xo0tsA-1
+X-Mimecast-MFC-AGG-ID: mxGtJHxCMKK696G9Xo0tsA_1786012505
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-496b408a5c0so11289655e9.0
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 03:35:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786012252; x=1786617052; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kpmfGa9DySgqH1p+t3aSoi4fYsVddD61gTFSw31rqcc=;
-        b=UXnif/gDI3vSAF58JTc6Cfy4QMeJc2GCbwZEvKZy1SteKajtmJU2uvdAKwj1yPfOY2
-         SusR/QbEKkJzmJ1sP99tWfo0DTy5AV9zXKQ48SFhgPJGFNJ9gVTk1VmUIfN+sthOsjoi
-         5fzewhJMJcNZv+IMXLNLIDjE45wok+2MFqUUNxmgAnXV/jchW9RGyPzh5MiTAnXJUYrO
-         cxAy+nR5sncSZxZYQ01XRZEFh9fOUSCer6xVXf1IrurRWmTo4LX2TKO6DwQGTsawejp+
-         e41TzwYFSF4kiOUSWXpEjsXvdOFpDQXdgBR54KYm5qO9b/gpQqcGEbbNzGBlwZpS5vkD
-         x81A==
+        d=redhat.com; s=google; t=1786012505; x=1786617305; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DJYQ27Sjsp6jth/HjB+z5OpRp2AnhJkmpaIw+MV/sWQ=;
+        b=iQqNCssbILnvVFNoN7TfO13u98GwooZneMdFzf5ekOunXSx+YBOLSw9rh9MjC0/7pF
+         ClGGhsqCsmvumCWcVgP2szVbaSoiYH4HHka6vh54t6NcwIvnM2xywIOyGTEe/awjeTXN
+         VqDHAqVpp3rnzur/2w+i95FQWaWyROKINjPQ2Fw3kzLt6+JsdtJ0TF1fYRYDO7fFsXzj
+         KLlokKROs+QwZPGvE3BwCviYN6GywST+ws6bHacExBYUrhPUqIKc1I3hJE0fbBNSz4VU
+         ACEmsirLF9o8un/vjdDImKjcc9K14GujOG/AeWNPH0Lkri9fRG7ubeNx4sZePZg2tq5u
+         BWdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786012252; x=1786617052;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kpmfGa9DySgqH1p+t3aSoi4fYsVddD61gTFSw31rqcc=;
-        b=mzuqepB2vaoo+U0elRcwLbWGWd/wV1LefHjveSwCUXaFEtajVAkDqMCwYRM1PaDa6E
-         ZH2mzqXwyDMd9hXOQBTLh/EDUDlE6slEezncdTmJuAYKjrtlXM8fwnhhjLX9VVGdlFrY
-         pUyRvpzfnYyKiD1e/C3gkaiIId3wYUgSQZKJKTESnp4tpIIIF9gUwDKpjeKG7QB5CTFO
-         Bf+BG2sxfYsb6IM1qwTkacnORgx1FS+1Y/K+KNv5WwGAhPV8xUR4tafUSGAIUJCppu56
-         X3uDbLSyzjDuWOlLPJ+k9oywCREe9L2buc++XJOO1btyNM2hUz7wuSwW5ItH5VZz/g12
-         FVkQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqVhKf/2PHR45v71YGcPtOcARv9R2/PKHD3lG1VdhFmLcrirJvEFX2qAHt5XTfRmKsjyTzDyak=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdRS2bNPDegxPHp+AeU0idZSD0B6S8r00x1jmgUzYH51VCs3vH
-	jRqsa9Qstmamv+fZKhJOEA+vC/yP+yFj29T4Lx8ErdR5j249xDKLbrWVLLCWW/+L2LY9V+wgeGd
-	WBXNc9sHtcOBHh24shCMr6s65wlO5W2B+nD6u7FBp
-X-Gm-Gg: AR+sD13/2k8iEqLw/XC7CYmGE7KywtvJ/GMJtGELhspKYVh2RVGdml2Fh9u3DUAVqDL
-	sNAEp1SmvUrsv6wDqz3GVGIvOja1QPT9nd+FF5Pfxom+ENk8bmYBPE1HgCJUiIeaDKOoiLBRex8
-	HQr8k0WWrQvXJNpWQTW1WdG7Zxie7O/rVxYCL+Um4hxvoafyvx81CtZP2vDQ+kz1tEeeXhTrVPF
-	QSUgIrsEqav8xtizZRcehIYH6tbZBK8NhKKoQdfs/rIAn1YdDeMJg9xwFnP2inJv4fvU3XpD0ne
-	BABtHxHSxa0gDWUBMOdFeBghfECcOxld04nYEeDnJZ0DeXKYIGoqrkEM8tFqUtLt1iRLssflYs+
-	9b5l2khqi+LpojphSCMZhaL+NzyjzzzKOdYdulCjsL8tif7i1KIPieaAq2etLlPdgIzg9iZM7jh
-	1yOQ==
-X-Received: by 2002:a05:622a:4083:b0:51c:2190:3b56 with SMTP id
- d75a77b69052e-52ce6144dc8mr150061011cf.21.1786012251418; Thu, 06 Aug 2026
- 03:30:51 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786012505; x=1786617305;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DJYQ27Sjsp6jth/HjB+z5OpRp2AnhJkmpaIw+MV/sWQ=;
+        b=rYplQtLka4lDpQlNxnEjrx9REu2fav2KRpB9+d/lL6nt/soarm0Ju1IvkjzlYx7ceh
+         CeqrWuDhuB7URiICceu1O+IwXXF1ixRUo2Nf+JT1D76joBVhmhR4Vo6l52WGsjuNvgsy
+         Z05qrlXLYCP12gK374rbX1Hy0WgbzoNeWzCBMmvP5AZfln0L71nWFIzb75SszA4rUC9Y
+         pARZxsKmDeTCd60dx2DiDK97BoBD7AuS/hFnk5Lnydd6XX/YQMN+DyKr0EmKS9LaJEAY
+         RUlwIgSoM6TU9pM2uyIGwTLHIZsA5HXhku7oZavtyQtkycHhU7BlFZ+vPdteP0srByBD
+         fwUw==
+X-Forwarded-Encrypted: i=1; AHgh+RpAIJ6b8Gfcsqo7Uf1eLKFQ3zp5Zgbfw7Mv/+ozomnAK3PBFFZgwAESIcqzfNJyiSwr8BLZulo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYUyMO7C6m0obVn5KPJPI7/Ac223uQ86R4o06F3DcnaAUGy/ee
+	+UpB6o2+6Sz/98Q3fUxzgbHvdoZxZyC4fYioklbJcpfe8iCGYdJBjteplTu8cs5skJJq+PzYjBy
+	ZjybWXr8OyQlzFJJ3TZ2U6HQZGInRGbNXtAp5WrSVYuNRpT7oyPoPc8Q61A==
+X-Gm-Gg: AR+sD118hd1+hDqKb8B915T3mWfnGAfPG9oqVmhLa5+4Gq7MAnjUmOj06jaAPMCd27S
+	h8alyYIaI33X+CLoS0oNM/OZjwyl1QeI5IIcbwRCA8EXLSitAC/nap27LwXOjxZh5RUwQMU8SZP
+	Gt3wregiM8pTDGoKH9YAs5MSOTZRyqJrA/G9mBgaC0BQ5pCjPuS4jIDmVTrmmH5Fxg/Q5FmodCU
+	AbfRLZ/4g8dsLDVjjGtZYSO/fK6YG6le9TnatYy77S8J7Wyh8fvQX7lb8PieluSg8yM+Ed45ifS
+	B5MM3NDNEJ/T75CbXkWkxnujsNMQwfhWA6fk5aO7y8QLoguUjBD2H4t3PxdX8gUzF23Ul2S+gu4
+	xpU19AD0i78rut/Ds3S1GjIeNVrhfXtjh79pIQmA7zShVU2GZOVdPU3+ACz2Oy1ydc+U9ad3u8H
+	E=
+X-Received: by 2002:a05:600c:3583:b0:499:59e9:64 with SMTP id 5b1f17b1804b1-49959e900b4mr2389075e9.12.1786012504788;
+        Thu, 06 Aug 2026 03:35:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:3583:b0:499:59e9:64 with SMTP id 5b1f17b1804b1-49959e900b4mr2388435e9.12.1786012504257;
+        Thu, 06 Aug 2026 03:35:04 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499542241c4sm49753095e9.11.2026.08.06.03.35.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Aug 2026 03:35:03 -0700 (PDT)
+Message-ID: <4fc3b9f1-4bef-4b34-ae7a-e89037cce829@redhat.com>
+Date: Thu, 6 Aug 2026 12:35:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260804155416.2168523-1-edumazet@google.com>
-In-Reply-To: <20260804155416.2168523-1-edumazet@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 6 Aug 2026 12:30:40 +0200
-X-Gm-Features: AUfX_mwDlha8y5wKNg_BJLLkzQR9LM5N4YybbebPTeMasjnVz6Z5VJCBy402zPs
-Message-ID: <CANn89iLr4EQxBAKikZCeXbXEk-pjmT4mq3d=D2P01MtNSUgwrg@mail.gmail.com>
-Subject: Re: [PATCH net] ipvlan: inherit needed_headroom from phy_dev
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com, 
-	Tangxin Xie <xietangxin@h-partners.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/3] net: hsr: clone before updating path and LAN
+ IDs in tagged frames
+To: Xin Xie <xiexinet@gmail.com>, davem@davemloft.net, kuba@kernel.org
+Cc: edumazet@google.com, horms@kernel.org, shuah@kernel.org, lukma@denx.de,
+ m-karicheri2@ti.com, fmaurer@redhat.com, luka.gejak@linux.dev,
+ bigeasy@linutronix.de, ali@iusegentoo.com, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260802202504.2962-1-xiexinet@gmail.com>
+ <20260802202504.2962-3-xiexinet@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260802202504.2962-3-xiexinet@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 4, 2026 at 5:54=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> ipvlan devices inherit hard_header_len from phy_dev during ipvlan_init(),
-> but leave needed_headroom set to 0.
->
-> When the underlying phy_dev (or stacked lower device) requires extra head=
-room
-> for headers (e.g. macsec, ipsec, wireguard, tunnels, or veth with rx head=
-room),
-> upper layers calculating packet headroom via LL_RESERVED_SPACE(dev) fail =
-to
-> reserve sufficient headroom.
->
-> This can result in reallocation failures, skb headroom underflows, or KAS=
-AN
-> slab-use-after-free crashes when dev_hard_header() / ipvlan_hard_header()
-> prepends header data.
->
-> Fix this by:
-> 1. Inheriting needed_headroom from phy_dev in ipvlan_init().
-> 2. Propagating needed_headroom updates to attached ipvlans in
->    ipvlan_device_event() when receiving NETDEV_FEAT_CHANGE events.
->
-> Note that a similar issue exists in macvlan and will be handled in anothe=
-r
-> patch.
->
-> Fixes: 2ad7bfab3016 ("ipvlan: Initial check-in of the IPVLAN driver.")
-> Reported-by: syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/netdev/6a720a21.40259c87.584f4.04bb.GAE@g=
-oogle.com/T/#u
-> Reported-by: Tangxin Xie <xietangxin@h-partners.com>
-> Closes: https://lore.kernel.org/netdev/CANn89i+1EW-sFNK8xoq98gMbPCeLS7e=
-=3D+rs9gHfLg5Wj+4x0sw@mail.gmail.com/T/#mcc6307f115e500df23ea2980d5669fe95f=
-20b6b4
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  drivers/net/ipvlan/ipvlan_main.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan=
-_main.c
-> index ed46439a9f4eb1dd8bfaf6c83476ba4f2aff31bc..7513c005a5121676d3f8edb08=
-98492ad434a9fab 100644
-> --- a/drivers/net/ipvlan/ipvlan_main.c
-> +++ b/drivers/net/ipvlan/ipvlan_main.c
-> @@ -146,6 +146,7 @@ static int ipvlan_init(struct net_device *dev)
->         dev->lltx =3D true;
->         netif_inherit_tso_max(dev, phy_dev);
->         dev->hard_header_len =3D phy_dev->hard_header_len;
-> +       dev->needed_headroom =3D phy_dev->needed_headroom;
->
->         netdev_lockdep_set_classes(dev);
->
-> @@ -773,6 +774,7 @@ static int ipvlan_device_event(struct notifier_block =
-*unused,
->         case NETDEV_FEAT_CHANGE:
->                 list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
->                         netif_inherit_tso_max(ipvlan->dev, dev);
-> +                       ipvlan->dev->needed_headroom =3D dev->needed_head=
-room;
->                         netdev_update_features(ipvlan->dev);
->                 }
->                 break;
+On 8/2/26 10:25 PM, Xin Xie wrote:
+> hsr_create_tagged_frame() and prp_create_tagged_frame() update the
+> path/LAN ID in the received skb data buffer and then skb_clone() it
+> for the egress port. When the same frame is forwarded to both slave
+> ports, the second port ID update lands in the same shared buffer the
+> first port clone still points at; if that clone is still queued
+> (qdisc backlog, NETEM, BQL), it is transmitted with the second port
+> ID - a silent on-wire corruption.
+> 
+> One always-available trigger is the master transmit path: a
+> pre-tagged frame transmitted on the master (for example injected
+> locally via AF_PACKET with a valid RCT) passes prp_fill_frame_info()
+> with frame->skb_prp set, the master-origin gate lets it through to
+> both slaves, and both slaves run prp_set_lan_id() + skb_clone() on
+> the same buffer. Tagged frames arriving on an HSR RedBox interlink
+> take the analogous path through hsr_create_tagged_frame(). Normal
+> traffic tests do not expose the race: the window between the first
+> dev_queue_xmit() and the second ID write is only a few instructions
+> and opens only under egress backpressure. With a 200 ms netem delay
+> on one slave, all 200 injected frames left that slave carrying the
+> other slave LAN ID in testing.
+> 
+> Reorder both helpers: clone first, privatize the clone with
+> skb_cow(), reacquire the header/trailer pointer, then update the ID.
+> skb_cow() is used rather than skb_cow_head() because privacy is
+> needed for the whole linear area, not only the header: the HSR tag
+> sits in the head, but the PRP RCT sits at the linear tail.
+> skb_get_PRP_rct() computes the trailer from skb_tail_pointer(), so
+> the returned pointer is always inside the linear area that
+> pskb_expand_head() copies; frames with a nonlinear tail are
+> mis-parsed by the existing helper regardless and are out of scope
+> here. (Both wrappers currently reach pskb_expand_head(); they differ
+> in the cloned-data predicate, and correctness here needs full data
+> privacy, not only header privacy.) This adds one linear-head copy
+> per tagged egress; untagged master traffic keeps the existing
+> __pskb_copy() path and pays nothing from this patch.
+> 
+> Fixes: 451d8123f897 ("net: prp: add packet handling support")
+> Reviewed-by: Ali Ahmet Memis <ali@iusegentoo.com>
+> Tested-by: Ali Ahmet Memis <ali@iusegentoo.com>
+> Signed-off-by: Xin Xie <xiexinet@gmail.com>
 
-Sashiko suggests to also inherit  needed_tailroom.
+Please try to condense a bit your commit message: too much text is alike
+no text at all.
 
-I will add this in V2, although I think devices having a non zero
-needed_tailroom handle the case just fine,
-since TCP never cared.
+> @@ -377,15 +389,28 @@ struct sk_buff *prp_create_tagged_frame(struct hsr_frame_info *frame,
+>  	struct sk_buff *skb;
+>  
+>  	if (frame->skb_prp) {
+> -		struct prp_rct *trailer = skb_get_PRP_rct(frame->skb_prp);
+> +		struct prp_rct *trailer;
+>  
+> +		/* Same sharing hazard as above: privatize the clone data
+> +		 * before updating the LAN id.
+> +		 */
+> +		skb = skb_clone(frame->skb_prp, GFP_ATOMIC);
+> +		if (!skb)
+> +			return NULL;
+> +		if (skb_cow(skb, 0)) {
+> +			kfree_skb(skb);
+> +			return NULL;
+> +		}
 
-This is a pre-existing issue, but since we are inheriting needed_headroom t=
-o
-avoid reallocation failures, should we also inherit needed_tailroom here?
-If the underlying device requires tailroom for trailers or ICVs (like MACse=
-c
-or IPsec), failing to set needed_tailroom will cause packets to be realloca=
-ted
-and copied on the fast path. It could also potentially trigger skb_over_pan=
-ic
-if the driver appends data without checking.
+This is the verbatim copy of the previous chunk; please create a shared
+helper instead.
 
-pw-bot: cr
+While at it, sashiko notes this leaves the else branch open to the same
+issue:
+
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260802202504.2962-1-xiexinet%40gmail.com
+
+Note that the data race on the dev stats can be addressed later in
+separate series, as there are already many occurrences in the hsr code.
+
+Also be aware of net-next commit c82ff94592fb.
+
+/P
+
