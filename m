@@ -1,81 +1,60 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE83841D626;
-	Thu,  6 Aug 2026 08:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E6D25B2F4;
+	Thu,  6 Aug 2026 08:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786005937; cv=none; b=KQyiUofFbP+Z36r79gFiujt+MRv1vn4OMbiOLgvQJ1fK7XZXCeheihldzxUivDuTa3ry47zyDlNuDXn3dADwL4GpVKd3cQ5R9E5k4R8Tfm2dHIt9kfzOQZhpgihaqm/merFqB++wcbzmbcpQXgpCqqOMUvhDeJ0/cSlZo08t+E8=
+	t=1786006239; cv=none; b=qg82M7KqETtbyeDxP8hZbJJSro2eE8Ul+SyBrbcMZewiXhh9AxN1LeBO2a/677rLkMBM9zGtWkvgVZuSWrbw8DUDOdAZJSuCWxHIn4DVC1Cxu9vEMUOioFM7r5GEOewEHGIR7OpVqVR8CqFx+6PuJRFleOBPKEhIey5Fmi9EelU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786005937; c=relaxed/simple;
-	bh=tQOGWflLxgUlJiz0YryMhWdMd5Sc9MHtenKd52ltzzc=;
+	s=arc-20240116; t=1786006239; c=relaxed/simple;
+	bh=vyzg7piNovw7zLe8IegZE+HcioBWNVQ+zkupiGhfNU8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OB/onFBBpn25FfW8Rx7+FMzbxyT+RrhrXTVK8UcfjsNYDjZGRWcADnAeBAEYUkdChCBhJUTX+LRsbYeO5XZNqNRQeEYnQR8ZR/ybTaUdHWilGeWz0/YecTNgjeND6IIFHvyGHWXX8W/usNykfu8+A9pXqsXQra1zq04ccUt8HqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KhNCGvV3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LzMNa21Q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=r+Zz4bJ5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Fn14qJ4O; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 In-Reply-To:Content-Type; b=hNVanRyk2j5UuvrLwtnjhJsddhOrb0SQjMHzVSZz0UCNc+wD03FdNtMCtI4gSI9rd8C1UjdAINOMhPb7jZ6U0RaJi+xzhceksWL4FO2RtOYNba0ZloPrlXGu1H3xwGjjxw2F/iqkEI6FgUHGyYZhGjMOhdoISXXguuGD/kU2+Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mTenKd7h; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KhNCGvV3";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LzMNa21Q";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="r+Zz4bJ5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Fn14qJ4O"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 59F387FF47;
-	Thu,  6 Aug 2026 08:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786005929; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GjRNSC6HwrsT5cr6zNghK1KCOASTQbMMQP6CzvGJHPE=;
-	b=KhNCGvV30uDGfuv0mBxpkcNtJRuib1G1AIZEinlV5c+2UPuTBNODyv8sGeAdhvzB9SdkS8
-	zw4Rsm5z4/1fhFNrAWvbcYCZDHJD5tnY4Rbu5GJH8atbeFY/IqDra22aqqUXRb8572b0/q
-	eQY+otRYnJ96TwLkDEq94slU82xeW+g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786005929;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GjRNSC6HwrsT5cr6zNghK1KCOASTQbMMQP6CzvGJHPE=;
-	b=LzMNa21Q+WmTW3YlKZ8BMvKdCK1BHjIXeKPzfHcyi8vslUhAYn5ca/KclcqsDUPdp/StEk
-	XnzohW2yY4xKQ9Dg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=r+Zz4bJ5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Fn14qJ4O
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786005925; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GjRNSC6HwrsT5cr6zNghK1KCOASTQbMMQP6CzvGJHPE=;
-	b=r+Zz4bJ57b2hmXhgnECwSdxpl8TV8yykfAVsv53UiyYpe0MVBH7HKFhQNPlhukIEjWN5zZ
-	x2w2N7vOs+5mTFW3k1FhFEKwPyYNwWicVK6n29K3hGxfgsZKUSnvbR7uV7n/p+5Oznu+mW
-	yN6nc0cZFIvvBeUhyktMCf3yUmWfInc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786005925;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GjRNSC6HwrsT5cr6zNghK1KCOASTQbMMQP6CzvGJHPE=;
-	b=Fn14qJ4O/Yq1pM33Ps/mgiYPiRX+Wl+sPn9CWTFNfuo/gBDErCgbTprEiIGLnp8jwnW09e
-	9d6qsM7HavA6bDBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8C974779B6;
-	Thu,  6 Aug 2026 08:45:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eASGH6RJdGorfgAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Thu, 06 Aug 2026 08:45:24 +0000
-Message-ID: <824bc2e7-5ee7-441b-949d-817817f32fd0@suse.de>
-Date: Thu, 6 Aug 2026 10:45:10 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mTenKd7h"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675NlgRS1066119;
+	Thu, 6 Aug 2026 08:50:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=W9qg6B
+	U5J2eP2WtS8IpkXouMPnmOqejfPhQHyKQJA8g=; b=mTenKd7hAqz4S8aXZbjOlu
+	wxaXadW3QskvO1IefQOGunFsC8q5ZbCaI/4sPyw4znT6/9MmxdOUEyFJ1fyAE7th
+	6Jnr7oPhcTvq7hkoygAfJabctfAN2FQ8g+jIxtIyLD3Qe+paG2jAoW7WfVqoF9dW
+	yAv7jCGpa0vUkP6ZYtnJ1t4gfuXoAHq9XuWsffpJxcpR98ANxqaIXeKxftr/gBsv
+	IrQWqBFhIO7Q+KG8uzLCUIaKEzQZ/kS9yTvxI7RYko9O4OKb9webtyowoQdkzWim
+	bUJrpokbKKJqQnThYrZF6d7S6gssGQOpzS4hi1aj5aa/vQqXCaTBAVnCd+KHZPRQ
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a478jq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 08:50:30 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6768fZgu002570;
+	Thu, 6 Aug 2026 08:50:29 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtyt6wa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 08:50:29 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6768oNwJ30081452
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Aug 2026 08:50:23 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C470620040;
+	Thu,  6 Aug 2026 08:50:23 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6925320043;
+	Thu,  6 Aug 2026 08:50:23 +0000 (GMT)
+Received: from [9.224.91.49] (unknown [9.224.91.49])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Aug 2026 08:50:23 +0000 (GMT)
+Message-ID: <b4dccacb-e129-47eb-9b17-aaac13d9fa9a@linux.ibm.com>
+Date: Thu, 6 Aug 2026 10:50:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,69 +62,87 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests: netfilter: Remove unused variables in
- conntrack_dump_flush
-To: Qingshuang Fu <fffsqian@163.com>, Pablo Neira Ayuso
- <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Qingshuang Fu <fuqingshuang@kylinos.cn>
-References: <20260806075052.1934904-1-fffsqian@163.com>
+Subject: Re: [PATCH net] dibs: fix use-after-free of dmb_node in loopback
+ attach/detach/unregister
+To: Hidayath Khan <hidayath@linux.ibm.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
+        sidraya@linux.ibm.com, wenjia@linux.ibm.com, mjambigi@linux.ibm.com
+Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, horms@kernel.org,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, pasic@linux.ibm.com,
+        gbayer@linux.ibm.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260727093530.968834-1-hidayath@linux.ibm.com>
 Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260806075052.1934904-1-fffsqian@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260727093530.968834-1-hidayath@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_TO(0.00)[163.com,netfilter.org,strlen.de,davemloft.net,google.com,kernel.org,redhat.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[163.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,kylinos.cn:email];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 59F387FF47
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a744ad6 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=1GTpPYFZVA6rkABA6Z4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 6aaULCIUy4kvxIy1XHVC1NmXXX0v7m4z
+X-Proofpoint-GUID: aY5aSJ1ETf1IZwi7RIyS2iq9e0OEtbae
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDA2OCBTYWx0ZWRfX2diKg/jQ6hbV
+ +2W/lvMw7LwOmD+upst1rAZ0Y8L/zzoGGyI7xup04OhaX/jrJcQHRCaEuVAIeXFS+//yK66s0By
+ cFym9MvRDtMemDqXhUujfiMb4nq0iSg=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDA2OCBTYWx0ZWRfX7bdPHelN8daI
+ K2IVOf0iv+0pzLl2IH27ziDMPq2LyylnEi5gJjSxiVVs6CrWBk2+re+zvW9Qwwfjt+jhMuOgqnm
+ zO6s+RE0v1LvLMU9y5vj9IWh0rNWRDLEIw3B2RjpcCoJHchM0Qe+t6kBOp30ypT2Hq3E/oMpVw6
+ L41QTWhHeHYy3XOMDt86UIlZv/1LejH5CBlHtwb9fDVGVV4RpYmcloEeP0QbKigTAkxUHIP7fmq
+ Gmu/00vgqg4o1UoB2XdBigJQPMXqAZSIbRdHyhiqV3jDJDv4LkCjB/IPerHhLEMWRg3FzyAcA0c
+ ovMovE6J6FcjVeO3FTr919J/nwomVS1UY8dC78KqKCABSllLUh6YEdYBtNZY9OuS4evxAa70jkg
+ jp57973iN1hQvfl2sc9QtbujFgC+8zEujE7lMW+3sMvsXtORvDlcvyz+LRhewZrF2SEcZw79OIh
+ Vw1wEHoZ7+IxaA+8dXg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608060068
 
-On 8/6/26 9:50 AM, Qingshuang Fu wrote:
-> From: Qingshuang Fu <fuqingshuang@kylinos.cn>
-> 
-> The variables 'rplnlh' in conntrack_data_insert() and 'rplnlh' together
-> with 'nest' in conntracK_count_zone() and conntrack_flush_zone() were
-> declared but never used since they were introduced.
-> 
-> Similarly, commit 76342e842587 ("selftests: netfilter: remove unused
-> parameter") removed the unused 'err' variable from these functions but
-> overlooked the remaining unused 'rplnlh' and 'nest' variables.  Remove
-> them to clean up the code.
-> 
-> Fixes: eff3c558bb7e ("netfilter: ctnetlink: support filtering by zone")
-> Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
-> ---
 
-Thanks for patch, it looks good to me but could we avoid the fixes tag here?
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+On 27.07.26 11:35, Hidayath Khan wrote:
+> dibs_lo_attach_dmb(), dibs_lo_detach_dmb() and dibs_lo_unregister_dmb()
+> look up the dmb_node under dmb_ht_lock, drop the lock and only then
+> operate on the node's refcount. Nothing keeps the node alive across
+> that window: __dibs_lo_unregister_dmb() removes the node from the hash
+> table under the write lock and immediately frees it.
+> 
+> A concurrent final put can therefore free the node between the lookup
+> and the refcount operation:
+> 
+> CPU0 (attach)                     CPU1 (owner unregisters)
+> 
+[...]
+> 
+> Note: commit cc21191b584c ("dibs: Move data path to dibs layer") moved
+> the code to its current location; the race was introduced earlier by
+> commit c3a910f2380f ("net/smc: implement DMB-merged operations of
+> loopback-ism").
+> 
+> Tested SMC-D via ISM and dibs loopback.
+> 
+> Fixes: c3a910f2380f ("net/smc: implement DMB-merged operations of loopback-ism")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+> Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+
+
+For the records:
+Deeper analysis showed that there is no path in the SMC code that can lead to such
+a race. SMC currently is the only user of dibs_loopback and was the only user
+of loopback-ism.
+So the stable tag was not really necessary. Sorry for the noise.
+
+
