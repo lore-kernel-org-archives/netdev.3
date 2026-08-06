@@ -1,104 +1,109 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970A61EFFB7;
-	Thu,  6 Aug 2026 15:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28E83A6B6F
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786029032; cv=none; b=nxtfrqifNJAbi6YBSlWzn3i6h7/pJeingVV7gmUVUNRot5Z5P+zIraTjtqTJ5ETtNyPFETSKPNPBayNj7gkGY5FJS91trMsRkdIqeup5eBCOBEJbKOpqB9nXQybKA/IvMnw/hpn0gW2yG1/u2sup2ovtJQ0zbpXs7SdgoWan3bI=
+	t=1786029432; cv=none; b=pwZJk4941GWUfZV5Q7PQWF95IGokX0UyRfrLQCZlJtnTHeZfmbMQqm/PefooFJ8Ure1wbHdZyinwt+PoDJsxaG24ImM0pfAIcCxnD3UOm6eDI7PF6yfiEmh6gNCw2dT8XN13cAezYs0WGvb00dDv/tIxwmpbFD5yIF54nyo+I48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786029032; c=relaxed/simple;
-	bh=B063e6v+aYj73BAHYqQupIaLxCNisgxVYNeVE/oX0cQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e4Rn2XVBMSOncH44JGlOjXe9irLmdCmTNi6MrhYP54e/R4xr+Kdih85ISQKFTwWV6XKgZpmDMT1CmkCy8Jcto1NeoWyi1MXWGEorDfdzHcc1c0sBRuBLJ+wrLWAxTEKYqpXcRHYZiWXssG3Jz4jWRv33kZk6o0Jb2uEiZzGrsrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 752F020127A;
-	Thu, 06 Aug 2026 17:10:23 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wrzjj-0006xx-1F;
-	Thu, 06 Aug 2026 17:10:23 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wrzjj-0000000Fu3X-0zU1;
-	Thu, 06 Aug 2026 17:10:23 +0200
-Date: Thu, 6 Aug 2026 17:10:23 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl83xx: add support
- for enabling supplies
-Message-ID: <anSj34TOZxYiG_ai@pengutronix.de>
-References: <20260806140239.3518906-1-o.rempel@pengutronix.de>
- <20260806140239.3518906-3-o.rempel@pengutronix.de>
- <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
+	s=arc-20240116; t=1786029432; c=relaxed/simple;
+	bh=A8IYp+WDBc4rHKZWEDslyqjqd0kvXWVBGZp7ZdQ5v+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TshwbFT00oikfY4fQumKoSxXLtFhrhHrvoBwn8DkWzdvNT5d2xf7DHxP/TE+DmFJPWGH0ZlqyB4Kfl1Pso+2E1WCaTSfu3puqzMjD7xDeIfRmXXLYpDJX/daRbQx6vFN4cgjLEgESVmrpddc7qCOSg34TuK1dSTXRnZYD3wfpiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hlaNPimo; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hlaNPimo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786029429;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vum/2/17v7wUDHYG+zqyg62gHOPYRpIv37Oqr+QwlSg=;
+	b=hlaNPimo4OZq7AgDTYVYQ1ZVxaCe9VlyjkLizrqbMzrJwtbLXiUqh/IuDNLRczc2ZPvwKg
+	mfWmWTnjjlLsAOQY/0HG66EqjheMsbio221uuW2n8K1nWMhRY2B9usHSbVqMhCvYDvzJYn
+	38ZRCas2zwp1iLAaCXVVK0MeyAN92Ss=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-rZd4QpmiN-Wdks1TULKlrQ-1; Thu,
+ 06 Aug 2026 11:16:54 -0400
+X-MC-Unique: rZd4QpmiN-Wdks1TULKlrQ-1
+X-Mimecast-MFC-AGG-ID: rZd4QpmiN-Wdks1TULKlrQ_1786029412
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47872180049D;
+	Thu,  6 Aug 2026 15:16:52 +0000 (UTC)
+Received: from bgrech-thinkpadp1gen3.rmtustx.csb (unknown [10.2.16.127])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 167881956094;
+	Thu,  6 Aug 2026 15:16:49 +0000 (UTC)
+From: Brian Grech <bgrech@redhat.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org
+Cc: horms@kernel.org,
+	sjpark@amazon.de,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Brian Grech <bgrech@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3] selftests/net: fin_ack_lat: fix latency threshold typo
+Date: Thu,  6 Aug 2026 10:16:45 -0500
+Message-ID: <20260806151645.4172900-1-bgrech@redhat.com>
+In-Reply-To: <20260804220108.1630366-1-bgrech@redhat.com>
+References: <20260804220108.1630366-1-bgrech@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Thu, Aug 06, 2026 at 04:12:44PM +0200, Andrew Lunn wrote:
-> > +static const char *const rtl8365mb_supplies[] = {
-> > +	"avddh", "avddl", "dvddio", "dvddio1", "dvddl", "pllvddl", NULL,
-> > +};
-> > +
-> 
-> > +static int rtl83xx_enable_supplies(struct device *dev,
-> > +				   const char *const *supplies)
-> > +{
-> > +	int i, ret, count = 0;
-> > +
-> > +	for (i = 0; supplies && supplies[i]; i++) {
-> > +		ret = devm_regulator_get_enable_optional(dev, supplies[i]);
-> > +		if (ret == -ENODEV)
-> > +			continue;
-> > +		if (ret)
-> > +			return dev_err_probe(dev, ret, "failed to enable %s supply\n",
-> > +					     supplies[i]);
-> > +		count++;
-> > +	}
-> > +
-> 
-> I've never used it, i've no idea if it is applicable, but there does
-> appear to be _bulk_ calls in the regulator API, maybe which is similar
-> to the clk _bulk_ API?
+The commit message for af8c8a450bf4 ("selftests: net: Add FIN_ACK
+processing order related latency spike test") states: "if the latency
+is larger than 1 second (spike), print a message". However the code
+uses a threshold of 100000 us (100 ms), not 1000000 us (1 s).
 
-Ack, in the first iteration of this patch we was using
-devm_regulator_bulk_get_enable(). But it would print warnings on
-existing boards without regulators in devicetree. Currently there are no
-bulk helpers with _optional regulators, so I reworked it to hand made
-optional bulk support.
+The lower threshold causes false positives on slower hardware where
+normal connection latency occasionally exceeds 100 ms but never
+approaches the 1 s spike that indicates the actual FIN/ACK race bug.
 
+Fix the threshold to match the documented intent.
+
+Fixes: af8c8a450bf4 ("selftests: net: Add FIN_ACK processing order related latency spike test")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Brian Grech <bgrech@redhat.com>
+---
+v3: Added Fixes tag, referenced original commit message wording per reviewer feedback
+v2: Added missing maintainer CCs
+
+ tools/testing/selftests/net/fin_ack_lat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/net/fin_ack_lat.c b/tools/testing/selftests/net/fin_ack_lat.c
+index 70187494b57a..4117332eb1a9 100644
+--- a/tools/testing/selftests/net/fin_ack_lat.c
++++ b/tools/testing/selftests/net/fin_ack_lat.c
+@@ -69,7 +69,7 @@ static void client(int port)
+ 		lat = timediff(start, end);
+ 		sum_lat += lat;
+ 		nr_lat++;
+-		if (lat < 100000)
++		if (lat < 1000000)
+ 			goto close;
+ 
+ 		if (getsockname(sock, (struct sockaddr *)&laddr, &len) == -1)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.55.0
+
