@@ -1,171 +1,121 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D9F389116;
-	Thu,  6 Aug 2026 11:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55D83D669B;
+	Thu,  6 Aug 2026 11:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786015448; cv=none; b=qIJGl22M6Slt9G4RvSsNL2HMxlBmU9y30oWZHJ5HYF984NahK7btfuwnD7T9iKWmYSYWM30N39kYh2itGlcsBF24rQFBEUoDnYV/cRpbUajmel1/A/yAfNAY6j/L0jmda2ijFo20h0xfw69tuy32MnqYoqayKU1WolDG3c1/lmQ=
+	t=1786015621; cv=none; b=ihsoJu+l8Bom6P5p7hZFwofiRTkC7KO5VUovDa88r3t8whXeGyv0yCUpSnb0gB7xljLqv7ZH09mf+BZ5Gy67zsVq4EEYJ17UQJP3F9Xf915CAzio9ysceD+fcjzJhA4ynBc4SGBV1eByjaz313/fXup/DzUmFx2f32cWfo8eaBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786015448; c=relaxed/simple;
-	bh=3vLEOjS8N1lG0hFLniosjT/VLwOstvLmGVxLy9OkcpA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kX42nWAtoMQkij3+sLWuYG36xqJVpIHhOiGcDTsGNwXZki7ylCWNBZRVAFLzEVBzSEpiTeOwd8//FvQHe7M8s908RRSxJQpwkOIsxtS33/DkMo8KQZ3n0lnl6Ww6YWX44sM7U4Vwi7TL/5Ja/JpN8oh80QIFbvkMQrbHbR7tCs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=C93c0M5w; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=AlSOPzWA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=On80Q5a5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vek3Nv6y; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1786015621; c=relaxed/simple;
+	bh=xCDz7o+TsH0fxkBtqxT8EVLU7+UOO6vjIdBLw+o2LiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UlHfNtCjcWJe+a+zyk8riX70064TuPbJdBfLeRw0YA6YkgAMEWegTaFVTOFemqVIVqbbv73I83p0DY8S7C9OAyku8Hh29EunI/ycYQtWv/KO2c5m+a7IxoQL4sbdtFRE/6I7rZ33FEzER7WuMpK87HKMDoIwynxMgQDT7quUcrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDkAvJOl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="C93c0M5w";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="AlSOPzWA";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="On80Q5a5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vek3Nv6y"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C77CE3E26;
-	Thu,  6 Aug 2026 11:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786015441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PA+g1zExc+Vt9DbKRrbRKHDuL82vbl57gQDAwHJd838=;
-	b=C93c0M5wNEJBJ5itNtR7l1+TFbzDTfmitNnht6iZ68F9yBMfpLQAtG8Zk22tLJfVj2j/JO
-	qw0TlyHo+dRFs20grjRVwVuPOXF2FXCjNPQR/vvwuvYdlPO+vJuEPseOc3VX59sV307VeT
-	CSZ/nzs141x6T5fue+g0cz2ewOTZH+g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786015441;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PA+g1zExc+Vt9DbKRrbRKHDuL82vbl57gQDAwHJd838=;
-	b=AlSOPzWA6BS6gqUG1/OnsnQ04rzyKpl3mLK/3UOQ7qCqxt9VXv87YbTbCl/xQdo5uezsrt
-	uaXYhypYh7r6HPBg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=On80Q5a5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vek3Nv6y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786015436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PA+g1zExc+Vt9DbKRrbRKHDuL82vbl57gQDAwHJd838=;
-	b=On80Q5a5EwVHxLNLyAvY3gAPC95DYTLDTYFWcJZ+cf8olRq+nA12znhd3sBfzY1qllqlrm
-	0F4xGGBCa4+rxMfSbBVZZzFB1WpR9/SW7aOtgRnOFsYPa44ggYxEUm1MBSU53dRzdmzX3k
-	9RgO5RN4PpibmW7rdzVjbR1ZMDIjrSQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786015436;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PA+g1zExc+Vt9DbKRrbRKHDuL82vbl57gQDAwHJd838=;
-	b=vek3Nv6yUpLsML4koUzIZp4YeJ81jVx+lTyDa+itsbCkdF15RGzdZNghKSQpPzEcf0XVXi
-	VWzSiLVt814RtgCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2CC98779B6;
-	Thu,  6 Aug 2026 11:23:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bSojCMxudGpkHgAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Thu, 06 Aug 2026 11:23:56 +0000
-Message-ID: <fbc724d3-6f78-4ad8-a3a0-005b055cf225@suse.de>
-Date: Thu, 6 Aug 2026 13:23:38 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDkAvJOl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF2A1F000E9;
+	Thu,  6 Aug 2026 11:26:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786015619;
+	bh=8zNhb5HkyFKrT8LFPzCbwqmtmRXOMvXw0uwmCxy8sXM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CDkAvJOl/trzFy/Zs44BEVlKBQq6MDIyRiIRJPelh1Gvq9+5c5eCZXBQp5JkyXM/+
+	 +Zg15KInZYbBEJUt1hv81atCcKnQvGziYGQkfsUQSWc1QytLMJ/sFk7oN+w3Mt48K1
+	 q84sGHd50PPP73Jl3j2ZPLvI3ZpiLseq1uYY0mrEmHV1L+LdTvyYY8w5Ki1ISEGeuT
+	 vxddCP9dLvx+Mnqc9wtsNdDF9yfaDma3EcbQC0JfpTmoqVfi0KEPddCVp6H3qwKheT
+	 7pqJA2XLtDR+fN02v5bJQVAMBv7aAyoA3TifNyBtWlDmHohsf5tbueEiVPFPApO/6U
+	 2VX5IS/Z3g57g==
+Date: Thu, 6 Aug 2026 12:26:55 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, shenjian15@huawei.com,
+	liuyonglong@huawei.com, chenhao418@huawei.com,
+	yangshuaisong@h-partners.com, ningwei15@huawei.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/3] net: hns3: set msg->desc to NULL after
+ kfree in hclge_query_reg_info()
+Message-ID: <20260806112655.GA51943@horms.kernel.org>
+References: <20260804130933.880552-2-shaojijie@huawei.com>
+ <20260805165214.606778-1-horms@kernel.org>
+ <241a437e-bffb-4454-b9cd-f067e673922a@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] bonding: fix wrong extack attribute in ARP validate
- netlink error path
-To: Hangbin Liu <liuhangbin@gmail.com>, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jonathan Toppins <jon.toppins+linux@gmail.com>
-Cc: Jay Vosburgh <jay.vosburgh@canonical.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-References: <20260806-bond_arp_validate-v1-1-3ae005657ef9@kylinos.cn>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260806-bond_arp_validate-v1-1-3ae005657ef9@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_TO(0.00)[gmail.com,jvosburgh.net,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	TAGGED_RCPT(0.00)[linux,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,suse.de:email,suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Rspamd-Queue-Id: C77CE3E26
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <241a437e-bffb-4454-b9cd-f067e673922a@huawei.com>
 
-On 8/6/26 5:29 AM, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
+On Thu, Aug 06, 2026 at 03:32:23PM +0800, Jijie Shao wrote:
 > 
-> The attribute of netlink error message should be IFLA_BOND_ARP_VALIDATE
-> when ARP validation setting fails.
+> on 2026/8/6 0:52, Simon Horman wrote:
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260804130933.880552-2-shaojijie@huawei.com?part=1
+> > ---
+> > --- Patch [1]: [PATCH net-next 1/3] net: hns3: set msg->desc to NULL after kfree in hclge_query_reg_info() ---
+> > commit ba3e282274aa0911fb278f48937385c06cc8f3a1
+> > Author: Jian Shen <shenjian15@huawei.com>
+> > 
+> > net: hns3: set msg->desc to NULL after kfree in hclge_query_reg_info()
+> > 
+> > This adds msg->desc = NULL after the kfree(msg->desc) at the end of
+> > hclge_query_reg_info() in the hns3 PF error handling code, described as
+> > avoiding a dangling pointer in a struct that the caller reuses.
+> > 
+> > > diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
+> > > index dac051e798da2..7e124e2c718da 100644
+> > > --- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
+> > > +++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
+> > > @@ -1592,6 +1592,7 @@ hclge_query_reg_info(struct hclge_dev *hdev,
+> > >   	}
+> > >   	kfree(msg->desc);
+> > > +	msg->desc = NULL;
+> > [Severity: Low]
+> > [Finding: main-1-0]
+> > [Sources: opus-5]
+> > Is the commit message description accurate here?  It says:
+> > 
+> >      In hclge_query_reg_info(), msg->desc is freed by kfree(), but the
+> >      caller continues to use msg across loop iterations. Set msg->desc
+> >      to NULL to avoid leaving a dangling pointer in the reused struct.
+> > 
+> > The only caller is hclge_query_reg_info_of_ssu(), and it re-initializes the
+> > whole stack struct from the static template at the top of every iteration:
+> > 
+> > 	for (i = 0; i < num; i++) {
+> > 		msg = hclge_ssu_reg_common_msg[i];
+> > 		...
+> > 		hclge_query_reg_info(hdev, &msg, loop_time, loop_para);
+> > 	}
+> > 
+> > None of the hclge_ssu_reg_common_msg[] entries initialize .desc, so msg.desc
+> > is NULL again on each pass.
+> > 
+> > Even without that, hclge_query_reg_info() overwrites msg->desc before any
+> > read of it:
+> > 
+> > 	msg->desc = kzalloc(desc_len, GFP_KERNEL);
+> > 	if (!msg->desc) {
+> > 		...
+> > 		return;
+> > 	}
+> > 
+> > so the freed pointer is never dereferenced or freed a second time.
+> > 
+> > Would it be worth rewording the message to describe this as defensive
+> > cleanup rather than a dangling pointer fix, so a stable backporter does not
+> > read it as a use-after-free fix?  The patch correctly carries no Fixes: tag.
 > 
-> Fixes: 2bff369b2354 ("bonding: netlink error message support for options")
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> ---
+> Keeping the message. kfree'd pointer is factually dangling; the patch
+> is defensive. No Fixes: tag already signals it's not a UAF fix.
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Thanks, sorry for the noise on this one too.
+I agree that in the context of hardening this change makes sense.
 
-Thanks!
-
->   drivers/net/bonding/bond_netlink.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-> index 4a11572f663d..7dc31b2551c4 100644
-> --- a/drivers/net/bonding/bond_netlink.c
-> +++ b/drivers/net/bonding/bond_netlink.c
-> @@ -372,7 +372,7 @@ static int bond_changelink(struct net_device *bond_dev, struct nlattr *tb[],
->   		int arp_validate = nla_get_u32(data[IFLA_BOND_ARP_VALIDATE]);
->   
->   		if (arp_validate && miimon) {
-> -			NL_SET_ERR_MSG_ATTR(extack, data[IFLA_BOND_ARP_INTERVAL],
-> +			NL_SET_ERR_MSG_ATTR(extack, data[IFLA_BOND_ARP_VALIDATE],
->   					    "ARP validating cannot be used with MII monitoring");
->   			return -EINVAL;
->   		}
-> 
-> ---
-> base-commit: 2a33516f9ef59ad11844d4fc152f889449b5daf3
-> change-id: 20260806-bond_arp_validate-359289656609
-> 
-> Best regards,
+Reviewed-by: Simon Horman <horms@kernel.org>
 
