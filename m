@@ -1,81 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9A3494802;
-	Thu,  6 Aug 2026 19:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E5841835A
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 19:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786045248; cv=none; b=MQf66BoTVUDOEDRqpqmAdN3v6/zTe8OmD+XT+xliV4aGFCmUW3biBOijOWwrqdIxsRe5muA/40UzgqDjQKX+MItg1/ivtfiDgYlFSrboFDGfZOun1Bm8ehPXa361ZeQBSZsFnyOMHeApgmTyoqrD7HrYyJZ/K2O9hv2Ih0fK0Vk=
+	t=1786045815; cv=none; b=rl4H5V0C/m8NWCG6nDvLzrQ77B1t8EwERcmUnMeF7DBCqjZAlnKeX7y+3zUZCISs44mbKAusbJYf+TSrJ0w891qO0DD6f/erCjrgVuGYojeSS59ZW08vt6ATJovPbI0/F0Dk0LUF2Y7uJ1TS93BiCm+ELwajP259D9bqbdiyGTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786045248; c=relaxed/simple;
-	bh=k+tUT7lpqCoLp08simO+a9IkTR+URcLxCvdpkLbrsCw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NIp7zVT6YZ6lGRiC4MmYhLCx6sBYi3nEO4ZhEc3ZUvT2qaJZS1GsI8NNP9kxUsXoPfRVEKQHxwM6RLoxJ616a78/EpHP5BaGYzKAtbIOs4qnsWHyg3hIHh2x39qfc8RVMgvEuQVeKcoq+KqKoATb9/MZybSQmE4QsYLsyZiWmpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XasFs6rd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786045815; c=relaxed/simple;
+	bh=PizaCOC+hmCri5Wwv9aBGGDYN4IjkNPrlXI09EcOmSY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=l74KYQlfUGrz3MC4/Aj8LALOVTrGctbjkQzClrPHUZbbJLSbQZ8t9kUbilwAmEvVbmAbvS/JcwXURowd5wNfqwP2rt+0MOSbeYbfROmosdRQTl0NwJ4OQ5wtnr7JqVEfOaO10jfUuy4TPIMdH9Tdvzvbe1pHyg8fxMGmSNTc3ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q1lsQRgT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XasFs6rd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3E21F000E9;
-	Thu,  6 Aug 2026 19:40:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786045246;
-	bh=9OlunGY6evHzMTZhD21YtSX+v5/awnb4KeVwjJAxNKI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XasFs6rdjHRm+rmonAkv8j33T+ovaBBKWbRy13MSssggCr7FyEjEpTT8r3J7aER2z
-	 DihqHpafhR871vUTNcI8HxiWrlN1X+tzEmvpHNni9Yml8iZA4XtC/qeVqSM14KNVOu
-	 qdbOli5Y2T3b07bgLrHqIXM1Nuen0T4BCPnRAvz+5kXRN6DYlAsnibAophHDd3LZ6h
-	 /kZtva/+betwE1Ms8zfmnII/svIAsmrWLlUq9LdkmU3ThxZfZwdPycKd4gOzKEJXpY
-	 c1RFVmPzyJCgujJzW52HAS939zemcYs/EywSgmmlR/jD1OMfpqs+BtLGuSKzt3phEc
-	 ajC2anULgUGvQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569C63809A29;
-	Thu,  6 Aug 2026 19:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q1lsQRgT"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 04AA6C2BCF5;
+	Thu,  6 Aug 2026 19:50:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786045814;
+	bh=PizaCOC+hmCri5Wwv9aBGGDYN4IjkNPrlXI09EcOmSY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=q1lsQRgTdLwFOj2gJ2Aw2Qm9D4lt73/XNJXZOUV8xshTF0Hkf0c0pRmN9niIjIL/X
+	 z3YLnbWB4hzKqPSU8RGEhihc5FY2ZaqVCBn4lup7WISWk/iomLkmRNcxaq4ySy97rW
+	 3uIoxnFmu2zp/mxu1YSUr5ftWotuzefUHsN4LM4F/3nxqqrkTAMMeqZp8aDY6XT0BI
+	 h3sVpk6zWUh+r4Bezi2uOdWrfphO3/rqLRX4VzrHGfSffpoTmUMQlzq9cQg5eB6AC4
+	 h6FqlkUYjm6mcP8bD4hVM8blpKlQWo3OXaVfd9ztDyV2FEObWCcXWyEURJVUnywUcs
+	 N7d+wqkvLpKHQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD724C56208;
+	Thu,  6 Aug 2026 19:50:13 +0000 (UTC)
+From: Christoph Paasch via B4 Relay <devnull+cpaasch.openai.com@kernel.org>
+Date: Thu, 06 Aug 2026 12:49:22 -0700
+Subject: [PATCH net-next] mailmap: add entries for Christoph Paasch
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3] tcp: honor BPF_SOCK_OPS_RWND_INIT on the
- active
- connect path
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178604520590.1446418.17755776050398529654.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 19:40:05 +0000
-References: <20260730220055.2946171-1-tejasbirajdar@meta.com>
-In-Reply-To: <20260730220055.2946171-1-tejasbirajdar@meta.com>
-To: Tejas Birajdar <tejasbirajdar@meta.com>
-Cc: edumazet@google.com, ncardwell@google.com, netdev@vger.kernel.org,
- kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net, dsahern@kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org, sashiko-bot@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260806-b4-mailman-v1-1-b4d7bc0ffd1c@openai.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQrCMBBEf6Xs2cUYbC3+ivSQxKldsaskUQql/
+ 26ix5l581ZKiIJE52aliI8keWoJh11DYXJ6A8u1ZLLGdqY3Hfsjz04es1M2FqPpEVqcWiqHV8Q
+ oy092IUVmxZJp+C/p7e8Iuboq610C++g0TLUqdIX3Ra20bV9nBzDDlwAAAA==
+X-Change-ID: 20260806-b4-mailman-02ef08ec5e75
+To: netdev@vger.kernel.org
+Cc: Matthieu Baerts <matttbe@kernel.org>, 
+ Christoph Paasch <cpaasch@openai.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786045813; l=1364;
+ i=cpaasch@openai.com; s=20250712; h=from:subject:message-id;
+ bh=RwSB4S74uMgM7hwtS7mI8TFWqu8YItSh26B7RAY+3a0=;
+ b=szBPnHJNE9QAFnLulcPxuz7mRbQwnDzI9WaiODvduPZs4PEE/+SdUpVdVBmIt8PZzLhaV2CgR
+ oScyKm8VsLcB88gSNDz3dgicd//HuHZiUmFs6kaUiAf6Tu5WOnDNaz4
+X-Developer-Key: i=cpaasch@openai.com; a=ed25519;
+ pk=1HRHZlVUZPziMZvsAQFvP7n5+uEosTDAjXmNXykdxdg=
+X-Endpoint-Received: by B4 Relay for cpaasch@openai.com/20250712 with
+ auth_id=459
+X-Original-From: Christoph Paasch <cpaasch@openai.com>
+Reply-To: cpaasch@openai.com
 
-Hello:
+From: Christoph Paasch <cpaasch@openai.com>
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Map the email addresses used for previous kernel contributions to the
+current OpenAI address. This prevents get_maintainer.pl from listing
+historical addresses as patch recipients.
 
-On Thu, 30 Jul 2026 15:00:55 -0700 you wrote:
-> BPF_SOCK_OPS_RWND_INIT lets a sockops BPF program pick the initial TCP
-> receive window, e.g. to advertise a larger window up front in environments
-> where that is known to be safe. Today it is only effective for the passive
-> (listener) side; on the active (connect) side the value is computed and
-> then silently discarded.
-> 
-> On the passive path tcp_openreq_init_rwin() inflates full_space when the
-> program returns a non-zero window, so tcp_select_initial_window() can offer
-> it:
-> 
-> [...]
+Suggested-by: Matthieu Baerts <matttbe@kernel.org>
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+---
+ .mailmap | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Here is the summary with links:
-  - [net-next,v3] tcp: honor BPF_SOCK_OPS_RWND_INIT on the active connect path
-    https://git.kernel.org/netdev/net-next/c/ca10634ebcca
+diff --git a/.mailmap b/.mailmap
+index fd5e272bca9a..85e022641168 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -210,6 +210,10 @@ Christophe Ricard <christophe.ricard@gmail.com>
+ Christopher Obbard <christopher.obbard@linaro.org> <chris.obbard@collabora.com>
+ Christoph Hellwig <hch@lst.de>
+ Christoph Manszewski <c.manszewski@gmail.com> <christoph.manszewski@intel.com>
++Christoph Paasch <cpaasch@openai.com> <christoph.paasch@gmail.com>
++Christoph Paasch <cpaasch@openai.com> <christoph.paasch@student.uclouvain.be>
++Christoph Paasch <cpaasch@openai.com> <christoph.paasch@uclouvain.be>
++Christoph Paasch <cpaasch@openai.com> <cpaasch@apple.com>
+ Chuck Lever <cel@kernel.org> <chuck.lever@oracle.com>
+ Chuck Lever <cel@kernel.org> <cel@netapp.com>
+ Chuck Lever <cel@kernel.org> <cel@citi.umich.edu>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+---
+base-commit: c206fc0705d1050d9bce22ac4eb94bb062443cd6
+change-id: 20260806-b4-mailman-02ef08ec5e75
+
+Best regards,
+--  
+Christoph Paasch <cpaasch@openai.com>
 
 
