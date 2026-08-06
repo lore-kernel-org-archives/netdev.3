@@ -1,177 +1,242 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209923BB674;
-	Thu,  6 Aug 2026 08:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4B33E717A
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 08:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786004163; cv=none; b=qUoi1REwHq11KA7c9ueUYL85nyRmBP7AAXx/fqYS54oR6+j7B3pQTlN2uM8GDOkTG+JbkZEMTbUevc3+x6DUdUYiWDwvqv2mgjziH9Gb44sFZCqh927pQx7M/WhOcZ68kwBL8WuGkfaobxFEYxPf7UENf7RbMjHdoK7MMdQalGw=
+	t=1786004948; cv=none; b=oEAHcYqdsIQwcRNEIJ6BLV1csdzsz+JVu2AI3iUrR8iSSfzt4fBezbPpAJ46OM2RBoJ4cO7Gck1NYAJqfoFLTKW6LjFVTPdhCCfhbOaQLJgWGJ3BDSi/1vTEfZrgNmOQbzkYZuWYHYya96yOZ+raNogqn4LEQtZadFmoI4JyZCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786004163; c=relaxed/simple;
-	bh=gdY0u5QHCOwfszhHEIhrdGRjU96/ovDQ5xj92FVYtn4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rmZTe+f5D4as7zDEomuQrlW/rOYdX1HSRqB+CZnNw3Twodv/eumuuGgvFid2+V7ODQjMXbuVeMaGlk5J98a5my5fu77BbiC1pXNcl9kQ7zsLDDjeUvWkh4kdAJgCcKwj947Isd+SZ/QcvyqKNxWsgYW3X8x+qKU/PLiX336MVM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=giS+S1VJ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786004948; c=relaxed/simple;
+	bh=QvfRtk7iTMkzOtjozh8twBiWiHdPU8W709dyQm0V1rY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CDFTElMmvUmyJWe8iFRa4CrZkrT7HmCr5XX5p6Y4xsJr8MlJO+dC/fuS7HMGbVFTsN/x9WPYgW87NxCVWZauN7JCnSBFNWF+thco6DE3s+kEcDjCWkR7sQSmOHJJphWSgFmZs0ha/3fDw5vP1vV0FcZS3FyEoW/BJR1Z5G68n48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nvp6kWpm; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="giS+S1VJ"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675Nluqj993470;
-	Thu, 6 Aug 2026 08:15:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=GzwcfyJSU+6R2Bsk1VVBvvghxbF5nO6h/PJzqZUY9
-	yA=; b=giS+S1VJS4V6lUHaVcVFweLAQddR4I1pUFY29Sc+n3KbwekfEyWpzezV5
-	mKRATibsoU9364myncP5FoEvy/t3OtIcRCtdjCRzt6ZL7VhVTuDfDOTr3XhH42el
-	UaZIOgDXYbUNY7/VuFyMTploYr5jp1+9+lYlsuJFX+UDtVF95AohadwonIhrQ+FW
-	K15GkIJX/N4hdMh/LFTJZQTeUvmDTWYf1tKVQrZBXP/36iWMrya5FR8Jj0Bs9v3D
-	L7uOxuRUoTqxIsj9ZCAkCYc2QoR82iKfyRdom0eLx9XAjdqAM5R1zEs5qoI63l+X
-	7/b3HUkU3FxiKW386dHE0BS7IsuyA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77gepea-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 08:15:54 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6768BNsV024629;
-	Thu, 6 Aug 2026 08:15:53 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qtenf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 08:15:53 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6768FnOh17301854
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 08:15:50 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DABD22004B;
-	Thu,  6 Aug 2026 08:15:49 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9F0C920043;
-	Thu,  6 Aug 2026 08:15:49 +0000 (GMT)
-Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Aug 2026 08:15:49 +0000 (GMT)
-From: Hidayath Khan <hidayath@linux.ibm.com>
-To: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
-        sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch
-Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        horms@kernel.org, pasic@linux.ibm.com, hidayath@linux.ibm.com,
-        linux-s390@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH net] net/smc: drop the abort_work reference when the work is cancelled
-Date: Thu,  6 Aug 2026 10:15:49 +0200
-Message-ID: <20260806081549.595001-1-hidayath@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nvp6kWpm"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4954aff6088so19042675e9.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 01:29:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786004945; x=1786609745; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oNzdd3ks5EfcRNkKIAlrqhz+l0zWLMF0+Ux/V0Mjszc=;
+        b=Nvp6kWpmbXafhcF8hJHCJOrXDGTIsF2L/Luf4nQ6lyfAxEXbu6n3Sxa3D4GuedDAK5
+         UdEEtq8AtxpRuM2Ow5otdeEfY3bIxI3hU7awo/88e7VW3S7Ircon6RzGrAzefCXIenZj
+         UxmuTBE9T/Eh4i5wGDYI5NkVYALX1UCkTozdY6iSRwjNcq6wGJ55X+ZH4RGbjG5EtuD6
+         nfSP9NUhL/a/rbOFLIjb9A6W9KvA4q6rzR9HvRM/u5V5yzyemE5YjlzeECvnZsetH83l
+         zzag8GTW6GepxnQc3BildiyzU3GOYacb3jetNdWavpLbSGKnwMBJk/R1ag3FUKmD+Cch
+         +vfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786004945; x=1786609745;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oNzdd3ks5EfcRNkKIAlrqhz+l0zWLMF0+Ux/V0Mjszc=;
+        b=Rcl1/DQjK66c9uvmXhFdUQF4kaeblKLApw8494hdSbUf+76y8Hzty4c50nKZKjNqnZ
+         tb7YE5EMzgG0vk3SplZevJqx3omaLPVSUupSKW2WJz6wR4QBZVzkIwKrs3NeYk47TMzd
+         rRB60MWMMAFJeobucKZ+mg1eIMI9sgKmNL+w7xVVnbVxNNRCD68Jeo3yhWqv5jmvjRDm
+         PhnMFT+r3uQz4H9xI+Jr4b8fqwgfz57ZyGow/A0KBSIs5sC4ZEguiQ/CMMMLxpsiNybL
+         VhaJBQh/VVj83roMKWrK5c6vPOI8yNzyQBVBzXF7RANgnOeqg/qu7mV0aT3D7vRILODu
+         5SEA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqr01Au+5Y2JJf0nqw9YUmVyuDQn8/iN5RWrhHH+gEjDXFcBsjjy+YxXq1yMOrSDGt7AulHXZI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0n+7UXbDJ7Ym04zOxcLXlSl+tjlhnR3iHAC7dYDb5Ybgs/fDj
+	ivPaLSgcMC/Y6ruq7mt3kbN8YCpUilVqvQjwxWXKG+wu9JgQIFoZqD3z
+X-Gm-Gg: AR+sD127y7qbzGM0to+HHbPJJy7ObmKMbbV6kZUXD9Y9iQeNW0bxCjn3mWuVRie3f9r
+	CpaNPkxyaYw19KAhFJ5oUwQnl3xwJ0qyWvr/o1ksgr0jUpIMk4gda9hWdDYeMyTo1bcUUn0tWK/
+	I6QIovZM4r0I6K3TYZXZWZvGKI/TrX2jfTwxNtvnrI4FHe8Fb6dmiOSJkUsa8prc9b/rFP83MKH
+	h/SEkCeP5U3XSfcwaEYBdMOFKrgMRA2qGV6QaYI/ZWyai2BPIZ325CEyQo9RsEC4cstW6k88KW3
+	7vCP8MPv3AYqf8+kf/ROZfhe9rDl63tI9uoWxB4MZmk9XBwH7oA0W9SxTQSoNSVTOnQJDeociYE
+	JFQvDwdzHq3ZazlnonlZDBD16/NzJOD2nZipQeDIaSt6aRHjmSAS8owHxSuxnll0vO+e3cMxB6R
+	ytSPjj9eXvIVMPfW7NyL5i3cAI8NxQFKD3PPyyJ7sBhU32nhhwQAKQ5CQd6hkK4cKynsj+5QH7v
+	MMCTf+H55tvMiXzbd0J5IXtIBD+1E+kZwmcrKAtF+pHxGiv45GIcokBT0l3XvvTF0zHRo4SDcM=
+X-Received: by 2002:a05:600c:4f4d:b0:493:cc25:9c0e with SMTP id 5b1f17b1804b1-4994e7cb0e8mr172103335e9.14.1786004944521;
+        Thu, 06 Aug 2026 01:29:04 -0700 (PDT)
+Received: from ?IPV6:2001:9e8:f131:1d01:8da1:260c:d732:9394? ([2001:9e8:f131:1d01:8da1:260c:d732:9394])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995421fee8sm40915395e9.7.2026.08.06.01.29.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Aug 2026 01:29:04 -0700 (PDT)
+Message-ID: <f7c3c062-94f9-40d8-8b20-9f03af79456e@gmail.com>
+Date: Thu, 6 Aug 2026 10:29:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDA1OSBTYWx0ZWRfX0BJcsRHuJwbx
- XijN5XIK4gvG8i7IhZilAiVR1yYAm/UhstxzQwUJro2Z9y2hj92ZRitwSalIpvRxEMrts6OQmjn
- 4E0PFaB6ek1TrbMb/dEcFtdVDH2+BeU3O6IdHTG3szo8hjhusuvOpdKPlsL7Qp+DmfqFJZHRqQD
- ziJb4ZMI9WC2e4iEeHlUmOtYXNnoV82zQMQkAg5NAZmzVHxrB6SmIxvCQ3UgcPolfFvaLbjHHR/
- fRN0Gy5bGNATkOe4pN0vF+uSqf+JyclILvVKFesVxK+0DC3DERArHowEWq1XuW5Hzp5fTO6rX8v
- pZ8ZRq2vMOOzthciyytUUNJaTlrBPLyMBnYy7OcNdxc1evrvSJMwTp1phtYaI1dbL9ibiHoz0DF
- VKJ99zeCEOfE/PzMTFQt2D2u6WKYkvi9eyYHmM2LMxHW/H164IAB7daPJmInP6ZfB4webHhnfcA
- PuBuqnDPWNZoCV7BQgQ==
-X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a7442bb cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=CsfcX7A8SnD_svm5:21 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=OeUCff8P1W_ZF3PiYk8A:9
-X-Proofpoint-GUID: kJFy0knwEupD4rfiR7DcPIUtMLAUpusG
-X-Proofpoint-ORIG-GUID: _fvljISag3PRVWwD_597e0fhfBfQ5va9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDA1OSBTYWx0ZWRfX4KUL223bH048
- T5xCPdK6+w9W9PpkA18w7gW/NFJ0nUhhx37Cbt6AHs+RF1LHTBD2rtmjjQ43pLjDKZD6IHY9zrI
- +eM5JbKr2Rx0o7NJgsOZBC6BgyRoDNY=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060059
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v11 3/4] net: pse-pd: realtek-pse-mcu: add I2C
+ transport
+Content-Language: en-US
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, daniel@makrotopia.org, bjorn@mork.no,
+ sander@svanheule.net
+References: <20260802100114.720594-4-jelonek.jonas@gmail.com>
+ <20260806011112.1855541-1-kuba@kernel.org>
+From: Jonas Jelonek <jelonek.jonas@gmail.com>
+In-Reply-To: <20260806011112.1855541-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The schedulers of conn->abort_work hand a socket reference to the work
-item and rely on it to give the reference back:
 
-        sock_hold(&smc->sk); /* sock_put in abort_work */
-        if (!queue_work(smc_close_wq, &conn->abort_work))
-                sock_put(&smc->sk);
 
-The queue_work() failure case is handled, but the cancellation case is
-not. smc_conn_free() cancels a still-pending abort_work:
+On 06.08.26 03:11, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> net: pse-pd: realtek-pse-mcu: add I2C transport
+>
+> This adds the I2C/SMBus transport for the Realtek PSE MCU core, providing
+> the send/recv callbacks used to exchange the 12-byte MCU frames. Two
+> framings are supported and selected by the compatible: SMBus block
+> transfers by default, and raw I2C when the match data sets native_i2c.
+>
+>> diff --git a/drivers/net/pse-pd/realtek-pse-mcu-i2c.c b/drivers/net/pse-pd/realtek-pse-mcu-i2c.c
+>> new file mode 100644
+>> index 0000000000000..e10f8c633b68e
+>> --- /dev/null
+>> +++ b/drivers/net/pse-pd/realtek-pse-mcu-i2c.c
+>> @@ -0,0 +1,170 @@
+> [ ... ]
+>
+>> +static int rtpse_mcu_i2c_smbus_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
+>> +{
+>> +	struct i2c_client *client = to_i2c_client(pse->dev);
+>> +
+>> +	/* Send opcode as SMBus command byte; remaining 11 bytes as block data */
+>> +	return i2c_smbus_write_i2c_block_data(client, req->opcode, RTPSE_MCU_MSG_SIZE - 1,
+>> +					      (u8 *)req + 1);
+>> +}
+>> +
+>> +static int rtpse_mcu_i2c_smbus_recv(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req,
+>> +				    struct rtpse_mcu_msg *resp)
+>> +{
+>> +	struct i2c_client *client = to_i2c_client(pse->dev);
+>> +	int tries, ret;
+>> +
+>> +	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
+>> +		if (tries > 0)
+>> +			msleep(RTPSE_MCU_I2C_RETRY_MS);
+>> +
+>> +		/* MCU needs 0x00 as command byte for read */
+>> +		ret = i2c_smbus_read_i2c_block_data(client, 0x00,
+>> +						    RTPSE_MCU_MSG_SIZE,
+>> +						    (u8 *)resp);
+> [ ... ]
+>
+>> +static int rtpse_mcu_i2c_native_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
+>> +{
+>> +	struct i2c_client *client = to_i2c_client(pse->dev);
+>> +	void *buf;
+>> +	int ret;
+>> +
+>> +	/* i2c_master_send() may DMA, so the buffer must not be on the stack. */
+>> +	buf = kmemdup(req, RTPSE_MCU_MSG_SIZE, GFP_KERNEL);
+>> +	if (!buf)
+>> +		return -ENOMEM;
+>> +
+>> +	ret = i2c_master_send(client, buf, RTPSE_MCU_MSG_SIZE);
+>> +	kfree(buf);
+> [Severity: Low]
+> Is the premise in this comment correct?  i2c_master_send() and
+> i2c_master_recv() both go through i2c_transfer_buffer_flags(), which
+> builds the message as:
+>
+> drivers/i2c/i2c-core-base.c:i2c_transfer_buffer_flags() {
+> 	struct i2c_msg msg = {
+> 		.addr = client->addr,
+> 		.flags = flags | (client->flags & I2C_M_TEN),
+> 		.len = count,
+> 		.buf = buf,
+> 	};
+> 	...
+> }
+>
+> I2C_M_DMA_SAFE is never set there, so an adapter that wants to DMA has to
+> obtain its buffer from i2c_get_dma_safe_msg_buf(), which bounces again
+> exactly because the flag is absent:
+>
+> drivers/i2c/i2c-core-base.c:i2c_get_dma_safe_msg_buf() {
+> 	...
+> 	if (msg->flags & I2C_M_DMA_SAFE)
+> 		return msg->buf;
+> 	...
+> 	if (msg->flags & I2C_M_RD)
+> 		return kzalloc(msg->len, GFP_KERNEL);
+> 	else
+> 		return kmemdup(msg->buf, msg->len, GFP_KERNEL);
+> }
+>
+> So does the kmemdup() here actually achieve anything?  On a DMA-capable
+> adapter the 12-byte frame is copied a second time by the core, and the
+> core's on-stack struct rtpse_mcu_msg was already legal for these APIs
+> (Documentation/i2c/dma-considerations.rst: "it is *not* mandatory that the
+> buffer of an I2C message is DMA safe").
+>
+> The SMBus path in the same file already passes the caller-supplied stack
+> req/resp straight into i2c_smbus_write_i2c_block_data() and
+> i2c_smbus_read_i2c_block_data(), which seems to contradict the rationale
+> used for the raw-I2C path.
+>
+> The same question applies to rtpse_mcu_i2c_native_recv() below, where the
+> kmalloc() plus the memcpy(resp, buf, RTPSE_MCU_MSG_SIZE) duplicate what
+> i2c_get_dma_safe_msg_buf()/i2c_put_dma_safe_msg_buf() already do for a
+> non-DMA-safe read buffer.  It also adds an -ENOMEM abort to a PSE control
+> transaction that the bus core could otherwise always complete.
+>
+> If skipping the core's bounce is really the goal, should these buffers be
+> handed to i2c_master_send_dmasafe()/i2c_master_recv_dmasafe(), or to an
+> explicit i2c_msg with I2C_M_DMA_SAFE?  Otherwise, could the allocations
+> and both comments simply be dropped?
+>
+> The commit message carries the same statement:
+>
+>   "Because i2c_master_send()/i2c_master_recv() may DMA, the raw-I2C path
+>   bounces each frame through a heap buffer rather than the core's stack
+>   buffers; the SMBus path is unaffected."
+>
+> Could this be reworded so it does not document a DMA rule that the I2C
+> core does not impose?
 
-        if (current_work() != &conn->abort_work)
-                cancel_work_sync(&conn->abort_work);
+I'll drop the DMA stuff again, apparently the other AI bot suggesting this
+fooled me.
 
-and discards the return value.  When cancel_work_sync() returns true the
-work was queued but had not started, so smc_conn_abort_work() never runs
-and its sock_put() never happens.  The reference is lost.
+>> +	if (ret < 0)
+>> +		return ret;
+>> +	return ret == RTPSE_MCU_MSG_SIZE ? 0 : -EIO;
+>> +}
+>> +
+>> +static int rtpse_mcu_i2c_native_recv(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req,
+>> +				     struct rtpse_mcu_msg *resp)
+>> +{
+>> +	struct i2c_client *client = to_i2c_client(pse->dev);
+>> +	int tries, ret;
+>> +	u8 *buf;
+>> +
+>> +	/* i2c_master_recv() may DMA, so read into an off-stack buffer. */
+>> +	buf = kmalloc(RTPSE_MCU_MSG_SIZE, GFP_KERNEL);
+>> +	if (!buf)
+>> +		return -ENOMEM;
+>> +
+>> +	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
+>> +		if (tries > 0)
+>> +			msleep(RTPSE_MCU_I2C_RETRY_MS);
+>> +
+>> +		ret = i2c_master_recv(client, buf, RTPSE_MCU_MSG_SIZE);
+>> +		if (ret < 0)
+>> +			goto out;
+>> +		if (ret == RTPSE_MCU_MSG_SIZE) {
+>> +			memcpy(resp, buf, RTPSE_MCU_MSG_SIZE);
+> [ ... ]
 
-As in smc_switch_conns(), a leaked sk_refcnt means the smc_sock is never
-destroyed: its buffers stay allocated and the network namespace reference
-a user socket holds is never released, so the netns cannot be torn down.
 
-smc_cdc_msg_validate() queues abort_work from the receive tasklet when a
-peer sends a CDC message with an out-of-order sequence number, so a
-remote peer combined with a concurrent local close is enough to reach it.
-
-Drop the reference when the work is cancelled, matching the pattern
-smc_close_cancel_work() already uses for conn->close_work:
-
-        if (cancel_work_sync(&smc->conn.close_work))
-                sock_put(sk);
-
-The sock_put() is safe here: every caller of smc_conn_free() passes the
-connection of a socket it holds a reference to, so this cannot release
-the last one.
-
-Fixes: b286a0651e44 ("net/smc: handle incoming CDC validation message")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
-Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
----
- net/smc/smc_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index c0027d2fe4e8..dd9fffbe41e0 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1254,6 +1254,7 @@ static void smc_buf_unuse(struct smc_connection *conn,
- /* remove a finished connection from its link group */
- void smc_conn_free(struct smc_connection *conn)
- {
-+	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
- 	struct smc_link_group *lgr = conn->lgr;
- 
- 	if (!lgr || conn->freed)
-@@ -1277,8 +1278,13 @@ void smc_conn_free(struct smc_connection *conn)
- 		tasklet_kill(&conn->rx_tsklet);
- 	} else {
- 		smc_cdc_wait_pend_tx_wr(conn);
--		if (current_work() != &conn->abort_work)
--			cancel_work_sync(&conn->abort_work);
-+		/* If the work was pending (cancel returns true) it never ran,
-+		 * so the sock_hold taken by its scheduler was never released.
-+		 */
-+		if (current_work() != &conn->abort_work) {
-+			if (cancel_work_sync(&conn->abort_work))
-+				sock_put(&smc->sk);
-+		}
- 	}
- 	if (!list_empty(&lgr->list)) {
- 		smc_buf_unuse(conn, lgr); /* allow buffer reuse */
-
-base-commit: 2b1c2bc2355fd59cc75045e42d9dc5470ef5fa9a
--- 
-2.52.0
-
+Regards,
+Jonas
