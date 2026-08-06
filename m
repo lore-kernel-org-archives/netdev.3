@@ -1,80 +1,83 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EA44570E9
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 11:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27004570E9
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 11:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786014525; cv=pass; b=P7i4LWnzCkfHxYBnZPgKUAxbQDDRjGGseJHUUacoC+q7L00DbsHoC7OGy+6XsDUox26Uj+M9AELKKNYm0DiMt6Hj9wJYwDOpYDfK/AKjSnnWiSUx+5msOfEBQ9MT3w9RVgInNTJoANvbYi3Ufn7r26AU+KnNIs20tjzJ2iJ6MKw=
+	t=1786014571; cv=pass; b=bGFKHtugd67APaKO6deUz5p5bEmnP+w0R9Jp0rQSlKkPpqGtdKBPOAktMpk/4GQUaMUYc5I7hlirb595gz+p4XC3FFH5ur1hY5vUwxBAcXj/U3P2uhj95tF422eWuYmJqMbJbZM58AqYLNSr+djS/54/T7tL6lqo9i84771BaPE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786014525; c=relaxed/simple;
-	bh=EM6BLCosGfeBJFtDqD/VbwR7sPOLdKkz2C4ocg1BS5o=;
+	s=arc-20240116; t=1786014571; c=relaxed/simple;
+	bh=jvNE2PIdNbuOmT4y0duOKZpH1CxmtBSnHQhxUMLn2Es=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bf/QoZ/uftWyYAPq3goI1dTcw1Rk6QNilsURTpknaZfc+amnQz/ZND4DptzsRYgLItFoARtlZBlRzJhCrpQF8b8lSu7lR/BrJI8J1cVoVU1J0j6ulywg+Tz91h4gYgl7ofPveXQkRUlzyh+H3aphM/z3dP3QUSee2++FHK0CICs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FxzPcUfU; arc=pass smtp.client-ip=209.85.216.49
+	 To:Cc:Content-Type; b=urNnY5aQqI/4jI8PI3/Ug2/vLtzQ+8BCQjxM7JHPyHNUfRuh8dBSlx+xNaqWANZ7iNvpMWLRpeMWVqUvt3z2vlMfRB4uQ14w4oauE24nWNRQC7/nnUPEr+9SKgBa21d4/Y7pGQGopYlw7hCgwZKA8iaqMxkwkwaqoS3zhB8O7PE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QBDyNIhF; arc=pass smtp.client-ip=209.85.128.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FxzPcUfU"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38e69bdb0fcso1924732a91.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 04:08:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786014516; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QBDyNIhF"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-81ed2a06b9eso20100397b3.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 04:09:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786014555; cv=none;
         d=google.com; s=arc-20260327;
-        b=RcdKBupvSxElgSRSSV0VQ0aHjVqGNobP0lRBWcCiXkgrSCvxOgw4dw5k/hp8LeTqBX
-         fSRAGCypvjlDULhDbVut2OQka7yBL4KVbg6SCG8cUTllwLpQ2OopctSh2V4B+wMSRKz+
-         umGqhxvzg6FICZhCgEuSXmtk4KK8yiugsufkP930aZQcsvAKDKewb3xsodEmPKi7KDXL
-         fMsos2ZsqWkmIWdr/DsNiFgo0DtB5tBMm38ftee8FczOWvCQC8DxH8gQjhcermVmSD7y
-         ud4C+MBEv+oRl0TkEODxmV5B4M4OtQbYSWL8gZdKcKXxe+uU4YmM1puS6IcMTP/ORiYl
-         7tQQ==
+        b=mjNvIzIQyBJ0dYeyVMwob3yXcWPqEbRc1BjWCeL2+GdE2TyvDjQ+tEdnWPvewsv7Rp
+         hnoD4MDXVQJ7lWYj/3X2KVzyXTyyDkMWaDPb+m6kjGgqzpkKBtYcdOuaYoczYDxvXAyz
+         /Z6an8w930J8Vt1Hj2do/JNdivDOJ6ZY5fX+hl+GFTgnqpPUninlC7x1bigIYMoXpp2n
+         ZbWV4834+6BhHL8XIcJb1VsxcmpvlNIyvjCv6JkTiGUlg6sKfjBV9JlgBl0Bn7CvUtiF
+         VPFTsUQ+i/P1Ju1DyWZNoSAhWxf44P7HoWW1Ua0gzmFca2Qh2eIbFiPbOO3tCIF+mX/s
+         K96g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=SeSH9QjY9/ICddSESWHil8j/Hw54y37cNPTdCzIm+tE=;
-        fh=gWWolyprO+U/gNrW1X0/J7LQ3Bcc5ExNXDfKxh6CjVQ=;
-        b=APtTrO0b8/q6LNvCsv5g/cIv0FvKa4nX0gm+eAlWPdFOTXsFcfohRfSIlfQjbls/K0
-         p3MUc1QWqX24A+8saZXDq0OOMOg2uEoKo3nmJ0hVzYuQb8qBfI3rx4sOcFIcrUUzLrei
-         XhCovobfVECTgNdhPJ7pE13OBb7Vgb0h/wh64+c8l2ARaUVoTX2thocNegxlD6scIb7L
-         77acbZIESMncPWyWd+gHimnFuGuTU1CZ4w/OslMDCKVbQLElv0KgcTdLQ8eBzmuGq+/R
-         V6KHtx4iIX1AqnXz2CoqxpCtCifmcjeXM1Md3j6pOzQ1i0fNuHbtuBoRwLzRlkPJgPRI
-         +eJQ==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9cQUUGYPqSh7uXBM4YMRyXpKWlqYEKV5B3vtEohmK/w=;
+        fh=YA4ruJqmU0x2ctdkQfZT1ZCqihWBdkSFa7pEHv7dJKk=;
+        b=XuR0v0A6+rCKxXR/LPpaFJDKFituDIDocQQqeCb5SVmD4vgqjH9nSa5pBkObFS7YmK
+         7+QXMvz8JNgByN00ULvn9f7RwMi7qUPYuxzIPY3eE+so0Xjh+MhyU+/4fqoh+BEa6nX5
+         t3hU6vpmlhKuJuNBen2x9u+lQYfnW5HIV6Zl2dqg/Vg9nSafYJDkbOMCjyJe3ijLHhdI
+         23CYgEiFA4Z9vKIdKIubV7BQ+lLKuzTZPTp5/ldzpNf53PXrKalemU14tD4djS4iYIBB
+         MuwxAVL6ZeZZBni61GJbBqMqR+YNw71R5iZ15XnB4tpyN7NMhZ/qVLEYXBMhYBE302Pc
+         oQBA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786014516; x=1786619316; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SeSH9QjY9/ICddSESWHil8j/Hw54y37cNPTdCzIm+tE=;
-        b=FxzPcUfU+SP2//7WIRHNvw0tIiO2gmkKrs0iJBdifrZ+KJE40nQDE4HjjF3QXsus8V
-         HsuQ6c+3RByy7kfTJffQIvUMflLaLx+6i4BERnlPdy8Y+9vq6FAF1rtbl386Fmau1Omb
-         ZelH6u0mavCTdGa2i3/7i0UQWv7vrZhr81B+81ptGl9P1/w8hMLweqGaC2fVqXqVQtWa
-         jLdxRrSZJvCdLR+FqsKrqJPC5pgxR7fAoh71dk1vq+9yu2/VYXGkDD5RnFbQuE2PKic1
-         qAMKUGlsReTMBRVwQ+kBq0aUHdyLhiePVoyd+aDy7UkaJqun3ktKT9FXod37WLThySyh
-         geNQ==
+        d=gmail.com; s=20251104; t=1786014555; x=1786619355; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9cQUUGYPqSh7uXBM4YMRyXpKWlqYEKV5B3vtEohmK/w=;
+        b=QBDyNIhFc2ueoyKk+xUYl6N6Ad14wzGZ7Gp53SK+V/P+LuE6mLOvFsnNmEjXhNNYGX
+         oX4z1BMAHxzfFlBVW8H9eGbUboRwEoJwRrQS336fPwkPKP7h5XqjspChO7Yqjw6d6fA/
+         kvgy3LML/xVckaKTXl8140OMRdsUY02zHo1xVqD6q+PrCg0ytKlb0AgAOJk1R97+9psz
+         a0oIjxTlKaJ+j+hU2P54Kz94ssB3cYgbRotWZPEr8GmiRHOczzRDFPM7VwwSWqFPd8r5
+         +mWTT65yIq8NElNVkXp7psvNDyybz+VUdKCLcIZFX+57sTAx0VYgh3+/5zIpV4imqqXs
+         QYPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786014516; x=1786619316;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=SeSH9QjY9/ICddSESWHil8j/Hw54y37cNPTdCzIm+tE=;
-        b=OAx3EsW17iWT0gquD3fzvUqypUPKE3R27Z6yOAGjzfXo5s2vOhcuRB58HQn6ZMVLIJ
-         VeRaFBT7vCS5Q7GKZ+bAPUUs+/GWChWAImwCELfdvsMyn5apN7AlmRTBvKU4mSSSfo6L
-         VeBZ1nihnKa+zkmo1888U6WtuaIDWawCHXnKX/iPahj9G471QLOIjkHv0mkYMy7q3CyI
-         4Tm+7L0/G8R/Gu+SYFojwBRCtyL22eBuA7hNRj++Pnst/MLfVrYkcKenq4KsXAN+UcYi
-         v1smV1oUfRkHdY7n2ibdd9nfaoG+yjYxKdKzXlg39fTqG1HNrqLIyuikJvlswKd5QqJd
-         2HEQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqnNAV2COGgQOjSt1kD7Dt05qQ4qKWF8uHgBeoFit6mLKFJ257Rj17fGaBHE55SD/aGcOPTqX8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1CdFz1ANINZVcygdeS1/h5Ph7G7RbPoVvVUW9eotKjwYXb6vi
-	Sr8zgEvKasQFaCMeXvuUeHbAl9f/R5TnoHKgBeD9APf6VC5MM0dhlHxdgrFRFiEzrym/ZkATcY7
-	q42xkN+v9+XWM4Ly/n6obaNnvaRx47Fs=
-X-Gm-Gg: AR+sD12mHVScPgba/Akg7oeSx0Kq+WKFFrWC9jp04q4OMmP+QoFUn9vGjEGwuNbOrGc
-	TGWKO5IBhJy25H5TrDRQw5c/TVNtvkMXKE213kaNEocrgizin5EgRtkswLkPM7iIEbs6i3ube2J
-	Ywme2OLQagYZZGBV1GwXVToulQblMnrvJB/89vwmyqiAwh20Z1bi2UFEqXK38u/ZobNqT+7tCcv
-	nneD8II8kuJqEJY08ssE1a1sJyCBJj7iUvqsKcR6OP1jhT2x3GuTWrz0SQA8tlmwTO7OzCqEVx4
-	23yLk41mUfUJpU5Ia5P9WpP/hl0x5djJfe580O87WSr6Ow==
-X-Received: by 2002:a17:90a:ec8e:b0:37f:be6c:f3f2 with SMTP id
- 98e67ed59e1d1-3903c53827bmr15298551a91.2.1786014515603; Thu, 06 Aug 2026
- 04:08:35 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786014555; x=1786619355;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9cQUUGYPqSh7uXBM4YMRyXpKWlqYEKV5B3vtEohmK/w=;
+        b=KcL/d4TFbaOXcymohIW8YWBVVDBnYXNJK6VcAlVGnmOIh6uftq/yCeVCUmsROX7XY7
+         2l4xIkv31W0puyChpxLvZcw0PSL2BBdroBffLfglOjg6TsF1tq70VNoVGaX8lPwTU75o
+         C32rzlqNmbqNB8CyB9h5SoKd9Rbusz3IWcZq+5hhFhjH+chDhQlncsJXUMp+z5qUSoBY
+         7HFk0ItqtuScJKdgFM16ytYGPKfduCHn9eu34mWVQPxyueabcfWIyV2tMOvrKSt8rojx
+         16LgfufGp7xaR1KV9my9Nu02iMzM5ESVxloZmr5tzkvedmvuTon4513E0fIT7z3bk8NM
+         S3Rg==
+X-Forwarded-Encrypted: i=1; AHgh+RqDMcq+RURdRgWKTBZZWvwi/QLcllmllXTqE09KDc6LN37uoGYPIqBtUGrLqcGXvZP3gJOcFoA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDQ29rpGYJLmQV1w8DyYrUDtbhb4x0VymiguYv/tCFumNZwR28
+	8+ZKdxFeygPDD+yrdeh4rdeImD/+NFMbjYlzlWw6r6JP17sOxyx09lJcQOpddyWb9cITMd1G9Vw
+	NO69VIra/OCwJ0SbXlnhGbXLAOi+SGbw=
+X-Gm-Gg: AR+sD11E0L3TUtXPLZcCr7gf2PREE/Kzw1Mvop8frDztI1tDdRGlT1L4XM1iTrLMe/H
+	Px1O+SFqBIRVWOz866WPzPGM74dbMPe/M0Y/xxCjwLVXZTuFfZsiOPK9NUSTd6fhH5sgHs5X2do
+	O9QlQfOdST4ug22QZwGgY+zP++nGH8VrJIDb/9/jyxZasHgrZeuLrsciCbCJVUqI19mVi6Pb8Pj
+	GlZwYod8ruaei06sS1gNda5J5aygzuLGgXzZlzFX8vSmumRDLSD1uT/0WB30bXRx3tYxbPK7plL
+	jgGB6S9/n+fdlOfxBBYS8xRHYgVr5F6GhVYHsfHStPFfD4C7Mko/uH9jUot1pxl1e7PbmUSEXSH
+	vtR6G1e3QGy810aPe2EhA1nI7L0TAOeK69INivohLXydCsY7z45gQdJhJPaWKJ5aptg0Z4MNhGH
+	FzDSzOy0/zAmv2bzJzMuw=
+X-Received: by 2002:a05:690c:6983:b0:80d:ab06:cb64 with SMTP id
+ 00721157ae682-822584bad34mr3629877b3.8.1786014555082; Thu, 06 Aug 2026
+ 04:09:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,55 +87,75 @@ MIME-Version: 1.0
 References: <20260805072641.402-1-strst.gs@gmail.com> <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
  <20260806102327.wrig23oltjzogyi7@skbuf>
 In-Reply-To: <20260806102327.wrig23oltjzogyi7@skbuf>
-From: Semih Baskan <strst.gs@gmail.com>
-Date: Thu, 6 Aug 2026 14:08:24 +0300
-X-Gm-Features: AUfX_mzEtHMUlnja0f1MxuB-IZVQhRJjhl7uNMwk-SKwEI-ep1jbrKu6_3Qu-lc
-Message-ID: <CAAsRjR=_7afhCfmE3=+Rueoo0L7ZTqAbRjxAWO3Vd01zcYGvug@mail.gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Thu, 6 Aug 2026 13:09:03 +0200
+X-Gm-Features: AUfX_mxopR7GB3Ojlu79PEWCg8s-EepDtmB4ZlVsxxuMgl9-7seiaOPsXE2jtgA
+Message-ID: <CAOiHx=kqmZSM2Vzusc_bcpJfTjJC=jYPgU3wnz_xX+_nnuiNtw@mail.gmail.com>
 Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
 To: Vladimir Oltean <olteanv@gmail.com>
-Cc: Jonas Gorski <jonas.gorski@gmail.com>, florian.fainelli@broadcom.com, andrew@lunn.ch, 
+Cc: Semih Baskan <strst.gs@gmail.com>, florian.fainelli@broadcom.com, andrew@lunn.ch, 
 	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
 	vladimir.oltean@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Vladimir,
-
+On Thu, Aug 6, 2026 at 12:23=E2=80=AFPM Vladimir Oltean <olteanv@gmail.com>=
+ wrote:
+>
+> On Wed, Aug 05, 2026 at 09:44:51AM +0200, Jonas Gorski wrote:
+> > While SVL is active, any ARL add/remove operations ignore the VID
+> > field/register and force it to 0, making existing static ARL entries
+> > with VID !=3D 0 inaccessible, and any (static) ARL entries added will
+> > have their VID set to 0, regardless what the software entry said.
+>
 > Is this a hardware limitation, or is it because global state
 > (dev->vlan_enabled) blinds b53_arl_rw_op()'s attempts to look at FDB
 > entries of the other type?
 
-I tested that separation on the RT-N18U (BCM53011 rev 5) during the
-measurements for the new series. Two builds kept ARLTBL_IVL_SVL_SELECT
-at IVL while disabling the table, so the ARL read/write ops were never
-switched to SVL:
+This is a hardware limitation.
 
-  - table off, select held at IVL, VC0 learning-mode bits cleared: a
-    static entry with VID 100, present in the hardware dump before the
-    toggle, is gone from the dump after it
-  - table off, select held at IVL, VC0 "individual VLAN learning mode"
-    bits (bits 6:5) kept set as well: same result
-  - positive control, table on, identical toggle: the entry survives
-    and the dump shows it
+The hardware hash function to determine the table index for a {
+VID,MAC } entry ignores the VID field (or rather treats it as 0) when
+filtering / 802.1q mode is disabled. This is done for all ARL
+accesses, both destination port lookup on forwarding as well as when
+doing ARL table operations.
 
-The observable is the fdb search path (bridge fdb show dev ... self),
-which does not go through b53_arl_rw_op() at all: b53_fdb_dump() only
-touches the ARL search registers. The same dump shows the entry before
-the toggle and shows survival in the table-on control, so it can tell
-the difference. With every mode input the driver has held at IVL, and
-with the reads happening through a path b53_arl_rw_op() cannot blind,
-the entry still does not survive disabling the table. On this chip
-that makes it a property of the table being off rather than an
-artifact of the select flip. Jonas also noted in the new thread that
-ARLTBL_IVL_SVL_SELECT is not implemented on 5301x at all, which fits:
-the bit visibly did nothing in these tests.
+You can manually write entries with VID !=3D 0 as the VID used for table
+index calculation and the VID of the entry are two different register
+fields, but the entry will then be written to the wrong index,
+preventing them from being matched when looking them up on forwarding
+in filtering/802.1q mode.
 
-I cannot rule out that the entries still sit in silicon and are merely
-unreachable in every mode the driver can program, but for the driver
-and for forwarding they behave as lost either way.
+I verified this by writing entries with VID !=3D 0 with 802.1q mode
+disabled, and then looking up the MAC for VID 0 with 802.1q mode
+enabled, which then found the entry with the VID !=3D 0, and looking up
+the MAC with the entry's VID did not find the correct entry.
 
-The measurements are summarized in the new series' cover letter:
+>
+> static int b53_arl_rw_op(struct b53_device *dev, unsigned int op)
+> {
+>         u8 reg;
+>
+>         if (op > ARLTBL_RW)
+>                 return -EINVAL;
+>
+>         b53_read8(dev, B53_ARLIO_PAGE, B53_ARLTBL_RW_CTRL, &reg);
+>         reg |=3D ARLTBL_START_DONE;
+>         if (op)
+>                 reg |=3D ARLTBL_RW;
+>         else
+>                 reg &=3D ~ARLTBL_RW;
+>         if (dev->vlan_enabled)
+>                 reg &=3D ~ARLTBL_IVL_SVL_SELECT;
+>         else
+>                 reg |=3D ARLTBL_IVL_SVL_SELECT;
 
-https://lore.kernel.org/all/20260806073119.387-1-strst.gs@gmail.com/
+This ARLTBL_IVL_SVL_SELECT bit is only implemented for a small subset
+of switches (bcm5302x / bcm58* and bcm53134). Additionally, according
+to the register description, this also requires enabling "per port
+IVL/SVL" mode, which is not enable by b53. The description of that
+also says that the VIDs used in SVL ports must not be used in IVL
+ports. No idea what the consequences are if they do.
 
 Best regards,
-Semih
+Jonas
