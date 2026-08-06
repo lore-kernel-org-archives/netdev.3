@@ -1,140 +1,181 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23969305E1F
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C2F305E1F
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786028632; cv=none; b=n7Jg1w2m+7xX271OzYbbitfAHCHodA1s9dqBcXM15+zjOdaJsqm/GifjZ/EN8yZKbsZ7Z9MtC9NlAZw8cE51e/A7F3IzOSJKoleOiSDCR9hI3fAZ4UEXlyVHkIkqqJpqQ7EEXp0oh6CbIHE5vj6SIjcAjTjTsuG1PAx3giY2COQ=
+	t=1786028635; cv=none; b=mfs8KUps/6eK+8zdHHrWRuB8YzfcFBaxtZ5hj8qvrABYiZln4NwUtPqlfQn/OtzKUvEPvPswq+4S7b7X1W+4qNoErAFjZU1rISSx9i8JVKGcOP4GYqD11Cdco56kVWLWZJ4gGvkWjkBNfkUt0MJIzsVPxljxefRGzOm/q8IVYik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786028632; c=relaxed/simple;
-	bh=U4enaZJU0Ag8XW5KixXcrTMBFhbFm+Rro2UuEalKp6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=chuk2IZQM6hMJWnF0ZHddzAN1Q2MOymRX4bse0JtgDRy2RxWLoIi9G3ibaffEHJkhKvOUAze8HZnIhjkMAk61bx6s5gxn4LNlSCNrFVF3L8NurkD97xp1Ve2vpjfM61UoRC4OYyWE3/3PqgD0UQiRmAxj2RRM+Sji5miJmvQHpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=JO1cmrW9; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1786028635; c=relaxed/simple;
+	bh=cYbc1CQoQc5pfYhgLv/MYSip5jRcSrSImN64FkQfEWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kifswnt18XzTgPnk+4qkHMz3xzVdB/zAQSfAFFwbaJTaJckC/pu0pRLkJkn7P5JsBKXol2Z1+w9cWRICCIYUhLDWpmZeIMK/f4X5lWY+63Wdxv+LsyBl2slIMS0hW87b/9NfHNPsotFj0nIQI6FnHUJLFpuayRBQmLG63wrcedY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iD59FJdt; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="JO1cmrW9"
-Received: by dvalin.narfation.org (Postfix) id D64BF200D8;
-	Thu, 06 Aug 2026 15:03:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1786028625;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JtwsqjhEg4/Ps2dJSppFH6CbIpUpKOfLmJgscIj5QtY=;
-	b=JO1cmrW9A9AKSxP95YtIx7zZY1BW277EKJe7z+xcF1B1ir3EmHI9NGxCot4wt4XP44GtAH
-	CMLSY1UL6lbzE9NQMOpXptAqclD/9n6BiFhcXT7lsS8TvC4HHZ5lTuF9ELcwAwNfldx7FZ
-	09ywjbnKM+P1smQT5rUdh9O/IHN1A/Q=
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, Antonio Quartulli <antonio@mandelbit.com>,
- Simon Wunderlich <sw@simonwunderlich.de>
-Subject:
- Re: [PATCH net-next 01/10] batman-adv: dat: drop non-4addr backwards
- compatibility
-Date: Thu, 06 Aug 2026 17:03:41 +0200
-Message-ID: <14211429.uLZWGnKmhe@sven-desktop>
-In-Reply-To: <20260805143200.722098-2-sw@simonwunderlich.de>
-References:
- <20260805143200.722098-1-sw@simonwunderlich.de>
- <20260805143200.722098-2-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iD59FJdt"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8486672f03cso2813039b3a.0
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:03:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786028634; x=1786633434; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uJS+V1CTVjT7mHslf1lQhCi1CZlnPDrIe8kNgbgFr+I=;
+        b=iD59FJdtqQPsbHxMZmzV4/4lrhB8zzIiu89v9R7PF4eug1Z9Ksth50eFrXX5CfoA4I
+         lRDJ3r8A8fxAlTycxueiLAx1CQrpJXUmjWYeyIFuv64BOXKksN5hqDYgG5qfNEcyNMay
+         pHpHTojeoRUOo1bmhxbSq6aQfiD/NdaInvcLNnhKo7fwQklBCqzTZhJfroSusClRfH1T
+         dC8ZkGxHxdaVuSO0od2xaPpgzZMwhMl4UjXfCntWY1QOatPlsvVCio8EVaYFVb5fVNFS
+         zoJ9PY12sO9HWx9f2rWe1wQgTJRUiSbXi93t+Z7evs+gUPCq/AYoIJQ6Zpei64Ou5+lQ
+         3avQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786028634; x=1786633434;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uJS+V1CTVjT7mHslf1lQhCi1CZlnPDrIe8kNgbgFr+I=;
+        b=ZJhhu6uBjz/a/sYZtiS+sX34Pf4k6OVw+GWg+yII2rS26jbVwE8oaLWETKiCeuS1Qw
+         mtFGFpptI0LZ6pKUmIqIFI/pWhGrV5baHiGGJUPTqaIfuB0xO2WM08kVpndbEZVVNGdm
+         tceE1XXr7f8j/TknpE/rDXawrEmnLY4HOy5BympRonXdiCimhh1lnwA31pSO24nDnQgX
+         jHMxb/Uw+lGXvt727xkWKje99wMshp1oRkK7Qs6N4GzMnEJepL+5oCYu39976QorLRwV
+         9OdJL/VaPlnyR+pVpR4Fjz2G9kOzuwEnwpUIlsa2bS5YTgfB4fFmKy+Ndcp7Hb3Jt4lE
+         6+rg==
+X-Forwarded-Encrypted: i=1; AHgh+RrTsvBXuMk+Isxd4GCuBhqkg+cx2PJzaDxzkrNIAGiDiptKurf0rQIix4puDKZJA13HsRHnZmg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0vXU0TsHwWTYCGLryDxzkWjcz4fWow2UzWMwki0cPkHHWRJ6i
+	vvNcjxaQmfpa/lofRHPTn60UMknu+oBYaULAPM0bzLZkJzfRhepWlkmx
+X-Gm-Gg: AR+sD12Ut2LMLLgLiWXaf4TqBgwpA4bnWWEsFxwkLum7Dmd15OYSD5VWUo1ajkZC00O
+	h2NQ06kXHJor79m8j+u+FfdSOsXAi1vI9a6KSjQ3AH01hdhgpv6JsdF1T/wFdFR2nSmOG9GTFRL
+	bkcphKBL0mMM+9SDs4Wvwu8ZgXr9JeVH2Znn6eAjCHaM3JChyQ66DqhHKC4NFxb1pFDND4qNZ5R
+	UhiGVMEU216G4FgwBeTZYSmLJyoqEGmjjTJdvokdZ1xSOC97AuNAWryNwAOp1W7mWmY4M/2Kixk
+	y3aUlw+BTz40/5wx7OXpQvtYbJSK9Y953E1WWem1O5Fvn4BEULgRoZeUqy7UwSSrJgUhJ7stRvf
+	xV/fUuJwAJP0mBWMpW4qlq6r+Q1oqyx5WyhqRN+b6JXGdGoFvABlhwkMNPEhZW64a2hVbVlINhM
+	/wGJThkq/jGFYmm4w7VAAB2MGrZCmztohrQJtat/qT0Mg9HiNDrmALfNo3A+6jcXZAnYD1CWSrq
+	JpoFvwZja7bHdWW0UuTlMvn7J7Qoo4HGmDr9yrOuFkGh9uIjZL4tkydQKpWY2MZKg==
+X-Received: by 2002:a05:6a00:2383:b0:848:44d2:72a2 with SMTP id d2e1a72fcca58-84f2e009b49mr13219705b3a.27.1786028633604;
+        Thu, 06 Aug 2026 08:03:53 -0700 (PDT)
+Received: from EAIT-H54D9Q2FJQ.eait.uq.edu.au ([130.102.10.60])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f456ba8b7sm1573356b3a.29.2026.08.06.08.03.49
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 06 Aug 2026 08:03:53 -0700 (PDT)
+From: Yu Zhang <yuz08559@gmail.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+Cc: virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yu Zhang <yuz08559@gmail.com>
+Subject: [PATCH] vhost-vdpa: drop the parent's vq callback before the call fd is released
+Date: Fri,  7 Aug 2026 01:03:23 +1000
+Message-ID: <20260806150323.2154-1-yuz08559@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3201252.e9J7NaK4W3";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 
---nextPart3201252.e9J7NaK4W3
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Date: Thu, 06 Aug 2026 17:03:41 +0200
-Message-ID: <14211429.uLZWGnKmhe@sven-desktop>
-In-Reply-To: <20260805143200.722098-2-sw@simonwunderlich.de>
-MIME-Version: 1.0
+VHOST_SET_VRING_CALL releases the previous call eventfd inside
+vhost_vring_ioctl() -- it swaps the new context into vq->call_ctx.ctx
+and then eventfd_ctx_put()s the old one, which is a synchronous
+kfree(). The parent vdpa device is only told about the change
+afterwards, when vhost_vdpa_vring_ioctl() reaches ops->set_vq_cb().
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805143200.722098-1=
-=2Dsw%40simonwunderlich.de?part=3D1
+Parent drivers cache the pointer handed to them in
+vdpa_callback::trigger and do not take a reference on it, so
+throughout that window the parent holds a dangling eventfd_ctx and may
+signal it. The documentation added with the field describes what
+signalling it means but says nothing about how long it stays valid.
 
-> --- Patch [1]: [PATCH net-next 01/10] batman-adv: dat: drop non-4addr bac=
-kwards compatibility ---
-[...]
-> Discovered by: opus-5 =C2=B7 Missed by: old-prompts, sashiko-gemini =C2=
-=B7 Confirmed by: old-prompts
-> Was the removed else branch really only reachable when talking to
-> pre-compat-15 nodes?
+This is the same hazard that "vhost_vdpa: assign irq bypass producer
+token correctly" addressed for the irq bypass producer token, by
+moving vhost_vdpa_unsetup_vq_irq() ahead of the vhost_vring_ioctl()
+call. The producer token was only one of the two consumers of that
+pointer; the one the parent keeps via ->set_vq_cb() was left behind
+the free.
 
-This is a misrepresentation of the commit. The code was added in batman-adv=
-=20
-with compat 14 when not all nodes had support for 4-addr packets.=20
-With compat-15, all nodes must have support for 4addr packets and the=20
-backwards compatibility hack is no longer needed
+With VDUSE the window is directly reachable from userspace, because
+the device emulation daemon can inject an interrupt at any time from a
+different fd, and neither side shares a lock with the other: VDUSE
+takes vq->irq_lock, vhost takes vhost_dev.mutex + vq->mutex.
 
-[...]
-> After this change those cache replies go out as BATADV_UNICAST_4ADDR, and=
- on
-> the receiver batadv_recv_unicast_packet() now takes the is4addr path:
->=20
-> 			subtype =3D unicast_4addr_packet->subtype;
-> 			batadv_dat_inc_counter(bat_priv, subtype);
->=20
-> so BATADV_P_DAT_CACHE_REPLY RX accounting is incremented where it previou=
-sly
-> was not, and the encapsulation of these replies changes in packet capture=
-s.
+  BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0x76/0xe0
+  Write of size 4 at addr ffff8881084e8788 by task vduse_uaf/2987
 
-Yes, but what is wrong about the correct packets and correct accounting?
+  _raw_spin_lock_irqsave+0x76/0xe0
+  eventfd_signal_mask+0x69/0x120
+  vduse_dev_ioctl+0x337/0x1a60     <- vduse_vq_signal_irqfd(), inlined
+  __x64_sys_ioctl+0x120/0x170      <- VDUSE_VQ_INJECT_IRQ
 
-[...]=20
-> Discovered by: opus-5 =C2=B7 Missed by: old-prompts, sashiko-gemini =C2=
-=B7 Confirmed by: old-prompts
-> This is a pre-existing issue and not introduced by this patch, but while
-> looking at the DAT subtype decoding: the default arm of the inner switch =
-in
-> batadv_dbg_arp() prints the packet type where the message says subtype:
->=20
-> 		switch (unicast_4addr_packet->subtype) {
-> 		...
-> 		default:
-> 			batadv_dbg(BATADV_DBG_DAT, bat_priv, "* type: Unknown (%u)!\n",
-> 				   unicast_4addr_packet->u.packet_type);
-> 		}
->=20
-> That arm is only reachable from case BATADV_UNICAST_4ADDR: of the outer
-> switch, so the value printed is always 0x42 rather than the unrecognized
-> value from enum batadv_subtype in include/uapi/linux/batadv_packet.h.
+  Allocated by task 2986:
+   do_eventfd+0x50/0x200
+   __x64_sys_eventfd2+0x2e/0x40
 
-Irrelevant for this patch but I've submitted a mini fix:
-https://patchwork.open-mesh.org/project/b.a.t.m.a.n./patch/20260806-4addr-u=
-nknown-subtype-print-v1-1-e906357a5895@narfation.org/
+  kmalloc-64, freed 64-byte region [ffff8881084e8780, ffff8881084e87c0)
 
-Regards,
-	Sven
+One thread loops VHOST_SET_VRING_CALL on /dev/vhost-vdpa-N with a
+fresh eventfd and then unbinds it, while another loops
+VDUSE_VQ_INJECT_IRQ on /dev/vduse/<name>. This reproduces in 5 out of
+5 ten-second runs on v7.1.6 and 3 out of 3 on v7.2-rc6. With the patch
+there are no reports in 3 out of 3 runs on either, while the same
+workload still gets ~30000 interrupts per run delivered into live
+eventfds, so the path is still being exercised.
 
+Tell the parent to drop the callback before vhost_vring_ioctl() can
+free the eventfd, mirroring what is already done for the bypass
+producer, and restore it if the ioctl fails -- on failure the swap
+never happened, the old context is still installed, and leaving the
+parent without a callback would silently drop that vq's interrupts.
 
---nextPart3201252.e9J7NaK4W3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Fixes: 5e68470f4e80 ("vdpa: Add eventfd for the vdpa callback")
+Signed-off-by: Yu Zhang <yuz08559@gmail.com>
+---
+ drivers/vhost/vdpa.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCanSiTQAKCRBND3cr0xT1
-y6t8AQD84YyhEiTBB6riLKZaG7fUtJLbGi7SGzoDcxIdade7fAEA7pecsXc6V744
-BCmzGIuj+MzY9/64yJz9Z9ZFKcXOZAs=
-=DknP
------END PGP SIGNATURE-----
-
---nextPart3201252.e9J7NaK4W3--
-
-
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index ac55275..b7833bd 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -714,13 +714,34 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+ 			if (ops->get_status(vdpa) &
+ 			    VIRTIO_CONFIG_S_DRIVER_OK)
+ 				vhost_vdpa_unsetup_vq_irq(v, idx);
++			/*
++			 * The parent caches call_ctx.ctx in cb.trigger without
++			 * holding a reference, so it has to stop using it
++			 * before vhost_vring_ioctl() drops the last one.
++			 */
++			cb.callback = NULL;
++			cb.private = NULL;
++			cb.trigger = NULL;
++			ops->set_vq_cb(vdpa, idx, &cb);
+ 		}
+ 		break;
+ 	}
+ 
+ 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
+-	if (r)
++	if (r) {
++		/*
++		 * A failure here means the swap never happened and the old
++		 * context is still installed, so give the parent back the
++		 * callback that was torn down above.
++		 */
++		if (cmd == VHOST_SET_VRING_CALL && vq->call_ctx.ctx) {
++			cb.callback = vhost_vdpa_virtqueue_cb;
++			cb.private = vq;
++			cb.trigger = vq->call_ctx.ctx;
++			ops->set_vq_cb(vdpa, idx, &cb);
++		}
+ 		return r;
++	}
+ 
+ 	switch (cmd) {
+ 	case VHOST_SET_VRING_ADDR:
+-- 
+2.43.0
 
