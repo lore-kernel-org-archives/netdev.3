@@ -1,134 +1,301 @@
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A4C431A2B;
-	Thu,  6 Aug 2026 09:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC723D75AD
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 09:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786008060; cv=none; b=Bk2d9ehNORMj2rCzNc7F/yFgoDoNlTKAdRbv5mcFQFfa6jpqS/Qqej8zR0tn4E3ixOZn0emywHb4mDv4Vjva27lA+G4BQmCfbvnQ5ObHqIEx64l2NqEcx2UwxAc3iuWkbEu/jAE5vwCqz1zhcxQ0lwZlXfXWKwf2cPtIUXJMiHY=
+	t=1786008081; cv=none; b=VeUnGTctF00gKyR8iVDb2J+cpHL6DLAI3shWkyjQ5UJXHnCGKp8NFhE0QqPcybGIQ7ZBvtu9YDQeeBdUxRQxSDLkWQRDtp+ljuS1tuorRXzummnfLY5511IzsQOg0Y8G6sEpC8L3JSZdoYcazIpyomPAIJGJ+LCropnVNY8ja1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786008060; c=relaxed/simple;
-	bh=Rj2ZkKqK6RL+viYdwlruvZzP6MLzQql0LuRjsmfUx0w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jTrZ2yUO09DnZ71+aSX334dMF/Bf20MNKRkgU1RL7CGwH4QP3aLDkBpVlJn05NqGi7ajBe/mbZDNsX6faGM+p4j6Mfct5m+OemTK8YOLoYQC35Xir3GjQe/6gyfpPL73OcOkYn1ddH87aPnHwxfQIJ7wzj3k9PKVOLEJ7qN2RVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=r84GRn6w; arc=none smtp.client-ip=115.124.30.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1786008081; c=relaxed/simple;
+	bh=fGmYpTEiNk+JO+wfhI0oFajoqQKT9IciIdMI69xLKrQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JXeVm4DBrTHbZlQaC539zYjOMP0O9R0zW9PhfU/0XySf2oaL4+2op30uDz/d8MOBrprjBPpO67tJFvotVcc3Yxqmjq+fxawV4CpT414+FaMJX5mj2ftZXuD8p02FEJl/Oj86jNy06gjCQ5ct2GCYvxt8sTd3i9y6D3wG0lswVjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eDY4xEHJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="r84GRn6w"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1786008054; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=nFt5XC6qJL3jq1W5fsS5A7pLtf+tp21ckrhuUR4laoY=;
-	b=r84GRn6wOSLUb7p/x0yFcVRo9LMVaLnkrz/Jk3gxlXdksmbcehtA50k+HHNTBLpYV045Jlw8rAg7NN8rcwNdq2bLBic2dkT5BFIvil0/GqQBE2/BiEKnaUOIATg8uw94pzHcGrVE18ZkFm8RTrJ1PKP00NxwFOi3ui8HUBvYjQI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R951e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X8TZBB-_1786008053;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X8TZBB-_1786008053 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 06 Aug 2026 17:20:54 +0800
-Date: Thu, 6 Aug 2026 17:20:53 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Hidayath Khan <hidayath@linux.ibm.com>, alibuda@linux.alibaba.com,
-	sidraya@linux.ibm.com, mjambigi@linux.ibm.com,
-	andrew+netdev@lunn.ch
-Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, pasic@linux.ibm.com, linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net] net/smc: drop the abort_work reference when the work
- is cancelled
-Message-ID: <anRR9doLcvlPAj4Q@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260806081549.595001-1-hidayath@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eDY4xEHJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786008078;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ddcDaGWQnP3DHovKK3FR6OSlFiL10dOGuvB5d+yT2cY=;
+	b=eDY4xEHJCbNAW35HIukZGCfcGSwaWCS9oNYXpUrSiExHbWkLM+sKP++s7yesdT5iImO22f
+	nGZVlLbF8CRgys4DH0GMCNWGHWheTWgFOiP+p48+cthz4+N4/bQPTI2kvKe3UxTCFcKR9g
+	iZAF9wrxlCumWMbrfEXWvqBs7Tzfffk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-EqR5JKJBNJySRScg-vI5Hg-1; Thu,
+ 06 Aug 2026 05:21:15 -0400
+X-MC-Unique: EqR5JKJBNJySRScg-vI5Hg-1
+X-Mimecast-MFC-AGG-ID: EqR5JKJBNJySRScg-vI5Hg_1786008073
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7131419560AB;
+	Thu,  6 Aug 2026 09:21:13 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.33.123])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C48DB422;
+	Thu,  6 Aug 2026 09:21:09 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: Selvamani.Rajagopal@onsemi.com
+Cc: parthiban.veerasooran@microchip.com,
+	andrew+netdev@lunn.ch,
+	pier.beruto@onsemi.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	andrew@lunn.ch,
+	Parthiban.Veerasooran@microchip.com
+Subject: Re: [PATCH net v5 1/4] net: ethernet: oa_tc6: Protect skb pointer used by two different kernel instances
+Date: Thu,  6 Aug 2026 11:20:55 +0200
+Message-ID: <20260806092055.101202-1-pabeni@redhat.com>
+In-Reply-To: <20260729-fix-race-condition-and-crash-v5-1-3906bc485daf@onsemi.com>
+References: <20260729-fix-race-condition-and-crash-v5-1-3906bc485daf@onsemi.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806081549.595001-1-hidayath@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On 2026-08-06 10:15:49, Hidayath Khan wrote:
->The schedulers of conn->abort_work hand a socket reference to the work
->item and rely on it to give the reference back:
->
->        sock_hold(&smc->sk); /* sock_put in abort_work */
->        if (!queue_work(smc_close_wq, &conn->abort_work))
->                sock_put(&smc->sk);
->
->The queue_work() failure case is handled, but the cancellation case is
->not. smc_conn_free() cancels a still-pending abort_work:
->
->        if (current_work() != &conn->abort_work)
->                cancel_work_sync(&conn->abort_work);
->
->and discards the return value.  When cancel_work_sync() returns true the
->work was queued but had not started, so smc_conn_abort_work() never runs
->and its sock_put() never happens.  The reference is lost.
->
->As in smc_switch_conns(), a leaked sk_refcnt means the smc_sock is never
->destroyed: its buffers stay allocated and the network namespace reference
->a user socket holds is never released, so the netns cannot be torn down.
->
->smc_cdc_msg_validate() queues abort_work from the receive tasklet when a
->peer sends a CDC message with an out-of-order sequence number, so a
->remote peer combined with a concurrent local close is enough to reach it.
->
->Drop the reference when the work is cancelled, matching the pattern
->smc_close_cancel_work() already uses for conn->close_work:
->
->        if (cancel_work_sync(&smc->conn.close_work))
->                sock_put(sk);
->
->The sock_put() is safe here: every caller of smc_conn_free() passes the
->connection of a socket it holds a reference to, so this cannot release
->the last one.
->
->Fixes: b286a0651e44 ("net/smc: handle incoming CDC validation message")
->Cc: stable@vger.kernel.org
->Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
->Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
->Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+From: AI Reviewer <ai@example.com>
 
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+--- Patch [1]: [PATCH net v5 1/4] net: ethernet: oa_tc6: Protect skb pointer used by two different kernel instances ---
+commit e4a0f5cf54cb40242b52216e184b30bf2c9fff57
+Author: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Best regards,
-Dust
+net: ethernet: oa_tc6: Protect skb pointer used by two different kernel instances
 
->---
-> net/smc/smc_core.c | 10 ++++++++--
-> 1 file changed, 8 insertions(+), 2 deletions(-)
+This patch puts tc6->waiting_tx_skb accesses under the existing
+tx_skb_lock, adds the helpers oa_tc6_drop_tx_skb() and
+oa_tc6_detach_waiting_tx_skb(), and also brings tc6->disable_traffic
+under the same lock in oa_tc6_disable_traffic(), oa_tc6_exit() and the
+threaded IRQ handler.  A few questions below.
+
+>     net: ethernet: oa_tc6: Protect skb pointer used by two different kernel instances
 >
->diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
->index c0027d2fe4e8..dd9fffbe41e0 100644
->--- a/net/smc/smc_core.c
->+++ b/net/smc/smc_core.c
->@@ -1254,6 +1254,7 @@ static void smc_buf_unuse(struct smc_connection *conn,
-> /* remove a finished connection from its link group */
-> void smc_conn_free(struct smc_connection *conn)
-> {
->+	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
-> 	struct smc_link_group *lgr = conn->lgr;
-> 
-> 	if (!lgr || conn->freed)
->@@ -1277,8 +1278,13 @@ void smc_conn_free(struct smc_connection *conn)
-> 		tasklet_kill(&conn->rx_tsklet);
-> 	} else {
-> 		smc_cdc_wait_pend_tx_wr(conn);
->-		if (current_work() != &conn->abort_work)
->-			cancel_work_sync(&conn->abort_work);
->+		/* If the work was pending (cancel returns true) it never ran,
->+		 * so the sock_hold taken by its scheduler was never released.
->+		 */
->+		if (current_work() != &conn->abort_work) {
->+			if (cancel_work_sync(&conn->abort_work))
->+				sock_put(&smc->sk);
->+		}
-> 	}
-> 	if (!list_empty(&lgr->list)) {
-> 		smc_buf_unuse(conn, lgr); /* allow buffer reuse */
->
->base-commit: 2b1c2bc2355fd59cc75045e42d9dc5470ef5fa9a
->-- 
->2.52.0
+>     Threaded IRQ uses waiting_tx_skb. Transmit path also uses
+>     this pointer without any mutual exclusion protection. As a
+>     result, it might leak skb buffer, particularly threaded IRQ
+>     runs in the middle of transmit path, near skb_linearize.
+
+[Severity: Medium]
+[Finding: main-1-1]
+[Sources: opus-5]
+Should the changelog mention the other behavioural changes that come with
+this fix?  The message only describes adding mutual exclusion for
+waiting_tx_skb, but the patch also:
+
+ - changes oa_tc6_start_xmit() so the disable_traffic case drops the frame
+   and returns NETDEV_TX_OK instead of netif_stop_queue() plus
+   NETDEV_TX_BUSY,
+ - moves skb_linearize() ahead of the busy/disabled checks,
+ - brings disable_traffic under tx_skb_lock in oa_tc6_exit() and in
+   oa_tc6_macphy_threaded_irq(),
+ - converts the tx skb free from kfree_skb() to dev_kfree_skb_any() in the
+   new oa_tc6_drop_tx_skb().
+
+The exact interleaving that leaks the skb is also not spelled out.  Since
+this carries a Fixes: tag and will be picked up for stable, could the
+message describe the leaking sequence and the return-code change?  The
+disable_traffic locking is only mentioned in the v3 changelog below the
+cut, which is dropped when the patch is applied.
+
+> diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+> index 0727d53345a33..5b24cce4f9b56 100644
+> --- a/drivers/net/ethernet/oa_tc6.c
+> +++ b/drivers/net/ethernet/oa_tc6.c
+> @@ -652,6 +652,26 @@ static int oa_tc6_enable_data_transfer(struct oa_tc6 *tc6)
+>  	return oa_tc6_write_register(tc6, OA_TC6_REG_CONFIG0, value);
+>  }
+>  
+> +/* Called when a frame that is meant to be transmitted, is dropped. */
+> +static void oa_tc6_drop_tx_skb(struct oa_tc6 *tc6, struct sk_buff *skb)
+> +{
+> +	if (skb) {
+> +		tc6->netdev->stats.tx_dropped++;
+> +		dev_kfree_skb_any(skb);
+> +	}
+> +}
+> +
+> +static struct sk_buff *oa_tc6_detach_waiting_tx_skb(struct oa_tc6 *tc6)
+> +{
+> +	struct sk_buff *skb;
+> +
+> +	lockdep_assert_held(&tc6->tx_skb_lock);
+> +	skb = tc6->waiting_tx_skb;
+> +	tc6->waiting_tx_skb = NULL;
+> +
+> +	return skb;
+> +}
+> +
+>  static void oa_tc6_cleanup_ongoing_rx_skb(struct oa_tc6 *tc6)
+>  {
+>  	if (tc6->rx_skb) {
+
+[ ... ]
+
+> @@ -693,9 +717,15 @@ static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
+>  static void oa_tc6_disable_traffic(struct oa_tc6 *tc6)
+>  {
+>  	u32 regval = INT_MASK0_ALL_INTERRUPTS;
+> +	struct sk_buff *skb;
+>  
+> +	spin_lock_bh(&tc6->tx_skb_lock);
+>  	tc6->disable_traffic = true;
+> -	oa_tc6_free_pending_skbs(tc6);
+> +	skb = oa_tc6_detach_waiting_tx_skb(tc6);
+> +	spin_unlock_bh(&tc6->tx_skb_lock);
+> +
+> +	oa_tc6_drop_tx_skb(tc6, skb);
+> +	oa_tc6_free_ongoing_skbs(tc6);
+>  	oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
+>  	oa_tc6_read_register(tc6, OA_TC6_REG_STATUS0, &regval);
+>  	oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0, regval);
+
+[ ... ]
+
+> @@ -1159,15 +1188,20 @@ static irqreturn_t oa_tc6_macphy_threaded_irq(int irq, void *data)
+>  	 * no need to attempt spi transfer, once it fails. Pending skbs
+>  	 * are already freed.
+>  	 */
+> -	if (!tc6->disable_traffic) {
+> -		while (tc6->int_flag ||
+> -		       (tc6->waiting_tx_skb && tc6->tx_credits)) {
+> -			ret = oa_tc6_try_spi_transfer(tc6);
+> -			if (ret) {
+> -				disable_irq_nosync(tc6->spi->irq);
+> -				oa_tc6_disable_traffic(tc6);
+> -				break;
+> -			}
+> +	spin_lock_bh(&tc6->tx_skb_lock);
+> +	if (tc6->disable_traffic) {
+> +		spin_unlock_bh(&tc6->tx_skb_lock);
+> +		return IRQ_HANDLED;
+> +	}
+> +	spin_unlock_bh(&tc6->tx_skb_lock);
+
+[Severity: Low]
+[Finding: fable-5-5-19]
+[Sources: fable-5, opus-5]
+Is tx_skb_lock the right lock for tc6->disable_traffic?
+
+The writers in oa_tc6_disable_traffic() and oa_tc6_exit() and this reader
+now take a spin_lock_bh() lock, but the primary hard IRQ handler still
+reads the same bool with a plain load and cannot take a BH lock:
+
+drivers/net/ethernet/oa_tc6.c:oa_tc6_macphy_isr() {
+	...
+	if (tc6->disable_traffic)
+		disable_irq_nosync(tc6->spi->irq);
+	else
+		tc6->int_flag = true;
+	...
+}
+
+In oa_tc6_exit() the store happens under the lock and disable_irq() only
+runs afterwards:
+
+	spin_lock_bh(&tc6->tx_skb_lock);
+	tc6->disable_traffic = true;
+	spin_unlock_bh(&tc6->tx_skb_lock);
+	disable_irq(tc6->spi->irq);
+
+Can a level triggered interrupt in that window make oa_tc6_macphy_isr()
+observe a stale false, set int_flag and wake the thread, which then takes
+the early return above without doing the data chunk transfer that
+deasserts INT?
+
+Also, is taking the lock here worth it when it is dropped again before the
+value is used?  Would READ_ONCE()/WRITE_ONCE() on the flag (or an
+IRQ-safe lock) express the actual access rules more accurately than a BH
+lock that the hardirq reader can never hold?
+
+>  
+> +	while (tc6->int_flag ||
+> +	       (tc6->waiting_tx_skb && tc6->tx_credits)) {
+> +		ret = oa_tc6_try_spi_transfer(tc6);
+> +		if (ret) {
+> +			disable_irq_nosync(tc6->spi->irq);
+> +			oa_tc6_disable_traffic(tc6);
+> +			break;
+>  		}
+>  	}
+>  
+> @@ -1250,18 +1284,22 @@ EXPORT_SYMBOL_GPL(oa_tc6_zero_align_receive_frame_enable);
+>   */
+>  netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb)
+>  {
+> -	if (tc6->disable_traffic || tc6->waiting_tx_skb) {
+> -		netif_stop_queue(tc6->netdev);
+> -		return NETDEV_TX_BUSY;
+> -	}
+> -
+>  	if (skb_linearize(skb)) {
+> -		dev_kfree_skb_any(skb);
+> -		tc6->netdev->stats.tx_dropped++;
+> +		oa_tc6_drop_tx_skb(tc6, skb);
+>  		return NETDEV_TX_OK;
+>  	}
+>  
+>  	spin_lock_bh(&tc6->tx_skb_lock);
+> +	if (tc6->waiting_tx_skb) {
+> +		netif_stop_queue(tc6->netdev);
+> +		spin_unlock_bh(&tc6->tx_skb_lock);
+> +		return NETDEV_TX_BUSY;
+> +	}
+
+[Severity: Low]
+[Finding: fable-5-1-5]
+[Sources: fable-5, opus-5]
+Does moving skb_linearize() in front of the waiting_tx_skb check change the
+back-pressure policy?
+
+Previously an xmit that hit the busy case returned NETDEV_TX_BUSY without
+touching the skb.  Now every xmit linearizes first, so a transient
+skb_linearize() -ENOMEM during a busy period frees the frame and returns
+NETDEV_TX_OK, where before it would have been requeued and retried.
+
+The kernel-doc above oa_tc6_start_xmit() still says:
+
+ * Return: NETDEV_TX_OK if the transmit ethernet frame skb added in the tx_skb_q
+ * otherwise returns NETDEV_TX_BUSY.
+
+which no longer covers the drop cases.  Should that be refreshed too?
+
+> +	if (tc6->disable_traffic) {
+> +		spin_unlock_bh(&tc6->tx_skb_lock);
+> +		oa_tc6_drop_tx_skb(tc6, skb);
+> +		return NETDEV_TX_OK;
+> +	}
+>  	tc6->waiting_tx_skb = skb;
+>  	spin_unlock_bh(&tc6->tx_skb_lock);
+>  
+> @@ -1393,7 +1431,9 @@ EXPORT_SYMBOL_GPL(oa_tc6_init);
+>   */
+>  void oa_tc6_exit(struct oa_tc6 *tc6)
+>  {
+> +	spin_lock_bh(&tc6->tx_skb_lock);
+>  	tc6->disable_traffic = true;
+> +	spin_unlock_bh(&tc6->tx_skb_lock);
+>  	disable_irq(tc6->spi->irq);
+>  	oa_tc6_phy_exit(tc6);
+>  	oa_tc6_free_pending_skbs(tc6);
+-- 
+This is an AI-generated review.
+
