@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306AE3ADB8D;
-	Thu,  6 Aug 2026 01:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5EF3B101D;
+	Thu,  6 Aug 2026 01:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785978675; cv=none; b=jtTbfMMRQyeOxxgJx3ancg/3lsHb552ghw0fe5OxqkHOHE8OMzfE6/l+clct8+0ZN+T26hQc+6NzPT4RFtCc/DoJcB3SwaZlviucLBXbiuE4f7purWmjMfDNyCcGOdRUm4Jnj3WBryocm+ijaKfjUhP3YgRgRgZFMck9decKjuo=
+	t=1785978676; cv=none; b=Mn4PPc12ttA458TihWZxjPYL+kLFH4nvV2uD56mfOmLnMSPKSqxeOh4WOgVaXzdpARBpLJh7/Fb5/6TMFEI85Xua+GKH7CTdGsD1TuhmuVdx7zTgwv6JvorP0ceuaMtf6ZzWEbjH/o9An6YwvDkBp/wgy8L2trwdhGvhmnC1OPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785978675; c=relaxed/simple;
-	bh=WcFWC+2xZp1HWe7xL+ytlY3vrwrn1vucMosVgSn1MDA=;
+	s=arc-20240116; t=1785978676; c=relaxed/simple;
+	bh=oRV13ajJMybdu1gFOPJqV+43C361lx0ENCeC4lK+y+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibLvxJi2IMZyWU89qmAYTEwhhlm2DG8H8wMi5Un8TDy7gD/N33vdEQxdXuCg2Ps67Vot5vFwaa6apCz08T4MycrNk0U0X8M43lD3JTbT1Cda119Kgigh5/Vu+cL5a+byffDC6uaoZUN/tgWOmDjh/WkiDEw7BrsyKB44cT94x9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A9D6U3H5; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=BzcsoIFjOwBDOoLC6XlzLTlo6Q2Hu6RplGPeecNI5UPYFh6JY3dm/zatSlxZ2PkEJJxj5vMuIwKe/Z8uLmzuumh7dJuZHXwjMwXK6ujGJxr/nVYF24Few68BmNjbUV6BmOV0oKMsYxLLFAZjId46UtR+O4ssnZwTFPV/0R3/2No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IguMuiAy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A9D6U3H5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD011F000E9;
-	Thu,  6 Aug 2026 01:11:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IguMuiAy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF6F1F00A3A;
+	Thu,  6 Aug 2026 01:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785978673;
-	bh=dGtdH5CJ8Wb8ZKt9aPoVOvjd1I6TqJYcKa/hisn+e6s=;
+	s=k20260515; t=1785978675;
+	bh=ebcYUBcFLfg9nDkh4dHoaZmcNdoWLmFjyaOtz0zXD5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A9D6U3H5paBs+TI9Jzet6xbQ6Ir4Vrpj50qKUaD4PVaYvWSrwcpzSyDRS3hB1F0nE
-	 IqStq6xwGafWlA7IHKE91denxpCux6//obCMyr0CmplUeCUFPWOcgTtQFFXwSQ3n4l
-	 owyt6F0G9ukNie1trpUrIB1fXc+mnQ3QUTcTRVKgLi5WfwDiXaHqxhT/+TqhI0O0CZ
-	 F5cnmDURGV38hx2Gsg7IHe4na6jyy1azATu349xPmIKmc4WxuESMo6NCwlZhkxBPK3
-	 qsJ2ykqhYwZGX95xNYdDdm2NaC/slpKZ8FJ9G39rika+JVdfVzrXs47TDBLGtrsTbv
-	 GWgwSBDlpUxzQ==
+	b=IguMuiAyhG8IOo2R/UFDnVXjFj3LrMcZa6RltFLpoo9I07bW5WaR03yFHvgmxhZPz
+	 ByMr5REITTXklZRgE2UyVWJPOc6s1cyr3oDl8iyS4lSOTOBdNAhok0kpPdau4RoTLl
+	 +htpcSkc6k8iMO3dvkrTRdsPckRdCTVB8AKJsn+KMnfFvpUCE81NpYHdQCGuCoNjwV
+	 8sNrxDLsuJ9//q9aiLOZH2hIkel31yw/QK4Rp5br22AneRmog6j+nXj+nFAxJn/Fkj
+	 F8RR+4bvgrdqxJIpjZ4VHQC+ke1q5t+xMEHRD/qLqfYEPRkR9hCSRhP/zbQTaCLjO2
+	 vZzd0xXcuCyIw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: jelonek.jonas@gmail.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -44,12 +44,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	daniel@makrotopia.org,
 	bjorn@mork.no,
 	sander@svanheule.net
-Subject: Re: [PATCH net-next v11 3/4] net: pse-pd: realtek-pse-mcu: add I2C transport
-Date: Wed,  5 Aug 2026 18:11:12 -0700
-Message-ID: <20260806011112.1855541-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v11 4/4] net: pse-pd: realtek-pse-mcu: add UART transport
+Date: Wed,  5 Aug 2026 18:11:13 -0700
+Message-ID: <20260806011113.1855680-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260802100114.720594-4-jelonek.jonas@gmail.com>
-References: <20260802100114.720594-4-jelonek.jonas@gmail.com>
+In-Reply-To: <20260802100114.720594-5-jelonek.jonas@gmail.com>
+References: <20260802100114.720594-5-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,148 +61,135 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: pse-pd: realtek-pse-mcu: add I2C transport
+net: pse-pd: realtek-pse-mcu: add UART transport
 
-This adds the I2C/SMBus transport for the Realtek PSE MCU core, providing
-the send/recv callbacks used to exchange the 12-byte MCU frames. Two
-framings are supported and selected by the compatible: SMBus block
-transfers by default, and raw I2C when the match data sets native_i2c.
+This adds a serdev (UART) transport for the Realtek PSE MCU core, with
+send/recv callbacks that exchange the 12-byte frames and an asynchronous
+receive_buf callback. The baud rate defaults to 19200 and can be overridden
+with the "current-speed" property.
 
-> diff --git a/drivers/net/pse-pd/realtek-pse-mcu-i2c.c b/drivers/net/pse-pd/realtek-pse-mcu-i2c.c
+> diff --git a/drivers/net/pse-pd/realtek-pse-mcu-uart.c b/drivers/net/pse-pd/realtek-pse-mcu-uart.c
 > new file mode 100644
-> index 0000000000000..e10f8c633b68e
+> index 0000000000000..9baa17d8d31fa
 > --- /dev/null
-> +++ b/drivers/net/pse-pd/realtek-pse-mcu-i2c.c
-> @@ -0,0 +1,170 @@
+> +++ b/drivers/net/pse-pd/realtek-pse-mcu-uart.c
+> @@ -0,0 +1,164 @@
 
 [ ... ]
 
-> +static int rtpse_mcu_i2c_smbus_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
+> +/*
+> + * No framing is done here: a glitched frame costs one transaction, then
+> + * the next _send re-frames from rx_len 0. Resync works by returning count
+> + * (not take), dropping any overflow so serdev keeps no leftover to bleed
+> + * into the next frame.
+> + */
+> +static size_t rtpse_mcu_uart_receive(struct serdev_device *serdev,
+> +				     const u8 *buf, size_t count)
 > +{
-> +	struct i2c_client *client = to_i2c_client(pse->dev);
+> +	struct rtpse_mcu_uart *ctx = serdev_device_get_drvdata(serdev);
+> +	size_t take;
 > +
-> +	/* Send opcode as SMBus command byte; remaining 11 bytes as block data */
-> +	return i2c_smbus_write_i2c_block_data(client, req->opcode, RTPSE_MCU_MSG_SIZE - 1,
-> +					      (u8 *)req + 1);
+> +	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
+> +		take = min(count, sizeof(ctx->rx_buf) - ctx->rx_len);
+> +		if (take) {
+> +			memcpy(ctx->rx_buf + ctx->rx_len, buf, take);
+> +			ctx->rx_len += take;
+> +			if (ctx->rx_len == sizeof(ctx->rx_buf))
+> +				complete(&ctx->rx_done);
+> +		}
+> +	}
+> +
+> +	/* consume all to avoid desync/misalignment */
+> +	return count;
 > +}
-> +
-> +static int rtpse_mcu_i2c_smbus_recv(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req,
-> +				    struct rtpse_mcu_msg *resp)
-> +{
-> +	struct i2c_client *client = to_i2c_client(pse->dev);
-> +	int tries, ret;
-> +
-> +	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
-> +		if (tries > 0)
-> +			msleep(RTPSE_MCU_I2C_RETRY_MS);
-> +
-> +		/* MCU needs 0x00 as command byte for read */
-> +		ret = i2c_smbus_read_i2c_block_data(client, 0x00,
-> +						    RTPSE_MCU_MSG_SIZE,
-> +						    (u8 *)resp);
 
 [ ... ]
 
-> +static int rtpse_mcu_i2c_native_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
+> +static int rtpse_mcu_uart_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
 > +{
-> +	struct i2c_client *client = to_i2c_client(pse->dev);
-> +	void *buf;
-> +	int ret;
+> +	struct rtpse_mcu_uart *ctx = to_rtpse_mcu_uart(pse);
+> +	int written;
 > +
-> +	/* i2c_master_send() may DMA, so the buffer must not be on the stack. */
-> +	buf = kmemdup(req, RTPSE_MCU_MSG_SIZE, GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
+> +	/* clear any leftover rx state before transmitting */
+> +	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
+> +		reinit_completion(&ctx->rx_done);
+> +		ctx->rx_len = 0;
+> +	}
+
+[ ... ]
+
+> +static int rtpse_mcu_uart_recv(struct rtpse_mcu_ctrl *pse,
+> +			       const struct rtpse_mcu_msg *req,
+> +			       struct rtpse_mcu_msg *resp)
+> +{
+> +	struct rtpse_mcu_uart *ctx = to_rtpse_mcu_uart(pse);
 > +
-> +	ret = i2c_master_send(client, buf, RTPSE_MCU_MSG_SIZE);
-> +	kfree(buf);
-
-[Severity: Low]
-Is the premise in this comment correct?  i2c_master_send() and
-i2c_master_recv() both go through i2c_transfer_buffer_flags(), which
-builds the message as:
-
-drivers/i2c/i2c-core-base.c:i2c_transfer_buffer_flags() {
-	struct i2c_msg msg = {
-		.addr = client->addr,
-		.flags = flags | (client->flags & I2C_M_TEN),
-		.len = count,
-		.buf = buf,
-	};
-	...
-}
-
-I2C_M_DMA_SAFE is never set there, so an adapter that wants to DMA has to
-obtain its buffer from i2c_get_dma_safe_msg_buf(), which bounces again
-exactly because the flag is absent:
-
-drivers/i2c/i2c-core-base.c:i2c_get_dma_safe_msg_buf() {
-	...
-	if (msg->flags & I2C_M_DMA_SAFE)
-		return msg->buf;
-	...
-	if (msg->flags & I2C_M_RD)
-		return kzalloc(msg->len, GFP_KERNEL);
-	else
-		return kmemdup(msg->buf, msg->len, GFP_KERNEL);
-}
-
-So does the kmemdup() here actually achieve anything?  On a DMA-capable
-adapter the 12-byte frame is copied a second time by the core, and the
-core's on-stack struct rtpse_mcu_msg was already legal for these APIs
-(Documentation/i2c/dma-considerations.rst: "it is *not* mandatory that the
-buffer of an I2C message is DMA safe").
-
-The SMBus path in the same file already passes the caller-supplied stack
-req/resp straight into i2c_smbus_write_i2c_block_data() and
-i2c_smbus_read_i2c_block_data(), which seems to contradict the rationale
-used for the raw-I2C path.
-
-The same question applies to rtpse_mcu_i2c_native_recv() below, where the
-kmalloc() plus the memcpy(resp, buf, RTPSE_MCU_MSG_SIZE) duplicate what
-i2c_get_dma_safe_msg_buf()/i2c_put_dma_safe_msg_buf() already do for a
-non-DMA-safe read buffer.  It also adds an -ENOMEM abort to a PSE control
-transaction that the bus core could otherwise always complete.
-
-If skipping the core's bounce is really the goal, should these buffers be
-handed to i2c_master_send_dmasafe()/i2c_master_recv_dmasafe(), or to an
-explicit i2c_msg with I2C_M_DMA_SAFE?  Otherwise, could the allocations
-and both comments simply be dropped?
-
-The commit message carries the same statement:
-
-  "Because i2c_master_send()/i2c_master_recv() may DMA, the raw-I2C path
-  bounces each frame through a heap buffer rather than the core's stack
-  buffers; the SMBus path is unaffected."
-
-Could this be reworded so it does not document a DMA rule that the I2C
-core does not impose?
-
-> +	if (ret < 0)
-> +		return ret;
-> +	return ret == RTPSE_MCU_MSG_SIZE ? 0 : -EIO;
+> +	if (!wait_for_completion_timeout(&ctx->rx_done, RTPSE_MCU_UART_RX_TIMEOUT))
+> +		return -ETIMEDOUT;
+> +
+> +	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
+> +		if (ctx->rx_len != sizeof(*resp))
+> +			return -EIO;
+> +
+> +		memcpy(resp, ctx->rx_buf, sizeof(*resp));
+> +	}
+> +	return 0;
 > +}
-> +
-> +static int rtpse_mcu_i2c_native_recv(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req,
-> +				     struct rtpse_mcu_msg *resp)
-> +{
-> +	struct i2c_client *client = to_i2c_client(pse->dev);
-> +	int tries, ret;
-> +	u8 *buf;
-> +
-> +	/* i2c_master_recv() may DMA, so read into an off-stack buffer. */
-> +	buf = kmalloc(RTPSE_MCU_MSG_SIZE, GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
-> +		if (tries > 0)
-> +			msleep(RTPSE_MCU_I2C_RETRY_MS);
-> +
-> +		ret = i2c_master_recv(client, buf, RTPSE_MCU_MSG_SIZE);
-> +		if (ret < 0)
-> +			goto out;
-> +		if (ret == RTPSE_MCU_MSG_SIZE) {
-> +			memcpy(resp, buf, RTPSE_MCU_MSG_SIZE);
 
-[ ... ]
+[Severity: Medium]
+Should rtpse_mcu_uart_recv() apply rtpse_mcu_resp_is_final() before
+accepting a frame?  The req argument is unused here, so the first complete
+12-byte frame becomes the transaction result no matter what it contains.
+
+realtek-pse-mcu.h describes one of those frames as transient:
+
+  /*
+   * MCU status opcodes (seen on the Gen1 dialect; Gen2 never emits them).
+   * INCOMPLETE/BAD_CSUM are terminal; NOT_READY is transient.
+   */
+  #define RTPSE_MCU_OPCODE_NOT_READY		0xff	/* -EAGAIN  */
+
+and the I2C transport keeps polling until the acceptance predicate holds,
+so a NOT_READY frame never escapes the transaction:
+
+  drivers/net/pse-pd/realtek-pse-mcu-i2c.c:rtpse_mcu_i2c_smbus_recv() {
+	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
+		...
+		if (ret == RTPSE_MCU_MSG_SIZE && rtpse_mcu_resp_is_final(req, resp))
+			return 0;
+	}
+	return -ETIMEDOUT;
+  }
+
+With the UART transport, a NOT_READY frame is copied into resp and
+rtpse_mcu_do_xfer() turns it into an error for the caller:
+
+  drivers/net/pse-pd/realtek-pse-mcu-core.c:rtpse_mcu_do_xfer() {
+	case RTPSE_MCU_OPCODE_NOT_READY:
+		return -EAGAIN;
+  }
+
+Is any runtime caller prepared for that?  The only place -EAGAIN is retried
+is the probe-time boot loop in rtpse_mcu_discover(); the pse_controller_ops
+paths propagate it, so an ethtool PSE get/set would fail.
+
+Note that "realtek,pse-mcu-gen1" is in rtpse_mcu_uart_of_match[], which is
+the dialect documented as emitting these status opcodes.
+
+Can the real reply also be lost in that case?  Once rx_len is 12 the
+receive callback computes take == 0 and drops the following bytes; if they
+instead arrive after the next rtpse_mcu_uart_send() has reset rx_len to 0
+(the core only sleeps RTPSE_MCU_RESPONSE_MS = 25 ms between send and recv),
+they are consumed as the next transaction's response and rejected by:
+
+  if (resp->opcode != req->opcode ||
+      resp->seq_num != req->seq_num ||
+      resp->checksum != rtpse_mcu_checksum((u8 *)resp, RTPSE_MCU_MSG_SIZE - 1))
+	return -EBADMSG;
+
+failing a second consecutive operation.
+
+Would it make sense to loop on wait_for_completion_timeout() against a
+remaining-time budget until rtpse_mcu_resp_is_final(req, resp) holds?  As
+written only the first frame is waited for, leaving most of the
+RTPSE_MCU_RESPONSE_MAX_MS (1000 ms) receive budget unused.
