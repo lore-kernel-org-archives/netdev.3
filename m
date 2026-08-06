@@ -1,87 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C333B7A8;
-	Thu,  6 Aug 2026 13:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A23306744;
+	Thu,  6 Aug 2026 13:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786021254; cv=none; b=Ev32dXYHPlaX29peWSz2Zm58VA33N9iCeHAAD0/Vt15th3QLueLlRnu8tkXPBYLsGUMt3rxLA8JWuJaqgvR0vppOyFM/6RVtbJ7UcWX+JStDiPEGEEJmO4iyuJWgg4+CrV0S5oGbDMy80PIzgUqfL1/5n8R2uM1y4kh/b+ck6S8=
+	t=1786021364; cv=none; b=Z19wi+DNqYN4iI/OocNRJJsRpIdiHbOPVwdQJNj+WtpyVuw8uo057u0EExtmsUAty7PkhbpZjRR7iFmZcfgVhceDivtSKjXByS6ICK0RBASTSJ8wxJfSFu8Yl7NmLMQ4XCjh+BHgMOkWhKBZHP7J54cIY0RIbVKNjbLdEU8hLHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786021254; c=relaxed/simple;
-	bh=/fa8VdIPaUqPEhTTsUX4HkD6atlDUaZ3c1JsGwtA/mc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Gf6GYQgnes4YosgivG9w/Ll9jxUM/g/pfSt1NeOHywdrsb+O4CUddBXyS8OoN0Un+BPHOw2H9w6H7dO2qmaju+eeaeCMlJHvPomsHKbMLhm9Npt8iOI9jn2977xmyURa1tnBAEcp8jL99N2uJ8hJUjRZxLHiiuW3e/JdIep2S/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYUZNsGv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786021364; c=relaxed/simple;
+	bh=SqrcTvuV/0D7PqQZ8A2wsELUsup5xSQV82HEAqk17cs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RQuuyRA+624tie9cXx+502wZX3HE/IE1+GGPD9GeEW7vEosAW59fL1WzMwhM0gdS3hdNxXqOT3bbRkpKOsDgOT8uU0va8YZ+SWCZiO/kaWocYvFh5C5ng74Mc3VaO5BDY1le1HQJwYMnk1DBuSln/pdTBV0EGMA/UZLAfqiU4AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WdmP2WIN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYUZNsGv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD5A1F000E9;
-	Thu,  6 Aug 2026 13:00:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WdmP2WIN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DDB1F000E9;
+	Thu,  6 Aug 2026 13:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786021246;
-	bh=wRqcmRy7CLmoDyS66+DULYDtYqTbfNYO5q1iOPEcNYQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=eYUZNsGv2UZWGZfDy6Oz+I73UkNuXk1aYveudLWQY0vkzi2dMjOr1VAf1+Wa9leO1
-	 iB+qt+rnmzt3p006n8vvQqioNqea2c+YOBdPo/yrnvBypuze0ZSXraY+oNG9JGsmsP
-	 xNP1nYEzFk3fyt9wyA6n7PVR7j0B9slXKuONM+qyTbo441Tp/GrhR+6Npu/neTChqu
-	 G/nDcHJFInnzW3jzTj8O7NE+ofy9gCLFGMjares//hYn7N6GbfIGBtqFfR5QkH5koo
-	 gz/iZeuBjz+0tEors4Do0au04Z1IBycIYHjdZHcODuKmqvMJvMXDUeDKwMeURy8icd
-	 9JiSwGrvyiXCw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19862380820D;
-	Thu,  6 Aug 2026 13:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786021362;
+	bh=REKdmea96z526a+0NUIpG6wRx2+DCKbDCfGqPIKFQCA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WdmP2WINsRrooeolI+/9+8hpP/fPOFukQQQX1fqvl1BDlnS4knj7j9TDCQXMhc5fv
+	 MpbzlPIi+eLfZtQ1vwDkG7rRPXoVmPQJdR7SbKqxLrUmll63LUXVYnsypBNdcI2y+b
+	 KyERFB9iS/YJivRBCDtQiRQCS7fwzgSGEjgcBbv4KK2bLxSKydp72ElhsNa0O6BZhh
+	 1TWIE1Y8dcZApWRTUHJiC+Ip5sc/p5HB9HEyeMk2PnG7gWX5lOdQ6KzZaXXszRlk09
+	 1tGcOLD/xM9BuNai1pvl6v5Aayo3KfhH3ExxtSj/ATp26nbl1j6+fkXyiFviXVG0Zn
+	 aMhT4aGhZET0w==
+Date: Thu, 6 Aug 2026 14:02:37 +0100
+From: Simon Horman <horms@kernel.org>
+To: Alexandra Winter <wintera@linux.ibm.com>
+Cc: Hidayath Khan <hidayath@linux.ibm.com>,
+	David Miller <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] net/dibs: Fix UAF of dmb_clientid_arr after
+ dibs_dev_del()
+Message-ID: <20260806130237.GB51943@horms.kernel.org>
+References: <20260804085848.3579518-1-wintera@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: phy: mediatek: fix TX blink masks using the RX
- bits
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178602120563.832117.16144265633708146287.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 13:00:05 +0000
-References: <20260804113511.3371248-1-naseefkm@gmail.com>
-In-Reply-To: <20260804113511.3371248-1-naseefkm@gmail.com>
-To: Ahmed Naseef <naseefkm@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew@lunn.ch,
- angelogioacchino.delregno@collabora.com, daniel@makrotopia.org,
- edumazet@google.com, hkallweit1@gmail.com, kuba@kernel.org,
- matthias.bgg@gmail.com, pabeni@redhat.com, dqfext@gmail.com,
- linux@armlinux.org.uk, SkyLake.Huang@mediatek.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260804085848.3579518-1-wintera@linux.ibm.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue,  4 Aug 2026 15:35:11 +0400 you wrote:
-> MTK_GPHY_LED_TX_BLINK_SET and MTK_2P5GPHY_LED_TX_BLINK_SET are built
-> from the RX blink bits instead of the TX ones, so both TX masks are
-> identical to their RX counterparts. The TX bits they should be using,
-> MTK_PHY_LED_BLINK_{10,100,1000,2500}TX, are otherwise only referenced
-> by the per-speed branch of mtk_phy_led_hw_ctrl_set().
+On Tue, Aug 04, 2026 at 10:58:48AM +0200, Alexandra Winter wrote:
+> A dibs device interrupt handler can be active after dibs_dev_del() and
+> may still access dmb_clientid_arr.
 > 
-> A TX trigger selected without a link trigger therefore programs the RX
-> blink bits, and the LED blinks on received traffic. The masks are also
-> used to decode the blink register in mtk_phy_led_hw_ctrl_get(), which
-> as a result cannot tell the two triggers apart: an RX-only
-> configuration reads back as RX and TX, and a TX-only configuration
-> reads back as neither.
+> Free dmb_clientid_arr in dibs_dev_release() after last reference is gone.
+> Note that allocating in dibs_dev_add() instead of dibs_dev_alloc() is ok
+> for now, because no dmbs can be registered before dibs_dev_add().
 > 
-> [...]
+> Fixes: cc21191b584c ("dibs: Move data path to dibs layer")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Hidayath Khan <hidayath@linux.ibm.com>
+> Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+> Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
 
-Here is the summary with links:
-  - [net] net: phy: mediatek: fix TX blink masks using the RX bits
-    https://git.kernel.org/netdev/net/c/f684c514f796
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Reviewed-by: Simon Horman <horms@kernel.org>
 
