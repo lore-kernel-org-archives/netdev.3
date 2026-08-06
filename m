@@ -1,377 +1,372 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011053.outbound.protection.outlook.com [52.101.70.53])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8437440B0F7;
-	Thu,  6 Aug 2026 08:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96A140D574
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 08:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786005233; cv=fail; b=UbaCC6nii+7GMOPcND1Yuet8OWR8vVQounx3IimmlJZsYeNZhYRy8ls9UW+aJdK3EXAn326IAQfA54KZDhkspKoPOaVSnEr/g1k1Cg+fPkFB5o6Mxks0pYf5wTinjOCNywdIXB/V3rxXqfO2c0V0HgsGbSrFlu2dpDkuBTFP4Ao=
+	t=1786005356; cv=pass; b=LG+E8iiA6zYJEPX19TG6dzF7xCU2Bk3cfZVzBR7qvvybxLz7OBSJViQbbC06McHGS471i6ub07iotvI1dgm3WM3d6qwIYQD4RzzTO6r/OsBG0RyD/r+anTD0wtvjK6ZW2fZIzLNT6g9ps2wDzvNm6DV4lnS8CoLaVJMyKRB4dAI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786005233; c=relaxed/simple;
-	bh=R4AHITBDk3T9bznrQ7CdBZJgFOQgnU506E3y2+GVJ88=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jcVsZesT/DB/P1HOy8A0hN1CtvgrNbbc+FfGRGPp/Eq4preThfotQD+5DR+LG44Na6bXcD3/Pqp2rNMOKrtn7suq6KEO77RBQBTBAPb4VUHFXG/v8FxNem7PZInbKCqzV2Lsg3MTVF4ZPkZYJ+c4QSYyrSkN8ZIz/R6x0gWsVMM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=ofJAPjqx; arc=fail smtp.client-ip=52.101.70.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
+	s=arc-20240116; t=1786005356; c=relaxed/simple;
+	bh=2q59vm3N0TmAwGhIjwwQXTk20j8PQSGjXydlnzSOE1A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bm2aP0+cF/GkJKe51oR0MBBWRWZix7L+4gg/eOmpfxAdGVnKFm7KgVDr3jGch2Mfi8YFrFxL/Xa6N+l7a2W2Uu24Vrh4JyBIEIsrYvCsRr4QfYfhWx/IvKez6Z9x8jVLu4tSE0PszBPMTh2Z4AckoP8Neyd4XWv3C3BKzb7gpJg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=knNYuJzw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KBwD5ECh; arc=pass smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="ofJAPjqx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uuryIJBH1uj2v0X1apeXa/GWbG0DL40sOtUxTZLjvacNrEIYFMvBo86ynJahFBGeA8AT1nN4G3ieWi6yWosvvM1bAu0HWBPtQ7TLzHHCfRqvpAXgKih0XGcoRNW+tHSEIel08K8Hb/lcazPasWgZ7jJpQJKUEbB/o5D0ZKFk05iy0eSGMcBWHsF+BOVD9jHg9s56bbaDNuxVoYe9+oP9lnkR6YHyyV5GuWD5QbWKZiR/dOAnZezk+OViQdXiaxAma0fCuOF5LoWEBkZnnQv8lPaNKGUsgQNuxlvQfiALVwBIGoMAo6YJMKfp/nPMC3HMk6VmWORfdaNM+G5lz/bcvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+50bdZ9c6fyH7BMACpFc8nuXDZWNvPnLmsjyVFxXdq4=;
- b=S5ZLsKhUOaRHyzbMxxUqQXc3v5vZAXgbYdDpB/HjJo1MdHXEt+A4MWR9vNt1Dtnll40V3oHfUSgxbilvqLT4HIzdbfVS0YJau6SDNpRffHo529XERNsbZIehS9MDA54scxSWKuEweCxhk5amZdXbhj75IkUbVgBGx2e8lkI1Ri1LJ7NGGX7c7aKCmj3PloGL0oDfWcr/oXQOG8pB1/ZTl3K3igDIAfhGXbU9vUZFtyuvDaRPgDe1stfevde+rILOTMzJDB02lyKj0Sk5748CfqRAJEe3Le1+7P2ehS+Sz2dx9NX8ODUI42BgBFbyrHJdrjcCZYPJNhkSoUCkS2ANxA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arri.de; dmarc=pass action=none header.from=arri.de; dkim=pass
- header.d=arri.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+50bdZ9c6fyH7BMACpFc8nuXDZWNvPnLmsjyVFxXdq4=;
- b=ofJAPjqxelTdNY+Msc4fv5ZWpA0HGk4AYBYGm0q3m4yR/US0x6aSvd/IlPMfNs+MI8cgVOF2V/Loef6uFsbP83vjIPMg/lXPe2bkFLdDyvC+24fMHWO51WBWGIhArG05sCqcvF7OEoSTZwatrpfHyJ3cYBU8Rsg9kmMqosyDEd4=
-Received: from PA1PR03MB11059.eurprd03.prod.outlook.com
- (2603:10a6:102:4fb::11) by DB3PR03MB10132.eurprd03.prod.outlook.com
- (2603:10a6:10:43c::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Thu, 6 Aug
- 2026 08:33:36 +0000
-Received: from PA1PR03MB11059.eurprd03.prod.outlook.com
- ([fe80::a171:1d74:5b7d:edef]) by PA1PR03MB11059.eurprd03.prod.outlook.com
- ([fe80::a171:1d74:5b7d:edef%6]) with mapi id 15.21.0292.018; Thu, 6 Aug 2026
- 08:33:35 +0000
-From: "Polak, Leszek" <LPolak@arri.de>
-To: "theo.lebrun@bootlin.com" <theo.lebrun@bootlin.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-CC: Conor Dooley <conor.dooley@microchip.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net v2] net: macb: fix stale data returned by MDIO reads
-Thread-Topic: [PATCH net v2] net: macb: fix stale data returned by MDIO reads
-Thread-Index: AQHdJXuRwFoW/iinZUOuFR8jYzQV9Q==
-Date: Thu, 6 Aug 2026 08:33:35 +0000
-Message-ID:
- <PA1PR03MB110596D36E77DA32E1FBD9099C8D22@PA1PR03MB11059.eurprd03.prod.outlook.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arri.de;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA1PR03MB11059:EE_|DB3PR03MB10132:EE_
-x-ms-office365-filtering-correlation-id: d30c1677-9f8e-4432-9c04-08def395680a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|38070700021|6133799003|10067099003|56012099006|11063799006|5023799004|18002099003|3023799007;
-x-microsoft-antispam-message-info:
- SBcOAiZEGJOHfFkSo+9r1nKQABsJ2DE3tRVUZ5r+3AA8ogtru+/NV+M13wTPORe4FKtVBbFRP+4Rrpw/Uu5aycqqLoPIYcYj+/PGIBDPlHbbf5AdlKsoQrrmQQ4KOkF9YOmVNZaexzf9L/P3w/QSNHnNnDMmJptfn8nwM11/QtoDJ4NxbmdWRsXJWwtDmeNQKG1DDn3rf/LrTdmcNMywYJVOBm7FDYr3+k8WS5X6UPa/zb3UBAfx0IVfu1kaEsWO1nufsGpyntTnsmxhH+OZKDvaHvZ4JDXjEvrV+FmDMc9xktIAbI1Q1v1q9vv1gczaZdKYixg2voXOSbk5MipEagL32nx50H5swVc3QZ5bC4Bx+s6YjXpzsv509SmlGy4qk37pjpDNVk4YRAeZydw62pvLA0/SRuodHhlDSXyYZCxVpJO2siPg1HIucVcNJtSsvd2p+vuwAwMoSIXjZI7B5W6Rb9kISEgHzVD4rTvuCfpSPl+AoZiMHPIE7oA/Zhy1YvjLGfgK0H1gV8TKZpQNYMT9+srCGCSQ7z0/69cp6wCYckNF/7GDOspFCWh5ekwFy/ruzd6tRVVs6w054GxhFBu1jKBJpp3qW7u62b8t8fLdrV/nUA/PhPXdIIxi8OCqWQucSSWe3WjgTbXEdjK0SK7fRSLLCJvofRUAxjWMohUG8xAt3q3oYHI6BayMrd3rsqTYRzhJeUs5Pffa5OQtxj/tksN1KZ76xmmsjS21Sys=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA1PR03MB11059.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(38070700021)(6133799003)(10067099003)(56012099006)(11063799006)(5023799004)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?Gqgb31Ngvmas0JoOfa2bi/Sx9hmXd9Rv94yK9BHyt68MMzzR4vGkzas76i?=
- =?iso-8859-1?Q?hjR5eS/FhfSQfT81c/iPtpAWcL0yYPk9yzol2cNANxBKXRdDj2wuiq7+yX?=
- =?iso-8859-1?Q?vZ8/Ri29Yd3DH2EH3agjmcbgjSb7/L4KKHrpoJbob1KO2l9kgOWeq51cKH?=
- =?iso-8859-1?Q?ZBY/XzUdTEuNG4yYx+acqNueVlSpj7PvE5N7O0Whanoz5CEJ+qx4h1pW1n?=
- =?iso-8859-1?Q?nj2cyGqHCR+UH2Q3z5yJLw0WhNjbQMP0f6DBZKl6FSS/FHwK26Nm+rR51W?=
- =?iso-8859-1?Q?hizzWVPxq6DlKrbXvebNU7JzNMbaJsZPF3AdVsJ3tkLeqiXtvnQ5C+zgc0?=
- =?iso-8859-1?Q?9/iT1jLSvwT8O/HvLO2snjFMQuiX6wdJTUqetR5ZIvrXQl00fz0EtiQ/Ez?=
- =?iso-8859-1?Q?gdYafB6NOxxo4Ij7zDEKAp7FXQGcm/Dsbt03p0EVLdtjQct/d1g0W9BSYA?=
- =?iso-8859-1?Q?QENBSBhynBitmKig2yHILs11jQbNIVLgl7RIC68+PWr/XzFfUXhxmKm0Mq?=
- =?iso-8859-1?Q?/fNlFsfzwQ4YhSU74tN+oEacpejvdF4vI5rJBw8ZmS4oabg16l4dtwVoE8?=
- =?iso-8859-1?Q?HyPWcdOHVwBSij4M3Ce55Xpsf3bOvFQuIe98QiBe3HsKPHGLW12vzQ/jva?=
- =?iso-8859-1?Q?ZWgJaReHGxyR9FqYpooYKWHHQa6T5mesJzbY3TD+wqtct1YnC4vhtbVQKM?=
- =?iso-8859-1?Q?I0X+4DZJn8IHlWKGZd2PaPLRGyYEtEROdLXS1cp/tLnNC7ZU0hr/tjEkKY?=
- =?iso-8859-1?Q?rykeEg90oHbY64zikxubVpT+AqpZjTpMj4dLsL1JwrwqFf2X5JuwUSmTlw?=
- =?iso-8859-1?Q?sD0Zn3ctGuP2cVTE6LpjDcPykCL25TAOOM1SUZJF3FoOvX2JZ9Gmcnbc6N?=
- =?iso-8859-1?Q?rtP0QNFnPUNz+Zc/zMBvsstq/ErRuIdONcAOxAoTworZS8Md3X/1FJvn3w?=
- =?iso-8859-1?Q?KTf4xkKD6U6rPJRDliYowCVIZDQXhY1zsxPs3s6JRpQjqS2HgOkCW9ynm0?=
- =?iso-8859-1?Q?IWc7r3RKU8to2tBtbDL+DQ26VCwwbOS1QdB/J4N2elJr1Ln9kUVkcUPYir?=
- =?iso-8859-1?Q?G3GY8vSk+Za4XF/l0eop5tIwYgoKg78DHjOFnvYMccASahmBke9NBFcH5Z?=
- =?iso-8859-1?Q?z+TDQYljFxjtSgNesbUkU7HjKQu/rAFXQRDuXmTxNRFtyRm/E5AyCF9zqk?=
- =?iso-8859-1?Q?IFZ747nKCgRj74WX2rZcJLZD2mKTpUVjAphh/uyMz3btFyOnAc/PEC9/3F?=
- =?iso-8859-1?Q?Okyo8ewK/8JKeK3x1a35vsITH6P0448S5ht1MGbR2j5/03bQETs8wUmUoP?=
- =?iso-8859-1?Q?nFsMlqvGQVg/Mn8/7bQSr0R7pHykaWZV/E4iu60/n6hJ8mxngyTuZbzBK1?=
- =?iso-8859-1?Q?V5MzOPzeI27A+1XImhvhvRcy1BERsDuObYxwCZdGKqxSmSIPgqmLbWpuIR?=
- =?iso-8859-1?Q?oAKy9gGfTLI13HCfxrU/PiRjDiktDqRXactSjhBiBxs65oOvpmpYucPMo8?=
- =?iso-8859-1?Q?cNjLmRGZafCl4Akpgi6QbLy7eaEx38iqBQNUuQqLu71Xg7zYmNQ2CYiAzc?=
- =?iso-8859-1?Q?YDS2vgtRrZOs13Odwo2kk+D9sdrYO54vcAOk0MaPwNiU9q2V3gngIWPeU+?=
- =?iso-8859-1?Q?MaBsU/HI/CLylvF78A6svGy1UNxJ00BFwqE3KZcnqw9Y8icAI5kcfuOM24?=
- =?iso-8859-1?Q?PFGrtlFd/Fmwpmnz3Fv3FxxertQkSuc4VPdqofsLuG8eeddGUZdg6NLUFw?=
- =?iso-8859-1?Q?GNy8sGdYteUWqVNpbPEfozS6A=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="knNYuJzw";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KBwD5ECh"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6767MBWq1286868
+	for <netdev@vger.kernel.org>; Thu, 6 Aug 2026 08:35:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	IO5BjtLwolVVWGPuthMC0L545oHTgrgv0T514NGc5jM=; b=knNYuJzwMETlbVQq
+	5tzrVBeRTrcQ7s791gy3Mm03rctd8+8OWYzsTd7anzKam5atqAbaN9X99a0RFh5X
+	UyTgUQCJEvyziraHMOdDe8ZMGDUEtwHj0rdfl5936m1cPmiu6V+dNw1nBdmVL6Nl
+	APzUNDDfo5sbWl7sTMGTOPNQ6a+u5iGduvLbhdVN/AmzuzWoVx3h+omU3C6OiNxx
+	3gUqZ43gke7QWYZaQhsHf/ZJkVMvbBIemgyZ5nG+hMUgjOx45msQYUIevxr3PYa7
+	W/kCCULdfo2ccMRkiRgt9vVpYa6yx0WuMbxSOWzu8pjjQm5HdLWaXobCmosw62qK
+	1KW60w==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fvntng91r-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:35:41 +0000 (GMT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90284139cceso6395046d6.0
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 01:35:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786005340; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SliIeLSlDDH45sIRnwdih0G99Xn+7NlAJZxohGs5W+o07PYnAVYLq4Oi6pQHDIEX7o
+         ENsslpAoX+1C7fQfntuB3DK7Pp5+qsfGAwNjonFEZ9yorKy5VDe7xZCI5pH0JLQwlDmy
+         PIqgxsx8hPIDGiQo1KLCdnyeNDsf9PjW1rryh7t6jY7E16RCEtdZR2kM7TjMw2MgS0W5
+         yfB2WuaQBN5y0Rc+wj9mJA7IJ0lVzU6ft0d4fTnscNpxBvpeEswOorLm6VMgML7BVZHV
+         lcT7Ci19BfB+3JrBf17y/83EHr+xsTzDG8DBBrpHRT8+I9GsMrl9vNUoK7XQ7F7VWVBh
+         GKag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IO5BjtLwolVVWGPuthMC0L545oHTgrgv0T514NGc5jM=;
+        fh=tbL56vCahF/S2wCtV1qIcXtZ88FAPnIRAvPHreQN0Q4=;
+        b=Fk1nd64mm0qsDL3mWOBleXC4/QVTgDp6OtkdMdBf8ED6aIRVU8AIafnrWaEHf+Jfsg
+         eaVEhuoYcs55ovl+2bWVNlhjKK9Clv/2oo/LZk39tyTXSZHMrbWE1EAhyN4jGROCbMhw
+         gQrzBsXZXeAPX3m/nQs4dsyw/WdWfvS4wrf0atPE4Rdwo/b0W5tlPFUZhF1lJ5WfrzO+
+         zeM1DheVSs68161ydlATjrS28Jw6XaV5EtYBwt/BCJrYwv6y1PVFQGXPvJEbwgQ1VFmF
+         prDGuCXktyubEJDOQWz0Dr/j6QRUH3gSJ/ZsLc4MrnZBEprAcZQOipkiLOy0NJfGLoN3
+         V6uw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1786005340; x=1786610140; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IO5BjtLwolVVWGPuthMC0L545oHTgrgv0T514NGc5jM=;
+        b=KBwD5EChppoyBO828fCEqYJjIH4tCttEPpOPaqCoTxFu9FLE6D95DGk0pvjY7QvgxM
+         Hp/G56/UyCazUpSU327t3L7MJXUaItfFEJ2aDoGpTF4Dcj3Ocox73OmF9AQxfRHrWpdH
+         tvqO/4wdWeSdXRIUJcpAmehzNt5qxoR9OGVZV8dcXaBB0jtET1OACmEOxqXC+CltyaRu
+         QLrOb8D9lWPN+bHOFcYcidtcN3fKqihRsaYmDDPpA3JVdIyNkYUnqFnK0JWlVJl+YoDS
+         uINFhr4j64oDcFbCxf2GmU9mT27fiRcoXbUU/mgNC50pjB5ndbGnfZInj5AThRMPU97y
+         v/cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786005340; x=1786610140;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IO5BjtLwolVVWGPuthMC0L545oHTgrgv0T514NGc5jM=;
+        b=LvmjZbSMdjDOFxmxltdxqgKMqVnPT0d+Hg5FEtLgsZilNAzEatzVlNkbSCNziWoTzr
+         Z01CQaAruJRCtQ7aTjkLy4TcffFWBoIp+GZLTjSr9paBu9ylB7ghnV2uEow4pSF4o6t+
+         qU0OZcDGCCP1X49DaSFENDeoTDOgqKYAYvH4TTDGLlCnT1pPe1SWaVnDM30E/xSVZa7U
+         VV+BcNxoyWc05y+EbrNOjTaSqAwmlE8zCnXfXwG1QyUnd1x42/CJWHv/4A6+dvgtCA9Z
+         sgIGAktHmfh/Sn+NQP1zf+RhjHa/zmcnE6TBfm4wmHGRzUNSoOptKzpnITXFfq5yf600
+         7/sA==
+X-Forwarded-Encrypted: i=1; AHgh+RrGKcTSneTun/kjvep0NMOWt0GPT7U7tPasj54MHxqilKr2XwpEFWu46NPRUp78SSWifkEci+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbflFloFNhe2E/JlgdKzEFV8CuvV9eOI1W7a+p7f++jl7LczTw
+	ZzYEHjV2eXXA9a9BtLuZtx2Z8EXU6m4UW/y1904rxHZBGGpymSQmrkxADMnd52KtP7W5xRe+A7c
+	JYssRFkEIhIpTGq6lzXRIvt0jFWselN3ebMmbIcahHCZ5aR0XwJpPjIVcBiJ+FYq4voC52VBuFP
+	cDUCxH5c25zEfL7PYYn2Nc8D98iIpebasLrg==
+X-Gm-Gg: AR+sD13gLFREajqjSvffdIyh31YRHVPhIQ/SuR9FEzaS+QpHJWEFws9rw+KuBFXpLr1
+	hPH34vsg4Uofd3Y+flVwN9oj4ALz7fH9SPLwlZZUC40CZ/TVuSUSIk3VDjiB2YlnYDfP2x5YC8J
+	Qljq6VLHUrTWlw0WS7yDY6PXlVoa5174lKQHA7ORSA8m4A9aM922BZacsoYkzc0kpjO37TiA7yD
+	1+yUfAuddB7ZnMljOb/iNiWoUZhRzgUnJ8ToRvgyztEoeH57hD8LDxOHCRPHcE5b+se2Te80K0=
+X-Received: by 2002:a05:620a:2715:b0:92e:eed7:91a9 with SMTP id af79cd13be357-9365de921b1mr229151385a.7.1786005340139;
+        Thu, 06 Aug 2026 01:35:40 -0700 (PDT)
+X-Received: by 2002:a05:620a:2715:b0:92e:eed7:91a9 with SMTP id
+ af79cd13be357-9365de921b1mr229147485a.7.1786005339701; Thu, 06 Aug 2026
+ 01:35:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: arri.de
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA1PR03MB11059.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d30c1677-9f8e-4432-9c04-08def395680a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Aug 2026 08:33:35.3593
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +e5u95U2rFMXUkU6SHCsAWU24gm8FjVtHIZPkVZAeq8o9kW3UCfC22TnEC0bc5RH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR03MB10132
+References: <20260730-block-as-nvmem-v9-0-f72935817dbf@oss.qualcomm.com>
+ <20260730-block-as-nvmem-v9-6-f72935817dbf@oss.qualcomm.com> <anIU7FSBT6VMzsf3@infradead.org>
+In-Reply-To: <anIU7FSBT6VMzsf3@infradead.org>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Thu, 6 Aug 2026 10:35:27 +0200
+X-Gm-Features: AUfX_mymqcS50Qq-y2dDzlxCgZvzowjJtigqHjeUXKY3p0hh0LvfQj0GIbG90FQ
+Message-ID: <CAFEp6-2kOsFcvBYk9Ow-ua7KAzdRgPD4Ky009O0Hgm-MXhJAMA@mail.gmail.com>
+Subject: Re: [PATCH v9 06/10] block: implement NVMEM provider
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+        Rocky Liao <quic_rjliao@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+        daniel@makrotopia.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDA2NSBTYWx0ZWRfX3ShH+iHNJ8wR
+ zXOPjBQ7NHhS1MtwJhTpsy6m5Q6ultlFbZP9pNyK3jYf694y2AdTaAK8Zaouy6QupisRqMOShYW
+ qOBW9RXcrbB6MX21vFHgVP/DHjocvAkdSXwXh78JcArWHHb/FT4rsiY3DgYRaenUdcrKW8/aoyB
+ E4fKn+/QzuF++N+LUz1fljrVSRgHX2bVzkNBj0ZOPf4963qiPRRnwRiRTfheA2ZHJSzCA4N9QDJ
+ sTNTr1etqZtQQGTIme4+Bd46CH8wP3JBya8DUH1qcei+wVAiud35uRfHMfKN3LvxoJp/h6V5Ncg
+ y559HyRYG/OkiRunH8u/lKoiAT0ROh3C7WJOL97bidCIjIMJz/dKnTobSPHuNhIKpjjWnc6CWae
+ zbJS2i5XlwMWQ5YB0FWJkLKlaLvvX1QMLb2bZ7URgiUXYdtHDNt577p68Z3soKtXG27VcldiDOo
+ 0EqTsmJ5pVpf9pzqGgA==
+X-Proofpoint-ORIG-GUID: IdNwhlqdMIeVI8UrNF516INgK2RgC55V
+X-Proofpoint-GUID: IdNwhlqdMIeVI8UrNF516INgK2RgC55V
+X-Authority-Analysis: v=2.4 cv=LpKiDHdc c=1 sm=1 tr=0 ts=6a74475d cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=yOCtJkima9RkubShWh1s:22 a=JfrnYn6hAAAA:8 a=EUspDBNiAAAA:8 a=VT4XjZGOAAAA:8
+ a=nTbZda4seY50gyMA9OkA:9 a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
+ a=1CNFftbPRP8L7MoqJWF3:22 a=6CpsfURP9XNmmWg3j1mJ:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDA2NSBTYWx0ZWRfX/jjY6yJbiz60
+ pKL/svXrjbHjf9sywVO5TxSfCRnfzkolJlJlQAILszIXfcGAVLb8ajpYcYRf8T4uTyfs7O+Ktmq
+ agdmgQAtOTs+RD/agCSbt5q+m4TYLfk=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 bulkscore=0 spamscore=0
+ phishscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060065
 
-macb_mdio_wait_for_idle() serves two purposes: checking that the bus is=0A=
-free before a management frame is issued, and waiting for that frame to=0A=
-complete. In the second case it samples NSR.IDLE with no delay --=0A=
-readx_poll_timeout() expands to read_poll_timeout() with=0A=
-sleep_before_read =3D false, so the first NSR read is issued immediately=0A=
-after the MAN write.=0A=
-=0A=
-The immediate sample dates back to the phylib conversion. Before it, the=0A=
-driver did not look at IDLE at all: it enabled the MFD interrupt and did=0A=
-wait_for_completion(&bp->mdio_complete), so the frame was known to be=0A=
-finished before MAN was read back. That was replaced by=0A=
-=0A=
-	/* wait for end of transfer */=0A=
-	while (!MACB_BFEXT(IDLE, macb_readl(bp, NSR)))=0A=
-		cpu_relax();=0A=
-=0A=
-placed directly after the MAN write, and the later readx_poll_timeout()=0A=
-conversion preserved the eager first read.=0A=
-=0A=
-On a Versal board (GEM1, Marvell 88Q1111 PHY) NSR.IDLE is still set at=0A=
-that point, and only clears shortly afterwards. The documentation=0A=
-presents NSR.IDLE purely as a completion indication and says nothing=0A=
-about this, but the measured behaviour is consistent with IDLE following=0A=
-the MDIO state machine, which cannot start driving the frame before the=0A=
-next MDC edge. Neither macb_mdc_clk_div() nor gem_mdc_clk_div() selects=0A=
-an MDC above 2.5 MHz, so one MDC period is at least 400 ns, far longer=0A=
-than a back-to-back register access.=0A=
-=0A=
-The poll therefore matches the IDLE left over from the previous frame and=
-=0A=
-returns before the frame just issued has started. The caller goes on to=0A=
-read a MAN DATA field still holding the previous result, so the read=0A=
-returns the data of the previously accessed register. Clause 45 accesses=0A=
-are hit twice per read, once for the address frame and once for the data=0A=
-frame.=0A=
-=0A=
-Reading each MMD register twice showed the first read returning the value=
-=0A=
-of the register accessed just before it:=0A=
-=0A=
-  31.8002 -> 0x0149, then 0x002b   (0x0149 is the value of 31.8001)=0A=
-  31.8004 -> 0x0b21, then 0x1401   (0x0b21 is the value of 31.8003)=0A=
-  31.8011 -> 0x400e, then 0x6000   (0x400e is the value of 31.8010)=0A=
-  31.8010 -> 0x6000, then 0x400e   (0x6000 is the value of 31.8011)=0A=
-=0A=
-Retrying does not recover latch-high, clear-on-read registers, because=0A=
-the first read does reach the PHY and clears the latch.=0A=
-=0A=
-Sleep before the first NSR sample on the completion path, so the frame is=
-=0A=
-guaranteed to be underway when IDLE is read. 20 us covers MDC down to=0A=
-50 kHz and is small against a frame, which takes over 25 us at 2.5 MHz=0A=
-MDC. The bus-free check is left untouched: IDLE is legitimately set=0A=
-there and must be reported without delay.=0A=
-=0A=
-Fixes: 6c36a7074436 ("macb: Use generic PHY layer")=0A=
-Cc: stable@vger.kernel.org=0A=
-Assisted-by: Claude:claude-opus-5=0A=
-Signed-off-by: Polak, Leszek <LPolak@arri.de>=0A=
----=0A=
-Changes in v2:=0A=
-- Add the "net" tree to the subject prefix; target net rather than=0A=
-  net-next.=0A=
-- Add Fixes: and Cc: stable@vger.kernel.org trailers.=0A=
-- Describe in the commit message where the eager IDLE sample came from:=0A=
-  the driver waited on the MFD interrupt until 6c36a7074436.=0A=
-- Keep the poll interval at 1 us. The delay is now a single fsleep()=0A=
-  ahead of the poll instead of a raised sleep_us, so the polling=0A=
-  behaviour after the first sample is unchanged:=0A=
-    v1: usleep(20) -> readl(NSR) -> usleep(20) -> readl(NSR) -> ...=0A=
-    v2: fsleep(20) -> readl(NSR) -> usleep(1)  -> readl(NSR) -> ...=0A=
-- Apply the delay only on the completion path, via a separate helper, so=0A=
-  the bus-free pre-check still returns immediately.=0A=
-- Drop the start_delay_us variable.=0A=
-- Reduce the comments to two lines.=0A=
-- Reword the commit message: the IDLE behaviour is now presented as=0A=
-  measured on this controller, with the state-machine explanation given=0A=
-  as a hypothesis, rather than asserted as documented. The v1 wording=0A=
-  also had "one MDC period is up to ~400 ns" backwards: 400 ns is the=0A=
-  minimum period, at the maximum MDC rate, so the delay has to be sized=0A=
-  for the slowest MDC, not the fastest.=0A=
-- Link to v1:=0A=
-  https://lore.kernel.org/netdev/970df4d9-6199-4148-840a-ed1897ff27eb=0A=
-=0A=
-Notes, not for the commit message:=0A=
-=0A=
-- Th=E9o, on your debug patch (the second version, with=0A=
-  macb_mdio_wait_for_idle_busy()): results are quoted in the reply to=0A=
-  your mail rather than here. The reproducer that produced the register=0A=
-  dump above is there too.=0A=
-=0A=
-- On "wouldn't others have discovered it before": I went through every=0A=
-  MDIO bus implementation under drivers/net that polls for completion,=0A=
-  ~22 of them. Sixteen poll a BUSY/START/FIRE bit that the driver itself=0A=
-  sets in the command write, so the bit necessarily reads back as set and=
-=0A=
-  the window cannot exist. Three poll a latched done event that is=0A=
-  consumed per transfer (fec, adin1110, mdio-mux-bcm-iproc). Only macb=0A=
-  and xilinx_axienet_mdio poll a level ready/idle bit that software never=
-=0A=
-  sets, which is the only shape where sampling too early can succeed on=0A=
-  stale state. That is not evidence the bug is real, but it is why almost=
-=0A=
-  nobody else could have hit it.=0A=
-=0A=
-- On the documentation not mentioning it: drivers/net/mdio/mdio-aspeed.c=0A=
-  carries an explicit workaround whose comment says the controller may=0A=
-  return stale data when a read follows immediately after a write, fixed=0A=
-  with a dummy read before the poll. So this class of behaviour does get=0A=
-  acknowledged in-tree even when the datasheet is silent. Different=0A=
-  mechanism from what I am claiming here -- register read pipeline rather=
-=0A=
-  than MDC clock domain -- so it is precedent for the category, not proof=
-=0A=
-  of my case.=0A=
-=0A=
-- Counter-evidence, in the interest of not only citing what helps me:=0A=
-  xilinx_axienet_mdio.c has the same shape as macb, pre-check ready,=0A=
-  write MCR with INITIATE, poll ready again with no delay, and nobody=0A=
-  reports corruption there. Th=E9o's EyeQ measurement points the same way.=
-=0A=
-  If IDLE deasserts in the pclk domain rather than the MDC domain, my=0A=
-  explanation is simply wrong and the Versal behaviour needs a different=0A=
-  one.=0A=
-=0A=
-- On MFD, this may satisfy both of you. Andrew, the design you put in FEC=
-=0A=
-  is not interrupt-driven, but it does not poll a level bit either: it=0A=
-  polls FEC_IEVENT & FEC_ENET_MII, the same latched event the interrupt=0A=
-  used, clears it after each transfer, and fec_enet_collect_events() has=0A=
-  "int_events &=3D ~FEC_ENET_MII;" with the comment "Don't clear MDIO=0A=
-  events, we poll for those". Polling an event bit with the interrupt=0A=
-  left masked gets the correctness without the interrupt overhead. macb=0A=
-  has that bit -- ISR bit 0, MFD, "Management frame sent" -- and it is=0A=
-  entirely unused today, two defines in macb.h and no reference in=0A=
-  macb_main.c.=0A=
-=0A=
-  The blocker is that it does not port cleanly. macb_interrupt() opens=0A=
-  with an unconditional queue_readl(queue, ISR), and macb_queue_isr_clear()=
-=0A=
-  only writes ISR when MACB_CAPS_ISR_CLEAR_ON_WRITE is set, i.e. ISR is=0A=
-  read-to-clear on the parts without that cap. FEC can preserve one bit=0A=
-  because IEVENT is write-one-to-clear; on read-to-clear macb parts there=
-=0A=
-  is no equivalent, so any RX/TX interrupt landing between the MAN write=0A=
-  and the poll would eat MFD and the poll would run to timeout. Solvable=0A=
-  on clear-on-write parts, not obviously on the others. I did not want to=
-=0A=
-  put that in this patch, but it looks like the right direction if=0A=
-  someone wants it.=0A=
-=0A=
-- On bus throughput: smaller than I first thought. fsleep() in mainline=0A=
-  is usleep_range(usecs, usecs + (usecs >> 2)), so fsleep(20) is=0A=
-  usleep_range(20, 25), not (20, 40). A clause 22 frame is 64 bits, so=0A=
-  25.6 us at 2.5 MHz MDC. Even at the upper bound the sleep finishes=0A=
-  before the frame does, and slower MDC hides it completely, so the added=
-=0A=
-  latency is around zero rather than the ~14 us I would have guessed.=0A=
-=0A=
-- Worth noting for the v1 comparison: read_poll_timeout() with=0A=
-  sleep_before_read sleeps usleep_range((sleep_us >> 2) + 1, sleep_us),=0A=
-  so v1 guaranteed only 6 us before the first sample despite asking for=0A=
-  20. The explicit fsleep() is the only one of the two that actually=0A=
-  delivers the delay it claims.=0A=
-=0A=
- drivers/net/ethernet/cadence/macb_main.c | 22 ++++++++++++++++------=0A=
- 1 file changed, 16 insertions(+), 6 deletions(-)=0A=
-=0A=
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/etherne=
-t/cadence/macb_main.c=0A=
---- a/drivers/net/ethernet/cadence/macb_main.c=0A=
-+++ b/drivers/net/ethernet/cadence/macb_main.c=0A=
-@@ -308,6 +308,16 @@ static int macb_mdio_wait_for_idle(struct macb *bp)=0A=
- 				  1, MACB_MDIO_TIMEOUT);=0A=
- }=0A=
- =0A=
-+/* IDLE clears only once the frame has started, up to one MDC period after=
-=0A=
-+ * MAN is written.=0A=
-+ */=0A=
-+static int macb_mdio_wait_for_frame_done(struct macb *bp)=0A=
-+{=0A=
-+	fsleep(20);=0A=
-+=0A=
-+	return macb_mdio_wait_for_idle(bp);=0A=
-+}=0A=
-+=0A=
- static int macb_mdio_read_c22(struct mii_bus *bus, int mii_id, int regnum)=
-=0A=
- {=0A=
- 	struct macb *bp =3D bus->priv;=0A=
-@@ -327,7 +337,7 @@ static int macb_mdio_read_c22(struct mii_bus *bus, int =
-mii_id, int regnum)=0A=
- 			      | MACB_BF(REGA, regnum)=0A=
- 			      | MACB_BF(CODE, MACB_MAN_C22_CODE)));=0A=
- =0A=
--	status =3D macb_mdio_wait_for_idle(bp);=0A=
-+	status =3D macb_mdio_wait_for_frame_done(bp);=0A=
- 	if (status < 0)=0A=
- 		goto mdio_read_exit;=0A=
- =0A=
-@@ -362,7 +372,7 @@ static int macb_mdio_read_c45(struct mii_bus *bus, int =
-mii_id, int devad,=0A=
- 			      | MACB_BF(DATA, regnum & 0xFFFF)=0A=
- 			      | MACB_BF(CODE, MACB_MAN_C45_CODE)));=0A=
- =0A=
--	status =3D macb_mdio_wait_for_idle(bp);=0A=
-+	status =3D macb_mdio_wait_for_frame_done(bp);=0A=
- 	if (status < 0)=0A=
- 		goto mdio_read_exit;=0A=
- =0A=
-@@ -372,7 +382,7 @@ static int macb_mdio_read_c45(struct mii_bus *bus, int =
-mii_id, int devad,=0A=
- 			      | MACB_BF(REGA, devad & 0x1F)=0A=
- 			      | MACB_BF(CODE, MACB_MAN_C45_CODE)));=0A=
- =0A=
--	status =3D macb_mdio_wait_for_idle(bp);=0A=
-+	status =3D macb_mdio_wait_for_frame_done(bp);=0A=
- 	if (status < 0)=0A=
- 		goto mdio_read_exit;=0A=
- =0A=
-@@ -405,7 +415,7 @@ static int macb_mdio_write_c22(struct mii_bus *bus, int=
- mii_id, int regnum,=0A=
- 			      | MACB_BF(CODE, MACB_MAN_C22_CODE)=0A=
- 			      | MACB_BF(DATA, value)));=0A=
- =0A=
--	status =3D macb_mdio_wait_for_idle(bp);=0A=
-+	status =3D macb_mdio_wait_for_frame_done(bp);=0A=
- 	if (status < 0)=0A=
- 		goto mdio_write_exit;=0A=
- =0A=
-@@ -439,7 +449,7 @@ static int macb_mdio_write_c45(struct mii_bus *bus, int=
- mii_id,=0A=
- 			      | MACB_BF(DATA, regnum & 0xFFFF)=0A=
- 			      | MACB_BF(CODE, MACB_MAN_C45_CODE)));=0A=
- =0A=
--	status =3D macb_mdio_wait_for_idle(bp);=0A=
-+	status =3D macb_mdio_wait_for_frame_done(bp);=0A=
- 	if (status < 0)=0A=
- 		goto mdio_write_exit;=0A=
- =0A=
-@@ -450,7 +460,7 @@ static int macb_mdio_write_c45(struct mii_bus *bus, int=
- mii_id,=0A=
- 			      | MACB_BF(CODE, MACB_MAN_C45_CODE)=0A=
- 			      | MACB_BF(DATA, value)));=0A=
- =0A=
--	status =3D macb_mdio_wait_for_idle(bp);=0A=
-+	status =3D macb_mdio_wait_for_frame_done(bp);=0A=
- 	if (status < 0)=0A=
- 		goto mdio_write_exit;=0A=
- =0A=
--- =0A=
-2.43.0=0A=
+Hi Christoph,
+
+On Tue, Aug 4, 2026 at 6:35=E2=80=AFPM Christoph Hellwig <hch@infradead.org=
+> wrote:
+>
+> On Thu, Jul 30, 2026 at 06:00:36PM +0200, Loic Poulain wrote:
+> > On embedded devices using an eMMC it is common that one or more partiti=
+ons
+> > on the eMMC are used to store MAC addresses and Wi-Fi calibration EEPRO=
+M
+> > data. Allow referencing the partition in device tree for the kernel and
+> > Wi-Fi drivers accessing it via the NVMEM layer.
+> >
+> > NVMEM is registered for a block device whose OF node describes an NVMEM
+> > layout, either via an "nvmem-layout" child or by being a "fixed-layout"
+> > node itself (e.g. an eMMC boot partition associated through its mmc-car=
+d
+> > node).
+> >
+> > The NVMEM device is a read-only side channel: the block device stays
+> > fully usable, reads are performed with a non-exclusive BLK_OPEN_READ
+> > open, and no synchronization is done against concurrent writes to the
+> > same region. This is acceptable for the intended use case of write-once=
+,
+> > factory-provisioned data.
+> >
+> > Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+> > Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> > ---
+> >  block/Kconfig             |  11 +++++
+> >  block/Makefile            |   1 +
+> >  block/blk-nvmem.c         | 104 ++++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  block/blk.h               |   8 ++++
+> >  block/genhd.c             |   4 ++
+> >  block/partitions/core.c   |   5 +++
+> >  include/linux/blk_types.h |   4 ++
+> >  7 files changed, 137 insertions(+)
+> >
+> > diff --git a/block/Kconfig b/block/Kconfig
+> > index 70e4a66d941ff66ecb0ec34f4f7eff7fd1e4be40..4899ad572c71ffdbb62460d=
+57623216254893ddc 100644
+> > --- a/block/Kconfig
+> > +++ b/block/Kconfig
+> > @@ -209,6 +209,17 @@ config BLK_INLINE_ENCRYPTION_FALLBACK
+> >         by falling back to the kernel crypto API when inline
+> >         encryption hardware is not present.
+> >
+> > +config BLK_NVMEM
+> > +     bool "Block device NVMEM provider"
+> > +     depends on OF
+> > +     depends on NVMEM
+> > +     help
+> > +       Allow block devices (or partitions) to act as NVMEM providers,
+> > +       exposing factory-provisioned data such as MAC addresses or Wi-F=
+i
+> > +       calibration blobs to the drivers that consume them. This is
+> > +       typically used on embedded devices where such data is stored in=
+ a
+> > +       dedicated area of an eMMC, instead of a separate EEPROM or OTP.
+> > +
+> >  source "block/partitions/Kconfig"
+> >
+> >  config BLK_PM
+> > diff --git a/block/Makefile b/block/Makefile
+> > index e7bd320e3d6971a8abf584f5de42776bb54e8216..8200297fbcbab304beb4239=
+d0c33da07011c3ed9 100644
+> > --- a/block/Makefile
+> > +++ b/block/Makefile
+> > @@ -39,3 +39,4 @@ obj-$(CONFIG_BLK_INLINE_ENCRYPTION) +=3D blk-crypto.o=
+ blk-crypto-profile.o \
+> >                                          blk-crypto-sysfs.o
+> >  obj-$(CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK) +=3D blk-crypto-fallback.=
+o
+> >  obj-$(CONFIG_BLOCK_HOLDER_DEPRECATED)        +=3D holder.o
+> > +obj-$(CONFIG_BLK_NVMEM)                +=3D blk-nvmem.o
+> > diff --git a/block/blk-nvmem.c b/block/blk-nvmem.c
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..05bc35b9b8f373ccb606bdc=
+a35d211c41d2764fe
+> > --- /dev/null
+> > +++ b/block/blk-nvmem.c
+> > @@ -0,0 +1,104 @@
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +/*
+> > + * block device NVMEM provider
+> > + *
+> > + * Copyright (c) 2024 Daniel Golle <daniel@makrotopia.org>
+> > + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+> > + *
+> > + * Useful on devices using a whole disk or a partition (e.g. an eMMC b=
+oot
+> > + * partition) to store MAC addresses, Bluetooth addresses or Wi-Fi
+> > + * calibration EEPROM data.
+> > + *
+> > + * The NVMEM device is a side channel onto a block device that stays f=
+ully
+> > + * usable. This is somewhat mitigated by opening the device exclusivel=
+y.
+> > + */
+> > +
+> > +#include <linux/cleanup.h>
+> > +#include <linux/device.h>
+> > +#include <linux/file.h>
+> > +#include <linux/fs.h>
+> > +#include <linux/nvmem-provider.h>
+> > +#include <linux/nvmem-consumer.h>
+> > +#include <linux/of.h>
+> > +#include <linux/property.h>
+> > +
+> > +#include "blk.h"
+> > +
+> > +static int blk_nvmem_reg_read(void *priv, unsigned int from,
+> > +                           void *val, size_t bytes)
+> > +{
+> > +     struct block_device *bdev =3D priv;
+> > +     struct file *bdev_file;
+> > +     loff_t pos =3D from;
+> > +     ssize_t ret;
+> > +
+> > +     /* open and prevent other exclusive openers */
+> > +     bdev_file =3D bdev_file_open_by_dev(bdev->bd_dev,
+> > +                                       BLK_OPEN_READ | BLK_OPEN_EXCL,
+> > +                                       blk_nvmem_reg_read, NULL);
+> > +     if (IS_ERR(bdev_file))
+> > +             return PTR_ERR(bdev_file);
+> > +
+> > +     ret =3D kernel_read(bdev_file, val, bytes, &pos);
+> > +     if (ret >=3D 0 && ret !=3D bytes)
+> > +             ret =3D -EIO;
+> > +
+> > +     fput(bdev_file);
+> > +
+> > +     return ret < 0 ? ret : 0;
+>
+> The error handling here is a bit weird as you seem to handle the
+> positive/negative values twice.  What about something like this instead?
+>
+>         bdev_file =3D bdev_file_open_by_dev(bdev->bd_dev,
+>                                           BLK_OPEN_READ | BLK_OPEN_EXCL,
+>                                           blk_nvmem_reg_read, NULL);
+>         if (IS_ERR(bdev_file))
+>                 return PTR_ERR(bdev_file);
+>         ret =3D kernel_read(bdev_file, val, bytes, &pos);
+>         fput(bdev_file);
+>
+>         if (ret < 0)
+>                 return ret;
+>         if (ret !=3D bytes)
+>                 return -EIO;
+>         return 0;
+>
+> ?
+
+Yes, that actually makes things clearer
+
+>
+> > +     struct device_node *child __free(device_node) =3D
+> > +                     of_get_child_by_name(np, "nvmem-layout");
+>
+> Please avoid the __cleanups stuff as it doesn't interact well with
+> the goto basd cleanups usually used in block drivers.
+
+Ack, will remove.
+
+>
+> > +     config.id =3D NVMEM_DEVID_NONE;
+> > +     config.dev =3D dev;
+> > +     config.name =3D dev_name(dev);
+> > +     config.owner =3D THIS_MODULE;
+> > +     config.priv =3D bdev;
+> > +     config.reg_read =3D blk_nvmem_reg_read;
+> > +     config.size =3D bdev_nr_bytes(bdev);
+> > +     config.word_size =3D 1;
+> > +     config.stride =3D 1;
+> > +     config.read_only =3D true;
+> > +     config.root_only =3D true;
+> > +     config.ignore_wp =3D true;
+> > +     config.of_node =3D np;
+>
+> Maybe initialize all the static information at declaration time
+> here?
+
+Ok.
+
+>
+> > +     bdev->bd_nvmem =3D nvmem;
+>
+> What guards access to this pointer?
+
+bd_nvmem is only ever assigned in blk_nvmem_add() and cleared in
+blk_nvmem_del(), and those are only called from the block device
+add/remove lifecycle, So registration and unregistration of the NVMEM
+device are serialized against each other by the same lock that
+serializes partition/disk creation and teardown, there is no window
+where blk_nvmem_add() and blk_nvmem_del() can race on the same bdev.
+
+Additionally, recent fixes in the nvmem framework have made it robust
+against concurrent access (for example, consumer reads) during or
+after nvmem unregistration.
+
+Thanks,
+Loic
