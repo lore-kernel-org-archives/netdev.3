@@ -1,63 +1,64 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A317442FA3
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 11:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D8C44C506
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 11:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786014894; cv=none; b=BuOYmeffYU5/V7vkz+zKMMnVi2Ga9iKJ1IK4YM/HuPMlIGjlyOh6fVnH4scpjOuFrKt1mOwFu+pnhaMJtRhqk6n1qXhEarGldZDiu9jYpobresACH7D4LlYuLw7PQTOrqR6Oeomgq/qDDgZbEsXb1FfkfMaxZLFrwEaC4eB8BXM=
+	t=1786014905; cv=none; b=eFT863mSJb33bBMxm1wzuucI5VQBxLC+UfOOFlSMk5OgQyqMJ29zCh7bzP/pZf8IX4OfMU8QEEq3qANxkTh+q3vzHf5JsWk9szrsLWKe4t/KEh0SbNuu5rvue2yPbYveyfkZ+YDbiIWKY8RdampzxWe+Ozlo8LinIZ1h4HRKf6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786014894; c=relaxed/simple;
-	bh=WmK8KZTr19xuBbBZECD6AVvHrr5CmfBlYQve7lOMDsw=;
+	s=arc-20240116; t=1786014905; c=relaxed/simple;
+	bh=amyEg9s1SM6GN6svOrv3HLp1ySuyy+gLUZT+5HjBiDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XY+xFcZ6YfW7vSmmSmALdKHD0fXHWaWaBmQifMwxXOL91L3C8JPiGirY0QCVgbDVnJGG73LEKdxcvN7xEDRFCYL6/jFOjOO6AoNiAKPv8PLXyMlk280VKztzn/0QK29zMv+uqJppvhfnbpGankIy3WHwKN0GrkJ+B4SOkch/Q4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=qo482Gpi; arc=none smtp.client-ip=209.85.210.178
+	 MIME-Version; b=EPoYxX1zwx3YNcsGthDzYGNjzboWeOdizaY79YZFo1MPx4iKlVjeI7M4wqsQFzMIxdMQWxt6gf0iHfbBSAQjZlTsskQwU50sM3KSTN///sC5KAdOnoYtRZmd4PtWW2aJNmjHsqiCBZQeaDZkSDfN1xSLVJifs5uxtxqX3z7UcOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=fz1cIMi3; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="qo482Gpi"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84874b52eabso2942321b3a.0
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 04:14:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="fz1cIMi3"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cbb7926836eso1530642a12.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 04:15:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1786014893; x=1786619693; darn=vger.kernel.org;
+        d=nebusec.ai; s=google; t=1786014903; x=1786619703; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=29AyUjE5Vfxw6W9VRHm3bjock3hYe1PRYtirYyF9Kc0=;
-        b=qo482Gpi+os5XUhf6WrthM3EbDKLW/rT+TfCOMUtr8PjJROpspKXmtkwsnzoDausIK
-         zaxf053Is84aGiObzljOdhh7xbf9POZl+o47hbpNIZ6qjB4FP3YDW/Z4YQi3g8o6PCyO
-         tFXb2mkymfO5FXRKJ6MBG2sH/7dGUifsp8T9/d1S4tx/8Yoj5gAgLsRr4zq2lWfQgkTc
-         0384bZRSWSvSrZFG5r29jRdKpb3T7Jjhf1M1V/rUJ+/fAWRorAcxQj0T1sSRd1tyKukF
-         bIvaKio5XUjpw5533H/3LCDTm2YDxderox3lYztN4Aeoq0j4Q3UFHX9NoCaAvHV/g6cp
-         IeqA==
+        bh=5SvYcx4ai7A+LAhsWyrU62LuZiiW2rO6oOfRGjc++k4=;
+        b=fz1cIMi30Beqh+m7J9gIcIdHNDD+o9V9XoxhvXRTgY6kjjvTmd9UAuAnv4gJk4JGYS
+         yR6oAGI36/IugSlqY8UT32upe1Tra8PDG7SCAgj7ntgf0QEP2OrPFNkGLDmqecpm5XLk
+         Vm1wkkWRyPTEj8KbU8HxSSzwgH4bg/N90yxAo2331Nk31t0ejodo185kBd9PjMKniMEM
+         ZaNnbSSfAMR0+ekhAMsMzQsh6qxMU6n6mpnIGRLSIjabeAc9W+KW15rJ9ua3FDUsAgJR
+         tLFe4EaLk9proNYdmLX6iCgv6jKCufSbrVgfNLcboMd841SmIDYNzqym8XEi4ZUPpjnU
+         m5/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786014893; x=1786619693;
+        d=1e100.net; s=20251104; t=1786014903; x=1786619703;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=29AyUjE5Vfxw6W9VRHm3bjock3hYe1PRYtirYyF9Kc0=;
-        b=NaefYuu1qIKwkYxmG95RRLb0HwgXO0+D4k6Q4ytDNlbV4GtATfQsz4IoHEIrfQ/FJd
-         EhvcLJAzct5oIRA+k3Y/XaYaPaCeIY1+xxFW/L+ltaC0g7hiA07dBAOC+QxyL69N8hcJ
-         fa3V7/X2xb/YEthNbdkH79xo56YxbSRMHSbIUA6JUHj0YTGEW4MZ+6Nyq2Vldd3JEEQO
-         VxjaEfshWjYwGFIgOJ7bSovApEI9GAeJzYdcp5knzLIas/ft0PHQsvcBBDgd64P+yyF2
-         dhWg0fwT8RjQdpK/tMZM36XkTUNi2DP/kJb26kqVpgKxbXUeJYI0UsNqsuNDbSaQbWJW
-         b85Q==
-X-Gm-Message-State: AOJu0YyeKyN3Z+RcsfljKjdTNc24BJ2AOCdk0DPg0fu7QpsJ7w/S4pLv
-	pUcsKpkoqhRuWnxjAkV4iE4oqK7VhkFqkx5qYifqPYTItv+bIzTIthKo79hKVk14FkX1Ze0DGOo
-	l01fhu7B2teZ5rgEG
-X-Gm-Gg: AR+sD13vBgEe/oDqPVsI4UEROjvsJiwD+tmamLEJaIh5OAkvm8Vk86eOIlqZdTPNXX8
-	/zHkmsvEYsdX4MDTSrOfQhgW9rC5+zBqkMBKY4TK/7fL3fHzsBx+ON65bvByaXHTFBX6k/m2hrf
-	IxIyvVdz6FGvKUz6uH3jdMdGhNhPtMvFswZ9It0SxJzUGv/ws4FsHKkMs+Ns1Wgl3bvzm1xn0aP
-	BCabVZNIwHikwGTqpRUYDx3WRP6xnhdO7IxeLbHsJmuP9qD5inpTOOS/61Ltl54nozsvL/ISG4n
-	NTpC4Ih2dlBxDYFGEkfOiOANYkivwqZVG8RSoqUtcxSCXr3LdlnIgPc/QroQvhOlDERk5C5Kd2a
-	TpwntexALZMm93hFNun6HgHIJ7T+JWL/s7RPUrFpVPj2H112JbrxlNouczJt8jb5JyuQ4DwWvlg
-	yOPIov4YGAUHDtlOBpa7i/vadEwNZR/d+bUXDxQzIKcV12bu4hxNNc3/s=
-X-Received: by 2002:aa7:9303:0:b0:845:cf86:9469 with SMTP id d2e1a72fcca58-84f2e004570mr17499947b3a.29.1786014892652;
-        Thu, 06 Aug 2026 04:14:52 -0700 (PDT)
+        bh=5SvYcx4ai7A+LAhsWyrU62LuZiiW2rO6oOfRGjc++k4=;
+        b=OaIFLLHFEAlOWvU+w1Kxj2jxJdBxXO2Z+Ki8nEk8pRPecWUGDNvFL2sLYBtRUKB3OJ
+         oLbLqOP6x7hhJef7ivsMc1MSnk+79ZS5uPHgiWSTVSG/9lfHy4u4tqaZSaGyWZdW+Ehc
+         vW7BJi+MbRxfS2sVpvqEjb65gB0Q+8xP/mlUCGZvtF+Hn65tNYMn0VAdRWySqDFmwL58
+         TzHONEqIQj+q59LJcDEV0R+vY2NpIeQVSo9C+dppRP2Priug6jotaGupXbm1sRFViJKC
+         FsWMd1bOjx7oJmAnaZGnAM68lyWP/Y3bKU3wiI0QVwWt1dNaEpCZMX8VwSgVZmrBVUq6
+         HoPg==
+X-Gm-Message-State: AOJu0Yyyxvnt0nkilvJZ0dGPvl7wJACID8LMPApXSPH9nxC7p2nbMcFd
+	lUZig8wgyI8+o84aXHpgHcT2tr0J5M+WoeIcxWa3cv3KGSXv5wlrkFlLNL95wKAiH2SoE5oGUUL
+	fIy5AitQp/93RwQlb
+X-Gm-Gg: AR+sD12H5vbpdhbdB52e1XKXd5yECQB9I+6IXz7JsrcDlDnu/xRvsEQu+a7HikKO3mL
+	DERvupbIhDaqnJhG9qqIoVSFWK5BFDp7z03cZSI5OY1glA/2jvT03pay6ljxK/qWe9z/SpNPmRi
+	juomNIwTgJM9BwYKOyoq6tehiFR4C8y8ZiBIJh3xrCjKi4XbWWj/UeEQIbfxuI2/xCYEhPJiu9S
+	ahJbh+Ka+724IBguFocqUgAwvKJe8r4CHSKPSUz/4C+2Qf/bkz1aJB1k+IxmlSHG53P0gE5+K77
+	PHbiyqRHRKjA16LJEUYOSch0K0HL1WijpDy6RPE7GZlZlqlWQVgmjCtSMreHP3QvSvWGFC7JiLf
+	QpJJLDU+huVsH9fV+sPgm1ntUJcUenuCUT9nQN2wcaVw3ICn3TlUnEVCJZEVULPhZpWXIZhqnvY
+	xjPjMVzqnrrEhbzj+BqXnt/U7dyrvTKgtxuQzuwP/hucSlnPG+0E8Prkl5WU+uJK3F6tuHtAPNL
+	4681Q==
+X-Received: by 2002:a05:6a00:2d8d:b0:846:bc81:3e29 with SMTP id d2e1a72fcca58-84f2e0228aemr14866416b3a.2.1786014903269;
+        Thu, 06 Aug 2026 04:15:03 -0700 (PDT)
 Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f453b07cdsm1214705b3a.17.2026.08.06.04.14.43
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f453b07cdsm1214705b3a.17.2026.08.06.04.14.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 04:14:52 -0700 (PDT)
+        Thu, 06 Aug 2026 04:15:02 -0700 (PDT)
 From: Ren Wei <weir@nebusec.ai>
 To: netdev@vger.kernel.org,
 	mptcp@lists.linux.dev
@@ -79,9 +80,9 @@ Cc: matttbe@kernel.org,
 	caoruide123@gmail.com,
 	weir@nebusec.ai,
 	sashiko-bot@kernel.org
-Subject: [PATCH net v3 1/2] mptcp: hold MP_JOIN msk ref when cloning reqsk
-Date: Thu,  6 Aug 2026 19:14:30 +0800
-Message-ID: <74e00d4f4fedec635ef06a16b1bf28a281b9e7e5.1785995291.git.caoruide123@gmail.com>
+Subject: [PATCH net v3 2/2] mptcp: fix MP_CAPABLE token migration when cloning reqsk
+Date: Thu,  6 Aug 2026 19:14:31 +0800
+Message-ID: <a12d76b7f2305b5a8d64c3d6c3585e39684ff792.1785995291.git.caoruide123@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1785995291.git.caoruide123@gmail.com>
 References: <cover.1785995291.git.caoruide123@gmail.com>
@@ -96,101 +97,230 @@ Content-Transfer-Encoding: 8bit
 From: Ruide Cao <caoruide123@gmail.com>
 
 TCP request migration clones pending request sockets with
-inet_reqsk_clone(). For MPTCP MP_JOIN requests this byte-copies
-subflow_req->msk, but the clone does not take its own reference.
+inet_reqsk_clone().  For MPTCP MP_CAPABLE requests this byte-copies the
+token_node hlist state into the clone even though the token table still
+names the original request.
 
-The original and cloned request can consequently drop the same msk
-reference from subflow_req_destructor(), leaving one request with a
-dangling pointer after the other is released.
+Moving the token only after inet_ehash_insert() succeeds leaves a window
+where the cloned request is already globally visible from the ehash but
+the token table still points at the original request.  Reordering the
+move after clone but before ehash exposure closes that window, but
+concurrent RX can still race on the old request and observe that the
+token was already moved.
 
-Add an MPTCP clone helper on the TCP request migration path and let
-cloned subflow requests grab their own msk reference when one is
-present.  The clone's normal destructor balances this reference on both
-successful migration and failed clone/insert paths.
+Move MP_CAPABLE token request ownership during MPTCP request cloning
+under the token bucket lock.  Make mptcp_token_accept() and
+mptcp_token_destroy_request() re-check token_node under the same lock and
+treat an already moved or removed request as a normal race instead of
+warning.
+
+If the passive MP_CAPABLE socket cannot claim the token, fail
+mptcp_sk_clone_init() and let the subflow fall back instead of
+installing a socket with mismatched token ownership.
 
 Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
 Cc: stable@vger.kernel.org
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Reported-by: David Lee <david.lee@trailofbits.com>
-Closes: https://lore.kernel.org/all/20260804095051.715355-1-david.lee@trailofbits.com/
 Reported-by: Vega <vega@nebusec.ai>
 Assisted-by: Codex:gpt-5.4
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/86e2514b533bf4d55d4aa2fdbf1404022e8c9430.1776149210.git.caoruide123%40gmail.com
 Signed-off-by: Ruide Cao <caoruide123@gmail.com>
 Signed-off-by: Ren Wei <weir@nebusec.ai>
 ---
- include/net/mptcp.h             |  7 +++++++
- net/ipv4/inet_connection_sock.c |  4 ++++
- net/mptcp/subflow.c             | 11 +++++++++++
- 3 files changed, 22 insertions(+)
+ net/mptcp/protocol.c   | 12 +++++----
+ net/mptcp/protocol.h   |  4 ++-
+ net/mptcp/subflow.c    |  2 ++
+ net/mptcp/token.c      | 61 +++++++++++++++++++++++++++++++++++++-----
+ net/mptcp/token_test.c |  4 +--
+ 5 files changed, 68 insertions(+), 15 deletions(-)
 
-diff --git a/include/net/mptcp.h b/include/net/mptcp.h
-index 71b9fc5a5796..0a02ac1ed22d 100644
---- a/include/net/mptcp.h
-+++ b/include/net/mptcp.h
-@@ -223,6 +223,8 @@ int mptcp_subflow_init_cookie_req(struct request_sock *req,
- struct request_sock *mptcp_subflow_reqsk_alloc(const struct request_sock_ops *ops,
- 					       struct sock *sk_listener,
- 					       bool attach_listener);
-+void mptcp_subflow_reqsk_clone(struct request_sock *req,
-+			       struct request_sock *new_req);
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index ca644ec53eed..07eaa6858d05 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3608,17 +3608,19 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+ 	 */
+ 	mptcp_set_state(nsk, TCP_ESTABLISHED);
  
- __be32 mptcp_get_reset_option(const struct sk_buff *skb);
++	if (!mptcp_token_accept(subflow_req, msk)) {
++		mptcp_release_sched(msk);
++		inet_csk_prepare_forced_close(nsk);
++		tcp_done(nsk);
++		return NULL;
++	}
++
+ 	/* The msk maintain a ref to each subflow in the connections list */
+ 	WRITE_ONCE(msk->first, ssk);
+ 	subflow = mptcp_subflow_ctx(ssk);
+ 	list_add(&subflow->node, &msk->conn_list);
+ 	sock_hold(ssk);
  
-@@ -309,6 +311,11 @@ static inline struct request_sock *mptcp_subflow_reqsk_alloc(const struct reques
- 	return NULL;
+-	/* new mpc subflow takes ownership of the newly
+-	 * created mptcp socket
+-	 */
+-	mptcp_token_accept(subflow_req, msk);
+-
+ 	/* set msk addresses early to ensure mptcp_pm_get_local_id()
+ 	 * uses the correct data
+ 	 */
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 4a2d40cd7b13..c58cfb1326b7 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1074,9 +1074,11 @@ static inline void mptcp_token_init_request(struct request_sock *req)
  }
  
-+static inline void mptcp_subflow_reqsk_clone(struct request_sock *req,
-+					     struct request_sock *new_req)
-+{
-+}
-+
- static inline __be32 mptcp_reset_option(const struct sk_buff *skb)  { return htonl(0u); }
- 
- static inline void mptcp_active_detect_blackhole(struct sock *sk, bool expired) { }
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 6257459bcee2..896f472dcba2 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -21,6 +21,7 @@
- #include <net/xfrm.h>
- #include <net/tcp.h>
- #include <net/tcp_ecn.h>
-+#include <net/mptcp.h>
- #include <net/sock_reuseport.h>
- #include <net/addrconf.h>
- 
-@@ -961,6 +962,9 @@ static struct request_sock *inet_reqsk_clone(struct request_sock *req,
- 		rcu_assign_pointer(tcp_sk(nreq->sk)->fastopen_rsk, nreq);
- 	}
- 
-+	if (rsk_is_mptcp(req))
-+		mptcp_subflow_reqsk_clone(req, nreq);
-+
- 	return nreq;
- }
- 
+ int mptcp_token_new_request(struct request_sock *req);
++void mptcp_token_move_request(struct request_sock *req,
++			      struct request_sock *new_req);
+ void mptcp_token_destroy_request(struct request_sock *req);
+ int mptcp_token_new_connect(struct sock *ssk);
+-void mptcp_token_accept(struct mptcp_subflow_request_sock *r,
++bool mptcp_token_accept(struct mptcp_subflow_request_sock *r,
+ 			struct mptcp_sock *msk);
+ bool mptcp_token_exists(u32 token);
+ struct mptcp_sock *mptcp_token_get_sock(struct net *net, u32 token);
 diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 8e386899ceb9..be7260821566 100644
+index be7260821566..65d876a08233 100644
 --- a/net/mptcp/subflow.c
 +++ b/net/mptcp/subflow.c
-@@ -47,6 +47,17 @@ static void subflow_req_destructor(struct request_sock *req)
- 	mptcp_token_destroy_request(req);
+@@ -56,6 +56,8 @@ void mptcp_subflow_reqsk_clone(struct request_sock *req,
+ 
+ 	if (subflow_req->msk)
+ 		sock_hold((struct sock *)subflow_req->msk);
++
++	mptcp_token_move_request(req, new_req);
  }
  
-+void mptcp_subflow_reqsk_clone(struct request_sock *req,
-+			       struct request_sock *new_req)
+ static void subflow_generate_hmac(u64 key1, u64 key2, u32 nonce1, u32 nonce2,
+diff --git a/net/mptcp/token.c b/net/mptcp/token.c
+index f1a50f367add..24877a2c3772 100644
+--- a/net/mptcp/token.c
++++ b/net/mptcp/token.c
+@@ -180,6 +180,36 @@ int mptcp_token_new_connect(struct sock *ssk)
+ 	return 0;
+ }
+ 
++void mptcp_token_move_request(struct request_sock *req,
++			      struct request_sock *new_req)
 +{
-+	struct mptcp_subflow_request_sock *subflow_req;
++	struct mptcp_subflow_request_sock *subflow_req = mptcp_subflow_rsk(req);
++	struct mptcp_subflow_request_sock *new_subflow_req;
++	struct mptcp_subflow_request_sock *pos;
++	struct token_bucket *bucket;
 +
-+	subflow_req = mptcp_subflow_rsk(new_req);
++	new_subflow_req = mptcp_subflow_rsk(new_req);
 +
-+	if (subflow_req->msk)
-+		sock_hold((struct sock *)subflow_req->msk);
++	if (hlist_nulls_unhashed_lockless(&subflow_req->token_node)) {
++		mptcp_token_init_request(new_req);
++		return;
++	}
++
++	bucket = token_bucket(subflow_req->token);
++	spin_lock_bh(&bucket->lock);
++	if (hlist_nulls_unhashed(&subflow_req->token_node)) {
++		mptcp_token_init_request(new_req);
++	} else {
++		pos = __token_lookup_req(bucket, subflow_req->token);
++		if (pos == subflow_req)
++			hlist_nulls_replace_init_rcu(&subflow_req->token_node,
++						     &new_subflow_req->token_node);
++		else
++			mptcp_token_init_request(new_req);
++	}
++	spin_unlock_bh(&bucket->lock);
 +}
 +
- static void subflow_generate_hmac(u64 key1, u64 key2, u32 nonce1, u32 nonce2,
- 				  void *hmac)
+ /**
+  * mptcp_token_accept - replace a req sk with full sock in token hash
+  * @req: the request socket to be removed
+@@ -187,24 +217,36 @@ int mptcp_token_new_connect(struct sock *ssk)
+  *
+  * Called when a SYN packet creates a new logical connection, i.e.
+  * is not a join request.
++ *
++ * Return: true on success.
+  */
+-void mptcp_token_accept(struct mptcp_subflow_request_sock *req,
++bool mptcp_token_accept(struct mptcp_subflow_request_sock *req,
+ 			struct mptcp_sock *msk)
  {
+ 	struct mptcp_subflow_request_sock *pos;
+ 	struct sock *sk = (struct sock *)msk;
+ 	struct token_bucket *bucket;
++	bool ret = false;
+ 
+-	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
+ 	bucket = token_bucket(req->token);
+ 	spin_lock_bh(&bucket->lock);
++	if (hlist_nulls_unhashed(&req->token_node))
++		goto unlock;
+ 
+-	/* pedantic lookup check for the moved token */
+ 	pos = __token_lookup_req(bucket, req->token);
+-	if (!WARN_ON_ONCE(pos != req))
+-		hlist_nulls_del_init_rcu(&req->token_node);
++	if (pos != req)
++		goto unlock;
++
++	hlist_nulls_del_init_rcu(&req->token_node);
+ 	__sk_nulls_add_node_rcu((struct sock *)msk, &bucket->msk_chain);
++	ret = true;
++
++unlock:
+ 	spin_unlock_bh(&bucket->lock);
++	if (ret)
++		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
++
++	return ret;
+ }
+ 
+ bool mptcp_token_exists(u32 token)
+@@ -355,16 +397,21 @@ void mptcp_token_destroy_request(struct request_sock *req)
+ 	struct mptcp_subflow_request_sock *pos;
+ 	struct token_bucket *bucket;
+ 
+-	if (hlist_nulls_unhashed(&subflow_req->token_node))
++	if (hlist_nulls_unhashed_lockless(&subflow_req->token_node))
+ 		return;
+ 
+ 	bucket = token_bucket(subflow_req->token);
+ 	spin_lock_bh(&bucket->lock);
++	if (hlist_nulls_unhashed(&subflow_req->token_node))
++		goto unlock;
++
+ 	pos = __token_lookup_req(bucket, subflow_req->token);
+-	if (!WARN_ON_ONCE(pos != subflow_req)) {
++	if (pos == subflow_req) {
+ 		hlist_nulls_del_init_rcu(&pos->token_node);
+ 		bucket->chain_len--;
+ 	}
++
++unlock:
+ 	spin_unlock_bh(&bucket->lock);
+ }
+ 
+diff --git a/net/mptcp/token_test.c b/net/mptcp/token_test.c
+index 4fc39fa2e262..be9acce8a567 100644
+--- a/net/mptcp/token_test.c
++++ b/net/mptcp/token_test.c
+@@ -99,7 +99,7 @@ static void mptcp_token_test_accept(struct kunit *test)
+ 	KUNIT_ASSERT_EQ(test, 0,
+ 			mptcp_token_new_request((struct request_sock *)req));
+ 	msk->token = req->token;
+-	mptcp_token_accept(req, msk);
++	KUNIT_EXPECT_TRUE(test, mptcp_token_accept(req, msk));
+ 	KUNIT_EXPECT_PTR_EQ(test, msk, mptcp_token_get_sock(&init_net, msk->token));
+ 
+ 	/* this is now a no-op */
+@@ -122,7 +122,7 @@ static void mptcp_token_test_destroyed(struct kunit *test)
+ 	KUNIT_ASSERT_EQ(test, 0,
+ 			mptcp_token_new_request((struct request_sock *)req));
+ 	msk->token = req->token;
+-	mptcp_token_accept(req, msk);
++	KUNIT_EXPECT_TRUE(test, mptcp_token_accept(req, msk));
+ 
+ 	/* simulate race on removal */
+ 	refcount_set(&sk->sk_refcnt, 0);
 -- 
 2.43.0
