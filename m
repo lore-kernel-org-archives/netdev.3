@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0B031352D;
-	Thu,  6 Aug 2026 00:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B801634041B;
+	Thu,  6 Aug 2026 00:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785975650; cv=none; b=HbGmp1ek8CU2BkDIPsQuSqNdWRBgkkqYD7qYU68qJC/AetlnsUnZNCqdQBTbpKIafWBXsAKT0KhJh23SPrjV+1edNYoyreSlMKERXaSwQ3vwk3HmptEOdBX6s/Rc30wGAKhCICK8pI2P1TygUKJ9Pj4YaBlmKuaFYcijoFSRJ48=
+	t=1785975652; cv=none; b=bo83tYqKZmOJ2mqXJ8rJRUXaRZL4KwQC5wSr2ZAPgpCcGyamBAFTX1rvtDfM5ZwgecokIjZjCrcgbBDtPJ7s6tFE2bK8H3gUyDscnLMmz2TqxZxh4ZQeDOb32QWngoAWai80/MpYr0WTEHcbh81a2kxOdRUNPJ17pQWNZOUb7uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785975650; c=relaxed/simple;
-	bh=D7bdKJibXyK9HWUIjCmCZpVqPfqZoY+xWK6PPTT4xnI=;
+	s=arc-20240116; t=1785975652; c=relaxed/simple;
+	bh=n04CMGwp6tEBl8c8aByqFwlkxfDsn2TwSXbaFfMK9tc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kR76Uw2oS6RcORI3HMt9RIWbIWtXCCVZbPEWC0Lag++RT8I8tMGsFUPvjONom3BwPJAY95hLm4Z/YVycwPSH42+VudEfzc3MzP2Y12UUB2//zzTZZlCR8ojQKVZ+0+rjKQ44ZFu+detTqVsn9No3TXX+DpXDc6Atm4Bv/foaEBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFoQCshy; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=FSCvWK3yokSc2RSxFRorcpYIVAf3+KfwewVSXddqWZ1MEwmgznH31GEGwylME6VvfvFQTnSnuQcW8Vn2gI4qzKeSRu6wazNnrDwhiK1J7fxcAN+lm5iT16JX/5FjwsOtP+qLTGaOuxevPfYN/IenUCvH4pNzl90YNcMQP2Xs2XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dQH5gZdF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFoQCshy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC661F000E9;
-	Thu,  6 Aug 2026 00:20:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dQH5gZdF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E301F00A3A;
+	Thu,  6 Aug 2026 00:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785975647;
-	bh=XYHzWSE8SJ+7K3/9abHAiv97y9wdituw7R0lo01shjA=;
+	s=k20260515; t=1785975648;
+	bh=wh4J+Bc28JG16+2tCsVeZ0u9k3JKqG5SRh6FCAyfgTo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=BFoQCshyS58ZkFG6QcMk3zhMtaKK9eEl+VjNUtK5C3mVAVwh4faP+6OZ6pU62h6hk
-	 rBxVQTuXpOeaWO9cTFO7AFasAqkvYKQ0jsN5l2t/ZWW+wMrgoGwbwTvgw/tOEg3i59
-	 YzQerq/FSWV+RbYzT3qAcOPBfIwrqhQjbXD/k2MG60VDn9/1yPg+bNR1vvbIVQVewv
-	 eA9vlb0UZby1WVCv68futbwRzEIwiNWZ6UGMq3t/tHyVYQt1lvv0mybTRfWNo4DEKk
-	 bNzf5NXwTrlPo9xSfR1/P3A5ryursL/ey7Nrb9nJlzoSawWFx0oEOHjM/n5cVij5hg
-	 lQakg20mZkl/A==
+	b=dQH5gZdF+JQ/BELyK2ZxyxKCrSv/uqnJccAQlC8lZKBHLZjRa6K9ACn7Fr7vcSa6t
+	 +YS7zRHlh8HfW2yskJbcsA8Azq8oScPKcUP84od8tmGu11Pwc4imbj/Kw5S2QThwEq
+	 5IEdqfmPE4vuVM6MUGEnP9zpgxRbRolXKENdEa5ICgnqCG1sN8+7OJ6noO7ZNS+8lK
+	 +1FGX/Byqa8gwjA5nevtRgE0mPAfQuwl/Y3e2OUqgDX6DskMSG8JVufbOT2n4qkAfm
+	 myJ5ORrkR+D3bEQ7L/H3RnommTy6GV2GUfdztlkV3HwRk7B/9nMkQpWZoeTl1D5p00
+	 8QkE9TBHxehJw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56AA7392FFD8;
-	Thu,  6 Aug 2026 00:20:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09A8392FFD8;
+	Thu,  6 Aug 2026 00:20:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tcp: fix TFO max_qlen accounting across reuseport
- migration
+Subject: Re: [PATCH net] netfilter: nf_flow_table: drop existing skb dst
+ before
+ skb_dst_set_noref()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178597560690.575509.1624669268833520335.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 00:20:06 +0000
-References: <20260803061739.134737-1-jiayuan.chen@linux.dev>
-In-Reply-To: <20260803061739.134737-1-jiayuan.chen@linux.dev>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
- kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, kafai@fb.com, daniel@iogearbox.net,
- linux-kernel@vger.kernel.org
+ <178597560839.575509.1356511922096738928.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 00:20:08 +0000
+References: <20260804093328.1831847-1-edumazet@google.com>
+In-Reply-To: <20260804093328.1831847-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ pablo@netfilter.org, fw@strlen.de, netdev@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ eric.dumazet@gmail.com, syzbot+76d4e3a055aec3b007ec@syzkaller.appspotmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  3 Aug 2026 14:17:38 +0800 you wrote:
-> A listener's TCP_FASTOPEN max_qlen stops being accurate and lets through
-> far more pending Fast Open requests than it was configured for.
+On Tue,  4 Aug 2026 09:33:28 +0000 you wrote:
+> Incoming skbs passing through netfilter flowtable offload hooks (or XFRM
+> offload path) might already carry a ref-counted dst_entry assigned during
+> earlier RX or routing steps.
 > 
-> This only shows up with SO_REUSEPORT listener migration, where closing a
-> listener hands its still-pending TFO children over to a surviving one.
-> 
-> fastopenq.qlen is charged in tcp_fastopen_create_child() when the child
-> is created and uncharged in reqsk_fastopen_remove() when the handshake
-> completes.  The uncharge follows rsk_listener of the request the child
-> points at, and inet_reqsk_clone() has repointed the child at a new
-> request owned by the new listener, so the ++ and the -- land on two
-> different sockets.  The new listener's qlen drifts negative and its
-> limit no longer binds.
+> Calling skb_dst_set_noref() when skb already holds a ref-counted dst
+> overwrites skb->_skb_refdst, leaking the previous dst_entry reference
+> count and triggering a DEBUG_NET_WARN_ON_ONCE assertion in
+> skb_dst_check_unset():
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] tcp: fix TFO max_qlen accounting across reuseport migration
-    https://git.kernel.org/netdev/net/c/a0ab2ba83e35
+  - [net] netfilter: nf_flow_table: drop existing skb dst before skb_dst_set_noref()
+    https://git.kernel.org/netdev/net/c/8aecf0bbcc72
 
 You are awesome, thank you!
 -- 
