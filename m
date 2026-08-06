@@ -1,486 +1,115 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DB5483BD9
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 17:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [40.65.178.148])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617AB36C597;
+	Thu,  6 Aug 2026 17:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=40.65.178.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786036425; cv=none; b=nIG5dYOjalisiIfO8SKJSiDcZx5k7/apjzTsi+yEHjaqpH1mXcSB/ludF5eskj40VyPHEwkgDQqD+IH4oFCvAiXBq62ay08B18kr53DlyFMm+3XEUlxT4+5N7guBByFo7ioy4e8itQAvBO/PQawgLfpzXLrlwlgW7NfED9reyN4=
+	t=1786036600; cv=none; b=Lz0EPRSsRztBfdkZvwo0QQlHy0er8MTfkjZfPkyraKzTeml+vKU55CZy1eiY/bu6CTb1uecnF1EWaC0v43DyBOjmMf5xCN5JPpu1FfU50kGGLzUs1n8uc8cymIEOu2QIKhF2UtQxu/hARqt1sqdPLyy/6hFbKcRTmlNknLPtT5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786036425; c=relaxed/simple;
-	bh=2g/BH7/dnQkVJ5j6ZHSFOFFmOj5t0qrsnPL18Dt9tD8=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ELaspnmTkZ9qNHayQEhvlraWwWaxCfIU88tiUEHf84ehTEdHioeUz6fFlG/WQlXN1UUfCcjFY+4DyJ4bp/tKKPb6/iS6l8egcFT410422lGXsQMGK9VZWki6QxEUgWaNFWAQ+85Va4j7x6x6sQPdNXRm+Aqi+rieEkrwc1dSrug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N2YXmTbd; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786036600; c=relaxed/simple;
+	bh=CwuWe3oIk4AzuGunWz+SP2Hs726ScsZkq/Uf4Lf1ouI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iDt2/57NGEeMkW4+uMPPlHpotiK1F7SLt7/CfEov1NXgu3QktCIoDSjkwU15DBjuhNUR++dKppdgXidRUQMWeBG7/oBisFDx24ncnMbYL+ykuTH74z+bQBWh99bd2QwtC9VNJ/ounp6dXcvQ9qwQpgf/JDc9QHTsAuD66DAt5/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=OwszU2L3; arc=none smtp.client-ip=40.65.178.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N2YXmTbd"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4980dc26022so24260045e9.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 10:13:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="OwszU2L3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786036419; x=1786641219; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZtyOCXOdSpPncxX9X95K21xTpnlgw4ERbigVVrepMHc=;
-        b=N2YXmTbdcjN973XvjwRBtUOypM+iKBrXRqUP6HPq7aSCcjFeWncSFcUG9CJUiCQfR4
-         DI2U2RaFgYTir/ENqUGwcAtT1tn/vRag/if2uFLgIKbt6M5mdQ2dl+8PO9T8k8HLk415
-         JjDFXlnVRHTZGHRU6lLN8AtQT6SFeVyxW6jr5JrqHSDMRZuv2NRLnm6HlB+LKqBgVV7i
-         HgNhNiYsUZD8vNk3ynXimA6W6M+iiC8e/wKLrSIv1DEmxSjeJ4wfo/I+K+sKqG4lG3Pb
-         iGeYKvp5n7jh+6WJ6qhkxfC1oeN7ryOJwkLeizvgOcCMHhkDvSntzwE6jueZBxcPtYko
-         9qmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786036419; x=1786641219;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZtyOCXOdSpPncxX9X95K21xTpnlgw4ERbigVVrepMHc=;
-        b=NbbR3SKLp5gckY2pfMcSWgXDVVzHU/WFtXv2xhyC6Bnuwn98U7hzDHZ1mvBs8IPe4X
-         lsbRwOJ3SMq3BC95vNEB6/edSkDlDJiDtsch3eu32jQiVEl0PmYjd1cGheq3RpMkW0md
-         xSzyA+n1+uLfENI48wOW4vKrE3RApvsGAsFOYfh/zbwFDza3FA6d+J90/eWa9YhOS3Rs
-         ArrNrKCiR3LAFOMFyPz7gr94hyvCv4nmUyequ0sVZneVf7bV06VoXl7oRZ11puUqUXJ1
-         VhNNSYSFvFEhClYfIYx8rYx2NGIFO98LtSiBvpT13RUJk5vgv2u1RNwFtRuIZsiQypDU
-         r0Bg==
-X-Forwarded-Encrypted: i=1; AHgh+RpZ80pnQl8r15olTp+9MVZtO3M0Qbtjv9UU1rIAhOuESp5eSFr9oAEvJKR+Zar/ElJid2VGNeo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCUqzkXcgyEZVk/l4dWPwYZ0piHm52DDFS4sbKK5FKtbI2Ty9t
-	TFKQHFBspUs7Hqn0roGTeCgCy315R1eMh+mzzk/r7Zk12DpdG7HgqP70
-X-Gm-Gg: AR+sD10DKd51bBXYX4X9fyhSuA/DfDrt9FuDXU4XPSGbuQ5hBzMZYsJHS/UNtELureI
-	YYKHMMunaXEWhmdk5cjNu0Ts6aOy841fCzH4VH6rtJWxRC0/zZ8D8IRRibReE3Mus9CeSfnKY2P
-	irenvfPahLGfT+jrufbAUG1b/u51rTo3E7mv6RXT+ag7LUSTBscjQRs9sq6EkQuifaSHRUu5tkO
-	Wcvvtj+E3lGNTDgbe4oIanr3qUYR56/K4PSosg62yV8nP1CTmLO/pzmB105/7AfHIGPLiuGYure
-	lwoHKAgjH2XDmTEL8KcZq9K4VyGPvxs8zGjb4mdfwZCo2xS/7n9ugQPRqao+nD25pq3Ya6+mUvQ
-	MtnsUggI9NyK3EptHUW9D5gp+4AsBnul1bxFEtEn6BBGWmcx5CgXi5CJG4HaJkErdSf6hBLtw01
-	4H3iLrlnTBSKgxPYQNOeeNMGaKKb6os8vjC1gfpEtiEl+pzYeGNi5RX2zWQkkxDarBE3BvO/73f
-	flp+ijQnuDPJR2AjETCSokg/Tx7KLrqrw6i
-X-Received: by 2002:a05:600c:5251:b0:499:5b04:6920 with SMTP id 5b1f17b1804b1-4995b04695bmr7965295e9.16.1786036419254;
-        Thu, 06 Aug 2026 10:13:39 -0700 (PDT)
-Received: from Ansuel-XPS. (host-79-42-255-151.retail.telecomitalia.it. [79.42.255.151])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995bb81731sm1732145e9.0.2026.08.06.10.13.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 10:13:38 -0700 (PDT)
-Message-ID: <6a74c0c2.1c04d3ff.d716d.a9f0@mx.google.com>
-X-Google-Original-Message-ID: <anTAvad1j37P3ZfY@Ansuel-XPS.>
-Date: Thu, 6 Aug 2026 19:13:33 +0200
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
-Subject: Re: [PATCH net-next v10 11/11] net: airoha: add phylink support
-References: <20260730102444.1967900-1-ansuelsmth@gmail.com>
- <20260730102444.1967900-12-ansuelsmth@gmail.com>
- <ams72wEsCiACYh-k@lore-desk>
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-Id:MIME-Version:Content-Transfer-Encoding; bh=8Ptg1
+	mK2PwCN7Sdld8TRmpv3xMzurCdFmlSv2qo+IKs=; b=OwszU2L3q7fYOa6pQObbA
+	XHZp1hbKXDlAclWDXfLXFrzNpttuUurzVObzcfdQWCdb0qILDPdhA4prUFDWbSDD
+	n4KG8snUhlM1kj5BQxIvRTtY3tA3dSW6r+l2XAuWV8raQnp8Wl7NXB8w/8uTcH86
+	OOwqTI8WqSepdkrygyVb7c=
+Received: from gpu-server-2.tailcd67b0.ts.net (unknown [101.52.241.91])
+	by web1 (Coremail) with SMTP id yAQGZQCXO8tfwXRqRwFEAQ--.57940S2;
+	Fri, 07 Aug 2026 01:16:16 +0800 (CST)
+From: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+To: linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	stable@vger.kernel.org,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	yyxroy22@gmail.com
+Subject: [PATCH net] sctp: fix use-after-free of cached ASCONF chunk
+Date: Fri,  7 Aug 2026 01:16:14 +0800
+Message-Id: <20260806171614.945331-1-yangyx22@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ams72wEsCiACYh-k@lore-desk>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:yAQGZQCXO8tfwXRqRwFEAQ--.57940S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cr15JFyUGF4UZFy7AF1DJrb_yoW8WFy8p3
+	98Zr4rtryUGr18ArZ3JFn0ga1Ikws3J39xKryqyw4fZFs8Xr1Yk347K3WUtr40kF4kAayS
+	grW3tF4UXF1qyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9C1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4U
+	JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I
+	0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIE
+	Y20_GrWkJr1UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjI
+	I2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5
+	MxkIecxEwVAFwVW8MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUyE__UUUUU=
+X-CM-SenderInfo: 51dqw5r0ssqzpdlo2hxwvl0wxkxdhvlgxou0/
 
-On Thu, Jul 30, 2026 at 01:56:11PM +0200, Lorenzo Bianconi wrote:
-> > Add phylink support for each GDM port. For GDM1 add the internal interface
-> > mode as the only supported mode. For GDM2/3/4 add the required
-> > configuration of the PCS to make the external PHY or attached SFP cage
-> > work.
-> > 
-> > These needs to be defined in the GDM port node using the pcs-handle
-> > property.
-> > 
-> > Update and provide a .get/set_link_ksettings function that use phylink
-> > for ethtool OPs now that we fully support phylink.
-> > 
-> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> 
-> Hi Christian,
-> 
-> just some nits inline. Fixing them:
-> 
-> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> 
-> Regards,
-> Lorenzo
-> 
-> > ---
-> >  drivers/net/ethernet/airoha/Kconfig       |   1 +
-> >  drivers/net/ethernet/airoha/airoha_eth.c  | 189 +++++++++++++++++++++-
-> >  drivers/net/ethernet/airoha/airoha_eth.h  |   5 +
-> >  drivers/net/ethernet/airoha/airoha_regs.h |  12 ++
-> >  4 files changed, 205 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/airoha/Kconfig b/drivers/net/ethernet/airoha/Kconfig
-> > index 1f6640a15fc9..789906516bf8 100644
-> > --- a/drivers/net/ethernet/airoha/Kconfig
-> > +++ b/drivers/net/ethernet/airoha/Kconfig
-> > @@ -20,6 +20,7 @@ config NET_AIROHA
-> >  	depends on NET_DSA || !NET_DSA
-> >  	select NET_AIROHA_NPU
-> >  	select PAGE_POOL
-> > +	select PHYLINK
-> >  	help
-> >  	  This driver supports the gigabit ethernet MACs in the
-> >  	  Airoha SoC family.
-> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-> > index dba7c52c0896..5065d6583b9f 100644
-> > --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> > @@ -8,6 +8,7 @@
-> >  #include <linux/of_reserved_mem.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/tcp.h>
-> > +#include <linux/pcs/pcs.h>
-> 
-> nit: alphabetic order.
-> 
-> >  #include <linux/u64_stats_sync.h>
-> >  #include <net/dst_metadata.h>
-> >  #include <net/page_pool/helpers.h>
-> > @@ -1915,6 +1916,14 @@ static int airoha_dev_open(struct net_device *netdev)
-> >  	struct airoha_qdma *qdma;
-> >  	int err;
-> >  
-> > +	err = phylink_of_phy_connect(dev->phylink, netdev->dev.of_node, 0);
-> > +	if (err) {
-> > +		netdev_err(netdev, "could not attach PHY: %d\n", err);
-> > +		return err;
-> > +	}
-> > +
-> > +	phylink_start(dev->phylink);
-> 
-> Should it be last operation in airoha_dev_open()?
->
+addip_last_asconf caches the outstanding outbound ASCONF chunk. The normal
+ASCONF-ACK completion path releases the chunk and clears the pointer.
 
-I checked also other ethernet driver for this pattern and it seems
-phylink_start is always called before any netif_start_queues.
+However, sctp_asconf_queue_teardown() releases the cached chunk without
+clearing addip_last_asconf. During peer restart handling,
+sctp_sf_do_dupcook_a() queues SCTP_CMD_PURGE_ASCONF_QUEUE, which invokes
+sctp_asconf_queue_teardown() while the association remains alive and leaves
+the pointer dangling.
 
-I'm addressing all the other suggestion and adding the Ack if you are ok
-with keeping this as is.
+A delayed authenticated ASCONF-ACK can then reach sctp_sf_do_asconf_ack(),
+which accesses the stale chunk and passes it to sctp_process_asconf_ack(),
+causing a use-after-free and a second release.
+
+Clear addip_last_asconf after releasing the cached chunk. This restores the
+invariant that a non-NULL pointer always references a live chunk.
+
+Fixes: a000c01e60e4 ("sctp: stop pending timers and purge queues when peer restart asoc")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude-Code:GLM-5.2
+Signed-off-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+---
+ net/sctp/associola.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+index b6ac096..cf3e807 100644
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -1709,6 +1709,8 @@ void sctp_asconf_queue_teardown(struct sctp_association *asoc)
+ 	sctp_assoc_free_asconf_queue(asoc);
  
-> > +
-> >  	netif_tx_start_all_queues(netdev);
-> >  	err = airoha_set_vip_for_gdm_port(dev, true);
-> >  	if (err)
-> > @@ -1954,6 +1963,10 @@ static int airoha_dev_stop(struct net_device *netdev)
-> >  		airoha_set_gdm_port_fwd_cfg(dev->eth,
-> >  					    REG_GDM_FWD_CFG(port->id),
-> >  					    FE_PSE_PORT_DROP);
-> > +
-> > +	phylink_stop(dev->phylink);
-> 
-> Should it be the first one? (reverse order of airoha_dev_open()).
-> 
-> > +	phylink_disconnect_phy(dev->phylink);
-> > +
-> >  	return 0;
-> >  }
-> >  
-> > @@ -2509,6 +2522,24 @@ airoha_ethtool_get_rmon_stats(struct net_device *netdev,
-> >  	} while (u64_stats_fetch_retry(&dev->stats.syncp, start));
-> >  }
-> >  
-> > +static int
-> > +airoha_ethtool_get_link_ksettings(struct net_device *netdev,
-> > +				  struct ethtool_link_ksettings *cmd)
-> > +{
-> > +	struct airoha_gdm_dev *dev = netdev_priv(netdev);
-> > +
-> > +	return phylink_ethtool_ksettings_get(dev->phylink, cmd);
-> > +}
-> > +
-> > +static int
-> > +airoha_ethtool_set_link_ksettings(struct net_device *netdev,
-> > +				  const struct ethtool_link_ksettings *cmd)
-> > +{
-> > +	struct airoha_gdm_dev *dev = netdev_priv(netdev);
-> > +
-> > +	return phylink_ethtool_ksettings_set(dev->phylink, cmd);
-> > +}
-> > +
-> >  static int airoha_qdma_set_chan_tx_sched(struct net_device *netdev,
-> >  					 int channel, enum tx_sched_mode mode,
-> >  					 const u16 *weights, u8 n_weights)
-> > @@ -3353,7 +3384,8 @@ static const struct ethtool_ops airoha_ethtool_ops = {
-> >  	.get_drvinfo		= airoha_ethtool_get_drvinfo,
-> >  	.get_eth_mac_stats      = airoha_ethtool_get_mac_stats,
-> >  	.get_rmon_stats		= airoha_ethtool_get_rmon_stats,
-> > -	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
-> > +	.get_link_ksettings	= airoha_ethtool_get_link_ksettings,
-> > +	.set_link_ksettings	= airoha_ethtool_set_link_ksettings,
-> >  	.get_link		= ethtool_op_get_link,
-> >  };
-> >  
-> > @@ -3409,6 +3441,155 @@ bool airoha_is_valid_gdm_dev(struct airoha_eth *eth,
-> >  	return false;
-> >  }
-> >  
-> > +/* Nothing to do in MAC, everything is handled in PCS */
-> > +static void airoha_mac_config(struct phylink_config *config, unsigned int mode,
-> > +			      const struct phylink_link_state *state)
-> > +{
-> > +}
-> > +
-> > +static void airoha_mac_link_up(struct phylink_config *config, struct phy_device *phy,
-> > +			       unsigned int mode, phy_interface_t interface,
-> > +			       int speed, int duplex, bool tx_pause, bool rx_pause)
-> > +{
-> > +	struct airoha_gdm_dev *dev = container_of(config, struct airoha_gdm_dev,
-> > +						  phylink_config);
-> > +	struct airoha_gdm_port *port = dev->port;
-> > +	struct airoha_eth *eth = dev->eth;
-> > +	u32 frag_size_tx, frag_size_rx;
-> > +	u32 mask, val;
-> > +
-> > +	/* TX/RX frag is configured only for GDM4 */
-> > +	if (port->id != AIROHA_GDM4_IDX)
-> > +		return;
-> > +
-> > +	switch (speed) {
-> > +	case SPEED_10000:
-> > +	case SPEED_5000:
-> > +		frag_size_tx = 8;
-> > +		frag_size_rx = 8;
-> > +		break;
-> > +	case SPEED_2500:
-> > +		frag_size_tx = 2;
-> > +		frag_size_rx = 1;
-> > +		break;
-> > +	default:
-> > +		frag_size_tx = 1;
-> > +		frag_size_rx = 0;
-> 
-> Missing break here.
-> 
-> > +	}
-> > +
-> > +	mutex_lock(&port->reg_lock);
-> > +
-> > +	/* Configure TX/RX frag based on speed */
-> > +	if (dev->nbq == 1) {
-> > +		mask = GDM4_SGMII1_TX_FRAG_SIZE_MASK;
-> > +		val = FIELD_PREP(GDM4_SGMII1_TX_FRAG_SIZE_MASK,
-> > +				 frag_size_tx);
-> > +	}  else {
-> > +		mask = GDM4_SGMII0_TX_FRAG_SIZE_MASK;
-> > +		val = FIELD_PREP(GDM4_SGMII0_TX_FRAG_SIZE_MASK,
-> > +				 frag_size_tx);
-> > +	}
-> > +	airoha_fe_rmw(eth, REG_FE_GDM4_TMBI_FRAG, mask, val);
-> > +
-> > +	if (dev->nbq == 1) {
-> > +		mask = GDM4_SGMII1_RX_FRAG_SIZE_MASK;
-> > +		val = FIELD_PREP(GDM4_SGMII1_RX_FRAG_SIZE_MASK,
-> > +				 frag_size_rx);
-> > +	} else {
-> > +		mask = GDM4_SGMII0_RX_FRAG_SIZE_MASK;
-> > +		val = FIELD_PREP(GDM4_SGMII0_RX_FRAG_SIZE_MASK,
-> > +				 frag_size_rx);
-> > +	}
-> > +	airoha_fe_rmw(eth, REG_FE_GDM4_RMBI_FRAG, mask, val);
-> 
-> nit: I guess you can have just one if/else block here running airoha_fe_rmw()
-> inside the block and getting rid of val/mask.
-> 
-> > +
-> > +	mutex_unlock(&port->reg_lock);
-> > +}
-> > +
-> > +/* Nothing to do in MAC, everything is handled in PCS */
-> > +static void airoha_mac_link_down(struct phylink_config *config, unsigned int mode,
-> > +				 phy_interface_t interface)
-> > +{
-> > +}
-> > +
-> > +static const struct phylink_mac_ops airoha_phylink_ops = {
-> > +	.mac_config = airoha_mac_config,
-> > +	.mac_link_up = airoha_mac_link_up,
-> > +	.mac_link_down = airoha_mac_link_down,
-> > +};
-> > +
-> > +static int airoha_fill_available_pcs(struct phylink_config *config,
-> > +				     struct phylink_pcs **available_pcs,
-> > +				     unsigned int num_possible_pcs)
-> > +{
-> > +	struct device *dev = config->dev;
-> > +
-> > +	return fwnode_phylink_pcs_parse(dev_fwnode(dev), available_pcs,
-> > +					num_possible_pcs);
-> > +}
-> > +
-> > +static int airoha_setup_phylink(struct net_device *netdev)
-> > +{
-> > +	struct airoha_gdm_dev *dev = netdev_priv(netdev);
-> > +	struct device_node *np = netdev->dev.of_node;
-> > +	struct airoha_gdm_port *port = dev->port;
-> > +	struct phylink_config *config;
-> > +	phy_interface_t phy_mode;
-> > +	struct phylink *phylink;
-> > +	int err;
-> > +
-> > +	err = of_get_phy_mode(np, &phy_mode);
-> > +	if (err) {
-> > +		dev_err(&netdev->dev, "incorrect phy-mode\n");
-> > +		return err;
-> > +	}
-> > +
-> > +	config = &dev->phylink_config;
-> > +	config->dev = &netdev->dev;
-> > +	config->type = PHYLINK_NETDEV;
-> > +
-> > +	/*
-> > +	 * GDM1 only supports internal for Embedded Switch
-> > +	 * and doesn't require a PCS.
-> > +	 */
-> > +	if (port->id == AIROHA_GDM1_IDX) {
-> > +		config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
-> > +					   MAC_10000FD;
-> > +
-> > +		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
-> > +			  config->supported_interfaces);
-> > +	} else {
-> > +		config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
-> > +					   MAC_10 | MAC_100 | MAC_1000 |
-> > +					   MAC_2500FD | MAC_5000FD | MAC_10000FD;
-> > +
-> > +		config->num_possible_pcs = fwnode_phylink_pcs_count(dev_fwnode(config->dev));
-> > +		config->fill_available_pcs = airoha_fill_available_pcs;
-> > +
-> > +		__set_bit(PHY_INTERFACE_MODE_SGMII,
-> > +			  config->supported_interfaces);
-> > +		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-> > +			  config->supported_interfaces);
-> > +		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-> > +			  config->supported_interfaces);
-> > +		__set_bit(PHY_INTERFACE_MODE_10GBASER,
-> > +			  config->supported_interfaces);
-> > +		__set_bit(PHY_INTERFACE_MODE_USXGMII,
-> > +			  config->supported_interfaces);
-> > +
-> > +		phy_interface_copy(config->pcs_interfaces,
-> > +				   config->supported_interfaces);
-> > +	}
-> > +
-> > +	phylink = phylink_create(config, of_fwnode_handle(np),
-> > +				 phy_mode, &airoha_phylink_ops);
-> > +	if (IS_ERR(phylink))
-> > +		return PTR_ERR(phylink);
-> > +
-> > +	dev->phylink = phylink;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int airoha_alloc_gdm_device(struct airoha_eth *eth,
-> >  				   struct airoha_gdm_port *port,
-> >  				   int nbq, struct device_node *np)
-> > @@ -3474,7 +3655,7 @@ static int airoha_alloc_gdm_device(struct airoha_eth *eth,
-> >  	dev->nbq = nbq;
-> >  	port->devs[index] = dev;
-> >  
-> > -	return 0;
-> > +	return airoha_setup_phylink(netdev);
-> >  }
-> >  
-> >  static int airoha_alloc_gdm_port(struct airoha_eth *eth,
-> > @@ -3510,6 +3691,7 @@ static int airoha_alloc_gdm_port(struct airoha_eth *eth,
-> >  
-> >  	port->id = id;
-> >  	spin_lock_init(&port->stats_lock);
-> > +	mutex_init(&port->reg_lock);
-> >  	eth->ports[p] = port;
-> >  
-> >  	err = airoha_metadata_dst_alloc(port);
-> > @@ -3706,6 +3888,8 @@ static int airoha_probe(struct platform_device *pdev)
-> >  			netdev = netdev_from_priv(dev);
-> >  			if (netdev->reg_state == NETREG_REGISTERED)
-> >  				unregister_netdev(netdev);
-> > +			if (dev->phylink)
-> > +				phylink_destroy(dev->phylink);
-> >  			of_node_put(netdev->dev.of_node);
-> >  		}
-> >  		airoha_metadata_dst_free(port);
-> > @@ -3744,6 +3928,7 @@ static void airoha_remove(struct platform_device *pdev)
-> >  
-> >  			netdev = netdev_from_priv(dev);
-> >  			unregister_netdev(netdev);
-> > +			phylink_destroy(dev->phylink);
-> >  			of_node_put(netdev->dev.of_node);
-> >  		}
-> >  		airoha_metadata_dst_free(port);
-> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-> > index fa9a8edce22f..6396a5aec384 100644
-> > --- a/drivers/net/ethernet/airoha/airoha_eth.h
-> > +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-> > @@ -595,6 +595,9 @@ struct airoha_gdm_dev {
-> >  	 * QDMA migration.
-> >  	 */
-> >  	spinlock_t txq_lock[AIROHA_NUM_NETDEV_TX_RINGS];
-> > +
-> > +	struct phylink *phylink;
-> > +	struct phylink_config phylink_config;
-> >  };
-> >  
-> >  struct airoha_gdm_port {
-> > @@ -604,6 +607,8 @@ struct airoha_gdm_port {
-> >  
-> >  	/* protect concurrent hw_stats accesses */
-> >  	spinlock_t stats_lock;
-> > +	/* protect concurrent GDM4 register access */
-> > +	struct mutex reg_lock;
-> 
-> nit: naming is always hard, maybe link_lock?
-> 
-> >  
-> >  	struct metadata_dst *dsa_meta[AIROHA_MAX_DSA_PORTS];
-> >  };
-> > diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
-> > index 442b48c9b991..4ea89057b560 100644
-> > --- a/drivers/net/ethernet/airoha/airoha_regs.h
-> > +++ b/drivers/net/ethernet/airoha/airoha_regs.h
-> > @@ -357,6 +357,18 @@
-> >  #define IP_FRAGMENT_PORT_MASK		GENMASK(8, 5)
-> >  #define IP_FRAGMENT_NBQ_MASK		GENMASK(4, 0)
-> >  
-> > +#define REG_FE_GDM4_TMBI_FRAG		0x2028
-> > +#define GDM4_SGMII1_TX_WEIGHT_MASK	GENMASK(31, 26)
-> > +#define GDM4_SGMII1_TX_FRAG_SIZE_MASK	GENMASK(25, 16)
-> > +#define GDM4_SGMII0_TX_WEIGHT_MASK	GENMASK(15, 10)
-> > +#define GDM4_SGMII0_TX_FRAG_SIZE_MASK	GENMASK(9, 0)
-> > +
-> > +#define REG_FE_GDM4_RMBI_FRAG		0x202c
-> > +#define GDM4_SGMII1_RX_WEIGHT_MASK	GENMASK(31, 26)
-> > +#define GDM4_SGMII1_RX_FRAG_SIZE_MASK	GENMASK(25, 16)
-> > +#define GDM4_SGMII0_RX_WEIGHT_MASK	GENMASK(15, 10)
-> > +#define GDM4_SGMII0_RX_FRAG_SIZE_MASK	GENMASK(9, 0)
-> > +
-> >  #define REG_MC_VLAN_EN			0x2100
-> >  #define MC_VLAN_EN_MASK			BIT(0)
-> >  
-> > -- 
-> > 2.53.0
-> > 
-
-
-
+ 	/* Free any cached ASCONF chunk. */
+-	if (asoc->addip_last_asconf)
++	if (asoc->addip_last_asconf) {
+ 		sctp_chunk_free(asoc->addip_last_asconf);
++		asoc->addip_last_asconf = NULL;
++	}
+ }
 -- 
-	Ansuel
+2.25.1
+
