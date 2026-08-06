@@ -1,137 +1,211 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEA52690EC
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 13:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F17627057D
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 13:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786023516; cv=pass; b=sYpoeJoV92jskuTme1OFiZbzL38+UfnesZkZhiiQtZEaQ6Qr624HElQIbq9Kln75y70vTPjzC8bwWr/fSEj7DYuBfG8VCGnGfM/8A0yNFe7UjtsZ8cI7qRvJlXUzNeG54aJSZK7AP54VqKHMcvyjdlVfE1pMx2IDgWudfkKFWoQ=
+	t=1786023556; cv=pass; b=Umt7K4Yt4/c6OBhfHVbMGD/XD1bLYoWZQ8k5FmaNJDtjtzoB6yDpDGBpnKmGRJvPtNqkw9pQW0Gm63CmTIMUqd9NulUsY83hSDlWtnm4lbL/TseLV2f4hXZyTShYgSXBwlKXnmATHzti7CjhrlCs9ajcbK0PZssVX08FXtbjLSg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786023516; c=relaxed/simple;
-	bh=PHzEhrU8WI4T82TlrKa6NQf/0AGs2opcAg9+onUf+Z8=;
+	s=arc-20240116; t=1786023556; c=relaxed/simple;
+	bh=i5kxKOIYarToQVV1Zz+t6qLk0Rks9qNpc4ZTDiDrfFU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TYkHjXP3GR+/kC6LaQLtRx9VH6oWiJgeWrvR2IRDUtTK793ngI7fIKqsHpls1Y8jwAR54PCss9YM8dCUb8JtfjbmwObZy8KFYHn/GWYjIC8OfdtatvGnmv4jcndaZpohfmwOqwMpNX2z6KSUr9wjg7c6mAtxwdyc4w3ctHQoZJA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GU8t+8I3; arc=pass smtp.client-ip=209.85.214.175
+	 To:Cc:Content-Type; b=R0YWdjKzl1oHFYzv409jQ84ZjXQOWHzm25ppqWviJt7ALbjZfTCxg+dCe8O0cIGkVJp647WgVw0vbD42NXQf3JwWtfAYNy/WwFpB9IhVvxna741ajnhgj/eBSleQtccYmZ03NHzZZJ8SdQTlUIsSHgGQC4syguDfNibX+T5HlQk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RC74orbh; arc=pass smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GU8t+8I3"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cc891373e0so26971225ad.2
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 06:38:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786023514; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RC74orbh"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cab973140bso30673095ad.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 06:39:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786023552; cv=none;
         d=google.com; s=arc-20260327;
-        b=nwL2w7v9T67nkPDxrQkVUhR2UPsju/imkiYYymwxC/E1YIMs8j3t6rys3rFMP3y/yg
-         /uCNyplf8LnvBQZNsc5MgOKOxsyMjbAMHZyBCahjSwpbPLfZUqzPJ09StW5mmuJg9ooS
-         ztnywXs4KiPzcHUOBAoJf2XziuDYhoUsKSpEOubrDExrL5DHS8sJ0t0BFzdWY9S5E02o
-         507cSnmjf0jwfNI0htuYvod14xutUcUfqSMLaYnZalZfNBg+cj560v2PwkM9QV8o77WV
-         VjIuMjLZF1kCCUw2YGBCMyQvTz4KEbKxlEFzHJgX9fvY5uW+HD4a+HBDoyYmHjZOzlQZ
-         JNxQ==
+        b=nICf+LauE/wsDBKrsZ5IB17e1U3cJ8A4Mc//6VZcia+nDRaFnEyBfeEsZXs5tj6Yz3
+         WwyiABTV+ZK+2y2Kqg1R9qOt9Oj2G7MqR+By8Cf11Is6ZAsmwSBNlM7wWkfezD5++kjE
+         hOXzd/P/7Y70D/IWOaT/8NBY1IxlL/lTx5UI/dFRyTe/OG58nwij6hrSW2fFpvDxfx4u
+         a4+TidaGIXCDwXRJcIfF/fw4z8i3aQ47kOTDEbdcs8YX+jLWpXE11m0fUJZBDspNctil
+         7b0D88EQrrQQGoloMF0Ue2rweVEWDJeWJZPDZFWsYHNP79i7h8tZJowUk6DptiYhgZSr
+         2GAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gMkBzLdP9OyMfsmAjdRRIfPjOi/S3wZ2VstuxfJXLpk=;
-        fh=HriQ7hAdnK9b1Q7bc6/yIsjUC8QLBz3+9hLXAIJ8j3c=;
-        b=F4c7VChy2+0kj7CiW32tSf2Iq709vzpdohHqWDxgG+SRrLWCIlOXEIbDiinQk5jaHu
-         IqjpNocuiXddHxxQfxsVH4Dn73QgKH2QEZaLub6N6PKwkfvZ7yS3P7W8wNxMiZncgTyA
-         NeS4G4h2ClfOPNvuA7SPj/h8WZNjV2MUwiy35iPvQzIDnyz7RGFHTNNuZmmFRSW1u2zE
-         zzEO/Tr7rzYAZaEi8mvZkzVrZH4drAjny/jJZc0p0vbF3W2nXFgPuQPc6sqUSmS/Azth
-         jVl7kwcPXc/VGy64k1Z11tCVnDbuIH3RI7On9lm71Kn8HqZ7tSYbZk8Lc0PS31rPZfD4
-         CNcA==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=WvS7EK4N94LTj7JpiUX2vYAWQIjDe8wIy5jRHQDxGxQ=;
+        fh=5zUeqTIE+zkp69d+cuGGxL5aRX7PtYH1LnmglcE4r0Y=;
+        b=n8n0ByuKSBsU749wPwdilQd9GfkS83C+jk40oSQOMduRy6a/v13vXClS/pHZWTdHHf
+         8rPofscc9I/HyrAiYvmN1y4h1p0+0urA52Hljic+PgkRv+aGornQoWvsEKwLK2vzdrrz
+         NT4dL/rVSoQ469EBN2kh6aS1MOibEn4t+KMh4syJZi4BsdbgD7YTR8VAV6X5Fh1zFFKR
+         q0turiAn/o7NR/nBD2fj1SjIs/7vKK481uAI/jbIINvOm55cchND2b5WjiUFvHGIoUI7
+         A9Gt+pNkFEHKddjSaVaRpQcArBkqds/xkuOtNhCiPwXEUxA8dD+IsnU5jB6elSF+XSIU
+         GAqg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786023514; x=1786628314; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gMkBzLdP9OyMfsmAjdRRIfPjOi/S3wZ2VstuxfJXLpk=;
-        b=GU8t+8I3517Dr2niX81FVhStMdet3jw8eniUEmpcO9NcHU57kSug7nycN3aCr9eeC6
-         w4+liK4w/1xUB5aWA+S8Q2HKBqlmvSUMHBfAMMiFQIPtTNqkfpggN6XhdCLXqt2TZKUv
-         +/DkLMPi1Hci8MxiSmICtyWbhdrd603Ezm2AMkGm+nrbzGdtCG8mmdR1eDF7DpEoKgvK
-         /+eDzI3SHPypf5qvFm1BkmIuzgXl0mH0ERqjw77MFIU6VGNWYjGgsbnSRYYxt66LD+0+
-         almZ9mH38mAy4k1EZneJuE7gjW7Sibau1E7+/y3GoEdje3B82jJK2s4/gU2+ulZh0n7O
-         TpMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786023514; x=1786628314;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1786023552; x=1786628352; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gMkBzLdP9OyMfsmAjdRRIfPjOi/S3wZ2VstuxfJXLpk=;
-        b=WDeFrLUzSsIAE9tdDy+LkoJqwYdyPoyNKqgQBnrhIuWc5IUD3xjv1uBJ0RItXfmSwK
-         w4RL9BtvhH0Nv0m3t8vbUTpoXvdoQnOBrgKSGGJE0sCijEZjiBRPNAJDzEhzq/7mlQQF
-         9FpQiyVMdVKno+tCWTmzqSWDnkJ+p3GGwcxVt9e6asPSSYoj70bQWghHsedhJa22YatR
-         I1WXDOMCYEf6I1fvsaXAcV0JFQz1KSxuLa1X6lzzo/xlQoNi8KChVE7zQP3Uff58dfQB
-         O0xuoWx6Yksg8aCCz9RM/X+RwD78Swv7G7WBktUI+ixjvRywDeOXCm3lH1Iu7X8hpLA8
-         p39g==
-X-Forwarded-Encrypted: i=1; AHgh+Rri9tBRzWB2ZL2/Z9sZSYCDiKhH8nI2B4kmyinHhespUkQk4pyhu/i9H0Q6RLCJQASu8Q2llpU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1eKkyqT9LRSVBfZK7yBHr/Zbf16hDrB8rIhkWb1d7FGdsG9Cl
-	cp6jSkYstEUo9461qEtgeO8s9R6I+63BdcRq5bkH1yRbOAPyCjrWfN8QBP6Fxja8CgbVnS0NLDO
-	mRk7mrXt2dQLqBcnQwwg/2j/MuB7JJvvAajMS
-X-Gm-Gg: AR+sD103rOgodSvWC5pqJIzWhzf8aIn6BqTOFkWB1UT7vLYySECl3Xkte28o2+FkJ1P
-	2/ipxxGNIU/6hLJjGXr12RN+k79LbvPy33iIWFMHECzb9jz4MbTOVtM0jXHaFt02X3CVlY+OS4M
-	S81cxDIUJRFTLutBwdHvs09b0saxhOOzAp/+XUGLbJ17DqqspvCv/l7ry+6zm4jRVHIB1REz8sA
-	xIJzoh4to7oPCDJPOMpNsqW1kvio4qedB9447dwoh/cGxMffZdtgxM/WsJhtED4iK/1yec6PMKH
-	76wSHIA++XlWXtNq1LinIR5RtJXcKlbFF+QuaSg0+13W
-X-Received: by 2002:a17:902:ea09:b0:2c9:a5e9:c26e with SMTP id
- d9443c01a7336-2d0ca75d2a2mr179131175ad.13.1786023514258; Thu, 06 Aug 2026
- 06:38:34 -0700 (PDT)
+        bh=WvS7EK4N94LTj7JpiUX2vYAWQIjDe8wIy5jRHQDxGxQ=;
+        b=RC74orbhlSgxRgytVmJJsEGdKaIDWIGBYhi02AETFRLTSCU8FTQqW7+sdqaCIfCVvZ
+         C3cLPSbsVRnwChqWhwPjHZJeJKKrLq6Xc6ayGkLy6wqNMtF62JSD7q6CSia46F9sT0Nb
+         j4iURJH2RxXxbgfCX8Lv4EITTR40EVXg3e30CYUhcTIcChgrcrdB4sd/EXcCQqXU45I1
+         kbpBjsqt9xfh9K7t0oG/GYjDELIZJrzYivIhSTk8SNK6n4iscoYG3nUyNzzu7jykCSSU
+         MUnP3yMEEBdiR5KkuiEUu6MZK/2IFLt5/FrW96RHqsvCQmJ1I4oXaOdk8gMSl93eWyvg
+         bAjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786023552; x=1786628352;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WvS7EK4N94LTj7JpiUX2vYAWQIjDe8wIy5jRHQDxGxQ=;
+        b=pKra71Qb+qSpJqAFmvNXF0MrrMvoAfI95Hl181TLyLc7u6iLBcRMe0k6PbEHRvCZMa
+         RdsRC4TpVK0SvsDYtaMYa2a94cD4tTYEPC61J2QDQE09qAgONsDgKMIjnvMK/vinrVRH
+         rpQvW4nbHTLEwseXtC1lpd+TdRBjEaDCctMkxfCQmTyeY/6jqrqz6Anp+XNrL3fDZGNM
+         EE23ymVeSJdTRVvD88hKs9SHPdlwniX6zdiJdiGlLEnzf+Ab3wpqXjJvTFOxvJNml/xC
+         nZm3BbCBPwNeuMX7Q4FiVxJTo7ZrgW90oRYA+PWCyLtbbxFlEsXasBnLIrtNEWQ5t4Xf
+         BRpw==
+X-Forwarded-Encrypted: i=1; AHgh+RpKW+ljrvXr4/SUaO2iJFsrYv2sxkdHD2bEpF30NCx1LF8hg3zsIF96ZsKkmGv/OCk1M0yZ61o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHB9Kx1J3EXlOGHN7/EvXcgBcad1xMH7x0mGt5XwtilWN3f+1D
+	wmVlRq4EsI0UYAqj9v9n6J8YIrZ1NGLxdrNR/XqpeZ/RlS6GWTCtdFykpAyv+vl3c+IL7TMgH3V
+	/v5s9Pl9WDjmdiHIEi5aNf2S9L5r23liWDOUAJqDYIg==
+X-Gm-Gg: AR+sD12uL2OEKjllMDOiIR+RcpcG077x3fVCMlado8Mh0L1R0XjpTeDfgV9lNqdhFrS
+	G8Z7CiK64JFHuYOPvlJxzGd6VYXj8vTAXD8qejnaKNLYNDP9WrK3r+aJT8La7uCE01DBV1BgD7D
+	xsoU7ST9CxmLU1MWn2X0j8k/UpSdcKbXXGe7MoQYS24ZxU+/Ae9iikIhZV6jKVqXBT5UsCuVQbq
+	tcAYEN3H/nE35NxoTR/ZeBSLv8T1GqP31POX95SCI+2frMXlGKGFFD6NdDmU/o8rrMOYHIIiRww
+	Hue49X9xYYyJyQ+k3KWvLRJRwF5sN9aFZrZxdW5jZ3MzPA==
+X-Received: by 2002:a17:902:d98b:b0:2ca:20b1:3e0a with SMTP id
+ d9443c01a7336-2d0ca7af30fmr192225135ad.3.1786023552218; Thu, 06 Aug 2026
+ 06:39:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260804201919.1148015-1-priv.luk@gmail.com> <20260806132630.GC51943@horms.kernel.org>
-In-Reply-To: <20260806132630.GC51943@horms.kernel.org>
-From: =?UTF-8?Q?=C5=81ukasz_Patron?= <priv.luk@gmail.com>
-Date: Thu, 6 Aug 2026 15:38:22 +0200
-X-Gm-Features: AUfX_myw4BIaz218nEF8B4Sdyd9jW1zCIlY8OcpZMDJzRslIWnD7PkKnRfm20MM
-Message-ID: <CAJmEJMzzuY=hJxo-0yPSfnOymcdd=O9zxmOxdeO_hCB3sbSrLA@mail.gmail.com>
-Subject: Re: [PATCH] net: qrtr: ns: Raise lookup limit to 128
-To: Simon Horman <horms@kernel.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
+References: <20260806073119.387-1-strst.gs@gmail.com> <20260806073119.387-2-strst.gs@gmail.com>
+ <20260806111523.gjlhjfmb526f2y4g@skbuf> <CAAsRjRnhdPJOCE5BwU7zUTJ0mtSYCOA3xLcF5ejZQT8OFjYiYQ@mail.gmail.com>
+ <20260806124313.see74vgu4dlqqse7@skbuf>
+In-Reply-To: <20260806124313.see74vgu4dlqqse7@skbuf>
+From: Semih Baskan <strst.gs@gmail.com>
+Date: Thu, 6 Aug 2026 16:39:00 +0300
+X-Gm-Features: AUfX_mxRvuER1vd3qvmc9Yh97lS0ixZkBTXVuWwkA_Y6u_hextEWJbzxTLKYbGY
+Message-ID: <CAAsRjR=RyiraYdLkOcHEagGKXK5+4zwQbT-Zq-1DwVkPiKUNpg@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net: dsa: let drivers offload 8021q uppers on
+ standalone ports
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: florian.fainelli@broadcom.com, jonas.gorski@gmail.com, andrew@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	vladimir.oltean@nxp.com, horms@kernel.org, netdev@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi Vladimir,
 
-After merging v6.6.142 into a downstream AOSP device, it's stuck on
-boot animation and following log spam can be observed in dmesg:
+> But it doesn't, at least not in a sane way. If it still only accepts
+> those VLANs that have been added to filters by higher layers, it's not
+> VLAN-unaware. If a solution is not found to the problem, the driver must
+> reject operation as VLAN-unaware.
 
-E qrtr    : ctrl_cmd_new_lookup(): QRTR client node exceeds max lookup limi=
-t!
-E qrtr    : qrtr_ns_worker(): failed while handling packet from 1:16600
+You are right that the port is not VLAN-unaware. It cannot be: the VID
+lookup on this silicon cannot be turned off without the ARL loss from
+the other subthread. My mistake in the previous mail was arguing around
+that instead of saying it.
 
-No idea why it needs more than 64 client lookups, but it appears to
-work fine with 128 as it did when there were no limits.
+Let me first correct a history error I made, because the accurate
+version actually simplifies the discussion.
 
-Also, I don't really have a good way to investigate what it needs all
-these lookups for as most of the userspace is closed source. Perhaps
-someone working at Qualcomm could have some ideas.
+> I fail to see how commit 06cfb2df7eb0 ("net: dsa: don't advertise
+> 'rx-vlan-filter' when not needed") could have caused a regression in
+> VLAN-unaware bridging on your b53 switch.
 
-On Thu, Aug 6, 2026 at 3:26=E2=80=AFPM Simon Horman <horms@kernel.org> wrot=
-e:
->
-> On Tue, Aug 04, 2026 at 10:18:30PM +0200, =C5=81ukasz Patron wrote:
-> > Current limit of 64 is not enough for Sony Xperia 10 VII (SM6475).
-> >
-> > Fixes: 5640227d9a21 ("net: qrtr: ns: Limit the maximum number of lookup=
-s")
-> > Signed-off-by: =C5=81ukasz Patron <priv.luk@gmail.com>
->
-> Hi =C5=81ukasz,
->
-> I think that this needs some more explanation.
->
-> E.g.:
-> Why is it insufficient on the cited device?
-> What is the user experience with the current and new limits?
-> Why is this considered a bug rather than enabling a device that
-> didn't work before?
->
-> --
-> pw-bot: changes-requested
+Correct, it could not, and my sentence attributing transparent bridging
+to the same change was wrong. b53 has had dev->vlan_enabled = true at
+switch allocation since before v5.15, and b53_vlan_filtering() has
+never turned the table off. So arbitrary-VID transparency was already
+impossible in v5.14, the last working kernel of the bug report. There
+was no coincidence and no bridging regression: what worked in v5.14
+and stopped in v5.15 is exactly one pipeline, the standalone 8021q
+upper. In v5.14 the feature bit was advertised unconditionally, the
+VIDs were delivered, and .port_vlan_add programmed them into the
+always-on table. 06cfb2df7eb0 stopped the delivery and f089652b6b16
+stopped the programming. The series restores that v5.14 pipeline for
+drivers that opt in, and nothing else. That is why the Fixes tag
+points where it points.
+
+> ..which you just said earlier that they don't work either way?!
+
+You are right, that sentence conflated two things. Forcing
+vlan_filtering=1 globally would not hurt tagged transparency, which is
+dead either way. What it changes is what works today: untagged
+forwarding becomes subject to bridge VLAN semantics the user never
+configured, the reported vlan_filtering state of every bridge on the
+switch flips under the user, and b53 switches its ingress mode to
+VC4_ING_VID_VIO_DROP plus VC5_DROP_VTABLE_MISS chip-wide.
+
+> The only distinction I'm seeing is that in hellcreek, VLAN-unaware mode
+> works, and in your b53 model it doesn't.
+
+Yes, and I think the three reasons you listed in 06cfb2df7eb0's commit
+message describe the difference better than my commit message did.
+hellcreek is case 3: its hardware can be VLAN-unaware, but standalone
+separation depends on unique VLANs, so its flag also forces the
+vlan_filtering state, and that forcing is correct there. b53 after
+v5.14 is case 1, "the standalone ports would otherwise drop
+VLAN-tagged traffic", with one difference: in case 1 the VLAN
+awareness that causes the dropping is held on by a VLAN-aware bridge
+elsewhere on the switch, while on b53 it is held on by the silicon
+itself, permanently. The new flag registers exactly that: a driver
+whose ports always satisfy case 1's condition, with no bridge
+required. It deliberately does not force the vlan_filtering state the
+way needs_standalone_vlan_filtering does, because that forcing solves
+hellcreek's separation problem, which b53 does not have.
+
+> You need to skip dsa_user_manage_vlan_filtering() because you want to
+> keep VLAN filters you need while lying to higher layers that you don't
+> need them.
+
+I would describe it as the opposite. 'rx-vlan-filter: on' is the true
+statement about this hardware: it filters, always, and cannot do
+otherwise. What lies to higher layers is the current mainline
+behaviour, which reports the port as not filtering and then drops
+every unsubscribed VID in silicon. The flag makes the feature bit
+match the silicon; the skip then only stops the core from toggling a
+bit that describes an invariant property.
+
+> With vlan_filtering/NETIF_F_HW_VLAN_CTAG_FILTER set to 0, no one *has*
+> to reoffload the VLAN filters, because the hardware shouldn't need them.
+
+Agreed, in the software model no one has to. The measurement was not an
+argument that the software model is wrong; it shows what breaks
+mechanically if the flag advertises the feature permanently but the
+core still clears it on toggles. It is internal consistency of this
+approach, not a requirement I claim the model imposes.
+
+Which leaves the real question, what to do with hardware like this.
+I see three options.
+
+1. Reject VLAN-unaware operation, as you suggest. Honest, but on b53 it
+   refuses the default configuration of every deployed OpenWrt board on
+   this platform, where the LAN bridge is vlan_filtering=0. That turns
+   a working untagged setup into a broken one on a kernel update.
+
+2. Force VLAN awareness, the hellcreek way. No new core code, but it
+   flips the reported vlan_filtering state under the user, changes
+   untagged handling switch-wide, and enables the drop modes above on
+   every port. Whether that cost is acceptable for this user base is
+   really a question for Jonas and Florian.
+
+3. This series: report the filtering that the silicon actually does,
+   restore the v5.14 delivery pipeline behind an opt-in, and change
+   nothing else. Untagged setups keep working unchanged, VLAN-unaware
+   bridges keep their (already partial) behaviour unchanged, and the
+   one regression users actually reported is fixed in a way that can
+   go to stable.
+
+I implemented 3 because it is the only one where no deployed
+configuration changes behaviour. If the consensus is that 1 or 2 is
+the right model for b53 despite the fallout, I will help make and test
+that on the hardware I have, but I do not think it can be the net fix
+for the regression.
+
+Best regards,
+Semih
