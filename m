@@ -1,79 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAC7390CA6;
-	Thu,  6 Aug 2026 15:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FAB2F7F12
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786029651; cv=none; b=X9N78wV7gK4nHkEeE2Al25lWOFJsPv3tQWUVZf/k9uCbIHJ90CJqoEKNxYmsBnvkVY5bCxoalWnjR1z/EXVOl2AY/OtiCWZ+iRbMSA2NgCUtOQZe1eixMHpWC5jQJSDPzkenyb/ng0IueP/NaqUptkYKWd/XUmAEqrDTmcUBLIk=
+	t=1786029840; cv=none; b=iuBPk3OYRzcIUkL8RujX2CbGqEziwvPhOvVWnkxVRwqd2YjZ4hYEC3zivEFdNftV/KB9XodYUOjW6l2NfWyeyKlAMD4Yo4Ua26d0ZBn1LxuYNRAabCaJdLWy06dirCgKIC1/2EvdgIMOW752iK5nM3o4zFe0Rovu5HcyCL5+Zgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786029651; c=relaxed/simple;
-	bh=1lVLDNftL+PCshr/bKIyiUq9UjY2dnZNkhFEmDSSruY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Kgc7+UE8nF0IsftbbIin4HRCRIO3WruVqr3Jp4DOrVbUotfVLUuQAE7zdnvn50IeSTqnGFSHNh/evzpgv/UHDv5qlnLyrlM+i63EUbM6k+4kZGTOag+SjDNPnJuD6M9DOD2HlZt9RvJoXhHa7vG3dUUt0AqOd+kzZI59r2t3/iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fLANLCd7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786029840; c=relaxed/simple;
+	bh=yir6YVA5i7m1Mlb0OBaQgNufMMEMMv/7xhYdXssCHVk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=axodrZ52NoFsl7BLeUQBpslZ2F5h5hJLl3x0K/ZczDuOxjItCZ+3d9mrr+a3ZH6amsq4KLgy50sYyJyyDoGKhaAFvuYKoFFoulzS5aH+zLb9JqYpAMvGsTPdU0vSSqR1xZ/oV/fwu3zUKB/fbz+YycKF0+xMmodabFR+lXpmI9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sv81s8Cz; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fLANLCd7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493D61F000E9;
-	Thu,  6 Aug 2026 15:20:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786029650;
-	bh=dugqSMkZOoszMrAgVZwnKFek9N80adddweUaTY/KKJo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=fLANLCd71KXRS2qi6Z+uFPdGcjl3gtsIJnG+lrv1vffQSir8Q18me1UxpeF53MVyg
-	 klZebbicRsVgRmzih0uLHj2sKK5img56pSEZNGPEHZ41cDwfMZWNdhPibBioAAv4TA
-	 WTwWtj9nk74zyjVwVXgj3h7IwX++RJK+RGr5+YEixS2YoA9CSt9jgrA7TsP63dNqci
-	 GccMbAdG2aKuRlHiEep/sMd2hT+goRL4Y8QMBVAtYc7y4GoYPjjloxdFPj7KJvtj3W
-	 6s/hyuuvaAz5O4i1i+GQL/eMnPkyGEpT48PxRunSpHgICFWkloY+mAvxw1Xpghlspb
-	 Gg1FbgXiOmvJw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A15380820D;
-	Thu,  6 Aug 2026 15:20:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sv81s8Cz"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38e3efab7e0so1013313a91.0
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:23:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786029839; x=1786634639; darn=vger.kernel.org;
+        h=content-transfer-encoding:lines:status:content-disposition
+         :content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JyD3MC/LYtqqEnSjFEabCt1+8sKgizIUqavkWxkyS9A=;
+        b=Sv81s8CzSZIKAfbxpMmuOYtzPB/2U0Qer7RAdTj3qP9tekvmHgibu2SJZBUNgUflsC
+         S3OlAzHh7nSwGXrvJdudIBpI3mVjLEpAwruttEFLvZJG4oQpF4zv0utKypHR3OEhPHtS
+         Kr94R5hOKoyhV5XiLZTg6Xf+mc22nGz8WM1kEYJxvhqXUO/T/dvayxLY2aWVuyotdYjT
+         5O/4zMB3i4iD6f4qORY9Ag/T/SssVoQf5d70VqC/+AQsKkB2xNOOjSnEkn7RFeiDocib
+         M/+0QS/AzTLkudib3ISEnceefcVxzFULc99mG4mfhnN0hR34+s7aiAi/I414GBAVTIpp
+         WG1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786029839; x=1786634639;
+        h=content-transfer-encoding:lines:status:content-disposition
+         :content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JyD3MC/LYtqqEnSjFEabCt1+8sKgizIUqavkWxkyS9A=;
+        b=AU4hhI7lWeu67lq35dFkMerbQ37Hj4l9vEVUWkej1a4BTFHQQh0Lr5FV8I1hLhQELP
+         M7zyVShdzvU8wX/D1c2QwzflWH9V5ZCNR+UQFpdxHp/SQli0MzEOTf/R145Jg5DohEM/
+         9dRAb+quCTN+6O59ybMp0Ix9vMA2rNrRXGxN/+Wn/gjPaOV2aM7h6Db0nkCJ3C8t6irl
+         1UKu12OXhiz1uRlVH7vYF2RTDqLtN1AjJp3cAPBQAvHfPTytL9xJ3QLvhYuTZZec78Ft
+         Fry9lFsavO3v3L1rS/QhL38scn6gfirMmOYrxJSIZS8otT31k0yG/mPYlnV1/GZaYBJT
+         Vg6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RooK8uASWNAmeRAjCUFp1AmZznXCOxDG805tSagOsY73WgCgZxQdxg4Zo8zmXG4wHh4Y7puq08=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEBYYJ2bixHqWKOASh/bG3Rg8FaLhz5I7/sxmLAbICtqDNFT5X
+	F4WmjNRG6TC0PB7pEUjZrWL9X28FusLpVwTRuRISvVQv3kKQ/5GPg2iM
+X-Gm-Gg: AR+sD1364A/eWveJzTnqRC1AZRBiWNQhs3dm5JSYDE0SX6q4d1rjRnxjPfNYN6kJmA9
+	GHoqJD4iDINLp0tdw3IeYlj3b4yiFp1zR2eRs2zdd5YfVfjTSZyjK2QymRABQz8wtOjgtXW7z3l
+	SxbL/wpw49oDA1q/cy6aIOo24tpyV/fMrkDyBQptHvKCIW6XgQ+wat3ITwIFH++xs0TWR80SjtJ
+	dTrwWkgwhbsgd7DCs+d3Dz95Xowa0UiUVE3J4N6kK9T3RAC5s6FJcogrD9pzCV7/Bknq5ipk+Wf
+	mh+/7PBDPf34Wzgk+/mas7iSWnKeceWUQm8E7S8K2LruqVat8RZfdBSwM+TK9mt+6bShHAQUQG9
+	a8uf2K4Mozmyxa+ao82lmYCMtf/ZYVegAY+baRaP6jwU7zfeshWR19vVtMyBklz3OaJLFWGrkEs
+	5ib37tDImG+OLmyTtt8Q11RTVl+EeuDwjIYIchBTh7iLuWyQjoZnNIkD8UKZPcEW+w5pRLNfU6B
+	BhJ/WsOpOV8rNF8JUaGtqYnjvO1PA==
+X-Received: by 2002:a17:90b:4ccc:b0:38e:5828:a446 with SMTP id 98e67ed59e1d1-3908982a10emr2522273a91.19.1786029838637;
+        Thu, 06 Aug 2026 08:23:58 -0700 (PDT)
+Received: from DESKTOP-VNSSJ2S.lan (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39085f5c9a5sm1696416a91.15.2026.08.06.08.23.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 08:23:58 -0700 (PDT)
+From: Zhi-Jun You <hujy652@gmail.com>
+To: hujy652@gmail.com,
+	Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: andrew+netdev@lunn.ch,
+	angelogioacchino.delregno@collabora.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	matthias.bgg@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	sujuan.chen@mediatek.com
+Subject: Re: [PATCH net v3 1/2] net: ethernet: mtk_wed: skip ring reset in wdma_tx_ring_setup for WED v3
+Date: Thu,  6 Aug 2026 23:23:50 +0800
+Message-ID: <20260806152350.555-1-hujy652@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260724172040.1653-1-hujy652@gmail.com>
+References: <20260724172040.1653-1-hujy652@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mutt-References: <20260724172040.1653-1-hujy652@gmail.com>
+X-Mutt-Fcc: ~/sent
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] ptp: fc3: register PTP clock after initialization
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178602960938.1333975.3024284810821390320.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 15:20:09 +0000
-References: <20260803135942.48383-1-mhun512@gmail.com>
-In-Reply-To: <20260803135942.48383-1-mhun512@gmail.com>
-To: Myeonghun Pak <mhun512@gmail.com>
-Cc: richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- ae878000@gmail.com
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  3 Aug 2026 22:59:42 +0900 you wrote:
-> ptp_clock_register() exposes the clock to userspace. If either following
-> initialization operation fails, probe returns and devres frees idtfc3 while
-> the registered clock still refers to the clock information embedded in it.
+On Sat, Jul 25, 2026 at 01:20:39AM +0800, Zhi-Jun You wrote:
+> Currently WED v3 tx wdma ring, ring reset happens in a separate code
+> block unconditionally.
 > 
-> Complete the fallible initialization before registering the clock. Schedule
-> the worker after registration because it requires the registered clock.
-> This removes post-registration failures and avoids exposing a partially
-> initialized clock.
+> Moreover, v3 has double the size of wdma_desc and has different init
+> values. mtk_wed_ring_reset doens't deal with that and would corrupt the
+> wdma_desc.
 > 
-> [...]
+> Fix this by skipping mtk_wed_ring_reset in mtk_wdma_tx_ring_setup for
+> WED v3.
 
-Here is the summary with links:
-  - [net,v2] ptp: fc3: register PTP clock after initialization
-    https://git.kernel.org/netdev/net-next/c/762137ff748f
+Commenting on Sashiko's report:
+https://sashiko.dev/#/patchset/20260724172040.1653-1-hujy652%40gmail.com
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> 
+> Fixes: e2f64db13aa1 ("net: ethernet: mtk_wed: introduce WED support for MT7988")
+> Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
+> ---
+> Changes in v3:
+> - new patch addressing WED v3 ring reset issue raised by Sashiko
+> - Link to the review: https://lore.kernel.org/netdev/20260630144831.1109-1-hujy652@gmail.com/
+> ---
+>  drivers/net/ethernet/mediatek/mtk_wed.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+> index 10d9beaae372..7d2775a97fa0 100644
+> --- a/drivers/net/ethernet/mediatek/mtk_wed.c
+> +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+> @@ -1938,7 +1938,7 @@ mtk_wed_wdma_tx_ring_setup(struct mtk_wed_device *dev, int idx, int size,
+>  	wdma_w32(dev, MTK_WDMA_RING_TX(idx) + MTK_WED_RING_OFS_CPU_IDX, 0);
+>  	wdma_w32(dev, MTK_WDMA_RING_TX(idx) + MTK_WED_RING_OFS_DMA_IDX, 0);
+>  
+> -	if (reset)
+> +	if (!mtk_wed_is_v3_or_greater(dev->hw) && reset)
+>  		mtk_wed_ring_reset(wdma, MTK_WED_WDMA_RING_SIZE, true);
+>  
+>  	if (!idx)  {
 
+-This is a pre-existing issue, but while reviewing the WDMA ring reset logic,
+ I noticed what looks like reversed logic in mtk_wdma_rx_reset():
+ drivers/net/ethernet/mediatek/mtk_wed.c:mtk_wdma_rx_reset() {
+ 	...
+ 	for (i = 0; i < ARRAY_SIZE(dev->rx_wdma); i++) {
+ 		if (dev->rx_wdma[i].desc)
+ 			continue;
+ 		wdma_w32(dev,
+ 			 MTK_WDMA_RING_RX(i) + MTK_WED_RING_OFS_CPU_IDX, 0);
+ 	}
+ 	...
+ }
+ Does the if (dev->rx_wdma[i].desc) continue; check skip the CPU_IDX reset for
+ active rings?
+ When a WDMA RX reset occurs (e.g., during recovery from a hang), the hardware
+ index is reset to 0, but the CPU_IDX register won't be reset for active rings
+ since they have a non-NULL desc.
+ Could this desynchronize the driver and hardware, leading to a permanent stall
+ of the WDMA RX rings and network traffic failure?
+ - ACK I will add a patch addressing this.
+
+ Best regards,
+ Zhi-Jun
+> -- 
+> 2.47.3
+> 
 
