@@ -1,43 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1059837F312
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 02:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E329D4A35;
+	Thu,  6 Aug 2026 02:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785983305; cv=none; b=Y/FVpnp0Hz2+nwlOpg7rPoNzKWhqpr2jPBOiFt6OB4xH4QhxuItsgv3+J6gEaxooYD7EXsKUYjiwZBQ9NGXSeTomqXgBDy3BZgPhlQGqThyOynWeO1lDJH2mqQxM+0Po43bmZI130CzyiTe7WOcovew1CwysF2Y0vhqD8lCd1WA=
+	t=1785983576; cv=none; b=cMD6Xl4qMNWuNTTa1mJpvwNU4egO5ks05qaYT8kXVkoGdkVYRAZNVGbhx9O66NFAluQlS3TRxmIwBoJLKcB38ePgSgiR6du1KDs5CRZoAxkfB+bn0STkrm5kZGgMTmfXYUdl4iLcCSlkmXlZytHPsK1pua/d54cz37qk70195Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785983305; c=relaxed/simple;
-	bh=EPuS4F7JlxgoaqYuV/14IldhH9XtZsdXOwjC0bk7440=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FNH6PpkDRSrYhbXcxNMHkGphSQBcQzJNANKVkoduH+VlSRZa0Yyb24al74/i400q4/iliXrE+HLPSSVqhMpzguXvEYP/akF5S+0H2YctLo+99so/uYPLz+fEiODSJNKkdFcrM+YtA5t5jm1BkdD4U4Z6Le2Fj2hsFO9KdyK/Bv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ieCP6mdb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785983576; c=relaxed/simple;
+	bh=Lf7bl1412E1olnFaIYOsqmdsxii6Np6afoo3+y94IsI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RSfAUmbQyHFeseqX2aw3iwHiR44vfTroPS+mYj/F3NL3wwhmWj91hmvoFfQAz3nS25b+2uPY51FGHFdsSpLc0l+iG1jMCOT1wHh9/VFeo0vnvs8QR+pltnEP3V3a3TDpRmImhqcmpBaQOEdWDmuk7d6tW/ZTHWH8cdXPlbqFqxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=UZfy4h39; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WSukOrje; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ieCP6mdb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07181F000E9;
-	Thu,  6 Aug 2026 02:28:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785983304;
-	bh=4cKUdmnZ4ppx+2Ind2nhuOT3zmI7AKm8kYtes8dldic=;
-	h=From:To:Cc:Subject:Date;
-	b=ieCP6mdb9AC4OuchyXfxl5ZqEp7nxp1+8Q1lpZrx4mKCGSUCH7pzvEdSWndag/Bkq
-	 NSmYDevPuVkJMkAJTijdWnqtYSGI8MIs65BFSejP6LO9h41V0B8m2Shy16RipvmSxF
-	 31g+que5twzHed6sR7Fsrhz6w/N8X+GX0jAzcsIO8kDe5WDJg2lt4njhAWu3nvfvs8
-	 pS9uFu4sq9SPfyJNZu8poiQ9p0w0X1Huifi5E2ST531IokkBASlcVqgmufmg2L+mwZ
-	 D5WDA4Dkp/wtzJEDWxHX5pilEAn0gu8N37eFfse2oQb/WW95LoDQ2JWyLamjT+4lBZ
-	 +IykZ1zNM5CyQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="UZfy4h39";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WSukOrje"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4hFrsv347jzKw1f;
+	Thu, 06 Aug 2026 04:32:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1785983571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Qo1VPNC8nOFBalRWhK8gOF/0DtEf6ZBynh0WN/8gQK8=;
+	b=UZfy4h395YHckDKIMymvTZQO1CDUOURRgWwsT/Wt5tx5ob2iFRKr+/OAL4YXe+OhLfoxKh
+	lNNTFJ3wLaIe/BtshbXyz6jPCVpbQuJpRHpvTMqepw/9b4xgzCsPzmS6zU2aSYRHnyDMk9
+	gMy72N/PlpokRuoOZMBuShZ7ga5ARXZ4gvWN/NjPO5cPVCduv0AS1DR8h+S30enjhEhlFj
+	Qy53EdxnBO3ZvZqIncJjcHNhbrREKL49ayo6BuCWjTqoHmqg0BbsBjNFia2m9YREmi7ivE
+	g/w37YAD2aQI/4oI9pEE77vk5n4UI4VC2L0Bz5IBqvoxZIvZHF+6fj9qb3EHJg==
+From: Qing Ming <a0yami@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1785983569;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Qo1VPNC8nOFBalRWhK8gOF/0DtEf6ZBynh0WN/8gQK8=;
+	b=WSukOrjen0TIhArFA7dvDyi7KKxxRVqhiONeSoT/FNmEVsBw4TTg2nFwJzxacwJRzb1B/u
+	QiRtehO+BMdJZdw+Yei/lFhg6LLC7LYycYWk5fqgMmjICOU5d5QUWBhJ1krZuH4bItP72h
+	YvTupHTCr3j6cMSQ4uTW8ICrN7c3x6GHKEWU/Poi7r5pr90npq2Wexbw5DOLHjzYj2TQNN
+	YAbm8mC2WnEIWa0jIekBAOAvqEIIUvKP1DEiw466H/EMLUQ+PY8Mtt8LSeZXpbr3gNXv+g
+	57Yl7sMepwAWztZ3d7TCwdvIozWDW2YoU8Bzl1W7aU9tGEHkLIU5k3Df6gZW2Q==
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Jiangshan Yi <yijiangshan@kylinos.cn>
-Subject: [PATCH net] net: avoid theoretical races with ref drain
-Date: Wed,  5 Aug 2026 19:28:21 -0700
-Message-ID: <20260806022821.2079945-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	Paolo Abeni <pabeni@redhat.com>,
+	osmocom-net-gprs@lists.osmocom.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qing Ming <a0yami@mailbox.org>
+Subject: [PATCH net] gtp: serialize PDP deletion with link teardown
+Date: Thu,  6 Aug 2026 10:32:26 +0800
+Message-ID: <20260806023226.5537-1-a0yami@mailbox.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,89 +65,56 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 68ff676b1b821b9e2ca
+X-MBO-RS-META: s5i3z167nf5pejy3osfsya8mhci6sean
 
-Technically, it's illegal to take a ref on a netdev just because
-we have a pointer on which we already hold a ref, with no other
-protection. This is because our simple per-cpu refcount
-implementation cannot atomically read the count.
+PDP contexts can be deleted through GTP_CMD_DELPDP or while the GTP
+network device is being unregistered. The latter is serialized by RTNL,
+but the generic-netlink delete path only holds RCU.
 
-Let's make sure we cancel outstanding work and never queue more
-work for a device we know is dead. This way taking a ref on
-a dev we know is on the netdev_work_list is always going to be safe.
+Running both paths concurrently can therefore make both paths delete the
+same PDP context. On a KASAN-enabled kernel, a reproducer racing DELPDP
+against RTM_DELLINK triggered:
 
-Jiangshan Yi reports that the issues is caught by ref tracker infra
-leading to a warning:
-  WARNING: lib/ref_tracker.c:322 at ref_tracker_free
-  WARNING: lib/ref_tracker.c:246 at ref_tracker_dir_exit
+  Oops: general protection fault, probably for non-canonical address
+  KASAN: maybe wild-memory-access in range 
+         [0xdead000000000120-0xdead000000000127]
+  RIP: gtp_genl_del_pdp+0x1c1/0x420 [gtp]
+  RBP: dead000000000122
 
-Reported-by: Jiangshan Yi <yijiangshan@kylinos.cn>
-Link: https://lore.kernel.org/20260731035135.3917308-2-yijiangshan@kylinos.cn
-Fixes: 12c765be84d2 ("net: turn the rx_mode work into a generic netdev_work facility")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The second deletion dereferenced the poisoned hlist pprev pointer.
+
+Take RTNL around the DELPDP lookup and deletion so that PDP creation,
+generic-netlink deletion and link teardown use the same serialization
+domain.
+
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Signed-off-by: Qing Ming <a0yami@mailbox.org>
 ---
- net/core/dev.h         |  1 +
- net/core/dev.c         |  1 +
- net/core/netdev_work.c | 16 ++++++++++++++++
- 3 files changed, 18 insertions(+)
+ drivers/net/gtp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/dev.h b/net/core/dev.h
-index 5d0b0305d3ba..b757faead4d1 100644
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -179,6 +179,7 @@ enum netdev_work_core {
- void __netdev_work_core_sched(struct net_device *dev, unsigned long event);
- unsigned long
- __netdev_work_core_cancel(struct net_device *dev, unsigned long mask);
-+void netdev_work_cancel_all(struct net_device *dev);
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 427b91aca50d..7c4a99e2fd52 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -2127,6 +2127,8 @@ static int gtp_genl_del_pdp(struct sk_buff *skb, struct genl_info *info)
+ 	if (!info->attrs[GTPA_VERSION])
+ 		return -EINVAL;
  
- void __dev_notify_flags(struct net_device *dev, unsigned int old_flags,
- 			unsigned int gchanges, u32 portid,
-diff --git a/net/core/dev.c b/net/core/dev.c
-index e50ed677de72..fca25797eeec 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -12478,6 +12478,7 @@ void unregister_netdevice_many_notify(struct list_head *head,
- 		dev_tcx_uninstall(dev);
- 		dev_xdp_uninstall(dev);
- 		dev_memory_provider_uninstall(dev);
-+		netdev_work_cancel_all(dev);
- 		netdev_unlock_ops(dev);
- 		bpf_dev_bound_netdev_unregister(dev);
++	rtnl_lock();
++
+ 	rcu_read_lock();
  
-diff --git a/net/core/netdev_work.c b/net/core/netdev_work.c
-index 3109fae132ad..e721a06d58df 100644
---- a/net/core/netdev_work.c
-+++ b/net/core/netdev_work.c
-@@ -31,6 +31,10 @@ static void netdev_work_enqueue(struct net_device *dev, unsigned long events,
- 		return;
+ 	pctx = gtp_find_pdp(sock_net(skb->sk), info->attrs);
+@@ -2147,6 +2149,7 @@ static int gtp_genl_del_pdp(struct sk_buff *skb, struct genl_info *info)
  
- 	spin_lock_bh(&netdev_work_lock);
-+	if (!dev_isalive(dev)) {
-+		spin_unlock_bh(&netdev_work_lock);
-+		return;
-+	}
- 	if (list_empty(&dev->work_node)) {
- 		list_add_tail(&dev->work_node, &netdev_work_list);
- 		netdev_hold(dev, &dev->work_tracker, GFP_ATOMIC);
-@@ -61,6 +65,18 @@ netdev_work_dequeue(struct net_device *dev, unsigned long *pending,
- 	return events;
+ out_unlock:
+ 	rcu_read_unlock();
++	rtnl_unlock();
+ 	return err;
  }
  
-+void netdev_work_cancel_all(struct net_device *dev)
-+{
-+	spin_lock_bh(&netdev_work_lock);
-+	dev->work_pending = 0;
-+	dev->work_core_pending = 0;
-+	if (!list_empty(&dev->work_node)) {
-+		list_del_init(&dev->work_node);
-+		netdev_put(dev, &dev->work_tracker);
-+	}
-+	spin_unlock_bh(&netdev_work_lock);
-+}
-+
- void netdev_work_sched(struct net_device *dev, unsigned long events)
- {
- 	netdev_work_enqueue(dev, events, 0);
 -- 
-2.55.0
+2.53.0
 
