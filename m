@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC7F371897;
-	Thu,  6 Aug 2026 13:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D4A392C3C;
+	Thu,  6 Aug 2026 13:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786022455; cv=none; b=GleCWcfmcSdg8J3+/ok1SPnOt1eI+UGnyiOutlvTfxXyx0o1wikza/dISD1ivpJkJCH1J1IyKt3QvvMSNW5iewp7QTXtrhnbi9g+Bl0ZyS/HwV++E2FYLhGAD4cRFE9bRjX6mmwYkZG8afAIlXdEhEXZ2K72RnctFKQTlOp/R/c=
+	t=1786022465; cv=none; b=tPwEUMQtGKK4aqYBWMSK/u8C2jV7IEZZzHTZwUTucni1wLdit2JItjLkHlgEyNfOebf2rEsU/H+zKjm5ckzyG861rCcLEjX//dumeb1CnrD0OA69+diaWCVXY9DzpjTYEUyEI85ZtJPrz/jZpozMg01SGhJo7TTbIaMYi64JFak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786022455; c=relaxed/simple;
-	bh=UV6ksYxjBjcF6snCyhIG5tK7/qFstSsI9////vM5eks=;
+	s=arc-20240116; t=1786022465; c=relaxed/simple;
+	bh=QgPQ8k6wqDqajYwvd3638Dpiin9GggbZ1wLDFlYRpGE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pUMssgRL7kH2JXQx5cYJHYxXt6fvMyZHTDyrLWFmufa/uxdCl41uu4MU98xL++YIC7k7+yEhIm1JUc4gQUBN20ZXjqJ0DlY76n7tm7gLtf3wID4MD1vuXT1LIg+R1zwW9rJ/qHiUmYG24W9YOmGjJNS6rMvFvwD3DbsvA5ENhaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLgLzMAm; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=UuOL/RA4TaZyKjOj18vvo9+YgDVRRuk/NLM7nitLKqeLKupNhy3u+ZMt+aLrKPSgPxsNzLesGnS/hNg+GO2dW1Rjty4y3iOER2DLE4S6cdO39tqvLg5sYvd1pBQAfw+WWimBuUelcaRFQZ7uPg36SnEBFSs4egGHKr1ZdXO0pCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gvoZxzn2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLgLzMAm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D04D1F000E9;
-	Thu,  6 Aug 2026 13:20:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gvoZxzn2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAE61F000E9;
+	Thu,  6 Aug 2026 13:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786022446;
-	bh=Surlx/2l+z2Yj4QRGGQoSLMlYGJNw9MVjsoZRAbVsxQ=;
+	s=k20260515; t=1786022459;
+	bh=qnx3W78q2VUrmxaw9ozFxoG02LsHUCMvlaSK1RQU7nk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hLgLzMAmob8Q5ytVF67nN5OhQWQqYvkDnjyxAwcja0dUB5ly/jxUUbrMO/EUtqYrg
-	 Y7QQB7xKu/BEJY6g2uUREo9NsAUNwgLTKnmrz+R9i/Fy95ozisaSK1RXP9OOCyZ2wO
-	 7XfI5qX4h0VIu+UG4gsFe2/OpmSJwf2Jv6KWR+7MgNoFsyR4twzR0AfdT5HsFHjY0W
-	 qHJxMjNwfC3+NFrHqs8TFCOvXINvkGfPaect4l3JttrZ4weQVVHb3/8rRdbVEKmp6e
-	 EoPHHhlFQ5dqaFutr9l9iBar9s1MMazRpUqFyJvlAInZXJLqc7TYus9LS2ldFesY2o
-	 J7e5x3Yf83J+A==
+	b=gvoZxzn24TOg+86qifW2zP9CkIIWY+yGfLKRItG4DyEwblKUeKWTRJ5VblprlHDXI
+	 D8rx7A8qc7nTYyKjEF4tB4zKgOuqDHhpZE8wedrIO4ladqwprALBqJfaU1u3QC1F1T
+	 qTqFnKfanwj0HiK3O0mD9c1pgHTjOS2A8h/Z6p9/CYOwy5J7ntjalVqqUlnhIACi1b
+	 Z4dvHE2LXCgPgaJNZn6y6nFzaDGbdTzAwPJHYTDsto78ZqLiXh6da0TikVWqbjHh7K
+	 yza+XCo6ARyHX3mFVL6YOUplRoqr5pefKWfxnTn/er36FRMhHhNEy/Pf0YUeysFzaP
+	 weVDPZLoln91g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1996D380820D;
-	Thu,  6 Aug 2026 13:20:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56963380820D;
+	Thu,  6 Aug 2026 13:20:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: octeontx2-pf: Fix UB in shift operation
+Subject: Re: [PATCH net-next 0/6] openvswitch: remove support for legacy
+ tunnel
+ ports
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178602240564.840277.12436088481002390035.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 13:20:05 +0000
-References: <20260804120446.1955448-1-Sergey.V.Frolov@kaspersky.com>
-In-Reply-To: <20260804120446.1955448-1-Sergey.V.Frolov@kaspersky.com>
-To: Sergey V. Frolov <Sergey.V.Frolov@kaspersky.com>
-Cc: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
- sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- naveenm@marvell.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, lvc-project@linuxtesting.org
+ <178602241884.840277.8360130594768086781.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 13:20:18 +0000
+References: <20260804182049.2289754-1-i.maximets@ovn.org>
+In-Reply-To: <20260804182049.2289754-1-i.maximets@ovn.org>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ aconole@redhat.com, echaudro@redhat.com, dsahern@kernel.org,
+ idosch@nvidia.com, shuah@kernel.org, kuniyu@google.com, razor@blackwall.org,
+ fmancera@suse.de, atenart@kernel.org, linux-kernel@vger.kernel.org,
+ dev@openvswitch.org, linux-kselftest@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Tue, 4 Aug 2026 15:04:48 +0300 you wrote:
-> From: "Sergey V. Frolov" <Sergey.V.Frolov@kaspersky.com>
+On Tue,  4 Aug 2026 20:20:34 +0200 you wrote:
+> ovs-vswitchd doesn't use OVS_VPORT_TYPE_GRE/VXLAN/GENEVE with the
+> Linux kernel module since adding support for standard tunnel devices
+> with COLLECT_METADATA back in 2017.  The code to use them was only
+> activated as a fallback for old kernels, so not used in practice.  And
+> it is now fully removed in the upcoming OVS 4.0 release.
 > 
-> In function otx2_get_egress_burst_cfg, when the parameter `burst` is
-> 255 and the max mantissa is 255 (0xFFULL), `burst_exp` is set to
-> `ilog2(255) - 1`, which equals 6.
-> 
-> This results in an unsigned wrap-around when calculating
-> `(1ULL << (*burst_exp - 7))`, since `*burst_exp - 7` becomes -1,
-> which makes the shift operand 0xFFFFFFFF. This value is greater than
-> the width of the left operand.
+> Modern way to use tunnels with OVS is to create standard tunnel ports
+> with RTM_NEWLINK + COLLECT_METADATA and add them as OVS_VPORT_TYPE_NETDEV.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: octeontx2-pf: Fix UB in shift operation
-    https://git.kernel.org/netdev/net/c/7e2d693af0d4
+  - [net-next,1/6] openvswitch: remove support for legacy tunnel types
+    https://git.kernel.org/netdev/net-next/c/d26dcf73a8f1
+  - [net-next,2/6] openvswitch: vport: remove infrastructure for vport options
+    https://git.kernel.org/netdev/net-next/c/38aecd1a1973
+  - [net-next,3/6] openvswitch: vport: remove infrastructure for separate modules
+    https://git.kernel.org/netdev/net-next/c/2425eba0f822
+  - [net-next,4/6] net: geneve: remove unused geneve_dev_create_fb
+    https://git.kernel.org/netdev/net-next/c/e5ba33295201
+  - [net-next,5/6] net: gre: remove unused gretap_fb_dev_create
+    https://git.kernel.org/netdev/net-next/c/9646825a51c4
+  - [net-next,6/6] net: vxlan: remove unused vxlan_dev_create
+    https://git.kernel.org/netdev/net-next/c/a5ae637f863d
 
 You are awesome, thank you!
 -- 
