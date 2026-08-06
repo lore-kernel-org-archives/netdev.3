@@ -1,56 +1,221 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D22335674E
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C17B3515C1
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786041412; cv=none; b=ZTXfF025iN4U7OL6uLcCvOzEvRKFBppWEYsBiToKr17T7nCtkvzWB+XofaiCRwWaXROnKkmX3mItrHoe8ZFUaQn9FUsDB3ENQHBaUHX99ispZfvFmDS+BRsQMrB95UZcTIsfIAQf5CrX9UB3UBtr36Jx/HkIj2hyUd/1/nG8C6U=
+	t=1786041422; cv=none; b=EggNbcg2OEQwYcasij6Yjmhk4hGhwV57f13lB+x6B6oFyeMxYJqivseiySmWYyWcfoHIAJa0fVAQkIqP4r1Tm1I0+N4lPbRLIuq4gLR1onaC62M+iswwDoPhbdkXQfm/iVPlYkEmTC9n8f/GxVkviX/Uo31lMRGCTrr1kR+UfB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786041412; c=relaxed/simple;
-	bh=FOvblDs7fFf1LN5WD4DVzA5t9BKd9Bi/2qhmqIHr/yU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oSsE54LdlvbiuaWFEANcLZU9oA0cQw9TQUGXjELwBGVA57geE3wmhcMcUETyTFqSMZKT5ioJaLXTyHYFowxljWoWfiISYi9S1rT0ReZ8nJZ2F837OSoG9ltrL0LXt4zfnNVnOdTtC2T/POmrrEMPnFAw3Y1H/Fbhhvsknmm2jis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kieO5jrv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786041422; c=relaxed/simple;
+	bh=6/WvcoIvcDKOHom1tueobmq78IJZ2QZsp3z1CoaBn1k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=r6fmc7535uCIq2xajnIewhceQiFv+UXoiLXt05IeKeP1Gq4H3tKe2HAMIJHRmozgaCPAtF/nVj6qR1TG8lDvze90RioYDcdOB+yPXtYpjZO2aIR2to6w0tTPesBJAeQPKGkYDEsSMZd1o6G6QofsH7no30sdpTikZtROJVyCirA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfsPO31k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kieO5jrv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB391F000E9;
-	Thu,  6 Aug 2026 18:36:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfsPO31k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385651F000E9;
+	Thu,  6 Aug 2026 18:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786041410;
-	bh=FOvblDs7fFf1LN5WD4DVzA5t9BKd9Bi/2qhmqIHr/yU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kieO5jrvcw7Gvsrp8TEdACX63Zw8N+zwEhVc0u02GWPQSg8gP4npYAHO7gK/GDBdo
-	 s7WdbU4p9Sx9/7bTyh6aLwbaMFohAtYQu+bZQFJyUUXA1HCAiZnhvvua9ar4YUddyX
-	 RC4Q9E7c9idDBrNJxMHMJ2j663GDTW9Z2trirFtu4nrb/k2o/kAZ4Z/zcUctiqUh9k
-	 //TUVAsdaybBdcy5bb6wP7rWpqou+8iiC0CBLJeqeY/Rn+zbB5iWcZQzQfI3B9mWn6
-	 9PLZ/aEfDF8peUqSv/xQYrFMU1BXicO0Ig374oqBBkGQijDHl4Zcb0A1Zo4WOubtpf
-	 yqPiKsmzTSN6w==
-Date: Thu, 6 Aug 2026 11:36:49 -0700
+	s=k20260515; t=1786041419;
+	bh=sL881gPdJx6xM4Jsh+VbyFliie3hWpb8MUCaNrE+uYA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cfsPO31k61DsJweKdPhhxMqlaEXRqE+kAYR+6gUovaMBF4e6JNXzuIIG/EztW/9CO
+	 gqar1hRM4MwYl6vSArul19Llspq8KZsstFtaWw8ojOuX9/Bs4anLVUj1IyxLYoT0Wz
+	 fbAzmzhPRnK84ZA2+pfi1ithX9fUQ5tMOOmQuFQQLZYt7aZ/MFqaxDL7A+jCUaA6pZ
+	 bpPSVqwuVfbPEWcgTeZuwIg+vc1vhVtIhfsgJz7IkvJsm8z8jX8vDVmcIZn/5pq1Qw
+	 +bdsJdaaLxDTNaQmuiMGaZerdBKnEv/dY7sJpFVszEZ35eEEk5b66aCgK1RnJctcf8
+	 izsEm0RsruwXg==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org,
- kylebot@openai.com
-Subject: Re: [PATCH v1 net-next] af_unix: Unlink scc_entry in
- unix_del_edge().
-Message-ID: <20260806113649.4d7f12b9@kernel.org>
-In-Reply-To: <CAAVpQUACUFcdUV_TURigYp=-wDamvN2PBQ+c+njYxAyDvmq8cg@mail.gmail.com>
-References: <20260804002155.2233594-1-kuniyu@google.com>
-	<20260806172900.2962014-1-kuba@kernel.org>
-	<CAAVpQUACUFcdUV_TURigYp=-wDamvN2PBQ+c+njYxAyDvmq8cg@mail.gmail.com>
+To: mmc@linux.ibm.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	horms@kernel.org,
+	bjking1@linux.ibm.com,
+	haren@linux.ibm.com,
+	ricklind@linux.ibm.com,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	simon.horman@corigine.com,
+	shaik.abdulla1@ibm.com,
+	davemarq@linux.ibm.com
+Subject: Re: [PATCH net-next v4 01/14] ibmveth: Add MQ RX hypercall wrappers and call definitions
+Date: Thu,  6 Aug 2026 11:36:14 -0700
+Message-ID: <20260806183614.3171785-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <1bb2ecd260f27171c534b9beda377b75ea1790ae.1785457143.git.mmc@linux.ibm.com>
+References: <1bb2ecd260f27171c534b9beda377b75ea1790ae.1785457143.git.mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, 6 Aug 2026 10:58:56 -0700 Kuniyuki Iwashima wrote:
-> > This is an AI-generated review of your patch. The human sending this
-> > email says "I meant to send this yesterday, damn. This is completely
-> > separate right?"
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+ibmveth: Add MQ RX hypercall wrappers and call definitions
 
-=F0=9F=91=86=EF=B8=8F
+This adds three new PHYP call IDs for multi-queue receive support and four
+static inline hcall wrapper helpers in ibmveth.h, bumping MAX_HCALL_OPCODE
+to the highest new opcode. No callers are added by this patch.
+
+A couple of questions below about the new wrappers and about the hvcall.h
+hunk.
+
+> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+> index dff90a7d7f70b..d79baf2e38273 100644
+> --- a/arch/powerpc/include/asm/hvcall.h
+> +++ b/arch/powerpc/include/asm/hvcall.h
+> @@ -362,7 +362,10 @@
+>  #define H_GUEST_DELETE		0x488
+>  #define H_PKS_WRAP_OBJECT	0x490
+>  #define H_PKS_UNWRAP_OBJECT	0x494
+> -#define MAX_HCALL_OPCODE	H_PKS_UNWRAP_OBJECT
+> +#define H_REG_LOGICAL_LAN_QUEUE 0x49C
+> +#define H_ADD_LOGICAL_LAN_BUFFERS_QUEUE 0x4A0
+> +#define H_FREE_LOGICAL_LAN_QUEUE 0x4A8
+> +#define MAX_HCALL_OPCODE	H_FREE_LOGICAL_LAN_QUEUE
+
+[Severity: Low]
+Could the changelog cite the PAPR/PHYP document and revision that assigns
+0x49C, 0x4A0 and 0x4A8?  These become architecture-wide constants shared
+with the KVM hcall emulation, so it would help to have the provenance
+recorded in the commit.
+
+There are also holes left at 0x498 and at 0x4A4 (the latter from dropping
+H_FREE_LOGICAL_LAN_BUFFER_QUEUE in v4).  Are those numbers reserved by the
+architecture for something else, or are they simply unused?
+
+Separately, MAX_HCALL_OPCODE is not driver-local.  It sizes
+kvm_arch.enabled_hcalls:
+
+  arch/powerpc/include/asm/kvm_host.h:
+      DECLARE_BITMAP(enabled_hcalls, MAX_HCALL_OPCODE/4 + 1);
+
+and it bounds the userspace-visible opcode range accepted by
+KVM_CAP_PPC_ENABLE_HCALL:
+
+  arch/powerpc/kvm/powerpc.c:kvm_vm_ioctl_enable_cap() {
+      ...
+      if (hcall > MAX_HCALL_OPCODE || (hcall & 3) ||
+          cap->args[1] > 1)
+      ...
+  }
+
+It also sizes the per-CPU hcall statistics array in
+arch/powerpc/platforms/pseries/hvCall_inst.c and gates
+kvmppc_pseries_do_hcall() and kvmppc_h_pr().  As far as I can tell the bump
+is behaviourally inert for these new opcodes, since kvm_vm_ioctl_enable_cap()
+still rejects them via kvmppc_book3s_hcall_implemented(), and the KVM
+dispatch path ends up returning RESUME_HOST either way.  Would it be worth
+mentioning the cross-subsystem effect in the changelog so the powerpc/KVM
+side has something to ack against?
+
+>  
+>  /* Scope args for H_SCM_UNBIND_ALL */
+>  #define H_UNBIND_SCOPE_ALL (0x1)
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+> index d87713668ed30..c88dbeb7cd967 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.h
+> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+> @@ -66,6 +66,143 @@ static inline long h_add_logical_lan_buffers(unsigned long unit_address,
+>  			    desc5, desc6, desc7, desc8);
+>  }
+>  
+> +/**
+> + * h_reg_logical_lan_queue - Register a subordinate receive queue
+
+[Severity: Low]
+This isn't a bug, but the naming here diverges from the existing wrappers in
+this file, which all spell it out as h_register_logical_lan() and
+h_free_logical_lan().  Would h_register_logical_lan_queue() read more
+consistently?
+
+[ ... ]
+
+> +static inline long h_reg_logical_lan_queue(unsigned long unit_address,
+> +					   unsigned long buffer_list,
+> +					   unsigned long rec_queue,
+> +					   unsigned long *queue_handle,
+> +					   unsigned long *irq)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[Severity: Low]
+This helper returns the queue handle as unsigned long *, which matches
+retbuf's element type and matches the other output parameters in this header
+(h_send_logical_lan()'s corellator_out, h_illan_attributes()'s
+ret_attributes).
+
+But h_register_logical_lan_with_handle() below declares the same conceptual
+value, the PHYP queue handle read out of retbuf[0], as u64 *.  Can these two
+be made to agree?  As it stands, callers have to pick a different storage
+type depending on which of the two helpers they call, even though both are
+returning the same thing.
+
+The commit message says the new wrappers have "argument ordering and return
+semantics matching the existing ibmveth hcall wrappers", which holds for
+this one but not for the u64 * variant.
+
+[ ... ]
+
+> +static inline long h_free_logical_lan_queue(unsigned long unit_address,
+> +					    unsigned long queue_handle)
+> +{
+> +	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
+> +
+> +	return plpar_hcall9(H_FREE_LOGICAL_LAN_QUEUE,
+> +			    retbuf, unit_address, queue_handle);
+> +}
+
+[Severity: Low]
+The kerneldoc above documents no output data for this hcall, and retbuf is
+never read.  Why not use plpar_hcall_norets() here, the way the existing
+counterpart in this file does?
+
+  #define h_free_logical_lan(ua) \
+    plpar_hcall_norets(H_FREE_LOGICAL_LAN, ua)
+
+That would drop the dead nine-entry stack buffer.
+
+[ ... ]
+
+> +static inline long
+> +h_register_logical_lan_with_handle(unsigned long unit_address,
+> +				   unsigned long buffer_list,
+> +				   unsigned long rec_queue,
+> +				   unsigned long filter_list,
+> +				   unsigned long mac_address,
+> +				   u64 *queue_handle)
+                                    ^^^^^^^^^^^^^^^^^^
+
+[Severity: Low]
+This is the u64 * side of the inconsistency noted above.  Both types are
+64-bit on ppc64, which is the only configuration that builds ibmveth, and
+the callers added later in the series do compile against both prototypes, so
+this looks like a readability issue rather than a functional one.  Could both
+helpers use unsigned long * for the handle?
+
+> +{
+> +	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
+> +	long rc;
+> +
+> +	rc = plpar_hcall9(H_REGISTER_LOGICAL_LAN, retbuf,
+> +			  unit_address, buffer_list, rec_queue,
+> +			  filter_list, mac_address);
+> +
+> +	if (rc == H_SUCCESS && queue_handle)
+> +		*queue_handle = retbuf[0];
+> +
+> +	return rc;
+> +}
+
+Thanks.
+-- 
+pw-bot: cr
