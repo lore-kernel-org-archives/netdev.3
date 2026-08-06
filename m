@@ -1,203 +1,187 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F212472AF
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 12:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F4623BD06;
+	Thu,  6 Aug 2026 12:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786020200; cv=none; b=S5ow+OEkkiyT2gDA8farfkmkQ9IPWkoQTUdOy87MTUpRy8bbl5kDCZ5BFVgSCOxTqbza9k+Ggj5DLVE5g0l7XkucWvK6mA/HTP0zX1Lo/CoVHm5gGgalg3LJNGOr4U1ITpCVfRPdnwPqPHjTvd/6g8bmKiskJbqwK7F/mah37t0=
+	t=1786020211; cv=none; b=mx8xTVvMj0hZF2AAH7/A8iiC3HrjdYykIn8UNNxyXyHpjYsP8skkX5OjMopJAVWKT7ID8VyRPU/wYw1uRY0PBN+9g7nC4y+NV1ESk7l6OAv63HVgxc8W8+6PhKzCppP3O1vhaeC0/QaUICOzXOHb+5lpIO7bVR9efg8Y2f4a4i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786020200; c=relaxed/simple;
-	bh=ELia1nGSVtDjYCk8ugSr2bXhv8uV52FM8aXndjdaki8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gmknSQqW7QompYxpzm3CUJH9/pEirdkOF6D0l7vLneNnaYlBU67WYHtqdvCvwhXifri+mPt0gYCMEwIDlZNM/zVO0Z3EmX3GuVToJxWst7T+u66z/8ePrHAqCz2IbXBnNUNrsoQyFgh1xfrnp00WBcxVf63njNgVjLtEL4IYEok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BY2bBdUN; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786020211; c=relaxed/simple;
+	bh=DK0cqkFmwiEXsaiPBauXtuB9eUxCxcSyKeeVLE4Nb0w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K+VfCcHHJfH6bvVVnPOOL87w+34Z7MdxkFUTwkPGE2bhA8nej8roC9kDuG3HnvMaRG4kOubWEvYGytyDEZHDVRQI9jxUU5kjkoct1xv+C6lJBKfI7HRIO5WApxnatfef8dE9BIhNMG3suBgAZokEUtCsSorRnDr8qfOjCd7OCGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7IKnd37; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BY2bBdUN"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4731f5ffa74so155666f8f.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 05:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786020196; x=1786624996; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6nKiIB+peEoaY10+rPHgfepIi/Nb3ssNCd0EEwEPfa4=;
-        b=BY2bBdUN2hj1yfVm1EjgHVQPSj0gD4SjTQuoTSHhx3bDzt6WBxL19Z4WEamIw+NLNB
-         Vxju7ypw2P9XTVf5eL0CZXTl8lI1SrNyYu/hi012SVI1DuH7qFz31ljhnYk0cVtJMke2
-         UF4DT17ZREc49GeLearfakwEbGizhgknRPO8C0insb6AcfuaO2yeVMr2nyobsYZdf5f+
-         eLpHCVzqd8JJcdcy8E6XBL33gmQYRvGrz7lKsDzqIS/BC4if2ENKvQplmQPChhiQMMce
-         Cu3qlu9Nu+5HgVLKcOxtXtVSVe/U1BINusllw8A8D3/A8wORQw6nsszyO9boqyZtHWxN
-         wA/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786020196; x=1786624996;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6nKiIB+peEoaY10+rPHgfepIi/Nb3ssNCd0EEwEPfa4=;
-        b=JAO5e386NwvTe1y232i3hCBRgTHvp5SQtXLAX5m7Aivdo1o3gQ7CnwoNhGE6e4QYA3
-         S9aBLsngDw3gKPk0AzzKCnFmPlVMJ+f56/N1m6VRqLKADpDWt0/aLCHb1Z3ZkH2yiZ8F
-         DYSncBiKjRCJ1DrEfZKB7YqvzuwyX2+KtSV6rRvx4UXPIlMdZFHactPHJ4XrbFPiiAwA
-         NQpGP7N/8yFqClPHGOz6yOd7Qd82RoiskpCBbA+l2o043ia+zSdbuaDh2oeFK2AMr20m
-         9yPIQhNG7wVdg48RK6N/25a+cCux+3z14EK6/rgyNGr9QAj0dgOMllZSMOiciloLTaNl
-         PJRQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpf7IKZH97+o3hep4//8IrtVDrmxckYovei3AvaPXQro5nt81Rw34yE0xBGMryju4wVEu2WPe4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydmR7yvpdSOUaWGdmu84dsOAAZW2mszDYI7HSJn/3nx71rQfz2
-	GNdVSZXrsB48Oa22o72WLnTspBeId4XOQ/M+JcNJEXdDuI/JPrm+wPXK
-X-Gm-Gg: AR+sD13BySSYXjw9TUPMMZqNmLPcn7zZQE0cWAzfmo9dlBhcZPR3vLqm+Lg6OxyhU0j
-	WzV5m2egYNSc2VXsrsN8wB/bhfyOHZPVW/6cREtBKPVIHCGMaoT3IJIt6UNRzf/j+bSva12tQls
-	zcH7ICkE87FKOxvg6o8f9kkx0fS/g2Gycm0vg94tbl9ZSOX0nVk7EMHshjSEd90SYKXKBOIUNz8
-	bZuudz2NJPKbJr4WZ9WblOKbQRsOS8qRgqORHMZR44leCocoKcK5Exc6JGlqC5kjxDR9Xq3yoDI
-	7c5M9CJDDkNYm0A/lzCQ0wHhzg7zT9swIju90AmFJMJd+pCglBwDXHIVK61N4lwrYGDbzG8mTHk
-	LmqY9p1DX4APgX+oyzOQTtNxGrevZ3iODjurW1eelntCyNdfcST4zRMmRTDxYESo9Ckj9RXLVqN
-	7VkRYLYRt3Y9pEgo0n/0qNQxuvAu88Zh9OYeZTSM+fsrSRlHkd7Egd
-X-Received: by 2002:a05:6000:290a:b0:47f:7526:5a0 with SMTP id ffacd0b85a97d-47fec47628bmr11598780f8f.0.1786020196246;
-        Thu, 06 Aug 2026 05:43:16 -0700 (PDT)
-Received: from skbuf ([2a02:2f04:d801:b100:3c1b:726e:a458:5bcf])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b26879sm6023626f8f.30.2026.08.06.05.43.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 05:43:15 -0700 (PDT)
-Date: Thu, 6 Aug 2026 15:43:13 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Semih Baskan <strst.gs@gmail.com>
-Cc: florian.fainelli@broadcom.com, jonas.gorski@gmail.com, andrew@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, vladimir.oltean@nxp.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/2] net: dsa: let drivers offload 8021q uppers on
- standalone ports
-Message-ID: <20260806124313.see74vgu4dlqqse7@skbuf>
-References: <20260806073119.387-1-strst.gs@gmail.com>
- <20260806073119.387-2-strst.gs@gmail.com>
- <20260806111523.gjlhjfmb526f2y4g@skbuf>
- <CAAsRjRnhdPJOCE5BwU7zUTJ0mtSYCOA3xLcF5ejZQT8OFjYiYQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7IKnd37"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6201F000E9;
+	Thu,  6 Aug 2026 12:43:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786020209;
+	bh=JoqeMau3HW0OzVxuPyJJqm+W627ZrvxUuvEC4cmRcEQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=V7IKnd37YedOHKea36qH8Zz2FT/QrvYvV5YaoV4bFM2O/19TRFR9qC6M4KG5DQAZt
+	 BvRH9sqTZtoCn0TPzXMtrgP9+QZfq3IrFR84//y7RisTLOgiKlSQza0PwEw39g3BeL
+	 9M0B1YQ78n8MzQpGZA8ycCEsJdvafKNRV5brPc+dyyn/hYRFzJSJHfSEKXN847vvrs
+	 EAK8fNG7e9q15NjVysv7EnM2rs0P3IIciV4YjNFFJCRWRiGhvm3RiyhWEosutwCFES
+	 vY/L5dY2C8NMZJ1nQIUa+C8EO3m1fKUXMBV1tRqfv87cXLKc+CxclnJEjIw4JVosQD
+	 lsUAX1O2TL7XQ==
+Message-ID: <202a6f62-6ffb-4f18-9168-66621b2963f3@kernel.org>
+Date: Thu, 6 Aug 2026 14:43:21 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAsRjRnhdPJOCE5BwU7zUTJ0mtSYCOA3xLcF5ejZQT8OFjYiYQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v3 0/2] mptcp: fix request migration ownership
+Content-Language: fr
+To: Ren Wei <weir@nebusec.ai>, netdev@vger.kernel.org, mptcp@lists.linux.dev
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, daniel@iogearbox.net, kafai@fb.com,
+ kylebot@openai.com, david.lee@trailofbits.com, vega@nebusec.ai,
+ caoruide123@gmail.com, sashiko-bot@kernel.org
+References: <cover.1785995291.git.caoruide123@gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <cover.1785995291.git.caoruide123@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 06, 2026 at 02:44:44PM +0300, Semih Baskan wrote:
-> Hi Vladimir,
+Hi Ren, Ruide,
+
+Thank you for the v3! Here is a quick reaction, only about the
+reproducers, not about the kernel code:
+
+On 06/08/2026 13:14, Ren Wei wrote:
+
+(...)
+
+> Changes in v3:
+
+(...)
+
+> - Added a packetdrill MP_CAPABLE reproducer and decoded warning.
+
+Nice, very appreciated, thank you!
+
+I confirm they work well!
+> // poc for MP_JOIN:
 > 
-> > Then their "vlan_filtering off" implementation is broken.
+> // Minimal reproducer for a stale subflow_req->msk after reqsk migration.
+> --tolerance_usecs=200000
+> --non_fatal=packet
 > 
-> In the sense that the hardware cannot forward an arbitrary tagged frame
-> transparently while the table is active, and the table cannot be
-> deactivated without the ARL cost from the other subthread, yes. The
-> flag exists so the driver can compensate for exactly that.
+> `sysctl -q net.mptcp.enabled=1
 
-But it doesn't, at least not in a sane way. If it still only accepts
-those VLANs that have been added to filters by higher layers, it's not
-VLAN-unaware. If a solution is not found to the problem, the driver must
-reject operation as VLAN-unaware.
+Small details to help you next time to look at packetdrill reproducers
+for MPTCP:
 
-> > BTW, how is the "standalone port" behaviour different than the
-> > vlan_filtering=0 bridge port case? If as you say, the switch must have
-> > the VID in the VLAN table to send the packet to the CPU, what is
-> > different when that port is under a VLAN-unaware bridge such that this
-> > presumably does work?
+ - You can add new tests in gtests/net/mptcp/<dir>/<file>.pkt from the
+   MPTCP packetdrill repository.
+ - Then here above, you can add: `../common/defaults.sh`.
+ - And execute your tests with run_all.py from the gtests/net dir, e.g.:
+   ./packetdrill/run_all.py -lv4 mptcp/<dir>/<file>.pkt
+
+These tests will then be executed from a dedicated netns, using many
+sysctl settings: this helps to reproduce issues in a more controlled
+environment.
+
+> sysctl -q net.ipv4.tcp_migrate_req=1
+> sysctl -q net.ipv4.tcp_synack_retries=1`
+
+(detail) Here, tcp_synack_retries can be set to 0, then the sleep at the
+end can be reduced.
+> // Listener A and the owning MPTCP connection.
+> +0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
+> +0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+> +0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
+> +0     bind(3, ..., ...) = 0
+> +0     listen(3, 8) = 0
 > 
-> It is not different, and it does not work. A tagged frame whose VID is
-> not in the table dies the same way when the port is under a
-> VLAN-unaware bridge; this hardware cannot do transparent tagged
-> bridging since the same v5.15 change. Jonas observed the same
-> limitation earlier in this thread from the other direction: on the
-> chips where standalone RX still works, forwarding tagged frames
-> between ports does not.
+> +0.0   <  addr[caddr0] > addr[saddr0]  S   0:0(0)         win 65535  <mss 1460, sackOK, TS val 1000 ecr 0,    nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
 
-I fail to see how commit 06cfb2df7eb0 ("net: dsa: don't advertise
-'rx-vlan-filter' when not needed") could have caused a regression in
-VLAN-unaware bridging on your b53 switch. Only perhaps if VLAN-unaware
-traffic worked by coincidence. If the switch drops packets with an
-unmapped arbitrary VID=1234, it would do so regardless of whether
-'rx-vlan-filter' is advertised or not - unless VID=1234 is not arbitrary
-but was programmed somehow by higher layers. Which is *not* a
-requirement for VLAN-unaware bridging.
+Also for next time, when validating the listener side, feel free to drop
+the TCP Timestamps option if it is not required (like what you did with
+the other test): that makes the .pkt file more readable.
 
+(...)
+
+> MP_CAPABLE packetdrill reproducer:
 > 
-> The reason the fix scopes to standalone ports is that they have a
-> finite, well-defined VID source: the 8021q uppers, reported through
-> the feature bit. A VLAN-unaware bridge has no such source; making it
-> transparent would mean programming the whole VID space, which is the
-> several-seconds-per-toggle variant Jonas measured and rejected in the
-> first thread. So the series fixes the reported regression, the
-> standalone PPPoE/upper case, and does not pretend to fix transparent
-> tagged bridging, which this hardware has not done since v5.15 either.
+> // Reproducer for MP_CAPABLE request token ownership during TCP req migration.
+> //
+> // The first listener owns the request created by the MP_CAPABLE SYN.  A second
+> // SO_REUSEPORT listener is added only after that SYN, then the first listener is
+> // closed.  The SYN+ACK retransmission timer migrates the request to the second
+> // listener, and a later request timer destroys the migrated request.
+> //
+> // On a vulnerable kernel, inet_reqsk_clone() raw-copies token_node.  The clone
+> // is not the token table owner, so destroying the migrated request triggers the
+> // MPTCP token ownership bug.
+> --tolerance_usecs=250000
 > 
-> > If there is a problem with the vlan_filtering_is_global +
-> > needs_standalone_vlan_filtering combination, then hellcreek also suffers
-> > from it, because it does set both flags as well.
-> 
-> You are right, and the commit message argues this badly; I will reword
-> it if a v2 is wanted. vlan_filtering_is_global is not the
-> differentiator, hellcreek sets it too. The difference is what the
-> forced vlan_filtering=1 means for each driver. For hellcreek,
-> switch-wide VLAN awareness is the intended operating state; its
-> standalone traffic depends on filtering being on, and hellcreek.c
-> documents that unmanaged setups are not supported. The forced flip
-> lands it in the state it wants. For b53, vlan_filtering=1 is a
-> different user-visible mode for every port on the switch: untagged
-> frames become PVID-classified against the table, egress untagging
-> applies, unknown VIDs are dropped at ingress. Forcing that globally
-> because one port left a VLAN-unaware bridge would change the behaviour
-> of every other port, including members of VLAN-unaware bridges that
-> expect transparent operation.
+> +0     `sysctl -q net.mptcp.enabled=1`
+> +0     `sysctl -q net.ipv4.tcp_migrate_req=1`
+> +0     `sysctl -q net.ipv4.tcp_synack_retries=2`
+> +0     `sysctl -q net.ipv4.tcp_timestamps=1`
+> +0     `sysctl -q kernel.panic_on_warn=0`
+> +0     `sysctl -q kernel.panic_on_oops=0`
+> +0     `ip tcp_metrics flush all >/dev/null 2>&1 || true`
+> +0     `tc qdisc replace dev tun0 root pfifo >/dev/null 2>&1 || true`
 
-..which you just said earlier that they don't work either way?!
+Same here for `../common/defaults.sh`. Then I guess you only need
+tcp_migrate_req=1 and tcp_synack_retries=2 (set to 0 to reduce the last
+wait), and "wscale" will always be 8 in the S(.) instead of depending on
+the environment.
 
-> b53 needs the VIDs delivered while vlan_filtering stays wherever the
-> user put it, which is the narrower flag.
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
-Sorry, but I'm not able to make any sense of this explanation.
-
-The only distinction I'm seeing is that in hellcreek, VLAN-unaware mode
-works, and in your b53 model it doesn't.
-
-> > Why can't standalone ports tolerate the .port_vlan_filtering() call?
-> 
-> They do tolerate and still receive it: the ds->ops->port_vlan_filtering
-> call is unchanged, b53 sees every toggle and rebuilds its hardware
-> state from its own records.
-
-Ok, my mistake.
-
-> What the flag skips is only the core's
-> dsa_user_manage_vlan_filtering(), whose two jobs are wrong for a
-> switch whose feature bit is permanently on. On the way to
-> vlan_filtering=1 it replays VIDs that were never cleared, so
-> vlan_vid_add() refcounts every upper VID twice.
-
-You are really explaining here what is needed for your hack to work, not
-why your hack is needed.
-
-You need to skip dsa_user_manage_vlan_filtering() because you want to
-keep VLAN filters you need while lying to higher layers that you don't
-need them. Just saying that you do need them and refusing to operate
-otherwise is much more straightforward.
-
-> On the way to 0 it
-> clears the VIDs and drops NETIF_F_HW_VLAN_CTAG_FILTER on a port that
-> happens to be bridged at toggle time; I measured that case on the
-> RT-N18U: after the port later leaves the bridge, its uppers stay dead
-> until reboot, because nothing re-offloads them once the feature bit is
-> gone.
-
-With vlan_filtering/NETIF_F_HW_VLAN_CTAG_FILTER set to 0, no one *has*
-to reoffload the VLAN filters, because the hardware shouldn't need them.
-Try the VID=1234 case with 2 veth interfaces in a software VLAN-unaware
-bridge.
-
-> With the skip, both effects are gone and the driver derives the
-> hardware state from the flip itself. hellcreek does not set the new
-> flag, so its path through dsa_user_manage_vlan_filtering() is
-> unchanged.
-> 
-> Best regards,
-> Semih
