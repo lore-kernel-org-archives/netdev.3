@@ -1,129 +1,84 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39746483BD9
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AE9480321;
+	Thu,  6 Aug 2026 15:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786031812; cv=none; b=cOXVyyYxf/er60qC+8RHF14yzJP5HDF8LCILFPJ3ouWepgA8Yp5al+V+hqv0w2d7+JhpBsVPW/6h9IdFDFZLX7SILPZRK3DnIC1vHpJ3vzCfsybaBZmeoUmHPsKrOJo63Y2b3UIXOgoRKCxXsgv/fZuVs/+UJbFETRM+gTE/Nf0=
+	t=1786031917; cv=none; b=AjN7bMWdKGYs6W/e8SGu4edQjSRRheQtCDyGoYARGz3rHXOJurM5ry/KB4LcmgPpa6cCJ75himbQhq48+gpWNnGBiKIIZIS4MabsssP+1scsm26wAWah4k0yImfdLdUcDHl23+ap/mwlZnFZ98GGIrb/84qJNwIIfhpCqq91d9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786031812; c=relaxed/simple;
-	bh=xpXYLu1m3cEgdgrwU2FGnbw3ZDXBwpd6sjT5QZMN/eY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lSYz0q2NLjevRM/23v/aqIc8bE1NxuMlx9AJfbSD/yb4JrS8q+isS2hwZGzfRwCwBWfFAKcjMazfCu1p0Z3qzd2h28NBI2W0mNtr6Eyxfd9nvD17aRy3HpnJ9CJOosPDJraQAnMe1fgbYXWGtp6zqm13dA81gAOAIhegRl6BKpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ws0SB-0000FO-4P; Thu, 06 Aug 2026 17:56:19 +0200
-Message-ID: <02a51eff-3782-4012-8475-1047a9be4dd3@pengutronix.de>
-Date: Thu, 6 Aug 2026 17:56:15 +0200
+	s=arc-20240116; t=1786031917; c=relaxed/simple;
+	bh=25GZVt6r6uHR00ioUFInr0Tz5oVLKZsd7tTwsm7u4f8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LgKxzvLz8AgBWiDCU9nJ73lTxXbNqXJZC7yyzjzkgx4s28JzN83HICBdvmWI6Ws1uE+PzVCh4kZNMP0HoNMeF5fnEpWyXZigjd0iD9Ds0xf6rkqqbArllBnlo3LGz9O3YSpnyTPTL/+Ik3AyRjiJFNwP5KsD8L605DnFt2beuSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=gCGGIwEr; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="gCGGIwEr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=dgmfbaoGdUMb9P229Ft+Kf+pUXbtQ7Nh7m79L8GZplo=; b=gCGGIwErge9fZgjj/KzBICBZHV
+	D32yPw/o8v5fFjoQ2Z4K8RxDnfb5i34VYjGEy+Geqv/C9AmPUgDs5ARXxfb/skT6zJGkNgRXj5xEX
+	Mr0vhlGu6DzslJ1xaidO6Bi1H7qeQQJ4W/cgSBEAJPtwNP64ROODqGyK5Tfh0KNUqY8tW7FfhBsVK
+	DjYp1+UhjKGpvKuwONitBm7lFl8bSOFEtUiWlO0H1luKS5kbduacHtipxjK2JldVUlHB+T8vmQkxV
+	w5KtSxLpbNEs688cVXYaR1wguUe9qJLq4QtjloGrVJkx4emaP8VNFtsSNNc05B6O/8vwOX06JWuT9
+	qluzyD7Q==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1ws0U7-00Enwg-2x;
+	Thu, 06 Aug 2026 15:58:20 +0000
+Date: Thu, 6 Aug 2026 08:58:15 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 3/4] netconsole: reject enabling a target with
+ no remote IP address
+Message-ID: <anSvBeRT4vqq5uZV@gmail.com>
+References: <20260805-netcons_ipv6-v1-0-170a35b92da1@gmail.com>
+ <20260805-netcons_ipv6-v1-3-170a35b92da1@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl83xx: add support
- for enabling supplies
-To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>,
- Luiz Angelo Daros de Luca <luizluca@gmail.com>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
- <alsi@bang-olufsen.dk>, kernel@pengutronix.de, linux-kernel@vger.kernel.org,
- =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
-References: <20260806140239.3518906-1-o.rempel@pengutronix.de>
- <20260806140239.3518906-3-o.rempel@pengutronix.de>
- <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
- <anSj34TOZxYiG_ai@pengutronix.de>
- <f2260b02-621f-4b92-aade-85c403a8839d@lunn.ch>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <f2260b02-621f-4b92-aade-85c403a8839d@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260805-netcons_ipv6-v1-3-170a35b92da1@gmail.com>
+X-Debian-User: leitao
 
-Hello Andrew,
-
-[Cc += regulator maintainers]
-
-On 8/6/26 17:35, Andrew Lunn wrote:
-> On Thu, Aug 06, 2026 at 05:10:23PM +0200, Oleksij Rempel wrote:
->> On Thu, Aug 06, 2026 at 04:12:44PM +0200, Andrew Lunn wrote:
->>>> +static const char *const rtl8365mb_supplies[] = {
->>>> +	"avddh", "avddl", "dvddio", "dvddio1", "dvddl", "pllvddl", NULL,
->>>> +};
->>>> +
->>>
->>>> +static int rtl83xx_enable_supplies(struct device *dev,
->>>> +				   const char *const *supplies)
->>>> +{
->>>> +	int i, ret, count = 0;
->>>> +
->>>> +	for (i = 0; supplies && supplies[i]; i++) {
->>>> +		ret = devm_regulator_get_enable_optional(dev, supplies[i]);
->>>> +		if (ret == -ENODEV)
->>>> +			continue;
->>>> +		if (ret)
->>>> +			return dev_err_probe(dev, ret, "failed to enable %s supply\n",
->>>> +					     supplies[i]);
->>>> +		count++;
->>>> +	}
->>>> +
->>>
->>> I've never used it, i've no idea if it is applicable, but there does
->>> appear to be _bulk_ calls in the regulator API, maybe which is similar
->>> to the clk _bulk_ API?
->>
->> Ack, in the first iteration of this patch we was using
->> devm_regulator_bulk_get_enable(). But it would print warnings on
->> existing boards without regulators in devicetree. Currently there are no
->> bulk helpers with _optional regulators, so I reworked it to hand made
->> optional bulk support.
+On Wed, Aug 05, 2026 at 10:33:03PM +0100, Gustavo Luiz Duarte wrote:
+> The command-line path already requires a remote address, but if a user
+> creates a dynamic target and enables it without setting a remote
+> address, we currently try sending netconsole traffic to "0.0.0.0".
 > 
-> static inline int __must_check clk_bulk_get_optional(struct device *dev,
-> static inline int __must_check devm_clk_bulk_get_optional(struct device *dev,
-> static inline int __must_check devm_clk_bulk_get_optional_enable(struct device *dev,
+> Refuse to enable a target if the remote address is unset.
 > 
-> If clk has them, maybe regulators should as well?
-
-clk and regulator have different interpretations of _optional
-when encountering a non-existent resource:
-
-clk_get                 return error
-clk_get_optional        return NULL
-regulator_get           return handle dummy regulator
-regulator_get_optional  return error code
-
-So devm_regulator_bulk_get() is already the "optional" variant, but it causes
-all existing users to get dummy supply warnings.
-
-I don't know if there's a strong case for a devm_regulator_bulk_get_nowarn(),
-maybe Mark or Liam have an opinion on that.
-
-Cheers,
-Ahmad
-
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+> ---
+>  drivers/net/netconsole.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
->    Andrew
-> 
+> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> index 070bae7b4fd7..a41b0a5ce64f 100644
+> --- a/drivers/net/netconsole.c
+> +++ b/drivers/net/netconsole.c
+> @@ -471,6 +471,12 @@ static int netcons_netpoll_setup(struct netconsole_target *nt)
+>  	int err;
+>  
+>  	rtnl_lock();
+> +	if (nt->remote_ip.family == AF_UNSPEC) {
+> +		np_err(np, "remote IP address not configured, aborting\n");
+> +		err = -EDESTADDRREQ;
+> +		goto unlock;
+> +	}
 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Why not doing it  before the rtnl lock?
