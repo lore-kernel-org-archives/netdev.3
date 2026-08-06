@@ -1,67 +1,492 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922423A8734;
-	Thu,  6 Aug 2026 14:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9DD37267E
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 14:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786025285; cv=none; b=dR17jFhJYFJsvM0MfytFs42U5jAj8KzIQn6TKwgi3C0CWiCUji8npu2b2OtN1i6vc7DUYKj50AjjOktnvAj/EsVm5VWX41KT0xPf2rM4TcKwTPuhvVCBd9gWd010E5WMk8Uqv+RpL6VQLW38HsrlhbPmFtQGiJ5u/9U1wbPSk8w=
+	t=1786025462; cv=none; b=e4j21HUPe9dnoB679O3xdnP0RsaQBcZitwm0Dbfj2h3y14mjyALHo1VZOtniRxMSny3eNDNyHvip57u1s3SI6k7Y+WVpBgTY/8+Vn6bWHhXMwHgLHvInNysfwcuc6h+FQyMjc4nvc4S+qVRwemeFDq3+HUf3D22R7bB+6n6XXWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786025285; c=relaxed/simple;
-	bh=7QfLPup1TVyoVI0T3ZggWOWebXh3+/TcVirM1mT2tkA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ae5sXTDyPiKsCbj+gkCN9P6dngtnhj3T4haqx4bjs0CYl01yVBCI7L0q02TjWHin6iGcQRAMbf9b9WmTMhD+P9iWH+ZdwXEPBiBcAp0MSxMplbnUJLLkZbosPDprJ+cKiDq81X/TI9rYOZ4WV61u9glvMoTYyICQmASSFwspo3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2FzUpSRD; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786025462; c=relaxed/simple;
+	bh=NwBIt/uJ4VdZ7/SW+rBwQSYexGMFFGSBY0Idlnk8YHU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QJ5huyPpTamkwo6GcyxLfyR5hxAhG2a/5rDZBOJzmSdd9D4hGzLaMdrRLG45MCuJAieWzJ21hc78ssDv1TtdljFTfyh7Znp3xU8Bb/YexZn3p/tC8xe92snaMkGX6ZuMPDu5clS6y0pU3BEw/s3/EUGELH9yrd5vyvWWvjVfoWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bpPVt83l; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2FzUpSRD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=CDt50ZbSfecwIguvUrRfu92OtUWjBxx8JFM0g8yVGpA=; b=2FzUpSRDhBmdvyV4gLJg+DyzDy
-	SXUJIk87J2EERnzgv0JCMg9kos6v0p0Escx7gR2Tl8zUgRvM0KQFy6rtorJcMKeJmeeZTOp0ityb/
-	WMPyaJ0kyNFUGwjSlj0o876exhGK5qwhGnCfLcM7mw2Ec4o0QKGUom75Llkn07yi6x6E=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wrylF-00GO3B-0m; Thu, 06 Aug 2026 16:07:53 +0200
-Date: Thu, 6 Aug 2026 16:07:52 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org
-Subject: Re: [PATCH net v1 1/1] net: phy: realtek: fix EEE advertisement
- write on the internal PHY MMD path
-Message-ID: <c006535e-f416-4c25-943e-a9e84c1e6c71@lunn.ch>
-References: <20260806134716.3511821-1-o.rempel@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bpPVt83l"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cab973140bso31473535ad.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 07:10:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786025459; x=1786630259; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ePY+/1fTaXFojTIYlblnOIxB+i9LU95CuQeSgwNz2HQ=;
+        b=bpPVt83lWPTlv7j/PE26z4W0Uff7bbnqcOZ8zErPuW035AeE/iQUxNyP4D8xNzo3nJ
+         wYTgEvyU037T+SAdX9j1Zv+aie/HX8lDBxw4UfEs1WVWuSI2+CjSREen7ia4Ts3Jc8E/
+         YZIdfVgAFVR/5rMSn83nPgqqP/AJs9DLhMZoDnPdpVWyNsSRtjAeu2EKmvBAoNhflYjj
+         HPNOJcynynyqjTyPh97Fe7PzG+TWVz864tr2xpxrxZjs1jYtAs+t8gfTkdKZCKhOr/FR
+         V6Rh/xGablA9G+HfZb2CgsMQdW9ZK9OuPTw12F8JYn55omzbeiPN2Eapex94qMCri5FX
+         RV7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786025459; x=1786630259;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ePY+/1fTaXFojTIYlblnOIxB+i9LU95CuQeSgwNz2HQ=;
+        b=gSZV4+UrnroSl4Lukbg0dMf0yWdyEI56XFKVwqRVfMi4P0izEnR+FIqbmTL2+VCdC/
+         bLbG28KARaPpQ3WP6h5Sv3CsRonErTiWDrjoG24K/MNeTHDhj6z8Ek1Q+LNK02YxD7e7
+         i2f3c92xbmChXGmuFu3aA20bRk9yPc28OY/3tJ11CQqIXRFypHtQXxr/kgviknhN2LAg
+         h3uRTRhbx7KQwT7R8wbvMGy58d4+az3hwnqc/sIBKSXzf2e2bkCvBHofIPkIv9cJYTgc
+         5UNwTteoNXWEcfDH/u5OAOR1yDhvK/iTR8/f/BRQJLAAOYVQdu3gYyExAwuW35FIPBua
+         EMmw==
+X-Forwarded-Encrypted: i=1; AHgh+RrAQZ1ko2shJ+HI0S/eQ1OedM2hn0iGP4Rj0MazmwcHcivaiU4+ZuRCnBhyvGL7PvWOP0OUBbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcCafVlaefbHClp8CNu56QDReQfAFM8JUcQttQb1JnOHya+ckg
+	/C31hKqO1HVAkqbqxLYLrEPn0jKWVFQXA2YbvIBRRAQlr+sEdu2QzW3g
+X-Gm-Gg: AR+sD13nH8vtPEIkXyd037VbIzcBoEUB+eRK8Je0m+GyzLbAt75Z/H7r4s+4eKjTOSF
+	dPcKXElyyZtm5z4Cex+9v2wX83QeDdh4KylmQT9xKswsXOS09hdbGzfFfaHrxQqz3eJqgxSVrkA
+	NqzavTXr8deQk0Fj77PnQ6RvBaT+x1NAAbYsDx3/fobr16DvSj8BFajm2GOkYnGg4+g77bNW7gk
+	xneLhMU5cgzpwnNQpti6hHdJb44OQ240wENrnQ2VPkUkDL3AsSGspQkUdNRA7pjeUacSq3If176
+	eBsly5Tg9Ov8FexVtGshN0ifZRJX0XPHUF5G6fYU1KttPc142vI4bpZd+0QUtfgR6vMwNB3LjLi
+	FSTIpSstRWyxjXqLd3oXUmd0GcUsPkmjsh7P3iMh9SwhY75Hwb1LEyzJT2YAM4CRWuefc+0Q+Jb
+	CKRdHBn6jYplwRNVGDYU0DxsyxRu+yjTTOvyiMOyIn/0KrU/vw/k8715cwGSctAZWhcP28irhVV
+	BupkSNdFYU=
+X-Received: by 2002:a17:902:d98b:b0:2ca:20b1:3e0a with SMTP id d9443c01a7336-2d0ca7af30fmr195609985ad.3.1786025458423;
+        Thu, 06 Aug 2026 07:10:58 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4bbc5csm32060905ad.62.2026.08.06.07.10.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 07:10:58 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [RFC PATCH] vhost: coalesce and retry IOTLB miss messages
+Date: Thu,  6 Aug 2026 22:06:16 +0800
+Message-Id: <20260806140616.59025-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806134716.3511821-1-o.rempel@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 06, 2026 at 03:47:16PM +0200, Oleksij Rempel wrote:
-> In rtlgen_write_mmd(), the MDIO_AN_EEE_ADV case swaps the arguments to
-> rtlgen_write_vend2(): it passes the MMD register number as the OCP address
-> and the OCP address constant as the value. The caller's value is discarded
-> and the write lands on the wrong register, so the EEE advertisement cannot
-> be configured on the affected PHYs.
-> 
-> Mirror rtlgen_read_mmd() and write the value to RTL_MDIO_AN_EEE_ADV.
-> 
-> Fixes: da681ed73fb9 ("net: phy: realtek: improve mmd register access for internal PHY's")
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+vhost_iotlb_miss() allocates a vhost_msg_node for each descriptor
+translation miss. The node is linked on dev->read_list. After userspace
+reads it, vhost_chr_read_iter() moves it to dev->pending_list. It stays
+there until an IOTLB UPDATE covers the missed IOVA.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+The failure was reproduced on a server with no swap device. Start
+vhost-net with VIRTIO_F_ACCESS_PLATFORM, post a descriptor for an
+unmapped IOVA, and keep kicking the same virtqueue. Leave the vhost fd
+unread, or read the MISS messages without installing a covering mapping.
 
-    Andrew
+The virtqueue does not advance past the descriptor that missed. Each kick
+hits the same missing translation and allocates another message. The
+read_list grows when userspace does not read the fd. The pending_list
+grows when userspace reads the MISS messages but does not install the
+mapping. On the test server the accumulated nodes consumed available
+memory and the OOM killer ran.
+
+A device-wide hard limit was considered as a smaller change. One
+virtqueue can fill the limit with repeated reports for the same IOVA.
+When another virtqueue misses, vhost_new_msg() returns NULL and no MISS is
+placed on read_list. translate_desc() still returns -EAGAIN and does not
+record that the second virtqueue needs another attempt. Freeing entries
+from the limit does not retry that virtqueue. It remains stopped unless
+the guest happens to kick it again.
+
+I did not find a smaller fix which also retries a virtqueue after a full
+limit.
+
+Record the current miss on each virtqueue by IOVA and permission.
+Repeated misses for that IOVA and permission return without allocating a
+new message.
+
+For N reports of the same unresolved miss, the old code performs N
+allocations, N read-list insertions and N wakeups. This change performs
+one allocation, one insertion and one wakeup. It removes N-1 allocations,
+insertions and wakeups. The first report takes two iotlb_lock passes.
+Later reports take one pass and stop at the per-virtqueue check. Compared
+with the old code, N repeated reports add one iotlb_lock pass in total and
+remove N-1 allocations, insertions and wakeups.
+
+Keep a device-wide count for message nodes that are already in their
+read/copy/pending lifetime. When the count reaches the limit, put the
+virtqueue on a FIFO wait list. Freeing a MISS message wakes one waiter so
+it can retry the translation and report its current miss.
+
+IOTLB UPDATE checks the current miss recorded on each virtqueue. A
+covering update clears the current miss and wakes the virtqueue. Old
+message nodes keep their normal lifetime; freeing an old node clears the
+virtqueue pointer only when it still points to that node.
+
+
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+ drivers/vhost/vhost.c | 212 ++++++++++++++++++++++++++++++++++++++----
+ drivers/vhost/vhost.h |  15 +++
+ 2 files changed, 209 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 4c525b3e16ea..cfbff17761d8 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -34,6 +34,8 @@
+ 
+ #include "vhost.h"
+ 
++#define VHOST_MAX_IOTLB_MSGS 2048
++
+ static ushort max_mem_regions = 64;
+ module_param(max_mem_regions, ushort, 0444);
+ MODULE_PARM_DESC(max_mem_regions,
+@@ -603,6 +605,8 @@ void vhost_dev_init(struct vhost_dev *dev,
+ 	init_waitqueue_head(&dev->wait);
+ 	INIT_LIST_HEAD(&dev->read_list);
+ 	INIT_LIST_HEAD(&dev->pending_list);
++	INIT_LIST_HEAD(&dev->iotlb_wait_list);
++	dev->iotlb_msg_count = 0;
+ 	spin_lock_init(&dev->iotlb_lock);
+ 	xa_init_flags(&dev->worker_xa, XA_FLAGS_ALLOC);
+ 
+@@ -615,6 +619,9 @@ void vhost_dev_init(struct vhost_dev *dev,
+ 		vq->dev = dev;
+ 		mutex_init(&vq->mutex);
+ 		vhost_vq_reset(dev, vq);
++		vq->iotlb_miss_node = NULL;
++		vq->iotlb_miss_waiting = false;
++		INIT_LIST_HEAD(&vq->iotlb_miss_wait_node);
+ 		if (vq->handle_kick)
+ 			vhost_poll_init(&vq->poll, vq->handle_kick,
+ 					EPOLLIN, dev, vq);
+@@ -1177,20 +1184,104 @@ void vhost_dev_stop(struct vhost_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(vhost_dev_stop);
+ 
++static void vhost_wait_iotlb_miss(struct vhost_dev *dev,
++				  struct vhost_virtqueue *vq)
++{
++	lockdep_assert_held(&dev->iotlb_lock);
++
++	if (vq->iotlb_miss_waiting)
++		return;
++
++	vq->iotlb_miss_waiting = true;
++	list_add_tail(&vq->iotlb_miss_wait_node, &dev->iotlb_wait_list);
++}
++
++static void vhost_unwait_iotlb_miss(struct vhost_dev *dev,
++				    struct vhost_virtqueue *vq)
++{
++	lockdep_assert_held(&dev->iotlb_lock);
++
++	if (!vq->iotlb_miss_waiting)
++		return;
++
++	vq->iotlb_miss_waiting = false;
++	list_del_init(&vq->iotlb_miss_wait_node);
++}
++
++static void vhost_wake_iotlb_waiter(struct vhost_dev *dev)
++{
++	struct vhost_virtqueue *vq;
++
++	lockdep_assert_held(&dev->iotlb_lock);
++
++	if (!dev->iotlb || dev->iotlb_msg_count >= VHOST_MAX_IOTLB_MSGS ||
++	    list_empty(&dev->iotlb_wait_list))
++		return;
++
++	vq = list_first_entry(&dev->iotlb_wait_list,
++			      struct vhost_virtqueue, iotlb_miss_wait_node);
++	vhost_unwait_iotlb_miss(dev, vq);
++	vhost_poll_queue(&vq->poll);
++}
++
++static void __vhost_free_msg(struct vhost_dev *dev,
++			     struct vhost_msg_node *node)
++{
++	bool iotlb_miss = node->iotlb_miss;
++
++	lockdep_assert_held(&dev->iotlb_lock);
++
++	if (iotlb_miss) {
++		if (node->vq->iotlb_miss_node == node)
++			node->vq->iotlb_miss_node = NULL;
++		dev->iotlb_msg_count--;
++	}
++
++	kfree(node);
++
++	if (iotlb_miss)
++		vhost_wake_iotlb_waiter(dev);
++}
++
++static void vhost_free_msg(struct vhost_msg_node *node)
++{
++	struct vhost_dev *dev = node->vq->dev;
++
++	spin_lock(&dev->iotlb_lock);
++	if (node->iotlb_miss)
++		__vhost_free_msg(dev, node);
++	else
++		kfree(node);
++	spin_unlock(&dev->iotlb_lock);
++}
++
+ void vhost_clear_msg(struct vhost_dev *dev)
+ {
+ 	struct vhost_msg_node *node, *n;
++	struct vhost_virtqueue *vq, *vq_n;
++	int i;
+ 
+ 	spin_lock(&dev->iotlb_lock);
+ 
+ 	list_for_each_entry_safe(node, n, &dev->read_list, node) {
+-		list_del(&node->node);
+-		kfree(node);
++		list_del_init(&node->node);
++		__vhost_free_msg(dev, node);
+ 	}
+ 
+ 	list_for_each_entry_safe(node, n, &dev->pending_list, node) {
+-		list_del(&node->node);
+-		kfree(node);
++		list_del_init(&node->node);
++		__vhost_free_msg(dev, node);
++	}
++
++	if (!dev->iotlb) {
++		list_for_each_entry_safe(vq, vq_n, &dev->iotlb_wait_list,
++					 iotlb_miss_wait_node) {
++			list_del_init(&vq->iotlb_miss_wait_node);
++			vq->iotlb_miss_waiting = false;
++		}
++
++		for (i = 0; i < dev->nvqs; ++i)
++			dev->vqs[i]->iotlb_miss_node = NULL;
+ 	}
+ 
+ 	spin_unlock(&dev->iotlb_lock);
+@@ -1588,18 +1679,25 @@ static inline int vhost_get_desc(struct vhost_virtqueue *vq,
+ static void vhost_iotlb_notify_vq(struct vhost_dev *d,
+ 				  struct vhost_iotlb_msg *msg)
+ {
+-	struct vhost_msg_node *node, *n;
++	int i;
+ 
+ 	spin_lock(&d->iotlb_lock);
+ 
+-	list_for_each_entry_safe(node, n, &d->pending_list, node) {
+-		struct vhost_iotlb_msg *vq_msg = &node->msg.iotlb;
+-		if (msg->iova <= vq_msg->iova &&
+-		    msg->iova + msg->size - 1 >= vq_msg->iova &&
+-		    vq_msg->type == VHOST_IOTLB_MISS) {
+-			vhost_poll_queue(&node->vq->poll);
+-			list_del(&node->node);
+-			kfree(node);
++	for (i = 0; i < d->nvqs; ++i) {
++		struct vhost_virtqueue *vq = d->vqs[i];
++		struct vhost_msg_node *node = vq->iotlb_miss_node;
++
++		if (!node || msg->iova > node->iotlb_miss_iova ||
++		    msg->iova + msg->size - 1 < node->iotlb_miss_iova)
++			continue;
++
++		vq->iotlb_miss_node = NULL;
++		node->iotlb_miss_resolved = true;
++		vhost_poll_queue(&vq->poll);
++		if (node->iotlb_miss_pending) {
++			node->iotlb_miss_pending = false;
++			list_del_init(&node->node);
++			__vhost_free_msg(d, node);
+ 		}
+ 	}
+ 
+@@ -1809,7 +1907,7 @@ ssize_t vhost_chr_read_iter(struct vhost_dev *dev, struct iov_iter *to,
+ 
+ 		ret = copy_to_iter(start, size, to);
+ 		if (ret != size || msg->type != VHOST_IOTLB_MISS) {
+-			kfree(node);
++			vhost_free_msg(node);
+ 			return ret;
+ 		}
+ 		vhost_enqueue_msg(dev, &dev->pending_list, node);
+@@ -1819,12 +1917,42 @@ ssize_t vhost_chr_read_iter(struct vhost_dev *dev, struct iov_iter *to,
+ }
+ EXPORT_SYMBOL_GPL(vhost_chr_read_iter);
+ 
++static bool vhost_iotlb_miss_exists(struct vhost_virtqueue *vq, u64 iova,
++				    int access)
++{
++	struct vhost_msg_node *node = vq->iotlb_miss_node;
++
++	lockdep_assert_held(&vq->dev->iotlb_lock);
++
++	return node && !node->iotlb_miss_resolved &&
++	       node->iotlb_miss_iova == iova &&
++	       node->iotlb_miss_perm == access;
++}
++
+ static int vhost_iotlb_miss(struct vhost_virtqueue *vq, u64 iova, int access)
+ {
+ 	struct vhost_dev *dev = vq->dev;
+ 	struct vhost_msg_node *node;
+ 	struct vhost_iotlb_msg *msg;
+ 	bool v2 = vhost_backend_has_feature(vq, VHOST_BACKEND_F_IOTLB_MSG_V2);
++	bool queued = false;
++	int ret = 0;
++
++	/* A failed translation stops this VQ before another miss can occur. */
++	lockdep_assert_held(&vq->mutex);
++
++	spin_lock(&dev->iotlb_lock);
++	if (vhost_iotlb_miss_exists(vq, iova, access)) {
++		vhost_unwait_iotlb_miss(dev, vq);
++		spin_unlock(&dev->iotlb_lock);
++		return 0;
++	}
++	if (dev->iotlb_msg_count >= VHOST_MAX_IOTLB_MSGS) {
++		vhost_wait_iotlb_miss(dev, vq);
++		spin_unlock(&dev->iotlb_lock);
++		return -ENOSPC;
++	}
++	spin_unlock(&dev->iotlb_lock);
+ 
+ 	node = vhost_new_msg(vq, v2 ? VHOST_IOTLB_MSG_V2 : VHOST_IOTLB_MSG);
+ 	if (!node)
+@@ -1840,8 +1968,40 @@ static int vhost_iotlb_miss(struct vhost_virtqueue *vq, u64 iova, int access)
+ 	msg->type = VHOST_IOTLB_MISS;
+ 	msg->iova = iova;
+ 	msg->perm = access;
++	node->iotlb_miss = true;
++	node->iotlb_miss_iova = iova;
++	node->iotlb_miss_perm = access;
+ 
+-	vhost_enqueue_msg(dev, &dev->read_list, node);
++	spin_lock(&dev->iotlb_lock);
++	if (vhost_iotlb_miss_exists(vq, iova, access)) {
++		vhost_unwait_iotlb_miss(dev, vq);
++		goto unlock;
++	}
++	if (WARN_ON_ONCE(vq->iotlb_miss_node)) {
++		ret = -EAGAIN;
++		goto unlock;
++	}
++	if (dev->iotlb_msg_count >= VHOST_MAX_IOTLB_MSGS) {
++		vhost_wait_iotlb_miss(dev, vq);
++		ret = -ENOSPC;
++		goto unlock;
++	}
++
++	dev->iotlb_msg_count++;
++	vq->iotlb_miss_node = node;
++	list_add_tail(&node->node, &dev->read_list);
++	vhost_unwait_iotlb_miss(dev, vq);
++	queued = true;
++
++unlock:
++	spin_unlock(&dev->iotlb_lock);
++
++	if (!queued) {
++		kfree(node);
++		return ret;
++	}
++
++	wake_up_interruptible_poll(&dev->wait, EPOLLIN | EPOLLRDNORM);
+ 
+ 	return 0;
+ }
+@@ -3283,11 +3443,25 @@ EXPORT_SYMBOL_GPL(vhost_new_msg);
+ void vhost_enqueue_msg(struct vhost_dev *dev, struct list_head *head,
+ 		       struct vhost_msg_node *node)
+ {
++	bool free = false;
++
+ 	spin_lock(&dev->iotlb_lock);
+-	list_add_tail(&node->node, head);
++	if (node->iotlb_miss) {
++		node->iotlb_miss_pending = head == &dev->pending_list;
++		if (node->iotlb_miss_pending && node->iotlb_miss_resolved) {
++			__vhost_free_msg(dev, node);
++			free = true;
++		} else {
++			list_add_tail(&node->node, head);
++		}
++	} else {
++		list_add_tail(&node->node, head);
++	}
+ 	spin_unlock(&dev->iotlb_lock);
+ 
+-	wake_up_interruptible_poll(&dev->wait, EPOLLIN | EPOLLRDNORM);
++	if (!free)
++		wake_up_interruptible_poll(&dev->wait,
++					   EPOLLIN | EPOLLRDNORM);
+ }
+ EXPORT_SYMBOL_GPL(vhost_enqueue_msg);
+ 
+@@ -3300,7 +3474,9 @@ struct vhost_msg_node *vhost_dequeue_msg(struct vhost_dev *dev,
+ 	if (!list_empty(head)) {
+ 		node = list_first_entry(head, struct vhost_msg_node,
+ 					node);
+-		list_del(&node->node);
++		list_del_init(&node->node);
++		if (node->iotlb_miss)
++			node->iotlb_miss_pending = false;
+ 	}
+ 	spin_unlock(&dev->iotlb_lock);
+ 
+diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
+index 0192ade6e749..b676bdcc629d 100644
+--- a/drivers/vhost/vhost.h
++++ b/drivers/vhost/vhost.h
+@@ -29,6 +29,7 @@ struct vhost_work {
+ 
+ struct vhost_worker;
+ struct vhost_dev;
++struct vhost_msg_node;
+ 
+ struct vhost_worker_ops {
+ 	int (*create)(struct vhost_worker *worker, struct vhost_dev *dev,
+@@ -164,6 +165,11 @@ struct vhost_virtqueue {
+ 	bool user_be;
+ #endif
+ 	u32 busyloop_timeout;
++
++	/* Protected by dev->iotlb_lock. */
++	struct vhost_msg_node *iotlb_miss_node;
++	struct list_head iotlb_miss_wait_node;
++	bool iotlb_miss_waiting;
+ };
+ 
+ struct vhost_msg_node {
+@@ -173,6 +179,12 @@ struct vhost_msg_node {
+   };
+   struct vhost_virtqueue *vq;
+   struct list_head node;
++	/* Protected by vq->dev->iotlb_lock. */
++	u64 iotlb_miss_iova;
++	u8 iotlb_miss_perm;
++	bool iotlb_miss;
++	bool iotlb_miss_resolved;
++	bool iotlb_miss_pending;
+ };
+ 
+ struct vhost_dev {
+@@ -202,8 +214,11 @@ struct vhost_dev {
+ 	 * The default value is set by fork_from_owner_default
+ 	 */
+ 	bool fork_owner;
++	/* Includes messages being copied to userspace. Protected by iotlb_lock. */
++	u16 iotlb_msg_count;
+ 	int (*msg_handler)(struct vhost_dev *dev, u32 asid,
+ 			   struct vhost_iotlb_msg *msg);
++	struct list_head iotlb_wait_list;
+ };
+ 
+ bool vhost_exceeds_weight(struct vhost_virtqueue *vq, int pkts, int total_len);
