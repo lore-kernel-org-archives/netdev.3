@@ -1,195 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5EF3B101D;
-	Thu,  6 Aug 2026 01:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4478F3AA9F3
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 01:11:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785978676; cv=none; b=Mn4PPc12ttA458TihWZxjPYL+kLFH4nvV2uD56mfOmLnMSPKSqxeOh4WOgVaXzdpARBpLJh7/Fb5/6TMFEI85Xua+GKH7CTdGsD1TuhmuVdx7zTgwv6JvorP0ceuaMtf6ZzWEbjH/o9An6YwvDkBp/wgy8L2trwdhGvhmnC1OPE=
+	t=1785978716; cv=none; b=tIUp7erKUFIA9/yLdLgxsjv6m3hKJ0CMQNxtgMQHgYNEj6+G/zZnukd2nJ21ZNy8VbX9bMbYDHRTYhzLTmtw1rCQq+KdNcIL7GmvFaXCYXjb50JYZCApl6/pu8q/+AosSqtbsu4mtv9LzTskClR/KQCJkGxGlaanDdD1KpIvH6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785978676; c=relaxed/simple;
-	bh=oRV13ajJMybdu1gFOPJqV+43C361lx0ENCeC4lK+y+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BzcsoIFjOwBDOoLC6XlzLTlo6Q2Hu6RplGPeecNI5UPYFh6JY3dm/zatSlxZ2PkEJJxj5vMuIwKe/Z8uLmzuumh7dJuZHXwjMwXK6ujGJxr/nVYF24Few68BmNjbUV6BmOV0oKMsYxLLFAZjId46UtR+O4ssnZwTFPV/0R3/2No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IguMuiAy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785978716; c=relaxed/simple;
+	bh=fh2aVZH0XFloieACynGxYahO9L5i6Ywj2QQ/YP6OJIc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GdItTwkTxNjuqXahJRRbC9r2EmeJA7d0HkW4Bx0HFR+//Wtc3DjCQncirPlr2LCAgL6ZJ1TWqOgRK5yjhBtGdgEe3yGDHc9QHfA8QVCxC+J6ZqNiUmZyvnrhGfK+r+NQtImgd6FwCSRpMeWHtKUbQWaWiScxXI9fUHnyepWEwCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Or7Z6YDT; arc=none smtp.client-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IguMuiAy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF6F1F00A3A;
-	Thu,  6 Aug 2026 01:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785978675;
-	bh=ebcYUBcFLfg9nDkh4dHoaZmcNdoWLmFjyaOtz0zXD5o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IguMuiAyhG8IOo2R/UFDnVXjFj3LrMcZa6RltFLpoo9I07bW5WaR03yFHvgmxhZPz
-	 ByMr5REITTXklZRgE2UyVWJPOc6s1cyr3oDl8iyS4lSOTOBdNAhok0kpPdau4RoTLl
-	 +htpcSkc6k8iMO3dvkrTRdsPckRdCTVB8AKJsn+KMnfFvpUCE81NpYHdQCGuCoNjwV
-	 8sNrxDLsuJ9//q9aiLOZH2hIkel31yw/QK4Rp5br22AneRmog6j+nXj+nFAxJn/Fkj
-	 F8RR+4bvgrdqxJIpjZ4VHQC+ke1q5t+xMEHRD/qLqfYEPRkR9hCSRhP/zbQTaCLjO2
-	 vZzd0xXcuCyIw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: jelonek.jonas@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	o.rempel@pengutronix.de,
-	kory.maincent@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	daniel@makrotopia.org,
-	bjorn@mork.no,
-	sander@svanheule.net
-Subject: Re: [PATCH net-next v11 4/4] net: pse-pd: realtek-pse-mcu: add UART transport
-Date: Wed,  5 Aug 2026 18:11:13 -0700
-Message-ID: <20260806011113.1855680-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260802100114.720594-5-jelonek.jonas@gmail.com>
-References: <20260802100114.720594-5-jelonek.jonas@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Or7Z6YDT"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb4cdf95b5aso2798345a12.1
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 18:11:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785978714; x=1786583514; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LTVPjfphXDhaRHaKV0RjaX7X6/y3DzQtxj+anMWWin8=;
+        b=Or7Z6YDTU1eYT3DDX16GgiHVOEfYkcUwLlR+2dS9sl26yDOhMCr+1XXYDfCW4DeKhy
+         WgK2+BJiAUMzqk1GzB3E1Tn4eK9rusT8ET+qK5dLXFDnFMMxtrK4tc5OpJLGna1qfgUe
+         DAAzi28la3tCUKxXkiqWM+wXvVYzmNBTowVaonO/0C5HuC4KSSAtKNxOzUnWxh/LySY/
+         oQud2SLsBSwGqPTh8bf3tLjN+RnzPwggKzjeTqMo3NuSX2o1/aVKmJix7bKehvHdG7Lm
+         L8mQEQFio0N/bOERewB7p87CHow5i0WQCI43jlYuuZkzr70Pd/cVZrPObszuv/szeXbk
+         g/7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785978714; x=1786583514;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LTVPjfphXDhaRHaKV0RjaX7X6/y3DzQtxj+anMWWin8=;
+        b=MHSXQ1peJ0FWoQrIj5fK1eU2ZOSVDTkv/7sdJju2mTZdhMdDOJa8DXOaUw8UqN+k+5
+         +NLnNVXKdruD1cxTsI5Fm4pMNzfEacVG+/MFetqDzZZ7orHk7VSlK/3C68TUBxT9KD8C
+         oCDpyvObtt+C//QsG2eKhxtZIywNniCuV9Ys5923AEpIMI3Sh6GvwVuLH9yASh6kqsFt
+         KwBm51UgEMtkHXA35kFhZnKEd+aAyBMnJ5BGGYEcjjZnO/kK6c9PWpmjd6QWMsj2uRlK
+         1sj3sPoFDuuPH2BD7uhbx0Pm+zAHychM1ujE31NU+hac7w1aXnFdqrzlDgXud1Kheuoe
+         nGJg==
+X-Forwarded-Encrypted: i=1; AHgh+RoW1Vnpv3ExukuGM4Zut7Wc9BN4eD0rEBTivrr4rItKh0wWVMlnWTN6jG7z4A4Woddu84MlrrU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzztc9lXHt3u3b7hN0q0L3MTHiHro0msD82UEdB8Ls6v54gGZal
+	n7WFylWWEU4CWJwiRnNZQLxn3025eyv1vXz7XKfCTpjH9MA88B+1vdHHBG3PybXUkPo9kFpMO05
+	fCJTKnA==
+X-Received: from pgbfm2.prod.google.com ([2002:a05:6a02:4982:b0:c79:1600:6a09])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:ac44:b0:3c3:8440:f6da
+ with SMTP id adf61e73a8af0-3cb85ea6fa5mr13301602637.29.1785978714318; Wed, 05
+ Aug 2026 18:11:54 -0700 (PDT)
+Date: Thu,  6 Aug 2026 01:11:22 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
+Message-ID: <20260806011152.1170012-1-kuniyu@google.com>
+Subject: [PATCH v1 net-next 00/11] neighbour: Namespacify arp_tbl and nd_tbl.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: pse-pd: realtek-pse-mcu: add UART transport
+The neighbour subsystem is almost ready to drop RTNL.
 
-This adds a serdev (UART) transport for the Realtek PSE MCU core, with
-send/recv callbacks that exchange the 12-byte frames and an asynchronous
-receive_buf callback. The baud rate defaults to 19200 and can be overridden
-with the "current-speed" property.
+However, the control paths are serialised by the global
+per-table lock.
 
-> diff --git a/drivers/net/pse-pd/realtek-pse-mcu-uart.c b/drivers/net/pse-pd/realtek-pse-mcu-uart.c
-> new file mode 100644
-> index 0000000000000..9baa17d8d31fa
-> --- /dev/null
-> +++ b/drivers/net/pse-pd/realtek-pse-mcu-uart.c
-> @@ -0,0 +1,164 @@
+This series converts arp_tbl and nd_tbl to per-netns table.
 
-[ ... ]
+Patch 1 ~ 2 are misc cleanup.
 
-> +/*
-> + * No framing is done here: a glitched frame costs one transaction, then
-> + * the next _send re-frames from rx_len 0. Resync works by returning count
-> + * (not take), dropping any overflow so serdev keeps no leftover to bleed
-> + * into the next frame.
-> + */
-> +static size_t rtpse_mcu_uart_receive(struct serdev_device *serdev,
-> +				     const u8 *buf, size_t count)
-> +{
-> +	struct rtpse_mcu_uart *ctx = serdev_device_get_drvdata(serdev);
-> +	size_t take;
-> +
-> +	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
-> +		take = min(count, sizeof(ctx->rx_buf) - ctx->rx_len);
-> +		if (take) {
-> +			memcpy(ctx->rx_buf + ctx->rx_len, buf, take);
-> +			ctx->rx_len += take;
-> +			if (ctx->rx_len == sizeof(ctx->rx_buf))
-> +				complete(&ctx->rx_done);
-> +		}
-> +	}
-> +
-> +	/* consume all to avoid desync/misalignment */
-> +	return count;
-> +}
+Patch 3 ~ 6 store arp_tbl/nd_tbl to net->neigh_tables[] and
+remove the global neigh_tables[].
 
-[ ... ]
+Patch 7 ~ 8 replaces the direct access to arp_tbl/nd_tbl to
+net->neigh_tables[] using new helpers.
 
-> +static int rtpse_mcu_uart_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
-> +{
-> +	struct rtpse_mcu_uart *ctx = to_rtpse_mcu_uart(pse);
-> +	int written;
-> +
-> +	/* clear any leftover rx state before transmitting */
-> +	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
-> +		reinit_completion(&ctx->rx_done);
-> +		ctx->rx_len = 0;
-> +	}
+Patch 9 ~ 10 finally replaces the global table with per-netns
+table.
 
-[ ... ]
+Patch 11 cleans up unnecessary net_eq().
 
-> +static int rtpse_mcu_uart_recv(struct rtpse_mcu_ctrl *pse,
-> +			       const struct rtpse_mcu_msg *req,
-> +			       struct rtpse_mcu_msg *resp)
-> +{
-> +	struct rtpse_mcu_uart *ctx = to_rtpse_mcu_uart(pse);
-> +
-> +	if (!wait_for_completion_timeout(&ctx->rx_done, RTPSE_MCU_UART_RX_TIMEOUT))
-> +		return -ETIMEDOUT;
-> +
-> +	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
-> +		if (ctx->rx_len != sizeof(*resp))
-> +			return -EIO;
-> +
-> +		memcpy(resp, ctx->rx_buf, sizeof(*resp));
-> +	}
-> +	return 0;
-> +}
+Note that some buggy drivers access nd_tbl without checking
+disable_ipv6_mod, so nd_tbl's extern definition is still left.
 
-[Severity: Medium]
-Should rtpse_mcu_uart_recv() apply rtpse_mcu_resp_is_final() before
-accepting a frame?  The req argument is unused here, so the first complete
-12-byte frame becomes the transaction result no matter what it contains.
 
-realtek-pse-mcu.h describes one of those frames as transient:
+Kuniyuki Iwashima (11):
+  neighbour: Remove __neigh_for_each_release().
+  neighbour: Remove lock dance for neigh_update_{gc,managed}_list().
+  neighbour: Remove unnecessary EXPORT_SYMBOL().
+  neighbour: Remove __rcu from neigh_tables[].
+  neighbour: Store arp_tbl and nd_tbl in net->neigh_tables[].
+  neighbour: Remove neigh_tables[].
+  ipv4: Replace &arp_tbl with arp_table(net).
+  ipv6: Replace &nd_tbl with nd_table(net).
+  neighbour: Clean up neigh_table_init() and neigh_table_clear().
+  neighbour: Namespacify neigh_tables.
+  neighbour: Remove unnecessary net_eq().
 
-  /*
-   * MCU status opcodes (seen on the Gen1 dialect; Gen2 never emits them).
-   * INCOMPLETE/BAD_CSUM are terminal; NOT_READY is transient.
-   */
-  #define RTPSE_MCU_OPCODE_NOT_READY		0xff	/* -EAGAIN  */
+ drivers/infiniband/ulp/ipoib/ipoib_main.c     |  27 +-
+ .../marvell/prestera/prestera_router.c        |  10 +-
+ .../mellanox/mlx5/core/en/rep/neigh.c         |  29 +-
+ .../mellanox/mlx5/core/en/tc_tun_encap.c      |  23 +-
+ .../mellanox/mlx5/core/en_accel/ipsec.c       |   6 +-
+ .../ethernet/mellanox/mlxsw/spectrum_router.c |  31 +-
+ .../ethernet/mellanox/mlxsw/spectrum_span.c   |  10 +-
+ .../netronome/nfp/flower/tunnel_conf.c        |  14 +-
+ drivers/net/ethernet/rocker/rocker_main.c     |   2 +-
+ drivers/net/ethernet/rocker/rocker_ofdpa.c    |   2 +-
+ drivers/net/ethernet/sfc/tc_counters.c        |   8 +-
+ drivers/net/ethernet/sfc/tc_encap_actions.c   |   4 +-
+ drivers/net/vrf.c                             |   2 +-
+ drivers/net/vxlan/vxlan_core.c                |  16 +-
+ include/net/arp.h                             |  10 +-
+ include/net/ndisc.h                           |  20 +-
+ include/net/neighbour.h                       |   6 +-
+ include/net/net_namespace.h                   |   4 +
+ include/net/route.h                           |   7 +-
+ net/bridge/br_arp_nd_proxy.c                  |   4 +-
+ net/core/neighbour.c                          | 318 ++++++++----------
+ net/ieee802154/6lowpan/tx.c                   |   3 +-
+ net/ipv4/arp.c                                | 131 +++++---
+ net/ipv4/devinet.c                            |  18 +-
+ net/ipv4/fib_semantics.c                      |   7 +-
+ net/ipv4/route.c                              |   2 +-
+ net/ipv6/addrconf.c                           |  17 +-
+ net/ipv6/ip6_output.c                         |   4 +-
+ net/ipv6/ndisc.c                              | 146 ++++----
+ net/ipv6/route.c                              |  18 +-
+ 30 files changed, 484 insertions(+), 415 deletions(-)
 
-and the I2C transport keeps polling until the acceptance predicate holds,
-so a NOT_READY frame never escapes the transaction:
+-- 
+2.55.0.679.g6767b8d81c-goog
 
-  drivers/net/pse-pd/realtek-pse-mcu-i2c.c:rtpse_mcu_i2c_smbus_recv() {
-	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
-		...
-		if (ret == RTPSE_MCU_MSG_SIZE && rtpse_mcu_resp_is_final(req, resp))
-			return 0;
-	}
-	return -ETIMEDOUT;
-  }
-
-With the UART transport, a NOT_READY frame is copied into resp and
-rtpse_mcu_do_xfer() turns it into an error for the caller:
-
-  drivers/net/pse-pd/realtek-pse-mcu-core.c:rtpse_mcu_do_xfer() {
-	case RTPSE_MCU_OPCODE_NOT_READY:
-		return -EAGAIN;
-  }
-
-Is any runtime caller prepared for that?  The only place -EAGAIN is retried
-is the probe-time boot loop in rtpse_mcu_discover(); the pse_controller_ops
-paths propagate it, so an ethtool PSE get/set would fail.
-
-Note that "realtek,pse-mcu-gen1" is in rtpse_mcu_uart_of_match[], which is
-the dialect documented as emitting these status opcodes.
-
-Can the real reply also be lost in that case?  Once rx_len is 12 the
-receive callback computes take == 0 and drops the following bytes; if they
-instead arrive after the next rtpse_mcu_uart_send() has reset rx_len to 0
-(the core only sleeps RTPSE_MCU_RESPONSE_MS = 25 ms between send and recv),
-they are consumed as the next transaction's response and rejected by:
-
-  if (resp->opcode != req->opcode ||
-      resp->seq_num != req->seq_num ||
-      resp->checksum != rtpse_mcu_checksum((u8 *)resp, RTPSE_MCU_MSG_SIZE - 1))
-	return -EBADMSG;
-
-failing a second consecutive operation.
-
-Would it make sense to loop on wait_for_completion_timeout() against a
-remaining-time budget until rtpse_mcu_resp_is_final(req, resp) holds?  As
-written only the first frame is waited for, leaving most of the
-RTPSE_MCU_RESPONSE_MAX_MS (1000 ms) receive budget unused.
