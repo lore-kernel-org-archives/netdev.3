@@ -1,130 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3758E3D5246;
-	Thu,  6 Aug 2026 07:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCA61A680B;
+	Thu,  6 Aug 2026 07:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786000850; cv=none; b=NFw7iXcn9wO4D8gyv70TKQJP9BNExFKg9trRhW5Hu/1tQYbu0NheJNAm4KDou4XH4ZtU1C5cikYnpn/d3XDipbSRmhW6L0UsOTXI1/q+NdqiwPkGsUzGr6XrDIfRTH/wm+QhqXVkTblWrxCtOuplybswstOH4BqUwTgLhAnSjcE=
+	t=1786000933; cv=none; b=YEcAeLWGSZUeJzG20yAPtahvtOxmYDMGKMNClbqGiWbLLPnR8A0m0Z08fn9U7dFIN0giwPkgwI7s1SKoXVA0yHqmulBa/yZATmgAFA3LfJ5qV+k568C6Gce9fAqbesTVZxvFyGDT6LnFE2xnaBM3PNbngyi5rsZ4EB/xINwmtoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786000850; c=relaxed/simple;
-	bh=zdWonA961HGgl0KyJwVVGOHX4pEHyP41NDnt92H3Jc4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GMGjSKBuGTHP/9G4BTvNFMh0w8/+zSceC4Xq5tpCEUeaVLXj16Feq4sdjNiBO5qtHnBV4BX5QbqpBKlduJan+XDi7pPTI0EXaxBXhd+CUT/djue0CaiCmzqnsy7ZLCYowi7Ui/jzrPnc8SIBKsEamO59eSBx7Ruk6klRWCEDSg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fTCsvmqc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786000933; c=relaxed/simple;
+	bh=5wHqZ7ljqrIUBlZxpUNlub2FOLpW0rJ5bkBqJSvoKNA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jzw2Nu2Evh/Lup4fYL2yHWHsPn6cABDECuHj0F37QeAeZ2Jw7sxzpB4BGDkECCQ+lXP3eiOoHKnYtPAFiRpHDTcFoHZcMoKaam6ssGmu/g6YBhElkZgqxgl/CBopA/g50/4HbmT30L17usMoeuR/7vsuxvuKRLmqjCQamUt5F/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jBfsMs4b; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fTCsvmqc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8001F000E9;
-	Thu,  6 Aug 2026 07:20:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jBfsMs4b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31801F000E9;
+	Thu,  6 Aug 2026 07:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786000848;
-	bh=b0ZzrWefZ6fmgbgqmkHNTFGvvIQC0bUb9AC0KM2YLLw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fTCsvmqcm7S1nCi4IOb/2VQfUdBXzzx4LKj1TFKG9/qJBlv/JK9JPc1oGyw6i95tS
-	 Twszq5j7m1BhnDpWbhmBVRle1ZdOBT3hXaIsim2nrNDstHRRAUDzRyRi/jGPT951LL
-	 yaE621xKoeWdGyBmat+Ah1GsI2KRsXvSbDXUKtpY1UmqrVdQpiPnV52FIFWBV1nQHB
-	 LEbZr3c53t9JQO6FJxvToj5G/icEQIom3T8vDD4fNzwHAcTMWXQ2f6raM4zUV2U7v0
-	 xe9RenIfeKkMXNJdA6mpONJ3RNgMKA1B9WlMmLh33xngTzUbGoNzUKimIWwGiCVxen
-	 TSAvWOJMVbsTA==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org
-Cc: achender@kernel.org,
-	jhubbard@nvidia.com,
-	leon@kernel.org
-Subject: [PATCH net-next 4/4] net/rds: acquire RDS_IN_XMIT in rds_tcp_reset_callbacks()
-Date: Thu,  6 Aug 2026 00:20:45 -0700
-Message-Id: <20260806072045.1092968-5-achender@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260806072045.1092968-1-achender@kernel.org>
-References: <20260806072045.1092968-1-achender@kernel.org>
+	s=k20260515; t=1786000931;
+	bh=1Q3INv6xfDxzZrTqbzjcHEhGswuBK+llXThgQbDfu2o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jBfsMs4b2u6YbDN4jD0UjuLe2iw8ro9plUDcXgmrVXDLBO4ZijnOT8sTfuc97RdSN
+	 TZ2l/GNR10Spsj5gRMgQNGk2/sgIFqjxbYJl7zSUrr9202rabWVmp+AqWKepGaD8XJ
+	 XnPSqBIz/+CKXnlmsAVX0HsZzSCrn7ZxylhCWSDAph0WeFMcTj6ddT4PcPi2Xsh0o3
+	 EBZ+p6UXY3udNAsMEMeXR0Gv0wdciQPhtmC84x1kDWMv5vf5pZP4LElFGTP/vy/T2S
+	 WeeOD7s5PRT8baYjobe1O6iRD8+p5oUgQQ+roJHObqfuMaC3BJbdEC7W0tYhiTdnYe
+	 dMu+Tzj++V3ZQ==
+Date: Thu, 6 Aug 2026 09:22:08 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Artem Shimko <a.shimko.dev@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v6 2/3] dt-bindings: net: add DAPU Telecom
+ DAP8211R(I) PHY binding
+Message-ID: <20260806-witty-apricot-condor-efe3ac@quoll>
+References: <20260805085540.452260-1-a.shimko.dev@gmail.com>
+ <20260805085540.452260-3-a.shimko.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260805085540.452260-3-a.shimko.dev@gmail.com>
 
-rds_tcp_reset_callbacks() quiesces the transmit path by setting the
-path state to RDS_CONN_RESETTING and then waiting for RDS_IN_XMIT to
-be sampled clear before swapping the underlying socket and calling
-rds_send_path_reset().
+On Wed, Aug 05, 2026 at 11:55:39AM +0300, Artem Shimko wrote:
+> Add device tree binding documentation for the DAPU Telecom DAP8211R(I)
+> Gigabit Ethernet PHY.
+> 
+> The PHY supports TX and RX clock delays in 150 ps steps from 0 to 2250 ps,
+> with a default of 1950 ps if not specified.
+> 
+> Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
+> ---
+>  .../bindings/net/dptel,dap8211r.yaml          | 62 +++++++++++++++++++
+>  1 file changed, 62 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/dptel,dap8211r.yaml
 
-As in rds_conn_shutdown(), sampling the bit clear is not the same as
-owning it: rds_send_xmit() can re-acquire RDS_IN_XMIT right after the
-wait_event() returns.  Its state recheck after taking the lock is a
-store-buffering pattern (teardown writes the state and reads the bit,
-the sender writes the bit and reads the state) and acquire_in_xmit()
-is only an acquire operation, so on weakly ordered architectures both
-sides can miss each other's write and the transmit path then runs
-concurrently with rds_send_path_reset() rewriting cp_xmit_* state.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Take the lock instead, hold it across the socket swap and
-rds_send_path_reset(), and release it with a wake-up at the end.  The
-lock-ordering constraint documented above the wait still holds: the
-lock is acquired before lock_sock(), so a sender inside tcp_sendmsg()
-can never be waited on while we hold the socket lock.  The !osock
-early path is unchanged: it does not quiesce today and the connection
-has never been RDS_CONN_UP at that point, so there is no sender to
-serialize against.
-
-This extends the previous change ("net/rds: acquire
-the fastpath locks in rds_conn_shutdown()") to the only other
-rds_send_path_reset() call site, mirroring Oracle UEK's "rds: Make sure
-transmit path and connection tear-down does not run concurrently".
-
-Fixes: 335b48d980f6 ("RDS: TCP: Add/use rds_tcp_reset_callbacks to reset tcp socket safely")
-Assisted-by: Claude-Code:claude-fable-5
-Signed-off-by: Allison Henderson <achender@kernel.org>
----
- net/rds/tcp.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/net/rds/tcp.c b/net/rds/tcp.c
-index b263634ac750d..042d3fdbdf7fe 100644
---- a/net/rds/tcp.c
-+++ b/net/rds/tcp.c
-@@ -128,6 +128,7 @@ void rds_tcp_reset_callbacks(struct socket *sock,
- {
- 	struct rds_tcp_connection *tc = cp->cp_transport_data;
- 	struct socket *osock = tc->t_sock;
-+	bool in_xmit_held = false;
- 
- 	if (!osock)
- 		goto newsock;
-@@ -153,7 +154,14 @@ void rds_tcp_reset_callbacks(struct socket *sock,
- 	 * cannot mark rds_conn_path_up() in the window before lock_sock()
- 	 */
- 	atomic_set(&cp->cp_state, RDS_CONN_RESETTING);
--	wait_event(cp->cp_waitq, !test_bit(RDS_IN_XMIT, &cp->cp_flags));
-+	/* Acquire the send-path lock rather than waiting for it to be
-+	 * released: a mere wait is racy, since rds_send_xmit() may take
-+	 * the lock again right after we sample it clear and then run
-+	 * concurrently with rds_send_path_reset() below.
-+	 */
-+	wait_event(cp->cp_waitq,
-+		   !test_and_set_bit_lock(RDS_IN_XMIT, &cp->cp_flags));
-+	in_xmit_held = true;
- 	/* reset receive side state for rds_tcp_data_recv() for osock  */
- 	cancel_delayed_work_sync(&cp->cp_send_w);
- 	cancel_delayed_work_sync(&cp->cp_recv_w);
-@@ -172,6 +180,11 @@ void rds_tcp_reset_callbacks(struct socket *sock,
- 	lock_sock(sock->sk);
- 	rds_tcp_set_callbacks(sock, cp);
- 	release_sock(sock->sk);
-+
-+	if (in_xmit_held) {
-+		clear_bit_unlock(RDS_IN_XMIT, &cp->cp_flags);
-+		wake_up_all(&cp->cp_waitq);
-+	}
- }
- 
- /* Add tc to rds_tcp_tc_list and set tc->t_sock. See comments
--- 
-2.25.1
+Best regards,
+Krzysztof
 
