@@ -1,171 +1,128 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3E530FF08;
-	Thu,  6 Aug 2026 09:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786007063; cv=none; b=ey2393YqGVP9uv5ue0rTF+cYCrRX84puVXYJwRBLWA9kLAYOxK1vqAYFbLqOcQIkKbnMHJ9bnCdYa3/cnVveeaaW0CSPa5Jt+JdZ+KL3I0sF5emkrFjOBMBoi11t7moPgOjY11ZeyByxxrDsspGocOESNJh93EUj4H8tMJy++ZE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786007063; c=relaxed/simple;
-	bh=B8/69GPoQft63t6vKlmcovoad80jxzWLlb9yEv7T9EA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=OA/uvEaAscChgmDKQZJK/slV4WDpo0OrSnDf0f9FyuXMSsoAhvDAf8cJw1fXlJVyMZ0fHTgYYL0fLvN6paazCfxTMXVUP0N36XKrTwn885QlK/yjgUgvVr8ql9d2+KXknoCy9y6+kZbE0v6VaIs8AurQOTkoleT0K75ffGoaWFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nh9PJo5o; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7kp901Ur; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BMg3Ql8P; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HQLL07cb; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9361331E83D
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 09:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786007181; cv=pass; b=gOqv63pvFMjJUDZDBVQAEJw8E83WbneXBh66uP0/pYqsiimmLBvq+M6uIxTEkXs4zVfFUQBNRelsKbie71goO2RfueKwSNCsYIWMkVYoR4s5zpYNk65MsI2W6Fk73r6bgzOrMR5C2p43gZQe6rsrhdICB26FxIymlrzulL08GGk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786007181; c=relaxed/simple;
+	bh=v9MYtyzjFW9TQ/cxwE4xtix0OTDYFMtTjQUhK50brqg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=awTmC0ad6s9rQnVcg8z9OZjB6oQrdxQhkBa8Kg7mVTbE8Gc9ubTKkgwYZm3u9bNnKUHqza2/mCQfDyvFEyIuw7KT5WRhWggGlUVDakZsVwjcy4qFYLtid5h7t/ZBC/VXqYK2NZ8TUMz6E5VqQlZJqdnhGv36syVFoFjHomtUdiw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=fuVEv+je; arc=pass smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nh9PJo5o";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7kp901Ur";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BMg3Ql8P";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HQLL07cb"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1A34C3E06;
-	Thu,  6 Aug 2026 09:04:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786007056; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DGKz2qvrhIfucCzgjxp4vh+wLFIgfMjvUPxJjhY5uTE=;
-	b=nh9PJo5o72OxkQ9un2g4QDr+IH1NwGWzZfDkawZbyKtI7IPjm9rwjifKy5fTtNOWtxE7iI
-	wzGaz9+SlV4BVGovqo1UcfcFApHnjoF/GvGudPfQ+/+pdRLvhrpiQJk/Yi8M5Nl4egI1/R
-	tF5uY8dg9yOVVQqtCC4FNALjVJkUVqE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786007056;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DGKz2qvrhIfucCzgjxp4vh+wLFIgfMjvUPxJjhY5uTE=;
-	b=7kp901UrG6p3eGeAJTLSYehdICbVGCjWTVWTuQJycaYvSXSwTkSb/p9em1Eg2KEfYEVEYW
-	EU1McX+E8u45R5Dg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BMg3Ql8P;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HQLL07cb
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1786007052; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DGKz2qvrhIfucCzgjxp4vh+wLFIgfMjvUPxJjhY5uTE=;
-	b=BMg3Ql8PrACdUEHQ4Cmq/m01lcTz26vwsaQtFXA2/FOzgI6s2Fg2ygyUj6mFOmEdKYych6
-	KNo9R6GL3G95KnxehoFS9yorjySBJ2MFalrPJyRxPVuIche/ObljIAU6siiRe/hXtjMM1S
-	MnFZ8tT4lwpCdDI5kWCYOnEsh5B42Ho=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1786007052;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DGKz2qvrhIfucCzgjxp4vh+wLFIgfMjvUPxJjhY5uTE=;
-	b=HQLL07cbuvXZsf1Dl0SwWZdTwt3kJkU+vH1/BR30s27rNuuvCp1nNsFm1jitA7XDaHHtqN
-	zdtN/57EprDXu8BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 50382779B6;
-	Thu,  6 Aug 2026 09:04:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pkKaEAtOdGpHEwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Thu, 06 Aug 2026 09:04:11 +0000
-Message-ID: <a0c1a965-37d6-4cb9-b21a-1afc3b162e03@suse.de>
-Date: Thu, 6 Aug 2026 11:03:57 +0200
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="fuVEv+je"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-39f91ba1ef7so12939541fa.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 02:06:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786007177; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GU+P3179RYlE0KIhBQSFQ5S0tOM9Jq8oOzVN36w/cKySu2x+78+7vMblD+aClN3C7x
+         C06iZevqqgGpkRcQUfEjNRFW4oJVicnhc9ruwL7CHZdoYe7ZY1ND5CKbsGQaEcDuVUpq
+         NThz/cuqetW2m95pnvlnHqYaqECmQzwlu5TK6m21zN+Sy+S5grdBt2vrnnSPhYTO7aYp
+         NnztWTPkLnqZzh2JuxZP48N6crW8ic5T+3XS//S33LAf2juFHPmXZv3szWJ+akD/PfSC
+         UTEHssRAytotVJHcbdF1+kIfXcGpxc/Wchs6/M7LwzYCJEonQv7FKFFPh2cCxB3uRFIr
+         jhgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=v9MYtyzjFW9TQ/cxwE4xtix0OTDYFMtTjQUhK50brqg=;
+        fh=ArFHMkB31hdX0JlorIuoga/MAoFChJFy2pjj3fouyo0=;
+        b=Bgba4C93yB2NBroRImZReSDxJTin57Inlc1M9pVWnpkNFccyF1UULr1A1gMlaMsZf+
+         GSjuV1XT/mPOAtQL83mh/5jv7UfUU2kr5HM1l70stYJZLlAykIINmqwqKVMuGz0jgCyW
+         gOvrWqGnDxvqKXXJ7aX4srehrjX/OURXiOE88V7A9LIP0YPtcm5/DfEcHH9v/GrzwyQl
+         0XdCQqfa9k25seu2zE3wywUNV7lLUOm54QMXrA4iTZTY3fmF+C0wW/3LcFKEJBgBMGp5
+         7UObrbCPnoqkPp3Nt1RPERZUSOG/CrNlnjafA/zPrt6RR3d+DlC7QIw6Ifl/KLhXgdJD
+         ELVA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1786007177; x=1786611977; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=v9MYtyzjFW9TQ/cxwE4xtix0OTDYFMtTjQUhK50brqg=;
+        b=fuVEv+jeww6QlC7krIXZ+f303Vd4gCYKpCdtND0HCPrHbHLgcnVzg68zBtw/VKAPqH
+         EYlW5k/WQOy9KNbeXt74cx3emkfjMpxAXXkJFT44s6eszieVmy1zEbtX3Jhu24LQ9ud5
+         cF7HgtfrJsK8f+DU0f0/IPBe1Eou074QZYL0Aq4jqtLwvuMi2my0IJdrEWL+WyNcXASB
+         /vCbk4xXodpgpKZc10uh/6ogoQhhg1JepKUvF6vTlcOfk/ENDt9ToI6wzOYZ11nAktBh
+         oG6Bt9gzfZWCKbeGlPRZR1vX1aQC78PYGcWHntkT5rFEfu2z3SqCASOkyjn09TZPhPkS
+         Cs1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786007177; x=1786611977;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v9MYtyzjFW9TQ/cxwE4xtix0OTDYFMtTjQUhK50brqg=;
+        b=bsIW1VrUQsdTp5Pyuj9TdSJerUEfPk+KVozlrewe/qGf7j0Jbedis6KI/z6Sl4Rc0g
+         A73FtY1hZwyyq/H1Y6HaoLAvASpITUJbVblVEYry7oQ/8wAkhPaI1wu7GJDph9dRLknp
+         IBvOZeSvLp6b88lsNDaIGBUi419YIuOoOVqOu99xdIfyA5X/lKpfsyE9VhOBGI4ClaNj
+         mSZvf+PaugafmKydRDaIygZoAw429S0hCoAV8A8EK0gFIJZya1AC6bxPiTYZgWmbcf4i
+         jpGbLfbxr1NuiNPwnEZLsA1QV6JtbDm0US4zoeeEbJt8dn8Nt07rWD5W87E0SPicIa87
+         mFXA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr22aBKXceU7n16E/lxtCkjxNucrJ6D0vp3F3HoskbPCciT97QKoGPmO09ixfc0907E8V9Z3OM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR1oBfl69hzfp71++NuGWuHV42pbqNvX1mJjGFL3HU3ug+3QeT
+	LZOGYcRpbEQUpgtbNff0LNSARhhX2zJaZEPcXQKKZVQG6Yfg6TedUQ6bdsYl68cbVap2kH5pAdG
+	H8Kz13Ln3T19SqXbnIkuxxW0bamoQWGumFEP1OLFCdJY=
+X-Gm-Gg: AR+sD11iWXK3mIvbIGXHcN34czbSUnoVBDFlmbXfqEaEdtEBuhCG80TS28bp8mqeVLt
+	bddZH8mOD0FA7ajScw/51rxxNQHfYRzVw3ot4efZC1bb6Ez2TQqOn12L0heRVqjqAubcflvuuoD
+	qNcwoc3wS9txoOUJqr8eRn7hXanglVmq55QhtOKA47AgzkfgGht4cYlnPk2MuS/9u9ZL6ZEbtiI
+	YIGDj74ekSK9db8Hx18MXyye2KylZHmYMrT0j+mJgS5/+Dfk6AsWsQ5H6Ejb4fdMwhSuRYZ0P+Q
+	2rxzmiQbdftEgvYecps/S9mSGfPPm2OeB/NBj8yrVrRg+30P+QnOLwmi
+X-Received: by 2002:a2e:9a0b:0:b0:39e:b3b2:e95f with SMTP id
+ 38308e7fff4ca-39fbb2646cbmr16353931fa.18.1786007177175; Thu, 06 Aug 2026
+ 02:06:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests: netfilter: Remove unused variables in
- conntrack_dump_flush
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: Qingshuang Fu <fffsqian@163.com>, Pablo Neira Ayuso
- <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Qingshuang Fu <fuqingshuang@kylinos.cn>
-References: <20260806075052.1934904-1-fffsqian@163.com>
- <824bc2e7-5ee7-441b-949d-817817f32fd0@suse.de>
-Content-Language: en-US
-In-Reply-To: <824bc2e7-5ee7-441b-949d-817817f32fd0@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.51
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 1A34C3E06
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FREEMAIL_ENVRCPT(0.00)[163.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[163.com,netfilter.org,strlen.de,davemloft.net,google.com,kernel.org,redhat.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,suse.de:dkim,kylinos.cn:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
+References: <cover.1785734738.git.zhilinz@nebusec.ai> <7f099879785257f4d57d6caf9b6308fc76c7aaea.1785734738.git.zhilinz@nebusec.ai>
+ <20260805090721.GA1364862@shredder> <20260805172902.27c9bde0@kernel.org> <20260806085214.GA1748060@shredder>
+In-Reply-To: <20260806085214.GA1748060@shredder>
+From: zhilin zou <zhilinz@nebusec.ai>
+Date: Thu, 6 Aug 2026 17:06:03 +0800
+X-Gm-Features: AUfX_myp3yj_rrWJgr9s5GBlHK_2Io6wcg-A0TryjUYb2SmwtVWpnRpCNmmloiY
+Message-ID: <CANB6i5xN-rrcVe9foAJ+nUP-6VLrgXa90kwh5banCUVDOwG=1A@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] ip6_tunnel: use skb_cow_head() in ip6_tnl_xmit()
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, dsahern@kernel.org, 
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
+	tom@herbertland.com, vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/6/26 10:45 AM, Fernando Fernandez Mancera wrote:
-> On 8/6/26 9:50 AM, Qingshuang Fu wrote:
->> From: Qingshuang Fu <fuqingshuang@kylinos.cn>
->>
->> The variables 'rplnlh' in conntrack_data_insert() and 'rplnlh' together
->> with 'nest' in conntracK_count_zone() and conntrack_flush_zone() were
->> declared but never used since they were introduced.
->>
->> Similarly, commit 76342e842587 ("selftests: netfilter: remove unused
->> parameter") removed the unused 'err' variable from these functions but
->> overlooked the remaining unused 'rplnlh' and 'nest' variables.  Remove
->> them to clean up the code.
->>
->> Fixes: eff3c558bb7e ("netfilter: ctnetlink: support filtering by zone")
->> Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
->> ---
-> 
-> Thanks for patch, it looks good to me but could we avoid the fixes tag 
-> here?
-> 
-> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+On Thu, Aug 6, 2026 at 4:52=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wro=
+te:
+>
+> On Wed, Aug 05, 2026 at 05:29:02PM -0700, Jakub Kicinski wrote:
+> > On Wed, 5 Aug 2026 12:07:21 +0300 Ido Schimmel wrote:
+> > > __gre6_xmit() and ip6erspan_tunnel_xmit() already call skb_cow_head()
+> > > before calling ip6_tnl_xmit().
+> >
+> > Probably just me but can't they all be buggy?
+> > PKTGEN likes to send shared skbs around in funny ways.
+> > Can we get a good explanation in the commit msg or maybe let's
+> > keep the check?
+>
+> ip6_tnl_xmit() is accessible via two Ethernet devices (pktgen doesn't
+> support other types) and they both clear IFF_TX_SKB_SHARING, so if
+> pktgen sends them shared skbs, I would say that it's a pktgen bug and
+> not a reason to block this patch. Note that pktgen is not available to
+> unprivileged users, so it's a less severe bug.
+>
+> The patch also makes ip6_tnl_xmit() consistent with its IPv4 counterpart
+> (ip_tunnel_xmit()) which is already using skb_cow_head().
+>
+> Zhiling, please add a note in the commit message that ip6gretap and
+> ip6erspan do not expect to be handed shared skbs given that they clear
+> IFF_TX_SKB_SHARING.
 
-Actually, since you are at it.. could you also include the following 
-diff? Thanks!
-
---- a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
-+++ b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
-@@ -216,7 +216,7 @@ static int count_entries(const struct nlmsghdr *nlh, 
-void *data)
-         return MNL_CB_OK;
-  }
-
--static int conntracK_count_zone(struct mnl_socket *sock, uint16_t zone)
-+static int conntrack_count_zone(struct mnl_socket *sock, uint16_t zone)
-  {
-         char buf[MNL_SOCKET_BUFFER_SIZE];
-         struct nlmsghdr *nlh;
+Thanks, Ido. I'll add a note to the commit message explaining that
+ip6gretap and ip6erspan clear IFF_TX_SKB_SHARING and therefore do not
+expect shared skbs, and send a v2 with your Reviewed-by tag retained.
