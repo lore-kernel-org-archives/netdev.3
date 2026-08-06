@@ -1,303 +1,177 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FE933B6F4
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 08:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209923BB674;
+	Thu,  6 Aug 2026 08:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786004131; cv=none; b=J0MR//lFhfhqjVaHT6m8uuHyhiHXYJkodC+/kxy1fUjm0EAnV/AdRuvL+urIvxlkPazT4n7HZrfvCBCWbLfmQ48qT/qlkSOr7NxV9sdNyr8NeqlD1nILaszUKxPGxcbkLxDkx0u7qesO7PloFQLnSpIYSkmz+jz1RIVXJvthIgM=
+	t=1786004163; cv=none; b=qUoi1REwHq11KA7c9ueUYL85nyRmBP7AAXx/fqYS54oR6+j7B3pQTlN2uM8GDOkTG+JbkZEMTbUevc3+x6DUdUYiWDwvqv2mgjziH9Gb44sFZCqh927pQx7M/WhOcZ68kwBL8WuGkfaobxFEYxPf7UENf7RbMjHdoK7MMdQalGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786004131; c=relaxed/simple;
-	bh=lSicgOWfFyFX904RBP0Ahnm628nd/WIlp22f4h4sCeQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KDGQKIz8mWBqz/ZnTXt5/zWcDyQ9T0w42jBQd+x37ALmQDtbt81SBT6rzvD1o58JZgIwdAFan0cdNGDO7xiH62T3wvFdzXd1FeQbOsVPLpiJKrPQvtZe3hLvci8lBQfuQg8W9e6+JeENaxzSiIVDCwWrLMB27/yJTv58jvARt/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iMXS2pJO; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786004163; c=relaxed/simple;
+	bh=gdY0u5QHCOwfszhHEIhrdGRjU96/ovDQ5xj92FVYtn4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rmZTe+f5D4as7zDEomuQrlW/rOYdX1HSRqB+CZnNw3Twodv/eumuuGgvFid2+V7ODQjMXbuVeMaGlk5J98a5my5fu77BbiC1pXNcl9kQ7zsLDDjeUvWkh4kdAJgCcKwj947Isd+SZ/QcvyqKNxWsgYW3X8x+qKU/PLiX336MVM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=giS+S1VJ; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iMXS2pJO"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49954b88fffso3565615e9.0
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 01:15:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786004126; x=1786608926; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gM9IN2/npqCkPX/AjXxyRJsM409ZJAwxp/k8ZTKIPEQ=;
-        b=iMXS2pJOe5e1Wk/sdyTaPUuDf3GbLlKiJA1AcFomHtqdRgE1uxulItQA20KpePQzuR
-         h88gXsOKCwqQdUBX7SIglAOvtpw68BzpfHXGT64I34NkCxIdQVK1Wh+pPGGImFMEGb5K
-         +0iNXI9Qdk4yvMxQp89nFhxh9536g2/AGX8SoFxhKCMNPJvURJHRBJ+NpKLPJsfeCJa2
-         MKLZ0VUhHONLoKMgXEA51EnjwFNWyMziyO5yll88Vg0SBwA/o5zNiLuVyA2IG880xjZ2
-         WqvxHR0SYZ2n7tEBfyiSDWdj4G/F+ycKNP1yIs5flC/5gWtaDDsp7XeBGPvphfIYWt8M
-         NiAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786004126; x=1786608926;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gM9IN2/npqCkPX/AjXxyRJsM409ZJAwxp/k8ZTKIPEQ=;
-        b=srCXZlGkTXLEbZSY/t9kf9fZRLs2iYDxriULlht5KyRq5OAuMQpiBh7h3S4F64i43Y
-         HMISs+YCNO4Ho4cNg8m/FkS5l8/tD8E5sIWc0jTjR4NRV+k089Tb5yov9ATStYqdxelQ
-         W3Yvl58s2ipiwI79kY7aFqlcoxm79A9hucAfGujfZAQY81F7zjJlXYjdmALX21gBBHt3
-         5Iox6Re3A7kjpSVVnGU2XEssulQQrXEEYVEB7f3Tq8Dmo4HqqxKeis4coQ8w1v3v5eyx
-         tzOHwLsTe3IeViWXP4RkLXHssPfvclfGPISOJWOhsLDS+sHU9bGhShbHCgZfddtrO92r
-         RgBQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ropr1ZEc2QuEFkoCOliXeMeQF+DYXj5CF/y+663sbgEM0guP9yS864bGJjy2DcrHVQOmzmFops=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyghdXb9Yz2W8OB/YaD3DKU8hhahZtp2dEvwGgR59BDD/gIlvFk
-	n+uFyB9XZCXVMMGzV6AoAEAH5f6F9zRNBr+Qb0Eow13CR/4YXKiPDOk0
-X-Gm-Gg: AR+sD13g8vB8UWBjAWd+sAVhFWJ6zRjYosagdjRaQFCCPCqATINqQmLayt9HR2ubZEt
-	NwILPr9XJZoXs3iAAXH7x4mxcAgZaDuq6VMdMbxo9YtM/M3NghoeofhyGXe4ZnlWmHDlBq+EjSr
-	VPD/UA6LADGQ2mZxTwiCn59R6HrOoO5uzWHVgH9b+gHFFPKV9mMalOkpKmx2mBTwdsouT1ZI7l0
-	Ffd3b7tE4awTy/TvBXV9gCTyGkKRikHLDN1vTVzX1VWSYo52yVQ8b24PUtiYi3eGa3fKo97Xgpr
-	OFouTyxsTDoqKY/9UYPlc0ei/Q17oV9KdR+6VqBIpLQQiRXzCepApgWHbMSnYpfheKFNu06ZvPY
-	3mwvVG18dKUwGZMORaz1scO4edVdiQIAmCdw/23c/tt6eEM+ZHFyelzLnIcoz7y8mKZRL9X3Yk7
-	RBb6pH8/qgy/c2nbzEc/NjV5R3FV0YoqZbjmQ6SRZHXDrUIYDom8WS66Qq6qWbElp47BLQCaTLv
-	Z2hHzqrwJVH5B1YqgYATecwtqIKzo+zcUoQpoyc0UnPsMg8/gpFpPG5FGJBpAQ=
-X-Received: by 2002:a05:600c:12c8:b0:495:63e4:7f78 with SMTP id 5b1f17b1804b1-4994e7baae6mr113674705e9.10.1786004125903;
-        Thu, 06 Aug 2026 01:15:25 -0700 (PDT)
-Received: from ?IPV6:2001:9e8:f131:1d01:8da1:260c:d732:9394? ([2001:9e8:f131:1d01:8da1:260c:d732:9394])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49954206d72sm64914395e9.1.2026.08.06.01.15.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Aug 2026 01:15:25 -0700 (PDT)
-Message-ID: <a8b34a1d-9aef-4e9b-8c29-a03c7c675c9f@gmail.com>
-Date: Thu, 6 Aug 2026 10:15:24 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="giS+S1VJ"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675Nluqj993470;
+	Thu, 6 Aug 2026 08:15:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=GzwcfyJSU+6R2Bsk1VVBvvghxbF5nO6h/PJzqZUY9
+	yA=; b=giS+S1VJS4V6lUHaVcVFweLAQddR4I1pUFY29Sc+n3KbwekfEyWpzezV5
+	mKRATibsoU9364myncP5FoEvy/t3OtIcRCtdjCRzt6ZL7VhVTuDfDOTr3XhH42el
+	UaZIOgDXYbUNY7/VuFyMTploYr5jp1+9+lYlsuJFX+UDtVF95AohadwonIhrQ+FW
+	K15GkIJX/N4hdMh/LFTJZQTeUvmDTWYf1tKVQrZBXP/36iWMrya5FR8Jj0Bs9v3D
+	L7uOxuRUoTqxIsj9ZCAkCYc2QoR82iKfyRdom0eLx9XAjdqAM5R1zEs5qoI63l+X
+	7/b3HUkU3FxiKW386dHE0BS7IsuyA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77gepea-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 08:15:54 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6768BNsV024629;
+	Thu, 6 Aug 2026 08:15:53 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qtenf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 08:15:53 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6768FnOh17301854
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Aug 2026 08:15:50 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DABD22004B;
+	Thu,  6 Aug 2026 08:15:49 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9F0C920043;
+	Thu,  6 Aug 2026 08:15:49 +0000 (GMT)
+Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Aug 2026 08:15:49 +0000 (GMT)
+From: Hidayath Khan <hidayath@linux.ibm.com>
+To: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
+        sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch
+Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        horms@kernel.org, pasic@linux.ibm.com, hidayath@linux.ibm.com,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH net] net/smc: drop the abort_work reference when the work is cancelled
+Date: Thu,  6 Aug 2026 10:15:49 +0200
+Message-ID: <20260806081549.595001-1-hidayath@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 2/4] net: pse-pd: add Realtek PSE MCU core
-Content-Language: en-US
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, daniel@makrotopia.org, bjorn@mork.no,
- sander@svanheule.net
-References: <20260802100114.720594-3-jelonek.jonas@gmail.com>
- <20260806011110.1855449-1-kuba@kernel.org>
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <20260806011110.1855449-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDA1OSBTYWx0ZWRfX0BJcsRHuJwbx
+ XijN5XIK4gvG8i7IhZilAiVR1yYAm/UhstxzQwUJro2Z9y2hj92ZRitwSalIpvRxEMrts6OQmjn
+ 4E0PFaB6ek1TrbMb/dEcFtdVDH2+BeU3O6IdHTG3szo8hjhusuvOpdKPlsL7Qp+DmfqFJZHRqQD
+ ziJb4ZMI9WC2e4iEeHlUmOtYXNnoV82zQMQkAg5NAZmzVHxrB6SmIxvCQ3UgcPolfFvaLbjHHR/
+ fRN0Gy5bGNATkOe4pN0vF+uSqf+JyclILvVKFesVxK+0DC3DERArHowEWq1XuW5Hzp5fTO6rX8v
+ pZ8ZRq2vMOOzthciyytUUNJaTlrBPLyMBnYy7OcNdxc1evrvSJMwTp1phtYaI1dbL9ibiHoz0DF
+ VKJ99zeCEOfE/PzMTFQt2D2u6WKYkvi9eyYHmM2LMxHW/H164IAB7daPJmInP6ZfB4webHhnfcA
+ PuBuqnDPWNZoCV7BQgQ==
+X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a7442bb cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=CsfcX7A8SnD_svm5:21 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=OeUCff8P1W_ZF3PiYk8A:9
+X-Proofpoint-GUID: kJFy0knwEupD4rfiR7DcPIUtMLAUpusG
+X-Proofpoint-ORIG-GUID: _fvljISag3PRVWwD_597e0fhfBfQ5va9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDA1OSBTYWx0ZWRfX4KUL223bH048
+ T5xCPdK6+w9W9PpkA18w7gW/NFJ0nUhhx37Cbt6AHs+RF1LHTBD2rtmjjQ43pLjDKZD6IHY9zrI
+ +eM5JbKr2Rx0o7NJgsOZBC6BgyRoDNY=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608060059
 
+The schedulers of conn->abort_work hand a socket reference to the work
+item and rely on it to give the reference back:
 
+        sock_hold(&smc->sk); /* sock_put in abort_work */
+        if (!queue_work(smc_close_wq, &conn->abort_work))
+                sock_put(&smc->sk);
 
-On 06.08.26 03:11, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: pse-pd: add Realtek PSE MCU core
->
-> This adds the shared core for the Realtek PSE MCU driver: the 12-byte
-> request/response protocol with sum-mod-256 checksum, the per-dialect opcode
-> tables and response parser hooks for the two protocol generations, and the
-> pse_controller_ops glue plus a registration helper for the transport modules.
->
->> diff --git a/drivers/net/pse-pd/realtek-pse-mcu-core.c b/drivers/net/pse-pd/realtek-pse-mcu-core.c
->> new file mode 100644
->> index 0000000000000..ed3b743470dbf
->> --- /dev/null
->> +++ b/drivers/net/pse-pd/realtek-pse-mcu-core.c
->> @@ -0,0 +1,988 @@
-> [ ... ]
->
->> +	/*
->> +	 * Explicit MCU error opcodes (observed on the Gen1 dialect; harmless
->> +	 * to check for Gen2 too). Catch these before the generic opcode/CRC
->> +	 * mismatch path so callers see a meaningful errno.
->> +	 */
->> +	switch (resp->opcode) {
->> +	case RTPSE_MCU_OPCODE_INCOMPLETE:
->> +		return -EBADE;
->> +	case RTPSE_MCU_OPCODE_BAD_CSUM:
->> +		return -EBADMSG;
->> +	case RTPSE_MCU_OPCODE_NOT_READY:
->> +		return -EAGAIN;
->> +	}
->> +
->> +	if (resp->opcode != req->opcode ||
->> +	    resp->seq_num != req->seq_num ||
->> +	    resp->checksum != rtpse_mcu_checksum((u8 *)resp, RTPSE_MCU_MSG_SIZE - 1))
->> +		return -EBADMSG;
->> +
->> +	return 0;
->> +}
-> [Severity: Low]
-> Does this validation in rtpse_mcu_do_xfer() accept an all-zero frame as a
-> valid reply?
->
-> For a request with opcode 0x00 and seq_num 0x00, an all-zero 12-byte
-> response satisfies every term:
->
->   resp->opcode  == 0 == req->opcode
->   resp->seq_num == 0 == req->seq_num
->   rtpse_mcu_checksum() over eleven 0x00 bytes == 0 == resp->checksum
->
-> Both dialects use 0x00 for a real command:
->
->   rtpse_mcu_dialect_gen1: [RTPSE_MCU_CMD_PORT_ENABLE]      = RTPSE_MCU_OP(0x00)
->   rtpse_mcu_dialect_gen2: [RTPSE_MCU_CMD_SET_GLOBAL_STATE] = RTPSE_MCU_OP(0x00)
->
-> and seq_num wraps back to 0x00 every 256 transactions since pse->seq is a u8
-> incremented unconditionally in rtpse_mcu_do_xfer():
->
->   req->seq_num = pse->seq++;
->
-> Would it be worth adding a discriminator here, for instance rejecting a frame
-> whose bytes are all zero, or reserving seq_num 0?
+The queue_work() failure case is handled, but the cancellation case is
+not. smc_conn_free() cancels a still-pending abort_work:
 
-done in next version.
+        if (current_work() != &conn->abort_work)
+                cancel_work_sync(&conn->abort_work);
 
->> +static int rtpse_mcu_port_cmd(struct rtpse_mcu_ctrl *pse, unsigned int port, u8 opcode, u8 arg)
->> +{
->> +	struct rtpse_mcu_msg req, resp;
->> +	int ret;
->> +
->> +	rtpse_mcu_msg_init(&req, opcode);
->> +	req.payload[0] = port;
->> +	req.payload[1] = arg;
->> +
->> +	ret = rtpse_mcu_do_xfer(pse, &req, &resp);
->> +	if (ret)
->> +		return ret;
->> +
->> +	if (resp.payload[0] != port || resp.payload[1] != 0)
->> +		return -EIO;
->> +
->> +	return 0;
->> +}
-> [Severity: Low]
-> Related to the above: does this echo check catch the all-zero frame for port
-> 0? An all-zero payload gives payload[0] == 0 == port and payload[1] == 0, so
-> a Gen1 port-0 enable/disable would be reported as successful even though the
-> frame carried no MCU data. rtpse_mcu_set_global_state() has the same shape,
-> it only requires resp.payload[0] == 0x0.
->
-> The same hole also shortens the poll in the I2C transport, since
-> rtpse_mcu_resp_is_final() declares an all-zero read final for opcode 0x00 /
-> seq_num 0x00 and the loop stops instead of waiting for the genuine reply.
+and discards the return value.  When cancel_work_sync() returns true the
+work was queued but had not started, so smc_conn_abort_work() never runs
+and its sock_put() never happens.  The reference is lost.
 
-done in next version.
+As in smc_switch_conns(), a leaked sk_refcnt means the smc_sock is never
+destroyed: its buffers stay allocated and the network namespace reference
+a user socket holds is never released, so the netns cannot be torn down.
 
-> [ ... ]
->
->> +	/*
->> +	 * Release the MCU from reset before the first transaction; the
->> +	 * boot-retry loop in discover() waits for it to answer.
->> +	 */
->> +	gpiod = devm_gpiod_get_optional(pse->dev, "reset", GPIOD_OUT_LOW);
->> +	if (IS_ERR(gpiod))
->> +		return dev_err_probe(pse->dev, PTR_ERR(gpiod),
->> +				     "failed to get reset gpio\n");
->> +
->> +	ret = rtpse_mcu_discover(pse, &info);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/*
->> +	 * Some boards gate all ports through a hardware line; deassert it only
->> +	 * once the MCU is confirmed present, so a failed probe leaves the ports
->> +	 * gated. From here the MCU protocol governs per-port admin state.
->> +	 */
->> +	gpiod = devm_gpiod_get_optional(pse->dev, "disable-ports", GPIOD_OUT_LOW);
->> +	if (IS_ERR(gpiod))
->> +		return dev_err_probe(pse->dev, PTR_ERR(gpiod),
->> +				     "failed to get disable-ports gpio\n");
-> [Severity: Medium]
-> Does the comment's promise hold for failures after this point?
->
-> rtpse_mcu_register() drives disable-ports low here, but nothing re-asserts it
-> on the error paths that follow. The devres unwind only releases the
-> descriptor; gpiod_free_commit() in drivers/gpio/gpiolib.c clears descriptor
-> flags, drops the label and optionally calls gc->free(), it does not change the
-> driven output level:
->
->   if (guard.gc && test_bit(GPIOD_FLAG_REQUESTED, &flags)) {
->           if (guard.gc->free)
->                   guard.gc->free(guard.gc, gpiod_hwgpio(desc));
->           clear_bit(GPIOD_FLAG_ACTIVE_LOW, &flags);
->
-> So if devm_add_action_or_reset() or devm_pse_controller_register() below fails
-> (the latter propagates -EINVAL/-ENODEV from of_load_pse_pis() for a
-> missing or mismatched pse-pis node, and -ENOMEM from the kfifo/devres
-> allocations), the board is left with all ports ungated and no driver bound.
-> The same applies on unbind or module unload.
->
-> Since the level also persists past the descriptor's lifetime, doesn't a
-> subsequent probe attempt start with the gate already open? That is exactly the
-> case the comment guards against: if rtpse_mcu_discover() then fails on a
-> re-probe, the ports are ungated while the MCU is unresponsive and unmanaged.
->
-> Would a devm action that re-asserts the line (and the reset line) fit here?
+smc_cdc_msg_validate() queues abort_work from the receive tasklet when a
+peer sends a CDC message with an out-of-order sequence number, so a
+remote peer combined with a concurrent local close is enough to reach it.
 
-Not added, possible failure here is seen less critical then having kill all PoE ports
-in case anything in the probe might get wrong. This would even be the case if the
-GPIO is asserted by default after reset, outside of the driver, and asserting this
-would make PoE non-functional though the probe failure might not be critical.
+Drop the reference when the work is cancelled, matching the pattern
+smc_close_cancel_work() already uses for conn->close_work:
 
->> +	if (!info.system_enable) {
->> +		ret = rtpse_mcu_set_global_state(pse, true);
->> +		/* Dialects without a global-state concept (e.g. Gen1) return
->> +		 * -EOPNOTSUPP; treat that as "no separate enable required".
->> +		 */
->> +		if (ret && ret != -EOPNOTSUPP)
->> +			return dev_err_probe(pse->dev, ret,
->> +					     "failed to enable PSE system\n");
->> +		if (!ret) {
->> +			ret = devm_add_action_or_reset(pse->dev,
->> +						       rtpse_mcu_global_disable, pse);
->> +			if (ret)
->> +				return ret;
->> +		}
->> +	}
-> [Severity: Medium]
-> Is there any compensating teardown for the Gen1 case? rtpse_mcu_dialect_gen1
-> has no RTPSE_MCU_CMD_SET_GLOBAL_STATE entry, so
-> rtpse_mcu_set_global_state() returns -EOPNOTSUPP and no devm action is
-> registered at all. The same happens on boards that already report
-> info.system_enable, where the whole block is skipped. For those boards
-> nothing disables power or re-gates the ports on a later probe failure or on
-> unbind.
+        if (cancel_work_sync(&smc->conn.close_work))
+                sock_put(sk);
 
-IMO the driver shouldn't mess with what it hasn't touched before, so no teardown
-if nothing has been activated/enabled before.
+The sock_put() is safe here: every caller of smc_conn_free() passes the
+connection of a socket it holds a reference to, so this cannot release
+the last one.
 
-> [ ... ]
->
->> diff --git a/drivers/net/pse-pd/realtek-pse-mcu.h b/drivers/net/pse-pd/realtek-pse-mcu.h
->> new file mode 100644
->> index 0000000000000..52f9442d7117c
->> --- /dev/null
->> +++ b/drivers/net/pse-pd/realtek-pse-mcu.h
->> @@ -0,0 +1,93 @@
-> [ ... ]
->
->> +/*
->> + * A polling transport can stop here: the reply to this request (opcode and
->> + * seq_num), or a terminal error. The seq_num rejects a stale reply left by an
->> + * abandoned transaction, instead of desyncing by one frame.
->> + */
->> +static inline bool rtpse_mcu_resp_is_final(const struct rtpse_mcu_msg *req,
->> +					   const struct rtpse_mcu_msg *resp)
->> +{
->> +	return (resp->opcode == req->opcode && resp->seq_num == req->seq_num) ||
->> +	       resp->opcode == RTPSE_MCU_OPCODE_INCOMPLETE ||
->> +	       resp->opcode == RTPSE_MCU_OPCODE_BAD_CSUM;
->> +}
-> [Severity: Low]
-> This is the transport-side half of the same question: for a request with
-> opcode 0x00 and seq_num 0x00, an all-zero read is declared final here, so
-> rtpse_mcu_i2c_smbus_recv() / rtpse_mcu_i2c_native_recv() stop polling rather
-> than retrying for the real frame. Should this helper also reject a frame that
-> is entirely zero?
+Fixes: b286a0651e44 ("net/smc: handle incoming CDC validation message")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+---
+ net/smc/smc_core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Covered by the fix not allowing seq_num to be 0.
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index c0027d2fe4e8..dd9fffbe41e0 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1254,6 +1254,7 @@ static void smc_buf_unuse(struct smc_connection *conn,
+ /* remove a finished connection from its link group */
+ void smc_conn_free(struct smc_connection *conn)
+ {
++	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
+ 	struct smc_link_group *lgr = conn->lgr;
+ 
+ 	if (!lgr || conn->freed)
+@@ -1277,8 +1278,13 @@ void smc_conn_free(struct smc_connection *conn)
+ 		tasklet_kill(&conn->rx_tsklet);
+ 	} else {
+ 		smc_cdc_wait_pend_tx_wr(conn);
+-		if (current_work() != &conn->abort_work)
+-			cancel_work_sync(&conn->abort_work);
++		/* If the work was pending (cancel returns true) it never ran,
++		 * so the sock_hold taken by its scheduler was never released.
++		 */
++		if (current_work() != &conn->abort_work) {
++			if (cancel_work_sync(&conn->abort_work))
++				sock_put(&smc->sk);
++		}
+ 	}
+ 	if (!list_empty(&lgr->list)) {
+ 		smc_buf_unuse(conn, lgr); /* allow buffer reuse */
 
+base-commit: 2b1c2bc2355fd59cc75045e42d9dc5470ef5fa9a
+-- 
+2.52.0
 
-Regards,
-Jonas
