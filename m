@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43F53A83A8;
-	Thu,  6 Aug 2026 01:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E443AB47E;
+	Thu,  6 Aug 2026 01:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785978672; cv=none; b=pQrBU/PAd+MMyruwtDBRQxE63jQ9Jk41hz9+V5VRHlhQRWvBuBVTfaHCOx4YrP1auUeyO/jE2sMAzWszs+g9Jd3UutKrEXkDErQIovKj5G+tfCgOZXNW8OxHTcp/eHn/P6fQaEa+MIeVkkvAsLE9a6uGjyIg4P4hTclwfByvN6E=
+	t=1785978674; cv=none; b=NhYCrhL9ydpoexyZhV9gkbW1U6aaULkoczg/jn9TN//Adq7qT2aqNp+V4aCf/g1LWiusRoFB2pNrRH/RqE2ZsW5A9nT3d7Pih7uGPPoSjBRrPc4PM4zIrwykVlLYb2I9kjXBRekESgFgbmY4tU95CIgaQXkdmHxi4S7H+o8fKIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785978672; c=relaxed/simple;
-	bh=sC0nJJGa97og3ugBOSncZ6LU3kG1fZZ1hZKkrnzRUt8=;
+	s=arc-20240116; t=1785978674; c=relaxed/simple;
+	bh=Wf1yw1hWjSMofGh9B//EgqznVrQjqhDsc8TpurI3z2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieHgDGOH+V+H24hUSVbFWfxVoOSrUeBsqxGB3bp1wQlv4r6FIRmja2m3Mr4GEReqDsYpkTBXs/4bOLT6Gnvv3it3+JZlJfyl4ceYZp2swuHjHQ/wyIE1I2Scd96HOclicePMpLvrGTK10viFtZvG/4BC+DeBWgaLL2QL1FQk4Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LcDipZgQ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=qcBh/S7vDsgTx+ueZGGr8X+pjhgBhOs9FX4JPzzYgbOcbkyJeVB537e4hVsER+ao0TcCr8EtrrNjn3uTsL7+p1R3xERmXkBILDTKtpCHSAXYbs5347glXRRdGT7CXMO+jLw0z+1n07KwFo6aIdO+ISsYXYmeQAzqePeF/UCihTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNO6w4Au; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LcDipZgQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFAD1F000E9;
-	Thu,  6 Aug 2026 01:11:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNO6w4Au"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F741F00A3A;
+	Thu,  6 Aug 2026 01:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785978670;
-	bh=0nWg/VyFOnBpDM8uIIWMRncb1yFhhBefq5y9ECkxs6s=;
+	s=k20260515; t=1785978672;
+	bh=qi/Ms2YIxVRuhPcVy9jiUsWczluue6n82mTxeGgXWcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LcDipZgQpnS09+uD19c5sPtMWPp+8xLdtKSZ4BYXbM0f82lw+aKQeq6yDf880lQ8Q
-	 VamjEvIUiCwIDEQ5pLmHcujnpnHK7EOdVeOw+pzgIngbdxt9aJXs91pdKgu+OTikNK
-	 +EjaczAXPWXeHfU3TmwvZi0SNxnV8k7rVCMWAL5vHGBvb1eJwObtmxhxLEIAAJoWlL
-	 sBm0U91RzqSBfcZaSKvG0OQjphKVDsG4iK3wkPhXJ7r/lxdMs59vS8gUIZ3yCUksT2
-	 7phQbBrsNSfSd5V4CIdQz1+B8r+4asIQ2XqoQc0u/C2El73UFubb944u7L4TIV6te9
-	 h4AsF+7WDRXRw==
+	b=gNO6w4Auow/SjV2ZOp+nyYCqqeRUfF9kqUXJVzB4dyOw5VnOuH0x+qTb9/T7cBsc+
+	 yBCDADtJohRnTU5UAxFyErOOBEno4Vg+2hvHDImCnNHHOy6k9ukUu5nP1HxWCmGfHi
+	 Ejd8YUqAM7yK6sWyxUwRInBX4PesCrlhy0RPIvPOFgzV2eHLTwHgG7PZcl70+uefKN
+	 9GziLps0C10zfiF/femEmreqm5ixvBuqw3uXvHz1RGu4HSvs+PjluIt+YgGYv911mU
+	 FqpuuvoOjSYY7P1fDfVkgTYqlmxmR1ocwd4KFsyoWK/sJXLYUVj1NMKNs4s2/5tg6X
+	 HKtQH/shV0ujQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: jelonek.jonas@gmail.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -44,12 +44,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	daniel@makrotopia.org,
 	bjorn@mork.no,
 	sander@svanheule.net
-Subject: Re: [PATCH net-next v11 1/4] dt-bindings: net: pse-pd: add bindings for Realtek PSE MCU
-Date: Wed,  5 Aug 2026 18:11:07 -0700
-Message-ID: <20260806011107.1855326-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v11 2/4] net: pse-pd: add Realtek PSE MCU core
+Date: Wed,  5 Aug 2026 18:11:10 -0700
+Message-ID: <20260806011110.1855449-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260802100114.720594-2-jelonek.jonas@gmail.com>
-References: <20260802100114.720594-2-jelonek.jonas@gmail.com>
+In-Reply-To: <20260802100114.720594-3-jelonek.jonas@gmail.com>
+References: <20260802100114.720594-3-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,149 +61,202 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-dt-bindings: net: pse-pd: add bindings for Realtek PSE MCU
+net: pse-pd: add Realtek PSE MCU core
 
-This adds a new YAML binding for the MCU that fronts the PSE silicon on a
-range of managed Realtek-based switches, covering both protocol generations
-and the I2C/SMBus and UART attachments.  Two questions below about the file
-naming and about the serial slave node name.
+This adds the shared core for the Realtek PSE MCU driver: the 12-byte
+request/response protocol with sum-mod-256 checksum, the per-dialect opcode
+tables and response parser hooks for the two protocol generations, and the
+pse_controller_ops glue plus a registration helper for the transport modules.
 
-> diff --git a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
+> diff --git a/drivers/net/pse-pd/realtek-pse-mcu-core.c b/drivers/net/pse-pd/realtek-pse-mcu-core.c
 > new file mode 100644
-> index 0000000000000..3bb32349c28c4
+> index 0000000000000..ed3b743470dbf
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-> @@ -0,0 +1,182 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/pse-pd/realtek,pse-mcu-gen1.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/drivers/net/pse-pd/realtek-pse-mcu-core.c
+> @@ -0,0 +1,988 @@
 
 [ ... ]
 
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      # UART
-> +      - items:
-> +          - enum:
-> +              - zyxel,gs1900-10hp-a1-pse
-> +          - const: realtek,pse-mcu-gen1
+> +	/*
+> +	 * Explicit MCU error opcodes (observed on the Gen1 dialect; harmless
+> +	 * to check for Gen2 too). Catch these before the generic opcode/CRC
+> +	 * mismatch path so callers see a meaningful errno.
+> +	 */
+> +	switch (resp->opcode) {
+> +	case RTPSE_MCU_OPCODE_INCOMPLETE:
+> +		return -EBADE;
+> +	case RTPSE_MCU_OPCODE_BAD_CSUM:
+> +		return -EBADMSG;
+> +	case RTPSE_MCU_OPCODE_NOT_READY:
+> +		return -EAGAIN;
+> +	}
 > +
-> +      # I2C, SMBus framing
-> +      - items:
-> +          - enum:
-> +              - zyxel,gs1920-24hp-v2-pse
-> +          - const: realtek,pse-mcu-gen1-smbus
+> +	if (resp->opcode != req->opcode ||
+> +	    resp->seq_num != req->seq_num ||
+> +	    resp->checksum != rtpse_mcu_checksum((u8 *)resp, RTPSE_MCU_MSG_SIZE - 1))
+> +		return -EBADMSG;
 > +
-> +      # UART
-> +      - items:
-> +          - enum:
-> +              - zyxel,gs1900-10hp-b1-pse
-> +              - zyxel,xmg1915-10ep-pse
-> +          - const: realtek,pse-mcu-gen2
-> +
-> +      # I2C, SMBus framing
-> +      - items:
-> +          - enum:
-> +              - zyxel,xs1930-12hp-pse
-> +          - const: realtek,pse-mcu-gen2-smbus
-> +
-> +      # I2C, raw framing
-> +      - items:
-> +          - enum:
-> +              - linksys,lgs328mpc-v2-pse
-> +          - const: realtek,pse-mcu-gen2-i2c
+> +	return 0;
+> +}
 
 [Severity: Low]
-This isn't a bug, but should the file be named after the family rather than
-after one compatible?
+Does this validation in rtpse_mcu_do_xfer() accept an all-zero frame as a
+valid reply?
 
-The file (and $id) is realtek,pse-mcu-gen1.yaml, while the compatible list
-here documents five strings across two protocol generations:
+For a request with opcode 0x00 and seq_num 0x00, an all-zero 12-byte
+response satisfies every term:
 
-    realtek,pse-mcu-gen1
-    realtek,pse-mcu-gen1-smbus
-    realtek,pse-mcu-gen2
-    realtek,pse-mcu-gen2-smbus
-    realtek,pse-mcu-gen2-i2c
+  resp->opcode  == 0 == req->opcode
+  resp->seq_num == 0 == req->seq_num
+  rtpse_mcu_checksum() over eleven 0x00 bytes == 0 == resp->checksum
 
-There is no file bearing the name of any realtek,pse-mcu-gen2* compatible,
-so searching by that compatible name finds nothing, and the commit message
-does not mention that gen2 is described in a ...-gen1.yaml file.
+Both dialects use 0x00 for a real command:
 
-Would realtek,pse-mcu.yaml (with the $id updated to match) describe the
-actual scope better?
+  rtpse_mcu_dialect_gen1: [RTPSE_MCU_CMD_PORT_ENABLE]      = RTPSE_MCU_OP(0x00)
+  rtpse_mcu_dialect_gen2: [RTPSE_MCU_CMD_SET_GLOBAL_STATE] = RTPSE_MCU_OP(0x00)
 
-To be clear, the $id path itself is consistent with the current file path
-(net/pse-pd/realtek,pse-mcu-gen1.yaml#), so $ref resolution and
-dt_binding_check are not affected here - this is only about the declared
-scope of the name.
+and seq_num wraps back to 0x00 every 256 transactions since pse->seq is a u8
+incremented unconditionally in rtpse_mcu_do_xfer():
 
-> +required:
-> +  - compatible
+  req->seq_num = pse->seq++;
+
+Would it be worth adding a discriminator here, for instance rejecting a frame
+whose bytes are all zero, or reserving seq_num 0?
+
+> +static int rtpse_mcu_port_cmd(struct rtpse_mcu_ctrl *pse, unsigned int port, u8 opcode, u8 arg)
+> +{
+> +	struct rtpse_mcu_msg req, resp;
+> +	int ret;
 > +
-> +allOf:
-> +  - $ref: pse-controller.yaml#
-
-[ ... ]
-
-> +    else:
-> +      allOf:
-> +        - $ref: /schemas/serial/serial-peripheral-props.yaml#
+> +	rtpse_mcu_msg_init(&req, opcode);
+> +	req.payload[0] = port;
+> +	req.payload[1] = arg;
 > +
-> +      properties:
-> +        reg: false
+> +	ret = rtpse_mcu_do_xfer(pse, &req, &resp);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (resp.payload[0] != port || resp.payload[1] != 0)
+> +		return -EIO;
+> +
+> +	return 0;
+> +}
 
 [Severity: Low]
-This else branch declares the bare gen compatibles to be UART (serial
-slave) attachments, and the node name is forced to ethernet-pse by
-pse-controller.yaml:
+Related to the above: does this echo check catch the all-zero frame for port
+0? An all-zero payload gives payload[0] == 0 == port and payload[1] == 0, so
+a Gen1 port-0 enable/disable would be reported as successful even though the
+frame carried no MCU data. rtpse_mcu_set_global_state() has the same shape,
+it only requires resp.payload[0] == 0x0.
 
-Documentation/devicetree/bindings/net/pse-pd/pse-controller.yaml
-  $nodename:
-    pattern: "^ethernet-pse(@.*|-([0-9]|[1-9][0-9]+))?$"
+The same hole also shortens the poll in the I2C transport, since
+rtpse_mcu_resp_is_final() declares an all-zero read final for opcode 0x00 /
+seq_num 0x00 and the loop stops instead of waiting for the genuine reply.
 
-But serial.yaml only enumerates these serial slave child node names:
+[ ... ]
 
-Documentation/devicetree/bindings/serial/serial.yaml
-patternProperties:
-  "^(bluetooth|bluetooth-gnss|embedded-controller|gnss|gps|mcu|onewire)$":
-    if:
-      type: object
-    then:
-      additionalProperties: true
-      $ref: serial-peripheral-props.yaml#
-      ...
-      required:
-        - compatible
-
-Does a board device tree with an ethernet-pse child of serial then get the
-shared slave-node subschema applied at all?  Since serial.yaml ends with
-additionalProperties: true, the unmatched child looks like it just falls
-through silently rather than being flagged.
-
-Should serial.yaml's pattern list gain ethernet-pse as part of this series,
-or is the intent to reuse the existing generic mcu name (which would
-conflict with pse-controller.yaml's $nodename pattern)?
-
-I checked the end of the series and serial.yaml is unchanged there, so no
-counterpart update appears later either.
-
-> +unevaluatedProperties: false
+> +	/*
+> +	 * Release the MCU from reset before the first transaction; the
+> +	 * boot-retry loop in discover() waits for it to answer.
+> +	 */
+> +	gpiod = devm_gpiod_get_optional(pse->dev, "reset", GPIOD_OUT_LOW);
+> +	if (IS_ERR(gpiod))
+> +		return dev_err_probe(pse->dev, PTR_ERR(gpiod),
+> +				     "failed to get reset gpio\n");
 > +
-> +examples:
+> +	ret = rtpse_mcu_discover(pse, &info);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * Some boards gate all ports through a hardware line; deassert it only
+> +	 * once the MCU is confirmed present, so a failed probe leaves the ports
+> +	 * gated. From here the MCU protocol governs per-port admin state.
+> +	 */
+> +	gpiod = devm_gpiod_get_optional(pse->dev, "disable-ports", GPIOD_OUT_LOW);
+> +	if (IS_ERR(gpiod))
+> +		return dev_err_probe(pse->dev, PTR_ERR(gpiod),
+> +				     "failed to get disable-ports gpio\n");
+
+[Severity: Medium]
+Does the comment's promise hold for failures after this point?
+
+rtpse_mcu_register() drives disable-ports low here, but nothing re-asserts it
+on the error paths that follow. The devres unwind only releases the
+descriptor; gpiod_free_commit() in drivers/gpio/gpiolib.c clears descriptor
+flags, drops the label and optionally calls gc->free(), it does not change the
+driven output level:
+
+  if (guard.gc && test_bit(GPIOD_FLAG_REQUESTED, &flags)) {
+          if (guard.gc->free)
+                  guard.gc->free(guard.gc, gpiod_hwgpio(desc));
+          clear_bit(GPIOD_FLAG_ACTIVE_LOW, &flags);
+
+So if devm_add_action_or_reset() or devm_pse_controller_register() below fails
+(the latter propagates -EINVAL/-ENODEV from of_load_pse_pis() for a
+missing or mismatched pse-pis node, and -ENOMEM from the kfifo/devres
+allocations), the board is left with all ports ungated and no driver bound.
+The same applies on unbind or module unload.
+
+Since the level also persists past the descriptor's lifetime, doesn't a
+subsequent probe attempt start with the gate already open? That is exactly the
+case the comment guards against: if rtpse_mcu_discover() then fails on a
+re-probe, the ports are ungated while the MCU is unresponsive and unmanaged.
+
+Would a devm action that re-asserts the line (and the reset line) fit here?
+
+> +	if (!info.system_enable) {
+> +		ret = rtpse_mcu_set_global_state(pse, true);
+> +		/* Dialects without a global-state concept (e.g. Gen1) return
+> +		 * -EOPNOTSUPP; treat that as "no separate enable required".
+> +		 */
+> +		if (ret && ret != -EOPNOTSUPP)
+> +			return dev_err_probe(pse->dev, ret,
+> +					     "failed to enable PSE system\n");
+> +		if (!ret) {
+> +			ret = devm_add_action_or_reset(pse->dev,
+> +						       rtpse_mcu_global_disable, pse);
+> +			if (ret)
+> +				return ret;
+> +		}
+> +	}
+
+[Severity: Medium]
+Is there any compensating teardown for the Gen1 case? rtpse_mcu_dialect_gen1
+has no RTPSE_MCU_CMD_SET_GLOBAL_STATE entry, so
+rtpse_mcu_set_global_state() returns -EOPNOTSUPP and no devm action is
+registered at all. The same happens on boards that already report
+info.system_enable, where the whole block is skipped. For those boards
+nothing disables power or re-gates the ports on a later probe failure or on
+unbind.
 
 [ ... ]
 
-> +  # UART attachment
-> +  - |
-> +    serial {
-> +        ethernet-pse {
-> +            compatible = "zyxel,gs1900-10hp-a1-pse", "realtek,pse-mcu-gen1";
-> +            current-speed = <19200>;
+> diff --git a/drivers/net/pse-pd/realtek-pse-mcu.h b/drivers/net/pse-pd/realtek-pse-mcu.h
+> new file mode 100644
+> index 0000000000000..52f9442d7117c
+> --- /dev/null
+> +++ b/drivers/net/pse-pd/realtek-pse-mcu.h
+> @@ -0,0 +1,93 @@
 
 [ ... ]
--- 
-pw-bot: cr
+
+> +/*
+> + * A polling transport can stop here: the reply to this request (opcode and
+> + * seq_num), or a terminal error. The seq_num rejects a stale reply left by an
+> + * abandoned transaction, instead of desyncing by one frame.
+> + */
+> +static inline bool rtpse_mcu_resp_is_final(const struct rtpse_mcu_msg *req,
+> +					   const struct rtpse_mcu_msg *resp)
+> +{
+> +	return (resp->opcode == req->opcode && resp->seq_num == req->seq_num) ||
+> +	       resp->opcode == RTPSE_MCU_OPCODE_INCOMPLETE ||
+> +	       resp->opcode == RTPSE_MCU_OPCODE_BAD_CSUM;
+> +}
+
+[Severity: Low]
+This is the transport-side half of the same question: for a request with
+opcode 0x00 and seq_num 0x00, an all-zero read is declared final here, so
+rtpse_mcu_i2c_smbus_recv() / rtpse_mcu_i2c_native_recv() stop polling rather
+than retrying for the real frame. Should this helper also reject a frame that
+is entirely zero?
