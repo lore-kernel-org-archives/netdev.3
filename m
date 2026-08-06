@@ -1,181 +1,191 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C2F305E1F
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D543A83A9
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786028635; cv=none; b=mfs8KUps/6eK+8zdHHrWRuB8YzfcFBaxtZ5hj8qvrABYiZln4NwUtPqlfQn/OtzKUvEPvPswq+4S7b7X1W+4qNoErAFjZU1rISSx9i8JVKGcOP4GYqD11Cdco56kVWLWZJ4gGvkWjkBNfkUt0MJIzsVPxljxefRGzOm/q8IVYik=
+	t=1786028791; cv=none; b=EwpNL+yi2V9Xn5CWMYvlYDD/+NvtXxcyL/YSRjpSQbRhywizry7sWDnaTMVfZL4j/OxNfOHcDoxCxUc1bVvs4Af20Cf2EKkP+/gcohhx1hmAP+2+yvgEuSLghRc3YXU8KYzPROh9PQLxgV11cgEABrzSRBWqB1gn0gTz84OsloA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786028635; c=relaxed/simple;
-	bh=cYbc1CQoQc5pfYhgLv/MYSip5jRcSrSImN64FkQfEWk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kifswnt18XzTgPnk+4qkHMz3xzVdB/zAQSfAFFwbaJTaJckC/pu0pRLkJkn7P5JsBKXol2Z1+w9cWRICCIYUhLDWpmZeIMK/f4X5lWY+63Wdxv+LsyBl2slIMS0hW87b/9NfHNPsotFj0nIQI6FnHUJLFpuayRBQmLG63wrcedY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iD59FJdt; arc=none smtp.client-ip=209.85.210.182
+	s=arc-20240116; t=1786028791; c=relaxed/simple;
+	bh=9561b7niqn0AoK8vxNZecvDmZ7DoOcHXsP3+5ybV3/E=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=gk95TwhNq3VxCJUpoZyU6atNyBZCuO/FD6wRf+puogAiOGmqAfRJawplox9j8wmCB63gr+GE1xFH1e+1f/vrLSyFzJ4J3hT4gB8qvfpNQErIEIFovOOFQA1mM8d2/1IxyEC87SER4EnVVgvRd3iIC3pGtWDKtONjuSpsUko8OjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pe5O1bfT; arc=none smtp.client-ip=74.125.224.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iD59FJdt"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8486672f03cso2813039b3a.0
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:03:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pe5O1bfT"
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-6681e7911b0so3355602d50.0
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:06:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786028634; x=1786633434; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uJS+V1CTVjT7mHslf1lQhCi1CZlnPDrIe8kNgbgFr+I=;
-        b=iD59FJdtqQPsbHxMZmzV4/4lrhB8zzIiu89v9R7PF4eug1Z9Ksth50eFrXX5CfoA4I
-         lRDJ3r8A8fxAlTycxueiLAx1CQrpJXUmjWYeyIFuv64BOXKksN5hqDYgG5qfNEcyNMay
-         pHpHTojeoRUOo1bmhxbSq6aQfiD/NdaInvcLNnhKo7fwQklBCqzTZhJfroSusClRfH1T
-         dC8ZkGxHxdaVuSO0od2xaPpgzZMwhMl4UjXfCntWY1QOatPlsvVCio8EVaYFVb5fVNFS
-         zoJ9PY12sO9HWx9f2rWe1wQgTJRUiSbXi93t+Z7evs+gUPCq/AYoIJQ6Zpei64Ou5+lQ
-         3avQ==
+        d=gmail.com; s=20251104; t=1786028788; x=1786633588; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ja1PiQAYHhNbzA9wF5bI95C14lIdSvb5kNTNlBGbiZM=;
+        b=pe5O1bfTyyUKSD8Elibq72CFxIdFah3qAQuSOEg5iJRRqZyL+V9lgTmlruhALjr6sq
+         BFFY5ph6gtA7OoK4hLygave0fPZoYveoVYUMwMTCU2Y8Mpd1hFmHWr69H0SweXfPk3Cc
+         CK3yaKfcsyV5alr2n9i4moHDw+mUnz6d8mzvdm8aJMW1rzGmHWjcmUu46xHUPSdwjivR
+         VD+POnESKFTeZcpqhvcHXRveGTjhxVRxwyfpjSAAkAKMXWQW8zuUUdC+JfN0Qf6hSul2
+         Dsb8pocVBO8fclIfvQHERqtlVWAmWVyyoxhxY/JxzevlZcDqwboxkqUwZvVSS2RlfxEb
+         xVrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786028634; x=1786633434;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uJS+V1CTVjT7mHslf1lQhCi1CZlnPDrIe8kNgbgFr+I=;
-        b=ZJhhu6uBjz/a/sYZtiS+sX34Pf4k6OVw+GWg+yII2rS26jbVwE8oaLWETKiCeuS1Qw
-         mtFGFpptI0LZ6pKUmIqIFI/pWhGrV5baHiGGJUPTqaIfuB0xO2WM08kVpndbEZVVNGdm
-         tceE1XXr7f8j/TknpE/rDXawrEmnLY4HOy5BympRonXdiCimhh1lnwA31pSO24nDnQgX
-         jHMxb/Uw+lGXvt727xkWKje99wMshp1oRkK7Qs6N4GzMnEJepL+5oCYu39976QorLRwV
-         9OdJL/VaPlnyR+pVpR4Fjz2G9kOzuwEnwpUIlsa2bS5YTgfB4fFmKy+Ndcp7Hb3Jt4lE
-         6+rg==
-X-Forwarded-Encrypted: i=1; AHgh+RrTsvBXuMk+Isxd4GCuBhqkg+cx2PJzaDxzkrNIAGiDiptKurf0rQIix4puDKZJA13HsRHnZmg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0vXU0TsHwWTYCGLryDxzkWjcz4fWow2UzWMwki0cPkHHWRJ6i
-	vvNcjxaQmfpa/lofRHPTn60UMknu+oBYaULAPM0bzLZkJzfRhepWlkmx
-X-Gm-Gg: AR+sD12Ut2LMLLgLiWXaf4TqBgwpA4bnWWEsFxwkLum7Dmd15OYSD5VWUo1ajkZC00O
-	h2NQ06kXHJor79m8j+u+FfdSOsXAi1vI9a6KSjQ3AH01hdhgpv6JsdF1T/wFdFR2nSmOG9GTFRL
-	bkcphKBL0mMM+9SDs4Wvwu8ZgXr9JeVH2Znn6eAjCHaM3JChyQ66DqhHKC4NFxb1pFDND4qNZ5R
-	UhiGVMEU216G4FgwBeTZYSmLJyoqEGmjjTJdvokdZ1xSOC97AuNAWryNwAOp1W7mWmY4M/2Kixk
-	y3aUlw+BTz40/5wx7OXpQvtYbJSK9Y953E1WWem1O5Fvn4BEULgRoZeUqy7UwSSrJgUhJ7stRvf
-	xV/fUuJwAJP0mBWMpW4qlq6r+Q1oqyx5WyhqRN+b6JXGdGoFvABlhwkMNPEhZW64a2hVbVlINhM
-	/wGJThkq/jGFYmm4w7VAAB2MGrZCmztohrQJtat/qT0Mg9HiNDrmALfNo3A+6jcXZAnYD1CWSrq
-	JpoFvwZja7bHdWW0UuTlMvn7J7Qoo4HGmDr9yrOuFkGh9uIjZL4tkydQKpWY2MZKg==
-X-Received: by 2002:a05:6a00:2383:b0:848:44d2:72a2 with SMTP id d2e1a72fcca58-84f2e009b49mr13219705b3a.27.1786028633604;
-        Thu, 06 Aug 2026 08:03:53 -0700 (PDT)
-Received: from EAIT-H54D9Q2FJQ.eait.uq.edu.au ([130.102.10.60])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f456ba8b7sm1573356b3a.29.2026.08.06.08.03.49
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 06 Aug 2026 08:03:53 -0700 (PDT)
-From: Yu Zhang <yuz08559@gmail.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yu Zhang <yuz08559@gmail.com>
-Subject: [PATCH] vhost-vdpa: drop the parent's vq callback before the call fd is released
-Date: Fri,  7 Aug 2026 01:03:23 +1000
-Message-ID: <20260806150323.2154-1-yuz08559@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1786028788; x=1786633588;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ja1PiQAYHhNbzA9wF5bI95C14lIdSvb5kNTNlBGbiZM=;
+        b=OTPQ7hABwMJrKQQKMsFvwV9lDyGzmovIJoiEmTTff6Viaz8Z8qqen9i4A/SxpzSFph
+         t6i2PVgwnRyYubOs/v87Zy6dEHQA+rIWXu/u12He7y1rskCwoZaS4l2KaV20Nohi/88y
+         XOv0lVbE3Uylp0QBTcEWl6vkdeWIrAu7eTELaVM8QodVYXbrqDWWGl69sG0YmGkJqTlh
+         89sU244VTu8Oh2WVI3ozPJ73VH2OrpuXIUjVPc4G+MdSa3XMDObO06mdV9n+P/8W85Kx
+         1kBXDL1jZ4mVhi0jPbtuyJjJ2wq47ZH7EpD+W+5uU20zycIwhdcw6y2gEFHDPv2l6C+P
+         fsTg==
+X-Forwarded-Encrypted: i=1; AHgh+RrZSzzczhZarDRNSfHrmztQKgcy6y+I0SNLUd39VmFyy6cwj7nygtzkyRm8XlNk8d8VoemfP0Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0XoNGSwb+fsf+1wiiKppO3juUoaVeabe2V67ouP272gfYe0qW
+	BLR2ZG002E8WB6B2wsM6DyZqI32tRm/VU9iNM7DLlRNrRrRVee8W1SL1
+X-Gm-Gg: AR+sD10hff7hU3HY2K1UPO/HeSjiOtPpvVqKntzQ/2i7AbZ7L9Jv4u8I3Bq5k0lfjiy
+	7TKWX5BsxYus70g/tXlFYw66/VRQCSwdiSwMUe17AJ31ewJ5Rkpky5qoPtF0gFpXIEX9/KJrRQE
+	VzuZj1VOhrE2XPdfZH6qGDH+XZrL91UtfbGrSdC4YTfHYh+Cq0EzoZka/bfPQfoI8xSL5skld3k
+	Ehzw7heN55P7bfyKaaA86jLTx83V0b8M7o1mp/8lDEfaYQahSF2AlDacab9Ups+dzGQ2hehbtPF
+	dxESTjfdXkOsawqk+NGTsde68wVVSnQLaz+km22FNbgguxaXgf5r5Mfqoc4CzU3sJ9hI4/OZrA7
+	Cdwuo0VzsZC78oSXi+kOMxvUklJz/Fzt1pC5Oyy5w9Zcq9xOmu2jSHPVTOERI7r8QWzWsIB3uRk
+	RNzOP+KxxNXSPaVwQxOM3+JU9sUoYx+3mq05nfTJUx9TC6O7wnWGDnY4gwOBn3Yp0WBtRuqAi/a
+	MIy7h1RvdwkQl8ML0JyQA/MJ7feN/VrjjXY
+X-Received: by 2002:a05:690e:11cd:b0:668:96a9:e70 with SMTP id 956f58d0204a3-6699ac8dd0cmr8435506d50.51.1786028788355;
+        Thu, 06 Aug 2026 08:06:28 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-669913aeb1csm5180549d50.5.2026.08.06.08.06.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 08:06:27 -0700 (PDT)
+Date: Thu, 06 Aug 2026 11:06:26 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Alice Mikityanska <alice.kernel@fastmail.im>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, 
+ netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ Alice Mikityanska <alice@isovalent.com>, 
+ syzbot <syzbot+ce13c07d96d04716eaa2@syzkaller.appspotmail.com>, 
+ vadim.fedorenko@linux.dev
+Message-ID: <willemdebruijn.kernel.1472260eb7745@gmail.com>
+In-Reply-To: <a2f88a4b-4105-40df-a46c-f1bc0f67af1f@app.fastmail.com>
+References: <20260805205957.1652619-1-alice.kernel@fastmail.im>
+ <willemdebruijn.kernel.220b53c78c5f4@gmail.com>
+ <a2f88a4b-4105-40df-a46c-f1bc0f67af1f@app.fastmail.com>
+Subject: Re: [PATCH net-next 4/4] net: Fix UDP length overflow with PMTU
+ discover and big MTU
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-VHOST_SET_VRING_CALL releases the previous call eventfd inside
-vhost_vring_ioctl() -- it swaps the new context into vq->call_ctx.ctx
-and then eventfd_ctx_put()s the old one, which is a synchronous
-kfree(). The parent vdpa device is only told about the change
-afterwards, when vhost_vdpa_vring_ioctl() reaches ops->set_vq_cb().
+Alice Mikityanska wrote:
+> On Thu, Aug 6, 2026, at 06:26, Willem de Bruijn wrote:
+> > Alice Mikityanska wrote:
+> >> From: Alice Mikityanska <alice@isovalent.com>
+> >> 
+> >> This commit bounds cork->base.fragsize to IP(6)_MAX_MTU to avoid a
+> >> possible overflow of UDP length that triggers a WARN in
+> >> udp_set_len_short when setsockopt IP(V6)_MTU_DISCOVER is set to
+> >> IPV6_PMTUDISC_DO or IP(V6)_PMTUDISC_PROBE, and a large packet is sent
+> >> over a netdev with an unusually large MTU.
+> >> 
+> >> Steps to reproduce (included in the new selftest):
+> >> 
+> >> 1. Set device MTU bigger than IP6_MAX_MTU (or IP_MAX_MTU + 20).
+> >>    cork->base.fragsize will be set to that MTU in ip(6)_setup_cork.
+> >> 2. Set IP(V6)_MTU_DISCOVER to IP(V6)_PMTUDISC_PROBE or IPV6_PMTUDISC_DO.
+> >>    It lets maxnonfragsize be set to device MTU (cork->fragsize) in
+> >>    __ip(6)_append_data, rather than to IP(6)_MAX_MTU.
 
-Parent drivers cache the pointer handed to them in
-vdpa_callback::trigger and do not take a reference on it, so
-throughout that window the parent holds a dangling eventfd_ctx and may
-signal it. The documentation added with the field describes what
-signalling it means but says nothing about how long it stays valid.
+In __ip6_append_data I only see
 
-This is the same hazard that "vhost_vdpa: assign irq bypass producer
-token correctly" addressed for the irq bypass producer token, by
-moving vhost_vdpa_unsetup_vq_irq() ahead of the vhost_vring_ioctl()
-call. The producer token was only one of the two consumers of that
-pointer; the one the parent keeps via ->set_vq_cb() was left behind
-the free.
+        if (ip6_sk_ignore_df(sk))
+                maxnonfragsize = sizeof(struct ipv6hdr) + IPV6_MAXPLEN;
+        else
+                maxnonfragsize = mtu;
 
-With VDUSE the window is directly reachable from userspace, because
-the device emulation daemon can inject an interrupt at any time from a
-different fd, and neither side shares a lock with the other: VDUSE
-takes vq->irq_lock, vhost takes vhost_dev.mutex + vq->mutex.
+> >> 3. Send 65528 bytes of payload (+8 bytes of UDP header, +20/40 bytes of
+> >>    IPv4/IPv6 header). Device MTU allows it (it's only one byte bigger
+> >>    than IP6_MAX_MTU or IP_MAX_MTU + IPv4 header, and the device MTU is
+> >>    bigger than that).
+> >> 4. The UDP length in the built packet is 65536, which overflows the
+> >>    16-bit length field and triggers the WARN in udp_set_len_short.
+> >
+> > This is discovered thanks to udp_set_len_short, but is this a
+> > preexisting bug and the fix go to net with a Fixes tag?
+> 
+> You're right, it's preexisting, it can go to net.
+> 
+> For the Fixes tag, I'm not sure about the first occurrence of this bug.
+> It could even be as old as 1470ddf7f8ce ("inet: Remove explicit write
+> references to sk/inet in ip_append_data"), but I can't compile this
+> kernel with modern tools and check myself, unless I bring up some VM
+> with an ancient distro from 2011. And I guess, it could be even older,
+> as corking existed before. At the same time, something else might have
+> prevented this bug back then.
+> 
+> If needed, I can try to do this archaeology.
 
-  BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0x76/0xe0
-  Write of size 4 at addr ffff8881084e8788 by task vduse_uaf/2987
+I also suspect that this has been present for a long time, given that
+your repro does not exercise anything particularly new.
 
-  _raw_spin_lock_irqsave+0x76/0xe0
-  eventfd_signal_mask+0x69/0x120
-  vduse_dev_ioctl+0x337/0x1a60     <- vduse_vq_signal_irqfd(), inlined
-  __x64_sys_ioctl+0x120/0x170      <- VDUSE_VQ_INJECT_IRQ
+Definitely no need to try to reproduce on an ancient system. We can
+estimate the introduction based on code analysis.
 
-  Allocated by task 2986:
-   do_eventfd+0x50/0x200
-   __x64_sys_eventfd2+0x2e/0x40
+In practice, most important is that the Fixes correcty identifies all
+relevant active stable branches that could use the fix. If helpful, I
+can also take a look.
 
-  kmalloc-64, freed 64-byte region [ffff8881084e8780, ffff8881084e87c0)
-
-One thread loops VHOST_SET_VRING_CALL on /dev/vhost-vdpa-N with a
-fresh eventfd and then unbinds it, while another loops
-VDUSE_VQ_INJECT_IRQ on /dev/vduse/<name>. This reproduces in 5 out of
-5 ten-second runs on v7.1.6 and 3 out of 3 on v7.2-rc6. With the patch
-there are no reports in 3 out of 3 runs on either, while the same
-workload still gets ~30000 interrupts per run delivered into live
-eventfds, so the path is still being exercised.
-
-Tell the parent to drop the callback before vhost_vring_ioctl() can
-free the eventfd, mirroring what is already done for the bypass
-producer, and restore it if the ioctl fails -- on failure the swap
-never happened, the old context is still installed, and leaving the
-parent without a callback would silently drop that vq's interrupts.
-
-Fixes: 5e68470f4e80 ("vdpa: Add eventfd for the vdpa callback")
-Signed-off-by: Yu Zhang <yuz08559@gmail.com>
----
- drivers/vhost/vdpa.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index ac55275..b7833bd 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -714,13 +714,34 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 			if (ops->get_status(vdpa) &
- 			    VIRTIO_CONFIG_S_DRIVER_OK)
- 				vhost_vdpa_unsetup_vq_irq(v, idx);
-+			/*
-+			 * The parent caches call_ctx.ctx in cb.trigger without
-+			 * holding a reference, so it has to stop using it
-+			 * before vhost_vring_ioctl() drops the last one.
-+			 */
-+			cb.callback = NULL;
-+			cb.private = NULL;
-+			cb.trigger = NULL;
-+			ops->set_vq_cb(vdpa, idx, &cb);
- 		}
- 		break;
- 	}
+Aside: I was not even aware that devices allow setting a device MTU
+beyond ETH_MAX_MTU. But loopback indeed has no dev->max_mtu and
+accepts up to INT32_MAX.
  
- 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
--	if (r)
-+	if (r) {
-+		/*
-+		 * A failure here means the swap never happened and the old
-+		 * context is still installed, so give the parent back the
-+		 * callback that was torn down above.
-+		 */
-+		if (cmd == VHOST_SET_VRING_CALL && vq->call_ctx.ctx) {
-+			cb.callback = vhost_vdpa_virtqueue_cb;
-+			cb.private = vq;
-+			cb.trigger = vq->call_ctx.ctx;
-+			ops->set_vq_cb(vdpa, idx, &cb);
-+		}
- 		return r;
-+	}
- 
- 	switch (cmd) {
- 	case VHOST_SET_VRING_ADDR:
--- 
-2.43.0
+> >> Note: IP_PMTUDISC_DO with IPv4 is safe, because ip_dst_mtu_maybe_forward
+> >> always clamps at IP_MAX_MTU, unlike ip6_dst_mtu_maybe_forward.
+> >
+> > That was introduced in commit 14972cbd34ff ("net: lwtunnel: Handle
+> > fragmentation"), the message of which includes "This includes .. some
+> > mtu fixes" without elaborating on those.
+> >
+> > That introduced the same clamp in ip6_mtu. Which was removed in
+> > commit 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
+> 
+> Looks like it could be by accident, it's a refactoring commit. The
+> similar change for IPv4 in commit ac6627a28dbf ("net: ipv4: Consolidate
+> ipv4_mtu and ip_dst_mtu_maybe_forward") preserves the clamp.
+> 
+> > Tangential to this fix, but maybe that should be reinstated. I don't
+> > immediately see why the two would diverge on this point.
+> 
+> I agree; even though the output case should be fixed by my patch, it
+> might still be relevant for forwarding. Let's see if Vadim has any
+> comment on the history of the above.
+> 
+> >> Reported-by: syzbot+ce13c07d96d04716eaa2@syzkaller.appspotmail.com
+> >> Closes: https://lore.kernel.org/netdev/6a6a966c.86abc875.e5c3d.0054.GAE@google.com/
+> >> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+> >> Assisted-by: Claude:claude-sonnet-4.6
+> >> Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> >
+> > I only see this patch 4/4. Is there more that did not make it to the list?
+> 
+> Sorry, I sent it like this by accident, this is an only patch in this
+> submission.
 
+That explains. No worries.
