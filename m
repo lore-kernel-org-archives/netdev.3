@@ -1,187 +1,271 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F4623BD06;
-	Thu,  6 Aug 2026 12:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F87B2DECD3
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 12:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786020211; cv=none; b=mx8xTVvMj0hZF2AAH7/A8iiC3HrjdYykIn8UNNxyXyHpjYsP8skkX5OjMopJAVWKT7ID8VyRPU/wYw1uRY0PBN+9g7nC4y+NV1ESk7l6OAv63HVgxc8W8+6PhKzCppP3O1vhaeC0/QaUICOzXOHb+5lpIO7bVR9efg8Y2f4a4i4=
+	t=1786021084; cv=none; b=TUezfwDJ9nccKJt53LDlvg0EjxM1Cn8cLCh0i/5dJrTwPkOJz4fD/PVP+Hg7aD6LjhOjBOUDmv1PDoujktzAgB+jl2kSmXPgS2loal6fScc5zJcMOZDa7ZV7jempVGGoVog/H4TRDiX+q4EjVWm2/FsS29vOdJWJanJrupl1INM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786020211; c=relaxed/simple;
-	bh=DK0cqkFmwiEXsaiPBauXtuB9eUxCxcSyKeeVLE4Nb0w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K+VfCcHHJfH6bvVVnPOOL87w+34Z7MdxkFUTwkPGE2bhA8nej8roC9kDuG3HnvMaRG4kOubWEvYGytyDEZHDVRQI9jxUU5kjkoct1xv+C6lJBKfI7HRIO5WApxnatfef8dE9BIhNMG3suBgAZokEUtCsSorRnDr8qfOjCd7OCGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7IKnd37; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786021084; c=relaxed/simple;
+	bh=3al0HDOqY9ebkA4EOMVEdKxXeaHy538zLs06SWOiaj4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xe6BMECAT2/s1/0Kkt0ZWG1EANbQ4uP0f2f5C4ozkMbokFw94yfAt/23MqNGRVz/QD8Y7cwK3ISIbkeN79sPE9nRqnhWHaMkfDjmrMu+jrrfavzrHrXhL2fUYAJP3lo3AfbszWACAlSa69+fYjPmb7wFW+T5CWIEOqm/oaYqR+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fnub3ibJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=k44Vhiqq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7IKnd37"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6201F000E9;
-	Thu,  6 Aug 2026 12:43:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786020209;
-	bh=JoqeMau3HW0OzVxuPyJJqm+W627ZrvxUuvEC4cmRcEQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=V7IKnd37YedOHKea36qH8Zz2FT/QrvYvV5YaoV4bFM2O/19TRFR9qC6M4KG5DQAZt
-	 BvRH9sqTZtoCn0TPzXMtrgP9+QZfq3IrFR84//y7RisTLOgiKlSQza0PwEw39g3BeL
-	 9M0B1YQ78n8MzQpGZA8ycCEsJdvafKNRV5brPc+dyyn/hYRFzJSJHfSEKXN847vvrs
-	 EAK8fNG7e9q15NjVysv7EnM2rs0P3IIciV4YjNFFJCRWRiGhvm3RiyhWEosutwCFES
-	 vY/L5dY2C8NMZJ1nQIUa+C8EO3m1fKUXMBV1tRqfv87cXLKc+CxclnJEjIw4JVosQD
-	 lsUAX1O2TL7XQ==
-Message-ID: <202a6f62-6ffb-4f18-9168-66621b2963f3@kernel.org>
-Date: Thu, 6 Aug 2026 14:43:21 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fnub3ibJ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="k44Vhiqq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786021081;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6kbOMQBVAhPddh1fc9S9hVBoJE1QXhrm/1cN6yecgL4=;
+	b=Fnub3ibJib38lBkOeQNoTTXr+eLIpV/QxGCTNl2gpV+PIzP4TL//axXcCf77jvaH8CjdTO
+	OBQHKEGEz4Xb7V6UexIk3a6tXdlz9g6VvM5sGoX65g7btz/jTYvibJyYwZ0JtVdwbNMPDj
+	qgSrAyig4TXh7acaMr9Lcgm78aVyBpU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-612-VpvJgVUjOA-XJj_7CLceRQ-1; Thu, 06 Aug 2026 08:57:59 -0400
+X-MC-Unique: VpvJgVUjOA-XJj_7CLceRQ-1
+X-Mimecast-MFC-AGG-ID: VpvJgVUjOA-XJj_7CLceRQ_1786021078
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47fd4ee0ac0so1592505f8f.2
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 05:57:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786021078; x=1786625878; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6kbOMQBVAhPddh1fc9S9hVBoJE1QXhrm/1cN6yecgL4=;
+        b=k44Vhiqq9s5i0LCRY2ja6LZJqKePSKtxsYkZjDUa9Ir36zNzaPcvXHhBoEsGjiqCCp
+         zlMURqbjqzaTIsrS5PjoEbw708qI9wTYATo16mufr4CNuZLpILTJ+cWsTUeRHXZw9L5G
+         w9DuBVSdqZ5iZrA8bl80P1BxMTZBmL93elNqiRn6RG9NlU8TrlP/TqQM7MTefhBPN47p
+         B7ccGEigjBNvOIOF7krRl4V4XgrGm2PZVQRdPdNvB79TsC6bdbS8JRkb8GNJQMFIwReD
+         mYgoekzNeU4Qq4IW6ddsGLiiLtgY96HiQCYjAOJjEcbVlLCTRkTeQsR4KzKApwbuxyKx
+         qNng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786021078; x=1786625878;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=6kbOMQBVAhPddh1fc9S9hVBoJE1QXhrm/1cN6yecgL4=;
+        b=fAkNnAoLRXGek3POk7EiMcM73jMBbfAf9E0RWTBoaluAZLEQyJOHkQY4LabeFL3UZ6
+         H0ima133jlqlof1oXYSzyiqYVGd43ofFUgkCtf3BgBwKzscNz6cDSufmgh5mlgNecnNf
+         X7tqpzS1wkwe2wdtCTXrjbCQvanquvJM5HQ95JFRSj7duRfHycYcFxnWM3d1bcJk46K/
+         bPyzE//enJKkR7Obv3xPnqaXjeUXi2gyiU5Fu9kv/7MJa7wnGEfzyFqQzvvx+r7T/bN5
+         aMaa/mhyQiu+gxSZ4AxQFQZhpO+uEP8pucDBvm6TOKBQpQLtUrJfdqb1BkDrMna6TsRN
+         tutw==
+X-Forwarded-Encrypted: i=1; AHgh+RoK8iTyDQafQeOYQlLXKkwuegs2xZcaHnxVtSyCfAMFtHJ8MPoLU6hIir/ipw0gn7Y6aDFAmbA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDC2+1ZzYEgm7CcJhWCyCQIe4DopnfUEIWVjsE+qUKX7FnjIo+
+	ssT4cKlXa/3xNoP+lNhbetH+7e8dGPPKHQaZskYJ0aiUQdntc3ySs5VctsfBEYtnj4OLNku1vMZ
+	L85AjSRG2k+jz1bhQAqgjbwL32f+Rw7A5T6WGJvU5QpyUMYDvZ6BrWHr/rA==
+X-Gm-Gg: AR+sD13RhkJZ2FCfrGLAnn9noGRk1f8/JLtELw+Thmn2ldcK3pYbFdqADxNKw9/eXO5
+	BcG8dGSD6oT5yWiuMssqtS2u1mZ3oYw7dCxiayzqT1wAsWsfUuiDMUIsb9eMJo3SvNdirSbK8te
+	4EnCAIi/aX4ECOYI0r1jYVMgNs0Zn1uIzW/4LimMWGqIBCcSA6rcPKSbMVvhRRa54jgy0QezwDr
+	7eYaDUjS9E/AwOxB68xVKjEf+4OO/c44ug5tO9uY3EeSh9gtWhZQjAESZphMF7yVipPfdPDEKkv
+	YJH3sywxjDGFvoc7W9IAzpZeAoqVN25rc0nY/tDBfVGLGZ9dGFn/if8iMJ+hNT1hi02mSAAChGp
+	lh5I=
+X-Received: by 2002:a05:600c:4514:b0:496:bbce:f3 with SMTP id 5b1f17b1804b1-4994e71ed7bmr185171385e9.6.1786021078285;
+        Thu, 06 Aug 2026 05:57:58 -0700 (PDT)
+X-Received: by 2002:a05:600c:4514:b0:496:bbce:f3 with SMTP id 5b1f17b1804b1-4994e71ed7bmr185170495e9.6.1786021077713;
+        Thu, 06 Aug 2026 05:57:57 -0700 (PDT)
+Received: from sgarzare-redhat ([5.77.117.129])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49954206d9dsm70070355e9.2.2026.08.06.05.57.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 05:57:56 -0700 (PDT)
+Date: Thu, 6 Aug 2026 14:57:50 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: "Nguyen Dinh Phi [SG]" <phind.uet@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andy King <acking@vmware.com>, 
+	George Zhang <georgezhang@vmware.com>, Dmitry Torokhov <dtor@vmware.com>, 
+	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com, Michal Luczaj <mhal@rbox.co>, Wupeng Ma <mawupeng1@huawei.com>, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] vsock: use sock_error() to consume sk_err after a
+ failed connect
+Message-ID: <anSEfl9bG6HjlMpz@sgarzare-redhat>
+References: <20260804135238.386417-1-phind.uet@gmail.com>
+ <anLuRE4ix5-BZ7-t@sgarzare-redhat>
+ <b64dde64-8ae0-4b97-bd65-14da8d9cb5eb@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net v3 0/2] mptcp: fix request migration ownership
-Content-Language: fr
-To: Ren Wei <weir@nebusec.ai>, netdev@vger.kernel.org, mptcp@lists.linux.dev
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, daniel@iogearbox.net, kafai@fb.com,
- kylebot@openai.com, david.lee@trailofbits.com, vega@nebusec.ai,
- caoruide123@gmail.com, sashiko-bot@kernel.org
-References: <cover.1785995291.git.caoruide123@gmail.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <cover.1785995291.git.caoruide123@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b64dde64-8ae0-4b97-bd65-14da8d9cb5eb@gmail.com>
 
-Hi Ren, Ruide,
+On Wed, Aug 05, 2026 at 06:29:36PM +0800, Nguyen Dinh Phi [SG] wrote:
+>On 5/8/26 16:34, Stefano Garzarella wrote:
+>>On Tue, Aug 04, 2026 at 09:52:36PM +0800, phind.uet@gmail.com wrote:
+>>>From: Nguyen Dinh Phi <phind.uet@gmail.com>
+>>>
+>>>Syzbot reported an issue which can be reproduced with these steps:
+>>>
+>>>  r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>>>  bind(r0, {VMADDR_CID_ANY, PORT})
+>>>  connect(r0, {VMADDR_CID_LOCAL, PORT})   -> -1, EPROTO  (self-connect)
+>>>  listen(r0, backlog)                     -> 0
+>>>  r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>>>  connect(r1, {VMADDR_CID_LOCAL, PORT})   -> 0
+>>>  accept(r0)                              -> -1, EPROTO  (stale sk_err)
+>>>
+>>>Basically, it creates a socket (r0) and triggers a self-connect after
+>>>binding it. This self-connect fails with EPROTO because it loops back to
+>>>r0 while the socket is still in the TCP_SYN_SENT state, causing it to be
+>>>incorrectly dispatched to the connecting-client path. The unexpected
+>>>packet type encountered there sets sk_err to EPROTO.
+>>>
+>>>After that, it invokes a listen() call on the same socket. This listen()
+>>>call succeeds because the kernel's listening path never inspects or
+>>>clears sk_err. Then, a new socket (r1) is created as a normal client and
+>>>connects to r0. However, vsock_accept() rejects this incoming connection
+>>>because the listener's sk_err still holds the EPROTO error from the
+>>>earlier failed self-connect.
+>>>
+>>>This rejection causes the child socket created for r1's connection to
+>>>never be freed on virtio or hyperv transports; only the VMCI transport
+>>>implements pending_work to revisit and clean up a rejected socket.
+>>>
+>>>Fix the issue in blocking connect() by using sock_error() to read the
+>>>sk_err to prevent the rejection branch from occurring in this scenario.
+>>>
+>>>sock_error() atomically reads and clears sk_err, ensuring the error is
+>>>consumed when vsock_connect() returns and cannot affect subsequent
+>>>operations on the same socket. This matches the established pattern
+>>>used by other protocol connect() implementations in the network
+>>>stack like __inet_stream_connect(), tipc_wait_for_connect()...
+>>>
+>>>For non-blocking connection, vsock_connect_timeout() may set
+>>>sk->sk_err after vsock_connect() has returned. To handle it, we also
+>>>remove the sk_err checks from vsock_accept(). Nothing in vsock sets
+>>>sk_err on a listening socket, so accept() has no reason to inspect it
+>>>at all.
+>>>
+>>>Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+>>>Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+>>>Fixes: d021c344051af ("VSOCK: Introduce VM Sockets")
+>>>Suggested-by: Michal Luczaj <mhal@rbox.co>
+>>>Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+>>>Tested-by: Wupeng Ma <mawupeng1@huawei.com>
+>>>---
+>>>V2: Add reproducer steps to commit message.
+>>>V3: Fix truncated title and add annotations to reproducer steps.
+>>>V4: Remove sk_err checks from vsock_accept()
+>>>
+>>>net/vmw_vsock/af_vsock.c | 13 ++++---------
+>>>1 file changed, 4 insertions(+), 9 deletions(-)
+>>>
+>>>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>>>index 622dbd046799..594fe27d2ebe 100644
+>>>--- a/net/vmw_vsock/af_vsock.c
+>>>+++ b/net/vmw_vsock/af_vsock.c
+>>>@@ -1847,12 +1847,10 @@ static int vsock_connect(struct socket *sock, 
+>>>struct sockaddr_unsized *addr,
+>>>        prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+>>>    }
+>>>
+>>>-    if (sk->sk_err) {
+>>>-        err = -sk->sk_err;
+>>>+    err = sock_error(sk);
+>>>+    if (err) {
+>>>        sk->sk_state = TCP_CLOSE;
+>>>        sock->state = SS_UNCONNECTED;
+>>>-    } else {
+>>>-        err = 0;
+>>>    }
+>>>
+>>>out_wait:
+>>>@@ -1893,7 +1891,7 @@ static int vsock_accept(struct socket *sock, 
+>>>struct socket *newsock,
+>>>    timeout = sock_rcvtimeo(listener, arg->flags & O_NONBLOCK);
+>>>
+>>>    while ((connected = vsock_dequeue_accept(listener)) == NULL &&
+>>>-           listener->sk_err == 0 && timeout != 0) {
+>>>+           timeout != 0) {
+>>>        prepare_to_wait(sk_sleep(listener), &wait, TASK_INTERRUPTIBLE);
+>>>        release_sock(listener);
+>>>        timeout = schedule_timeout(timeout);
+>>>@@ -1906,11 +1904,8 @@ static int vsock_accept(struct socket 
+>>>*sock, struct socket *newsock,
+>>>        }
+>>>    }
+>>>
+>>>-    if (listener->sk_err) {
+>>>-        err = -listener->sk_err;
+>>>-    } else if (!connected) {
+>>>+    if (!connected)
+>>>        err = -EAGAIN;
+>>>-    }
+>>>
+>>>    if (connected) {
+>>
+>>Can this become an `} else {` ?
+>>
+>>Or just add a `goto out` when setting `err = -EAGAIN`.
+>>
+>
+>I will update it.
+>
+>>>        sk_acceptq_removed(listener);
+>>
+>>         lock_sock_nested(connected, SINGLE_DEPTH_NESTING);
+>>         vconnected = vsock_sk(connected);
+>>
+>>         /* If the listener socket has received an error, then we should
+>>          * reject this socket and return.  Note that we simply mark the
+>>          * socket rejected, drop our reference, and let the cleanup
+>>          * function handle the cleanup; the fact that we found it in
+>>          * the listener's accept queue guarantees that the cleanup
+>>          * function hasn't run yet.
+>>          */
+>>         if (err) {
+>>             vconnected->rejected = true;
+>>         } else {
+>>
+>>
+>>Should we update this comment too and maybe remove the `if (err)` at
+>>all. With that change I guess `rejected` is never set at the end and
+>>maybe we can remove it at all from `struct vsock_sock`.
+>>
+>>Looking at commit d021c344051a ("VSOCK: Introduce VM Sockets") where
+>>`rejected` was introduced, I can't see any path where sk_err is set on
+>>a listener socket, so I guess that path was dead since the beginning.
+>>
+>
+>That seems true, let me verify it.
+>
+>>So now I'm thinking if it's better to split in 2 patches (both with the
+>>same Fixes tag):
+>>- Patch 1: "vsock: remove stale sk_err checks from vsock_accept()"
+>>   Where we can also remove `rejected` since it's never set to true since
+>>   the beginning
+>>- Patch 2: "vsock: use sock_error() to consume sk_err after a failed
+>>   connect"
+>>
+>>WDYT?
+>>
+>
+>Yes, I felt the same when I was writing the commit message, but honestly I
+>didn't know that I could split it into a series when sending the new 
+>version.
+>
+>So, it may contain 3 patches, if the rejected flag can be removed from 
+>vsock_sock.
 
-Thank you for the v3! Here is a quick reaction, only about the
-reproducers, not about the kernel code:
+Yeah, or including the rejected flag removal in the patch 1 I suggested.
 
-On 06/08/2026 13:14, Ren Wei wrote:
+Up to you.
 
-(...)
-
-> Changes in v3:
-
-(...)
-
-> - Added a packetdrill MP_CAPABLE reproducer and decoded warning.
-
-Nice, very appreciated, thank you!
-
-I confirm they work well!
-> // poc for MP_JOIN:
-> 
-> // Minimal reproducer for a stale subflow_req->msk after reqsk migration.
-> --tolerance_usecs=200000
-> --non_fatal=packet
-> 
-> `sysctl -q net.mptcp.enabled=1
-
-Small details to help you next time to look at packetdrill reproducers
-for MPTCP:
-
- - You can add new tests in gtests/net/mptcp/<dir>/<file>.pkt from the
-   MPTCP packetdrill repository.
- - Then here above, you can add: `../common/defaults.sh`.
- - And execute your tests with run_all.py from the gtests/net dir, e.g.:
-   ./packetdrill/run_all.py -lv4 mptcp/<dir>/<file>.pkt
-
-These tests will then be executed from a dedicated netns, using many
-sysctl settings: this helps to reproduce issues in a more controlled
-environment.
-
-> sysctl -q net.ipv4.tcp_migrate_req=1
-> sysctl -q net.ipv4.tcp_synack_retries=1`
-
-(detail) Here, tcp_synack_retries can be set to 0, then the sleep at the
-end can be reduced.
-> // Listener A and the owning MPTCP connection.
-> +0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
-> +0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-> +0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
-> +0     bind(3, ..., ...) = 0
-> +0     listen(3, 8) = 0
-> 
-> +0.0   <  addr[caddr0] > addr[saddr0]  S   0:0(0)         win 65535  <mss 1460, sackOK, TS val 1000 ecr 0,    nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
-
-Also for next time, when validating the listener side, feel free to drop
-the TCP Timestamps option if it is not required (like what you did with
-the other test): that makes the .pkt file more readable.
-
-(...)
-
-> MP_CAPABLE packetdrill reproducer:
-> 
-> // Reproducer for MP_CAPABLE request token ownership during TCP req migration.
-> //
-> // The first listener owns the request created by the MP_CAPABLE SYN.  A second
-> // SO_REUSEPORT listener is added only after that SYN, then the first listener is
-> // closed.  The SYN+ACK retransmission timer migrates the request to the second
-> // listener, and a later request timer destroys the migrated request.
-> //
-> // On a vulnerable kernel, inet_reqsk_clone() raw-copies token_node.  The clone
-> // is not the token table owner, so destroying the migrated request triggers the
-> // MPTCP token ownership bug.
-> --tolerance_usecs=250000
-> 
-> +0     `sysctl -q net.mptcp.enabled=1`
-> +0     `sysctl -q net.ipv4.tcp_migrate_req=1`
-> +0     `sysctl -q net.ipv4.tcp_synack_retries=2`
-> +0     `sysctl -q net.ipv4.tcp_timestamps=1`
-> +0     `sysctl -q kernel.panic_on_warn=0`
-> +0     `sysctl -q kernel.panic_on_oops=0`
-> +0     `ip tcp_metrics flush all >/dev/null 2>&1 || true`
-> +0     `tc qdisc replace dev tun0 root pfifo >/dev/null 2>&1 || true`
-
-Same here for `../common/defaults.sh`. Then I guess you only need
-tcp_migrate_req=1 and tcp_synack_retries=2 (set to 0 to reduce the last
-wait), and "wscale" will always be 8 in the S(.) instead of depending on
-the environment.
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+Thanks,
+Stefano
 
