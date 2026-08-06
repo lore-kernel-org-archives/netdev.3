@@ -1,216 +1,168 @@
-Received: from outbound-ip173b.ess.barracuda.com (outbound-ip173b.ess.barracuda.com [209.222.82.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8441480328;
-	Thu,  6 Aug 2026 15:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=209.222.82.107
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786031695; cv=fail; b=VobMNOvIwtiojlacT9tzahjvgdzNpZBoiawkTz1xhkzRfHdVK+vQSUPvqA7lyjv3s/asDJnDXg2Rr4YXMrE89b587yYBY2hhDfjZCERQiGtfrvEEGL04ZQJLfPMhCCga+ja99+TY65rhPcyJyDQWBTuAjxrGmpKtO+w/X2MOKGU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786031695; c=relaxed/simple;
-	bh=F8WAOASE5pfJgLnJYV/ldxyLldrqscV4+BHzbANXd28=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B8E48424F
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786031700; cv=none; b=kKPDxLT/rasKUut3GViOfwvRLXtaTkrjvYm35W8UZd5gJp0w6QOb8bStzAvCMYXXJ8mXE8klt0OdvDVSH+1EMif+2mSAjAmXjmzSg5T1xPPH+pJt995xNrUh7RQUz30xpIvXv8YHIPVb5IeGFAsinueCykN3gotOJ2kid06S/N0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786031700; c=relaxed/simple;
+	bh=YMrJHqplVwx2kC/JKXO/7KKnLxRXDy7VoJSh3QW+AfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MplaZDv8BL8iSeFJg4t39WxdTdAPdgmanuEW9E4ems4as3LsDLGFICXgAPBA7WPMcXUmeG+c4dWmTM06BxJRbfVf5jTQgy4ZUEpe6F0zLsnR/cg21eqvHl+Rvthwa4pT0JUQKhZG3/wXGEPTy1C3v/vt6TgRspTH14hxBtJ9pl4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opengear.com; spf=pass smtp.mailfrom=digi.com; dkim=pass (2048-bit key) header.d=opengear.com header.i=@opengear.com header.b=HJsK0RVK; arc=fail smtp.client-ip=209.222.82.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opengear.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digi.com
+	 MIME-Version:Content-Type:Content-Disposition; b=owj3RkBzgMSry3N8u3jMjqNsC5nrIFsy73Q3YZ+Gp+tPg0A7kLNOvlirzDsPrXlg4VcF0xzIEUTCoxLnDrBC3SYPXJZO0UZM69UZTZsjBb72XUgMMvHMaz8g0sNVsWtvG+jyaxTBu5G3UL32A7ITZyBN8H2oOUobXI3OTRtB6EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k8TVrLPm; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=opengear.com header.i=@opengear.com header.b="HJsK0RVK"
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11021115.outbound.protection.outlook.com [40.93.194.115]) by mx-outbound21-228.us-east-2b.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Thu, 06 Aug 2026 15:54:23 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qVKIG258cLZ+7ZwAnIQS36rD+N2DLuKP3Afe9U/XBS83VUMfd0Ncgm64nUBf96XP5uGm1yThmZWg7G2ryAnISfHi/tT6bdE6s/1hQsF2n1/sGqLjmrXeJwhAw6xUpGjLV0i/ZdokumR+6h1GN0K4TcntIyGQkwRqRB62w8QV3Ojh/WUCNcvAPVy8+ofAJ9Pb1ETlQkePnpHEToSOT9ZC09FVrvC0TIMS/nYtryhdte466hDNsrIql1nECY0i9Bofy5Xww+92SJNx1B1ow7aZcQhKxN+e78Vp4OVp8bUrPsOev5qDRceOpMSfUvIna6T9HcffMQJDT0UdGtmPwWs+PQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZrXf8ytQN9M0y6knN7vGj8cIepeXbdx7GRq+XuirlEc=;
- b=CuGESj4gXwE4QQpnCxHE8DKUs/ltH2gkJxQPiIDBKxHg1srNPzBYF4B3EiKWX8xKCApnwX4fZiL2EXtbLH6MsjaMP5FUtovdnpgzCxy9TWeXayi35o6VyqN/5CJWTLXL0/ZGXU0Gvui2Iiw1ab1mrUCNnyVGW1jNJjKjkj7V1wEY9xH8yqYV8YN+dQhrkmP0F3hGIfiaX/psCuKL5UMGyWOXXuAlmwsDnb/pxgcuTD8XGz6hICzPMOiVS9A/t5Ab3anW9Ev3YL5zbYgP5zsBEmVaxYpvqQTWVqeuaHXLAKIo4Y9jL8q1W/ne6XwDA2UHVtLCJwJHlf9MDj8BlGdX8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=digi.com; dmarc=pass action=none header.from=opengear.com;
- dkim=pass header.d=opengear.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=opengear.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZrXf8ytQN9M0y6knN7vGj8cIepeXbdx7GRq+XuirlEc=;
- b=HJsK0RVK/+18zpHTAvtj4VV+n/Z0RYM8VavvU6PeVRYcYvVdm2PsTQRXWfN3gl0lxIXswbJeJm0uEUXtCpvy1IX9yylBJV3RiuGrk2y89BEXlxys4TQou8uM+8WFdUx/zBga9jI/Q0DNwuZjLSZeQolahL4tI+IoYFNfMyaUBrDsNekWimZmwvo0FhNFwi8qQ1iDF64EKM+rR+WBjZPcYeB17HlcINBXzaorHL9crou9TFy6IpRE0i5QU2J+24brbRlZLsKCpBS3XkQLXivZDyK2JWIhaavftMd81Rm0r3bGgXth2H1JQ8qiBAfuY7wLuf3BEJsdS2zg2qMPnAQm2A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=opengear.com;
-Received: from DM6PR10MB4139.namprd10.prod.outlook.com (2603:10b6:5:21d::24)
- by IA1PR10MB5900.namprd10.prod.outlook.com (2603:10b6:208:3d4::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.16; Thu, 6 Aug
- 2026 15:53:03 +0000
-Received: from DM6PR10MB4139.namprd10.prod.outlook.com
- ([fe80::19e9:d558:fd6c:8e5a]) by DM6PR10MB4139.namprd10.prod.outlook.com
- ([fe80::19e9:d558:fd6c:8e5a%6]) with mapi id 15.21.0292.018; Thu, 6 Aug 2026
- 15:53:00 +0000
-From: Peter Hunt <peter.hunt@opengear.com>
-To: mani@kernel.org,
-	loic.poulain@oss.qualcomm.com,
-	ryazanov.s.a@gmail.com
-Cc: johannes@sipsolutions.net,
-	netdev@vger.kernel.org,
-	mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k8TVrLPm"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d004f135b1so29343915ad.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:54:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786031690; x=1786636490; darn=vger.kernel.org;
+        h=content-transfer-encoding:lines:status:content-disposition
+         :content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=87/H9EMlwH5MQtLg4YoCYwZZh62cqUzZ27PH8DCBgO4=;
+        b=k8TVrLPmFzqy4CSP6J69MD9Jlb5vi0Un8F3KTYID8US4/GAxdvEdBAhnN4dE5fUNOC
+         ijrWq8k8Ot6+TIheLBVax4hy/nyrD+ag0OG/PCxhW6XUeSqUNxFy9GNljK3VmZMn7Pya
+         hs2OPzeeA5pjzGYq7i11UfOz1T2Y0hZ5bVNnuujF+5YnKEvIkAPWOXDpGIaar8+lJy57
+         pLww31FacbC1dVy9UcnEy7AgR/X+m5s5zWhtjDbmALj1aZxnx/5wp+g+SHIYBV7Nk65z
+         jTqsGO8s+mTYeu+y3De5yy6hqkK8utOAXkj5YEFv+9VgACaXs7jkZ8AXXi0qVgyJXrsi
+         fnmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786031690; x=1786636490;
+        h=content-transfer-encoding:lines:status:content-disposition
+         :content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=87/H9EMlwH5MQtLg4YoCYwZZh62cqUzZ27PH8DCBgO4=;
+        b=E7pfcZuwgXwqBgF4qhZWdGSWiVPt3mw3SjGNoghZZpKCK78ynoGopmGU8kajMoa8sS
+         ZYdpTIFmTP/ZjG8SZXXwtomBg7JGHHp7fOWQ580PQIo56SZ7SbCCFGdqHInuVZoNgW4d
+         7X3vX/9k3uQ1It8n7/FGcyt5aUzFZOJb9kiOmuvJCFoMKsMY4hJUS9y+wQAofOmuNhMX
+         PrUf8T2fZmZcVUWawALpv0zCvgsXU6hMT6MxxzGLLHRv7Lb6DPMVrJ3dD321JxAj7ILP
+         hAbhrCi1BQec4fLZo+lMGmcULMAmMctyUNyBk0Z3ytxydlS3vQ3Gd4ePsm5UHRqiXc3i
+         P5LA==
+X-Forwarded-Encrypted: i=1; AHgh+RrSgDfRl6uDxBfUghgukxa3szYBNrT8BbmUehpZgYX672lPWIaRrO5DACF/7xmXZYJQ1aI8pBs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziR7glTCGrGgq9yT2DXa61RIv9DpxYmmHjva9OlUmQXyVQE1tD
+	l+bhnr/6wI4yv2tNKyVRjTym3dXJFZAFOaJ9xktb8mEZsxYnqBq1sy+j
+X-Gm-Gg: AR+sD12B1vGldMcTf6ZxDvacipV9rYu0GbPrCT7+xaKEW66S/myY5x514+0YELxO2ei
+	Xru1dA/VxE+YNadKv65oF8HRxu9s1eTbhIq0N+htgrOIddNNjl2QVHdxcX6lAXMhD58ydATEl32
+	nc4d8V0JiebiaeAbwDAsVjhKvDgMXi2kHObIGrzufSngbtqW1q124XoR4W+Jk2+ls8DNBJaCph7
+	XJtVmCXqYFnOFaEWu6tQ5vzaARt2UFzpEH0/cgeiG1ZnaFXJe3ZnQxAzBW8B2bd86gG2S+y+kdV
+	FlrT1yBrZKQ747grLtxzJLGQaD2kZN7lx39mm1UWpFefxsGczj97INHkzZaOyqPcTV9xjp2uwrw
+	mQFhgLtD+bzkkS/Gz9NxNVpxU3GnQNTL6MtWMjR0nEAB2utJDP49PgL9mKj5Ie/Tb3zM006N/B1
+	AZfgwvRUUmPbREl09i/+/P8UGqq/hsMtG/4XMlQEIAqdGLUsICdkcp7Z0KylROVVapjA4QJwDNh
+	iAjtUd/TLh+H2jo2+r14WmODWP5wA==
+X-Received: by 2002:a17:903:4688:b0:2cc:f5aa:9513 with SMTP id d9443c01a7336-2d0ca7fbc9amr204312735ad.10.1786031689896;
+        Thu, 06 Aug 2026 08:54:49 -0700 (PDT)
+Received: from DESKTOP-VNSSJ2S.lan (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4c94d4sm33717415ad.65.2026.08.06.08.54.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 08:54:49 -0700 (PDT)
+From: Zhi-Jun You <hujy652@gmail.com>
+To: pabeni@redhat.com
+Cc: andrew+netdev@lunn.ch,
+	angelogioacchino.delregno@collabora.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	hujy652@gmail.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Peter Hunt <peter.hunt@opengear.com>
-Subject: [PATCH net-next v2 1/3] net: wwan: core: propagate modem control signals to port drivers
-Date: Thu,  6 Aug 2026 09:52:51 -0600
-Message-ID: <20260806155253.3378294-2-peter.hunt@opengear.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260806155253.3378294-1-peter.hunt@opengear.com>
-References: <20260806155253.3378294-1-peter.hunt@opengear.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH3P220CA0002.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:610:1e8::13) To DM6PR10MB4139.namprd10.prod.outlook.com
- (2603:10b6:5:21d::24)
+	linux-mediatek@lists.infradead.org,
+	lorenzo@kernel.org,
+	matthias.bgg@gmail.com,
+	nbd@nbd.name,
+	netdev@vger.kernel.org,
+	sujuan.chen@mediatek.com
+Subject: Re: [PATCH net v3 2/2] net:ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
+Date: Thu,  6 Aug 2026 23:54:30 +0800
+Message-ID: <20260806155430.768-1-hujy652@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260730090030.201100-1-pabeni@redhat.com>
+References: <20260724172040.1653-2-hujy652@gmail.com> <20260730090030.201100-1-pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR10MB4139:EE_|IA1PR10MB5900:EE_
-X-MS-Office365-Filtering-Correlation-Id: 819c1cb7-5368-416a-912f-08def3d2ca7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|6133799003|11063799006|56012099006|10067099003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	CzCvueTKjF8r4qEVgZ4cbkzsYVQgiUjy+nf8IsphkmuBev5D5QBKgVvodS0+654/WEmu9+eVW9YURt5nwWGFqZ1p5UkJNBNdfKyuGrV8C1o7Z8EGQ9gETHgRmchMQh64/0iAVbYbhFn0tpYKeDb3hNEatFbLYIgekeQNK2KqmR8sWengg9kuPwRPpmkl/jZ11RnD3rmQQcIdLYdlsuTdOcIy0UeDXzqaWwoNoUOQcnEncCVxHTtnGeyiazQIw/Q9n6vPW2Vb8xO5XgYcHQnDApw/EdzqlOct+5LIVCmgzolxrbIFr0cl0rMXXASt92AN7bNbj+/GEsSVi3LwdDUQWSWJcY4MWrZ+p8oDbbM6QAaYp0+J4UOjDg9zfvfK/wnj1dejMnFH5ouh+GuGuoygQOVGYt3XZKSc8oL5rlrTwVgzkEQdLBfx1Y6lQw2hcIgYuSbmrmliRSWwvLCb6YfK6HNNe0YBR9Uf5Ym952azDWRli7kxtPndDcxNEnHG55z57Akkge8qlpspSqxv6AK7lNaEv7syZp5MaLf5K1M0k55rZ5eInxko9N2heTp2D1mZ4iF3tCcRILfKGL5vFAiitmPP7yrcXvLDOkk+PAxohpITwpMVAd4yM60wywFiOzMAVvmtNnx7HfjJ+K5crC78tLm11mkWnSYvHvROcDmtBGg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB4139.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(6133799003)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e6RTGyVvKqZ9CpipTsb5FY8cCBCLt3fFKsgyLs9T0WP/+oPgAfgv+2KPXOau?=
- =?us-ascii?Q?MaJjVwnMufZhIL3LF+zW2sGcFYrsdGWyC/jDoodsQXCHcCC8jj6ld+dNSSj3?=
- =?us-ascii?Q?gnInRQZmE9Szsqk738ne5MT1wSXHo3ZmsAZtpE08H6zXzCv/pmQLH/f53wMx?=
- =?us-ascii?Q?tP0hVUDibFZldveC4fFlBSEiLgpxcyvzFXJKqmqWXPrlyuFPUF26/CoGlvPx?=
- =?us-ascii?Q?77V0rM00hX6ecdhx5BFG1+P9lSFa+cKRMaY9/LImFjxbQxdVR0Ln+JHVpAWo?=
- =?us-ascii?Q?yS4Uz3tLxZwJoEu8QhloumvbWFvpXnJfgHDAMcdM+EmYJmGFYiWZYO6HtrTM?=
- =?us-ascii?Q?zx+7qtuLwaLkl3V3itbxJXd+v4tiLBRk7LbD3L/EM2dT1BH6TWJBpxurU2yS?=
- =?us-ascii?Q?YNggKI2USQIuEK9+EDHOg4EtCIBTPhPr6S62bExWWjfugxeCSGAeDIunNMlA?=
- =?us-ascii?Q?8tv5x6oeDz6fikF1lplF/mt0bvhQUR6F1O4fptYboy0ihJZrHHyLnPGke+BY?=
- =?us-ascii?Q?8kv1CJ6OEQFGXSG3btJd0r70k9qWwzAglUM0mTW4JVSLL20sydjXcv2GqJT6?=
- =?us-ascii?Q?PtuDshvY6TRashTXvygV2waUTYXXrMc21ONfZselgod4YD8s0MQ0PSLwDemm?=
- =?us-ascii?Q?Wq5LkEkgDTEr4XQDDr+Wnrl7bAqeRcFUN5G2UPdZPIbq5DIPrUb9NcSBPTCh?=
- =?us-ascii?Q?uwm5RIZmoB5O5K2htiVSw93T3jx85qKxCVr4/FJqiugnRXkh4V5laqu6REV+?=
- =?us-ascii?Q?8b372sfa9qiPTrcZMwtbM3/kauEcLUbkZGacEOhvWlp7QIcl+jL0BtFyW9XH?=
- =?us-ascii?Q?oKzkN5C59X7ScZ47AkX0HOX9OoRh1ueFQdWRSZjkYJiCzaBKKU3Oni4ai3fb?=
- =?us-ascii?Q?VYrLsdgUeL66hJPn/9U9upo9VZd3E+8ZPWvWl9sypbWXRtmH9kxM3/BAdciq?=
- =?us-ascii?Q?eQAxIOOQtjZVd69cPzCrAbOTnfDm88F5pra6dZh4beKCaSllEQeCMNdbbvT6?=
- =?us-ascii?Q?DKVBWHtuRHyB4kGV7Ro1fS2V9IxY+Kd0CqHC4Fq4YX8hHT+gMBslQ5jeaaxe?=
- =?us-ascii?Q?rAG3sMp2sNzq3/HHcpdw1sE9BYzdDanUJ+xvVTuorgbhiGICYhxbhfHTUP6b?=
- =?us-ascii?Q?ocivipxrHOMQLuaq7GWq0+e4FKV3TBKd5bSOsaOh1ykym6kAeZuBvsOgmTNI?=
- =?us-ascii?Q?gjru+8Yr+LRh5hftmQvVlLt9E7nuDQZ8UCMdLsiFknc3V2hO5EEhycVyfXHZ?=
- =?us-ascii?Q?+eqKzzeufIHw3yY3h8qH+iynZhn3pJ/A82nnGPGKK3ANMLVneo6a1/LKShtj?=
- =?us-ascii?Q?rS8co6G6NzkzMiMFndCq7fc9YUXRB6wKUt4XjeH3Ml1cWLZ3Vz5DxOVmzwTZ?=
- =?us-ascii?Q?qBXePSfTlUnyHP5ppEnEnhk431EoCVWZVQJF+gyVuWvzw1zqpyoSjAYRItdm?=
- =?us-ascii?Q?Ep1aYqghK4g8VajUp6klC3vL0ZzpHMrT+QhhZSaAZkCBbJIpUPum4YPMXK7y?=
- =?us-ascii?Q?Ab0M/stj6y28YI/2V17Vr/IQvsbNwXcD1q4nuH37U3pwtLyWHQpMvm7E/MYB?=
- =?us-ascii?Q?m8TMK0NqM42/jXGTt5nBpPaYZ/7He5TCQ8pi3LmnQucP1C2MKRtwKRUvuEEv?=
- =?us-ascii?Q?CEH6UAgrYLA3vLN4FCwVo4MvbVF+mEk0X/YRHYx3hiiPc1YzxkmyFCbPFReI?=
- =?us-ascii?Q?JyUjl4AW85Y3PRnvJlA+QsOibwOKoBVOH7sPQB+/yRX3t05J?=
-X-Exchange-RoutingPolicyChecked:
-	i6ug8cAfPJ8KL8xjI4nrQhGrrF7eFBhI6kfallpq48Ogxzs2Ba//OSfdiZoxHX8jNbRJoELPbKz6/l244JpWQJsOaNzY1RLaoEN5Xk/93nwcMETaGjlS2vlOOB5JCkPsdvZW5OTN0y+Tx0PwCj602S/WwMIgsA/Rso9W2sjTM9qXQyLyT3kVgqAPtEm8TVRpXro7cXGSnAQCX0jCedcqJ++JX5dDM5VuMz9WQmGuU1kPXGOWUSTbfqiksHfw3zs877xac9uptyfSH3yNpBWuUuohBF6IIKmbNoOjNc29I4Gphkyy2bcjSPGf9NsXJvxcXnc3v9u53gYO3y84hEL+Ug==
-X-OriginatorOrg: opengear.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 819c1cb7-5368-416a-912f-08def3d2ca7b
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB4139.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 15:53:00.0557
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: abb4cdb7-1b7e-483e-a143-7ebfd1184b9e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 59jzLCAfiN85AoAWa6ILZwKI/vaW+RriMs71dP5UpCotiuEu+BnCXCIuRWkG/ydU
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB5900
-X-BESS-ID: 1786031625-105604-7725-24966-2
-X-BESS-VER: 2019.1_20260804.2006
-X-BESS-Apparent-Source-IP: 40.93.194.115
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVkYWloZAVgZQ0MTUwtwgzSLFPM
-	UgJc00ycw81SzFxNzI0DTV0MTE2NBSqTYWAO3BwnBBAAAA
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.275190 [from 
-	cloudscan9-227.us-east-2a.ess.aws.cudaops.com]
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------
-	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS112744 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status:1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mutt-References: <20260730090030.201100-1-pabeni@redhat.com>
+X-Mutt-Fcc: ~/sent
+Content-Transfer-Encoding: 8bit
 
-The WWAN character device emulates the TTY modem-control ioctls
-(TIOCMGET/TIOCMSET/TIOCMBIC/TIOCMBIS) for AT and QCDM ports, but the
-result is only stored in port->at_data.mdmbits and never reaches the port
-driver. A driver therefore cannot act on the host raising or dropping
-DTR/RTS, even though some modems depend on it (e.g. they withhold
-unsolicited AT result codes until the host asserts DTR).
+On Thu, Jul 30, 2026 at 11:00:30AM +0200, Paolo Abeni wrote:
+> From: AI Reviewer <ai@example.com>
+> 
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev/
+> ---
+> --- Patch [2]: [PATCH net v3 2/2] net:ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986 ---
+> commit 30cd2d1bc8bf876e5d201d631684431920a3f165
+> Author: Zhi-Jun You <hujy652@gmail.com>
+> 
+> net:ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
+> 
+> This commit fixes an issue on non-DBDC MT7986 where WDMA_RING_TX(0) is
+> never set up because idx is 1, even though it is required for WED RX to
+> function. It addresses this by explicitly calling mtk_wed_wdma_tx_ring_setup
+> if the WED version is v2 and rx_ring[0] is unallocated.
+> 
+> Link: https://lore.kernel.org/r/20260711112128.971-1-hujy652@gmail.com
+> Link: https://lore.kernel.org/r/20260630144831.1109-1-hujy652@gmail.com
+> 
+> > diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+> > --- a/drivers/net/ethernet/mediatek/mtk_wed.c
+> > +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+> [ ... ]
+> > @@ -2334,6 +2334,13 @@ mtk_wed_start(struct mtk_wed_device *dev, u32 irq_mask)
+> >  		if (!dev->rx_wdma[i].desc)
+> >  			mtk_wed_wdma_rx_ring_setup(dev, i, 16, false);
+> 
+> [Severity: High]
+> This is a pre-existing issue, but does this code ignore the return value
+> from mtk_wed_wdma_rx_ring_setup()? 
+> 
+> If mtk_wed_ring_alloc() fails due to memory pressure, it returns an error
+> without configuring the hardware base registers. Because the error is
+> ignored, when DMA is later enabled in mtk_wed_start(), could the hardware
+> attempt to fetch from unmapped physical addresses and cause an IOMMU fault?
+> 
+> >  
+> > +	/*
+> > +	 * non-DBDC MT7986 allocates only rx_ring[1] and tx_wdma[1] during setup
+> > +	 * but tx_wdma[0] is also needed for WED to function.
+> > +	 */
+> > +	if (mtk_wed_is_v2(dev->hw) && !dev->rx_ring[0].desc)
+> > +		mtk_wed_wdma_tx_ring_setup(dev, 0, MTK_WED_WDMA_RING_SIZE, !!dev->tx_wdma[0].desc);
+> 
+> [Severity: High]
+> Does this new call to mtk_wed_wdma_tx_ring_setup() also need to check its
+> return value? 
+> 
+> Similar to the RX ring above, if mtk_wed_ring_alloc() fails to allocate
+> memory, the hardware base registers won't be configured. Since the caller
+> proceeds to enable hardware DMA regardless, might this lead to the WED
+> processing descriptors from unmapped memory and causing memory corruption
+> or a system crash?
+> 
 
-Add optional ->tiocmget/->tiocmset operations to struct wwan_port_ops and
-call them from the AT/QCDM ioctl path. ->tiocmset is passed the resolved
-TIOCM_* bitmask after BIC/BIS/SET has been applied; ->tiocmget, when
-provided, refreshes the cached bits from the device. Drivers that do not
-implement them keep the previous store-only behaviour.
+I am not sure how to proceed with this.
 
-Signed-off-by: Peter Hunt <peter.hunt@opengear.com>
----
- drivers/net/wwan/wwan_core.c | 12 +++++++++++-
- include/linux/wwan.h         |  4 ++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+Can Felix or Lorenzo comment this?
 
-diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index ffbcf11e4e68..bf83eb5790fe 100644
---- a/drivers/net/wwan/wwan_core.c
-+++ b/drivers/net/wwan/wwan_core.c
-@@ -1018,7 +1018,15 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
- #endif
- 
- 	case TIOCMGET:
--		ret = put_user(port->at_data.mdmbits, (int __user *)arg);
-+		if (port->ops->tiocmget) {
-+			ret = port->ops->tiocmget(port);
-+			if (ret >= 0) {
-+				port->at_data.mdmbits = ret;
-+				ret = 0;
-+			}
-+		}
-+		if (!ret)
-+			ret = put_user(port->at_data.mdmbits, (int __user *)arg);
- 		break;
- 
- 	case TIOCMSET:
-@@ -1036,6 +1044,8 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
- 			port->at_data.mdmbits |= mdmbits;
- 		else
- 			port->at_data.mdmbits = mdmbits;
-+		if (port->ops->tiocmset)
-+			ret = port->ops->tiocmset(port, port->at_data.mdmbits);
- 		break;
- 	}
- 
-diff --git a/include/linux/wwan.h b/include/linux/wwan.h
-index 1e0e2cb53579..bac02521e274 100644
---- a/include/linux/wwan.h
-+++ b/include/linux/wwan.h
-@@ -57,6 +57,8 @@ struct wwan_port;
-  * @tx_blocking: Optional blocking routine that sends WWAN port protocol data
-  *               to the device.
-  * @tx_poll: Optional routine that sets additional TX poll flags.
-+ * @tiocmget: Optional routine that reads the modem control lines.
-+ * @tiocmset: Optional routine that sets the modem control lines.
-  *
-  * The wwan_port_ops structure contains a list of low-level operations
-  * that control a WWAN port device. All functions are mandatory unless specified.
-@@ -70,6 +72,8 @@ struct wwan_port_ops {
- 	int (*tx_blocking)(struct wwan_port *port, struct sk_buff *skb);
- 	__poll_t (*tx_poll)(struct wwan_port *port, struct file *filp,
- 			    poll_table *wait);
-+	int (*tiocmget)(struct wwan_port *port);
-+	int (*tiocmset)(struct wwan_port *port, unsigned int mdmbits);
- };
- 
- /** struct wwan_port_caps - The WWAN port capbilities
--- 
-2.43.0
+Best regards,
+Zhi-Jun
+
+> > +
+> >  	if (dev->wlan.hw_rro) {
+> >  		for (i = 0; i < MTK_WED_RX_PAGE_QUEUES; i++) {
+> -- 
+> This is an AI-generated review.
+> 
 
