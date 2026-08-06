@@ -1,87 +1,58 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CD4327C13;
-	Thu,  6 Aug 2026 14:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD63D378D8A
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 14:15:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786025583; cv=none; b=ln/h1eDEMTzhku0NNvKvZ4yee5G0wIF9dTQicWDxlxf+UEYNJ53K2VHZgYI+iwsl8UCtQdqyZ9aL0ebMxb1WtwRh5mxpE/8XMAWgLFjFHAK6+3kL1nrqAKeTfD1Gj3l20eS2LS/Kdi2nakzGFIPRybbUXvvZOnAmzybTWEf3PNA=
+	t=1786025721; cv=none; b=uWZc63OvrqHDt2z3Nt+rjpEyQ5avZSvHQtG5idQwwbpa603nGtJeOGY+nUPMg103s/FhggoxicVWxv6AVTWkkyjRWAdZRrkh/tPDnF/wwSYAMQJWb0e7wCBby3yCXHLkxYiQTUE3/U52BEkMpwkjj/MaIBLF8RMpXW3zqzB3JpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786025583; c=relaxed/simple;
-	bh=YJaunE3oTPQ3gffzKmm3eA1vuU19wjIh21oZNkffK6s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=klPnQ53NXMmuDypJWql6Czl7h5gZppHiabXynRJd+fUZv2TTHHRV1MBEIVRSOHxCxRT8g5w5cCK2X5vbkxcCm06f2M3RZGxe9PSArmgHl1egRwILaFBmgVPkJXIgHnIIiC3wkQa2+o5huoUCpFfPrOLK7KTKh4rvwqm/l0yqgPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=30OvKTZ9; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786025721; c=relaxed/simple;
+	bh=u2zuK/HNAcnf6WPNTpYq2EyjgC4S4xFOQoD7odLKQHA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H9pzrz0Y71SEfFQnHm4q4epeHlwxeO83JTMGxiAvgjQl9cxJkiUjCygqJgLZFxreKe1duvOQmlDWCReLgS66c8aqg2n6Bwzrqzrg2bLvt/VtWKrIKOw5I502idXYO0n8vsEns4FL1bW8C6ZUy4/ijyMa7uYyhNQqsaxQwhFyUDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mPYPAhI3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="30OvKTZ9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=121xU5dcoWPrnt5d8/n5EIpr7xqyUdpe+00oIJZeCSY=; b=30OvKTZ93ZAPzN2IIMTu+j4NtB
-	mYGNYIseKxc/5Cq2OnDfvDU8DuE887YGRWosXKtoxv1KshILhrzgzIugsM21ioKDH648tG0d2/PL8
-	rC6kk1THIiQy0lfeLLry54someGZ/uVlub7ZKjcVWhn2Y2GVFAimr4mGkwE8mO+rahFI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wrypw-00GO5x-3Q; Thu, 06 Aug 2026 16:12:44 +0200
-Date: Thu, 6 Aug 2026 16:12:44 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl83xx: add support
- for enabling supplies
-Message-ID: <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
-References: <20260806140239.3518906-1-o.rempel@pengutronix.de>
- <20260806140239.3518906-3-o.rempel@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mPYPAhI3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D7F1F00A3A;
+	Thu,  6 Aug 2026 14:15:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786025718;
+	bh=3KiDbqseCfcmYqL7PGKFGETEHd9/l1HXzdoXIYkaItQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=mPYPAhI3AWeyogYshJKtvX2+4lBj8AaUbdzVbWYsysO6hUp8VqMQE7wxodb/fDZwJ
+	 RjxifdxUDd+3Q0fbAmLzGB8wEa7X7Bjoqp1Uu1cTsqy8h9vmkTHiqwfAiiR3kRU2Og
+	 NX+mduAgYxnNLG2ztrmPT0SEk+M3xlTU68gwweX9YeBXZKCItyiHEREqr9AHFzXXMq
+	 bfKkX55NFA09H9kNcaiQoeyCaEhqUYdR6cXWhEzQjMf94tyvr5QCMJH/u/77dKw/wT
+	 kSwqxQFXCCm7cvK1MoubU73TrUZAZN2hrZgI/ugF9AlgJEWOQUzgAWAM9KvNTUO91W
+	 /fOpJct69y8Bw==
+Date: Thu, 6 Aug 2026 07:15:17 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ren Wei <weir@nebusec.ai>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, vega@nebusec.ai, edragain@163.com
+Subject: Re: [PATCH net RESEND 1/1] ipv4: reject RTAX_ADVMSS values below
+ TCP_MIN_MSS
+Message-ID: <20260806071517.06ae9713@kernel.org>
+In-Reply-To: <a2e93ae9003f33bf49b789dbd537f4a6c10f26fa.1784972917.git.edragain@163.com>
+References: <cover.1784972917.git.edragain@163.com>
+	<a2e93ae9003f33bf49b789dbd537f4a6c10f26fa.1784972917.git.edragain@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806140239.3518906-3-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> +static const char *const rtl8365mb_supplies[] = {
-> +	"avddh", "avddl", "dvddio", "dvddio1", "dvddl", "pllvddl", NULL,
-> +};
-> +
+On Thu,  6 Aug 2026 12:13:38 +0800 Ren Wei wrote:
+> Subject: [PATCH net RESEND 1/1] ipv4: reject RTAX_ADVMSS values below TCP_MIN_MSS
 
-> +static int rtl83xx_enable_supplies(struct device *dev,
-> +				   const char *const *supplies)
-> +{
-> +	int i, ret, count = 0;
-> +
-> +	for (i = 0; supplies && supplies[i]; i++) {
-> +		ret = devm_regulator_get_enable_optional(dev, supplies[i]);
-> +		if (ret == -ENODEV)
-> +			continue;
-> +		if (ret)
-> +			return dev_err_probe(dev, ret, "failed to enable %s supply\n",
-> +					     supplies[i]);
-> +		count++;
-> +	}
-> +
+I think you reposted this with an identical message ID :/
+We use message ID as the unique key for the submission, this isn't
+going to work.
 
-I've never used it, i've no idea if it is applicable, but there does
-appear to be _bulk_ calls in the regulator API, maybe which is similar
-to the clk _bulk_ API?
-
-Andrew
+*Wait 2 days* for feedback and then repost again, using a normal
+client, which understands email header semantics.
