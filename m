@@ -1,181 +1,218 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010021.outbound.protection.outlook.com [40.93.198.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EA01C2324
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:19:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786040373; cv=fail; b=pC43TgciG61OwvWqOXkoEWHrqXefuFWcFqw6VtgquGBtA3x07EwfTe0PeQl2XlbNgQIV4YZ/oix8PSgCbuVJ7wuiCPOOrl3Xc7N8SBOaYogvrtXxcdAGAXwfMzJxA1W1pehzJB0DCEVtGYb4E1yJIfq7JqN0zYzt5OfJJ+tyB78=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786040373; c=relaxed/simple;
-	bh=B4Go834oYsgfrGTMPCP5fArH91GkwnBRcHaiLDjz3rs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sU7F/hHkkDXATB1u5SMhhmzxypnNvlC8ihPgnK1Z7ec/NWm2YhajewHtz/SsTfOoHWBahJOXaM4zbaWHEDaWp1Xta1d+Ch2XDAGjHHn3aFcLFM+0M4Pzqadnpk1mpEEgWUSS7g7LeU97oZB/Lc64L0010tUNAwvwZSRnaXfWMJA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=i01XDMmA; arc=fail smtp.client-ip=40.93.198.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0360F48A2D1
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786040566; cv=none; b=LCBjfWAJHSQ1d6zpTxkbenNpB1ZELyOuegI5RZTOJCIWZ584gVif9d9Ie8Chr5hR30bUj7kwho5DEIS/XfVuylw+OpL2U3NwXhG5xFsMApZbpQhPpRRYD4vUFInF/WQNDqgZO1w4Zw6Sop06yYqO9yiiTgcLFK99vqwQHlPG7o8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786040566; c=relaxed/simple;
+	bh=EQ7JJcNfGobpRBKLruxZxyQYlNTVRpJsh8Fv6F42UfI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f/bOQHBdsoXIJlInWFmvchf5CZVYixBtQi2z2kubo+8V83u9cR17ibe+uU4rQSq7c59iXvh2tzEZCJUXEnRtO2xn1dH/l3XIlFbosRcsIAg9IsE4wGTw4VnEBUpKvadzANbyp6wd4+JdL6VD8Wh4T1DNQt59qoEB0nWGdFlp37c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pJ2wR/Zz; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="i01XDMmA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y354S5Bc+jzQRkCxR8/+3iBR4pddico3qhaPVp2JgAGrLodPgmM6JUulKo6E1dNRWjaQ5tF3rdBwlgPVmnZ9s/NAkzZBnIOaUUnpeMva1HZKP7LV+vrvKMcFJuvOGAXSiJZIisJwhO1KI2yizuip/NVRyjnX3d0wlaJ5hOIDYKS9eH3Sv9QJfXjzyXZSVI+4KXR8+v0Sxpiw7v39JtzoDqiuxLfJubwZKNsFA9wive0doN7wn/ttQM9WrkXNc77gRxd+tu6VpRmSU1Jvf/E/ZWMKDtNG+fY/gkVvXtYZtVkQ7p6Oep4tAztKMZfCYM1tK39CPTGPptz7p7ExBYLa+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3cd6i7Eb9b9ghPh0I3LMj3U7rAzK54b0OzDOmu8wtzs=;
- b=HP8ZX/9pSse8cw0dGhKfKG6Vjt5fLX8j+WawbFWDfDEj6zOsi/jfo9TssctYQn/IvY/N1t8eE62FnFD7O6ExoQHSdMS1F2EICoVIap3N7GRc2G+upfrVvSaKMP1h84kM0hwG6dSIyY6pgrSXpd0YumuxcSBCbpd1Quy9/yDMv04sL1QIq0NepGez6PZSeBDVwGG6JR18YvWvlbcreR0ZkWczZmrJWDAjt0CDEc1J/q4+78M7M7TLIYSM7jjHO7cifFvJVzW9oJDkFG8yrGxTfpwPTJkv9UtSM5VAUS1a2QZ15QZOE05gROFWUn2rhkZhprhTOxZcub0iARrxofaC6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3cd6i7Eb9b9ghPh0I3LMj3U7rAzK54b0OzDOmu8wtzs=;
- b=i01XDMmAid06NyN0nbsKFvI+k+Yiv87X9UqNvrlIBd92UTExn0vwuEc8zwQea9a4FbLfJS8pIlFjcvM/C61blb3JRuAzoLRiwcKq1UuJf79sE1ky1CtGjylBncpmQvfVVI5QB6yt8CyELM8YJL0AHsWLZOSfJIxO7qGDcoaP5np6Usay/SKxgAz3mWD/7qfIOGVOgrjghnm6Ka1mzvLwt22Nr7JfVSuTCRU596oIlxVWGHO3R+Ju3drnR9GtAWDf9zUDjaBofe5zGwvK04elhDxt8rCW9RSzc/kPdqNJpHH3jIjBvsoXJko05K0oLieYDoKdJdvj0Lry2rIVAbbF4A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by CYYPR12MB8855.namprd12.prod.outlook.com (2603:10b6:930:bb::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.16; Thu, 6 Aug
- 2026 18:19:30 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0292.019; Thu, 6 Aug 2026
- 18:19:29 +0000
-Date: Thu, 6 Aug 2026 21:19:18 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: zhilin zou <zhilinz@nebusec.ai>, Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
-	edumazet@google.com, horms@kernel.org, tom@herbertland.com,
-	vega@nebusec.ai
-Subject: Re: [PATCH net 1/1] ip6_tunnel: use skb_cow_head() in ip6_tnl_xmit()
-Message-ID: <20260806181918.GA2060872@shredder>
-References: <cover.1785734738.git.zhilinz@nebusec.ai>
- <7f099879785257f4d57d6caf9b6308fc76c7aaea.1785734738.git.zhilinz@nebusec.ai>
- <20260805090721.GA1364862@shredder>
- <20260805172902.27c9bde0@kernel.org>
- <20260806085214.GA1748060@shredder>
- <CANB6i5xN-rrcVe9foAJ+nUP-6VLrgXa90kwh5banCUVDOwG=1A@mail.gmail.com>
- <ae905b11-1b13-4f3e-8705-8a8c2ea7f54b@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ae905b11-1b13-4f3e-8705-8a8c2ea7f54b@redhat.com>
-X-ClientProxiedBy: FR0P281CA0206.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ad::15) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pJ2wR/Zz"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-495635a85d2so21485675e9.0
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 11:22:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786040563; x=1786645363; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=G5M14lldlo4edE1Inq08j5CZxhFj4ORfcjPmMog4vd4=;
+        b=pJ2wR/ZzaNVeb5G07P1LMrqtxGhsB7uvteOlJLJSfZQBiqS4ziYRPT5H46g/LQ4+u6
+         DEzN9netzB5z0MwMtUcUjvpjWqVMElT2PntfAilk9mi3dXnq2rut2Jbi6gkUjuYsrrs5
+         P54/h7UmDWavRwVSn8atEdSdbZtHZL1PD01YdAPr1XMfzLC4+LCyFayIE4/bDAiFS0Cn
+         jz4wsoTiFWLunnirw91/LK6Tv+yWDihpfAA1zatTj36K6mFCcFfkPiY7B3Ykg/hNauzc
+         x+SAjmNhUF2sq1q7rfCp6/QN7+I+Jz+w5vlY0uvNFLcrB84jh51FUzdzqDgtAaBofcGU
+         3Hng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786040563; x=1786645363;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=G5M14lldlo4edE1Inq08j5CZxhFj4ORfcjPmMog4vd4=;
+        b=NYMYgjnU0JIV53OFEViW+GYNVwjxCD+owQftVO1ccM2GsbbSkP1xlRS8oCTtNkz65B
+         ps6zFcsH37eum3KL1d/Hk4ezWnbIPU/2GZoyv2srso5eJKWVCU4R81U2P6UuhSZpAz7K
+         uSFNOc3skbdfM8xbiVisvo2JDVHhZHBRfHP+hey1DtM0MuubtXvfoWG91NVvMWP9d9pe
+         IqHo1mi3O8kWWyw0SxCgNNdoonSGTD0BoyAP+HbAaAfP5DWaFJ/Bm1uNch2DFnvJdyDf
+         2O8ZmB5uMoI29MQw0566K9mH9PUk9dT6kn0AdpaOizalNUgmZpYt4cLxvcenfIlC2NCs
+         HHMg==
+X-Forwarded-Encrypted: i=1; AHgh+Rry0rt9cIZb6m6zusS/DI0yfD9MZ/sl4UhSk5IxxG17XVnVhxbLbf0NlAmrM5QA0VMxRCAAMZ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdhIbVRBmkA+whqykVjLgbgYbFt7htfg22sBzoEysuukQTfZnD
+	CIIaWbQ1jV0XHgaJ0FVJdFhLMdtkoTeNLjf4NjRad5sznb505Q1SZ+ES
+X-Gm-Gg: AR+sD12oaTN9j8FqTDF5Qz1zvAN/X8EWjiNqviyOQ0ijoFtHixWSWU3/9n8p5ISEN27
+	Bofhdk0MSiJn9AUg+K1uraeFIgetig38pKOFPaQC8AnrOQ57frX6kQ/saF9/JvJq35Xz2gBWhai
+	Gaf3ojFEqyzKtn19Rhx2wthGMV8xy7q4nedUWwOdIImJ9CeORRr9wjtxsoDm7EePEE37A3GC19h
+	nGzRhLO2ivXq34l5ST+M5HBPk/2tabHkV6obRr1yQxOEp5Cms4DKD487427yE7PLEkiuA71jk12
+	WpsDLKlEsayzcVOF/ZeVdDa/O6uQyTjmu3eqLOHuZl5/P63YWCyvox+8S5I2Z6eculFGX/fWMTT
+	m/84NA4Svr4aZsBKyJb4xxDIY6wrtUp6Fa8VRy/sK94iCWpstbKwbyW+HhYdfJC9dmUptK5VOrd
+	4vZjEvM4OBmBOIAkQT1sjFduDJWxAfPJ4aNtTpLHGz6yB9QvHWpaQ3/3C+JyEutRbIZ6T33GqYn
+	Toto+rGrm1YhFKl41KP3PjEGJh29OXW6w==
+X-Received: by 2002:a05:600c:5791:b0:498:11b5:3ff7 with SMTP id 5b1f17b1804b1-4994e7d8a85mr188950265e9.18.1786040562951;
+        Thu, 06 Aug 2026 11:22:42 -0700 (PDT)
+Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4995420bd1csm82214425e9.3.2026.08.06.11.22.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 11:22:41 -0700 (PDT)
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: bpf@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	andrii@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	eddyz87@gmail.com,
+	edumazet@google.com,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	liamwisehart@meta.com,
+	martin.lau@linux.dev,
+	pabeni@redhat.com,
+	song@kernel.org,
+	netdev@vger.kernel.org,
+	sdf.kernel@gmail.com,
+	ameryhung@gmail.com,
+	kuniyu@google.com,
+	memxor@gmail.com,
+	Mahe Tardy <mahe.tardy@gmail.com>
+Subject: [PATCH bpf-next v4 0/5] Introduce bpf_ksock
+Date: Thu,  6 Aug 2026 18:22:29 +0000
+Message-Id: <20260806182234.380833-1-mahe.tardy@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CYYPR12MB8855:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5d70de66-8bd3-422f-4e0e-08def3e7415f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|10067099003|11063799006|56012099006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	jvZSJADoQAqJVclTmfzrf+nEArpaBX/YM8ZQcjj3l78dVCer/K5G/1wczcBbUTAagj8OYEB9mFeDwUK5G+qGVe30RWuzuhMDPeBkFurc2YG3d3gwy7lgIpZgeL2xBPmhzdXAeGcq88Dc53Deusc9G9Ik5XR0he9NtX+Fxyy4s1obtMjZ8pc+4UYJuflgg81t0H0sxSTyAXwrvJ76VzYm+ukWBPUuUktegIkuVwOTgjmeSJohecVU8eOcqYQ7425g1TiV7P2SCKqnvWLMLPi9eHt5q0yIhabR1AUnMaLALu6JJJ0LeFgTCMyfjnNRtBtny5GXrv3Odk4nzbrI6dtWxZWEFNBGBXF/t1m5JHjJBHCcvVs9LS+xByr5Gz+I/c3o2k0oRPHTktJ+c7DLRNOq9iv9PYzNC4/z7cnJUODBaVd/EByx1pNAAnXp3bif7fJW46T5R6TJEEfs/Am4HjxICySspw47fYWvVQv68VjYsnd+TVnlbndPz5Vrw/iljJYYXW4gGNtTZTjx9JYjR8SLxROHqzgRmRMuzzLAflcznip+8N3pqPTKnYBRJb3JOoii78XwryoVjObM7Q6YcVxDXiFabpjfR5XJht4zOehr40jb66cZk3Dhtkd4sExQFIobtgB0GkymwUxom1fQqdEDMJM0rddN6+BUGyMqVbJ6Tas=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(10067099003)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z2JEcE5DMXFIYVhOL0RGcDFFSWJUZUtXT2lhYk5paUxJalYrN0hkVGdac1lm?=
- =?utf-8?B?WjQwZjRlTVVOUytJcVVleDNyekNCR2I4RStQMGw1L2M0bmtnY1c4bjBJdlFK?=
- =?utf-8?B?dGhIUnArNUtBZ0d5UXBZQmF3TXBteE9RUi8yM1IxbFE2V3dwT0JuZE03ZGFl?=
- =?utf-8?B?WmZYTzl0cWllYjhqVm5PaGVrOFFOclFjVjlycWZHRkw5dWtpRk95bHJkM1h6?=
- =?utf-8?B?ZXhWMHZzQUVTbmUxQ202bmhISit1NVNGMy81WWJ4NVV2SnRhR0prY0lJVjZ1?=
- =?utf-8?B?ZWJiSTBUVWZkUEpnWkRwL3dWaml2OXM2SUs3cmxHbVc4SGdNQkM0d0lIemVr?=
- =?utf-8?B?WHpFaFFQSVBBcytsZk5JRkMzdjM2alYvanR2WU1lcXo3RlVHOXZ1eW9kdUNK?=
- =?utf-8?B?QkNwdmVJaWNLNDMvYkM5TWlPMUpIenkzSDdYK2tjYk5zSjhIV2J4R0tZRmw2?=
- =?utf-8?B?dzBFcDEranQ2KzVYTEh5cW9xbC80SWJhaHE2b2FxajNwWnRVU2tZOXNiTG5x?=
- =?utf-8?B?dkQveDV0bkltNXYxaFM5VW1pMzI3WTlDTEFUVVVoWDE0aFZnc1NuREJzcGox?=
- =?utf-8?B?N2NwbHJ3bkdPNmFRRDkyNUhrSFQ4cmZzTnBiYnAvK3FycTdZbHBFZ3UxL0hD?=
- =?utf-8?B?Rzhmb0psZXZ3M29EYkl4dlo2MmN1STNRSDdLVzYwRnVoYzhDbUZHTWdkVm9K?=
- =?utf-8?B?N0RVQmRadnhrcEs3ZHU1d2pOcWdhbXF0UjdRZlU1TGVzZ0VFSnNTNFVybHg0?=
- =?utf-8?B?NDhiU1I0a1E3dU91L2pmaFdjY0NMS2t2N2tiTTRHNW9uYnpLdk1mb1ZHZ3VP?=
- =?utf-8?B?RTNCMXpYRERqTWFMcDJlanZXVW9reSs3Qk16YWp0UTJmWTFOVHlOMWdkc2lO?=
- =?utf-8?B?MjFIc2RWdU4yQVdSaTZkVkFEbE9Rekc0SFoyaXpnbDVFZm9XM2s5WGZMUVBv?=
- =?utf-8?B?RnQ3ejJaVm9jTGpBSmttcEJDYWFLZFM1YVBRc2ZYd3h4cVBHNzRpemVWNTBl?=
- =?utf-8?B?b296NGZUVmJKYzgvQ3BMQ3c0eG9WT2V6SWFMaTJ3dDVEMlA1STNIbklPbkJr?=
- =?utf-8?B?YmZpZlJYWlZDRVAzMFRiZm5tRDA4dGRMSzlBcysrQi9pYytOZVBrd1IxL3ds?=
- =?utf-8?B?VjJNOVczVkt1VEZPOFNsK3dsWlZQTTFWRk55NG5UU01sVUpEWGwyY25BVC9H?=
- =?utf-8?B?aWRmOGU0Y2hvVzl0alJrMGdoTStlWHNiMGQ2dU53OSt5WjZrYUFtcEQrKzVN?=
- =?utf-8?B?YS9IWWZjTm10cFBWRnptdHFML0V3eE1Xci9xeGxValFRb3RSVEdzS1JsY1pR?=
- =?utf-8?B?a3VjaWg5c2xLUzZyK254UnRlVjRJZzlURU42S0dTNmczRUpBY1diU08rQlpk?=
- =?utf-8?B?Nm1sclhCQUJHT0RaZmVlZ3ZsQ01icmx6VnZQYmVqcGt0MkNocEtiOUFjaC9j?=
- =?utf-8?B?WDl0R3lUbk1JTWlSSjRmeWlvV0pxcXRwYVV4QmQrUERqL2Q2SG9oQlhsWDB0?=
- =?utf-8?B?cFNsbXJrdFA3cWRNY1hTNVNkbTJoSVFyQjJSano5NG1TQ01sTktPZTYzR3Y4?=
- =?utf-8?B?Tmd3UlRBV1lVUmtQN1U0RGRLNnNhb2RHbUorWUFCYmZlN3A5RjVqWGlMRGMz?=
- =?utf-8?B?Vit6NTFPUElPYWlyRXlqMlh4UXAxSUg2MGV4OHFCb1NxdWlKS1hESHhJWUFa?=
- =?utf-8?B?MHI1dU95RTNjSGx1bWZMVVl3eVFVN2hjM0p5dHRiWWNwd3k5WU1hZThuVWxo?=
- =?utf-8?B?T0ZIZXZyWE5EUVhQTHBORTVtbFRvcnNDNE1pWCtmcDFWWXpyWDV4QlR4V0ds?=
- =?utf-8?B?YmJaVFB3eEtQQjMvaHJURS80NzFGTVBPZ2JYNmFGcjMxVXBYN250YXBYMVV0?=
- =?utf-8?B?ZE9BRVMyK0p2M0x1L3hmbU5Za3R0YW01TTU1YUpISTY2cWtLbnl4dzRQRFd2?=
- =?utf-8?B?L2FtTVI1c1U1TmFhRXprU1ZBS3FPbytkOWU5dDJ1eHlGbG1ad0taMVl4UGtJ?=
- =?utf-8?B?YlRZTXp1VkFQZHFQUHV4enkxcXBZODEyanU1cytxR3U1TmtZQnE1b1R4S1RT?=
- =?utf-8?B?b0I1Y3IxUEFxYkhFSFJpamdjc1dXZ25jZnpUZ1NOeEcwRS8zL3VVYTZNZWNO?=
- =?utf-8?B?YVp3ZEkwRlFCWkV4S3kxNW5lVHB2MkFoNUlrdzE3SzAzY0VrcU11K0U1SjJz?=
- =?utf-8?B?UytUSlU4eTZJS0ZjQ095WGN0ZWJXWmwySDA5MHJBNWRlTzd3Wi8yUG80Qlh0?=
- =?utf-8?B?YXlOcmpMRG1OMEdqQ1BxS0JMbStGRHl2R1RtRjJ1RXBqcng2RnZYN2JtejAw?=
- =?utf-8?B?MDZVS2l5QkdvSUh3akFYTHBZcnJwdGpPdWhNNmdjRnpNeEpMZTFEQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d70de66-8bd3-422f-4e0e-08def3e7415f
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 18:19:29.5468
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bc45dpEC7Gjd/4+6WKENkZfe/FYW54+nObrQrHppgz2yO6OOIwPAaqJgTYG6EdyzjxWnrrw5T7Il/YbRTsZ+UQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8855
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 06, 2026 at 06:28:00PM +0200, Paolo Abeni wrote:
-> On 8/6/26 11:06 AM, zhilin zou wrote:
-> > On Thu, Aug 6, 2026 at 4:52 PM Ido Schimmel <idosch@nvidia.com> wrote:
-> >>
-> >> On Wed, Aug 05, 2026 at 05:29:02PM -0700, Jakub Kicinski wrote:
-> >>> On Wed, 5 Aug 2026 12:07:21 +0300 Ido Schimmel wrote:
-> >>>> __gre6_xmit() and ip6erspan_tunnel_xmit() already call skb_cow_head()
-> >>>> before calling ip6_tnl_xmit().
-> >>>
-> >>> Probably just me but can't they all be buggy?
-> >>> PKTGEN likes to send shared skbs around in funny ways.
-> >>> Can we get a good explanation in the commit msg or maybe let's
-> >>> keep the check?
-> >>
-> >> ip6_tnl_xmit() is accessible via two Ethernet devices (pktgen doesn't
-> >> support other types) and they both clear IFF_TX_SKB_SHARING, so if
-> >> pktgen sends them shared skbs, I would say that it's a pktgen bug and
-> >> not a reason to block this patch. Note that pktgen is not available to
-> >> unprivileged users, so it's a less severe bug.
-> >>
-> >> The patch also makes ip6_tnl_xmit() consistent with its IPv4 counterpart
-> >> (ip_tunnel_xmit()) which is already using skb_cow_head().
-> >>
-> >> Zhiling, please add a note in the commit message that ip6gretap and
-> >> ip6erspan do not expect to be handed shared skbs given that they clear
-> >> IFF_TX_SKB_SHARING.
-> > 
-> > Thanks, Ido. I'll add a note to the commit message explaining that
-> > ip6gretap and ip6erspan clear IFF_TX_SKB_SHARING and therefore do not
-> > expect shared skbs, and send a v2 with your Reviewed-by tag retained.
-> 
-> I'm not sure if it's too late, but since a v2 is required, I think it
-> would be better to keep the skb_shared check: that will avoid a later
-> patch for the pktgen/shared issue that inevitably will land, possibly
-> via the security channel.
+This patch series introduces bpf_ksock, a set of BPF kfuncs to allow BPF
+programs to create UDP sockets and send data. This provides a mechanism
+for BPF LSM progs to emit telemetry over UDP independently of userspace.
 
-What do you mean by "keep the skb_shared check"? Return an error if the
-skb is shared before calling skb_cow_head()? How would that avoid "a
-later patch for the pktgen/shared issue" when other tunnels are already
-calling skb_cow_head() without an skb_shared() check (they clear
-IFF_TX_SKB_SHARING)?
+The main use case is to be able to completely dispense with
+agents/daemons for BPF programs after startup. In the case of
+Isovalent's Tetragon, the idea would be to be able to emit security
+alerts or export data from BPF even when the agent is down. For meta,
+according to Liam presentation[^2], this could replace logging via
+ringbuffers which created cross-binary versioning issues.
 
-Not saying that there isn't a possible problem with pktgen, but it
-should be fixed there and not papered over in various drivers.
+The implementation follows the established kfunc lifecycle pattern
+(create/acquire/release with refcounting, kptr map storage, dtor
+registration), for example used by the network bpf_crypto kfuncs.
+
+For reference, this was discussed at LSF/MM/BPF 2025[^1] in Montreal,
+again at Plumbers 2025 in Tokyo. Liam Wisehart mentioned this work
+during his presentation of BpfJailer[^2]. Then it was also discussed
+during LSF/MM/BPF 2026 in Zagreb.
+
+A first version of it, called bpf_netpoll was submitted to the mailing
+list but eventually NACKED by Jakub Kicinski[^3]. The discussion
+eventually reached an agreement that we should use regular kernel
+sockets if we want to do network from BPF programs[^4]. This was
+fundamentally more complex to implement but here is a first proposition
+of how it could look like after several automated reviews using sashiko.
+
+For more details, here are some of the main adjustements I had to make
+during the preparation of these patches:
+
+Initially, the goal was to register the ksock_kfunc_set with
+BPF_PROG_TYPE_UNSPEC to allow send to be called from any programs. This
+introduces significant challenges (but might be doable). The limitation
+is still that the programs should be able to sleep but combining this
+with bpf workqueue allows to send from virtually anywhere. However, not
+by-passing LSM socket hooks make it impossible to be called from the
+workqueue context as the credential of the initial caller would not be
+preserved. Also, it would be easy for users to shoot themselves in the
+foot and attach a program that sends asynchronously over the network on
+a network hook. So the idea for now is to restrict the ksock_kfunc_set
+(which is acquire, release and send) to SYSCALL and LSM to make it
+simpler. Also to make the patch set easier to start with, the sockets
+are restricted to UDP.
+
+v4 updates:
+- drop the __sys_ prefix on connect_socket() (Song)
+- replace recursion protection with a verifier filter on calling
+  bpf_ksock_send() on a program attached to the security_socket_sendmsg()
+  LSM hook (Song)
+
+v3 updates:
+Simplifies bpf_ksock_connect arg by using a union (union bpf_ksock_addr)
+containing struct sockaddr_in and struct sockaddr_in6 to remove most of
+bpf_ksock_parse_addr() code (Stanislav).
+
+Note that I initially tried to put the union inside of struct
+bpf_ksock_addr_opts but we ended up with too much struct nesting depth
+from bpf, for example when trying to write the ipv4 address:
+
+	addr_opts.addr.sin.sin_addr.s_addr = ipv4_remote;
+
+It resulted in:
+
+	max struct nesting depth exceeded
+	R2 pointer type STRUCT bpf_ksock_addr_opts must point to void,
+	scalar, or struct with scalar
+
+v2 updates:
+This second version simplifies the patch set by removing bind, keeping
+connect + send for now (could be replaced per sendto if needed). It also
+removes the sysctl limit and the whole hashtable ksock_send guard with a
+single bit in task_struct.
+
+- remove bind from the API (Stanislav, Amery, Kuniyuki)
+- remove the bpf_ksock_max sysctl limit (Stanislav, Kuniyuki)
+- replace ksock_send_guard with a bit in task_struct (Kuniyuki)
+- remove unnecessary init struct sockaddr_storage addr = {}; (Kuniyuki)
+- remove redundant ASSERT_OK_FD (sashiko)
+- fix typos in ksock test patch commit log (bot+bpf-ci)
+- fix return statement in kfunc registration (bot+bpf-ci)
+
+v1 updates (from local sashiko iterations):
+- do not bypass the LSM and thus add send re-enter protection;
+- limit the number of socket creation through the kfunc per ns;
+- copy the arg values to avoid TOCTOU race since kfunc can sleep;
+- prevent calling bpf_ksock_create from workqueue with improper creds.
+
+[^1]: https://lwn.net/Articles/1022034/
+[^2]: https://lpc.events/event/19/contributions/2159/
+[^3]: https://lore.kernel.org/bpf/20260511182019.69ebc7c6@kernel.org/
+[^4]: https://lore.kernel.org/bpf/CAPhsuW71P58XqsXrLbqsShgnozg66TA=T_c=fYrqSSzvL1tTWA@mail.gmail.com/
+
+Link to v3: https://lore.kernel.org/bpf/20260804164652.296919-1-mahe.tardy@gmail.com/
+
+Mahe Tardy (5):
+  net: Add connect_socket() helper
+  bpf: Add ksock kfuncs
+  selftests/bpf: Add ksock kfunc test
+  selftests/bpf: Test forbidden bpf_ksock_send() LSM attach
+  selftests/bpf: Add ksock test for async callback guard
+
+ include/linux/bpf_ksock.h                     |  36 ++
+ include/linux/socket.h                        |   2 +
+ kernel/bpf/verifier.c                         |   3 +
+ net/core/Makefile                             |   3 +
+ net/core/bpf_ksock.c                          | 331 ++++++++++++++++++
+ net/socket.c                                  |  32 +-
+ .../testing/selftests/bpf/prog_tests/ksock.c  | 133 +++++++
+ .../selftests/bpf/prog_tests/ksock_wq.c       |  34 ++
+ .../selftests/bpf/progs/ksock_common.h        |  58 +++
+ tools/testing/selftests/bpf/progs/ksock_lsm.c |  88 +++++
+ .../selftests/bpf/progs/ksock_lsm_verifier.c  |  36 ++
+ tools/testing/selftests/bpf/progs/ksock_wq.c  |  62 ++++
+ 12 files changed, 804 insertions(+), 14 deletions(-)
+ create mode 100644 include/linux/bpf_ksock.h
+ create mode 100644 net/core/bpf_ksock.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/ksock.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/ksock_wq.c
+ create mode 100644 tools/testing/selftests/bpf/progs/ksock_common.h
+ create mode 100644 tools/testing/selftests/bpf/progs/ksock_lsm.c
+ create mode 100644 tools/testing/selftests/bpf/progs/ksock_lsm_verifier.c
+ create mode 100644 tools/testing/selftests/bpf/progs/ksock_wq.c
+
+--
+2.34.1
+
