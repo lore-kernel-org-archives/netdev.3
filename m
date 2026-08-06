@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23833515DB
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6BE375F96
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786041438; cv=none; b=QqVRkVMDz3CfmU8KfVlLZnt1NwOQnDaDyPGs4je4KwUUryA34uskRikY5bSsDA3rqYHS+P5NylV3TEO5ONah0tqZ4eUAsjB81lLcT8TcQCA225PzOwwIxkDh5H+mT/xpx8+sS0Gaf40L8FYokeoSpf/d7PAFYFfurNvqs7VeyJw=
+	t=1786041440; cv=none; b=Qu18PnSDkU8XMpuhjQjGUg5Q4hzEjfz3yybzNVNbdUaBs89UIo+BaN9HYaagdnRD2+Ic2kvPHzh3bsAn43OUAqQBbpo+BqqS+qagQuKPNALbkVtny5X3oIAXMgSVZWSriRfi2DrQEN90zuC6zNXEYPKQLdpuJ8p3gXVUtfPuIl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786041438; c=relaxed/simple;
-	bh=hmzfqHA/5kxJYR6KXAapoOm5nPO64sSNJ3LGTFoKPZ4=;
+	s=arc-20240116; t=1786041440; c=relaxed/simple;
+	bh=V2DvMbRgplYzPqHNqxNxcMhwRSffxjJ35diw6niiqYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjvqpdnN+uZJlO3kuv2cLmWNA5jL2+MgiCTq+xVpU7PqCtNogOrTPp3ds9sUw5dp24lNyiYOSJSRJ3P8oVbfR6MyvDELoQL0/mPA/OqXXTVSEnTviMiKzJjpT6jPV/YeaHU7OiveD5QrBgqPUTLDBZTuRcjJt7Q+Tzbp42tH6yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYyNy6g/; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=VkprdkfItXXWUzePeSa/VnVjJX34k6Jf2vX3gZw9Cbd6J1de1eR80YvseqpqBiHncl7X4Dwh6FRfV/sX7zap2XuT3wnWOUNidqUlcg5UjjvbFxIoIqgDLZPNWcPzju49SRk7Kk6kMtqAGNDZAzEZ7G26oYCdy8/2a6oP3DK7vvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLTXSg2q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TYyNy6g/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC241F00A3F;
-	Thu,  6 Aug 2026 18:37:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLTXSg2q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92CD1F00A3A;
+	Thu,  6 Aug 2026 18:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786041431;
-	bh=vrnW8xdKOW/hhiBr97d5RmlyHFSHG2wySPLHv+SNioU=;
+	s=k20260515; t=1786041435;
+	bh=CcfGVUdCTlU178dtUa1uXlDvnR7tT80EsHLccxBq3S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TYyNy6g/aCJn4hIoA95gJVAM8Co0TeaOEItLF3u47w2ZW9bkGahS1sTBmgE0PTa7b
-	 UAa2+m41NiDXW7jM2PoeztlyFStTy4mo1aE04+RUrkmkW/UbfTWfp6+Xb6hyQrR2m5
-	 gWRGZO9xGPcoB8MArVbPql8Rv6/XvnNzEqKEp+mfv3TYdw4Yeb7KrlPYi/iqWiTr1I
-	 9qcFCDV093tOZNi30TAvka092HBK6OmKWXDyw5lNkzi1w0Un2lUp0y7h98qziAcUse
-	 c9+I5xzfVnCLXnwvDvYCUDsxRa9ShwWiUwb0pqPkg5umoqKY2IqUxP6TLs+ZA3b5ba
-	 NQwOB/M8f2IcQ==
+	b=hLTXSg2qZAbWhIlCQc+RUIAYB7nvoQ+TgA/1briRLdxfjSwndau/q7iyQY+it2NMl
+	 QIk39Iytwxte4SxkWjq05rpN9IUSAkpeD7ajjuIbi0CafFoOVl3mrs0iNLfIqntLsm
+	 4O0VdNQV4x1EJmQZjriSb7uO4iBuYlWjFtNVJFl5PuL1Okyf6Xc90LImVNUXvhJ2Fg
+	 5J0yKnjrqVTPgtmOFFDYpL2kExD543uAZe1qYYqhLSOc8R+4euodfy2v7xVCqlZ1jZ
+	 nzXszENKp4UrdxvI0xRshGMQLYkeQpiIaC+CViq3SPcbF4k4G0W6YrJfuchnPdszT2
+	 nUVSmCbKpmjJg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: mmc@linux.ibm.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -43,12 +43,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	simon.horman@corigine.com,
 	shaik.abdulla1@ibm.com,
 	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v4 11/14] ibmveth: Expose per-queue buffer pool details via debugfs
-Date: Thu,  6 Aug 2026 11:37:10 -0700
-Message-ID: <20260806183710.3175754-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 14/14] ibmveth: Fix MQ RX poll and shutdown hangs after queue resize
+Date: Thu,  6 Aug 2026 11:37:14 -0700
+Message-ID: <20260806183714.3176012-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <fa6f1b5f19acd2b54f6b2c19d27bd79f4ff60599.1785457143.git.mmc@linux.ibm.com>
-References: <fa6f1b5f19acd2b54f6b2c19d27bd79f4ff60599.1785457143.git.mmc@linux.ibm.com>
+In-Reply-To: <6c687fce21930e4ded39610717ac05862b67e7aa.1785457143.git.mmc@linux.ibm.com>
+References: <6c687fce21930e4ded39610717ac05862b67e7aa.1785457143.git.mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,88 +60,59 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ibmveth: Expose per-queue buffer pool details via debugfs
+ibmveth: Fix MQ RX poll and shutdown hangs after queue resize
 
-This adds a read-only buffer_pools debugfs file that dumps size,
-buff_size, active and available for every RX queue and buffer pool, and
-wires creation into ibmveth_probe() and teardown into ibmveth_remove().
-The existing queue-0 poolN sysfs files are left unchanged.
+This changes ibmveth_poll() to skip RX slots whose correlator cannot be
+mapped to a buffer pool instead of retrying them forever, completes NAPI
+when the interface is going down, and adds a descriptor length check
+before skb_put().  The WARN_ON plus adapter reset escalation in the
+correlator validation paths is replaced by a rate-limited message.
 
-A few questions about the new code below.
+No Link: tags present in the commit header.
+
+A few questions below.
+
+[Severity: Low]
+Would it make sense to split this into separate patches with individual
+Fixes: tags?  There appear to be four independent changes here:
+
+  - skipping bad RX correlators and dropping the WARN_ON/reset escalation
+  - completing NAPI when the interface is down or napi_disable is pending
+  - validating the descriptor length against skb tailroom before skb_put()
+  - changing the return value on the budget-exhausted shutdown path
+
+There is no Fixes: tag, so stable maintainers cannot pick up the hang fix
+without also picking up the policy change that removes the reset based
+recovery, and the skb_put() hardening is not visible as a fix on its own.
 
 > diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index dbb47a42b4cb5..db13747466025 100644
+> index c99d8e8be7b37..09e06d86701a5 100644
 > --- a/drivers/net/ethernet/ibm/ibmveth.c
 > +++ b/drivers/net/ethernet/ibm/ibmveth.c
-
-[ ... ]
-
-> @@ -2985,6 +2986,44 @@ static const struct net_device_ops ibmveth_netdev_ops = {
->  #endif
->  };
+> @@ -1376,6 +1376,24 @@ ibmveth_free_single_rx_queue(struct ibmveth_adapter *adapter, int queue_idx)
+>  	netdev_dbg(adapter->netdev, "Freed queue %d resources\n", queue_idx);
+>  }
 >  
-> +static int ibmveth_buffer_pools_show(struct seq_file *m, void *v)
+> +static bool ibmveth_rxq_correlator_valid(struct ibmveth_adapter *adapter,
+> +					 int queue_index, u64 correlator)
 > +{
-> +	struct ibmveth_adapter *adapter = m->private;
-> +	int i, j;
+> +	unsigned int pool = correlator >> 32;
+> +	unsigned int index = correlator & 0xffffffffUL;
 > +
-> +	seq_puts(m, "Queue  Pool  Size  BuffSize  Active  Available\n");
-> +	seq_puts(m, "-----  ----  ----  --------  ------  ---------\n");
-> +
-> +	for (i = 0; i < adapter->num_rx_queues; i++) {
-> +		for (j = 0; j < IBMVETH_NUM_BUFF_POOLS; j++) {
-> +			struct ibmveth_buff_pool *pool =
-> +				&adapter->rx_buff_pool[i][j];
+> +	return pool < IBMVETH_NUM_BUFF_POOLS &&
+> +	       index < adapter->rx_buff_pool[queue_index][pool].size;
+> +}
 
-[Severity: Low]
-Should this dump be taken under rtnl_lock()?
+[Severity: High]
+This isn't a bug introduced by this patch, since the pre-existing WARN_ON
+checks were also bounds-only, but can a correlator naming an inactive or
+already freed pool still pass ibmveth_rxq_correlator_valid() and then
+dereference a NULL array?
 
-ibmveth_buffer_pools_show() reads adapter->num_rx_queues plus
-pool->size, pool->buff_size, pool->active and pool->available with no
-lock held, but every writer of those fields runs under RTNL:
-
-veth_pool_store() {
-	...
-	rtnl_lock();
-	...
-	pool->active = newactive;
-	pool->buff_size = newbuff_size;
-	pool->size = newsize;
-	...
-	/* on ibmveth_open() failure, the same three fields are
-	 * written back with the old values */
-			pool->active = oldactive;
-			pool->buff_size = oldbuff_size;
-			pool->size = oldsize;
-	...
-}
-
-ibmveth_alloc_buffer_pools() likewise copies the queue-0 geometry into
-queues 1..N-1 field by field under RTNL from ibmveth_open(), and the
-reset path goes through dev_close()/dev_open() under rtnl_lock().
-
-Can a concurrent read of buffer_pools therefore print a torn snapshot,
-for example active=1 paired with the previous size/buff_size, or a
-half-copied per-queue template, or the transient rollback state that was
-never an actual configuration?
-
-There does not appear to be a memory-safety consequence here, since
-rx_buff_pool[] is a fixed-size array embedded in struct ibmveth_adapter
-and only scalar members are read, so the concern is limited to the
-values printed.
-
-> +
-> +			seq_printf(m, "%5d  %4d  %4u  %8u  %6d  %9d\n",
-> +				   i, j, pool->size, pool->buff_size,
-> +				   pool->active,
-> +				   atomic_read(&pool->available));
-
-[Severity: Low]
-Are Active and Available meaningful while the interface is down?
-
-ibmveth_free_buffer_pool() frees free_map, unmaps and frees all
-skbuffs, and frees dma_addr/skbuff, but leaves pool->active set and
-never decrements pool->available:
+ibmveth_init_buffer_pool() sets pool->size for all pools regardless of
+active state, while ibmveth_alloc_queue_buffer_pools() skips inactive
+pools, and ibmveth_free_buffer_pool() clears the arrays without clearing
+size or active:
 
 	kfree(pool->free_map);
 	pool->free_map = NULL;
@@ -150,112 +121,308 @@ never decrements pool->available:
 		kfree(pool->skbuff);
 		pool->skbuff = NULL;
 	}
-	/* pool->active and pool->available untouched */
 
-available is only cleared later, in ibmveth_alloc_buffer_pool() via
-atomic_set(&pool->available, 0) on the next open.
+With the defaults in ibmveth.h:
 
-So a read after ibmveth_close() -> ibmveth_free_buffer_pools() ->
-ibmveth_free_queue_buffer_pools() -> ibmveth_free_buffer_pool() reports
-every configured pool as Active=1 with the last non-zero Available,
-even though the skbuffs and DMA mappings are gone.
+	static int pool_count[] = { 256, 512, 256, 256, 256 };
+	static int pool_active[] = { 1, 1, 0, 0, 0};
 
-Related: for queues 1..N-1 the table prints all-zero rows before the
-first open, because the queue-0 template is only copied into those
-queues inside ibmveth_alloc_buffer_pools() during open.
+a correlator of pool=2, index=0 satisfies both conditions of the new
+helper, and both users then index a NULL pointer before the !skb test can
+help:
 
-The commit message says "Per-queue runtime pressure is what debugfs
-shows" - could the down/uninitialized cases be either reflected in the
-output or documented?
+	return adapter->rx_buff_pool[queue_index][pool].skbuff[index];
 
-> +		}
-> +	}
+and
+
+	skb = adapter->rx_buff_pool[queue_index][pool].skbuff[index];
+
+Should the helper also require pool->active and non-NULL skbuff/dma_addr/
+free_map, or should ibmveth_free_buffer_pool() clear pool->size?  The same
+window seems to apply to pools torn down by ethtool -L scale-down, an MTU
+change, or sysfs deactivation.
+
+[Severity: Low]
+This is a pre-existing weakness rather than something new here, but the
+helper only bounds-checks, so a stale correlator that happens to land in
+range after an ethtool -L resize is treated as a live frame.  With
+reuse=false the buffer can be handed to the stack while the hypervisor may
+still own it, and with reuse=true the index is pushed onto free_map a
+second time.  Is there any generation counter or per-queue tag available in
+the correlator that could distinguish a stale descriptor from a current
+one?
+
 > +
-> +	return 0;
-> +}
-> +DEFINE_SHOW_ATTRIBUTE(ibmveth_buffer_pools);
-> +
-> +static void ibmveth_debugfs_init(struct ibmveth_adapter *adapter)
+> +static void ibmveth_rxq_advance(struct ibmveth_rx_q *rxq)
 > +{
-> +	adapter->debugfs_dir = debugfs_create_dir(adapter->netdev->name,
-> +						  NULL);
-> +	debugfs_create_file("buffer_pools", 0400, adapter->debugfs_dir,
-> +			    adapter, &ibmveth_buffer_pools_fops);
+> +	if (++rxq->index == rxq->num_slots) {
+> +		rxq->index = 0;
+> +		rxq->toggle = !rxq->toggle;
+> +	}
 > +}
+> +
+>  /**
+>   * ibmveth_remove_buffer_from_pool - remove a buffer from a pool
+>   * @adapter: adapter instance
+> @@ -1397,17 +1415,12 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+>  	unsigned int free_index;
+>  	struct sk_buff *skb;
+>  
+> -	if (WARN_ON(pool >= IBMVETH_NUM_BUFF_POOLS) ||
+> -	    WARN_ON(index >= adapter->rx_buff_pool[queue_index][pool].size)) {
+> -		schedule_work(&adapter->work);
+> +	if (!ibmveth_rxq_correlator_valid(adapter, queue_index, correlator))
+>  		return -EINVAL;
+> -	}
+>  
+>  	skb = adapter->rx_buff_pool[queue_index][pool].skbuff[index];
+> -	if (WARN_ON(!skb)) {
+> -		schedule_work(&adapter->work);
+> +	if (!skb)
+>  		return -EFAULT;
+> -	}
 
 [Severity: Medium]
-Is the mutable interface name a safe key for a directory created
-directly in the debugfs root?
+The schedule_work(&adapter->work) escalation is dropped here and in
+ibmveth_rxq_get_buffer(), so nothing bounds the condition any more.  The
+commit message describes the new skip policy but does not mention that all
+recovery escalation is gone.
 
-Three separate things follow from passing NULL as the parent and
-netdev->name as the name.
+The previous reset performed a close/open cycle, which issued
+h_free_logical_lan and re-registered the logical LAN, flushing every buffer
+registration the hypervisor still held.  If the bad correlator exists
+because PHYP still holds buffers from a pool that
+ibmveth_free_buffer_pool() already unmapped and freed during an
+ethtool -L resize:
 
-First, the name goes stale. The directory is created once, as the last
-statement of ibmveth_probe(), and the driver installs no netdev
-notifier and never calls debugfs_rename(). After the udev/systemd
-predictable-name rename that happens right after register_netdev(), or
-after any later ip link set dev ethN name foo, does the debugfs
-directory keep the obsolete name for the lifetime of the device?
+	dma_unmap_single(&adapter->vdev->dev, pool->dma_addr[i],
+			 pool->buff_size, DMA_FROM_DEVICE);
+	dev_kfree_skb_any(skb);
 
-Second, with the debugfs root as parent the name has to be globally
-unique there. Consider the sequence: first adapter probes as eth0, udev
-renames it to enP1p1s0, a second ibmveth adapter probes and
-alloc_etherdev_mqs() names it eth0 again because eth0 is free in the
-netdev namespace. debugfs_create_dir("eth0", NULL) then collides with
-the first adapter's stale directory:
+can the hypervisor keep writing into those freed pages indefinitely now
+that the driver only logs and advances?
 
-fs/debugfs/inode.c:debugfs_start_creating() {
-	...
-	dentry = simple_start_creating(parent, name);
-	if (IS_ERR(dentry)) {
-		if (dentry == ERR_PTR(-EEXIST))
-			pr_err("'%s' already exists in '%pd'\n", name, parent);
-	...
-}
+Separately, this also folds together two different classes: -EINVAL for an
+out-of-range correlator, and -EFAULT where pool and index are in range but
+skbuff[index] is NULL, which indicates driver/hypervisor state desync.  Is
+silently skipping the -EFAULT case intended?
 
-The ERR_PTR is stored in adapter->debugfs_dir and handed to
-debugfs_create_file() as the parent, which returns immediately:
+And if the descriptor's correlator belongs to a different queue's pool, the
+skip never reclaims that queue's slot, so that pool's available count stays
+inflated and ibmveth_replenish_task() stops replenishing it:
 
-fs/debugfs/inode.c:debugfs_start_creating() {
-	...
-	if (IS_ERR(parent))
-		return parent;
-	...
-}
+	if (pool->active && pool->free_map &&
+	    (atomic_read(&pool->available) < pool->threshold))
 
-Does the second and every subsequent adapter then end up with no
-buffer_pools file at all, with only that debugfs pr_err as an
-indication?
-
-Third, netdev->name is read here after register_netdev() has published
-the device, without rtnl_lock(), while dev_change_name() rewrites
-net_device->name under RTNL. Can the string handed to
-debugfs_create_dir() be a partially updated name?
-
-Would a driver-owned parent directory plus a stable identifier such as
-dev_name(&dev->dev) avoid all three?
-
-> +
-> +static void ibmveth_debugfs_exit(struct ibmveth_adapter *adapter)
-> +{
-> +	debugfs_remove_recursive(adapter->debugfs_dir);
-> +	adapter->debugfs_dir = NULL;
-> +}
-> +
->  static void ibmveth_put_pool_kobjs(struct ibmveth_adapter *adapter,
->  				  int pools_ready)
->  {
-> @@ -3182,6 +3221,8 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
 >  
->  	netdev_dbg(netdev, "registered\n");
+>  	/* if we are going to reuse the buffer then keep the pointers around
+>  	 * but mark index as available. replenish will see the skb pointer and
+> @@ -1452,11 +1465,8 @@ ibmveth_rxq_get_buffer(struct ibmveth_adapter *adapter,
+>  	unsigned int pool = correlator >> 32;
+>  	unsigned int index = correlator & 0xffffffffUL;
 >  
-> +	ibmveth_debugfs_init(adapter);
+> -	if (WARN_ON(pool >= IBMVETH_NUM_BUFF_POOLS) ||
+> -	    WARN_ON(index >= adapter->rx_buff_pool[queue_index][pool].size)) {
+> -		schedule_work(&adapter->work);
+> +	if (!ibmveth_rxq_correlator_valid(adapter, queue_index, correlator))
+>  		return NULL;
+> -	}
+>  
+>  	return adapter->rx_buff_pool[queue_index][pool].skbuff[index];
+>  }
+> @@ -1483,14 +1493,15 @@ static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
+>  
+>  	cor = rxq->queue_addr[rxq->index].correlator;
+>  	rc = ibmveth_remove_buffer_from_pool(adapter, cor, queue_index, reuse);
+> -	if (unlikely(rc))
+> +	if (unlikely(rc)) {
+> +		if (rc == -EINVAL || rc == -EFAULT)
+> +			goto advance;
+>  		return rc;
+> -
+> -	if (++rxq->index == rxq->num_slots) {
+> -		rxq->index = 0;
+> -		rxq->toggle = !rxq->toggle;
+>  	}
+>  
+> +advance:
+> +	ibmveth_rxq_advance(rxq);
 > +
 >  	return 0;
 >  }
 
+[Severity: Low]
+Can ibmveth_rxq_harvest_buffer() still return non-zero after this change?
+ibmveth_remove_buffer_from_pool() has exactly three returns: -EINVAL,
+-EFAULT and 0, and both error codes now go to the advance label, so
+"return rc;" looks unreachable.
+
+That would make all five "if (unlikely(rc)) break;" checks in
+ibmveth_poll(), including the two added by this patch, dead code, along
+with the harvest failure path in ibmveth_drain_rx_queue():
+
+	rc = ibmveth_rxq_harvest_buffer(adapter, queue_index, true);
+	if (rc) {
+		netdev_err(netdev,
+			   "Failed to harvest buffer from queue %d during drain: %d\n",
+			   queue_index, rc);
+		break;
+	}
+	drained++;
+
+Should unmappable slots encountered during drain still be counted as
+drained++ with no diagnostic?  The kernel-doc above harvest still documents
+"other - non-zero return from ibmveth_remove_buffer_from_pool", which no
+longer matches the implementation.
+
+>  
+> @@ -3092,11 +3103,19 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+>  	if (WARN_ON(queue_index < 0 || queue_index >= adapter->num_rx_queues))
+>  		return 0;
+>  
+> +	if (!netif_running(netdev) || napi_disable_pending(napi)) {
+> +		napi_complete_done(napi, 0);
+> +		return 0;
+> +	}
+> +
+>  	if (adapter->rx_qstats)
+>  		adapter->rx_qstats[queue_index].polls++;
+>  
+>  restart_poll:
+>  	while (frames_processed < budget) {
+> +		if (!netif_running(netdev) || napi_disable_pending(napi))
+> +			break;
+> +
+>  		if (!ibmveth_rxq_pending_buffer(adapter, queue_index))
+>  			break;
+>  
+
 [ ... ]
 
-Cross-instance finding from sashiko-gemini (b6bfc50872782421f7178a42615ea39fe861918e607d995ed830a5a2db8a4460):
-[Severity: Medium]
-Addition of driver-private ethtool -S strings for standard queue statistics.
+> @@ -3126,8 +3145,45 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+>  			__sum16 iph_check = 0;
+>  
+>  			skb = ibmveth_rxq_get_buffer(adapter, queue_index);
+> -			if (unlikely(!skb))
+> -				break;
+> +			if (unlikely(!skb)) {
+> +				if (net_ratelimit())
+> +					netdev_err(netdev,
+> +						   "bad correlator on queue %d, skipping slot\n",
+> +						   queue_index);
+
+[ ... ]
+
+> +
+> +			if (unlikely((unsigned int)offset +
+> +				     (unsigned int)length >
+> +				     skb_tailroom(skb))) {
+
+[Severity: High]
+This is not a regression from this patch, since there was no length check
+at all before, but can this check be bypassed by 32-bit wraparound?
+
+Both operands are cast to unsigned int, so the sum is modulo 2^32.  Unlike
+offset, length is not masked; ibmveth_rxq_frame_length() returns the whole
+descriptor field:
+
+	return be32_to_cpu(rxq->queue_addr[rxq->index].length);
+
+and in ibmveth.h that field is a full __be32 written by the hypervisor,
+while only offset gets IBMVETH_RXQ_OFF_MASK (0x0000FFFF).
+
+For a corrupted length like 0xFFFFFFF0 with a small offset, the addition
+wraps to a small value and the guard does not fire.  The copybreak test
+compares against "static unsigned int rx_copybreak", so 0xFFFFFFF0 is not
+less than rx_copybreak and no copy skb is allocated, and execution reaches:
+
+	skb_put(skb, length);
+
+which trips skb_over_panic() -> BUG().  Would an overflow-safe form work
+better here, for example:
+
+	if (offset > tailroom || length > tailroom - offset)
+
+or validating length against pool->buff_size?
+
+[ ... ]
+
+> @@ -3206,8 +3262,14 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+>  
+>  	ibmveth_replenish_task(adapter, queue_index);
+>  
+> -	if (frames_processed == budget)
+> +	if (frames_processed == budget) {
+> +		if (!netif_running(netdev) || napi_disable_pending(napi)) {
+> +			napi_complete_done(napi, frames_processed);
+> +			/* After complete_done, must not return full budget. */
+> +			return frames_processed ? frames_processed - 1 : 0;
+> +		}
+>  		goto out;
+> +	}
+>  
+>  	if (!napi_complete_done(napi, frames_processed))
+>  		goto out;
+> @@ -3225,6 +3287,8 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+>  	}
+>  
+>  	if (ibmveth_rxq_pending_buffer(adapter, queue_index) &&
+> +	    netif_running(netdev) &&
+> +	    !napi_disable_pending(napi) &&
+>  	    napi_schedule(napi)) {
+>  		lpar_rc = ibmveth_disable_irq(adapter, queue_index);
+>  		WARN_ON(lpar_rc != H_SUCCESS);
+
+[Severity: High]
+This isn't a bug introduced by this patch, as the
+napi_complete_done() -> ibmveth_enable_irq() -> ibmveth_rxq_pending_buffer()
+sequence is unchanged, but do the new guards actually close the shutdown
+window the commit message describes?
+
+The new mid-loop break also lands here with frames_processed < budget, so
+the quiesce case still reaches:
+
+	if (!napi_complete_done(napi, frames_processed))
+		goto out;
+
+Clearing NAPI_STATE_SCHED there is what napi_disable() waits for, so
+ibmveth_close() can proceed past ibmveth_cleanup_rx_interrupts() into
+ibmveth_cleanup_rx_resources():
+
+	if (adapter->rx_queue[i].queue_addr) {
+		dma_free_coherent(dev, adapter->rx_queue[i].queue_len,
+				  adapter->rx_queue[i].queue_addr,
+				  adapter->rx_queue[i].queue_dma);
+		adapter->rx_queue[i].queue_addr = NULL;
+
+while the still running poll executes:
+
+	lpar_rc = ibmveth_enable_irq(adapter, queue_index);
+
+re-arming the PHYP interrupt that close just masked, and then evaluates
+ibmveth_rxq_pending_buffer(), which reads
+rxq->queue_addr[rxq->index].flags_off - a NULL dereference or a read of
+freed coherent memory.  ibmveth_close() has no synchronize_net() between
+napi_disable()/free_irq() and the frees, unlike the scale-down path.
+
+Note the new netif_running()/napi_disable_pending() terms are evaluated
+after ibmveth_rxq_pending_buffer() in the same condition, so they cannot
+prevent that access; they only suppress the following
+ibmveth_disable_irq().
+
+Related question on that suppression: in the window where
+__LINK_STATE_START is already cleared by __dev_close_many() but
+NAPI_STATE_DISABLE is not yet set, the pre-patch code re-masked PHYP via
+the napi_schedule() branch.  With the new guards, poll now returns leaving
+delivery unmasked into the napi_disable()/free_irq() window, and the
+interrupt handler does not mask either when napi_schedule_prep() fails:
+
+	if (napi_schedule_prep(napi)) {
+		lpar_rc = ibmveth_disable_irq(adapter, qindex);
+		WARN_ON(lpar_rc != H_SUCCESS);
+		__napi_schedule(napi);
+	}
+
+Can that leave the queue interrupt storming until free_irq()?
+
+[ ... ]
