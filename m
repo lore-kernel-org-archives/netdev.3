@@ -1,63 +1,67 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4478F3AA9F3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E985E3B388E
 	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 01:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785978716; cv=none; b=tIUp7erKUFIA9/yLdLgxsjv6m3hKJ0CMQNxtgMQHgYNEj6+G/zZnukd2nJ21ZNy8VbX9bMbYDHRTYhzLTmtw1rCQq+KdNcIL7GmvFaXCYXjb50JYZCApl6/pu8q/+AosSqtbsu4mtv9LzTskClR/KQCJkGxGlaanDdD1KpIvH6o=
+	t=1785978717; cv=none; b=FdPNTuxz9Jy6v6G1oXIn0DXEv781J/wiQVINjJc8i04jz7c3wrbTtxZgNbUYuL+4OOIGTZd4n87tgLdebcVi1pM5Hpk/2Y0bPsfEvvSSF0wNrlx2onU+TTv6Kh8aeyQAPd+t2xtm3Nzzv5gmnJhsd2p+VhQedzJJWMhJOLIDrdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785978716; c=relaxed/simple;
-	bh=fh2aVZH0XFloieACynGxYahO9L5i6Ywj2QQ/YP6OJIc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GdItTwkTxNjuqXahJRRbC9r2EmeJA7d0HkW4Bx0HFR+//Wtc3DjCQncirPlr2LCAgL6ZJ1TWqOgRK5yjhBtGdgEe3yGDHc9QHfA8QVCxC+J6ZqNiUmZyvnrhGfK+r+NQtImgd6FwCSRpMeWHtKUbQWaWiScxXI9fUHnyepWEwCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Or7Z6YDT; arc=none smtp.client-ip=209.85.215.197
+	s=arc-20240116; t=1785978717; c=relaxed/simple;
+	bh=OmpN6/0A6ira9q/KdqPD/SdhtPNDOzBSm1ugVtAQ7sg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=rdJ4RaMiYCjijp7YGXl7he09HcbKFJVIx7fojThPXinjW2msTKuOeIj/l7Fss5KJ8h8Ph17s9Mk3UX1oz5prnEjYu9ATrhp6uJSxnI/EHg/LvJW1mGRuZorR2V/gt06qoao2XD0vHLpCFNrNHtWTddq4fUHrXSCn2Kk2YDKOb6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J9CIXEBO; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Or7Z6YDT"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb4cdf95b5aso2798345a12.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J9CIXEBO"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38f0fe57470so464846a91.0
         for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 18:11:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785978714; x=1786583514; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LTVPjfphXDhaRHaKV0RjaX7X6/y3DzQtxj+anMWWin8=;
-        b=Or7Z6YDTU1eYT3DDX16GgiHVOEfYkcUwLlR+2dS9sl26yDOhMCr+1XXYDfCW4DeKhy
-         WgK2+BJiAUMzqk1GzB3E1Tn4eK9rusT8ET+qK5dLXFDnFMMxtrK4tc5OpJLGna1qfgUe
-         DAAzi28la3tCUKxXkiqWM+wXvVYzmNBTowVaonO/0C5HuC4KSSAtKNxOzUnWxh/LySY/
-         oQud2SLsBSwGqPTh8bf3tLjN+RnzPwggKzjeTqMo3NuSX2o1/aVKmJix7bKehvHdG7Lm
-         L8mQEQFio0N/bOERewB7p87CHow5i0WQCI43jlYuuZkzr70Pd/cVZrPObszuv/szeXbk
-         g/7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785978714; x=1786583514;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785978715; x=1786583515; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LTVPjfphXDhaRHaKV0RjaX7X6/y3DzQtxj+anMWWin8=;
-        b=MHSXQ1peJ0FWoQrIj5fK1eU2ZOSVDTkv/7sdJju2mTZdhMdDOJa8DXOaUw8UqN+k+5
-         +NLnNVXKdruD1cxTsI5Fm4pMNzfEacVG+/MFetqDzZZ7orHk7VSlK/3C68TUBxT9KD8C
-         oCDpyvObtt+C//QsG2eKhxtZIywNniCuV9Ys5923AEpIMI3Sh6GvwVuLH9yASh6kqsFt
-         KwBm51UgEMtkHXA35kFhZnKEd+aAyBMnJ5BGGYEcjjZnO/kK6c9PWpmjd6QWMsj2uRlK
-         1sj3sPoFDuuPH2BD7uhbx0Pm+zAHychM1ujE31NU+hac7w1aXnFdqrzlDgXud1Kheuoe
-         nGJg==
-X-Forwarded-Encrypted: i=1; AHgh+RoW1Vnpv3ExukuGM4Zut7Wc9BN4eD0rEBTivrr4rItKh0wWVMlnWTN6jG7z4A4Woddu84MlrrU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzztc9lXHt3u3b7hN0q0L3MTHiHro0msD82UEdB8Ls6v54gGZal
-	n7WFylWWEU4CWJwiRnNZQLxn3025eyv1vXz7XKfCTpjH9MA88B+1vdHHBG3PybXUkPo9kFpMO05
-	fCJTKnA==
-X-Received: from pgbfm2.prod.google.com ([2002:a05:6a02:4982:b0:c79:1600:6a09])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:ac44:b0:3c3:8440:f6da
- with SMTP id adf61e73a8af0-3cb85ea6fa5mr13301602637.29.1785978714318; Wed, 05
- Aug 2026 18:11:54 -0700 (PDT)
-Date: Thu,  6 Aug 2026 01:11:22 +0000
+        bh=L4smYRD0UYgKyriuQPGkmNrfE7wLz1kFYgUlyCs+ykA=;
+        b=J9CIXEBOu2nOOUsGZbBDp1m/dABnJ897p/2VNFGfQxAdzY6rGj9XuLvy9lrBQ1U7Y/
+         6xTpkjoBlpsuZW7oP8E1zLz4Qp0aZw8Hd4w//DKGyqca2e4F+LGFJUaqeXrs77CPpNN1
+         wK6bqwhSiMD5tOQuanvS8Gv/hGp2ULsxgZd2J0b3gsTyt2OFt/+ue3es0C3NelG56Yi5
+         rFh8G419t0KgPrBmic6rArjI1vMsOWvMy0PJk8iv9LcDfuZgPH8+feRGBZ368T0/rQwN
+         6Z2mFjOhlHmFFR+AXu+kVgEj+/ylikwnXo8g/S/6kzlMiQGZF+wux4V/3xkclRzBaBZL
+         YlLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785978715; x=1786583515;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=L4smYRD0UYgKyriuQPGkmNrfE7wLz1kFYgUlyCs+ykA=;
+        b=n5ksnwVHmTu5gXZ6nbkIkW7Qpuw5XojNz0UlEYoqpFg/6vi/rGo74YF6Suj/Po5any
+         c8FTrXkTRVeCn+HRfgu9v3cfDX3eGSdT+qXMy8S9/zNSf3DkuxhHOx3KlHF8eP3d8sUx
+         TEitYT9ocgvZtzvUeD43u42iVfI8eDKkbFvARDxRIpWIgtOBIpPeW1NOt87re9Stc4gK
+         iDObIXaPvjFxW2l9QjB/pLc8WwNAEw0W6EGALzar3rhRixS9ZEBH2gnf1WvBqA/Pm2xD
+         mkm16mJv/SZvkp/ykoEv6DFoYjYyTgUheC4Wfl9GNTdDRA1EnZAU+VJoSLAAvecQhcUS
+         jPzQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoyVgsbGHtz40ClNTp80Xj1AKtCl5ZD3joWep7cZjEHHR4nDhMIBxlA25yiatvDxo2n4mmA2l8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxycb6bbkTPifQY1BRoP3go84NQX372n5RKIz0OnckVAJWN4ujo
+	4ttkF61hn2BoLI9bJCJWqwl9n7xeCXX/jsu/7WvLwh37ItPBsbOFGaOrYrnS6ZXn9cpHckTVdI3
+	5MX61ow==
+X-Received: from pjbqb1.prod.google.com ([2002:a17:90b:2801:b0:38e:4ba3:1d9d])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1cc8:b0:38e:7297:a92e
+ with SMTP id 98e67ed59e1d1-3908979a96dmr318146a91.9.1785978715068; Wed, 05
+ Aug 2026 18:11:55 -0700 (PDT)
+Date: Thu,  6 Aug 2026 01:11:23 +0000
+In-Reply-To: <20260806011152.1170012-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260806011152.1170012-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260806011152.1170012-1-kuniyu@google.com>
-Subject: [PATCH v1 net-next 00/11] neighbour: Namespacify arp_tbl and nd_tbl.
+Message-ID: <20260806011152.1170012-2-kuniyu@google.com>
+Subject: [PATCH v1 net-next 01/11] neighbour: Remove __neigh_for_each_release().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -66,75 +70,73 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-The neighbour subsystem is almost ready to drop RTNL.
+Since commit 6deb53595092 ("net: remove unused ATM protocols
+and legacy ATM device drivers"), there is no in-kernel user of
+__neigh_for_each_release().
 
-However, the control paths are serialised by the global
-per-table lock.
+Let's remove it.
 
-This series converts arp_tbl and nd_tbl to per-netns table.
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ include/net/neighbour.h |  2 --
+ net/core/neighbour.c    | 31 -------------------------------
+ 2 files changed, 33 deletions(-)
 
-Patch 1 ~ 2 are misc cleanup.
-
-Patch 3 ~ 6 store arp_tbl/nd_tbl to net->neigh_tables[] and
-remove the global neigh_tables[].
-
-Patch 7 ~ 8 replaces the direct access to arp_tbl/nd_tbl to
-net->neigh_tables[] using new helpers.
-
-Patch 9 ~ 10 finally replaces the global table with per-netns
-table.
-
-Patch 11 cleans up unnecessary net_eq().
-
-Note that some buggy drivers access nd_tbl without checking
-disable_ipv6_mod, so nd_tbl's extern definition is still left.
-
-
-Kuniyuki Iwashima (11):
-  neighbour: Remove __neigh_for_each_release().
-  neighbour: Remove lock dance for neigh_update_{gc,managed}_list().
-  neighbour: Remove unnecessary EXPORT_SYMBOL().
-  neighbour: Remove __rcu from neigh_tables[].
-  neighbour: Store arp_tbl and nd_tbl in net->neigh_tables[].
-  neighbour: Remove neigh_tables[].
-  ipv4: Replace &arp_tbl with arp_table(net).
-  ipv6: Replace &nd_tbl with nd_table(net).
-  neighbour: Clean up neigh_table_init() and neigh_table_clear().
-  neighbour: Namespacify neigh_tables.
-  neighbour: Remove unnecessary net_eq().
-
- drivers/infiniband/ulp/ipoib/ipoib_main.c     |  27 +-
- .../marvell/prestera/prestera_router.c        |  10 +-
- .../mellanox/mlx5/core/en/rep/neigh.c         |  29 +-
- .../mellanox/mlx5/core/en/tc_tun_encap.c      |  23 +-
- .../mellanox/mlx5/core/en_accel/ipsec.c       |   6 +-
- .../ethernet/mellanox/mlxsw/spectrum_router.c |  31 +-
- .../ethernet/mellanox/mlxsw/spectrum_span.c   |  10 +-
- .../netronome/nfp/flower/tunnel_conf.c        |  14 +-
- drivers/net/ethernet/rocker/rocker_main.c     |   2 +-
- drivers/net/ethernet/rocker/rocker_ofdpa.c    |   2 +-
- drivers/net/ethernet/sfc/tc_counters.c        |   8 +-
- drivers/net/ethernet/sfc/tc_encap_actions.c   |   4 +-
- drivers/net/vrf.c                             |   2 +-
- drivers/net/vxlan/vxlan_core.c                |  16 +-
- include/net/arp.h                             |  10 +-
- include/net/ndisc.h                           |  20 +-
- include/net/neighbour.h                       |   6 +-
- include/net/net_namespace.h                   |   4 +
- include/net/route.h                           |   7 +-
- net/bridge/br_arp_nd_proxy.c                  |   4 +-
- net/core/neighbour.c                          | 318 ++++++++----------
- net/ieee802154/6lowpan/tx.c                   |   3 +-
- net/ipv4/arp.c                                | 131 +++++---
- net/ipv4/devinet.c                            |  18 +-
- net/ipv4/fib_semantics.c                      |   7 +-
- net/ipv4/route.c                              |   2 +-
- net/ipv6/addrconf.c                           |  17 +-
- net/ipv6/ip6_output.c                         |   4 +-
- net/ipv6/ndisc.c                              | 146 ++++----
- net/ipv6/route.c                              |  18 +-
- 30 files changed, 484 insertions(+), 415 deletions(-)
-
+diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+index 8860cc2175fc..7847c29496ae 100644
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -405,8 +405,6 @@ static inline struct net *pneigh_net(const struct pneigh_entry *pneigh)
+ void neigh_app_ns(struct neighbour *n);
+ void neigh_for_each(struct neigh_table *tbl,
+ 		    void (*cb)(struct neighbour *, void *), void *cookie);
+-void __neigh_for_each_release(struct neigh_table *tbl,
+-			      int (*cb)(struct neighbour *));
+ int neigh_xmit(int fam, struct net_device *, const void *, struct sk_buff *);
+ 
+ struct neigh_seq_state {
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 1349c0eedb64..69a5f9dfa851 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3161,37 +3161,6 @@ void neigh_for_each(struct neigh_table *tbl, void (*cb)(struct neighbour *, void
+ }
+ EXPORT_SYMBOL(neigh_for_each);
+ 
+-/* The tbl->lock must be held as a writer and BH disabled. */
+-void __neigh_for_each_release(struct neigh_table *tbl,
+-			      int (*cb)(struct neighbour *))
+-{
+-	struct neigh_hash_table *nht;
+-	int chain;
+-
+-	nht = rcu_dereference_protected(tbl->nht,
+-					lockdep_is_held(&tbl->lock));
+-	for (chain = 0; chain < (1 << nht->hash_shift); chain++) {
+-		struct hlist_node *tmp;
+-		struct neighbour *n;
+-
+-		neigh_for_each_in_bucket_safe(n, tmp, &nht->hash_heads[chain]) {
+-			int release;
+-
+-			write_lock(&n->lock);
+-			release = cb(n);
+-			if (release) {
+-				hlist_del_rcu(&n->hash);
+-				hlist_del_rcu(&n->dev_list);
+-				neigh_mark_dead(n);
+-			}
+-			write_unlock(&n->lock);
+-			if (release)
+-				neigh_cleanup_and_release(n);
+-		}
+-	}
+-}
+-EXPORT_SYMBOL(__neigh_for_each_release);
+-
+ int neigh_xmit(int index, struct net_device *dev,
+ 	       const void *addr, struct sk_buff *skb)
+ {
 -- 
 2.55.0.679.g6767b8d81c-goog
 
