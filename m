@@ -1,140 +1,122 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C8C3D1713;
-	Thu,  6 Aug 2026 12:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274FF389116;
+	Thu,  6 Aug 2026 12:06:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786017900; cv=none; b=gjS3f9+71YDYGrwEvXQ9Tk6lLco6pmIVcFyRWnxLHiAgDtjC3oEktoWXO37pgrjt+dQCQoBv82/tHtc3bKMfP61HiEGnPVC8U2FACxEqZuH8mwY6dwMjhXTXAYM0/8yoznqcD983jU3b85plF4SA5UGW/uSWASHYDw8OthBN+dI=
+	t=1786018018; cv=none; b=sZ0HvjXp8kO3yA+1bLfcxNU505cFcy5GguX8K2j09aWzYQ15ESAxqwYOSrwW4fkShNfmPl7hwWSPxIQlCFQDVvFThFQqkMnj1+nebw+cShBHomJzSTIEvVgDOQj0MR+ZKzly0ry5hFkRE9joOfk0juL6ItQC8AR/vZ7mlNeRMHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786017900; c=relaxed/simple;
-	bh=hInYNNR2MRbgIBwO8UgEjL13c2n784AGLihERLLViFE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sHET5fMA+n4MIEioNXNdkp00qlrpfxN1Keeh+Y3kRbNPhDlFk2q3VrE5L3HqUXrfdmVUnSnduI0UIicOzbsRyr8DFXVVwDA504cE/XkGcYSkHXVC9w+DKOiIQ5+02Kbl7dPW/ow2Mo9LLHO3F7be3Ikd5HEyU52tmxUZt+R0cf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fsR7Nm3l; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786018018; c=relaxed/simple;
+	bh=r9VGBxwF+J0VJMXe/vi44fLPtflZtoQXoDHaJyHXsjc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jDuKHlWM6OuaM3HfksdvXZ80jEqANy0NArJySAhKiWrnUeILIlKd83NUEjTSfQW0DeEW09YJx4RFPR3N+K1W0XY0mBIFMOrE4Zi9zsiWVwgP/x2YyHtILBS7/eQjQGf6Hl4X6vdL4VX2oLqA6RPVrl3fj5nfXcJtITAi+cyUaVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=GGKJmMit; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fsR7Nm3l"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675Nn0J91094475;
-	Thu, 6 Aug 2026 12:04:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=jUArO4QTBrXtvlWICDou+TBrUpW/gYP9mZLGidHsx
-	0A=; b=fsR7Nm3lSd4gyJJ3AkbJEQP/Uo7bqRV+3VAhVJLyqn5c9qh8S7piuktGS
-	QDe7UQgekSlFMKxVnmQVpSkuqfAV3bhG5MsMyrHksu7EbkqebdFdJIzORWZcF/wG
-	eOdLnZCSvZgDFiq+RfUzqastCoKIBlC261ZWZC94nCaL3IinFa7KZMKpIopCFWiF
-	zLWnrqZbLVjulOmCg2YQt4jSzIL3cw6dVIURPXp/n9gTfc0zz0afDyo5jTjDfHJY
-	AtXseayOU8X5aku7pvciAVXPwoQg0nwfvlITi2VqC3f96SdI3fK+Z5LXf6tX67MZ
-	hBqBZY+EFfTf3W5Pof/IimXp7u8RA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8h581r6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 12:04:53 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676BuJNc028048;
-	Thu, 6 Aug 2026 12:04:52 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qu6d4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 12:04:52 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676C4mWD45154612
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 12:04:48 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 542BC20043;
-	Thu,  6 Aug 2026 12:04:48 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DAC2A2004D;
-	Thu,  6 Aug 2026 12:04:47 +0000 (GMT)
-Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Aug 2026 12:04:47 +0000 (GMT)
-From: Hidayath Khan <hidayath@linux.ibm.com>
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, wintera@linux.ibm.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com
-Cc: mjambigi@linux.ibm.com, tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
-        horms@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        pasic@linux.ibm.com, gbayer@linux.ibm.com, andrew+netdev@lunn.ch,
-        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] dibs: fix double free of dmb_clientid_arr
-Date: Thu,  6 Aug 2026 14:04:47 +0200
-Message-ID: <20260806120447.596164-1-hidayath@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="GGKJmMit"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F033153B;
+	Thu,  6 Aug 2026 05:06:52 -0700 (PDT)
+Received: from [192.168.178.24] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F0A133F632;
+	Thu,  6 Aug 2026 05:06:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786018016; bh=r9VGBxwF+J0VJMXe/vi44fLPtflZtoQXoDHaJyHXsjc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GGKJmMity6kCF4wZUNnHzGepGcdf1SaRohZ8rLzLYO1VxTi0fZmOhXFOXJnUb1Vf9
+	 okW11psOZ0rMszXq//5a61um/a4XDtFh74fuswTOVdDdoe608hYchCJ1BUTHAAGX9F
+	 dklFELZc0aOaNaGHxF0c2x8fqfYoTiYtoz3VBiSY=
+Message-ID: <3c39665b-5fe0-4015-ae96-c97e0ce8e9c2@arm.com>
+Date: Thu, 6 Aug 2026 14:06:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDA5MyBTYWx0ZWRfX+u2dxN+GqGrH
- lh9PTCKo2/25Gq6I2ahWZ8NU5lAGPmVjauFVVsnwKEgx707cxlq0YVxOnoLZ7zCSJyM4klARV7K
- IVgqiytW67dwdJW3zwk04XF6lO6cyrY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDA5MyBTYWx0ZWRfX70B/0rCFRlE3
- a4CNFhjbVA791xXC5lh3KEbRzTGWsUNUpH6CSeu/ZAy9kWNakdJnJzn/tgO622KRegNf75f23XZ
- dzVwuSn8Hs3TFHsRTsFctXiWU3PsbM1KrkRBBwgCgR4OzPZcElsk1bmX+lA/mroGAUPffV6fkVe
- TxvqxpwbTTEpSRUv3W3m/NaPknm1omjx5hhZMahifhDsPU0VEaMJR0xL67m7ZSmJcyKbPOFVsKx
- 9N6GAMwZ4wxDkrmErKGAA5HrIgMTNoEtdIB2EEqCdQZYwHdkAL6yKo+b2qVQ6v9QTrh9ud9YbAl
- UvKB0ZNNjZLi3w9XvXdVEHtzT3Q9OMD3ci6HW9oX23WzWSpPh6l2bUqEZM+2OxI3CW3axqnA/gp
- pXUJDuQJo35mgYGIZz8dNcu8VZi170j+NwLoyWyruWMrd873VAoBotUqFL1XEj4FhOLSareS7Rb
- Dhi26NWMQdHFgl0SEmA==
-X-Authority-Analysis: v=2.4 cv=SI1ykuvH c=1 sm=1 tr=0 ts=6a747865 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=m-JuoJLILF45OwHNZkAA:9
-X-Proofpoint-ORIG-GUID: BBTrFJBgqV3Z7q7frO-uUA_3DTbA-81s
-X-Proofpoint-GUID: Tqso5xCSkUji-Aa9hUD9NM_KbzqRl8Ca
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608060093
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC/RFT 0/2] net: stmmac: Add support for Allwinner A733
+ GMAC210
+To: Jerome Brunet <jbrunet@baylibre.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+References: <20260731-allwinner-a733-gmac-support-v1-0-d0a8732bfa82@baylibre.com>
+Content-Language: en-GB
+From: Andre Przywara <andre.przywara@arm.com>
+In-Reply-To: <20260731-allwinner-a733-gmac-support-v1-0-d0a8732bfa82@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-dibs_dev_add() frees dibs->dmb_clientid_arr on both of its failure
-paths, but does not clear the pointer. dibs_lo_dev_probe() then frees
-the same pointer again in its err_reg path, so a failing device_add()
-or sysfs_create_group() results in a double free.
+Hi,
 
-Drop the kfree() from dibs_lo_dev_probe().
+On 7/31/26 18:30, Jerome Brunet wrote:
+> The A733 GMAC210 is a DesignWare MAC 5.20 with an Allwinner glue close to
+> the A523 GMAC200 already supported by dwmac-sun55i, but with a few
+> significant differences:
+> 
+>   * The glue configuration registers are a dedicated MMIO region of the
+>     controller instead of a syscon register.
+>   * That region is inside the controller reset domain, so the reset must be
+>     released before the configuration is written, and must not be asserted
+>     again afterwards or the configuration is lost.
+>   * The DMA channels have their own interrupt lines.
+>   * A PTP reference clock and an AHB reset are needed.
+>   * The controllers do not require a power domain (AFAIK).
+>   * The TX clock delay value is 5 bits wide instead of 3, split over 2
+>     register fields.
+> 
+> The DT changes for the A733 and the Cubie A7A board are not part of this
+> series and will be sent separately through the sunxi tree.
+> 
+> Tested on a Cubie A7A, RGMII with an external PHY on GMAC0.
+> 
+> Full disclosure: at the moment there is a problem with EEE/LPI while
+> testing on the Cubie A7A. If the device stays in LPI mode long enough, the
+> link sometimes (but not always) goes down, coming back up when the device
+> exits LPI mode.
 
-Fixes: cc21191b584c ("dibs: Move data path to dibs layer")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
----
-v2:
-- Fix Fixes: tag (was c3a910f2380f, should be cc21191b584c)
-- Remove incorrect Note paragraph copied from a different patch
+I saw that the MAXIO PHY *vendor* driver disables exactly those two 
+modes, so is this maybe more of a PHY problem?
 
- drivers/dibs/dibs_loopback.c | 1 -
- 1 file changed, 1 deletion(-)
+Cheers,
+Andre
 
-diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
-index fd5caf1e19a8..649e4e375be3 100644
---- a/drivers/dibs/dibs_loopback.c
-+++ b/drivers/dibs/dibs_loopback.c
-@@ -335,7 +335,6 @@ static int dibs_lo_dev_probe(void)
- 	return 0;
- 
- err_reg:
--	kfree(dibs->dmb_clientid_arr);
- 	/* pairs with dibs_dev_alloc() */
- 	put_device(&dibs->dev);
- 	kfree(ldev);
-
-base-commit: 92a09f2af870e91efb9471b109db15c2030f90f2
--- 
-2.52.0
+> 
+> I'm currently working around the problem by adding the following
+> properties to the PHY node:
+> 
+> 	eee-broken-100tx;
+> 	eee-broken-1000t;
+> 
+> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+> ---
+> Jerome Brunet (2):
+>        dt-bindings: net: sun8i-emac: Add A733 GMAC210 compatible
+>        net: stmmac: Add support for Allwinner A733 GMAC210
+> 
+>   .../bindings/net/allwinner,sun8i-a83t-emac.yaml    | 130 +++++++++++++++---
+>   drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c | 145 ++++++++++++++++++---
+>   2 files changed, 242 insertions(+), 33 deletions(-)
+> ---
+> base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+> change-id: 20260731-allwinner-a733-gmac-support-163bde10c152
+> 
+> Best regards,
+> --
+> Jerome
+> 
+> 
 
