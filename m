@@ -1,54 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD5343FD0B;
-	Thu,  6 Aug 2026 11:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879F144C506
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 11:14:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786014679; cv=none; b=No/xq0sH/iYsX8hIsPoVkI0bSFaDXua2fvRmUGp+T9oEholxo3jvSxUfWIyE2OP2ZU/bWlyxmu3fye7kqQytghTVelMKIZiOKSYmCrNkWr4xXgwfLwiAXqtfP+42DGsE9sp7Aoew4TWWIeXAu442iTCzO5cQNvRkiUEzIoeK3hU=
+	t=1786014887; cv=none; b=YFbDize8Jh4mmHzlSHTTeL6jEvDZoNgXwJ1rxAh8n0kUawFeseWW+UNH7EbtfM3sWlXjQawFDjzK8b2mcVH4vUMtYChgMs652/T06pBNGD+C5geWeaDrmXr4PMvx18VPupRv+Oxa9lhdah+fkHafIT/TZSklabg9voXWccC2VcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786014679; c=relaxed/simple;
-	bh=jM7QhXtGyphW9uInFqnd6yXmuv6fIvWUUj7d9YIJDSE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgEBZkJKfNcUE9PW7BHu5lV6qEEqifUzNt+5TWCqDeercxfrXomB/gvpj5R0jOvKxxmfHMVhDFerJF3TZRrOllOSj5L8E8sO8ps7t4VR7DK5zOywDz9YwhOnIdOvyY3nOGG4cBHlVagoIsNrPpaJTL92Dge/XnUdMWGv5BZGJIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3cYvQYH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786014887; c=relaxed/simple;
+	bh=nvbzzX+pDP2dRXeZDJUrtx9SgL5Afg0FEVJyUD58kJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e0ivyFVE2lielOV25THXRxYV34sAGlWjRXK4KzE936DTSKq6aq3lotnPsjQeukVAmxDec7XqHEckMnppKxqB0HWjeyk8KrDR33obqhF+dXnjCJY8CQ/kSK4RDKyfxHsLkuCNafBMHXFlbEkIiTDjRM1O4Hq7lNmbbkXu12I6iJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=d1MaXmq9; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3cYvQYH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EB71F00A3A;
-	Thu,  6 Aug 2026 11:11:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786014670;
-	bh=YEM6tuzrrV+758mV8ftM+RCEoNJEyN7le8XFuhHw68I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l3cYvQYHTOOqPIn86WXNCyIlmOctSA9gbLhP7G8E0zbxBZxTBfAifvQYHEm5pwoZx
-	 FIMbM7irG+Bjzpph7Itm4j4JDdkFN5rpRsv/+Plcp7dRjSKYrFkXASXkyWWawjg9Vy
-	 pjkgmiIkkHxqTo6cu1UE9qFBfZPWgsm72zajQF/nJKL9ojsCNrRu1QEE1gWMv1DSpS
-	 7yeGWt1+Ry6rPSTcqVurunYXhW03UW1Zu+nfjHHdS+AuLv5x48zJdx9Ll2S9T3xnDe
-	 q1+4/GCuVtfQUi6ar6zFFSg5+k47P3NUxyOFxA29bZKeUvBYYT4XKTGkrB4hM7hl16
-	 ZXkt9BmrBMMgQ==
-From: Simon Horman <horms@kernel.org>
-To: nashuiliang@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="d1MaXmq9"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84867f07d63so2452670b3a.2
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 04:14:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1786014883; x=1786619683; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5ciFqBkXHxNV/WACSCeYPUNyIzmEq+5S/n4whTSPG1E=;
+        b=d1MaXmq98Di/v5EdT0LIZIpFsXZcM2p+QfCe861ot91N5LzZ0TCUQ159R+84JwRk+2
+         eV+KLLVhGDQQeBq+Lsg+XnaFv1Qk0toiUFonm6yOpopdzgL2AJ/mOE7W/I5s0K7y/wHa
+         p2HK1GpXzGYk4+sKtrWU32m9h/NoDusPLY5kQtc/2C2iRhBTp9mSKu73tdEZVu45t1t1
+         H38Mk7HA0GgzXZGJvI0nrvEx8MjVZsP0tbn/iQWtfdIb3ywUZfPLarlwNEiEhLwV+C5F
+         3xmWNuLgiAia6UyEznlfhzeueXQmSWBoDJcyTU8DEB26+HoB2JHUzgN7sMgvAKXDFe2X
+         FVHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786014883; x=1786619683;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5ciFqBkXHxNV/WACSCeYPUNyIzmEq+5S/n4whTSPG1E=;
+        b=lL5p393NrNni4r+KmAAkcwaj8cXVveiUiuGBu0hmaGIxT1Lorscrt+9B/OGfOY2xH+
+         uhWmwXVuYef1w6qekDEM90YG+LWjEc9HTFokpHyUb0vpMgE0xqLxnpy+xHL69dCC7hRg
+         /lqr01n0EHtwpH+miNWnD43b/dawIczwSLmfbWCJEOgyyAnv5V+TRC5TmggNgKlC6Dc+
+         8W236kG2QEfluKrf77st4LXN2e4tmJQgxoU6UVgZSTtm7YdIALv41tWQ1JYJ+KScjWsN
+         K6h1sLZhsEd9yL08z89DrZXA1+gvgvy3BLjF1ayyvWfmPYE8O12SAK+vOf56CrXldvfy
+         mF9Q==
+X-Gm-Message-State: AOJu0YxUfqkrc2ZjLVkp0D66yGOLFpdWOw+o7lYFVT8c9fNg1rUQQOr7
+	xrBRfQyv0ZISH3AMEfsDmdJeXij7chZq/Pq7vpEcODgdg7tFfLslzIIaJq2MCVyaeFhpwRifINy
+	tEg/x1HSsLNa1yrRmgjs=
+X-Gm-Gg: AR+sD10rI/FFXdywGeMgOtoMJBh2Q0hnkl18LMwouv7nDXrrAnhRE15aVefSEj6+6Cx
+	in3YWNJ0i5dSh78sWQE67Whg6vyyesXPrdY/lOgH8BIkKcxAreBsUHCea7BqAoV/I+CqnhKXMf6
+	bF12ssx+JDVU+EjIl9w3kXBonKBYZ3IJTZGUafPj1cGHsoHLlPv5wpk4N4GuEX7VzZwcLVlzIA8
+	UpOeZCH5JQPUmJU9LrCiI7+7U8YpAihQ0hJvlnALh2n6xswpAS5N22j1J93zKWr8UpnJ2xTpcZx
+	sOi4C8YSPTqj2F9QVQxow2lC0juyJQwlaUoU2G42RSjunL1bkPHAn6TcaEXqrd3Zu7zNcAg7h+a
+	I4rdlNplUSS/q12mpsZxZaTDw95OpFmJwLtJ5JDQCpuvGdGP6JRY8SMPxtxVEP+mhG5bjW1nJon
+	fczxpL1sRf1ooC8nyugGhuV1cNg7Ll3FP77b1Yop2f7m0M+R2yKqWzxj1IrGT9GCyniQ==
+X-Received: by 2002:a05:6a00:8785:b0:84f:37c1:f887 with SMTP id d2e1a72fcca58-84f37c1fa4emr8463994b3a.12.1786014882885;
+        Thu, 06 Aug 2026 04:14:42 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f453b07cdsm1214705b3a.17.2026.08.06.04.14.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 04:14:42 -0700 (PDT)
+From: Ren Wei <weir@nebusec.ai>
+To: netdev@vger.kernel.org,
+	mptcp@lists.linux.dev
+Cc: matttbe@kernel.org,
+	martineau@kernel.org,
+	geliang@kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	kuniyu@google.com,
-	willemb@google.com,
-	liuhangbin@gmail.com,
-	krikku@gmail.com,
-	skhawaja@google.com,
-	sdf.kernel@gmail.com,
+	horms@kernel.org,
 	ncardwell@google.com,
-	martin.lau@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v7] net: reduce RFS/ARFS flow updates by checking LLC affinity
-Date: Thu,  6 Aug 2026 12:10:54 +0100
-Message-ID: <20260806111054.648657-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260804024053.765-1-nashuiliang@gmail.com>
-References: <20260804024053.765-1-nashuiliang@gmail.com>
+	kuniyu@google.com,
+	daniel@iogearbox.net,
+	kafai@fb.com,
+	kylebot@openai.com,
+	david.lee@trailofbits.com,
+	vega@nebusec.ai,
+	caoruide123@gmail.com,
+	weir@nebusec.ai,
+	sashiko-bot@kernel.org
+Subject: [PATCH net v3 0/2] mptcp: fix request migration ownership
+Date: Thu,  6 Aug 2026 19:14:29 +0800
+Message-ID: <cover.1785995291.git.caoruide123@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,409 +89,224 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260804024053.765-1-nashuiliang@gmail.com?part=1
----
---- Patch [1]: [PATCH net-next v7] net: reduce RFS/ARFS flow updates by checking LLC affinity ---
-commit a4fc10ca836e4630c08de840b94b9f47a375f4d6
-Author: Chuang Wang <nashuiliang@gmail.com>
+From: Ruide Cao <caoruide123@gmail.com>
 
-net: reduce RFS/ARFS flow updates by checking LLC affinity
+Hi,
 
-This patch makes rps_record_sock_flow() skip the flow table update when the
-new CPU shares an LLC with the previously recorded one, gated by a new
-sysctl net.core.rps_feat_llc_affinity. It also converts
-sock_rps_record_flow_hash() and sock_rps_record_flow() from static inlines
-into exported out-of-line functions.
+TCP request migration clones pending requests with inet_reqsk_clone().
+Some MPTCP request fields carry ownership which cannot be transferred by
+a plain byte copy.
 
-A few questions below.
+For MP_JOIN requests, subflow_req->msk holds a socket reference.  The
+clone inherits the pointer without acquiring its own reference, so the
+original and cloned requests can drop the same reference.  Patch 1 lets
+the cloned request take an additional reference.
 
-> diff --git a/include/net/rps.h b/include/net/rps.h
-> index e33c6a2fa8bbc..6dacf0888a6c2 100644
-> --- a/include/net/rps.h
-> +++ b/include/net/rps.h
+For MP_CAPABLE requests, token_node belongs to the original request and
+is hashed in the token table.  Copying the node gives the clone invalid
+hash state, while concurrent request migration and RX processing can
+observe different owners in the ehash and token tables.  Patch 2 moves
+token-table ownership from the original request to the clone under the
+bucket lock, and makes token acceptance and destruction tolerate a token
+that has already been removed.
 
-[ ... ]
+--------------------
+Changes in v3:
 
-> @@ -55,11 +56,14 @@ struct rps_sock_flow_table {
->  
->  #define RPS_NO_CPU 0xffff
->  
-> +bool rps_llc_check(u32 old_val, u32 new_val);
-> +
->  static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
->  {
->  	unsigned int index = hash & rps_tag_to_mask(tag_ptr);
->  	u32 val = hash & ~net_hotdata.rps_cpu_mask;
->  	struct rps_sock_flow_table *table;
-> +	u32 old_val;
->  
->  	/* We only give a hint, preemption can change CPU under us */
->  	val |= raw_smp_processor_id();
-> @@ -68,7 +72,8 @@ static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
->  	/* The following WRITE_ONCE() is paired with the READ_ONCE()
->  	 * here, and another one in get_rps_cpu().
->  	 */
-> -	if (READ_ONCE(table[index].ent) != val)
-> +	old_val = READ_ONCE(table[index].ent);
-> +	if (old_val != val && rps_llc_check(old_val, val))
->  		WRITE_ONCE(table[index].ent, val);
+- Split MP_JOIN and MP_CAPABLE into two patches.
+- Reworked MP_CAPABLE token migration to happen during MPTCP request
+  cloning.
+- Made MP_CAPABLE accept/destroy paths tolerant of already moved or
+  removed request tokens.
+- Added a packetdrill MP_CAPABLE reproducer and decoded warning.
+- Dropped the redundant IPPROTO_TCP guard around the direct MPTCP clone
+  call, as request migration is TCP-only.
+- Based v3 on the latest net tree rather than the current mptcp_net-next
+  export, which has not yet merged commit a0ab2ba83e35 ("tcp: fix TFO
+  max_qlen accounting across reuseport migration") and therefore lacks
+  the overlapping inet_reqsk_clone() changes.
+- v2 link:
+  https://lore.kernel.org/all/40fd38e7a368e5b7bc9bc83364a32241f977d53f.1778404619.git.caoruide123@gmail.com/
 
-[Severity: Medium]
-[Finding: main-2-4]
-[Sources: opus-5]
-Should the skip decision also require that old_val belongs to the same
-flow?  The slot index here is only a masked hash:
+Changes in v2:
 
-	unsigned int index = hash & rps_tag_to_mask(tag_ptr);
+- drop the generic request_sock clone callback
+- call MPTCP directly from inet_reqsk_clone() under the TCP protocol
+  check
+- keep cloned MP_JOIN requests holding an msk reference
+- clear raw-copied MP_CAPABLE token hash state in the clone
+- move MP_CAPABLE token ownership only after successful req migration
+- avoid exposing token internals to inet_connection_sock.c
+- update the commit message accordingly
+- v1 link:
+  https://lore.kernel.org/all/86e2514b533bf4d55d4aa2fdbf1404022e8c9430.1776149210.git.caoruide123@gmail.com/
 
-so distinct flows share slots.  get_rps_cpu() re-validates the stored hash
-bits for exactly that reason:
+------------------------------
 
-	ident = READ_ONCE(sock_flow_table[flow_id].ent);
-	if ((ident ^ hash) & ~net_hotdata.rps_cpu_mask)
-		goto try_rps;
+// poc for MP_JOIN:
 
-With the CPU extraction fixed (see the comment on rps_llc_check() below),
-if flow A owns the slot with (hashA, cpu3) and flow B then records from a
-CPU sharing an LLC with cpu3, rps_llc_check() returns false, the slot keeps
-hashA, and every packet of B fails the hash test in get_rps_cpu() and falls
-back to plain RPS.  Flow B can then never install its own entry.
+// Minimal reproducer for a stale subflow_req->msk after reqsk migration.
+--tolerance_usecs=200000
+--non_fatal=packet
 
-The same applies to the sentinel.  rps_sock_flow_sysctl() initializes every
-entry:
+`sysctl -q net.mptcp.enabled=1
+sysctl -q net.ipv4.tcp_migrate_req=1
+sysctl -q net.ipv4.tcp_synack_retries=1`
 
-	for (i = 0; i < size; i++)
-		sock_table[i].ent = RPS_NO_CPU;
+// Listener A and the owning MPTCP connection.
++0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
++0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
++0     bind(3, ..., ...) = 0
++0     listen(3, 8) = 0
 
-and _sock_rps_delete_flow() writes RPS_NO_CPU back on teardown.  With the
-intended mask, RPS_NO_CPU & rps_cpu_mask decodes to nr_cpu_ids - 1 on
-power-of-two CPU counts, which is a valid and usually active CPU, so the
-first record for a flow can be suppressed and the slot can stay at
-RPS_NO_CPU.
++0.0   <  addr[caddr0] > addr[saddr0]  S   0:0(0)         win 65535  <mss 1460, sackOK, TS val 1000 ecr 0,    nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
++0.0   >                               S.  0:0(0)  ack 1             <mss 1460, sackOK, TS val 1000 ecr 1000, nop, wscale 8, mpcapable v1 flags[flag_h] key[skey]>
++0.1   <                                .  1:1(0)  ack 1  win 256    <nop, nop, TS val 1000 ecr 1000, mpcapable v1 flags[flag_h] key[ckey=2, skey]>
++0     accept(3, ..., ...) = 4
 
-Would something like this before the CPU comparison be more correct?
+// Make the MPTCP socket fully established so it accepts MP_JOIN.
++0.1   <                               P.  1:3(2)  ack 1  win 256    <nop, nop, TS val 1001 ecr 1000, mpcapable v1 flags[flag_h] key[skey, ckey] mpcdatalen 2, nop, nop>
++0.0   >                                .  1:1(0)  ack 3             <nop, nop, TS val 1001 ecr 1001, dss dack8=3 dll=0 nocs>
 
-	if ((old_val ^ new_val) & ~net_hotdata.rps_cpu_mask)
-		return true;
+// Leave exactly one MP_JOIN request half-open.
++0.1   <  addr[caddr1] > addr[saddr0]  S   0:0(0)         win 65535  <mss 1460, sackOK, TS val 2000 ecr 0,    nop, wscale 8, mp_join_syn address_id=1 token=sha256_32(skey)>
++0.0   >                               S.  0:0(0)  ack 1             <mss 1460, sackOK, TS val 2000 ecr 2000, nop, wscale 8, mp_join_syn_ack address_id=0 sender_hmac=auto>
 
->  }
->  
-> @@ -136,25 +141,8 @@ static inline bool rfs_is_needed(void)
->  #endif
->  }
->  
-> -static inline void sock_rps_record_flow_hash(__u32 hash)
-> -{
-> -#ifdef CONFIG_RPS
-> -	if (!rfs_is_needed())
-> -		return;
-> -
-> -	_sock_rps_record_flow_hash(hash);
-> -#endif
-> -}
-> -
-> -static inline void sock_rps_record_flow(const struct sock *sk)
-> -{
-> -#ifdef CONFIG_RPS
-> -	if (!rfs_is_needed())
-> -		return;
-> -
-> -	_sock_rps_record_flow(sk);
-> -#endif
-> -}
-> +void sock_rps_record_flow_hash(__u32 hash);
-> +void sock_rps_record_flow(const struct sock *sk);
+// Listener B joins the reuseport group, then A is closed. The next request
+// timer clones and migrates the half-open MP_JOIN request to B.
++0.1   socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 5
++0     setsockopt(5, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0     setsockopt(5, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
++0     bind(5, ..., ...) = 0
++0     listen(5, 8) = 0
++0     close(3) = 0
 
-[Severity: Medium]
-[Finding: main-1-1]
-[Sources: opus-5]
-The changelog says:
+// Wait past the first SYN+ACK RTO, then release the owning MPTCP socket.
++1.5   setsockopt(4, SOL_SOCKET, SO_LINGER, {onoff=1, linger=0}, 8) = 0
++0     close(4) = 0
 
-  "Additionally, export sock_rps_record_flow_hash() and
-  sock_rps_record_flow(). This resolves a symbol visibility compilation
-  error triggered by 'tun' using sock_rps_record_flow_hash() in
-  tun_flow_update() when CONFIG_TUN is built as a module."
+// The migrated request expires on its next timer and its destructor uses msk.
++4.0   `true`
 
-Is that error pre-existing?  Before this patch both helpers were static
-inline in include/net/rps.h, so tun.ko and sctp.ko referenced no external
-symbol.  The undefined-symbol reports quoted in the v4/v5 notes look like
-they come from this patch adding a call to the non-exported rps_llc_check()
-inside the inline rps_record_sock_flow().
+------------------------------
+crash log of MP_JOIN
+[  280.449259] [      C0] BUG: KASAN: slab-use-after-free in subflow_req_destructor (net/mptcp/subflow.c:45)
+[  280.449417] [      C0] Write of size 4 at addr ff1100010e008d40 by task swapper/0/0
+[  280.449525] [      C0] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.2.0-rc5-00353-gc27e36054537 #10 PREEMPT(full)
 
-Should the changelog say that instead?
+[  280.449637] [      C0] Call Trace:
+[  280.450422] [      C0]  subflow_req_destructor (net/mptcp/subflow.c:45)
+[  280.450504] [      C0]  subflow_v4_req_destructor (net/mptcp/subflow.c:694)
+[  280.450581] [      C0]  __reqsk_free (net/ipv4/inet_connection_sock.c:906)
+[  280.450681] [      C0]  reqsk_timer_handler (include/net/request_sock.h:137 net/ipv4/inet_connection_sock.c:1147)
 
-Also, does turning these into out-of-line calls change the RFS fast path?
-The rfs_is_needed() static-key test previously compiled to a nop at each
-call site (tcp_recvmsg, tcp_sendmsg, inet_accept, sctp, tun), and on
-CONFIG_RPS=n the whole thing compiled away.  Now every call site performs a
-real call, including on CONFIG_RPS=n where the new definitions sit after
-"#endif /* CONFIG_RPS */" with empty bodies.  An alternative would be to
-keep the inlines and export rps_llc_check() only.
+[  280.454937] [      C0] Allocated by task 10014:
+[  280.455381] [      C0]  sk_prot_alloc (net/core/sock.c:2246)
+[  280.455516] [      C0]  sk_clone (net/core/sock.c:2488)
+[  280.455611] [      C0]  mptcp_sk_clone_init (include/net/sock.h:1848 net/mptcp/protocol.c:3564)
+[  280.455683] [      C0]  subflow_syn_recv_sock (net/mptcp/subflow.c:883)
+[  280.455772] [      C0]  tcp_check_req (net/ipv4/tcp_minisocks.c:934)
 
->  
->  static inline void sock_rps_delete_flow(const struct sock *sk)
->  {
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index c1c1be1a6962f..ab74616f95892 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
+[  280.457177] [      C0] Freed by task 0:
+[  280.457603] [      C0]  slab_free_after_rcu_debug (include/linux/kasan.h:235 mm/slub.c:2677 mm/slub.c:6439)
+[  280.457688] [      C0]  rcu_core (kernel/rcu/tree.c:2645 kernel/rcu/tree.c:2897)
 
-[ ... ]
+[  280.458199] [      C0] Last potentially related work creation:
+[  280.458426] [      C0]  kmem_cache_free (mm/slub.c:2638 mm/slub.c:6377 mm/slub.c:6504)
+[  280.458518] [      C0]  __sk_destruct (net/core/sock.c:2289 net/core/sock.c:2391)
+[  280.458607] [      C0]  sk_destruct (net/core/sock.c:2419)
+[  280.458700] [      C0]  __sk_free (net/core/sock.c:2430)
+[  280.458793] [      C0]  sk_free (net/core/sock.c:2441)
+[  280.458885] [      C0]  mptcp_close (include/net/sock.h:2020 net/mptcp/protocol.c:3399)
+[  280.458969] [      C0]  inet_release (net/ipv4/af_inet.c:442)
 
-> @@ -5218,6 +5220,55 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
->  	return cpu;
->  }
->  
-> +/**
-> + * rps_llc_check - determine if RPS flow table should be updated.
-> + * @old_val: previous flow record value.
-> + * @new_val: target flow record value.
-> + *
-> + * Return: true if the record needs an update, false otherwise.
-> + */
-> +bool rps_llc_check(u32 old_val, u32 new_val)
-> +{
-> +	u32 old_cpu = old_val & ~net_hotdata.rps_cpu_mask;
-> +	u32 new_cpu = new_val & ~net_hotdata.rps_cpu_mask;
+[  280.459536] [      C0] The buggy address belongs to the cache MPTCP of size 2968
+[  280.459593] [      C0] The buggy address is 128 bytes inside a freed 2968-byte region
 
-[Severity: Critical]
-[Finding: main-1-0]
-[Sources: opus-5]
-Is the mask polarity inverted here?  The entry format comment in
-include/net/rps.h says the upper part holds the high-order hash bits and
-the lower part holds the CPU number, and both the producer and the existing
-consumer agree with that:
 
-rps_record_sock_flow():
-	u32 val = hash & ~net_hotdata.rps_cpu_mask;
-	val |= raw_smp_processor_id();
 
-get_rps_cpu():
-	if ((ident ^ hash) & ~net_hotdata.rps_cpu_mask)
-		goto try_rps;
-	next_cpu = ident & net_hotdata.rps_cpu_mask;
+------------------------------
 
-So old_cpu and new_cpu as computed above are flow hash bits, not CPU ids.
-Two consequences seem to follow.
+MP_CAPABLE packetdrill reproducer:
 
-First, hash & ~rps_cpu_mask is either 0 or a multiple of rps_cpu_mask + 1,
-which equals roundup_pow_of_two(nr_cpu_ids), so the first guard
+// Reproducer for MP_CAPABLE request token ownership during TCP req migration.
+//
+// The first listener owns the request created by the MP_CAPABLE SYN.  A second
+// SO_REUSEPORT listener is added only after that SYN, then the first listener is
+// closed.  The SYN+ACK retransmission timer migrates the request to the second
+// listener, and a later request timer destroys the migrated request.
+//
+// On a vulnerable kernel, inet_reqsk_clone() raw-copies token_node.  The clone
+// is not the token table owner, so destroying the migrated request triggers the
+// MPTCP token ownership bug.
+--tolerance_usecs=250000
 
-	if (old_cpu >= nr_cpu_ids || !cpu_active(old_cpu))
-		return true;
++0     `sysctl -q net.mptcp.enabled=1`
++0     `sysctl -q net.ipv4.tcp_migrate_req=1`
++0     `sysctl -q net.ipv4.tcp_synack_retries=2`
++0     `sysctl -q net.ipv4.tcp_timestamps=1`
++0     `sysctl -q kernel.panic_on_warn=0`
++0     `sysctl -q kernel.panic_on_oops=0`
++0     `ip tcp_metrics flush all >/dev/null 2>&1 || true`
++0     `tc qdisc replace dev tun0 root pfifo >/dev/null 2>&1 || true`
 
-is true for every non-zero value and rps_llc_check() returns true
-unconditionally.  Does the LLC filtering ever run?  If it does not, where
-does the ~93% reduction in mlx5e_rx_flow_steer reported in the changelog
-come from?
++0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
++0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
++0     getsockopt(3, SOL_TCP, TCP_IS_MPTCP, [1], [4]) = 0
++0     bind(3, ..., ...) = 0
++0     listen(3, 1) = 0
 
-Second, in the remaining case where the stored hash bits happen to be zero
-(recorded hash smaller than roundup_pow_of_two(nr_cpu_ids)), old_cpu is 0,
-which is active and normally present in current->cpus_ptr, so the code
-reaches cpus_share_cache(old_cpu, new_cpu) with new_cpu being an arbitrary
-hash-derived value that is never range checked:
++0       <  S   0:0(0)         win 32792  <mss 1000, sackOK, nop, nop, nop, wscale 7, mpcapable v1 flags[flag_h] nokey>
++0       >  S.  0:0(0)  ack 1             <mss 1460, nop, nop, sackOK, nop, wscale 9, mpcapable v1 flags[flag_h] key[skey]>
 
-kernel/sched/core.c:cpus_share_cache() {
-	if (this_cpu == that_cpu)
-		return true;
++0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 4
++0     setsockopt(4, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0     setsockopt(4, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
++0     getsockopt(4, SOL_TCP, TCP_IS_MPTCP, [1], [4]) = 0
++0     bind(4, ..., ...) = 0
++0     listen(4, 1) = 0
 
-	return per_cpu(sd_llc_id, this_cpu) == per_cpu(sd_llc_id, that_cpu);
-}
++0     close(3) = 0
 
-Can this index __per_cpu_offset[] out of bounds and dereference the
-resulting address?  The hashes come from remote 4-tuples and this runs on
-the socket receive/transmit path.
+// Let the retransmission timer migrate the request to fd 4 and let the migrated
+// request expire.  On vulnerable kernels its raw-copied token_node is not the
+// token-table owner, so the request timer trips the token owner assertion.
++8.0   `true`
 
-Would using val & net_hotdata.rps_cpu_mask for both extractions, plus a
-new_cpu < nr_cpu_ids check before cpus_share_cache(), be the intended
-logic?
++0     close(4) = 0
 
-> +
-> +	/*
-> +	 * RPS LLC Affinity Feature:
-> +	 * Reduce RFS/ARFS flow updates by checking LLC affinity.
-> +	 *
-> +	 * Frequent flow table updates can trigger constant hardware steering
-> +	 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
-> +	 * contention on driver internal locks (like mlx5's arfs_lock).
-> +	 *
-> +	 * This strategy only updates the flow record if it migrates across LLC
-> +	 * boundaries. This minimizes expensive hardware updates while preserving
-> +	 * cache locality for the application.
-> +	 */
-> +	if (static_branch_unlikely(&rps_feat_llc_affinity)) {
-> +		/* Force update if the recorded CPU is invalid or has gone offline */
-> +		if (old_cpu >= nr_cpu_ids || !cpu_active(old_cpu))
-> +			return true;
-> +
-> +		/*
-> +		 * Force an update if the current task is no longer permitted
-> +		 * to run on the old_cpu.
-> +		 */
-> +		if (!cpumask_test_cpu(old_cpu, current->cpus_ptr))
-> +			return true;
+------------------------------
+decoded warning from MP_CAPABLE reproducer:
 
-[Severity: Medium]
-[Finding: main-5-11]
-[Sources: opus-5]
-Is current the task that owns this flow?  tun_flow_update() calls
-sock_rps_record_flow_hash(e->rps_rxhash) and its callers are tun_get_user()
-and tun_xdp_one(), so current there is the tun or vhost writer thread, not
-the application that will recvmsg() the flow.  The affinity of that
-unrelated task does not say where the consumer runs.
+[  314.661418] [      C2] ------------[ cut here ]------------
+[  314.661636] [      C2] WARNING: net/mptcp/token.c:364 at mptcp_token_destroy_request+0x2b0/0x330, CPU#2: swapper/2/0
+[  314.661931] [      C2] CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 7.2.0-rc5-00353-gc27e36054537 #10 PREEMPT(full)
+[  314.662092] [      C2] RIP: 0010:mptcp_token_destroy_request (build/../net/mptcp/token.c:364 (discriminator 1))
+[  314.663001] [      C2] Call Trace:
+[  314.663043] [      C2]  <IRQ>
+[  314.663107] [      C2]  subflow_v4_req_destructor (build/../net/mptcp/subflow.c:694)
+[  314.663213] [      C2]  __reqsk_free (build/../net/ipv4/inet_connection_sock.c:906)
+[  314.663325] [      C2]  reqsk_timer_handler (build/../include/net/request_sock.h:137 build/../net/ipv4/inet_connection_sock.c:1147)
+[  314.663762] [      C2]  call_timer_fn (build/../kernel/time/timer.c:1748)
+[  314.668915] [      C2] ---[ end trace 0000000000000000 ]---
 
-Also, p->cpus_ptr is not always &p->cpus_mask:
 
-kernel/sched/core.c:set_cpus_allowed_common() {
-	if (ctx->flags & (SCA_MIGRATE_ENABLE | SCA_MIGRATE_DISABLE)) {
-		p->cpus_ptr = ctx->new_mask;
-		return;
-	}
-	...
-}
+Ruide Cao (2):
+  mptcp: hold MP_JOIN msk ref when cloning reqsk
+  mptcp: fix MP_CAPABLE token migration when cloning reqsk
 
-Inside a migrate_disable() region (including PREEMPT_RT spin_lock
-sections), cpus_ptr is cpumask_of(rq->cpu), so this test is false for every
-old_cpu other than the current one and rps_llc_check() degenerates to
-"always update".  The mask is also read with no serialization against a
-concurrent sched_setaffinity() or cpuset change.
+ include/net/mptcp.h             |  7 ++++
+ net/ipv4/inet_connection_sock.c |  4 +++
+ net/mptcp/protocol.c            | 12 ++++---
+ net/mptcp/protocol.h            |  4 ++-
+ net/mptcp/subflow.c             | 13 +++++++
+ net/mptcp/token.c               | 61 +++++++++++++++++++++++++++++----
+ net/mptcp/token_test.c          |  4 +--
+ 7 files changed, 90 insertions(+), 15 deletions(-)
 
-> +
-> +		/*
-> +		 * If CPUs do not share a cache, allow the update to prevent
-> +		 * expensive remote memory accesses and cache misses.
-> +		 */
-> +		if (!cpus_share_cache(old_cpu, new_cpu))
-> +			return true;
-> +
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->  #ifdef CONFIG_RFS_ACCEL
->  
->  /**
 
-[ ... ]
-
-> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-> index b508618bfc123..b6d4ebcbb6a68 100644
-> --- a/net/core/sysctl_net_core.c
-> +++ b/net/core/sysctl_net_core.c
-> @@ -210,6 +210,33 @@ static int rps_sock_flow_sysctl(const struct ctl_table *table, int write,
->  	kvfree_rcu_mightsleep(tofree);
->  	return ret;
->  }
-> +
-> +static int rps_feat_llc_affinity_sysctl(const struct ctl_table *table, int write,
-> +					void *buffer, size_t *lenp, loff_t *ppos)
-> +{
-> +	u8 curr_state;
-> +	int ret;
-> +	const struct ctl_table tmp = {
-> +		.data = &curr_state,
-> +		.maxlen = sizeof(curr_state),
-> +		.mode = table->mode,
-> +		.extra1 = table->extra1,
-> +		.extra2 = table->extra2
-> +	};
-> +
-> +	curr_state = static_branch_unlikely(&rps_feat_llc_affinity) ? 1 : 0;
-> +
-> +	ret = proc_dou8vec_minmax(&tmp, write, buffer, lenp, ppos);
-> +	if (write && ret == 0) {
-> +		if (curr_state && !static_branch_unlikely(&rps_feat_llc_affinity))
-> +			static_branch_enable(&rps_feat_llc_affinity);
-> +		else if (!curr_state && static_branch_unlikely(&rps_feat_llc_affinity))
-> +			static_branch_disable(&rps_feat_llc_affinity);
-> +	}
-> +
-> +	return ret;
-> +}
-
-[Severity: Medium]
-[Finding: main-5-9]
-[Sources: opus-5]
-Can two concurrent writers to this file race?  The snapshot, the parse and
-the toggle are done with no serialization, while the in-tree helper for the
-same job takes a mutex:
-
-kernel/sysctl.c:proc_do_static_key() {
-	static DEFINE_MUTEX(static_key_mutex);
-	...
-	mutex_lock(&static_key_mutex);
-	val = static_key_enabled(key);
-	ret = proc_dointvec_minmax(&tmp, dir, buffer, lenp, ppos);
-	...
-	mutex_unlock(&static_key_mutex);
-}
-
-If CPU0 is inside static_key_enable_cpuslocked():
-
-	if (atomic_read(&key->enabled) == 0) {
-		atomic_set(&key->enabled, -1);
-		jump_label_update(key);
-		atomic_set_release(&key->enabled, 1);
-	}
-
-then CPU1 entering static_key_disable_cpuslocked() reads the transient -1
-before taking jump_label_lock():
-
-	if (atomic_read(&key->enabled) != 1) {
-		WARN_ON_ONCE(atomic_read(&key->enabled) != 0);
-		return;
-	}
-
-which warns and drops the disable request, leaving the key in the state the
-administrator did not ask for.  Would reusing proc_do_static_key() be
-simpler here?  It also enforces the CAP_SYS_ADMIN check that this handler
-omits.
-
-The "if (curr_state && !static_branch_unlikely(...))" pre-checks look
-redundant since enable and disable are idempotent, and they only widen the
-window.
-
-> +
->  #endif /* CONFIG_RPS */
->  
->  #ifdef CONFIG_NET_FLOW_LIMIT
-> @@ -554,6 +581,14 @@ static struct ctl_table net_core_table[] = {
->  		.mode		= 0644,
->  		.proc_handler	= rps_sock_flow_sysctl
->  	},
-> +	{
-> +		.procname   = "rps_feat_llc_affinity",
-> +		.maxlen     = sizeof(u8),
-> +		.mode       = 0644,
-> +		.proc_handler   = rps_feat_llc_affinity_sysctl,
-> +		.extra1     = SYSCTL_ZERO,
-> +		.extra2     = SYSCTL_ONE
-> +	},
-
-[Severity: Low]
-[Finding: main-1-2]
-[Sources: opus-5]
-Could this new sysctl get a documentation entry?  Neither the tunable list
-in the RFS Configuration section of Documentation/networking/scaling.rst nor
-Documentation/admin-guide/sysctl/net.rst mentions rps_feat_llc_affinity, its
-semantics or its default.
-
-The same file also states:
-
-  "rps_sock_flow_table is a global flow table that contains the *desired*
-  CPU for flows: the CPU that is currently processing the flow in
-  userspace.  Each table value is a CPU index that is updated during calls
-  to recvmsg and sendmsg (specifically, inet_recvmsg(), inet_sendmsg() and
-  tcp_splice_read())."
-
-With the feature enabled the entry is deliberately left stale whenever
-rps_llc_check() returns false, so that description no longer holds.  Should
-it be updated in the same patch?
-
->  #endif
->  #ifdef CONFIG_NET_FLOW_LIMIT
->  	{
+base-commit: 44871eadd07a7f004aa00cb87399461eea08c630
+-- 
+2.43.0
