@@ -1,75 +1,80 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B878261B70
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 07:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01273CB8F1
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 07:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786001179; cv=none; b=NUYlPm2L98AOllnB9keThhypRKhpxKKknFI3FAknDdYxPV+DJ63vYIkzIWvVzn4vB0IPgKqPUffa4s30X49xUidyz216cgAu89pMLG3qDDqO0z+8TtFI3UCGzHtXh5G8T9RflKv5SaiND6BDKop5JGbSZ9c1oZD1uhGmZTh/jcM=
+	t=1786001495; cv=none; b=k18RfqbigM2EZfXgGxCXIdS1/G+DzENYmIBAkuhhTSIUh9AO1+MhiEuuIyWjljdGMQhH/N3vOqr00ylJM85NI8D+swCmsFvL0JF1IvNL1vWWI7OCNx134YSKkwveJsRVI2QunqqFL+ESeOsyRQ8NiaE+6S8IugN2+3cc7JuD/jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786001179; c=relaxed/simple;
-	bh=DwLSILOJ14UgHDlR+2izyPNmb+RJMyL88SqW+3pc1Hc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbKy8YApASvrSH6s5pbHszlKEU25/hAbmLdk7BeAWTRKSTeI5DAs1KoLqjjKGOxhxAVsxUZQzIRBy/VHfGmnaNegCGLLncLxxoipZHlcG+SzaL0q/+jBqhFQUpP2IOqhNp1tmtOVcvjpQETnNhotjIKhBYrEwNvVOQSusZIHJ8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YlQKoMfE; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1786001495; c=relaxed/simple;
+	bh=h/28hW+aLZCVn/rYJAAjPMDlQtD25+OgSFqcgQatD3g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bw7962Ej+qfMYofgI8p8G/EcgRAJbh6k9JPniD401DVtq7lwUoiOF7DOrd6FhAQjUvxdkYmkxiWegBEb3eOZ/fr8/FaeQSL2ozYw0k2Osc67HkzJRdIGugITa9+YIyzgwEgsir1bE29OS/nVspGGiooY8XUcloL8TzyA9geGCVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yg64C0kU; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YlQKoMfE"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47de0093c42so1353201f8f.3
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 00:26:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yg64C0kU"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4980dc26022so17176135e9.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 00:31:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786001176; x=1786605976; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KZGj/L3nadsNc5+G4zPPi1gGSB5LzCydIBvRZmooxYk=;
-        b=YlQKoMfEwWhsnKMt8Pl3hlqskT9/BnxRXD3BsHQ3QBYeTdD6tuNuBOzOSzKzqqdKJ0
-         Aqha4BXcZVU2PPIF0p+4PoHVWsRs2YzoRC2TQ5uKT00D5Ham1iIVLdT6sPe55J68sfiK
-         Npam9wTybTF3bhglu9hAPu6exjCIzYG/NM9scNAih8xW2gU7ELtBgFTmeSAqM880fEk/
-         YCSWaLW3PFtv3UdV93LLpowZndrEFXibzvMAO4WbQfSDy1M9v1yv3Baiqg6B6rJIl0q4
-         h6m5VpNC7vU8cDMGg8mn8ToR8p0tetSLtirsf5e/eSqHLx/J641z/3WKgLAeJ7w0fR0P
-         dV2w==
+        d=gmail.com; s=20251104; t=1786001489; x=1786606289; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aotJrnxBGSGoTO/cMveKNNxTRn93HwEGoid/iEuKyAU=;
+        b=Yg64C0kUT57VVQZScncI36VuQdcQixrbJvjyu0hB8CESa12rss1P3iPmTuVQuJL3Zz
+         e1fmdHI6WOuRSBSLpL9FbGNYoHPfWfHW3UOWEDiZNaMO/on/mnyxR0WDLM/V81NG7Kw5
+         0zLkR6bw5Csr7i/TeH9rt/R7XXxgdG05MckQxjvcCHnF/74ubJjl55cypfvRRSCfU224
+         KCxBpWBVKdYTNoe7p+SWKF0wRnEbpzF1LzuNqGE8nzDzP84+9ztVSYMSoZioFGE9j7k7
+         ODdqE5p5jrdGY9XcA8w1qvydDsleAj26f3xSc1PSiTo2MbaOJlpdBRTM2hCGA+CaEiE+
+         8o4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786001176; x=1786605976;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KZGj/L3nadsNc5+G4zPPi1gGSB5LzCydIBvRZmooxYk=;
-        b=UQeVszlrEDS3QScnhDMSvUalFaAh524Hxg20bgsImnbOFs63LtcEKopymQnZAwhmZo
-         xDjEl9mWhPH0tHCyonQsIyCedde7Eu1HMVh/2wlmuOBI4Q3onzAevPrCCii2drE2PUT2
-         2yArX9UoE8cSnQqXwGq1EXwn7s1Up82HSTUzKuYiqOeD6QHL/zcGW58p9+3fd59Up9Fw
-         /gXx8yPsDNNKYsu3Q8ZkHWkW8lAuCjNyZJ+K7EiliLcZ2NwSM0LQdaJloti3F79Ilw0n
-         b5+7513arrKKwiH8Ur2nQvpHaSFgi+/42NMtRJVrhw0/2hznP2wkX+/Fogg975ZIuv/k
-         xY3g==
-X-Gm-Message-State: AOJu0YyVb2lMz1szh0EtknYRDfEyipkRu3XuDY9uIEtyVKPncesU10Ex
-	shEhFrLj5K3C0qiqPs0hGI4ddKafH1ajvQ5H2kJDcPnv6B5YKCiftj6uanGmogsH
-X-Gm-Gg: AR+sD11kBpvIgaQk13SgEEMZAXC+q+tME3Ehfba/ZWOx7fUZrERvXEVdmS9+LSxX+Qx
-	MMojl2RcY6f0Fwlhd+8G038wn3O3GsFkLPMbmlKEb/WRCDpsD2f+npIzGQnVs9UE0AtdnT80KtV
-	CsDkEQWoxtJaw4GRISvyABe6kbFKSND8vQrTX/MOuNSxpVkmhFEOhNYuB8XCjqtCMyGuAbMCcMc
-	S6IATFy0DHz1XkXzKZeb0MDPOcUKpgG/AyMLUAh+a8O1Wi3WaP2oDvtVU3zA5C0lgv4YH8N2/8z
-	Z7IGSYdWNAqXBPFlfd4tLhmRRVlWiOYRZnl6RPwHRdJQc1ejkcQZ21gLLLFarKxfmMrcORl1XyG
-	qy4bcZ00AYVWoqPoXI+H4soBl8Rp6y28YXGQfpx6wMPZ8MAhvrmf1IvUuC8cBuv3G08DOV7PUbs
-	NxsJJMLSPrAwRjFCpvJ0E1lyLZ7KtD3SZrkPbXTjg/cp5BFMwV+dJLAE4=
-X-Received: by 2002:adf:e992:0:b0:47f:c648:e280 with SMTP id ffacd0b85a97d-47fec519539mr16086894f8f.18.1786001176240;
-        Thu, 06 Aug 2026 00:26:16 -0700 (PDT)
-Received: from fedora ([46.205.219.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b25b4asm3900021f8f.26.2026.08.06.00.26.15
+        d=1e100.net; s=20251104; t=1786001489; x=1786606289;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aotJrnxBGSGoTO/cMveKNNxTRn93HwEGoid/iEuKyAU=;
+        b=rhkCCbYAZjDwH+tEJ4AZF135PcIAaAv66R6Nkgi6OWNvbili42dnlnRhtGSDqes91O
+         MSy5J4LCKdVS46NN0CJQhtnjfTomxkv+/iMwFDzUN6EfUqUVNVU7D5h5GUxZ+5/bAoYp
+         Q0XvOFD1/5ZFWO7VTqCzs9Pz2DWsyFsZ6uwnDWPEgeoqygFHFCPyda7jvs1au/SCJwS8
+         sC0hTRhY4cBPRo0wGZ6VDFH2yg2+XB5XvOACX5Ve/6ZT3UWZ8H58rvPGg9NPGZWjQI2y
+         9/IbJBubv4n0RTl95Y1uQ6dfkoHlfynolrkkzlXZqBATtTGT+dfRp1vKtNrpwr7YA/IY
+         +Hhg==
+X-Forwarded-Encrypted: i=1; AHgh+RpFf+zE6dEx/ZvdsCmvosIka664GtjvxsdfY+gH2UggXlRcwf4JwfnYnELPF3r3YtCcmg4WCxI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqNWGe9Hxe/UVS0ws8+MCkryLAdrqcqBxZBSgU+xm5HZ331z3g
+	Zki1oczJkIeAKUnp/5ai0TlzgjtvvpI+Vmbj79VkVHa9xCWPM0n+VdU8dCUh+ZwW
+X-Gm-Gg: AR+sD11HDyVHt5w8dMbF5gxWkgrCAD8I0ZTs24eBKUzmong9yeH+TnlvM8Ygxaa1kcA
+	lULkw0SNmTPjspG8kteQkjr8PxBlHZttQHtHDDLLGbPehxdylJ6BbfkdYHvFByHyUug5JxpMf/0
+	Xc8mzzaUZ6yW6Q1X3f6B0j2yuHnJSn9z6J2Ikh5cGEpdNdex5jVhC7Is61DGtTaqvWKANeiDhBb
+	Z6aG7/sbZD4u4VLZm8YozU36Eeen1pTGYnGU7chrQn+hIoX0UQJz9Kc7Sy8hHGw9+KbU41nBYyp
+	pktt9H81vZb4Yw5H6he5L6RxXjG7rScbQCBKYduef9knklIBwh/BTxPRWL3XobGpyLYJcIYj+z9
+	kbP/WDgXqYGVmcLRmnL8ZPDSoq7IiJuKaBSgWoaV8qcKG38HlwX9nO95qdKqxAYh3oPnpR3Yydq
+	vd9jNJ0scGY6gKA3yng/ajukz9Z3JoS295g9XSW4jsqIGtQx8ZQYjMn005+YqOiw==
+X-Received: by 2002:a05:600c:34d1:b0:498:1595:be7b with SMTP id 5b1f17b1804b1-4994e794ee7mr182173735e9.4.1786001488744;
+        Thu, 06 Aug 2026 00:31:28 -0700 (PDT)
+Received: from SVR.localdomain ([86.106.74.249])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994e52d819sm79075085e9.1.2026.08.06.00.31.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 00:26:15 -0700 (PDT)
-From: Daniel Pawlik <pawlik.dan@gmail.com>
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org,
-	win847@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Daniel Pawlik <pawlik.dan@gmail.com>
-Subject: [PATCH v2] net: airoha: npu: use coherent DMA for mailbox messages
-Date: Thu,  6 Aug 2026 09:26:01 +0200
-Message-ID: <20260806072601.1815487-1-pawlik.dan@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805070851.2885888-1-pawlik.dan@gmail.com>
-References: <20260805070851.2885888-1-pawlik.dan@gmail.com>
+        Thu, 06 Aug 2026 00:31:28 -0700 (PDT)
+Sender: Semih Baskan <strstgs@gmail.com>
+From: Semih Baskan <strst.gs@gmail.com>
+To: florian.fainelli@broadcom.com,
+	jonas.gorski@gmail.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: vladimir.oltean@nxp.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/2] net: dsa: b53: fix 8021q uppers on standalone ports
+Date: Thu,  6 Aug 2026 10:31:17 +0300
+Message-ID: <20260806073119.387-1-strst.gs@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,119 +83,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox
-buffer") switched airoha_npu_send_msg() to DMA_BIDIRECTIONAL so
-non-coherent CPUs invalidate caches before reading NPU GET responses.
+Since v5.15, a standalone port on a b53 switch cannot receive its own
+tagged traffic: the switch VID lookup is always active, an 8021q
+upper's VID never reaches the VLAN table, and every tagged frame
+resolves to an empty member set and is discarded. The common victim is
+a VLAN-tagged PPPoE WAN, where the PADI goes out and the tagged PADO
+never reaches the CPU.
 
-On EN7581 + MT7996 that change regresses probe: the mailbox completes
-successfully, but WLAN_FUNC_GET_WAIT_NPU_VERSION still reads as 0.0 and
-mt76 never binds NPU offload. Healthy boards report 0.1111.
+My first attempt disabled the VLAN table while not filtering:
 
-airoha_npu_send_msg() is also used from PPE foe_commit under
-spin_lock_bh(), so per-message dma_alloc_coherent(GFP_ATOMIC) is a poor
-fit. Allocate one device-managed coherent bounce buffer at probe and
-reuse it under the existing per-core mailbox lock. That also keeps the
-buffer valid if the NPU completes a write after a mailbox timeout.
+  https://lore.kernel.org/all/20260805072641.402-1-strst.gs@gmail.com/
 
-Verified on Quantum Fiber / Gemtek W1700K (EN7581 + MT7996).
+Jonas pointed out that this moves the ARL to shared VLAN learning and
+desynchronizes the hardware table from the bridge fdb, and I withdrew
+it. I then measured the alternatives on an RT-N18U (BCM53011 rev 5),
+with the outbound direction of the same link as a positive control on
+every run:
 
-Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buffer")
-Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260805070851.2885888-1-pawlik.dan@gmail.com/
-Assisted-by: Cursor:composer-2
-Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
----
-v2:
-- allocate one coherent mailbox buffer at probe and reuse it under the
-  per-core lock instead of per-message dma_alloc_coherent(GFP_ATOMIC)
+  - With the table enabled, no ingress VID check setting delivers the
+    frame: VC4_NO_ING_VID_CHK, VC4_ING_VID_VIO_FWD and
+    VC4_ING_VID_VIO_TO_IMP all give 0, and clearing VC0_DROP_VID_MISS
+    changes nothing. The frame does not die at ingress admission, it
+    dies when forwarding resolves the VID against an empty member set.
+  - With the table disabled, a static fdb entry with VID 100 is lost
+    from the hardware ARL no matter how the driver drives the ARL
+    registers: keeping ARLTBL_IVL_SVL_SELECT at IVL does not preserve
+    it, and neither does additionally keeping the VID learning bits in
+    VLAN_CTRL0 set.
 
- drivers/net/ethernet/airoha/airoha_npu.c  | 31 +++++++++++++++++------
- include/linux/soc/airoha/airoha_offload.h |  4 +++
- 2 files changed, 27 insertions(+), 8 deletions(-)
+So on this hardware, delivering the frame and keeping VID-keyed ARL
+entries are mutually exclusive unless the VID is in the table. This
+series therefore programs the table, narrowed to what is actually
+needed: a standalone port only needs the VIDs its 8021q uppers use,
+which is one table write per upper instead of entries for all 4096
+VIDs.
 
-diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
-index b679bed952de..dfa09fed907e 100644
---- a/drivers/net/ethernet/airoha/airoha_npu.c
-+++ b/drivers/net/ethernet/airoha/airoha_npu.c
-@@ -23,6 +23,8 @@
- #define NPU_EN7581_FIRMWARE_RV32_MAX_SIZE	0x200000
- #define NPU_EN7581_FIRMWARE_DATA_MAX_SIZE	0x10000
- #define NPU_DUMP_SIZE				512
-+/* Enough for struct ppe_mbox_data and small WLAN TLV payloads */
-+#define AIROHA_NPU_MBOX_SIZE			256
- 
- #define REG_NPU_LOCAL_SRAM		0x0
- 
-@@ -165,17 +167,24 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
- {
- 	u16 core = 0; /* FIXME */
- 	u32 val, offset = core << 4;
--	dma_addr_t dma_addr;
- 	int ret;
- 
--	dma_addr = dma_map_single(npu->dev, p, size, DMA_BIDIRECTIONAL);
--	ret = dma_mapping_error(npu->dev, dma_addr);
--	if (ret)
--		return ret;
-+	if (size > AIROHA_NPU_MBOX_SIZE)
-+		return -EINVAL;
- 
-+	/*
-+	 * Mailbox payloads are bidirectional (CPU request, NPU response).
-+	 * On EN7581+MT7996, streaming DMA_BIDIRECTIONAL against the
-+	 * caller kzalloc() buffer can leave WLAN_FUNC_GET_WAIT_NPU_VERSION
-+	 * reading as 0.0 despite MBOX success. Reuse a probe-time coherent
-+	 * bounce buffer under the per-core lock (also used from PPE
-+	 * foe_commit under atomic context).
-+	 */
- 	spin_lock_bh(&npu->cores[core].lock);
- 
--	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, dma_addr);
-+	memcpy(npu->mbox_buf, p, size);
-+
-+	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, npu->mbox_dma);
- 	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(1) + offset, size);
- 	regmap_read(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, &val);
- 	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, val + 1);
-@@ -189,9 +198,10 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
- 	if (!ret && FIELD_GET(MBOX_MSG_STATUS, val) != NPU_MBOX_SUCCESS)
- 		ret = -EINVAL;
- 
--	spin_unlock_bh(&npu->cores[core].lock);
-+	if (!ret)
-+		memcpy(p, npu->mbox_buf, size);
- 
--	dma_unmap_single(npu->dev, dma_addr, size, DMA_BIDIRECTIONAL);
-+	spin_unlock_bh(&npu->cores[core].lock);
- 
- 	return ret;
- }
-@@ -770,6 +780,11 @@ static int airoha_npu_probe(struct platform_device *pdev)
- 	if (err)
- 		return err;
- 
-+	npu->mbox_buf = dmam_alloc_coherent(dev, AIROHA_NPU_MBOX_SIZE,
-+					    &npu->mbox_dma, GFP_KERNEL);
-+	if (!npu->mbox_buf)
-+		return -ENOMEM;
-+
- 	err = airoha_npu_run_firmware(dev, base, &res);
- 	if (err)
- 		return dev_err_probe(dev, err, "failed to run npu firmware\n");
-diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
-index 7589fccfeef6..afd481233489 100644
---- a/include/linux/soc/airoha/airoha_offload.h
-+++ b/include/linux/soc/airoha/airoha_offload.h
-@@ -179,6 +179,10 @@ struct airoha_npu {
- 
- 	struct airoha_foe_stats __iomem *stats;
- 
-+	/* Coherent bounce buffer for mailbox cmd/rsp (airoha_npu_send_msg) */
-+	void *mbox_buf;
-+	dma_addr_t mbox_dma;
-+
- 	struct {
- 		int (*ppe_init)(struct airoha_npu *npu);
- 		int (*ppe_deinit)(struct airoha_npu *npu);
--- 
-2.55.0
+I tried to keep the fix inside b53, but the driver cannot solve this
+alone: without NETIF_F_HW_VLAN_CTAG_FILTER the 8021q layer never calls
+.ndo_vlan_rx_add_vid, so the VIDs never reach the driver, and DSA
+manages that feature bit. The one existing way to get it,
+ds->needs_standalone_vlan_filtering, does not work here. It was
+measured insufficient, because f089652b6b16 makes .port_vlan_add skip
+the hardware write while not filtering, and its other effect is one
+b53 cannot take: with vlan_filtering_is_global, the forced
+vlan_filtering=1 in dsa_port_reset_vlan_filtering() would flip the
+whole switch into VLAN filtering when any port leaves a VLAN-unaware
+bridge. hellcreek relies on exactly those semantics, so patch 1 adds a
+narrower opt-in that only delivers the VIDs and leaves vlan_filtering
+alone, and patch 2 uses it in b53 and programs entries that carry
+standalone members, masked so bridge VLANs stay without effect while
+not filtering.
+
+Tested on the RT-N18U: the standalone upper receives 7 of 7 probe
+frames with vlan_filtering staying 0, the static fdb entry with a VID
+now survives a vlan_filtering toggle since the table and the ARL mode
+are never touched, uppers keep working across bridge join and leave
+and across a vlan_filtering toggle including on ports that were
+bridged while the toggle happened, deleting an upper or bridging its
+port verifiably stops delivery of that VID to the CPU, and the PPPoE
+session from the original report establishes. 802.1ad uppers keep
+working as software VLANs, since this switch does not parse 0x88a8,
+and stacked QinQ over an offloaded upper works too.
+
+Semih Baskan (2):
+  net: dsa: let drivers offload 8021q uppers on standalone ports
+  net: dsa: b53: offload 8021q uppers on standalone ports
+
+ drivers/net/dsa/b53/b53_common.c | 118 ++++++++++++++++++++++++++-----
+ include/net/dsa.h                |   3 +
+ net/dsa/port.c                   |  21 ++++--
+ net/dsa/user.c                   |   4 +-
+ 4 files changed, 120 insertions(+), 26 deletions(-)
 
