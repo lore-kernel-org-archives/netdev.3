@@ -1,144 +1,417 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54C3389E07
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 05:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D80175A5;
+	Thu,  6 Aug 2026 06:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785994125; cv=none; b=iume8Zq7PnUDvuz9/bBuqgE59Rswpdx3yNSiUUEg5qFcvodr+9uF1HijQYsJG9aO3Q9ibHpmhUPFnUcbbOpEoJDy2DW530WxBZq9tSizp7RmiRnnqvryyJuxbKgafaBbrA7z3kcY/aLDmx6/ofcMFVp8b7N+in7qw3Uuh07+mRw=
+	t=1785996422; cv=none; b=nX02NXXK2eUUe9Ia7feIlcjsBNywFHYpTgekldhEMfYNHxrhp8t2Niqe9u5lqwAbV+6XLoMT6N6hkAq3vu4Grgw9CeyYOad/QnRY7Ilbp/eaKE8wJgE1/m0SVwYokprwmBxE5ZrGuaxGHkMu+3UvrDuJixhsgFmjPO8B6x0DfaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785994125; c=relaxed/simple;
-	bh=V+QtMJzJPNTgI4duhuoXDR9EwubyRO6fWld88OVjdeI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NqHMCVsrShVQERVgmm/+CpbwFuvQIRZZMvnEMX+TV5FYBrMllCZ/rZkFt26m7gjOxn1d5UcgZsZMgaPQfZcHCLdamlvFpsKU679Xr4OMIRg7lUfMwJQaF8l/xZuPPdB6JhMOyM4PZcHFQziCsny2hcvN/DaUoJJu5ain4HEfGw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YOdQATMK; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785996422; c=relaxed/simple;
+	bh=cgdjW+MZSSh34CCTRR/C5ZkFvF8tn2fI8RO7WeSPGPg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nyx5krSBTRv4huQmEMiRhQHoMLuJwSd6SqELWeh7p/hGuTcarXdzj4od4+JsynTj87WktfQnyIe60k2ai+OzIv+RYJvy/EoziE+zWPv/gbNTwq5Z/7CBDMsWOHapc61Ki54UVRsCm1m3PVi9VCKFEPheebY+ffQQoeicvi5LtFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=fETvGALt; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YOdQATMK"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675Nn2LC1068575;
-	Thu, 6 Aug 2026 05:28:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ZGY3C4
-	YMNFITS4/neg/qQRae7zDhrY4NYXElDGhkDiU=; b=YOdQATMKsKksJsrIs5fdVR
-	bp1BGtrktdijAsKswngg54LcwXzHnZw7EuP8yL6YK7Zqqdl/3zJ+Hqx6sfsUvF2d
-	69Nu8djMU654NBpSb/b/ghoCcEa8nJvFKcgaDaxiwnuK50mnYEnXgg3wxx/c7lGt
-	16+RPjAeGcRRvuxH0mymBbbttsE0qRfkUi5VFkH/lkfZCycNTGACMQMby+pph827
-	19olL3qH52MP6jQhTl7NG4FPiSTHM7r3cA6NbcW0XWu2DWX0TsLRf03MWfdDIH0c
-	XFFxxOxTD+0ZihM4cirA+X+vjaLwacbDqnPwU0/tmpzMmRnuZOWr+Iy+F08G5cLg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a46gys-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 05:28:34 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6765QKmN024383;
-	Thu, 6 Aug 2026 05:28:33 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbghkxb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Aug 2026 05:28:33 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6765SUgP52822424
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Aug 2026 05:28:31 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9319D58068;
-	Thu,  6 Aug 2026 05:28:30 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2222D5805D;
-	Thu,  6 Aug 2026 05:28:29 +0000 (GMT)
-Received: from [9.67.83.170] (unknown [9.67.83.170])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Aug 2026 05:28:28 +0000 (GMT)
-Message-ID: <22d2d33d-9118-4ccc-b5d0-0d41c2021eff@linux.ibm.com>
-Date: Wed, 5 Aug 2026 22:28:28 -0700
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="fETvGALt"
+Received: from LAPTOP-99KJFSET (unknown [36.153.54.46])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 48fb94a33;
+	Thu, 6 Aug 2026 14:06:55 +0800 (GMT+08:00)
+From: Hongyan Xu <getshell@seu.edu.cn>
+To: Stephan Gerhold <stephan@gerhold.net>
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	Hongyan Xu <getshell@seu.edu.cn>
+Subject: [PATCH] net: wwan: qcom_bam_dmux: fix TX DMA channel use-after-free
+Date: Thu,  6 Aug 2026 14:06:42 +0800
+Message-ID: <20260806060642.1281-1-getshell@seu.edu.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v1 0/6] ibmvnic: honour flexible in-range MTU
- values
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, nnac123@linux.ibm.com, davemarq@linux.ibm.com,
-        vaishnavi@linux.ibm.com, bjking1@linux.ibm.com,
-        linuxppc-dev@lists.ozlabs.org
-References: <20260805224401.58791-1-mmc@linux.ibm.com>
- <20260805193832.645bdb30@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <20260805193832.645bdb30@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a741b82 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=7dpCjRRtK3qBi1irl1gA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 3FwmCuCqgCwBk1BaamNstPr3DnM7Llwv
-X-Proofpoint-GUID: Q0H02W6Q0fjIgEAiOFKUhMoBG5rawV4r
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDAzOCBTYWx0ZWRfX4sHbJURhXWM7
- JxemAeNzx0UT/qtdmvOG6ATIVJfFvF5wdu+rkvEuq/St4V3Kqk9Vu8qGDLEqBaygRyxpBzYKKgk
- s8X+rphZkWzJtNc4rkjLUjmpdreVFWA=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDAzOCBTYWx0ZWRfX9py2RWP4A5IF
- vCmrzyolw6y4+3h0hHq1a6jrc3p/4+S3p6M1KWAiH/0X/uB+GXM5BP2Iqyx6C5uCgmG6A0lkAYs
- 3Kdl41YrQRdPtOQPXBL23wbGNQoMMCRnDG4Gu6N+lYEOLtzkjBVKlFb+WB4dlS0jTZjrW27DcBP
- ZeFEjFmYM2jR1azjAO4Wtyfd4WDyWPqNWcqdOfxkP3gj5Zq2WJTDr4rS4O2YmQ2F0N/LMCCipwd
- UuvpdXDvGSS/IpysKwfhwf4CJ5BjtBLB/zjJQiZzualRmL//N7HbGWwxX1bMPW/VDI8tAXna+LR
- Hd/yzj9VldPtyPEohdYKpJvjqWzd2/VeNMVBX8BTiLQM7htzaKyxG5ORsHXdwBQUNAf/0bPC+n1
- rYaNR9UUUPmK97En82lOKhJ9u0RKkbBQSrBha2FOmR3O8PxLf8c9fuwo9EA41IX+cqL37jQav/B
- WBYdiOGJQWGHQRbzIjw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608060038
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9fd5ae82e603a1kunmdd09a832289390
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCHUhCVhkdS0tCTR9PQhlDSVYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlITVVKTkhVTk9VT01ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=fETvGALtoIo72cooiaR/FzKGyWMc6M0KsMW7Y2ogTVorlty+7SpWZiBp8HDldIoHQniAWF/8dp7tBrUKiiOKPaJM5EO0Y5RD7PP5/gUe9MHTsOaheBXbmqW+AfdJBXMnMKVKzg2COyCNeRE+1zrXDAmnGUS5svUSmfdZjWnO2nc=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=h4VR9GvsId49kJ4OwMgJNUhnVRvYJVrYNyl2glI56kY=;
+	h=date:mime-version:subject:message-id:from;
 
+The modem-driven power-control IRQ can release the TX DMA channel
+independently of the runtime PM callbacks. It can therefore race with the
+command, netdev transmit, and wakeup-work paths while they prepare and
+submit descriptors through dmux->tx. A runtime PM reference prevents
+runtime suspend, but does not serialize those paths with the external IRQ.
 
-On 8/5/26 7:38 PM, Jakub Kicinski wrote:
-> On Wed,  5 Aug 2026 15:43:55 -0700 Mingming Cao wrote:
->> Subject: [PATCH net-next v1 0/6] ibmvnic: honour flexible in-range MTU values
-> Warning: drivers/net/ethernet/ibm/ibmvnic.c:1031 No description found for return value of 'rx_pool_entries'
->
->
-> please DO NOT repost this until your previous series is reviewed and
-> merged. Please read:
-> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-> There aren't supposed to be more than 15 outstanding patches form one
-> person or company to one tree. We are flooded with AI-assisted code
-> so reviews are slow. Your place in review queue depends on your
-> credibility with the community so please help review other patches
-> or just wait your turn.
-Hi Jakub,
+Protect TX channel users with SRCU. Clear the published channel pointer and
+wait for existing readers before terminating and releasing the channel.
+Serialize channel replacement and power transitions with a mutex, and
+discard deferred packets if the channel disappears after runtime resume.
 
-Thanks for the feedback.
+Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
+Signed-off-by: Hongyan Xu <getshell@seu.edu.cn>
+---
+ drivers/net/wwan/qcom_bam_dmux.c | 143 ++++++++++++++++++++++++-------
+ 1 file changed, 114 insertions(+), 29 deletions(-)
 
-
-Sorry for violating the outstanding patch limit. I wasn't aware of that 
-rule, so thanks for pointing me to it.
-I understand the review queue is already quite busy. I'll wait for the 
-ibmveth MQ support series (v4, 14 patches) to progress through review 
-before reposting this one.
-In the meantime, I'm working through Sakashi's review comments on the 
-ibmveth VQ v4 series.
-
-For the ibmvnic MTU support series, I'll hold off on posting a v2 for 
-now and will address the kernel-doc warning in the next revision.
-
-Thanks again for the guidance.
-Mingming
-
+diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
+index cc6ace8d6437..95a2c427323c 100644
+--- a/drivers/net/wwan/qcom_bam_dmux.c
++++ b/drivers/net/wwan/qcom_bam_dmux.c
+@@ -12,11 +12,13 @@
+ #include <linux/if_arp.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/netdevice.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/soc/qcom/smem_state.h>
+ #include <linux/spinlock.h>
++#include <linux/srcu.h>
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+ #include <net/pkt_sched.h>
+@@ -73,8 +75,11 @@ struct bam_dmux {
+ 	u32 pc_mask, pc_ack_mask;
+ 	wait_queue_head_t pc_wait;
+ 	struct completion pc_ack_completion;
++	struct mutex power_lock; /* Protect power state and TX replacement */
+ 
+-	struct dma_chan *rx, *tx;
++	struct dma_chan *rx;
++	struct dma_chan __rcu *tx;
++	struct srcu_struct tx_srcu;
+ 	struct bam_dmux_skb_dma rx_skbs[BAM_DMUX_NUM_SKB];
+ 	struct bam_dmux_skb_dma tx_skbs[BAM_DMUX_NUM_SKB];
+ 	spinlock_t tx_lock; /* Protect tx_skbs, tx_next_skb */
+@@ -106,6 +111,23 @@ static void bam_dmux_pc_ack(struct bam_dmux *dmux)
+ 	dmux->pc_ack_state = !dmux->pc_ack_state;
+ }
+ 
++static struct dma_chan *bam_dmux_tx_get(struct bam_dmux *dmux, int *srcu_idx)
++{
++	*srcu_idx = srcu_read_lock(&dmux->tx_srcu);
++	return srcu_dereference(dmux->tx, &dmux->tx_srcu);
++}
++
++static void bam_dmux_tx_put(struct bam_dmux *dmux, int srcu_idx)
++{
++	srcu_read_unlock(&dmux->tx_srcu, srcu_idx);
++}
++
++static struct dma_chan *bam_dmux_tx_locked(struct bam_dmux *dmux)
++{
++	lockdep_assert_held(&dmux->power_lock);
++	return rcu_dereference_protected(dmux->tx, 1);
++}
++
+ static bool bam_dmux_skb_dma_map(struct bam_dmux_skb_dma *skb_dma,
+ 				 enum dma_data_direction dir)
+ {
+@@ -182,12 +204,13 @@ static void bam_dmux_tx_callback(void *data)
+ 	dev_consume_skb_any(skb);
+ }
+ 
+-static bool bam_dmux_skb_dma_submit_tx(struct bam_dmux_skb_dma *skb_dma)
++static bool bam_dmux_skb_dma_submit_tx(struct bam_dmux_skb_dma *skb_dma,
++				       struct dma_chan *tx)
+ {
+ 	struct bam_dmux *dmux = skb_dma->dmux;
+ 	struct dma_async_tx_descriptor *desc;
+ 
+-	desc = dmaengine_prep_slave_single(dmux->tx, skb_dma->addr,
++	desc = dmaengine_prep_slave_single(tx, skb_dma->addr,
+ 					   skb_dma->skb->len, DMA_MEM_TO_DEV,
+ 					   DMA_PREP_INTERRUPT);
+ 	if (!desc) {
+@@ -229,9 +252,10 @@ static int bam_dmux_send_cmd(struct bam_dmux_netdev *bndev, u8 cmd)
+ {
+ 	struct bam_dmux *dmux = bndev->dmux;
+ 	struct bam_dmux_skb_dma *skb_dma;
++	struct dma_chan *tx;
+ 	struct bam_dmux_hdr *hdr;
+ 	struct sk_buff *skb;
+-	int ret;
++	int ret, srcu_idx;
+ 
+ 	skb = alloc_skb(sizeof(*hdr), GFP_KERNEL);
+ 	if (!skb)
+@@ -257,14 +281,23 @@ static int bam_dmux_send_cmd(struct bam_dmux_netdev *bndev, u8 cmd)
+ 		goto tx_fail;
+ 	}
+ 
+-	if (!bam_dmux_skb_dma_submit_tx(skb_dma)) {
++	tx = bam_dmux_tx_get(dmux, &srcu_idx);
++	if (!tx) {
++		ret = -ENODEV;
++		goto tx_put_fail;
++	}
++
++	if (!bam_dmux_skb_dma_submit_tx(skb_dma, tx)) {
+ 		ret = -EIO;
+-		goto tx_fail;
++		goto tx_put_fail;
+ 	}
+ 
+-	dma_async_issue_pending(dmux->tx);
++	dma_async_issue_pending(tx);
++	bam_dmux_tx_put(dmux, srcu_idx);
+ 	return 0;
+ 
++tx_put_fail:
++	bam_dmux_tx_put(dmux, srcu_idx);
+ tx_fail:
+ 	bam_dmux_tx_done(skb_dma);
+ free_skb:
+@@ -335,7 +368,8 @@ static netdev_tx_t bam_dmux_netdev_start_xmit(struct sk_buff *skb,
+ 	struct bam_dmux_netdev *bndev = netdev_priv(netdev);
+ 	struct bam_dmux *dmux = bndev->dmux;
+ 	struct bam_dmux_skb_dma *skb_dma;
+-	int active, ret;
++	struct dma_chan *tx;
++	int active, ret, srcu_idx;
+ 
+ 	skb_dma = bam_dmux_tx_queue(dmux, skb);
+ 	if (!skb_dma)
+@@ -360,12 +394,16 @@ static netdev_tx_t bam_dmux_netdev_start_xmit(struct sk_buff *skb,
+ 		return NETDEV_TX_OK;
+ 	}
+ 
+-	if (!bam_dmux_skb_dma_submit_tx(skb_dma))
+-		goto drop;
++	tx = bam_dmux_tx_get(dmux, &srcu_idx);
++	if (!tx || !bam_dmux_skb_dma_submit_tx(skb_dma, tx))
++		goto tx_put_drop;
+ 
+-	dma_async_issue_pending(dmux->tx);
++	dma_async_issue_pending(tx);
++	bam_dmux_tx_put(dmux, srcu_idx);
+ 	return NETDEV_TX_OK;
+ 
++tx_put_drop:
++	bam_dmux_tx_put(dmux, srcu_idx);
+ drop:
+ 	bam_dmux_tx_done(skb_dma);
+ 	dev_kfree_skb_any(skb);
+@@ -375,8 +413,9 @@ static netdev_tx_t bam_dmux_netdev_start_xmit(struct sk_buff *skb,
+ static void bam_dmux_tx_wakeup_work(struct work_struct *work)
+ {
+ 	struct bam_dmux *dmux = container_of(work, struct bam_dmux, tx_wakeup_work);
++	struct dma_chan *tx;
+ 	unsigned long pending;
+-	int ret, i;
++	int ret, i, srcu_idx;
+ 
+ 	ret = pm_runtime_resume_and_get(dmux->dev);
+ 	if (ret < 0) {
+@@ -389,10 +428,24 @@ static void bam_dmux_tx_wakeup_work(struct work_struct *work)
+ 		goto out;
+ 
+ 	dev_dbg(dmux->dev, "pending skbs after wakeup: %#lx\n", pending);
++	tx = bam_dmux_tx_get(dmux, &srcu_idx);
++	if (!tx) {
++		bam_dmux_tx_put(dmux, srcu_idx);
++		for_each_set_bit(i, &pending, BAM_DMUX_NUM_SKB) {
++			struct bam_dmux_skb_dma *skb_dma = &dmux->tx_skbs[i];
++			struct sk_buff *skb = skb_dma->skb;
++
++			bam_dmux_tx_done(skb_dma);
++			dev_kfree_skb_any(skb);
++		}
++		goto out;
++	}
++
+ 	for_each_set_bit(i, &pending, BAM_DMUX_NUM_SKB) {
+-		bam_dmux_skb_dma_submit_tx(&dmux->tx_skbs[i]);
++		bam_dmux_skb_dma_submit_tx(&dmux->tx_skbs[i], tx);
+ 	}
+-	dma_async_issue_pending(dmux->tx);
++	dma_async_issue_pending(tx);
++	bam_dmux_tx_put(dmux, srcu_idx);
+ 
+ out:
+ 	pm_runtime_put_autosuspend(dmux->dev);
+@@ -655,10 +708,16 @@ static void bam_dmux_free_skbs(struct bam_dmux_skb_dma skbs[],
+ 
+ static void bam_dmux_power_off(struct bam_dmux *dmux)
+ {
+-	if (dmux->tx) {
+-		dmaengine_terminate_sync(dmux->tx);
+-		dma_release_channel(dmux->tx);
+-		dmux->tx = NULL;
++	struct dma_chan *tx;
++
++	lockdep_assert_held(&dmux->power_lock);
++
++	tx = bam_dmux_tx_locked(dmux);
++	RCU_INIT_POINTER(dmux->tx, NULL);
++	synchronize_srcu(&dmux->tx_srcu);
++	if (tx) {
++		dmaengine_terminate_sync(tx);
++		dma_release_channel(tx);
+ 	}
+ 
+ 	if (dmux->rx) {
+@@ -673,7 +732,10 @@ static void bam_dmux_power_off(struct bam_dmux *dmux)
+ static irqreturn_t bam_dmux_pc_irq(int irq, void *data)
+ {
+ 	struct bam_dmux *dmux = data;
+-	bool new_state = !dmux->pc_state;
++	bool new_state;
++
++	mutex_lock(&dmux->power_lock);
++	new_state = !dmux->pc_state;
+ 
+ 	dev_dbg(dmux->dev, "pc: %u\n", new_state);
+ 
+@@ -687,7 +749,8 @@ static irqreturn_t bam_dmux_pc_irq(int irq, void *data)
+ 		bam_dmux_pc_ack(dmux);
+ 	}
+ 
+-	dmux->pc_state = new_state;
++	WRITE_ONCE(dmux->pc_state, new_state);
++	mutex_unlock(&dmux->power_lock);
+ 	wake_up_all(&dmux->pc_wait);
+ 
+ 	return IRQ_HANDLED;
+@@ -716,6 +779,7 @@ static int bam_dmux_runtime_suspend(struct device *dev)
+ static int __maybe_unused bam_dmux_runtime_resume(struct device *dev)
+ {
+ 	struct bam_dmux *dmux = dev_get_drvdata(dev);
++	struct dma_chan *tx;
+ 
+ 	dev_dbg(dev, "runtime resume\n");
+ 
+@@ -735,29 +799,37 @@ static int __maybe_unused bam_dmux_runtime_resume(struct device *dev)
+ 	}
+ 
+ 	/* Wait until we're up */
+-	if (!wait_event_timeout(dmux->pc_wait, dmux->pc_state,
++	if (!wait_event_timeout(dmux->pc_wait, READ_ONCE(dmux->pc_state),
+ 				BAM_DMUX_REMOTE_TIMEOUT)) {
+ 		bam_dmux_pc_vote(dmux, false);
+ 		return -ETIMEDOUT;
+ 	}
+ 
++	mutex_lock(&dmux->power_lock);
++
+ 	/* Ensure that we actually initialized successfully */
+-	if (!dmux->rx) {
++	if (!dmux->pc_state || !dmux->rx) {
++		mutex_unlock(&dmux->power_lock);
+ 		bam_dmux_pc_vote(dmux, false);
+ 		return -ENXIO;
+ 	}
+ 
+ 	/* Request TX channel if necessary */
+-	if (dmux->tx)
++	tx = bam_dmux_tx_locked(dmux);
++	if (tx) {
++		mutex_unlock(&dmux->power_lock);
+ 		return 0;
++	}
+ 
+-	dmux->tx = dma_request_chan(dev, "tx");
+-	if (IS_ERR(dmux->tx)) {
+-		dev_err(dev, "Failed to request TX DMA channel: %pe\n", dmux->tx);
+-		dmux->tx = NULL;
++	tx = dma_request_chan(dev, "tx");
++	if (IS_ERR(tx)) {
++		dev_err(dev, "Failed to request TX DMA channel: %pe\n", tx);
++		mutex_unlock(&dmux->power_lock);
+ 		bam_dmux_runtime_suspend(dev);
+ 		return -ENXIO;
+ 	}
++	rcu_assign_pointer(dmux->tx, tx);
++	mutex_unlock(&dmux->power_lock);
+ 
+ 	return 0;
+ }
+@@ -799,6 +871,7 @@ static int bam_dmux_probe(struct platform_device *pdev)
+ 	init_waitqueue_head(&dmux->pc_wait);
+ 	init_completion(&dmux->pc_ack_completion);
+ 	complete_all(&dmux->pc_ack_completion);
++	mutex_init(&dmux->power_lock);
+ 
+ 	spin_lock_init(&dmux->tx_lock);
+ 	INIT_WORK(&dmux->tx_wakeup_work, bam_dmux_tx_wakeup_work);
+@@ -808,6 +881,9 @@ static int bam_dmux_probe(struct platform_device *pdev)
+ 		dmux->rx_skbs[i].dmux = dmux;
+ 		dmux->tx_skbs[i].dmux = dmux;
+ 	}
++	ret = init_srcu_struct(&dmux->tx_srcu);
++	if (ret)
++		return ret;
+ 
+ 	/* Runtime PM manages our own power vote.
+ 	 * Note that the RX path may be active even if we are runtime suspended,
+@@ -827,10 +903,11 @@ static int bam_dmux_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_disable_pm;
+ 
++	mutex_lock(&dmux->power_lock);
+ 	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
+ 				    &dmux->pc_state);
+ 	if (ret)
+-		goto err_disable_pm;
++		goto err_unlock_power;
+ 
+ 	/* Check if remote finished initialization before us */
+ 	if (dmux->pc_state) {
+@@ -839,12 +916,16 @@ static int bam_dmux_probe(struct platform_device *pdev)
+ 		else
+ 			bam_dmux_power_off(dmux);
+ 	}
++	mutex_unlock(&dmux->power_lock);
+ 
+ 	return 0;
+ 
++err_unlock_power:
++	mutex_unlock(&dmux->power_lock);
+ err_disable_pm:
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_dont_use_autosuspend(dev);
++	cleanup_srcu_struct(&dmux->tx_srcu);
+ 	return ret;
+ }
+ 
+@@ -872,13 +953,17 @@ static void bam_dmux_remove(struct platform_device *pdev)
+ 	pm_runtime_set_suspended(dev);
+ 
+ 	/* Try to wait for remote side to drop power vote */
+-	if (!wait_event_timeout(dmux->pc_wait, !dmux->rx, BAM_DMUX_REMOTE_TIMEOUT))
++	if (!wait_event_timeout(dmux->pc_wait, !READ_ONCE(dmux->rx),
++				BAM_DMUX_REMOTE_TIMEOUT))
+ 		dev_err(dev, "Timed out waiting for remote side to suspend\n");
+ 
+ 	/* Make sure everything is cleaned up before we return */
+ 	disable_irq(dmux->pc_irq);
++	mutex_lock(&dmux->power_lock);
+ 	bam_dmux_power_off(dmux);
++	mutex_unlock(&dmux->power_lock);
+ 	bam_dmux_free_skbs(dmux->tx_skbs, DMA_TO_DEVICE);
++	cleanup_srcu_struct(&dmux->tx_srcu);
+ }
+ 
+ static const struct dev_pm_ops bam_dmux_pm_ops = {
+-- 
+2.50.1.windows.1
 
