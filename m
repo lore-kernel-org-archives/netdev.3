@@ -1,125 +1,172 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F493115AF
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 11:42:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786016575; cv=none; b=MTYUFBshKdhLtVxl3zBoSD5pBuwrPVdu5zyC1aUmgd5Z6uJlQ875j4llfM+cWQaycfIXHqUCcYi0KuMOkxzHt6kPZDSqLbuCqhsNO6l79udhKfJILB8E19qyQO422bMjalCUQszxA80xVytvwjft9o0sHi7beE4jVFFA0UxWanI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786016575; c=relaxed/simple;
-	bh=lLIv+GBfnp0Asaitu6xr1dOWl+9//A2rCdI6bcSWBJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iGofolUdV2KFofz1bcOHo3sbVh1dux5o/VjxnuJ2AdxBssjCQr9z9Ss+IDftJta8+I9iDg6KbvM/eZtmzemyww9cXYSLsIdxcw+npnhBsKp+JnG9VObBu/1dYbMjachhB9AdEXa0r2WT5mh0XvIJmotCcW5KlzLwt5EULDOJaR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X181mcOd; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278C6471D1E
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 11:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786016698; cv=pass; b=lhwE5Z+5Zqnx7fd0KtiOg4w69qehiG4p+gACePTYPdnd1S6eGKR+1apzkyrmpPkeJLDAP5iLhtqMEei+uNw6rjffSNItMtb93YhSUJsoV4eR/w1jVibohhsxcoDxvbr0+lh+l1azWVXlBVuHLxVyl5CLrpdibZIUwxiY8xBIJBI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786016698; c=relaxed/simple;
+	bh=AUxgG1Ig6Ovtxh4RzkpXp3mi3TLTHszOIpuoo0+1H0U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FW17FWPPglLiVyr5U8b8GIQ1j9YjNfHIqFxygu2/uBrmaauX11pgQtdFHK/kl13nRpanng7vIgEzR/iaVAafH7GZBEJpRHkHL5b432PSrAmsor8US37faFrCrQ4IPfK7hgtErnklY11FTBfhvxLgr9JRacy+ewBKy7NG4GASDkg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iIYloeNH; arc=pass smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X181mcOd"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47f3b39f2a1so1572085f8f.2
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 04:42:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iIYloeNH"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ceaf8a1265so31700295ad.2
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 04:44:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786016696; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eDB2FLkTFPHOKILMh6WdXRc3SAv1c6S5g10Q6fb0+NxRYJwew5/D9KoVDdOsr6k8FL
+         S8X8dQa/gX1IlX8zqGsxW3bOluOpXj8kawMKV4asWleN6bkDoKOQ4vF9BXACtwWWlNFo
+         fGJy/eoz5kvfDWDSsMQWHTXZQ77otKfA+mi3eg/k207HE9bf90aFk5PcA+HV/2Hn268M
+         UWc+RaBJYVBaIx2yyNT/+E+PpoYKUYkLemntx5tWNiOAkgbogungES9yJYOItCYzBERY
+         yrnnLQB23tEheIRpHlFGPHguYAH9GwsX92rGos0/R7r5Slv78+Q1OWGYxQOwKRKCK3vK
+         4qhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=AUxgG1Ig6Ovtxh4RzkpXp3mi3TLTHszOIpuoo0+1H0U=;
+        fh=Znq4fw4ZkK0+0DLTeWe3HIuD4AQ8LVagr9Azjf0hWyI=;
+        b=O18Zu3u+UN7dDv54o/LJp4dPhcl/FP1WAhN0OCNFT4pJr2M8FkPKMTIHPVb/le3bSB
+         MOWgJn4m0oGGfmG2oxOGUgVRDee79qS0BiKz9gNDzIZHB6LejWmX8yt9e77l+WtsZP1C
+         gchac8SAHbMzHvgnFsygXGhlkhN9UBWK+I9iZB/yeLo8RRn/4cWHrtUeV/1Occy9Udt5
+         ZpNZfvRathZpvEFJKgMu3JPl4zZPen85Q0/VO5Q4W7p6b2S7DnuLH+YLPxlnvfO+C0DC
+         /65KYnH98NHIMzBnJWH2BkhaGuFPxGTswG5naiEoeczgAulR7pMux5cyR+HtMt/2ogOy
+         +caQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786016572; x=1786621372; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pP2RHdBvl9Vbu++q0+wAPww43hCY6xSyT/WVN5AI6mc=;
-        b=X181mcOdvLw8kpjFHLUiB31+3As/MGZOGmQnnMLQyhqIaG0NbgqVm0poCpHlUt+XKN
-         vdXMUocwKMSHg6IsKcb5pGKmfeFE9ZNSFElYUwwbE/pQulE+dDb3OhaFJSptps0pLyid
-         0hh1VFqJ5Fo6euIVV8F1aobpNcxHcCJsDzOI4boZLR809FARElPiEeL8vfVbKO0blYQu
-         AaNItjPutYl4Gs5H27Re2y4liDSfwTU51UrwIy2jMHOQVxDKkYVeXuyI6mt+kmlcvYZs
-         Fffo1d+ECZX0DiGcvyPBIqeLwPWDhCnszE55bSpbDfcAezK0ebnV0sr7PXkf/u0JtxAq
-         yIdg==
+        d=gmail.com; s=20251104; t=1786016696; x=1786621496; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AUxgG1Ig6Ovtxh4RzkpXp3mi3TLTHszOIpuoo0+1H0U=;
+        b=iIYloeNHZmrLymD/tARTUnyq7nPaQmB7ksENOREjleHCntlD6edXdy0ORiingIQbCa
+         8f5061/TwnicKbv0Jm8npdnv3l2pdEH/NVtgUORbuPDSYIBB+vNeo/g0aepn2dyyyggy
+         WvTv64VTnffvdAlUeB9qtmEWwjkyS6BqRAcLEXMIxKl1vW6s2qOhvHYjSTBqt8MCb1vC
+         WHOEQWHXJyrOuz509XVNFwlwYOI99WxlUGsMJxhfNv5d9TTo8+wgFQcq65J42dEsa0P8
+         53zeY3cf0h8p3bL+dQ2TGlHDcDHdo9bpCd3z9WLrGXlwuBIMr/hO6Gl0ez2ovcNJNUoH
+         l34w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786016572; x=1786621372;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pP2RHdBvl9Vbu++q0+wAPww43hCY6xSyT/WVN5AI6mc=;
-        b=lgRa9uc4xnYOdxQycV8dICDG9NOXyg4nn1apy51WBJDIaeVpKkO54Nj9PoZZsIE66U
-         Q8W+qcSgT1RHRwXs6vIKG9JKci2aMj8tq+QlPy3FPKjXXFRDhZhAOKibu0Kw0BA2FoQz
-         t3Yu8Q5u/16C1BF1mgpAMCaBmPQlMOgkuPe7ICrwMc0ECpRJgd23P7BzLgcpVhRd69Pc
-         NlXMbwuFT3MycKBDRPiRrln3CJKnqIB4uQ+ab5AMrgHkOsZ2SH8gI4Tk3qb8kCROdCwt
-         I2RN27/KGmwHm/tWFIJUjZFZzjZSZIehzkzeavOKII1+3pmt/SGY8dbAKn+gkfkdLHVU
-         vlyQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq0PlRJPtRSznBmAW3IjF1ys3jPFURshOD9jtgn2xOu+UovWifkqu2HDwxyCvAPh20d++mRNh8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yym+cV1LfQH66/mykLwOWXMyTe7+6MNIuRG6U9YVyGqWhWnCDqV
-	2TN5JPGjact6b+4IwqTgaFCtoBeAFwZB3RFN3sjWhvR8OBTZdMkp0qyI
-X-Gm-Gg: AR+sD12bQ9MbkDMkM7VX+TiZYJIXs4oDkNZEUOfzF+hL/X8gwjMuAnwegJm6m7ql5Cw
-	mM4PzMZr5PwMs5N2R6YyE/vLrxc7SxMYLTACzvSYnrJ+feMmpJ89Hem3cpdhA+osm119OX4WYdG
-	KSE/DejLli90tKeJYZVs5AC0mHgVT0eQY5RgIqBdL331MZp9qLC18VZX6jiOst3AzgKGIhgixEy
-	tO4N6ei5UNTULV+xjqGSCDrENBNbwyE0jj3T7zaoRAlbEuTdetWSEAtCnZsvgmp6c5/3tDx1BQT
-	psB4I0f7le+z/xJU/QvGH9TefghcVBQQRXTN1sHQJYnnZU62fyNeT5wQa6mIB2kt/qqRNFYms2S
-	oHCZZslszDoYvu+hL0S/uXK1CDZ2uHQBuNJqaPCgu1Yp8KmUiiTdr8iEj/Rie9uzyjUW+VCt0a0
-	sxJM2qhDZQ61MaPQDxy0es3CYY38/rfnKGkr2EVAGbWCr6d+6O3s+V3GB+7wijbBBFKaT9xXhLk
-	9xVkmJFo+P1Xjmt0I4P1U0oonJO+tJiOms4msITbldECwx7f55vxS5hnTDX4XIYZlglcJpJR3pH
-	gahUKemnKscK
-X-Received: by 2002:a05:600c:8b23:b0:495:4d00:2fc0 with SMTP id 5b1f17b1804b1-4994e7bb12dmr172180005e9.12.1786016572398;
-        Thu, 06 Aug 2026 04:42:52 -0700 (PDT)
-Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499542135cesm60598005e9.4.2026.08.06.04.42.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 04:42:51 -0700 (PDT)
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: io-uring@vger.kernel.org
-Cc: asml.silence@gmail.com,
-	netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH io_uring-7.2 1/1] io_uring/zcrx: fail non-qops netdevs early
-Date: Thu,  6 Aug 2026 12:42:33 +0100
-Message-ID: <23ae94da6725cac660652781b3533a20d0a1ad34.1786016493.git.asml.silence@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20251104; t=1786016696; x=1786621496;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=AUxgG1Ig6Ovtxh4RzkpXp3mi3TLTHszOIpuoo0+1H0U=;
+        b=Mrwg+ys/o47jYkohVAXqYaNa++YbaqmJD+LPYgE7CoFCw6fDs2GEtWaO+8TKh8A62a
+         8hfuQAZP2gurCBlDFN83H1CVXTqGiWN7gmeSnd4xN28ncr0pMBt0uD+fR1ZFlEmjAA+r
+         kXPWVJKVdGRiZ14jThLoGYQAoml9DEKmx7m57ekR6RtUwHt3rRfa0yrb1Clx05t2oUjG
+         LR9Y5d6TogPIBu9rI9CE2Pt9V02UYYlZPI/FTcd+E0D4zVfqR30PNWk8rKT8PmkJ8InV
+         76PbgdBFOKt/JvKgVtnhe8fHIQ5+iH3IZcn5ZJPXOtfoGALdTc7+VwKg/jC6Twjl7wAV
+         yjVQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpXUY39nzcduqdP21Nlirau0K7o2n+jt3MEoNzajUqchkEhBa7bejrv3AKdsnH6GsGSLRwLtxY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywse74N66ZsWbvAJ6DAK79ZcMmXjCCVGzN31SkPyCRTqS4DLq0M
+	WumrCXzB1zP38w53yOIn0SR3KKyIBUfQMAK8uBNGlrDKgS+LxJBKahQuqKINBC3myLwVw3RTyeB
+	JMJx0BqSyesmWDQXPAthRwrQAdv4VV8M=
+X-Gm-Gg: AR+sD12RvFxtgCy3+6kAatdisf2gHC6Bc6NdtHpXNJr76D5S1rn7TW8L/ynR0nsHcyD
+	t5ebvpw/ml+S8641cf6u1wIycoZT8qze1z+XVaXmA7Z6kiCsryrKpRFypQolQoe5KbD+gxlGvYe
+	fm7eE2iVC0SUpmqcvy8cy9Cp325wOpcHRXG3/ZN0czWkVsUx9Y94RwFR26SsQrwWxWSHQ3be2t2
+	hqlbsFJCzlRZ0OL+GxHaIhms2mIhax/mr24Vjd787slTKCkAEf26KOZPJ15m5d/+jcpP27QvDhM
+	QMGr5m400f3zWl9XcFhsRhRQL47MFgxjvL8qVDpOpO7ZPyGb0lor6wMncg==
+X-Received: by 2002:a17:902:f605:b0:2c6:9f66:d573 with SMTP id
+ d9443c01a7336-2d0ca71b3f0mr180101105ad.2.1786016695873; Thu, 06 Aug 2026
+ 04:44:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260806073119.387-1-strst.gs@gmail.com> <20260806073119.387-2-strst.gs@gmail.com>
+ <20260806111523.gjlhjfmb526f2y4g@skbuf>
+In-Reply-To: <20260806111523.gjlhjfmb526f2y4g@skbuf>
+From: Semih Baskan <strst.gs@gmail.com>
+Date: Thu, 6 Aug 2026 14:44:44 +0300
+X-Gm-Features: AUfX_mwHP697PP4AGGxhxU3Vfygk5y6Zd4Szc3bdootKBhEca3ZtrRhRfZuUozo
+Message-ID: <CAAsRjRnhdPJOCE5BwU7zUTJ0mtSYCOA3xLcF5ejZQT8OFjYiYQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net: dsa: let drivers offload 8021q uppers on
+ standalone ports
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: florian.fainelli@broadcom.com, jonas.gorski@gmail.com, andrew@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	vladimir.oltean@nxp.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-netdev_get_by_index_lock() might return a netdev that doesn't have qops
-and also relies on rtnl. We're going to reject it later when opening a
-queue, but netdev_queue_get_dma_dev() warns before that. Reject non-qops
-netdevs earlier for now.
+Hi Vladimir,
 
-RTNL: assertion failed at ./include/net/netdev_lock.h (72)
-WARNING: ./include/net/netdev_lock.h:72 at netdev_assert_locked_ops_compat
-    include/net/netdev_lock.h:72 [inline]
-WARNING: ./include/net/netdev_lock.h:72 at netdev_queue_get_dma_dev+0x52e/0x660
-    net/core/netdev_queues.c:43,
-RIP: 0010:netdev_assert_locked_ops_compat include/net/netdev_lock.h:72 [inline]
-RIP: 0010:netdev_queue_get_dma_dev+0x53a/0x660 net/core/netdev_queues.c:43
-Call Trace:
- <TASK>
- zcrx_register_netdev io_uring/zcrx.c:831 [inline]
- io_register_zcrx+0xe94/0x1d30 io_uring/zcrx.c:983
- __io_uring_register io_uring/register.c:942 [inline]
- __do_sys_io_uring_register+0x1193/0x1bc0 io_uring/register.c:1040
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> Then their "vlan_filtering off" implementation is broken.
 
-Cc: stable@vger.kernel.org
-Fixes: b6c5f9454ef34 ("io_uring/zcrx: call netdev_queue_get_dma_dev() under instance lock")
-Reported-by: syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
----
- io_uring/zcrx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+In the sense that the hardware cannot forward an arbitrary tagged frame
+transparently while the table is active, and the table cannot be
+deactivated without the ARL cost from the other subthread, yes. The
+flag exists so the driver can compensate for exactly that.
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index f1464ea8ca64..add91d6d6e52 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -825,6 +825,10 @@ static int zcrx_register_netdev(struct io_zcrx_ifq *ifq,
- 						reg->if_idx);
- 	if (!ifq->netdev)
- 		return -ENODEV;
-+	if (!ifq->netdev->queue_mgmt_ops) {
-+		ret = -EOPNOTSUPP;
-+		goto netdev_put_unlock;
-+	}
- 
- 	netdev_hold(ifq->netdev, &ifq->netdev_tracker, GFP_KERNEL);
- 
--- 
-2.54.0
+> BTW, how is the "standalone port" behaviour different than the
+> vlan_filtering=0 bridge port case? If as you say, the switch must have
+> the VID in the VLAN table to send the packet to the CPU, what is
+> different when that port is under a VLAN-unaware bridge such that this
+> presumably does work?
 
+It is not different, and it does not work. A tagged frame whose VID is
+not in the table dies the same way when the port is under a
+VLAN-unaware bridge; this hardware cannot do transparent tagged
+bridging since the same v5.15 change. Jonas observed the same
+limitation earlier in this thread from the other direction: on the
+chips where standalone RX still works, forwarding tagged frames
+between ports does not.
+
+The reason the fix scopes to standalone ports is that they have a
+finite, well-defined VID source: the 8021q uppers, reported through
+the feature bit. A VLAN-unaware bridge has no such source; making it
+transparent would mean programming the whole VID space, which is the
+several-seconds-per-toggle variant Jonas measured and rejected in the
+first thread. So the series fixes the reported regression, the
+standalone PPPoE/upper case, and does not pretend to fix transparent
+tagged bridging, which this hardware has not done since v5.15 either.
+
+> If there is a problem with the vlan_filtering_is_global +
+> needs_standalone_vlan_filtering combination, then hellcreek also suffers
+> from it, because it does set both flags as well.
+
+You are right, and the commit message argues this badly; I will reword
+it if a v2 is wanted. vlan_filtering_is_global is not the
+differentiator, hellcreek sets it too. The difference is what the
+forced vlan_filtering=1 means for each driver. For hellcreek,
+switch-wide VLAN awareness is the intended operating state; its
+standalone traffic depends on filtering being on, and hellcreek.c
+documents that unmanaged setups are not supported. The forced flip
+lands it in the state it wants. For b53, vlan_filtering=1 is a
+different user-visible mode for every port on the switch: untagged
+frames become PVID-classified against the table, egress untagging
+applies, unknown VIDs are dropped at ingress. Forcing that globally
+because one port left a VLAN-unaware bridge would change the behaviour
+of every other port, including members of VLAN-unaware bridges that
+expect transparent operation. b53 needs the VIDs delivered while
+vlan_filtering stays wherever the user put it, which is the narrower
+flag.
+
+> Why can't standalone ports tolerate the .port_vlan_filtering() call?
+
+They do tolerate and still receive it: the ds->ops->port_vlan_filtering
+call is unchanged, b53 sees every toggle and rebuilds its hardware
+state from its own records. What the flag skips is only the core's
+dsa_user_manage_vlan_filtering(), whose two jobs are wrong for a
+switch whose feature bit is permanently on. On the way to
+vlan_filtering=1 it replays VIDs that were never cleared, so
+vlan_vid_add() refcounts every upper VID twice. On the way to 0 it
+clears the VIDs and drops NETIF_F_HW_VLAN_CTAG_FILTER on a port that
+happens to be bridged at toggle time; I measured that case on the
+RT-N18U: after the port later leaves the bridge, its uppers stay dead
+until reboot, because nothing re-offloads them once the feature bit is
+gone. With the skip, both effects are gone and the driver derives the
+hardware state from the flip itself. hellcreek does not set the new
+flag, so its path through dsa_user_manage_vlan_filtering() is
+unchanged.
+
+Best regards,
+Semih
