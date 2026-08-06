@@ -1,136 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF8F2C3768
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AFA3AEB5F
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786030301; cv=none; b=I/ezgn3GbsZi8h3tkMX+vnEkDUQNvtNZhL05ZO5emg7bZMtQ6FYoXiTU32fqM2h0YgnIDD6U/8uc6N9DtyRXpI58wXb3gota9BhPweZb95EGBzYyhwPyObSDFmtx6AlDY5bO0ehVU6XOnUaZ6Zg2+SRS5ZTJ7atZzQpJCTdF1/U=
+	t=1786030466; cv=none; b=XIakpEtOnIjEgBSq0dfdr4q4iiUMs6RT9S7lptBRJc++j7A97sMpsDMYsMiOujS0yfKVeULmqlQSHKuRzJpX8VlwIRFldzMoJ4GJkwy7FiD29R+CowprZibIICSbD6vTec5naeG+u2oH8g5t8oS6m9G4RmT04pQ8hdAJHsgIZHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786030301; c=relaxed/simple;
-	bh=Sp0zEf6KPmO0rlstHCAEqhlW6xfx+tlA2d2CHkUBxrk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uk4qSs2/yiqMywsd4U9Lw0OcfGgfD36uzc3ULbcBh1+t5A4Q7+BGUpFQBCnPwaI7wCmoujciwtae9S5NylDDyRC97LFyvU+KQPWjYAmTDl05Lf4i3rsJZvmC3C+mr03ZZor8YwkJN00EUEnR3Zy6g45/nZeGlJGXMmovFUO2E/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJ0VbGfz; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJ0VbGfz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DF01F000E9;
-	Thu,  6 Aug 2026 15:31:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786030300;
-	bh=ehSjwbGQhcKtiFxnNIjwCp5apoigHhStk5UURx7APDY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cJ0VbGfzrrKCC+BbSelshvk+bcfKF2B/CwO5JQmToB8zsjA3DymgVpANhp+WUteDw
-	 wCEmL9JU0KTIRqjMRxhx1GTZl5c+KTZJbEiHQT/BFpvwQ8bc8SNMPp57YtDiqlC23u
-	 gywu1XNdoUbCBizuR4JUOPOudwPSXvIPXPQYhk1ctwWh0wIPWQ30ddUEmPVfduiUE/
-	 KhkMFU6RXUWPDgVva2xBMyCOhAPgpsj3SMcc3qbzQwYfRxNSxoEhKwyJNTtA15no3V
-	 OHbQnYCFFhzGZNstuDiO3q2zsQWmnOrKslnCEs9bmcfNARTA+SS4GUAW+6ftuCXS+M
-	 fZWcbbl2eY+Mw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: jiawenwu@trustnetic.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	mengyuanlou@net-swift.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	joe@dama.to,
-	u.kleine-koenig@baylibre.com,
-	weirongguang@kylinos.cn,
-	larysa.zaremba@intel.com,
-	horms@kernel.org
-Subject: Re: [PATCH net v2] net: ngbe: fix NULL pointer dereference in non-MSI-X interrupt enabling
-Date: Thu,  6 Aug 2026 08:31:38 -0700
-Message-ID: <20260806153138.2580692-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <5FE44222ED3FAC4B+20260803072022.377406-1-jiawenwu@trustnetic.com>
-References: <5FE44222ED3FAC4B+20260803072022.377406-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1786030466; c=relaxed/simple;
+	bh=FxObtbgqm/ZQn5/T1KiHkx1b4gmdzhL3J2edlXpdLe8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pYU5L00gEWOLY2BFdIQAd3QaJqWqU2ZBeJjuDqKxq/eMKRQ63cz5+GfCF4SQNmQ51osmMqzjgbtGJM3C95Q+SUx7z2N9ik7lqO5KpatwlAlDY6dkwL5t3XKrOkURNMRtWOKtYQa/Xta87NKg+zBx3ljprj1cYjqH7Bm7IRG3iIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 676FY8RG002933;
+	Fri, 7 Aug 2026 00:34:08 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 676FY8Hm002930
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Fri, 7 Aug 2026 00:34:08 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <bde6aeae-42b9-45eb-90f1-7616770c09ee@I-love.SAKURA.ne.jp>
+Date: Fri, 7 Aug 2026 00:34:06 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [bug report] net: udp_tunnel_nic: reference count leak during
+ network namespace migration
+To: Eric Dumazet <edumazet@google.com>
+Cc: Network Development <netdev@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>
+References: <73ed3aa5-f6e1-47b6-9e5d-428ac1f4cbf3@I-love.SAKURA.ne.jp>
+ <2175f74b-00c7-4868-aea5-ed9c171c41ee@I-love.SAKURA.ne.jp>
+ <CANn89iL-ghxRFqSGeqpOfxNnOdyBRO_Nik+6chu6-eLw-wdTOw@mail.gmail.com>
+Content-Language: en-US
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <CANn89iL-ghxRFqSGeqpOfxNnOdyBRO_Nik+6chu6-eLw-wdTOw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Anti-Virus-Server: fsav301.rs.sakura.ne.jp
+X-Virus-Status: clean
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: ngbe: fix NULL pointer dereference in non-MSI-X interrupt enabling
+On 2026/08/06 22:57, Eric Dumazet wrote:
+> On Thu, Aug 6, 2026 at 3:18 PM Tetsuo Handa
+> <penguin-kernel@i-love.sakura.ne.jp> wrote:
+>>
+>> Ping?
+>>
+> 
+> Is this a dup of
+> https://lore.kernel.org/netdev/6a632b15.dde6c935.cf6c8.0011.GAE@google.com/T/#u
+> ?
+> 
+> If not, please send a patch.
 
-This patch avoids dereferencing wx->msix_entry in NGBE_INTR_MISC() when the
-device is not running in MSI-X mode, by testing pdev->msix_enabled in
-ngbe_irq_enable() and falling back to a hard-coded mask value otherwise.
+Symptom is different (memory leak v.s. refcount leak) but fix will be the same.
 
-> diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> index a16221995909..cb653861aad8 100644
-> --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> @@ -180,8 +180,10 @@ static void ngbe_irq_enable(struct wx *wx, bool queues)
->  	/* mask interrupt */
->  	if (queues)
->  		wx_intr_enable(wx, NGBE_INTR_ALL);
-> -	else
-> +	else if (wx->pdev->msix_enabled)
->  		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
-> +	else
-> +		wx_intr_enable(wx, BIT(0));
->  }
+I will wait for your responses on
+https://lkml.kernel.org/r/bd87fb25-b125-42b6-b70f-5bc5a9b6bcbd@I-love.SAKURA.ne.jp .
 
-[Severity: Medium]
-Is BIT(0) the right mask bit for the misc cause in the non-MSI-X case?
+> 
+>> On 2026/07/18 21:03, Tetsuo Handa wrote:
+>>> Description:
+>>>
+>>>   syzbot is reporting a reference count leak when a netdevsim device configured with
+>>>   UDP tunnel offloads is moved to another network namespace, and then the target
+>>>   namespace is destroyed.
+>>>
+>>> Cause of the Leak:
+>>>
+>>>   The root cause is a structural mismatch between the namespace migration logic in
+>>>   __dev_change_net_namespace() and the unregistration path in udp_tunnel_nic_unregister().
+>> (...snipped...)
+>>
 
-In the MSI/INTx fallback, wx_set_interrupt_capability() sets
-wx->num_q_vectors = 1, and ngbe_up() -> wx_configure_vectors() still
-programs the misc IVAR:
-
-drivers/net/ethernet/wangxun/libwx/wx_lib.c:wx_configure_vectors() {
-	...
-	wx_set_ivar(wx, -1, 0, v_idx);
-}
-
-with v_idx == wx->num_q_vectors == 1.  wx_set_ivar() only forces the
-other-causes vector to 0 when WX_FLAG_IRQ_VECTOR_SHARED is set, which
-happens for wx_mac_em with num_vfs == 7 in __wx_enable_sriov():
-
-	if (test_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags))
-		msix_vector = 0;
-
-So in plain MSI/INTx the misc cause sits at bit 1, and bit 0 is queue
-vector 0.  Does this branch then clear the wrong bit in PX_IMC, leaving
-the misc cause masked while unmasking the queue cause?
-
-The queue cause looks like it is meant to stay masked here, per
-ngbe_intr():
-
-	/* would disable interrupts here but it is auto disabled */
-	napi_schedule_irqoff(&q_vector->napi);
-
-	if (!test_bit(WX_STATE_DOWN, wx->state))
-		ngbe_irq_enable(wx, false);
-
-and wx_poll() is the place that re-arms it after NAPI completes:
-
-	wx_intr_enable(wx, WX_INTR_Q(q_vector->v_idx));
-
-Can unmasking BIT(0) from the hard IRQ handler let the device re-assert
-the (possibly shared) INTx/MSI line while NAPI is still scheduled,
-leading to repeated hard-IRQ entries and, on the eicr == 0 path, to
-IRQ_NONE returns followed by a full NGBE_INTR_ALL unmask?
-
-Would BIT(wx->num_q_vectors) be the value that preserves the behaviour
-prior to commit 4174c0c331a2, where NGBE_INTR_MISC(A) expanded to
-BIT((A)->num_q_vectors)?  The sibling driver still uses that form
-unconditionally, including on its non-MSI-X path:
-
-drivers/net/ethernet/wangxun/txgbe/txgbe_type.h:
-	#define TXGBE_INTR_MISC(A)	BIT((A)->num_q_vectors)
-
-One more note on the changelog: it says the fix is to check
-pdev->msix_enabled "to determine the correct vector index", but it does
-not mention that the mask value written in non-MSI-X mode changes from
-BIT(1) to BIT(0).  Could the changelog spell out the intended vector
-index for the MSI/INTx case?
--- 
-pw-bot: cr
