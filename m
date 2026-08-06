@@ -1,303 +1,189 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11020076.outbound.protection.outlook.com [52.101.228.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FC21C2324
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 03:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785985920; cv=none; b=koiJnOZ+Xw8msMCKZEWrD8/u0aRsnHKtloqev4omxkr3ChN9FMXinT4fxJ9FPUfrZiksMWTulDLaaK4fuYN45omeYHUIVaHKkEz4oi2Gy1Z6k9dTGYD/tYuU6vqdtLB68m0s32txcFzvAeNFGentXZ6LDPiOB6oA7TQPvSEmizw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785985920; c=relaxed/simple;
-	bh=wJO5xNuH/QBI/KYDgIW2r/J7mUFYYkWmXx2Xe37IfW8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ed7EZQZwRFh5m0fjI1500nVNhWrOYKl/bAqWcnLxE320MjGPME28AQ8pEDb+Om22bjIQIdub1OT6ITnZUPuhsryLbCFe8a6YBN4vSPmwcefcGvDnRZo0dQUQ0N56WwLJHRmv+IY7wPffDZBkikqsZ9kTgj9aJrohBjffo948yEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fQp+PnD/; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FCF1B87C0;
+	Thu,  6 Aug 2026 03:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785986748; cv=fail; b=SNg6TI2Q3R7QzgAIo40iLlqC4QQ2jCvQ3ZK694+ARFaAiGupbM8ilV5OYdO9P5pyeA05EnxHLRpuael+vc0NqS5GEUzV440gAADbFwhSkD+gL8rGiMJ8MvOH9Ub4ypFba/PeAK2BFvB1wx/coE+4v+lMhvVfKtWnTwh1It1mU54=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785986748; c=relaxed/simple;
+	bh=dZqMW0jqZicFlmrfGypdQ5hFBlV12KFJkL0x6uuDom4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=NGA4cpKuBnB/u4LwYvAEdpMZfapNJsV3N+spsia0Ttzoix488q5Dws7m7oM2mOzKZLWFq3NTo28dQGph8Ai3ok2IqgjwpM5tyIcA5AffC16rT3lX/Dk6V2QCI2An4XlE6e5ZMb75fNUzZ5S2aN0zUV1aimIsO/bZxSwLz8aT4X4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=JxJpcZih; arc=fail smtp.client-ip=52.101.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fQp+PnD/"
-Message-ID: <f6289ac9-0974-4132-982b-b2072290056b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785985915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8t4Ch0yNlGBXhF3B/jw4f/nuYmc7rbUKhgGr+ADAb2k=;
-	b=fQp+PnD/k1/7rGbuhgybYppYdx2I9htzkDE73fwUyxPHx06JHAbIiOMek9h1p3dM6D1xqR
-	0l7pbT0zmY9BKFQf+fSKoKmGk2kDMCjJZ88n3bv2fZUZcUkApZ4OebGE6JkgknHGjjMD9D
-	u43mhxr4IzgRYdhDoR8XCWW8ilZ8EW0=
-Date: Thu, 6 Aug 2026 11:11:02 +0800
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="JxJpcZih"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=flZ/6kxOmqWXb0XFVCw+GkIDNSwOgPy6VcNKd7hzyYD4qEj4wymMnvRh/bbBQeaM3y4NNdi8FHcjPY+BoUlEsdtCbOOyeWxuuHZxpGhXgCgMujmQwKadletpxBfCJFmHpMiekACJzUK4rCMEAuKnqUlwWbLKvAryUtSP9FQjPRzVmqAvGEar2WbKqJEOOiGnkOPCP9WCMn2uJxnJ/E1rTTcDPnujpZasDXwbve6RuhMraBOUKg2YlEvo2ySEIgTQUjXLmQCTG6di7iMMdeUpi29mkEaBhNZqiOiMH3Ngkuu0ITymN2uXK+TqtUnQfDMtJbx+W6C00ItPysjsQxvT1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KjaQwNL2JFe7IYT4GlcSbqXxDuGtoWATREgRceBlvwg=;
+ b=Y9MQhVMujMYvGVyrTuvJGyoRwhqf2xsRubB5Z8P38wPPUE+XsKsbjzyu5qlBDSFXqDoHW8dxZdCvSXudRcH5VkxDL+AcX2fAHS45a+Nlrp2EOk/KmTc4AaGlNCgsggtFh+MCXJlgQcPEHh4hm5cicYv7pdfPMLoo3ugYVK86XBb0ciOPNODgru05aKK09oHuTLxsGIf7qya/JmhKEHofbuEy7QC6Mlh7UhzoJtZxiiQSlbApfu54ChD+qnEY9sQOQOYVHlDq8dYf8h2YjD4MDenPMNCNbeGNdysWuhCB2zcThccAFM4tyadOwIP8E+RfYPq9lfaZ9fgm2mcAZl2e5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KjaQwNL2JFe7IYT4GlcSbqXxDuGtoWATREgRceBlvwg=;
+ b=JxJpcZihyMDst9ltexGKPAkc38EAiQqkofYk69XFhjU1VFFFBv+0Y4tbry8v099bEZJlldV0s6wEUzcE89upGcsyFlVXe0qYyTGJOCFyd/5nLO6FS/3rHG/vpvRihLrqSh1pDmAb04RIirLKF7Xc1lGT+7k2LDdbRExKP68PO/I=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TYYP286MB4042.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:14f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Thu, 6 Aug
+ 2026 03:25:43 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0292.018; Thu, 6 Aug 2026
+ 03:25:43 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nicholas Bellinger <nab@linux-iscsi.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: ntb@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] NTB: ntb_netdev: Preserve RX queue depth on allocation failure
+Date: Thu,  6 Aug 2026 12:25:37 +0900
+Message-ID: <20260806032537.3526498-1-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TY4P301CA0073.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:36f::7) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next] pppoe: pass bound packets directly to generic
- PPP
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: linux-ppp@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, kees@kernel.org,
- ericwouds@gmail.com, manizada@pm.me, nbd@nbd.name, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, norbert@doyensec.com, gnault@redhat.com
-References: <20260804074452.75548-1-qingfang.deng@linux.dev>
- <20260806012820.1905519-2-kuba@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qingfang Deng <qingfang.deng@linux.dev>
-In-Reply-To: <20260806012820.1905519-2-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYYP286MB4042:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cf99fbb-a3b8-411d-af5b-08def36a6597
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|10070799003|18002099003|5023799004|56012099006|3023799007|10067099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	DgCYQGtSUcXmd+d8izYmCfLRqxZ5W6S1ID3XPbBbhjRPuDLYdPaf9X+Ge34JgsxQuAgpGSqFH8J+pPRZKEEvwFk+WOpgIXaooCnmiOj36llttFEl9KxgP7C7FodVuDNGKFpjrYbudCBr64iNv3grrFNzpmHvb1BcRepDB3XinTPiLGQIvtmEnvURliyN754fiGzq/emC/4bQYxTLrFjDprexcfJJiLn6u9AUz0K+L35rbINqe53loZ9FrVDVQe+jirpBbv8YtBfxnDyJyUuksftbm5m/+R85NnBm8A70ZWBIqkN/ehXAsNQgEOOT40Osl826U6mcaxvl1u3jb0lADFW54litx1tJid+Tn/WrFM27tOB2RJ7M4tQB9wIk0BsYiYoOx/S3C6yGO9QWBHYWaiIB9igwoEuFGdprozvNiUVeR2BkBZ4dv/IQPLaUHEWf+hnDJDMu9FpeAGi/edRlyAQThL+flqP6tG6EBlgu6gAyecn/HzcUvFXxB8SRhP02XHTakhhCHpUGSznqCB5dWqvcnt4AGy64fuqk7IRYwVPO6RjCAfuUOJeRfOhwLi/Obb0HoD6gcx9y3LU+wgch/riGMCHdMQHnxsbdjFGrzeCSL0W/BT14PJjiHUKQRkfdi0Fi41CFpDmdH9FIYEcir9fNE2L0sjbunuGuMctWiGDSAobMDgQV9ZJAezkDVLYgxlUWMhMrcf+xoUt/bKg3TQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(10070799003)(18002099003)(5023799004)(56012099006)(3023799007)(10067099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?A1+cpenJel04I8fQDHJDqid8PIlW6eclzXoNJIu8cVNtquoUXRbU5HRRpTsg?=
+ =?us-ascii?Q?jGqw8Ljey6MQoZ8jb/NuQJk/jrK0J3sCrxM0CEi6wOIP3oj4Ja9AxfHWSyP3?=
+ =?us-ascii?Q?zGkJ972qE9rv1wbyNKjIymzaGmck/ZvdRNEdSBBXLtnf6zJsymIqNjzei75G?=
+ =?us-ascii?Q?thkzClTJSS9M306bF0/vdChjwrznKT2OhOyDwxSIiCANcpTkG7JYs7mqCoAN?=
+ =?us-ascii?Q?IDJKJpt9jaqROtEMisE0iDIuvIL7OmSTgom0UzWnt57p4dsg8peD/kgJgSSS?=
+ =?us-ascii?Q?4e5axEGkwLlzfxktZ0+X+GGHTp9yUjo1nuHXKJYgezIt20KyPH6I7wUx5VUF?=
+ =?us-ascii?Q?bL9mstnPr3ZxAWUT+p5qwqGVkeCyghk4WqlfqImLPfiIcx5uj3VgryulXDqZ?=
+ =?us-ascii?Q?1GnkoVTLJEEtdVYBJCJLik4S1DlC+ewXZwjtk8ItPA5gtSUDpeVTQIsSGGpE?=
+ =?us-ascii?Q?G3eFpf6dHEs3Se7JI5V0/dsSoYbusjWkeJiBNKoLSlZ/dAjueuI4KSYkqbX1?=
+ =?us-ascii?Q?ZGbKaNEsOY6niBZ1T8v18CQ3BKPts3Usq4CnC0ScjmqeIDJC0VUhgiz/WNOD?=
+ =?us-ascii?Q?PXIDmgWfmgyqT9YBq2yNjYsY2t7qWW6mxHQdXL7/hswxZF+YTf7XBfRp+2p6?=
+ =?us-ascii?Q?ndGwII0yb5jDCKBGqTkT98gfqz6G/IYubCTcrKJgSqOMSGXP0DBvEf86PQ6u?=
+ =?us-ascii?Q?GCJ+CWGALTVjARInBhjYk7V/n0PyIEw4aENZv+OX6mgeJOntdQ1IqEdVTioM?=
+ =?us-ascii?Q?wFjP/REianxCZuHcIGU+ZHy4aXWSKuH2QXi9eiWGXjI5WAtCNqY3vm2MPwG+?=
+ =?us-ascii?Q?7Ci+jRaayzrdrPP1Phejy0HHm26MziNkM7oQLeZaVardnQNofZHdKiZSdbsV?=
+ =?us-ascii?Q?dSa9p4QGhlk6sAt7K8+NBptkmfkdsVkyzycpKS+lYHFAl1Hzi2coyjlwCZ1V?=
+ =?us-ascii?Q?w8hXHsm4ii/D1afx587ujmlUGrMUXQtKIi1ER47E4fQCqwxhBObFky8emBEl?=
+ =?us-ascii?Q?LvXFl/U5uODjWb5T2wvC+w6r9AC7TtckiaISzOjuD8ICAOwricH+5+UpcO9z?=
+ =?us-ascii?Q?tOGANguBwpIjVp7jdTZB+8j69gUqCcX4bema0BUBaKUFalLDkiWrRM2fAmNc?=
+ =?us-ascii?Q?0e8Yk6xIq3g6Cz1Ww1nXBxSp7jG6+ZuI9dc91e2ImU9AfHxqi3j1mQtIz4sP?=
+ =?us-ascii?Q?VWu21mjALUeedMSsiR7k0eJoAGpglmGbVe+tPFWEC0CV3pcLDFVfqkRhtvlN?=
+ =?us-ascii?Q?zj6mkMzgcfIaXNuvp7QxxANWRi1LELfc6PKL6w29dgGdQizsZ9uoI8Ok2uuT?=
+ =?us-ascii?Q?o2wcQG7SmdKHuy1RbelQB7o2GkVsds0cmYsVa6fTtP6iKEX6wx3pp8pCs9kx?=
+ =?us-ascii?Q?nYm/DilUh81XKTORCCli2fIj0m4Hv9dW1UB19tQGNUVwQEnCvOU+d4l9RLhI?=
+ =?us-ascii?Q?8DOCdyjlOBbCJ+9hx0dq1RMExr2/yrYA15rcn/XpiunBOqakFr3GO7/wkjai?=
+ =?us-ascii?Q?zZvyqR1/FGxgbuuNoVHWFcOsNzLQDRWgpud5SFA11wznGdczLsD1LzjWDIEX?=
+ =?us-ascii?Q?KI4hT07GXXfcXNXn+olHxr2mD/I0u9y0u7MVhdC/MwAyfrH4kxzoKRljzrDo?=
+ =?us-ascii?Q?tOA+JvQ+6nZP87feh/zQgULTdJ7e5OPXNzblZ2Gfo/WI4Q1mbdwE8GdxF5EF?=
+ =?us-ascii?Q?0UbfLEHFJVMRW6PwtDNbQmZOiZzkWuwfqvcLDFExIYnk/TX2JxVT52cjV3o6?=
+ =?us-ascii?Q?uQHicrxq6XnKZGaqUlxBX6Bmcq1cJJ8KszQCxfJmlcdwQsIgKo6v?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cf99fbb-a3b8-411d-af5b-08def36a6597
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 03:25:43.1831
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AZ2hTHNO4ReEgzh948MVl5FF31e4kaHe8/fiPH2vYAJsfKre2Mq/UOvT5U45Ql58J7KDmLcGlat1son6MMGNgw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYP286MB4042
 
-Hi,
+ntb_netdev_rx_handler() hands the received skb to the network stack
+before allocating its replacement. If the allocation fails, nothing is
+reposted. Every failure therefore takes one buffer out of the RX queue
+while the interface remains up, and enough failures eventually stall
+reception.
 
-On 2026/8/6 9:28, Jakub Kicinski wrote:
-> This is (mostly) an AI-generated review of your patch.
->
-> One non-AI question - presumably you're doing this to improve performance?
-> Could you add some numbers to the cover letter?
+A retry path could refill the queue later, but ntb_netdev has none.
+Allocate the replacement first instead. If that fails, drop the packet
+and repost the same skb. This keeps the queue full and lets packet
+delivery resume as soon as memory is available again.
 
-Yes. I may add those numbers to v2. Note that the generic PPP RX also 
-serializes internally (which I plan to remove in another patch), so this 
-patch alone won't significantly improve performance.
+Fixes: 548c237c0a99 ("net: Add support for NTB virtual ethernet device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+---
+ drivers/net/ntb_netdev.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-> ---
-> pppoe: pass bound packets directly to generic PPP
->
-> This drops __sk_receive_skb() for PPPOX_BOUND PPPoE sockets and hands
-> session frames straight to ppp_input() from pppoe_rcv(), relying on the
-> RCU-deferred channel free added by ec4215683e47.  It also adds a
-> synchronize_net() in pppoe_connect() after the old session is unhashed,
-> before po->chan is cleared and reused.
->
-> No Link: tags are present in the commit header.
->
-> A few questions below.
->
->> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
->> index 6874a1a8edaf1..0624116241823 100644
->> --- a/drivers/net/ppp/pppoe.c
->> +++ b/drivers/net/ppp/pppoe.c
->> @@ -345,10 +345,10 @@ static struct notifier_block pppoe_notifier = {
->>   
->>   /************************************************************************
->>    *
->> - * Do the real work of receiving a PPPoE Session frame.
->> + * Backlog receive a PPPoE Session frame and deliver to userspace.
->>    *
->>    ***********************************************************************/
->> -static int pppoe_rcv_core(struct sock *sk, struct sk_buff *skb)
->> +static int pppoe_backlog_rcv(struct sock *sk, struct sk_buff *skb)
->>   {
->>   	struct pppox_sock *po = pppox_sk(sk);
-> [Severity: Low]
-> Is the new banner comment accurate?  The function body still delivers to
-> the generic PPP layer, not to userspace:
->
-> drivers/net/ppp/pppoe.c:pppoe_backlog_rcv() {
-> 	if (sk->sk_state & PPPOX_BOUND) {
-> 		ppp_input(&po->chan, skb);
-> 	} else {
-> 		if (sock_queue_rcv_skb(sk, skb))
-> 			goto abort_kfree;
-> 	}
-> }
->
-> That branch still looks reachable: pppoe_rcv() only takes the new direct
-> path when it observes PPPOX_BOUND, and a frame observed while !BOUND is put
-> on the socket backlog by __sk_receive_skb() and only evaluated at
-> release_sock() time.  By then pppox_ioctl(PPPIOCGCHAN) may already have run
-> sk->sk_state |= PPPOX_BOUND under lock_sock().
->
-> Could the comment mention that the bound case still goes to ppp_input(), so
-> that a later reader does not remove the branch on the strength of the banner
-> text?
-
-
-I'll update the banner comment.
-
-
->
-> [ ... ]
->
->> @@ -420,6 +420,10 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
->>   	if (!po)
->>   		goto drop;
->>   
->> +	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
->> +		ppp_input(&po->chan, skb);
->> +		return NET_RX_SUCCESS;
->> +	}
->>   	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
-> [Severity: Medium]
-> Does this skip socket filters and the skb->dev clearing that
-> __sk_receive_skb() used to perform for bound sessions?
->
-> net/core/sock.c:__sk_receive_skb() {
-> 	reason = sk_filter_trim_cap(sk, skb, trim_cap);
-> 	if (reason)
-> 		goto discard_and_relse;
->
-> 	skb->dev = NULL;
-> 	...
-> }
->
-> Two things in sk_filter_trim_cap() look relevant here.  A filter attached
-> with SO_ATTACH_FILTER/SO_ATTACH_BPF is now silently ignored for all bound
-> session traffic; do_sock_setsockopt() routes SOL_SOCKET options to
-> sock_setsockopt() for PF_PPPOX since pppoe does not set SOCK_CUSTOM_SOCKOPT,
-> so sk->sk_filter can be non-NULL.  The pfmemalloc guard is also bypassed:
->
-> net/core/filter.c:sk_filter_trim_cap() {
-> 	if (skb_pfmemalloc(skb) && !sock_flag(sk, SOCK_MEMALLOC)) {
-> 		NET_INC_STATS(sock_net(sk), LINUX_MIB_PFMEMALLOCDROP);
-> 		return SKB_DROP_REASON_PFMEMALLOC;
-> 	}
-> 	...
-> }
->
-> The dropped skb->dev = NULL also matters for the frames ppp_input() parks on
-> pch->file.rq (proto >= 0xc000, PPP_CCPFRAG, or pch->ppp == NULL) -- those can
-> now sit queued indefinitely holding a non-refcounted net_device pointer.  Is
-> that intentional?  The cgroup-BPF and LSM parts of sk_filter_trim_cap() do
-> appear to be no-ops for PF_PPPOX, so those are not a concern, and the
-> sk_rcvqueues_full() check is not meaningful for the bound path.
->
-> Note the PPPOX_BOUND branch in pppoe_backlog_rcv() still runs under the old
-> contract, so the same class of frame is handled two different ways depending
-> on timing.  Could the changelog say something about the filtering and
-> skb->dev behaviour change?
-
-The sk filter is an unintended side effect when sk_receive_skb() was 
-introduced (commit 25995ff57767). pppd has never used that to filter 
-PPPoE packets, instead it uses the generic PPP filter.
-
-The dropped skb->dev = NULL should not matter, as the generic PPP layer 
-does not expect it to be initialized by an underlying channel.
-
->
-> [Severity: Low]
-> Should this read be annotated?  po->sk.sk_state is loaded here from softirq
-> with no lock held, while every writer stores it with a plain access under
-> lock_sock():
->
-> drivers/net/ppp/pppox.c:pppox_unbind_sock()	sk->sk_state = PPPOX_DEAD;
-> drivers/net/ppp/pppox.c:pppox_ioctl()		sk->sk_state |= PPPOX_BOUND;
-> drivers/net/ppp/pppoe.c:pppoe_connect()		sk->sk_state = PPPOX_CONNECTED;
->
-> Before the patch the test happened inside bh_lock_sock() in
-> __sk_receive_skb(), so it was serialized against those writers.  Would
-> KCSAN report this now, and would READ_ONCE()/WRITE_ONCE() be appropriate?
->
-> There is also a bare control dependency: pppoe_connect() fills in
-> po->chan.{hdrlen,mtu,private,ops}, calls ppp_register_net_channel() (which
-> sets chan->ppp), and only then publishes sk->sk_state, with no release
-> store to pair with.  The reader then loads po->chan.ppp inside ppp_input()
-> with no acquire.  As far as I can tell the worst outcome is ppp_input()
-> seeing !pch and dropping the frame, so this looks like an annotation
-> question rather than a correctness one.  pppol2tp_recv() has the same
-> unannotated pattern.
-sk->sk_state is already `volatile` so I don't think it needs an extra 
-READ/WRITE_ONCE() which does the same thing.
-> [Severity: Low]
-> Can frames reach ppp_input() out of arrival order now?  Two paths can feed
-> the same channel:
->
-> pppoe_rcv() -> ppp_input()			(softirq, no socket lock)
-> release_sock() -> pppoe_backlog_rcv() -> ppp_input()	(process context)
->
-> pppox_ioctl(PPPIOCGCHAN) sets sk->sk_state |= PPPOX_BOUND under lock_sock().
-> A frame that arrived just before that, while the socket was owned by the
-> ioctl caller, went to the socket backlog.  A frame arriving after the BOUND
-> store but before release_sock() takes the new fast path and is handed to
-> ppp_input() immediately, ahead of the older backlogged one.
->
-> ppp_input() serializes internally, and the window only exists once per
-> session while LCP/auth frames are in flight, so this may be acceptable --
-> but is it worth a note?
-
-
-I may add a comment into pppoe_backlog_rcv().
-
-
->
-> [Severity: Low]
-> Does this leave the documented channel contract stale?
->
-> include/linux/ppp_channel.h {
->   * SMP locking notes:
->   * The channel code must ensure that when it calls ppp_unregister_channel,
->   * nothing is executing in any of the procedures above, for that
->   * channel.
-> }
->
-> ppp_input() is one of the listed procedures.  After this change pppoe_rcv()
-> calls it from softirq with no serialization, while every pppoe caller that
-> reaches ppp_unregister_channel() via pppox_unbind_sock() -- pppoe_release(),
-> pppoe_flush_dev(), pppoe_unbind_sock_work(), pppoe_connect() -- does so
-> without draining in-flight ppp_input() callers.  In pppoe_connect() the new
-> synchronize_net() sits after pppox_unbind_sock(), so it fences the later
-> memset(&po->chan) and re-registration rather than the unregister itself.
->
-> The RCU-deferred struct channel free from ec4215683e47 does appear to close
-> the use-after-free, and pppol2tp_recv() already calls ppp_input() the same
-> lockless way, so this is about the text rather than a runtime failure.
-> Should include/linux/ppp_channel.h (and possibly
-> Documentation/networking/ppp_generic.rst) be updated to describe the
-> RCU-based rule that now makes this safe?
->
-> [ ... ]
-
-
-True, but it should be done in a separate patch.
-
-
->
->> @@ -625,6 +629,13 @@ static int pppoe_connect(struct socket *sock, struct sockaddr_unsized *uservaddr
->>   		pn = pppoe_pernet(sock_net(sk));
->>   		delete_item(pn, po->pppoe_pa.sid,
->>   			    po->pppoe_pa.remote, po->pppoe_ifindex);
->> +
->> +		/* pppoe_rcv() can call ppp_input() without taking the socket
->> +		 * lock. Once the socket is unhashed, wait for any receive path
->> +		 * that found it earlier before clearing and reusing po->chan.
->> +		 */
->> +		synchronize_net();
->> +
->>   		if (po->pppoe_dev) {
->>   			dev_put(po->pppoe_dev);
->>   			po->pppoe_dev = NULL;
-> [Severity: Low]
-> Is holding the socket lock across the grace period necessary here?
-> pppoe_connect() takes lock_sock(sk) at the top, so every disconnect/rebind
-> of a session now blocks other users of that socket for a full,
-> non-expedited RCU grace period.  The drain is only needed to protect the
-> following memset(&po->chan, 0, sizeof(po->chan)), so could it be arranged
-> without the socket lock held?
->
-> For the record, this does not look like it can stall RTNL:
-> delete_item() unhashes the socket before synchronize_net(), and
-> pppoe_flush_dev() only locks sockets it finds by walking pn->hash_table, so
-> the RTNL-holding notifier cannot find the socket sleeping in the grace
-> period.
-
-pppd is single-threaded, so in practice, "other users of that socket" do 
-not exist.
-
-If there are multiple users of one socket, the current implementation 
-needs the lock to keep the entire teardown/rebind transaction serialized.
-
-A plain unlock creates this race:
-
-1. Caller A unbinds and unhashes the old session, then unlocks.
-2. Caller B connects a new session on the same socket. PPPOX_DEAD 
-permits this.
-3. B clears and registers po->chan for its session.
-4. A reacquires the lock and resumes inside its old teardown branch, 
-overwriting B's socket.
-
-Best regards,
-
-Qingfang
+diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
+index c3a6ba96fc8a..029a4a532a10 100644
+--- a/drivers/net/ntb_netdev.c
++++ b/drivers/net/ntb_netdev.c
+@@ -127,8 +127,8 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+ {
+ 	struct ntb_netdev_queue *q = qp_data;
+ 	struct ntb_netdev *dev = q->ntdev;
++	struct sk_buff *skb, *new_skb;
+ 	struct net_device *ndev;
+-	struct sk_buff *skb;
+ 	int rc;
+ 
+ 	ndev = dev->ndev;
+@@ -144,6 +144,12 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+ 		goto enqueue_again;
+ 	}
+ 
++	new_skb = netdev_alloc_skb(ndev, ndev->mtu + ETH_HLEN);
++	if (!new_skb) {
++		ndev->stats.rx_dropped++;
++		goto enqueue_again;
++	}
++
+ 	skb_put(skb, len);
+ 	skb->protocol = eth_type_trans(skb, ndev);
+ 	skb->ip_summed = CHECKSUM_NONE;
+@@ -157,12 +163,7 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+ 		ndev->stats.rx_bytes += len;
+ 	}
+ 
+-	skb = netdev_alloc_skb(ndev, ndev->mtu + ETH_HLEN);
+-	if (!skb) {
+-		ndev->stats.rx_errors++;
+-		ndev->stats.rx_frame_errors++;
+-		return;
+-	}
++	skb = new_skb;
+ 
+ enqueue_again:
+ 	rc = ntb_transport_rx_enqueue(qp, skb, skb->data, ndev->mtu + ETH_HLEN);
+-- 
+2.51.0
 
