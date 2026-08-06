@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2039C37F74C
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 16:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B196380FC3;
+	Thu,  6 Aug 2026 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786035076; cv=none; b=DLYDm2Nw3mcKaZsXO8NNldToYMjCr838EOY4FEbszypxrkWY42AZc44PEVwbpdBGc0zL17Nuscegh57uK8dqaHc1avd13hEzoO5RblhGyE0UjW/Z7HEONibiFDBI8umWIbxu9dVnC7yIYiYbGCu8sVR6nqySCmFZAAGcADbLtj4=
+	t=1786035077; cv=none; b=NwDw8lgV8Ov9ZepFGeHDXT0YXBBk4LC5DjyqjEFZwpdFSdI8RuE6Toze1aE+CF8r+H9t6PovwhaJUSD3tAlIvLvW5LLparp/8yejlKl9VA0OrSQx7syxTAaArQ3xRZOtsrivL4+UwaxgklWsh+Bu+blZo4d3xHXSz1qIAIbvne4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786035076; c=relaxed/simple;
-	bh=itOkh+wmr701nf8fr2L39CkoiSVm1wz9pCpPGdEW6jk=;
+	s=arc-20240116; t=1786035077; c=relaxed/simple;
+	bh=V28Zn9l07PnyvCbOXsDBt1/jIaK0FKq/uN9FQhJyYng=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fFYVyMa+BGrNBLMdct4sXEkAQvzJ4J91YshpgUSnF8gwsbnKvRLf8WUKcnASk8vLLCAH3TFf5J4uxKgzyg/HCWdhxX4tu7QbRWCrj6OQfBmrQ4n3o7NX6yBMvj2POHlIYyoKcngOyUEDVjqa0SyJCo7k3MZyRlK5/JU8d4jDB3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QREWnUZv; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=XFJRzoAUIy3/tCiLZvdCNyX4ZKgQ0/ffiWptIaw/u9EF9auIybsMULIl3u2o5yJ3bkV/rWldKE3kYWGUsg1e6pa8GSnmo+IkDB7E4vRDK3JvlH9AQRAGrJNF02ONU+NVeMbjrJT9l8m340PnOQWcK91ytf1ZoZ9xxNiT+WQg05g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SbqWDj3w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QREWnUZv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B461F00A3D;
-	Thu,  6 Aug 2026 16:51:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SbqWDj3w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913451F00A3E;
+	Thu,  6 Aug 2026 16:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786035066;
-	bh=XpAZOFrjB/8nwCcL0xPnoPHsPPfJCH2g5SYoXpP5IMA=;
+	s=k20260515; t=1786035064;
+	bh=vxolka/MWL4H+ALKSuwKFt5z/S49G+LJW4ab/ImI8k0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=QREWnUZvO1RSoGekwXLQtH2V4g+HEqH12VBoAvMVZf346mUxcA93M0IcCrmlPFn14
-	 md2sgn0qvHkMXeVrDsu/BxJP6HPU+FM/5AppawieZUkJ/Hcm0xpVfWEefpI9y98e0S
-	 WYVJ33TKMLmILpWW0NjdeKZMKsyH650RZwwK/U7rkmO51PXtVMaN0oBrs17mjNku7y
-	 lxLE6y5TB2sr6l/aupb8dYl62WxxLc9dpAJ4v/xHGP+LaOuH7Ai0w/zHmL8rcImPVW
-	 QimIA/sCe61Sivs2jH+hq6NrvHtV74SgiWa7MbXXj76EoYHkRuAdh7lmP0pzitZFvd
-	 q9GvNmjBcQnBA==
+	b=SbqWDj3wUasGqcRsd0FAqFM/XOoPWvI5z3JzzeKyIq3q13IuSlNARb0lLw2OiqcLJ
+	 nFkr8VuPKyqsCeD+4/74IhZBZPxR0czrsLuePdaDpzIzU/G4AbsgLTZLptJEBLw9OV
+	 YMLzkZTxtcB76b/YiPlhvok238U90tCBosiy6NvjF05o9eEumSeyB+izk8iyvP8Dks
+	 fzSiXYeodYXw7sonerKhu3Op6BrYvCktk3SNoTdPWPCQ/yOrHkou7eo9Iv+X6wDkL3
+	 /9CEkKgCNiBCkNR0vh1J5ZnzntVdLHaZJP6Ds8XYJO23X/bbB6d788+1H8+g1aUTNH
+	 yRV/hTPTmAZ7A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93956380820D;
-	Thu,  6 Aug 2026 16:50:26 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198B5380820D;
+	Thu,  6 Aug 2026 16:50:25 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: avoid theoretical races with ref drain
+Subject: Re: [PATCH net] sctp: clear control chunk transport if it is being
+ removed
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178603502513.1375455.12453285964072800716.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 16:50:25 +0000
-References: <20260806022821.2079945-1-kuba@kernel.org>
-In-Reply-To: <20260806022821.2079945-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- yijiangshan@kylinos.cn
+ <178603502364.1375455.4324945153303168941.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 16:50:23 +0000
+References: 
+ <7e1168cb722132152a29d47e5eafaeac4a3bf6f3.1785943120.git.lucien.xin@gmail.com>
+In-Reply-To: 
+ <7e1168cb722132152a29d47e5eafaeac4a3bf6f3.1785943120.git.lucien.xin@gmail.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
+ kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ marcelo.leitner@gmail.com, danielelinguaglossa@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  5 Aug 2026 19:28:21 -0700 you wrote:
-> Technically, it's illegal to take a ref on a netdev just because
-> we have a pointer on which we already hold a ref, with no other
-> protection. This is because our simple per-cpu refcount
-> implementation cannot atomically read the count.
+On Wed,  5 Aug 2026 11:18:40 -0400 you wrote:
+> sctp_make_heartbeat_ack() caches the destination transport in
+> chunk->transport without taking a reference. When src_out_of_asoc_ok is
+> enabled, the HEARTBEAT ACK may remain queued on control_chunk_list instead
+> of being transmitted immediately.
 > 
-> Let's make sure we cancel outstanding work and never queue more
-> work for a device we know is dead. This way taking a ref on
-> a dev we know is on the netdev_work_list is always going to be safe.
+> If the peer transport is removed while the chunk is still queued,
+> sctp_assoc_rm_peer() drops the transport and schedules it for RCU freeing,
+> but only clears cached transport pointers in out_chunk_list.  The queued
+> control chunk therefore retains a dangling transport pointer.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: avoid theoretical races with ref drain
-    https://git.kernel.org/netdev/net/c/d31c14e56a4f
+  - [net] sctp: clear control chunk transport if it is being removed
+    https://git.kernel.org/netdev/net/c/c9158ceaf277
 
 You are awesome, thank you!
 -- 
