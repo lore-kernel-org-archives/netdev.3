@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311F832AABA
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEE038AC8C
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786041430; cv=none; b=WQzdbC8n1DjL7Ltcj2vh+MN5fz0QenS8gtFYDf+KPlAlleEMoPVb86IB9pY3xEJVQ6uHU7ydDyI/U/FUoPx6jKx1Cmtgspq0cFnm0lQkZb8Bs/UK6qLjD0Hk90cnUFjcrf2ApMw1SrKABYnYN8Wa7VddhTbB0lHYAEMCq1cMG4U=
+	t=1786041433; cv=none; b=FvRa18bAWuCIc+jrytPq9zbY+iMmVbIPgS7a0ZKoUBzdCo+4TrBn/igXBLRrg0UNpVf7QIod3+K/0JSKzFOlh7GiBGhqO9F84P2xQ2O2r3CDx+Dx/0WVMy63hcuvnNRPTfbzGXhcpOG3+JxNgVArCal79NB9MJURnw5VUInGQWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786041430; c=relaxed/simple;
-	bh=nKi+yQGG4X8SNh9j5I6sj6FhftQkCkMuFc57ieAfxJ8=;
+	s=arc-20240116; t=1786041433; c=relaxed/simple;
+	bh=myoyzkqC8QL5sL+Zxf+wzv7LcDSQEoQNtV35rGJBHm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ws5gU3KMt+LCphNbUQRtG/w8pxPzpYckdBkonWCN0qmxpS+0QUeEZDPNyPb1AFP47ZelEJavRSPP42PmNSaXCJKKLOAud461GegxE7Qbd5WYU9Wl7Ak8pGZmLIc0+8IpFbRYG4HMOYF55Jo00CxESWvhSrUccW2jO2jUf9SNhHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hBmW791L; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=UH8tSHkyad2wo7K2LhvM5d4WBokAOreYPKicGDXBETQU53nyYokbznvVKsZUozznR6ZL9KyWp1o1XRb6+MzqX0K+eIPdOBmnh3mHNPHvu8Hp43OQVyLHBasXa/+NxcmghdV7eWiPLDPPHW+gk1dTctErw4cNBgpVsA9QOvAdcXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXO25lmb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hBmW791L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231D91F000E9;
-	Thu,  6 Aug 2026 18:37:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXO25lmb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05F21F00A3A;
+	Thu,  6 Aug 2026 18:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786041423;
-	bh=CnhGS3BrNb0/ghDK+6g25kaQq2VEHr155B30XJE1rZY=;
+	s=k20260515; t=1786041427;
+	bh=zaR4JHv1bKV9s+VwwvyqGdtrYMsfXB8/Yfp9wInQJQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hBmW791Lo6H1eZ1doTkvr3622RiJJchSASYd3qcsg6TRQCkJlOHDGp7zH0ygvOzqQ
-	 6ycq4Z7ryLN1bQEsQpViuHEyH1pB0dn+wPwhgWR218vPh0AkMQDEe8TeA4OJ34sRIz
-	 JGQeZ7Xh5NMg9piMIqKKSYwO0q5nMZUtA1NwD43qfHHzqTp5w13yBc5s3q7pWV5vg/
-	 bF8G8wwllvGC2IkmLI7K8JCgGbpX+JLeEKZ6PDo8los+LbgM/m54f5qBN0LGDN2v5R
-	 jy9oss/7bCRT4zQTaxyeHh6fa/nJS0KkGa7Q+2XIUBC04hXXoy/qkDq0a++Wge5XVh
-	 zU3a1UGkH5Ivg==
+	b=eXO25lmbdoAki1jcLv2aVL3OKyqrCdaIRf4eKARJyAsWO4TUJKOeRO+OnHWklr3hs
+	 2VFZn2l9ZbtIhyqyOh2g/XQnfrbX9HA11GhTWNTZB6/WpXTojFfkYHNrgC+kd/3vTP
+	 sgBacKC1DFGWLYXXANIF9JqDhye4pnJgN6lBpmrj3s9bh7TyM9JXhbRs5TUYHwnsO+
+	 b7zt4TUIUMVEaQ6VgZ9WKOF9GrVyrL2iHxXDrQuR7EnvkdobM4aiIMlrXe2/ZHmnph
+	 Y1IRsLP9n8AFaXwrUHAYHLa2TNNKAK0N6g2pdYEcASQsc1ZnAW9dPTIdI678GrMR02
+	 AgRavjYlD3iNA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: mmc@linux.ibm.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -43,12 +43,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	simon.horman@corigine.com,
 	shaik.abdulla1@ibm.com,
 	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v4 04/14] ibmveth: Refactor buffer pool management for per-queue MQ RX
-Date: Thu,  6 Aug 2026 11:37:02 -0700
-Message-ID: <20260806183702.3175208-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 07/14] ibmveth: Add RX queue register/deregister helpers for MQ
+Date: Thu,  6 Aug 2026 11:37:06 -0700
+Message-ID: <20260806183706.3175447-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <e22471625e6a04bee87f099f467d575bcfd0c2c6.1785457143.git.mmc@linux.ibm.com>
-References: <e22471625e6a04bee87f099f467d575bcfd0c2c6.1785457143.git.mmc@linux.ibm.com>
+In-Reply-To: <e415d7657c48f0848763b9781c7af3d8d3abc276.1785457143.git.mmc@linux.ibm.com>
+References: <e415d7657c48f0848763b9781c7af3d8d3abc276.1785457143.git.mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,337 +60,250 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ibmveth: Refactor buffer pool management for per-queue MQ RX
+ibmveth: Add RX queue register/deregister helpers for MQ
 
-This reworks the five RX buffer pools into per-queue arrays
-(rx_buff_pool[queue][pool]) with new alloc/free helpers, wires those
-helpers into ibmveth_open()/ibmveth_close(), and clones pool geometry from
-queue 0 to queues 1..N.  It also flips the default active flag of the
-64 KiB pool to 0.
+This patch factors the queue-0 control-plane work out of
+ibmveth_open()/ibmveth_close() into ibmveth_register_rx_queues() and
+ibmveth_free_all_queues(), teaches ibmveth_register_logical_lan() to use
+h_register_logical_lan_with_handle() once multi_queue is set, and adds
+adapter->hcall_stats. Runtime behaviour stays single-queue.
 
-A few questions below.
+A few questions about the new open/close teardown pipeline below.
 
 > diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 1007dd95cde02..7a2ed49cad4f1 100644
+> index 131c1a61d9e7e..9d1242dbcb19d 100644
 > --- a/drivers/net/ethernet/ibm/ibmveth.c
 > +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> @@ -625,6 +625,145 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
->  	}
+
+[ ... ]
+
+> @@ -1182,14 +1201,89 @@ static int ibmveth_register_logical_lan(struct ibmveth_adapter *adapter,
+>  	return rc;
 >  }
 >  
 > +/**
-> + * ibmveth_alloc_queue_buffer_pools - Allocate buffer pools for a single queue
+> + * ibmveth_free_all_queues - Free all RX queues at once
 > + * @adapter: ibmveth adapter structure
-> + * @queue: queue index
 > + *
-> + * Allocates all active buffer pools for the specified queue.
-> + * Pool metadata must be initialized before calling this function.
+> + * Uses H_FREE_LOGICAL_LAN to free all queues in one hypercall.
+> + * Used during interface close and registration error cleanup.
 > + *
-> + * Return: 0 on success, negative error code on failure
+> + * Clears queue handles only; queue_irq[] is released by
+> + * ibmveth_cleanup_rx_interrupts().
 > + */
-> +static int ibmveth_alloc_queue_buffer_pools(struct ibmveth_adapter *adapter,
-> +					    int queue)
+> +static void ibmveth_free_all_queues(struct ibmveth_adapter *adapter)
 > +{
-> +	struct net_device *netdev = adapter->netdev;
+> +	unsigned long lpar_rc;
 > +	int i;
 > +
-> +	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
-> +		struct ibmveth_buff_pool *bpool =
-> +			&adapter->rx_buff_pool[queue][i];
+> +	netdev_dbg(adapter->netdev, "freeing all RX queues at once\n");
 > +
-> +		if (!bpool->active)
-> +			continue;
+> +	do {
+> +		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> +		adapter->hcall_stats.free_lan++;
+> +	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
 > +
-> +		if (ibmveth_alloc_buffer_pool(bpool)) {
-> +			netdev_err(netdev,
-> +				   "pool %d/%d alloc failed (size=%u count=%u)\n",
-> +				   i, queue,
-> +				   bpool->buff_size,
-> +				   bpool->size);
-> +			bpool->active = 0;
-> +
-> +			/* Free pools allocated so far for this queue */
-> +			while (--i >= 0) {
-> +				struct ibmveth_buff_pool *fpool =
-> +					&adapter->rx_buff_pool[queue][i];
-> +
-> +				if (fpool->active)
-> +					ibmveth_free_buffer_pool(adapter,
-> +								 fpool);
-> +			}
-
-[Severity: Low]
-
-Is the free predicate here meant to differ from the one used by the sibling
-helper added in the same patch?
-
-This unwind path keys off fpool->active, while
-ibmveth_free_queue_buffer_pools() deliberately frees by allocation
-presence:
-
-	if (pool->free_map || pool->dma_addr || pool->skbuff)
-		ibmveth_free_buffer_pool(adapter, pool);
-
-and the changelog states "free paths release by real allocations
-(free_map/dma_addr/skbuff), not only pool->active".
-
-So on the queue that fails, a pool holding allocations with active == 0 is
-never released, which is exactly the case the allocation-based predicate
-was added for.  Since a failing ndo_open means ibmveth_close() is never
-called, would those free_map/dma_addr/skbuff arrays be leaked?
-
-ibmveth_free_buffer_pool() already NULLs all three pointers and is
-idempotent, so could the unwind just call ibmveth_free_queue_buffer_pools()
-on the same queue (or use the same predicate)?  The same helper is reused
-by the incremental resize path later in the series, where pools can hold
-memory while active is clear.
-
-> +			return -ENOMEM;
-> +		}
+> +	if (lpar_rc != H_SUCCESS) {
+> +		netdev_err(adapter->netdev,
+> +			   "h_free_logical_lan failed: %ld\n", lpar_rc);
 > +	}
 > +
-> +	return 0;
+> +	for (i = 0; i < adapter->num_rx_queues; i++)
+> +		adapter->queue_handle[i] = 0;
 > +}
-> +
-> +/**
-> + * ibmveth_free_queue_buffer_pools - Free buffer pools for a single queue
-> + * @adapter: ibmveth adapter structure
-> + * @queue: queue index
-> + *
-> + * Frees all active buffer pools for the specified queue.
-       ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 [Severity: Low]
+Where is the firmware contract for this documented?  The helper issues one
+adapter-level h_free_logical_lan() and then clears queue_handle[] for all
+num_rx_queues entries, which assumes that the single hcall also
+deregisters the subordinate queues that later patches register with
+H_REG_LOGICAL_LAN_QUEUE.
 
-The kernel-doc summary says "all active buffer pools", but the body
-intentionally ignores the active flag and frees on allocation presence, and
-the in-body comment says the opposite of the summary.  Could the summary be
-reworded to say pools that have allocations?  Later MQ patches reuse this
-helper and depend on that distinction.
+The header already provides a per-queue wrapper that this path never uses:
 
-> + */
-> +static void ibmveth_free_queue_buffer_pools(struct ibmveth_adapter *adapter,
-> +					    int queue)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
-> +		struct ibmveth_buff_pool *pool =
-> +			&adapter->rx_buff_pool[queue][i];
-> +
-> +		/* Free pool if it has allocated memory, regardless of
-> +		 * active flag. Pools may have memory allocated but not
-> +		 * marked active during queue scale-up, so we must check
-> +		 * for actual allocations.
-> +		 */
-> +		if (pool->free_map || pool->dma_addr || pool->skbuff)
-> +			ibmveth_free_buffer_pool(adapter, pool);
-> +	}
-> +}
-> +
+  static inline long h_free_logical_lan_queue(unsigned long unit_address,
+					      unsigned long queue_handle)
+
+The assumption cannot be exercised at this commit because multi_queue is
+still 0, and the helper is unchanged at the end of the series, so nothing
+in the series validates it.  The changelog justifies the new ordering with
+"PHYP cannot retain a registered LAN while its DMA-backed RX pools are
+released"; if H_FREE_LOGICAL_LAN does not release subordinate queue
+registrations, then ibmveth_free_buffer_pools() and
+ibmveth_cleanup_rx_resources() would unmap memory PHYP still owns.
+
+Could the PAPR reference for the subordinate-queue semantics be stated in
+the kerneldoc or the changelog before the MQ enablement patch relies on it?
 
 [ ... ]
 
-> +static int
-> +ibmveth_alloc_buffer_pools(struct ibmveth_adapter *adapter)
-> +{
-> +	struct net_device *netdev = adapter->netdev;
-> +	int i, q, rc;
-> +
-> +	/* Initialize pool metadata for queues 1-15 from queue 0 settings */
-                                            ^^^^^^^^^^
-
-[Severity: Low]
-
-IBMVETH_MAX_RX_QUEUES is 1U at this commit, so queues 1-15 do not exist yet
-and this loop body cannot run.  Should the comment say "queues 1..N" until
-the bound is raised later in the series?
-
-> +	for (q = 1; q < adapter->num_rx_queues; q++) {
-> +		for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
-> +			struct ibmveth_buff_pool *src =
-> +				&adapter->rx_buff_pool[0][i];
-> +			struct ibmveth_buff_pool *dst =
-> +				&adapter->rx_buff_pool[q][i];
-> +
-> +			dst->size = src->size;
-> +			dst->index = src->index;
-> +			dst->buff_size = src->buff_size;
-> +			dst->threshold = src->threshold;
-> +			dst->active = src->active;
-> +		}
-> +	}
-
-[Severity: Low]
-
-This turns the per-pool sysfs knobs into a per-queue template.  Is that
-intended to stay undocumented?
-
-Only queue 0 gets sysfs objects, in ibmveth_probe():
-
-	struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
-	...
-	error = kobject_init_and_add(kobj, &ktype_veth_pool, &dev->dev.kobj,
-				     "pool%d", i);
-
-and veth_pool_show()/veth_pool_store() read and write that single instance.
-After this change the queue-0 values are cloned above and each queue
-allocates its own copy, so writing num = 4096 to one pool multiplies the
-real allocation by adapter->num_rx_queues while sysfs still reports the
-single-queue value.
-
-The multiplier is 1 everywhere in this series (IBMVETH_DEFAULT_RX_QUEUES is
-1), so nothing changes today.  Should these knobs stay adapter-wide (counts
-divided across queues), gain per-queue nodes, or should the multiplier be
-documented?
-
-> +
-> +	/* Allocate actual buffers for all queues */
-> +	for (q = 0; q < adapter->num_rx_queues; q++) {
-> +		rc = ibmveth_alloc_queue_buffer_pools(adapter, q);
-> +		if (rc) {
-> +			/* Free pools for all previous queues */
-> +			while (--q >= 0)
-> +				ibmveth_free_queue_buffer_pools(adapter, q);
-> +			return rc;
-> +		}
-> +	}
-> +
-> +	netdev_dbg(netdev, "allocated buffer pools for %d queue(s)\n",
-> +		   adapter->num_rx_queues);
-> +	return 0;
-> +}
-> +
-
-[ ... ]
-
-> @@ -927,14 +1055,10 @@ static int ibmveth_close(struct net_device *netdev)
+> @@ -1252,10 +1332,9 @@ static int ibmveth_open(struct net_device *netdev)
 >  
->  	ibmveth_update_rx_no_buffer(adapter);
->  
-> +	ibmveth_free_buffer_pools(adapter);
+>  out_cleanup_rx_interrupts:
+>  	ibmveth_cleanup_rx_interrupts(adapter);
+> -out_unregister_lan:
+> -	do {
+> -		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> -	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+> +out_unregister_queues:
+> +	ibmveth_free_all_queues(adapter);
+> +out_free_buffer_pools:
+>  	ibmveth_free_buffer_pools(adapter);
+>  out_free_queue_mem:
 >  	ibmveth_cleanup_rx_resources(adapter);
->  	ibmveth_free_filter_list(adapter);
->  
-> -	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-> -		if (adapter->rx_buff_pool[0][i].active)
-> -			ibmveth_free_buffer_pool(adapter,
-> -						 &adapter->rx_buff_pool[0][i]);
-> -
-
-[Severity: Low]
-
-The teardown order changed here, which the changelog does not mention (it
-only says the helpers are wired into open()/close()).
-
-Baseline:
-
-	ibmveth_update_rx_no_buffer()
-	ibmveth_cleanup_rx_resources()
-	ibmveth_free_filter_list()
-	free active pools
-
-New:
-
-	ibmveth_update_rx_no_buffer()
-	ibmveth_free_buffer_pools()
-	ibmveth_cleanup_rx_resources()
-	ibmveth_free_filter_list()
-
-h_free_logical_lan(), napi_disable() and free_irq() have all run by this
-point, so neither PHYP nor NAPI still references the pool buffers or the RX
-queue, and the swap looks safe.  Could the reorder be called out in the
-changelog, since a future per-queue drain may need the RX completion queue
-still present while pools are released?
-
->  	for (i = 0; i < netdev->real_num_tx_queues; i++)
->  		ibmveth_free_tx_ltb(adapter, i);
->  
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
-> index 8eaa3942fc40b..abcd4054c67e2 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.h
-> +++ b/drivers/net/ethernet/ibm/ibmveth.h
-> @@ -265,7 +265,7 @@ static inline long h_illan_attributes(unsigned long unit_address,
->  static int pool_size[] = { 512, 1024 * 2, 1024 * 16, 1024 * 32, 1024 * 64 };
->  static int pool_count[] = { 256, 512, 256, 256, 256 };
->  static int pool_count_cmo[] = { 256, 512, 256, 256, 64 };
-> -static int pool_active[] = { 1, 1, 0, 0, 1};
-> +static int pool_active[] = { 1, 1, 0, 0, 0};
-                                          ^^^
 
 [Severity: High]
+This isn't a bug introduced by this patch, but should the unwind here leave
+state that a later ibmveth_close() can walk again?
 
-Does this drop large-receive support for existing single-queue users?
+ibmveth_set_csum_offload(), ibmveth_set_tso() and ibmveth_change_mtu() call
+ibmveth_close()/ibmveth_open() directly instead of dev_close()/dev_open(),
+so when the re-open fails the error is only returned as an errno while
+IFF_UP and netif_running() stay set:
 
-Pools 2 (16 KiB) and 3 (32 KiB) are already inactive by default, so with
-the 64 KiB pool off the largest buffer ever posted at MTU 1500 becomes
-2048 bytes.  ibmveth_probe() seeds each pool from this array:
+	if (restart)
+		rc2 = ibmveth_open(dev);
 
-	ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
-				 pool_count[i], pool_size[i], pool_active[i]);
+	return rc1 ? rc1 : rc2;
 
-and the new helper skips inactive pools, so nothing larger is handed to
-PHYP:
+After that failed open, every RX resource is freed (buffer_list_addr[] is
+NULLed by ibmveth_cleanup_rx_resources()), NAPI is left disabled, and
+queue_irq[0] is deliberately kept populated.  The next ndo_stop, for
+example retrying the same ethtool command or an "ip link set dev X down",
+re-enters ibmveth_close() -> ibmveth_cleanup_rx_interrupts(), which does:
 
-	if (!bpool->active)
-		continue;
+	for (i = 0; i < adapter->num_rx_queues; i++)
+		napi_disable(&adapter->napi[i]);
 
-ibmveth_poll() does receive hypervisor-aggregated frames longer than the
-MTU:
-
-	if ((length > netdev->mtu + ETH_HLEN) || lrg_pkt ||
-	    iph_check == 0xffff) {
-		ibmveth_rx_mss_helper(skb, mss, lrg_pkt);
-		adapter->rx_large_packets++;
+	for (i = 0; i < adapter->num_rx_queues; i++) {
+		if (adapter->queue_irq[i])
+			free_irq(adapter->queue_irq[i], &adapter->napi[i]);
 	}
 
-Those arrive as single non-scatter buffers, and TSO/large-send is enabled
-by default in ibmveth_probe() when firmware reports
-IBMVETH_ILLAN_LRG_SND_SUPPORT.  With no buffer larger than 2 KiB posted,
-are such frames simply dropped by PHYP and counted in the no-buffer counter
-read by ibmveth_update_rx_no_buffer()?
+Can the second napi_disable() ever return?  napi_disable_locked() leaves
+NAPIF_STATE_SCHED|NAPIF_STATE_NPSVC set, and the second call waits in
+usleep_range() for bits that no poll will clear, with rtnl held by the
+ndo_stop caller.  The free_irq() that follows also refers to an IRQ that is
+no longer requested.
 
-The changelog says:
+If it did get past those, ibmveth_update_rx_no_buffer() would dereference
+the now-NULL buffer_list_addr[0]:
 
-    "MTU changes activate it when required; leaving it enabled would pin
-    about 16 MiB per RX queue in MQ mode."
+	__be64 *p = adapter->buffer_list_addr[0] + 4096 - 8;
 
-Is the first half accurate?  ibmveth_change_mtu() activates pools only up
-to the first pool whose buff_size covers the new MTU:
+and ibmveth_free_all_queues() would issue H_FREE_LOGICAL_LAN for a LAN that
+is not registered.
 
-	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
-		adapter->rx_buff_pool[0][i].active = 1;
-		if (new_mtu_oh <= adapter->rx_buff_pool[0][i].buff_size) {
-			...
-			return 0;
-		}
-	}
+The baseline close() already had an unconditional napi_disable(), so the
+hang predates this patch, but this patch centralizes and extends the
+unconditional teardown (now also free_all_queues() plus the NULL-able
+buffer_list_addr[0] read) without an "already torn down" guard, and the
+same structure survives to the end of the series.  Would a state check at
+the top of ibmveth_close(), or switching those callers to
+dev_close()/dev_open(), be preferable?
 
-At MTU 1500 that stops at the 2 KiB pool, so the 64 KiB pool is never
-re-enabled; ibmveth_set_tso() does not touch pool->active either.  Recovery
-then requires a manual write to pool4/active in sysfs.
-
-The second half describes MQ, but IBMVETH_DEFAULT_RX_QUEUES is 1 both at
-this commit and at the end of the series (a3781f4ae789 still has
-pool_active[] = { 1, 1, 0, 0, 0}), so the only configurations affected are
-today's single-queue ones.  Would it be better to keep the default at 1 and
-scale the 64 KiB count (or deactivate it) when RX queues are actually
-scaled up?
-
-Note also that commit cd7c7ec3687986 ("ibmveth: change rx buffer default
-allocation for CMO") enabled this pool on purpose and added
-pool_count_cmo[] = { 256, 512, 256, 256, 64 } specifically to reduce the
-64 KiB count under CMO, which suggests the default was deliberate.
-
-As a side effect, ibmveth_get_desired_dma() sums only active pools:
-
-	if (adapter->rx_buff_pool[0][i].active)
-		ret += adapter->rx_buff_pool[0][i].size *
-		       IOMMU_PAGE_ALIGN(adapter->rx_buff_pool[0][i].buff_size,
-					tbl);
-
-so does the CMO entitlement the driver requests shrink silently as well?
-
+> @@ -1268,7 +1347,6 @@ static int ibmveth_open(struct net_device *netdev)
+>  static int ibmveth_close(struct net_device *netdev)
+>  {
+>  	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+> -	long lpar_rc;
 >  
->  #define IBM_VETH_INVALID_MAP ((u16)0xffff)
->
+>  	netdev_dbg(netdev, "close starting\n");
+>  
+> @@ -1277,18 +1355,8 @@ static int ibmveth_close(struct net_device *netdev)
+>  	/* PHYP mask + napi_disable + free_irq live in cleanup_rx_interrupts */
+>  	ibmveth_free_tx_resources(adapter);
+>  	ibmveth_cleanup_rx_interrupts(adapter);
+
+[Severity: Medium]
+Does the PHYP mask taken by ibmveth_cleanup_rx_interrupts() actually stay
+in effect until free_irq()?
+
+The helper masks queue 0 and calls synchronize_irq() before napi_disable():
+
+	ibmveth_disable_irq(adapter, i);
+	synchronize_irq(adapter->queue_irq[i]);
+	...
+	for (i = 0; i < adapter->num_rx_queues; i++)
+		napi_disable(&adapter->napi[i]);
+
+But a poll that is already in flight unmasks it again on completion, with
+no coordination against teardown:
+
+ibmveth_poll()
+	if (!napi_complete_done(napi, frames_processed))
+		goto out;
+
+	/* We think we are done - reenable interrupts, ... */
+	lpar_rc = ibmveth_enable_irq(adapter, 0);
+
+So napi_disable() can return with the source unmasked.  In the window
+before free_irq(), an RX interrupt is then delivered and
+ibmveth_interrupt() -> ibmveth_schedule_rx_queue() sees napi_schedule_prep()
+fail and returns IRQ_HANDLED without masking, since masking only happens on
+the napi_schedule_prep() success branch.  Can a VIO source with pending RX
+re-assert repeatedly until free_irq() shuts the line down, and can
+ibmveth_free_all_queues() then issue H_FREE_LOGICAL_LAN while the source is
+still unmasked?
+
+The kerneldoc in cleanup_rx_interrupts() states "Mask PHYP before
+napi_disable so ibmveth_interrupt cannot return IRQ_HANDLED without
+masking", which does not seem to hold when the poll itself is the entity
+that unmasks.  The pre-series code did napi_disable() first, then
+h_vio_signal(VIO_IRQ_DISABLE), then free_irq(); this patch propagates the
+new ordering into the open-failure unwind as well and places
+ibmveth_free_all_queues() behind it, and ibmveth_poll() still unmasks
+unconditionally at the end of the series.
+
+> -
+> -	do {
+> -		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> -	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+> -
+> -	if (lpar_rc != H_SUCCESS) {
+> -		netdev_err(netdev, "h_free_logical_lan failed with %lx, "
+> -			   "continuing with close\n", lpar_rc);
+> -	}
+> -
+>  	ibmveth_update_rx_no_buffer(adapter);
+> -
+> +	ibmveth_free_all_queues(adapter);
+
+[Severity: Low]
+Was moving ibmveth_update_rx_no_buffer() ahead of the H_FREE_LOGICAL_LAN
+intentional?
+
+Previously the counter was read after h_free_logical_lan() returned, so the
+hypervisor was no longer writing it.  ibmveth_update_rx_no_buffer() reads
+the last 8 bytes of the DMA-mapped buffer_list page that PHYP updates:
+
+	__be64 *p = adapter->buffer_list_addr[0] + 4096 - 8;
+
+	adapter->rx_no_buffer = be64_to_cpup(p);
+
+At the new call site the LAN is still registered, so frames can still be
+dropped and counted after the snapshot, and those drops are lost from the
+rx_no_buffer value reported by ethtool -S.
+
+The 7-step close pipeline in the changelog does not mention
+ibmveth_update_rx_no_buffer() at all:
+
+  ibmveth_close():
+
+    1. netif_tx_stop_all_queues()
+    2. ibmveth_free_tx_resources()
+    3. ibmveth_cleanup_rx_interrupts() - mask PHYP, napi_disable, free_irq
+    4. ibmveth_free_all_queues()       - H_FREE_LOGICAL_LAN
+    5. ibmveth_free_buffer_pools()
+    6. ibmveth_cleanup_rx_resources()
+    7. ibmveth_free_filter_list()
+
+Could the step list be updated to include it and to say where it belongs
+relative to H_FREE_LOGICAL_LAN?  The ordering is unchanged through the end
+of the series.
+
+>  	ibmveth_free_buffer_pools(adapter);
+>  	ibmveth_cleanup_rx_resources(adapter);
+>  	ibmveth_free_filter_list(adapter);
+
+[ ... ]
