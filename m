@@ -1,74 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B97C494832;
-	Thu,  6 Aug 2026 19:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F002490C13
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 20:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786046134; cv=none; b=sZflqQQA1qffv0uqPYXAguuFesA2/timFHdsgytCWFV2xNrxPg+aUIWRLy760ktRqpGU2Y9tZeMCadsmjojpaWDWmCg9pvszYb7rmWDV3YtFPZi7Z5QUJWIhx4lvlxRnEYPqc3oUi8X5MnG3yfia4R2ybIbU6mWU4fqwZhAEzJs=
+	t=1786046665; cv=none; b=eYWTntHJADTogmJLysGvg0bu01xHqnUWZfy+X7tlp0bUD6tAxZP3sKzDA2vYJsZRglJnuKqVdD4dAazovdhs5xIk6frnYcnOUE8GIrUujpMNEYKKHKJ1jumEUY/6IFLkcw+azJobcknGyR7LtdsFoIgluV/IysRoiNnoxpa26SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786046134; c=relaxed/simple;
-	bh=9xXFxWBZhtBBjmvdni477OdAS4SuKxy9UV+7qr+hAAc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=f6EuCtVlOAF6+RhPA7PCnF2s7aQviaLCZ5yeEd3ZjZFRQHrGbgB5gMubW4j4WKYrLtG/wazSAVaga1pXcmzuWGfpIgPRTnCEjJurJ3uAf3Y7sr1n18ZlZaqNDFbzP5eAxTSbhm/F/4yejpRhvJhdkw0WCqcbqBFLJmuLs5EA4YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FFPp/0/+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786046665; c=relaxed/simple;
+	bh=vgNZfjOyt5LhGJHgSSZNxJ4rnZpOUM3mLpsAKxDpIvI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sM1KC7vv3mLk34qjfLKd9u5X9lUCKiKnALKz55N+4mAcAFzlCuArz0qlyAylsRyv4n7cgjQ9QUfv/PITVnvDoDrS2/RUj1WUuoe7BD1QynR1m1umegnAJci1USKAZiWqM+2k+aRn0h9c4h8ysaLI0y81Vt6TO/NdMgSvO7OTNVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UH9Hj2TG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FFPp/0/+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18971F000E9;
-	Thu,  6 Aug 2026 19:55:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UH9Hj2TG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610C01F0155E
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 20:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786046132;
-	bh=WWEZqZQ6JDzY6qsRYwTpGP3OBrrR+iSWUun0CDpR9GE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=FFPp/0/+oUAg7x549IYw+p9c5EP3vshAAshXGS7tctrT3K3bgKtumm1gwLM/AlpwS
-	 SZ7wcu7GaNapgFB2s8ftN/Y953wlJPmUAcXwJmz4N5cNP8aNlogGpirA63i6f7XAZd
-	 37bUGWOn9YkB7rlntNEWjvKrgIMqxwNPoLpFO/A04dclw5rFw0SQNWgTvYs9pPEtRH
-	 s0EmjBAmjJQ3KYdv045Wy2ZsgcAt6ieFwPwiXvZjFUGrDRID5GUYGbZ/zww8InRtEe
-	 ykWBmcZCz18g7Al7W9XK10IxYQeLhVQ6lPX7m2FIuSFM3CAeSyPoNAOPtbOTcLagYv
-	 8lHKTwQNJMRGg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1991F3809A29;
-	Thu,  6 Aug 2026 19:54:53 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786046657;
+	bh=S+ivQOtAjzR+9YUNezgrawqw4+W1vmKjk85MTyzBXtY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=UH9Hj2TGitUSHikCK6jXbcLfxQ1u1h74Sk3gLGQIFH8jxhd/KqgKepHMKony5Tlb7
+	 1i7uRMo5gRqnPvgEEiT7KddxBtNsYm22tTwnDcT5BR46hoUsuzF9PwAe3JnbGVr86n
+	 65aM4XCSKgmmISw/E/SULRjJ0/3y7FhZ0WZn/TKxucA4PpNeottkj4ONPQ7QOAm4JW
+	 3uYr2bvMiXYV7wtvQVvV7BRrNe5OKNIu7KpIPZ/5wb7z1u14AVyTDABUQGs64QaQYO
+	 CRoK+wRG0rVhNuIe4ERGxLMhnJ6712dT8VVhNeiu8nT+ubvEjx3XxXI+sm/Z7HuZNW
+	 hRfJbWRBgDWgg==
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92f03daaa97so158356385a.2
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 13:04:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rrze+ClHI16PpNjcsSQ25iMhdKRHARHgYsQXKn33j5+FQslGr7lgtCUZ2R/64mIAOl7OPPHG7c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/5OCcdwN2YG8o5BKq3vd7fMsuvjKH/zapyr8sFMlox+3y+A8E
+	UJ8C8k54FT4aYiLDr8swpBIwsbCxVaf49VMhr2EHU3AJbKLBW+V52XPWUUo8xK9ILQBArqfJVyR
+	TLxnzJoJPLJy77R9naSNzcpL5GNlmVx4=
+X-Received: by 2002:a05:620a:a1c7:b0:92e:fc42:2c1d with SMTP id
+ af79cd13be357-936490336e2mr1654159585a.20.1786046656402; Thu, 06 Aug 2026
+ 13:04:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] wireless-next-2026-08-06
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178604609190.1449574.17126966400520817454.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 19:54:51 +0000
-References: <20260806121304.190084-3-johannes@sipsolutions.net>
-In-Reply-To: <20260806121304.190084-3-johannes@sipsolutions.net>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <20260804164652.296919-1-mahe.tardy@gmail.com> <20260804164652.296919-3-mahe.tardy@gmail.com>
+ <CAPhsuW7=6Wy31ZKqUiwOOPJA7-39y_DtJXBO8BFj+OUfgnzRWg@mail.gmail.com> <anTCmv1esr3CWfSf@gmail.com>
+In-Reply-To: <anTCmv1esr3CWfSf@gmail.com>
+From: Song Liu <song@kernel.org>
+Date: Thu, 6 Aug 2026 13:04:04 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW5iobzRZPukVSRH8XNGwKHjvzog4mZyGvv+ddr0-8_4vA@mail.gmail.com>
+X-Gm-Features: AUfX_mxU8Y3D8oTLXxheJVC383QcQaQRagZNf03urIPY9sqCvDJE691vlDTOGY4
+Message-ID: <CAPhsuW5iobzRZPukVSRH8XNGwKHjvzog4mZyGvv+ddr0-8_4vA@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v3 2/5] bpf: Add ksock kfuncs
+To: Mahe Tardy <mahe.tardy@gmail.com>
+Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf@vger.kernel.org, andrew+netdev@lunn.ch, 
+	andrii@kernel.org, ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, 
+	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com, 
+	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev, 
+	pabeni@redhat.com, netdev@vger.kernel.org, sdf.kernel@gmail.com, 
+	ameryhung@gmail.com, kuniyu@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Thu, Aug 6, 2026 at 10:21=E2=80=AFAM Mahe Tardy <mahe.tardy@gmail.com> w=
+rote:
+>
+> On Tue, Aug 04, 2026 at 09:55:44PM -0700, Song Liu wrote:
+> > On Tue, Aug 4, 2026 at 9:47=E2=80=AFAM Mahe Tardy <mahe.tardy@gmail.com=
+> wrote:
+> > [...]
+> > > +__bpf_kfunc int bpf_ksock_send(struct bpf_ksock *ks, const void *dat=
+a,
+> > > +                              u32 data__sz)
+> > > +{
+> > > +       struct msghdr msg =3D {
+> > > +               .msg_flags =3D MSG_DONTWAIT,
+> > > +       };
+> > > +       struct kvec iov =3D {
+> > > +               .iov_base =3D (void *)data,
+> > > +               .iov_len =3D data__sz,
+> > > +       };
+> > > +       int ret;
+> > > +
+> > > +       if (!bpf_ksock_has_user_task_context())
+> > > +               return -EOPNOTSUPP;
+> > > +
+> > > +       /* Early check for UDP. Exact limits enforced by kernel_sendm=
+sg(). */
+> > > +       if (data__sz > IP_MAX_MTU)
+> > > +               return -EMSGSIZE;
+> > > +
+> > > +       if (current->in_bpf_ksock_send)
+> > > +               return -EBUSY;
+> >
+> > Returning EBUSY is not ideal. Can we avoid recursion by disallowing
+> > calling bpf_ksock_send from certain hooks? You can find examples
+> > check_kfunc_call() or check_special_kfunc(). This probably means
+> > we need to grow special_kfunc_list, which is not ideal.
+>
+> This is actually a really nice feedback. I didn't know we could add a
+> filter per attach BTF ID. This resolves the issue that the send kfunc
+> calls security_socket_sendmsg so we can remove all the recursion
+> protection and struggles, it's rejected at verifier time.
+>
+> The filter now looks like this, I'd send this in the next version:
+>
+> BTF_ID_LIST_SINGLE(bpf_lsm_socket_sendmsg_id, func, bpf_lsm_socket_sendms=
+g)
+>
+> static int bpf_ksock_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_=
+id)
+> {
+>         if (!btf_id_set8_contains(&ksock_kfunc_btf_ids, kfunc_id))
+>                 return 0;
+>
+>         if (prog->type =3D=3D BPF_PROG_TYPE_SYSCALL)
+>                 return 0;
+>
+>         if (prog->type =3D=3D BPF_PROG_TYPE_LSM &&
+>             prog->aux->attach_btf_id !=3D bpf_lsm_socket_sendmsg_id[0])
+>                 return 0;
+>
+>         return -EACCES;
+> }
+>
+> I don't think I need to touch anything else. I'll adjust the tests
+> according to this. Thanks Song.
 
-This pull request was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Ah, right, filter is enough for this case.
 
-On Thu,  6 Aug 2026 14:12:35 +0200 you wrote:
-> Hi,
-> 
-> Last code for this cycle :-)
-> 
-> Nothing really to say - beyond the tag it's mostly
-> small cleanups and fixes here and there.
-> 
-> [...]
-
-Here is the summary with links:
-  - [GIT,PULL] wireless-next-2026-08-06
-    https://git.kernel.org/netdev/net-next/c/4fa4977a0d90
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks for digging deep into this.
+Song
