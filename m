@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531BD3515D5
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CED387363
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786041425; cv=none; b=tOvsvswuNLou3dB/yj+WdK9pMXbDbU/RgTz/gROusX4oTpVnEit8WwbqpWNN2fl5BxpjcDzWIpZc+W1aJSwFqWD13Shn6riGQ6K8imJ0SN/45QiQuhu8Tajk7x2Khdy1YJKWwAC4DbKq1WX0IWin7fMIfPn4j9TzOjOC78KMWHw=
+	t=1786041429; cv=none; b=GDVAIh+iLjd2HDdNmCNVfgZfleIIMnFLMBvibp3eJh/kMpp/b1W4gB70R2LxdA/f8Ea8A/CLNP3+KmHtEQCl3nprk75xlOxuhyhM9LXZ3M0MHOPCHFFypUc6NlRjZDOTdV/QeongCYFyYjt5Qwg8h64CYWbiprPuV6V24R5aIIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786041425; c=relaxed/simple;
-	bh=mgZAVhkDrfrF7qc7YZj1qyQn2LSj69vkQtEg4HBHa90=;
+	s=arc-20240116; t=1786041429; c=relaxed/simple;
+	bh=Xfh4U01wQ5+s2d1/DmRIKl5ixhPK/cYmHW72RLoPNoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZoQLUG+o3eDZsez7qRDaTIO+YYlw4NYF5nejx8C/8B1k/GSjw7+foeVPH2QOVKEWAzKYG9OklKQyMbjkNM24kICSqYxSExiggCvEMpX+wIIg+A/uNQwg3A507rIGJ3uYN2RthTbwEdhM99Hk9NHfyNq2whshrXPq0VUq1mGx9sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxWirj8v; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=HvDGSg1ZSyqDQ0Cc/B6ZPu1LntgKG0R1rXCpAonyh43u9EKE+Bj6S1kMY7xzSn9g3mHMhoh1PlB0A4cDsvW4A4M5lUoBLdLfFyedb6Dw8utsC00DXQFP+4odDo+8W6ZJQFyTGdLvjxSK/xwMcdGtmIbXPSMuSq8o76wvOp2GwE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpJifcHP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxWirj8v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4911F00A3D;
-	Thu,  6 Aug 2026 18:37:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpJifcHP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C431F00A3F;
+	Thu,  6 Aug 2026 18:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786041422;
-	bh=5D+kt9Ji/YpIEH/DJsU9gAW+siSqFCe9WpV0JXtz8gM=;
+	s=k20260515; t=1786041426;
+	bh=95cN4lzTAczWJkREkqD6+UVv867WIgYTfpkjFcU67nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IxWirj8veGuW3/yidWhisUR53I3S5aTzCtKSXD2gxWlfFRMPb29SX78U6uoaZu3w3
-	 zIVThS5O2AIsa9Bk3F/JKwfkB8H6EARnstKRjLDlgkpZSgun05dJuC4urHMwXY/loq
-	 KlM5mhNgm8UBdUecCVQY9CQEGaib+hDLYV+j7uCy86ejL6GJgjBm+5TJcRcGK5VkQL
-	 CX2R+XrASGuKwVxdNLQTJ4qYC12FhrspB/TcpxtBkIEDYnACylYC7IrQrHtp0TLDZt
-	 EDB/nyPR3es/7WkPyrnxgath9VgiIZ96cCEawq800oz7FmQUSSyxwdXA5f7+uTy7B1
-	 qX91gTep5cB6A==
+	b=EpJifcHPXkvekr9Va2mGjT22r9seMbAPoE0p8MdlFYwCXQE9vkuLSiU2nu199w7o3
+	 fu3u63dvRfSHzdOGmyJYfzeM+0Ls4lhJuy2jIDQRzDgqlgSQRifO/2vzf+5e4Wuz3+
+	 MOynoyfmUGTEaPX0i/vmfASfcVxxjKnMuvmikEZEXv5xWD6sa7H7T8v2GSqknBni8z
+	 PcJCmWDaxPlIEX62gR6F7gOZJb2dF+Oc558RWrrGE7EC5kyH1MU7CaX9ftGQqvEOXR
+	 ah/tKCRormQsOlE/Ur0HEbd/ojOJVecX3quYAeopGyt62tiPE2J811HOxSENsk6LvC
+	 zgNX6pCuMuurQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: mmc@linux.ibm.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -43,12 +43,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	simon.horman@corigine.com,
 	shaik.abdulla1@ibm.com,
 	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v4 03/14] ibmveth: Refactor RX resource allocation for MQ RX bring-up
-Date: Thu,  6 Aug 2026 11:37:01 -0700
-Message-ID: <20260806183701.3175123-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 06/14] ibmveth: Refactor TX resource allocation in open/close paths
+Date: Thu,  6 Aug 2026 11:37:05 -0700
+Message-ID: <20260806183705.3175367-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <984697bdc91a3c37f5f24750d7f24fc2d97031fa.1785457143.git.mmc@linux.ibm.com>
-References: <984697bdc91a3c37f5f24750d7f24fc2d97031fa.1785457143.git.mmc@linux.ibm.com>
+In-Reply-To: <f6e2721c3c664f789a72594d64c7b586ef1ce108.1785457143.git.mmc@linux.ibm.com>
+References: <f6e2721c3c664f789a72594d64c7b586ef1ce108.1785457143.git.mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,173 +60,238 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ibmveth: Refactor RX resource allocation for MQ RX bring-up
+ibmveth: Refactor TX resource allocation in open/close paths
 
-This moves the filter list and per-queue RX ring allocation out of
-ibmveth_open() into four new helpers, and wires them into both the
-open error unwind and ibmveth_close().  Runtime behaviour is meant to
-stay single-queue since num_rx_queues is still 1.
+This moves the per-queue TX long term buffer alloc/free loops out of
+ibmveth_open() and ibmveth_close() into ibmveth_alloc_tx_resources() and
+ibmveth_free_tx_resources(), relocates the TX allocation to the end of
+open(), and reworks the open() error unwind labels.
 
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 8e758362cb263..1007dd95cde02 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.c
-> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> @@ -151,6 +151,184 @@ static unsigned int ibmveth_real_max_tx_queues(void)
->  	return min(n_cpu, IBMVETH_MAX_QUEUES);
->  }
->  
-> +/**
-> + * ibmveth_alloc_filter_list - Allocate and map filter list
-> + * @adapter: ibmveth adapter structure
-> + *
-> + * Return: 0 on success, negative error code on failure
-> + */
-> +static int
-> +ibmveth_alloc_filter_list(struct ibmveth_adapter *adapter)
-> +{
-> +	struct device *dev = &adapter->vdev->dev;
-> +	struct net_device *netdev = adapter->netdev;
-> +
-> +	adapter->filter_list_addr = (void *)get_zeroed_page(GFP_KERNEL);
-> +	if (!adapter->filter_list_addr) {
-> +		netdev_err(netdev, "unable to allocate filter pages\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	adapter->filter_list_dma = dma_map_single(dev,
-> +						  adapter->filter_list_addr,
-> +						  4096, DMA_BIDIRECTIONAL);
-> +	if (dma_mapping_error(dev, adapter->filter_list_dma)) {
-> +		netdev_err(netdev, "unable to map filter list pages\n");
-> +		free_page((unsigned long)adapter->filter_list_addr);
-> +		adapter->filter_list_addr = NULL;
-> +		return -ENOMEM;
-> +	}
+A few questions on the changelog and on the new ordering below.
 
 [Severity: Medium]
+The changelog says:
 
-Should this error path also clear adapter->filter_list_dma?  On failure
-dma_map_single() has stored DMA_MAPPING_ERROR, which is ~(dma_addr_t)0 and
-therefore non-zero, and only filter_list_addr is reset here.
+    That also retires a mid-open TX leak where the old index-based
+    while (--i) free could skip successfully allocated LTBs.
 
-The sibling helper added in the same patch does zero the cookie in the
-same situation:
+Is that leak real?  In the parent commit the TX loop re-initializes the
+shared index before allocating anything:
 
-	if (dma_mapping_error(dev, adapter->buffer_list_dma[i])) {
-		...
-		adapter->buffer_list_dma[i] = 0;
-		goto err_cleanup;
+	rc = -ENOMEM;
+	for (i = 0; i < netdev->real_num_tx_queues; i++) {
+		if (ibmveth_allocate_tx_ltb(adapter, i))
+			goto out_free_tx_ltb;
 	}
 
-so the two new helpers appear to disagree on the convention.
+and nothing between that loop and the later gotos (mac_address/rxq_desc
+setup, ibmveth_register_logical_lan(), ibmveth_alloc_buffer_pools(),
+ibmveth_setup_rx_interrupts()) reassigns i.  On every path that reaches
+out_free_tx_ltb, i is either the failing index or real_num_tx_queues, so
+while (--i >= 0) frees exactly what was allocated.  Paths taken before the
+TX loop jump to out_free_filter_list, which is below the TX label.
 
+The new helper also uses the same index-based unwind that the changelog
+calls broken:
+
+err_free_ltbs:
+	while (--i >= 0)
+		ibmveth_free_tx_ltb(adapter, i);
+
+Could this paragraph be dropped or reworded to describe the actual
+motivation (removing the dependence on a shared loop index and matching
+the RX helpers)?  As written it reads like a leak fix that a stable
+maintainer might want to backport, and there is no Fixes: tag.
+
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+> index 664169c4d27a4..131c1a61d9e7e 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.c
+> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> @@ -1077,8 +1077,14 @@ static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
+>  
+>  static void ibmveth_free_tx_ltb(struct ibmveth_adapter *adapter, int idx)
+>  {
+> -	dma_unmap_single(&adapter->vdev->dev, adapter->tx_ltb_dma[idx],
+> -			 adapter->tx_ltb_size, DMA_TO_DEVICE);
+> +	if (!adapter->tx_ltb_ptr[idx])
+> +		return;
 > +
-> +	netdev_dbg(netdev, "filter list @ 0x%p (DMA: 0x%llx)\n",
-> +		   adapter->filter_list_addr,
-> +		   (unsigned long long)adapter->filter_list_dma);
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * ibmveth_free_filter_list - Free filter list resources
-> + * @adapter: ibmveth adapter structure
-> + */
-> +static void
-> +ibmveth_free_filter_list(struct ibmveth_adapter *adapter)
-> +{
-> +	struct device *dev = &adapter->vdev->dev;
-> +
-> +	if (adapter->filter_list_dma) {
-> +		dma_unmap_single(dev, adapter->filter_list_dma, 4096,
-> +				 DMA_BIDIRECTIONAL);
-> +		adapter->filter_list_dma = 0;
+> +	if (adapter->tx_ltb_dma[idx]) {
+> +		dma_unmap_single(&adapter->vdev->dev, adapter->tx_ltb_dma[idx],
+> +				 adapter->tx_ltb_size, DMA_TO_DEVICE);
+> +		adapter->tx_ltb_dma[idx] = 0;
 > +	}
 
-[Severity: Medium]
+[Severity: Low]
+Is the inner test on tx_ltb_dma[idx] wanted here?  It treats DMA address 0
+as a "not mapped" sentinel, and the only architecturally valid check for a
+bad handle is dma_mapping_error() at map time.  If a mapping ever
+legitimately returned IOVA 0, the TCE entry would leak while kfree() below
+still released the buffer.
 
-Can this unmap the DMA_MAPPING_ERROR sentinel?  ibmveth_free_filter_list()
-treats any non-zero filter_list_dma as a live mapping, and the mapping-error
-branch of ibmveth_alloc_filter_list() leaves the sentinel behind.
+On pseries this cannot happen today, since
+arch/powerpc/kernel/iommu.c:iommu_table_reserve_pages() reserves entry 0:
 
-The state looks reachable without dev_close().  ibmveth_set_csum_offload(),
-ibmveth_set_tso(), ibmveth_change_mtu() and veth_pool_store() all call
-ibmveth_close() and then ibmveth_open() directly while netif_running() is
-still true:
+	if (tbl->it_offset == 0)
+		set_bit(0, tbl->it_map);
+
+The test also looks redundant: ibmveth_allocate_tx_ltb() already kfree()s
+the buffer and clears tx_ltb_ptr[idx] on dma_mapping_error(), so
+tx_ltb_ptr[idx] != NULL already implies a valid mapping and the new early
+return covers the stated "safe on an unallocated slot" goal.  Would
+dropping the zero test and relying on the pointer check be simpler?
+
+>  	kfree(adapter->tx_ltb_ptr[idx]);
+>  	adapter->tx_ltb_ptr[idx] = NULL;
+>  }
+
+[ ... ]
+
+> @@ -1184,35 +1226,38 @@ static int ibmveth_open(struct net_device *netdev)
+>  				     rxq_desc.desc,
+>  				     mac_address);
+>  		rc = -ENONET;
+> -		goto out_free_tx_ltb;
+> +		goto out_free_queue_mem;
+>  	}
+>  
+>  	rc = ibmveth_alloc_buffer_pools(adapter);
+>  	if (rc)
+> -		goto out_free_tx_ltb;
+> +		goto out_unregister_lan;
+
+[Severity: Low]
+This changes hypervisor-visible behaviour on an RX error path, which the
+changelog does not mention while stating "there is no MQ RX behaviour
+change here".
+
+In the parent commit an ibmveth_alloc_buffer_pools() failure went to
+out_free_tx_ltb and then to ibmveth_cleanup_rx_resources(), leaving the
+logical LAN registered with PHYP while the RX ring was freed and the
+buffer list unmapped.  With the new label the h_free_logical_lan() loop
+runs first, which is the safer order.
+
+Is this an intentional fix folded into a TX-only refactor?  If so, could
+it be split out with its own changelog text (the next patch in the series
+reorders open() so this path disappears entirely, so the fix becomes hard
+to find later).
+
+>  
+>  	rc = ibmveth_setup_rx_interrupts(adapter);
+> -	if (rc) {
+> -		do {
+> -			lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> -		} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+> -		goto out_free_buffer_pools;
+> -	}
+> +	if (rc)
+> +		goto out_unregister_lan;
+>  
+>  	netdev_dbg(netdev, "initial replenish cycle\n");
+>  	ibmveth_schedule_rx_queue(adapter, 0);
+>  
+> +	rc = ibmveth_alloc_tx_resources(adapter);
+> +	if (rc)
+> +		goto out_cleanup_rx_interrupts;
+> +
+>  	netif_tx_start_all_queues(netdev);
+
+[ ... ]
+
+> @@ -1224,13 +1269,13 @@ static int ibmveth_close(struct net_device *netdev)
+>  {
+>  	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+>  	long lpar_rc;
+> -	int i;
+>  
+>  	netdev_dbg(netdev, "close starting\n");
+>  
+>  	netif_tx_stop_all_queues(netdev);
+>  
+>  	/* PHYP mask + napi_disable + free_irq live in cleanup_rx_interrupts */
+> +	ibmveth_free_tx_resources(adapter);
+>  	ibmveth_cleanup_rx_interrupts(adapter);
+
+[Severity: High]
+Can a transmit already in flight write into the TX LTB after it has been
+unmapped and freed here?
+
+netif_tx_stop_all_queues() only sets __QUEUE_STATE_DRV_XOFF.  It does not
+take __netif_tx_lock and does not wait for an ndo_start_xmit that is
+already running on another CPU (netif_tx_disable() would).  ibmveth_close()
+is also called directly, bypassing dev_close() -> dev_deactivate_many()
+and its synchronize_net() / some_qdisc_is_busy() wait, from:
+
+	ibmveth_set_csum_offload()
+	ibmveth_set_tso()
+	ibmveth_change_mtu()
+	veth_pool_store()
+
+all of which do:
 
 	if (netif_running(dev)) {
 		restart = 1;
 		ibmveth_close(dev);
 	}
+
+So a transmitter that already passed netif_xmit_stopped() can be inside
+ibmveth_start_xmit(), which copies into the LTB with no NULL check and no
+lock:
+
+	memcpy(adapter->tx_ltb_ptr[queue_num], skb->data, skb_headlen(skb));
 	...
-	if (restart)
-		rc2 = ibmveth_open(dev);
+		memcpy(adapter->tx_ltb_ptr[queue_num] + total_bytes,
+		       skb_frag_address_safe(frag), skb_frag_size(frag));
+	...
+	desc.fields.address = adapter->tx_ltb_dma[queue_num];
 
-If that re-open fails at the dma_mapping_error() check in
-ibmveth_alloc_filter_list(), open() returns through the out: label without
-calling ibmveth_free_filter_list(), so the adapter is left with
-filter_list_addr == NULL and filter_list_dma == DMA_MAPPING_ERROR while the
-netdev is still marked running.  A later "ip link set dev ethX down" then
-reaches ndo_stop == ibmveth_close() -> ibmveth_free_filter_list() and unmaps
-that invalid address.
+while ibmveth_free_tx_ltb() concurrently does:
 
-On pseries the dma_iommu path catches this in iommu_free_check(), which emits
-a ratelimited "iommu_free: invalid entry" message and a WARN_ON(1) (a panic
-with panic_on_warn set), so no TCE state is changed, but the backtrace is
-still user triggerable with CAP_NET_ADMIN plus a mapping failure.
+	dma_unmap_single(...);
+	adapter->tx_ltb_dma[idx] = 0;
+	kfree(adapter->tx_ltb_ptr[idx]);
+	adapter->tx_ltb_ptr[idx] = NULL;
 
-Setting adapter->filter_list_dma = 0 in that error branch, matching
-ibmveth_alloc_rx_queues(), would make the guard here reliable.
+That looks like either a write of up to tx_ltb_size bytes into freed heap
+memory, or a NULL dereference on the cleared pointer.
 
-This is still present unchanged at the end of the series (a3781f4ae789), so
-a later patch does not appear to address it.
+A second question on the same move: the DMA unmap now happens before the
+h_free_logical_lan() loop below, so a racing ibmveth_send() can hand PHYP
+a descriptor whose address is 0 or an already unmapped TCE while the
+logical LAN is still registered.  Previously the TX LTBs were freed at the
+very end of close(), after h_free_logical_lan(), free_irq()/napi_disable()
+and the buffer pool teardown, which incidentally left a large gap between
+the XOFF and the free.  Was the inversion intended?
 
-> +
-> +	if (adapter->filter_list_addr) {
-> +		free_page((unsigned long)adapter->filter_list_addr);
-> +		adapter->filter_list_addr = NULL;
-> +	}
-> +}
-> +
+Would keeping ibmveth_free_tx_resources() after the h_free_logical_lan()
+loop, switching to netif_tx_disable(), and/or adding an
 
-[ ... ]
+	if (unlikely(!adapter->tx_ltb_ptr[queue_num]))
 
-> +		adapter->buffer_list_dma[i] =
-> +			dma_map_single(dev, adapter->buffer_list_addr[i],
-> +				       4096, DMA_BIDIRECTIONAL);
-> +		if (dma_mapping_error(dev, adapter->buffer_list_dma[i])) {
-> +			netdev_err(netdev,
-> +				   "unable to map buffer list for queue %d\n",
-> +				   i);
-> +			adapter->buffer_list_dma[i] = 0;
-> +			goto err_cleanup;
-> +		}
-> +
+bail-out in ibmveth_start_xmit() be preferable?  The last one would also
+cover the mirror window that the new open() ordering creates, where the
+LAN is registered and RX interrupts/NAPI are live while tx_ltb_ptr[] is
+still NULL during the sleeping GFP_KERNEL allocation in
+ibmveth_alloc_tx_resources():
 
-[ ... ]
+	ibmveth_schedule_rx_queue(adapter, 0);
 
-> @@ -627,74 +805,34 @@ static int ibmveth_open(struct net_device *netdev)
+	rc = ibmveth_alloc_tx_resources(adapter);
+
+[Severity: Low]
+The comment about PHYP mask, napi_disable and free_irq now sits above
+ibmveth_free_tx_resources() instead of above the
+ibmveth_cleanup_rx_interrupts() call it describes, so it reads as
+documentation of the TX free.  Could it move below the TX free?
+
 >  
-> -	rc = -ENOMEM;
-> -	adapter->buffer_list_addr[0] = (void *)get_zeroed_page(GFP_KERNEL);
-> -	if (!adapter->buffer_list_addr[0]) {
-> -		netdev_err(netdev, "unable to allocate list pages\n");
-> +	rc = ibmveth_alloc_filter_list(adapter);
-> +	if (rc)
->  		goto out;
-> -	}
+>  	do {
 
 [ ... ]
 
-> @@ -753,26 +889,12 @@ static int ibmveth_open(struct net_device *netdev)
-> +	ibmveth_cleanup_rx_resources(adapter);
->  out_free_filter_list:
-> -	free_page((unsigned long)adapter->filter_list_addr);
-> -out_free_buffer_list:
-> -	free_page((unsigned long)adapter->buffer_list_addr[0]);
-> +	ibmveth_free_filter_list(adapter);
->  out:
->  	napi_disable(&adapter->napi[0]);
->  	return rc;
-
-[ ... ]
+> -	for (i = 0; i < netdev->real_num_tx_queues; i++)
+> -		ibmveth_free_tx_ltb(adapter, i);
+> -
+>  	netdev_dbg(netdev, "close complete\n");
+>  
+>  	return 0;
