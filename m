@@ -1,67 +1,81 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4B33E717A
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 08:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80F83F1ABB;
+	Thu,  6 Aug 2026 08:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786004948; cv=none; b=oEAHcYqdsIQwcRNEIJ6BLV1csdzsz+JVu2AI3iUrR8iSSfzt4fBezbPpAJ46OM2RBoJ4cO7Gck1NYAJqfoFLTKW6LjFVTPdhCCfhbOaQLJgWGJ3BDSi/1vTEfZrgNmOQbzkYZuWYHYya96yOZ+raNogqn4LEQtZadFmoI4JyZCs=
+	t=1786004963; cv=none; b=GPtms7MkY/PsHQnBzOs56ke5EwGbcFtMgmZuK9YueQPKRWpF4X9fdgemFt8QEeZY0lFYEyJ7V2z6DdLMcyzUZgGueqIWW2mC+yUlvVsMcPXQSSKzZrtQtplCstHrcOHg1K2DdRu3n+HpZ8fso4zBp4zNHFtMfVpwqZbGJj7r/Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786004948; c=relaxed/simple;
-	bh=QvfRtk7iTMkzOtjozh8twBiWiHdPU8W709dyQm0V1rY=;
+	s=arc-20240116; t=1786004963; c=relaxed/simple;
+	bh=ZfH3IEPFVAlM0yx88rkh4G9nfKDa38UO6TQVVB+tWMI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CDFTElMmvUmyJWe8iFRa4CrZkrT7HmCr5XX5p6Y4xsJr8MlJO+dC/fuS7HMGbVFTsN/x9WPYgW87NxCVWZauN7JCnSBFNWF+thco6DE3s+kEcDjCWkR7sQSmOHJJphWSgFmZs0ha/3fDw5vP1vV0FcZS3FyEoW/BJR1Z5G68n48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nvp6kWpm; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=JcIws8uFOZbwoKexDtNVUwHQEXFNf7m/y5+wqrGyfPDRBokEdL/E0BDXEP9gXO8kshOfLiSXpS5u8MYfrRPEBb7bwN1o5B1yl1eoX7zVACWZv4DjF5Rujups8adQ82UQvXxtYwf01g2llIeqe49S61DtSZzgsNlzLLql+xe6mJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dJOrCGyr; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0V+zflXb; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=yvRPblMU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=v96/eeTB; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nvp6kWpm"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4954aff6088so19042675e9.3
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 01:29:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786004945; x=1786609745; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oNzdd3ks5EfcRNkKIAlrqhz+l0zWLMF0+Ux/V0Mjszc=;
-        b=Nvp6kWpmbXafhcF8hJHCJOrXDGTIsF2L/Luf4nQ6lyfAxEXbu6n3Sxa3D4GuedDAK5
-         UdEEtq8AtxpRuM2Ow5otdeEfY3bIxI3hU7awo/88e7VW3S7Ircon6RzGrAzefCXIenZj
-         UxmuTBE9T/Eh4i5wGDYI5NkVYALX1UCkTozdY6iSRwjNcq6wGJ55X+ZH4RGbjG5EtuD6
-         nfSP9NUhL/a/rbOFLIjb9A6W9KvA4q6rzR9HvRM/u5V5yzyemE5YjlzeECvnZsetH83l
-         zzag8GTW6GepxnQc3BildiyzU3GOYacb3jetNdWavpLbSGKnwMBJk/R1ag3FUKmD+Cch
-         +vfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786004945; x=1786609745;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oNzdd3ks5EfcRNkKIAlrqhz+l0zWLMF0+Ux/V0Mjszc=;
-        b=Rcl1/DQjK66c9uvmXhFdUQF4kaeblKLApw8494hdSbUf+76y8Hzty4c50nKZKjNqnZ
-         tb7YE5EMzgG0vk3SplZevJqx3omaLPVSUupSKW2WJz6wR4QBZVzkIwKrs3NeYk47TMzd
-         rRB60MWMMAFJeobucKZ+mg1eIMI9sgKmNL+w7xVVnbVxNNRCD68Jeo3yhWqv5jmvjRDm
-         PhnMFT+r3uQz4H9xI+Jr4b8fqwgfz57ZyGow/A0KBSIs5sC4ZEguiQ/CMMMLxpsiNybL
-         VhaJBQh/VVj83roMKWrK5c6vPOI8yNzyQBVBzXF7RANgnOeqg/qu7mV0aT3D7vRILODu
-         5SEA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqr01Au+5Y2JJf0nqw9YUmVyuDQn8/iN5RWrhHH+gEjDXFcBsjjy+YxXq1yMOrSDGt7AulHXZI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0n+7UXbDJ7Ym04zOxcLXlSl+tjlhnR3iHAC7dYDb5Ybgs/fDj
-	ivPaLSgcMC/Y6ruq7mt3kbN8YCpUilVqvQjwxWXKG+wu9JgQIFoZqD3z
-X-Gm-Gg: AR+sD127y7qbzGM0to+HHbPJJy7ObmKMbbV6kZUXD9Y9iQeNW0bxCjn3mWuVRie3f9r
-	CpaNPkxyaYw19KAhFJ5oUwQnl3xwJ0qyWvr/o1ksgr0jUpIMk4gda9hWdDYeMyTo1bcUUn0tWK/
-	I6QIovZM4r0I6K3TYZXZWZvGKI/TrX2jfTwxNtvnrI4FHe8Fb6dmiOSJkUsa8prc9b/rFP83MKH
-	h/SEkCeP5U3XSfcwaEYBdMOFKrgMRA2qGV6QaYI/ZWyai2BPIZ325CEyQo9RsEC4cstW6k88KW3
-	7vCP8MPv3AYqf8+kf/ROZfhe9rDl63tI9uoWxB4MZmk9XBwH7oA0W9SxTQSoNSVTOnQJDeociYE
-	JFQvDwdzHq3ZazlnonlZDBD16/NzJOD2nZipQeDIaSt6aRHjmSAS8owHxSuxnll0vO+e3cMxB6R
-	ytSPjj9eXvIVMPfW7NyL5i3cAI8NxQFKD3PPyyJ7sBhU32nhhwQAKQ5CQd6hkK4cKynsj+5QH7v
-	MMCTf+H55tvMiXzbd0J5IXtIBD+1E+kZwmcrKAtF+pHxGiv45GIcokBT0l3XvvTF0zHRo4SDcM=
-X-Received: by 2002:a05:600c:4f4d:b0:493:cc25:9c0e with SMTP id 5b1f17b1804b1-4994e7cb0e8mr172103335e9.14.1786004944521;
-        Thu, 06 Aug 2026 01:29:04 -0700 (PDT)
-Received: from ?IPV6:2001:9e8:f131:1d01:8da1:260c:d732:9394? ([2001:9e8:f131:1d01:8da1:260c:d732:9394])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995421fee8sm40915395e9.7.2026.08.06.01.29.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Aug 2026 01:29:04 -0700 (PDT)
-Message-ID: <f7c3c062-94f9-40d8-8b20-9f03af79456e@gmail.com>
-Date: Thu, 6 Aug 2026 10:29:03 +0200
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dJOrCGyr";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0V+zflXb";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="yvRPblMU";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="v96/eeTB"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A73C33DF3;
+	Thu,  6 Aug 2026 08:29:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786004955; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VxxkrXS63wnZ6XusAODq+UDbiJlzKAHyKEaLpbkaGVk=;
+	b=dJOrCGyr+1HTvGw17PrmNGjAwdlO2VqDiiNUZU8pZuTHClaEb0anto1j4SDh2kYhMMH4rE
+	rSc4VxuJpiOQAXXyA5nGMDsV+LPUjbZ1q/qDeZNqswxIRoUfb3ecQh9dMny7oBtriVYNBb
+	tBElGJfMWLN0LD9xRS4kK+CMajPkCJ4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786004955;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VxxkrXS63wnZ6XusAODq+UDbiJlzKAHyKEaLpbkaGVk=;
+	b=0V+zflXbZN+VOs2CL/WKkB7+b01HBV1sMyVCEBbHTfoTV6vjCWN3wbqofdgZbAz96NUJ31
+	8gbbuE5o/+uuFwDw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=yvRPblMU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="v96/eeTB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1786004951; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VxxkrXS63wnZ6XusAODq+UDbiJlzKAHyKEaLpbkaGVk=;
+	b=yvRPblMUqvKfNOqoh1pb6LQW6iUHZxd+lvNNnCYiQsx1t86dONgufBZGH7DTbINubaRdjv
+	x8a2nltia6erU4M7IBHI/0bB+xozvDTnNqn9NTWw230ARIfazXLIAep7UbwZrgi0sBucx4
+	hILgjUHGICmRFNqCQw52KD9+JHxz8BE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1786004951;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VxxkrXS63wnZ6XusAODq+UDbiJlzKAHyKEaLpbkaGVk=;
+	b=v96/eeTBaGai3ppIbOqzBfcrsuOTwxN/QqLp67bV/2HTK37GAAANooOEuIUJcjJPs4LHMt
+	sfWQou2ZUjsep0Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 52C14779B6;
+	Thu,  6 Aug 2026 08:29:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Dk1gEddFdGoKbgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Thu, 06 Aug 2026 08:29:11 +0000
+Message-ID: <19ecac31-71d6-43f6-9453-52e6b1a04fcd@suse.de>
+Date: Thu, 6 Aug 2026 10:28:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,174 +83,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 3/4] net: pse-pd: realtek-pse-mcu: add I2C
- transport
+Subject: Re: [PATCH] tcp: clarify comment for mdev_us in struct tcp_sock
+To: Ziran Zhang <zhangcoder@yeah.net>, Eric Dumazet <edumazet@google.com>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260805131927.27661-1-zhangcoder@yeah.net>
 Content-Language: en-US
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, daniel@makrotopia.org, bjorn@mork.no,
- sander@svanheule.net
-References: <20260802100114.720594-4-jelonek.jonas@gmail.com>
- <20260806011112.1855541-1-kuba@kernel.org>
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <20260806011112.1855541-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260805131927.27661-1-zhangcoder@yeah.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_TO(0.00)[yeah.net,google.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[yeah.net];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[yeah.net:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid,suse.de:dkim];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Spam-Level: 
+X-Rspamd-Queue-Id: A73C33DF3
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
 
+On 8/5/26 3:19 PM, Ziran Zhang wrote:
+> The existing comment for mdev_us says "medium deviation", but this
+> term is inaccurate. The field stores the "mean deviation" of RTT,
+> as originally defined in Van Jacobson's paper "Congestion
+> Avoidance and Control", and it is scaled by 4 (<< 2) in the Linux
+> implementation.
+> 
+> Update the comment to reflect the correct terminology and storage
+> format.
+> 
+> Signed-off-by: Ziran Zhang <zhangcoder@yeah.net>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-
-On 06.08.26 03:11, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: pse-pd: realtek-pse-mcu: add I2C transport
->
-> This adds the I2C/SMBus transport for the Realtek PSE MCU core, providing
-> the send/recv callbacks used to exchange the 12-byte MCU frames. Two
-> framings are supported and selected by the compatible: SMBus block
-> transfers by default, and raw I2C when the match data sets native_i2c.
->
->> diff --git a/drivers/net/pse-pd/realtek-pse-mcu-i2c.c b/drivers/net/pse-pd/realtek-pse-mcu-i2c.c
->> new file mode 100644
->> index 0000000000000..e10f8c633b68e
->> --- /dev/null
->> +++ b/drivers/net/pse-pd/realtek-pse-mcu-i2c.c
->> @@ -0,0 +1,170 @@
-> [ ... ]
->
->> +static int rtpse_mcu_i2c_smbus_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
->> +{
->> +	struct i2c_client *client = to_i2c_client(pse->dev);
->> +
->> +	/* Send opcode as SMBus command byte; remaining 11 bytes as block data */
->> +	return i2c_smbus_write_i2c_block_data(client, req->opcode, RTPSE_MCU_MSG_SIZE - 1,
->> +					      (u8 *)req + 1);
->> +}
->> +
->> +static int rtpse_mcu_i2c_smbus_recv(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req,
->> +				    struct rtpse_mcu_msg *resp)
->> +{
->> +	struct i2c_client *client = to_i2c_client(pse->dev);
->> +	int tries, ret;
->> +
->> +	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
->> +		if (tries > 0)
->> +			msleep(RTPSE_MCU_I2C_RETRY_MS);
->> +
->> +		/* MCU needs 0x00 as command byte for read */
->> +		ret = i2c_smbus_read_i2c_block_data(client, 0x00,
->> +						    RTPSE_MCU_MSG_SIZE,
->> +						    (u8 *)resp);
-> [ ... ]
->
->> +static int rtpse_mcu_i2c_native_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
->> +{
->> +	struct i2c_client *client = to_i2c_client(pse->dev);
->> +	void *buf;
->> +	int ret;
->> +
->> +	/* i2c_master_send() may DMA, so the buffer must not be on the stack. */
->> +	buf = kmemdup(req, RTPSE_MCU_MSG_SIZE, GFP_KERNEL);
->> +	if (!buf)
->> +		return -ENOMEM;
->> +
->> +	ret = i2c_master_send(client, buf, RTPSE_MCU_MSG_SIZE);
->> +	kfree(buf);
-> [Severity: Low]
-> Is the premise in this comment correct?  i2c_master_send() and
-> i2c_master_recv() both go through i2c_transfer_buffer_flags(), which
-> builds the message as:
->
-> drivers/i2c/i2c-core-base.c:i2c_transfer_buffer_flags() {
-> 	struct i2c_msg msg = {
-> 		.addr = client->addr,
-> 		.flags = flags | (client->flags & I2C_M_TEN),
-> 		.len = count,
-> 		.buf = buf,
-> 	};
-> 	...
-> }
->
-> I2C_M_DMA_SAFE is never set there, so an adapter that wants to DMA has to
-> obtain its buffer from i2c_get_dma_safe_msg_buf(), which bounces again
-> exactly because the flag is absent:
->
-> drivers/i2c/i2c-core-base.c:i2c_get_dma_safe_msg_buf() {
-> 	...
-> 	if (msg->flags & I2C_M_DMA_SAFE)
-> 		return msg->buf;
-> 	...
-> 	if (msg->flags & I2C_M_RD)
-> 		return kzalloc(msg->len, GFP_KERNEL);
-> 	else
-> 		return kmemdup(msg->buf, msg->len, GFP_KERNEL);
-> }
->
-> So does the kmemdup() here actually achieve anything?  On a DMA-capable
-> adapter the 12-byte frame is copied a second time by the core, and the
-> core's on-stack struct rtpse_mcu_msg was already legal for these APIs
-> (Documentation/i2c/dma-considerations.rst: "it is *not* mandatory that the
-> buffer of an I2C message is DMA safe").
->
-> The SMBus path in the same file already passes the caller-supplied stack
-> req/resp straight into i2c_smbus_write_i2c_block_data() and
-> i2c_smbus_read_i2c_block_data(), which seems to contradict the rationale
-> used for the raw-I2C path.
->
-> The same question applies to rtpse_mcu_i2c_native_recv() below, where the
-> kmalloc() plus the memcpy(resp, buf, RTPSE_MCU_MSG_SIZE) duplicate what
-> i2c_get_dma_safe_msg_buf()/i2c_put_dma_safe_msg_buf() already do for a
-> non-DMA-safe read buffer.  It also adds an -ENOMEM abort to a PSE control
-> transaction that the bus core could otherwise always complete.
->
-> If skipping the core's bounce is really the goal, should these buffers be
-> handed to i2c_master_send_dmasafe()/i2c_master_recv_dmasafe(), or to an
-> explicit i2c_msg with I2C_M_DMA_SAFE?  Otherwise, could the allocations
-> and both comments simply be dropped?
->
-> The commit message carries the same statement:
->
->   "Because i2c_master_send()/i2c_master_recv() may DMA, the raw-I2C path
->   bounces each frame through a heap buffer rather than the core's stack
->   buffers; the SMBus path is unaffected."
->
-> Could this be reworded so it does not document a DMA rule that the I2C
-> core does not impose?
-
-I'll drop the DMA stuff again, apparently the other AI bot suggesting this
-fooled me.
-
->> +	if (ret < 0)
->> +		return ret;
->> +	return ret == RTPSE_MCU_MSG_SIZE ? 0 : -EIO;
->> +}
->> +
->> +static int rtpse_mcu_i2c_native_recv(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req,
->> +				     struct rtpse_mcu_msg *resp)
->> +{
->> +	struct i2c_client *client = to_i2c_client(pse->dev);
->> +	int tries, ret;
->> +	u8 *buf;
->> +
->> +	/* i2c_master_recv() may DMA, so read into an off-stack buffer. */
->> +	buf = kmalloc(RTPSE_MCU_MSG_SIZE, GFP_KERNEL);
->> +	if (!buf)
->> +		return -ENOMEM;
->> +
->> +	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
->> +		if (tries > 0)
->> +			msleep(RTPSE_MCU_I2C_RETRY_MS);
->> +
->> +		ret = i2c_master_recv(client, buf, RTPSE_MCU_MSG_SIZE);
->> +		if (ret < 0)
->> +			goto out;
->> +		if (ret == RTPSE_MCU_MSG_SIZE) {
->> +			memcpy(resp, buf, RTPSE_MCU_MSG_SIZE);
-> [ ... ]
-
-
-Regards,
-Jonas
+Thanks!
