@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C17B3515C1
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D50A343882
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786041422; cv=none; b=EggNbcg2OEQwYcasij6Yjmhk4hGhwV57f13lB+x6B6oFyeMxYJqivseiySmWYyWcfoHIAJa0fVAQkIqP4r1Tm1I0+N4lPbRLIuq4gLR1onaC62M+iswwDoPhbdkXQfm/iVPlYkEmTC9n8f/GxVkviX/Uo31lMRGCTrr1kR+UfB8=
+	t=1786041425; cv=none; b=VJe13+UdUQiB4BgyevS+HTxaZKnsuT4USz93khys31thFxi+4P8YqqKc1/jKAbKSowvjH9Ytz7GgKUvpDTv4GKqlpiZHlHEuCE4GOyue84XnGt+8URdUD7jTrhGViG7ga6Rvz0sDF7iU5pYW8osVJsi59FyQmaipjJXgzqqchDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786041422; c=relaxed/simple;
-	bh=6/WvcoIvcDKOHom1tueobmq78IJZ2QZsp3z1CoaBn1k=;
+	s=arc-20240116; t=1786041425; c=relaxed/simple;
+	bh=JKMCp8x7/41njXwC0h6kD9fsrnbNzGOkwJifCzo7K8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6fmc7535uCIq2xajnIewhceQiFv+UXoiLXt05IeKeP1Gq4H3tKe2HAMIJHRmozgaCPAtF/nVj6qR1TG8lDvze90RioYDcdOB+yPXtYpjZO2aIR2to6w0tTPesBJAeQPKGkYDEsSMZd1o6G6QofsH7no30sdpTikZtROJVyCirA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfsPO31k; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=p6r4NCW5GCoFBxwZBqVNu4froFDUl9hX3XB/bfHQbF38RRya1DrPtwwzV+HORx3wpPkyekq1FxkHsPc5/xroUbP1R2xyghj+pO7pgASqYrxfiVmqr7TCx2reImZkoo6fO7RtBJ/3uBV2CUY0vNYzq6zf+UHOI60oZaNeuHO1nCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQGcO8bu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfsPO31k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385651F000E9;
-	Thu,  6 Aug 2026 18:36:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQGcO8bu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E991F00A3A;
+	Thu,  6 Aug 2026 18:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786041419;
-	bh=sL881gPdJx6xM4Jsh+VbyFliie3hWpb8MUCaNrE+uYA=;
+	s=k20260515; t=1786041421;
+	bh=Kw0bAgHUZzpkjFP8Xw4GTrzIO4gOGMMUN0JzOov3mas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cfsPO31k61DsJweKdPhhxMqlaEXRqE+kAYR+6gUovaMBF4e6JNXzuIIG/EztW/9CO
-	 gqar1hRM4MwYl6vSArul19Llspq8KZsstFtaWw8ojOuX9/Bs4anLVUj1IyxLYoT0Wz
-	 fbAzmzhPRnK84ZA2+pfi1ithX9fUQ5tMOOmQuFQQLZYt7aZ/MFqaxDL7A+jCUaA6pZ
-	 bpPSVqwuVfbPEWcgTeZuwIg+vc1vhVtIhfsgJz7IkvJsm8z8jX8vDVmcIZn/5pq1Qw
-	 +bdsJdaaLxDTNaQmuiMGaZerdBKnEv/dY7sJpFVszEZ35eEEk5b66aCgK1RnJctcf8
-	 izsEm0RsruwXg==
+	b=TQGcO8buNiiU7P9QXyP0XZKtJ4m6pEXJWFTVLkxziKjhmLrM11ZDDYrV8bK6ZTRap
+	 i5BBCbu1ehL1CEwsIOelSa6kpMLfBEhrB3xnAVpAURAov/im7Iv0fjv4YV4HtHBU+x
+	 wPD6fzo04ZKW5FzvNtXhDSPaqsg9Ytt9s7BO1QDDO8/g3sA+yV6WLRSPXGWYHnNSLr
+	 S9uFfqUdmuOca5/JvpfAooX+Qrj0nNXjwxu+hnKot/fT6+uBZ+yvR0yyUurlbEwOE4
+	 3i3YUtv8sX3fKoZ0ncZDHA0qVcR/vFgG0PKI/EwYMFat7r/5tChKwx6LefwzA3cQo0
+	 T+1HJm6PCG/Hg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: mmc@linux.ibm.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -43,12 +43,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	simon.horman@corigine.com,
 	shaik.abdulla1@ibm.com,
 	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v4 01/14] ibmveth: Add MQ RX hypercall wrappers and call definitions
-Date: Thu,  6 Aug 2026 11:36:14 -0700
-Message-ID: <20260806183614.3171785-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 02/14] ibmveth: Prepare MQ RX adapter data structures
+Date: Thu,  6 Aug 2026 11:36:59 -0700
+Message-ID: <20260806183659.3175041-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <1bb2ecd260f27171c534b9beda377b75ea1790ae.1785457143.git.mmc@linux.ibm.com>
-References: <1bb2ecd260f27171c534b9beda377b75ea1790ae.1785457143.git.mmc@linux.ibm.com>
+In-Reply-To: <5aceac43fd2da5d06bee7aba36e2983e1a7bc007.1785457143.git.mmc@linux.ibm.com>
+References: <5aceac43fd2da5d06bee7aba36e2983e1a7bc007.1785457143.git.mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,162 +60,151 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ibmveth: Add MQ RX hypercall wrappers and call definitions
+ibmveth: Prepare MQ RX adapter data structures
 
-This adds three new PHYP call IDs for multi-queue receive support and four
-static inline hcall wrapper helpers in ibmveth.h, bumping MAX_HCALL_OPCODE
-to the highest new opcode. No callers are added by this patch.
+This converts the single-instance RX state in struct ibmveth_adapter
+(napi, rx_queue, buffer_list_addr/dma, rx_buff_pool) into queue-indexed
+arrays sized by the new IBMVETH_MAX_RX_QUEUES, adds multi_queue and
+num_rx_queues, and mechanically rewrites all existing references to
+index 0.  IBMVETH_MAX_RX_QUEUES stays at 1 in this patch.
 
-A couple of questions below about the new wrappers and about the hvcall.h
-hunk.
+A couple of observations below, neither of which changes runtime
+behaviour today.
 
-> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-> index dff90a7d7f70b..d79baf2e38273 100644
-> --- a/arch/powerpc/include/asm/hvcall.h
-> +++ b/arch/powerpc/include/asm/hvcall.h
-> @@ -362,7 +362,10 @@
->  #define H_GUEST_DELETE		0x488
->  #define H_PKS_WRAP_OBJECT	0x490
->  #define H_PKS_UNWRAP_OBJECT	0x494
-> -#define MAX_HCALL_OPCODE	H_PKS_UNWRAP_OBJECT
-> +#define H_REG_LOGICAL_LAN_QUEUE 0x49C
-> +#define H_ADD_LOGICAL_LAN_BUFFERS_QUEUE 0x4A0
-> +#define H_FREE_LOGICAL_LAN_QUEUE 0x4A8
-> +#define MAX_HCALL_OPCODE	H_FREE_LOGICAL_LAN_QUEUE
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+> index 73e051d26b9d8..8e758362cb263 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.c
+> +++ b/drivers/net/ethernet/ibm/ibmveth.c
 
-[Severity: Low]
-Could the changelog cite the PAPR/PHYP document and revision that assigns
-0x49C, 0x4A0 and 0x4A8?  These become architecture-wide constants shared
-with the KVM hcall emulation, so it would help to have the provenance
-recorded in the commit.
+[ ... ]
 
-There are also holes left at 0x498 and at 0x4A4 (the latter from dropping
-H_FREE_LOGICAL_LAN_BUFFER_QUEUE in v4).  Are those numbers reserved by the
-architecture for something else, or are they simply unused?
-
-Separately, MAX_HCALL_OPCODE is not driver-local.  It sizes
-kvm_arch.enabled_hcalls:
-
-  arch/powerpc/include/asm/kvm_host.h:
-      DECLARE_BITMAP(enabled_hcalls, MAX_HCALL_OPCODE/4 + 1);
-
-and it bounds the userspace-visible opcode range accepted by
-KVM_CAP_PPC_ENABLE_HCALL:
-
-  arch/powerpc/kvm/powerpc.c:kvm_vm_ioctl_enable_cap() {
-      ...
-      if (hcall > MAX_HCALL_OPCODE || (hcall & 3) ||
-          cap->args[1] > 1)
-      ...
-  }
-
-It also sizes the per-CPU hcall statistics array in
-arch/powerpc/platforms/pseries/hvCall_inst.c and gates
-kvmppc_pseries_do_hcall() and kvmppc_h_pr().  As far as I can tell the bump
-is behaviourally inert for these new opcodes, since kvm_vm_ioctl_enable_cap()
-still rejects them via kvmppc_book3s_hcall_implemented(), and the KVM
-dispatch path ends up returning RESUME_HOST either way.  Would it be worth
-mentioning the cross-subsystem effect in the changelog so the powerpc/KVM
-side has something to ack against?
-
+> @@ -482,42 +486,44 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+>  	mb();
 >  
->  /* Scope args for H_SCM_UNBIND_ALL */
->  #define H_UNBIND_SCOPE_ALL (0x1)
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
-> index d87713668ed30..c88dbeb7cd967 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.h
-> +++ b/drivers/net/ethernet/ibm/ibmveth.h
-> @@ -66,6 +66,143 @@ static inline long h_add_logical_lan_buffers(unsigned long unit_address,
->  			    desc5, desc6, desc7, desc8);
+> -	atomic_dec(&(adapter->rx_buff_pool[pool].available));
+> +	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
+>  
+>  	return 0;
 >  }
 >  
-> +/**
-> + * h_reg_logical_lan_queue - Register a subordinate receive queue
+>  /* get the current buffer on the rx queue */
+> -static inline struct sk_buff *ibmveth_rxq_get_buffer(struct ibmveth_adapter *adapter)
+> +static inline struct sk_buff *
+> +ibmveth_rxq_get_buffer(struct ibmveth_adapter *adapter)
 
 [Severity: Low]
-This isn't a bug, but the naming here diverges from the existing wrappers in
-this file, which all spell it out as h_register_logical_lan() and
-h_free_logical_lan().  Would h_register_logical_lan_queue() read more
-consistently?
+This isn't a bug, but the patch carries a few edits that are not part of
+the stated mechanical index-0 conversion:
+
+  - dropping the redundant parentheses in the atomic_dec() call in
+    ibmveth_remove_buffer_from_pool()
+  - reflowing the ibmveth_rxq_get_buffer() prototype
+  - rewriting the kernel-doc of ibmveth_get_desired_dma() from
+    "Return value:" to "Return:"
+  - inserting a blank line in struct ibmveth_adapter after
+    rx_large_packets
+
+The commit message says:
+
+    This patch keeps behavior unchanged by mechanically switching existing
+    references to index 0
+
+Could these cosmetic edits move to a separate cleanup patch, or be
+mentioned in the changelog?  As it stands each hunk has to first be
+classified as conversion or cleanup before the "behavior unchanged" claim
+can be confirmed.
 
 [ ... ]
 
-> +static inline long h_reg_logical_lan_queue(unsigned long unit_address,
-> +					   unsigned long buffer_list,
-> +					   unsigned long rec_queue,
-> +					   unsigned long *queue_handle,
-> +					   unsigned long *irq)
-                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: Low]
-This helper returns the queue handle as unsigned long *, which matches
-retbuf's element type and matches the other output parameters in this header
-(h_send_logical_lan()'s corellator_out, h_illan_attributes()'s
-ret_attributes).
-
-But h_register_logical_lan_with_handle() below declares the same conceptual
-value, the PHYP queue handle read out of retbuf[0], as u64 *.  Can these two
-be made to agree?  As it stands, callers have to pick a different storage
-type depending on which of the two helpers they call, even though both are
-returning the same thing.
-
-The commit message says the new wrappers have "argument ordering and return
-semantics matching the existing ibmveth hcall wrappers", which holds for
-this one but not for the u64 * variant.
+> @@ -1693,8 +1704,7 @@ static void ibmveth_poll_controller(struct net_device *dev)
+>   *
+>   * @vdev: struct vio_dev for the device whose desired IO mem is to be returned
+>   *
+> - * Return value:
+> - *	Number of bytes of IO data the driver will need to perform well.
+> + * Return: Number of bytes of IO data the driver will need to perform well.
+>   */
+>  static unsigned long ibmveth_get_desired_dma(struct vio_dev *vdev)
+>  {
 
 [ ... ]
 
-> +static inline long h_free_logical_lan_queue(unsigned long unit_address,
-> +					    unsigned long queue_handle)
-> +{
-> +	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-> +
-> +	return plpar_hcall9(H_FREE_LOGICAL_LAN_QUEUE,
-> +			    retbuf, unit_address, queue_handle);
-> +}
-
-[Severity: Low]
-The kerneldoc above documents no output data for this hcall, and retbuf is
-never read.  Why not use plpar_hcall_norets() here, the way the existing
-counterpart in this file does?
-
-  #define h_free_logical_lan(ua) \
-    plpar_hcall_norets(H_FREE_LOGICAL_LAN, ua)
-
-That would drop the dead nine-entry stack buffer.
+> @@ -1898,10 +1912,10 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>  		memcpy(pool_count, pool_count_cmo, sizeof(pool_count));
+>  
+>  	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+> -		struct kobject *kobj = &adapter->rx_buff_pool[i].kobj;
+> +		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
+>  		int error;
+>  
+> -		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
+> +		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
+>  					 pool_count[i], pool_size[i],
+>  					 pool_active[i]);
+>  		error = kobject_init_and_add(kobj, &ktype_veth_pool,
 
 [ ... ]
 
-> +static inline long
-> +h_register_logical_lan_with_handle(unsigned long unit_address,
-> +				   unsigned long buffer_list,
-> +				   unsigned long rec_queue,
-> +				   unsigned long filter_list,
-> +				   unsigned long mac_address,
-> +				   u64 *queue_handle)
-                                    ^^^^^^^^^^^^^^^^^^
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+> index c88dbeb7cd967..8eaa3942fc40b 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.h
+> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+
+[ ... ]
+
+> @@ -294,18 +296,23 @@ struct ibmveth_rx_q {
+> -	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+> -	struct ibmveth_rx_q rx_queue;
+> +	struct ibmveth_buff_pool
+> +		rx_buff_pool[IBMVETH_MAX_RX_QUEUES][IBMVETH_NUM_BUFF_POOLS];
+> +	struct ibmveth_rx_q rx_queue[IBMVETH_MAX_RX_QUEUES];
 
 [Severity: Low]
-This is the u64 * side of the inconsistency noted above.  Both types are
-64-bit on ppc64, which is the only configuration that builds ibmveth, and
-the callers added later in the series do compile against both prototypes, so
-this looks like a readability issue rather than a functional one.  Could both
-helpers use unsigned long * for the handle?
+Is replicating the whole struct ibmveth_buff_pool per queue the layout you
+want here?
 
-> +{
-> +	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-> +	long rc;
-> +
-> +	rc = plpar_hcall9(H_REGISTER_LOGICAL_LAN, retbuf,
-> +			  unit_address, buffer_list, rec_queue,
-> +			  filter_list, mac_address);
-> +
-> +	if (rc == H_SUCCESS && queue_handle)
-> +		*queue_handle = retbuf[0];
-> +
-> +	return rc;
-> +}
+struct ibmveth_buff_pool embeds a struct kobject, which is the per-pool
+sysfs tuning object.  Only row 0's kobjects are ever initialized and
+registered, in ibmveth_probe():
 
-Thanks.
--- 
-pw-bot: cr
+	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
+		...
+		error = kobject_init_and_add(kobj, &ktype_veth_pool,
+					     &dev->dev.kobj, "pool%d", i);
+
+and only row 0's are dropped, in ibmveth_remove():
+
+	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+		kobject_put(&adapter->rx_buff_pool[0][i].kobj);
+
+So every row above 0 carries a kobject that is never initialized and never
+used.
+
+Later in the series IBMVETH_MAX_RX_QUEUES is raised to 16U, at which point
+the netdev private area unconditionally holds 16 x 5 pool structs
+regardless of num_rx_queues, of which 75 embedded kobjects are dead
+weight.
+
+The follow-on code also shows that only part of the struct is really
+per-queue: ibmveth_alloc_single_rx_queue() copies size, index, buff_size,
+threshold and active from row 0 into each new row, so the pool
+configuration is shared while free_map/dma_addr/skbuff/producer_index/
+consumer_index/available are the genuinely per-queue state.
+
+Would it be cleaner to split the struct into one shared, sysfs-visible
+configuration object plus a small per-queue state array, given this patch
+is the one that fixes the layout for the rest of the series?
+
+Is it also intentional that the per-pool sysfs tuning interface now
+implicitly means "queue 0 configures all queues"?  If so, could that be
+stated in the changelog?
+
+> @@ -325,6 +332,7 @@ struct ibmveth_adapter {
+>  	u64 tx_send_failed;
+>  	u64 tx_large_packets;
+>  	u64 rx_large_packets;
+> +
+>  	/* Ethtool settings */
+>  	u8 duplex;
+>  	u32 speed;
