@@ -1,124 +1,355 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDCB2BD022
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 10:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B85442B16
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 10:43:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786012742; cv=none; b=JRFy6TQKDIsqzrsBfYdiYCOYtjgusLagzaZu4z8ZYMCzgnV0Q8R2Ok3KrjmmwSQp+BSWjJm2TyZnG5zuJ4rKYcggYVmTMjogdr0zuIvhYYA1RyMPR+zoUfAOQHTSzywpNbfhTqXR+0Um6povr0KdHSToAgg8FEbCCDgQzcRXrBo=
+	t=1786013036; cv=none; b=RyjcQ9zJyczRIc48r6wf1Z728ehImuBNULW7Vm3s9Lai7TyGb0mnuzgv20t3uoBlYNo2onXOXxoBI0wG/uXs5Safn4z3xxDVvWIgsKMpwdkLOaJ8+astkP9erp+tMYYARk4A/FIEqYriLLcNqVH+mTK/O7OaDGVbOHn7lep8Vcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786012742; c=relaxed/simple;
-	bh=rFLZtw2z8JP4NTc8a4V436P/+oQw7CWh+GEgzMXdQBI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=EjYh+7V2AhDNXiqUuIg32knL/7telbbuzq9e4h756O4BsA8vpt8Mxfe9Cyj5zEb/6wBCUKhRy1/LZQxyb/orbl4gSy8T3pBxco4E+QA7Zk+SwYsYHx60iD2DhVEhfx7ipsJeNzvcgkBwLfF4bXGzoeLMgM/K1fuFdIFa7B7Cri8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KweyhLyd; arc=none smtp.client-ip=209.85.222.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1786013036; c=relaxed/simple;
+	bh=mJ+RN8ePvhVJF5AlsN3C0MS6Tw0qV6ACVMQ3C83OyuI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KXcrpCwJnPuc4OAG0V1NFIeN4Xzkj5Fga4OUQSHuYgBHL3deIEnkmasPgGqmsHQmz/OfTj1VmXe/sP6PsSsK/U+cIxDMiIUX4FfCyqyyEjeCxfpVS/bw3rc9hExvc5pah7S54UfGwPMBC6d8v+zLaPU2wF7VrwDERObBmUfIz3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UAwiTyjj; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KweyhLyd"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-930a098ea19so215575285a.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 03:39:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786012739; x=1786617539; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AgFuLu/BfZUsOKBU1K1bcnNrvwrTqBd6XAlIdlzF8Xk=;
-        b=KweyhLydRLf/U1gGBoqD1Or7f+itANMBTba9vjvuGiXb7HhOC5Gmaufuw0UbHxpqk+
-         GAuHLpBoNgMAd/n5eByaKc936jL7+rBsutcg833IUZ8nm+RoM/v7XcA4eL9zzqoSanAa
-         oFsev7uwh4G8tJhufiTsN5Sh4C27ohFqil31TyQR2SbYsu8gqzxTqpPLfBAv7GSKRXTy
-         e5YGBifhG7DCtZrWT91y13Gj7aNblfIedrc2YIv15feU41WRoyIw09kc/KcKviFhfJ0o
-         e46nSMVCt1SDLaXXkYHNVfgFzhQZS99ZdMOrnEHJoEYZbLfnW90muqvBU93Zw0f2X49z
-         MEYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786012739; x=1786617539;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AgFuLu/BfZUsOKBU1K1bcnNrvwrTqBd6XAlIdlzF8Xk=;
-        b=JYWyT++aaoWXCDlCcgPWjLLs6aYj/kq6pHAgF2Z/ztQIfZRgaS2yxWhO+MID05zm8T
-         6xtUVYj/aLZPbzXKYhqLF33asY+Zz/AfN9IZPc17NLNdtemljm0qO3zM4sx9ohiClZp8
-         3aL2iEHZqkyllSYe5r4Zm4efKYHil9D0i8j+ENAKdBCXSrqOAHVeJ7q3hee2SoEBNPgm
-         mzx2yUy/1drU6xc+fY94ARbjMK3hQ/x/Jbm/x5QtHC8Af48q9YjWnq55EYWZPGutjUPJ
-         6CBZC2pgSXDKaVJyhQhhRtJ2ZyPVM/mfLhCYoviSH61w/8iUSkEFzOc+7+8s4l9yhCm5
-         nJlg==
-X-Forwarded-Encrypted: i=1; AHgh+RpNSNOtPif8KwtCJ7DvExrrBpbiyVeya2H7XV7C//9hOTk2xiOc+4qtnb9dZ+CuYl27LCTk25E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza+TI3fUT2k5arAGHFND874K03QXVS7jtjGEEqtc5YwLwQFHlM
-	/zBWpr+ZLAaWTC7ufUZcoZgpeTWe22UiDIxN1k4AMrqQw3cx+ik/w5QG79P/NjQSIERJBZQCygS
-	RD40/HlkUJYMpbg==
-X-Received: from qkhb1.prod.google.com ([2002:a05:620a:4e1:b0:92e:76a1:96c8])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:4415:b0:92e:ea8d:5c89 with SMTP id af79cd13be357-936492aee38mr1070472785a.40.1786012738962;
- Thu, 06 Aug 2026 03:38:58 -0700 (PDT)
-Date: Thu,  6 Aug 2026 10:38:57 +0000
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UAwiTyjj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786013031;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SBjMr6cegFyxVHZZAtwE1vAY/RYiMu3UJwSU7HdYUVo=;
+	b=UAwiTyjjP//s1Zn7wUTH3JeGqDVErlHtGZEe3pTkkeZMEgJZ4/DBwf33AUNwDzwR3HCptw
+	SeZQsKAvO9N9EQN+aXnUXsF5JmloRKezIYxeFVtauBpvG2lgb7Cx6gUbiSpam5b/6m78U/
+	5vCk8nanB9OBFtBnz1ntFvkFpoIA5OI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-580-MijakqcQOcCv4YlXzWa8vg-1; Thu,
+ 06 Aug 2026 06:43:42 -0400
+X-MC-Unique: MijakqcQOcCv4YlXzWa8vg-1
+X-Mimecast-MFC-AGG-ID: MijakqcQOcCv4YlXzWa8vg_1786013020
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3295018007E9;
+	Thu,  6 Aug 2026 10:43:40 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.33.123])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7FD86180034C;
+	Thu,  6 Aug 2026 10:43:36 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: Selvamani.Rajagopal@onsemi.com
+Cc: parthiban.veerasooran@microchip.com,
+	andrew+netdev@lunn.ch,
+	pier.beruto@onsemi.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	andrew@lunn.ch,
+	Parthiban.Veerasooran@microchip.com
+Subject: Re: [PATCH net v5 2/4] net: ethernet: oa_tc6: Improve the error recovery
+Date: Thu,  6 Aug 2026 12:43:23 +0200
+Message-ID: <20260806104323.151154-1-pabeni@redhat.com>
+In-Reply-To: <20260729-fix-race-condition-and-crash-v5-2-3906bc485daf@onsemi.com>
+References: <20260729-fix-race-condition-and-crash-v5-2-3906bc485daf@onsemi.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
-Message-ID: <20260806103857.115541-1-edumazet@google.com>
-Subject: [PATCH v2 net] ipvlan: inherit needed_headroom and needed_tailroom
- from phy_dev
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com, 
-	Tangxin Xie <xietangxin@h-partners.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-ipvlan devices inherit hard_header_len from phy_dev during ipvlan_init(),
-but leave needed_headroom and needed_tailroom set to 0.
+From: AI Reviewer <ai@example.com>
 
-When the underlying phy_dev (or stacked lower device) requires extra headroom
-or tailroom for headers/trailers (e.g. macsec, ipsec, wireguard, tunnels, or
-veth with rx headroom), upper layers calculating packet headroom and tailroom
-fail to reserve sufficient space.
-
-This can result in reallocation overhead, skb headroom underflows, or KASAN
-slab-use-after-free crashes when dev_hard_header() / ipvlan_hard_header()
-prepends header data or when lower devices append tailroom.
-
-Fix this by:
-1. Inheriting needed_headroom and needed_tailroom from phy_dev in ipvlan_init().
-2. Propagating needed_headroom and needed_tailroom updates to attached ipvlans
-   in ipvlan_device_event() when receiving NETDEV_FEAT_CHANGE events.
-
-Fixes: 2ad7bfab3016 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Reported-by: syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a720a21.40259c87.584f4.04bb.GAE@google.com/T/#u
-Reported-by: Tangxin Xie <xietangxin@h-partners.com>
-Closes: https://lore.kernel.org/netdev/CANn89i+1EW-sFNK8xoq98gMbPCeLS7e=+rs9gHfLg5Wj+4x0sw@mail.gmail.com/T/#mcc6307f115e500df23ea2980d5669fe95f20b6b4
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
-v2: also inherit needed_tailroom (Sashiko)
-v1: https://lore.kernel.org/netdev/CANn89iLr4EQxBAKikZCeXbXEk-pjmT4mq3d=D2P01MtNSUgwrg@mail.gmail.com/T/#t
+--- Patch [2]: [PATCH net v5 2/4] net: ethernet: oa_tc6: Improve the error recovery ---
+commit f8f47e53b81fcb2cf25c3e00de04be99437717cf
+Author: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
- drivers/net/ipvlan/ipvlan_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+net: ethernet: oa_tc6: Improve the error recovery
 
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index ed46439a9f4eb1dd8bfaf6c83476ba4f2aff31bc..92d3d340281ffbc8e54a61e975484ab156c42c9b 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -146,6 +146,8 @@ static int ipvlan_init(struct net_device *dev)
- 	dev->lltx = true;
- 	netif_inherit_tso_max(dev, phy_dev);
- 	dev->hard_header_len = phy_dev->hard_header_len;
-+	dev->needed_headroom = phy_dev->needed_headroom;
-+	dev->needed_tailroom = phy_dev->needed_tailroom;
- 
- 	netdev_lockdep_set_classes(dev);
- 
-@@ -773,6 +775,8 @@ static int ipvlan_device_event(struct notifier_block *unused,
- 	case NETDEV_FEAT_CHANGE:
- 		list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
- 			netif_inherit_tso_max(ipvlan->dev, dev);
-+			ipvlan->dev->needed_headroom = dev->needed_headroom;
-+			ipvlan->dev->needed_tailroom = dev->needed_tailroom;
- 			netdev_update_features(ipvlan->dev);
- 		}
- 		break;
+This patch adds a tailroom check before skb_put() in the oa_tc6 receive
+path, turns the rx skb update helpers into functions returning an error
+code, and makes oa_tc6_process_spi_data_rx_buf() continue over
+recoverable (-EAGAIN/-ENOMEM) errors instead of bailing out on the first
+one.  A new helper oa_tc6_look_for_new_frame() bundles setting
+rx_buf_overflow with dropping the in-progress rx skb.
+
+No Link: tags present in the commit header.
+
+> diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+> index 5b24cce4f9b56..421f72e6f71e3 100644
+> --- a/drivers/net/ethernet/oa_tc6.c
+> +++ b/drivers/net/ethernet/oa_tc6.c
+> @@ -710,6 +710,12 @@ static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
+>  	oa_tc6_cleanup_waiting_tx_skb(tc6);
+>  }
+>  
+> +static void oa_tc6_look_for_new_frame(struct oa_tc6 *tc6)
+> +{
+> +	tc6->rx_buf_overflow = true;
+> +	oa_tc6_cleanup_ongoing_rx_skb(tc6);
+> +}
+> +
+
+[Severity: Low]
+[Finding: main-1-2]
+[Sources: opus-5]
+Should the rx_buf_overflow field keep that name after this change?
+
+The flag is now also set for conditions that are not MAC-PHY receive
+buffer overflows: exhausted skb tailroom and rx_skb == NULL in
+oa_tc6_update_rx_skb(), plus the blanket per-buffer retry at the end of
+oa_tc6_process_spi_data_rx_buf(), which also covers -ENOMEM from
+netdev_alloc_skb_ip_align().
+
+Would a rename (something like rx_resync or skip_until_frame_start), or a
+second flag, keep the two conditions distinguishable when debugging?
+
+[ ... ]
+
+> @@ -835,13 +844,35 @@ static void oa_tc6_submit_rx_skb(struct oa_tc6 *tc6)
+>  	tc6->rx_skb = NULL;
+>  }
+>  
+> -static void oa_tc6_update_rx_skb(struct oa_tc6 *tc6, u8 *payload, u8 length)
+> +/* On oversubscribed traffic condition, particularly with overwhelming rx
+> + * buffer overflow errors, there could be data chunk loss. If tail + length
+> + * goes beyond end pointer, that is an indication that the data chunk with
+> + * end_valid bit is lost. Time to look for a data chunk with start_valid bit.
+> + *
+> + * If rx_skb is NULL, it is time to start looking for data chunk with
+> + * start_bit.
+> + */
+> +static int oa_tc6_update_rx_skb(struct oa_tc6 *tc6, u8 *payload, u8 length)
+>  {
+> +	if (!tc6->rx_skb ||
+> +	    (tc6->rx_skb->tail + length) > tc6->rx_skb->end) {
+> +		oa_tc6_look_for_new_frame(tc6);
+> +		return -EAGAIN;
+> +	}
+> +
+>  	memcpy(skb_put(tc6->rx_skb, length), payload, length);
+> +	return 0;
+>  }
+
+[Severity: Low]
+[Finding: main-1-1]
+[Sources: opus-5]
+This isn't a bug, but could this use the documented accessor instead of
+reaching into the sk_buff layout fields?
+
+	if (!tc6->rx_skb || skb_tailroom(tc6->rx_skb) < length)
+
+The arithmetic here does match the overflow test inside skb_put() for both
+representations selected by NET_SKBUFF_DATA_USES_OFFSET, but skb->tail and
+skb->end are internal fields, and skb_tailroom() in
+include/linux/skbuff.h additionally returns 0 for non-linear skbs.
+
+[ ... ]
+
+> @@ -946,6 +980,15 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
+>  		if (tc6->rx_skb) {
+>  			size = end_byte_offset + 1;
+>  			oa_tc6_prcs_rx_frame_end(tc6, data, size);
+> +
+> +			/* Return value from oa_tc6_prcs_rx_frame_end is not
+> +			 * checked. If it returned an error, it is to make
+> +			 * the code to look for new frame. At this stage,
+> +			 * code below is going to process a new frame. So,
+> +			 * error condition is set to false, in case it is
+> +			 * set before proceeding.
+> +			 */
+> +			tc6->rx_buf_overflow = false;
+>  		}
+>  		size = OA_TC6_CHUNK_PAYLOAD_SIZE - start_byte_offset;
+>  		return oa_tc6_prcs_rx_frame_start(tc6,
+
+[ ... ]
+
+> @@ -972,8 +1013,9 @@ static u32 oa_tc6_get_rx_chunk_footer(struct oa_tc6 *tc6, u16 footer_offset)
+>  static int oa_tc6_process_spi_data_rx_buf(struct oa_tc6 *tc6, u16 length)
+>  {
+>  	u16 no_of_rx_chunks = length / OA_TC6_CHUNK_SIZE;
+> +	bool retry = false;
+> +	int ret = 0;
+>  	u32 footer;
+> -	int ret;
+>  
+>  	/* All the rx chunks in the receive SPI data buffer are examined here */
+>  	for (int i = 0; i < no_of_rx_chunks; i++) {
+> @@ -982,8 +1024,11 @@ static int oa_tc6_process_spi_data_rx_buf(struct oa_tc6 *tc6, u16 length)
+>  						    OA_TC6_CHUNK_PAYLOAD_SIZE);
+>  
+>  		ret = oa_tc6_process_rx_chunk_footer(tc6, footer);
+> -		if (ret)
+> -			return ret;
+> +		if (ret) {
+> +			if (ret != -EAGAIN)
+> +				return ret;
+> +			retry = true;
+> +		}
+
+[Severity: Medium]
+[Finding: main-2-5]
+[Sources: opus-5]
+Since the loop no longer returns on the first -EAGAIN, how many STATUS0
+control transfers does one buffer now cost?
+
+Every remaining footer in the same buffer that has
+OA_TC6_DATA_FOOTER_EXTENDED_STS set re-enters
+oa_tc6_process_extended_status(), which does a blocking
+oa_tc6_read_register(OA_TC6_REG_STATUS0) plus an
+oa_tc6_write_register() write-back, each taking spi_ctrl_lock, even
+though the first invocation already latched and cleared the error.
+
+All footers of one buffer are sampled on the wire before any of them is
+processed, so a single overflow event tends to leave the extended status
+bit set in most footers of that buffer.  With OA_TC6_MAX_TX_CHUNKS = 48
+that turns one read/write pair into up to 48 pairs of control transfers
+in the SPI IRQ thread, before the received frames are handed to the
+stack.
+
+Does that delay the next data transfer that drains the MAC-PHY receive
+buffer, and could it aggravate the overflow condition being recovered
+from?  The commit message does not mention this side effect.
+
+>  
+>  		/* If there is a data valid chunks then process it for the
+>  		 * information needed to determine the validity and the location
+> @@ -995,12 +1040,35 @@ static int oa_tc6_process_spi_data_rx_buf(struct oa_tc6 *tc6, u16 length)
+>  
+>  			ret = oa_tc6_prcs_rx_chunk_payload(tc6, payload,
+>  							   footer);
+> -			if (ret)
+> -				return ret;
+> +			if (ret) {
+> +				if (ret != -ENOMEM && ret != -EAGAIN)
+> +					return ret;
+> +				retry = true;
+> +			}
+>  		}
+>  	}
+>  
+> -	return 0;
+> +	/* Not bailing out on recoverable error codes, -EAGAIN and
+> +	 * -ENOMEM. If subsequent loop iterations, if any, succeeds,
+> +	 * error code would be overwritten. retry flag helps to
+> +	 * make the caller to continue and retry. Since recovery
+> +	 * action for -ENOMEM and -EAGAIN are same, we are returning
+> +	 * one of the error codes, that is -EAGAIN.
+> +	 *
+> +	 * Successful recovery depends on how small the frames are,
+> +	 * how many chunks, among the received chunks triggered the
+> +	 * error, whether data is intact even with error conditions.
+> +	 * As a result, there is no single, best method to recover
+> +	 * most data when error conditions hit. We do our best by
+> +	 * processing all the chunks with good "footer header" and
+> +	 * "data valid" bit set.
+> +	 */
+> +	if (retry) {
+> +		ret = -EAGAIN;
+> +		oa_tc6_look_for_new_frame(tc6);
+> +	}
+> +
+> +	return ret;
+>  }
+
+[Severity: Medium]
+[Finding: main-1-0]
+[Sources: opus-5]
+Can this drop a frame that was already successfully re-synchronized
+inside the same buffer?
+
+The retry flag is sticky, so oa_tc6_look_for_new_frame() runs at loop exit
+even when a later chunk recovered.  Sequence:
+
+  chunk i:  extended status set, STATUS0 reports rx buffer overflow
+            oa_tc6_process_extended_status()
+               oa_tc6_look_for_new_frame()   /* rx_skb freed,
+                                                rx_buf_overflow = true */
+               return -EAGAIN
+            loop sets retry = true and keeps going
+
+  chunk j:  start_valid, so oa_tc6_prcs_rx_chunk_payload() does
+               if (start_valid && tc6->rx_buf_overflow)
+                       tc6->rx_buf_overflow = false;
+            oa_tc6_prcs_rx_frame_start() -> oa_tc6_allocate_rx_skb()
+            allocates a fresh rx_skb, later "ongoing" chunks append fine
+
+  loop exit: retry is still true
+               ret = -EAGAIN;
+               oa_tc6_look_for_new_frame(tc6);   /* frees the good
+                                                    rx_skb, rx_dropped++,
+                                                    rx_buf_overflow = true */
+
+On the next SPI transfer the continuation and end chunks of that frame are
+then discarded by:
+
+	if (tc6->rx_buf_overflow)
+		return 0;
+
+until another start_valid chunk arrives.  rx_chunks_available is 5 bits
+(max 31) while a 1514-byte frame needs roughly 24 chunks of 64 payload
+bytes, so a frame still in progress at buffer end is a normal occurrence.
+
+This also appears to undo the tc6->rx_buf_overflow = false added in the
+end-plus-start-in-one-chunk branch of oa_tc6_prcs_rx_chunk_payload().
+
+Is the trailing call needed for state consistency at all?  The overflow
+path already sets the flag in oa_tc6_process_extended_status(), the
+tailroom and NULL paths set it in oa_tc6_update_rx_skb(), and the only
+remaining case, -ENOMEM from oa_tc6_allocate_rx_skb(), leaves rx_skb NULL
+so the next mid-frame chunk hits the !tc6->rx_skb branch and sets the
+flag anyway.
+
+[ ... ]
+
+> @@ -1162,10 +1230,12 @@ static int oa_tc6_try_spi_transfer(struct oa_tc6 *tc6)
+>  		}
+>  
+>  		ret = oa_tc6_process_spi_data_rx_buf(tc6, spi_len);
+> -		if (ret) {
+> -			if (ret == -EAGAIN)
+> -				continue;
+>  
+> +		/* Not continuing with the next iteration to give
+> +		 * waiting_tx_skb a chance to get drained, if
+> +		 * needed.
+> +		 */
+> +		if (ret && ret != -EAGAIN) {
+>  			oa_tc6_free_ongoing_skbs(tc6);
+>  			netdev_err(tc6->netdev, "Device error: %d\n", ret);
+>  			return ret;
+
+[Severity: Low]
+[Finding: main-3-7]
+[Sources: opus-5]
+Does this comment match the resulting control flow?  The while (true) loop
+does proceed to the next iteration on -EAGAIN.
+
+What changed is that the continue was removed, so the tail of the loop
+body is now reached on the recoverable-error path:
+
+	if (!tc6->waiting_tx_skb && netif_queue_stopped(tc6->netdev))
+		netif_wake_queue(tc6->netdev);
+
+That code wakes the tx queue, which lets the stack queue new skbs, rather
+than draining waiting_tx_skb.  Could the comment be reworded to describe
+the wake-queue check being reached?
 -- 
-2.55.0.629.g250fe7f194-goog
+This is an AI-generated review.
 
