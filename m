@@ -1,78 +1,47 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D1148551F
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 17:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7F2483BD9
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 17:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786037139; cv=none; b=O30EuSGRQ8YcWljgcDUKNjbN6BOiFkbpGk19O9Zeij+HP0v1X4CZcBTlI72eLA16W/Sx5GXJmwPnkzq68AM7/9VWuy7XbUcGdEXvXcMSQ8mMtv0nPj0TGSd0FWXy4vTSwYAk8Kf6A4OZVc+4WUWpVKgx9Xslnl6BMZWkdjO1abc=
+	t=1786037343; cv=none; b=SVsCHLnSXn46eJmwENHHtFB/PSE+7n+ewAxFk5C9jXlt5fkDUxEAZcQqO7hiXZSQlPC1BJBNhiYzfdDE6UbrsWM0WNCTzivq7kWgepcqvIMNjMRvXH0NPJUvnV7WS7jqutkFMaXZb2YyPnsamPN/SaaLlIhoaoFiWMoiIrBJALQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786037139; c=relaxed/simple;
-	bh=bZP+M5covBQtrQ2/QpkLXWL+jOK0O6sgCty2Nw0Ju2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EM+GB9p8nG2Qg9xmTJ2bTFZ3ELP/RKL4opRm9F1LjvG6/597jxp0XMg4zB/Hvdy35fQoG7RyCIzSJu5wdG8lgI95jrYwKnc8gHG4XfZD/wHm1y++hlDLpglRjT1adNdRMYMtc/Mybx7tr5aOLGkqReMTjpa78PuZl6mxF4Jpvtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SJiXSZf9; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786037343; c=relaxed/simple;
+	bh=OeeQgs+s5EEkSB1DyFUhIlSkYlxagPwri27qFQvrZig=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Mm49BdggRqO/WiyPUcqBu3hY1ZoXlWYQ3QQO49HV8zwKGDqaW716zwSKW5mVkbVwN3T+6NXKliSSAFjL3TPI6ru8x3enG9TwwBZbKK1+UCAumGR78+7oOJMHTw9xOLSZ65tj/7UEhklaIaPFv4b8cMXxP5ijYSC/keJtcNwDQ7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GuTbpl7E; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SJiXSZf9"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so2020800a91.2
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 10:25:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786037138; x=1786641938; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=g5bdrOH9EQYp8+Y2KB755YBGfk5WlLVToWPGvUG6bgI=;
-        b=SJiXSZf9iPvJE4fSfLQxnE1zxY8xHOtOb5pSuXXu1hZybm8qlMuwDgzho72WdAiAvm
-         9hYf1Tq0BCHbkqFRJ49350J2GvP3+giVN2lK7gUEMOCLTxVKsI9rvZ7aXmNNz3/McO+l
-         7GmUJ9RxdEDSGbnZTF9wMDwwZhz6gpy8lIdhH1JOM5inrx8KV3kjy9Ug1rZpK0nMhCna
-         FH/I313KY+dcHpGHRd3HQSCoKONt9uM7r0gW75I78jXk6CfxUIynzhwYL4/uDYkKfeXd
-         QDl9nVCXbmPdxHUKPm860y+a83VRobCRagD6VJa+zPLr2PR0LOgytRCV3pS6RNnKBvf9
-         h0TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786037138; x=1786641938;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=g5bdrOH9EQYp8+Y2KB755YBGfk5WlLVToWPGvUG6bgI=;
-        b=D6h6qqiUJ83fCsEWV8f7G4KRVRbPKFC/ULxPCExX6GH6pS8KiojBdJi/YIkNA2pDT3
-         d8Itt4g4zelBNPEFRH5qluPxD0Kuo/etiAJYcqm7qS36EcsFjx2EZR17vsjguI2KZJrb
-         oVwaB7NgtyZ0mEyFVY/zif6TNGETOtSs/NS9t4eXS1KolM7azqw7Gwc1zluITmzs3/Ye
-         S9/ddhHmPBQc793LpWxbL2R1c9EHi9o4SFwQy42e5ozNQ+cxfPOUEnoJUxE+1kFtVFtt
-         UGtsKQuV3cGWwDDKINaUoex6rNsxnkbhlsF8RzwOqoB/6qFjsYLuaQOstawcjvtfRXOS
-         EneQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpqltYT6Noo9Vt1l9uyLSYZ5vhsf30kj1VZ3PXF7P+upQ6oEgwFIucg951vsor/q5aDmEXyWGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdhsCnVZdKFv2fIhGkDMn1o6gD0JCyrasQms7PCFLk+UiXt1BD
-	564FBQc82oTVlcC94CK6wA62+L/JVlfAcEs2vVEotAraaxaaPojhoHd5
-X-Gm-Gg: AR+sD12kAYtwxgeSfW01FUI85On+fAaSRx27+nH3Q+LlfNROcjS2TaqpeZuQNymQcY8
-	QHO1F8tgA9TL79FqfT4O6zABqA5EIFJNtzF9sRhnJJ4v75tpUsfBmfzoRJdxCg6SaP9SraLw0cS
-	c6ySwi92y9k/nlCzMci32UCKTnV81wV/fzyexhoTidrnBwwSJx32aWmhMYi6O0MkeSaq4NsslYV
-	7a5e7Kzrw/L5hizK7CzTksQO6XWE0liNS/yLhnxCXHRMHIxe6S6BD1j77kfO/JUvGoHQGwLCs1z
-	qllzNRzSLI9cjJ9PuJoowpcG2GJFHvy7rLtG6ZOo4nSZmts9HqRMOxJsDdqQUQnmvd+Ekl0Qjst
-	4179wff4iXB7ZDs4QDZl2iZJftVLW3MhAaKIw08hByRFnXzaYGpFLITBOI7WlLLTXFsSh07/reH
-	zIE0xmzmlQ9LpB7Fzhzz6ouzp3C2fFt+ziwTPiY377O1zZMqZuozvSe+GZfIZpaZeBtLJSaDa4T
-	pOElu/ompPIHt2ypKTl+ZH5sf7UwYY1wrHHwi9r39gouOMFj7WAG6crKSs/
-X-Received: by 2002:a17:90b:524c:b0:38e:5ac1:9517 with SMTP id 98e67ed59e1d1-3903c54b386mr15896123a91.3.1786037137831;
-        Thu, 06 Aug 2026 10:25:37 -0700 (PDT)
-Received: from bloom.localdomain ([2604:3d09:178e:e100::6868])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-390b1389e3csm57948a91.2.2026.08.06.10.25.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 10:25:36 -0700 (PDT)
-From: Ivy Lopez <skunkolee@gmail.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com
-Cc: andrew+netdev@lunn.ch,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GuTbpl7E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF721F00A3A;
+	Thu,  6 Aug 2026 17:29:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786037341;
+	bh=7pIaPeD22oCEvYbUCFVmoeAuHjBxVUeDI7QonlC4Gnc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=GuTbpl7EeB9jSBYiTlvyx1fhoJHolfVJwHpibwaeJt1Jo5yGHKRfKcW5gzIsJCxE5
+	 EJdOzeFMOSwQRVTTYUapm4gtMjbrf5AlMMn9/C3wj/JOSeRu9lTGHpNe8ERrQUp9Hk
+	 4OHoEdesm4+n4kLpkjKMViI4JiIxCHyORe5tMhEXxl0+c+2qjbUSb+2KMTZ+zrkzmZ
+	 13achVBV1nd195VuxpLNA6711GgVIW8QUvWxCiH6/MDdgjRk4woXd1UF1ZiWncNljC
+	 gG5R6ZJsUjm8430EtiqO6/b7GvaLgnH6WjHXg0MDKwO6+aUvPSLGPCUAxF3+UeArKR
+	 /Y1BycUoMf7Kg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: kuniyu@google.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
+	horms@kernel.org,
+	kuni1840@gmail.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ivy Lopez <skunkolee@gmail.com>
-Subject: [PATCH] e1000e: fix incorrect modified flag check in e1000_read_nvm_spt()
-Date: Thu,  6 Aug 2026 11:24:52 -0600
-Message-ID: <20260806172452.32139-1-skunkolee@gmail.com>
+	kylebot@openai.com
+Subject: Re: [PATCH v1 net-next] af_unix: Unlink scc_entry in unix_del_edge().
+Date: Thu,  6 Aug 2026 10:28:59 -0700
+Message-ID: <20260806172900.2962014-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260804002155.2233594-1-kuniyu@google.com>
+References: <20260804002155.2233594-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,47 +50,147 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-e1000_read_nvm_spt() reads two adjacent 16-bit NVM words as one
-32-bit dword for efficiency. When deciding whether to use the
-shadow RAM value for the high word (data[i + 1]), it incorrectly
-checks the "modified" flag of the low word (shadow_ram[offset + i])
-instead of the high word's own flag (shadow_ram[offset + i + 1]).
-
-This can cause silent NVM shadow RAM corruption:
- - if only the high word is marked modified, its pending write is
-   lost and the stale flash value is returned instead
- - if only the low word is marked modified, the high word is
-   incorrectly overwritten with the low word's shadow value
-
-This function is used on all PCH chips from SPT onward (SPT, CNP,
-TGP, ADP, MTP, etc). The bug has been present since the dword-read
-optimization was introduced for these chips.
-
-Note: this was found via code review while investigating a separate
-reproducible packet loss issue on I219-LM (SPT+ PCH). Testing showed
-this fix does not resolve that particular symptom, but the flag
-check is still a genuine logic bug that can corrupt shadow RAM
-contents and should be fixed regardless.
-
-Fixes: 79849ebc0e06 ("e1000e: initial support for i219")
-Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
+This is an AI-generated review of your patch. The human sending this
+email says "I meant to send this yesterday, damn. This is completely
+separate right?"
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+af_unix: Unlink scc_entry in unix_del_edge().
 
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index aa90e0ce8aca..87cd1cdc6f10 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -3473,7 +3473,7 @@ static s32 e1000_read_nvm_spt(struct e1000_hw *hw, u16 offset, u16 words,
- 				    dev_spec->shadow_ram[offset + i].value;
- 			else
- 				data[i] = (u16)(dword & 0xFFFF);
--			if (dev_spec->shadow_ram[offset + i].modified)
-+			if (dev_spec->shadow_ram[offset + i + 1].modified)
- 				data[i + 1] =
- 				    dev_spec->shadow_ram[offset + i + 1].value;
- 			else
--- 
-2.55.0
+A vertex whose out_degree drops to zero is moved to fpl->vertices and later
+freed by unix_free_vertices(), but it stayed linked in the circular
+scc_entry list built by __unix_walk_scc().  This adds a
+list_del(&vertex->scc_entry) so a following unix_walk_scc_fast() no longer
+walks into the freed vertex.  Reported-by: Kyle Zeng <kylebot@openai.com>,
+Fixes: 4090fa373f0e ("af_unix: Replace garbage collection algorithm.").
 
+Two questions below, one about the changelog wording and one about the
+cyclic SCC accounting that the described remnant vertex feeds into.
+
+> af_unix: Unlink scc_entry in unix_del_edge().
+>
+> Kyle Zeng reported that GC could free a dead SCC partially.
+[ ... ]
+> However, X's SCC forces the next GC to call unix_walk_scc_fast(),
+> and it iterates over A through B's scc_entry.
+
+[Severity: Low]
+Could the changelog name what "iterates over A" means in practice?  A's
+vertex has already been kfree()d by unix_free_vertices() at that point, so
+the fast walk reads and writes freed memory:
+
+net/unix/garbage.c:unix_scc_dead() {
+	list_for_each_entry_reverse(vertex, scc, scc_entry) {
+		/* Don't restart DFS from this vertex. */
+		list_move_tail(&vertex->entry, &unix_visited_vertices);
+	...
+}
+
+net/unix/garbage.c:unix_collect_skb() {
+	list_for_each_entry_reverse(vertex, scc, scc_entry) {
+		...
+		edge = list_first_entry(&vertex->edges, typeof(*edge), vertex_entry);
+	...
+}
+
+The summary says "GC could free a dead SCC partially", and the words
+use-after-free or list corruption do not appear anywhere in the message.
+Since the trigger is ordinary unprivileged sendmsg(SCM_RIGHTS) plus close()
+on AF_UNIX sockets, would it help stable triage to say explicitly that the
+pre-patch behaviour is a use-after-free on the freed unix_vertex?
+
+> This itself is not a problem since the next GC run will judge
+> B as dead as well and free it finally.
+>
+>        X -.   A <.> B -.
+>        ^--'         ^--'
+
+> diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+> index 0783555e25266..9fcaaf55cba5d 100644
+> --- a/net/unix/garbage.c
+> +++ b/net/unix/garbage.c
+> @@ -186,6 +186,7 @@ static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
+>  	if (!vertex->out_degree) {
+>  		edge->predecessor->vertex = NULL;
+>  		list_move_tail(&vertex->entry, &fpl->vertices);
+> +		list_del(&vertex->scc_entry);
+>  	}
+>  }
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the surviving remnant vertex
+that the changelog accepts as harmless looks like it unbalances
+unix_graph_cyclic_sccs.
+
+__unix_walk_scc() only counts SCCs that are still alive:
+
+net/unix/garbage.c:__unix_walk_scc() {
+	if (unix_scc_dead(&scc, false)) {
+		unix_collect_skb(&scc, hitlist);
+	} else {
+		...
+		if (unix_scc_cyclic(&scc))
+			cyclic_sccs++;
+	}
+}
+
+so the {A, B} SCC that the full walk judges dead contributes 0.  But the
+fast walk decrements once for every ring it finds dead:
+
+net/unix/garbage.c:unix_walk_scc_fast() {
+	vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
+	list_add(&scc, &vertex->scc_entry);
+
+	if (unix_scc_dead(&scc, true)) {
+		cyclic_sccs--;
+		unix_collect_skb(&scc, hitlist);
+	}
+	...
+	WRITE_ONCE(unix_graph_cyclic_sccs, cyclic_sccs);
+	WRITE_ONCE(unix_graph_state,
+		   cyclic_sccs ? UNIX_GRAPH_CYCLIC : UNIX_GRAPH_NOT_CYCLIC);
+}
+
+Using the exact scenario from the changelog, with X's live cyclic SCC plus
+{A, B}: the full walk collects {A, B} and stores unix_graph_cyclic_sccs = 1
+for X.  Because the purge runs with fpl->dead == true, unix_del_edge()
+deliberately skips unix_update_graph(), so B survives as a self-linked
+singleton ring back on unix_unvisited_vertices and the state stays
+UNIX_GRAPH_CYCLIC.
+
+The next GC then takes the fast walk, finds B's singleton ring dead and does
+cyclic_sccs-- on a group that was never counted, taking the counter 1 -> 0.
+
+Can that flip unix_graph_state to UNIX_GRAPH_NOT_CYCLIC while X's cyclic SCC
+is still present?  After that, both entry points bail out:
+
+net/unix/garbage.c:unix_gc() {
+	if (unix_graph_state == UNIX_GRAPH_NOT_CYCLIC) {
+		spin_unlock(&unix_gc_lock);
+		goto skip_gc;
+	}
+}
+
+net/unix/garbage.c:unix_schedule_gc() {
+	if (READ_ONCE(unix_graph_state) == UNIX_GRAPH_NOT_CYCLIC)
+		return;
+}
+
+Closing X's fd does not release the socket while it is inflight, so nothing
+calls unix_del_edges()/unix_update_graph() to re-arm the state.  Does that
+leak X's struct sock, its skb and the pinned struct file until some
+unrelated sender happens to pass an AF_UNIX fd to an inflight receiver?
+
+And if two such remnant rings are found in one fast walk while the counter
+is 1, does the second cyclic_sccs-- wrap the unsigned long to ULONG_MAX?
+The state would then stay UNIX_GRAPH_CYCLIC, so unix_walk_scc() is never
+selected again to recompute the counter, and this makes every fd-passing
+send take the synchronous path:
+
+net/unix/garbage.c:unix_schedule_gc() {
+	if (user && READ_ONCE(unix_graph_cyclic_sccs))
+		flush_work(&unix_gc_work);
+}
+
+The counter and the unconditional decrement predate this patch (58b47c713711
+and e29c7a4cec86), so this is not a regression from the one-line addition,
+but should the accounting also be corrected for the remnant case?
