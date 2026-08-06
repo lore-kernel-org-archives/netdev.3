@@ -1,65 +1,82 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A000C3254B3
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 13:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC7F371897;
+	Thu,  6 Aug 2026 13:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786022348; cv=none; b=SZBfCN01XBcX/EpmlqNgiql7ECyN1l5QJ1BWujySODbmJWPUB7E6FnIqBui56n2UTEuueykjiUgmYRL70vIAeU0yyRbah8FVaZbkvZEvBnlUqI27wm1R1b1mQI0QDiTL3NXhgWzx1g8FbS6Lw1tSgxOs+S7ttneasnI7RaAzv8U=
+	t=1786022455; cv=none; b=GleCWcfmcSdg8J3+/ok1SPnOt1eI+UGnyiOutlvTfxXyx0o1wikza/dISD1ivpJkJCH1J1IyKt3QvvMSNW5iewp7QTXtrhnbi9g+Bl0ZyS/HwV++E2FYLhGAD4cRFE9bRjX6mmwYkZG8afAIlXdEhEXZ2K72RnctFKQTlOp/R/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786022348; c=relaxed/simple;
-	bh=ScabkRed9xc17TccwMuJo10g/H6/bHekEyqsdV2aSl0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=u0lO0PCOMrk+sDD3WdnukgkiAPyjfSqPdBYOHsakOzinFEX26oH9PF5JCKpcHDH5j3XSQwAmHbJvjHh0eA8XjW/c0dLqLSgYxuyoJP7rtVzcqhL80RvB2ZTWXFvsy5X4Pf3a6bHdm6FuUjzROb+kUZXvbupOVBvtnIuxMnSFrOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 676DIdrk072588;
-	Thu, 6 Aug 2026 22:18:39 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 676DIcEG072585
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 6 Aug 2026 22:18:38 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <2175f74b-00c7-4868-aea5-ed9c171c41ee@I-love.SAKURA.ne.jp>
-Date: Thu, 6 Aug 2026 22:18:36 +0900
+	s=arc-20240116; t=1786022455; c=relaxed/simple;
+	bh=UV6ksYxjBjcF6snCyhIG5tK7/qFstSsI9////vM5eks=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pUMssgRL7kH2JXQx5cYJHYxXt6fvMyZHTDyrLWFmufa/uxdCl41uu4MU98xL++YIC7k7+yEhIm1JUc4gQUBN20ZXjqJ0DlY76n7tm7gLtf3wID4MD1vuXT1LIg+R1zwW9rJ/qHiUmYG24W9YOmGjJNS6rMvFvwD3DbsvA5ENhaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLgLzMAm; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLgLzMAm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D04D1F000E9;
+	Thu,  6 Aug 2026 13:20:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786022446;
+	bh=Surlx/2l+z2Yj4QRGGQoSLMlYGJNw9MVjsoZRAbVsxQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=hLgLzMAmob8Q5ytVF67nN5OhQWQqYvkDnjyxAwcja0dUB5ly/jxUUbrMO/EUtqYrg
+	 Y7QQB7xKu/BEJY6g2uUREo9NsAUNwgLTKnmrz+R9i/Fy95ozisaSK1RXP9OOCyZ2wO
+	 7XfI5qX4h0VIu+UG4gsFe2/OpmSJwf2Jv6KWR+7MgNoFsyR4twzR0AfdT5HsFHjY0W
+	 qHJxMjNwfC3+NFrHqs8TFCOvXINvkGfPaect4l3JttrZ4weQVVHb3/8rRdbVEKmp6e
+	 EoPHHhlFQ5dqaFutr9l9iBar9s1MMazRpUqFyJvlAInZXJLqc7TYus9LS2ldFesY2o
+	 J7e5x3Yf83J+A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1996D380820D;
+	Thu,  6 Aug 2026 13:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bug report] net: udp_tunnel_nic: reference count leak during
- network namespace migration
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-To: Network Development <netdev@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-References: <73ed3aa5-f6e1-47b6-9e5d-428ac1f4cbf3@I-love.SAKURA.ne.jp>
-Content-Language: en-US
-In-Reply-To: <73ed3aa5-f6e1-47b6-9e5d-428ac1f4cbf3@I-love.SAKURA.ne.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Status: clean
-X-Anti-Virus-Server: fsav303.rs.sakura.ne.jp
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: octeontx2-pf: Fix UB in shift operation
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178602240564.840277.12436088481002390035.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 13:20:05 +0000
+References: <20260804120446.1955448-1-Sergey.V.Frolov@kaspersky.com>
+In-Reply-To: <20260804120446.1955448-1-Sergey.V.Frolov@kaspersky.com>
+To: Sergey V. Frolov <Sergey.V.Frolov@kaspersky.com>
+Cc: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
+ sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ naveenm@marvell.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, lvc-project@linuxtesting.org
 
-Ping?
+Hello:
 
-On 2026/07/18 21:03, Tetsuo Handa wrote:
-> Description:
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue, 4 Aug 2026 15:04:48 +0300 you wrote:
+> From: "Sergey V. Frolov" <Sergey.V.Frolov@kaspersky.com>
 > 
->   syzbot is reporting a reference count leak when a netdevsim device configured with
->   UDP tunnel offloads is moved to another network namespace, and then the target
->   namespace is destroyed.
+> In function otx2_get_egress_burst_cfg, when the parameter `burst` is
+> 255 and the max mantissa is 255 (0xFFULL), `burst_exp` is set to
+> `ilog2(255) - 1`, which equals 6.
 > 
-> Cause of the Leak:
+> This results in an unsigned wrap-around when calculating
+> `(1ULL << (*burst_exp - 7))`, since `*burst_exp - 7` becomes -1,
+> which makes the shift operand 0xFFFFFFFF. This value is greater than
+> the width of the left operand.
 > 
->   The root cause is a structural mismatch between the namespace migration logic in
->   __dev_change_net_namespace() and the unregistration path in udp_tunnel_nic_unregister().
-(...snipped...)
+> [...]
+
+Here is the summary with links:
+  - [net,v2] net: octeontx2-pf: Fix UB in shift operation
+    https://git.kernel.org/netdev/net/c/7e2d693af0d4
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
