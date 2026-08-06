@@ -1,219 +1,119 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4306211A14
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 03:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B468248B
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 03:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785986894; cv=none; b=DSOSNDmsIqGu7G6Js0ZUAN3upnLzkbMdZodsrbPq5r+vY+Ger6z1RKHW5l7c3JYQiOcPK5mt9UxTI7Qkj/eH88mxe+pkZRU2JhW5Ju1dNqiJLsnrf/jHN5qyusPUuWBiz7hpRePhurMZpveasghyhehnpnCQEaPgonKmylurgK0=
+	t=1785986998; cv=none; b=CbYbl3cnLNqRfKMYT5jbIDOjS/QBYzkODMAP/OC6lQpR7+099XVQhLklDr1GAy7Yl/VzC81MiREN784LCCF+aKprqrYrpvgtPJsLMf8OSil4cB+e8dG33pm1HmyQ0/JmgKK58MfF6QkW3YzpCmrkCpC+X3ckGG1JY0lue6Jk+3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785986894; c=relaxed/simple;
-	bh=o3VumL4n1F9L3wdHGdyo89N5SNYZOxFXNvPB9xYfOwc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PX6QvEFQd7Xo2q+3WGi0ZyBP54TM4d3VWACZ/Fpzbx0ywEIT98umB1v4NLOwNBmQklQyyM61jaeJ7Auv+XjsLEbGab1eCrm8TmlIUMShfLCRjFmBlk519ik8dlQIHcjLe4AhXeOgYlWvx0e4xJ1b2xBw+0gu8itiUhV5CTlS3UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RuOQKgmG; arc=none smtp.client-ip=209.85.214.175
+	s=arc-20240116; t=1785986998; c=relaxed/simple;
+	bh=mNTeb8AhLdndI9x9cRA+xL4uJ7EvUDo1kPf4fhiiAtw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RpouOG8wLF6qfHHHz/OeQTz6diXTy9cHjnoLS2d41W0td0a7RdJ+fJ4Hmo3nml/FLN1qKychAnknQG8YJYb3No8lgSeQtWmbKUi9ArAR6vzpM6CWEmt2jR4mh88g4kEJAZqW2+QGUmvzVqvvlka6fAi76JOhk/JK/7cJL3tstZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KDdrnaW3; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RuOQKgmG"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ceb096e675so22684745ad.0
-        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 20:28:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KDdrnaW3"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38511175ad3so1496650a91.2
+        for <netdev@vger.kernel.org>; Wed, 05 Aug 2026 20:29:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785986892; x=1786591692; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Wy2teMLMsXQgihU2TjOQqhHKl5ccc/qhFvBF59Tujoo=;
-        b=RuOQKgmG+nq8MOJmjvj9zvIx+utf2ny6iLaT1tGJyeMh3Hm+tsyHWJBOyvbCnbGvDu
-         /zUOdly/UY6/N0qSnDe1Rf39eOL5VCfcg7vITdk7G7qrdXnZN1eCDtVjFRMFRKF2TH30
-         mVE1VMintto9NdHll6Afefo6AU7BKYiKHIi6YM4O4WIUQDb7GIQlxDdpUSNWzKGRrorv
-         36+qglh7Y3J/3LRkeKKoIKMfnE9g9w7v2vLCNDc+bpgwYZ14KBBmta4ck4CAPlk7QdGw
-         RTv5LQP3XlNOGj1/q7V7a8EnlH0S0uIobDM1bRpp3cgcJh+zLTALXTKEYlb6xZ49BptF
-         8rQA==
+        d=gmail.com; s=20251104; t=1785986996; x=1786591796; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KR6lwebD1jjbs/VxzPpKtBdIVfW3eDGBZKaYrDvtd84=;
+        b=KDdrnaW3MLR0P3mTqJ4gjVae97PhHcaVgrm6VScBMEBkh1Q77yGbPiva72G/Y6NYZf
+         TBsWwyFULz6NlUY8X6QV3SivUyJZ7EISpVO8JfDZkBqQwR1rtfq6LQj2oxdi62nGSabj
+         7EuFKdHWbabv2+M9J9PGjZ8m6tPqF5Kq+nEp0DCL7eAf2MFO7EpEvH/lY41DN2zph/l4
+         zakoa727Py/5lCxhevYI/R50WjM/KKNfIJXKGxHWKfBDerVahRN6vrqYlQZhp5SIBTPt
+         Yp6ytUN4rxwzJUxEA2buCtms13X5oVvnjJh+1hVmRxGn7TPs2CvMiXEaWbuz/Z4j1ZGE
+         UEjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785986892; x=1786591692;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Wy2teMLMsXQgihU2TjOQqhHKl5ccc/qhFvBF59Tujoo=;
-        b=FhwHvQjLLasOBsPPiwMbjAeQ0XprTNOGQqB9/VziE95BmN2CZhirq0Ng6uhSeQzlPR
-         8TASiUMmXK6O8kaFT2amdR9HbulrKrBigpG5RQ/tViVRGNKu6hsrh9VY9xN43sfoT4Gr
-         RpRfQheHJFxqOZLN3lLyGW0Zs7YHufzlukzfkXcNbYhhGE6fA/g8gZFMIvFGlCYCLger
-         jvKPG4D0DYmcepqdcMKE6t8rF/o4Mk5kNxxfCHytA8F9V41gyciW+kQ+mRg6Xt6zoIZV
-         SaHBIBdxI1ScaNi6eN2oBqPUgJHbuQnbn76qbkOzFTAl1cvQO1mFXSNyeTv2lH4sc7qM
-         Y8mg==
-X-Forwarded-Encrypted: i=1; AHgh+RpPo0DsVkfjYr/HagYBoMzKprI/PDJgawdTmZU1VUvfH0WS/jTzVHmopvDb2DTnFEspEetBrtc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4+3G0a2TMk7Bu/rtsHJ78ZExQJpPWEpU0UqlT4ZrUDv2z+hPT
-	Ufp3Q4HL68bFVp/9wef+xotTqua7s/MkFiBoc0p+4318BTKy9k6Cb6i2
-X-Gm-Gg: AR+sD10N7DrXKrt3dgdQUK5YgnwCCT9N6UvIDgCLLHBM6qqbN0C89djIAwTwH3+jKtd
-	dDSJ3cTdxSNF4ZeAGnGfwwIgdydtDlJJwJntt9Kdvehoxi7qoUPDN750OlHl9p8+3QvCaWEiiOk
-	IR7M/72pj8rluwwLE6iOI6dopNL6CUIR4Q3avjXYz1KBi15Q8M832oVXTBjP2nQf6YXoomiN868
-	dGw7QY/CydVTHinBMfRfxmN2i0eV2gx9Bl+jcFPgPjSxwQZAbReQY+R1WEbCdmMabb9ORl4OIQY
-	/zlBW13usS9pTBoBggWzu1O2F3ES7LvEFzoMhTaLO3cjTRJu6f8qadllKW2DrVS/wvannr92XM8
-	YtTQLr+6acmbQrWYnd3Vlac1YfPHlHSa5wF/ekHyccLekLACJwgR6sUmqVPQzj/8fs09JdCMdjw
-	zCYDsQN7SfKuq1QkwQ19uXjWG3NAOR8L3ObCQsG1t60l+eOatXMnLLQlH9VK8uYG3xs6OWu3tij
-	XZ0UQPabWLXsU2N8Io=
-X-Received: by 2002:a17:903:2b0d:b0:2ce:faa6:7cbb with SMTP id d9443c01a7336-2d0ca7afcc1mr141641525ad.4.1785986892002;
-        Wed, 05 Aug 2026 20:28:12 -0700 (PDT)
-Received: from [192.168.255.10] ([43.132.141.24])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa4b6c66sm23504135ad.55.2026.08.05.20.28.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Aug 2026 20:28:11 -0700 (PDT)
-Message-ID: <aabdf499-20ad-4667-b289-626c09a56c0a@gmail.com>
-Date: Thu, 6 Aug 2026 11:28:07 +0800
+        d=1e100.net; s=20251104; t=1785986996; x=1786591796;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=KR6lwebD1jjbs/VxzPpKtBdIVfW3eDGBZKaYrDvtd84=;
+        b=iKul0t7vWwn803LxskpW+Ot2eDBWOwW956nwKlkkpk+XYoVsMOXhAz76hvtTl6Uxyu
+         IPhYWFACfnI6dieoSvrc7Q3l1/fU3eU8DoTnhInqjDGS+qoNOz0elJfO+yWltk6VqqsB
+         z86cXLQG+5rGNdzj11r9CUa4tQgzoMWSt4Ib9P/slnW02rqsKSrzpthNXS1EnnlgL/+3
+         cjWFYbZ39Aw+lU6L3uTF1ytU5Btnr5OElmew9o50Mro9IQX6EwVOHuAoFUXTdp4Ygvbi
+         CjDtsBwoiZcJD6qSr4SatmeRhrUcV77ymuqwgIeIKw3CVxbbp+hgB9z0Thc61UZYVezs
+         mO8Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpOTFgMBavcuCIVQ7zZNcYOWJr1eFmIlxAUCDUFgPkPWtnO1dmG91aO0fIxcVF7JrEv7qqLAo4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZSbE/mYZrUNd01CUk8lDOPXeYFVe1kDgbelB94AelDHYq+sOG
+	EC0jyRadwc2g85H8LD3igZqbePb/wZcoRXD+iwQGyHHzbR/aO/m5bxBk4BnJiA==
+X-Gm-Gg: AR+sD13usxhRxl+EEBDqNvuzlkuW5bDWrfeBAH2JFSDUmIqsPht64kG45K/HxN9XUhU
+	/fADx/r0EAhIG7CdtoCUhCxPVDUHOo2p1mxmB85BhVu4bjcyN+wKrnngJaCj6sBEWzk8csSkscU
+	s9DY7yWw4UzPOdgkbEHM1+3EauD+8SlUVTkwl4Jd5AKld7Nch1Huv0u0ELGX8cKmg7k3qYxPRHK
+	K+DG96Q0tCzqhN8is/jQ4jkmHOvhZ+G82lJU6rtZ8gtxYm8klzFnAi3r4+xJTJ5phNtV7ok5M/1
+	3Ersv+Gs4lBWj6XuCY/4X+4ejt3szS7SZIR2CVsACiGU8Oa2/JNKT2H/EJ4J0ryJT3IKGImmRfk
+	pN/TzVTqzQu1zH2Fdvr1Y67Y7QKfa7qBNk/KvJiC0fc5pQLMBtTWy5EHJBCrNV7YTZcCLWnTyAh
+	Rn/80j1IJKlt4uUcUZw5N/qfVQ9HIt2OCgta0tppNTBYe0GZG0gNtVG2Chjgi6gSBopwNnVRcah
+	znDesPnxnyMpR3sVcb8qabM1lQJXVQopQ==
+X-Received: by 2002:a17:90b:1e53:b0:38e:6d4c:14e6 with SMTP id 98e67ed59e1d1-3903c5501efmr10058987a91.3.1785986996091;
+        Wed, 05 Aug 2026 20:29:56 -0700 (PDT)
+Received: from [192.168.110.119] ([216.236.36.151])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39085f2cb6bsm573371a91.9.2026.08.05.20.29.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 20:29:54 -0700 (PDT)
+From: Hangbin Liu <liuhangbin@gmail.com>
+Date: Thu, 06 Aug 2026 11:29:28 +0800
+Subject: [PATCH net] bonding: fix wrong extack attribute in ARP validate
+ netlink error path
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/sched: cls_api: fix tp_created race losing
- existing tcf_proto
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, corvus@tencent.com, henrymei@tencent.com,
- stable@vger.kernel.org
-References: <20260805093012.95155-1-henrymei@tencent.com>
- <CAM0EoMmZGXhHL2v=AyjR9xSs8-s9EfkA9FkpULqtFBEOUxHQQA@mail.gmail.com>
-From: Aohan Mei <ljp1205831794@gmail.com>
-In-Reply-To: <CAM0EoMmZGXhHL2v=AyjR9xSs8-s9EfkA9FkpULqtFBEOUxHQQA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260806-bond_arp_validate-v1-1-3ae005657ef9@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBPMcNCuEhGWUw2EhYYE0d2Tl
+ m/x/wOJIlOCrnogUubERyho6grmzYWVBPtiUFKhNBLFdAQ/uniO2e3s3UWi1VYZixpRWijdGWn
+ h+3/2EOiC4X0/D36MwGgAAAA=
+X-Change-ID: 20260806-bond_arp_validate-359289656609
+To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Jonathan Toppins <jon.toppins+linux@gmail.com>
+Cc: Jay Vosburgh <jay.vosburgh@canonical.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@gmail.com>, 
+ Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.14.3
 
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
+The attribute of netlink error message should be IFLA_BOND_ARP_VALIDATE
+when ARP validation setting fails.
 
-在 2026/8/6 01:52, Jamal Hadi Salim 写道:
-> On Wed, Aug 5, 2026 at 5:30 AM Aohan Mei <ljp1205831794@gmail.com> wrote:
->>
->> tc_new_tfilter() attaches a filter to a chain. When no
->> tcf_proto (tp) exists for the given (protocol, prio), it creates one
->> with tcf_proto_create(), marks tp_created so the error path can clean
->> it up, and inserts it with tcf_chain_tp_insert_unique().
->>
->> However, tcf_proto_create() can sleep, opening a race window in which a
->> concurrent thread may insert a tp with the same (protocol, prio). In
->> that case tcf_chain_tp_insert_unique() destroys tp_new and returns the
->> *existing* tp, but tp_created is never reset. If the request then fails
->> (e.g. kind mismatch), the errout path calls
->> tcf_chain_tp_delete_empty() on a tp this thread never created. For
->> classifiers without a delete_empty callback (all but cls_flower),
->> tcf_proto_check_delete() removes the tp unconditionally: a live tp and
->> all its filters are silently lost while the owner's change() still
->> reports success. The race is reachable because cls_flower on
->> ingress/clsact qdiscs runs without rtnl_lock and can interleave with
->> rtnl_lock-holding classifiers such as u32.
->>
->> Fix this by making tcf_chain_tp_insert_unique() report through a new
->> "inserted" out-parameter whether tp_new was actually inserted, and
->> gate the errout delete_empty call on it instead of tp_created.
->> tp_created itself must stay set on this path: the chain reference was
->> consumed by the destroyed tp_new, and errout_tp relies on tp_created
->> to decide whether to tcf_chain_put(), so resetting it would underflow
->> the chain refcount.
->>
->> Fixes: 8b64678e0af8 ("net: sched: refactor tp insert/delete for concurrent execution")
->> Cc: stable@vger.kernel.org
->> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
->> Signed-off-by: Aohan Mei <henrymei@tencent.com>
-> 
-> This is the same issue Sashiko found. A patch is here:
-> 
-> https://lore.kernel.org/netdev/20260805134049.927864-1-victor@mojatatu.com/
-> 
-> Also, please add assisted-by: tags going forward if this was ai generated.
-> 
-> cheers,
-> jamal
-> 
->> ---
->>   net/sched/cls_api.c | 21 ++++++++++++++++++---
->>   1 file changed, 18 insertions(+), 3 deletions(-)
->>
->> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
->> index fee4524ad..9ceb2b538 100644
->> --- a/net/sched/cls_api.c
->> +++ b/net/sched/cls_api.c
->> @@ -1937,7 +1937,8 @@ static struct tcf_proto *tcf_chain_tp_find(struct tcf_chain *chain,
->>   static struct tcf_proto *tcf_chain_tp_insert_unique(struct tcf_chain *chain,
->>                                                      struct tcf_proto *tp_new,
->>                                                      u32 protocol, u32 prio,
->> -                                                   bool rtnl_held)
->> +                                                   bool rtnl_held,
->> +                                                   bool *inserted)
->>   {
->>          struct tcf_chain_info chain_info;
->>          struct tcf_proto *tp;
->> @@ -1948,6 +1949,7 @@ static struct tcf_proto *tcf_chain_tp_insert_unique(struct tcf_chain *chain,
->>          if (tcf_proto_exists_destroying(chain, tp_new)) {
->>                  mutex_unlock(&chain->filter_chain_lock);
->>                  tcf_proto_destroy(tp_new, rtnl_held, false, NULL);
->> +               *inserted = false;
->>                  return ERR_PTR(-EAGAIN);
->>          }
->>
->> @@ -1964,6 +1966,11 @@ static struct tcf_proto *tcf_chain_tp_insert_unique(struct tcf_chain *chain,
->>                  tp_new = ERR_PTR(err);
->>          }
->>
->> +       /* Tell the caller whether tp_new was actually inserted, or an
->> +        * already existing tp is being returned instead.
->> +        */
->> +       *inserted = !tp && !err;
->> +
->>          return tp_new;
->>   }
->>
->> @@ -2254,11 +2261,13 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
->>          void *fh;
->>          int err;
->>          int tp_created;
->> +       bool tp_inserted;
->>          bool rtnl_held = false;
->>          u32 flags;
->>
->>   replay:
->>          tp_created = 0;
->> +       tp_inserted = false;
->>
->>          err = nlmsg_parse_deprecated(n, sizeof(*t), tca, TCA_MAX,
->>                                       rtm_tca_policy, extack);
->> @@ -2382,7 +2391,7 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
->>
->>                  tp_created = 1;
->>                  tp = tcf_chain_tp_insert_unique(chain, tp_new, protocol, prio,
->> -                                               rtnl_held);
->> +                                               rtnl_held, &tp_inserted);
->>                  if (IS_ERR(tp)) {
->>                          err = PTR_ERR(tp);
->>                          goto errout_tp;
->> @@ -2440,7 +2449,13 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
->>          }
->>
->>   errout:
->> -       if (err && tp_created)
->> +       /* Only delete a tp that we actually inserted ourselves. When
->> +        * tcf_chain_tp_insert_unique() raced with a concurrent insertion
->> +        * it returns the existing tp; tp_created must stay set then (the
->> +        * chain reference was consumed by the destroyed tp_new), but the
->> +        * existing tp must not be deleted.
->> +        */
->> +       if (err && tp_inserted)
->>                  tcf_chain_tp_delete_empty(chain, tp, rtnl_held, NULL);
->>   errout_tp:
->>          if (chain) {
->> --
->> 2.50.1 (Apple Git-155)
->>
+Fixes: 2bff369b2354 ("bonding: netlink error message support for options")
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+ drivers/net/bonding/bond_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for the pointer. We tested Victor's patch locally and confirm it 
-is an equivalent fix for the same issue, happy to defer to his version.
+diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
+index 4a11572f663d..7dc31b2551c4 100644
+--- a/drivers/net/bonding/bond_netlink.c
++++ b/drivers/net/bonding/bond_netlink.c
+@@ -372,7 +372,7 @@ static int bond_changelink(struct net_device *bond_dev, struct nlattr *tb[],
+ 		int arp_validate = nla_get_u32(data[IFLA_BOND_ARP_VALIDATE]);
+ 
+ 		if (arp_validate && miimon) {
+-			NL_SET_ERR_MSG_ATTR(extack, data[IFLA_BOND_ARP_INTERVAL],
++			NL_SET_ERR_MSG_ATTR(extack, data[IFLA_BOND_ARP_VALIDATE],
+ 					    "ARP validating cannot be used with MII monitoring");
+ 			return -EINVAL;
+ 		}
 
-BTW, "TencentOS Corvus AI" found this bug; and the patch was mannualy 
-written and validated, so no `assisted-by` tag here. Noted for future 
-submissions.
+---
+base-commit: 2a33516f9ef59ad11844d4fc152f889449b5daf3
+change-id: 20260806-bond_arp_validate-359289656609
 
-Thanks,
-Aohan Mei
+Best regards,
+-- 
+Hangbin Liu <liuhangbin@kylinos.cn>
+
