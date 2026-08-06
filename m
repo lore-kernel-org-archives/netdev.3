@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B196380FC3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FA7380FDE;
 	Thu,  6 Aug 2026 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786035077; cv=none; b=NwDw8lgV8Ov9ZepFGeHDXT0YXBBk4LC5DjyqjEFZwpdFSdI8RuE6Toze1aE+CF8r+H9t6PovwhaJUSD3tAlIvLvW5LLparp/8yejlKl9VA0OrSQx7syxTAaArQ3xRZOtsrivL4+UwaxgklWsh+Bu+blZo4d3xHXSz1qIAIbvne4=
+	t=1786035081; cv=none; b=TgSdm3sjuOKNUVIRe2b9ReS8sn04qwVpDEzr4GUv48vfVkZq4FoXUiBPM1ozivYwVH5bLWo3DY74OoBc77QzD09zEXj03hq2zuj0tWQhJL7fln/Cti5SwtkVn/Jtnx4zyOGbZ4306flDO1PdMPdugVLrvc42m5k74lReOrzGQfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786035077; c=relaxed/simple;
-	bh=V28Zn9l07PnyvCbOXsDBt1/jIaK0FKq/uN9FQhJyYng=;
+	s=arc-20240116; t=1786035081; c=relaxed/simple;
+	bh=5QOLgOF5GA03ixxqefqlHoSmngn+m5FCeceXG6UrlME=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XFJRzoAUIy3/tCiLZvdCNyX4ZKgQ0/ffiWptIaw/u9EF9auIybsMULIl3u2o5yJ3bkV/rWldKE3kYWGUsg1e6pa8GSnmo+IkDB7E4vRDK3JvlH9AQRAGrJNF02ONU+NVeMbjrJT9l8m340PnOQWcK91ytf1ZoZ9xxNiT+WQg05g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SbqWDj3w; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Fn6kYpzOOybPRbzp0f1daomCas3Y1vUQALi/EWX+cskax4mjkJ8348C7X1opWw9yFaVjTvdPoiOytiGYi5n4VLgJJvTzyzSL34JVc2d+5sUmeaioZVYzRvvJoxrWsuTNyyUIY54x91WYGGAhBodCV0ohyyHI+7VCHq0yHrtyXvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W1AJtjOT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SbqWDj3w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913451F00A3E;
-	Thu,  6 Aug 2026 16:51:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W1AJtjOT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6F11F00A3F;
+	Thu,  6 Aug 2026 16:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786035064;
-	bh=vxolka/MWL4H+ALKSuwKFt5z/S49G+LJW4ab/ImI8k0=;
+	s=k20260515; t=1786035067;
+	bh=w/uefEEOH9/iG6+Ql6DZWRZebcZnCVGNHfKrKvZ9G8w=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=SbqWDj3wUasGqcRsd0FAqFM/XOoPWvI5z3JzzeKyIq3q13IuSlNARb0lLw2OiqcLJ
-	 nFkr8VuPKyqsCeD+4/74IhZBZPxR0czrsLuePdaDpzIzU/G4AbsgLTZLptJEBLw9OV
-	 YMLzkZTxtcB76b/YiPlhvok238U90tCBosiy6NvjF05o9eEumSeyB+izk8iyvP8Dks
-	 fzSiXYeodYXw7sonerKhu3Op6BrYvCktk3SNoTdPWPCQ/yOrHkou7eo9Iv+X6wDkL3
-	 /9CEkKgCNiBCkNR0vh1J5ZnzntVdLHaZJP6Ds8XYJO23X/bbB6d788+1H8+g1aUTNH
-	 yRV/hTPTmAZ7A==
+	b=W1AJtjOTWqV6B++zxCIkpRlFmYvfbcAGK85zFmrKlKS8bZfPHjQuKItc3goG+3JKL
+	 u47aE3AGi50Vw4oeEIKxkGc9GJccvoi+p9cn4hwHIAyMTGbYN8WT+z+5kJBUNo8KXt
+	 77ad6Pzlb29BwOHcgd48ZfPu6rTbAWO/gLrt35jb6sP2y+2EsJYlG4I86IPh6+JCVt
+	 L6aKBzJm8/xLZmqUX5UxgYKllI5ZR1aIfNEZXpOyXeYovX4RU7wXSaFUYKRBx1MIMd
+	 PRkKyw6nM+o3Hx4MMkxVrPORZkcxJGaLCky4pXP3DbuN94yeSrT6J2f+3xxegpi/wc
+	 nNTMZKEu409EQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198B5380820D;
-	Thu,  6 Aug 2026 16:50:25 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19855380820D;
+	Thu,  6 Aug 2026 16:50:28 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] sctp: clear control chunk transport if it is being
- removed
+Subject: Re: [PATCH net] s390/ism: Fix UAF of sba and ieq during
+ ism_dev_exit()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178603502364.1375455.4324945153303168941.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 16:50:23 +0000
-References: 
- <7e1168cb722132152a29d47e5eafaeac4a3bf6f3.1785943120.git.lucien.xin@gmail.com>
-In-Reply-To: 
- <7e1168cb722132152a29d47e5eafaeac4a3bf6f3.1785943120.git.lucien.xin@gmail.com>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
- kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- marcelo.leitner@gmail.com, danielelinguaglossa@gmail.com
+ <178603502663.1375455.2308379407794585304.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 16:50:26 +0000
+References: <20260805131043.954639-1-wintera@linux.ibm.com>
+In-Reply-To: <20260805131043.954639-1-wintera@linux.ibm.com>
+To: Alexandra Winter <wintera@linux.ibm.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, aswin@linux.ibm.com,
+ netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ horms@kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  5 Aug 2026 11:18:40 -0400 you wrote:
-> sctp_make_heartbeat_ack() caches the destination transport in
-> chunk->transport without taking a reference. When src_out_of_asoc_ok is
-> enabled, the HEARTBEAT ACK may remain queued on control_chunk_list instead
-> of being transmitted immediately.
+On Wed,  5 Aug 2026 15:10:43 +0200 you wrote:
+> A ism interrupt handler can be active in parallel with ism_dev_exit(),
+> accessing freed data structures.
 > 
-> If the peer transport is removed while the chunk is still queued,
-> sctp_assoc_rm_peer() drops the transport and schedules it for RCU freeing,
-> but only clears cached transport pointers in out_chunk_list.  The queued
-> control chunk therefore retains a dangling transport pointer.
+> No new interrupts will be generated after unregister_ieq(). Drain ongoing
+> interrupt handlers by free_irq(), before freeing ism data structures.
+> 
+> Fixes: 684b89bc39ce ("s390/ism: add device driver for internal shared memory")
+> Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] sctp: clear control chunk transport if it is being removed
-    https://git.kernel.org/netdev/net/c/c9158ceaf277
+  - [net] s390/ism: Fix UAF of sba and ieq during ism_dev_exit()
+    https://git.kernel.org/netdev/net/c/b1896543ce59
 
 You are awesome, thank you!
 -- 
