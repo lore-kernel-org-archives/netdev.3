@@ -1,81 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD51DF76;
-	Thu,  6 Aug 2026 02:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A6B24501D;
+	Thu,  6 Aug 2026 02:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785982847; cv=none; b=g/yhMSzEljnb9ETsxul1oUgIc18ZwLCO/QVXHoJWcY71y9Azpk/go+pQX2HiHGfI7fHn9xbk66KDpuxWi3l7oF9dxndzWNInuAdJAF/LATnEb6a0Rr0pS5KxRzD4sPkdxIPh6O+8xPeDqEcfwoaeJ4lqefKs/NCaXkUduaTZlPc=
+	t=1785983242; cv=none; b=RlThe579flLPyIr0M5hnq3sHjZqRuAfKuoNDRSggR5a1rgosvgbllEgyD/4iw6cgCD7A4R3Q9gDngWA/4etciJFO4AVm24167EeI/1yf4TVTw7j+Byq/VK7oiDPgJSE2p6uzEpylRLypAhFLeTPvVDfm8l+h5qzaM5pemnMU8p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785982847; c=relaxed/simple;
-	bh=Db7le1/FY7MpvuuEgqgUXiPVfzH/SK77Zot6SCwEvVw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KbC/TDr9ejc/9JRrvvCbJVDGjGdnBSECYjXlbKEwN0auv6aMz6sszX1MLrV8OmP/AiysUJ2Z7QklVClKn4zRgDqStQUyz6nAtEs+NX30tA3OGv8tV1njM3p9p7I8CqEbQ1gVYi9kLeRv+ubaspqsnvlEJlZt7kmaditWui5iQxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPFFO2mk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785983242; c=relaxed/simple;
+	bh=YtCJ5SsRpPBSQ+MXB5wcKcfelVvY0AKNgMKUVYF/zFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qi164XiSd44coEs8/KejnpLbpivcyWsdJ1V3X+ezEM7Um3O/U/Cs0ybWtdi30pPcIIBQ7YZAdvd/ZJFgPFf/CPTHsz39mpZwsHUTFPoBqC12S0wYhrn74tnW0+mpsNdFqtI0pO6N2sDVonGQvQqaVuC3esBzOiRFmxJUNngskqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPBnuGze; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPFFO2mk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4811F000E9;
-	Thu,  6 Aug 2026 02:20:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPBnuGze"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB1F1F000E9;
+	Thu,  6 Aug 2026 02:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785982846;
-	bh=TydB11UB/GCYIDS8q/suvoTcvc1zyeq7+Pt4k8NwUgw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VPFFO2mkSl9nBAMvvzcZEZleV8fvx9CPSZ5MR1nkwiU7kpa+CWv9Baya3Z/U2i6eB
-	 IQLZD19pbyCFWydeDEIG7iV3W8JskDy5Ju2cyBI9nuhYDnD6tJ891tg6xo1GdIsNfs
-	 jSqOw93gs+LKd26+7jzZyCvgc7anNJqJCVprpx5B5yuxncGvaF2EL6jCuviFQ0hAP1
-	 nOuFUQWi8xLGEzvljSDqIaduxjWXhm5gpAaLKeXONUtIFe3cwcrgmM7MKKvSeypRiH
-	 jTu85Shl26uKFv25KVSdyWOziTjtkHqlk0sU+lfDlu0cWC7oLo2hXX/P68/jfWBA8D
-	 +AWDv98CZj4PQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19940392FFF9;
-	Thu,  6 Aug 2026 02:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785983241;
+	bh=qwH5CR6eL+Douq4vuseN2ZC6QOu68xpXtt7+jfLX+Ak=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VPBnuGzeG7vz0eF4A1zwMkKnPk5BwghrKPuuApTL7oYrYrY8Du/WgfiEemnePTZlS
+	 HOktoDnAxH3avwbhLec65Aa1qwmiZpz68wlLdCAPNXesYto3ID4LYczhghfgjXXtE1
+	 i4k4oOX603yZcyO4vNTP8yveILz13yhfgOBoYcjDoKYzRCIi2aAzJ3kyUqxSzaKBWg
+	 QA9fQvudcRpNHtfT1PWvsQ0o2XnZXFsu0YVsQGSs2cxnUU0CZoBQgNAWOYHMaJVglX
+	 yT0dXkgIQWLeTTztzZvoKUN8I6mBkYp5C+c4PJXyja0dJeu7cwZHOXBeJX7O4L8EDW
+	 9Ue+LZn9GZfSA==
+Date: Wed, 5 Aug 2026 19:27:20 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jiangshan Yi <yijiangshan@kylinos.cn>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 13667453960@163.com
+Subject: Re: [PATCH net 0/2] Fix ref_tracker warnings at boot
+Message-ID: <20260805192720.1373c514@kernel.org>
+In-Reply-To: <20260731035135.3917308-1-yijiangshan@kylinos.cn>
+References: <20260731035135.3917308-1-yijiangshan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net RESEND] net: stmmac: raise TX completion interrupt at
- the
- end of an xmit burst
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178598280589.610432.15021421797770719608.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 02:20:05 +0000
-References: <20260731194522.55069-1-contact@c127.dev>
-In-Reply-To: <20260731194522.55069-1-contact@c127.dev>
-To: Johan Alvarado <contact@c127.dev>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- Jose.Abreu@synopsys.com, rmk+kernel@armlinux.org.uk, pavel@ucw.cz,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 31 Jul 2026 14:45:22 -0500 you wrote:
-> The TX mitigation logic only sets the Interrupt on Completion bit once
-> every tx_coal_frames descriptors (STMMAC_TX_FRAMES = 25), with the
-> tx_coal_timer hrtimer (STMMAC_COAL_TX_TIMER = 5000 us) as the only
-> fallback. TX skbs are freed exclusively from the TX completion path,
-> so any flow that keeps fewer than 25 frames in flight has all of its
-> skbs held for up to 5 ms after transmission.
+On Fri, 31 Jul 2026 11:51:33 +0800 Jiangshan Yi wrote:
+> This series fixes two ref_tracker warnings that appear at boot on
+> both TCG and KVM:
 > 
-> [...]
+>   WARNING: lib/ref_tracker.c:322 at ref_tracker_free
+>   WARNING: lib/ref_tracker.c:246 at ref_tracker_dir_exit
 
-Here is the summary with links:
-  - [net,RESEND] net: stmmac: raise TX completion interrupt at the end of an xmit burst
-    https://git.kernel.org/netdev/net-next/c/d21a374995df
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks for the report, I've been siting on a fix for this.
+Let me send mine out.
