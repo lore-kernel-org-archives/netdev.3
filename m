@@ -1,154 +1,124 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012021.outbound.protection.outlook.com [40.93.195.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A088D43F4D7
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 10:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786012704; cv=fail; b=BBTw/o7r10sI4Lgznz6xP6i7fAhb69Qqk2Cf8+1fSc1cmzX2SidsixYGG7G/WSX4dqYEL7/YzMlJ23mahlXrLszpoBPF/DSjPe6dpozSH8no4ZqVTsixlT7BXK+BpaeGmMx9bVx3INQZQdnMYwKF5+yueFGg9Zb5NPDyfr5Etew=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786012704; c=relaxed/simple;
-	bh=jRY+6Sm6bg4UPK03u8u6AqDON1t5VW4vdE4FC8EuGKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QwwcNk2OL3UqnoRN7QObVWuOp2u0vZ3vJufWSr55f4wlbxzPDLUNKQEQt/8k1FxguIPewVAcbZWtOIKVfIb7PxFBSfk6Lk2M/ZLxpRk0+gj5K2Ca9usfmCrduBbhvbBDpshxjmi5VdBOIazdptKdlW7t044ZkhfxVfMXAYGnP0c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LuDJP0kf; arc=fail smtp.client-ip=40.93.195.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDCB2BD022
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 10:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786012742; cv=none; b=JRFy6TQKDIsqzrsBfYdiYCOYtjgusLagzaZu4z8ZYMCzgnV0Q8R2Ok3KrjmmwSQp+BSWjJm2TyZnG5zuJ4rKYcggYVmTMjogdr0zuIvhYYA1RyMPR+zoUfAOQHTSzywpNbfhTqXR+0Um6povr0KdHSToAgg8FEbCCDgQzcRXrBo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786012742; c=relaxed/simple;
+	bh=rFLZtw2z8JP4NTc8a4V436P/+oQw7CWh+GEgzMXdQBI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=EjYh+7V2AhDNXiqUuIg32knL/7telbbuzq9e4h756O4BsA8vpt8Mxfe9Cyj5zEb/6wBCUKhRy1/LZQxyb/orbl4gSy8T3pBxco4E+QA7Zk+SwYsYHx60iD2DhVEhfx7ipsJeNzvcgkBwLfF4bXGzoeLMgM/K1fuFdIFa7B7Cri8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KweyhLyd; arc=none smtp.client-ip=209.85.222.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LuDJP0kf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V7yE584/xGtFSguS0wYBDbCzYV9d8t0fKMD/ABh27+RbbGObv0Zx692wrPR66xeswWETFQs5zoCMua5Mz+dw/06nS1fdG++Np5ZUo67uTAdGuUsq7gxlOGv0qei5jrfx3qA3QsyfnYTBc8I1aHOqLs21QBfK5SXSGzf1oSDAEC8czGMocVx61Ysg0mYklZZ/DgantfOxZd9HiiMpqC4tTWo2r1r5lsjc83Eeu87zLMkLd4Sfqo4hXzgBNfkh4qBmXipv/gySNoBW7pkE+cyJiRxDejm06BtCJWUa0GyaVo3DjOlhL2XXzujCHmBpW+/ZdcqwhELKdd7LhuAILlAe3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AN4vNdSMghpeXgXa/ORjP/0XPq2TtjY0U5YQB2GvMSM=;
- b=PpK4+NQCoyGQ4giyuKcWRHF8OMHzFIY3/GgBx1pq5CP1W9mOFx5SqONx3JtwbTyqmfQeBVCVrAAIMwpN5jfLvcLm1pL2+nOB3rOE00SapvOBoqUal4W3Xu6udVKYer3GC0oPfk56wMefL2Pr/ID/5az+x9VmlYX0O18fXPUUxFWmf+QAbaUjyqPazqwbFpX6f1BdU/4NfdA6OwC9mr0Lwy5L+zpxnEQJmQ0RiB33lwIyDzwbkZucDfuTGbS+o1k41Z8WfUSu2hace69WuLX99HM6a64B8xH4LLeRPH1I5d5LsEccVoYux5Jv8984DcsBQrUZlWMA8cfRyluWbOYZQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AN4vNdSMghpeXgXa/ORjP/0XPq2TtjY0U5YQB2GvMSM=;
- b=LuDJP0kfCuetUWXVApbmbQCqpZ5Ku/4OZ99jNNrybM/WaG46zg7oPUs2lt5a+m+XS3DM3zIVnacrgygJzg38m2D4e2guHAtaNr2Vr49sKvj1MlIPKgadY000MOZk8N+Gx7g6oQQcpL8ZPuzO/3ne++RgreCZ9sDKHiHRP5IC8NofxnaEf7XGalZznIoMXHQ5ivEA+8d6XBQBbNnnXdFjgF/MhvL9Q7RoUIj7eErWnmR8J4/9EjZnjtB8fRbCxfQ2/fKXN2oZbCKmQSTNPfChwtm3eknQD/y7U/2hjY5lD/OuiY/ClN5uNwd6caXuwY08TGQwWdidtBqj3Hw69/XBkw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by SJ0PR12MB7005.namprd12.prod.outlook.com (2603:10b6:a03:486::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Thu, 6 Aug
- 2026 10:38:16 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0292.019; Thu, 6 Aug 2026
- 10:38:16 +0000
-Date: Thu, 6 Aug 2026 13:38:07 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>, zhilinz@nebusec.ai
-Cc: zhilinz@nebusec.ai, netdev@vger.kernel.org, dsahern@kernel.org,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, leone4fernando@gmail.com, vega@nebusec.ai
-Subject: Re: [PATCH net v3 1/1] ipmr: only copy pktinfo to cache reports
-Message-ID: <20260806103807.GA1818763@shredder>
-References: <e93d0d2fa5725ddd06b20e3e4223ab68b93b48d1.1785719031.git.zhilinz@nebusec.ai>
- <20260805013126.4161847-1-kuba@kernel.org>
- <20260805081737.GA1284302@shredder>
- <20260805163624.312b4df7@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260805163624.312b4df7@kernel.org>
-X-ClientProxiedBy: FR4P281CA0067.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ce::18) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KweyhLyd"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-930a098ea19so215575285a.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 03:39:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786012739; x=1786617539; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AgFuLu/BfZUsOKBU1K1bcnNrvwrTqBd6XAlIdlzF8Xk=;
+        b=KweyhLydRLf/U1gGBoqD1Or7f+itANMBTba9vjvuGiXb7HhOC5Gmaufuw0UbHxpqk+
+         GAuHLpBoNgMAd/n5eByaKc936jL7+rBsutcg833IUZ8nm+RoM/v7XcA4eL9zzqoSanAa
+         oFsev7uwh4G8tJhufiTsN5Sh4C27ohFqil31TyQR2SbYsu8gqzxTqpPLfBAv7GSKRXTy
+         e5YGBifhG7DCtZrWT91y13Gj7aNblfIedrc2YIv15feU41WRoyIw09kc/KcKviFhfJ0o
+         e46nSMVCt1SDLaXXkYHNVfgFzhQZS99ZdMOrnEHJoEYZbLfnW90muqvBU93Zw0f2X49z
+         MEYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786012739; x=1786617539;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AgFuLu/BfZUsOKBU1K1bcnNrvwrTqBd6XAlIdlzF8Xk=;
+        b=JYWyT++aaoWXCDlCcgPWjLLs6aYj/kq6pHAgF2Z/ztQIfZRgaS2yxWhO+MID05zm8T
+         6xtUVYj/aLZPbzXKYhqLF33asY+Zz/AfN9IZPc17NLNdtemljm0qO3zM4sx9ohiClZp8
+         3aL2iEHZqkyllSYe5r4Zm4efKYHil9D0i8j+ENAKdBCXSrqOAHVeJ7q3hee2SoEBNPgm
+         mzx2yUy/1drU6xc+fY94ARbjMK3hQ/x/Jbm/x5QtHC8Af48q9YjWnq55EYWZPGutjUPJ
+         6CBZC2pgSXDKaVJyhQhhRtJ2ZyPVM/mfLhCYoviSH61w/8iUSkEFzOc+7+8s4l9yhCm5
+         nJlg==
+X-Forwarded-Encrypted: i=1; AHgh+RpNSNOtPif8KwtCJ7DvExrrBpbiyVeya2H7XV7C//9hOTk2xiOc+4qtnb9dZ+CuYl27LCTk25E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yza+TI3fUT2k5arAGHFND874K03QXVS7jtjGEEqtc5YwLwQFHlM
+	/zBWpr+ZLAaWTC7ufUZcoZgpeTWe22UiDIxN1k4AMrqQw3cx+ik/w5QG79P/NjQSIERJBZQCygS
+	RD40/HlkUJYMpbg==
+X-Received: from qkhb1.prod.google.com ([2002:a05:620a:4e1:b0:92e:76a1:96c8])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4415:b0:92e:ea8d:5c89 with SMTP id af79cd13be357-936492aee38mr1070472785a.40.1786012738962;
+ Thu, 06 Aug 2026 03:38:58 -0700 (PDT)
+Date: Thu,  6 Aug 2026 10:38:57 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SJ0PR12MB7005:EE_
-X-MS-Office365-Filtering-Correlation-Id: 986cb8e1-88de-4b58-5535-08def3a6d329
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|56012099006|4143699003|10067099003|18002099003|22082099003|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info:
-	0QAREFmhaSoWSb6z5ziPbEF4jRTjvioTIPdDrsBjXaKKX6gvwythkgI9pmxQhKPRGXJPld34uNjobW2ycTNPlP+QqKrewURVraSVOfk1I/A3o6OhShoT3BoPlOKCC3rhBrRIQ+PQ3b72zaJYxFPzfawMBLUd9mcB3Ac9kvD69EvajfMur9OLSAPRMzDvODbBFnxLAJzVOjGYu0LMl3jnNfnbhRi1xuJJd0BK0ffWvv111zF/qCDRUriUDQ9iaEz/osmXpida9N2KLuewM8+VwTZP9eLWir02X2ioJVZdoNqJBqnzCjnNqBCKexl/Bu+k+0Lw9eMT37bEUsqb516sC5Ro3Phq9uayn2o+nCWJo/vxFd7DmP2WjldDvHfc92fwldhtlyvJk/ew3bKJhawAtNZdLcokDoWsD/IMnUOOO8RhQ/c3Vo6jr/xEJVp9LBH1YjUqYS/V5wC9lA7qNJSx8e04AhbNthUGHD7N7reQn0ejpSmNz2RKbkmAhB/0y3atGYQQOeuNHTonPH06QG2Nm8ADHFAP0cffvToFW87Rowa8ayrJMACd6jJ/ZO9kxOpRVWsujg3xln4gUOn8Z6+OQ+lXFiwPg8S+Vwvpwrdz5iFazxJMua96JW/PTCQzrAlcRRAqcYuVG2inyHI4IE04TV9VrHPyGZCQKyjXpilmsLE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?B2T2BUfR/vAM3Wh+r5vjzoILFrrMrqXzKqYhTpkJzW6G+x8Xhx9+LEQ6JHUJ?=
- =?us-ascii?Q?9xPpAWTzdCbsUepyM/lRKZ+6/dt97V9SNMX05QfDqFfeXtScWXTSxiFW53YD?=
- =?us-ascii?Q?di9mchHqNZc8DhVNxCHQGm9LkqW+18cOdVDXAckvnJmlTCnJ8lItC7PKc6me?=
- =?us-ascii?Q?GIxcnlbGz+TqJXFswJGVW6M0vdiKcAecXTFiIw5qlUmBhD6BOvv9nb90OUaN?=
- =?us-ascii?Q?5cPGcvyMrMUgEkrLgbdVe3HRxud//8Tf3Gzf811oHsYC3VG/OSdhT5X7T83d?=
- =?us-ascii?Q?+lFIXHrJKKJTx1N7r6DK3Xwyyr1mG83SigYAI5j+Ck+TwfHSgXNjX5zXflh0?=
- =?us-ascii?Q?x7ewVYBOHMOg78W/tZdmB42SohSSRK2bIfWYZZT75o7z/EFZI4riZy9xPv9p?=
- =?us-ascii?Q?l+8bVwnkGnqJLNXTUKfD278RSZRuVai8eknWE0566EdruJ6Qp4m0Hgog5l2x?=
- =?us-ascii?Q?X6/Am1hLZQkWzkk8HXWBxaf+wgEw3HYjVGV9Zlg87xXxCRPjT2CKKLnFgTas?=
- =?us-ascii?Q?bgRPzeDJq68Fi5S1+0mjYydjwa+F8y418RmHyQLoKnoL5rClmdXrcen47h1H?=
- =?us-ascii?Q?z88/F17dyQ8H5jUK/7ioD5oNn9Q94ZfG18E6+hnO7Ex5r4R5fKETRdVPyfM7?=
- =?us-ascii?Q?7a4yPZ0BS2tpbvv2tYMfJ2GYntd+v7vIdgAxlpEWuZYR/+FCch1robGsOJVK?=
- =?us-ascii?Q?Np29IwyS9R9mp5ozucpcTFj0rolNQ15KEdITwlZRrcYlucF7KGz98TIzvsvy?=
- =?us-ascii?Q?ILHivQcTrufGfP27HeQZtCFKd8ZQHpnFGCafAvKXpbKRsPCJhb6owxGjbX8K?=
- =?us-ascii?Q?aBmuXjBaasAcMiqaEAprGnLP0uqScNaweUkoqWATjl9uwKpHHCGqj5kcj/eI?=
- =?us-ascii?Q?3cKgxF0vdQ1+jp8Q6d3BsLkHJSoRWDxfdm7A5gOE6hAUZFic56vcYptol/le?=
- =?us-ascii?Q?cWn7c/ikwQWOFgjtXYUCnephTrWbZTp+VpFbz0QncNVo6KXYexEwwY7TKYxs?=
- =?us-ascii?Q?cP/zn/4aaceI8Eay6VmBAgPphKwggnm5wSZmEx/OcH3OyQVZbGzRAV9JjGQD?=
- =?us-ascii?Q?4mXIX4NLNExD2+eKmwRD/GsfYbnO3HqBZ1NDiIfPaosdsrflEJGpqApNf99h?=
- =?us-ascii?Q?kfaBWiS8k9EVOHOffBhwnK25HPq18MWn78+U42hdj9h+VwRDOQ2Nz0zgAvZ5?=
- =?us-ascii?Q?Aj+D8zpeIe0lRtAe55UySsowwUPShr9d6X3TQn7xB6mhAoCDZNwwEszP6EN5?=
- =?us-ascii?Q?Jk3Z2dfPQpCMtg0BLsFNSCJD+5iT/GK7QCUgzjzbV3km9G2B5Dz2IvS8UIbU?=
- =?us-ascii?Q?byDwWnIQ535E5nb/wb8H2XnuIMHMHIdCXw2ZDy+NTUU78qJpVJkIQUdr2UWt?=
- =?us-ascii?Q?Kbq6Hid8Gg2GMS3vnMPJ4IYjBa+WYDBkUg9aRsu5jN9eZs9ICniPptYxIEj+?=
- =?us-ascii?Q?f6/UbUV9gvMUSDVVBvG7WfeBvzAtcOyN9kLPsUdFOFYVCnqago5eQ3KCa6EW?=
- =?us-ascii?Q?sPoCcDVDQCaGQS+vKe1f3RBEQxXC4nW0TbtS7LYFR7vTikTn8bOgmc1rSHjO?=
- =?us-ascii?Q?kj67+cgcr1x48PY2wrgXACT6hkBMQVarxahnC+kt/kx7pgOpYRvkH03VkEjF?=
- =?us-ascii?Q?kRINCoojZ7FowhM9pqnDzNv/OJswBhDamt/l0mSF2jqpL8MbQFIIcPso+8xK?=
- =?us-ascii?Q?O/wBYFfTsLVkzhHNBn6sNpQ/aV3w/oek4lWgXNrr5I60Xccaqv2xBCM99xhg?=
- =?us-ascii?Q?qJR4RgA0zg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 986cb8e1-88de-4b58-5535-08def3a6d329
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 10:38:16.7495
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1RfCvwUtpP3fe1k+4y3gOFrt720xBzjaf/1kAA4SUlqnWeKtngnw5f5jh0lItaGy/3GqasT/Vl4vw+jxenJIgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7005
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
+Message-ID: <20260806103857.115541-1-edumazet@google.com>
+Subject: [PATCH v2 net] ipvlan: inherit needed_headroom and needed_tailroom
+ from phy_dev
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com, 
+	Tangxin Xie <xietangxin@h-partners.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Aug 05, 2026 at 04:36:24PM -0700, Jakub Kicinski wrote:
-> On Wed, 5 Aug 2026 11:17:37 +0300 Ido Schimmel wrote:
-> > On Tue, Aug 04, 2026 at 06:31:26PM -0700, Jakub Kicinski wrote:
-> > > This is an AI-generated review of your patch. The human sending this
-> > > email says "Looks legit, let's fix both in one patch?"  
-> > 
-> > I suggested [1], but the bug in the IGMPMSG_WHOLEPKT /
-> > IGMPMSG_WRVIFWHOLE branch needs a different Fixes tag (it precedes
-> > bb7403655b3c) and Sashiko [2][3] found another bug in this code:
-> > 
-> > ipv4_pktinfo_prepare() modifies the control block of 'pkt', which can
-> > result in this packet being processed incorrectly after
-> > ipmr_cache_report() returns. I *think* that [4] takes care of it, but
-> > all of this needs to be explained in the commit message which should
-> > carry the appropriate Fixes tags (bb7403655b3c + 1da177e4c3f4).
-> 
-> TBH no strong preference on the geometry of the patches (could also 
-> be two fixes in a series I guess?)  It'd be great if we could start
-> grouping the sufficiently similar fixes a little bit more. Otherwise
-> it's increasingly hard to make sense of the patch queue for me, if
-> nothing else.
-> 
-> > Note that this upcall is not fast path, so the extra work shouldn't be a
-> > problem.
-> > 
-> > Is this what you prefer?
-> 
-> diff looks good at a glance..
+ipvlan devices inherit hard_header_len from phy_dev during ipvlan_init(),
+but leave needed_headroom and needed_tailroom set to 0.
 
-So let's go with one patch and two Fixes tags assuming Zhiling can
-confirm that this diff works well and solves the reported problems.
+When the underlying phy_dev (or stacked lower device) requires extra headroom
+or tailroom for headers/trailers (e.g. macsec, ipsec, wireguard, tunnels, or
+veth with rx headroom), upper layers calculating packet headroom and tailroom
+fail to reserve sufficient space.
+
+This can result in reallocation overhead, skb headroom underflows, or KASAN
+slab-use-after-free crashes when dev_hard_header() / ipvlan_hard_header()
+prepends header data or when lower devices append tailroom.
+
+Fix this by:
+1. Inheriting needed_headroom and needed_tailroom from phy_dev in ipvlan_init().
+2. Propagating needed_headroom and needed_tailroom updates to attached ipvlans
+   in ipvlan_device_event() when receiving NETDEV_FEAT_CHANGE events.
+
+Fixes: 2ad7bfab3016 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Reported-by: syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6a720a21.40259c87.584f4.04bb.GAE@google.com/T/#u
+Reported-by: Tangxin Xie <xietangxin@h-partners.com>
+Closes: https://lore.kernel.org/netdev/CANn89i+1EW-sFNK8xoq98gMbPCeLS7e=+rs9gHfLg5Wj+4x0sw@mail.gmail.com/T/#mcc6307f115e500df23ea2980d5669fe95f20b6b4
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+v2: also inherit needed_tailroom (Sashiko)
+v1: https://lore.kernel.org/netdev/CANn89iLr4EQxBAKikZCeXbXEk-pjmT4mq3d=D2P01MtNSUgwrg@mail.gmail.com/T/#t
+
+ drivers/net/ipvlan/ipvlan_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index ed46439a9f4eb1dd8bfaf6c83476ba4f2aff31bc..92d3d340281ffbc8e54a61e975484ab156c42c9b 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -146,6 +146,8 @@ static int ipvlan_init(struct net_device *dev)
+ 	dev->lltx = true;
+ 	netif_inherit_tso_max(dev, phy_dev);
+ 	dev->hard_header_len = phy_dev->hard_header_len;
++	dev->needed_headroom = phy_dev->needed_headroom;
++	dev->needed_tailroom = phy_dev->needed_tailroom;
+ 
+ 	netdev_lockdep_set_classes(dev);
+ 
+@@ -773,6 +775,8 @@ static int ipvlan_device_event(struct notifier_block *unused,
+ 	case NETDEV_FEAT_CHANGE:
+ 		list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
+ 			netif_inherit_tso_max(ipvlan->dev, dev);
++			ipvlan->dev->needed_headroom = dev->needed_headroom;
++			ipvlan->dev->needed_tailroom = dev->needed_tailroom;
+ 			netdev_update_features(ipvlan->dev);
+ 		}
+ 		break;
+-- 
+2.55.0.629.g250fe7f194-goog
+
