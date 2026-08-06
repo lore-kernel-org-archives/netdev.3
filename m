@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269BA386575;
-	Thu,  6 Aug 2026 01:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576CE3AA4FA;
+	Thu,  6 Aug 2026 01:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785979261; cv=none; b=ptrvaOxV/a2tNlUBXOcAM34Eva27WuyFZ/u+miRF6r6tFWiy5l+bnDukohP28QM4k1FT/ej/sDa7ucv4CUXo/Sz4iiZKB+CZrGBnKwQKPP5GAFhXS7BbneerBW/3djM99Gv0EaFz96F3LgYZoqk7kLrbEw5UIWSTRt5BdTlclrc=
+	t=1785979262; cv=none; b=mtRfibQac+kuQ/5Ww+wYTawp5+OimEW4HKLvlnb7YlfZectzUWQuJyscRABa+PckmCcyYwakH2OK1ehXC3JZQdtorNl93xJ0NNuKbC/xLFV1msFADAt9IOTuD1nA+u7u/u9Uk3sitN6PZBpaP8zrMebJyizn6J8lH5fvts09nho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785979261; c=relaxed/simple;
-	bh=zFuNcPHAAqnZVIFAUlXugk5HxB9Ed12TWf6iWutGK+s=;
+	s=arc-20240116; t=1785979262; c=relaxed/simple;
+	bh=YPFlRkUjM7Z9gVyCdp9VZF5SDWMEoptmeATsjQmQeGo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=QwPxKfg0iaAkHO+/hpqfpI5zDftTXbpXI6dVMcf0g+QMDDPtLGR6FwhgV8OaN2ySz+WBllZewPPVq91xc42y1fHXt2G9Xi4vAHwveWDpNEa7GyTB1kI1be0SaScmqNhlYjdXTDZBCchXBwJ9M9RVdwKbKLuXX+OF148RSjVF2xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H1WnB/1r; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=T9rSyyVg3a+wAY0CejQd6yzez5uwL+kTdmO3kQm7xCx4kgo4McrYmyR7BNIxAscM+Ejp1njwB9YdVucSvPRlf5CDyrEqiec5j8KdZEcSbQLHXJJPmSXAxRGIMVl/Ww8ehyrYXWCj35caf40hvqNK/RUKloXF7D8bqwBEDg+BHy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dbly2vqf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H1WnB/1r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703071F000E9;
-	Thu,  6 Aug 2026 01:20:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dbly2vqf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB42A1F00A3A;
+	Thu,  6 Aug 2026 01:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785979259;
-	bh=gs6o80yMo+wvVaPrtsizRFwgtO5kTqNyHZAFZ9Km8PE=;
+	s=k20260515; t=1785979261;
+	bh=3fxGL6riYetsJkvSTv/2CuF78hbEv/cEtHlqHYVry5Y=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=H1WnB/1rYaRR/wzDPfCb93v1Ock4N4EHtYi8pWHYpFToG7pRrQfsXlwtMw9KicFbT
-	 d/VKRBUBnSAtHyBrR+V1Q6TTHtBlOc7rQgPhftJqcZrOWs5yvquWVWHpEn8kPyKF83
-	 dbdOevjiocUe8/wHxBiDmhU7oBFOyFzBeZ0wo/x/WTY2R0Y5HEkkmy9sUq4+iukAIS
-	 JnTbX/urfur5+4ZhZE2cJNTsix8d9Dmqpbf4W27fbpyUslBgxQcQzU6x3rjHmu9Xcl
-	 idWZhe1HtobTWO1P+ZZdPd6zi3UGksmzzIF3T+NdjR1IFKzvC+gBRewdinvSQB7iq/
-	 5YJzjcVbp9bGw==
+	b=dbly2vqfuWGVlTbj4USEE8wVTz0FoS8BQlgZNC10EShvODsTEz2p/4/rsmV5oua1c
+	 7L5xMl27F0EheFM7iSKUbU+o+SHXD2Lv2Yxh6rJ0aSW0sN3y3KLYQpSs6d3KqEnrkh
+	 GjiTN6+lnWkUfk4dW8hkYnqriGr8DXdyzSZIEwOXsIHF4W3LUfaBxaczBAx3cKiNHU
+	 yMUt1sI+Ldccnai2BihfHHmybxaHoS1mvRcAbsGDJ9wz6oQghjAg++BUZGMNxYQMsN
+	 zEDWkLwtAA4Huj8voTESkxEPjrV9EuWWcQjhnBMyo0g6tIB1E2B4g6O0RL+WocyZyj
+	 l+dQBZXmSb0yQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569AA392FFF2;
-	Thu,  6 Aug 2026 01:20:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09FB392FFF2;
+	Thu,  6 Aug 2026 01:20:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] selftests: drv-net: print device info at the
- start
+Subject: Re: [PATCH] net: usb: cdc_ether: add quirk for AMI BMC stale link
+ events
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178597921914.593652.3156874799133708597.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 01:20:19 +0000
-References: <20260803211944.2166211-1-kuba@kernel.org>
-In-Reply-To: <20260803211944.2166211-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
- sdf@fomichev.me, dw@davidwei.uk, linux-kselftest@vger.kernel.org
+ <178597922038.593652.1432741241165291582.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 01:20:20 +0000
+References: <20260730051341.24930-1-guojinhui.liam@bytedance.com>
+In-Reply-To: <20260730051341.24930-1-guojinhui.liam@bytedance.com>
+To: Jinhui Guo <guojinhui.liam@bytedance.com>
+Cc: oliver@neukum.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  3 Aug 2026 14:19:44 -0700 you wrote:
-> When a reviewer asks a developer to run an upstream test during code
-> review, it's often ambiguous whether the test was actually run against
-> a real device, or just against netdevsim. Print the driver name and
-> ifname at the start of the test, e.g.:
-> 
->   # Interface: enp0s13f0u1u4, driver: r8152
->   TAP version 13
->   1..1
->   ok 1 ...
+On Thu, 30 Jul 2026 13:13:41 +0800 you wrote:
+> On AMD Genoa/Turin platforms the BMC-provided USB-Ethernet gadget
+> (American Megatrends, VID 0x046b PID 0xffb0) intermittently fails to
+> respond to ARP after AC cold boot.  usbmon captures a stale
+> NETWORK_CONNECTION(off) immediately followed by
+> NETWORK_CONNECTION(on) on the interrupt endpoint (~130us apart)
+> after enumeration.  Because alloc_netdev() leaves
+> __LINK_STATE_NOCARRIER cleared, netif_carrier_ok() returns true
+> when the spurious OFF arrives, so usbnet_cdc_status() cannot
+> recognise it as redundant and schedules EVENT_LINK_CHANGE.
+> __handle_link_change() then calls unlink_urbs(), killing ~60 rx
+> URBs whose payload has already been DMA'd into memory — xHCI trace
+> confirms them completing as -ECONNRESET with non-zero residual
+> length.  rx_complete() drops these unconditionally.  The following
+> ON restores the carrier and re-submits URBs, but the ARP reply is
+> already lost; the interface looks "up but silent" until ifdown/ifup.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] selftests: drv-net: print device info at the start
-    https://git.kernel.org/netdev/net-next/c/9cb1d062b094
+  - net: usb: cdc_ether: add quirk for AMI BMC stale link events
+    https://git.kernel.org/netdev/net-next/c/089ca284afb0
 
 You are awesome, thank you!
 -- 
