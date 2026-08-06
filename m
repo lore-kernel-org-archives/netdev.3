@@ -1,45 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404DF366553
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 16:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6720437E5D6;
+	Thu,  6 Aug 2026 16:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786034392; cv=none; b=CSFAilVbBvvENLPrQejT6aVvFNfDcltT3U+GOfiAb6eAvMcvi0zCgqq/ja1y3Piq0wMsJNXHCLkvmGgmcxIqvizkXfticRtMBUCQh4CVpH3dpgnlAnA33TF0uvCsRqec4YS37bqk6eyMlirs/F/LfTXUdDbr0jvd67aqcxyhD7U=
+	t=1786035073; cv=none; b=Q/leljnQ8YVWOa3YPRk7BY+Gvt04QIQdYIAW5V2PqFWuD7EIUuWg3EfoSylq3X4SnDayvi3gOt/Y/Pt9+xC+Dt75tS2DF0TiI43Rm30K1YRv5JPw3+kJtiXUn8VJoB3cSKJccEMazCBA22ak2uGRufcuNA2u2WM61JIDCCPybvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786034392; c=relaxed/simple;
-	bh=wvsxxt/FpSJZKCOrF1M7MFRMNZcWQP8tVZ0SORsoR4I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qd/9xD0P2CLXx1KRAGhehhkZeFBKnnI5b95L2V+2GHaiYGJs0b0xkLXR+t7dUOto7B4QU+cBRIoyB1rGuyYfRL/+5BdqDMLCkGBzdibM9aaXT3OmM5IJACZG1E8hOxoU0g1rSfzJ61X83Gw9B7BfWfuvdBltVkbq4+Sbgp1VX8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KTYPclz0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786035073; c=relaxed/simple;
+	bh=wx61V6k9UT7I6BPYSM0f8QJJq+iOQIRUCppl+UZDg9o=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=gndk2W1j88W4dBts/RNiBMCan+j9a6/ok4MzpFcITBLi/cY3Yshm4oL285b7q+WZpIOSlwFZeF2e3FD0HFkxSG2JrbRUta2oN3v6LGSvO4CVpbz8aHRGoJ+5AYCqBZvvnplzj2EIiT1BsWbe8leSgHp4u9Dexp7E3+sCN25CZ6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dgXqd4oT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KTYPclz0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAF81F000E9;
-	Thu,  6 Aug 2026 16:39:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dgXqd4oT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECA81F00A3A;
+	Thu,  6 Aug 2026 16:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786034390;
-	bh=8Z7x3vpS5L/9DV63t4j/E169Et1rDRo5hXWrjcuscOE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KTYPclz0kkHnBX5VdRHVX+bK/uVu3yIIHnwHHkucZInfyhf7REtuvE2wDM/yFXFBC
-	 RPIjXSFOyVk/0bdXSKVw+IxwMmhgw/Yh/gsBdPiQIN+hXgGdDX1VQx9Tz2uEaLxsgC
-	 TBh9wJyIxv7QsU2quMRxNmhYBoPIQIuN/GeJ1Z7jl4K/8zMroVOYhFOsSDxtgTISg/
-	 sVECZkN8uflN7QYxmMKMJPHBS8jk7IZOIt318hn8lXr6PvbfYXcEFvBvrL8qyErrfo
-	 61A1/JEhHqJP5Qa2/fiH4ye7napxvdJJFTkqtRt+3Uo2FL761/+sRnyZPIeKoS8YIr
-	 Hi8n1UkM2FBeQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: clementwei90@163.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	andrew+netdev@lunn.ch,
-	weirongguang@kylinos.cn
-Subject: Re: [PATCH net v1] tap: fix incorrect variable used for USO check in set_offload()
-Date: Thu,  6 Aug 2026 09:39:49 -0700
-Message-ID: <20260806163949.2807698-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805072121.117472-1-clementwei90@163.com>
-References: <20260805072121.117472-1-clementwei90@163.com>
+	s=k20260515; t=1786035061;
+	bh=Ifhfs0fGj2DTHxVW1jC536LInZKvb4z6yJmgO5VTnTQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=dgXqd4oTXg7JL12o4Qyp89bnljNMSfstpAc8w3J8j29mTzz/KPOoZXMzHqCiK4ZhW
+	 wtHHkR4qiEPQlfN62dZEp+gGNxaDVve5VKyGGMA4P/dkeyYZh/wceNSWqPXot4sXAG
+	 0Q/4r7QP0S67EpXbkMT4n17VXaWFO8TbnaB/C+/5fPAJ99NyC7p58qPfnWUbaon9jQ
+	 BVu7S8EGF1UY0SOcZBn7G7v+UM04aQFTUHxbsk1HyXJeHMDkcFDdcLkpgtZ3Ff4vSa
+	 nzV5jTYDLXofYq6OQWZjblVZG9SNMORCMmF0dP2FVGGhdyo3wbpF8CvXlsvpMAmk1o
+	 OiNYhEovO2vDw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19921380820D;
+	Thu,  6 Aug 2026 16:50:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,119 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] tls: don't abort the connection on
+ signal-interrupted
+ sends
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178603502065.1375455.781310626292605942.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 16:50:20 +0000
+References: <20260805063109.1772314-1-maxbr@linux.ibm.com>
+In-Reply-To: <20260805063109.1772314-1-maxbr@linux.ibm.com>
+To: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ svens@linux.ibm.com, brueckner@linux.ibm.com, ben.coddington@hammerspace.com
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-tap: fix incorrect variable used for USO check in set_offload()
+Hello:
 
-This changes the RX_OFFLOADS decision in set_offload() so that the
-TUN_F_USO4/TUN_F_USO6 test reads the ioctl argument instead of
-feature_mask, since feature_mask only ever holds NETIF_F_* bits.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-> index fae115915c8ef..ce25ebeeccf0e 100644
-> --- a/drivers/net/tap.c
-> +++ b/drivers/net/tap.c
-> @@ -895,7 +895,7 @@ static int set_offload(struct tap_queue *q, unsigned long arg)
->  	 * user-space will not receive TSO frames.
->  	 */
->  	if (feature_mask & (NETIF_F_TSO | NETIF_F_TSO6) ||
-> -	    (feature_mask & (TUN_F_USO4 | TUN_F_USO6)) == (TUN_F_USO4 | TUN_F_USO6))
-> +	    (arg & (TUN_F_USO4 | TUN_F_USO6)) == (TUN_F_USO4 | TUN_F_USO6))
->  		features |= RX_OFFLOADS;
->  	else
->  		features &= ~RX_OFFLOADS;
+On Wed,  5 Aug 2026 08:22:48 +0200 you wrote:
+> When a signal interrupts a blocking send, tls_tx_records() treats the
+> resulting -ERESTARTSYS as a transmission failure and marks the socket
+> errored via tls_err_abort() with the raw error code. Later syscalls
+> return the kernel-internal errno 512 (ERESTARTSYS) to userspace, as the
+> signal it stems from is no longer pending during syscall exit and thus
+> never translated.
+> 
+> [...]
 
-[Severity: High]
-This isn't a bug introduced by this patch, but there looks to be a second
-wrong-variable defect from the same commit named in the Fixes: tag, a few
-lines above in the same function:
+Here is the summary with links:
+  - [net,v2] tls: don't abort the connection on signal-interrupted sends
+    https://git.kernel.org/netdev/net/c/af0e5cdd031f
 
-drivers/net/tap.c:set_offload() {
-	if (arg & TUN_F_CSUM) {
-		feature_mask = NETIF_F_HW_CSUM;
-		...
-			if (arg & TUN_F_TSO4)
-				feature_mask |= NETIF_F_TSO;
-			if (arg & TUN_F_TSO6)
-				feature_mask |= NETIF_F_TSO6;
-		...
-		/* TODO: for now USO4 and USO6 should work simultaneously */
-		if ((arg & (TUN_F_USO4 | TUN_F_USO6)) == (TUN_F_USO4 | TUN_F_USO6))
-			features |= NETIF_F_GSO_UDP_L4;
-	}
-	...
-	tap->tap_features = feature_mask;
-	if (tap->update_features)
-		tap->update_features(tap, features);
-}
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Should NETIF_F_GSO_UDP_L4 be set in feature_mask rather than features here?
-All the TSO bits go into feature_mask, and feature_mask is what becomes
-tap->tap_features, i.e. the forward feature mask consulted in
-tap_handle_frame():
 
-	if (q->flags & IFF_VNET_HDR)
-		features |= tap->tap_features;
-	if (netif_needs_gso(skb, features)) {
-		struct sk_buff *segs = __skb_gso_segment(skb, features, false);
-
-With NETIF_F_GSO_UDP_L4 missing from tap->tap_features, net_gso_ok() fails
-for SKB_GSO_UDP_L4 and every USO super-frame is split by
-__skb_gso_segment() before it reaches userspace.
-
-The write into the local features also looks like it cannot have a device
-level effect, because macvlan_fix_features() filters vlan->set_features
-through MACVLAN_FEATURES (which does not contain NETIF_F_GSO_UDP_L4) and
-then does features |= ALWAYS_ON_FEATURES, where NETIF_F_GSO_SOFTWARE
-already contains NETIF_F_GSO_UDP_L4.
-
-For comparison, tun.c:set_offload() records NETIF_F_GSO_UDP_L4 in the mask
-that becomes tun->set_features:
-
-		if (arg & TUN_F_USO4 && arg & TUN_F_USO6) {
-			features |= NETIF_F_GSO_UDP_L4;
-
-Also, macvtap's TUN_OFFLOADS, used to initialise tap_features in
-macvtap_newlink(), contains no NETIF_F_GSO_UDP_L4 either.
-
-Would it make sense to fix both occurrences in one patch, so that USO on
-tap/macvtap actually takes effect?  As it stands, this patch turns
-GRO/LRO on for the USO case while the aggregated skbs are still
-re-segmented, and a backporter reading the changelog would likely conclude
-USO on tap works afterwards.
-
-[Severity: Medium]
-Is the new arg based term meant to be evaluated outside the
-if (arg & TUN_F_CSUM) block?  The sibling USO test that sets
-NETIF_F_GSO_UDP_L4 sits inside that block, so the two tests now disagree
-on their precondition.
-
-tap_ioctl()'s TUNSETOFFLOAD handler only rejects unknown bits:
-
-		if (arg & ~(TUN_F_CSUM | TUN_F_TSO4 | TUN_F_TSO6 |
-			    TUN_F_TSO_ECN | TUN_F_UFO |
-			    TUN_F_USO4 | TUN_F_USO6))
-			return -EINVAL;
-
-so arg == (TUN_F_USO4 | TUN_F_USO6) with TUN_F_CSUM clear is reachable from
-userspace holding the tap fd.  In that case the whole
-if (arg & TUN_F_CSUM) block is skipped, feature_mask stays 0, no offload is
-negotiated, yet the new term is true and features |= RX_OFFLOADS runs.
-
-This looks like a new state transition: the old expression
-feature_mask & (TUN_F_USO4 | TUN_F_USO6) was always false, since
-TUN_F_USO4/TUN_F_USO6 (0x20/0x40) map onto NETIF_F_HIGHDMA_BIT and
-NETIF_F_FRAGLIST_BIT, which feature_mask never contains, so this arg value
-previously took the features &= ~RX_OFFLOADS branch.
-
-RX_OFFLOADS is (NETIF_F_GRO | NETIF_F_LRO), and both bits are inside
-MACVLAN_FEATURES, so the value reaching macvtap_update_features() ->
-vlan->set_features -> netdev_update_features() sticks and shows up in
-ethtool -k.  Since tap->tap_features is 0 in that path, tap_handle_frame()
-then re-segments everything GRO coalesced.
-
-Would nesting the USO test under arg & TUN_F_CSUM, as tun.c:set_offload()
-does, or deriving it from feature_mask once the NETIF_F_GSO_UDP_L4
-assignment above is corrected, be preferable here?
