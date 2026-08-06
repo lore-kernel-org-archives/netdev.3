@@ -1,143 +1,245 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B6223E33D;
-	Thu,  6 Aug 2026 06:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DDA3AC00
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 07:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785999443; cv=none; b=X64j8Wi/Gf7PTL8wM6Irp+X6lekpP+2QoDmGnxHDYOmBbk3qIJNqW+EE2Fsg0MvXU3khHfZnKaBP+9Mey8QqsFmtuyKkHScLB4+LCIYbHvRXTSF1qlGKalTBBTYXm2iFFuCiuEp9NeO1X2mrLVtQy4jVVPrrsAZUcm5YqEbWvIU=
+	t=1786000746; cv=none; b=Ed0HpvtMhVW9W/4EdkGH+snO2FN4L3Dhyl3TbiJMZEo65Qd5efMgbRQYSEJ2FqkjUfd9FSBPDiBbq9nFkJcFzF0EKnWP97BY2nlc7XyBv5pG4miLAntWgHahwjNBLSf8DRZuP7BzeMePZUEuALZQNWUaYZ8RvND6gdd8GJv9GOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785999443; c=relaxed/simple;
-	bh=8fov8siOUQ/ZPsb4A+0iemwS7egXU5qk/c4rmCcyuC0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VBGAiObHeY+Bz4n5mAijZK28R+cf4LPZhMapOYC5ag3t1k+doNC6bZ9pnbeYP7lS5aFZ8yFjP+i+QumG8nY4Txsc9lXbReD9l1mOjzVb6SZLLNUeTYKUdgqFwUOPnkB1YP3x63wHv8hU6dboIP257QY5aSZvOBY6j3MHTs46wJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=QGXxeCAc; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1786000746; c=relaxed/simple;
+	bh=pAnZTpbJUx3vZ+GsiQOgJ/n1CQp1O4Pq+UpZM1UMbH0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tT4f1BGtDRI4Oyd3xjlgmqBp4ozlrVnlf1WPcgAQlY78yiEn9rcQCvr+J+MPigV7NmXGNKArUgeX7OiFJwG2hfIpM2he9hQeF2d9oASzhCwM8mnurr6ipBhA3pzca+lLvVd0TXIPZFY+1dZWg5Io44Rzz2Ad2RPPOTeo0ZYc7dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L8PnNgG2; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="QGXxeCAc"
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675NblpQ312197;
-	Wed, 5 Aug 2026 23:57:05 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=3u37kiuvA
-	6RlHfpkPzL13oX2UNzl3sBthf5IzqiiOqk=; b=QGXxeCAcaCEQ1wnuIcElbSnE6
-	ddykqo9euLxzQpn15RyBidRE8B6cE13KoAZnFWLM59H3TsVExm2Q+5NhgbWdnUuZ
-	oy08R0trY+MtC0i9svdIyFQBe/RnEf1MzeTuxOunS32EORizroNjCHRuN9bjqavN
-	2jUZr+j3/2NBLu/oxH3SxOcbfcm/4jnei0XxkJVkjyEz2dGgPCSZxbnPgBhoX2Bq
-	Z3eKiDfdyCOMjj7LPQUJJo+pG/QkjlxvvtXbFpJSfHw3C2J51j3kBjPr57lvopa7
-	S7Ef1jHEvwuUyAe5SLJKG0/rLV9LzfrKNS3zcA5E4aJmlT+noLNSujoK5ilCw==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fumgemkha-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 05 Aug 2026 23:57:04 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.45; Thu, 6 Aug
- 2026 06:57:03 +0000
-From: Glenn Judd <gmj@meta.com>
-To: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
-        Mark
- Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-        <netdev@vger.kernel.org>
-CC: "David S. Miller" <davem@davemloft.net>,
-        Andrew Lunn
-	<andrew+netdev@lunn.ch>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Khalid Manaa
-	<khalidm@nvidia.com>,
-        Dragos Tatulea <dtatulea@nvidia.com>, <linux-rdma@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH net v3] net/mlx5e: do not HW-GRO coalesce small frames
-Date: Wed, 5 Aug 2026 23:56:50 -0700
-Message-ID: <20260806065650.2444999-1-gmj@meta.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L8PnNgG2"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4954a2e73a9so11007145e9.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 00:19:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786000743; x=1786605543; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=J58Qoy4aHHn9awwFtSrKAEtr0Dz8WhHaRR0KQcTY5As=;
+        b=L8PnNgG2b2VyMmFrYjdjNdDC3wEWoQY2eZDrcP7oFIj5QpQX6PivN0i2mmWOV1auGw
+         hvwpezOBj5FIAWS6MqmczQZ40CFZOwV+pWPzV5fJn3AKnxlhy68S3RAJojtKbcrLiVaU
+         uxxitkah+h2z1wBQE5/djgWjkpTTKP8rrHhyPjXNr64/lIL5OvD9SlahvDYxEAyqrIop
+         kA5/Kq1BvDmN3B4mNv3UN85Aw4Ih3PENMlUUtHw2L8wguGfW30LuxHWTJKhGlfQW3212
+         HspQHzLrxbg/ghotlVvRX5+OMTDstojE2Gv5s3xNIfF9M9krb9G8rUS/Df3aQaax7Bfk
+         j63w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786000743; x=1786605543;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=J58Qoy4aHHn9awwFtSrKAEtr0Dz8WhHaRR0KQcTY5As=;
+        b=Gw3HOI7ohyArqvgmvxe5v/UN9dWwqM3gGYIOyo98vPBa9lQ/p8EY7vL8G/xlXrWulR
+         6sHW36alCtrkJDNPBQ06rPANi7Vi78Fe+ViNUC/74H9q6qUQwuTwrzbVaDh4v/CHQj3r
+         Sbxk8u9GnXb7BrwyjTa9Klr4/3GYs8EmJDW4KTYQZgFkYoRNQ7iqVpYZouV52Y9kppYq
+         QutcfIyWZD75nsFLfQd0OkZyIIhvjM7DlPAw1V933z8ydDFmxINobicJP0lMuFLskkRo
+         ep8aE0px9S7Ocu08fBoxvBSUl8W0dj1xdXh1xSKMxrAJ+OlGzaqO4lFbq3eWKw4GPtLi
+         cJlQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqQApgulJe/Kw8PkMJpy7fpdBTBg+e+6Wv/3wRsnOqdMM7PYqcQBkXapUkkVuB33YaffgQK6bc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhQQtAfp8qJ/4yR2I915nZnB81nqNSke/sEggEhJ1z3LxUcRks
+	o+2CfrHvNSOvwHTYpRYJxeFTceeJO2TnlPBYQOFhnjsLA1z01gsQnypn
+X-Gm-Gg: AR+sD138UfzuwpchrSyo3bcyIpnwAr4sZUZ0LMLvey65hZlZb1RxqEb5mJGBTMudPR0
+	6/iuuMK0vQibEbuRbR9mNTrBXs4I2dmwBA0QTihtb1p4otkPHkkze/RFeOZOW9kJnWdzdGAcl/3
+	iEyxvkv3pfeBnpgdr0pUoYxi9RNf3Hd3H4/em63RE5LQRwuHH5mw9I5d1Bk+FeWSFvEk8Pkp5mg
+	ay2qa07kofz2XM+TJSn5IzvT4F9WUGSQSBKu+tKXpgEnHykcGEtWGyqDiiXMDf9ZxM3Z21V+Sr0
+	n5/MJx3CJZP6YWENK4NQgW+e7mpmLcZwblSD38jTeHmazDjYnGaUeHFn6zOuP7oRlOoAnLqtMxy
+	+GeGh7x+zRxRzBQ9wReTj2ZF3j6ZXafN012Tl04OmcpebWsftWBLYj//8sxMp/kKI3sj+ymwjPO
+	/QQvWcp4bPU5528Xk1VeKoEhLD9rzYXgpueAdW33NViypo2gZE0McBeIiKIa47iuPB8yuktuv9G
+	/tUjZ+fi9RQne/cM0WT/ZgyA7wXbOvOZeojeVnihtg6xN7X+Hv3+huaPGiN7WM=
+X-Received: by 2002:a05:600c:1d23:b0:499:51b8:d649 with SMTP id 5b1f17b1804b1-49951b8d652mr95522045e9.3.1786000742355;
+        Thu, 06 Aug 2026 00:19:02 -0700 (PDT)
+Received: from ?IPV6:2001:9e8:f131:1d01:8da1:260c:d732:9394? ([2001:9e8:f131:1d01:8da1:260c:d732:9394])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994e98fdedsm109323795e9.4.2026.08.06.00.19.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Aug 2026 00:19:01 -0700 (PDT)
+Message-ID: <d26486b9-e820-41a6-ae22-f7473cc9ecef@gmail.com>
+Date: Thu, 6 Aug 2026 09:19:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDA1MiBTYWx0ZWRfX0yLGtkYAmwnl
- 2W/22AUkV2MMuz4z2xZa6l63vLnhbSgo+xIc2UNo5m7JeufjjP3sem6fHcEdoyqCYXjBkVKYUIp
- 3kTZ8u4xe8cSiwpSmA6/LjXh3CeWzGcX4K8BMqaZsD4Y6K+VtUZWuf/AFJK+Zc9U/9EbknY9qMu
- o60FmQjyKu6PW0Fjy9tWML0NOLVh6+p7bMO+vqkiaGJpw8/QtREfOmYiIYGdtfhCz3bQt3PavYT
- wmtRN0UYbbdbv0yDLwjPfGyDx4QHeeB34GoeadsgUxeK3c53N25pJQUtCVkXcPCfcmij/1u0ZFc
- pXdZjWj953IEHDlBR9CesQy8SEsvNPxtYwS2Pr+AHZgiPYWeA5LdNLX/aiHl9q9Y8F7T3bF/QWZ
- yYdDNCA7bEVCPLW5DgZifYks0TNTHOC9YM/vJGeMyttmPvBKQ9mbhIa9gVdHKWi+4RRn4pTDGUF
- B9+Amnw3IIlmalc2jNQ==
-X-Proofpoint-ORIG-GUID: nC811fwNVK99RnNI6SfolPBjcuWLD-yg
-X-Authority-Analysis: v=2.4 cv=I4xVgtgg c=1 sm=1 tr=0 ts=6a743040 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=tpM8CJlwf7uhpglF1g9U:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
- a=dqT7Y9b5xjMEFiSigBgA:9 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: nC811fwNVK99RnNI6SfolPBjcuWLD-yg
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDA1MiBTYWx0ZWRfX6hJrlmgUUsz+
- 3R/cwtO/Mj6wB8ZPa+R+6eXprE6VDuP322W9fTfcEmH9SsHZgCgXfHAcY+Fq0Mr957KzJD9Nzsn
- 1yvpFcs4wThwLLJ/3OkcNOoeGlMkmzE=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_06,2026-08-05_01,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v11 1/4] dt-bindings: net: pse-pd: add bindings
+ for Realtek PSE MCU
+Content-Language: en-US
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, daniel@makrotopia.org, bjorn@mork.no,
+ sander@svanheule.net
+References: <20260802100114.720594-2-jelonek.jonas@gmail.com>
+ <20260806011107.1855326-1-kuba@kernel.org>
+From: Jonas Jelonek <jelonek.jonas@gmail.com>
+In-Reply-To: <20260806011107.1855326-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When hardware GRO (SHAMPO) coalesces a small IPv4/TCP segment that was
-padded up to the 60-byte minimum Ethernet frame, the trailing padding is
-folded into the merged payload causing padding to be delivered
-to the user as payload.
 
-Detecting and reproducing the issue: the selftest
-tools/testing/selftests/drivers/net/gro.py subtest
-hw_ipv4_data_lrg_1byte sends {100, 1} expecting to receive {101}.
-In current code, it receives {106} (100 + 1 payload + 5 pad) instead.
 
-This patch avoids giving the user padding as payload by simply not
-coalescing small packets (which fails the subtest; the same approach
-and behavior as sw gro). This gains code simplicity at the cost of
-more computation (passing an extra skb up the stack) for small packets
-that could be coalesced.
+On 06.08.26 03:11, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> dt-bindings: net: pse-pd: add bindings for Realtek PSE MCU
+>
+> This adds a new YAML binding for the MCU that fronts the PSE silicon on a
+> range of managed Realtek-based switches, covering both protocol generations
+> and the I2C/SMBus and UART attachments.  Two questions below about the file
+> naming and about the serial slave node name.
+>
+>> diff --git a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
+>> new file mode 100644
+>> index 0000000000000..3bb32349c28c4
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
+>> @@ -0,0 +1,182 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/net/pse-pd/realtek,pse-mcu-gen1.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> [ ... ]
+>
+>> +properties:
+>> +  compatible:
+>> +    oneOf:
+>> +      # UART
+>> +      - items:
+>> +          - enum:
+>> +              - zyxel,gs1900-10hp-a1-pse
+>> +          - const: realtek,pse-mcu-gen1
+>> +
+>> +      # I2C, SMBus framing
+>> +      - items:
+>> +          - enum:
+>> +              - zyxel,gs1920-24hp-v2-pse
+>> +          - const: realtek,pse-mcu-gen1-smbus
+>> +
+>> +      # UART
+>> +      - items:
+>> +          - enum:
+>> +              - zyxel,gs1900-10hp-b1-pse
+>> +              - zyxel,xmg1915-10ep-pse
+>> +          - const: realtek,pse-mcu-gen2
+>> +
+>> +      # I2C, SMBus framing
+>> +      - items:
+>> +          - enum:
+>> +              - zyxel,xs1930-12hp-pse
+>> +          - const: realtek,pse-mcu-gen2-smbus
+>> +
+>> +      # I2C, raw framing
+>> +      - items:
+>> +          - enum:
+>> +              - linksys,lgs328mpc-v2-pse
+>> +          - const: realtek,pse-mcu-gen2-i2c
+> [Severity: Low]
+> This isn't a bug, but should the file be named after the family rather than
+> after one compatible?
+>
+> The file (and $id) is realtek,pse-mcu-gen1.yaml, while the compatible list
+> here documents five strings across two protocol generations:
+>
+>     realtek,pse-mcu-gen1
+>     realtek,pse-mcu-gen1-smbus
+>     realtek,pse-mcu-gen2
+>     realtek,pse-mcu-gen2-smbus
+>     realtek,pse-mcu-gen2-i2c
+>
+> There is no file bearing the name of any realtek,pse-mcu-gen2* compatible,
+> so searching by that compatible name finds nothing, and the commit message
+> does not mention that gen2 is described in a ...-gen1.yaml file.
+>
+> Would realtek,pse-mcu.yaml (with the $id updated to match) describe the
+> actual scope better?
+>
+> To be clear, the $id path itself is consistent with the current file path
+> (net/pse-pd/realtek,pse-mcu-gen1.yaml#), so $ref resolution and
+> dt_binding_check are not affected here - this is only about the declared
+> scope of the name.
 
-The threshold is chosen as ETH_ZLEN + 2 * VLAN_HLEN. This is the largest
-frame that may still contain minimum-frame padding (+ 2 VLAN tags), so
-anything larger is safe to consider for coalesce. (We do not include
-ETH_FCS_LEN in that threshold computation as netdev_fix_features()
-drops NETIF_F_GRO_HW whenever NETIF_F_RXFCS is set, so retained FCS
-can't reach this path.)
+Could someone please take a decision on this and tell the bot how it
+should be? This is being raised again and again... Conor explicitly said
+the filename should carry one of the compatibles.
 
-Fixes: 92552d3abd32 ("net/mlx5e: HW_GRO cqe handler implementation")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Assisted-by: Meta:internal-AI-tooling
-Signed-off-by: Glenn Judd <gmj@meta.com>
----
-Notes:
-    v3: Per reviewer request, redesigned to simply not coalesce
-        small packets. Dropping the v2 padding detection/removal.
-    v2: https://lore.kernel.org/netdev/20260803214412.1714151-1-gmj@meta.com/
-    v1: https://lore.kernel.org/netdev/20260731185442.2778723-1-gmj@meta.com/
 
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+>> +required:
+>> +  - compatible
+>> +
+>> +allOf:
+>> +  - $ref: pse-controller.yaml#
+> [ ... ]
+>
+>> +    else:
+>> +      allOf:
+>> +        - $ref: /schemas/serial/serial-peripheral-props.yaml#
+>> +
+>> +      properties:
+>> +        reg: false
+> [Severity: Low]
+> This else branch declares the bare gen compatibles to be UART (serial
+> slave) attachments, and the node name is forced to ethernet-pse by
+> pse-controller.yaml:
+>
+> Documentation/devicetree/bindings/net/pse-pd/pse-controller.yaml
+>   $nodename:
+>     pattern: "^ethernet-pse(@.*|-([0-9]|[1-9][0-9]+))?$"
+>
+> But serial.yaml only enumerates these serial slave child node names:
+>
+> Documentation/devicetree/bindings/serial/serial.yaml
+> patternProperties:
+>   "^(bluetooth|bluetooth-gnss|embedded-controller|gnss|gps|mcu|onewire)$":
+>     if:
+>       type: object
+>     then:
+>       additionalProperties: true
+>       $ref: serial-peripheral-props.yaml#
+>       ...
+>       required:
+>         - compatible
+>
+> Does a board device tree with an ethernet-pse child of serial then get the
+> shared slave-node subschema applied at all?  Since serial.yaml ends with
+> additionalProperties: true, the unmatched child looks like it just falls
+> through silently rather than being flagged.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 04af54b704d8..68b4dc49ccea 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -2263,6 +2263,11 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
- 
- 	data_offset = wqe_offset & (page_size - 1);
- 	page_idx = wqe_offset >> rq->mpwqe.page_shift;
-+	if (unlikely(cqe_bcnt <= ETH_ZLEN + 2 * VLAN_HLEN)) {
-+		match = false;
-+		flush = true;
-+	}
-+
- 	if (*skb &&
- 	    !(match && mlx5e_hw_gro_skb_has_enough_space(*skb, data_bcnt,
- 							 page_size))) {
+It gets applied since it's referenced in my bindings. It just doesn't use the
+"routing" present in serial.yaml.
 
--- 
-2.53.0-Meta
+> Should serial.yaml's pattern list gain ethernet-pse as part of this series,
 
+I would avoid this since it adds no value in what is validated. From what
+I've seen the pattern in serial.yaml isn't exhaustive so other bindings
+like "qca,qca7000" also use a node name not being in that list.
+
+> or is the intent to reuse the existing generic mcu name (which would
+> conflict with pse-controller.yaml's $nodename pattern)?
+
+No, reason already given in ( ).
+
+> [ ... ]
+>
+>> +  # UART attachment
+>> +  - |
+>> +    serial {
+>> +        ethernet-pse {
+>> +            compatible = "zyxel,gs1900-10hp-a1-pse", "realtek,pse-mcu-gen1";
+>> +            current-speed = <19200>;
+> [ ... ]
+
+
+Regards,
+Jonas
