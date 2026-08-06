@@ -1,118 +1,118 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C81A3D3317
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 19:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786044470; cv=pass; b=gnQ5l6uQ4SvFE/sESqeXvIAion7xDnNzFcnBzCpVspW5lhS3i+tt3IFu7u4yuO2YGYpaqBuyKgtnwdJabZujg/hsFRE/sJ1NunAAvtAEqgpAdZ+0sClqVpMMa7nRAWEka2nyMcT8V6psDwJexoAkD5Yrrd9eXmxHxvsXGqedyQY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786044470; c=relaxed/simple;
-	bh=iUV55gIu4aYclKwZ2UeoAZWtDqJYux+N/370D2hWb3s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M3OjnASAGKMI0/eyXWfxWyQMd9/R4iEfKOPSltMtKSGA/A4byyS4CnR/TywsHZkwlLfHEIqsN0qI9vQQyaj823z8cPXS4LRyWP4JUoEm6zVnXpYyopUwKGaZi8wPFIjfarNAPnR9X5d9N58gAZbCi13f6sMHAXZ66VZcB3JKIjQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EhUFZE6Z; arc=pass smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F6B2E54D1;
+	Thu,  6 Aug 2026 19:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786044740; cv=none; b=aL7gIgdMFGdLkDCb9YIUntAXuVWftf+bdWwTZ6ZdRKP5fqPoeMqjzeb9dWrkBl+RJ3nb7TC2m1wEGc+9v5kdbrrhHVZxxE3F8N/k1o3+bGFOy94V17W+dLpzlgDomZNejj1mll2m8kZU4IYsXlv2bfw22FIB3DNPiLPNVKBx8fU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786044740; c=relaxed/simple;
+	bh=3KzeiQa+hZqeTYB1Gm3m7fHbxkQO+WwPhVCyaF0zGg4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nOAAtWjTrgSoPTzYpwM6qGUDCtIkzXCtzC42LvBld8Gxx4soeqi6KzVRcP4P0BxyfNIKyliH9xNVysvrjqsLR2yV7ygfXNiAr2VHMHRy1wpXDkYiTeXWwxtoSHjXF0iHtmTLUGmBLMg2ZZ9BaJ7AfXOlB8goKW7zSz8hC3QTQaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=tAxnX+Lx; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=wQhaKFi3; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EhUFZE6Z"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cacef7d299so24755ad.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 12:27:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786044469; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xhv4YRJJchEILf7aecCnrLcVmslqGPq3fEEdfSuPK45p0lx3NUIH3B5HxXke4gubHH
-         C61yN/yBjfJ3DoLyelkcFmaTSxZSAI4XP90LHmy+ydgt2ruD4M3Gv2txM++X0NZ6O9dG
-         +/tybIuF+h30OX2QN/zhN33wzvj37osJniBa/bvTHaC2u5W0vo+AlGQKJkjr7taNfcxw
-         NDN9IEriMRGJesmhEayFq5GDmi72mK0NPfC+upWMYF0kjLBMiD0jkTj72q6NNlPGPqc9
-         EVH1xlfeqfsT15Q9/ShJLlhaNk1H3u4WuruxKPAoDTaDjBklhvaCPqsY1ds9I4HBpJIj
-         mNmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RKDxq6e03wLEUEpXNUuVpy51JZ2keZfmV6/afBlsFiI=;
-        fh=yTYzHmnr1B5+GGzLzQABnUXmsXy/GUneDJ7UnyoZNkI=;
-        b=PzgMssPbLQxt/RPg5M4HgYqdDMjP1m1INnwwlulat1ab3a/Enbj5b4i6WmLjG5syIC
-         37orvvuO/i+iF04SoBU1z0nTTBcus03DYUrmq6bxesp/vJeOlb9k8fX5DdtOzE1jKFWS
-         pCGhPrYScS9GMjyYVIDFA5WH7yBvBb6upYkq+qOclUTOcLVp8RGyVb39tWgOd7gFouiv
-         G0haPpPvefWqVEu0+xF0+lpMuYip4wmek8JRzy7+rmwMfR7pkwqzwwd6LyZX10+J1mN+
-         mIvbnQlVI26xGtTVmJKj8BPmseRcHm6Y4IwIBTCE7hhvw+VFosSBrJofk0MZIzx6zeWL
-         /6Wg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786044469; x=1786649269; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RKDxq6e03wLEUEpXNUuVpy51JZ2keZfmV6/afBlsFiI=;
-        b=EhUFZE6ZB9SrYy+Z+s7Lmm07wVa2+eKcktST2HvmDoVCCrTHriAoxUGVfTrmwBvOhP
-         I1hFRYVTT2YzT+CeXaR40H5NdyoorWJJOa+sqodoH+6eD8Mb1R1mYmzeRCb41N4+GgJU
-         opaW6aZPddAOOK87l6LweGMVZOIZtW5svRmnf4MasZHTaqTNv60hDV7I2h02x2Rha+LT
-         6majc6CYEDn/M102F/ihLc3wrZzq+aH/Y1BKjrRii11zrHf00mrMqqYxmRkxUSiDjs+S
-         Ua3l7fjquYS2t248VZbOI96dHLwvUCrzi0L7d96k0VyblHgXRQXE6OetdA8wpRudgxOa
-         kbAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786044469; x=1786649269;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RKDxq6e03wLEUEpXNUuVpy51JZ2keZfmV6/afBlsFiI=;
-        b=V8RdJZctN67kq4jqvcoy9+TrOtJe8Kvm55ddsrFNXSw0m2dJFBm41TWVsS5DJFZoEA
-         bUNeKN+6cKV4im36s8Tkte9TIDDZ3I7pMUnG5MDvXGbUXMl6ss3K9GmBCkQ3ApVYm0Rc
-         RqJbNGAILTedD8klQd6LvmEQNS85f9Io+4sDXbHm79LAWBfp81RJO/FbvTkk0KfdayEc
-         XtDhOIgSJxz/avrUcdcvFz5iJF/ydXboPAzrOJaGZlLW1QXfi15nkn2XdEGrI2Kscr9e
-         vHhWd11ZvjgAqAhBk/w2CefYEvyBm+PQtsqpB0oNgCytUXG/culQn8KEiMcJhrMUCXm6
-         Ersw==
-X-Gm-Message-State: AOJu0YwMbQ6Ap81vqKYcKYqMFzOcwfhmJZvpx3X6pgvgK12tiw978sG3
-	IcSng7F61Bm43L8oxoyd6mF1JLTBrAFwr5GHbAZyX6HcH69cOcogjWIzBkqcCOhV1n1uW2VN4Y7
-	t4P+OYBj+dg/fVsxF41IQF5bakFpRbVrMXLDHvL+l
-X-Gm-Gg: AR+sD13sRxlCPFEPHMnBP5gDwT/lPrUNFPr8Gj4y7u2J1/9MKuVkDY6yzkEVy4T3mN7
-	O3s2S4mWZSe/8sYouwvzESyk0hU5fsXrSHl0t47rQ6ma5H0qjAqawYn7PKwLqNaLsyxXqYvv+f9
-	xXSxb4MKj5mq6AC1JIPPMWMLgI5ImKfm5TchihHoqGPOPJbkmGbZtCBldDzKI+ryFbmR0L/DEgh
-	V03gwlg9wiZZACIiv901twEIh7vvBSva7uNtKYfhTESRaqWUOqI+PS/Lxk1P29E5y6ciSDmAJGK
-	mwJyR0FpD7VuRmx2NOygGa2LrUXPzVMuXoE+qo/Ft8z+KKjC2qcBhLGadNr/iEsq1+VVSo3rGwk
-	=
-X-Received: by 2002:a17:902:f2c1:b0:2d1:1d3d:97c3 with SMTP id
- d9443c01a7336-2d120537ac8mr1601595ad.13.1786044468248; Thu, 06 Aug 2026
- 12:27:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="tAxnX+Lx";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="wQhaKFi3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1786044730;
+	bh=3KzeiQa+hZqeTYB1Gm3m7fHbxkQO+WwPhVCyaF0zGg4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tAxnX+LxEJLULeSmCzDYjHtyuShf3QRNvOsyDNcQx6lyiUH0MXIaKY7+Eq/Ffs5HL
+	 Okh0NpwUuHwbsSr0NBTNkk9US8dimwKpmZgcB9znEljX35j/V/2XqmovbHrlZ/IpLY
+	 DwWVM7P8mAqWvaxGG/th3OMutFHbxFnKcTeJp+tmwn9fmzvalgWthYodoAeCafwB95
+	 RSuzmuJ5D2srebIwa5BrKuNMGr1BRClTituC/Xk/pbeSmbeuPkCrSwMaLDqDbkdX+Q
+	 3OomvLylHPA0dr012hBuwnhJ2Qb7P2X5C5PLvtl0/pw1kEuEy0RPLhMbpUs55QJcz5
+	 edwTccW1cvN4A==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 36F29496FB; Thu,  6 Aug 2026 19:32:10 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1786044727;
+	bh=3KzeiQa+hZqeTYB1Gm3m7fHbxkQO+WwPhVCyaF0zGg4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=wQhaKFi3Hn3wZpfQ+zgT+x3CzIrR+sW1TD1v4iXMUin78tcSCF/2FADmFRiJUupn2
+	 xiuCDFe6fePWS3LNjAiS3wKAJZZZJteaXOtqoYzEH8/Eh6VUPb3J1DIcZE5PLKuWdS
+	 VJg5GhGfopxeT5cRCDMXpVvdA1d+VAgGY8HOUCMkrEf/WpEqrqg/K1eTqwTCfP9sIa
+	 bg9FWaSjnXWG1SAdfYkr3HgwZgT0otlGR/bq+in9R5FMekGKEzePRQefJgwxgXytFu
+	 8dL5Bt4QnJwavfP/KQ9uFuGe3R76WIagFyAAvusaDVsVZblt+CqbmTA6PCAGeBOYlT
+	 O/CLZYJXJuV4A==
+Received: from [10.30.1.58] (unknown [213.80.50.14])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 58662496F2;
+	Thu,  6 Aug 2026 19:32:07 +0000 (UTC)
+Message-ID: <3a2f6485-191f-4926-aab8-636bd168fc8f@birger-koblitz.de>
+Date: Thu, 6 Aug 2026 21:32:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260803181852.491437-1-almasrymina@google.com>
- <20260803181852.491437-2-almasrymina@google.com> <20260806121602.711dfa34@kernel.org>
-In-Reply-To: <20260806121602.711dfa34@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Thu, 6 Aug 2026 12:27:34 -0700
-X-Gm-Features: AUfX_mwqNjMDNPTTybK3pB8uuckkeznT_cqRY7Nyr9TJWPsHvswqs3jxPXVSagc
-Message-ID: <CAHS8izOXwOe2jZmyniWChdU-dKwoFNiVRti66D77LxQS8AhoCQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 2/2] selftests: drv-net: ncdevmem: gracefully
- retry bind()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Bobby Eshleman <bobbyeshleman@meta.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 04/13] ax88179_178a: Add HW support for
+ AX179A-based chips
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
+References: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
+ <20260802-ax88179a-v5-4-dcb9fea4acd4@birger-koblitz.de>
+ <b6c5b109-a999-43ac-b4f1-14007e7b3387@lunn.ch>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <b6c5b109-a999-43ac-b4f1-14007e7b3387@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 6, 2026 at 12:16=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Mon,  3 Aug 2026 18:18:26 +0000 Mina Almasry wrote:
-> > During tests, ethnl_rings_set randomly bounces the link causing a
-> > transient IPv6 Duplicate Address Detection "tentative" race, resulting
-> > in spurious -EADDRNOTAVAIL aborts inside the ncdevmem server.
->
-> The test env is supposed to disable DAD and addr flush on down.
-> If DAD is enabled multiple ksft tests would fail.
 
-Ack, let me check how to do this in my test env.
+On 02/08/2026 23:28, Andrew Lunn wrote:
+> This is more of a nitpick, given how much work you have already done
+> on this driver. I think designated initializer syntax could make this
+> more readable:
+> 
+> num ax_bulk_in_speeds {
+> 	BULK_IN_SPEED_1G_SS = 0,
+> 	BULK_IN_SPEED_1G_HS   = 1,
+> 	BULK_IN_SPEED_100_FULL_SS = 2,
+> 	BULK_IN_SPEED_100_HALF_SS = 3,
+>   ...
+> };
+> 
+> 
+>> +static const struct ax_bulkin_settings AX88179A_BULKIN_SIZE[] = {
+>   [BULK_IN_SPEED_1G_SS] = {5, 0x7B, 0x00, 0x17, 0x0F},
+>   [BULK_IN_SPEED_1G_HS] = {5, 0xC0, 0x02, 0x06, 0x0F},
+> 
+>> +static void ax88179a_bulkin_config(struct usbnet *dev, u8 link_sts)
+>> +{
+>> +	struct ax88179_data *ax179_data = dev->driver_priv;
+>> +	const struct ax_bulkin_settings *bulkin_data;
+>> +	int index = 0;
+>> +
+>> +	switch (ax179_data->speed) {
+>> +	case ETHER_LINK_2500:	/* AX88279 only */
+>> +		index = BULK_IN_SPEED_2500;
+>> +		break;
+>> +
+>> +	case ETHER_LINK_1000:	/* AX88279 & AX88178A */
+>> +		if (ax179_data->chip_version == AX_VERSION_AX88279) {
+>> +			if (link_sts & AX_USB_SS)
+>> +				index = BULK_IN_SPEED_1G_SS;
+>> +			else if (link_sts & AX_USB_HS)
+>> +				index = BULK_IN_SPEED_HS;
+> 
+> This removes the 1, 2, 3, etc making the relationship more obvious.
+> 
+Will be done in v6. And the change even allows to remove the above
+dependencies on the chip versions in ax88179a_bulkin_config(), since
+the different ax_bulkin_settings structures no longer need to start at 0
+index. Much more than nitpick!
 
---=20
-Thanks,
-Mina
+Birger
+
