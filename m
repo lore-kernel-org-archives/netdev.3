@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49D837FF41;
-	Thu,  6 Aug 2026 16:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32AF37F33F;
+	Thu,  6 Aug 2026 16:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786035088; cv=none; b=LcujR3ptMTsXhF975ecelc8E+hiBtdtzw7XJT5TeSwRBSDzcqExVnOa9Tb0ggCplgL4UfZglsIrabYTcZuXPtXIWsosZnlAcGLWgtpITZtl9sAmvS1Cup62DoKFrurZd8v2cEmkzz8w3Jt3KLRFWqGp85pIrC96ZxP9ya22c1nQ=
+	t=1786035090; cv=none; b=HnZEQdi+zq0F3Lx8fG2cNbd+nTbBBKJG/aQ9cEluEdDHVlYs1rFSwREP2plBEz5dw9D8DPs8fdku3/Be7iu3wSYJr3o34DpwkkIYSa6HTdl4JuBHjrGn1HuHbCacUzQ73p9mwDSajQpVtQ6nHt6LWqVBhIulvQvH6stWD5K+w+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786035088; c=relaxed/simple;
-	bh=46BIHVoqFzJQOMA28tW7wGzS6BMe6cdehwNM7VgIdUo=;
+	s=arc-20240116; t=1786035090; c=relaxed/simple;
+	bh=45NAAedD7g5YQOH7dpDDYjiipzqsZkcyr1oeZGTxmM0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZRhYd3saAK5NBZJHnfCAL0KboWw/vLydDBFZdFxi2il6cDkzo0JP5D8RKb5RA5eazQi4fKTRDeinLsqhTWT6MvhI/TNYVMyghH4IEvWz+EMv2n2kmKW13YC6GQlLrcM1LJUkWTVC71kMj1ImacnVNZ28loOJwMCx5riNK6LWUGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eOgLpgsA; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Uo4rzgET/s3tDQBNYASlZAq7/WE/3OxMOZtzFDRuAhPFRoLqyA6zysXTWJlNYpH98Y/7A6MYBEVuyXb6QLfEOF9d3f4gHZPSTB7TouPtnoRXYpeAiTmEc9H4/0aQ/lw/0Pzd0VWOEiE+HJxzydL3gqI9E/cAhNfpOpLyI8AhFLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FisnvbAe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eOgLpgsA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2271F00ACA;
-	Thu,  6 Aug 2026 16:51:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FisnvbAe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155821F00A3A;
+	Thu,  6 Aug 2026 16:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786035070;
-	bh=W/bRh8moy1kxdIX3Zas3SghuIEWFKs0JxEd4NqqKUQQ=;
+	s=k20260515; t=1786035079;
+	bh=V0d9CVOXxDdjEJr3P6dHA3Zp9kfbflA+jBu+F9nto8E=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=eOgLpgsA7loHIQYsA3JdfQ7Tf3LBRPj1tPnwIVnqssYi7bvVNbM1Yveq+ZMt+/p5N
-	 /8/jddaVPbHYoEOkTNWkHHjH3s1A0LzZunyerSt++HbSZe61RqMQQ4T1Texbg6lLm8
-	 CBFfNDJs/P0tVUJf+qfrggXiyEEyRdu/Vf88wcs07q4CDjKh5EPgYHoUOg3Dv9CQUk
-	 NErasnCVdU9EumsAcF6QPrM3EZ0HU8Qs1poARp1eKoamo1jz2X2TGLUcGjCoCenZNl
-	 9DjJHTOKv0dbW1GZJocjdRoVKpIH8xs9nbcmOQH4Ylot03oC3g20e3Z3Q3PqkWHz9A
-	 sW5cGDBL4WNkA==
+	b=FisnvbAePHDRcw+b0+qIYZ/gdnEKt7uRu4uEwv2x9qMZDPhTpT/oxxZDdHIQeTxjb
+	 T1cS8Jem6Bp4rZpT7dPtCa+5k5n4IRLgTg+dOuOpcEg146ed44RrdDyXvF/F8gbzkY
+	 5+D+3kt/enzieBb8dAqNHjVCgnuq+PNoBuuKyWxRq4tncuC4W3dZ5xWug13V9IjMnV
+	 WCw+nZVXryyjx0PpouSGyuaQAdh+ty5NZ42WSzNTRqEpPzmM419aA8iUY+AGcW2nRe
+	 QRNlbGiOCwD+oRo9ueQAwkaLahwcPRm1+tNeqA9TnT5ILDLPr3ODsjUYwl9+b0FW7R
+	 YHJyUTwr9cmGg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199BD380820D;
-	Thu,  6 Aug 2026 16:50:31 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939E4380820D;
+	Thu,  6 Aug 2026 16:50:39 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: Defer netdev KOBJ_ADD uevent until the device
- is
- published
+Subject: Re: [PATCH net 1/2] fjes: unregister the netdev before destroying the
+ workqueues
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178603502963.1375455.13217677789461225888.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Aug 2026 16:50:29 +0000
-References: <20260806080758.2039586-2-dtatulea@nvidia.com>
-In-Reply-To: <20260806080758.2039586-2-dtatulea@nvidia.com>
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, jacob.e.keller@intel.com,
- sdf@fomichev.me, tariqt@nvidia.com, shshitrit@nvidia.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178603503813.1375455.12729853575409508362.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Aug 2026 16:50:38 +0000
+References: <20260805011410.414431-1-fanwu01@zju.edu.cn>
+In-Reply-To: <20260805011410.414431-1-fanwu01@zju.edu.cn>
+To: Fan Wu <fanwu01@zju.edu.cn>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 6 Aug 2026 11:07:58 +0300 you wrote:
-> netdev_register_kobject() calls device_add(), which emits KOBJ_ADD and
-> wakes udev, but register_netdevice() only makes the device findable by
-> name later, in list_netdevice().  A udev worker that reacts to the uevent
-> can therefore run against a device that no lookup can find yet.
+On Wed,  5 Aug 2026 01:14:09 +0000 you wrote:
+> fjes_remove() destroys the driver workqueues before unregistering the
+> netdev. The interrupt handler queues work on them, but the IRQ is only
+> freed from fjes_close() under unregister_netdev(), so an interrupt in that
+> window can queue work once the workqueues are gone.
 > 
-> This used to be harmless because the ethtool ioctl took the rtnl_lock
-> when looking the device up, and register_netdevice() runs under rtnl, so
-> the worker simply blocked until registration finished. The commit in the
-> fixes tag moved the lookup out from under rtnl for ops-locked drivers.
-> Now there is a short window in register_netdevice() between
-> netdev_register_kobject() until list_netdevice() when the device is not
-> findable by name.
+> Unregister the netdev first so fjes_close() frees the IRQ and cancels the
+> workers before the workqueues are destroyed. force_close_task, which the
+> workers arm on the system workqueue, is handled in the next patch.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: Defer netdev KOBJ_ADD uevent until the device is published
-    https://git.kernel.org/netdev/net/c/8e63c9e6179a
+  - [net,1/2] fjes: unregister the netdev before destroying the workqueues
+    https://git.kernel.org/netdev/net-next/c/f2473fbfc3fd
+  - [net,2/2] fjes: cancel force_close_task in fjes_remove()
+    https://git.kernel.org/netdev/net-next/c/c206fc0705d1
 
 You are awesome, thank you!
 -- 
