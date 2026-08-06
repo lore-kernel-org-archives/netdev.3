@@ -1,300 +1,214 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBE73F1AD9;
-	Thu,  6 Aug 2026 09:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968453D6CC4
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 09:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786009616; cv=none; b=skfopT64K5HAaxYkFsz6SVKrqlCweqFaGuT0Ny6XmjTeN8q0qTA7d3fyYFP5+ypFvMvdtR0reGNyGUzS4DkAW/JqDNafUYKktUnr1auCkwDi8f7iQ0s7Fli/ZJzZWD91SKEzYfFtsE1CdR3yOywcHcIvdAparvP3nHnyIKHN+yM=
+	t=1786009876; cv=none; b=GXL6regIz/nvXOPY7V4ZnmRVHLWW/N0e2blStj3GE/8VW4SNq56NTsFtfq4HIRL92OKjK2nFBv/AmRvS0Ezh2Rq0Blt1qQn8xLXI8QIohdjQRp49QreGiiE0ZEIREONAsS1VcbUQhhAGqxn2DwLMAScE7dAFTkylLTLBQTGhw+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786009616; c=relaxed/simple;
-	bh=WGjpApM1QS/+/4gE7zGSR2fGxkMnAOBbZ+dzB3diWFA=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=lqFzft8BjjqtuscZ3A6RyAAOYg/6L7E5tzhrBoMVOdeWlLWdQihj+Pvx3TdgLcc15ZGHcWL7qJ4ELgEhwpidaTUlAWvrLC93XA0hm0kOh6xaMc6q0gQNWCgc8YTJbiY+a4TBxod353iApkXmM1dVqz7IKJ2jDieaP87rOxIamPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=v+VzKLjK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TU1Q2fmD; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1786009876; c=relaxed/simple;
+	bh=BBS2llsyBXlMMEFVnV3Vqme+CPr4KYuAOK8RLTlwRNw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CD8SGnF7UmVRfRzWS/QwYKZBgYqJVDr6iFw0b5DZFAfzLuf1dnyH8gQ+jxngNV/IBehzSX5fkRaLYxw3P4/1g56vgousY1/eF02PBWbKkA7/S8mYnrMbEwVFEVWq7w8mkWL21tC8KE7m2NWVPk085zTBg1t4EhUyQ+30EZSpamo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Is0sErDG; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="v+VzKLjK";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TU1Q2fmD"
-Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfout.phl.internal (Postfix) with ESMTP id 64C81EC0181;
-	Thu,  6 Aug 2026 05:46:51 -0400 (EDT)
-Received: from ams-imap-19 ([10.64.2.39])
-  by ams-compute-01.internal (MEProxy); Thu, 06 Aug 2026 05:46:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1786009610;
-	 x=1786096010; bh=3Cwml3kDGqwN88ArLgRyqqKml7+F2SCPibDeasxjiYw=; b=
-	v+VzKLjKVOy22eBHGJXNBvrIr/zc3v5CLvuDAhSTSP77ZXbemoQj6+bpvsSWJWh6
-	LmzXVmz2/nIgUtO2MgjFnMv4wY7362I9AOWBV5Hr8NhPyNTIFH+2aPfhmc5wu9XF
-	hN678tMGLiR1YS5T+qQ67YptlH8OBdtD1hTHDsPq/NB3FjhHjrYQZDgYIArrzez4
-	DI0unrVLLN1ogQf4IDfixtZAPAAOyiyU4t7ktOrkGpFFPSjW4V61XSS5B6fDRJOr
-	JGEVzSZRdKuA3KLpixTpeo2I8uDQsvPjsm/IKjF5zVnPFtsm988mcY7Xrv1h4xC1
-	/66QqjpU5fikKoN9MIuLVw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786009610; x=
-	1786096010; bh=3Cwml3kDGqwN88ArLgRyqqKml7+F2SCPibDeasxjiYw=; b=T
-	U1Q2fmDLYXVFUMTuhZCafl5I3bGQ8uVso7Kk6P3Dr5xt4hBacKmPz/nJ1DOilgvH
-	BfyKdDZcu+JZgEcJ5VwqlgSKF4WtVVjtnxSVcDxx5dmRgdBMZV6rmeDLDjc6QQl3
-	xgvpxRaTRhezPh7lpEoaAhAoKWha/EQe6fGFPVwIxGBHOWzE+xPSBOdoEnj4Pphu
-	cEE6c1JRlifnuEO81lk9V+nPrJuliJ69iXNqS61KcmAcQ5eAOyuUL8pl4eyvIG5L
-	RVwvjRmDdgPKXH90ZQO2v+1pyx9/1Nb75OEdj1/HFPPJem0MjC8h/8WK40LyiM8L
-	KhXK9OMXiH1A0REV5VTjQ==
-X-ME-Sender: <xms:BVh0ajbpLpBvHs0m4DoABwM9jgQExhduzs9-PttP5tTw6hSUmDqrGw>
-    <xme:BVh0atOj1jbTkSnZFQFBQ1Cn84KMqtaSbpPA3tOIn7vBBXyui6adObju1-jJRggL-
-    X60KhLjl1D_8hg41JdtbW3uitmk4Wrvd0_k213_WV4lkQmKyYI9uc7s>
-X-ME-Proxy-Cause: dmFkZTFg/vNmH/Q80/GJjeUrMBYJLwYbgipZTRdWmtBPfVXulLWEQqrlyyfTKliylbiUJH
-    w93/c93TEioXIwS3GFJMQVzZs9jTO6CTXbhWrWOyr8bsLe7QU3FmaLJULLCrz0+LX6XTXm
-    FtHBvA70lH8IqwJpi+EpC0Lu7uaZVTw8bbGBF+Wo1Ur5FF0mh2HYqXV9L+ABEiWKt0Ww4Z
-    xwKJ7vM2e/DSNq1Oh63tak03vIQ8dwvsu0+MgIKO98RSP53GJbpSwENTnX2nkwiNDnfAFM
-    t8QFfUwbAwA/nVSe5IzAVsry8MVWr/flj7XrJ+8v83AXNQ+agCYuTFzE23puZ7YzhCiKKF
-    lP1Yx40JYauQE6/NhRblXjZRWuvTKW6KD24pIhneyjIqKvGKC97hBv4HIkw5INL3d67lmY
-    u+45Uy8nCTzqnTlDIImPZJRIWC4mvOoNd8KwDCr/dCV3mBZm+7MFpBvLcAAJ3i3uFLi3Ou
-    pbnH2JSoTYZVAISzBrJyaXHsHGY30BL4B4TLlcDvV5AxALOPAuODqMpN7lb4dTuZs12vFy
-    yy+RmwR8Ca2oOuVzonxfZ9ueVBUw+LL2VCFnEg0OpLHTc5EiNd/fhs0qZ8ZqbpCtK4W3rh
-    GXT71zshg8ei5VyF4qj75AnI6wNw0k+cnmdVplVzIEeW8faYipEl/T9+vzUg
-X-ME-Proxy: <xmx:CFh0ajrqmHGpfnvUhLBNxgnmjW4QNQWQRclVEcWZ8VDazmJH82KqdQ>
-    <xmx:CFh0aqBW5DpoQHSsC9085bTOp2FmTxoOvuzK7UsdTidXFBvNptT_yg>
-    <xmx:CFh0akozSBdIZzjYGkoPhAHoLjGcOqq29VyU2QrCgBa0YnCx-IQ-ow>
-    <xmx:CFh0alBnP8PzCtSQJIKXM4b78WrAhkoykvokhUbuk6f7ByoWrjbbIQ>
-    <xmx:Clh0asnjvnrhLXHnUd5YY5OnQrciQXHauB70fo5d9nnnRVwF3YEEkDDI>
-Feedback-ID: i559e4809:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 6D0542F81644; Thu,  6 Aug 2026 05:46:45 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Is0sErDG"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49800c6a846so16230555e9.3
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 02:51:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1786009870; x=1786614670; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:from:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=jdPKyoXHfLY/Q9bnRaheIyeMtvycemI/+0+xRlC9rLA=;
+        b=Is0sErDGzc8AmAHiosQbgNEn4t6jeA9PMeY2UUCPNVtrF3hL4rvuXjJrOqfvF3kB/j
+         eb2h6O7/0Nx3hhfkzV4FlmPN/j/a5FL1dC7IUhHPsx6aO28oQZuwRfkl0BeQ1pGib6EG
+         X4MJrRfCrJDzfUM+Sr5zMDYf7OyxoOk1zDQfFY0e3k6qUHtYcU8v/dotkTosZFqIkYG6
+         UtTOCvyo1oCE9UNFFQNtxLm1jw1sGnrk5a9un60sDPJRPHGXv0SePzTFR8/gCKvL9ecx
+         4X+fkKn0U/29N8UNTnLKH06sfHgtpwPGEqIajg3W1nVpwtXaOgzUcvdbCsoCDpFcx0Cs
+         7iRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786009870; x=1786614670;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:from:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jdPKyoXHfLY/Q9bnRaheIyeMtvycemI/+0+xRlC9rLA=;
+        b=rAf+diPv4JdkqCT5dfF/fCEDTYxtOo1ZRSEsOm4t8whX0kwqPWTS279OHLyWbGYRxD
+         1TMrVDXj7jLjlNDj03sC0jGMT2QNu9UQR4cqIShhOAamstVubiV9Nx1EmOcwt2bdHsUJ
+         Wb4TIzekwiumC0oaLz5E3Wsnc3VWd15XeVNHqE0g6+FFq9L5U55HObI6a4W+hcC8f6te
+         6xCFeydCOmm/ME43eqWb3TxHuy6KKpVqk0B/Ubpgqs+ij1If0Yrm1ZDlekP99EgwAZLh
+         ccnnmsOYe2OXTJDM9L57LXXtEDUaykaLEey/qPty7lWrzF5y4fFDpen6AGz2Kr/DPyOJ
+         r6xg==
+X-Gm-Message-State: AOJu0YzVYot2D9pILXccur01UxXQnETBw2VLHhwbF0VdxGRFHH6yANFv
+	znBUFuhW+YU0ectugGHiUrn74umpYRchjFSqY6zlj6RWTpfiUTXvlGBSfhnooUD0Ygg92Q/GLYJ
+	oggsHk5bhCBLfxxuONLlTmPMpwU0dzLLcvSmi+WbJ2rj87IPVxR4=
+X-Gm-Gg: AR+sD11/kxIy14S1ghoRD3MX+rwBSjr6nyFRFnbf9owwyeVDn7ux51ZUj3CyfL3bsyP
+	hKodigcGr+a2RaLcawcRMpged4DXcCJK1sQo48dTu0+Pn2goH9frg1gvLDBPmf8xK5wQ8IYA8z9
+	0rljXBs3ThnpWI0dxXkGd9QX9bi0y4g+kOeukXNu5U+rAp8TAqCwgZ3bNwmP2qO40E5liPuVINE
+	jKPuu/EQOqYTUCEH5xhD89ASyObp7vZX3QcUvI8y9eCHqiB6fXCw1qI+wEt7lzXsPCVsZssGQZq
+	JgPA/rbUW8GrHRRYqBz+UOjIUKNoTZp/8G/Qm20DMu971h8Q8H6X2lvrjEhToJOT1M47dfelV5I
+	BCfudxwL9P19UIiKFvxd0UUc237z46Bj0kKRLft7QzFnFzImKAjGS8keX8dzsx3E3vWYdnEU5Qd
+	9KCI1C0I0kBF3S2ozc3dk5xTMVmglzuftchavs1fE3OJOd8t2AaVZUqA/tEGrhrEDaPjQQuixAV
+	XqUsd7q
+X-Received: by 2002:a05:600c:a597:b0:493:bb29:af40 with SMTP id 5b1f17b1804b1-4994e7d9be3mr113312645e9.14.1786009868935;
+        Thu, 06 Aug 2026 02:51:08 -0700 (PDT)
+Received: from [192.168.182.19] ([185.242.181.115])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b25c01sm4435750f8f.29.2026.08.06.02.51.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Aug 2026 02:51:08 -0700 (PDT)
+Message-ID: <96c13143-ada5-4a38-bf31-eb36e5828b43@openvpn.net>
+Date: Thu, 6 Aug 2026 11:51:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 06 Aug 2026 12:45:52 +0300
-From: "Alice Mikityanska" <alice.kernel@fastmail.im>
-To: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
- "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Simon Horman" <horms@kernel.org>,
- "Shuah Khan" <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, "Alice Mikityanska" <alice@isovalent.com>,
- syzbot <syzbot+ce13c07d96d04716eaa2@syzkaller.appspotmail.com>,
- vadim.fedorenko@linux.dev
-Message-Id: <a2f88a4b-4105-40df-a46c-f1bc0f67af1f@app.fastmail.com>
-In-Reply-To: <willemdebruijn.kernel.220b53c78c5f4@gmail.com>
-References: <20260805205957.1652619-1-alice.kernel@fastmail.im>
- <willemdebruijn.kernel.220b53c78c5f4@gmail.com>
-Subject: Re: [PATCH net-next 4/4] net: Fix UDP length overflow with PMTU discover and
- big MTU
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/2] ovpn: don't re-hash a removed peer on float
+To: moonafterrain@outlook.com, Sabrina Dubroca <sd@queasysnail.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org
+References: <20260805-ovpn-fixes-v1-0-763f8c237fb9@outlook.com>
+ <20260805-ovpn-fixes-v1-2-763f8c237fb9@outlook.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+ ifS0+hzvnPVD9wXa9kdjO+0H
+Organization: OpenVPN Inc.
+In-Reply-To: <20260805-ovpn-fixes-v1-2-763f8c237fb9@outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 6, 2026, at 06:26, Willem de Bruijn wrote:
-> Alice Mikityanska wrote:
->> From: Alice Mikityanska <alice@isovalent.com>
->> 
->> This commit bounds cork->base.fragsize to IP(6)_MAX_MTU to avoid a
->> possible overflow of UDP length that triggers a WARN in
->> udp_set_len_short when setsockopt IP(V6)_MTU_DISCOVER is set to
->> IPV6_PMTUDISC_DO or IP(V6)_PMTUDISC_PROBE, and a large packet is sent
->> over a netdev with an unusually large MTU.
->> 
->> Steps to reproduce (included in the new selftest):
->> 
->> 1. Set device MTU bigger than IP6_MAX_MTU (or IP_MAX_MTU + 20).
->>    cork->base.fragsize will be set to that MTU in ip(6)_setup_cork.
->> 2. Set IP(V6)_MTU_DISCOVER to IP(V6)_PMTUDISC_PROBE or IPV6_PMTUDISC_DO.
->>    It lets maxnonfragsize be set to device MTU (cork->fragsize) in
->>    __ip(6)_append_data, rather than to IP(6)_MAX_MTU.
->> 3. Send 65528 bytes of payload (+8 bytes of UDP header, +20/40 bytes of
->>    IPv4/IPv6 header). Device MTU allows it (it's only one byte bigger
->>    than IP6_MAX_MTU or IP_MAX_MTU + IPv4 header, and the device MTU is
->>    bigger than that).
->> 4. The UDP length in the built packet is 65536, which overflows the
->>    16-bit length field and triggers the WARN in udp_set_len_short.
->
-> This is discovered thanks to udp_set_len_short, but is this a
-> preexisting bug and the fix go to net with a Fixes tag?
+Hi Junrui,
 
-You're right, it's preexisting, it can go to net.
+On 05/08/2026 15:29, Junrui Luo via B4 Relay wrote:
+> From: Junrui Luo <moonafterrain@outlook.com>
+> 
+> ovpn_peer_endpoints_update() releases peer->lock before sending the
+> float notification, then re-acquires ovpn->lock and peer->lock to move
+> the peer to its new bucket in the by_transp_addr table. The only
+> re-check in that second critical section is for a NULL bind, which
+> cannot detect removal: bind is cleared by ovpn_peer_release() only
+> after the refcount drops to zero, and the RX path holds a reference
+> across the whole float.
+> 
+> Both paths take ovpn->lock, but that only serialises them - it does
+> not order them:
+> 
+>    CPU0 (RX softirq)              CPU1
+>    ovpn_peer_endpoints_update()
+>      spin_unlock_bh(&peer->lock)
+>      ovpn_nl_peer_float_notify()
+>                                   ovpn_nl_peer_del_doit()
+>                                     ovpn_peer_remove()  <- unlinks peer
+>                                     unlock_ovpn()       <- drops last ref
+>      spin_lock_bh(&ovpn->lock)
+>      hlist_nulls_add_head_rcu()   <- removed peer re-linked
+> 
+> ovpn_peer_release_rcu() then frees the peer without unlinking it again,
+> leaving a dangling node in by_transp_addr that every later datagram
+> walks in ovpn_peer_get_by_transp_addr():
+> 
+>    BUG: KASAN: slab-use-after-free in ovpn_peer_endpoints_update+0xa5a/0x1010
+>    Write of size 8 at addr ffff888008576858 by task trigger/78
+> 
+>    Call Trace:
+>     ovpn_peer_endpoints_update+0xa5a/0x1010
+>     ovpn_decrypt_post+0x212/0x1040
+>     ovpn_recv+0x2b6/0x540
+>     ovpn_udp_encap_recv+0x21c/0x420
+>     udp_queue_rcv_one_skb+0x1060/0x11a0
+>     process_backlog+0x451/0x600
+> 
+>    Freed by task 0:
+>     kfree+0x11a/0x390
+>     rcu_core+0x7aa/0x1570
+> 
+>    Last potentially related work creation:
+>     call_rcu+0x82/0x720
+>     ovpn_peer_release_kref+0x5c/0xd0
+>     ovpn_nl_peer_del_doit+0x355/0x550
+> 
+> Fix it by extending the existing early return to also bail out when the
+> peer is no longer hashed by ID. hash_entry_id is unhashed with
+> hlist_del_init_rcu() by ovpn_peer_remove() under ovpn->lock, which the
+> float path holds across both the check and the rehash, so a peer that
+> passes the test cannot be removed before it is re-linked.
+> 
+> Fixes: f0281c1d3732 ("ovpn: add support for updating local or remote UDP endpoint")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Assisted-by: Claude:claude-opus-5
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 
-For the Fixes tag, I'm not sure about the first occurrence of this bug.
-It could even be as old as 1470ddf7f8ce ("inet: Remove explicit write
-references to sk/inet in ip_append_data"), but I can't compile this
-kernel with modern tools and check myself, unless I bring up some VM
-with an ancient distro from 2011. And I guess, it could be even older,
-as corking existed before. At the same time, something else might have
-prevented this bug back then.
+A fix for this issue was recently merged to net:
 
-If needed, I can try to do this archaeology.
+commit 33ec10567fe14456063daf549fdf1a4f53448e4c
+Author: Antonio Quartulli <antonio@openvpn.net>
+Date:   Tue Jul 28 13:48:47 2026 +0200
 
->> Note: IP_PMTUDISC_DO with IPv4 is safe, because ip_dst_mtu_maybe_forward
->> always clamps at IP_MAX_MTU, unlike ip6_dst_mtu_maybe_forward.
->
-> That was introduced in commit 14972cbd34ff ("net: lwtunnel: Handle
-> fragmentation"), the message of which includes "This includes .. some
-> mtu fixes" without elaborating on those.
->
-> That introduced the same clamp in ip6_mtu. Which was removed in
-> commit 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
+     ovpn: skip rehash for peers already removed from by_id
 
-Looks like it could be by accident, it's a refactoring commit. The
-similar change for IPv4 in commit ac6627a28dbf ("net: ipv4: Consolidate
-ipv4_mtu and ip_dst_mtu_maybe_forward") preserves the clamp.
+Probably you came up with this fix on an older codebase.
 
-> Tangential to this fix, but maybe that should be reinstated. I don't
-> immediately see why the two would diverge on this point.
+I suggest two things:
+1) always check the openvpn-devel mailing list and our patchwork 
+instance for already submitted patches that are waiting review (or that 
+are queued for sending to net/net-next)
+2) make sure to always pull the latest tree patches are based on (net or 
+net-next) before sending them over.
 
-I agree; even though the output case should be fixed by my patch, it
-might still be relevant for forwarding. Let's see if Vadim has any
-comment on the history of the above.
+In this period of hectic AI works things are moving exceptionally fast 
+(well, not always :))
 
->> Reported-by: syzbot+ce13c07d96d04716eaa2@syzkaller.appspotmail.com
->> Closes: https://lore.kernel.org/netdev/6a6a966c.86abc875.e5c3d.0054.GAE@google.com/
->> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
->> Assisted-by: Claude:claude-sonnet-4.6
->> Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
->
-> I only see this patch 4/4. Is there more that did not make it to the list?
+Thanks a lot anyway for looking after our code!
 
-Sorry, I sent it like this by accident, this is an only patch in this
-submission.
+Best Regards,
 
->
->> ---
->>  net/ipv4/ip_output.c                         |  2 +
->>  net/ipv6/ip6_output.c                        |  2 +-
->>  tools/testing/selftests/net/Makefile         |  1 +
->>  tools/testing/selftests/net/cork_fragsize.py | 77 ++++++++++++++++++++
->>  4 files changed, 81 insertions(+), 1 deletion(-)
->>  create mode 100755 tools/testing/selftests/net/cork_fragsize.py
->> 
->> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
->> index e6dd1e5b8c32..2bc997c4fa7b 100644
->> --- a/net/ipv4/ip_output.c
->> +++ b/net/ipv4/ip_output.c
->> @@ -1299,6 +1299,8 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
->>  
->>  	cork->fragsize = ip_sk_use_pmtu(sk) ?
->>  			 dst4_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
->> +	if (cork->fragsize > IP_MAX_MTU)
->> +		cork->fragsize = IP_MAX_MTU;
->>  
->>  	if (!inetdev_valid_mtu(cork->fragsize))
->>  		return -ENETUNREACH;
->> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
->> index 368e4fa3b43c..91c92cb8e529 100644
->> --- a/net/ipv6/ip6_output.c
->> +++ b/net/ipv6/ip6_output.c
->> @@ -1430,7 +1430,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
->>  	if (frag_size && frag_size < mtu)
->>  		mtu = frag_size;
->>  
->> -	cork->base.fragsize = mtu;
->> +	cork->base.fragsize = min(mtu, IP6_MAX_MTU);
->>  	cork->base.gso_size = ipc6->gso_size;
->>  	cork->base.tx_flags = 0;
->>  	cork->base.mark = ipc6->sockc.mark;
->> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
->> index b43ddf192ecc..628203fda424 100644
->> --- a/tools/testing/selftests/net/Makefile
->> +++ b/tools/testing/selftests/net/Makefile
->> @@ -25,6 +25,7 @@ TEST_PROGS := \
->>  	cmsg_so_mark.sh \
->>  	cmsg_so_priority.sh \
->>  	cmsg_time.sh \
->> +	cork_fragsize.py \
->>  	double_udp_encap.sh \
->>  	drop_monitor_tests.sh \
->>  	ecmp_rehash.sh \
->> diff --git a/tools/testing/selftests/net/cork_fragsize.py b/tools/testing/selftests/net/cork_fragsize.py
->> new file mode 100755
->> index 000000000000..7a1bb069227a
->> --- /dev/null
->> +++ b/tools/testing/selftests/net/cork_fragsize.py
->> @@ -0,0 +1,77 @@
->> +#!/usr/bin/env python3
->> +# SPDX-License-Identifier: GPL-2.0
->> +
->> +# Test possible UDP length overflow in udp_send_skb/udp_v6_send_skb.
->> +
->> +from lib.py import ksft_run, ksft_exit, ksft_true
->> +from lib.py import ip, NetNS, NetNSEnter
->> +import errno
->> +import socket
->> +import subprocess
->> +
->> +
->> +IP_MTU_DISCOVER = 10
->> +IP_PMTUDISC_PROBE = 3
->> +IPV6_MTU_DISCOVER = 23
->> +IPV6_PMTUDISC_DO = 2
->> +
->> +
->> +def check_dmesg_clean(func) -> bool:
->> +    dmesg = subprocess.Popen(['dmesg'], stdout=subprocess.PIPE)
->> +    result = subprocess.run(['grep', '-q', f'WARNING:.*{func}'], stdin=dmesg.stdout)
->> +    dmesg.wait()
->> +    return result.returncode != 0 and dmesg.returncode == 0
->> +
->> +
->> +def test_ipv6() -> None:
->> +    with NetNS() as ns:
->> +        ip('link add dummy type dummy', ns=ns)
->> +        ip('link set dummy mtu 65576', ns=ns)
->> +        ip('link set dummy up', ns=ns)
->> +        ip('-6 addr add fd00::1/64 dev dummy nodad', ns=ns)
->> +        ip('-6 neigh add fd00::2 lladdr 02:00:00:00:00:02 dev dummy nud permanent', ns=ns)
->> +
->> +        with NetNSEnter(ns):
->> +            with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as fd:
->> +                fd.setsockopt(socket.IPPROTO_IPV6, IPV6_MTU_DISCOVER, IPV6_PMTUDISC_DO)
->> +                try:
->> +                    fd.sendto(b' ' * 65528, ('fd00::2', 1234))
->> +                except OSError as e:
->> +                    # Ignore EMSGSIZE: it happens on kernels with the fix.
->> +                    if e.errno != errno.EMSGSIZE:
->> +                        raise
->> +
->> +        ip('link del dummy', ns=ns)
->> +
->> +    ksft_true(check_dmesg_clean('udp_v6_send_skb'), 'WARNING detected in dmesg')
->> +
->> +
->> +def test_ipv4() -> None:
->> +    with NetNS() as ns:
->> +        ip('link add dummy type dummy', ns=ns)
->> +        ip('link set dummy mtu 65556', ns=ns)
->> +        ip('link set dummy up', ns=ns)
->> +        ip('addr add 10.0.0.1/24 dev dummy', ns=ns)
->> +        ip('neigh add 10.0.0.2 lladdr 02:00:00:00:00:02 dev dummy nud permanent', ns=ns)
->> +
->> +        with NetNSEnter(ns):
->> +            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as fd:
->> +                fd.setsockopt(socket.IPPROTO_IP, IP_MTU_DISCOVER, IP_PMTUDISC_PROBE)
->> +                try:
->> +                    fd.sendto(b' ' * 65528, ('10.0.0.2', 1234))
->> +                except OSError as e:
->> +                    # Ignore EMSGSIZE: the check happens after the WARN is printed.
->> +                    if e.errno != errno.EMSGSIZE:
->> +                        raise
->> +
->> +        ip('link del dummy', ns=ns)
->> +
->> +    ksft_true(check_dmesg_clean('udp_send_skb'), 'WARNING detected in dmesg')
->> +
->> +
->> +if __name__ == "__main__":
->> +    ksft_run([
->> +        test_ipv6,
->> +        test_ipv4,
->> +    ])
->> +    ksft_exit()
->> -- 
->> 2.55.0
->>
+-- 
+Antonio Quartulli
+OpenVPN Inc.
+
