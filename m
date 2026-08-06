@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D50A343882
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531BD3515D5
+	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 18:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786041425; cv=none; b=VJe13+UdUQiB4BgyevS+HTxaZKnsuT4USz93khys31thFxi+4P8YqqKc1/jKAbKSowvjH9Ytz7GgKUvpDTv4GKqlpiZHlHEuCE4GOyue84XnGt+8URdUD7jTrhGViG7ga6Rvz0sDF7iU5pYW8osVJsi59FyQmaipjJXgzqqchDo=
+	t=1786041425; cv=none; b=tOvsvswuNLou3dB/yj+WdK9pMXbDbU/RgTz/gROusX4oTpVnEit8WwbqpWNN2fl5BxpjcDzWIpZc+W1aJSwFqWD13Shn6riGQ6K8imJ0SN/45QiQuhu8Tajk7x2Khdy1YJKWwAC4DbKq1WX0IWin7fMIfPn4j9TzOjOC78KMWHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786041425; c=relaxed/simple;
-	bh=JKMCp8x7/41njXwC0h6kD9fsrnbNzGOkwJifCzo7K8o=;
+	bh=mgZAVhkDrfrF7qc7YZj1qyQn2LSj69vkQtEg4HBHa90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6r4NCW5GCoFBxwZBqVNu4froFDUl9hX3XB/bfHQbF38RRya1DrPtwwzV+HORx3wpPkyekq1FxkHsPc5/xroUbP1R2xyghj+pO7pgASqYrxfiVmqr7TCx2reImZkoo6fO7RtBJ/3uBV2CUY0vNYzq6zf+UHOI60oZaNeuHO1nCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQGcO8bu; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=ZoQLUG+o3eDZsez7qRDaTIO+YYlw4NYF5nejx8C/8B1k/GSjw7+foeVPH2QOVKEWAzKYG9OklKQyMbjkNM24kICSqYxSExiggCvEMpX+wIIg+A/uNQwg3A507rIGJ3uYN2RthTbwEdhM99Hk9NHfyNq2whshrXPq0VUq1mGx9sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxWirj8v; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQGcO8bu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E991F00A3A;
-	Thu,  6 Aug 2026 18:37:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxWirj8v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4911F00A3D;
+	Thu,  6 Aug 2026 18:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786041421;
-	bh=Kw0bAgHUZzpkjFP8Xw4GTrzIO4gOGMMUN0JzOov3mas=;
+	s=k20260515; t=1786041422;
+	bh=5D+kt9Ji/YpIEH/DJsU9gAW+siSqFCe9WpV0JXtz8gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TQGcO8buNiiU7P9QXyP0XZKtJ4m6pEXJWFTVLkxziKjhmLrM11ZDDYrV8bK6ZTRap
-	 i5BBCbu1ehL1CEwsIOelSa6kpMLfBEhrB3xnAVpAURAov/im7Iv0fjv4YV4HtHBU+x
-	 wPD6fzo04ZKW5FzvNtXhDSPaqsg9Ytt9s7BO1QDDO8/g3sA+yV6WLRSPXGWYHnNSLr
-	 S9uFfqUdmuOca5/JvpfAooX+Qrj0nNXjwxu+hnKot/fT6+uBZ+yvR0yyUurlbEwOE4
-	 3i3YUtv8sX3fKoZ0ncZDHA0qVcR/vFgG0PKI/EwYMFat7r/5tChKwx6LefwzA3cQo0
-	 T+1HJm6PCG/Hg==
+	b=IxWirj8veGuW3/yidWhisUR53I3S5aTzCtKSXD2gxWlfFRMPb29SX78U6uoaZu3w3
+	 zIVThS5O2AIsa9Bk3F/JKwfkB8H6EARnstKRjLDlgkpZSgun05dJuC4urHMwXY/loq
+	 KlM5mhNgm8UBdUecCVQY9CQEGaib+hDLYV+j7uCy86ejL6GJgjBm+5TJcRcGK5VkQL
+	 CX2R+XrASGuKwVxdNLQTJ4qYC12FhrspB/TcpxtBkIEDYnACylYC7IrQrHtp0TLDZt
+	 EDB/nyPR3es/7WkPyrnxgath9VgiIZ96cCEawq800oz7FmQUSSyxwdXA5f7+uTy7B1
+	 qX91gTep5cB6A==
 From: Jakub Kicinski <kuba@kernel.org>
 To: mmc@linux.ibm.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -43,12 +43,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	simon.horman@corigine.com,
 	shaik.abdulla1@ibm.com,
 	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v4 02/14] ibmveth: Prepare MQ RX adapter data structures
-Date: Thu,  6 Aug 2026 11:36:59 -0700
-Message-ID: <20260806183659.3175041-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 03/14] ibmveth: Refactor RX resource allocation for MQ RX bring-up
+Date: Thu,  6 Aug 2026 11:37:01 -0700
+Message-ID: <20260806183701.3175123-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <5aceac43fd2da5d06bee7aba36e2983e1a7bc007.1785457143.git.mmc@linux.ibm.com>
-References: <5aceac43fd2da5d06bee7aba36e2983e1a7bc007.1785457143.git.mmc@linux.ibm.com>
+In-Reply-To: <984697bdc91a3c37f5f24750d7f24fc2d97031fa.1785457143.git.mmc@linux.ibm.com>
+References: <984697bdc91a3c37f5f24750d7f24fc2d97031fa.1785457143.git.mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,151 +60,173 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ibmveth: Prepare MQ RX adapter data structures
+ibmveth: Refactor RX resource allocation for MQ RX bring-up
 
-This converts the single-instance RX state in struct ibmveth_adapter
-(napi, rx_queue, buffer_list_addr/dma, rx_buff_pool) into queue-indexed
-arrays sized by the new IBMVETH_MAX_RX_QUEUES, adds multi_queue and
-num_rx_queues, and mechanically rewrites all existing references to
-index 0.  IBMVETH_MAX_RX_QUEUES stays at 1 in this patch.
-
-A couple of observations below, neither of which changes runtime
-behaviour today.
+This moves the filter list and per-queue RX ring allocation out of
+ibmveth_open() into four new helpers, and wires them into both the
+open error unwind and ibmveth_close().  Runtime behaviour is meant to
+stay single-queue since num_rx_queues is still 1.
 
 > diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 73e051d26b9d8..8e758362cb263 100644
+> index 8e758362cb263..1007dd95cde02 100644
 > --- a/drivers/net/ethernet/ibm/ibmveth.c
 > +++ b/drivers/net/ethernet/ibm/ibmveth.c
-
-[ ... ]
-
-> @@ -482,42 +486,44 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
->  	mb();
->  
-> -	atomic_dec(&(adapter->rx_buff_pool[pool].available));
-> +	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
->  
->  	return 0;
+> @@ -151,6 +151,184 @@ static unsigned int ibmveth_real_max_tx_queues(void)
+>  	return min(n_cpu, IBMVETH_MAX_QUEUES);
 >  }
 >  
->  /* get the current buffer on the rx queue */
-> -static inline struct sk_buff *ibmveth_rxq_get_buffer(struct ibmveth_adapter *adapter)
-> +static inline struct sk_buff *
-> +ibmveth_rxq_get_buffer(struct ibmveth_adapter *adapter)
-
-[Severity: Low]
-This isn't a bug, but the patch carries a few edits that are not part of
-the stated mechanical index-0 conversion:
-
-  - dropping the redundant parentheses in the atomic_dec() call in
-    ibmveth_remove_buffer_from_pool()
-  - reflowing the ibmveth_rxq_get_buffer() prototype
-  - rewriting the kernel-doc of ibmveth_get_desired_dma() from
-    "Return value:" to "Return:"
-  - inserting a blank line in struct ibmveth_adapter after
-    rx_large_packets
-
-The commit message says:
-
-    This patch keeps behavior unchanged by mechanically switching existing
-    references to index 0
-
-Could these cosmetic edits move to a separate cleanup patch, or be
-mentioned in the changelog?  As it stands each hunk has to first be
-classified as conversion or cleanup before the "behavior unchanged" claim
-can be confirmed.
-
-[ ... ]
-
-> @@ -1693,8 +1704,7 @@ static void ibmveth_poll_controller(struct net_device *dev)
->   *
->   * @vdev: struct vio_dev for the device whose desired IO mem is to be returned
->   *
-> - * Return value:
-> - *	Number of bytes of IO data the driver will need to perform well.
-> + * Return: Number of bytes of IO data the driver will need to perform well.
->   */
->  static unsigned long ibmveth_get_desired_dma(struct vio_dev *vdev)
->  {
-
-[ ... ]
-
-> @@ -1898,10 +1912,10 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
->  		memcpy(pool_count, pool_count_cmo, sizeof(pool_count));
->  
->  	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
-> -		struct kobject *kobj = &adapter->rx_buff_pool[i].kobj;
-> +		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
->  		int error;
->  
-> -		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
-> +		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
->  					 pool_count[i], pool_size[i],
->  					 pool_active[i]);
->  		error = kobject_init_and_add(kobj, &ktype_veth_pool,
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
-> index c88dbeb7cd967..8eaa3942fc40b 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.h
-> +++ b/drivers/net/ethernet/ibm/ibmveth.h
-
-[ ... ]
-
-> @@ -294,18 +296,23 @@ struct ibmveth_rx_q {
-> -	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
-> -	struct ibmveth_rx_q rx_queue;
-> +	struct ibmveth_buff_pool
-> +		rx_buff_pool[IBMVETH_MAX_RX_QUEUES][IBMVETH_NUM_BUFF_POOLS];
-> +	struct ibmveth_rx_q rx_queue[IBMVETH_MAX_RX_QUEUES];
-
-[Severity: Low]
-Is replicating the whole struct ibmveth_buff_pool per queue the layout you
-want here?
-
-struct ibmveth_buff_pool embeds a struct kobject, which is the per-pool
-sysfs tuning object.  Only row 0's kobjects are ever initialized and
-registered, in ibmveth_probe():
-
-	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
-		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
-		...
-		error = kobject_init_and_add(kobj, &ktype_veth_pool,
-					     &dev->dev.kobj, "pool%d", i);
-
-and only row 0's are dropped, in ibmveth_remove():
-
-	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-		kobject_put(&adapter->rx_buff_pool[0][i].kobj);
-
-So every row above 0 carries a kobject that is never initialized and never
-used.
-
-Later in the series IBMVETH_MAX_RX_QUEUES is raised to 16U, at which point
-the netdev private area unconditionally holds 16 x 5 pool structs
-regardless of num_rx_queues, of which 75 embedded kobjects are dead
-weight.
-
-The follow-on code also shows that only part of the struct is really
-per-queue: ibmveth_alloc_single_rx_queue() copies size, index, buff_size,
-threshold and active from row 0 into each new row, so the pool
-configuration is shared while free_map/dma_addr/skbuff/producer_index/
-consumer_index/available are the genuinely per-queue state.
-
-Would it be cleaner to split the struct into one shared, sysfs-visible
-configuration object plus a small per-queue state array, given this patch
-is the one that fixes the layout for the rest of the series?
-
-Is it also intentional that the per-pool sysfs tuning interface now
-implicitly means "queue 0 configures all queues"?  If so, could that be
-stated in the changelog?
-
-> @@ -325,6 +332,7 @@ struct ibmveth_adapter {
->  	u64 tx_send_failed;
->  	u64 tx_large_packets;
->  	u64 rx_large_packets;
+> +/**
+> + * ibmveth_alloc_filter_list - Allocate and map filter list
+> + * @adapter: ibmveth adapter structure
+> + *
+> + * Return: 0 on success, negative error code on failure
+> + */
+> +static int
+> +ibmveth_alloc_filter_list(struct ibmveth_adapter *adapter)
+> +{
+> +	struct device *dev = &adapter->vdev->dev;
+> +	struct net_device *netdev = adapter->netdev;
 > +
->  	/* Ethtool settings */
->  	u8 duplex;
->  	u32 speed;
+> +	adapter->filter_list_addr = (void *)get_zeroed_page(GFP_KERNEL);
+> +	if (!adapter->filter_list_addr) {
+> +		netdev_err(netdev, "unable to allocate filter pages\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	adapter->filter_list_dma = dma_map_single(dev,
+> +						  adapter->filter_list_addr,
+> +						  4096, DMA_BIDIRECTIONAL);
+> +	if (dma_mapping_error(dev, adapter->filter_list_dma)) {
+> +		netdev_err(netdev, "unable to map filter list pages\n");
+> +		free_page((unsigned long)adapter->filter_list_addr);
+> +		adapter->filter_list_addr = NULL;
+> +		return -ENOMEM;
+> +	}
+
+[Severity: Medium]
+
+Should this error path also clear adapter->filter_list_dma?  On failure
+dma_map_single() has stored DMA_MAPPING_ERROR, which is ~(dma_addr_t)0 and
+therefore non-zero, and only filter_list_addr is reset here.
+
+The sibling helper added in the same patch does zero the cookie in the
+same situation:
+
+	if (dma_mapping_error(dev, adapter->buffer_list_dma[i])) {
+		...
+		adapter->buffer_list_dma[i] = 0;
+		goto err_cleanup;
+	}
+
+so the two new helpers appear to disagree on the convention.
+
+> +
+> +	netdev_dbg(netdev, "filter list @ 0x%p (DMA: 0x%llx)\n",
+> +		   adapter->filter_list_addr,
+> +		   (unsigned long long)adapter->filter_list_dma);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * ibmveth_free_filter_list - Free filter list resources
+> + * @adapter: ibmveth adapter structure
+> + */
+> +static void
+> +ibmveth_free_filter_list(struct ibmveth_adapter *adapter)
+> +{
+> +	struct device *dev = &adapter->vdev->dev;
+> +
+> +	if (adapter->filter_list_dma) {
+> +		dma_unmap_single(dev, adapter->filter_list_dma, 4096,
+> +				 DMA_BIDIRECTIONAL);
+> +		adapter->filter_list_dma = 0;
+> +	}
+
+[Severity: Medium]
+
+Can this unmap the DMA_MAPPING_ERROR sentinel?  ibmveth_free_filter_list()
+treats any non-zero filter_list_dma as a live mapping, and the mapping-error
+branch of ibmveth_alloc_filter_list() leaves the sentinel behind.
+
+The state looks reachable without dev_close().  ibmveth_set_csum_offload(),
+ibmveth_set_tso(), ibmveth_change_mtu() and veth_pool_store() all call
+ibmveth_close() and then ibmveth_open() directly while netif_running() is
+still true:
+
+	if (netif_running(dev)) {
+		restart = 1;
+		ibmveth_close(dev);
+	}
+	...
+	if (restart)
+		rc2 = ibmveth_open(dev);
+
+If that re-open fails at the dma_mapping_error() check in
+ibmveth_alloc_filter_list(), open() returns through the out: label without
+calling ibmveth_free_filter_list(), so the adapter is left with
+filter_list_addr == NULL and filter_list_dma == DMA_MAPPING_ERROR while the
+netdev is still marked running.  A later "ip link set dev ethX down" then
+reaches ndo_stop == ibmveth_close() -> ibmveth_free_filter_list() and unmaps
+that invalid address.
+
+On pseries the dma_iommu path catches this in iommu_free_check(), which emits
+a ratelimited "iommu_free: invalid entry" message and a WARN_ON(1) (a panic
+with panic_on_warn set), so no TCE state is changed, but the backtrace is
+still user triggerable with CAP_NET_ADMIN plus a mapping failure.
+
+Setting adapter->filter_list_dma = 0 in that error branch, matching
+ibmveth_alloc_rx_queues(), would make the guard here reliable.
+
+This is still present unchanged at the end of the series (a3781f4ae789), so
+a later patch does not appear to address it.
+
+> +
+> +	if (adapter->filter_list_addr) {
+> +		free_page((unsigned long)adapter->filter_list_addr);
+> +		adapter->filter_list_addr = NULL;
+> +	}
+> +}
+> +
+
+[ ... ]
+
+> +		adapter->buffer_list_dma[i] =
+> +			dma_map_single(dev, adapter->buffer_list_addr[i],
+> +				       4096, DMA_BIDIRECTIONAL);
+> +		if (dma_mapping_error(dev, adapter->buffer_list_dma[i])) {
+> +			netdev_err(netdev,
+> +				   "unable to map buffer list for queue %d\n",
+> +				   i);
+> +			adapter->buffer_list_dma[i] = 0;
+> +			goto err_cleanup;
+> +		}
+> +
+
+[ ... ]
+
+> @@ -627,74 +805,34 @@ static int ibmveth_open(struct net_device *netdev)
+>  
+> -	rc = -ENOMEM;
+> -	adapter->buffer_list_addr[0] = (void *)get_zeroed_page(GFP_KERNEL);
+> -	if (!adapter->buffer_list_addr[0]) {
+> -		netdev_err(netdev, "unable to allocate list pages\n");
+> +	rc = ibmveth_alloc_filter_list(adapter);
+> +	if (rc)
+>  		goto out;
+> -	}
+
+[ ... ]
+
+> @@ -753,26 +889,12 @@ static int ibmveth_open(struct net_device *netdev)
+> +	ibmveth_cleanup_rx_resources(adapter);
+>  out_free_filter_list:
+> -	free_page((unsigned long)adapter->filter_list_addr);
+> -out_free_buffer_list:
+> -	free_page((unsigned long)adapter->buffer_list_addr[0]);
+> +	ibmveth_free_filter_list(adapter);
+>  out:
+>  	napi_disable(&adapter->napi[0]);
+>  	return rc;
+
+[ ... ]
