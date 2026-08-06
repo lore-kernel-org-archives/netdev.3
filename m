@@ -1,268 +1,158 @@
-Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA79E39182F
-	for <netdev@vger.kernel.org>; Thu,  6 Aug 2026 15:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE07C4534BB;
+	Thu,  6 Aug 2026 15:25:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786029935; cv=none; b=Y0a2fhNXOmxAbgjITbqYPL95kFWVHGu9njULDepc7kkpaxlYu2STnWzhutGBMrfxLpMvV+ymPOvb8CEroVJrYNQqv4libiCst1wAy8CiFs3gARTFIRi3NKTjfm81skMtmhA2apOdYuY6D1BkxvjOIzpBitXJWBStwGRqntrAo24=
+	t=1786029946; cv=none; b=KYPU9oUGQ5d3l1Pfz7CfTpx4anCTtUXFluTYo4ghuA7i4UtYOZ5PBtYnKODRZNhI+dV5bBaJijk9lzK7LIS7l+vMo7tTXxV+SjG2WDoAn65sOfa9Y6+J3Vghwhj8HRrrUNCRioN2myEQikZMGyFDjwZsruxurMPTpK0AuZbNqQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786029935; c=relaxed/simple;
-	bh=9+LCOnORD6j42znvB/KSuKtXctYbOKNZtrgMAqL1QDk=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Yte36wiYGjKgJVfHp0O/t9aerDuNQlL/zL0KhYp5HAQYo/EKJKOQY7R7hVzTm5BHpvqUAb16mWAD/44BmnRISfcUz9xQI4HF18FpyZOWBrmYA+y3ZAzLaOKLNU1KKNJc3rUfg1AE+zRRAcH3bwIWPAgN4s+Zb9Y6eW4Nzs1DseA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-6ae7c37604aso1516184eaf.0
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 08:25:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786029932; x=1786634732;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ie2TMnf/y4p7EjEZc1gzKIMMwmQMQX/OMF6JXBGBJGk=;
-        b=NJ6RQocuIOlc38Klxr3Y22k+abHwspB60wwHMv9OqPaXF3Rc+fXREo126e6iaaiOzN
-         eO0WArY9dRW1Wgq0Fc6V3O4tArW38CyQktDe1lD9JbQuT60otgMutn2Ee9C9Y+qyNM9q
-         w+y7FjU8hppPQ4GnnsSL20dLc0e1oMKxPC0ug6oXaJbkcrt4nHhj00YXOZS356qOo5dC
-         YfxtiWqc1RS70540tv7+EElH8eAr/uFlqCI571VOBWqIYwIZtv6OVDXG9lMYkKCGfme+
-         B+WjHnx9cUdWr1A02du6Fk1+wy5hEnb7Kvegjozqso+dXaOTu2NhV1If3eJMsRWKmicD
-         2SXw==
-X-Forwarded-Encrypted: i=1; AHgh+RpFZYGPv5NAhlIS/+lW9G3LHwJd8aDa4ot5UPRsjOc2DwWSkGFSjLgM/cYlsZCFyEVV9OmhDLo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/wEppsl1sUAYSvvD0QrUFlZQXTDaXBYa9yMUsz7OiHjUyPc7i
-	St7vbYpJ16K5eLqKQqZp6gZMpwbyHhLogttyIfMmOuYFnt0IMBxbclvUhHEEq11h+xXFvyyuF7O
-	hRlFVB8LZf5Mo959/BxWpr1n3XtR7HuGW/TB9dJPJHJg181o+8rVk1L2+++8=
+	s=arc-20240116; t=1786029946; c=relaxed/simple;
+	bh=6ZmyFdti4jUjXxdahptyIuC0nIWw63KYauFtkrL+iTA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gc+PwEDO8nHJcToOrsxn+aj565ahtLr6V4VpOMNCFSSzp5DqrxBntG1deUl+sov6XM1lOt7cz0Z8aajMS0ZNHUlFnFJPQbdRs9HkDEzbyDNo+3u4ONVMEdqTBOWfUQpTGarF3h604ylWv22X9KTa3S56A1ewRhr36Jw+/1XpBmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1SHe8hNs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3Na0ofr4; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1SHe8hNs";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3Na0ofr4"
+Date: Thu, 6 Aug 2026 17:25:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1786029942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mpfdccAUVHz0tdtPTBfIMNzx7scFBPZBXLSSy/lEYpE=;
+	b=1SHe8hNsEiu5ukMZ6FiR9tDPnb5wfN5Ovwo551qPZB2fu64CVBv+BXiZ1jbjt8Yux5PqeY
+	2DzfWcjEp3KFd8UeaLv35s9IcX/vprgE+cPCmvz7LCXlsldlJbOKde4JMt6VUpbw23piIs
+	b/uM0Z1ui4EFbaVg6hbu5WzOedAqSXJdD9MPGPLDWHhRi9la7oZUUK0zGqWQtT0MupELSL
+	MCa6TmfqAowAzqJDTKZjM1CEAqOGZpywvYYggFAszchgHQxu8PWubRT08Dz+Ikjd7vA1Ex
+	ARdp4gA1NX0bAzQE4U3tAZk6DpKJ1Nc7Ed6KVPqvx3bMn3vTPjFFzHJDuocOwQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1786029942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mpfdccAUVHz0tdtPTBfIMNzx7scFBPZBXLSSy/lEYpE=;
+	b=3Na0ofr4Im3AR5eD9a48+BM+33OP2k3Nfr2kGluGXN6CsxEfOJWrDRaFDL33k91fw0M37e
+	mnMs0Hj3pcLPbkBQ==
+From: Benedikt Spranger <b.spranger@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Vasilij Strassheim <v.strassheim@linutronix.de>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean
+ <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Martin Kaistra
+ <martin.kaistra@linutronix.de>
+Subject: Re: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
+ bindings
+Message-ID: <20260806172541.009f1295@mitra>
+In-Reply-To: <b47e0589-a3a2-4f88-ba90-72d176efccd3@lunn.ch>
+References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	<20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
+	<20260730-loutish-labrador-of-joviality-6e6c79@quoll>
+	<411ec84fd55e152e94ac1f4edba497eac3a5623d.camel@linutronix.de>
+	<590a933f-85af-4eaa-b9ee-be689dc15c69@lunn.ch>
+	<20260805153220.3860b262@mitra>
+	<9f8ac30b-6579-4e48-abe3-823302a3da0e@lunn.ch>
+	<20260805162705.1a3467ea@mitra>
+	<b47e0589-a3a2-4f88-ba90-72d176efccd3@lunn.ch>
+Organization: Linutronix GmbH
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:83c7:20b0:6b0:1ba4:dcc5 with SMTP id
- 006d021491bc7-6b01ba507admr1413386eaf.20.1786029932598; Thu, 06 Aug 2026
- 08:25:32 -0700 (PDT)
-Date: Thu, 06 Aug 2026 08:25:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a74a76c.ec7c9571.3ac9bb.0054.GAE@google.com>
-Subject: [syzbot] [net?] [bpf?] KASAN: slab-use-after-free Read in xsk_bind
-From: syzbot <syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com>
-To: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org, 
-	daniel@iogearbox.net, davem@davemloft.net, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, sdf@fomichev.me, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On Thu, 6 Aug 2026 15:35:36 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-syzbot found the following issue on:
+> > The minimal IP core is an unmanaged switch. No need for a DSA driver
+> > here. The IP core profides a MDIO bus, therefor a MDIO driver would
+> > be good. The version register in combination with some feature
+> > register can be determined to get the needed information to
+> > configure the DSA driver, or in the minimal case to return -ENODEV.
+ 
+> I think you misunderstood my comment. I expect the MDIO bus is part of
+> the licensed core.
+OK, I did the second step, but the first was not clear, so lets do some
+ASCII art:
 
-HEAD commit:    c21bb4193868 Merge tag 'for_linus' of git://git.kernel.org..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=11e1dbb9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
-dashboard link: https://syzkaller.appspot.com/bug?extid=c06674caba265dc61d46
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15e1dbb9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15ff93b9580000
+                     ---------
+               S_AXI |   S   | port_0_gmii
+              clk_in |   W   |     ...
+               reset |   I   | port_N_gmii
+           IP_enable |   T   |
+default_op_mode[4:0] |   C   |
+         port_0_link |   H   | port_0_phy_rst_n
+             ...     |       |     ...
+         port_N_link |   I   | port_N_phy_rst_n
+          S_AXI_ACLK |   P   |
+       S_AXI_ARESETN |       |
+                     ---------
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/dde4460fa7fd/disk-c21bb419.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e1fe13568a84/vmlinux-c21bb419.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/283184100427/bzImage-c21bb419.xz
+The switch is connected through an AXI Stream interface i.e. the memory
+interface ==> Device Tree binding needed (Base Register)
+Other AXI related signals are hiden and need no device tree
+representation.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com
+The switch has one mandatory and 6 optional clocks:
+1. System Clock / clk_in (mandatory)
+2. AXI4 Lite Clock
+3. AXI Stream Clock
+4. port_x_ref_rmii_clk
+5. PHY RX Clock
+6. PHY TX Clock
+7. Port_x MDC
 
-==================================================================
-BUG: KASAN: slab-use-after-free in xsk_bind+0x1582/0x16c0 net/xdp/xsk.c:1758
-Read of size 4 at addr ffff88802a91a18c by task syz-executor236/5659
+Here are all Device Tree bindings optional, since the mandatory clock
+can be provided by some not exposed internal clock signal as in our
+case and the other clocks are optional.
 
-CPU: 1 UID: 0 PID: 5659 Comm: syz-executor236 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x13d/0x4b0 mm/kasan/report.c:482
- kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
- xsk_bind+0x1582/0x16c0 net/xdp/xsk.c:1758
- __sys_bind_socket net/socket.c:1920 [inline]
- __sys_bind_socket net/socket.c:1912 [inline]
- __sys_bind+0x1a9/0x260 net/socket.c:1951
- __do_sys_bind net/socket.c:1956 [inline]
- __se_sys_bind net/socket.c:1954 [inline]
- __x64_sys_bind+0x72/0xb0 net/socket.c:1954
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa532ec49c9
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffca3bd2128 EFLAGS: 00000246 ORIG_RAX: 0000000000000031
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fa532ec49c9
-RDX: 0000000000000010 RSI: 00002000000003c0 RDI: 0000000000000004
-RBP: 00000000000f4240 R08: 0000000000000001 R09: 0000000000000001
-R10: 0000000000000004 R11: 0000000000000246 R12: 00007ffca3bd2180
-R13: 00007fa532f3040a R14: 0000000000000003 R15: 00007ffca3bd2160
- </TASK>
+GMII ports ==> The ports are defined by the DSA bindings.
 
-Allocated by task 5622:
- kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
- kasan_save_track+0x14/0x30 mm/kasan/common.c:78
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:415
- kasan_kmalloc include/linux/kasan.h:263 [inline]
- __kmalloc_cache_noprof+0x2e5/0x6c0 mm/slub.c:5489
- _kmalloc_noprof include/linux/slab.h:988 [inline]
- _kzalloc_noprof include/linux/slab.h:1309 [inline]
- nsim_queue_alloc+0x3c/0x140 drivers/net/netdevsim/netdev.c:715
- nsim_queue_init drivers/net/netdevsim/netdev.c:1012 [inline]
- nsim_init_netdevsim drivers/net/netdevsim/netdev.c:1059 [inline]
- nsim_create+0xb13/0x1420 drivers/net/netdevsim/netdev.c:1152
- __nsim_dev_port_add+0x3ba/0x8f0 drivers/net/netdevsim/dev.c:1509
- nsim_dev_port_add_all drivers/net/netdevsim/dev.c:1570 [inline]
- nsim_drv_probe+0xdbd/0x13a0 drivers/net/netdevsim/dev.c:1731
- call_driver_probe drivers/base/dd.c:628 [inline]
- really_probe+0x241/0xa60 drivers/base/dd.c:706
- __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
- driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
- __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
- __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
- device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
- bus_probe_device+0x64/0x160 drivers/base/bus.c:620
- device_add+0x121d/0x1970 drivers/base/core.c:3772
- nsim_bus_dev_new drivers/net/netdevsim/bus.c:471 [inline]
- new_device_store+0x40b/0x700 drivers/net/netdevsim/bus.c:191
- bus_attr_store+0x74/0xb0 drivers/base/bus.c:172
- sysfs_kf_write+0xf2/0x150 fs/sysfs/file.c:145
- kernfs_fop_write_iter+0x3e0/0x5f0 fs/kernfs/file.c:345
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x6ac/0x1050 fs/read_write.c:687
- ksys_write+0x12a/0x250 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+reset ==> optional GPIO device tree binding
 
-Freed by task 5659:
- kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
- kasan_save_track+0x14/0x30 mm/kasan/common.c:78
- kasan_save_free_info+0x3b/0x70 mm/kasan/generic.c:584
- poison_slab_object mm/kasan/common.c:253 [inline]
- __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:285
- kasan_slab_free include/linux/kasan.h:235 [inline]
- slab_free_hook mm/slub.c:2677 [inline]
- slab_free mm/slub.c:6377 [inline]
- kfree+0x22b/0x6c0 mm/slub.c:6692
- nsim_queue_mem_free+0xfe/0x190 drivers/net/netdevsim/netdev.c:796
- netdev_rx_queue_reconfig+0x405/0x630 net/core/netdev_rx_queue.c:144
- netdev_rx_queue_restart+0x8f/0xc0 net/core/netdev_rx_queue.c:183
- nsim_qreset_write+0x2e3/0x410 drivers/net/netdevsim/netdev.c:887
- full_proxy_write+0x135/0x1a0 fs/debugfs/file.c:388
- vfs_write+0x2aa/0x1050 fs/read_write.c:685
- ksys_write+0x12a/0x250 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+IP_enable ==> optional GPIO device tree binding
 
-The buggy address belongs to the object at ffff88802a91a000
- which belongs to the cache kmalloc-cg-1k of size 1024
-The buggy address is located 396 bytes inside of
- freed 1024-byte region [ffff88802a91a000, ffff88802a91a400)
+default_op_mode ==> optional GPIO device tree bindings
 
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x2a918
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000040 ffff88813fe2d280 dead000000000100 dead000000000122
-raw: 0000000000000000 0000000800100010 00000000f5000000 0000000000000000
-head: 00fff00000000040 ffff88813fe2d280 dead000000000100 dead000000000122
-head: 0000000000000000 0000000800100010 00000000f5000000 0000000000000000
-head: 00fff00000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5622, tgid 5622 (syz-executor236), ts 69567522694, free_ts 58081032970
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0xfd/0x120 mm/page_alloc.c:1859
- prep_new_page mm/page_alloc.c:1867 [inline]
- get_page_from_freelist+0xf48/0x3530 mm/page_alloc.c:3946
- __alloc_frozen_pages_noprof+0x299/0x2dc0 mm/page_alloc.c:5304
- alloc_slab_page mm/slub.c:3266 [inline]
- allocate_slab mm/slub.c:3380 [inline]
- new_slab+0xa2/0x640 mm/slub.c:3426
- refill_objects+0xe3/0x410 mm/slub.c:7310
- refill_sheaf mm/slub.c:2804 [inline]
- __pcs_replace_empty_main+0x376/0x680 mm/slub.c:4675
- alloc_from_pcs mm/slub.c:4773 [inline]
- slab_alloc_node mm/slub.c:4905 [inline]
- __do_kmalloc_node mm/slub.c:5333 [inline]
- __kmalloc_noprof+0x66d/0x820 mm/slub.c:5359
- _kmalloc_noprof include/linux/slab.h:992 [inline]
- _kzalloc_noprof include/linux/slab.h:1309 [inline]
- __register_sysctl_table+0xac/0x1650 fs/proc/proc_sysctl.c:1378
- neigh_sysctl_register+0x326/0x660 net/core/neighbour.c:3915
- devinet_sysctl_register+0xb6/0x210 net/ipv4/devinet.c:2783
- inetdev_init+0x2b8/0x570 net/ipv4/devinet.c:291
- inetdev_event+0x7fa/0x17f0 net/ipv4/devinet.c:1590
- notifier_call_chain+0x99/0x3f0 kernel/notifier.c:85
- call_netdevice_notifiers_info+0xbe/0x110 net/core/dev.c:2250
- call_netdevice_notifiers_extack net/core/dev.c:2288 [inline]
- call_netdevice_notifiers net/core/dev.c:2302 [inline]
- register_netdevice+0x1998/0x25a0 net/core/dev.c:11484
- ipvlan_link_new+0x3a4/0xc60 drivers/net/ipvlan/ipvlan_main.c:593
-page last free pid 187 tgid 187 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- __free_pages_prepare mm/page_alloc.c:1406 [inline]
- free_pages_prepare+0x586/0xd80 mm/page_alloc.c:1451
- __free_contig_range_common+0x14f/0x250 mm/page_alloc.c:6897
- __free_contig_range mm/page_alloc.c:6942 [inline]
- free_pages_bulk+0x12a/0x200 mm/page_alloc.c:5257
- vm_area_free_pages+0xad/0x2b0 mm/vmalloc.c:3439
- vfree mm/vmalloc.c:3488 [inline]
- vfree+0x107/0x750 mm/vmalloc.c:3462
- delayed_vfree_work+0x56/0x80 mm/vmalloc.c:3392
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+port_x_link and port_x_phy_rst_n are signals to the PHY ==> mdio device
+tree binding.
 
-Memory state around the buggy address:
- ffff88802a91a080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88802a91a100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff88802a91a180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                      ^
- ffff88802a91a200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88802a91a280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
+> So when you take your FPGA design, and delete the
+> licensed part, that disappears as well. When you delete the licensed
+> part, you should have a big hole in the middle of the design, leaving
+> just what surrounds the switch. That is that logical? Clock dividers?
+See above; hope that helps.
 
+> Logic to map the switch registers to MMIO, so maybe a PCIe device
+> core?
+The AXI bus may connected to an PCIe bridge for example. In our case it
+is connected directly to the SoC ARM core.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> Does any of this surrounding logic need software?
+In our case: No.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> If it does, that is probably specific to your design, and needs a
+> compatible which covers both the licensed switch core, and the
+> surrounding design specific logic.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+In our case the clocks are routed to fixed clocks, which have no device
+tree representation. reset , IP_enable and default_op_mode are an fixed
+levels.
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Therefore no need for a detailed compatible string and no optional
+device tree properties. Clean and simple *knock on wood*
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Regards
+    Bene
