@@ -1,195 +1,297 @@
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC7D34E74D
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 18:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B343806AB
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 18:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786128538; cv=pass; b=hCBMAe9pdOjQ/MWF5wVJ6pIyb6jjhvAq4I5fkLKekbZL21gHxhjmgsOsi9jQO4GC7IkKq/SNoFwfGP1os5Kfog4v6uakXSEre5f4m7F3yCbeyB5zuARJQOzGd/0OQaR5xEmjjYXM6inOdPkskr3S2ASZb+b89icwKxbKH/e6b+4=
+	t=1786128560; cv=pass; b=niZ0trrZKyu31YeDvyAiPPCwIOe7DZcIbmFmfpgcsRefAVOh6s0qTy4ZKDxGJ+YowhDi6oqYCCuPtpNW1+XCTVUcN2iENkiuEkZTABzDm6Fq9COCFhxVWSCC/5C8OO+sI/l7PwWtvpElT1TrFnBEfzN1xPUJzPgQFFulxHR3Czg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786128538; c=relaxed/simple;
-	bh=K/AYQ0slGtGh2aGVAcbd5Ml309uD9bp7iupPakzq76U=;
+	s=arc-20240116; t=1786128560; c=relaxed/simple;
+	bh=cMLhlgk0orhgodPiLnxT6aS7BKgXgh0IFtpLbjrYAPg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cX+0RL4D8u3vHCAgyp7bRTelKIjiB1ptdM5rr0U4t7Dlw+3lwpEsPLI2PQL2+46op3A3XiKC8Tqk5ePoenaZZLxQv+pQsZNG/l7Bw1AltraU0hTnS+j6FeHvKi5qjWMDKglh8TaVzYKA1hxswFks0NQDaa061YoimrTUWYQF9F0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JMhAf9U6; arc=pass smtp.client-ip=209.85.222.52
+	 To:Cc:Content-Type; b=IK6Iq9m3r/5RCq0rHevL4BS6WJpjzTnrzjb/ndTs3v0EW5FRCK46gCDiRKSN8eqDJBMSMxooP3cRVOCEg10BW7i+fIsU1keMMqNjyOmf6J3sE0EVBBGVJoznIYpeszdEbIMkJ1DR2PTwPFN7M3iiPxhC8d/TFOt43/AgV1NinLY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WOgKZejx; arc=pass smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JMhAf9U6"
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-977fca41f52so1229079241.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 11:48:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786128536; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WOgKZejx"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8453427d3f4so4327484b3a.3
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 11:49:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786128558; cv=none;
         d=google.com; s=arc-20260327;
-        b=iTLhg20LaDsu2Xckws9nFPn0LKxH4C+64emjBiFsXLZ7K+v0mwDbGpLe8/nddkZLut
-         zWQG8UqEld79sK3oHygoKFxgihP82rpJ2usA6LHKGz+uVavo0zZ5w7Hy1JpDrE4JTnzd
-         qTEq8bJtKqLseb4Y1l6SN33ELyDTRSGBDnvWCOFZN9Cs6KpO9JCXzQHtDZ900eO1YCOU
-         TxeuM48RTvyJzGBfCthNzm27x03OXvv4FtQI6N7D+1k40mCCZbCgoyd/gfOf2/nIvaTD
-         kEkQbdHc7SzyQjpmcCxRUgWiMKntQRxlBNCZV5fv5M+maBjo9duFsoxoBshgKd0BYxU+
-         U4hA==
+        b=EvQ3dSEH0kJaEJqhie/+f8anc5Y7eQJ/IHxwdvIrX0dGVbfqlxuzc1GXJG1/e5TwJB
+         Rh4kChu+Vr4ddfaxFi/j5MgLtZpyaFNiGTLsUO8jqyvQlRE9QqmEqI4QvBYhnqLhhCKf
+         Z7deVWFv8AxS9LmbEvyD3TVYsVJ2w7+wSz1b6e35ZkCuqsjKOUmj24KnnXmsWZoRPITo
+         5bH1Dsgf2icpe6b6SggdSmP2OvHhW02QgiphTVElqijFk6ABEPSUL+JPfdwGpgesjUpv
+         Ql1jC1M+i4J09j/y9KRFBvX2LuNh0s51+jdYNwEp2TUUIsKtVspnVGe4CRYDyCNGVaBv
+         dOrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=KQbEMAEah3Uz8h1TWdBCzAeaWUqz5MbVi1G2fYGojfc=;
-        fh=CPipSGvTyhll6KEr+LsbLymGDrprXKbw5w8ytHYsz5Y=;
-        b=H+G1PeLuKks/MNnQBNrWFTRZrwNalxEIiTVs3bhgWAW0s8l+7joMxmjHPWNdrFP6B1
-         aU/cwczCENxOzZ3sb3mT0qhTEqAMaHnIG1OQu0qOfLyS27nH3KUd1qHYeKZaeS628YSK
-         0j/ijg78vaxbsUAwV1rqolU/PgMgtInL9zXIv7flQqbTBnNk8eiLzfxwS4z/2HjH3fEA
-         RhEUiFhYSdcnzASVZ9CHdbwyzlpZXIPEEuEPB1pKN2OwXKIs9xt5i6vuy2pXMbAZ//xU
-         RmP0e2aGbxAj+af4harWw4XPZPLW7bjCMAX7DWjw2NKbv8Xgch9qBC7hwMdZ0iAb56pF
-         +iUg==;
+        bh=sIsYnSDGuGotLIFBuLysAd3V3WVCpo1jYD2HT13QtQU=;
+        fh=GA/uJSnVPuPKJcfcylBI3XbfiOAARkAJ7cT/cqnYMf8=;
+        b=LTV84wbNh2Fpf0jdjxoADFJcJ1f5ScoV2S+opYmpmcufdCRGgjyAoRs4Gxd8PjHsAy
+         NtE8B7XQnjjZrJLQlX7PlP2TOpLnrunid7uWiiVukMhJWX92RGUYM5w5oQGsApbijTO6
+         gjoT++gTzDeFukXdkFlcfwqCqeUazrWa/0s0W/g0/zvMBfhf3/TIVuMluPl7MX+hsdBa
+         MHmbXcmrUCNZvixCKgQ6Awy4eI3OVYVS1uSv69yVORlW1uR9NuTY5Hh7eaPhlVMc8WfV
+         J5AYFqREBCwA3RspGOdxHon09P6td9xkjxKy8h0808Dk4Hz70jiwRjCeIiMSh1SdHI57
+         J7bA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786128536; x=1786733336; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786128558; x=1786733358; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=KQbEMAEah3Uz8h1TWdBCzAeaWUqz5MbVi1G2fYGojfc=;
-        b=JMhAf9U6dfKednfqd8dtBUk7canj9LAv/awGpDra4tmFHbTMPNxvWLr/DfJrtG8c97
-         9hJVeN/TeZyWUTCIuV4DzT24pirlbAMO/6d8LUUcbTE9+CYJPFNGg1xbXIioOU+s9ivj
-         6bGpOZkeqm5/IUdN8B1ppTs6+LHS1etEvWyTW29++Dnp5n+aSsJ5pyATaWiV6n78hTu/
-         YahRabBsWrv+w5ZXW0J9Ihb/iTBVpgb68gfubkVhRkBwZ/X62EsJRJAh5M9HJqONTCtl
-         oTArV8811sAguAjw2X8utuSMXJjRog8tEJk1fSp0tHgQk9fC/yV+xGrrin3qMktPmV46
-         jSdw==
+        bh=sIsYnSDGuGotLIFBuLysAd3V3WVCpo1jYD2HT13QtQU=;
+        b=WOgKZejxT2/QDVtj6+wuS4QuYryNWc2dH7fhSIwzesV74hoxC5xFusiuUH3iQENrq5
+         i/ZCqoG/2tjGTY9boZqwvyM+YqrBJuY1HEuGpeePiLKeA5BwAiNX1LEYMS1mIwcl/hca
+         nWcUKhh47JjkbvY6avPFZM8ZQSmkGYqXk0zowICMHWCmlgogBagk7TCLvRYjjcGXWgWP
+         q+TA77Zkr994DgCKPSwOmh5gORu+KuUDIWmKGW7j7ZEK01NeFz8GRnGKVLFzFuGoZz8y
+         +IOWEVbcE1FDr0cgxmoT2e6SciGvCojbsKSc1O1wphwrN9ktDY7Qd4weLF755+GZ42XL
+         OcWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786128536; x=1786733336;
+        d=1e100.net; s=20251104; t=1786128558; x=1786733358;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KQbEMAEah3Uz8h1TWdBCzAeaWUqz5MbVi1G2fYGojfc=;
-        b=hgqDy/sL3fS8Z4wrmKlKKhc/K1/CGuZAG1CPvq6lc/69GmtgsCF8opVJ04XZTl1A4M
-         0oyj3KqR3/wQtVo1Re4QXQtrMJD+4ZIROBrAmvkxZ8j6M0IF9lnlxND4gPobEdQvL1IT
-         WP/Kn+occJoCYeAi2ryQ+Gis0QqpOrERf0Q7M7/Gm8npp96PqI/YFn9U9ZX8ffplQUBw
-         nwxVydKJbP8iqAl5aoKqjgx75EKCY/PaoDPPC/71DGdi3uHM+gAsZnuzAxyU5pQ6ppwc
-         shPs/nM/MTb7VACRaYN1XOh/dCapQ5y9KbCT6utlLWK/y+LRa/NWjDULAnfvf2/pKO5r
-         byHQ==
-X-Forwarded-Encrypted: i=1; AHgh+RraSh5o+jl+OmgWjy2g52hS8M9mrHbHVTFvinnA1VuL10peFD4NaLK6pm2OQ9pOmHZb07IRZQ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMGI5RlC+Oh+AgTBzXbxXG4PFyydv3DlTF8eCBXLRU9wTaNtbE
-	ZQ42MZmHezEIGTKfAILtCn/udsJrBiqRqJ2qWrHG5lvhb8gk8XaZtwx3XWT7e27KsP+p5y4c7PE
-	lI+Em30qLYUmMZi0pG6LWwlAWrFJ87lo=
-X-Gm-Gg: AR+sD10p+fkJmgtOY9RccEgPMUcYhX4WR/B+r2xXA6RUi5B+HzPx1v3uiEIXF8kqGfq
-	9sZoHBuBsfzxyQCFlO9lzaCAHOv+VmrGtsd6zm7J+ZuX+qnmJMOwk73O48D0xVwqUkPVWivB0l7
-	QwL9QNZFFVjHbpyCl2wCoeqqeU3A+FVPEGncN44UykIj2sWqocANJvya9JJBhHpWe16TPWW1Y6S
-	SP6n+nyxfYxNdYLSm2Axy1k+A0h306+Z39xjKUiGqdAihP+V8UtR3a5Czbkb3AxjK1Sf8D5RPnw
-	A9okYUPPnFB+Sm0LkFqkKVeWSDPSbsV67wLV3rY5b7ZiT9U7OTD7K3zmA6Ch/yJCbm2CjmK8YV7
-	OqaFxs3DtnQ8pcXXnuVl2O28F1Zpgxvp2Dg/Lpaoc9xIpB6r4fwEhQoOquQOm0Jm2ZXnOg48USs
-	Nh6tI9EFhuPoao+GpRMpC796pyeeiuGnBWWos9mdwllLi/pSc=
-X-Received: by 2002:a05:6102:41a1:b0:73e:9fae:5845 with SMTP id
- ada2fe7eead31-764e1c5f6d2mr939262137.0.1786128535635; Fri, 07 Aug 2026
- 11:48:55 -0700 (PDT)
+        bh=sIsYnSDGuGotLIFBuLysAd3V3WVCpo1jYD2HT13QtQU=;
+        b=pTnSkxOzPotLzTqsctDUanrbTu8Q/WewPhMSKjJh39DoyTtgfFm6R+CgkeiCIoBtzG
+         DOFTXcKos09Bb4gIEnaksiZqlmYNY8Xs9yTlN7yicqxOOi93tXkT7HZo/bV27amMxam2
+         Zf9CvV3U8Mm/HY6/bITDg1JnWPgTJGtEZ0FdVTc46iuQk5Rz2E1YZ91wxFxrDX8YsAay
+         FlPvTxDvltAv9luQ5g+ovImWnEv2pcIz26KuRqtRP4J6e5GywsCyGtgZ5nGRojzJ5bg4
+         BT21BhMd80gHTCMgJphzTM/GoErSmkmHtPSTewrsMVMU04G8+iJ1/WjKyMM0jZXkGVUO
+         4gOA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrp+6tIsr9y0NIiEYOkOgGxUJBdj/tvr6JCgR9OLhbVcZdmNKxhMwm5lAotF8m9U3dKHxo4Coc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJRcLI/asEYbPtoWVDfuXE3kaR6BAdXA4Ot93dDHCjX+ZTiTip
+	VEniK4mJElKOo6oIugJmBR2htELLEDlvw/Of9bZkTszzsMQAhbKWwX2/u6sG1rlH9askrVBlK32
+	AWJluhynLL8+XTJALDzqr1vXcp9RW1aw=
+X-Gm-Gg: AR+sD13L3u5A5j7EEoQxZWqdgsVZdZCmyD8mnuCWESLPge/IDP4xgWXq9zG/Dbm9hsu
+	vQtcm+NQUozJczlAAkYQ4TZZe2AcPAyDHmvqoa3kmUl435k2ewvb51iV+AL85U2xO8rT1yfimwX
+	XnQfnpR90BC3jTR+nMetr4YQxzXQa57q2lFUzRnafd1op6sObqdvQAtB0rKDZFP07ZpCRU/YsUY
+	uvCmWfHdLoleWA8Ndesm7ks0voZ6zi4QzoSl8oP64iZ5mx3FwJc04fuZAU/MgNCNKHzpJnXMlHq
+	lMm/8SxJoW5layV4JhyENDk5nkMfsm6ZZLDlYVbfjRIxjww7mqycL9+sXTfysJnDOeirGiA1KBG
+	PMNNeyPuR8CuAmB++W1SVDEZaJXQXRS/U53d91jOM8gE=
+X-Received: by 2002:a05:6a00:348d:b0:842:706e:ad43 with SMTP id
+ d2e1a72fcca58-84f2e0ccba3mr28384946b3a.33.1786128557901; Fri, 07 Aug 2026
+ 11:49:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
- <b2e83ba0-2e9c-4105-b806-8a155e8b9aa5@lunn.ch> <CADvTj4rame1n8eQL2GUOaJHnOcR_cqNxzNYO+QeCLYDczEFeUA@mail.gmail.com>
- <ddce5cfa-8cf9-4f9e-ab0a-0b415706876a@lunn.ch> <CADvTj4qxGVw+PW2LeF-a3h1XfmirQZGfJA9-6Czt72XASbVLBQ@mail.gmail.com>
- <4aeebecb-81fe-4f09-9dfe-a3be2f778bb8@lunn.ch>
-In-Reply-To: <4aeebecb-81fe-4f09-9dfe-a3be2f778bb8@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Fri, 7 Aug 2026 12:48:43 -0600
-X-Gm-Features: AUfX_mzkWefaGr-yvRIWAT7-WpS4J20YFg4GvupbZl2AqZK75NjTjLSVgtv1IY8
-Message-ID: <CADvTj4qrYYA-e+9iJ+q4UaZteUjpypRa6HBSmwp-ajwPbwYERg@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 0/4] net: mdio: support dynamic OF device changes
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Jonas Gorski <jonas.gorski@gmail.com>, 
-	Vladimir Oltean <olteanv@gmail.com>, Ciprian Regus <ciprian.regus@analog.com>, 
-	Andreas Larsson <andreas@gaisler.com>, Mark Einon <mark.einon@gmail.com>, 
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
-	Keyur Chudgar <keyur@os.amperecomputing.com>, Michael Chan <michael.chan@broadcom.com>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Wei Fang <wei.fang@nxp.com>, 
-	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
-	Bryan Whitehead <bryan.whitehead@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, Timur Tabi <timur@kernel.org>, 
-	nic_swsd@realtek.com, Byungho An <bh74.an@samsung.com>, 
-	Steve Glendinning <steve.glendinning@shawell.net>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
-	Jiawen Wu <jiawenwu@trustnetic.com>, Mengyuan Lou <mengyuanlou@net-swift.com>, 
-	Thangaraj Samynathan <Thangaraj.S@microchip.com>, Sebastian Reichel <sre@kernel.org>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20260804200042.2412009-1-Jeremy.Jean@oss.cyber.gouv.fr> <CADvbK_fs8FObEc25MGhiMiYZMR7YzdanTRJtMTvsbFQZJg_fqQ@mail.gmail.com>
+In-Reply-To: <CADvbK_fs8FObEc25MGhiMiYZMR7YzdanTRJtMTvsbFQZJg_fqQ@mail.gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 7 Aug 2026 14:49:05 -0400
+X-Gm-Features: AUfX_mwiDpL7-UK9yPj6T3mzC4-sccKB4KQOmcs6OiOJXkIdsl04HlxdHkC8j0M
+Message-ID: <CADvbK_eDZRfopfzha_TXEzfsZL5GEnJnE5WwouN2OmwOLO18TQ@mail.gmail.com>
+Subject: Re: [PATCH] sctp: validate cookie AUTH state before use
+To: =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 7, 2026 at 11:15=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+On Fri, Aug 7, 2026 at 2:47=E2=80=AFPM Xin Long <lucien.xin@gmail.com> wrot=
+e:
 >
-> > I guess it can also be used like this for live dt modification:
+> [sashiko-gemini]:
+> > > +bool sctp_auth_verify_cookie_params(const struct sctp_endpoint *ep,
+> > > +                                    const struct sctp_cookie *cookie=
+)
+> > > +{
+> > > +        const struct sctp_paramhdr *random;
+> > > +        const struct sctp_hmac_algo_param *hmacs;
+> > > +        const struct sctp_chunks_param *chunks;
+> > > +        u16 hmacs_len, chunks_len;
+> > > +        u16 n_hmacs, n_chunks, i;
+> > > +        bool has_sha1 =3D false;
+> > > +
+> > > +        if (sctp_sk(ep->base.sk)->cookie_auth_enable || !ep->auth_en=
+able)
+> > > +                return true;
+> > This is a pre-existing issue, but does skipping validation when
+> > cookie_auth_enable is true leave the system vulnerable if auth_enable i=
+s
+> > dynamically toggled?
+> > When an endpoint has auth_enable =3D 0, it generates state cookies with=
+ a
+> > zero-initialized auth_hmacs array. If the administrator then dynamicall=
+y
+> > enables auth_enable =3D 1, an attacker could send a COOKIE_ECHO with th=
+e
+> > previously generated cookie (which has a valid MAC) bundled with an AUT=
+H
+> > chunk.
+> > Because cookie_auth_enable is true, this check skips validation and the
+> > zeroed auth_hmacs is restored. When the AUTH chunk is processed,
+> > sctp_auth_asoc_verify_hmac_id() calculates the element count with a zer=
+oed
+> > length:
+> > sctp_auth_asoc_verify_hmac_id() {
+> >         hmacs =3D (struct sctp_hmac_algo_param *)asoc->c.auth_hmacs;
+> >         n_elt =3D (ntohs(hmacs->param_hdr.length) -
+> >                  sizeof(struct sctp_paramhdr)) >> 1;
+> >
+> >         return __sctp_auth_find_hmacid(hmacs->hmac_ids, n_elt, hmac_id)=
+;
+> > }
+> > Since length is 0, this underflows to 65534, causing an out-of-bounds r=
+ead
+> > of 131,068 bytes past the association allocation in
+> > __sctp_auth_find_hmacid().
 >
-> A guess is not good enough. Give us a concrete, in kernel use cases.
-
-I searched the current tree for callers of the OF changeset and
-overlay APIs and for OF reconfiguration notifiers. I did not find a
-current in-tree path which adds or removes a child below an already
-registered MDIO bus.
-
-There are concrete existing kernel mechanisms and DT descriptions which
-could become users. lan966x_pci already applies an embedded DT overlay
-from a PCI driver, and the FPGA region code already coordinates
-in-kernel overlay application and removal. Mainline also ships overlays
-for TI J7 Ethernet expansion cards, NXP LS1028A QDS cards, and other
-boards which add PHY nodes below existing MDIO controllers.
-
-Those overlays are currently normally applied before Linux starts, so
-they are not present-day live MDIO users. If an in-kernel line-card,
-mezzanine, or FPGA manager applies one of these topologies after
-detecting hardware, adding or removing the PHY children below the
-persistent MDIO bus is exactly the operation this notifier supports.
-
-Likewise, a driver which identifies a PHY or retimer package from an
-EEPROM, NVMEM, or firmware and then enables the matching child nodes
-would use the same mechanism. The kernel already uses OF changesets for
-analogous late hardware selection in other subsystems.
-
-> > AFAIU the patches other than the last one are still relevant regardless
-> > since they are fixing a bunch of generic mdio safety issues in code tha=
-t
-> > has users since MDIO maps already change at runtime through non-OF
-> > paths(i.e. SFP insertion/removal).
+> False positive: when cookie_auth_enable is true, the cookie is already
+> authenticated. The cookie content is generated locally, so validation is
+> unnecessary.
 >
-> Fixes are fine, but please word the commit message around real things
-> that can happen in todays kernel. If it is a race condition, such bug
-> reports often show the call stack of the two racing threads.
-
-After auditing those paths, I would qualify that statement. SFP, AMD
-XGBE, and Airoha all modify the MDIO map at runtime, but their known
-paths use subsystem-local lifecycle ordering to serialize removal and
-attachment. I do not currently have evidence of a reachable race in
-those particular paths.
-
-They do demonstrate that the MDIO map cannot be treated as immutable.
-Its safety currently depends on every producer and consumer arranging
-compatible external serialization, while the MDIO APIs neither express
-nor enforce that lifetime contract.
-
-I found more concrete current interleavings elsewhere. For example,
-PXA168 can scan and attach from ndo_open while its remove path
-unregisters and frees the MDIO bus before unregistering the netdev.
-BCM SF2 looks up and removes PHYs belonging to another MDIO provider and
-can observe that provider while registration and OF population are
-still in progress. GENET ACPI and Davinci also cross lookup, reference,
-and attachment lifetime boundaries.
-
-> Do you have a board with an SFP cage? Can you test your change.
-
-I do not currently have an SFP-capable board.
-
 >
->    Andrew
+> [sashiko-claude]:
+> > > +bool sctp_auth_verify_cookie_params(const struct sctp_endpoint *ep,
+> > > +                                    const struct sctp_cookie *cookie=
+)
+> > > +{
+> > > +        const struct sctp_paramhdr *random;
+> > > +        const struct sctp_hmac_algo_param *hmacs;
+> > > +        const struct sctp_chunks_param *chunks;
+> > > +        u16 hmacs_len, chunks_len;
+> > > +        u16 n_hmacs, n_chunks, i;
+> > > +        bool has_sha1 =3D false;
+> > > +
+> > > +        if (sctp_sk(ep->base.sk)->cookie_auth_enable || !ep->auth_en=
+able)
+> > > +                return true;
+> > Discovered by: opus-5, old-prompts =C2=B7 Missed by: sashiko-gemini
+> > This isn't a bug introduced by this patch, but does the new invariant l=
+eave
+> > the underflowing consumer reachable in the default configuration?  With
+> > cookie_auth_enable set (the default from protocol.c), this early return
+> > skips all validation, and sctp_auth_asoc_verify_hmac_id() still has no
+> > lower bound on the parameter length:
+> > net/sctp/auth.c:sctp_auth_asoc_verify_hmac_id() {
+> >         hmacs =3D (struct sctp_hmac_algo_param *)asoc->c.auth_hmacs;
+> >         n_elt =3D (ntohs(hmacs->param_hdr.length) -
+> >                  sizeof(struct sctp_paramhdr)) >> 1;
+> >         return __sctp_auth_find_hmacid(hmacs->hmac_ids, n_elt, hmac_id)=
+;
+> > }
+> > For a zero-length parameter the unsigned subtraction wraps and the
+> > truncation into __u16 n_elt yields 65534, so __sctp_auth_find_hmacid()
+> > scans about 128 KB past the 12-byte asoc->c.auth_hmacs array in softirq
+> > context.  Note the sibling consumer __sctp_auth_cid() does guard this
+> > case:
+> >         if (!param || param->param_hdr.length =3D=3D 0)
+> >                 return 0;
+> > Is a zero-length asoc->c.auth_hmacs together with peer.auth_capable =3D=
+=3D 1
+> > reachable without any forged cookie?  It looks like it is:
+> > sctp_association_init()
+> >         if (ep->auth_hmacs_list)
+> >                 memcpy(asoc->c.auth_hmacs, ep->auth_hmacs_list,
+> >                         ntohs(ep->auth_hmacs_list->param_hdr.length));
+> > with ep->auth_hmacs_list NULL while ep->auth_enable =3D=3D 0 (the defau=
+lt in
+> > sctp_endpoint_init()), so c.auth_hmacs stays all zero.  Afterwards
+> > sctp_setsockopt_auth_supported() does:
+> >         ep->auth_enable =3D !!params->assoc_value;
+> > and sctp_process_ext_param() then sets, for that same already-created
+> > association:
+> >                         if (asoc->ep->auth_enable)
+> >                                 asoc->peer.auth_capable =3D 1;
+> > A remote AUTH chunk then reaches sctp_sf_authenticate() ->
+> > sctp_auth_asoc_verify_hmac_id() with the underflow.  If the scan happen=
+s
+> > to match the attacker's 16-bit hmac_id, sctp_auth_get_hmac() indexes th=
+e
+> > four-entry sctp_hmac_list[] with that id and the resulting hmac_len gat=
+es
+> > the 20/32-byte digest write in sctp_auth_calculate_hmac().
+> > Would it be worth adding the same length =3D=3D 0 guard to
+> > sctp_auth_asoc_verify_hmac_id(), and bounding the index in
+> > sctp_auth_get_hmac(), rather than relying only on the conditionally
+> > executed cookie check?  The same applies to
+> > sctp_auth_make_key_vector(), which still does:
+> >         random_len =3D ntohs(random->param_hdr.length);
+> >         ...
+> >         memcpy(new->data, random, random_len);
+> > out of the fixed 36-byte asoc->c.auth_random.
+>
+> False positive: same reason as above.
+>
+> > > +
+> > > +        random =3D (const struct sctp_paramhdr *)cookie->auth_random=
+;
+> > > +        if (random->type !=3D SCTP_PARAM_RANDOM ||
+> > > +            ntohs(random->length) !=3D sizeof(*random) + SCTP_AUTH_R=
+ANDOM_LENGTH)
+> > > +                return false;
+> > > +
+> > > +        hmacs =3D (const struct sctp_hmac_algo_param *)cookie->auth_=
+hmacs;
+> > > +        hmacs_len =3D ntohs(hmacs->param_hdr.length);
+> > > +        if (hmacs->param_hdr.type !=3D SCTP_PARAM_HMAC_ALGO ||
+> > > +            hmacs_len < sizeof(struct sctp_paramhdr) +
+> > > +                        sizeof(hmacs->hmac_ids[0]) ||
+> > > +            hmacs_len > sizeof(cookie->auth_hmacs) ||
+> > > +            (hmacs_len - sizeof(struct sctp_paramhdr)) %
+> > > +                        sizeof(hmacs->hmac_ids[0]))
+> > > +                return false;
+> > Discovered by: opus-5, old-prompts =C2=B7 Missed by: sashiko-gemini
+> > Can these checks reject a cookie this endpoint minted itself?
+> > The decision to validate is taken from ep->auth_enable sampled at
+> > COOKIE-ECHO time, not from the state that produced the INIT-ACK, while =
+the
+> > HMACS and CHUNKS tests unconditionally require a well-formed parameter.=
+  An
+> > all-zero (absent) auth_hmacs/auth_chunks looks like a state the produce=
+r
+> > legitimately creates:
+> > net/sctp/associola.c:sctp_association_init() {
+> >         if (ep->auth_hmacs_list)
+> >                 memcpy(asoc->c.auth_hmacs, ep->auth_hmacs_list, ...);
+> >         if (ep->auth_chunk_list)
+> >                 memcpy(asoc->c.auth_chunks, ep->auth_chunk_list, ...);
+> > }
+> > auth_random is the only one of the three always written, and the endpoi=
+nt
+> > lists are NULL while ep->auth_enable =3D=3D 0, which is the default in
+> > sctp_endpoint_init().  sctp_make_init() treats the zero-length case as
+> > "parameter omitted" rather than malformed:
+> >                 auth_hmacs =3D (struct sctp_paramhdr *)asoc->c.auth_hma=
+cs;
+> >                 if (auth_hmacs->length)
+> >                         chunksize +=3D SCTP_PAD4(ntohs(auth_hmacs->leng=
+th));
+> >                 else
+> >                         auth_hmacs =3D NULL;
+> > sctp_pack_cookie() copies asoc->c verbatim, so the outstanding cookie
+> > carries those zeros.  If the application then calls
+> > setsockopt(SCTP_AUTH_SUPPORTED) while the cookie is still within
+> > Valid.Cookie.Life, and cookie_hmac_alg is none, the early return above =
+is
+> > skipped and "hmacs->param_hdr.type !=3D SCTP_PARAM_HMAC_ALGO" fails wit=
+h
+> > type 0.
+> > Given that, does the comment "they must satisfy the same constraints as
+> > locally generated AUTH parameters" hold?  Locally generated parameters =
+may
+> > legitimately be absent.
+>
+> ep->auth_enable can be changed at any time during the handshake, especial=
+ly
+> on a listening socket, and we should not change this behavior for backwar=
+d
+> compatibility at this time.
+>
+> If it changes from 0 to 1 while processing a COOKIE-ECHO, the packet will
+> be rejected and the connection will eventually fail, but it will not lead
+> to a crash. Changing ep->auth_enable during an active handshake should be
+> considered invalid SCTP usage.
+
+Acked-by: Xin Long <lucien.xin@gmail.com>
