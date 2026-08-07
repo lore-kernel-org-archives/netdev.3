@@ -1,169 +1,199 @@
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D867738E5C4
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 16:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786120880; cv=pass; b=lRcEeaKKZKIEMQBVhDg0Yxu2S+gJwJrp8MJ5evrzgL+9vyWhVoQ7ghPL/nooms992uT7UAhegbeNNzujBc1mkLj4AClSJ9Irie6hiYimbEDgsvTqxKMcWdXOmV74pnzYgILSC3M+h257sUmmDWqeztRjP/RCe1jWw90seC0jSHM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786120880; c=relaxed/simple;
-	bh=H4YOFrL1KfBu3NDle8YUdni3Mk4BFwaMFq6LZ90tQgg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ObUu2ltHh3UZN32lWeinwFJIF9JnAXy3uWVGxHZ1uUPWwzxm25zUqx/oCeppI3BKiEOmj6j5q5YaxkTwhPIYEJAmb5pjolNjJ7x5KEYpCJg79We6HKmRLqfJLDmdXmPwuEUmJNt/ZXtOndFmayD7tdG4ECfusbqv5dmGYdWMT2c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQWRLutR; arc=pass smtp.client-ip=209.85.222.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9462047ECE5
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 16:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786121050; cv=none; b=GQfDxLfFZH60aQKa80O5LEw1g3UK8CRIU6ogXbk1O9hobIj3RvoF4kHr4jhCas3Hkd0Lwb6lU6mfBjAcBsufQQH1O1tMXjmq2yG7WTMkOPLettpfjI7HhhRDGmg6+GQI+b09wUCWqUMyDhb9E6rrGjOiIY4pYNC+3IdeFUyzTcg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786121050; c=relaxed/simple;
+	bh=uPhLGPhcYhdMfSp4rrZp74jm8xFS8hjXR/BosdftPU0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QyzOoDBsJVl6Y+vpxg92suxZ4LL3gUu3CbTS/vsoAApnxw7oF9HffntRixLnnfof2us2uXnoVf5QLWkJIMKGjrMbJc8QVkLKNFdgzckoO5vVTSgpO6IbbzT2dkBvaB3kCdwreP/twjnOHGfkqolgOxYlJtiemG81yLiMQLjC2vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UcT2M3h9; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQWRLutR"
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-969524c1a63so2517565241.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 09:41:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786120878; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PztbWYOwmadNqvPrIrszfj/pvANbDgMQ1M8Ekr2qn8lV/pFx7u38tX7CUdV5GCQ82J
-         CfWYCZAke709ogHfkV3L7Tg28TYf5q6ehUkS14yb4EyIq/i5l0ZwJvK8uw+er+AMZx25
-         ErvNoPigLivOGanu4DSyCxO7JTSSFZBBSKSu/PRYNYaFQ/4ziT8zuTWlx6kh713FYO40
-         2ABgX5W5LB1gZU3fb2MXIo0bEyjv1bJrICA3gYd75j/ZWvzeuUtyTvevHmF+oI1PWxJS
-         809xHdGbgwgf6+b5mKWq9XWJWyHurHAG0ZsbNOxILqUfQ94eG1mDlwnGK2+6PTg7nuzx
-         s4Yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VbYKBFSni/MXYcTbspULgZDCuPfk5qG+Byfv7cl+Zzg=;
-        fh=8n61rF/eVGdUYSRFxirYdm+/rE2TUO5lRQZzVkH07N4=;
-        b=jDgkDaMmohgxDzlR4UZHSWcc/Z3q1puHH4w3BzKDjqFoDnTWO7JB6fAXuLIx2x6rzR
-         XEEsvCnADdU6wTsXVhBzAZY3b6Rycdo2VpU26m2yA1y3j4uk1ZVHKw2TdkQ20n6kp5N6
-         LF9hiVjMKGwFCZbPrWs4qhtB0DNrlbNKWleK4TKdt2dU1iUQb1wi9EB73QPse7ct21m0
-         JAtv9d/SJfJa71Eb+Cx2sfRMkGek1ZLxjbpTe4Uc44eymyEfM43EFz963Qfgh75T66wX
-         72G7a2GvGvJhjeGawDuq0V8MACM1bAr9j3nkLp4Njvxbh4RGQT7UamUuzebWJm0JkriJ
-         orPw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UcT2M3h9"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4956242332dso28268725e9.2
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 09:44:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786120878; x=1786725678; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1786121044; x=1786725844; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=VbYKBFSni/MXYcTbspULgZDCuPfk5qG+Byfv7cl+Zzg=;
-        b=bQWRLutRFUKY/OF/6kmInYCWZcLyGaNyhItdMuuSNqAsCkK5solo5inhvi1d1BllN4
-         f2FoUM7mxHcL13xsdSR/PjkSNpSbqJj/E0MbKsRafc9xqsmfzHCyWRDEBQgN4b+JLK08
-         UYTx5SRS4fJuAJpBFSxSuNzed4SPx8gdwyYj9WsGBB6ueJggMvg9FWBWELo6wWhOn3rA
-         y1wE/RT0j5aT2IJEjyV1D4zko8RrVkwsyjdXrAGkhLFYzeBU+1Gc6EYCzu+62B5DJ6Gy
-         HfDT1izxLFumQm48VEMQWq8NdYgygHFzGxLO+uJr732wFlpsz0FiOW8K3ymk2DOyCMxc
-         APhQ==
+        bh=3QXb84XN1127M+aZY6/SeCM+ISG9Q4eDpoIhqwUcmGU=;
+        b=UcT2M3h9RMhWwlsYKBJV4IzIj8IK0p8L6BlAMqKaHKzJ90hXgWWBUlqgwRHRMBu3HP
+         zHInYBcMuQXkiT1I2mPxrGCNoltKBHnVz8wZAbVkAtjoN2O03c3K00G9JiHsnisc4ztF
+         TZaIUYe0JEEjqw4HZV1LrYrWp4QQFk4P4VadnUQc0mi8nUfyWp/yAAWdmP8zDGiDE2q3
+         3OKxdlKbL2MFiwuTxa7evZraV3ekmPpCr66dgH3PbhNcG1IiK96TDjvgUbr88lyFX1Ol
+         Eh/AiM8gXCkoLesPfVRow1Sz2K8GnEnjSlfdjPyZ4Zlzq9tiGS0Mmt8UIKjwoQ41bHK7
+         PATA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786120878; x=1786725678;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1786121044; x=1786725844;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VbYKBFSni/MXYcTbspULgZDCuPfk5qG+Byfv7cl+Zzg=;
-        b=ejomCnnHPbyMcMrPaBYrpMkG3y6LmMD1rpStK5mdVaJ6vUAW/mmziKIFadyfwqIGGz
-         70GzK1l7dZCrzh94Ho13Swxqq0lIoZ+6WU9oDTkKt7Dj2XZjHMXdnnwvG0iFjdezTTka
-         W1l+eWyavDPK1GIeaZlmGZ+gIK7UFlvFD+AFfXy4bhJkLeiV/KVjB7LRVGj7qtZkthvq
-         7Fr+fenvtkpwcdL1E0D8TI74Eq89OsAheMfvYZd9hdVkyxQbcQh0KrLpiwSOAC8NYCoh
-         SLgCDvbEN1LnBKi6yxM2+bp9Gc6Yeytl6nEoAhANn7og8rK3aRUv5bUMOt0NWd6XX7WW
-         k7cw==
-X-Forwarded-Encrypted: i=1; AHgh+RqKRT7S4sa8RJKYMtIX377z0SVVZAWF4r+0qOL2IP6TaWl1BJfWNgpStOXlYdGtSsOxBOsfP/g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJj0KOyfyUkdF2SBw1/4t6EajnsO+kj7cnoWQm27xUH8folpNs
-	T3Gn5rJEP5a7zGN0nb0miQG1WgKmB4xytIdC0C/XjYcwpIJBrhM8kt7j5+bqdQdrrAcy/tXTicC
-	Xrnvnd1tCrVs9gu566h4wLKArj1Is47Y=
-X-Gm-Gg: AR+sD11LueRZRksNgGJTdRL4FMLE7cS2nymHGyXucIpw2iSbWxg2sp1j0KxSQRl2YFo
-	2WKLJor9/l/MxGDValKnsmG9uv3UKuLkq4war9l4mY6OcBNuIql6vsG6NhoY36uVtVytMNtIlvZ
-	3pKmp7oRhTwTPJMBAL7qcnAAzn5JkLQzIBvCWS/UxvlLwgwnByk5+hHhRt6FRr+ri7nWp13kz0A
-	n91LxZZJtVFBvwt34l1bIRxyv/W5fwMI/w9BXjjrItmpssnaTWqIMvZkrrtAW4Kcc2HW9gtxGYb
-	gWMeaxtmOxk+RSUxuaBTgTmg6Q7xdzKVmjWOgR64Ti38XPgWimtA+wbdHyX7fCU9GMMx9Vce6NO
-	x4KJQmUYBMjvFs7WQfi0lBrCLbOkWkwCaPTCKM/AAu92NYxthEZuZuI0mYfnN8SbW2JI7xCkd+l
-	Ym5B9OaWHws16Pn20qkXCi8JJyzjoRmYH1Ecd+
-X-Received: by 2002:a05:6102:578b:b0:737:5c42:858b with SMTP id
- ada2fe7eead31-764e72c3a27mr698784137.11.1786120877713; Fri, 07 Aug 2026
- 09:41:17 -0700 (PDT)
+        bh=3QXb84XN1127M+aZY6/SeCM+ISG9Q4eDpoIhqwUcmGU=;
+        b=jDQw8cNBm+ecPnZ7wdTDMM/zd5nC+YDw9ZGsOGBH47sAI+RF8xP2F6PrN2dit5Xx07
+         oLuHmf3Qju6kdKxg0+V/oodZYFKJD8ZxVgw5CknKHd7CCRRNKcQWx8O3AFbUX7/ZnlY6
+         tgJB+TtNJrNR5Q+glfsxOkv2ZVTfUcU1hO86LqibAf888WxqEkMf4mPLxXAaSDQKNYDj
+         tOGoGNhF2DVjgNyLQy3jF9nFh42tUet1v36iRnJyFnh73paab2rQ++j4vqdN4z3cwShh
+         ehRF3ifU+KwQ6xjCm2hSv14ShBYjaWZgkUUdcEmBkKwN9918VN9Tb1XFE8DjaFuk5XNm
+         VEmw==
+X-Forwarded-Encrypted: i=1; AHgh+RrfBIuEShJ/xdaOdCqGsVksT3/N0RMOC4Gn+1SIFqi1h74wgfETpDaTCENeRLpbcy9qOCD+Uuc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzKqu/8JNMroZDYllK3HGjRAVEJBcaYOJdbAbpOryYgyrQKplj
+	VLYlfe6XzuIMidUDGEBgcNanbwlauUNI59K3JuO/numOCHzM3Vqz5msL
+X-Gm-Gg: AR+sD11qJXxrES/uLp93W39yWWeaLav+bQOAkBJbLdd2FSgL/fhRS4pwLLoaKp3UHYA
+	ivFXvEY4EYrfp99jb8nhkkuXF4Uked1h4X6XPwgAIh6dWiQaroqs8kPJsRSsKc7edzG6LJ6/AaF
+	kvJA29FugOWQwcQXdDYXdr7bANSdryWYfAyOf5HMZGIEUo4j60MvVDtLRle6hjFEgQXLbS3rGyD
+	XkDeVOnLxdY2crODOrOGi+mCXJLON+gszNYHDksmfTDfDyckPm6CYi0LthGZwAOSzcyN/XpdTBj
+	XJ0tNoqaj7WFzRyZGEz4ThKBWmJbyAKKqnacjWRcin+9Hz51tTwV/5vSqH7GZn5W9CMSpJV5GPM
+	FPY1V4M4s27/EPH0bRmonrisn145hUian2ZyRfTqajLY9QA0ujdFrAs2QUk/CLnAM4E9vkuUV2A
+	REGKTyHjFYKRwiNOvli0RZIOiTtvfrl5G09ctWK/B4FyM6AQpgPLmx2hBMPTCVDOHSgOI4DRliQ
+	P3w0Z62Bm1XoFfgdRFUyzHrMg==
+X-Received: by 2002:a05:600c:46cc:b0:495:4e89:3f30 with SMTP id 5b1f17b1804b1-49961b8a027mr11821095e9.15.1786121044328;
+        Fri, 07 Aug 2026 09:44:04 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021f9182sm7368787f8f.28.2026.08.07.09.44.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 09:44:03 -0700 (PDT)
+Date: Fri, 7 Aug 2026 17:44:02 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net 1/2] ipv4: mcast: getsockopt: do not overwrite past
+ optlen
+Message-ID: <20260807174402.2dfc12d6@pumpkin>
+In-Reply-To: <20260806-mcast_fix-v1-1-bed0a5518e57@debian.org>
+References: <20260806-mcast_fix-v1-0-bed0a5518e57@debian.org>
+	<20260806-mcast_fix-v1-1-bed0a5518e57@debian.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
- <b2e83ba0-2e9c-4105-b806-8a155e8b9aa5@lunn.ch> <CADvTj4rame1n8eQL2GUOaJHnOcR_cqNxzNYO+QeCLYDczEFeUA@mail.gmail.com>
- <ddce5cfa-8cf9-4f9e-ab0a-0b415706876a@lunn.ch>
-In-Reply-To: <ddce5cfa-8cf9-4f9e-ab0a-0b415706876a@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Fri, 7 Aug 2026 10:41:06 -0600
-X-Gm-Features: AUfX_mwLDixIRmddCRIK4ioEeGf1D4LRV-vMQxIFETRbvqYEEeJik4zuAKwk_IU
-Message-ID: <CADvTj4qxGVw+PW2LeF-a3h1XfmirQZGfJA9-6Czt72XASbVLBQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 0/4] net: mdio: support dynamic OF device changes
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Jonas Gorski <jonas.gorski@gmail.com>, 
-	Vladimir Oltean <olteanv@gmail.com>, Ciprian Regus <ciprian.regus@analog.com>, 
-	Andreas Larsson <andreas@gaisler.com>, Mark Einon <mark.einon@gmail.com>, 
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
-	Keyur Chudgar <keyur@os.amperecomputing.com>, Michael Chan <michael.chan@broadcom.com>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Wei Fang <wei.fang@nxp.com>, 
-	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
-	Bryan Whitehead <bryan.whitehead@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, Timur Tabi <timur@kernel.org>, 
-	nic_swsd@realtek.com, Byungho An <bh74.an@samsung.com>, 
-	Steve Glendinning <steve.glendinning@shawell.net>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
-	Jiawen Wu <jiawenwu@trustnetic.com>, Mengyuan Lou <mengyuanlou@net-swift.com>, 
-	Thangaraj Samynathan <Thangaraj.S@microchip.com>, Sebastian Reichel <sre@kernel.org>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 7, 2026 at 9:10=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Fri, Aug 07, 2026 at 08:59:47AM -0600, James Hilliard wrote:
-> > On Fri, Aug 7, 2026 at 7:16=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wro=
-te:
-> > >
-> > > On Thu, Aug 06, 2026 at 09:54:19PM -0600, James Hilliard wrote:
-> > > > MDIO buses enumerate firmware children only when the bus is registe=
-red. A
-> > > > later devicetree overlay or status transition is ignored, unlike on=
- I2C and
-> > > > SPI buses. Supporting live reconfiguration also means that populati=
-on and
-> > > > removal can race address scanning, PHY attachment and bus teardown.
-> > >
-> > > Please make the bootloader work around the issues, and drop this
-> > > patchset.
-> >
-> > This is just fixing OF_DYNAMIC for mdio now, it's no longer used
-> > by the AC200/AC300 PHY patches anymore.
->
-> Meaning it has no users?
+On Thu, 06 Aug 2026 02:42:00 -0700
+Breno Leitao <leitao@debian.org> wrote:
 
-I think OF_OVERLAY depends on OF_DYNAMIC?
+> getsockopt(MCAST_MSFILTER) can write past the end of the buffer the caller
+> declared.
+> 
+> This is because the copy_to_user() does not respect the optlen, and can
+> write over the allocated buffer, overwriting userspace undesired
+> memory
 
-I guess it can also be used like this for live dt modification:
-https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/t=
-ree/Documentation/devicetree/configfs-overlays.txt?h=3Dtopic/overlays
+Nak. This is just the way it is defined.
+The application provides a length that is just the header.
+As you noted the header contains details of the real buffer.
 
-> We don't add code unless it has a user. To do so pointlessly adds
-> Maintenance burden.
+There are quite a few sockopt like it, you have to support them.
+There may be some where the length isn't checked and is just assumed
+to be the right size - they have to continue to work as well.
 
-AFAIU the patches other than the last one are still relevant regardless
-since they are fixing a bunch of generic mdio safety issues in code that
-has users since MDIO maps already change at runtime through non-OF
-paths(i.e. SFP insertion/removal).
+	David
 
->
->    Andrew
+> 
+> The amount written comes from the numsrc the caller left in optval, not
+> from optlen. do_ip_getsockopt() reads optlen once, to check that the header
+> fits, and then reuses the variable for the length of the reply, so by the
+> time ip_mc_gsfget() fills the source list nothing remembers how big the
+> buffer was.
+> 
+> The copies go through copy_to_user(), so this reaches only the caller's own
+> address space.
+> 
+> setsockopt has had the matching check from the start:
+> 
+> 	if (GROUP_FILTER_SIZE(gsf->gf_numsrc) > optlen)
+> 		return -EINVAL;
+> 
+> Clamp numsrc to what optlen holds rather than rejecting. Another option
+> would be to reject (-EINVAL), but, that might break userspace _more_.
+> 
+> For reviewing purposes: size0 is the header size, so, the available
+> buffer is len - size0.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  net/ipv4/ip_sockglue.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
+> index a55ef327ec932..2e4e19b90645b 100644
+> --- a/net/ipv4/ip_sockglue.c
+> +++ b/net/ipv4/ip_sockglue.c
+> @@ -1447,6 +1447,7 @@ static int ip_get_mcast_msfilter(struct sock *sk, sockptr_t optval,
+>  {
+>  	const int size0 = offsetof(struct group_filter, gf_slist_flex);
+>  	struct group_filter gsf;
+> +	unsigned int max_numsrc;
+>  	int num, gsf_size;
+>  	int err;
+>  
+> @@ -1455,6 +1456,10 @@ static int ip_get_mcast_msfilter(struct sock *sk, sockptr_t optval,
+>  	if (copy_from_sockptr(&gsf, optval, size0))
+>  		return -EFAULT;
+>  
+> +	/* Maximum number of sources that would fit in the userspace buffer*/
+> +	max_numsrc = (len - size0) / sizeof(gsf.gf_slist_flex[0]);
+> +	gsf.gf_numsrc = min_t(u32, gsf.gf_numsrc, max_numsrc);
+> +
+>  	num = gsf.gf_numsrc;
+>  	err = ip_mc_gsfget(sk, &gsf, optval,
+>  			   offsetof(struct group_filter, gf_slist_flex));
+> @@ -1474,6 +1479,7 @@ static int compat_ip_get_mcast_msfilter(struct sock *sk, sockptr_t optval,
+>  {
+>  	const int size0 = offsetof(struct compat_group_filter, gf_slist_flex);
+>  	struct compat_group_filter gf32;
+> +	unsigned int max_numsrc;
+>  	struct group_filter gf;
+>  	int num;
+>  	int err;
+> @@ -1483,6 +1489,9 @@ static int compat_ip_get_mcast_msfilter(struct sock *sk, sockptr_t optval,
+>  	if (copy_from_sockptr(&gf32, optval, size0))
+>  		return -EFAULT;
+>  
+> +	max_numsrc = (len - size0) / sizeof(gf32.gf_slist_flex[0]);
+> +	gf32.gf_numsrc = min_t(u32, gf32.gf_numsrc, max_numsrc);
+> +
+>  	gf.gf_interface = gf32.gf_interface;
+>  	gf.gf_fmode = gf32.gf_fmode;
+>  	num = gf.gf_numsrc = gf32.gf_numsrc;
+> @@ -1705,6 +1714,7 @@ int do_ip_getsockopt(struct sock *sk, int level, int optname,
+>  	switch (optname) {
+>  	case IP_MSFILTER:
+>  	{
+> +		unsigned int max_numsrc;
+>  		struct ip_msfilter msf;
+>  
+>  		if (len < IP_MSFILTER_SIZE(0)) {
+> @@ -1715,6 +1725,12 @@ int do_ip_getsockopt(struct sock *sk, int level, int optname,
+>  			err = -EFAULT;
+>  			goto out;
+>  		}
+> +		/* Do not write more sources than the caller said optval can
+> +		 * hold.
+> +		 */
+> +		max_numsrc = (len - IP_MSFILTER_SIZE(0)) /
+> +			     sizeof(msf.imsf_slist_flex[0]);
+> +		msf.imsf_numsrc = min_t(u32, msf.imsf_numsrc, max_numsrc);
+>  		err = ip_mc_msfget(sk, &msf, optval, optlen);
+>  		goto out;
+>  	}
+> 
+
