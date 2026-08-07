@@ -1,111 +1,170 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A212C326D;
-	Fri,  7 Aug 2026 01:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296B323741
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 01:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786067660; cv=none; b=NaRcXGin9Fdf17r64Brcw1fvZHVQQ+SZZz5DoySB+h0pgvQ4zvgwirNzYhcgMpUOxRhCz6boegUTwkqFIX/U8Tu9IrGKR8iz9ZkTTiVsH02P2pSeRKaBunig6ZlBcDvx6im2H/KxP35D2fPSmF0/nmbn9ZEis+qBatLt4HdRz1k=
+	t=1786067734; cv=none; b=jjsD924h9VKE1pPj6K3gPIlfuydDZPmbIs7MyhldisY04XjN9raCjVU30cmUMUy72fW7T5YJMGOL36TFnmMgp5krUJzWufnilD7L0fC7w6U6/JQ61BcSIVTarJaiHb3KHFZVZmirJeHc70gu+MviDWcIcPIXjWqSXz526TBsylU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786067660; c=relaxed/simple;
-	bh=Dki6NqBruKndxMNgT5dyFppwBJaeC/paWC2HzCOseUo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YxbErCVpyLXHBVBbdSJZ3z4QxjzlvDl9jvV2izL6NPhefkOaPR4VWhNAe3AKEg+UqlIvOAiXxmnY1U9DsyL2vNbOnpjiisz6cqAYXYMXuETWR/ELamsGLocWxizuCwLp0kxdsXka9gj78U0ibC0yPPBze9saF7p2FoLh1N4C3Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CUd6D6rz; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CUd6D6rz"
-Message-ID: <05084a53-a1a4-4e60-bdd7-6fd16ef6a029@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786067655;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=67Kicf9WT4kjE79wuLJ4NaDZ2qJ1L7TiOIATh55V8Lc=;
-	b=CUd6D6rzmd+s48TboJYTV45ifl8rC0y4HKW/x0GxCQXk2ef8ABU7L+iG0ewPJUSeTMA9xn
-	tq8GzUPlyvusoL6oe0GRygrxLhlNfDAzd3PTj+W6b4ibIKMwoJORjWtsO7muV0ECSeadU2
-	SaYjJ3zHpMxhA7XTXOp5kOCJmBclqqY=
+	s=arc-20240116; t=1786067734; c=relaxed/simple;
+	bh=pacRcA8W1tWwSgL9a07u5fSoSJzl+fbdFfO33FuVV1k=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=j/5VDyktmB75a7pJ6A97+qDaGBRVj9SsUiGUekffkHWKTrPDc3Uk0Pqb/HbmNHpORRmDP06UgOX3jWexPSd24wdFqeER6bsfSFxmGgtacaMyvksWRvQMFiTbJUvFAdW4vw96VTeKH7Y8uRWdD2k/U6Fwcjg7fG4C2fFwGzGFXIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:tivesync2t1786067632tb37c38a6
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.235.196.25])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 14464708908423724219
+To: "'Jakub Kicinski'" <kuba@kernel.org>
+Cc: <netdev@vger.kernel.org>,
+	<mengyuanlou@net-swift.com>,
+	<andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<pabeni@redhat.com>,
+	<joe@dama.to>,
+	<u.kleine-koenig@baylibre.com>,
+	<weirongguang@kylinos.cn>,
+	<larysa.zaremba@intel.com>,
+	<horms@kernel.org>,
+	<netdev@vger.kernel.org>,
+	<mengyuanlou@net-swift.com>,
+	<andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<pabeni@redhat.com>,
+	<joe@dama.to>,
+	<u.kleine-koenig@baylibre.com>,
+	<weirongguang@kylinos.cn>,
+	<larysa.zaremba@intel.com>,
+	<horms@kernel.org>
+References: <5FE44222ED3FAC4B+20260803072022.377406-1-jiawenwu@trustnetic.com> <20260806153138.2580692-1-kuba@kernel.org>
+In-Reply-To: <20260806153138.2580692-1-kuba@kernel.org>
+Subject: RE: [PATCH net v2] net: ngbe: fix NULL pointer dereference in non-MSI-X interrupt enabling
 Date: Fri, 7 Aug 2026 09:53:51 +0800
+Message-ID: <077e01dd260f$983c0c60$c8b42520$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next v4 1/5] net: Add connect_socket() helper
-To: Mahe Tardy <mahe.tardy@gmail.com>, bpf@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, andrii@kernel.org, ast@kernel.org,
- daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com,
- edumazet@google.com, john.fastabend@gmail.com, kuba@kernel.org,
- liamwisehart@meta.com, martin.lau@linux.dev, pabeni@redhat.com,
- song@kernel.org, netdev@vger.kernel.org, sdf.kernel@gmail.com,
- ameryhung@gmail.com, kuniyu@google.com, memxor@gmail.com
-References: <20260806182234.380833-1-mahe.tardy@gmail.com>
- <20260806182234.380833-2-mahe.tardy@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260806182234.380833-2-mahe.tardy@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQG+uWkNEl0QLst9yGJ3EcEY63s4ywEjyRTmtsWKkgA=
+X-QQ-SENDSIZE: 520
+Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NvxNySBpH0Ql6jlTvvgclVeH77aTpjdOHrb11CSv9Bpy5K5VfyxZWzI9
+	qOsTuvW5dzXPubWDWfqBpXLoCUkqP4Eucfcc8P7mIfzSxtds6vZyjFmmG2bGRKCJU3wfIiq
+	Oly4yxi5SdD+yKIMXWFF0j8fQgMykrpQZdQft2aDeqf4OhmBclcYU3SMphdvWel+ZPVQtx+
+	b/2HHeu3wC/RT0YuiOlScA8mAhIETL4X3JiTkIK4q+KqWSEwTj22FccJL0sJlbI82GgJhnb
+	zkk5QxXYOfoXXT4zQwFTPjiu3KCInhDnjoO81G5baL35B64WYAoplxzTTu8rxO8Mq77JtY/
+	YdKAKXcoP98qGJC3SadOpARr4T1vLTTHO1/bGTZg/QEPcJkuoB+ifHCbEv12PqCDhZs7KKt
+	pLYyHGJnPbW1mMHnj6T2gaLXYaIMam5/e3K3er6cLaACsoFpU1mle4Ud/Tys+8Jgm0/xKSj
+	QK4Rx4QWL2tMdrifxTCXhDQvlGjDGysYgRwA81wijgSu6e+lvM5Ub7diITA5cj/q4pH07XT
+	iOBjdvA3rl+FgGVkFsUenbnCjiylqWo+IWWomtHPrhGz85w/3Mwxa8+LUGNVTUjCW03ZCrT
+	QHVMPOnAzWXZX5w6UJBht/fnQ623cHjpVpcgosmv1SCcXQZh3icdfVgVnfmBs0pOfx+XfHy
+	q/yDXbnaZvLrMkC43/QgEaGJeDB+pHYYv/rktO6VTIDIYFua7YRvLboUE+jPVecXWeVV7eY
+	Fj/5gyjK7ZmuGo+LNa35hk1q9yM5zkdmW3qmLJbyDmx2icpi3GoMUYX+M6LaVfbW5FCjC6p
+	nfzoJTxj71o0HvmjXn+jzF6zBTW8wyTRGBdR3lxt0jTEqpFzgXOpd8ccaemOA7HnFy5ikqi
+	RLS3nIMwyAlGr+OoCrNpUJZfFvi4TNB2seNSA6jWlmERrWka6iyLPXUgKKWEjI1kdYabTgg
+	WSVNEsk78SFnFsQNS2LBovFzJP4aJ8r9bhrqoU1pzaqeLcpQsicCpKns9ajdmJQSkJ8aZuC
+	BMFgYnJ1EQ8Zw0LV+IvO+8idgGaeu/94a9ObxlHQaaNP4+E4aSerUMnLo4CFosHeVNlPxLT
+	A==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
 
-
-On 8/7/26 2:22 AM, Mahe Tardy wrote:
-> Add a helper that connects an existing socket while invoking the LSM
-> hook. Reuse it in __sys_connect_file() to avoid duplicating the connect
-> logic. Other socket operations have equivalent helpers that trigger the
-> appropriate LSM hooks that can be reused, this one was the only one
-> missing.
->
-> Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+On Thu, Aug 6, 2026 11:32 PM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > ---
->   include/linux/socket.h |  2 ++
->   net/socket.c           | 32 ++++++++++++++++++--------------
->   2 files changed, 20 insertions(+), 14 deletions(-)
->
-> diff --git a/include/linux/socket.h b/include/linux/socket.h
-> index 2a8d7b14f1d1..8964528e3823 100644
-> --- a/include/linux/socket.h
-> +++ b/include/linux/socket.h
-> @@ -461,6 +461,8 @@ extern struct file *__sys_socket_file(int family, int type, int protocol);
->   extern int __sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
->   extern int __sys_bind_socket(struct socket *sock, struct sockaddr_storage *address,
->   			     int addrlen);
-> +extern int connect_socket(struct socket *sock, struct sockaddr_storage *addr,
-> +				int addrlen, int flags);
->   extern int __sys_connect_file(struct file *file, struct sockaddr_storage *addr,
->   			      int addrlen, int file_flags);
->   extern int __sys_connect(int fd, struct sockaddr __user *uservaddr,
-> diff --git a/net/socket.c b/net/socket.c
-> index 63c69a0fa74e..126a674f534d 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -2103,6 +2103,20 @@ SYSCALL_DEFINE3(accept, int, fd, struct sockaddr __user *, upeer_sockaddr,
->   	return __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, 0);
->   }
->
-> +int connect_socket(struct socket *sock, struct sockaddr_storage *address,
-> +			 int addrlen, int flags)
-> +{
+> net: ngbe: fix NULL pointer dereference in non-MSI-X interrupt enabling
+> 
+> This patch avoids dereferencing wx->msix_entry in NGBE_INTR_MISC() when the
+> device is not running in MSI-X mode, by testing pdev->msix_enabled in
+> ngbe_irq_enable() and falling back to a hard-coded mask value otherwise.
+> 
+> > diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> > index a16221995909..cb653861aad8 100644
+> > --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> > +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> > @@ -180,8 +180,10 @@ static void ngbe_irq_enable(struct wx *wx, bool queues)
+> >  	/* mask interrupt */
+> >  	if (queues)
+> >  		wx_intr_enable(wx, NGBE_INTR_ALL);
+> > -	else
+> > +	else if (wx->pdev->msix_enabled)
+> >  		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
+> > +	else
+> > +		wx_intr_enable(wx, BIT(0));
+> >  }
+> 
+> [Severity: Medium]
+> Is BIT(0) the right mask bit for the misc cause in the non-MSI-X case?
 
+In the non-MSI-X case, the MISC and queue interrupt share the vector 0.
 
-Please fix the checkpatch warning if revise
+> In the MSI/INTx fallback, wx_set_interrupt_capability() sets
+> wx->num_q_vectors = 1, and ngbe_up() -> wx_configure_vectors() still
+> programs the misc IVAR:
+> 
+> drivers/net/ethernet/wangxun/libwx/wx_lib.c:wx_configure_vectors() {
+> 	...
+> 	wx_set_ivar(wx, -1, 0, v_idx);
+> }
 
-CHECK: extern prototypes should be avoided in .h files
-#27: FILE: include/linux/socket.h:464:
-+extern int connect_socket(struct socket *sock, struct sockaddr_storage 
-*addr,
+The register WX_PX_MISC_IVAR is only valid in the MSI-X case.
 
-CHECK: Alignment should match open parenthesis
-#28: FILE: include/linux/socket.h:465:
-+extern int connect_socket(struct socket *sock, struct sockaddr_storage 
-*addr,
-+                int addrlen, int flags);
+> with v_idx == wx->num_q_vectors == 1.  wx_set_ivar() only forces the
+> other-causes vector to 0 when WX_FLAG_IRQ_VECTOR_SHARED is set, which
+> happens for wx_mac_em with num_vfs == 7 in __wx_enable_sriov():
+> 
+> 	if (test_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags))
+> 		msix_vector = 0;
+> 
+> So in plain MSI/INTx the misc cause sits at bit 1, and bit 0 is queue
+> vector 0.  Does this branch then clear the wrong bit in PX_IMC, leaving
+> the misc cause masked while unmasking the queue cause?
+> 
+> The queue cause looks like it is meant to stay masked here, per
+> ngbe_intr():
+> 
+> 	/* would disable interrupts here but it is auto disabled */
+> 	napi_schedule_irqoff(&q_vector->napi);
+> 
+> 	if (!test_bit(WX_STATE_DOWN, wx->state))
+> 		ngbe_irq_enable(wx, false);
+> 
+> and wx_poll() is the place that re-arms it after NAPI completes:
+> 
+> 	wx_intr_enable(wx, WX_INTR_Q(q_vector->v_idx));
+> 
+> Can unmasking BIT(0) from the hard IRQ handler let the device re-assert
+> the (possibly shared) INTx/MSI line while NAPI is still scheduled,
+> leading to repeated hard-IRQ entries and, on the eicr == 0 path, to
+> IRQ_NONE returns followed by a full NGBE_INTR_ALL unmask?
+> 
+> Would BIT(wx->num_q_vectors) be the value that preserves the behaviour
+> prior to commit 4174c0c331a2, where NGBE_INTR_MISC(A) expanded to
+> BIT((A)->num_q_vectors)?  The sibling driver still uses that form
+> unconditionally, including on its non-MSI-X path:
+> 
+> drivers/net/ethernet/wangxun/txgbe/txgbe_type.h:
+> 	#define TXGBE_INTR_MISC(A)	BIT((A)->num_q_vectors)
+> 
+> One more note on the changelog: it says the fix is to check
+> pdev->msix_enabled "to determine the correct vector index", but it does
+> not mention that the mask value written in non-MSI-X mode changes from
+> BIT(1) to BIT(0).  Could the changelog spell out the intended vector
+> index for the MSI/INTx case?
 
-CHECK: Alignment should match open parenthesis
-#41: FILE: net/socket.c:2107:
-+int connect_socket(struct socket *sock, struct sockaddr_storage *address,
-+             int addrlen, int flags)
+I'll add a log to describe this in passing fix. 
+
 
