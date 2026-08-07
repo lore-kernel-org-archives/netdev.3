@@ -1,116 +1,189 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA47C4252BB;
-	Fri,  7 Aug 2026 07:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC103F660D;
+	Fri,  7 Aug 2026 08:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786088961; cv=none; b=bH74lo0wSLadvdUrtC2khJxxNhbZu2h5JaiDXIxP+QgTO1QHJWUxNBVig96Qm3QbBizGzk39QTNsbpnQUzQ01NXNKisZBl0b+kyZBjeVceCZPBPgwlkXOpCOxW1tuquM/n+4FZzTJZeJsFMjg6d6/HgVgcJbfe+gW4FW7KnekxQ=
+	t=1786089666; cv=none; b=OQSrWzsFhLA2IfBt6UE+Ttbk/NEgpEjZp3Jm642/ZTHEOyP4Bv7BcUfdSrQTvdI7rbZSNP8EdBgjFxtXJ4ZoTpxfv9K499FdZ75DncWbLX18qRsm93JXcZ/7khkewRtj55Y2TeFKnI/8pGlxGe/CYBRe84buTtNh99jKo/oVgTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786088961; c=relaxed/simple;
-	bh=fi2MuFluUi3ZEKC+8bpeI+eGKgy4RiFx8FGb6zegiiM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P4FyZ04jEmCYYwrW0nHbDhMgZt+tO+F2svhWUeiiLFSFLDq0vBLlTCgpcRMXnrgDEGlyIy8GiopwraCe+kOyi+GMZR1HbBaY4WXm6TAme+IP1hQe/uAORcwadMTObKNnoJK8k7KzmjQ+AYKaVsEj+WhbuP4rLTnPjqz44OGeO6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3E20E200C57;
-	Fri, 07 Aug 2026 09:49:15 +0200 (CEST)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wsFKN-000Dj1-0T;
-	Fri, 07 Aug 2026 09:49:15 +0200
-Message-ID: <c9e3a4fb-40a1-40f6-b0e4-bf957195f1b8@pengutronix.de>
-Date: Fri, 7 Aug 2026 09:49:15 +0200
+	s=arc-20240116; t=1786089666; c=relaxed/simple;
+	bh=vA+iyiMuAKU4WdXWINwunM/+iSBzTZ/BPT8+SmqDbp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eL/Dl9UPs+pL4y+dDesHia9yVkzR4aPatoXO6knTTioCx5jt/XeSmXxDgBwQhbCoFjJmTJxrv4aaDT12YlucFry9AaFAjd8OTdR9UXLmr75Amn60/uafY625IyD7qi0RQs/IYDHlPMVQkEAJJ5a7U6ZpAShr0u1VH01Tymh/ABQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=LEkKyh2w; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LEkKyh2w"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Lr
+	5ELda4t3IwetdpAFGn/lX6FGeF2LyHiG4brun4dGU=; b=LEkKyh2whOQ8s+XJiI
+	of7giGAeNu9DKUKUB4DNbJ90l1vx2ytrCgdU/GMYacPrA6fwTZH4RzKhDRhjR7jh
+	FclDj+LzX6TWcL1M4Ku1/KFlS8i2q/MWgeuICO2ZniD5K7ROmdJFCGIw8JEEDiU1
+	K0DioJjHYfi22Z0Gw8bWSLoOg=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wCn7EdlkHVq3qccNw--.18515S2;
+	Fri, 07 Aug 2026 15:59:34 +0800 (CST)
+From: Qingshuang Fu <fffsqian@163.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qingshuang Fu <fuqingshuang@kylinos.cn>,
+	Qingshuang Fu <fffsqian@163.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH net v2] selftests: netfilter: conntrack_dump_flush: remove unused variables and fix typo
+Date: Fri,  7 Aug 2026 15:59:28 +0800
+Message-Id: <20260807075928.64326-1-fffsqian@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl83xx: add support
- for enabling supplies
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
- Linus Walleij <linusw@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
- Rob Herring <robh@kernel.org>, netdev@vger.kernel.org,
- Luiz Angelo Daros de Luca <luizluca@gmail.com>,
- linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
- Eric Dumazet <edumazet@google.com>, kernel@pengutronix.de,
- =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
- Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
- <alvin.sipraga@analog.com>, "David S. Miller" <davem@davemloft.net>,
- devicetree@vger.kernel.org
-References: <20260806140239.3518906-1-o.rempel@pengutronix.de>
- <20260806140239.3518906-3-o.rempel@pengutronix.de>
- <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
- <anSj34TOZxYiG_ai@pengutronix.de>
- <f2260b02-621f-4b92-aade-85c403a8839d@lunn.ch>
- <02a51eff-3782-4012-8475-1047a9be4dd3@pengutronix.de>
- <CAD++jLk-5-_2x2scn2hNQ-aWBx=EKGYzvcaUwv5fS7k5Bq=KGA@mail.gmail.com>
- <anVedv6aV1hguF5x@pengutronix.de>
- <CAD++jLkkwuRYrW7aF4BrxoH=qVfNfbzsW8A+URig79dVMxgZ-g@mail.gmail.com>
- <anWE2HD_Mrv9XlYV@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <anWE2HD_Mrv9XlYV@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCn7EdlkHVq3qccNw--.18515S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxArykCF47XrWDZw17Zw1fWFg_yoW7Jr1Dpw
+	18Gwn5Gw18Jr4S93WkCan8AF9xtr9xA34Sqr4xGa4rZanxtr1Yy398ta4fGryYyrWjqr9r
+	uFWjgF90ya1ay3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRxhLbUUUUU=
+X-CM-SenderInfo: 5iii21xldqqiywtou0bp/xtbCwgg2AWp1kGjaSgAA3K
 
-Hello,
+From: Qingshuang Fu <fuqingshuang@kylinos.cn>
 
-On 8/7/26 9:10 AM, Oleksij Rempel wrote:
-> On Fri, Aug 07, 2026 at 08:51:53AM +0200, Linus Walleij wrote:
->> On Fri, Aug 7, 2026 at 6:26 AM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
->>> On Thu, Aug 06, 2026 at 07:40:29PM +0200, Linus Walleij wrote:
->>>> On Thu, Aug 6, 2026 at 5:56 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>>>
->>>> [Andrew says]
->>>>> So devm_regulator_bulk_get() is already the "optional" variant, but it causes
->>>>> all existing users to get dummy supply warnings.
->>>>
->>>> So is this a big problem? Does it cause any other issues than
->>>> dmesg noise?
->>>
->>> As tested with local sashiko setup, new warnings for existing system
->>> without good reason will be reported as regression, so it will be
->>> blocker for net-next inclusion.
->>
->> Strong reverse centaur (*) warning on this one.
->>
->> I'm not sure this is how Mark want such "regressions" to be treated.
->>
->> I think a few dummy supplies is just fine and it's rather that Sashiko
->> need to be taught not to treat that as bugs/regressions.
->>
->> Yours,
->> Linus Walleij
->>
->> (*) Reverse centaur = humans touted to please AI, as opposed
->> to AI helping humans, sarcastic term coined by author Cory Doctorow.
-> 
-> Without context, I would fully agree with this statement. But as some
-> one who need to adders new warnings on every kernel update for our
-> customers, I see the point of sashiko - new unnecessary warning
-> is extra unnecessary work for some one else == regression.
+Remove unused 'rplnlh' in conntrack_data_insert(), and remove unused
+'rplnlh' and 'nest' variables in conntrack_count_zone() and
+conntrack_flush_zone(). These variables were declared but never used
+since their introduction.
 
-I also think we shouldn't dump 6 new warnings on other users if their
-setup is working ok.
+Also fix typo: rename misspelled conntracK_count_zone() to
+conntrack_count_zone().
 
-Cheers,
-Ahmad
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
+---
+v2:
+  - Drop Fixes tag as this is a cleanup, not a bug fix
+  - Add Reviewed-by tag from Fernando Fernandez Mancera
+  - Also fix the typo in function name conntracK_count_zone
+  - Link to v1: https://lore.kernel.org/all/20260806075052.1934904-1-fffsqian@163.com/
+---
+ .../net/netfilter/conntrack_dump_flush.c      | 31 +++++++++----------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-> 
+diff --git a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
+index 5cecb8a1bc94..31b8250ddc53 100644
+--- a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
++++ b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
+@@ -102,7 +102,6 @@ static int conntrack_data_insert(struct mnl_socket *sock, struct nlmsghdr *nlh,
+ 				 uint16_t zone)
+ {
+ 	char buf[MNL_SOCKET_BUFFER_SIZE];
+-	struct nlmsghdr *rplnlh;
+ 	unsigned int portid;
+ 	int ret;
+ 
+@@ -216,12 +215,11 @@ static int count_entries(const struct nlmsghdr *nlh, void *data)
+ 	return MNL_CB_OK;
+ }
+ 
+-static int conntracK_count_zone(struct mnl_socket *sock, uint16_t zone)
++static int conntrack_count_zone(struct mnl_socket *sock, uint16_t zone)
+ {
+ 	char buf[MNL_SOCKET_BUFFER_SIZE];
+-	struct nlmsghdr *nlh, *rplnlh;
++	struct nlmsghdr *nlh;
+ 	struct nfgenmsg *nfh;
+-	struct nlattr *nest;
+ 	unsigned int portid;
+ 	int ret;
+ 
+@@ -266,9 +264,8 @@ static int conntracK_count_zone(struct mnl_socket *sock, uint16_t zone)
+ static int conntrack_flush_zone(struct mnl_socket *sock, uint16_t zone)
+ {
+ 	char buf[MNL_SOCKET_BUFFER_SIZE];
+-	struct nlmsghdr *nlh, *rplnlh;
++	struct nlmsghdr *nlh;
+ 	struct nfgenmsg *nfh;
+-	struct nlattr *nest;
+ 	unsigned int portid;
+ 	int ret;
+ 
+@@ -326,7 +323,7 @@ FIXTURE_SETUP(conntrack_dump_flush)
+ 	ret = mnl_socket_bind(self->sock, 0, MNL_SOCKET_AUTOPID);
+ 	EXPECT_EQ(ret, 0);
+ 
+-	ret = conntracK_count_zone(self->sock, TEST_ZONE_ID);
++	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
+ 	if (ret < 0 && errno == EPERM)
+ 		SKIP(return, "Needs to be run as root");
+ 	else if (ret < 0 && errno == EOPNOTSUPP)
+@@ -423,7 +420,7 @@ FIXTURE_SETUP(conntrack_dump_flush)
+ 					 NF_CT_DEFAULT_ZONE_ID);
+ 	EXPECT_EQ(ret, 0);
+ 
+-	ret = conntracK_count_zone(self->sock, TEST_ZONE_ID);
++	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
+ 	EXPECT_GE(ret, 2);
+ 	if (ret > 2)
+ 		SKIP(return, "kernel does not support filtering by zone");
+@@ -437,7 +434,7 @@ TEST_F(conntrack_dump_flush, test_dump_by_zone)
+ {
+ 	int ret;
+ 
+-	ret = conntracK_count_zone(self->sock, TEST_ZONE_ID);
++	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
+ 	EXPECT_EQ(ret, 2);
+ }
+ 
+@@ -447,13 +444,13 @@ TEST_F(conntrack_dump_flush, test_flush_by_zone)
+ 
+ 	ret = conntrack_flush_zone(self->sock, TEST_ZONE_ID);
+ 	EXPECT_EQ(ret, 0);
+-	ret = conntracK_count_zone(self->sock, TEST_ZONE_ID);
++	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
+ 	EXPECT_EQ(ret, 0);
+-	ret = conntracK_count_zone(self->sock, TEST_ZONE_ID + 1);
++	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 1);
+ 	EXPECT_EQ(ret, 2);
+-	ret = conntracK_count_zone(self->sock, TEST_ZONE_ID + 2);
++	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 2);
+ 	EXPECT_EQ(ret, 2);
+-	ret = conntracK_count_zone(self->sock, NF_CT_DEFAULT_ZONE_ID);
++	ret = conntrack_count_zone(self->sock, NF_CT_DEFAULT_ZONE_ID);
+ 	EXPECT_EQ(ret, 2);
+ }
+ 
+@@ -463,13 +460,13 @@ TEST_F(conntrack_dump_flush, test_flush_by_zone_default)
+ 
+ 	ret = conntrack_flush_zone(self->sock, NF_CT_DEFAULT_ZONE_ID);
+ 	EXPECT_EQ(ret, 0);
+-	ret = conntracK_count_zone(self->sock, TEST_ZONE_ID);
++	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
+ 	EXPECT_EQ(ret, 2);
+-	ret = conntracK_count_zone(self->sock, TEST_ZONE_ID + 1);
++	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 1);
+ 	EXPECT_EQ(ret, 2);
+-	ret = conntracK_count_zone(self->sock, TEST_ZONE_ID + 2);
++	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 2);
+ 	EXPECT_EQ(ret, 2);
+-	ret = conntracK_count_zone(self->sock, NF_CT_DEFAULT_ZONE_ID);
++	ret = conntrack_count_zone(self->sock, NF_CT_DEFAULT_ZONE_ID);
+ 	EXPECT_EQ(ret, 0);
+ }
+ 
 
+base-commit: 0d839570765118029aa8bf4a95444c6a11aacf85
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.25.1
 
