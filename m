@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BDB3EEAF4;
-	Fri,  7 Aug 2026 23:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C263E51D3;
+	Fri,  7 Aug 2026 23:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786146066; cv=none; b=V4yagB1FqngvyJbHGTz6Anv8+jgnqGU5kzqGRxEXB4AfPJYe1wRAOskiIqQhSGvQM3HeX+TuLNGZb3XAmEnUlQYlZbFoGqFNA6w6ebSnXNwFCNe6GgfT2ru7+ZpUOwdJs7rkrSkrDkNTT3DruYgRbD7qfE6NaET81CeympoOUf8=
+	t=1786146077; cv=none; b=b5eBois60ItkiiXiEDQSSJ8h1P4fxFQPSGuEYHpJNOsxFfi/SMprWMW6zMFDRbgjb3axkUR5XJTEy8Q8iAlIA86GzzMv0C+Q3lX4RPfhrWV1uDIoNcmlgO3dXdjpTv7dP4QAKQxhUGgG0dr/0ozmU4rZgg+J7GWL7Mjd32HAQtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786146066; c=relaxed/simple;
-	bh=36KwH32cf1h6Z8Z9Y0OuV/Xlbl6SjqRaKMjRPQEbsuQ=;
+	s=arc-20240116; t=1786146077; c=relaxed/simple;
+	bh=XoS14kvFOv4SiGQ/VnEVHUJGGIrPuIv3pZmyIZS+41E=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Py4MMQ/7oGYQmom5keffOv82+VkAt2SYfSbEZCmyqh/IQI+nnORV/Y+L63C04i7oB8GqIrBZthjAmfVmojcRzKnb7girMuMgP+eXwqmR8gYVYX7MTy1KKvGORWaUZdNKDUDvEdiv31pbbUotBaT35xG+yiKrzTzY4UATTcd3s8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pmg4iT+A; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=HyfeOVkTtAK3AgFyWnKta07T8lxGB9b2+YCzNqjHUtxOirR65buiqdsKfPFYz3M+a4RXqR+ii162omV6FMvyoVvt/Ts0k1eenUtUlLlGYLL0RX98Ftbe/23szVqi0FXJDr6/2JXJh7nyyoxNN2xoTQNseHDoBNYb3mxxLdc1+8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l7AVh/dx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pmg4iT+A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C17A1F00A3A;
-	Fri,  7 Aug 2026 23:41:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l7AVh/dx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A432B1F000E9;
+	Fri,  7 Aug 2026 23:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786146065;
-	bh=ulh1dPI3L1SxP7LLxw1EsSyfBt9XripzbpCsqcOXeMM=;
+	s=k20260515; t=1786146066;
+	bh=9DFmypWpmVHZU7PmvERyZc25SfrArDmgI2FIP1ogS3I=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Pmg4iT+AYQgxC+7RQJv2MgAiU4ULsMuE+PTh0hwaZ1/W8hsQvBlSBOuCJGo7eIhJ3
-	 Wsz4qV/1Zv9WAzFKYqN6txcEajHUzxTgPBoo2fsijn4LlAkB5DVUx4AKhE+Wz2py10
-	 MNBrXfBecoLzmRv8p3p6+X9ATubwcMvhDPpPeMEmYQViJ+ETncRwV1HnqyyRglEHCt
-	 ceQ4jNplX7Q/7WFnj9iFAKJGkphoa6qlA8DWDWZi8LoMgLomCao3GcafE6vCU5LIbH
-	 QuSptlAcc5jTwsToPd0WujLWoPkr7UXibUXpgKJ4ZesprMBOUPEYLkjShnmAEk0BCL
-	 7e8SeplYH8EOg==
+	b=l7AVh/dxAVlzOmtPiPJhvQXBfdptFT1BrOfkoZlE9NFHpFN/3WIQUzvBxpb4IbBoc
+	 RAPUOXcXdBmb+Coe1OOU5NrSYsggVBUAwLaUxvcUPjz6x8vkZjfqM9o+Zs7EsNML9L
+	 M8gAkPj3ym6/auWx9sGvgUMYj2IakNT+fmtbdfNbkzVvj8p7w86ZIoXk2Hf0KLJxQP
+	 i03O2AsFVSr0qHOkuUoGMRhms+0POEP6T8pzJ+2jY+tQjLjrkAsa4uWpHfET5suc2g
+	 zGlk/OBWrrYgvoCShllEfoyhcUfoZitYozqVKQlCq6DGlcO2JMV2Wtfyb6f8gkMJvI
+	 GOb2QViLkkDeA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AD2380CEF9;
-	Fri,  7 Aug 2026 23:40:24 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5697E380CEF9;
+	Fri,  7 Aug 2026 23:40:26 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: phy: mediatek: add EcoNet EN7528 PHY
- support
+Subject: Re: [PATCH net-next] s390/ctcm: Convert fsm.h to proper kernel-doc
+ format
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178614602338.2465504.18347820222618862870.git-patchwork-notify@kernel.org>
-Date: Fri, 07 Aug 2026 23:40:23 +0000
-References: <20260804103321.3331802-1-naseefkm@gmail.com>
-In-Reply-To: <20260804103321.3331802-1-naseefkm@gmail.com>
-To: Ahmed Naseef <naseefkm@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew@lunn.ch,
- angelogioacchino.delregno@collabora.com, daniel@makrotopia.org,
- edumazet@google.com, hkallweit1@gmail.com, kuba@kernel.org,
- matthias.bgg@gmail.com, pabeni@redhat.com, dqfext@gmail.com,
- linux@armlinux.org.uk, SkyLake.Huang@mediatek.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org
+ <178614602489.2465504.5258419928849173397.git-patchwork-notify@kernel.org>
+Date: Fri, 07 Aug 2026 23:40:24 +0000
+References: <20260803182736.2356374-1-nagamani@linux.ibm.com>
+In-Reply-To: <20260803182736.2356374-1-nagamani@linux.ibm.com>
+To: Nagamani PV <nagamani@linux.ibm.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, wintera@linux.ibm.com,
+ aswin@linux.ibm.com, linux-s390@vger.kernel.org, netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  4 Aug 2026 14:33:21 +0400 you wrote:
-> The EcoNet EN7528 MIPS SoC embeds four Gigabit Ethernet PHYs (PHY ID
-> 0x03a29491) behind its built-in MT7530 switch. They use the same LED
-> register layout as the other SoC PHYs handled by this driver, but their
-> LED controller powers up with its external control disabled, so the LED
-> pins stay dark regardless of what is programmed into the LED control
-> registers.
+On Mon,  3 Aug 2026 20:27:36 +0200 you wrote:
+> drivers/s390/net/fsm.h contains comments starting with '/**'
+> that don't follow kernel-doc syntax, triggering warnings when
+> running:
+> 
+>   scripts/kernel-doc -none -Wall drivers/s390/net/fsm*
+> 
+> Example warning:
+> Warning: drivers/s390/net/fsm.h:14 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
+>  * Define this to get debugging messages.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] net: phy: mediatek: add EcoNet EN7528 PHY support
-    https://git.kernel.org/netdev/net-next/c/b6e2649fff15
+  - [net-next] s390/ctcm: Convert fsm.h to proper kernel-doc format
+    https://git.kernel.org/netdev/net-next/c/0023e4c6171d
 
 You are awesome, thank you!
 -- 
