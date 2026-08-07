@@ -1,108 +1,82 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2489D3AC0FC
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 10:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F84397B1C;
+	Fri,  7 Aug 2026 10:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786097762; cv=none; b=qX7QXGbXkNwz2iP/3mb76h+o30BkKc8tpoxX1/U6RtlUjpcE1ey3nJ3yUrU5rjZ+MrwIKWhZ27k5K4q1RbWqdrhIOVYo/axRZhOzOrLCzv7ZxeeO3i+ElrrxKJwLiiBNhBEGMsgPp/nFZzaP4qlpzti63Mf95vwlWfZYXuXD0Ng=
+	t=1786098234; cv=none; b=C3ny/8jcbr818BVxvnpDm8v55AnI9FJaZmq+WQN/phTwd6Xw+0WNVRr86dAO34wKGc/I/L9dPJMMNp/qPINm8kJyS4Bffyg/fh8LdobmwO+ymDqUsS9Ra6BbZlWeCEXzrhRZdspnUUwQ6GcLBSSeFMRmMJH0jTiHup5qLoXgYUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786097762; c=relaxed/simple;
-	bh=9v3e066T2HE99HSfvlnhhec2m8EEsbZj/nDIcBFCh6Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ptNa3Osd0hWOiOpNXQJdI4Jb6LLddXcXZkUEbjSPJX2OL+nRv/KXms6sVWCLLnj7t8xlhwnNgyZ+v+KEMpyYhFYhlMPXMc2M8exgkiY3sa4wJAaQ8cZnkSFltLK0zfKP0w/Tp1R2sQYbJ42mm/I1qvWH0u52uFyaxPU6qA2/vaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C6STPQlP; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786098234; c=relaxed/simple;
+	bh=bIjsHrwrh5cGKWtGNy+OBCSSmpd6L7S7wDE2PEYU/7U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A2F4OKMaw5+ngjFwWTvE3oxPebAWCkA/gCyjVoeaaRKpluVCIv1Dj5JSzAJhbpGezYMI/gqofsJG33XIZ28CbutQKnvZSIrft4muOgwqrFVuKQgiNeq6tX313lnM8hqJd9S/QTtViRT+5i+yJ3xBQ5Ojnngqq3lAIGNGBHPYM4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=Cj/E7RoJ; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C6STPQlP"
-Message-ID: <dbc8c1a5-e2f3-4e14-864d-ce8f939039e0@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786097748;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XLgrwNtYxxf7AgEZoJyDVDcOLppADT7UiyLcVXO2tuY=;
-	b=C6STPQlPGymE5CRdh7/y7Rv3m//Jh268xSFzMYeX1KKhoYzh5LzXG+/+btBpV+MvCgEg4m
-	yyss3LtatAmwto+KqI1S04WOHh0WssUWXX4cHfrjTMCOMltREFgu8e9/SuXPaohvgJ7bai
-	MdnFDMs5NdOerE+DH4uWxkmSkCTfX08=
-Date: Fri, 7 Aug 2026 18:14:55 +0800
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="Cj/E7RoJ"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 53E3D60192;
+	Fri,  7 Aug 2026 12:23:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1786098228;
+	bh=vT5puZXX1TYP7PjTvIrBrI5uYYQP6KI812jYIqWywPA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Cj/E7RoJYtYfQj6ZTc5DgK47kMe4cxNMTBRLsbCMb+0Nefih1/J0mJKAscbb8SKYR
+	 JjdewAMGN4yAo6o/hptvNexeB/30dTmmM54rR4+RASZ6JklxFg82Ld674BK9tl9f8s
+	 yTkNPPgBLN5IYmkJ8/2b0qRvFhsHP5YUeNgpWAWZR0DS/NYhNM4/T+O6m80Z7ewwlG
+	 8Z756J2MWOY3itz0kYyvqN0bMB5UxCY/t6ryJWGOl1r952nAcJ/fZ5qLt4t+LpPhIh
+	 SioUfUfsB5Wv6P9vzt05vf2E3+R8dUA69OHl3RFk9Elwu5v2oS8B34nk8cY/wqE8Ku
+	 XUgFX68P/JdsQ==
+Date: Fri, 7 Aug 2026 12:23:45 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Qingshuang Fu <fffsqian@163.com>, Florian Westphal <fw@strlen.de>,
+	davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qingshuang Fu <fuqingshuang@kylinos.cn>,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: Re: [PATCH net v2] selftests: netfilter: conntrack_dump_flush:
+ remove unused variables and fix typo
+Message-ID: <anWyMUFvONx6k1d5@chamomile>
+References: <20260807075928.64326-1-fffsqian@163.com>
+ <anWgQSbZWK6D2ONg@fedora>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v3 2/2] net: ravb: serialize PTP clock teardown
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
- niklas.soderlund@ragnatech.se, kuba@kernel.org
-Cc: paul@pbarker.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, richardcochran@gmail.com,
- masaru.nagai.vx@renesas.com, sergei.shtylyov@cogentembedded.com,
- luoxuanqiang@kylinos.cn, stable@vger.kernel.org
-References: <20260806095126.57803-1-xuanqiang.luo@linux.dev>
- <20260806095126.57803-3-xuanqiang.luo@linux.dev>
- <cdc07462-5997-44f5-8659-5e7862f418ac@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: luoxuanqiang <xuanqiang.luo@linux.dev>
-In-Reply-To: <cdc07462-5997-44f5-8659-5e7862f418ac@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <anWgQSbZWK6D2ONg@fedora>
 
-Hi Vadim,
+On Fri, Aug 07, 2026 at 05:07:13PM +0800, Hangbin Liu wrote:
+> On Fri, Aug 07, 2026 at 03:59:28PM +0800, Qingshuang Fu wrote:
+> > From: Qingshuang Fu <fuqingshuang@kylinos.cn>
+> > 
+> > Remove unused 'rplnlh' in conntrack_data_insert(), and remove unused
+> > 'rplnlh' and 'nest' variables in conntrack_count_zone() and
+> > conntrack_flush_zone(). These variables were declared but never used
+> > since their introduction.
+> > 
+> > Also fix typo: rename misspelled conntracK_count_zone() to
+> > conntrack_count_zone().
+> > 
+> > Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> > Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
+> 
+> > ---
+> > v2:
+> >   - Drop Fixes tag as this is a cleanup, not a bug fix
+> 
+> If not a bug fix, you should target to net-next.
 
-在 2026/8/7 06:34, Vadim Fedorenko 写道:
-> On 06/08/2026 10:51, xuanqiang.luo@linux.dev wrote:
->> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->>
->> ravb_get_ts_info() can run without RTNL while ravb_ptp_stop() 
->> unregisters
->> the PHC. The PTP interrupt handler can race with the same teardown, 
->> so both
->> paths may access the clock while it is being freed.
->>
->> Protect the clock pointer with priv->lock, clear it before unregistering
->> the PHC, and unregister the detached clock outside the lock.
->
-> I think adding spinlock here is a bit of overkill. For
-> ravb_get_ts_info() you can simply extend struct ravb_ptp to store clock
-> index on init and reset it to -1 on ptp stop.
->
-Thanks! That is a good suggestion.
+We will handle this though the nf-next tree.
 
-I will do this in the next version.
-
-> For interrupt race I think ravb_ptp_stop() can be split into disable
-> interrupt function (like ravb_ptp_disable()) and actual clock free. In
-> this case ravb_ptp_disable() can be run before synchronize_irq() with
-> ptp_clock_unregister() afterwards in teardown callbacks, like it's
-> already done for ring allocations.
->
-I see the approach you described. I assume you are referring to the
-handling in ravb_set_ringparam().
-
-One detail I would like to clarify is which IRQs need to be synchronized.
-When err_mgmt_irqs is set, ravb_multi_interrupt() is registered for dia,
-err_a and mgmt_a, while only dia is stored in ndev->irq. Each handler
-checks ISS and may call ravb_ptp_interrupt().
-
-Is there a hardware routing guarantee that gPTP interrupts are only
-delivered through dia, making synchronize_irq(ndev->irq) sufficient?
-Otherwise, it seems that the driver needs to retain the err_a and mgmt_a
-IRQ numbers and synchronize all three before unregistering the clock.
-
-The additional users of priv->lock would not be on particularly hot
-paths, but avoiding them still seems preferable if draining the
-interrupts fully closes the lifetime race. I would just like to confirm
-the required IRQ scope first. Tracking and synchronizing all three IRQs
-would also make the change larger, so the interrupt teardown patch may
-no longer be suitable for Cc: stable.
-
-In any case, thanks for the suggestion.
-
-Thanks,
-Xuanqiang
-
+Thanks.
