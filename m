@@ -1,224 +1,189 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9079346AFB;
-	Fri,  7 Aug 2026 10:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786100201; cv=fail; b=T5jJtSQ3HAUdWOOrnLdkN1qNR0xcIbDmOi/W/UZHOXSGCfyvetYIzDxqKlfYR+cFgSFZMtqAX/RspgthcsjTRDZfSFn3mpCoXc0/G5OuMaEq7gwmYEAVMc2UOsSKF2dc4CY5FQ+853iZjPMXXYHghRFm0p6bK41IU6p9ritlWGI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786100201; c=relaxed/simple;
-	bh=+koQOZBWaoEmKLEYdEP6rk5g4dnJKM57NPzF2OLUc6M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=iIkBHq92Q/DKauvcl0/zoYijrKfQdN8b+GHncfTbgmhS12Sx1FB4qcHjMqOtCuJw3q21vBRG7Rma693fTbd+rGXts21IlUivW4sbVZyEJ3lQrrpxkf0/DAIKljo7reZ9+/UzO3/QBsOJiUhTcnJX891N69U4P3gsDhmjORaCe9w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W/VDWR3K; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398153C6A57;
+	Fri,  7 Aug 2026 11:11:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786101096; cv=none; b=SkJrJasLy70RwM541hhFmu18/deQjvJkKiKufEEFNPU0hgMstKtSS2RjbWExMZby36dDtFqsrrysQVH6uVEFQzo/+cf4ZNhq3GbKdVXqV6pl85nr8OekKGmvX5clI0z7tEapF4cBmBHcx83xwC9YrUtN1t2EA4dJ90Eg7TZ4eOk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786101096; c=relaxed/simple;
+	bh=UPAjB0BdsiGVSp/QBakciyTb0Cb2PgDPRyhiNB6yjbg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nDV4sOjKy4LYZ9gqL7XI/mammlckfTtlySmPDlU/XOyRBSj39RSsW5WiHqpnrpUFFJsKyZfUd0sLEcUQQBK3rmM6rm9Q5JtD8DAy+z94XArIq3wHQmSGHlbHsLwk+6aMwvIAe50An4JQZ4LQvcNd+AaA/EJ1EcRKrU9TYYYJAqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Tp0/Var9; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W/VDWR3K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786100199; x=1817636199;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=+koQOZBWaoEmKLEYdEP6rk5g4dnJKM57NPzF2OLUc6M=;
-  b=W/VDWR3KtwJ1Wa+l2kEUmrhUPukTAYVh5sg59X7/L6o83q6Rpj3cATHQ
-   byXA2mNwRpZQXSVp6Ir2q/n/DwregpzdD6XJjdnfkTjduIifs8gT0wtBf
-   UVtPWG2Hv+85+BeDvOkuNpHxkzlWscCYRw3iRajEwMU/V12odcQCCKRFT
-   NYvofyQuN4vZ9DadWBlin2XTwvTXOunbKJNAUKIisS4sYvdYwipDuSO84
-   mB/fc/1kJoyQ+9OLduz1fOtxt/iPjC/cC8kUS5E8toZeJcSZxXhcj/+lz
-   vp/0Yk+yuHne8MkQrYJDxppsLraIfCh18BHvWAKpeYlj1AdWd4GfpHzHp
-   w==;
-X-CSE-ConnectionGUID: tfaIFV0eSduLDYOk0XuMig==
-X-CSE-MsgGUID: Jij8CoatT2yr+yqJnv681w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="86557812"
-X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; 
-   d="scan'208";a="86557812"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2026 03:56:39 -0700
-X-CSE-ConnectionGUID: Gd+Yt8gASV6J4WPfZRh+nQ==
-X-CSE-MsgGUID: vvLI3x0nTSi0ZNmqVyJ71w==
-X-ExtLoop1: 1
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2026 03:56:38 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Tp0/Var9"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=cmpSACpQmSDOvkCsslSgBCvhphPrgzodOLZTrWWOAUY=;
+	b=Tp0/Var93VcbMnNN/DXf5t3Qwl9TbSqrL6DVz1Mmr38m/M3Yqmtm11CWu20dFVskW8sl/gzBe
+	9mitCO1ZFNe2Leu7zofD3tG05KcR4ruf0j7/cqAgDgoPf5yaXFjztC/lFXGwpvKz8lOufXI/haO
+	0kIl9iGHsO61/UVxWGM/i+0=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hGh5d74zBzmV99;
+	Fri,  7 Aug 2026 19:00:53 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id EFF8D4057A;
+	Fri,  7 Aug 2026 19:11:27 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 7 Aug 2026 03:56:37 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Fri, 7 Aug 2026 03:56:37 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.49) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 7 Aug 2026 03:56:37 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nvW/QCbmmYsifug3iZ4270LfmaQ9S5gUTbfl8ERhJRt0cOPe2e2kSAsZ+qkz+rnmDCmKD4oCuli85YuqnI9QUdoUD0Dsmo9RJkgBmahB1tZsErvPLVcdYIcGBuvPbJnQiwFLQJv5A7S+vHJP/GXPmzQqNZdMG0qhElfK/G3F9tkDSqVjwWviRy6XxflidHhrtHRnuMHqpTsYEm0rP2LUL+t9rCz9gV3pykLKz7eYB72+gMXKpReVm0lRQiA3KZcw2G5Yy8yoZg8097uzWmNzpPnbu+JeSvc53QBb3duPDIYtTRhygG5SZotHPS+lclAvt1E7EpQ/wSo/6ZYgzfu/OQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P0lI860LNZyKuNg6KCaqGa887mUZ1+lpNq3bQxZAICM=;
- b=ALRABaCreiWBgtYY0QQbAQP7TlpDmFj7Mw6NfEVKCAELFwgLHeZ+QK8EUp7Kx7YrhJ12z5NR9o1i0ICqCWpVq0qsPF0qCF77dbAqB5zQEHZZsrTIrYnX56oWRotn3Ywd/npDMCxnm5aGVJuR32JhfO2nFHxrY96gCjClmky/TMd8xI9kIw0r0fb2lGK0dAmvJNHblHJPcbsL8PWt3Ho2z5PfrrlBEkeysBX019eju/Q2Vi5jZHvJB1jUWFT67JfosgkFbewDCS3XEQSGukVWi2fuI3jvG8OmQ+EbZyTbngx6pkkELoNlvXar2b0fzFfJpKbG2gBardDzGvmPykAqYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
- (2603:10b6:f:fc02::31) by CH3PR11MB8187.namprd11.prod.outlook.com
- (2603:10b6:610:160::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Fri, 7 Aug
- 2026 10:56:34 +0000
-Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
- ([fe80::675:8a:9680:ad3f]) by DS4PPF7551E6552.namprd11.prod.outlook.com
- ([fe80::675:8a:9680:ad3f%6]) with mapi id 15.21.0270.017; Fri, 7 Aug 2026
- 10:56:34 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Ivy Lopez <skunkolee@gmail.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
- check in e1000_read_nvm_spt()
-Thread-Topic: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
- check in e1000_read_nvm_spt()
-Thread-Index: AQHdJckVqL2dnhokukK8jxDxTHgqUbaSawfQ
-Date: Fri, 7 Aug 2026 10:56:34 +0000
-Message-ID: <DS4PPF7551E6552AF076FA235232DAB1E95E5D12@DS4PPF7551E6552.namprd11.prod.outlook.com>
-References: <20260806172452.32139-1-skunkolee@gmail.com>
-In-Reply-To: <20260806172452.32139-1-skunkolee@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS4PPF7551E6552:EE_|CH3PR11MB8187:EE_
-x-ms-office365-filtering-correlation-id: a38bc3ec-7411-4a39-ebec-08def4728be2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|38070700021|56012099006|11063799006|10067099003|18002099003|22082099003;
-x-microsoft-antispam-message-info: tHCdCcmMytmyfuIxLgURSzSMaFR9MRvc6xOYtZgPfQRDQoEmLfTdNEqxYqeNzL3tNgN0kgI4v3nwyUuDA6XcAOwjHJSejDuZCubh7+ZjAWy5z9z0kQvQDT46NIC74TfVqyydgIV3a5t5n4Gg2qIBmHfrf0G9PQutMXwSNiszdW58UbuY4HQxeXRLVjun6HVHG5oGYiTh61x29u2uURxCm1cfHPcpAURrYDlyU81t7ZkSzxMqWjpfY5C4GpG6JQKs1eGnO+wNCMRrHbE4Of0qXdWuvKTY119VbVE6mKfRcIlA3qCjMxN/MXUr0sopK0wo4FTlQMAH984VRzsMxtu/08yzvOMmugTDHOxcZo/BB/5aEJr5hH1HS6S4YmV5WxV5xDJhAoAWFCNWLPJMiTms8refwMAeo0xLN8nWrvlJScVYf9kbv5OxrVumMaUP4f2D0LC0t/R8kJU0dl8CyK1nWM/ArR6ItAKKdGRnUCQgi+A+0FIH0RaNH+pRoQ3k99GvjxnfD1Wpg4PJLQiu9jYyhBvqTWUVCRfroTiC8YtWAi694A746OrnB/sNDGV/N9XZKirksPV9CPDr/poIs5Wn7mTQ2uja7f9V4bQdqPild4E4OtVsnRpZd8nw6rzRBD2qEiMg5lysHG6U+PMMtSwsQ3wu5BSYQFYMBXKd0V+Ml1OojwxwnddcJ2A2S5p9xhC15otML49Q/lxcS67hEfbpeHgg/ej4m4be91kPUsgII4o=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPF7551E6552.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(38070700021)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?gkcHuTVFK6HEGp/uc4+mxV9mjSq/kV0s0vMqhQI8cFHIywTPuNUrNTf5Hheu?=
- =?us-ascii?Q?MMHRBwiNK5u1EAIcKhngqFiroU11O7SzR6X47GxNX6ezQ5zJO+qfnqfJE1X3?=
- =?us-ascii?Q?FM3sCkT/eYzjIQcrj0ZNyYR6wXlhCXjl28tsvKNRYFT3w/DAulgzxAJjgDaP?=
- =?us-ascii?Q?HtRqcn0ErtNR2FbZyoe5nyKJmXm5ckkF5094A1XR8/wdmkP4ti6Bqg0gqbbj?=
- =?us-ascii?Q?4yqk+YTld60nZncDqkvHxEa389FO+cfnZpWHD+0iETPmSBcON2ZTbsjELuGG?=
- =?us-ascii?Q?R0ytF4bAOLFxPIx8U8sjFCtcNPhRdrPxEyv/vveRAhBFCf/VhGrsgi14AhUc?=
- =?us-ascii?Q?2RRBtjRX9fG5M2TUhh7kJz5iJhAzzj5uKrrnZxE8H2md54kvvcCexQSMtBGv?=
- =?us-ascii?Q?v9jtZxauiFgHAux7KdT6EkXq2yWqQkUWakW7t5PMN3HS4MORbOoBB4DSu1Ik?=
- =?us-ascii?Q?YqReCjQcvBGT2WKxcvURYEBQ7Tii7YTm8h9yHACvANCLI85oHoT8vdCMiFEs?=
- =?us-ascii?Q?vxv3ghnHjNaVTzT6jrDqwXUYubUD68dtaHcguK/3UE8A03JHb+mq6bRXdm1w?=
- =?us-ascii?Q?/78cNE1n1MWaDqpiRu7tMa/4MrT9s+Ey7LK6YgtNoadLxiyRIVANxijcAofE?=
- =?us-ascii?Q?MUKb3g3YLSUYMTOYT9M+htWCoqPREIDqhBy8Q0hXaztiDrCiH4PTGTRY3BM6?=
- =?us-ascii?Q?X3+1+gHqQqUKPfLGpvC6U0q6u9lVPN1YSj+SpkB6Ykr4DKujLq9G3oqR2Ol4?=
- =?us-ascii?Q?hx57rXXOxVg/QITL2DvPCyzt8QqKs7oYi4BdW3Ho49a+pyDdknADKSBaoZHM?=
- =?us-ascii?Q?vWYf3qnvGI8oYtcTozjUHbkJEaVIS92tBhVdSTPRKgZmfWTpcKFG7ATiRF3S?=
- =?us-ascii?Q?9V0uPcbjCBJ4+gcKNcr7eUzxCTakrrUYRJnTmPPlm82HCDD43ixoqPMNYEZJ?=
- =?us-ascii?Q?+zFbKd6xKFFXTe9UQySuk7VNUZUkQR5fYYcJbfa7sz8qf5/ylRiGfOc6IrVm?=
- =?us-ascii?Q?2y/dGLXwDJJ0gANUSbws3Tw4LUeBGl+u3Fjv6qG1b1dBtzmcQRHWH+F+4rcZ?=
- =?us-ascii?Q?S35Xb0zkFxu/rJvx1EjkNsur0giP64RMHojl3+qS/+3PGqX+oUJPsD1RxX7Y?=
- =?us-ascii?Q?finuYYNiU6Tv8dhNDnCxAl+keqycCHBIxKb2VM2Udshv4NBmwJarp71SVkfi?=
- =?us-ascii?Q?fEQRxR0spAzdap7S6QZY6ZAjvVm6mXxhGtie5MKMQbtq/fz6suQGvEtna1D+?=
- =?us-ascii?Q?VyO/SFIi8eGfAfjHQSzy+1jgfeurcxVCZW8TvQ1/LNYzsRaj5scQzf9grVej?=
- =?us-ascii?Q?fUiwLwvDPCxxFwkF6CmwkAi1LSHLcTqHd9E/iKKgdTB1rrgGLQydRS5D8hvS?=
- =?us-ascii?Q?DSsnEne8k7z5EoeCUN9bYaVKl0Ig6ov/ObsZhdNyYAwibulwhvUf5+7FJhvk?=
- =?us-ascii?Q?6t4zUgf96hgTfGiBW8kEhcUDox0iRxDPVHlSvMxO9PAIRgeRC5q3HMfdY+ay?=
- =?us-ascii?Q?CMy+jE4N7wfL+HPacpIx4JBqI0eZLH+yUdlR1bHTuzXN5eQkquFBM67csU5M?=
- =?us-ascii?Q?6JnspAqSucQLbl4bX76yvyGtdibr/GajUrqoga9MF2IMrAHMMXCrbYMPJjzu?=
- =?us-ascii?Q?8wOdPlrgkGaC0pbKLicmX0dNnfxJ42eHIA118ZOTIpZelRFWfIOs63xi+opW?=
- =?us-ascii?Q?EBzhPB4WFlpQolG4+t7ptheSusynq9tmsibTxk7BLsZTn4fcSvxzEkBp7cMI?=
- =?us-ascii?Q?WbqCeR+PFw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 15.2.1544.36; Fri, 7 Aug 2026 19:11:26 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Teng Peisen <tengpeisen@huawei.com>, Wu Di
+	<wudi234@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Larysa Zaremba
+	<larysa.zaremba@intel.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chen Anwen
+	<chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>, Zhang Min
+	<zhangmin548@huawei.com>, luosifu <luosifu@huawei.com>, Xin Guo
+	<guoxin09@huawei.com>, Zhou Shuai <zhoushuai28@huawei.com>, Wu Like
+	<wulike1@huawei.com>, Shi Jing <shijing34@huawei.com>
+Subject: [PATCH net] hinic3: Fix SKB linearization mismatch and silent TX drops
+Date: Fri, 7 Aug 2026 19:11:19 +0800
+Message-ID: <ca8f219dd1eac99e41e22477bd0902b92ec7628e.1785899557.git.tengpeisen@huawei.com>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: TtQC5e70c1qdpIUrmpxMWEOS17rm+ja0CY7rWo8vUYCE0xLro/aF9NLpzZSxSHq4QNbJmcmcaaCfIlXVNCaw0P1o7hJtTfnqhyQjb6RonbU8Os4yt9vrJAv/ZvrBikLWRlRrjw8/qpIkPwmDXWkga+v1WaPfFbcdx56NJ95WZoRjW/AyyH8XEFvoJLWAIqYDXLWpnuJJIz9NNoPfEOmdlB+OzktuVhBBz9yVhoZwdWC+mGr3uv6Nd/0Z0YUjdnk6ywtaCTvx7JTK9DWSVzkNQb1MCmiYyar13hEawELY1pA75utZrwMVtafLXh//jQC07OjcP730jDZ/orvdiV7JWw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPF7551E6552.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a38bc3ec-7411-4a39-ebec-08def4728be2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Aug 2026 10:56:34.3442
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /E6b7JMGL1aQAMJZ4F60cWQmw4Z3ayDQFlPccgDwOJB4eFFB+GSqpzq5tFIxRuFJkNB3MpON8VT8SWRpZjo5BvdhmjIIQyUYK3vbOHuUQCI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8187
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
+Message-ID: <20260807111119.fbukxHs-iuZ7DczDDq1cu4F7WC8OtTKc-4WXyZzTFKk@z>
+
+Previously, hinic3_send_one_skb() cached the SKB fragment count before
+calling hinic3_tx_offload(). If hinic3_tx_csum() falls back to
+skb_checksum_help() for unsupported tunnel packets, the SKB may be
+linearized. Continuing to build the TX descriptor with the stale
+fragment count leads to a descriptor mismatch, which can trigge
+out-of-bounds DMA reads or IOMMU faults.
+
+Furthermore, the old code ignored the return value of skb_checksum_help(),
+transmitting corrupted packets with incomplete checksums upon failure. It
+also failed to increment drop statistics across various TX error paths,
+causing packets to be dropped silently without notifying the user.
+
+Fix this by:
+1. Moving the hinic3_tx_offload() call before calculating 'num_sge' to
+   ensure the correct fragment count is used if the SKB is linearized.
+2. Propagating skb_checksum_help() errors and returning
+   HINIC3_TX_OFFLOAD_INVALID to properly drop the skb.
+3. Adding missing statistics increments (dropped, map_frag_err,
+   unknown_tunnel_pkt, skb_pad_err) across the TX error paths so these
+   events are correctly reflected in interface statistics.
+
+Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
+Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
+Co-developed-by: Wu Di <wudi234@huawei.com>
+Signed-off-by: Wu Di <wudi234@huawei.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+---
+ .../net/ethernet/huawei/hinic3/hinic3_tx.c    | 31 ++++++++++++++++---
+ 1 file changed, 26 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+index 9306bf0020ca..45effdddb434 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+@@ -97,8 +97,12 @@ static int hinic3_tx_map_skb(struct net_device *netdev, struct sk_buff *skb,
+
+ 	dma_info[0].dma = dma_map_single(&pdev->dev, skb->data,
+ 					 skb_headlen(skb), DMA_TO_DEVICE);
+-	if (dma_mapping_error(&pdev->dev, dma_info[0].dma))
++	if (dma_mapping_error(&pdev->dev, dma_info[0].dma)) {
++		u64_stats_update_begin(&txq->txq_stats.syncp);
++		txq->txq_stats.map_frag_err++;
++		u64_stats_update_end(&txq->txq_stats.syncp);
+ 		return -EFAULT;
++	}
+
+ 	dma_info[0].len = skb_headlen(skb);
+
+@@ -117,6 +121,9 @@ static int hinic3_tx_map_skb(struct net_device *netdev, struct sk_buff *skb,
+ 						     skb_frag_size(frag),
+ 						     DMA_TO_DEVICE);
+ 		if (dma_mapping_error(&pdev->dev, dma_info[idx].dma)) {
++			u64_stats_update_begin(&txq->txq_stats.syncp);
++			txq->txq_stats.map_frag_err++;
++			u64_stats_update_end(&txq->txq_stats.syncp);
+ 			err = -EFAULT;
+ 			goto err_unmap_page;
+ 		}
+@@ -260,9 +267,11 @@ static int hinic3_tx_csum(struct hinic3_txq *txq, struct hinic3_sq_task *task,
+ 		if (l4_proto != IPPROTO_UDP ||
+ 		    ((struct udphdr *)skb_transport_header(skb))->dest !=
+ 		    VXLAN_OFFLOAD_PORT_LE) {
++			u64_stats_update_begin(&txq->txq_stats.syncp);
++			txq->txq_stats.unknown_tunnel_pkt++;
++			u64_stats_update_end(&txq->txq_stats.syncp);
+ 			/* Unsupported tunnel packet, disable csum offload */
+-			skb_checksum_help(skb);
+-			return 0;
++			return skb_checksum_help(skb);
+ 		}
+ 	}
+
+@@ -412,6 +421,10 @@ static u32 hinic3_tx_offload(struct sk_buff *skb, struct hinic3_sq_task *task,
+ 		offload |= HINIC3_TX_OFFLOAD_TSO;
+ 	} else {
+ 		tso_cs_en = hinic3_tx_csum(txq, task, skb);
++		if (tso_cs_en < 0) {
++			offload = HINIC3_TX_OFFLOAD_INVALID;
++			return offload;
++		}
+ 		if (tso_cs_en)
+ 			offload |= HINIC3_TX_OFFLOAD_CSUM;
+ 	}
+@@ -539,12 +552,17 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
+ 	int err;
+
+ 	if (unlikely(skb->len < MIN_SKB_LEN)) {
+-		if (skb_pad(skb, MIN_SKB_LEN - skb->len))
++		if (skb_pad(skb, MIN_SKB_LEN - skb->len)) {
++			u64_stats_update_begin(&txq->txq_stats.syncp);
++			txq->txq_stats.skb_pad_err++;
++			u64_stats_update_end(&txq->txq_stats.syncp);
+ 			goto err_out;
++		}
+
+ 		skb->len = MIN_SKB_LEN;
+ 	}
+
++	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
+ 	num_sge = skb_shinfo(skb)->nr_frags + 1;
+ 	/* assume normal wqe format + 1 wqebb for task info */
+ 	wqebb_cnt = num_sge + 1;
+@@ -560,7 +578,6 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
+ 		return NETDEV_TX_BUSY;
+ 	}
+
+-	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
+ 	if (unlikely(offload == HINIC3_TX_OFFLOAD_INVALID)) {
+ 		goto err_drop_pkt;
+ 	} else if (!offload) {
+@@ -604,6 +621,10 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
+ err_drop_pkt:
+ 	dev_kfree_skb_any(skb);
+ err_out:
++	u64_stats_update_begin(&txq->txq_stats.syncp);
++	txq->txq_stats.dropped++;
++	u64_stats_update_end(&txq->txq_stats.syncp);
++
+ 	return NETDEV_TX_OK;
+ }
 
 
-
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> Of Ivy Lopez
-> Sent: Thursday, August 6, 2026 7:25 PM
-> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
-> Przemyslaw <przemyslaw.kitszel@intel.com>
-> Cc: andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
-> kuba@kernel.org; pabeni@redhat.com; intel-wired-lan@lists.osuosl.org;
-> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Ivy Lopez
-> <skunkolee@gmail.com>
-> Subject: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
-> check in e1000_read_nvm_spt()
->=20
-> e1000_read_nvm_spt() reads two adjacent 16-bit NVM words as one 32-bit
-> dword for efficiency. When deciding whether to use the shadow RAM
-> value for the high word (data[i + 1]), it incorrectly checks the
-> "modified" flag of the low word (shadow_ram[offset + i]) instead of
-> the high word's own flag (shadow_ram[offset + i + 1]).
->=20
-> This can cause silent NVM shadow RAM corruption:
->  - if only the high word is marked modified, its pending write is
->    lost and the stale flash value is returned instead
->  - if only the low word is marked modified, the high word is
->    incorrectly overwritten with the low word's shadow value
->=20
-> This function is used on all PCH chips from SPT onward (SPT, CNP, TGP,
-> ADP, MTP, etc). The bug has been present since the dword-read
-> optimization was introduced for these chips.
->=20
-> Note: this was found via code review while investigating a separate
-> reproducible packet loss issue on I219-LM (SPT+ PCH). Testing showed
-> this fix does not resolve that particular symptom, but the flag check
-> is still a genuine logic bug that can corrupt shadow RAM contents and
-> should be fixed regardless.
->=20
-> Fixes: 79849ebc0e06 ("e1000e: initial support for i219")
-> Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
-> ---
->  drivers/net/ethernet/intel/e1000e/ich8lan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-> b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-> index aa90e0ce8aca..87cd1cdc6f10 100644
-> --- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-> +++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-> @@ -3473,7 +3473,7 @@ static s32 e1000_read_nvm_spt(struct e1000_hw
-> *hw, u16 offset, u16 words,
->  				    dev_spec->shadow_ram[offset + i].value;
->  			else
->  				data[i] =3D (u16)(dword & 0xFFFF);
-> -			if (dev_spec->shadow_ram[offset + i].modified)
-> +			if (dev_spec->shadow_ram[offset + i +
-> 1].modified)
->  				data[i + 1] =3D
->  				    dev_spec->shadow_ram[offset + i +
-> 1].value;
->  			else
-> --
-> 2.55.0
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+base-commit: 2195424c3da2ef1829a63b807e3a900a90e57d85
+--
+2.54.0
 
