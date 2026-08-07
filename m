@@ -1,60 +1,86 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D8D390618;
-	Fri,  7 Aug 2026 14:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64556332EA2
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 14:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786111689; cv=none; b=GKBks6kyCP01rU+oxOQHgEgnIbqvJrpgymkuOS7baRJAASKIXNCpEomGrYJD9B3uYmNow1GiG5XuHKdWsb00eGeObfmILDLOQohNyuQZLDNjcpD9Hel2y3jqAK5gkeulIHMSEWIuulfY8rB5iyTFXe3UGKfRT0u2zR16tZYlHB0=
+	t=1786111902; cv=none; b=kkfujgXl34E3uJXTSBIDs/oiBsARuz0Z1/jD5jVYzNAQYrpDv9DN+X0i+NjoNj7Bx5AdcDKn7RbBmXn84euIsMdzDuaT8ey3uSpbBVLnep0WpPQIpuZBA5gmNf9JymD+mXw+G0uv2KNAXVE6k8xtRzbG4SBamIkQkEnoWxFtyj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786111689; c=relaxed/simple;
-	bh=sBgHf49vQuwRZIapKRQug04mmsH+OyoArQ+d0NHZAVU=;
+	s=arc-20240116; t=1786111902; c=relaxed/simple;
+	bh=0W4fKAHbM+UE8Xc3sDu3vU6dgMyazOqlQbZUbA/JbWA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fxVy0ITtnRRiXDVAj0Ge8w91m57GFiR35h0IexzVptT7bv+nXrTWYjFM2RmX4nVkkOwdgZ4JOGETWPmA1loCVUnx7Ho7KLZknCX/8PDwQrLdbmtNzw0wfZn+4OkRgXf71yMUpNgFjYzy6PFhGBnqP2CI5qnvq2Xg7TPBZFkXM7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tWu2OLAs; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=tjGSbdgnJr6/x0qP/ZjU8NEyv6RFK5Mf7lI9l8AwYen99QysTZfFfwVzxFDiJqtaKBWQAdjfyupH1Ax0tsHSPjGzrXK6LDDsSqOfd5slElnIeomxOPF2oeoZgxL+6LcXaFVlSaao21cIqOy1BwBWiLA7TLYW9cRbDi2unY5Dw2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XdR4O5xb; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gHaimQ63; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tWu2OLAs"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 677ClgwV1419590;
-	Fri, 7 Aug 2026 14:07:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cWoCqI
-	qoi0UhoduRzW3/cbAn7/o84+ShPzQj/cnzgDI=; b=tWu2OLAstDvM7FJ0vsYitD
-	EISJEX035XEVpgp52Zm5gERrUjvOnxZSo8gPV8B2Eb22W34fQhmzFOFlspkxhFub
-	1opUUUEfdguhvHP/eBrNO4lKdKyxCU6EUQgfjJNHIKKf7W6haentXjciRfJKud9E
-	M5ZIbdiNIrzD3K8OrHd4x7Lu1mLGuYzR/hE/dOtmeHaQjXt3mfB/o7CBk/Tmynoo
-	8RkJRwMdymrf2L5OjMK66hj4dsgfK7jYID+OFZ2nZR3hYWc6pHuR8uDRnhr2puv1
-	xby8yumjPcyQ9wD/Itfm5/3jZDfNGwSPSBDC+NdqyTnlfZCxu/btJYE7R2e33xTw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy0243ks-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Aug 2026 14:07:58 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 677DuiQx024185;
-	Fri, 7 Aug 2026 14:07:58 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhqvx0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Aug 2026 14:07:58 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 677E7rWC33096062
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 7 Aug 2026 14:07:54 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC94520043;
-	Fri,  7 Aug 2026 14:07:53 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7187C20040;
-	Fri,  7 Aug 2026 14:07:53 +0000 (GMT)
-Received: from [9.111.147.5] (unknown [9.111.147.5])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  7 Aug 2026 14:07:53 +0000 (GMT)
-Message-ID: <6464b794-ab0b-4294-b1cb-3de618f4b11e@linux.ibm.com>
-Date: Fri, 7 Aug 2026 16:07:53 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XdR4O5xb";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gHaimQ63"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 677CgInT943008
+	for <netdev@vger.kernel.org>; Fri, 7 Aug 2026 14:11:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	jY/yOsvpc9aWjuEvUxwTi0KWtinXasaO3wK8pTemGEY=; b=XdR4O5xb7tobtL3Z
+	w38JXbrqD/s5ZITebXeCQBNbWDhlxZFelzyFSR+mmHn+JQNctTe6yt7gmtIjH4ch
+	wBYsPymzjHh1P+lw4UyxcfAv0lJWGI7r+7IRDsrJTbF8X2rz3dgly0+a4J/GlsZo
+	V9cgcG7QwGzooIDmngRCgxEyD2ZkqHVwCD5De4/O4lsfrAxJa7q+ZreHCAHvEU2/
+	LQNocv9NrrJB/+uKWW+hKB1ARfUULSi05u6d77XFGBk3rAcgCvURgPBOVR+CdyOk
+	1UWcuP8GP/mNWQ2nKvEMIH37b8qTtivfD+ue0Ig9saO7rOQREGC+KdCjebYex3hN
+	lNgjcQ==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fvy6hcahb-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 14:11:37 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d02df2bf09so41715925ad.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 07:11:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1786111897; x=1786716697; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jY/yOsvpc9aWjuEvUxwTi0KWtinXasaO3wK8pTemGEY=;
+        b=gHaimQ63SEnhgeOGBrYxRclaPDCFst/+iEuAHUR4QiotA1XAQlYiSNfkvO+eWaBDUr
+         3b2usUJPDki/l5eq5C9AQkM2iM3f6AoNewbEPeYsVaaUkMeCzLlrzN6bgUeoAYRKGcA8
+         ARXxE5jbXt69KC51l+tW/6qqobj+XiQRMN4OJ5DOAbU+NpVqPKUvNjwZlgsvhqJMO4wy
+         OgnaW6/4r+w1n9b7Fr0acNVaOBVfSrzeJLKH+WI2qbGCC3Rr4yrOAO5eDTA4g8a+kKJS
+         sTNNsd3hIRGARGlYZbGeDYmREm9XAJ7TJfiduXLfH4dGo4IeIgALxdlryD569U0SryEf
+         oJiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786111897; x=1786716697;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jY/yOsvpc9aWjuEvUxwTi0KWtinXasaO3wK8pTemGEY=;
+        b=iKQwo1tYy6QBtyYgY43AWIkxjknOAQtJ35UW+wNzkPIfBq29FBS8DtCa4SfSkP7ywV
+         G717t0GbOstW3QMxa8JffhOFEhH5giq0MRJwA1puZc9kcboF9uyUTcnT2DTPU84CbHZa
+         VUPmhiLZn9lWRMP1JQJosF94w3rlg1g/ZhYphSs08691y1ocyEZj83REBadqoeIj9baB
+         TAi9aCB1BNo655/VH84NYGbEIYVPU2pIw0jxKUy/7/IisH4maAV7OqSVzsWpXNLr2nQF
+         b5C9lYgoKw3SIkB90uWflw/NVPVPPp1H3qA2qj4gOgZWM0fzTx9ywDhd4JLmlpusqmwf
+         ltYQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqXn+wV7yCH49NUrtFj3YiX435m7EKcj75nMNEVx7D0rxrunL53mHIoIgcvmF9/inE2P0i0kuY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+ULw4eWK6Cs8zOvr/yPK9LFAi7dcrWnwG3+r8cFyWkKCx1PUx
+	/hbs01N5YGHIrfUayG+/kMZlTL/c79B3YjhfN80Q9ica49vTIBMGEV6ZFIN0/zLEebo4L+K5Ecj
+	dv44arw42+BKT4GsMouu3buStNu3obExo6tNfZ4MKVNJnMHRAd/2RrXb0IGg=
+X-Gm-Gg: AR+sD12uG5FHum7Z3bkSI2Ee3BDkAfdPiM2BVkPvCdLE1GSw0HjiRxyKEKz0T4tyKWn
+	ZtlSCg3hSvaOml+A82X5TXMEw91NTaMSp6pmSoXTkXCSF9ecPz/B3QFzmv+qOX7x8IKF80kU0G3
+	4faoJr8CdGAoSo+1muCVqiksLrf/AW+Kf44aDaYcpiYdqNJPXdRZpCcqsvu4yorEk8momi3zVph
+	rpuHgLUgKpqwOBJ3g9LbkIEYwENdSA860XLTtdpG1x98lgSInUawVtGq4fE0EwTXwiTjYsjUE6J
+	D0nwSZXeIYdAnbEKQHehD5NUl6IVfGSdzNW9oB5h14kKPFjSj1HTP0Fr6f7Icm1gtkrxnK1gFMk
+	LjEf3sD6eFfiyMsAJYkWDeHQgXJqVQYlBWBXlCbNREE0H8nZ9jksropxP51l7
+X-Received: by 2002:a17:903:46c6:b0:2cc:864b:539 with SMTP id d9443c01a7336-2d0ca713b0dmr274945785ad.6.1786111896722;
+        Fri, 07 Aug 2026 07:11:36 -0700 (PDT)
+X-Received: by 2002:a17:903:46c6:b0:2cc:864b:539 with SMTP id d9443c01a7336-2d0ca713b0dmr274945125ad.6.1786111896262;
+        Fri, 07 Aug 2026 07:11:36 -0700 (PDT)
+Received: from [192.168.1.20] (103.sub-97-215-187.myvzw.com. [97.215.187.103])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d14d57f8b7sm10026305ad.30.2026.08.07.07.11.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Aug 2026 07:11:35 -0700 (PDT)
+Message-ID: <2480a569-de5f-4d91-9b9f-60a46613e5ef@oss.qualcomm.com>
+Date: Fri, 7 Aug 2026 07:11:33 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,193 +88,100 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/dibs: Fix UAF of dmb_clientid_arr after
- dibs_dev_del()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: hidayath@linux.ibm.com, davem@davemloft.net, pabeni@redhat.com,
-        edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, horms@kernel.org,
-        stable@vger.kernel.org
-References: <20260804085848.3579518-1-wintera@linux.ibm.com>
- <20260806160602.2694608-1-kuba@kernel.org>
+Subject: Re: __free usage
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Andrew Lunn
+ <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+        Ally Heev <allyheev@gmail.com>, linux-kernel@vger.kernel.org,
+        Simon Horman <horms@kernel.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+References: <20251116-aheev-fix-free-uninitialized-ptrs-ethernet-intel-v1-0-0ddc81be6a4c@gmail.com>
+ <20251116-aheev-fix-free-uninitialized-ptrs-ethernet-intel-v1-2-0ddc81be6a4c@gmail.com>
+ <72754805-575c-4568-9dab-514e1b758847@oss.qualcomm.com>
+ <ae840989-03df-4e84-a9cc-46c51f6dd44e@oss.qualcomm.com>
+ <8f35edd6-6b37-4575-8a30-558ae0dee0bd@intel.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <20260806160602.2694608-1-kuba@kernel.org>
+In-Reply-To: <8f35edd6-6b37-4575-8a30-558ae0dee0bd@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: tGcjwzDcnRvt8iEODw8mCHuDstCu4-ZF
-X-Authority-Analysis: v=2.4 cv=e5k2j6p/ c=1 sm=1 tr=0 ts=6a75e6bf cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=w_x_aPnZaW76GSbdfxEA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: J0ssvwLpQsiWcakMLJR-4J5dpoQ6tpYM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDEwOCBTYWx0ZWRfX9SkVuTKnb09A
- dBE6sM4yJNkBBPE4CyTa0DcONl1COW7UILpnMqm68UG+2N13lMHpxA1+QSH2RYxcJP9Hlsr8JD4
- yuUFH01f9K4cAtGupvbSeg1H7ZnU2l3OR1ldc38l/yzwqtGM87BvIXij2XCeeRPMM3f6OmajNbh
- w2QizTNnnNSR8VaEIo7UPtOVcM7j0dWeWMVZdmNJE5etncgpp1VO9xUOawrf7dqTwvSaY6UXPO1
- 0TPFulefjpDc5KsDhOoL67oI1cF3YklRpeGxi673Qw5I5UixxWkNvO/rRMGachAJfMSQ+JcfCZr
- akpnrrbwmgvMpAfxNM/vEdaquMJpUR/lL7p0P307ajxIMrZa8xZ3D+6pvHGxpcdQ1Y8VXOPaoi9
- PT5VeTYj77wnYUZk2RMbaIY1z8zR7WKjiLMMgAdIy649a/+v2hn2JQjFoQkJab2d28HOelrH2Qy
- CO9HLm0sbvp5+oG3hWA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDEwOCBTYWx0ZWRfX1EF63KlLmPqK
- blRyd0xhxVlmh6tgLl0S6mNfzlAs0u+ZrEtc8kenwYTNznmDTywcMN8ZK3EiM795hgyXlV2p8ll
- c5ZWZO1OFn9qky02Pq1/CTv/GL48Qh8=
+X-Proofpoint-GUID: bGjtBfan6nTvALGjWodR2EGNnbRP5Trn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDExMSBTYWx0ZWRfX/3Yw+xDc6Nui
+ Au0jMXB+Dr+LuZRI5p9lS2CgUDz1YZQwtII9DgTpMxTfAj0+VMmukO9ppFprnEZxiVPgiXyxop/
+ ndqKFujbsCkG26pTx9ODjOKTjRKOkiORcZ+ulfjsBwBodLHvEKiOLCxh3X8eAlcJPSFQDmgJMdx
+ MrtRdnx2EKM1xvE21Hfb9FqRqPflnnIXNVNUAkBZ1teBctYLZ9kMnJtEetYUZLvC5UhKLsCGzcU
+ Lm3xoir+mhq537d7nLgQRBJyCtm3EZNX/XCkiqwJ0n8P4NDdYQofSYrs8GcsOIM5RZV/78YRVBs
+ GaEkmvZRCjbOhUFtD0NwI6cCEkLFsFCgHKmxlk3FfBRlzgGkg57+a6GSIt6/Un+F55IpoGrjDVA
+ ElifCfeXRIB0K4bJxb5Jhdf2wGALksMNGu+dc86r66nStXn1IrqBOfvP2yr1PsezrGC6HQFI3TN
+ sQQU4AK++0gpDXw+7uQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDExMSBTYWx0ZWRfXxfPgDoXOWbvX
+ JRSQ/gPaqSCKbgwZa6xbMipjdIuKazSJ948WMAtKFsRtaDTUFVbDmgkGEJaKbYqGEr8XXRAI14/
+ 4Q5k2xf9Vy0DFxTFLWjNwjCo0xCXUgk=
+X-Proofpoint-ORIG-GUID: bGjtBfan6nTvALGjWodR2EGNnbRP5Trn
+X-Authority-Analysis: v=2.4 cv=MbpcfZ/f c=1 sm=1 tr=0 ts=6a75e799 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=UaEkX0D7FlC0tWE/LoNF7Q==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=pGLkceISAAAA:8 a=XQPYAtKPP1igbtPNMl0A:9
+ a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22 a=cvBusfyB2V15izCimMoJ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-07_02,2026-08-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=0 priorityscore=1501 adultscore=0 phishscore=0
- clxscore=1015 malwarescore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
+ phishscore=0 adultscore=0 priorityscore=1501 clxscore=1015 malwarescore=0
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070108
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070111
 
-
-
-On 06.08.26 18:06, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net/dibs: Fix UAF of dmb_clientid_arr after dibs_dev_del()
+On 8/5/2026 4:56 AM, Przemek Kitszel wrote:
+> On 8/5/26 00:56, Jeff Johnson via Intel-wired-lan wrote:
+>> On 8/4/2026 3:54 PM, Jeff Johnson wrote:
+>>> On 11/16/2025 7:56 AM, Ally Heev wrote:
+>>>> usage of cleanup attributes is discouraged in net [1], achieve cleanup
+>>>> using goto. In this patch though, only uninitialized pointers with __free
+>>>> attribute are cleaned as they can cause undefined behavior when they
+>>>> go out of scope
+>>>>
+>>>> Suggested-by: Simon Horman <horms@kernel.org>
+>>>> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+>>>> Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
+>>>> Signed-off-by: Ally Heev <allyheev@gmail.com>
+>>>>
+>>>> [1] https://docs.kernel.org/process/maintainer-netdev.html#using-device-managed-and-cleanup-h-constructs
+>>>
+>>> <SMH>
+>>>
+>>> If using __free() *correctly* gives more readable code, why wouldn't we do it?
+>>>
+>>> The only problem with this function is that it doesn't follow the guidance
+>>> from cleanup.h:
+>>>
+>>>   * the recommendation is to always define and assign variables in one
+>>>   * statement and not group variable definitions at the top of the
+>>>   * function when __free() is used.
+>> OMG, not sure why Thunderbird showed this as a recent unread e-mail.
+>> Please ignore this noise!
 > 
-> This moves the kfree() of dibs->dmb_clientid_arr out of dibs_dev_del() and
-> into dibs_dev_release(), so the array survives until the last device
-> reference is dropped.  The error paths in dibs_dev_add() are converted from
-> gotos to direct returns and no longer free the array.
+> always happy to see some __free() advocates :)
 > 
->> diff --git a/drivers/dibs/dibs_main.c b/drivers/dibs/dibs_main.c
->> index 14c3e2d84902e..f059fefb09bf8 100644
->> --- a/drivers/dibs/dibs_main.c
->> +++ b/drivers/dibs/dibs_main.c
->> @@ -128,6 +128,7 @@ static void dibs_dev_release(struct device *dev)
->>  
->>  	dibs = container_of(dev, struct dibs_dev, dev);
->>  
->> +	kfree(dibs->dmb_clientid_arr);
->>  	kfree(dibs);
->>  }
+> perhaps with our new meticulous friend Sashiko __free() would not be
+> misused anymore, especially if we let them know the following quote:
 > 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but does the new ownership rule
-> here leave a double free of dibs->dmb_clientid_arr in the loopback probe
-> path?
+>  > So just make the rule be that __free() without an assignment is 
+> simply > a bug.
+>  >               Linus
 > 
-[..]
+> and the resulting "less code" is always better (if only to fit more
+> data into the AI context window)
 
+There are unfortunately some uses of __free() that require a NULL assignment,
+namely when the allocation is passed back via  a ** argument -- see
+__free(firmware). But for all the rest it would be good to have the
+consistency. Anything to help reduce often buggy cleanup gotos.
 
-[PATCH net v2] dibs: fix double free of dmb_clientid_arr
-is in discussion on the netdev mailinglist already.
-
-
-> 
-> Since this is tagged for stable, would it be worth also stating the new
-> caller contract in the changelog, i.e. that callers must only call
-> put_device() when dibs_dev_add() fails?
-> 
-
-I don't understand the proposal.
-
-
->> @@ -194,12 +195,13 @@ int dibs_dev_add(struct dibs_dev *dibs)
->>  
->>  	ret = device_add(&dibs->dev);
->>  	if (ret)
->> -		goto free_client_arr;
->> +		return ret;
->>  
->>  	ret = sysfs_create_group(&dibs->dev.kobj, &dibs_dev_attr_group);
->>  	if (ret) {
->>  		dev_err(&dibs->dev, "sysfs_create_group failed for dibs_dev\n");
->> -		goto err_device_del;
->> +		device_del(&dibs->dev);
->> +		return ret;
->>  	}
-> 
-> [Severity: High]
-> These are the two failure returns that reach the loopback err_reg path
-> described above: device_add() returning an error (-ENOMEM, or a
-> kobject_add()/duplicate-name failure) and sysfs_create_group() returning
-> -ENOMEM.  In both cases dmb_clientid_arr is still allocated and not NULLed,
-> so the caller-side kfree() and dibs_dev_release() both free it.  The
-> kzalloc-failure case is fine because the pointer is still NULL.
-> 
-
-Same as above (?)
-
-[PATCH net v2] dibs: fix double free of dmb_clientid_arr
-is in discussion on the netdev mailinglist already.
-
-
-
-> [Severity: Medium]
-> This is a pre-existing issue and not introduced by the patch, but the
-> changelog reasons about the placement of the allocation:
-> 
->     Note that allocating in dibs_dev_add() instead of dibs_dev_alloc() is ok
->     for now, because no dmbs can be registered before dibs_dev_add().
-> 
-> Does that reasoning also cover dibs->lock, which is initialized in the same
-> place?
-> 
-> drivers/dibs/dibs_main.c:dibs_dev_add() {
-> 	max_dmbs = dibs->ops->max_dmbs();
-> 	spin_lock_init(&dibs->lock);
-> 	dibs->dmb_clientid_arr = kzalloc(max_dmbs, GFP_KERNEL);
-> 	...
-> }
-> 
-> ism_probe() enables interrupts before that, via ism_dev_init() doing
-> request_irq(pci_irq_vector(pdev, 0), ism_handle_irq, ...) plus
-> register_sba()/register_ieq(), and only calls dibs_dev_add() afterwards.  In
-> that window dibs comes from kzalloc, so dibs->lock has never been
-> initialized and dmb_clientid_arr is NULL, yet the handler takes the lock and
-> indexes the array before any check:
-> 
-> drivers/s390/net/ism_drv.c:ism_handle_irq() {
-> 	spin_lock(&dibs->lock);
-> 	ism->sba->s = 0;
-> 	...
-> 		client_id = dibs->dmb_clientid_arr[bit];
-> 		if (unlikely(client_id == NO_DIBS_CLIENT ||
-> 			     !dibs->subs[client_id]))
-> 			continue;
-> 	...
-> }
-> 
-> The comment in ism_probe() says interrupts and events are ignored before
-> dibs_dev_add() adds the device to any clients, but that check happens on
-> dibs->subs[], after the lock acquisition and after the dmb_clientid_arr
-> dereference.  With CONFIG_DEBUG_SPINLOCK or lockdep this window would give
-> "spinlock bad magic" or "trying to register non-static key" from hardirq
-> context, and spin_lock_init() in dibs_dev_add() re-zeroing the lock while
-> the handler may hold it would void mutual exclusion.
-> 
-> Would moving spin_lock_init() and the allocation into dibs_dev_alloc() close
-> this window?
-> 
-
-Recently fixed by:
-c27e36054537 ("dibs: initialise dibs->lock in dibs_dev_alloc()")
-
-
-
->> @@ -214,13 +216,6 @@ int dibs_dev_add(struct dibs_dev *dibs)
->>  	mutex_unlock(&dibs_dev_list.mutex);
->>  
->>  	return 0;
->> -
->> -err_device_del:
->> -	device_del(&dibs->dev);
->> -free_client_arr:
->> -	kfree(dibs->dmb_clientid_arr);
->> -	return ret;
->> -
->>  }
->>  EXPORT_SYMBOL_GPL(dibs_dev_add);
-> 
-> [ ... ]
-
+/jeff
