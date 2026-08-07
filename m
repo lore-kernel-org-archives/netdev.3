@@ -1,194 +1,329 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-171.mail.aliyun.com (out28-171.mail.aliyun.com [115.124.28.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F1038F64D
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 04:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA9F38F64D;
+	Fri,  7 Aug 2026 04:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786077859; cv=none; b=JNGw5Dsas4YmcCl3hSC2Vi0ZpUpjRY3Fj1SsiXMp5+dq7cKysIFwcG77zpsu+A/dOPVSlewiFhVA6q+OdNDgHnVKtkxbrI41YalD6oF+oY1JrfSx1es++3GgmXKBWlphlIeLv72ydbXdASbtkYl2HIxHwVG5hb9hY/4z7fDGIzY=
+	t=1786077879; cv=none; b=q7yWQl/x5xPgvbI3m0XZFvBSAaNzs/+d1UJOMYAXoDfvpEjwFHSCD/vslKexhKCgXfRUDbSqdLRlW2Gp6QuRRO76edu54WWxi7lg11l62wF3lwX1S8xExbSUGbsKEq/pLtkIjRnKoOb/xSL4ZQwSHwB4qEdbKOiokXnjUsVaz4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786077859; c=relaxed/simple;
-	bh=fNUAVSh87gyqiRUTF61Kq6TTInm4rWrlJXeXNfgPN60=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BoMy8cDS05Qw8iQlCIVbnEIQJgUQ4g+8ZQDBwKJSB42794N3UUVyVLgi3BSP2bN6fWysWG2nvSjZyVQGbDbO/FiIMA8k93/+2uHi2SMkzjl/dR62WUHCGG2+TBmPSyG2jarSYIqjpiKpH+DKbUP+EZMwb9koMRlx6VZNtRu769s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/eYcpES; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/eYcpES"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38101f85591so1488018a91.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 21:44:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786077857; x=1786682657; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ABwdlKjS2wcFImpU+xFj4AEYt0rG3aoP9rVyKaasM0Q=;
-        b=P/eYcpESyz9DQTRtYHn0U5LVgBUiwbynHLlcgA3jZc5MBfurT9FVwoh3u303Sf1bgK
-         Pu0rn35jnJTjioTajlZMfw1DGy9qsVNWomKCkPcOJZ1vW0r4jtoh0NzgFfuWynm0i0yK
-         vbsAI+7Y4Glz/lT+SMeQtXaCtgm9LG3uyWbr/se4HNsx0udij13s2iNva64CPvS98lYI
-         /AYjVelJTIdzaC1YXCTva6HLN95cRQQmk8YOCxAAHJizX8IAZavvTvs6gSarqzB74gxz
-         nLrXCazEH+RuYN4pDH18kEuqzJ8L+MIIeBiisWypJn9Rm1xsn/gPzEObZkyPPpWmezav
-         T1gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786077857; x=1786682657;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ABwdlKjS2wcFImpU+xFj4AEYt0rG3aoP9rVyKaasM0Q=;
-        b=MZ/kTFjmVjnFN7Ks85EnMG5PCudw6SYqCSnbqymyLRgIwxm7Ki5aUHWcku/ObkCanN
-         zHfKhj/rif8rFT/j9sapHE8p3hTgHLwc33rGRj+1q/AVQrgkCfHcHQ4ejY2UHq6sIOzB
-         wcCoFU7TknUQMKQy5Y2lKnAwvV/SVUTpEdKa4PAXMPUTyA3FthkVvvTNzJVUDZ+uP0Us
-         AZ4eEngTEpaYltsxf9eXN8L2W/6NFqMlsRVKRVn/R+Gfb240crnHPbKq5n6kDPjYz14G
-         xgn/M94eqJoD7NTOR7Ox4vhf2EJSol49gqt/3GiP2fZLns7QX/ylYPRXHiEaIkzsOVpo
-         4Z8w==
-X-Forwarded-Encrypted: i=1; AHgh+RrTXnCxZtoBhObY/71dQIfnFraguGKrjtlJdok0Oh5jIy6v970k97sBxW0rQlsssqolfsD7IuM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3x1eV66FbE3kmsDxGM0rksMD6n25UC5SdBCuVLH09/7hMCJoU
-	/2BYbwLtCnyTfR9l/LrgYTEMcXmTI6zzHaNJityLLzFQTOt71NXzedO2
-X-Gm-Gg: AR+sD12qQtQnMmBiHguoQllkQn231FRqe2hI58HIAgTKYyPOj0y0tCziZAINIiFDWk8
-	YXoMFBYWNlHbmsnSXrsc9uUbBqwCBccC4Hvq6Z0V9ZAbgGXWtwzff7hQIRIN5SqbCtdk24vX8AO
-	9ggsxR3yJ1velmFovVwfOTc1qX5/dPo/L77Oh1A7/02qDKm7w5FFAJCK3T/yqHv5C6/y4/x/PrR
-	XkIGVHZA3B06AobwlRowTXcVLjAHoKncpHz6bIgkwHNMNaDtsjppy3zLDQ/c2GMFTgM8oewnqvn
-	VyXB21wvVAa0yLArMZXgtILleW6xeVIIyS2J8o/dU9ahL/dYs+sdueAmpjcwO6zlnp9KONhWwqc
-	PC0yHkWgLEAEGBhD1UIHqots4YWZHIX1pQ4P48n2fhneFnC9ATLj3EVMW7i2ZzG66xUtilEGPa7
-	JvEthjZHxHAaAI7B/BYwBv4Xt6DVMhomNSg/fX0Pep2GnNI/BSZqGbxtv84vFdA7cL/nnlu/YUr
-	IZjyPCd32BaptYqyG4TUYwXbfwvT2Py
-X-Received: by 2002:a17:90b:2f10:b0:387:d5bd:6231 with SMTP id 98e67ed59e1d1-39089861124mr4334944a91.20.1786077857168;
-        Thu, 06 Aug 2026 21:44:17 -0700 (PDT)
-Received: from [192.168.255.10] ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-390b1573defsm423588a91.1.2026.08.06.21.44.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Aug 2026 21:44:16 -0700 (PDT)
-Message-ID: <f18c47fd-b067-4573-a877-194e680c0979@gmail.com>
-Date: Fri, 7 Aug 2026 12:44:10 +0800
+	s=arc-20240116; t=1786077879; c=relaxed/simple;
+	bh=eQLW07cqTCfmxQhTCauzMBas5iAkR2wP9zLoIDcRXes=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MtMXyZITFDdfBhhkJDRKXzMxEWGdw7UqYZWClKytJUB7i+1CaTZlf7v1I+O7iOyQJmXxo6moEw6xSSD26CVtxs4y/IY3bOVl33POW4ZOeMDhFqtAq60OW8oohwb4S1nEct5wLDJh1+oqVNHQlzF4MHEvg+cf5J8BrAEWKcZK42E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.142496-0.0169027-0.840601;FP=16316663584136904868|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033045220102;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.ig.C8v2_1786077868;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.ig.C8v2_1786077868 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 07 Aug 2026 12:44:28 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	horms@kernel.org,
+	linux-doc@vger.kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	enelsonmoore@gmail.com,
+	skhan@linuxfoundation.org,
+	hkallweit1@gmail.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v24 net-next 03/11] net/nebula-matrix: add channel wire opcode enum definitions
+Date: Fri,  7 Aug 2026 12:44:07 +0800
+Message-ID: <20260807044422.2356-4-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260807044422.2356-1-illusion.wang@nebula-matrix.com>
+References: <20260807044422.2356-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/sched: cls_api: fix teardown of an adopted proto
- on insert-race loss
-To: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jhs@mojatatu.com,
- jiri@resnulli.us
-Cc: horms@kernel.org, vladbu@nvidia.com, netdev@vger.kernel.org
-References: <20260805134049.927864-1-victor@mojatatu.com>
-From: Aohan Mei <ljp1205831794@gmail.com>
-In-Reply-To: <20260805134049.927864-1-victor@mojatatu.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+From: illusion wang <illusion.wang@nebula-matrix.com>
 
-在 2026/8/5 21:40, Victor Nogueira 写道:
-> In tc_new_tfilter() the create branch sets tp_created = 1 before calling
-> tcf_chain_tp_insert_unique(). When the caller loses the race (another
-> request inserted a proto at the same chain/prio first), insert_unique()
-> destroys the caller's own tp_new and returns the winner's proto with an
-> extra reference. tp_created was never cleared, so the loser's errout
-> path treated the winner's live proto as its own and called
-> tcf_chain_tp_delete_empty() on it, silently unlinking an active
-> classifier that the winning request already advertised via
-> RTM_NEWTFILTER.
-> 
-> Track the outcome of the insert step in a single tri-state variable so
-> each errout path reacts correctly:
-> 
-> - TP_NOT_CREATED: no proto created; pursue the old path.
-> - TP_CREATED: proto inserted successfully; same code path as before.
-> - TP_NOT_OWNED: New - lost the insert race; tp is another request's proto
->    (chain ref already released by tp_new's destroy)
-> 
-> Both errout reactions are single expressions derived from the state.
-> 
-> This fix is motivated by the Sashiko's automated review of Patch
-> (net/sched: cls_api: Always acquire rtnl_lock when destroying locked
-> classifiers) [1][2]. The review identified the silent-unlink behaviour of
-> an adopted proto's teardown when a request loses the
-> tcf_chain_tp_insert_unique() race.
-> 
-> [1] https://sashiko.dev/#/patchset/20260801125632.360365-1-jhs%40mojatatu.com
-> [2] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260801125632.360365-1-jhs%40mojatatu.com
-> 
-> Fixes: 8b64678e0af8 ("net: sched: refactor tp insert/delete for concurrent execution")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260801125632.360365-1-jhs%40mojatatu.com
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260801125632.360365-1-jhs%40mojatatu.com
-> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-> ---
->   net/sched/cls_api.c | 18 +++++++++++++-----
->   1 file changed, 13 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-> index 4e6a2812a4f3..3271963c945d 100644
-> --- a/net/sched/cls_api.c
-> +++ b/net/sched/cls_api.c
-> @@ -2248,6 +2248,12 @@ static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
->   	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
->   }
->   
-> +enum tcf_tp_insert_state {
-> +	TP_NOT_CREATED = 0, /* did not create and insert a new tp */
-> +	TP_CREATED, /* created and inserted a new tp */
-> +	TP_NOT_OWNED, /* created a proto but failed to insert */
-> +};
-> +
->   static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
->   			  struct netlink_ext_ack *extack)
->   {
-> @@ -2268,12 +2274,12 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
->   	unsigned long cl;
->   	void *fh;
->   	int err;
-> -	int tp_created;
-> +	enum tcf_tp_insert_state tp_state;
->   	bool rtnl_held = false;
->   	u32 flags;
->   
->   replay:
-> -	tp_created = 0;
-> +	tp_state = TP_NOT_CREATED;
->   
->   	err = nlmsg_parse_deprecated(n, sizeof(*t), tca, TCA_MAX,
->   				     rtm_tca_policy, extack);
-> @@ -2395,13 +2401,15 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
->   			goto errout_tp;
->   		}
->   
-> -		tp_created = 1;
-> +		tp_state = TP_CREATED;
->   		tp = tcf_chain_tp_insert_unique(chain, tp_new, protocol, prio,
->   						rtnl_held);
->   		if (IS_ERR(tp)) {
->   			err = PTR_ERR(tp);
->   			goto errout_tp;
->   		}
-> +		if (tp != tp_new)
-> +			tp_state = TP_NOT_OWNED;
->   	} else {
->   		mutex_unlock(&chain->filter_chain_lock);
->   	}
-> @@ -2455,13 +2463,13 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
->   	}
->   
->   errout:
-> -	if (err && tp_created)
-> +	if (err && tp_state == TP_CREATED)
->   		tcf_chain_tp_delete_empty(chain, tp, rtnl_held, NULL);
->   errout_tp:
->   	if (chain) {
->   		if (tp && !IS_ERR(tp))
->   			tcf_proto_put(tp, rtnl_held, NULL);
-> -		if (!tp_created)
-> +		if (tp_state == TP_NOT_CREATED)
->   			tcf_chain_put(chain);
->   	}
->   	tcf_block_release(q, block, rtnl_held);
+Add enum nbl_chan_msg_type into nbl_def_channel.h, defining all
+PF/VF/firmware channel wire opcodes used for inter-component mailbox
+communication.
 
-The fix seems good:
+Each enumerator carries an explicit fixed numeric value, acting as stable
+wire-format message ID shared between driver and firmware.
 
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Tested-by: Aohan Mei <henrymei@tencent.com>
+ABI constraint: New opcodes must only be appended before
+NBL_CHAN_MSG_MAILBOX_MAX.
+Reordering, inserting or deleting existing entries will break
+cross-version driver-firmware interoperability. Any modification to
+existing opcode assignments requires coordinated firmware ABI change.
+
+This commit introduces the opcode ID enumeration. Message payload
+structures and complete channel layer logic will be added in subsequent
+separate patches.
+
+Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
+---
+ .../nbl/nbl_include/nbl_def_channel.h         | 242 ++++++++++++++++++
+ 1 file changed, 242 insertions(+)
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+new file mode 100644
+index 000000000000..be374667c338
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+@@ -0,0 +1,242 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_DEF_CHANNEL_H_
++#define _NBL_DEF_CHANNEL_H_
++
++/*
++ * Mailbox wire opcodes
++ * Every opcode is assigned explicit fixed numeric value, stable wire ABI
++ * shared between driver and firmware.
++ * Firmware/driver wire compatibility rule:
++ * New entries must only be appended before NBL_CHAN_MSG_MAILBOX_MAX.
++ * Reordering / inserting / deleting existing items will break cross-version
++ * interoperability. Any change to existing enumerators requires matching
++ * firmware ABI adjustment.
++ */
++enum nbl_chan_msg_type {
++	NBL_CHAN_MSG_ACK = 0,
++	NBL_CHAN_MSG_ADD_MACVLAN = 1,
++	NBL_CHAN_MSG_DEL_MACVLAN = 2,
++	NBL_CHAN_MSG_ADD_MULTI_RULE = 3,
++	NBL_CHAN_MSG_DEL_MULTI_RULE = 4,
++	NBL_CHAN_MSG_SETUP_MULTI_GROUP = 5,
++	NBL_CHAN_MSG_REMOVE_MULTI_GROUP = 6,
++	NBL_CHAN_MSG_REGISTER_NET = 7,
++	NBL_CHAN_MSG_UNREGISTER_NET = 8,
++	NBL_CHAN_MSG_ALLOC_TXRX_QUEUES = 9,
++	NBL_CHAN_MSG_FREE_TXRX_QUEUES = 10,
++	NBL_CHAN_MSG_SETUP_QUEUE = 11,
++	NBL_CHAN_MSG_REMOVE_ALL_QUEUES = 12,
++	NBL_CHAN_MSG_CFG_DSCH = 13,
++	NBL_CHAN_MSG_SETUP_CQS = 14,
++	NBL_CHAN_MSG_REMOVE_CQS = 15,
++	NBL_CHAN_MSG_CFG_QDISC_MQPRIO = 16,
++	NBL_CHAN_MSG_CONFIGURE_MSIX_MAP = 17,
++	NBL_CHAN_MSG_DESTROY_MSIX_MAP = 18,
++	NBL_CHAN_MSG_MAILBOX_SET_IRQ = 19,
++	NBL_CHAN_MSG_GET_GLOBAL_VECTOR = 20,
++	NBL_CHAN_MSG_GET_VSI_ID = 21,
++	NBL_CHAN_MSG_SET_PROMISC_MODE = 22,
++	NBL_CHAN_MSG_GET_FIRMWARE_VERSION = 23,
++	NBL_CHAN_MSG_GET_QUEUE_ERR_STATS = 24,
++	NBL_CHAN_MSG_GET_COALESCE = 25,
++	NBL_CHAN_MSG_SET_COALESCE = 26,
++	NBL_CHAN_MSG_SET_SPOOF_CHECK_ADDR = 27,
++	NBL_CHAN_MSG_SET_VF_SPOOF_CHECK = 28,
++	NBL_CHAN_MSG_GET_RXFH_INDIR_SIZE = 29,
++	NBL_CHAN_MSG_GET_RXFH_INDIR = 30,
++	NBL_CHAN_MSG_GET_RXFH_RSS_KEY = 31,
++	NBL_CHAN_MSG_GET_RXFH_RSS_ALG_SEL = 32,
++	NBL_CHAN_MSG_GET_HW_CAPS = 33,
++	NBL_CHAN_MSG_GET_HW_STATE = 34,
++	NBL_CHAN_MSG_REGISTER_RDMA = 35,
++	NBL_CHAN_MSG_UNREGISTER_RDMA = 36,
++	NBL_CHAN_MSG_GET_REAL_HW_ADDR = 37,
++	NBL_CHAN_MSG_GET_REAL_BDF = 38,
++	NBL_CHAN_MSG_GRC_PROCESS = 39,
++	NBL_CHAN_MSG_SET_SFP_STATE = 40,
++	NBL_CHAN_MSG_SET_ETH_LOOPBACK = 41,
++	NBL_CHAN_MSG_CHECK_ACTIVE_VF = 42,
++	NBL_CHAN_MSG_GET_PRODUCT_FLEX_CAP = 43,
++	NBL_CHAN_MSG_ALLOC_KTLS_TX_INDEX = 44,
++	NBL_CHAN_MSG_FREE_KTLS_TX_INDEX = 45,
++	NBL_CHAN_MSG_CFG_KTLS_TX_KEYMAT = 46,
++	NBL_CHAN_MSG_ALLOC_KTLS_RX_INDEX = 47,
++	NBL_CHAN_MSG_FREE_KTLS_RX_INDEX = 48,
++	NBL_CHAN_MSG_CFG_KTLS_RX_KEYMAT = 49,
++	NBL_CHAN_MSG_CFG_KTLS_RX_RECORD = 50,
++	NBL_CHAN_MSG_ADD_KTLS_RX_FLOW = 51,
++	NBL_CHAN_MSG_DEL_KTLS_RX_FLOW = 52,
++	NBL_CHAN_MSG_ALLOC_IPSEC_TX_INDEX = 53,
++	NBL_CHAN_MSG_FREE_IPSEC_TX_INDEX = 54,
++	NBL_CHAN_MSG_ALLOC_IPSEC_RX_INDEX = 55,
++	NBL_CHAN_MSG_FREE_IPSEC_RX_INDEX = 56,
++	NBL_CHAN_MSG_CFG_IPSEC_TX_SAD = 57,
++	NBL_CHAN_MSG_CFG_IPSEC_RX_SAD = 58,
++	NBL_CHAN_MSG_ADD_IPSEC_TX_FLOW = 59,
++	NBL_CHAN_MSG_DEL_IPSEC_TX_FLOW = 60,
++	NBL_CHAN_MSG_ADD_IPSEC_RX_FLOW = 61,
++	NBL_CHAN_MSG_DEL_IPSEC_RX_FLOW = 62,
++	NBL_CHAN_MSG_NOTIFY_IPSEC_HARD_EXPIRE = 63,
++	NBL_CHAN_MSG_GET_MBX_IRQ_NUM = 64,
++	NBL_CHAN_MSG_CLEAR_FLOW = 65,
++	NBL_CHAN_MSG_CLEAR_QUEUE = 66,
++	NBL_CHAN_MSG_GET_ETH_ID = 67,
++	NBL_CHAN_MSG_SET_OFFLOAD_STATUS = 68,
++	NBL_CHAN_MSG_INIT_OFLD = 69,
++	NBL_CHAN_MSG_INIT_CMDQ = 70,
++	NBL_CHAN_MSG_DESTROY_CMDQ = 71,
++	NBL_CHAN_MSG_RESET_CMDQ = 72,
++	NBL_CHAN_MSG_INIT_FLOW = 73,
++	NBL_CHAN_MSG_DEINIT_FLOW = 74,
++	NBL_CHAN_MSG_OFFLOAD_FLOW_RULE = 75,
++	NBL_CHAN_MSG_GET_ACL_SWITCH = 76,
++	NBL_CHAN_MSG_GET_VSI_GLOBAL_QUEUE_ID = 77,
++	NBL_CHAN_MSG_INIT_REP = 78,
++	NBL_CHAN_MSG_GET_LINE_RATE_INFO = 79,
++	NBL_CHAN_MSG_REGISTER_NET_REP = 80,
++	NBL_CHAN_MSG_UNREGISTER_NET_REP = 81,
++	NBL_CHAN_MSG_REGISTER_ETH_REP = 82,
++	NBL_CHAN_MSG_UNREGISTER_ETH_REP = 83,
++	NBL_CHAN_MSG_REGISTER_UPCALL_PORT = 84,
++	NBL_CHAN_MSG_UNREGISTER_UPCALL_PORT = 85,
++	NBL_CHAN_MSG_GET_PORT_STATE = 86,
++	NBL_CHAN_MSG_SET_PORT_ADVERTISING = 87,
++	NBL_CHAN_MSG_GET_MODULE_INFO = 88,
++	NBL_CHAN_MSG_GET_MODULE_EEPROM = 89,
++	NBL_CHAN_MSG_GET_LINK_STATE = 90,
++	NBL_CHAN_MSG_NOTIFY_LINK_STATE = 91,
++	NBL_CHAN_MSG_GET_QUEUE_CXT = 92,
++	NBL_CHAN_MSG_CFG_LOG = 93,
++	NBL_CHAN_MSG_INIT_VDPAQ = 94,
++	NBL_CHAN_MSG_DESTROY_VDPAQ = 95,
++	NBL_CHAN_MSG_GET_UPCALL_PORT = 96,
++	NBL_CHAN_MSG_NOTIFY_ETH_REP_LINK_STATE = 97,
++	NBL_CHAN_MSG_SET_ETH_MAC_ADDR = 98,
++	NBL_CHAN_MSG_GET_FUNCTION_ID = 99,
++	NBL_CHAN_MSG_GET_CHIP_TEMPERATURE = 100,
++	NBL_CHAN_MSG_DISABLE_HW_FLOW = 101,
++	NBL_CHAN_MSG_ENABLE_HW_FLOW = 102,
++	NBL_CHAN_MSG_SET_UPCALL_RULE = 103,
++	NBL_CHAN_MSG_UNSET_UPCALL_RULE = 104,
++	NBL_CHAN_MSG_GET_REG_DUMP = 105,
++	NBL_CHAN_MSG_GET_REG_DUMP_LEN = 106,
++	NBL_CHAN_MSG_CFG_LAG_HASH_ALGORITHM = 107,
++	NBL_CHAN_MSG_CFG_LAG_MEMBER_FWD = 108,
++	NBL_CHAN_MSG_CFG_LAG_MEMBER_LIST = 109,
++	NBL_CHAN_MSG_CFG_LAG_MEMBER_UP_ATTR = 110,
++	NBL_CHAN_MSG_ADD_LAG_FLOW = 111,
++	NBL_CHAN_MSG_DEL_LAG_FLOW = 112,
++	NBL_CHAN_MSG_SWITCHDEV_INIT_CMDQ = 113,
++	NBL_CHAN_MSG_SWITCHDEV_DEINIT_CMDQ = 114,
++	NBL_CHAN_MSG_SET_TC_FLOW_INFO = 115,
++	NBL_CHAN_MSG_UNSET_TC_FLOW_INFO = 116,
++	NBL_CHAN_MSG_INIT_ACL = 117,
++	NBL_CHAN_MSG_UNINIT_ACL = 118,
++	NBL_CHAN_MSG_CFG_LAG_MCC = 119,
++	NBL_CHAN_MSG_REGISTER_VSI2Q = 120,
++	NBL_CHAN_MSG_SETUP_Q2VSI = 121,
++	NBL_CHAN_MSG_REMOVE_Q2VSI = 122,
++	NBL_CHAN_MSG_SETUP_RSS = 123,
++	NBL_CHAN_MSG_REMOVE_RSS = 124,
++	NBL_CHAN_MSG_GET_REP_QUEUE_INFO = 125,
++	NBL_CHAN_MSG_CTRL_PORT_LED = 126,
++	NBL_CHAN_MSG_NWAY_RESET = 127,
++	NBL_CHAN_MSG_SET_INTL_SUPPRESS_LEVEL = 128,
++	NBL_CHAN_MSG_GET_ETH_STATS = 129,
++	NBL_CHAN_MSG_GET_MODULE_TEMPERATURE = 130,
++	NBL_CHAN_MSG_GET_BOARD_INFO = 131,
++	NBL_CHAN_MSG_GET_P4_USED = 132,
++	NBL_CHAN_MSG_GET_VF_BASE_VSI_ID = 133,
++	NBL_CHAN_MSG_ADD_LLDP_FLOW = 134,
++	NBL_CHAN_MSG_DEL_LLDP_FLOW = 135,
++	NBL_CHAN_MSG_CFG_ETH_BOND_INFO = 136,
++	NBL_CHAN_MSG_CFG_DUPPKT_MCC = 137,
++	NBL_CHAN_MSG_ADD_ND_UPCALL_FLOW = 138,
++	NBL_CHAN_MSG_DEL_ND_UPCALL_FLOW = 139,
++	NBL_CHAN_MSG_GET_BOARD_ID = 140,
++	NBL_CHAN_MSG_SET_SHAPING_DPORT_VLD = 141,
++	NBL_CHAN_MSG_SET_DPORT_FC_TH_VLD = 142,
++	NBL_CHAN_MSG_REGISTER_RDMA_BOND = 143,
++	NBL_CHAN_MSG_UNREGISTER_RDMA_BOND = 144,
++	NBL_CHAN_MSG_RESTORE_NETDEV_QUEUE = 145,
++	NBL_CHAN_MSG_RESTART_NETDEV_QUEUE = 146,
++	NBL_CHAN_MSG_RESTORE_HW_QUEUE = 147,
++	NBL_CHAN_MSG_KEEP_ALIVE = 148,
++	NBL_CHAN_MSG_GET_BASE_MAC_ADDR = 149,
++	NBL_CHAN_MSG_CFG_BOND_SHAPING = 150,
++	NBL_CHAN_MSG_CFG_BGID_BACK_PRESSURE = 151,
++	NBL_CHAN_MSG_ALLOC_KT_BLOCK = 152,
++	NBL_CHAN_MSG_FREE_KT_BLOCK = 153,
++	NBL_CHAN_MSG_GET_USER_QUEUE_INFO = 154,
++	NBL_CHAN_MSG_GET_ETH_BOND_INFO = 155,
++	NBL_CHAN_MSG_CLEAR_ACCEL_FLOW = 156,
++	NBL_CHAN_MSG_SET_BRIDGE_MODE = 157,
++	NBL_CHAN_MSG_GET_VF_FUNCTION_ID = 158,
++	NBL_CHAN_MSG_NOTIFY_LINK_FORCED = 159,
++	NBL_CHAN_MSG_SET_PMD_DEBUG = 160,
++	NBL_CHAN_MSG_REGISTER_FUNC_MAC = 161,
++	NBL_CHAN_MSG_SET_TX_RATE = 162,
++	NBL_CHAN_MSG_REGISTER_FUNC_LINK_FORCED = 163,
++	NBL_CHAN_MSG_GET_LINK_FORCED = 164,
++	NBL_CHAN_MSG_REGISTER_FUNC_VLAN = 165,
++	NBL_CHAN_MSG_GET_FD_FLOW = 166,
++	NBL_CHAN_MSG_GET_FD_FLOW_CNT = 167,
++	NBL_CHAN_MSG_GET_FD_FLOW_ALL = 168,
++	NBL_CHAN_MSG_GET_FD_FLOW_MAX = 169,
++	NBL_CHAN_MSG_REPLACE_FD_FLOW = 170,
++	NBL_CHAN_MSG_REMOVE_FD_FLOW = 171,
++	NBL_CHAN_MSG_CFG_FD_FLOW_STATE = 172,
++	NBL_CHAN_MSG_REGISTER_FUNC_RATE = 173,
++	NBL_CHAN_MSG_NOTIFY_VLAN = 174,
++	NBL_CHAN_MSG_GET_XDP_QUEUE_INFO = 175,
++	NBL_CHAN_MSG_STOP_ABNORMAL_SW_QUEUE = 176,
++	NBL_CHAN_MSG_STOP_ABNORMAL_HW_QUEUE = 177,
++	NBL_CHAN_MSG_NOTIFY_RESET_EVENT = 178,
++	NBL_CHAN_MSG_ACK_RESET_EVENT = 179,
++	NBL_CHAN_MSG_GET_VF_VSI_ID = 180,
++	NBL_CHAN_MSG_CONFIGURE_QOS = 181,
++	NBL_CHAN_MSG_GET_PFC_BUFFER_SIZE = 182,
++	NBL_CHAN_MSG_SET_PFC_BUFFER_SIZE = 183,
++	NBL_CHAN_MSG_GET_VF_STATS = 184,
++	NBL_CHAN_MSG_REGISTER_FUNC_TRUST = 185,
++	NBL_CHAN_MSG_NOTIFY_TRUST = 186,
++	NBL_CHAN_MSG_CHECK_VF_IS_ACTIVE = 187,
++	NBL_CHAN_MSG_GET_ETH_ABNORMAL_STATS = 188,
++	NBL_CHAN_MSG_GET_ETH_CTRL_STATS = 189,
++	NBL_CHAN_MSG_GET_PAUSE_STATS = 190,
++	NBL_CHAN_MSG_GET_ETH_MAC_STATS = 191,
++	NBL_CHAN_MSG_GET_FEC_STATS = 192,
++	NBL_CHAN_MSG_CFG_MULTI_MCAST_RULE = 193,
++	NBL_CHAN_MSG_GET_LINK_DOWN_COUNT = 194,
++	NBL_CHAN_MSG_GET_LINK_STATUS_OPCODE = 195,
++	NBL_CHAN_MSG_GET_RMON_STATS = 196,
++	NBL_CHAN_MSG_REGISTER_PF_NAME = 197,
++	NBL_CHAN_MSG_GET_PF_NAME = 198,
++	NBL_CHAN_MSG_CONFIGURE_RDMA_BW = 199,
++	NBL_CHAN_MSG_SET_RATE_LIMIT = 200,
++	NBL_CHAN_MSG_SET_TC_WGT = 201,
++	NBL_CHAN_MSG_REMOVE_QUEUE = 202,
++	NBL_CHAN_MSG_GET_MIRROR_TABLE_ID = 203,
++	NBL_CHAN_MSG_CONFIGURE_MIRROR = 204,
++	NBL_CHAN_MSG_CONFIGURE_MIRROR_TABLE = 205,
++	NBL_CHAN_MSG_CLEAR_MIRROR_CFG = 206,
++	NBL_CHAN_MSG_MIRROR_OUTPUTPORT_NOTIFY = 207,
++	NBL_CHAN_MSG_CHECK_FLOWTABLE_SPEC = 208,
++	NBL_CHAN_MSG_CHECK_VF_IS_VDPA = 209,
++	NBL_CHAN_MSG_GET_VDPA_VF_STATS = 210,
++	NBL_CHAN_MSG_SET_RX_RATE = 211,
++	NBL_CHAN_MSG_GET_UVN_PKT_DROP_STATS = 212,
++	NBL_CHAN_MSG_GET_USTORE_PKT_DROP_STATS = 213,
++	NBL_CHAN_MSG_GET_USTORE_TOTAL_PKT_DROP_STATS = 214,
++	NBL_CHAN_MSG_SET_WOL = 215,
++	NBL_CHAN_MSG_INIT_VF_MSIX_MAP = 216,
++	NBL_CHAN_MSG_GET_ST_NAME = 217,
++	/* mailbox msg end */
++	NBL_CHAN_MSG_MAILBOX_MAX,
++};
++
++#endif
+-- 
+2.47.3
+
