@@ -1,56 +1,56 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDA040FDB9
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 23:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1078E42252A
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 23:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786145384; cv=none; b=D9mikmqsiwB9bM0jbuzllKk1Wuccz/eM8w7baGGX3XFfFZqVfT8MLp2QmZl7LL5B8H3rUvHk0F/lTmCkYxTbVqnlUWEqrADh7yLzlOBaRcO/3ZAJbkzBHiSnr4Kj2LoVsEgL83ZE2F1a9GRe8xe1wRToGZn9SE+5izzGH/Mq6pg=
+	t=1786145385; cv=none; b=niXbdzptWXQFkd3SuHgD1KrPOLIjGMd7sp5N+oavj9SDp0l5QUJ85++VaSgTT0Z1wdrzOY45QKwqFuIf+zSKSY+99ZYz+sY+V4wMzxR5wo/Y26FjJM8M9McQaaRhAQZMRDtfNLky7m+hWHXmaTQ7iYZ9I2Db3FPwnA8lwaM1KvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786145384; c=relaxed/simple;
-	bh=cdDjam6vU2xpx0CzBdL4C24L25X1Fm9eBq0XO1S/eF4=;
+	s=arc-20240116; t=1786145385; c=relaxed/simple;
+	bh=GM4b5Ajrk79hJITsSNuEbOodBC8eQfVOzK3glo/1IXs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SJnfl3Z3yJA/kVKVHa+aCil6a8TSnsRjNeaDDZd5F3Ntu00Vs3A7a7RZmlk9TItS3q2VrTddlF1Q9MYixME7YCN69D4P7oMOQSse3F3WGDuJjJqGA/YFWC7rs1//reubKcFHicmYzUNxE8ZQCmPudcIyKvxEpw6EpYiBjOfA+aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lPvML2Fx; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=GZcqBXS18eIHECG1rqlNW7nlr/StOQt9GOMdiH7y9Ctq/xBxqjgLvQwkk1xQm76C8EikZBnMjLrp7tqOOoWLJdGgjDX8qoDsxpRYCrimj19+EwofhwhIYpQCk/k1MRCXcUXnxsQOn5ypxu+GgLkxxH7OZZa6Q2b1v+BlR43pLiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HcPU5AxD; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lPvML2Fx"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84a3514f912so116517b3a.3
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 16:29:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HcPU5AxD"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d02df2bf09so2022825ad.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 16:29:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786145382; x=1786750182; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786145383; x=1786750183; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wCh+wVgP6Kf6FzpQGc1Cbtbr/EpEXz9JL59wtUpMK6k=;
-        b=lPvML2FxNko5s8DTx89I25FTg8uZOsksQAlOuXydIO4z/KJHkem1Oht60pq1suC3Zc
-         8uwQNkrPQZSWxpwVtIRGPbgbsaZmgG1WfPVILGEWLjirYoWIqSShDZIDhTLO8f8xYGzE
-         2NjCCCcxpQh51Hoisj+YhqzT/DrQ+isrq71+KaVnctfQIsgrfvaUDbrsou6bqMtJ2UuN
-         yerywvKuipo6gLGkbqkF2dEVbJHeqKmEIibqC7n+Yiiz3JHBraF50DeycMx0vkbjGiCR
-         Gmiuu6ujBO4zduZspI/2yu7fNN61r6+8opcj+CH2bq4saeSuFYithaX0kpz0BYycjlBt
-         /VPQ==
+        bh=CrjU6guZewij2ntQbsl9hvm4/0knrJ2wIh/OKc7TYns=;
+        b=HcPU5AxDjMstikIKXqKuvWmz/vzq08WayHmHYylVmNguT4uofAbejxcoKcliPQrMcl
+         c+1Eij73SxpKprZDmiXVj6A1m1uPTvEzgMErsF1utgwXN2oVzD4a1HQq1He4ivR37Z3W
+         nJUdPP6TpO/IVSTUzzWW8FrVyE6QoBH3W3NZGhmtAb0hEJSV3M0yUnfxdMXMn81625nd
+         PLKDXImAGajcK/Utn4zUI4ddUFAHyK+pUITOO9WaL0kXDuC3UpaPgT6uQKSqei4XgwBT
+         4h3drAQLS4erawvCb0axl57Cz2DZ1XwBgDZBRvmQEjcnRZwqa5E4ElK3U0oMA5IFgjyX
+         Y51g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786145382; x=1786750182;
+        d=1e100.net; s=20251104; t=1786145383; x=1786750183;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wCh+wVgP6Kf6FzpQGc1Cbtbr/EpEXz9JL59wtUpMK6k=;
-        b=AXaBVXwthiyXzN6OWUwqYVKu4mxbxT3uVHQmnFqVoCxIapdgvtI4PfQkrS/ftXnV9I
-         rBjaHywy9ZUZ45IVh9p8zHMxintrd4Ymt6TWoWEyGU+ICIo06AyQTHxdBbUX89xBXMcV
-         R1zX0Glu8VW7YAoWvg5v9lXAP0JnBtoCoZitX/9tuNpZE/KCqlvUEXkovIJxWVf02zcW
-         vK2nUhjEYpGQ+Tbc40fKBF4f571axQPtw4Qt7RpVrBGQeHWHz8bSSi2sExbVDFeVqK4l
-         KoqiSLevTigjLgvT7bpBphJAtVTkB8EXToPUVoZeb2V5aGi/+Ie82hN/NHUvHf+URAEQ
-         a/pg==
-X-Forwarded-Encrypted: i=1; AHgh+RrZKA247bghMboiOR6NSUWQpgqrrbhwXl38GPRfoUsZdkzbbKqHF0nETBntK/mmbPyhN+11fUQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzr/QVe/EKPlzZl8HJzs9CkgA6lVDiY3ZZlgNjjmJTXUFxcvvgq
-	aYXQy4hH5CEpwq0diZYYAUi9qb50R+anjopb4ugNSB9oDsqSqmd3AYzhGe9oyYjS+uw2wVGzWyF
-	/aWueJw==
-X-Received: from pglx21.prod.google.com ([2002:a63:1715:0:b0:c9a:b3b0:a861])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:94e7:b0:848:3f91:da82
- with SMTP id d2e1a72fcca58-84f2e12c1fcmr30293952b3a.32.1786145382202; Fri, 07
- Aug 2026 16:29:42 -0700 (PDT)
-Date: Fri,  7 Aug 2026 23:28:48 +0000
+        bh=CrjU6guZewij2ntQbsl9hvm4/0knrJ2wIh/OKc7TYns=;
+        b=eecL4ewcMsAZZ99//JttS129/P1qleDaW1ZWFbTXwhuwR9FK7RKlIc45FPQTSwO7a8
+         IKuV8tUyBdPdyD02En7Up12hvxQleA5UDjOH+p6jjFxutIUEXNy1VJaMR6F25zEjW2Jq
+         V4LjSs4OaTFiJrTEHdMKhthmlHi8m84jkUuhwDG4nYadTTuZqToCj65VCxj+tknprC4m
+         DXSAHx2JHQ/E9xiBbcxBZTOtg2QKX1OcyIs7kR022VRERidj1ZQyzv1F6pGhkqu45GPA
+         SuuG4TGpC7ASjWPtoRyXMQPVgBIHoZkMszn9ejiqsvza67GRPwqxfuakDxFN4sXSAn2N
+         EbQA==
+X-Forwarded-Encrypted: i=1; AHgh+RrUMH23UEjliRb6Uyqreqr9SsZxmcsd5yUiNPlsavm2/9GCiHM7Dd54VcCuxRoTxhq+Aimnyos=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwocFh/mlU68dD+12IxcaENvrZhZqWkcaMq8sTYTmIgQGP1Ixmi
+	jtROJ4HURu/DsUIX5o0lMucyosBG/MaaDtT719cGpBFCqWB85GsFp3LqT/I6ptNBxtguZZiSSEv
+	u8wpEnA==
+X-Received: from plblg8.prod.google.com ([2002:a17:902:fb88:b0:2cc:61be:8bbb])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e851:b0:2c9:de53:f84f
+ with SMTP id d9443c01a7336-2d0ca9904acmr285803205ad.19.1786145383032; Fri, 07
+ Aug 2026 16:29:43 -0700 (PDT)
+Date: Fri,  7 Aug 2026 23:28:49 +0000
 In-Reply-To: <20260807232932.3986667-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260807232932.3986667-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260807232932.3986667-11-kuniyu@google.com>
-Subject: [PATCH v2 net-next 10/13] neighbour: Namespacify neigh_tables.
+Message-ID: <20260807232932.3986667-12-kuniyu@google.com>
+Subject: [PATCH v2 net-next 11/13] neighbour: Don't store net in struct pneigh_entry.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -70,289 +70,326 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Now, neigh_table is ready to be namespacified.
+neigh_table is now per-netns, so struct pneigh_entry does not need
+to store a net pointer.
 
-Let's allocate per-netns neigh_table in neigh_table_register()
-and call neigh_table_init() and neigh_sysctl_register() for it.
+Let's remove it and net comparison for pneigh_entry.
 
-proc_create_seq_data() is changed to proc_create_net_data().
-
-neigh_flush_one() calls timer_shutdown_sync() outside of n->lock
-if its netns is dying because neigh_del_timer() uses timer_delete()
-and there might be running timer and its neigh_release() might
-be executed after neigh_table_clear() frees neigh_table.
-
-The next patch will remove other unnecessary net_eq().
-
-Note that CONFIG_SYSCTL cannot be enabled without CONFIG_PROC_FS.
+We no longer need to pass net to pneigh_create(), pneigh_delete(),
+and pneigh_lookup().
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
 v2:
-  * panic() when register_pernet_subsys(&arp_net_ops) fails
-  * Add timer_shutdown_sync() in neigh_flush_one()
+  * Split from the next patch
+  * Remove net comparison in pneigh_dump_table()
+  * Remove net arg of pneigh_create(), pneigh_delete(), and
+    pneigh_lookup()
 ---
- include/net/neighbour.h |  2 --
- net/core/neighbour.c    | 45 ++++++++++++++++++++++++++++-------------
- net/ipv4/arp.c          | 20 +++++++++++++-----
- net/ipv6/ndisc.c        | 43 ++++++++++++++-------------------------
- 4 files changed, 61 insertions(+), 49 deletions(-)
+ include/net/neighbour.h | 12 +++------
+ net/core/neighbour.c    | 55 ++++++++++++++---------------------------
+ net/ipv4/arp.c          |  6 ++---
+ net/ipv6/ip6_output.c   |  2 +-
+ net/ipv6/ndisc.c        |  4 +--
+ 5 files changed, 27 insertions(+), 52 deletions(-)
 
 diff --git a/include/net/neighbour.h b/include/net/neighbour.h
-index 3e31eebf8663..b4e89533e1e6 100644
+index b4e89533e1e6..954c13b3a2b4 100644
 --- a/include/net/neighbour.h
 +++ b/include/net/neighbour.h
-@@ -341,8 +341,6 @@ static inline void neigh_confirm(struct neighbour *n)
+@@ -179,7 +179,6 @@ struct neigh_ops {
  
- int neigh_table_register(struct net *net, struct neigh_table *tbl, int index);
- void neigh_table_unregister(struct net *net, int index);
--void neigh_table_init(struct neigh_table *tbl);
--int neigh_table_clear(struct neigh_table *tbl);
- struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
- 			       struct net_device *dev);
- struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
+ struct pneigh_entry {
+ 	struct pneigh_entry	__rcu *next;
+-	possible_net_t		net;
+ 	struct net_device	*dev;
+ 	netdevice_tracker	dev_tracker;
+ 	union {
+@@ -389,19 +388,14 @@ static inline void neigh_set_reach_time(struct neigh_parms *p)
+ 
+ void pneigh_enqueue(struct neigh_table *tbl, struct neigh_parms *p,
+ 		    struct sk_buff *skb);
+-struct pneigh_entry *pneigh_lookup(struct neigh_table *tbl, struct net *net,
++struct pneigh_entry *pneigh_lookup(struct neigh_table *tbl,
+ 				   const void *key, struct net_device *dev);
+-int pneigh_create(struct neigh_table *tbl, struct net *net, const void *key,
++int pneigh_create(struct neigh_table *tbl, const void *key,
+ 		  struct net_device *dev, u32 flags, u8 protocol,
+ 		  bool permanent);
+-int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *key,
++int pneigh_delete(struct neigh_table *tbl, const void *key,
+ 		  struct net_device *dev);
+ 
+-static inline struct net *pneigh_net(const struct pneigh_entry *pneigh)
+-{
+-	return read_pnet(&pneigh->net);
+-}
+-
+ void neigh_app_ns(struct neighbour *n);
+ void neigh_for_each(struct neigh_table *tbl,
+ 		    void (*cb)(struct neighbour *, void *), void *cookie);
 diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 36488dbd1512..71aadcf9626d 100644
+index 71aadcf9626d..23ce17de23e3 100644
 --- a/net/core/neighbour.c
 +++ b/net/core/neighbour.c
-@@ -397,6 +397,9 @@ static void neigh_flush_one(struct neighbour *n)
- 
- 	write_unlock(&n->lock);
- 
-+	if (!check_net(neigh_parms_net(n->parms)))
-+		timer_shutdown_sync(&n->timer);
-+
- 	neigh_cleanup_and_release(n);
+@@ -334,8 +334,7 @@ static void neigh_parms_qlen_dec(struct net_device *dev, int family)
+ 	rcu_read_unlock();
  }
  
-@@ -1807,10 +1810,9 @@ void neigh_parms_release(struct neigh_table *tbl, struct neigh_parms *parms)
- 
- static struct lock_class_key neigh_table_proxy_queue_class;
- 
--void neigh_table_init(struct neigh_table *tbl)
-+static int neigh_table_init(struct net *net, struct neigh_table *tbl)
+-static void pneigh_queue_purge(struct sk_buff_head *list, struct net *net,
+-			       int family)
++static void pneigh_queue_purge(struct sk_buff_head *list, int family)
  {
- 	unsigned long now = jiffies;
--	struct net *net = &init_net;
- 	unsigned long phsize;
+ 	struct sk_buff_head tmp;
+ 	unsigned long flags;
+@@ -346,13 +345,11 @@ static void pneigh_queue_purge(struct sk_buff_head *list, struct net *net,
+ 	skb = skb_peek(list);
+ 	while (skb != NULL) {
+ 		struct sk_buff *skb_next = skb_peek_next(skb, list);
+-		struct net_device *dev = skb->dev;
  
- 	RCU_INIT_POINTER(tbl->nht, neigh_hash_alloc(3));
-@@ -1830,8 +1832,9 @@ void neigh_table_init(struct neigh_table *tbl)
- 		goto err_stats;
- 
- #ifdef CONFIG_PROC_FS
--	if (!proc_create_seq_data(tbl->id, 0, net->proc_net_stat,
--				  &neigh_stat_seq_ops, tbl))
-+	if (!proc_create_net_data(tbl->id, 0, net->proc_net_stat,
-+				  &neigh_stat_seq_ops,
-+				  sizeof(struct seq_net_private), tbl))
- 		goto err_proc;
- #endif
- 
-@@ -1860,7 +1863,7 @@ void neigh_table_init(struct neigh_table *tbl)
- 	INIT_DEFERRABLE_WORK(&tbl->managed_work, neigh_managed_work);
- 	queue_delayed_work(system_power_efficient_wq, &tbl->managed_work, 0);
- 
--	return;
-+	return 0;
- 
- #ifdef CONFIG_PROC_FS
- err_proc:
-@@ -1871,16 +1874,11 @@ void neigh_table_init(struct neigh_table *tbl)
- err_phash:
- 	neigh_hash_free_rcu(&rcu_dereference_protected(tbl->nht, 1)->rcu);
- err_hash:
--	panic("cannot allocate memory");
-+	return -ENOMEM;
- }
- 
--/*
-- * Only called from ndisc_cleanup(), which means this is dead code
-- * because we no longer can unload IPv6 module.
-- */
--int neigh_table_clear(struct neigh_table *tbl)
-+static void neigh_table_clear(struct net *net, struct neigh_table *tbl)
- {
--	struct net *net __maybe_unused = &init_net;
- 	struct neigh_hash_table *nht;
- 
- 	cancel_delayed_work_sync(&tbl->managed_work);
-@@ -1901,20 +1899,39 @@ int neigh_table_clear(struct neigh_table *tbl)
- 	nht = rcu_dereference_protected(tbl->nht, 1);
- 	tbl->nht = NULL;
- 	neigh_hash_free_rcu(&nht->rcu);
--
--	return 0;
- }
- 
- int neigh_table_register(struct net *net, struct neigh_table *tbl, int index)
- {
-+	int err;
+-		if (net == NULL || net_eq(dev_net(dev), net)) {
+-			neigh_parms_qlen_dec(dev, family);
+-			__skb_unlink(skb, list);
+-			__skb_queue_tail(&tmp, skb);
+-		}
++		neigh_parms_qlen_dec(skb->dev, family);
++		__skb_unlink(skb, list);
++		__skb_queue_tail(&tmp, skb);
 +
-+	tbl = kmemdup(tbl, sizeof(*tbl), GFP_KERNEL);
-+	if (!tbl) {
-+		err = -ENOMEM;
-+		goto err;
-+	}
-+
-+	err = neigh_table_init(net, tbl);
-+	if (err)
-+		goto free_table;
-+
- 	net->neigh_tables[index] = tbl;
+ 		skb = skb_next;
+ 	}
+ 	spin_unlock_irqrestore(&list->lock, flags);
+@@ -459,8 +456,7 @@ static int __neigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
+ 	spin_unlock_bh(&tbl->lock);
  
+ 	pneigh_ifdown(tbl, dev, skip_perm);
+-	pneigh_queue_purge(&tbl->proxy_queue, dev ? dev_net(dev) : NULL,
+-			   tbl->family);
++	pneigh_queue_purge(&tbl->proxy_queue, tbl->family);
+ 	if (skb_queue_empty_lockless(&tbl->proxy_queue))
+ 		timer_delete_sync(&tbl->proxy_timer);
  	return 0;
-+
-+free_table:
-+	kfree(tbl);
-+err:
-+	return err;
+@@ -740,8 +736,7 @@ static u32 pneigh_hash(const void *pkey, unsigned int key_len)
  }
  
- void neigh_table_unregister(struct net *net, int index)
+ struct pneigh_entry *pneigh_lookup(struct neigh_table *tbl,
+-				   struct net *net, const void *pkey,
+-				   struct net_device *dev)
++				   const void *pkey, struct net_device *dev)
  {
-+	struct neigh_table *tbl = net->neigh_tables[index];
-+
- 	net->neigh_tables[index] = NULL;
-+	neigh_table_clear(net, tbl);
-+	kfree(tbl);
+ 	struct pneigh_entry *n;
+ 	unsigned int key_len;
+@@ -754,7 +749,6 @@ struct pneigh_entry *pneigh_lookup(struct neigh_table *tbl,
+ 
+ 	while (n) {
+ 		if (!memcmp(n->key, pkey, key_len) &&
+-		    net_eq(pneigh_net(n), net) &&
+ 		    (n->dev == dev || !n->dev))
+ 			return n;
+ 
+@@ -764,7 +758,7 @@ struct pneigh_entry *pneigh_lookup(struct neigh_table *tbl,
+ 	return NULL;
  }
  
- static struct neigh_table *neigh_find_table(struct net *net, int family)
+-int pneigh_create(struct neigh_table *tbl, struct net *net,
++int pneigh_create(struct neigh_table *tbl,
+ 		  const void *pkey, struct net_device *dev,
+ 		  u32 flags, u8 protocol, bool permanent)
+ {
+@@ -775,7 +769,7 @@ int pneigh_create(struct neigh_table *tbl, struct net *net,
+ 
+ 	mutex_lock(&tbl->phash_lock);
+ 
+-	n = pneigh_lookup(tbl, net, pkey, dev);
++	n = pneigh_lookup(tbl, pkey, dev);
+ 	if (n)
+ 		goto update;
+ 
+@@ -786,7 +780,6 @@ int pneigh_create(struct neigh_table *tbl, struct net *net,
+ 		goto out;
+ 	}
+ 
+-	write_pnet(&n->net, net);
+ 	memcpy(n->key, pkey, key_len);
+ 	n->dev = dev;
+ 	netdev_hold(dev, &n->dev_tracker, GFP_KERNEL);
+@@ -819,7 +812,7 @@ static void pneigh_destroy(struct rcu_head *rcu)
+ 	kfree(n);
+ }
+ 
+-int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *pkey,
++int pneigh_delete(struct neigh_table *tbl, const void *pkey,
+ 		  struct net_device *dev)
+ {
+ 	struct pneigh_entry *n, __rcu **np;
+@@ -834,8 +827,7 @@ int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *pkey,
+ 	for (np = &tbl->phash_buckets[hash_val];
+ 	     (n = rcu_dereference_protected(*np, 1)) != NULL;
+ 	     np = &n->next) {
+-		if (!memcmp(n->key, pkey, key_len) && n->dev == dev &&
+-		    net_eq(pneigh_net(n), net)) {
++		if (!memcmp(n->key, pkey, key_len) && n->dev == dev) {
+ 			rcu_assign_pointer(*np, n->next);
+ 
+ 			mutex_unlock(&tbl->phash_lock);
+@@ -2007,7 +1999,7 @@ static int neigh_delete(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	}
+ 
+ 	if (ndm->ndm_flags & NTF_PROXY) {
+-		err = pneigh_delete(tbl, net, nla_data(dst_attr), dev);
++		err = pneigh_delete(tbl, nla_data(dst_attr), dev);
+ 		goto out;
+ 	}
+ 
+@@ -2103,7 +2095,7 @@ static int neigh_add(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			goto out;
+ 		}
+ 
+-		err = pneigh_create(tbl, net, dst, dev, ndm_flags, protocol,
++		err = pneigh_create(tbl, dst, dev, ndm_flags, protocol,
+ 				    !!(ndm->ndm_state & NUD_PERMANENT));
+ 		goto out;
+ 	}
+@@ -2855,11 +2847,10 @@ static int pneigh_dump_table(struct neigh_table *tbl, struct sk_buff *skb,
+ 			     struct netlink_callback *cb,
+ 			     struct neigh_dump_filter *filter)
+ {
+-	struct pneigh_entry *n;
+-	struct net *net = sock_net(skb->sk);
+-	int err = 0, h, s_h = cb->args[3];
+ 	int idx, s_idx = idx = cb->args[4];
++	int err = 0, h, s_h = cb->args[3];
+ 	unsigned int flags = NLM_F_MULTI;
++	struct pneigh_entry *n;
+ 
+ 	if (filter->dev_idx || filter->master_idx)
+ 		flags |= NLM_F_DUMP_FILTERED;
+@@ -2870,7 +2861,7 @@ static int pneigh_dump_table(struct neigh_table *tbl, struct sk_buff *skb,
+ 		for (n = rcu_dereference(tbl->phash_buckets[h]), idx = 0;
+ 		     n;
+ 		     n = rcu_dereference(n->next)) {
+-			if (idx < s_idx || pneigh_net(n) != net)
++			if (idx < s_idx)
+ 				goto next;
+ 			if (neigh_ifindex_filtered(n->dev, filter->dev_idx) ||
+ 			    neigh_master_filtered(n->dev, filter->master_idx))
+@@ -3129,7 +3120,7 @@ static int neigh_get(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	if (ndm->ndm_flags & NTF_PROXY) {
+ 		struct pneigh_entry *pn;
+ 
+-		pn = pneigh_lookup(tbl, net, dst, dev);
++		pn = pneigh_lookup(tbl, dst, dev);
+ 		if (!pn) {
+ 			NL_SET_ERR_MSG(extack, "Proxy neighbour entry not found");
+ 			err = -ENOENT;
+@@ -3329,7 +3320,6 @@ static struct neighbour *neigh_get_idx(struct seq_file *seq, loff_t *pos)
+ static struct pneigh_entry *pneigh_get_first(struct seq_file *seq)
+ {
+ 	struct neigh_seq_state *state = seq->private;
+-	struct net *net = seq_file_net(seq);
+ 	struct neigh_table *tbl = state->tbl;
+ 	struct pneigh_entry *pn = NULL;
+ 	int bucket;
+@@ -3337,9 +3327,6 @@ static struct pneigh_entry *pneigh_get_first(struct seq_file *seq)
+ 	state->flags |= NEIGH_SEQ_IS_PNEIGH;
+ 	for (bucket = 0; bucket <= PNEIGH_HASHMASK; bucket++) {
+ 		pn = rcu_dereference(tbl->phash_buckets[bucket]);
+-
+-		while (pn && !net_eq(pneigh_net(pn), net))
+-			pn = rcu_dereference(pn->next);
+ 		if (pn)
+ 			break;
+ 	}
+@@ -3353,21 +3340,15 @@ static struct pneigh_entry *pneigh_get_next(struct seq_file *seq,
+ 					    loff_t *pos)
+ {
+ 	struct neigh_seq_state *state = seq->private;
+-	struct net *net = seq_file_net(seq);
+ 	struct neigh_table *tbl = state->tbl;
+ 
+-	do {
+-		pn = rcu_dereference(pn->next);
+-	} while (pn && !net_eq(pneigh_net(pn), net));
++	pn = rcu_dereference(pn->next);
+ 
+ 	while (!pn) {
+ 		if (++state->bucket > PNEIGH_HASHMASK)
+ 			break;
+ 
+ 		pn = rcu_dereference(tbl->phash_buckets[state->bucket]);
+-
+-		while (pn && !net_eq(pneigh_net(pn), net))
+-			pn = rcu_dereference(pn->next);
+ 		if (pn)
+ 			break;
+ 	}
 diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
-index a44fa68fdd07..f197051d3aa7 100644
+index f197051d3aa7..90bc53fb8090 100644
 --- a/net/ipv4/arp.c
 +++ b/net/ipv4/arp.c
-@@ -1518,6 +1518,12 @@ static int __net_init arp_net_init(struct net *net)
- 		goto err;
+@@ -868,7 +868,7 @@ static int arp_process(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			    (arp_fwd_proxy(in_dev, dev, rt) ||
+ 			     arp_fwd_pvlan(in_dev, dev, rt, sip, tip) ||
+ 			     (rt->dst.dev != dev &&
+-			      pneigh_lookup(tbl, net, &tip, dev)))) {
++			      pneigh_lookup(tbl, &tip, dev)))) {
+ 				n = neigh_event_ns(tbl, sha, &sip, dev);
+ 				if (n)
+ 					neigh_release(n);
+@@ -1094,7 +1094,7 @@ static int arp_req_set_public(struct net *net, struct arpreq *r,
+ 	if (mask) {
+ 		__be32 ip = ((struct sockaddr_in *)&r->arp_pa)->sin_addr.s_addr;
  
- #ifdef CONFIG_PROC_FS
-+#ifdef CONFIG_SYSCTL
-+	err = neigh_sysctl_register(NULL, &arp_table(net)->parms, NULL);
-+	if (err)
-+		goto err_sysctl;
-+#endif
-+
- 	if (!proc_create_net("arp", 0444, net->proc_net, &arp_seq_ops,
- 			     sizeof(struct neigh_seq_state))) {
- 		err = -ENOMEM;
-@@ -1529,6 +1535,10 @@ static int __net_init arp_net_init(struct net *net)
+-		return pneigh_create(tbl, net, &ip, dev, 0, 0, false);
++		return pneigh_create(tbl, &ip, dev, 0, 0, false);
+ 	}
  
- #ifdef CONFIG_PROC_FS
- err_proc_create:
-+#ifdef CONFIG_SYSCTL
-+	neigh_sysctl_unregister(&arp_table(net)->parms);
-+err_sysctl:
-+#endif
- 	neigh_table_unregister(net, NEIGH_ARP_TABLE);
- #endif
- err:
-@@ -1538,6 +1548,9 @@ static int __net_init arp_net_init(struct net *net)
- static void __net_exit arp_net_exit(struct net *net)
- {
- 	remove_proc_entry("arp", net->proc_net);
-+#ifdef CONFIG_SYSCTL
-+	neigh_sysctl_unregister(&arp_table(net)->parms);
-+#endif
- 	neigh_table_unregister(net, NEIGH_ARP_TABLE);
- }
+ 	return arp_req_set_proxy(net, dev, 1);
+@@ -1243,7 +1243,7 @@ static int arp_req_delete_public(struct net *net, struct arpreq *r,
+ 	if (mask) {
+ 		__be32 ip = ((struct sockaddr_in *)&r->arp_pa)->sin_addr.s_addr;
  
-@@ -1548,12 +1561,9 @@ static struct pernet_operations arp_net_ops = {
+-		return pneigh_delete(tbl, net, &ip, dev);
++		return pneigh_delete(tbl, &ip, dev);
+ 	}
  
- void __init arp_init(void)
- {
--	neigh_table_init(&arp_tbl);
-+	if (register_pernet_subsys(&arp_net_ops))
-+		panic("Cannot allocate arp table\n");
+ 	return arp_req_set_proxy(net, dev, 0);
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 1ec32b3c0a7f..25fc57e52b5f 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -581,7 +581,7 @@ int ip6_forward(struct sk_buff *skb)
  
- 	dev_add_pack(&arp_packet_type);
--	register_pernet_subsys(&arp_net_ops);
--#ifdef CONFIG_SYSCTL
--	neigh_sysctl_register(NULL, &arp_tbl.parms, NULL);
--#endif
- 	register_netdevice_notifier(&arp_netdev_notifier);
- }
+ 	/* XXX: idev->cnf.proxy_ndp? */
+ 	if (READ_ONCE(net->ipv6.devconf_all->proxy_ndp) &&
+-	    pneigh_lookup(nd_table(net), net, &hdr->daddr, skb->dev)) {
++	    pneigh_lookup(nd_table(net), &hdr->daddr, skb->dev)) {
+ 		int proxied = ip6_forward_proxy_check(skb);
+ 
+ 		hdr = ipv6_hdr(skb);
 diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 3a458b188595..13e24c64dcdc 100644
+index 13e24c64dcdc..3e16cb581f42 100644
 --- a/net/ipv6/ndisc.c
 +++ b/net/ipv6/ndisc.c
-@@ -1984,6 +1984,13 @@ static int __net_init ndisc_net_init(struct net *net)
- 	if (err)
- 		goto err;
+@@ -770,7 +770,7 @@ static int pndisc_is_router(const void *pkey,
+ 	struct pneigh_entry *n;
+ 	int ret = -1;
  
-+#ifdef CONFIG_SYSCTL
-+	err = neigh_sysctl_register(NULL, &nd_table(net)->parms,
-+				    ndisc_ifinfo_sysctl_change);
-+	if (err)
-+		goto err_sysctl;
-+#endif
-+
- 	err = inet_ctl_sock_create(&sk, PF_INET6,
- 				   SOCK_RAW, IPPROTO_ICMPV6, net);
- 	if (err < 0) {
-@@ -2002,6 +2009,10 @@ static int __net_init ndisc_net_init(struct net *net)
- 	return 0;
+-	n = pneigh_lookup(nd_table(net), net, pkey, dev);
++	n = pneigh_lookup(nd_table(net), pkey, dev);
+ 	if (n)
+ 		ret = !!(READ_ONCE(n->flags) & NTF_ROUTER);
  
- err_sock_create:
-+#ifdef CONFIG_SYSCTL
-+	neigh_sysctl_unregister(&nd_table(net)->parms);
-+err_sysctl:
-+#endif
- 	neigh_table_unregister(net, NEIGH_ND_TABLE);
- err:
- 	return err;
-@@ -2010,6 +2021,9 @@ static int __net_init ndisc_net_init(struct net *net)
- static void __net_exit ndisc_net_exit(struct net *net)
- {
- 	inet_ctl_sock_destroy(net->ipv6.ndisc_sk);
-+#ifdef CONFIG_SYSCTL
-+	neigh_sysctl_unregister(&nd_table(net)->parms);
-+#endif
- 	neigh_table_unregister(net, NEIGH_ND_TABLE);
- }
- 
-@@ -2020,30 +2034,7 @@ static struct pernet_operations ndisc_net_ops = {
- 
- int __init ndisc_init(void)
- {
--	int err;
--
--	err = register_pernet_subsys(&ndisc_net_ops);
--	if (err)
--		return err;
--	/*
--	 * Initialize the neighbour table
--	 */
--	neigh_table_init(&nd_tbl);
--
--#ifdef CONFIG_SYSCTL
--	err = neigh_sysctl_register(NULL, &nd_tbl.parms,
--				    ndisc_ifinfo_sysctl_change);
--	if (err)
--		goto out_unregister_pernet;
--out:
--#endif
--	return err;
--
--#ifdef CONFIG_SYSCTL
--out_unregister_pernet:
--	unregister_pernet_subsys(&ndisc_net_ops);
--	goto out;
--#endif
-+	return register_pernet_subsys(&ndisc_net_ops);
- }
- 
- int __init ndisc_late_init(void)
-@@ -2058,9 +2049,5 @@ void ndisc_late_cleanup(void)
- 
- void ndisc_cleanup(void)
- {
--#ifdef CONFIG_SYSCTL
--	neigh_sysctl_unregister(&nd_tbl.parms);
--#endif
--	neigh_table_clear(&nd_tbl);
- 	unregister_pernet_subsys(&ndisc_net_ops);
- }
+@@ -1102,7 +1102,7 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+ 		if (lladdr && !memcmp(lladdr, dev->dev_addr, dev->addr_len) &&
+ 		    READ_ONCE(net->ipv6.devconf_all->forwarding) &&
+ 		    READ_ONCE(net->ipv6.devconf_all->proxy_ndp) &&
+-		    pneigh_lookup(tbl, net, &msg->target, dev)) {
++		    pneigh_lookup(tbl, &msg->target, dev)) {
+ 			/* XXX: idev->cnf.proxy_ndp */
+ 			goto out;
+ 		}
 -- 
 2.55.0.679.g6767b8d81c-goog
 
