@@ -1,141 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5678F3750A9;
-	Fri,  7 Aug 2026 17:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0EF38D3ED
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 17:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786122591; cv=none; b=Hmr1M5vfXHnKYL0iBiVG8tvxpqdszCeldjlyNXFp0Gn1nmRn0BHqjF7LIM1NOqyrGs6O3/YE1AkCIF1GWna/REKDfKzvmEPW3IZ88Fgfy175yop3PEWG+oz4Hg5Se/Q//4hlZxg6soCYwAxpDhQ912rlpQ5dbRgfHokEpAO15uU=
+	t=1786122627; cv=none; b=oSrNT4tiEGR1g2MUJcSvHLL/Bpod79zy/aSEUCye5Rj5mwrAgM1w6qEfWQ/S31WQzPsBAbQ+Jm6/jepGTeFhWyF/yuGW++651HZPS4vuDYthyhWwOyvikd6repHB+Q7zAOaaqAEW+uztEZraIMjaPuxHMRtxmR5Le1IvhRvG4jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786122591; c=relaxed/simple;
-	bh=sFQTra/cCbfPgdpYPr1RgPeCH75wq/wFOhftfVv4W8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TC+2ALsVHoUc9kLkBtGlh7JCwHr8SpoXaqK/hgmwMAA7PPoYjBd/MxGbaDH07CLxrHK18Sv39fVhBPnvIf6q/YbxgWLUo8PggNy4saPtEN6r5CWVrIXFMTp88pDb8Iyi3F/8nZAIjhwAznmRTls+uFgYxCjLBgUrapWZeJ13VwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XRtoj7uu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786122627; c=relaxed/simple;
+	bh=I4CABGXjTJheJN90a8dJaU5pacRQj/oNKRMh16rmia4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nF+kny7awqEKPgqmi4q5egtGqqYW8opAoc11sDYeRqZgU8KyUCJQ2Ib52zIghKQoCcj4OFWmTpLWAiD1DvhyRafd3hzuIb1ZjQ9bTObbKUBANjIuLiIfzCb2PuoRfYfmHD34qyNS+eULlaRVJHPELfI3HtDYn78yUHQ6FJZ8omY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qJMFDTkI; arc=none smtp.client-ip=209.85.160.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XRtoj7uu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFBB1F000E9;
-	Fri,  7 Aug 2026 17:09:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786122590;
-	bh=AOOz5/HFZ3VZ2fi1SYICsO8bhZcrCDvCEqCJjAJFYeg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XRtoj7uuHaSLSXEJqgt8VHNlrM5S0SQmyfREgWlLAHf24RkgmIn1Ce0NI8+qeLrLi
-	 qyXin9BZRHw9nemQIec2X2dkgWKR43My3aud90x1/G2WbGvRhzdb0uOVaRPp1oUt+Z
-	 2naFDoAMdOCyKEacBmU9h6oXauTkZNyH+1K6M4XaSN6I8Q36QmIheK80ZMAsM2YGeB
-	 WuguCVoV+QDjtV3cIijqkaMy3a2OZBkmgtAWxDCM0aLKF6evuyDURdx2dPlG3xMuWM
-	 JF9DojlwnV22j54mxMguKjBib1eVtQhz0bWOL+Ym/wpLxSgC3nNOFh4Yu3E0VhJa0K
-	 y9kaLsv+mAEGw==
-Date: Fri, 7 Aug 2026 18:09:45 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, git@amd.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/4] net: macb: Rename MACB_CAPS_QBV to
- MACB_CAPS_TC
-Message-ID: <20260807-juggle-porcupine-71281d2d9041@spud>
-References: <20260807095012.640223-1-vineeth.karumanchi@amd.com>
- <20260807095012.640223-2-vineeth.karumanchi@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qJMFDTkI"
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51c0f0a0760so61108011cf.2
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 10:10:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786122625; x=1786727425; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=clSEJ3UwtXKJIIWAprg7HGhkfYg/BjPf3JtVxf9+fI8=;
+        b=qJMFDTkIscjIsX1N3KYk32kF/dpo2GgM/SALfbjEyLqrej8LgdUnrQ51xCuoyUnQsO
+         0mi6UInPoeS2yGXRX8Os7Wblk8Fr3HdC82vuCaJVO3lgYs4MRSiTaFjilOd6LFbW3U0r
+         jFP8082hY1LzvyhVruIA7uc3KRIjU4J0w+QUrwIAK5EmeIXKTxdUGGdEuzRQ1GwHFbtT
+         MvHK0MjwRi74h/vZnSO+NLnClxusgz4IyulYuM/2GbRYVJJlsbhzui1KzccWyt2/NBem
+         jyn30Pe4gHLP2a68kuWqix1cqku096yFovsEqgZtEIWGL6lEjIs2aZHruZbGVKKVeW3f
+         cfRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786122625; x=1786727425;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=clSEJ3UwtXKJIIWAprg7HGhkfYg/BjPf3JtVxf9+fI8=;
+        b=gmtefwIBBSLHgRTZtvrbwfnZRrEU8krISk/D4V4tX1rNWLwCYp6kupE1k0AQ3GzGld
+         hOkVqHcQPhlu6rG+CsXzjCgnWSZ803GsEmtLCF+6aHauWTXZuBJxXonUDdWU+SFDLPxS
+         RF9ITaioR8S7yhre+HwSpaM1qaHxmiPy89dSumsfphBLW3OJ/sEYX06kNSWHS0yrzmGu
+         yZggxTBTjevCvv8tuw8TqDwNOrmLcPyNvzGSmb5LNWKYHOkdvPcK8SvaSb6SJ319vtAG
+         FosK+K5H+wT0zkQb9Q/nhmX/c+DdU3qaFXtv/X0DWd23p7nCdsUAQi27aXsyPdxyA37h
+         z1Jg==
+X-Forwarded-Encrypted: i=1; AHgh+RqUjpGhoJTSdsJb5ha2RBXnhmE9yXh8I1Oj+P4a0ilW+VtUAHv8+0FPoLnZM/FZPIRg5ue92EY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOdq+eGkJ0n3AiNYciUwGDoxepMReL67SdG4fFkun1gEOHEzkd
+	9AIkekfG+dv/Pfik1noDut7uznEZgaR3QGYjFldhC4Glbs6ThDMHYizln8OMykzsQhpW/fMPpe5
+	EWe2noTEB9tgkZw==
+X-Received: from qtam18-n2.prod.google.com ([2002:a05:622a:e112:20b0:51c:b62:17d9])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:134b:b0:51c:88b:d7e3 with SMTP id d75a77b69052e-52d2090cc27mr28212811cf.3.1786122624628;
+ Fri, 07 Aug 2026 10:10:24 -0700 (PDT)
+Date: Fri,  7 Aug 2026 17:10:24 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KSnMEygBgPxuMCVt"
-Content-Disposition: inline
-In-Reply-To: <20260807095012.640223-2-vineeth.karumanchi@amd.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
+Message-ID: <20260807171024.1897860-1-edumazet@google.com>
+Subject: [PATCH net] l2tp: fix tunnel and session refcount leak on seq_file release
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com, 
+	James Chapman <jchapman@katalix.com>, Guillaume Nault <gnault@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
---KSnMEygBgPxuMCVt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In pppol2tp_proc_open() and l2tp_dfs_seq_open(), iteration state
+(pd->tunnel and pd->session) is kept in seq_file private data to allow
+iteration across multiple read() system calls.
 
-On Fri, Aug 07, 2026 at 03:20:09PM +0530, Vineeth Karumanchi wrote:
-> The MACB_CAPS_QBV capability flag was originally introduced to
-> gate TAPRIO/QBV support. However, GEM IP versions that support
-> QBV also implement multiple TSN clauses.
->=20
-> Replace this with a generic capability flag that can be reused
-> by other TSN features. Rename MACB_CAPS_QBV to MACB_CAPS_TC to
-> better reflect its role as a general traffic-class offload capability.
+However, if userspace closes /proc/net/pppol2tp or /sys/kernel/debug/l2tp/tunnels
+before reading to end-of-file (EOF), any tunnel or session reference stored in
+pd->tunnel / pd->session is left un-dropped when seq_file private data is freed.
 
-I'm not convinced that this is broadly correct, whether or not there's
-Qav support (which is what you're using the newly renamed flag for)
-depends on an IP configuration time define that I think is independent
-of whether or not there's Qbv support (gem_exclude_cbs).
+Fix this by dropping any remaining pd->tunnel and pd->session references in
+pppol2tp_proc_release() and l2tp_dfs_seq_release() when closing the file.
 
-That said, the only platform that supports Qbv that I have the exact
-documentation for does not disable the CBS bits.
+Fixes: 0e0c3fee3a59 ("l2tp: hold reference on tunnels printed in pppol2tp proc file")
+Fixes: f726214d9b23 ("l2tp: hold reference on tunnels printed in l2tp/tunnels debugfs file")
+Reported-by: syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6a760f32.01d0871a.3a0d52.004f.GAE@google.com/T/#u
+Assisted-by: Jetski:Gemini-3.1-Pro
+Cc: James Chapman <jchapman@katalix.com>
+Cc: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/l2tp/l2tp_debugfs.c |  4 ++++
+ net/l2tp/l2tp_ppp.c     | 38 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 40 insertions(+), 2 deletions(-)
 
-Cheers,
-Conor.
+diff --git a/net/l2tp/l2tp_debugfs.c b/net/l2tp/l2tp_debugfs.c
+index b26986fda9d6cf096519d56032fe3deb5034c7c8..c12d5e1ee550ccc2608b6128cb653ca373280373 100644
+--- a/net/l2tp/l2tp_debugfs.c
++++ b/net/l2tp/l2tp_debugfs.c
+@@ -306,6 +306,10 @@ static int l2tp_dfs_seq_release(struct inode *inode, struct file *file)
+ 
+ 	seq = file->private_data;
+ 	pd = seq->private;
++	if (pd->session)
++		l2tp_session_put(pd->session);
++	if (pd->tunnel)
++		l2tp_tunnel_put(pd->tunnel);
+ 	if (pd->net)
+ 		put_net_track(pd->net, &pd->ns_tracker);
+ 	kfree(pd);
+diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+index f8881699e1cad88e6f312e6ca47ae0af94c6137c..24e5bc06f65c6134974612294e36dd13c1608607 100644
+--- a/net/l2tp/l2tp_ppp.c
++++ b/net/l2tp/l2tp_ppp.c
+@@ -1597,6 +1597,40 @@ static const struct seq_operations pppol2tp_seq_ops = {
+ 	.stop		= pppol2tp_seq_stop,
+ 	.show		= pppol2tp_seq_show,
+ };
++
++static int pppol2tp_proc_open(struct inode *inode, struct file *file)
++{
++	struct net *net = pde_data(inode);
++	struct pppol2tp_seq_data *pd;
++
++	pd = __seq_open_private(file, &pppol2tp_seq_ops, sizeof(*pd));
++	if (!pd)
++		return -ENOMEM;
++
++	pd->p.net = get_net_track(net, &pd->p.ns_tracker, GFP_KERNEL);
++	return 0;
++}
++
++static int pppol2tp_proc_release(struct inode *inode, struct file *file)
++{
++	struct seq_file *seq = file->private_data;
++	struct pppol2tp_seq_data *pd = seq->private;
++
++	if (pd->session)
++		l2tp_session_put(pd->session);
++	if (pd->tunnel)
++		l2tp_tunnel_put(pd->tunnel);
++
++	put_net_track(pd->p.net, &pd->p.ns_tracker);
++	return seq_release_private(inode, file);
++}
++
++static const struct proc_ops pppol2tp_proc_ops = {
++	.proc_open	= pppol2tp_proc_open,
++	.proc_read	= seq_read,
++	.proc_lseek	= seq_lseek,
++	.proc_release	= pppol2tp_proc_release,
++};
+ #endif /* CONFIG_PROC_FS */
+ 
+ /*****************************************************************************
+@@ -1608,8 +1642,8 @@ static __net_init int pppol2tp_init_net(struct net *net)
+ 	struct proc_dir_entry *pde;
+ 	int err = 0;
+ 
+-	pde = proc_create_net("pppol2tp", 0444, net->proc_net,
+-			      &pppol2tp_seq_ops, sizeof(struct pppol2tp_seq_data));
++	pde = proc_create_data("pppol2tp", 0444, net->proc_net,
++			       &pppol2tp_proc_ops, net);
+ 	if (!pde) {
+ 		err = -ENOMEM;
+ 		goto out;
+-- 
+2.55.0.654.g21b8a5bc05-goog
 
->=20
-> The supported TSN clauses are handled through macb_setup_tc().
->=20
-> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-> ---
->  drivers/net/ethernet/cadence/macb.h      | 2 +-
->  drivers/net/ethernet/cadence/macb_main.c | 6 +++---
->  2 files changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/c=
-adence/macb.h
-> index a11052565436..f24df25923d7 100644
-> --- a/drivers/net/ethernet/cadence/macb.h
-> +++ b/drivers/net/ethernet/cadence/macb.h
-> @@ -768,7 +768,7 @@
->  #define MACB_CAPS_MIIONRGMII			BIT(9)
->  #define MACB_CAPS_NEED_TSUCLK			BIT(10)
->  #define MACB_CAPS_QUEUE_DISABLE			BIT(11)
-> -#define MACB_CAPS_QBV				BIT(12)
-> +#define MACB_CAPS_TC				BIT(12)
->  #define MACB_CAPS_PCS				BIT(13)
->  #define MACB_CAPS_HIGH_SPEED			BIT(14)
->  #define MACB_CAPS_CLK_HW_CHG			BIT(15)
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
-net/cadence/macb_main.c
-> index d394f1f43b68..29c93df1444c 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -4846,8 +4846,8 @@ static int macb_init_dflt(struct platform_device *p=
-dev)
->  		dev->hw_features |=3D NETIF_F_HW_CSUM | NETIF_F_RXCSUM;
->  	if (bp->caps & MACB_CAPS_SG_DISABLED)
->  		dev->hw_features &=3D ~NETIF_F_SG;
-> -	/* Enable HW_TC if hardware supports QBV */
-> -	if (bp->caps & MACB_CAPS_QBV)
-> +	/* Enable TC offload for TSN-capable hardware */
-> +	if (bp->caps & MACB_CAPS_TC)
->  		dev->hw_features |=3D NETIF_F_HW_TC;
-> =20
->  	dev->features =3D dev->hw_features;
-> @@ -5678,7 +5678,7 @@ static const struct macb_config versal_config =3D {
->  	.caps =3D MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_JUMBO |
->  		MACB_CAPS_GEM_HAS_PTP | MACB_CAPS_BD_RD_PREFETCH |
->  		MACB_CAPS_NEED_TSUCLK | MACB_CAPS_QUEUE_DISABLE |
-> -		MACB_CAPS_QBV |
-> +		MACB_CAPS_TC |
->  		MACB_CAPS_USRIO_HAS_MII,
->  	.dma_burst_length =3D 16,
->  	.init =3D init_reset_optional,
-> --=20
-> 2.44.4
->=20
-
---KSnMEygBgPxuMCVt
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCanYRWQAKCRB4tDGHoIJi
-0lepAQCL8DJHbLzfc/ciV6fdlv2aZwWZf7Qc5VROrZakl7wTrAEA9PoiQ0av6S6Z
-dv6HdKeMfehglF89aDyPFj2QrXbfAA4=
-=sVqu
------END PGP SIGNATURE-----
-
---KSnMEygBgPxuMCVt--
