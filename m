@@ -1,76 +1,71 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010037.outbound.protection.outlook.com [52.101.85.37])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012061.outbound.protection.outlook.com [40.93.195.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEF73E63A4;
-	Fri,  7 Aug 2026 09:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266353DD518;
+	Fri,  7 Aug 2026 09:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786096238; cv=fail; b=HtFa+LKN1nM0HHODZElvJS/QIieO9qEz+thZUAes276g7NNriOSpDw/1uXIJoQUPAN9ytD35WoOdbBatQXPOztKT6Amn7uwUvKNyrrkYmTTYTzjHUVQvig1cGJwe9SlqyNldy8LbMohhVGwyEraLm5s8dRYQj7G0CiJSY4Gd6N0=
+	t=1786096242; cv=fail; b=O5AuAO3a9T1NKMYKTogAWctnQWB8C3lKx39Q/oSnh7ihGgymFclKAsX6awLb3++hDarJdcXzkE/B4bIb7BiBofqKq4lpSbhq5kFNqXhpTFfK+XnhxaoTiKtr56RF6ABNwO0tSAtrEZr7+vJ8twt90xHE/uAyY78XFN9ipQmr2Uo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786096238; c=relaxed/simple;
-	bh=4Bws6HnIDlgC+E31lqedBS8jcW55xbuUPuWvTei5TpI=;
+	s=arc-20240116; t=1786096242; c=relaxed/simple;
+	bh=wFEp2xXc+xM+2IuyRXXu9lU0h5KQCHKxOwSQ02tUPLE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ilti4D+GSIjRg8qk4whT8MR5g8Lqy4Pma5DtyJqe13DxqP8vfkvZUxB8e4erXWzFv1fkn0Wm1OuMoVCfoI328N+FaTwG/bDmYhyD49kvmfXG4q6jwA+6lq5ywHtGI/SSh7GRIiBIlWRXIaNQt2+5oDxBC/p1K+dKr2GeywxdyyI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Wqo/8h5O; arc=fail smtp.client-ip=52.101.85.37
+	 MIME-Version:Content-Type; b=qeZwCxI8uwHxxJsOZS2NF7JqhqVRatZCfM7iV/b0HfquGkLq5FRqzc54R7D3Kh0mGKKzmegdGC1hi9xEhRGDKXTwO880+A+qVpXVXmy9hYI71Xo4bN+afBMCEsD4N3LMbJXmsu1p+/DDnB1hQ1UMhOvmL3unBlyvXzCP0CpXaOA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HPDOTRgi; arc=fail smtp.client-ip=40.93.195.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Wqo/8h5O"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HPDOTRgi"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EaUZLs8YcXexm+I/NaRDeTKsZBTINpd/csHcSeH+1Pru5CGE36+0U+7oR3Av7scmPUAHRoPsWmslj9K9PoP8IoclFO4D1sdio3U6GwWNdHvOiqEpFF7daARgJT3/KzuXockCIMhyamRpgjW66esYNEQiO7F+n5x/Drk+fUsxgwuwy4OPuKoGZOCkazBqUXZMq4xg+QGWgamGRgbS845pEBgqmR1T1RErQnVkT2fGvGXTEo3ieGNJ2Z92bA64jQkK76c1CN0uGE3g/C3QnCCH/GT5inmtp24kypfQhIZAtkBdWewx4MQlHs8ojE4VKhLcWo/S1wkKTmVdVzZQwzFp9g==
+ b=AUoGYu5Q/f7gCqsbcxItejrdQYaiNs6dOFArdF6lv8AalUYojw4+oz5idfFVsQzcCpS9FgYQ/WxIrFCSmrl3AEqUQaZCNliSwyAqNA20+3WNHglHiGiQebDyWYrNFAU1Kvu6RH2tL4Gcy3+YIfUMUUxaqd28ybGLw17qPYhK5OcFEPUNC5Wlxsx1564ebamcNbthP/QAeiY+KCpjNbQ6b3EfBHfmtLTEX336AnrNgZpmkBCM5aBy6lIYzuAmqm10kVpLPjmwOKKANxfO5tOhcV8K4MU0G1S2xYWOe7qBIVMHQ53sYBVr6eez2NI++YSYRMcySnwmg43baO2zxjTBVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EBDfLn4ZfX8bCFrdM375szH+rT5KMoaYpRTRK4BXkF4=;
- b=ktkEgvnx9Lzz1pVyhDSfC4mxtXIZUFog7InJ6jRDolh5DfKHNN/qh59vYS4OMYIeaKEgqz8d+Trc4fl1AQVRkW6mcmFj4x//Mgpp92g2MS5vu3ZVCE8XL7plT77MByzNfSffKf/cGVcx1jUnNxMzSnrDTr6GUKFX7iz21D8AY8USx/e7X94ZHfXN42+XZecT0izgkqWLck4jrNJyU2UqJlVV6O1kWhb0z5oiN1ky5ViP5dE1kWEisvwpYQh7A+LGNhQYA4GiGkY66virbNgmKGTy1afjwE04suY1oTGYottR6rfqU7W2mnDzVaqy1j9wo+nnv7tMZo+9lDipDLj3Lg==
+ bh=/v1qj2GGX/dyA2R4qR/YpM5HkkNQo6xviR0hMv9POIs=;
+ b=HwnpZE/QGtroi+GYAW2DB+LlYbFPE6OaiPXgMiMfqAmJO/wlcE/vjn8Ioy72pwuEYwIN7dUjagvWFU9ciyX3wkbsPk55nIIVSBdEhGJ27pvZR0UVbRLCq/Tnoa4vuvcA2QDOJdroX2JIhXgDCQgz0H1AK6SDG8qn0Ogy0KIdUWDHhRuqK7dIcRvJ5CeIc+I6e2gn4RwdbmTrv0ZuCJ7SIXDUSsIGLHn9KukG93KJwdRtaMxiFaJkkiKOPW3fFYsptqAQkfUv4cPkbpg4m23cvUn+wYf09MVhOMtj/OhCrr4M32cYqy4l74lqHOw1f6GEmhUJIBYMOayg706ZgAQA+Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=bootlin.com smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EBDfLn4ZfX8bCFrdM375szH+rT5KMoaYpRTRK4BXkF4=;
- b=Wqo/8h5OGP4RG+qIlaqwFnSVh8y1eNhTdYMjknMJ8n0DO05KFqpWxNc3oXpdQjhDm4UdWXwH3gIxi4lu1oizM8Ob3IPqyhPkwZ0Lpo6DHpP9SueZUp8U7K3jvibiEGgG9NROSLOHByitrtwAu+WskgNJNQq3zr+IJ/1h0ZIfrKQ=
-Received: from IA1P220CA0018.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:464::9)
- by LV9PR12MB9781.namprd12.prod.outlook.com (2603:10b6:408:2f6::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Fri, 7 Aug
- 2026 09:50:32 +0000
-Received: from BL02EPF0002992A.namprd02.prod.outlook.com
- (2603:10b6:208:464:cafe::45) by IA1P220CA0018.outlook.office365.com
- (2603:10b6:208:464::9) with Microsoft SMTP Server (version=TLS1_3,
+ bh=/v1qj2GGX/dyA2R4qR/YpM5HkkNQo6xviR0hMv9POIs=;
+ b=HPDOTRgiskBqkl+sMAA0x1NZa8VANDD3jWUG0yNULImgZQ81ZvwRYdroZAA9piB55+deXziGxh5ulGuqhO9hPFcsag/Vd0RTqqQclfJ4Hp7Ge/IOxwmklrIipYA82Im+VtK+7EdvZVRPDTRME7lBhEJ1v3PDmJHE2DLDnCp3wGA=
+Received: from MN0PR03CA0002.namprd03.prod.outlook.com (2603:10b6:208:52f::31)
+ by DS7PR12MB8289.namprd12.prod.outlook.com (2603:10b6:8:d8::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.20; Fri, 7 Aug 2026 09:50:36 +0000
+Received: from BL6PEPF0001AB77.namprd02.prod.outlook.com
+ (2603:10b6:208:52f:cafe::82) by MN0PR03CA0002.outlook.office365.com
+ (2603:10b6:208:52f::31) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.23 via Frontend Transport; Fri, 7
- Aug 2026 09:50:32 +0000
+ Aug 2026 09:50:36 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0002992A.mail.protection.outlook.com (10.167.249.55) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BL6PEPF0001AB77.mail.protection.outlook.com (10.167.242.170) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Fri, 7 Aug 2026 09:50:32 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.315.6 via Frontend Transport; Fri, 7 Aug 2026 09:50:35 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 7 Aug
- 2026 04:50:27 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 7 Aug
- 2026 04:50:26 -0500
+ 2026 04:50:22 -0500
 Received: from xhdvineethc40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Fri, 7 Aug 2026 04:50:23 -0500
+ Transport; Fri, 7 Aug 2026 04:50:19 -0500
 From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 To: <theo.lebrun@bootlin.com>, <conor.dooley@microchip.com>,
 	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 	<kuba@kernel.org>, <pabeni@redhat.com>
 CC: <vineeth.karumanchi@amd.com>, <git@amd.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next 3/4] net: macb: Add MQPRIO qdisc hardware offload support
-Date: Fri, 7 Aug 2026 15:20:11 +0530
-Message-ID: <20260807095012.640223-4-vineeth.karumanchi@amd.com>
+Subject: [PATCH net-next 2/4] net: macb: Move TC capability and PM checks to macb_setup_tc()
+Date: Fri, 7 Aug 2026 15:20:10 +0530
+Message-ID: <20260807095012.640223-3-vineeth.karumanchi@amd.com>
 X-Mailer: git-send-email 2.44.4
 In-Reply-To: <20260807095012.640223-1-vineeth.karumanchi@amd.com>
 References: <20260807095012.640223-1-vineeth.karumanchi@amd.com>
@@ -84,133 +79,90 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0002992A:EE_|LV9PR12MB9781:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9e85c64-2823-4550-b893-08def469525d
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB77:EE_|DS7PR12MB8289:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9aa68c91-28ff-48cc-59c1-08def469546b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|376014|23010399003|18002099003|22082099003|11063799006|56012099006|6133799003|10067099003;
+	BCL:0;ARA:13230040|1800799024|36860700016|376014|23010399003|82310400026|11063799006|56012099006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	+0rNEXrXBUKbdDE3iHaGAQo6Yd+fks51qUErC7z/E4p1iqC6kXeYw90ZWOvaLBQtTWJ3WzsCkkzLhTywmRO0U3rq3RdMYQOqYFwzsMF8akozkLXvr+hfGldM2elBSRm9NQkTfb1kGI2pl5u9SEXAqyBgeK2PuBajdCcnezDWWiSGvpQH/ULgvu3Jt8CfTir6RhDCVyYZbplPTWw4TyDY0Zb7pE95EZTsXBliuxOIKLmJNPU8odI2RxllPWB2iHjo5g34SE5FXPxB7j41Jncfm+PmFbkJEIjixJdL8+/neugncMC6I0Kup7ffKDuXD8adFph4fQhRerzxOFNwTvniZ0InQjFCN3pcZXYWPRZhBhunVGOC8VcpoEtUaFV/PpyFFFeFFsQqWoWrBszlHg7nXLvUTosSRmPz6HAKiRfRhhx4fm9qT33TQtxU8F4VaGnPyLWzp7elIJgxaEdvEMuYhgXKsDLzF2l/GFH5CGpbW+n64K+9TWGqV4oJ+8PvyQA1gpa8tYjrKaMfq0Scre1d3NHC4pP6sj81MEv3ilgba7vMn93kuOY5kYbM8L3wOb7vgJYy7SkwHc9STvjwFLCpxj33HngCCpSr/aUxltnRwrNX4HM1dN87pPPoFR+fu4+qLU9vLw6lRfbVrzBp7pWVaJ6T1CobcVIVNj3HoNka1P5FbCb9uVhlUcd2Dbb7X4rbP7+bvNgfOfHr9i8R0tU1TQ==
+	K0sYzsrQePEilu0Ca7FCltDWDIkH7mat3agYszLVmVUlHRPoYYBf45DD6fV65+iGnrra75RlPaeAyvFcilr7EDPJyxZ//maef6CQkXynXhRCnI45pQKKcaj+97yv9stUKIoF4nVVe6SEkFG8MEN9gQPBuS2osbZ/p28fnxk/xnSJcaLolg89nZeFTPa1jgqLLSi/fFgt5XyM4ku84Nv10fiAAmRjKAUUfaG/kC8vOyuUxPmlbI4cloHq8Fwr9wT4ysPBVUKvMy36/dUvRcoZsAoDIy9waDjtMMpvvY9gs8YLCNGzil3VMrtQEasMkFhY6l9r0WU+Opdcx3jpWGnvMk/xQACq9GgIeiEuuZ/14zAvxnqF0jj5B5elPryAc32/P19TxoFi7+0yXJs1GkFUudP1gRE+kdTs5vjh7lVpiM6mLQ3MdGD0WqNvMqeIaCtSb4w3bSWq6fznvGiASBBEK2y2lS7+GsE+PeRAlGY2tThejavBkYVwG+GYe1odabqsGM5QAFrl/KLqw+YVVcUzF0kUB9qV9szkfa92iPR1cQKHiZkjoeppbW1YqUa0rTq6DDZ5fouIB2BpU6JfVWOavyb7Fz8pOPVDKWE/Lh6OiLbObWnr2X9z1B++Wovu5pMx7PgzQZqD/5k/tmSdL7mZ7N3TlCcsJiI6RbX5AtlDa8Gw0TnFnXvGLJ4CayIqEGy1WMCnKrkWhjHw49jygWrqUA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(376014)(23010399003)(18002099003)(22082099003)(11063799006)(56012099006)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(23010399003)(82310400026)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	o9lMCuUICL02Y1taiDV0VGo+YMiOlF7y+jGtLDxQgE+lfruI4miX6TXuGDyIn2FYU4shKr5PgVSzJc3Ic8kFFplRgZxQPaC2eVJPhwjJOEXx1bs/Tz8R06Tyt79/TAFauNhAhs7efIhIXD2f3H73zckV9FP1wLvbr8PtLScfFJrDZORAIWTm5KORQ3AfZIWN7iyfmtbpnGGyb/IkRTHIssdLf2F7n0gUvpDe53WuZK6F8Qt9x3fB2/vZbVFnSnrsNZH+udOuZ/pXc2/q8MJ26M/Kz4yWs37Y/PGnFirsVkTx11Oki8fpX7dHm+VGyU8AnVJvJJXA2jLvd0ApGmYDow1kmLUadwYJ9VHCq30uGe7BGfnuM8tt+taPnwvUlvTPMBxePNYWjn3uO6W8EsUxrhrPJCK94qbwK2mZS9sbvYUwztURHcScdg2W7NO0fi11
+	q/fRPdL1fzIq35/l0HXLl+iIRIE/g8Qs1o7Yb+qE/5Mw9EAfhiF7FxhTqhMaVwO73GsWguVQL9DwmsBNITeexopbMfwvafOuyKcEYI/N6Qpup8THqLLDXd6yzoLnAylMIxq5HUoFnVcy9OmwOk2RVIGD5RTM5xuKNLvBvWhZjBNJAPhtIUpcWiAJxDwFimYdDgGpknMWFZtPiRQTTXrc4C35MT2AWVaGG0DokLkB37DkqWBCiTMcRmqQATLVQLkwlX36aUZfWYbHjn+p2qMKTgfUTYyTxrcog6chE9Dx3QfzkmEWwnY+g1pldJzw1oON5o8K/ulHoEkKGDnrAt5e+BUhm9ekP/C63mlEzyD61nfJpswzoLRfYCu9EU3FQpRYZYn5qMRL2xpc/janMIRgrLsltxyFLsbs3OBHfBoQbJns00l1qJ5ilOEJbfKmMjCl
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 09:50:32.3379
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 09:50:35.7814
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9e85c64-2823-4550-b893-08def469525d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9aa68c91-28ff-48cc-59c1-08def469546b
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0002992A.namprd02.prod.outlook.com
+	BL6PEPF0001AB77.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR12MB9781
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8289
 
-Add support for TC_SETUP_QDISC_MQPRIO hardware offload, allowing
-traffic class to queue mapping via the mqprio qdisc.
+Move the NETIF_F_HW_TC capability check and the runtime PM suspend
+guard from macb_setup_taprio() into the common macb_setup_tc()
+entry point.
 
-Implement macb_setup_mqprio() which configures TC-to-queue mappings
-through netdev_set_num_tc() and netdev_set_tc_queue(), and resets
-them when num_tc is zero. The driver advertises TC_MQPRIO_HW_OFFLOAD_TCS
-offload level.
-
-Add macb_tc_query_caps() to report mqprio capabilities. Setting
-validate_queue_counts to true delegates queue count and overlap
-validation to the mqprio core via mqprio_validate_queue_counts(),
-avoiding redundant checks in the driver.
+These preconditions apply to all hardware TC offload paths routed
+through ndo_setup_tc(), not just TAPRIO. Centralizing them avoids
+duplicating the same checks as new TC qdisc types are added.
 
 Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 59 ++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ drivers/net/ethernet/cadence/macb_main.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 508d952e2ae7..00355cc4b434 100644
+index 29c93df1444c..508d952e2ae7 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4515,6 +4515,60 @@ static int macb_setup_taprio(struct net_device *ndev,
- 	return err;
- }
+@@ -4499,18 +4499,8 @@ static void macb_taprio_destroy(struct net_device *ndev)
+ static int macb_setup_taprio(struct net_device *ndev,
+ 			     struct tc_taprio_qopt_offload *taprio)
+ {
+-	struct macb *bp = netdev_priv(ndev);
+ 	int err = 0;
  
-+static int macb_setup_mqprio(struct net_device *ndev,
-+			     struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	u8 num_tc = qopt->num_tc;
-+	int err;
-+	u8 i;
-+
-+	/* Handle reset case early */
-+	if (!num_tc) {
-+		netdev_reset_tc(ndev);
-+		return 0;
-+	}
-+
-+	/* Configure traffic classes */
-+	qopt->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
-+
-+	err = netdev_set_num_tc(ndev, num_tc);
-+	if (err)
-+		return err;
-+
-+	for (i = 0; i < num_tc; i++) {
-+		err = netdev_set_tc_queue(ndev, i, qopt->count[i],
-+					  qopt->offset[i]);
-+		if (err)
-+			goto err_reset_tc;
-+
-+		netdev_dbg(ndev, "MQPRIO: TC%d -> queue %u (count=%u)\n",
-+			   i, qopt->offset[i], qopt->count[i]);
-+	}
-+
-+	return 0;
-+
-+err_reset_tc:
-+	netdev_reset_tc(ndev);
-+	return err;
-+}
-+
-+static int macb_tc_query_caps(struct net_device *dev,
-+			      struct tc_query_caps_base *base)
-+{
-+	switch (base->type) {
-+	case TC_SETUP_QDISC_MQPRIO: {
-+		struct tc_mqprio_caps *caps = base->caps;
-+
-+		caps->validate_queue_counts = true;
-+
-+		return 0;
-+	}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
+-	if (unlikely(!(ndev->hw_features & NETIF_F_HW_TC)))
+-		return -EOPNOTSUPP;
+-
+-	/* Check if Device is in runtime suspend */
+-	if (unlikely(pm_runtime_suspended(&bp->pdev->dev))) {
+-		netdev_err(ndev, "Device is in runtime suspend\n");
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	switch (taprio->cmd) {
+ 	case TAPRIO_CMD_REPLACE:
+ 		err = macb_taprio_setup_replace(ndev, taprio);
+@@ -4528,9 +4518,22 @@ static int macb_setup_taprio(struct net_device *ndev,
  static int macb_setup_tc(struct net_device *dev, enum tc_setup_type type,
  			 void *type_data)
  {
-@@ -4523,6 +4577,9 @@ static int macb_setup_tc(struct net_device *dev, enum tc_setup_type type,
++	struct macb *bp;
++
  	if (!dev || !type_data)
  		return -EINVAL;
  
-+	if (type == TC_QUERY_CAPS)
-+		return macb_tc_query_caps(dev, type_data);
++	bp = netdev_priv(dev);
 +
- 	bp = netdev_priv(dev);
- 
- 	if (unlikely(!(dev->hw_features & NETIF_F_HW_TC)))
-@@ -4535,6 +4592,8 @@ static int macb_setup_tc(struct net_device *dev, enum tc_setup_type type,
- 	}
- 
++	if (unlikely(!(dev->hw_features & NETIF_F_HW_TC)))
++		return -EOPNOTSUPP;
++
++	/* Check if Device is in runtime suspend */
++	if (unlikely(pm_runtime_suspended(&bp->pdev->dev))) {
++		netdev_err(dev, "Device is in runtime suspend\n");
++		return -EOPNOTSUPP;
++	}
++
  	switch (type) {
-+	case TC_SETUP_QDISC_MQPRIO:
-+		return macb_setup_mqprio(dev, type_data);
  	case TC_SETUP_QDISC_TAPRIO:
  		return macb_setup_taprio(dev, type_data);
- 	default:
 -- 
 2.44.4
 
