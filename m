@@ -1,149 +1,86 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66904377EC3
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 09:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C118D377ED7;
+	Fri,  7 Aug 2026 09:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786096271; cv=none; b=lxwMp3wCLjpcDMt7g6/60fVF77dcH8UmrYz2JmJhAZuBeGunCyLLf5q8jKLt63RLBBesHMQiff+nosFtDxKmOHed3cU/KRxPe2oiBW5BLiprF9d9vU5DfOjJkTITMlkW5U4s3gSO7jc1xGGU4NWIfTB6oG5RFb1Ubftm+4JO9UQ=
+	t=1786096508; cv=none; b=VU0Ds/JmjLNHjIHIQKlMcxvbmJpEajX1U6QgGkhsx+QruZuuOnnzs1vly5vZPAj8RWCcXhX661fstCrHguhOCGRMrPDUf202GLLQWdhYAqLTb5YJiqCQkiA0SEhMw046GoZ1QQbjc88DZSaBM/OQTU/1BiHHpLp5Pa6MYWAztJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786096271; c=relaxed/simple;
-	bh=kLIJ7ESzSbgSa7C7U7LBT9Ad+YF0VtcMzSfWUdwBSsg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fcvIETMfta7VqUP05J/bbisjEFM33gdHoBJPFG+WSPC+0HwbJpqwhbk6aTjhktGeOYvVpFXzWGnZzK45N24TZO/WuyJyt0OsOJLAKsLZ5tU2GSslCWeZSjuL1EsmWsf/WXirKm3S5M0CLo8DAxL1ut+TAek/IES15Vyz4pb5/2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r79zyM5J; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786096508; c=relaxed/simple;
+	bh=KCtRJ+a5gZ9ziP+VCBdd/234T81s+X2T53qgzmmgj+g=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NhG5VHwSj9B37JW3JC4gVsQ2B954szCeXg+vXqs6YQoegMXDe5zeOv6UYocAerKXwI0OFKscxHXisFhZuEnDR+tlma19xaeF7on1/8nf5DKBWSNfE3HyzOxw/a7hn73W+8+iHremV2e+3ziqbFEwEWymTQ55n+4spxzBAtxy1/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=KgyCfvzo; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r79zyM5J"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49553515a8bso47288385e9.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 02:51:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786096268; x=1786701068; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CK5aAlE2gXWUQMLhZXJtBxJFs/yXRK0ivXNCpOMa24I=;
-        b=r79zyM5JQ2IYlFzg++2oapCcw694JrZSBpghxHSyd70xbL5LmQHxtvfAC+1bOUi3FJ
-         9bNGYpvH1ViQiR4zYULRKXlSgtTwnpZTBtnaf5AkOLdyMDI6dCoKFE0MZHhssjt/n5ir
-         Ja9AGChwbDtTYGxXNLtM/gxCdmatW17pejVM5EWqk6DaANuFLyTlfQBPqi+efs7+YzLv
-         /3hnwz+CRK9ERucw3b23Uq+VsYXDuRAqL0Qub68eXSm8GDaYzkdmPEIF27XlyGw/sv7v
-         JFThhCDX/ixs2Hapk6Rftk4/m1JdxBwEzN6CggyIRnRvwQqu7Pl2FMF+ufPVrfkXjyzT
-         11pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786096268; x=1786701068;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=CK5aAlE2gXWUQMLhZXJtBxJFs/yXRK0ivXNCpOMa24I=;
-        b=b+I+acc/IYLqX3ltKZfznl2SCyu9t+EKnP6YrAskxMchlLm8p7Vq+iQAOad3ahSxqe
-         31J6/mCNCw6jjerJl4JfLb8mDDunXx9/cqOJXk+JZwckxn1WeJXAhQfoPknbJ23pESsA
-         xinp8pmdN3rDqQuZy/8WX6twENK5czuzClAb9TDDaGMeBAqpDr9mo1XT8iCQgN6v7pfD
-         CSldURkHTzgko1hkesqHAdQCCdht3CG+uSKyTCD0CPwQm0o4PHYdwJRB/P/6yBExqHF0
-         DaQOeRaIJohxhnrtQSnX+AyEQf7NGbi8p22xsms1UxaA7TAdxmIbUPzSJDWfkUWim5YV
-         pIew==
-X-Forwarded-Encrypted: i=1; AHgh+RoRM9f8SUKmwqW7DUMCoUqhZf248xz1VMhndiOm5fZO1k/tEYIvPYwXni6pJx5y4hkPrnLLwGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLCeen5AI2CVbxM/eRPFMb2AJi7G5edkAcMwQapmZEinSVcdug
-	7qBNQZBQ/IIa8C6j2axP2SBR5mF9wxWLAOmeNtkALWKwkz9IVuVSeFc+
-X-Gm-Gg: AR+sD10ryS7ZPp08u2gTBVrG+0pKiKpBOTbLufp4n1fJisyRiXXtMf/Zu/gSub2l7u4
-	SOYnryGpd7jfSco33gWjrMXwODI2J9mWvWuUfSzRUV91IBsldgl6tv+pTTR97FF9dz/8InFzVed
-	kEKmkdZGXMpYmFOy9b94AVuH/YQ9YJgyO8Ec05hap0U9+gj2aUDGha4v4V88PJsNO2DtkdUWP0+
-	qC416rGXvBxxruRvnVZPzstF4NhqoVHDIu/RzhZDHnedOp6pGM3AC6RiWbRkSzJOxuG0GX5EJHa
-	aKHIrPobS+65ghpWX1KV2KBXzy1VXBR1zYCsZjFOnPrtLosQP23i4nu3umxnbz7Yla1BiojxlXl
-	OJNLhDdLlYI84D273IQN6Jf8UMwL6ZaPBQn4g2LKCW5sOYMYcSpi3e0e+JSOW7MQja9QzIJK1IA
-	3HliCtwhyyVhCYRywB7kkypAhpvWoT0NYeGaW3OUX03INhAEM4rx20Gd33zZTGvtEICXBHoOjch
-	K+1pYH4jOK8+JR9WguQ
-X-Received: by 2002:a05:600c:a47:b0:499:484a:7644 with SMTP id 5b1f17b1804b1-49959e2eb00mr98245435e9.9.1786096268249;
-        Fri, 07 Aug 2026 02:51:08 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995ea27b29sm31138585e9.11.2026.08.07.02.51.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 02:51:07 -0700 (PDT)
-Date: Fri, 7 Aug 2026 11:51:05 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
-	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
-	pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org,
-	sdf.kernel@gmail.com, ameryhung@gmail.com, kuniyu@google.com,
-	memxor@gmail.com
-Subject: Re: [PATCH bpf-next v4 1/5] net: Add connect_socket() helper
-Message-ID: <anWqiWgSNWARKBRi@gmail.com>
-References: <20260806182234.380833-1-mahe.tardy@gmail.com>
- <20260806182234.380833-2-mahe.tardy@gmail.com>
- <05084a53-a1a4-4e60-bdd7-6fd16ef6a029@linux.dev>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="KgyCfvzo"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=QVgfmBluaZnUjMLr50+g3Vh7nfXTTGPctw64a+rZv24=;
+	b=KgyCfvzo8K2j4os4s4u330vIRTu5d5oDlLEiJy/Vn4YDYBW9LxBin1M0CRAWIFxnUzTaljORN
+	UBFK29AvlNX63a7bjGEOXyujPDxi03DrszpWKd+q2BBFZq5Zzzbzu7HBWH/Z1eCrpKQL2MWk8M9
+	POnKOXIsKF67RisnwF4LzC8=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4hGfQd2Y2wzpSvQ;
+	Fri,  7 Aug 2026 17:45:29 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 90F0840561;
+	Fri,  7 Aug 2026 17:55:02 +0800 (CST)
+Received: from localhost.huawei.com (10.90.31.46) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 7 Aug 2026 17:55:01 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
+	<ningwei15@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH v2 net-next 2/3] net: hns3: add missing const qualifier to hclge_log_error() reg parameter
+Date: Fri, 7 Aug 2026 17:54:34 +0800
+Message-ID: <20260807095435.2959246-3-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20260807095435.2959246-1-shaojijie@huawei.com>
+References: <20260807095435.2959246-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <05084a53-a1a4-4e60-bdd7-6fd16ef6a029@linux.dev>
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-On Fri, Aug 07, 2026 at 09:53:51AM +0800, Jiayuan Chen wrote:
-> 
-> On 8/7/26 2:22 AM, Mahe Tardy wrote:
-> > Add a helper that connects an existing socket while invoking the LSM
-> > hook. Reuse it in __sys_connect_file() to avoid duplicating the connect
-> > logic. Other socket operations have equivalent helpers that trigger the
-> > appropriate LSM hooks that can be reused, this one was the only one
-> > missing.
-> > 
-> > Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
-> > ---
-> >   include/linux/socket.h |  2 ++
-> >   net/socket.c           | 32 ++++++++++++++++++--------------
-> >   2 files changed, 20 insertions(+), 14 deletions(-)
-> > 
-> > diff --git a/include/linux/socket.h b/include/linux/socket.h
-> > index 2a8d7b14f1d1..8964528e3823 100644
-> > --- a/include/linux/socket.h
-> > +++ b/include/linux/socket.h
-> > @@ -461,6 +461,8 @@ extern struct file *__sys_socket_file(int family, int type, int protocol);
-> >   extern int __sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
-> >   extern int __sys_bind_socket(struct socket *sock, struct sockaddr_storage *address,
-> >   			     int addrlen);
-> > +extern int connect_socket(struct socket *sock, struct sockaddr_storage *addr,
-> > +				int addrlen, int flags);
-> >   extern int __sys_connect_file(struct file *file, struct sockaddr_storage *addr,
-> >   			      int addrlen, int file_flags);
-> >   extern int __sys_connect(int fd, struct sockaddr __user *uservaddr,
-> > diff --git a/net/socket.c b/net/socket.c
-> > index 63c69a0fa74e..126a674f534d 100644
-> > --- a/net/socket.c
-> > +++ b/net/socket.c
-> > @@ -2103,6 +2103,20 @@ SYSCALL_DEFINE3(accept, int, fd, struct sockaddr __user *, upeer_sockaddr,
-> >   	return __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, 0);
-> >   }
-> > 
-> > +int connect_socket(struct socket *sock, struct sockaddr_storage *address,
-> > +			 int addrlen, int flags)
-> > +{
-> 
-> 
-> Please fix the checkpatch warning if revise
-> 
-> CHECK: extern prototypes should be avoided in .h files
-> #27: FILE: include/linux/socket.h:464:
-> +extern int connect_socket(struct socket *sock, struct sockaddr_storage
-> *addr,
-> 
-> CHECK: Alignment should match open parenthesis
-> #28: FILE: include/linux/socket.h:465:
-> +extern int connect_socket(struct socket *sock, struct sockaddr_storage
-> *addr,
-> +                int addrlen, int flags);
-> 
-> CHECK: Alignment should match open parenthesis
-> #41: FILE: net/socket.c:2107:
-> +int connect_socket(struct socket *sock, struct sockaddr_storage *address,
-> +             int addrlen, int flags)
-> 
+The reg parameter of hclge_log_error() is never modified within the
+function, but is declared as 'char *'. Callers pass const strings,
+causing a compiler warning about discarding the 'const' qualifier.
+Add the missing const to fix the warning.
 
-Yep fixed for next revision, thanks.
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
+index 7e124e2c718d..6093a60d257b 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
+@@ -1762,7 +1762,7 @@ static const struct hclge_hw_type_id hclge_hw_type_id_st[] = {
+ 	},
+ };
+ 
+-static void hclge_log_error(struct device *dev, char *reg,
++static void hclge_log_error(struct device *dev, const char *reg,
+ 			    const struct hclge_hw_error *err,
+ 			    u32 err_sts, unsigned long *reset_requests)
+ {
+-- 
+2.33.0
+
