@@ -1,340 +1,476 @@
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out198-8.us.a.mail.aliyun.com (out198-8.us.a.mail.aliyun.com [47.90.198.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79483DD523
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 04:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26DF3AFD15;
+	Fri,  7 Aug 2026 05:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786078328; cv=none; b=eb3HtM80LNZ+4/pHInPjq9L0JV+UuqFd2dwjANdo2ngbUJhIlofJV78DWoBN1wRpDglL07YmHmzn7rjjSSYeJXnLa0EmtkKPmn+j8sm5tVvyVeRBg8Zvq0l4IpeBbz3ZUv5aIftuMKhmzUgxgkN02RLgARMsdh+zGdNxGbGJbvQ=
+	t=1786078866; cv=none; b=FZiidG5w8d3mBmQ0onddo+rHMF+c3o2be0Rs4k+DJMd4zopTi0R2NcGAAQeOlnwCphDGJMxlY/i+ovemKeHX/u4RiBOdH4KjsGsCB462dmu5HFrxmgQZTbZIwKqPrPj9sY7Pad/3IKHnJPa9htbKkEQdjT5Eskt/y5m7nO2wpqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786078328; c=relaxed/simple;
-	bh=PQrmptIkB9+FHFCt7654nCnkDwp4ijPJju9VLqHK+oU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YEV654eNxgYUKwI23baiVNsHlIjwL4s2Soqsk/qJAnYzRnYCmu+2SZhjHdjOX4CSIXimU8YJ3YHPrXrL3qvNuYtZ0hJiIo5CwxA5ph+V1ww15C4p110gYwg++UxSa24OeViXAGOIVfMMoJZUsxqEHoc92rx030PfiLryGXztvVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PGOTj812; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PGOTj812"
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6ae4475c68aso944796eaf.2
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 21:51:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786078301; x=1786683101; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uKnDaJp5ZviVMN/jgF3Auq00JWcI1+Cd7CJPkOYq6WA=;
-        b=PGOTj812feWXTUIA0b20qNu4rIu6f/JNC5wNYKLR86pdVgM4pBe7vuOCdAxuzhySyZ
-         Wxm0j5TRZ4ECuPQchwI1q6J9/6rv2ZU9RyyJKHi35Dc4UbKc25ZnQWmC6JVRZTy+fyeh
-         4JLOz+oBThy1ZA4dvp3J0iUTNESlU5bFVK2+3yoTnSFVOaZq8G0QrtLQ0be33vROMDb4
-         dKiUgerE58wijzObOv+nc9neK4STGj6qRCZ/JCquB9TPQ552bVFWCUPrKPnWzIvxWO+y
-         m6rdoDsnbFOtqz7Dndx5we8tP28PWnjBxWj3y6nSaG6BtWVWHJ4fOy6l4vd1WHGbFM6N
-         jriQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786078301; x=1786683101;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uKnDaJp5ZviVMN/jgF3Auq00JWcI1+Cd7CJPkOYq6WA=;
-        b=gzE66+VdVVgS4/ROYj5bQa5/Dw5xmDyiEpMFkoeATg2GXWjqmqrcwCyWshOtMYPSiz
-         6He9z4OmZzUB3j9+bQMm9yYdB3jZf87uZ951xY0bCi0nIEHnpm+kK6k5J06TkiiWEPpn
-         NUE53DqswHS0NePCbCRN6vuhCTukFFaDVRamBviGn+whUu5dQCYik15EPgg9FH8r9+WM
-         CqysK0dWyEglnezNNWS8tFA6HvnE43ByGJQbB5zArkabYZgBTESaxz9SlWn8b2dDkdS9
-         crUBpgqm6KKzWpT3dGP5CM29on2j9IhY39g6lWBbzvoY6Po6VeUYIdmVNeTsRszSt+Lz
-         lvNw==
-X-Forwarded-Encrypted: i=1; AHgh+RpHU1ofBNhtZZMYFYaqJI2kJovNibJhiz4B/bbU9pOHlR4/WdBfV419y9y1CqLy6D5LgQ77+AA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxON3P/jOJqayJdVA+w24P+fwRFZN5O1bRxLQBSPdthZferpDNC
-	vP+lEMMi3eUEtupj6m+0ofY+IM8SAIHAOqpuTZTwg6T60feWbzMybJgo
-X-Gm-Gg: AR+sD13niQPu6rW8PfAA/oYZOVPoKoAWFaoek3woII6vVffiTXORGpt/Qw5PPWL4UPI
-	WH+1o/wwi6p0nWDIX5kYksAgGBuP0QQbwKcYa9+2zpUbC7tIgUoumA21s0MFvIEODFCRAX5CU7L
-	g/504TVGA0ZfW55gbWnQMyJMfnNYmMLeF+PG53nRr3wM04PJhHgKwzq9K6XFTb23uSuv86LV6qn
-	NHG+ghSoqCR3oBaRMDoo3EDrbeltCyBkVtCLbm/rwnFRgeAjNA5p/gC/ns8zkKsgX4AIdyTph4+
-	m/wRxcibHxMCj65nEqwGSD9uY6UeyRk1tZBOHclOx0WwvymocJm3dRZemVWmndLyVMmGRoOP8Z7
-	GGrZ3oTMrLaX3Sr+Z4g3AK1cckYILpJhEeAvhXPGnm5MvRxhKfxOeNw2sc/hthp/nrfrIh/IWNn
-	oDyyUSIUIbSd1OBFIqqpdjWDqlpl47amkEN85FnEipJ1gaKoKHuvoMHvEHIwbDPORYSMF/wFxwN
-	fAF94ipo/OgMZAlyrSPO8fNIbBAf9/tabk6OpDsUscrhYI6nkL0Ick+dUMRwaDWhxO1YLiPcKLg
-	odpOHotMofbj1A/PM5gg9/FVBm09A/5q0AQvyEcqgufmDja8aNlYKt+OG5zKd+vXx8s2yVR74c6
-	wpKF16eUq9pCg5AxL
-X-Received: by 2002:a05:6820:4d0a:b0:6a3:c5:30ca with SMTP id 006d021491bc7-6ae97025da8mr10409051eaf.31.1786078301063;
-        Thu, 06 Aug 2026 21:51:41 -0700 (PDT)
-Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b02bbbf755sm1519726eaf.2.2026.08.06.21.51.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 21:51:40 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Thu, 06 Aug 2026 22:51:28 -0600
-Subject: [PATCH net-next v4 3/4] dt-bindings: net: x-powers: add
- AC200/AC300 EPHY packages
+	s=arc-20240116; t=1786078866; c=relaxed/simple;
+	bh=natvTo7p8TmCp+pasUxiWZHr+dLoAMV/UaBlK+PdSb8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pDGqBasJGBSkQ2v6klL3HglqV6JRTohwUg4Y6WWDGJL5oz2ttSbYOef0BTa5KU8IGuCch+4i8Gpsj01ZlnDC/7iV0IfKJ9BFErieUd9kyhA34BbiIhYljUqGKkdO2+JJ9SSfyZo9uyDTcUaoIRGASjf6KsJdVa1XNlUzFIN2z3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0110936-0.00135384-0.987553;FP=16290500658568124146|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033045018182;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.ig.C91c_1786077877;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.ig.C91c_1786077877 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 07 Aug 2026 12:44:38 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	horms@kernel.org,
+	linux-doc@vger.kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	enelsonmoore@gmail.com,
+	skhan@linuxfoundation.org,
+	hkallweit1@gmail.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v24 net-next 11/11] net/nebula-matrix: add common dev start/stop operation
+Date: Fri,  7 Aug 2026 12:44:15 +0800
+Message-ID: <20260807044422.2356-12-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260807044422.2356-1-illusion.wang@nebula-matrix.com>
+References: <20260807044422.2356-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260806-submit-acx00-of-dynamic-v1-v4-3-9bf2f7441632@gmail.com>
-References: <20260806-submit-acx00-of-dynamic-v1-v4-0-9bf2f7441632@gmail.com>
-In-Reply-To: <20260806-submit-acx00-of-dynamic-v1-v4-0-9bf2f7441632@gmail.com>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- James Hilliard <james.hilliard1@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: mfd@lists.linux.dev, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
 
-The AC200 and AC300 contain compatible Fast Ethernet link PHYs which
-report the same Clause 22 identifier and use the same link-side register
-layout. Their package control paths differ: AC200 uses registers in its
-I2C MFD, while the AC300 control range is at a second Clause 22 address
-fixed at 16 plus the link address.
+From: illusion wang <illusion.wang@nebula-matrix.com>
 
-Describe both variants as Ethernet PHY packages. The package reg value is
-the link PHY base address and the child supplies the documented PHY ID,
-because the identification registers cannot be read until package setup
-has completed. The AC300 driver reaches its control range with the PHY
-package offset helpers. The AC200 package instead references its MFD.
+Add device start/stop helper functions to manage MSI-X vector mapping,
+mailbox interrupt resource initialization and deinitialization.
+Create unbound global workqueue for mailbox task scheduling; this shared
+work infrastructure supports both current interrupt-driven receive and
+future polling receive path.
 
-Give fixed hardware variant-specific compatibles. Also provide an ACx00
-compatible for systems which can contain either package, with one packed
-NVMEM field containing calibration in bits 3 through 0, the AC300 selector
-in bit 8 and its low-calibration selector in bit 9. Such a description
-contains the potential resources for both backends; the driver consumes
-only those selected by the configuration field.
+This patch implements complete startup and shutdown flow for
+common device resources:
+1. Add nbl_dev_start() to finish device startup procedure:
+   - Configure hardware MSI-X mapping table for different interrupt types
+   - Allocate required MSI-X irq vectors via pci_alloc_irq_vectors
+   - Request mailbox IRQ; interrupt handler schedules mailbox processing work
+   - Enable hardware mailbox interrupt and mark channel interrupt ready
 
-Describe the package clock, supply and optional xMII receive-clock
-inversion needed by some integrations. A fixed AC200 package may omit the
-NVMEM field and use its internal calibration copy. Limit AC300-capable link
-addresses to 0 through 7 so the control address remains in the documented
-range 16 through 23.
+2. Add nbl_dev_stop() to tear down device resources safely in strict order:
+   - Update software channel state first to switch to polling, then mask
+     hardware interrupt to avoid stale ACK handling
+   - Free mailbox IRQ handler and release MSI-X vector resources
+   - Destroy hardware MSI-X mapping table
 
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Extend channel TX waiting logic with polling fallback and shutdown detection.
+When interrupt path is disabled, send routines rely on active polling to
+wait for message ACK, preventing deadlock during device stop.
+
+Hook nbl_core_start() / nbl_core_stop() into PCI probe and remove paths.
+
+Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
 ---
- .../bindings/net/x-powers,acx00-ephy-package.yaml  | 208 +++++++++++++++++++++
- 1 file changed, 208 insertions(+)
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   2 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 259 ++++++++++++++++++
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.c       |   7 +-
+ .../nbl/nbl_include/nbl_def_dev.h             |   2 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  21 +-
+ 5 files changed, 285 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml b/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml
-new file mode 100644
-index 000000000000..22bddc7a2f94
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml
-@@ -0,0 +1,208 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/x-powers,acx00-ephy-package.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+index 9519aacbf0ea..a48bd9a0ef1e 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+@@ -39,5 +39,7 @@ struct nbl_adapter {
+ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
+ 				  struct nbl_init_param *param);
+ void nbl_core_remove(struct nbl_adapter *adapter);
++int nbl_core_start(struct nbl_adapter *adapter);
++void nbl_core_stop(struct nbl_adapter *adapter);
+ 
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+index bdb4d6a45fbc..3a8b7ee2e475 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+@@ -6,6 +6,17 @@
+ #include <linux/pci.h>
+ #include "nbl_dev.h"
+ 
++static void nbl_dev_clean_mailbox_schedule(struct nbl_dev_mgt *dev_mgt);
 +
-+title: X-Powers AC200 and AC300 Ethernet PHY packages
++/* ----------  Interrupt config  ---------- */
++static irqreturn_t nbl_dev_clean_mailbox(int __always_unused irq, void *data)
++{
++	struct nbl_dev_mgt *dev_mgt = (struct nbl_dev_mgt *)data;
 +
-+maintainers:
-+  - James Hilliard <james.hilliard1@gmail.com>
++	nbl_dev_clean_mailbox_schedule(dev_mgt);
++	return IRQ_HANDLED;
++}
 +
-+description:
-+  The AC200 and AC300 contain compatible Fast Ethernet PHY blocks which report
-+  the same Clause 22 PHY ID and use the same link-side register layout. The
-+  package control paths differ. AC200 control registers are part of an I2C MFD,
-+  while AC300 control registers occupy a second Clause 22 address fixed at 16
-+  plus the link PHY address.
+ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
+ {
+ 	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
+@@ -14,6 +25,187 @@ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
+ 	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
+ }
+ 
++static int nbl_dev_request_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	struct nbl_common_info *common = dev_mgt->common;
++	u16 local_vec_id;
++	int irq_num;
++	int err;
 +
-+  Systems with a known package use the corresponding AC200 or AC300 compatible.
-+  Systems which can contain either package use the ACx00 compatible and a
-+  packed NVMEM configuration field to select the backend at runtime.
++	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
++		return 0;
 +
-+  The link PHY cannot report its ID until the package control sequence has
-+  completed, so its child node supplies the documented PHY ID. The package and
-+  child use the same base address. The AC200 driver programs that address into
-+  the package, while the AC300 driver derives its control address from it.
++	local_vec_id =
++		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
++	irq_num = pci_irq_vector(common->pdev, local_vec_id);
++	if (irq_num < 0) {
++		dev_err(common->dev, "Failed to get mailbox IRQ vector: %d\n",
++			irq_num);
++		return irq_num;
++	}
 +
-+select:
-+  properties:
-+    compatible:
-+      enum:
-+        - x-powers,ac200-ephy-package
-+        - x-powers,ac300-ephy-package
-+        - x-powers,acx00-ephy-package
-+  required:
-+    - compatible
++	snprintf(dev_common->mailbox_name, sizeof(dev_common->mailbox_name),
++		 "nbl_mailbox@pci:%s", pci_name(common->pdev));
++	err = request_irq(irq_num, nbl_dev_clean_mailbox, 0,
++			  dev_common->mailbox_name, dev_mgt);
++	if (err)
++		return err;
 +
-+properties:
-+  compatible:
-+    enum:
-+      - x-powers,ac200-ephy-package
-+      - x-powers,ac300-ephy-package
-+      - x-powers,acx00-ephy-package
++	return 0;
++}
 +
-+  reg:
-+    maximum: 31
++static void nbl_dev_free_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	struct nbl_common_info *common = dev_mgt->common;
++	u16 local_vec_id;
++	int irq_num;
 +
-+  clocks:
-+    maxItems: 1
-+    description:
-+      AC300 input clock, running at 24, 25, or 27 MHz. The AC200 input clock
-+      belongs to the referenced AC200 MFD instead.
++	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
++		return;
 +
-+  vcc1-supply:
-+    description:
-+      3.3 V supply for the AC300 I/O, bandgap, Ethernet PHY analog front end,
-+      and internal digital LDO
++	local_vec_id =
++		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
++	irq_num = pci_irq_vector(common->pdev, local_vec_id);
++	if (irq_num >= 0)
++		free_irq(irq_num, dev_mgt);
++}
 +
-+  nvmem-cells:
-+    maxItems: 1
-+    description:
-+      Packed EPHY configuration field. Bits 3 through 0 contain the analog
-+      calibration code, bits 7 through 4 are reserved, bit 8 selects AC300
-+      when set and AC200 when clear, and bit 9 requests the AC300
-+      low-calibration tuning sequence. A fixed AC200 package may provide only
-+      the low calibration bits or omit the cell and use its internal eFuse
-+      copy instead.
++static int nbl_dev_enable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	u16 local_vec_id;
 +
-+  nvmem-cell-names:
-+    const: configuration
++	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
++		return 0;
 +
-+  x-powers,ac200:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: Reference to the AC200 MFD containing this Ethernet PHY
++	local_vec_id =
++		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
++	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
++				  NBL_CHAN_INTERRUPT_READY,
++				  NBL_CHAN_TYPE_MAILBOX, true);
 +
-+  x-powers,xmii-rx-clock-inverted:
-+    type: boolean
-+    description:
-+      Invert the xMII receive clock inside the PHY. This is required by some
-+      SoC integrations, including the Allwinner H6 AC200 connection.
++	return disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
++					    local_vec_id, true);
++}
 +
-+patternProperties:
-+  ^ethernet-phy@[a-f0-9]+$:
-+    $ref: ethernet-phy.yaml#
-+    properties:
-+      compatible:
-+        const: ethernet-phy-id0044.1400
-+    required:
-+      - compatible
-+    unevaluatedProperties: false
++static int nbl_dev_disable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	u16 local_vec_id;
 +
-+required:
-+  - compatible
++	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
++		return 0;
 +
-+dependentRequired:
-+  nvmem-cells: [ nvmem-cell-names ]
-+  nvmem-cell-names: [ nvmem-cells ]
++	local_vec_id =
++		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
++	/*
++	 * Disable sequence invariant: update software state first, then mask
++	 * hardware interrupt. Must not reverse the order.
++	 *
++	 * If hardware interrupt is masked before clearing INTERRUPT_READY,
++	 * the hardware may still transmit outstanding ACK packets for in-flight
++	 * messages. Subsequent switch to polling mode discards pending ACK
++	 * processing, triggering "Channel waiting ack failed" and "Skip ack
++	 * with invalid status" errors.
++	 *
++	 * By entering polling mode first, any late hardware interrupts are
++	 * ignored without pending ACK expectations, then hardware interrupt
++	 * can be safely disabled.
++	 *
++	 * This helper is invoked in two paths:
++	 * 1. Error unwind path of nbl_dev_start(): immediately followed by
++	 *    nbl_dev_free_mailbox_irq(), channel resources
++	 *    are fully torn down afterwards, no stale descriptors remain.
++	 * 2. Normal device stop path nbl_dev_stop(): free_irq() synchronously
++	 *    waits for any in-flight threaded irq bottom-half handler to
++	 *    finish execution, all pending mailbox cleanup work completes
++	 *    before channel teardown in late remove stage. No stuck
++	 *    descriptors will linger in either scenario.
++	 */
++	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
++				  NBL_CHAN_INTERRUPT_READY,
++				  NBL_CHAN_TYPE_MAILBOX, false);
 +
-+allOf:
-+  - $ref: ethernet-phy-package.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          const: x-powers,ac200-ephy-package
-+    then:
-+      properties:
-+        clocks: false
-+        vcc1-supply: false
-+      required:
-+        - x-powers,ac200
-+  - if:
-+      properties:
-+        compatible:
-+          const: x-powers,ac300-ephy-package
-+    then:
-+      properties:
-+        reg:
-+          maximum: 7
-+        x-powers,ac200: false
-+      required:
-+        - clocks
-+        - vcc1-supply
-+        - nvmem-cells
-+        - nvmem-cell-names
-+  - if:
-+      properties:
-+        compatible:
-+          const: x-powers,acx00-ephy-package
-+    then:
-+      properties:
-+        reg:
-+          maximum: 7
-+      required:
-+        - clocks
-+        - vcc1-supply
-+        - nvmem-cells
-+        - nvmem-cell-names
-+        - x-powers,ac200
++	return disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
++					    local_vec_id, false);
++}
 +
-+unevaluatedProperties: false
++static int nbl_dev_cfg_msix_map(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	bool mask_en = msix_info->serv_info[NBL_MSIX_NET_TYPE].hw_self_mask_en;
++	u16 msix_net_num = msix_info->serv_info[NBL_MSIX_NET_TYPE].num;
++	u16 msix_not_net_num = 0;
++	int err, i;
 +
-+examples:
-+  - |
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++	msix_info->serv_info[NBL_MSIX_VIRTIO_TYPE].base_vector_id = 0;
++	for (i = NBL_MSIX_NET_TYPE; i < NBL_MSIX_TYPE_MAX; i++)
++		msix_info->serv_info[i].base_vector_id =
++			msix_info->serv_info[i - 1].base_vector_id +
++			msix_info->serv_info[i - 1].num;
 +
-+        ethernet-phy-package@0 {
-+            compatible = "x-powers,acx00-ephy-package";
-+            reg = <0>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            clocks = <&pwm 5>;
-+            vcc1-supply = <&reg_3v3>;
-+            nvmem-cells = <&ephy_configuration>;
-+            nvmem-cell-names = "configuration";
-+            x-powers,ac200 = <&ac200>;
++	for (i = 0; i < NBL_MSIX_TYPE_MAX; i++) {
++		if (i == NBL_MSIX_NET_TYPE)
++			continue;
++		msix_not_net_num += msix_info->serv_info[i].num;
++	}
 +
-+            ethernet-phy@0 {
-+                compatible = "ethernet-phy-id0044.1400";
-+                reg = <0>;
-+            };
-+        };
-+    };
++	err = disp_ops->cfg_msix_map(dev_mgt->disp_ops_tbl->priv,
++					   msix_net_num, msix_not_net_num,
++					   mask_en);
 +
-+  - |
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++	return err;
++}
 +
-+        ethernet-phy-package@0 {
-+            compatible = "x-powers,ac300-ephy-package";
-+            reg = <0>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            clocks = <&pwm 5>;
-+            vcc1-supply = <&reg_3v3>;
-+            nvmem-cells = <&ephy_configuration>;
-+            nvmem-cell-names = "configuration";
++static int nbl_dev_destroy_msix_map(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
 +
-+            ethernet-phy@0 {
-+                compatible = "ethernet-phy-id0044.1400";
-+                reg = <0>;
-+            };
-+        };
-+    };
++	return disp_ops->destroy_msix_map(dev_mgt->disp_ops_tbl->priv);
++}
 +
-+  - |
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++static int nbl_dev_init_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	struct nbl_common_info *common = dev_mgt->common;
++	int needed = 0;
++	int err;
++	int i;
 +
-+        ethernet-phy-package@1 {
-+            compatible = "x-powers,ac200-ephy-package";
-+            reg = <1>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            x-powers,ac200 = <&ac200>;
-+            nvmem-cells = <&ephy_configuration>;
-+            nvmem-cell-names = "configuration";
++	for (i = 0; i < NBL_MSIX_TYPE_MAX; i++)
++		needed += msix_info->serv_info[i].num;
 +
-+            ethernet-phy@1 {
-+                compatible = "ethernet-phy-id0044.1400";
-+                reg = <1>;
-+            };
-+        };
-+    };
-+...
-
++	err = pci_alloc_irq_vectors(common->pdev, needed, needed,
++				    PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
++	if (err < 0) {
++		dev_err(common->dev,
++			"pci_alloc_irq_vectors failed, err = %d\n", err);
++		return err;
++	}
++
++	return 0;
++}
++
++static void nbl_dev_clear_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_common_info *common = dev_mgt->common;
++
++	pci_free_irq_vectors(common->pdev);
++}
++
+ /* ----------  Channel config  ---------- */
+ static void nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
+ {
+@@ -73,6 +265,14 @@ static void nbl_dev_clean_mailbox_task(struct work_struct *work)
+ 				      NBL_CHAN_TYPE_MAILBOX);
+ }
+ 
++static void nbl_dev_clean_mailbox_schedule(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
++	struct nbl_common_info *common = dev_mgt->common;
++
++	queue_work(common->wq, &common_dev->clean_mbx_task);
++}
++
+ /* ----------  Dev init process  ---------- */
+ static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
+ {
+@@ -238,3 +438,62 @@ void nbl_dev_remove(struct nbl_adapter *adapter)
+ 	nbl_dev_remove_common_dev(adapter);
+ 	nbl_common_destroy_wq(common);
+ }
++
++/* ----------  Dev start process  ---------- */
++int nbl_dev_start(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
++	int cleanup_ret;
++	int ret;
++
++	ret = nbl_dev_cfg_msix_map(dev_mgt);
++	if (ret)
++		return ret;
++
++	ret = nbl_dev_init_interrupt_scheme(dev_mgt);
++	if (ret)
++		goto init_interrupt_scheme_err;
++	ret = nbl_dev_request_mailbox_irq(dev_mgt);
++	if (ret)
++		goto mailbox_request_irq_err;
++	ret = nbl_dev_enable_mailbox_irq(dev_mgt);
++	if (ret)
++		goto enable_mailbox_irq_err;
++
++	return 0;
++enable_mailbox_irq_err:
++	cleanup_ret = nbl_dev_disable_mailbox_irq(dev_mgt);
++	if (cleanup_ret)
++		dev_err(dev_mgt->common->dev,
++			"Failed to disable mailbox IRQ: %d\n", cleanup_ret);
++	nbl_dev_free_mailbox_irq(dev_mgt);
++	cancel_work_sync(&common_dev->clean_mbx_task);
++mailbox_request_irq_err:
++	nbl_dev_clear_interrupt_scheme(dev_mgt);
++init_interrupt_scheme_err:
++	cleanup_ret =  nbl_dev_destroy_msix_map(dev_mgt);
++	if (cleanup_ret)
++		dev_err(dev_mgt->common->dev,
++			"Failed to destroy MSI-X map: %d\n", cleanup_ret);
++	return ret;
++}
++
++void nbl_dev_stop(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
++	int ret;
++
++	ret = nbl_dev_disable_mailbox_irq(dev_mgt);
++	if (ret)
++		dev_err(dev_mgt->common->dev,
++			"Failed to disable mailbox IRQ: %d\n", ret);
++	nbl_dev_free_mailbox_irq(dev_mgt);
++	cancel_work_sync(&common_dev->clean_mbx_task);
++	nbl_dev_clear_interrupt_scheme(dev_mgt);
++	ret = nbl_dev_destroy_msix_map(dev_mgt);
++	if (ret)
++		dev_err(dev_mgt->common->dev,
++			"Failed to destroy MSI-X map: %d\n", ret);
++}
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
+index bd175e200408..c1e6180a7010 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
+@@ -9,8 +9,7 @@ void nbl_res_chip_deinit_module(struct nbl_resource_mgt *res_mgt)
+ {
+ 	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
+ 
+-	if (hw_ops->deinit_module)
+-		hw_ops->deinit_module(res_mgt->hw_ops_tbl->priv);
++	hw_ops->deinit_module(res_mgt->hw_ops_tbl->priv);
+ }
+ 
+ int nbl_res_chip_init_module(struct nbl_resource_mgt *res_mgt)
+@@ -20,7 +19,5 @@ int nbl_res_chip_init_module(struct nbl_resource_mgt *res_mgt)
+ 	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
+ 	struct nbl_hw_mgt *p = res_mgt->hw_ops_tbl->priv;
+ 
+-	if (hw_ops->init_module)
+-		return hw_ops->init_module(p, eth_speed, eth_num);
+-	return -EOPNOTSUPP;
++	return hw_ops->init_module(p, eth_speed, eth_num);
+ }
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+index b422a4edf0a9..32e6cce38d39 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+@@ -10,5 +10,7 @@ struct nbl_adapter;
+ 
+ int nbl_dev_init(struct nbl_adapter *adapter);
+ void nbl_dev_remove(struct nbl_adapter *adapter);
++int nbl_dev_start(struct nbl_adapter *adapter);
++void nbl_dev_stop(struct nbl_adapter *adapter);
+ 
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+index 8a968a06b5b6..c12a53da6a9b 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+@@ -16,6 +16,16 @@
+ #include "nbl_include/nbl_def_common.h"
+ #include "nbl_core.h"
+ 
++int nbl_core_start(struct nbl_adapter *adapter)
++{
++	return nbl_dev_start(adapter);
++}
++
++void nbl_core_stop(struct nbl_adapter *adapter)
++{
++	nbl_dev_stop(adapter);
++}
++
+ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
+ 				  struct nbl_init_param *param)
+ {
+@@ -131,7 +141,14 @@ static int nbl_probe(struct pci_dev *pdev,
+ 		goto adapter_init_err;
+ 	}
+ 	pci_set_drvdata(pdev, adapter);
++	err = nbl_core_start(adapter);
++	if (err)
++		goto core_start_err;
++
+ 	return 0;
++core_start_err:
++	pci_set_drvdata(pdev, NULL);
++	nbl_core_remove(adapter);
+ adapter_init_err:
+ 	pci_clear_master(pdev);
+ configure_dma_err:
+@@ -142,8 +159,10 @@ static void nbl_remove(struct pci_dev *pdev)
+ {
+ 	struct nbl_adapter *adapter = pci_get_drvdata(pdev);
+ 
+-	if (adapter)
++	if (adapter) {
++		nbl_core_stop(adapter);
+ 		nbl_core_remove(adapter);
++	}
+ 
+ 	pci_clear_master(pdev);
+ }
 -- 
-2.53.0
+2.47.3
 
