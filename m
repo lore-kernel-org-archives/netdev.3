@@ -1,70 +1,74 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE9B47427A
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 15:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D11F476053
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 15:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786117392; cv=none; b=T8N7ib0NQKlORyi6kjLPbLzQ1IFCB7IWu+C+56QiTN3kXWrvDKAsn/yA5lPym+UrOUBprx7HJ6lm4Z8cZXI7T2NV6GLzlAWarI1qJuOkj0iduCAlZscDkp6FkPiY7bGDsJU6k5mWzEfoLnYAzBcHGrd41jkxT02Y5OIA+XgVvyw=
+	t=1786117393; cv=none; b=OUe4prDLKTMcr4qfkgIAmEdV7ZXcU7kru1bo53zBMzIhbNSAjE6jZbaIjtUfwF2dPcTo2RIBnvV8a0FhyzhHSzeol1sOleUFDWEAxBbxSdUQqBQa139Je3q9BOkqmHlzvi1amofmz3oprAJlxXQ5Jn9U+fIqm3VR55qj2eN6/IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786117392; c=relaxed/simple;
-	bh=OZUjRIHTiAh6P8HTdAvZ3IOQGeUlhZGyXxkyglHov9M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q+HruK/h2uVcT7UnaoKD7Oc7kdVRKuO/naewENEeI+Mfpfd8I3OKEbwYqq4bvxq3ja6EVaWSe54Q5+HE2+BrezZwpfN6453N54sdMlNrQ0Ael/mC2v0Dq6ZtxCLe0ts+qDdo//lz92tDvHK7ax2T/5IQsW43gn+2YUlKcOQJEOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=kpwdXDx1; arc=none smtp.client-ip=209.85.215.176
+	s=arc-20240116; t=1786117393; c=relaxed/simple;
+	bh=ZFTHGgGkU9rlx6TOHTE1gumlcIsK/aMPZ3BOdvx2fkc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RqHSkvtCHamzBrGcebSAJ/aYqyLPFgxpovC2jloyNbAxf4iPtdrZIej0W87O8ifmSn/lF33u2dAbwlt01q2194yCZStBP/FRk9OHDEFmt5rFpHX0qNkKR3tKxanjYyavJoMMuJm32N3cM/cUNIeS8l4VOUqXODiw2j/+y0TTUm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=bMSsvsoV; arc=none smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="kpwdXDx1"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c9eefcf9175so3348538a12.3
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 08:43:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="bMSsvsoV"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c9aea40d799so2047704a12.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 08:43:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1786117389; x=1786722189; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yQpw629GBrjFwmfndXuo64d+zVTcLysyTqoPxM7hh30=;
-        b=kpwdXDx18d5+0LyFl/HO+vowGfKdaXPkYzSPgujGNirfaxqDq+Gx349bpI4ulbLvet
-         vUARQCg/s++8U5y6c2GSjyFrtNC/pm9QkEyLPKV5rzPyRbgF2UxbvcobRGazfFD5i3qx
-         Fwr/UrQjtD/fkmzjZVooZv1rklpLS/lMhrwba8tqtJGpHXPRkSCbQruId7MqVLk1RmP3
-         vsrFPxMY9WnCubhAEHpeYVGbQqS6az4SZD4uErGuo1a8rN60R+Xmimnpj9Ktkh3LI//J
-         8ZkJ2GbsWZ8V7wCZm9l0GCWfM/B/7UPWhm40svs4FwsvF5g/rLwvNaejNBJMPT3yJXiG
-         HgYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786117389; x=1786722189;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1786117391; x=1786722191; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yQpw629GBrjFwmfndXuo64d+zVTcLysyTqoPxM7hh30=;
-        b=mZrTRqD9nZto2NjJanH/B0hANalIOvzVOb0XYf9F8qjjzk8enUK/IW8G/ItSsHoUvE
-         Xm5KGjO1vaUs7T5PaimOtxBfO38LZsaoIzsjE7bppNz5tblNZvLyRzNHjfKx+cAEq+xl
-         pQfuokvjev7TWE3mUb5KdxPxOpT0pt+qh1YHi55fGgiF798dZYBTxURslH3ke/47Nrig
-         3NSM2kpOrayIW9FyqUS8q1vq8sYqUszTDGnJAxR2w4CAuGW0UhUFwYuItyTLbJqCVkEC
-         0VTpdNK9fiMZqLMBNA6xrNNwbYfdZU4TU1RzGeBhJlLC736awUDlROUizBuNOjCFG6JZ
-         K+FA==
-X-Gm-Message-State: AOJu0YzgwINADqgv+YAqs8803FjUVYp9pYhDN16Ktd554E8VU+BhhhMf
-	aU4HS0YQy6oGhEvSGbqgcwoZRDV4rYV0cL1hUD9Wk+VPc/3sAnf9YvBJVFEWy+6IELgy0P7drfU
-	KCt/0
-X-Gm-Gg: AR+sD13kmS1ywnsTJvOHb49iwOEsihq8j1Em+dF0S6lFSLoh9L2tFSc/gkDqfWx3Ppj
-	amEH08uxVJRaatY4iOHMBYjP0V/Cp1A5fG61jEp9RFKUvryb8pgrimN1vLQhVKSHWYukIVyNL3T
-	ktIztVa0Xn0k4LmTPxGDZ8jN8Hj7R6kNANHAm624+QeRzCR8Y19vfvlJ9M3b1rrEU7aEpRweltm
-	M7kEwLaHDFiLv0L2lkD4VnsDwS1KZFeSzrKb9Fb+sGsaWHwcBmZf2SoVWs7qZWVBmD9+33qDMcU
-	Aa2dsh+RV6dI1T40F1lyHYoAFajxmCpmifleMG5WJLMqa81nvKztivnaFTTjUq3XeWDOik53xio
-	PvDaCMExTgh6jsOgxIpZcl3gEDIprr++V/yTjEV/pdkopAe8fQ1XurRE2/mlKlbeR07AWNA0oIS
-	xZsWp5aSnJ9fn/QdLZ7XO5Z6+3W598Xu8JnjfZUHLZQ6w3jJS4xYpcce5RxqlUZscs2Sjqg71+I
-	SbRaI+xfxP2L4R1iLT1N84p1Bg=
-X-Received: by 2002:a05:6a21:112:b0:3c3:bb13:438 with SMTP id adf61e73a8af0-3cbc0480f16mr6545096637.32.1786117389459;
-        Fri, 07 Aug 2026 08:43:09 -0700 (PDT)
+        bh=g7S/UVHcq0v5DCqTaABl2lRpZe35jIUxPsNvTEDp+Zw=;
+        b=bMSsvsoVd+Zeh2Z9yzPkY5kgE9FpN/FARoCkZc1J74AqsYnPm2PzALUM01qk/ZY8un
+         q5kEp3A3kjuqE2cZ5Ge8pw0TMgPuckN4to1N95LrccVNGyKVqxRGjKAtnxTB4Gp2Quke
+         fBz/rMwQkY4lnQfaHggEtlT5mtS35iDhJ/iBLGSLbKOOmE4zCc6TBkBVIOjan7A+70t4
+         0knjSrU3MyDJDseb4mCg1OijziKwHcqolO6XiM40NFPsGbF//CCtREn6xv42aha0UHPL
+         S5KF/2TjQAQimVMUSdSmo8iARag8Xx1WaHscWthSRRrd2p1Wn8zNCEdIWpXuN6xDj/1I
+         i74g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786117391; x=1786722191;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=g7S/UVHcq0v5DCqTaABl2lRpZe35jIUxPsNvTEDp+Zw=;
+        b=qtaoLAhKtrdfPDLs1vX1BUK/M9+CrSXwjC1L2A+aZGasBXLnu8nrZOpy6J20mnoVt9
+         dJ29TlHi8t2785/rlZo03jT03TiWH4kwV3f8Cjb7IVtfugprTfKgveBG7q4wS+9sH7v7
+         98Yf1X0ToaGpNHNZqOh0IpDDpw5+ehqOkFakAtCyVv1YJM8B2EGiETM86+D46NWvj6FY
+         iwS0hodbxGX0H3o9nXgO0ONqlzmVeljP4bL7bu3yK97numlYJ6qGq79vAlQCcjQ9Jn9W
+         YqTolcV+d/ZXyVUSsfk32ZedeeUJOf8DPv8G0/63gRWfmN4MY2YfewNLEizaUknbsFtm
+         jkIg==
+X-Gm-Message-State: AOJu0Yz+I1fqdySyaQjejk03rh98KVKvy37A1gSwE/kNmME5miO/0bd0
+	Ad6ZYNajVlUWb24O0ecIvfyqx5Gq2pGQhOyfLHKAZCngm9gb2lyqJh/5UzTHCKCWyW43xeUIMv1
+	IziiL
+X-Gm-Gg: AR+sD11uKqWTXMZTfC7CE+AayPg4hxvaYhx/7JDKH12eWXAVAKiAM4Fm5YUy37kxaRB
+	bFwS+LSlhM5bIfa9PNOwEEc1Mx0qiE8a5R3iLWRV2NG5kwaZWfSbg5fjeuCY4IaGV1Pyr3kNz6g
+	SXr13ozGHZnysWWDbazpTjWrnjdH5fSV3ASC3R4j/OKZaROgQ23FWKEMDMTBladxzls9NTuxKfW
+	M7QAtNNbHfbABsTcnd33oczzMLq+I5yvL5M9Yz7pn3eBfAtu//jd/u6l2GoruTli8ZFI6PXGx5L
+	4tAudCY23EKBzIXAm+dAK1uBsxc2BeYsjaRpOfIxIVAkHb1OLJXc3Ga0AmGOZUEvGhrkkqufJpK
+	bxEIFZ1jwLtZVhlSTYXQ0vFATVjeia7Ija3yVmwNMa2Ff7ghGSLdCfLJ8PIrIHoDJ17JM1+lINR
+	f1yyyt1ZycugDTZPI+A9UBIRMMsudR4Ol4K08yyf/58jp06JpfylfVufiJOe5cMYk8ZgsjDQuuq
+	OacqBec6do/GmtdoCxP+kkBDqltnBqGeHrT5A==
+X-Received: by 2002:a05:6a21:6f17:b0:3c3:a20f:f720 with SMTP id adf61e73a8af0-3cbcea2fed2mr1794246637.36.1786117391459;
+        Fri, 07 Aug 2026 08:43:11 -0700 (PDT)
 Received: from phoenix.lan (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141019a0528sm8213083c88.1.2026.08.07.08.43.08
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141019a0528sm8213083c88.1.2026.08.07.08.43.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 08:43:09 -0700 (PDT)
+        Fri, 07 Aug 2026 08:43:11 -0700 (PDT)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: dsahern@gmail.com,
 	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2-next 0/7] cleanup help and exit codes
-Date: Fri,  7 Aug 2026 08:42:23 -0700
-Message-ID: <20260807154306.111200-1-stephen@networkplumber.org>
+Subject: [PATCH iproute2-next 2/7] ip/routel: follow help vs usage convention
+Date: Fri,  7 Aug 2026 08:42:25 -0700
+Message-ID: <20260807154306.111200-3-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260807154306.111200-1-stephen@networkplumber.org>
+References: <20260807154306.111200-1-stephen@networkplumber.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,178 +77,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series cleans up how iproute2 commands handle help
-and syntax errors. Before, ip help command and usage
-errors both output to stderr and had non-zero exit code.
-Now help outputs to stdout and exits with 0.
+Similar to update to ip, put help on stdout and usage
+on stderr.
 
-Since help and usage errors should not happen when
-iproute2 commands are scripted this should have little impact
-on users. There is no POSIX or other official standard for this;
-the design choices here follow the precedent in coreutils, etc.
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+---
+ ip/routel | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-Initial conversion was done by hand, but after that the same pattern
-was applied across all utilities with the aid of the "mechanical turk"
-(ie. Claude Opus).
-
-Before:
-$ ip help 2>/dev/null; echo $? # text is on stderr
-255
-
-After:
-$ ip help >/dev/null; echo $? # text is on stdout
-0
-
-Usage output is unchanged:
-$ ip bogus 2>/dev/null; echo $?
-1
-
-
-Note: a help command inside a batch file still exits
-immediately and following commands are not executed.
-
-Example:
-$ printf "help\nlink\n" | ./ip/ip -batch - ; echo $?
-Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }
-       ip [ -force ] -batch filename
-...
-0
-
-Stephen Hemminger (7):
-  ip: follow Linux convention for help vs usage
-  ip/routel: follow help vs usage convention
-  misc: put help to stdout and usage to stderr
-  netshaper: put help to stdout and usage to stderr
-  bridge: put help to stdout and usage to stderr
-  genl: put help to stdout and usage to stderr
-  tc: put help to stdout and usage to stderr
-
- bridge/bridge.c       | 20 ++++++++++----------
- bridge/fdb.c          | 18 +++++++++---------
- bridge/link.c         | 16 +++++++++++-----
- bridge/mdb.c          | 14 +++++++-------
- bridge/monitor.c      | 11 ++++++-----
- bridge/mst.c          | 10 +++++-----
- bridge/vlan.c         | 10 +++++-----
- bridge/vni.c          | 10 +++++-----
- genl/genl.c           | 14 ++++++++------
- ip/ip.c               | 15 ++++++++-------
- ip/ip6tunnel.c        | 12 ++++++------
- ip/ip_common.h        |  4 ++--
- ip/ipaddress.c        | 18 +++++++++---------
- ip/ipaddrlabel.c      | 10 +++++-----
- ip/ipfou.c            | 12 ++++++------
- ip/ipila.c            | 12 ++++++------
- ip/ipioam6.c          | 13 ++++++++-----
- ip/ipl2tp.c           | 21 ++++++++++++---------
- ip/iplink.c           | 40 ++++++++++++++++++++-------------------
- ip/iplink_amt.c       | 15 +++++----------
- ip/iplink_can.c       | 11 +++--------
- ip/iplink_dsa.c       |  4 ++--
- ip/iplink_hsr.c       | 11 +++--------
- ip/iplink_vxcan.c     | 11 +++--------
- ip/ipmacsec.c         | 32 +++++++++++++++----------------
- ip/ipmaddr.c          | 14 +++++++-------
- ip/ipmonitor.c        | 10 +++++-----
- ip/ipmptcp.c          | 10 +++++-----
- ip/ipmroute.c         | 14 +++++++-------
- ip/ipneigh.c          | 18 +++++++++---------
- ip/ipnetconf.c        | 10 +++++-----
- ip/ipnetns.c          | 10 +++++-----
- ip/ipnexthop.c        | 26 ++++++++++++-------------
- ip/ipntable.c         | 10 +++++-----
- ip/iproute.c          | 20 ++++++++++----------
- ip/iproute_lwtunnel.c | 33 +++++++++++++++++---------------
- ip/iprule.c           | 12 ++++++------
- ip/ipseg6.c           | 13 ++++++++-----
- ip/iptoken.c          | 13 +++++++------
- ip/iptunnel.c         | 12 ++++++------
- ip/iptuntap.c         | 12 ++++++------
- ip/ipvrf.c            | 10 +++++-----
- ip/ipxfrm.c           | 14 +++++++-------
- ip/link_veth.c        | 14 +++++---------
- ip/routel             | 11 ++++++-----
- ip/rtmon.c            | 10 +++++-----
- ip/tcp_metrics.c      | 12 ++++++------
- ip/xfrm_monitor.c     | 10 +++++-----
- ip/xfrm_policy.c      | 16 +++++++++-------
- ip/xfrm_state.c       | 26 +++++++++++++------------
- misc/arpd.c           | 12 +++++++-----
- misc/ifstat.c         | 44 +++++++++++++++++++++----------------------
- misc/nstat.c          | 11 ++++++-----
- misc/rtacct.c         | 13 ++++++-------
- netshaper/netshaper.c | 31 +++++++++++++++---------------
- tc/e_bpf.c            | 15 ++++++++++-----
- tc/f_basic.c          | 12 +++++++-----
- tc/f_bpf.c            | 12 +++++++-----
- tc/f_cgroup.c         | 16 ++++++++++------
- tc/f_flow.c           | 12 +++++++-----
- tc/f_flower.c         | 13 +++++++++----
- tc/f_fw.c             | 12 +++++++-----
- tc/f_matchall.c       | 12 +++++++-----
- tc/f_route.c          | 12 +++++++-----
- tc/f_u32.c            | 12 +++++++-----
- tc/m_action.c         | 23 ++++++++++------------
- tc/m_bpf.c            | 10 ++++++----
- tc/m_connmark.c       | 16 +++++++++-------
- tc/m_csum.c           | 18 ++++++++++--------
- tc/m_ct.c             | 12 +++++++-----
- tc/m_ctinfo.c         | 16 +++++++++-------
- tc/m_estimator.c      | 12 +++++++-----
- tc/m_gact.c           | 27 +++++++++++++++-----------
- tc/m_gate.c           | 14 ++++++++------
- tc/m_ife.c            | 16 +++++++++-------
- tc/m_mirred.c         | 14 ++++++++------
- tc/m_mpls.c           | 16 +++++++++-------
- tc/m_nat.c            | 22 +++++++++++++---------
- tc/m_pedit.c          | 22 ++++++++++++----------
- tc/m_police.c         | 10 ++++++----
- tc/m_sample.c         | 24 ++++++++++++-----------
- tc/m_simple.c         | 16 +++++++++-------
- tc/m_skbedit.c        | 17 ++++++++++-------
- tc/m_skbmod.c         | 16 +++++++++-------
- tc/m_tunnel_key.c     | 20 +++++++++++---------
- tc/m_vlan.c           | 24 ++++++++++++-----------
- tc/q_cake.c           | 12 +++++++-----
- tc/q_cbs.c            | 12 +++++++-----
- tc/q_choke.c          | 12 +++++++-----
- tc/q_clsact.c         | 14 ++++++++++----
- tc/q_codel.c          | 12 +++++++-----
- tc/q_drr.c            | 24 +++++++++++++----------
- tc/q_dualpi2.c        | 38 ++++++++++++++++++++-----------------
- tc/q_etf.c            | 12 +++++++-----
- tc/q_ets.c            | 29 ++++++++++++++++------------
- tc/q_fifo.c           | 13 ++++++++-----
- tc/q_fq.c             | 12 +++++++-----
- tc/q_fq_codel.c       | 12 +++++++-----
- tc/q_fq_pie.c         | 12 +++++++-----
- tc/q_gred.c           | 19 ++++++++++---------
- tc/q_hfsc.c           | 28 +++++++++++++++------------
- tc/q_hhf.c            | 12 +++++++-----
- tc/q_htb.c            | 19 ++++++++++++-------
- tc/q_ingress.c        | 14 ++++++++++----
- tc/q_mqprio.c         | 10 ++++++----
- tc/q_multiq.c         | 12 +++++++-----
- tc/q_netem.c          | 21 +++++++++++++--------
- tc/q_pie.c            | 12 +++++++-----
- tc/q_plug.c           | 13 ++++++++-----
- tc/q_prio.c           | 15 +++++++++------
- tc/q_qfq.c            | 26 ++++++++++++++++---------
- tc/q_red.c            | 12 +++++++-----
- tc/q_sfb.c            | 14 ++++++++++----
- tc/q_sfq.c            | 12 +++++++-----
- tc/q_skbprio.c        | 13 ++++++++-----
- tc/q_taprio.c         | 10 ++++++----
- tc/q_tbf.c            | 14 ++++++++------
- tc/tc.c               | 12 ++++++------
- tc/tc_class.c         | 20 ++++++++++++--------
- tc/tc_exec.c          |  6 +++---
- tc/tc_filter.c        | 31 +++++++++++++++++-------------
- tc/tc_monitor.c       | 11 ++++++-----
- tc/tc_qdisc.c         | 14 +++++++-------
- tc/tc_stab.c          | 13 +++++++------
- 124 files changed, 1057 insertions(+), 868 deletions(-)
-
+diff --git a/ip/routel b/ip/routel
+index 09a90126..defe738c 100755
+--- a/ip/routel
++++ b/ip/routel
+@@ -11,10 +11,11 @@ import getopt
+ import subprocess
+ 
+ 
+-def usage():
++def usage(help=False):
+     '''Print usage and exit'''
+-    print("Usage: {} [tablenr [raw ip args...]]".format(sys.argv[0]))
+-    sys.exit(64)
++    print("Usage: {} [tablenr [raw ip args...]]".format(sys.argv[0]),
++          file=sys.stdout if help else sys.stderr)
++    sys.exit(0 if help else 1)
+ 
+ 
+ def main():
+@@ -23,12 +24,12 @@ def main():
+     try:
+         opts, args = getopt.getopt(sys.argv[1:], "h46f:", ["help", "family="])
+     except getopt.GetoptError as err:
+-        print(err)
++        print(err, file=sys.stderr)
+         usage()
+ 
+     for opt, arg in opts:
+         if opt in ["-h", "--help"]:
+-            usage()
++            usage(True)
+         elif opt == '-6':
+             family = 'inet6'
+         elif opt == "-4":
 -- 
 2.53.0
 
