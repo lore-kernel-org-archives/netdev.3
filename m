@@ -1,147 +1,174 @@
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C77F4749C7
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 14:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786114801; cv=pass; b=C5f5K1DvuHJddfmdXJFEOkK861VE02H57+gCnmXNG0CjuNnMNuPS4S8kR0NpO9znTl3tbz8lPWPohY7t6ONwCmNO1ESU266ZLyBlA8VVXH11f5V1NB+519YFOnfOD5ENzez3go1Ckg3YuUWkzjfcIx2p/pmjPHCWu9P+mP9Ahb8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786114801; c=relaxed/simple;
-	bh=gV20Qq1q8KHAEqMNSgw5mTDYx8Xl3nfNz4w7UDZshT8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N3YSGbsmcpQzISkUrASYXhUKBLTCnYapL64uvi5a3R6jJoETl5iikzlfnOkF2BzrNRURwzbxCOo4r4ZXLz2Q0EhXpkgEZQ+yPNzZhLwa+RWVhdGn8hThg4z1ZqVpiYaZcvIZ5+8EJ4hVTQ1+z7HR8686RY0QHa5MyFSXtxAM0TE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gyl+qiOJ; arc=pass smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gyl+qiOJ"
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-977168e4f3dso2207313241.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 07:59:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786114799; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SYNVKnlbysCt/vaSHEr0HBqdbwglKLEWVzebgPksi9yhAcE5xP5VPc7WgxK4nk8iuM
-         ZpsuDZIKjd0ylX54pOe43v5CAMq9M9Z+5kVOvrKJqaYaCnmqBJa4D7BJXl44+DGdy3sS
-         ADTBg5hDmAfColUdVuC9IQnw1EWZF4L1nzrHZfvjyTrEyFhyzpZL7ZGcTbCqGS0whEDv
-         97yzWPm37jpNeIrFSByYHXqlA+KH6pl1jXR4ygG+mW9wMO3zRlxODbIVKjk+DRAcJ1dE
-         WU+hE3VEQZBmBKq17SlsL4ac/5UvLWRUfuhGRLkGrpuedmETnw3djQyteQJ2T2YukBMc
-         ELaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xvuSwihRV3vLoITfKBXt24sePvRgdmUhr3+yUrenF18=;
-        fh=PQsvmajA8uisrdQB3axq8AyCue+3aRKy5qeIGURsNuk=;
-        b=esTFYb40PIi7OcDkJxhdc8XE0foVdTRHw79MWz3UVAx1oAUnSFvFWPlgQRZhrzZlmZ
-         6T3BXeYS9mT7++DSal1wygjLWT4tcEEHLAJtx4oGCncbFx87DG22zfVDIWYh1R0ws+9k
-         eQLijVZvUD0yQ8JOQIetnWPP76UgL4A7U343Z3xF5L57dtcUIxbnTCmKNdPC+Xlyw7rv
-         4brV1tqo6RLMmXC3vwyYuCsXN9JSpAZUXGEH82AcJn8J0OcFJ3gYDCbZnxAZ6a7v9t8H
-         pJoFAPoY95I9LicpBj5o/CBT2nC6cJ1twPzyvJh9JFfCcB7xWmmMvDDqFULnYFxOi8w6
-         25sw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786114799; x=1786719599; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xvuSwihRV3vLoITfKBXt24sePvRgdmUhr3+yUrenF18=;
-        b=Gyl+qiOJiAmjPzSOy+yAUbgHE7C2l5ryrcwZj7SEstdeZ+RQ/gj0b3pqLcoW8xI+G2
-         w2S7/9zA5bbP10Ap0l2Y67e5QA9K44vSAFVIWbKWgO6Z/6LORJD2qArzV6qC4vK4fVhi
-         eMxU0mH8NslkObuipwS/rQBTeJrw5of9PMksU9uX9cTRAZW3bLaQY6gq3kblSvGOAJvT
-         3U2CmeCH60eiIbrMmDDH3T+kowUcOpAd++FiuYPTcTvC8T+++pRDc2WTzkLjNMsD0y8b
-         mryaobBDYudLE61t/mF0Znw65XqqXKH37ghcuoyZbB9lu0pIgHgMsV332cNNIFOP1TRa
-         E9HA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425D342C4E8
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 15:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.69
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786114944; cv=none; b=vEZVtWmkAzUcNRLm/BtwG3hAUeFvONDMauQ3bcfPmB5JVNwtbSUpbFsVEl0AY5O6bVBEWPI26UmG70gGno0WoMB2sKwn9vpJPiSz8lz+guJgWVvzwAzzhu1nMaJhYolInwRdZzsaIMDnA8mouXVX6OrZfftei28QWAhI/Kv3mi4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786114944; c=relaxed/simple;
+	bh=e+81dOHvj0So3RON92CFdhhmQ3xPUfPVWFr2uruoMWA=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=IPsCCiEWcm1NGsuaEuiI4bPJPYLwnK+Fw4fWBw//xOqiWZ7ZcTG+CNGRrZ+x1dfascOYypMqYfHqnm3MY2dMD7TA5XAbLWz+c2119w/Nxmn055RXeAXcaGYEVW8taLEIlXqovl/oT3DIN85ezqqBzR3KqfdObWeu6/VVNurXPdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7eb64224fd2so5314779a34.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 08:02:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786114799; x=1786719599;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xvuSwihRV3vLoITfKBXt24sePvRgdmUhr3+yUrenF18=;
-        b=dPpLg77wktS76UyvKzpBxvA2lyVF5q4HxKN1Ye/YGhbgGqY8AzYwywxJsRJVRDnQY5
-         uv2VaduV2hP0bHghJISTLtcCRZ4t0ji4kjSs6GtD/L/920CHcyv+idxpkRj8eTHaw2On
-         VYMbJFPMWcrTeSwxHP5up03EBJEotunQFFeFZTsR9yUvwcDlQBO0lhCiTS+8BLV3nfDU
-         VL4qWUGgmU5Mm+mGXtOtBAsgF8+H1igNC5zvQRafWZO/u0PFyAi481YXIArfcgU5Lo0F
-         8wnjWnDEP72VZy6aln/iSA7hdoyKOUgtKrjZNdhAggg/X245XTqV9AMnJYuDu4+YkRn+
-         zcow==
-X-Forwarded-Encrypted: i=1; AHgh+RpaZeErKpMW79c8D6DcaA/TyfZ+hqjemD9uj79i03/+Ex8LnxYapT2l4U2RwEBbFZWjRQElZDc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTva5ZaAa+++mFbSMsCG1RhauhNqgQVWXfiN0W0L70zyWMIe7Z
-	NSRid9nL4cHqIOuhwcm47kreCYppEnCml7hRHB1lXG257Qi5v3w0EbzotdyxWWWQTudA8Ck3esa
-	Cl/SCrGWIPPUbg1Btx3aYhCogzrdH774=
-X-Gm-Gg: AR+sD13LZ2tFSeIjIgwqVg97zm7Y5BkLGePVh7oyAzYohmJZFdacxkVYoMdd24AKOYi
-	HzlYnXDw1kzT1a/zTc07ifw144ECrjDXl+mdD7s6dq+PwvEcOcWc3ZO2fPeNWMDfgeE7upQG8D9
-	ZBIgf947r0bfgkWZZNd3flWEYUYxlXb64uW9dgj1A9ynZrkexmwkeO72H7m7S7WpXML49o6dOAm
-	TpT6ZExahTc8CTFH4h4bJ7qeWqZ+1YUYMzW42CM7tEIP7lm3JKoQ66XQCdzgXIUgIYBS7L6g0vy
-	4hYUYHl5PQNgq0Bo/lqVLISVpMPmwPQdDVf5Vz3qHA7IvC+dlzSWCR7ahv21rCyUkwprAVkntP8
-	wihIGFB1q7motu/GO7yIqJHwpozl6D5i4VaUM2dpN04yOeldFK2xZ+vGRmZIdBHKXWenrX/j5QZ
-	+35XJToRyeo6TwtTZyMsnRRpDlQlI7+lxGA00q
-X-Received: by 2002:a05:6102:54ac:b0:738:bf0f:d0c6 with SMTP id
- ada2fe7eead31-760e3b9ab74mr7413161137.0.1786114798682; Fri, 07 Aug 2026
- 07:59:58 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786114941; x=1786719741;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=lqEEJEDiXR1euy6HrUWyog1UErAU/b24emNmEVqWzFU=;
+        b=LiCdm2y+lJ3M/bfkCk+6RgdJWGklwjlgGEBM3CupVABuH4o43weKc2uHye9CI1niDe
+         hZashJr6FF5ADFeQRLsRrUvMEyxByVbmxDTd4Vjwm4moqzNdwdlG+OY4+Nt2Jv+fCmlh
+         j2XAhOWN/fY7SaBKWQ7xn1gamzp8pjPD3+gQbGDRhO1O8pMlBSkyTPcumvzK3RE/xzbE
+         ZoJPw0t8Yd9JYN+32JfGt2yXdLdybf+5xAX6ORgGWyLPR4SXXFBCM5IH6olkGDje8nkR
+         HofFm8dhcqSsYAOqoZU88CIGyxorb10pw8FOwPgqzn991p0SOE+SsgkYuCyJ5lBKfjdJ
+         vacg==
+X-Forwarded-Encrypted: i=1; AHgh+RoAdQK/+Ygu8uanfLc7sdcIfKAoii6gV+s373mVyAhBNhB/hxTXyYzokfOFW7enliN1YK0zTX4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT3aw8uj2Gh2V0jcx7YTY0PVhjAH1Bkn5GSEjT+FNTEoa48u91
+	qjxk96QdxI9uzVVtasxnZIxCcxpXL9r4KrL57gXwylgWUe+rcNL2qyUaVUYStBNzmNGh7N2gubp
+	9RDF8eOMdd9aMQ8RpL2JCdaOXzBH9SNUpddZ/XBZd1lEfrzZhXOoWh9o/i2U=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com> <b2e83ba0-2e9c-4105-b806-8a155e8b9aa5@lunn.ch>
-In-Reply-To: <b2e83ba0-2e9c-4105-b806-8a155e8b9aa5@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Fri, 7 Aug 2026 08:59:47 -0600
-X-Gm-Features: AUfX_mzMI4rGrSWJxil0rkCdGHQcdQSp5kYsnGxukt-NVGzxhhYkib-rvufG5PE
-Message-ID: <CADvTj4rame1n8eQL2GUOaJHnOcR_cqNxzNYO+QeCLYDczEFeUA@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 0/4] net: mdio: support dynamic OF device changes
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Jonas Gorski <jonas.gorski@gmail.com>, 
-	Vladimir Oltean <olteanv@gmail.com>, Ciprian Regus <ciprian.regus@analog.com>, 
-	Andreas Larsson <andreas@gaisler.com>, Mark Einon <mark.einon@gmail.com>, 
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
-	Keyur Chudgar <keyur@os.amperecomputing.com>, Michael Chan <michael.chan@broadcom.com>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Wei Fang <wei.fang@nxp.com>, 
-	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
-	Bryan Whitehead <bryan.whitehead@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, Timur Tabi <timur@kernel.org>, 
-	nic_swsd@realtek.com, Byungho An <bh74.an@samsung.com>, 
-	Steve Glendinning <steve.glendinning@shawell.net>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
-	Jiawen Wu <jiawenwu@trustnetic.com>, Mengyuan Lou <mengyuanlou@net-swift.com>, 
-	Thangaraj Samynathan <Thangaraj.S@microchip.com>, Sebastian Reichel <sre@kernel.org>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-pm@vger.kernel.org
+X-Received: by 2002:a05:6820:2083:b0:6aa:9be1:484a with SMTP id
+ 006d021491bc7-6ae96c10158mr12840974eaf.7.1786114941023; Fri, 07 Aug 2026
+ 08:02:21 -0700 (PDT)
+Date: Fri, 07 Aug 2026 08:02:21 -0700
+In-Reply-To: <20260807081606.3200128-1-mjambigi@linux.ibm.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a75f37d.b50370da.49fe0.001c.GAE@google.com>
+Subject: [syzbot ci] Re: net/smc: fix clcsock and lgr/lnk races in smc_diag
+ dump path
+From: syzbot ci <syzbot+cia7ddf4f17dfab266@syzkaller.appspotmail.com>
+To: alibuda@linux.alibaba.com, andrew@lunn.ch, davem@davemloft.net, 
+	dust.li@linux.alibaba.com, edumazet@google.com, guwen@linux.alibaba.com, 
+	horms@kernel.org, kuba@kernel.org, linux-s390@vger.kernel.org, 
+	mjambigi@linux.ibm.com, netdev@vger.kernel.org, pabeni@redhat.com, 
+	pasic@linux.ibm.com, sidraya@linux.ibm.com, tonylu@linux.alibaba.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 7, 2026 at 7:16=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Thu, Aug 06, 2026 at 09:54:19PM -0600, James Hilliard wrote:
-> > MDIO buses enumerate firmware children only when the bus is registered.=
- A
-> > later devicetree overlay or status transition is ignored, unlike on I2C=
- and
-> > SPI buses. Supporting live reconfiguration also means that population a=
-nd
-> > removal can race address scanning, PHY attachment and bus teardown.
->
-> Please make the bootloader work around the issues, and drop this
-> patchset.
+syzbot ci has tested the following series
 
-This is just fixing OF_DYNAMIC for mdio now, it's no longer used
-by the AC200/AC300 PHY patches anymore.
+[v3] net/smc: fix clcsock and lgr/lnk races in smc_diag dump path
+https://lore.kernel.org/all/20260807081606.3200128-1-mjambigi@linux.ibm.com
+* [PATCH net v3] net/smc: fix clcsock and lgr/lnk races in smc_diag dump path
 
->
->         Andrew
+and found the following issue:
+WARNING in smc_diag_dump_proto
+
+Full report is available here:
+https://ci.syzbot.org/series/ab0d12fd-741a-4a0f-9f49-e52b84e94f4a
+
+***
+
+WARNING in smc_diag_dump_proto
+
+tree:      net
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
+base:      594d905195024b228c962627ae5ae7c17bd582a4
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/0c4d246f-d098-4afe-b6bc-0f0ad52f55f8/config
+syz repro: https://ci.syzbot.org/findings/fa5564b8-8db6-4f76-9d75-dbd796435d87/syz_repro
+
+------------[ cut here ]------------
+DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+WARNING: kernel/locking/mutex.c:625 at __mutex_lock_common kernel/locking/mutex.c:625 [inline], CPU#0: syz.0.161/6326
+WARNING: kernel/locking/mutex.c:625 at __mutex_lock+0x12d8/0x1550 kernel/locking/mutex.c:821, CPU#0: syz.0.161/6326
+Modules linked in:
+CPU: 0 UID: 0 PID: 6326 Comm: syz.0.161 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:__mutex_lock_common kernel/locking/mutex.c:625 [inline]
+RIP: 0010:__mutex_lock+0x12df/0x1550 kernel/locking/mutex.c:821
+Code: de 57 90 48 c1 e8 03 0f b6 04 18 84 c0 0f 85 47 02 00 00 83 3d 45 cc 83 04 00 75 13 48 8d 3d a8 1b 87 04 48 c7 c6 40 f7 ec 8b <67> 48 0f b9 3a 90 e9 75 ee ff ff 90 0f 0b 90 e9 48 f2 ff ff 90 0f
+RSP: 0018:ffffc900068c6e40 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: dffffc0000000000 RCX: ffff888170ffd940
+RDX: 0000000000000000 RSI: ffffffff8becf740 RDI: ffffffff905b2db0
+RBP: ffffc900068c6fd0 R08: ffffffff9057de43 R09: 1ffffffff20afbc8
+R10: dffffc0000000000 R11: fffffbfff20afbc9 R12: ffff8881b1006648
+R13: 0000000000000000 R14: 1ffff92000d18ddc R15: 0000000000000000
+FS:  00007f4dacd826c0(0000) GS:ffff88818d945000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000020000000e000 CR3: 0000000171350000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ smc_diag_msg_common_fill net/smc/smc_diag.c:50 [inline]
+ __smc_diag_dump net/smc/smc_diag.c:101 [inline]
+ smc_diag_dump_proto+0x6d2/0x2620 net/smc/smc_diag.c:255
+ smc_diag_dump+0x59/0xa0 net/smc/smc_diag.c:278
+ netlink_dump+0x711/0xee0 net/netlink/af_netlink.c:2331
+ __netlink_dump_start+0x589/0x7b0 net/netlink/af_netlink.c:2446
+ netlink_dump_start include/linux/netlink.h:341 [inline]
+ smc_diag_handler_dump+0x199/0x240 net/smc/smc_diag.c:293
+ sock_diag_rcv_msg+0x4b0/0x5f0 net/core/sock_diag.c:-1
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+ __sock_sendmsg net/socket.c:790 [inline]
+ ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+ __sys_sendmsg net/socket.c:2770 [inline]
+ __do_sys_sendmsg net/socket.c:2775 [inline]
+ __se_sys_sendmsg net/socket.c:2773 [inline]
+ __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4dabf9e019
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f4dacd82028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f4dac226090 RCX: 00007f4dabf9e019
+RDX: 0000000000000600 RSI: 0000200000000540 RDI: 0000000000000003
+RBP: 00007f4dac03500c R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f4dac226128 R14: 00007f4dac226090 R15: 00007ffe0de8ec98
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	de 57 90             	ficoms -0x70(%rdi)
+   3:	48 c1 e8 03          	shr    $0x3,%rax
+   7:	0f b6 04 18          	movzbl (%rax,%rbx,1),%eax
+   b:	84 c0                	test   %al,%al
+   d:	0f 85 47 02 00 00    	jne    0x25a
+  13:	83 3d 45 cc 83 04 00 	cmpl   $0x0,0x483cc45(%rip)        # 0x483cc5f
+  1a:	75 13                	jne    0x2f
+  1c:	48 8d 3d a8 1b 87 04 	lea    0x4871ba8(%rip),%rdi        # 0x4871bcb
+  23:	48 c7 c6 40 f7 ec 8b 	mov    $0xffffffff8becf740,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	90                   	nop
+  30:	e9 75 ee ff ff       	jmp    0xffffeeaa
+  35:	90                   	nop
+  36:	0f 0b                	ud2
+  38:	90                   	nop
+  39:	e9 48 f2 ff ff       	jmp    0xfffff286
+  3e:	90                   	nop
+  3f:	0f                   	.byte 0xf
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
