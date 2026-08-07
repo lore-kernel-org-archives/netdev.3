@@ -1,100 +1,101 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC7A47886E
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 12:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B5643031B;
+	Fri,  7 Aug 2026 13:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786107561; cv=none; b=Tqu/w8vXWETbRzK3Npqrec6SsbQK1bVUUfKE0peBkmBxA78dOaRCAOlw6sMbwn71v+CRP/Bo2xLScTKPJHETQiSfZ1QemvgdTjl4ova6J434GnWG99EfowoDQg+J04CRxeC9vp4bZyyPo2gVmrH4H+1eKQLCjUvtu/kkHcIKXiA=
+	t=1786107762; cv=none; b=MEz7fOZTG7+VNXIx6bU0z2ha4kDt9kvG1eJ3QWII3zSU1QzwntxGUbjyKDeGbpwm2/OEz6ZjYMUJVnc8qXLosZMPgQzZxhA+gILoaw7eOzQG1H5ukXNmg57V0g38zyPucPB1CJwjCg/PD7FzVjw+RlYeBTfLyR0r9kg7nccxni0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786107561; c=relaxed/simple;
-	bh=nB9PeiYqtYxB59Cpiw4+izGx1h8kYfW2R3OcHeWgats=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvRKL1np/Qbniqhq78shH1dqsRI7mVbZYWHqJpM4B9KPb/Y79WyR6l/XhrrdZw0zOd2eDHTi+o5eY7J3St7ujfuRg3mxAFyds4zrnjoblPwGnx1k66DsAK3ybDa5wkv3V/ANqxtG0sugSlI4IrREdiSEsdDuh0pZ7ZbzBF4yy44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OlQOTixK; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786107762; c=relaxed/simple;
+	bh=FdWE3jLBu1qUiJGqtka5XAGDIfCU188cWO+v/9kTolg=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=tjuH2lQhNbOH2cHmsxu2iPdKziUF+1iMmvGGTYTyxPd16lXD9YiDxOAVEJ0CuaOQy2gyJRqR0KD2IGc6MlzGBo8mh+f9UyxulB2WoGD2sTLUhKCEC1CzM0kfRwef9drD0fr5UTWEPbWr2UbLnCQtywBsSfPRV6/O2Jfp72o3MEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OecVw22t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OlQOTixK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786107548;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8M7wXURrhkNZfyuEwKvTXxWNDng8ek7UYAiVlFhlORo=;
-	b=OlQOTixKGPEpP7p/CXf9DzmLtycDrMsqpIDylABsfXjv7Ssg5jhrpGrODFpwS6xa76A96Y
-	Npv6E+ErxlD7GlslS+64K3eO6x0qZZT4Ij9btxj3VRebps1huWkkju3AE7Ee3xvuEupiYw
-	Ld6yhVr95ibC2zo+/Sjc5mamA/ujIlw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-pasijFAYP1-GQ_F9r9GQxw-1; Fri,
- 07 Aug 2026 08:59:05 -0400
-X-MC-Unique: pasijFAYP1-GQ_F9r9GQxw-1
-X-Mimecast-MFC-AGG-ID: pasijFAYP1-GQ_F9r9GQxw_1786107543
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 598A019560B2;
-	Fri,  7 Aug 2026 12:59:03 +0000 (UTC)
-Received: from thuth-p1g4.redhat.corp (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4E93A30001A2;
-	Fri,  7 Aug 2026 12:58:59 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Eric Biggers <ebiggers@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Steve French <smfrench@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org
-Subject: [PATCH v2 3/6] net/tcp-ao: clear the aes_cmac_key when done
-Date: Fri,  7 Aug 2026 14:58:40 +0200
-Message-ID: <20260807125845.1477067-4-thuth@redhat.com>
-In-Reply-To: <20260807125845.1477067-1-thuth@redhat.com>
-References: <20260807125845.1477067-1-thuth@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OecVw22t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864B01F000E9;
+	Fri,  7 Aug 2026 13:02:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786107752;
+	bh=1ojP9lXDTsgxo+kBprRZYnvCdgavnn52UswOqgtr3nc=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=OecVw22taBzl2gw5knEc7KAsRSOu+xy7WrSl5VJa24e6O4sz1Y6duJxpWBx4xAj00
+	 SxwiVPTLg9TcQZjSpGqD7plpJalJalll0HQP8DDfJWoEbueZPFIiPg4ulIVvdPBonw
+	 K1X8wRNrppJpXuxm0HfMG+kJevTJtd/JyRuwnp5mxcbvJgg93Nuadmj++VtZ+0AbFd
+	 jmRTVO3RY2Se7UzN4HgipbbPMpcjR4guz+7xvEZF6yXh45P7R89orLAyBaV2ATDDij
+	 QVFc4Hma0dAnVVIb//MUH7uVMc8W7eEeLmrohv/eczvy/UyaQI/lMoQYDnxe5b/yuL
+	 2puGqJ6IXaEjw==
+Date: Fri, 07 Aug 2026 08:02:31 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Paul Walmsley <pjw@kernel.org>, Hal Feng <hal.feng@starfivetech.com>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Conor Dooley <conor+dt@kernel.org>, 
+ linux-hardening@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>, 
+ linux-clk@vger.kernel.org, Emil Renner Berthing <kernel@esmil.dk>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, Kees Cook <kees@kernel.org>, 
+ Albert Ou <aou@eecs.berkeley.edu>, 
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, devicetree@vger.kernel.org, 
+ linux-riscv@lists.infradead.org
+To: Changhuang Liang <changhuang.liang@starfivetech.com>
+In-Reply-To: <20260807112923.191627-16-changhuang.liang@starfivetech.com>
+References: <20260807112923.191627-1-changhuang.liang@starfivetech.com>
+ <20260807112923.191627-16-changhuang.liang@starfivetech.com>
+Message-Id: <178610775180.4069377.7068076405963189133.robh@kernel.org>
+Subject: Re: [PATCH v3 15/22] dt-bindings: clock: Add StarFive JHB100
+ Peripheral-1 clock and reset generator
 
-From: Thomas Huth <thuth@redhat.com>
 
-Clear the local aes_cmac_key structure via __cleanup() function
-when we're done with it to avoid that sensitive data could leak on
-the stack.
+On Fri, 07 Aug 2026 04:29:16 -0700, Changhuang Liang wrote:
+> Add bindings for the Peripheral-1 clock and reset generator (PER1CRG)
+> on the JHB100 RISC-V SoC by StarFive Ltd.
+> 
+> Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  .../clock/starfive,jhb100-per1crg.yaml        | 70 +++++++++++++++++++
+>  .../dt-bindings/clock/starfive,jhb100-crg.h   | 60 ++++++++++++++++
+>  .../dt-bindings/reset/starfive,jhb100-crg.h   | 19 +++++
+>  3 files changed, 149 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-per1crg.yaml
+> 
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- net/ipv4/tcp_ao.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+My bot found errors running 'make dt_binding_check' on your patch:
 
-diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
-index e4ec60a334963..0626cbf60620c 100644
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -141,7 +141,7 @@ void tcp_ao_calc_traffic_key(const struct tcp_ao_key *mkt, u8 *traffic_key,
- 					traffic_key);
- 		return;
- 	case TCP_AO_ALGO_AES_128_CMAC: {
--		struct aes_cmac_key k;
-+		struct aes_cmac_key k __cleanup(aes_cmac_zeroize_key);
- 
- 		aes_cmac_preparekey(&k, mkt->key, AES_KEYSIZE_128);
- 		aes_cmac(&k, input, input_len, traffic_key);
--- 
-2.55.0
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/display/mediatek/mediatek,mt8196-tdshp.example.dtb: tdshp@321e0000 (mediatek,mt8196-disp-tdshp): 'clock-names' is a required property
+	from schema $id: http://devicetree.org/schemas/display/mediatek/mediatek,mt8196-tdshp.yaml
+Documentation/devicetree/bindings/display/imx/fsl,imx-lcdc.example.dtb: display0: fsl,pcr: b'\xf0\xc8\x80\x80' is not of type 'object', 'integer', 'array', 'boolean', 'null'
+	from schema $id: http://devicetree.org/schemas/dt-core.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/20260807112923.191627-16-changhuang.liang@starfivetech.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
