@@ -1,87 +1,78 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35A125DB1C;
-	Fri,  7 Aug 2026 12:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA96C47607F;
+	Fri,  7 Aug 2026 12:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786107212; cv=none; b=rxlMFSkWRWXl+zizD1m3uBc6eNFVoaQErVhWOts/rarQchH2pwt+wKqSlA4OD55SIujZxyR1ZUStkkfBQ6TghJNaCnphLCm6gIFWyCTvQL4SqGvY4z0v/SWgN0S3n9uYPI/KP64wHkI4lReRLYmbgIlGtWH6sCqdY4F0/dxjZcs=
+	t=1786107443; cv=none; b=n/RbopuDKZaWn245nOFGz15Ak+hLnGcCDklLCxk0Pp2CtiqfqySqJxU1vcYxxIjXUY2mH87Qq95UiSEJ8dudtahoTgSg7yL84iJyTHdD+ubQvb1cB/ShYJ5AG0nC5ssuH832o91c5XATcuhdPF0l3ckzcYGN1N141A6QhK6Xet4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786107212; c=relaxed/simple;
-	bh=rUkBAjb3eEuDoy2WuDuyIP98jM9oBwsHgsWuCSkxWrc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=L0LpGNBjHGRbNh+G9CfbvE21qdUrT5FzODNX7GWxoLnoLv8zxzek1bj6hkvnl3u73sMVE4xAfCbx661vbdCu6Uswtt0VUdkLYPZWjpAeBEeo0rJARiqGGkX4sieN6+bv0iwkdw0SVqjjtfZzydHs6BLI2PHFD13Kn7eO0JLDoOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.190.163.182])
-	by mtasvr (Coremail) with SMTP id _____wCHgD8j1XVq5NxyAA--.38353S3;
-	Fri, 07 Aug 2026 20:52:52 +0800 (CST)
-Received: from smtpclient.apple (unknown [10.190.163.182])
-	by mail-app3 (Coremail) with SMTP id zS_KCgB3jW8j1XVqOqsRBA--.31227S2;
-	Fri, 07 Aug 2026 20:52:51 +0800 (CST)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1786107443; c=relaxed/simple;
+	bh=RqNrnrfSrh4JGqVqqnuJS4ZrvC2g64alleAL3373SJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b9T7T/Q8Wbi8tk0uTba2WCWQBCEnn484xzxakWu5FzKPND1XldV0wpUTRzePp0PE/e1OwQMztk1vlq6e+6MyGO9jodioGalwSSF4W2sNm0vTBbvDeyrLOLGWH61mGWv/tkNaiddElcTE79AP/8UAa4BsT+aY2KnQ+pJgT4NaU4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZI/xW4b6; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZI/xW4b6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE321F000E9;
+	Fri,  7 Aug 2026 12:57:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786107436;
+	bh=bfeT8Oe0hGP6zH0zazdc6PEZoroy4KpwJjKGjfF2ayA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZI/xW4b6wrmM2Mp2BrqbeavdEN8NnBJ9uODK97LhzrfB3IU2OmtFyN5prTcpLJhg8
+	 8lrqCfC81aS+nWvHyfbvpCCb67hz4ZY4ZOA4xf5uTod6/1YpDDmjSl37jZzvOKdU3v
+	 s9+kkxACDnSJ/0RUjlsSL2JAaMugu2EPOm2A1jg35XpFVyjFMRwDSKOemYj/L4LcYG
+	 AYQK0hhqj5TgWGvYR8dkvyOYsLg0emmSDpscJrvywdNfmWHr1VD2epjlmKpBn9qHFx
+	 Jxb571w0ZRzMoRn+qizl2IWc/kWM6hpm9b1pEET2rC21EGgONKOXIZjN2JOQ8zJgLj
+	 6pvpZ6pQX/akg==
+Date: Fri, 7 Aug 2026 13:57:12 +0100
+From: Simon Horman <horms@kernel.org>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Alexandra Winter <wintera@linux.ibm.com>,
+	Aswin Karuvally <aswin@linux.ibm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 0/2] drivers/s390/net: Enable CONTEXT_ANALYSIS
+Message-ID: <20260807125712.GK51943@horms.kernel.org>
+References: <20260805145032.1409325-1-hca@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [PATCH] ieee802154: cc2520: fix FIFOP work use-after-free
-From: Fan Wu <12321260@zju.edu.cn>
-In-Reply-To: <87pkzucdft.fsf@bootlin.com>
-Date: Fri, 7 Aug 2026 20:52:41 +0800
-Cc: Fan Wu <fanwu01@zju.edu.cn>,
- linux-wpan@vger.kernel.org,
- Stefan Schmidt <stefan@datenfreihafen.org>,
- Alexander Aring <alex.aring@gmail.com>,
- Varka Bhadram <varkab@cdac.in>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4A1FAADE-AC28-4197-8547-EC7EF5ECE927@zju.edu.cn>
-References: <20260806050328.422480-1-fanwu01@zju.edu.cn>
- <87pkzucdft.fsf@bootlin.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: Apple Mail (2.3774.600.62)
-X-CM-TRANSID:zS_KCgB3jW8j1XVqOqsRBA--.31227S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?G/yVVwXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnZPoDCNGYdHSfuFmYJL54WPoyxOUvSJwEUFKaRvEar3skd5reE36IWJNXy2ehh2UXY9E
-	R1h2aZX6O1ig2+h8hVCp9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
-	BjDU0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26c
-	xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
-	j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxV
-	AFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x02
-	67AKxVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc
-	804VCY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY
-	67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y4
-	8IcxkI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY
-	04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU85l1PUUUU
-	U==
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260805145032.1409325-1-hca@linux.ibm.com>
 
- Thanks, this is a much simpler solution,  I will respin accordingly.
+On Wed, Aug 05, 2026 at 04:50:30PM +0200, Heiko Carstens wrote:
+> Enable CONTEXT_ANALYSYS for drivers/s390/net.
+> 
+> Static code checking for acquiring and releasing locks used to be done
+> with sparse. That was removed with [1] and replaced with a clang based
+> approach [2]. The new approach requires that each subsystem needs to be
+> explicitly enabled for checking.
+> 
+> Do that for drivers/s390/net. In order to avoid false positives due to
+> conditional locking, disable context analysis for specific functions of
+> the ctcm driver. All comments in ctcm indicate that the code should stay
+> as it is, and that such warnings should be ignored.
+> 
+> Disabling context analysis for specific functions keeps analysis enabled
+> for the rest of a file.
+> 
+> [1] 5b63d0ae94cc ("compiler-context-analysis: Remove Sparse support")
+> [2] 3269701cb256 ("compiler-context-analysis: Add infrastructure for Context Analysis with Clang")
+> 
+> Heiko Carstens (2):
+>   s390/ctcm: Add __context_unsafe() attribute to various functions
+>   drivers/s390/net: Enable CONTEXT_ANALYSIS
 
-> On Aug 7, 2026, at 20:39, Miquel Raynal <miquel.raynal@bootlin.com> =
-wrote:
->=20
-> Hi Fan,
->=20
-> While I may agree on the problem, I don't like the solution. It is
-> overly complex. If the problem is the fact that we might queue works,
-> what about disable_work[_sync]() ?
->=20
-> Thanks,
-> Miqu=C3=A8l
+For the series:
+
+Reviewed-by: Simon Horman <horms@kernel.org>
 
