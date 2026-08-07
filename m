@@ -1,66 +1,75 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C733FE64A
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 09:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0443EDAC1
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 10:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786096794; cv=none; b=EPVq8CvkynNsVfdBV0U3Sj7tAi6xtEJX57XQ31paW5ynNxqrvtQTZR2wIml+soFDRDp7OblOKIqxhg9Wv3u4ABXA5bexeAnt7Nqbwm1IyQ1Q2QcfL8diK+y4TikFOECgR/uCQwxEF4ftu3KUlAUGtqOUUKn7L1S4UNOJkSTUHjc=
+	t=1786096841; cv=none; b=jSziKS5A3BYzyq3EzNPmfiGrrcV9pNjPrUkq0m2/+L3fd281cu/sBs2UfMt3lQgNIWkZWKZ3nN6C+nnYbEcJ5E6fWDrYR7lMTER+6CzZdH1P/HUnCqyormPmT+l5f9hCfhDGARezwiTS+6+wHq9olKcgLwBoUFbIpQsYu/ITEAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786096794; c=relaxed/simple;
-	bh=vAMujusWBTM741d7RAiPKT9Iib9nEaiW1Xpf0HvbAm4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8kn/zkfuEEMwHi61479YFKKPmAysKWHyps/85BJBPaJbaOhEQg3yFczfcVPj6KjaDqalkRpg6ACu2mCF9rwoh3gabVD+sr6EeXAqh4ATx6Too0jKXjmtYaEpB/oNwcQB0kDRCTEdZPXVyfBWyhdC8AcKcVmHZHsIcEklokWJpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MoGuHjwl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786096841; c=relaxed/simple;
+	bh=WE8i65b9LC7lL9iQ5/lEghqFQeb0neL/8MWHHX2SAPE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cm7LG1jKJg2n6gKSxwoZ3Q6ICq+jVhjtn1xCkhstDbkbJbHdB7aacCTUCJp/sLGIZbkFnPhIp7h+Iwzv/WE6U4aYldlmcw25+xhOycebQgWOF9xfcyGcPJlXFnYmbuZlQhbupRlNaGTdEoeGPFPGSaelsIjaxgT0WYKXNtxKEpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pm1SLs9V; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MoGuHjwl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786096792;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jUqI+WEShIkI1sR1+RONA2PEu9DsOmlQV/su8ACFp1w=;
-	b=MoGuHjwloGIcp6Cw4Xc1CHYRv/hai8qujkKs6ell3xOvENMUEx//V0IEDiwNGaN34P7Imd
-	tr+8h5Awfg5GUmwXNEYykbwf8Y/wwwj5IsC0h5Mkgv1a+yQOX0DngIlE1tu5XSy6Zv0kTu
-	yjB1d3vlPzW4lw4GVnz+2W4o4bnxi+w=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-379-rW-EyCUhNlac1B4rvtr5Rw-1; Fri,
- 07 Aug 2026 05:59:37 -0400
-X-MC-Unique: rW-EyCUhNlac1B4rvtr5Rw-1
-X-Mimecast-MFC-AGG-ID: rW-EyCUhNlac1B4rvtr5Rw_1786096776
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A36081956044;
-	Fri,  7 Aug 2026 09:59:35 +0000 (UTC)
-Received: from p16v.redhat.com (unknown [10.44.32.215])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 21A2730001A2;
-	Fri,  7 Aug 2026 09:59:31 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Min Li <min.li@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Petr Oros <poros@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pm1SLs9V"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cf52d15d88so29816745ad.2
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 03:00:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786096839; x=1786701639; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QQZgcdlI2EieaifCVQjJlrIUWRZzFN6DkbdW2khQ3hg=;
+        b=Pm1SLs9Vov4ax6nEhgu4CzxOZs+MSR7P3WXTpdz1PFwe917a57sFkh67hXtDvoqJj7
+         UiKLoOulcmT1bPsSkAhNOiNxPId7cRsPSg45sov5/hdJRxKZjLyClutI738g4XSwHSRM
+         5Soudi7LnRXtX8zNHhcvU1On4RKmSFFiB9Oc1jLgpCGx6D4D4JxJ7cN8NGnW6w6GJ4cY
+         mYpOpIYaAd7Nk1v0eHriKCW5pyfjewYHYunp96L5s8khxO3XCbtaG16xrxlDaSJzu+7q
+         DGGNKtuDY2jbPKeSvgK1Po67J3CQmkF2WxirP7NhVC+9KGapmkpb4NUjvg4nLNGpJrgT
+         oN+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786096839; x=1786701639;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QQZgcdlI2EieaifCVQjJlrIUWRZzFN6DkbdW2khQ3hg=;
+        b=gwwb8tLLFurWuxKrAOrLXxHYcVl7LTGRiyZ9jxYTy1krlN96rvW6qHgLP/+COSOj8V
+         PD+QbrF5g6SA8m25O3xE/QXUA/iuFrwrVVV8VqltMfzddeEd0hzmWkT1L2W2HsENpeOM
+         pSjz7hxMfpeZf/Ol/1FnBQKnEkS2rwoxnTEJqcbgpupYsaRVHgU3XgkIeKtiZx7w/ziE
+         eY8YoH3p3jN3LZp9FTgHDoJ+J+oiLxZO+yotzWQAbIygjSd9O3zzuP/Jum0zFciDl/fL
+         wRIANDhNTX42HsetJgEjHTaacvTq5BcLbWcU1DIOlSiOqhDLnJFmt9Zp09OwBsOSIoDF
+         0Wyg==
+X-Forwarded-Encrypted: i=1; AHgh+RrkoahD1dlvSX1g3X3RQaQMQaBWjIioq8e1G266QNSi1s2sjKRtZdhLfErKOOxOtfl3/KYz234=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT+15dmsGlZ9GvYq8214XJHmmDQ5Ji8WMbPIfnQfVJnAowdjzZ
+	GKq1XbKhJHlhsJT4kkjYz056VHWRm2EvsoPMqLl/S1SspsK0ABzIYufc
+X-Gm-Gg: AR+sD12HApZxOUKDjT34wZFZEJJ1KOILIAFiDlulQzTBWHIES1mtCzSaPYdrSkUacZo
+	QUDrMk/lJIQgJDLEf9abtYs3xa3UMxBDmsnV0SNLM28Yd/k8FSY/6zfsDGUQqe3Z/fWnoj0GVG4
+	fq/EZm55dp7l6zFOQKp0cxLVyl26J1H7CvwVz0xDv7jIxeumpxzIAqz9Pz7GL7C3c6PGATVJDpV
+	NgnmWq/p2BWjm8nmmskVMEkdqlL/vgei+g0CeMRX7x+yISO2aXDKuTOpe3kB8Jb+jrLScjzWw4U
+	KqEnRka3H0Acci4nrv5yKJXxUZM5N3JFaY/XcgkrW0hdKqGtK3BOtcW6qckyDuaxcgTLk6WTcT2
+	92hJYF1II9sQVtgRTxMkhOl1pnl0sj4UVMKRfplpzrpplSCSHlHLqHue2XeO3KayS5Sy4Kvqzp1
+	s05wQIgHaSOFtMzqirv5VXLkPl34WONd0x1rqstXt70TSsbj0fi1cNT6Yso2uCqgOP8MYUjfWBp
+	XvVfOLs1sljdm5AiZ+ULtzSONrQAmnHsDkZ4mgUSGwOGdZkNOyE+5KM0KFMd56LvHw=
+X-Received: by 2002:a17:902:f60c:b0:2cc:aa36:c04c with SMTP id d9443c01a7336-2d0ca7afcabmr254341645ad.1.1786096838646;
+        Fri, 07 Aug 2026 03:00:38 -0700 (PDT)
+Received: from EAIT-H54D9Q2FJQ.eait.uq.edu.au ([130.102.10.60])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d16c4a9f0fsm6500035ad.68.2026.08.07.03.00.32
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 07 Aug 2026 03:00:37 -0700 (PDT)
+From: Yu Zhang <yuz08559@gmail.com>
+To: mst@redhat.com,
+	jasowangio@gmail.com
+Cc: eperezma@redhat.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v3 1/2] dpll: zl3073x: update all DPLL channels on ref_sync_set
-Date: Fri,  7 Aug 2026 11:59:25 +0200
-Message-ID: <20260807095926.386923-2-ivecera@redhat.com>
-In-Reply-To: <20260807095926.386923-1-ivecera@redhat.com>
-References: <20260807095926.386923-1-ivecera@redhat.com>
+	Yu Zhang <yuz08559@gmail.com>
+Subject: [PATCH 0/2] vhost-vdpa: fix a use-after-free on the config eventfd
+Date: Fri,  7 Aug 2026 20:00:23 +1000
+Message-ID: <20260807100025.19750-1-yuz08559@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,134 +77,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-zl3073x_dpll_input_pin_ref_sync_set() excludes the sync source from
-automatic reference selection by setting its priority to NONE, but
-currently only does this on the single DPLL channel whose pin_priv
-was passed to the callback.
+vhost_vdpa_config_cb() reads v->config_ctx with no reference and no lock
+while VHOST_VDPA_SET_CONFIG_CALL frees the old context, so a config
+interrupt delivered at the wrong moment signals freed memory.
 
-Since input pins are registered with every DPLL channel, the datasheet
-recommends covering all channels to prevent the sync source from
-remaining a selectable candidate on the other channels. This is
-a preparation for the following patch which changes the DPLL core to
-invoke pin-level set callbacks only through the pin owner's reference
-instead of iterating over all registered DPLL devices.
+Patch 1 stops the fdget error value from ever being installed in
+config_ctx.  It is a fix in its own right -- the callback tests only for
+NULL and would signal the ERR_PTR -- and it is also what lets patch 2's
+lock establish "non-NULL implies valid".
 
-Replace the single-channel priority write with a list_for_each_entry()
-loop over all DPLL channels. Each channel's lock is acquired
-individually for its read-modify-write sequence. The guard(mutex) is
-replaced with explicit mutex_lock/mutex_unlock to allow releasing the
-owner's lock before iterating, avoiding nested locking of the same
-mutex class. A change notification is sent for the sync pin if any
-channel's priority was actually modified.
+Patch 2 adds the lock that closes the use-after-free.
 
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/zl3073x/dpll.c | 58 ++++++++++++++++++++++++++++++-------
- 1 file changed, 48 insertions(+), 10 deletions(-)
+This is not the reopen refcount underflow fixed by f6bbf0010ba0
+("vhost-vdpa: fix use-after-free of v->config_ctx"), and it is a
+different bug from the vq call fd one I sent on Aug 6
+(https://lore.kernel.org/all/20260806150323.2154-1-yuz08559@gmail.com/),
+which is about the parent caching an eventfd_ctx it does not own.  The
+three touch different functions.
 
-diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-index 0488ae6ac486c8..83bd3027dbaa1e 100644
---- a/drivers/dpll/zl3073x/dpll.c
-+++ b/drivers/dpll/zl3073x/dpll.c
-@@ -263,9 +263,10 @@ zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
- 	u8 mode, ref_id, sync_ref_id;
- 	struct zl3073x_chan chan;
- 	struct zl3073x_ref ref;
-+	bool sync_ntf = false;
- 	int rc;
- 
--	guard(mutex)(&zldpll->lock);
-+	mutex_lock(&zldpll->lock);
- 
- 	ref_id = zl3073x_input_pin_ref_get(pin->id);
- 	sync_ref_id = zl3073x_input_pin_ref_get(sync_pin->id);
-@@ -285,17 +286,20 @@ zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
- 		if (sync_freq > 8000) {
- 			NL_SET_ERR_MSG(extack,
- 				       "sync frequency must be 8 kHz or less");
--			return -EINVAL;
-+			rc = -EINVAL;
-+			goto unlock;
- 		}
- 		if (ref_freq < 1000) {
- 			NL_SET_ERR_MSG(extack,
- 				       "clock frequency must be 1 kHz or more");
--			return -EINVAL;
-+			rc = -EINVAL;
-+			goto unlock;
- 		}
- 		if (ref_freq <= sync_freq) {
- 			NL_SET_ERR_MSG(extack,
- 				       "clock frequency must be higher than sync frequency");
--			return -EINVAL;
-+			rc = -EINVAL;
-+			goto unlock;
- 		}
- 
- 		zl3073x_ref_sync_pair_set(&ref, sync_ref_id);
-@@ -308,20 +312,54 @@ zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
- 
- 	rc = zl3073x_ref_state_set(zldev, ref_id, &ref);
- 	if (rc)
--		return rc;
-+		goto unlock;
- 
--	/* Exclude sync source from automatic reference selection by setting
--	 * its priority to NONE. On disconnect the priority is left as NONE
--	 * and the user must explicitly make the pin selectable again.
-+	/* All code paths accessing per-channel reference priorities are
-+	 * serialized by the subsystem dpll_lock, so it is safe to release
-+	 * our lock here before iterating over the other channels.
- 	 */
--	if (state == DPLL_PIN_STATE_CONNECTED) {
-+	mutex_unlock(&zldpll->lock);
-+
-+	if (state != DPLL_PIN_STATE_CONNECTED)
-+		return 0;
-+
-+	/* The datasheet recommends excluding the sync source from automatic
-+	 * reference selection by setting its priority to NONE on all DPLL
-+	 * channels. This is advisory - the ref sync pair is already
-+	 * configured, so a failure here is not fatal. On disconnect the
-+	 * priority is left as NONE and the user must explicitly make the
-+	 * pin selectable again.
-+	 */
-+	list_for_each_entry(zldpll, &zldev->dplls, list) {
-+		u8 prio;
-+
-+		mutex_lock(&zldpll->lock);
-+
- 		chan = *zl3073x_chan_state_get(zldev, zldpll->id);
-+		prio = zl3073x_chan_ref_prio_get(&chan, sync_ref_id);
-+		if (prio == ZL_DPLL_REF_PRIO_NONE) {
-+			mutex_unlock(&zldpll->lock);
-+			continue; /* Ref is already non-selectable */
-+		}
-+
- 		zl3073x_chan_ref_prio_set(&chan, sync_ref_id,
- 					  ZL_DPLL_REF_PRIO_NONE);
--		return zl3073x_chan_state_set(zldev, zldpll->id, &chan);
-+		if (zl3073x_chan_state_set(zldev, zldpll->id, &chan))
-+			dev_warn(zldev->dev,
-+				 "Failed to set ref prio on DPLL%u\n",
-+				 zldpll->id);
-+		else
-+			sync_ntf = true;
-+
-+		mutex_unlock(&zldpll->lock);
- 	}
-+	if (sync_ntf)
-+		__dpll_pin_change_ntf(sync_pin->dpll_pin);
- 
- 	return 0;
-+unlock:
-+	mutex_unlock(&zldpll->lock);
-+	return rc;
- }
- 
- static int
+Tested on v7.2-rc6 with KASAN under qemu, VDUSE as the parent: one thread
+swaps the config call fd on the vhost-vdpa fd while another injects
+VDUSE_DEV_INJECT_CONFIG_IRQ on the VDUSE fd.  9 of 10 30-second runs hit
+the UAF; 0 of 5 with the series applied, with the workload counters
+unchanged either way (~30k swaps and ~2.6M injects per run), so the race
+is still being exercised rather than merely not reached.  Also clean over
+5 runs with PROVE_LOCKING, and vdpa_sim shows no change on the shared
+VHOST_VDPA_SET_CONFIG_CALL path (20000 install/unbind cycles plus the
+bad-fd path, identical before and after).
+
+For patch 1 specifically: with a working config fd installed, 250 injects
+deliver 250 signals; after a VHOST_VDPA_SET_CONFIG_CALL with a bad fd,
+delivery stops on an unpatched kernel and continues with the patch.
+
+Yu Zhang (2):
+  vhost-vdpa: don't install the eventfd_ctx_fdget() error in config_ctx
+  vhost-vdpa: protect config_ctx from being freed under the config
+    callback
+
+ drivers/vhost/vdpa.c | 44 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 15 deletions(-)
+
 -- 
-2.54.0
+2.43.0
 
