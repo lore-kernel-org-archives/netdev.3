@@ -1,109 +1,254 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4131A238F;
-	Fri,  7 Aug 2026 18:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DC636E46C
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 18:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786126312; cv=none; b=FSDYxqGd9fmY8HkiffGCHjPqAnBvbeHAkyG3A+I5vGVzHmMHOZyywsMPegMMz/Zyz1YRYTUyxYxeoOUr9MayQrLNC9WRIMkcSuf8dbU8rEOjByrhGuZzCwzMX12vYiD+iVm1T98LjypPHAxhcXLAVzZ/8sXYu/xiV2zIYG4IV7k=
+	t=1786126652; cv=none; b=I3grrzUyk0+ew9uUPYl9P7XbeZPs9lsM46s5wTpUXOYa2AdS5oj0iXU62Vgr/PfhfLXUrfxjLr4PqMkYfif1XrSSSHFewLQpGaUOsVWF4YgGGsY3PjaY3GOJo/eH6s0AlQiFpbrGuDGxc8xuMHORsJmonc+tl1AC3QACDcZ5lUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786126312; c=relaxed/simple;
-	bh=ZSW5AEalbuQC057fVffBfKe+krjNcLDAy9fh3ffgLO0=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=MZiLpX7sOMBHEkj/dl42eR2NozSQJKhtTRDk3bO//ht67H34S1qbo/0LMmPm0pfYT3dAWiYwcRe04C4rmC5Rtqk5rrBO7qwsbP5Kr/gj/38NoQH6S3lK1QRvKxjTx6gjjMVvle8dufI0fInMJW9zBFG9ywsmulJeq+dcylI38DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NViKPaao; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786126652; c=relaxed/simple;
+	bh=iHqdeXDvyAh8OuI3xDZM2Mg8lwsinPA8tT43LXr/qDo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jviIuU8ObjtmAKzApGoe5xBNnVANXRXE3VaqbkJcBqeoQPTEGSosWCo+pqEHZgh1tYcDnhQFBP6i330QDjk06G25ZZ6POt/g5aEclsvprnwH5lO/f5uQfozHPPwIRC3ON+cMXc5US+ieQP/FaBLgyUf1C1vHWC59ux7UDWsteZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RkOWBv+z; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NViKPaao"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3931F000E9;
-	Fri,  7 Aug 2026 18:11:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786126311;
-	bh=nay5RC2CHfuLl3chelYXkbTUlw4S/GT/LRVPuNblyrY=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=NViKPaaoSdSQ0hl6zFKLMattFtKsEWaYu66/gys/+vTsJE+vL/wl02iNyok5LBmWJ
-	 rNVYeSfRPbT/Q0PhyfBwhMin+lKkd3tMUqv/rVYS4gNkjcmGg67DwqDYK2K8OkQ9tg
-	 IJK0lIg2yyKKsDhlbIJlP9iWzI2KbBjuLlhvtCdDaUNqtaHSGqd0ZeGzABsMDjKp77
-	 xyJVN+1nHATSV048gbPXDCz9vQkRjtArDsoyUtSX9MV7WXFvZ1/NwX3ZroPYI++YwI
-	 Lbjp95qJ/3+lL9KUD4WwjO9g23raJGHmSgcz8Q3x9kSWbkKO2dsoHAXCMZFasZsmhv
-	 WcDrFv0zTQKfg==
-Content-Type: multipart/mixed; boundary="===============2622278696798544287=="
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RkOWBv+z"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cbe41618110so338889a12.2
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 11:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786126650; x=1786731450; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8YehZV8pGgThZgWk/4T4DcEH08k8INHztawGZMSNBxg=;
+        b=RkOWBv+zoJSKKl3WaJQqSc0AGch/Bt253cNcGlUplcaHkPc/Mk1HoyVkfOm0EX6PuR
+         iXHnT0xHm2d4JR0TiszLzCg4MIu7zCw8EVW3A4abxbo+ZTUbMSX1Tre6qXlZ+dXllOnz
+         f79Zc4DlyQ/Cl+fA/WltE4rJqaZ9SpnTVsRkeB8K5QFn9cUlGxjO+yVsLMGZF9rhcC/r
+         4ZuDpGIfTD1oLIW8tJavTa4TwWFQgoxDxSPTvgrC8SpYl+EWMblNywcm6+g+Lwm0/iC2
+         AvJmCSNTtXVRfgfl5rh9gYrnLfCcTn+AC0DURlRBuFT4i+yOpT3/pyCFJ1f4JCOXoSZT
+         g/fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786126650; x=1786731450;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8YehZV8pGgThZgWk/4T4DcEH08k8INHztawGZMSNBxg=;
+        b=Fazx58uhedxFf2Q/e2Lp5+71M+/kCe7lziR0tUAgD44gZJfBPlFePz1te58Gk5lFww
+         rb1buQWC6GpO57p2Rxo7FW7u9JrwQGe/cSJzH5DAXK4X++cdRNw9Mcbrfihh1Qq1o0hm
+         r+2EsIZ1rGTw/w89GJZqAwhcaUKqLgUTPmQA5NxnhXySrzImFvNKoKEILVlo4vXZjUWi
+         ytXt0XdFDsc69mdh7bLnhb7ibJwf33D19jwosOVEv9NVttFj5i1Jx2fbNnPgfU7H1Fgw
+         TNjjxTJkTxtA36NZwb3Md1eS+bMfU4o+ElmRWNsHL/aA3svMnsXhcrIwC+0/kigoIr5x
+         UdgA==
+X-Gm-Message-State: AOJu0YzsmKxCIw5MZSU5+hxrB21u9VS2NhW5mnYYaz25bFXissprPbql
+	JIK7C0E06X9a2d8pui+GXRF78vNWuUu3nq/xTh5hqhqOwQ+sJg3Xi+mL
+X-Gm-Gg: AR+sD11OA58mTODwJU8Tl5mVOaJcBKjqaf8XPzxq9Yc7ejA7apP/BQWNzJ/lUCiK+D1
+	q87xmVKz9AuQkXQMf+VVnm/zkfl8qyAYlxf8HWx07PHC8FKr8W7d2n+SCKJzIbRr823ZVFQ2VxG
+	TYHbk3FrAGtiD4aiAFlpl+Pqp8JLTEVwVa4ACq6Ehp2aRoR+9yqYcFgS4op+gH8q4C9Wnestf7m
+	cMnqdQuogyMM/qeReFhaMmDBPOq1qpIhf+B698KjlFmCcq8Jr1Yi1ctSAv+IwejSvokbzSJeOtZ
+	aL0lY4f1epcF5AZmBcDI1Hy1dtPLRKndxAlWtorOR5aZTOdHi45G2PzSdbEDpKFSe9znB+3Akty
+	x+w0nbhKvUfncJEmAfWpAFu+lIIARHGhJt6i+dIUSWgxvqfa7wiwaPjW7hTPruoZTnRjkMibeeg
+	RxBurtiXNe0GKBVr93iK8CnbTDYYDKKrfUL2hQ7FqhPMM+6Z4IThpL+DxhEzT1s3+ys/iNxCIey
+	l2wk43jGHHDipCjPsloRYejJmujx9V1Ow==
+X-Received: by 2002:a17:903:1b2b:b0:2ca:ecf6:9115 with SMTP id d9443c01a7336-2d0caa9bb8bmr211590575ad.2.1786126650048;
+        Fri, 07 Aug 2026 11:17:30 -0700 (PDT)
+Received: from localhost.localdomain ([14.216.81.160])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d14dbeaaa0sm12947345ad.50.2026.08.07.11.17.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 11:17:29 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3] ipv4: fix use-after-free in fib_nhc_update_mtu()
+Date: Sat,  8 Aug 2026 02:17:10 +0800
+Message-ID: <20260807181710.1178747-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <bbfbdee48bdf4ff655479e02a00828655b8dc1580c321feb46bfbb864e46dff7@mail.kernel.org>
-In-Reply-To: <20260807171532.125149-2-mahe.tardy@gmail.com>
-References: <20260807171532.125149-2-mahe.tardy@gmail.com>
-Subject: Re: [PATCH bpf-next v5 1/5] net: Add connect_socket() helper
-From: bot+bpf-ci@kernel.org
-To: mahe.tardy@gmail.com,bpf@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,andrii@kernel.org,ast@kernel.org,daniel@iogearbox.net,davem@davemloft.net,eddyz87@gmail.com,edumazet@google.com,john.fastabend@gmail.com,kuba@kernel.org,liamwisehart@meta.com,martin.lau@linux.dev,pabeni@redhat.com,song@kernel.org,netdev@vger.kernel.org,sdf.kernel@gmail.com,ameryhung@gmail.com,kuniyu@google.com,memxor@gmail.com,jiayuan.chen@linux.dev,mahe.tardy@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Fri,  7 Aug 2026 18:11:50 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============2622278696798544287==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+fib_nhc_update_mtu() walks the nexthop exception table under RTNL, but
+RTNL does not serialize this walk with PMTU exception updates. The walk
+uses rcu_dereference_protected() with a constant true condition without
+holding fnhe_lock.
 
-> diff --git a/include/linux/socket.h b/include/linux/socket.h
-> index 2a8d7b14f1d1..5a5eb1250103 100644
-> --- a/include/linux/socket.h
-> +++ b/include/linux/socket.h
-> @@ -461,6 +461,8 @@ extern struct file *__sys_socket_file(int family, int type, int protocol);
->  extern int __sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
->  extern int __sys_bind_socket(struct socket *sock, struct sockaddr_storage *address,
->  			     int addrlen);
-> +int connect_socket(struct socket *sock, struct sockaddr_storage *addr,
-> +		   int addrlen, int flags);
->  extern int __sys_connect_file(struct file *file, struct sockaddr_storage *addr,
->  			      int addrlen, int file_flags);
->  extern int __sys_connect(int fd, struct sockaddr __user *uservaddr,
-> diff --git a/net/socket.c b/net/socket.c
-> index 63c69a0fa74e..8f18f124d92a 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -2103,6 +2103,20 @@ SYSCALL_DEFINE3(accept, int, fd, struct sockaddr __user *, upeer_sockaddr,
->  	return __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, 0);
->  }
->
-> +int connect_socket(struct socket *sock, struct sockaddr_storage *address,
-> +		   int addrlen, int flags)
-> +{
+The following interleaving can therefore occur:
 
-This isn't a bug, but would a name closer to the neighbouring helpers,
-such as __sys_connect_socket(), read better here? The equivalent
-socket-level helpers in the same file follow the __sys_<op>_socket() or
-__sys_<op>_sock() shape (__sys_bind_socket(), __sys_listen_socket(),
-__sys_shutdown_sock()), and the declaration is added in the middle of
-that same helpers block in include/linux/socket.h. Also, net/socket.c
-already has kernel_connect(), which performs the same
-READ_ONCE(sock->ops)->connect() dispatch and differs only in not calling
-the LSM hook, so the two names don't signal which one a caller should
-pick. Could a short comment note how it differs from kernel_connect()?
+  CPU 0                              CPU 1
+  fib_nhc_update_mtu()               update_or_create_fnhe()
+    load fnhe                          spin_lock_bh(&fnhe_lock)
+                                       fnhe_remove_oldest()
+                                         unlink fnhe
+                                         kfree_rcu(fnhe, rcu)
+    <quiescent state>
+    access fnhe after grace period
 
-> +	int err;
-> +
-> +	err = security_socket_connect(sock, (struct sockaddr *)address, addrlen);
-> +	if (err)
-> +		return err;
-> +
-> +	return READ_ONCE(sock->ops)->connect(sock,
-> +				    (struct sockaddr_unsized *)address,
-> +				    addrlen, flags);
-> +}
-> +
->  /*
->   *	Attempt to connect to a socket with the server address.  The address
->   *	is in user space so we verify it is OK and move it to kernel space.
+KASAN reported:
 
-[ ... ]
+  BUG: KASAN: slab-use-after-free in fib_nhc_update_mtu+0x3df/0x410
+  Read of size 8 at addr ffff888107d49000 by task poc/90
+  Call Trace:
+   fib_nhc_update_mtu+0x3df/0x410
+   fib_sync_mtu+0x7a/0xd0
+   fib_netdev_event+0x229/0x3f0
+   netif_set_mtu_ext+0x33a/0x570
+   dev_set_mtu+0x88/0x120
 
+The same walk updates fnhe_pmtu and fnhe_mtu_locked. These fields form a
+pair and other writers serialize them with fnhe_lock. RCU alone prevents
+reclamation, but would still allow concurrent writers to leave a mixed
+pair.
+
+Walk the table under RCU and acquire fnhe_lock only while updating each
+exception. RCU keeps the current entry alive while the short critical
+section serializes its paired PMTU fields. This avoids holding the global
+lock while scanning all 2048 buckets for every nexthop.
+
+Fixes: af7d6cce5369 ("net: ipv4: update fnhe_pmtu when first hop's MTU changes")
+Cc: stable@vger.kernel.org
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+Changes in v3:
+- Walk the exception table under RCU.
+- Move the PMTU update into route.c and take fnhe_lock around each entry
+  update instead of exporting and holding it across the full table scan.
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31202489240
---===============2622278696798544287==--
+Link: https://lore.kernel.org/netdev/20260806133309.731709-1-nicoyip.dev@gmail.com/ [v2]
+Link: https://lore.kernel.org/netdev/20260731162938.3388534-1-nicoyip.dev@gmail.com/ [v1]
+---
+ include/net/route.h      |  2 ++
+ net/ipv4/fib_semantics.c | 34 +++++++++++-----------------------
+ net/ipv4/route.c         | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+), 23 deletions(-)
+
+diff --git a/include/net/route.h b/include/net/route.h
+index f90106f383c5..45290177a33c 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -276,6 +276,8 @@ int fib_dump_info_fnhe(struct sk_buff *skb, struct netlink_callback *cb,
+ 		       u32 table_id, struct fib_info *fi,
+ 		       int *fa_index, int fa_start, unsigned int flags);
+ 
++void fnhe_update_pmtu(struct fib_nh_exception *fnhe, u32 new, u32 orig);
++
+ static inline void ip_rt_put(struct rtable *rt)
+ {
+ 	/* dst_release() accepts a NULL parameter.
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 78f84ae3ee12..0483519b7fb0 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -1895,42 +1895,30 @@ static int call_fib_nh_notifiers(struct fib_nh *nh,
+ 	return NOTIFY_DONE;
+ }
+ 
+-/* Update the PMTU of exceptions when:
+- * - the new MTU of the first hop becomes smaller than the PMTU
+- * - the old MTU was the same as the PMTU, and it limited discovery of
+- *   larger MTUs on the path. With that limit raised, we can now
+- *   discover larger MTUs
+- * A special case is locked exceptions, for which the PMTU is smaller
+- * than the minimal accepted PMTU:
+- * - if the new MTU is greater than the PMTU, don't make any change
+- * - otherwise, unlock and set PMTU
++/* Walk the exceptions of a nexthop after its first hop MTU changed. The
++ * chain is RCU protected here, while fnhe_update_pmtu() takes fnhe_lock
++ * for the update of each entry.
+  */
+ void fib_nhc_update_mtu(struct fib_nh_common *nhc, u32 new, u32 orig)
+ {
+ 	struct fnhe_hash_bucket *bucket;
+ 	int i;
+ 
+-	bucket = rcu_dereference_protected(nhc->nhc_exceptions, 1);
++	rcu_read_lock();
++	bucket = rcu_dereference(nhc->nhc_exceptions);
+ 	if (!bucket)
+-		return;
++		goto out;
+ 
+ 	for (i = 0; i < FNHE_HASH_SIZE; i++) {
+ 		struct fib_nh_exception *fnhe;
+ 
+-		for (fnhe = rcu_dereference_protected(bucket[i].chain, 1);
++		for (fnhe = rcu_dereference(bucket[i].chain);
+ 		     fnhe;
+-		     fnhe = rcu_dereference_protected(fnhe->fnhe_next, 1)) {
+-			if (fnhe->fnhe_mtu_locked) {
+-				if (new <= fnhe->fnhe_pmtu) {
+-					fnhe->fnhe_pmtu = new;
+-					fnhe->fnhe_mtu_locked = false;
+-				}
+-			} else if (new < fnhe->fnhe_pmtu ||
+-				   orig == fnhe->fnhe_pmtu) {
+-				fnhe->fnhe_pmtu = new;
+-			}
+-		}
++		     fnhe = rcu_dereference(fnhe->fnhe_next))
++			fnhe_update_pmtu(fnhe, new, orig);
+ 	}
++out:
++	rcu_read_unlock();
+ }
+ 
+ void fib_sync_mtu(struct net_device *dev, u32 orig_mtu)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 152d8cb28f65..b82401a6baed 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -741,6 +741,35 @@ static void update_or_create_fnhe(struct fib_nh_common *nhc, __be32 daddr,
+ 	spin_unlock_bh(&fnhe_lock);
+ }
+ 
++/* Update the PMTU of an exception when:
++ * - the new MTU of the first hop becomes smaller than the PMTU
++ * - the old MTU was the same as the PMTU, and it limited discovery of
++ *   larger MTUs on the path. With that limit raised, we can now
++ *   discover larger MTUs
++ * A special case is locked exceptions, for which the PMTU is smaller
++ * than the minimal accepted PMTU:
++ * - if the new MTU is greater than the PMTU, don't make any change
++ * - otherwise, unlock and set PMTU
++ *
++ * fnhe_lock keeps fnhe_pmtu and fnhe_mtu_locked consistent against
++ * update_or_create_fnhe(), which sets both under the same lock.
++ */
++void fnhe_update_pmtu(struct fib_nh_exception *fnhe, u32 new, u32 orig)
++{
++	spin_lock_bh(&fnhe_lock);
++
++	if (fnhe->fnhe_mtu_locked) {
++		if (new <= fnhe->fnhe_pmtu) {
++			fnhe->fnhe_pmtu = new;
++			fnhe->fnhe_mtu_locked = false;
++		}
++	} else if (new < fnhe->fnhe_pmtu || orig == fnhe->fnhe_pmtu) {
++		fnhe->fnhe_pmtu = new;
++	}
++
++	spin_unlock_bh(&fnhe_lock);
++}
++
+ static void __ip_do_redirect(struct rtable *rt, struct sk_buff *skb, struct flowi4 *fl4,
+ 			     bool kill_route)
+ {
+-- 
+2.43.0
+
