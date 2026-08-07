@@ -1,176 +1,126 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C24237DEBC
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 05:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67F143E06A;
+	Fri,  7 Aug 2026 05:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786080494; cv=none; b=DxYBBAnPa8IGLupG4NCxmnYh7HPIlb7sX9iqGPkzylp0ZWrBFmNxzvJLDMxulve8nTviymHjMkxH3WfuY6w4av4cVByxf3YaJqDxTN5vczXQqamJUQkjYja8RAwpfzDrto6ETCDIKnV8OaB95ZH/j3uvOaZduiSUgjLwqsxL2FM=
+	t=1786081542; cv=none; b=elXH9UCirF8io/whz/HgQUQD1t8KjnE+6w0YxCgYqtjuVBiIleAIUTSPsL9a5+j47864M5bC0lqevdpEI/+3vjZ6X8TXuMEnWFFF9EBqS3VHzQWtsdL05oaGDqdobfycR+kWjFn6WohAFniYJJ6daYjMOkEcWQH8l36WZnXHV+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786080494; c=relaxed/simple;
-	bh=qFvp4uTofHAGTkfOnJ0T+NM7iIzp2wiRIOn9DUfpOUw=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=rHxIEFQm1Jb7AHxf1eQkDgKxdvu0xnFbuAwdKSdWfUXNLAlTGXmKGAgwfIuVa4CVkdSvaGWRzTQq9KGubyvLVsqKef2IiJRSDbfdQmY6Q9PL2fDJmtKBi2RSwyqirVTCYL4unrm6cipxlVqnkBZz8cAb9yyEEpwDt2wnG2a9qhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-49001defc4dso3067409b6e.3
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 22:28:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786080490; x=1786685290;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=TvTYXt+JOaan37lriLTI6Cyp2pGjz3SyqEWd9qAwVQU=;
-        b=Ri+NMTScJvJXfJMBvLefTI6Mm35GAf//FawXV9JTgO0Y1fVzQCYxtr7rOrcOhVkAEg
-         6wfbt1+jh5weWjPEMOxOi/Bv2fVjG3JXww121jBLIhqBgl4ZHvPJYdh2D+E2XAy8ekj+
-         X64DHjbbnOQaRLKcjSgKqQlbM7Wlm+0BcKePB13uQRM8/Wwq3ZHFAxtbVEHd0SLQIf4M
-         Xk8fv8tVNRM2MUTZvkeqfUe8US+6XbK+9hP/qd5Im8v/X0U+0ybd9QLzzsq8NP3lcFYl
-         AGXiOxpsOIz4WLx4PGBfBWMqapxGlvx/+hL8/pdYQ9mSrEWKoWSRYaAd5gKXMVEgPNrE
-         fs0Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoabiZOFf1ByjKk4damBapcQd0V+rmEKoVaeKST4vPg8Wn0kHJEyyDRB/AaXfDnPfOijHmrkng=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2W963xxuKsK03ZlaVlzEzDHqjcnR2ZaPXI2FyiPezOdW0P/VK
-	zwxf7spmnb/uzYfAR8R0uUPoOuILeAMdg/I0F+Rsj2ri/07CcAAwtktGKtSJBZeXFsG0YGK81Ou
-	1fot8V9sf7iMDDwmVGzbIjRivGBS0ip/R+QlzMNLfRxTvcc8JJijTqOQSuj4=
+	s=arc-20240116; t=1786081542; c=relaxed/simple;
+	bh=XEA4BT0LkK1Iq1kR/R0KipogGUWsDyNP3b75JT7lBOY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=StDbjN6V5504QIzNflX2nG5U9VRPT7PbTlCyVyTLuZCHyRJwNbYUH/2yuXihpQcr3VYkhYqdCNf2x0FU9gOGM8tfd2kCDknfkAE/F9Fi8rDGqoLSrmsX+y5IVOibbQeafzedQqNeV85xAEnRRqUebM4Xi6ujzan9lQh6sEXDlqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XiEMxGio; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XiEMxGio"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6770HxTV4068702;
+	Fri, 7 Aug 2026 05:45:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=XEA4BT
+	0LkK1Iq1kR/R0KipogGUWsDyNP3b75JT7lBOY=; b=XiEMxGioLOCnZmNNZMXFvm
+	uHiAn9ipSTM7MlCakf12s/9lhuj9HhIFNj9HCwWL7S3ohQWS2J3czcKlRunrnqKH
+	8t2gjg10dN5FLYVryeP58jo9f/el6o85NYvlRHeVMmtvXTNSPvdDZaK+qvswUQTj
+	yIWimmmdTYbIwjDkZBVLMjfKJsB6KQwIHHrgnzRN4wsHomgWCItlB3as9jD6kMDB
+	nT1Ej7F7r0nEtzT6A3LXU9lGfUNvW3hFzVT+jU7KIqeSUZqOXZfPPWY9rRtIDGn2
+	GCsFWPLYaStCyK74fGqAGDMqPWCPyx+WmQu6K+Z1BdsVLWuPIz0OrlpHxZeOXTjQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy022cqv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 05:45:33 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6775fJAT016185;
+	Fri, 7 Aug 2026 05:45:32 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbgp941-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 05:45:32 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6775jVGG4260476
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Aug 2026 05:45:31 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1938C5805A;
+	Fri,  7 Aug 2026 05:45:31 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 85AEE58054;
+	Fri,  7 Aug 2026 05:45:24 +0000 (GMT)
+Received: from [9.124.213.67] (unknown [9.124.213.67])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Aug 2026 05:45:24 +0000 (GMT)
+Message-ID: <e16d16f1-029b-4d30-b393-2e9e525a2998@linux.ibm.com>
+Date: Fri, 7 Aug 2026 11:15:22 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1c89:b0:6ae:4ff6:8d99 with SMTP id
- 006d021491bc7-6ae96f658cemr10227803eaf.26.1786080490002; Thu, 06 Aug 2026
- 22:28:10 -0700 (PDT)
-Date: Thu, 06 Aug 2026 22:28:09 -0700
-In-Reply-To: <20260807002250.1817498-1-antonio@openvpn.net>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a756ce9.01d0871a.3a0d52.003b.GAE@google.com>
-Subject: [syzbot ci] Re: pull request: fixes for ovpn 2026-08-07
-From: syzbot ci <syzbot+cifb58fcbd8413e765@syzkaller.appspotmail.com>
-To: andrew@lunn.ch, antonio@openvpn.net, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, ralf@mandelbit.com, sd@queasysnail.net
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-
-syzbot ci has tested the following series
-
-[v1] pull request: fixes for ovpn 2026-08-07
-https://lore.kernel.org/all/20260807002250.1817498-1-antonio@openvpn.net
-* [PATCH net 1/4] ovpn: fix NULL dereference when killing missing key
-* [PATCH net 2/4] ovpn: finish crypto callback cleanup before peer release
-* [PATCH net 3/4] ovpn: run deferred work on a module-owned workqueue
-* [PATCH net 4/4] ovpn: defer key slot crypto freeing to workqueue
-
-and found the following issue:
-WARNING in __alloc_workqueue
-
-Full report is available here:
-https://ci.syzbot.org/series/a46f06c7-f8d8-4053-a746-91498a46c290
-
-***
-
-WARNING in __alloc_workqueue
-
-tree:      net
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
-base:      594d905195024b228c962627ae5ae7c17bd582a4
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/cc426b49-07b7-496e-badf-5b0646780dd0/config
-
-usbcore: registered new interface driver udl
-bochs-drm 0000:00:01.0: vgaarb: deactivate vga console
-[drm] Found bochs VGA, ID 0xb0c5.
-[drm] Framebuffer size 16384 kB @ 0xfd000000, mmio @ 0xfebf0000.
-[drm] Initialized bochs-drm 1.0.0 for 0000:00:01.0 on minor 2
-bochs-drm 0000:00:01.0: [drm] fb1: bochs-drmdrmfb frame buffer device
-usbcore: registered new interface driver gm12u320
-usbcore: registered new interface driver gud
-brd: module loaded
-loop: module loaded
-zram: Added device: zram0
-null_blk: disk nullb0 created
-null_blk: module loaded
-Guest personality initialized and is inactive
-VMCI host device registered (name=vmci, major=10, minor=267)
-Initialized host personality
-usbcore: registered new interface driver rtsx_usb
-lpc_ich 0000:00:1f.0: I/O space for GPIO uninitialized
-usbcore: registered new interface driver viperboard
-usbcore: registered new interface driver dln2
-usbcore: registered new interface driver pn533_usb
-nfcsim 0.2 initialized
-usbcore: registered new interface driver port100
-usbcore: registered new interface driver nfcmrvl
-Loading iSCSI transport class v2.0-870.
-st: Version 20160209, fixed bufsize 32768, s/g segs 256
-ACPI: \_SB_.GSIA: Enabled at IRQ 16
-ahci 0000:00:1f.2: AHCI vers 0001.0000, 32 command slots, 1.5 Gbps, SATA mode
-ahci 0000:00:1f.2: 6/6 ports implemented (port mask 0x3f)
-ahci 0000:00:1f.2: flags: 64bit ncq only 
-scsi host0: ahci
-scsi host1: ahci
-scsi host2: ahci
-scsi host3: ahci
-scsi host4: ahci
-scsi host5: ahci
-ata1: SATA max UDMA/133 abar m4096@0xfebf2000 port 0xfebf2100 irq 26 lpm-pol 1
-ata2: SATA max UDMA/133 abar m4096@0xfebf2000 port 0xfebf2180 irq 26 lpm-pol 1
-ata3: SATA max UDMA/133 abar m4096@0xfebf2000 port 0xfebf2200 irq 26 lpm-pol 1
-ata4: SATA max UDMA/133 abar m4096@0xfebf2000 port 0xfebf2280 irq 26 lpm-pol 1
-ata5: SATA max UDMA/133 abar m4096@0xfebf2000 port 0xfebf2300 irq 26 lpm-pol 1
-ata6: SATA max UDMA/133 abar m4096@0xfebf2000 port 0xfebf2380 irq 26 lpm-pol 1
-Rounding down aligned max_sectors from 4294967295 to 4294967288
-db_root: cannot open: /etc/target
-slram: not enough parameters.
-ftl_cs: FTL header not found.
-wireguard: WireGuard 1.0.0 loaded. See www.wireguard.com for information.
-wireguard: Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-------------[ cut here ]------------
-workqueue: ovpn is using neither WQ_PERCPU or WQ_UNBOUND. Setting WQ_PERCPU.
-WARNING: kernel/workqueue.c:5852 at __alloc_workqueue+0x1cf5/0x2060, CPU#0: swapper/0/1
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:__alloc_workqueue+0x1cf8/0x2060
-Code: 38 00 e9 59 f9 ff ff e8 46 96 38 00 e9 26 fb ff ff e8 3c 96 38 00 e9 a7 fb ff ff e8 32 96 38 00 48 8d 3d fb a1 cc 0e 4c 89 f6 <67> 48 0f b9 3a 81 cd 00 01 00 00 e9 a7 e5 ff ff e8 13 96 38 00 48
-RSP: 0000:ffffc900000677a8 EFLAGS: 00010293
-RAX: ffffffff818e8c5e RBX: 0000000000000000 RCX: ffff888102a95940
-RDX: 0000000000000000 RSI: ffff88810c4cf570 RDI: ffffffff905b2e60
-RBP: 0000000000000000 R08: ffff888102a95940 R09: 0000000000000002
-R10: 0000000000000102 R11: 0000000000000000 R12: ffffc900000678c0
-R13: ffff88810c4cf400 R14: ffff88810c4cf570 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88818d934000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff88823ffff000 CR3: 000000000e946000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- alloc_workqueue_noprof+0xe3/0x210
- ovpn_init+0x1b/0xb0
- do_one_initcall+0x250/0x870
- do_initcall_level+0x10a/0x1a0
- do_initcalls+0x59/0xa0
- kernel_init_freeable+0x29d/0x3e0
- kernel_init+0x1d/0x1d0
- ret_from_fork+0x514/0xb70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v1 2/2] net/smc: reduce TX slot contention with
+ exclusive wait
+To: "D. Wythe" <alibuda@linux.alibaba.com>, wenjia@linux.ibm.com,
+        wintera@linux.ibm.com, dust.li@linux.alibaba.com,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com
+Cc: kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+        leonro@nvidia.com, pabeni@redhat.com, edumazet@google.com,
+        sidraya@linux.ibm.com, jaka@linux.ibm.com,
+        oliver.yang@linux.alibaba.com
+References: <20260806064252.39180-1-alibuda@linux.alibaba.com>
+ <20260806064252.39180-3-alibuda@linux.alibaba.com>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <20260806064252.39180-3-alibuda@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 5Z1A-X9Ul4AbIGvY6DC94YAoYjzATQny
+X-Authority-Analysis: v=2.4 cv=e5k2j6p/ c=1 sm=1 tr=0 ts=6a7570fd cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=V8dVQpNtD287ao_dHYcA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: wg8Cl8HsGDvmhnxFt346RO9uKVX49UbI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDAzNiBTYWx0ZWRfX8hvqpcHirg8N
+ rDGFekFISNfXNrpmQMugTeNqOkDZXV/ih3Ew6h8biHE+N2VJrqP7Gqw/Zo+vsGRA4wPRjVIg+OI
+ tlcAxwWGQB86l5GnQIPyPXWAyR11S2vBO+8GRFM9puNRNe769AEMq5f43gkyfG+YxNOruHs4xXI
+ fIgLtK2zFNpuxjxmFMJ5UpW8LWC2K48ZIpe38vdAqDuc1jSjDRwig/imJ1oIHOuDn7RT36VQ9EB
+ Vr/SnhKzEoDnWVlM/SAxd3ptYXrZqdfHrE87byfW5l/iKIhSzO5cKdjKBmaPrA8chZhi/3HZOxM
+ eVcXo+ql2P9K2ommoip7lkVQsYcNNkF2EKBPm+Hf7Lzeax8L2sukCFWl6h1Gkf+fjQPEOaMw/Sh
+ CDGDYr42woHwEdmq9kVavdBNjpSavmhR8uLy5OkqyPdKUGFaeKhSgWNNMiTn7gAEY/78zSHbKSa
+ QOK+I2G/Z6KmCEY39mg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDAzNiBTYWx0ZWRfX+EzpRCfcR/D3
+ z5rur2urkutzrnix7KXx9vDh9L8Hw9fSoYt7wYtB9PkhIgI82HQuzTJYUHu/giKMYbDkKJd3Yb3
+ FEgvMVCT/r7dXRZXkB1cjSbN0O6U1Vc=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-07_01,2026-08-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 impostorscore=0 priorityscore=1501 adultscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070036
 
 
-***
 
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
+On 06/08/26 12:12 pm, D. Wythe wrote:
+> smc_wr_tx_get_free_slot() waits for a free TX slot with
+> wait_event_interruptible_timeout(). Since the wait_event family
+> enqueues waiters as non-exclusive, wake_up() may wake multiple
+> waiters even though only one can use the slot, causing
+> thundering-herd contention when slots are scarce.
 
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+Have you run any performance benchmarks (e.g. redis-benchmark or uperf)
+to quantify the benefit of this change?
 
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
-
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
+Since the motivation is to reduce contention caused by multiple waiters
+being awakened for a single available TX slot, it would be helpful to
+see measurable results. Please share the baseline and patched throughput
+figures, and any observed throughput differences.
