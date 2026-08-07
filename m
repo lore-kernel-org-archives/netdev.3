@@ -1,385 +1,169 @@
-Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A093F86E0
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 16:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.136
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786120160; cv=none; b=cVVg11+sn+eKOcbxhqF3EF//7a3bUXuxpipzWB5FXycyrsHSwlSLENjjcnIPW+LdOl4AY3FkY7CML9e2k4lET375CV9T+ixLVFIbRrz98olseDnt2qzG7JcrMF6K2uXU6C7RUCyl6cUtFaSY7K5dnJExtXZCxIbxQXFbg6X9Iic=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786120160; c=relaxed/simple;
-	bh=//rpAe3Qqwml6p7iioxSCtRJm4GnWGCuBG+pqN3Xff4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFvpTiermqpr3dxI8w/ugXixCutKp8ymJIsssrWWxmjwJVkOElAUHSOOslzIWlg9RJd0iuo/ryyMUjBLvB+jpmQ+AicKbIpqgXhfCrPWh+bBDTUQiZhq4Zp4kUN8D2oV97Yx/SWFHOQIl/qtF7T2On58Oa1kxSKq8XQ63noQiig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=SdvebITZ; arc=none smtp.client-ip=74.125.227.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D867738E5C4
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 16:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786120880; cv=pass; b=lRcEeaKKZKIEMQBVhDg0Yxu2S+gJwJrp8MJ5evrzgL+9vyWhVoQ7ghPL/nooms992uT7UAhegbeNNzujBc1mkLj4AClSJ9Irie6hiYimbEDgsvTqxKMcWdXOmV74pnzYgILSC3M+h257sUmmDWqeztRjP/RCe1jWw90seC0jSHM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786120880; c=relaxed/simple;
+	bh=H4YOFrL1KfBu3NDle8YUdni3Mk4BFwaMFq6LZ90tQgg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ObUu2ltHh3UZN32lWeinwFJIF9JnAXy3uWVGxHZ1uUPWwzxm25zUqx/oCeppI3BKiEOmj6j5q5YaxkTwhPIYEJAmb5pjolNjJ7x5KEYpCJg79We6HKmRLqfJLDmdXmPwuEUmJNt/ZXtOndFmayD7tdG4ECfusbqv5dmGYdWMT2c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQWRLutR; arc=pass smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="SdvebITZ"
-Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-38fd9408220so1234549a91.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 09:29:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQWRLutR"
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-969524c1a63so2517565241.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 09:41:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786120878; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PztbWYOwmadNqvPrIrszfj/pvANbDgMQ1M8Ekr2qn8lV/pFx7u38tX7CUdV5GCQ82J
+         CfWYCZAke709ogHfkV3L7Tg28TYf5q6ehUkS14yb4EyIq/i5l0ZwJvK8uw+er+AMZx25
+         ErvNoPigLivOGanu4DSyCxO7JTSSFZBBSKSu/PRYNYaFQ/4ziT8zuTWlx6kh713FYO40
+         2ABgX5W5LB1gZU3fb2MXIo0bEyjv1bJrICA3gYd75j/ZWvzeuUtyTvevHmF+oI1PWxJS
+         809xHdGbgwgf6+b5mKWq9XWJWyHurHAG0ZsbNOxILqUfQ94eG1mDlwnGK2+6PTg7nuzx
+         s4Yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VbYKBFSni/MXYcTbspULgZDCuPfk5qG+Byfv7cl+Zzg=;
+        fh=8n61rF/eVGdUYSRFxirYdm+/rE2TUO5lRQZzVkH07N4=;
+        b=jDgkDaMmohgxDzlR4UZHSWcc/Z3q1puHH4w3BzKDjqFoDnTWO7JB6fAXuLIx2x6rzR
+         XEEsvCnADdU6wTsXVhBzAZY3b6Rycdo2VpU26m2yA1y3j4uk1ZVHKw2TdkQ20n6kp5N6
+         LF9hiVjMKGwFCZbPrWs4qhtB0DNrlbNKWleK4TKdt2dU1iUQb1wi9EB73QPse7ct21m0
+         JAtv9d/SJfJa71Eb+Cx2sfRMkGek1ZLxjbpTe4Uc44eymyEfM43EFz963Qfgh75T66wX
+         72G7a2GvGvJhjeGawDuq0V8MACM1bAr9j3nkLp4Njvxbh4RGQT7UamUuzebWJm0JkriJ
+         orPw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1786120158; x=1786724958; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sxt2GxOrc+xCi8Pf5TPqmLwVbPShVG3kpwrPeAQtE40=;
-        b=SdvebITZOqc+FIYRYjrLqAoaHvJpnSOQq9wMCo2ajNjJ7IqY771bhhltIw3Q5Lsv/c
-         fKsNWtgtSeWEkB1EjZANwUs5ZmcUUfIsYkuEV+0sephdlMR4i0nhtzf3c5frXwn0IZjr
-         hPDIyyHFJ6QavaKbtuGsNGhc70/t+obOYWe+U++3wla7QmvMMRt5Z0xLQv44aJw/auNJ
-         Na2qSMibGX/qLNgC755EFYHIkibxx4cEGIF70zwthlsQgQwu++Ng2Ciw8EUYG2nJpHBO
-         DM35xviqPMhm/2i/uiuiDXF59QV6NRSHNzpBWMl6NkjTjpRcEvhSZIBhZ9dLZQvmNaEj
-         rl2A==
+        d=gmail.com; s=20251104; t=1786120878; x=1786725678; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VbYKBFSni/MXYcTbspULgZDCuPfk5qG+Byfv7cl+Zzg=;
+        b=bQWRLutRFUKY/OF/6kmInYCWZcLyGaNyhItdMuuSNqAsCkK5solo5inhvi1d1BllN4
+         f2FoUM7mxHcL13xsdSR/PjkSNpSbqJj/E0MbKsRafc9xqsmfzHCyWRDEBQgN4b+JLK08
+         UYTx5SRS4fJuAJpBFSxSuNzed4SPx8gdwyYj9WsGBB6ueJggMvg9FWBWELo6wWhOn3rA
+         y1wE/RT0j5aT2IJEjyV1D4zko8RrVkwsyjdXrAGkhLFYzeBU+1Gc6EYCzu+62B5DJ6Gy
+         HfDT1izxLFumQm48VEMQWq8NdYgygHFzGxLO+uJr732wFlpsz0FiOW8K3ymk2DOyCMxc
+         APhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786120158; x=1786724958;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sxt2GxOrc+xCi8Pf5TPqmLwVbPShVG3kpwrPeAQtE40=;
-        b=ioMVO1k3/oPMR9JR0GTZvuDgTDsubU9X0EOxe7PT1F6avHpTNQhx4QRTU+FVwwG+so
-         w89WlYxH7b4YEm03FiRGBMuCg2ngzYaGpFQkyGxiqi0Ia6TGvr59hdFmAIKzdheJR2va
-         7e6XkPyzrMKYkvRu7+YIugqBB0nmKC8zCCFrop607KQPgQneSpBuLIaSFips57VpMvnT
-         d+UkXY9RD0zr9UE+paQE7Q8Woe3Nl7DAwgFUP6WLKRu80oDRdkdjRnoeBBps094DNIBH
-         1OqIdlvs4UgXRgMFmn0c21PinXASNXi+3xmPC/Yc9HNhorE6y5/3CyVcqpBob7ew8+mx
-         v8pA==
-X-Forwarded-Encrypted: i=1; AHgh+RqOTcztHjx4n9U1OD5FY1Z47x3hkwY2CQT7vW1sd22ya+zpFfrVbU/aHVLA6mxOI+SIoasvFNk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwESEzWj934mH9VwjVYqW26AYo5Hg63eVFN0txEkNlFxBvj+f0K
-	8ZfwwasL1mIyIxa10oyGnv0dVhrQ/eZfSYMu06LkJplTipd7MzfgSTRw/Dz0/y5wCZdt
-X-Gm-Gg: AR+sD11hGklgVQN4JULd08u6ZTZ5hB+r5aSklvSUFY6o0D/86pnLsxsHmvuPOdRnsFI
-	KSECkiiu6Pfy9XZ1m6HGWqhDG0dTbjB0Hyv4WqmdXB45SoHg3iAWQPlef3eC+7E7zif+Pm9SZ6u
-	IeX4hTYk4enUnKdwziiSSlcFnSW2pausvAO2J3ghBRYmCoWrH5i9GN+5O4Z6Yqz6WW/8xnjAuLp
-	MWLpfamzJIE1W2EEiq92HdiyaDxR0c7fwDfIkeowIb00z708+Y5oXP9iy+AcDuJhbmIHvQNDQ4+
-	qO6O/d5KtN0Zl9zll/2Ue4L52znRhimmNR9+31W/aUYNIq+kJ0hto89rj88ZSZoSsbpwVdx5lOB
-	5V1kuQq8saeM74SRzSWU+3i+3n+fZwgMLdeUZkuU2+2ZyAzalwa33YCXKSSjxevMRXo8eqsqYSn
-	MgM3Xmkvaee9vziNr9y2/5ZXCC4ta95VYWtUPyiphuA6rdWgBqwUquzxc=
-X-Received: by 2002:a17:90a:ec8e:b0:37f:be6c:f3f2 with SMTP id 98e67ed59e1d1-3903c53827bmr26399611a91.2.1786120157909;
-        Fri, 07 Aug 2026 09:29:17 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925fc6dfcdsm3179485a91.4.2026.08.07.09.29.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 09:29:17 -0700 (PDT)
-From: Ren Wei <weir@nebusec.ai>
-To: oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org
-Cc: david@ixit.cz,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	pengpeng@iscas.ac.cn,
-	kees@kernel.org,
-	error27@gmail.com,
-	raoxu@uniontech.com,
-	dddddd@hust.edu.cn,
-	ian.ray@gehealthcare.com,
-	joe@dama.to,
-	kuniyu@google.com,
-	linma@zju.edu.cn,
-	vega@nebusec.ai,
-	rakukuip@gmail.com,
-	weir@nebusec.ai
-Subject: [PATCH 1/1] nfc: llcp: Pass caller buffer to nfc_llcp_general_bytes to fix UAF and memory leaks
-Date: Sat,  8 Aug 2026 00:28:51 +0800
-Message-ID: <006437e618b55acc0df69d94255244a490b11461.1786029423.git.rakukuip@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1786029423.git.rakukuip@gmail.com>
-References: <cover.1786029423.git.rakukuip@gmail.com>
+        d=1e100.net; s=20251104; t=1786120878; x=1786725678;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VbYKBFSni/MXYcTbspULgZDCuPfk5qG+Byfv7cl+Zzg=;
+        b=ejomCnnHPbyMcMrPaBYrpMkG3y6LmMD1rpStK5mdVaJ6vUAW/mmziKIFadyfwqIGGz
+         70GzK1l7dZCrzh94Ho13Swxqq0lIoZ+6WU9oDTkKt7Dj2XZjHMXdnnwvG0iFjdezTTka
+         W1l+eWyavDPK1GIeaZlmGZ+gIK7UFlvFD+AFfXy4bhJkLeiV/KVjB7LRVGj7qtZkthvq
+         7Fr+fenvtkpwcdL1E0D8TI74Eq89OsAheMfvYZd9hdVkyxQbcQh0KrLpiwSOAC8NYCoh
+         SLgCDvbEN1LnBKi6yxM2+bp9Gc6Yeytl6nEoAhANn7og8rK3aRUv5bUMOt0NWd6XX7WW
+         k7cw==
+X-Forwarded-Encrypted: i=1; AHgh+RqKRT7S4sa8RJKYMtIX377z0SVVZAWF4r+0qOL2IP6TaWl1BJfWNgpStOXlYdGtSsOxBOsfP/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJj0KOyfyUkdF2SBw1/4t6EajnsO+kj7cnoWQm27xUH8folpNs
+	T3Gn5rJEP5a7zGN0nb0miQG1WgKmB4xytIdC0C/XjYcwpIJBrhM8kt7j5+bqdQdrrAcy/tXTicC
+	Xrnvnd1tCrVs9gu566h4wLKArj1Is47Y=
+X-Gm-Gg: AR+sD11LueRZRksNgGJTdRL4FMLE7cS2nymHGyXucIpw2iSbWxg2sp1j0KxSQRl2YFo
+	2WKLJor9/l/MxGDValKnsmG9uv3UKuLkq4war9l4mY6OcBNuIql6vsG6NhoY36uVtVytMNtIlvZ
+	3pKmp7oRhTwTPJMBAL7qcnAAzn5JkLQzIBvCWS/UxvlLwgwnByk5+hHhRt6FRr+ri7nWp13kz0A
+	n91LxZZJtVFBvwt34l1bIRxyv/W5fwMI/w9BXjjrItmpssnaTWqIMvZkrrtAW4Kcc2HW9gtxGYb
+	gWMeaxtmOxk+RSUxuaBTgTmg6Q7xdzKVmjWOgR64Ti38XPgWimtA+wbdHyX7fCU9GMMx9Vce6NO
+	x4KJQmUYBMjvFs7WQfi0lBrCLbOkWkwCaPTCKM/AAu92NYxthEZuZuI0mYfnN8SbW2JI7xCkd+l
+	Ym5B9OaWHws16Pn20qkXCi8JJyzjoRmYH1Ecd+
+X-Received: by 2002:a05:6102:578b:b0:737:5c42:858b with SMTP id
+ ada2fe7eead31-764e72c3a27mr698784137.11.1786120877713; Fri, 07 Aug 2026
+ 09:41:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
+ <b2e83ba0-2e9c-4105-b806-8a155e8b9aa5@lunn.ch> <CADvTj4rame1n8eQL2GUOaJHnOcR_cqNxzNYO+QeCLYDczEFeUA@mail.gmail.com>
+ <ddce5cfa-8cf9-4f9e-ab0a-0b415706876a@lunn.ch>
+In-Reply-To: <ddce5cfa-8cf9-4f9e-ab0a-0b415706876a@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Fri, 7 Aug 2026 10:41:06 -0600
+X-Gm-Features: AUfX_mwLDixIRmddCRIK4ioEeGf1D4LRV-vMQxIFETRbvqYEEeJik4zuAKwk_IU
+Message-ID: <CADvTj4qxGVw+PW2LeF-a3h1XfmirQZGfJA9-6Czt72XASbVLBQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 0/4] net: mdio: support dynamic OF device changes
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Florian Fainelli <f.fainelli@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Jonas Gorski <jonas.gorski@gmail.com>, 
+	Vladimir Oltean <olteanv@gmail.com>, Ciprian Regus <ciprian.regus@analog.com>, 
+	Andreas Larsson <andreas@gaisler.com>, Mark Einon <mark.einon@gmail.com>, 
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+	Keyur Chudgar <keyur@os.amperecomputing.com>, Michael Chan <michael.chan@broadcom.com>, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, Wei Fang <wei.fang@nxp.com>, 
+	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
+	Bryan Whitehead <bryan.whitehead@microchip.com>, UNGLinuxDriver@microchip.com, 
+	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, Timur Tabi <timur@kernel.org>, 
+	nic_swsd@realtek.com, Byungho An <bh74.an@samsung.com>, 
+	Steve Glendinning <steve.glendinning@shawell.net>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
+	Jiawen Wu <jiawenwu@trustnetic.com>, Mengyuan Lou <mengyuanlou@net-swift.com>, 
+	Thangaraj Samynathan <Thangaraj.S@microchip.com>, Sebastian Reichel <sre@kernel.org>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Luxiao Xu <rakukuip@gmail.com>
+On Fri, Aug 7, 2026 at 9:10=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Fri, Aug 07, 2026 at 08:59:47AM -0600, James Hilliard wrote:
+> > On Fri, Aug 7, 2026 at 7:16=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wro=
+te:
+> > >
+> > > On Thu, Aug 06, 2026 at 09:54:19PM -0600, James Hilliard wrote:
+> > > > MDIO buses enumerate firmware children only when the bus is registe=
+red. A
+> > > > later devicetree overlay or status transition is ignored, unlike on=
+ I2C and
+> > > > SPI buses. Supporting live reconfiguration also means that populati=
+on and
+> > > > removal can race address scanning, PHY attachment and bus teardown.
+> > >
+> > > Please make the bootloader work around the issues, and drop this
+> > > patchset.
+> >
+> > This is just fixing OF_DYNAMIC for mdio now, it's no longer used
+> > by the AC200/AC300 PHY patches anymore.
+>
+> Meaning it has no users?
 
-commit 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
-attempted to fix a use-after-free (UAF) issue by
-invoking nfc_llcp_local_put(local) after accessing local->gb. However,
-if the reference count dropped to zero, local was freed prematurely,
-leading to a Use-After-Free when the returned pointer was accessed.
-Alternative approaches using dynamic allocation (such as kmemdup) introduced
-severe memory leaks and state inconsistency because callers consistently
-treated the returned pointer as borrowed memory.
+I think OF_OVERLAY depends on OF_DYNAMIC?
 
-Fix this properly by refactoring nfc_llcp_general_bytes() and
-nfc_get_local_general_bytes() to accept a caller-provided output buffer
-(out_gb) and its maximum length (gb_max_len). The general bytes are
-safely copied into out_gb BEFORE calling nfc_llcp_local_put(local),
-ensuring safe lifetime management without ownership transfer complications.
+I guess it can also be used like this for live dt modification:
+https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/t=
+ree/Documentation/devicetree/configfs-overlays.txt?h=3Dtopic/overlays
 
-Update all callers across drivers (microread, pn533, pn544, st21nfca,
-digital_dep, and nci) to allocate local stack buffers of size
-NFC_MAX_GT_LEN and pass them to nfc_get_local_general_bytes().
+> We don't add code unless it has a user. To do so pointlessly adds
+> Maintenance burden.
 
-Fixes: 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <weir@nebusec.ai>
----
- drivers/nfc/microread/microread.c |  5 ++---
- drivers/nfc/pn533/pn533.c         | 10 +++++-----
- drivers/nfc/pn533/pn533.h         |  2 +-
- drivers/nfc/pn544/pn544.c         |  7 +++----
- drivers/nfc/st21nfca/core.c       |  5 ++---
- include/net/nfc/hci.h             |  2 +-
- include/net/nfc/nfc.h             |  2 +-
- net/nfc/core.c                    | 10 +++++-----
- net/nfc/digital_dep.c             |  3 ++-
- net/nfc/llcp_core.c               | 18 ++++++++++++------
- net/nfc/nci/core.c                |  3 ++-
- net/nfc/nfc.h                     |  2 +-
- 12 files changed, 37 insertions(+), 32 deletions(-)
+AFAIU the patches other than the last one are still relevant regardless
+since they are fixing a bunch of generic mdio safety issues in code that
+has users since MDIO maps already change at runtime through non-OF
+paths(i.e. SFP insertion/removal).
 
-diff --git a/drivers/nfc/microread/microread.c b/drivers/nfc/microread/microread.c
-index 4149c5d735bd..0f0a03da9ff4 100644
---- a/drivers/nfc/microread/microread.c
-+++ b/drivers/nfc/microread/microread.c
-@@ -251,9 +251,8 @@ static int microread_start_poll(struct nfc_hci_dev *hdev,
- 		param[1] |= (1 << 1);
- 
- 	if ((im_protocols | tm_protocols) & NFC_PROTO_NFC_DEP_MASK) {
--		hdev->gb = nfc_get_local_general_bytes(hdev->ndev,
--						       &hdev->gb_len);
--		if (hdev->gb == NULL || hdev->gb_len == 0) {
-+		nfc_get_local_general_bytes(hdev->ndev, hdev->gb, sizeof(hdev->gb), &hdev->gb_len);
-+		if (hdev->gb_len == 0) {
- 			im_protocols &= ~NFC_PROTO_NFC_DEP_MASK;
- 			tm_protocols &= ~NFC_PROTO_NFC_DEP_MASK;
- 		}
-diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
-index d7bdbc82e2ba..b3ac3f31518d 100644
---- a/drivers/nfc/pn533/pn533.c
-+++ b/drivers/nfc/pn533/pn533.c
-@@ -1346,10 +1346,10 @@ static int pn533_poll_dep(struct nfc_dev *nfc_dev)
- 	u8 *next, nfcid3[NFC_NFCID3_MAXSIZE];
- 	u8 passive_data[PASSIVE_DATA_LEN] = {0x00, 0xff, 0xff, 0x00, 0x3};
- 
--	if (!dev->gb) {
--		dev->gb = nfc_get_local_general_bytes(nfc_dev, &dev->gb_len);
-+	if (!dev->gb_len) {
-+		nfc_get_local_general_bytes(nfc_dev, dev->gb, sizeof(dev->gb), &dev->gb_len);
- 
--		if (!dev->gb || !dev->gb_len) {
-+		if (!dev->gb_len) {
- 			dev->poll_dep = 0;
- 			queue_work(dev->wq, &dev->rf_work);
- 		}
-@@ -1647,8 +1647,8 @@ static int pn533_start_poll(struct nfc_dev *nfc_dev,
- 	}
- 
- 	if (tm_protocols) {
--		dev->gb = nfc_get_local_general_bytes(nfc_dev, &dev->gb_len);
--		if (dev->gb == NULL)
-+		nfc_get_local_general_bytes(nfc_dev, dev->gb, sizeof(dev->gb), &dev->gb_len);
-+		if (dev->gb_len == 0)
- 			tm_protocols = 0;
- 	}
- 
-diff --git a/drivers/nfc/pn533/pn533.h b/drivers/nfc/pn533/pn533.h
-index 09e35b8693f5..d3425fcfd557 100644
---- a/drivers/nfc/pn533/pn533.h
-+++ b/drivers/nfc/pn533/pn533.h
-@@ -166,7 +166,7 @@ struct pn533 {
- 	struct timer_list listen_timer;
- 	int cancel_listen;
- 
--	u8 *gb;
-+	u8 gb[NFC_MAX_GT_LEN];
- 	size_t gb_len;
- 
- 	u8 tgt_available_prots;
-diff --git a/drivers/nfc/pn544/pn544.c b/drivers/nfc/pn544/pn544.c
-index 9d0a16ac465e..098b29d9a68e 100644
---- a/drivers/nfc/pn544/pn544.c
-+++ b/drivers/nfc/pn544/pn544.c
-@@ -377,10 +377,9 @@ static int pn544_hci_start_poll(struct nfc_hci_dev *hdev,
- 		return r;
- 
- 	if ((im_protocols | tm_protocols) & NFC_PROTO_NFC_DEP_MASK) {
--		hdev->gb = nfc_get_local_general_bytes(hdev->ndev,
--							&hdev->gb_len);
--		pr_debug("generate local bytes %p\n", hdev->gb);
--		if (hdev->gb == NULL || hdev->gb_len == 0) {
-+		nfc_get_local_general_bytes(hdev->ndev, hdev->gb, sizeof(hdev->gb), &hdev->gb_len);
-+		pr_debug("generate local bytes len %zu\n", hdev->gb_len);
-+		if (hdev->gb_len == 0) {
- 			im_protocols &= ~NFC_PROTO_NFC_DEP_MASK;
- 			tm_protocols &= ~NFC_PROTO_NFC_DEP_MASK;
- 		}
-diff --git a/drivers/nfc/st21nfca/core.c b/drivers/nfc/st21nfca/core.c
-index fd39a05c9622..0f49bf6af522 100644
---- a/drivers/nfc/st21nfca/core.c
-+++ b/drivers/nfc/st21nfca/core.c
-@@ -351,10 +351,9 @@ static int st21nfca_hci_start_poll(struct nfc_hci_dev *hdev,
- 			if (r < 0)
- 				return r;
- 		} else {
--			hdev->gb = nfc_get_local_general_bytes(hdev->ndev,
--							       &hdev->gb_len);
-+			nfc_get_local_general_bytes(hdev->ndev, hdev->gb, sizeof(hdev->gb), &hdev->gb_len);
- 
--			if (hdev->gb == NULL || hdev->gb_len == 0) {
-+			if (hdev->gb_len == 0) {
- 				im_protocols &= ~NFC_PROTO_NFC_DEP_MASK;
- 				tm_protocols &= ~NFC_PROTO_NFC_DEP_MASK;
- 			}
-diff --git a/include/net/nfc/hci.h b/include/net/nfc/hci.h
-index 756c11084f65..86ed63e5d533 100644
---- a/include/net/nfc/hci.h
-+++ b/include/net/nfc/hci.h
-@@ -144,7 +144,7 @@ struct nfc_hci_dev {
- 	data_exchange_cb_t async_cb;
- 	void *async_cb_context;
- 
--	u8 *gb;
-+	u8 gb[NFC_MAX_GT_LEN];
- 	size_t gb_len;
- 
- 	unsigned long quirks;
-diff --git a/include/net/nfc/nfc.h b/include/net/nfc/nfc.h
-index c54df042db6b..cfb9111bdf4e 100644
---- a/include/net/nfc/nfc.h
-+++ b/include/net/nfc/nfc.h
-@@ -273,7 +273,7 @@ struct sk_buff *nfc_alloc_recv_skb(unsigned int size, gfp_t gfp);
- 
- int nfc_set_remote_general_bytes(struct nfc_dev *dev,
- 				 const u8 *gt, u8 gt_len);
--u8 *nfc_get_local_general_bytes(struct nfc_dev *dev, size_t *gb_len);
-+u8 *nfc_get_local_general_bytes(struct nfc_dev *dev, u8 *out_gb, size_t gb_max_len, size_t *gb_len);
- 
- int nfc_fw_download_done(struct nfc_dev *dev, const char *firmware_name,
- 			 u32 result);
-diff --git a/net/nfc/core.c b/net/nfc/core.c
-index a92a6566e6a0..af7edf2687ef 100644
---- a/net/nfc/core.c
-+++ b/net/nfc/core.c
-@@ -280,9 +280,9 @@ static struct nfc_target *nfc_find_target(struct nfc_dev *dev, u32 target_idx)
- int nfc_dep_link_up(struct nfc_dev *dev, int target_index, u8 comm_mode)
- {
- 	int rc = 0;
--	u8 *gb;
--	size_t gb_len;
- 	struct nfc_target *target;
-+	u8 gb[NFC_MAX_GT_LEN];
-+	size_t gb_len = 0;
- 
- 	pr_debug("dev_name=%s comm %d\n", dev_name(&dev->dev), comm_mode);
- 
-@@ -301,7 +301,7 @@ int nfc_dep_link_up(struct nfc_dev *dev, int target_index, u8 comm_mode)
- 		goto error;
- 	}
- 
--	gb = nfc_llcp_general_bytes(dev, &gb_len);
-+	nfc_get_local_general_bytes(dev, gb, sizeof(gb), &gb_len);
- 	if (gb_len > NFC_MAX_GT_LEN) {
- 		rc = -EINVAL;
- 		goto error;
-@@ -644,11 +644,11 @@ int nfc_set_remote_general_bytes(struct nfc_dev *dev, const u8 *gb, u8 gb_len)
- }
- EXPORT_SYMBOL(nfc_set_remote_general_bytes);
- 
--u8 *nfc_get_local_general_bytes(struct nfc_dev *dev, size_t *gb_len)
-+u8 *nfc_get_local_general_bytes(struct nfc_dev *dev, u8 *out_gb, size_t gb_max_len, size_t *gb_len)
- {
- 	pr_debug("dev_name=%s\n", dev_name(&dev->dev));
- 
--	return nfc_llcp_general_bytes(dev, gb_len);
-+	return nfc_llcp_general_bytes(dev, out_gb, gb_max_len, gb_len);
- }
- EXPORT_SYMBOL(nfc_get_local_general_bytes);
- 
-diff --git a/net/nfc/digital_dep.c b/net/nfc/digital_dep.c
-index 3982fa084737..a0218497e82d 100644
---- a/net/nfc/digital_dep.c
-+++ b/net/nfc/digital_dep.c
-@@ -1490,12 +1490,13 @@ static int digital_tg_send_atr_res(struct nfc_digital_dev *ddev,
- 				   struct digital_atr_req *atr_req)
- {
- 	struct digital_atr_res *atr_res;
-+	u8 local_gb[NFC_MAX_GT_LEN];
- 	struct sk_buff *skb;
- 	u8 *gb, payload_bits;
- 	size_t gb_len;
- 	int rc;
- 
--	gb = nfc_get_local_general_bytes(ddev->nfc_dev, &gb_len);
-+	gb = nfc_get_local_general_bytes(ddev->nfc_dev, local_gb, sizeof(local_gb), &gb_len);
- 	if (!gb)
- 		gb_len = 0;
- 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index dc65c719f35f..1ed0ecde5872 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -635,23 +635,29 @@ static int nfc_llcp_build_gb(struct nfc_llcp_local *local)
- 	return ret;
- }
- 
--u8 *nfc_llcp_general_bytes(struct nfc_dev *dev, size_t *general_bytes_len)
-+u8 *nfc_llcp_general_bytes(struct nfc_dev *dev, u8 *out_gb, size_t gb_max_len, size_t *general_bytes_len)
- {
- 	struct nfc_llcp_local *local;
- 
-+	if (!out_gb || !general_bytes_len)
-+		return NULL;
-+
-+	*general_bytes_len = 0;
-+
- 	local = nfc_llcp_find_local(dev);
--	if (local == NULL) {
--		*general_bytes_len = 0;
-+	if (local == NULL)
- 		return NULL;
--	}
- 
- 	nfc_llcp_build_gb(local);
- 
--	*general_bytes_len = local->gb_len;
-+	if (local->gb && local->gb_len) {
-+		*general_bytes_len = min_t(size_t, local->gb_len, gb_max_len);
-+		memcpy(out_gb, local->gb, *general_bytes_len);
-+	}
- 
- 	nfc_llcp_local_put(local);
- 
--	return local->gb;
-+	return out_gb;
- }
- 
- int nfc_llcp_set_remote_gb(struct nfc_dev *dev, const u8 *gb, u8 gb_len)
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 5f46c4b5720f..d27fe4f8456a 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -780,9 +780,10 @@ static int nci_set_local_general_bytes(struct nfc_dev *nfc_dev)
- {
- 	struct nci_dev *ndev = nfc_get_drvdata(nfc_dev);
- 	struct nci_set_config_param param;
-+	u8 local_gb[NFC_MAX_GT_LEN];
- 	int rc;
- 
--	param.val = nfc_get_local_general_bytes(nfc_dev, &param.len);
-+	param.val = nfc_get_local_general_bytes(nfc_dev, local_gb, sizeof(local_gb), &param.len);
- 	if ((param.val == NULL) || (param.len == 0))
- 		return 0;
- 
-diff --git a/net/nfc/nfc.h b/net/nfc/nfc.h
-index 0b1e6466f4fb..6caec88f7400 100644
---- a/net/nfc/nfc.h
-+++ b/net/nfc/nfc.h
-@@ -49,7 +49,7 @@ void nfc_llcp_mac_is_up(struct nfc_dev *dev, u32 target_idx,
- int nfc_llcp_register_device(struct nfc_dev *dev);
- void nfc_llcp_unregister_device(struct nfc_dev *dev);
- int nfc_llcp_set_remote_gb(struct nfc_dev *dev, const u8 *gb, u8 gb_len);
--u8 *nfc_llcp_general_bytes(struct nfc_dev *dev, size_t *general_bytes_len);
-+u8 *nfc_llcp_general_bytes(struct nfc_dev *dev, u8 *out_gb, size_t gb_max_len, size_t *general_bytes_len);
- int nfc_llcp_data_received(struct nfc_dev *dev, struct sk_buff *skb);
- struct nfc_llcp_local *nfc_llcp_find_local(struct nfc_dev *dev);
- int nfc_llcp_local_put(struct nfc_llcp_local *local);
--- 
-2.43.0
+>
+>    Andrew
