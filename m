@@ -1,141 +1,99 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13FA23B62B
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 00:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF4A1F427C;
+	Fri,  7 Aug 2026 00:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786063305; cv=none; b=BuAR0P3gmNzB6dQiQS4Yq1Ko2Mqzd8KheGmw3LFXDnOS4E5rmKmhVb6xVv7BlNO8wAVvNar5UyFltxRtLzIwITEuHC8Dx4cFn+z7/jWiLXTC5UkaYvHPfBNCNnuyj0PLSObyUasez9JQUhncOBToYa+kpM0V/MaDicnxZdZStLM=
+	t=1786063459; cv=none; b=t5n0hNiPgjzJHajO59qAsLK1lFpyGv+xpKtdzGDNXMsapH7oEVswsUolrdGt0gjQMVS4tLrlrH3KzSOV+R19paq5sGb5Izp+8MNY/MythJkgij6gK0/yEZDmHdsSnESwgMCQMnvW/HDVfT6eY3MojQ/V85tYQ2CayhZSRdudu3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786063305; c=relaxed/simple;
-	bh=ZL9+sQZHP4asdqRDP1EZKwR4QQUfjUwzOHzZncI0HUg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bdUOBW90A8fwOy5oqVJksV1snEk96MGYUWOLGbboxMLh+uk0QT9cBkPfiEwyZHHyyYCi4Adl6gbjfOOK8jWHjcVAkkao+GCvMyA6hoQ8OQ4rEaqtaC1hW/R7fntj5LeVKe7dE9KXOiJ4p0/MpKaHsP3zXrQm4Qag1qQpCL4T4no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ape0tNYu; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786063459; c=relaxed/simple;
+	bh=vTSlRFsFMOHcSBeaYMHKVdBDYSAun+VmxGWefKxUvNE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jyw9KqCtfLF6VRpGCJC3UQtDR2nkEsjQdeqN1lWPJVq9i/5xXZbK6uPLV9PBo022+WA1Ne3grfZcAGVjMTe6arNABMZPsBszN1lx35z+FHxz2hKq/XcBsUoCet8G4tZrslkPib7o3aq38FXr8KFZqyqnUIA2MlQIjKdjfYPe6pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ao1qXwk3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ape0tNYu"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b14d1f9315so2268761e87.2
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 17:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786063302; x=1786668102; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jg9t6USd7aCBm3DCerjF5PDOcPoho7Pj+WkMHzrBY40=;
-        b=Ape0tNYuKCjFJKx+9LCTzZC54swhSWC02VWN44NKQTZWWSJcfp5h0/RkFtqgN5mNF+
-         igfBpqMC8fEBWtfe4oEQvSHLT5TuV0163iO0JiREJIHfB+wu/mjJh3DpQFN9WUQEkyGH
-         VSQdNPJEb8NPD5PC0qjihYUyu44BmCqWXHMNUV2QBNpZ4up0QzQbx4URKEL9PC+kJWsj
-         VVHS2vwcFL11zPq3Hr6E5pVryWvdn2J3pjznnuvW/GyLjbB4mqE7UhK5gD3FE2JYLcrn
-         LJcIi3zuMtMlhLU51bWM7gVN9mA3n/1dy6mIRsQE3IHgnzFAzlTBgTgm5NHEqERcyWqI
-         3vaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786063302; x=1786668102;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jg9t6USd7aCBm3DCerjF5PDOcPoho7Pj+WkMHzrBY40=;
-        b=H4vbf+/39t1jQew8jrKeysGMFH9y4rPnnCsEOhwFSGGIVBhckizj35BBIUgw0jaX5C
-         /9BmF0XOuIIh+XFMBKZGvi5rC4sGLi6Dylgu73u4mNl85kZbmoqM1esdlQM5SBetFfBa
-         AsQeL/aBxwD1V8kTSPgXYa/gRk9JmRHC2eqyNy1TzmPElcjFt1eunSbCeDv6xhkcMyPs
-         Ezy7mAp+QZfrvOFIPzwgn2m2BHiHFRD2qiKpT+thodNqpk4EDQbA0NhmljGXMJe4JEx8
-         BCq4AJyS3YkBh/mtasah+yVhpE2VXt+0y0z5kiFnXyFQm1G3trwCNWoSzNfyHDwaZM5q
-         MKmQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrd2LZbBQdYQCpmkK21Ducvqpvsmw+Q+BT4cjtQbpOQc0MSRhBCz3wUJ8F6ih1LctpPEbmV7MA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqYj8OLOCQPP2Is9JLKQz8PzZzIuWPmjrJ897xz0VSm2mESn7Y
-	4wEubG2YPEqnB3OAE/e8sm/ObB3jEU51jnVBFGeftnaY4GCVlt7o+9M=
-X-Gm-Gg: AR+sD122YWX7vG7GuDw/fpoAesuV/PWDvr5RwBXQIQ3NSTKmnGb+DkQ/bld3ab01vvo
-	Vm3s424hq2nfL9bcB/g59RYnIt0wxzYDhq9+FkXbXT3is5Mws8jXIioe0bi4lOwobnmXIM1//Dc
-	OVaGTSJl6KvxIWbHvQ3dry7JVoz54c/rjSozSlZeF1/ILxmqeS6M7NbgysDlviJmlcVm3augtvH
-	V1uh2PTSTDPpWf/paNpsJKtImETkWNMGuBDelAKkrOB7WvOwlgyvuqFwXyt8zeM1ItNIx+gHY/o
-	fycr6da7PjdmcywpT0xEenPUfsA9xePB3oLMlG99EKNgTmk+HShbRYRBlVKRB9YzCiiT5C0nodw
-	f0tP5RgzRSk8Phc/wDHE7m71ItRYtvjgc+vfad3MjEG5vteMs++5l/Aca5iEH1H/TqeXkqDm256
-	vj+gpPVFuu8yEGpCnwtKHFSYt17zcBYDTkF082ZFUq0sK45BVCzd4=
-X-Received: by 2002:ac2:5dcf:0:b0:5ae:bb19:1864 with SMTP id 2adb3069b0e04-5b2f4b90286mr1828052e87.21.1786063301532;
-        Thu, 06 Aug 2026 17:41:41 -0700 (PDT)
-Received: from fedora ([46.8.219.5])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b3055f2b86sm189232e87.66.2026.08.06.17.41.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 17:41:41 -0700 (PDT)
-From: Vitaliy Sochnev <sochnev.v.74@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Vitaliy Sochnev <sochnev.v.74@gmail.com>,
-	stable@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org (moderated list:AIROHA ETHERNET DRIVER),
-	linux-mediatek@lists.infradead.org (moderated list:AIROHA ETHERNET DRIVER),
-	netdev@vger.kernel.org (open list:AIROHA ETHERNET DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net] net: airoha: npu: load the firmware without the sysfs fallback
-Date: Fri,  7 Aug 2026 03:41:08 +0100
-Message-ID: <20260807024125.434055-1-sochnev.v.74@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ao1qXwk3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAE61F000E9;
+	Fri,  7 Aug 2026 00:44:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786063458;
+	bh=YzF3JU9PvjOyT5wjw7pqwLKhu38VQCSEUcm9ov65ISM=;
+	h=From:Subject:Date:To:Cc;
+	b=ao1qXwk3fwJ3kvG3YMdvvL41bkYZzkdfpg/f0IXEZJ1RDgMEZHrdvV5knXlcfXeM0
+	 iYDzw8z8htdG+cgIkmro6QS2jpJ473feKsLYWfflRrWUSJH2GSsABflrqBpB8Yr2fO
+	 32Qt5YGGQ4yWWxtl6e6lyYJdRkVaRSS2cd6QQ92qPZcDwmcnBFgx1udAVi53RmZI2E
+	 ffuE8JpfSTRL8sWUx+5H9Vjm734JnpsKBJZYsh1CAzdCSWagesZcrVWc92gpMm2rMh
+	 07HsQrZ+i5n0FwOiWsOr8yLz+FDBe2re3Z6LrAZNP4UP3loK+85S6IXqYDXV9+iY3l
+	 r6QhoDRII3jLg==
+From: Chuck Lever <cel@kernel.org>
+Subject: [PATCH net 0/2] net/tls: Fail splice after a failed async decrypt
+Date: Thu, 06 Aug 2026 20:44:06 -0400
+Message-Id: <20260806-tls-splice-crypto-fix-v1-0-a2624005a286@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCMBBFr1Jm7WBMJYhXERfJdLQjNQ2ZKErp3
+ Zvo8j3e/wsoZ2GFc7dA5reozLHCYdcBjT7eGWWoDNZYZ07GYZkUNU1CjJS/qcx4kw9a7wbuiYy
+ 1R6jblLnq3+8FIhe4/qW+woOptMeWBa+MIftIY1M13D+9RFjXDaoKLQGZAAAA
+X-Change-ID: 20260806-tls-splice-crypto-fix-2a6de3cc0224
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.16-dev-da966
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1212; i=cel@kernel.org;
+ h=from:subject:message-id; bh=vTSlRFsFMOHcSBeaYMHKVdBDYSAun+VmxGWefKxUvNE=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqdSpYehLoRalF96MH8GjWF7HSmdAVagqJUhLxj
+ nAg2wAjgxiJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCanUqWAAKCRAzarMzb2Z/
+ l0nvD/4jl1D+t0xupoNwvkkyu1NaAYX0ndSN3xdCvAJJEjcHsr3rXPe40/lQW4RQfNML+1ohgLz
+ vVbBliS4PXftq2/czwrctjSzq4CTk6P1nd76rpu2ocatmNnLwo/n3VJWAa37tLZEMCXyiMPcrQv
+ ozDeUtifyXciJKTt03+QLhobxz4E5aKt5b7tLBU3kRFmjLd9rlFhOyJErJ7fXGIayC8mZfCiBRL
+ 7G5koiE67qM8AEeout+C7IGqlonFjWX95r6t3tfLQHuNBTA3ulWVxTlSaRHJQoVp36HD8DQeYAn
+ JVBsYl6oGieoQjI66aOFW8j6/0r1vcq6UbmGmbRZw4F4R2nApiguhpWJG1JWOW7K5JJf5xMPbXz
+ hqbcy4NDbMe2a3DZNthuFNOPFcBBIc5wbmYk4WNf3nEMcB2cUfS7k49QJF2H70W1+AGSHnDwBKQ
+ j6/ulAVIQrEDdParQEce0b00xbb8HCwETP5U0HoWqUXIkkLNHa59uAf5VNcwuUTVoeobbXxnb3g
+ RTJ4F3e7oOqKZDGzMS+ePGGVW5C3/pjgIHEIxb8zl2sYvbv3sKoN4Ztpl7nWSn+Hrt9kzYy1c9V
+ aZh8P6rV1Di8A2M7Y681YqzHsT6LQWc40Fs1QsWSaj47Zy+JuOWf95QF6qsnjDVYZwa+OIprWUX
+ ajte5f9QdsAtShg==
+X-Developer-Key: i=cel@kernel.org; a=openpgp;
+ fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-airoha_npu_load_firmware() maps a missing firmware file to -EPROBE_DEFER
-so that the NPU can be brought up once the rootfs carrying /lib/firmware
-has been mounted. That mapping holds only as long as request_firmware()
-reports -ENOENT.
+tls_sw_recvmsg() and tls_sw_read_sock() both read ctx->async_wait.err
+once they hold the reader lock, so a record that failed
+authentication fails the call. tls_sw_splice_read() has no such
+check. sk_err does not stand in for one. The first reader to reach
+sock_error() clears sk_err, while async_wait.err persists. A splice
+therefore keeps delivering records on a connection the other two
+readers have already refused.
 
-It does not when the sysfs fallback is in play. With
-CONFIG_FW_LOADER_USER_HELPER_FALLBACK set, or with the fallback armed at
-runtime through /proc/sys/kernel/firmware_config/force_sysfs_fallback,
-request_firmware() hands the request to a userspace helper, waits out the
-full loading_timeout and returns -ETIMEDOUT. The -ENOENT test no longer
-matches, dev_err_probe() turns the result into a hard failure, and the
-NPU is left unbound after stalling the boot for 60 seconds:
+Both patches come from a receive-path series for zero-length data
+records. Jakub asked for them separately, since the rest of that
+series is still under discussion.
 
-  airoha-npu 1e900000.npu: Direct firmware load for airoha/en7581_npu_rv32.bin failed with error -2
-  airoha-npu 1e900000.npu: Falling back to sysfs fallback for: airoha/en7581_npu_rv32.bin
-  airoha-npu 1e900000.npu: error -ETIMEDOUT: failed to run npu firmware
-  airoha-npu 1e900000.npu: probe with driver airoha-npu failed with error -110
+Link to the original series:
+https://patch.msgid.link/20260726-tls-follow-on-v1-0-99bf4cc1c729@kernel.org
 
-Clearing FW_LOADER_USER_HELPER in the configuration is not a dependable
-guard against this, because unrelated drivers select it. On the affected
-build the symbol was turned back on by LEDS_LP55XX_COMMON, even though
-the platform had explicitly disabled it.
-
-request_firmware_direct() sets FW_OPT_NOFALLBACK_SYSFS, so a missing file
-is reported as -ENOENT whatever the firmware loader is configured to do,
-and the deferred probe path works as it was meant to.
-
-Measured on a Nokia XG-040G-MD with FW_LOADER_USER_HELPER=y and
-FW_LOADER_USER_HELPER_FALLBACK=y, on two images from the same tree
-differing only by this patch: without it the probe fails with
--ETIMEDOUT after 64.5s and the NPU stays unbound, with it the NPU
-reports its firmware version at 3.7s. The fallback is compiled in and
-forced in both cases; the patch does not disable it, it only keeps the
-driver from falling into it.
-
-Fixes: 23290c7bc190 ("net: airoha: Introduce Airoha NPU support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitaliy Sochnev <sochnev.v.74@gmail.com>
 ---
- drivers/net/ethernet/airoha/airoha_npu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Chuck Lever (2):
+      net/tls: Fail tls_sw_splice_read() after a failed async decrypt
+      selftests: tls: cover splice after a failed decrypt
 
-diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
-index b679bed95..ca33e615a 100644
---- a/drivers/net/ethernet/airoha/airoha_npu.c
-+++ b/drivers/net/ethernet/airoha/airoha_npu.c
-@@ -202,7 +202,7 @@ static int airoha_npu_load_firmware(struct device *dev, void __iomem *addr,
- 	const struct firmware *fw;
- 	int ret;
- 
--	ret = request_firmware(&fw, fw_name, dev);
-+	ret = request_firmware_direct(&fw, fw_name, dev);
- 	if (ret)
- 		return ret == -ENOENT ? -EPROBE_DEFER : ret;
- 
--- 
-2.55.0
+ net/tls/tls_sw.c                  |  5 +++
+ tools/testing/selftests/net/tls.c | 75 +++++++++++++++++++++++++++++++++------
+ 2 files changed, 70 insertions(+), 10 deletions(-)
+---
+base-commit: 594d905195024b228c962627ae5ae7c17bd582a4
+change-id: 20260806-tls-splice-crypto-fix-2a6de3cc0224
+
+Best regards,
+--  
+Chuck Lever <cel@kernel.org>
 
