@@ -1,56 +1,56 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8372427FA8
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 23:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DFE42AFB2
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 23:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786145386; cv=none; b=HjwAhBZ7znu27zsuMhp/zXxXCdc0dFPpITwvNiQbm/BU0NDLfyRjbnu879sFYZAv7Os0N7NHHsLqFw/S2Uc610BD6uJW4BKE2jMc/vDOoqbjqpkWl5h3PGFOqtosIF2VqvG8MYp+zRJbDDVqTE1nDH+gw/4MEYQKfMyIZVukiAI=
+	t=1786145387; cv=none; b=Eh2gtNzbLFwWnpJaHaEspaoYs7egZ6gNnyVaYdm5Q1dVpH1E5JaLRsT/Aot0oWKLJbMj6g0oOJkgLsaZR8wCiD0Xe3CZYV/aRIKiMPltdP/K7YZRHyePyEJ0TfubJ05a1nwds7pNB5p37OrE1BYuqhTmS0FgSAdjDzs7MpjSaoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786145386; c=relaxed/simple;
-	bh=xkMs1ottVDa7T2Qr33twwwvPlkGXfQVCcJz3LAzjYrQ=;
+	s=arc-20240116; t=1786145387; c=relaxed/simple;
+	bh=vlPpVZM9ggJ+XfKvbAQtQl2Mup01PYgNb3JjLeLDBjg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SXuwc4Hq0fK2hSIygMdsPGDoL4m2sNaqTezAB7kD/JcljrFaBjqZNSSUtrewhbFc+t7OirrLxmHaWSGYmESEuKoyN+wxGHAUmWAmseQRsx8lMJ0G7hZOT3sAx0DAmhUVbGDVEcr4CSRaYnEpREiX953UKFEgSKEguF9eOIP2W50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EExbEDoD; arc=none smtp.client-ip=209.85.210.200
+	 To:Cc:Content-Type; b=FMI7XUFj5v1HjdOllkcczJlkSCbJD8ahScI+J8v1t5HcDoN5PDm+UvmgdH049pBniYK/biYs2Fk3oIBwBcIKT9lqOLIxPcyBfPRBwOuUzGfT2SxygA6W4fww4nJ2OX84euRmbClaEfs9YMAM4/6i7xHv6eol4QOkpCqhaMdoKms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rViWqNyq; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EExbEDoD"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84e04598adeso42907b3a.2
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 16:29:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rViWqNyq"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84859a64079so104085b3a.3
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 16:29:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786145384; x=1786750184; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786145385; x=1786750185; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OjTlp0SluaOs5k2MAx4xnwS10zBMIH4AOWKtZRR5WFc=;
-        b=EExbEDoDYOg62ULucb2gPFLKZcO5vzeZwQwDThFIT+7JsBcSEh6zgHec0SdIxrW83W
-         dHg4YlAJop0IPsw8J/la10yejNPlaoZqWCvzrj2+n7tV/GkdV36y2+coQYZAD7vD6G3g
-         1ZnZUn32r2IiptPbP2z2pbv1g4qcYqXQ3GV8hzvKDUiwkEyybDlYHgxblerJ2kdW188v
-         4rXvFDaVq/3Mrs7HprnXLejdFGI2eMT2blXl7arjfsSpNdPqMyjp5pmGYmErHH/WQIzs
-         zK97xbcltQ2fvAgQ96/0JEeg0uMf53LPUw5AqxPM2cfeeASMc2J87wxEbsO0s80Qj/ca
-         fzDQ==
+        bh=WHP8N4gF93Sn3d892+Om88mcx9eberIzJuR/Mwj9Npk=;
+        b=rViWqNyqcIMx/ybSbK0hnaQIvO/5pED2un8g2aL6BZCGlpLOidQqXhRd49CGTgXezu
+         eylx+sPob3T4AjdK6b3KSp120POeegA3DfkvwQuPhI2IfxEwLyPWiWKAlIXHbaN0Trj3
+         9iORNvs2wHoCMmurQArNcDmCxnIVJ+jpNUXAxILoCA1xhaYh8qpqqDaOKf724ep+l1e2
+         QXEbg7vTdTwKv+XMckEzzYgx3PzIgj66SVmJ672RJFOFkmrg2GdMQ4uNIG0CyJPz6lIt
+         gb2xnQHqQZ7kv6nwB04jrv6R5RS2ps3AeFeOr2B0QSbaVkuYGT6EhX258Pjm02nQvPjB
+         h9UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786145384; x=1786750184;
+        d=1e100.net; s=20251104; t=1786145385; x=1786750185;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OjTlp0SluaOs5k2MAx4xnwS10zBMIH4AOWKtZRR5WFc=;
-        b=oD3wxVs+RqekRMsd8kpUieOM84d5CvDAFnGTnLcXfA5UBpF6zTx6A1JV3fCOKlXp/1
-         CHi+HLXsR/iUic/dzv/QxuC6i1cv+kikZYq9Zx0VDbK4EY39FqdN6qJs/V1D1HRSb04r
-         Pf3XLKgLJt8CWLVkh0xNlpzuVLByh6qrb4jf2UyCQhEWy8SWhl6RCYnLYILqsSPZGBHp
-         rcZF4PP1c0uG7vYFy7vpjtWR0rN+nPra4WmzcTX792hHd0maB444wLOYqCaj/hSJASe1
-         gbQu7F+/03qdGvLitirgB0MUptr0s1Hkg2aK5+N4WM4OV/N6LgAWPiV9eEKO63fET2Qs
-         BrgQ==
-X-Forwarded-Encrypted: i=1; AHgh+RorMcduV8npLFbBg1I3o+X5UULcOfTQw5cqSnBaFaNUDAFcM5PLCsi90+nvON8kw2GO5W1Pwy4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDdZVuj/wmU/zn+X6aQ37Pc7ujJiYDble3eT+anjuYTf628nq/
-	Y6eV8qZqx6pvbbN0VTHyeJxwH6T+NbKrOOddhUokOI2IEW8doXXxoaZNDKDbYI4zlaN4PcjW4eo
-	3PtUESQ==
-X-Received: from pgct6.prod.google.com ([2002:a05:6a02:5286:b0:c85:98b1:c613])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:399f:b0:848:42a7:1854
- with SMTP id d2e1a72fcca58-84f4fee21bemr14065202b3a.39.1786145383945; Fri, 07
- Aug 2026 16:29:43 -0700 (PDT)
-Date: Fri,  7 Aug 2026 23:28:50 +0000
+        bh=WHP8N4gF93Sn3d892+Om88mcx9eberIzJuR/Mwj9Npk=;
+        b=HaP+ysH+jPmfmj1H+W7nRjqixQEf8ZhWHtNVB9JRJHQTo5jhbrT0Oia6rc4Z9PUhiD
+         TF5ZcHveFCnvfEQ+K21Own0CU/MH+zlFrpnX/0dGXUD0yTcZt5SidcJyNhPvOX0vooDU
+         UM5ugoDM5et9438QpkDi4gsyYkQSpeu+ovbuXDzHcIgI788+TAU1RPD5pK7lvQiOPUTS
+         E572tdjfWvJspPG1fjOhVzIdQzOT6VndAY8dINdj0tmOn+9VDxFp/jXtQDvzSWZGWK/C
+         kbWaKK2C3yYej8Sxr9eE2S6iN8AHuiR72bEBOuwk1hNpJBzQrOfIX54C3mPnTLe7Ieg/
+         mmfA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0Mq4zTuuHM9cK6FDoiiMXHkP8JwmZpbmieyJg5onxHTN+50L6AvviHZAz7/sNu+X0AcRu40U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXQmaxqucRWQOmh/9KGxExU6lhrH8R2kJi8m7tg1WyogHjciD0
+	/uzc4ziuV/Cx6m5KV42XqBSlWfXAdIG5jn4scEWQdGTpiiNuD9r4rhFIoviyPBw+QU65Kq8rQsO
+	siFTYMg==
+X-Received: from pfhz14.prod.google.com ([2002:a05:6a00:240e:b0:847:84b8:2dcf])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4293:b0:84e:9257:d0c2
+ with SMTP id d2e1a72fcca58-84f2dfd09fbmr31575892b3a.9.1786145384809; Fri, 07
+ Aug 2026 16:29:44 -0700 (PDT)
+Date: Fri,  7 Aug 2026 23:28:51 +0000
 In-Reply-To: <20260807232932.3986667-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260807232932.3986667-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260807232932.3986667-13-kuniyu@google.com>
-Subject: [PATCH v2 net-next 12/13] neighbour: Remove unnecessary net_eq().
+Message-ID: <20260807232932.3986667-14-kuniyu@google.com>
+Subject: [PATCH v2 net-next 13/13] selftest: net: Specify netns for ip ntable
+ in test_neigh.sh.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -70,111 +71,91 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-neigh_table is now per-netns, and net_eq() is no longer needed.
+test_neigh.sh configures the following attributes in the root
+netns, but now these can be set per netns.
 
-Let's remove them.
+  * NDTA_THRESH1 / NDTA_THRESH2 / NDTA_THRESH3
+  * NDTA_GC_INTERVAL
 
-As a bonus, each netns can configure the default table param
-(ifindex==0) and GC parameters via RTM_SETNEIGHTBL.
+Let's specify netns for "ip ntable".
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
-v2: Split pneigh part into the prev patch
----
- net/core/neighbour.c | 32 +++++++++-----------------------
- 1 file changed, 9 insertions(+), 23 deletions(-)
+ tools/testing/selftests/net/test_neigh.sh | 26 +++++++++++------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 23ce17de23e3..e22b0fe4b952 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -1732,13 +1732,13 @@ void pneigh_enqueue(struct neigh_table *tbl, struct neigh_parms *p,
+diff --git a/tools/testing/selftests/net/test_neigh.sh b/tools/testing/selftests/net/test_neigh.sh
+index 7c594bf6ead0..286da09a2010 100755
+--- a/tools/testing/selftests/net/test_neigh.sh
++++ b/tools/testing/selftests/net/test_neigh.sh
+@@ -241,18 +241,18 @@ extern_valid_common()
+ 	local orig_thresh3
+ 
+ 	run_cmd "ip -n $ns1 neigh flush dev veth0"
+-	orig_thresh1=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
+-	orig_thresh2=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh2")) | .["thresh2"]')
+-	orig_thresh3=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh3")) | .["thresh3"]')
+-	run_cmd "ip ntable change name $tbl_name thresh3 10 thresh2 9 thresh1 8"
++	orig_thresh1=$(ip -n "$ns1" -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
++	orig_thresh2=$(ip -n "$ns1" -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh2")) | .["thresh2"]')
++	orig_thresh3=$(ip -n "$ns1" -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh3")) | .["thresh3"]')
++	run_cmd "ip -n $ns1 ntable change name $tbl_name thresh3 10 thresh2 9 thresh1 8"
+ 	run_cmd "ip -n $ns1 neigh add $ip_addr lladdr $mac nud stale dev veth0 extern_valid"
+ 	run_cmd "ip -n $ns1 neigh add ${subnet}3 lladdr $mac nud stale dev veth0"
+ 	run_cmd "sleep 5"
+-	forced_gc_runs_t0=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
++	forced_gc_runs_t0=$(ip -n "$ns1" -j -s ntable show name "$tbl_name" | jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
+ 	for i in {1..20}; do
+ 		run_cmd "ip -n $ns1 neigh add ${subnet}$((i + 4)) nud none dev veth0"
+ 	done
+-	forced_gc_runs_t1=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
++	forced_gc_runs_t1=$(ip -n "$ns1" -j -s ntable show name "$tbl_name" | jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
+ 	if [[ $forced_gc_runs_t1 -eq $forced_gc_runs_t0 ]]; then
+ 		check_err 1 "Forced garbage collection did not run"
+ 	fi
+@@ -263,7 +263,7 @@ extern_valid_common()
+ 
+ 	log_test "$af_str \"extern_valid\" flag: Forced garbage collection"
+ 
+-	run_cmd "ip ntable change name $tbl_name thresh3 $orig_thresh3 thresh2 $orig_thresh2 thresh1 $orig_thresh1"
++	run_cmd "ip -n $ns1 ntable change name $tbl_name thresh3 $orig_thresh3 thresh2 $orig_thresh2 thresh1 $orig_thresh1"
+ 
+ 	RET=0
+ 
+@@ -285,9 +285,9 @@ extern_valid_common()
+ 	local orig_gc_stale
+ 
+ 	run_cmd "ip -n $ns1 neigh flush dev veth0"
+-	orig_thresh1=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
+-	orig_base_reachable=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["base_reachable"]')
+-	run_cmd "ip ntable change name $tbl_name thresh1 10 base_reachable 10000"
++	orig_thresh1=$(ip -n "$ns1" -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
++	orig_base_reachable=$(ip -n "$ns1" -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["base_reachable"]')
++	run_cmd "ip -n $ns1 ntable change name $tbl_name thresh1 10 base_reachable 10000"
+ 	orig_gc_stale=$(ip -n "$ns1" -j ntable show name "$tbl_name" dev veth0 | jq '.[]["gc_stale"]')
+ 	run_cmd "ip -n $ns1 ntable change name $tbl_name dev veth0 gc_stale 1000"
+ 	run_cmd "ip -n $ns1 neigh add $ip_addr lladdr $mac nud stale dev veth0 extern_valid"
+@@ -297,9 +297,9 @@ extern_valid_common()
+ 	for i in {1..20}; do
+ 		run_cmd "ip -n $ns1 neigh add ${subnet}$((i + 4)) nud none dev veth0"
+ 	done
+-	periodic_gc_runs_t0=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]')
++	periodic_gc_runs_t0=$(ip -n "$ns1" -j -s ntable show name "$tbl_name" | jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]')
+ 	run_cmd "sleep 10"
+-	periodic_gc_runs_t1=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]')
++	periodic_gc_runs_t1=$(ip -n "$ns1" -j -s ntable show name "$tbl_name" | jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]')
+ 	[[ $periodic_gc_runs_t1 -ne $periodic_gc_runs_t0 ]]
+ 	check_err $? "Periodic garbage collection did not run"
+ 	run_cmd "ip -n $ns1 neigh get $ip_addr dev veth0 | grep \"extern_valid\""
+@@ -310,7 +310,7 @@ extern_valid_common()
+ 	log_test "$af_str \"extern_valid\" flag: Periodic garbage collection"
+ 
+ 	run_cmd "ip -n $ns1 ntable change name $tbl_name dev veth0 gc_stale $orig_gc_stale"
+-	run_cmd "ip ntable change name $tbl_name thresh1 $orig_thresh1 base_reachable $orig_base_reachable"
++	run_cmd "ip -n $ns1 ntable change name $tbl_name thresh1 $orig_thresh1 base_reachable $orig_base_reachable"
  }
  
- static inline struct neigh_parms *lookup_neigh_parms(struct neigh_table *tbl,
--						      struct net *net, int ifindex)
-+						     int ifindex)
- {
- 	struct neigh_parms *p;
- 
- 	list_for_each_entry(p, &tbl->parms_list, list) {
--		if ((p->dev && p->dev->ifindex == ifindex && net_eq(neigh_parms_net(p), net)) ||
--		    (!p->dev && !ifindex && net_eq(net, &init_net)))
-+		if ((p->dev && p->dev->ifindex == ifindex) ||
-+		    (!p->dev && !ifindex))
- 			return p;
- 	}
- 
-@@ -2456,8 +2456,8 @@ static int neightbl_set(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		if (tbp[NDTPA_IFINDEX])
- 			ifindex = nla_get_u32(tbp[NDTPA_IFINDEX]);
- 
--		p = lookup_neigh_parms(tbl, net, ifindex);
--		if (p == NULL) {
-+		p = lookup_neigh_parms(tbl, ifindex);
-+		if (!p) {
- 			err = -ENOENT;
- 			goto errout_tbl_lock;
- 		}
-@@ -2538,12 +2538,6 @@ static int neightbl_set(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		}
- 	}
- 
--	err = -ENOENT;
--	if ((tb[NDTA_THRESH1] || tb[NDTA_THRESH2] ||
--	     tb[NDTA_THRESH3] || tb[NDTA_GC_INTERVAL]) &&
--	    !net_eq(net, &init_net))
--		goto errout_tbl_lock;
--
- 	if (tb[NDTA_THRESH1])
- 		WRITE_ONCE(tbl->gc_thresh1, nla_get_u32(tb[NDTA_THRESH1]));
- 
-@@ -2626,9 +2620,6 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 		nidx = 0;
- 		p = list_next_entry(&tbl->parms, list);
- 		list_for_each_entry_from_rcu(p, &tbl->parms_list, list) {
--			if (!net_eq(neigh_parms_net(p), net))
--				continue;
--
- 			if (nidx < neigh_skip)
- 				goto next;
- 
-@@ -2806,12 +2797,11 @@ static int neigh_dump_table(struct neigh_table *tbl, struct sk_buff *skb,
- 			    struct netlink_callback *cb,
- 			    struct neigh_dump_filter *filter)
- {
--	struct net *net = sock_net(skb->sk);
--	struct neighbour *n;
--	int err = 0, h, s_h = cb->args[1];
- 	int idx, s_idx = idx = cb->args[2];
--	struct neigh_hash_table *nht;
-+	int err = 0, h, s_h = cb->args[1];
- 	unsigned int flags = NLM_F_MULTI;
-+	struct neigh_hash_table *nht;
-+	struct neighbour *n;
- 
- 	if (filter->dev_idx || filter->master_idx)
- 		flags |= NLM_F_DUMP_FILTERED;
-@@ -2823,7 +2813,7 @@ static int neigh_dump_table(struct neigh_table *tbl, struct sk_buff *skb,
- 			s_idx = 0;
- 		idx = 0;
- 		neigh_for_each_in_bucket_rcu(n, &nht->hash_heads[h]) {
--			if (idx < s_idx || !net_eq(dev_net(n->dev), net))
-+			if (idx < s_idx)
- 				goto next;
- 			if (neigh_ifindex_filtered(n->dev, filter->dev_idx) ||
- 			    neigh_master_filtered(n->dev, filter->master_idx))
-@@ -3228,10 +3218,6 @@ static struct neighbour *neigh_get_valid(struct seq_file *seq,
- 					 loff_t *pos)
- {
- 	struct neigh_seq_state *state = seq->private;
--	struct net *net = seq_file_net(seq);
--
--	if (!net_eq(dev_net(n->dev), net))
--		return NULL;
- 
- 	if (state->neigh_sub_iter) {
- 		loff_t fakep = 0;
+ extern_valid_ipv4()
 -- 
 2.55.0.679.g6767b8d81c-goog
 
