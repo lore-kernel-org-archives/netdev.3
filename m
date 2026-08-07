@@ -1,64 +1,48 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC733479885
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA6147CA7E
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786108623; cv=none; b=Rll/fvJO1g/Gv5q4x2Be8U1LXZ/YDuRLtW+Xe3rWEOigq3VVCKVdDLaWYUlAJu7vJVRLKmQKk5mclOQbuHnWX4nKDOciUldiVPEy+IfATRJ/NWdQlMpfaayJRpW88j9glOVQS7ozpa9bpSNghLgKYR7nBlcgEQVJuArrOGXQb4w=
+	t=1786108688; cv=none; b=jkv7CKsnD0njQCkUV4H033XBPyGldP0SIP5bibHuO/mkrD4lXTjpfUWeloWkyUpnVzzhTJigoqF/D2NKgANjOR2Xmq2Vw+AX7uYk9ppbSFzK3ibACeckf1aG9AXYBZgv/1xjNCzqHqd2W/YLBciCgdwiXR0X1msTCqhKCjcQ0vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786108623; c=relaxed/simple;
-	bh=/2E7sQuMTmfX5pqH0Qv+6Ma8jmJhb+CHCqKvTTEwOfI=;
+	s=arc-20240116; t=1786108688; c=relaxed/simple;
+	bh=w2Xz0PP8BrPnLZcjl6mx6Bw9ghx0T8pcVEyQjwO9cQs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJl68UJu0Eu97E+5eW6L3N7jsu9kCx9iLS1I4Bi3/emMlONGdOGIvKSHLOqSZyvxNeiom+OP852s/ZPCdvMCt054wZYlqGSrdCikM9R9NIuSpaewXv2tfPQeOqrYxWzJxFKxDcpDHCbLwYQnpEdMXwmy6VLJnHjgC4hLEGmEaYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZdSfN7qM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=HoCrXMXfOhdQ/AkO4tJHuYp0GkuQOVt8VuUjxaqOTRsqnw9Iy2RQNGIxGgg+bSN5zKKSqITC7MWk0qW59uxCRt2rOW2PVH5BgJU66xhkEbeOiycymprPUKdy3gOdgliv0Vzokfb6SU1kN7Mgp9VahGUdxMObD/Mzb8arpFyOZdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=pTY0SdSA; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZdSfN7qM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786108613;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZpGvXHAw51KB03tCAmwbfWnx4faPy+B05yUewXeAM+k=;
-	b=ZdSfN7qMkS0rrWaSTxa5m+tbRB0TyVXK7IL4oNkAMWTwkVXNKNh/tSLmsoteOY26A0VPGE
-	D1JR5/rKC2NdFxpTwk2n58DRzAqW0nb1Ab51kOktZZozKjfCpv7DC6KXeLV6bk3I1b8xNQ
-	K68DU8Q4kCrBHwoW0IV+i47hgAn5WuY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-6eML5XLFPz2VtqrH2-VKgg-1; Fri,
- 07 Aug 2026 09:16:45 -0400
-X-MC-Unique: 6eML5XLFPz2VtqrH2-VKgg-1
-X-Mimecast-MFC-AGG-ID: 6eML5XLFPz2VtqrH2-VKgg_1786108603
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EAC4218002C4;
-	Fri,  7 Aug 2026 13:16:42 +0000 (UTC)
-Received: from thinkpad (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C944422;
-	Fri,  7 Aug 2026 13:16:39 +0000 (UTC)
-Date: Fri, 7 Aug 2026 15:16:36 +0200
-From: Felix Maurer <fmaurer@redhat.com>
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Lukasz Majewski <lukma@denx.de>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>,
-	syzbot+fbf74291c3b7e753b481@syzkaller.appspotmail.com,
-	Xin Xie <xiexinet@gmail.com>
-Subject: Re: [PATCH net] hsr: Avoid holding seqnr_lock while transmitting
- packets
-Message-ID: <anXatDPkcVsCTB36@thinkpad>
-References: <20260805-hsr_deadlock-v1-1-d8a6f06fc5a8@kylinos.cn>
- <20260807094325.GG51943@horms.kernel.org>
- <anXStphPD0z-ystm@fedora>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="pTY0SdSA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0baHMT8a3acjUVPhKmQPDtxqTuHfz7bXkAxA3XPC5U4=; b=pTY0SdSAzKcWBvYoUDCinV3p8T
+	JV2tZHdZ5X9vj1A//xLnaIcGDn+k+ASZB8wsCIlNcivtyIQKNAUngQiHTtbmQfYOm/5CMkzADNOQh
+	VN22HPaopM9GcV+GyOm3sBjrJCWDfnadOBkPfmEXNhOBoGl/aazP4OIl7GoM4RyxTQW25CeNWcj77
+	XarqtfK7fCtTQCosg3NLssMiGEAebJF0K1gOKEE1b0nPsxHq+nrN55Avx3RPtlSs1hi2RRjGYJq5B
+	7fzbE57Xgig281peA1JxwrIf0XQrkspCT21tjopIwp/NNK42L48MfD9zJwp/tU8x1LxzYtBRAL1Bz
+	jvmWFnDA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wsKSW-000SEk-2P;
+	Fri, 07 Aug 2026 13:18:00 +0000
+Date: Fri, 7 Aug 2026 06:17:56 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
+	michael.chan@broadcom.com, pavan.chebbi@broadcom.com, manoj.panicker2@amd.com, 
+	somnath.kotur@broadcom.com, andrew.gospodarek@broadcom.com, wei.huang2@amd.com
+Subject: Re: [PATCH net 3/4] eth: bnxt: decrease indent in bnxt_request_irq()
+Message-ID: <anXa8wKW7Rm5Fm2J@gmail.com>
+References: <20260803193135.2030368-1-kuba@kernel.org>
+ <20260803193135.2030368-4-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,38 +51,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <anXStphPD0z-ystm@fedora>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+In-Reply-To: <20260803193135.2030368-4-kuba@kernel.org>
+X-Debian-User: leitao
 
-Hi Hangbin, hi Simon,
+On Mon, Aug 03, 2026 at 12:31:34PM -0700, Jakub Kicinski wrote:
+> bnxt_request_irq() has unnecessary level of indentation.
+> Use continue instead. No need to re-fetch NUMA node for
+> each IRQ, move to the function level.
+> 
+> No functional changes.
 
-On Fri, Aug 07, 2026 at 08:42:30PM +0800, Hangbin Liu wrote:
-> Hi Simon,
-> On Fri, Aug 07, 2026 at 10:43:25AM +0100, Simon Horman wrote:
-> [ ... ]
-> > Simon says:
-> >
-> > I don't think the advice on how to annotate this is correct
-> >
-> > Tags trump freeform text, but Depends-on is a not a standard tag and as
-> > such should not be used.
-> >
-> > I believe that the correct approach would be a tag like this:
-> >
-> >   Cc: <stable@vger.kernel.org> # aae9d6b616b5: hsr: Implement more robust duplicate discard for HSR
-> >
-> > Link: https://docs.kernel.org/process/stable-kernel-rules.html#option-1
->
-> Thanks, I will update with this.
+The transformation looks equivalent to me.
 
-Thank you for the patch! Just to let you know, there is a patch
-addressing the same thing in an in-flight patchset [1]. Unfortunately, I
-didn't have a lot of time to review in the last weeks, so I'll just
-leave this note here so you can coordinate if necessary :)
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Thanks,
-   Felix
-
-
-[1]: https://lore.kernel.org/netdev/20260803222211.877-3-xiexinet@gmail.com/
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
