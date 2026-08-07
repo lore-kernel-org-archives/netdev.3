@@ -1,197 +1,171 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011021.outbound.protection.outlook.com [40.93.194.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388383AF662
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 08:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786091504; cv=none; b=TVheqdhPMCyYdBHjUK1beBJouD7RkbVQ7y0Ro6yj84YQKLZEv9NfrIcAaqauqUyz19fAquAEWd8aFRCztRCfbjknWoV7OICWySNnJ1DMkB0v/6cXSSyWiK2zIiGCXz4QRSTgTb64whE0Rqp8Gv8/oz8rbrlMqzIWhluYKiiw6TU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786091504; c=relaxed/simple;
-	bh=BAQw95zm7I4QyIEk3qphNJd8baZeUD/GvCDwvrwd1nc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TnfrNTw04PjaDwB9yeUErzMAL0ZGz+61Em8zp8dj3flbg9F1pFy1ZxGgRg/RfbuuG7riGb4/OHTo+zG8SxUBxwN2i8i6RstXD/bp6iX8J5oWII6Rnnh83yNMVfFVbArqem2+IqjALS0H6Ur0TLU6uMU+qXK4nXPm1oIFL7bPwPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CB/pSn4Q; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NFRYKwZe; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406FC332EAE;
+	Fri,  7 Aug 2026 08:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786091632; cv=fail; b=DI+R8yD/q9vaxjtnb+uoAMYXlVa+sf62WtTItztFGt3qB6A+mlroZlrT/aPKxboRPr2uXnPtH+aQ7PW+tEXZytypkcXXgc9VPbacP2cEDwSy4fWujjsnVqjI+9xAly7u+TBWpLU2yWdRoLQAcPHkwszEk9UKjr4Xg06LoE9ZTzw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786091632; c=relaxed/simple;
+	bh=ywgmLssne9EaZbJvQNhBgkvIu48Yzq9r2P9sUOQqrZA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=CFTGEt73a7G4Euu+Scqg0G5DT7Nd3eU5jPQ2dxzl0IXoW6jEQd6SlGS8RhGbnOVKRINbYSIAWcJYYp8M/0FyrJwEwQ2mrgCfSSu2clOO1E1bakEAfOtRbA652QMgGL3yjxVI+vtId00U05rs7iwpAEs0QhOrxcu07WumPWJDnE0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GYGtNb8w; arc=fail smtp.client-ip=40.93.194.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CB/pSn4Q";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NFRYKwZe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786091494;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xWZ7ebWd0/tPXvvw5j8PF/AV+Q2MSNIx2DQCKuNhQbw=;
-	b=CB/pSn4Qll9UF4lPLc+dMvBlOR0j+Iz8FrTlUN/jrXJBiekjrGlkXYqcQcPnGbpK642qU/
-	Q1Qi6QQe62s3QiNFMNgPvVhoKIOu3AjqSZsMkd2VktIKQkHCxI9jA2BU+vSkVxZZ7F77Ng
-	QYzUwwemNwDhSg1Wqn6kfrCOPV9oXOU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-260-i3bYub1DPDKOH5ZtvWrTeA-1; Fri, 07 Aug 2026 04:31:32 -0400
-X-MC-Unique: i3bYub1DPDKOH5ZtvWrTeA-1
-X-Mimecast-MFC-AGG-ID: i3bYub1DPDKOH5ZtvWrTeA_1786091491
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f90dbaf84so2320465f8f.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 01:31:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786091491; x=1786696291; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xWZ7ebWd0/tPXvvw5j8PF/AV+Q2MSNIx2DQCKuNhQbw=;
-        b=NFRYKwZeajbOYF8QsMxZIYr2I1Ql+TKBY5WH2/5MHl+R4ClfPX2r7rpesZPnd/epbp
-         r3VDAcqIISqaJa1aC37SdWPYLChRYraPKQWqfB0dTZNWBXm5kq8WZAIBtecaWmfsdXHl
-         T/x9AWl70BAoiy4IgN9FBP0bcY9NWpYtw1XiKIVtHEAwvQaqEyGbUgRDYmtC2NFbP7sl
-         v+sVj4gDbiyC2qG5us38JptgWRVD+LykqQeQzK7pIFvPIOtf61o28ompWPSOEI4vQv2x
-         jfbpbpYtOj9qA8pv+bOADRcr/x0x//NEmYDYl5EKuNlV9Jz+M8nV8XW2ixSLg1b1BCKm
-         QUQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786091491; x=1786696291;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xWZ7ebWd0/tPXvvw5j8PF/AV+Q2MSNIx2DQCKuNhQbw=;
-        b=Tabm6vvpC0H7nL1xGhBfq4JlYLtOH+hab8+WYdw83uu7aih+z55ZPe+X9cefCD6x5I
-         QJZsFTmdI7f0alFkghvzM9qXvLpTVYplmr/murX2a0FK5Cn+Jl+UCQ6S7yz5bC8w1sGi
-         go51gnke6H5ua4SUDEPDOWbNLVJWvofcpAyOR5i7pCekxKbgLw8qtdYSPB2hZ7Bp+Vbj
-         o6xQAf1jVnussKyCw0hlnlwnqmUmAAxM1S170dr00cwiliutEAJrFcIX98/VkPolT7Ms
-         pdkFAkWbbhnX6YiaF58CF83YnYzqoRhBDNHrsAHT+b8jT8t/BV6M9rUMlBkOuUMsQJki
-         OhIA==
-X-Forwarded-Encrypted: i=1; AHgh+RoWwFw+umhd0YKhH0MUu8+SBNgNAEP+2QLzl8ejC1jp8oT4CelB1pSp65Agf2Ohb4RBf6Lg3Dk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6GuMVl/OQP4T3gSEwoaZd1sQKnTqH04w6riBIYGr94wulPLsl
-	K7r7uaIGZRTlFlIkGDGKejG5Oc84zYj6ecosvRNmdfNcYqeKbKf4bvMQ6CQ+wWG6Bx8vbg7QUfG
-	RQ3uRyTgNpEKMi5SptCE4ynJxGP7CuMhtaahPPDUfBNq5I8tgGYBSit12kA==
-X-Gm-Gg: AR+sD1169w1/FsCR2TRM8F3gl8OMR+nMkuj369kHk4HIVi4ZICF+9cQBbgKOjmVt8un
-	0ZFGJfuhprn2706NNfqUB7psb1eFhB5gjjVhRkvo/Bu51/UTinnD+BHHcsBOBjo9J/5wTswgIAm
-	bKzm5EU6e183HSU0DCZOIbiS+D/okKpnO4H1yjeU/6lhV56p8/Hr40a/nFPdIXgqMcioufFXWNU
-	EFUV/ZVrwOzew5BJdWOu6rKIMpPx5qFVNw1dy879WDxpPvNsHAusgXrwBBVvhjmKqLAvKzVoMB6
-	vtFGk1nptRPKxnN3oNi8snu6lslx2kFDKC7xgC4/rex4Bmvh5FBWh+FK1S3GarwCEunI3H5BPXM
-	MRQ1ig9doL6OKcUN4Ob/azRZe0LEFocJlVtC5AwcilB+xXaOJ9Cpg6KS3dQ0E3e+ThtmJX9jA64
-	s=
-X-Received: by 2002:a05:6000:41d3:b0:47f:f20c:e8a4 with SMTP id ffacd0b85a97d-47ff20cea51mr27353634f8f.19.1786091491430;
-        Fri, 07 Aug 2026 01:31:31 -0700 (PDT)
-X-Received: by 2002:a05:6000:41d3:b0:47f:f20c:e8a4 with SMTP id ffacd0b85a97d-47ff20cea51mr27353524f8f.19.1786091490938;
-        Fri, 07 Aug 2026 01:31:30 -0700 (PDT)
-Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021e8c5asm4098371f8f.18.2026.08.07.01.31.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Aug 2026 01:31:30 -0700 (PDT)
-Message-ID: <4dfd3009-efa3-4cc8-9d67-a9e845fa2d1c@redhat.com>
-Date: Fri, 7 Aug 2026 10:31:29 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GYGtNb8w"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wMgsrmhnzcaq5CIrTX921kiSSN0G+PMSZy9RTE2j4k4JH6LetDtrL71/vGyYrOOkCa6/PgIs3Zlv5ayfrtdWVfvvLPDEDHbNIo2H+prYbzKTt3MBC0TpkemmduK2/oAKqLkePqjDgtJsGkegaAgyHb57QXXvOskxtUZbi2yWIF//LW0vSDPVuVFWonXKUktpcpHEekfAsnO7MPvedbPLkzv5x7wSH8n0MBBePgdmNAGEPeBMatktCPDycIt1CGtLivjjXgpLbhVcg0u8JVUCUl65jGfTZ6q9ZEOON0NyGQbZaRPIYyRuofgeLoYgqwf2ruIABf8HPFet8R7sMuJS3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1/YK+ve18dI2RnqnI2vaBqh+a24TJ88tPstElXtHvRY=;
+ b=QlfxI99QVBATzmBPZUaOXCkWsKrOIhb3s1TzAo1GBcpnFaW/jweQTDYT8W/x2qT9GrHktTPTHoB/tmbjFxM05F6eAlRbZ+s4K11Hf1EXJDCGg6gp3igcGWJLphCEQdw2NNrdtZc+2IeLgBeFQdXlXjUfq2F/Jah4wueYGKy+Mz5QHHx8t53GBj/PyTHbldcfLRfObQgQTfkl00xRCfRpDr1K8wVnmNkUcrJmL7o1WNue8T6MuFXvKfAGEYQpxeXkbjtbH5Si38AwPtBb6TYgoO0Gce5Dqdo+RXfwrqhixwIsryUpvX6IC+pAzVWCwLwcwH+X4hX3Xfm87WxqNUCp+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1/YK+ve18dI2RnqnI2vaBqh+a24TJ88tPstElXtHvRY=;
+ b=GYGtNb8w2msgUtmIEVzecjqBERhIlvaV+fJG+NQ4F6FhLGF2f5MHNJQyGMPXJJZamQY2QQgajXnwKnfYFOvy9P/8tTvRjeO5QOprn5No8N+kxkfJ2rgXmrIrVQ93UuA816K7OGCVvRJsqHjnj2otTAMVFx/EhaFgV2E+XU0W9G0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CY1PR12MB9697.namprd12.prod.outlook.com (2603:10b6:930:107::6)
+ by MW3PR12MB4394.namprd12.prod.outlook.com (2603:10b6:303:54::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.16; Fri, 7 Aug
+ 2026 08:33:48 +0000
+Received: from CY1PR12MB9697.namprd12.prod.outlook.com
+ ([fe80::3a41:55a0:8203:596d]) by CY1PR12MB9697.namprd12.prod.outlook.com
+ ([fe80::3a41:55a0:8203:596d%6]) with mapi id 15.21.0292.022; Fri, 7 Aug 2026
+ 08:33:47 +0000
+Message-ID: <0c33f43b-782b-4c15-ab67-a5038bae3925@amd.com>
+Date: Fri, 7 Aug 2026 14:03:41 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: xilinx: axienet: Treat xlnx,rxmem as a
+ required property
+To: Suraj Gupta <suraj.gupta2@amd.com>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Michal Simek <michal.simek@amd.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260806170253.1199749-1-suraj.gupta2@amd.com>
+Content-Language: en-US
+From: "Pandey, Radhey Shyam" <radheys@amd.com>
+In-Reply-To: <20260806170253.1199749-1-suraj.gupta2@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5PR01CA0086.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ad::12) To CY1PR12MB9697.namprd12.prod.outlook.com
+ (2603:10b6:930:107::6)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/1] ip6_tunnel: use skb_cow_head() in ip6_tnl_xmit()
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: zhilin zou <zhilinz@nebusec.ai>, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
- edumazet@google.com, horms@kernel.org, tom@herbertland.com, vega@nebusec.ai
-References: <cover.1785734738.git.zhilinz@nebusec.ai>
- <7f099879785257f4d57d6caf9b6308fc76c7aaea.1785734738.git.zhilinz@nebusec.ai>
- <20260805090721.GA1364862@shredder> <20260805172902.27c9bde0@kernel.org>
- <20260806085214.GA1748060@shredder>
- <CANB6i5xN-rrcVe9foAJ+nUP-6VLrgXa90kwh5banCUVDOwG=1A@mail.gmail.com>
- <ae905b11-1b13-4f3e-8705-8a8c2ea7f54b@redhat.com>
- <20260806181918.GA2060872@shredder>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260806181918.GA2060872@shredder>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY1PR12MB9697:EE_|MW3PR12MB4394:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72b022e0-231b-46b4-6c24-08def45e99c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|11063799006|56012099006|10067099003|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	etLm8sxl2LU48D49Q0oZf78UwunpY04crezpkHfpFMtPJKrz1Tk1ZmxZX3dQ7vtjp5mL4Rgzz/FioPhQIln48xQYNU+CtXIZ9iFDITskYg/FIwz3ZQoLqVra0a0/+42K46Yw61FX5usYUyfupKBdGsB71L7Kcu+x4xlLYQ3QcyAEef2nsEw7N90DLANnSAxjCvleeiXj14wDRwroVRzzrj/YeASaS6i19pd/rz6bDCFPCGvL+bRm9P2Q39L1jYwDOW7xCPhyqHtuGo75hxqDIoxydyp3aYqg1Vv4XlaWegiI50Tmbz78nHlDzX0cVQnAjFEFeC6Kw8R5n61DYonL+/uadArr2McwZdqSMnb1YyKeCNIasNUzEY3ER5vyElAP0MyjbOpj+f9iQBnIKMaAwWGDu/O4yopp8NTGIRFNDqFsVSpbFE3yQk83CIoyI7hRTS37p4B3LaAsvwW8SvV0kAjI6aL9OUuaq8O8HAEawjrsq3MgPaHm3LSesmJjNAXQTjW4XLqyZznEWDEBi3lWaDUf+DrZNnetNi9zd1fPCWdfb5XBJgpkIxquWNQCiAI+Qafnpr+gVzkbFEEVAflDcXU87kgaXZIsGqsK0DUwMXNiB1NTQG5NLL6QH5Gyp9Y3Oo3HtyQm9R0uzjmafKdKQ81kTJLmm2GvvQIFbT66muE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9697.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(11063799006)(56012099006)(10067099003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VXBFWitjSjJ4d0t0ZFgyNS9NbkxLam1UNVAyTVlLZjc2bml1UU8raENVQU1E?=
+ =?utf-8?B?a256enBwem96d3BBNmY5ZU9xNVJUOWJCTzFnTE9BMS9aY0I2UEcrOU4vRFla?=
+ =?utf-8?B?NmRBZUo3VzNCM2daTWhpd0tmc0VvUGlDbmZTdDlBVHNvb3NCOFQ0SlIrdHZL?=
+ =?utf-8?B?cEpqUGZKM1B1cERjWmtDc2hZanZEZ1AwaVFDencxODdyRURzYTMvZlMwU3Bj?=
+ =?utf-8?B?VDNmOEVVNm5VM0xrbzdNODlTY3VoNnlKaEdmd1IzeHNPSWhXeklhejliQUdq?=
+ =?utf-8?B?a3Z5dDA4N3VRd2pydjVBMGFpeDYyUmlPUE54dzhzZUJhbmpOckJqZ3VkWkpv?=
+ =?utf-8?B?a1hIaFNUYWF0Tmhya3dvN2dWU2ZsTEVlRHM5ODVZbVJJK0VHalN0b3JYaWF0?=
+ =?utf-8?B?cGg1aFJMYXJJT0JIWXBRMnozTDc5SVZkN0ZtUzg2Zlgzem5MNm9rTkxxdGFt?=
+ =?utf-8?B?TDFQSDNFRU8xYWJ4S2w1MEZEMzBmc2VRV1VVK0s2QTlKbnN3T0I5MmVseHli?=
+ =?utf-8?B?aExZbEdwRkNJcEpCd0Y0bFNOa09kc2Vsb0hMbGkzWkpjQlJLWU4yTEpHKzVz?=
+ =?utf-8?B?bTNnOEFjbUhxdnlrQ000MHhnWWdNVXhjOERSWW1yTGRjcWRhUUpSTVEvSGhR?=
+ =?utf-8?B?Nk1tdktZWEtVMlpvMjZLQkQxWmY3V3ZabGp3NUg0TllKNzdFektINEFIR0dQ?=
+ =?utf-8?B?cDV0cWhrZEtHTVFCNEhrdWlvYTdXeEFML1c4T1NWREpJZGp4WmdTUjczL3Ro?=
+ =?utf-8?B?YTRGdUM1bnVSblVKM1VPK25YWGdsWm1qcnFvaSs2Wlc2RkVKdVFSMDd2WGNv?=
+ =?utf-8?B?SEFBYjJ0eWVaZDNIN3E5bjdCRjJSTkF3NUEwQlJzUC9KdW4vaHg2R0VJS05E?=
+ =?utf-8?B?dW93NTllRDZmM25CVUZ0Q3VNak1GZHNOWmpJUnFVSWlnRVR0UmNXTFVmZTAv?=
+ =?utf-8?B?QUJSN0dYazdyUW1vTHFSVVlqWERtK0xrWXNJTEcxU0FqY3JCb1lPSU9aUGdH?=
+ =?utf-8?B?NEZLTnpGNFJyUUlJSU5hR3NtY21BeXVGcFdzbGJhaDFYL3ArbkF2a2pmOFJt?=
+ =?utf-8?B?ZHpheEtsSThGaTY4dUpxaWwxb0FUWDN2ZlFPVmcrZUtlZ1pIMjhENVR3Z3BD?=
+ =?utf-8?B?VnliejhPZXdWbzJ4NXZEc2ZsejBkSFIyL0xBS2RsaE10WWdiTkdaQjB0aEtx?=
+ =?utf-8?B?dk9KMlY5K0c1MnhCTGpZMnFJcmtOSTZDTGtPd2l3VEFnV2lGNjFFL2hLWnov?=
+ =?utf-8?B?c1ErdkVsUXppb3hpQ2pDTjAwY0E0VTFKU3gxbUtxTXh3dTlkaU5SaTdoMFJH?=
+ =?utf-8?B?RWtJdS9JQWVZd1owdkdVbkZNNU83aGxoQUV4SmRXbHlLcy8wWkQxY2pydlB3?=
+ =?utf-8?B?Qy9kbUZQck1uWlFWamgvNEw0U1N4aUFVM1ZOZUJaL2lmWkpndlVqaWpQdVNJ?=
+ =?utf-8?B?eTZyS1ZRa3pWRjNhbGNoM0xhZVFOYlorWGs2Z21aU1RhTEJyV1d1M1B1ZFJN?=
+ =?utf-8?B?RnFXdkhoWWtQTEZ0anRlVEUxOW9yUEZGcXp1UTg0MUJWNWhXQTEyUGZPUGY4?=
+ =?utf-8?B?UW4ydVJpRm56T2UzaXc1RkNTcERIRk1sUVM1ZHdac0lyUGxSUkFWckduMU1S?=
+ =?utf-8?B?N0ZMdFhUNmU4RWlXM2QvMXFqeVk0ZkFtc01oWjQ1MkJ2QW45WWQrVmsrNzIx?=
+ =?utf-8?B?S2czQ3N3VG8reWh5OVFXM0pZL3kvUFMvaG5FNjN3NTg4ZnRVbG54WWI3RGxX?=
+ =?utf-8?B?OStDdU5GbFpLSk5pRFY0Q1pvSXFSd25Ud1hDckkxVERUMnNMdFBzcFlIcnJu?=
+ =?utf-8?B?SXNyVEFxdjY0YlQwRzNNZkZzSHI3bllLRGhSN2xKNlhFUUlKZCthU3BTV1da?=
+ =?utf-8?B?QitSYmJDMkV3Q2sybHdqam1SUnErL04wTHJhMUs5QkNiRll6WTJTTDZxTWFK?=
+ =?utf-8?B?SVk1Wjc4cGFRV3ZkQ2FiRzNyQk9QOGNBQjY2ei93ZDZ2VDZWdUZtVFovV3N2?=
+ =?utf-8?B?ZzJzVDdwMUdieDFDU0hKN3QxSi9BekZraldjak1jSVBTZlArUGV6NTRYRnBk?=
+ =?utf-8?B?R2p5MlJ3Q3dEVi95amJ3NGNhNTliTGFCR1pvSi94b1RoQWlSOXptTDZXUERM?=
+ =?utf-8?B?YUtkMTFjUW5sVFArbGxDQmwvRjhtVVQ4UUxkZnA1Y3BBZlgzNHRzWWZ1LzhQ?=
+ =?utf-8?B?Ui9IM1pzSFJCZElvQitFWnkxWUpkVmxMZkgwNWgvc1YvQVdDbWxMMVZiSmpE?=
+ =?utf-8?B?QTMwbXZaL09UOEFWSHlBTGpUTWFJc25zaDkyZjhUbDBJZXRIRzhQdTBNaVVF?=
+ =?utf-8?B?ZTVvREZ0S0dRVERWQVd1VG9kdU5mYkhUUlF4a2hiUHd2aDVuUkx3Zz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72b022e0-231b-46b4-6c24-08def45e99c6
+X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9697.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 08:33:47.8454
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Sb7XSUEoj058cO1yuDIF4cVCWqh3rS++BTqUK1zKNgZsKLmxtOWKRLhGpRNO47lI
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4394
 
-On 8/6/26 8:19 PM, Ido Schimmel wrote:
-> On Thu, Aug 06, 2026 at 06:28:00PM +0200, Paolo Abeni wrote:
->> On 8/6/26 11:06 AM, zhilin zou wrote:
->>> On Thu, Aug 6, 2026 at 4:52 PM Ido Schimmel <idosch@nvidia.com> wrote:
->>>>
->>>> On Wed, Aug 05, 2026 at 05:29:02PM -0700, Jakub Kicinski wrote:
->>>>> On Wed, 5 Aug 2026 12:07:21 +0300 Ido Schimmel wrote:
->>>>>> __gre6_xmit() and ip6erspan_tunnel_xmit() already call skb_cow_head()
->>>>>> before calling ip6_tnl_xmit().
->>>>>
->>>>> Probably just me but can't they all be buggy?
->>>>> PKTGEN likes to send shared skbs around in funny ways.
->>>>> Can we get a good explanation in the commit msg or maybe let's
->>>>> keep the check?
->>>>
->>>> ip6_tnl_xmit() is accessible via two Ethernet devices (pktgen doesn't
->>>> support other types) and they both clear IFF_TX_SKB_SHARING, so if
->>>> pktgen sends them shared skbs, I would say that it's a pktgen bug and
->>>> not a reason to block this patch. Note that pktgen is not available to
->>>> unprivileged users, so it's a less severe bug.
->>>>
->>>> The patch also makes ip6_tnl_xmit() consistent with its IPv4 counterpart
->>>> (ip_tunnel_xmit()) which is already using skb_cow_head().
->>>>
->>>> Zhiling, please add a note in the commit message that ip6gretap and
->>>> ip6erspan do not expect to be handed shared skbs given that they clear
->>>> IFF_TX_SKB_SHARING.
->>>
->>> Thanks, Ido. I'll add a note to the commit message explaining that
->>> ip6gretap and ip6erspan clear IFF_TX_SKB_SHARING and therefore do not
->>> expect shared skbs, and send a v2 with your Reviewed-by tag retained.
->>
->> I'm not sure if it's too late, but since a v2 is required, I think it
->> would be better to keep the skb_shared check: that will avoid a later
->> patch for the pktgen/shared issue that inevitably will land, possibly
->> via the security channel.
+On 8/6/2026 10:32 PM, Suraj Gupta wrote:
+> "xlnx,rxmem" device-tree property is used to learn the size of the Rx/Tx
+> packet buffer built into the ethernet IP, but return value of
+> of_property_read_u32() is ignored. When the property is absent lp->rxmem is
+> left at 0, which silently limits the interface to the default MTU and
+> disables jumbo frames with no indication of the misconfiguration.
 > 
-> What do you mean by "keep the skb_shared check"? Return an error if the
-> skb is shared before calling skb_cow_head()? How would that avoid "a
-> later patch for the pktgen/shared issue" when other tunnels are already
-> calling skb_cow_head() without an skb_shared() check (they clear
-> IFF_TX_SKB_SHARING)?
+> "xlnx,rxmem" has been documented as a required property since the binding
+> was introduced. Check the return value of of_property_read_u32() and fail
+> probe when the property is missing, so a misconfigured device tree is
+> reported rather than silently degrading functionality.
+> 
+> Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
 
-My my concern is against possible regressions. At this late stage of the
-release cycle we want to avoid them, even if there are already similar
-pre-existing bugs.
-
-AFAICS pktgen sets the per pkt_gen device F_SHARED flag unconditionally
-and push shared skbs when F_SHARED is set regardless the NIC priv_flags.
-
-What about addressing both issues in the same series? Something like
-the following (completely untested) would do:
----
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index ee64f3012321..a7126d639586 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -1385,6 +1385,9 @@ static ssize_t pktgen_if_write(struct file *file,
- 					return -EINVAL;
- 				pkt_dev->flags &= ~flag;
- 			} else {
-+				if (!(pkt_dev->odev->priv_flags &
-+				      IFF_TX_SKB_SHARING))
-+					return -EINVAL;
- 				pkt_dev->flags |= flag;
- 			}
- 
-@@ -3868,13 +3871,15 @@ static int pktgen_add_device(struct pktgen_thread *t, const char *ifname)
- 	pkt_dev->svlan_id = 0xffff;
- 	pkt_dev->burst = 1;
- 	pkt_dev->node = NUMA_NO_NODE;
--	pkt_dev->flags = F_SHARED;	/* SKB shared by default */
-+	pkt_dev->flags = 0;
- 
- 	err = pktgen_setup_dev(t->net, pkt_dev, ifname);
- 	if (err)
- 		goto out1;
--	if (pkt_dev->odev->priv_flags & IFF_TX_SKB_SHARING)
-+	if (pkt_dev->odev->priv_flags & IFF_TX_SKB_SHARING) {
- 		pkt_dev->clone_skb = pg_clone_skb_d;
-+		pkt_dev->flags |= F_SHARED;
-+	}
- 
- 	pkt_dev->entry = proc_create_data(ifname, 0600, t->net->proc_dir,
- 					  &pktgen_if_proc_ops, pkt_dev);
----
-
-/P
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Thanks!> ---
+>   drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> index fcf517069d16..1722b7038f34 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -2898,7 +2898,10 @@ static int axienet_probe(struct platform_device *pdev)
+>   	 * Here we check for memory allocated for Rx/Tx in the hardware from
+>   	 * the device-tree and accordingly set flags.
+>   	 */
+> -	of_property_read_u32(pdev->dev.of_node, "xlnx,rxmem", &lp->rxmem);
+> +	ret = of_property_read_u32(pdev->dev.of_node, "xlnx,rxmem", &lp->rxmem);
+> +	if (ret)
+> +		return dev_err_probe(&pdev->dev, ret,
+> +				     "failed to read xlnx,rxmem property\n");
+>   
+>   	lp->switch_x_sgmii = of_property_read_bool(pdev->dev.of_node,
+>   						   "xlnx,switch-x-sgmii");
 
