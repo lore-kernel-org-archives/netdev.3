@@ -1,47 +1,47 @@
 Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11020124.outbound.protection.outlook.com [52.101.85.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CD341A4F2
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 20:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074C9440A13
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 20:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786133887; cv=fail; b=DQCzsSQd6/c0vZ+DhvQY3EvYo269Q4Azn9LUNY2JG9v0zITliniupkMf+grtTX3SF1npv/sJmGH2ul0Y1MfnZPA40fOiH4IzHPq+bmd8BWfiNsaz41fXdy41AZxBSlv5+isnLJCPtLRfIDTIDRM9tiHKa+LMcSoURKwcpcFkLZI=
+	t=1786133889; cv=fail; b=QZbYxt4jxPfRDz8wEOBX7PCsLm294mhg9kN6kVkh5kMJDS3oAIaPcUUywXciVxC7GBzgRMBW0JQY+CiZjofNr1JqmLRrppWiM2FnHaKUVk39wFXUj6txggDPUiXnLj9z4+9GjlEGSBoRGBVEJ8eS+FpIEyUNguiu9ddpYy+FtXE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786133887; c=relaxed/simple;
-	bh=7dyg5QvMUVsYZX2NUOd8GIRdMiONCMkp3qBCMRIe4FQ=;
+	s=arc-20240116; t=1786133889; c=relaxed/simple;
+	bh=r5tpCmkK0Us8eY/pFGLj/j7dyoMAcFTOQJlhUtWh4Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZLbfBh/8wn7R+r2+iuGlxQOBLof8MfbKu8Dn4v5fS/+pk5Tj4Xu/yL4RISCjJZLaT9ihkPafsZ6daQB6cHy9L4KzIqdRmL1c84ClO/TY3kNearQwezcvIKXPgZtkxYvd6wIiSn0PMbOVAAaesL41HVXl5flGKgwfqtuayLciRFQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu; spf=pass smtp.mailfrom=msu.edu; dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b=0c+XEAwJ; arc=fail smtp.client-ip=52.101.85.124
+	 Content-Type:MIME-Version; b=Ju14Z1NNmntjJriRkc9ZYgXXmF7mYwo++w7JsC8z+qrzgDnivP700+VNXYa/QetG3ai4gzcWyvz049+YTwEK7ruKUd7ax+VwwysaH3M1Wx5XZ8gtzMTGQPIfi73Sm5USYhygfp8amz+7DIL3e39VTBH7GQsR0tJEDUVc4EOoZvg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu; spf=pass smtp.mailfrom=msu.edu; dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b=vdXjS4Ga; arc=fail smtp.client-ip=52.101.85.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=msu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b="0c+XEAwJ"
+	dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b="vdXjS4Ga"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uD6uOURfX9TiqtUAT+bNoF9APL0Rtdwk6joofCRoeEYKx29+c9vvYmrMZ6S0VTWP9c9lTdQ7sgsy6qB94/3j5SPtCUNO9/fXmUPwooXWG/I539dgXroLK9jKDSjq+Q68oMEuR0xxflsZHa3ZgxpTt2lLAOqTA7i/SjDfMPWF8GZ+WnMXcnNkQNuhT/L7UEzJNpMr7eSY1Bu9Tm+i8rrINBcf1y+PJ8whiIlBRsQTTDoRc/aQ7pGyvZVVZMGA10cNlwsJFnySi2mYGC/9bXtpDyFDjnFFJzKADeHj7Mu80Db7JEu1COIKY5TopqJEdN3lc59FcYnXqF+dLBJ/m3qlDA==
+ b=ZAzDQ2wdJPkUWPx/Nw7IUMphBqyTyolv+h/AizFf8OqhbtZC38CnQanI2+2uKHmyKzchilIT7FFAFcF200xrTzC85n8eu5XagnVjGnJDy4Da5h5QAWVhzIyej9P5jykP7ugzPUQ5RlT9/a4h+sfYaWhIbVaLZ1gkprvHMkaLo6pKd0f3IBM+9/hReu5L4DIogjefNGjLfWDVNznrz1uza+lx0z28CFE+PpKc1l13zpkoVLvl1T5H1q8WvTesNsQahdTN+yE7RenHITzMgnpN1ff8tdyQQDm20nacF1bMqNjXs+n9WJ+8U6bryQY1Dczc2KjXENuJNKJHcFZnufizcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CiY6Mjjc7RrLVSFXaB3eB5rpTdDGLNqxB3YIuP9Itso=;
- b=otUywSAW+OC4nmZTyECNf4lFeTBjvCP1MeZx+uF+JhmPgYTt5bc8aXXbbHjKbgthW5tk5CjOCbTXeOOLH5M+vO65lxTu1rQaF63v6iqoVGg7AVRefD0/hrO2Hh1FC+dPwHR4YB43UsO+47UwnEuvY3/ODz4DY7+puqmTFDSuznFqQ2nTMsM5wGa1Mi05paaDJM+MuWweu2zytpefz6yUn4fZc+qxKL6Buoly9XX6J1MpR1d7v9Vfa9GP+NLiS+f/5k3vmJCBS/cxNK/Srr74eh/waA6uQdNeCTMfYHNP8ozXnQ14rB+4EBJf9Yjk4L/LVs7lnWS+sybAPimfcQgPVA==
+ bh=v4MdWBYtUWYIHJcIRGyWZw2cSIbSB1elTdxU2nJNitw=;
+ b=DWq79W3hM9t6wOzV1LShrwfyE1XZP50EKqQfO4aRjX+uiANuHBTQ3A4kwlq0+ZBOuUMYdlHg2w5sfChXNksoc2HjJ4T7Ye7bX5vMSIMz4W+ojFlw3k1xdaJfnX8EXANn1IJPoSQdYiIeV+IN7GFnIZpscghKu+yBTKhL5f3Thu+zhiQnrsMgnmV55KxAH+sAen7BElRvNp22Rav5PkNITQnCvYFZIBbr8LrGHWukp3yFxJ70ycYbUMhMbar3K+EoCUqXU5JFhp0NpFpFReYjGQaIZBAOoKsXtyHZj7dfETNWEX4E760BbT45vvv9GGkhTSDC+M/9Dmmd4gmCm/xEKg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=msu.edu; dmarc=pass action=none header.from=pa.msu.edu;
  dkim=pass header.d=pa.msu.edu; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pa.msu.edu;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CiY6Mjjc7RrLVSFXaB3eB5rpTdDGLNqxB3YIuP9Itso=;
- b=0c+XEAwJF1JzbjlVYuoyFE+Gq6OHNRp64RspTUgJFPbMSozDkjGUF40ljC7P2bMzOc0bApRxP7xaAoRa1vBnMcoQc9uXsemx7OtYLCuWST+8IT5RhfISPITgBJrRJx0nStffSZRqxyrwPWUxRUs9o8etyDtEFQmqRVJZqMuTHUQ/OzFUwDRN83bL+V/GgFll/3HBCz8qizj6V4HVDgnmmgp+1lEV0neuGMMNQryD2NJwx5Qu3YheXoA3TYh3nHwU9nmIQzzOn4C5I+H/aKf/5PKcoaJ9uwMlFt+sAzjFVY8iCPVLTJiJ63I3LwJoOY4aQuBAYGlpGCHlt4D+Ta+bVg==
+ bh=v4MdWBYtUWYIHJcIRGyWZw2cSIbSB1elTdxU2nJNitw=;
+ b=vdXjS4GaR036RKrqZUpZrybZlsnQ15faBVt3Z4018/lj4CbiSYUQYQ4j47eqJsn78amgeZyBmCpuFHkzvBF18u7cwJU6YyeClxT2LtuGZy2d7fU5QHbJAV9WbHtY7yAx3wfElRlIsiDEuiLJrWGJXMu8UgPlQRrsp6b9AvGk9zTGywiwpWB42O+5apxsWRJQX+pCMS3czcQVDKHliWCaX1eivGamqYrgpaHtZduS2s5/gGFVASaBZeTmGDp9A64CvA8cr3Rz43HV7v1LWkukWu3q5N7SqBzvquCRnroqIQC1DVJbYXWLfbikepRGQjk7zXkdgkiIvYUdZASBh3OyZw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=pa.msu.edu;
 Received: from DM6PR12MB4337.namprd12.prod.outlook.com (2603:10b6:5:2a9::12)
  by LV3PR12MB9332.namprd12.prod.outlook.com (2603:10b6:408:20f::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.24; Fri, 7 Aug
- 2026 20:17:57 +0000
+ 2026 20:18:03 +0000
 Received: from DM6PR12MB4337.namprd12.prod.outlook.com
  ([fe80::b412:1b80:dfc:18c5]) by DM6PR12MB4337.namprd12.prod.outlook.com
  ([fe80::b412:1b80:dfc:18c5%6]) with mapi id 15.21.0292.019; Fri, 7 Aug 2026
- 20:17:57 +0000
+ 20:17:59 +0000
 From: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
 To: netdev@vger.kernel.org
 Cc: theo.lebrun@bootlin.com,
@@ -49,14 +49,14 @@ Cc: theo.lebrun@bootlin.com,
 	charles.perry@microchip.com,
 	andrew@lunn.ch,
 	Nathan Whitehorn <nwhitehorn@pa.msu.edu>
-Subject: [PATCH net-next v4 1/2] net: macb: Poll for link state changes when using the internal PCS.
-Date: Fri,  7 Aug 2026 16:07:46 -0400
-Message-ID: <20260807201741.3275-2-nwhitehorn@pa.msu.edu>
+Subject: [PATCH net-next v4 2/2] net: macb: add support for 1000BASE-X autonegotiation to PCS
+Date: Fri,  7 Aug 2026 16:07:47 -0400
+Message-ID: <20260807201741.3275-3-nwhitehorn@pa.msu.edu>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260807201741.3275-1-nwhitehorn@pa.msu.edu>
 References: <20260807201741.3275-1-nwhitehorn@pa.msu.edu>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ClientProxiedBy: CH0PR03CA0010.namprd03.prod.outlook.com
  (2603:10b6:610:b0::15) To DM6PR12MB4337.namprd12.prod.outlook.com
  (2603:10b6:5:2a9::12)
@@ -68,91 +68,161 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM6PR12MB4337:EE_|LV3PR12MB9332:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63688a4b-bac4-4d15-4ba9-08def4c0f8a6
+X-MS-Office365-Filtering-Correlation-Id: 5f4e15f8-e256-4df1-cc31-08def4c0f963
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|786006|10070799003|56012099006|11063799006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	b7F7/l9Al6K5BIPC8D4yKMueF/g00TAorYLb6Jm2alnNfmQvBG/4/ug07CPcamZ7+lRw+ZyMrc6Zkkw5nmyi5hz3KUHQAczWf6EPwdUeR+Z3glDHg0btOP3DUIZk2bE5pWzZCaDOpoQzzf0hq2ABbT/PcH2dn0c0zcrajKlqXUq4jBwzPBHb4ufi6uAZQVuC0GV2fmK1jp3w83q75LReZOmyaHwOULd63kNiiA50EUyM0KQAlHkGYIn03ELxgyHF4dnLa1uKvmqRTLGA6Jxx+aJWdsYJ+TTJJ6jf9BrjF8eGi8Dy2cpEbwEjQHFAcn0CRPx3jFiwd5FS05Q+WbvlTfZmnpKs20+4wEcWXdeyRt42oN2ccLjFgvk2C5G6d6YBoNEVi/jBWxM8oC5GvTNkxiw6mf6aXMJt1BGLcVg3RbokxEAvQNQCQ0ZzoaqqOyeRL3XNzSaB5g9r016czxeM8YAeeDzoR2z5EQRm86cK7NxBPueID37DH6l4uHPKpzJxGnwaGZkWk/bEQuFVC4L7WMDiBdCE6lkreUKtWatEU4iMzdrazOknM2Ah1SDKBzNIMCrhOLv0bgYkMW4MsVOC28fdLqMLTXTV/AYygizNqToRZZJnTvxPm2yMQJ6FSv0/Jiu1AA1dBbgKCVdQ1Ot20w==
+	yAmiMWE88rINkBJXea3lKbRQJ5BDsJjSk+sJ1ZUn4M1eWh2mO5KohXSUD/53Fyw4zb8fTA3HDD72/RIJleXDSisYxoKRgRINF5Kbp4MI7GGbEtWZPIrhuGOkdpX5jHo4eu8VWViDHt/un7UT1mWTGf0jY++qUfwrRlZV8e08miFjh7XsbHQFTuKqbDDvxkGkkv0Iq50TS/pJQT7Btu/SDCI6hWd/ZyJhua2e/Q2oSuBbqVFumzr9KherUjpwbwVRg6Yf43uKUMWjoq4pqyiVH55bnNGimTR1pxhIOOrcjk6ju+KVy7QBhBSU+6teLEM6qqJFzxovtqaStKfmDVg6nMoQipUXMyVL7CeMj67rQpv0IqVawiXtpD30wgKQhZB6Z9Hr3DD0WQh87hYDVzwVWggATymG4+RS110bXxOYNeMR16lS0DvKFb68STVG6wKneCRR9UTB0VhFhIIWjAUTmjByrj6OTLAQHT/DvNvgT4mtuz0n8HQNtbL9dh/cTlT/SpZCFmYOfOATSmpLnwPRQPHCpE+q91+WYdZKLSdr7Qht687iWSLuMIg7J3zV+hrNmhdqroCHWg0rOKvOsRu08S+AolIueJNCZSgaHTvFJn9xZkWtZpiLuwKvnxlm1qZKL+1tet95LZBfMBC9Qr3Ab8Tw6VPWXiuprcmRtU2UsC0=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4337.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(786006)(10070799003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?N1owN3dXTk9UTWtSWUlRcVN6bFEvSnJBenNCQUxXd2s2ckRObm9obDdqRU82?=
- =?utf-8?B?Y0JIZHpaOHdjamZrSk50M3lPcmJxbGMxM0V5RDFBV09rc25MVHJScnFBRUZM?=
- =?utf-8?B?YnE3enYzWGZpaCtyWjJiR1ZWMVNTOE5Fa3RpK2psY1NxaFZvK25LazNwL3dB?=
- =?utf-8?B?MDREYzVhamZVUitHYTlVT2J1VGNORVMrRVhJS3dUSE05ajc5YU44S3F2YXd2?=
- =?utf-8?B?a2ZnRWx4Zm1tM0dIMHl2Sk40L2NkdS84dHBSbTN1NXJLSE9WZjg3VGVEVTE0?=
- =?utf-8?B?a1E3Q1VEUzcvaXdQa1U3OXZWaU9wQ0g0anVoRWREalAva3Zld2k1dDZVK3ky?=
- =?utf-8?B?Rm05TXhmRGF1TEE2dkNHU2d6NXozdmE4UlF6Y1p2VDRKbGJkdEhBa0tJTm1P?=
- =?utf-8?B?cFE3QVNzNmd3QUZWQVBjc1UwSE1MU204ZW85UXRubzhvSnhHRVdheUtkZDUx?=
- =?utf-8?B?dnRpd3g4M1ZqcDVTbkROQzJuU0prQXpFUkVIVDJ3aUpVNExPL0Y3OGV3K3ZW?=
- =?utf-8?B?akhtZlc0SE9zaWsrTUNrSm0rQTNjN1dEck0vVmkxdGJGR2Z6YmVjbE10K3hW?=
- =?utf-8?B?UG80cG9LVUs5N1o2MkxuTVF1R0xuaFFNOFVJcmVkUlMvM01SOGlYYzU0MEtm?=
- =?utf-8?B?WWRBSzM2YkYrZDZidElvN042UUtvSzEwYjlsenAvd0ZXSHl0NENVbno2Wkta?=
- =?utf-8?B?MVR1T0NIbFZhNHJHWXJOUVNOVnNjYjBDSGNjWjVpdFd5ZGpkUEl6ZXdLa041?=
- =?utf-8?B?elc1d1AzZjNkaUNGaHBHcE56NkRIcnprL3R1UUN6ZXpCTS9DRTJuazhpbnNu?=
- =?utf-8?B?RnNPaUFYeDd5RURQRGhwMnRTdHRsVy9rQk83VlVHU0k4L3hGb3VlT3JmUDVK?=
- =?utf-8?B?by9sV1g2ZkgzQ2h3SGhDOHNkMUZsOHBtcUZiYnMzMzZxWUpqY1VRQS9lTHhV?=
- =?utf-8?B?K1N0OUJqZUZxN2syOEZLNGpndmdXNGVjUWRZMFJPU3FzYm5lbnRZb09CcEhx?=
- =?utf-8?B?ZGtSV3dLZ0N3UnY4WHNQamtZVngwMFJ6NDd0U0M4UllCMGlsK2s2QVFVd2Mr?=
- =?utf-8?B?c1lqN3BQWGtOMTVvSVJYQ24yenhOSEF1RHZEZGo1SlVZNHVmNEpwN2ViZHBy?=
- =?utf-8?B?a1VPTHJrKzF2U1l3Z3JJMHdDb2JSZnYwNm8rUnQvc0htaWlNVS93WEQzSTRv?=
- =?utf-8?B?S2Y3RmdBOGlyb1VJQWtIaWR5S1pDVjhacXVnUnpOamxLV0U2YUdBblQyc2JR?=
- =?utf-8?B?S0dlN05ycDFKdVlvbzNTa2JpbnMvWFdiYjJmaHFtbW5PbnBlQnNvYTdITHZZ?=
- =?utf-8?B?LzVnWnVsUGpURlNrRUxRbDRpajRKa2NZbmVCRVZMaEhvT2FGMUZmV040ZVEy?=
- =?utf-8?B?ak12VGtGQU0yYm5TZG9oN2Nia1JPYTQ2UnFYMGdkeVNFbkVPTXZwdGJJWVNN?=
- =?utf-8?B?aXpXZitIN2Y1QUtxc3RpSzBnaTRLSThPWElUdmVEbHlnemxpWGE1ZHJTQlZZ?=
- =?utf-8?B?WDlpQmJOaWx3UnJ0N3RRRXhjRkp6ZGhOdGoxV0dtY2ZCelo0aU5DZ3duV1Zq?=
- =?utf-8?B?cFp0aG1vT2VjZW5IRE9QeGRSdWQ3QmNYSGNEcGNZSGkvS1VGRGJRNkN2eWZT?=
- =?utf-8?B?QXlzaHlWNExVWktOTjBHRGpwalpCMDdyNCtRZGxRYTV2engrOHI4UGhjeTE2?=
- =?utf-8?B?QVFOSllTY2l6czRNRWJ2VWVWbEFZUGlhNkx0YW84d014azNJWTgzZmJMM09i?=
- =?utf-8?B?ZnVQSEg3WWpEblNzOVFXcWhJMmFLcHY2K3IwaFJla0wzRmxHUlB2RS9YSVRQ?=
- =?utf-8?B?QWUwYlV0Yi9oWmxYc2c2ZGNpakk3UnJYUGxxaEhDcm02TFM1ZFBDUEwvdFlZ?=
- =?utf-8?B?K3JnS0g5YXIzbHVHOXpQVEVqMStKNDNCMlZCRmhUUSsyUHRzdzcvbWRxSUdM?=
- =?utf-8?B?eXZSTWZFQ2VuNFFKR1FWNC9zQ3FtNTdIUUdOVmZFYlE1aXJRY2RtUDZ0cGh5?=
- =?utf-8?B?dXNFdHdlOUxaZVlUcVZlYWtIN20wWldJMGNwcXhOTzFQTkZreEF1SW9RY2lE?=
- =?utf-8?B?MFdya3FzT25uaUlJcW82QUFiWlVPN0NmNTlXRmpRRkNyMHpXVFhXL2cxOHBV?=
- =?utf-8?B?Z3VDNGRxbGppWWxLSklkVDN4dnQvUFpNcUxnVW9FcjVQcitTT2xwd2VabnZu?=
- =?utf-8?B?MzRiMmJOWTU4MW5iL0JSZGRqb0NEQit0cmQySVNZUmtQQUVWSEpYeVJYcFFy?=
- =?utf-8?B?Tk5wemRmaFhFczN0dk53dWw3dElBSHFMZ3RrUG92K1ZGcTFnQ2llYXNTOWQz?=
- =?utf-8?B?R2MrVDhadVBkWkhKczgxbVFCRUhDNzlYWXY3dnlDWVNpTFlyeVNsZz09?=
+	=?us-ascii?Q?J+ovJ37YjPZTO059nk66KvXmtd0n494fLxCHSErFfoj5ryR8jkEnkaH26EP0?=
+ =?us-ascii?Q?29SsL5q/QmVsFNIjbc4U7FFZKoceePyeZBOgstW1Kiputr9ZTrJVpqj3zNeA?=
+ =?us-ascii?Q?yjqdX+rU/XQzMPDdlWdIBS8OVpVffgHQQ/w9y+HNiZbbcURel/q03nwFZPK7?=
+ =?us-ascii?Q?FMw5+Rp2KH6d3jl8ksoAbcrYJ+ntCSFl/7XSdl48CiTMygTbrP2MdljTu8Jh?=
+ =?us-ascii?Q?6QnXZMVixUnCEuFDYfF+tcrzyqQtEHBefcyFEys1U4AkaIRg9sx9rfst670m?=
+ =?us-ascii?Q?A0QdIPpirtWLmhqZ23Xypnpn2FW9kaAGBAOBxfqDGSah6Zj2jcGoNODJJa6b?=
+ =?us-ascii?Q?pZ4j6AmtIwzZJNtDJrdR4K1Jm0ONt/dI4yaQoEc51LvKw4XaoGW4uMMtTvsl?=
+ =?us-ascii?Q?zcLH6gnW07DEeAyWhpN1i6XavrcjOaZUE8zXJyxWxlp7t1eFwa9fr6tq3aSt?=
+ =?us-ascii?Q?KMln0gzhr4A53uT/tQ/CTdlVckOtmsoCHPDAi8b0RZAjxgJ8cA8pTqpsDdQs?=
+ =?us-ascii?Q?iZO6V3gdZw1CDeYbwCycUS6n0p/gH3gFTNOLCorIc0A1Yx3OJYVRCyUIV0SP?=
+ =?us-ascii?Q?lpjzxkUsD1ikGOF+eC5JT7IFVmpXvI9LUyym8wwCGK/hJTCAT/fD1eV7r2yI?=
+ =?us-ascii?Q?trf8HNGFZ0wG2qLBbeBa5988t7BvkQhTMgGc16oi9JQ2Q0wHs4P0xSofXuo/?=
+ =?us-ascii?Q?kuwDbEY/+Mqdr89jJwqgTuIl9QCplhvbPyXuc6ytDDOYtDKSZbTPtkxxW66h?=
+ =?us-ascii?Q?xooxVcpjrc6LUcgOTUnpCqOpzvI+Hg74v4jQviDplVnu/8jAAj8olcRyOFgP?=
+ =?us-ascii?Q?oMyvzvg46/qMnRHXx3WhrkOdwIzuZCLw1t0nDIRe0JmtI9IsAgGS2nyJyMf0?=
+ =?us-ascii?Q?oJNbOkWm75xPy0H4Siha3m+iIKnIUcuLg36LrXqWbKkfflvo16H4YmR2qBcH?=
+ =?us-ascii?Q?ouYgt5HI40y5g26af45PPQkz01Of5aAOc6xE/6DLI/GJJ/vqldzLaNbPmhGV?=
+ =?us-ascii?Q?GmZfc9oXj66kYy0fedk7fNE1Fa4kIhmRjLsoJ9wX4JR+H+tT3Uj2wUa1+8nT?=
+ =?us-ascii?Q?XeQneUIjqkCJCVWPIYQFayArgJBg4RUn5SN/XKV01TG/wD54lY50q/IC2Kne?=
+ =?us-ascii?Q?nr/hMcvc1rFow7+5OmJzom3YW5VGdCCV7R/42CVMPXLoeaPNYfD2QCOrTmjw?=
+ =?us-ascii?Q?NIC9L/mAPI5jVD4QQ8yyfoeXAOyLhgsZsXiL8hFO/yXiySwzRvSwtiAWZnSr?=
+ =?us-ascii?Q?lQTj1H9JwTBkijf2x6h0m0KbHBL6cyrxBRaIL9QZrBwKzyUIIR3nSQS0Dllt?=
+ =?us-ascii?Q?3SB9Y1I/ZETw1eCr7fJHL4jStjxFIR1WxVor152Xw3d26l3mWoo8qtk4e44V?=
+ =?us-ascii?Q?fM22v7JqsA8F1tlgOfTaJPiB/6rGnCpOXr+q21ljz9AioeLbU32V0xNtiwG+?=
+ =?us-ascii?Q?Iod5F+mwlMJpxU2GD5Eja25wz+TXY11AmuNiReoM2gmivT6CLX5+yCeUHhXR?=
+ =?us-ascii?Q?NO5v4LSMUK3wmiyv+skSzUR0D9Oc/ITAy0A/s46am/dV82xXyL4WSdQjxBZB?=
+ =?us-ascii?Q?RmY/1WBy9QH7zFsiH25Brm2nvZHqD8rDeve+ydU37lYv5RLF5Cd12jZSUiVF?=
+ =?us-ascii?Q?gk/SOYzZdOhml9h36WMxKuIIzfZA0abGPT5/HDxSntHGZnS5B46wxOwlUirX?=
+ =?us-ascii?Q?/dd/UmXgeGwe0UWfwl1odYp7SRzDnKxsZ7Jj5Ap/8BAxVbUV72xzyCxTarCH?=
+ =?us-ascii?Q?6iZoy6mOxw=3D=3D?=
 X-OriginatorOrg: pa.msu.edu
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63688a4b-bac4-4d15-4ba9-08def4c0f8a6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f4e15f8-e256-4df1-cc31-08def4c0f963
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4337.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 20:17:57.7162
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 20:17:58.9407
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 22177130-642f-41d9-9211-74237ad5687d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9JQOyFsqf0+u11td7DG1FQKk6EfQanpdbfc3ntl48LsY8zYhELdTeJCVkF21p2j6
+X-MS-Exchange-CrossTenant-UserPrincipalName: B+oTbMMTY0jB9aiSMILTrsxPZ3FnemGankAQvabfpC15IwE+bd5YJF69jI5Qt9Z/
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9332
 
-When used with an offboard transceiver (e.g. an SFP), link state needs
-to be measured at the PCS rather than an onboard PHY. Poll the link
-state when the PCS is active to allow the kernel to detect link state
-changes in this case.
+The current PCS code unconditionally uses SGMII autonegotiation, though
+the hardware supports both SGMII and 1000BASE-X modes. Decouple the
+choice of PCS enablement from use of the SGMII mode when running at
+gigabit rates and announce to phylink that 1000BASE-X is a supported
+operating mode. This enables direct attachment of the PCS to e.g. an
+SFP.
+
+The 1000BASE-X code in phylink also sometimes calls the autonegotiation
+restart method, so add an implementation of autonegotiation restart.
 
 Signed-off-by: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/cadence/macb_main.c | 30 ++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index d394f1f43b68..c15a9c7e69d3 100644
+index c15a9c7e69d3..2252e6a55072 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1025,6 +1025,7 @@ static int macb_mii_probe(struct net_device *dev)
- 	struct macb *bp = netdev_priv(dev);
+@@ -583,7 +583,12 @@ static void macb_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
  
- 	bp->phylink_sgmii_pcs.ops = &macb_phylink_pcs_ops;
-+	bp->phylink_sgmii_pcs.poll = true;
- 	bp->phylink_usx_pcs.ops = &macb_phylink_usx_pcs_ops;
+ static void macb_pcs_an_restart(struct phylink_pcs *pcs)
+ {
+-	/* Not supported */
++	struct macb *bp = container_of(pcs, struct macb, phylink_sgmii_pcs);
++	u32 old, new;
++
++	old = gem_readl(bp, PCSCNTRL);
++	new = old | BMCR_ANRESTART;
++	gem_writel(bp, PCSCNTRL, new);
+ }
  
- 	bp->phylink_config.dev = &dev->dev;
+ static int macb_pcs_config(struct phylink_pcs *pcs,
+@@ -609,8 +614,10 @@ static int macb_pcs_config(struct phylink_pcs *pcs,
+ 		new = old | BMCR_ANENABLE;
+ 	else
+ 		new = old & ~BMCR_ANENABLE;
+-	if (old != new)
++	if (old != new) {
+ 		gem_writel(bp, PCSCNTRL, new);
++		return 1;
++	}
+ 
+ 	return 0;
+ }
+@@ -750,7 +757,9 @@ static void macb_mac_config(struct phylink_config *config, unsigned int mode,
+ 		ctrl &= ~(GEM_BIT(SGMIIEN) | GEM_BIT(PCSSEL));
+ 		ncr &= ~GEM_BIT(ENABLE_HS_MAC);
+ 
+-		if (state->interface == PHY_INTERFACE_MODE_SGMII) {
++		if (state->interface == PHY_INTERFACE_MODE_1000BASEX) {
++			ctrl |= GEM_BIT(PCSSEL);
++		} else if (state->interface == PHY_INTERFACE_MODE_SGMII) {
+ 			ctrl |= GEM_BIT(SGMIIEN) | GEM_BIT(PCSSEL);
+ 		} else if (state->interface == PHY_INTERFACE_MODE_10GBASER) {
+ 			ctrl |= GEM_BIT(PCSSEL);
+@@ -957,7 +966,8 @@ static struct phylink_pcs *macb_mac_select_pcs(struct phylink_config *config,
+ 
+ 	if (interface == PHY_INTERFACE_MODE_10GBASER)
+ 		return &bp->phylink_usx_pcs;
+-	else if (interface == PHY_INTERFACE_MODE_SGMII)
++	else if (interface == PHY_INTERFACE_MODE_1000BASEX ||
++	         interface == PHY_INTERFACE_MODE_SGMII)
+ 		return &bp->phylink_sgmii_pcs;
+ 	else
+ 		return NULL;
+@@ -1032,7 +1042,8 @@ static int macb_mii_probe(struct net_device *dev)
+ 	bp->phylink_config.type = PHYLINK_NETDEV;
+ 	bp->phylink_config.mac_managed_pm = true;
+ 
+-	if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII) {
++	if (bp->phy_interface == PHY_INTERFACE_MODE_1000BASEX ||
++	    bp->phy_interface == PHY_INTERFACE_MODE_SGMII) {
+ 		bp->phylink_config.poll_fixed_state = true;
+ 		bp->phylink_config.get_fixed_state = macb_get_pcs_fixed_state;
+ 		/* The PCSAUTONEG bit in PCSCNTRL is on out of reset. Setting
+@@ -1061,9 +1072,12 @@ static int macb_mii_probe(struct net_device *dev)
+ 			  bp->phylink_config.supported_interfaces);
+ 		phy_interface_set_rgmii(bp->phylink_config.supported_interfaces);
+ 
+-		if (bp->caps & MACB_CAPS_PCS)
++		if (bp->caps & MACB_CAPS_PCS) {
++			__set_bit(PHY_INTERFACE_MODE_1000BASEX,
++				  bp->phylink_config.supported_interfaces);
+ 			__set_bit(PHY_INTERFACE_MODE_SGMII,
+ 				  bp->phylink_config.supported_interfaces);
++		}
+ 
+ 		if (bp->caps & MACB_CAPS_HIGH_SPEED) {
+ 			__set_bit(PHY_INTERFACE_MODE_10GBASER,
+@@ -4932,7 +4946,9 @@ static int macb_init_dflt(struct platform_device *pdev)
+ 	/* Set MII management clock divider */
+ 	val = macb_mdc_clk_div(bp);
+ 	val |= macb_dbw(bp);
+-	if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII)
++	if (bp->phy_interface == PHY_INTERFACE_MODE_1000BASEX)
++		val |= GEM_BIT(PCSSEL);
++	else if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII)
+ 		val |= GEM_BIT(SGMIIEN) | GEM_BIT(PCSSEL);
+ 	macb_writel(bp, NCFGR, val);
+ 
 -- 
 2.34.1
 
