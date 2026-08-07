@@ -1,286 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3815D153BE9;
-	Fri,  7 Aug 2026 09:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2CD3F6C59;
+	Fri,  7 Aug 2026 09:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786095811; cv=none; b=cyvB6hI10IaR1anXOiYXx1IWVaFVUBj7BDLikEoqox83CFryM6vIT8uiPmeRGsrjtzJbGqAmoD9+uT2RQKA3rbMXa2V/UvIy0Xv0ZJBK415f5hrXUuI6kPPUe53CAvaYZ0qvcXZoj9B9020oQUCOhZBr7i/7kHO68wwB3HZu714=
+	t=1786095976; cv=none; b=MOIZzeYojMfFVPsNBYZqw+HQi0T8ecInoiuCJT1lRdmhzRh57G14t7Ln1/OKkJjtiAeT6gsuuIPkTtMRX4DoAIOxQp8LN9hGG80wCUwYIr04J+LZsGyJb/9caYdJmI8eLaSdGAUMrVvmwLV+AVWah2jyJcxnFcvsb2hKPRblB9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786095811; c=relaxed/simple;
-	bh=wg8zmodNvqGxCRF9W74IH2KBT4Jy0ShhFlv8pW72zs8=;
+	s=arc-20240116; t=1786095976; c=relaxed/simple;
+	bh=N9OKWG6I9IaS/RwnlBzT77yvgO42QkjabsDcDXb+ubg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oCtoYETCU/LFYsAOy/hS/OcPAxNxen/Q3Se/D98Q9Gzy0BsrnSMr0qkXZiLN6Zat50t+wSUb5Ze+VpY6ZB+UknexjeKdYc+W+d0YH8zzSpzXStxUovUL/kxn+FNJj7pwcioDZQxbkAIjCmGcZCKE1/x2f5H0OwfZmhGEgreXk2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyakmqmv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=gpCV5AknuvqxXapm+2FcNvSOD4J32nhIPFDcQ9BjFKAbQhoUGoeL3H54OQdoNyx0X8LV2dm2udpoXXzbYAowlZKC1Box7+ciVFtbWZrtiXBVCCUZlU2P7JBz/8UElRbtPeKUCtjfFPoe2rwTQ/E+OmJclDN/ApAHeudO+IH9mEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijTQHrzT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyakmqmv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BCF1F000E9;
-	Fri,  7 Aug 2026 09:43:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijTQHrzT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0661F000E9;
+	Fri,  7 Aug 2026 09:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786095809;
-	bh=qsxt3KFTIs6ULVIQVvO6yqBMkZtwIrvoha7joOwhWLs=;
+	s=k20260515; t=1786095975;
+	bh=JrvW/aP9EnaNe+CG46Gc+YyzW5Zy1RMicP8pdsjUpmw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dyakmqmvNz2A+PnIAaN6QvIfcBB4SnG7IJ5CfBBRjpKMkhZuhQodfmnWRL3Gqw/at
-	 yo4QcNW3yrcBW3tyPBD64jU+qJwGle4usgDOl29WyaK4dxc5/OFjal7K3o1qDHKJkR
-	 w0LNWt4d5Cc3aG49HSdm/gcI5J5+95G+CWinuiYd7ayDA35HbxGPZcqBQ9qx55b5u2
-	 L0lPhQ7mX/t26vuV6trTOdYen8EZ+9QTq6QwBo8SxsSwXZzsUboeaC4nYJINleVIDZ
-	 JWgf1Ta3TPonBen1/e8RxJG15FJIyhvwXcbDhDBhrBZiU+NlTkYMOqsTeZvElzTLMf
-	 q3bEtYz1d8pLQ==
-Date: Fri, 7 Aug 2026 10:43:25 +0100
+	b=ijTQHrzTO6g23Oyf+GGCatbd+zFM29SxQwWT63hzzOWj8I4rllY8M3z8RJmQ04fD7
+	 QMdk5ZOy3nJBUxDYarqWL8yJxYRqqhMujfZBZZMmBS+/n4u1vx/ywHqwvrJAWZ4yQX
+	 YTKmfnBmveHcSYc3V9xQPaetqv7I89/WCfpD5B/3o9EoQ0h19Z2hR+AHUgZOJXpxiI
+	 o5gNMtAW8f7AnmUkcDsoArRnfyNsoLqbvx5kdlOz+OSccLMj+w9ENiJu0RJHnJ9KWx
+	 GfJGjF61xZ8UFPMcqVp41GD2JO8kfVSzsR1USG1UkcGwIB5y6pNS19jQC+Mf61RpF/
+	 ZMI/f5t8Dzv3g==
+Date: Fri, 7 Aug 2026 10:46:11 +0100
 From: Simon Horman <horms@kernel.org>
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Lukasz Majewski <lukma@denx.de>, Felix Maurer <fmaurer@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Hangbin Liu <liuhangbin@kylinos.cn>,
-	syzbot+fbf74291c3b7e753b481@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] hsr: Avoid holding seqnr_lock while transmitting
- packets
-Message-ID: <20260807094325.GG51943@horms.kernel.org>
-References: <20260805-hsr_deadlock-v1-1-d8a6f06fc5a8@kylinos.cn>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	=?utf-8?Q?=C5=81ukasz?= Patron <priv.luk@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: qrtr: ns: Raise lookup limit to 128
+Message-ID: <20260807094611.GH51943@horms.kernel.org>
+References: <20260804201919.1148015-1-priv.luk@gmail.com>
+ <20260806132630.GC51943@horms.kernel.org>
+ <CAJmEJMzzuY=hJxo-0yPSfnOymcdd=O9zxmOxdeO_hCB3sbSrLA@mail.gmail.com>
+ <20260806072702.71b2e604@kernel.org>
+ <oqknkvlljjxfo5stpc3yicqzgs6g4an6lg7ybrll4zyvxr675q@hm23pe4cpxhm>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260805-hsr_deadlock-v1-1-d8a6f06fc5a8@kylinos.cn>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <oqknkvlljjxfo5stpc3yicqzgs6g4an6lg7ybrll4zyvxr675q@hm23pe4cpxhm>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805-hsr_deadlock-v1-1-d8a6f06fc5a8@kylinos.cn?part=1
----
---- Patch [1]: [PATCH net] hsr: Avoid holding seqnr_lock while transmitting packets ---
-commit 1d9b203ac401a6e7717dcd0d27015da8d13c979b
-Author: Hangbin Liu <liuhangbin@kylinos.cn>
+On Thu, Aug 06, 2026 at 06:00:23PM +0200, Manivannan Sadhasivam wrote:
+> On Thu, Aug 06, 2026 at 07:27:02AM -0700, Jakub Kicinski wrote:
+> > On Thu, 6 Aug 2026 15:38:22 +0200 Łukasz Patron wrote:
+> > > After merging v6.6.142 into a downstream AOSP device, it's stuck on
+> > > boot animation and following log spam can be observed in dmesg:
+> > > 
+> > > E qrtr    : ctrl_cmd_new_lookup(): QRTR client node exceeds max lookup limit!
+> > > E qrtr    : qrtr_ns_worker(): failed while handling packet from 1:16600
+> > > 
+> > > No idea why it needs more than 64 client lookups, but it appears to
+> > > work fine with 128 as it did when there were no limits.
+> > 
+> > Ack, I'll fold the explanation into the commit msg. pls don't repost.
+> 
+> With the added info,
+> 
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-hsr: Avoid holding seqnr_lock while transmitting packets
+Likewise,
 
-This narrows hsr->seqnr_lock so that it only covers the outgoing sequence
-number update in handle_std_frame(), and removes it from the whole
-hsr_forward_skb() path in hsr_dev_xmit(), hsr_handle_frame() and the
-supervision frame senders.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Closes: https://syzkaller.appspot.com/bug?extid=fbf74291c3b7e753b481
-
-Before the diff, a question about the changelog and the Fixes: tags:
-
-> Since commit aae9d6b616b5 ("hsr: Implement more robust duplicate discard
-> for HSR"), sequence numbers are stored in an array and no longer require
-> linear comparison. Protecting only the sequence number update is
-> sufficient.
->
-> Fixes: 06afd2c31d33 ("hsr: Synchronize sending frames to have always incremented outgoing seq nr.")
-> Fixes: 430d67bdcb04 ("net: hsr: Use the seqnr lock for frames received via interlink port.")
-
-[Severity: Medium]
-[Finding: main-1-0]
-[Sources: opus-5]
-The correctness argument here depends on aae9d6b616b5, which is much newer
-than both commits named in the Fixes: tags (06afd2c31d33 is in the tree
-since v6.2, 430d67bdcb04 since v6.12).
-
-In a tree that has those two commits but not aae9d6b616b5,
-hsr_register_frame_out() still does the last-seen/greater-than comparison,
-so shrinking the lock to the counter bump in handle_std_frame() and dropping
-it from hsr_dev_xmit() would reintroduce exactly the local drop that
-06afd2c31d33 describes.
-
-Should the changelog carry an explicit dependency note, or should the tags
-be scoped (for example "Depends-on:" or a note that this is not suitable for
-stable before aae9d6b616b5)? The doubt about the tags is currently written
-below the --- separator, so it is dropped from the committed message.
-
-Simon says:
-
-I don't think the advice on how to annotate this is correct
-
-Tags trump freeform text, but Depends-on is a not a standard tag and as
-such should not be used.
-
-I believe that the correct approach would be a tag like this:
-
-  Cc: <stable@vger.kernel.org> # aae9d6b616b5: hsr: Implement more robust duplicate discard for HSR
-
-Link: https://docs.kernel.org/process/stable-kernel-rules.html#option-1
-
-> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-> index 5555b71ab19b5..14e8d06762294 100644
-> --- a/net/hsr/hsr_device.c
-> +++ b/net/hsr/hsr_device.c
-> @@ -232,9 +232,7 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, struct net_device *dev)
->  		skb->dev = master->dev;
->  		skb_reset_mac_header(skb);
->  		skb_reset_mac_len(skb);
-> -		spin_lock_bh(&hsr->seqnr_lock);
->  		hsr_forward_skb(skb, master);
-> -		spin_unlock_bh(&hsr->seqnr_lock);
->  	} else {
->  		dev_core_stats_tx_dropped_inc(dev);
->  		dev_kfree_skb_any(skb);
-
-[Severity: Medium]
-[Finding: main-2-3]
-[Sources: opus-5]
-Can this lose statistics updates? The tail of hsr_forward_skb() does plain
-read-modify-write on struct net_device_stats for the master and interlink
-ports:
-
-net/hsr/hsr_forward.c:hsr_forward_skb() {
-	...
-	if (port->type == HSR_PT_MASTER || port->type == HSR_PT_INTERLINK) {
-		port->dev->stats.tx_packets++;
-		port->dev->stats.tx_bytes += skb->len;
-	}
-	...
-out_drop:
-	rcu_read_unlock();
-	port->dev->stats.tx_dropped++;
-}
-
-Before this change every caller reaching those increments for
-master/interlink held hsr->seqnr_lock across all of hsr_forward_skb(), which
-made them mutually exclusive as a side effect.
-
-hsr_dev_setup() sets dev->lltx = true ("Prevent recursive tx locking") and
-the master has no qdisc, so __dev_queue_xmit() calls hsr_dev_xmit() without
-the txq lock. Two CPUs can then run tx_packets++ concurrently and drop an
-increment, and tx_bytes += skb->len can tear on 32-bit. The interlink RX
-path, hsr_handle_frame() -> hsr_forward_skb(), now races the same counters.
-
-Would switching these to dev_sw_netstats or otherwise per-CPU counters be
-preferable while the lock goes away?
-
-[ ... ]
-
-> @@ -335,6 +333,7 @@ static void send_hsr_supervision_frame(struct hsr_port *port,
->  		hsr_stag->sequence_nr = htons(hsr->sequence_nr);
->  		hsr->sequence_nr++;
->  	}
-> +	spin_unlock_bh(&hsr->seqnr_lock);
->  
->  	hsr_stag->tlv.HSR_TLV_type = type;
->  	/* HSRv0 has 6 unused bytes after the MAC */
-> @@ -356,13 +355,11 @@ static void send_hsr_supervision_frame(struct hsr_port *port,
->  		ether_addr_copy(hsr_sp->macaddress_A, hsr->macaddress_redbox);
->  	}
->  
-> -	if (skb_put_padto(skb, ETH_ZLEN)) {
-> -		spin_unlock_bh(&hsr->seqnr_lock);
-> +	if (skb_put_padto(skb, ETH_ZLEN))
->  		return;
-> -	}
->  
->  	hsr_forward_skb(skb, port);
-> -	spin_unlock_bh(&hsr->seqnr_lock);
-> +
->  	return;
->  }
->  
-> @@ -402,8 +399,9 @@ static void send_prp_supervision_frame(struct hsr_port *master,
->  		return;
->  	}
->  
-> -	hsr_forward_skb(skb, master);
->  	spin_unlock_bh(&hsr->seqnr_lock);
-> +
-> +	hsr_forward_skb(skb, master);
->  }
-
-[Severity: Low]
-[Finding: main-2-2]
-[Sources: opus-5]
-This isn't a bug, but the two implementers of the same
-hsr_proto_ops->send_sv_frame callback now follow different rules for
-seqnr_lock.
-
-send_hsr_supervision_frame() was converted to the minimal scope the patch
-establishes in handle_std_frame(): lock, bump sup_sequence_nr/sequence_nr,
-unlock.
-
-send_prp_supervision_frame() still takes seqnr_lock before the sequence
-number bump and holds it across skb_put(), ether_addr_copy() and the
-possibly reallocating skb_put_padto(), which is also why it keeps the
-duplicated unlock in the error path and just before hsr_forward_skb():
-
-net/hsr/hsr_device.c:send_prp_supervision_frame() {
-	spin_lock_bh(&hsr->seqnr_lock);
-	hsr_stag->sequence_nr = htons(hsr->sup_sequence_nr);
-	hsr->sup_sequence_nr++;
-	...
-	if (skb_put_padto(skb, ETH_ZLEN)) {
-		spin_unlock_bh(&hsr->seqnr_lock);
-		return;
-	}
-
-	spin_unlock_bh(&hsr->seqnr_lock);
-
-	hsr_forward_skb(skb, master);
-}
-
-Nothing in the extended region re-acquires seqnr_lock and the two unlock
-sites are on mutually exclusive paths, so this is not an unbalanced unlock.
-Could the PRP side be shrunk the same way so both callbacks obey one
-convention and the duplicated unlock disappears?
-
-> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-> index 0774981a65c16..8e4158a9b57c8 100644
-> --- a/net/hsr/hsr_forward.c
-> +++ b/net/hsr/hsr_forward.c
-> @@ -621,9 +621,10 @@ static void handle_std_frame(struct sk_buff *skb,
->  	if (port->type == HSR_PT_MASTER ||
->  	    port->type == HSR_PT_INTERLINK) {
->  		/* Sequence nr for the master/interlink node */
-> -		lockdep_assert_held(&hsr->seqnr_lock);
-> +		spin_lock_bh(&hsr->seqnr_lock);
->  		frame->sequence_nr = hsr->sequence_nr;
->  		hsr->sequence_nr++;
-> +		spin_unlock_bh(&hsr->seqnr_lock);
->  	}
->  }
-
-[Severity: Medium]
-[Finding: main-1-1]
-[Sources: opus-5]
-With the lock released here, allocation of the sequence number and the
-actual transmit are no longer atomic with respect to each other. Can frames
-now leave the ring out of sequence order?
-
-CPU0 handle_std_frame()
-	spin_lock_bh(&hsr->seqnr_lock);
-	frame->sequence_nr = 100;
-	hsr->sequence_nr = 101;
-	spin_unlock_bh(&hsr->seqnr_lock);
-
-CPU1 handle_std_frame()
-	spin_lock_bh(&hsr->seqnr_lock);
-	frame->sequence_nr = 101;
-	hsr->sequence_nr = 102;
-	spin_unlock_bh(&hsr->seqnr_lock);
-
-CPU1 then reaches hsr_forward_do() -> hsr_xmit() -> dev_queue_xmit() on the
-slaves before CPU0 does, so 101 goes on the wire before 100. hsr_dev_setup()
-sets dev->lltx = true and the master has no queue, so nothing re-establishes
-ordering between the two.
-
-Local receive is fine, since hsr_check_duplicate() uses the per-node bitmap
-under node->seq_out_lock. The changelog only justifies the relaxation with
-this kernel's own array based discard, which is the point 06afd2c31d33
-raised for the peer side:
-
-	"if the higher sequence number leaves on wire before the lower does
-	 and the destination receives them in that order ... it will drop the
-	 packet with the lower sequence number and never inject into the
-	 stack"
-
-How is a remote DANH, RedBox or hardware peer that still uses last-seq or
-window based duplicate discard expected to behave here, including a Linux
-peer older than aae9d6b616b5? If out-of-order egress is considered
-acceptable, could the changelog say so explicitly?
-
-[ ... ]
