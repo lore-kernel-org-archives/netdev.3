@@ -1,156 +1,116 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510CA4B0499;
-	Fri,  7 Aug 2026 19:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0661DDC37
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 19:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786132065; cv=none; b=MxFluoae95yKl7cG6xarSK88uXtFEIvkVkVpPFCKZXhoKUtNwXWoBI1X6cVZnTmJXEeUv2q4ZyNpM29DrigAVk0otAk9MqPVmI2qI/YXIloX21igWQGVmhRm5GzBB7t8yTgO37X12ol1VUtpNN6G92SWL0DyNwIDNc2FRIbRzkk=
+	t=1786132185; cv=none; b=nlPSlXmJU1XrYbl5e4PS2FJ4PY2WWWHvOr3OzarewcGUdIg9mz9/IVu+ePewha0/5rQEK2FnnnjSpOwPZ+yNmyLpTJ3VzvANuym4/6OTH5M4mrcv9irFw4YqmSZ0nq+xoNIH4HOpcs4KCN4aXvV4ymHkpLIOX9u7Ew+EfkjuTNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786132065; c=relaxed/simple;
-	bh=QntrGngumTcllej+FfCdcocjCbzb02RXnrTN48F9GKI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cGZl9o2tQHKvIrAJ0tNpULCQJDQh9KDjPdTgaw10UMQmWGjqWsW3okVSKklDugwhkj0jge1gPRuvl16/7Bo6vtzLnrW8trAB/eniv9VySK9685AznLMo6q7JoNVxbXiOeb/HR6GIwBUloFbvBUNdRNoy7WzL11JkGib9aUyst7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=AHtEEN5A; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1786132185; c=relaxed/simple;
+	bh=cDE7rA8aqN5e7rQ7XoHZoyTnsUGAF4oK9A5CKhOIVkE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dTK1uwgRkE7YyR1bu45DsyEL8vFpSgVFDlt64KXO54Q862w05FGfqfHFRLjy0QJgTEguFTZCAgfIDWsltRISb+P0k3/KRKS/6T1ECr2XYPDYAuAk5GuKMa/guwT7ZFXcUd6JyncEc4AIlEH1ZuH9bnHatFglWeQuFf3rHMC1lN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dOqnr1Oj; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="AHtEEN5A"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1786132060;
-	bh=QntrGngumTcllej+FfCdcocjCbzb02RXnrTN48F9GKI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=AHtEEN5An0lY1ClT5rM8Ep5yspcSNQhvDxsEHiwF/HjupGcU9295W9RvK98P4lY7y
-	 tQinRY4ZOBflPrVuFEuQNO5SXXC5kFRt8FrKtl9PT2awrwwKbpc3md5Qvo9rdY4jf1
-	 OOiwlTWq0yzzlnU2qtMgHuUunD4i5JOH2n7WqX2iy+83m3qsqXI1BYcEOksg+rSf9B
-	 h50UzZuReq5DF3px9nQqwR4+QNHKi+PBv4Bm8tFocte6VHAvQ/BAQfYUEo1Pse7RC8
-	 Rn4cFaDAeZIP7EzDjUM4t6QWgmELRGqauRoaVFOxPruJKsVqfz5YtlUZIDfGIAiaXA
-	 CWc6ZSRZZimXQ==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 4F225600BF;
-	Fri,  7 Aug 2026 19:46:47 +0000 (UTC)
-Received: by x201s (Postfix, from userid 1000)
-	id 20787201E49; Fri, 07 Aug 2026 19:45:45 +0000 (UTC)
-From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
-To: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>
-Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dOqnr1Oj"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ce87c7e3bbso34526775ad.1
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 12:49:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786132184; x=1786736984; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Pjt4VBNA9RhvwHOG/dB1GY/jBYqoDr2m2fvZn74cx+Y=;
+        b=dOqnr1Oj5pkhzSzIY4CJlicnS54FZQYGA7yXX40fSdGtXIieNcX1CTg6NLP+s2Mqcn
+         U8ZuSf1OTy7FZ/93AijVG8V9wtaDH9dTQ4QRkvh+aQfBURRQmsavp7aps+3AYWwKyhX2
+         6mScQnFn0bWs/FW/ZjaA8TEVt4Vbmb3ZuCtGgUo/xtjH0t3FvxuHpp6Gty/Jg52JZx9z
+         qktbcRrzueFYKiT/QtDtkMgewVtZ7Me0RCUqmk5HGqX+ZDfajkL+ixkxyerSNIOfdLvc
+         /bQxcsz3LZLIXkfZ76y4U+hWOtdDZ04MoDRD729IVfk7yAtfsOYBDAkow2J9rEfxCxX9
+         QIfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786132184; x=1786736984;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Pjt4VBNA9RhvwHOG/dB1GY/jBYqoDr2m2fvZn74cx+Y=;
+        b=kW10OoNAfdyzIg76CJIxTssBowLM8P58emq+z/0KKtyKbnfApvKsOt6vJcz1ExTQvB
+         nE/Pj1RLO2aFjA7IKGTFHkITEtbA9Gtm/VK/9jIMW5vW3fWKhFXUlEOXTc5kA7kw0yv8
+         SNQiw3Ae+PE9xHXnPf7dizAvwtFyv8663hfSVmhgD/UvyR8n6SPm+u8HjKgtuc8HfgFN
+         e2kNH24IQmaqQqiAVTkYY3qmTlugqm84GQ9OG44SDbG3IgtQeDVNn0HMmzH8Nz2Nd5MN
+         MWCgP/6TxGFRY7omhxKa74fbnCizcRDZvl+BVPVjQk4EkFXp1u7gd+1BxA88xIOXTXw9
+         ICZg==
+X-Gm-Message-State: AOJu0Yzg4/M0X8BYYmrWdR6Q9i1VkvN0QczD+rzrsjouslNqlmhyqJPS
+	LHzTucui8J7HdJ3ZrrdDQV7DEoQG/NcnD0HRCa0CD5PzItLtD419dXIPGJUkwBjsKJc=
+X-Gm-Gg: AR+sD12F694UbvaKzLisJjzd1BrmtDA24xu2i04RhnuinHRYyedsPKmXZ+8aUyqqB3w
+	R0Sis844ZO3swL+Rm1uOo9s5lDtsVAZhelrQl864C9mMdEm+4ZOpWHaGkHqRsjD3G40+TKGbyF6
+	7ki4rjy8iDlT6DDI5DV9p0Ur57eavtaNyHpvXwBjbcImgXcXzV+r/hfBnT0+04BxqulFU91739v
+	bjkOduE+rZdoeVdC0DRN/9PQ7CElVZZBhya7rFsrmnHzpZZTP6AJ2qd0EhJxGo/S/KiCHdwaXCh
+	PigR9rY3/TR6dvCizu+VJede1VXqd0kmSBB4DtBZA9lHEJYTeiFdBS8H9dlDOGH0v2wXU7zN0ND
+	yGprutKy4csr64T6JC5Mysg1M7BHAa/oQ2dXAGK6Nu8gM6ZCD6xQhWHFH3HHVR+FvmlQljmuMvV
+	/wS2VXESh54+Fw01Ip9VqqLs/yE+9C2hGRK18dRj0NBi0Elr/NyOZ2HJyNEAUSJ/e7tS5+SSLNG
+	RxUANdoKlcfbsA+4vwXQX82jxmTIVx7NEOPY1l07src2TX7q9PRmw==
+X-Received: by 2002:a05:6a21:6e0c:b0:3bf:c223:4640 with SMTP id adf61e73a8af0-3cb85f4e199mr32087435637.32.1786132183828;
+        Fri, 07 Aug 2026 12:49:43 -0700 (PDT)
+Received: from ubuntu-openwrt.tail1b3f25.ts.net ([123.201.0.80])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14101b7b39bsm9527458c88.14.2026.08.07.12.49.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 12:49:43 -0700 (PDT)
+From: Sandeep Sondagar <sandeepsondagar@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org,
-	Kristian Nielsen <knielsen@knielsen-hq.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net] tcp: reset late connection after listening socket close
-Date: Fri,  7 Aug 2026 19:45:10 +0000
-Message-ID: <20260807194513.1263310-1-ast@fiberby.net>
-X-Mailer: git-send-email 2.53.0
+	Sandeep Sondagar <sandeepsondagar@gmail.com>
+Subject: [PATCH net] net: phylink: treat PSGMII as an inband capable interface
+Date: Sat,  8 Aug 2026 01:19:37 +0530
+Message-ID: <20260807194937.785825-1-sandeepsondagar@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In commit c82199061009 ("task_work: remove fifo ordering guarantee")
-Eric removed the ordering guarantee, thereby changing it from a
-guaranteed FIFO to currently LIFO ordering, in an effort to reduce
-jitter.
+PSGMII (the Qualcomm 5-port SGMII) conveys the link negotiation result
+from the PHY back to the MAC through per-channel inband SGMII words,
+exactly like SGMII and QSGMII.
 
-This allows for a TCP handshake to complete, after the listening socket
-has been closed, and after inet_csk_listen_stop() has been run.
+However, PHY_INTERFACE_MODE_PSGMII is missing from
+phylink_get_inband_type(), so phylink reports INBAND_NONE for it and
+phylink_pcs_neg_mode() falls back to PHYLINK_PCS_NEG_NONE. The PCS is
+then programmed in force mode and its control-register speed bits (which
+default to 1000base) are used, so a slower copper link - e.g. 100base-T
+- is reported as 1Gbps and cannot pass traffic.
 
-In that case the client sees the connection as ESTABLISHED, however in
-tcp_v{4,6}_syn_recv_sock() the call to __inet_inherit_port() returns
--ENOENT, and the new connection is dropped silently by put_and_exit.
+Classify PSGMII alongside SGMII and QSGMII as INBAND_CISCO_SGMII so the
+PCS negotiates inband and the resolved link speed comes from the PHY
+inband word.
 
-A client may therefore hang indefinitely on a blocking read() if the
-used data communication protocol is initiated by the server, like SMTP
-and the reporter[1]'s MariaDB protocol both are.
-
-Had the new connection been processed before the listening socket was
-closed, it would have been in the accept queue, and been notified when
-inet_csk_listen_stop() was run, and the client would have got a reset.
-
-This patch adds a check on the state of the listening socket, and
-resets the new connection, before discarding it with put_and_exit.
-The check is placed just before it would fail in __inet_inherit_port(),
-and just after TCP MD5 and AO options have been copied to newsk.
-
-The blamed commit was identified by testing on ancient Debian stable
-releases to get a rough scope of where to look, then identifying in
-which release between v3.16 and v4.19 it broke, and finally bisecting
-v4.2..v4.3 on a fresh Debian then-stable (jessie) VM with tooling from
-that era, and confirmed by reverting it from v4.3, v5.10.y and net.
-
-Reproducer:
-  https://files.fiberby.net/ast/2026/kernel/socket_teardown_test.c
-
-Reported-by: Kristian Nielsen <knielsen@knielsen-hq.org>
-Link: https://lore.kernel.org/87sf0ldk41.fsf@urd.knielsen-hq.org # [1]
-Fixes: c82199061009 ("task_work: remove fifo ordering guarantee")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Signed-off-by: Sandeep Sondagar <sandeepsondagar@gmail.com>
 ---
+ drivers/net/phy/phylink.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I'm not submitting a selftest at this time, as I have only found an
-efficient way to often detect the issue, not disprove it, and I would
-need more test data from different systems, before I can reliably
-disprove it with a low runtime budget, without getting false negatives.
-
-The check could also be "sk->sk_state != TCP_LISTEN".  I have only
-seen TCP_LISTEN and TCP_CLOSE at this location during my testing.
-
-IMHO socket migration is out of scope for this patch, see commit
-54b92e841937 ("tcp: Migrate TCP_ESTABLISHED/TCP_SYN_RECV sockets in
-accept queues."), as it would complicate backporting to stable.
-
-I have not yet tested that MD5/AO works, I guess that would involve
-extending my reproducer to place client and server in distinct netns.
-
- net/ipv4/tcp_ipv4.c | 5 +++++
- net/ipv6/tcp_ipv6.c | 5 +++++
- 2 files changed, 10 insertions(+)
-
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index b8887cdd66c57..45d9a7e40e951 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1756,6 +1756,11 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 		goto put_and_exit; /* OOM, release back memory */
- #endif
- 
-+	if (sk->sk_state == TCP_CLOSE) {
-+		tcp_v4_send_reset(newsk, skb, SK_RST_REASON_TCP_STATE);
-+		goto put_and_exit;
-+	}
-+
- 	if (__inet_inherit_port(sk, newsk) < 0)
- 		goto put_and_exit;
- 	*own_req = inet_ehash_nolisten(newsk, req_to_sk(req_unhash),
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 9e9155b1b3aa7..c7aa3c6b1c314 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1512,6 +1512,11 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 		goto put_and_exit; /* OOM */
- #endif
- 
-+	if (sk->sk_state == TCP_CLOSE) {
-+		tcp_v6_send_reset(newsk, skb, SK_RST_REASON_TCP_STATE);
-+		goto put_and_exit;
-+	}
-+
- 	if (__inet_inherit_port(sk, newsk) < 0)
- 		goto put_and_exit;
- 	*own_req = inet_ehash_nolisten(newsk, req_to_sk(req_unhash),
-
-base-commit: 594d905195024b228c962627ae5ae7c17bd582a4
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 18d2ead97aa5..983a1a3cee37 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1040,6 +1040,7 @@ static enum inband_type phylink_get_inband_type(phy_interface_t interface)
+ {
+ 	switch (interface) {
+ 	case PHY_INTERFACE_MODE_SGMII:
++	case PHY_INTERFACE_MODE_PSGMII:
+ 	case PHY_INTERFACE_MODE_QSGMII:
+ 	case PHY_INTERFACE_MODE_QUSGMII:
+ 	case PHY_INTERFACE_MODE_USXGMII:
 -- 
-2.53.0
+2.43.0
 
