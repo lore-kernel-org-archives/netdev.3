@@ -1,110 +1,111 @@
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D754E32B9A1
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 01:45:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A212C326D;
+	Fri,  7 Aug 2026 01:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786067130; cv=none; b=lDsyOerkqja8lPHMEpcB5IrmYvaO0ercdY9nB47khrh+o/9/Y90Wsd4GB1+FKdtNm0Yq6kJKXgZ4FIt8dlE1P2it393cB+P/wQRVNDttlKmBmXTIV5++a5iXseRfm9T5KMEz0rYjBAa71CcrP4CliDVaS6Ct5RX6X9kpMgVhCK4=
+	t=1786067660; cv=none; b=NaRcXGin9Fdf17r64Brcw1fvZHVQQ+SZZz5DoySB+h0pgvQ4zvgwirNzYhcgMpUOxRhCz6boegUTwkqFIX/U8Tu9IrGKR8iz9ZkTTiVsH02P2pSeRKaBunig6ZlBcDvx6im2H/KxP35D2fPSmF0/nmbn9ZEis+qBatLt4HdRz1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786067130; c=relaxed/simple;
-	bh=M1XjDIffT0FTcOD82kwXmuuqPwDoN2YGqSyC21R3u9s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lnSrVUm9y0QSzqLTugUB5l+NPH5davXTFiIkpYjN2/26nqPf03GsWoDfnuX941XPaXKzp8gn0bCYf4GxKSMuw5Cju7MUfhYSYeVspwCFBbf4XetPGx8k1hr6IGHmjq0h3JPoeBnGpMWRwUWQPIPgkn69vyGh07EyzDCwufeXBRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EHWPNjG0; arc=none smtp.client-ip=95.215.58.180
+	s=arc-20240116; t=1786067660; c=relaxed/simple;
+	bh=Dki6NqBruKndxMNgT5dyFppwBJaeC/paWC2HzCOseUo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YxbErCVpyLXHBVBbdSJZ3z4QxjzlvDl9jvV2izL6NPhefkOaPR4VWhNAe3AKEg+UqlIvOAiXxmnY1U9DsyL2vNbOnpjiisz6cqAYXYMXuETWR/ELamsGLocWxizuCwLp0kxdsXka9gj78U0ibC0yPPBze9saF7p2FoLh1N4C3Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CUd6D6rz; arc=none smtp.client-ip=91.218.175.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EHWPNjG0"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CUd6D6rz"
+Message-ID: <05084a53-a1a4-4e60-bdd7-6fd16ef6a029@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786067121;
+	t=1786067655;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8jlX+IfD+2MCo+MyUvVlXIriPQzZHfLSuI3PIRWAQ8A=;
-	b=EHWPNjG0rfu7V9oGARGPNeXuTgLsK1aY/mFm4L6oroEqc71cyQtQOr7Wf0FPEZ91jRqdNA
-	DqwIlhAErRVQLCbnZLKId78LLYcwApAvSrA9AHOe/VnHD8wR/vpWAdtg6v/hLiBRkNF0Nh
-	7ipAD6tWWitUvehf9Dx5ox7JQ2rijGE=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Morley <morleyd@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] tcp: fix icsk_ack.ato bitfield overflow
-Date: Fri,  7 Aug 2026 09:44:36 +0800
-Message-ID: <20260807014437.36687-1-jiayuan.chen@linux.dev>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=67Kicf9WT4kjE79wuLJ4NaDZ2qJ1L7TiOIATh55V8Lc=;
+	b=CUd6D6rzmd+s48TboJYTV45ifl8rC0y4HKW/x0GxCQXk2ef8ABU7L+iG0ewPJUSeTMA9xn
+	tq8GzUPlyvusoL6oe0GRygrxLhlNfDAzd3PTj+W6b4ibIKMwoJORjWtsO7muV0ECSeadU2
+	SaYjJ3zHpMxhA7XTXOp5kOCJmBclqqY=
+Date: Fri, 7 Aug 2026 09:53:51 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH bpf-next v4 1/5] net: Add connect_socket() helper
+To: Mahe Tardy <mahe.tardy@gmail.com>, bpf@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, andrii@kernel.org, ast@kernel.org,
+ daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com,
+ edumazet@google.com, john.fastabend@gmail.com, kuba@kernel.org,
+ liamwisehart@meta.com, martin.lau@linux.dev, pabeni@redhat.com,
+ song@kernel.org, netdev@vger.kernel.org, sdf.kernel@gmail.com,
+ ameryhung@gmail.com, kuniyu@google.com, memxor@gmail.com
+References: <20260806182234.380833-1-mahe.tardy@gmail.com>
+ <20260806182234.380833-2-mahe.tardy@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260806182234.380833-2-mahe.tardy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-On cross-region connections we observed delayed ACKs suddenly turning
-into immediate ACKs plus a TCP_MAX_QUICKACKS burst, as if the
-connection had just received its first data segment.
 
-Commit 95b9a87c6a6b ("tcp: record last received ipv6 flowlabel")
-squeezed icsk_ack.ato into 8 bits, sized for TCP_DELACK_MAX. But both
-writers still bound ato by icsk_rto, which can be well above 255
-jiffies, so the bitfield assignment silently wraps mod 256: repeated
-delack timer misses double ato up to icsk_rto, storing 320 as 64 and
-256 as 0, and ato == 0 is the "first data packet" sentinel in
-tcp_event_data_recv().
+On 8/7/26 2:22 AM, Mahe Tardy wrote:
+> Add a helper that connects an existing socket while invoking the LSM
+> hook. Reuse it in __sys_connect_file() to avoid duplicating the connect
+> logic. Other socket operations have equivalent helpers that trigger the
+> appropriate LSM hooks that can be reused, this one was the only one
+> missing.
+>
+> Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+> ---
+>   include/linux/socket.h |  2 ++
+>   net/socket.c           | 32 ++++++++++++++++++--------------
+>   2 files changed, 20 insertions(+), 14 deletions(-)
+>
+> diff --git a/include/linux/socket.h b/include/linux/socket.h
+> index 2a8d7b14f1d1..8964528e3823 100644
+> --- a/include/linux/socket.h
+> +++ b/include/linux/socket.h
+> @@ -461,6 +461,8 @@ extern struct file *__sys_socket_file(int family, int type, int protocol);
+>   extern int __sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
+>   extern int __sys_bind_socket(struct socket *sock, struct sockaddr_storage *address,
+>   			     int addrlen);
+> +extern int connect_socket(struct socket *sock, struct sockaddr_storage *addr,
+> +				int addrlen, int flags);
+>   extern int __sys_connect_file(struct file *file, struct sockaddr_storage *addr,
+>   			      int addrlen, int file_flags);
+>   extern int __sys_connect(int fd, struct sockaddr __user *uservaddr,
+> diff --git a/net/socket.c b/net/socket.c
+> index 63c69a0fa74e..126a674f534d 100644
+> --- a/net/socket.c
+> +++ b/net/socket.c
+> @@ -2103,6 +2103,20 @@ SYSCALL_DEFINE3(accept, int, fd, struct sockaddr __user *, upeer_sockaddr,
+>   	return __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, 0);
+>   }
+>
+> +int connect_socket(struct socket *sock, struct sockaddr_storage *address,
+> +			 int addrlen, int flags)
+> +{
 
-Clamp both writers to TCP_DELACK_MAX, which the static_assert already
-guarantees to fit and tcp_send_delayed_ack() effectively caps ato at
-anyway.
 
-Fixes: 95b9a87c6a6b ("tcp: record last received ipv6 flowlabel")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- net/ipv4/tcp_input.c | 6 +++---
- net/ipv4/tcp_timer.c | 4 +++-
- 2 files changed, 6 insertions(+), 4 deletions(-)
+Please fix the checkpatch warning if revise
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index daff93d51342..c0d2d3c0d40a 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1039,9 +1039,9 @@ static void tcp_event_data_recv(struct sock *sk, struct sk_buff *skb)
- 			/* The fastest case is the first. */
- 			icsk->icsk_ack.ato = (icsk->icsk_ack.ato >> 1) + TCP_ATO_MIN / 2;
- 		} else if (m < icsk->icsk_ack.ato) {
--			icsk->icsk_ack.ato = (icsk->icsk_ack.ato >> 1) + m;
--			if (icsk->icsk_ack.ato > icsk->icsk_rto)
--				icsk->icsk_ack.ato = icsk->icsk_rto;
-+			icsk->icsk_ack.ato = min3((icsk->icsk_ack.ato >> 1) + (u32)m,
-+						  icsk->icsk_rto,
-+						  (u32)TCP_DELACK_MAX);
- 		} else if (m > icsk->icsk_rto) {
- 			/* Too long gap. Apparently sender failed to
- 			 * restart window, so that we send ACKs quickly.
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index f7215d53bbda..1038e7ba9c2e 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -334,7 +334,9 @@ void tcp_delack_timer_handler(struct sock *sk)
- 	if (inet_csk_ack_scheduled(sk)) {
- 		if (!inet_csk_in_pingpong_mode(sk)) {
- 			/* Delayed ACK missed: inflate ATO. */
--			icsk->icsk_ack.ato = min_t(u32, icsk->icsk_ack.ato << 1, icsk->icsk_rto);
-+			icsk->icsk_ack.ato = min3((u32)icsk->icsk_ack.ato << 1,
-+						  icsk->icsk_rto,
-+						  (u32)TCP_DELACK_MAX);
- 		} else {
- 			/* Delayed ACK missed: leave pingpong mode and
- 			 * deflate ATO.
--- 
-2.43.0
+CHECK: extern prototypes should be avoided in .h files
+#27: FILE: include/linux/socket.h:464:
++extern int connect_socket(struct socket *sock, struct sockaddr_storage 
+*addr,
+
+CHECK: Alignment should match open parenthesis
+#28: FILE: include/linux/socket.h:465:
++extern int connect_socket(struct socket *sock, struct sockaddr_storage 
+*addr,
++                int addrlen, int flags);
+
+CHECK: Alignment should match open parenthesis
+#41: FILE: net/socket.c:2107:
++int connect_socket(struct socket *sock, struct sockaddr_storage *address,
++             int addrlen, int flags)
 
