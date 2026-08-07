@@ -1,104 +1,194 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A47F343D63;
-	Fri,  7 Aug 2026 04:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F1038F64D
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 04:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786076797; cv=none; b=GZK/F7nh5wug4nfTd40TvwHtNS6OiShDkxB0Kj+pZyXQDhg8Z09MQW6QSZFRS6WazW2xkO4oUzUBi2MfU+yYZb7qXJ4T7LSz/c0rKUdyrD2molwLCfVjAg3BltOSfZRoMQYXK7Ep7mbAuhdth9yiGNnqpj7nbbqVCqXtVbhN8Rw=
+	t=1786077859; cv=none; b=JNGw5Dsas4YmcCl3hSC2Vi0ZpUpjRY3Fj1SsiXMp5+dq7cKysIFwcG77zpsu+A/dOPVSlewiFhVA6q+OdNDgHnVKtkxbrI41YalD6oF+oY1JrfSx1es++3GgmXKBWlphlIeLv72ydbXdASbtkYl2HIxHwVG5hb9hY/4z7fDGIzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786076797; c=relaxed/simple;
-	bh=yln42IKi00e1pvpPiNXQrNfS9kBjRe+eQK1DP9DNHpg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qhYrSKpyhIDg9qb1RuzQYF+GBQcgwD+ap68kLQcxzug0mST7LYd7fZUsQenK+Mj413lQ6NcJwRNuTnWRaIbW+GPIL7efCLYz/Ftlq6WkfZ+IDh2UAc7Hpq++bVfJn81fCfdB7fBGRPrAZjIM57ccGEPlCOGIiu4+SOPicyBKQJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 17164200C57;
-	Fri, 07 Aug 2026 06:26:31 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wsCAA-000CK7-3C;
-	Fri, 07 Aug 2026 06:26:31 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wsCAA-00000000mz3-3beQ;
-	Fri, 07 Aug 2026 06:26:30 +0200
-Date: Fri, 7 Aug 2026 06:26:30 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Mark Brown <broonie@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>, Conor Dooley <conor+dt@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-	netdev@vger.kernel.org,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
-	Eric Dumazet <edumazet@google.com>, kernel@pengutronix.de,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl83xx: add support
- for enabling supplies
-Message-ID: <anVedv6aV1hguF5x@pengutronix.de>
-References: <20260806140239.3518906-1-o.rempel@pengutronix.de>
- <20260806140239.3518906-3-o.rempel@pengutronix.de>
- <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
- <anSj34TOZxYiG_ai@pengutronix.de>
- <f2260b02-621f-4b92-aade-85c403a8839d@lunn.ch>
- <02a51eff-3782-4012-8475-1047a9be4dd3@pengutronix.de>
- <CAD++jLk-5-_2x2scn2hNQ-aWBx=EKGYzvcaUwv5fS7k5Bq=KGA@mail.gmail.com>
+	s=arc-20240116; t=1786077859; c=relaxed/simple;
+	bh=fNUAVSh87gyqiRUTF61Kq6TTInm4rWrlJXeXNfgPN60=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BoMy8cDS05Qw8iQlCIVbnEIQJgUQ4g+8ZQDBwKJSB42794N3UUVyVLgi3BSP2bN6fWysWG2nvSjZyVQGbDbO/FiIMA8k93/+2uHi2SMkzjl/dR62WUHCGG2+TBmPSyG2jarSYIqjpiKpH+DKbUP+EZMwb9koMRlx6VZNtRu769s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/eYcpES; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/eYcpES"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38101f85591so1488018a91.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 21:44:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786077857; x=1786682657; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ABwdlKjS2wcFImpU+xFj4AEYt0rG3aoP9rVyKaasM0Q=;
+        b=P/eYcpESyz9DQTRtYHn0U5LVgBUiwbynHLlcgA3jZc5MBfurT9FVwoh3u303Sf1bgK
+         Pu0rn35jnJTjioTajlZMfw1DGy9qsVNWomKCkPcOJZ1vW0r4jtoh0NzgFfuWynm0i0yK
+         vbsAI+7Y4Glz/lT+SMeQtXaCtgm9LG3uyWbr/se4HNsx0udij13s2iNva64CPvS98lYI
+         /AYjVelJTIdzaC1YXCTva6HLN95cRQQmk8YOCxAAHJizX8IAZavvTvs6gSarqzB74gxz
+         nLrXCazEH+RuYN4pDH18kEuqzJ8L+MIIeBiisWypJn9Rm1xsn/gPzEObZkyPPpWmezav
+         T1gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786077857; x=1786682657;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ABwdlKjS2wcFImpU+xFj4AEYt0rG3aoP9rVyKaasM0Q=;
+        b=MZ/kTFjmVjnFN7Ks85EnMG5PCudw6SYqCSnbqymyLRgIwxm7Ki5aUHWcku/ObkCanN
+         zHfKhj/rif8rFT/j9sapHE8p3hTgHLwc33rGRj+1q/AVQrgkCfHcHQ4ejY2UHq6sIOzB
+         wcCoFU7TknUQMKQy5Y2lKnAwvV/SVUTpEdKa4PAXMPUTyA3FthkVvvTNzJVUDZ+uP0Us
+         AZ4eEngTEpaYltsxf9eXN8L2W/6NFqMlsRVKRVn/R+Gfb240crnHPbKq5n6kDPjYz14G
+         xgn/M94eqJoD7NTOR7Ox4vhf2EJSol49gqt/3GiP2fZLns7QX/ylYPRXHiEaIkzsOVpo
+         4Z8w==
+X-Forwarded-Encrypted: i=1; AHgh+RrTXnCxZtoBhObY/71dQIfnFraguGKrjtlJdok0Oh5jIy6v970k97sBxW0rQlsssqolfsD7IuM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3x1eV66FbE3kmsDxGM0rksMD6n25UC5SdBCuVLH09/7hMCJoU
+	/2BYbwLtCnyTfR9l/LrgYTEMcXmTI6zzHaNJityLLzFQTOt71NXzedO2
+X-Gm-Gg: AR+sD12qQtQnMmBiHguoQllkQn231FRqe2hI58HIAgTKYyPOj0y0tCziZAINIiFDWk8
+	YXoMFBYWNlHbmsnSXrsc9uUbBqwCBccC4Hvq6Z0V9ZAbgGXWtwzff7hQIRIN5SqbCtdk24vX8AO
+	9ggsxR3yJ1velmFovVwfOTc1qX5/dPo/L77Oh1A7/02qDKm7w5FFAJCK3T/yqHv5C6/y4/x/PrR
+	XkIGVHZA3B06AobwlRowTXcVLjAHoKncpHz6bIgkwHNMNaDtsjppy3zLDQ/c2GMFTgM8oewnqvn
+	VyXB21wvVAa0yLArMZXgtILleW6xeVIIyS2J8o/dU9ahL/dYs+sdueAmpjcwO6zlnp9KONhWwqc
+	PC0yHkWgLEAEGBhD1UIHqots4YWZHIX1pQ4P48n2fhneFnC9ATLj3EVMW7i2ZzG66xUtilEGPa7
+	JvEthjZHxHAaAI7B/BYwBv4Xt6DVMhomNSg/fX0Pep2GnNI/BSZqGbxtv84vFdA7cL/nnlu/YUr
+	IZjyPCd32BaptYqyG4TUYwXbfwvT2Py
+X-Received: by 2002:a17:90b:2f10:b0:387:d5bd:6231 with SMTP id 98e67ed59e1d1-39089861124mr4334944a91.20.1786077857168;
+        Thu, 06 Aug 2026 21:44:17 -0700 (PDT)
+Received: from [192.168.255.10] ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-390b1573defsm423588a91.1.2026.08.06.21.44.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Aug 2026 21:44:16 -0700 (PDT)
+Message-ID: <f18c47fd-b067-4573-a877-194e680c0979@gmail.com>
+Date: Fri, 7 Aug 2026 12:44:10 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/sched: cls_api: fix teardown of an adopted proto
+ on insert-race loss
+To: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jhs@mojatatu.com,
+ jiri@resnulli.us
+Cc: horms@kernel.org, vladbu@nvidia.com, netdev@vger.kernel.org
+References: <20260805134049.927864-1-victor@mojatatu.com>
+From: Aohan Mei <ljp1205831794@gmail.com>
+In-Reply-To: <20260805134049.927864-1-victor@mojatatu.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD++jLk-5-_2x2scn2hNQ-aWBx=EKGYzvcaUwv5fS7k5Bq=KGA@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
 
-On Thu, Aug 06, 2026 at 07:40:29PM +0200, Linus Walleij wrote:
-> On Thu, Aug 6, 2026 at 5:56 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+
+在 2026/8/5 21:40, Victor Nogueira 写道:
+> In tc_new_tfilter() the create branch sets tp_created = 1 before calling
+> tcf_chain_tp_insert_unique(). When the caller loses the race (another
+> request inserted a proto at the same chain/prio first), insert_unique()
+> destroys the caller's own tp_new and returns the winner's proto with an
+> extra reference. tp_created was never cleared, so the loser's errout
+> path treated the winner's live proto as its own and called
+> tcf_chain_tp_delete_empty() on it, silently unlinking an active
+> classifier that the winning request already advertised via
+> RTM_NEWTFILTER.
 > 
-> [Andrew says]
-> > > static inline int __must_check clk_bulk_get_optional(struct device *dev,
-> > > static inline int __must_check devm_clk_bulk_get_optional(struct device *dev,
-> > > static inline int __must_check devm_clk_bulk_get_optional_enable(struct device *dev,
-> > >
-> > > If clk has them, maybe regulators should as well?
-> >
-> > clk and regulator have different interpretations of _optional
-> > when encountering a non-existent resource:
-> >
-> > clk_get                 return error
-> > clk_get_optional        return NULL
-> > regulator_get           return handle dummy regulator
-> > regulator_get_optional  return error code
-> >
-> > So devm_regulator_bulk_get() is already the "optional" variant, but it causes
-> > all existing users to get dummy supply warnings.
+> Track the outcome of the insert step in a single tri-state variable so
+> each errout path reacts correctly:
 > 
-> So is this a big problem? Does it cause any other issues than
-> dmesg noise?
+> - TP_NOT_CREATED: no proto created; pursue the old path.
+> - TP_CREATED: proto inserted successfully; same code path as before.
+> - TP_NOT_OWNED: New - lost the insert race; tp is another request's proto
+>    (chain ref already released by tp_new's destroy)
+> 
+> Both errout reactions are single expressions derived from the state.
+> 
+> This fix is motivated by the Sashiko's automated review of Patch
+> (net/sched: cls_api: Always acquire rtnl_lock when destroying locked
+> classifiers) [1][2]. The review identified the silent-unlink behaviour of
+> an adopted proto's teardown when a request loses the
+> tcf_chain_tp_insert_unique() race.
+> 
+> [1] https://sashiko.dev/#/patchset/20260801125632.360365-1-jhs%40mojatatu.com
+> [2] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260801125632.360365-1-jhs%40mojatatu.com
+> 
+> Fixes: 8b64678e0af8 ("net: sched: refactor tp insert/delete for concurrent execution")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260801125632.360365-1-jhs%40mojatatu.com
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260801125632.360365-1-jhs%40mojatatu.com
+> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+> ---
+>   net/sched/cls_api.c | 18 +++++++++++++-----
+>   1 file changed, 13 insertions(+), 5 deletions(-)
+> 
+> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+> index 4e6a2812a4f3..3271963c945d 100644
+> --- a/net/sched/cls_api.c
+> +++ b/net/sched/cls_api.c
+> @@ -2248,6 +2248,12 @@ static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
+>   	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
+>   }
+>   
+> +enum tcf_tp_insert_state {
+> +	TP_NOT_CREATED = 0, /* did not create and insert a new tp */
+> +	TP_CREATED, /* created and inserted a new tp */
+> +	TP_NOT_OWNED, /* created a proto but failed to insert */
+> +};
+> +
+>   static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+>   			  struct netlink_ext_ack *extack)
+>   {
+> @@ -2268,12 +2274,12 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+>   	unsigned long cl;
+>   	void *fh;
+>   	int err;
+> -	int tp_created;
+> +	enum tcf_tp_insert_state tp_state;
+>   	bool rtnl_held = false;
+>   	u32 flags;
+>   
+>   replay:
+> -	tp_created = 0;
+> +	tp_state = TP_NOT_CREATED;
+>   
+>   	err = nlmsg_parse_deprecated(n, sizeof(*t), tca, TCA_MAX,
+>   				     rtm_tca_policy, extack);
+> @@ -2395,13 +2401,15 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+>   			goto errout_tp;
+>   		}
+>   
+> -		tp_created = 1;
+> +		tp_state = TP_CREATED;
+>   		tp = tcf_chain_tp_insert_unique(chain, tp_new, protocol, prio,
+>   						rtnl_held);
+>   		if (IS_ERR(tp)) {
+>   			err = PTR_ERR(tp);
+>   			goto errout_tp;
+>   		}
+> +		if (tp != tp_new)
+> +			tp_state = TP_NOT_OWNED;
+>   	} else {
+>   		mutex_unlock(&chain->filter_chain_lock);
+>   	}
+> @@ -2455,13 +2463,13 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+>   	}
+>   
+>   errout:
+> -	if (err && tp_created)
+> +	if (err && tp_state == TP_CREATED)
+>   		tcf_chain_tp_delete_empty(chain, tp, rtnl_held, NULL);
+>   errout_tp:
+>   	if (chain) {
+>   		if (tp && !IS_ERR(tp))
+>   			tcf_proto_put(tp, rtnl_held, NULL);
+> -		if (!tp_created)
+> +		if (tp_state == TP_NOT_CREATED)
+>   			tcf_chain_put(chain);
+>   	}
+>   	tcf_block_release(q, block, rtnl_held);
 
-As tested with local sashiko setup, new warnings for existing system
-without good reason will be reported as regression, so it will be
-blocker for net-next inclusion.
+The fix seems good:
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Tested-by: Aohan Mei <henrymei@tencent.com>
