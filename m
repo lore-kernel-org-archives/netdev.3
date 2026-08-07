@@ -1,71 +1,71 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0E74772AD
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9A748CD75
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786108807; cv=none; b=kdUc+Z4i3dAj6OGLos+lcJ7qDdJ4xANNdfWcwEivfUY8tLnlmVVbkTTgj3dho+UaX5CYXtNigirooEFLf8GnM1NeQNfG49SPvqtMxvG6abfcvYIF/Sv0sKG+4mXwRt5eNkJECbG5pbc011brNYBY+1RytkAnSiNIxOk6i6C4Q3w=
+	t=1786108808; cv=none; b=ILgRBpDY99m4mIVM2RHmhOfRJcY7bUDaZgop99bUmq2WeW/OwH7v9qdsLGpRF7YKRTU7NypVOAHU3lzOs6mwgDdV9QwPj8bhsWdjQA5fd2dhGd4bs02uYU8Cx6F/brzRv1FS3w8dYOuryILrCOdTQWjC6x3e/SvDZ0mAbw6vJQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786108807; c=relaxed/simple;
-	bh=XEPKuFkhwe8ZEQpD+ybrZ931bpYJrWOlA0mPf2Iby4w=;
+	s=arc-20240116; t=1786108808; c=relaxed/simple;
+	bh=whO3+w/ZTNGenAN5nZvoSYf9oSxjpzGFNNUFQZP8NFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LiCco9WYlZvjQrDNKKjB8koCecW6n7R8Jt4r5xjsSkmPGSy4FF+VmuPtrr0oAmbN0qdfVvZuanIZTgavwLsmZehHd/mo4jIpZchRjwyX0/neV+/Mln13CDoPv7rfqjjkypEMH5vMLj9d5C7w36LP9EBza+c0swLzWno1NtC5jZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kJ67GseK; arc=none smtp.client-ip=209.85.128.50
+	 MIME-Version; b=rHTv8d5WQBixmirtM2QdUTB8ElZrQhlV2a+qjGbi+x1BT6oI2ZODSImPbwcrcKPMsEtv4hyGy50nsHsDkSUX8qJHHtLh0am/Qo/Gf9FlqXRmwXOS6s0SRw2m+r3liDQicD4eYTTOQmqLSCrDy2XhUWPV9puSIk8mz2Kb4omt7nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L9CG6Hmh; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kJ67GseK"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-495590dde14so38621735e9.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 06:19:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L9CG6Hmh"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4954f5e8020so17818315e9.2
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 06:20:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786108795; x=1786713595; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786108801; x=1786713601; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JFwnycb9pT/CeFOR+3rV5yTDz73HQ1IY/EPJ9WblqSc=;
-        b=kJ67GseKWztVBEt1G6HCpMjmx57HHOTCojzwIJzRYpAWdcL8AyoRTIrvFtnen/cB/U
-         gJvRkOnwf/kP0dPNdpI4P8aSp6H49iskdMSH7aKWCcu1CvfIpbzp4MQUkMHk4Ht3NfbX
-         pqZFTzDF4FpAn/U9/2sMYsy3N5Pu3W1LgHGX746kdSj/UfLRBNui87lZXEKsgz6riiff
-         FRGOWSl7pQRAYxy3e+CvcJolD972O+5ZFMiPvM+/RlQH3Jt2u+kG2NEjge0A79I0ubru
-         3LD0AjLJd0aJy8mz4vLNmYbo8PK8U8hrNLYhN5uhdzeu+jduBP12AalmBiyk25LUTZmZ
-         obiQ==
+        bh=cqYb2eoQn70P2RDf/h3UF8nL8mb6Z4ebRKt/6kWIC1M=;
+        b=L9CG6HmhmReO1NS5PcFpylqrPF3kOBEkLpWMJhGdx8PD3qM0Y+DmhdiwSwyzf7ezTH
+         hk5u89n912eki59N6apo6NlsXscb4TD5FOzKBAE2vHa8VykyOj23evQS4214T2tEANXr
+         gES6rwhPfuMlReqXURcsjSkfEwG72hx9fk8UCp+fvBEekjdy4ecnsqamq3QV899412MA
+         WVr1KKaSR3TpSgWYkt0Snp8ZYm6P53E9BgrpZcjiFfPI3JvVf1B4hY6i/di3xljuovR2
+         NKBa/02bMAfMnjKRKgAr+ol944dbsPDyjWtLR4IYZ2LcSW3igCvjDqCINVyBqhOybSnf
+         ZvBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786108795; x=1786713595;
+        d=1e100.net; s=20251104; t=1786108801; x=1786713601;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JFwnycb9pT/CeFOR+3rV5yTDz73HQ1IY/EPJ9WblqSc=;
-        b=Eb23Z1qQBKVSjrsLzzVuCgqIg3yUpE4X+4pE02v+jL1SHCeLwGlMZQUNgcRV25Em/5
-         sMt04hYd4Mt7q4CoVdp17ciPhh7a9pEbZ/CnQjPgss7BcGNCg6Jh5WHqb9yyt4C2kdph
-         rHUDCXUvwxv9CS8ZgnA2VjO/kAMlcFuVtJfL7v5Mj+wYD6v9YgnHCqIMQEPuVl/OCXEo
-         CQTjWLEMlHZGMdklTpJMP4Hd7bUGTRzwStEgSDe/7r8ayocaxORH7Q1f6m2OWAIt7To4
-         zBx1bjZ04UesOGXRzOzHC49O3kKJuMytl0/n45xSwa6aVDI+p3D+NXBKpTY0Dh8xFGeE
-         /iJA==
-X-Forwarded-Encrypted: i=1; AHgh+RqABNlUNG6cH5HOhHJYQAQAUud2l6cYcgW3zP/yeetyjOiiFT8xYfEdxI4G/euKKTp40m5vqJo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+oR87Nl9uKsiNC0aQUTEFx5s7OZTkVod3x9NLjXuOjPcGbDHH
-	cC7pgQCTtPoniQbHSP5nwUsBM1AcYnm7B5ahkDMwXcMKg2GE6ecBFQd7
-X-Gm-Gg: AR+sD133nPzdlVlg+S/+Q5Hjg61c+kz2+8kxYP1kJW8KOqYocIz/g2mlIoNiNp//3rU
-	L617KOKhErt2f+VmA+FqawWJdT0Ese9TcZ+08IvuoOVsAZwHGq+NtR6m5IVd9JzgtZRcz6e2U86
-	SGTyhlgnaJ+oLP0CDWRUkzyGbcqLDn0aThXjMNFixxjihcQGMSfiiWlFHaK4veNhO+LZLfzsNdB
-	5VcvS2sBtFAHk2PB+83fqCzrx61YeDTgaJ2lXZjWJE5CHhlRlqI9Oits24786cCQ5qQiImeF2+t
-	57WLhd84uatflMtyonuQuix4SK8kF4jpUk2ijx85u0oJPtStWST7lz1E3ttF7TD7CSVukNfe9c7
-	ABsHQv6J925iM+r4OmA2YM7/lRs7u1VNXFu/YtXRU/65MA/zbMe8nQeh97xhqvOp7mSWWL7DhmA
-	4cJaOncmjKRTn3gNC9wGJyKfzm56NaHs/XM7kdptvd7nlH+5r1fQ0rYVRFBk8G/edRoG8FTvzKj
-	fAgRcPQw/lbdTei5r7oRlJWOZQPn1oi9v0Zik3R6CaDUGvFEl37qLWjiPWjalsbrJbFmtC0TAJJ
-X-Received: by 2002:a05:600c:474a:b0:496:c361:fb96 with SMTP id 5b1f17b1804b1-4994e6db5aemr273450105e9.0.1786108795242;
-        Fri, 07 Aug 2026 06:19:55 -0700 (PDT)
+        bh=cqYb2eoQn70P2RDf/h3UF8nL8mb6Z4ebRKt/6kWIC1M=;
+        b=Y0NEpGSoOI9qSaSCFGnptnkquBKAhuU6s5VEiPsDc1gU212JVnPJXlH0bbo4llXYl1
+         MHByMu9902oG25AyUivBgKa2z76MLkaXMGNyHA0vOg5RyFwaK8KLELb8kznSMpxNKocB
+         K5eHs8fIVzat2t3aLcqoucpjB/jTid3RxHjcN88czjobW91kSoXuAAYOD2c2Kh+CXu9W
+         txDp7OP9ZyPpS+tBsJd3mfoNwTBlQMZlWDv+zNRmrS58AqspX1MWeD+O9c+AD+Y7igoY
+         UrWClwDbrsgX3LpmVtP6RlFsyTrZtIaPnoQl4KeTkFO2Qw+QhAGC7mXDQQl7br7jTkwR
+         Vs1Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqRKBllemwP1TNi9nPRxYkNskmT9cXt9SP0cJjpHxsWcbaC+OiMtrcrQLyTUvamQiw2uoeoxuQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhsWq3rKrf1wuXMY9KUYH/elXHbvRwMT1Z1qLtJaDghkfjCoOM
+	Yy1JNlmwScL9M8AszMIrHJ7j3IPIB4ek3wqWgKRVjja2Qx6gRa/+0FFdReSCCmoZ
+X-Gm-Gg: AR+sD12Guvf9T3o24c1r7NGXxEweRv+lncQwSdI/jXn21xExqxmJjTwqUQHx6PEopM5
+	WtALEtahVBrA0ae3lIxbMurZ/wfiihUWl1rXoItj/JcrNIM8BqCBdo4eOfktiruevMSJohjaM1J
+	1I4lQnf9tOvPB2023snMgviVNIjjuzUoBdyDpwqXcVIWX/g9aegCHo55ZwE0ZEXbCaEtg/zobVU
+	2NLqsjemGQP27MairIxPDLl4utRvp0RwyvPr/atWBPAJpxMijVPWSrDFjpkP9mGz0QssS8ztzua
+	aQhcIOlVy1jFXWpmCrX9gpiWZkeZIcBXWN7a7lnr2nOK1yhdumqJ2HfRalJ2AvbrQXtQZCo0pgW
+	uf5BFRyKzcls8M5iSjnn8X2krnk/BodY8cYqEEMtglgiuQ+4dwkv6C1dsHShrOXixSthyDJZGdc
+	1br1QvQR8YH/0nVsis5mH8CB2AD6lGC6Xd9D2DVsXgKR5Q3EXUFt2zhyPiD0i+nVKmYE5Ruu26E
+	LGpd8oX9iJ7Jf6CC9pZ1MGwZVTWgJU6zmyTMKXk4oIsEnxBojQ4tfM8FzqtMcHeaA==
+X-Received: by 2002:a05:600c:1d24:b0:496:c9cd:e7ab with SMTP id 5b1f17b1804b1-4995e08452bmr52792775e9.5.1786108800794;
+        Fri, 07 Aug 2026 06:20:00 -0700 (PDT)
 Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995427a244sm144125015e9.10.2026.08.07.06.19.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995427a244sm144125015e9.10.2026.08.07.06.19.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 06:19:54 -0700 (PDT)
+        Fri, 07 Aug 2026 06:20:00 -0700 (PDT)
 From: Pavel Begunkov <asml.silence@gmail.com>
 To: io-uring@vger.kernel.org
 Cc: asml.silence@gmail.com,
 	netdev@vger.kernel.org
-Subject: [PATCH io_uring 10/16] io_uring/zcrx: don't pass ifq_reg to area creation
-Date: Fri,  7 Aug 2026 14:19:28 +0100
-Message-ID: <76751ee4747abb4893058fcaaa36895dfe24a297.1786108672.git.asml.silence@gmail.com>
+Subject: [PATCH io_uring 15/16] io_uring/zcrx: lock area creation with pp_lock
+Date: Fri,  7 Aug 2026 14:19:33 +0100
+Message-ID: <a667399971120227a28d54ebabc50e707f717bf3.1786108672.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1786108672.git.asml.silence@gmail.com>
 References: <cover.1786108672.git.asml.silence@gmail.com>
@@ -77,63 +77,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We might want to create an area without having an instance of struct
-io_uring_zcrx_ifq_reg. Extract a helper that doesn't have the ifq
-registration structure as an argument but takes the buf length
-explicitly.
+Protect __zcrx_create_area() with pp_lock. It's not needed for now,
+nobody can take the lock in parallel, but we'll need it for dynamic area
+creation for avoiding races with the device dying.
 
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
- io_uring/zcrx.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ io_uring/zcrx.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 5b46e1335079..a142d6035f7e 100644
+index 8de142856795..fe36520994e7 100644
 --- a/io_uring/zcrx.c
 +++ b/io_uring/zcrx.c
-@@ -459,21 +459,22 @@ static int io_zcrx_append_area(struct io_zcrx_ifq *ifq,
- 	return 0;
+@@ -330,13 +330,6 @@ static void __io_zcrx_unmap_area(struct io_zcrx_ifq *ifq,
+ 	}
  }
  
--static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
-+static int __zcrx_create_area(struct io_zcrx_ifq *ifq,
- 			       struct io_uring_zcrx_area_reg *area_reg,
--			       struct io_uring_zcrx_ifq_reg *reg)
-+			       u32 rx_buf_len)
+-static void io_zcrx_unmap_area(struct io_zcrx_ifq *ifq,
+-				struct io_zcrx_area *area)
+-{
+-	guard(mutex)(&ifq->pp_lock);
+-	__io_zcrx_unmap_area(ifq, area);
+-}
+-
+ static void io_zcrx_unmap_areas(struct io_zcrx_ifq *ifq)
  {
- 	int buf_size_shift = PAGE_SHIFT;
- 	struct io_zcrx_area *area;
+ 	unsigned area_idx;
+@@ -508,6 +501,8 @@ static int __zcrx_create_area(struct io_zcrx_ifq *ifq,
  	unsigned nr_iovs;
  	int i, ret;
  
--	if (reg->rx_buf_len) {
--		if (!is_power_of_2(reg->rx_buf_len) ||
--		     reg->rx_buf_len < PAGE_SIZE)
-+	if (rx_buf_len) {
-+		if (!is_power_of_2(rx_buf_len) || rx_buf_len < PAGE_SIZE)
++	lockdep_assert_held(&ifq->pp_lock);
++
+ 	if (rx_buf_len) {
+ 		if (!is_power_of_2(rx_buf_len) || rx_buf_len < PAGE_SIZE)
  			return -EINVAL;
--		buf_size_shift = ilog2(reg->rx_buf_len);
-+		buf_size_shift = ilog2(rx_buf_len);
+@@ -579,7 +574,7 @@ static int __zcrx_create_area(struct io_zcrx_ifq *ifq,
+ 		return 0;
+ err:
+ 	if (area) {
+-		io_zcrx_unmap_area(ifq, area);
++		__io_zcrx_unmap_area(ifq, area);
+ 		io_zcrx_free_area(ifq, area);
  	}
-+	if (WARN_ON_ONCE(ifq->niov_shift))
-+		return -EINVAL;
- 	if (!ifq->dev && buf_size_shift != PAGE_SHIFT)
- 		return -EOPNOTSUPP;
- 
-@@ -543,6 +544,13 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
  	return ret;
+@@ -589,6 +584,7 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
+ 			       struct io_uring_zcrx_area_reg *area_reg,
+ 			       struct io_uring_zcrx_ifq_reg *reg)
+ {
++	guard(mutex)(&ifq->pp_lock);
+ 	return __zcrx_create_area(ifq, area_reg, reg->rx_buf_len);
  }
  
-+static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
-+			       struct io_uring_zcrx_area_reg *area_reg,
-+			       struct io_uring_zcrx_ifq_reg *reg)
-+{
-+	return __zcrx_create_area(ifq, area_reg, reg->rx_buf_len);
-+}
-+
- static struct io_zcrx_ifq *io_zcrx_ifq_alloc(struct io_ring_ctx *ctx)
- {
- 	struct io_zcrx_ifq *ifq;
 -- 
 2.54.0
 
