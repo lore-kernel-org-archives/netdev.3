@@ -1,82 +1,50 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E53426437
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 11:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7423FE644;
+	Fri,  7 Aug 2026 11:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786103316; cv=none; b=InH72CGll5qYAFn4qNPjEv7dSa2C2dn/NG6XSd9UKAB7MZsZTwfCKgpGD9qQpJJDvxbMK5GcKUUR7dy7BPevSUZ80gTEzF4EOR0roLKtxsJGnY8ioI5t+J/Hmp+hRVCtsKUtbvfBmt+7RBhGaCWSkUPmZqOgFhZTf12nR2VNIao=
+	t=1786103371; cv=none; b=fkOADYQ/F9gfjP+SrxM5PBEeaFipquCMf1rBz5+Dkje+3ADGOpWK2GfJVhG8rueD/0T0gi+Pf/X7c+l5rnHIRBsVxx6vUFiUwiJvk2zjP2ZnPyxa8kGxXVgeC3tm0QIOQDILp7U31g7gsBg44CP+4+DRcwjKdbSNt4CNtP1aF54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786103316; c=relaxed/simple;
-	bh=dBRcctB1HbE1wp3EANcrd4ceGJoZwfhb665DWjmN70M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nnej67QwKmQXvkDxEzzwYztWQ35e5HJX/NQ+qf0ja6wQvD3Y2G5QiTVssbNIfOaLTZLv4SIKx5EccIGVX4zu244tUF2Qiiy/Rcdfl8ped8Car92WE6V4v8O7XfXdA2UuRTj3nyxIyqudosPHUJytMEFl1X74hae/y/YeVTQKI0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=frMM/js9; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786103371; c=relaxed/simple;
+	bh=IiTixi9C3RoKTu6cZNLff09DrEVQ40crqIsXh+KYYcw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AJfGKL+I+Q6lnusDjpKpJsLtJFjY4vjzHqawzH4H8iho4/PcbjKuWxa1bgg3LX4xRiP+S+n9vbpu6NlYbaKTj8lNphAtlpbeFsLArOBZizLQe3A7uTS0k0ARxgBOWqMyg+1dgHAPYU25xxUdKj3VJUnJNhg37Dg5RT2mtXC4rFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=cQY4A06x; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="frMM/js9"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8485bd28dd0so3671895b3a.2
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 04:48:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786103309; x=1786708109; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=n7mwOnPyfiCCwq729LgAnh/HsggJnMmpUOleEikcENM=;
-        b=frMM/js91S+8AZobTBXBz9e5mOmpdcxZlXhedXuBUQBGgdXSix1ekWfygsorDgFEER
-         szlkywL3GalAntpw/ix1eYxDsC9OPsq7pkmHR+dOzUBf+3ZNE0OSYqP68KllsZfoAkdI
-         4aemGysoYpGJ8SohgibXsPE7jujkRiTrZPpMgVGKIa6nmuLBTRgsIyCeaszVTg6Vr7N1
-         aa2dZEPV2LdhwYDtWtFPr2QyUuuqIhv1ZIZfwZj+4geo4uN+h6LMpiZ+0JfTmjCSASUS
-         J4G3xV88VFCfXY7GM+T6zcIPffDa8AzovrzDj9JegOStH+vDgcUQbT/Dv/zuqn/zCfUt
-         nStg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786103309; x=1786708109;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=n7mwOnPyfiCCwq729LgAnh/HsggJnMmpUOleEikcENM=;
-        b=MC6rTi+RRj8SGY4ATZnBNH4sO+k9yYs4HRPiSPLxkWV+VEuctL5LGmXKmxfJpTlZWy
-         7wjNZ55wiP2lsXu/EySqAfscV2rGEZogTSE1YmRFo0m6WQtaxbHBQZqOT8vXPVDhQ533
-         nk+cZLMBSdP1/xqxcoq1As5O0Xq2sGr6+DcUSoziKLYOh6mTHciyLzWe0y/nhhYbgcbJ
-         oroMZYVwZOH4pJi9woVfnxjc5Q5tKoDv9L68JuMgrVLHIwBCpURphIRzsebrKts847sc
-         FnujWEbTyci5sjHcZPNn/9AW7gzeWxPw116CPaowk9kJhWSgckd2Z9DdakCB7andxlSK
-         6iKw==
-X-Forwarded-Encrypted: i=1; AHgh+RpkbGIm/jL63KEgbn6GhRbHaEsBwC3TGDTbqbWmlJwDU1AfYpyhr7bflViW5qMTp097JAKgLjQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUIHV8fGgVDRtx9lN5Ediy43P1Dgn9j6vejv6XwxtK0yQLe7Ok
-	I7CJbBMvng9wiJaN3Auv6esMnrdVh8egWm9wwcoL9qSlLHiUofDzCAKY
-X-Gm-Gg: AR+sD11PEUpC6pL9irzjo+jYruQz3GO54BQ9Dt34wvqQAD9ezDaaRvnRl0/dHergmCI
-	Afb23WogXdsmua1vD6iIF4klEHMPGeDgOXLpZO0jSajCXI0Vcehheg01kfFmMg5yg+1YRMrhZcv
-	49pUnjClgAGegSBZtQT3emlOHTUcU06RKDsJ/2Ni+Aa92CUYdjzv5e9QaBD5wNN8u8Qc3Xrd3PD
-	05rWwV68bcICKnnnIlMNX8pFnb+2FuogOp7Gtv96Y8xyTD5rwHKxZmmxHQRwLgcDiihJkp1bKrf
-	yVecVCcRWCVXsAZPs+9oKBPqP9hFVC9Zc6EYwE+LVolV391fMmS+qh8P9dsQVQB+Ykqb7UqBFnK
-	d/1IzsjVmFptJQpx/SSfBPP+BEBsuFMtEMiOmtmyo0iKKQa1JYhAZZDnlyfQyUZIzIBUHlaMydq
-	i8fnETgOb84wulYGN8lqNuV3PGFBSSv2A466RgsqXAXUstydXB118IwA4MFcCqNfIN8uibHi78J
-	g==
-X-Received: by 2002:a05:6a20:3d1a:b0:3c3:719d:dfe2 with SMTP id adf61e73a8af0-3cb85f4e179mr25112695637.36.1786103308527;
-        Fri, 07 Aug 2026 04:48:28 -0700 (PDT)
-Received: from amd.ban-spse ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315be86fc7bsm7011180eec.1.2026.08.07.04.48.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 04:48:28 -0700 (PDT)
-From: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Claudio Imbrenda <imbrenda@linux.vnet.ibm.com>,
-	Asias He <asias@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chaithanya Lagisetty <nagachaithanya9911@gmail.com>,
-	syzbot+53515d23498d641e21ea@syzkaller.appspotmail.com
-Subject: [PATCH] vsock: fix memory leak of rejected child sockets in vsock_accept()
-Date: Fri,  7 Aug 2026 11:48:04 +0000
-Message-ID: <20260807114804.320862-1-nagachaithanya9911@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="cQY4A06x"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=+lbd/1MNGm4HT0GuWsiCSQDSsz/SkBpL3XmixSXX94E=;
+	b=cQY4A06xoXiuvo2WO1JIxDjiCzCVLBgFgKix3UB+3Jtrl2jto73NrLgC9FIi7hOHM0J0aG9A+
+	FpRBDrZxOdduEJv5qOMkkqKaNox5OE6bnLevpFFCoQBvR7tQuDx3KLtYIP8uJJaIG3bLraUNzw2
+	MgN5/29mocUqN7U708FwHPA=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4hGhxz5jbtzpSvD;
+	Fri,  7 Aug 2026 19:39:19 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 364034057F;
+	Fri,  7 Aug 2026 19:48:53 +0800 (CST)
+Received: from localhost.huawei.com (10.90.31.46) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 7 Aug 2026 19:48:52 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<hawk@kernel.org>, <ilias.apalodimas@linaro.org>, <almasrymina@google.com>,
+	<toke@redhat.com>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
+	<ningwei15@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH v5 net] net: page_pool: fix UAF in __page_pool_release_netmem_dma on xa_cmpxchg race
+Date: Fri, 7 Aug 2026 19:48:30 +0800
+Message-ID: <20260807114830.344336-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,128 +52,183 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-When a listener socket carries an error (e.g. sk_err set by a connect()
-issued on the socket before listen()), vsock_accept() dequeues the child
-from the accept queue but rejects it. Previously it only marked the child
-as rejected and relied on vsock_pending_work() to clean it up. However,
-rejected child sockets created through virtio_transport and vsock_loopback
-never reach that cleanup path, causing the child socket, along with its
-LSM blob and transport-specific state, to leak permanently.
+This bug was discovered while testing the hns3 driver under channel
+reconfiguration (`ethtool -L` / `ethtool -G`) with iperf3 traffic on
+arm64. The race is intermittently triggered when page_pool_destroy()
+runs page_pool_scrub() concurrently with page return via
+page_pool_put_netmem() on a different CPU. A WARN in
+page_pool_clear_pp_info() surfaced the dangling DMA index bits left
+by the cmpxchg loser, which led to the investigation.
 
-Fix this by releasing the child's references directly in vsock_accept()
-on the reject path: remove it from the connected table and drop the
-references taken by sk_alloc(), __vsock_insert_connected() and
-vsock_enqueue_accept(), so the socket reaches vsock_sk_destruct() and is
-freed. The now-unused 'rejected' flag and its handling in
-vsock_pending_work() are removed.
+page_pool_scrub() iterates pool->dma_mapped via xa_for_each() with no
+page ref held. __page_pool_release_netmem_dma() currently reads and
+writes netmem fields (dma_addr, DMA index bits in pp_magic) after
+xa_cmpxchg() returns. The unref path calls put_page() unconditionally
+regardless of the cmpxchg outcome; when it loses the cmpxchg, it still
+frees the page before the scrub winner finishes these netmem accesses,
+so scrub touches a freed page -- a Use-After-Free.
 
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Reported-by: syzbot+53515d23498d641e21ea@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=53515d23498d641e21ea
-Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Fix this by splitting the DMA release into two functions:
+
+1. __page_pool_unmap_netmem_dma() caches dma_addr before xa_cmpxchg(),
+   does the cmpxchg to remove the DMA mapping, and calls dma_unmap on
+   the cached address. It never touches netmem fields after the cmpxchg,
+   making it safe for the scrub path which holds no page ref.
+
+2. __page_pool_release_netmem_dma() wraps the above and additionally
+   clears dma_addr and DMA index bits in netmem fields. This is safe
+   only when the caller holds a page ref, so it is used by the return
+   path (page_pool_return_netmem).
+
+The scrub path calls __page_pool_unmap_netmem_dma() directly; the return
+path calls __page_pool_release_netmem_dma().
+
+Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
+Suggested-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Assisted-by: OhMyOpenCode:GLM-5.2
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- include/net/af_vsock.h   |  4 +---
- net/vmw_vsock/af_vsock.c | 38 ++++++++++++++++++++------------------
- 2 files changed, 21 insertions(+), 21 deletions(-)
+Changes in v5:
+- Replace goto label with if block per Jakub's review.
+- Add bug discovery context to commit message per Jakub's request.
+- Add Reviewed-by tag from Mina.
+- Link to v4: https://lore.kernel.org/r/20260731111507.2355601-1-shaojijie@huawei.com
 
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 30046a3c20f7..b70cea7f754f 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -53,12 +53,10 @@ struct vsock_sock {
- 	 * for connection requests are placed in the pending list until they
- 	 * are connected, at which point they are put in the accept queue list
- 	 * so they can be accepted in accept().  If accept() cannot accept the
--	 * connection, it is marked as rejected so the cleanup function knows
--	 * to clean up the socket.
-+	 * connection, the child is cleaned up directly in vsock_accept().
- 	 */
- 	struct list_head pending_links;
- 	struct list_head accept_queue;
--	bool rejected;
- 	struct delayed_work connect_work;
- 	struct delayed_work pending_work;
- 	struct delayed_work close_work;
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 622dbd046799..2084c88ac836 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -39,9 +39,9 @@
-  * from the listener socket's pending list and enqueued in the listener
-  * socket's accept queue.  Callers of accept(2) will accept connected sockets
-  * from the listener socket's accept queue.  If the socket cannot be accepted
-- * for some reason then it is marked rejected.  Once the connection is
-- * accepted, it is owned by the user process and the responsibility for cleanup
-- * falls with that user process.
-+ * for some reason then it is cleaned up directly in vsock_accept().  Once the
-+ * connection is accepted, it is owned by the user process and the
-+ * responsibility for cleanup falls with that user process.
-  *
-  * - It is possible that these pending sockets will never reach the connected
-  * state; in fact, we may never receive another packet after the connection
-@@ -49,9 +49,7 @@
-  * future, after some amount of time passes where a connection should have been
-  * established.  This function ensures that the socket is off all lists so it
-  * cannot be retrieved, then drops all references to the socket so it is cleaned
-- * up (sock_put() -> sk_free() -> our sk_destruct implementation).  Note this
-- * function will also cleanup rejected sockets, those that reach the connected
-- * state but leave it before they have been accepted.
-+ * up (sock_put() -> sk_free() -> our sk_destruct implementation).
-  *
-  * - Lock ordering for pending or accept queue sockets is:
-  *
-@@ -774,11 +772,11 @@ static void vsock_pending_work(struct work_struct *work)
+Changes in v4:
+- Restructure per Mina's review: merge page_pool_remove_dma_mapping()
+  into __page_pool_unmap_netmem_dma() with dma_unmap inlined via goto
+  label; simplify __page_pool_release_netmem_dma() to a thin wrapper.
+- Link to v3: https://lore.kernel.org/r/20260729110249.2824835-1-shaojijie@huawei.com
+
+Changes in v3:
+- Fix unlikely() to likely() for PP_DMA_INDEX_BITS to match
+  file convention.
+- Link to v2: https://lore.kernel.org/r/20260727132612.3277927-1-shaojijie@huawei.com
+
+Changes in v2:
+- Redesign the fix per Mina's review: v1's unconditional
+  netmem_set_dma_index() introduced a UAF when the scrub path
+  (no page ref) writes to a page freed by the unref path.
+- Cache dma_addr before xa_cmpxchg; move dma_addr/DMA index
+  cleanup to page_pool_return_netmem() which holds a page ref.
+- Rename page_pool_release_dma_index() to
+  page_pool_remove_dma_mapping() to reflect its new role as a
+  pure cmpxchg wrapper.
+- Link to v1: https://lore.kernel.org/r/20260724092135.414699-1-shaojijie@huawei.com
+---
+ net/core/page_pool.c | 66 +++++++++++++++++++++++---------------------
+ 1 file changed, 35 insertions(+), 31 deletions(-)
+
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 21dc4a9c8714..50ee550fef73 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -500,29 +500,40 @@ static int page_pool_register_dma_index(struct page_pool *pool,
+ 	return err;
+ }
  
- 	if (vsock_is_pending(sk)) {
- 		vsock_remove_pending(listener, sk);
--	} else if (!vsk->rejected) {
--		/* We are not on the pending list and accept() did not reject
--		 * us, so we must have been accepted by our user process.  We
--		 * just need to drop our references to the sockets and be on
--		 * our way.
-+	} else {
-+		/* We are not on the pending list, so we must have been accepted
-+		 * by our user process (rejected sockets are cleaned up directly
-+		 * in vsock_accept()).  We just need to drop our references to
-+		 * the sockets and be on our way.
- 		 */
- 		cleanup = false;
- 		goto out;
-@@ -942,7 +940,6 @@ static struct sock *__vsock_create(struct net *net,
- 	vsk->listener = NULL;
- 	INIT_LIST_HEAD(&vsk->pending_links);
- 	INIT_LIST_HEAD(&vsk->accept_queue);
--	vsk->rejected = false;
- 	vsk->sent_request = false;
- 	vsk->ignore_connecting_rst = false;
- 	WRITE_ONCE(vsk->peer_shutdown, 0);
-@@ -1919,14 +1916,19 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
- 		vconnected = vsock_sk(connected);
+-static int page_pool_release_dma_index(struct page_pool *pool,
+-				       netmem_ref netmem)
++static void __page_pool_unmap_netmem_dma(struct page_pool *pool,
++					 netmem_ref netmem)
+ {
+ 	struct page *old, *page = netmem_to_page(netmem);
+ 	unsigned long id;
++	dma_addr_t dma;
  
- 		/* If the listener socket has received an error, then we should
--		 * reject this socket and return.  Note that we simply mark the
--		 * socket rejected, drop our reference, and let the cleanup
--		 * function handle the cleanup; the fact that we found it in
--		 * the listener's accept queue guarantees that the cleanup
--		 * function hasn't run yet.
-+		 * reject this socket and return.  The child was found on the
-+		 * listener's accept queue, so it still holds the references
-+		 * taken by sk_alloc(), __vsock_insert_connected() and
-+		 * vsock_enqueue_accept().  Drop them here so the socket is
-+		 * destroyed.  We cannot defer this to vsock_pending_work():
-+		 * rejected child sockets created through virtio_transport and
-+		 * vsock_loopback are not cleaned up by that worker, so the
-+		 * child would otherwise leak permanently.
- 		 */
- 		if (err) {
--			vconnected->rejected = true;
-+			vsock_remove_connected(vconnected);
-+			connected->sk_state = TCP_CLOSE;
-+			sock_put(connected);
- 		} else {
- 			newsock->state = SS_CONNECTED;
- 			sock_graft(connected, newsock);
+-	if (unlikely(!PP_DMA_INDEX_BITS))
+-		return 0;
+-
+-	id = netmem_get_dma_index(netmem);
+-	if (!id)
+-		return -1;
++	if (!pool->dma_map)
++		return;
+ 
+-	if (in_softirq())
+-		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
+-	else
+-		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
+-	if (old != page)
+-		return -1;
++	/* Cache dma_addr before xa_cmpxchg. The scrub path holds no page ref;
++	 * the unref path calls put_page() regardless of cmpxchg outcome, so
++	 * after the cmpxchg we cannot safely touch netmem fields.
++	 */
++	dma = page_pool_get_dma_addr_netmem(netmem);
+ 
+-	netmem_set_dma_index(netmem, 0);
++	if (likely(PP_DMA_INDEX_BITS)) {
++		id = netmem_get_dma_index(netmem);
++		if (!id)
++			return;
++
++		if (in_softirq())
++			old = xa_cmpxchg(&pool->dma_mapped,
++					 id, page, NULL, 0);
++		else
++			old = xa_cmpxchg_bh(&pool->dma_mapped,
++					    id, page, NULL, 0);
++		if (old != page)
++			return;
++	}
+ 
+-	return 0;
++	dma_unmap_page_attrs(pool->p.dev, dma,
++			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
++			     DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
+ }
+ 
+ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t gfp)
+@@ -728,24 +739,16 @@ void page_pool_clear_pp_info(netmem_ref netmem)
+ static __always_inline void __page_pool_release_netmem_dma(struct page_pool *pool,
+ 							   netmem_ref netmem)
+ {
+-	dma_addr_t dma;
+-
++	/* Caller must hold a page ref: __page_pool_unmap_netmem_dma() is
++	 * safe without a ref, but the field clears below require it.
++	 */
+ 	if (!pool->dma_map)
+-		/* Always account for inflight pages, even if we didn't
+-		 * map them
+-		 */
+ 		return;
+ 
+-	if (page_pool_release_dma_index(pool, netmem))
+-		return;
+-
+-	dma = page_pool_get_dma_addr_netmem(netmem);
+-
+-	/* When page is unmapped, it cannot be returned to our pool */
+-	dma_unmap_page_attrs(pool->p.dev, dma,
+-			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
+-			     DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
++	__page_pool_unmap_netmem_dma(pool, netmem);
+ 	page_pool_set_dma_addr_netmem(netmem, 0);
++	if (likely(PP_DMA_INDEX_BITS))
++		netmem_set_dma_index(netmem, 0);
+ }
+ 
+ /* Disconnects a page (from a page_pool).  API users can have a need
+@@ -1171,8 +1174,9 @@ static void page_pool_scrub(struct page_pool *pool)
+ 				synchronize_net();
+ 		}
+ 
++		/* No page ref, dma-unmap only. */
+ 		xa_for_each(&pool->dma_mapped, id, ptr)
+-			__page_pool_release_netmem_dma(pool, page_to_netmem((struct page *)ptr));
++			__page_pool_unmap_netmem_dma(pool, page_to_netmem((struct page *)ptr));
+ 	}
+ 
+ 	/* No more consumers should exist, but producers could still
+
+base-commit: 594d905195024b228c962627ae5ae7c17bd582a4
 -- 
-2.43.0
+2.33.0
 
