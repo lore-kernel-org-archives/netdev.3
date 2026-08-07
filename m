@@ -1,156 +1,133 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51C741CB57
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 10:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786097477; cv=none; b=OisUd2kJrA9Oq3FP7EI5JmmA1lb4qQMxlR1ONAFxZBI24NovQ6PutziEnQRUPE0hmdKWN8ASdBOCDafgwboNU1GxkYgH5vaBSC+mR4N1AZVnSSY/Qu+gjMonGeMzd5HotDX9yXupyri+XgcQAQYaffhH+mx+736kqmx3ijX3zjc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786097477; c=relaxed/simple;
-	bh=PzJAzmMlMAwzz07m1rStOfmSbMehiPpj8jWRb5DmwqU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E3E+/sjH0wFoi6fV9JbwcbBTZQsKrPbRQAZgElcXrPDNmSyyiNFoeEdbhP94BmBdxLHm7xsS582eXQzm87U4eRwdRO3hRfW0q8c9HUhG6hF5Ti6/7vaUouMkzRuXVE+xAJDdpzrHlg0pw9jXXrGnmAf+bsEhVi7SMkJIttayJGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UD83MMOz; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFFD37AA94
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 10:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786097506; cv=pass; b=SR10PerkIBEhqer/LYaePnLVWe5vkKIXqX0xlAshFYMjHx8aUQ62RC+XlV/V7FB04o0AIWJsknpXs4uhAU3zEry4VHqgrucvaROoGN3GarfwjyIZfglKvUE6QTJUozRmEganDXXHu9+QRjN6GaG3SLGf7NMin8nEiv6QpuukfLo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786097506; c=relaxed/simple;
+	bh=zdxgfaDL7vWIO0bJwbL8U29BOQdGbtp0IGf3LADiyZE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sot/O6Tqlp+o/MNK9qBvbQ5yXhjb7qs8220KRK+uhRE5NC+zXkByHN+30KXzexZKInuMm0oinArxMZ1EbvZ2IfD4XqorCfJ180E5BEeAXC4rf1NeS3g7F/kQAIEB+kJJZ1YgzlxRxAgDpafnS4bD3315uHmVwiu3G8XnPruqdQY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o1xH8h3P; arc=pass smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UD83MMOz"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-495437bb891so17026085e9.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 03:11:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o1xH8h3P"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b01146b205so2207066e87.2
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 03:11:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786097502; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kyV+EfgcmYD9xKSNfVZEtZTNDbwtpe8+nuvnw4vG0RHtRrCfZnOczT5BDpgXx6vD+k
+         MjUJaSKiO2zA17tem9Tq1ZQdB5HZNqd7o9DSFfeQ4O38OV2WeDUhq3kfORHqd349/tOv
+         oOd5MkBZ5lbAGa7s/YWGaRapXGJI3iKK3lU/EGwHQzY4fj/E8ikaubNguVGHFhsNiO7l
+         LxgcYi10ZGkdU5YrJED4j78oFMtW3q0ZPP+8x5Y59ysreTk+cVi4Kfg3yIgZoCp2wcTk
+         CsKcDE6LuwAMstMJY576agkX6Dg3LRxDkSysPcsFGd0M9Fzy80OXCb8bRN1Qm4TS586S
+         KJ8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=zdxgfaDL7vWIO0bJwbL8U29BOQdGbtp0IGf3LADiyZE=;
+        fh=dZlPtKxKeotgjqbClC3114vsg/djByv9m/CF7Sn/zVI=;
+        b=bcuJjfkKBA8Q5wRGduc0DGW7uKvwHfg8RqmiVxhrVHhD01tANe25Zl8IYmQ5Eq0vCA
+         xpesHx5saqHbVm4HGG6H8vDjFwicbWlMQU1+v4/BJyng/p/pqu+qgBwlt+0mdZrPtfFB
+         SI1tcPriqsrYOzNKhBHa3rIQOZp0sI7l70x+TkN4QDUVU0+l+aSmqc8P9G9LC2C7UjkQ
+         is9FI9kc5gbFgJtEmuD9ttdUcSwdg5C4MyqNSMM2ArDGD8KtqEh+lXWa0AHYkSEmWcXs
+         1wg5tWq0UWByVKGYoevmlreu/76Y6HIPmerzrTXt+sC0qS21cxtADkpamF1cgg4TEN2o
+         JBrg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786097469; x=1786702269; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sfkgU7jZpdRNXbaepKxMlnZZSP7VZ5dxP7EkmOF/3y0=;
-        b=UD83MMOzcyTD7X+V2QlIB9xnMgUmONeRCkdDp41xPEqcQzNmtxI8xqhNprxKHtz5Bv
-         kSVTLrG/F7cLh17LbFg7D9lydmiv9MrpZaqX0IMuYJpQBGDUB+Ka2e/FO2k6S/r6vAHv
-         k4bGnuHiRe8AvnJ/ag/qycJz9QCAcdRVntLlOrp+5pc396NKxaePv8eYy9GtJ7sgMoQ8
-         f2faXryON032p9UraTthfJNrhCmzGmFr6snT9DbEdGI8E/JegqnmXJOLPULWKCt3MnZI
-         HKhrNNe8a5PGX4toEkcMofvmZHSmq6IFPTwMr0iMMddUD8EyZhQa/qxyPK9PEhMdR77e
-         kQWg==
+        d=gmail.com; s=20251104; t=1786097502; x=1786702302; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zdxgfaDL7vWIO0bJwbL8U29BOQdGbtp0IGf3LADiyZE=;
+        b=o1xH8h3PoPK7IypM0GqH70jZ3+OosLSF+7OFQOvZ1Mg+n4OZ1lnxIwoJSR87ElfQng
+         cBUDEz9NxoKshr5bb4aPpVWH4cJbrNT8IspV5Km+jAaQ4wRkkh4neqmSkSf6t1rFfcpy
+         QC2aCvcQpJ8IGwKGyU7lCCD2x+GfWZ++hIs254CnhNwTx6M3sAwxzAqMd6GlImNuGcOT
+         6ozznhNzcgblueqFH4q5vdIzdTfxos9xu7zeRmXcHyuTyfk6SVfzy5xKeMtz9PMYZELI
+         0rIJJZObFs3hJLhqI1v8hb9ipB0sf1YlW/w6BQ5ESOKYQiWRFXnNlz9mRn8uMrsNB7rd
+         pNcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786097469; x=1786702269;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=sfkgU7jZpdRNXbaepKxMlnZZSP7VZ5dxP7EkmOF/3y0=;
-        b=TVzZg+6y79pzTdRAkBQzEuyYoePVqRduU34smRUETUc/99BbptDb7uEnRcOiDNUkvD
-         QgboerqWwyg5ORrNGhbfvhK/qV7Xf9oALW/I7ogMNN8SuoHjJUeHZCFZwvRk1MFq/0c+
-         v+3M1cSZHjqhIE1HriNq9yxdlWxPHDF6SHLRKANHZwSloGvmlLO+PIkKo/9RxxtCdKCO
-         JDO5dtcMRZxlGe+sjz3UaQ/pYDDF0soyzwKkbjz1QqSZCI3Mgz/O3nq1DI6lmtWXen4d
-         DcskHYe7wSII6STqScpS5oK0bVA2sjMS1Xqeqpc1r3IHl5Yo8PthN0ibwlaYqKAq+k6q
-         +ijA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr3CuGUnkQIOOTGPwzIRDLxOijkaBWXdwWjjtj7Eqqaz6EiPloAmXN9aiSoHybqE4/dp+bSXC8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNZX5UpqA58zwrJ3IpR2DYjPwPrL9JsCGLQ2hrkIBONI60JdWU
-	iuUL7uEdKewQGZGKWtZCb0ofNcWnSw4FmQRRv3KcZBk3yyvLIbF5FOmj
-X-Gm-Gg: AR+sD108yEwHvJrndzBnRg+l51fiTxKxofW7vQCoODNp2z18UI63qExhhAuugpmB+Lw
-	qOFp+nguSfyPXAshKeL7d7uafGRdsW1bbPEeITqwUSLZDDF1FCv8c7dM9CGpZYBk5/XkVhGUB/M
-	2812TuBrpLF+7axeRycztI0h31dTcM7WLZKnu3tNd5kH+MfKBRho7oVFKVNXKde1VDgiopldYXY
-	DcCOmfOi/0AsSTkm5JRph7OjP633GUqbHPjcdJCqzhEoALlXGT20foxeVTVKv0G+CBuHhf/SnIc
-	nFgUJZEom/nW72yMzwcu91cMa4Fg/CsCDhlRSMxgS0xlB9860yyhlmiadN370d7LFdvVqOqQ7Gu
-	SDv+r40V75WpHC94DdkOC1GRe21U69HdJl0uBlzL85XysUwETqzEIatbco7MtKhPcrP+BI6DYp1
-	FT7ZgYXFwmaFvB8hvf51aXVl12Y2wxyznjoBYmjN47gFD+fWPivxYdfuw7bnvz4wZYMsme0RrWQ
-	cy0giLQfTyg3ckksDhnMd0g8b+OKHLR
-X-Received: by 2002:a05:600c:1546:b0:495:3bc6:d381 with SMTP id 5b1f17b1804b1-499553bcbc8mr121186275e9.2.1786097469384;
-        Fri, 07 Aug 2026 03:11:09 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995919df87sm90789365e9.6.2026.08.07.03.11.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 03:11:08 -0700 (PDT)
-Date: Fri, 7 Aug 2026 12:11:07 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
-	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
-	pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org,
-	sdf.kernel@gmail.com, ameryhung@gmail.com, kuniyu@google.com,
-	memxor@gmail.com
-Subject: Re: [PATCH bpf-next v4 3/5] selftests/bpf: Add ksock kfunc test
-Message-ID: <anWvO7ZQh1eEHZie@gmail.com>
-References: <20260806182234.380833-1-mahe.tardy@gmail.com>
- <20260806182234.380833-4-mahe.tardy@gmail.com>
- <c51bef73-17b0-430d-b473-7744141d6dab@linux.dev>
+        d=1e100.net; s=20251104; t=1786097502; x=1786702302;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zdxgfaDL7vWIO0bJwbL8U29BOQdGbtp0IGf3LADiyZE=;
+        b=hwq9T4/l1Cp8Lh5jpf/ivdLDt198x+DFDZiqx3CWDHcnCZ5NupGCR/E2AkFyb1y24r
+         Ym8V9rAC35UZRDhYvvbKsEonn8SulgSyGN/kBBVN5FQbY00MQqbivNxTgSPLYog6gfwZ
+         u3SyphzZU9BFRhUVsLkS0GGyKTWgujjQS8XccUJGHEsoaN8ZztxLaWEIz4MXQazjFRPP
+         k4mcE5v6pZkOGn0oASCPq9qq321fUoZLmuQmsIBZcxtatb7bDzAjWWJ3PJRh2/0ROdKi
+         /AUaZCB1/ym+h+7u5kboXLSWrH9AXPt+CGvIsp9ow0KIGnEcgvtzvfQSr7cN1U0WuzgA
+         Mv8Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rq99zsBh5gZGDKD6QNzW14/qTmLgbUKmjZRA6ElTE4+wxx0VMh3MQmXxyikWVGJuFe0jrYBCGA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwD78LDlnBYp99HRdnr7TPdHiwE6JwubDQQSanTdnhawE9qTzJx
+	M9FtovM9F/1MIDxX6VesBK9nV20HUBf82giN30TeeTP6NLLZmQYM6j7X94pwIhwFf+qBY5EoyDL
+	iSnc9HF6ynUkYuRvP4bZAFEvKcyt/apE=
+X-Gm-Gg: AR+sD13+B7vteQqUrazMPBSRGxb1yIq2uJpdkXZMxfNG4MVSPqg0cttu0PhzE7/DPY+
+	P6Re/swMi8h26v4OIminyZzV/Z3RUBi9ghRRBV9xaoUdCQ6dzu8kTPiPAUj5/y33xoWATqUyiOr
+	E8JK/oL6KYeHazEDaN4EhzdvjA6GeZw7ENIqAmvwrKoizazRfX6xh5mN1dfATViefv46588hcQw
+	toFtgQAIEIMO563mgNOPaor5RV0LZGk1iyy0gA0a6uqBW6rGPWQSuBOyj2aze5nSgBMiCXvO4IS
+	C893orZ8Aeerc7YLrYFNAJJPl6gvJuuHYhjFVyp5SZIhUyYlkZWcLu9goSNNu15rNcyJK5Fym/9
+	3RFZsQmsnAPrbFLanx76+QYnHnTOajkYkg8mcH4Yg7QiKgA==
+X-Received: by 2002:a05:6512:304d:b0:5b2:c5d5:6151 with SMTP id
+ 2adb3069b0e04-5b2f4cdc528mr3181669e87.48.1786097502040; Fri, 07 Aug 2026
+ 03:11:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c51bef73-17b0-430d-b473-7744141d6dab@linux.dev>
+References: <20260804014714.4362-1-sigefriedhyy@gmail.com> <CA+7S2vKRASitG1pK_RPG1L-hDsJyev1q-+ViRhCppBg9aFuZvQ@mail.gmail.com>
+In-Reply-To: <CA+7S2vKRASitG1pK_RPG1L-hDsJyev1q-+ViRhCppBg9aFuZvQ@mail.gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Fri, 7 Aug 2026 19:11:29 +0900
+X-Gm-Features: AUfX_mz5tZNDcI8fdqNR9f_r1Yx0gpuNJ8HlfuHmCbVxvf05NeUXUhbQZ5sIHZE
+Message-ID: <CA+7S2v+upifiRtBmGjHqBbOLFWn_m1dj+mezi7rFZGYLb-DChQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 00/10] ipv6: report why a route was deleted in RTM_DELROUTE
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Chris J Arges <carges@cloudflare.com>, Daniel Zahka <daniel.zahka@gmail.com>, 
+	David Ahern <dsahern@kernel.org>, David Wei <dw@davidwei.uk>, 
+	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Gal Pressman <gal@nvidia.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Nimrod Oren <noren@nvidia.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Aug 07, 2026 at 05:12:21PM +0800, Jiayuan Chen wrote:
-> 
-> On 8/7/26 2:22 AM, Mahe Tardy wrote:
-> > Add
-> [...]
-> > +
-> > +SEC("lsm.s/socket_bind")
-> > +int BPF_PROG(ksock_socket_bind, struct socket *sock, struct sockaddr *address,
-> > +	     int addrlen, int ret)
-> > +{
-> > +	struct __ksock_ctx_value *v;
-> > +	struct bpf_ksock *ks, *tmp;
-> > +	u32 pid = bpf_get_current_pid_tgid() >> 32;
-> > +
-> > +	if (ret || pid != target_pid)
-> > +		return ret;
-> > +
-> > +	v = ksock_ctx_value_lookup();
-> > +	if (!v) {
-> > +		send_ret = -ENOENT;
-> > +		return ret;
-> > +	}
-> > +
-> > +	ks = NULL;
-> > +	bpf_rcu_read_lock();
-> > +	tmp = v->ctx;
-> > +	if (tmp)
-> > +		ks = bpf_ksock_acquire(tmp);
-> > +	bpf_rcu_read_unlock();
-> > +
-> > +	if (!ks) {
-> > +		send_ret = -ENOENT;
-> > +		return ret;
-> > +	}
-> > +
-> 
-> 
-> Since bpf_ksock_send() is sleepable, every consumer of the kptr is
-> necessarily a sleepable program and thus has to open-code the same
-> bpf_rcu_read_lock()/acquire/unlock sequence before each send.
-> 
-> Given ksock_common.h already wraps the insert side, how about also
-> providing the get side, e.g.:
-> 
-> static inline struct bpf_ksock *ksock_ctx_get(void)
-> {
->     struct __ksock_ctx_value *v = ksock_ctx_value_lookup();
->     struct bpf_ksock *ks = NULL, *tmp;
-> 
->     if (!v)
->             return NULL;
->     bpf_rcu_read_lock();
->     tmp = v->ctx;
->     if (tmp)
->             ks = bpf_ksock_acquire(tmp);
->     bpf_rcu_read_unlock();
->     return ks;
-> }
-> 
-> These selftests will be the reference everyone copies from, so
-> encapsulating the RCU dance here also documents the correct usage.
-> 
+Reply to comment in the other sashiko run:
 
-Yeah good idea, I'll just keep a slightly difference dance using
-bpf_kptr_xchg() in the ksock_lsm_verifier.c program because I want the
-verifier to bump against bpf_ksock_send() restriction explicitely and
-not bpf_ksock_acquire().
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260804014714.4362-1-sigefriedhyy%40gmail.com
 
+> Should the netlink socket returned here be closed by the callers?
+> [...] Would a defer(rtnl.close) [...] make teardown explicit?
+
+> Same question for this raw ICMPv6 socket [...] Would a
+> defer(sock.close) here be preferable?
+
+> is the stated reason for the retry loop accurate? [...]
+> addrconf_dad_begin() takes the early branch and never sends a DAD
+> probe at all [...] Could the docstring describe that tentative
+> window instead?
+
+The comments above look valid, but I do not think they affect the
+correctness of the test code, so it does not seem worth sending a v6
+just to fix them. If a v6 is needed for other reasons, I will fix
+them there.
+
+> Should the #else branch also get a stub for ip6_del_rt_reason()?
+
+The ip6_del_rt() stub exists only because __remove_nexthop_fib() in
+net/ipv4/nexthop.c is obj-y and calls it with CONFIG_IPV6=n. The new
+helper has no caller outside net/ipv6/, so a stub for it would be
+dead code. I would rather add one when a caller needs it.
+
+Thanks,
+
+Yuyang
