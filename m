@@ -1,118 +1,165 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BB33F4845;
-	Fri,  7 Aug 2026 23:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FE73F4854
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 23:29:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786145361; cv=none; b=aoYu3tY1lzZctrR0JafT1WWJ8X1DwRJI07mgemTQHuon5+qlAG8mdsNYPvEeybi9l0WqODvmA66yn8QPvV4wec5kKhqWcyujsSucuMd/8Ffbui750IXMEM7HFGDr89ayqMMWqVFrun2RybS6EPUGiewChcIW+ghE2xL6xw7+KyU=
+	t=1786145376; cv=none; b=mk/ugds9o2XtzH5C3MxTsDHnyZDunvimDd2NakakEaSPTdMqR1R+IVWZhXRoppmmUy/HRrFLOLDk6tzMro2At8jWVv+G01wGrM7KtHZHYp2icKhcBygLl4J6xFPrWgp91yhKrvJpVKVwolJRdTr4UZvTx5+wYgMlTg5hP7ixv24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786145361; c=relaxed/simple;
-	bh=1U9D00chGx9eu21TOd7HaIlO5ndkNBfGJHeZDUxpt/Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YHVzNu6PEqV8K6yvSl4ztL72s80T+Fjubw0V0c8JkwCg34GfLQVT2/f/9XrQVOtZPzyfgpoItd3tPhF04172R/D5levmL1eeWWBql4LB/10J0jdMOsSRzwOGDIqZAZG898PXlCGSoN7SFZ/HMXgbAJpmWYSSuf8+dfLav6Ukcgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Lg25hY9D; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1786145376; c=relaxed/simple;
+	bh=6gawzkc7Vrw0wUrDc8eZ3z5zpYkGK5YvFnVmHqtfnFo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cVdgYgDi1NiZf8KbgtIA6IJp3OKVXe7u2L3iYNAynktlsF5/LbLVA9dwFeg6BAfNZ/Sgyp1ywxsOkBYP6po/j3sxBmab5RrnbOn/TatDKd/vWmMGC0L1v4R5MuhFm0JDfEO5tEX0Pg3z5StbnruOD7AxoweZpKFcv1jPdrOhD0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jgt68oJS; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Lg25hY9D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1786145355;
-	bh=1U9D00chGx9eu21TOd7HaIlO5ndkNBfGJHeZDUxpt/Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Lg25hY9DdWPYXNnD9gMYhRdndoPbND4FhuX/PxTKVVr/2DosXyXb1MXicDr0GY4za
-	 8AF3BQcHrKqxJ7GsABwsBww7/s/mqQlweifETpDZv4057DKmb2cEF9NGkCPs/ELZmW
-	 jX0n+WXaa+kZVA5m24WMwKs4D3em+O4CsvHycOIkVVItIoN0X7SpratoKJDttbVtBE
-	 /QPr9Nj8/mDXxjrrZrCoM8ZYbX7YcLwwip5uh7EoCSrJzHbtAauA7zAMHTGwTTlkH5
-	 19TFQTLA8m6zZR17pA0sUHWINWJI9ZxBs3gyrsbFi8/eF9Ly13voLEv6vVBB3r/pZN
-	 IlnLuB+JVbnig==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 171E9600C1;
-	Fri,  7 Aug 2026 23:29:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by x201s (Postfix) with ESMTP id 40112200F79;
-	Fri, 07 Aug 2026 23:27:15 +0000 (UTC)
-Message-ID: <dcb59215-35f3-4518-91d6-ca265be5d9c8@fiberby.net>
-Date: Fri, 7 Aug 2026 23:27:13 +0000
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jgt68oJS"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-848d21bbb55so132519b3a.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 16:29:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786145374; x=1786750174; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ixfTwcnbpg8mQmqRKTzllTLX1dR+S7HpNIRrzN3lVAI=;
+        b=Jgt68oJSf4plvWkBfgzS1hXONG8rak8WCZyG7FkOPToih1NVu+ew6N2dE0e3/QWm6E
+         28p69/u9Dfra9UmHiizJ02onuCKKmy+PnDbAL/SiidOHoDgJsWXBiEpk2VUjLx2ob0vg
+         VEoo3XvicODtqtTlxZeHUM/PpmWJJLEPnEH5XrwaHj721fj4x/ixOfB4yxyIJ7+lAonl
+         AIqqj/Jekn+M2gB3+J2sLkejyMGTcDS+uBS21pTl61RlBK2faw1y9GhH7hxvN90jC3gx
+         +chxiG9N2hp0/zsx9WJ1rONG16XAUrIFprQgWejlIshypIfWjHHmZ/zXCAfh12eY+X7Z
+         reMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786145374; x=1786750174;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ixfTwcnbpg8mQmqRKTzllTLX1dR+S7HpNIRrzN3lVAI=;
+        b=FW4IZNeUHGB10dgalf+p1zFGL89cCQ5wnHivSSSOfv/VRZhrzROIldMNJ9IpP3LgrF
+         8874VIo15Bj8wmwG3B82h89rqBzIXeUZokr/ktJOSuzyxaAo2jc6PDs9w7prIfULeWKx
+         1mednNjEZlI06FuAfNJWyiu8TjLIDIjefnQ5nTX0ibuzz+q+QNM7SI9xuCzetKpTbmov
+         GttOMfCNm9bUSVrvz3Q5U/rnjjs3/aiKiehQxJCHcnJNY3df0/zMDA887nrjIEDxl/hv
+         K57Y3Vx40lfyUsKdHf2hpLHxK3p97I6YbkURLwVEuzwUn8VbhK71ASs4i0/Pqpci7JDy
+         op2g==
+X-Forwarded-Encrypted: i=1; AHgh+RrL4fVX2pN6ySa94n2zXD00b/e/GsBQDiBrPgbhqRsYbGZ2MtskF3XI23CzPZrRqiYT0rQ0uIo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzulNqiHwkKMaDVAICTIzxdqiqEQKV75AciePapGLHU1suM8LTj
+	9QLJrvNBbmQp1iF11AqVF9QhGpQIe5vLKKrQG2UFKocNI7UuyWWYz2r/uM3vXtvuODm1VK1fhHN
+	vIQc8Xw==
+X-Received: from pfaw13.prod.google.com ([2002:a05:6a00:ab8d:b0:848:4460:aed3])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:c1ca:10b0:84e:915:d7eb
+ with SMTP id d2e1a72fcca58-84f2e0dbfb7mr24288993b3a.37.1786145374003; Fri, 07
+ Aug 2026 16:29:34 -0700 (PDT)
+Date: Fri,  7 Aug 2026 23:28:38 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] tcp: reset late connection after listening socket
- close
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Kristian Nielsen <knielsen@knielsen-hq.org>,
- stable@vger.kernel.org
-References: <20260807194513.1263310-1-ast@fiberby.net>
- <CAAVpQUD9RTxs742Ty-UQXJJwTbN2wrnFGQDffKN0eZL4udq3Ng@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>
-In-Reply-To: <CAAVpQUD9RTxs742Ty-UQXJJwTbN2wrnFGQDffKN0eZL4udq3Ng@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
+Message-ID: <20260807232932.3986667-1-kuniyu@google.com>
+Subject: [PATCH v2 net-next 00/13] neighbour: Namespacify arp_tbl and nd_tbl.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your review.
+The neighbour subsystem is almost ready to drop RTNL.
 
-On 8/7/26 9:05 PM, Kuniyuki Iwashima wrote:
-> On Fri, Aug 7, 2026 at 12:47 PM Asbjørn Sloth Tønnesen <ast@fiberby.net> wrote:
->> In commit c82199061009 ("task_work: remove fifo ordering guarantee")
->> Eric removed the ordering guarantee, thereby changing it from a
->> guaranteed FIFO to currently LIFO ordering, in an effort to reduce
->> jitter.
-> 
-> Could you elaborate a bit more on how c82199061009 introduced the issue?
-> 
-> I didn't quite see the connection between the first and second paragraphs.
+However, the control paths are serialised by the global
+per-table lock.
 
-Sorry, I didn't elaborate more, it was already getting quite long.  I had also
-hoped that the bisection had yielded a stronger and clearer connection, or that
-this commit had been blamed before.
+This series converts arp_tbl and nd_tbl to per-netns table.
 
-My understanding is that due to the LIFO (Last In First Out) ordering, the order
-and thereby timing sequence is reversed. I haven't looked too deeply into the
-specifics here, like which items have been scheduled together etc., as I don't
-suggest reverting the blamed commit.  I have rather focused on fixing this TCP
-quirk, and make it work with LIFO ordering, and not restoring the FIFO ordering.
-I have mainly used netstat counters to debug the path taken by the affected
-connections, and identify where and why the connections died.
+Patch 1 ~ 2 are misc cleanup.
 
-I was also skeptical of the bisection result.  Did my reproducer have a false
-negative?  However by reverting the commit, and thereby re-adding the order
-reversal logic I have reliably proved that the blamed commit is deeply connected
-to the experienced symptom, on everything I have tested post-v4.3 (the revert has
-a trivial conflict on v5.10, but can then cleanly be cherry-picked on the current
-net tree).  I have tested with my reproducer on v4.3, v4.4, v5.10.y and net, both
-that my reproducer detects the issue in the tagged release, and that the issue is
-gone with the revert.  I tested v5.10.y as the original report was against v5.10.
+Patch 3 ~ 6 store arp_tbl/nd_tbl to net->neigh_tables[] and
+remove the global neigh_tables[].
+
+Patch 7 ~ 8 replace the direct access to arp_tbl/nd_tbl to
+net->neigh_tables[] using new helpers.
+
+Patch 9 ~ 10 finally replace the global table with per-netns
+table.
+
+Patch 11 ~ 12 clean up unnecessary net_eq().
+
+Patch 13 updates test_neigh.sh.
+
+Note that some buggy drivers access nd_tbl without checking
+disable_ipv6_mod, so nd_tbl's extern definition is still left.
 
 
-> The listener's state could change at any time on SMP.
+Changes:
+  v2:
+    * Add Patch 11 & 13
+    * Patch 7
+      * Add note about mlx5e_tc_update_neigh_used_value()
+    * Patch 9
+      * Add __maybe_unused to net in neigh_table_clear()
+        (next patch removes it)
+    * Patch 10
+      * panic() when register_pernet_subsys(&arp_net_ops) fails
+      * Add timer_shutdown_sync() in neigh_flush_one()
+    * Patch 11
+      * Split from the next patch
+      * Remove net comparison in pneigh_dump_table()
+      * Remove net arg of pneigh_create(), pneigh_delete(), and
+        pneigh_lookup()
 
-True, but it won't schedule work items, and execute them in reverse order, which
-IMHO makes this race condition a lot easier to hit with LIFO ordering.
+  v1: https://lore.kernel.org/netdev/20260806011152.1170012-1-kuniyu@google.com/
 
 
->> This allows for a TCP handshake to complete, after the listening socket
->> has been closed, and after inet_csk_listen_stop() has been run.
->>
->> In that case the client sees the connection as ESTABLISHED, however in
->> tcp_v{4,6}_syn_recv_sock() the call to __inet_inherit_port() returns
->> -ENOENT, and the new connection is dropped silently by put_and_exit.
-> 
-> Note that if __inet_inherit_port() passes, inet_csk_reqsk_queue_add()
-> calls inet_child_forget().
+Kuniyuki Iwashima (13):
+  neighbour: Remove __neigh_for_each_release().
+  neighbour: Remove lock dance for neigh_update_{gc,managed}_list().
+  neighbour: Remove unnecessary EXPORT_SYMBOL().
+  neighbour: Remove __rcu from neigh_tables[].
+  neighbour: Store arp_tbl and nd_tbl in net->neigh_tables[].
+  neighbour: Remove neigh_tables[].
+  ipv4: Replace &arp_tbl with arp_table(net).
+  ipv6: Replace &nd_tbl with nd_table(net).
+  neighbour: Clean up neigh_table_init() and neigh_table_clear().
+  neighbour: Namespacify neigh_tables.
+  neighbour: Don't store net in struct pneigh_entry.
+  neighbour: Remove unnecessary net_eq().
+  selftest: net: Specify netns for ip ntable in test_neigh.sh.
 
-__inet_inherit_port() consistently exits early with -ENOENT, because
-inet_csk(sk)->icsk_bind_hash is NULL for these ill timed connections.
+ drivers/infiniband/ulp/ipoib/ipoib_main.c     |  27 +-
+ .../marvell/prestera/prestera_router.c        |  10 +-
+ .../mellanox/mlx5/core/en/rep/neigh.c         |  29 +-
+ .../mellanox/mlx5/core/en/tc_tun_encap.c      |  23 +-
+ .../mellanox/mlx5/core/en_accel/ipsec.c       |   6 +-
+ .../ethernet/mellanox/mlxsw/spectrum_router.c |  31 +-
+ .../ethernet/mellanox/mlxsw/spectrum_span.c   |  10 +-
+ .../netronome/nfp/flower/tunnel_conf.c        |  14 +-
+ drivers/net/ethernet/rocker/rocker_main.c     |   2 +-
+ drivers/net/ethernet/rocker/rocker_ofdpa.c    |   2 +-
+ drivers/net/ethernet/sfc/tc_counters.c        |   8 +-
+ drivers/net/ethernet/sfc/tc_encap_actions.c   |   4 +-
+ drivers/net/vrf.c                             |   2 +-
+ drivers/net/vxlan/vxlan_core.c                |  16 +-
+ include/net/arp.h                             |  10 +-
+ include/net/ndisc.h                           |  20 +-
+ include/net/neighbour.h                       |  18 +-
+ include/net/net_namespace.h                   |   4 +
+ include/net/route.h                           |   7 +-
+ net/bridge/br_arp_nd_proxy.c                  |   4 +-
+ net/core/neighbour.c                          | 344 ++++++++----------
+ net/ieee802154/6lowpan/tx.c                   |   3 +-
+ net/ipv4/arp.c                                | 131 ++++---
+ net/ipv4/devinet.c                            |  18 +-
+ net/ipv4/fib_semantics.c                      |   7 +-
+ net/ipv4/route.c                              |   2 +-
+ net/ipv6/addrconf.c                           |  17 +-
+ net/ipv6/ip6_output.c                         |   4 +-
+ net/ipv6/ndisc.c                              | 146 ++++----
+ net/ipv6/route.c                              |  18 +-
+ tools/testing/selftests/net/test_neigh.sh     |  26 +-
+ 31 files changed, 514 insertions(+), 449 deletions(-)
 
-inet_csk(sk)->icsk_bind_hash is NULL, because inet_put_port() has been
-called.
+-- 
+2.55.0.679.g6767b8d81c-goog
 
-inet_put_port() has been called by tcp_set_state(TCP_CLOSE).
