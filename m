@@ -1,127 +1,106 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA3F2F5A36;
-	Fri,  7 Aug 2026 07:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198463BD22E
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 07:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786086622; cv=none; b=ANfthgdKpyJZNDqDieiroKVM9qXhfmDycoIGIO4G9ghKKRSGX/X4UJLBHxAK0cqrdrGLLKKCB0h/kxkCwAlZdsVuGg7aGcq8cxaHDCPNMROEPj6Ch7qKYw3rvgcaz6pJRVwkn1ba1omya3ERxRJ5mFZUcuaCzY+HV+orLtZlvkc=
+	t=1786087311; cv=none; b=i+UtC6zS9BnMDawHa7BvYf0eUoSdQb0XzOyLWGq9If890bXX0349PvUvMsaD94pHLeAVorwzUMNDLfgqmShEtNcrV07xnPAT29t8fkWy9ujSN5B/ngOkeudLzT5bRSAx0DZDIePRHS50+I4u5b9JnzHf72Sa1TXrIaOuWma1mTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786086622; c=relaxed/simple;
-	bh=dpRKrf5/c/UrAyd7GX9AFayLjbeS+srrO3fK9U4KlYg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EQDd5hg15hNl7u2n2BZYc6+xx6Okv/CwWJHGTARQhaODqz+ogi+6m4J4/r8T6DIEGJZ6eMHHxM36YYbT90yavMkMTk0oP0IjSAYSqwOIEjmpMwl7AuABP12JtzWlNSzyZGJpFPRQ2nhIiFx7x3r9Ay5xsULz5AB50wANQEt/dBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C270D2018B6;
-	Fri, 07 Aug 2026 09:10:16 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wsEie-000Dao-2D;
-	Fri, 07 Aug 2026 09:10:16 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wsEie-00000000p4J-2IOg;
-	Fri, 07 Aug 2026 09:10:16 +0200
-Date: Fri, 7 Aug 2026 09:10:16 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, netdev@vger.kernel.org,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
-	Eric Dumazet <edumazet@google.com>, kernel@pengutronix.de,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl83xx: add support
- for enabling supplies
-Message-ID: <anWE2HD_Mrv9XlYV@pengutronix.de>
-References: <20260806140239.3518906-1-o.rempel@pengutronix.de>
- <20260806140239.3518906-3-o.rempel@pengutronix.de>
- <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
- <anSj34TOZxYiG_ai@pengutronix.de>
- <f2260b02-621f-4b92-aade-85c403a8839d@lunn.ch>
- <02a51eff-3782-4012-8475-1047a9be4dd3@pengutronix.de>
- <CAD++jLk-5-_2x2scn2hNQ-aWBx=EKGYzvcaUwv5fS7k5Bq=KGA@mail.gmail.com>
- <anVedv6aV1hguF5x@pengutronix.de>
- <CAD++jLkkwuRYrW7aF4BrxoH=qVfNfbzsW8A+URig79dVMxgZ-g@mail.gmail.com>
+	s=arc-20240116; t=1786087311; c=relaxed/simple;
+	bh=ZajAxfm8MbD3oVnOzFzl8Oq1PRA4xm1shkPJ62+1h6s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=Jn3m6tEe27eP2469zTsQwhZpnuJuw6D/RQ5Lyi/9Ic9cfsYdP4yn3f78gZRv0RpWsZ1JkqoAmPJtc/HJSstIoLPa/Dbz/eMzA3FSLmxkDyDhC8Brm4jusKl+bZ8nIZw4Rqrg00sELBt8g3bJgIEOXGNdSazu3RL5Nt4/qsRIKcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXkB+GP1; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXkB+GP1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9091F000E9;
+	Fri,  7 Aug 2026 07:21:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786087309;
+	bh=zWPqmeD5j8xJTnEI6T4R5jFbtRt7pqwUH1/9iSllAbQ=;
+	h=Date:Subject:To:References:From:Cc:In-Reply-To;
+	b=IXkB+GP1IWE2Y/qFuWTswshMD/whVqmi1FbKpZtybg1NZcoNLsLjKwehOGNsaZdrl
+	 xX8lMIgiZ0wsKXurwGUSBUi1rYm8kyRVcmUXiUt8kbfqkcyv/RDm392cfKco+ulrbr
+	 FN77BgAZmGH/HY13quJ/UEH2Cza4zQAueZnWGesHIkKI+Bz5avkL/U+Xsl/JxsJeEF
+	 oReq0FhHbOOc/4R41vl3QVep2Flh27YvY3kX4LZ9urpE7FcZWEqxP3DI5mqSMpDWBb
+	 KEtQNMGfxnG8zkTjedEoZR2LuXN0ZV77Xca7QNvaTeLv9z1HalHAMHJwJ/mjhWBszp
+	 8iOopILaiAqPg==
+Message-ID: <b8068b1f-2158-4a5f-9df9-fdb42defca29@kernel.org>
+Date: Fri, 7 Aug 2026 09:21:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD++jLkkwuRYrW7aF4BrxoH=qVfNfbzsW8A+URig79dVMxgZ-g@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next] mailmap: add entries for Christoph Paasch
+To: netdev@vger.kernel.org
+References: <20260806-b4-mailman-v1-1-b4d7bc0ffd1c@openai.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Content-Language: fr
+Cc: cpaasch@openai.com
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260806-b4-mailman-v1-1-b4d7bc0ffd1c@openai.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 07, 2026 at 08:51:53AM +0200, Linus Walleij wrote:
-> On Fri, Aug 7, 2026 at 6:26 AM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> > On Thu, Aug 06, 2026 at 07:40:29PM +0200, Linus Walleij wrote:
-> > > On Thu, Aug 6, 2026 at 5:56 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> > >
-> > > [Andrew says]
-> > > > > static inline int __must_check clk_bulk_get_optional(struct device *dev,
-> > > > > static inline int __must_check devm_clk_bulk_get_optional(struct device *dev,
-> > > > > static inline int __must_check devm_clk_bulk_get_optional_enable(struct device *dev,
-> > > > >
-> > > > > If clk has them, maybe regulators should as well?
-> > > >
-> > > > clk and regulator have different interpretations of _optional
-> > > > when encountering a non-existent resource:
-> > > >
-> > > > clk_get                 return error
-> > > > clk_get_optional        return NULL
-> > > > regulator_get           return handle dummy regulator
-> > > > regulator_get_optional  return error code
-> > > >
-> > > > So devm_regulator_bulk_get() is already the "optional" variant, but it causes
-> > > > all existing users to get dummy supply warnings.
-> > >
-> > > So is this a big problem? Does it cause any other issues than
-> > > dmesg noise?
-> >
-> > As tested with local sashiko setup, new warnings for existing system
-> > without good reason will be reported as regression, so it will be
-> > blocker for net-next inclusion.
+On 06/08/2026 21:49, Christoph Paasch via B4 Relay wrote:
+> From: Christoph Paasch <cpaasch@openai.com>
 > 
-> Strong reverse centaur (*) warning on this one.
-> 
-> I'm not sure this is how Mark want such "regressions" to be treated.
-> 
-> I think a few dummy supplies is just fine and it's rather that Sashiko
-> need to be taught not to treat that as bugs/regressions.
-> 
-> Yours,
-> Linus Walleij
-> 
-> (*) Reverse centaur = humans touted to please AI, as opposed
-> to AI helping humans, sarcastic term coined by author Cory Doctorow.
+> Map the email addresses used for previous kernel contributions to the
+> current OpenAI address. This prevents get_maintainer.pl from listing
+> historical addresses as patch recipients.
+Thanks!
 
-Without context, I would fully agree with this statement. But as some
-one who need to adders new warnings on every kernel update for our
-customers, I see the point of sashiko - new unnecessary warning
-is extra unnecessary work for some one else == regression.
+Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
+Cheers,
+Matt
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sponsored by the NGI0 Core fund.
+
