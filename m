@@ -1,236 +1,156 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA0E3ED5C9
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 10:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51C741CB57
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 10:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786096878; cv=none; b=d5HvXNYoWCtD2Qgz75z/VYue6YPqU2DI16zdCPhKNhncs4+X2g++2C7rqdwjG7JA60VsJAo2OaPA7NPmsMgylvzI5J9LebopFclgINV1nwj1nzJtET+XOJrC4dmQL7CTk5XYUcHfMUhMsh7eWuI9GTqhDDSzSSl3G5wTTOXNw/w=
+	t=1786097477; cv=none; b=OisUd2kJrA9Oq3FP7EI5JmmA1lb4qQMxlR1ONAFxZBI24NovQ6PutziEnQRUPE0hmdKWN8ASdBOCDafgwboNU1GxkYgH5vaBSC+mR4N1AZVnSSY/Qu+gjMonGeMzd5HotDX9yXupyri+XgcQAQYaffhH+mx+736kqmx3ijX3zjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786096878; c=relaxed/simple;
-	bh=WRblBsIe9oNVkt2I3kyXT3rZMZlv0teuEBRSGedeze4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4/iLewYS3FhZOctmZaFAQDD6DiGGXUnxpxbkzK2TgCyg6wLfq83UHWaG9MOn12et7uHcu/FQcJumq2rUwStahEr+W3IUXQwVtLqW6Fw0IF95q5sTt4t/jNQ8edb1+aGWPYGlZzZP9zlvZNbYF+BWael4BHU34BMMEv8pslvPhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kV0TBFKo; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1786097477; c=relaxed/simple;
+	bh=PzJAzmMlMAwzz07m1rStOfmSbMehiPpj8jWRb5DmwqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E3E+/sjH0wFoi6fV9JbwcbBTZQsKrPbRQAZgElcXrPDNmSyyiNFoeEdbhP94BmBdxLHm7xsS582eXQzm87U4eRwdRO3hRfW0q8c9HUhG6hF5Ti6/7vaUouMkzRuXVE+xAJDdpzrHlg0pw9jXXrGnmAf+bsEhVi7SMkJIttayJGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UD83MMOz; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kV0TBFKo"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cc61541f8cso21368045ad.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 03:01:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UD83MMOz"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-495437bb891so17026085e9.1
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 03:11:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786096876; x=1786701676; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VHf8GCKQo1jv7HW3zO9fz6VriXYAKorx9FGJYJOkndc=;
-        b=kV0TBFKoicO0hHRC+3FjDW+Me3goGMquK8b8ELRLYpOAWl+7RdgwsAWy0+bQix8G44
-         rpxT7s8rK0/exXVTiX0zkmbMq8KidOde+WdhIRE4VxMqrBYux6K7fyitC60hGYZn/9Dv
-         2eE3Q3aVzdmicY6iYxe+wMNwWuCVUkYy6tyQiWVwwqTLquStS4anNLz606uMlOwwQRdY
-         EZbBWzb2O2qozna3BlVlK/iy3MIIIQaLwqZFp46kEb25oMmnrzfNPrd7RWMFvWAXDG08
-         e3JQmPpO70Ho4eVfH1yLgRwm+IlV8LcSjySmhT3wKaW9wrjoNGaRxawRZEpFVZ0DXXOc
-         S+6A==
+        d=gmail.com; s=20251104; t=1786097469; x=1786702269; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sfkgU7jZpdRNXbaepKxMlnZZSP7VZ5dxP7EkmOF/3y0=;
+        b=UD83MMOzcyTD7X+V2QlIB9xnMgUmONeRCkdDp41xPEqcQzNmtxI8xqhNprxKHtz5Bv
+         kSVTLrG/F7cLh17LbFg7D9lydmiv9MrpZaqX0IMuYJpQBGDUB+Ka2e/FO2k6S/r6vAHv
+         k4bGnuHiRe8AvnJ/ag/qycJz9QCAcdRVntLlOrp+5pc396NKxaePv8eYy9GtJ7sgMoQ8
+         f2faXryON032p9UraTthfJNrhCmzGmFr6snT9DbEdGI8E/JegqnmXJOLPULWKCt3MnZI
+         HKhrNNe8a5PGX4toEkcMofvmZHSmq6IFPTwMr0iMMddUD8EyZhQa/qxyPK9PEhMdR77e
+         kQWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786096876; x=1786701676;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VHf8GCKQo1jv7HW3zO9fz6VriXYAKorx9FGJYJOkndc=;
-        b=CZk+Q+j1hsFdqCe1bxsT4WAum03ucp1j7AJ8O6v87d8RCCoABauvM9PYnUaOpLRdAB
-         1ND8ojWWhQSpq1UONezS/eXDP1N5FL1PULUCu02XcCp/O+HynQItVnmA2+oKKD/6zeH5
-         hUME+O3VKgWCT/0OAlIOCkgPgdq/nCU7yX3Xo/HV2wyLAxpm0jmYMrh+TVloHNoocQus
-         +X8ms1ZS9tBrZfUqQKAENn38t30hLUCRjxSjbp0uNo8npJe1qJ82vlHhIhIry8Z7Mmxd
-         pzPyhjgUgWa1mMfZc1la1YkCfPoIzQgCHWLcEdpMeHtu4LLv++it5NhEga0uUOURsYhm
-         GnYA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrpc+4GnqJgUX80deSqzPlC96qrXc4gx/X7T2SJxGVxcH4TIYTm4QubO/tf73nDxRSzfS99fGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywj7Xn/Gbjhf5/X+u0LH31TTl98VZ4xKQFeFHT8vDXzokaX4AUg
-	Exc/I84/QxTswCBp4zfDsYVtKHrFKPj2pn+yzvyq4axaYob0I9B11oJG
-X-Gm-Gg: AR+sD13PhtCvanlqs/vwVnXmzVkU+wyobvACatnzpkXfJk2Z2CxEl4Az3lywE0BPHKV
-	Jd/ndhc7BEnu15JKPoDZHPciFy+JY10jACbE7eeaVfbYinY3n0UxNwGqHxTPb8d5vKfYQgN5MWk
-	J6ZaJ8A5GsNRIwtOEGc8h3kAi3GM+RjbpmoqcB73A4MaHVRHDj1YhKunUpPxq90SRRRqj6ld9+J
-	NvD9tAnhppz95qxuMTXDzIDISgICq8j9u9RUNP/meNxLfAKGlgYotoEOAkpyNRrt00WAEqtbS4A
-	SX3NlITqBdrDCIaQelgjF+UryFGDZ6lq0auiwv0L1dkZJtmNFlPPdHshx4DCxD4G0qA3gPVUlZD
-	jgXVgEF0GPYUgCWutQX1CeTgzUeZ9qStv6m0/0OKG0tk6lMOijCXM0NjYZnGIFrAjbATeTPcmvI
-	gOr0yjB7kknMDmGF7XffARLkJX/vpfz0T6kw4e5PE+9z9hTR4ZE7Pm6DDZ4U53B8RnNmfcvJpDt
-	002RcC0DODXbMRcJ94laM7OEqM34u5YANKsaov+6cXbeQ6nhp3DGI2fPxZ52fnTkw==
-X-Received: by 2002:a17:903:1847:b0:2bf:13af:b077 with SMTP id d9443c01a7336-2d0f70f54bfmr62139835ad.14.1786096875757;
-        Fri, 07 Aug 2026 03:01:15 -0700 (PDT)
-Received: from EAIT-H54D9Q2FJQ.eait.uq.edu.au ([130.102.10.60])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d16c4a9f0fsm6500035ad.68.2026.08.07.03.01.11
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 07 Aug 2026 03:01:14 -0700 (PDT)
-From: Yu Zhang <yuz08559@gmail.com>
-To: mst@redhat.com,
-	jasowangio@gmail.com
-Cc: eperezma@redhat.com,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yu Zhang <yuz08559@gmail.com>
-Subject: [PATCH 2/2] vhost-vdpa: protect config_ctx from being freed under the config callback
-Date: Fri,  7 Aug 2026 20:00:25 +1000
-Message-ID: <20260807100025.19750-3-yuz08559@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260807100025.19750-1-yuz08559@gmail.com>
-References: <20260807100025.19750-1-yuz08559@gmail.com>
+        d=1e100.net; s=20251104; t=1786097469; x=1786702269;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=sfkgU7jZpdRNXbaepKxMlnZZSP7VZ5dxP7EkmOF/3y0=;
+        b=TVzZg+6y79pzTdRAkBQzEuyYoePVqRduU34smRUETUc/99BbptDb7uEnRcOiDNUkvD
+         QgboerqWwyg5ORrNGhbfvhK/qV7Xf9oALW/I7ogMNN8SuoHjJUeHZCFZwvRk1MFq/0c+
+         v+3M1cSZHjqhIE1HriNq9yxdlWxPHDF6SHLRKANHZwSloGvmlLO+PIkKo/9RxxtCdKCO
+         JDO5dtcMRZxlGe+sjz3UaQ/pYDDF0soyzwKkbjz1QqSZCI3Mgz/O3nq1DI6lmtWXen4d
+         DcskHYe7wSII6STqScpS5oK0bVA2sjMS1Xqeqpc1r3IHl5Yo8PthN0ibwlaYqKAq+k6q
+         +ijA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3CuGUnkQIOOTGPwzIRDLxOijkaBWXdwWjjtj7Eqqaz6EiPloAmXN9aiSoHybqE4/dp+bSXC8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNZX5UpqA58zwrJ3IpR2DYjPwPrL9JsCGLQ2hrkIBONI60JdWU
+	iuUL7uEdKewQGZGKWtZCb0ofNcWnSw4FmQRRv3KcZBk3yyvLIbF5FOmj
+X-Gm-Gg: AR+sD108yEwHvJrndzBnRg+l51fiTxKxofW7vQCoODNp2z18UI63qExhhAuugpmB+Lw
+	qOFp+nguSfyPXAshKeL7d7uafGRdsW1bbPEeITqwUSLZDDF1FCv8c7dM9CGpZYBk5/XkVhGUB/M
+	2812TuBrpLF+7axeRycztI0h31dTcM7WLZKnu3tNd5kH+MfKBRho7oVFKVNXKde1VDgiopldYXY
+	DcCOmfOi/0AsSTkm5JRph7OjP633GUqbHPjcdJCqzhEoALlXGT20foxeVTVKv0G+CBuHhf/SnIc
+	nFgUJZEom/nW72yMzwcu91cMa4Fg/CsCDhlRSMxgS0xlB9860yyhlmiadN370d7LFdvVqOqQ7Gu
+	SDv+r40V75WpHC94DdkOC1GRe21U69HdJl0uBlzL85XysUwETqzEIatbco7MtKhPcrP+BI6DYp1
+	FT7ZgYXFwmaFvB8hvf51aXVl12Y2wxyznjoBYmjN47gFD+fWPivxYdfuw7bnvz4wZYMsme0RrWQ
+	cy0giLQfTyg3ckksDhnMd0g8b+OKHLR
+X-Received: by 2002:a05:600c:1546:b0:495:3bc6:d381 with SMTP id 5b1f17b1804b1-499553bcbc8mr121186275e9.2.1786097469384;
+        Fri, 07 Aug 2026 03:11:09 -0700 (PDT)
+Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995919df87sm90789365e9.6.2026.08.07.03.11.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 03:11:08 -0700 (PDT)
+Date: Fri, 7 Aug 2026 12:11:07 +0200
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
+	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
+	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
+	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
+	pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org,
+	sdf.kernel@gmail.com, ameryhung@gmail.com, kuniyu@google.com,
+	memxor@gmail.com
+Subject: Re: [PATCH bpf-next v4 3/5] selftests/bpf: Add ksock kfunc test
+Message-ID: <anWvO7ZQh1eEHZie@gmail.com>
+References: <20260806182234.380833-1-mahe.tardy@gmail.com>
+ <20260806182234.380833-4-mahe.tardy@gmail.com>
+ <c51bef73-17b0-430d-b473-7744141d6dab@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <c51bef73-17b0-430d-b473-7744141d6dab@linux.dev>
 
-vhost_vdpa_config_cb() loads v->config_ctx and signals it without taking
-a reference and without holding any lock:
+On Fri, Aug 07, 2026 at 05:12:21PM +0800, Jiayuan Chen wrote:
+> 
+> On 8/7/26 2:22 AM, Mahe Tardy wrote:
+> > Add
+> [...]
+> > +
+> > +SEC("lsm.s/socket_bind")
+> > +int BPF_PROG(ksock_socket_bind, struct socket *sock, struct sockaddr *address,
+> > +	     int addrlen, int ret)
+> > +{
+> > +	struct __ksock_ctx_value *v;
+> > +	struct bpf_ksock *ks, *tmp;
+> > +	u32 pid = bpf_get_current_pid_tgid() >> 32;
+> > +
+> > +	if (ret || pid != target_pid)
+> > +		return ret;
+> > +
+> > +	v = ksock_ctx_value_lookup();
+> > +	if (!v) {
+> > +		send_ret = -ENOENT;
+> > +		return ret;
+> > +	}
+> > +
+> > +	ks = NULL;
+> > +	bpf_rcu_read_lock();
+> > +	tmp = v->ctx;
+> > +	if (tmp)
+> > +		ks = bpf_ksock_acquire(tmp);
+> > +	bpf_rcu_read_unlock();
+> > +
+> > +	if (!ks) {
+> > +		send_ret = -ENOENT;
+> > +		return ret;
+> > +	}
+> > +
+> 
+> 
+> Since bpf_ksock_send() is sleepable, every consumer of the kptr is
+> necessarily a sleepable program and thus has to open-code the same
+> bpf_rcu_read_lock()/acquire/unlock sequence before each send.
+> 
+> Given ksock_common.h already wraps the insert side, how about also
+> providing the get side, e.g.:
+> 
+> static inline struct bpf_ksock *ksock_ctx_get(void)
+> {
+>     struct __ksock_ctx_value *v = ksock_ctx_value_lookup();
+>     struct bpf_ksock *ks = NULL, *tmp;
+> 
+>     if (!v)
+>             return NULL;
+>     bpf_rcu_read_lock();
+>     tmp = v->ctx;
+>     if (tmp)
+>             ks = bpf_ksock_acquire(tmp);
+>     bpf_rcu_read_unlock();
+>     return ks;
+> }
+> 
+> These selftests will be the reference everyone copies from, so
+> encapsulating the RCU dance here also documents the correct usage.
+> 
 
-	struct eventfd_ctx *config_ctx = v->config_ctx;
-
-	if (config_ctx)
-		eventfd_signal(config_ctx);
-
-VHOST_VDPA_SET_CONFIG_CALL replaces that field and drops what is normally
-the last reference to the old context:
-
-	swap(ctx, v->config_ctx);
-
-	if (ctx)
-		eventfd_ctx_put(ctx);
-
-eventfd_ctx_put() drops the last kref and frees the context immediately,
-with no RCU grace period, so a callback that has already loaded the
-pointer goes on to dereference freed memory.  The two sides share no
-lock: the ioctl runs under vhost_dev.mutex, while the parent invokes the
-callback from its own interrupt or workqueue context.
-
-This is not the reopen refcount underflow fixed by commit f6bbf0010ba0
-("vhost-vdpa: fix use-after-free of v->config_ctx"), which was about
-vhost_vdpa_config_put() leaving a stale pointer behind.  Here the pointer
-is maintained correctly and it is the read side that is unprotected.
-
-With VDUSE as the parent this is reachable from userspace with access to
-/dev/vduse (root by default).  VDUSE_DEV_INJECT_CONFIG_IRQ queues
-dev->inject, and vduse_dev_irq_inject() runs the callback under VDUSE's
-own dev->irq_lock, which vhost does not hold.  vduse_dev_reset() does
-flush_work(&dev->inject), but VHOST_VDPA_SET_CONFIG_CALL never goes
-through reset, so an inject already in flight is not waited for.  A
-process that injects config interrupts on the VDUSE fd while another
-thread swaps the call fd on the vhost-vdpa fd hits it in seconds:
-
-  BUG: KASAN: slab-use-after-free in native_queued_spin_lock_slowpath
-  Read of size 4 at addr ffff888107d21808 by task kworker/u17:1/2993
-  Workqueue: vduse-irq vduse_dev_irq_inject
-  Call Trace:
-   native_queued_spin_lock_slowpath+0x97/0x5b0
-   _raw_spin_lock_irqsave+0xd4/0xe0
-   eventfd_signal_mask+0x69/0x120
-   vhost_vdpa_config_cb+0x34/0x50
-   vduse_dev_irq_inject+0x46/0x60
-   process_one_work+0x468/0x950
-
-  Allocated by task 2992:
-   do_eventfd+0x50/0x200
-   __x64_sys_eventfd2+0x2e/0x40
-
-  Freed by task 2992:
-   eventfd_ctx_put+0xb9/0xc0
-   vhost_vdpa_unlocked_ioctl+0x116c/0x2190
-
-Add a spinlock covering every access to config_ctx, so the callback
-either signals a context that is still alive or observes NULL, and the
-put happens only once no callback can reach the old value.
-
-Clearing the parent's callback before the put would not be enough: of the
-in-tree set_config_cb() implementations only VDUSE takes a lock, the rest
-store the pointer unlocked, so that would not order against an in-flight
-invocation.
-
-Fixes: 776f395004d8 ("vhost_vdpa: Support config interrupt in vdpa")
-Signed-off-by: Yu Zhang <yuz08559@gmail.com>
----
- drivers/vhost/vdpa.c | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index e5e47f6..272d506 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -56,6 +56,8 @@ struct vhost_vdpa {
- 	int virtio_id;
- 	int minor;
- 	struct eventfd_ctx *config_ctx;
-+	/* Serialises vhost_vdpa_config_cb() against config_ctx being replaced. */
-+	spinlock_t config_lock;
- 	int in_batch;
- 	struct vdpa_iova_range range;
- 	u32 batch_asid;
-@@ -187,10 +189,12 @@ static irqreturn_t vhost_vdpa_virtqueue_cb(void *private)
- static irqreturn_t vhost_vdpa_config_cb(void *private)
- {
- 	struct vhost_vdpa *v = private;
--	struct eventfd_ctx *config_ctx = v->config_ctx;
-+	unsigned long flags;
- 
--	if (config_ctx)
--		eventfd_signal(config_ctx);
-+	spin_lock_irqsave(&v->config_lock, flags);
-+	if (v->config_ctx)
-+		eventfd_signal(v->config_ctx);
-+	spin_unlock_irqrestore(&v->config_lock, flags);
- 
- 	return IRQ_HANDLED;
- }
-@@ -511,15 +515,22 @@ static long vhost_vdpa_get_vring_num(struct vhost_vdpa *v, u16 __user *argp)
- 
- static void vhost_vdpa_config_put(struct vhost_vdpa *v)
- {
--	if (v->config_ctx) {
--		eventfd_ctx_put(v->config_ctx);
--		v->config_ctx = NULL;
--	}
-+	struct eventfd_ctx *ctx;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&v->config_lock, flags);
-+	ctx = v->config_ctx;
-+	v->config_ctx = NULL;
-+	spin_unlock_irqrestore(&v->config_lock, flags);
-+
-+	if (ctx)
-+		eventfd_ctx_put(ctx);
- }
- 
- static long vhost_vdpa_set_config_call(struct vhost_vdpa *v, u32 __user *argp)
- {
- 	struct vdpa_callback cb;
-+	unsigned long flags;
- 	int fd;
- 	struct eventfd_ctx *ctx;
- 
-@@ -532,8 +543,14 @@ static long vhost_vdpa_set_config_call(struct vhost_vdpa *v, u32 __user *argp)
- 	if (IS_ERR(ctx))
- 		return PTR_ERR(ctx);
- 
-+	spin_lock_irqsave(&v->config_lock, flags);
- 	swap(ctx, v->config_ctx);
-+	spin_unlock_irqrestore(&v->config_lock, flags);
- 
-+	/*
-+	 * The callback can no longer reach the old context, so this is the
-+	 * last reference to it.
-+	 */
- 	if (ctx)
- 		eventfd_ctx_put(ctx);
- 
-@@ -1595,6 +1612,7 @@ static int vhost_vdpa_probe(struct vdpa_device *vdpa)
- 	}
- 
- 	atomic_set(&v->opened, 0);
-+	spin_lock_init(&v->config_lock);
- 	v->minor = minor;
- 	v->vdpa = vdpa;
- 	v->nvqs = vdpa->nvqs;
--- 
-2.43.0
+Yeah good idea, I'll just keep a slightly difference dance using
+bpf_kptr_xchg() in the ksock_lsm_verifier.c program because I want the
+verifier to bump against bpf_ksock_send() restriction explicitely and
+not bpf_ksock_acquire().
 
