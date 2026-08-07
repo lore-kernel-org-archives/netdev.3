@@ -1,59 +1,64 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15F63F6C5F
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 09:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C943F6C5F
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 09:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786096718; cv=none; b=tSA8rCpfnZX4b66UD2vAx+senYnEa+Z2+pBrApoBZg6k7d7IUkZydng6MURtvQOUL3j9c1lGLJPNDcZMn6LYc4l2K5GWa9kDOnif0qnbT/0jnUu65vc7eNfGpZ5oggYZ1KI6JWijLivts8NtaRKMjvJBrb8sgfCPEtKiJ4zMZ/Q=
+	t=1786096730; cv=none; b=Djwa1J7z4Ygg1sf0SPqomgI71OOD5SL7vu3WHtegdqahmCXIIfyRFaIMekjYBlDke7Fr/rbNija2XWdmhmk0g9wY+nNFZ0bbq45TY19R+ng3TZcYV/wS7sOz8BotUVR0oeitNbO8g5tQFdw+mPV+Ku/arFIytxREODuVLRH5LVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786096718; c=relaxed/simple;
-	bh=TkFjR4BsAQVCmBq9LtMKCNVzQavpzs+eY/KB6yUHnSE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eXhRMaLir3PD2DzjcdWiWfpAkFXW4TNVvyntAbh2iN/TvwzgvC5SVwE9BBbJHr1qaiso3QuR/dNlAX4AzAAV50ccZ3ffkP6VmSZ5QW6p2gP8ENs8bUfa9XgKD4GiX19USFWM5U9EBTiZRkf+HAvvPRoNzpRdFnOtjDTG8Wxs1CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xyf00PiA; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1786096730; c=relaxed/simple;
+	bh=vYO0WeHNrFw4Px8+7ptkWRw855MPvpN7TIk4sbw1vL8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FU8hvbpQloAt1prCnXPqiw5BQfm67rHBBp2PH95Tw9MSuiBPF2Mc1Dpr3aC1fLHJALXCcTFgssOmQw7ZA9jmel5wU3In5tX96usiadUlxWTKvEGHi9Be7xCwu1zjj86I2anb383qm0GmKjpdUAZcdukv1T6bJ15IdZ51rSASrSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P1lxspt0; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xyf00PiA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P1lxspt0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786096715;
+	s=mimecast20190719; t=1786096726;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WpPcjcfPLKMPB/S/zYbq+QWgxEqwxZXN4wTls5spDRg=;
-	b=Xyf00PiASyb0pWPSR1bftfXdIjUVLYhQVeg0tdIli8L3+q6K0cOJx0kXmqiwLDfWSzCD/4
-	DaoNHkuOYzeQmsEWlG6dl3lahqFPdcCaaZ7jwsm7VdO+TTu890qsAj/ZlnHqWpbJXjMgX1
-	2SGKBf/0Z0bRvwUtxck2Ee1lAMpr3rI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ywj3Ox55+64qC+LLZSuqobMyifCN0SXuGWJPoERO1So=;
+	b=P1lxspt09aCWmXy7dX+Pp+urIEjV4ZPghUiYhCD2xItvadZf6/mI+n2BFfYwYFk4NlE00r
+	7yqWdNZ4zCNj1VB18fYegkBC/26HDmbwQVEXlHmUXaTGHsQCepe/UsypkCP16ZFprJLzGD
+	z+vxEXRQ1HbV/9q5PjWJ/rtda3lNgQk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-URcM9PObN863tLQnF1BREA-1; Fri,
- 07 Aug 2026 05:58:32 -0400
-X-MC-Unique: URcM9PObN863tLQnF1BREA-1
-X-Mimecast-MFC-AGG-ID: URcM9PObN863tLQnF1BREA_1786096711
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-pe2Nbu7JPoO3mMoUyKmUvg-1; Fri,
+ 07 Aug 2026 05:58:44 -0400
+X-MC-Unique: pe2Nbu7JPoO3mMoUyKmUvg-1
+X-Mimecast-MFC-AGG-ID: pe2Nbu7JPoO3mMoUyKmUvg_1786096722
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1E92A19560A5;
-	Fri,  7 Aug 2026 09:58:31 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B9D01956080;
+	Fri,  7 Aug 2026 09:58:42 +0000 (UTC)
 Received: from p16v.redhat.com (unknown [10.44.32.215])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EE3771956094;
-	Fri,  7 Aug 2026 09:58:27 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 13DDB1956094;
+	Fri,  7 Aug 2026 09:58:38 +0000 (UTC)
 From: Ivan Vecera <ivecera@redhat.com>
 To: netdev@vger.kernel.org
-Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+Cc: Petr Oros <poros@redhat.com>,
+	Chris du Quesnay <Chris.duQuesnay@microchip.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Jiri Pirko <jiri@resnulli.us>,
 	Min Li <min.li@microchip.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Petr Oros <poros@redhat.com>,
 	Richard Cochran <richardcochran@gmail.com>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 0/3] dpll: zl3073x: add PTP clock support
-Date: Fri,  7 Aug 2026 11:58:23 +0200
-Message-ID: <20260807095826.386756-1-ivecera@redhat.com>
+Subject: [PATCH net-next v5 3/3] dpll: zl3073x: add PTP clock support
+Date: Fri,  7 Aug 2026 11:58:26 +0200
+Message-ID: <20260807095826.386756-4-ivecera@redhat.com>
+In-Reply-To: <20260807095826.386756-1-ivecera@redhat.com>
+References: <20260807095826.386756-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,80 +68,591 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Add PTP hardware clock support to the zl3073x DPLL driver.
+Add PTP clock support for the ZL3073x DPLL driver. A PTP clock device
+is registered for each DPLL channel regardless of the initial channel
+state, providing gettimex64, settime64, adjtime, adjfine, adjphase
+and getmaxphase callbacks.
 
-Patch 1 scales the poll sleep interval in zl3073x_poll_zero_u8()
-proportionally to the timeout to avoid excessive bus traffic for
-the longer PTP-related timeouts.
+Callback availability depends on the current channel state:
+- adjfine: when NCO pin is connected (returns -EOPNOTSUPP otherwise)
+- adjphase: available when tracking a reference, uses TIE write
+- adjtime: always available and uses
+  * phase step for sub-second deltas when NCO pin is connected
+  * TIE write when tracking a reference
+  * plain ToD read-modify-write otherwise
+- gettime/settime: always available
 
-Patch 2 adds low-level channel operations for ToD read/write/adjust,
-output phase step, delta frequency offset write and TIE write as
-building blocks for PTP callbacks.
+The adjtime callback splits multi-second adjustments into a ToD
+read-modify-write for the seconds part and a sub-second mechanism
+(phase step or TIE write) for the remainder. On partial failure
+where seconds were already committed, success is returned to
+prevent the PTP servo from retrying and applying seconds again.
 
-Patch 3 registers a PTP clock device for each DPLL channel with
-gettimex64, settime64, adjtime, adjfine, adjphase and getmaxphase
-callbacks. Callback availability adapts to the current channel
-state - adjfine requires NCO pin connected, adjphase uses TIE write
-when tracking a reference, and adjtime selects the appropriate
-mechanism automatically. Periodic output support will be added in a
-follow-up series.
+All PTP callbacks are serialized by the existing per-DPLL zldpll->lock
+mutex, which is also used by DPLL pin and device callbacks.
 
-Link: https://lore.kernel.org/netdev/20260803140637.102339-1-ivecera@redhat.com/
-Link: https://lore.kernel.org/netdev/20260730132150.371376-1-ivecera@redhat.com/
-Link: https://lore.kernel.org/netdev/20260713103739.1553284-1-ivecera@redhat.com/
-Link: https://lore.kernel.org/netdev/20260708170527.916035-1-ivecera@redhat.com/
-
-Changes:
-v5:
-  - Add prep patch to scale poll interval with timeout
-  - Enumerate all ToD commands in tod_ready_wait switch, return
-    -EOPNOTSUPP with WARN_ON in default case (Vadim)
-  - Handle CMD=0 (power-on default) in tod_ready_wait
-  - Rewrite tod_adjust rollover guard as a retry loop that re-reads
-    until the margin is sufficient, replacing manual fixup and fsleep
-  - Fix "lowest-ID synth" comments to "first enabled synth"
-  - Include dev_name() in PTP clock name for multi-device systems
-  - Update kernel-doc for adjfine/adjphase to document zero no-op
-v4:
-  - Move out_step_time_mask to struct zl3073x_dev (device-global)
-  - Fix tod_adjust rollover guard for tick-crossing case
-  - Drop trailing tod_ready_wait from tod_adjust
-  - Fix TOD_CTRL register item count
-  - Move phase step registers into existing page 9 section in regs.h
-  - Align ToD command define values
-  - Update kernel-doc for chan_state_fetch
-  - Drop perout support (will rework as follow-up)
-  - Replace abs(delta) with explicit range check to avoid S64_MIN UB
-  - Add locking context doc to zl3073x_chan_df_offset_set
-  - Export zl3073x_chan_tod_ready_wait and wait for ToD completion in
-    adjtime before phase step/TIE write to prevent WR_NEXT_1HZ from
-    overwriting the sub-second adjustment
-v3:
-  - Use PTP_1588_CLOCK instead of PTP_1588_CLOCK_OPTIONAL (Jakub)
-  - Factor out output pin frequency helper to a separate commit (Jakub)
-  - Remove spurious #include <linux/mutex.h> from dpll.h (Jakub)
-v2:
-  - Squash low-level ops patches (1+3) into patch 1.
-  - Squash PTP callback patches (2+4) into patch 2, register PTP
-    clock regardless of initial channel state.
-
-Ivan Vecera (3):
-  dpll: zl3073x: scale poll interval proportionally to timeout
-  dpll: zl3073x: add channel ToD, phase step and TIE operations
-  dpll: zl3073x: add PTP clock support
-
+Reviewed-by: Petr Oros <poros@redhat.com>
+Tested-by: Chris du Quesnay <Chris.duQuesnay@microchip.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+---
  drivers/dpll/zl3073x/Kconfig |   6 +-
- drivers/dpll/zl3073x/chan.c  | 321 +++++++++++++++++++++++++-
- drivers/dpll/zl3073x/chan.h  |  32 +++
- drivers/dpll/zl3073x/core.c  |  17 +-
- drivers/dpll/zl3073x/core.h  |  23 ++
  drivers/dpll/zl3073x/dpll.c  | 431 +++++++++++++++++++++++++++++++++--
  drivers/dpll/zl3073x/dpll.h  |   5 +
- drivers/dpll/zl3073x/regs.h  |  52 +++++
- 8 files changed, 855 insertions(+), 32 deletions(-)
+ 3 files changed, 414 insertions(+), 28 deletions(-)
 
-
-base-commit: 4fa4977a0d900f936bcae5cd2c510be5554e8dd6
+diff --git a/drivers/dpll/zl3073x/Kconfig b/drivers/dpll/zl3073x/Kconfig
+index 5bbca140058131..da1731ace15f02 100644
+--- a/drivers/dpll/zl3073x/Kconfig
++++ b/drivers/dpll/zl3073x/Kconfig
+@@ -2,7 +2,7 @@
+ 
+ config ZL3073X
+ 	tristate "Microchip Azurite DPLL/PTP/SyncE devices" if COMPILE_TEST
+-	depends on NET
++	depends on NET && PTP_1588_CLOCK
+ 	select DPLL
+ 	select NET_DEVLINK
+ 	select REGMAP
+@@ -16,7 +16,7 @@ config ZL3073X
+ 
+ config ZL3073X_I2C
+ 	tristate "I2C bus implementation for Microchip Azurite devices"
+-	depends on I2C && NET
++	depends on I2C && NET && PTP_1588_CLOCK
+ 	select REGMAP_I2C
+ 	select ZL3073X
+ 	help
+@@ -28,7 +28,7 @@ config ZL3073X_I2C
+ 
+ config ZL3073X_SPI
+ 	tristate "SPI bus implementation for Microchip Azurite devices"
+-	depends on NET && SPI
++	depends on NET && SPI && PTP_1588_CLOCK
+ 	select REGMAP_SPI
+ 	select ZL3073X
+ 	help
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+index 0488ae6ac486c8..a686dd52bfac9e 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/bits.h>
+ #include <linux/bitfield.h>
++#include <linux/cleanup.h>
+ #include <linux/bug.h>
+ #include <linux/container_of.h>
+ #include <linux/dev_printk.h>
+@@ -13,6 +14,7 @@
+ #include <linux/netlink.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
++#include <linux/ptp_clock_kernel.h>
+ #include <linux/slab.h>
+ #include <linux/sprintf.h>
+ 
+@@ -2275,45 +2277,375 @@ zl3073x_dpll_init_fine_phase_adjust(struct zl3073x_dev *zldev)
+ 	return zl3073x_write_u8(zldev, ZL_REG_SYNTH_PHASE_SHIFT_CTRL, 0x01);
+ }
+ 
++/* Maximum frequency adjustment: +-1% of nominal in ppb */
++#define ZL3073X_DPLL_PTP_MAX_ADJ	10000000
++
+ /**
+- * zl3073x_dpll_alloc - allocate DPLL device
+- * @zldev: pointer to zl3073x device
+- * @ch: DPLL channel number
++ * zl3073x_dpll_ptp_gettimex64 - read current time from ToD counters
++ * @info: PTP clock info
++ * @ts: timespec to store current time
++ * @sts: optional system timestamp pair for cross-timestamping
+  *
+- * Allocates DPLL device structure for given DPLL channel.
++ * Return: 0 on success, <0 on error
++ */
++static int zl3073x_dpll_ptp_gettimex64(struct ptp_clock_info *info,
++				       struct timespec64 *ts,
++				       struct ptp_system_timestamp *sts)
++{
++	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
++						   ptp_info);
++
++	guard(mutex)(&zldpll->lock);
++
++	return zl3073x_chan_tod_read(zldpll->dev, zldpll->id, false, ts, sts);
++}
++
++/**
++ * zl3073x_dpll_ptp_settime64 - set ToD counters to given time
++ * @info: PTP clock info
++ * @ts: timespec with time to set
+  *
+- * Return: pointer to DPLL device on success, error pointer on error
++ * Return: 0 on success, <0 on error
+  */
+-struct zl3073x_dpll *
+-zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch)
++static int zl3073x_dpll_ptp_settime64(struct ptp_clock_info *info,
++				      const struct timespec64 *ts)
+ {
+-	struct zl3073x_dpll *zldpll;
++	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
++						   ptp_info);
+ 
+-	zldpll = kzalloc_obj(*zldpll);
+-	if (!zldpll)
+-		return ERR_PTR(-ENOMEM);
++	guard(mutex)(&zldpll->lock);
+ 
+-	zldpll->dev = zldev;
+-	zldpll->id = ch;
+-	mutex_init(&zldpll->lock);
+-	INIT_LIST_HEAD(&zldpll->pins);
++	return zl3073x_chan_tod_write(zldpll->dev, zldpll->id, *ts);
++}
+ 
+-	return zldpll;
++/**
++ * zl3073x_dpll_ptp_adjtime_phase_step - adjust sub-second time via phase step
++ * @zldpll: DPLL channel
++ * @delta: time adjustment in nanoseconds (must be within (-NSEC_PER_SEC,
++ *         NSEC_PER_SEC))
++ *
++ * Uses the output phase step mechanism with tod_step=1 to adjust both
++ * the output clock phase and the ToD counter simultaneously. This keeps
++ * outputs and ToD coherent. Only valid for NCO.
++ *
++ * Outputs are grouped by synthesizer since the phase step value is in
++ * synthesizer clock cycles. The first synth group with enabled outputs
++ * uses tod_step to adjust both outputs and the ToD counter. Remaining
++ * groups step outputs only. If no synth has enabled outputs, the ToD
++ * counter is stepped alone using an empty output mask (the FW uses
++ * the first enabled synth's period for the conversion).
++ *
++ * Return: 0 on success, -EOPNOTSUPP if no synths available, <0 on error
++ */
++static int zl3073x_dpll_ptp_adjtime_phase_step(struct zl3073x_dpll *zldpll,
++					       s64 delta)
++{
++	u16 synth_mask[ZL3073X_NUM_SYNTHS] = {};
++	struct zl3073x_dev *zldev = zldpll->dev;
++	const struct zl3073x_synth *synth;
++	struct zl3073x_dpll_pin *pin;
++	u32 first_synth_freq = 0;
++	bool tod_stepped = false;
++	s32 step_cycles;
++	u32 synth_freq;
++	int rc;
++	u8 i;
++
++	/* Build per-synth output masks from registered output pins */
++	list_for_each_entry(pin, &zldpll->pins, list) {
++		u8 out_id, synth_id;
++
++		if (zl3073x_dpll_is_input_pin(pin))
++			continue;
++
++		out_id = zl3073x_output_pin_out_get(pin->id);
++
++		if (!zl3073x_dev_out_is_stepped(zldev, out_id))
++			continue;
++
++		synth_id = zl3073x_dev_out_synth_get(zldev, out_id);
++		if (synth_id >= ZL3073X_NUM_SYNTHS) {
++			dev_warn(zldev->dev, "Unexpected synth id for OUT%u\n",
++				 out_id);
++			continue;
++		}
++		synth_mask[synth_id] |= BIT(out_id);
++	}
++
++	/* Process each synth group */
++	for (i = 0; i < ZL3073X_NUM_SYNTHS; i++) {
++		synth = zl3073x_synth_state_get(zldev, i);
++		if (!zl3073x_synth_is_enabled(synth) ||
++		    zl3073x_synth_dpll_get(synth) != zldpll->id)
++			continue;
++
++		synth_freq = zl3073x_synth_freq_get(synth);
++
++		/* Remember first enabled synth freq for ToD-only fallback */
++		if (!first_synth_freq)
++			first_synth_freq = synth_freq;
++
++		if (!synth_mask[i])
++			continue;
++
++		/* Safe for s32: max synth freq is 750 MHz */
++		step_cycles = div_s64(delta * synth_freq, NSEC_PER_SEC);
++
++		rc = zl3073x_chan_phase_step(zldev, zldpll->id,
++					     synth_mask[i], step_cycles,
++					     !tod_stepped);
++		if (rc) {
++			if (tod_stepped) {
++				dev_warn(zldev->dev,
++					 "Partial phase step failure\n");
++				return 0;
++			}
++			return rc;
++		}
++		tod_stepped = true;
++	}
++
++	if (!first_synth_freq)
++		return -EOPNOTSUPP;
++
++	/* No enabled outputs found; step ToD counter only using the
++	 * first enabled synth's period (empty output mask).
++	 */
++	if (!tod_stepped) {
++		step_cycles = div_s64(delta * first_synth_freq, NSEC_PER_SEC);
++		return zl3073x_chan_phase_step(zldev, zldpll->id, 0,
++					       step_cycles, true);
++	}
++
++	return 0;
+ }
+ 
+ /**
+- * zl3073x_dpll_free - free DPLL device
+- * @zldpll: pointer to zl3073x_dpll structure
++ * zl3073x_dpll_ptp_adjtime - adjust PTP clock time
++ * @info: PTP clock info
++ * @delta: time adjustment in nanoseconds
+  *
+- * Deallocates given DPLL device previously allocated by @zl3073x_dpll_alloc.
++ * For NCO, large deltas (>= 1 second) are split into a ToD
++ * read-modify-write for the seconds part and an output phase step for
++ * the sub-second remainder. Sub-second deltas use phase step directly,
++ * falling back to ToD read-modify-write if phase step is unavailable.
++ * In AUTO/REFLOCK modes, large deltas are split into ToD
++ * read-modify-write for seconds and TIE write for the sub-second
++ * remainder. Sub-second deltas use TIE write directly.
++ *
++ * Return: 0 on success, <0 on error
+  */
+-void
+-zl3073x_dpll_free(struct zl3073x_dpll *zldpll)
++static int zl3073x_dpll_ptp_adjtime(struct ptp_clock_info *info, s64 delta)
+ {
+-	WARN(zldpll->dpll_dev, "DPLL device is still registered\n");
++	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
++						   ptp_info);
++	struct zl3073x_dev *zldev = zldpll->dev;
++	const struct zl3073x_chan *chan;
++	bool sec_adjusted = false;
++	struct timespec64 ts;
++	int rc;
+ 
+-	mutex_destroy(&zldpll->lock);
+-	kfree(zldpll);
++	if (!delta)
++		return 0;
++
++	guard(mutex)(&zldpll->lock);
++
++	/* Modes without phase step or TIE use plain ToD adjust */
++	chan = zl3073x_chan_state_get(zldev, zldpll->id);
++	if (!zl3073x_chan_mode_is_nco(chan) &&
++	    !zl3073x_chan_mode_supports_tie(chan))
++		return zl3073x_chan_tod_adjust(zldev, zldpll->id,
++					       ns_to_timespec64(delta));
++
++	/* Split off seconds via ToD read-modify-write so the sub-second
++	 * remainder can be applied through the output-coherent mechanism
++	 * (phase step or TIE write).
++	 */
++	if (delta >= NSEC_PER_SEC || delta <= -NSEC_PER_SEC) {
++		s32 remainder;
++
++		ts.tv_sec = div_s64_rem(delta, NSEC_PER_SEC, &remainder);
++		ts.tv_nsec = 0;
++		delta = remainder;
++
++		rc = zl3073x_chan_tod_adjust(zldev, zldpll->id, ts);
++		if (rc)
++			return rc;
++
++		/* No sub-second remainder, done */
++		if (!delta)
++			return 0;
++
++		/* Wait for the ToD write to be applied at the 1 Hz edge
++		 * before issuing phase step or TIE write, so the pending
++		 * WR_NEXT_1HZ does not overwrite the sub-second adjustment.
++		 */
++		rc = zl3073x_chan_tod_ready_wait(zldev, zldpll->id);
++		if (rc)
++			return rc;
++
++		sec_adjusted = true;
++	}
++
++	/* Apply sub-second delta via phase step (NCO) or TIE write */
++	if (zl3073x_chan_mode_is_nco(chan)) {
++		rc = zl3073x_dpll_ptp_adjtime_phase_step(zldpll, delta);
++		if (!rc)
++			return 0;
++	} else {
++		rc = zl3073x_chan_tie_write(zldev, zldpll->id, delta);
++		if (!rc)
++			return 0;
++	}
++
++	/* Phase step or TIE write failed, fall back to ToD adjust */
++	rc = zl3073x_chan_tod_adjust(zldev, zldpll->id,
++				     ns_to_timespec64(delta));
++
++	/* In the unlikely event that both phase step/TIE write and fallback
++	 * ToD adjust fail after seconds were already committed, return
++	 * success to prevent the PTP servo from retrying the full delta and
++	 * applying seconds again. The sub-second residual will self-correct
++	 * in the next servo cycle.
++	 */
++	if (rc && sec_adjusted) {
++		dev_warn(zldev->dev,
++			 "Sub-second adjustment failed after seconds applied\n");
++		return 0;
++	}
++
++	return rc;
++}
++
++/**
++ * zl3073x_dpll_ptp_adjfine - adjust PTP clock frequency
++ * @info: PTP clock info
++ * @scaled_ppm: frequency adjustment in scaled ppm (ppm * 2^16)
++ *
++ * Only supported for NCO. Writes the delta frequency offset register.
++ *
++ * Return:
++ * * %0			- success or @scaled_ppm is zero (no-op)
++ * * %-EOPNOTSUPP	- NCO pin is not connected and @scaled_ppm is non-zero
++ * * negative		- other error
++ */
++static int
++zl3073x_dpll_ptp_adjfine(struct ptp_clock_info *info, long scaled_ppm)
++{
++	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
++						   ptp_info);
++	const struct zl3073x_chan *chan;
++	s64 offset;
++
++	/* Convert scaled_ppm to df_offset in 2^-48 steps:
++	 *   df_offset = -(scaled_ppm * 2^32) / 10^6
++	 *
++	 * Simplify to avoid overflow:
++	 *   df_offset = -(scaled_ppm * 2^26) / 5^6
++	 *   df_offset = -(scaled_ppm * 67108864) / 15625
++	 */
++	offset = -div_s64((s64)scaled_ppm * 67108864LL, 15625);
++
++	guard(mutex)(&zldpll->lock);
++
++	chan = zl3073x_chan_state_get(zldpll->dev, zldpll->id);
++	if (!zl3073x_chan_mode_is_nco(chan))
++		return scaled_ppm ? -EOPNOTSUPP : 0;
++	if (offset == chan->df_offset)
++		return 0;
++
++	return zl3073x_chan_df_offset_set(zldpll->dev, zldpll->id, offset);
++}
++
++/**
++ * zl3073x_dpll_ptp_adjphase - adjust PTP clock phase
++ * @info: PTP clock info
++ * @delta: phase adjustment in nanoseconds
++ *
++ * Only supported in AUTO and REFLOCK modes. Uses TIE write for
++ * nanosecond resolution phase adjustment.
++ *
++ * Return:
++ * * %0			- success or @delta is zero (no-op)
++ * * %-EOPNOTSUPP	- mode does not support TIE and @delta is non-zero
++ * * negative		- other error
++ */
++static int zl3073x_dpll_ptp_adjphase(struct ptp_clock_info *info, s32 delta)
++{
++	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
++						   ptp_info);
++	struct zl3073x_dev *zldev = zldpll->dev;
++	const struct zl3073x_chan *chan;
++
++	if (!delta)
++		return 0;
++
++	guard(mutex)(&zldpll->lock);
++
++	chan = zl3073x_chan_state_get(zldev, zldpll->id);
++
++	if (!zl3073x_chan_mode_supports_tie(chan))
++		return -EOPNOTSUPP;
++
++	return zl3073x_chan_tie_write(zldev, zldpll->id, delta);
++}
++
++static s32
++zl3073x_dpll_ptp_getmaxphase(struct ptp_clock_info *info __always_unused)
++{
++	/* HW limits TIE write to +-1 second. Return the constant HW
++	 * limit and let adjphase handle mode-specific checks.
++	 */
++	return NSEC_PER_SEC - 1;
++}
++
++static const struct ptp_clock_info zl3073x_dpll_ptp_clock_info = {
++	.owner		= THIS_MODULE,
++	.max_adj	= ZL3073X_DPLL_PTP_MAX_ADJ,
++	.gettimex64	= zl3073x_dpll_ptp_gettimex64,
++	.settime64	= zl3073x_dpll_ptp_settime64,
++	.adjtime	= zl3073x_dpll_ptp_adjtime,
++	.adjfine	= zl3073x_dpll_ptp_adjfine,
++	.adjphase	= zl3073x_dpll_ptp_adjphase,
++	.getmaxphase	= zl3073x_dpll_ptp_getmaxphase,
++};
++
++/**
++ * zl3073x_dpll_ptp_register - register PTP clock for a DPLL channel
++ * @zldpll: DPLL channel to register PTP clock for
++ *
++ * Return: 0 on success, <0 on error
++ */
++static int zl3073x_dpll_ptp_register(struct zl3073x_dpll *zldpll)
++{
++	struct zl3073x_dev *zldev = zldpll->dev;
++	struct ptp_clock *ptp_clock;
++
++	snprintf(zldpll->ptp_info.name, sizeof(zldpll->ptp_info.name),
++		 "%s-dpll%u", dev_name(zldev->dev), zldpll->id);
++
++	ptp_clock = ptp_clock_register(&zldpll->ptp_info, zldev->dev);
++	if (IS_ERR(ptp_clock)) {
++		dev_err(zldev->dev, "Failed to register PTP clock for DPLL%u\n",
++			zldpll->id);
++		return PTR_ERR(ptp_clock);
++	}
++
++	zldpll->ptp_clock = ptp_clock;
++
++	return 0;
++}
++
++/**
++ * zl3073x_dpll_ptp_unregister - unregister PTP clock for a DPLL channel
++ * @zldpll: DPLL channel to unregister PTP clock for
++ */
++static void zl3073x_dpll_ptp_unregister(struct zl3073x_dpll *zldpll)
++{
++	if (!IS_ERR_OR_NULL(zldpll->ptp_clock)) {
++		ptp_clock_unregister(zldpll->ptp_clock);
++		zldpll->ptp_clock = NULL;
++	}
+ }
+ 
+ /**
+@@ -2398,6 +2730,48 @@ zl3073x_dpll_ref_sync_pairs_register(struct zl3073x_dpll *zldpll)
+ 	return 0;
+ }
+ 
++/**
++ * zl3073x_dpll_alloc - allocate DPLL device
++ * @zldev: pointer to zl3073x device
++ * @ch: DPLL channel number
++ *
++ * Allocates DPLL device structure for given DPLL channel.
++ *
++ * Return: pointer to DPLL device on success, error pointer on error
++ */
++struct zl3073x_dpll *
++zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch)
++{
++	struct zl3073x_dpll *zldpll;
++
++	zldpll = kzalloc_obj(*zldpll);
++	if (!zldpll)
++		return ERR_PTR(-ENOMEM);
++
++	zldpll->dev = zldev;
++	zldpll->id = ch;
++	zldpll->ptp_info = zl3073x_dpll_ptp_clock_info;
++	mutex_init(&zldpll->lock);
++	INIT_LIST_HEAD(&zldpll->pins);
++
++	return zldpll;
++}
++
++/**
++ * zl3073x_dpll_free - free DPLL device
++ * @zldpll: pointer to zl3073x_dpll structure
++ *
++ * Deallocates given DPLL device previously allocated by @zl3073x_dpll_alloc.
++ */
++void
++zl3073x_dpll_free(struct zl3073x_dpll *zldpll)
++{
++	WARN(zldpll->dpll_dev, "DPLL device is still registered\n");
++
++	mutex_destroy(&zldpll->lock);
++	kfree(zldpll);
++}
++
+ /**
+  * zl3073x_dpll_register - register DPLL device and all its pins
+  * @zldpll: pointer to zl3073x_dpll structure
+@@ -2428,6 +2802,13 @@ zl3073x_dpll_register(struct zl3073x_dpll *zldpll)
+ 		return rc;
+ 	}
+ 
++	rc = zl3073x_dpll_ptp_register(zldpll);
++	if (rc) {
++		zl3073x_dpll_pins_unregister(zldpll);
++		zl3073x_dpll_device_unregister(zldpll);
++		return rc;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -2441,7 +2822,7 @@ zl3073x_dpll_register(struct zl3073x_dpll *zldpll)
+ void
+ zl3073x_dpll_unregister(struct zl3073x_dpll *zldpll)
+ {
+-	/* Unregister all pins and dpll */
++	zl3073x_dpll_ptp_unregister(zldpll);
+ 	zl3073x_dpll_pins_unregister(zldpll);
+ 	zl3073x_dpll_device_unregister(zldpll);
+ }
+diff --git a/drivers/dpll/zl3073x/dpll.h b/drivers/dpll/zl3073x/dpll.h
+index faebc402ba1b70..993221dc63249d 100644
+--- a/drivers/dpll/zl3073x/dpll.h
++++ b/drivers/dpll/zl3073x/dpll.h
+@@ -5,6 +5,7 @@
+ 
+ #include <linux/dpll.h>
+ #include <linux/list.h>
++#include <linux/ptp_clock_kernel.h>
+ 
+ #include "core.h"
+ 
+@@ -22,6 +23,8 @@
+  * @type: DPLL type (PPS or EEC)
+  * @lock_status: last saved DPLL lock status
+  * @pins: list of pins
++ * @ptp_info: PTP clock info
++ * @ptp_clock: registered PTP clock (or NULL)
+  */
+ struct zl3073x_dpll {
+ 	struct list_head		list;
+@@ -36,6 +39,8 @@ struct zl3073x_dpll {
+ 	enum dpll_type			type;
+ 	enum dpll_lock_status		lock_status;
+ 	struct list_head		pins;
++	struct ptp_clock_info		ptp_info;
++	struct ptp_clock		*ptp_clock;
+ };
+ 
+ struct zl3073x_dpll *zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch);
 -- 
 2.54.0
 
