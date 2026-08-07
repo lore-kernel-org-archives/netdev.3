@@ -1,71 +1,71 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C654734CA
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB4348BD24
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786108797; cv=none; b=eqB9YDcodkYN3/YZLSjMk1p8cfCwtPfoe6Q3knTSa46+OMobknjQmE9GyBSU3johzFq3KTJPLdBkXML5h8hDtA7z/Jsb3+QvRBJGtsZMvH6jhzAIFVYkhY8SyBZQTUn7rmjedw5+YQOyb8cRb0J5s0EpN9Qltetv358QTHvakwE=
+	t=1786108800; cv=none; b=Zo4meYqomqIYQFbbZ5yyuwH32c5iXf15koEuXZO06cz8TI+fR0o+trIhcvKyoAHEB/Ye9os1N/8UhDhCa+UL9PmKwR5hxaws0yQ1USZrMK2za5nfXsrc8/i5Eml34MZIGqEdj7+NHUiX8hGCHcau5tRamJ60FP3YtPGfWSTnwjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786108797; c=relaxed/simple;
-	bh=4YjmpMBph23jpmNi5pIu1lAttkg50B5OhEcnauebiG8=;
+	s=arc-20240116; t=1786108800; c=relaxed/simple;
+	bh=1H5deh0Reijn8Kox+Uf/v8W/YmDbXdVXJU4Zg/Zcunc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LlrU8IrKgcAh3WLHpF/KxUIIEYFLp1VPMqoWbsFzJXpPvsSrGMP/wAecYKAGzfoPpBuHtgyDNSNfAMF69GhG+2uacxgJfDWeR5px+TvdCbPZRqrk7WkFRmgFmti5LE0TKq/I24MOWwmFw1eObZ4hejhFhZtkvfTIIsNGjLDaA9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OF/NP7Tq; arc=none smtp.client-ip=209.85.128.45
+	 MIME-Version; b=YmO/BcOtHuTPtZOUXibtghlK+FOiSn1NzKk9bBoBA0TQS0+4NTV1W9ll4ZTvfTowe8Rr0QI1Jc3Get/5njjUmr+7ns+YQLV38N73A3Q5dTjCS1Pq6zSaSPpwVaz28b8IHUrRAnDNK5ZVO9AW8ooEvaZZkjtkps5o+UkDpNgEAV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bq7Q73fz; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OF/NP7Tq"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4956869750eso24850415e9.2
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 06:19:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bq7Q73fz"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49954b88fffso17197525e9.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 06:19:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786108788; x=1786713588; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786108792; x=1786713592; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dtLOE6UfRc4choy+RqQ8hJ7IRsUIafze2ylP3yt/xGE=;
-        b=OF/NP7TqcupYoMjWDdtfeDzBL/kKlmB16dd/X8u7tAPGiPzoBGW7nvnuYdznbJmncB
-         5Bw7GawwpvQkTZXNWqf45cY5q0gEBUmuHEzZKUfPTCHa7MpS3cgPDSp/g/wAte5ISDTM
-         QjSszaG0ZAv56UGRsssd/iP/MH9YKZEbw9wkgZ21KrgcTTBXOm+Ogb6Ho4g9sRz0D/CQ
-         yG5+bmWxHeCei4r/DrqyK+y3YgA3xSr9+zVQ4andYKFvlooc8Cgv+EnhJwim5JIU42oe
-         OWRya76lCQ5r1cVDnQkYo2mSlL+5rNJufzh7daJbb1lp5BN6iMYVa0gVYpk28Xqkl2Im
-         /zDw==
+        bh=ZJaZJRWy/IKZEWjx0ShchG6wpjaMI3hEZM40yrtEelk=;
+        b=bq7Q73fzjF4hxOChDEjK9iqJF+l8PkNI66enRFM3LAXwHIi7hD13y53rgPuRFx2tQZ
+         cXqNiZAMqgkEVpLs+Jpyi2OWYudmApdYnRvv1h8s5yuigtQHox1Xn75y43+VZWmTJfz0
+         IzroxxatvSlow1hUlDerzL2fjglIwFOeo3nBTJeS0fewINcb9/n9VGmNJZJaF0d4H/Xa
+         QJ+i42xDWlLpEBSsObIzhHaOwvuv1VLUfbwsEz3E6q6ImRCHond7BCTfli4z0uzioliE
+         lb2HF9lBD0aS5CH1sEDzHmU+VqFv5HJ0634QRvsVpHG3mXbPohQirP4ApFbFur4PK/mJ
+         qfWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786108788; x=1786713588;
+        d=1e100.net; s=20251104; t=1786108792; x=1786713592;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dtLOE6UfRc4choy+RqQ8hJ7IRsUIafze2ylP3yt/xGE=;
-        b=tJRKcotgxwwfUkXbQc99+rK8IFkGCfHfqkz9YXU0Urf6s2PHLuRm/8BQ82S2MTgidP
-         3TX/xu9qTfnDRqn4z96piA3dmY9u+xTLzxzhcOBKnKCj7P/8iNvZaV1drQL5zRR41ZVI
-         hpjv7MgxBmPEIyKQuyx7P8WHTR+nkVzvlJILMLkejWJeYUPjwttjcQOR6EtVd+Plfka/
-         njONoaQMKdu/LR+j6INmfHLtkxyu5AXGbyttYwRncUwq7snRpPNeSo6veexlVDBfgQdR
-         OHYRyQWtWRAIkMheKYsjZMF1X11JlhB6A/V5zhelOxf5jlr/t8fFaVBXIFDL7gY6TEKn
-         ArWQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrARSZepplo3/a/EZ28O9EgcZ9HLhUaS+NYQSbVU11N/jGKlzWu2ushPbvgkJLgvFTPZULQCL0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxGCV/DAGCRVnaze+/6umpwag1TUmJ8NbvLZ+h26W7SXzboDwp
-	rjEe0DA6vc9qtNy6NjE7Ys4npJ97Mwpk4Iyp0maXI1r76HF1wGMIaXxqWc5dIsk0
-X-Gm-Gg: AR+sD12XTKNf2TfuT+u+jgtkVlGPF4NU3G1hzdgQuzFntzyU++lVcWmiVb0DZQskJAw
-	DWq4P+IDP1DYa5wrSVe35b+IAQ7CG3VjUWcKMq1uamrGe98V6mozG8CUXBCGfg78N1MzzEB4Jod
-	eVg59r1EPBKBzEODJm5uPejdN6GyYhm5rWIwbwKweKQzLqXtItyYS5yejoLfqhWJ/WWSnIdh52c
-	uZbRCkRBz4KvbexFREfvVG8ufJJgnxNd2f54xJENM3Vd6+E20gkSg6GK70A4y1qqIljJRusv9qT
-	p3H/giblnix7uh8TvBVy9ZuRTo1TVo+OtJ2aQv+GKDCjPfUw+FmFRZObD1VpDLYlVLe3q9vMbdX
-	oY/f4w4WJSIGFvsgjbGT7z+U0hRolKKrhXcnYz9jD+vhmpJPiNwaoyO/53btZ/CDusI6sPQfchU
-	73sV/sH+m9IzQmOv4PArdQtGFuM2N06w+ng15MuHN7kKaBdT2h/AAe7wNA/LIFyDaUhbwdBJq+v
-	/MHimtsnMjdX/OKoz09RBIMP6oAmkDJP05guTudYhxf3Sjf/Vh9bO5iaSDLkIPCaA==
-X-Received: by 2002:a05:600c:6b4e:b0:496:bbcb:b0bb with SMTP id 5b1f17b1804b1-4994e7e863amr244964415e9.18.1786108787583;
-        Fri, 07 Aug 2026 06:19:47 -0700 (PDT)
+        bh=ZJaZJRWy/IKZEWjx0ShchG6wpjaMI3hEZM40yrtEelk=;
+        b=Y+gMsMnmHj+PKEW1/QMc6ACVHST9ImTYUNv8d8djZ/wOgvKZHeCE5FPu5MD4VE7AnI
+         oVg2f8VSiWBNoVUWoi7zIrr/ZSEvEjvFJc/jwMYTrn3uNMHehbkCuCYUhjtIGJgan6VF
+         nLOj5VCuAYnWC03zIp/aR21ue4u2L+M/WyvcgF/MzjD2HAaf9rBGijpjNkUgqG1v2rcn
+         XUxtse90ZndkSg1pj8ELKPpAnOvL4tFGDVdHILeP9Jv1Wvzn8kElXBouk78F97nttAXX
+         AZFeKqTeNU3bc7fl1djVM75QNsIIuUdJSuYuSpzTOhrlqgVHhATViFhIyztfg+WZ9VXW
+         7/FA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq0ltXXytZtPfKNuuBmjQzOBDK5JX2Y4dQnHJCjAQ8Z1/h5yo/sinsamjG/ef64ZhsWYQIvEDQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgsWNLZCEzgBKvPUbcx6qbwlNLpvgEEWwGgy+OKUa/DZPzANHH
+	jfv+XOBjtUcC6Cf/1KfxRatY2WuL2x2gKE7nBNKg1k+q+D72m6WL1AUR1IPKFi+y
+X-Gm-Gg: AR+sD111URh6VV2aXNaRM1qlvggW0nnscwynzrdBe730gbyDqwec+/8U2HQ51kqqC9X
+	BIqm5AIhMiswXq/AYiMqIqRnzf3GREuAVlAD3n6lqi/y1u63ZOidU5jSKhrn9evkLXZU4djJUfv
+	KyCzw/2xnqiKa6mfhBylHxh/GUIhCwG3HGQrga2ynIC0rEpEa7+BjceKauNQcnX2FF7R14ZoyxV
+	P0Bv4HaOjAqkeNRPvpIkLGAfY9pEFe1FWBJ7eOkGnshDK5hSkog7wkBnLFDeDV2THkPzIV0w03p
+	Z53DVEFqI5tqMh8WTH6btFray84m44MHPZQ4QTp3WoWtt0Qmt77o8gWK26kDPNMSCuswsSWRvsn
+	ETIBjULGZvMKRES6MZrEJtp0n7/EHE9XIr3Xe6nX0L2e8LP1ox+Zgmr3tzq3IK3oy/MbCFpHgHd
+	A/wlfIFogNbJ9nM+pFjArD1WZ60jGH4TK10vYQ0eZBRZCXem3VCnyRTrF8kwl9SV/4XVDxMZa8v
+	2F2BZGanXcKb3nABfk3ieAZfVA1hgZFjkMxWaQF4zMWvXpuWPZ9LNdGWcBDWKHZHfW4gFPPie3K
+X-Received: by 2002:a05:600c:6d03:b0:498:2b1f:e0c6 with SMTP id 5b1f17b1804b1-4994e7d9949mr265695965e9.18.1786108791778;
+        Fri, 07 Aug 2026 06:19:51 -0700 (PDT)
 Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995427a244sm144125015e9.10.2026.08.07.06.19.46
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995427a244sm144125015e9.10.2026.08.07.06.19.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 06:19:46 -0700 (PDT)
+        Fri, 07 Aug 2026 06:19:50 -0700 (PDT)
 From: Pavel Begunkov <asml.silence@gmail.com>
 To: io-uring@vger.kernel.org
 Cc: asml.silence@gmail.com,
 	netdev@vger.kernel.org
-Subject: [PATCH io_uring 05/16] io_uring/zcrx: coalesce same-niov RQEs on refill
-Date: Fri,  7 Aug 2026 14:19:23 +0100
-Message-ID: <71f11d5de47553f187737e0e892ab783b03f53b1.1786108672.git.asml.silence@gmail.com>
+Subject: [PATCH io_uring 08/16] io_uring/zcrx: don't reload skb_shinfo
+Date: Fri,  7 Aug 2026 14:19:26 +0100
+Message-ID: <1e4c864a5ea639803c866aea70b8d5bf558f189f.1786108672.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1786108672.git.asml.silence@gmail.com>
 References: <cover.1786108672.git.asml.silence@gmail.com>
@@ -77,122 +77,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With large rx piages I often see >10 sequential RQEs referring to the
-same niov. Instead of putting them one by one, count such RQEs during
-parsing and batch refcounting for the niov.
+Keep skb_shinfo in a local variable so that it doesn't reload it on
+every iteration of the loop.
 
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
- io_uring/zcrx.c | 56 +++++++++++++++++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 20 deletions(-)
+ io_uring/zcrx.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 38557a9194ef..691206a7721b 100644
+index 2ea1e79ca8a2..bea606beaf4f 100644
 --- a/io_uring/zcrx.c
 +++ b/io_uring/zcrx.c
-@@ -358,16 +358,16 @@ static inline atomic_t *io_get_user_counter(struct net_iov *niov)
- 	return &area->user_refs[net_iov_idx(niov)];
- }
+@@ -1693,6 +1693,7 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
+ 	struct io_kiocb *req = args->req;
+ 	struct sk_buff *frag_iter;
+ 	unsigned start, start_off = offset;
++	struct skb_shared_info *shi;
+ 	int i, ret = 0;
  
--static bool io_zcrx_put_niov_uref(struct net_iov *niov)
-+static bool io_zcrx_put_niov_uref(struct net_iov *niov, unsigned refs)
- {
- 	atomic_t *uref = io_get_user_counter(niov);
- 	int old;
- 
- 	old = atomic_read(uref);
- 	do {
--		if (unlikely(old == 0))
-+		if (unlikely(old < refs))
- 			return false;
--	} while (!atomic_try_cmpxchg(uref, &old, old - 1));
-+	} while (!atomic_try_cmpxchg(uref, &old, old - refs));
- 
- 	return true;
- }
-@@ -1163,6 +1163,22 @@ static inline bool io_parse_rqe(struct io_uring_zcrx_rqe *rqe,
- 	return true;
- }
- 
-+static bool zcrx_put_refill_niov(struct net_iov *niov, struct page_pool *pp,
-+				 unsigned refs)
-+{
-+	netmem_ref netmem = net_iov_to_netmem(niov);
-+
-+	if (!io_zcrx_put_niov_uref(niov, refs))
-+		return false;
-+	if (page_pool_unref_netmem(netmem, refs) != 0)
-+		return false;
-+	if (unlikely(niov->desc.pp != pp)) {
-+		io_zcrx_return_niov(niov);
-+		return false;
-+	}
-+	return true;
-+}
-+
- static unsigned io_zcrx_ring_refill(struct page_pool *pp,
- 				    struct io_zcrx_ifq *ifq,
- 				    netmem_ref *netmems, unsigned to_alloc)
-@@ -1170,34 +1186,34 @@ static unsigned io_zcrx_ring_refill(struct page_pool *pp,
- 	struct zcrx_rq *rq = &ifq->rq;
- 	struct io_uring_zcrx_rqe *rqe;
- 	struct zcrx_rq_iter it;
-+	struct net_iov *niov = NULL;
-+	unsigned niov_refs = 0;
- 	unsigned allocated = 0;
- 
- 	guard(spinlock_bh)(&rq->lock);
- 
- 	zcrx_rq_iter_init(&it, rq);
- 
--	while (zcrx_rq_iter_next(&it, rq, &rqe)) {
--		struct net_iov *niov;
--		netmem_ref netmem;
-+	while (allocated < to_alloc - 1 && zcrx_rq_iter_next(&it, rq, &rqe)) {
-+		struct net_iov *next_niov;
- 
--		if (!io_parse_rqe(rqe, ifq, &niov))
--			continue;
--		if (!io_zcrx_put_niov_uref(niov))
-+		if (!io_parse_rqe(rqe, ifq, &next_niov))
- 			continue;
--
--		netmem = net_iov_to_netmem(niov);
--		if (!page_pool_unref_and_test(netmem))
--			continue;
--
--		if (unlikely(niov->desc.pp != pp)) {
--			io_zcrx_return_niov(niov);
-+		if (niov == next_niov) {
-+			niov_refs++;
- 			continue;
- 		}
-+		if (niov && zcrx_put_refill_niov(niov, pp, niov_refs)) {
-+			netmems[allocated] = net_iov_to_netmem(niov);
-+			allocated++;
-+		}
-+		niov = next_niov;
-+		niov_refs = 1;
-+	}
- 
--		netmems[allocated] = netmem;
-+	if (niov && zcrx_put_refill_niov(niov, pp, niov_refs)) {
-+		netmems[allocated] = net_iov_to_netmem(niov);
- 		allocated++;
--		if (allocated >= to_alloc)
--			break;
+ 	len = min_t(size_t, len, desc->count);
+@@ -1728,17 +1729,15 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
  	}
  
- 	smp_store_release(&rq->ring->head, rq->cached_head);
-@@ -1409,7 +1425,7 @@ static void zcrx_return_buffers(netmem_ref *netmems, unsigned nr)
- 		netmem_ref netmem = netmems[i];
- 		struct net_iov *niov = netmem_to_net_iov(netmem);
+ 	start = skb_headlen(skb);
++	shi = skb_shinfo(skb);
  
--		if (!io_zcrx_put_niov_uref(niov))
-+		if (!io_zcrx_put_niov_uref(niov, 1))
- 			continue;
- 		if (!page_pool_unref_and_test(netmem))
- 			continue;
+-	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+-		const skb_frag_t *frag;
+-		unsigned frag_end;
++	for (i = 0; i < shi->nr_frags; i++) {
++		const skb_frag_t *frag = &shi->frags[i];
++		unsigned frag_end = start + skb_frag_size(frag);
+ 
+ 		if (WARN_ON(start > offset + len))
+ 			return -EFAULT;
+ 
+-		frag = &skb_shinfo(skb)->frags[i];
+-		frag_end = start + skb_frag_size(frag);
+-
+ 		if (offset < frag_end) {
+ 			unsigned copy = min(frag_end - offset, len);
+ 			unsigned frag_off = offset - start;
 -- 
 2.54.0
 
