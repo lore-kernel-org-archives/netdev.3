@@ -1,157 +1,151 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013039.outbound.protection.outlook.com [52.101.72.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9173C233956
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 02:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786069630; cv=none; b=XThYvEkE9MJR81gQyxGZL3bUVskmIaKw2ycQsY8sL1yrtlhAoMBXpbyMTQcYiJVPE4zL/HkIu/RYe/c/rkiz6ILH6OoGr2mDcBBlfzhXNlj0yScFebfSkJg5S3aVkK/fBlUQIgP2waUtSLLy7o1PHa7XGqEzJw+tq1jPc7nwYFA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786069630; c=relaxed/simple;
-	bh=0sIHYHXmj4kfkFzJUw5iipjWTE9r6gD6R63u5QZ378E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dd2kr1dIlRDet+MhLwWoTRFkx+wMJL4RaHnZ/bqHfz3z5gheu4V/fdkH7bwC+usYNpFBclQzMflyJeWvIbeS4EyXjufIbbz695tHcMSESUgRfUSDfzq5MNVsGh6nzdJhHFn9VUZE867ucbL9ucGzhRmCBWA2LexE2hwGoue6wig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EFxONSwv; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9F34B04B1
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 02:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786069955; cv=fail; b=iVunaVWbZ6+/t3vNuaTCb/UpfkO7tFhlwXG//ZePjNI9HFbKqKPnCNrwKpE/FhR0LF34nT5atAtD5QeciyOMN2wyzxFqv1oSGdTKhkkB81UHaIls+rWkr8xXPTk+NtjczDUg8HjWqHL30gaYWyXumnUr8PIzdlxEOaoI6MWkEp0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786069955; c=relaxed/simple;
+	bh=ghDGzzfpTVyhDKkCg6pAJe8O2Zh7fZZA2/6PefwzKUo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bAQGE2b7zHbl0J1qBnsTBZsVKYqvQUMFiBFI83Mr6GXuIhD+6lEuaKVv/Y3KXBqqDyK6rk3FV+G4209D/bXo6Esj3p6OIsobyEV2bqESBmgdX+Ba1dmq8LlVvmp/4juRUyn4eVdpK9t6sJIMxy1XcaYhep4dZ8ym6JxilIvCMLg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=SXTI1InU; arc=fail smtp.client-ip=52.101.72.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EFxONSwv"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so3106025a91.0
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 19:27:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786069629; x=1786674429; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Rt72B6lVkq2wOx7y/7/IbB63EiyH3V4VoZfX5qtaWOk=;
-        b=EFxONSwv41DNxoIUBAuQH3qxgcFTC2ucmMRVeMwjw5MtegTuoXDUEr8NCDrND7lgb0
-         CElXma4F2GYcUlApwXh5WGdiHXonlq1Pl3d4S9XmN4hvgNUokwgajYibn7lzN4lBLAKB
-         tMDYz4rBE8JYflGovSosd1xzptUEr91ejHKCJP4NK0Ib4lop89yLC9zLxRmSa9n8UN9+
-         9RPS3So+fwTNOEfWCyPpXAgXEoahbBrSoj3D+BmJwsBXRjod2mZDWyNz5rGic58NGunW
-         mmnGgQ90jSgVc/P/F7vH571VlTyBcjciGpZ3s9aXm1H17Exs60R7aRohFRpdpHzlMF/m
-         lkqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786069629; x=1786674429;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Rt72B6lVkq2wOx7y/7/IbB63EiyH3V4VoZfX5qtaWOk=;
-        b=QldXh8+qynkXC2uygjPkjUxEcUilAeTJezL/MchZXzd9Ea3uoMJQs5D9G/4aCYBxhe
-         4TKund7hD7Dxm9y/yR2kE6406YzD/+2NSFdnArmIs1hVtIzIQywmkspglNV3+rqnUpVC
-         aFKslf6uH3YI1M7rgSzl/BXX3kbsjKrpv9mt1I+txDgV3ZJ7odE3fzD9KxSHbsZaO1W1
-         sENgzs8bO5FA8Uy8gXcMK/mkv/OTIQ6kcLRGxlkKcTtaA4cCTeRcu+iOOZfl2Z0qsH/q
-         5TH85BPNWH4TCcg451KxYjzcjLsr2Cb5NpVEWWhtSdLtyZ9Ugx3jPzh7bG6gu5aK4jrF
-         EPIg==
-X-Forwarded-Encrypted: i=1; AHgh+RoEPfwRQMupdP6MzTOj4FLZd1C9BL4pmAX4e3UbH0nwbf7MvdEky6JoXtpUWyh3DRXvN8xu250=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNghT5uW7hJUdOqHwYKP01fKiB0tapoyR7n0/M3NqHm1XnXX8Z
-	eDHfrlJTdKDIHCIOE/mBpJjEZQtg7v7mFxQKvQHAC/XNF0JhnCxZXt8q
-X-Gm-Gg: AR+sD11BUUQByY9+fKWFYsq8hvVWb0cPbMzHNbLy6Bxb82Lps6VYbqkmQS74sXhEEoX
-	Zo8OZbkOd6PLb55EHpD/vcqqqXCr39eNeHCfjpxDzcc+Hm9MvNuRS2XpS6NiyafjQbmPEEIRUKc
-	Af6dOC6C/9omWEcstjFPnvR8DCEsTUux/hdtNAwp4LtEnObdZKrnP5hwOQrOJRu9JJPecIXCetI
-	Ktt3MM7+CQjaOeZcx5CbUSjrvBjo1/kGyYNa7xCWV2qalJKlp/zzX/M+IDfVIo64Ljg/C6r9Wlo
-	i+cvXACY1kRHvUia4JxPc6FSTMu4glX1RWAZF29QWRrvM/7oiXOCCqBA1g6Lw+ADyfjNBzu5qgf
-	gLjNlge7QvedZZkPkKpJVKnEefvHtaTHl6H8GDgUhudL365ZU5zDFeMtf6ygsypejasFO5VIJm7
-	UPNBBljkoY9jeKRjSp9Oph9kbgZedqb+0LVhElBYzfgv0xkM1y8xNoJssiYX1N62EVfvp5VBYiA
-	mivjcjHlIPSWRqrqBJx5qB8iTJhM9RL5hnGnmBCsmWKC6Rz9gMtSi0=
-X-Received: by 2002:a05:6a21:a04:b0:3bf:9aa9:b2a4 with SMTP id adf61e73a8af0-3cb85ef91f7mr24553793637.20.1786069628776;
-        Thu, 06 Aug 2026 19:27:08 -0700 (PDT)
-Received: from EAIT-H54D9Q2FJQ.eait.uq.edu.au ([130.102.10.60])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315beb88413sm1843082eec.18.2026.08.06.19.27.04
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 06 Aug 2026 19:27:08 -0700 (PDT)
-From: Yu Zhang <yuz08559@gmail.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yu Zhang <yuz08559@gmail.com>
-Subject: [PATCH] vduse: reject non-coherent iotlb entries in the coherent fault path
-Date: Fri,  7 Aug 2026 12:26:57 +1000
-Message-ID: <20260807022657.11318-1-yuz08559@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="SXTI1InU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UIBMa/MbrdPn5wacTGF7vofWnfIrtVAjTQMhIBbBFB9lCwsKhYylqm473zSWwLJlKoClh8SOqChdzDrglPYiaF76u1a7rz9PuRLRMHJVDGNssEqVPJ5DwxGOTcMtWqj3Wyc7OHZsj4Ry+W3BKobT9HWR9dsdPk0qRm3bdbCObhohk5Wb7RwGIuBkx8zxRujyxgFVvCtPGqwaFk2hdJHPE/wIeeH58LevWXPMQObUIkhxc1xDn0vhnBT20tehak6kNZw+HsEOzzNtqpSemSbZTiliZ01cChoQbOev7Xr9BQQUHyrZ7/M/2fZQmwZpd1sytP5ReHndBjEnQxYBGZ/4Ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EpvbHXl5did+/6STlc+lzqD1DPgvtEBnFUgfQ601PeY=;
+ b=Ilvs4m1rUsg5eWi+Wa4Nze2tLwR1xG66TCaYOmAby1C5Iy/pxoDC/Phr6wc3rf11mzo4Rlh+SeCnQq62kQsDpV1k90MTZ71S3WANPz9R7xtQVAquVAVZ3Wdltpk1awGEsXj98NP5wDsYV6G+kkFwxaKnE8JyCPkibENRwASF//jpLwm90yZLl3bqWKBqy2vgR+sgD78Vv1KHUQoCWQ16EWBOYqwL1ckj040z28xQxyI/We+sKQLPpd9xGTdW0wz6tRvirkUP0VVxefyuqPEx9sjt+3woTpDK8BOep1za2/xUjlJKEkUs1WsrA6sReuWvZGK6E4IFe1OnLegRJ5GBCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EpvbHXl5did+/6STlc+lzqD1DPgvtEBnFUgfQ601PeY=;
+ b=SXTI1InUJNZqn+P4iJJfrb8Vsn1hKplJ1D+Lrbs5ilPt8kGPnGj2w502PaqAet3SKn7AokWj3gCYR803p5lk1yoRb9YtVS6kOSQ7Zl9lZ/j8sfhQHaIUthX9SW9ehenvAQTQUd8SS0Y3wezkmPizyQYy38jRpyoj17c7W4lUj4PzkpyC/zOKnSAFcO0CUfCssSe/fI6Z5wlry0fdm25v+JBuRu+L1QwiQe8m+MMBb2eoL1gISO8s11VB39zM3MtRSOooX+VJ6VGK3XuMWoY5a443m6WkmYUW49sp7zEcoNVjGnq8zndqXYJmipPMG+Mo7LkBA3a0QGQHEXpJhNih3g==
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
+ VI0P189MB3174.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:2c6::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.6; Fri, 7 Aug 2026 02:32:26 +0000
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0315.008; Fri, 7 Aug 2026
+ 02:32:26 +0000
+From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "jmaloy@redhat.com"
+	<jmaloy@redhat.com>, "horms@kernel.org" <horms@kernel.org>,
+	"tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>, Xiang Mei <xmei5@asu.edu>, Weiming
+ Shi <bestswngs@gmail.com>
+Subject: RE: [PATCH net v11] tipc: fix NULL deref in tipc_named_node_up() on
+ empty publication list
+Thread-Topic: [PATCH net v11] tipc: fix NULL deref in tipc_named_node_up() on
+ empty publication list
+Thread-Index: AQHdJPVxU2iy4kpsx0iyGvzWdnF+ULaRc6IAgABr2IA=
+Date: Fri, 7 Aug 2026 02:32:26 +0000
+Message-ID:
+ <GV1P189MB19883E37232698C679E7CF5CC6D12@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References: <20260805161356.193230-1-tung.quang.nguyen@est.tech>
+ <20260806130424.62a59734@kernel.org>
+In-Reply-To: <20260806130424.62a59734@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV1P189MB1988:EE_|VI0P189MB3174:EE_
+x-ms-office365-filtering-correlation-id: 5d4e4014-8d85-479b-ea92-08def42c1eaa
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|38070700021|11063799006|56012099006|10067099003|4143699003|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ cVhyo3ZkiGepkmGDV5DA9RA+hghrcwbkIb8c/NR6GJjdGa+fCqJ92xdUR6+ASgvdP6kmCELhVQ30qnRegjqPm6uRKSWR+xunOcIM7KjJERMjTJK8d3IdI/Moz9bVjxlm8Hzmw7hVrMljmA+wB/SQDWL/0Ojrw5h4TRZrxCF5vrcsm6TXm39iaLxcmMzGXQjUpEUEsEAKcvtdNUD7StAwZwFKWsSf32yQFY4Qs8lrUt8A595LRZN54DN1qjQu2qjR3zGQb9Ed3yMkfNy73/kkOcRVsL53nM1W88cqVIgG8AmUOD+v+mw7xdhtXyTMdFlVTJU/64FuMZPHfyjt2V2v0KGeUnQ99uLWRXxbdb6wQoreLem1MFNjtNfDYigQ99e6Ru5jLvHlQk7OSsBeUuoaeyJ7DbHQTN7R1TCR7kERAEHCym8h/cfoIrpuhegX1vNolWarQzCnlfGTMGdSxcbE1YKEfVSAZ28g6Q9T5ztLNZKCu5LWm7cGKGLrgSN7HYiOWYMLE8AYY907b4gfZJUiMKtgg4Evylt5Vel5lz7U/GOkjU8+icHj9WOtzr1hfnp2e6/1qsxb58rYQlvwNY3uXDAWlev6uIz21dDtUXpnnv+B8FJj+Q9aZFlty4IiIyrBFhQv6cFdVN4s5O8Tloya25M9jC4m6T/bw0R5R7WXr1mGVVMFFcC59hhkizZlErBnfTSFM0JYvk3l1ic1rELN7lC8vErYTFiT6Wf5fhA4Hm8=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(38070700021)(11063799006)(56012099006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?p0eJXyqPD42cq2EnxHR+im6vIC2vKAUL7GbXF6aaVmNk509Keu/YZhR4jqoL?=
+ =?us-ascii?Q?44uytcPIvLfYAMixdi06es9Mw+G7hu3q7rYEfpcwezlSnLORU9VHpVsNgBDr?=
+ =?us-ascii?Q?BKVyt2jlF63mm6btdC2ZVSCJbN4o9FUl4ImkvV0bwnn8y7OWCRpRFK47yXZm?=
+ =?us-ascii?Q?JMPdctjE/dPwAQN3dDOG2Syq72GlqxcTW9vhGBssK6vewcsahrsrBKohl0uC?=
+ =?us-ascii?Q?uO4RpBwhC9ZQ63p+7+i386AAOSAsglqkiZV5e+PI2W6nwOqXWQFXH9jW742j?=
+ =?us-ascii?Q?vD9csg8HxWG9Qdx2W39Eip29K+LG3JfryfTL2GhTf3pS3I2Q6yKsXgDsQUTa?=
+ =?us-ascii?Q?AWD7nY17Ce7G2AYsd5SvqIvaqtxuBvVcO9bRvlmgesqzPNYdYz6T36Zvr+wy?=
+ =?us-ascii?Q?j7t5q3wIXW+LJiBUXH1y4hXQVllP4YakShWkF1wvMnVTksE1JcqXhKW+AJiV?=
+ =?us-ascii?Q?qf9MYIsqqWOUXcpcXL1eluH83dV3OuHh/8z4/VwM49T1k5L/qEKvmDehAmLP?=
+ =?us-ascii?Q?LgL/k2r6kpmv9MesMQ4RcUSDlyFbZgvrp8gUnZ8fOFfOlU2PCL6y//fhqMOo?=
+ =?us-ascii?Q?pw2yf5g/DzTr//lCSxx9b9adgyM1A/2Uz/0LDRVo310r3iSukmI7cLSZFe1M?=
+ =?us-ascii?Q?5IchGONJ0INGSXcIow2ecM9YrtS5YRU/xMMOqspWvsA91kGR4/a1HiNUXXUR?=
+ =?us-ascii?Q?xfm+Isttyby6wSHD5WVM+TnW62TSlvGoVj5n0vHSjhgnWghKiqQr72F4hcHT?=
+ =?us-ascii?Q?sJq1/hQB05EYG55o0R/+2bAO4VQCxvoghGAu7ZS7hscer+fMeTeswHBNTlCx?=
+ =?us-ascii?Q?qQ51RGX4Ye8Zi+o5x2AxqFd77sfXHRfpZR/8RinMhbHmlLq/CouGDaMPd7/2?=
+ =?us-ascii?Q?4nTLiu1Djg8ukbz/C0/R1mpoM7b7p3bnQtPv51VKxvpJzaTASvIuKvigdMr+?=
+ =?us-ascii?Q?HWYQ+s4uvl9cEHgpXknSAF4jhpdUFzNfpVQsBUnEhISBVglZqlxuYFnhQ7BO?=
+ =?us-ascii?Q?v5zwoFPtw2UvdhO87u2kkRXHxtip2/c8KeBeDUGrVzcegbTF3nIaKFCaMxvW?=
+ =?us-ascii?Q?q6IIt+BsEkCE61+iEWUiiyVlNkiZOasb1q2A3I+xSVq3cdkNpzVaqkAe1b9b?=
+ =?us-ascii?Q?04qXuGG3UDugecHeMx3ChvjPxH4yz75SPLya8xd/3O3uzjkqhqnA2d0j/u8d?=
+ =?us-ascii?Q?6z1t3hUKK0PCZdkxVsrirbfGbN/FYFLffV6YgBmqKymmj7XGhFEghik1KqSy?=
+ =?us-ascii?Q?SJhqPQkeDwJzQBiLiG+SApyhlfFRSfnI900qFSZG5mP0/Q9VBQE5wrHst64T?=
+ =?us-ascii?Q?hwd5ItZ0AFFmnaSVdj6OhG2Q1Rt4UxolchoG/oYZwkpubtBq/k2RcvR4rIxp?=
+ =?us-ascii?Q?VpRKuuX+mHeZ9hpRq2beHlExjNpl+GVc99waXfkkKPY5ileKbSQE3C9/1PKe?=
+ =?us-ascii?Q?Uj8nBHdveikhNu0bbNF6TZMGp8U1mJf2SNhT+Xf5U1scg8330i85cENpCvAO?=
+ =?us-ascii?Q?v2Mw6wd/lDyUhzI7PIC+qrfEBc4CXWcRS/xeI3FGq9KDp4OhYiPF53+bw/tr?=
+ =?us-ascii?Q?R6c30VJY31eM+G8SB9IbBbgN3LmBU6qJ8fsqlGb6gjE6Et0R8KtBVxwP0aPp?=
+ =?us-ascii?Q?ssaH+HWnxEwkPpePeMpDrDXSD/YSy60mj9vS/tpoEnJLc1Bv7pF4+EEyT5f1?=
+ =?us-ascii?Q?JdYG4uUPKU436AqDPLx73Zgh5WR0iZpzudBM0GqviVf6dBaVdGoBf6Y2//KQ?=
+ =?us-ascii?Q?W/mKHm2VpA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d4e4014-8d85-479b-ea92-08def42c1eaa
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Aug 2026 02:32:26.3011
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7QNo5tS7SYc+Og1NK6QH0JxbXINSwyCe46l2vKoDRWSzSDq57gUScZRv7nsGVfKZ3kRVdur2AMevWP5MFysYG+c0cckWaYFWbC0JEwJAG2E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0P189MB3174
 
-vduse_domain_get_coherent_page() turns an iotlb entry into a struct page
-with pfn_to_page((map->addr + iova - map->start) >> PAGE_SHIFT) and takes
-a reference on it, with no check that map->addr is a physical address.
-
-That assumption only holds for entries created by the domain's own
-coherent allocator (vduse_domain_alloc_coherent(), which stores
-virt_to_phys()). VDUSE registers its vdpa device with use_va=true, so for
-a use_va device vhost_vdpa_va_map() passes a userspace virtual address as
-the map address, and vduse_domain_set_map() copies those entries verbatim
-into the same domain->iotlb. Both kinds of entry share one tree, and the
-mmap fault handler only splits them by iova < bounce_size, so a use_va
-entry placed above bounce_size lands in the coherent path.
-
-A userspace daemon can exploit this: bind the device to virtio_vdpa so
-the coherent allocator mints an entry whose backing file is the domain's
-anon inode, obtain the domain fd with VDUSE_IOTLB_GET_FD2, rebind to
-vhost_vdpa without deleting the vdpa device (vdpa_dev_del() only calls
-_vdpa_unregister_device(), so the domain and the fd survive), install a
-VHOST_IOTLB_UPDATE over the same iova with an arbitrary uaddr, then fault
-the domain mapping. The kernel computes pfn = uaddr >> PAGE_SHIFT from
-the userspace value and hands the daemon a struct page for a pfn of its
-choosing -- an out-of-bounds vmemmap access for a wild value:
-
-  BUG: unable to handle page fault for address: ffffea8000000008
-  RIP: vduse_domain_mmap_fault+0x100/0x330
-
-or, for a value that resolves to a valid pfn, a read/write window onto an
-arbitrary physical page (confirmed: a write through the domain mapping
-lands on a page selected purely by the fabricated pfn).
-
-Coherent entries are always registered with domain->file as their backing
-file, while entries installed through a vhost IOTLB message carry the
-mapped vma's file (vhost_vdpa_va_map() stores get_file(vma->vm_file)).
-Reject any entry whose file is not domain->file before calling
-pfn_to_page(); the fault then returns VM_FAULT_SIGBUS. Legitimate coherent
-mappings are unaffected.
-
-Fixes: 8c773d53fb7b ("vduse: Implement an MMU-based software IOTLB")
-Signed-off-by: Yu Zhang <yuz08559@gmail.com>
----
- drivers/vdpa/vdpa_user/iova_domain.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/vdpa/vdpa_user/iova_domain.c b/drivers/vdpa/vdpa_user/iova_domain.c
-index 4dc76c0..847f010 100644
---- a/drivers/vdpa/vdpa_user/iova_domain.c
-+++ b/drivers/vdpa/vdpa_user/iova_domain.c
-@@ -221,6 +221,7 @@ vduse_domain_get_coherent_page(struct vduse_iova_domain *domain, u64 iova)
- 	u64 start = iova & PAGE_MASK;
- 	u64 last = start + PAGE_SIZE - 1;
- 	struct vhost_iotlb_map *map;
-+	struct vdpa_map_file *map_file;
- 	struct page *page = NULL;
- 
- 	spin_lock(&domain->iotlb_lock);
-@@ -228,6 +229,17 @@ vduse_domain_get_coherent_page(struct vduse_iova_domain *domain, u64 iova)
- 	if (!map)
- 		goto out;
- 
-+	/*
-+	 * Only coherent allocations made by this domain are backed by a real
-+	 * struct page here: their map->addr is a physical address and their
-+	 * backing file is the domain's own anon inode. Entries installed via a
-+	 * vhost IOTLB message on a use_va device instead carry a userspace
-+	 * virtual address in map->addr, and must never be fed to pfn_to_page().
-+	 */
-+	map_file = (struct vdpa_map_file *)map->opaque;
-+	if (map_file->file != domain->file)
-+		goto out;
-+
- 	page = pfn_to_page((map->addr + iova - map->start) >> PAGE_SHIFT);
- 	get_page(page);
- out:
--- 
-2.43.0
-
+>make htmldoc on the testing branch flagged:
+>
+>Documentation/networking/tipc:184: ./net/tipc/name_distr.c:261: ERROR:
+>Unexpected indentation. [docutils]
+>Documentation/networking/tipc:184: ./net/tipc/name_distr.c:262: WARNING:
+>Block quote ends without a blank line; unexpected unindent. [docutils]
+>
+>+/**
+>+ * tipc_named_dist_cluster_scope - distribute all publications to
+>+specified node
+>+ * @net: the associated network namespace
+>+ * @dnode: destination node
+>+ *
+>+ * Return:
+>+ * 0 on success
+>+ * -EINVAL on failure, insert duplicate publication or reach the max
+>+number of
+>+ *  supported publications
+>
+>is it this line ?
+Yes, it is.
+I will address this together with sashiko's valid findings.
