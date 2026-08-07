@@ -1,236 +1,224 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C589E3C6A57
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 10:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9079346AFB;
+	Fri,  7 Aug 2026 10:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786099971; cv=pass; b=VjsDtPKmy1kRmnyT8RchOFK3YXaIFHlx6iByZRFeSGPEMhkKmcZRkim2lfjPaHn9IWAnUm2SKR3jguo5Q2txE4MIVAWXwidgORv37IOXgvxIajyXE5aPbhlVZpEoD98m6W9tBMQY6+RIHD0ejTXFOKT/7ZEapQWBUmsjcShfuKM=
+	t=1786100201; cv=fail; b=T5jJtSQ3HAUdWOOrnLdkN1qNR0xcIbDmOi/W/UZHOXSGCfyvetYIzDxqKlfYR+cFgSFZMtqAX/RspgthcsjTRDZfSFn3mpCoXc0/G5OuMaEq7gwmYEAVMc2UOsSKF2dc4CY5FQ+853iZjPMXXYHghRFm0p6bK41IU6p9ritlWGI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786099971; c=relaxed/simple;
-	bh=JOPfYMY0t10rtaToFl+YuQnshZGyBfYLLr+eiZvzGn4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=liH5INyfqF+NYDrtWJ8/Uqf12dwJ3rhsIL2EfyHWdAA5OSr6Fahd2J+/19gS1TIQfDszQn6PfD9vs71qcS2EBhBXds7X1RLtXT4H/JVf6WKAfjTYHchI72Ma5G5K5cLXs93fYxGk9w/okk0QaK2mfzxzlbzpLLpl/8J6orZq6lk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ur4Xewa8; arc=pass smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1786100201; c=relaxed/simple;
+	bh=+koQOZBWaoEmKLEYdEP6rk5g4dnJKM57NPzF2OLUc6M=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=iIkBHq92Q/DKauvcl0/zoYijrKfQdN8b+GHncfTbgmhS12Sx1FB4qcHjMqOtCuJw3q21vBRG7Rma693fTbd+rGXts21IlUivW4sbVZyEJ3lQrrpxkf0/DAIKljo7reZ9+/UzO3/QBsOJiUhTcnJX891N69U4P3gsDhmjORaCe9w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W/VDWR3K; arc=fail smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ur4Xewa8"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e50a650a0so174780285a.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 03:52:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786099969; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qyWCcrPX1kYC1fNEpGTdni6f5ZbARVz4jbVPle1qHv7F74gvvAUettX12n3RJZprPC
-         TrGbgo1HZNqEDdOtmPEOBNKhczNY1sxfuUqiAaZEaZ2CZi0Yqzwa3/YZrBjEiW1JrMps
-         ILJArQWoW22wM7MxItCCpTze9kmAOTuhYbWbCaE5CllBFiGt6V7Cv/RFkYKrnkt9FVky
-         uINoD2EZpAW4i5z6MONpri3tX0gcJs3OocW8XP0tEF8Z8gfapPgjrDw6fqFDLFo+MVpV
-         hAq3T0IFbCk0sXoaoXGWgiE/Gcpaph1M/9rwL1/tZdL+lOnZg0pK05V6cxcTu9P9mM7T
-         /bqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hQ0c5ajHoRAqu5+TxzBEWaUWKNbl8UxZvFXxusiZKRY=;
-        fh=Ow+UsI7mXNgiczJPQtgxHQcuwxcEjbVRoihM0UOtm7Y=;
-        b=B59nvatfnLG3EoKy26l/8zNvQ4xWsa4IVE4ImOGuRcon93QwVxlvxiQxeoKMOyuoPj
-         T3nAoi6XXGtkTusjTuBwgmIOJ3Mz4B8qCEaGLLFUsuR3A/MYCtvFbeCiZIBSi3Cq0fzi
-         Iny2wSvA88j/QAPAYak5UMgyFGoud7DTdAH+Qg+eVqTyTxjxTuFZn7ILkmIm6l4WiWGZ
-         RKiGtQ1JQllOOvDU9mNrO0rqT14Do2VF52pNwYJB6RLfHOMcg9sjH0/MOl/Piv+xmqot
-         1z2rxBYGKhuyXsj1mhvC7qsA8w2oCy9X7/YpR8J1gxYIGQB8wFB1YA5CbBFmzbBc3SfV
-         Ve7w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786099969; x=1786704769; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hQ0c5ajHoRAqu5+TxzBEWaUWKNbl8UxZvFXxusiZKRY=;
-        b=ur4Xewa800+whD/3uM6IxW4IJRmbW/b/C0+nq1ErcNLJExrYs9FYyXEfAf8vwxLnaJ
-         GNm7loHwutaq4QnNn3Z7rgZn9WBSj15Gcq4vim9Ywp/IBygNd73B2aLpU/kR8tIDepPF
-         QjwSqTEhqxDh1VrZkt31s4zZ5ul4a3XtUQzuxW222uuuY/VSN8lbFu71XRk+TVEI3+ci
-         h81hJlwISFJUbWrNBNJZNQOenGdUk1XekPikb7L2/YB0+s5sjpVHejfYtxV10Bd2mDay
-         R4ayqSaLi3N0b6DF27OkLXeRvU4CPcR+zFiZkUiy7DeQApLTczk5G/FJsFhZgJ+VKWXj
-         Rzcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786099969; x=1786704769;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hQ0c5ajHoRAqu5+TxzBEWaUWKNbl8UxZvFXxusiZKRY=;
-        b=EGBjbLfjNfO2UJWJ09FKMJNzE/aD4+bQOrtFGcoFk16yxZgt/S8OH6olDTL/PkN1uD
-         XgY/IExAcVEZ69Jt9Zij+X+UyWemLvl6Giv+oGVCK75Vo1oCMaLEw7FrbRkdOnmxzePX
-         llkHhl8UfjXBF6YDeqRlBCFSCjh5fA+WEYkNeWM3MJ6knbyf5d78W4Lo/ey8czFXzmc9
-         PegIZGcd1WjtUE0zPWfeFp++epMTnFh/ofNDCcUIF7GBjjnBK7ELS7oWg1DAKyp7zZU2
-         Pp5j9o8odtg4yeR3+UzWXd7x9fhR9phYi3eI/cHG13FybQ01zjihlZayl1uW6RE1HCt2
-         Gj8Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rptp/4XdpjQaZsqT+fwee04jhtiVqH7d6s0ViqsJqdmCPtV7QAiRfVxA16JDFI/D+x3mhxIoOQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFw1aukvysuQjOw6LuwNkWXKO1RiLH337OKY42mMpejHovUk6R
-	OD3D9UFGmBDWiRVNWqXjpQlnHUK+w+cvVFOLyaB8jOAO71hTVxk1+GI1mZ8n45WqBaUwao4KG8d
-	jVQJGfi8JRkgyaQfd6jJZfvPG9g6vvYY/CMVaW4rn
-X-Gm-Gg: AR+sD10gvGrs73eBwoy63ChtXXuVZODskkOjuuNmH5YV7CyH04mqARBx7Rt/+ssEJxq
-	uMaLES1AbvBdSqgfTCX/esuPW0gASg5sS+7Gsg7d6qYJnFjDVoG03FlofZyXt+GzqqDDgcX5gr5
-	K5qW//sqVip+qweHQhVNuogsdYslpovFk1u71SNDOY2xcXoLDAoLg5QkKn/kH34k8bQ6T90wjeC
-	REbuzmj+BQ1j30JAq2uNUXHJFf0rZhFxC4vuQR9F0IfPkwPC7UY6mfUfOO27pnNAUwgNqhFl1UX
-	9HNTjbdwUParxuCBb76gHWwkyuAhB8Hwodgy7Y8r+akWBrmGJxz6MrMA/J/zy0Qch8w2050h2xg
-	n6Xjg8SM+KjPl2ox9bVMK2zUPnT4aeigHDmyIelgQVqPH3MXQcAIqcd8=
-X-Received: by 2002:a05:620a:3989:b0:930:147c:84a2 with SMTP id
- af79cd13be357-93649266f01mr1676458685a.32.1786099967912; Fri, 07 Aug 2026
- 03:52:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W/VDWR3K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786100199; x=1817636199;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=+koQOZBWaoEmKLEYdEP6rk5g4dnJKM57NPzF2OLUc6M=;
+  b=W/VDWR3KtwJ1Wa+l2kEUmrhUPukTAYVh5sg59X7/L6o83q6Rpj3cATHQ
+   byXA2mNwRpZQXSVp6Ir2q/n/DwregpzdD6XJjdnfkTjduIifs8gT0wtBf
+   UVtPWG2Hv+85+BeDvOkuNpHxkzlWscCYRw3iRajEwMU/V12odcQCCKRFT
+   NYvofyQuN4vZ9DadWBlin2XTwvTXOunbKJNAUKIisS4sYvdYwipDuSO84
+   mB/fc/1kJoyQ+9OLduz1fOtxt/iPjC/cC8kUS5E8toZeJcSZxXhcj/+lz
+   vp/0Yk+yuHne8MkQrYJDxppsLraIfCh18BHvWAKpeYlj1AdWd4GfpHzHp
+   w==;
+X-CSE-ConnectionGUID: tfaIFV0eSduLDYOk0XuMig==
+X-CSE-MsgGUID: Jij8CoatT2yr+yqJnv681w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="86557812"
+X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; 
+   d="scan'208";a="86557812"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2026 03:56:39 -0700
+X-CSE-ConnectionGUID: Gd+Yt8gASV6J4WPfZRh+nQ==
+X-CSE-MsgGUID: vvLI3x0nTSi0ZNmqVyJ71w==
+X-ExtLoop1: 1
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2026 03:56:38 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 7 Aug 2026 03:56:37 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Fri, 7 Aug 2026 03:56:37 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.49) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 7 Aug 2026 03:56:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nvW/QCbmmYsifug3iZ4270LfmaQ9S5gUTbfl8ERhJRt0cOPe2e2kSAsZ+qkz+rnmDCmKD4oCuli85YuqnI9QUdoUD0Dsmo9RJkgBmahB1tZsErvPLVcdYIcGBuvPbJnQiwFLQJv5A7S+vHJP/GXPmzQqNZdMG0qhElfK/G3F9tkDSqVjwWviRy6XxflidHhrtHRnuMHqpTsYEm0rP2LUL+t9rCz9gV3pykLKz7eYB72+gMXKpReVm0lRQiA3KZcw2G5Yy8yoZg8097uzWmNzpPnbu+JeSvc53QBb3duPDIYtTRhygG5SZotHPS+lclAvt1E7EpQ/wSo/6ZYgzfu/OQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P0lI860LNZyKuNg6KCaqGa887mUZ1+lpNq3bQxZAICM=;
+ b=ALRABaCreiWBgtYY0QQbAQP7TlpDmFj7Mw6NfEVKCAELFwgLHeZ+QK8EUp7Kx7YrhJ12z5NR9o1i0ICqCWpVq0qsPF0qCF77dbAqB5zQEHZZsrTIrYnX56oWRotn3Ywd/npDMCxnm5aGVJuR32JhfO2nFHxrY96gCjClmky/TMd8xI9kIw0r0fb2lGK0dAmvJNHblHJPcbsL8PWt3Ho2z5PfrrlBEkeysBX019eju/Q2Vi5jZHvJB1jUWFT67JfosgkFbewDCS3XEQSGukVWi2fuI3jvG8OmQ+EbZyTbngx6pkkELoNlvXar2b0fzFfJpKbG2gBardDzGvmPykAqYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
+ (2603:10b6:f:fc02::31) by CH3PR11MB8187.namprd11.prod.outlook.com
+ (2603:10b6:610:160::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Fri, 7 Aug
+ 2026 10:56:34 +0000
+Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
+ ([fe80::675:8a:9680:ad3f]) by DS4PPF7551E6552.namprd11.prod.outlook.com
+ ([fe80::675:8a:9680:ad3f%6]) with mapi id 15.21.0270.017; Fri, 7 Aug 2026
+ 10:56:34 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Ivy Lopez <skunkolee@gmail.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
+ check in e1000_read_nvm_spt()
+Thread-Topic: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
+ check in e1000_read_nvm_spt()
+Thread-Index: AQHdJckVqL2dnhokukK8jxDxTHgqUbaSawfQ
+Date: Fri, 7 Aug 2026 10:56:34 +0000
+Message-ID: <DS4PPF7551E6552AF076FA235232DAB1E95E5D12@DS4PPF7551E6552.namprd11.prod.outlook.com>
+References: <20260806172452.32139-1-skunkolee@gmail.com>
+In-Reply-To: <20260806172452.32139-1-skunkolee@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS4PPF7551E6552:EE_|CH3PR11MB8187:EE_
+x-ms-office365-filtering-correlation-id: a38bc3ec-7411-4a39-ebec-08def4728be2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|38070700021|56012099006|11063799006|10067099003|18002099003|22082099003;
+x-microsoft-antispam-message-info: tHCdCcmMytmyfuIxLgURSzSMaFR9MRvc6xOYtZgPfQRDQoEmLfTdNEqxYqeNzL3tNgN0kgI4v3nwyUuDA6XcAOwjHJSejDuZCubh7+ZjAWy5z9z0kQvQDT46NIC74TfVqyydgIV3a5t5n4Gg2qIBmHfrf0G9PQutMXwSNiszdW58UbuY4HQxeXRLVjun6HVHG5oGYiTh61x29u2uURxCm1cfHPcpAURrYDlyU81t7ZkSzxMqWjpfY5C4GpG6JQKs1eGnO+wNCMRrHbE4Of0qXdWuvKTY119VbVE6mKfRcIlA3qCjMxN/MXUr0sopK0wo4FTlQMAH984VRzsMxtu/08yzvOMmugTDHOxcZo/BB/5aEJr5hH1HS6S4YmV5WxV5xDJhAoAWFCNWLPJMiTms8refwMAeo0xLN8nWrvlJScVYf9kbv5OxrVumMaUP4f2D0LC0t/R8kJU0dl8CyK1nWM/ArR6ItAKKdGRnUCQgi+A+0FIH0RaNH+pRoQ3k99GvjxnfD1Wpg4PJLQiu9jYyhBvqTWUVCRfroTiC8YtWAi694A746OrnB/sNDGV/N9XZKirksPV9CPDr/poIs5Wn7mTQ2uja7f9V4bQdqPild4E4OtVsnRpZd8nw6rzRBD2qEiMg5lysHG6U+PMMtSwsQ3wu5BSYQFYMBXKd0V+Ml1OojwxwnddcJ2A2S5p9xhC15otML49Q/lxcS67hEfbpeHgg/ej4m4be91kPUsgII4o=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPF7551E6552.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(38070700021)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?gkcHuTVFK6HEGp/uc4+mxV9mjSq/kV0s0vMqhQI8cFHIywTPuNUrNTf5Hheu?=
+ =?us-ascii?Q?MMHRBwiNK5u1EAIcKhngqFiroU11O7SzR6X47GxNX6ezQ5zJO+qfnqfJE1X3?=
+ =?us-ascii?Q?FM3sCkT/eYzjIQcrj0ZNyYR6wXlhCXjl28tsvKNRYFT3w/DAulgzxAJjgDaP?=
+ =?us-ascii?Q?HtRqcn0ErtNR2FbZyoe5nyKJmXm5ckkF5094A1XR8/wdmkP4ti6Bqg0gqbbj?=
+ =?us-ascii?Q?4yqk+YTld60nZncDqkvHxEa389FO+cfnZpWHD+0iETPmSBcON2ZTbsjELuGG?=
+ =?us-ascii?Q?R0ytF4bAOLFxPIx8U8sjFCtcNPhRdrPxEyv/vveRAhBFCf/VhGrsgi14AhUc?=
+ =?us-ascii?Q?2RRBtjRX9fG5M2TUhh7kJz5iJhAzzj5uKrrnZxE8H2md54kvvcCexQSMtBGv?=
+ =?us-ascii?Q?v9jtZxauiFgHAux7KdT6EkXq2yWqQkUWakW7t5PMN3HS4MORbOoBB4DSu1Ik?=
+ =?us-ascii?Q?YqReCjQcvBGT2WKxcvURYEBQ7Tii7YTm8h9yHACvANCLI85oHoT8vdCMiFEs?=
+ =?us-ascii?Q?vxv3ghnHjNaVTzT6jrDqwXUYubUD68dtaHcguK/3UE8A03JHb+mq6bRXdm1w?=
+ =?us-ascii?Q?/78cNE1n1MWaDqpiRu7tMa/4MrT9s+Ey7LK6YgtNoadLxiyRIVANxijcAofE?=
+ =?us-ascii?Q?MUKb3g3YLSUYMTOYT9M+htWCoqPREIDqhBy8Q0hXaztiDrCiH4PTGTRY3BM6?=
+ =?us-ascii?Q?X3+1+gHqQqUKPfLGpvC6U0q6u9lVPN1YSj+SpkB6Ykr4DKujLq9G3oqR2Ol4?=
+ =?us-ascii?Q?hx57rXXOxVg/QITL2DvPCyzt8QqKs7oYi4BdW3Ho49a+pyDdknADKSBaoZHM?=
+ =?us-ascii?Q?vWYf3qnvGI8oYtcTozjUHbkJEaVIS92tBhVdSTPRKgZmfWTpcKFG7ATiRF3S?=
+ =?us-ascii?Q?9V0uPcbjCBJ4+gcKNcr7eUzxCTakrrUYRJnTmPPlm82HCDD43ixoqPMNYEZJ?=
+ =?us-ascii?Q?+zFbKd6xKFFXTe9UQySuk7VNUZUkQR5fYYcJbfa7sz8qf5/ylRiGfOc6IrVm?=
+ =?us-ascii?Q?2y/dGLXwDJJ0gANUSbws3Tw4LUeBGl+u3Fjv6qG1b1dBtzmcQRHWH+F+4rcZ?=
+ =?us-ascii?Q?S35Xb0zkFxu/rJvx1EjkNsur0giP64RMHojl3+qS/+3PGqX+oUJPsD1RxX7Y?=
+ =?us-ascii?Q?finuYYNiU6Tv8dhNDnCxAl+keqycCHBIxKb2VM2Udshv4NBmwJarp71SVkfi?=
+ =?us-ascii?Q?fEQRxR0spAzdap7S6QZY6ZAjvVm6mXxhGtie5MKMQbtq/fz6suQGvEtna1D+?=
+ =?us-ascii?Q?VyO/SFIi8eGfAfjHQSzy+1jgfeurcxVCZW8TvQ1/LNYzsRaj5scQzf9grVej?=
+ =?us-ascii?Q?fUiwLwvDPCxxFwkF6CmwkAi1LSHLcTqHd9E/iKKgdTB1rrgGLQydRS5D8hvS?=
+ =?us-ascii?Q?DSsnEne8k7z5EoeCUN9bYaVKl0Ig6ov/ObsZhdNyYAwibulwhvUf5+7FJhvk?=
+ =?us-ascii?Q?6t4zUgf96hgTfGiBW8kEhcUDox0iRxDPVHlSvMxO9PAIRgeRC5q3HMfdY+ay?=
+ =?us-ascii?Q?CMy+jE4N7wfL+HPacpIx4JBqI0eZLH+yUdlR1bHTuzXN5eQkquFBM67csU5M?=
+ =?us-ascii?Q?6JnspAqSucQLbl4bX76yvyGtdibr/GajUrqoga9MF2IMrAHMMXCrbYMPJjzu?=
+ =?us-ascii?Q?8wOdPlrgkGaC0pbKLicmX0dNnfxJ42eHIA118ZOTIpZelRFWfIOs63xi+opW?=
+ =?us-ascii?Q?EBzhPB4WFlpQolG4+t7ptheSusynq9tmsibTxk7BLsZTn4fcSvxzEkBp7cMI?=
+ =?us-ascii?Q?WbqCeR+PFw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260807102802.1696827-1-zhangfeionline@gmail.com>
-In-Reply-To: <20260807102802.1696827-1-zhangfeionline@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 7 Aug 2026 12:52:36 +0200
-X-Gm-Features: AUfX_mzSMpUQCv06Wy26GHfIm0nFy7PCL5fYHhg5VMZW2T9FoI34L9S5HgjTTyI
-Message-ID: <CANn89iKByRiWyVdPCzvb5+0WWrPcaeLSXDqP6GqUHbqRwMF9bA@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: ethernet: drop skbs with a short linear
- part in eth_type_trans()
-To: Pengfei Zhang <zhangfeionline@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, zhangpengfei16@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Exchange-RoutingPolicyChecked: TtQC5e70c1qdpIUrmpxMWEOS17rm+ja0CY7rWo8vUYCE0xLro/aF9NLpzZSxSHq4QNbJmcmcaaCfIlXVNCaw0P1o7hJtTfnqhyQjb6RonbU8Os4yt9vrJAv/ZvrBikLWRlRrjw8/qpIkPwmDXWkga+v1WaPfFbcdx56NJ95WZoRjW/AyyH8XEFvoJLWAIqYDXLWpnuJJIz9NNoPfEOmdlB+OzktuVhBBz9yVhoZwdWC+mGr3uv6Nd/0Z0YUjdnk6ywtaCTvx7JTK9DWSVzkNQb1MCmiYyar13hEawELY1pA75utZrwMVtafLXh//jQC07OjcP730jDZ/orvdiV7JWw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS4PPF7551E6552.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a38bc3ec-7411-4a39-ebec-08def4728be2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Aug 2026 10:56:34.3442
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /E6b7JMGL1aQAMJZ4F60cWQmw4Z3ayDQFlPccgDwOJB4eFFB+GSqpzq5tFIxRuFJkNB3MpON8VT8SWRpZjo5BvdhmjIIQyUYK3vbOHuUQCI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8187
+X-OriginatorOrg: intel.com
 
-On Fri, Aug 7, 2026 at 12:28=E2=80=AFPM Pengfei Zhang <zhangfeionline@gmail=
-.com> wrote:
->
-> eth_type_trans() pulls ETH_HLEN unconditionally, but never checks that th=
-e
-> skb has that many bytes in its linear part.  Only skb->len is checked, by
-> skb_pull_inline(), while the __skb_pull() it calls requires
-> len <=3D skb_headlen(skb).  The two are the same test for a linear skb an=
-d
-> differ for a paged one.
->
-> Drivers using hardware header split, such as amd-xgbe and dwc-xlgmac, can
-> end up with a paged skb whose linear part is shorter than the header: on
-> certain frames the controller reports a header length below ETH_HLEN.  Wi=
-th
-> 2, that gives len=3D56, headlen=3D2 and data_len=3D54.  Nothing is wrong =
-with
-> that skb, but eth_type_trans() on it hits the BUG() in __skb_pull() from
-> softirq context, so one received packet panics the machine.
->
-> Drop the frame instead.  Test skb_headlen() rather than skb->len, since
-> that is what __skb_pull() requires.  Returning 0 leaves skb->protocol
-> unset, so the frame is counted in rx_dropped and freed with
-> SKB_DROP_REASON_UNHANDLED_PROTO rather than discarded silently.
->
-> Signed-off-by: Pengfei Zhang <zhangfeionline@gmail.com>
+
+
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Ivy Lopez
+> Sent: Thursday, August 6, 2026 7:25 PM
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
+> Przemyslaw <przemyslaw.kitszel@intel.com>
+> Cc: andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+> kuba@kernel.org; pabeni@redhat.com; intel-wired-lan@lists.osuosl.org;
+> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Ivy Lopez
+> <skunkolee@gmail.com>
+> Subject: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
+> check in e1000_read_nvm_spt()
+>=20
+> e1000_read_nvm_spt() reads two adjacent 16-bit NVM words as one 32-bit
+> dword for efficiency. When deciding whether to use the shadow RAM
+> value for the high word (data[i + 1]), it incorrectly checks the
+> "modified" flag of the low word (shadow_ram[offset + i]) instead of
+> the high word's own flag (shadow_ram[offset + i + 1]).
+>=20
+> This can cause silent NVM shadow RAM corruption:
+>  - if only the high word is marked modified, its pending write is
+>    lost and the stale flash value is returned instead
+>  - if only the low word is marked modified, the high word is
+>    incorrectly overwritten with the low word's shadow value
+>=20
+> This function is used on all PCH chips from SPT onward (SPT, CNP, TGP,
+> ADP, MTP, etc). The bug has been present since the dword-read
+> optimization was introduced for these chips.
+>=20
+> Note: this was found via code review while investigating a separate
+> reproducible packet loss issue on I219-LM (SPT+ PCH). Testing showed
+> this fix does not resolve that particular symptom, but the flag check
+> is still a genuine logic bug that can corrupt shadow RAM contents and
+> should be fixed regardless.
+>=20
+> Fixes: 79849ebc0e06 ("e1000e: initial support for i219")
+> Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
 > ---
-> Notes for reviewers, not for the changelog:
->
-> We ran into this on a platform built on the Synopsys DesignWare Core IP,
-> where a single received frame is enough to panic the machine.  Nothing wa=
-s
-> corrupted -- the skb was intact and every invariant held.  What is missin=
-g
-> is a check that the header being pulled is actually present.
->
-> The length in question is reported by the MAC itself: with header split
-> enabled it writes into the receive descriptor how far into the frame it c=
-ut
-> the header.  A MAC reporting less than ETH_HLEN there is misbehaving, and
-> that much is the hardware's problem.  But eth_type_trans() requires
-> ETH_HLEN linear bytes and tests only skb->len, so the short length reache=
-s
-> the BUG() in softirq context, on a path fed by received traffic.
->
-> The same failure mode was CVE-2024-41091 when it was reachable through
-> tun_xdp_one(), and was fixed there by dropping the frame, in 049584807f1d
-> ("tun: add missing verification for short frame").
->
-> amd-xgbe shows the same shape in-tree:
->
->   /* On some frames the MAC reports a header length below ETH_HLEN in the
->    * receive descriptor.  The driver takes that value as-is; nothing boun=
-ds
->    * it from below.
->    */
->   xgbe-dev.c:1901
->         rdata->rx.hdr_len =3D XGMAC_GET_BITS_LE(rdesc->desc2,
->                                              RX_NORMAL_DESC2, HL);
->
->   /* The length is passed down unchanged and used to fill the skb, throug=
-h
->    * the ordinary core helpers.  The numbers below are one instance of it=
-,
->    * hdr_len =3D 2 on a 56-byte frame:
->    */
->   xgbe-drv.c:2355
->         skb =3D xgbe_create_skb(pdata, napi, rdata, buf1_len);
->             napi_alloc_skb(napi, rdata->rx.hdr.dma_len)
->             skb_copy_to_linear_data(skb, packet, len)    /* len =3D 2 */
->             skb_put(skb, len)                            /* headlen =3D 2=
- */
->
->   xgbe-drv.c:2370
->         skb_add_rx_frag(...)      /* the other 54 bytes, as a frag */
->
->   /* The skb is well formed here -- 56 =3D=3D 2 + 54 -- and eth_type_tran=
-s()
->    * pulls the MAC header without testing that it is in the linear part.
->    * The patch adds that test in eth_type_trans(), just before the pull
->    * marked below.  Without it the pull takes the machine down:
->    */
->   xgbe-drv.c:2435
->         skb->protocol =3D eth_type_trans(skb, netdev);
->             eth_skb_pull_mac(skb)              <- eth.c:164, unguarded
->                 skb_pull_inline(skb, ETH_HLEN)      /* 14 > 56, false */
->                     __skb_pull(skb, ETH_HLEN)
->                         skb->len -=3D len;            /* 56 - 14 =3D 42 *=
-/
->                         if (skb->len < skb->data_len)   /* 42 < 54 */
->                                 BUG();              /* fatal in softirq *=
-/
->
-> Every step there uses the standard core APIs, and there is no skb memory
-> corruption anywhere along the way: the BUG() fires on arithmetic that
-> __skb_pull() just did itself.  A driver doing nothing unusual walks past
-> the one test there is and into it.  A received packet should not be able
-> to make the stack panic on purpose, so the check belongs where the
-> requirement is -- the stack has everything it needs to reject the frame
-> itself, and should not have to rely on the hardware or the driver
-> reporting a sane length.
->
-> The BUG() in __skb_pull() is deliberately left alone.  It is the backstop
-> for the many skb_pull() call sites that discard the return value, and for
-> real corruption it should stay a panic.
->
->  net/ethernet/eth.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
-> index d9faadbe9..84914709a 100644
-> --- a/net/ethernet/eth.c
-> +++ b/net/ethernet/eth.c
-> @@ -161,6 +161,12 @@ __be16 eth_type_trans(struct sk_buff *skb, struct ne=
-t_device *dev)
->         skb->dev =3D dev;
->         skb_reset_mac_header(skb);
->
-> +       if (unlikely(skb_headlen(skb) < ETH_HLEN)) {
-> +               net_warn_ratelimited("%s: dropping frame with a short lin=
-ear part from %s\n",
-> +                                    __func__, dev->name);
-> +               return 0;
-> +       }
-> +
->         eth =3D eth_skb_pull_mac(skb);
->         eth_skb_pkt_type(skb, dev);
->
+>  drivers/net/ethernet/intel/e1000e/ich8lan.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c
+> b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+> index aa90e0ce8aca..87cd1cdc6f10 100644
+> --- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
+> +++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+> @@ -3473,7 +3473,7 @@ static s32 e1000_read_nvm_spt(struct e1000_hw
+> *hw, u16 offset, u16 words,
+>  				    dev_spec->shadow_ram[offset + i].value;
+>  			else
+>  				data[i] =3D (u16)(dword & 0xFFFF);
+> -			if (dev_spec->shadow_ram[offset + i].modified)
+> +			if (dev_spec->shadow_ram[offset + i +
+> 1].modified)
+>  				data[i + 1] =3D
+>  				    dev_spec->shadow_ram[offset + i +
+> 1].value;
+>  			else
+> --
+> 2.55.0
 
-This is obviously a wrong patch. Please fix  faulty drivers instead of
-adding more code in our fast path.
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-If you use header split, you are supposed to use modern NAPI api, like
-napi_gro_frags() which will take care of that.
-
-pw-bot: cr
