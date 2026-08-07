@@ -1,81 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D533E63A8;
-	Fri,  7 Aug 2026 22:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72983B1006
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 22:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786142448; cv=none; b=J7cumthtELOaa2CtrVIz1Uv+cRis0DDfEizlIlOF2sSMgitLy1JmOzwpLoUSP2JJ5CYP3IT7SI2SWhJTrcosRQ6036Hs7oxWd3t/UchC8qgSvf7sI/npM4pjKCeXz7HBTp+qv87jmvelRFalxEQeOECu00ll9Xe2yr7OSf9bDkc=
+	t=1786142600; cv=none; b=SdR3DqiffMPhwLoMQLNbZyMlJntmz7LL+VmZ9Z9kN72tCjNV4z31PFXeaGjQtTjIFJIojpw4+jltBPaHhq8Lf9DelSa60RSMSkyScMsUAp7MX1j1ShMKTUJohq2U6Y1fwQR/7T0s/TUEqeqBNLFfCCJE0bZXJZNoyAGjcJeazdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786142448; c=relaxed/simple;
-	bh=A3OZ4WheXYBiqLennK8dtLcO/X1mvJl3ED4jUxiMNKg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PXrs39qb+CsrJn+ibUaiC44Qe1jOmfBXlOgOuLzb22O1bsyPr5YE9W1IEDP1NCf5+KNJowIYA3sW2XrYjL2LUI4kBPJXx+Gt/0n9UZRebWDneuuBj2rfeoqq6KoSXEU6TbEIPROj+iaY8Cmn4+EwYVjbFzG2PCx5QUUYRHgkX4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6bmzbxk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786142600; c=relaxed/simple;
+	bh=BvrofKwocSbNuq7sTD8fYFKd6S6sYIJHjbO+8YnCr5k=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OiBUA9qIOKSyey1xhJlZ1y1hFAb5R5mFpJWLqEQMT/Ln5rlertN7fvKBbfykyljy0zKAAZ0DvfLQhFVE6Zuhcksn1PSBKNA9su8n/kbZtA2s1nV/tGdPhjaD9KLKP4d6ZQgKtPVUKHVTp9tAwyeq+edWi0YKFqfYVBSeQ1SABqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VvDRhDTr; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6bmzbxk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE731F000E9;
-	Fri,  7 Aug 2026 22:40:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786142447;
-	bh=dO4+NdII2HSxAD5U6y68CBY3wcvoSD59ZLtUerF+Wtg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=O6bmzbxk22ENVd2FfLJffnia8MhgwyY7eBjrQ50DtxBMex07FznAACZyXpe84dsjF
-	 pkqsRN2KKWK3zhckojfzaIkY0qPDAAnmDryHUJpcPDss9Wh17M5HVfggLFVKfqVm+i
-	 mSWPxUhI+8PdKmqFBigHgc8ypcK+Tuu0o5rA/qmSnNX0XtAEM9y1VmaH8lZPeqekfs
-	 q9DXQlDonHGtylxwV5trh2OF3ZS2m7nO/v0fNpKi25/Uq2MyQH6sST1e06aU7qxTWZ
-	 U1wggtzy0lF1qtYW6+D+oFtNukdOJKtQGdFxTZaYXMW635bscxvGfQMbA+zS6VLvZu
-	 HLS4Fz1oXzEaQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19772380CEF9;
-	Fri,  7 Aug 2026 22:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VvDRhDTr"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-848d21bbb55so82702b3a.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 15:43:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786142598; x=1786747398; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ykY5mhg5szJc1ECW0sXmdh6ZKDvqOwzTKdzjZudBEzY=;
+        b=VvDRhDTr1cUE74vLgZa9QYSfo5dRSs1KVh5zqKmnLpACFcjxUfTjNzgSreUqR2tgvu
+         5XfOLDJcEG2x2KwTkoYO8lN16kOKWMDBp8VAxSR2loJYhSyMWPV91w+9eJBn2vElLDFZ
+         YSN/PxGHoMBFvXHn0OWSIUOh4XM6rP0v7YsHmcBKgpfeX2PTKOFyHwh+zSaybKA5EWFP
+         7DRcx7itknBB7FL6e4S3xwGB1pTwUe3P1VJZnXSEM4USz1YShf7RueS3/zKhMNO7PQQ3
+         o3b1MJqZp5eMDFZNqgkfnB6M9dGw/9lpRPDZ0vTISvF63VE7rhRg1AlU+BOjgao77U/N
+         OXPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786142598; x=1786747398;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ykY5mhg5szJc1ECW0sXmdh6ZKDvqOwzTKdzjZudBEzY=;
+        b=jaXIXb0SV0Ww2ZDynStXZFzjEJaHvi7IxvSl+f2fRgAA+o7BY4QKhfY8ciRN5SZES+
+         r5tczxrxBNBPxx4LG28rQVcfyvajUFMrMPoPoXINfu1JLex+PRlC5SkPXI4CUz9FfsN1
+         3MpMerxoJvIWgCbysZJjtHU+S5d0l5ybiRKI5Sf+So/qt9l9CbuytKE8czKA0UMDZFZI
+         pArsvs0I6TCY8WDeEdDGrEpA+sJfZDjLhL+W/Vf9m1hjxzAwW88JHUy7TgiRMTLYUfX6
+         OaJB76tshg3IX4ON81+L4Y2XSYbDhPZ4cD8fGev6X4m8947/6U0n0N1imSy1oyNAWf2e
+         7sBw==
+X-Gm-Message-State: AOJu0YzCORcOmxfLbZpnBjmrVN7p6PjLhoTwnUULBNmCrFgwRO0I7HLF
+	mFrpkB7/FyZwYGAcVsG64C1bjD0IKC+dBexECVO+V4STS8V+EvA2joUszgsAOlbXtjottfXuuZm
+	O5K6OXhY2s6yHF+M9IiI53qgAo97M75DexRb3QXrV7N58w96FUca2dS7gQHRC0wKMm2DVM+M7ir
+	CRAG6b4UGx57VKJscoGJ2rJ5Om+wSk4Jj7X4f1Cjr/DB6c0K2vsUDHkadlLWj3TXQ=
+X-Received: from pfmy18.prod.google.com ([2002:aa7:8052:0:b0:84a:6fe4:b6bf])
+ (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:1821:b0:84f:21ba:54e9 with SMTP id d2e1a72fcca58-84f2e0dbe2cmr28795655b3a.38.1786142597834;
+ Fri, 07 Aug 2026 15:43:17 -0700 (PDT)
+Date: Fri,  7 Aug 2026 22:43:13 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] sctp: validate cookie AUTH state before use
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178614240590.2445639.1288172802373951589.git-patchwork-notify@kernel.org>
-Date: Fri, 07 Aug 2026 22:40:05 +0000
-References: <20260804200042.2412009-1-Jeremy.Jean@oss.cyber.gouv.fr>
-In-Reply-To: <20260804200042.2412009-1-Jeremy.Jean@oss.cyber.gouv.fr>
-To: =?utf-8?b?SsOpcsOpbXkgSmVhbiA8SmVyZW15LkplYW5Ab3NzLmN5YmVyLmdvdXYuZnI+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
+Message-ID: <20260807224315.234152-1-hramamurthy@google.com>
+Subject: [PATCH net 0/2] gve: Bug fixes for header-split and PTP
+From: Harshitha Ramamurthy <hramamurthy@google.com>
+To: netdev@vger.kernel.org
+Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	richardcochran@gmail.com, thostet@google.com, jordanrhee@google.com, 
+	ziweixiao@google.com, willemb@google.com, nktgrg@google.com, 
+	pkaligineedi@google.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+This series contains 2 bug fixes for gve.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Patch 1 fixes an issue which causes TX timeouts due to HW detection of
+an illegal descriptor. This happens when receiving header-only packets
+with header split enabled - this produces an SKB with a zero-length
+fragment.
 
-On Tue,  4 Aug 2026 20:00:42 +0000 you wrote:
-> When cookie authentication is disabled, COOKIE_ECHO restores fixed-size
-> AUTH fields directly from peer-controlled cookie bytes.  A forged RANDOM
-> length, HMAC list, or CHUNKS list can then reach association consumers
-> with lengths or identifiers that were never validated against the local
-> backing arrays.
-> 
-> A forged RANDOM length can cause out-of-bounds reads during key-vector
-> construction.  A forged HMAC identifier also caused a 32-byte write past
-> a zero-length AUTH chunk, providing a primitive for a local privilege
-> escalation chain.
-> 
-> [...]
+Patch 2 prevents a kernel NULL pointer dereference by stubbing the PTP
+adjfine callback.
 
-Here is the summary with links:
-  - sctp: validate cookie AUTH state before use
-    https://git.kernel.org/netdev/net/c/3dbb44d88b1e
+Jordan Rhee (2):
+  gve: fix zero-length skb frag with header-split
+  gve: fix NULL dereference due to missing ptp adjfine
 
-You are awesome, thank you!
+ drivers/net/ethernet/google/gve/gve_ptp.c    | 6 ++++++
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c | 5 +++++
+ 2 files changed, 11 insertions(+)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.55.0.679.g6767b8d81c-goog
 
