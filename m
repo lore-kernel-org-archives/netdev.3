@@ -1,179 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430642DF13F;
-	Fri,  7 Aug 2026 14:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786112732; cv=none; b=HMz+pdHbaOyZdPBTiYVmAcfZB5S+7au35ZYBMMj4wDvBJ/Tnet41VyYXRuLd0euhWnjaTghnEHyGVEjOhhMTB+OygF74AW4VGib4LdVttJ93VgfanwLW/QbE0ZznpSBBkZ9CcAJSA5WuwqQsp1vEySTVjOnEeyZtt6etEeyTvmQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786112732; c=relaxed/simple;
-	bh=EECuk7N2cA6Oa/5Z9csB0jQgOBwniWWgxKe9434Ss2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PYMhJhc0NDIHJiDpxcBXggXoSRVrx4TnoY0AvB9qAkQvQJ6x4biGzDK0+T2t5tfyD3pRxZ2C23SPkFlf9T5PYkVKW9t0Ybrwq/AAxpBV/vvWkZuzCIPk3NQ9Fc9S9EkjR92PeISbpQlsqJpn/8nbTPqA94Zq3b53JyDyNZXfGtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8QJoBrx; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1653B38AC6A
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 14:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786112832; cv=pass; b=HQiD/KCKOxEiGmixE4FWb/BASVXseajOMQoYXp5K4J5gZ89FkbfDarUvVckVL61nxb/0ksvU5dOXARc1xRpSBesJv8grDuZ5A5AjUb3NO4jaIWFK20Z+4BOA+41SUQukW5Ibr78QSSABSiPShKq/uxNoPxECSKi1BelZQ+sN8zA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786112832; c=relaxed/simple;
+	bh=5ZT+nU5ePSOJIdlnBHHaxRDfRgbVL3I6dkvQIAl0+3M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KbQlKVMDvBy2woN8dRdeALmenxW6gQdyn94VzYKhbo9yqzinLjttW1Oc9m3nTE8nEFfKxg89ajDZh8z3MviR1LOMgMary1E9LTiyKb3BJyj9Ygi73NUltwDns5mthCaBqDQtffRt+P/jicnFPyfeJ3gm0/rnMPnQzEoR7ODQbDU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tnganA/L; arc=pass smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8QJoBrx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882F51F000E9;
-	Fri,  7 Aug 2026 14:25:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786112730;
-	bh=i2Z8NEk1ahmUsaUuW3bNeWB6LgPaFITwCVOCDXlB65w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=n8QJoBrxMkb4NlOUnex6GnBTKSnS4WHQpuyOz5pvbu9tfZaPjMEgeauF6KtPSnOTL
-	 N2UwF6KayHX/QlEsWYxjwy97MxEIglorrx46P4u2KVJX0bGYirYVpcYTcX8Xitqqjh
-	 5tva1LuP+9YFgTtxQ71V0cwkeXDMTBLOfdgL57G7qoHWH5BbGb2O4ApMTdx10kHy7D
-	 i1Uc4MeAtfUuFWVLiCV11RqSqlQy3rc1md6lQRzy02UbFi8BP8/KODKgJiDSRxULIg
-	 6/tGXmK4TmdTSHQig8YExe7AxGt6bt7d1cfv7zOG3KdnGtR5l2pVjpKY6kd8rGSGRa
-	 eGZK7BMSVaqbw==
-Date: Fri, 7 Aug 2026 15:25:26 +0100
-From: Simon Horman <horms@kernel.org>
-To: nshettyj@marvell.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Satheesh Paul <psatheesh@marvell.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next] octeontx2-af: Add mailbox to read default MCAM
- entry
-Message-ID: <20260807142526.GM51943@horms.kernel.org>
-References: <20260806075631.2007542-1-nshettyj@marvell.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tnganA/L"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4956869750eso25559235e9.2
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 07:27:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786112827; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hkRloIUh216C5bhXK7ailX4CFYjfPSf7sT77R00ou7nGAJVqkMNgDoTcSpylVWjplM
+         /wIqGNUX7kNhkf7FTt855hTBzCBlbFWXXsbKpoMRuVwevCrevLm1vgP08g4yJwijYgp8
+         zedXrPW9eiMRPJ9diqzdR4qwtrGH5r19opfoutuJQ8PUxOJOg+zb+szYAyXJiuc0vjEy
+         TLG60+uxOXjwDQDM+b+oCc7Xhq/T1sMNrEXnoG9bcrA+o1oIInpsPwfj9YdVJFlwyw5Y
+         7+ARvAR2IMmp5pHZOhJW5P8F3jnr9/SqFGi1mG75xPhZJWgL19N9735QDRvBJ47xVAtx
+         x64w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5ZT+nU5ePSOJIdlnBHHaxRDfRgbVL3I6dkvQIAl0+3M=;
+        fh=lXX+0rqoHC3CPSOl9foYkC/s8jwIU3Tv6096jNe3WRU=;
+        b=nA1Zve3+JVHkGwzlj7N+pMXKYVotu2+9s8mt7jzpBr37wl5eymAyiGLDHrTOrQA+qj
+         v2IOvZr4xmilBkAlPXWAQDAK9AiEXY6PblR+qm6w/8li+G8hHMC8QdKgf9i5bEfX5Z0A
+         yExDSEiJYRuKMgyHNFObH/eDww8ZxcrvdmSTks2+J2dRm6rqvL+sTVmirBtGN7f78YVc
+         xDjPIKk9HU94M7zkahw3Aa0Eye5mZhbmbZIRi8BGejNsx1hnA0YLgEdnq7ApYnX1Nap9
+         Ku8BLWhGjJaAQ4jkR8FDv0FSfzybX3ZNA2JU8BwjsxxrKuYqmiBT3J/5ml0r3tu+pliZ
+         iKzw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786112827; x=1786717627; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5ZT+nU5ePSOJIdlnBHHaxRDfRgbVL3I6dkvQIAl0+3M=;
+        b=tnganA/L66WxOVh6g7SlDsAJ7iEloExiuZmP1b2wjK/mTn8gflFLIxPEOKZseB10Ag
+         kNinkILNjrEtLYWdLrYEiD+SnSCgrvncwDMGJdKsSAAtvqHNBq7xIxwYJDI0ZWuKn05Z
+         Ye1fzXApaoGVNRw1xODIFm04XVz2I1Jav1YnVOyFUOR5Rb+953gCkX3DuB88BiPmd2W3
+         Np4uDRwaU+p8x8PVyUZYINWlG2pBh6WHWt7C1pg+EjDVw+TSiDai+Ctt0e3Gub467RDY
+         dp6ep/69jUWZ+LB3Eo6hjK7/bSm0fzeLXL9KX5VkSsc0m4ydrPT4FybXqsgly5UXfZui
+         3H0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786112827; x=1786717627;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5ZT+nU5ePSOJIdlnBHHaxRDfRgbVL3I6dkvQIAl0+3M=;
+        b=m5jgx8zuRsPRVIGiDEkKtlMF9HgPOUbEYolTJW0+9WEBVLxKJtaFQcBK1puUw+Lkcd
+         /BunPFeqtRo2YEkI1UCBvaZI3nU/GdOZCSELGPz0zQEQYwTnWeh2xP1KDWAvR+JAVdNo
+         2qxLGpF0fLxzt1mqQ2LdpyzxGSCHDj6jZrFIfwRfKETjFWaUAXnmLhGCEdAi6OQ9hSiB
+         1fnKlr8mKY4ARgbN8qI20mZsXfV68rJ1Wj/59IZJtFxHspaUp/TRAMxlNYPAOCatLoYy
+         gkGJl29t3PNCAZ1DuhO+6b4XPVrvcO6FapVOfwo0O044hwlCqpSvGkSDA6lbT4KkZobf
+         hz8g==
+X-Forwarded-Encrypted: i=1; AHgh+RpkuftKSFfBWXP+fn8HN0nki66+yWyXVlPzBcT5oO3/Mo7UKxbdRypCaG/XPlB004/9TYwb5BM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJLqM449oDFo5OT77+cUTgZ8mnqkRCev/VPJ5s/QEA12Vy92n9
+	aRJXxszm6Q3oNXhxQwE71mbjpd9rTtYQDyMXNymSAP/dW8U57POYUrqiMYjAN7s+deyyzZWiqlu
+	TxIFvqpn2wHP9uPN2FxOetZThtOaYNy+TF/mCniJt
+X-Gm-Gg: AR+sD12WMi2IL1p2i9OVzQ8DWXktDfVuFhGAl+LsC0j8shhj14fpE9me5Bl1wF9ImtB
+	EDhoLnfurd2vEjKqO7Rassm/K97hW+Ax0sspBWnsPH0ZEzkvhyIHBA+Mq3nEZCPM9YbuNSbvDUr
+	OO/0g3BDYm1re7/VMC9YxDakXuzv8GqurqeqctmfLk5mlhmYwzrF6b6nYvgJWtttwpU906POlCR
+	sV0b9snF1O29yUznDRaPcj3TNGnBP0ScjNVzBHpL3v7tgnov9rmSOCh8VdkH+kA6D4fq43l4Vc2
+	esb2VeAaOuW0OV3OQLJ6sDmTE2pt8lwx8Im0S/g6jf5N53TGd0RNXuARj9zflPTMjvxVF/P5O3d
+	uDY+DO/ZqF2E6DkObABVwRmej5cREZAc=
+X-Received: by 2002:a05:600c:48aa:b0:498:ff3:71ed with SMTP id
+ 5b1f17b1804b1-4994e7e6e99mr211942655e9.17.1786112826205; Fri, 07 Aug 2026
+ 07:27:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806075631.2007542-1-nshettyj@marvell.com>
+References: <20260806200548.3124802-1-surenb@google.com> <20260806200548.3124802-3-surenb@google.com>
+In-Reply-To: <20260806200548.3124802-3-surenb@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 7 Aug 2026 16:26:54 +0200
+X-Gm-Features: AUfX_mwSu3MvMCSzwZwIjnv1yD3ofSuLhSz__pDDowPm-PtIyEmCGX0-kA2AFSw
+Message-ID: <CAH5fLghUGQFq-wsQpLDqvAdT1VviWPumCZHBg_qL9eMTh3GNFg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org, 
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	jannh@google.com, arve@android.com, cmllamas@google.com, christian@brauner.io, 
+	tkjos@android.com, dsahern@kernel.org, davem@davemloft.net, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 06, 2026 at 01:26:31PM +0530, nshettyj@marvell.com wrote:
-> From: Satheesh Paul <psatheesh@marvell.com>
-> 
-> Add an NPC mailbox command so PF/VF clients can read the default
-> unicast MCAM rule associated with their NIX LF.
-> 
-> Signed-off-by: Satheesh Paul <psatheesh@marvell.com>
-> Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-> ---
->  .../net/ethernet/marvell/octeontx2/af/mbox.h  |  2 ++
->  .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 34 +++++++++++++++++++
->  2 files changed, 36 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> index 73f743e4a83d..cece197d1074 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> @@ -309,6 +309,8 @@ M(NPC_MCAM_GET_DFT_RL_IDXS, 0x601e, npc_get_dft_rl_idxs,	\
->  M(NPC_MCAM_GET_NPC_PFL_INFO, 0x601f, npc_get_pfl_info,		\
->  					msg_req,		\
->  					npc_get_pfl_info_rsp)	\
-> +M(NPC_MCAM_READ_DEFAULT_RULE, 0x6021, npc_read_default_rule, msg_req,	\
-> +					npc_mcam_read_base_rule_rsp)	\
->  /* NIX mbox IDs (range 0x8000 - 0xFFFF) */				\
->  M(NIX_LF_ALLOC,		0x8000, nix_lf_alloc,				\
->  				 nix_lf_alloc_req, nix_lf_alloc_rsp)	\
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> index db27ea622f35..266bb762691c 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> @@ -4303,6 +4303,40 @@ int rvu_mbox_handler_npc_set_pkind(struct rvu *rvu, struct npc_set_pkind *req,
->  				      req->skip_size);
->  }
->  
-> +int rvu_mbox_handler_npc_read_default_rule(struct rvu *rvu,
-> +					   struct msg_req *req,
-> +					   struct npc_mcam_read_base_rule_rsp *rsp)
-> +{
-> +	struct npc_mcam *mcam = &rvu->hw->mcam;
-> +	int index, blkaddr, nixlf, rc;
-> +	u16 pcifunc = req->hdr.pcifunc;
-> +	u8 intf, enable;
-> +
-> +	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
-> +	if (blkaddr < 0)
-> +		return NPC_MCAM_INVALID_REQ;
-> +
-> +	rc = nix_get_nixlf(rvu, pcifunc, &nixlf, NULL);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	/* Read the default ucast entry */
-> +	mutex_lock(&mcam->lock);
-> +	index = npc_get_nixlf_mcam_index(mcam, pcifunc, nixlf,
-> +					 NIXLF_UCAST_ENTRY);
-> +	if (index < 0) {
-> +		mutex_unlock(&mcam->lock);
-> +		return NIX_AF_ERR_AF_LF_INVALID;
-> +	}
-> +
-> +	/* Read the mcam entry */
-> +	npc_read_mcam_entry(rvu, mcam, blkaddr, index, &rsp->entry, &intf,
-> +			    &enable);
-> +	mutex_unlock(&mcam->lock);
-> +
-> +	return 0;
-> +}
-> +
+On Thu, Aug 6, 2026 at 10:05=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+>
+> tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> it and mmap_read_trylock().
+>
+> Long Version:
+>
+> =3D=3D Background =3D=3D
+>
+> Historically, binder used an mmap_read_trylock() in its shrinker code.
+> This ensures that reclaim is not blocked on an mmap_lock. Commit
+> 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> support for the per-VMA lock, but left mmap_read_trylock() as a
+> fallback.
+>
+> This was presumably because the per-VMA locking can fail for several
+> reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> to mmap_read_trylock().
+>
+> =3D=3D Problem =3D=3D
+>
+> The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> essentially already a non-blocking trylock. The main reason it fails
+> is also the reason mmap_read_trylock() fails: something is holding
+> mmap_write_lock().
+>
+> The only remedy for a collision with mmap_write_lock() is to wait,
+> which this code can not do. So the "fallback" after
+> lock_vma_under_rcu() failure is not really a fallback: it is really
+> likely to just be retrying in vain. That retry in an of itself isn't
+> horrible. But it adds complexity.
+>
+> =3D=3D Solution =3D=3D
+>
+> Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> will not persistently fail. Rely on it alone and simplify the code.
+> The removal of the fallback does not affect NOMMU case because binder
+> driver depends on CONFIG_MMU.
+>
+> Full disclosure: I originally tried to do this with
+> lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> trylock semantics. Claude caught this in a review and suggested the
+> approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> I guess.
+>
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-Hi,
-
-There is an extensive AI-generated review of this patch available at
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260806075631.2007542-1-nshettyj%40marvell.com
-
-While I'd appreciate it if you could look over the entire review I think
-the most relevant point raised is the one I've pasted immediately below.
-Could you provide some feedback on it?
-
-  Does this path return the contents of unrelated registers on CN20K?
-  The index comes from the cn20k-aware lookup, whose first branch is:
-
-    npc_get_nixlf_mcam_index() {
-	if (is_cn20k(rvu->pdev)) {
-		rc = npc_cn20k_dft_rules_idx_get(rvu, pcifunc, &bcast, &mcast,
-						 &promisc, &ucast);
-	...
-    }
-
-  but the entry is then decoded unconditionally with the legacy reader, which
-  uses the pre-CN20K register macros:
-
-    npc_read_mcam_entry() {
-	cam1 = rvu_read64(rvu, blkaddr,
-			  NPC_AF_MCAMEX_BANKX_CAMX_W0(src, bank, 1));
-	...
-	entry->action = rvu_read64(rvu, blkaddr,
-				   NPC_AF_MCAMEX_BANKX_ACTION(src, sbank));
-    }
-
-  CN20K MCAM registers use different bases and shifts, for example in
-  af/cn20k/reg.h:
-
-    #define NPC_AF_CN20K_MCAMEX_BANKX_CAMX_W0_EXT(a, b, c) ...
-	offset = (0x9000000ull | (a) << 4 | (b) << 20 | (c) << 3);
-
-  Elsewhere in the driver the helper choice is guarded, e.g. in
-  npc_update_dmac_value():
-
-    if (is_cn20k(rvu->pdev)) {
-	if (npc_cn20k_read_mcam_entry(rvu, npcblkaddr, rule->entry,
-				      cn20k_entry, &intf,
-				      &enable, &hw_prio))
-		return -EINVAL;
-    } else {
-	npc_read_mcam_entry(rvu, mcam, npcblkaddr, rule->entry,
-			    entry, &intf, &enable);
-    }
-
-  and rvu_mbox_handler_npc_cn20k_read_base_steer_rule() uses
-  npc_cn20k_read_mcam_entry() for the equivalent CN20K message.  Without a
-  similar branch here, does a CN20K PF/VF get garbage key/action data with a
-  return code of 0?
-
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
