@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB9D47A0C0;
-	Fri,  7 Aug 2026 15:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D112C476044;
+	Fri,  7 Aug 2026 15:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786117031; cv=none; b=iqQkVXY+zrCHfVF8raGUN3/SDtU1wF7aJxt2dhm2z4S7QtqDMLgzNKgSYG3xzTDqvehE7KeonfXGIaWbz2cDE7f6F/Ao7PUx9f+NNrGe21WhhX8wBsoVf/5csUGl5426XAVcbAIqOGvd2CjY1cRorgMBfWz5VbXHmWtrwZAGGmM=
+	t=1786117147; cv=none; b=WRikadG6rr8Vmp0QPq1P8Cx/eYNQRHft01fbf/1o7LDaTA3XkgA7fMsTAmKd8XKziAs/1fQUtSeCOO3jGnGux5yP/hzQvvhmKGyA4+E3MCD0sBcVvfWUrwOU1z4vR7Xd62TtdCbrxGkB5djqYEyp+gEYzv5PuWUyKkoii/B9ko4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786117031; c=relaxed/simple;
-	bh=UCnGMXcxknMn2gpC7VCMq0/DzV6ohIC8YD5p2mCJbWc=;
+	s=arc-20240116; t=1786117147; c=relaxed/simple;
+	bh=DDCIXrVx9ykV1HwQ9aZPqjf2Kv3Uq4axRuHBtrVxNNA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lw0MjdrfMezGctBOVwLCSTzvV39jWp4RUeFZVuORZx4SDzlp9RXtbR1WS+kiP0SbmO0DdZkgcly4sl17Mqqn26Vld5QdQCykidfB4rr8LK1pBKm3Blx6jUUUdpu9PwlAp+4OsmjPriwNxyu0TeaMGBhFiSF2hRLGW+1D7HqYpNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NTVrrKZM; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=YZIaZ3z+v7uaaj5k3BuOwKTJV12xsR+SXxUQ3ZU6pFGtIiSKscTKBhde7sdfbbt8qr4D4Uv6N/YhEeDSqJptAdxpA2VNKJmnyPFso8tk8PCbe+n34ImVFMvatDAzJeTw4TogE+k5aGptMM8dLAGTh2hcRKwwmE2dz+F3f6DoNh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eyVWYnmZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NTVrrKZM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F0C1F00A3D;
-	Fri,  7 Aug 2026 15:37:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eyVWYnmZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36AB1F000E9;
+	Fri,  7 Aug 2026 15:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786117030;
-	bh=5RitbQenhrDoWq7k1wu9B70oWwVmOgYnYYYp4h7OS1E=;
+	s=k20260515; t=1786117145;
+	bh=NAheNQzZrUL8VkT48h9rxz80c6O8mgo9DdVWeFvBsyc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NTVrrKZM1bG6Vvw5wY9rgG2SM3BG/ydY+6BoETIkSqLuw7GRzibg3KM8RNq7W8eO8
-	 +IMp55X5+6WVBfj6gXSVowQZwjzKQ12cGdzf6QYRm7RyimoK4o2nm2neMs7fktzqrf
-	 Uf8Hg4wwnK3OHp2PznFVCGw3jn+RbMDSd+EJjT6yLmiwsuei9M0c6DJd02BCh2DfX1
-	 QHiQhhBI/Sue9e3Ea8OJW+qDGDXsv8swxwsl+u90PpfoMlRC8LtqNqLYqaSa3JKZM1
-	 oyoxWf1EEmZsrfzSjw9DdEHMHkvh4TyfS+TQi3SSUCSCi8lHyR8k0RalEGRMrdOkSU
-	 BTTfD6CUrr12w==
-Message-ID: <6df7ba6d-0479-4b37-8e93-bb0b7d1288f7@kernel.org>
-Date: Fri, 7 Aug 2026 17:37:03 +0200
+	b=eyVWYnmZHpLCJKZPvOBM6jCVsS4y+LNltnyxjOuPsCFwzFoD3nuyLapTIz7+L9xXv
+	 +OO6+9pa6W/m2cXcIFi5O0tKeNXdPr5xZzL6hxYqldJJUNU1Pmjw5Aa3hO7WMFg8aw
+	 +/pOcQI8jgDpGTPX/H1MmebbqtpmHDcfIRTEpn9GB6Fc+msemNn7ZE6qHrBQt7PqOK
+	 pVA1kfntwF0hMRHyCHUsZnLvjQukofINMLYWhlYxhDfXr1FOz9Y5NX6ZWiXZ9JQcEB
+	 bnLLUJv9lJHMghYTbw+ZD9a4khlY7sCMG4cZ1jTOwlly6ktEKz8L60Meg7koDpKXTi
+	 U2DwLovoY7j4Q==
+Message-ID: <de2bacba-c3d6-496b-86cb-0c0a98163a8d@kernel.org>
+Date: Fri, 7 Aug 2026 17:39:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/5] mm: Make per-VMA locks available universally
+Subject: Re: [PATCH v4 3/5] mm: Add RCU-based VMA lookup helper that waits for
+ writers
 Content-Language: en-US
 To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
 Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
@@ -45,7 +46,7 @@ Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
  dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
 References: <20260806200548.3124802-1-surenb@google.com>
- <20260806200548.3124802-2-surenb@google.com>
+ <20260806200548.3124802-4-surenb@google.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -86,97 +87,59 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260806200548.3124802-2-surenb@google.com>
+In-Reply-To: <20260806200548.3124802-4-surenb@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 On 8/6/26 22:05, Suren Baghdasaryan wrote:
 > From: Dave Hansen <dave.hansen@linux.intel.com>
 > 
-> The per-VMA locks have been around for several years. They've had some
-> bugs worked out of them and have seen quite wide use. However, they
-> are still only available when architectures explicitly enable them.
-> Remove the conditional compilation around the per-VMA locks, making
-> them available on all architectures and configs.
+> == Background ==
 > 
-> The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
-> when the architecture started using per-VMA locks in the fault
-> handler. But, contrary to the naming, the Kconfig option does not
-> really indicate whether the architecture supports per-VMA locks or
-> not. It is more of a marker for whether the architecture is likely to
-> benefit from per-VMA locks.
+> There are basically two parallel ways to look up a VMA: the
+> traditional way, which is protected by mmap_read_lock, and the RCU-based
+> per-VMA lock way which is based on RCU and refcounts.
 > 
-> To me, the most important thing side-effect of universal availability
-> is letting per-VMA locks be used in SMP=n configs. This lets us use
-> per-VMA locking in all x86 code without fallbacks.
+> == Problem ==
 > 
-> Overall, this just generally makes the kernel simpler. Just look at
-> the diffstat. It also opens the door to users that want to use the
-> per-VMA locks in common code. Doing *that* brings additional
-> simplifications.
+> The mmap_lock one is more straightforward to use but it has a big
+> disadvantage in that it can not be mixed with page faults since those
+> can take mmap_lock for read, which can deadlock when mixed with nested
+> page faults and parallel writers.
+> For example:
 > 
-> The downside of this is adding some fields to vm_area_struct and
-> mm_struct. There are likely ways to optimize this, especially for
-> things like SMP=n configs. For now, do the simplest thing: use the
-> same implementation everywhere.
+> 	mmap_read_lock(mm);
+> 	// Another thread does mmap_write_lock().
+> 	// New mmap_lock readers are blocked.
+> 	vma = vma_lookup(mm, address);
+> 	// This deadlocks on mmap_read_lock() if it faults:
+> 	copy_from_user(address);
+> 	mmap_read_unlock(mm);
 > 
-> == Considerations for NOMMU config ==
+> The per-VMA lock can be mixed with faults, but they can fail and need to
+> be able to fall back to the traditional way.
 > 
-> NOMMU systems do not write-lock VMAs, therefore read-locking a VMA
-> would always succeed unless VMA is detached. Therefore for NOMMU
-> config we make vma_mark_attached() a NOOP, which keeps VMAs always in
-> detached state. This causes VMA read-locking to always fail and the
-> caller falls back to locking mmap_lock.
+> == Solution ==
 > 
-> The following functions will have a different implementation in NOMMU
-> config:
+> Add vma_start_read_unlocked() - a variant of the RCU-based lookup that
+> waits for writers. This is basically the same as the existing RCU-based
+> lookup, but on a failure to lock it temporarily takes mmap_lock for read
+> and waits for writers to finish before locking the VMA, dropping the
+> mmap_lock and returning the locked VMA. This has some advantages:
 > 
-> - vma_mark_attached(), vma_mark_detached() are made NOOPs, keeping VMAs
-> always in a detached state and preventing assertions and refcount
-> underflows;
+>  1. Callers do not need to have a fallback path for when they
+>     collide with writers.
+>  2. It can be used in contexts where page faults can happen because
+>     it can take the mmap_lock for read but never *holds* it.
+>  3. Its fast path does not require taking mmap_lock for read.
 > 
-> - vma_start_write(), vma_start_write_killable() are made NOOPs to avoid
-> warnings in __vma_start_write() due to VMAs being detached.
-> These functions are not used in NOMMU code but __vma_start_write()
-> is an exported function, therefore might be used by drivers.
+> Basically, when applied correctly, this approach results in faster
+> *and* simpler code.
 > 
-> - vma_assert_attached() is made NOOP because it's reachable from NOMMU
-> code via split_vma()->vma_iter_store_new()->vma_iter_store_overwrite();
+> While at it, fix the comments for vma_start_read_locked(),
+> vma_start_read_locked_nested(), and uffd_lock_vma().
 > 
-> - vma_assert_write_locked() is asserting vma->vm_mm is write-locked;
-> 
-> The following functions work for both MMU and NOMMU configs:
-> 
-> - vma_lock_init() performs the same initialization as for MMU config;
-> 
-> - mm_lock_seqcount_init(), mm_lock_seqcount_begin(), mm_lock_seqcount_end()
-> are called from mmap_write_{lock|unlock} and update mm_lock_seq correctly.
-> 
-> - mmap_lock_speculate_try_begin(), mmap_lock_speculate_retry() work as is
-> because mm_lock_seq is updated correctly;
-> 
-> - vma_start_read(), vma_start_read_locked() will always fail because VMAs
-> are always detached;
-> 
-> - vma_end_read() will never be called because vma_start_read() never
-> succeeds;
-> 
-> - vma_is_attached() always return false because VMAs are always detached;
-> 
-> - vma_assert_detached() will never trigger because VMAs are never attached;
-> 
-> Changes in the following files are not affecting NOMMU config:
-> 
-> task_mmu.c - not compiled when CONFIG_MMU=n;
-> pagewalk.c - not compiled when CONFIG_MMU=n;
-> userfaultfd.c - not compiled when CONFIG_MMU=n (CONFIG_USERFAULTFD depends
-> on CONFIG_MMU);
-> 
-> The following changes are made to keep NOMMU config working like before:
-> 
-> stack_map_lock_vma() - keeps mmap_lock in NOMMU config;
-> bpf_iter_task_vma_new() - bails out in NOMMU config;
-> 
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > Cc: Suren Baghdasaryan <surenb@google.com>
@@ -197,5 +160,4 @@ On 8/6/26 22:05, Suren Baghdasaryan wrote:
 > Cc: netdev@vger.kernel.org
 
 Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
 
