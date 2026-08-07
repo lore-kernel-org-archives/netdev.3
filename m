@@ -1,72 +1,71 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45DB48664C
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E2F48AE0F
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786108806; cv=none; b=nDwraDlteUp0PgnvG2rdGqaCjrM65+n1M3aOn/bgM/rGSw+s8aR34aQBBnFOX++mQiGptU5GCY8gwSCRFmjNFKVQEouDxv8J4Y2giiiD00FhGK1PX1NJsJwbxSPleF3qC/HD4E7rnLrFz2sTr9ZgslCzpHPPVYzB6LbQdM7CEak=
+	t=1786108802; cv=none; b=s9/JdEiJQuFW4d4YSfR0c/UI5Ob0ezAMT/PBtmX2HlH2Zkuu5QtoMS/RnQ8VrDEsZx1CZRMW0gRRTx8e5MUUzGfXbr3AigDMC79+du4pMvvmZsABtlL+HlfKzloYaSrXtODvhpHEtCxCmpu4Rzqy6AcQOCn+9zUgCqOpP8yAh5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786108806; c=relaxed/simple;
-	bh=NG+/rgzHAv6MDNfeFWrG2P9/U23Edpgb2yNwIiBT1Ho=;
+	s=arc-20240116; t=1786108802; c=relaxed/simple;
+	bh=5pu06JvHixiAVT0qs4ZaZ8MfmBkOaDyNJb1uYUHpmRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8kK+yEYsod1pyz+Eh98MREtae+4+ftrkVliaOxHp19sKpDMnFN9yzJj3h1IzVE1jANW4mrg0o1zkUjrvhfrtjhN/qSUK7JlLMyUt8H7F3+tBhmAn74qovw/jJ0euVrplNyJRpm7cAncjf3LsxwZygC1NadaCOQXYy17Bnwh6CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGkB5VGK; arc=none smtp.client-ip=209.85.128.51
+	 MIME-Version; b=YQgm7szy8uWFco+Fgu7oWzHxwtuv0dmXRpgukNjV8A1ashrUEV+7JwB5oGG7+PZFn+xJSTyojkoz1lSWqbj0hYU2xUg/El7xJEHoX9WbYi2E2qRmXjyodh2QQk6tPsc5zMAj0KpkSSRa+4qlCdYpP5u6ktyuFVpzMUzxEPaKXf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uq2go7lM; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGkB5VGK"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49553515a8bso50395685e9.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 06:19:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uq2go7lM"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-495437bb891so18534725e9.1
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 06:19:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786108796; x=1786713596; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786108794; x=1786713594; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=D+9t8ch659Yhm+Hv1XmNdLGapWGQy+4Zla8E93djIqg=;
-        b=bGkB5VGK0dOVdvbaIHIszpbNamnVjga78RxB57hXoJf/vZYP1KYx5H2aa29AnhDzID
-         6BpjF5ou/QQdzErWsFYg3nS3kkk2pcrwQuLq/CMdo16wpZS1e924vRS0Q7D33ZhzNRsq
-         KAPDhmaKmRvqNCZAXemxA85WcPqgYV85lpIoAyB0SjNq5Ozs2C7babdR3ts6gC+LM1R1
-         5HRMOT7vmQwNXkMQC1MCDkkGqYVkzxyRdVctbSxxjb4BrBOkCdLO9OklbJ9CeCECLHyz
-         pgmprGLYyP8vhX3QCNXPlDkok7M/0I0BvjBx8t0rJzv0New5JyzSWfVpyvDjPr1klUhV
-         6fVw==
+        bh=EDQ+BBm7w3Gy/ahKim7uXbGBp319WtMN7ZYZ7TfHqOY=;
+        b=Uq2go7lMFyf6S+SxwhtWi4RMozGrmKaMYvx56nmwHIZjCsnq09FvFBDwRuhZG+PiqL
+         0GIM3s83jWp5qIShVG7Ljy47HAZ38FOIcnfzSv7whF9Hr9F5pJUXUzhbHx6MMLn4j0O2
+         aNWMRwA+Xnsge80FMKo/9wJVpAUtwj8rh3K//1z17xpdd3yKJrKq3GiJYedcTWSiWpEr
+         kB8Qot7W1Wew6GzZeC8Hznw56fMwuylw7cbRNYV7uJ2KUBaHdCn6d9v2gvptImuc7j/Z
+         a0FLzDwuhly/+E9xfiQMqwys0o+QC51GpjgdrSQtQIcmXvOPI3vcgRw3025dtcbKANz6
+         c/bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786108796; x=1786713596;
+        d=1e100.net; s=20251104; t=1786108794; x=1786713594;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D+9t8ch659Yhm+Hv1XmNdLGapWGQy+4Zla8E93djIqg=;
-        b=bXTIS+S7pVq9TH2MeORXYUteZi/p9nNcvFw0iHm/fka7r3aJhtIfpwcp9QHhdm5oeS
-         xL5n3S0kKa1lK+Sgj/zbakWRCio4htBxGcVm1qToh71+dY77cxYlTKwVZMD+e4ALJKYa
-         XB7uhoMl4BQfLT8SjGX7Wdpqv3KMrRSgTHlqMjiVTVKc6HV8TsdbAAqRB7QGsTX4LiVS
-         GobMqBkfAqXHdZfMDVrBVqGQHaONWXmu8VQWAlQocUlCiFe+zcuhGBe0DFwZz6DAo3u5
-         Ct5YiUsyR6gppRAwfdfFW6X/duh5uYXWbdQkUt2ziWhvzn4uiPkBt6IBehctTIIQnjM1
-         gARg==
-X-Forwarded-Encrypted: i=1; AHgh+RpA003dbdYoVtUWDdE75I1zl3atIJx7rMZNby7Vskz7NISMWWZjqvwt9P9OOv0ADG/D5g+tEsI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz03REuHv0woaQ3n+8WfyDEW3Jurn2Fi+hlLTlN1KzM5lOdTN+t
-	s6cm9mOL7nAbcI2Bvey17xt/QI5C+YobOL8J3soeTKuZeHPpXCUEJP6v
-X-Gm-Gg: AR+sD13MmSFM69JgWCMzmQUwzBPddlCVErnZyTdIEMfQjeexTvxgdxhbIcZcqmJT1/G
-	vwPCYxYXSxpkUuncJpiSYXbUMhV3RPBKd2vI8TZnxSCVJXDKBRkZu6GHjbaFrZa7AuPYurZhax5
-	FqhMFXLfPum7ub81TUdk2KhU93gUz2pLUMoMDWVTwwPtyabGbtvNugACfFN/M+bwuq7D2SquAJ/
-	PDRMeSBdmi7hkwPrd91E7jJ0lAm3BwNIrg26+O+CWgTgfNGeoz/SNs/YXGFn+o5WeLGfLq4YL60
-	uNUcg6FAIMfL6mXlWUz7Z48pAN7xzmqeJrDCKTdXqNclUuNKT2qFm2iwIlupc6oaWR8iRLIMYUT
-	LMJfyXhPDC+Gw99fSEfivUrYd6G2T5px4pq/22HXq7sCBFwjV8N4JxJ/z5O9lGST4l6qa70lZaD
-	xZzehcblgk3BSgx6MGouPf63FDcwK89vyOs1ZFfqfgF2rYbS3yTP9kmpfxT2kEpS+rPxJZhnDle
-	SztldAktft9eXBOQ/JD5A/GQRkMGcVPWfS4B1NQbYFQeCPECjzzD+Q/5WeJRGUmx1foYNg4kn7Z
-	Xg==
-X-Received: by 2002:a05:600c:6c50:b0:499:48bb:417e with SMTP id 5b1f17b1804b1-49959e0176bmr101727645e9.2.1786108796252;
-        Fri, 07 Aug 2026 06:19:56 -0700 (PDT)
+        bh=EDQ+BBm7w3Gy/ahKim7uXbGBp319WtMN7ZYZ7TfHqOY=;
+        b=EhQhpnrHQYHqZVgA9qV/AvpCXyHvNlWvoVkHUBC7oaF/lzN76rl+3HNUPIVT/cNTaw
+         GejkzLallQJ4mJlo3I+MQBTAgXHGxlu7Dee+/mUyI3GsayuD1IHGK19STbf5RbD/cnyh
+         7XoIeBBPbNrlzyRarrm4Bs7IU/DNnBx7bY2LaFvnS/DhD3Uz+5RAxUJ/wHY25Lc/Pwgl
+         RURhH0UBhBShgvnUX2DwMDwTNjXqsY8ncri9ttJe1aKLQLRNEp4UUnhGy5JkR1zAralo
+         eZjNi4isccEUjcsRK15dM/iD6lLpXeL7H0yaPon+5G180v5Yw8yXc3PkgbT0HeUcQXH4
+         Id6A==
+X-Forwarded-Encrypted: i=1; AHgh+RqPg8Yd6qGGPGRFSiaC7N6c6eXZWKMMNfxJ2LTwL9zjR1je8Uelxz2ScA7jOcMYsAmrdJKthvQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3LFIkcF52IDcD2zAIZ2bKS2EtZ9/VH2GMuNF5249Fp//ae1At
+	MhZVs51E7OQ5DQUaB3bOhak7cfnQDs3smuO1w1hO1Dp7EpNHtf9mkz5G0CUSOfBu
+X-Gm-Gg: AR+sD12e5KAA3SqgJW/4YXW1/bqdfkcAE9wjXTDuRiqgWaCvAfSnz7rSnXOyyQ/Am1Z
+	ci/uVhgfkcO1Ilyq4W0YwdIRBmglIDFgC7KoA1ApyDzvePs2KbJct7r6H7e4VAnIgy59ZKMbCqQ
+	ONAFtR4Xh8nHVrwh18s7GPYnhIDZWz/+/18YgsuKwXvphWT69kD5uf9/Bs4Ng9H4qosn48X76np
+	xO0LoTCklq6ALr90sLGgxVyw5TduYVQ9BY7NWTyfjvgQ4a33yiGOs9FXxigMFLqGuiQwX/TYffX
+	ElTO6roXbGBoyVjd+H8qbooZfUXMnUzM1EQ2tJidH42CItdI139g0MmdN0pF1ezwyx6XT57MPHI
+	XjEQFFErFZvDciIRoLLJ7VTR7P215pYhAvMmBj72sJg0bMmMF1tT6dzEAW4xG6CXPE/Ii7cfA7z
+	02WlJTclAVEQk2l/g9hmtqcraRP9YZNKOT5AmA6XY5EZ76Aj1PNsYg1c4t6/UenhXhnPtacBG12
+	vMOsY1W+h2mksOqAvSbqqCj9pHxSnwHhPR8Lf7mZEcYXpQDzKSCanCI7ngz9s5VQw==
+X-Received: by 2002:a05:600c:4fc5:b0:497:ff5a:38b9 with SMTP id 5b1f17b1804b1-499553f8440mr116495595e9.9.1786108793196;
+        Fri, 07 Aug 2026 06:19:53 -0700 (PDT)
 Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995427a244sm144125015e9.10.2026.08.07.06.19.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995427a244sm144125015e9.10.2026.08.07.06.19.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 06:19:55 -0700 (PDT)
+        Fri, 07 Aug 2026 06:19:52 -0700 (PDT)
 From: Pavel Begunkov <asml.silence@gmail.com>
 To: io-uring@vger.kernel.org
 Cc: asml.silence@gmail.com,
 	netdev@vger.kernel.org
-Subject: [PATCH io_uring 11/16] io_uring/zcrx: split dmabuf unmap and release
-Date: Fri,  7 Aug 2026 14:19:29 +0100
-Message-ID: <bd8c1fd8dac85ce0cf839b389ecd6050761965ca.1786108672.git.asml.silence@gmail.com>
+Subject: [PATCH io_uring 09/16] io_uring/zcrx: add helper for deriving area token
+Date: Fri,  7 Aug 2026 14:19:27 +0100
+Message-ID: <c7752161065a1f7273ce3de9683804dd105c6d53.1786108672.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1786108672.git.asml.silence@gmail.com>
 References: <cover.1786108672.git.asml.silence@gmail.com>
@@ -78,68 +77,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Until now unmapping and destroying dmabuf were the same thing. To keep
-it consistent with non-dmabuf, split it into two separate helpers. Unmap
-destroys mappings and attachements as it should, and release only
-putting down the dmabuf fd reference.
+Add zcrx_area_id_to_token() to deduplicate the way the area token is
+calculated out of the area index.
 
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
- io_uring/zcrx.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ io_uring/zcrx.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index a142d6035f7e..91d0d823f482 100644
+index bea606beaf4f..5b46e1335079 100644
 --- a/io_uring/zcrx.c
 +++ b/io_uring/zcrx.c
-@@ -121,21 +121,25 @@ static int io_populate_area_dma(struct io_zcrx_ifq *ifq,
- 	return 0;
- }
+@@ -39,6 +39,11 @@
  
--static void io_release_dmabuf(struct io_zcrx_mem *mem)
-+static void io_unmap_dmabuf(struct io_zcrx_mem *mem)
- {
- 	if (!IS_ENABLED(CONFIG_DMA_SHARED_BUFFER))
- 		return;
--
- 	if (mem->sgt)
- 		dma_buf_unmap_attachment_unlocked(mem->attach, mem->sgt,
- 						  DMA_FROM_DEVICE);
- 	if (mem->attach)
- 		dma_buf_detach(mem->dmabuf, mem->attach);
--	if (mem->dmabuf)
--		dma_buf_put(mem->dmabuf);
--
- 	mem->sgt = NULL;
- 	mem->attach = NULL;
+ #define IO_DMA_ATTR (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING)
+ 
++static inline u64 zcrx_area_id_to_token(u32 area_id)
++{
++	return (u64)area_id << IORING_ZCRX_AREA_SHIFT;
 +}
 +
-+static void io_release_dmabuf(struct io_zcrx_mem *mem)
-+{
-+	if (!IS_ENABLED(CONFIG_DMA_SHARED_BUFFER))
-+		return;
-+	if (mem->dmabuf)
-+		dma_buf_put(mem->dmabuf);
- 	mem->dmabuf = NULL;
- }
+ static inline struct io_zcrx_ifq *io_pp_to_ifq(struct page_pool *pp)
+ {
+ 	return pp->mp_priv;
+@@ -526,7 +531,7 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
+ 	area->free_count = nr_iovs;
+ 	/* we're only supporting one area per ifq for now */
+ 	area->area_id = 0;
+-	area_reg->rq_area_token = (u64)area->area_id << IORING_ZCRX_AREA_SHIFT;
++	area_reg->rq_area_token = zcrx_area_id_to_token(area->area_id);
+ 	spin_lock_init(&area->freelist_lock);
  
-@@ -190,6 +194,7 @@ static int io_import_dmabuf(struct io_zcrx_ifq *ifq,
- 	mem->size = len;
- 	return 0;
- err:
-+	io_unmap_dmabuf(mem);
- 	io_release_dmabuf(mem);
- 	return ret;
+ 	ret = io_zcrx_append_area(ifq, area);
+@@ -1533,7 +1538,7 @@ static bool io_zcrx_queue_cqe(struct io_kiocb *req, struct net_iov *niov,
+ 	area = io_zcrx_iov_to_area(niov);
+ 	offset = off + (net_iov_idx(niov) << ifq->niov_shift);
+ 	rcqe = (struct io_uring_zcrx_cqe *)(cqe + 1);
+-	rcqe->off = offset + ((u64)area->area_id << IORING_ZCRX_AREA_SHIFT);
++	rcqe->off = offset + zcrx_area_id_to_token(area->area_id);
+ 	rcqe->__pad = 0;
+ 	return true;
  }
-@@ -317,7 +322,7 @@ static void io_zcrx_unmap_area(struct io_zcrx_ifq *ifq,
- 	}
- 
- 	if (area->mem.is_dmabuf) {
--		io_release_dmabuf(&area->mem);
-+		io_unmap_dmabuf(&area->mem);
- 	} else {
- 		dma_unmap_sgtable(ifq->dev, &area->mem.page_sg_table,
- 				  DMA_FROM_DEVICE, IO_DMA_ATTR);
 -- 
 2.54.0
 
