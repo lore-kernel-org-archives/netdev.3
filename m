@@ -1,50 +1,41 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC7F12B94;
-	Fri,  7 Aug 2026 06:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5729D18A6CF;
+	Fri,  7 Aug 2026 06:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786084753; cv=none; b=llHXI/O79q0pM6wpVp/QppSWT4ozt6OtI0a+kFdoT6onlJboPZ5y0LEdknb3bN058rp7UHNI1ZNuUnK/rh2Lws/1i8LXMZ0b5srOlF3ZT4kdvPVirVcfH7jrYO2y2J9GSVs2aoEjuxkN58Ozwag5uDKGYv2TP5Sb3dJCyxmLPG8=
+	t=1786084849; cv=none; b=SO9bR/vYW0ERRXeGdCf51upFQSnEeJvqmqNVfLI1fZeQSVSfDaJF7OTliEETY4M9qP1dEHCAT27A2iQVkerFK4NTcLKwgcRpvb5uaXrPfi5VwIG47/o1l8Xs/X4znXyUanTbMIuyBZvhcYfVF1weIFyjfLn3ar+dMvcHWbB9NgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786084753; c=relaxed/simple;
-	bh=TG/NqxHidDLcV6kQpboNPww5RI1M1P+rlw1iUy1zMHk=;
+	s=arc-20240116; t=1786084849; c=relaxed/simple;
+	bh=Uu2yxfYGMTlV6AIkuI7Bk50GiRAdX4wrgCfEy+STOX0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WtSQK2nfxQSxxxEDx43RLb4QK1vked+2YpZI6KkI4L4M5h298bLfRplTygDsQ18P/7tj3g4d1NNC3WFnX/lizPBCF6UWW2BmViGwQ6FsQmmRCFJYfb9pLnaZlLjapjzMLZs3+ba8yckJymNY0dSqswN7whWFyrF+fXJ/Xzlrwyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=vOjubb06; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=M9Il4MdW; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	 In-Reply-To:Content-Type; b=nYHPzpX0xmX63rgvxq/92bpWw7WjG4dNlPiplP/ttSnZQQmzakcJfv4zaOPbHze3/h/FYjffQ+/dwd3wIFedNH7dJfGDj/arbKvby12yeRvxajsU03KwG8FIawfyEmR9bSiahegv0JAVG7Vw+9ed4ko+Vki8Nl6JRKkLn2LWBtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=NjwkHhP5; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="vOjubb06";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="M9Il4MdW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1786084749;
-	bh=TG/NqxHidDLcV6kQpboNPww5RI1M1P+rlw1iUy1zMHk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vOjubb06eMdoTe3RmV+AMbYwsdJxyMSnQfeVjEUa5L8I0+hl0DBoe1V0XZvRd3cDH
-	 a6Pb+P+D6ioczXUBd3K3AoyR9YFY7ym8PrIV4dz0G2QuvryByG7hxCFf162gi2nwh5
-	 PIt7QSJ5ZmGlfb4kPlS/GMPGzEutDkZwdayvgkNXphG+SxjcIr3iRM2Ef8GYqITJ4R
-	 5cV4ZRR1rQGPJ8LTLX8TrAj6d8Zq35EdlAt0Om1RbDYSsQzKOhofiJ3TIbApvJ/79Q
-	 uMbEKfhAWNq92AUtbx47HaPoV3TjtBxSJnbTWhoCoWTZEM27OjpulSmoepS2qIrV7b
-	 4/W31UrYzIyKg==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id D3F53496FB; Fri,  7 Aug 2026 06:39:09 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1786084743;
-	bh=TG/NqxHidDLcV6kQpboNPww5RI1M1P+rlw1iUy1zMHk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M9Il4MdWvhUuLQZK2ejcgyvlrFrVG5MJ/qGviNcGDv+TZ4F51d+KXjHlbRjo5HRYE
-	 +P0e9KYGdhfm/LwhXUzjyAqdcOE4MeiTUZxQYRFjK3lEP1YCGtE6f2ekhhEmtRCq1U
-	 6by2VpD7cm3iTsMqU2GuIg70snEHJBzgA6B1dDh002Z4KhdehTbsnfNk5Suw6ENbX2
-	 JWDkwLnwO3KmqPLH7YCiimKsE85VLdLbXjezpSS7pQlLyoiwJpvDoPWkKi5t7LFNQc
-	 fRqonUZVqgfxPtKsHrUycW81cWrwfxon6D4DPWRTTwyiqdsQGlBfxvXiSFagAOwE+a
-	 8ZgujGqjY9sfQ==
-Received: from [10.30.1.58] (unknown [213.80.50.14])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 3CB2D496F5;
-	Fri,  7 Aug 2026 06:39:03 +0000 (UTC)
-Message-ID: <7a91e550-ac70-4423-9aed-9f4406e71fe8@birger-koblitz.de>
-Date: Fri, 7 Aug 2026 08:39:00 +0200
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="NjwkHhP5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1786084839; x=1786689639; i=markus.elfring@web.de;
+	bh=l8xVvU2F/fFUSSpqRZVrd3WQpwZlkQIJEg0DhUYBh/o=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=NjwkHhP5M8TGZW9jGD2QxOUcax2Gu8ONV1zT/v86VjnVb/QnKnGjaE3waDwE5Lqr
+	 LNNihC6KzujOQJ/5KCUuNtCH+trhbDPJnQBKRZr1tXoxzbUkA9AvHBU4vEASjZi6Q
+	 ZnTVRjzA41q3hiZYZYv1W0ro+y9W66QjC7LHA7+9rixSS+m7YVB0MqWqv6tSRpQas
+	 GPMXNEDBzZii8Xv6wRA5sv6mmuL39VFZYrW80lf5lpslHaY2r7uSTGs4lsnet0rXe
+	 2+5EQ+E6MIXtgNNnJ81B08hDRzc+4BgKFJCccCzYRZ5BsWBDK2PSnKP9VfTkk7NOs
+	 GdVSVmuEdG8n6YaX3w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MqZQY-1xEJPG3iXQ-00kazQ; Fri, 07
+ Aug 2026 08:33:31 +0200
+Message-ID: <c27214da-4e76-4b5d-ab86-ab03beba8f6f@web.de>
+Date: Fri, 7 Aug 2026 08:33:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,115 +43,149 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 13/13] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
-References: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
- <20260802-ax88179a-v5-13-dcb9fea4acd4@birger-koblitz.de>
- <5f32ac56-1c2f-474a-ab2a-f51464172d6d@lunn.ch>
- <4a203340-c2f1-48b3-b16f-93c31cbe2727@birger-koblitz.de>
- <f2a99d04-6d61-4cc2-814d-cfe1ef9b1395@lunn.ch>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <f2a99d04-6d61-4cc2-814d-cfe1ef9b1395@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: tools: Use fputc() calls in some functions
+To: lkp@intel.com, acpica-devel@lists.linux.dev, bpf@vger.kernel.org,
+ coresight@lists.linaro.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-perf-users@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ mptcp@lists.linux.dev, netdev@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, virtualization@lists.linux.dev,
+ Adrian Hunter <adrian.hunter@intel.com>, Alex Mastro <amastro@fb.com>,
+ Alex Williamson <alex@shazbot.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, Andi Kleen <ak@linux.intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Ankur Arora <ankur.a.arora@oracle.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Bartosz Golaszewski <brgl@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
+References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
+ <202608070547.MRKfa3bH-lkp@intel.com>
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <202608070547.MRKfa3bH-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:heSIkINqyeiTt9/TVU/2HaIToPYra83aIuf0AvbOJOpmzGssabi
+ 2pB+Q4N00ikWy96JtYbAI4l92VxDK1eIhjSpkmWDfXgFHRUQ7AnWMM14fXBeSUbUtrPT8vY
+ ocQ8Oavw5OBRE5CCpreC0Xu8PbI7O1BHO5Y74x3WyR2UhRH9v5EgfFH9wSGPOPrV+FzK6Z/
+ XIXRX7oHnEmzadhHoTc1g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:k5xmCFqfYnc=;FPhBCzsAApmszVnTY7kCXnMutFZ
+ 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
 
+=E2=80=A6
+> All errors (new ones prefixed by >>):
+>=20
+>>> builtin-check.c:300:8: error: incompatible pointer to integer conversi=
+on passing 'FILE *' (aka 'struct _IO_FILE *') to parameter of type 'int' [=
+-Wint-conversion]
+>      300 |         fputc(stderr, '\n');
+>          |               ^~~~~~
+>    /usr/include/stdio.h:155:16: note: expanded from macro 'stderr'
+>      155 | #define stderr stderr
+>          |                ^~~~~~
+>    /usr/include/stdio.h:611:23: note: passing argument to parameter '__c=
+' here
+>      611 | extern int fputc (int __c, FILE *__stream) __nonnull ((2));
+>          |                       ^=E2=80=A6
 
+Would you become interested to take another look at a corrected source cod=
+e transformation approach?
 
-On 06/08/2026 23:16, Andrew Lunn wrote:
->>>> +static int asix_ax88279_config_aneg(struct phy_device *phydev)
->>>> +{
->>>> +	bool adv_2500;
->>>> +	int ret;
->>>> +
->>>> +	if (phydev->autoneg == AUTONEG_DISABLE) {
->>>> +		phydev_warn(phydev, "Disabling autoneg is not supported\n");
->>>> +		return -EINVAL;
->>>> +	}
->>>
->>> Why is that? Now that phylink is driving the PHY, and reporting
->>> speeds, duplex etc, you should have everything you need to program the
->>> MAC when the link mode is forced.
->>>
->> I tried forcing the PHY speed in the past, and it does not work.
->> This is a limitation which is also acknowledged for the suspected underlying PHY
->> hardware Airoha EN8811H, see the head of air_en8811h.c
-> 
-> How well does this unwind on error? Is phydev->autoneg put back to the
-> old state to indicate autoneg is used?
-> 
-> This is one of the areas where phylib/phylink is missing a bit of
-> support infrastructure. We have a bit indicating the PHY support
-> autoneg, ETHTOOL_LINK_MODE_Autoneg_BIT, but there is no bit
-> ETHTOOL_LINK_MODE_Force_BIT, indicating the PHY supports forced
-> mode. So the core cannot enforce this and reject it in
-> ksettings_set().
-The error is handled quite poorly:
-$ sudo ethtool -s enx6c6e07090000 autoneg off speed 1000
-$ ip a
-shows link is down
+Improving output for single characters (with SmPL)?
+https://lore.kernel.org/cocci/406093f5-ee7d-4ae9-808b-2b42d4846eab@web.de/
+https://sympa.inria.fr/sympa/arc/cocci/2026-07/msg00055.html
+https://lkml.org/lkml/2026/7/23/2205
 
-Kernel log:
-[848763.836126] Asix Electronics AX88279 usb-004:045:03: Disabling autoneg is not supported
-[848763.836134] ------------[ cut here ]------------
-[848763.836137] _phy_start_aneg+0x0/0xa0: returned: -22
-[848763.836142] WARNING: drivers/net/phy/phy.c:1352 at _phy_state_machine+0x100/0x310, CPU#8: kworker/8:1/534588
-[848763.836146] Modules linked in: ax88179_178a cdc_mbim cdc_ncm ax88179(OE) ax88796b(OE) cdc_ether phylink(OE) r8152 nfnetlink_queue nfnetlink_log cdc_wdm usbnet mii sd_mod scsi_mod scsi_common 
-snd_seq_dummy snd_hrtimer snd_seq snd_seq_device ccm qrtr rfcomm algif_hash algif_skcipher af_alg bnep binfmt_misc nls_ascii nls_cp437 vfat fat amd_atl snd_acp_legacy_mach snd_acp_mach intel_rapl_msr 
-snd_soc_nau8821 intel_rapl_common snd_acp3x_rn snd_soc_dmic snd_acp3x_pdm_dma snd_sof_amd_rembrandt snd_sof_amd_acp snd_sof_pci snd_sof_xtensa_dsp snd_sof snd_sof_utils snd_pci_ps edac_mce_amd iwlmvm 
-snd_soc_acpi_amd_match snd_soc_acpi_amd_sdca_quirks snd_amd_sdw_acpi kvm_amd soundwire_amd btusb soundwire_generic_allocation btmtk mac80211 soundwire_bus btrtl kvm snd_soc_sdca snd_hda_codec_conexant 
-btbcm snd_hda_codec_generic btintel snd_hda_codec_atihdmi snd_soc_core snd_hda_codec_hdmi snd_compress snd_hda_intel snd_pcm_dmaengine libarc4 irqbypass snd_hda_codec aesni_intel snd_acp_pci bluetooth 
-snd_ctl_led gf128mul snd_amd_acpi_mach
-[848763.836238]  iwlwifi snd_hda_core snd_acp_legacy_common think_lmi rapl snd_intel_dspcfg snd_pci_acp6x ecdh_generic snd_intel_sdw_acpi snd_pci_acp5x firmware_attributes_class wmi_bmof pcspkr 
-snd_hwdep thinkpad_acpi cfg80211 snd_pcm nvram snd_rn_pci_acp3x snd_timer sparse_keymap snd_acp_config ee1004 snd snd_soc_acpi ccp k10temp snd_pci_acp3x rfkill ac soundcore amd_pmc joydev uvcvideo 
-evdev videobuf2_vmalloc uvc videobuf2_memops videobuf2_v4l2 videodev videobuf2_common mc msr i2c_dev ecryptfs parport_pc ppdev lp dm_mod parport efi_pstore configfs nfnetlink efivarfs ip_tables 
-x_tables autofs4 ext4 mbcache jbd2 crc32c_cryptoapi amdgpu drm_buddy amdxcp drm_panel_backlight_quirks gpu_sched drm_ttm_helper ttm drm_exec i2c_algo_bit drm_suballoc_helper drm_display_helper 
-hid_multitouch cec hid_generic ucsi_acpi typec_ucsi rc_core nvme xhci_pci i2c_hid_acpi typec i2c_hid drm_client_lib sp5100_tco xhci_hcd roles hid drm_kms_helper psmouse r8169 watchdog nvme_core video 
-thunderbolt usbcore i2c_piix4 realtek nvme_keyring
-[848763.836342]  serio_raw drm nvme_auth phy_package crc16 i2c_smbus usb_common wmi battery button [last unloaded: ax88796b(OE)]
-[848763.836359] CPU: 8 UID: 0 PID: 534588 Comm: kworker/8:1 Tainted: G  R     W  OE       7.1.3+deb13-amd64 #1 PREEMPT(lazy)  Debian 7.1.3-1~bpo13+1
-[848763.836365] Tainted: [R]=FORCED_RMMOD, [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-[848763.836367] Hardware name: LENOVO 21JR005UGE/21JR005UGE, BIOS R2CET38W(1.20 ) 07/29/2024
-[848763.836371] Workqueue: events_power_efficient phy_state_machine
-[848763.836374] RIP: 0010:_phy_state_machine+0x102/0x310
-[848763.836377] Code: 00 00 00 48 89 df 41 bc 01 00 00 00 e8 87 f8 ff ff 48 c7 c6 c0 63 1b 9b 83 f8 ed 74 79 85 c0 79 46 48 8d 3d 60 7a 7b 01 89 c2 <67> 48 0f b9 3a 48 8d bb 68 05 00 00 e8 2d dc 65 ff 
-84 c0 0f 84 a7
-[848763.836380] RSP: 0018:ffffd18e8baebe18 EFLAGS: 00010282
-[848763.836383] RAX: 00000000ffffffea RBX: ffff88d4e0359800 RCX: 0000000000000000
-[848763.836386] RDX: 00000000ffffffea RSI: ffffffff9b1b63c0 RDI: ffffffff9c96e5b0
-[848763.836387] RBP: 0000000000000004 R08: 0000000000000000 R09: 0000000000000000
-[848763.836390] R10: 727463656c452078 R11: 656c452078697341 R12: 0000000000000001
-[848763.836391] R13: ffff88d442ec9b80 R14: ffff88d4e0359d10 R15: 0000000000000000
-[848763.836393] FS:  0000000000000000(0000) GS:ffff88d801d16000(0000) knlGS:0000000000000000
-[848763.836396] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[848763.836398] CR2: 00007f20af9bd943 CR3: 000000023bd5a000 CR4: 0000000000f50ef0
-[848763.836400] PKRU: 55555554
-[848763.836402] Call Trace:
-[848763.836405]  <TASK>
-[848763.836411]  phy_state_machine+0x28/0x50
-[848763.836415]  process_one_work+0x198/0x390
-[848763.836421]  worker_thread+0x1af/0x320
-[848763.836425]  ? __pfx_worker_thread+0x10/0x10
-[848763.836429]  kthread+0xe3/0x120
-[848763.836432]  ? __pfx_kthread+0x10/0x10
-[848763.836435]  ret_from_fork+0x2ba/0x340
-[848763.836439]  ? __pfx_kthread+0x10/0x10
-[848763.836442]  ret_from_fork_asm+0x1a/0x30
-[848763.836449]  </TASK>
-[848763.836451] ---[ end trace 0000000000000000 ]---
-[848763.836458] ax88179 4-1:1.0 enx6c6e07090000: phy link down 2500base-x/1Gbps/Full/none/rx/tx/nolpi
-[848763.836489] ax88179 4-1:1.0 enx6c6e07090000: Link is Down
-[848764.571154] r8152 4-2:1.0 enx00e04c680000: carrier off
+Can similar adjustments become more helpful for further software areas?
 
-
-$ sudo ethtool -s enx6c6e07090000 autoneg on
-Does not recover.
-
-Birger
+Regards,
+Markus
