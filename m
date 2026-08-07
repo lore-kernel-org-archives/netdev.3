@@ -1,144 +1,74 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3406911CA9
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 01:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575CE37F313;
+	Fri,  7 Aug 2026 01:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786065521; cv=none; b=deXJ+8rnxpubplc2J1MnDEd6DIldrT07JuymMSWEfHtgpjlP39WCTILZP1fH8V3OXH9ONg83J4M+C/qqXIfMprNTxsX62EPzVy9i2OF3G+C331CsO9dkr86ub7Pzwn6KmcnYZS/KN1rQjA8QOVfzDkxawUZQUehie47iT5uJEkU=
+	t=1786066344; cv=none; b=OkAeJfGQpYAB6elSKCvL8K8Mja6f56vuiEyqTX22tq3gaSG1I0wZpeXp/WURv2tj+y2+by9TmTszNyIbPGEFlbTVzZdUB9I9Ua79rffKEgj3GCR48TDvpR6A3fqnFhdpnHrCMXpXm8fetpc7YWWB11zClhe4DImosTb8qwNrbgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786065521; c=relaxed/simple;
-	bh=ky9OYXhOW8zxX/NXbWdZJYd58LsAgBtp3GIk2ouJjoc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=fFi8I913vs1dUDjB4uvt5eI+ItzdDOvOUTQz1pRgbMDwEoJA0++u2DxPVh/t6Sr9LqumN4YUBIOjbEasUW/bReaZUilJLT3/ieIEtPOnDZ8PLDsZ5h6ki7fdHY9cYmhYSp/qJ7b9PJ7ucU9vRBv3KDTA8Y3Hsp1oILLYth6sDu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lFkK9tV+; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lFkK9tV+"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-81e9d8f3289so43549447b3.1
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 18:18:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786065519; x=1786670319; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=hOxpWXKVFJ3URm3uZriLzHf088tykABB1pdbe8MixXM=;
-        b=lFkK9tV+dqR6n+QOfXc0b6HdfcsnS/a67B5R2mDqGhh5VFLdseW+lBltRXql3eRVLt
-         xSYSo2r3V9jLhaHVzW//wXrnBP0JRMzDbmOHEaoQwmbxlt2JDjZQ4tvUf6Q9KHe5j/R9
-         2GCNsj4cJLUHeNsUq777/o+KSh8PZKm+bYJY52DnHv6Oyg2nMeJHYogerdEqggzkJu0d
-         1ngYRFoMw5higCa4gymjdbqTTsI3U3Alo99bQHFqdf3tDC1N3AR3qxA/WjwzwL1PuDoe
-         cuDUrnfGnqn0DVWc3aL9agASnhgV2w6MIzmqSh+/vN9Sfr55lpa4aVkVv300tBvnhYcO
-         SdBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786065519; x=1786670319;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hOxpWXKVFJ3URm3uZriLzHf088tykABB1pdbe8MixXM=;
-        b=OJNFswGPoF9VV0J9T6bN79muZjfGkqrrilpoVVHrMF4EBF0B2J16XRUDU4GtrzYS9n
-         1O9gz6Mu7sGn1SdItxF0clGWkU0LmJKoXPUpgGem6sAYuMe4vCAbz5KZqq1DV/Gfqyei
-         GJl48rpnDj6UU9YKxYCiwwK0drQ39AB4xeh0nJWauz84HTqj00aogeo7J6sfHOE/dKX+
-         Yu+pikKLQB+o1iCrHxrTF+3z2SbxTnkwD+seJjLd40CqsbGOqX2xtPSux6kX1l3+MgBb
-         09/PjdL09cpgbTxQUJd3CE/r+cb5nPdVCSEHJ52dJM+ybklHl7SotY/gwKz+2qxa6uF8
-         +Exw==
-X-Forwarded-Encrypted: i=1; AHgh+RpzmX08CUa8jTGVB5esqXWPRg9Ez4xFNLJMuA4J8t4bU30z7zwMPFJJFE4kYaB8/75KphZtotA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOVmNmYuam2cjWbYxF10MRacK3B6wQNZaQ4XYubfJY/nXMq68f
-	gK3EY7+GWged4mSo+H95dczOScl6u9yFdBL8HsBRfe9junNkPRaTMhtM
-X-Gm-Gg: AR+sD12tnhAsqHBWPgmgExS0MLp5FXszLTvVd4Iq5Gy/FG/k0PkCYnuI4jsJf+nBe/E
-	9aXcjl2g9nz979LjLS0QJ0y2aG+EvPYwuAqQvzw9YOCBOapUG7Pawv9sJQrLwjVKO4z2Mj2sHj5
-	tx88pXCH8p7gT4lpmnW9CN9o2Ooev8PSNDUPZ7+Ak2sLu5vo35gCa0ivW1LSKEkBi9M2gachu9m
-	snC2gzDj/ZJz0G7FqZXK5fiRS4UQ4NC4pLHFk6OyXA0e8ZQiJ9qHiQJa9rBp+9n+9qArUIaJUly
-	37QnSL8hFrKPyZJn06l4u4pWRPBDyLR+czBZ8KpGyV6ec6OIEI1BA0g5jaQ+DVzbyLxdP3wgCCB
-	zzDgn+k15oBM1VUs3ZXBPjuE000jiWSPGf+7QDMG/SU46RWIpZbZU8LAVmf6CRGMA0xIIJYGXOF
-	93yAWgCbuWuT/nzBhVXk1ouHHHByL54s87SDfju6zn3n9aL8FLoMuKC/2d8vj03VpM1suk7UZiz
-	T1jNI8y2jaLzq462/KXqMXs2++hr81+HZ1c
-X-Received: by 2002:a05:690c:601:b0:81d:5155:213b with SMTP id 00721157ae682-820223296bfmr123197047b3.14.1786065519098;
-        Thu, 06 Aug 2026 18:18:39 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-823f577c580sm1465037b3.27.2026.08.06.18.18.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 18:18:37 -0700 (PDT)
-Date: Thu, 06 Aug 2026 21:18:37 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- netdev@vger.kernel.org
-Cc: intel-wired-lan@lists.osuosl.org, 
- anthony.l.nguyen@intel.com, 
- joshua.a.hay@intel.com, 
- przemyslaw.kitszel@intel.com, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <willemdebruijn.kernel.c36ea46d8e97@gmail.com>
-In-Reply-To: <20260806232913.4020403-1-willemdebruijn.kernel@gmail.com>
-References: <20260806232913.4020403-1-willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH net-next v4 0/6] hardware pacing offload
+	s=arc-20240116; t=1786066344; c=relaxed/simple;
+	bh=wsyRP142YZf4XMnHzOGwUdUJ8c/hm1/gqr1lEZT3WFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ewY6Kr0DF4d4jbcWKBko/epuad7KCW9qWSyajwXlxqSbddtPn8keov1A1S6BhqpWBzPE6nt/VNGxlQlrFM4KD/EhT8gvuvWUW0HFjI6+HrgUMbHCBUPELgOMcZ4j36zD2UfPdK7oCGTPxGFkCpbd2s7tBhpZ9JpyNgC9BJFxSg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: ce5aaa0c91ff11f1aa26b74ffac11d73-20260807
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:c5ffcfe7-d20b-407f-bcb1-85d1a0c7c666,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:a2fd6a2d36fbc58e45ea6ac09a000e97,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|83|102|136|865|898,TC:nil,Content:
+	0|15|50,EDM:-3|-100,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,C
+	OL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: ce5aaa0c91ff11f1aa26b74ffac11d73-20260807
+X-User: xiongweimin@kylinos.cn
+Received: from xwm-tianyi510pro-14imb.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiongweimin@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 492142625; Fri, 07 Aug 2026 09:32:08 +0800
+From: Xiong Weimin <xiongweimin@kylinos.cn>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 2/2] virtio_net: unmap AF_XDP header with tx virtqueue
+Date: Fri,  7 Aug 2026 09:32:05 +0800
+Message-ID: <20260807013205.2130344-1-xiongweimin@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260806160411.2689177-1-kuba@kernel.org>
+References: <20260806160411.2689177-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Willem de Bruijn wrote:
-> From: Willem de Bruijn <willemb@google.com>
-> 
-> Enable safe hardware pacing offload on a first device (idpf), plus support.
-> 
-> - Add rtnetlink support for admin control over the device feature
-> - Add device support to the idpf driver
-> 
-> Besides the main feature, also
-> 
-> - Small optimization to FQ offload: avoid unnecessary ktime_.._get().
-> - Expand so_txtime drv-net test with hw offload testcases.
-> - Expand pktgen with txtime feature.
-> 
-> Details and detailed changelog in the individual patches.
-> 
-> High level changes:
->   v3 -> v4
->     - Replace ethtool API with rtnetlink
->     - Drop/defer pktgen patch: not essential
-> 
-> NOTE: the idpf patch will have a minor merge conflict with commit
-> "idpf: add missing cpu_to_le32 in idpf_tx_splitq_build_flow_desc"
-> (https://lore.kernel.org/netdev/20260803210707.1912217-1-willemdebruijn.kernel@gmail.com/).
-> I expect that this series will need another revision, at which point
-> that fix will have made its way to net-next. There is also a fix to
-> so_txtime.py outstanding, but that is structured so that these do not
-> conflict.
-> 
-> v3: https://lore.kernel.org/netdev/20260726202902.760552-1-willemdebruijn.kernel@gmail.com/
-> v2: https://lore.kernel.org/netdev/20260722204454.3234605-1-willemdebruijn.kernel@gmail.com/
-> v1: https://lore.kernel.org/netdev/20260706133433.3142805-1-willemdebruijn.kernel@gmail.com/
-> 
-> Willem de Bruijn (6):
->   net: rtnetlink: add pacing_offload_horizon attribute to net_device
->   net_sched: sch_fq: clear past skb->tstamp if offloading pacing
->   idpf: support pacing offload
->   selftests: drv-net: refactor so_txtime errqueue handling
->   selftests: drv-net: in so_txtime tell apart sw from hw pacing
->   selftests: drv-net: extend so_txtime with hw offload
-> 
->  Documentation/netlink/specs/rt-link.yaml      |   6 +
->  .../networking/net_cachelines/net_device.rst  |   3 +-
->  drivers/net/ethernet/intel/idpf/idpf.h        |   1 +
->  drivers/net/ethernet/intel/idpf/idpf_lib.c    |   3 +
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  70 +++++++-
->  drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   2 +
->  .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  56 ++++++-
->  drivers/net/ethernet/intel/idpf/virtchnl2.h   |  10 ++
->  include/linux/netdevice.h                     |   4 +-
->  include/linux/skbuff.h                        |  17 +-
->  include/uapi/linux/if_link.h                  |   1 +
->  net/core/rtnetlink.c                          |  21 +++
->  net/sched/sch_fq.c                            |  19 ++-
->  .../testing/selftests/drivers/net/so_txtime.c | 157 +++++++++++++-----
->  .../selftests/drivers/net/so_txtime.py        |  75 ++++++++-
->  15 files changed, 385 insertions(+), 60 deletions(-)
+On Thu, Aug 06, 2026 at 09:04:11AM -0700, Jakub Kicinski wrote:
+> Would it be clearer to state "no functional change intended" ...?
 
-This was intended to have a wider audience list. Will address in v5.
+Agreed - with the existing dma_dev equality check, rq->vq and sq->vq
+are equivalent for this unmap today.  I will drop this as a standalone
+"fix" and fold the sq->vq symmetry into the v2 series with an
+explicit no-functional-change note (no Fixes: tag for that part).
+
+Thanks,
+Xiong Weimin
