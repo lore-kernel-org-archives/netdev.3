@@ -1,80 +1,46 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3086B2165EA
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 00:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9981F63D9;
+	Fri,  7 Aug 2026 00:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786062189; cv=none; b=c0FhmLG1kMaGT5OAKIHTtdfe4K9zppPsJfVG7AZgGFWpPXpjh+9PwCL0glIKnWZWbhufdHlGczVAD/yPezeyt54td7+zehk9WBLwpc4OXmlDVnSUkorblSgJJ/5SOwk4MhLfzothZgoAzJDkib7MNfCpT0dzh1PABYbFBiQHpLI=
+	t=1786062291; cv=none; b=ZGK3MsPA4r4O1pVPmruf6KZuVXZzPtc+9XAMf9+KaQq+OMCbaZBFiDpG3Lxu22Q7lE6ywZI6SPZgIafQLXku4IZapM6aIB9xUisNtGDUF6b6x/uOwdCinluRUdWfvLsVhUVETXTxyeq6KMCDOYmmNO7ptoW6z79gQ1vMXhIR3Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786062189; c=relaxed/simple;
-	bh=EFYhBynMAaNcd1fjC3bL/hTRYOxwE8QB3zNhiLwQt+Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jbb5dwU6hwI9PrxzU9n3QBWzbwkHKtWmjZ/UHtda5+nfz8swzetF5CEnJy/frH4X+nQqHdOLm3JusKJ0jquj1ytCDD8IFrktkVhBV72eS0WRkH4eNsr+AMJ6E32c+Xog7E5fB0JncT1XyQxOaAGiAZglvpA5wGDi8qxK9e56sKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=C2qvDALC; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1786062291; c=relaxed/simple;
+	bh=boS94ZSlKZKREDR+sAeqr4EGsykk7ip4fw7bc15aHNw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SShlNY1Twjo2KjMmVChoq+3Wmc5B4mBClkAuj/TR9ZRZ8Hv5XJt/X+MWK168tEGtHVDHsI5Lqs3CCfrf5GHbjl/QVoc3EfVZ8PESXL5McYANw4oNPbW4ZXvCO7CVoXzB672IF9BL41bCmKs3JUw9CImCpVaI2JUF4VoHvwtoJ2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=dRj6MU7z; arc=none smtp.client-ip=115.124.30.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="C2qvDALC"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so24727125e9.0
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 17:23:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1786062186; x=1786666986; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WnL626t/uWWQp4KgYZRv7oBKfB6koRg5weJsbODC44A=;
-        b=C2qvDALCi9vOi8wBTyTuhTbWiJXK/a+zV6vOHXc3bVQnzWTifzOQmq+zblcLEfHHA1
-         H9I2fCHcZkL7oK+AUh76oxyfOvusrh0Bz4NvgELHYX+dSrHLpHeOTpowUh53XUZCqzu9
-         9L+RdHv+nUuDDE7+MQVzNPui2KZYUVJaVpQRYuTRUoFjdDjr5WX6NhBTPqqbzrWWnJdG
-         Rr8527qPUTYLzxqcjMot3vOoCVtQXDUoqysKDiWS7oWtAWLag8gmHzrxMxgpdjqumc6s
-         tk5fdAlVwI9rMJsjEjVTqdA3geIb0tfnlm0xQQsC9vmevv/EhCDqIXemWGxhEXzdGBoh
-         jIDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786062186; x=1786666986;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WnL626t/uWWQp4KgYZRv7oBKfB6koRg5weJsbODC44A=;
-        b=NCRguuXMn2DS2MgRg7D60BX6r5KCBv9Sj+x2C7LJOEf15UUGX48uIteJA/iexJquRt
-         +NI8X5VJk5RsOIGENLXQtRcjGa7J7cQUbi1AOM7KNtWKypNn1WBm7KsBb/Uwds45t0Jp
-         LbHW8+Be3EkHiyV6dMB/SyOwKe3LQLCqn2mxPZiXJWuR8jx9XgUcCo/zl/wgowEjoT/E
-         jCZ701+VpXKQJ8pUXAGcNKjfF2XnNjrKVtLvzw01tWsQI9a8XFc0zAh0H6/3yyOtKMJ+
-         FSHXApYZxo8IYedL5xyAj5BxYCP7ouY8PlKqymKjAlwad7cKOB9YorlSmP3mnVaNqEUD
-         oTFQ==
-X-Gm-Message-State: AOJu0YwRN7b/BAkz4gPXswIYXXGYRvVga1lyPgWAD6s/DCyyMgZRy+4u
-	KHIqvOpGwScnpbPzWcbvKBtqL22kT+VLQzqz5/828RiuE4FmRVONEVB16dV3UyB2q8LjMX6ny8K
-	nWfYPDiKKZ9gJ2iCAB9LklS76jbpDWGwY0HaaQ/1K/PvpcNPu6i+UqQX5i0ip9cez
-X-Gm-Gg: AR+sD11rKdKh2x2bCZrI0/RdzamIZ2L/J5iKe9Sd/3vtZ1dngz1vQjsnNQ0E58gzEjM
-	n/BuRkmGgT1luaLKkt5g1g9VcS6DLL9apTK/zPtpWp6RnFsTb+M3f5hC7m0aNJ3uoBHY2bgI8Ry
-	EGU3LqZMT8Qmo4Mm6tt46a/1gvcELPKZlTFfPB3n5JtvmptjCHiefSywTwBArvjwdmgZMZ6Mmau
-	l5dq76M/+lzIGtIEMZnDGdayInWbXp7v//y/wLJcOsSZgkA00x/PLJdP9LFLLdEEIUG4dhnicfd
-	+eoHuaNVH/mr/fEhwAtB1VUDjBbsJr/aMfeyq4HHkqMV5hVQBQShrJoUCWLh1NXNqb+0xssA0p1
-	i8IrEzfhBiiWGKdBDMLOdOd1rg7SDEYAoiLe603LALh+6m99n99vR2iagP4QB7S0jE9ni5fPe2V
-	f9wA5bz0NOXGu6RuoYUL3VSu5VC7l93JmTacrfDKdqoYcUevAJxUFBXpN0EQ7a4X/oO64jaSMu+
-	kPYqK7nRAWP
-X-Received: by 2002:a05:600c:c4a3:b0:496:c1f3:e8f8 with SMTP id 5b1f17b1804b1-4994e71eaf3mr240736435e9.7.1786062186364;
-        Thu, 06 Aug 2026 17:23:06 -0700 (PDT)
-Received: from inifinity.homelan.mandelbit.com ([2001:67c:2fbc:1:6db2:29ac:6c1f:5e1f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021ec565sm359215f8f.22.2026.08.06.17.23.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 17:23:04 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: netdev@vger.kernel.org
-Cc: Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="dRj6MU7z"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1786062278; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=Ja0xHUy1uLe/iPUk1mrxNeEqzUToXVTj7trH39SP5fg=;
+	b=dRj6MU7zulj8RJR63XzbE3onnozpKcF6Eo7KolIRdbHecK9uswzRbXGern0OZ7RSxVFJkEjOCjAVdnMeFQW6A6NUbfXM6Ar7oqeTP5aTCMtfgkn6YuxsoURX7zOm0wKNEG2ODulkc43sMOlZ4E8wb4EIA3G0yXl4FZWlKzMFlY8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=feng.tang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X8V4iI0_1786062277;
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0X8V4iI0_1786062277 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 07 Aug 2026 08:24:38 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Antonio Quartulli <antonio@openvpn.net>
-Subject: [PATCH net 4/4] ovpn: defer key slot crypto freeing to workqueue
-Date: Fri,  7 Aug 2026 02:22:44 +0200
-Message-ID: <20260807002250.1817498-5-antonio@openvpn.net>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260807002250.1817498-1-antonio@openvpn.net>
-References: <20260807002250.1817498-1-antonio@openvpn.net>
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: Feng Tang <feng.tang@linux.alibaba.com>
+Subject: [PATCH net-next v3] selftests: net: reuseport_bpf_numa: consider cpuless numa node
+Date: Fri,  7 Aug 2026 08:24:36 +0800
+Message-Id: <20260807002436.43991-1-feng.tang@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,148 +49,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ralf Lici <ralf@mandelbit.com>
+reuseport_bpf_numa case failed when testing on a platform with CXL
+memory:
 
-Key slots are released through a kref and the existing release path
-frees the AEAD transforms from an RCU callback. That is not safe for all
-crypto implementations: crypto_free_aead can sleep, for example when an
-async or hardware implementation has teardown work to complete.
+    #./reuseport_bpf_numa
+    ---- IPv4 UDP ----
+    send node 0, receive socket 0
+    ./reuseport_bpf_numa: failed to pin to node: Invalid argument
 
-Use queue_rcu_work for key-slot release. This keeps the RCU grace period
-needed by lockless key-slot readers, but runs the actual crypto teardown
-from workqueue context where sleeping is allowed. Once the rcu_work
-callback runs, pre-existing RCU readers are gone, and the final kref put
-already proves that no transform user remains, so the worker can release
-the AEAD transforms and free the slot directly.
+The root cause is that the platform has 2 numa nodes: node 0 has
+both cpu and memory, while node 1 is a CXL node which only has
+memory, and caused numa_run_on_node() to fail.
 
-The previous patch drains ovpn_wq during module exit, so queued key-slot
-teardown work cannot outlive module text.
+Add sanity check to skip cpuless numa node for the numa binding test.
 
-Fixes: 8534731dbf2d ("ovpn: implement packet processing")
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
 ---
- drivers/net/ovpn/crypto.c      | 10 +---------
- drivers/net/ovpn/crypto.h      |  4 +++-
- drivers/net/ovpn/crypto_aead.c | 19 ++++++++++++++-----
- drivers/net/ovpn/crypto_aead.h |  1 -
- 4 files changed, 18 insertions(+), 16 deletions(-)
+Changelog:
+  since v2:
+    * fix spelling issue (Jakub, Sashiko)
+	* remove unnecessary 'inline' for is_cpuless_node() (Jakub)
 
-diff --git a/drivers/net/ovpn/crypto.c b/drivers/net/ovpn/crypto.c
-index 2e95f29514fc..7e545428900a 100644
---- a/drivers/net/ovpn/crypto.c
-+++ b/drivers/net/ovpn/crypto.c
-@@ -18,20 +18,12 @@
- #include "crypto_aead.h"
- #include "crypto.h"
- 
--static void ovpn_ks_destroy_rcu(struct rcu_head *head)
--{
--	struct ovpn_crypto_key_slot *ks;
--
--	ks = container_of(head, struct ovpn_crypto_key_slot, rcu);
--	ovpn_aead_crypto_key_slot_destroy(ks);
--}
--
- void ovpn_crypto_key_slot_release(struct kref *kref)
- {
- 	struct ovpn_crypto_key_slot *ks;
- 
- 	ks = container_of(kref, struct ovpn_crypto_key_slot, refcount);
--	call_rcu(&ks->rcu, ovpn_ks_destroy_rcu);
-+	queue_rcu_work(ovpn_wq, &ks->free_work);
+  since v1:
+    * address comments from Sashiko bot
+      https://lore.kernel.org/all/20260730113738.41C901F000E9@smtp.kernel.org/
+    * lift the cpuless node check out of send_from_node() 
+
+ .../selftests/net/reuseport_bpf_numa.c        | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/tools/testing/selftests/net/reuseport_bpf_numa.c b/tools/testing/selftests/net/reuseport_bpf_numa.c
+index 8ec52fc5ef41..6e4817ef57c5 100644
+--- a/tools/testing/selftests/net/reuseport_bpf_numa.c
++++ b/tools/testing/selftests/net/reuseport_bpf_numa.c
+@@ -104,6 +104,26 @@ static void attach_bpf(int fd)
+ 	close(bpf_fd);
  }
  
- /* can only be invoked when all peer references have been dropped (i.e. RCU
-diff --git a/drivers/net/ovpn/crypto.h b/drivers/net/ovpn/crypto.h
-index 0e284fec3a75..e3feb16d5498 100644
---- a/drivers/net/ovpn/crypto.h
-+++ b/drivers/net/ovpn/crypto.h
-@@ -10,6 +10,8 @@
- #ifndef _NET_OVPN_OVPNCRYPTO_H_
- #define _NET_OVPN_OVPNCRYPTO_H_
- 
-+#include <linux/workqueue.h>
++/*
++ * Return true if it is a cpuless node. Return false if it isn't or any
++ * error (very unlikely) happens during the libnuma calls.
++ */
++static bool is_cpuless_node(int node_id)
++{
++	struct bitmask *cpumask;
++	bool ret = false;
 +
- #include "pktid.h"
- #include "proto.h"
- 
-@@ -45,8 +47,8 @@ struct ovpn_crypto_key_slot {
- 
- 	struct ovpn_pktid_recv pid_recv ____cacheline_aligned_in_smp;
- 	struct ovpn_pktid_xmit pid_xmit ____cacheline_aligned_in_smp;
-+	struct rcu_work free_work;
- 	struct kref refcount;
--	struct rcu_head rcu;
- };
- 
- struct ovpn_crypto_state {
-diff --git a/drivers/net/ovpn/crypto_aead.c b/drivers/net/ovpn/crypto_aead.c
-index 8f07c418622b..74eaf6fac2f5 100644
---- a/drivers/net/ovpn/crypto_aead.c
-+++ b/drivers/net/ovpn/crypto_aead.c
-@@ -9,6 +9,7 @@
- 
- #include <crypto/aead.h>
- #include <linux/skbuff.h>
-+#include <linux/workqueue.h>
- #include <net/ip.h>
- #include <net/ipv6.h>
- #include <net/udp.h>
-@@ -380,13 +381,19 @@ static struct crypto_aead *ovpn_aead_init(const char *title,
- 	return ERR_PTR(ret);
- }
- 
--void ovpn_aead_crypto_key_slot_destroy(struct ovpn_crypto_key_slot *ks)
-+static void ovpn_aead_crypto_key_slot_free(struct ovpn_crypto_key_slot *ks)
- {
--	if (!ks)
--		return;
--
- 	crypto_free_aead(ks->encrypt);
- 	crypto_free_aead(ks->decrypt);
++	cpumask = numa_allocate_cpumask();
++	if (!cpumask)
++		return ret;
++
++	if (!numa_node_to_cpus(node_id, cpumask) && !numa_bitmask_weight(cpumask))
++		ret = true;
++
++	numa_bitmask_free(cpumask);
++	return ret;
 +}
 +
-+static void ovpn_aead_crypto_key_slot_free_work(struct work_struct *work)
-+{
-+	struct ovpn_crypto_key_slot *ks;
-+
-+	ks = container_of(to_rcu_work(work), struct ovpn_crypto_key_slot,
-+			  free_work);
-+	ovpn_aead_crypto_key_slot_free(ks);
- 	kfree(ks);
- }
- 
-@@ -420,6 +427,7 @@ ovpn_aead_crypto_key_slot_new(const struct ovpn_key_config *kc)
- 
- 	ks->encrypt = NULL;
- 	ks->decrypt = NULL;
-+	INIT_RCU_WORK(&ks->free_work, ovpn_aead_crypto_key_slot_free_work);
- 	kref_init(&ks->refcount);
- 	ks->key_id = kc->key_id;
- 
-@@ -453,7 +461,8 @@ ovpn_aead_crypto_key_slot_new(const struct ovpn_key_config *kc)
- 	return ks;
- 
- destroy_ks:
--	ovpn_aead_crypto_key_slot_destroy(ks);
-+	ovpn_aead_crypto_key_slot_free(ks);
-+	kfree(ks);
- 	return ERR_PTR(ret);
- }
- 
-diff --git a/drivers/net/ovpn/crypto_aead.h b/drivers/net/ovpn/crypto_aead.h
-index 65a2ff307898..fae3b585a43b 100644
---- a/drivers/net/ovpn/crypto_aead.h
-+++ b/drivers/net/ovpn/crypto_aead.h
-@@ -22,7 +22,6 @@ int ovpn_aead_decrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
- 
- struct ovpn_crypto_key_slot *
- ovpn_aead_crypto_key_slot_new(const struct ovpn_key_config *kc);
--void ovpn_aead_crypto_key_slot_destroy(struct ovpn_crypto_key_slot *ks);
- 
- enum ovpn_cipher_alg ovpn_aead_crypto_alg(struct ovpn_crypto_key_slot *ks);
- 
+ static void send_from_node(int node_id, int family, int proto)
+ {
+ 	struct sockaddr_storage saddr, daddr;
+@@ -213,6 +233,8 @@ static void test(int *rcv_fd, int len, int family, int proto)
+ 	for (node = 0; node < len; ++node) {
+ 		if (!numa_bitmask_isbitset(numa_nodes_ptr, node))
+ 			continue;
++		if (is_cpuless_node(node))
++			continue;
+ 		send_from_node(node, family, proto);
+ 		receive_on_node(rcv_fd, len, epfd, node, proto);
+ 	}
+@@ -221,6 +243,8 @@ static void test(int *rcv_fd, int len, int family, int proto)
+ 	for (node = len - 1; node >= 0; --node) {
+ 		if (!numa_bitmask_isbitset(numa_nodes_ptr, node))
+ 			continue;
++		if (is_cpuless_node(node))
++			continue;
+ 		send_from_node(node, family, proto);
+ 		receive_on_node(rcv_fd, len, epfd, node, proto);
+ 	}
 -- 
-2.54.0
+2.43.5
 
