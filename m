@@ -1,66 +1,66 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9462047ECE5
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 16:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5DC4756C0
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 16:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786121050; cv=none; b=GQfDxLfFZH60aQKa80O5LEw1g3UK8CRIU6ogXbk1O9hobIj3RvoF4kHr4jhCas3Hkd0Lwb6lU6mfBjAcBsufQQH1O1tMXjmq2yG7WTMkOPLettpfjI7HhhRDGmg6+GQI+b09wUCWqUMyDhb9E6rrGjOiIY4pYNC+3IdeFUyzTcg=
+	t=1786121082; cv=none; b=SmMNX8jCOdufcSbUkJUA/+KU8sCn+qpbr5ythIVg3lydk/Dqkgib2mrdwf7xwOhtit5sBhCL2LpdGra6/CydVlrjSH0Qo2/CYyJ8OUWjAa/Iq/TOYFvFczx+uUkN6nivKu5/eDWfYLHrJ4sO3/MTXjYTDHOgnanVRLj5T6Gi5/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786121050; c=relaxed/simple;
-	bh=uPhLGPhcYhdMfSp4rrZp74jm8xFS8hjXR/BosdftPU0=;
+	s=arc-20240116; t=1786121082; c=relaxed/simple;
+	bh=+LbwcBxTcVL6TE8Xa7VF9oYYHSPpansJnznnqPEwo64=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QyzOoDBsJVl6Y+vpxg92suxZ4LL3gUu3CbTS/vsoAApnxw7oF9HffntRixLnnfof2us2uXnoVf5QLWkJIMKGjrMbJc8QVkLKNFdgzckoO5vVTSgpO6IbbzT2dkBvaB3kCdwreP/twjnOHGfkqolgOxYlJtiemG81yLiMQLjC2vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UcT2M3h9; arc=none smtp.client-ip=209.85.128.48
+	 MIME-Version:Content-Type; b=WKYPLzzNVSvGZGE/+NszIpbqjovzqlx0BeLDDjZb7qJsb6TKl2NZUfWLcRDWh3gRX9EugDJ2OBZCPMlHPnQR1PcOlGTbwCq3cz2qMiXc5gNEQN1aaCyX0AH3cmWFFkFx+vjm8Y4RKMk63KH29SwuguLocgfiVhZHyBVWPiKAt5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E8PSHLQH; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UcT2M3h9"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4956242332dso28268725e9.2
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 09:44:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E8PSHLQH"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4798bea72f9so2244360f8f.1
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 09:44:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786121044; x=1786725844; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786121079; x=1786725879; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=3QXb84XN1127M+aZY6/SeCM+ISG9Q4eDpoIhqwUcmGU=;
-        b=UcT2M3h9RMhWwlsYKBJV4IzIj8IK0p8L6BlAMqKaHKzJ90hXgWWBUlqgwRHRMBu3HP
-         zHInYBcMuQXkiT1I2mPxrGCNoltKBHnVz8wZAbVkAtjoN2O03c3K00G9JiHsnisc4ztF
-         TZaIUYe0JEEjqw4HZV1LrYrWp4QQFk4P4VadnUQc0mi8nUfyWp/yAAWdmP8zDGiDE2q3
-         3OKxdlKbL2MFiwuTxa7evZraV3ekmPpCr66dgH3PbhNcG1IiK96TDjvgUbr88lyFX1Ol
-         Eh/AiM8gXCkoLesPfVRow1Sz2K8GnEnjSlfdjPyZ4Zlzq9tiGS0Mmt8UIKjwoQ41bHK7
-         PATA==
+        bh=5vPWw2J266KWoCzUTs7KvPsgaoOdOp2O33Cr+Xyu+Z4=;
+        b=E8PSHLQHGw/j+CuTVIAUl805DcGbM3iUEG+Q0rGXNZncL7mb64gaQJxPAXW1c/IFDn
+         WsVjQbdDOhlsEZW2eBXj/sjRb4ba5FyTwVEC+scdS+h4UdXwMyaSchYYUiOR/TfW4UXG
+         GRUR0VVXHeTjsLzixoECwg9EJw+5t/hXyt0YhcX66bbdXZ8/B2NaA+ckz9vZqHhZ81o0
+         htYBCUOCSqddVBGlb/pmmL0Qy3wIXiaQxyhgmvT3vVlfF8o4SKiovNP+oQFoBdkvlyDt
+         OrPRdt6Ue/kK2nnr7i/YSLwmdIaHLeKfeVjJkzWUldB9KcepD8AbK5K0nfgasOasMCgu
+         MP9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786121044; x=1786725844;
+        d=1e100.net; s=20251104; t=1786121079; x=1786725879;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3QXb84XN1127M+aZY6/SeCM+ISG9Q4eDpoIhqwUcmGU=;
-        b=jDQw8cNBm+ecPnZ7wdTDMM/zd5nC+YDw9ZGsOGBH47sAI+RF8xP2F6PrN2dit5Xx07
-         oLuHmf3Qju6kdKxg0+V/oodZYFKJD8ZxVgw5CknKHd7CCRRNKcQWx8O3AFbUX7/ZnlY6
-         tgJB+TtNJrNR5Q+glfsxOkv2ZVTfUcU1hO86LqibAf888WxqEkMf4mPLxXAaSDQKNYDj
-         tOGoGNhF2DVjgNyLQy3jF9nFh42tUet1v36iRnJyFnh73paab2rQ++j4vqdN4z3cwShh
-         ehRF3ifU+KwQ6xjCm2hSv14ShBYjaWZgkUUdcEmBkKwN9918VN9Tb1XFE8DjaFuk5XNm
-         VEmw==
-X-Forwarded-Encrypted: i=1; AHgh+RrfBIuEShJ/xdaOdCqGsVksT3/N0RMOC4Gn+1SIFqi1h74wgfETpDaTCENeRLpbcy9qOCD+Uuc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzKqu/8JNMroZDYllK3HGjRAVEJBcaYOJdbAbpOryYgyrQKplj
-	VLYlfe6XzuIMidUDGEBgcNanbwlauUNI59K3JuO/numOCHzM3Vqz5msL
-X-Gm-Gg: AR+sD11qJXxrES/uLp93W39yWWeaLav+bQOAkBJbLdd2FSgL/fhRS4pwLLoaKp3UHYA
-	ivFXvEY4EYrfp99jb8nhkkuXF4Uked1h4X6XPwgAIh6dWiQaroqs8kPJsRSsKc7edzG6LJ6/AaF
-	kvJA29FugOWQwcQXdDYXdr7bANSdryWYfAyOf5HMZGIEUo4j60MvVDtLRle6hjFEgQXLbS3rGyD
-	XkDeVOnLxdY2crODOrOGi+mCXJLON+gszNYHDksmfTDfDyckPm6CYi0LthGZwAOSzcyN/XpdTBj
-	XJ0tNoqaj7WFzRyZGEz4ThKBWmJbyAKKqnacjWRcin+9Hz51tTwV/5vSqH7GZn5W9CMSpJV5GPM
-	FPY1V4M4s27/EPH0bRmonrisn145hUian2ZyRfTqajLY9QA0ujdFrAs2QUk/CLnAM4E9vkuUV2A
-	REGKTyHjFYKRwiNOvli0RZIOiTtvfrl5G09ctWK/B4FyM6AQpgPLmx2hBMPTCVDOHSgOI4DRliQ
-	P3w0Z62Bm1XoFfgdRFUyzHrMg==
-X-Received: by 2002:a05:600c:46cc:b0:495:4e89:3f30 with SMTP id 5b1f17b1804b1-49961b8a027mr11821095e9.15.1786121044328;
-        Fri, 07 Aug 2026 09:44:04 -0700 (PDT)
+        bh=5vPWw2J266KWoCzUTs7KvPsgaoOdOp2O33Cr+Xyu+Z4=;
+        b=EtBQpVQ/kZjGcV0a/jZZuiTtjLYJsyvHCebhGIQs+EMqzNI1QD5YWMXRFNjjiCCD6x
+         itw2EgzokESXPje66Qbu/ZEAf8hdk91bwVjeNBxdjebVyNXcxEgYSPSsMqT73qA9Og4o
+         YiWZisPnz8xrD80n5XqMcRv6p038V37WXF12X9qbOPjWNy8nx+27DAdlN70D6LjGfbeD
+         vobrQTP9fVKjglOLNCXaRWwbpjqFYRKFdYrds/fsJhpMEJkUQllV/NKs72Kei8Qo5S11
+         0YItxvC3XvIUzOXhvM3Rn4ndJOp6/iPUu2t3BLJtorC7hxCnzidbyczvdLPCY952Ufep
+         ljIA==
+X-Forwarded-Encrypted: i=1; AHgh+RqGg+d6/1MraerQAtKqVKftKqbHR64C7x3kSI7WwLZCQjZKD2dvrTqOd1UK8+XGB++ds56E5Fs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzeo4gTcu7NeXr1jatFXMr0Va9zvSmZmFePaif/XZ9KBSDkKBae
+	9k80wBHtLsM/RRXD7oNxK2TK9Q7SjaTlVQGruGXq2equFyW4Q/uvUCYK
+X-Gm-Gg: AR+sD13knV/iKAMN5U2C0yIX5ikU9xxudt6uZoIIdgifyV7BirMsnpmqDG0n21FUS6K
+	89iKiFv3WRIOm3ZNY58+7smEia5UlUzZgdMM6ZyA98OiNAjltrsXv84dqzn6LZNX1PRh3sQ+SfY
+	IRuRjGyRIH6kORVwesUmWy0UDy8AcpN5BraGRK4Ej9OT0HGQqF20Q+iY1PBoPFaVpH7dGvDdi4W
+	GbLlkzrwqEmiUWXmcARlWVSXZCsnHm100WmUxIPt4YCf4ybFprDp0MtUSaCt6nC4ylVjQO8MASF
+	QiknAxbr0UUNBc7aeIFCIdGqg9R5IudizfcrLQ3OSqxXZQ79JN19vJ4CjCPjIqOli6v4+B/Ityg
+	EyNVGD53uog10stG+0MM6cvi4Y1wzFgzseFWoCAx48YCmwEAs/zKtVb4iBodiI2Duk8gTZJx8Yu
+	l26+4cyGe44mri24vYnp3JRyGenqkYuj+oYawZnbZgCQMIhDNYE2xKDjRz5LTW2sELFVBzVJlS+
+	6bpZxUYG1hAXmhqfsJrIB9A+fDCbDXr34X+
+X-Received: by 2002:a5d:59c4:0:b0:47f:4919:d5b2 with SMTP id ffacd0b85a97d-47fec4e887dmr36634353f8f.1.1786121078631;
+        Fri, 07 Aug 2026 09:44:38 -0700 (PDT)
 Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021f9182sm7368787f8f.28.2026.08.07.09.44.03
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021e8cd0sm7470652f8f.17.2026.08.07.09.44.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 09:44:03 -0700 (PDT)
-Date: Fri, 7 Aug 2026 17:44:02 +0100
+        Fri, 07 Aug 2026 09:44:38 -0700 (PDT)
+Date: Fri, 7 Aug 2026 17:44:37 +0100
 From: David Laight <david.laight.linux@gmail.com>
 To: Breno Leitao <leitao@debian.org>
 Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
@@ -69,12 +69,12 @@ Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
  <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
  stable@vger.kernel.org
-Subject: Re: [PATCH net 1/2] ipv4: mcast: getsockopt: do not overwrite past
- optlen
-Message-ID: <20260807174402.2dfc12d6@pumpkin>
-In-Reply-To: <20260806-mcast_fix-v1-1-bed0a5518e57@debian.org>
+Subject: Re: [PATCH net 2/2] ipv6: mcast: do not write past optlen in the
+ source filter getsockopt
+Message-ID: <20260807174437.01bf2e33@pumpkin>
+In-Reply-To: <20260806-mcast_fix-v1-2-bed0a5518e57@debian.org>
 References: <20260806-mcast_fix-v1-0-bed0a5518e57@debian.org>
-	<20260806-mcast_fix-v1-1-bed0a5518e57@debian.org>
+	<20260806-mcast_fix-v1-2-bed0a5518e57@debian.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -85,115 +85,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 06 Aug 2026 02:42:00 -0700
+On Thu, 06 Aug 2026 02:42:01 -0700
 Breno Leitao <leitao@debian.org> wrote:
 
-> getsockopt(MCAST_MSFILTER) can write past the end of the buffer the caller
-> declared.
+> getsockopt(MCAST_MSFILTER) on an IPv6 socket overruns the caller's buffer
+> the same way the IPv4 one does. ip6_mc_msfget() fills the source list from
+> the numsrc left in optval, and nothing compares that against optlen, which
+> ipv6_get_msfilter() has already reused for the length of the reply.
 > 
-> This is because the copy_to_user() does not respect the optlen, and can
-> write over the allocated buffer, overwriting userspace undesired
-> memory
+> Clamp numsrc to what optlen holds, as the IPv4 side now does.
 
-Nak. This is just the way it is defined.
-The application provides a length that is just the header.
-As you noted the header contains details of the real buffer.
-
-There are quite a few sockopt like it, you have to support them.
-There may be some where the length isn't checked and is just assumed
-to be the right size - they have to continue to work as well.
+Nak, same as IPv4.
 
 	David
 
-> 
-> The amount written comes from the numsrc the caller left in optval, not
-> from optlen. do_ip_getsockopt() reads optlen once, to check that the header
-> fits, and then reuses the variable for the length of the reply, so by the
-> time ip_mc_gsfget() fills the source list nothing remembers how big the
-> buffer was.
-> 
-> The copies go through copy_to_user(), so this reaches only the caller's own
-> address space.
-> 
-> setsockopt has had the matching check from the start:
-> 
-> 	if (GROUP_FILTER_SIZE(gsf->gf_numsrc) > optlen)
-> 		return -EINVAL;
-> 
-> Clamp numsrc to what optlen holds rather than rejecting. Another option
-> would be to reject (-EINVAL), but, that might break userspace _more_.
-> 
-> For reviewing purposes: size0 is the header size, so, the available
-> buffer is len - size0.
 > 
 > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Breno Leitao <leitao@debian.org>
 > ---
->  net/ipv4/ip_sockglue.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+>  net/ipv6/ipv6_sockglue.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
-> index a55ef327ec932..2e4e19b90645b 100644
-> --- a/net/ipv4/ip_sockglue.c
-> +++ b/net/ipv4/ip_sockglue.c
-> @@ -1447,6 +1447,7 @@ static int ip_get_mcast_msfilter(struct sock *sk, sockptr_t optval,
+> diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
+> index b4c977434c2e0..2c3fbde7cb058 100644
+> --- a/net/ipv6/ipv6_sockglue.c
+> +++ b/net/ipv6/ipv6_sockglue.c
+> @@ -1012,6 +1012,7 @@ static int ipv6_get_msfilter(struct sock *sk, sockptr_t optval,
 >  {
 >  	const int size0 = offsetof(struct group_filter, gf_slist_flex);
 >  	struct group_filter gsf;
 > +	unsigned int max_numsrc;
->  	int num, gsf_size;
+>  	int num;
 >  	int err;
 >  
-> @@ -1455,6 +1456,10 @@ static int ip_get_mcast_msfilter(struct sock *sk, sockptr_t optval,
->  	if (copy_from_sockptr(&gsf, optval, size0))
+> @@ -1021,6 +1022,11 @@ static int ipv6_get_msfilter(struct sock *sk, sockptr_t optval,
 >  		return -EFAULT;
->  
-> +	/* Maximum number of sources that would fit in the userspace buffer*/
+>  	if (gsf.gf_group.ss_family != AF_INET6)
+>  		return -EADDRNOTAVAIL;
+> +
+> +	/* Number of sources that would fit in the userspace buffer */
 > +	max_numsrc = (len - size0) / sizeof(gsf.gf_slist_flex[0]);
 > +	gsf.gf_numsrc = min_t(u32, gsf.gf_numsrc, max_numsrc);
 > +
 >  	num = gsf.gf_numsrc;
->  	err = ip_mc_gsfget(sk, &gsf, optval,
->  			   offsetof(struct group_filter, gf_slist_flex));
-> @@ -1474,6 +1479,7 @@ static int compat_ip_get_mcast_msfilter(struct sock *sk, sockptr_t optval,
+>  	sockopt_lock_sock(sk);
+>  	err = ip6_mc_msfget(sk, &gsf, optval, size0);
+> @@ -1041,6 +1047,7 @@ static int compat_ipv6_get_msfilter(struct sock *sk, sockptr_t optval,
 >  {
 >  	const int size0 = offsetof(struct compat_group_filter, gf_slist_flex);
 >  	struct compat_group_filter gf32;
 > +	unsigned int max_numsrc;
 >  	struct group_filter gf;
->  	int num;
 >  	int err;
-> @@ -1483,6 +1489,9 @@ static int compat_ip_get_mcast_msfilter(struct sock *sk, sockptr_t optval,
+>  	int num;
+> @@ -1050,6 +1057,10 @@ static int compat_ipv6_get_msfilter(struct sock *sk, sockptr_t optval,
+>  
 >  	if (copy_from_sockptr(&gf32, optval, size0))
 >  		return -EFAULT;
->  
+> +
 > +	max_numsrc = (len - size0) / sizeof(gf32.gf_slist_flex[0]);
 > +	gf32.gf_numsrc = min_t(u32, gf32.gf_numsrc, max_numsrc);
 > +
 >  	gf.gf_interface = gf32.gf_interface;
 >  	gf.gf_fmode = gf32.gf_fmode;
 >  	num = gf.gf_numsrc = gf32.gf_numsrc;
-> @@ -1705,6 +1714,7 @@ int do_ip_getsockopt(struct sock *sk, int level, int optname,
->  	switch (optname) {
->  	case IP_MSFILTER:
->  	{
-> +		unsigned int max_numsrc;
->  		struct ip_msfilter msf;
->  
->  		if (len < IP_MSFILTER_SIZE(0)) {
-> @@ -1715,6 +1725,12 @@ int do_ip_getsockopt(struct sock *sk, int level, int optname,
->  			err = -EFAULT;
->  			goto out;
->  		}
-> +		/* Do not write more sources than the caller said optval can
-> +		 * hold.
-> +		 */
-> +		max_numsrc = (len - IP_MSFILTER_SIZE(0)) /
-> +			     sizeof(msf.imsf_slist_flex[0]);
-> +		msf.imsf_numsrc = min_t(u32, msf.imsf_numsrc, max_numsrc);
->  		err = ip_mc_msfget(sk, &msf, optval, optlen);
->  		goto out;
->  	}
 > 
 
