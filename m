@@ -1,65 +1,66 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6DE3F58C2
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 20:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABC64446E8
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 21:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786136308; cv=none; b=Rp0VpFdNbFtTwBgwxDFXZ0YwAonWpBzLAVfOI8lqulplIGCkF4ZXWbU7/x9JoVHJQp1r6K3VFS7EM54txLXYFlT6Rphi9KKYq6dmaSiYOZJ8D+oqapaBGCVH4KdEIPZT4aj9D6E/ZnteQWDaZIX2syYwFqSmI4Q1i/58/clzVzM=
+	t=1786136414; cv=none; b=E8RS350EZ4LgT+2/AN3rLutb2to5W+IqMB+z+qsoa24Zn3ICXZrKLDuBWtZPPE20Ysm13B2bC/OsDYQnC1JHRQTbDGoCCH90xRsb1yWeM4kgeiEtdUk8suw0dxBpwvFD1+5shxwbWGZxji5B24DNpLzox0YWrLj0qgkvAQskp2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786136308; c=relaxed/simple;
-	bh=2J/UP/+6DMH2CHEER9PVAEvN6Vtdaca1g6fEmR+C3dU=;
+	s=arc-20240116; t=1786136414; c=relaxed/simple;
+	bh=9kRu9s6sylkq4R57DiZLd0w8rMbxTFR+JqfzBmRWz1o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YtkligJHzTlS2ZcAU5gM2vYh6TojPQpyVsSUMCotDJ97JIp+9qMCMluq58BMXxGFhqarXWRUH9GT6C+tKkJLR5Qh/7eDzX2shmhzlh5sfN/+PfsCUYpH7jEGUWVdcExJOzpQSWWnBFZLZusI7WQZHwGMqd9j0xFltSsmRavElsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=lz1Rd8VC; arc=none smtp.client-ip=209.85.128.50
+	 Content-Type:Content-Disposition:In-Reply-To; b=qUCyaKLLHipOgffRRlLNSw4iE09yTJ3hCzka+Ola30xqJU3mjev1cS050hh+SQGMvPox4fqT2cQcIh/scpUaob15FfvDL+QCvMCCgeHJlRRpBy2MvVUI6OT7sQSrbkMrf3e9uQTwnnXc8dMYtXPNl/uKjVylPQLbcuzzOakbTGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=TvEej7As; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="lz1Rd8VC"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4957eefd361so28741335e9.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 13:58:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="TvEej7As"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47f703a9d05so2498054f8f.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 14:00:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1786136305; x=1786741105; darn=vger.kernel.org;
+        d=baylibre.com; s=google; t=1786136409; x=1786741209; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Ub+G0Ff6hsiwxt6UoJCvVXER5yXovtTMeMwmgc6K8J8=;
-        b=lz1Rd8VCvRx7qtS80RxVEavo94LfoBnLpZwb21SCH4j4bTt9UZb0KA+ydFxRIVt7FL
-         nxdSsWa74XLiyTQWKTUyAF2pAweLrVmrv+K/+4ntTWWRH7GF9eyT/65qdgEdmJUYMErW
-         KwADCpdTBl8zmlaAtd/gN9DP0VLYLq0XIdf00XZzaq32No1ICxgvWuKjx/Iu4Qb+ImGC
-         /47SKKrJC+AZf94OJnmycGyyEDOaOq12/Qhi4+GEmYC3Tt0Md/GATxtFUhb6BI+yU7o/
-         vN2JER+ycA7xIOPH+nP9nyza8XvzeaQboVHw8kER6MhsVksVDEskb+OoqLyD1Cpg9+Ot
-         cpoQ==
+        bh=n2jSfoVmmGxnKuCYX8tAJQ7xubX2vrZV9GTQr1E87rk=;
+        b=TvEej7AsybxgM22dCCDyIX7OteOz06DymOsvyfRgIj+GS04SqxLy4PctB4r7tzVnbZ
+         OLJRuPOqEnXZ7maiaPOSSiPEJ5xyoAcVxxuiyWsusvwS80Q1MqoIX/YJ+Z8wxR3LSGMO
+         cVS/0REVj4o0BIYUemwLRsI1SaXJLlMFLMzWX/02MHVYYS4YhgD+5tab5bihQA3Gx6Lj
+         mMRTDWVQkbbppLQ7jOkXKtMKUakSxCVLLBlz/Iwz1NDPHWZseBhtiMmLJg7kTEjg/5JG
+         h1zbxcX/4UXhhMV2PpTvgn6I9nSk7cWoqFsj7kjTG22EWn9D71G1o1KT46kZSkfpRXv+
+         PorQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786136305; x=1786741105;
+        d=1e100.net; s=20251104; t=1786136409; x=1786741209;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Ub+G0Ff6hsiwxt6UoJCvVXER5yXovtTMeMwmgc6K8J8=;
-        b=KsIwg1TVWIXlbyl13nb0Q2267FWIR6RKqeetD+icQvQ8c82S5dI6VWlEpA8JgF1BeU
-         kNpmorHQQ4G8p38CLFgoLlbRY0wRA/0mbVwpQjnDeFWU14BNjtAx1CxwJy81uB5e8m2D
-         GkNsVqP58j8z0YFn0ZW6SLPUi+29g8u3V51zo7VSVWp1xiHfrod6gxKhYyvaulltEKNl
-         As3l5BLVfzhxi2lK9N4OjV5pW5PClYuKR3gZ2HTfAajcYNSPA0vUP+jqjRABnm/iA/g7
-         a2TKHkQ+oIcrt1JkKpBH3mOp+CeZ80AUwq8oxupgQd3+p/U9zSRv1a2CjoqK0tC/xuFh
-         Np2Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpstMplrbE0vCS+Yrg3ryW4j6wZ9uZz2XmOxlcjhuxovcqjXviPxN1h8rHSOt1tVaMGoxqIUbk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM6YE+cZhQWtZGKajfoxI9zn/7Lai8gNhZDwuDpEUD8mqG2/Ue
-	5A1PinsiTGTvHnMvN1GpqNx30NLkZIjhm05PxJl176V1nVQR3yUPHr6L2tyGw6vtk/Q=
-X-Gm-Gg: AR+sD13AETSpZcgnsko5EMsudoSyLkI2UHLLhPWz5dtK41wjzwPxOUEpaUGBiQzo6gU
-	EGEh4eT82wSplgqz+VAl9KALYuOhaO7/eMxe+PlrS/fm9S0CeDeE5+9pwUsBhdsBV1/dBcSsISB
-	qDDFCNvKI4/0RpJfUTkMeYdD2R5KB2fndi5GPng2EZ78gWNL572MCp1WfgekJAoC1q6O/P3yFSg
-	cDASWCGLanlyGCj5Tkw74kiapVKnAKzKtABWRvWfVmBPYi1cf6m2yRXAxlUIsKaxmPVtxQ44d1a
-	0oRW+hsHSsfJOvgZ7CU6Z7xXQ1r/1yOdsReeSOC569/0XYli93w9cjh4oBl8LonJ+yorqLRIAc8
-	v2CcLLxVuEIkgCx/u4jyxU+ysjFbf3C63qru01sIYHuIhyImwG1KOOs7F02ltCx1HvumwXGzNej
-	BKa3ustyuYKt5RAXUbUurUF7zw3PFAfRl5U9FVeQ+eHgwX2Jwh23k9nD2CLRiU5W0l6g==
-X-Received: by 2002:a05:600c:6612:b0:495:4811:7998 with SMTP id 5b1f17b1804b1-4995e0ebf84mr102518595e9.17.1786136305361;
-        Fri, 07 Aug 2026 13:58:25 -0700 (PDT)
+        bh=n2jSfoVmmGxnKuCYX8tAJQ7xubX2vrZV9GTQr1E87rk=;
+        b=RrRrnKpXH8EM8IPiRh8v/8chaXcu1DHRuUX/TCw+Nr3FG42C527k/DVUFg2p2ji94u
+         IPkhQjjgLWGVKGsAuksbxxBwKPkcusR2NuU1b3LPLuCtYJ9OpbHwGrfm/Rhrm20uP9nd
+         sq/K6mivS2ktj8sOUbUYtK9kw9KDoXVSz8M0/4ADDGB4wF6A1PuOee5gCtBYvbSi3flS
+         iYBgf8dE6mx+H/OOng7KhPDttmoCM8RBYvFb+Au1G7LYQckJz0wtPNNHeqFTnMb1HBrR
+         Jm7kuL7/aIJ5SXpQDI3P8sU0a4wME4wjx4LC4uNo1WmunERDQ9aetkCxGk/MrBNMAGjE
+         KmyA==
+X-Forwarded-Encrypted: i=1; AHgh+RrblrxgoZQyeyQqKK0Iljw7Ol9DljTEIc89sY3zMgN7Q1HwzEZNYqyuUHrOTfauC9P+07bFPeQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMZnLSdydSWAkn03CFr29iMXd2+rz1KAnbuygQcC1BEwwjLTJX
+	cZySh3jXq/Pui9dla5jButovECV5780CgD3/g5XQreEbHRqSgG01Ay0pxJyf4HUHrOo=
+X-Gm-Gg: AR+sD11TkTxTZajBUmR2HhjfseQeWnFIuwVQVK/oStMO71m9SeHmOV3jVnRxag4C6ba
+	+FXM7pfQ5fSZODYmI2khYofXrtx4VzgzxO8Mn9QcJ66zN0OqN4gEDrxTnlFXbbQmCgP1xzXPEG0
+	nwKo5PSZ1vG3V/a4/NyB8mpx+W2Uu7BnRROHbF+PinWIUZGYpr2AVhJYHuwbWm3lRIVL3xbV4o0
+	UM6lwdja5b7VphOW9nZ8rwyu/i1TpQ1qm3ABGv5PG2Wb0F1QkVyHXo/ejPj0hDlqSg+Uibg8p9d
+	byqQDMeuQj/KrM/+1Ap8fco8UyrtNTcGFhWtfYvOjm+tNJvfPUBdrAEjEUFDyD6zfd62L1bZbpH
+	kyWedRyoyhKVENRPuEdjz41jUQRjroq+NZEySLXy9c5IA6euUaU3J4DQncZy6U0caK1f7GjTlpq
+	b8RlTHwnTnkAA6psBIFiRZ12CYMByU91dgF8bNfbIS0UGe8lGKGDMCOZLe/IiFaAqsM+Emnj/Vx
+	Lt9+Q==
+X-Received: by 2002:a05:6000:388:b0:474:d7a5:4b7a with SMTP id ffacd0b85a97d-480026ee69emr10610830f8f.28.1786136409374;
+        Fri, 07 Aug 2026 14:00:09 -0700 (PDT)
 Received: from localhost ([2a02:8071:56d1:2de0:1d24:d58d:2b65:c291])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4800215078asm8418961f8f.12.2026.08.07.13.58.24
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-480021509a5sm8514666f8f.16.2026.08.07.14.00.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 13:58:24 -0700 (PDT)
-Date: Fri, 7 Aug 2026 22:58:23 +0200
+        Fri, 07 Aug 2026 14:00:08 -0700 (PDT)
+Date: Fri, 7 Aug 2026 23:00:07 +0200
 From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
 Cc: Srinivas Neeli <srinivas.neeli@amd.com>, 
@@ -72,10 +73,10 @@ Cc: Srinivas Neeli <srinivas.neeli@amd.com>,
 	Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, git-dev@amd.com
-Subject: Re: [PATCH 02/20] net: xilinx: tsn: add TSN endpoint wrapper driver
-Message-ID: <anZGPKSopP9GLKJt@monoceros>
+Subject: Re: [PATCH 03/20] net: xilinx: tsn: add endpoint MAC driver skeleton
+Message-ID: <anZG-AucFEZrwjjO@monoceros>
 References: <20260807104431.157230-1-nagadheeraj.rottela@amd.com>
- <20260807104431.157230-3-nagadheeraj.rottela@amd.com>
+ <20260807104431.157230-4-nagadheeraj.rottela@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,81 +84,119 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yneap3wk5hqcchh7"
+	protocol="application/pgp-signature"; boundary="s3a2p35cknyjhbm7"
 Content-Disposition: inline
-In-Reply-To: <20260807104431.157230-3-nagadheeraj.rottela@amd.com>
+In-Reply-To: <20260807104431.157230-4-nagadheeraj.rottela@amd.com>
 
 
---yneap3wk5hqcchh7
+--s3a2p35cknyjhbm7
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
-Subject: Re: [PATCH 02/20] net: xilinx: tsn: add TSN endpoint wrapper driver
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 03/20] net: xilinx: tsn: add endpoint MAC driver skeleton
 MIME-Version: 1.0
 
-Hello,
-
-On Fri, Aug 07, 2026 at 04:14:13PM +0530, Nagadheeraj Rottela wrote:
-> diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
+On Fri, Aug 07, 2026 at 04:14:14PM +0530, Nagadheeraj Rottela wrote:
+> From: Srinivas Neeli <srinivas.neeli@amd.com>
+>=20
+> The TSN Endpoint MAC owns the IP's host-side MCDMA data path and is the
+> netdev physically wired to the CPU. The DSA switch needs this netdev to
+> exist as its conduit.
+>=20
+> Add a platform driver (compatible "xlnx,tsn-ep-mac") for the endpoint.
+> Register the netdev named "ep", set its MAC address, and provide minimal
+> netdev and ethtool ops. This skeleton handles device bring-up only, with
+> no data path yet. So ndo_open just starts the queues and ndo_start_xmit
+> drops frames.
+>=20
+> Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
+> Co-developed-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+> Signed-off-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+> ---
+>  drivers/net/ethernet/xilinx/tsn/Makefile      |   2 +-
+>  drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h  |  15 ++
+>  .../net/ethernet/xilinx/tsn/xilinx_tsn_ep.c   | 152 ++++++++++++++++++
+>  .../net/ethernet/xilinx/tsn/xilinx_tsn_main.c |   3 +
+>  4 files changed, 171 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h
+>  create mode 100644 drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
+>=20
+> diff --git a/drivers/net/ethernet/xilinx/tsn/Makefile b/drivers/net/ether=
+net/xilinx/tsn/Makefile
+> index 6f99226f3dc8..5886828b386f 100644
+> --- a/drivers/net/ethernet/xilinx/tsn/Makefile
+> +++ b/drivers/net/ethernet/xilinx/tsn/Makefile
+> @@ -1,2 +1,2 @@
+>  obj-$(CONFIG_XILINX_TSN) +=3D xilinx_tsn.o
+> -xilinx_tsn-y :=3D xilinx_tsn_main.o
+> +xilinx_tsn-y :=3D xilinx_tsn_main.o xilinx_tsn_ep.o
+> diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h b/drivers/net/e=
+thernet/xilinx/tsn/xilinx_tsn.h
 > new file mode 100644
-> index 000000000000..1ef1b0c2ee6e
+> index 000000000000..b0757e22d1fd
 > --- /dev/null
-> +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
-> @@ -0,0 +1,105 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
+> +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h
+> @@ -0,0 +1,15 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
 > +/*
-> + * Time Sensitive Networking (TSN) Ethernet MAC wrapper driver.
+> + * AMD/Xilinx TSN Endpoint Ethernet MAC driver, shared definitions.
 > + *
 > + * Copyright (C) 2026 Advanced Micro Devices, Inc.
 > + */
 > +
-> +#include <linux/clk.h>
-> +#include <linux/device.h>
+> +#ifndef _XILINX_TSN_H
+> +#define _XILINX_TSN_H
+> +
+> +#include <linux/platform_device.h>
+> +
+> +extern struct platform_driver xlnx_tsn_ep_driver;
+> +
+> +#endif /* _XILINX_TSN_H */
+> diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/ne=
+t/ethernet/xilinx/tsn/xilinx_tsn_ep.c
+> new file mode 100644
+> index 000000000000..9b556edf5423
+> --- /dev/null
+> +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
+> @@ -0,0 +1,152 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * AMD/Xilinx TSN Endpoint MAC driver.
+> + *
+> + * Copyright (C) 2026 Advanced Micro Devices, Inc.
+> + */
+> +
+> +#include <linux/etherdevice.h>
+> +#include <linux/ethtool.h>
+> +#include <linux/if_ether.h>
+> +#include <linux/kernel.h>
 > +#include <linux/mod_devicetable.h>
 > +#include <linux/module.h>
+> +#include <linux/netdevice.h>
 > +#include <linux/of.h>
-> +#include <linux/of_platform.h>
+> +#include <linux/of_net.h>
 > +#include <linux/platform_device.h>
-> +#include <linux/slab.h>
+> +#include <linux/string.h>
 > +#include <linux/types.h>
 
-Please drop <linux/mod_devicetable.h>. This header is planned to go away
-soon and you can rely on <linux/platform_device.h> to provide
-of_device_id.
+As for patch #2: Please drop <linux/mod_devicetable.h>.
 
-> [...]
-> +static struct platform_driver * const tsn_drivers[] = {
-> +	&tsn_driver,
-> +};
-> +
-> +static int __init xlnx_tsn_init(void)
-> +{
-> +	return platform_register_drivers(tsn_drivers, ARRAY_SIZE(tsn_drivers));
-> +}
-> +module_init(xlnx_tsn_init);
-> +
-> +static void __exit xlnx_tsn_exit(void)
-> +{
-> +	platform_unregister_drivers(tsn_drivers, ARRAY_SIZE(tsn_drivers));
-> +}
-> +module_exit(xlnx_tsn_exit);
+Best regards
+Uwe
 
-I assume you expect tsn_drivers[] to grow? If not, use
-module_platform_driver() to reduce boilerplate.
-
---yneap3wk5hqcchh7
+--s3a2p35cknyjhbm7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmp2RusACgkQj4D7WH0S
-/k5magf9GDZifuMmMgVgWbOijgerh1NAUQiervav2kcbQ650bgaya6orUyAqUnnd
-eGe7DyhyOOdkl3qnsTwH9/e4Xn739LEnnjAwWIBrFn56ErYRhl/Dd+vuD/9U0LPd
-bGwI5ss9L6itgtlzGpZRsi4KhSiWG0asI7Ll3WFkUrhOdMd5a2+L22Vd47E3gXAo
-lVQ7ntvXRliL54xVe1tVbSbz/JrN89nHRR7sI/FWjUEknfpTbVVldBt95gevSOc9
-pVoI5wtCOSAMPQTzSAHFoj1qZcrOofeK49hvnUiasTy8OWa5oJiuCzHknYyPXcOS
-JWFSEfqueZ+Xqyq+Y71krOsj8b+cYw==
-=pHZr
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmp2R1MACgkQj4D7WH0S
+/k5O/Af/TgMIOtaQklVLmWBMkmBIzcsGU429YEzvVu05CyiD5QqR8zjbZJwQxKmw
+SkyMCDxo8Lq8CrA6KdsXb8wFOgqxMS/L1M4pvvsMdK32qvm80JzIg6E7SGtf+tOE
+WkMebpH8sCnZ+fawjduQcfq3KJP3vF8QS/GFeUxDtPrvAwt29padXs7p9fKdRVKd
+OwKoX7evpfoIVchzwiduw8NKgwyL3PxM4rofCXNYn2bEN6wgBp3BlBguCrkthyey
+OK7y/Un+T0wIHPiT7jyJgMobOIlJPqhbvLIdL0QWN2jg+fpzjaGGAMeH/yIkSUWw
+G9Yviixwsqv9xIP/h8edIDavoQLkPw==
+=9zsc
 -----END PGP SIGNATURE-----
 
---yneap3wk5hqcchh7--
+--s3a2p35cknyjhbm7--
