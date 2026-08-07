@@ -1,39 +1,39 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D8E277818;
-	Fri,  7 Aug 2026 17:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E31139CD16;
+	Fri,  7 Aug 2026 17:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786122694; cv=none; b=Zd/+jIZvGtwFHBK3/cdRCGS5liuUsf53XXKZ4PkjFkt+dR2ddwGk9X156rbzJj6ImoYjkV1bv+EdsyArUv7D5/GyNjnKh4fHCNVuJzB68neys2cykJYZhN98r7qdBy0a8U3dA3wbzIsjpIQYjhs1diIlZPc3cabX5m77Zypeozw=
+	t=1786122695; cv=none; b=akSV8GyOpbeKbZVol2cKEOPGIQ/+Uv81jENmkks+DV2jR1MKkskSH299mfUOqP5bcMj/IpezH6BPignnoHDvDt2lUVj0Lemv4Fsfo+lRp9zGfdhDxSkDVSbVfeWhJ2Tp0XNwOn8ggmZLslvw3qC2U07p+WAmgIXcnZ2Y9XYYpXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786122694; c=relaxed/simple;
-	bh=nNPpJ3jgJ4vZhS3npXKGNYuoRWuJPMaRt/U62ygLjk4=;
+	s=arc-20240116; t=1786122695; c=relaxed/simple;
+	bh=rBw3ksG8sn3qePBYAOan3UfsqwmqPGXIovfdeShyRnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=so0xlCe8x04HiIY4O/bai0He15WFp+Wqp4aJL/ZTvWPkAHzr6l4lb5d9n0tAjpopCtxO4DL/5fP5ZJDM9g+BwQwX3/rv2IgxTiuchmxJ7EBslQ1t/vZVWkw7J3avwpQATWxjTyCMSgsDg4CnPd/61oVIdR2cJuXub3wmADHFUV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=P3OKl6KH; arc=none smtp.client-ip=212.227.15.18
+	 MIME-Version; b=rKDs/6xRAkhiuZBNtxHze4pzf8L12IyL4rYASLjKHoQx9wygbHSD6C77eIHmHnUzJnWNNPOx9Fg/jXekV+ENxlDb427EdEK/+VF/GmBXJuipCeQW/nIc+uHn0HgcTwn5F4c0iwQZgF/X0223Yb0vzAZ7aMuDMqs9+TYubfjGpbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=foUfRUVc; arc=none smtp.client-ip=212.227.15.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="P3OKl6KH"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="foUfRUVc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1786122672; x=1786727472;
+	s=s31663417; t=1786122675; x=1786727475;
 	i=markus.stockhausen@gmx.de;
-	bh=k35fzHH3PkUCZPD9+NAIfJV1MZe3RheAlrYYUkwppgs=;
+	bh=E2FjJxWwQ87JgCPJxps7bGNztmSj/+VNQGA/ayLoYpQ=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=P3OKl6KHcCfQT2AnzJRZUtNK7h+27LcLjiuis+TztuPVVrahgTDESn1WrDMoJVhJ
-	 YzC6XLVmU0DPYl/yqLAU1i+v4Sf8OE9MgkvEbtmS5NBG9T1h4uHBKTbkxSpmLWXbG
-	 JUPVueKcDPdocn5tDQ4xBf4GIBA4228hK6KUbEcKeLGfYziJh6WMveNPI5RGFlh6H
-	 1JXZ+BRwDSVCJNm7o9G6n5VZ171+G4PXsIAw9b53uW2nUb3R14aHmH+J5p7zWF5o4
-	 raeoUJgkzW6MTSgMqdoo0A6mVnOOW9dt/DUv88EeeqiLQm0El6Vptgx11v2RaHmg1
-	 9fa78VKcTFvOKIaVzw==
+	b=foUfRUVc5QfTeYNKI52QxcicqO4Yds/E0N80L1D+t7m0OT30pI81g2p+xjH7YhQW
+	 Gf30pmXCR3dTWSmI9Iwk/8aoUPZ3r7G6ecfe316SxcTpU70rPqoO9L5NBkkAj9Yj0
+	 lqBGWd5O5UwFCcVTzRSjaDl574mcH3RCoV7apjTzIcr40+rFun4xSPI/ULk8oEmcU
+	 7Y1CMv2LcU1cv3ddCjlpINPgSh0zTWte4Q5Dv7+gVEuPOVOjQcQW2gmi4kNRU2FJo
+	 6fq5jeDeSGySnrCmQVcXOzMa8MVQ2e3YaPYYYa8LwKpy5MK7/hWnqqS+d8yu+Zpj1
+	 29pZ5DLs+EK0+sYAmg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N6sn7-1wxqil0rfz-00zmN5; Fri, 07
- Aug 2026 19:11:12 +0200
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N3bWr-1x19Zh3UEV-017UXb; Fri, 07
+ Aug 2026 19:11:14 +0200
 From: Markus Stockhausen <markus.stockhausen@gmx.de>
 To: andrew@lunn.ch,
 	hkallweit1@gmail.com,
@@ -50,9 +50,9 @@ To: andrew@lunn.ch,
 	conor+dt@kernel.org,
 	devicetree@vger.kernel.org
 Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH net-next v13 03/11] net: phy: add (*notify_phy_attach/detach)() hooks to struct mii_bus
-Date: Fri,  7 Aug 2026 19:10:50 +0200
-Message-ID: <20260807171058.522833-4-markus.stockhausen@gmx.de>
+Subject: [PATCH net-next v13 11/11] net: mdio: realtek-rtl9300: reword Kconfig and module description
+Date: Fri,  7 Aug 2026 19:10:58 +0200
+Message-ID: <20260807171058.522833-12-markus.stockhausen@gmx.de>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260807171058.522833-1-markus.stockhausen@gmx.de>
 References: <20260807171058.522833-1-markus.stockhausen@gmx.de>
@@ -63,402 +63,140 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mM7/8JvtJ22PstXC/qVDk7t/1jEk3cViBECqZcIA/Hi0/0NwzMv
- KnI62v3tDZM3q6lJk0dwnX7L4k9+gZOWNQ6wZpkyiOEkw27s9HQ17gNTLgRiAx/+3e5fhDR
- t8iGzeACh5f0vS6XWN+oCP7b23CA/u1xtGnw4hwpo1aXTNBmvhMe0vLQm7taX07oG8qGhaX
- ekpKKb1OY3ySelKSHTnBQ==
+X-Provags-ID: V03:K1:tmlfDcTRn83lJLV1Ti6r4nThmplum/Iea8zkrbh/+62Q1wiEeU1
+ VegTs3T/NyBKYajTFVXcY8CYQDIt6HlxmfMQ6IIbzPszeH2j3yuIQXrd6keOAV8KkJGpuGc
+ zlMXMlkTtls32CLKL80DofSHWwIx2p+DMlFOKLSGdRKKfckG+qWBnulJGDALfFwsbpiwKsw
+ 1IIc5hUH+gZsobd8lcPsQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Vz1dwYAuKJU=;xDIlt3a77C2tts+PMObWFqc+gnp
- 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
- U6Fqz0Qhtw33AXAJTDhdp+Ok8Luz0Pl
+UI-OutboundReport: notjunk:1;M01:P0:uONGnqVsehg=;sHhfr8kJtYVZImZhoQ3w/dpj4JZ
+ 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
+ LoZS7s7/ztZ+Go6Pr90=
 
-From: Daniel Golle <daniel@makrotopia.org>
+The Realtek MDIO driver has been enhanced to support multiple
+devices from the RTL83xx/RTL93xx series. Reword Kconfig and
+module description accordingly.
 
-Some MDIO buses require programming PHY polling registers depending
-on the PHY type. RealTek switch SoCs are the most prominent example
-of a DSA switch which doesn't allow to program MAC speed, duplex and
-flow-control settings without using PHY polling to do so [1].
-
-Avoid a half-baked solution in the MDIO bus driver because
-
-- it must reinvent the bus scanning to determine the PHYs and
-- it must anticipate the right point in time (e.g. deferred PHYs).
-
-Hence there is a need to inform the MDIO bus driver that a PHY is
-being attached or detached. Provide two hooks in struct mii_bus
-
-- notify_phy_attach(): called in phy_attach_direct() after PHY
-  hardware has been initialized and just before PHY is resumed.
-- notify_phy_detach(): called in phy_detach() right after PHY
-  has been suspended.
-
-Worth to notice: As of now phy_detach() is not 100% LIFO symmetric
-to phy_attach_direct(). E.g. sysfs links are torn down before
-suspend while being created before resume. Without reordering of the
-detach function the above mentioned notifier placement is the best
-possible symmetric implementation. For this
-
-- Relocate code from phy_detach() into phy_detach_internal(). This
-  naming was selected to avoid confusion with "unlocked" helper that
-  usually start with two underscores.
-- The helper takes an additional parameter notify_bus that decides
-  if the bus notification should be sent or not.
-- Call the helper with notification from slimmed down version of
-  phy_detach() and without notification from phy_attach_direct()
-  error path.
-- An unconditional notify_phy_detach() was favoured [3]
-
-Remark! A slightly different version of this patch was part of a
-former series [2]. The discussion already showed that an initialization
-hook should be placed somewhere late during the whole setup. This
-commit implants it right after phy_init_hw() as suggested. On top of
-this it adds the detach hook.
-
-[1] https://github.com/openwrt/openwrt/pull/21515#discussion_r2714069716
-[2] https://lore.kernel.org/netdev/cover.1769053496.git.daniel@makrotopia.=
-org/
-[3] https://lore.kernel.org/netdev/9e40f50b-357a-4a93-9f59-94847850835d@lu=
-nn.ch/#t
-
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
 =2D--
- drivers/net/phy/phy_device.c | 180 +++++++++++++++++++----------------
- include/linux/phy.h          |  18 ++++
- 2 files changed, 116 insertions(+), 82 deletions(-)
+ drivers/net/mdio/Kconfig                | 4 ++--
+ drivers/net/mdio/mdio-realtek-rtl9300.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 94b2e85e00a3..1a43fec022aa 100644
-=2D-- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1734,6 +1734,96 @@ static bool phy_drv_supports_irq(const struct phy_d=
-river *phydrv)
- 	return phydrv->config_intr && phydrv->handle_interrupt;
- }
+diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
+index a05229838cb4..d44278f26fab 100644
+=2D-- a/drivers/net/mdio/Kconfig
++++ b/drivers/net/mdio/Kconfig
+@@ -172,11 +172,11 @@ config MDIO_IPQ8064
+ 	  interface units of the IPQ8064 SoC
 =20
-+static void phy_detach_internal(struct phy_device *phydev, bool notify_bu=
-s)
-+{
-+	struct net_device *dev =3D phydev->attached_dev;
-+	struct module *ndev_owner =3D NULL;
-+	struct mii_bus *bus;
-+
-+	if (phydev->devlink) {
-+		device_link_del(phydev->devlink);
-+		phydev->devlink =3D NULL;
-+	}
-+
-+	if (phydev->sysfs_links) {
-+		if (dev)
-+			sysfs_remove_link(&dev->dev.kobj, "phydev");
-+		sysfs_remove_link(&phydev->mdio.dev.kobj, "attached_dev");
-+	}
-+
-+	if (!phydev->attached_dev)
-+		sysfs_remove_file(&phydev->mdio.dev.kobj,
-+				  &dev_attr_phy_standalone.attr);
-+
-+	phy_suspend(phydev);
-+
-+	if (notify_bus && phydev->mdio.bus->notify_phy_detach)
-+		phydev->mdio.bus->notify_phy_detach(phydev);
-+
-+	if (dev) {
-+		struct hwtstamp_provider *hwprov;
-+
-+		/* hwprov may technically be protected by ops lock but
-+		 * not for devices with a phydev, see phy_link_topo_add_phy()
-+		 */
-+		hwprov =3D rtnl_dereference(dev->hwprov);
-+		/* Disable timestamp if it is the one selected */
-+		if (hwprov && hwprov->phydev =3D=3D phydev) {
-+			rcu_assign_pointer(dev->hwprov, NULL);
-+			kfree_rcu(hwprov, rcu_head);
-+		}
-+
-+		phydev->attached_dev->phydev =3D NULL;
-+		phydev->attached_dev =3D NULL;
-+		phy_link_topo_del_phy(dev, phydev);
-+	}
-+
-+	phydev->phy_link_change =3D NULL;
-+	phydev->phylink =3D NULL;
-+
-+	if (phydev->mdio.dev.driver)
-+		module_put(phydev->mdio.dev.driver->owner);
-+
-+	/* If the device had no specific driver before (i.e. - it
-+	 * was using the generic driver), we unbind the device
-+	 * from the generic driver so that there's a chance a
-+	 * real driver could be loaded
-+	 */
-+	if (phydev->is_genphy_driven) {
-+		device_release_driver(&phydev->mdio.dev);
-+		phydev->is_genphy_driven =3D 0;
-+	}
-+
-+	/* Assert the reset signal */
-+	phy_device_reset(phydev, 1);
-+
-+	/*
-+	 * The phydev might go away on the put_device() below, so avoid
-+	 * a use-after-free bug by reading the underlying bus first.
-+	 */
-+	bus =3D phydev->mdio.bus;
-+
-+	put_device(&phydev->mdio.dev);
-+	if (dev)
-+		ndev_owner =3D dev->dev.parent->driver->owner;
-+	if (ndev_owner !=3D bus->owner)
-+		module_put(bus->owner);
-+}
-+
-+/**
-+ * phy_detach - detach a PHY device from its network device
-+ * @phydev: target phy_device struct
-+ *
-+ * This detaches the phy device from its network device and the phy
-+ * driver, and drops the reference count taken in phy_attach_direct().
-+ */
-+void phy_detach(struct phy_device *phydev)
-+{
-+	/* cleanup including bus notification */
-+	phy_detach_internal(phydev, true);
-+}
-+EXPORT_SYMBOL(phy_detach);
-+
- /**
-  * phy_attach_direct - attach a network device to a given PHY device poin=
-ter
-  * @dev: network device to attach
-@@ -1876,6 +1966,12 @@ int phy_attach_direct(struct net_device *dev, struc=
-t phy_device *phydev,
- 	if (err)
- 		goto error;
+ config MDIO_REALTEK_RTL9300
+-	tristate "Realtek RTL9300 MDIO interface support"
++	tristate "Realtek RTL83xx/RTL93xx MDIO interface support"
+ 	depends on MACH_REALTEK_RTL || COMPILE_TEST
+ 	help
+ 	  This driver supports the MDIO interface found in the Realtek
+-	  RTL9300 family of Ethernet switches with integrated SoC.
++	  RTL83xx/RTL93xx family of Ethernet switches with integrated SoC.
 =20
-+	if (phydev->mdio.bus->notify_phy_attach) {
-+		err =3D phydev->mdio.bus->notify_phy_attach(phydev);
-+		if (err)
-+			goto error;
-+	}
-+
- 	phy_resume(phydev);
+ config MDIO_REGMAP
+ 	tristate
+diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
+io-realtek-rtl9300.c
+index 7792cdbedda4..0a0cb814fbf1 100644
+=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
++++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
+@@ -1088,5 +1088,5 @@ static struct platform_driver otto_emdio_driver =3D =
+{
 =20
- 	/**
-@@ -1890,8 +1986,8 @@ int phy_attach_direct(struct net_device *dev, struct=
- phy_device *phydev,
- 	return err;
+ module_platform_driver(otto_emdio_driver);
 =20
- error:
--	/* phy_detach() does all of the cleanup below */
--	phy_detach(phydev);
-+	/* cleanup without bus notification */
-+	phy_detach_internal(phydev, false);
- 	return err;
-=20
- error_module_put:
-@@ -1906,86 +2002,6 @@ int phy_attach_direct(struct net_device *dev, struc=
-t phy_device *phydev,
- }
- EXPORT_SYMBOL(phy_attach_direct);
-=20
--/**
-- * phy_detach - detach a PHY device from its network device
-- * @phydev: target phy_device struct
-- *
-- * This detaches the phy device from its network device and the phy
-- * driver, and drops the reference count taken in phy_attach_direct().
-- */
--void phy_detach(struct phy_device *phydev)
--{
--	struct net_device *dev =3D phydev->attached_dev;
--	struct module *ndev_owner =3D NULL;
--	struct mii_bus *bus;
--
--	if (phydev->devlink) {
--		device_link_del(phydev->devlink);
--		phydev->devlink =3D NULL;
--	}
--
--	if (phydev->sysfs_links) {
--		if (dev)
--			sysfs_remove_link(&dev->dev.kobj, "phydev");
--		sysfs_remove_link(&phydev->mdio.dev.kobj, "attached_dev");
--	}
--
--	if (!phydev->attached_dev)
--		sysfs_remove_file(&phydev->mdio.dev.kobj,
--				  &dev_attr_phy_standalone.attr);
--
--	phy_suspend(phydev);
--	if (dev) {
--		struct hwtstamp_provider *hwprov;
--
--		/* hwprov may technically be protected by ops lock but
--		 * not for devices with a phydev, see phy_link_topo_add_phy()
--		 */
--		hwprov =3D rtnl_dereference(dev->hwprov);
--		/* Disable timestamp if it is the one selected */
--		if (hwprov && hwprov->phydev =3D=3D phydev) {
--			rcu_assign_pointer(dev->hwprov, NULL);
--			kfree_rcu(hwprov, rcu_head);
--		}
--
--		phydev->attached_dev->phydev =3D NULL;
--		phydev->attached_dev =3D NULL;
--		phy_link_topo_del_phy(dev, phydev);
--	}
--
--	phydev->phy_link_change =3D NULL;
--	phydev->phylink =3D NULL;
--
--	if (phydev->mdio.dev.driver)
--		module_put(phydev->mdio.dev.driver->owner);
--
--	/* If the device had no specific driver before (i.e. - it
--	 * was using the generic driver), we unbind the device
--	 * from the generic driver so that there's a chance a
--	 * real driver could be loaded
--	 */
--	if (phydev->is_genphy_driven) {
--		device_release_driver(&phydev->mdio.dev);
--		phydev->is_genphy_driven =3D 0;
--	}
--
--	/* Assert the reset signal */
--	phy_device_reset(phydev, 1);
--
--	/*
--	 * The phydev might go away on the put_device() below, so avoid
--	 * a use-after-free bug by reading the underlying bus first.
--	 */
--	bus =3D phydev->mdio.bus;
--
--	put_device(&phydev->mdio.dev);
--	if (dev)
--		ndev_owner =3D dev->dev.parent->driver->owner;
--	if (ndev_owner !=3D bus->owner)
--		module_put(bus->owner);
--}
--EXPORT_SYMBOL(phy_detach);
--
- int phy_suspend(struct phy_device *phydev)
- {
- 	struct net_device *netdev =3D phydev->attached_dev;
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 5f8d65868e0f..3d8afe6b7f1c 100644
-=2D-- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -376,6 +376,24 @@ struct mii_bus {
- 			 int regnum, u16 val);
- 	/** @reset: Perform a reset of the bus */
- 	int (*reset)(struct mii_bus *bus);
-+	/**
-+	 * @notify_phy_attach: Perform post-attach handling for MDIO bus
-+	 * drivers. Optional and independent of @notify_phy_detach. Called
-+	 * in phy_attach_direct() right before phy_resume(). Runs in process
-+	 * context, may sleep and may be called with RTNL held. Must not
-+	 * acquire or rely on RTNL. Returns 0 on success or negative errno
-+	 * on failure. Must unwind its own state on error as attachment is
-+	 * aborted.
-+	 */
-+	int (*notify_phy_attach)(struct phy_device *phydev);
-+	/**
-+	 * @notify_phy_detach: Perform pre-detach handling for MDIO bus
-+	 * drivers. Optional and independent of @notify_phy_attach. Called
-+	 * in phy_detach() right after phy_suspend(). Runs in process context,
-+	 * may sleep and may be called with RTNL held. Must not acquire or
-+	 * rely on RTNL.
-+	 */
-+	void (*notify_phy_detach)(struct phy_device *phydev);
-=20
- 	/** @stats: Statistic counters per device on the bus */
- 	struct mdio_bus_stats stats[PHY_MAX_ADDR];
+-MODULE_DESCRIPTION("RTL9300 MDIO driver");
++MODULE_DESCRIPTION("RTL83xx/RTL93xx MDIO driver");
+ MODULE_LICENSE("GPL");
 =2D-=20
 2.55.0
 
