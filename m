@@ -1,55 +1,46 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B80C381E8D;
-	Fri,  7 Aug 2026 01:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D754E32B9A1
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 01:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786066362; cv=none; b=aahFgRlH0AWURiNlJjeLqqlmuJC9za5zdSdUZMbeFqmMRAXx0sTPfTnDr4lO8xdwA29N/Jsw0h5GVp51S5LI70D1lIBUf4lce/YVe+bndmvdW959i6PJkqcSxk9fmBoNWvAXKZ9UU+JxehDWe8cS52vI6KiHbenu6/h6bkUo0Ek=
+	t=1786067130; cv=none; b=lDsyOerkqja8lPHMEpcB5IrmYvaO0ercdY9nB47khrh+o/9/Y90Wsd4GB1+FKdtNm0Yq6kJKXgZ4FIt8dlE1P2it393cB+P/wQRVNDttlKmBmXTIV5++a5iXseRfm9T5KMEz0rYjBAa71CcrP4CliDVaS6Ct5RX6X9kpMgVhCK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786066362; c=relaxed/simple;
-	bh=VFX53KzQM2qEgP9mFKjgry9XD7/Ah7IVDbXDv5M0AiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EquULYLMTBjPK7xN5XmHXr3uZ2gkZ96UtWqHnbu1zsZHWQ215Ogdg36O8+usfu02LJWK7xiqBubmUGExUjZoZ9HihkksdEoKIm6NKq8sKdlI/ivrXUZDrW3rGz9K7FpDgEjp5+GO6IMlsafDOYhESvfHY8jtFDEcWaT/ZSBareM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: d748795a91ff11f1aa26b74ffac11d73-20260807
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:2230873a-e80d-4119-8a7d-cd4b679327d8,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:321251d9f6ffadff5b29864f53d29c4e,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|865|898,TC:nil,Content:0|15|50,E
-	DM:5|-100,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
-	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: d748795a91ff11f1aa26b74ffac11d73-20260807
-X-User: xiongweimin@kylinos.cn
-Received: from xwm-tianyi510pro-14imb.. [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiongweimin@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 57141345; Fri, 07 Aug 2026 09:32:23 +0800
-From: Xiong Weimin <xiongweimin@kylinos.cn>
+	s=arc-20240116; t=1786067130; c=relaxed/simple;
+	bh=M1XjDIffT0FTcOD82kwXmuuqPwDoN2YGqSyC21R3u9s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lnSrVUm9y0QSzqLTugUB5l+NPH5davXTFiIkpYjN2/26nqPf03GsWoDfnuX941XPaXKzp8gn0bCYf4GxKSMuw5Cju7MUfhYSYeVspwCFBbf4XetPGx8k1hr6IGHmjq0h3JPoeBnGpMWRwUWQPIPgkn69vyGh07EyzDCwufeXBRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EHWPNjG0; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EHWPNjG0"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786067121;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8jlX+IfD+2MCo+MyUvVlXIriPQzZHfLSuI3PIRWAQ8A=;
+	b=EHWPNjG0rfu7V9oGARGPNeXuTgLsK1aY/mFm4L6oroEqc71cyQtQOr7Wf0FPEZ91jRqdNA
+	DqwIlhAErRVQLCbnZLKId78LLYcwApAvSrA9AHOe/VnHD8wR/vpWAdtg6v/hLiBRkNF0Nh
+	7ipAD6tWWitUvehf9Dx5ox7JQ2rijGE=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: netdev@vger.kernel.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	virtualization@lists.linux.dev,
+	Simon Horman <horms@kernel.org>,
+	David Morley <morleyd@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 1/2] virtio_net: fix AF_XDP pool disable after queue shrink
-Date: Fri,  7 Aug 2026 09:32:19 +0800
-Message-ID: <20260807013220.2130441-1-xiongweimin@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH net] tcp: fix icsk_ack.ato bitfield overflow
+Date: Fri,  7 Aug 2026 09:44:36 +0800
+Message-ID: <20260807014437.36687-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,94 +48,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-xp_clear_dev() calls the driver to unbind an AF_XDP pool, then frees
-the pool.  virtnet_xsk_pool_disable() currently rejects qid >=
-curr_queue_pairs, so if XDP detach (or another path) has already shrunk
-curr_queue_pairs below a still-bound qid, disable returns -EINVAL.
-The core only WARNs, clears the netdev pool pointer, and destroys the
-pool, which leaks the driver's DMA mappings and xsk_buffs and leaves
-rq/sq->xsk_pool dangling for a use-after-free if those queues are
-brought back later.
+On cross-region connections we observed delayed ACKs suddenly turning
+into immediate ACKs plus a TCP_MAX_QUICKACKS burst, as if the
+connection had just received its first data segment.
 
-Use max_queue_pairs for the bounds check so cleanup can still run,
-null the freed pointers, and avoid refill on inactive queues when
-unbinding.  Also unmap the shared TX header with sq->vq on the enable
-error path to match the mapping side (no functional change while
-rq/sq share a DMA device).
+Commit 95b9a87c6a6b ("tcp: record last received ipv6 flowlabel")
+squeezed icsk_ack.ato into 8 bits, sized for TCP_DELACK_MAX. But both
+writers still bound ato by icsk_rto, which can be well above 255
+jiffies, so the bitfield assignment silently wraps mod 256: repeated
+delack timer misses double ato up to icsk_rto, storing 320 as 64 and
+256 as 0, and ato == 0 is the "first data packet" sentinel in
+tcp_event_data_recv().
 
-Fixes: 09d2b3182c8e ("virtio_net: xsk: bind/unbind xsk for rx")
-Signed-off-by: Xiong Weimin <xiongweimin@kylinos.cn>
+Clamp both writers to TCP_DELACK_MAX, which the static_assert already
+guarantees to fit and tcp_send_delayed_ack() effectively caps ato at
+anyway.
+
+Fixes: 95b9a87c6a6b ("tcp: record last received ipv6 flowlabel")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 ---
-v2:
-- rewrite as a real fix for disable-after-shrink (leak / UAF)
-- drop the previous "check queue index before use" reorder patch
-- fold sq->vq unmap symmetry here as NFC (no separate Fixes for that)
+ net/ipv4/tcp_input.c | 6 +++---
+ net/ipv4/tcp_timer.c | 4 +++-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
- drivers/net/virtio_net.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 3e2a587..d07ccef 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -5848,7 +5848,7 @@ static int virtnet_rq_bind_xsk_pool(struct virtnet_info *vi, struct receive_queu
- 
- 	rq->xsk_pool = pool;
- 
--	virtnet_rx_resume(vi, rq, true);
-+	virtnet_rx_resume(vi, rq, qindex < vi->curr_queue_pairs);
- 
- 	if (pool)
- 		return 0;
-@@ -5959,10 +5959,11 @@ err_sq:
- err_rq:
- 	xsk_pool_dma_unmap(pool, 0);
- err_xsk_map:
--	virtqueue_unmap_single_attrs(rq->vq, hdr_dma, vi->hdr_len,
-+	virtqueue_unmap_single_attrs(sq->vq, hdr_dma, vi->hdr_len,
- 				     DMA_TO_DEVICE, 0);
- err_free_buffs:
- 	kvfree(rq->xsk_buffs);
-+	rq->xsk_buffs = NULL;
- 	return err;
- }
- 
-@@ -5974,7 +5975,12 @@ static int virtnet_xsk_pool_disable(struct net_device *dev, u16 qid)
- 	struct send_queue *sq;
- 	int err;
- 
--	if (qid >= vi->curr_queue_pairs)
-+	/* rq/sq are sized by max_queue_pairs.  Allow cleanup even if
-+	 * curr_queue_pairs has shrunk below qid (e.g. after XDP detach),
-+	 * otherwise disable fails, leaks mappings/xsk_buffs, and leaves
-+	 * dangling rq/sq->xsk_pool pointers to a soon-to-be-freed pool.
-+	 */
-+	if (qid >= vi->max_queue_pairs)
- 		return -EINVAL;
- 
- 	sq = &vi->sq[qid];
-@@ -5985,11 +5991,17 @@ static int virtnet_xsk_pool_disable(struct net_device *dev, u16 qid)
- 	err = virtnet_rq_bind_xsk_pool(vi, rq, NULL);
- 	err |= virtnet_sq_bind_xsk_pool(vi, sq, NULL);
- 
--	xsk_pool_dma_unmap(pool, 0);
-+	if (pool)
-+		xsk_pool_dma_unmap(pool, 0);
-+
-+	if (sq->xsk_hdr_dma_addr) {
-+		virtqueue_unmap_single_attrs(sq->vq, sq->xsk_hdr_dma_addr,
-+					     vi->hdr_len, DMA_TO_DEVICE, 0);
-+		sq->xsk_hdr_dma_addr = 0;
-+	}
- 
--	virtqueue_unmap_single_attrs(sq->vq, sq->xsk_hdr_dma_addr,
--				     vi->hdr_len, DMA_TO_DEVICE, 0);
- 	kvfree(rq->xsk_buffs);
-+	rq->xsk_buffs = NULL;
- 
- 	return err;
- }
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index daff93d51342..c0d2d3c0d40a 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -1039,9 +1039,9 @@ static void tcp_event_data_recv(struct sock *sk, struct sk_buff *skb)
+ 			/* The fastest case is the first. */
+ 			icsk->icsk_ack.ato = (icsk->icsk_ack.ato >> 1) + TCP_ATO_MIN / 2;
+ 		} else if (m < icsk->icsk_ack.ato) {
+-			icsk->icsk_ack.ato = (icsk->icsk_ack.ato >> 1) + m;
+-			if (icsk->icsk_ack.ato > icsk->icsk_rto)
+-				icsk->icsk_ack.ato = icsk->icsk_rto;
++			icsk->icsk_ack.ato = min3((icsk->icsk_ack.ato >> 1) + (u32)m,
++						  icsk->icsk_rto,
++						  (u32)TCP_DELACK_MAX);
+ 		} else if (m > icsk->icsk_rto) {
+ 			/* Too long gap. Apparently sender failed to
+ 			 * restart window, so that we send ACKs quickly.
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index f7215d53bbda..1038e7ba9c2e 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -334,7 +334,9 @@ void tcp_delack_timer_handler(struct sock *sk)
+ 	if (inet_csk_ack_scheduled(sk)) {
+ 		if (!inet_csk_in_pingpong_mode(sk)) {
+ 			/* Delayed ACK missed: inflate ATO. */
+-			icsk->icsk_ack.ato = min_t(u32, icsk->icsk_ack.ato << 1, icsk->icsk_rto);
++			icsk->icsk_ack.ato = min3((u32)icsk->icsk_ack.ato << 1,
++						  icsk->icsk_rto,
++						  (u32)TCP_DELACK_MAX);
+ 		} else {
+ 			/* Delayed ACK missed: leave pingpong mode and
+ 			 * deflate ATO.
 -- 
 2.43.0
 
