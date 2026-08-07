@@ -1,65 +1,67 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE9A1C5D59
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 18:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC61E379C47
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 18:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786127986; cv=none; b=nfGy3agySTktEc2u+xd4TWFXNnsPIOdhc6pxXhMnaRv2WTdZV8GvKvN3xFc/ciUjbtg8KIz64cBPbtHIVgx+E2ocjs9tySXTa77lDSbW2OQbh/tpVNxZPp5WrIY6s623xsZ0de0syrKdvSX2r7zJ2vUOQiiTG7EP44Yi6fsyWBU=
+	t=1786127997; cv=none; b=Ep06y7xFN7oocTVWlnP/J7txrKu8wGdJdufPjffhJbm5ekTZJBM+L0sBlFCEeZ3fi0EcSw/wCO2RxEt/VRCoBxmZlnhF6AQ3YLPzLqK02SNE+nOkxn0rxjDsXG45ZOiHaEV7C7Ra8KavMtwr+NzMNV7PD4xkUo82/D+weuDEyYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786127986; c=relaxed/simple;
-	bh=IzPmcRJ4AgDYRWiKH693rYRs6l7oHafS/JmoHHbw1Gc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h8ohmqIkuH0FpXs2MKe+4IuMdCcILI7XuUB4bMP+Acejsc6liLQJkDyU5UjRz/tClLm+0YU7CDr9t7TBHgdipqmevwN79W1qY6WVmuAZkeb/yY0qGHpgJB6fwIs3tuT5XNSQ9fzJSW1zhxysRjHfLHYBpAWFU9yLTct0F3+3mfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=NxF5e2Xh; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1786127997; c=relaxed/simple;
+	bh=maW/AdYWuK8BsDS8KSzSgHXYaUMsPA074OQ12rZ89jQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=E9KiJ7maE7dQSbDc16buMo2C4q8QPLGvndeXl2BCe2URBgD1bFXl6XqQ8byAAnhCWhB/0xqQEHs3MHOVRj46YRpV4qzE09dwH8+pmTcgg0klGAkFTKOtxechNNqAutVwv3vN47dSZcJek/SB0t4fJSkQ0S4YZGfY7l1uDGvUtCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=JGdOxLQY; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="NxF5e2Xh"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so37129575e9.2
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 11:39:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="JGdOxLQY"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49553515a8bso55579515e9.1
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 11:39:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1786127982; x=1786732782; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/Y/2I1qMhTbN5OiL5ZOkSR3I6MY/IGkPfgkqdR7RNwc=;
-        b=NxF5e2Xh0M7nX1u3FkAYR5/9SDMSF+CmC9bg9VVXHoJ0IRPv7AJSaLlAMsEye5PCnh
-         aYa1pLGPZZjcUdHZ2cTVzCRLRM/EJVv63A6aQPtYH4yolQ6+GdvwXCbQfaJRhRo67PAT
-         QcfnZnFXf8V7fMtZMyv8j3dz1TJw/OhkIp4/EEPWSUOgWj3vePTKhFvwXYTIJgxFFPGi
-         yrNzYLQ5XsEjJafBEYAE5iQMZPvgAT99IbFmmZcBmrXLo/e7uxEGle8XZU+zHL4XCPXr
-         DjH7vMjQ3ilCdaMJVxhIz6Xae65TxwEv89aOsDTcf+eZW8pRbRD44HjMGSch0+mKBoLY
-         uI/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786127982; x=1786732782;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=purestorage.com; s=google2022; t=1786127994; x=1786732794; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/Y/2I1qMhTbN5OiL5ZOkSR3I6MY/IGkPfgkqdR7RNwc=;
-        b=jDEBi47BpKGer86aYFrJuoOAhgYTfFVjNiWyK5DtVwsY8eb7bWt8zb1iDdssosKSkB
-         NmIOJAoOf7p0kXOdq230VBOlmeVL9r6HQAMqvwQcwDDmR5vAYAI+wtLUlGQAmkyOeuvB
-         10tuO3vauyzjFoEZu4tX//nY1QDymWvGCMcXeF+JozmArPPMY2174cdGPG8hOZBwihUK
-         LaA7Vv7R0gBQrY8k9mmistZoPdGj2xoi0c+k/5UJreraj4ZHIGeILQWLy2UUe4OfZy31
-         K6S40xm1iaXzpVeumY9hYROpwATjQZUWyc+1VXpJuZKIDm1RHpA8jQ/HJ8ovtfWiZFbY
-         5JdQ==
-X-Gm-Message-State: AOJu0YyCyuIHPzMFNDKBC+VsfU9IS7tBm98vVXUt8ryqiER+OspurVjt
-	5c1H4ZTiQVj5D0CaD78uU/thmKmW1vYJzmI9xp202PSwtWT7DSHe4aPqyIe8JQ6BoQvZbcaP/UA
-	J/xeAVF8yX1XqLIU9GL3sMqNSXCiwU5B6toGyT8shR+8hNAUrIoWbhjOJ1VFMwI7MUfrYba5GuH
-	MTuXVx8nT6fmUaAPQ3OSCVFGEOg9V8dmmZvMV/FNtKJXcMi6s=
-X-Gm-Gg: AR+sD12x15xLBcpP011pH4haQRxqYNhk9IPqGDB7wLdOmvFll3y3lSVmWvXoi8nWxpr
-	lmtssoei9DwZ4UerX0aXZIefOTcGIAE3jjRK+bDiqMz9E3GbxTmPhX5DERLUn3rJLkWXNvSIttC
-	L38iswLps8+GBUvA+4Idv2dUKr1uT9pGhdluW+qOB/1T0GjlTX8KYIteTWf/+0k1RZxS8wMlUDG
-	qd+nDguVCW+e/h5TdqaIwYlpFdBc8vVp23BC2M+V1ukfaFCYR5H7UJWQVpSEedtDlkM/B1vH+fL
-	0YmlFBJ5ojkFubpyDFU4Nyr0hCg+f1tlN0XoFp7majmTTcqdwUZ8B5OcY8GbDWaYCB8qqqmRzsC
-	0DMHNEDC+xmsag07VJUjIQBZ9YpD70BELjXiAjJQPEOZ6fpPhB/SVgnVab7vf/o3dOPFKi1Hp+z
-	ssVqh4yff6GZtcz3unmMlpKHEO1vBa2Pd26MegyP6oJuWSoUTIfpqjfPIFLhcBa75JkKrJxt/1B
-	kxyt4yDf5qRDO9qfSlF6GEQYQMDdb8ENAJw5h7OuUZ53ip+/s2hknHiQGE6FgniaVSWtmBQ+gz/
-	Ax87vlEmWJSOpCEmWE+wyeRaOFshIVRmv7Gyy0EetojEeN153Unu7SrVpj0VnSq+lIaH6EK3Iew
-	iaOGR0MU=
-X-Received: by 2002:a05:600c:a47:b0:499:484a:7644 with SMTP id 5b1f17b1804b1-49959e2eb00mr140337935e9.9.1786127982439;
-        Fri, 07 Aug 2026 11:39:42 -0700 (PDT)
+        bh=qtDiVIInccujlIt2Sqa5fOCnM6byWdzYUVqLrms+bSo=;
+        b=JGdOxLQYIAf08iIXH8OXov3c2MCJhavqrQkD2FFn3I0S5u54qmyth1y9i+BFjbNcrq
+         GzXXRpladfrP4+JRekhIAM0V5KPo/hb8kf0AVScUmxqR3g2desnt5JchGbw8/JHC8ibk
+         QjBVt5TZOZ5JvAE94ih1KPz5Z/IZnjBU6XKIk/TZKgcDvQunMErE+TaKJ/l5xtBm9IpI
+         tlkQJscd4+/Yd8FPCirZstVEr49k/lQFtDjxzTOhV1WGD9TVi11K5CEHmMVUXT3ZXCto
+         GabnpE3mrcdTE9q3bo19uIbdztiU+PJ8J8AFC3+TKxZXIReWChjcTzG4tpHl48KQl07k
+         ahww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786127994; x=1786732794;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qtDiVIInccujlIt2Sqa5fOCnM6byWdzYUVqLrms+bSo=;
+        b=NTsTea1lMX5ZWLv/ZbvX/g6THWUHmLwaHL0sZJKVEIlUdi9pXrK7qts4d9n3lJODnk
+         okGlIEAVZZTINajb/KK6JhEgS8hOgISXAvLXz4irN8jUjhH7UU74BMBTjsDRr2JnX4jv
+         BPJffRkNV0E9rVVp0MukFTEtQd6FtUb+nE+uaf5N3TfxBXM2GXi+UdYY1ZKNVcA6XT0S
+         uGXXoU5Uo6aTkAEyqJGWtZ60KdZHVNgf99rOObB4ENJdt+MKcP5bJ78CjTgynyCQdTjd
+         HiEJyritdN6VYA+MVEJ4Jm97svvPKYQnh8hkpzzDwD8qn56ZuoWcAza7I75kcpcOg4WZ
+         Yohg==
+X-Gm-Message-State: AOJu0YyvzUWc0ndoDlfgEbdTq0Lx9q59viqzkWn7Jw159YkJlvpYonwI
+	vHpnKUeLyNXvOT3xJ6f2GviQSQwEVb8L0kYqWnSlXRgHhT2d6adypw1lih/HBZSoq1pMn+pHBnN
+	70AZeuN14kgypZxx+HO+J+9+cFZi2SxKdtmPrZhhtK5E21758ZpFizSDDWn9WSNdKdnSIy9jBIs
+	9zx3etgieSt2QDja1+MhEdTV6QlHXJlYnknoSjeAhQkrbfKWU=
+X-Gm-Gg: AR+sD101PH7LAGoAKjkA2wG2CMUwEY+lTy2nA1VKY+QbwiCPrNSQzVCX0Ste1t467NN
+	+3J8AmgcRFLhykUrkljWyMu/Fl84tq/QTVREB25JdtrBrDYlIRw7wMmMhVeIMrYTmMWYiZVD2Ly
+	NHebNb0yBXYtOeiArZhyOYss8RPLa4VvHLrEZdGvrAUrZlptaXck/d2v+A0qNkBzWGz0lnXAbBV
+	nvmnSD4MbT+BN6NOX+U8j4sQ/TngDMcSKjlS7Vh7Bg6/CppK/F21Zwysujud0cd+1cmqunx4Sof
+	M1Gn+hw/LtwS6j9BSC2+l6VOYWZM5HgW35K0Xa8jC2L6dCoKMGYWiBiUMEn/3J+rpUH60mo8SM9
+	CMK2gJiMRJ8q+orf+aKfCB68w0CWco0KSqCONk5nBeIoM/ML6E9RhAbnfi3P9/0dJyf+PjOtjY0
+	+mSIV6dVMNXUVRRcJ9oH0hruWlwwBIfkutC968qLFx913DRAR0Jimac+A8T3/sH96/hnozCBRYZ
+	ujxUwO2YDHr0IMLOzSSyp9IvAlawrsFMvid9LTALXzCmA+9qzMEVqGcmvx2oeW6YiXZYShB9rQK
+	ZaA+I3idD/z1BhFoWv65yeyYcgAHzIIgqwWU14WHZLx8fVA4vWJswR/dANpeUq74oNOkOYTCHM/
+	zssocGlfl5DSntfArxg==
+X-Received: by 2002:a05:600c:45d2:b0:496:ca1f:a428 with SMTP id 5b1f17b1804b1-49959e42ac3mr136489715e9.19.1786127993990;
+        Fri, 07 Aug 2026 11:39:53 -0700 (PDT)
 Received: from dev-rjethwani.dev.purestorage.com ([208.88.159.129])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-499541b86f5sm166106135e9.0.2026.08.07.11.39.38
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-499541b86f5sm166106135e9.0.2026.08.07.11.39.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 11:39:41 -0700 (PDT)
+        Fri, 07 Aug 2026 11:39:53 -0700 (PDT)
 From: Rishikesh Jethwani <rjethwani@purestorage.com>
 To: netdev@vger.kernel.org
 Cc: saeedm@nvidia.com,
@@ -75,10 +77,12 @@ Cc: saeedm@nvidia.com,
 	leon@kernel.org,
 	andrew.gospodarek@broadcom.com,
 	Rishikesh Jethwani <rjethwani@purestorage.com>
-Subject: [PATCH net-next v16 00/10] tls: Add TLS 1.3 hardware offload support
-Date: Fri,  7 Aug 2026 12:38:43 -0600
-Message-Id: <20260807183853.2288959-1-rjethwani@purestorage.com>
+Subject: [PATCH v16 01/10] net: tls: reject TLS 1.3 offload in chcr_ktls and nfp drivers
+Date: Fri,  7 Aug 2026 12:38:44 -0600
+Message-Id: <20260807183853.2288959-2-rjethwani@purestorage.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260807183853.2288959-1-rjethwani@purestorage.com>
+References: <20260807183853.2288959-1-rjethwani@purestorage.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,78 +91,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+These drivers only support TLS 1.2. Return early when TLS 1.3
+is requested to prevent unsupported hardware offload attempts.
 
-  This series adds TLS 1.3 hardware offload support including KeyUpdate
-  (rekey) and a selftest for validation.
+Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
+---
+ drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c | 3 +++
+ drivers/net/ethernet/netronome/nfp/crypto/tls.c                | 3 +++
+ 2 files changed, 6 insertions(+)
 
-  Patch 1: Reject TLS 1.3 offload in chcr_ktls and nfp drivers
-    These drivers only support TLS 1.2; add explicit version check.
-
-  Patch 2: mlx5e TLS 1.3 hardware offload
-    Add TLS 1.3 TX/RX offload on ConnectX-6 Dx and newer.
-    Handle 12-byte IV format and TLS_1_3 context type.
-
-  Patch 3: tls: reject rekey attempts on an existing HW-offloaded connection
-    Prep for the following patch ("tls: add TLS 1.3 hardware offload
-    support")
-
-  Patch 4: tls: add TLS 1.3 hardware offload support
-    Extend tls_device.c for TLS 1.3 record format (content type
-    appended before tag). Handle TLS 1.3 IV construction in fallback.
-
-  Patch 5: Split tls_set_sw_offload into init/finalize
-
-  Patch 6: Prep helpers and refactors for HW offload KeyUpdate
-
-  Patch 7: TX KeyUpdate support
-
-  Patch 8: RX KeyUpdate support
-
-  Patch 9: Tracepoints for RX KeyUpdate path
-
-  Patch 10: Selftest for hardware offload
-
-Rishikesh
-
-Changes in v16:
-  - Addressed review comments
-
-Rishikesh Jethwani (10):
-  net: tls: reject TLS 1.3 offload in chcr_ktls and nfp drivers
-  net/mlx5e: add TLS 1.3 hardware offload support
-  tls: reject rekey attempts on an existing HW-offloaded connection
-  tls: add TLS 1.3 hardware offload support
-  tls: split tls_set_sw_offload into init and finalize stages
-  tls: prep helpers and refactors for HW offload KeyUpdate
-  tls: device: add TX KeyUpdate support
-  tls: device: add RX KeyUpdate support
-  tls: device: add tracepoints for the KeyUpdate path
-  selftests: net: add TLS hardware offload test
-
- MAINTAINERS                                   |   2 +
- .../chelsio/inline_crypto/ch_ktls/chcr_ktls.c |   3 +
- .../mellanox/mlx5/core/en_accel/ktls.c        |  10 +
- .../mellanox/mlx5/core/en_accel/ktls.h        |   8 +-
- .../mellanox/mlx5/core/en_accel/ktls_txrx.c   |  14 +-
- .../net/ethernet/netronome/nfp/crypto/tls.c   |   3 +
- include/net/tls.h                             | 104 +-
- include/uapi/linux/snmp.h                     |   6 +
- net/tls/tls.h                                 |  24 +-
- net/tls/tls_device.c                          | 955 +++++++++++++++--
- net/tls/tls_device_fallback.c                 |  82 +-
- net/tls/tls_main.c                            |  77 +-
- net/tls/tls_proc.c                            |   6 +
- net/tls/tls_sw.c                              | 167 ++-
- net/tls/trace.h                               |  98 ++
- .../selftests/drivers/net/hw/.gitignore       |   1 +
- .../testing/selftests/drivers/net/hw/Makefile |   2 +
- .../selftests/drivers/net/hw/tls_hw_offload.c | 975 ++++++++++++++++++
- .../drivers/net/hw/tls_hw_offload.py          | 295 ++++++
- 19 files changed, 2613 insertions(+), 219 deletions(-)
- create mode 100644 tools/testing/selftests/drivers/net/hw/tls_hw_offload.c
- create mode 100755 tools/testing/selftests/drivers/net/hw/tls_hw_offload.py
-
+diff --git a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
+index f5acd4be1e69..29e108ce6764 100644
+--- a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
++++ b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
+@@ -431,6 +431,9 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
+ 	atomic64_inc(&port_stats->ktls_tx_connection_open);
+ 	u_ctx = adap->uld[CXGB4_ULD_KTLS].handle;
+ 
++	if (crypto_info->version != TLS_1_2_VERSION)
++		goto out;
++
+ 	if (direction == TLS_OFFLOAD_CTX_DIR_RX) {
+ 		pr_err("not expecting for RX direction\n");
+ 		goto out;
+diff --git a/drivers/net/ethernet/netronome/nfp/crypto/tls.c b/drivers/net/ethernet/netronome/nfp/crypto/tls.c
+index 9983d7aa2b9c..13864c6a55dc 100644
+--- a/drivers/net/ethernet/netronome/nfp/crypto/tls.c
++++ b/drivers/net/ethernet/netronome/nfp/crypto/tls.c
+@@ -287,6 +287,9 @@ nfp_net_tls_add(struct net_device *netdev, struct sock *sk,
+ 	BUILD_BUG_ON(offsetof(struct nfp_net_tls_offload_ctx, rx_end) >
+ 		     TLS_DRIVER_STATE_SIZE_RX);
+ 
++	if (crypto_info->version != TLS_1_2_VERSION)
++		return -EOPNOTSUPP;
++
+ 	if (!nfp_net_cipher_supported(nn, crypto_info->cipher_type, direction))
+ 		return -EOPNOTSUPP;
+ 
 -- 
 2.25.1
 
