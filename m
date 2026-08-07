@@ -1,164 +1,156 @@
-Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C68A1D435F
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 00:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1F54B0497
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 00:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786060896; cv=none; b=KzSgqzYCfewlvN0m0zqU0QUXsXNnd27X1JnTC0DOfHBqiptz6uQmJsqSBmcuzocqtiXekXQ+Rv+5sLR3R4Q6vmxEtXZeEoXyO/FKIPCobZDpm4VEJwztqJPVWaXC3jD0931cGpORnzD/KIgcmdb7RcQl4VkARp4qJIMsk1I5Ko8=
+	t=1786061877; cv=none; b=A70jfUVGgxGfg2OeUgohJTSpW4U2nSxA4kKaGGighleGkQrIx1NLNWkiyZdsP+Z+Y4COjUnfNwlgLNHgqKYxEDT42ACb3US5fZPFSHWMbVNkS3IeQgLxxGAO30+mPg05Rh8Mx+BVL+JXkD2ThTWzIRZfWIs4Plu/lwUa6Z0/2xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786060896; c=relaxed/simple;
-	bh=1bJWVyeZnRuOuHntp7+lTeu0y4ITdPXkHSJVDH6DNUk=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=DJnMd7eMMWfSN2oCDINhU78pN+e778O14sPbYznvLqSlcbaKBAiwZHW7ZGWIy88xrjf8Ud6bL9SVCp2VjIT0XBoDxbALxF21NJfvw9u1BC95pCp2O01H/f5MwHeAtLr7LZmcSwX1CVu9OtGEuukIbWbmbX/tK457v7vdBoZGT7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-6aae0178901so1900499eaf.3
-        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 17:01:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786060893; x=1786665693;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JhlxfeYKuuhGGTKptt6/0FUkLSlB4juTWmeosV4wFr8=;
-        b=ok/IRcBiUwszgUcuTmYC+Urh+UbywlHHwMW6oqDKB6ze5n2LvnlfbB1A1LYMI1SRLG
-         carzQcw+DVG0qBoq3+l82aJF+TVnXjZlguQg6bb1FVutLNLh/Hv6kPaTJKZpzMf9rW5u
-         FBYONbk6CKzqZERJYtYCXkuYer17kloFMMG9rdwZiWB3BkdjXPnwFK70icqunBrAip04
-         gojdc2O7cMbpNmC9OOd/J5fCKnYzjsnzP7cIZ1APm6jotNfs3ZYX72Z7C+PUBvRQiv1g
-         G7cW+nhk6b6vWmrycTAw8qMx8NZ8yYXFRo98zm9aVS398p5SFBMC6jNWmGzjIGN85uce
-         XUbQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpcImP0JhrsUnL1z9bXZjb469WXmMtpCVsWP9vr12IgG6VAXDsd1cOIvVrjnnC4oP2wyzAnBow=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJ/jN4aCUCVGAO/NQ2HTVlA5HBBF2XracrK9KrissCjy9izERo
-	Y38RqmE1pN2E5qk0l4n/8mSIv5Ogp5nk6P7qQOOYvfHgfpSX1AI1BeTkbfJM/vHRy8B6xYZi8Jk
-	Op+odIPplcRhmQIbvfK4bic3TMPrMQFoKdHBso45JdD3i3OdHVxDtRroc8lQ=
+	s=arc-20240116; t=1786061877; c=relaxed/simple;
+	bh=VgncDmnLpV5j4nAmnp54PyOYRb9MX84DWvxwoXbrfPc=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=sONPeVuLNnaKtG0fUbpgSp9CHMvJcvyVVG7j2RtXRj2AC7Cyumqdb6p3Y+4iKk/h9bmS6mKGa4C38RxJ0ZiFIu1Dv6PLrisDzPhWY7b1HzIqA88VzctWBouUlO41gFqnWhuKpH5gndp3kUOz69kQcm4BJ8pItWV90ZHzdHDHWS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2YZazkc; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2YZazkc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64A61F00A3D;
+	Fri,  7 Aug 2026 00:17:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786061875;
+	bh=2YbgrN5QJ/HCdjlIqSCLm+xT0EJ1uk/RpEylLMinMy0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=W2YZazkch/DemYGo3V16oP57pv+VqrS41axCxt6Xr3OAZaITMW77sF4HPGiEDCVfB
+	 uFdCtQpLp7gtViLv1R4URzCQJ+4f5wdEIU9NL26aJInLutWQ7y1iJkS9JoMt5YZ8M3
+	 x1udvKgrW/2fwgHmQXjJjpB2MOADIQLaeDqEKYjZxVhQuz6ADY9O+Yx0oKFkF5Xz88
+	 OKyYuZ3YHn33Ajc3zax65vRkT7wfCDlj0U652jD3zUmjHsV0Y1Xd2nJqk6OYXTV7jl
+	 58lUvE/7li0KgyYuNShFrSQT9qhBr7ixzpVb7iIEb+DYMCLiirb2kHq2xh+JAXEGsO
+	 GnvKnTTdqf0qw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C211CF4006C;
+	Thu,  6 Aug 2026 20:17:53 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Thu, 06 Aug 2026 20:17:53 -0400
+X-ME-Sender: <xms:MSR1atQVQF3kU_Kqhz40L-VIXUwHFzZP4JuXmSsHm_TPMBmCO1oL8g>
+    <xme:MSR1ahmX5Br5MBwYOSaWPmyqbZRh4tFSZF6OlIMFxbCvINti_rAVYJo5UGa0YnbAb
+    lYuXjCpV_PNRCTWrnrhcqSSCI2JSAcGHEx3XYcbElkBMgmqgYF5v1uO>
+X-ME-Proxy-Cause: dmFkZTFIF3yBPe+YwGZSPnYigUANaFs4vrAmKV2+PKRTgi3H0D1rH/kT8gAkHvenWEG9mM
+    Nq0iI4ovMP6dcsYS9+WMNTDEAooFtwvqCgaXzqIsCXR3a+X8uMPwvJIPZqYc+6tQ/SMUr8
+    y+7WO/H2y06C/v7+XkjyXD3SatL0t8Vtxkgeagm5wpsnlPj4S8DO7HF7g3XMUaUEysItkn
+    NtfLY4bzbLTQ5wEM6/zLmSQEZNRpygFK5aYguEKtHxm9yV/ZdIjjWUzwKNWJzlaXHu/w4B
+    aC1hngXx7oOS+lRCgyubND/RE+lRp9CiggMCUE0rwJMSTQHPOFk+FuDqkp/4fuEG4ENeZF
+    pMkyJU5iJEW+gjzSXqhUpeLjC0rcFAGWVM6wMJQ17J8Gnap/aZeHMT1bI1RBSz0VHcDoX4
+    7za9bp13Ipv+I9Nv590SuZXZqGvdOphr3TiLP2RxTZjicn59un2eqfcUKc9ggRv+xA4uA4
+    Gtwd4kVIIvvizSqyOAhSQT9ALGA8PkofBBpkkwOp6/+ov55b4ISK4+p7nUU5xEtWAGP09b
+    tEsVzD7SrBNaEFPFVbRS+vzZ1VdIhnI9PP1TWf4IZWYZ75RiMTHRROBHViROA8uFv2dmPa
+    AoOhQ1NlnI0YBbEvU5Fum1idTPGZ99B/G+rOe3FT2DLLQ6qdA55UP9FsN5fA
+X-ME-Proxy: <xmx:MSR1ai2t4TQy0V76NFhsM4hJkB7nt-ZU0vCFha8jMzMUxrLNeafPEg>
+    <xmx:MSR1ag_9DehKWCnCjEM602oLzu9wJYPVkuJHl0Gw9jhnt3LavsoF2g>
+    <xmx:MSR1an5U73qHBe8ox-mfH9szpOUIX9xaJOEzqVnIn4JvbLNu0Yxbcw>
+    <xmx:MSR1aouYKUPHwVQ2S1UtozesPYyUXMCwiPmMoSneOBFFi2pHp9ZLNw>
+    <xmx:MSR1ap0OOOrOGl2uQ73yEguycLmBqTUM2-S0lyzCro8CudKba3INMrPu>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 9F889780070; Thu,  6 Aug 2026 20:17:53 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a4a:ee0a:0:b0:6ae:6f38:dac with SMTP id
- 006d021491bc7-6ae96c8490emr9917601eaf.10.1786060893028; Thu, 06 Aug 2026
- 17:01:33 -0700 (PDT)
-Date: Thu, 06 Aug 2026 17:01:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a75205d.01d0871a.3a0d52.0034.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in cfg80211_wext_siwrate
-From: syzbot <syzbot+af177aa139efdd13a9da@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    31a420a822ff bpf: Check sk_state before sk_protocol in bpf..
-git tree:       bpf
-console output: https://syzkaller.appspot.com/x/log.txt?x=14370132580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4e38b15c29e6a1d9
-dashboard link: https://syzkaller.appspot.com/bug?extid=af177aa139efdd13a9da
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/180a2e05da8a/disk-31a420a8.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7e4b97c130ad/vmlinux-31a420a8.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/589c3b9f04af/bzImage-31a420a8.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+af177aa139efdd13a9da@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-wlan1: Failed check-sdata-in-driver check, flags: 0x0
-WARNING: net/mac80211/driver-ops.h:884 at drv_set_bitrate_mask net/mac80211/driver-ops.h:884 [inline], CPU#1: syz.1.7134/31079
-WARNING: net/mac80211/driver-ops.h:884 at ieee80211_set_bitrate_mask+0x1034/0x1320 net/mac80211/cfg.c:4134, CPU#1: syz.1.7134/31079
-Modules linked in:
-CPU: 1 UID: 0 PID: 31079 Comm: syz.1.7134 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:drv_set_bitrate_mask net/mac80211/driver-ops.h:884 [inline]
-RIP: 0010:ieee80211_set_bitrate_mask+0x1084/0x1320 net/mac80211/cfg.c:4134
-Code: 20 01 00 00 48 85 c0 49 0f 44 ee 48 b8 00 00 00 00 00 fc ff df 0f b6 04 03 84 c0 0f 85 3b 01 00 00 41 8b 17 4c 89 ef 48 89 ee <67> 48 0f b9 3a e9 c3 fd ff ff e8 ad 3b 82 f6 90 0f 0b 90 e9 41 fe
-RSP: 0018:ffffc90004457778 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 1ffff11006ac0325 RCX: dffffc0000000000
-RDX: 0000000000000000 RSI: ffff888035600120 RDI: ffffffff9069c4f0
-RBP: ffff888035600120 R08: ffff888069d60faf R09: 1ffff1100d3ac1f5
-R10: dffffc0000000000 R11: ffffed100d3ac1f6 R12: ffff888069d60740
-R13: ffffffff9069c4f0 R14: ffff888035601938 R15: ffff888035601928
-FS:  00007f1ff74ce6c0(0000) GS:ffff888125050000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b2f81aff8 CR3: 000000007c55c000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000600
-Call Trace:
- <TASK>
- rdev_set_bitrate_mask net/wireless/rdev-ops.h:683 [inline]
- cfg80211_wext_siwrate+0x78d/0x9d0 net/wireless/wext-compat.c:1238
- ioctl_standard_call+0xc5/0x160 net/wireless/wext-core.c:1042
- wireless_process_ioctl net/wireless/wext-core.c:-1 [inline]
- wext_ioctl_dispatch+0xee/0x410 net/wireless/wext-core.c:1013
- wext_handle_ioctl+0x110/0x1d0 net/wireless/wext-core.c:1074
- sock_ioctl+0x159/0x7e0 net/socket.c:1353
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f1ff659e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f1ff74ce028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f1ff6825fa0 RCX: 00007f1ff659e0d9
-RDX: 0000200000000040 RSI: 0000000000008b20 RDI: 0000000000000008
-RBP: 00007f1ff6635024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f1ff6826038 R14: 00007f1ff6825fa0 R15: 00007ffebb92fee8
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	20 01                	and    %al,(%rcx)
-   2:	00 00                	add    %al,(%rax)
-   4:	48 85 c0             	test   %rax,%rax
-   7:	49 0f 44 ee          	cmove  %r14,%rbp
-   b:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
-  12:	fc ff df
-  15:	0f b6 04 03          	movzbl (%rbx,%rax,1),%eax
-  19:	84 c0                	test   %al,%al
-  1b:	0f 85 3b 01 00 00    	jne    0x15c
-  21:	41 8b 17             	mov    (%r15),%edx
-  24:	4c 89 ef             	mov    %r13,%rdi
-  27:	48 89 ee             	mov    %rbp,%rsi
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	e9 c3 fd ff ff       	jmp    0xfffffdf7
-  34:	e8 ad 3b 82 f6       	call   0xf6823be6
-  39:	90                   	nop
-  3a:	0f 0b                	ud2
-  3c:	90                   	nop
-  3d:	e9                   	.byte 0xe9
-  3e:	41                   	rex.B
-  3f:	fe                   	.byte 0xfe
+X-ThreadId: A0WByMxMWtsc
+Date: Thu, 06 Aug 2026 20:17:33 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Sabrina Dubroca" <sd@queasysnail.net>
+Cc: "John Fastabend" <john.fastabend@gmail.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Simon Horman" <horms@kernel.org>, "Dave Watson" <davejwatson@fb.com>,
+ "Shuah Khan" <shuah@kernel.org>, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Message-Id: <2dc8c2c0-7b5a-4c1e-a9b9-e4d06977c0d1@app.fastmail.com>
+In-Reply-To: <amuIA8GjpwBf1ecB@krikkit>
+References: <20260726-tls-follow-on-v1-0-99bf4cc1c729@kernel.org>
+ <20260726-tls-follow-on-v1-1-99bf4cc1c729@kernel.org>
+ <amsVm65P9E0_SUT3@krikkit>
+ <eaa66ad3-fd50-4ec5-b097-e60bd11b2bc9@app.fastmail.com>
+ <amuIA8GjpwBf1ecB@krikkit>
+Subject: Re: [PATCH net 1/9] net/tls: Bound time spent on no-data records in
+ tls_sw_read_sock()
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+On Thu, Jul 30, 2026, at 1:21 PM, Sabrina Dubroca wrote:
+> 2026-07-30, 09:05:17 -0400, Chuck Lever wrote:
+>> 
+>> 
+>> On Thu, Jul 30, 2026, at 5:12 AM, Sabrina Dubroca wrote:
+>> > 2026-07-26, 20:33:29 -0400, Chuck Lever wrote:
+>> 
+>> >> Bound a run of such records, as net_rx_action() bounds a softirq
+>> >> poll. The first record that delivers no bytes arms a deadline
+>> >> TLS_RX_NODATA_NS ahead; any record that delivers bytes disarms it,
+>> >> so a normal stream never trips it. Breaking out with nothing copied
+>> >
+>> > Another thought here: I think a peer that sends "some" 0-length data
+>> > records followed by one (possibly very small) data record, and then
+>> > repeats that sequence, will not hit this "rate-limiting" of no-data
+>> > records. Is that right? And if so, is that a problem?
+>> 
+>> That occurred to me too. It's right on the cusp between still
+>> making progress and gumming things up. Neither the packet-count
+>> limit nor the time-bound address this case.
+>> 
+>> I don't have a good answer.
+>
+> I'm not sure that can be addressed in a generic way within ktls. Maybe
+> the caller needs to do its own accounting of "this read_sock/read_actor
+> dance has been going on for too long now, let's stop".
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+The consumer can, but only by killing the connection. During a run of
+empty records, read_actor is never called and nothing decrements
+desc->count, so the consumer never regains control. The socket lock is
+held throughout, and __sk_flush_backlog() takes only sk_lock.slock, so
+sk_lock.owned stays set. Anything needing lock_sock() blocks behind the
+reader, kernel_sock_shutdown() included. The one channel left is a
+store to sk->sk_err, which tls_rx_rec_wait() tests first in its loop.
+That works, but it is terminal for the connection.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+To be non-lethal, the bound has to be inside ktls. v2 of this series
+will use a count rather than a deadline, as Jakub requested.
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
 
-If you want to undo deduplication, reply with:
-#syz undup
+> If we hit the nodata_deadline, we break out of the loop, read_actor
+> returns 0 since it's an empty record, and we jump to
+> read_sock_requeue.
+  
+Well, but consume_skb() has already run, and the break leaves the loop
+for read_sock_end, which does not requeue. read_actor is never reached
+for an empty record.
+
+
+> sk->sk_data_ready is tls_data_ready at this point, no? I'm confused by
+> "the consumer" here.
+
+It depends on which callback was installed first, and unfortunately
+two current in-tree read_sock consumers differ in that order.
+
+svcsock (to become a read_sock consumer soon) installs svc_data_ready
+at socket setup and the handshake runs later, so ktls sits on top:
+sk_data_ready is tls_data_ready and saved_data_ready is svc_data_ready.
+The release-time announce already reaches that consumer.
+
+But nvme-tcp is the reverse. It starts TLS in nvme_tcp_alloc_queue() and
+installs its own callback afterward in nvme_tcp_start_queue().
+saved_data_ready is sock_def_readable and the announce never queues its
+io_work.
+
+The explicit poke is for the second case. v2 of this series will rewrite
+the comment to state the condition rather than name a function.
+
+
+-- 
+Chuck Lever
