@@ -1,218 +1,136 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0997644C64B;
-	Fri,  7 Aug 2026 06:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4C13D8105;
+	Fri,  7 Aug 2026 06:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786085038; cv=none; b=HUWkkxsD1xirwFGnJCbX8kWHiFUeT8xUyTh3ennjyYHr9pKB+ST5tXfqvcrv8NQKRfSrHv0r7TNEtGbRibfevJNmpmRxgACJbmWXAoWottjkwwl57p1MtXloP+rb97j+21NOxsGynb2fgywQ5cmk5Z7+s3peYzMLpptqB0iWyVM=
+	t=1786085360; cv=none; b=Xc3c486IARBiSxfon+bc/Hh0Pl4EX21pQdwIQQjEx0ovsevmcg8XZiJVQkpfOGsSSmTqxBcolICqp+OrgA0QR4NLLnDNOU9EcSp437OS0KLOKOqDFo53/RrDxatqzaVOFtDhOuD5paVaZ4ikkTQWP8wmU8Kb3MNWhOVqTp3AUcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786085038; c=relaxed/simple;
-	bh=ownM38qo6qKUu/ffImXqntcXmjD0N74UnEarE0QoUQQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SwcCylLW/s3smvHNRjiubvXcwDw33ZRkeB7GQsC1SnX9Sq5xX7Ms5OI5A1tP7hhM21YD/5B/w+NJifQAql2jLSfKDMlNvf6ekT/GfgdmyBjH2a1jgdRkZcbNvKLu3GICRXwTWyUaBin5lLcgDS3aDjoQhSXmWdHr4AF7QM6cJBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ik/JaOFV; arc=none smtp.client-ip=117.135.210.4
+	s=arc-20240116; t=1786085360; c=relaxed/simple;
+	bh=rAnJDWZOjgQZGj5vdiYX+LKXqnRLkVN1h81pn8OofZY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gLSAQXZ69k0rivmTBz4bISO23Xt+NDoaQB02NF3xwDF75xmeX8KjcCvsegglHrdXwquALGd2tC/yATPBabynb3v3HzN7KWHaekAlQVQGGl2aPQ8+cp3kJ/T73u5oDJH4nM21fqdWkyg4zo8sFgkmPONdU4dwPQDEzJ9f6Ne2D7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=iriP9Ww9; arc=none smtp.client-ip=220.197.31.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ik/JaOFV"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="iriP9Ww9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=XiEF1RhqiQjGuKkXjKUAZy724ihfORrXJyDL4vNVdqw=;
-	b=ik/JaOFVklvsZsGmbhpbbwCw7E3rY0u5I0VJDDRxZpF6oxN13o2cO1B7idjihD
-	ws9T+FYrmHaPsoek/IzZ3N7aGP3n5d9K2RHhh4laFWYIJoINfvKlPbiPUnuLQAWx
-	ZwJDlytxgL78E6AoVy1iaD6AUo+E7m7xdFTTBOPHe19PY=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=o+
+	pQySnj2tke+BcxYstuQ/c3I+18MgXYsNi289JUnaQ=; b=iriP9Ww9MTzaujkqVP
+	W2yemald0eM4CBiRaXCezot3axCfl1EFGoMRZO9eDx479M/XJwppD2HWpEMJz4ip
+	LU6NAr6T6zDFReSk/vqoU705SveAfwA7tmv+feKJpU/jdnSW+D4s3/6EMb3A3+uw
+	VCVRvvaKFQmAFVwpdv7Tr6vDo=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBXY8eDfnVqS8ZGOQ--.43665S2;
-	Fri, 07 Aug 2026 14:43:17 +0800 (CST)
-From: luoqing <l1138897701@163.com>
-To: l1138897701@163.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4] sctp: auth: propagate HMAC calculation errors to callers
-Date: Fri,  7 Aug 2026 14:43:14 +0800
-Message-Id: <20260807064314.500742-1-l1138897701@163.com>
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAHDmCyf3VqlTqDMQ--.260S2;
+	Fri, 07 Aug 2026 14:48:20 +0800 (CST)
+From: Qingshuang Fu <fffsqian@163.com>
+To: Antonio Quartulli <antonio@openvpn.net>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qingshuang Fu <fuqingshuang@kylinos.cn>,
+	Qingshuang Fu <fffsqian@163.com>
+Subject: [PATCH] selftests/net: ovpn: fix socket leak in ovpn_socket() error paths
+Date: Fri,  7 Aug 2026 14:48:16 +0800
+Message-Id: <20260807064816.53811-1-fffsqian@163.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260730064202.792809-1-l1138897701@163.com>
-References: <20260730064202.792809-1-l1138897701@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXY8eDfnVqS8ZGOQ--.43665S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Ar4xuFyrZw17tF1DZryfXrb_yoWxJFWfp3
-	Z8CrZYkw1xJr4aqFs3CF48G3WY9ws5C3y3JayYqwsay3Z8Xryrtryjka18KryUCFWkJa42
-	yw4jgF15Gr1qyFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piJ5rxUUUUU=
-X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3gW4-Gp1foW5zgAA3M
+X-CM-TRANSID:_____wAHDmCyf3VqlTqDMQ--.260S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw4xtF48Gr15WFyxXF1xAFb_yoW8KFy7pF
+	s7Ga4DtryxJr1xX3W8trW8JF1I9ws7K3y7C348Kw13Zr4DJrnYq34FkFWq9Fy7CFs5Xw4f
+	Zw4xCFWYvr1DXw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pipVbPUUUUU=
+X-CM-SenderInfo: 5iii21xldqqiywtou0bp/xtbCwhQFz2p1f7QgJwAA3P
 
-From: Qing Luo <luoqing@kylinos.cn>
+From: Qingshuang Fu <fuqingshuang@kylinos.cn>
 
-sctp_auth_calculate_hmac() can fail when building the association secret
-under memory pressure, but its void return silently leaves the HMAC digest
-zeroed.  On the receive path, sctp_sf_authenticate() compares this zeroed
-digest against the peer-supplied one using crypto_memneq(), potentially
-accepting an all-zero HMAC from the peer if the allocation failed.  On the
-send path, sctp_packet_pack() transmits a packet with a zeroed HMAC that
-the peer would reject.
+The ovpn_socket() function creates a socket but fails to close it on
+several error paths, leading to a file descriptor leak:
 
-Improve error handling by making sctp_auth_calculate_hmac() return int:
-- sctp_sf_authenticate() returns SCTP_IERROR_NOMEM instead of accepting
-  a zero HMAC.
-- sctp_packet_pack() drops the packet on failure instead of transmitting
-  a zeroed HMAC.
+1. When the address family is neither AF_INET nor AF_INET6, the socket
+   is leaked in the switch default case.
+2. When setsockopt() for SO_REUSEADDR, SO_REUSEPORT, or SO_MARK fails,
+   the socket is leaked.
+3. When setsockopt() for IPV6_V6ONLY fails, the socket is leaked.
 
-Update the declaration in auth.h accordingly.
+The existing err_socket label already handles closing the socket for
+the bind() failure path. Fix all other error paths to use goto
+err_socket instead of returning directly, ensuring the socket is
+properly closed on every error path.
 
-Assisted-by: LLM
-Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+Fixes: 959bc330a439 ("testing/selftests: add test tool and scripts for ovpn module")
+Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
 ---
-v4: Remove the entry "sctp_auth_chunk_verify()" that has been removed from the commit message.
-    
-v3: Add missing SCTP maintainers and sctp mailing list, no code changes
+ tools/testing/selftests/net/ovpn/ovpn-cli.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
----
- include/net/sctp/auth.h |  6 +++---
- net/sctp/auth.c         | 10 ++++++----
- net/sctp/output.c       | 12 +++++++++---
- net/sctp/sm_statefuns.c |  9 ++++++---
- 4 files changed, 24 insertions(+), 13 deletions(-)
-
-diff --git a/include/net/sctp/auth.h b/include/net/sctp/auth.h
-index 6f2cd562b1de..eeb3297fe97d 100644
---- a/include/net/sctp/auth.h
-+++ b/include/net/sctp/auth.h
-@@ -83,9 +83,9 @@ int sctp_auth_send_cid(enum sctp_cid chunk,
- 		       const struct sctp_association *asoc);
- int sctp_auth_recv_cid(enum sctp_cid chunk,
- 		       const struct sctp_association *asoc);
--void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
--			      struct sk_buff *skb, struct sctp_auth_chunk *auth,
--			      struct sctp_shared_key *ep_key, gfp_t gfp);
-+int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
-+			     struct sk_buff *skb, struct sctp_auth_chunk *auth,
-+			     struct sctp_shared_key *ep_key, gfp_t gfp);
- void sctp_auth_shkey_release(struct sctp_shared_key *sh_key);
- void sctp_auth_shkey_hold(struct sctp_shared_key *sh_key);
- 
-diff --git a/net/sctp/auth.c b/net/sctp/auth.c
-index c901d373af80..6de66f56c41c 100644
---- a/net/sctp/auth.c
-+++ b/net/sctp/auth.c
-@@ -613,9 +613,9 @@ int sctp_auth_recv_cid(enum sctp_cid chunk, const struct sctp_association *asoc)
-  *    zero (as shown in Figure 6) followed by all chunks that are placed
-  *    after the AUTH chunk in the SCTP packet.
-  */
--void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
--			      struct sk_buff *skb, struct sctp_auth_chunk *auth,
--			      struct sctp_shared_key *ep_key, gfp_t gfp)
-+int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
-+			     struct sk_buff *skb, struct sctp_auth_chunk *auth,
-+			     struct sctp_shared_key *ep_key, gfp_t gfp)
- {
- 	struct sctp_auth_bytes *asoc_key;
- 	__u16 key_id, hmac_id;
-@@ -636,7 +636,7 @@ void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
- 		/* ep_key can't be NULL here */
- 		asoc_key = sctp_auth_asoc_create_secret(asoc, ep_key, gfp);
- 		if (!asoc_key)
--			return;
-+			return -ENOMEM;
- 
- 		free_key = 1;
+diff --git a/tools/testing/selftests/net/ovpn/ovpn-cli.c b/tools/testing/selftests/net/ovpn/ovpn-cli.c
+index f4effa7580c0..81b81d5fc162 100644
+--- a/tools/testing/selftests/net/ovpn/ovpn-cli.c
++++ b/tools/testing/selftests/net/ovpn/ovpn-cli.c
+@@ -507,7 +507,8 @@ static int ovpn_socket(struct ovpn_ctx *ctx, sa_family_t family, int proto)
+ 		sock_len = sizeof(*in6);
+ 		break;
+ 	default:
+-		return -1;
++		ret = -EINVAL;
++		goto err_socket;
  	}
-@@ -654,6 +654,8 @@ void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
  
- 	if (free_key)
- 		sctp_auth_key_put(asoc_key);
-+
-+	return 0;
- }
+ 	int opt = 1;
+@@ -516,13 +517,13 @@ static int ovpn_socket(struct ovpn_ctx *ctx, sa_family_t family, int proto)
  
- /* API Helpers */
-diff --git a/net/sctp/output.c b/net/sctp/output.c
-index 23e96305cad7..3d7ead9d40e1 100644
---- a/net/sctp/output.c
-+++ b/net/sctp/output.c
-@@ -517,8 +517,14 @@ static int sctp_packet_pack(struct sctp_packet *packet,
+ 	if (ret < 0) {
+ 		perror("setsockopt for SO_REUSEADDR");
+-		return ret;
++		goto err_socket;
+ 	}
+ 
+ 	ret = setsockopt(s, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt));
+ 	if (ret < 0) {
+ 		perror("setsockopt for SO_REUSEPORT");
+-		return ret;
++		goto err_socket;
+ 	}
+ 
+ 	if (ctx->mark != 0) {
+@@ -530,16 +531,16 @@ static int ovpn_socket(struct ovpn_ctx *ctx, sa_family_t family, int proto)
+ 				 sizeof(ctx->mark));
+ 		if (ret < 0) {
+ 			perror("setsockopt for SO_MARK");
+-			return ret;
++			goto err_socket;
  		}
- 
- 		if (auth) {
--			sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
--						 packet->auth->shkey, gfp);
-+			if (sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
-+						     packet->auth->shkey, gfp)) {
-+				sctp_chunk_free(packet->auth);
-+				packet->auth = NULL;
-+				if (gso)
-+					kfree_skb(nskb);
-+				return -ENOMEM;
-+			}
- 			/* free auth if no more chunks, or add it back */
- 			if (list_empty(&packet->chunk_list))
- 				sctp_chunk_free(packet->auth);
-@@ -619,7 +625,7 @@ int sctp_packet_transmit(struct sctp_packet *packet, gfp_t gfp)
- 
- 	/* pack up chunks */
- 	pkt_count = sctp_packet_pack(packet, head, gso, gfp);
--	if (!pkt_count) {
-+	if (pkt_count <= 0) {
- 		kfree_skb(head);
- 		goto out;
  	}
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 708fa07d5fff..bb89c9b52e0b 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -4455,9 +4455,12 @@ static enum sctp_ierror sctp_sf_authenticate(
  
- 	memset(digest, 0, sig_len);
+ 	if (family == AF_INET6) {
+ 		opt = 0;
+-		if (setsockopt(s, IPPROTO_IPV6, IPV6_V6ONLY, &opt,
+-			       sizeof(opt))) {
++		ret = setsockopt(s, IPPROTO_IPV6, IPV6_V6ONLY, &opt, sizeof(opt));
++		if (ret < 0) {
+ 			perror("failed to set IPV6_V6ONLY");
+-			return -1;
++			goto err_socket;
+ 		}
+ 	}
  
--	sctp_auth_calculate_hmac(asoc, chunk->skb,
--				 (struct sctp_auth_chunk *)chunk->chunk_hdr,
--				 sh_key, GFP_ATOMIC);
-+	if (sctp_auth_calculate_hmac(asoc, chunk->skb,
-+				     (struct sctp_auth_chunk *)chunk->chunk_hdr,
-+				     sh_key, GFP_ATOMIC)) {
-+		kfree(save_digest);
-+		return SCTP_IERROR_NOMEM;
-+	}
- 
- 	/* Discard the packet if the digests do not match */
- 	if (crypto_memneq(save_digest, digest, sig_len)) {
+
+base-commit: f9a2394a23482bfd330911e9c8295b71724feacd
 -- 
 2.25.1
-
-> Returning 0 here is fine, as its only caller, sctp_packet_transmit(),
-> currently always returns 0. sctp_packet_pack(), on the other hand, returns
-> the number of packets it builds.
->
-> If you'd like to improve the return value for sctp_packet_transmit(),
-> that can be done in a separate patch targeting net-next.
-
-Hi Longxin
-
-Thank you very much for your patient guidance on community patch submission conventions and your valuable review. I fully take your comment.
-
-As you mentioned, returning 0 is acceptable for the moment, given `sctp_packet_transmit()` always returns zero today, while `sctp_packet_pack()` returns the count of generated packets.
-
-Although there is no functional bug in the current code, unifying the return‑value semantics makes the interface more consistent, which can prevent latent risks when this code path is extended in the future.
-
-I will implement this optimization as a standalone patch for net‑next as you suggested.
-
-Please help to evaluate whether this improvement is necessary for mainline. If maintainers think it brings limited practical benefit, I am okay to drop this patch entirely.
-
-Thanks,
-luoqing
 
