@@ -1,154 +1,156 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB873367B8E
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 19:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5976539B94F
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 19:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786131250; cv=pass; b=APMJc3O9Kr3NFwQ3hnblsYX5mb8dA++LmmMuWypPb+snyP7cqulGsQopP7IedihQikrLoyZ7drrMHEy8p1ERfD4aqVEsMFVEuePfWF4V8Ujy9tAl3KI5uvg5FPKdxpGCwyZbP4kEH73KyU4SnJYnJRZ5t3losdA5rKZK9jWoXVo=
+	t=1786131856; cv=pass; b=IsOpMeQd9Zrn4z92JjFnUQ+/TVVC/1GKXw11cJKJ6fndm3+gaCcedjZl/7rInSoQ5kjTri6MBa/q4s+RAOuhbti8HyqH99qf8/xIirxdobvOvwep0hKuVPN9HdMGZOXdeLdDIzg5ilT4T+1q1I2WE7C45OBM4hNUFhLyzxa3yBM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786131250; c=relaxed/simple;
-	bh=U6y2778gV/zoZJ4mqp5v2pm/RGDs0J8HINfVltgsuYk=;
+	s=arc-20240116; t=1786131856; c=relaxed/simple;
+	bh=4xiLHxYkPGdiFvA0nrbU2tlQdfq82xczLJnzo0zXkwI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZajRb1MZahtMpecB8SdNUMx2jRXjqhZ1dRoXru0bNmLkKKqr+Zp/6uf0IJAAoqg7GNgWztmrctRpzm8m6bmfwBUoNT83SeQl6rulcZ7XlomVgvVxbDWHG3a7L4OAA2QEreUaG+Kab1n6XWZxpmnbgAifUSw/U6LwVg1iBnmFeXM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=if9oZXL2; arc=pass smtp.client-ip=209.85.221.170
+	 To:Cc:Content-Type; b=QQn//qkC2pUs3u25Q6hvJYb+dT07FyR3jxp0VZhZ6IO6As7ei5+yZhpIti3n1EkRtFlTGln8UBNZUCj/SxaBeifb3s2HVTkbcY8Umu2Uk2Sm+KE4HHfzXc+Y+IKgdiza0V2Ym2yAVCXSK7BQNOZf/iXkzDD2NtOCNDLGQEhARIk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q80mHEg0; arc=pass smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="if9oZXL2"
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5bfb3347ce0so1098125e0c.2
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 12:34:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786131248; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q80mHEg0"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84a2dcede83so5318793b3a.3
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 12:44:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786131854; cv=none;
         d=google.com; s=arc-20260327;
-        b=IvNdhxjX9mesq62f02KwUqS/qEZgRYIDaSsHlVnI7unOdazF2Z7ijFQW628ym4ejBE
-         HK3CXRpZ+4L7ljjZIJiaNF0rwuGq0bvAc+CUimCPDfntSGfQ0zKO3XvkLwyFFSJmPgIG
-         /Bl3n90Zevi4MjHqK2tLc7kLIhinTeHFTgKkc2OJcMxc/VD9l+W/6FxC/5p8y/mZ7cia
-         N/UnqXJ2UGdf4vAMoqIZneRwt8T9UqGteWmk15tLhrFVKLN0y/cmqYsCsjGNtn8rX8Xy
-         Ox1E2m3P5DKl+l7hCobCv036rxtuaITZY1BBXXlYSM/NHg6vRfAoVfcE+gaAaU0hkMmo
-         XO4g==
+        b=I2z2lr2ILRtH4R9yA2F+fxaVoapOF5dG74z0iT/+/czGw8CRbDCaHVbuM4DhW0LnBG
+         i8H5emWv6q9DDjNZ5sdSs91jKnZEdYrScSZ2RnxZOkcdnFn8tHFGxUb9gAuaYLB4FzAa
+         BdS6Nib93JdPzwOZf6O8kYnD5m5O+Jmu4X0olsBANZg87C24xEY2XoiXFxGHwZIpOw66
+         3qIb7h4uI3VAmNwQ2OI0ot8Pf+Mw0VVHVAUmHTe+/QPxVsZm4XT92/uHQq5ClIryDI1l
+         IaY6vEaDiJ3EGEiSn31eqsD4fqK4JGUtqXM3iqw8mo7y2jTP3BuZ3HT5JfTL8hDs8xRd
+         WeYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9caxZJDo+1eTj4vuH9vzEsfwbNVL6i24iyprVwcm01c=;
-        fh=JNnIPGs2a6CJ1ET3H9cZwf//WZ00nvH1WOFlhXNS7j8=;
-        b=AkYB5BdDIScuUX0O5J4UK4agz4caVbv9PgFazdI3tS8uKRVWPNGKJdIisgEcPpTU6a
-         mWel2vb165zoSSzUeZzOQ5r0kLbOcyEet+UaQ7oFHaimMVVtkV1YBYWCFDHaYWNrzskk
-         z/o8uWzj4MrgGhc/3ArfnOZ6dl+lC321Gacq7PdpPuvM1NCf+a4vFpkKVpAKXq3WNT1p
-         mNwrdDIbwSsT4tzyDulKoprrNmcWQc8h5HtGEY/pc+T4TXHslmGQlGtlAIS6p2QCiZLK
-         djB+438XpdEQLrXx2zqaHjgHU/JaplnSSRgMAkDi5CVR1p+5CLj+pqlMgI3MTCV7+TGY
-         gAMg==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=e/wtoPuRy5LBbReY+YT0mukVCMIY6FSDljjCufXHkOM=;
+        fh=mm/NAmbNYceH48CMEE2Ftym3JWoXa49TLhkNZowOkpA=;
+        b=q3pSPomOZZRdZVjYUyzelENLQ5KM6H+L8Jy+6ASNB2CpDsRL0Xk6qiZfLPf7Zw7C6A
+         ol+zqyiUWHiZKv+jVrRcnXFDPTmD+6OO4m6mW5v9WgsnL1i96ZXHuW92aORPMTBn5oyw
+         34d9xnFYBnqF+YeDqY1VbpNlq+c8fR/5mqRH1zE9X1WKWXJJ7np1qjio1ym0MstOzT1F
+         V7L0WuDU3jyZBsa1AX/cDDL6so/9aftY1F6tol878b0Sh1aEtxDqaaDjBy3lvXz+4PIT
+         MoGZivi+wNMCkCD6WKRcBiX3wb+n/VQqIrUmqonH4zTmiZa/BdpYYd9xjHqu/ROrtO/m
+         FoZQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786131248; x=1786736048; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9caxZJDo+1eTj4vuH9vzEsfwbNVL6i24iyprVwcm01c=;
-        b=if9oZXL2QnHfigqUiImu8fydZDDmfepU1ziHSDHwg7vyx4Xxy/XF34gEbxEUmIxlYr
-         9lnAor71qGZtrcZ1O/AuT3Xh/Tnc00I0GrcxCDbiovj7vYoBlf/wWyIU5iX1MDNuAiQr
-         sR2mxMFCsueH4zaYb4l9jPB6vDN/lJ7pzUNYfgfGxdGHxEYSUB3e84igBa/7w/KH9aOJ
-         ljGKoZxmOvtGP7U7YTOighKHbaO/0ihPftlNtXN6NW95qC1Wt35lfYcdtYDNkzgNH4Zx
-         UkEwMMrpGixtIM0fpafEEGuwKs4sIkmPozmk2RMLVOphB//8Eh5HDdpWeDByOxTwmbol
-         x4rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786131248; x=1786736048;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1786131854; x=1786736654; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9caxZJDo+1eTj4vuH9vzEsfwbNVL6i24iyprVwcm01c=;
-        b=OuH7qKYeP2qVnrD8u6108KwS6tK4P/G0S+frrkcGJQDkb+xojzG1UWkFhPX4jGrnaF
-         kODE0Ucno1UORizeyydo4Oh2bRK6fvfjkUcEemLf86d1JgAwc4Ihnt1g6znbaHzj71Kg
-         hsBFlOuyJU+Q6Y84Xp36SID5k1mX3304oGAU2RxF/qIvxAhOBjvEWcBeIg17ImFXsjpH
-         GOO5l5yGB1LQ2RDPejVDk/FcKXTrXrHZhxDcLaVUKxKMuYk6c/TBgtStLLdGNAg6uBtB
-         iZk+9bf783KdbZ3MaRE4hJe2C4+Ckp95/zUGy3waaEAywAqaBiwAz/EW4wzpU4HXyYOX
-         DZhQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrrxwHbgqLaH+Ev3zIaL17X5l6PO/DXuaDJkG57+pMfEz6TLfYIz5GhLHNDWg9m98nVFUfehF8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkgXhM2YA+hS92XIwha+EqkaNo3m8BR3Alvhm9A4JqVbVW7rKD
-	Yl/x12mAELBsLatqmSClIcHcQUYvaI9LycVHlyuFps+6bRAeJ8IL61iZACJj0p28qMtZ/Cw92Vq
-	jAPA18QdA5B3taR0R9HuVMX+hZLSEyY0=
-X-Gm-Gg: AR+sD13fJkNvl3Th4MmbCod2JAtyqDTk6z6FjbXhDkQ9Dy5TmDlhRjBTV5hHqI+f5Hy
-	/JXVy3Yhmat+wFWLdMqbytvFC6ex7dkoWchfXRK/HelpHaTErxJpNK4Q98hVt6DqwYg6vYSE1HO
-	+6j7XEw0SYoTqNJWWD4dnQg5FFHt3+D6zbDjDkO+FqfOsVFyy5VkEZGWfOb1kRGpC8sfuDialJz
-	jUKaqwxEE1hylXaxzLrkN2vptJkYTiy80IpRniFTaQkRCuoJo8zgOYG81e3EtJH4Pyp48OMOsyV
-	g5R8xKL5aO+M/7dB0XfKnjh8jGKnImbgSG3mESQ3m7sNIWyEQ4W8ZyjzPeW7e43w2KuISKcp5wG
-	0lrzI2xsaKcDI1uLS1KCSZkrE1RvGeLzulgfaLr7jPfoBgaKZnrwFiaHTe1htUZizkik8vAApEr
-	h5Igx5dGgCXMD8UHQjyO+X8jFqhflp4gk+AgrV
-X-Received: by 2002:a05:6102:d8e:b0:739:478b:5bf2 with SMTP id
- ada2fe7eead31-760e8f347d4mr6463052137.13.1786131247763; Fri, 07 Aug 2026
- 12:34:07 -0700 (PDT)
+        bh=e/wtoPuRy5LBbReY+YT0mukVCMIY6FSDljjCufXHkOM=;
+        b=Q80mHEg04QYmylKFoxCyDQK8pKqgOUTJGyr3fWCzTnohYdHTX28YRVl3Sx/ExN9eUM
+         mZigsHsz/wm6vY6ko2X699jYd32rjwZOskPXMGb1EIg33N0DW+jJ5XQYVMwg11cS8zHE
+         zZiTli8YJS0e4frkpoAcfFU9IArBK6LkV7L0UjOABb6wNLyVY6xYLw1qR5NHzPpMvkMM
+         BRXs1FU7sJjijXBvIUBd+46PLEWNlrfySSbmR358Ssh+utSZLeAehRO5ys9AX5V6Nbq5
+         nFVu/tyw0BPDKpeFuEhWiH9NMw8aCiT86rFhNYcpv2f7L1hSt7oK5J4tr+TEcNWMMbqF
+         ZRfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786131854; x=1786736654;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=e/wtoPuRy5LBbReY+YT0mukVCMIY6FSDljjCufXHkOM=;
+        b=CPkF8J6yPKJQMNFHXYAQyq93z8lpMfBnrAzeLlLzWEuB2FTFNpmbVroMvBBcFg89NA
+         /E0CwQdVRjQzZbNtK/GVky8Agr4tTH3jpHcy8iDOuHapw9ztkPhBPFPEVbNJubP06Za0
+         yEBEKeQbvZhL4C/3Z9z6SZBjt+NnsT8BUKT1Fq0UmNgjmWs6dGHk61HrE2T5oRaeoUBj
+         4MSCP/GaopnluLEE2Mqosi8JXZAsa1pOdEU44C8tmum0q91aBIOeivBeI6m10OSdAZI0
+         i3mKwcEi2XsMDhvamAk6CC4LNZOdJ4bbNtYcxgL5l/GHWbdPIkd8BLh2T8SqESegUSkA
+         rfiw==
+X-Forwarded-Encrypted: i=1; AHgh+RppBlKOShD3dUCEmHum818TCwELY2Ysa55vNRCOTZrutAJDpWFNnfWnx2gApGLHDqdFQzBJQFI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKxJR44M/Hq/dunaXhEP2qimbCltRh84jsR+TWUrx+Dt2gS+Sm
+	c7RSZRkAxZHdCe215iBgaUlVFqWlAce9B+4pgXoraWkoB0u5JxGeN+IuejJxqBAK4wMRZrCCX83
+	f3ZUXwmf30Ewj0MMj8k1ylKKvAZaPYXc=
+X-Gm-Gg: AR+sD13MOi9IuDh4ubuqrIGESUyiNCE4KJd8eaxymsq6wCGvc3dCk2YQit7KJ4exXbO
+	HisSe/KUmA86VAmL8AcFBflg3VPzqthsVbGQ3hukj0374QZ4p6wTOuk9n9055vl9UMqW+lfBycx
+	J/iJn2DEXwGBN6mNTKIuj8yXShTOkg6vozgf0C3Nw1hkR65NcWqdSGqxnWhoXyanCibgrvaqmHh
+	7oUi+liwGr5ADpSFx7E+j7xcaRv6gRDzbYEZp3Yq/XUBuNfxjgQkknmi+cWN2SDfs6mSwXZj9LF
+	m6BJI3brBJpz5ZkTZkxG7E2GaclabMxKtPNMnlIR4BEE/KYDL5oioKyXibg8yoCWhzdYgZGatnd
+	vlSJTBTmZdF0Ba4JBSyGPI87JNuAYpDza4Cwt2BcHCo8=
+X-Received: by 2002:a05:6a00:2187:b0:843:49f0:f5a0 with SMTP id
+ d2e1a72fcca58-84f5e0c4b15mr6824968b3a.32.1786131854606; Fri, 07 Aug 2026
+ 12:44:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806-submit-mdio-of-dynamic-v2-v4-0-4beb0c50d5ba@gmail.com>
- <b2e83ba0-2e9c-4105-b806-8a155e8b9aa5@lunn.ch> <CADvTj4rame1n8eQL2GUOaJHnOcR_cqNxzNYO+QeCLYDczEFeUA@mail.gmail.com>
- <ddce5cfa-8cf9-4f9e-ab0a-0b415706876a@lunn.ch> <CADvTj4qxGVw+PW2LeF-a3h1XfmirQZGfJA9-6Czt72XASbVLBQ@mail.gmail.com>
- <4aeebecb-81fe-4f09-9dfe-a3be2f778bb8@lunn.ch> <CADvTj4qrYYA-e+9iJ+q4UaZteUjpypRa6HBSmwp-ajwPbwYERg@mail.gmail.com>
- <3cd188e7-7dc4-4d67-82de-e2ef3edee232@lunn.ch>
-In-Reply-To: <3cd188e7-7dc4-4d67-82de-e2ef3edee232@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Fri, 7 Aug 2026 13:33:56 -0600
-X-Gm-Features: AUfX_mxMpD-qand8wklMDqDrRd_xxDI0iY7G3-8rmiKaEvXH5AFL93SLf7_FiGM
-Message-ID: <CADvTj4pJG56UERve8BfbYzjCLO4KBDDuFviTcz1ivuwUFRMdxA@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 0/4] net: mdio: support dynamic OF device changes
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Jonas Gorski <jonas.gorski@gmail.com>, 
-	Vladimir Oltean <olteanv@gmail.com>, Ciprian Regus <ciprian.regus@analog.com>, 
-	Andreas Larsson <andreas@gaisler.com>, Mark Einon <mark.einon@gmail.com>, 
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
-	Keyur Chudgar <keyur@os.amperecomputing.com>, Michael Chan <michael.chan@broadcom.com>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Wei Fang <wei.fang@nxp.com>, 
-	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
-	Bryan Whitehead <bryan.whitehead@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, Timur Tabi <timur@kernel.org>, 
-	nic_swsd@realtek.com, Byungho An <bh74.an@samsung.com>, 
-	Steve Glendinning <steve.glendinning@shawell.net>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
-	Jiawen Wu <jiawenwu@trustnetic.com>, Mengyuan Lou <mengyuanlou@net-swift.com>, 
-	Thangaraj Samynathan <Thangaraj.S@microchip.com>, Sebastian Reichel <sre@kernel.org>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20260806171614.945331-1-yangyx22@mails.tsinghua.edu.cn>
+In-Reply-To: <20260806171614.945331-1-yangyx22@mails.tsinghua.edu.cn>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 7 Aug 2026 15:44:03 -0400
+X-Gm-Features: AUfX_mzVEiReFNJVEm_qbf2Gmz63c3XMP8OIwZQiLtSF0RDjxwSqyp76pzJhYwg
+Message-ID: <CADvbK_ekVxEzb=-sbphAtmzYYXqfggWX2h3CK24s84MmQvahJg@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: fix use-after-free of cached ASCONF chunk
+To: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>, Ao Wang <wangao@seu.edu.cn>, 
+	Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>, 
+	yyxroy22@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 7, 2026 at 1:16=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Fri, Aug 07, 2026 at 12:48:43PM -0600, James Hilliard wrote:
-> > On Fri, Aug 7, 2026 at 11:15=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wr=
-ote:
-> > >
-> > > > I guess it can also be used like this for live dt modification:
-> > >
-> > > A guess is not good enough. Give us a concrete, in kernel use cases.
+> > diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+> > index 5b0ae616e1ff9..737f8ea9d482f 100644
+> > --- a/net/sctp/associola.c
+> > +++ b/net/sctp/associola.c
+> > @@ -1713,6 +1713,8 @@ void sctp_asconf_queue_teardown(struct sctp_association *asoc)
+> >          sctp_assoc_free_asconf_queue(asoc);
 > >
-> > I searched the current tree for callers of the OF changeset and
-> > overlay APIs and for OF reconfiguration notifiers. I did not find a
-> > current in-tree path which adds or removes a child below an already
-> > registered MDIO bus.
->
-> So lets wait for a real user to come along.
+> >          /* Free any cached ASCONF chunk. */
+> > -        if (asoc->addip_last_asconf)
+> > +        if (asoc->addip_last_asconf) {
+> >                  sctp_chunk_free(asoc->addip_last_asconf);
+> > +                asoc->addip_last_asconf = NULL;
+> This is a pre-existing issue, but does setting this pointer to NULL here
+> create a NULL pointer dereference in the T4 RTO timer handler?
+> During a peer restart initiated by an unexpected COOKIE ECHO,
+> sctp_sf_do_dupcook_a() queues a command to purge the ASCONF queue, which
+> calls this function. It also queues a command to stop the T4 RTO timer
+> using del_timer().
+> Because del_timer() is not synchronous, if the T4 RTO timer is already
+> executing on another CPU, it will block on bh_lock_sock(). Once the
+> restart processing completes and the socket lock is released, the delayed
+> timer resumes and can unconditionally dereference the now-NULL pointer:
+> net/sctp/sm_statefuns.c:sctp_sf_t4_timer_expire() {
+>         struct sctp_chunk *chunk = asoc->addip_last_asconf;
+>         struct sctp_transport *transport = chunk->transport;
+>         ...
+> }
+> Previously this race caused a use-after-free, but with this change, it seems
+> it will result in a guaranteed kernel panic. Are there any synchronization
+> mechanisms preventing the timer from running and dereferencing this pointer
+> after the queue is purged?
 
-So should I just drop the final "net: mdio: support dynamic OF device
-changes" patch and keep the MDIO hardening patches?
+Hi, Yuxiang,
 
->
->         Andrew
+Please address the issue reported by both Sashikos in this patch by adding
+a NULL check in sctp_sf_t4_timer_expire(), like:
+
+@@ -6105,7 +6105,12 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
+                                        struct sctp_cmd_seq *commands)
+ {
+        struct sctp_chunk *chunk = asoc->addip_last_asconf;
+-       struct sctp_transport *transport = chunk->transport;
++       struct sctp_transport *transport;
++
++       if (!chunk)
++               return SCTP_DISPOSITION_CONSUME;
++
++       transport = chunk->transport;
+
+        SCTP_INC_STATS(net, SCTP_MIB_T4_RTO_EXPIREDS);
+
+Otherwise, this change would turn the existing issue into a NULL pointer
+dereference.
+
+Thanks.
