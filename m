@@ -1,476 +1,181 @@
-Received: from out198-8.us.a.mail.aliyun.com (out198-8.us.a.mail.aliyun.com [47.90.198.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26DF3AFD15;
-	Fri,  7 Aug 2026 05:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786078866; cv=none; b=FZiidG5w8d3mBmQ0onddo+rHMF+c3o2be0Rs4k+DJMd4zopTi0R2NcGAAQeOlnwCphDGJMxlY/i+ovemKeHX/u4RiBOdH4KjsGsCB462dmu5HFrxmgQZTbZIwKqPrPj9sY7Pad/3IKHnJPa9htbKkEQdjT5Eskt/y5m7nO2wpqw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786078866; c=relaxed/simple;
-	bh=natvTo7p8TmCp+pasUxiWZHr+dLoAMV/UaBlK+PdSb8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDGqBasJGBSkQ2v6klL3HglqV6JRTohwUg4Y6WWDGJL5oz2ttSbYOef0BTa5KU8IGuCch+4i8Gpsj01ZlnDC/7iV0IfKJ9BFErieUd9kyhA34BbiIhYljUqGKkdO2+JJ9SSfyZo9uyDTcUaoIRGASjf6KsJdVa1XNlUzFIN2z3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0110936-0.00135384-0.987553;FP=16290500658568124146|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033045018182;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.ig.C91c_1786077877;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.ig.C91c_1786077877 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Fri, 07 Aug 2026 12:44:38 +0800
-From: "illusion.wang" <illusion.wang@nebula-matrix.com>
-To: dimon.zhao@nebula-matrix.com,
-	illusion.wang@nebula-matrix.com,
-	alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com,
-	netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	corbet@lwn.net,
-	kuba@kernel.org,
-	horms@kernel.org,
-	linux-doc@vger.kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	lukas.bulwahn@redhat.com,
-	edumazet@google.com,
-	enelsonmoore@gmail.com,
-	skhan@linuxfoundation.org,
-	hkallweit1@gmail.com,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v24 net-next 11/11] net/nebula-matrix: add common dev start/stop operation
-Date: Fri,  7 Aug 2026 12:44:15 +0800
-Message-ID: <20260807044422.2356-12-illusion.wang@nebula-matrix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260807044422.2356-1-illusion.wang@nebula-matrix.com>
-References: <20260807044422.2356-1-illusion.wang@nebula-matrix.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF213783C3
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 05:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786080250; cv=pass; b=uE0h4QYb5vdWqtrq9k7VZd91mN0j/y/XPqWFA1xgQH6z9rBDRv2iMdDRjPYwqoqxmE6P+HgJRu3C0SO/vT0poAKGuwU0h8K0aqCjrulor/QR4WxIOz+u7jITdDE468iCpm4KZh6/fwxlwzHP8irpZLguFd686GzlNi2SfBwiiIk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786080250; c=relaxed/simple;
+	bh=/qvEecEMyOi542WJRYMMRzy+QAliMqatuH7VPufRODw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H+WsTuUcl9sf6sfoq+1bRgZWkvts1RQ2b9rStQO75WkFyWBiiVCG7HMii54HGp6zqTso26J1nv9tJxAvc8zBQexebV2kX19IVn/KRYBIn4yLi7LmWQ30Nsska3tv7qmqZdkm/jMKwus7bSFEkjMh5MHZWq6U88YxaUp3YAstHjk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aW3wSyAA; arc=pass smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aW3wSyAA"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b14d1f9315so2398657e87.2
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 22:24:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786080244; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JalAMfrixuFtVkgj9r+Acp1/mywmYTSAZ1HjLoyVZeD3fjtLd4+Us7KXxfJIbZqRlN
+         1ImeuQn9Csn1x/30Eeuz+KGwvX1gGrYuvPKVH5WVdVKd95L7gN0PPSvpS+25pGNsdg5u
+         kOq52avGCOFLChUFdyL+xXcyJSlSV2nyQ5ijHhZ/Fsx8o8KrYEYF+CcMFCfwaBCoJ7PH
+         iPKmwWO1yzChcbaf0D9wNxezbYxt6WMiaQuznhECtjFksvogIqRF3QLBENPKFZmFNbMf
+         POj4+M+ey5dXQbxIT9dcHYuOpKISu9SMQ3XHmHPW0OneshSJMcfKcD/tMI/3rBb3KyDw
+         Gwgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uijGZVvSATzvrVnVp0OH7XFf3Ki325iqaFC2kD6QkJ8=;
+        fh=vMepP4Yu8v/UghFKFY+tE6nMi5zX0Nr49LD9aLt2a/0=;
+        b=X6agg4HJ2MmmR0mGH82yIlQgwwTRVlpuWsfW4MeIYhtYTBcFKuN8viMgy/i7G1/Bsu
+         caORanMU9hSzHoGg+JqiFuQpz3BDyQeIJuf+v9AjziHhSojOOO1/Pa8NMsCIy1zT0WiJ
+         JqiXPfo633/MuKUXwQaWRUvOFkYKH0IVvPU5cWG4H+CIxgEGtbYObdsTF5vb/Q1ZrPuT
+         fP7wqbmRLhSPrXu1v9uxh7ZApmOLWfS+NEh5nTaRNOO1trH7GrllwcMSDWnx6nGWFz3c
+         rqaHuhbJQbLMyY94DtJJltSLyXTA0pH0/+1q8ZfRTvLJZGFjqZnw0y+CG5ISCs3dvceC
+         ibAQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786080244; x=1786685044; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uijGZVvSATzvrVnVp0OH7XFf3Ki325iqaFC2kD6QkJ8=;
+        b=aW3wSyAAi78+D23Sdek5zfMxHIz0k5EUrrc2YshlmiJ/zL+f/Py/Qb9LTZgS8ADWle
+         MiyXm6MNtsIWgGGVZihNpAknx5n8sK+8Yz0ei488iZv8Q8dIupmKXLmPQXdPEsCiMA4f
+         OxAH87ip2O2NuNCHmWIUAE779Dz/Ej7iV1znLFmMCAOnie/HuVimaffT94wH2/wjkRFu
+         0mU64G5ilIF1Kpxjix1drjGIwHahfaiwM4ol/eXKqzMI+3i6pYV/F+0E9gt1AHVuCCsG
+         O6hRBM3d3XMVnrbqRK9HGRL+K6vTcUi36cKd6SHQWstcg7JaNnreL47Y/QoKuD5xgp7O
+         gWPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786080244; x=1786685044;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uijGZVvSATzvrVnVp0OH7XFf3Ki325iqaFC2kD6QkJ8=;
+        b=Ekld1LUadWBIY/70qM9UJyTl69bx32tB0LzHuvyeFy6BD/Ti3o4MzmkUs7dRZHBRr/
+         oAiwb76FeuSnm39zuIwFpd49Qlf5R91n3n2uQppr4FNv57BmWj76M+wd449MF2Gk2+1R
+         L6XL3k5LKC86PPyuvFqO63euYdEZIb9IrqUFl5AIS2p6r62UtVYSc0BNCesvk3SlNiSx
+         iT82jR11ibwOQC6f6xaqlrpMmUEl6xmjjsynRwwRxu1h+vpUmFAzs396iT+Ok237Gme9
+         gGm9i1yxtn0SJ6ZLvs8froVxild22nP70PgGKQlbOJKaK+zOPtZR5GA/7HXu7S7Ti7Rd
+         i3mw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6M9piqlsuFNu3wJ9Mya6WkzEX884Vq7d6Ob0+kkOpiz1yldYlF0K2eGlgrwnObxIQiHrzTxA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTVQfoH7HmZ9oc8g/17mJZPvKX6CwwCJJu2g+SsAxSL3eXIcHH
+	U6i50Hy6h8Vlbldu/fFVhIhp1CSivuondzQ+kJytab0qtP2FjZ5Uzgjp5tx4hUt/nDKeNRAuAPz
+	bErshd22q+XqgJG5i+hVIqKHRSXExOMY=
+X-Gm-Gg: AR+sD11BLaaL6BmOnabbzhHYPYjsRTCN+b9hRi28AdnLMILcvGOWoBLO/2ZrBJXTk94
+	XnInt57QznYmzVrbV125BUFImzRfhgcCWfyDuIke5rRrkT5qFPj887o9rQOtkDfI6tYg+LtHIbc
+	KUai9qloZor5/RfuZOEzpQln6EByn8M2k+DMq0ieJ1aXVYc7PMxfQLkyPvgxW//Sd9jLP0YEEYj
+	16gasDNiorpJu4tUH08dat2DpjPCnvG5JK0YGLegr9p9tL8MmCfL8k8d+q5O5QFGLgkkA3iWGXu
+	46dD3Rifr8/zA1cmddcj4+TWiPvU1t/7heEjzryGQzeAat2lAGYc84oUtmkoS+5HAXYkk3RO9QN
+	1rAlyjiL/h+3jOsFw2QXGtZEqp0RLq6GeyfkaelAp/1qjwbjseqC4bmVgkFI=
+X-Received: by 2002:a05:6512:31c7:b0:5ae:bcc4:c071 with SMTP id
+ 2adb3069b0e04-5b2f4ae81a7mr2718810e87.0.1786080243491; Thu, 06 Aug 2026
+ 22:24:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260804085330.1333242-1-xiongweimin@kylinos.cn> <20260806160410.2689091-1-kuba@kernel.org>
+In-Reply-To: <20260806160410.2689091-1-kuba@kernel.org>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Fri, 7 Aug 2026 13:23:24 +0800
+X-Gm-Features: AUfX_mx4bReQpJiFf032E4v-MIpmmPYimASFStvuaH9sZiJsUvBsJhvKU5xM0ZM
+Message-ID: <CAL+tcoBR3Nn8KE=pGOUg+ey1X_sqcFkkOjAJHrnU-BDA2=HP7g@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] virtio_net: check AF_XDP queue index before use
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: xiongweimin@kylinos.cn, mst@redhat.com, jasowangio@gmail.com, 
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
+	netdev@vger.kernel.org, virtualization@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: illusion wang <illusion.wang@nebula-matrix.com>
+On Fri, Aug 7, 2026 at 12:23=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> virtio_net: check AF_XDP queue index before use
+>
+> This moves the qid >=3D vi->curr_queue_pairs test in
+> virtnet_xsk_pool_enable() so that it runs before the vi->rq[qid].page_poo=
+l
+> check instead of after it.  The rest of the function is unchanged.
+>
+> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> > index 3e2a5876c6c8c..6160aa8ba595e 100644
+> > --- a/drivers/net/virtio_net.c
+> > +++ b/drivers/net/virtio_net.c
+> > @@ -5896,15 +5896,15 @@ static int virtnet_xsk_pool_enable(struct net_d=
+evice *dev,
+> >       if (vi->hdr_len > xsk_pool_get_headroom(pool))
+> >               return -EINVAL;
+> >
+> > +     if (qid >=3D vi->curr_queue_pairs)
+> > +             return -EINVAL;
+> > +
+> >       /* In big_packets mode, xdp cannot work, so there is no need to
+> >        * initialize xsk of rq.
+> >        */
+> >       if (!vi->rq[qid].page_pool)
+> >               return -ENOENT;
+> >
+> > -     if (qid >=3D vi->curr_queue_pairs)
+> > -             return -EINVAL;
+> > -
+>
+> [Severity: Medium]
+> The changelog says this "keeps an out of range queue id from reaching
+> vi->rq[qid] while checking page_pool".  Was an out of range qid actually
+> reachable here?
+>
+> vi->rq and vi->sq are sized max_queue_pairs in virtnet_alloc_queues():
+>
+>         vi->sq =3D kzalloc_objs(*vi->sq, vi->max_queue_pairs);
+>         ...
+>         vi->rq =3D kzalloc_objs(*vi->rq, vi->max_queue_pairs);
+>
+> and the netdev is created with alloc_etherdev_mq(..., max_queue_pairs), s=
+o
+> dev->num_rx_queues =3D=3D dev->num_tx_queues =3D=3D max_queue_pairs.
+>
+> The only path into virtnet_xsk_pool_enable() is
+> xp_assign_dev() -> ndo_bpf(XDP_SETUP_XSK_POOL) -> virtnet_xsk_pool_setup(=
+),
+> and xp_assign_dev() first goes through xsk_reg_pool_at_qid() in
+> net/xdp/xsk.c:
+>
+>         if (queue_id >=3D max(dev->real_num_rx_queues,
+>                             dev->real_num_tx_queues))
+>                 return -EINVAL;
+>
+> real_num_rx_queues/real_num_tx_queues can never exceed num_rx_queues/
+> num_tx_queues, so any qid that reaches the driver is already inside the
+> allocated arrays and vi->rq[qid].page_pool was an in-bounds read.
+>
+> For a qid in [curr_queue_pairs, max_queue_pairs) the old ordering still
+> rejected the request before sq/rq were used, so the only visible differen=
+ce
+> after the reorder appears to be -EINVAL instead of -ENOENT.  Could the
+> changelog describe this as a defensive reordering rather than as preventi=
+ng
+> an out of range dereference?  As written it reads like a memory safety fi=
+x
+> and may attract a stable backport.
 
-Add device start/stop helper functions to manage MSI-X vector mapping,
-mailbox interrupt resource initialization and deinitialization.
-Create unbound global workqueue for mailbox task scheduling; this shared
-work infrastructure supports both current interrupt-driven receive and
-future polling receive path.
+Point taken. Sashiko is good at finding things like this stuff...
 
-This patch implements complete startup and shutdown flow for
-common device resources:
-1. Add nbl_dev_start() to finish device startup procedure:
-   - Configure hardware MSI-X mapping table for different interrupt types
-   - Allocate required MSI-X irq vectors via pci_alloc_irq_vectors
-   - Request mailbox IRQ; interrupt handler schedules mailbox processing work
-   - Enable hardware mailbox interrupt and mark channel interrupt ready
+I don't see the necessity to keep this patch then.
 
-2. Add nbl_dev_stop() to tear down device resources safely in strict order:
-   - Update software channel state first to switch to polling, then mask
-     hardware interrupt to avoid stale ACK handling
-   - Free mailbox IRQ handler and release MSI-X vector resources
-   - Destroy hardware MSI-X mapping table
-
-Extend channel TX waiting logic with polling fallback and shutdown detection.
-When interrupt path is disabled, send routines rely on active polling to
-wait for message ACK, preventing deadlock during device stop.
-
-Hook nbl_core_start() / nbl_core_stop() into PCI probe and remove paths.
-
-Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
----
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   2 +
- .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 259 ++++++++++++++++++
- .../nebula-matrix/nbl/nbl_hw/nbl_chip.c       |   7 +-
- .../nbl/nbl_include/nbl_def_dev.h             |   2 +
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  21 +-
- 5 files changed, 285 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index 9519aacbf0ea..a48bd9a0ef1e 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -39,5 +39,7 @@ struct nbl_adapter {
- struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 				  struct nbl_init_param *param);
- void nbl_core_remove(struct nbl_adapter *adapter);
-+int nbl_core_start(struct nbl_adapter *adapter);
-+void nbl_core_stop(struct nbl_adapter *adapter);
- 
- #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-index bdb4d6a45fbc..3a8b7ee2e475 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-@@ -6,6 +6,17 @@
- #include <linux/pci.h>
- #include "nbl_dev.h"
- 
-+static void nbl_dev_clean_mailbox_schedule(struct nbl_dev_mgt *dev_mgt);
-+
-+/* ----------  Interrupt config  ---------- */
-+static irqreturn_t nbl_dev_clean_mailbox(int __always_unused irq, void *data)
-+{
-+	struct nbl_dev_mgt *dev_mgt = (struct nbl_dev_mgt *)data;
-+
-+	nbl_dev_clean_mailbox_schedule(dev_mgt);
-+	return IRQ_HANDLED;
-+}
-+
- static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
- {
- 	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-@@ -14,6 +25,187 @@ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
- 	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
- }
- 
-+static int nbl_dev_request_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	struct nbl_common_info *common = dev_mgt->common;
-+	u16 local_vec_id;
-+	int irq_num;
-+	int err;
-+
-+	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-+		return 0;
-+
-+	local_vec_id =
-+		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-+	irq_num = pci_irq_vector(common->pdev, local_vec_id);
-+	if (irq_num < 0) {
-+		dev_err(common->dev, "Failed to get mailbox IRQ vector: %d\n",
-+			irq_num);
-+		return irq_num;
-+	}
-+
-+	snprintf(dev_common->mailbox_name, sizeof(dev_common->mailbox_name),
-+		 "nbl_mailbox@pci:%s", pci_name(common->pdev));
-+	err = request_irq(irq_num, nbl_dev_clean_mailbox, 0,
-+			  dev_common->mailbox_name, dev_mgt);
-+	if (err)
-+		return err;
-+
-+	return 0;
-+}
-+
-+static void nbl_dev_free_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	struct nbl_common_info *common = dev_mgt->common;
-+	u16 local_vec_id;
-+	int irq_num;
-+
-+	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-+		return;
-+
-+	local_vec_id =
-+		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-+	irq_num = pci_irq_vector(common->pdev, local_vec_id);
-+	if (irq_num >= 0)
-+		free_irq(irq_num, dev_mgt);
-+}
-+
-+static int nbl_dev_enable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	u16 local_vec_id;
-+
-+	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-+		return 0;
-+
-+	local_vec_id =
-+		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-+	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
-+				  NBL_CHAN_INTERRUPT_READY,
-+				  NBL_CHAN_TYPE_MAILBOX, true);
-+
-+	return disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
-+					    local_vec_id, true);
-+}
-+
-+static int nbl_dev_disable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	u16 local_vec_id;
-+
-+	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-+		return 0;
-+
-+	local_vec_id =
-+		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-+	/*
-+	 * Disable sequence invariant: update software state first, then mask
-+	 * hardware interrupt. Must not reverse the order.
-+	 *
-+	 * If hardware interrupt is masked before clearing INTERRUPT_READY,
-+	 * the hardware may still transmit outstanding ACK packets for in-flight
-+	 * messages. Subsequent switch to polling mode discards pending ACK
-+	 * processing, triggering "Channel waiting ack failed" and "Skip ack
-+	 * with invalid status" errors.
-+	 *
-+	 * By entering polling mode first, any late hardware interrupts are
-+	 * ignored without pending ACK expectations, then hardware interrupt
-+	 * can be safely disabled.
-+	 *
-+	 * This helper is invoked in two paths:
-+	 * 1. Error unwind path of nbl_dev_start(): immediately followed by
-+	 *    nbl_dev_free_mailbox_irq(), channel resources
-+	 *    are fully torn down afterwards, no stale descriptors remain.
-+	 * 2. Normal device stop path nbl_dev_stop(): free_irq() synchronously
-+	 *    waits for any in-flight threaded irq bottom-half handler to
-+	 *    finish execution, all pending mailbox cleanup work completes
-+	 *    before channel teardown in late remove stage. No stuck
-+	 *    descriptors will linger in either scenario.
-+	 */
-+	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
-+				  NBL_CHAN_INTERRUPT_READY,
-+				  NBL_CHAN_TYPE_MAILBOX, false);
-+
-+	return disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
-+					    local_vec_id, false);
-+}
-+
-+static int nbl_dev_cfg_msix_map(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	bool mask_en = msix_info->serv_info[NBL_MSIX_NET_TYPE].hw_self_mask_en;
-+	u16 msix_net_num = msix_info->serv_info[NBL_MSIX_NET_TYPE].num;
-+	u16 msix_not_net_num = 0;
-+	int err, i;
-+
-+	msix_info->serv_info[NBL_MSIX_VIRTIO_TYPE].base_vector_id = 0;
-+	for (i = NBL_MSIX_NET_TYPE; i < NBL_MSIX_TYPE_MAX; i++)
-+		msix_info->serv_info[i].base_vector_id =
-+			msix_info->serv_info[i - 1].base_vector_id +
-+			msix_info->serv_info[i - 1].num;
-+
-+	for (i = 0; i < NBL_MSIX_TYPE_MAX; i++) {
-+		if (i == NBL_MSIX_NET_TYPE)
-+			continue;
-+		msix_not_net_num += msix_info->serv_info[i].num;
-+	}
-+
-+	err = disp_ops->cfg_msix_map(dev_mgt->disp_ops_tbl->priv,
-+					   msix_net_num, msix_not_net_num,
-+					   mask_en);
-+
-+	return err;
-+}
-+
-+static int nbl_dev_destroy_msix_map(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+
-+	return disp_ops->destroy_msix_map(dev_mgt->disp_ops_tbl->priv);
-+}
-+
-+static int nbl_dev_init_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	struct nbl_common_info *common = dev_mgt->common;
-+	int needed = 0;
-+	int err;
-+	int i;
-+
-+	for (i = 0; i < NBL_MSIX_TYPE_MAX; i++)
-+		needed += msix_info->serv_info[i].num;
-+
-+	err = pci_alloc_irq_vectors(common->pdev, needed, needed,
-+				    PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
-+	if (err < 0) {
-+		dev_err(common->dev,
-+			"pci_alloc_irq_vectors failed, err = %d\n", err);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static void nbl_dev_clear_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_common_info *common = dev_mgt->common;
-+
-+	pci_free_irq_vectors(common->pdev);
-+}
-+
- /* ----------  Channel config  ---------- */
- static void nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
- {
-@@ -73,6 +265,14 @@ static void nbl_dev_clean_mailbox_task(struct work_struct *work)
- 				      NBL_CHAN_TYPE_MAILBOX);
- }
- 
-+static void nbl_dev_clean_mailbox_schedule(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-+	struct nbl_common_info *common = dev_mgt->common;
-+
-+	queue_work(common->wq, &common_dev->clean_mbx_task);
-+}
-+
- /* ----------  Dev init process  ---------- */
- static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
- {
-@@ -238,3 +438,62 @@ void nbl_dev_remove(struct nbl_adapter *adapter)
- 	nbl_dev_remove_common_dev(adapter);
- 	nbl_common_destroy_wq(common);
- }
-+
-+/* ----------  Dev start process  ---------- */
-+int nbl_dev_start(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-+	int cleanup_ret;
-+	int ret;
-+
-+	ret = nbl_dev_cfg_msix_map(dev_mgt);
-+	if (ret)
-+		return ret;
-+
-+	ret = nbl_dev_init_interrupt_scheme(dev_mgt);
-+	if (ret)
-+		goto init_interrupt_scheme_err;
-+	ret = nbl_dev_request_mailbox_irq(dev_mgt);
-+	if (ret)
-+		goto mailbox_request_irq_err;
-+	ret = nbl_dev_enable_mailbox_irq(dev_mgt);
-+	if (ret)
-+		goto enable_mailbox_irq_err;
-+
-+	return 0;
-+enable_mailbox_irq_err:
-+	cleanup_ret = nbl_dev_disable_mailbox_irq(dev_mgt);
-+	if (cleanup_ret)
-+		dev_err(dev_mgt->common->dev,
-+			"Failed to disable mailbox IRQ: %d\n", cleanup_ret);
-+	nbl_dev_free_mailbox_irq(dev_mgt);
-+	cancel_work_sync(&common_dev->clean_mbx_task);
-+mailbox_request_irq_err:
-+	nbl_dev_clear_interrupt_scheme(dev_mgt);
-+init_interrupt_scheme_err:
-+	cleanup_ret =  nbl_dev_destroy_msix_map(dev_mgt);
-+	if (cleanup_ret)
-+		dev_err(dev_mgt->common->dev,
-+			"Failed to destroy MSI-X map: %d\n", cleanup_ret);
-+	return ret;
-+}
-+
-+void nbl_dev_stop(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-+	int ret;
-+
-+	ret = nbl_dev_disable_mailbox_irq(dev_mgt);
-+	if (ret)
-+		dev_err(dev_mgt->common->dev,
-+			"Failed to disable mailbox IRQ: %d\n", ret);
-+	nbl_dev_free_mailbox_irq(dev_mgt);
-+	cancel_work_sync(&common_dev->clean_mbx_task);
-+	nbl_dev_clear_interrupt_scheme(dev_mgt);
-+	ret = nbl_dev_destroy_msix_map(dev_mgt);
-+	if (ret)
-+		dev_err(dev_mgt->common->dev,
-+			"Failed to destroy MSI-X map: %d\n", ret);
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
-index bd175e200408..c1e6180a7010 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
-@@ -9,8 +9,7 @@ void nbl_res_chip_deinit_module(struct nbl_resource_mgt *res_mgt)
- {
- 	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
- 
--	if (hw_ops->deinit_module)
--		hw_ops->deinit_module(res_mgt->hw_ops_tbl->priv);
-+	hw_ops->deinit_module(res_mgt->hw_ops_tbl->priv);
- }
- 
- int nbl_res_chip_init_module(struct nbl_resource_mgt *res_mgt)
-@@ -20,7 +19,5 @@ int nbl_res_chip_init_module(struct nbl_resource_mgt *res_mgt)
- 	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
- 	struct nbl_hw_mgt *p = res_mgt->hw_ops_tbl->priv;
- 
--	if (hw_ops->init_module)
--		return hw_ops->init_module(p, eth_speed, eth_num);
--	return -EOPNOTSUPP;
-+	return hw_ops->init_module(p, eth_speed, eth_num);
- }
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-index b422a4edf0a9..32e6cce38d39 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-@@ -10,5 +10,7 @@ struct nbl_adapter;
- 
- int nbl_dev_init(struct nbl_adapter *adapter);
- void nbl_dev_remove(struct nbl_adapter *adapter);
-+int nbl_dev_start(struct nbl_adapter *adapter);
-+void nbl_dev_stop(struct nbl_adapter *adapter);
- 
- #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index 8a968a06b5b6..c12a53da6a9b 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -16,6 +16,16 @@
- #include "nbl_include/nbl_def_common.h"
- #include "nbl_core.h"
- 
-+int nbl_core_start(struct nbl_adapter *adapter)
-+{
-+	return nbl_dev_start(adapter);
-+}
-+
-+void nbl_core_stop(struct nbl_adapter *adapter)
-+{
-+	nbl_dev_stop(adapter);
-+}
-+
- struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 				  struct nbl_init_param *param)
- {
-@@ -131,7 +141,14 @@ static int nbl_probe(struct pci_dev *pdev,
- 		goto adapter_init_err;
- 	}
- 	pci_set_drvdata(pdev, adapter);
-+	err = nbl_core_start(adapter);
-+	if (err)
-+		goto core_start_err;
-+
- 	return 0;
-+core_start_err:
-+	pci_set_drvdata(pdev, NULL);
-+	nbl_core_remove(adapter);
- adapter_init_err:
- 	pci_clear_master(pdev);
- configure_dma_err:
-@@ -142,8 +159,10 @@ static void nbl_remove(struct pci_dev *pdev)
- {
- 	struct nbl_adapter *adapter = pci_get_drvdata(pdev);
- 
--	if (adapter)
-+	if (adapter) {
-+		nbl_core_stop(adapter);
- 		nbl_core_remove(adapter);
-+	}
- 
- 	pci_clear_master(pdev);
- }
--- 
-2.47.3
-
+Thanks,
+Jason
