@@ -1,82 +1,122 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F84397B1C;
-	Fri,  7 Aug 2026 10:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA203F6613;
+	Fri,  7 Aug 2026 10:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786098234; cv=none; b=C3ny/8jcbr818BVxvnpDm8v55AnI9FJaZmq+WQN/phTwd6Xw+0WNVRr86dAO34wKGc/I/L9dPJMMNp/qPINm8kJyS4Bffyg/fh8LdobmwO+ymDqUsS9Ra6BbZlWeCEXzrhRZdspnUUwQ6GcLBSSeFMRmMJH0jTiHup5qLoXgYUk=
+	t=1786098237; cv=none; b=D7m3MHWFlp93hgxw9Q//CycUG2FgPfEtoVx6o0VvQLP1yd2lPO1PWfWH5LZwPCQnu0p6SbgMt4iOBjMAvm5b511SgJwyC3EFcZVNikRSUUwsK/U2SWQ2/Kgz6t1N03qZ8E7SRXh3stQfdYnrWzIT6bMp73VgYPWIlUlXccbnFy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786098234; c=relaxed/simple;
-	bh=bIjsHrwrh5cGKWtGNy+OBCSSmpd6L7S7wDE2PEYU/7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A2F4OKMaw5+ngjFwWTvE3oxPebAWCkA/gCyjVoeaaRKpluVCIv1Dj5JSzAJhbpGezYMI/gqofsJG33XIZ28CbutQKnvZSIrft4muOgwqrFVuKQgiNeq6tX313lnM8hqJd9S/QTtViRT+5i+yJ3xBQ5Ojnngqq3lAIGNGBHPYM4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=Cj/E7RoJ; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1786098237; c=relaxed/simple;
+	bh=KUpgVbn5nB2+AyKuxa3JNzzXGLajWAIhacWJDPIenwM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=grpEsK+VDpS5LRGDI/NHTQY37+EOzZ8Ye0xyNWi+XjdNOe9+WQs/bxF7vDR89oX1hjBUMX9X7MHbIgnNmknnIqAUJin4W1x3eMncgLFbRxSSNGhEoWl6DjbUBc+BZG1SLDmKQIiYxk8XoBRmniZIQUcZbTTzqeNg/RJhRn7uNxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sz1q2J3K; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="Cj/E7RoJ"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 53E3D60192;
-	Fri,  7 Aug 2026 12:23:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1786098228;
-	bh=vT5puZXX1TYP7PjTvIrBrI5uYYQP6KI812jYIqWywPA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Cj/E7RoJYtYfQj6ZTc5DgK47kMe4cxNMTBRLsbCMb+0Nefih1/J0mJKAscbb8SKYR
-	 JjdewAMGN4yAo6o/hptvNexeB/30dTmmM54rR4+RASZ6JklxFg82Ld674BK9tl9f8s
-	 yTkNPPgBLN5IYmkJ8/2b0qRvFhsHP5YUeNgpWAWZR0DS/NYhNM4/T+O6m80Z7ewwlG
-	 8Z756J2MWOY3itz0kYyvqN0bMB5UxCY/t6ryJWGOl1r952nAcJ/fZ5qLt4t+LpPhIh
-	 SioUfUfsB5Wv6P9vzt05vf2E3+R8dUA69OHl3RFk9Elwu5v2oS8B34nk8cY/wqE8Ku
-	 XUgFX68P/JdsQ==
-Date: Fri, 7 Aug 2026 12:23:45 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Qingshuang Fu <fffsqian@163.com>, Florian Westphal <fw@strlen.de>,
-	davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Qingshuang Fu <fuqingshuang@kylinos.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: Re: [PATCH net v2] selftests: netfilter: conntrack_dump_flush:
- remove unused variables and fix typo
-Message-ID: <anWyMUFvONx6k1d5@chamomile>
-References: <20260807075928.64326-1-fffsqian@163.com>
- <anWgQSbZWK6D2ONg@fedora>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sz1q2J3K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786098235; x=1817634235;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KUpgVbn5nB2+AyKuxa3JNzzXGLajWAIhacWJDPIenwM=;
+  b=Sz1q2J3KRK8uVWLaCBSW24QfK3+ztsLXxEuftuja2M5RUFgPGvsLk2dJ
+   hJVa15JZ6EiS3VGtCPIAfgt6+e8rcwKDA1qaW/kpiOdZXV6TjlIkuEWWs
+   +IMDwGXleNN+gzb6cfYxLf7WuZ66hD66d8Z68mqNBcBGcNVN7IHgVZTIz
+   sCdHZTYjqlNn7wnpxZPTcR0SPFYtxKOZZoqhvUL3P+hg2NJbl8UgbTKpp
+   2whK7K/lZc6s3uHDp4SOeWphe4AqDNu7Tq7e6+eRQPmPc/wQi8lskoAfD
+   eeo9yub5RTdmPMfyj7aQBxNJPIYFkmZmB8dxDNGJ4NZoYGIBLzpoRh4iU
+   g==;
+X-CSE-ConnectionGUID: wR3XonIrScWftd6ydKVC0Q==
+X-CSE-MsgGUID: gWuC3fc7QRSDnb4HWWTcig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="90381233"
+X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; 
+   d="scan'208";a="90381233"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2026 03:23:53 -0700
+X-CSE-ConnectionGUID: baiEERPRRHm0GOb6ZwJ49g==
+X-CSE-MsgGUID: WG5fssa3SCGkU8OuGXMnSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; 
+   d="scan'208";a="265835216"
+Received: from os-delivery.igk.intel.com ([10.102.18.218])
+  by orviesa003.jf.intel.com with ESMTP; 07 Aug 2026 03:23:51 -0700
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+To: netdev@vger.kernel.org
+Cc: intel-wired-lan@lists.osuosl.org,
+	anthony.l.nguyen@intel.com,
+	kuba@kernel.org,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	edumazet@google.com,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	stable@vger.kernel.org,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Subject: [PATCH net v1] net/sched: cls_u32: feed u32_replace_hw_knode() with correct set of flags
+Date: Fri,  7 Aug 2026 12:03:56 +0200
+Message-Id: <20260807100356.1083774-1-jedrzej.jagielski@intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <anWgQSbZWK6D2ONg@fedora>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 07, 2026 at 05:07:13PM +0800, Hangbin Liu wrote:
-> On Fri, Aug 07, 2026 at 03:59:28PM +0800, Qingshuang Fu wrote:
-> > From: Qingshuang Fu <fuqingshuang@kylinos.cn>
-> > 
-> > Remove unused 'rplnlh' in conntrack_data_insert(), and remove unused
-> > 'rplnlh' and 'nest' variables in conntrack_count_zone() and
-> > conntrack_flush_zone(). These variables were declared but never used
-> > since their introduction.
-> > 
-> > Also fix typo: rename misspelled conntracK_count_zone() to
-> > conntrack_count_zone().
-> > 
-> > Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-> > Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
-> 
-> > ---
-> > v2:
-> >   - Drop Fixes tag as this is a cleanup, not a bug fix
-> 
-> If not a bug fix, you should target to net-next.
+Fix u32_change() to pass proper variable to u32_replace_hw_knode().
 
-We will handle this though the nf-next tree.
+When trying to offload u32 cmd by adding skip_sw attributes it gets
+ignored and it cannot be correctly processed by HW and tc_cls_u32_offload
+struct which is then passed to driver lacks skip_sw var enabled.
 
-Thanks.
+u32_replace_hw_knode is fed with the TCA_ACT_* flags (bits 16+)
+instead of TCA_CLS_* flags (bits 0-4) which actually stores the flags
+parsed by tc, so tc_skip_sw() always returns false. This leads to
+ignoring some of the attibutes which are meant to be configured on filter
+setup.
+
+None of the TCA_ACT_FLAGS_* is actually used within
+u32_replace_hw_knode(), so there is no point in passing them.
+
+Looks like commit 695176bfe5de ("net_sched: refactor TC action init API")
+shadowed the local flags variable which used to be set with
+nla_get_u32(tb[TCA_U32_FLAGS]) with the flags as the new function param
+while not replacing for none of the u32_replace_hw_knode() calls.
+
+Fixes: 695176bfe5de ("net_sched: refactor TC action init API")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+---
+ net/sched/cls_u32.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index 8f30cc82181d..dc6e455e64ec 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -935,7 +935,7 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 
+ 		u32_bind_filter(tp, new, base, tb);
+ 
+-		err = u32_replace_hw_knode(tp, new, flags, extack);
++		err = u32_replace_hw_knode(tp, new, userflags, extack);
+ 		if (err) {
+ 			u32_unbind_filter(tp, new, tb);
+ 
+@@ -1161,7 +1161,7 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 		struct tc_u_knode __rcu **ins;
+ 		struct tc_u_knode *pins;
+ 
+-		err = u32_replace_hw_knode(tp, n, flags, extack);
++		err = u32_replace_hw_knode(tp, n, userflags, extack);
+ 		if (err)
+ 			goto errunbind;
+ 
+-- 
+2.31.1
+
