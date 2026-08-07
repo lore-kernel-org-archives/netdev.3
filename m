@@ -1,23 +1,22 @@
-Received: from out28-173.mail.aliyun.com (out28-173.mail.aliyun.com [115.124.28.173])
+Received: from out198-27.us.a.mail.aliyun.com (out198-27.us.a.mail.aliyun.com [47.90.198.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88548394462;
-	Fri,  7 Aug 2026 04:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9633A48CE;
+	Fri,  7 Aug 2026 04:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786077879; cv=none; b=J3HAYTjexyChd02MiyKvndOf/X0ZRdsOvnIIhngAxHB2oXWMPfVk+krwi3mmqwQTTcKguQUR9ycgQsslaM7Vu0GFSxTH8y/apWMY+ReDy0vd1ngIB6L9OUmBp0An7MQhYGj+J2WNJMY4wtwgYgyo0arbqrlyJrf+c2q0W85Gp8c=
+	t=1786077888; cv=none; b=lN6uGzwkaPWo8uf1zaqdqoJ13Eyt6SbJ5NnfMi1svJzA25kDHT7qcXD+0FGBZmom8taXW3/eA/0XI6laskcZdLLv1uT2Yq42mUZSGrzhzizkESP8YZ8SxlsiEb100oPc/AVWctDdi8Nn/EXrC6VWepLOw/wPWVmKyIR5gOZMFb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786077879; c=relaxed/simple;
-	bh=DZ6b9YivWPqAOV9feQm9s/xewYNtEF/sc3f+R2bfTjY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqzrKac7dWXoWFksZDVhqOz4BFBM8Ngcm/qo5bBWnHOf9IW28HaiTnXAV00jVgR8KatgSoIL3tyxQEn/DYztIVk4ckT/pYXuYepxgknwyCqUyZE5LutJBIZjXYfjOCd9jN9eeNBQiCXTzOQq6yOCJfV6Iov/k6ZEoMcMetHCqjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.173
+	s=arc-20240116; t=1786077888; c=relaxed/simple;
+	bh=iiq1dw2F1ND77dkqK3hr3g5CdtDEMw+MbVDIu+3y60A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LIbYgry24AX+uGpk3qb3r+NTUJG/0909X8Z0WPDUc1QyRGMy7hUgr2YAimfGzoQeRboHfkjKv9aBgos9S9myArO5PrYIKMhMdlc8EMFRZUDAPgVKie5u+4juneYNOkluT0/XRxlHK6KqRS2yVApyCKDf6VYS88hvsM4xY3E0IM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00325441-0.00217557-0.99457;FP=16635848956530263698|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033037021217;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.ig.C8tg_1786077866;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.ig.C8tg_1786077866 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06867412|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.133578-0.0117365-0.854685;FP=7381890710716827154|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.ig.C8qu_1786077864;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.ig.C8qu_1786077864 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Fri, 07 Aug 2026 12:44:27 +0800
+          Fri, 07 Aug 2026 12:44:25 +0800
 From: "illusion.wang" <illusion.wang@nebula-matrix.com>
 To: dimon.zhao@nebula-matrix.com,
 	illusion.wang@nebula-matrix.com,
@@ -37,507 +36,267 @@ Cc: andrew+netdev@lunn.ch,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v24 net-next 02/11] net/nebula-matrix: add core driver architecture and HW layer initialization
-Date: Fri,  7 Aug 2026 12:44:06 +0800
-Message-ID: <20260807044422.2356-3-illusion.wang@nebula-matrix.com>
+Subject: [PATCH v24 net-next 00/11] nbl driver for Nebulamatrix NICs
+Date: Fri,  7 Aug 2026 12:44:04 +0800
+Message-ID: <20260807044422.2356-1-illusion.wang@nebula-matrix.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260807044422.2356-1-illusion.wang@nebula-matrix.com>
-References: <20260807044422.2356-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: illusion wang <illusion.wang@nebula-matrix.com>
 
-Add the fundamental driver architecture framework and Leonis hardware
-layer initialization for NBL NIC family.
+This patch series represents the first phase. We plan to integrate it in
+two phases: the first phase covers mailbox and chip configuration,
+while the second phase involves net dev configuration.
+Together, they will provide basic PF-based Ethernet port transmission and
+reception capabilities.
 
-- nbl_adapter/nbl_core/nbl_common_info core device context
-- PCI probe/remove entry and basic device capability parsing
-- 64/32-bit DMA mask fallback and PCI master setup
-- Leonis hardware BAR resource request and ioremap logic
+After that, we will consider other features, such as ethtool support,
+flow management, adminq messaging, VF support, debugfs support, etc.
 
-This patch establishes the lowest HW layer and core infrastructure,
-preparing for subsequent device implementations.
+To ensure compatibility, our architecture is divided into the following
+layers:
 
-Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
----
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   3 +-
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |  18 +++
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 152 ++++++++++++++++++
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  14 ++
- .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |  33 ++++
- .../nbl/nbl_include/nbl_def_common.h          |  32 ++++
- .../nbl/nbl_include/nbl_def_hw.h              |  17 ++
- .../nbl/nbl_include/nbl_include.h             |   9 ++
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  97 ++++++++++-
- 9 files changed, 373 insertions(+), 2 deletions(-)
+1. Dev Layer (Device Layer)
+The top-level business logic layer where all operations are
+device-centric. Every operation is performed relative to the device
+context. The intergration of base functions encompasses:
+management(ctrl only for leonis pf0), network(net_dev,this time not
+contained),common.
+
+2. Dispatch Layer
+The distribution from services to specific data operations is mainly
+divided into two types: direct pass-through and handling by the
+management PF. It shields the upper layer from the differences in
+specific underlying locations.
+It describes the processing locations and paths of the services.
+
+3. Resource Layer
+Handles tasks dispatched from Dispatch Layer. These tasks fall into two
+categories:
+3.1 Hardware control
+The Resource Layer further invokes the HW Layer when hardware access is
+needed, as only the HW Layer has OS-level privileges.
+3.2 Software resource management
+Operations like packet statistics collection that don't require hardware
+access.
+
+4. HW Layer (Hardware Layer)
+Serves the Resource Layer by interacting with different hardware
+chipsets.Writes to hardware registers to drive the hardware based on
+Resource Layer directives.
+
+5. Channel Layer
+
+Handle communication between PF0(has ctrl func) and other PF,and provide
+basic interaction channels.
+
+6. Common Layer
+Provides fundamental services
+
+changes v23->v24
+Link to v23:https://lore.kernel.org/netdev/20260731094242.2655-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+2.Issues found by Jakub
+
+changes v22->v23
+Link to v22:https://lore.kernel.org/netdev/20260723040110.91410-1-illusion.wang@nebula-matrix.com/
+AI review issues
+
+chages v21->v22
+Link to v21:https://lore.kernel.org/netdev/20260708064742.35391-1-illusion.wang@nebula-matrix.com/
+AI review issues
+
+changes v20->v21
+Link to v20:https://lore.kernel.org/netdev/20260630010718.4346-1-illusion.wang@nebula-matrix.com/
+I have dropped the old Patch 2 titled "add our driver architecture"
+Add new Patch 2 "add core driver architecture and HW layer initialization".
+Split original patch8 into three separate patches as suggested
+
+changes v19->v20
+Link to v19:https://lore.kernel.org/netdev/20260617044702.2439-1-illusion.wang@nebula-matrix.com/
+Starting from V20, I have dropped the old Patch 3 titled "P4
+configuration invoked during chip initialization". This functionality
+will be reimplemented in next phase using the request_firmware() API
+with an external firmware blob.
+changes v18->v19
+Link to v18:https://lore.kernel.org/netdev/20260611044916.2383-1-illusion.wang@nebula-matrix.com/
+changes v17->v18
+Link to v17:https://lore.kernel.org/netdev/20260601093149.25905-1-illusion.wang@nebula-matrix.com/
+changes v16->v17
+Link to v16:https://lore.kernel.org/netdev/20260526035453.2359-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v15->v16
+Link to v15:https://lore.kernel.org/netdev/20260520032950.4874-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v14->v15
+Link to v14:https://lore.kernel.org/netdev/20260513011649.4404-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v13->v14
+Link to v13:https://lore.kernel.org/netdev/20260428114910.2616-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v12->v13
+Link to v12:https://lore.kernel.org/netdev/20260415033608.2438-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v11->v12
+Link to v11:https://lore.kernel.org/netdev/20260408093739.56001-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v10->v11
+Link to v10:https://lore.kernel.org/netdev/20260401022318.28550-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Mohsin
+2.AI review issues
+changes v9->v10
+Link to v9:https://lore.kernel.org/netdev/20260325040048.2313-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Jakub
+2.AI review issue
+changes v8->v9
+Link to v8:https://lore.kernel.org/netdev/20260317034533.5600-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Jakub
+2.AI review issue
+Changes v7→v8
+Link to v7:https://lore.kernel.org/netdev/20260310120959.22015-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Paolo
+Changes v6->v7
+Link to v6:https://lore.kernel.org/netdev/20260306033451.5196-1-illusion.wang@nebula-matrix.com/
+1.Issue found by Jakub
+2.AI review issue
+Changes v5->v6
+Link to V5:https://lore.kernel.org/netdev/20260226073840.3222-1-illusion.wang@nebula-matrix.com/
+1.put all standard linux includes files the .c file which needs it & others
+--Andrew
+2.AI review issue
+Changes v4->v5
+Link to V4:https://lore.kernel.org/netdev/20260206021608.85381-1-illusion.wang@nebula-matrix.com/
+1.change nbl_core to nbl & change ** pointers to *pointers & others
+--Andrew
+2.AI review issue
+Changes v3->v4
+Link to v3: https://lore.kernel.org/netdev/20260123011804.31263-1-illusion.wang@nebula-matrix.com
+1.cut down to part of a mini driver(mailbox and chip init)
+--Jakub Kicinski Simon Horman(some sort of staged approached)
+2.modify issues found by ai.
+3. Reverse Christmas tree/nbl_err/devm_kfree/remove some macros/
+void type to real type/others
+--Andrew Lunn
+4.change deprecated pci_enable_msix_range to pci_alloc_irq_vectors
+5.delete service layer
+6.the style of kconfig---Randy Dunlap
+7.add to Documentation/networking/device_drivers/ethernet/index.rst
+--Simon Horman
+Changes v2 →v3
+Link to v2: https://lore.kernel.org/netdev/20260109100146.63569-1-illusion.wang@nebula-matrix.com/
+1.cut down to a mini driver:
+    delete vf support
+    use promisc mode to cut down flow management
+    drop patch15 in v2
+    delete adminq msg
+    delete abnormal handling
+    delete some unimportant interfaces
+2.modify issues found by ai review
+Changes v1->v2
+Link to v1: https://lore.kernel.org/netdev/20251223035113.31122-1-illusion.wang@nebula-matrix.com/
+1.Format Issues and Compilation Issues
+- Paolo Abeni
+2.add sysfs patch and drop coexisting patch
+- Andrew Lunn
+3.delete some unimportant ndo operations
+4.add machine generated headers patch
+5.Modify the issues found in patch1-2 and apply the same fixes to other
+patches
+6.modify issues found by nipa
+
+illusion wang (11):
+  net/nebula-matrix: add minimum nbl build framework
+  net/nebula-matrix: add core driver architecture and HW layer
+    initialization
+  net/nebula-matrix: add channel wire opcode enum definitions
+  net/nebula-matrix: add channel layer
+  net/nebula-matrix: add common resource implementation
+  net/nebula-matrix: add intr resource implementation
+  net/nebula-matrix: add chip-wide hardware init/deinit implementation
+  net/nebula-matrix: dispatch: add control-level routing core
+    infrastructure
+  net/nebula-matrix: dispatch: add channel RPC framework & shared hw ops
+    mutex
+  net/nebula-matrix: add common/ctrl dev init/remove operation
+  net/nebula-matrix: add common dev start/stop operation
+
+ .../device_drivers/ethernet/index.rst         |    1 +
+ .../ethernet/nebula-matrix/nbl.rst            |   28 +
+ MAINTAINERS                                   |   10 +
+ drivers/net/ethernet/Kconfig                  |    1 +
+ drivers/net/ethernet/Makefile                 |    1 +
+ drivers/net/ethernet/nebula-matrix/Kconfig    |   31 +
+ drivers/net/ethernet/nebula-matrix/Makefile   |    6 +
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   15 +
+ .../nbl/nbl_channel/nbl_channel.c             | 1142 +++++++++++++++++
+ .../nbl/nbl_channel/nbl_channel.h             |  173 +++
+ .../nebula-matrix/nbl/nbl_common/nbl_common.c |  206 +++
+ .../nebula-matrix/nbl/nbl_common/nbl_common.h |   29 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   45 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      |  499 +++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |   57 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c |  633 +++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |   26 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.c       |   23 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.h       |   12 +
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 1086 ++++++++++++++++
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  355 +++++
+ .../nbl_hw_leonis/nbl_resource_leonis.c       |  321 +++++
+ .../nbl_hw_leonis/nbl_resource_leonis.h       |   12 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |   78 ++
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.c  |  405 ++++++
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.h  |   21 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.c   |  150 +++
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  109 ++
+ .../nbl/nbl_include/nbl_def_channel.h         |  379 ++++++
+ .../nbl/nbl_include/nbl_def_common.h          |   69 +
+ .../nbl/nbl_include/nbl_def_dev.h             |   16 +
+ .../nbl/nbl_include/nbl_def_dispatch.h        |   42 +
+ .../nbl/nbl_include/nbl_def_hw.h              |   53 +
+ .../nbl/nbl_include/nbl_def_resource.h        |   38 +
+ .../nbl/nbl_include/nbl_include.h             |   49 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  247 ++++
+ 36 files changed, 6368 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Kconfig
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.h
  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index b90fba239401..caa863d3a582 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -3,4 +3,5 @@
- 
- obj-$(CONFIG_NBL) := nbl.o
- 
--nbl-objs +=      nbl_main.o
-+nbl-objs +=       nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
-+				nbl_main.o
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index 59f5b92944cc..e2e33fbb848a 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -6,8 +6,26 @@
- #ifndef _NBL_CORE_H_
- #define _NBL_CORE_H_
- 
-+#include <linux/pci.h>
-+#include "nbl_include/nbl_include.h"
-+#include "nbl_include/nbl_def_common.h"
-+
- enum {
- 	NBL_CAP_HAS_NET_BIT,
- };
- 
-+struct nbl_core {
-+	struct nbl_hw_mgt *hw_mgt;
-+};
-+
-+struct nbl_adapter {
-+	struct pci_dev *pdev;
-+	struct nbl_core core;
-+	struct nbl_common_info common;
-+};
-+
-+struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
-+				  struct nbl_init_param *param);
-+void nbl_core_remove(struct nbl_adapter *adapter);
-+
- #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-new file mode 100644
-index 000000000000..d66d7ca8a2bb
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-@@ -0,0 +1,152 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+#include <linux/device.h>
-+#include <linux/pci.h>
-+#include <linux/bits.h>
-+#include <linux/io.h>
-+#include <linux/spinlock.h>
-+#include <linux/bitfield.h>
-+#include "nbl_hw_leonis.h"
-+
-+/* Structure starts here, adding an op should not modify anything below */
-+static struct nbl_hw_mgt *nbl_hw_setup_hw_mgt(struct nbl_common_info *common)
-+{
-+	struct device *dev = common->dev;
-+	struct nbl_hw_mgt *hw_mgt;
-+
-+	hw_mgt = devm_kzalloc(dev, sizeof(*hw_mgt), GFP_KERNEL);
-+	if (!hw_mgt)
-+		return ERR_PTR(-ENOMEM);
-+
-+	hw_mgt->common = common;
-+
-+	return hw_mgt;
-+}
-+
-+static int nbl_pcim_request_selected_bars(struct pci_dev *pdev, u32 mask,
-+					  const char *name)
-+{
-+	int bar;
-+	int ret;
-+
-+	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++) {
-+		if (!(mask & BIT(bar)))
-+			continue;
-+		ret = pcim_request_region(pdev, bar, name);
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+int nbl_hw_init_leonis(struct nbl_adapter *adapter)
-+{
-+	struct nbl_common_info *common = &adapter->common;
-+	struct pci_dev *pdev = common->pdev;
-+	struct nbl_hw_mgt *hw_mgt = NULL;
-+	resource_size_t bar_len;
-+	u32 bar_mask;
-+	int ret;
-+
-+	hw_mgt = nbl_hw_setup_hw_mgt(common);
-+	if (IS_ERR(hw_mgt)) {
-+		ret = PTR_ERR(hw_mgt);
-+		goto setup_mgt_fail;
-+	}
-+	bar_mask = BIT(NBL_MEMORY_BAR) | BIT(NBL_MAILBOX_BAR);
-+	ret = nbl_pcim_request_selected_bars(pdev, bar_mask, NBL_DRIVER_NAME);
-+	if (ret) {
-+		dev_err(&pdev->dev,
-+			"Request memory bar failed, err = %d\n",
-+			ret);
-+		goto setup_mgt_fail;
-+	}
-+
-+	bar_len = pci_resource_len(pdev, NBL_MEMORY_BAR);
-+	if (!(pci_resource_flags(pdev, NBL_MEMORY_BAR) & IORESOURCE_MEM)) {
-+		dev_err(&pdev->dev, "MEMORY BAR is not memory resource\n");
-+		ret = -EINVAL;
-+		goto setup_mgt_fail;
-+	}
-+	if (common->has_ctrl) {
-+		/*
-+		 * Hardware layout: MEMORY BAR total size is 64M.
-+		 * The front NBL_HW_REG_SPACE_SIZE (32M) holds module
-+		 * registers and table entries. The trailing NBL_RDMA_NOTIFY_LEN
-+		 * bytes within this 32M region are reserved exclusively for
-+		 * RDMA notification hardware logic.
-+		 * Ethernet driver must avoid mapping this reserved range to
-+		 * prevent x86 PAT attribute aliasing conflict between eth UC
-+		 * mapping and RDMA driver WC mapping.
-+		 * Mapping range starts at offset 0, length equals
-+		 * NBL_HW_REG_SPACE_SIZE - NBL_RDMA_NOTIFY_LEN.
-+		 */
-+		if (bar_len < NBL_HW_REG_SPACE_SIZE) {
-+			dev_err(&pdev->dev,
-+				"MEMORY BAR len %pa too small for ctrl reg space\n",
-+				&bar_len);
-+			ret = -EINVAL;
-+			goto setup_mgt_fail;
-+		}
-+		/*
-+		 * Spec: Front 32MiB of 64M MEM BAR contains register space.
-+		 * Skip trailing NBL_RDMA_NOTIFY_LEN bytes inside 32M boundary
-+		 * never map that RDMA exclusive partition to avoid PAT conflict
-+		 */
-+		hw_mgt->hw_size = NBL_HW_REG_SPACE_SIZE  - NBL_RDMA_NOTIFY_LEN;
-+		hw_mgt->hw_addr =
-+			pcim_iomap(pdev, NBL_MEMORY_BAR,
-+				   hw_mgt->hw_size);
-+	} else {
-+		if (bar_len < NBL_REG_NET_ONLY_LEN) {
-+			dev_err(&pdev->dev,
-+				"MEMORY BAR len %pa too small for net only reg space\n",
-+				&bar_len);
-+			ret = -EINVAL;
-+			goto setup_mgt_fail;
-+		}
-+		hw_mgt->hw_size = NBL_REG_NET_ONLY_LEN;
-+		hw_mgt->hw_addr = pcim_iomap(pdev, NBL_MEMORY_BAR,
-+					     hw_mgt->hw_size);
-+	}
-+	if (!hw_mgt->hw_addr) {
-+		dev_err(&pdev->dev, "MEMORY BAR pcim_iomap failed\n");
-+		ret = -EIO;
-+		goto setup_mgt_fail;
-+	}
-+
-+	bar_len = pci_resource_len(pdev, NBL_MAILBOX_BAR);
-+	if (!(pci_resource_flags(pdev, NBL_MAILBOX_BAR) & IORESOURCE_MEM)) {
-+		dev_err(&pdev->dev, "MAILBOX BAR is not memory resource\n");
-+		ret = -EINVAL;
-+		goto setup_mgt_fail;
-+	}
-+	if (bar_len == 0) {
-+		dev_err(&pdev->dev, "MAILBOX BAR length is zero\n");
-+		ret = -EINVAL;
-+		goto setup_mgt_fail;
-+	}
-+	hw_mgt->mailbox_bar_hw_addr = pcim_iomap(pdev, NBL_MAILBOX_BAR,
-+						 bar_len);
-+	if (!hw_mgt->mailbox_bar_hw_addr) {
-+		dev_err(&pdev->dev, "MAILBOX BAR pcim_iomap failed\n");
-+		ret = -EIO;
-+		goto setup_mgt_fail;
-+	}
-+
-+	adapter->core.hw_mgt = hw_mgt;
-+
-+	return 0;
-+
-+setup_mgt_fail:
-+	return ret;
-+}
-+
-+void nbl_hw_remove_leonis(struct nbl_adapter *adapter)
-+{
-+	/* All BAR mappings & PCI regions are managed by pcim/devres,
-+	 * no manual iounmap / release required
-+	 */
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-new file mode 100644
-index 000000000000..77c67b67ba31
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_HW_LEONIS_H_
-+#define _NBL_HW_LEONIS_H_
-+
-+#include <linux/types.h>
-+
-+#include "../../nbl_include/nbl_include.h"
-+#include "../nbl_hw_reg.h"
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-new file mode 100644
-index 000000000000..1a199357e85f
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-@@ -0,0 +1,33 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_HW_REG_H_
-+#define _NBL_HW_REG_H_
-+
-+#include <linux/types.h>
-+
-+#include "../nbl_include/nbl_def_hw.h"
-+#include "../nbl_include/nbl_def_common.h"
-+#include "../nbl_core.h"
-+
-+#define NBL_MEMORY_BAR				0
-+#define NBL_MAILBOX_BAR				2
-+#define NBL_RDMA_NOTIFY_LEN			(8ULL << 10)
-+#define NBL_REG_NET_ONLY_LEN			(8ULL << 10)
-+/*
-+ * PCI MEMORY BAR total size: 64MiB.
-+ * First 32MiB: module registers + table entry address range.
-+ * Region after 32MiB is unused for ethernet driver.
-+ */
-+#define NBL_HW_REG_SPACE_SIZE			(32ULL << 20)
-+
-+struct nbl_hw_mgt {
-+	struct nbl_common_info *common;
-+	u8 __iomem *hw_addr;
-+	u8 __iomem *mailbox_bar_hw_addr;
-+	resource_size_t hw_size;
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-new file mode 100644
-index 000000000000..5b7ec68d620b
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEF_COMMON_H_
-+#define _NBL_DEF_COMMON_H_
-+
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/device.h>
-+#include "nbl_include.h"
-+
-+struct nbl_common_info {
-+	struct pci_dev *pdev;
-+	struct device *dev;
-+	u32 msg_enable;
-+	u16 vsi_id;
-+	u8 eth_id;
-+	u8 logic_eth_id;
-+	u8 eth_num;
-+
-+	u8 function;
-+	u8 devid;
-+	u8 bus;
-+	u8 hw_bus;
-+
-+	u8 has_ctrl;
-+	u8 has_net;
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-new file mode 100644
-index 000000000000..517cfa5c755e
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEF_HW_H_
-+#define _NBL_DEF_HW_H_
-+
-+#include <linux/types.h>
-+
-+struct nbl_hw_mgt;
-+struct nbl_adapter;
-+
-+int nbl_hw_init_leonis(struct nbl_adapter *adapter);
-+void nbl_hw_remove_leonis(struct nbl_adapter *adapter);
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-index cd99f96e1568..70f4f4b4c49c 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-@@ -10,5 +10,14 @@
- 
- /*  ------  Basic definitions  -------  */
- #define NBL_DRIVER_NAME					"nbl"
-+struct nbl_func_caps {
-+	u32 has_ctrl:1;
-+	u32 has_net:1;
-+	u32 rsv:30;
-+};
-+
-+struct nbl_init_param {
-+	struct nbl_func_caps caps;
-+};
- 
- #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index 7c969c854bdc..bd9f682b8323 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -8,16 +8,111 @@
- #include <linux/module.h>
- #include <linux/bits.h>
- #include "nbl_include/nbl_include.h"
-+#include "nbl_include/nbl_def_hw.h"
-+#include "nbl_include/nbl_def_common.h"
- #include "nbl_core.h"
- 
-+struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
-+				  struct nbl_init_param *param)
-+{
-+	struct nbl_common_info *common;
-+	struct nbl_adapter *adapter;
-+	int ret;
-+
-+	adapter = devm_kzalloc(&pdev->dev, sizeof(*adapter), GFP_KERNEL);
-+	if (!adapter)
-+		return ERR_PTR(-ENOMEM);
-+
-+	adapter->pdev = pdev;
-+	common = &adapter->common;
-+
-+	common->pdev = pdev;
-+	common->dev = &pdev->dev;
-+	common->has_ctrl = param->caps.has_ctrl;
-+	common->has_net = param->caps.has_net;
-+	common->function = PCI_FUNC(pdev->devfn);
-+	common->devid = PCI_SLOT(pdev->devfn);
-+	common->bus = pdev->bus->number;
-+
-+	ret = nbl_hw_init_leonis(adapter);
-+	if (ret)
-+		goto hw_init_fail;
-+
-+	return adapter;
-+hw_init_fail:
-+	return ERR_PTR(ret);
-+}
-+
-+void nbl_core_remove(struct nbl_adapter *adapter)
-+{
-+	nbl_hw_remove_leonis(adapter);
-+}
-+
-+static void nbl_get_func_param(struct pci_dev *pdev, kernel_ulong_t driver_data,
-+			       struct nbl_init_param *param)
-+{
-+	param->caps.has_net = !!(driver_data & BIT(NBL_CAP_HAS_NET_BIT));
-+
-+	/*
-+	 * Only PF0 possesses ctrl capability; all PFs share identical PCI
-+	 * device ID, so we handle this via special function ID judgement.
-+	 */
-+	if ((PCI_FUNC(pdev->devfn) == 0) && !pdev->is_virtfn)
-+		param->caps.has_ctrl = 1;
-+}
-+
- static int nbl_probe(struct pci_dev *pdev,
- 		     const struct pci_device_id *id)
- {
--	return -ENODEV;
-+	struct nbl_init_param param = { { 0 } };
-+	struct device *dev = &pdev->dev;
-+	struct nbl_adapter *adapter;
-+	int err;
-+
-+	err = pcim_enable_device(pdev);
-+	if (err) {
-+		dev_err(&pdev->dev, "Failed to enable PCI dev, err=%d\n", err);
-+		return err;
-+	}
-+
-+	nbl_get_func_param(pdev, id->driver_data, &param);
-+
-+	err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
-+	if (err) {
-+		dev_dbg(dev, "Configure DMA 64 bit mask failed, err = %d\n",
-+			err);
-+		err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
-+		if (err) {
-+			dev_err(dev,
-+				"Configure DMA 32 bit mask failed, err = %d\n",
-+				err);
-+			goto configure_dma_err;
-+		}
-+	}
-+	pci_set_master(pdev);
-+
-+	adapter = nbl_core_init(pdev, &param);
-+	if (IS_ERR(adapter)) {
-+		dev_err(dev, "Nbl adapter init fail: %pe\n", adapter);
-+		err = PTR_ERR(adapter);
-+		goto adapter_init_err;
-+	}
-+	pci_set_drvdata(pdev, adapter);
-+	return 0;
-+adapter_init_err:
-+	pci_clear_master(pdev);
-+configure_dma_err:
-+	return err;
- }
- 
- static void nbl_remove(struct pci_dev *pdev)
- {
-+	struct nbl_adapter *adapter = pci_get_drvdata(pdev);
-+
-+	if (adapter)
-+		nbl_core_remove(adapter);
-+
-+	pci_clear_master(pdev);
- }
- 
- /*
 -- 
 2.47.3
 
