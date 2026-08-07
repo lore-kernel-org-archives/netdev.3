@@ -1,107 +1,127 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB283A7F55
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 07:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA3F2F5A36;
+	Fri,  7 Aug 2026 07:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786086587; cv=none; b=Pdj19EKmE7QJxI2S8NVex0Gg/wMUsVHdvnA+12TBz6aySfLx5Ea1y2HKfR8GJfGqKYxl/mtbPSwD0PlgWZTnuq/U2e+pAoDdvshWo7A9T4b0ukFuUYmYBj20C6x+FRiQJBFcI0CpboJnWCVBpyvbHYzzw4Popj9y3wPZ7A044JE=
+	t=1786086622; cv=none; b=ANfthgdKpyJZNDqDieiroKVM9qXhfmDycoIGIO4G9ghKKRSGX/X4UJLBHxAK0cqrdrGLLKKCB0h/kxkCwAlZdsVuGg7aGcq8cxaHDCPNMROEPj6Ch7qKYw3rvgcaz6pJRVwkn1ba1omya3ERxRJ5mFZUcuaCzY+HV+orLtZlvkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786086587; c=relaxed/simple;
-	bh=kU8n87TYz+UCfnzSKQ39bsgXgvURXkwoGXpt3nLZNqk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pT+1I1Iknx81bkTv73HsqztkvgqXO+yqRgT/PieX9p+zvNFOGrOnW/w5sPid/vaCS0ty/BKQttAaXNZZzicxTjlOEjkSsMNnGbQoiQetxMCLUzjdJYaSRoFGpRDZpogx7aVkhmZEkofysceVG9B54VmeFXjPz/FEXveRca/yLz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lb+M0q4Y; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lb+M0q4Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=0k
-	y09dIta4QjCQbWE773MIrFnSxRcS4gB4I4E5BcI/E=; b=lb+M0q4YTSqVA1X495
-	V6bhi7n+kUR1Cl3+bW/VxcoNcMwoAGDBM6eiy5LtMz/PVdlicUNip13iOoy1n3RW
-	OegvAiq8ZMPht55lnA5OZxiW7pVwPgVKLdScum38NA1kS/rt8AAmb6ag4fwUaHuR
-	LFKhmmnRo5fUmKPp8niOZET8I=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgD3VhachHVqXqFCLA--.40526S2;
-	Fri, 07 Aug 2026 15:09:18 +0800 (CST)
-From: Rongguang Wei <clementwei90@163.com>
-To: willemdebruijn.kernel@gmail.com,
-	kuba@kernel.org,
-	jasowangio@gmail.com,
-	andrew+netdev@lunn.ch
-Cc: netdev@vger.kernel.org,
-	Rongguang Wei <weirongguang@kylinos.cn>,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net v2] tap: fix incorrect variable used for USO check in set_offload()
-Date: Fri,  7 Aug 2026 15:09:14 +0800
-Message-Id: <20260807070914.112698-1-clementwei90@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1786086622; c=relaxed/simple;
+	bh=dpRKrf5/c/UrAyd7GX9AFayLjbeS+srrO3fK9U4KlYg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EQDd5hg15hNl7u2n2BZYc6+xx6Okv/CwWJHGTARQhaODqz+ogi+6m4J4/r8T6DIEGJZ6eMHHxM36YYbT90yavMkMTk0oP0IjSAYSqwOIEjmpMwl7AuABP12JtzWlNSzyZGJpFPRQ2nhIiFx7x3r9Ay5xsULz5AB50wANQEt/dBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C270D2018B6;
+	Fri, 07 Aug 2026 09:10:16 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wsEie-000Dao-2D;
+	Fri, 07 Aug 2026 09:10:16 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wsEie-00000000p4J-2IOg;
+	Fri, 07 Aug 2026 09:10:16 +0200
+Date: Fri, 7 Aug 2026 09:10:16 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, netdev@vger.kernel.org,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
+	Eric Dumazet <edumazet@google.com>, kernel@pengutronix.de,
+	Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
+	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl83xx: add support
+ for enabling supplies
+Message-ID: <anWE2HD_Mrv9XlYV@pengutronix.de>
+References: <20260806140239.3518906-1-o.rempel@pengutronix.de>
+ <20260806140239.3518906-3-o.rempel@pengutronix.de>
+ <9181f24b-cd5e-46c8-8e57-cbf309ac1a98@lunn.ch>
+ <anSj34TOZxYiG_ai@pengutronix.de>
+ <f2260b02-621f-4b92-aade-85c403a8839d@lunn.ch>
+ <02a51eff-3782-4012-8475-1047a9be4dd3@pengutronix.de>
+ <CAD++jLk-5-_2x2scn2hNQ-aWBx=EKGYzvcaUwv5fS7k5Bq=KGA@mail.gmail.com>
+ <anVedv6aV1hguF5x@pengutronix.de>
+ <CAD++jLkkwuRYrW7aF4BrxoH=qVfNfbzsW8A+URig79dVMxgZ-g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgD3VhachHVqXqFCLA--.40526S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Aw1fXF1rXF4xWw47KrW8Xrb_yoW8uFW3pa
-	1UCrWjyr4kJrW7Aa1UAw10q3y5Xws3Jay3Cr4qya4FvFy5GFW8uFWS9ay0qFyqg3yUWFy2
-	vFy2yFW5A3WDZ37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jrYFAUUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-h9Aq2p1hJ-YnwAA3J
+In-Reply-To: <CAD++jLkkwuRYrW7aF4BrxoH=qVfNfbzsW8A+URig79dVMxgZ-g@mail.gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-From: Rongguang Wei <weirongguang@kylinos.cn>
+On Fri, Aug 07, 2026 at 08:51:53AM +0200, Linus Walleij wrote:
+> On Fri, Aug 7, 2026 at 6:26 AM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+> > On Thu, Aug 06, 2026 at 07:40:29PM +0200, Linus Walleij wrote:
+> > > On Thu, Aug 6, 2026 at 5:56 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> > >
+> > > [Andrew says]
+> > > > > static inline int __must_check clk_bulk_get_optional(struct device *dev,
+> > > > > static inline int __must_check devm_clk_bulk_get_optional(struct device *dev,
+> > > > > static inline int __must_check devm_clk_bulk_get_optional_enable(struct device *dev,
+> > > > >
+> > > > > If clk has them, maybe regulators should as well?
+> > > >
+> > > > clk and regulator have different interpretations of _optional
+> > > > when encountering a non-existent resource:
+> > > >
+> > > > clk_get                 return error
+> > > > clk_get_optional        return NULL
+> > > > regulator_get           return handle dummy regulator
+> > > > regulator_get_optional  return error code
+> > > >
+> > > > So devm_regulator_bulk_get() is already the "optional" variant, but it causes
+> > > > all existing users to get dummy supply warnings.
+> > >
+> > > So is this a big problem? Does it cause any other issues than
+> > > dmesg noise?
+> >
+> > As tested with local sashiko setup, new warnings for existing system
+> > without good reason will be reported as regression, so it will be
+> > blocker for net-next inclusion.
+> 
+> Strong reverse centaur (*) warning on this one.
+> 
+> I'm not sure this is how Mark want such "regressions" to be treated.
+> 
+> I think a few dummy supplies is just fine and it's rather that Sashiko
+> need to be taught not to treat that as bugs/regressions.
+> 
+> Yours,
+> Linus Walleij
+> 
+> (*) Reverse centaur = humans touted to please AI, as opposed
+> to AI helping humans, sarcastic term coined by author Cory Doctorow.
 
-The USO features in set_offload() incorrectly uses feature_mask and
-features argument.
+Without context, I would fully agree with this statement. But as some
+one who need to adders new warnings on every kernel update for our
+customers, I see the point of sashiko - new unnecessary warning
+is extra unnecessary work for some one else == regression.
 
-The USO feature was written to the local features variable instead of
-feature_mask. All other offload bits (TSO, TSO_ECN) are stored in
-feature_mask which becomes tap->tap_features and is used by
-tap_handle_frame() for GSO segmentation. Without NETIF_F_GSO_UDP_L4
-in tap->tap_features, making USO on tap effectively non-functional.
-
-Keeping the USO handling inside the TUN_F_CSUM block avoids enabling
-GRO/LRO when userspace requests USO without CSUM.
-
-Fixes: 399e0827642f ("driver/net/tun: Added features for USO.")
-Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
----
-v2: Fix more incorrect variable in USO check.
-    https://lore.kernel.org/netdev/20260806163949.2807698-1-kuba@kernel.org/
-v1: https://lore.kernel.org/netdev/20260805072121.117472-1-clementwei90@163.com/
----
- drivers/net/tap.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index 5d2d34d24ce8..d4ca2fee538b 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -883,7 +883,7 @@ static int set_offload(struct tap_queue *q, unsigned long arg)
- 
- 		/* TODO: for now USO4 and USO6 should work simultaneously */
- 		if ((arg & (TUN_F_USO4 | TUN_F_USO6)) == (TUN_F_USO4 | TUN_F_USO6))
--			features |= NETIF_F_GSO_UDP_L4;
-+			feature_mask |= NETIF_F_GSO_UDP_L4;
- 	}
- 
- 	/* tun/tap driver inverts the usage for TSO offloads, where
-@@ -894,8 +894,7 @@ static int set_offload(struct tap_queue *q, unsigned long arg)
- 	 * When user space turns off TSO, we turn off GSO/LRO so that
- 	 * user-space will not receive TSO frames.
- 	 */
--	if (feature_mask & (NETIF_F_TSO | NETIF_F_TSO6) ||
--	    (feature_mask & (TUN_F_USO4 | TUN_F_USO6)) == (TUN_F_USO4 | TUN_F_USO6))
-+	if (feature_mask & (NETIF_F_TSO | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4))
- 		features |= RX_OFFLOADS;
- 	else
- 		features &= ~RX_OFFLOADS;
 -- 
-2.25.1
-
-
-No virus found
-		Checked by Hillstone Network AntiVirus
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
