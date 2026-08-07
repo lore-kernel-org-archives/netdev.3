@@ -1,113 +1,118 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F51B640
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 23:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BB33F4845;
+	Fri,  7 Aug 2026 23:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786144698; cv=none; b=j9KmfuqcSBG0DRsDrpmYNP88KMw5c49oay7RFeLdy4Tv8NIShhARfeMkeZ2+ZNdFmsU4BJzt8m52D7TdTtaNA4uz/Fh36guk+oPns0ryz0FUntbzc2rbfgNmxqR9J9PEpWPq3kwCO6bOeT+Pn7gfpwCt7+03JOcYdoTq8oLav54=
+	t=1786145361; cv=none; b=aoYu3tY1lzZctrR0JafT1WWJ8X1DwRJI07mgemTQHuon5+qlAG8mdsNYPvEeybi9l0WqODvmA66yn8QPvV4wec5kKhqWcyujsSucuMd/8Ffbui750IXMEM7HFGDr89ayqMMWqVFrun2RybS6EPUGiewChcIW+ghE2xL6xw7+KyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786144698; c=relaxed/simple;
-	bh=zpV/i8GSCP4xuXj8dQrdWJpY2ZIH1vjtPVBpIoJ6U08=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=GuyOgtkW1sv+paMC4RhqWFqvLwCYhUog81NGNNMpM9YhEkgttMiz50W2MKnWWKGdS/mSNm0QvMt9LdTwM6BKvpg37/krVUad/0hWm9EYAkDcHA8YWIalw0m4dxqAHkuhfTXQCQ4XULc4b4gl903cDGe/WjbJOybuCdSuQkiLEzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X2iDvo4Y; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786145361; c=relaxed/simple;
+	bh=1U9D00chGx9eu21TOd7HaIlO5ndkNBfGJHeZDUxpt/Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YHVzNu6PEqV8K6yvSl4ztL72s80T+Fjubw0V0c8JkwCg34GfLQVT2/f/9XrQVOtZPzyfgpoItd3tPhF04172R/D5levmL1eeWWBql4LB/10J0jdMOsSRzwOGDIqZAZG898PXlCGSoN7SFZ/HMXgbAJpmWYSSuf8+dfLav6Ukcgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Lg25hY9D; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X2iDvo4Y"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-80e24970f1dso577367b3.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 16:18:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786144695; x=1786749495; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=v/BYCb6+3dWK/veTq4j0zRMOD51HKIQXtQrL2bTHrVM=;
-        b=X2iDvo4YH424p938VtQLeTNj8pQnsmjMEEnEWthdQhhTDb63MuIJEChmpd+bkfT9U8
-         H0rkePFRkvnJANxFwWT6T35qsDfOzi6WX4ayLQ3BQJzZqVqd1M91h6ouRDU4suDA+NW5
-         GKTs+SP/a6btSG8dqEEAvvVwDl5VMNIod54yYmSDb4pcZyjf9kdAfVrp5X2g/9wLglQH
-         YpECB1vPCC5znjPuDLh3imE2a0s1rL7LAuyvUm3igytqiF4mV1TpoyEfA29L9e7QSZeT
-         /+D51T+k9yJ7MD4/Sc/pJqxi+29f1eJzQYUMVw5Lx7awb4B+XRueds3V5LZB7Fv5BRyG
-         rrcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786144695; x=1786749495;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v/BYCb6+3dWK/veTq4j0zRMOD51HKIQXtQrL2bTHrVM=;
-        b=I6Ji4MPEWREeQQ2wJxPmkt9S4/WUSVtAIfOtecoC2xBmPmJXMbzZBORnAERUIiMLqm
-         o/Psu+MDHDECL7Ly5DETRRznsQP3glIec/XjlWbMg1Mh0Famq4fq/U4CQfYeDeLTDek0
-         D6bzYTjM8U1gN2CsX9DcGZIcX1HdQNiootDOVhBmPQuYu+i1jF4avHfxnnF1FMyFjU+S
-         +QkEbm6KIGjyI2StTMlXkIKLO+8xTlNv2r9+K0OQ6R9m0BIqYF26GmIEfsjZTqOR0qsl
-         Uqe1lApBKT5B9fO/xEI5S0O5fKjJeKFJXtKn10StEaaVmUU9ns381aBqk8IKZZPleNlj
-         jhgg==
-X-Gm-Message-State: AOJu0Yzf4OZEqfbZyVuB/1krhkBfiFeul1IhinJFURVAdEK1RD/reXOa
-	Eb4CD2Nx9vA3TdWU2AG9LVoBIKKwcHQISyQegaM8Q1nabFKq2w1XWcl0
-X-Gm-Gg: AR+sD12gGrYeuT5dsq/XjYKOYXWRe9079gd3V283bRXJmZU7sCuDEYGebYWi67ifglb
-	T/GUtfqjGgKfUikQWTw/UNl/qfMHZD3a+dlXbpxQJLhRz7gS5n+O4hciLpWtD571+RcG5kVZtfg
-	8Ej7VvGg+VIHBb+OOLb7PGpaVVwiBA82PNyXMy/5XddUvXaqZjOJe+11uy80FhPmKEJBNllhFIF
-	hINSBJ3eMlJYI/Di4Nw92LVbfu3QM9RlyRCISI8Lzn6PQwkD/+Y2oHvDOTT3pAKM7LR/SicON5C
-	FSenj/oDvTviMiTVkLjyxxKg6I9W5n7FsoFyPK6u+JPX6HMDzkFtES2IRiV5M4nZk4qzO2N6u8e
-	ldpi5H502xmNTYqKmKnjZZUnTdjKrZf/oQQdl0FjaULVx1FXMgvtniWBheEdDsEjgo+9NniH7u2
-	9xotv+3xewwMkk0in2GRIMVAYGXtZJuOyMLGE8Uvf+m2+lpPObrpbjyMUOB/Ei4u0JFPENl39eu
-	uoY3TnMo9T4x42iSOR19wFu11OzfyvoxowC
-X-Received: by 2002:a05:690e:1247:b0:668:bf66:4e69 with SMTP id 956f58d0204a3-66ac2ff5a98mr7453934d50.36.1786144695575;
-        Fri, 07 Aug 2026 16:18:15 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66acad06ad5sm2158819d50.5.2026.08.07.16.18.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 16:18:15 -0700 (PDT)
-Date: Fri, 07 Aug 2026 19:18:14 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- andrew@lunn.ch, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <willemdebruijn.kernel.2765226ccd5ed@gmail.com>
-In-Reply-To: <20260807154525.7a970468@kernel.org>
-References: <20260806173702.3857148-1-willemdebruijn.kernel@gmail.com>
- <20260807154525.7a970468@kernel.org>
-Subject: Re: [PATCH net] selftests: drv-net: so_txtime: only send test traffic
- to sch_etf
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Lg25hY9D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1786145355;
+	bh=1U9D00chGx9eu21TOd7HaIlO5ndkNBfGJHeZDUxpt/Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Lg25hY9DdWPYXNnD9gMYhRdndoPbND4FhuX/PxTKVVr/2DosXyXb1MXicDr0GY4za
+	 8AF3BQcHrKqxJ7GsABwsBww7/s/mqQlweifETpDZv4057DKmb2cEF9NGkCPs/ELZmW
+	 jX0n+WXaa+kZVA5m24WMwKs4D3em+O4CsvHycOIkVVItIoN0X7SpratoKJDttbVtBE
+	 /QPr9Nj8/mDXxjrrZrCoM8ZYbX7YcLwwip5uh7EoCSrJzHbtAauA7zAMHTGwTTlkH5
+	 19TFQTLA8m6zZR17pA0sUHWINWJI9ZxBs3gyrsbFi8/eF9Ly13voLEv6vVBB3r/pZN
+	 IlnLuB+JVbnig==
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 171E9600C1;
+	Fri,  7 Aug 2026 23:29:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by x201s (Postfix) with ESMTP id 40112200F79;
+	Fri, 07 Aug 2026 23:27:15 +0000 (UTC)
+Message-ID: <dcb59215-35f3-4518-91d6-ca265be5d9c8@fiberby.net>
+Date: Fri, 7 Aug 2026 23:27:13 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] tcp: reset late connection after listening socket
+ close
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Kristian Nielsen <knielsen@knielsen-hq.org>,
+ stable@vger.kernel.org
+References: <20260807194513.1263310-1-ast@fiberby.net>
+ <CAAVpQUD9RTxs742Ty-UQXJJwTbN2wrnFGQDffKN0eZL4udq3Ng@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>
+In-Reply-To: <CAAVpQUD9RTxs742Ty-UQXJJwTbN2wrnFGQDffKN0eZL4udq3Ng@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Jakub Kicinski wrote:
-> On Thu,  6 Aug 2026 13:36:57 -0400 Willem de Bruijn wrote:
-> > Subject: [PATCH net] selftests: drv-net: so_txtime: only send test traffic to sch_etf
+Thank you for your review.
+
+On 8/7/26 9:05 PM, Kuniyuki Iwashima wrote:
+> On Fri, Aug 7, 2026 at 12:47 PM Asbjørn Sloth Tønnesen <ast@fiberby.net> wrote:
+>> In commit c82199061009 ("task_work: remove fifo ordering guarantee")
+>> Eric removed the ordering guarantee, thereby changing it from a
+>> guaranteed FIFO to currently LIFO ordering, in an effort to reduce
+>> jitter.
 > 
-> This should probably go to net-next - where it does not apply.
+> Could you elaborate a bit more on how c82199061009 introduced the issue?
+> 
+> I didn't quite see the connection between the first and second paragraphs.
 
-Ack, will address and send to net-next.
+Sorry, I didn't elaborate more, it was already getting quite long.  I had also
+hoped that the bisection had yielded a stronger and clearer connection, or that
+this commit had been blamed before.
 
-> I'm not sure if we documented this but selftests should not be treated
-> as fixes, unless they are packaged with a kernel fix. Or you _really_
-> need them in the current kernel version, but then you have to explain
-> why it matters specifically to you.
+My understanding is that due to the LIFO (Last In First Out) ordering, the order
+and thereby timing sequence is reversed. I haven't looked too deeply into the
+specifics here, like which items have been scheduled together etc., as I don't
+suggest reverting the blamed commit.  I have rather focused on fixing this TCP
+quirk, and make it work with LIFO ordering, and not restoring the FIFO ordering.
+I have mainly used netstat counters to debug the path taken by the affected
+connections, and identify where and why the connections died.
 
-No need from me. Makes total sense, but I was not aware. I do not yet
-see it explicitly in maintainer-netdev.rst. If you want I can send
-something like this:
+I was also skeptical of the bisection result.  Did my reproducer have a false
+negative?  However by reverting the commit, and thereby re-adding the order
+reversal logic I have reliably proved that the blamed commit is deeply connected
+to the experienced symptom, on everything I have tested post-v4.3 (the revert has
+a trivial conflict on v5.10, but can then cleanly be cherry-picked on the current
+net tree).  I have tested with my reproducer on v4.3, v4.4, v5.10.y and net, both
+that my reproducer detects the issue in the tagged release, and that the issue is
+gone with the revert.  I tested v5.10.y as the original report was against v5.10.
 
-@@ -66,7 +66,8 @@ driven by David Miller, the main network maintainer.  There is the
- ``net`` tree, and the ``net-next`` tree.  As you can probably guess from
- the names, the ``net`` tree is for fixes to existing code already in the
- mainline tree from Linus, and ``net-next`` is where the new code goes
--for the future release.  You can find the trees here:
-+for the future release.  For selftests, all patches, including fixes,
-+target net-next. You can find the trees here:
- 
+
+> The listener's state could change at any time on SMP.
+
+True, but it won't schedule work items, and execute them in reverse order, which
+IMHO makes this race condition a lot easier to hit with LIFO ordering.
+
+
+>> This allows for a TCP handshake to complete, after the listening socket
+>> has been closed, and after inet_csk_listen_stop() has been run.
+>>
+>> In that case the client sees the connection as ESTABLISHED, however in
+>> tcp_v{4,6}_syn_recv_sock() the call to __inet_inherit_port() returns
+>> -ENOENT, and the new connection is dropped silently by put_and_exit.
+> 
+> Note that if __inet_inherit_port() passes, inet_csk_reqsk_queue_add()
+> calls inet_child_forget().
+
+__inet_inherit_port() consistently exits early with -ENOENT, because
+inet_csk(sk)->icsk_bind_hash is NULL for these ill timed connections.
+
+inet_csk(sk)->icsk_bind_hash is NULL, because inet_put_port() has been
+called.
+
+inet_put_port() has been called by tcp_set_state(TCP_CLOSE).
