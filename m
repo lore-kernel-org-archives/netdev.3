@@ -1,242 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181E648876E
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67A548CD46;
+	Fri,  7 Aug 2026 13:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786108448; cv=none; b=IR1iW4w6rZWX8slIBhexYb7GBGbapBcsZpQi/dXM4LfIqiHBXoK+Bj5gQ0Y8BQW6mWOHaJqYvhW1MiNR5p3aCgJC+C8Ezq1sVd4rsUlwyBAlzXOVvHAk9g8YiGWEj11LCMQIbExyGH+W/yO/9MeN1XL6oTtEkRLqCgiHH1q+pmI=
+	t=1786108469; cv=none; b=QBQe9MckVrt9o2uRxrDymWcnnzsw83QihHG9uHBGLNjF/79df3T0ncPjY6chQolQ8Mv8bRkgMMEmQe2cucgr1bgCghL4BhLy2zGCDx4PW2zbQD81J862GAxyD6VYwHLkaHeK7haPuph8OTMazX6u/DTib8BW9RNf5o1+n9meYYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786108448; c=relaxed/simple;
-	bh=WzpJDU9FbKqDMi0AmEFKjRX4c4fT3hvj8KwBS7N71qQ=;
+	s=arc-20240116; t=1786108469; c=relaxed/simple;
+	bh=ToVnByjB/LjnH1+eN8SLBsmkjrCBzy5ZTA9bYUm32NU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LP8u0diaoyxNShZhU+L5Om1GTj3jCXbbKw1T2Ty6lJjcTWdD8dZaOPiN0lZhuU31QJzZIGTnDHjwThHDxYSiqMc+qSq5NEBpFSjTKAIZI6AZQbpK4Y5bMJ0Q0n9VQmlUubpZXjEgXx2aoTp1PUnGzW+086NUqa3fWjZymyc83FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fz6sokr6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=TcrtSkgA; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=K+8W3pI7uVk2A+Gz4bagvxhg2i5pspXl60DaoYQVsdEQL8s+CkZI7JsecgXYPPCqXBYhbPvK6pEUoipY4qm23jBExl8BUwL096M4Z19OsQKHrp+w2Cvf+9/iNzrc1bQGhjbpopa0w7dgqPy+iCzveRC08Ggbf9M4p2CSs41RVKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=WAkSJ5sW; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fz6sokr6";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="TcrtSkgA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786108435;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xUbzS3I8i6QFWa+8ZY5NS44GUz1hHJ0wwcZwZwY6pas=;
-	b=Fz6sokr66RBLUXoK2qS2z3V4nqnQpJX+CNbPwYMQPNzOWB9DfaH3dJmhwKFPmu6i7MDyPb
-	cFKrJn/z2ab/4b34tRT72+XEuX6QW2dhwTGAv+4jwrzY85X+MNkgKvPgwasNez54PuoMwS
-	zPu01FgatN0OY3dLDeRUxO9DGwdpq/k=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-32-qluetRWSM3qK0NC1eKvFyg-1; Fri, 07 Aug 2026 09:13:54 -0400
-X-MC-Unique: qluetRWSM3qK0NC1eKvFyg-1
-X-Mimecast-MFC-AGG-ID: qluetRWSM3qK0NC1eKvFyg_1786108433
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4954fd771baso12710695e9.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 06:13:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786108433; x=1786713233; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xUbzS3I8i6QFWa+8ZY5NS44GUz1hHJ0wwcZwZwY6pas=;
-        b=TcrtSkgA2/TbopghyqJFH7c8SU32SypS43+27g7ErkWyX/tMNhf9r0PaBp1rLQF0Yf
-         upI4T4tAdWp9sjxCQoMmmsGkFkiZpUjycldNbFWnFF4CiOYSUd8QKZCQ8CBtwk87thg5
-         IBEoEmIpZ+/4uRsWhXyaK79/zZP67tXS+n20GqmZNRl+FliU29fMX3xQWrPviUbzJt2h
-         6M5kC89z+nf6KykQhgH1dNjrc24DB82NKJy0CQBR33hWftCnZrjFtAq4rRfs32Y7zKIW
-         xZ8LudmDL3DjufPDkzPmjg/wR/I6BeqdMP5YL0r5jILbonGgMwf8tdtNiyl1wqE9Kt/i
-         tVFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786108433; x=1786713233;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xUbzS3I8i6QFWa+8ZY5NS44GUz1hHJ0wwcZwZwY6pas=;
-        b=JD6NW1eYquDHW4fPYzy0jaNiNpN/yp5TTj7Caujs13UgNBRr+2mUUtrz4s1fB7/2dP
-         FseS3vRes7V8KdRLvurvH5E+VbYJJu2s2E2OEjpMbRqRJmcgUx0WcTlp2Mgmn3CDqU1c
-         WuhY9hqbI7PXBgqsyWE73df1LP492w/Vkt+Lk19Q++3aaVv1W9fTJrvu9qAZIfE8fcTO
-         zrR6X2sjpmmN58j8WMNI0OtI0n+2vH7nBtrGBCAKjBgtDq+2ZXG/KBueEIVkTwa4nIJq
-         qcO08eKN1Ng/Qoi8mxT+WUK3DCZvLjBP7n4LxCQAXBbY7643bIDVBWoF/Qf0Ok7xowaQ
-         G4dg==
-X-Forwarded-Encrypted: i=1; AHgh+RpN0fw8Gavn+QHnUKqS0Eseze4RhsyNW7C9sE9bu8tE/IHwZ19qwjDBLROaFWEsqH3rc+LA8yY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3KC15phkVXf8+Tewef9P8mphFzkY/bOONJw4mJK5cwDp8yfGa
-	XndHDf6M+76siL37rBQVAwWuEiTQq5dH+zwzTD2uQ/pSfs3Wls+Zh7M4Prpk1Oym72hA21W52Re
-	PL2MXgQG5UtfhnaLpPdjxQEit5IBPbPSuZLN/QzEKgN+4qatOFXDhUEe65w==
-X-Gm-Gg: AR+sD10DxjkuPvXv7qBNq+TJkKClEq8kEXb8gTEOSt3/7mefTr32NxU9yUYU3bFNFL9
-	DnJbRn9CDmrC0teljuAcMZnz9NPyB9f1NIG0E1EQ8/cD0VXm2FADjAI/gSOys8rMMBkhF1hZXWG
-	9NQrlIQxQ3JH2VKRDHm090H+4cyu1vcaz+PGQb+FAWCeD3MZyPqu8GWCjrBAGfENhV3aDfx0pcX
-	XIAllFlAC1nMzugqS8He4kbo5yw+Puz5+sBTVkqeon5OD7PFzSHhf6LiDXeqL3HR13JYSnmUagW
-	3Wh455SJnpDNB4Tf8GKlOleijt5Ioh5uMq2ANIsUfhJW86ub81BgwJMK9wf9rkWOfBFwLIn94mA
-	JXQ==
-X-Received: by 2002:a05:600c:a48:b0:495:69eb:27d3 with SMTP id 5b1f17b1804b1-499553f4c4cmr145495135e9.8.1786108432776;
-        Fri, 07 Aug 2026 06:13:52 -0700 (PDT)
-X-Received: by 2002:a05:600c:a48:b0:495:69eb:27d3 with SMTP id 5b1f17b1804b1-499553f4c4cmr145494565e9.8.1786108432334;
-        Fri, 07 Aug 2026 06:13:52 -0700 (PDT)
-Received: from sgarzare-redhat ([5.77.96.150])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995bdca3ddsm51398005e9.1.2026.08.07.06.13.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 06:13:51 -0700 (PDT)
-Date: Fri, 7 Aug 2026 15:13:35 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>, 
-	phind.uet@gmail.com
-Cc: "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	"Michael S . Tsirkin" <mst@redhat.com>, Claudio Imbrenda <imbrenda@linux.vnet.ibm.com>, 
-	Asias He <asias@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+53515d23498d641e21ea@syzkaller.appspotmail.com
-Subject: Re: [PATCH] vsock: fix memory leak of rejected child sockets in
- vsock_accept()
-Message-ID: <anXZQSE4Bh8ilEHo@sgarzare-redhat>
-References: <20260807114804.320862-1-nagachaithanya9911@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="WAkSJ5sW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=cfyN1w9xacNUFPC4+FgRwaEGqm63jUtvMyECCGvIl/w=; b=WAkSJ5sWiQoMQ1E7YMRNsUlXIF
+	1eANAdQhkt1Nmu3G7S/egTHz0AL4XrjVqjGwT/fHFBRvJgm2sWtA3oohMJybs6ZmPZEeTXWSuta0e
+	TjAzmI9FEQN7bpZLuolREDdpleWQjong1EAabyU2sS2Hb/mDKUcaiWCmDMEMPMuYHAHs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wsKOh-00GZTn-Js; Fri, 07 Aug 2026 15:14:03 +0200
+Date: Fri, 7 Aug 2026 15:14:03 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Birger Koblitz <mail@birger-koblitz.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>, linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jianhui Xu <neuromoments@gmail.com>
+Subject: Re: [PATCH net-next v5 13/13] ax88796b: Add support for AX88772D,
+ AX88179A and AX88279
+Message-ID: <527d31e5-1731-4925-bf7f-a567f3fb3774@lunn.ch>
+References: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
+ <20260802-ax88179a-v5-13-dcb9fea4acd4@birger-koblitz.de>
+ <5f32ac56-1c2f-474a-ab2a-f51464172d6d@lunn.ch>
+ <4a203340-c2f1-48b3-b16f-93c31cbe2727@birger-koblitz.de>
+ <f2a99d04-6d61-4cc2-814d-cfe1ef9b1395@lunn.ch>
+ <7a91e550-ac70-4423-9aed-9f4406e71fe8@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260807114804.320862-1-nagachaithanya9911@gmail.com>
+In-Reply-To: <7a91e550-ac70-4423-9aed-9f4406e71fe8@birger-koblitz.de>
 
-On Fri, Aug 07, 2026 at 11:48:04AM +0000, Chaithanya Lagisetty wrote:
->When a listener socket carries an error (e.g. sk_err set by a connect()
->issued on the socket before listen()), vsock_accept() dequeues the child
->from the accept queue but rejects it. Previously it only marked the child
->as rejected and relied on vsock_pending_work() to clean it up. However,
->rejected child sockets created through virtio_transport and vsock_loopback
->never reach that cleanup path, causing the child socket, along with its
->LSM blob and transport-specific state, to leak permanently.
->
->Fix this by releasing the child's references directly in vsock_accept()
->on the reject path: remove it from the connected table and drop the
->references taken by sk_alloc(), __vsock_insert_connected() and
->vsock_enqueue_accept(), so the socket reaches vsock_sk_destruct() and is
->freed. The now-unused 'rejected' flag and its handling in
->vsock_pending_work() are removed.
->
->Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
->Reported-by: syzbot+53515d23498d641e21ea@syzkaller.appspotmail.com
->Closes: https://syzkaller.appspot.com/bug?extid=53515d23498d641e21ea
->Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
->---
-> include/net/af_vsock.h   |  4 +---
-> net/vmw_vsock/af_vsock.c | 38 ++++++++++++++++++++------------------
-> 2 files changed, 21 insertions(+), 21 deletions(-)
+On Fri, Aug 07, 2026 at 08:39:00AM +0200, Birger Koblitz wrote:
+> 
+> 
+> On 06/08/2026 23:16, Andrew Lunn wrote:
+> > > > > +static int asix_ax88279_config_aneg(struct phy_device *phydev)
+> > > > > +{
+> > > > > +	bool adv_2500;
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	if (phydev->autoneg == AUTONEG_DISABLE) {
+> > > > > +		phydev_warn(phydev, "Disabling autoneg is not supported\n");
+> > > > > +		return -EINVAL;
+> > > > > +	}
+> > > > 
+> > > > Why is that? Now that phylink is driving the PHY, and reporting
+> > > > speeds, duplex etc, you should have everything you need to program the
+> > > > MAC when the link mode is forced.
+> > > > 
+> > > I tried forcing the PHY speed in the past, and it does not work.
+> > > This is a limitation which is also acknowledged for the suspected underlying PHY
+> > > hardware Airoha EN8811H, see the head of air_en8811h.c
+> > 
+> > How well does this unwind on error? Is phydev->autoneg put back to the
+> > old state to indicate autoneg is used?
+> > 
+> > This is one of the areas where phylib/phylink is missing a bit of
+> > support infrastructure. We have a bit indicating the PHY support
+> > autoneg, ETHTOOL_LINK_MODE_Autoneg_BIT, but there is no bit
+> > ETHTOOL_LINK_MODE_Force_BIT, indicating the PHY supports forced
+> > mode. So the core cannot enforce this and reject it in
+> > ksettings_set().
+> The error is handled quite poorly:
+> $ sudo ethtool -s enx6c6e07090000 autoneg off speed 1000
+> $ ip a
+> shows link is down
+> 
+> Kernel log:
+> [848763.836126] Asix Electronics AX88279 usb-004:045:03: Disabling autoneg is not supported
+> [848763.836134] ------------[ cut here ]------------
+> [848763.836137] _phy_start_aneg+0x0/0xa0: returned: -22
+> [848763.836142] WARNING: drivers/net/phy/phy.c:1352 at _phy_state_machine+0x100/0x310, CPU#8: kworker/8:1/534588
+> [848763.836146] Modules linked in: ax88179_178a cdc_mbim cdc_ncm ax88179(OE)
+> ax88796b(OE) cdc_ether phylink(OE) r8152 nfnetlink_queue nfnetlink_log
 
-Thanks for this, this is something similar of what I suggested some days 
-ago to Phi in 
-https://lore.kernel.org/netdev/anLuRE4ix5-BZ7-t@sgarzare-redhat/
+That is ugly.
 
-Phi's work also includes more cleanups, so let's avoid duplicated work.
+Ideally, we want phylib/phylink to report EOPNOTSUPP in
+ksetting_set. However, as i said, we currently don't have a mechanism
+for the PHY to report forced link does not work.
 
-Please test Phi's v5 series that should include something similar, plus 
-other stuff that should fix exaclty the same report.
+So:
 
-Stefano
+Please change EINVAL to EOPNOTSUPP.
 
->
->diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
->index 30046a3c20f7..b70cea7f754f 100644
->--- a/include/net/af_vsock.h
->+++ b/include/net/af_vsock.h
->@@ -53,12 +53,10 @@ struct vsock_sock {
-> 	 * for connection requests are placed in the pending list until they
-> 	 * are connected, at which point they are put in the accept queue list
-> 	 * so they can be accepted in accept().  If accept() cannot accept the
->-	 * connection, it is marked as rejected so the cleanup function knows
->-	 * to clean up the socket.
->+	 * connection, the child is cleaned up directly in vsock_accept().
-> 	 */
-> 	struct list_head pending_links;
-> 	struct list_head accept_queue;
->-	bool rejected;
-> 	struct delayed_work connect_work;
-> 	struct delayed_work pending_work;
-> 	struct delayed_work close_work;
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index 622dbd046799..2084c88ac836 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -39,9 +39,9 @@
->  * from the listener socket's pending list and enqueued in the listener
->  * socket's accept queue.  Callers of accept(2) will accept connected sockets
->  * from the listener socket's accept queue.  If the socket cannot be accepted
->- * for some reason then it is marked rejected.  Once the connection is
->- * accepted, it is owned by the user process and the responsibility for cleanup
->- * falls with that user process.
->+ * for some reason then it is cleaned up directly in vsock_accept().  Once the
->+ * connection is accepted, it is owned by the user process and the
->+ * responsibility for cleanup falls with that user process.
->  *
->  * - It is possible that these pending sockets will never reach the connected
->  * state; in fact, we may never receive another packet after the connection
->@@ -49,9 +49,7 @@
->  * future, after some amount of time passes where a connection should have been
->  * established.  This function ensures that the socket is off all lists so it
->  * cannot be retrieved, then drops all references to the socket so it is cleaned
->- * up (sock_put() -> sk_free() -> our sk_destruct implementation).  Note this
->- * function will also cleanup rejected sockets, those that reach the connected
->- * state but leave it before they have been accepted.
->+ * up (sock_put() -> sk_free() -> our sk_destruct implementation).
->  *
->  * - Lock ordering for pending or accept queue sockets is:
->  *
->@@ -774,11 +772,11 @@ static void vsock_pending_work(struct work_struct *work)
->
-> 	if (vsock_is_pending(sk)) {
-> 		vsock_remove_pending(listener, sk);
->-	} else if (!vsk->rejected) {
->-		/* We are not on the pending list and accept() did not reject
->-		 * us, so we must have been accepted by our user process.  We
->-		 * just need to drop our references to the sockets and be on
->-		 * our way.
->+	} else {
->+		/* We are not on the pending list, so we must have been accepted
->+		 * by our user process (rejected sockets are cleaned up directly
->+		 * in vsock_accept()).  We just need to drop our references to
->+		 * the sockets and be on our way.
-> 		 */
-> 		cleanup = false;
-> 		goto out;
->@@ -942,7 +940,6 @@ static struct sock *__vsock_create(struct net *net,
-> 	vsk->listener = NULL;
-> 	INIT_LIST_HEAD(&vsk->pending_links);
-> 	INIT_LIST_HEAD(&vsk->accept_queue);
->-	vsk->rejected = false;
-> 	vsk->sent_request = false;
-> 	vsk->ignore_connecting_rst = false;
-> 	WRITE_ONCE(vsk->peer_shutdown, 0);
->@@ -1919,14 +1916,19 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
-> 		vconnected = vsock_sk(connected);
->
-> 		/* If the listener socket has received an error, then we should
->-		 * reject this socket and return.  Note that we simply mark the
->-		 * socket rejected, drop our reference, and let the cleanup
->-		 * function handle the cleanup; the fact that we found it in
->-		 * the listener's accept queue guarantees that the cleanup
->-		 * function hasn't run yet.
->+		 * reject this socket and return.  The child was found on the
->+		 * listener's accept queue, so it still holds the references
->+		 * taken by sk_alloc(), __vsock_insert_connected() and
->+		 * vsock_enqueue_accept().  Drop them here so the socket is
->+		 * destroyed.  We cannot defer this to vsock_pending_work():
->+		 * rejected child sockets created through virtio_transport and
->+		 * vsock_loopback are not cleaned up by that worker, so the
->+		 * child would otherwise leak permanently.
-> 		 */
-> 		if (err) {
->-			vconnected->rejected = true;
->+			vsock_remove_connected(vconnected);
->+			connected->sk_state = TCP_CLOSE;
->+			sock_put(connected);
-> 		} else {
-> 			newsock->state = SS_CONNECTED;
-> 			sock_graft(connected, newsock);
->-- 
->2.43.0
->
+We accept your change as is.
 
+But if you have time/energy, it would be nice to have some follow up
+patches in a new series which fixes this correctly, allow a PHY to
+indicate it does not support forced. The question is, how to actually
+do that. The BMSR has a bit `Auto-Negotiation Ability`. But there is
+no 'Forced Ability' indication. It is simply assumed all PHYs can do
+forced. All the bits we have in phydev->supported, are positive, the
+PHY can do something. There are no negative, the PHY cannot do
+something. So i think it would be wrong to add a negative.
+
+What we do have is struct phy_driver flags, and currently
+
+#define PHY_IS_INTERNAL		0x00000001
+#define PHY_RST_AFTER_CLK_EN	0x00000002
+#define PHY_POLL_CABLE_TEST	0x00000004
+#define PHY_ALWAYS_CALL_SUSPEND	0x00000008
+#define MDIO_DEVICE_IS_PHY	0x80000000
+
+So maybe add
+
+#define PHY_BROKEN_FORCED	0x00000010
+
+and look for that in ksettings_set() ?
+
+    Andrew
