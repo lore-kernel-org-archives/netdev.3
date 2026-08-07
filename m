@@ -1,63 +1,67 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011028.outbound.protection.outlook.com [52.101.52.28])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013025.outbound.protection.outlook.com [40.93.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1DA3F8254;
-	Fri,  7 Aug 2026 10:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FBE42FCC2;
+	Fri,  7 Aug 2026 10:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786099537; cv=fail; b=mC6Vp/cf0ui/+jBEVovFAMRkWZtFE/1ZvSNlvEE1vOtxU0VuQWX0iJvnvCpFveGo4g8Q1qyPdvqKqAi9xEoWXRPnbyGK28Cr/5XM3+lX1HUf7hozxHA5eXNtGo6+ng3keznAMr/cu1bJl6O4hGVSVv2JXw1ONZUcFeMb2ubfLqU=
+	t=1786099542; cv=fail; b=PII4qSlhCKlwfpD8JY2t42nr5dTpvnCo7PYTFGuytFpImZiJ0LK24McUI4EHAJwBvSgaH2m+3nmEO3mjVwiZxdbs7r/h55g9Y3Go4IQCzhO+El2OP/mmS618PCnxNFpA9S52sCtqvVjMgclnpOYvXIYygU8oUsOMv4H40xxmT6E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786099537; c=relaxed/simple;
-	bh=x9GMH2d8vJvuK+0C5VD1zQLhb2kfYFbXBqfEsb1lQJw=;
+	s=arc-20240116; t=1786099542; c=relaxed/simple;
+	bh=xiOdPf+JmIIavDsBUHotwIfRTJkYLABoRX9gBHFlf70=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XfQ+Vk86B7kcRHXerMXr7Xacy6DnlG98g8In28k0AdCFWWZKK6utCm348ATz1hKXWpepGeKR7mjAj++iupNXP27HCnIr1KGu9/MamywUxxQq+mxL3LSFTeHclnlvHymOR/q4sssPTdXedvc0Fq5zbQMi9amNC/L1r97w50A6Qdk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ncgWw7jD; arc=fail smtp.client-ip=52.101.52.28
+	 MIME-Version:Content-Type; b=NmIxoegir34muzWCVT+okJJxJ/oj3Wy5kicBtAVGlIQg0Qiv0vbkVAVerAYrRn0OoUOFuuDFbQUzZFLUI2kazXoW/BsOAHXbXMdXOPRkUj8/KYc6MV2XIPf9DtsZY5wiGD6RrrAIcIj+CYPwgEVJOu8Ll/SwY90VLg3jB3jEqrM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OqWED1Cq; arc=fail smtp.client-ip=40.93.196.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ncgWw7jD"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OqWED1Cq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xYu4lF+ndBbTDZOFFsSEKRlJyut+J0DApJjMNHmMIHKH4hHjxyY9yN1Zfw9f+QtqhLzsb91NN8+8zOXNxm0Zx8MEtWfEj81w5Fa9SJNon5AhTx2ztU5mY1UNVEHgNS77CkBpVizZCEWacvr7DWo3wys3Lhm/MqZuPJbHjSQaFlbU6h9fNSMf1eYkZ6jLqa7QIy/a9JNU/BAiFXS8dbsPfOQupQxuE37bKAfuveUJahGK1HuZ+oeDCeTNI26GFd3NhGaroM9tqNPgtzcK5JUGuyM5w25WCmj/L8O6AgKOASSjtUtGfAtK9DMjJ+vdLpiXyKIQmnLRDdvmZD48wtqokw==
+ b=NCYqem8rBI2QZjGuHSFfWxTUFIw5WpOmTlZo5YkKh3ZNMCqExEWPw3wdHqtqz78kt3GUhp30cLyw/FaWh9I3DXtxTEqapE84s5GFcxRQmCcpi8j8f4U2zinUz4ioIIzB0cZLmAKCoavH1HAFKgbyGea1vOjKx7Qc75cicft831fYfHoSYbnZIE1iSTNQSImAdEdFzRV811oHipu79m1d3M3mBSHm7nMxkPyLczjZYkEMFhYORhl1pZ0g9g2rzqfI2pp7+ebX3F3OrsmX3fGdDmm9aECHHpFp0QuVTnLDhfqzCgM5mp8cKx5Ch0L2uVvSDd1RTTK/ojHtFK9zfUT23A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n0onyrmUWbRTSXOvvNu2iNNwP6EWh035g0IcBtOo5LY=;
- b=ITZySOV7+rg/YFhhg14IbHFSWzrh7Q+rU10196FX3n+H927AdCEI3p/zbbnr/irAadbzS6nny8Av5Fq8LHpgu8YUz7j23QrqR5PYfYSxY35q6K+7GNR+ugB4GHjkiBmcu22mGITZX4t35C0Lshl8NpbM9vOR3f0ChtDs9dLZIb07KGNrP7AipPjIWkN2a3wQXl7UMDrQku4+GvBS2uqjAWZe+LRXXbtpmS7p6jRg5YrdICr1mri5R/cXqOM6IVpteAE7/fPs3pwlBjvoI5axVo5HRKsO8Fah8NIBWX//bQOSHpoltJS1T/UDmjBmn8YJev+LnS5GnqAhe+7qQvMG1g==
+ bh=FJPoxpUO28vkt+Xzt2+HLrMEFtqmCbP0XZfa4v90xPo=;
+ b=tF06/hFbY+efs6hbCHes7DiGbvjOF/vV9/tUIDWLUBp5RX17nkFTEy69CMwPIB1kUEGZm75dVR53hVbTGvlqCUeHebHiBR0Wqw4vSKet4ikq5w2ht+Of5iuNZ2r33xX56KzWbfovfWcsD0cS+4ZryNy6HhcY9glMPZ93bTyxYvAyf4oIaclObSJciud6nB8DDWs2JG5mOYy+rCL4/0MqJNTscqjPZ73QWmfCUaxdpMS1inJXyru7XATZY7lZYGdyF/LPLMlM/92YUTIjplXwSfXXZwgYLOyuN52LptagseaZ9/q825ldG9qONX/Us8IuxbgBG9BqiNz5JV/S1Q5mFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n0onyrmUWbRTSXOvvNu2iNNwP6EWh035g0IcBtOo5LY=;
- b=ncgWw7jD7ESTaRe5CayKjY9z50bH1VWG/lF/9F5Br8FA8B/ovGdSeKVZrwrqIwZWTbwiRx+IOp2k8kP/PvAJB3mm1GxCobjT/NUya/kf29pawj9dZ6Vl2Fv1bBeBrTgL5noQzqp9n3pzS7OLDhFp/xO0d/F8qYlVXiczBBkp4mo=
-Received: from SJ2PR07CA0019.namprd07.prod.outlook.com (2603:10b6:a03:505::21)
- by CH1PR12MB9624.namprd12.prod.outlook.com (2603:10b6:610:2b3::20) with
+ bh=FJPoxpUO28vkt+Xzt2+HLrMEFtqmCbP0XZfa4v90xPo=;
+ b=OqWED1CqJLPVsY0mm22+TsJI25TkuubGfvWFmu69thmjkmPDVQlVykUYqHaO5oPlnT5zbxHaMgJVsbjapkxQwIPjLyrjDNIW+ep6GMJQIXMw5dOAaBZoVoXh9t/EgzDJABx8+v7XL/t+b6hKVs1eCVGh0bJOZSa+dcqNNV/a2K0=
+Received: from PH7P220CA0084.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32c::7)
+ by IA4PR12MB9809.namprd12.prod.outlook.com (2603:10b6:208:54f::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.24; Fri, 7 Aug
- 2026 10:45:27 +0000
-Received: from SJ5PEPF000001EE.namprd05.prod.outlook.com
- (2603:10b6:a03:505:cafe::23) by SJ2PR07CA0019.outlook.office365.com
- (2603:10b6:a03:505::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.23 via Frontend Transport; Fri, 7
- Aug 2026 10:45:27 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.23; Fri, 7 Aug
+ 2026 10:45:36 +0000
+Received: from SJ1PEPF000023D3.namprd21.prod.outlook.com
+ (2603:10b6:510:32c:cafe::86) by PH7P220CA0084.outlook.office365.com
+ (2603:10b6:510:32c::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.24 via Frontend Transport; Fri, 7
+ Aug 2026 10:45:36 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ5PEPF000001EE.mail.protection.outlook.com (10.167.242.202) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF000023D3.mail.protection.outlook.com (10.167.244.68) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Fri, 7 Aug 2026 10:45:27 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.315.0 via Frontend Transport; Fri, 7 Aug 2026 10:45:36 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 7 Aug
- 2026 05:45:21 -0500
+ 2026 05:45:28 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 7 Aug
+ 2026 05:45:27 -0500
 Received: from xhdnrottela40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Fri, 7 Aug 2026 05:45:16 -0500
+ Transport; Fri, 7 Aug 2026 05:45:22 -0500
 From: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
 To: Srinivas Neeli <srinivas.neeli@amd.com>, Andrew Lunn
 	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
@@ -70,9 +74,9 @@ To: Srinivas Neeli <srinivas.neeli@amd.com>, Andrew Lunn
 CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<git-dev@amd.com>, <nagadheeraj.rottela@amd.com>
-Subject: [PATCH 08/20] net: xilinx: tsn: deliver endpoint RX frames to DSA user ports
-Date: Fri, 7 Aug 2026 16:14:19 +0530
-Message-ID: <20260807104431.157230-9-nagadheeraj.rottela@amd.com>
+Subject: [PATCH 09/20] net: dsa: tag_xlnx_tsn: add skeleton tag protocol
+Date: Fri, 7 Aug 2026 16:14:20 +0530
+Message-ID: <20260807104431.157230-10-nagadheeraj.rottela@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260807104431.157230-1-nagadheeraj.rottela@amd.com>
 References: <20260807104431.157230-1-nagadheeraj.rottela@amd.com>
@@ -86,165 +90,152 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EE:EE_|CH1PR12MB9624:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd619b0c-e256-4043-8aae-08def470fe4c
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D3:EE_|IA4PR12MB9809:EE_
+X-MS-Office365-Filtering-Correlation-Id: ecaaf5b4-d13a-4df9-a9f7-08def471039b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|23010399003|36860700016|18002099003|22082099003|11063799006|56012099006|3023799007|10067099003|921020;
+	BCL:0;ARA:13230040|36860700016|23010399003|7416014|376014|82310400026|1800799024|921020|56012099006|11063799006|10067099003|18002099003|3023799007|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	NFHBXVje98Bx+GP0PCuN/zP193E2lE71FHlermhfXty7Zp8+P+T+iRPdHVTtgVSclELJ28wDRK2TGQCeBlFEy6DlTWg7D46jNgi8pFxnL5ZISRCA3PFn8LMpfXvGhECMCp41qpibH4xnSmNpLIAQQ8XvVSf1lJt3PmfofwSEloSWLGYcvEEN8HBn3sJxGsj7b7G/tJHdUhY/Q8RZmNiTOAw+1T5SwSHhYgHTsyiEfuqDD6hbWaK0WZ8HnuWUA1afBMYtpp1gLNdj1GAJleaJMX++mj2pk1wzVISm/ZoniGqvFoK3+EFGjZ8egZVBxAzI3OzMX1upVI6LJGh530Rpnyb2ONOiMxI1fbzErShRrkt7IAn4daf4r4X+iWrNTQ3W0/Y1J/ZoWI4p9CTNm8PlhSt/CYbuI2gejbFDfOAi+CkrCXFHuEZRcJmeAeedIU9xs9Ybai1SoPiqpTDFlu3Zoe2Hllseb3ZRfJ/naW8QIcMNKiap4J3oAtRj2d4XImgQtcPlkVyGXOMmC5bEN4TLyuVWcuUwdUgjmUiJpagciRUaz4FU7Y9SKiJVUlvoOXlNxfx8Eozm0RmjrGM996xTYXDpRuabLPtKCUNTV55U9R+GqXv8mD1TE42tNDhMzpdyzLSnf6m/p9OnItxOYh87O8C96n3SCQE7/rErav7Zi4tmQcyd3VS373jd9qImhDUk4zZsQ4BQIanvq+GB+A2frOOHLD/E5yycp7lZh70sEtGezHKLlRH4S80s0xW6Vy2c
+	aBTDdXK9oDgbTTJXqaC0RoK+9KKlfcrQfwdREJUtHKF9oomfWXvA4qHvMdSsICVGYUpr5/wpsTFlvvPF77kcVpYUt7bN5kp89fnHdmH/K+re7r95VqNbkXzdlTUNAx0IoM6TtyJCLF3u9Nc+LGSFGuDtFXmkX+k8Kudu9WulqapKsDWAcpSCkFpo7IeptFOgIshorCtalWOu48yQ3C7k7NkfvBOonRWL42flzE3Av+/69Ivf3SKrZzjevRbUXvWDEcTiBN/MHMtNN0e167nbnPn0M5Cb30UGwXws4S0E83hlh+SaLMUpyFrhF2PintKSjtHnxA+6dafy79TSXb/rrKRLAunS9LYyq2HxXjX7c3R6sxQcT9dSLAAAsM+Cv8UUq9pvDjUjq8T6yEi5hMTUx6esHPvK2OvUd8uU5QSvKvIADK5YyVWErju/zmz37Pp+hd8xcX8uwNa/MuChbfyT4aH9JyOIN+HfwWFokXxiFqisBkOl1d6fsxKy0I0N6lL4fPvX/r5AF9vAY0GfcbDkTPmKb6CHVbjXai845VdFNo59ntan3jBHE1huE0kr016Xv45c3h6vM9SHc5JFeY7sb+oTdaAvgbiWeRktMw81DiCwAPOmJD92T/geeVdljoTCtNyKMgJ49DdLVtkFrueFnZYq/HLv0TcrqTgx9j0tzPfHtAJ4xrlOIOtZUCbPHskVNL5SKksTLOSAmhV1uoZiZadFF159FV7WS/r7agoanrVDgXOtkd3/BeNovglL3MXD
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(23010399003)(36860700016)(18002099003)(22082099003)(11063799006)(56012099006)(3023799007)(10067099003)(921020);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(7416014)(376014)(82310400026)(1800799024)(921020)(56012099006)(11063799006)(10067099003)(18002099003)(3023799007)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	w74rfV5/q7XbSrb0+4YaT7tB97vMwCmTgq+NJKwx/QndpFZA7XfRaPn/RV694mYg59HIA9boJ5ksO+6PRe9u61WtYr/JHWfoxG9jzyNLbvagqPDQYG8ZsnlGLO7SwtDF+0kt4jKBMKwsMK+8ZfoAQb4UD6ehpqwW2qV85rdm+177gVcwgEbI8uhRRxUfaR1LjBmkYYdJmNisCp7qMr1en/720+hlWls2CFI2aO/4RyJXTefIb6pPffXpcYcWlJXnpD6M/apmMlQAQdjmn1YImqxA9qinsFK0d6Fj5Bq4gVJTsV7DOx6d9uRR2KcHznE+r10kPwrO/JI6Qf8ASRbGApB4Ixdhu9ba9gvBJ2e7a+VHnNDqJk2yZkjJUplFwvPwKd0tCnT4YoCUCXjfew9GUQn6Cm4ef/4+YFMo7DSrNKOCLSC+V6MoCB8PlzqYUQ5h
+	jeEm+a6Hq921y4TDImadQjdRIsTmYeyGNV+ElgnY6nzhQaYTNaWHXYIgrIYewQxlGAzmEcoKTRIhS85ZbwyP218Ew5vlnHj9z1frbHWPTL0c8Vxh07cM54WiK9/v1Vj2FSKoIdjuOTf16sSL6/7AtzWsARV9hxCko+ZZbKuKJJlhJUaWbPnGbeMDqY/t/jwXo1T9Xw62/2Awxm58KDnYecyQHPfTjPK7iiu3Wywd96o258esYVSBoqY9kl9aW1xHOKxB04WTu168fbABbMPniDtNVpFr+qNUn0Y8n/SPGC5pFO9/WkA1h49/MqqFiJX7w/6FNcx5yraNYRcfY/7z4/ktjb1Y3RNBtZQh7cHpfry+vkS95iV6K5xH0fgCxsDzOi0Kuvs0IbbGHx5QP43JiUx13xhTWHBh4qV/zmfHOg3ntAFS+PrVVeXW2K29ZaNm
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 10:45:27.1853
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 10:45:36.0863
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd619b0c-e256-4043-8aae-08def470fe4c
+X-MS-Exchange-CrossTenant-Network-Message-Id: ecaaf5b4-d13a-4df9-a9f7-08def471039b
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001EE.namprd05.prod.outlook.com
+	SJ1PEPF000023D3.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9624
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9809
 
-The DSA core routes an RX frame to a user port from the port metadata
-attached to the skb. Without that metadata, frames from the two MACs
-cannot reach their swpN netdevs.
+The AMD/Xilinx TSN Endpoint Ethernet MAC IP does not insert an
+in-band CPU tag on the wire. The EP MAC driver attaches a per-port
+metadata_dst (METADATA_HW_PORT_MUX) on RX to carry the port
+classification out of band. The tag protocol therefore has no tag
+bytes to add or strip.
 
-Allocate a METADATA_HW_PORT_MUX entry per MAC port at probe and attach
-the matching entry to each RX frame by its TUSER port_id. Frames from
-MAC1 and MAC2 now reach the correct user netdev, which completes the
-conduit data path.
+Add DSA_TAG_PROTO_XLNX_TSN and register NET_DSA_TAG_XLNX_TSN as a
+no-op tag driver. A later patch adds the PTP TX intercept to reroute
+PTP frames through the per-MAC PTP TX path.
 
 Signed-off-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
 ---
- .../net/ethernet/xilinx/tsn/xilinx_tsn_ep.c   | 51 ++++++++++++++++++-
- 1 file changed, 50 insertions(+), 1 deletion(-)
+ MAINTAINERS            |  1 +
+ include/net/dsa.h      |  2 ++
+ net/dsa/Kconfig        |  9 +++++++++
+ net/dsa/Makefile       |  1 +
+ net/dsa/tag_xlnx_tsn.c | 33 +++++++++++++++++++++++++++++++++
+ 5 files changed, 46 insertions(+)
+ create mode 100644 net/dsa/tag_xlnx_tsn.c
 
-diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-index 7615d27f3b36..051285b47ddb 100644
---- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-+++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-@@ -29,6 +29,7 @@
- #include <linux/string.h>
- #include <linux/types.h>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e5b95b3bfa21..6fbe83fb3953 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -29614,6 +29614,7 @@ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+ F:	drivers/net/ethernet/xilinx/tsn/
++F:	net/dsa/tag_xlnx_tsn.c
  
-+#include <net/dst_metadata.h>
- #include <net/netdev_queues.h>
+ XILINX UARTLITE SERIAL DRIVER
+ M:	Peter Korsgaard <jacmet@sunsite.dk>
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 6f7f5c17b532..f0cc5b49407a 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -60,6 +60,7 @@ struct tc_action;
+ #define DSA_TAG_PROTO_MXL862_VALUE		32
+ #define DSA_TAG_PROTO_NETC_VALUE		33
+ #define DSA_TAG_PROTO_KSZ8463_VALUE		34
++#define DSA_TAG_PROTO_XLNX_TSN_VALUE		35
  
- #include "xilinx_tsn.h"
-@@ -56,6 +57,9 @@
- #define TSN_TUSER_PORT_MAC1		0x1
- #define TSN_TUSER_PORT_MAC2		0x2
- 
-+/* Sized to index port_md[] by TUSER port_id (1 or 2, slot 0 unused) */
-+#define XLNX_TSN_EP_PORT_MD_SLOTS	(TSN_TUSER_PORT_MAC2 + 1)
-+
- /**
-  * struct skbuf_dma_descriptor - skb container for each in-flight DMA descriptor
-  * @sgl: scatter-gather list backing the DMA mapping
-@@ -107,6 +111,8 @@ struct xlnx_tsn_ep_dma_chan {
-  * @tx_chans: array of TX channels (size @num_tx_queues)
-  * @rx_chans: array of RX channels (size @num_rx_queues)
-  * @closing: set in ndo_stop so the RX completion callback stops re-arming
-+ * @port_md: per-TUSER-port METADATA_HW_PORT_MUX entries attached on RX,
-+ *	indexed by port_id (1 for MAC1, 2 for MAC2)
-  */
- struct xlnx_tsn_ep {
- 	struct net_device *ndev;
-@@ -124,6 +130,8 @@ struct xlnx_tsn_ep {
- 	struct xlnx_tsn_ep_dma_chan **rx_chans;
- 
- 	bool closing;
-+
-+	struct metadata_dst *port_md[XLNX_TSN_EP_PORT_MD_SLOTS];
+ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
+@@ -97,6 +98,7 @@ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_MXL862		= DSA_TAG_PROTO_MXL862_VALUE,
+ 	DSA_TAG_PROTO_NETC		= DSA_TAG_PROTO_NETC_VALUE,
+ 	DSA_TAG_PROTO_KSZ8463		= DSA_TAG_PROTO_KSZ8463_VALUE,
++	DSA_TAG_PROTO_XLNX_TSN		= DSA_TAG_PROTO_XLNX_TSN_VALUE,
  };
  
- static inline struct skbuf_dma_descriptor *
-@@ -254,6 +262,7 @@ static void ep_dma_rx_cb(void *data, const struct dmaengine_result *result)
- 	}
+ struct dsa_switch;
+diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+index d5e725b90d78..8ca48ce46ec1 100644
+--- a/net/dsa/Kconfig
++++ b/net/dsa/Kconfig
+@@ -221,4 +221,13 @@ config NET_DSA_TAG_YT921X
+ 	  Say Y or M if you want to enable support for tagging frames for
+ 	  Motorcomm YT921x switches.
  
- 	skb_put(skb, rx_len);
-+	skb_dst_set_noref(skb, &ep->port_md[port_id]->dst);
- 	skb->dev = ndev;
- 	skb->protocol = eth_type_trans(skb, ndev);
- 	skb->ip_summed = CHECKSUM_NONE;
-@@ -771,6 +780,37 @@ static int ep_count_dma_queues(struct device *dev, u32 *out_tx, u32 *out_rx)
- 	return 0;
- }
- 
-+static void ep_free_port_md(struct xlnx_tsn_ep *ep)
-+{
-+	int i;
++config NET_DSA_TAG_XLNX_TSN
++	tristate "Tag driver for AMD/Xilinx TSN Endpoint Ethernet MAC"
++	help
++	  Say Y or M if you want to enable support for the AMD/Xilinx TSN
++	  Endpoint Ethernet MAC IP. The IP does not insert an in-band CPU
++	  tag; port classification is conveyed via metadata_dst attached on
++	  RX by the EP MAC driver, and PTP TX frames are intercepted in the
++	  xmit hook to be steered into the per-MAC PTP TX register window.
 +
-+	for (i = 0; i < XLNX_TSN_EP_PORT_MD_SLOTS; i++) {
-+		if (ep->port_md[i]) {
-+			metadata_dst_free(ep->port_md[i]);
-+			ep->port_md[i] = NULL;
-+		}
-+	}
+ endif
+diff --git a/net/dsa/Makefile b/net/dsa/Makefile
+index b8c2667cd14a..6ba6c3a95976 100644
+--- a/net/dsa/Makefile
++++ b/net/dsa/Makefile
+@@ -41,6 +41,7 @@ obj-$(CONFIG_NET_DSA_TAG_RZN1_A5PSW) += tag_rzn1_a5psw.o
+ obj-$(CONFIG_NET_DSA_TAG_SJA1105) += tag_sja1105.o
+ obj-$(CONFIG_NET_DSA_TAG_TRAILER) += tag_trailer.o
+ obj-$(CONFIG_NET_DSA_TAG_VSC73XX_8021Q) += tag_vsc73xx_8021q.o
++obj-$(CONFIG_NET_DSA_TAG_XLNX_TSN) += tag_xlnx_tsn.o
+ obj-$(CONFIG_NET_DSA_TAG_XRS700X) += tag_xrs700x.o
+ obj-$(CONFIG_NET_DSA_TAG_YT921X) += tag_yt921x.o
+ 
+diff --git a/net/dsa/tag_xlnx_tsn.c b/net/dsa/tag_xlnx_tsn.c
+new file mode 100644
+index 000000000000..de352aa3d9a8
+--- /dev/null
++++ b/net/dsa/tag_xlnx_tsn.c
+@@ -0,0 +1,33 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * AMD/Xilinx TSN Endpoint Ethernet MAC tag protocol.
++ */
++
++#include "tag.h"
++
++#define XLNX_TSN_NAME	"xlnx_tsn"
++
++static struct sk_buff *xlnx_tsn_xmit(struct sk_buff *skb,
++				     struct net_device *dev)
++{
++	return skb;
 +}
 +
-+static int ep_alloc_port_md(struct xlnx_tsn_ep *ep)
++static struct sk_buff *xlnx_tsn_rcv(struct sk_buff *skb,
++				    struct net_device *dev)
 +{
-+	int i;
-+
-+	for (i = TSN_TUSER_PORT_MAC1; i <= TSN_TUSER_PORT_MAC2; i++) {
-+		struct metadata_dst *md;
-+
-+		md = metadata_dst_alloc(0, METADATA_HW_PORT_MUX, GFP_KERNEL);
-+		if (!md) {
-+			ep_free_port_md(ep);
-+			return -ENOMEM;
-+		}
-+		md->u.port_info.port_id = i;
-+		ep->port_md[i] = md;
-+	}
-+
-+	return 0;
++	kfree_skb(skb);
++	return NULL;
 +}
 +
- static int xlnx_tsn_ep_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -835,16 +875,24 @@ static int xlnx_tsn_ep_probe(struct platform_device *pdev)
- 			 ndev->dev_addr);
- 	}
- 
-+	ret = ep_alloc_port_md(ep);
-+	if (ret) {
-+		dev_err_probe(dev, ret, "failed to allocate per-port metadata\n");
-+		goto err_free_ndev;
-+	}
++static const struct dsa_device_ops xlnx_tsn_netdev_ops = {
++	.name	= XLNX_TSN_NAME,
++	.proto	= DSA_TAG_PROTO_XLNX_TSN,
++	.xmit	= xlnx_tsn_xmit,
++	.rcv	= xlnx_tsn_rcv,
++};
 +
- 	platform_set_drvdata(pdev, ep);
- 
- 	ret = register_netdev(ndev);
- 	if (ret) {
- 		dev_err_probe(dev, ret, "failed to register net device\n");
--		goto err_free_ndev;
-+		goto err_free_md;
- 	}
- 
- 	return 0;
- 
-+err_free_md:
-+	ep_free_port_md(ep);
- err_free_ndev:
- 	free_netdev(ndev);
- 	return ret;
-@@ -858,6 +906,7 @@ static void xlnx_tsn_ep_remove(struct platform_device *pdev)
- 		return;
- 
- 	unregister_netdev(ep->ndev);
-+	ep_free_port_md(ep);
- 	free_netdev(ep->ndev);
- }
- 
++module_dsa_tag_driver(xlnx_tsn_netdev_ops);
++MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_XLNX_TSN, XLNX_TSN_NAME);
++MODULE_DESCRIPTION("DSA tag driver for AMD/Xilinx TSN Endpoint Ethernet MAC");
++MODULE_LICENSE("GPL");
 -- 
 2.34.1
 
