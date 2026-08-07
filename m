@@ -1,927 +1,118 @@
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD4D284690
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E43D2F5337;
+	Fri,  7 Aug 2026 13:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786110393; cv=none; b=q4li6WdRGqhRPJvjsLXDDlQIK1G4044IEKJCGcmTPmSr0mnb5Tx8iWZWcKUPzi75UoLvwxyUeeh8WnxC/fCLW2voEZYsQhNcJPHi0DWt5TGEn1AIHhYasQU4dDEwreR1BgMG3oMlZtdse0qEFjy/W4nHMLu9q8blU89W4MgXgwI=
+	t=1786110636; cv=none; b=JW45kWIxjIUAGl2K2k1Ljyn8bf0JCxBTHl8YbUCLzIyFivvUotMSHbaDaroca5g3J/6gVofB2fOsm5+I4Px9Q56jKST6K+FZjOPiQI5Vn3IBUaV0tn+vcpDftgX/Xv4vkSb6t0QCN+b3IUyfNmdRJ9/C+zjNBMtYAVHlE+R0IYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786110393; c=relaxed/simple;
-	bh=IU2H+Z7RC8DDuRieZNBRe4n5tHIbWtACdNJ7PEktJyw=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=mAp+I0bVslP7k6RMdXPWQG3EIXTT73pAOHEvDAJGEU2k8Y3JUJLNWRrZAHA8cYAn0KQ77xsEktkdvq1m8ITlLXOAOFPXcTz3Bt3wtZeV0v1x291oQ2RW5WEoNMB2w8PuQTEybciLs5F4w3/4UBD3OV2ZV1JxNEVSATb25tbWqKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4a41f46d629so3578039b6e.3
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 06:46:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786110381; x=1786715181;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=oAdEYHP32x3+S6ceXQBbcor8N5Tem/MWy3ipglvmGXY=;
-        b=Yj/nJrkQfARH9gtCwwmt1Z5Onimg2R5XoOHalORGTOfFT09CLCxDFwmW3/RkCbS0cQ
-         OYbANm2zRlxzXwAgsHFp/9Z1NHuS+fWH/k/BkV7H7n40rqXHHgYHUB9nlAn4S3aN5FIj
-         g2kqXfgITksSyAiBFUBqgfZ8NIH71np67jRijEyd5Bq+y8yjtidqg5krDjG2oYNPhyiY
-         cHupP+Ga9TFzL1bjPX6rk4tUKbSTYxdD6cg6mKbMpkh/BPeQ5Vz6FpjkluaMVAtNLhKl
-         2eeTahkqC3kRTjSXPixm67DDHwJaOX6GNKR301oSmR0LJc3BXsVhRaPWe4I2di0MmOpF
-         gQ4w==
-X-Forwarded-Encrypted: i=1; AHgh+RovtcikKRMxdhI8TYhrI0+LkcYxoajGqLk1bIo1ht9BNopRtBR8uJrfUJRi+nMRQq89Ovuir7U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwefFs5zNvZQMvlY/AV/NebNc/Ka52/lgwwO/ACgjEBaXNKTih4
-	qyECBr3dOy9LKwTSvA4q+pl/RgOt7xYTwQhkLRRI+HeBRdZMM46Zb2aq3mokJJpg+7qvo99Kn3r
-	gjIdDIl9ih4ZbQBWBzZvJMBSCxVI1gzRBW2s+cCyacSUbjarnjWyJLRoRDrs=
+	s=arc-20240116; t=1786110636; c=relaxed/simple;
+	bh=FLk0G7duslb6LyR8oWVflOfVz1bEUiaFzEL1gnBd3aU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M5qstW1rkscc5WClQledhca2bGHEp/bOwn/zvrJyO7kC2NOoqGfw56MqHQBt2gHDq6IE5QE6cXGnPfC51s7RsDQfDuYHvbmruVEBLItfcPY4Dacq4b38m1jxbCMK7dYWYCEcPoZHHIx/P0gY0zwcklC7OZTmgokTn5nqcUoVbqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fajom48d; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fajom48d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2555D1F00A3E;
+	Fri,  7 Aug 2026 13:50:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786110626;
+	bh=27kReTIqIDVZ1zYA2K/pxnR3vMezeUuF6AAq7ItAXb8=;
+	h=From:Subject:Date:To:Cc;
+	b=Fajom48dAj+ywRKayYOXCpoNkCm0shmKVLxe1FyO2iiaknH7DfD9VIT+ORGChCUOL
+	 mS+dXFiWuYBS3r2L5p+rAef+uPwMs0udGH2/OzkZqGThwAnNYFrMMvk7WGLBtu0zI/
+	 M6DiVBfdzoKC7PZlfId1HUb3s2FPbBPoTdUnNTrK351HoF2bAktyuw6+Cqehkh9Ff2
+	 Tmym9Ovlq/GV6O9FzN9uyF5tfhEYU1M4QWJK8Uyt6gtSToykdZuX/v4LSR2xhgpIvb
+	 Ss27LbHl+nu78kLfgIQXNShkKwH9lavfuDoYtfitc5fXaxStZ8ZLz6gaD8zGXSup5y
+	 5sai65bXC0fbA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net-next v3 0/7] mptcp: out-of-order queue pruning
+Date: Fri, 07 Aug 2026 15:49:00 +0200
+Message-Id: <20260807-net-next-mptcp-oooq-pruning-v3-0-dbc1eb853cc3@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:320b:b0:496:a01:458b with SMTP id
- 5614622812f47-4b1a0bcbf37mr2137767b6e.2.1786110381381; Fri, 07 Aug 2026
- 06:46:21 -0700 (PDT)
-Date: Fri, 07 Aug 2026 06:46:21 -0700
-In-Reply-To: <671756af.050a0220.10f4f4.010f.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a75e1ad.b50370da.49fe0.001b.GAE@google.com>
-Subject: Re: [syzbot] [rdma?] INFO: task hung in add_one_compat_dev (3)
-From: syzbot <syzbot+6dee15fdb0606ef7b6ba@syzkaller.appspotmail.com>
-To: jgg@ziepe.ca, leon@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org, nogikh@google.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43OSw6CMBAG4KuQrq3pi0pceQ/jAugA9dHWthAM4
+ e4WjIlujItZTGb+b2ZCAbyGgPbZhDwMOmhrUsM3Gaq70rSAtUo9YoRJsmMCG4ipxohvLtYOW2v
+ v2PneaNNiUeRSKkpUpQhKgvPQ6HHVj+gdRKfXJPTVGeq44Mtup0O0/rE+MtA18dfNgWKCc6WEg
+ lryMheHC3gD16317XpqYB8Yp78xljAmCl5QKZqS0S9snucnbEO1/jABAAA=
+X-Change-ID: 20260724-net-next-mptcp-oooq-pruning-48566d10dbd0
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ Gang Yan <yangang@kylinos.cn>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2213; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=FLk0G7duslb6LyR8oWVflOfVz1bEUiaFzEL1gnBd3aU=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLJKH82cfHBuQGri9P2fQ554bpH8wHYoKIJB8zqn563Sq
+ FuPZ7Z3dpSyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEyknZPhf22Vn5jBAfeO635p
+ mx2V8o2WzTFs5ens4/H/yVj0+1jBdkaGaR0bGX1db7YrfFuT0eMvVjfJfkmhc4ir8tzz6d3/897
+ xAgA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-syzbot has found a reproducer for the following issue on:
+Under memory pressure, a pruning of the MPTCP-level OoO queue might be
+required as last resort, to avoid too long recoveries, or even stalls.
+Geliang and Gang managed to reproduce this behaviour, and Paolo
+improved the situation thanks to the following patches:
 
-HEAD commit:    f9a2394a2348 Merge tag 'mm-hotfixes-stable-2026-08-06-18-4..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=13d50fb9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8e21dcbdb02d4229
-dashboard link: https://syzkaller.appspot.com/bug?extid=6dee15fdb0606ef7b6ba
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14d037b9580000
+- Patches 1-3: improve the MPTCP-level retransmission schema to make
+  recoveries from memory pressure/after MPTCP-level drop significantly
+  faster.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+6dee15fdb0606ef7b6ba@syzkaller.appspotmail.com
+- Patches 4-5: make the admission check way stricter for incoming
+  packets exceeding the memory limits, with some exceptions for fallback
+  sockets.
 
-INFO: task syz-executor222:6072 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26880 pid:6072  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebbbac208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebbbacfb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebbbac6c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-INFO: task syz-executor222:6074 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26904 pid:6074  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebbb6a208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebbb6afb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebbb6a6c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-INFO: task syz-executor222:6076 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:27368 pid:6076  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebbb28208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebbb28fb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebbb286c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-INFO: task syz-executor222:6077 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26112 pid:6077  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebbb07208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebbb07fb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebbb076c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-INFO: task syz-executor222:6078 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26376 pid:6078  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebbae6208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebbae6fb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebbae66c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-INFO: task syz-executor222:6079 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26752 pid:6079  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebbac5208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebbac5fb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebbac56c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-INFO: task syz-executor222:6080 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26432 pid:6080  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebbaa4208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebbaa4fb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebbaa46c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-INFO: task syz-executor222:6081 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26952 pid:6081  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebba83208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebba83fb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebba836c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-INFO: task syz-executor222:6082 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26496 pid:6082  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebba62208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebba62fb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebba626c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-INFO: task syz-executor222:6085 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26592 pid:6085  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebb9ff208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebb9fffb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebb9ff6c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-Future hung task reports are suppressed, see sysctl kernel.hung_task_warnings
-INFO: task syz-executor222:6089 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:25776 pid:6089  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebb97b208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebb97bfb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebb97b6c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-Future hung task reports are suppressed, see sysctl kernel.hung_task_warnings
-INFO: task syz-executor222:6098 blocked for more than 15 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor222 state:D stack:26376 pid:6098  tgid:5946  ppid:5945   task_flags:0x400140 flags:0x00080800
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x16dc/0x5500 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- rt_mutex_schedule+0x76/0xf0 kernel/sched/core.c:7607
- rt_mutex_slowlock_block+0x55c/0x680 kernel/locking/rtmutex.c:1670
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1747 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1787 [inline]
- rt_mutex_slowlock+0x2d4/0x780 kernel/locking/rtmutex.c:1827
- __rt_mutex_lock kernel/locking/rtmutex.c:1842 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:560 [inline]
- mutex_lock_nested+0x168/0x1d0 kernel/locking/rtmutex_api.c:578
- add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- rdma_dev_init_net+0x243/0x2f0 drivers/infiniband/core/device.c:1195
- ops_init+0x35d/0x5d0 net/core/net_namespace.c:137
- setup_net+0x118/0x350 net/core/net_namespace.c:446
- copy_net_ns+0x4f9/0x720 net/core/net_namespace.c:579
- create_new_namespaces+0x3f0/0x6b0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0x149/0x190 kernel/nsproxy.c:234
- ksys_unshare+0x57d/0xa00 kernel/fork.c:3269
- __do_sys_unshare kernel/fork.c:3343 [inline]
- __se_sys_unshare kernel/fork.c:3341 [inline]
- __x64_sys_unshare+0x38/0x50 kernel/fork.c:3341
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f3ebbc64e57
-RSP: 002b:00007f3ebb852208 EFLAGS: 00000293 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 000000006a75e0c0 RCX: 00007f3ebbc64e57
-RDX: 0000000000000000 RSI: 00007f3ebb852fb0 RDI: 0000000040000000
-RBP: 0000000000000021 R08: 0000000000000000 R09: 00007f3ebb8526c0
-R10: 0000000000000008 R11: 0000000000000293 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffccc2960e0 R15: 00007ffccc2961c8
- </TASK>
-Future hung task reports are suppressed, see sysctl kernel.hung_task_warnings
+- Patches 6-7: implement OoO queue pruning for MPTCP.
 
-Showing all locks held in the system:
-3 locks held by kworker/0:1/10:
- #0: ffff88801a047938 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3297 [inline]
- #0: ffff88801a047938 ((wq_completion)events){+.+.}-{0:0}, at: process_scheduled_works+0xa20/0x14e0 kernel/workqueue.c:3405
- #1: ffffc900000f7c40 (pcpu_balance_work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3297 [inline]
- #1: ffffc900000f7c40 (pcpu_balance_work){+.+.}-{0:0}, at: process_scheduled_works+0xa20/0x14e0 kernel/workqueue.c:3405
- #2: ffffffff8e0c6d58 (pcpu_alloc_mutex){+.+.}-{4:4}, at: pcpu_balance_workfn+0x66/0x1000 mm/percpu.c:2210
-4 locks held by pr/legacy/17:
-1 lock held by khungtaskd/38:
- #0: ffffffff8dfc3000 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #0: ffffffff8dfc3000 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #0: ffffffff8dfc3000 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x2e/0x180 kernel/locking/lockdep.c:6775
-6 locks held by kworker/0:2/199:
-5 locks held by kworker/u8:15/1421:
-6 locks held by kworker/u8:17/4282:
-1 lock held by klogd/4956:
-2 locks held by getty/5350:
- #0: ffff888028ba60a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
- #1: ffffc90003cbe2e0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x460/0x1360 drivers/tty/n_tty.c:2211
-3 locks held by kworker/0:4/5740:
- #0: ffff88801a046538 ((wq_completion)events_power_efficient){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3297 [inline]
- #0: ffff88801a046538 ((wq_completion)events_power_efficient){+.+.}-{0:0}, at: process_scheduled_works+0xa20/0x14e0 kernel/workqueue.c:3405
- #1: ffffc90003e37c40 ((reg_check_chans).work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3297 [inline]
- #1: ffffc90003e37c40 ((reg_check_chans).work){+.+.}-{0:0}, at: process_scheduled_works+0xa20/0x14e0 kernel/workqueue.c:3405
- #2: ffffffff8f374cf8 (rtnl_mutex){+.+.}-{4:4}, at: reg_check_chans_work+0xac/0x1110 net/wireless/reg.c:2469
-1 lock held by syz-executor222/5946:
-5 locks held by syz-executor222/6068:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff888029fb91c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #4: ffffffff8f374cf8 (rtnl_mutex){+.+.}-{4:4}, at: ib_get_eth_speed+0x173/0x7f0 drivers/infiniband/core/verbs.c:2051
-5 locks held by syz-executor222/6069:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803dcb91c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #4: ffffffff8f374cf8 (rtnl_mutex){+.+.}-{4:4}, at: ib_get_eth_speed+0x173/0x7f0 drivers/infiniband/core/verbs.c:2051
-4 locks held by syz-executor222/6070:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff888029fb91c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-5 locks held by syz-executor222/6071:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88802a5d51c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #4: ffffffff8f374cf8 (rtnl_mutex){+.+.}-{4:4}, at: ib_get_eth_speed+0x173/0x7f0 drivers/infiniband/core/verbs.c:2051
-4 locks held by syz-executor222/6072:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6073:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88801e2dd1c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6074:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-5 locks held by syz-executor222/6075:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88801e2dd1c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #4: ffffffff8f374cf8 (rtnl_mutex){+.+.}-{4:4}, at: ib_get_eth_speed+0x173/0x7f0 drivers/infiniband/core/verbs.c:2051
-4 locks held by syz-executor222/6076:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6077:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6078:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6079:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6080:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6081:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6082:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-5 locks held by syz-executor222/6083:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff888040bfd1c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #4: ffffffff8f374cf8 (rtnl_mutex){+.+.}-{4:4}, at: ib_get_eth_speed+0x173/0x7f0 drivers/infiniband/core/verbs.c:2051
-4 locks held by syz-executor222/6084:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6085:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6086:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6087:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6088:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6089:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6090:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6091:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-5 locks held by syz-executor222/6092:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #4: ffffffff8f374cf8 (rtnl_mutex){+.+.}-{4:4}, at: ib_get_eth_speed+0x173/0x7f0 drivers/infiniband/core/verbs.c:2051
-4 locks held by syz-executor222/6093:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6094:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6095:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6096:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6097:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6098:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6099:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6100:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6101:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6102:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6103:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6104:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6105:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6106:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6107:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6108:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6109:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6110:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6111:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6112:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6113:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6114:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6115:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6116:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6117:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6118:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6119:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6120:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6121:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6122:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6123:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6124:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6125:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6126:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6127:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6130:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6137:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
-4 locks held by syz-executor222/6142:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6147:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
-4 locks held by syz-executor222/6154:
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6157:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6159:
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6160:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6166:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
-4 locks held by syz-executor222/6168:
-4 locks held by syz-executor222/6172:
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
-4 locks held by syz-executor222/6182:
- #0: ffffffff8f366140 (pernet_ops_rwsem){++++}-{4:4}, at: copy_net_ns+0x4e2/0x720 net/core/net_namespace.c:575
-4 locks held by syz-executor222/6184:
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #1: ffffffff8f0c1500 (devices_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x200/0x2f0 drivers/infiniband/core/device.c:1189
- #3: ffff88803fa291c8 (&device->compat_devs_mutex){+.+.}-{4:4}, at: add_one_compat_dev+0xf0/0x650 drivers/infiniband/core/device.c:953
- #2: ffffffff8f0c1740 (rdma_nets_rwsem){++++}-{4:4}, at: rdma_dev_init_net+0x238/0x2f0 drivers/infiniband/core/device.c:1194
-, at: copy_net_ns+0x4e2/0
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Changes in v3:
+- Address comments from Clashiko.
+- Patches 2, 6: new
+- Patch 3: many cleanups, needed after patch 2.
+- Patch 4: check backlog and rcvbuf separately + do not drop rst
+- Patch 7: prune only for new data + reorganize code to follow TCP
+- Link to v2: https://patch.msgid.link/20260731-net-next-mptcp-oooq-pruning-v2-0-24838164fa21@kernel.org
+
+Changes in v2:
+- Address comments from Clashiko.
+- Patch 3: typo, comment, bump TCP MIB counter.
+- Patch 5: uniform MIB counter name.
+- Rebased.
+- Link to v1: https://patch.msgid.link/20260724-net-next-mptcp-oooq-pruning-v1-0-5dd4dec63a54@kernel.org
 
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Paolo Abeni (7):
+      mptcp: move the retrans loop to a separate helper
+      mptcp: move the stale logic out of retrans scheduler
+      mptcp: let the retrans scheduler do its job
+      mptcp: explicitly drop over memory limits
+      mptcp: enforce hard limit on backlog flushing
+      mptcp: avoid code duplication in __mptcp_move_skb()
+      mptcp: implemented OoO queue pruning
+
+ net/mptcp/mib.c      |   3 +
+ net/mptcp/mib.h      |   3 +
+ net/mptcp/options.c  |  32 +++++-
+ net/mptcp/pm.c       |  41 +++++---
+ net/mptcp/protocol.c | 290 ++++++++++++++++++++++++++++++++++++---------------
+ net/mptcp/protocol.h |  11 +-
+ 6 files changed, 273 insertions(+), 107 deletions(-)
+---
+base-commit: 4fa4977a0d900f936bcae5cd2c510be5554e8dd6
+change-id: 20260724-net-next-mptcp-oooq-pruning-48566d10dbd0
+
+Best regards,
+--  
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
