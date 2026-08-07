@@ -1,76 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F333A5436;
-	Fri,  7 Aug 2026 14:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736DC411A04
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 14:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786113506; cv=none; b=iprF9acfIOUS+l4U5EcuruMk31MDYW9aC9t7OxCrpFWjbz/2YUCxLAjFL8BMkQiUJL2YmVDuSjp4pOG+CHD+r3YqXcNL3rl3wMPECDuAYlhFSNjW7MOwQP0zyxRPHxGM4tAXytwpzKZWWUkz0Jio1Cc6ZA1ZOrYzJ3BbuOD6ep4=
+	t=1786114182; cv=none; b=FnibHA6EXk6daVwfdRbBSVFidQUS/9D6S1Olq+AiZG5Fz9qnXTnIWdtOpJKFmyItOYju+i3pMPCc4Le+/ady/O7E80AoN5cFWdwskDMm8TM9CERP35Gv6WLQsokqXiFIeQBrP/YhHjAD6LkCknKrLe7yKiqEzO3y3lOjDfsOBKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786113506; c=relaxed/simple;
-	bh=SPeyJun5GGNv2JmxQxTTAs/jyNLyfJRuGfh+YHCcH3k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XntoKLJHCypTX8PTKjfsvvl3KhGyJBXLTjXHyNb/WnhpBZEuEvCKgtoZwrqsUT9hUyoHX8FS/txFziuSeoX/r4PoDYGljdM3z+MDpkjHePWb4yNrG1Y2XlOq+vbhkIxWL/OvPeCc0kG5KEypQ+q3KB/eiLp3pDAq6GneK+/79Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hsCFp4Or; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786114182; c=relaxed/simple;
+	bh=rIBVD0ltrU8+8xGc90Oa/79dIW3TVRlPoGEf1xQTtFM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IoZAI27dW7u3IIPngA6ktodBq0zUIifjPgD6jM1ucN/BR1JfWB7Ymj+BijHAr1SQBRqDWwihVDM7lyWb3BIRjJMLVxjUNhb77lkOjsgIg7R7GJy0i6rCvkEcAx2kqDG2mi+DjF/E/CtQLqmUFXlY1vga8O7sNEbN974FL9conVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sslaz9qR; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hsCFp4Or"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D611F000E9;
-	Fri,  7 Aug 2026 14:38:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786113496;
-	bh=4NQsNhafXfqt3vvYSvrFFNkI6Bzq3TezU7xMHrLilhE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hsCFp4Or3HSU3gYRFBOi0FCdy45zU6DEgdIYyppCR5ZBTVSjoaxhbglJhvyxYIsG6
-	 pFWDgQpCqe8LFoE/bNlaaWyDGaqG8Zw8WKvVbvRSGFYPJEoDa/uaQ+tGyk+pvp8BlX
-	 yDKoY/v66527BgLx5JybULMyAPq/3UiF8OvPv/bbLFuG9iGsYrMCYfRn+GcbWW2cin
-	 g1LvDWRJDTLXftT8GxDPwrZcpFTf2JfjVDwklkMSHd/CxryMqIJGQYfOi9rjoVeJz6
-	 UMC0nwA4Ne072RdHqwWO/MP4Yx6+gt8B+/Kkhgjqs1k7xMhfnxeJbbyrdpowwwOG96
-	 CtWtY/xqwGkIQ==
-Date: Fri, 7 Aug 2026 15:38:12 +0100
-From: Simon Horman <horms@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH net 0/2] net: mcast: do not write past optlen in the
- source filter getsockopt
-Message-ID: <20260807143812.GO51943@horms.kernel.org>
-References: <20260806-mcast_fix-v1-0-bed0a5518e57@debian.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sslaz9qR"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47f611b3af9so458794f8f.3
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 07:49:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786114179; x=1786718979; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ukm+OuNktymp77TFPbZkArdXVPXyYalBdkMMLYPXS10=;
+        b=sslaz9qR/vyd7bq8Jp3kC/7MM6pDm3ok0jS0ye5F72fSL//pg44ult3NDuC57AznN7
+         Vs1wMnEuJzbWWuiLbQ+peM1204aAfC/vT0F8pt4jJcDV6NcnbAmOLGFusdatHeqclcbk
+         Vi+P+evunyo1FFr6ughqdVFHx0EwjQe5xPLUb5g8uPXyRyzEwjKnzjM2KiLLvDiMVBsu
+         AE6F709bBBpqy8xrctxGjCknf0KlWbA+fDve0kgL8Vp2jpieBfsBPaCqzvyXleLfdN2t
+         o6AMi6M+pl1L0pySGJAObaaEvsS3qTxlPdul26jf0ZCqfqNENPBH3zkyc0oysYE7t02P
+         nIJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786114179; x=1786718979;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ukm+OuNktymp77TFPbZkArdXVPXyYalBdkMMLYPXS10=;
+        b=Tauwyt/dKVub/Yc7f2Z134XVgfCq6N6V2RYFQmxIfdTcNHZCE03trSSlfIXLenpC5j
+         FF8G/veDgdC7dC/VfsHxQ20NS9OOrfXDjSM9xZYWxxm2QY2R7QuBx3HrGmcL1U7vtzi2
+         lowfW5LExyOC/Hs9KUmAZuqVAGwPCvJRxq5F7OcnoL4ic4vw0FEI8XCXscdX9hEwtz8C
+         j3CdImOaU2IxMLv5OJHZjBfUz2sZIeFVIjps28isyHymiluLkxgOZq7hlYYM1mWwOCTe
+         tChMdPaj7KQbR4QUtkpqedGvnWofMnD6dOTNVjWZr31te+GcBq5DHMHuodkQixXJaIVU
+         EG1g==
+X-Gm-Message-State: AOJu0YwzcruafaqspILAfbA1onYg8Ahor29cgtqG8rdcXvu1k7AvLi32
+	3unxKLZGroC7g4jLRra0BBRJf5KYvBqDDAA2ZcvdccdceoadxdqvKPgk
+X-Gm-Gg: AR+sD10de3Cy9yq/x7y4Yi3wIUOH4gqZk7taLU3kcDuXdhBG7TnF3sPuejaqrDATVIE
+	W2Z25ZUaeHWUzjgFBNcbGczFTsDqB9Z4QkY42Ju/2KCA4n7JFOzS5jGzjxAjsCRUolqOdmtTHug
+	jhuvVsiyTiSGjbDJwRFpfCgO3vJIXvamhNn0rc7CIp0F+DqkopP+2DqcFnqlyUjB0FWs8MwMyQg
+	FmAaiGlRumXPRWKIH5vanH9lyd40qjV2oB1UqmAoQz+BwRHzTJM2CpfwZkqNb14oNvFgv28VAte
+	OOUn7w6nQfQ6pI409ivWeRNnOWTuJEVQTGrb1kxOumgN2JXXsQS1fWctUW2HNGxICIwCpy73gfw
+	CeaHhPYvGvLTkM2eIxeT32eHVQl2Eg7riWXPDfZsU5zdQsZysAwNRLb3Sd2isb6Yaxxp1//4UWx
+	9RhGMioSsLaKaaPOo7V5FM2D7RVi/Jv3oXcCQA1kLtcwEEV0rGvGvpokeUSd/b3LlM9eaRPPvG5
+	PuuW2UlhwZ7/8iZmfCe/NZWJyF8JV0CEzASOyda0cOTFzglKx3ij3yBhJe5hG+1gGUJ4PTNPa5n
+	5N5aZKgZTxFP5xBdHHyiE/CC7Sm3AGCm5hYG
+X-Received: by 2002:a05:600c:34d0:b0:496:c249:ddb1 with SMTP id 5b1f17b1804b1-4994e7d7feamr167001975e9.4.1786114178649;
+        Fri, 07 Aug 2026 07:49:38 -0700 (PDT)
+Received: from [192.168.2.69] (dynamic-077-179-201-133.77.179.pool.telefonica.de. [77.179.201.133])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995d85254asm26878245e9.1.2026.08.07.07.49.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Aug 2026 07:49:37 -0700 (PDT)
+Message-ID: <156d1de2-927f-450c-a809-dff6892d527c@gmail.com>
+Date: Fri, 7 Aug 2026 16:49:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806-mcast_fix-v1-0-bed0a5518e57@debian.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4 2/4] net: hsr: shrink seqnr_lock to sequence
+ counter updates
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
+ shuah@kernel.org, kees@kernel.org, petr.wozniak@gmail.com,
+ qingfang.deng@linux.dev, fmaurer@redhat.com, luka.gejak@linux.dev,
+ bigeasy@linutronix.de, xiaoliang.yang_1@nxp.com, skhawaja@google.com,
+ stable@vger.kernel.org, sdf.kernel@gmail.com
+References: <20260803222211.877-1-xiexinet@gmail.com>
+ <20260803222211.877-3-xiexinet@gmail.com> <anXrR6-2UVYF1iZa@fedora>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+Autocrypt: addr=xiexinet@gmail.com; keydata=
+ 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
+ sNySbH3veZ/55EtlXA==
+In-Reply-To: <anXrR6-2UVYF1iZa@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 06, 2026 at 02:41:59AM -0700, Breno Leitao wrote:
-> getsockopt() on the multicast source filter options writes past the
-> buffer the caller declared. Only the fixed header is checked against
-> optlen. The number of sources copied out comes from gf_numsrc/
-> imsf_numsrc, read back from optval, and nothing bounds that count by
-> the space left in the buffer.
+On 07/08/2026 16:27, Hangbin Liu wrote:
 > 
-> I hit this while converting the mcast getsockopt paths to sockopt_t.
-> Fixing it against 'net' first, so the fix is settled on its own before
-> the conversion goes on top.
+> Maybe use a shorter commit description.
 > 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
-> Breno Leitao (2):
->       ipv4: mcast: getsockopt: do not overwrite past optlen
->       ipv6: mcast: do not write past optlen in the source filter getsockopt
+> Note: Avoid these macros in fast path, prefer per-cpu or per-queue counters.
 > 
->  net/ipv4/ip_sockglue.c   | 16 ++++++++++++++++
->  net/ipv6/ipv6_sockglue.c | 11 +++++++++++
->  2 files changed, 27 insertions(+)
+> And the counters in hsr_deliver_master() also need to protected. Especially
+> multicast.
+> 
+> Thanks
+> Hangbin
 
-For the series:
+Thanks.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+The long commit description was from v4. I reworked and shortened it in v5:
 
+https://lore.kernel.org/netdev/20260807140751.1351-3-xiexinet@gmail.com/
+
+Regarding the statistics, Paolo previously suggested addressing the HSR dev stats races in a separate series, since there are already several occurrences:
+
+https://lore.kernel.org/netdev/4fc3b9f1-4bef-4b34-ae7a-e89037cce829@redhat.com/
+
+Would you prefer that I drop the DEV_STATS_* conversions from the next revision and address all HSR statistics consistently in a follow-up, including hsr_deliver_master() and multicast, rather than adding per-CPU accounting to this series?
+
+-- 
+Xin
