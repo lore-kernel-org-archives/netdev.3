@@ -1,192 +1,208 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5F447A0C3;
-	Fri,  7 Aug 2026 13:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3414A4734F5
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 13:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786108336; cv=none; b=YOBAcEfpRgodt/FWWupdjaLjVqISwFwJAfw/hMeMyLBLMzFOenh+rPk7slon2W8Dhil8+GDkQ+N7l2kNeEGMAsoyVD5pUntwlEfEgkleb1LIua7X1hk1H5xn1VtvPTj9+xKoq/7QajukR3WAxge7/G1oa2kkk0qd5FT6rhLLdcU=
+	t=1786108402; cv=none; b=LJ1o/GFOc49qDd1qx45Bqb7kAXr9i1yh/NZI569JP847U3s0BZp78iCSCNTPotU0JX5LHhJS+JPinpvjcOzzaBmKDN1VD/i+wAUAaUtUcfR7DTGtUWB5A3w29eg7eDhz1qTbojq7SxJYH7uQLDfmc3ysYqFVaTkzW9Pi7nN9nQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786108336; c=relaxed/simple;
-	bh=Sm1ZTlkwxRVVTkIitbmYJS9dm7aSbE94ilVK0AWaVE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nr/9unwJqsCw9sMXpPBXJrWU/zGOsxScUvnCKTzS3rwleAbgaHp1A0qk3UMwNe4IyClWxD8Gi53k3H2QA78Go2lUtNfHTaVvPGfqHWf+Ip36UR48dQT13jD5jVpNZO1LtNDd1oRJac3hcXZKmAopHL8F9MFwd8/CiN7SG8KvzWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=wYK6HgwX; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1786108402; c=relaxed/simple;
+	bh=NH+vbbaxZiG6Y0t+Ae1nwybjPC/wrZUjqEzfT2sfGrs=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UhftSWoBlE4ngmk5Fs5fmAToLVm8hiWQRhBpGqfl0YKEjFG9ADz0WD0AYxywyHwDmQmmDwug+PAdNOLzIKW7ztiOvkUxaUZryK3xaf7oaRAnpRsSq7M6XLIqrh3Jh2NtU8+7TbOl2yt8EAjF6BUhplO9AvCmy1Hdh9X/F7aGk4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IlmkawxR; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="wYK6HgwX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=ziu+Fcd6E+lf+L5u/C2gboILzXsqzImH3sl/bESmKEE=; b=wYK6HgwXDu/LqzHg/ss6o4ddB0
-	50AnUYFt6QuGRo7na9ETHxqRFhZTi2/O89xxYIPBKFL8Ns4HXFY4UikAZCg1pE2PptnTBnOobJv7X
-	/Gf3Uss8lDzVe/dtWzKV16sfp2WHMUPOw/aO43iGWUt5hnexGy98pFqWIAW7G1NPfo7h+8SIe+Q3n
-	INGJ959IO4Z4QouL7qAAtI8xyIVveV2rnLmDChsyxaZpiM4RnvOlpc+vFwztsj31BZUQFJbATAype
-	lAwjgyCjpV7/SvyrYIUpK3y5wJlgast71sHaNK7RST2xad86xFuaB/SfcZCJwBNLRN0Sp/RjuAB6i
-	UJHWmLAg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wsKMb-000S4A-1u;
-	Fri, 07 Aug 2026 13:11:53 +0000
-Date: Fri, 7 Aug 2026 06:11:49 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/4] netconsole: use the address family instead
- of the ipv6 flag
-Message-ID: <anXZJCDJtt-iTHy4@gmail.com>
-References: <20260805-netcons_ipv6-v1-0-170a35b92da1@gmail.com>
- <20260805-netcons_ipv6-v1-2-170a35b92da1@gmail.com>
- <anSte7-WkTYU4MnC@gmail.com>
- <CAGSyskWn8N-h=r-ePd23Kc19m3aiN5Bm04rYOhYPqV=roj4Y9g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IlmkawxR"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so33882565e9.2
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 06:13:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786108394; x=1786713194; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tBl3GBctv61bQMyEd2S/uBaFdUwcRcdsqM3BfaYguhk=;
+        b=IlmkawxRsT62aobFbJ4plJeaOL3z5PJhXmki8EuAS2bL+/Q1hCJC4VJ8UKl/pH2EHZ
+         hCr+sorVfmZoc09ADNHqMufsitwgkaiEhMHI18verzjY5+vJRPogmKaPNUbLrY0oyXpR
+         /iQCrXyHX6DwGzTeCmZsq3WFH5GV/wcH/NsH4t/7oBY3hy+Uj/McjYtwKAwSvE9opqSA
+         d3on5MehzZQ1+dw9n8EoBun3OHP7KVfbpVmH6INCGbgYkamHTtLAvmRpmBk9REN5Q1Yh
+         9oj//QXRk71UbqyIMyViEvkmut1FRXN1sAgwTWSITzbMW6rnFkhdJ4epCBxbEqdTtYYC
+         IgtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786108394; x=1786713194;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=tBl3GBctv61bQMyEd2S/uBaFdUwcRcdsqM3BfaYguhk=;
+        b=euKqDR06BbUBuvYOSHd7f0Y0sfbYc+2P1Gg4xrfTmoHYXdipn5i9Hw8k7NrZ7aJk8p
+         4YhNo5wUJU7l81lISPi9PxfU8dfWIkgxjFkfw1U5lyC5DIYtITi6h9C6nUdktZ4XBH7z
+         R4NMl0SGE0kYVqDirsP6qgRXJZmC4kRM9qaAMkX5R/N6x7BZiVSPr42c5RFV6eVIOfIr
+         Kf61xiIJcgU2vKxaiOfsuWlAjuWceWfofuS4VTQMwwpiEjn4RcrOMVB3cAmEbttWnvG+
+         R31TG1vTTq3l7E3S7wDyiP05j66NMjfO7e9p1CiUvb9hnngPzKLZuNZ4ld1Troo6zceD
+         RCVw==
+X-Forwarded-Encrypted: i=1; AHgh+RrZCtUlUTLLRfdOJLR7uMeQUpoKvyS1tNNnpp29awkCTTLGLliW+E5MVvk/TtgMsUPy2FRGAgI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIwGpMm1Wia9NraaHplQRimITSpfliL0vCozH/g00faSh5icAY
+	MFnmWqG7DQcLE5pLAzLc9JH1G180DECnwsB1vleQZM64VKPUnFSfX+ct
+X-Gm-Gg: AR+sD124Lw+MdJZbT73oOqXFhdx2LoJz5xsFhD3mo2ZHvSWVdZ1yT5JT8DSv3UUu/Ft
+	DXkL5LXFiBFd7yNZibwBwOBro89wKzFW+Z4z4pORE47KDTiHdG7jkynCe14/+z0+DNXn2UoZruX
+	CQB0/rJOEaUgaBMQbc2E1G0tR+tE1+YC/rh+KkHwTRF9nfp4TIe1SLukbbsgcjcZQ196BWR9ZZc
+	OoBZ/ro9pXLd4RPNgqyaq+RzwNARoXrRIqtoF1XZN13tWH+B/9ZB9zpL/2OIDuONLZ3shC8m9Ap
+	xboh0go6bGoqY99q4/0NfoaI+LNq9K/hcN116E6qcp4UkS5x4J8wiXVGywPRflWOwB5GYfXOP2B
+	vxUetmBBxgzzW6TFY86O7QbYH5szKpoN3rL4o94Ty0kTVLtkgvwVylMZpQ5Ey0Zt9/Lap1/eZlA
+	bAGw43YwqiIDOhKlB73rch8RlecmYivS5nYkyXrkggitrlrcrwCk2cXwXgtWvFOcKtyi/7yhmgj
+	Ban6HdbDQLU8aJWZSGagPp7Q6En5cPSecNwrH8nklRcGiorhk3xgg==
+X-Received: by 2002:a7b:cc0b:0:b0:496:cb48:5eb8 with SMTP id 5b1f17b1804b1-49959e38ecamr104184045e9.15.1786108394327;
+        Fri, 07 Aug 2026 06:13:14 -0700 (PDT)
+Received: from Ansuel-XPS24.localdomain (host-87-19-255-168.retail.telecomitalia.it. [87.19.255.168])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4995c7b2b68sm58827665e9.4.2026.08.07.06.13.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 06:13:13 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	llvm@lists.linux.dev
+Subject: [PATCH net-next v11 01/12] net: phylink: keep and use MAC supported_interfaces in phylink struct
+Date: Fri,  7 Aug 2026 15:12:43 +0200
+Message-ID: <20260807131301.192060-2-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260807131301.192060-1-ansuelsmth@gmail.com>
+References: <20260807131301.192060-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSyskWn8N-h=r-ePd23Kc19m3aiN5Bm04rYOhYPqV=roj4Y9g@mail.gmail.com>
-X-Debian-User: leitao
 
-On Fri, Aug 07, 2026 at 01:00:51PM +0100, Gustavo Luiz Duarte wrote:
-> On Thu, Aug 6, 2026 at 4:55 PM Breno Leitao <leitao@debian.org> wrote:
-> >
-> > On Wed, Aug 05, 2026 at 10:33:02PM +0100, Gustavo Luiz Duarte wrote:
-> > > Now that we have the address family in inet_addr, use that and remove
-> > > nt->ipv6.
-> > >
-> > > We no longer need netcons_local_ip_unset() to check that all bytes are
-> > > zeroes, as that is now denoted by (family == AF_UNSPEC).
-> > >
-> > > Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
-> > > ---
-> > >  drivers/net/netconsole.c | 82 ++++++++++++++----------------------------------
-> > >  1 file changed, 23 insertions(+), 59 deletions(-)
-> > >
-> > > diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-> > > index d615a9256787..070bae7b4fd7 100644
-> > > --- a/drivers/net/netconsole.c
-> > > +++ b/drivers/net/netconsole.c
-> > > @@ -181,7 +181,6 @@ enum target_state {
-> > >   *           local_mac       (read-only)
-> > >   * @local_ip:        Source IP address of the target (read-write).
-> > >   * @remote_ip:       Destination IP address of the target (read-write).
-> > > - * @ipv6:    Whether the target addresses are IPv6 (read-write).
-> > >   * @local_port:      Source UDP port of the target (read-write).
-> > >   * @remote_port: Destination UDP port of the target (read-write).
-> > >   * @remote_mac:      Destination ethernet address of the target (read-write).
-> > > @@ -213,7 +212,6 @@ struct netconsole_target {
-> > >       bool                    release;
-> > >       struct netpoll          np;
-> > >       struct inet_addr        local_ip, remote_ip;
-> > > -     bool                    ipv6;
-> > >       u16                     local_port, remote_port;
-> > >       u8                      remote_mac[ETH_ALEN];
-> > >       /* protected by target_list_lock; +1 gives scnprintf() room for its
-> > > @@ -463,23 +461,6 @@ static int netcons_take_ipv4(struct netconsole_target *nt,
-> > >       return 0;
-> > >  }
-> > >
-> > > -/*
-> > > - * Test whether the caller left nt->local_ip unset, so that
-> > > - * netcons_netpoll_setup() should auto-populate it from the egress device.
-> > > - *
-> > > - * nt->local_ip is a union of __be32 (IPv4) and struct in6_addr (IPv6),
-> > > - * so an IPv6 address whose first 4 bytes are zero (e.g. ::1, ::2,
-> > > - * IPv4-mapped ::ffff:a.b.c.d) must not be tested via the IPv4 arm —
-> > > - * doing so would misclassify a caller-supplied address as unset and
-> > > - * silently overwrite it with whatever address the device exposes.
-> > > - */
-> > > -static bool netcons_local_ip_unset(const struct netconsole_target *nt)
-> > > -{
-> > > -     if (nt->ipv6)
-> > > -             return ipv6_addr_any(&nt->local_ip.in6);
-> > > -     return !nt->local_ip.ip;
-> > > -}
-> > > -
-> > >  static int netcons_netpoll_setup(struct netconsole_target *nt)
-> > >  {
-> > >       struct net *net = current->nsproxy->net_ns;
-> > > @@ -525,16 +506,13 @@ static int netcons_netpoll_setup(struct netconsole_target *nt)
-> > >               rtnl_lock();
-> > >       }
-> > >
-> > > -     if (netcons_local_ip_unset(nt)) {
-> > > -             if (!nt->ipv6) {
-> > > -                     err = netcons_take_ipv4(nt, ndev);
-> > > -                     if (err)
-> > > -                             goto put;
-> > > -             } else {
-> > > +     if (nt->local_ip.family == AF_UNSPEC) {
-> > > +             if (nt->remote_ip.family == AF_INET6)
-> > >                       err = netcons_take_ipv6(nt, ndev);
-> > > -                     if (err)
-> > > -                             goto put;
-> > > -             }
-> > > +             else
-> > > +                     err = netcons_take_ipv4(nt, ndev);
-> > > +             if (err)
-> > > +                     goto put;
-> >
-> > nice, that is much clearer.
-> >
-> > >               ip_overwritten = true;
-> > >       }
-> > >
-> > > @@ -716,22 +694,22 @@ static void netconsole_print_banner(struct netconsole_target *nt)
-> > >       struct netpoll *np = &nt->np;
-> > >
-> > >       np_info(np, "local port %d\n", nt->local_port);
-> > > -     if (nt->ipv6)
-> > > +     if (nt->local_ip.family == AF_INET6)
-> > >               np_info(np, "local IPv6 address %pI6c\n", &nt->local_ip.in6);
-> > >       else
-> > >               np_info(np, "local IPv4 address %pI4\n", &nt->local_ip.ip);
-> >
-> > Any chance it can be UNSPEC?
-> 
-> Yes. Since this is a refactoring patch, I didn't want to change behavior here.
-> So I kept the original behavior which is print "0.0.0.0".
-> 
-> I was planning to send a separate patch set to change this:
-> a) Print an empty string if unset (AF_UNSPEC).
+Add in phylink struct a copy of supported_interfaces from phylink_config
+and make use of that instead of relying on phylink_config value.
 
-Please add it to this patchset. 
-> b) Allow the user to write an empty string to local_ip or remote_ip to
-> denote unset.
-> 
-> This can be useful in case the user is reconfiguring the target and
-> wants to make use of the local_ip automatic discovery logic from
-> netconsole.
+This in preparation for support of PCS handling internally to phylink
+where a PCS can be removed or added after the phylink is created and we
+need both a reference of the supported_interfaces value from
+phylink_config and an internal value that can be updated with the new
+PCS info.
 
-Cool, this could come later.
+Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/phy/phylink.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-> > > @@ -755,7 +733,7 @@ static int netpoll_parse_ip_addr(const char *str, struct inet_addr *addr)
-> > >           in6_pton(str, len, (void *)&addr->in6, -1, &end) > 0 &&
-> > >           (!end || *end == 0 || *end == '\n')) {
-> > >               addr->family = AF_INET6;
-> >
-> > Why not setting family for for IPV4? In
-> >
-> >         if (in4_pton(str, len, (void *)addr, -1, &end) > 0 &&
-> >             (!end || *end == 0 || *end == '\n'))
-> >                 return 0;
-> 
-> I did that in the previous patch. Here we are just changing the return code
-> convention for netpoll_parse_ip_addr(). We no longer need to return the address
-> family because it is now baked into inet_address. So instead of returning 0 for
-> ipv4, 1 for ipv6, and -1 for failure, we just return -1 for failure and 0 for
-> success.
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index b241768edbcb..b7180ae76cc8 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -60,6 +60,11 @@ struct phylink {
+ 	/* The link configuration settings */
+ 	struct phylink_link_state link_config;
+ 
++	/* What interface are supported by the current link.
++	 * Can change on removal or addition of new PCS.
++	 */
++	DECLARE_PHY_INTERFACE_MASK(supported_interfaces);
++
+ 	/* The current settings */
+ 	phy_interface_t cur_interface;
+ 
+@@ -628,7 +633,7 @@ static int phylink_validate_mask(struct phylink *pl, struct phy_device *phy,
+ static int phylink_validate(struct phylink *pl, unsigned long *supported,
+ 			    struct phylink_link_state *state)
+ {
+-	const unsigned long *interfaces = pl->config->supported_interfaces;
++	const unsigned long *interfaces = pl->supported_interfaces;
+ 
+ 	if (state->interface == PHY_INTERFACE_MODE_NA)
+ 		return phylink_validate_mask(pl, NULL, supported, state,
+@@ -1878,6 +1883,9 @@ struct phylink *phylink_create(struct phylink_config *config,
+ 		goto free_pl;
+ 	}
+ 
++	phy_interface_copy(pl->supported_interfaces,
++			   pl->config->supported_interfaces);
++
+ 	pl->mac_supports_eee_ops = phylink_mac_implements_lpi(mac_ops);
+ 	pl->mac_supports_eee = pl->mac_supports_eee_ops &&
+ 			       pl->config->lpi_capabilities &&
+@@ -2024,7 +2032,7 @@ static int phylink_validate_phy(struct phylink *pl, struct phy_device *phy,
+ 		 * those which the host supports.
+ 		 */
+ 		phy_interface_and(interfaces, phy->possible_interfaces,
+-				  pl->config->supported_interfaces);
++				  pl->supported_interfaces);
+ 
+ 		if (phy_interface_empty(interfaces)) {
+ 			phylink_err(pl, "PHY has no common interfaces\n");
+@@ -2824,12 +2832,12 @@ static phy_interface_t phylink_sfp_select_interface(struct phylink *pl,
+ 		return interface;
+ 	}
+ 
+-	if (!test_bit(interface, pl->config->supported_interfaces)) {
++	if (!test_bit(interface, pl->supported_interfaces)) {
+ 		phylink_err(pl,
+ 			    "selection of interface failed, SFP selected %s (%u) but MAC supports %*pbl\n",
+ 			    phy_modes(interface), interface,
+ 			    (int)PHY_INTERFACE_MODE_MAX,
+-			    pl->config->supported_interfaces);
++			    pl->supported_interfaces);
+ 		return PHY_INTERFACE_MODE_NA;
+ 	}
+ 
+@@ -3757,14 +3765,14 @@ static int phylink_sfp_config_optical(struct phylink *pl)
+ 
+ 	phylink_dbg(pl, "optical SFP: interfaces=[mac=%*pbl, sfp=%*pbl]\n",
+ 		    (int)PHY_INTERFACE_MODE_MAX,
+-		    pl->config->supported_interfaces,
++		    pl->supported_interfaces,
+ 		    (int)PHY_INTERFACE_MODE_MAX,
+ 		    pl->sfp_interfaces);
+ 
+ 	/* Find the union of the supported interfaces by the PCS/MAC and
+ 	 * the SFP module.
+ 	 */
+-	phy_interface_and(pl->sfp_interfaces, pl->config->supported_interfaces,
++	phy_interface_and(pl->sfp_interfaces, pl->supported_interfaces,
+ 			  pl->sfp_interfaces);
+ 	if (phy_interface_empty(pl->sfp_interfaces)) {
+ 		phylink_err(pl, "unsupported SFP module: no common interface modes\n");
+@@ -3935,7 +3943,7 @@ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
+ 
+ 	/* Set the PHY's host supported interfaces */
+ 	phy_interface_and(phy->host_interfaces, phylink_sfp_interfaces,
+-			  pl->config->supported_interfaces);
++			  pl->supported_interfaces);
+ 
+ 	/* Do the initial configuration */
+ 	return phylink_sfp_config_phy(pl, phy);
+-- 
+2.53.0
 
-Would it make sense to change it here, together and close to the
-detection?
