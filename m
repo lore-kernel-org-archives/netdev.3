@@ -1,62 +1,64 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0443EDAC1
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 10:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AB83DFC92
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 10:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786096841; cv=none; b=jSziKS5A3BYzyq3EzNPmfiGrrcV9pNjPrUkq0m2/+L3fd281cu/sBs2UfMt3lQgNIWkZWKZ3nN6C+nnYbEcJ5E6fWDrYR7lMTER+6CzZdH1P/HUnCqyormPmT+l5f9hCfhDGARezwiTS+6+wHq9olKcgLwBoUFbIpQsYu/ITEAk=
+	t=1786096856; cv=none; b=DuT9hyEVrNaTYOYWl5EHD2dQkLQ2PGNseGBi+lceMX8L4SYcmaucLpeFAVaMypQ9CsK+al+bP8YVwf2lQyyvCzpJr40yVM+lmokXFcjWD9ubib8pa/onOU8GwZaHocHHdVgLrtgaRVNjXG4Ac7d4nXX1pCZP0Nt0yPKemfv/l4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786096841; c=relaxed/simple;
-	bh=WE8i65b9LC7lL9iQ5/lEghqFQeb0neL/8MWHHX2SAPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cm7LG1jKJg2n6gKSxwoZ3Q6ICq+jVhjtn1xCkhstDbkbJbHdB7aacCTUCJp/sLGIZbkFnPhIp7h+Iwzv/WE6U4aYldlmcw25+xhOycebQgWOF9xfcyGcPJlXFnYmbuZlQhbupRlNaGTdEoeGPFPGSaelsIjaxgT0WYKXNtxKEpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pm1SLs9V; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1786096856; c=relaxed/simple;
+	bh=MCXM2XKBVlX/EwXo9DZCvLtvoatevzZ4S5wRf3peb1Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=luJ43FBK4PtL+MSmq0VSn4edH+Ngu+ZHnxT7H9ZnVpmmc8KfX2v9GxxpUXHonogyS51s7R1zKqGe+rLLfeau1wMmFqtCoGM/uS0394fteAIVyfOAXJUL/JKQWVIHO+vqpl7dMAKAVR0wEPF9ZeZQtWRf8wfWObLnOpAtw1Q5WHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bG+rNtPy; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pm1SLs9V"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cf52d15d88so29816745ad.2
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 03:00:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bG+rNtPy"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cf452def93so15111215ad.1
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 03:00:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786096839; x=1786701639; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QQZgcdlI2EieaifCVQjJlrIUWRZzFN6DkbdW2khQ3hg=;
-        b=Pm1SLs9Vov4ax6nEhgu4CzxOZs+MSR7P3WXTpdz1PFwe917a57sFkh67hXtDvoqJj7
-         UiKLoOulcmT1bPsSkAhNOiNxPId7cRsPSg45sov5/hdJRxKZjLyClutI738g4XSwHSRM
-         5Soudi7LnRXtX8zNHhcvU1On4RKmSFFiB9Oc1jLgpCGx6D4D4JxJ7cN8NGnW6w6GJ4cY
-         mYpOpIYaAd7Nk1v0eHriKCW5pyfjewYHYunp96L5s8khxO3XCbtaG16xrxlDaSJzu+7q
-         DGGNKtuDY2jbPKeSvgK1Po67J3CQmkF2WxirP7NhVC+9KGapmkpb4NUjvg4nLNGpJrgT
-         oN+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786096839; x=1786701639;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786096853; x=1786701653; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QQZgcdlI2EieaifCVQjJlrIUWRZzFN6DkbdW2khQ3hg=;
-        b=gwwb8tLLFurWuxKrAOrLXxHYcVl7LTGRiyZ9jxYTy1krlN96rvW6qHgLP/+COSOj8V
-         PD+QbrF5g6SA8m25O3xE/QXUA/iuFrwrVVV8VqltMfzddeEd0hzmWkT1L2W2HsENpeOM
-         pSjz7hxMfpeZf/Ol/1FnBQKnEkS2rwoxnTEJqcbgpupYsaRVHgU3XgkIeKtiZx7w/ziE
-         eY8YoH3p3jN3LZp9FTgHDoJ+J+oiLxZO+yotzWQAbIygjSd9O3zzuP/Jum0zFciDl/fL
-         wRIANDhNTX42HsetJgEjHTaacvTq5BcLbWcU1DIOlSiOqhDLnJFmt9Zp09OwBsOSIoDF
-         0Wyg==
-X-Forwarded-Encrypted: i=1; AHgh+RrkoahD1dlvSX1g3X3RQaQMQaBWjIioq8e1G266QNSi1s2sjKRtZdhLfErKOOxOtfl3/KYz234=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxT+15dmsGlZ9GvYq8214XJHmmDQ5Ji8WMbPIfnQfVJnAowdjzZ
-	GKq1XbKhJHlhsJT4kkjYz056VHWRm2EvsoPMqLl/S1SspsK0ABzIYufc
-X-Gm-Gg: AR+sD12HApZxOUKDjT34wZFZEJJ1KOILIAFiDlulQzTBWHIES1mtCzSaPYdrSkUacZo
-	QUDrMk/lJIQgJDLEf9abtYs3xa3UMxBDmsnV0SNLM28Yd/k8FSY/6zfsDGUQqe3Z/fWnoj0GVG4
-	fq/EZm55dp7l6zFOQKp0cxLVyl26J1H7CvwVz0xDv7jIxeumpxzIAqz9Pz7GL7C3c6PGATVJDpV
-	NgnmWq/p2BWjm8nmmskVMEkdqlL/vgei+g0CeMRX7x+yISO2aXDKuTOpe3kB8Jb+jrLScjzWw4U
-	KqEnRka3H0Acci4nrv5yKJXxUZM5N3JFaY/XcgkrW0hdKqGtK3BOtcW6qckyDuaxcgTLk6WTcT2
-	92hJYF1II9sQVtgRTxMkhOl1pnl0sj4UVMKRfplpzrpplSCSHlHLqHue2XeO3KayS5Sy4Kvqzp1
-	s05wQIgHaSOFtMzqirv5VXLkPl34WONd0x1rqstXt70TSsbj0fi1cNT6Yso2uCqgOP8MYUjfWBp
-	XvVfOLs1sljdm5AiZ+ULtzSONrQAmnHsDkZ4mgUSGwOGdZkNOyE+5KM0KFMd56LvHw=
-X-Received: by 2002:a17:902:f60c:b0:2cc:aa36:c04c with SMTP id d9443c01a7336-2d0ca7afcabmr254341645ad.1.1786096838646;
-        Fri, 07 Aug 2026 03:00:38 -0700 (PDT)
+        bh=mXJlW9JsusO8To5K56BmONAgJx5Sdd1b4tle9i9ZWE8=;
+        b=bG+rNtPyUBAtJ+cL2Lq+M5Zt0zbQ55t7q+ccSZlAhyytJZjsNcJ+WuafaI7kcLTd/K
+         ZtBUpIVy/cJq18W/WSuhGRJSSfZtUWAKIn6dZEp8D7wAfAfKnvV6tZ6aU/Ia2YdG+3yQ
+         0cC+7mnhptf6ulnAeZ/FtHjgKUkQRQyPOAF/Fa4cdQSseYE9lZA5mJsgrBpu1JOyQHBV
+         UNni/TagtlBMIuJ8FYcbiMRhw5nhPjTff2HwkbP4SBJ8sTf0r533rJ651S01heP7cOEp
+         /xqvI/14JGC+TS+2ow4MV7lRN0VJpajYb8mIHiiAHVyj5f7PRH3bIzzHVyx3XQr29V3I
+         b3XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786096853; x=1786701653;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mXJlW9JsusO8To5K56BmONAgJx5Sdd1b4tle9i9ZWE8=;
+        b=W+zXVbzFTbct+NGKULZVfccpxb5L1zXiyqJq+vF5UyK5WiuG3kg9k6NbzKPGZHeFXv
+         c7ucGOHcoecXvhWJ4NB4pkjjN0euP8OSZRa3OO2vPA4llVeKAn8oeoZlm4qgjZ0VBMBF
+         r05Jq5cxj3Zot5zG7UAmXQyBqX7hrcW8sJRNvIcAvE3FjGMJckHXH/8G7C/qeMx8kBt5
+         3yndBUnBjY5noTYyCjy8QKfzZwvEBvziHbJK967Iyiheyw451SIstazj2Q7YH1bRFt22
+         tsC0Mwbnm6Fu/hQWNaHa3zuYdIhiVm/HqTVLlJ4d6FnxKwepmcBqJGz+PeYosQJDvUOa
+         kqEA==
+X-Forwarded-Encrypted: i=1; AHgh+RqHh/61zJyaagUupEq7DrTC4aBZu4j2oXuw8dHui+KBNRaYs/FMQyc9eSXTiRxaPX7bnWcD348=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbGhqwKTZg0mihQaCpZe+zsPrT9TXeinPAcomYcD4fkC1S6lNH
+	Hhs+7FJNAJZwMGfFjiMs/yjYxL1OeTCr7zzbDYUvdZoGC+Mqi8AzXsUX
+X-Gm-Gg: AR+sD10VjtGv3BPYrocu7hc0IG4n9jZY2wP/s9A2N59ubiA/ko5PQ6sF+S5JhfciLPV
+	0NW5idV/agMX5wJNQBJiTP0FIX53YE3Nn5ukWJ5iYeCKtwDhUOdJ0LWrP7nLJaE3GtF9EWOkpe8
+	HfI1hFGfK8L5dTMWPEu61EJE7MjAR8JowO1KBWeOCGvrEjbys0knPQ9QmI9g+c7KyGkt7Rbf3/A
+	RLERUJ5XdziH8lk0oXtcRiLwC1ngD3aXoM0aUkfGopaBCzoO5eFifK+5c4znzB9fGEdAFIcUK/M
+	fRr/+pGZn5S7B5OtRORrbE1KSQZVGOKXfbQHERwkeFNT97Sr3VcCjSx2RtgioWmI7nqlcUGslW4
+	7GaZVy6th6jn9g9wMDrtR2dbndB5qvVUq/5p+91C8T8a5qTi0GhRDr9ao6zCks06EVBMyQ0oE5m
+	U54csbP6ngZfa+JnzRc+Zj7VACh81VkQH6B+jjDzJe7wnFSdZuEpWBKjazfBPDq3UYbgeLVIzR/
+	Wj5WuP8q56KAwkV0DcI9mzyncxNRP2iacTB9sYzKNtrEzWsn1dPcck=
+X-Received: by 2002:a17:902:ce0c:b0:2cc:89ce:2f07 with SMTP id d9443c01a7336-2d0f704ca37mr63534455ad.1.1786096852750;
+        Fri, 07 Aug 2026 03:00:52 -0700 (PDT)
 Received: from EAIT-H54D9Q2FJQ.eait.uq.edu.au ([130.102.10.60])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d16c4a9f0fsm6500035ad.68.2026.08.07.03.00.32
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d16c4a9f0fsm6500035ad.68.2026.08.07.03.00.47
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 07 Aug 2026 03:00:37 -0700 (PDT)
+        Fri, 07 Aug 2026 03:00:51 -0700 (PDT)
 From: Yu Zhang <yuz08559@gmail.com>
 To: mst@redhat.com,
 	jasowangio@gmail.com
@@ -66,10 +68,12 @@ Cc: eperezma@redhat.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yu Zhang <yuz08559@gmail.com>
-Subject: [PATCH 0/2] vhost-vdpa: fix a use-after-free on the config eventfd
-Date: Fri,  7 Aug 2026 20:00:23 +1000
-Message-ID: <20260807100025.19750-1-yuz08559@gmail.com>
+Subject: [PATCH 1/2] vhost-vdpa: don't install the eventfd_ctx_fdget() error in config_ctx
+Date: Fri,  7 Aug 2026 20:00:24 +1000
+Message-ID: <20260807100025.19750-2-yuz08559@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260807100025.19750-1-yuz08559@gmail.com>
+References: <20260807100025.19750-1-yuz08559@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,46 +82,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-vhost_vdpa_config_cb() reads v->config_ctx with no reference and no lock
-while VHOST_VDPA_SET_CONFIG_CALL frees the old context, so a config
-interrupt delivered at the wrong moment signals freed memory.
+vhost_vdpa_set_config_call() swaps the eventfd_ctx_fdget() return value
+into v->config_ctx before checking it, so on failure the field briefly
+holds an ERR_PTR:
 
-Patch 1 stops the fdget error value from ever being installed in
-config_ctx.  It is a fix in its own right -- the callback tests only for
-NULL and would signal the ERR_PTR -- and it is also what lets patch 2's
-lock establish "non-NULL implies valid".
+	ctx = fd == VHOST_FILE_UNBIND ? NULL : eventfd_ctx_fdget(fd);
+	swap(ctx, v->config_ctx);
 
-Patch 2 adds the lock that closes the use-after-free.
+	if (!IS_ERR_OR_NULL(ctx))
+		eventfd_ctx_put(ctx);
 
-This is not the reopen refcount underflow fixed by f6bbf0010ba0
-("vhost-vdpa: fix use-after-free of v->config_ctx"), and it is a
-different bug from the vq call fd one I sent on Aug 6
-(https://lore.kernel.org/all/20260806150323.2154-1-yuz08559@gmail.com/),
-which is about the parent caching an eventfd_ctx it does not own.  The
-three touch different functions.
+	if (IS_ERR(v->config_ctx)) {
+		long ret = PTR_ERR(v->config_ctx);
 
-Tested on v7.2-rc6 with KASAN under qemu, VDUSE as the parent: one thread
-swaps the config call fd on the vhost-vdpa fd while another injects
-VDUSE_DEV_INJECT_CONFIG_IRQ on the VDUSE fd.  9 of 10 30-second runs hit
-the UAF; 0 of 5 with the series applied, with the workload counters
-unchanged either way (~30k swaps and ~2.6M injects per run), so the race
-is still being exercised rather than merely not reached.  Also clean over
-5 runs with PROVE_LOCKING, and vdpa_sim shows no change on the shared
-VHOST_VDPA_SET_CONFIG_CALL path (20000 install/unbind cycles plus the
-bad-fd path, identical before and after).
+		v->config_ctx = NULL;
+		return ret;
+	}
 
-For patch 1 specifically: with a working config fd installed, 250 injects
-deliver 250 signals; after a VHOST_VDPA_SET_CONFIG_CALL with a bad fd,
-delivery stops on an unpatched kernel and continues with the patch.
+Commit 0bde59c1723a ("vhost-vdpa: set v->config_ctx to NULL if
+eventfd_ctx_fdget() fails") added that clearing, and spelled out the
+invariant the rest of the file relies on: "we consider 'v->config_ctx'
+valid if it is not NULL".  The window between the swap and the clearing
+still breaks it.  vhost_vdpa_config_cb() only tests for NULL, so a config
+interrupt delivered inside the window hands the ERR_PTR to
+eventfd_signal().
 
-Yu Zhang (2):
-  vhost-vdpa: don't install the eventfd_ctx_fdget() error in config_ctx
-  vhost-vdpa: protect config_ctx from being freed under the config
-    callback
+Check the fd before installing it instead.  That closes the window and
+matches how vhost_vring_ioctl() handles the same failure for the vq call
+fd.
 
- drivers/vhost/vdpa.c | 44 +++++++++++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
+It also stops a rejected fd from tearing down a config interrupt that was
+working: until now the swap replaced the live context and put it, so
+after an EBADF the device silently stopped delivering config interrupts
+until userspace installed a new fd.
 
+Fixes: 776f395004d8 ("vhost_vdpa: Support config interrupt in vdpa")
+Signed-off-by: Yu Zhang <yuz08559@gmail.com>
+---
+ drivers/vhost/vdpa.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index ac55275..e5e47f6 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -529,18 +529,14 @@ static long vhost_vdpa_set_config_call(struct vhost_vdpa *v, u32 __user *argp)
+ 		return  -EFAULT;
+ 
+ 	ctx = fd == VHOST_FILE_UNBIND ? NULL : eventfd_ctx_fdget(fd);
++	if (IS_ERR(ctx))
++		return PTR_ERR(ctx);
++
+ 	swap(ctx, v->config_ctx);
+ 
+-	if (!IS_ERR_OR_NULL(ctx))
++	if (ctx)
+ 		eventfd_ctx_put(ctx);
+ 
+-	if (IS_ERR(v->config_ctx)) {
+-		long ret = PTR_ERR(v->config_ctx);
+-
+-		v->config_ctx = NULL;
+-		return ret;
+-	}
+-
+ 	v->vdpa->config->set_config_cb(v->vdpa, &cb);
+ 
+ 	return 0;
 -- 
 2.43.0
 
