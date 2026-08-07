@@ -1,151 +1,191 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013039.outbound.protection.outlook.com [52.101.72.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9F34B04B1
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 02:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31DA4B04BE
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 02:41:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786069955; cv=fail; b=iVunaVWbZ6+/t3vNuaTCb/UpfkO7tFhlwXG//ZePjNI9HFbKqKPnCNrwKpE/FhR0LF34nT5atAtD5QeciyOMN2wyzxFqv1oSGdTKhkkB81UHaIls+rWkr8xXPTk+NtjczDUg8HjWqHL30gaYWyXumnUr8PIzdlxEOaoI6MWkEp0=
+	t=1786070478; cv=pass; b=N9jS8fVL/MPnGJg3jJnd3U8dxtP5IEL8sSA63Fpx+YoIz3wOB7bS2x9tpYoh7bN9IwGkKep8ifFj3fKS4xl1GvBaGjUamTRG2cDD1o8WfUczTq/84QayVdETdIRVoeLe4LTv4nZZjO4M3DQUjQsbvLPCxCVwBT3zBWdFtFhTA2k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786069955; c=relaxed/simple;
-	bh=ghDGzzfpTVyhDKkCg6pAJe8O2Zh7fZZA2/6PefwzKUo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=bAQGE2b7zHbl0J1qBnsTBZsVKYqvQUMFiBFI83Mr6GXuIhD+6lEuaKVv/Y3KXBqqDyK6rk3FV+G4209D/bXo6Esj3p6OIsobyEV2bqESBmgdX+Ba1dmq8LlVvmp/4juRUyn4eVdpK9t6sJIMxy1XcaYhep4dZ8ym6JxilIvCMLg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=SXTI1InU; arc=fail smtp.client-ip=52.101.72.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	s=arc-20240116; t=1786070478; c=relaxed/simple;
+	bh=6EWctOxAWLRCc3hTznphIkPrW49vIH2Teom9K5/kdnY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZvFKsy/e+4HRPkzDyz6i5DiH/SuoQBvxPjyIsHYH724p3bA0rD6Q0tPS+VOKKpfdwrvm7pyD5QY4HqQkEJiZx7IU9BAnj6bY+eGz597l2+261vMhNfBHGTpX24PDyYn+VyhkeK0hTspEjKu+yYkfZ7iXEiB3p707d4mzo7/ieVQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EDO6/dVe; arc=pass smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="SXTI1InU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UIBMa/MbrdPn5wacTGF7vofWnfIrtVAjTQMhIBbBFB9lCwsKhYylqm473zSWwLJlKoClh8SOqChdzDrglPYiaF76u1a7rz9PuRLRMHJVDGNssEqVPJ5DwxGOTcMtWqj3Wyc7OHZsj4Ry+W3BKobT9HWR9dsdPk0qRm3bdbCObhohk5Wb7RwGIuBkx8zxRujyxgFVvCtPGqwaFk2hdJHPE/wIeeH58LevWXPMQObUIkhxc1xDn0vhnBT20tehak6kNZw+HsEOzzNtqpSemSbZTiliZ01cChoQbOev7Xr9BQQUHyrZ7/M/2fZQmwZpd1sytP5ReHndBjEnQxYBGZ/4Ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EpvbHXl5did+/6STlc+lzqD1DPgvtEBnFUgfQ601PeY=;
- b=Ilvs4m1rUsg5eWi+Wa4Nze2tLwR1xG66TCaYOmAby1C5Iy/pxoDC/Phr6wc3rf11mzo4Rlh+SeCnQq62kQsDpV1k90MTZ71S3WANPz9R7xtQVAquVAVZ3Wdltpk1awGEsXj98NP5wDsYV6G+kkFwxaKnE8JyCPkibENRwASF//jpLwm90yZLl3bqWKBqy2vgR+sgD78Vv1KHUQoCWQ16EWBOYqwL1ckj040z28xQxyI/We+sKQLPpd9xGTdW0wz6tRvirkUP0VVxefyuqPEx9sjt+3woTpDK8BOep1za2/xUjlJKEkUs1WsrA6sReuWvZGK6E4IFe1OnLegRJ5GBCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EpvbHXl5did+/6STlc+lzqD1DPgvtEBnFUgfQ601PeY=;
- b=SXTI1InUJNZqn+P4iJJfrb8Vsn1hKplJ1D+Lrbs5ilPt8kGPnGj2w502PaqAet3SKn7AokWj3gCYR803p5lk1yoRb9YtVS6kOSQ7Zl9lZ/j8sfhQHaIUthX9SW9ehenvAQTQUd8SS0Y3wezkmPizyQYy38jRpyoj17c7W4lUj4PzkpyC/zOKnSAFcO0CUfCssSe/fI6Z5wlry0fdm25v+JBuRu+L1QwiQe8m+MMBb2eoL1gISO8s11VB39zM3MtRSOooX+VJ6VGK3XuMWoY5a443m6WkmYUW49sp7zEcoNVjGnq8zndqXYJmipPMG+Mo7LkBA3a0QGQHEXpJhNih3g==
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
- VI0P189MB3174.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:2c6::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6; Fri, 7 Aug 2026 02:32:26 +0000
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0315.008; Fri, 7 Aug 2026
- 02:32:26 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "jmaloy@redhat.com"
-	<jmaloy@redhat.com>, "horms@kernel.org" <horms@kernel.org>,
-	"tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>, Xiang Mei <xmei5@asu.edu>, Weiming
- Shi <bestswngs@gmail.com>
-Subject: RE: [PATCH net v11] tipc: fix NULL deref in tipc_named_node_up() on
- empty publication list
-Thread-Topic: [PATCH net v11] tipc: fix NULL deref in tipc_named_node_up() on
- empty publication list
-Thread-Index: AQHdJPVxU2iy4kpsx0iyGvzWdnF+ULaRc6IAgABr2IA=
-Date: Fri, 7 Aug 2026 02:32:26 +0000
-Message-ID:
- <GV1P189MB19883E37232698C679E7CF5CC6D12@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References: <20260805161356.193230-1-tung.quang.nguyen@est.tech>
- <20260806130424.62a59734@kernel.org>
-In-Reply-To: <20260806130424.62a59734@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV1P189MB1988:EE_|VI0P189MB3174:EE_
-x-ms-office365-filtering-correlation-id: 5d4e4014-8d85-479b-ea92-08def42c1eaa
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|38070700021|11063799006|56012099006|10067099003|4143699003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- cVhyo3ZkiGepkmGDV5DA9RA+hghrcwbkIb8c/NR6GJjdGa+fCqJ92xdUR6+ASgvdP6kmCELhVQ30qnRegjqPm6uRKSWR+xunOcIM7KjJERMjTJK8d3IdI/Moz9bVjxlm8Hzmw7hVrMljmA+wB/SQDWL/0Ojrw5h4TRZrxCF5vrcsm6TXm39iaLxcmMzGXQjUpEUEsEAKcvtdNUD7StAwZwFKWsSf32yQFY4Qs8lrUt8A595LRZN54DN1qjQu2qjR3zGQb9Ed3yMkfNy73/kkOcRVsL53nM1W88cqVIgG8AmUOD+v+mw7xdhtXyTMdFlVTJU/64FuMZPHfyjt2V2v0KGeUnQ99uLWRXxbdb6wQoreLem1MFNjtNfDYigQ99e6Ru5jLvHlQk7OSsBeUuoaeyJ7DbHQTN7R1TCR7kERAEHCym8h/cfoIrpuhegX1vNolWarQzCnlfGTMGdSxcbE1YKEfVSAZ28g6Q9T5ztLNZKCu5LWm7cGKGLrgSN7HYiOWYMLE8AYY907b4gfZJUiMKtgg4Evylt5Vel5lz7U/GOkjU8+icHj9WOtzr1hfnp2e6/1qsxb58rYQlvwNY3uXDAWlev6uIz21dDtUXpnnv+B8FJj+Q9aZFlty4IiIyrBFhQv6cFdVN4s5O8Tloya25M9jC4m6T/bw0R5R7WXr1mGVVMFFcC59hhkizZlErBnfTSFM0JYvk3l1ic1rELN7lC8vErYTFiT6Wf5fhA4Hm8=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(38070700021)(11063799006)(56012099006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?p0eJXyqPD42cq2EnxHR+im6vIC2vKAUL7GbXF6aaVmNk509Keu/YZhR4jqoL?=
- =?us-ascii?Q?44uytcPIvLfYAMixdi06es9Mw+G7hu3q7rYEfpcwezlSnLORU9VHpVsNgBDr?=
- =?us-ascii?Q?BKVyt2jlF63mm6btdC2ZVSCJbN4o9FUl4ImkvV0bwnn8y7OWCRpRFK47yXZm?=
- =?us-ascii?Q?JMPdctjE/dPwAQN3dDOG2Syq72GlqxcTW9vhGBssK6vewcsahrsrBKohl0uC?=
- =?us-ascii?Q?uO4RpBwhC9ZQ63p+7+i386AAOSAsglqkiZV5e+PI2W6nwOqXWQFXH9jW742j?=
- =?us-ascii?Q?vD9csg8HxWG9Qdx2W39Eip29K+LG3JfryfTL2GhTf3pS3I2Q6yKsXgDsQUTa?=
- =?us-ascii?Q?AWD7nY17Ce7G2AYsd5SvqIvaqtxuBvVcO9bRvlmgesqzPNYdYz6T36Zvr+wy?=
- =?us-ascii?Q?j7t5q3wIXW+LJiBUXH1y4hXQVllP4YakShWkF1wvMnVTksE1JcqXhKW+AJiV?=
- =?us-ascii?Q?qf9MYIsqqWOUXcpcXL1eluH83dV3OuHh/8z4/VwM49T1k5L/qEKvmDehAmLP?=
- =?us-ascii?Q?LgL/k2r6kpmv9MesMQ4RcUSDlyFbZgvrp8gUnZ8fOFfOlU2PCL6y//fhqMOo?=
- =?us-ascii?Q?pw2yf5g/DzTr//lCSxx9b9adgyM1A/2Uz/0LDRVo310r3iSukmI7cLSZFe1M?=
- =?us-ascii?Q?5IchGONJ0INGSXcIow2ecM9YrtS5YRU/xMMOqspWvsA91kGR4/a1HiNUXXUR?=
- =?us-ascii?Q?xfm+Isttyby6wSHD5WVM+TnW62TSlvGoVj5n0vHSjhgnWghKiqQr72F4hcHT?=
- =?us-ascii?Q?sJq1/hQB05EYG55o0R/+2bAO4VQCxvoghGAu7ZS7hscer+fMeTeswHBNTlCx?=
- =?us-ascii?Q?qQ51RGX4Ye8Zi+o5x2AxqFd77sfXHRfpZR/8RinMhbHmlLq/CouGDaMPd7/2?=
- =?us-ascii?Q?4nTLiu1Djg8ukbz/C0/R1mpoM7b7p3bnQtPv51VKxvpJzaTASvIuKvigdMr+?=
- =?us-ascii?Q?HWYQ+s4uvl9cEHgpXknSAF4jhpdUFzNfpVQsBUnEhISBVglZqlxuYFnhQ7BO?=
- =?us-ascii?Q?v5zwoFPtw2UvdhO87u2kkRXHxtip2/c8KeBeDUGrVzcegbTF3nIaKFCaMxvW?=
- =?us-ascii?Q?q6IIt+BsEkCE61+iEWUiiyVlNkiZOasb1q2A3I+xSVq3cdkNpzVaqkAe1b9b?=
- =?us-ascii?Q?04qXuGG3UDugecHeMx3ChvjPxH4yz75SPLya8xd/3O3uzjkqhqnA2d0j/u8d?=
- =?us-ascii?Q?6z1t3hUKK0PCZdkxVsrirbfGbN/FYFLffV6YgBmqKymmj7XGhFEghik1KqSy?=
- =?us-ascii?Q?SJhqPQkeDwJzQBiLiG+SApyhlfFRSfnI900qFSZG5mP0/Q9VBQE5wrHst64T?=
- =?us-ascii?Q?hwd5ItZ0AFFmnaSVdj6OhG2Q1Rt4UxolchoG/oYZwkpubtBq/k2RcvR4rIxp?=
- =?us-ascii?Q?VpRKuuX+mHeZ9hpRq2beHlExjNpl+GVc99waXfkkKPY5ileKbSQE3C9/1PKe?=
- =?us-ascii?Q?Uj8nBHdveikhNu0bbNF6TZMGp8U1mJf2SNhT+Xf5U1scg8330i85cENpCvAO?=
- =?us-ascii?Q?v2Mw6wd/lDyUhzI7PIC+qrfEBc4CXWcRS/xeI3FGq9KDp4OhYiPF53+bw/tr?=
- =?us-ascii?Q?R6c30VJY31eM+G8SB9IbBbgN3LmBU6qJ8fsqlGb6gjE6Et0R8KtBVxwP0aPp?=
- =?us-ascii?Q?ssaH+HWnxEwkPpePeMpDrDXSD/YSy60mj9vS/tpoEnJLc1Bv7pF4+EEyT5f1?=
- =?us-ascii?Q?JdYG4uUPKU436AqDPLx73Zgh5WR0iZpzudBM0GqviVf6dBaVdGoBf6Y2//KQ?=
- =?us-ascii?Q?W/mKHm2VpA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EDO6/dVe"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cab97c86bdso37305ad.1
+        for <netdev@vger.kernel.org>; Thu, 06 Aug 2026 19:41:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786070476; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PGfHD2U8qT+EotasofqGyd/URRpriMX+jwWSo0LzBaPs/Rslkkp9s2KxuXCwUn031k
+         cwKsxGy5vjhdQsxveVzKW6uqBIedz9gWSLCHZjd7MiBBu+FbAWqd7uT7HFSOd39ZA2b8
+         ir7zWHEZeGDlifmLwoJTV3BWj8QcXVkpLWN/JBRktvmDF1iNmAoZVDXoi9S7XrhElCsV
+         u/NxkEQpLjEKnHx150NJpRUqKeZKsjLG9ym/oAry9bJMfQgJfLFpvvD8GAHCeccoBW6y
+         bY38YlwoiGa/K9Dx5EY9SXyHvQv9UKiaaewBgVMHVJwjg3Zp1EQ7cePpvtdjohtx+xy8
+         wcCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ohem3ALx0oIURkSK0DNHfCt3tnXEbZJxRR8T9mkrZcA=;
+        fh=fOg9WQE1C3/9wS3sMSfE5Llamkf/7WhE532m7HYlG6w=;
+        b=s95Rw7YEO6CB1W2jVsmm6NGIMF+K0PAxPCrtFL8bEWh53TdRzGINr7BblyUcONuGAn
+         jUum828Xwkxzs7jgsweg5IfK78FTSPp+9WxlSG64UFEcfNfXDvptUoIKKqZFU9C7Z8OQ
+         xuqpXlJCNR2Iw9ursTMayeEcmNcSiXuB9ds+mg/0SiHMKNo1c60Urg/IL/1mwLHbGnt5
+         kSFREBz+ufMVBZ7M2WecO8ElUOgTBkSj7MQwBM4ws566OztBcmEQcfRpNUmIaFD4dQl+
+         jaD0fUjLdXHsqWWNYjP+j3wQIybFZ8pqfegE2jii5XWdHrfeCk45+LHPHdqUkexhPIk6
+         c4vQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786070476; x=1786675276; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ohem3ALx0oIURkSK0DNHfCt3tnXEbZJxRR8T9mkrZcA=;
+        b=EDO6/dVe8/2MyjE0zXNpCLC17sWPh/z96mnBWcCBapnV6KQVsh9drgnUrIzgyx+ar1
+         iZ/xK2PcVUI7Oov1yvx6s5vFmO+phjCkTHdLdA8Mxv5LzwPCdDVdPMbb38R4c9ZEclYl
+         u9hNb0Ht174RQSp7XG1tGjLvN35YyHDYJQqAshtm5hFVuC7+LI5yfQQYtBYLxW3ISfLl
+         W/LldMcW7vGOBJrly7RF1MZ4V2JePZbja8vScf1v7aLTSPc0d3FyxjiPUbdyYUR98YFu
+         7DJJSxJKlHMPvCoYs9vSZV5WfipvJ42oM5GGwpmcMve/k30kD39MYuXvqPnmE45W2hMW
+         xdgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786070476; x=1786675276;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ohem3ALx0oIURkSK0DNHfCt3tnXEbZJxRR8T9mkrZcA=;
+        b=CaeDfJie1IBV/jtoF6ax6O56fzqg3jFSAEthSd4Ia3S+jQRB8e5vCMOFD0AoMDiB+u
+         RmrLyZlxRoP8wkQaP2xSn5ZgIGmPXRi1HPLW+ocTTaUVBfvl35fulSj+hxiExZXelyDa
+         0HGJYClYt8etqUDhKSF4YGOMjNUlqO0aTu/nxBv+JqyF1qGbOIf24H4bWnFn5UZ9x54t
+         LHyBcmdY7qpL0uOuYv93nl1Y8lBTj6O4Ra2QPx4i15DoyK4aszLHBb36sEHQOXGnhyiz
+         lUTX7eiSmIi2F7R/fkNunnrthljRthT/5ytOhAQTcH/klTCVirlwupo0NwRehYe8h1+q
+         zgcg==
+X-Gm-Message-State: AOJu0Ywl8A4W2DebGOgEZwFFmo+/F2KTdtIcFKSjUjc+sfQ/hAV57i/3
+	8wc4b2vyoHHtX8LSF5UmAf1eQhBEGRsM86dVkp0X6epD3jbqmtSy9DFr+6YOuuG4F4/FMlCGvjb
+	nBlrs7Nn6NjPXZpw6d6bqKdep7ShkQH7mN6ecZlNq
+X-Gm-Gg: AR+sD10aVq8Rhmud1Kd7TlIYiQDPMV1JgPL+kqVFVNL3/xDpoDgAiunP3SU6lBx3wjq
+	9WRRkAYynhOOY07kGrgc7h+4P1s2UAUZ9GMrdnTruEaK1/h10gghmNfDmAmKI8jyhg8Cqgxyszy
+	L0ua6WLBIA602Gj7GYzQ3WyxLH0rmd2cHgtBPUhuUC/bTZDdBSam7Vyh60b1tc7ELJsLmTW/2+h
+	w/GYmLuGWKUh7p8HNX9RVgCwL35WSuGrwER/gKpmexRMLjJ/jBCJJ3sf3dPoJQaD7GBeYcg+JwM
+	38ytASNbA6JkGTa70FVA5CfvYaqGfxCm5oq/scE8uglJbDXFKsjHjVKeQ1RX36xwf/LnA1GN//O
+	D3ydQuCgqx9rm0cK73/Q+T/xRPIuN3XZGln9IqgnN5xRJAQ==
+X-Received: by 2002:a17:902:d50c:b0:2cf:9ec1:ea6e with SMTP id
+ d9443c01a7336-2d120427dcemr4473575ad.8.1786070475498; Thu, 06 Aug 2026
+ 19:41:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d4e4014-8d85-479b-ea92-08def42c1eaa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Aug 2026 02:32:26.3011
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7QNo5tS7SYc+Og1NK6QH0JxbXINSwyCe46l2vKoDRWSzSDq57gUScZRv7nsGVfKZ3kRVdur2AMevWP5MFysYG+c0cckWaYFWbC0JEwJAG2E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0P189MB3174
+References: <20260803184630.3813311-1-hramamurthy@google.com>
+ <20260803184630.3813311-7-hramamurthy@google.com> <045c0ac7-c784-4162-a01a-1a1d8f8377e7@intel.com>
+In-Reply-To: <045c0ac7-c784-4162-a01a-1a1d8f8377e7@intel.com>
+From: Harshitha Ramamurthy <hramamurthy@google.com>
+Date: Thu, 6 Aug 2026 19:41:04 -0700
+X-Gm-Features: AUfX_myquY2_EEFaQMQmJpcrA_JutQqi3BzmVIZBqAI3DAhyAGqfuzR9Umj2n3Q
+Message-ID: <CAEAWyHdh3+mO=+b9Zmt1dLO5-x3bhF1ZcC26wsbcnf787MyY2w@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 06/15] gve: introduce ctrl ops to set vectors
+ and Qs
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
+	john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com, 
+	willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com, 
+	jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org, 
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->make htmldoc on the testing branch flagged:
+On Thu, Aug 6, 2026 at 12:33=E2=80=AFAM Przemek Kitszel
+<przemyslaw.kitszel@intel.com> wrote:
 >
->Documentation/networking/tipc:184: ./net/tipc/name_distr.c:261: ERROR:
->Unexpected indentation. [docutils]
->Documentation/networking/tipc:184: ./net/tipc/name_distr.c:262: WARNING:
->Block quote ends without a blank line; unexpected unindent. [docutils]
+> On 8/3/26 20:46, Harshitha Ramamurthy wrote:
+> > Introduce following ctrl ops for Adminq mode. This change does
+> > not introduce any functional change, just movement of code into
+> > ops.
+> >
+> > - set_num_queues to set maximum and default TX/RX queues in the
+> >    alloc structures used in the initialization flow.
+> > - set_num_ntfy_blks op to set number of vectors(ntfy_blks) in the
+> >    initialization flow.
+> >
+> > Reviewed-by: Willem de Bruijn <willemb@google.com>
+> > Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+> > Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> > ---
+> >   drivers/net/ethernet/google/gve/gve.h        |  6 ++
+> >   drivers/net/ethernet/google/gve/gve_adminq.c | 45 ++++++++++++++
+> >   drivers/net/ethernet/google/gve/gve_adminq.h |  2 +
+> >   drivers/net/ethernet/google/gve/gve_main.c   | 64 +++----------------=
+-
+> >   4 files changed, 63 insertions(+), 54 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethern=
+et/google/gve/gve.h
+> > index 56148ea3cfbf..1bc5e32b6618 100644
+> > --- a/drivers/net/ethernet/google/gve/gve.h
+> > +++ b/drivers/net/ethernet/google/gve/gve.h
+> > @@ -829,10 +829,16 @@ struct gve_device_info {
+> >    * struct gve_ctrl_ops - Control plane operations structure
+> >    * @map_db_bar: Maps the doorbell BAR for the device and store in @pr=
+iv.
+> >    * @unmap_db_bar: Unmaps the doorbell BAR previously mapped by @map_d=
+b_bar.
+> > + * @set_num_queues: Sets default and max TX/RX queues into allocation
+> > + *                  structures stored in @priv to be used during initi=
+alization.
+> > + * @set_num_ntfy_blks: Sets no. of vectors into @priv to be used durin=
+g
+> > + *                     initialization.
+> >    */
+> >   struct gve_ctrl_ops {
+> >       int (*map_db_bar)(struct gve_priv *priv);
+> >       void (*unmap_db_bar)(struct gve_priv *priv);
+> > +     void (*set_num_queues)(struct gve_priv *priv);
+> > +     int (*set_num_ntfy_blks)(struct gve_priv *priv);
+> >   };
+> >
+> >   struct gve_priv {
+> > diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net=
+/ethernet/google/gve/gve_adminq.c
+> > index 9c3ebdb547cf..1d9ae601cdeb 100644
+> > --- a/drivers/net/ethernet/google/gve/gve_adminq.c
+> > +++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+> > @@ -1612,3 +1612,48 @@ void gve_adminq_unmap_db_bar(struct gve_priv *pr=
+iv)
+> >
+> >       pci_iounmap(pdev, priv->db_bar2);
+> >   }
+> > +
+> > +int gve_adminq_set_num_ntfy_blks(struct gve_priv *priv)
 >
->+/**
->+ * tipc_named_dist_cluster_scope - distribute all publications to
->+specified node
->+ * @net: the associated network namespace
->+ * @dnode: destination node
->+ *
->+ * Return:
->+ * 0 on success
->+ * -EINVAL on failure, insert duplicate publication or reach the max
->+number of
->+ *  supported publications
+> Would be best to change patch 2 to introduce this in the gve_adminq.c,
+> to avoid trashing. Same for the other callbacks.
+
+That=E2=80=99s a good suggestion, thanks. I will move these functions into
+gve_adminq.c in the patch they=E2=80=99re introduced to reduce the churn.
 >
->is it this line ?
-Yes, it is.
-I will address this together with sashiko's valid findings.
+>
+> [..]
+>
+> >
+> >   static const struct gve_ctrl_ops gve_adminq_ops =3D {
+> > -     .map_db_bar      =3D gve_adminq_map_db_bar,
+> > -     .unmap_db_bar    =3D gve_adminq_unmap_db_bar,
+> > +     .map_db_bar             =3D gve_adminq_map_db_bar,
+> > +     .unmap_db_bar           =3D gve_adminq_unmap_db_bar,
+>
+> pleaase instead use final spacing in the previous patch
+
+Ack. Will fix in v4.
+>
+> > +     .set_num_queues         =3D gve_adminq_set_num_queues,
+> > +     .set_num_ntfy_blks      =3D gve_adminq_set_num_ntfy_blks,
+> >   };
+>
