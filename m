@@ -1,109 +1,111 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8B744238E
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 09:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333BF44A40B;
+	Fri,  7 Aug 2026 09:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786093644; cv=none; b=q9yYKeXpQGzOVlLDZkS5RmBRjz66OMmr7+bVx6gJSKNADX05KE5qpje/fimz63RUSvPtRnDac27hxln4tMZL24wy+XEUcTiZ6L9MM1QZ0yiVZx+ZU7oQwyXtL+wRuXIRcVSaCUei3DnmOVdUsfUQyI68FhCcpF03ro79hM3UQ/o=
+	t=1786093970; cv=none; b=RXylA5XWyzwag+QvJiopIG1jjP02D6MeGchEXtwGwWxenrGfYNM4vbbR3vZKnHKxOJTPOQtv+sUkKF6qTnU5CuLB6oFuLCjRw+RuFlMfUeu6xlidnrAAbW+ZiJ9NkrA36gyma5mrzNd+GzqaJf+Sq3SmYQVYFgGaMLTjQcGtLJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786093644; c=relaxed/simple;
-	bh=1TrKSTZ+bpBOKYMAcQwbLCx2isLKoZGtybgMbRG9jCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lFwaZEKConrdX8Ijskw68lD3IiIASGiHywGYmEIn+PgsSfhKPSubcrCx+iwH8uQlyCnuOuBhshy4U6B7ESHaXMjpKlwDt5XZGlb6vkT8SVpeE2zsmCS9uidyx2WFmZBzF4mkpHHX3yz7Qf3lRSdJ+4DX/zU6GrLSMs5t+70HzbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KagHAN3k; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786093970; c=relaxed/simple;
+	bh=fStG8wCeTEtx7N/xz4zqqDh7ixGfO5w2n8pDizUNGZ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gAxUvJxxaE+f6yTNlXQUlc2TRGrk/jeu0+rN4b3W7JFHYoIy1KFOtNjskbDnVeGsgPaKU+828CyQnuDxdfJbQeK8PZXPERAR9tc6Au2w4VLX2FuhYxKnzxkCkXZELis4zstinKwBM1feWuCmz/U8s9vNvfSi83gbuj4QXWtRVG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=C5gdKJm7; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KagHAN3k"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ceb096e675so38262555ad.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 02:07:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786093642; x=1786698442; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=w30NsI+1RUdi2X/WAHFrnMemITJZqC+5MhrMfUj8hcw=;
-        b=KagHAN3k19O/MSUi6OaaV6ozWDEfhCmXHE8A8hXTl/rAdeLbV5zlugY/EpP1GS7GEM
-         hrFna3HHz8YCFn8nZVGcUepzd93kE07dieK77HqVcekZR+KKJVkhaP/qqH9+PEUN75Qq
-         kQfZEQR7RUjikXUscgaaw0gxmlGWO6xa2RHL5sq1jXeOSd8O57Y+vbxc8zUQOS/wolXw
-         faPgoghzyAFA1H8xu+FuSdVGAMy4tnSBmeOjIsq7c1faoHthQD26AMX0Tg6IctZeg/hC
-         Ig789AMVtjBwB33NvuOlmrgFr6Mtko4CN+NUOBYGI+kl6cYqLGT820vsUb0T7dqelAHv
-         C6kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786093642; x=1786698442;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=w30NsI+1RUdi2X/WAHFrnMemITJZqC+5MhrMfUj8hcw=;
-        b=buCueSJOZ2TbR3sAy4ukggixO+m+aU1OIsIy1MQV6jMJoegmdWL41ldfc2ySkRyOod
-         yyaoFRaTsjOkI8IyBmJ/l2wC/YkN6DlFfwrSbu2XWhVpdKRRFbWRvtAGRnwN4hF0N3tQ
-         IFSEu7dBwT4Tqdb39fKdXVZ9336oCc4iaUZlPmC706cF3e/M16JO48mAxzkB60htfp2O
-         B6Qa5lQ4jf2NWopJZP2RbbvtRCDa9XyzTR/Y8tzDTbAQ7kzSBVsElfDNcnCtaXnrKtGP
-         e2dag4WmVGEEnbGvUWe0SzAMzISZfB5UPT2ZURfsHKgolBflVEinMSTkp1J5sCywR+TF
-         uZ2w==
-X-Forwarded-Encrypted: i=1; AHgh+RpYHHKeM9mZDLckKwFoih9errbErd5NflAlT4mP5fs0AScbw19XAUNStz6btC93m2AqAYLUEEI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxjy1wEECogRJeUhDojEU/iYk8+voW8hcMvZeyrkpRQLhrMuZux
-	aO0X8XmiD8QXUkb03c8/yW2FJsOWHXJeWN7L2Rm8heHL1eLRv/+KNhsE
-X-Gm-Gg: AR+sD11I+KcEdtI3ZfV/zWNvxI1y92dulS3lKKOipCrwuRN/nsWVHGO1cBrVo9MA8jS
-	ye71IehZHV5xiWa6ykyWV5MGabohqjRGwj4D1k98zIYefrE09kxOgUO0cxU3YyBqfOVoEJOaY1f
-	WV1NhpQGpnjAi9KANZAyv2evpCXjAv/lqcRtkAdhhP0sWOY1n+cPCTSQnB+zSw5K1gJx+Suq/zh
-	twwnTHWJU0s2JOEyrkFUkOLp9CdCB2nAX4AsxmzP+fOdwdogniccXEDCDtaVmwn+Wfnl8gLCX6P
-	FutBcETVywBV8MMYItvGuJS0HsSEczTCrU0K+JRRmXHXAVSA17ZGmSeioUs8pgUZSLmQw9X53HT
-	vw5DI/4r2/zAFoh8L4sYkzqoE+n/yxiqHpNJns5dqbAGK3ZJCTXEUohcYJr/1KAUBJB3ywa4cRv
-	zo18Pp1RGvFr0rSS4HYKdO31JTDiLFT8pK7HpK3Lgb7Sg1p3qZIs8O5nY=
-X-Received: by 2002:a17:902:e885:b0:2ca:e565:7b15 with SMTP id d9443c01a7336-2d0ca7f8a67mr219600325ad.10.1786093641504;
-        Fri, 07 Aug 2026 02:07:21 -0700 (PDT)
-Received: from fedora ([203.175.12.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d16c4a7733sm5724695ad.67.2026.08.07.02.07.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 02:07:21 -0700 (PDT)
-Date: Fri, 7 Aug 2026 17:07:13 +0800
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Qingshuang Fu <fffsqian@163.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Qingshuang Fu <fuqingshuang@kylinos.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: Re: [PATCH net v2] selftests: netfilter: conntrack_dump_flush:
- remove unused variables and fix typo
-Message-ID: <anWgQSbZWK6D2ONg@fedora>
-References: <20260807075928.64326-1-fffsqian@163.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="C5gdKJm7"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6770IJaj4135534;
+	Fri, 7 Aug 2026 09:12:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=fStG8w
+	CeTEtx7N/xz4zqqDh7ixGfO5w2n8pDizUNGZ0=; b=C5gdKJm7IKQeY+GMzsrDlt
+	6cb1e2sKwO3v8wbWrEV2lwUi6T4m7bFQ8zmLo1buhgmLPZ8E3U+EK/snyvyCChYt
+	0XoXKm0wsCmWwu7iBuuqj1dCyVv92nQ+y4+ulWVuxMKfZ9kBMHZB7y/o6IWubQ9S
+	JfN34KZkION8X/VGCXQ9/kwiR6rd/5S3pw+L501F2gj73kv2vTQGjlDLRLUTrWHD
+	lP+XQvviArmvPkjJRN4Gsbu5ZWqt18xw69qkvEPdtTG6VjqmjHVA80glqmEVAxo6
+	xYS04lNPzjQslhhTWApakjiIbPod9P4ycNtBMXqVGRBphCQfLmyL66yGFCYIMimA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fvy0435j2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 09:12:29 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6779BH2V001259;
+	Fri, 7 Aug 2026 09:12:28 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtyxuct-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Aug 2026 09:12:28 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6779CQ5l27656822
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Aug 2026 09:12:27 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90F4B5805C;
+	Fri,  7 Aug 2026 09:12:26 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 328995805A;
+	Fri,  7 Aug 2026 09:12:21 +0000 (GMT)
+Received: from [9.124.213.67] (unknown [9.124.213.67])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Aug 2026 09:12:20 +0000 (GMT)
+Message-ID: <6e8e02fc-03f5-4790-863e-f5d45d8c26a4@linux.ibm.com>
+Date: Fri, 7 Aug 2026 14:42:18 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807075928.64326-1-fffsqian@163.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net/smc: fix clcsock and lgr/lnk races in smc_diag
+ dump path
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com
+Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+        guwen@linux.alibaba.com, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org
+References: <20260807081606.3200128-1-mjambigi@linux.ibm.com>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <20260807081606.3200128-1-mjambigi@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA3MDA2NSBTYWx0ZWRfX0fRzhzT1WzkQ
+ C4nuYOqugzYavz4sXSxp+SDlUXQqHW4v/+c6BSrOaI05E5ipdWLMcLbuBoR/rzwJLoLK0PIEbM7
+ PQC8FyQa36Nkakk8k/p029HmiPD82IyJ8/cWLeRbklEzDQc8+feRgucWz8O36LxSWM21IvZKnML
+ joOkLsL6qdtd48NSqonOfZM/8rLp7E5RDiRh8Yg4TDSaiMGEUnJDNbYNjVJQlsdCZZzvtUVcrjO
+ Ny9wcrNp5ErP/WsZADs8otdw6dAfHOcwdPFbYMwAMAeX2C00Ca/If1DIotcNQJeXpZW73eEr3Zc
+ UIcDEPwMFDSVMRD8RP/76XMgLjK92DUkdykwQ5cPmzNIvEI6QfImm8kwjO26ElnMq33s9r6uTnq
+ l5m2ZSYyX9YSRE7y6B6gvDxzgck0d1pSSyATM5VBL4e+/wzfIIvk+0zh0zPBNuaxfhQNGjnUj7o
+ wE27fJv9jthhWm1gWKA==
+X-Proofpoint-ORIG-GUID: xfxd_WyA5ZHcqKkka3FlxQrl8-cNDo60
+X-Proofpoint-GUID: enGPPuYxTz0LPl7x6iaQJYMW6Ekiy4Ku
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA3MDA2NSBTYWx0ZWRfX9K9GaB/pi5F7
+ VLI47VPlSr9F2rZ6MdYZ9KyIepcNSB/P+5y+RznQQmlKg1djinH0jRIyXcYqDQIjdhPsKKzki1V
+ urNGcokzajioyEZ/fhObAiwwC0zc3YI=
+X-Authority-Analysis: v=2.4 cv=WLpPmHsR c=1 sm=1 tr=0 ts=6a75a17d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VI0bH49URBRJcOTGMQgA:9
+ a=QEXdDO2ut3YA:10 a=Qzt0FRFQUfIA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-07_01,2026-08-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 priorityscore=1501 phishscore=0 suspectscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608070065
 
-On Fri, Aug 07, 2026 at 03:59:28PM +0800, Qingshuang Fu wrote:
-> From: Qingshuang Fu <fuqingshuang@kylinos.cn>
-> 
-> Remove unused 'rplnlh' in conntrack_data_insert(), and remove unused
-> 'rplnlh' and 'nest' variables in conntrack_count_zone() and
-> conntrack_flush_zone(). These variables were declared but never used
-> since their introduction.
-> 
-> Also fix typo: rename misspelled conntracK_count_zone() to
-> conntrack_count_zone().
-> 
-> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-> Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
+Apologies for the confusion.
 
-> ---
-> v2:
->   - Drop Fixes tag as this is a cleanup, not a bug fix
-
-If not a bug fix, you should target to net-next.
-
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+This is a v1 patch. The v3 tag in the subject is a mistake. Please
+consider this submission as v1.
