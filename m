@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088743EC83F;
-	Fri,  7 Aug 2026 23:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D32414A08
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 23:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786146683; cv=none; b=oNqdLjlh5PVieT8t1I/Wb9FB3aQ2T2hqL8rVkL5Gf5E/+cMVFVjyvcDU7fthnE7cUXq7hU/c/IUMwSwWMzTTBSkG9TH7Vxx42ShU8I9+E/R69so6Hor2FpeOhhxHxJyyIGUA/rkLoWVVjHim5yKs5Xma2okBsPX1ysHQGweOt5E=
+	t=1786146684; cv=none; b=Yhkh1bWFVYFjmf1x/mlwwSrvdG18dSwBO3hHmK0rrDjujPmxE7aNxFDDNyfdweTJAUwh1gmGYPVG74SEW4mqCZR2swPPVCdO0Z+050AWauCt6wJq108aRW07rWKiUAbwhas3dwPRgSTlXC9Azl9AeOfBdyYU+8/xTlqyKEGRPkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786146683; c=relaxed/simple;
-	bh=k5tULKbMi0qzuQwezFlWEXdbtgRky27IRgRIiTBUM4I=;
+	s=arc-20240116; t=1786146684; c=relaxed/simple;
+	bh=/trS4uMoAhnkNiDwlFe43pDclXNjwyvSHl+sa+0V9sw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mpYxQIVQEU4963QiF5c+KrMdI/zkGTtwlnUBDAszwiVHQU7ZoE7Sf7YoMurJvwhfx/8/8w0tu1lDX5GCEJNG8bVRGKMfsLr2aMC2zaebSdVwreTihX4eE4JLWyZwN724wt9nQ3uN34Gmlni2ZJ/2JZ+hcUqCCKW33l7NP0yKTnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mba0/mlI; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=UvjpNZNRDkGb/Ej+X8AZcqLrbtDLQaND1KBU9qBrkJjIj4p3kyxII9GWeZ/XGRdpLt4JOMv5k3YUESiM33F+bT1J8Agc1k9WApEM96w5NWMhi+iB0KO321N3Q1b27uCmEvlerO8lpfggj03PUJiLtamvOgQ9eAOdMab2rfO7lLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zf20NWKJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mba0/mlI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E163E1F000E9;
-	Fri,  7 Aug 2026 23:51:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zf20NWKJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F2B1F000E9;
+	Fri,  7 Aug 2026 23:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786146681;
-	bh=N47jnt2bP29zQ2jvHDVdIgx+caSVaSGLIR/5kYqZnoo=;
+	s=k20260515; t=1786146683;
+	bh=qZBPikskH+oIHSDWkS3tCRQPMgtdk1YbqqNSrbMIKgw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=mba0/mlI8HXwJt6IvWVEVluS4ccvHnfM3uTcAPf7Ei5vFZmMZ7LLKdCmR9cJk0YZ+
-	 e2TObqync5anCNhKH/m3lyYk1fU3cO/Q3L4PZL3z6w/iKLAghkA/TnSDF9YfOeOvgq
-	 ozwdZbIuHCikxGL77Qo0nvXVuSe+QzdGLbb+Wqiw3/Yzan2jkEZ2fh7D9VaeA44C5c
-	 wd6LLfKTo0SoybNg0jWMehyqfxuB+buqTLdNbesR5uwHJ0oRD1bWYzcCaDyEXBQWaK
-	 9WPTLrBOxhV88E8N4xdiX0uGDRMePpFLiwC0+mFVm8IXNJDAedkWE9yXyhJ8Pp2znW
-	 0FGE04LS2mBzQ==
+	b=Zf20NWKJTF0GRiF0HAVaCCn0pI8NRxcNHkqeQgA6q3QMfXnD/a1lFJ/jYKFYGz2fR
+	 SgDpKamyDaPB1WrR+aNYeLIAkg90vgFcSYx3GpXkDblUhYUc5p02uaEho07KCRHogE
+	 cVHptoNdzSHn30BAEfNxs1hV8f/oMJ3wu1uLzL3vd+Mg5alYMjow7jTVikAHnia8+N
+	 G6awxBo9D6kQCNIazGPjUOz4sM12TnYmA/1IwfZK6he4W2bnSEeY6otOl/APpBXpl4
+	 XD/MsYSlXdLIBiqVC6ARf0Yvm5KZXRMFtJiIxvTuFd6fAkUsUPs3/JhVAJkYSUpaBe
+	 8oda2t+OGIdLg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A2D380CEF9;
-	Fri,  7 Aug 2026 23:50:41 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198C9380CEF9;
+	Fri,  7 Aug 2026 23:50:43 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,69 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 00/14] selftests: net: shaper: Expand shaper API
- coverage
+Subject: Re: [PATCH v2] net: niu: fix potential buffer overflow/truncation in
+ irq
+ names
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178614664013.2467553.3659943416881200948.git-patchwork-notify@kernel.org>
-Date: Fri, 07 Aug 2026 23:50:40 +0000
-References: <20260805030936.1092907-1-mohsin.bashr@gmail.com>
-In-Reply-To: <20260805030936.1092907-1-mohsin.bashr@gmail.com>
-To: Mohsin Bashir <mohsin.bashr@gmail.com>
+ <178614664163.2467553.5421204651277744533.git-patchwork-notify@kernel.org>
+Date: Fri, 07 Aug 2026 23:50:41 +0000
+References: <20260803211149.10585-1-ronanmarchal29@gmail.com>
+In-Reply-To: <20260803211149.10585-1-ronanmarchal29@gmail.com>
+To: Ronan Marchal <ronanmarchal29@gmail.com>
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, pabeni@redhat.com, shuah@kernel.org,
- alexander.duyck@gmail.com
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  4 Aug 2026 20:09:22 -0700 you wrote:
-> From: Mohsin Bashir <hmohsin@meta.com>
+On Mon,  3 Aug 2026 23:11:49 +0200 you wrote:
+> Building with W=1 reports a -Wformat-truncation warning on
+> niu_set_irq_name(): the "%s:SYSERR" format could be truncated
+> because irq_name[] was one byte too small for the worst case
+> interface name length (IFNAMSIZ-1) plus the ":SYSERR" suffix.
 > 
-> Add more net shaper selftest coverage for group operations and nested
-> node management.
-> 
-> The series first prepares shared cleanup and capability helpers, and
-> separates the basic netdev grouping coverage from the rate-limited
-> variant. It then adds tests for updating node shaper rates through both
-> .set and .group, discovering the supported nesting depth, deleting child
-> nodes and reparenting their leaves, moving queues between nodes, and
-> rejecting node reparenting.
+> Increase the irq_name buffer size to account for the suffix and
+> replace the remaining sprintf() calls in the same function with
+> snprintf() to avoid possible buffer overflows.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,01/14] selftests: net: shaper: Drop redundant command timeouts
-    https://git.kernel.org/netdev/net-next/c/9515a13829df
-  - [net-next,02/14] selftests: net: shaper: Prepare helpers for group tests
-    https://git.kernel.org/netdev/net-next/c/7ea7db704f51
-  - [net-next,03/14] selftests: net: shaper: Decouple basic_groups from netdev rate limiting
-    https://git.kernel.org/netdev/net-next/c/1b5c2eb00e59
-  - [net-next,04/14] selftests: net: shaper: Add basic_groups_with_rate test
-    https://git.kernel.org/netdev/net-next/c/ff0c37b8c134
-  - [net-next,05/14] selftests: net: shaper: Add node scope .set rate update test
-    https://git.kernel.org/netdev/net-next/c/212410dc81df
-  - [net-next,06/14] selftests: net: shaper: Add .group rate update test
-    https://git.kernel.org/netdev/net-next/c/047735744ded
-  - [net-next,07/14] selftests: net: shaper: Add nested depth limit discovery test
-    https://git.kernel.org/netdev/net-next/c/1e89d0d7430c
-  - [net-next,08/14] selftests: net: shaper: Add child node deletion reparent test
-    https://git.kernel.org/netdev/net-next/c/5c84926ef73c
-  - [net-next,09/14] selftests: net: shaper: Add queue migration between nodes test
-    https://git.kernel.org/netdev/net-next/c/aa05d8096a9b
-  - [net-next,10/14] selftests: net: shaper: Add reparenting rejection test
-    https://git.kernel.org/netdev/net-next/c/4f197c44981f
-  - [net-next,11/14] selftests: net: shaper: Cover scalar attributes
-    https://git.kernel.org/netdev/net-next/c/83731be09057
-  - [net-next,12/14] selftests: net: shaper: Reject invalid set requests
-    https://git.kernel.org/netdev/net-next/c/3651c7e18c04
-  - [net-next,13/14] selftests: net: shaper: Cover mixed-parent grouping
-    https://git.kernel.org/netdev/net-next/c/ca157503b5b8
-  - [net-next,14/14] selftests: net: shaper: Cover recursive node cleanup
-    https://git.kernel.org/netdev/net-next/c/e09d72c1c80d
+  - [v2] net: niu: fix potential buffer overflow/truncation in irq names
+    https://git.kernel.org/netdev/net-next/c/4d8e0becfd34
 
 You are awesome, thank you!
 -- 
