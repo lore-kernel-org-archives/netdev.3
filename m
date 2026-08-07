@@ -1,64 +1,64 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FB0390C90
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 17:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035722848A7
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 17:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786122955; cv=none; b=Bk7gatirijMoGsZf24ZKcVSPN92FMlaEfvgqEOP7GeHm+G/STvrAAz/fv5AhneLIxhHGhTg+NYOBT1macK7mjNpwsFxA4THd73F261n+ckP3W/+SuuBAqstnQjWhrCiG9cKCaJEWe28Fprp/IAGNVTJmpxNVlWS9L3JG4rNrE6c=
+	t=1786122955; cv=none; b=R5HkPV7oe/IwQTp9oeEXQ7OLA0VTtEcROLcg8Xhamf0Sdsb4XpNvlkI2cpZWLsp8A8xdUaz1KrNMPvD22bBQghmZgASxWCVzEEzqDIses0gaem9BL+Qx++vnaEc5QFJXdRoIyy8kmv7IjJp/6pcVW4xSFt0G0jcVw/EVWELugxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786122955; c=relaxed/simple;
-	bh=Et+kuqugF4cEYXkjBvC8gkcjmEYk2pm2V/H8gpMDQf8=;
+	bh=mc8Kcpbanc6kRAe3d36YKz/STBTBT7+QMuwxL2Gz/gU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ALxx3zwkMHfLYd5CkSxZQTGpW3a/Gft+4E4l8ShRGcKrY5ljrtAQ2sCBYV8ynDBXFNhzpXIhAeuc7/OZDrM7r4ju/4xWsHBL33Q5F1KJCecFf7+wDCxgh0hr1olTIQKsPR28tJVzedxYpvQJ2Uv6w0Y+PxhUFYhHpW2u4mKlat8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZDbxALOg; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version; b=pgNYhOq0IOU4wyuekiVjJlVmaY7fC+833CBFftYt5IZgFvpc/14XYCvd8YFTA0vmH3+sviSHPE6QW90K/KWzjqxpE2aWbEiu/33/f85/MQulE9NX+qGaWFha32leFL8IKMhNUd5Kc7V7zSsxmKZTyc49HurtKrwosr02pjHxF9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FbFYwmW4; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZDbxALOg"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49556f97a9dso23770785e9.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 10:15:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FbFYwmW4"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-498028b3d5eso36314355e9.1
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 10:15:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786122949; x=1786727749; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786122947; x=1786727747; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nxwTLpqGlKATwBGA+bjhrTl/MviFR33fc6I/eqxacZE=;
-        b=ZDbxALOgc7BsAt0ZD74Sx8qzlPg/I6pvtsnmPj8I3LOk3GapyzE0Iyh/pTEE+gCQs4
-         DfMLw9PYs1XXqR7OrzivQksfhvPdLh44y2JizluVgin2/dirOZ5hzFpQYtB4Mc8WZDck
-         4r7ht2MMFS17dZo2JUmio/CBaCiDY4U/YBq4RPUyT0decmC/9T2aSYA+gWY8EaYrhGgn
-         ya/JYrF3NWOQ9SgU+WdHqO+c2zvgzfLw3f1Umxdf/2NmKW8acUuH5FoLa0b+qB9u4imo
-         x51/hG+UorbyhhAFKqadq7WrtfVr3K7Y9sEhfDu+XOKRXO1n15w7zCaMwOC6elYl0EPM
-         MAMg==
+        bh=QzE4FNBfM9pugES/g1CSxQ7z8K7sge5OuzK7XfajAuY=;
+        b=FbFYwmW4bdK39vqlxeV/6M78gaZKgFWd3Pn8Hx7ua4SrmO7IbZYidUYM1/WfWp+9XW
+         k0xZ8oWqaQNyEKnfVC7+yD5YAGT55mE/pqH+Z8FXP0jGol/WWTivpBnEMZQmPnKri5Tc
+         /B7SfXt970Jkag2pYHfz9i0dkT+1xVP5c6cfZHASXq1ONYZYpyAaOR7bCrWRm0XqF1YP
+         MzesWxn2UOyRbCkDOLXBf9ARi9k06XKa2aTGVEUhS3C1V8mgzOZOISsZ0pLKTBvqFWKj
+         6kKBOLQ9nqr9OrRheRqr5ia/d711jD1TrwK0o0VjpDITy5wKo3f4dvwcCfe+Thh3tFYT
+         BX4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786122949; x=1786727749;
+        d=1e100.net; s=20251104; t=1786122947; x=1786727747;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nxwTLpqGlKATwBGA+bjhrTl/MviFR33fc6I/eqxacZE=;
-        b=V/6h5jsqrlB8fUBDKnm/mngmFYi+DiXW8B6j11Qq/Yk0ycgXuNF1ewVhZ0WmdYABSG
-         r5vwol80H3gtgsbGIUGNu7qpFTz3DJr/wprPUojowQ46AQioSDw082EXz3F3A65lFJVr
-         abCpdtSbFJAblF+J7DrEj0ZG4pus0p7ClW3j5i/IppDceDxXUn2sAl7GGddfppwUZSkk
-         0BpqUjDcMEGUr8HPyYt6CIor0jjRSPsusU8mxylH0hW8r5ZHMpkTIx9TnIC4zOJW51vm
-         cPhNqTNDgthuJPjYqnKoJmU8ZFwCNfiD5ijFcbTX4DtbPXg8qJ0k4YhBxIbUYxg7jlpG
-         GlZw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3wc3HY2PFKK2m/mTkPd7nLskJ12EQj/UFK5OoG/TEJssvrImLmQ+zlvyLRx35eoUFL85tUhk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqG2J84ZFh8KaNz0OoTrsV04ZMIcxge6ir5eDwbY5ToIWy6miz
-	I/59YbAJa+FvTIx4T5t22brcN/cmvfMBQd1lT+XymKKT2uDGAIADwwkI
-X-Gm-Gg: AR+sD11m08Z+0PnEGF+jFDulJW0GPhUCOnsRIy3dxmuDB18XD26ZS8gEvv3iR5NNr4t
-	HV25FYgzfF9b83qTPBuuvqeE01Pr1WTuUu0trwNKZ8mBRyHlpm4Sj1m9wFshR4v6Nj1q8+avtNx
-	VnTy1LSWKzaTt3OMR43IVVSrS4ezOu6XfKaWvHaYvnuzawtTnp6msW/n9kyXg+yn4Br81JvHNHD
-	5hZsKYcNzwiaKWc5nvXTtBLy0qdha9e+WhKMOCmaXWp6THySZkSPKyN0EzuuRLN6LvOTM9anajm
-	pVZzmubeWjsvMqoai7HL+B6MuKv81tmJgrh949xMiUEu8NLMbjHySo/97hCP/rlDuFEsXG9fN1M
-	LKmdsOfkxgN2TCRhLZdRfn8ES0K+ou7LfvEkjy9vwTTR63blh8Zjz57mmka9OqdvA4Knp1Yyi4D
-	mQkLtvjKVFs1h+s3HVMdHstsvDPCi07qd6BzZnaG8+aRG71GiMy9c8R9YPVzOJYBBz8fTDQg4Xz
-	+w73NpQQpCidnnqDhdKycn923D+xT9O7KVgH8JAhroF
-X-Received: by 2002:a05:600c:470d:b0:499:53aa:a86a with SMTP id 5b1f17b1804b1-49953aaa86fmr185810285e9.13.1786122948694;
-        Fri, 07 Aug 2026 10:15:48 -0700 (PDT)
+        bh=QzE4FNBfM9pugES/g1CSxQ7z8K7sge5OuzK7XfajAuY=;
+        b=XO2Q137haaqEk4Q4IUqhDfuH5cWjlzh8+YA9A7lwLzM9q11Dal+8CnHDTA3Q/9Ia60
+         OpU0Yeizpbu9Opl+4YGMPqYp5wumrtk0JGXuU0ebPCjgXHKp8fotcbk14+pPZi7KLLjk
+         72AxXPiegUyxnr8JNH7fHwxeZ+cC0eIZ1pILOhwC+E3uOLpuJ739VbR2O3W6faF+FEbQ
+         v3Vn6gthDu/sWqBM2e1IA7whrDdwxX359Y45xh95bIfMl6sxkUCiQ9XNqzoO253q/Pd9
+         Q13NJlILXlTFcMqd1oe64pMAfAoknmvI3attOn8EUwooHTcJop2KKr68GnfGWVfRdinn
+         v4og==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7dA/thWrkGyIzchLA6CLIQSifm+4FaYDi9+44jDjQHIrUILMpGgqRfn7zU37IsmOLWUiCh9U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/EXwh6ClRUYUOM8Qd2X/t/XzTf+rp991TEpNI3jR/tyTv3Qyo
+	AN67OAv0AoBvk0+eOZsOqIMZHLdX12/9PVJoQt00qelu4w+j2++u3v1w
+X-Gm-Gg: AR+sD11F1HLcNhzqGAs2FvOM44/Vyz/WS33dxfjjHq1H98wRk6ZxABNAQVHV6ZHaMxb
+	Gd3PnkWcPax6P18xIeAqpuHu1/kvh7GFFqDJ96A4INQgFaWIfJkeXNpeBW+mGs410ujXA1x0j80
+	IPx9NzfxIhpvKdH8b3svvDc4kkyHno5KB9UJu6gQbPwmtjPdbLGrIps/tQ4x312pkuS+aJx4y/j
+	z4cx6zwYviEZC1AQ3T4W9nV5TIH2vifW575rhIVfOcn50w8rkKUerX4/dEGUg10rd3ckTpBdEkU
+	E0kAsQ4nUUas/oE9wx1dijDocSH2aWSvOnl50PKXEBvPqXrKSee37s3k8zokGie0qNXNdZgfHQh
+	j2PIzFwV4r8ktFuFo8cOcVGmIifrquArY0SaMYBcuzWok9vjmIvNaluJIRRZdIFdbDrpd1GwnP9
+	nzPq7PCuxDJTTbzmE7rZlANlAAidMlo4cZDl3gIsFHk447tVEbjMnnn7qpGxG1DoA6x5H3bqCNM
+	UNzi8DotV64T0dsoTbRSV2gnO++AZ9pQ7g=
+X-Received: by 2002:a05:600d:8492:b0:495:69eb:27fe with SMTP id 5b1f17b1804b1-4994e7bb193mr251025295e9.11.1786122946924;
+        Fri, 07 Aug 2026 10:15:46 -0700 (PDT)
 Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4995d85b96csm27737425e9.2.2026.08.07.10.15.47
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4995d85b96csm27737425e9.2.2026.08.07.10.15.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 10:15:47 -0700 (PDT)
+        Fri, 07 Aug 2026 10:15:45 -0700 (PDT)
 From: Mahe Tardy <mahe.tardy@gmail.com>
 To: bpf@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -81,9 +81,9 @@ Cc: andrew+netdev@lunn.ch,
 	memxor@gmail.com,
 	jiayuan.chen@linux.dev,
 	Mahe Tardy <mahe.tardy@gmail.com>
-Subject: [PATCH bpf-next v5 2/5] bpf: Add ksock kfuncs
-Date: Fri,  7 Aug 2026 17:15:29 +0000
-Message-Id: <20260807171532.125149-3-mahe.tardy@gmail.com>
+Subject: [PATCH bpf-next v5 1/5] net: Add connect_socket() helper
+Date: Fri,  7 Aug 2026 17:15:28 +0000
+Message-Id: <20260807171532.125149-2-mahe.tardy@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260807171532.125149-1-mahe.tardy@gmail.com>
 References: <20260807171532.125149-1-mahe.tardy@gmail.com>
@@ -95,469 +95,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add BPF kfuncs that allow BPF LSM programs to create and use sockets for
-sending data. This provides a mechanism for BPF programs to emit
-telemetry. For this first patch set, it's restricted to SOCK_DGRAM
-socket types with IPPROTO_UDP protocol but could be easily extended to
-SOCK_STREAM and IPPROTO_TCP in the future.
+Add a helper that connects an existing socket while invoking the LSM
+hook. Reuse it in __sys_connect_file() to avoid duplicating the connect
+logic. Other socket operations have equivalent helpers that trigger the
+appropriate LSM hooks that can be reused, this one was the only one
+missing.
 
-The API consists of five kfuncs:
-
-  bpf_ksock_create()   - Create a socket (sleepable)
-  bpf_ksock_connect()  - Connect socket to remote address (sleepable)
-  bpf_ksock_send()     - Send data through the socket (sleepable)
-  bpf_ksock_acquire()  - Acquire a reference to a socket context
-  bpf_ksock_release()  - Release a reference (cleanup via
-                         queue_rcu_work since sock_release sleeps)
-
-The setup kfuncs bpf_ksock_create, bpf_ksock_connect, can be called from
-SYSCALL programs only. While bpf_ksock_acquire, bpf_ksock_release and
-bpf_ksock_send can be called from SYSCALL and LSM programs.
-
-The implementation follows the established kfunc lifecycle pattern
-(create/acquire/release with refcounting, kptr map storage, dtor
-registration). The kernel socket is wrapped in a refcounted bpf_ksock
-struct. Cleanup is deferred via queue_rcu_work() because sock_release()
-may sleep.
-
-The kfuncs are only compiled when CONFIG_INET is enabled, as they
-specifically support AF_INET and AF_INET6 sockets.
-
-The socket operations go through the expected LSM hooks instead of
-by-passing them like many kernel sockets since those are created by BPF
-programs and thus system users. Thus, the bpf_ksock_send() kfunc, which
-is exposed to LSM progs has a verifier filter protection to avoid
-recursion so that the whole bpf_kfunc_set kfunc set cannot be called in
-a program attached to security_socket_sendmsg(). Also, because of the
-LSM checks, we prevent the use of the kfuncs from asynchronous workqueue
-as the current value would then be invalid.
-
-In bpf_ksock_create(), we copy the arg values to avoid TOCTOU races
-since the kfunc can sleep and the arg values could be stored in a map
-that could be re-written by BPF progs or even userspace programs if the
-map is mmaped.
-
+Acked-by: Song Liu <song@kernel.org>
 Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
 ---
- include/linux/bpf_ksock.h |  36 ++++
- kernel/bpf/verifier.c     |   3 +
- net/core/Makefile         |   3 +
- net/core/bpf_ksock.c      | 335 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 377 insertions(+)
- create mode 100644 include/linux/bpf_ksock.h
- create mode 100644 net/core/bpf_ksock.c
+ include/linux/socket.h |  2 ++
+ net/socket.c           | 32 ++++++++++++++++++--------------
+ 2 files changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/bpf_ksock.h b/include/linux/bpf_ksock.h
-new file mode 100644
-index 000000000000..cb387fb75e43
---- /dev/null
-+++ b/include/linux/bpf_ksock.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* Copyright (c) 2026 Isovalent */
-+
-+#ifndef _BPF_KSOCK_H
-+#define _BPF_KSOCK_H
-+
-+#include <linux/types.h>
-+#include <linux/in.h>
-+#include <linux/in6.h>
-+
-+/**
-+ * struct bpf_ksock_create_opts - BPF kernel socket creation parameters
-+ * @family:	Address family: AF_INET or AF_INET6.
-+ * @type:	Socket type: only SOCK_DGRAM supported for now.
-+ * @protocol:	Protocol number (e.g. IPPROTO_UDP), or 0 for the default protocol
-+ *		of the given type.
-+ * @reserved:	Must be zero. Reserved for future use.
-+ */
-+struct bpf_ksock_create_opts {
-+	__u8 family;
-+	__u8 type;
-+	__u8 protocol;
-+	__u8 reserved;
-+};
-+
-+/**
-+ * union bpf_ksock_addr - IPv4 or IPv6 socket address
-+ * @sin: IPv4 socket address.
-+ * @sin6: IPv6 socket address.
-+ */
-+union bpf_ksock_addr {
-+	struct sockaddr_in sin;
-+	struct sockaddr_in6 sin6;
-+};
-+
-+#endif /* _BPF_KSOCK_H */
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 52be0a118cce..4f3de0a4b0c1 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -4445,6 +4445,9 @@ BTF_ID(struct, task_struct)
- #ifdef CONFIG_CRYPTO
- BTF_ID(struct, bpf_crypto_ctx)
- #endif
-+#ifdef CONFIG_INET
-+BTF_ID(struct, bpf_ksock)
-+#endif
- BTF_SET_END(rcu_protected_types)
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index 2a8d7b14f1d1..5a5eb1250103 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -461,6 +461,8 @@ extern struct file *__sys_socket_file(int family, int type, int protocol);
+ extern int __sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
+ extern int __sys_bind_socket(struct socket *sock, struct sockaddr_storage *address,
+ 			     int addrlen);
++int connect_socket(struct socket *sock, struct sockaddr_storage *addr,
++		   int addrlen, int flags);
+ extern int __sys_connect_file(struct file *file, struct sockaddr_storage *addr,
+ 			      int addrlen, int file_flags);
+ extern int __sys_connect(int fd, struct sockaddr __user *uservaddr,
+diff --git a/net/socket.c b/net/socket.c
+index 63c69a0fa74e..8f18f124d92a 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -2103,6 +2103,20 @@ SYSCALL_DEFINE3(accept, int, fd, struct sockaddr __user *, upeer_sockaddr,
+ 	return __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, 0);
+ }
 
- static bool rcu_protected_object(const struct btf *btf, u32 btf_id)
-diff --git a/net/core/Makefile b/net/core/Makefile
-index b3fdcb4e355f..a9295b785901 100644
---- a/net/core/Makefile
-+++ b/net/core/Makefile
-@@ -44,6 +44,9 @@ obj-$(CONFIG_FAILOVER) += failover.o
- obj-$(CONFIG_NET_SOCK_MSG) += skmsg.o
- obj-$(CONFIG_BPF_SYSCALL) += sock_map.o
- obj-$(CONFIG_BPF_SYSCALL) += bpf_sk_storage.o
-+ifneq ($(CONFIG_INET),)
-+obj-$(CONFIG_BPF_SYSCALL) += bpf_ksock.o
-+endif
- obj-$(CONFIG_OF)	+= of_net.o
- obj-$(CONFIG_NET_TEST) += net_test.o
- obj-$(CONFIG_NET_DEVMEM) += devmem.o
-diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
-new file mode 100644
-index 000000000000..8a4f0150a0a4
---- /dev/null
-+++ b/net/core/bpf_ksock.c
-@@ -0,0 +1,335 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright (c) 2026 Isovalent */
-+
-+#include <linux/bpf.h>
-+#include <linux/bpf_ksock.h>
-+#include <linux/btf.h>
-+#include <linux/btf_ids.h>
-+#include <linux/in.h>
-+#include <linux/in6.h>
-+#include <linux/net.h>
-+#include <linux/refcount.h>
-+#include <linux/sched.h>
-+#include <linux/slab.h>
-+#include <linux/socket.h>
-+#include <linux/unaligned.h>
-+#include <linux/workqueue.h>
-+#include <linux/ip.h>
-+#include <net/sock.h>
-+
-+/**
-+ * struct bpf_ksock - refcounted BPF kernel socket context
-+ * @sock:	The underlying kernel socket.
-+ * @usage:	Reference counter.
-+ * @rwork:	RCU work for deferred cleanup (sock_release may sleep).
-+ */
-+struct bpf_ksock {
-+	struct socket *sock;
-+	refcount_t usage;
-+	struct rcu_work rwork;
-+};
-+
-+static void ksock_release_work_fn(struct work_struct *work)
++int connect_socket(struct socket *sock, struct sockaddr_storage *address,
++		   int addrlen, int flags)
 +{
-+	struct bpf_ksock *ks =
-+		container_of(to_rcu_work(work), struct bpf_ksock, rwork);
-+
-+	sock_release(ks->sock);
-+	kfree(ks);
-+}
-+
-+static bool bpf_ksock_has_user_task_context(void)
-+{
-+	/*
-+	 * Task work can run from do_exit() after exit_nsproxy_namespaces()
-+	 * cleared current->nsproxy, while current is still not a kthread.
-+	 */
-+	return !(current->flags & PF_KTHREAD) && current->nsproxy;
-+}
-+
-+__bpf_kfunc_start_defs();
-+
-+/**
-+ * bpf_ksock_create() - Create a BPF kernel socket.
-+ *
-+ * Allocates and creates a kernel socket.
-+ *
-+ * The returned context must either be stored in a map as a kptr, or
-+ * freed with bpf_ksock_release().
-+ *
-+ * This function may sleep (sock_create), so it can only be used
-+ * in sleepable BPF programs (SYSCALL).
-+ * It cannot be called from a BPF workqueue callback because that callback
-+ * does not retain the invoking task's namespace or security context.
-+ *
-+ * @opts:	Pointer to struct bpf_ksock_create_opts with socket parameters.
-+ * @opts__sz:	Size of the opts struct.
-+ * @err__uninit:	Integer to store error code when NULL is returned.
-+ */
-+__bpf_kfunc struct bpf_ksock *
-+bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
-+		 int *err__uninit)
-+{
-+	struct bpf_ksock_create_opts opts_copy;
-+	struct bpf_ksock *ks;
 +	int err;
 +
-+	/*
-+	 * sock_create() derives the network namespace, credentials, and cgroup
-+	 * from current. Kernel threads, including BPF workqueue callbacks, do
-+	 * not carry the context of the task that invoked the BPF program.
-+	 */
-+	if (!bpf_ksock_has_user_task_context()) {
-+		err = -EOPNOTSUPP;
-+		goto err_out;
-+	}
-+
-+	if (!opts || opts__sz != sizeof(struct bpf_ksock_create_opts)) {
-+		err = -EINVAL;
-+		goto err_out;
-+	}
-+
-+	opts_copy = (struct bpf_ksock_create_opts){
-+		.family = READ_ONCE(opts->family),
-+		.type = READ_ONCE(opts->type),
-+		.protocol = READ_ONCE(opts->protocol),
-+		.reserved = READ_ONCE(opts->reserved),
-+	};
-+
-+	if (opts_copy.reserved) {
-+		err = -EINVAL;
-+		goto err_out;
-+	}
-+
-+	if (opts_copy.family != AF_INET && opts_copy.family != AF_INET6) {
-+		err = -EAFNOSUPPORT;
-+		goto err_out;
-+	}
-+
-+	if (opts_copy.type != SOCK_DGRAM) {
-+		err = -EPROTONOSUPPORT;
-+		goto err_out;
-+	}
-+
-+	if (opts_copy.protocol != IPPROTO_UDP && opts_copy.protocol != 0) {
-+		err = -EPROTONOSUPPORT;
-+		goto err_out;
-+	}
-+
-+	ks = kzalloc_obj(*ks);
-+	if (!ks) {
-+		err = -ENOMEM;
-+		goto err_out;
-+	}
-+
-+	/*
-+	 * Use the normal current-task socket path so LSM/cgroup policy,
-+	 * socket labels, and the active netns reference match a socket(2)
-+	 * created by the BPF program's caller.
-+	 */
-+	err = sock_create(opts_copy.family, opts_copy.type, opts_copy.protocol,
-+			  &ks->sock);
++	err = security_socket_connect(sock, (struct sockaddr *)address, addrlen);
 +	if (err)
-+		goto err_free;
++		return err;
 +
-+	ks->sock->sk->sk_rcvbuf = SOCK_MIN_RCVBUF;
-+	ks->sock->sk->sk_userlocks |= SOCK_RCVBUF_LOCK;
-+
-+	refcount_set(&ks->usage, 1);
-+	put_unaligned(0, err__uninit);
-+	return ks;
-+
-+err_free:
-+	kfree(ks);
-+err_out:
-+	put_unaligned(err, err__uninit);
-+	return NULL;
++	return READ_ONCE(sock->ops)->connect(sock,
++				    (struct sockaddr_unsized *)address,
++				    addrlen, flags);
 +}
 +
-+/**
-+ * bpf_ksock_connect() - Connect a BPF kernel socket to a remote address.
-+ * @ks:		The BPF kernel socket context.
-+ * @addr:	Pointer to an IPv4 or IPv6 socket address.
-+ * @addr__sz:	Size of the address union.
-+ *
-+ * Connects the socket to the specified remote address and port.
-+ *
-+ * This function may sleep while connecting the socket, so it can only be used
-+ * in sleepable BPF programs (SYSCALL).
-+ *
-+ * Return: 0 on success, negative errno on error.
-+ */
-+__bpf_kfunc int bpf_ksock_connect(struct bpf_ksock *ks,
-+				  const union bpf_ksock_addr *addr,
-+				  u32 addr__sz)
-+{
-+	struct sockaddr_storage sa;
-+	int addrlen;
-+
-+	if (!bpf_ksock_has_user_task_context())
-+		return -EOPNOTSUPP;
-+
-+	if (!addr || addr__sz != sizeof(*addr))
-+		return -EINVAL;
-+
-+	/* Kfunc memory arguments may be unaligned. */
-+	memcpy(&sa, addr, sizeof(*addr));
-+
-+	switch (sa.ss_family) {
-+	case AF_INET:
-+		addrlen = sizeof(struct sockaddr_in);
-+		break;
-+#if IS_ENABLED(CONFIG_IPV6)
-+	case AF_INET6:
-+		addrlen = sizeof(struct sockaddr_in6);
-+		break;
-+#endif
-+	default:
-+		return -EAFNOSUPPORT;
-+	}
-+
-+	return connect_socket(ks->sock, &sa, addrlen, 0);
-+}
-+
-+/**
-+ * bpf_ksock_acquire() - Acquire a reference to a BPF kernel socket.
-+ * @ks:	The BPF kernel socket context to acquire. Must be a
-+ *	trusted pointer (e.g. RCU-protected kptr from a map).
-+ *
-+ * The acquired context must either be stored in a map as a kptr, or
-+ * freed with bpf_ksock_release().
-+ */
-+__bpf_kfunc struct bpf_ksock *bpf_ksock_acquire(struct bpf_ksock *ks)
-+{
-+	if (!refcount_inc_not_zero(&ks->usage))
-+		return NULL;
-+	return ks;
-+}
-+
-+/**
-+ * bpf_ksock_release() - Release a BPF kernel socket.
-+ * @ks:	The BPF kernel socket context to release.
-+ *
-+ * When the final reference is released, the socket is cleaned up via
-+ * queue_rcu_work() (since sock_release may sleep).
-+ */
-+__bpf_kfunc void bpf_ksock_release(struct bpf_ksock *ks)
-+{
-+	if (refcount_dec_and_test(&ks->usage)) {
-+		INIT_RCU_WORK(&ks->rwork, ksock_release_work_fn);
-+		queue_rcu_work(system_dfl_wq, &ks->rwork);
-+	}
-+}
-+
-+__bpf_kfunc void bpf_ksock_release_dtor(void *ks)
-+{
-+	bpf_ksock_release(ks);
-+}
-+CFI_NOSEAL(bpf_ksock_release_dtor);
-+
-+/**
-+ * bpf_ksock_send() - Send data through a BPF kernel socket.
-+ * @ks:		The BPF kernel socket context. Must be an acquired reference.
-+ * @data:	Pointer to the data to send.
-+ * @data__sz:	Size of the data to send (max 65535 bytes).
-+ *
-+ * Sends data on a connected socket, best-effort and nonblocking. This may sleep
-+ * (kernel_sendmsg), so it can only be called from sleepable BPF programs.
-+ *
-+ * Return: Number of bytes sent on success, negative errno on error.
-+ */
-+__bpf_kfunc int bpf_ksock_send(struct bpf_ksock *ks, const void *data,
-+			       u32 data__sz)
-+{
-+	struct msghdr msg = {
-+		.msg_flags = MSG_DONTWAIT,
-+	};
-+	struct kvec iov = {
-+		.iov_base = (void *)data,
-+		.iov_len = data__sz,
-+	};
-+	int ret;
-+
-+	if (!bpf_ksock_has_user_task_context())
-+		return -EOPNOTSUPP;
-+
-+	/* Early check for UDP. Exact limits enforced by kernel_sendmsg(). */
-+	if (data__sz > IP_MAX_MTU)
-+		return -EMSGSIZE;
-+
-+	ret = kernel_sendmsg(ks->sock, &msg, &iov, 1, data__sz);
-+
-+	return ret;
-+}
-+
-+__bpf_kfunc_end_defs();
-+
-+BTF_KFUNCS_START(ksock_init_kfunc_btf_ids)
-+BTF_ID_FLAGS(func, bpf_ksock_create, KF_ACQUIRE | KF_RET_NULL | KF_SLEEPABLE)
-+BTF_ID_FLAGS(func, bpf_ksock_connect, KF_SLEEPABLE)
-+BTF_KFUNCS_END(ksock_init_kfunc_btf_ids)
-+
-+static const struct btf_kfunc_id_set ksock_init_kfunc_set = {
-+	.owner = THIS_MODULE,
-+	.set = &ksock_init_kfunc_btf_ids,
-+};
-+
-+BTF_KFUNCS_START(ksock_kfunc_btf_ids)
-+BTF_ID_FLAGS(func, bpf_ksock_release, KF_RELEASE)
-+BTF_ID_FLAGS(func, bpf_ksock_acquire, KF_ACQUIRE | KF_RCU | KF_RET_NULL)
-+BTF_ID_FLAGS(func, bpf_ksock_send, KF_SLEEPABLE)
-+BTF_KFUNCS_END(ksock_kfunc_btf_ids)
-+
-+#ifdef CONFIG_BPF_LSM
-+BTF_ID_LIST_SINGLE(bpf_lsm_socket_sendmsg_id, func, bpf_lsm_socket_sendmsg)
-+#endif
-+
-+static int bpf_ksock_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
-+{
-+	if (!btf_id_set8_contains(&ksock_kfunc_btf_ids, kfunc_id))
-+		return 0;
-+
-+	if (prog->type == BPF_PROG_TYPE_SYSCALL)
-+		return 0;
-+
-+#ifdef CONFIG_BPF_LSM
-+	if (prog->type == BPF_PROG_TYPE_LSM &&
-+	    prog->aux->attach_btf_id != bpf_lsm_socket_sendmsg_id[0])
-+		return 0;
-+#endif
-+
-+	return -EACCES;
-+}
-+
-+static const struct btf_kfunc_id_set ksock_kfunc_set = {
-+	.owner = THIS_MODULE,
-+	.set = &ksock_kfunc_btf_ids,
-+	.filter = bpf_ksock_kfunc_filter,
-+};
-+
-+BTF_ID_LIST(bpf_ksock_dtor_ids)
-+BTF_ID(struct, bpf_ksock)
-+BTF_ID(func, bpf_ksock_release_dtor)
-+
-+static int __init bpf_ksock_kfunc_init(void)
-+{
-+	int ret;
-+	const struct btf_id_dtor_kfunc bpf_ksock_dtors[] = {
-+		{
-+			.btf_id = bpf_ksock_dtor_ids[0],
-+			.kfunc_btf_id = bpf_ksock_dtor_ids[1],
-+		},
-+	};
-+
-+	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL,
-+					&ksock_init_kfunc_set);
-+	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL,
-+					       &ksock_kfunc_set);
-+	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_LSM,
-+					       &ksock_kfunc_set);
-+	return ret ?: register_btf_id_dtor_kfuncs(bpf_ksock_dtors,
-+						  ARRAY_SIZE(bpf_ksock_dtors),
-+						  THIS_MODULE);
-+}
-+
-+late_initcall(bpf_ksock_kfunc_init);
+ /*
+  *	Attempt to connect to a socket with the server address.  The address
+  *	is in user space so we verify it is OK and move it to kernel space.
+@@ -2119,23 +2133,13 @@ int __sys_connect_file(struct file *file, struct sockaddr_storage *address,
+ 		       int addrlen, int file_flags)
+ {
+ 	struct socket *sock;
+-	int err;
+
+ 	sock = sock_from_file(file);
+-	if (!sock) {
+-		err = -ENOTSOCK;
+-		goto out;
+-	}
+-
+-	err =
+-	    security_socket_connect(sock, (struct sockaddr *)address, addrlen);
+-	if (err)
+-		goto out;
++	if (!sock)
++		return -ENOTSOCK;
+
+-	err = READ_ONCE(sock->ops)->connect(sock, (struct sockaddr_unsized *)address,
+-					    addrlen, sock->file->f_flags | file_flags);
+-out:
+-	return err;
++	return connect_socket(sock, address, addrlen,
++				    sock->file->f_flags | file_flags);
+ }
+
+ int __sys_connect(int fd, struct sockaddr __user *uservaddr, int addrlen)
 --
 2.34.1
 
