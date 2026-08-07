@@ -1,104 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDFD372EFF;
-	Fri,  7 Aug 2026 18:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA94837C11E
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 18:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786128103; cv=none; b=b45kU/merjzMjp9HMImwd2jCOQK/HTiIj+sBMEA+q1KKgFShtBIlEm9xgqDjGXg4bx3MfOI0Lh2RmYn5GNj/6raDrsoS+5Zp+H49Oa5jT78EZ8lk46RLnQWkEDnzvSyl6BHq2KWwl2/HXjoVfPGM3U/uptrIadLogiux3CEevLw=
+	t=1786128145; cv=none; b=iT5j609ZogR+ZAcU1drhl/bGFd5lDmzG/uyegwTO36I48bZrh/RDMZZtjsM8m1OP9kZHTXNB8lN6JhsB2a5zORht2EtSU2Zj5Oq8n3hiCC1uZj6gKaEYSXbpgnpT3+dd7b7yi/H05LWInXoZHflfBXM620n06Algo82fe2kgir8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786128103; c=relaxed/simple;
-	bh=XVV7hOgWnCFpL7U6Ae7wQrOvW1wHNIWKqGFVEsR5j5s=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=ByD/TIiB/kp/vmtqZM2sURq0Mza+lrWCU9jVUzV6rvykCVayOXGna3X2hatTViSpQpEBZU4wxFq9MPj+dZ1eNs2QvvJmesLl20MgLQHQhuv5ghDhdF/lOy4pKLzvSNORjxRspdoGhcG65xZ3kNLu4KFMLB4aOfHewOjvLrdF2ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJbKhU3v; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786128145; c=relaxed/simple;
+	bh=kIxvH1ECDAJjmkjqqBi8p4D7nI8FKr025kL/O8Y1RNg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=boH5oPKVqdZANlch0a0O/gZJjKCePu5OOlodMAlFnXvy4lmEfNBtRmU9kPNyhmlbhrvda1YugX1Cf5OjJva4jIZ7Qz04187QSCmS9Yus5IUPkZFsnZtWaODaZ+wZq8gJ+W7l6GoVGvwg8Kx2+/OJ0SUGRlYyf+nb/7XYDwKnApE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sB/22N7Y; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJbKhU3v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530401F000E9;
-	Fri,  7 Aug 2026 18:41:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786128101;
-	bh=1fvthPLXP6I2226nh/VOQy7w9V6Y86YRryAUsNAJq3w=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=eJbKhU3vqSQWAY2GWHI5EpXYesykkTX3A1JtFTg3+uy+R/XN1QjTEUmtmWSgo5ens
-	 QcZaZ58NadmHiQUYAP6VtqVmHtNpn5HUZnprFxK4YqJ/HM4QYJp5tvufxQh3Ra2MeN
-	 dW8OiTzMqwdkQdeo3yCWZpNbXhDSUqbsa3msFoKjMN7hPF0xO07RE3eiG7udt3Z2jd
-	 42JVzswbT5ZB6UWZ9D8Bexe9IRf2IDlCaiGYKck8khh4kL/Ew/aCnTwm6PYXJgxMn9
-	 DzHrfhj0sbi0PNhKs9ye5Jdc4ZrTt7jW6VPbmk0z33EPjdBvgR3g2SirbjIjmUsCmM
-	 QfItMTgfAo+mg==
-Content-Type: multipart/mixed; boundary="===============4596101357538191178=="
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sB/22N7Y"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=YIAWJfIwSNFtkKjD5xlFiUWxLnIwM/cdT5KEU51NJIk=; b=sB/22N7YFBnLC+Wwqf4yDayyQQ
+	nGt6Xu/BcpdmPO+ws9V3FzzNz+4lksXSL87STWTANsrzg6wD2l+3EP9VQC+m3Dxs/qc5Fa25SsK8o
+	fCCbuLMaX2oTwNmreDeHUX8TdLHJY+nfU0G2r/fdlwxk11EUZeomYP+oBPN82Tt8CJAE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wsPWL-00Gd5x-Ra; Fri, 07 Aug 2026 20:42:17 +0200
+Date: Fri, 7 Aug 2026 20:42:17 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alexander Duyck <alexander.duyck@gmail.com>
+Cc: "Das, Shubham" <shubham.das@intel.com>, Lee Trager <lee@trager.us>,
+	"Srinivasan, Vijay" <vijay.srinivasan@intel.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"mkubecek@suse.cz" <mkubecek@suse.cz>,
+	"D H, Siddaraju" <siddaraju.dh@intel.com>,
+	"Chintalapalle, Balaji" <balaji.chintalapalle@intel.com>,
+	"Lindberg, Magnus" <magnus.k.lindberg@ericsson.com>,
+	"niklas.damberg@ericsson.com" <niklas.damberg@ericsson.com>,
+	"Wirandi, Jonas" <jonas.wirandi@ericsson.com>
+Subject: Re: Ethtool : PRBS feature
+Message-ID: <debdbcd4-e2e4-49f1-8961-b41f299e61e6@lunn.ch>
+References: <BL3PR11MB6385468A86BACA1D8EFEF2BE88F62@BL3PR11MB6385.namprd11.prod.outlook.com>
+ <SN7PR11MB8109F7A3F491E20701BDC0DFFFF02@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <46f714b7-ec6e-4b26-9ff8-b7f27f11fe33@trager.us>
+ <SN7PR11MB81091D62922BAC1AF7A553ECFFF82@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <SN7PR11MB810996F17CD8513F4CD57371FFCF2@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <CAKgT0Ucz8FT0EvdUMm=dUS-Q171ZuT-i-n+mahJV3OvQnOMkyw@mail.gmail.com>
+ <SN7PR11MB8109B6F350AE2E5BC02C6E1EFFCC2@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <SN7PR11MB8109AD2F25C4DE21C048C9CBFFC92@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <SN7PR11MB8109BF8590FC789586C326F5FFD12@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <CAKgT0UfEgu5xFts82j4=qFCiX-JnNVrtL3MUEhffpP7B_ZqvWA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <b86b0f951182de8fd972fc8f1a7d138e98a95b1e3804335cfab89ba24b1dacca@mail.kernel.org>
-In-Reply-To: <20260807171532.125149-5-mahe.tardy@gmail.com>
-References: <20260807171532.125149-5-mahe.tardy@gmail.com>
-Subject: Re: [PATCH bpf-next v5 4/5] selftests/bpf: Test forbidden bpf_ksock_send() LSM attach
-From: bot+bpf-ci@kernel.org
-To: mahe.tardy@gmail.com,bpf@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,andrii@kernel.org,ast@kernel.org,daniel@iogearbox.net,davem@davemloft.net,eddyz87@gmail.com,edumazet@google.com,john.fastabend@gmail.com,kuba@kernel.org,liamwisehart@meta.com,martin.lau@linux.dev,pabeni@redhat.com,song@kernel.org,netdev@vger.kernel.org,sdf.kernel@gmail.com,ameryhung@gmail.com,kuniyu@google.com,memxor@gmail.com,jiayuan.chen@linux.dev,mahe.tardy@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Fri,  7 Aug 2026 18:41:40 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKgT0UfEgu5xFts82j4=qFCiX-JnNVrtL3MUEhffpP7B_ZqvWA@mail.gmail.com>
 
---===============4596101357538191178==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> Honestly I would probably defer to Andrew or Maxime on this as most of
+> the DSA stuff is much more their wheelhouse than mine.
 
-> diff --git a/tools/testing/selftests/bpf/progs/ksock_lsm_verifier.c b/tools/testing/selftests/bpf/progs/ksock_lsm_verifier.c
-> new file mode 100644
-> index 000000000000..5b969e03b6d6
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/progs/ksock_lsm_verifier.c
-> @@ -0,0 +1,36 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright (c) 2026 Isovalent */
-> +
-> +#include "vmlinux.h"
-> +#include <bpf/bpf_helpers.h>
-> +#include <bpf/bpf_tracing.h>
-> +#include "bpf_misc.h"
-> +#include "bpf_tracing_net.h"
+Sorry, too many patches recently, too many newbies using AI without
+the knowledge to properly steer it, etc, so i've not really been
+following along with this thread.
 
-This isn't a bug, but does ksock_lsm_verifier.c still need bpf_tracing_net.h?
-The AF_INET/SOCK_DGRAM constants it provides look like they're only used by
-ksock_lsm.c, so the include could probably be dropped here.
+> Also rather than submitting a snippet you might just resubmit the full
+> patch with your changes as an RFC as it provides the full context on
+> what we are reviewing.
 
-> +#include "ksock_common.h"
-> +
-> +char send_data[11] = "dummy data";
-> +
-> +SEC("lsm.s/socket_sendmsg")
-> +__description("bpf_ksock_send is rejected from socket_sendmsg LSM hook")
-> +__failure __msg("calling kernel function bpf_ksock_send is not allowed")
-> +int BPF_PROG(ksock_socket_sendmsg, struct socket *sock, struct msghdr *msg,
-> +	     int size, int ret)
-> +{
-> +	struct __ksock_ctx_value *v;
-> +	struct bpf_ksock *ks;
-> +
-> +	v = ksock_ctx_value_lookup();
-> +	if (!v)
-> +		return ret;
-> +
-> +	ks = bpf_kptr_xchg(&v->ctx, NULL);
-> +	if (!ks)
-> +		return ret;
-> +
-> +	bpf_ksock_send(ks, send_data, sizeof(send_data));
-> +	bpf_ksock_release(ks);
-> +
-> +	return ret;
-> +}
-> +
-> +char __license[] SEC("license") = "GPL";
++1
 
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31202489240
---===============4596101357538191178==--
+	Andrew
