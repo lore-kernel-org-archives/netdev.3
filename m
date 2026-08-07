@@ -1,550 +1,204 @@
-Received: from out-93wp-a22.jellyfish.systems (out-93wp-a22.jellyfish.systems [104.207.68.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010066.outbound.protection.outlook.com [52.101.84.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99182380FF0
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 02:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.207.68.22
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786069007; cv=none; b=LwjID8VAU0lz5CbMMul/UYkG/eHgEnjvOEUWam8O4RPBLc+251eITpgK0WXKiciCIjH6fFWioyRsGldBUnim7DSfadJcDHi2j/dwe8hgwXIyo/xmNaqEIA176LftcDs1PCW7kicVHoVXwuoH/9Mppb8SDfpsvYdUIYGA3JXJfgE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786069007; c=relaxed/simple;
-	bh=rG3ZRRX+6OT0u6Cx10VJ/T4eHjeIUIVqSTjsotynN/I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSZO5ZW60wCR2oSM1T8DR1+IbD0vcw/9OR+L9m1IH8tj8hT6flZp5BAozGKQKgzGfNWrTJEjG1hVM5Scf7qcgDlSIU8asghLVQYWyWI2MDZyQ0cBF1S70QhxveQIGAT45wgXyaQS/6qQ+DvzSYf+zAu1EHsjqELOFzQzVz0ijBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net; spf=pass smtp.mailfrom=catcrafts.net; arc=none smtp.client-ip=104.207.68.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=catcrafts.net
-Received: from mail.privateemail.com (unknown [87.215.145.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.privateemail.com (Postfix) with ESMTPSA id 4hGSLM73cLz2x99;
-	Fri, 07 Aug 2026 02:11:07 +0000 (UTC)
-From: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-To: David Heidelberg <david@ixit.cz>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	oe-linux-nfc@lists.linux.dev,
-	Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-Subject: [PATCH v4 5/6] nfc: s3fwrn5: support the S3NRN4V variant
-Date: Fri,  7 Aug 2026 04:10:00 +0200
-Message-ID: <20260807021001.239389-6-jorijnvdgraaf@catcrafts.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260807021001.239389-1-jorijnvdgraaf@catcrafts.net>
-References: <20260807021001.239389-1-jorijnvdgraaf@catcrafts.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEED4369A;
+	Fri,  7 Aug 2026 02:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786069304; cv=fail; b=XTWRBdaoLBx94MJ8wTmcWIyGS0gT641DgLnITQdepRLwMMOrTvfwi9Ll2rLAamVYvMDSWgdEfHcpBIsnguLCbp/Sxfcr3HYc/ldHenHT4UCNuSlN6XhGggSKUrALVbilAnxN2kMIvKYz4vlDiTA3JdOdTMpBouA6CVyiaeeFJmk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786069304; c=relaxed/simple;
+	bh=/zauodbJKl1DcqiRNRf4YKBKvkDeHl2z+9xct54eBl0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=p1/HxYHGnm2cu7MJRCf5VCfpPc828ovw/E7zeMtteb7OjWUISNb3Ikyt7Sce5WhggpGvPJ/CEslLoBIBj0STxwwtNwKH90inSgUnkozzjiIzEAh/gaGVkJjZ9KiR9nNTuUbouhA3N8yIBBMRfbTRwhQO794Lq7t0SiQcT3VxYK8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mo6Mb1QY; arc=fail smtp.client-ip=52.101.84.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mo6Mb1QY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aOOJrvWLA6FE8ApOcjYc53OUyDsXA4Q0yZmK/nzneUwXMrUheKaYibXrFfyxCxSlwz31TeJm/TUUP9bJfnUADSVJAALT+oo8A2t4mqCjGCShSFyNsIcNo2gQyrGr3VuQrEKMYWb4njG0dyfEkYt75Y7kFgV1pflS7uVaIkeMBBhHxpwSZfhzLOKSMrK1iEkPQeqj9QBLiTSbNoGtSqMby9IEAoII8NGs286RYs50xRp+YlcQQJx7ltp0C7kCded+fxCnaVv99Ix8W4wqX0e4sG7VAlFhFlX2/6srHMAAL548vGa0/yoTir8Kf/73Q7wIysGmlWCn4gdDSTYCANPF8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/zauodbJKl1DcqiRNRf4YKBKvkDeHl2z+9xct54eBl0=;
+ b=a8CdOQwg3usBjSZW+vx+qTpyymFly06Ijht4sPGIqgkB+cRg9Y9rE2OJ1xnja5T+Cn5N6t5W+gYpNrcAYLaMMuZRPPfVHItV4+DMAhHQkdD7VwET5JBR3q/j9lGzWGvXnHdBZmWPaaFOr89d2vOTSmOQQBEt/ylIXFMwunYoMlgln153dLR4Sxo3Ma+XTljxKRgSMcqwjdaWxZshow64nzwg/KS7tMEK/Oz4oIT3wXlGiCHYwNTodOlR9TYMsQ0lEfo/8HEBv3O+AaHblJzQyHQ5xlIRH8UPm+WBcTPJ83KCo2N0PAlSz6zsG0iYXrcmMAB9Aw+CeqBTV/7T6APmow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/zauodbJKl1DcqiRNRf4YKBKvkDeHl2z+9xct54eBl0=;
+ b=mo6Mb1QYeUgF3TIOJtqtSJvGALMMgPFEZwwtKE0u9Ba37/eZwAhC7r4sKsd1DlhHPhjwO13hiX0Rr1zWUFkRXfWQalhqrLExJ5BolO1+1GwL9KQWyTbe9rd0PT57HA7gbOSiAjgK0iJuuDVRyPgEWld9umiIzEmpNiclB/zHoiXckszSKprjbjwxChpjC8SQggzqyHP3ZzYEW3Om+NqJIaulDB+rle1ZyNPAFs+AI3Tp2jD/sHRYcCYIBVs9rMbaaptT+atewbmXOX0mymSH62E1HArkh4NMwoG0aiyBRJ8mKS6W5nKiblHQt9HcDRMldB16v/iwf3HKDG1QNKUQ3w==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by AS8PR04MB8102.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3f3::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Fri, 7 Aug
+ 2026 02:21:39 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0292.013; Fri, 7 Aug 2026
+ 02:21:39 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"Wei Fang (OSS)" <wei.fang@oss.nxp.com>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "liuhangbin@gmail.com"
+	<liuhangbin@gmail.com>, "mst@redhat.com" <mst@redhat.com>,
+	"jasowangio@gmail.com" <jasowangio@gmail.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "ast@kernel.org" <ast@kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>, "hawk@kernel.org"
+	<hawk@kernel.org>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+	"sdf@fomichev.me" <sdf@fomichev.me>
+Subject: RE: [PATCH net 2/2] net: tap: fix skb->protocol not updated after
+ VLAN network header adjustment
+Thread-Topic: [PATCH net 2/2] net: tap: fix skb->protocol not updated after
+ VLAN network header adjustment
+Thread-Index: AQHdJMgipP89sDqcOEu5VK5yASB6z7aPZ/qAgAAGSnCAAVot4IAASRiAgADLp1A=
+Date: Fri, 7 Aug 2026 02:21:39 +0000
+Message-ID:
+ <GV2PR04MB11739828521F49658D691669E88D12@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260805105314.3882595-1-wei.fang@oss.nxp.com>
+ <20260805105314.3882595-3-wei.fang@oss.nxp.com>
+ <willemdebruijn.kernel.4a69732dc0a4@gmail.com>
+ <GV2PR04MB11739F20D97C6507DB388951388D22@GV2PR04MB11739.eurprd04.prod.outlook.com>
+ <GV2PR04MB1173961FAF524C3A3FB49204888D22@GV2PR04MB11739.eurprd04.prod.outlook.com>
+ <willemdebruijn.kernel.1f5ad76837fbe@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.1f5ad76837fbe@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AS8PR04MB8102:EE_
+x-ms-office365-filtering-correlation-id: 0e757d57-c7c2-454f-bb67-08def42a9d17
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|19092799006|7416014|376014|366016|18002099003|22082099003|38070700021|11063799006|4143699003|56012099006|10067099003|3023799007;
+x-microsoft-antispam-message-info:
+ goc4+VUOmzMqUbCWfkOYRQbQBRWvFzibb/cjKFiDqvkXeq19Wd8XY3sfvFXkJB85pDTTW4SaXfIFqS7azX43jpAauKOeCBIOXV5HgpdJIeTLEdKhMQ4WgmwFqmrmF+20WBfL10jRKkqeOY6OzfKkx6YL7UmrEVwHK+F2zGPL28rx3i36nir18zYzUltwEZf36X41WTrBcsz/yQ2Gp+fGhXCmBtz4xtoJmXwfgYkQgbhtdsNuargBR/vXq6No4tnAiXqjmTyfi2YmHfJh3FLV8Yw5PyG8I9lLKuDeN2v5qB0psPBRpwzshT9Fao7l2Z+YoExomejBtPvcd8kas2qX37x7WkbbFfOrXuN7/1c/rn6Hz+l9i082IIuXxwJ/L6t9NsOInO+LrfToxhxfw4yfiAnnxsyshD2A7VvUSnDjH+wLn7P0ckSq2KqMrHlGSvR7s2hzd1PA1BhOYhYpd9hp+KYt97PnH1hwrfsCsCh7VWoZgXkw4wL6A7VpEMiFzwVCDZONV1cfenhWSxQRJOjAujY/Rx7NjCIXUpj/VPOQz5X6mVWQlmr0MkTWGP93qzJPEFg/8DoHVVkVHY47AzLiEM1mwHfXavV+qB4zNXkxwVMdmmQP4zaKR3+5eVZGByQUQtXy15Ga42lQMUU4DVulRyKU7fwQR75aZvz+vJqFeODk7ifqtqjpukguFpC3wnlHJ2wbX0nz/HniIzv+diQlXeY2ZQpqDXadtnVBIKFuUwY=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(19092799006)(7416014)(376014)(366016)(18002099003)(22082099003)(38070700021)(11063799006)(4143699003)(56012099006)(10067099003)(3023799007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?QUNodDUrWXdPOWIrd1NDN0NPNldsVUZ3M0tyZFBqRFZ4UzY3TjVJbEFlRlcw?=
+ =?utf-8?B?Q0pXU0VZa1F6eW1uK3BJM0hSZzUrVGxwbGUvM2RpMW1CWnJra3BvdWFNd2d4?=
+ =?utf-8?B?cjk3TUhzUlE4RnJTcVRuT1k2K1RYOXRZTW9MQVNkV0xtT1YwMUgxRzRGdFJz?=
+ =?utf-8?B?WHVEc0U5OXN6VGdYZnFieEw1bTZaNTM5WUhQdTZJbUhlWjdzOHhla2VwWWZu?=
+ =?utf-8?B?ZnhyYS9ZajY5aE1GOXZlREhTZkI4NkxkM1JtTHZpVXA5a0V0VC9NWEJTMGF0?=
+ =?utf-8?B?NDhnZkZMR1hRU0FYL3I0ZWlyTnpISnVVR3BQT1YzWk5DZkMzVzgwRXJOckJI?=
+ =?utf-8?B?b3V4ZTdTZ015ZmNtMXl0YmExQXZySnlUOUsxeVpDalBtK2xxTkdHQm9zakZm?=
+ =?utf-8?B?RVY1NURHb0NYSW5hVGpESGFLN0ZaN3pieXhzVktYUlVpSytsTVhQelZ3R2oz?=
+ =?utf-8?B?dDVhTTFKeHREaCtCMzRyWXc3MXB6ZXVjcVdUcGlBRHYrUTFGYmdLd0NVY0FU?=
+ =?utf-8?B?YXlvLzBSK2UzWDJFUStkeXdtSmd0aTRieGZoWitoOHQ5Ynp3ZHZZeHFlYVEx?=
+ =?utf-8?B?cFMzTGRheHB4UDNJd2l2MmkydW8zK1Z5MkwrWG9sR202T0pWWHJqZ0M4d0hD?=
+ =?utf-8?B?RStFY00yV01tN2hNcGdzNGpacmNVdUx2NDlBMDg4MTVpZmsxenduMWVVT3hU?=
+ =?utf-8?B?RHM2R3EvYy9YS3g3RVN5Z1FsK0oyQk1WS1lQV0tFblkxeWt1VDhPOEtuMVhy?=
+ =?utf-8?B?bkVpME9odXVXK2c2MHhabHdEdEx3S0VINGo0NlQzS050Q2d5U3FKVzBLdTZY?=
+ =?utf-8?B?WE1lUTl3SldaRkVMWW03cnNrdXhyTUFKRjlKTTJJblJuMVYvalNyUDQxeFp0?=
+ =?utf-8?B?dHVhSEwwa2EvTlROWS9NV3R0RWF5Z3JxdEZJUHArRlVidWhCbGZ1b0NBc25U?=
+ =?utf-8?B?ZFlaVnFtSzgxYXA4UnB1TnpKL0drM1hyVnE3WWxhaE51ZmNjTVZ1SGpPUVRO?=
+ =?utf-8?B?cEtXREd3dmtMeVFBeEtTMGlZYm9JaDRhRWNsMFlIMVZWN25PbnMzNG5lZ2k5?=
+ =?utf-8?B?Yy9sc2o3ZHFKSnZYTisvZGY4ZXVBOStma1BNWk9jMEdIRFdDdUU3UHMvbWU3?=
+ =?utf-8?B?ZWlCTFV0OEd5UmFJWWhzeXpNQWwwVWdMRjdGVVN5alRPWngyTGJwS0Z4UlN1?=
+ =?utf-8?B?NDNhS0ViOVBMUWduWjUrVHdNSThkREc0enZRcFJHVjl6MlVzK2hScEhyK3Z2?=
+ =?utf-8?B?VWpFbEJrbjRRUnRKaDBqdktxQXNiNGJweXpCdDUwNXBwUytiTTFUbGNEMEkr?=
+ =?utf-8?B?dXZGb0lhQWE4emp2RUcrQXZwODZvL0RSOUR6T0lJOTI3N0kxL2lzSXVHUmg3?=
+ =?utf-8?B?SE5xUytKMWtobEc0OXZ6VVRFNXhSdXV2UTJNQnh5WDNUa29HRW1xOHp1azRE?=
+ =?utf-8?B?L1JjUjRzbFExS1pWUDZDSDhtZytwQ2F2NTg2ZFNtVytSNjJWS2dyTS9jSzFp?=
+ =?utf-8?B?cmpUQmZJaDNYTklkVlg1UXBqQm43UkZGWnhZVmpaWFJrYnFzMFdXb3p0WGpq?=
+ =?utf-8?B?SndIYVRCV0NUR2NGOG83OVgwVUZhUFc0NzNjMldJRkJ0cUpmU3JUZHkzQWFP?=
+ =?utf-8?B?d3MrZk1LWHJlcFhEbWlNR1hRM2l4NUF6Zno3ck5jMU9EYXFyNkt0QkVGckVo?=
+ =?utf-8?B?d1dkczNTaXY5UFVnck9kcFU4T1BLL0U4SUYzMWltTGdSRnVoVHo0WTh1UEE1?=
+ =?utf-8?B?N1RmdmJORXhwempnMjNqWmJmMG43NGdGd1hXL2R4QTg1dEltMWN1ODhzTW5S?=
+ =?utf-8?B?SWN5UHFZaE16eUdDdlM0ODVvaVhSWkxkd2REVHdnK1lXakZianh5SHE0Mk9C?=
+ =?utf-8?B?UFlIQWk5S1RDYjdYMTA3L0tGL2hyQ2ozd2t5R2pIVHZtS0hiRnd5bi9TWGZU?=
+ =?utf-8?B?cWVqZ211QTBpYmYyUGw4MVNqL21GWTdtaHRnMXJrRTlybGF0YkN3WXlzSExY?=
+ =?utf-8?B?OVZxVmtnUG1lQVUxU2Y0NDlWakg0L0NvTkZ6Ymh5ckFTdklrenFYeUM0TzBj?=
+ =?utf-8?B?d3R2aS8yQUdPR0RCb3BvTElKMjBEd3Z1UTlYY1RXeXE1SXVlUXhoQWdBa1Nr?=
+ =?utf-8?B?dExoREgvWnhhcTJaRENLcmJ1N3NuMnBFK3NLSTlvbVo3dTluSE85UlBGaHll?=
+ =?utf-8?B?YXRlams3TXpLN21OZ0xhTW5Wb2VZQkRzWjl6cUViaUdTNk5jeTYrcGVlVmxy?=
+ =?utf-8?B?V1FISGgyY2wwT2lvSndSd09CaHhjVittcDdQTVJ5ZVVUUSt0T2xEcmVSMW12?=
+ =?utf-8?Q?n+01I3qwiAYrdMasO/?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Envelope-From: jorijnvdgraaf@catcrafts.net
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e757d57-c7c2-454f-bb67-08def42a9d17
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Aug 2026 02:21:39.4213
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MrHqvfwfvfS1sblxQwtrLpwoJo5aSkricfqSjJy6Q0I586vQqFZ58IoyFZ4Pry/RzAanXt/WVMcwfJ/nthcUew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8102
 
-The S3NRN4V (e.g. on the Fairphone 6, SM7635) is a later part in the
-Samsung NFC controller line this driver covers. It needs different
-bring-up, selected with a new samsung,s3nrn4v compatible:
-
- - It ships with working firmware, and its bootloader reports a
-   hardware version this driver has no flash base address for, so the
-   firmware download step is skipped. Its RF calibration data is
-   loaded with the proprietary DUAL_OPTION command (the HW and SW
-   blobs merged into a single stream) instead of the
-   START/SET/STOP_RFREG sequence. The upload is version-gated on
-   DUAL_OPTION GET_VER, matching the vendor stack: GET_VER reports
-   the chip's current calibration versions, and the push is skipped
-   when both match the blobs (each blob carries its version in its
-   last 16 bytes). post_setup runs on every device-up, so the
-   gate is what keeps the chip's calibration store from being rewritten
-   each time NFC is enabled.
-
- - Its reference clock speed is configured with the single-byte FW_CFG
-   form, sent from the ->init hook, before CORE_RESET, in the same
-   order the vendor stack sends it. The vendor HAL uses the
-   single-byte form for this generation, and its vendor configuration
-   sets the selector to 0x11, which selects the 19.2 MHz reference.
-   Without this command the chip completes NCI initialization but
-   goes silent on RF_DISCOVER -- the command times out unanswered and
-   polling never starts (verified on hardware).
-
-The calibration data is requested from a chip-scoped directory,
-samsung/s3nrn4v/hwreg.bin and samsung/s3nrn4v/swreg.bin, rather than
-the flat sec_s3fwrn5_rfreg.bin name the older parts use.
-
-The variant is carried as match data by both the OF and the I2C device
-id tables so the two match paths agree.
-
-Existing S3FWRN5 / S3FWRN82 setups keep the firmware-download path and
-the legacy rfreg sequence, unchanged.
-
-Assisted-by: Claude:claude-opus-4-8
-Assisted-by: Claude:claude-fable-5
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
----
-The upload deliberately does not share a helper with
-s3fwrn5_nci_rf_configure(): the framing differs (sub-OID prefix
-byte, one merged stream vs per-file sections) and the error policy
-differs (abort STOP on a failed section), so a common helper would
-carry more branches than it saves.
-
-FW_CFG is sent from ->init rather than from within
-s3fwrn5_nci_rf_configure_dual() so the clock configuration still runs
-when the calibration files are absent (the upload path returns early
-there; the reference clock must not depend on it).
-
- drivers/nfc/s3fwrn5/core.c    |  34 ++++++-
- drivers/nfc/s3fwrn5/i2c.c     |  12 ++-
- drivers/nfc/s3fwrn5/nci.c     | 179 +++++++++++++++++++++++++++++++++-
- drivers/nfc/s3fwrn5/nci.h     |  23 ++++-
- drivers/nfc/s3fwrn5/s3fwrn5.h |  14 ++-
- drivers/nfc/s3fwrn5/uart.c    |   2 +-
- 6 files changed, 256 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/nfc/s3fwrn5/core.c b/drivers/nfc/s3fwrn5/core.c
-index af0fa8bd970b..563470cb928d 100644
---- a/drivers/nfc/s3fwrn5/core.c
-+++ b/drivers/nfc/s3fwrn5/core.c
-@@ -20,6 +20,9 @@
- 				NFC_PROTO_ISO14443_B_MASK | \
- 				NFC_PROTO_ISO15693_MASK)
- 
-+#define S3NRN4V_HWREG_NAME	"samsung/s3nrn4v/hwreg.bin"
-+#define S3NRN4V_SWREG_NAME	"samsung/s3nrn4v/swreg.bin"
-+
- static int s3fwrn5_firmware_init(struct s3fwrn5_info *info)
- {
- 	struct s3fwrn5_fw_info *fw_info = &info->fw_info;
-@@ -74,6 +77,22 @@ static int s3fwrn5_firmware_update(struct s3fwrn5_info *info)
- 	return ret;
- }
- 
-+static int s3fwrn5_nci_init(struct nci_dev *ndev)
-+{
-+	struct s3fwrn5_info *info = nci_get_drvdata(ndev);
-+	int ret = 0;
-+
-+	if (info->variant == S3FWRN5_VARIANT_S3NRN4V) {
-+		ret = s3fwrn5_nci_clk_cfg(info);
-+		if (ret < 0)
-+			dev_err(&ndev->nfc_dev->dev,
-+				"failed to configure the reference clock: %d\n",
-+				ret);
-+	}
-+
-+	return ret;
-+}
-+
- static int s3fwrn5_nci_open(struct nci_dev *ndev)
- {
- 	struct s3fwrn5_info *info = nci_get_drvdata(ndev);
-@@ -127,6 +146,15 @@ static int s3fwrn5_nci_post_setup(struct nci_dev *ndev)
- 	struct s3fwrn5_info *info = nci_get_drvdata(ndev);
- 	int ret;
- 
-+	if (info->variant == S3FWRN5_VARIANT_S3NRN4V) {
-+		ret = s3fwrn5_nci_rf_configure_dual(info, S3NRN4V_HWREG_NAME,
-+						    S3NRN4V_SWREG_NAME);
-+		if (ret < 0)
-+			dev_warn(&ndev->nfc_dev->dev,
-+				 "RF calibration data update failed: %d\n", ret);
-+		return 0;
-+	}
-+
- 	if (s3fwrn5_firmware_init(info)) {
- 		//skip bootloader mode
- 		return 0;
-@@ -149,6 +177,7 @@ static int s3fwrn5_nci_post_setup(struct nci_dev *ndev)
- }
- 
- static const struct nci_ops s3fwrn5_nci_ops = {
-+	.init = s3fwrn5_nci_init,
- 	.open = s3fwrn5_nci_open,
- 	.close = s3fwrn5_nci_close,
- 	.send = s3fwrn5_nci_send,
-@@ -158,7 +187,7 @@ static const struct nci_ops s3fwrn5_nci_ops = {
- };
- 
- int s3fwrn5_probe(struct nci_dev **ndev, void *phy_id, struct device *pdev,
--	const struct s3fwrn5_phy_ops *phy_ops)
-+	const struct s3fwrn5_phy_ops *phy_ops, enum s3fwrn5_variant variant)
- {
- 	struct s3fwrn5_info *info;
- 	int ret;
-@@ -170,6 +199,7 @@ int s3fwrn5_probe(struct nci_dev **ndev, void *phy_id, struct device *pdev,
- 	info->phy_id = phy_id;
- 	info->pdev = pdev;
- 	info->phy_ops = phy_ops;
-+	info->variant = variant;
- 	mutex_init(&info->mutex);
- 
- 	s3fwrn5_set_mode(info, S3FWRN5_MODE_COLD);
-@@ -225,3 +255,5 @@ EXPORT_SYMBOL(s3fwrn5_recv_frame);
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Samsung S3FWRN5 NFC driver");
- MODULE_AUTHOR("Robert Baldyga <r.baldyga@samsung.com>");
-+MODULE_FIRMWARE(S3NRN4V_HWREG_NAME);
-+MODULE_FIRMWARE(S3NRN4V_SWREG_NAME);
-diff --git a/drivers/nfc/s3fwrn5/i2c.c b/drivers/nfc/s3fwrn5/i2c.c
-index f93d8b47b65e..884420ac83b5 100644
---- a/drivers/nfc/s3fwrn5/i2c.c
-+++ b/drivers/nfc/s3fwrn5/i2c.c
-@@ -145,6 +145,7 @@ static irqreturn_t s3fwrn5_i2c_irq_thread_fn(int irq, void *phy_id)
- 
- static int s3fwrn5_i2c_probe(struct i2c_client *client)
- {
-+	enum s3fwrn5_variant variant;
- 	struct s3fwrn5_i2c_phy *phy;
- 	int ret;
- 
-@@ -183,8 +184,9 @@ static int s3fwrn5_i2c_probe(struct i2c_client *client)
- 		return dev_err_probe(&client->dev, PTR_ERR(phy->clk),
- 				     "failed to get clock\n");
- 
-+	variant = (uintptr_t)i2c_get_match_data(client);
- 	ret = s3fwrn5_probe(&phy->common.ndev, phy, &phy->i2c_dev->dev,
--			    &i2c_phy_ops);
-+			    &i2c_phy_ops, variant);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -209,13 +211,17 @@ static void s3fwrn5_i2c_remove(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id s3fwrn5_i2c_id_table[] = {
--	{ .name = "s3fwrn5_i2c" },
-+	{ .name = "s3fwrn5_i2c", .driver_data = S3FWRN5_VARIANT_FWDL },
-+	{ .name = "s3nrn4v", .driver_data = S3FWRN5_VARIANT_S3NRN4V },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, s3fwrn5_i2c_id_table);
- 
- static const struct of_device_id of_s3fwrn5_i2c_match[] = {
--	{ .compatible = "samsung,s3fwrn5-i2c" },
-+	{ .compatible = "samsung,s3fwrn5-i2c",
-+	  .data = (void *)S3FWRN5_VARIANT_FWDL },
-+	{ .compatible = "samsung,s3nrn4v",
-+	  .data = (void *)S3FWRN5_VARIANT_S3NRN4V },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, of_s3fwrn5_i2c_match);
-diff --git a/drivers/nfc/s3fwrn5/nci.c b/drivers/nfc/s3fwrn5/nci.c
-index 5a9de11bbece..f1877797d136 100644
---- a/drivers/nfc/s3fwrn5/nci.c
-+++ b/drivers/nfc/s3fwrn5/nci.c
-@@ -8,6 +8,9 @@
- 
- #include <linux/completion.h>
- #include <linux/firmware.h>
-+#include <linux/minmax.h>
-+#include <linux/slab.h>
-+#include <linux/unaligned.h>
- 
- #include "s3fwrn5.h"
- #include "nci.h"
-@@ -20,7 +23,24 @@ static int s3fwrn5_nci_prop_rsp(struct nci_dev *ndev, struct sk_buff *skb)
- 	return 0;
- }
- 
--const struct nci_driver_ops s3fwrn5_nci_prop_ops[4] = {
-+/*
-+ * DUAL_OPTION responses are not uniform: GET_VER answers with the chip's
-+ * calibration versions instead of a status byte, so stash the payload for
-+ * the caller before completing the request.
-+ */
-+static int s3fwrn5_nci_dual_rsp(struct nci_dev *ndev, struct sk_buff *skb)
-+{
-+	struct s3fwrn5_info *info = nci_get_drvdata(ndev);
-+
-+	info->dual_rsp_len = min_t(unsigned int, skb->len,
-+				   sizeof(info->dual_rsp));
-+	memcpy(info->dual_rsp, skb->data, info->dual_rsp_len);
-+
-+	nci_req_complete(ndev, skb->data[0]);
-+	return 0;
-+}
-+
-+const struct nci_driver_ops s3fwrn5_nci_prop_ops[5] = {
- 	{
- 		.opcode = nci_opcode_pack(NCI_GID_PROPRIETARY,
- 				NCI_PROP_SET_RFREG),
-@@ -41,6 +61,11 @@ const struct nci_driver_ops s3fwrn5_nci_prop_ops[4] = {
- 				NCI_PROP_FW_CFG),
- 		.rsp = s3fwrn5_nci_prop_rsp,
- 	},
-+	{
-+		.opcode = nci_opcode_pack(NCI_GID_PROPRIETARY,
-+				NCI_PROP_DUAL_OPTION),
-+		.rsp = s3fwrn5_nci_dual_rsp,
-+	},
- };
- 
- #define S3FWRN5_RFREG_SECTION_SIZE 252
-@@ -117,3 +142,155 @@ int s3fwrn5_nci_rf_configure(struct s3fwrn5_info *info, const char *fw_name)
- 	release_firmware(fw);
- 	return ret;
- }
-+
-+/*
-+ * The S3NRN4V expects the single-byte FW_CFG form (just the clock-speed
-+ * selector).
-+ */
-+int s3fwrn5_nci_clk_cfg(struct s3fwrn5_info *info)
-+{
-+	u8 clk_speed = NCI_PROP_FW_CFG_CLK_SPEED;
-+
-+	return nci_prop_cmd(info->ndev, NCI_PROP_FW_CFG, 1, &clk_speed);
-+}
-+
-+/*
-+ * An 8-byte calibration version: 5 bytes of date stamp and a 3-byte CSC
-+ * code, at fixed offsets both in a blob's 16-byte tail and in each half of
-+ * the GET_VER response (HW at offset 0, SW at offset 15).
-+ */
-+static bool s3fwrn5_nci_dual_version_eq(const u8 *a, const u8 *b)
-+{
-+	return !memcmp(a + 5, b + 5, 5) && !memcmp(a + 12, b + 12, 3);
-+}
-+
-+static bool s3fwrn5_nci_dual_cal_current(struct s3fwrn5_info *info,
-+					 const struct firmware *hw_fw,
-+					 const struct firmware *sw_fw)
-+{
-+	if (info->dual_rsp_len < 30)
-+		return false;
-+	if (hw_fw->size < 16 || sw_fw->size < 16)
-+		return false;
-+
-+	return s3fwrn5_nci_dual_version_eq(info->dual_rsp,
-+					   hw_fw->data + hw_fw->size - 16) &&
-+	       s3fwrn5_nci_dual_version_eq(info->dual_rsp + 15,
-+					   sw_fw->data + sw_fw->size - 16);
-+}
-+
-+/*
-+ * S3NRN4V RF calibration data update: the HW and SW blobs merged into one
-+ * stream (HW first), pushed as START_UPDATE, one SET_OPTION per 252-byte
-+ * section, then STOP_UPDATE carrying a 16-bit checksum (running sum of the
-+ * merged stream as 32-bit words).
-+ */
-+int s3fwrn5_nci_rf_configure_dual(struct s3fwrn5_info *info,
-+				  const char *hw_name, const char *sw_name)
-+{
-+	struct nci_prop_dual_set_option_cmd set_option;
-+	struct device *dev = &info->ndev->nfc_dev->dev;
-+	const struct firmware *hw_fw, *sw_fw;
-+	size_t merged_size, i, len;
-+	u8 *merged = NULL;
-+	u8 stop_cmd[3];
-+	u32 checksum;
-+	u8 sub_oid;
-+	int ret;
-+
-+	ret = firmware_request_nowarn(&hw_fw, hw_name, dev);
-+	if (ret < 0)
-+		return ret;
-+	ret = firmware_request_nowarn(&sw_fw, sw_name, dev);
-+	if (ret < 0)
-+		goto out_hw;
-+
-+	merged_size = hw_fw->size + sw_fw->size;
-+
-+	/*
-+	 * The stream is checksummed as 32-bit words and pushed in at most 256
-+	 * sections (the section index is a single byte); reject blobs that
-+	 * would silently break either.
-+	 */
-+	if (!merged_size || merged_size % 4 ||
-+	    merged_size > 256 * NCI_PROP_DUAL_SECTION_SIZE) {
-+		dev_err(dev, "invalid calibration data size: %zu\n", merged_size);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	/*
-+	 * Ask the chip for its current calibration versions and skip the
-+	 * upload when both already match the blobs; a mismatch or an
-+	 * unparseable answer means the upload proceeds. GET_VER answers with
-+	 * versions, not a status byte, so nci_prop_cmd()'s return carries no
-+	 * meaning here.
-+	 */
-+	sub_oid = NCI_PROP_DUAL_SUB_GET_VER;
-+	info->dual_rsp_len = 0;
-+	nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION, 1, &sub_oid);
-+	if (s3fwrn5_nci_dual_cal_current(info, hw_fw, sw_fw)) {
-+		dev_dbg(dev, "calibration data already current\n");
-+		ret = 0;
-+		goto out;
-+	}
-+
-+	merged = kvmalloc(merged_size, GFP_KERNEL);
-+	if (!merged) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+	memcpy(merged, hw_fw->data, hw_fw->size);
-+	memcpy(merged + hw_fw->size, sw_fw->data, sw_fw->size);
-+
-+	checksum = 0;
-+	for (i = 0; i + 4 <= merged_size; i += 4)
-+		checksum += get_unaligned_le32(merged + i);
-+
-+	dev_info(dev, "calibration data update: %s + %s\n", hw_name, sw_name);
-+
-+	/* START_UPDATE */
-+	sub_oid = NCI_PROP_DUAL_SUB_START_UPDATE;
-+	ret = nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION, 1, &sub_oid);
-+	if (ret < 0) {
-+		dev_err(dev, "Unable to start calibration data update\n");
-+		goto out;
-+	}
-+
-+	/* SET_OPTION per section */
-+	set_option.sub_oid = NCI_PROP_DUAL_SUB_SET_OPTION;
-+	set_option.index = 0;
-+	for (i = 0; i < merged_size; i += NCI_PROP_DUAL_SECTION_SIZE) {
-+		len = min_t(size_t, merged_size - i, NCI_PROP_DUAL_SECTION_SIZE);
-+		memcpy(set_option.data, merged + i, len);
-+		ret = nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION,
-+				   len + 2, (__u8 *)&set_option);
-+		if (ret < 0) {
-+			dev_err(dev, "calibration data update error: %d\n",
-+				ret);
-+			/* Abort form: STOP_UPDATE with the sub-OID alone. */
-+			sub_oid = NCI_PROP_DUAL_SUB_STOP_UPDATE;
-+			nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION, 1,
-+				     &sub_oid);
-+			goto out;
-+		}
-+		set_option.index++;
-+	}
-+
-+	/* STOP_UPDATE with checksum */
-+	stop_cmd[0] = NCI_PROP_DUAL_SUB_STOP_UPDATE;
-+	put_unaligned_le16(checksum, &stop_cmd[1]);
-+	ret = nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION, 3, stop_cmd);
-+	if (ret < 0) {
-+		dev_err(dev, "Unable to stop calibration data update\n");
-+		goto out;
-+	}
-+
-+	dev_info(dev, "calibration data update: success\n");
-+out:
-+	kvfree(merged);
-+	release_firmware(sw_fw);
-+out_hw:
-+	release_firmware(hw_fw);
-+	return ret;
-+}
-diff --git a/drivers/nfc/s3fwrn5/nci.h b/drivers/nfc/s3fwrn5/nci.h
-index bc4bce2bbc4d..453a1c9d65eb 100644
---- a/drivers/nfc/s3fwrn5/nci.h
-+++ b/drivers/nfc/s3fwrn5/nci.h
-@@ -40,6 +40,9 @@ struct nci_prop_stop_rfreg_rsp {
- 
- #define NCI_PROP_FW_CFG		0x28
- 
-+/* S3NRN4V single-byte FW_CFG payload; 0x11 selects the 19.2 MHz reference. */
-+#define NCI_PROP_FW_CFG_CLK_SPEED	0x11
-+
- struct nci_prop_fw_cfg_cmd {
- 	__u8 clk_type;
- 	__u8 clk_speed;
-@@ -50,7 +53,25 @@ struct nci_prop_fw_cfg_rsp {
- 	__u8 status;
- };
- 
--extern const struct nci_driver_ops s3fwrn5_nci_prop_ops[4];
-+#define NCI_PROP_DUAL_OPTION		0x2a
-+
-+#define NCI_PROP_DUAL_SUB_GET_VER	0x00
-+#define NCI_PROP_DUAL_SUB_START_UPDATE	0x01
-+#define NCI_PROP_DUAL_SUB_SET_OPTION	0x02
-+#define NCI_PROP_DUAL_SUB_STOP_UPDATE	0x03
-+
-+#define NCI_PROP_DUAL_SECTION_SIZE	252
-+
-+struct nci_prop_dual_set_option_cmd {
-+	__u8 sub_oid;
-+	__u8 index;
-+	__u8 data[NCI_PROP_DUAL_SECTION_SIZE];
-+};
-+
-+extern const struct nci_driver_ops s3fwrn5_nci_prop_ops[5];
- int s3fwrn5_nci_rf_configure(struct s3fwrn5_info *info, const char *fw_name);
-+int s3fwrn5_nci_rf_configure_dual(struct s3fwrn5_info *info,
-+				  const char *hw_name, const char *sw_name);
-+int s3fwrn5_nci_clk_cfg(struct s3fwrn5_info *info);
- 
- #endif /* __LOCAL_S3FWRN5_NCI_H_ */
-diff --git a/drivers/nfc/s3fwrn5/s3fwrn5.h b/drivers/nfc/s3fwrn5/s3fwrn5.h
-index 2b492236090b..63f679f17166 100644
---- a/drivers/nfc/s3fwrn5/s3fwrn5.h
-+++ b/drivers/nfc/s3fwrn5/s3fwrn5.h
-@@ -21,6 +21,13 @@ enum s3fwrn5_mode {
- 	S3FWRN5_MODE_FW,
- };
- 
-+enum s3fwrn5_variant {
-+	/* S3FWRN5 / S3FWRN82: firmware is downloaded by this driver */
-+	S3FWRN5_VARIANT_FWDL,
-+	/* S3NRN4V: no firmware download; FW_CFG + DUAL_OPTION bring-up */
-+	S3FWRN5_VARIANT_S3NRN4V,
-+};
-+
- struct s3fwrn5_phy_ops {
- 	void (*set_wake)(void *id, bool sleep);
- 	void (*set_mode)(void *id, enum s3fwrn5_mode);
-@@ -36,6 +43,11 @@ struct s3fwrn5_info {
- 	const struct s3fwrn5_phy_ops *phy_ops;
- 
- 	struct s3fwrn5_fw_info fw_info;
-+	enum s3fwrn5_variant variant;
-+
-+	/* Last DUAL_OPTION response payload (GET_VER carries versions). */
-+	u8 dual_rsp[32];
-+	u8 dual_rsp_len;
- 
- 	struct mutex mutex;
- };
-@@ -78,7 +90,7 @@ static inline int s3fwrn5_write(struct s3fwrn5_info *info, struct sk_buff *skb)
- }
- 
- int s3fwrn5_probe(struct nci_dev **ndev, void *phy_id, struct device *pdev,
--	const struct s3fwrn5_phy_ops *phy_ops);
-+	const struct s3fwrn5_phy_ops *phy_ops, enum s3fwrn5_variant variant);
- void s3fwrn5_remove(struct nci_dev *ndev);
- 
- int s3fwrn5_recv_frame(struct nci_dev *ndev, struct sk_buff *skb,
-diff --git a/drivers/nfc/s3fwrn5/uart.c b/drivers/nfc/s3fwrn5/uart.c
-index 8f142a255101..75397c3dbc58 100644
---- a/drivers/nfc/s3fwrn5/uart.c
-+++ b/drivers/nfc/s3fwrn5/uart.c
-@@ -136,7 +136,7 @@ static int s3fwrn82_uart_probe(struct serdev_device *serdev)
- 	}
- 
- 	ret = s3fwrn5_probe(&phy->common.ndev, phy, &phy->ser_dev->dev,
--			    &uart_phy_ops);
-+			    &uart_phy_ops, S3FWRN5_VARIANT_FWDL);
- 	if (ret < 0)
- 		goto err_serdev;
- 
--- 
-2.55.0
-
+PiA+ID4gPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3RhcC5jDQo+ID4gPiA+ID4gKysrIGIvZHJpdmVy
+cy9uZXQvdGFwLmMNCj4gPiA+ID4gPiBAQCAtMTA4MSw5ICsxMDgxLDE1IEBAIHN0YXRpYyBpbnQg
+dGFwX2dldF91c2VyX3hkcChzdHJ1Y3QNCj4gdGFwX3F1ZXVlDQo+ID4gPiAqcSwNCj4gPiA+ID4g
+c3RydWN0IHhkcF9idWZmICp4ZHApDQo+ID4gPiA+ID4gIAl9DQo+ID4gPiA+ID4NCj4gPiA+ID4g
+PiAgCS8qIE1vdmUgbmV0d29yayBoZWFkZXIgdG8gdGhlIHJpZ2h0IHBvc2l0aW9uIGZvciBWTEFO
+IHRhZ2dlZA0KPiA+ID4gcGFja2V0cyAqLw0KPiA+ID4gPiA+IC0JaWYgKGV0aF90eXBlX3ZsYW4o
+c2tiLT5wcm90b2NvbCkgJiYNCj4gPiA+ID4gPiAtCSAgICB2bGFuX2dldF9wcm90b2NvbF9hbmRf
+ZGVwdGgoc2tiLCBza2ItPnByb3RvY29sLCAmZGVwdGgpICE9IDApDQo+ID4gPiA+ID4gLQkJc2ti
+X3NldF9uZXR3b3JrX2hlYWRlcihza2IsIGRlcHRoKTsNCj4gPiA+ID4gPiArCWlmIChldGhfdHlw
+ZV92bGFuKHNrYi0+cHJvdG9jb2wpKSB7DQo+ID4gPiA+ID4gKwkJX19iZTE2IHByb3RvID0gdmxh
+bl9nZXRfcHJvdG9jb2xfYW5kX2RlcHRoKHNrYiwNCj4gPiA+IHNrYi0+cHJvdG9jb2wsDQo+ID4g
+PiA+ID4gKwkJCQkJCQkgICAmZGVwdGgpOw0KPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiArCQlpZiAo
+cHJvdG8gIT0gMCkgew0KPiA+ID4gPiA+ICsJCQlza2Jfc2V0X25ldHdvcmtfaGVhZGVyKHNrYiwg
+ZGVwdGgpOw0KPiA+ID4gPiA+ICsJCQlza2ItPnByb3RvY29sID0gcHJvdG87DQo+ID4gPiA+ID4g
+KwkJfQ0KPiA+ID4gPiA+ICsJfQ0KPiA+ID4gPg0KPiA+ID4gPiBEb2VzIHRoZSBzYW1lIGFwcGx5
+IHRvIHRoZSBzYW1lIGNhbGwgaW4gdGFwX2dldF91c2VyPw0KPiA+ID4NCj4gPiA+IFRoZSBzaXR1
+YXRpb24gb2YgdGFwX2dldF91c2VyKCkgaXMgZGlmZmVyZW50LCBza2JfcHJvYmVfdHJhbnNwb3J0
+X2hlYWRlcigpDQo+ID4gPiBpcyBjYWxsZWQgYmVmb3JlIHRoZSBWTEFOIGFkanVzdG1lbnQgYmxv
+Y2suIFNvIEkgdGhpbmsgdHJhbnNwb3J0X2hlYWRlcg0KPiA+ID4gc2hvdWxkIGJlIGNvcnJlY3Qu
+IFRoZSBvbmx5IGNvbmNlcm4gaXMgd2hldGhlciBza2ItPnByb3RvY29sIG5lZWRzIHRvIGJlDQo+
+ID4gPiB1cGRhdGVkIGFmdGVyIGNhbGxpbmcgc2tiX3NldF9uZXR3b3JrX2hlYWRlcigpLg0KPiA+
+ID4NCj4gPiA+IEknbSBub3Qgc3VyZSBhcyBJIGFtIG5vdCBmYWlybHkgZmFtaWxpYXIgd2l0aCB0
+aGUgdGFwIGRyaXZlci4gSSBhZGRlZCB0aGlzIHBhdGNoDQo+ID4gPiBiZWNhdXNlIFNhc2hpa28g
+cmVwb3J0ZWQgdGhhdCB0aGUgdGFwIGRyaXZlciBoYXMgdGhlIHNhbWUgaXNzdWUgYXMNCj4gYWZf
+cGFja2V0Lg0KPiA+ID4NCj4gPiA+ID4NCj4gPiA+ID4gQW5kIGluIGdlbmVyYWwgdG8gb3RoZXIg
+Y2FsbGVycyBvZiB2bGFuX2dldF9wcm90b2NvbF9hbmRfZGVwdGgsDQo+ID4gPiA+IGluY2x1ZGlu
+ZyB0aHJvdWdoIHdyYXBwZXIgc2tiX25ldHdvcmtfcHJvdG9jb2w/DQo+ID4gPg0KPiA+ID4gSSBk
+b24ndCB0aGluayB0aGlzIGlzc3VlIGV4aXN0cyBlbHNld2hlcmUuIFRoZSBpc3N1ZSBhcmlzZXMg
+YmVjYXVzZQ0KPiA+ID4gc2tiX3Byb2JlX3RyYW5zcG9ydF9oZWFkZXIoKSBpcyBjYWxsZWQgYWZ0
+ZXIgc2tiX3NldF9uZXR3b3JrX2hlYWRlcigpLA0KPiBhbmQNCj4gPiA+IGF0IHRoaXMgcG9pbnQs
+IHNrYi0+cHJvdG9jb2wgYW5kIG5ldHdvcmtfaGVhZGVyIGFyZSBub3Qgc3luY2hyb25pemVkICgg
+SW4NCj4gPiA+IF9fc2tiX2Zsb3dfZGlzc2VjdCgpLCBuaG9mZiA9IHNrYl9uZXR3b3JrX29mZnNl
+dChza2IpIGJ1dCBwcm90byBpcw0KPiA+ID4gRVRIX1BfODAyMVEgb3IgRVRIX1BfODAyMUFEKSks
+IGNhdXNpbmcgc2tiX3Byb2JlX3RyYW5zcG9ydF9oZWFkZXIoKQ0KPiB0bw0KPiA+ID4gZmFpbCB0
+byBzZXQgdHJhbnNwb3J0X2hlYWRlciBjb3JyZWN0bHkuDQo+ID4gPg0KPiA+ID4gUGVyaGFwcyB0
+aGUgY29ycmVjdCBhcHByb2FjaCB3b3VsZCBiZSB0byByZXN0b3JlIHRoZSBvcmlnaW5hbA0KPiBg
+c2tiLT5wcm90b2NvbGANCj4gPiA+IHZhbHVlIGFmdGVyIGBza2JfcHJvYmVfdHJhbnNwb3J0X2hl
+YWRlcigpYCwgbWFpbnRhaW5pbmcgY29uc2lzdGVuY3kgd2l0aA0KPiB0aGUNCj4gPiA+IHByZXZp
+b3VzIGJlaGF2aW9yOyBvdGhlcndpc2UsIGl0IG1pZ2h0IGludHJvZHVjZSBuZXcgaXNzdWVzLg0K
+PiA+DQo+ID4gRm9yIEFGX1BBQ0tFVCwgaXQgaGFzIGJlZW4gY29uZmlybWVkIHRoYXQgc2tiLT5w
+cm90b2NvbCBkb2VzIG5vdCBuZWVkIHRvIGJlDQo+ID4gcmVzdG9yZWQgdG8gaXRzIGluaXRpYWwg
+dmFsdWU7IG90aGVyd2lzZSwgdGhlIGVncmVzcyB0YyBmbG93ZXIgZm9yIHByb3RvY29sIGlwIHdp
+bGwNCj4gPiBub3QgbWF0Y2ggdGhlIHBhY2tldC4gQSBrbm93biBpc3N1ZSBpcyB0aGF0IHRoZSBw
+YWNrZXRzIGNhbm5vdCBtYXRjaCB0aGUNCj4gZWdyZXNzDQo+ID4gVEMgZmxvd2VyIHJ1bGVzIGZv
+ciBwcm90b2NvbCA4MDIuMVEsIGJ1dCB0aGlzIGlzc3VlIGV4aXN0cyBiZWZvcmUgdGhpcyBzZXJp
+ZXMuIFRoaXMNCj4gPiBpcyBsaWtlbHkgYSBsaW1pdGF0aW9uIG9mIHVzaW5nIEFGX1BBQ0tFVCB0
+byBzZW5kIHBhY2tldHMuDQo+IA0KPiBBY3R1YWxseSB0aGlzIHVwZGF0ZSBvZiBuZXR3b3JrIGhl
+YWRlciB0byBzdGFydCBvZiB0aGUgSVAgaGVhZGVyIG1heQ0KPiBoYXZlIGJlZW4gYSBtaXN0YWtl
+LiBJZiB1c2Vyc3BhY2UgaW5zZXJ0cyBhIFZMQU4gcGFja2V0LCB0aGF0IGlzIHdoYXQNCj4gc2hv
+dWxkIGVudGVyIHRoZSBzdGFjay4NCj4gDQo+IEJ1dCBmb3IgdGhpcyBzcGVjaWZpYyBpc3N1ZTog
+d291bGQgaXQgbWFrZSBzZW5zZSB0byBqdXN0IG1vdmUNCj4gc2tiX3Byb2JlX3RyYW5zcG9ydF9o
+ZWFkZXIgYmVmb3JlIHRoYXQgYWRqdXN0bWVudD8NCg0KSSB0aGluayBpdCBpcyBmZWFzaWJsZS4g
+VGhlIHRyYW5zcG9ydF9oZWFkZXIgd2lsbCBiZSBzZXQgY29ycmVjdGx5LCBhbmQgb3RoZXINCmJl
+aGF2aW9ycyB3aWxsIHJlbWFpbiBjb25zaXN0ZW50IHdpdGggYmVmb3JlLCB3aXRob3V0IGludHJv
+ZHVjaW5nIGFuDQpuZXcgaXNzdWVzLg0KDQo=
