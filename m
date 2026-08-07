@@ -1,154 +1,292 @@
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2133.outbound.protection.partner.outlook.cn [139.219.17.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809A419F40B
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 11:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC47942FCCA;
+	Fri,  7 Aug 2026 11:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.133
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786101706; cv=pass; b=KjmwOqEWd4T9T8RanTtAPQlc3l3DfFLtoMNkq4IzISluOMtlBmaAIhlgRAKH6mFuYmjnO1CFUKWIEOSq4o2KQ6Iz5dt0+TMOlIyEFk59MtO4Os9GQa1kl/qwTQnJtBAub0w7YsbzuU+ThetfZwR+rFn8dtuIcApv0Nm9h30LteU=
+	t=1786102189; cv=fail; b=hW7/aXRForAh87EGRgXt8F2P/PZU8MlYlKSEBp0KW7P1shecQyeBM4nc62J31P0ep7GPY+Nf1YfDYosG4ebYiol6dhiyb8JkbZ+GQzb+hPtFCegJQ1UR5Vw0RFngT6APXGMZ06Xge1lVFXsIEcmILjWV+FOnLZar+dUS8jLIBO0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786101706; c=relaxed/simple;
-	bh=b7BM3Lp9tBbanKUXXOullk/LF8dMXL9Sd5xXHhKmN5U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jhodcUeE8X6fbbAF21pE2eC4IhFP5r7qYMBiKE0CqtZIKq1htKQ6Cz5jgr2jun/y9iJtVntIQ1/viiKqCHmqcaXrLR+J40ZkI3DPdqPdDJ/TuL6Fg8XROlyoRtjKjJh6mSnXp7SkEAQnB90Uv8icOxOR11HYq9VO2wb49qBXPIQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AeBBR/jO; arc=pass smtp.client-ip=209.85.167.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AeBBR/jO"
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4960a66d36dso819492b6e.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 04:21:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786101704; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CohMkih8hs8VXPLRWXqCFHuecal7tAuFV6AmH4zJOrqKeN5npN/5C2piec2uC5lDei
-         FjWibvDu+Ki5kbdNextr8jlHYDHa6CRPtbrqSZUHNW/J85o6lL4AwneXgPGBqJNKQhhC
-         IoMbRJwYnsZZHzELWfympouxco9O189vp/sRPlBakpSLMnJSS++fnnzGUJZQ9VwiKghG
-         WvGPcJbb16gXPFLXu0P0++tK0t7L85ilErh82oQodjuWBymziQYf36RyQ19jgBKB7aiN
-         UgaDZF3DZbDvywja+dHk5HUP1EC4x83scWV6m8jXkZnW7XfXQiZRex9U9qd036CaGd6n
-         qgyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mINjklpxtkICORyfJxN/cHIuCc/TZS+0MLm3vqn2bsU=;
-        fh=ou7HoF2iNTXmr88aOUofn6fi2GivoYPUxM/3PPPyfsY=;
-        b=boPBkZVZFjYPFdqgNSnZAnP7J3qQn5v08lOeWRbUznv2CLYkSH/Ycbzvc713TZA1Ph
-         0pt68A5Ebsr33sb8G9RzfiNfUa04ecF+0igOa3bZ1WOE/uh4n0YRhY+bg9Np+E9OdwFc
-         XoJ90Sk2F5IdFirI0J2L5aLOjVqmtYehY9TbumI8TXO4ix3WxsjAboDvKrPKFrQo7nVn
-         IwiPvc3/xjYY/vlvZXI8nUsbxDmjItdv/vqdo/fXkNl/8LvKIAx5Fq6k33h4LTsY7YcF
-         GagfphoVecN18dW787Q0YDRNFeJpkq1PHACeyuQlRo8yr3KWGrKjfY2sUhDEyGGAfrab
-         w3rg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786101704; x=1786706504; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mINjklpxtkICORyfJxN/cHIuCc/TZS+0MLm3vqn2bsU=;
-        b=AeBBR/jOY5icRr0mi3SOSYWV2Bm8ohjo5i6vzUHTwtOlby/s3F8hQvh6LAbSjcUDQ6
-         zvEGHpWBCtoUySBzBl07Pqz+ttzLpb95pGxxApdrTl67Cr+pjKm2U7dP88WH4QTg8h0h
-         cHb9mkM4552qp1DKx+OCG5TxgUIxud8yI5wjWIuszvvc8iNj2tXgMC4GR+pXVt4d11Zm
-         YEVowFgfezFGiYdo46ZSF7VZde2lnpFHs/C/EDBfllVW8CBlvb95r4Qqyec9YZ2dKU7E
-         2dKOVn8kLRW6dgHMaGZRiOKY9dXF+m4x2aNDyOU7P8R7aijE1hnobeammteNmsa+23VJ
-         Hc6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786101704; x=1786706504;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mINjklpxtkICORyfJxN/cHIuCc/TZS+0MLm3vqn2bsU=;
-        b=qji5Bo0PlYl/s1nN92Ng3tUTqENso0n7er/IZa61v9ezqzxZZJd7SNNTXbQTjbdGQa
-         Ytue0UfQEagpAStICbu7fqp6YZDfqRi61K8kt2Qwc+KDL6c8a9qT3RSs7lSh794/rLAT
-         e5MGMJ0wlQca7GlFYkjhXzFtXVsYNsK7AN40/0I55eHTHEzghaszMmyts0p/CNk05q+O
-         V5PAZBtyKpCOYY1Zu9v/OcmOHKkrzzVSqc2JS6MhDX8cp/aVH/L03CM5ZkZNEfDIWovc
-         vGmGcEZYySh41b9oVm9YoP6o1ZXHO70gR7SFc3ostoGE7IKmmocssU0hgkT95cdwgWmq
-         FkOA==
-X-Forwarded-Encrypted: i=1; AHgh+RqEUBtGTn2eSSj9nlxHlLTHvm1DqgQBlmDKalp2Z8vgGpk6MpI1GAQ4SI1PMn42MbprUgnFje4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxAYvJFXkWlNBAaTOeRJZwT/aFlSDFK7dWKmATqh73Fw563eaL
-	2Ti8hV0EEmaWhOVbDSr1DQC/hhkzwfsnYQUNMcB1doGW1VO768eNjiaKZYG0xl0SiJCbHNhMs8a
-	wvMYESyFlFjWz147YFzYwxGWFind2kxM=
-X-Gm-Gg: AR+sD13uWSeWMCh7WaZEHRglSS8F4NiindD+Q+UNKhpJMuzq1qVp568fLUKjMaWgJ9p
-	tku46245qcLtgWo0ahg0nnRIPtwFhc3Ea0IwyFDmf/a17EceIhOWQ0cvxDg/KiNA3GRSJXitQ/2
-	AYJbAAUqz8xuDJA3qR2CltNgXGSBnamZPxXnL5HhWjXro2l3UB2DdA7sEJD5q9vJ3ykuoOmC7Em
-	MOj29WRGFpImH1bQVpRaHeWGtidvjgMk5kHWIs+fvR8Z+MkkyMIA5DyYV6RemP77c73XvUlnFPy
-	yBBiir5EUXMpxv0BtMwDFcvhJ11fzPde5RaJGpl04CJbh0IA2iifW9xMQwO8/SN65/4/DLLOCHm
-	o6Y0=
-X-Received: by 2002:a05:6808:13c2:b0:495:d9fc:238a with SMTP id
- 5614622812f47-4afae30e48cmr7524084b6e.3.1786101704218; Fri, 07 Aug 2026
- 04:21:44 -0700 (PDT)
+	s=arc-20240116; t=1786102189; c=relaxed/simple;
+	bh=kp+5N8WDHHnhIC9ZE7D3GdPnN33OneXvXKIzPjZel0I=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=tlLt1Ypp9mLpratU8hZYG8mQt6fvMD6UKAhD9abUMkezIRLXKCLGpphyttcO4uTkS/UWpFR5LXHb9Q1/0YiOKh4leYHd0rGQw4buvGsUBM3q2DfZZT/HQfUuiG61Aq7qnpdtsEqRc74b4vnokAIzfVPTZUB7V+SMwPEJEga9S/w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KXhc18AMdEzWpFmUJ0s0PZeLaAkj3qE9SIjhIzQ5t7X2DIB0JIzo8oge+BsCSkGSKqbuAvVy32vJYoa81ipNgaX3vgUT5sHiABmA70zDymab3UEnSna2uG+LTiv73XveHqCrF0ZpzSYr5m1GpJ7gGyp3PrY7TwtTe+FEMmMJMDfsJBYU9m/ADbQDXdIlk9cucA41xZD9F4rNVqcZdDlVjIDaEJdruY0IVe2Ev9U0DGLv2sG14QImM61ZGr/iJBd2AVCn2cisll1ykCXArSvBArplK+ktHeVAR+aonA/Lxuql0nDzRHqRzwpjLVUEDkOGoeNdrftHNQgmVPX+FxT7eQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nTuMUOcopC48Mbt54yY6GaQuKB5E/PYSsSp/9/uqHJs=;
+ b=KzoFFtpeHcNSy4KqEHmx1A79Q3TOSDrAGEAEkxNzHWRORj+zAwEiTAMVR1I52UDX0gjcALUB3b1lrnAiU3Jhd95p9jHvqM1JynBAPXl25gHHhkjok7tlh+pxFWwWvy8EceTNTgposojPpQ8F/TbOc89/F/vu5wlUsaQuWIkv+YW7e/QQHvD2sAUkTkjFizgtPTZFE9Zx+EqJ5q7izE3hNDRMc8fzbBLqlxaPcYU+IonKgxmiBbdcFjOaw/AX3XmNWlp1OV0XQRZJayM5vr7nQjOtbIRkZDyJUZUEWuKpVo7QIn/fAU3BUBynHby65JuZ+Cx3PHCNZAonMuTht7mu/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:17::6) by ZQ4PR01MB1252.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:16::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.23; Fri, 7 Aug
+ 2026 11:29:32 +0000
+Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+ ([fe80::e7d4:256c:b066:850d]) by
+ ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%4])
+ with mapi id 15.21.0292.022; Fri, 7 Aug 2026 11:29:32 +0000
+From: Changhuang Liang <changhuang.liang@starfivetech.com>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>
+Cc: linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-hardening@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Changhuang Liang <changhuang.liang@starfivetech.com>
+Subject: [PATCH v3 00/22] Add basic clocks and resets for JHB100 SoC
+Date: Fri,  7 Aug 2026 04:29:01 -0700
+Message-Id: <20260807112923.191627-1-changhuang.liang@starfivetech.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: NT0PR01CA0009.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c510::19) To ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:17::6)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260805-netcons_ipv6-v1-0-170a35b92da1@gmail.com>
- <20260805-netcons_ipv6-v1-1-170a35b92da1@gmail.com> <anSsOVuekqtrHDbA@gmail.com>
-In-Reply-To: <anSsOVuekqtrHDbA@gmail.com>
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Fri, 7 Aug 2026 12:21:32 +0100
-X-Gm-Features: AUfX_mxWlUoYJlld1vFqIGzoqxO5uJw26ROdntN0BlL1ZbKwf0s5zr-_2OK406M
-Message-ID: <CAGSyskWqbUd9c9uFsdr4=L-O56cq6qctHVsXiVbS=xzVWBHHHA@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/4] netconsole: add an address family to struct inet_addr
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1252:EE_
+X-MS-Office365-Filtering-Correlation-Id: dbb5ba94-43c1-43e2-a1bc-08def477266a
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|52116014|6133799003|10067099003|56012099006|921020|18002099003|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	R3GG/5u7nBN38++vkolNu2JS+ctnDsGHF8PnbQ9N1VIMRQiWNwccBjd5geAx967yeGnnhf53MJPASEfc8JsKBVcR15Bmt0w1cEUp3hXXe/kqD4oSPmUd6i/jBKiLSPIF3xz44ojQpwtoaSaZizw2tRhiPuUWszjPTWohz1iXf8hftOYqlwvlIC4/yqGjXdlOhGEUEjjn1HNGSjjHHRJG2M0v084JbZhauJ5oLgYBjgAIKwmrAVRtIhDxuBu/9rlNKpSy2eJmhESSANY5wNHUjPq3hVNMyx/Asz24EDJglT4+bzGxqJdpt+T3j9qSYCKTlwIhr+MSWmzkGrE4b+eAk13sQKQU10mmbc4JBVAD0Q+XHW1W8wwLuAcW4wAqDqjLpGbqutQNKnP6ndO2h4qZQN9Tvgv+RMroUR+sCURYUq7dpfx6Pm85I9QH4k4Uu86vZVZidJM7yjnvglZv4hQq0iy28n0f8OM76TiyTB6w1bU7dwUoqaog6WvztDdmU2rsHa9VMkQxAYgmSMTXj5S+mxKbBoWzTd+pkfdwh7Mmz5/QpsDiZ+R1yxT8nU8zOO15rZdmLitNvAcs/FRLr7MGVA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(52116014)(6133799003)(10067099003)(56012099006)(921020)(18002099003)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hYtuARdlKxlV9glezHfNmMY+ke8YW+/i7jrFVzqJtkdX345o3MptYt8ByO1N?=
+ =?us-ascii?Q?CGV2uc7k3xGj8uHteUQDADqx4sNvD60byXWW6Esd/mD3WQKe9UMwt8uaSyEm?=
+ =?us-ascii?Q?oJZ1gN561XQXTKAgJnXPleMBvuhHdIzNLWhd1v2tEanhKnQ0L9T8Iuofaytx?=
+ =?us-ascii?Q?+SZBno+E9iv7NQzIxTDLqixiDcEq5/K0sOEhiQd+kz/x82fZm2GYmRQGJ1Kd?=
+ =?us-ascii?Q?x0YTxDFveOh9/rXAVs2ASn9OK48jkHSYegBPXszzNAGnebZztPkkfHom5wx5?=
+ =?us-ascii?Q?o8/WjJweJTB5cYo/sVI9YrVPf5FXGYp7jZFLBNqguam+ADB63bEv2qS8igMS?=
+ =?us-ascii?Q?OwUo8zQOnjr9/b+mhvnkobuJdh17/KprFiyViLW2PDlnWChCBcqo9ZMQqj5Y?=
+ =?us-ascii?Q?GBrKOveb7d7m0n4tSzOKoZkMpZyAvWIfDL9uc+6pAJ4xgd9oHuyLhYVSGqUg?=
+ =?us-ascii?Q?4NJU0B7poRr75QA11SkyT+wytAjexAMDJnFfxQTzMcu3tXzAl99mTRDM8DK+?=
+ =?us-ascii?Q?1XopSBu38yfijwnkdNYIaI+3SCTpieatt8CeCYbBmd1nl07rd9kl6nCj3nmT?=
+ =?us-ascii?Q?KriAnEUXIIPGhhWBvRkgqHTmgfBjQGCKflBefPhGqRs8WyIMR2qOjnR5Thr7?=
+ =?us-ascii?Q?YTSZulEF+3ul3dxH6O+f8H//jCkj7AX+zPWco74PbQIuzZft7DYxa0/mPe8j?=
+ =?us-ascii?Q?5HJOdUMijzFR1tdcVe764GQrfTInQX+97doTJXZIBNhdg18QI4v9a983JYIM?=
+ =?us-ascii?Q?aRlOEOJT2yZ9dUojhdG1UyZYr5/ah1Ke4I5Tz+jH8qdZ164iKOcLoROEXMEC?=
+ =?us-ascii?Q?Tp8raw3QS7dovI+zw+pkwsa+2r4DAS3ZzndEj7Jc9CpkXu7+wJfVbdLTDMTG?=
+ =?us-ascii?Q?AVeTesexW1Bi7hDxJUrOe8W2NGMJbQeFFhttOrPDQIg8flsg54uUVcS/GlG3?=
+ =?us-ascii?Q?KPAL7IX54k6r3uNuenNCozk4d9onHgrxY5pFBosApxZyFUhc0wErxgXb6TXU?=
+ =?us-ascii?Q?8/vtB9aMveFOoTW4wdxOggjFPX4mv9374tfkBWbdlpHxCJUJYlV/hbCRhf78?=
+ =?us-ascii?Q?QIiIL6yJG5rytll4rYdiH4pwci7yoq8IDbzBVmp/Rft1lJeLs6PZc2bwgL7M?=
+ =?us-ascii?Q?zm/ofYXtOvDl+xuh01Gb8nX1hgy4/vQ1v2Usza/bFPy4TwQNJ7SRxkfyADHk?=
+ =?us-ascii?Q?o0jGmpAKOkhp2IZQvydPAt+apqP+u5WYcK5R0goGoAuaHZYlsvlCoOlAes7C?=
+ =?us-ascii?Q?wiKq7LYjzUa8TFSw7a3AmZY3Fm4s3WZm2dOO2+tuT9/C7FJ6LOir2C9TxpZH?=
+ =?us-ascii?Q?TXYbSA3xkmCB+qGnFwGHKPknw05z/uvo0dJuh8dZZor4H7KMSihEgTTEXcGL?=
+ =?us-ascii?Q?/c4iWixRGGkLgn9ZrRiMcIEwYxcdsan18XPWezB2ao7/haopta8BhirR10wO?=
+ =?us-ascii?Q?F9aBoQ8v0F5xD9froGqBek2JZSXMqPN9MyXPbNtgUMTEH52lLHZxewh5LrIe?=
+ =?us-ascii?Q?KQ6ua7A32KRkQzCRkGyy2/hG9ElLuFsVnPvz2ZKfC59KeVlKctWbfYLbGjIQ?=
+ =?us-ascii?Q?C2AwX6RQSNIQGgef/UVRKiHyNH+1Z9OGD5CkDiGg9hTG/z8INsVyLkelfx1/?=
+ =?us-ascii?Q?RtT6RZx1HTs79VmsvTbQ04VNwDCUeGbBeIj14e9E5mtO/sL9udCNXdTGLEes?=
+ =?us-ascii?Q?t1eef9dltBzebc8PajQ+yPf9T39RIq2pxErEQtMTAA6EX9K4WTjuRqAznLEh?=
+ =?us-ascii?Q?flHs1NidgUNuJc0YAyO4uaydBOKZE0HiavWoYfnRi/jdD8M14m+2?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbb5ba94-43c1-43e2-a1bc-08def477266a
+X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 11:29:31.8793
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xdzexNlwNklZzSc264hM7N3cnkXrTSWJbvvLhDLvgcx6zkJpAuCMMd0LPPGfHANUWQ+vPZXKfcdjqC8z35e1qLTgXP/UzWHBwSNb4IUxwrNkP/fEUgOuZx20bad5EJge
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1252
 
-On Thu, Aug 6, 2026 at 4:49=E2=80=AFPM Breno Leitao <leitao@debian.org> wro=
-te:
->
-> On Wed, Aug 05, 2026 at 10:33:01PM +0100, Gustavo Luiz Duarte wrote:
-> > @@ -731,7 +733,7 @@ static void netconsole_print_banner(struct netconso=
-le_target *nt)
-> >  /* Parse the string and populate the `inet_addr` union. Return 0 if IP=
-v4 is
->                                                     ^-> there is no more =
-union.
->
-> I think there are other references for union that needs to be updated as
-> well.
+The JHB100 SoC includes CRG (Clock and Reset Generator) for multiple
+subsystems:
 
-I fixed this in the next patch, but let me do it here for consistency.
-I didn't find any other reference to union.
+The JHB100 SoC is divided into multiple subsystems, and basically
+each subsystem includes a CRG(Clock and Reset Generator):
+ - sys0crg/sys1crg/sys2crg/
+ - per0crg/per1crg/per2crg/per3crg/
+ - voutcrg
+ - vcecrg
+ - gpu0crg/gpu1crg
+ - cpucrg
+ - usbcrg
+ - host0crg/host1crg
+ - pcierpcrg
+ - husb0crg/husb1crg
+ - husbcmncrg
+ - husbd0crg/husbd1crg
+ - npucrg
 
->
-> > +static int netpoll_parse_ip_addr(const char *str, struct inet_addr *ad=
-dr)
-> ...
-> >       return -1;
->
-> Should the failure path set addr->family =3D AF_UNSPEC?
+In the current series, we will only add the following CRG:
+ - sys0crg/sys1crg/sys2crg/
+ - per0crg/per1crg/per2crg/per3crg/
 
-The failure path leaves addr untouched, so if the user writes an invalid va=
-lue
-to local_ip or remote_ip the write fails and the original value is maintain=
-ed.
+The remaining CRG will be implemented in future series.
 
->
-> > +++ b/include/linux/netpoll.h
-> > +struct inet_addr {
-> > +     /* Address family: AF_UNSPEC when unset, else AF_INET or AF_INET6=
- */
-> > +     u8                      family;
-> > +     union {
-> > +             __be32          ip;
-> > +             struct in6_addr in6;
-> > +     };
-> >  };
->
-> Since a1116396476f6 ("netconsole: move local_ip/remote_ip/ipv6 to
-> netconsole_target") struct netpoll has no address member, and netconsole
-> is the only user left in the tree:
->
->     drivers/net/netconsole.c:   union inet_addr         local_ip, remote_=
-ip;
->     drivers/net/netconsole.c:static int netpoll_parse_ip_addr(const char =
-*str, union inet_addr *addr)
->
-> Since you touched it, can you move it to netconsole headers, please?
+This series depends on the series:
+https://lore.kernel.org/all/20260806122553.182449-1-changhuang.liang@starfivetech.com/
+and it has been tested on the StarFive JHB100 EVB-1.
 
-Sure, will do it in v2.
+changes since v2:
+
+PATCH 5/7/9/11/13/15/17/19:
+- Fix file name errors:
+  <dt-bindings/reset/starfive-jhb100-crg.h> ==> <dt-bindings/reset/starfive,jhb100-crg.h>
+
+PATCH 6:
+- Execute kfree (rdev) on the path where auxiliary_device_init() returns an error;
+- Check the return value of devm_pm_runtime_enable().
+- Replace struct jhb100_crg_domain_info with struct starfive_crg_domain_info
+  for common files.
+- Restructure index validation in `starfive_clk_get`, add sparse
+  hole check to return `-ENOENT` for unregistered clock entries.
+
+PATCH 6/8/10/12/14/16/18/20:
+- Repalce module_platform_driver() with builtin_platform_driver()
+- Add missing static qualifier.
+
+patch 21:
+- Mark struct starfive_reset_info as const.
+- Mark struct starfive_reset_map as const.
+- Fix typo: discontigous ==> discontiguous
+- Fix typo: JHB110 ==> JHB100
+- For discontiguous type of reset controller, use ARRAY_SIZE()
+  to calculate the number of resets.
+- Add STARFIVE_RESET_ID_INVALID for handling invalid ID cases.
+
+v2: https://lore.kernel.org/all/20260508053632.818548-1-changhuang.liang@starfivetech.com/
+v1: https://lore.kernel.org/all/20260402105523.447523-1-changhuang.liang@starfivetech.com/
+
+Changhuang Liang (18):
+  dt-bindings: clock: Add StarFive JHB100 System-0 clock and reset
+    generator
+  clk: starfive: Add JHB100 System-0 clock generator driver
+  dt-bindings: clock: Add StarFive JHB100 System-1 clock and reset
+    generator
+  clk: starfive: Add JHB100 System-1 clock generator driver
+  dt-bindings: clock: Add StarFive JHB100 System-2 clock and reset
+    generator
+  clk: starfive: Add JHB100 System-2 clock generator driver
+  dt-bindings: clock: Add StarFive JHB100 Peripheral-0 clock and reset
+    generator
+  clk: starfive: Introduce inverter and divider
+  clk: starfive: Expand the storage of clock parent index
+  clk: starfive: Add StarFive JHB100 Peripheral-0 clock driver
+  dt-bindings: clock: Add StarFive JHB100 Peripheral-1 clock and reset
+    generator
+  clk: starfive: Add StarFive JHB100 Peripheral-1 clock driver
+  dt-bindings: clock: Add StarFive JHB100 Peripheral-2 clock and reset
+    generator
+  clk: starfive: Add StarFive JHB100 Peripheral-2 clock driver
+  dt-bindings: clock: Add StarFive JHB100 Peripheral-3 clock and reset
+    generator
+  clk: starfive: Add StarFive JHB100 Peripheral-3 clock driver
+  reset: starfive: Add StarFive JHB100 reset driver
+  riscv: dts: starfive: jhb100: Add clocks and resets nodes
+
+Sia Jee Heng (4):
+  reset: starfive: Rename file name "jh71x0" to "common"
+  reset: starfive: Convert the word "jh71x0" to "starfive"
+  clk: starfive: Rename file name "jh71x0" to "common"
+  clk: starfive: Convert the word "jh71x0" to "starfive"
+
+ .../clock/starfive,jhb100-per0crg.yaml        |  70 ++
+ .../clock/starfive,jhb100-per1crg.yaml        |  70 ++
+ .../clock/starfive,jhb100-per2crg.yaml        |  76 +++
+ .../clock/starfive,jhb100-per3crg.yaml        |  76 +++
+ .../clock/starfive,jhb100-sys0crg.yaml        |  63 ++
+ .../clock/starfive,jhb100-sys1crg.yaml        |  71 +++
+ .../clock/starfive,jhb100-sys2crg.yaml        |  64 ++
+ MAINTAINERS                                   |  13 +
+ arch/riscv/boot/dts/starfive/jhb100.dtsi      | 198 +++++-
+ drivers/clk/starfive/Kconfig                  |  85 ++-
+ drivers/clk/starfive/Makefile                 |  10 +-
+ drivers/clk/starfive/clk-starfive-common.c    | 487 ++++++++++++++
+ drivers/clk/starfive/clk-starfive-common.h    | 147 +++++
+ .../clk/starfive/clk-starfive-jh7100-audio.c  | 127 ++--
+ drivers/clk/starfive/clk-starfive-jh7100.c    | 503 +++++++--------
+ .../clk/starfive/clk-starfive-jh7110-aon.c    |  62 +-
+ .../clk/starfive/clk-starfive-jh7110-isp.c    |  72 +--
+ .../clk/starfive/clk-starfive-jh7110-stg.c    |  94 +--
+ .../clk/starfive/clk-starfive-jh7110-sys.c    | 525 +++++++--------
+ .../clk/starfive/clk-starfive-jh7110-vout.c   |  74 +--
+ drivers/clk/starfive/clk-starfive-jh7110.h    |   4 +-
+ drivers/clk/starfive/clk-starfive-jh71x0.c    | 339 ----------
+ drivers/clk/starfive/clk-starfive-jh71x0.h    | 127 ----
+ .../clk/starfive/clk-starfive-jhb100-per0.c   | 599 ++++++++++++++++++
+ .../clk/starfive/clk-starfive-jhb100-per1.c   | 149 +++++
+ .../clk/starfive/clk-starfive-jhb100-per2.c   | 174 +++++
+ .../clk/starfive/clk-starfive-jhb100-per3.c   | 132 ++++
+ .../clk/starfive/clk-starfive-jhb100-sys0.c   | 150 +++++
+ .../clk/starfive/clk-starfive-jhb100-sys1.c   | 105 +++
+ .../clk/starfive/clk-starfive-jhb100-sys2.c   | 129 ++++
+ drivers/reset/starfive/Kconfig                |  15 +-
+ drivers/reset/starfive/Makefile               |   3 +-
+ .../reset/starfive/reset-starfive-common.c    | 211 ++++++
+ .../reset/starfive/reset-starfive-common.h    |  33 +
+ .../reset/starfive/reset-starfive-jh7100.c    |   4 +-
+ .../reset/starfive/reset-starfive-jh7110.c    |   8 +-
+ .../reset/starfive/reset-starfive-jh71x0.c    | 134 ----
+ .../reset/starfive/reset-starfive-jh71x0.h    |  14 -
+ .../reset/starfive/reset-starfive-jhb100.c    | 302 +++++++++
+ .../dt-bindings/clock/starfive,jhb100-crg.h   | 542 ++++++++++++++++
+ .../dt-bindings/reset/starfive,jhb100-crg.h   | 186 ++++++
+ ...rfive-jh71x0.h => reset-starfive-common.h} |  10 +-
+ 42 files changed, 4895 insertions(+), 1362 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-per0crg.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-per1crg.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-per2crg.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-per3crg.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-sys0crg.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-sys1crg.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-sys2crg.yaml
+ create mode 100644 drivers/clk/starfive/clk-starfive-common.c
+ create mode 100644 drivers/clk/starfive/clk-starfive-common.h
+ delete mode 100644 drivers/clk/starfive/clk-starfive-jh71x0.c
+ delete mode 100644 drivers/clk/starfive/clk-starfive-jh71x0.h
+ create mode 100644 drivers/clk/starfive/clk-starfive-jhb100-per0.c
+ create mode 100644 drivers/clk/starfive/clk-starfive-jhb100-per1.c
+ create mode 100644 drivers/clk/starfive/clk-starfive-jhb100-per2.c
+ create mode 100644 drivers/clk/starfive/clk-starfive-jhb100-per3.c
+ create mode 100644 drivers/clk/starfive/clk-starfive-jhb100-sys0.c
+ create mode 100644 drivers/clk/starfive/clk-starfive-jhb100-sys1.c
+ create mode 100644 drivers/clk/starfive/clk-starfive-jhb100-sys2.c
+ create mode 100644 drivers/reset/starfive/reset-starfive-common.c
+ create mode 100644 drivers/reset/starfive/reset-starfive-common.h
+ delete mode 100644 drivers/reset/starfive/reset-starfive-jh71x0.c
+ delete mode 100644 drivers/reset/starfive/reset-starfive-jh71x0.h
+ create mode 100644 drivers/reset/starfive/reset-starfive-jhb100.c
+ create mode 100644 include/dt-bindings/clock/starfive,jhb100-crg.h
+ create mode 100644 include/dt-bindings/reset/starfive,jhb100-crg.h
+ rename include/soc/starfive/{reset-starfive-jh71x0.h => reset-starfive-common.h} (50%)
+
+--
+2.25.1
