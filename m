@@ -1,75 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F12713B58C
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 03:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427C84B04B7
+	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 03:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786071649; cv=none; b=vCICchhdtspzFor6xu7wHtBUVb+I44RR+vcBVWrb01+c8BvV2qXpOPPVvE/28d/SvSjJKuYUHT5SlBRKW1IXPvqz2NAcLw0Ey6E/aURUb4bg4H8gAOF3UIVI/zepBPSR0cd18veuNbkdkapBm8slHrYPqeteFJG/5xctyBUKvG0=
+	t=1786072164; cv=none; b=IIaw+z5K/P/AV2n5pIurTrAnerBkyUt1kvbfboyTLr35cjAmyG5N7ZvPAq3xNnNIlun8rIKf+X2Req6K1PJEsG+XQ+zufRH9jZK5Vf39Y2zN/RFpkY0mWAlqL6sXepR5/r4DFcvEJ5TB3myMeeK6eHZLZbByxM+8iKr7Xf420+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786071649; c=relaxed/simple;
-	bh=29C4gAEhBbHqHHmFOnf1yRtjVig0rwZuK7QmwrpKb+g=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Da7YZQNizGA7RzKI1QFElQMoWQd+pdM6kFb3ypkhfLCQ5FjwKVnNFhkhr/QEGapJK4sjn8B0ZtDzksEov+GVC7kDRm27Kb+b885NAZYPcru29sMpz0aliSSCAEviy6TugRl1+NUpVuKIDQsgYF6T99N/4ucwJkhSiu5/YC9rPak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vu3Q0lDJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786072164; c=relaxed/simple;
+	bh=qJsIrlpjxAoV0i3edp0eZ1i+xWJNB6ppxSNKd05uYVE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RvC+stbUtbQiKAlEcdXLUz3qaQXm6GuqWFxWGOQguLkKfjsgje1f39G9+oMOZHtGs+CYgLQUKp+hbmNI1UhR/vMsde7byTcx1bvr8CvYyoIJCnfKuu4lrzTdYMxqGkH/o7hBUSCoW4u8pUpzMHMw2DtmX6nbFmDj3+PR8pcw1tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wO6ZTmmc; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vu3Q0lDJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02041F000E9;
-	Fri,  7 Aug 2026 03:00:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786071647;
-	bh=HP2uAHm4lfU38RmE7jst+ecA7W738PAKrQIaash5+WI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Vu3Q0lDJ7ihf3HbC+ptxEl/PwDhuulGxyhxjrKygKw8twbe6+HDvpDNkJOSztUhHH
-	 JW1kXMC1Sr+cMveJFRc8EqUfK5wx+iN1AyyXSwLPqLJZw+tCTw8uKRDnVvGdbgial0
-	 AizdAM563FPOIeXIQ95bHE/uThVyO/kOe2jpLZamF8iOBDYCcd41fuG+5wIXjkEqkw
-	 WwMC//7ZmhLsSD+UK/cvMC3WW1HeQb7+MwYGk6bppWVWkB2WlKROEKOvS0ZfxPKwgI
-	 LQhkF+g77u2mry9pBAf0kOKqoLEaLZIwE4V7CrnW7mg5PQE2a7avy7SO8Oj5NZXRhw
-	 J2JzluqGNruhw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D125E380A95E;
-	Fri,  7 Aug 2026 03:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wO6ZTmmc"
+Message-ID: <6a86c972-99af-4e35-9392-8776d57dbc9a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786072149;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+V+3Rilgi/Wp7c2pZmJ7w3fau0rAoMuzLvq1wpuXAP0=;
+	b=wO6ZTmmcXRH4Dr8L+cO6BsDaOEQelv1Uj4S+IQbOowagCg+iJsGmPTf5N03wgBn/4hi5xn
+	JIjiQj4I0CIP3xCeCHJXCdQHx7E9FyCB266L0Ou3QK9270rye0xj+0rxByBbJoUOYRjTOA
+	QqXrJnifUNzn7VXjeEoFaViLgkapohs=
+Date: Fri, 7 Aug 2026 11:08:43 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH iproute2] SECURITY: add threat model
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178607160639.1577180.8924370949928684557.git-patchwork-notify@kernel.org>
-Date: Fri, 07 Aug 2026 03:00:06 +0000
-References: <20260805154807.48866-1-stephen@networkplumber.org>
-In-Reply-To: <20260805154807.48866-1-stephen@networkplumber.org>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org, dsahern@gmail.com
+Subject: Re: [PATCH bpf-next v4 2/5] bpf: Add ksock kfuncs
+To: Mahe Tardy <mahe.tardy@gmail.com>, bpf@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, andrii@kernel.org, ast@kernel.org,
+ daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com,
+ edumazet@google.com, john.fastabend@gmail.com, kuba@kernel.org,
+ liamwisehart@meta.com, martin.lau@linux.dev, pabeni@redhat.com,
+ song@kernel.org, netdev@vger.kernel.org, sdf.kernel@gmail.com,
+ ameryhung@gmail.com, kuniyu@google.com, memxor@gmail.com
+References: <20260806182234.380833-1-mahe.tardy@gmail.com>
+ <20260806182234.380833-3-mahe.tardy@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260806182234.380833-3-mahe.tardy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
 
-This patch was applied to iproute2/iproute2.git (main)
-by Stephen Hemminger <stephen@networkplumber.org>:
+On 8/7/26 2:22 AM, Mahe Tardy wrote:
 
-On Wed,  5 Aug 2026 08:48:07 -0700 you wrote:
-> Add some new paragraphs to the SECURITY file describing the
-> threat model. This may help reduce bogus security vulnerability
-> reports generated by AI.
-> 
-> This text is AI generated mostly for AI consumption.
-> 
-> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-> 
-> [...]
 
-Here is the summary with links:
-  - [iproute2] SECURITY: add threat model
-    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=7385bcedf313
+[...]
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> +	return ret;
+> +}
+> +
+> +__bpf_kfunc_end_defs();
+> +
+> +BTF_KFUNCS_START(ksock_init_kfunc_btf_ids)
+> +BTF_ID_FLAGS(func, bpf_ksock_create, KF_ACQUIRE | KF_RET_NULL | KF_SLEEPABLE)
+> +BTF_ID_FLAGS(func, bpf_ksock_connect, KF_SLEEPABLE)
+> +BTF_KFUNCS_END(ksock_init_kfunc_btf_ids)
+> +
+> +static const struct btf_kfunc_id_set ksock_init_kfunc_set = {
+> +	.owner = THIS_MODULE,
+> +	.set = &ksock_init_kfunc_btf_ids,
+> +};
+> +
+> +BTF_KFUNCS_START(ksock_kfunc_btf_ids)
+> +BTF_ID_FLAGS(func, bpf_ksock_release, KF_RELEASE)
+> +BTF_ID_FLAGS(func, bpf_ksock_acquire, KF_ACQUIRE | KF_RCU | KF_RET_NULL)
+> +BTF_ID_FLAGS(func, bpf_ksock_send, KF_SLEEPABLE)
+> +BTF_KFUNCS_END(ksock_kfunc_btf_ids)
+> +
+> +BTF_ID_LIST_SINGLE(bpf_lsm_socket_sendmsg_id, func, bpf_lsm_socket_sendmsg)
+> +
 
+
+I guess bpf_lsm_socket_sendmsg will not be compiled when CONFIG_BPF_LSM 
+is disabled
 
