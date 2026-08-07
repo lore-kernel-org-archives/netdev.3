@@ -1,100 +1,46 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DAFA381EB7
-	for <netdev@vger.kernel.org>; Fri,  7 Aug 2026 09:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3815D153BE9;
+	Fri,  7 Aug 2026 09:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786095315; cv=none; b=myysVAnLiKJaVYNmSi/EeElWVkuUF2DcIVMqK1GABdkx5cbt7juqjDJezwxKzPTuN/8ugs7HljETi7LIbNPuqqlGjdxDZCzGtFN3QdU2dK46QFfhxJKig72/IWcODKbBAM6A6JRrsFXSdlKBsBm944GCqGaBME4JLuFlekn+JBs=
+	t=1786095811; cv=none; b=cyvB6hI10IaR1anXOiYXx1IWVaFVUBj7BDLikEoqox83CFryM6vIT8uiPmeRGsrjtzJbGqAmoD9+uT2RQKA3rbMXa2V/UvIy0Xv0ZJBK415f5hrXUuI6kPPUe53CAvaYZ0qvcXZoj9B9020oQUCOhZBr7i/7kHO68wwB3HZu714=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786095315; c=relaxed/simple;
-	bh=FWknEnFGHnb8AusWnqbnQ5ip9N6W/WlkUzLqLBMY3Hw=;
+	s=arc-20240116; t=1786095811; c=relaxed/simple;
+	bh=wg8zmodNvqGxCRF9W74IH2KBT4Jy0ShhFlv8pW72zs8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FLYiYUWWHgCXwgG+gUc233sfNbSZhDZS7JhsOkZzdSM+3fpZAisJglGLplkuys7xo8TPSO8rlfGKkel6n4/+ODW4T1JrGF9tqFh8MI2OyeX++TPu/wwNReSrJECug/ucHXo47wvzwnnA8y/mKBSrTx4qjEvzqAaMjHXfr9Dy7nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hYTYp4Hn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DvbhQngv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=oCtoYETCU/LFYsAOy/hS/OcPAxNxen/Q3Se/D98Q9Gzy0BsrnSMr0qkXZiLN6Zat50t+wSUb5Ze+VpY6ZB+UknexjeKdYc+W+d0YH8zzSpzXStxUovUL/kxn+FNJj7pwcioDZQxbkAIjCmGcZCKE1/x2f5H0OwfZmhGEgreXk2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyakmqmv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hYTYp4Hn";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DvbhQngv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786095312;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2q74kqk26zh4EaW1H6VpmpPR31S2jVXMPD6KusRsTmI=;
-	b=hYTYp4HnBFPtY/ZApZI5jezqPTiKgg9b8RirkoaKWdRhokvroQ/6+AEE4bFbECAvuOjhYS
-	xKJ9c1PE1SB9XO+pZDqCGux2/WRv8SxDMmDX48TtWa0uFSVx84ClHijmBWiCuvHrGuHWuy
-	68UZ2s0rpqOjG5JOCLZBujVyDrFdMiw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-6-vLcF_TPnSBCVKIZqpgIQ-1; Fri, 07 Aug 2026 05:35:01 -0400
-X-MC-Unique: 6-vLcF_TPnSBCVKIZqpgIQ-1
-X-Mimecast-MFC-AGG-ID: 6-vLcF_TPnSBCVKIZqpgIQ_1786095300
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-475e540a0ffso1936692f8f.3
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 02:35:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786095300; x=1786700100; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2q74kqk26zh4EaW1H6VpmpPR31S2jVXMPD6KusRsTmI=;
-        b=DvbhQngv68ARjywk3mAL+VKIJGwMl6MWm6uwW9MzVBAadR4yIox2/QDK9OCXyYixa2
-         qMUvm9FFL9oMu5O3Hqtkk8blOxktHrOH3K3UzLhajHJ+pqSgPOz3I5+5v0gk61pZLAd2
-         bREoaup6hakxYj6PFX4+a3Lz90fEwkYefcaRcas3isOve+0Ao1zx/5JAoikUfw5HvcN2
-         7iepOmqQLEzUTQ7Sqr42vaKI4jbL674WTeffNS3SzbYUoG7/nMOofbkcAkbQq0uDjKjd
-         vJNxSD2aQQcdEhCJLhegH6SwzdJva+cklIlQYm/NMeqcoW97T4NBLQHwWeS63gHTziYT
-         Hirw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786095300; x=1786700100;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2q74kqk26zh4EaW1H6VpmpPR31S2jVXMPD6KusRsTmI=;
-        b=U352cNgZvBoIkkVti/h2FSCnkziBZIl6s8GGasxwVY/C9+vOVpIKN+2piVVYK2ej11
-         YHsPToZkoa6IxVea3i3JWsvN/QAjobVl48AI/vEo8Vl/MupBc9GaMJTozM9AMglwTSYd
-         XKhkARK4+wWaWMGdOGovU+6lXTiWvlLHh4Qme2vxf4h+8VTEPiFtYt62yuCanxLqgxhk
-         1cJNW7vvnLYH+5ucV7LMnFCkUp9Uc0qDRl2VhP0/YYCSl5/2Ta7B143fzvCZKinH3cxv
-         8/N5YqammkSI6xb2ft2YeLSKNPRoN4FliCN94dCitNJUscX+9yqOxCnq51WHb3kIBTB1
-         gNHg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpo2XDJilQW5fmn6+jrQK4vEZWERG0mFMv6j5ICU98whNGSibFEVUn2jKfTtXLpcvYf+sFtKpg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4Mk2DKN8N7T2tPv+E4IaES5/wsyxFzY9tqr9PjqvSx1cAD+R/
-	+n3NQeNTxZwKU2sK3IbBB827cUhhGucwibVkRJVfWinGcEMBViS15yxQTLjXOihxsmVBw5t3huT
-	ZAGT1Ekd6Hvzfco48V/Acud2qujiyO+VXab7ajR9AVtU+RJOUiEdIDimhng==
-X-Gm-Gg: AR+sD13wcGNA4Po/0lp3anmc40fw16MtXrRXP7OwyuMuCHndf8wKqz1AUjAcq1LVYtO
-	K3vRx0hr60qG31YncB3Nfj8YgpN4OCcZ/zzhso1V2ddTM0qlcX89Ijmi3q/GnsoMWbycn5EhdU2
-	4O5U+KJzIPDJUqfXMPDvYeJVV5R9wobEiJrg5Kx956oOACkoE9Vq3VElS3+cm4EphKRiXUbecGz
-	h43B4YSng11W3OS8YIKS1hjOj5aT63uX0SVcHOeaia/6Tc4/mJzNXW22TxjqqQwxKGatwRBXT0R
-	wMHL1n3xvYUuRJylGNl0reWCM1kTIllR/yhY1VabEKlJ9hgEbs8QMnZ2qwe/7d+d/MDk+O6b0Qo
-	=
-X-Received: by 2002:a05:6000:1844:b0:47f:9c6f:8844 with SMTP id ffacd0b85a97d-47fec4f8017mr29957796f8f.9.1786095300177;
-        Fri, 07 Aug 2026 02:35:00 -0700 (PDT)
-X-Received: by 2002:a05:6000:1844:b0:47f:9c6f:8844 with SMTP id ffacd0b85a97d-47fec4f8017mr29957686f8f.9.1786095299619;
-        Fri, 07 Aug 2026 02:34:59 -0700 (PDT)
-Received: from localhost ([2a01:e11:1007:ea0:8374:5c74:dd98:a7b2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021e8c5asm4651560f8f.18.2026.08.07.02.34.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 02:34:59 -0700 (PDT)
-Date: Fri, 7 Aug 2026 11:34:58 +0200
-From: Davide Caratti <dcaratti@redhat.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyakmqmv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BCF1F000E9;
+	Fri,  7 Aug 2026 09:43:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786095809;
+	bh=qsxt3KFTIs6ULVIQVvO6yqBMkZtwIrvoha7joOwhWLs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dyakmqmvNz2A+PnIAaN6QvIfcBB4SnG7IJ5CfBBRjpKMkhZuhQodfmnWRL3Gqw/at
+	 yo4QcNW3yrcBW3tyPBD64jU+qJwGle4usgDOl29WyaK4dxc5/OFjal7K3o1qDHKJkR
+	 w0LNWt4d5Cc3aG49HSdm/gcI5J5+95G+CWinuiYd7ayDA35HbxGPZcqBQ9qx55b5u2
+	 L0lPhQ7mX/t26vuV6trTOdYen8EZ+9QTq6QwBo8SxsSwXZzsUboeaC4nYJINleVIDZ
+	 JWgf1Ta3TPonBen1/e8RxJG15FJIyhvwXcbDhDBhrBZiU+NlTkYMOqsTeZvElzTLMf
+	 q3bEtYz1d8pLQ==
+Date: Fri, 7 Aug 2026 10:43:25 +0100
+From: Simon Horman <horms@kernel.org>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Daniel Thompson <daniel@riscstar.com>,
-	Alex Elder <elder@riscstar.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next v2 0/2] Implement mqprio and ets qdisc offload
- in stmmac driver
-Message-ID: <anWmwkIqEsOLFKXf@dcaratti.users.ipa.redhat.com>
-References: <20260807-stmmac-ets-offload-v2-0-9ac67af92cb8@oss.qualcomm.com>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Lukasz Majewski <lukma@denx.de>, Felix Maurer <fmaurer@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>,
+	syzbot+fbf74291c3b7e753b481@syzkaller.appspotmail.com
+Subject: Re: [PATCH net] hsr: Avoid holding seqnr_lock while transmitting
+ packets
+Message-ID: <20260807094325.GG51943@horms.kernel.org>
+References: <20260805-hsr_deadlock-v1-1-d8a6f06fc5a8@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -103,21 +49,238 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260807-stmmac-ets-offload-v2-0-9ac67af92cb8@oss.qualcomm.com>
+In-Reply-To: <20260805-hsr_deadlock-v1-1-d8a6f06fc5a8@kylinos.cn>
 
-On Fri, Aug 07, 2026 at 10:41:38AM +0200, Lorenzo Bianconi wrote:
- 
-> ---
-> Changes in v2:
-> - Implement strict priority policy in mqprio qdisc offload
-> - Restore to dt configured values destroying the qdisc
-> - Do not ets offload if there are any queues in avb mode.
-> - Re-apply ETS configuration closing/opening the net_device.
-> - Link to v1: https://lore.kernel.org/r/20260804-stmmac-ets-offload-v1-1-f3a09169d22b@oss.qualcomm.com
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805-hsr_deadlock-v1-1-d8a6f06fc5a8@kylinos.cn?part=1
+---
+--- Patch [1]: [PATCH net] hsr: Avoid holding seqnr_lock while transmitting packets ---
+commit 1d9b203ac401a6e7717dcd0d27015da8d13c979b
+Author: Hangbin Liu <liuhangbin@kylinos.cn>
 
-Since SP and DWRR are mutually exclusive on this driver, here it makes
-a lot more sense to fix semi-broken mq_prio offload on stmmac, and
-let ETS offload DWRR-only setups. For the series:
+hsr: Avoid holding seqnr_lock while transmitting packets
 
-Reviewed-by: Davide Caratti <dcaratti@redhat.com>
+This narrows hsr->seqnr_lock so that it only covers the outgoing sequence
+number update in handle_std_frame(), and removes it from the whole
+hsr_forward_skb() path in hsr_dev_xmit(), hsr_handle_frame() and the
+supervision frame senders.
 
+Closes: https://syzkaller.appspot.com/bug?extid=fbf74291c3b7e753b481
+
+Before the diff, a question about the changelog and the Fixes: tags:
+
+> Since commit aae9d6b616b5 ("hsr: Implement more robust duplicate discard
+> for HSR"), sequence numbers are stored in an array and no longer require
+> linear comparison. Protecting only the sequence number update is
+> sufficient.
+>
+> Fixes: 06afd2c31d33 ("hsr: Synchronize sending frames to have always incremented outgoing seq nr.")
+> Fixes: 430d67bdcb04 ("net: hsr: Use the seqnr lock for frames received via interlink port.")
+
+[Severity: Medium]
+[Finding: main-1-0]
+[Sources: opus-5]
+The correctness argument here depends on aae9d6b616b5, which is much newer
+than both commits named in the Fixes: tags (06afd2c31d33 is in the tree
+since v6.2, 430d67bdcb04 since v6.12).
+
+In a tree that has those two commits but not aae9d6b616b5,
+hsr_register_frame_out() still does the last-seen/greater-than comparison,
+so shrinking the lock to the counter bump in handle_std_frame() and dropping
+it from hsr_dev_xmit() would reintroduce exactly the local drop that
+06afd2c31d33 describes.
+
+Should the changelog carry an explicit dependency note, or should the tags
+be scoped (for example "Depends-on:" or a note that this is not suitable for
+stable before aae9d6b616b5)? The doubt about the tags is currently written
+below the --- separator, so it is dropped from the committed message.
+
+Simon says:
+
+I don't think the advice on how to annotate this is correct
+
+Tags trump freeform text, but Depends-on is a not a standard tag and as
+such should not be used.
+
+I believe that the correct approach would be a tag like this:
+
+  Cc: <stable@vger.kernel.org> # aae9d6b616b5: hsr: Implement more robust duplicate discard for HSR
+
+Link: https://docs.kernel.org/process/stable-kernel-rules.html#option-1
+
+> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+> index 5555b71ab19b5..14e8d06762294 100644
+> --- a/net/hsr/hsr_device.c
+> +++ b/net/hsr/hsr_device.c
+> @@ -232,9 +232,7 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		skb->dev = master->dev;
+>  		skb_reset_mac_header(skb);
+>  		skb_reset_mac_len(skb);
+> -		spin_lock_bh(&hsr->seqnr_lock);
+>  		hsr_forward_skb(skb, master);
+> -		spin_unlock_bh(&hsr->seqnr_lock);
+>  	} else {
+>  		dev_core_stats_tx_dropped_inc(dev);
+>  		dev_kfree_skb_any(skb);
+
+[Severity: Medium]
+[Finding: main-2-3]
+[Sources: opus-5]
+Can this lose statistics updates? The tail of hsr_forward_skb() does plain
+read-modify-write on struct net_device_stats for the master and interlink
+ports:
+
+net/hsr/hsr_forward.c:hsr_forward_skb() {
+	...
+	if (port->type == HSR_PT_MASTER || port->type == HSR_PT_INTERLINK) {
+		port->dev->stats.tx_packets++;
+		port->dev->stats.tx_bytes += skb->len;
+	}
+	...
+out_drop:
+	rcu_read_unlock();
+	port->dev->stats.tx_dropped++;
+}
+
+Before this change every caller reaching those increments for
+master/interlink held hsr->seqnr_lock across all of hsr_forward_skb(), which
+made them mutually exclusive as a side effect.
+
+hsr_dev_setup() sets dev->lltx = true ("Prevent recursive tx locking") and
+the master has no qdisc, so __dev_queue_xmit() calls hsr_dev_xmit() without
+the txq lock. Two CPUs can then run tx_packets++ concurrently and drop an
+increment, and tx_bytes += skb->len can tear on 32-bit. The interlink RX
+path, hsr_handle_frame() -> hsr_forward_skb(), now races the same counters.
+
+Would switching these to dev_sw_netstats or otherwise per-CPU counters be
+preferable while the lock goes away?
+
+[ ... ]
+
+> @@ -335,6 +333,7 @@ static void send_hsr_supervision_frame(struct hsr_port *port,
+>  		hsr_stag->sequence_nr = htons(hsr->sequence_nr);
+>  		hsr->sequence_nr++;
+>  	}
+> +	spin_unlock_bh(&hsr->seqnr_lock);
+>  
+>  	hsr_stag->tlv.HSR_TLV_type = type;
+>  	/* HSRv0 has 6 unused bytes after the MAC */
+> @@ -356,13 +355,11 @@ static void send_hsr_supervision_frame(struct hsr_port *port,
+>  		ether_addr_copy(hsr_sp->macaddress_A, hsr->macaddress_redbox);
+>  	}
+>  
+> -	if (skb_put_padto(skb, ETH_ZLEN)) {
+> -		spin_unlock_bh(&hsr->seqnr_lock);
+> +	if (skb_put_padto(skb, ETH_ZLEN))
+>  		return;
+> -	}
+>  
+>  	hsr_forward_skb(skb, port);
+> -	spin_unlock_bh(&hsr->seqnr_lock);
+> +
+>  	return;
+>  }
+>  
+> @@ -402,8 +399,9 @@ static void send_prp_supervision_frame(struct hsr_port *master,
+>  		return;
+>  	}
+>  
+> -	hsr_forward_skb(skb, master);
+>  	spin_unlock_bh(&hsr->seqnr_lock);
+> +
+> +	hsr_forward_skb(skb, master);
+>  }
+
+[Severity: Low]
+[Finding: main-2-2]
+[Sources: opus-5]
+This isn't a bug, but the two implementers of the same
+hsr_proto_ops->send_sv_frame callback now follow different rules for
+seqnr_lock.
+
+send_hsr_supervision_frame() was converted to the minimal scope the patch
+establishes in handle_std_frame(): lock, bump sup_sequence_nr/sequence_nr,
+unlock.
+
+send_prp_supervision_frame() still takes seqnr_lock before the sequence
+number bump and holds it across skb_put(), ether_addr_copy() and the
+possibly reallocating skb_put_padto(), which is also why it keeps the
+duplicated unlock in the error path and just before hsr_forward_skb():
+
+net/hsr/hsr_device.c:send_prp_supervision_frame() {
+	spin_lock_bh(&hsr->seqnr_lock);
+	hsr_stag->sequence_nr = htons(hsr->sup_sequence_nr);
+	hsr->sup_sequence_nr++;
+	...
+	if (skb_put_padto(skb, ETH_ZLEN)) {
+		spin_unlock_bh(&hsr->seqnr_lock);
+		return;
+	}
+
+	spin_unlock_bh(&hsr->seqnr_lock);
+
+	hsr_forward_skb(skb, master);
+}
+
+Nothing in the extended region re-acquires seqnr_lock and the two unlock
+sites are on mutually exclusive paths, so this is not an unbalanced unlock.
+Could the PRP side be shrunk the same way so both callbacks obey one
+convention and the duplicated unlock disappears?
+
+> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> index 0774981a65c16..8e4158a9b57c8 100644
+> --- a/net/hsr/hsr_forward.c
+> +++ b/net/hsr/hsr_forward.c
+> @@ -621,9 +621,10 @@ static void handle_std_frame(struct sk_buff *skb,
+>  	if (port->type == HSR_PT_MASTER ||
+>  	    port->type == HSR_PT_INTERLINK) {
+>  		/* Sequence nr for the master/interlink node */
+> -		lockdep_assert_held(&hsr->seqnr_lock);
+> +		spin_lock_bh(&hsr->seqnr_lock);
+>  		frame->sequence_nr = hsr->sequence_nr;
+>  		hsr->sequence_nr++;
+> +		spin_unlock_bh(&hsr->seqnr_lock);
+>  	}
+>  }
+
+[Severity: Medium]
+[Finding: main-1-1]
+[Sources: opus-5]
+With the lock released here, allocation of the sequence number and the
+actual transmit are no longer atomic with respect to each other. Can frames
+now leave the ring out of sequence order?
+
+CPU0 handle_std_frame()
+	spin_lock_bh(&hsr->seqnr_lock);
+	frame->sequence_nr = 100;
+	hsr->sequence_nr = 101;
+	spin_unlock_bh(&hsr->seqnr_lock);
+
+CPU1 handle_std_frame()
+	spin_lock_bh(&hsr->seqnr_lock);
+	frame->sequence_nr = 101;
+	hsr->sequence_nr = 102;
+	spin_unlock_bh(&hsr->seqnr_lock);
+
+CPU1 then reaches hsr_forward_do() -> hsr_xmit() -> dev_queue_xmit() on the
+slaves before CPU0 does, so 101 goes on the wire before 100. hsr_dev_setup()
+sets dev->lltx = true and the master has no queue, so nothing re-establishes
+ordering between the two.
+
+Local receive is fine, since hsr_check_duplicate() uses the per-node bitmap
+under node->seq_out_lock. The changelog only justifies the relaxation with
+this kernel's own array based discard, which is the point 06afd2c31d33
+raised for the peer side:
+
+	"if the higher sequence number leaves on wire before the lower does
+	 and the destination receives them in that order ... it will drop the
+	 packet with the lower sequence number and never inject into the
+	 stack"
+
+How is a remote DANH, RedBox or hardware peer that still uses last-seq or
+window based duplicate discard expected to behave here, including a Linux
+peer older than aae9d6b616b5? If out-of-order egress is considered
+acceptable, could the changelog say so explicitly?
+
+[ ... ]
