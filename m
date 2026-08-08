@@ -1,150 +1,76 @@
-Received: from zg8tmtu5ljg5lje1ms4xmtka.icoremail.net (zg8tmtu5ljg5lje1ms4xmtka.icoremail.net [159.89.151.119])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6196D2D6E58;
-	Sat,  8 Aug 2026 00:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.89.151.119
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA55272816;
+	Sat,  8 Aug 2026 00:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786150706; cv=none; b=EnRYmAU2K+02JoYAWyb1N9PkU6iMe+SJBPjqJSU046I83Qk3LVssq+CGmRZlJ+1hArRtAydH6AgfhX+YTo/Ks8G2XSVmjpEfzfCIqW+0xjAYkn8yJUfARDVhqCwnZyFCNsQJl9sThowsUWYND3VJGn8UN+WjnkcBt2Q3/bedilI=
+	t=1786150742; cv=none; b=AKfHYYnSx+1x0ks6Y6KCp3fMW5zwlGEO5hS4V6dED/pYMrRY7Ycq1Y5gTYAvVMFjkdqYLfF4sdFPRxtIiZ0DInAiYoSF5lkEb7NwKiG1PP4zLKpspEM6YrZcQSBuA4ch1ilmcJKV/QSTUc6nD0lHE+FYfzSP0bhzzHdiEUdQecw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786150706; c=relaxed/simple;
-	bh=yZkREdEjHQEDUr57udPnaYwkQLcQxYJhgfKaohafuPg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b2rfGKXXLNb+ZsfDbLEXOKo4WyUzY1ITZrqLGqyIYPUykL4dtUZvd3BkBovdLE9WgBdon8EMiA2i4FaVlfku94RqTKNcKJ12d5vOwrpUUgkYyBB04THo1tcEYjPbIa/CA0ajHqP+Pe3Rof5NlytUzpXZ3TjNWUCIFpbkg8ASDz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=QepjMXoc; arc=none smtp.client-ip=159.89.151.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1786150742; c=relaxed/simple;
+	bh=YGuSVUOMY56+RRIAcCYgwtca/i2nDVqQejr5/tB8nnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=swbhHJowvqSKkrxZAtEagvB7UOwsdn4L1eiwthGzPI6UJbtM7gh00BDVVLbLgmkaKoe8yLTZCCWyQUabuZgA/eVZPflJl0cwb/ZJvN8/XyxnZYbNdU4+x+Mz65bV4jOKKbsIjNM6Fn4W3v23wQqmcMsfccZW9a2Nu53Gb46DcD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPBU7H2w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="QepjMXoc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-Id:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=TNDApsOsnp2m2lDrTJuIAVtUvQ2U/qmosQ
-	3lDWNOF4A=; b=QepjMXocUszGkTzHW3esG5/gCgz7RAoajs/svlf+M2KcxcwnWs
-	Tw9XF/U1iwB2SXPfdwrqjJ5eB87NWOxdorrxSAb3C33RPYEaoyiIApK8ccez4N0e
-	tsKxgPwN1eAsWXPSGbqGpMw+JigNC9jpAzsIfRWOfuUjZrYT8ts5DW9KU=
-Received: from gpu-server-2.tailcd67b0.ts.net (unknown [101.52.241.91])
-	by web2 (Coremail) with SMTP id yQQGZQCHgrQOf3ZqgbvKAA--.21278S2;
-	Sat, 08 Aug 2026 08:58:04 +0800 (CST)
-From: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-To: linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	stable@vger.kernel.org,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	yyxroy22@gmail.com
-Subject: [PATCH net v2] sctp: fix use-after-free of cached ASCONF chunk
-Date: Sat,  8 Aug 2026 08:57:48 +0800
-Message-Id: <20260808005748.1981039-1-yangyx22@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <CADvbK_ekVxEzb=-sbphAtmzYYXqfggWX2h3CK24s84MmQvahJg@mail.gmail.com>
-References: <CADvbK_ekVxEzb=-sbphAtmzYYXqfggWX2h3CK24s84MmQvahJg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPBU7H2w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72171F000E9;
+	Sat,  8 Aug 2026 00:58:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786150740;
+	bh=FxQWgheFrGGIAFY2WTZAGots/+C6XDFhzlfMzxIo6NU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=CPBU7H2wUpkV0heySQzYdIO8q6cUYIuOC4MlusA5+nesc+hT3SVqwhRb2eJ2gjG9w
+	 O9fUrureOUHY9QN2Yx3WyS+ZCKq88w9HrT1+YyGlB7M6oJeUgw/G4jD1nb9lA0HV1l
+	 f6bzqDfE0tEcMnAYzzsEzQADs1UdBct8Gr1ET+iDFLV3p5m95eHUR/B67xvh99KWty
+	 wh4DeN5uUa5QgxyC8f74gbk9TjChqKFnwNv/4k1Bk8gxF6F6ANzrVLtx0+BywQmVWn
+	 KWARFmLVdqu6l2bTnKFyUYWDLoBKRFybeoVF6IoE7ghoAfGolKVPloa6ZWpM9SVXa1
+	 tBTV/CMrNlzcw==
+Date: Fri, 7 Aug 2026 17:58:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca
+ <sd@queasysnail.net>, Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Alexei Lazar <alazar@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
+ Carolina Jubran <cjubran@nvidia.com>, Chris Mi <cmi@nvidia.com>, Cosmin
+ Ratiu <cratiu@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>, Doruk Tan
+ Ozturk <doruk@0sec.ai>, Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman
+ <gal@nvidia.com>, Jacob Keller <Jacob.e.keller@intel.com>, Jianbo Liu
+ <jianbol@nvidia.com>, Kees Cook <kees@kernel.org>, Lama Kayal
+ <lkayal@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, "Patrisious
+ Haddad" <phaddad@nvidia.com>, Raed Salem <raeds@nvidia.com>, Rahul
+ Rameshbabu <rrameshbabu@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+ Stanislav Fomichev <sdf.kernel@gmail.com>
+Subject: Re: [PATCH net-next V2 12/13] selftests: drv-net: psp: Fix
+ responder parsing
+Message-ID: <20260807175858.70a717d6@kernel.org>
+In-Reply-To: <20260804083535.2946459-13-tariqt@nvidia.com>
+References: <20260804083535.2946459-1-tariqt@nvidia.com>
+	<20260804083535.2946459-13-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yQQGZQCHgrQOf3ZqgbvKAA--.21278S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxuF4kuw43CFyfZrWrAr4rGrg_yoW5Ar17pa
-	98Wr4ayry5AryxurWfJr1Duw43Krs5J3y3Gr9YqwsYyFs8XryYkry7Ka4jqrWkCF4kAa43
-	KryYqFn8Gr90yaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvK1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4j6r4UJwA2
-	z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0x
-	vYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIEY20_
-	GrWkJr1UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zV
-	CS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAI
-	w28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUEAp5UUUUU=
-X-CM-SenderInfo: 51dqw5r0ssqzpdlo2hxwvl0wxkxdhvlgxou0/
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-addip_last_asconf caches the outstanding outbound ASCONF chunk. The normal
-ASCONF-ACK completion path releases the chunk and clears the pointer.
+On Tue, 4 Aug 2026 11:35:34 +0300 Tariq Toukan wrote:
+>  			off += n;
+> -			n = off;
 
-However, sctp_asconf_queue_teardown() releases the cached chunk without
-clearing addip_last_asconf. During peer restart handling,
-sctp_sf_do_dupcook_a() queues SCTP_CMD_PURGE_ASCONF_QUEUE, which invokes
-sctp_asconf_queue_teardown() while the association remains alive and leaves
-the pointer dangling.
+> +#define cmd(_name, _extra_sz)						\
+>  		({							\
+>  			ssize_t sz = sizeof(_name);			\
+> -			bool match = n >= sz &&	!memcmp(buf, _name, sz); \
+> +			bool match = off >= sz + (_extra_sz) &&		\
+> +				!memcmp(buf, _name, sz);		\
 
-A delayed authenticated ASCONF-ACK can then reach sctp_sf_do_asconf_ack(),
-which accesses the stale chunk and passes it to sctp_process_asconf_ack(),
-causing a use-after-free and a second release.
-
-Clearing the pointer exposes a race with T4 expiry. Peer restart handling
-queues the timer stop before the purge, but SCTP_CMD_TIMER_STOP uses
-timer_delete(), which does not wait for a callback already running on
-another CPU. Such a callback can reach sctp_sf_t4_timer_expire() after
-the purge and dereference NULL.
-
-Clear addip_last_asconf after releasing the cached chunk, and make
-sctp_sf_t4_timer_expire() consume a stale T4 expiry if no outstanding
-ASCONF remains.
-
-Fixes: a000c01e60e4 ("sctp: stop pending timers and purge queues when peer restart asoc")
-Cc: stable@vger.kernel.org
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Assisted-by: Claude-Code:GLM-5.2
-Signed-off-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
----
-Changes in v2:
-- Guard sctp_sf_t4_timer_expire() against a cleared cached ASCONF pointer,
-  as requested by Xin Long.
-- Explain why the T4 callback may run after the restart purge.
-
- net/sctp/associola.c    | 4 +++-
- net/sctp/sm_statefuns.c | 6 +++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-index 5b0ae61..737f8ea 100644
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -1713,6 +1713,8 @@ void sctp_asconf_queue_teardown(struct sctp_association *asoc)
- 	sctp_assoc_free_asconf_queue(asoc);
- 
- 	/* Free any cached ASCONF chunk. */
--	if (asoc->addip_last_asconf)
-+	if (asoc->addip_last_asconf) {
- 		sctp_chunk_free(asoc->addip_last_asconf);
-+		asoc->addip_last_asconf = NULL;
-+	}
- }
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 708fa07..3a8e16b 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -6145,8 +6145,12 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
- 					struct sctp_cmd_seq *commands)
- {
- 	struct sctp_chunk *chunk = asoc->addip_last_asconf;
--	struct sctp_transport *transport = chunk->transport;
-+	struct sctp_transport *transport;
-+
-+	if (!chunk)
-+		return SCTP_DISPOSITION_CONSUME;
- 
-+	transport = chunk->transport;
- 	SCTP_INC_STATS(net, SCTP_MIB_T4_RTO_EXPIREDS);
- 
- 	/* ADDIP 4.1 B1) Increment the error counters and perform path failure
--- 
-2.25.1
-
+Please don't replace off by n.
