@@ -1,297 +1,155 @@
-Received: from mail-oa1-f78.google.com (mail-oa1-f78.google.com [209.85.160.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-106119.protonmail.ch (mail-106119.protonmail.ch [79.135.106.119])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF633B14B6
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 20:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB112F0C7E
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 20:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786219834; cv=none; b=Ybx02IQIA+IHFGk04zBrjtcOoNFNSM+R7EhMMAfesj+8nffK0cEbMYafpkt0wVUHYCJ4ODIMh9JzSB0KFg9V397lET2uz1w+cE8YCe1kde92qZtnl6uyggiju71u2ppwvgKxjDBCm/oCnSd+IEtBUylZ5HUPu+CUOT2Vsh9lzmE=
+	t=1786221468; cv=none; b=X9Nx+cMmrxAieiSTl1MtFK2wlXRQWsrApOGC6RgfK1AYT0wWHNsWbfdbGIycUo6ETYfNRmohWLczrQoSu7KwQvnyhSjQvRiL9Kko1jRiyFbs28F/77HemBLwfkuFYAnBgZhDTwDMNUO8gueidTuFC76Jg4MD2UFrJPNwogx4glY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786219834; c=relaxed/simple;
-	bh=K+WjQb2QRaZMmsDC9lRnHGrtcqT4lUg5LzTKfgMMjdY=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=LuMRO0ZMaufu/jcWp+oEk+pdAQdtYTnYj5a312yAwp2MtfHK7xje6LgXvSLN/UakYMhAxS+R1+Cz6XOSNuKnMgCEao7WMCv94reMEYECFFWqVVuEMKSZWh8U5a6Ke+27WfE+YJI9akLJlCehxFnBewFzMuQMPNZas1Fz+43uKm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f78.google.com with SMTP id 586e51a60fabf-4519fdc5145so690411fac.1
-        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 13:10:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786219831; x=1786824631;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PBfcAZEEzM9IT3BBX5aXyz/xvHwpceg7nRUDkBwJfoc=;
-        b=stDbtfAlZeUHoM7FrYVbAHhRQ2bEgSm//tDrbN9s56zfRj4WMD6Vio61O8NDxO+ZQY
-         foOijbl30OV5D9G5uCful8dpvdylXgh4Dc6mb1Ij2NT/5uqmbrXV8/gYeZrV5OWbLbG3
-         Qnz8qUaM1n67IeUBH5C2DSmENY9bw6mqmkdqGS2O4C9o5Ly3oU314DDsHODtC+tMAIVb
-         LDqPaw/yPAoElVyRGKUgNm68Axm2dULFuqf49czDAVs15WRVmyIcUSs0P1nSFtdmB73U
-         9zTXelawaNgoa3SzysUxaOIsGMMnTQ1Wp/XHOyIzt1gWNBsk/8zfh7AyXuN2fpIV9OQx
-         8Beg==
-X-Forwarded-Encrypted: i=1; AHgh+RqX8tK0KWeZOfWlzOhG6jOBzEGL+HqHCchydq0NYjkXvQxABUsPlfEfVP71nvvsviITuiAzFUE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0MObqdoANyHMEWaxVM0TBaHGCYEtj1BYiqlzRdIwe9xvl9T3o
-	ooiK1aIVkJTKiNR8Pa73YY39QtutSr+UgZ+7ekMXit6qQuPeuyNzx8wtMS5in9NYsbeIp3DYt9X
-	PIk+aMceNS4daNKYHB1F+6pHXkUO6wDz/d3mZQ2y10qR7PeDOV93VKesIkDo=
+	s=arc-20240116; t=1786221468; c=relaxed/simple;
+	bh=pRkGWPDysq+3krAoeTSjNETKTaQN91z4bODPjkF9RQs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mZ1qSeElOc9OuYsYRm2rx8bpgZAn3DLNgb116CZHOLfASX6YH/VBJ5SbNGltqd6ZPo/5fXc5rcdrl7xid8TJXZWPwYzzxy+0NUArA3z8ivzodwKy/PW2lwA/RiOLsARz/jOuRIYY+p8H4BJL/wU3sOYw1xQ/dhSEFRbedINXwuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=YEbeKSit; arc=none smtp.client-ip=79.135.106.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="YEbeKSit"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1786221458; x=1786480658;
+	bh=NSY9IBQLOML4TZFwOdvdU+K5iWRNzYKtyaA/UWYx+X8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=YEbeKSitf5k60lE3w5iwJdK6NbFHOYCE/V+Gq/r6mWmEjsewNzvX1RMvAahPWwcWB
+	 rt0PUd67Dg+C33jT9Y/JNasmlY8N2h4XPSd4OaOX0h+9suOnkojy174RFI3KqL6yak
+	 rMuMVvBmaZkhX7nSLRn2kXh+SjkY7tD6JL1ek7bCf/cdJ0MuQ3mkBaCr3arKPHHNcp
+	 kFJUKcp5M6UUEG2URDZQb+8zTzxzqkmonMa2Q+Niik08WkMHNJGSCmBVAzYfmNCoXp
+	 YfUn3GvWp/dLITqGrH30ircEls/ag1K2ZNt9ylnjiNxq+a4CL6Dtkzl3GKNeaAIMFI
+	 k4js3gRQ8Rp0Q==
+Date: Sat, 08 Aug 2026 20:37:30 +0000
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+From: manizada <manizada@pm.me>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net v2] net: tun: bound receive headroom
+Message-ID: <M-tchWLCUNtHY9Erqqa3ydBwEKSuSzKhdoNQp_1ByTTHSIZpP8kar1oE64p8PC6N1vCrIgoBfkeMVnExvtNkmTz14LI7eq-_I22-9ok-2SY=@pm.me>
+In-Reply-To: <willemdebruijn.kernel.25faae4ed8f11@gmail.com>
+References: <20260805084504.953162-1-manizada@pm.me> <willemdebruijn.kernel.25faae4ed8f11@gmail.com>
+Feedback-ID: 37265593:user:proton
+X-Pm-Message-ID: e118d8eedad03ce45d2e8f5ac677d7306cb38a11
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:170e:b0:497:df42:1e05 with SMTP id
- 5614622812f47-4b13323c85bmr10329586b6e.8.1786219831343; Sat, 08 Aug 2026
- 13:10:31 -0700 (PDT)
-Date: Sat, 08 Aug 2026 13:10:31 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a778d37.01d0871a.3a0d52.0071.GAE@google.com>
-Subject: [syzbot] [net?] INFO: task hung in nsim_bus_dev_max_vfs_write
-From: syzbot <syzbot+034625f56d7756bdd6f7@syzkaller.appspotmail.com>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    0d8395707651 Merge tag 'soc-fixes-7.2-2' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1291fcc6580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=acc0a882b963ae23
-dashboard link: https://syzkaller.appspot.com/bug?extid=034625f56d7756bdd6f7
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13fcd7b9580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/2018c5f56c1d/disk-0d839570.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/3bfeae099eec/vmlinux-0d839570.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/37bf23e44126/bzImage-0d839570.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+034625f56d7756bdd6f7@syzkaller.appspotmail.com
-
-INFO: task syz.2.3306:9302 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.2.3306      state:D stack:28248 pid:9302  tgid:9302  ppid:5736   task_flags:0x400140 flags:0x00080002
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x125c/0x6730 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- schedule+0xdd/0x2c0 kernel/sched/core.c:7326
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7383
- __mutex_lock_common kernel/locking/mutex.c:726 [inline]
- __mutex_lock+0xccc/0x1bd0 kernel/locking/mutex.c:821
- nsim_bus_dev_max_vfs_write+0x206/0x410 drivers/net/netdevsim/dev.c:276
- full_proxy_write+0x135/0x1a0 fs/debugfs/file.c:388
- vfs_write+0x2aa/0x1050 fs/read_write.c:685
- ksys_write+0x12a/0x250 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fdede59e0d9
-RSP: 002b:00007ffd58ff29c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007fdede825fa0 RCX: 00007fdede59e0d9
-RDX: 0000000000000001 RSI: 0000200000000180 RDI: 0000000000000003
-RBP: 00007fdede635024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fdede825fac R14: 00007fdede825fa0 R15: 00007fdede825fa0
- </TASK>
-
-Showing all locks held in the system:
-1 lock held by khungtaskd/31:
- #0: ffffffff8ebe8200 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #0: ffffffff8ebe8200 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #0: ffffffff8ebe8200 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x3d/0x184 kernel/locking/lockdep.c:6775
-1 lock held by klogd/4952:
- #0: ffff8880b843b520 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock_nested+0x2c/0x140 kernel/sched/core.c:667
-2 locks held by getty/5353:
- #0: ffff8880373500a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x24/0x80 drivers/tty/tty_ldisc.c:243
- #1: ffffc900032332e8 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x419/0x14e0 drivers/tty/n_tty.c:2211
-7 locks held by syz-executor/8899:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff8880236dc480 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
- #4: ffff88805b6db128 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1102 [inline]
- #4: ffff88805b6db128 (&dev->mutex){....}-{4:4}, at: __device_driver_lock drivers/base/dd.c:1171 [inline]
- #4: ffff88805b6db128 (&dev->mutex){....}-{4:4}, at: device_release_driver_internal+0xb2/0x620 drivers/base/dd.c:1369
- #5: ffff88805b6da258 (&devlink->lock_key#2){+.+.}-{4:4}, at: nsim_drv_remove+0x4a/0x1e0 drivers/net/netdevsim/dev.c:1799
- #6: ffff888059584140 (&sb->s_type->i_mutex_key#8/2){+.+.}-{4:4}, at: inode_lock_nested include/linux/fs.h:1069 [inline]
- #6: ffff888059584140 (&sb->s_type->i_mutex_key#8/2){+.+.}-{4:4}, at: __simple_recursive_removal+0xe0/0x5c0 fs/libfs.c:619
-2 locks held by syz.2.3306/9302:
- #0: ffff888020aea450 (sb_writers#9){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff88805b6da258 (&devlink->lock_key#2){+.+.}-{4:4}, at: nsim_bus_dev_max_vfs_write+0x206/0x410 drivers/net/netdevsim/dev.c:276
-2 locks held by syz.4.3307/9303:
- #0: ffff888020aea450 (sb_writers#9){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff88805b6da258 (&devlink->lock_key#2){+.+.}-{4:4}, at: nsim_bus_dev_max_vfs_write+0x206/0x410 drivers/net/netdevsim/dev.c:276
-2 locks held by syz.1.3308/9304:
- #0: ffff888020aea450 (sb_writers#9){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff88805b6da258 (&devlink->lock_key#2){+.+.}-{4:4}, at: nsim_bus_dev_max_vfs_write+0x206/0x410 drivers/net/netdevsim/dev.c:276
-2 locks held by syz.3.3309/9305:
- #0: ffff888020aea450 (sb_writers#9){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff88805b6da258 (&devlink->lock_key#2){+.+.}-{4:4}, at: nsim_bus_dev_max_vfs_write+0x206/0x410 drivers/net/netdevsim/dev.c:276
-4 locks held by syz-executor/9361:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff8880716e6c80 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9365:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff888034a0ec80 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9368:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff888079407080 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9374:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff888033b25080 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9441:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff88807946c080 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9466:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff888071f27480 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9470:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff88802cd2ac80 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9471:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff888059892080 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9472:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff888071c50080 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9546:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff888056c2ac80 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9568:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff88802172f080 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9571:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff888033bf1480 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9572:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff888033ce6480 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-4 locks held by syz-executor/9576:
- #0: ffff888025c42450 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:739
- #1: ffff88807b9d7c80 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x2c2/0x5f0 fs/kernfs/file.c:336
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_get_active_of fs/kernfs/file.c:73 [inline]
- #2: ffff888029fee0f8 (kn->active#57){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x332/0x5f0 fs/kernfs/file.c:337
- #3: ffffffff900046a0 (nsim_bus_dev_list_lock){+.+.}-{4:4}, at: del_device_store+0xd1/0x480 drivers/net/netdevsim/bus.c:234
-
-=============================================
-
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 31 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- nmi_cpu_backtrace.cold+0x12d/0x151 lib/nmi_backtrace.c:122
- nmi_trigger_cpumask_backtrace+0x21c/0x2a0 lib/nmi_backtrace.c:65
- trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline]
- __sys_info lib/sys_info.c:157 [inline]
- sys_info+0x141/0x190 lib/sys_info.c:165
- check_hung_uninterruptible_tasks kernel/hung_task.c:353 [inline]
- watchdog+0xcb1/0x1030 kernel/hung_task.c:561
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 13 Comm: kworker/u8:1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-Workqueue: bat_events batadv_iv_send_outstanding_bat_ogm_packet
-RIP: 0010:rcu_read_unlock include/linux/rcupdate.h:869 [inline]
-RIP: 0010:batadv_iv_ogm_slide_own_bcast_window net/batman-adv/bat_iv_ogm.c:801 [inline]
-RIP: 0010:batadv_iv_ogm_schedule_buff+0x724/0x15e0 net/batman-adv/bat_iv_ogm.c:862
-Code: 00 00 48 8b ad c8 01 00 00 48 85 ed 74 12 e8 03 cb 89 f6 48 81 ed c8 01 00 00 0f 85 e3 fe ff ff 4c 8b 74 24 08 e8 ec ca 89 f6 <e8> 37 88 38 00 31 ff 89 c5 89 c6 e8 4c c5 89 f6 85 ed 0f 85 65 03
-RSP: 0018:ffffc90000127aa8 EFLAGS: 00000293
-RAX: 0000000000000000 RBX: dffffc0000000000 RCX: ffffffff8b808e0a
-RDX: ffff88801eac0000 RSI: ffffffff8b8089f4 RDI: ffff88801eac0000
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff888077fc5000
-R13: 000000000b46a101 R14: 0000000000000068 R15: ffff8880794561c0
-FS:  0000000000000000(0000) GS:ffff888123eed000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055e4c0393be0 CR3: 000000000e994000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- batadv_iv_ogm_schedule net/batman-adv/bat_iv_ogm.c:918 [inline]
- batadv_iv_ogm_schedule net/batman-adv/bat_iv_ogm.c:911 [inline]
- batadv_iv_send_outstanding_bat_ogm_packet+0x548/0x800 net/batman-adv/bat_iv_ogm.c:1807
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+On Wednesday, August 5th, 2026 at 6:14 AM, Willem de Bruijn <willemdebruijn=
+.kernel@gmail.com> wrote:
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+> Asim Viladi Oglu Manizada wrote:
+> > tun_get_user() uses tun->align both as skb headroom and when choosing h=
+ow
+> > much packet data to keep linear. OVS can propagate an oversized headroo=
+m
+> > request from another port to TUN or TAP.
+> >
+> > When align is larger than the usable space in a one-page skb head,
+> > SKB_MAX_HEAD(align) underflows and the result becomes negative when sto=
+red
+> > in good_linear. That value later wraps when assigned to the size_t line=
+ar
+> > variable, and tun_alloc_skb() can place skb->data outside the allocated
+> > head.
+> >
+> > Bound the headroom stored by TUN to the one-page skb-head budget and th=
+e
+> > largest non-sentinel 16-bit skb header offset. Leave one linear byte fo=
+r
+> > raw TUN and a complete Ethernet header for TAP, including NET_IP_ALIGN.
+> >
+> > Also pull the raw-TUN protocol byte and the TAP Ethernet header before
+> > accessing them, so these checks remain safe for nonlinear skbs supplied=
+ by
+> > other allocation paths.
+> >
+> > Fixes: eaea34b23c46 ("net/tun: implement ndo_set_rx_headroom")
+> > Cc: stable@vger.kernel.org
+> > Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
+> > Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+> > ---
+> > v2:
+> > - bound tun->align instead of clamping good_linear to zero
+> > - derive the bound from the one-page head, 16-bit offset, and TUN/TAP
+> >   linear-header requirements
+> > - pull the raw-TUN protocol byte before reading it
+> > - make the TAP Ethernet-header pull unconditional
+> > v1: https://lore.kernel.org/netdev/20260721014117.2234892-1-manizada@pm=
+.me/
+> >
+> >  drivers/net/tun.c | 21 ++++++++++++++++-----
+> >  1 file changed, 16 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> > index fed9dfdfcc3b..efd2e7d75c9a 100644
+> > --- a/drivers/net/tun.c
+> > +++ b/drivers/net/tun.c
+> > @@ -1107,11 +1107,16 @@ static netdev_features_t tun_net_fix_features(s=
+truct net_device *dev,
+> >  static void tun_set_headroom(struct net_device *dev, int new_hr)
+> >  {
+> >  =09struct tun_struct *tun =3D netdev_priv(dev);
+> > +=09size_t max_headroom;
+> >
+> > -=09if (new_hr < NET_SKB_PAD)
+> > -=09=09new_hr =3D NET_SKB_PAD;
+> > +=09max_headroom =3D min_t(size_t, SKB_MAX_HEAD(0), U16_MAX - 1);
+> >
+> > -=09tun->align =3D new_hr;
+> > +=09if ((tun->flags & TUN_TYPE_MASK) =3D=3D IFF_TAP)
+> > +=09=09max_headroom -=3D ETH_HLEN + NET_IP_ALIGN;
+> > +=09else
+> > +=09=09max_headroom -=3D 1;
+> > +
+> > +=09tun->align =3D clamp_t(int, new_hr, NET_SKB_PAD, max_headroom);
+> >  }
+> >
+> >  static void
+> > @@ -1822,7 +1827,13 @@ static ssize_t tun_get_user(struct tun_struct *t=
+un, struct tun_file *tfile,
+> >  =09switch (tun->flags & TUN_TYPE_MASK) {
+> >  =09case IFF_TUN:
+> >  =09=09if (tun->flags & IFF_NO_PI) {
+> > -=09=09=09u8 ip_version =3D skb->len ? (skb->data[0] >> 4) : 0;
+> > +=09=09=09u8 ip_version;
+> > +
+> > +=09=09=09if (skb->len && !pskb_may_pull(skb, 1)) {
+> > +=09=09=09=09err =3D -ENOMEM;
+> > +=09=09=09=09goto drop;
+> > +=09=09=09}
+> > +=09=09=09ip_version =3D skb->len ? (skb->data[0] >> 4) : 0;
+>=20
+> Overall, LGTM, thanks. Let's wait for the bots too.
+>=20
+> This can be a bit simpler. pskb_may_pull checks that len < skb->len.
+> And it is not an allocation failure, but a bad packet.
+>=20
+> =09if (!pskb_may_pull(skb, 1)) {
+> =09=09err =3D -EINVAL;
+> =09=09goto drop;
+> =09}
+>=20
+> =09ip_version =3D skb->data[0] >> 4;
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Makes sense, I'll do that in v3, it also keeps returning -EINVAL
+in the empty packet case without needing a skb->len check. Will
+resubmit within 72 hours or so unless I hear any more concerns.
+I'll respond to the AI review separately, those things don't look
+concerning.
