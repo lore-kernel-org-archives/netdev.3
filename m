@@ -1,205 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A6136215E;
-	Sat,  8 Aug 2026 15:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED239BA3D
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 15:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786203631; cv=none; b=GeU+hDtS6f3TH8fp03WYBANrqS6i1lAss646LfUsjh9lKxUM3OgQUTPjR6K7xaa3hCkCSYxPaG+YpL3mbJolhOn2JUouyk66vQi1K52fLDdzG6C7MXLJmmkHKLV8kw1GpUWgyGzMzqlG1Gb9GPrIOKd2Y2ccuGGznpckdceF93c=
+	t=1786204361; cv=none; b=KHbnAknF1v59n2t+d2qTv/W4uMacCRLbKLNk0wwiDvONX1rbZt542YeXxy1CzuvXyErWkK9aij8t1PoFtbTFOrteY9ZXG9ES9u1KELL+9fJBaoGMv6fVCSTIqjERkXmuobYZaYOeJMPFInRueYxpjn4sp8B8naid35J3vM3JVSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786203631; c=relaxed/simple;
-	bh=3oVNotWFtrAD9Xeka2+GhQHWAcGZfaj/Rdoma6xNEvE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DxiwqdE1yxkjMcqChw88YizpXI19jvHrcpjoEPt7CnglGygqMobFai6xmWkrrenlM2A5A7KF0kSlD7FVuBp/kZmlYBKzMhbsr9zhO2WFsP0PdQfBIoK0SwsObmwLR+YOzQyiZPBasY66VejLPPb+8zYWwf1w6dUcFYBi3PBr4vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lKrkwAn+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786204361; c=relaxed/simple;
+	bh=pmkrgEFMwlW10NfSy7U/UKFMiS0k1rJpu5H8jHpbDYo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lOBqn01Aa5cY6l313GUyr1LrQrXjRKUThybwSEJJZGqeSx+psx2sl6fNRGLtECfIkf+ryjz3BupWVQm/EsyGH8wa3BCQKe/f0quNboaRm2bUc2F0hRNXsAKNfUJqCZ30nWIuG1rz9YcgV5gMAYBgG7GVbFrfTG45Si3OEvVsDFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QOXPDMCw; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lKrkwAn+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677471F00ACA;
-	Sat,  8 Aug 2026 15:40:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786203628;
-	bh=6MFLVkziX3hANiicO2h9CJB3xgQAuAMAQlVIbnpFQHw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lKrkwAn+v/eyoe66azGN5UguUqvoQEgDMPyXi4tlJAyjM1DGB7QJk0MwEVB/VzBME
-	 /Tu67vIcYNgwjBLH21XWRKB2sZ1r5pq8JikQ3bubeiW5I0YefN0ELDcZOsEvXQ50PB
-	 Cr6Zs+/OSYPSnhvI13xbFPrMF/m7sL02EceGl0BxqDzCPMqvl5j5wBphNdpIrO0OCK
-	 dHdOVicmyZc5VQtspBAlCzkZv/AQj9K+aDW2MDbFhhxdypKAvq0oA31GYHQim30yiU
-	 YPDHDoyxPQKayukosGoA2l0ViGnKtDSLsQz0sP+ImC4Bp00FoMHFpGuzKkcAFn6X9q
-	 Xo8Eg71wMv+0w==
-From: Chuck Lever <cel@kernel.org>
-Date: Sat, 08 Aug 2026 11:40:15 -0400
-Subject: [PATCH v3 7/7] SUNRPC: fold xs_sock_process_cmsg() into its only
- caller
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QOXPDMCw"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-81e6f2ee60bso43593857b3.1
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 08:52:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786204359; x=1786809159; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oJjFtGpsZeLNWlPzOVeEhmIhXTVBEh63FbCc6q1Hy8s=;
+        b=QOXPDMCwoQmHuL8OgFlAu0brk8BkR7cl3yiyKK3n3w9/5NA7vZPvOBKAmVNbv9yx0L
+         cKl1b2NmKcaFrLlIWH2JPQ+Q86OWUj+BvTyns7DXWuRcVyn3nIpSd5Nnw8g4UoHcvKDo
+         1+kGdmKikh2Dte4DMtvd8xkZ5FKEr1V3e0QtstS+gvyL7BRK8n4JB1g4buiQ+etn2dZP
+         hVpCojKf2Xkm3ut0le9pe+oLqmDAhxA2aoPL6hhXDLslIJ9cnMTlqUxJemKB8J47cwgZ
+         WxZNP+nfIc8MYbEs32lQhh2sPDBh2jj1cK0wYLETSLIJfePAGGNzsOLBD5BnSyNUvKP+
+         hPnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786204359; x=1786809159;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oJjFtGpsZeLNWlPzOVeEhmIhXTVBEh63FbCc6q1Hy8s=;
+        b=f5eQwbNaW93HpjbETc0jBu2CONpeaB/1oLVHpA4bSQ9lFAH7aDMHuDyGP3VqiOmLAc
+         /5Zvm9UQeZlTIKmDjFn7nD5rqjupF1Ki9UOZC9l21YeBZezYZ0nYk0SJaw55lrPMi5Oe
+         acYUUoyAyWi96djY7LQp2JD8/FxFEVIYBm0dsngdlFLhwqRlGFWPq/GntT60cAvny1LG
+         /ZWMpkzY23+N80lSer9mns5bdX1TpD7JRC1R/zkKMXx51VIk3BtN+ypnsbY2qAuaAWa3
+         HqovVTUtMEX9YQNfDhjhHX5voheIGGIXFwfvHpCN+qNQdxydiun5m7toxNEoiyWGmyN0
+         Tacw==
+X-Gm-Message-State: AOJu0Yzw3viDK/EA1AgqPPlyj0tUKRyBaATIWt+t7h2NPAXKTPihTtK7
+	xyoN9R4zxR27VMQJ+R13ytleZJk0yQ8NSAW4UDnik3F7/UUH2bGUQJh4F/KeeQ==
+X-Gm-Gg: AR+sD11kWwMrPF9q8vESBjoUYtkQJLqB6LoHRK10iq5QXO4Rdi2UFZO2QThDFbEqcyW
+	idlwuWFlK+/cFh7Oz3I1a9qpqemU8Vuuy9u27uXSVZO9+CTWHtcjszhD7iTLyEwE0WYVbpguCPj
+	RqAZdO7EH73lFoRNglnn0dMDVCD3+kBAqmoYAZZNuAH7eh/EE2Ukcbwvi9xl8umLlKseR61oR3f
+	8u2ym2Wob1axY1wmy4gp2FoRxTRD5xMUlzD7OQFSevkcz+S//iG7ckt+NAZSliNHF06UDWtns/r
+	9WHV+LY/SFAGEYd3ShWqSV69C6VY3y+ZcQRj3rZj/Weupxw6qNuKREXfh1qixZnLUqBSPXvGCL1
+	QWltb2IGkUiv1gQ3IfHHDjcwoNYMsmm+SBzBL/TCrKu/aTUToeKjAoo1UClMitooLDDm/FhC8dV
+	0FeV4jJR9sNfxZIg1xuwTYAdCcXG2T/J6KOlekOfv1svtNjcwJwWuPvRPWliKfnocq3xO1TqCkD
+	sZo1vfPVbTbzho02GKR5StzbKW5xyRBZFCEKco337o458IAO4Uc0Mss0RU=
+X-Received: by 2002:a05:690c:4881:b0:80e:dc2:873b with SMTP id 00721157ae682-825eed3b75bmr42159177b3.16.1786204358788;
+        Sat, 08 Aug 2026 08:52:38 -0700 (PDT)
+Received: from willemb.c.googlers.com.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-823f79a6c6dsm27839747b3.48.2026.08.08.08.52.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 08:52:37 -0700 (PDT)
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrew@lunn.ch,
+	Willem de Bruijn <willemb@google.com>
+Subject: [PATCH net-next v5 0/6] hardware pacing offload
+Date: Sat,  8 Aug 2026 11:51:38 -0400
+Message-ID: <20260808155217.885299-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260808-svcsock-cmsg-fixes-v3-7-62d9a631c880@kernel.org>
-References: <20260808-svcsock-cmsg-fixes-v3-0-62d9a631c880@kernel.org>
-In-Reply-To: <20260808-svcsock-cmsg-fixes-v3-0-62d9a631c880@kernel.org>
-To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>
-Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org
-X-Mailer: b4 0.16-dev-da966
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4767; i=cel@kernel.org;
- h=from:subject:message-id; bh=3oVNotWFtrAD9Xeka2+GhQHWAcGZfaj/Rdoma6xNEvE=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqd03kDAcu0i7WYCBNzqppbvx92XV2KZAT/N04J
- Q3nkXNhupWJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCandN5AAKCRAzarMzb2Z/
- l83gEACJFVJiWmgXsSM3xzXjw1idB+zOFZvxpAbYqvqi/GwJ3xpSvZZR0PPa5+N/Y8R64OC0jW8
- 7tLPbBy/kCtJ8V7NRJxhZ/epusSH/431zZxxciFaz/uD8q2tbZQEgLt/tq6ZNd8Am/6uroe4lMT
- 4pFkk6AJMflaI/2qF/86YY8ZtYAZ6n09mYR4YLE1rm6vPHjtXlFUGdvxZkv7XvfLqYBXXdpOPpp
- dvmeVWdyng2KiJ75yjh+vsp8k9oq57RAOc+bzAxN8OyhmuNvwHh1bLnBiHbeH90FDot/rlEAxXC
- kF7Q+OZw0TBb171J9QoGOYiirj8MbKU6RKIcJEGkT5mtD+AW2HRtQXi+eqvbWkhnpKbMvh4mUKe
- XmBMqiUcH97CdByZUp//sJHOTgNj1AYzFnAfj5c51+KXPzI8S7IBw6BKS0cZFc0Z4A9C7bw5bU3
- ybq/aBwpkOrev0jG7zfFJ+QIlIa3nPEH/Uziko5DTuHug9DXvQL2njugzkWXr6K8TC0P4UtOwgd
- 2s+JMnx/tIaEghFcUYqKE/s/2Usq4EIjyvSARgYpK6JbTQ3bXyllqO/V1/AbkwqMfkaIZj6K38S
- gmD+lLpz2ku72Et2E+CWkXPKTUv4kNm5/popJIxRh/nBeF/iTHJB/hYL1EQdlwkwF+tU6HCAoul
- 41AdylEd1rIwCHQ==
-X-Developer-Key: i=cel@kernel.org; a=openpgp;
- fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
+Content-Transfer-Encoding: 8bit
 
-xs_sock_process_cmsg() switches on the TLS record type, and every arm
-but TLS_RECORD_TYPE_ALERT returns the -EAGAIN its caller passed in.
-The DATA arm clears MSG_EOR in the caller's msghdr, but
-xs_sock_recvmsg() has already cleared that flag before the call.
-Deriving the record type a second time inside the helper also fires
-trace_tls_contenttype() twice for every alert.
+From: Willem de Bruijn <willemb@google.com>
 
-Move the alert handling into xs_sock_recv_cmsg() and delete the
-helper. Every other record type still returns -EAGAIN. The DATA arm's
-account of MSG_EOR moves to xs_sock_recvmsg(), where the flag is
-cleared.
+Enable safe hardware pacing offload on a first device (idpf), plus support.
 
-Signed-off-by: Chuck Lever <cel@kernel.org>
----
- net/sunrpc/xprtsock.c | 85 ++++++++++++++++++---------------------------------
- 1 file changed, 30 insertions(+), 55 deletions(-)
+- Add rtnetlink support for admin control over the device feature
+- Add device support to the idpf driver
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 5527f7f8a185..38dd75a23af7 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -356,45 +356,6 @@ xs_alloc_sparse_pages(struct xdr_buf *buf, size_t want, gfp_t gfp)
- 	return want;
- }
- 
--static int
--xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
--		     unsigned int *msg_flags, struct cmsghdr *cmsg, int ret)
--{
--	u8 content_type = tls_get_record_type(sock->sk, cmsg);
--	u8 level, description;
--
--	switch (content_type) {
--	case 0:
--		break;
--	case TLS_RECORD_TYPE_DATA:
--		/* TLS sets EOR at the end of each application data
--		 * record, even though there might be more frames
--		 * waiting to be decrypted.
--		 */
--		*msg_flags &= ~MSG_EOR;
--		break;
--	case TLS_RECORD_TYPE_ALERT:
--		tls_alert_recv(sock->sk, msg, &level, &description);
--		/* RFC 8446 Section 6: every alert but a closure alert is
--		 * an error alert, whatever the legacy AlertLevel octet
--		 * says.
--		 */
--		switch (description) {
--		case TLS_ALERT_DESC_CLOSE_NOTIFY:
--		case TLS_ALERT_DESC_USER_CANCELED:
--			ret = -EAGAIN;
--			break;
--		default:
--			ret = -EACCES;
--		}
--		break;
--	default:
--		/* discard this record type */
--		ret = -EAGAIN;
--	}
--	return ret;
--}
--
- static int
- xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- {
-@@ -412,6 +373,7 @@ xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- 		.msg_control = &u,
- 		.msg_controllen = sizeof(u),
- 	};
-+	u8 level, description;
- 	int ret;
- 
- 	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &alert_kvec, 1,
-@@ -421,23 +383,32 @@ xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- 	 * kTLS filled in u.cmsg.
- 	 */
- 	if (ret >= 0 && msg.msg_controllen < sizeof(u)) {
--		if (tls_get_record_type(sock->sk, &u.cmsg) ==
--		    TLS_RECORD_TYPE_ALERT) {
--			/* RFC 8446 Section 5.1 requires a record with an
--			 * Alert type to carry exactly one message. An alert
--			 * is two octets. tls_alert_recv() reads both without
--			 * checking the length. alert_kvec caps the count at
--			 * two, so a longer record fills it as well. kTLS
--			 * sets MSG_EOR only once the record has been
--			 * drained.
--			 */
--			if (ret != sizeof(alert) ||
--			    !(msg.msg_flags & MSG_EOR))
--				return -EACCES;
--			iov_iter_revert(&msg.msg_iter, ret);
-+		if (tls_get_record_type(sock->sk, &u.cmsg) !=
-+		    TLS_RECORD_TYPE_ALERT)
-+			return -EAGAIN;
-+		/* RFC 8446 Section 5.1: a record with an Alert type carries
-+		 * exactly one message, and an alert is two octets.
-+		 * tls_alert_recv() reads both without checking the length.
-+		 * alert_kvec caps the count at two, so a longer record
-+		 * fills it as well. kTLS sets MSG_EOR only once the
-+		 * record has been drained.
-+		 */
-+		if (ret != sizeof(alert) || !(msg.msg_flags & MSG_EOR))
-+			return -EACCES;
-+		iov_iter_revert(&msg.msg_iter, ret);
-+		tls_alert_recv(sock->sk, &msg, &level, &description);
-+		/* RFC 8446 Section 6: every alert but a closure alert is
-+		 * an error alert, whatever the legacy AlertLevel octet
-+		 * says.
-+		 */
-+		switch (description) {
-+		case TLS_ALERT_DESC_CLOSE_NOTIFY:
-+		case TLS_ALERT_DESC_USER_CANCELED:
-+			ret = -EAGAIN;
-+			break;
-+		default:
-+			ret = -EACCES;
- 		}
--		ret = xs_sock_process_cmsg(sock, &msg, msg_flags, &u.cmsg,
--					   -EAGAIN);
- 	}
- 	return ret;
- }
-@@ -451,6 +422,10 @@ xs_sock_recvmsg(struct socket *sock, struct msghdr *msg, int flags, size_t seek)
- 	ret = sock_recvmsg(sock, msg, flags);
- 	/* Handle TLS inband control message lazily */
- 	if (msg->msg_flags & MSG_CTRUNC) {
-+		/* TLS sets EOR at the end of each application data
-+		 * record, even though there might be more frames
-+		 * waiting to be decrypted.
-+		 */
- 		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
- 		if (ret == 0 || ret == -EIO)
- 			ret = xs_sock_recv_cmsg(sock, &msg->msg_flags, flags);
+Besides the main feature, also
+
+- Small optimization to FQ offload: avoid unnecessary ktime_.._get().
+- Expand so_txtime drv-net test with hw offload testcases.
+- Expand pktgen with txtime feature.
+
+Details and detailed changelog in the individual patches.
+
+High level changes:
+  v4 -> v5
+    - Rebase + small kdoc fix only
+  v3 -> v4
+    - Replace ethtool API with rtnetlink
+    - Drop/defer pktgen patch: not essential
+
+NOTE: the idpf patch will have a minor merge conflict with commit
+"idpf: add missing cpu_to_le32 in idpf_tx_splitq_build_flow_desc"
+(https://lore.kernel.org/netdev/20260803210707.1912217-1-willemdebruijn.kernel@gmail.com/).
+I expect that this series will need another revision, at which point
+that fix will have made its way to net-next. There is also a fix to
+so_txtime.py outstanding, but that is structured so that these do not
+conflict.
+
+v4: https://lore.kernel.org/netdev/20260806232913.4020403-1-willemdebruijn.kernel@gmail.com/
+v3: https://lore.kernel.org/netdev/20260726202902.760552-1-willemdebruijn.kernel@gmail.com/
+v2: https://lore.kernel.org/netdev/20260722204454.3234605-1-willemdebruijn.kernel@gmail.com/
+v1: https://lore.kernel.org/netdev/20260706133433.3142805-1-willemdebruijn.kernel@gmail.com/
+
+*** BLURB HERE ***
+
+Willem de Bruijn (6):
+  net: rtnetlink: add pacing_offload_horizon attribute to net_device
+  net_sched: sch_fq: clear past skb->tstamp if offloading pacing
+  idpf: support pacing offload
+  selftests: drv-net: refactor so_txtime errqueue handling
+  selftests: drv-net: in so_txtime tell apart sw from hw pacing
+  selftests: drv-net: extend so_txtime with hw offload
+
+ Documentation/netlink/specs/rt-link.yaml      |   6 +
+ .../networking/net_cachelines/net_device.rst  |   3 +-
+ drivers/net/ethernet/intel/idpf/idpf.h        |   2 +
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |   3 +
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  70 +++++++-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   2 +
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  56 ++++++-
+ drivers/net/ethernet/intel/idpf/virtchnl2.h   |  10 ++
+ include/linux/netdevice.h                     |   4 +-
+ include/linux/skbuff.h                        |  17 +-
+ include/uapi/linux/if_link.h                  |   1 +
+ net/core/rtnetlink.c                          |  21 +++
+ net/sched/sch_fq.c                            |  19 ++-
+ .../testing/selftests/drivers/net/so_txtime.c | 157 +++++++++++++-----
+ .../selftests/drivers/net/so_txtime.py        |  75 ++++++++-
+ 15 files changed, 386 insertions(+), 60 deletions(-)
 
 -- 
-2.54.0
+2.55.0.679.g6767b8d81c-goog
 
