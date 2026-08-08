@@ -1,96 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9812D376A19;
-	Sat,  8 Aug 2026 06:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786172180; cv=none; b=rb18Lhknni/rOtsdQ2SuUPOsj8G9F3NshrHyxjuB4rECYu7YLoJwrvHV9Jgvvn+rnGNIxHF0h1ZOVnylvV1pT0pFFBSksqj+VrUnqCRl07tinBS0w25yPh5dk4W+xj/73GfIC6bTgzuHSPYrbRVHp8rLYPuzsVVhJ2JzTsDZo6M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786172180; c=relaxed/simple;
-	bh=iKNubltje/DbF0zoiCKsalbe/R4Kp81SgSbhJzRz+tY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vnd3WvQfSFcoBQiR68pY2OoA/5QbGlmeot44bwtX8TaMJd/cCkUbOLkUbsyqxeD1WonNayvV8U1MX80bv8V4lOdpiSbVBauHFmGdffcVLjPHxFJrgYjfOX+iqpUuABs65MunwWy0DN0FedXTnd1Hz+U27OQN18FnM1cZiJWqP0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SH5FOaiU; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E06F3B7746
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 07:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786172416; cv=pass; b=LqP5MF991iNMGTTZQBgxLohwZsdZ+R0SI2Cduzdep6qoDnNl08RJ7V1wRyUO+YeGaowp0vwxNynbomx2G+r/oONCUVQhIDzSjbzojkCXrP2COrqMhhKqNtHl6+tzDj44whfr+kcD/Cu3kFxaqGVzJKitP4R5SfQf9ZC6dENvkNw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786172416; c=relaxed/simple;
+	bh=9H8bxirkZyL2BdQN2JzSybWbJ2Mt85TIL5xVBn743NI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gomXH7x6hREeguHNuM3NeoNhvivWJdIj/W/ZzwLI61lGDqXVSIz46CdH8qkZk73O/4fec4a4lxCwDZan41ashSPvpCLHNipp+UaM1eI9jImhiwc382ESv1t9aU8Ti1uwEx6g/HtrQ5VY1+CwQ8ukiRY85sJV6mIPMJuE3KCFIgM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MDtg5by2; arc=pass smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SH5FOaiU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2063E1F00A3A;
-	Sat,  8 Aug 2026 06:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786172179;
-	bh=eOli6oQDuvK/j5yjuVJfio8ypK3vDCmN1PA1hPchLUs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SH5FOaiUpsypafEkbFKZt/ckxoPTspIen1L9PpnyuZ+1JGdbzIlToLyq8j5gmA+LA
-	 uB0Vs/NdC2YBfvenqs+tlajOzBRwjMnrz0DT5om1zNNu4haEW0TpXmwFTnJka4SgBe
-	 EBEvUQIsxMqQpjOnM4XjYJZk6kTvxgZTi/bicxiqi5tOpew1dk22k57fvaEOULQVHz
-	 QdXHs/jC8f/Y3RHCogjUe2vB6kToSj5LXMH5j2gd5RYviMutF6pdjY77ePBGaE0Q6p
-	 nQM0Az1BmI6/LIiiFWCbuuqvScMlMz5OL3pexZmyQcUdm1bDBpGm/frw/zGcT3PbqQ
-	 vaCZeOjDPzm2Q==
-From: Geliang Tang <geliang@kernel.org>
-To: Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Hannes Reinecke <hare@suse.de>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>,
-	linux-nvme@lists.infradead.org,
-	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev
-Subject: [PATCH v2 3/3] nvmet-tcp: support IPv6 traffic class
-Date: Sat,  8 Aug 2026 14:55:01 +0800
-Message-ID: <ef1d3f9cbd321aeb0a49f37685f2fb7e01c60623.1786171863.git.tanggeliang@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1786171863.git.tanggeliang@kylinos.cn>
-References: <cover.1786171863.git.tanggeliang@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MDtg5by2"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8ff88549786so2009236d6.3
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 00:00:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786172403; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CM1PciouJUgkXs+WvXKm/7/w3UGVLmNrdMEllgeC4Z/TzXHZlqodN9pyRIpneVyKkz
+         Gj4jjBeNpWRWO1wYe4UeXuMR910Rp3HQ4llaEnnq1FyemywkjhGjy6+ayx6HElXKrXqI
+         k8/vboTEmeZLBLzCT3yUkFe8lkJ3ZBteohNJINhTXJAPjUom3kUmORqB2WNcOMSzAKtI
+         bmNAg4pTHLGk/MH/VypaJvuVF3LIYv3N/NeWYySYtRQuTrlXMKdcaUSnTgDoMWzfbrId
+         rZy3ljPCQGzVAIjPabp9P1SuFadHaXvhJNzBw5Kkj648Lm4CTbKBsoGwU3KmpgW0FVzg
+         kKRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OCoQ/BqwhJzxKbqP23vELa0j2NE7X00OdRwlilQKW7U=;
+        fh=OVpcSpyYDT8dm3E0SSAmkwiBws1CwEJvNboTUi3yMws=;
+        b=XR87/FBTSJtQkESwLtIm97a1trjRniaFj5iYZYkL2kAG6ymoMH9/KW+u51xYYropS8
+         c7Z3GoPgL+m1p2mt2AxSj5yLbdHDqpMwHH26sm1AEO2w9fwEtHsmgBAwUKPLfr1NOPZ9
+         KmsMMPeX7+LQU5PKSJByB0KYdhhPg6RpRbFl+CRTRbV4ybQvRJWheY78YP3PveLvkRwj
+         9Qr77nY4XLkh5Qy/A2U9ZlB75AiHhpjqe/NnOCukv8QCazSV17V7qS/jRXVwqmfJKpV6
+         Qk2/GuiOeruUH7GL3Fs/X9weXGxnX2jadQzhIticONXDVzeSIi6NXPX3eIZYepHekQiM
+         BxVg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786172403; x=1786777203; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OCoQ/BqwhJzxKbqP23vELa0j2NE7X00OdRwlilQKW7U=;
+        b=MDtg5by2MJNkoMYS2hQ7+HTs8QAKtkWO0LC8EMhS45J11cixdthF3BnI79mTeLN0AQ
+         bwnlCkuWr9QanR6Rku7cc7PbToHMtZ3qfHTLKGboWEPdDm1/UH9QbmTQoLnTkBsPwCWh
+         muihZcKEwcXNv16iFH9+c1p2dL0Wigm7KGJotVewtHSrFLVds6GVUKp/Fph+2UhxQDYB
+         3bf6plIxNBiuGkiVWcLSZUoFmCntb5LklHP0Yx0BSdK4Xfz1O2K8k0dWGGW7a+8gvWNK
+         drBLj3XySd3C8Ng1y6f49t+KQA9QYVA2OV/21VrzSa5x7Mdqs+oksHcUnHAhYBJ5AMnZ
+         T4tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786172403; x=1786777203;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OCoQ/BqwhJzxKbqP23vELa0j2NE7X00OdRwlilQKW7U=;
+        b=e7GzmfG8H3CAoR7BBziOCFjtsDXR2v+bEjF1yFp4jqPsfGTO+AXmP0xr4JQOFMVOe7
+         oDmPSO4UfGk5BIYnEGQbc0axP1TospKU3EbCxFCFr2OTSzRGp392bR0Wie4azFe8MkWd
+         Xf5RUFrBLfACR5VVMluTDtH3rc9WKGelBIHN83NgTB1W/z4HW/nKhVYuuF0ejfj3thdB
+         loxa9hlqxfNiCrUcaLmpoSfVv7gqa10FLc9dG2I/k97eR6G9e6aye+OlFd/AMdxMkV5t
+         SowBOEeLYiqby9Q9Zq0/oltLGqLhc7PRj3AZdDyTzTWlfnu9E6zF9s4mWLXM87IZ9Llw
+         ZNyw==
+X-Forwarded-Encrypted: i=1; AHgh+Roll6YZqzztXEjGHJJN4bnhlMvntpEgTNR3pTntH+xv25Fkn8+DA5xT8EK3g9ImICjci4uIwXk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxui10bY71iT8WNfqf/14KRPasBdMClMExdX1EdsQ9635zUYAIK
+	MMyvt/1L5oxqQU4GTbbm+RWxmpxfsKGD7D8nK+4x4lzRF9/+buxPrlbBKRyWOEzf24CFEWba1v5
+	tzdt11usrPRR0oVfJ144HDVuHh2OzBtLQNrA5wZH1
+X-Gm-Gg: AR+sD11I3/ZCBGoxza0sT3lvwIXrZSd6PuNf1cqN1XB+Av2EPyrlY5tXTL4kdJNPrmk
+	Boa0Xmj8qa4DYt+SUm4WgfgBnq8xtpzmwoimWqF3PV4cW+RzM1Yn8WCI/rTob0YBlJjBD2GkZ/y
+	qYlqzREd3i5qaY/+blfCeoRhTV5UnV0xuIn86f68IF3gCDYtMCyJxuPhGTPXjKKyEjdf1VsOHFM
+	crojtu4QxmdjUTjOhny1rP+f5dVRx3NCrtaDs9s1D3zOcUJocyLH4GAU6RXpeDk1FsH4CbEgQ6P
+	oJ6vol8OO7QBXqs61KL4Hy1eirj3xiJWoCKisAeIpoQLmYbd75sw7mR3S2iS/bu5t7k6fDY0xUB
+	cEOR70eo6WqR/EfL8m7gyVJQaqqxIe6aXIbmALCnnwruGSC4+nXxlnqQ=
+X-Received: by 2002:a05:6214:2423:b0:8e0:16f0:28ab with SMTP id
+ 6a1803df08f44-908811f0d91mr284473576d6.11.1786172402394; Sat, 08 Aug 2026
+ 00:00:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260807171024.1897860-1-edumazet@google.com>
+In-Reply-To: <20260807171024.1897860-1-edumazet@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sat, 8 Aug 2026 08:59:50 +0200
+X-Gm-Features: AUfX_mw0AmXnxL6-8lm-j-7ba5RvNOFRZBxSaBp2oX3TptdUfoceyAzgEGuDOzc
+Message-ID: <CANn89i+i1gL5WvmbkedXm03NcoV0RC7ATd1GiLt=Mj5Y_tSDwg@mail.gmail.com>
+Subject: Re: [PATCH net] l2tp: fix tunnel and session refcount leak on
+ seq_file release
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com, 
+	James Chapman <jchapman@katalix.com>, Guillaume Nault <gnault@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+On Fri, Aug 7, 2026 at 7:10=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
+rote:
+>
+> In pppol2tp_proc_open() and l2tp_dfs_seq_open(), iteration state
+> (pd->tunnel and pd->session) is kept in seq_file private data to allow
+> iteration across multiple read() system calls.
+>
+> However, if userspace closes /proc/net/pppol2tp or /sys/kernel/debug/l2tp=
+/tunnels
+> before reading to end-of-file (EOF), any tunnel or session reference stor=
+ed in
+> pd->tunnel / pd->session is left un-dropped when seq_file private data is=
+ freed.
+>
+> Fix this by dropping any remaining pd->tunnel and pd->session references =
+in
+> pppol2tp_proc_release() and l2tp_dfs_seq_release() when closing the file.
+>
+> Fixes: 0e0c3fee3a59 ("l2tp: hold reference on tunnels printed in pppol2tp=
+ proc file")
+> Fixes: f726214d9b23 ("l2tp: hold reference on tunnels printed in l2tp/tun=
+nels debugfs file")
+> Reported-by: syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6a760f32.01d0871a.3a0d52.004f.GAE@=
+google.com/T/#u
+> Assisted-by: Jetski:Gemini-3.1-Pro
+> Cc: James Chapman <jchapman@katalix.com>
+> Cc: Guillaume Nault <gnault@redhat.com>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+>  net/l2tp/l2tp_debugfs.c |  4 ++++
+>  net/l2tp/l2tp_ppp.c     | 38 ++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 40 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/l2tp/l2tp_debugfs.c b/net/l2tp/l2tp_debugfs.c
+> index b26986fda9d6cf096519d56032fe3deb5034c7c8..c12d5e1ee550ccc2608b6128c=
+b653ca373280373 100644
+> --- a/net/l2tp/l2tp_debugfs.c
+> +++ b/net/l2tp/l2tp_debugfs.c
+> @@ -306,6 +306,10 @@ static int l2tp_dfs_seq_release(struct inode *inode,=
+ struct file *file)
+>
+>         seq =3D file->private_data;
+>         pd =3D seq->private;
+> +       if (pd->session)
+> +               l2tp_session_put(pd->session);
+> +       if (pd->tunnel)
+> +               l2tp_tunnel_put(pd->tunnel);
+>         if (pd->net)
+>                 put_net_track(pd->net, &pd->ns_tracker);
+>         kfree(pd);
+> diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+> index f8881699e1cad88e6f312e6ca47ae0af94c6137c..24e5bc06f65c6134974612294=
+e36dd13c1608607 100644
+> --- a/net/l2tp/l2tp_ppp.c
+> +++ b/net/l2tp/l2tp_ppp.c
+> @@ -1597,6 +1597,40 @@ static const struct seq_operations pppol2tp_seq_op=
+s =3D {
+>         .stop           =3D pppol2tp_seq_stop,
+>         .show           =3D pppol2tp_seq_show,
+>  };
+> +
+> +static int pppol2tp_proc_open(struct inode *inode, struct file *file)
+> +{
+> +       struct net *net =3D pde_data(inode);
+> +       struct pppol2tp_seq_data *pd;
+> +
+> +       pd =3D __seq_open_private(file, &pppol2tp_seq_ops, sizeof(*pd));
+> +       if (!pd)
+> +               return -ENOMEM;
+> +
+> +       pd->p.net =3D get_net_track(net, &pd->p.ns_tracker, GFP_KERNEL);
 
-nvmet-tcp currently applies the received IPv4 TOS value when setting
-up a queue socket, but does not handle the IPv6 traffic class.
+Oh well, we have a dependency against CONFIG_NET_NS for this stuff.
 
-Extend the queue socket setup to handle AF_INET6 sockets. Obtain the
-traffic class from the IPv6 socket's rcv_flowinfo and apply it through
-ip6_sock_set_tclass(). Keep the existing IPv4 TOS handling unchanged.
-
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
----
- drivers/nvme/target/tcp.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 75a276d73be3..1d65519ebc0f 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -1725,6 +1725,14 @@ static int nvmet_tcp_set_queue_sock(struct nvmet_tcp_queue *queue)
- 	/* Set socket type of service */
- 	if (inet->rcv_tos > 0)
- 		ip_sock_set_tos(sock->sk, inet->rcv_tos);
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (sock->sk->sk_family == AF_INET6) {
-+		u8 rcv_tclass = ip6_tclass(inet6_sk(sock->sk)->rcv_flowinfo);
-+
-+		if (rcv_tclass > 0)
-+			ip6_sock_set_tclass(sock->sk, rcv_tclass);
-+	}
-+#endif
- 
- 	ret = 0;
- 	write_lock_bh(&sock->sk->sk_callback_lock);
--- 
-2.53.0
-
+pw-bot: cr
