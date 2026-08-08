@@ -1,129 +1,204 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010063.outbound.protection.outlook.com [52.101.61.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63376369D5D
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 11:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786188312; cv=none; b=A9ROgqBaE+sz0LZd0CnFTSitzjCSD2gk+nyAvInyr/6+QXIdRswNdZ7aEQl8eQLqCD1MUsx3B8pBt2gbyvyYs6GzopQbvKIlZg1Rjo3ccYPCbXzcv70m8Tcg8cmBDh5jb4L3dHjyq1ObLXNcm7ytY67jUVRA/AVvdW3G9NRLt0c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786188312; c=relaxed/simple;
-	bh=S06gw4GaTWEIrO/scYSHRfENLicYT3okDY8QqVj7Uok=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WdxaNq9XsYrr0wqV7xt3EMbuwdr7sXEOWgFyE0s5rM7fRcMvssmL4zyuzuf4dL58nIAdBjoEEY/RPXRRqQT+kzZ6k7cHzAevfs8nOqSRiWG9C3/fpc6VB49sI++3m+07i/qJEG8PRIQYE8m/ovpMSSYSfxOFzTEWl5xZkwB6Xjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dtqnjQya; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15DE3D47C3;
+	Sat,  8 Aug 2026 12:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786192048; cv=fail; b=TNZONkIfyobodYaivnUyQclo1Bc1qiJmLj/Xp0BnU8yWqXR+wPlcjC8ewMx+iO6g4zQ08i8Gvow96aAXoWru9jHvVZjKPSCU5/AwbT/rdCH3IOhKHoGF0lolkW0bs8jE0kJwj5Iyn8TWPInx0IfPp3peZLCGImO2phVe2jE/j9c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786192048; c=relaxed/simple;
+	bh=Rtlsifh1+Z9HfUt3neQZ3M595UCBSBx1NIfhRgxzqQ0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=WLi5fVVpGIsPr86grS4n4tK/uDFFwlr2RU/cLfGCJ5rezCKALvOHRB6HMtj92AsBN/cHat8tWZXhDhEZxk3ZnmKepC6a/MwCnBRXOF+/lXymAAzyVxMlInWvBXeFeAgKGgHgORXRufj74EL4Z0/GzOs4ZFAhF1fK+C22MljXWJw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=vumkroU5; arc=fail smtp.client-ip=52.101.61.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dtqnjQya"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c9cf07d2df6so259701a12.2
-        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 04:25:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786188311; x=1786793111; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1TJD+ZNU8p0QF/zIOcyyYdEmIZzKa2aJynIM7jFFyUQ=;
-        b=dtqnjQyalO/IWF2SeSYvrwd89YeBlK75DMQjFDjs+J2gmCeXbX5xr2rg86TD43iMzr
-         km6I9I4Pd68ojPU72rttKGH/Glun7B8DxXDsTjh7pcRlBUzE7MHFS2h0k7m3BKkRIcwl
-         8MhBQBXFoBHw42vRSGKlx0qE1dWx7KX8+a0NtUiaf7Q2qnfq4jgD/r2PxDnds8oTuO3v
-         VWuU53GxKU7HUiUz15M1pSmvyIzy/AaX8ruhk0ZaQCLecHA0gsqJUF25pros+13O75t4
-         ggLFzWfFPsley2ULRYDNesAb2rK3HQv6d4OXM8a/7Vh3bUfU+oPZCxJxUHlhRKsRonb7
-         hpuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786188311; x=1786793111;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1TJD+ZNU8p0QF/zIOcyyYdEmIZzKa2aJynIM7jFFyUQ=;
-        b=AoDOGKuKPXcMLSAEDpApxo9IeEpZyIj+0iVZrexQ5cB2kftk/Dkw9GTU+Xr3lGq9jq
-         6BrvW9w6LnsDLhMMGeiSxkELnFgEW1Sk0Sz/CYzw/fvOc40KoBuZ1L8m20h8ogwDABMW
-         jBPiakzq7XXnw70FDzqR6LU+zIybyOZMtzvKLByjvbU7oJcfijeM5Jt5jW6rBbbpyCmf
-         /2O8FgV2ZQzz4ZYxLsFWFrUdLYh9mOaU0e/LfSWGrFngbyUy1l47nFQLjmg7q/RnXv81
-         5KcQq1mR7QUZbCsKTWD4aYqulkONjVAmDI8DFvfFZdTBHGSg+k9U9RmHsaFcmZ4MzWBN
-         FUAw==
-X-Forwarded-Encrypted: i=1; AHgh+RqMSKwCkqfH229JvD0Du69wOwUkSPK1h4uQ0PpPAwomMv/s9ZKtxwBGhDtXHd9TgVR58pi21Yo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTefITgRBkAGVkZsgVOPGYTQRge6YXPA+2AsfXKQPPDgnnS70H
-	p++XymfztC/+HQckyoVr+GV+27nkbGTcJ0unTrUVmTGCpjiB5vJ0FQSN
-X-Gm-Gg: AR+sD11bxm+bYoWAKXMlLGLLROnz6IFPiw0IV1R7AzmIch8JLNrRx4R3UD21BRZ+aaB
-	q6t2KeYPyCmsnMysuNwB6rDKbW6zVV0BMXMUMC1dGNaSJt8UWzKSuYmxPvSEOQGeI14RSZSaoL7
-	AJ/mPL9fI4CJ2FhGw1MtYEY3FNCGTUesIS0Bs7+VApeOfbJroyCCsXiq8U7a0fLIWzLbA1J9RRE
-	19zjX6X99YANkc0TCCB0lZYVH6DVJ3p7Ly7R04fKF77tWRF7onDjUUg+xLLLeMDeGhA8ZY/g4o8
-	i+/ln3P4lVHFW59JhyYYi570kVJKTxHK9fZeNwCPZHgf2eQD5f5vj8BglrfZev0YieuDCmlq9V0
-	ikfX9gOxxKTU/gQ3hdbp2jra+EQwf39hJhJuyDCSVz6x9y59/FDpNpD5rYFwGTTn6ovdgwTmYpl
-	b9cVb+JdHRFP2eA5uf8QOvj9zZl3h1PeHjjqBmsavzj1w+yxjSa6pWz/nfBKh1I0Uh+cNOGC0=
-X-Received: by 2002:a05:6300:4045:b0:3bf:83f3:b810 with SMTP id adf61e73a8af0-3cb85ef7f63mr36662806637.29.1786188310005;
-        Sat, 08 Aug 2026 04:25:10 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315bebee8d0sm17746334eec.24.2026.08.08.04.25.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Aug 2026 04:25:09 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>
-Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Tiwei Bie <tiwei.bie@intel.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] vhost/vdpa: reject VRING_NUM larger than device max
-Date: Sat,  8 Aug 2026 19:24:58 +0800
-Message-Id: <20260808112458.101616-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="vumkroU5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=thqFUl9EtNNh+vtdpcBW0Ju3/H1ZbGQlPiuplJ2wEBLwSUzTTp2CunRxF4nqYhBrhtBMrMwwK/cKn2PuQBJbwCW9xK6QoExR/oliPaDJHXYggB7j22Fb2+z+2CQYSjmJ7Npazmqj81eSfl7tRGxLRQv06ELaCRvCHkrNQw8qWaB8pYVnBTdZNnJgpQ38oVA5w5iEmIJwd0nw58r1wjynIjhdykqXMnaaKlA2Ps5D9FaW3ro0o/VnkgpJb6fFS8TXz9QsOgCQ6UeWnvD4QnV1t1iOXotJV1YKNXzXEqkVzBQMpAsV4QH6JPLFCKLW1qRrqjc61J61lvj7RxYJsTOtIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bUl7e79l7B7Yn5jcHORMxjsWO7XCVPFDSKyGoex3DU8=;
+ b=dL21KBYapaB+F0Viy6eQUUJXjyYzowBfGATY9T3+A3GFdzM9g+W9a7DKtcAAEkFaoBEIYg/cqCUrotVmHCvqkg/hDIBKyq9pcIsxxJUdFCeN5CXX/6VPgeRd+1wYKuzwI7GrC32oNS9DmpyVDYRixr8olCq91l6U9Ki+NjksxbQOLdV8k0+9Kjz8zDySCKnWmeNKW5JYx3aJ+QNaa08PQTFtqo3Mpj/5dPO61nyroTz6PSNV/AKpFkWxTuOr5EJrP/XowKavHkbItOUE2sroL020Pn8RZW2Hg8B5nS3eoE8n6AyZdCnoIZHfuLsCFj0tDd3LBjFzqsMOZ3HqNoRcdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bUl7e79l7B7Yn5jcHORMxjsWO7XCVPFDSKyGoex3DU8=;
+ b=vumkroU54mYbDCmburI0Ie0eyvs4lsILmUD3yIlTHXjNs99tLtXKbkVy96ytB0k7E2sbcD8hWRKt7AnzngnDNwqm4QABxuA67GOz+KK7EVTW+PZUne6WmuJDDPMzYGuGyQZFF1K3yUlSP/1E6DXO/RmUnTJ+CU9JEZsfSLi7P+w=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN7PR12MB8147.namprd12.prod.outlook.com (2603:10b6:806:32e::5)
+ by DM4PR12MB5937.namprd12.prod.outlook.com (2603:10b6:8:68::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Sat, 8 Aug
+ 2026 12:27:13 +0000
+Received: from SN7PR12MB8147.namprd12.prod.outlook.com
+ ([fe80::3923:c1a4:778b:56f2]) by SN7PR12MB8147.namprd12.prod.outlook.com
+ ([fe80::3923:c1a4:778b:56f2%5]) with mapi id 15.21.0292.018; Sat, 8 Aug 2026
+ 12:27:13 +0000
+Message-ID: <b9190115-68b8-4318-8fc7-e9abe6a47557@amd.com>
+Date: Sat, 8 Aug 2026 17:57:02 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/20] net: xilinx: tsn: add TSN endpoint wrapper driver
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+Cc: Srinivas Neeli <srinivas.neeli@amd.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Michal Simek <michal.simek@amd.com>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, Simon Horman <horms@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, git-dev@amd.com
+References: <20260807104431.157230-1-nagadheeraj.rottela@amd.com>
+ <20260807104431.157230-3-nagadheeraj.rottela@amd.com>
+ <anZGPKSopP9GLKJt@monoceros>
+Content-Language: en-US
+From: "Neeli, Srinivas" <srneeli@amd.com>
+In-Reply-To: <anZGPKSopP9GLKJt@monoceros>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN3PR01CA0122.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:96::8) To SN7PR12MB8147.namprd12.prod.outlook.com
+ (2603:10b6:806:32e::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8147:EE_|DM4PR12MB5937:EE_
+X-MS-Office365-Filtering-Correlation-Id: f17bc927-8848-4ffb-1e79-08def548604c
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|18002099003|22082099003|10067099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	WIikJWBFDHVNS47RrVzB0k8M9xZRQ8BrsHI/vygBHt24OEvCZGBUDbX/6kuuAVM/UzTJVU3EcKkJ9QjpsYmkUbRUbKBohcfQlMwzI5F2NMJILmci11BsR8Y8pDu+uaIYw4Vxo4sW6MDgaU/sI7baPXN3JGELZ22EnrKap10wC9nBcPVFVtu+xNxVWpc/w7u+YIEMW630ED+lfMDNGr8UYkm7edzCJ5hrhvS+Czl41I9Yy94uUKYRlRV9Tn51BFroJA8wrBLPYj5+b+XiTR+txK2zFa3nIUziyKUjaIRHbRsZGpsJt70EvqOQRFmPJGH76GhSuwdWkEqwWabMnKE+deKQ2hSaZmyNkItHufmkBiA6PEL5hJng8/vbv+JJ1K5RS3q2v6H411hcJahZQeCEeUpcQbYripX2x5FKSrWv3XYJVd3SBbDADpgmBZJYugAdzhJcMNBlSRgUaBiDJD2UPh4TfoYppt+NKzzenPRnKKRnzykDTbpzR8uwpFGpnaf0C/TVwADGnbM5Re0oPOLKmBgo4LtturrsNUdVsQRIY9UMURE8G0+9Qu0Wxo59e8J4VEFdlk76572hIyBQ5rF61hRnzMRhLz2LWfPzvXYpewSuxM76ODK7ltCFlALu8gtu5hGszys6T3oUvTnBiqf/vPJc3ZAmQ3cEcaHzQ7OkT34=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8147.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZWhTd2F5QitxcHp6WGVqZDVkU1lqWXNDNkErWStpOSs0T3Y1L0MvYlBkMDVU?=
+ =?utf-8?B?UFo3ZXNMZHVrQkJKOEpwRTJzOWZuM2N0U01pTDhOSldXNkZHeFRYamVmVEtR?=
+ =?utf-8?B?YldEUzJOclBMZVVMbUc2ZDFNZDRHWkJQRWtZNkp5U1FGNTNpNlQ1NkxkN0Vr?=
+ =?utf-8?B?U045d2VJK3MvS280cnlTa3NuQ3BveHBHSkhqTWVDdTFEQVNIMUVIeCtBSFkw?=
+ =?utf-8?B?MlZtSzh3L2lqcytRanUvRm9JaENEYlZCOG5GTEx2OUVXQ2VDZTNFWUhhQ1Rn?=
+ =?utf-8?B?UmFDVm43NHdTSHcyOHE3Wm1rY2lrdUlRMFppS3NzTGFCZWluWDF1ckdrcTMr?=
+ =?utf-8?B?N1NwZ1p6cm9zYW45SlU2VjR4cmUzYlFkMWhxN294QXA3NnNHVzdmYWc2Qjd0?=
+ =?utf-8?B?V0h5L0UxWjMvSVZLVXRBODBQa1o3bzVwZ2Z3S0swU3E5ZU9XRVNaaUJ3dXFv?=
+ =?utf-8?B?bk9vZksyS1lZNFUxcUJTUXZCMmFmNUVtb1BNaEtxcDQwbjQ5aXR6NWJEcXVl?=
+ =?utf-8?B?QVBvcFg5ak9tUzE1eWNjeUt1SEo3Nm1mV0taUE9aQnRURlpMVDk2RmZVNWFT?=
+ =?utf-8?B?R2RvbEtocE9QWlU2L1g2TW95VFBGeDZpQURvZTFJd3dYY2NFT2RzSDVLQ2py?=
+ =?utf-8?B?bHJEZExRNytuMzF1Tm82dmc2NDM3ZmJWc1luTXJMQmU4ZHVlVzB4NEVWNTVK?=
+ =?utf-8?B?R0k2SDFiRU0vRjZuYlM0OHRaWHl0Ynp2eVdEZjNmaFQ5WWgrOWZMTHlnRjFM?=
+ =?utf-8?B?RGNTeElQWUh6UDRwdlBpTi9zVklPRVp3S1JYdzZORG93aW5MZzJKQUFab1B4?=
+ =?utf-8?B?UHdHdHdIak82OGN2U2xHNjVPSTcrSnIzN1FxeEZqWkVBd3ViQ1dtLzlXV1do?=
+ =?utf-8?B?T2lTeVNudTI0cVpiS3FWUCsvcUVPNEN0R05TVnNiN3g3ejNUZS9LQ0Nxa3Er?=
+ =?utf-8?B?ZmhOUm1GdjlRMm5VRS9NdFljYlRTT3RHaHZCckliM1dSa3JJcHZJTDFHb3I3?=
+ =?utf-8?B?SWdpSGNTQ2FzaHErM1poUnNpbmhkaUVyc1FCOXAwTFJMd0U5Mk1oYW9aM1Vq?=
+ =?utf-8?B?L0tkd2ZVODJNbWVLM0FPNXQzS2dsU2U3cUxMc2JDa0hNUU5od1Bqd05FVWxX?=
+ =?utf-8?B?UWxkcDBKMk1OMExIOTIyQ0g1L25uOTZRaWM5SENSQ3d0amVQVWRLRzlhN3Zv?=
+ =?utf-8?B?MExkTjY1TmYrVG5OeXJlSlo0dVZxTW5rUWRvWVFCMHM4YXpndzZNVEJuTEZk?=
+ =?utf-8?B?dmc4STlYalRvb1dOYytzT3NWRDlzZkNCVWV5ejhTcTZSc09yditoMzZtV0hj?=
+ =?utf-8?B?V01qZTk2K2J5QmJvM3Y1Q3M5REZUQ0lJWGpGWHpYV3dDQkhTNnc3RVZRR3dS?=
+ =?utf-8?B?WmlnalZvQVhTcFdBbmNkU1lJK0xQajh6NU50cUdDeUtIWUFQa3BhcGpiNyt0?=
+ =?utf-8?B?d1VocXFKSlBBODB3cUppRVpVNUdxRTR2bWp5RTZWTkRlVzlSb1VpMmd2bnJQ?=
+ =?utf-8?B?UmIyNmVGRGFWV2xESnpKSUNYRFMxMHFCUzJDREhKNHgxVEJvN2owQXNnbmM3?=
+ =?utf-8?B?bDlrSFd0aXpsaDh0dEV2QzE3akNNeU12Vlh5WEFGSm5ZV3VCRXpvT0k0MUEr?=
+ =?utf-8?B?NWlBT1lseEhweEswdVFlRHI3dEtuTE5vQVo2NlRGY0lBcm9aZzlMeVlPb3E0?=
+ =?utf-8?B?ZE9YYk9IT1VEOFVnN09HdjNnc20rZ3JJd2trY2p5bjdGYy9MMmE3NW9oRmQx?=
+ =?utf-8?B?TXlaNEJFQVVjWkhsdTNSQkpjQnpiK3crK0dsdVY5VTBweDRPOVQ5ZUZRaTRF?=
+ =?utf-8?B?R3dnRmFTUjJ5SzdLZWE4Q1FnR1FiSGtSdk00QVdwS3hJQVNtTGRhaGh6UzNS?=
+ =?utf-8?B?TUVxanAxbEhjb05RbDhaeUk1K3BWMFVEU25HY2VjM2JkeTVkOWxieENXRFVq?=
+ =?utf-8?B?ZGMvaGpkYXFlbmtzc1IyanY1b20rdUpLMElaU29oTVlyS0J6UDRENld4QnF3?=
+ =?utf-8?B?Z015QnUreXpkVDZCRzdBdENSL253UTBCdmFPeVhreVdkWFpBR3RLNTZJb0Q3?=
+ =?utf-8?B?ZjR1cDZSRTNhdG5KSGlUamF2Nm9ZUzdLRWNQZFU1TmhmdEhFZ3RSM01QWmJW?=
+ =?utf-8?B?T25lby96SHJHS0N5UkZxVlE0YndreVpBaUhodVpZY05RK2Q1dUcrM1FCRXhl?=
+ =?utf-8?B?dUI2YTRKOUF6SDFrSVNXeGUvQ0hITkUrL3NjWU5TMnpqWU5JT0dORnpiZ056?=
+ =?utf-8?B?YXhoU0Z0ekY2NDY5emcxUWIrcWNzSjd5QUpjODVPLzRFbjREdnV4SGdRb2xo?=
+ =?utf-8?Q?ic6V1ZFxX+7iisfAqg?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f17bc927-8848-4ffb-1e79-08def548604c
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8147.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2026 12:27:13.6659
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4oZuhhnds+Atfwbtm5gYeeb08vWTF0S73b4hBii+V80skJQC5zmFMXzqbbJtMkqw
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5937
 
-vhost_vring_set_num() only requires a non-zero power-of-two that fits
-in 16 bits. vhost-vdpa then hands that value to the backend through
-set_vq_num() without comparing it to get_vq_num_max().
+Hi Uwe,
 
-A local process with access to /dev/vhost-vdpa-* can therefore set a
-queue size larger than the device advertises. On the vdpa_sim backend,
-the worker then walks descriptors beyond the mapped descriptor ring.
-KASAN reports a 16-byte out-of-bounds read, corresponding to one
-vring_desc, in the vringh IOTLB path:
+On 8/8/2026 2:28 AM, Uwe Kleine-König wrote:
+> Hello,
+>
+> On Fri, Aug 07, 2026 at 04:14:13PM +0530, Nagadheeraj Rottela wrote:
+>> diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
+>> new file mode 100644
+>> index 000000000000..1ef1b0c2ee6e
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
+>> @@ -0,0 +1,105 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +/*
+>> + * Time Sensitive Networking (TSN) Ethernet MAC wrapper driver.
+>> + *
+>> + * Copyright (C) 2026 Advanced Micro Devices, Inc.
+>> + */
+>> +
+>> +#include <linux/clk.h>
+>> +#include <linux/device.h>
+>> +#include <linux/mod_devicetable.h>
+>> +#include <linux/module.h>
+>> +#include <linux/of.h>
+>> +#include <linux/of_platform.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/slab.h>
+>> +#include <linux/types.h>
+> Please drop <linux/mod_devicetable.h>. This header is planned to go away
+> soon and you can rely on <linux/platform_device.h> to provide
+> of_device_id.
 
-  BUG: KASAN: out-of-bounds in _copy_from_iter
-  Read of size 16
-  copy_from_iotlb
-  copydesc_iotlb
-  vringh_getdesc_iotlb
-  vdpasim_net_work
+Thanks for review, Will update in V2 series.
 
-Check the requested size against get_vq_num_max() in
-vhost_vdpa_vring_ioctl() before calling vhost_vring_ioctl(), and return
--EINVAL when the request is too large.
+>> [...]
+>> +static struct platform_driver * const tsn_drivers[] = {
+>> +	&tsn_driver,
+>> +};
+>> +
+>> +static int __init xlnx_tsn_init(void)
+>> +{
+>> +	return platform_register_drivers(tsn_drivers, ARRAY_SIZE(tsn_drivers));
+>> +}
+>> +module_init(xlnx_tsn_init);
+>> +
+>> +static void __exit xlnx_tsn_exit(void)
+>> +{
+>> +	platform_unregister_drivers(tsn_drivers, ARRAY_SIZE(tsn_drivers));
+>> +}
+>> +module_exit(xlnx_tsn_exit);
+> I assume you expect tsn_drivers[] to grow? If not, use
+> module_platform_driver() to reduce boilerplate.
 
-Fixes: 4c8cf31885f6 ("vhost: introduce vDPA-based backend")
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
-v2:
-- Add the missing Signed-off-by tag.
+Yes, patch 3 adds &xlnx_tsn_ep_driver to the array, so I will keep 
+platform_register_drivers().
 
- drivers/vhost/vdpa.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Thanks
 
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index ac55275fa0d0..b2083e1ef150 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -716,6 +716,13 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 				vhost_vdpa_unsetup_vq_irq(v, idx);
- 		}
- 		break;
-+	case VHOST_SET_VRING_NUM:
-+		/* Reject sizes above the max reported by the device. */
-+		if (copy_from_user(&s, argp, sizeof(s)))
-+			return -EFAULT;
-+		if (s.num > ops->get_vq_num_max(vdpa))
-+			return -EINVAL;
-+		break;
- 	}
- 
- 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
--- 
-2.34.1
+Srinivas Neeli
+
