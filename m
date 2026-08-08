@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADB641D203;
-	Sat,  8 Aug 2026 19:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF75A41E6DB;
+	Sat,  8 Aug 2026 19:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786218522; cv=none; b=L6W1SG1rVHiAG/Jj+jtc9VfoQFN9k1r60OyyWw3PDWps0jW4VC9z2nBqeSHG7VUNPM1WkgNbBIEgaihyF99Ql594SjRIN7e76U1Ndlv+zO0xdifAJfkZUnqloBPEC3eHyrdVubVR+b0dBBJXd1A+V4aKx1TbZKZ9qul72Q1gLIs=
+	t=1786218523; cv=none; b=hqW9d5/BsYzaFu9vjo0oauL4Zc+KlC+4l8blmiekhD6ayymflanw5SYbl56pX1xiz4Ar1G4KvSTEUBW4hEZjB/Tjt1lD25wSducVDqiIGWf4L6lLiSMvyZyhCTUT78RvcDmMg48kMlTfVCKxjVHLnK/QWY137hZVcYyCSoDTuVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786218522; c=relaxed/simple;
-	bh=mUVvRW3FHa2Pv22+VtOX5M8Ff9wtk1c9tYZjSJclItY=;
+	s=arc-20240116; t=1786218523; c=relaxed/simple;
+	bh=q4pOwfmFTrzXbmPjoxui5l41xc+Dd+sig9fZrOlNHH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBeGH3CfkT6E0lDq2JfEHBYvnRCLLcRw62KiRPN1aUbZHPW+Bbb/QNdR9dBUk75+mtys36T2NFeW0debSjJZ8rBbzTvQaeJCd01bxniF4SC+F3MU92msSuc2B3zSDpF6r30kUFooWZfV/j6GCw7ygu4Hv/qejIVxfj1sI3dsKo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6UsMQjl; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=eV94wEOWHpTk3tweR0hf3rxfmpXJpP3RR7gEmILw7OSXd0l4nUMT5Hu+e8wKisV0bThKGQ/tRu/EvyvU62CFuPKr8bm+hMaSFYkd1HnYyhGYyFHPS3TaINncOKo05F6xrkFARb6L2ryBZy9ituocpKSls8y/KR6BJ0vmXfMFgXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlOxowtT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6UsMQjl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D961F00A3A;
-	Sat,  8 Aug 2026 19:48:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlOxowtT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2E91F000E9;
+	Sat,  8 Aug 2026 19:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786218519;
-	bh=Cyxw3LjdsOzEPkfg3cAwIWEsA+6PRzyjyGFVfYuit6o=;
+	s=k20260515; t=1786218520;
+	bh=fe+d7V0Gwd5vaQVPo5oPWMSQHgmJs6bKTDmsscoMXcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q6UsMQjlKGX5PXRmsZkwuv7u8xoIAKSNjkEz7uWbqtMrDmm1o6iWiwwDIX2EYYI9I
-	 x7ZlQ+cjHihdH2d8fIFuBRRraGZoKY9vvBMztKa5Od01SRyZPhEnMEOsJSyEPHfULw
-	 w2qbVBB3BOLRLyedy3k6JiD/KSPBYE+twNDKVdm8nK+t0xMbc2RrX3w/DsOpFxgHmn
-	 jycapsuQSzEWROavRWNzdn3+BZ6J2zSe2ZeBRzrx1wSxrku2aHxvZipyJHOhvV08QQ
-	 +fhxpmT6XY8zCDcsfkpV31qqn38ljrBfWPBWEKHISXxN+YZ7BW51DrJrR+sU38n0Ir
-	 HPxNVx1pEoNYA==
+	b=AlOxowtTK5VwxuTFU+KpoTVNn/mpb5uLh5YVFbPtpfw0l/qwLDAe+CW5t2pn+Grdi
+	 zL3gBvrO3BNmzpBSNgreEtAu2ApN6TOPzieNyEa7533/iNdpQOrx5DEFZdmBmgqD8Z
+	 jrHn8Ttflp0+Ke8WrbQzuzasZt7W/vwZtnqo3EjbB20pR2Mi2i3eCqcNTdKTYNtYVr
+	 nyS+NzmzA11KbSPFSuH0jK+k3/NJyJEmHVExKzK3qSnp/w54k/Zs7r8NRz6XViUa74
+	 YKO33K6VlRHLyPgInXxHUCcpHm9NLLsk8wR3kqnQb+qxdwEX2nlC1YWTDxEJI2Qanb
+	 DvWAemYbiNH0w==
 From: Jakub Kicinski <kuba@kernel.org>
 To: nagadheeraj.rottela@amd.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -48,12 +48,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	git-dev@amd.com
-Subject: Re: [PATCH 19/20] net: dsa: xilinx: offload bridge VLAN filtering to the switch
-Date: Sat,  8 Aug 2026 12:48:38 -0700
-Message-ID: <20260808194838.133557-1-kuba@kernel.org>
+Subject: Re: [PATCH 20/20] net: dsa: xilinx: trap link-local control frames to the CPU port
+Date: Sat,  8 Aug 2026 12:48:39 -0700
+Message-ID: <20260808194839.133603-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260807104431.157230-20-nagadheeraj.rottela@amd.com>
-References: <20260807104431.157230-20-nagadheeraj.rottela@amd.com>
+In-Reply-To: <20260807104431.157230-21-nagadheeraj.rottela@amd.com>
+References: <20260807104431.157230-21-nagadheeraj.rottela@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,460 +65,438 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: dsa: xilinx: offload bridge VLAN filtering to the switch
+net: dsa: xilinx: trap link-local control frames to the CPU port
 
-This wires bridge VLAN filtering into the switch's per-VID port-membership
-table and the per-port native-VID registers, and declares VLAN filtering
-switch-wide. It also sets the per-MAC VLAN-enable bits so tagged frames are
-not treated as oversize.
-
-A few questions about the new VLAN paths below.
+This adds CAM entries for the two bridge-group destination MACs in active
+use (STP at 01:80:c2:00:00:00 and LLDP at 01:80:c2:00:00:0e) with a port
+list containing only the CPU port and the endpoint management-queue bit
+set. The entries are kept in sync with each wire port's native VID via a
+new shadow list in struct xlnx_tsn.
 
 > diff --git a/drivers/net/dsa/xilinx/xilinx_tsn.c b/drivers/net/dsa/xilinx/xilinx_tsn.c
-> index 57558b0e2613..7e5cf77cfa66 100644
+> index 7e5cf77cfa66..e35dbcdfcbda 100644
 > --- a/drivers/net/dsa/xilinx/xilinx_tsn.c
 > +++ b/drivers/net/dsa/xilinx/xilinx_tsn.c
 
 [ ... ]
 
-> @@ -814,6 +815,297 @@ static int xlnx_tsn_port_fdb_dump(struct dsa_switch *ds, int port,
->  	return ret;
+> @@ -694,6 +702,28 @@ static int xlnx_tsn_cam_write(struct xlnx_tsn *sw, const unsigned char *addr,
+>  	return xlnx_tsn_cam_wait_done(sw);
 >  }
 >  
-> +/* The VLAN-membership control enable bit self-clears once the indirect
-> + * read or write completes.
+> +/* IEEE 802.1 bridge-group destination MACs. A bridge must consume
+> + * these locally rather than relay them between ports. Each address
+> + * gets a CAM trap entry pointing to the CPU port only. The CAM
+> + * matches the destination MAC exactly, so only the addresses in
+> + * active use are listed here.
 > + */
-> +static int xlnx_tsn_vlan_wait_done(struct xlnx_tsn *sw)
-> +{
-> +	u32 reg;
+> +static const u8 xlnx_tsn_ctrl_das[][ETH_ALEN] = {
+> +	{ 0x01, 0x80, 0xc2, 0x00, 0x00, 0x00 }, /* STP / RSTP / MSTP */
+> +	{ 0x01, 0x80, 0xc2, 0x00, 0x00, 0x0e }, /* LLDP */
+> +};
 > +
-> +	return readl_poll_timeout(sw->sw_base + TSN_VLAN_CTRL_OFFSET, reg,
-> +				  !(reg & TSN_VLAN_EN), TSN_SW_POLL_DELAY_US,
-> +				  TSN_SW_POLL_TIMEOUT_US);
+> +static bool xlnx_tsn_addr_is_ctrl_trap(const unsigned char *addr)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(xlnx_tsn_ctrl_das); i++)
+> +		if (ether_addr_equal(addr, xlnx_tsn_ctrl_das[i]))
+> +			return true;
+> +
+> +	return false;
 > +}
 > +
-> +/* Caller holds indirect_lock. */
-> +static int xlnx_tsn_vlan_read(struct xlnx_tsn *sw, u16 vid, u32 *data)
-> +{
-> +	int ret;
-> +
-> +	sw_iow(sw, TSN_VLAN_CTRL_OFFSET,
-> +	       FIELD_PREP(TSN_VLAN_CTRL_VID_MASK, vid) | TSN_VLAN_ACCESS_READ | TSN_VLAN_EN);
-> +	ret = xlnx_tsn_vlan_wait_done(sw);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*data = sw_ior(sw, TSN_VLAN_DATA_OFFSET);
-> +	return 0;
-> +}
-> +
-> +/* Caller holds indirect_lock. */
-> +static int xlnx_tsn_vlan_write(struct xlnx_tsn *sw, u16 vid, u32 data)
-> +{
-> +	sw_iow(sw, TSN_VLAN_DATA_OFFSET, data);
-> +	sw_iow(sw, TSN_VLAN_CTRL_OFFSET,
-> +	       FIELD_PREP(TSN_VLAN_CTRL_VID_MASK, vid) | TSN_VLAN_ACCESS_WRITE | TSN_VLAN_EN);
-> +
-> +	return xlnx_tsn_vlan_wait_done(sw);
-> +}
-
-[Severity: Medium]
-
-Should xlnx_tsn_vlan_read() and xlnx_tsn_vlan_write() confirm the engine is
-idle (TSN_VLAN_EN clear) before writing TSN_VLAN_EN again?
-
-If xlnx_tsn_vlan_wait_done() times out, the error is propagated but
-TSN_VLAN_EN is left set and nothing clears or re-checks it.  The next
-operation then writes EN=1 while EN is already 1.  The driver assumes the
-enable is edge-triggered for the sibling blocks, xlnx_tsn_cam_wait_ready()
-polls CAM readiness before every CAM access and xlnx_tsn_set_port_state()
-carries:
-
-	/* Bit won't re-arm if a previous change never cleared it. */
-	val = sw_ior(sw, TSN_PORT_STATE_CTRL_OFFSET);
-	if (val & chg_bit) {
-		...
-		return -EBUSY;
-	}
-
-Can this then report a dropped access as a successful one?
-readx_poll_timeout() evaluates its condition before the first sleep, so if
-the previously stuck access clears EN just after the CTRL write,
-xlnx_tsn_vlan_wait_done() returns 0 immediately and xlnx_tsn_vlan_read()
-hands back the TSN_VLAN_DATA contents of the previous VID as the membership
-word of the requested VID.  The callers then write that value back:
-xlnx_tsn_port_vlan_add() ORs the port bit into the wrong port list,
-xlnx_tsn_port_vlan_del() clears a bit from the wrong entry, and
-xlnx_tsn_port_vlan_filtering() copies one VID's port list onto another.
-
-[ ... ]
-
-> +/* Write a port's native VID and egress-untag setting to hardware.
-> + * While VLAN filtering is off, every port uses the reset-default
-> + * native VID and stays tagged, so committed VLANs have no effect
-> + * until the bridge goes VLAN-aware. Caller holds indirect_lock.
-> + */
-> +static void xlnx_tsn_apply_pvid(struct xlnx_tsn *sw, int port)
-> +{
-> +	u16 vid = sw->vlan_aware ? sw->pvid[port] : TSN_SW_DEFAULT_VID;
-> +	bool untag = sw->vlan_aware && sw->pvid_untagged[port];
-> +
-> +	xlnx_tsn_set_native_vid(sw, port, vid);
-> +	xlnx_tsn_set_native_untag(sw, port, untag);
-> +}
-
-[ ... ]
-
-> +static int xlnx_tsn_port_vlan_filtering(struct dsa_switch *ds, int port,
-> +					bool vlan_filtering,
-> +					struct netlink_ext_ack *extack)
-> +{
-> +	struct xlnx_tsn *sw = ds->priv;
-> +	struct dsa_port *dp;
-> +	unsigned long bit;
-> +	u32 reg, data;
-> +	int ret;
-> +
-> +	guard(mutex)(&sw->indirect_lock);
-> +
-> +	/* Flip Port-List-Valid on every configured VID: set it to enforce
-> +	 * membership, clear it so VLANs added while filtering was off stay
-> +	 * inert.
-> +	 */
-> +	for_each_set_bit(bit, sw->cfg_vids, VLAN_N_VID) {
-> +		ret = xlnx_tsn_vlan_read(sw, bit, &data);
-> +		if (ret)
-> +			return ret;
-> +
-> +		if (vlan_filtering)
-> +			data |= TSN_VLAN_PORT_LIST_VALID;
-> +		else
-> +			data &= ~TSN_VLAN_PORT_LIST_VALID;
-> +
-> +		ret = xlnx_tsn_vlan_write(sw, bit, data);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	sw->vlan_aware = vlan_filtering;
-
-[Severity: Medium]
-
-What state is the switch left in when this function fails part way through?
-
-A -ETIMEDOUT out of xlnx_tsn_vlan_wait_done() inside this loop returns
-immediately, so the VIDs already visited have Port-List-Valid flipped while
-the remaining ones keep the old value.  DSA does not update
-ds->vlan_filtering when the driver op fails (dsa_port_vlan_filtering()
-returns the error before assigning it) and the bridge reverts its own
-BROPT_VLAN_ENABLED, so those already-flipped VIDs enforce membership
-together with the switch-wide TSN_SW_CTRL_MEMBER_VIOL_DISCARD pinned in
-xlnx_tsn_setup(), while the bridge believes it is VLAN-unaware.
-
-The same applies to everything written after sw->vlan_aware is committed
-here: the miss policy, the learning qualifier, the native-VID/untag
-registers and the port-state cycling.  A failure in
-xlnx_tsn_port_state_cycle() (-EBUSY "previous state change still pending"
-or -ETIMEDOUT from xlnx_tsn_set_port_state()) leaves the hardware fully
-VLAN-aware, with unknown unicast and multicast discarded rather than
-flooded, while DSA and the driver shadow both think filtering is off.
-
-Also, xlnx_tsn_port_state_cycle() sets the requested state and then
-restores the saved one, so if the restoring write fails the user port stays
-in TSN_PORT_STATE_BLOCKING or in TSN_PORT_STATE_FLUSH, which is not an STP
-state at all, and nothing puts it back.
-
-The last patch of the series ("net: dsa: xilinx: trap link-local control
-frames to the CPU port") adds a restore: label here, but it only assigns
-sw->vlan_aware back to its old value; every register written in between
-keeps its new value, so this question still stands at the end of the
-series.
-
-> +
-> +	/* Miss policy for unicast and multicast. It only kicks in when the
-> +	 * CAM misses and the VID has no membership entry either. So flood the
-> +	 * unregistered ones while VLAN-unaware, and drop them once filtering
-> +	 * is on.
-> +	 */
-> +	reg = sw_ior(sw, TSN_SW_CTRL_OFFSET);
-> +	reg &= ~(TSN_SW_CTRL_UCAST_MISS_MASK | TSN_SW_CTRL_MCAST_MISS_MASK);
-> +	if (vlan_filtering) {
-> +		reg |= FIELD_PREP(TSN_SW_CTRL_UCAST_MISS_MASK, TSN_SW_CTRL_MISS_DISCARD) |
-> +		       FIELD_PREP(TSN_SW_CTRL_MCAST_MISS_MASK, TSN_SW_CTRL_MISS_DISCARD);
-> +	} else {
-> +		reg |= FIELD_PREP(TSN_SW_CTRL_UCAST_MISS_MASK, TSN_SW_CTRL_UCAST_MISS_FLOOD) |
-> +		       FIELD_PREP(TSN_SW_CTRL_MCAST_MISS_MASK, TSN_SW_CTRL_MCAST_MISS_FLOOD);
-> +	}
-> +	sw_iow(sw, TSN_SW_CTRL_OFFSET, reg);
-
-[Severity: Medium]
-
-Is the VLAN-unaware state here the same as the VLAN-unaware state at boot?
-
-TSN_SW_CTRL_MCAST_MISS_MASK is only ever programmed from this function.
-xlnx_tsn_setup() masks and programs TSN_SW_CTRL_UCAST_MISS_MASK and
-TSN_SW_CTRL_MEMBER_VIOL_MASK only, so at probe the multicast miss field
-keeps whatever the register already holds:
-
-	reg &= ~(TSN_SW_CTRL_UCAST_MISS_MASK | TSN_SW_CTRL_MEMBER_VIOL_MASK);
-	reg |= FIELD_PREP(TSN_SW_CTRL_UCAST_MISS_MASK, TSN_SW_CTRL_UCAST_MISS_FLOOD) |
-	       FIELD_PREP(TSN_SW_CTRL_MEMBER_VIOL_MASK, TSN_SW_CTRL_MEMBER_VIOL_DISCARD);
-
-The header documents the encoding as flood / to processor / to MAC /
-discard, with FLOOD == 0x1, so a reset value of 0x0 is a different action.
-Unless the reset value happens to be FLOOD, unknown multicast and broadcast
-handling in a VLAN-unaware bridge would depend on whether vlan_filtering
-has ever been toggled once.  Could xlnx_tsn_setup() program this field too?
-
-The changelog also does not mention that the patch starts driving this
-switch-wide field.
-
-[ ... ]
-
-> +static int xlnx_tsn_port_vlan_add(struct dsa_switch *ds, int port,
-> +				  const struct switchdev_obj_port_vlan *vlan,
-> +				  struct netlink_ext_ack *extack)
-> +{
-> +	bool untagged = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
-> +	bool pvid = vlan->flags & BRIDGE_VLAN_INFO_PVID;
-> +	struct xlnx_tsn *sw = ds->priv;
-> +	u32 data;
-> +	int ret;
-> +
-> +	guard(mutex)(&sw->indirect_lock);
-> +
-> +	/* The hardware strips the tag on egress only for a wire port's native
-> +	 * VLAN. Reject an untagged request for any other VID. The CPU port is
-> +	 * exempt as it always trunks tagged toward the host.
-> +	 */
-> +	if (port != XLNX_TSN_CPU_PORT && untagged && !pvid &&
-> +	    vlan->vid != sw->pvid[port]) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "untagged egress is only supported for the port PVID");
-> +		return -EINVAL;
-> +	}
-
-[Severity: Medium]
-
-Can this restriction be bypassed by command ordering?  It is validated
-against the mutable sw->pvid[] shadow and never re-validated when the PVID
-moves:
-
-  bridge vlan add dev swp1 vid 10 pvid untagged
-  bridge vlan add dev swp1 vid 20 pvid untagged
-
-The second call has pvid == true, so the check above is skipped and the
-if (pvid) branch below overwrites sw->pvid[1] with 20 and reprograms the
-single native-VID/untag pair.  The bridge keeps BRIDGE_VLAN_INFO_UNTAGGED
-on VLAN 10 (__vlan_add_pvid() only moves vg->pvid, VLAN 10 is not
-re-notified), so the bridge still expects VLAN 10 to egress untagged on
-swp1 while the hardware now tags it, with no error reported.
-
-Deleting VID 20 afterwards gives the same divergence through
-xlnx_tsn_port_vlan_del(), which resets the native VID and untag setting to
-the defaults while VLAN 10 is still configured untagged.
-
-> +
-> +	ret = xlnx_tsn_vlan_read(sw, vlan->vid, &data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	data |= TSN_PORT_BIT(port);
-> +	if (sw->vlan_aware)
-> +		data |= TSN_VLAN_PORT_LIST_VALID;
-> +	else
-> +		data &= ~TSN_VLAN_PORT_LIST_VALID;
-> +	ret = xlnx_tsn_vlan_write(sw, vlan->vid, data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	set_bit(vlan->vid, sw->cfg_vids);
-> +
-> +	/* The CPU port needs membership only. */
-> +	if (port == XLNX_TSN_CPU_PORT)
+>  static void xlnx_tsn_port_fast_age(struct dsa_switch *ds, int port)
+>  {
+>  	struct xlnx_tsn *sw = ds->priv;
+> @@ -712,6 +742,9 @@ static int xlnx_tsn_port_fdb_add(struct dsa_switch *ds, int port,
+>  	u8 portlist;
+>  	int ret;
+>  
+> +	if (xlnx_tsn_addr_is_ctrl_trap(addr))
 > +		return 0;
 > +
-> +	if (pvid) {
-> +		sw->pvid[port] = vlan->vid;
-> +		sw->pvid_untagged[port] = untagged;
-> +		xlnx_tsn_apply_pvid(sw, port);
+
+[Severity: Medium]
+Do the three FDB ops now disagree about these two addresses?
+
+xlnx_tsn_port_fdb_add() and xlnx_tsn_port_fdb_del() return 0 without
+touching the CAM, so a request like:
+
+    bridge fdb add 01:80:c2:00:00:00 dev swp1 master static
+
+is accepted by br_fdb_add() (it only rejects the all-zero address),
+notified to the driver through dsa_port_do_fdb_add() ->
+ds->ops->port_fdb_add(), and reported as successfully offloaded although
+nothing was programmed. The corresponding delete likewise returns success
+while the trap entry stays in the CAM, so user space has no way to remove
+it and gets no error.
+
+xlnx_tsn_port_fdb_dump() has no matching filter - it walks the per-MAC
+read-key region and reports every slot with TSN_CAM_FOUND set using
+is_static = false:
+
+    ctrl = sw_ior(sw, TSN_CAM_CTRL_OFFSET);
+    if (!(ctrl & TSN_CAM_FOUND))
+            continue;
+    ...
+    ret = cb(addr, vid, false, data);
+
+If the trap entries land in a wire port's read-key region (the driver
+already relies on that region for its own OP_ADD entries), they would be
+dumped back as dynamic entries learnt on swp1/swp2, which contradicts what
+add and del report.
+
+Would it be better to either apply the same filter in the dump, or make
+add/del return an error for these addresses instead of reporting success?
+
+>  	if (!vid)
+>  		vid = TSN_SW_DEFAULT_VID;
+>  
+
+[ ... ]
+
+> @@ -733,6 +766,9 @@ static int xlnx_tsn_port_fdb_del(struct dsa_switch *ds, int port,
+>  	u8 portlist;
+>  	int ret;
+>  
+> +	if (xlnx_tsn_addr_is_ctrl_trap(addr))
+> +		return 0;
+> +
+>  	if (!vid)
+>  		vid = TSN_SW_DEFAULT_VID;
+>  
+
+[ ... ]
+
+> @@ -936,12 +973,93 @@ static void xlnx_tsn_set_vlan_only_learning(struct xlnx_tsn *sw, bool on)
+>  	sw_iow(sw, TSN_SW_ADDR_LEARN_OFFSET, reg);
+>  }
+>  
+> +/* Install or remove link-local control-frame traps for one VID.
+> + * Each entry points to the CPU port and marks frames as management
+> + * traffic for delivery on the management queue. Caller holds
+> + * indirect_lock.
+> + */
+> +static int xlnx_tsn_set_ctrl_traps(struct xlnx_tsn *sw, u16 vid, bool add)
+> +{
+> +	int i, ret;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(xlnx_tsn_ctrl_das); i++) {
+> +		ret = xlnx_tsn_cam_write(sw, xlnx_tsn_ctrl_das[i], vid,
+> +					 TSN_PORT_BIT(XLNX_TSN_CPU_PORT),
+> +					 true, add);
+
+[Severity: Medium]
+Can this port list also catch the host's own transmitted control frames?
+
+The host bridge sends BPDUs and LLDPDUs with exactly these destination
+MACs. Those frames enter the fabric from the endpoint port and, when
+untagged, are looked up under the CPU port's native VID. While the bridge
+is VLAN-unaware xlnx_tsn_apply_pvid() keeps that at TSN_SW_DEFAULT_VID,
+which is also the trap key installed here, so the frame matches the same
+CAM entry - whose port list contains only TSN_PORT_BIT(XLNX_TSN_CPU_PORT)
+and therefore neither wire port.
+
+Whether the frame still egresses depends on the SA-egress selection
+programmed in xlnx_tsn_setup():
+
+    mgmt = sw_ior(sw, TSN_SW_MGMT_QUEUING_OFFSET);
+    mgmt |= TSN_SW_MGMT_QUEUING_EP_SA_EGRESS;
+    sw_iow(sw, TSN_SW_MGMT_QUEUING_OFFSET, mgmt);
+
+taking precedence over a CAM hit. Is that precedence guaranteed by the IP?
+Nothing in the driver or the register definitions states it. If the CAM
+hit governs instead, the host's own BPDUs and LLDPDUs would be forwarded
+only back to the ingress (CPU) port and dropped, which would disable STP
+transmission entirely. Could this be confirmed against the switch IP
+documentation, or the trap port list adjusted for endpoint ingress?
+
+> +		if (ret)
+> +			return ret;
 > +	}
 > +
-> +	if (vlan->vid == sw->pvid[port] &&
-> +	    sw->pvid_untagged[port] != untagged) {
-> +		sw->pvid_untagged[port] = untagged;
-> +		xlnx_tsn_apply_pvid(sw, port);
+> +	return 0;
+> +}
+> +
+> +static bool xlnx_tsn_vid_in(const u16 *vids, int count, u16 vid)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < count; i++)
+> +		if (vids[i] == vid)
+> +			return true;
+> +
+> +	return false;
+> +}
+> +
+
+[ ... ]
+
+> +static int xlnx_tsn_sync_ctrl_traps(struct xlnx_tsn *sw)
+> +{
+> +	u16 want[XLNX_TSN_NUM_PORTS - 1], vid;
+> +	struct dsa_port *dp;
+> +	int i, n, ret;
+> +
+> +	n = 0;
+> +	dsa_switch_for_each_user_port(dp, &sw->ds) {
+> +		vid = sw->vlan_aware ? sw->pvid[dp->index] : TSN_SW_DEFAULT_VID;
+> +		if (!xlnx_tsn_vid_in(want, n, vid))
+> +			want[n++] = vid;
+> +	}
+> +
+> +	/* Remove traps at VIDs no longer used as any wire port's native VID. */
+> +	i = 0;
+> +	while (i < sw->ctrl_trap_count) {
+> +		vid = sw->ctrl_trap_vid[i];
+> +		if (xlnx_tsn_vid_in(want, n, vid)) {
+> +			i++;
+> +			continue;
+> +		}
+> +		ret = xlnx_tsn_set_ctrl_traps(sw, vid, false);
+> +		if (ret)
+> +			return ret;
+> +
+> +		sw->ctrl_trap_vid[i] = sw->ctrl_trap_vid[--sw->ctrl_trap_count];
+> +	}
+> +
+> +	/* Add traps at native VIDs not yet installed. */
+> +	for (i = 0; i < n; i++) {
+> +		if (xlnx_tsn_vid_in(sw->ctrl_trap_vid, sw->ctrl_trap_count,
+> +				    want[i]))
+> +			continue;
+> +		ret = xlnx_tsn_set_ctrl_traps(sw, want[i], true);
+> +		if (ret)
+> +			return ret;
+> +
+> +		sw->ctrl_trap_vid[sw->ctrl_trap_count++] = want[i];
 > +	}
 > +
 > +	return 0;
 > +}
 
-[Severity: High]
+[Severity: Medium]
+Can the shadow list get permanently out of step with the CAM here?
 
-What clears sw->pvid[port] when the bridge withdraws
-BRIDGE_VLAN_INFO_PVID from a VLAN that stays configured?
+xlnx_tsn_set_ctrl_traps() writes two entries and returns on the first
+xlnx_tsn_cam_write() failure without unwinding the one it already
+programmed, but this function treats it as all-or-nothing.
 
-  bridge vlan add dev swp1 vid 10 pvid untagged
-  bridge vlan add dev swp1 vid 10 untagged        # pvid flag dropped
+Removal direction: if the STP delete succeeds and the LLDP delete returns
+-ETIMEDOUT from xlnx_tsn_cam_wait_ready()/xlnx_tsn_cam_wait_done(), the
+early return happens before:
 
-nbp_vlan_add() detects the flag change via __vlan_flags_would_change() and
-re-notifies switchdev with flags lacking PVID, so this function is called
-with pvid == false.  The extack check above is skipped because
-vlan->vid == sw->pvid[port], the if (pvid) block is not taken, and the last
-block only updates sw->pvid_untagged[].  sw->pvid[1] stays 10, so
-xlnx_tsn_apply_pvid() keeps VID 10 in the native-VID register and untagged
-frames from the wire are still admitted into VLAN 10 and forwarded to its
-other members, although the bridge would drop them.
+    sw->ctrl_trap_vid[i] = sw->ctrl_trap_vid[--sw->ctrl_trap_count];
 
-Other DSA drivers handle this notification explicitly.
-mv88e6xxx_port_vlan_add():
+so the VID stays recorded as installed although one of its entries is
+gone. If that VID becomes a wanted native VID again, the removal loop
+keeps it and the add loop skips it, because
+xlnx_tsn_vid_in(sw->ctrl_trap_vid, ...) is true - the deleted STP trap is
+never reinstalled and BPDUs at that VID are relayed to the peer wire port
+again, with no error reported anywhere.
 
-	} else if (vlan->vid && p->bridge_pvid.vid == vlan->vid) {
-		/* The old pvid was reinstalled as a non-pvid VLAN */
-		p->bridge_pvid.valid = false;
-		...
-	}
+Add direction: if the STP add succeeds and the LLDP add fails, the return
+happens before:
 
-and ocelot_vlan_add() calls ocelot_port_set_pvid(ocelot, port, NULL) in the
-same situation.
+    sw->ctrl_trap_vid[sw->ctrl_trap_count++] = want[i];
 
-The mirror case is in xlnx_tsn_port_vlan_del() below:
+so the installed entry is untracked, and xlnx_tsn_remove_ctrl_traps()
+iterates only ctrl_trap_vid[0..ctrl_trap_count), so it can never delete
+it.
 
-	if (sw->pvid[port] == vlan->vid) {
-		sw->pvid[port] = TSN_SW_DEFAULT_VID;
+Should xlnx_tsn_set_ctrl_traps() roll back the entries it already
+programmed, or should the bookkeeping be updated per entry rather than per
+VID?
 
-Rather than disabling untagged admission, this re-points untagged ingress
-at VID 1.  When VLAN 1 is a configured VLAN whose member list includes the
-port (the bridge default_pvid VLAN, kept as a tagged member), does
-TSN_SW_CTRL_MEMBER_VIOL_DISCARD still fire, or does untagged traffic leak
-into VLAN 1 once the real PVID VLAN is deleted?
+>  static int xlnx_tsn_port_vlan_filtering(struct dsa_switch *ds, int port,
+>  					bool vlan_filtering,
+>  					struct netlink_ext_ack *extack)
+>  {
+>  	struct xlnx_tsn *sw = ds->priv;
+>  	struct dsa_port *dp;
+> +	bool old_vlan_aware;
+>  	unsigned long bit;
+>  	u32 reg, data;
+>  	int ret;
+> @@ -967,6 +1085,7 @@ static int xlnx_tsn_port_vlan_filtering(struct dsa_switch *ds, int port,
+>  			return ret;
+>  	}
+>  
+> +	old_vlan_aware = sw->vlan_aware;
+>  	sw->vlan_aware = vlan_filtering;
+>  
 
 [ ... ]
 
-> @@ -941,12 +1232,26 @@ static int xlnx_tsn_setup(struct dsa_switch *ds)
->  	       TSN_SW_ADDR_LEARN_NO_VLAN_EN;
->  	sw_iow(sw, TSN_SW_ADDR_LEARN_OFFSET, reg);
+> @@ -1004,15 +1123,23 @@ static int xlnx_tsn_port_vlan_filtering(struct dsa_switch *ds, int port,
+>  		ret = xlnx_tsn_port_state_cycle(sw, dp->index,
+>  						TSN_PORT_STATE_BLOCKING);
+>  		if (ret)
+> -			return ret;
+> +			goto restore;
 >  
-> -	/* On a CAM miss flood unknown tagged unicast frames to all ports. */
-> +	/* On a CAM miss flood unknown tagged unicast frames to all ports.
-> +	 * Also drop tagged frames whose ingress port is not in the VLAN
-> +	 * member list. The membership check only bites once VLANs exist.
-> +	 */
->  	reg = sw_ior(sw, TSN_SW_CTRL_OFFSET);
-> -	reg &= ~TSN_SW_CTRL_UCAST_MISS_MASK;
-> -	reg |= FIELD_PREP(TSN_SW_CTRL_UCAST_MISS_MASK, TSN_SW_CTRL_UCAST_MISS_FLOOD);
-> +	reg &= ~(TSN_SW_CTRL_UCAST_MISS_MASK | TSN_SW_CTRL_MEMBER_VIOL_MASK);
-> +	reg |= FIELD_PREP(TSN_SW_CTRL_UCAST_MISS_MASK, TSN_SW_CTRL_UCAST_MISS_FLOOD) |
-> +	       FIELD_PREP(TSN_SW_CTRL_MEMBER_VIOL_MASK, TSN_SW_CTRL_MEMBER_VIOL_DISCARD);
->  	sw_iow(sw, TSN_SW_CTRL_OFFSET, reg);
+>  		ret = xlnx_tsn_port_state_cycle(sw, dp->index,
+>  						TSN_PORT_STATE_FLUSH);
+>  		if (ret)
+> -			return ret;
+> +			goto restore;
+>  	}
 >  
-> +	/* Every port uses the default native VID until VLAN filtering is
-> +	 * enabled. Seed the PVID shadow and program the native VID
-> +	 * registers to match.
-> +	 */
-> +	scoped_guard(mutex, &sw->indirect_lock)
-> +		for (port = XLNX_TSN_CPU_PORT; port < XLNX_TSN_NUM_PORTS; port++) {
-> +			sw->pvid[port] = TSN_SW_DEFAULT_VID;
-> +			xlnx_tsn_apply_pvid(sw, port);
-> +		}
+> +	ret = xlnx_tsn_sync_ctrl_traps(sw);
+> +	if (ret)
+> +		goto restore;
 > +
+>  	return 0;
+> +
+> +restore:
+> +	sw->vlan_aware = old_vlan_aware;
+> +	return ret;
+>  }
 
 [Severity: Medium]
+Does this rollback leave the shadow flag disagreeing with the hardware?
 
-Should the per-VID VLAN-membership memory be flushed here as well?
+Only sw->vlan_aware is reverted, while every register write already made
+for the new setting stays in place:
 
-The membership words at TSN_VLAN_CTRL_OFFSET / TSN_VLAN_DATA_OFFSET now
-gate forwarding, and MEMBER_VIOL is pinned to DISCARD just above, but the
-driver never initializes that memory at setup and never clears it at
-teardown.  The software shadows (sw->cfg_vids, sw->pvid[], sw->vlan_aware)
-always start zeroed from devm_kzalloc(), so anything left in the table
-takes part in forwarding without the driver knowing about it.  This is
-reachable after unbind/rebind or module reload where the entries were not
-torn down, for example a failing xlnx_tsn_vlan_write() during bridge
-teardown, a shutdown/kexec path (dsa_switch_shutdown() does no VLAN
-cleanup), or a pre-programmed fabric.
+  - TSN_VLAN_PORT_LIST_VALID flipped on each VID in sw->cfg_vids
+  - the unicast/multicast CAM-miss policy in TSN_SW_CTRL
+  - the VLAN-only-learning bit via xlnx_tsn_set_vlan_only_learning()
+  - the per-port native VID and untag bits via xlnx_tsn_apply_pvid()
 
-Three consequences to consider:
+xlnx_tsn_port_state_cycle() can return -EBUSY (previous state-change bit
+still pending) or -ETIMEDOUT (ack timeout), and xlnx_tsn_sync_ctrl_traps()
+can return -ETIMEDOUT from the CAM polling.
 
-A stale entry with Port-List-Valid set makes the pinned MEMBER_VIOL=DISCARD
-action fire for tagged frames arriving on a port absent from the stale port
-list, so traffic a VLAN-unaware bridge must forward is dropped.  The new
-comment "The membership check only bites once VLANs exist" would then not
-hold.
+When enabling filtering fails that way, the hardware keeps discarding
+unknown unicast/multicast and enforcing VLAN membership while
+sw->vlan_aware is false and DSA and the bridge both believe filtering is
+off, so traffic is dropped with no indication of why.
 
-xlnx_tsn_port_vlan_add() does a read-modify-write:
+It also affects later operations: xlnx_tsn_port_vlan_add() takes the
+data &= ~TSN_VLAN_PORT_LIST_VALID branch, xlnx_tsn_apply_pvid() reprograms
+the native VID to TSN_SW_DEFAULT_VID, and xlnx_tsn_sync_ctrl_traps()
+recomputes wanted trap VIDs from the reverted flag:
 
-	ret = xlnx_tsn_vlan_read(sw, vlan->vid, &data);
-	...
-	data |= TSN_PORT_BIT(port);
+    vid = sw->vlan_aware ? sw->pvid[dp->index] : TSN_SW_DEFAULT_VID;
 
-so a newly added VLAN inherits stale member ports and forwards that VID to
-ports the bridge never added.
-
-The Port-List-Valid flip in xlnx_tsn_port_vlan_filtering() walks only
-sw->cfg_vids, so untracked VIDs are never made inert or repaired, and
-last_member in xlnx_tsn_port_vlan_del() is computed from a port list that
-can contain bits the driver never set.
-
-For reference, mv88e6xxx flushes the whole VTU at setup via
-mv88e6xxx_vtu_setup() -> mv88e6xxx_g1_vtu_flush().
+so the CAM trap keys can end up permanently mismatched against the native
+VIDs actually programmed. Before this patch the function returned the
+error with the flag matching the writes already made. Would undoing the
+hardware writes too, or dropping the flag revert, be more consistent?
 
 [ ... ]
 
-> diff --git a/drivers/net/dsa/xilinx/xilinx_tsn.h b/drivers/net/dsa/xilinx/xilinx_tsn.h
-> index a94f5124a33d..955041cde564 100644
-> --- a/drivers/net/dsa/xilinx/xilinx_tsn.h
-> +++ b/drivers/net/dsa/xilinx/xilinx_tsn.h
+> @@ -1204,6 +1333,21 @@ static const struct phylink_mac_ops xlnx_tsn_phylink_mac_ops = {
+>  	.mac_link_down	= xlnx_tsn_mac_link_down,
+>  };
+>  
+> +static void xlnx_tsn_remove_ctrl_traps(struct xlnx_tsn *sw)
+> +{
+> +	int i;
+> +
+> +	guard(mutex)(&sw->indirect_lock);
+> +
+> +	for (i = 0; i < sw->ctrl_trap_count; i++)
+> +		if (xlnx_tsn_set_ctrl_traps(sw, sw->ctrl_trap_vid[i], false))
+> +			dev_warn(sw->dev,
+> +				 "failed to remove control trap vid %u\n",
+> +				 sw->ctrl_trap_vid[i]);
+> +
+> +	sw->ctrl_trap_count = 0;
+> +}
+> +
+>  static int xlnx_tsn_setup(struct dsa_switch *ds)
+>  {
+>  	struct dsa_port *cpu_dp = dsa_to_port(ds, XLNX_TSN_CPU_PORT);
 
 [ ... ]
 
-> @@ -304,6 +333,15 @@ struct xlnx_tsn_mac {
->   * @nb: netdev notifier that handles NETDEV_REGISTER on each swpN
->   *	to set its final MAC, and NETDEV_CHANGEADDR on the conduit
->   *	to refresh the shared prefix
-> + * @vlan_aware: true once bridge VLAN filtering is on. Until then the
-> + *		native VID, egress untag, and membership enforcement are
-> + *		all held back.
-> + * @pvid: per-port bridge PVID shadow, written to the native VID register
-> + *	  while @vlan_aware; defaults to TSN_SW_DEFAULT_VID
+> @@ -1276,9 +1420,19 @@ static int xlnx_tsn_setup(struct dsa_switch *ds)
+>  			return ret;
+>  	}
+>  
+> +	/* Trap link-local control frames (STP, LLDP) to the CPU port.
+> +	 * Without this, a frame arriving on one wire port would be
+> +	 * flooded out the other instead of reaching the host bridge.
+> +	 */
 
-[Severity: Low]
-
-This isn't a bug, but does the @pvid description match what the code does
-for the CPU port?
-
-pvid[XLNX_TSN_CPU_PORT] can never change: xlnx_tsn_port_vlan_add() returns
-early at
-
-	/* The CPU port needs membership only. */
-	if (port == XLNX_TSN_CPU_PORT)
-		return 0;
-
-before any pvid bookkeeping, and xlnx_tsn_port_vlan_del() only ever writes
-TSN_SW_DEFAULT_VID back into it.  So the endpoint native VID stays at VID 1
-for the lifetime of the driver even though TSN_EP_NATIVE_VLAN_OFFSET and
-xlnx_tsn_set_native_vid() handle XLNX_TSN_CPU_PORT.
-
-The two apply loops also disagree on coverage: xlnx_tsn_setup() uses
-for (port = XLNX_TSN_CPU_PORT; port < XLNX_TSN_NUM_PORTS; port++) while
-xlnx_tsn_port_vlan_filtering() re-applies with
-dsa_switch_for_each_user_port(), which excludes the CPU port.  Could the
-documentation say the CPU-port slots are unused, or the loops be made
-consistent?
-
-> + * @pvid_untagged: per-port flag tracking whether the PVID egresses
-> + *		   untagged; drives the native-VLAN untag enable
-> + * @cfg_vids: VIDs with a membership entry in the VLAN-membership memory,
-> + *	      used to walk and update Port-List-Valid when @vlan_aware changes
->   * @indirect_lock: serialises the CAM and VLAN-membership indirect
->   *		   register sequences
-
-[ ... ]
-
-Cross-instance finding from sashiko-gemini (4f56bb35ca00c92afa83ce956f0bfab329dc0d5a7ae6d461bc954faf0f898d34):
 [Severity: Medium]
-Mixing goto-based error handling with scope-based cleanup helpers (`guard()`, `scoped_guard()`) in the same function.
+Can trapped frames actually reach the host bridge in this tree?
 
-Cross-instance finding from sashiko-gemini (e8525d575b62bcd573cc21461acce156f144090732b49f8b9225c62ef9d9e0ba):
-[Severity: High]
-Leaking internal default VLAN tags to wire ports when VLAN filtering is disabled.
+The tag protocol receive hook for this switch drops everything coming from
+the conduit:
+
+net/dsa/tag_xlnx_tsn.c:xlnx_tsn_rcv() {
+	kfree_skb(skb);
+	return NULL;
+}
+
+That is the only rcv path in the tagger, so no frame the switch delivers on
+the CPU port ever reaches a DSA user netdev or the software bridge, and
+this patch adds no management-queue consumer. With the CAM port list set to
+TSN_PORT_BIT(XLNX_TSN_CPU_PORT) only, the observable change today looks
+like 01:80:c2:00:00:00 and 01:80:c2:00:00:0e are dropped rather than
+consumed locally.
+
+The commit message says the switch "then delivers trapped frames on the
+management queue" - is there a receive path for that queue, or does that
+part depend on a follow-up patch?
+
+Separately, this comment says the frame "would be flooded out the other
+instead of reaching the host bridge", while the commit message says a CAM
+miss is "flooded to all ports except the ingress port", which includes the
+CPU port. Could the two descriptions be reconciled?
+
+> +	scoped_guard(mutex, &sw->indirect_lock) {
+> +		ret = xlnx_tsn_sync_ctrl_traps(sw);
+> +		if (ret)
+> +			return ret;
+> +	}
+
+[Severity: Medium]
+Should this error path use the err_traps label added below instead of
+returning directly?
+
+xlnx_tsn_sync_ctrl_traps() installs entries incrementally and records each
+wanted VID as it goes, so a failure on the second VID - or on the second
+destination MAC of the first VID - leaves CAM entries programmed and
+ctrl_trap_count possibly non-zero.
+
+Nothing removes them afterwards: DSA does not call ds->ops->teardown() when
+ds->ops->setup() fails,
+
+net/dsa/dsa.c:dsa_switch_setup() {
+	err = ds->ops->setup(ds);
+	if (err < 0)
+		goto unregister_notifier;
+}
+
+and the shadow state goes away with the failed probe, so a re-probe starts
+with ctrl_trap_count = 0 and never accounts for the stale entries. The
+mutex itself is released correctly by the scoped_guard cleanup; it is only
+the xlnx_tsn_remove_ctrl_traps() call that is skipped.
+
+> +
+>  	ret = xlnx_tsn_mdio_register_all(sw);
+>  	if (ret)
+> -		return ret;
+> +		goto err_traps;
+>  
+>  	sw->nb.notifier_call = xlnx_tsn_netdev_event;
+>  	ret = register_netdevice_notifier(&sw->nb);
+> @@ -1312,6 +1466,8 @@ static int xlnx_tsn_setup(struct dsa_switch *ds)
+>  	unregister_netdevice_notifier(&sw->nb);
+>  err_mdio:
+>  	xlnx_tsn_mdio_unregister_all(sw);
+> +err_traps:
+> +	xlnx_tsn_remove_ctrl_traps(sw);
+>  	return ret;
+>  }
+
+[ ... ]
+
+Cross-instance finding from sashiko-gemini (f0bf43e93137481b1a742a87803d2ec1a8a9f5833a1ae7688d64415f986a1ea2):
+[Severity: Medium]
+Mixing goto-based error handling with scoped guard cleanups in the same function.
