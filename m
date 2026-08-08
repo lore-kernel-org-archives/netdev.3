@@ -1,91 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2702B3321A1;
-	Sat,  8 Aug 2026 01:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786153259; cv=none; b=TItflmAsC2XykI7+YtycjWMbA9nPtoSFkQng/EGWLzcTHoZ6hwWlYx3Jnzbu/r8xmcU4e0VZnLDTAY9QY5no+C7YYk4DQoZw6hENFHZ3g5hU/owtj84OE/kQzHC4NKEPPMn8l37/N04WPCrRlU4t+QmZWzCP1Hun70HCTvxGBXc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786153259; c=relaxed/simple;
-	bh=NJ8GJPPA+zploVAg3Hn7JkNR2DDXJKV7+/g0hytsz0M=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SW3E0WKwq8LrwHt99tLPqCK3H4Pnd1LbzlBr9vuXroouueHGGeSI+OPMQREr3ePzTcpIZxyonaVMRN6rlo8XF50UABBrhX83RbGBT2qfFwEkbqvdlJYVJ8rHM/7ZdeHTioxggO0h8iEAB5Ei2rVYtoOSOzHmPCN3OL+I5WtJR0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=joAKtJ9a; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CDA31E837
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 01:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786153269; cv=pass; b=AEVGxfN+SXhZYcrViAQM8EUjgKrN4BHkLWHY8b30RK96jNfQA3a7WOkKThuy80hShvUCTboujKHCz/hV39rjGMAec0cIpoCLIaKP8TvJspoJ2B9s+4l80ked1zQzeZiUpXiVGaixPZTO0iHm1EnYT1Til7l6rO8HtuWxQfYtJYA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786153269; c=relaxed/simple;
+	bh=J6v6peq2pcAz4ZTnsFALAfBpXXwe0QNWMxVmWduDSlU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l559rDE+ZxToXMPaRe9eeS2s0QY4rkLopIJDpcgLq7LdAr/WVqTDM0EbwjhsHfRCcJ9/NE0RkwuPVmcsN8CizqHW8jTYJJMIpubqO3ffCTQJZyqAJ3VBY2fUkTyn10uxByPYiRxdenkrXVG+o455tr3sL/9MgZM9MPw5RyMwa44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S9rnqsxr; arc=pass smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="joAKtJ9a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E051F000E9;
-	Sat,  8 Aug 2026 01:40:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786153257;
-	bh=NXm/SsYiv4ju2Xo/fyAJbZ1/yajU4AJnu1Qr1d7j8WA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=joAKtJ9aDWLRW8g60N7rTz7Fk3n3zBec23EWuWHUcWd5HRqJVBkyk5WzNKzjUm85d
-	 9lsGEGYAKdlvH34Iw4D0SJhzT+OSm4I97ZiogX8In8C3QDlPx4sL/bJHQX8+z9I/xL
-	 llWdFb+5gWtBqCI6caipTdq3EJ5h0snCEe5r3v584ZLlC4dIbfsFFuGlNZ1gWMXXjG
-	 gPJYFRkePsgxKXugp6MgsJ6jx2YB/CLH5jYGJREspbCKJ7wNR1g4fjFpD2B6OMjnJi
-	 76Cubw0CLs7D2krtwFJV7n8r/JTSsAZEjTiFhC2xcn67UHTA3CEZG4Jtgx1r3vW0f4
-	 mcuseiKZ7WFJg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5696B380CEE4;
-	Sat,  8 Aug 2026 01:40:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S9rnqsxr"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so112883a91.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 18:41:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786153268; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ja/sZsZchhiBOE2lv3kQTZZF5ks//aN0BEEmUxkUlZjnbvcIEYfTjUjjd44PxX8sMa
+         H1ngz4xhLHezlIVpWo831xko3Fda0esYSeVL2iNXy3C2y6+OnlZ0b3d8UVPj+BIztgs0
+         9sgLX8Cw0rd3WtEgjzH6Hwzirrppus89/r9lKltOEvwkQ1WktPH/7HMCdsOtPkFecW8K
+         bq4bgxZVM44j0a+BMooShmL9JPgdn0U92kmEzkoT0YkPvac3o4l4PxltTWPTRGJeboTB
+         SxIx/X7q9QQGvEjQyuHiciz5dD3rcpFdnLswb5Nht8iSDHanvgYK8cWRCboT1N9WeVCC
+         RaGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=K33TW3QT82O6/MHuB/paGse9ECFvxfuZooBXxXgxnaI=;
+        fh=JmGpHUwFQSvqEk8506ax+r3Erjp00V9ivQL3nD+Clo0=;
+        b=A8pHEcKlcqa3gmUZN9O6Gb8gBXK6ZJwHOiXFuUTQCf+NkpchkpsQwsEn6qJ8vC42Dh
+         ecS38bJCp+cQM/Ai26povKA39wCO1LqNrAUkIykM1/MTRPCZGlMZYbZGcM316EDSohmK
+         F8vM3fVFAaLlUXa+xQ8FNlI01mS6hPLCIx1bhmOPcxy2HoAz9lN89A1CUj1NOyh3mL8g
+         GR+Dts+q5G4aBY80ZXHClN4edkm4qO8rqSqCWYdxdVr50WkF2kS6ZJwYiI1tDZzhySNF
+         vld41BxvDNEfHGw9TJ91EJvMhZwFSWD9hR5yVVg+xCEacYC1dk6/yInd3YhEsbm+qmqD
+         /Djg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786153268; x=1786758068; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=K33TW3QT82O6/MHuB/paGse9ECFvxfuZooBXxXgxnaI=;
+        b=S9rnqsxrUk8/+6bAJuHNSzw/5VgLOhzwV9SWzeIuA7gTYfwvWbUPyDCoLzNM1jlqlf
+         M3HWi4fYCJ8f/0MG2n06Hy0CmZ7RVE7JoV6XXjg16SJhBe3I2pL60fy4fj4bMaV1KvIN
+         HgwbMaAR0MaTvG0Jf7EAAz0mXKfyqkB853A8ob1SPJXcIAn0qwWCUI60ZKqX3WqE0RTP
+         qtS5Yr97zwwz39HewRekrHKSfySOr672krX5TtZ9W/S8Pwl4rgQRNtnhasjuR+/NPqKq
+         Oxha5gdeh0eeicKrQedsD1xgmP8D+EsN+NbzcKYxek2qKjWa+d6CtqWe8bcT5hSljHh2
+         2qcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786153268; x=1786758068;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K33TW3QT82O6/MHuB/paGse9ECFvxfuZooBXxXgxnaI=;
+        b=c+NlN7AzURRNVODKwEDTL3EoYAlAFBTuPYdexA6e1Z/TuIq1k9QUWYP+SyqU8lB4YP
+         RnRGiCvIiSErkX7lVELAshYkpDQXPOjYIBtQj3zzSZ35wPpngv8d3afXBaJyka9o8eVk
+         5C8/SiDE7YAOM65CB4edV3GXVXuJDbBfIIgB/eQ6hqrZdEo9KaGtIQYdnpuN+mSVrFSU
+         zlrMHJo0EUWS85Dz3wRKfX1IgEGN4bZMTcjdqKhgDYbviMRh7gDFqCGEY1oEFHKSRsQM
+         7exDyjDj5a6bTjzALKNxiRQ42lUmMbdiGAoe+kh4cIyyrt/KB6HL2RTMg8PgbcQuUf8J
+         rP3w==
+X-Forwarded-Encrypted: i=1; AHgh+RpTm/z8BDsqyoiTYpFIwUYMA16oz+DydN+DhOPyfKGSnH0cl/BR+swChgYboxYV76EkosdzSUk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC41ughvy3g5AALgERUS3ow7CCnuJHJ9aCAkUUAfZmKQ/yQu34
+	D5u0d6HYFa7JHjQ5oRrOyZ/80AXBVslubeoekJz5uZTlDslM6x9R67R0va29W6/4eImZ4Zl8hd3
+	RRfjzGmicT4ofO7QZeynrg8t/xxHi8ptxLYbGqQLs
+X-Gm-Gg: AR+sD12NYlxnAQRAJdkHaImhr9dPQ7Ay+AqJ8bkL6UPI4o9iLGcSQoC3RED1eecqY40
+	iEwNo2Lozs1IRVlgWlBaxgn/AUqAFgNSAZOUGZ2omZ5j9H9a5ZCocxX1rKMMBHHRK8D6aUxUoze
+	evu5hed5zv8imGfFmrckTTEkBOi3KVukDaCdgPPXcJLzkIMseTcNDYnLxypIgO1kGjjm5N+8cip
+	JV7REiCT1n79dStypbG8T518gIwthRbAoKEJaTU2wChY9Kxe0LDPkEqR9zw94ImvzWlV0SffzUR
+	NhUrgtSpm+/U2Kr53egXESmFSqPNGAKTuZgMzVkC/Cajnjq5k6v2OxqZEDnX1EBoDfZhUa7znDg
+	Wbnk5OA9QSUbzvk+M6kOpB5h7CoTUUmKgM1LhcKoFgFItammkG0GjJhAkXmfX+sJno72qSRIF29
+	gqSOxuVmvfHr8oTA==
+X-Received: by 2002:a17:90b:5343:b0:37f:a915:1c29 with SMTP id
+ 98e67ed59e1d1-3909d9174b2mr12356788a91.19.1786153267129; Fri, 07 Aug 2026
+ 18:41:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v8 0/3] net: devmem: allow rx-buf-size >
- PAGE_SIZE
- per binding
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178615321588.2493713.16495466969438230257.git-patchwork-notify@kernel.org>
-Date: Sat, 08 Aug 2026 01:40:15 +0000
-References: <20260805-tcpdm-large-niovs-v8-0-3e0225e2808c@meta.com>
-In-Reply-To: <20260805-tcpdm-large-niovs-v8-0-3e0225e2808c@meta.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: donald.hunter@gmail.com, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, kraxel@redhat.com, vivek.kasireddy@intel.com,
- sumit.semwal@linaro.org, christian.koenig@amd.com, shuah@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org,
- sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net,
- almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com,
- dw@davidwei.uk, joe@dama.to, bobbyeshleman@meta.com
+References: <cover.1785824313.git.namcao@linutronix.de> <bc759ceba26d6e20fab3bcf7333ee7e6246696b6.1785824313.git.namcao@linutronix.de>
+ <20260807180709.6fb7f2b2@kernel.org>
+In-Reply-To: <20260807180709.6fb7f2b2@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 7 Aug 2026 18:40:55 -0700
+X-Gm-Features: AUfX_mwkQ2n41h6YY5wbT9_yjGRlbcWzEI_ZrbQgH0BeSD9IvCNWMhOBG_HaYpA
+Message-ID: <CAAVpQUC5mY9gZH=LmRvdZb1F+QbxGPuNBgSXvHh6pTzZO5QSNQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 1/1] af_unix: Do not wait for garbage
+ collector in sendmsg()
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Nam Cao <namcao@linutronix.de>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Fri, Aug 7, 2026 at 6:07=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Tue,  4 Aug 2026 08:46:16 +0200 Nam Cao wrote:
+> > AF_UNIX sockets' sendmsg() schedules and blocks on the garbage collecto=
+r if
+> > user has too many inflight unix sockets and there is cyclic reference i=
+n
+> > the system. This causes real-time issues, as cyclic reference can be
+> > created by any task in the system, and high priority tasks who do need =
+to
+> > send lots of AF_UNIX sockets get blocked by the garbage collector which
+> > runs as workqueue, causing a priority inversion scenario.
+>
+> Hi Kuniyuki! Any thoughts?
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+flush_work() makes an insane process slow down by itself and
+the sane users (whose peers receive fd in timely manner) can
+likely acquire the gc lock before insane users.
 
-On Wed, 05 Aug 2026 13:42:42 -0700 you wrote:
-> Every devmem dmabuf binding hands the page_pool PAGE_SIZE niovs today.
-> On NICs that consume one descriptor per netmem, this caps a single RX
-> descriptor at PAGE_SIZE and burns CPU on buffer churn.
-> 
-> In this series, we add a bind-time netlink attribute,
-> NETDEV_A_DMABUF_RX_BUF_SIZE, that lets userspace request a larger niov
-> size (power of two >= PAGE_SIZE). Drivers must opt in via
-> queue_mgmt_ops.QCFG_RX_PAGE_SIZE.
-> 
-> [...]
+The commit message assumes the GC is low priority, and it will
+be easier to trigger OOM and soft lockup without the penalty.
 
-Here is the summary with links:
-  - [net-next,v8,1/3] net: devmem: allow rx-page-size > PAGE_SIZE per dmabuf binding
-    https://git.kernel.org/netdev/net-next/c/b27a8560eec9
-  - [net-next,v8,2/3] selftests/net: ncdevmem: add -b option to set rx-page-size on bind
-    https://git.kernel.org/netdev/net-next/c/3e8c9ec4eb75
-  - [net-next,v8,3/3] selftests/net: devmem.py: add check_rx_large_niov
-    https://git.kernel.org/netdev/net-next/c/8ac4255c1e0c
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+If priority inversion on RT kernel is the only problem here, there will
+be more flush_work() instances triggered from userspace, and the real
+problem is that flush_work() does not implement priority inheritance
+like mutex.
