@@ -1,325 +1,217 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FD037DAB1
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 17:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC12382F01
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 18:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786210469; cv=none; b=KJjkkJ38nX+FsR3mvrhh99aUWUpE8zg6IoEn5Au4LFpilZakii3E5hIM6Up7S995+yOVIuYAIPs/MBCmmnRju/3+nmsVMj+1kgCuXBWm5VxdBzwrWgwCyPydJArYhVjZ2HOuhUyDlynsCQLX1NJ0I84y2JfEDJfauDAu0ZZWs3Q=
+	t=1786212043; cv=none; b=rfFjGcuqLb55eU9BrGpwB1aQvHdxlZErhgaAMDTaf4no7E/asL37zpSw7Q3EFdYAz7MMmrqmn+VGKmzag4WlIpQMFfHFfbk+ntAyjBwdZ/utPp4kT0a7eZJqQwIK6wWg9pFLVHW3xsBVK1UlHAoaeqLaghlBTxm8AQw/UchynsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786210469; c=relaxed/simple;
-	bh=CD8JCBoHiHATz2FdOhtIMai4GcrNmUauAN1NF5m0LHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fRHYe/jisDABdBxGaAlCOklTcmFZxcHXL92rWPu8EWvhzXhJ+Ejz03I4RNMyE9DaIo39uSSM+Iz12KD0Umcha+m3aRm+WBs/eGVLi61zg+PlGLErPqojTeSCkiygs6/z2mFyiqtgGooREAMDHf93EuiNInYewlrBjQB3SkHoxY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R10uL+kz; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786212043; c=relaxed/simple;
+	bh=YJAjSKLv9W9Jb5w4ieif+6gn/uRjxtvwUlHbZe+U9zI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BkE8L/QfRHI6Wt+2E6it/yA6/+zj2OcBKUa/9oSzkN51xoZZ4oR4NMAOEhdsYRjf3oxJNpPYUlzogg+iJyci+pQw2YFuO6Wlhs171lOCt2+g4KIsADNDR76KjoiZFnWecDuC41KKECSBjID+RYkmvCEuxiPcCt0I1olWGhNxrM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XzNmG57S; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VJT5O8os; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R10uL+kz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786210467; x=1817746467;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CD8JCBoHiHATz2FdOhtIMai4GcrNmUauAN1NF5m0LHY=;
-  b=R10uL+kzXllyy79VFfUNIdnaOmKbAxaef4mlHWVMNuRqcn/awxB3ApVE
-   8lwaRmsytApmj7liJuKRZ9vPIAB5gSNoJfZG64/wuPL/ZE8yCIu9Y/bQT
-   CaJlE9hRdqJ6jnQZO9YxX5GuUk0/iQrLp+FdSZTTgTh0u4sSGM9ZDvzdv
-   rV3AlNlU3en6FXTxpwhjL4Yl9vrbfXsuaVC050LmxEK52gSjB3KXK0J4q
-   HI8lUakVJmizCOllAUGdyUpo+uY2hmrbqYfdBATID3tgMwG8E+eMjbH3j
-   6cRgXNqaF7Hdcv/30Z+G8uMS21P3WZLuebNMPA2uZXhshhXadsglGrLJV
-   w==;
-X-CSE-ConnectionGUID: xpPn1Lx6R5mB3hts1Og3kw==
-X-CSE-MsgGUID: NdzZ5eWrQp6Ki5Wb7FRtAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11869"; a="86865046"
-X-IronPort-AV: E=Sophos;i="6.25,212,1779174000"; 
-   d="scan'208";a="86865046"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2026 10:34:26 -0700
-X-CSE-ConnectionGUID: Wx5l5sWNRMCmsyQLEas2zg==
-X-CSE-MsgGUID: 6/cgszAaThCUxYeik+WnrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,212,1779174000"; 
-   d="scan'208";a="259341028"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 08 Aug 2026 10:34:23 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wskw8-00000000KZ3-1bM1;
-	Sat, 08 Aug 2026 17:34:20 +0000
-Date: Sun, 9 Aug 2026 01:33:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zhiling Zou <zhilinz@nebusec.ai>, netdev@vger.kernel.org,
-	dev@openvswitch.org, i.maximets@ovn.org
-Cc: oe-kbuild-all@lists.linux.dev, aconole@redhat.com, echaudro@redhat.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: Re: [PATCH net v4 1/1] net: openvswitch: reallocate update replies
- for mismatched IDs
-Message-ID: <202608090140.jJdhfFjc-lkp@intel.com>
-References: <3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XzNmG57S";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VJT5O8os"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 678GlTBH294933
+	for <netdev@vger.kernel.org>; Sat, 8 Aug 2026 18:00:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=IVuWzrtf/RLqHaO1jhaG0E
+	05SMtt0qVsGUroudHlfw0=; b=XzNmG57S8qVu5/ei/MH9cPykLIB8uXlwVXyejm
+	WlG51iKnsWDui5Z7Y1to4w5+hwxy4KVLzghEAOoAC047H2LwQeEE/LmSJ4KXpgYG
+	nV3g+e6SidsV9WcunRCftwJ93K4SE5OqbUor6tkVEoCrTC9uUFpc3pK75Jec/0NK
+	pYzG0PcSpVcomEHp0FRtK7HrP7qo8kXdAeqMZnslWXm56fgrJO4S2bn0lG/uXdLq
+	YW//70gNUabo5uKUZ4hsjtrt50SOp3SUFVHjWgQbdpGhSewLTd93nzwjyuQEWGR/
+	LgNgh1gcut1LCCV0VLVs6ctJkrpSfI9BmHRbntXIJAmkOIQw==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fwush1gjg-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 18:00:36 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c0408254aso33369221cf.0
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 11:00:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1786212036; x=1786816836; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=IVuWzrtf/RLqHaO1jhaG0E05SMtt0qVsGUroudHlfw0=;
+        b=VJT5O8osLi/W0RkiPjDrQ5SRLzSd5TXI/r2nGZeyrBzJjfxuAHTRKAK1aNhL8qRwi+
+         weihxxcXAY41yfHZgG0QZvhbIJxCVf5HtJCCCsHcs+d8ygfb8FgcOvrUkVz844u0YOQZ
+         u5/GohH1R8XikTEcGDzydVjWwNuhTEt0jfVC0nWUXZwTWiSKvmXrZzt6aEQt2FmV3NYI
+         MKTwRyIukOQ0h8ZVfSMhDdG/9A1D8yiZrJsyYf1zh2uk/ZnQTBLCMbZ4PbjjbPVANdlN
+         2z4nwAnfEqIwMHavgjbqh+yIXV9cQHqKYU04iZ6Kne3WrcCYG9Z8B1uaceSJQlC1aOg/
+         v7Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786212036; x=1786816836;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=IVuWzrtf/RLqHaO1jhaG0E05SMtt0qVsGUroudHlfw0=;
+        b=rbefgY3g5VcTRVPP5Lq6ukLYSwLyIt2yGJto8EIIqUBEgBPpUdVMUrb/HvRY079wx6
+         UfkyUoUUOVJh7lzUEYdhgKF1l50JOZVL6W/n6fVUcCZC6XbcDH+V0d3vg5eIUW7OUxna
+         YEKng3B6XCzLLHC1N/YZSyDQQmRI2pxN6QC/tWnuh1OFFnBNeuH03DFAyXgVheAbe+rS
+         MmhollWPPydwFn+1mVPkQG/7EzxYOm1YKwImehbw/Fcgek+BNYgh1pRpSJgyWBN3V481
+         c0XEq5k9LsiMXdElLYHZ8JJPLl/pj+3eIDeBGm+7x0fkxSDem4dCJlBnIjkzj+BvMkW8
+         bo+g==
+X-Gm-Message-State: AOJu0YwAOH6ay/B1Mqf6zbSCkqk/e/Y5mrOzs+QZL1u4KAhRsL+YMqbY
+	p/hnvdTw76hCh2jRuptUeodMMo5fFG1fyovT7qPZNwPKRYrt6f0rltTv4BszNKypBhvcHaPyTjB
+	Obz+lmexz50N2y/ozQMHqBLlAHD+zz62aGKZ4bRx6pg0OCROgkEHid2IsmX0=
+X-Gm-Gg: AR+sD13NEJ+YOhtzBWf7H3YcPiAvW1LvKAR4J6yfxy0WtH0W6pK2JDdzLBkwD4YFLCa
+	16nMcAcqh2Oc6w2aQPD4xETDw4qCZeR4rMOOo3Na6ISVbCjw3msOVFeAeAUOz16QAaF8au7AxNQ
+	4+nQhFQfl56VNDa1/bVnrOFMY5bs19QvOQg1YDCfTG0WaAcRnUu9bqcplZg1HELIPSYBERYl6b7
+	M3X5T4+sdCzRjkDjLUcabnUPUxi7DANGslogPq5m2bz81gLwCQL+FPKEaQq3eYEoClvTMLrWBcA
+	GEo90XvS81gvRMx86aPjkU0RwmkHgv0RNEtzJGKDs8xX1StNIo91BgWvu5HsM1QoBzFNgwGcM8w
+	Vq+hbNV2r5DTA14I=
+X-Received: by 2002:a05:622a:53c6:b0:517:c65c:4987 with SMTP id d75a77b69052e-52d23856240mr87301521cf.22.1786212035870;
+        Sat, 08 Aug 2026 11:00:35 -0700 (PDT)
+X-Received: by 2002:a05:622a:53c6:b0:517:c65c:4987 with SMTP id d75a77b69052e-52d23856240mr87300571cf.22.1786212035383;
+        Sat, 08 Aug 2026 11:00:35 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995e9ea92csm137632185e9.4.2026.08.08.11.00.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 11:00:34 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Date: Sat, 08 Aug 2026 20:00:13 +0200
+Subject: [PATCH net] net: stmmac: keep gso_enabled_types in sync with
+ netdev features
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz@nebusec.ai>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260808-stmmac-fix-tso6-features-v1-1-f82b17595052@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MwQqDMBAFf0X27EIa1Kb+ivQQ4ovdg1GyaSmI/
+ 27wODAzBymyQGlsDsr4icqWKjzahsLHpwUsc2Wyxg7GGcda1tUHjvLnotvAEb58M5SfcQ49Xl3
+ nYKnme0aV7vVECYXe53kBS/HbH28AAAA=
+X-Change-ID: 20260808-stmmac-fix-tso6-features-7fdc5e9448e2
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-GUID: EyIQ8h9D-sKIw6bcBrGAk9r7n_vx7S0M
+X-Authority-Analysis: v=2.4 cv=GvpyPE1C c=1 sm=1 tr=0 ts=6a776ec4 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=EUspDBNiAAAA:8 a=3uZi2X7aTxeIN_KhKxEA:9 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-ORIG-GUID: EyIQ8h9D-sKIw6bcBrGAk9r7n_vx7S0M
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA4MDE1NCBTYWx0ZWRfX1qZ/5yPvJMSf
+ nDPqSQ+TMgI3vmEFeYcsQXyQGIf1pgggPxzYGhvIFVeovpq66WsO2jM51LdQqzK+7NcXTcpo7Dh
+ /c9kf3oyXQaE4UgwxuCEWPDAS7PCxYs8yc+zzDHTjcknhT66MgazNnpDWG7n540MmNjR6X5hZIi
+ a5VEPDMVkcnSs1g8Llft0bquUsR/wPbre3Xt28v/ywQDaNi5dWd8AUENy//NtyESqjeWTk99mlc
+ V5XpeLxaLe58jzrHS3aOrgepFFvdJMqyT+qzWhkp5R6R3j8bdIjdy0sGUaWCID+A/uVScode8tG
+ tEYjwtSWvt09QB+ub70/Z3+8rLMZgsOAw3/fkniT6t7Me12JwMF5I3Yik+6H+S90kYtUrffBWuj
+ cy1hXt5kJsfKljYYS4rK8LtfERZURVqypRm58ephOJ3+g/6PlozmcBCGcoyw6wLeBqPqCIGNHjq
+ jWZSTfz3X9zmzoz238Q==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA4MDE1NCBTYWx0ZWRfX7nCbURKfkZ3O
+ bztWjKDXUxqzBat/AOJgZ4y88MsojxkBGMPX2FRAT61kwfB1YwYMJX2SXrX/dRGDYVygCFcJL9H
+ vGwU1/0WpOccGJ4IcXPGDviC962FdEE=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-08_06,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ adultscore=0 suspectscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608080154
 
-Hi Zhiling,
+stmmac_set_gso_types() derives priv->gso_enabled_types all-or-nothing
+from NETIF_F_TSO, but stmmac_set_gso_features() advertises NETIF_F_TSO,
+NETIF_F_TSO6 and (on GMAC4) NETIF_F_GSO_UDP_L4 as independently
+toggleable features. Since netdev_fix_features() only ties TSO6 to the
+checksum features, disabling TSO (ethtool -K ethX tx-tcp-segmentation
+off) leaves TSO6 enabled in dev->features while gso_enabled_types
+becomes 0.
 
-kernel test robot noticed the following build errors:
+For a TCPv6 GSO skb the stack then keeps the frame unsegmented
+(NETIF_F_TSO6 is still set), stmmac_features_check() does not clear the
+GSO mask, and the stmmac_xmit() gate (gso_type & gso_enabled_types) is
+false, so the multi-MSS skb is transmitted through the ordinary
+descriptor path as a single oversized frame.
 
-[auto build test ERROR on horms-ipvs/master]
-[also build test ERROR on v7.2-rc6]
-[cannot apply to net/main net-next/main linus/master next-20260807]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Derive each GSO type from its own feature bit instead, so the mask stays
+in sync with dev->features and TCPv6 (or UDP L4 on GMAC4) segmentation
+keeps working when only TSO is disabled.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zhiling-Zou/net-openvswitch-reallocate-update-replies-for-mismatched-IDs/20260808-205431
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/horms/ipvs.git master
-patch link:    https://lore.kernel.org/r/3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz%40nebusec.ai
-patch subject: [PATCH net v4 1/1] net: openvswitch: reallocate update replies for mismatched IDs
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260809/202608090140.jJdhfFjc-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260809/202608090140.jJdhfFjc-lkp@intel.com/reproduce)
+Fixes: 2e4082e4b739 ("net: stmmac: simplify GSO/TSO test in stmmac_xmit()")
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 24 ++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608090140.jJdhfFjc-lkp@intel.com/
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index a71f0df26378..3d3042afcdf4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -4371,16 +4371,18 @@ static void stmmac_flush_tx_descriptors(struct stmmac_priv *priv, int queue)
+ 	stmmac_set_queue_tx_tail_ptr(priv, tx_q, queue, tx_q->cur_tx);
+ }
+ 
+-static void stmmac_set_gso_types(struct stmmac_priv *priv, bool tso)
++static void stmmac_set_gso_types(struct stmmac_priv *priv,
++				 netdev_features_t features)
+ {
+-	if (!tso) {
+-		priv->gso_enabled_types = 0;
+-	} else {
+-		/* Manage oversized TCP frames for GMAC4 device */
+-		priv->gso_enabled_types = SKB_GSO_TCPV4 | SKB_GSO_TCPV6;
+-		if (priv->plat->core_type == DWMAC_CORE_GMAC4)
+-			priv->gso_enabled_types |= SKB_GSO_UDP_L4;
+-	}
++	priv->gso_enabled_types = 0;
++
++	if (features & NETIF_F_TSO)
++		priv->gso_enabled_types |= SKB_GSO_TCPV4;
++	if (features & NETIF_F_TSO6)
++		priv->gso_enabled_types |= SKB_GSO_TCPV6;
++	/* Manage oversized UDP frames for GMAC4 devices */
++	if (features & NETIF_F_GSO_UDP_L4)
++		priv->gso_enabled_types |= SKB_GSO_UDP_L4;
+ }
+ 
+ static void stmmac_set_gso_features(struct net_device *ndev)
+@@ -4416,7 +4418,7 @@ static void stmmac_set_gso_features(struct net_device *ndev)
+ 	if (priv->plat->core_type == DWMAC_CORE_GMAC4)
+ 		ndev->hw_features |= NETIF_F_GSO_UDP_L4;
+ 
+-	stmmac_set_gso_types(priv, true);
++	stmmac_set_gso_types(priv, ndev->hw_features);
+ 
+ 	dev_info(priv->device, "TSO feature enabled\n");
+ }
+@@ -6198,7 +6200,7 @@ static int stmmac_set_features(struct net_device *netdev,
+ 			stmmac_enable_sph(priv, priv->ioaddr, sph_en, chan);
+ 	}
+ 
+-	stmmac_set_gso_types(priv, features & NETIF_F_TSO);
++	stmmac_set_gso_types(priv, features);
+ 
+ 	if (features & NETIF_F_HW_VLAN_CTAG_RX)
+ 		priv->hw->hw_vlan_en = true;
 
-All errors (new ones prefixed by >>):
+---
+base-commit: dd057113ac7ba5bdd2aed3d9405305911152f911
+change-id: 20260808-stmmac-fix-tso6-features-7fdc5e9448e2
 
-   net/openvswitch/datapath.c: In function 'ovs_flow_cmd_new':
->> net/openvswitch/datapath.c:1100:25: error: function declaration isn't a prototype [-Werror=strict-prototypes]
-    1100 |                         size_t current, desired;
-         |                         ^~~~~~
-   In file included from include/linux/thread_info.h:23,
-                    from include/asm-generic/preempt.h:5,
-                    from ./arch/powerpc/include/generated/asm/preempt.h:1,
-                    from include/linux/preempt.h:78,
-                    from include/linux/spinlock.h:56,
-                    from include/linux/kref.h:16,
-                    from include/linux/mm_types.h:8,
-                    from include/linux/buildid.h:5,
-                    from include/linux/module.h:14,
-                    from net/openvswitch/datapath.c:9:
->> arch/powerpc/include/asm/current.h:26:17: error: conflicting types for 'get_current'; have 'size_t()' {aka 'long unsigned int()'}
-      26 | #define current get_current()
-         |                 ^~~~~~~~~~~
-   net/openvswitch/datapath.c:1100:32: note: in expansion of macro 'current'
-    1100 |                         size_t current, desired;
-         |                                ^~~~~~~
-   arch/powerpc/include/asm/current.h:15:35: note: previous definition of 'get_current' with type 'struct task_struct *(void)'
-      15 | static inline struct task_struct *get_current(void)
-         |                                   ^~~~~~~~~~~
->> net/openvswitch/datapath.c:1102:33: error: lvalue required as left operand of assignment
-    1102 |                         current = ovs_flow_cmd_msg_size(acts, &new_flow->id,
-         |                                 ^
-   cc1: some warnings being treated as errors
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-
-vim +1100 net/openvswitch/datapath.c
-
-   966	
-   967	static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
-   968	{
-   969		struct net *net = sock_net(skb->sk);
-   970		struct nlattr **a = info->attrs;
-   971		struct ovs_header *ovs_header = info->userhdr;
-   972		struct sw_flow *flow = NULL, *new_flow;
-   973		struct sw_flow_mask mask;
-   974		struct sk_buff *reply;
-   975		struct datapath *dp;
-   976		struct sw_flow_key *key;
-   977		struct sw_flow_actions *acts;
-   978		struct sw_flow_match match;
-   979		u32 ufid_flags = ovs_nla_get_ufid_flags(a[OVS_FLOW_ATTR_UFID_FLAGS]);
-   980		int error;
-   981		bool log = !a[OVS_FLOW_ATTR_PROBE];
-   982	
-   983		/* Must have key and actions. */
-   984		error = -EINVAL;
-   985		if (!a[OVS_FLOW_ATTR_KEY]) {
-   986			OVS_NLERR(log, "Flow key attr not present in new flow.");
-   987			goto error;
-   988		}
-   989		if (!a[OVS_FLOW_ATTR_ACTIONS]) {
-   990			OVS_NLERR(log, "Flow actions attr not present in new flow.");
-   991			goto error;
-   992		}
-   993	
-   994		/* Most of the time we need to allocate a new flow, do it before
-   995		 * locking.
-   996		 */
-   997		new_flow = ovs_flow_alloc();
-   998		if (IS_ERR(new_flow)) {
-   999			error = PTR_ERR(new_flow);
-  1000			goto error;
-  1001		}
-  1002	
-  1003		/* Extract key. */
-  1004		key = kzalloc(sizeof(*key), GFP_KERNEL);
-  1005		if (!key) {
-  1006			error = -ENOMEM;
-  1007			goto err_kfree_flow;
-  1008		}
-  1009	
-  1010		ovs_match_init(&match, key, false, &mask);
-  1011		error = ovs_nla_get_match(net, &match, a[OVS_FLOW_ATTR_KEY],
-  1012					  a[OVS_FLOW_ATTR_MASK], log);
-  1013		if (error)
-  1014			goto err_kfree_key;
-  1015	
-  1016		ovs_flow_mask_key(&new_flow->key, key, true, &mask);
-  1017	
-  1018		/* Extract flow identifier. */
-  1019		error = ovs_nla_get_identifier(&new_flow->id, a[OVS_FLOW_ATTR_UFID],
-  1020					       key, log);
-  1021		if (error)
-  1022			goto err_kfree_key;
-  1023	
-  1024		/* Validate actions. */
-  1025		error = ovs_nla_copy_actions(net, a[OVS_FLOW_ATTR_ACTIONS],
-  1026					     &new_flow->key, &acts, log);
-  1027		if (error) {
-  1028			OVS_NLERR(log, "Flow actions may not be safe on all matching packets.");
-  1029			goto err_kfree_key;
-  1030		}
-  1031	
-  1032		reply = ovs_flow_cmd_alloc_info(acts, &new_flow->id, info, false,
-  1033						ufid_flags);
-  1034		if (IS_ERR(reply)) {
-  1035			error = PTR_ERR(reply);
-  1036			goto err_kfree_acts;
-  1037		}
-  1038	
-  1039		ovs_lock();
-  1040		dp = get_dp(net, ovs_header->dp_ifindex);
-  1041		if (unlikely(!dp)) {
-  1042			error = -ENODEV;
-  1043			goto err_unlock_ovs;
-  1044		}
-  1045	
-  1046		/* Check if this is a duplicate flow */
-  1047		if (ovs_identifier_is_ufid(&new_flow->id))
-  1048			flow = ovs_flow_tbl_lookup_ufid(&dp->table, &new_flow->id);
-  1049		if (!flow)
-  1050			flow = ovs_flow_tbl_lookup(&dp->table, key);
-  1051		if (likely(!flow)) {
-  1052			rcu_assign_pointer(new_flow->sf_acts, acts);
-  1053	
-  1054			/* Put flow in bucket. */
-  1055			error = ovs_flow_tbl_insert(&dp->table, new_flow, &mask);
-  1056			if (unlikely(error)) {
-  1057				acts = NULL;
-  1058				goto err_unlock_ovs;
-  1059			}
-  1060	
-  1061			if (unlikely(reply)) {
-  1062				error = ovs_flow_cmd_fill_info(new_flow,
-  1063							       ovs_header->dp_ifindex,
-  1064							       reply, info->snd_portid,
-  1065							       info->snd_seq, 0,
-  1066							       OVS_FLOW_CMD_NEW,
-  1067							       ufid_flags);
-  1068				BUG_ON(error < 0);
-  1069			}
-  1070			ovs_unlock();
-  1071		} else {
-  1072			struct sw_flow_actions *old_acts;
-  1073	
-  1074			/* Bail out if we're not allowed to modify an existing flow.
-  1075			 * We accept NLM_F_CREATE in place of the intended NLM_F_EXCL
-  1076			 * because Generic Netlink treats the latter as a dump
-  1077			 * request.  We also accept NLM_F_EXCL in case that bug ever
-  1078			 * gets fixed.
-  1079			 */
-  1080			if (unlikely(info->nlhdr->nlmsg_flags & (NLM_F_CREATE
-  1081								 | NLM_F_EXCL))) {
-  1082				error = -EEXIST;
-  1083				goto err_unlock_ovs;
-  1084			}
-  1085	
-  1086			/* Look for any overlapping flow. */
-  1087			if (unlikely(!ovs_flow_cmp(flow, &match))) {
-  1088				if (ovs_identifier_is_key(&flow->id))
-  1089					flow = ovs_flow_tbl_lookup_exact(&dp->table,
-  1090									 &match);
-  1091				else /* UFID matches but key is different */
-  1092					flow = NULL;
-  1093				if (!flow) {
-  1094					error = -ENOENT;
-  1095					goto err_unlock_ovs;
-  1096				}
-  1097			}
-  1098	
-  1099			if (unlikely(reply)) {
-> 1100				size_t current, desired;
-  1101	
-> 1102				current = ovs_flow_cmd_msg_size(acts, &new_flow->id,
-  1103								ufid_flags);
-  1104				desired = ovs_flow_cmd_msg_size(acts, &flow->id,
-  1105								ufid_flags);
-  1106				if (current < desired) {
-  1107					struct sk_buff *resized;
-  1108	
-  1109					resized = ovs_flow_cmd_alloc_info(acts, &flow->id,
-  1110									  info, false,
-  1111									  ufid_flags);
-  1112					if (IS_ERR(resized)) {
-  1113						error = PTR_ERR(resized);
-  1114						goto err_unlock_ovs;
-  1115					}
-  1116					kfree_skb(reply);
-  1117					reply = resized;
-  1118				}
-  1119			}
-  1120	
-  1121			/* Update actions. */
-  1122			old_acts = ovsl_dereference(flow->sf_acts);
-  1123			rcu_assign_pointer(flow->sf_acts, acts);
-  1124	
-  1125			if (unlikely(reply)) {
-  1126				error = ovs_flow_cmd_fill_info(flow,
-  1127							       ovs_header->dp_ifindex,
-  1128							       reply, info->snd_portid,
-  1129							       info->snd_seq, 0,
-  1130							       OVS_FLOW_CMD_NEW,
-  1131							       ufid_flags);
-  1132				BUG_ON(error < 0);
-  1133			}
-  1134			ovs_unlock();
-  1135	
-  1136			ovs_nla_free_flow_actions_rcu(old_acts);
-  1137			ovs_flow_free(new_flow, false);
-  1138		}
-  1139	
-  1140		if (reply)
-  1141			ovs_notify(&dp_flow_genl_family, reply, info);
-  1142	
-  1143		kfree(key);
-  1144		return 0;
-  1145	
-  1146	err_unlock_ovs:
-  1147		ovs_unlock();
-  1148		kfree_skb(reply);
-  1149	err_kfree_acts:
-  1150		ovs_nla_free_flow_actions(acts);
-  1151	err_kfree_key:
-  1152		kfree(key);
-  1153	err_kfree_flow:
-  1154		ovs_flow_free(new_flow, false);
-  1155	error:
-  1156		return error;
-  1157	}
-  1158	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
