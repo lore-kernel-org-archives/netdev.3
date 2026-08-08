@@ -1,125 +1,163 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5F637CD39
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 10:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BF73CB2CF
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 10:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786185270; cv=none; b=a3iHaesXhFtwrCFf2lNZrircT5uLogNjfTqzaLAaIBi7TVOTAhLdl6yXpmXLIuoxAr7FJEfVQLVJ5c5NIV0n7HsPqHqImBdqMd3YgWGqP1+XwE0NL4GO+VUx0zZW0sHg/EGyqHSD0uWQ/vxYbCjHUp/AvXMruQJ8HuFswqdm++k=
+	t=1786185545; cv=none; b=CRQWxi5SgaupQlGE69YZfYcMrwMEPfV9+s5bpcwGgMRzOouadNh74HyHf6tPXiwcIr6oiiUkIkEG9zAv35xmJlk/rFD4+aiWipRqWloaNb2Ge57WVixYJK6+GbB/WR1A1bQgdcNgJrg6O+B8bKF62gpbW9ijv3vlGxgaU2zD3pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786185270; c=relaxed/simple;
-	bh=8cLsyOrjXGvoCCKeyA9EG98ua8ktDWJeJNjwpR7WQKs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DQUVe/GihfP0Dn8nxiRYAjhW4dohf1l2Jqiwp4MtLl25pWDoL3SCI/l8Di4jwwoN8JdIuuLAdxsiZZoAT7sMmW+CSgjIHKPpyOiqUHgQILK3OlRaVe6yeVm7HwlIgwQnvuhPYiN7e80yM1p4ch3nqwIVgtgQqKUEMLyOAScTY/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOxI4qUd; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786185545; c=relaxed/simple;
+	bh=ngVD+iZWR7jCh0MY5EC6oquQpUmXxcSQpH22Nvcg+LQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CKIrgOzs88m3QeJ3ydBF6Fx1GOuqQzDO3AoZjs9FCpNbClTXPi6k7S0fT+mt7h9QnFzluTByzMwP1kuPJ9Yuy+M1RGL5dT1HFD5N8yJQCFU7E/QkfvyqOaN1F6ccWUMGCRYzN9HpeLP6VE0ujYMoVQVQgzwZPUzRgmk+T3BvjE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QhGee+Qn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NCeGbN0a; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOxI4qUd"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ced3386430so4896995ad.1
-        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 03:34:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QhGee+Qn";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NCeGbN0a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786185543;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=avs/8vY6YPXcNnZBbOhG7aKpSljPvSAucckGDKnJ5sU=;
+	b=QhGee+QnxOdaNzxUAKm6VIGuyDW/oYm9K22hhi9VWvGvea8JKdS1szqZxTIZW2n+AZ8qiq
+	/72S6/2I8lG+Lb8/uaIKIIIgJe5eBldUu+AEj/ky6rIrwhN10XRFBxeSaSunN0ymn9T2+J
+	HZb/iUbeEc7HrgbnKrrgDbyiGcz6l+Y=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-596-ogDtXc78Os2mfGWnp9NJZw-1; Sat, 08 Aug 2026 06:39:02 -0400
+X-MC-Unique: ogDtXc78Os2mfGWnp9NJZw-1
+X-Mimecast-MFC-AGG-ID: ogDtXc78Os2mfGWnp9NJZw_1786185541
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48000d75326so205122f8f.2
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 03:39:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786185268; x=1786790068; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LMt2HBv95FWkEezOYc96XrHhu7tFutq5B2cwfp/ralY=;
-        b=VOxI4qUd8ZYG6z0foxa6r2QAkVviy27w2Gsn1NMKAIyTci4cdvDpRDD1nXK2e7GLBK
-         YZzoZLqV64xDJxUkxFl5zGLCClrzCgIanrSHfxNprxmFBFgZw0QOb+1DZhnWTY5UIgbc
-         Gn4l/a9sSsR6P9nXPERZCB6ac8/F6vo8ZgOs8C4CtJzm4fR6H0jWP7Zl2hA57Q2tzd5n
-         NZBN4Om21wGN6AYUkEpc/SZbwi+CKULMd5ZIBFRgv3tDzeL0A89h57FkPtgv1vg0VIlN
-         7WzpXPgncAyf4CgnsDiYnkO7MteEXbV9MPTlx61TArBBo3JX8W5bfhHhVERrylPCAOgq
-         kWQg==
+        d=redhat.com; s=google; t=1786185541; x=1786790341; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=avs/8vY6YPXcNnZBbOhG7aKpSljPvSAucckGDKnJ5sU=;
+        b=NCeGbN0aDwGzRlZyzYEi4yVaDviho1Q/FIRzJG4bX7NmCS5+T1ov61DpNXIwLZgEAA
+         IrC5whVbxd4FLKvGWi3uGi2/ki6qoerZRCZ8qywBprXGA6cpwpUhc7wxPiYtwghCj1x7
+         c04ipYS/2lUqvF2ZEoL0W84oASaIzTm9iDCw52jWFKNCyzSnen7BqYTEv6HKKA0qnOvc
+         IjDAe72yo+7OfaxolN9Z9TG9qIFn1gWVLSbzFMsQVboRvAo5W8DwBBKTcG32xGTvAYCS
+         oB7ByhaIJiM9bqtQ+bwwsmiqg5VEEER0sQLu7bnMIDj7R59FCYLLk7myZSJV6jtY5Q3H
+         jATQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786185268; x=1786790068;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LMt2HBv95FWkEezOYc96XrHhu7tFutq5B2cwfp/ralY=;
-        b=IFLgV5jL+JFOGhq9Kyx0amoeiEWiXfM10H7Dy3S0hT36BXJpyfE8djKoLAI9VA36sL
-         7bi4u+T9c8MClTrFCLYmwYlRZpqqgcLYbz2ODbiqDH7hwE+WUUnq8/JQqH/pwoAzwxam
-         xWwrXyAIXhKlr3sCwfcXF7UD8KKoj4n6O8LGu/UFA04LpJgoci2OQTgR+CkToLvzAtT7
-         RxwOY3nY25nvlq6Enq/AUt5cHHfgT0wXytH+ZXJnW2BMXosy9qUmZI7P0jYpS+JK7Qa6
-         RlTd/jsajjEAwlgB7fK0ktr2kd4tqV2q8I5ATCzBty4Wq2UqyuYHEWujEpz8DONEWfj9
-         bXMQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqfkorv4NmvoryrlYvkJJC4Aic09Q5ZXMcJ6znAvE6+lj7mlkNzOiFEF0QnuMGeRC1RBdE/MvI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXqUfhGH7RsHfiq6PIw6VDDIHtNAblsRK6ZpwVllpSY0IspWhh
-	v23Yihuib0cdRIJEA+CEQbv71G9lKOdBXm/pyZDczH3zsQfH2+gyDx5tZO+idqMM
-X-Gm-Gg: AR+sD13h7XM+5bMrTFwW5e+5vxspWZDa6eN/awZEsG0go1mcosCx/p/dsnbVJEYx/DI
-	qtPe90McHg/HaRkCE/Z5qyLi5GzrodVW/7xG0jDIBXYGIJINF0aZtMzd0A/9d6AL5rHap2xnXWG
-	YuR7mJYxV8DqVvs840vwVV6j+p7F9+wCygfIECVI6hXBIahbFHXFM3mkdmSCajcP0Sp2I85uW9p
-	20mgKfPFvGcnmgLCawmCkbRJhZG6GY2PGfUoshlQ1p67oWcEVwsjYnmFunXSyhL7nKuIvVfeAOc
-	AixaIQATent5aBNzmMc7nUktSFOs/KNWtdoFH3JDqIpqPiwSG4ConBK2612lpaykd+LaqCJZ4bd
-	pQ+9T9+lH8Zhsu/aesdNt7xCX0l7FXS2u9VqixW9waBeSxJkVERnciwn6HaK/NmZZ1qqIwma18M
-	q+ZdS19FtrklDYXdoLPLtev8r6G8e+B4+qqpflXQ6gKuilBLHPUOaGfaibeySjHFA3REWhxvo=
-X-Received: by 2002:a05:6a20:3d0b:b0:3bf:b1d3:393e with SMTP id adf61e73a8af0-3cbc01011aemr11771109637.2.1786185267762;
-        Sat, 08 Aug 2026 03:34:27 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315be86d3fcsm18060034eec.4.2026.08.08.03.34.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Aug 2026 03:34:27 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>
-Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Tiwei Bie <tiwei.bie@intel.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] vhost/vdpa: reject VRING_NUM larger than device max
-Date: Sat,  8 Aug 2026 18:34:15 +0800
-Message-Id: <20260808103415.101261-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1786185541; x=1786790341;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=avs/8vY6YPXcNnZBbOhG7aKpSljPvSAucckGDKnJ5sU=;
+        b=nSCmsJrJUQAjpB6amlkMccd/dML7lHqgNh3J35VxRjDKAVE06Q/HXD/SGSSMj71lm1
+         f28tk3ldIT4v9crv7zIHHy6HYcndsrvtDdWnpF5Xar1F0RZKp9DmZp42Wo++KQqhADTC
+         XFYHqpMr8Y17mDLjFyA7AwUCVD5PujQl6+w5PS5n8xCCgLgIN03iJ4NJq085+gN3/BkR
+         RAy43QuNmlmMOqgN8fiaEhB4q0HuXJCdRWshH22/fszYMFlFJBzytu6/nxHg5ULjC+9a
+         mnBb39bTQjj5YXnSrU2SHQGbVMUjau4iBmE1fl/J7Wdrgn9jYQzk0Vk8DosPBZ4T4Ja2
+         uRYw==
+X-Forwarded-Encrypted: i=1; AHgh+RoEn8Pk0spGt1qHUCzu7JfzM4B5eHwKpxm5aL7U5rF+IEfrVmRUQJXEoFLKKSUc083Pp04KBY8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg6Uk+AgKzY0fF52L0tVFijTIglHLRDm+p4cZH2WLa6HaDRu2f
+	gVYDcDyPxxiQzq7xZIPrfgZ/0/UNO2sQoPPvUOv8TC/kSPEJtSISdqF3m5na9OTGJXihGzkXUfD
+	wSdc9gdT5gs+ifhbniJTKj4ThAC/K5uWs04IHhBAyeGHrSnQ7lSCJtcpo6A==
+X-Gm-Gg: AR+sD11xIpxSIrvt9FyAi2XUcYJDyRSYbJ2uk15oJAmkPZcbuWgsUMYOH/BFK0Ct9bS
+	otmC+pxdu0nawF362ut9MCA+MLajG41q51BrYEbzH3kROiPtzBf/5J4kgbpCNLrHXP8KyIZkZo5
+	jXnULGMi8NFUJdWNyPIF/zG0XgBd8ApwfP8VzoqAFRuEDdlFhhUmLy7Bcoo6i63RDTe+emZIoxe
+	vnVsU6dJZc629yJoTVO6CEcRXfvAjMg4nqC7ilNwcU/zvGm+NVKm9tpFNoJKsPqZgu6MrcXARVV
+	gxeS42RhYr2TdHR0XKlw5oxYXaw5H2gWp1WhuxzqqD0ObciFDSvE7hJSuND1J2zwScCwBKni
+X-Received: by 2002:adf:e38f:0:b0:47f:83ee:e56f with SMTP id ffacd0b85a97d-48130ed8729mr6725826f8f.18.1786185540772;
+        Sat, 08 Aug 2026 03:39:00 -0700 (PDT)
+X-Received: by 2002:adf:e38f:0:b0:47f:83ee:e56f with SMTP id ffacd0b85a97d-48130ed8729mr6725785f8f.18.1786185540446;
+        Sat, 08 Aug 2026 03:39:00 -0700 (PDT)
+Received: from [192.168.0.9] ([47.64.115.28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021f9182sm14217694f8f.28.2026.08.08.03.38.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 08 Aug 2026 03:38:59 -0700 (PDT)
+Message-ID: <995329a7-8980-4b5c-85c1-9c415b200804@redhat.com>
+Date: Sat, 8 Aug 2026 12:38:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/6] net/tcp-ao: clear the aes_cmac_key when done
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Eric Biggers <ebiggers@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Neal Cardwell <ncardwell@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Steve French <smfrench@gmail.com>,
+ Namjae Jeon <linkinjeon@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+References: <20260807125845.1477067-1-thuth@redhat.com>
+ <20260807125845.1477067-4-thuth@redhat.com>
+ <20260807152231.15b33daf@kernel.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20260807152231.15b33daf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-vhost_vring_set_num() only requires a non-zero power-of-two that fits
-in 16 bits. vhost-vdpa then hands that value to the backend through
-set_vq_num() without comparing it to get_vq_num_max().
+On 08/08/2026 00.22, Jakub Kicinski wrote:
+> On Fri,  7 Aug 2026 14:58:40 +0200 Thomas Huth wrote:
+>> -		struct aes_cmac_key k;
+>> +		struct aes_cmac_key k __cleanup(aes_cmac_zeroize_key);
+> 
+> Nak, we don't like the auto-cleanup stuff in networking.
 
-A local process with access to /dev/vhost-vdpa-* can therefore set a
-queue size larger than the device advertises. On the vdpa_sim backend,
-the worker then walks descriptors beyond the mapped descriptor ring.
-KASAN reports a 16-byte out-of-bounds read, corresponding to one
-vring_desc, in the vringh IOTLB path:
+Ok, if you don't like it, then let's drop this patch.
 
-  BUG: KASAN: out-of-bounds in _copy_from_iter
-  Read of size 16
-  copy_from_iotlb
-  copydesc_iotlb
-  vringh_getdesc_iotlb
-  vdpasim_net_work
+> If y'all need a garbage collector there're jobs programming in Java.
+No need for derogatory statements, Jakub. That's really inappropriate.
 
-Check the requested size against get_vq_num_max() in
-vhost_vdpa_vring_ioctl() before calling vhost_vring_ioctl(), and return
--EINVAL when the request is too large.
+  Thomas
 
-Fixes: 4c8cf31885f6 ("vhost: introduce vDPA-based backend")
----
- drivers/vhost/vdpa.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index ac55275fa0d0..b2083e1ef150 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -716,6 +716,13 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 				vhost_vdpa_unsetup_vq_irq(v, idx);
- 		}
- 		break;
-+	case VHOST_SET_VRING_NUM:
-+		/* Reject sizes above the max reported by the device. */
-+		if (copy_from_user(&s, argp, sizeof(s)))
-+			return -EFAULT;
-+		if (s.num > ops->get_vq_num_max(vdpa))
-+			return -EINVAL;
-+		break;
- 	}
- 
- 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
--- 
-2.34.1
