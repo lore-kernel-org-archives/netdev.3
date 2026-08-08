@@ -1,125 +1,123 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D37378D70
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 09:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E4D3C6A38
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 10:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786183144; cv=none; b=rRXGzf6OjrM+NdSqjIXTwMRjPe0d0H3/EPZPYhYw2RtL8Cfgc32yW2Vn2Y8Rp744pghTNu6FwzYhYhSuIurEVAFOkoKo/3RIsreqE9+bTMocAXGZVN8P4ST1O7a8KI/AElkPUKHfB5cFaC0QtF8TYKc/PgJuFwoqA1RjNTLvgFU=
+	t=1786184472; cv=none; b=XENJXrP2hllkEJpRrukqfF/NFv7iYyRe5m/57Sy+AiRT5hwFyOgl5yyOI+fn8CA3QRLifznsv+H3QF+qktY+TVaqFx8c365Pe9t+IygpNiy5sc5wAqhXVoq+3/UM4Axt/WoMYwWVgasxwghSC8i6mPiihpElqmdkLNGNQKAtlNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786183144; c=relaxed/simple;
-	bh=W0eW/ZasrcB2H3LJL+03kv0ucwEjc0ZwxAGacASR04w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=skVcrFloNx3IUhlJzDne5rB3AwHFJDwUMmD4oMXb1Uq8LUQZ86IZGF0EwN1AYB3/5ov0aa5FKhu3OW64XBgze19cJ3ShP0YiR9isNZC/BUydxQOPwg9GUAAsCLrV1jYg9FJgawjKAJFT1U/mIi6+KgwPiE8aUIFmpetXJLbnHr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=IbduS9jn; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1786184472; c=relaxed/simple;
+	bh=RXpVzpt7di1+nGOPxTbhDa4AoMa4uRQ9RAyXrUYqYH8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cnesD5ThyY+oVvkCVjeAQNrspNUx7jxs7wl5zrxxtQy0p2N0/yDWbFk1wwkHXARCO7cCQVEEGsic1uOvzC0IqIpJshTb+OWpxKkdItLRyhmfFId5LaQ950sZM7e85FG1nj9i6iFUh6ySOHzNJux3D/q452er8U756rP3ZVBPPY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=quFBL+oQ; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="IbduS9jn"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49553515a8bso5139845e9.1
-        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 02:59:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="quFBL+oQ"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso2861885e9.0
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 03:21:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1786183139; x=1786787939; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Hr4rNoSGp4NHIekFunzyCDZp2DX3uWJ4HIovEA2xeO4=;
-        b=IbduS9jnB2UahRDtFzqXuVcSkf1SQSDTZ77nciPUlfptm3qzygluDCSQTBKEDvPzeq
-         8k77tza2nOc+9xrHVicwmDQHirDKLznbzGF6HCD9Z3uoK9gKk2J1v3Km9eIeAJaxoqM3
-         dEIUp/Vub+Vbp/H0Ir3zZtrVfOLuoEOWhwPhyEL9wEAcwEtKnLVkWc1ARNNxb3/B+SpK
-         u/4D5tdCc2hU2FTWTMCfjl/GhKtYajTCooy0QuevtdQ0QVGwroJmTgNXdwymbm5VpNBv
-         w9WRXk0ERb5Fypm8J0hgmO9E6CR/nsr0svpCMAMdh//ROUH6WXvEOMRlAk9zvNwDssVU
-         X3XA==
+        d=gmail.com; s=20251104; t=1786184468; x=1786789268; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xQRg1mejXL46bQBa0p78UFbpH6Ut5RwhVRoCIO1su08=;
+        b=quFBL+oQvWu8pzBnRtRQEKaW4d/OVtub9aNNuJ0wiEJT7nJ3d5B6i072GUnY5muwZT
+         90yZIybX+v/zMJyK0ci92DEUPp5/PflLc+cmDhS5ztxH0Oo8RNmsrqaAYJkIXNpQGaqn
+         KWwFuz7rv++8A4YW4EjT6XQiGFC7/+3W7TVGOogoBPwRPc/RJ8vOWIU5MuwNUNR6IJJ1
+         Je+oifvhzVdJplKJ8Arnucj4pFkAQCLxmCZQd7tUt9Keiy7NPAEYvm2zWsKPgkdOnKdP
+         JVoFpt1h6R50Ys6XTLfLstTB4kC11r1wYyUhUN9+/Avga/Efkl9cof3N+wHUcitXzVvN
+         1dDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786183139; x=1786787939;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Hr4rNoSGp4NHIekFunzyCDZp2DX3uWJ4HIovEA2xeO4=;
-        b=bYNhdtyLy5srxTkTo0vhs0gMpzAhZ1fS0YMyHpGzGYgvwU/MhzFiSX+JHTx6Wz86jJ
-         /WxUnSJKOVCwWvo7qtwnFTGaCO8OBO04tXSyPDtnd688uqH5V7JMZG1oezJg0cgmQaxS
-         zi68xQPSoTDBdEVgftinQK9ukYRXWCb4aps9ucTGyoVarst1owW8TrSgipFfeeOSo4uq
-         PvnFCAVi/uMBQ3+hkiMb+qkPbOysrpfz/DM79IyOUfFIIJ5MoMG7qV502E+b9WD8qTUH
-         25Ga9TCpbDgoa8AXIZwQHhl80QRS5ZEndgtdK54fDfMx5FlAifwqlUvaiaaLR4lM2QZj
-         78JQ==
-X-Gm-Message-State: AOJu0YzPlfUyI7ppWFyDKdjCY0tozCXnFytNHjztrnCiUWMkWDb1yv8Q
-	qWigz1csnSMAoMC45RfNGKgHNVty+W5q8P2hE8mc+OW+hZoYTU6VC4T6CiumcrXd95w=
-X-Gm-Gg: AR+sD11MkHIavb5nyRD6fKYQqmiimHVOamPhy2KqyGxtifV/L9Ukg92fFyOkR5r9z3K
-	SBrNZt6xgjFGA+akfc1/xceAMtOmCMEGp2qaWRJVUC6ngRQBI9Lj6tLPbmpYL5vM+2TUFsPZh4S
-	bfD4/L+gj+7MU8BwugdbgiGe/m8ma4l2M3mkZSQCI25s1+GQQW/Pab5elApaVfsL+Thtno9mIfJ
-	iZpcU/mAGy+JpNdTADDsZPGBYT8Q1AwrbO3ztuD5dUgGCArTL7E2YxwKShJ2zHH1hGISbrddOBq
-	+ehmohrbB64+a8kXmZdbUyNUobhQenkuVxEi4z4O7KNiEoK37tyj2RKKyniEZddfo9JxcbZzNHg
-	m1u+gKXBiRQ/GB/8l9V/k4cg78IPzJU6dv1whjIG87p2DuOa0IC3dzlhLVp3aWwSNhB+OyVeWpI
-	QA+PH5CAU54WFdZVE5WoQVXfRZvF0aDb9MvqEKljTMZ4UYhQkK94xO4AiNCX24fe/ltFONrHgjx
-	+IucdhXur9vc7sh9A/L
-X-Received: by 2002:a05:600c:3b04:b0:490:c6c2:52 with SMTP id 5b1f17b1804b1-49959e016f2mr204095965e9.3.1786183138873;
-        Sat, 08 Aug 2026 02:58:58 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995ea2dc4esm123249915e9.13.2026.08.08.02.58.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Aug 2026 02:58:58 -0700 (PDT)
-Date: Sat, 8 Aug 2026 11:58:54 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, 
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Jakub Kicinski <kuba@kernel.org>, Min Li <min.li@microchip.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Petr Oros <poros@redhat.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/2] dpll: use pin owner's dpll ref for
- pin-level attribute setting
-Message-ID: <anb91_uhQWVz_oMh@FV6GYCPJ69>
-References: <20260807095926.386923-1-ivecera@redhat.com>
- <20260807095926.386923-3-ivecera@redhat.com>
+        d=1e100.net; s=20251104; t=1786184468; x=1786789268;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xQRg1mejXL46bQBa0p78UFbpH6Ut5RwhVRoCIO1su08=;
+        b=ntvtSS/z18pMZmHE7fsYQbUydfW45xkeqNxa0WcBX4zo3X19eg9SVSMIn+uoVKKe4f
+         FexSjvZCAELsfEaIFf7m6NaRgNiKVHVCal16p1JRdRrqKOA3hr/qdMPTbrvSCpQKPftO
+         /vABil2EObeMV68GvH4T+DStDYNwp6S7os5MZAy5MEfOqJtsFmKgogx2XaIYocotp69d
+         d8hY1+XYTSsAusHY211cJedowPWNZ3U6HxcEfpZ+wI2InMqRHDmsT/UxR1LWyTfpnK4B
+         tG/CXaRdcUkAetpSDQXuOPwnxbu5dGXkrtcVGbsyjvWL3wp8PjIccL/WeSSnhqlFjgwO
+         GpyA==
+X-Forwarded-Encrypted: i=1; AHgh+RptQvnWcfvHvB5FX1paehLKKrS6VtMo+WH5g4rIvq+aGF6Ldb7ftpwsf3cviTbD02hoYxhJ/MU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3qSOs4F/RH4qLbUCn2/ytqIWi3dyEMeeLNNzDX7uYaCMyta3z
+	rXHDc5hFLbL1xCgfgbiN2kce3qDBxq7wWA6CcxXj7oVGEHpGVC6/ilrp
+X-Gm-Gg: AR+sD12UxRbgPsapvl2IsChZ2Nv5QY7VAFUATKecuKtMWGMfWXX+tNMr2n1dXRMn4sb
+	vqTVsJZAvF8nLIWQA5E4mNPCvcd+jYYHUXssxnR2y/9Vob+u8XI4hPZgZ1B6GGFMYC5Gfw3v8RW
+	ljqb9+nA6dVwg1w5gHLfQ2sAVZggFlo17GXAjn6fMzT2Fm2E6PedYzrKd8apgMXmclk+dkB9jhr
+	cX6gVwMznex/2dX9nyE7mbNkUIShyTecc6gfDsfrqXnNh/kwtTYpvNLEt+jnRE5uWauH+LMvnco
+	juWlPA2cFryV91JiBL9tf5R8+s4G+AJgv4kqVRDzZUpK1ZqK75BkT/kLQacNE81PAaAijNNPn8z
+	VXjwYhFE+B7j8K2TlJCHN4h06/QfXiqcv14ifKL34Hq6bM1PCaHjfuPhhxhpUx4D+3UTeco76MU
+	ij6QdDp7Dv2eODHpEth4pP/o+FyWVDqKvGzQ5HYFCPcRBPN5J5/DrGo2Y8CH8xkW5zp6Bs4a/oN
+	dsY5FWWSu1EARdWkyuCn4aWVj5nTVxs6NLcvp/6QkODzQy/bE7a9uCrsdaDK4Ak1/Fsxfw7ngfV
+	fEYGld7e5LTp/9hyp9j1
+X-Received: by 2002:a05:600c:1987:b0:495:3de8:33a6 with SMTP id 5b1f17b1804b1-4995e0dfb2emr138243805e9.16.1786184468167;
+        Sat, 08 Aug 2026 03:21:08 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-077-007-004-134.77.7.pool.telefonica.de. [77.7.4.134])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021e8c5asm15256604f8f.18.2026.08.08.03.21.07
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 08 Aug 2026 03:21:07 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+	nic_swsd@realtek.com
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Javen Xu <javen_xu@realsil.com.cn>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] r8169: give RTL_GIGA_MAC_VER_EXTENDED a distinct value
+Date: Sat,  8 Aug 2026 12:19:41 +0200
+Message-Id: <20260808101941.57666-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807095926.386923-3-ivecera@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-Fri, Aug 07, 2026 at 11:59:26AM +0200, ivecera@redhat.com wrote:
->Pin-level attributes (frequency, phase adjust, embedded sync, reference
->sync) are properties of the pin itself, not of a particular DPLL device.
->The get callbacks already use only the pin owner's DPLL reference
->(via dpll_pin_own_dpll_ref_first()), but the set callbacks iterate over
->all registered DPLL references and invoke the set operation on each one.
->
->This is redundant because a pin is a single physical entity - setting
->its frequency or phase adjust once through the owner's ops is sufficient.
->Calling set on every registered DPLL just results in duplicate HW writes
->for drivers that share a pin across multiple DPLL devices (e.g. ice
->registers each input pin with both the EEC and PPS DPLL, zl3073x
->registers input pins with every DPLL channel).
->
->Simplify dpll_pin_freq_set(), dpll_pin_esync_set(),
->dpll_pin_ref_sync_state_set() and dpll_pin_phase_adj_set() to call the
->set callback only through the owner's DPLL reference, matching the
->existing get-side behavior. This removes the xa_for_each iteration
->loops, the now-unnecessary rollback logic, and several local variables.
->
->The -EOPNOTSUPP validation loop, which checked ops support across all
->owner-matching references, is replaced with a direct check on the
->single owner reference returned by dpll_pin_own_dpll_ref_first().
->
->The documentation in dpll.rst is updated to reflect that pin-level
->attributes are set through the pin owner's dpll reference only.
->
->No existing driver is affected:
->  - ptp_ocp and mlx5 register each pin with a single DPLL.
->  - ice registers input pins with two DPLLs (EEC and PPS) using
->    identical ops and pin_priv; the set callbacks address the HW by
->    pin index, not by DPLL, so the second call was a no-op.
->  - zl3073x registers input pins with every DPLL channel; the set
->    callbacks address HW by pin/ref ID regardless of DPLL. The
->    ref_sync_set callback was the only one with per-channel behavior,
->    addressed by the preceding patch.
->
->Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+RTL_GIGA_MAC_VER_EXTENDED implicitly follows
+RTL_GIGA_MAC_VER_LAST = RTL_GIGA_MAC_NONE - 1, so it has the same value
+as RTL_GIGA_MAC_NONE.
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+rtl_init_one() therefore sends unknown chips through extended detection.
+If TX_CONFIG_V2 reads as zero, they are misidentified as RTL9151AS
+instead of being rejected.
+
+Give RTL_GIGA_MAC_VER_EXTENDED a distinct value. It is only a detection
+marker and is never stored in tp->mac_version.
+
+Found by Clang's -Wduplicate-enum and verified with a QEMU stub.
+
+Fixes: 5e3c5a2b85da9 ("r8169: add support for extended chip version id and RTL9151AS")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-fable-5
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ drivers/net/ethernet/realtek/r8169.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/realtek/r8169.h b/drivers/net/ethernet/realtek/r8169.h
+index 0b9c1d4eb48ba..fb772cc043105 100644
+--- a/drivers/net/ethernet/realtek/r8169.h
++++ b/drivers/net/ethernet/realtek/r8169.h
+@@ -74,7 +74,7 @@ enum mac_version {
+ 	RTL_GIGA_MAC_VER_80,
+ 	RTL_GIGA_MAC_NONE,
+ 	RTL_GIGA_MAC_VER_LAST = RTL_GIGA_MAC_NONE - 1,
+-	RTL_GIGA_MAC_VER_EXTENDED
++	RTL_GIGA_MAC_VER_EXTENDED = RTL_GIGA_MAC_NONE + 1
+ };
+ 
+ struct rtl8169_private;
+-- 
+2.53.0
+
