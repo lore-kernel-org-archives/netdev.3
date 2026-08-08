@@ -1,236 +1,323 @@
-Received: from mail-43100.protonmail.ch (mail-43100.protonmail.ch [185.70.43.100])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4505C2F0C7E
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 20:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B90333F383
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 22:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786222161; cv=none; b=K7+QhWnPw7l1Fw3FaAg07BGD2c5X3nL3uwh9XE2aseIJE5/xfPwNNov7co2u7gdardjqVwIR9StiVMdAjAhhIS/YRP/KLhBlLltmylh9CivtHdtDJdP7Pz3+r3czT9169vKu4CUJtBN5HDBXOSprC7UzHgd7VsOTz90IHqrJKCo=
+	t=1786227623; cv=none; b=aRYH813iLrhNuPw29O5wsmkW5UycQUUYY+9CJoIA56B4+JCq/ybYzqMfmlASwGx+LtbH26i1ZbGwfD1jc3E+3Ydz1ZDMXOCc2r9DokwE9fIxd7gLtfZkN90idXMokHqotW6Y5ws6PlW+hChr/PYS3LAmsJTLHcRDQvLPiGVjGqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786222161; c=relaxed/simple;
-	bh=Hs1lo/Yt0wnw6bToEFrrhbdaRH3eG44pTYd4kW6BDvk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rlLbDBhwLGH9BkKD7/XPhFGVX51epmCYQUOKGPfJBeQsyohcKP4G3Ad0AfUgm0CXGSIqGhe/y3wF7NQ4eIsO2am/vD9ygr7Pu7mS1eleqoxXXMJsgBSWWofS/6vVPAFpkfBTF6ZBufYIzwjcc/kejX/eNQi81NWAkJCED3JdXBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=m8ed6OwB; arc=none smtp.client-ip=185.70.43.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1786227623; c=relaxed/simple;
+	bh=b8Z2KO3TBjsJ6EwWbjiSsIeptN7atizEtQf1IUqBR2Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W97kFe/VPtMt5BOwf52Wg7vPiLZSnjG3xD+TZ0Rut/tnm/F8u1l59Lw10rj5Jn4m9fstuEqHTqS6lyyWAjIgoQXHEhYq+Mztbq0Boa9m2tw87gQPJFmyDjhRuwRnf5/na7k8IJ1pQvsjccb+8jzfxn5k72w5BMAWGczNcx15cS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IevWeCdY; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="m8ed6OwB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1786222156; x=1786481356;
-	bh=Sdx90Tbwg4No+B+M/+bZrMrDCj+Kwh8GppS54q3a0lw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=m8ed6OwBvtGrML8adljDNcieNY8w8pmpVW2uJfMtj5YvFjJ6yW0dSDvlLz4JCvN+j
-	 OcP2pe9mMfSO2U6bgI8HkJ0rH9uXDqul83lMUwVvrzKgRg3LFrGBqg0GKVLx2isApq
-	 /fdNTa8lpu6kpYkG3MuAC3bWxtwMxWNAE+wBjuvCaim24iiuL8Q+UZUSNEKFtoa6rR
-	 S5miMplwtmLTMV2Gy5fSTnBgc0wAF7Ql/d3KDtcKw82cmGf2T931jf50IPdZYizzXl
-	 Pj2t/1PPhrWIjRYjwfuXfNEHWqdLSMgGFoDs9w5yL05663Rgzon2OZfd/r7qUyjcBB
-	 kaRI0W3uOoeRg==
-Date: Sat, 08 Aug 2026 20:49:11 +0000
-To: Jakub Kicinski <kuba@kernel.org>
-From: manizada <manizada@pm.me>
-Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com, jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com
-Subject: Re: [PATCH net v2] net: tun: bound receive headroom
-Message-ID: <i1iqF8lnn-l74SDP8wgrfjVHVaCGXclTI1vgMTfh60WpzUIeJoc5bhsXoOxsbtH0XgzX0FuSpYTweIS1pe1omkMGE_NIj1LjBB8enWdp2Qg=@pm.me>
-In-Reply-To: <20260806142236.2353282-1-kuba@kernel.org>
-References: <20260805084504.953162-1-manizada@pm.me> <20260806142236.2353282-1-kuba@kernel.org>
-Feedback-ID: 37265593:user:proton
-X-Pm-Message-ID: 827c1920182034b41497cd7cc3a7f140fd757e55
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IevWeCdY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786227621; x=1817763621;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=b8Z2KO3TBjsJ6EwWbjiSsIeptN7atizEtQf1IUqBR2Q=;
+  b=IevWeCdY4CtLDTU+wXl513w4N7IL9o2fpJKPJwAyOBnwhjzzcWECF2w6
+   I+u6PS4aZhZdZiS9SM5tqt0UcEvQw7rqk5qloPsUNQ4DDpovipP3O4wFo
+   lQ0JCQtvXed0aUJLj9DA815QRV6dtlngemfmpOfWaGHvAhrEjgLDd1ZcD
+   VSrL7ZeX0d4Kv2/hqr4V/Q2gS+TWKY1MSDlSzottvTfL3OvN+jrIF7fdH
+   N4c+CS9ReUkF5Lj6hEb/aQG6TUBWqQS6VVBQoiwVDJLyO7SqHzj6ITDyO
+   Comt5tc0/ENikKex/I9bmIpB9Ed/QK7gX8CodlzuqehmOKKzUNvc2pgA6
+   Q==;
+X-CSE-ConnectionGUID: M3QwhnTGTIeBQcsCbZE5CA==
+X-CSE-MsgGUID: UTr+SDR/RPqAJswqnnbMeg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11869"; a="90610065"
+X-IronPort-AV: E=Sophos;i="6.25,212,1779174000"; 
+   d="scan'208";a="90610065"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2026 15:20:21 -0700
+X-CSE-ConnectionGUID: hfvnj9eFRYGGQBpVC7bviw==
+X-CSE-MsgGUID: t2IEYqgsTAOWFTMBktwR5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,212,1779174000"; 
+   d="scan'208";a="266945831"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 08 Aug 2026 15:20:17 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wspOp-00000000Ksp-06UW;
+	Sat, 08 Aug 2026 22:20:15 +0000
+Date: Sun, 9 Aug 2026 06:19:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zhiling Zou <zhilinz@nebusec.ai>, netdev@vger.kernel.org,
+	dev@openvswitch.org, i.maximets@ovn.org
+Cc: oe-kbuild-all@lists.linux.dev, aconole@redhat.com, echaudro@redhat.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: Re: [PATCH net v4 1/1] net: openvswitch: reallocate update replies
+ for mismatched IDs
+Message-ID: <202608090656.Aevl8bsK-lkp@intel.com>
+References: <3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz@nebusec.ai>
+
+Hi Zhiling,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on horms-ipvs/master]
+[also build test WARNING on v7.2-rc6]
+[cannot apply to net/main net-next/main linus/master next-20260807]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Zhiling-Zou/net-openvswitch-reallocate-update-replies-for-mismatched-IDs/20260808-205431
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/horms/ipvs.git master
+patch link:    https://lore.kernel.org/r/3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz%40nebusec.ai
+patch subject: [PATCH net v4 1/1] net: openvswitch: reallocate update replies for mismatched IDs
+config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260809/202608090656.Aevl8bsK-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260809/202608090656.Aevl8bsK-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608090656.Aevl8bsK-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from ./arch/nios2/include/generated/asm/current.h:1,
+                    from include/linux/wait.h:11,
+                    from include/linux/swait.h:8,
+                    from include/linux/completion.h:12,
+                    from include/linux/mm_types.h:14,
+                    from include/linux/buildid.h:5,
+                    from include/linux/module.h:14,
+                    from net/openvswitch/datapath.c:9:
+   net/openvswitch/datapath.c: In function 'ovs_flow_cmd_new':
+   include/asm-generic/current.h:7:45: error: expected ')' before '->' token
+       7 | #define get_current() (current_thread_info()->task)
+         |                                             ^~
+   include/asm-generic/current.h:8:17: note: in expansion of macro 'get_current'
+       8 | #define current get_current()
+         |                 ^~~~~~~~~~~
+   net/openvswitch/datapath.c:1100:32: note: in expansion of macro 'current'
+    1100 |                         size_t current, desired;
+         |                                ^~~~~~~
+>> net/openvswitch/datapath.c:1102:33: warning: assignment to 'struct task_struct *' from 'size_t' {aka 'unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
+    1102 |                         current = ovs_flow_cmd_msg_size(acts, &new_flow->id,
+         |                                 ^
+   net/openvswitch/datapath.c:1104:25: error: 'desired' undeclared (first use in this function)
+    1104 |                         desired = ovs_flow_cmd_msg_size(acts, &flow->id,
+         |                         ^~~~~~~
+   net/openvswitch/datapath.c:1104:25: note: each undeclared identifier is reported only once for each function it appears in
 
 
+vim +1102 net/openvswitch/datapath.c
 
+   966	
+   967	static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
+   968	{
+   969		struct net *net = sock_net(skb->sk);
+   970		struct nlattr **a = info->attrs;
+   971		struct ovs_header *ovs_header = info->userhdr;
+   972		struct sw_flow *flow = NULL, *new_flow;
+   973		struct sw_flow_mask mask;
+   974		struct sk_buff *reply;
+   975		struct datapath *dp;
+   976		struct sw_flow_key *key;
+   977		struct sw_flow_actions *acts;
+   978		struct sw_flow_match match;
+   979		u32 ufid_flags = ovs_nla_get_ufid_flags(a[OVS_FLOW_ATTR_UFID_FLAGS]);
+   980		int error;
+   981		bool log = !a[OVS_FLOW_ATTR_PROBE];
+   982	
+   983		/* Must have key and actions. */
+   984		error = -EINVAL;
+   985		if (!a[OVS_FLOW_ATTR_KEY]) {
+   986			OVS_NLERR(log, "Flow key attr not present in new flow.");
+   987			goto error;
+   988		}
+   989		if (!a[OVS_FLOW_ATTR_ACTIONS]) {
+   990			OVS_NLERR(log, "Flow actions attr not present in new flow.");
+   991			goto error;
+   992		}
+   993	
+   994		/* Most of the time we need to allocate a new flow, do it before
+   995		 * locking.
+   996		 */
+   997		new_flow = ovs_flow_alloc();
+   998		if (IS_ERR(new_flow)) {
+   999			error = PTR_ERR(new_flow);
+  1000			goto error;
+  1001		}
+  1002	
+  1003		/* Extract key. */
+  1004		key = kzalloc(sizeof(*key), GFP_KERNEL);
+  1005		if (!key) {
+  1006			error = -ENOMEM;
+  1007			goto err_kfree_flow;
+  1008		}
+  1009	
+  1010		ovs_match_init(&match, key, false, &mask);
+  1011		error = ovs_nla_get_match(net, &match, a[OVS_FLOW_ATTR_KEY],
+  1012					  a[OVS_FLOW_ATTR_MASK], log);
+  1013		if (error)
+  1014			goto err_kfree_key;
+  1015	
+  1016		ovs_flow_mask_key(&new_flow->key, key, true, &mask);
+  1017	
+  1018		/* Extract flow identifier. */
+  1019		error = ovs_nla_get_identifier(&new_flow->id, a[OVS_FLOW_ATTR_UFID],
+  1020					       key, log);
+  1021		if (error)
+  1022			goto err_kfree_key;
+  1023	
+  1024		/* Validate actions. */
+  1025		error = ovs_nla_copy_actions(net, a[OVS_FLOW_ATTR_ACTIONS],
+  1026					     &new_flow->key, &acts, log);
+  1027		if (error) {
+  1028			OVS_NLERR(log, "Flow actions may not be safe on all matching packets.");
+  1029			goto err_kfree_key;
+  1030		}
+  1031	
+  1032		reply = ovs_flow_cmd_alloc_info(acts, &new_flow->id, info, false,
+  1033						ufid_flags);
+  1034		if (IS_ERR(reply)) {
+  1035			error = PTR_ERR(reply);
+  1036			goto err_kfree_acts;
+  1037		}
+  1038	
+  1039		ovs_lock();
+  1040		dp = get_dp(net, ovs_header->dp_ifindex);
+  1041		if (unlikely(!dp)) {
+  1042			error = -ENODEV;
+  1043			goto err_unlock_ovs;
+  1044		}
+  1045	
+  1046		/* Check if this is a duplicate flow */
+  1047		if (ovs_identifier_is_ufid(&new_flow->id))
+  1048			flow = ovs_flow_tbl_lookup_ufid(&dp->table, &new_flow->id);
+  1049		if (!flow)
+  1050			flow = ovs_flow_tbl_lookup(&dp->table, key);
+  1051		if (likely(!flow)) {
+  1052			rcu_assign_pointer(new_flow->sf_acts, acts);
+  1053	
+  1054			/* Put flow in bucket. */
+  1055			error = ovs_flow_tbl_insert(&dp->table, new_flow, &mask);
+  1056			if (unlikely(error)) {
+  1057				acts = NULL;
+  1058				goto err_unlock_ovs;
+  1059			}
+  1060	
+  1061			if (unlikely(reply)) {
+  1062				error = ovs_flow_cmd_fill_info(new_flow,
+  1063							       ovs_header->dp_ifindex,
+  1064							       reply, info->snd_portid,
+  1065							       info->snd_seq, 0,
+  1066							       OVS_FLOW_CMD_NEW,
+  1067							       ufid_flags);
+  1068				BUG_ON(error < 0);
+  1069			}
+  1070			ovs_unlock();
+  1071		} else {
+  1072			struct sw_flow_actions *old_acts;
+  1073	
+  1074			/* Bail out if we're not allowed to modify an existing flow.
+  1075			 * We accept NLM_F_CREATE in place of the intended NLM_F_EXCL
+  1076			 * because Generic Netlink treats the latter as a dump
+  1077			 * request.  We also accept NLM_F_EXCL in case that bug ever
+  1078			 * gets fixed.
+  1079			 */
+  1080			if (unlikely(info->nlhdr->nlmsg_flags & (NLM_F_CREATE
+  1081								 | NLM_F_EXCL))) {
+  1082				error = -EEXIST;
+  1083				goto err_unlock_ovs;
+  1084			}
+  1085	
+  1086			/* Look for any overlapping flow. */
+  1087			if (unlikely(!ovs_flow_cmp(flow, &match))) {
+  1088				if (ovs_identifier_is_key(&flow->id))
+  1089					flow = ovs_flow_tbl_lookup_exact(&dp->table,
+  1090									 &match);
+  1091				else /* UFID matches but key is different */
+  1092					flow = NULL;
+  1093				if (!flow) {
+  1094					error = -ENOENT;
+  1095					goto err_unlock_ovs;
+  1096				}
+  1097			}
+  1098	
+  1099			if (unlikely(reply)) {
+  1100				size_t current, desired;
+  1101	
+> 1102				current = ovs_flow_cmd_msg_size(acts, &new_flow->id,
+  1103								ufid_flags);
+  1104				desired = ovs_flow_cmd_msg_size(acts, &flow->id,
+  1105								ufid_flags);
+  1106				if (current < desired) {
+  1107					struct sk_buff *resized;
+  1108	
+  1109					resized = ovs_flow_cmd_alloc_info(acts, &flow->id,
+  1110									  info, false,
+  1111									  ufid_flags);
+  1112					if (IS_ERR(resized)) {
+  1113						error = PTR_ERR(resized);
+  1114						goto err_unlock_ovs;
+  1115					}
+  1116					kfree_skb(reply);
+  1117					reply = resized;
+  1118				}
+  1119			}
+  1120	
+  1121			/* Update actions. */
+  1122			old_acts = ovsl_dereference(flow->sf_acts);
+  1123			rcu_assign_pointer(flow->sf_acts, acts);
+  1124	
+  1125			if (unlikely(reply)) {
+  1126				error = ovs_flow_cmd_fill_info(flow,
+  1127							       ovs_header->dp_ifindex,
+  1128							       reply, info->snd_portid,
+  1129							       info->snd_seq, 0,
+  1130							       OVS_FLOW_CMD_NEW,
+  1131							       ufid_flags);
+  1132				BUG_ON(error < 0);
+  1133			}
+  1134			ovs_unlock();
+  1135	
+  1136			ovs_nla_free_flow_actions_rcu(old_acts);
+  1137			ovs_flow_free(new_flow, false);
+  1138		}
+  1139	
+  1140		if (reply)
+  1141			ovs_notify(&dp_flow_genl_family, reply, info);
+  1142	
+  1143		kfree(key);
+  1144		return 0;
+  1145	
+  1146	err_unlock_ovs:
+  1147		ovs_unlock();
+  1148		kfree_skb(reply);
+  1149	err_kfree_acts:
+  1150		ovs_nla_free_flow_actions(acts);
+  1151	err_kfree_key:
+  1152		kfree(key);
+  1153	err_kfree_flow:
+  1154		ovs_flow_free(new_flow, false);
+  1155	error:
+  1156		return error;
+  1157	}
+  1158	
 
-
-On Thursday, August 6th, 2026 at 7:22 AM, Jakub Kicinski <kuba@kernel.org> =
-wrote:
-
-> This is an AI-generated review of your patch. The human sending this
-> email says "This is what the bots think :)"
-> ---
-> net: tun: bound receive headroom
->=20
-> This patch clamps the headroom that tun_set_headroom() stores in tun->ali=
-gn
-> so that SKB_MAX_HEAD(align) in tun_get_user() cannot underflow, and it ad=
-ds
-> pskb_may_pull() calls before reading the raw-TUN first byte and the TAP
-> Ethernet header.
->=20
-> > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> > index fed9dfdfcc3bc..efd2e7d75c9ac 100644
-> > --- a/drivers/net/tun.c
-> > +++ b/drivers/net/tun.c
-> > @@ -1107,11 +1107,16 @@ static netdev_features_t tun_net_fix_features(s=
-truct net_device *dev,
-> >  static void tun_set_headroom(struct net_device *dev, int new_hr)
-> >  {
-> >  =09struct tun_struct *tun =3D netdev_priv(dev);
-> > +=09size_t max_headroom;
-> >
-> > -=09if (new_hr < NET_SKB_PAD)
-> > -=09=09new_hr =3D NET_SKB_PAD;
-> > +=09max_headroom =3D min_t(size_t, SKB_MAX_HEAD(0), U16_MAX - 1);
-> >
-> > -=09tun->align =3D new_hr;
-> > +=09if ((tun->flags & TUN_TYPE_MASK) =3D=3D IFF_TAP)
-> > +=09=09max_headroom -=3D ETH_HLEN + NET_IP_ALIGN;
-> > +=09else
-> > +=09=09max_headroom -=3D 1;
-> > +
-> > +=09tun->align =3D clamp_t(int, new_hr, NET_SKB_PAD, max_headroom);
-> >  }
->=20
-> [Severity: Low]
-> Is the upper bound intentionally this tight?  At the clamp maximum,
-> tun_get_user() computes:
->=20
-> =09good_linear =3D SKB_MAX_HEAD(align);
->=20
-> which evaluates to 1 for raw TUN and ETH_HLEN for TAP.  The non-zerocopy
-> path then does:
->=20
-> =09copylen =3D len;
-> =09linear =3D min(hdr_len, good_linear);
->=20
-> so the resulting skb has skb_headlen() of 1 (or 14) bytes.
->=20
-> Does that make every write() carrying a virtio_net_hdr with
-> VIRTIO_NET_HDR_F_NEEDS_CSUM or a GSO type fail?
-
-I don't really follow this; not for the linear-area reason described. The
-virtio-header conversion calls pskb_may_pull() for the required checksum
-or GSO headers before skb_partial_csum_set(). The requested pull length
-includes the checksum field, so after a successful pull csum_end is within
-skb_headlen(). The one-byte and ETH_HLEN values are only the minimum
-prefix initially kept linear.
-
-In configs where the 16-bit (vs the one-page) offset limit controls the
-cap, an extreme max-headroom request can still leave too little room for
-a non-zero checksum-start offset to fit. But that is rejected safely and
-is a whole other topic.
-
-> The chain
-> tun_vnet_hdr_tnl_to_skb() -> virtio_net_hdr_to_skb() ends in
-> skb_partial_csum_set(), which requires the csum offsets to live inside th=
-e
-> linear area:
->=20
-> net/core/skbuff.c:skb_partial_csum_set() {
-> =09...
-> =09if (unlikely(csum_start >=3D U16_MAX || csum_end > skb_headlen(skb))) =
-{
-> =09=09net_warn_ratelimited("bad partial csum: ...");
-> =09=09return false;
-> =09}
-> =09...
-> }
->=20
-> With a 1-byte or 14-byte headlen that check always fails, so tun_get_user=
-()
-> takes the err =3D -EINVAL path, bumps rx_frame_errors and drops the frame=
- for
-> all checksum-offloaded and GSO traffic while the headroom request is in
-> effect.
->=20
-> Note that for IFF_TUN, tun_can_build_skb() returns false, so the raw-TUN
-> path always goes through tun_alloc_skb() and always sees good_linear =3D=
-=3D 1 at
-> the bound.  tun_alloc_skb() only overrides linear when prepad + len <
-> PAGE_SIZE, which is not the case for non-trivial packets at this prepad.
->=20
-> Would reserving a usable linear area instead (for example GOODCOPY_LEN, o=
-r
-> the maximum hdr_len the device can accept) give the same memory-safety
-> guarantee without turning offloaded traffic into drops?  For a Cc: stable
-> patch, could the commit message also mention this consequence?  Right now=
- it
-> only says:
->=20
->   "Leave one linear byte for raw TUN and a complete Ethernet header for T=
-AP,
->    including NET_IP_ALIGN."
->=20
-> > @@ -1822,7 +1827,13 @@ static ssize_t tun_get_user(struct tun_struct *t=
-un, struct tun_file *tfile,
-> >  =09switch (tun->flags & TUN_TYPE_MASK) {
-> >  =09case IFF_TUN:
-> >  =09=09if (tun->flags & IFF_NO_PI) {
-> > -=09=09=09u8 ip_version =3D skb->len ? (skb->data[0] >> 4) : 0;
-> > +=09=09=09u8 ip_version;
-> > +
-> > +=09=09=09if (skb->len && !pskb_may_pull(skb, 1)) {
-> > +=09=09=09=09err =3D -ENOMEM;
-> > +=09=09=09=09goto drop;
-> > +=09=09=09}
->=20
-> [Severity: Low]
-> Should this path set drop_reason too?
-
-I'll just do what Willem suggested in v3 instead:
-
-=09if (!pskb_may_pull(skb, 1)) {
-=09=09err =3D -EINVAL;
-=09=09goto drop;
-=09}
-
-=09ip_version =3D skb->data[0] >> 4;
-
-So there'd be no skb->len check, so pull failure can also mean
-that the packet contains no first byte, at which point SKB_DROP_REASON_NOME=
-M
-wouldn't make sense either. So I think it's best not to set it?
-
-> It jumps to drop without touching
-> drop_reason, so the free_skb label in tun_get_user() reports the initial
-> SKB_DROP_REASON_NOT_SPECIFIED:
->=20
-> drivers/net/tun.c:tun_get_user() {
-> =09...
-> free_skb:
-> =09if (!IS_ERR_OR_NULL(skb))
-> =09=09kfree_skb_reason(skb, drop_reason);
-> =09...
-> }
->=20
-> Since the call is guarded by skb->len, pskb_may_pull(skb, 1) can only fai=
-l
-> via the GFP_ATOMIC allocation inside __pskb_pull_tail()/pskb_expand_head(=
-),
-> so SKB_DROP_REASON_NOMEM looks like the accurate value here.
->=20
-> The IFF_TAP arm changed by the same hunk does set an explicit reason for =
-its
-> pull failure, so the two adjacent sites in the same switch end up reporti=
-ng
-> different things to the kfree_skb_reason() tracepoint.
->=20
-> > +=09=09=09ip_version =3D skb->len ? (skb->data[0] >> 4) : 0;
-> >
-> >  =09=09=09switch (ip_version) {
-> >  =09=09=09case 4:
->=20
-> [ ... ]
->=20
-> > @@ -1842,7 +1853,7 @@ static ssize_t tun_get_user(struct tun_struct *tu=
-n, struct tun_file *tfile,
-> >  =09=09skb->dev =3D tun->dev;
-> >  =09=09break;
-> >  =09case IFF_TAP:
-> > -=09=09if (frags && !pskb_may_pull(skb, ETH_HLEN)) {
-> > +=09=09if (!pskb_may_pull(skb, ETH_HLEN)) {
-> >  =09=09=09err =3D -ENOMEM;
-> >  =09=09=09drop_reason =3D SKB_DROP_REASON_HDR_TRUNC;
-> >  =09=09=09goto drop;
-> --
-> pw-bot: cr
-> 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
