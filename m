@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD833B2FC7;
-	Sat,  8 Aug 2026 19:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9AE3D3CE0;
+	Sat,  8 Aug 2026 19:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786218509; cv=none; b=FFvwuiANBTY08zLav/4WIpxzq44betH261cxr/sAnq7Cdw9RrxIzC8pXO0knqPVihjEpIkBSUBAZeEfahRdlfQ3Xh/v/ba5BYeZLOs0Bul6dYJL43zj4QM17YTiQsQ+Xgclynr5R2w9L+VWDq3r7Eg235G38d/RU2dJ+wnkX3S8=
+	t=1786218513; cv=none; b=QDdVf/qkEGXgINMvg5H805YGA71KOzwVZboSLemHPZAobK4L/Blc3jWDflvwAm3rk59guupO+ewC+6yvw13SAa/4xoWXIEiTpeQlAzxM1+yFC8QQOQMpkEYMYTQJzjt6feO2eU9AIuYh8ajgLaBLSZiuvvWwGb+DdwjeYKoWp3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786218509; c=relaxed/simple;
-	bh=S0/ksoVWu4eMG2NtgvzRC4h/zxjU87B5+OQhvo2ceZg=;
+	s=arc-20240116; t=1786218513; c=relaxed/simple;
+	bh=lzIekT/pvGRq9TMvm0y84O2enBx/YluoPMB7VMUyWDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJXCXvvfjB8k3TqBDVzO+H6FSTOth1qM/apbDnqXQjH9De/wfT/mL8azyeu2CC5XRTmMnRP4JNscu5T8PWu56K4rukGoQkCD2zfuEuzzkXU37oSJhUGLF905Y4NHOeW/KyfiZ8gf1/0ht6MTeLBbaRfEFT1CliGpPYEQoix4BTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OQJ5N09t; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=tuXUGMRmnAzGIqpPbNbz/yzM70dvaVNsUDoCqtMvm+yTAN2UcEIJq74mVbK3u2XuhFoSxerQlazT8PhfER9lACOQqGhUThpNqWP+GYJgAdH86FD4H/Fp4uZRvqcChTUEiBq3AymRyecpEGPLeuW38l6b6df6IKkWu4FyO1X3N90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LNv6l3dy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OQJ5N09t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD7E1F000E9;
-	Sat,  8 Aug 2026 19:48:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LNv6l3dy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4D11F00A3A;
+	Sat,  8 Aug 2026 19:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786218507;
-	bh=QT5V9DnroqFF7LhVXu5utoVefBI3jbPAXKoqn/bo8rk=;
+	s=k20260515; t=1786218506;
+	bh=PGLFx20OJkATeaOnfq8BynVGC6dZ8C1J46R9FCi/LBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OQJ5N09t9DuXBthTGuDN63DLQj81u7xaV1bbKBf6q7Jrw39/ys395wzOXO6nfTIVL
-	 0mtz6gs1hgi0wiy/YnboNKyzelnRwq+vNlhWlMrZC4EJzjB3rTefTl3EvAkZ/JAqMl
-	 ms4+lNojvOnD2tNPOPruH+YIpSLWBzalTeKlZ+8E44hpBUGTbZwtCURmbNympGHeMJ
-	 Qzz9PJRdZ7RVj2UJTs+jVOnLr61fHAlX1SLan9tkVxFs9aWQZlmObWP7TNAib+LBT9
-	 r0ExVQLVx+xcZFj8OTRdXNODVTcrYXmN187Foc4XPjOcMymd2gFOrQ0NOMxa1sVbHw
-	 mCyWwTzQP5+Pg==
+	b=LNv6l3dyn2JhxoNffxFzH5N7/HO6kRQ1XMVBhjGzG23WKCuAE9H0e94GzE7ddXkZL
+	 EzgSDKWIqOH2Rv8mgRhTTJGK6UBRSPlXg5nLqOzaV9GdF06LIZLBzSIqok4n5w1/eB
+	 XdBCow7G8i22cSyUKEUBjrSk5VaRMlj6Nz6UHcOQieaMoEmdi9ystqgoUT9H0SoMTh
+	 XOYH9psBi8Pc6PPJ49P1ltzTqcS0mC3rSEOfWlaaRFc4qe/xOFz6/YQhlqtJL3YEiQ
+	 RqnLW0j3P9JN5iekVpEI0qWiTUPVoFidiEKPqYk+MAN+J6/9An1QEilMP+0c5d0UEP
+	 33ffWB3wCRXqg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: nagadheeraj.rottela@amd.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -48,12 +48,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	git-dev@amd.com
-Subject: Re: [PATCH 09/20] net: dsa: tag_xlnx_tsn: add skeleton tag protocol
-Date: Sat,  8 Aug 2026 12:48:26 -0700
-Message-ID: <20260808194826.132977-1-kuba@kernel.org>
+Subject: Re: [PATCH 08/20] net: xilinx: tsn: deliver endpoint RX frames to DSA user ports
+Date: Sat,  8 Aug 2026 12:48:25 -0700
+Message-ID: <20260808194825.132892-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260807104431.157230-10-nagadheeraj.rottela@amd.com>
-References: <20260807104431.157230-10-nagadheeraj.rottela@amd.com>
+In-Reply-To: <20260807104431.157230-9-nagadheeraj.rottela@amd.com>
+References: <20260807104431.157230-9-nagadheeraj.rottela@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,129 +65,172 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: dsa: tag_xlnx_tsn: add skeleton tag protocol
+net: xilinx: tsn: deliver endpoint RX frames to DSA user ports
 
-This adds DSA_TAG_PROTO_XLNX_TSN and a new tag driver for the AMD/Xilinx
-TSN Endpoint Ethernet MAC, which carries port classification out of band
-via a METADATA_HW_PORT_MUX metadata_dst instead of an in-band CPU tag.
-The tagger is described as a no-op, with the PTP TX intercept deferred to
-a later patch.
+The endpoint driver now allocates one METADATA_HW_PORT_MUX metadata_dst
+per MAC port at probe time and attaches the matching entry to each RX
+frame based on the TUSER port_id, so the DSA core can route frames to
+the correct swpN user netdev.
 
-A few questions below.
+> diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
+> index 7615d27f3b36..051285b47ddb 100644
+> --- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
+> +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
 
-> diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-> index d5e725b90d78..8ca48ce46ec1 100644
-> --- a/net/dsa/Kconfig
-> +++ b/net/dsa/Kconfig
-> @@ -221,4 +221,13 @@ config NET_DSA_TAG_YT921X
->  	  Say Y or M if you want to enable support for tagging frames for
->  	  Motorcomm YT921x switches.
+[ ... ]
+
+> @@ -254,6 +262,7 @@ static void ep_dma_rx_cb(void *data, const struct dmaengine_result *result)
+>  	}
 >  
-> +config NET_DSA_TAG_XLNX_TSN
+>  	skb_put(skb, rx_len);
+> +	skb_dst_set_noref(skb, &ep->port_md[port_id]->dst);
+>  	skb->dev = ndev;
+>  	skb->protocol = eth_type_trans(skb, ndev);
+>  	skb->ip_summed = CHECKSUM_NONE;
 
-[Severity: Low]
-Should this symbol sit between NET_DSA_TAG_VSC73XX_8021Q and
-NET_DSA_TAG_XRS700X instead of after NET_DSA_TAG_YT921X?  The Makefile
-change in this same patch does place it alphabetically:
+[Severity: Medium]
+Should this attach be gated on the ep netdev actually being a DSA conduit?
 
-  obj-$(CONFIG_NET_DSA_TAG_VSC73XX_8021Q) += tag_vsc73xx_8021q.o
-  obj-$(CONFIG_NET_DSA_TAG_XLNX_TSN) += tag_xlnx_tsn.o
-  obj-$(CONFIG_NET_DSA_TAG_XRS700X) += tag_xrs700x.o
+The only in-tree receive-side consumer that interprets and then drops this
+dst is dsa_switch_rcv() in net/dsa/tag.c:
 
-so the two lists no longer correspond.  This ordering is still the same at
-the end of the series.
+	if (md_dst && md_dst->type == METADATA_HW_PORT_MUX) {
+		unsigned int port = md_dst->u.port_info.port_id;
 
-> +	tristate "Tag driver for AMD/Xilinx TSN Endpoint Ethernet MAC"
-> +	help
-> +	  Say Y or M if you want to enable support for the AMD/Xilinx TSN
-> +	  Endpoint Ethernet MAC IP. The IP does not insert an in-band CPU
-> +	  tag; port classification is conveyed via metadata_dst attached on
-> +	  RX by the EP MAC driver, and PTP TX frames are intercepted in the
-> +	  xmit hook to be steered into the per-MAC PTP TX register window.
+		skb_dst_drop(skb);
+		if (!skb_has_extensions(skb))
+			skb->slow_gro = 0;
 
-[Severity: Low]
-The help text tells the user that "PTP TX frames are intercepted in the
-xmit hook to be steered into the per-MAC PTP TX register window", but
-xlnx_tsn_xmit() added by this same patch is a bare pass-through with no
-ETH_P_1588 classification and no tagger_data->ptp_tx() call, and the file
-does not include <linux/dsa/xlnx_tsn.h> yet.
+and that path is only reached for ETH_P_XDSA, which eth_type_trans() returns
+only when netdev_uses_dsa(dev) is true.
 
-Would it make sense to add the second sentence of the help text together
-with the later patch that implements it?  The commit message itself says
-"A later patch adds the PTP TX intercept", so at this revision menuconfig
-describes behaviour that is not present.
+NET_DSA_XILINX_TSN is a separate tristate from XILINX_TSN, so the ep netdev
+can be up and receiving with no switch bound (switch driver not built, no
+switch node in DT, switch probe failure, or the window between the ep
+register_netdev() and dsa_register_switch()). In that configuration nothing
+drops the metadata dst, and every received frame carries a dev-less
+DST_METADATA into the generic stack: skb->slow_gro is forced on for all
+traffic, IPv4 early demux is skipped because ip_rcv_finish_core() requires
+!skb_dst(skb), and the stale port_id 1/2 stays readable through
+skb_metadata_dst() by tc/BPF/netfilter ingress, AF_PACKET taps, bridging and
+clones.
 
-The mismatch does go away at the end of the series, where
-xlnx_tsn_xmit() gains:
+Both existing users of this mechanism gate the attach. mtk_poll_rx() in
+drivers/net/ethernet/mediatek/mtk_eth_soc.c:
 
-  net/dsa/tag_xlnx_tsn.c:xlnx_tsn_xmit() {
-      ...
-      if (eth_hdr(skb)->h_proto != htons(ETH_P_1588) ||
-          skb_vlan_tag_present(skb))
-              return skb;
+		if (mtk_is_netsys_v1(eth) && (trxd.rxd2 & RX_DMA_VTAG) &&
+		    netdev_uses_dsa(netdev)) {
+			...
+				skb_dst_set_noref(skb, &eth->dsa_meta[port]->dst);
 
-      tagger_data->ptp_tx(dp, skb);
-      return NULL;
-  }
+and airoha_qdma_rx_process() in drivers/net/ethernet/airoha/airoha_eth.c:
 
-> +
->  endif
+		if (netdev_uses_dsa(netdev)) {
+			...
+				skb_dst_set_noref(q->skb,
+						  &port->dsa_meta[sptag]->dst);
 
-[ ... ]
+[Severity: Medium]
+Is the noref dst still valid by the time it is dereferenced?
 
-> diff --git a/net/dsa/tag_xlnx_tsn.c b/net/dsa/tag_xlnx_tsn.c
-> new file mode 100644
-> index 000000000000..de352aa3d9a8
-> --- /dev/null
-> +++ b/net/dsa/tag_xlnx_tsn.c
-> @@ -0,0 +1,33 @@
+skb_dst_set_noref() stores an unreferenced pointer that must either be
+consumed inside the same RCU read-side section or upgraded with
+skb_dst_force().  Neither happens here: __netif_rx() does not process the
+frame inline, netif_rx_internal() enqueues it on a softnet backlog queue
+(possibly a remote CPU's under RPS) and returns, so the DMA completion
+callback's BH section ends while the skb still holds the raw pointer:
 
-[ ... ]
+ep_dma_rx_cb()
+  skb_dst_set_noref()
+  __netif_rx() -> netif_rx_internal() -> enqueue_to_backlog()
 
-> +static struct sk_buff *xlnx_tsn_rcv(struct sk_buff *skb,
-> +				    struct net_device *dev)
+later NET_RX softirq:
+  process_backlog() -> __netif_receive_skb_core() -> dsa_switch_rcv()
+    skb_metadata_dst() / skb_dst()
+
+The two existing users consume the metadata in the same BH section via
+napi_gro_receive().  The one core call site that queues a dst-carrying skb
+to the backlog, dev_loopback_xmit(), upgrades first:
+
+	DEBUG_NET_WARN_ON_ONCE(!skb_dst(skb));
+	skb_dst_force(skb);
+	netif_rx(skb);
+
+Would napi_gro_receive()/netif_receive_skb(), or an skb_dst_force() before
+the handoff, be more appropriate here?
+
+> @@ -771,6 +780,37 @@ static int ep_count_dma_queues(struct device *dev, u32 *out_tx, u32 *out_rx)
+>  	return 0;
+>  }
+>  
+> +static void ep_free_port_md(struct xlnx_tsn_ep *ep)
 > +{
-> +	kfree_skb(skb);
-> +	return NULL;
+> +	int i;
+> +
+> +	for (i = 0; i < XLNX_TSN_EP_PORT_MD_SLOTS; i++) {
+> +		if (ep->port_md[i]) {
+> +			metadata_dst_free(ep->port_md[i]);
+> +			ep->port_md[i] = NULL;
+> +		}
+> +	}
 > +}
 
-[Severity: Low]
-Could this drop be documented and made visible?  The commit message and
-the Kconfig text describe a "no-op tag driver" that "has no tag bytes to
-add or strip", but xlnx_tsn_rcv() destroys every skb it is handed, with no
-drop reason, no counter and no comment.
+[Severity: High]
+Can this free a metadata_dst that skbs still point at?
 
-The hook does look mandatory for the design, since the conduit RX
-interception only happens when .rcv is non-NULL:
+metadata_dst_free() in net/core/dst.c is an unconditional kfree():
 
-  include/net/dsa.h:netdev_uses_dsa() {
-      return dev->dsa_ptr && dev->dsa_ptr->rcv;
-  }
+void metadata_dst_free(struct metadata_dst *md_dst)
+{
+	...
+	kfree(md_dst);
+}
 
-but that rationale is not stated anywhere in the file.
+It ignores dst->__rcuref (dst_init() starts it at 1) and skips the
+call_rcu_hurry(&dst->rcu_head, dst_destroy_rcu) deferral that dst_release()
+performs.  Meanwhile ep_dma_rx_cb() published the raw pointer to the stack
+with skb_dst_set_noref().
 
-For frames that do carry the metadata dst attached by the EP MAC driver:
+Two paths look reachable:
 
-  drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c:ep_dma_rx_cb() {
-      ...
-      skb_dst_set_noref(skb, &ep->port_md[port_id]->dst);
-      ...
-  }
+(a) xlnx_tsn_ep_remove() frees right after unregister_netdev() with no
+    synchronize_net() of its own.  flush_all_backlogs() only purges skbs
+    still sitting on a backlog queue, not an skb already dequeued and in
+    flight in __netif_receive_skb_core() on another CPU, nor a clone that
+    already left the netdev-scoped backlog.  Such an skb then reads
+    md_dst->type / md_dst->u.port_info.port_id out of freed memory in
+    net/dsa/tag.c or the flow dissector.
 
-dsa_switch_rcv() takes the METADATA_HW_PORT_MUX branch and never reaches
-this function.  Anything else falls into:
+(b) If anything upgrades the noref dst with skb_dst_force() (for instance
+    __dev_queue_xmit() when the frame is bridged or forwarded to a device
+    without IFF_XMIT_DST_RELEASE, which is reachable in the ungated
+    non-DSA case above), dst_hold_safe() succeeds because rcuref starts at
+    1 and the skb owns a reference.  The kfree() here then frees a
+    still-referenced object, and the skb's later skb_dst_drop() ->
+    dst_release() does a rcuref_put() write on freed memory and may queue
+    dst_destroy_rcu() on it.
 
-  net/dsa/tag.c:dsa_switch_rcv() {
-      ...
-      } else {
-              nskb = cpu_dp->rcv(skb, dev);
-      }
-      ...
-  }
+Would dst_release(&ep->port_md[i]->dst) be the right teardown, matching
+mtk_free_dev():
 
-so a conduit frame whose metadata dst was stripped, for example by a tc
-ingress action on the conduit, disappears without showing up in
-ip -s link, dropwatch or drop-reason tracing.  Would
-kfree_skb_reason() plus a short comment explaining that the hook exists
-only to make netdev_uses_dsa() true be preferable here?  This body is
-unchanged at the end of the series.
+		dst_release(&eth->dsa_meta[i]->dst);
+
+and the equivalent dst_release(&port->dsa_meta[i]->dst) in the airoha
+driver?
+
+[ ... ]
+
+> @@ -858,6 +906,7 @@ static void xlnx_tsn_ep_remove(struct platform_device *pdev)
+>  		return;
+>  
+>  	unregister_netdev(ep->ndev);
+> +	ep_free_port_md(ep);
+>  	free_netdev(ep->ndev);
+>  }
+
+[Severity: High]
+Same concern as above, at the call site: the metadata_dst objects are
+kfree()d here immediately after unregister_netdev(), with no RCU grace
+period and no refcount check, while skbs or clones referencing them may
+still be in flight in the receive stack or queued in a qdisc after an
+skb_dst_force() upgrade.
