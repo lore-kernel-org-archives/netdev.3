@@ -1,130 +1,106 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CDA31E837
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 01:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786153269; cv=pass; b=AEVGxfN+SXhZYcrViAQM8EUjgKrN4BHkLWHY8b30RK96jNfQA3a7WOkKThuy80hShvUCTboujKHCz/hV39rjGMAec0cIpoCLIaKP8TvJspoJ2B9s+4l80ked1zQzeZiUpXiVGaixPZTO0iHm1EnYT1Til7l6rO8HtuWxQfYtJYA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786153269; c=relaxed/simple;
-	bh=J6v6peq2pcAz4ZTnsFALAfBpXXwe0QNWMxVmWduDSlU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l559rDE+ZxToXMPaRe9eeS2s0QY4rkLopIJDpcgLq7LdAr/WVqTDM0EbwjhsHfRCcJ9/NE0RkwuPVmcsN8CizqHW8jTYJJMIpubqO3ffCTQJZyqAJ3VBY2fUkTyn10uxByPYiRxdenkrXVG+o455tr3sL/9MgZM9MPw5RyMwa44=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S9rnqsxr; arc=pass smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478362E6CCD;
+	Sat,  8 Aug 2026 01:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786153306; cv=none; b=rMGUuIl+o737UvjzzJEtrWUgntTWm4OkncSHcJcpx+DDtGat8QlukrlYjMYSZ4fzePipZ68k5o24/5QJiYIZ1wqn+kw+us2oFDyC2gCxKH3R2+M1JV3JIhYuEwJ+6kPc+lWz7/ewr7kv/1ubnK6kak/pM57sOzo9sBu0Ho06aNM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786153306; c=relaxed/simple;
+	bh=8cfggL2C7NfHpvFvhTFPgrlEcm7Oi2u2UESLglztmSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ihQR+d5YFqEaO1rxNG2BoKGCIO1Ep7YUS1s6IYgOMFAT1cONCaVa2EvwcKS8uiQKkUn2JMzIIiBphxwmF0BqIx1+IJkC+AgCtQhSrBKPWNXKTbZQjOwSZZioaLBB+YNYoUaYcIuKFgf/VF7tf5GNJdoHvcMAR9h572E1rpZi458=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Yo8nL7sX; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S9rnqsxr"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so112883a91.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 18:41:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786153268; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ja/sZsZchhiBOE2lv3kQTZZF5ks//aN0BEEmUxkUlZjnbvcIEYfTjUjjd44PxX8sMa
-         H1ngz4xhLHezlIVpWo831xko3Fda0esYSeVL2iNXy3C2y6+OnlZ0b3d8UVPj+BIztgs0
-         9sgLX8Cw0rd3WtEgjzH6Hwzirrppus89/r9lKltOEvwkQ1WktPH/7HMCdsOtPkFecW8K
-         bq4bgxZVM44j0a+BMooShmL9JPgdn0U92kmEzkoT0YkPvac3o4l4PxltTWPTRGJeboTB
-         SxIx/X7q9QQGvEjQyuHiciz5dD3rcpFdnLswb5Nht8iSDHanvgYK8cWRCboT1N9WeVCC
-         RaGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=K33TW3QT82O6/MHuB/paGse9ECFvxfuZooBXxXgxnaI=;
-        fh=JmGpHUwFQSvqEk8506ax+r3Erjp00V9ivQL3nD+Clo0=;
-        b=A8pHEcKlcqa3gmUZN9O6Gb8gBXK6ZJwHOiXFuUTQCf+NkpchkpsQwsEn6qJ8vC42Dh
-         ecS38bJCp+cQM/Ai26povKA39wCO1LqNrAUkIykM1/MTRPCZGlMZYbZGcM316EDSohmK
-         F8vM3fVFAaLlUXa+xQ8FNlI01mS6hPLCIx1bhmOPcxy2HoAz9lN89A1CUj1NOyh3mL8g
-         GR+Dts+q5G4aBY80ZXHClN4edkm4qO8rqSqCWYdxdVr50WkF2kS6ZJwYiI1tDZzhySNF
-         vld41BxvDNEfHGw9TJ91EJvMhZwFSWD9hR5yVVg+xCEacYC1dk6/yInd3YhEsbm+qmqD
-         /Djg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786153268; x=1786758068; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=K33TW3QT82O6/MHuB/paGse9ECFvxfuZooBXxXgxnaI=;
-        b=S9rnqsxrUk8/+6bAJuHNSzw/5VgLOhzwV9SWzeIuA7gTYfwvWbUPyDCoLzNM1jlqlf
-         M3HWi4fYCJ8f/0MG2n06Hy0CmZ7RVE7JoV6XXjg16SJhBe3I2pL60fy4fj4bMaV1KvIN
-         HgwbMaAR0MaTvG0Jf7EAAz0mXKfyqkB853A8ob1SPJXcIAn0qwWCUI60ZKqX3WqE0RTP
-         qtS5Yr97zwwz39HewRekrHKSfySOr672krX5TtZ9W/S8Pwl4rgQRNtnhasjuR+/NPqKq
-         Oxha5gdeh0eeicKrQedsD1xgmP8D+EsN+NbzcKYxek2qKjWa+d6CtqWe8bcT5hSljHh2
-         2qcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786153268; x=1786758068;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K33TW3QT82O6/MHuB/paGse9ECFvxfuZooBXxXgxnaI=;
-        b=c+NlN7AzURRNVODKwEDTL3EoYAlAFBTuPYdexA6e1Z/TuIq1k9QUWYP+SyqU8lB4YP
-         RnRGiCvIiSErkX7lVELAshYkpDQXPOjYIBtQj3zzSZ35wPpngv8d3afXBaJyka9o8eVk
-         5C8/SiDE7YAOM65CB4edV3GXVXuJDbBfIIgB/eQ6hqrZdEo9KaGtIQYdnpuN+mSVrFSU
-         zlrMHJo0EUWS85Dz3wRKfX1IgEGN4bZMTcjdqKhgDYbviMRh7gDFqCGEY1oEFHKSRsQM
-         7exDyjDj5a6bTjzALKNxiRQ42lUmMbdiGAoe+kh4cIyyrt/KB6HL2RTMg8PgbcQuUf8J
-         rP3w==
-X-Forwarded-Encrypted: i=1; AHgh+RpTm/z8BDsqyoiTYpFIwUYMA16oz+DydN+DhOPyfKGSnH0cl/BR+swChgYboxYV76EkosdzSUk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzC41ughvy3g5AALgERUS3ow7CCnuJHJ9aCAkUUAfZmKQ/yQu34
-	D5u0d6HYFa7JHjQ5oRrOyZ/80AXBVslubeoekJz5uZTlDslM6x9R67R0va29W6/4eImZ4Zl8hd3
-	RRfjzGmicT4ofO7QZeynrg8t/xxHi8ptxLYbGqQLs
-X-Gm-Gg: AR+sD12NYlxnAQRAJdkHaImhr9dPQ7Ay+AqJ8bkL6UPI4o9iLGcSQoC3RED1eecqY40
-	iEwNo2Lozs1IRVlgWlBaxgn/AUqAFgNSAZOUGZ2omZ5j9H9a5ZCocxX1rKMMBHHRK8D6aUxUoze
-	evu5hed5zv8imGfFmrckTTEkBOi3KVukDaCdgPPXcJLzkIMseTcNDYnLxypIgO1kGjjm5N+8cip
-	JV7REiCT1n79dStypbG8T518gIwthRbAoKEJaTU2wChY9Kxe0LDPkEqR9zw94ImvzWlV0SffzUR
-	NhUrgtSpm+/U2Kr53egXESmFSqPNGAKTuZgMzVkC/Cajnjq5k6v2OxqZEDnX1EBoDfZhUa7znDg
-	Wbnk5OA9QSUbzvk+M6kOpB5h7CoTUUmKgM1LhcKoFgFItammkG0GjJhAkXmfX+sJno72qSRIF29
-	gqSOxuVmvfHr8oTA==
-X-Received: by 2002:a17:90b:5343:b0:37f:a915:1c29 with SMTP id
- 98e67ed59e1d1-3909d9174b2mr12356788a91.19.1786153267129; Fri, 07 Aug 2026
- 18:41:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Yo8nL7sX"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zPdvXze8eJ+ip1RN4T5sK8ZVGUl8K7CRCIHKK0OEMsY=; b=Yo8nL7sXT8DRH38MZOCw9KMwkr
+	FAGRqZvulhAtUjnuFQ/xUT7VCJP3ZAz6pmjW+4saebDg7NiH/RsA9+0Kpt/PWmkioG1+G35+7fCoS
+	WxDFIETAP35cQ+2y3/Mi7493pxT5koC5/6xxcZJMI/Gc0ch+zQoaaHbikgQIzLBF5RmOoVYF4Ld1G
+	EZApA0iQw3Ox2+EXHHsaLEdwbfC+tCEekT1PTPToUC3n6ZQaY5pBoQseiPCWf0LoGF4r42Xi5whKf
+	5yH6lMKcuUhcIDYN9K4tRjP+3czgzJzw/I1lDa9qR8GKtcqdU6NGeWAY9a2d37wm7kbmtMK4OxqxX
+	hm2Im+OQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wsVcI-0000000189D-1P0D;
+	Sat, 08 Aug 2026 01:13:14 +0000
+Date: Sat, 8 Aug 2026 02:12:50 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org,
+	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com,
+	aliceryhl@google.com, arve@android.com, cmllamas@google.com,
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org,
+	davem@davemloft.net, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] mm: Make per-VMA locks available universally
+Message-ID: <anaCkrk55EQoE2aS@casper.infradead.org>
+References: <20260806200548.3124802-1-surenb@google.com>
+ <20260806200548.3124802-2-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1785824313.git.namcao@linutronix.de> <bc759ceba26d6e20fab3bcf7333ee7e6246696b6.1785824313.git.namcao@linutronix.de>
- <20260807180709.6fb7f2b2@kernel.org>
-In-Reply-To: <20260807180709.6fb7f2b2@kernel.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Fri, 7 Aug 2026 18:40:55 -0700
-X-Gm-Features: AUfX_mwkQ2n41h6YY5wbT9_yjGRlbcWzEI_ZrbQgH0BeSD9IvCNWMhOBG_HaYpA
-Message-ID: <CAAVpQUC5mY9gZH=LmRvdZb1F+QbxGPuNBgSXvHh6pTzZO5QSNQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 1/1] af_unix: Do not wait for garbage
- collector in sendmsg()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Nam Cao <namcao@linutronix.de>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806200548.3124802-2-surenb@google.com>
 
-On Fri, Aug 7, 2026 at 6:07=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> On Tue,  4 Aug 2026 08:46:16 +0200 Nam Cao wrote:
-> > AF_UNIX sockets' sendmsg() schedules and blocks on the garbage collecto=
-r if
-> > user has too many inflight unix sockets and there is cyclic reference i=
-n
-> > the system. This causes real-time issues, as cyclic reference can be
-> > created by any task in the system, and high priority tasks who do need =
-to
-> > send lots of AF_UNIX sockets get blocked by the garbage collector which
-> > runs as workqueue, causing a priority inversion scenario.
->
-> Hi Kuniyuki! Any thoughts?
+On Thu, Aug 06, 2026 at 01:05:44PM -0700, Suren Baghdasaryan wrote:
+> +++ b/kernel/bpf/stackmap.c
+> @@ -272,13 +272,8 @@ struct stack_map_vma_lock {
+>  /*
+>   * Acquire a stable read-side reference on the VMA covering @ip.
+>   *
+> - * With CONFIG_PER_VMA_LOCK=y this returns a VMA with its per-VMA read
+> - * lock held and mmap_lock dropped, so the caller may sleep.
+> - *
+> - * With CONFIG_PER_VMA_LOCK=n it returns a VMA with mmap_lock still
+> - * held; the caller must snapshot any fields it needs and pin vm_file
+> - * with get_file() before stack_map_unlock_vma() drops mmap_lock, as
+> - * the VMA may be split, merged, or freed after that.
+> + * This returns a VMA with its per-VMA read lock held and mmap_lock
+> + * dropped, so the caller may sleep.
 
-flush_work() makes an insane process slow down by itself and
-the sane users (whose peers receive fd in timely manner) can
-likely acquire the gc lock before insane users.
+I don't know if BPF is compatible with !MMU or not, but the comment
+is inconsistent with the code.  How about:
 
-The commit message assumes the GC is low priority, and it will
-be easier to trigger OOM and soft lockup without the penalty.
+ * On NOMMU configurations, returns with the mmap_lock held.  If the MMU
+ * is enabled, the per-VMA lock will be held instead.  The lock
+ * should be released with stack_map_unlock_vma() which will release the
+ * appropriate lock.  Once the lock is released, the VMA may be freed.
 
-If priority inversion on RT kernel is the only problem here, there will
-be more flush_work() instances triggered from userspace, and the real
-problem is that flush_work() does not implement priority inheritance
-like mutex.
+>   * Returns NULL on failure, in which case no lock is held.
+>   */
+> @@ -288,7 +283,6 @@ stack_map_lock_vma(struct stack_map_vma_lock *lock, unsigned long ip)
+>  	struct mm_struct *mm = lock->mm;
+>  	struct vm_area_struct *vma;
+>  
+> -	/* noop under !CONFIG_PER_VMA_LOCK */
+>  	vma = lock_vma_under_rcu(mm, ip);
+>  	if (vma) {
+>  		lock->vma = vma;
+> @@ -308,21 +302,20 @@ stack_map_lock_vma(struct stack_map_vma_lock *lock, unsigned long ip)
+>  		return NULL;
+>  	}
+>  
+> -#ifdef CONFIG_PER_VMA_LOCK
+> +#ifdef CONFIG_MMU
+>  	if (!vma_start_read_locked(vma)) {
+>  		mmap_read_unlock(mm);
+>  		return NULL;
+>  	}
+>  	mmap_read_unlock(mm);
+>  #endif
+> -
+>  	lock->vma = vma;
+>  	return vma;
+>  }
