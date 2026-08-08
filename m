@@ -1,137 +1,229 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF51331354C;
-	Sat,  8 Aug 2026 09:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A7C23E325
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 09:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786179732; cv=none; b=k3Z1jqPrjPm0D03p6YB1iOVwIfDOeN75WwZcnjoH+Cxz8ZqgEbvFW8u14rLSxT3bE3x5WJgTEZhGPEkc+KitmT/GNZ5rGqt5l7XiqnHFEMeoDIQpXbz2am0jSuLwCm1w/ipPdN/qS+TxXDmj0lv2f/VJ5ZipA2FLtVFQApr/u4c=
+	t=1786182505; cv=none; b=mGk3jbui5o/0r6qoKnembRTnC/xdHERrFZ9boKc+XS0j8DzHIK3+YsshhTwQe4R22PwsJMXaC7rbbjNgxvnmg/S+Lao7ZKMGAzSby/mqM4refqjJ1B7Hlfj2MWuE6Mx/Nf+Q+ycQ7VVsfHgqipv6/OTv6uPPurqnbKBmd9+pZtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786179732; c=relaxed/simple;
-	bh=Ta3ydkwxadwVfeEOrPVNo+tQcGjpYYV3d7hcM4vz+js=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=avoB3TzLxzmDx/B6gZKvbnJbIDgxoqQ3VXoELfcPwP0Puf3nQQA0AtHZJbIYnkOfh+kmWzv3wReERFZOruGl58KGNLPGbKKObMDTS26kjyKh6X4nzLkzl4UAE7HxWw9NwCNni4X7krEuouIUVfQosgE11UbQ9rtkt+jyHQV2TtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BVdRq9Ub; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BVdRq9Ub"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=i25+lI2q8WnrC5a18HSJkcZlF/JN3MlaxK8/+QXZiCY=; b=BVdRq9UbvI/M0u/TLUL0NocVdk
-	HVYbTisDtERvwSWi5Yz70hqfKSdSwIl8E5T/mUHS+0yZkaJUWss0RcOqTTdPiqCn8/a+Rjd5Clao8
-	FwBXwUmMDAVSegrqXQTE7tNrU9iTzbG/+vPy8XpZ9NcX7ebZdp0KODA2ftyba4dQMkQL+v/nuAmRf
-	7p1UjWBIxBrjRXPltK8BgrfsiycNfZvEgcBd7QVeMotqnKgz278HcnIwG19zTs6klmDttFJnhmGYx
-	TVnL6O4bV55W1EI/CUy2vhFFSqtfaK3hmH3uv1C9cDiAhEBZQlavkiWgl8iS5s5idgMHpVglcsbv+
-	P8KgkxHw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wsbPr-00000004jNh-11E4;
-	Sat, 08 Aug 2026 07:24:23 +0000
-Date: Sat, 8 Aug 2026 08:24:23 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
-	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org,
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com,
-	aliceryhl@google.com, arve@android.com, cmllamas@google.com,
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org,
-	davem@davemloft.net, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v4 3/5] mm: Add RCU-based VMA lookup helper that waits
- for writers
-Message-ID: <anbZpzFbtYG7Ngit@casper.infradead.org>
-References: <20260806200548.3124802-1-surenb@google.com>
- <20260806200548.3124802-4-surenb@google.com>
+	s=arc-20240116; t=1786182505; c=relaxed/simple;
+	bh=plAcaAfWJxE01uPirDC5GWjyqjI4nWQRqs3riEN01BE=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=P+odEhdcj9vxbJ7qhhcqpaOOsMaKiQRsRTnYHsa1pz1sgj/KiVcgpmFpYOXKTc8cg+VWhHc3qulrvTN+wfA75tEmyRP77/MQxDDg89iCLj30rwJu/Llj5lGexDOMFvUm6h+kXtyk86LmNLN7JDYuQe1+R+zxpFgTPdaxQApTGkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4b1a69b1188so213534b6e.1
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 02:48:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786182503; x=1786787303;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=vt1JeakK4SowEAXdUueofri/dxNTH8MVHlU3iQyRkbE=;
+        b=IRXZDyJ1/GafRN+NytHYIY+kha7U5WQshQUCW4mtBzSZW4+UvtzYEIwPLS82WK+pUe
+         cx4VU2Xaxonhh4D/Kr7dJaogH9hxesTa8NoedEEumGnuZ29rcjZHQOV5ShCNE8xsH43s
+         8ozGsIZZLSnReMMQ1GSvW04pVaRbhxlpDhByXIlgcRSI9oSYKSSFXYakLsks+B0vVu+g
+         idGT72AQQTviZ4Nj1GUZuef+GKnY03yhnryDsM4unpcnX9nxBJ8QmSepPUVO+UaAE9RJ
+         Nywd6j6C8kIx4qgjJqQDj4J43sEUtegclGvMX5GS1pCk1FE/veJpaurejkcHhuVLU0RT
+         3VpA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6TlaVSGgoxvM9MaTnJXB9mQO/sDfcnudj7Xkg8/IQPUm14ABzkU9WapqMOVvbTa6BdruLFks=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC5EtXAXh0iTRsY2PfkLZlUpikRJBBRrtxby5rXNbKc6HZiUSR
+	SoNrGGmzlVoRIIP78dAglVHnZGwMlAGbPkYBIO754smRMj3epQkdnC4XH4vWl2KrKc6wkloKJei
+	ZbWZon2sxB1HEDvqc6TNVLhBPiMNWM+cYfKewc3JQIXo7u6cUwt+0Cb/8SDg=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806200548.3124802-4-surenb@google.com>
+X-Received: by 2002:a05:6808:66d5:b0:4b1:b037:da8b with SMTP id
+ 5614622812f47-4b1b037ddabmr1851825b6e.11.1786182502947; Sat, 08 Aug 2026
+ 02:48:22 -0700 (PDT)
+Date: Sat, 08 Aug 2026 02:48:22 -0700
+In-Reply-To: <6a6d379a.2d659fcc.1d46f5.01a8.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a76fb66.b50370da.49fe0.0025.GAE@google.com>
+Subject: Re: [syzbot] [net?] [usb?] BUG: using smp_processor_id() in
+ preemptible code in tx_complete
+From: syzbot <syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com>
+To: andrew@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, oneukum@suse.com, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Aug 06, 2026 at 01:05:46PM -0700, Suren Baghdasaryan wrote:
-> From: Dave Hansen <dave.hansen@linux.intel.com>
-> 
-> == Background ==
+syzbot has found a reproducer for the following issue on:
 
-I think we can do without the headings?
+HEAD commit:    a59f57e2aa12 Merge tag 'watchdog-for-v7.2-rc7' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=127defb9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d07fbc6821d72a61
+dashboard link: https://syzkaller.appspot.com/bug?extid=04cd90bb99c6ef81a65d
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17106fb9580000
 
-> There are basically two parallel ways to look up a VMA: the
-> traditional way, which is protected by mmap_read_lock, and the RCU-based
-> per-VMA lock way which is based on RCU and refcounts.
-> 
-> == Problem ==
-> 
-> The mmap_lock one is more straightforward to use but it has a big
-> disadvantage in that it can not be mixed with page faults since those
-> can take mmap_lock for read, which can deadlock when mixed with nested
-> page faults and parallel writers.
-> For example:
-> 
-> 	mmap_read_lock(mm);
-> 	// Another thread does mmap_write_lock().
-> 	// New mmap_lock readers are blocked.
-> 	vma = vma_lookup(mm, address);
-> 	// This deadlocks on mmap_read_lock() if it faults:
-> 	copy_from_user(address);
-> 	mmap_read_unlock(mm);
-> 
-> The per-VMA lock can be mixed with faults, but they can fail and need to
-> be able to fall back to the traditional way.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
 
-Umm.  I don't see how this avoids deadlock.  Assuming the next patch
-converts copy_from_user() to use the VMA lock, surely the following
-situation would obtain:
+BUG: using smp_processor_id() in preemptible [00000000] code: vhci_rx/6048
+caller is tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+CPU: 2 UID: 0 PID: 6048 Comm: vhci_rx Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ check_preemption_disabled+0xd8/0xe0 lib/smp_processor_id.c:47
+ tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+ __usb_hcd_giveback_urb+0x38d/0x610 drivers/usb/core/hcd.c:1657
+ usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
+ vhci_recv_ret_submit drivers/usb/usbip/vhci_rx.c:107 [inline]
+ vhci_rx_pdu drivers/usb/usbip/vhci_rx.c:242 [inline]
+ vhci_rx_loop+0x60e/0xa60 drivers/usb/usbip/vhci_rx.c:265
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: using smp_processor_id() in preemptible [00000000] code: vhci_rx/6048
+caller is tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+CPU: 1 UID: 0 PID: 6048 Comm: vhci_rx Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ check_preemption_disabled+0xd8/0xe0 lib/smp_processor_id.c:47
+ tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+ __usb_hcd_giveback_urb+0x38d/0x610 drivers/usb/core/hcd.c:1657
+ usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
+ vhci_recv_ret_submit drivers/usb/usbip/vhci_rx.c:107 [inline]
+ vhci_rx_pdu drivers/usb/usbip/vhci_rx.c:242 [inline]
+ vhci_rx_loop+0x60e/0xa60 drivers/usb/usbip/vhci_rx.c:265
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: using smp_processor_id() in preemptible [00000000] code: vhci_rx/6048
+caller is tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+CPU: 3 UID: 0 PID: 6048 Comm: vhci_rx Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ check_preemption_disabled+0xd8/0xe0 lib/smp_processor_id.c:47
+ tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+ __usb_hcd_giveback_urb+0x38d/0x610 drivers/usb/core/hcd.c:1657
+ usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
+ vhci_recv_ret_submit drivers/usb/usbip/vhci_rx.c:107 [inline]
+ vhci_rx_pdu drivers/usb/usbip/vhci_rx.c:242 [inline]
+ vhci_rx_loop+0x60e/0xa60 drivers/usb/usbip/vhci_rx.c:265
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: using smp_processor_id() in preemptible [00000000] code: vhci_rx/6048
+caller is tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+CPU: 0 UID: 0 PID: 6048 Comm: vhci_rx Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ check_preemption_disabled+0xd8/0xe0 lib/smp_processor_id.c:47
+ tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+ __usb_hcd_giveback_urb+0x38d/0x610 drivers/usb/core/hcd.c:1657
+ usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
+ vhci_recv_ret_submit drivers/usb/usbip/vhci_rx.c:107 [inline]
+ vhci_rx_pdu drivers/usb/usbip/vhci_rx.c:242 [inline]
+ vhci_rx_loop+0x60e/0xa60 drivers/usb/usbip/vhci_rx.c:265
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: using smp_processor_id() in preemptible [00000000] code: vhci_rx/6048
+caller is tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+CPU: 0 UID: 0 PID: 6048 Comm: vhci_rx Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ check_preemption_disabled+0xd8/0xe0 lib/smp_processor_id.c:47
+ tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+ __usb_hcd_giveback_urb+0x38d/0x610 drivers/usb/core/hcd.c:1657
+ usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
+ vhci_recv_ret_submit drivers/usb/usbip/vhci_rx.c:107 [inline]
+ vhci_rx_pdu drivers/usb/usbip/vhci_rx.c:242 [inline]
+ vhci_rx_loop+0x60e/0xa60 drivers/usb/usbip/vhci_rx.c:265
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: using smp_processor_id() in preemptible [00000000] code: vhci_rx/6048
+caller is tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+CPU: 0 UID: 0 PID: 6048 Comm: vhci_rx Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ check_preemption_disabled+0xd8/0xe0 lib/smp_processor_id.c:47
+ tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+ __usb_hcd_giveback_urb+0x38d/0x610 drivers/usb/core/hcd.c:1657
+ usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
+ vhci_recv_ret_submit drivers/usb/usbip/vhci_rx.c:107 [inline]
+ vhci_rx_pdu drivers/usb/usbip/vhci_rx.c:242 [inline]
+ vhci_rx_loop+0x60e/0xa60 drivers/usb/usbip/vhci_rx.c:265
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: using smp_processor_id() in preemptible [00000000] code: vhci_rx/6048
+caller is tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+CPU: 2 UID: 0 PID: 6048 Comm: vhci_rx Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ check_preemption_disabled+0xd8/0xe0 lib/smp_processor_id.c:47
+ tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+ __usb_hcd_giveback_urb+0x38d/0x610 drivers/usb/core/hcd.c:1657
+ usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
+ vhci_recv_ret_submit drivers/usb/usbip/vhci_rx.c:107 [inline]
+ vhci_rx_pdu drivers/usb/usbip/vhci_rx.c:242 [inline]
+ vhci_rx_loop+0x60e/0xa60 drivers/usb/usbip/vhci_rx.c:265
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: using smp_processor_id() in preemptible [00000000] code: vhci_rx/6048
+caller is tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+CPU: 3 UID: 0 PID: 6048 Comm: vhci_rx Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ check_preemption_disabled+0xd8/0xe0 lib/smp_processor_id.c:47
+ tx_complete+0x237/0x770 drivers/net/usb/usbnet.c:1301
+ __usb_hcd_giveback_urb+0x38d/0x610 drivers/usb/core/hcd.c:1657
+ usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
+ vhci_recv_ret_submit drivers/usb/usbip/vhci_rx.c:107 [inline]
+ vhci_rx_pdu drivers/usb/usbip/vhci_rx.c:242 [inline]
+ vhci_rx_loop+0x60e/0xa60 drivers/usb/usbip/vhci_rx.c:265
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+vhci_hcd: connection reset by peer
 
-A takes mmap_read_lock
-B tries to take mmap_write_lock, blocks
-A calls copy_from_user()
-A calls vma_start_read_unlocked() (because it doesn't know A actually
-holds the mmap_read_lock() already)
-A does a lookup under RCU, but gets NULL back (maybe it's calling
-c_f_u() with an invalid address?)
-A tries to take the mmap_read_lock again to make sure.  Deadlock
-because B is waiting for A to release the mmap_read_lock.
- 
-Am I missing something?
 
-> +/**
-> + * vma_start_read_unlocked() - Find the VMA covering 'address' and read-lock it.
-> + * @mm: the mm_struct of the address space to search
-> + * @address: address that the vma should contain
-> + *
-> + * The fast path does not take mmap_lock. Waits for writers to finish if the
-> + * VMA is being modified by taking mmap_lock.
-> + * Use when mmap_lock is not held, otherwise use vma_start_read_locked().
-> + * Nothing prevents VMAs being unmapped/mapped before or after the VMA is
-> + * looked up, if a stronger guarantee is required, take an mmap_lock.
-> + *
-> + * Return: If a VMA exists which spans @address, return that VMA, read-locked.
-> + * If no VMA is mapped there or, very unlikely, a reference count overflow
-> + * occurred, return NULL.
-> + */
-> +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
-> +					       unsigned long address)
-> +{
-> +	struct vm_area_struct *vma;
-> +
-> +	/* Fast path: return stable VMA covering 'address': */
-> +	vma = lock_vma_under_rcu(mm, address);
-> +	if (vma)
-> +		return vma;
-> +
-> +	/* Slow path: preclude VMA writers by temporarily getting mmap read lock. */
-> +	mmap_read_lock(mm);
-> +	vma = vma_lookup(mm, address);
-> +	if (vma && !vma_start_read_locked(vma))
-> +		vma = NULL;
-> +	mmap_read_unlock(mm);
-> +
-> +	return vma;
-> +}
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
