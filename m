@@ -1,81 +1,74 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E4D3C6A38
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 10:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5F637CD39
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 10:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786184472; cv=none; b=XENJXrP2hllkEJpRrukqfF/NFv7iYyRe5m/57Sy+AiRT5hwFyOgl5yyOI+fn8CA3QRLifznsv+H3QF+qktY+TVaqFx8c365Pe9t+IygpNiy5sc5wAqhXVoq+3/UM4Axt/WoMYwWVgasxwghSC8i6mPiihpElqmdkLNGNQKAtlNw=
+	t=1786185270; cv=none; b=a3iHaesXhFtwrCFf2lNZrircT5uLogNjfTqzaLAaIBi7TVOTAhLdl6yXpmXLIuoxAr7FJEfVQLVJ5c5NIV0n7HsPqHqImBdqMd3YgWGqP1+XwE0NL4GO+VUx0zZW0sHg/EGyqHSD0uWQ/vxYbCjHUp/AvXMruQJ8HuFswqdm++k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786184472; c=relaxed/simple;
-	bh=RXpVzpt7di1+nGOPxTbhDa4AoMa4uRQ9RAyXrUYqYH8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cnesD5ThyY+oVvkCVjeAQNrspNUx7jxs7wl5zrxxtQy0p2N0/yDWbFk1wwkHXARCO7cCQVEEGsic1uOvzC0IqIpJshTb+OWpxKkdItLRyhmfFId5LaQ950sZM7e85FG1nj9i6iFUh6ySOHzNJux3D/q452er8U756rP3ZVBPPY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=quFBL+oQ; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1786185270; c=relaxed/simple;
+	bh=8cLsyOrjXGvoCCKeyA9EG98ua8ktDWJeJNjwpR7WQKs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DQUVe/GihfP0Dn8nxiRYAjhW4dohf1l2Jqiwp4MtLl25pWDoL3SCI/l8Di4jwwoN8JdIuuLAdxsiZZoAT7sMmW+CSgjIHKPpyOiqUHgQILK3OlRaVe6yeVm7HwlIgwQnvuhPYiN7e80yM1p4ch3nqwIVgtgQqKUEMLyOAScTY/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOxI4qUd; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="quFBL+oQ"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso2861885e9.0
-        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 03:21:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOxI4qUd"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ced3386430so4896995ad.1
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 03:34:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786184468; x=1786789268; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786185268; x=1786790068; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xQRg1mejXL46bQBa0p78UFbpH6Ut5RwhVRoCIO1su08=;
-        b=quFBL+oQvWu8pzBnRtRQEKaW4d/OVtub9aNNuJ0wiEJT7nJ3d5B6i072GUnY5muwZT
-         90yZIybX+v/zMJyK0ci92DEUPp5/PflLc+cmDhS5ztxH0Oo8RNmsrqaAYJkIXNpQGaqn
-         KWwFuz7rv++8A4YW4EjT6XQiGFC7/+3W7TVGOogoBPwRPc/RJ8vOWIU5MuwNUNR6IJJ1
-         Je+oifvhzVdJplKJ8Arnucj4pFkAQCLxmCZQd7tUt9Keiy7NPAEYvm2zWsKPgkdOnKdP
-         JVoFpt1h6R50Ys6XTLfLstTB4kC11r1wYyUhUN9+/Avga/Efkl9cof3N+wHUcitXzVvN
-         1dDQ==
+        bh=LMt2HBv95FWkEezOYc96XrHhu7tFutq5B2cwfp/ralY=;
+        b=VOxI4qUd8ZYG6z0foxa6r2QAkVviy27w2Gsn1NMKAIyTci4cdvDpRDD1nXK2e7GLBK
+         YZzoZLqV64xDJxUkxFl5zGLCClrzCgIanrSHfxNprxmFBFgZw0QOb+1DZhnWTY5UIgbc
+         Gn4l/a9sSsR6P9nXPERZCB6ac8/F6vo8ZgOs8C4CtJzm4fR6H0jWP7Zl2hA57Q2tzd5n
+         NZBN4Om21wGN6AYUkEpc/SZbwi+CKULMd5ZIBFRgv3tDzeL0A89h57FkPtgv1vg0VIlN
+         7WzpXPgncAyf4CgnsDiYnkO7MteEXbV9MPTlx61TArBBo3JX8W5bfhHhVERrylPCAOgq
+         kWQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786184468; x=1786789268;
+        d=1e100.net; s=20251104; t=1786185268; x=1786790068;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xQRg1mejXL46bQBa0p78UFbpH6Ut5RwhVRoCIO1su08=;
-        b=ntvtSS/z18pMZmHE7fsYQbUydfW45xkeqNxa0WcBX4zo3X19eg9SVSMIn+uoVKKe4f
-         FexSjvZCAELsfEaIFf7m6NaRgNiKVHVCal16p1JRdRrqKOA3hr/qdMPTbrvSCpQKPftO
-         /vABil2EObeMV68GvH4T+DStDYNwp6S7os5MZAy5MEfOqJtsFmKgogx2XaIYocotp69d
-         d8hY1+XYTSsAusHY211cJedowPWNZ3U6HxcEfpZ+wI2InMqRHDmsT/UxR1LWyTfpnK4B
-         tG/CXaRdcUkAetpSDQXuOPwnxbu5dGXkrtcVGbsyjvWL3wp8PjIccL/WeSSnhqlFjgwO
-         GpyA==
-X-Forwarded-Encrypted: i=1; AHgh+RptQvnWcfvHvB5FX1paehLKKrS6VtMo+WH5g4rIvq+aGF6Ldb7ftpwsf3cviTbD02hoYxhJ/MU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3qSOs4F/RH4qLbUCn2/ytqIWi3dyEMeeLNNzDX7uYaCMyta3z
-	rXHDc5hFLbL1xCgfgbiN2kce3qDBxq7wWA6CcxXj7oVGEHpGVC6/ilrp
-X-Gm-Gg: AR+sD12UxRbgPsapvl2IsChZ2Nv5QY7VAFUATKecuKtMWGMfWXX+tNMr2n1dXRMn4sb
-	vqTVsJZAvF8nLIWQA5E4mNPCvcd+jYYHUXssxnR2y/9Vob+u8XI4hPZgZ1B6GGFMYC5Gfw3v8RW
-	ljqb9+nA6dVwg1w5gHLfQ2sAVZggFlo17GXAjn6fMzT2Fm2E6PedYzrKd8apgMXmclk+dkB9jhr
-	cX6gVwMznex/2dX9nyE7mbNkUIShyTecc6gfDsfrqXnNh/kwtTYpvNLEt+jnRE5uWauH+LMvnco
-	juWlPA2cFryV91JiBL9tf5R8+s4G+AJgv4kqVRDzZUpK1ZqK75BkT/kLQacNE81PAaAijNNPn8z
-	VXjwYhFE+B7j8K2TlJCHN4h06/QfXiqcv14ifKL34Hq6bM1PCaHjfuPhhxhpUx4D+3UTeco76MU
-	ij6QdDp7Dv2eODHpEth4pP/o+FyWVDqKvGzQ5HYFCPcRBPN5J5/DrGo2Y8CH8xkW5zp6Bs4a/oN
-	dsY5FWWSu1EARdWkyuCn4aWVj5nTVxs6NLcvp/6QkODzQy/bE7a9uCrsdaDK4Ak1/Fsxfw7ngfV
-	fEYGld7e5LTp/9hyp9j1
-X-Received: by 2002:a05:600c:1987:b0:495:3de8:33a6 with SMTP id 5b1f17b1804b1-4995e0dfb2emr138243805e9.16.1786184468167;
-        Sat, 08 Aug 2026 03:21:08 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-077-007-004-134.77.7.pool.telefonica.de. [77.7.4.134])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021e8c5asm15256604f8f.18.2026.08.08.03.21.07
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 08 Aug 2026 03:21:07 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>,
-	nic_swsd@realtek.com
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Javen Xu <javen_xu@realsil.com.cn>,
+        bh=LMt2HBv95FWkEezOYc96XrHhu7tFutq5B2cwfp/ralY=;
+        b=IFLgV5jL+JFOGhq9Kyx0amoeiEWiXfM10H7Dy3S0hT36BXJpyfE8djKoLAI9VA36sL
+         7bi4u+T9c8MClTrFCLYmwYlRZpqqgcLYbz2ODbiqDH7hwE+WUUnq8/JQqH/pwoAzwxam
+         xWwrXyAIXhKlr3sCwfcXF7UD8KKoj4n6O8LGu/UFA04LpJgoci2OQTgR+CkToLvzAtT7
+         RxwOY3nY25nvlq6Enq/AUt5cHHfgT0wXytH+ZXJnW2BMXosy9qUmZI7P0jYpS+JK7Qa6
+         RlTd/jsajjEAwlgB7fK0ktr2kd4tqV2q8I5ATCzBty4Wq2UqyuYHEWujEpz8DONEWfj9
+         bXMQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqfkorv4NmvoryrlYvkJJC4Aic09Q5ZXMcJ6znAvE6+lj7mlkNzOiFEF0QnuMGeRC1RBdE/MvI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXqUfhGH7RsHfiq6PIw6VDDIHtNAblsRK6ZpwVllpSY0IspWhh
+	v23Yihuib0cdRIJEA+CEQbv71G9lKOdBXm/pyZDczH3zsQfH2+gyDx5tZO+idqMM
+X-Gm-Gg: AR+sD13h7XM+5bMrTFwW5e+5vxspWZDa6eN/awZEsG0go1mcosCx/p/dsnbVJEYx/DI
+	qtPe90McHg/HaRkCE/Z5qyLi5GzrodVW/7xG0jDIBXYGIJINF0aZtMzd0A/9d6AL5rHap2xnXWG
+	YuR7mJYxV8DqVvs840vwVV6j+p7F9+wCygfIECVI6hXBIahbFHXFM3mkdmSCajcP0Sp2I85uW9p
+	20mgKfPFvGcnmgLCawmCkbRJhZG6GY2PGfUoshlQ1p67oWcEVwsjYnmFunXSyhL7nKuIvVfeAOc
+	AixaIQATent5aBNzmMc7nUktSFOs/KNWtdoFH3JDqIpqPiwSG4ConBK2612lpaykd+LaqCJZ4bd
+	pQ+9T9+lH8Zhsu/aesdNt7xCX0l7FXS2u9VqixW9waBeSxJkVERnciwn6HaK/NmZZ1qqIwma18M
+	q+ZdS19FtrklDYXdoLPLtev8r6G8e+B4+qqpflXQ6gKuilBLHPUOaGfaibeySjHFA3REWhxvo=
+X-Received: by 2002:a05:6a20:3d0b:b0:3bf:b1d3:393e with SMTP id adf61e73a8af0-3cbc01011aemr11771109637.2.1786185267762;
+        Sat, 08 Aug 2026 03:34:27 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315be86d3fcsm18060034eec.4.2026.08.08.03.34.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 03:34:27 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>
+Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Tiwei Bie <tiwei.bie@intel.com>,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] r8169: give RTL_GIGA_MAC_VER_EXTENDED a distinct value
-Date: Sat,  8 Aug 2026 12:19:41 +0200
-Message-Id: <20260808101941.57666-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost/vdpa: reject VRING_NUM larger than device max
+Date: Sat,  8 Aug 2026 18:34:15 +0800
+Message-Id: <20260808103415.101261-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,40 +77,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-RTL_GIGA_MAC_VER_EXTENDED implicitly follows
-RTL_GIGA_MAC_VER_LAST = RTL_GIGA_MAC_NONE - 1, so it has the same value
-as RTL_GIGA_MAC_NONE.
+vhost_vring_set_num() only requires a non-zero power-of-two that fits
+in 16 bits. vhost-vdpa then hands that value to the backend through
+set_vq_num() without comparing it to get_vq_num_max().
 
-rtl_init_one() therefore sends unknown chips through extended detection.
-If TX_CONFIG_V2 reads as zero, they are misidentified as RTL9151AS
-instead of being rejected.
+A local process with access to /dev/vhost-vdpa-* can therefore set a
+queue size larger than the device advertises. On the vdpa_sim backend,
+the worker then walks descriptors beyond the mapped descriptor ring.
+KASAN reports a 16-byte out-of-bounds read, corresponding to one
+vring_desc, in the vringh IOTLB path:
 
-Give RTL_GIGA_MAC_VER_EXTENDED a distinct value. It is only a detection
-marker and is never stored in tp->mac_version.
+  BUG: KASAN: out-of-bounds in _copy_from_iter
+  Read of size 16
+  copy_from_iotlb
+  copydesc_iotlb
+  vringh_getdesc_iotlb
+  vdpasim_net_work
 
-Found by Clang's -Wduplicate-enum and verified with a QEMU stub.
+Check the requested size against get_vq_num_max() in
+vhost_vdpa_vring_ioctl() before calling vhost_vring_ioctl(), and return
+-EINVAL when the request is too large.
 
-Fixes: 5e3c5a2b85da9 ("r8169: add support for extended chip version id and RTL9151AS")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Fixes: 4c8cf31885f6 ("vhost: introduce vDPA-based backend")
 ---
- drivers/net/ethernet/realtek/r8169.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vhost/vdpa.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/r8169.h b/drivers/net/ethernet/realtek/r8169.h
-index 0b9c1d4eb48ba..fb772cc043105 100644
---- a/drivers/net/ethernet/realtek/r8169.h
-+++ b/drivers/net/ethernet/realtek/r8169.h
-@@ -74,7 +74,7 @@ enum mac_version {
- 	RTL_GIGA_MAC_VER_80,
- 	RTL_GIGA_MAC_NONE,
- 	RTL_GIGA_MAC_VER_LAST = RTL_GIGA_MAC_NONE - 1,
--	RTL_GIGA_MAC_VER_EXTENDED
-+	RTL_GIGA_MAC_VER_EXTENDED = RTL_GIGA_MAC_NONE + 1
- };
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index ac55275fa0d0..b2083e1ef150 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -716,6 +716,13 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+ 				vhost_vdpa_unsetup_vq_irq(v, idx);
+ 		}
+ 		break;
++	case VHOST_SET_VRING_NUM:
++		/* Reject sizes above the max reported by the device. */
++		if (copy_from_user(&s, argp, sizeof(s)))
++			return -EFAULT;
++		if (s.num > ops->get_vq_num_max(vdpa))
++			return -EINVAL;
++		break;
+ 	}
  
- struct rtl8169_private;
+ 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
 -- 
-2.53.0
-
+2.34.1
