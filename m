@@ -1,63 +1,65 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF452D5432
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 00:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7042FE074
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 00:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786150612; cv=none; b=e39OYlisuZvVU7WwPzBgXcylR9pKDJu2KxiXaha9h+Xxt+n3AsPVsOiJpiNhsGw7GLEJJz5ud0kfg+GY7lDqcPDbHDa2AB3nBYk6te1eJ4e9nawSjjsRTO0Nj/t84icHxUpzKo1mObLyr11HpWvKki/asf2PgdYy0ukaWBG3CKk=
+	t=1786150615; cv=none; b=fMFHIs6aVFL1VrDKnmED5O/c7TFTLaoR1F+9FJWSAjW53yI4RU/sxKEuBE7tIRTfN3nmsQ0q2gXlM1+q4O4mtt1hruNBEmN2E9IeA/8TNgIsr9Jea0ks3EfYMQCepExJV978OEX9G8l22ZPgd669Ze0HRt7J8cWdZsUSchSLjow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786150612; c=relaxed/simple;
-	bh=oNnQBavscS80u+UGpKtOOXlgpHIrXWtpeSHj9v4Btqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I0Il1okoLPGsZozNHYvTxl9qJxlMdOfXJVMpaD16HM9OXiG+Tk+7ba07GMWujtb2F9sDthnlpITO4zKgQUrcag+8Wwxb0tGBvrYGIR+LTP80CPNNS1vYeQnpVCq3+qU6Yt17gbReHbTTyoLoGBYTw3+hlbvqQSrQB6yfCE4Fa78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I+k+1WVl; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1786150615; c=relaxed/simple;
+	bh=T0RjTWuQ+2/lL9aoFWrGRiZzgtI2eOK8+W6T0zf9pak=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c+D8eyRcoPj9Bu4IqTRakLeq3FF9vgXGJUJ7O1+BVDBpqdfDUOd1LVOvWa1SxRwXgAzdPkX09DISnsyXSLO3yTnyFFN5Po0fa6QbZ2jlRUPvqs2CG3eFGirX+ZRB95bCwNzMGCZ1k8cFDtQXp1KaLmAOzWfeUz1OZEJZO80foGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f6F7gfOL; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I+k+1WVl"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso71271a91.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 17:56:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f6F7gfOL"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38e347638adso124167a91.0
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 17:56:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786150610; x=1786755410; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OywlotrISI28ogrb/o9BX8gY76dmE+zXz3yzUBYvHik=;
-        b=I+k+1WVlsRJYaWf4BzahCsbdgkQ02CBWtzvorZax+Di17U6cTWAtOdS8Fd03SlPLk/
-         osPG1sxbLQSu/AER8YKWR9UKbL04e2EnHgc60YQptZO2M2/PFnrlhq5o53/q9kxomfSJ
-         IcLTbKDIW82DiI5yjt4jt89xB1T56c/BIo15gdUEBAwZA42n+4cGAD21K/97EDUhpWuE
-         qJYSsYeFtGgYJtpoDovuebSk6bXDPVIjwlxzUcpdWTx5LBpKLhcfUDCw7xbGIkGshC4O
-         guRgi/5lZPXA7hEvqOQzrcsfqOlpvFKlufl8bZJU3aAsw1ZvrTLtMk8nP3czi5hStrDl
-         TrOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786150610; x=1786755410;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786150614; x=1786755414; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OywlotrISI28ogrb/o9BX8gY76dmE+zXz3yzUBYvHik=;
-        b=P9UJ5NL4e0nY6K+tZtNbv+7GcmwLr/5grsaxAa9GGTAOjp1pF8h2Ay/h4bvo2aeClx
-         m9vY70+lbzN3QkQrr877sEk6ulwQA3ctvhvTTmz0mn9aii+yxGcfJFPTTxoFsY5B2rHq
-         xJ4X6PUWf0F55f33zFZSFsfjEXdL+BCJbUjd4/1CQbGqY/IYwqeUWjYus5E7SUBAG0pk
-         UV06fSIBUAMEaZJIepqTfUcMYAvsJUscnoi5xe+zlnbx0sB0Kk4nrbyBighTIlFmtffN
-         8lZcPceloCcrLCUaD8g3PsnmQgUgkGD6oyh/UFo5bZhrf1xYkBBVT8r65KJimEmutuEu
-         UmzQ==
-X-Forwarded-Encrypted: i=1; AHgh+RomnpWGBeY6hVdFOFGco8OZGxR/xU7BykI4r/i0mZJ9wz3DQ2kHigB3p5+Av+2ILtbnj60sWQg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7d6ppB9qMwZ5PKxXmNC6Qsi85I1O6T6/e2VsgkHVzc97IzAVW
-	1bMd3kmnGkvd8O3Vkd952P3UQc+qKTwSnxPRfJGalS2DtIKbFd98cARt
-X-Gm-Gg: AR+sD13DVI/kbndm01Vf9kHo7/5RLTGds8mBEPC/f00RhyT7sA7hGTZx6q80UmMeElY
-	zuoAdUYts5iAVgj89y5TZb8uCMoNUG6NR8GnE42PlxdRtNcqKOzTD+fIST5gvFl6u6TfWlQal7E
-	PCaoJrB8s6th45+xsqGQZviNQo5fGqEhs66uparGibQpBTpDlm8YJwWZenpO7SQzu2kK5gC5NJb
-	u3+HJxSmmyOPhyV59v38jNeZ+ROvlSHUBYKjiWeY4LEojsbV3yGM6VTCxVNLnYvUNY1dRonwobt
-	a/vuZXz07Op90RX/wUtkZePB11vp3uRzvH/2CG2xaqUjJMCajCHpjcpnxjdnwtPkquoRJq3RulK
-	tBFXloSOSYH7DXQqmwiurEwNtLBZOQbaXK0TbS+MrWo0ah9lFDJPyMSGxZ1ORGpaswBmGkNDdz+
-	Z3Kv9dv7LBLpI33PTJppeVEaDFUmxSkqMMgCzOs7THL3QFES511m3sSg8GJhmPTkTvDhgY2Iac/
-	eIk/NwdPOe1O3NgLUROS4IE2qO73wspWVfc9/NNzv81BpQe25g=
-X-Received: by 2002:a17:90b:2548:b0:36b:77b9:5c8c with SMTP id 98e67ed59e1d1-39282428edbmr3688900a91.17.1786150610006;
-        Fri, 07 Aug 2026 17:56:50 -0700 (PDT)
+        bh=9/1TzYDcUXNZpa7mQIBzWuP+KknfPHzOJXzXsgHlbeQ=;
+        b=f6F7gfOLiiL6pdiBs3AMPsiBuVIyZQlGPVyBZTetDX5rpVdNr/1M1tyghxMs4J9wnq
+         oI54r+CtoEMjck1rnojGkFz+7mfkbYNSPD6l+I2uK+sh6SLkIgFUI/YFLTDk/5NSba0Q
+         EHhc54tQHztgkAd+sgmGOK4lRMsf1cESS99iGUOcPYva7o3waCw3w56ELAe77uvnk/Pk
+         jWGrPcu2BPMwexu7xQ9oEzBgxGPh2CEej5sS3pD1Xdshlc4XAhca87ihaM1TOiV8R3Su
+         Z0mtF/1esEH4VA54af8xCkFVcVHgPmk9GiGS426mNFLec5Zh9Dj+wPGO6z9kOsikMBeP
+         Hn8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786150614; x=1786755414;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9/1TzYDcUXNZpa7mQIBzWuP+KknfPHzOJXzXsgHlbeQ=;
+        b=iKvuQHqq9SrI9DmvNMISU8M5c5Tu7HkXtMX791xD8poFdgF/69Crp1CjggJCHbAsRf
+         BQ6nM53Ic86WvAv2bFnD9o5GN6AltIckDVGyAKPAM9lSF8FMNGPZNRA8aKqd/NJRO5Zk
+         52W9neOalRd3IY2MaDQeMbQhpWP2wnvhy1J4/xOGmDTfq/8AbIJblaSJ9HH5F4wRqzAZ
+         WYPonaon3YZ1KCbbH7+1SeZuVpNAxhY0koGvuyygWtbd8qWbzLAbbOvwk1xDn5cybgEs
+         16hhKKIGi2xFlVY8C9R62iE3pzmHGWOQPT8EQwkqFUn4zkykXWY3MvtjLTr9UbEOtFev
+         xSig==
+X-Forwarded-Encrypted: i=1; AHgh+RpQLxo3wKuy2WluEXgakh02lkgEaBI4+hfE8KV3mNMwzVlqpg50BxgYvcqagyc4u6xwMppKEKg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiGLsGwYbQwYRWEtQ9xnNd5kaMSpyog8OYiXo/mYWWPFfLuKvJ
+	L/6NeKEdFyzewEgGWEQOCcvNBzGwzuNm1K6xeyZHfWyXj2gQBuLAOzvc
+X-Gm-Gg: AR+sD133zMK0D6WKsTcGArjkxFmZ21XcItAhBoVLPYCbO6YNV1Ha43SWVTMKlOjkYxW
+	Odr0o0zCfuOeg5OWlYCWi2VImR60eS12rm8U1smYHQL4vfvfTbtQEO44YYM2MgPXruhfRvlAJDN
+	Kza2ECzoh3wBxL9WrfXw1OeMSiYg5H/LVLsXFMfzMIV7TuisowVxSiDxQEm1ldBNXbx3YeOKjCu
+	nCDKQah0t58/QyE2m8+LmsDwxIOTMBm88xgk7NlUsKOCnEmKIG43MBjSTfpN43vkL7+5z26GX4n
+	o6pXIvYwEgAXf02ZzwYftyP0NGc/i5V8RCVNR6+kky0VKTzIR2eTW/MUCaz662yCw9q2kK15VGE
+	b6ocPo2dW+qkbcGB5AeifVYsQl7P0a7XOBGPhQJrSpqI4qSP4adlK3Q2UP3uW50wKx0RIljM29X
+	/NDu2z4f5JITTSQKHc6xe96/CzfYOldalMPbxnT4x4B2fCFFAiQ05ng40pGMSSC7aItLYY6sAFf
+	ibvW56F6PQJ5O1KNtkPDwdHZ9zVyFvQ6cfpKq9/rho3hPh73Oo=
+X-Received: by 2002:a17:90b:2e46:b0:38d:b36e:9813 with SMTP id 98e67ed59e1d1-39282430494mr3914716a91.11.1786150613992;
+        Fri, 07 Aug 2026 17:56:53 -0700 (PDT)
 Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:d7e9:6449:7464:1dfa])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925fc6c13asm4205182a91.2.2026.08.07.17.56.45
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925fc6c13asm4205182a91.2.2026.08.07.17.56.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 17:56:49 -0700 (PDT)
+        Fri, 07 Aug 2026 17:56:53 -0700 (PDT)
 Sender: Yuyang Huang <uyoko90@gmail.com>
 From: Yuyang Huang <sigefriedhyy@gmail.com>
 To: Yuyang Huang <sigefriedhyy@gmail.com>
@@ -79,10 +81,12 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v6 00/10] ipv6: report why a route was deleted in RTM_DELROUTE
-Date: Sat,  8 Aug 2026 09:56:32 +0900
-Message-ID: <20260808005642.26901-1-sigefriedhyy@gmail.com>
+Subject: [PATCH net-next v6 01/10] ipv6: add ip6_del_rt_reason()
+Date: Sat,  8 Aug 2026 09:56:33 +0900
+Message-ID: <20260808005642.26901-2-sigefriedhyy@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260808005642.26901-1-sigefriedhyy@gmail.com>
+References: <20260808005642.26901-1-sigefriedhyy@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,142 +95,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When the kernel deletes an IPv6 route on its own, the RTM_DELROUTE
-notification does not say why. User space cannot tell a route that
-expired from one the router explicitly withdrew, yet the two call for
-different reactions: an expired RA route means the router failed to
-refresh it in time, which points at a misconfigured or unreliable
-router and may warrant action such as disabling IPv6 on that network,
-while a zero-lifetime withdrawal is normal, RFC-compliant operation.
+Add RTA_DEL_REASON and enum rt_del_reason to the rtnetlink uAPI, and
+add ip6_del_rt_reason(), which takes the reason a route is being
+deleted. It has no skip_notify argument: a caller that records a
+deletion reason wants the notification that carries it.
 
-This is a general problem for any consumer device running Linux,
-especially on Wi-Fi networks, where multicast delivery is not
-guaranteed (e.g. frames can be lost around DTIM for clients in power
-save mode). The motivating case is Android: the userspace NetworkStack
-process listens on RTMGRP_IPV6_ROUTE and today treats any loss of the
-IPv6 default route as "router lost". To avoid the device repeatedly
-gaining and losing IPv6 connectivity on a badly configured network,
-when it detects the device is on a dual-stack network with working
-IPv4 connectivity, it defensively clears accept_ra_defrtr and restarts
-IPv6, so user space apps stop using broken global IPv6 connectivity
-while link-local IPv6 keeps working. That reaction is wrong if the
-route was withdrawn by a zero-lifetime RA (some ISPs do this
-intentionally for reconfiguration) - with accept_ra_defrtr off, IPv6
-never recovers once the router advertises again. It is the right
-reaction if the route genuinely expired, since the router failed to
-refresh it in time.
+The reason is unused for now. Subsequent patches propagate it to the
+deletion path and report it on RTM_DELROUTE.
 
-Fixing this in user space is not practical: RTM_NEWROUTE carries the
-initial route lifetime (in rta_cacheinfo), but the kernel does not
-resend it when a later RA refreshes the lifetime. So distinguishing
-the cause of an RTM_DELROUTE from user space would mean opening a raw
-socket, listening to RAs, and tracking lifetimes independently,
-duplicating logic the kernel already has. Sending RTM_NEWROUTE on
-every RA lifetime refresh was also considered, but that would be
-spammy and is technically wrong, since a lifetime update does not add
-a new route.
+Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+---
+ include/net/ip6_route.h        |  2 ++
+ include/uapi/linux/rtnetlink.h | 25 +++++++++++++++++++++++++
+ net/ipv6/route.c               |  8 ++++++++
+ 3 files changed, 35 insertions(+)
 
-This series proposes RTA_DEL_REASON instead: it tells user space why
-the route was deleted so it can react accordingly. In the Android
-case, NetworkStack would defensively disable global IPv6 only on
-RT_DEL_REASON_EXPIRED, and take no action on
-RT_DEL_REASON_RA_WITHDRAWN, since that is RFC-compliant behavior.
-
-Patches 1 to 6 add RTA_DEL_REASON and enum rt_del_reason to the
-rtnetlink uAPI, thread the reason from the kernel-initiated IPv6
-deletion paths down to the RTM_DELROUTE notification, and record the
-cause: RT_DEL_REASON_EXPIRED for routes garbage collected after their
-RTF_EXPIRES lifetime ran out, and RT_DEL_REASON_RA_WITHDRAWN for
-default routes, prefix routes and RFC 4191 route information routes
-withdrawn by Router Advertisements. Patches 1 to 5 are no-ops on the
-wire; the attribute first appears in patch 6. The route addition path
-is not touched.
-
-Patches 7 to 9 extend the rt-route Netlink spec with the route
-notifications and their multicast groups, split the newroute and
-delroute request attribute lists out of the shared getroute reply
-list, and add the new attribute and its enum.
-
-Only kernel-initiated deletions that user space cannot otherwise
-explain are attributed. User-requested deletions are self-explanatory
-to the requester, so they carry no reason; the UAPI documents that
-absence and RT_DEL_REASON_UNSPEC must be treated identically, which
-keeps the door open for attributing more paths (nexthop removal
-cascades, device removal) later.
-
-Patch 10 adds selftests covering all three producer paths: a
-GC-expired route, and a default route + PIO prefix route + RIO route
-advertised and then withdrawn by hand-crafted RAs over a raw ICMPv6
-socket (no external RA tool needed), plus a check that user-requested
-deletions carry no attribute. The notifications are decoded with YNL,
-which also exercises the rt-route spec additions.
-
-Changes since v5:
-- Declare ip6_del_rt_reason() outside the CONFIG_IPV6 guard, next to
-  ip6_ins_rt(), since only IPv6 code calls it.
-- Document in the UAPI that the attribute is notification-only and
-  rejected in requests.
-- Document the del-reason attribute and its enum entries in the
-  rt-route spec, instead of a YAML comment on the newroute request.
-- Close the selftest sockets with defer(), and describe the real
-  reason the RA send is retried.
-
-Changes since v4:
-- Rename the payload values to RT_DEL_REASON_*, so they do not read as
-  attribute ids. The attribute id is still RTA_DEL_REASON.
-- Document that the reason value space is family-agnostic.
-- Drop the skip_notify argument from ip6_del_rt_reason(); all callers
-  passed false, and skipping the notification discards the reason.
-- Drop the unused !CONFIG_IPV6 stub for ip6_del_rt_reason().
-
-Changes since v3:
-- Split the single kernel patch into six, one logical step each, per
-  review.
-- Use the enum throughout instead of a plain u32.
-- Add inet6_rt_del_notify() and call it from fib6_del_route(), so the
-  route addition path is unchanged.
-- Move the route notifications and their multicast groups to their own
-  spec patch.
-- Split the newroute and delroute request attribute lists out of the
-  getroute reply list in a separate spec patch, so the attribute
-  addition is a one-line diff.
-
-Changes since v2:
-- Fix the patch 1 commit message, which still said u8.
-- Keep del-reason out of the newroute and delroute request attribute
-  lists in the rt-route spec, since the kernel rejects it in requests.
-
-Changes since v1:
-- Expand the motivation with the Android use case, per review request.
-- Widen RTA_DEL_REASON from u8 to u32, per Netlink uAPI convention.
-- Convert dict_keys to a set before the set difference in the
-  selftest, for clarity.
-
-Yuyang Huang (10):
-  ipv6: add ip6_del_rt_reason()
-  ipv6: propagate the route deletion reason to fib6_del_route()
-  ipv6: record the reason for kernel-initiated route deletions
-  ipv6: add a deletion reason argument to rt6_fill_node()
-  ipv6: expose the route deletion reason in RTM_DELROUTE
-  ipv6: add inet6_rt_del_notify()
-  netlink: specs: rt-route: add route notifications
-  netlink: specs: rt-route: split out the request attribute list
-  netlink: specs: rt-route: add the route deletion reason
-  selftests: net: verify RTA_DEL_REASON on route deletion
-
- Documentation/netlink/specs/rt-route.yaml     |  85 +++++++-
- include/net/ip6_fib.h                         |   5 +-
- include/net/ip6_route.h                       |   2 +
- include/uapi/linux/rtnetlink.h                |  25 +++
- net/ipv6/addrconf.c                           |   3 +-
- net/ipv6/ip6_fib.c                            |  14 +-
- net/ipv6/ndisc.c                              |   4 +-
- net/ipv6/route.c                              |  75 +++++--
- .../testing/selftests/net/lib/py/__init__.py  |   4 +-
- tools/testing/selftests/net/lib/py/ynl.py     |   7 +-
- tools/testing/selftests/net/rtnetlink.py      | 187 +++++++++++++++++-
- 11 files changed, 375 insertions(+), 36 deletions(-)
-
+diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+index 09ffe0f13ce7..cc045705862d 100644
+--- a/include/net/ip6_route.h
++++ b/include/net/ip6_route.h
+@@ -126,6 +126,8 @@ int ipv6_route_ioctl(struct net *net, unsigned int cmd,
+ int ip6_route_add(struct fib6_config *cfg, gfp_t gfp_flags,
+ 		  struct netlink_ext_ack *extack);
+ int ip6_ins_rt(struct net *net, struct fib6_info *f6i);
++int ip6_del_rt_reason(struct net *net, struct fib6_info *f6i,
++		      enum rt_del_reason del_reason);
+ #if IS_ENABLED(CONFIG_IPV6)
+ int ip6_del_rt(struct net *net, struct fib6_info *f6i, bool skip_notify);
+ #else
+diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetlink.h
+index 27265fd31e5f..3988b51db539 100644
+--- a/include/uapi/linux/rtnetlink.h
++++ b/include/uapi/linux/rtnetlink.h
+@@ -399,6 +399,7 @@ enum rtattr_type_t {
+ 	RTA_DPORT,
+ 	RTA_NH_ID,
+ 	RTA_FLOWLABEL,
++	RTA_DEL_REASON,
+ 	__RTA_MAX
+ };
+ 
+@@ -407,6 +408,30 @@ enum rtattr_type_t {
+ #define RTM_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct rtmsg))))
+ #define RTM_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct rtmsg))
+ 
++/* RTA_DEL_REASON: why the kernel deleted the route. u32.
++ * Emitted only on RTM_DELROUTE notifications, and only when the deletion
++ * path records a cause. Absence means either an older kernel or a
++ * deletion path that does not (yet) record its cause - consumers must
++ * treat "absent" and "unspec" identically. New causes may be appended.
++ * Currently only IPv6 deletion paths record a cause.
++ *
++ * The attribute is notification-only: the kernel rejects it in
++ * requests, so a notification must not be echoed back verbatim.
++ *
++ * The value space is family-agnostic: a value must never be
++ * reinterpreted per address family. A cause that only one family can
++ * produce still gets its own value rather than reusing another
++ * family's.
++ */
++enum rt_del_reason {
++	RT_DEL_REASON_UNSPEC,		/* cause not recorded */
++	RT_DEL_REASON_EXPIRED,		/* RTF_EXPIRES lifetime ran out (GC) */
++	RT_DEL_REASON_RA_WITHDRAWN,	/* zero-lifetime RA / PIO / RIO */
++	__RT_DEL_REASON_MAX
++};
++
++#define RT_DEL_REASON_MAX (__RT_DEL_REASON_MAX - 1)
++
+ /* RTM_MULTIPATH --- array of struct rtnexthop.
+  *
+  * "struct rtnexthop" describes all necessary nexthop information,
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index fc42d67e5822..ca374b056f5a 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -4004,6 +4004,14 @@ int ip6_del_rt(struct net *net, struct fib6_info *rt, bool skip_notify)
+ 	return __ip6_del_rt(rt, &info);
+ }
+ 
++int ip6_del_rt_reason(struct net *net, struct fib6_info *rt,
++		      enum rt_del_reason del_reason)
++{
++	struct nl_info info = { .nl_net = net };
++
++	return __ip6_del_rt(rt, &info);
++}
++
+ static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+ {
+ 	struct nl_info *info = &cfg->fc_nlinfo;
 -- 
 2.43.0
 
