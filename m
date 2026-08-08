@@ -1,92 +1,54 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5480030D41D
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 00:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+Received: from zg8tmtu5ljg5lje1ms4xmtka.icoremail.net (zg8tmtu5ljg5lje1ms4xmtka.icoremail.net [159.89.151.119])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6196D2D6E58;
+	Sat,  8 Aug 2026 00:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.89.151.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786150659; cv=none; b=cKUANJYDwyBiInJpyoOtFRdmVY9ruJemFT1Ba5YZLP/B8h3NDwuRaK0zNEbE7Gltct50EZ2NleUns8i+TtrelXhK1TCRsY7f04/ksL8k1DH5tc3Z7SnroMHhhs6zF58uoeY5D5OXYWHnSyt2BH0nhZyjh3X2LsSZpXanlKOPZsY=
+	t=1786150706; cv=none; b=EnRYmAU2K+02JoYAWyb1N9PkU6iMe+SJBPjqJSU046I83Qk3LVssq+CGmRZlJ+1hArRtAydH6AgfhX+YTo/Ks8G2XSVmjpEfzfCIqW+0xjAYkn8yJUfARDVhqCwnZyFCNsQJl9sThowsUWYND3VJGn8UN+WjnkcBt2Q3/bedilI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786150659; c=relaxed/simple;
-	bh=jWLxZrOctQi48RKqTYRz91+Ibtr0QTKx2FayMGGmNqQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sdt5q+7zUzebI8/Oh0FSKwP5uIk+1DrpvbrlWAqG/PtpgJVzw7+sLuhH6ZShGXcmdlc6TuVLAirf3XSErB01ofUBBemzoT8dV3ZrJ9rCDZQGPHM8eQvWBMcyk/pMTvpTymizZw+Sudz59DyRh3515d87RaVTY9Dqm/qi9VRn0GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=msypLLX5; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786150706; c=relaxed/simple;
+	bh=yZkREdEjHQEDUr57udPnaYwkQLcQxYJhgfKaohafuPg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=b2rfGKXXLNb+ZsfDbLEXOKo4WyUzY1ITZrqLGqyIYPUykL4dtUZvd3BkBovdLE9WgBdon8EMiA2i4FaVlfku94RqTKNcKJ12d5vOwrpUUgkYyBB04THo1tcEYjPbIa/CA0ajHqP+Pe3Rof5NlytUzpXZ3TjNWUCIFpbkg8ASDz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=QepjMXoc; arc=none smtp.client-ip=159.89.151.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="msypLLX5"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so99752a91.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 17:57:36 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="QepjMXoc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786150656; x=1786755456; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=y7Yu9LFtUUVkb91RBdW7WVFjGnJVr4Pvqr7j1MPpwfw=;
-        b=msypLLX5zQPJZYxuOB3QaUkiMmBRfgM86VF43XEztpZJlFjhRLfpt1WgebIkcQQgSB
-         /oOUloWEl00kJbs4cWT23Rai+qpu7JTZ1joHztec9Ca7jQ96kV7xqzpIAGLwPbFyKFjx
-         iDDZ4TZgswEKFap9MkXeqLDG4um6u1EyU47zQi7pKTHR5zM58FplAYNJGTjpv1v5md5Q
-         TgdMTBjXs9z4AvTo8puvBv1bpS3B6scvAP9BVxWDrCIBMLQvzVsWpeOWmNGZqU0s7Tr8
-         f6jR8oJwZB+TsMNZbBkWMNWo3/HQ9ddJXcpeogFfO8JKlDrCja3NlN6+8ddcvtBCK/eF
-         aLGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786150656; x=1786755456;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=y7Yu9LFtUUVkb91RBdW7WVFjGnJVr4Pvqr7j1MPpwfw=;
-        b=JFB3ue2PvRNhWnCIDy2T6Z2An99bys54mRnjnTIRslHf3PHIZoDJS9DkdYTUQjWten
-         GN8JP9JsgV9R/e4sQoFOIunV3drfD+X966nU+F5ZE7w4ZL6kT00wiUW50lpj3AqoZltJ
-         4//Dg3xgoOYm+/BJUVFP4XDhLL3z1m1DIEgFT+nQnmPbbfdZWLAeXkQIg/juYdZ0ih12
-         mJ/aoZjVag6ln53JXUxHLjBikwrdclqrLO6SuR9KtDUDZYeWYPrZhW+SIu+khNNPtTd5
-         456Nc1VOxp9aU6nrd3fVqjgFRXxXKeLrpK6/x21GR1AfYwONtxvBHqt7nhXybPWzwtcC
-         EwFw==
-X-Forwarded-Encrypted: i=1; AHgh+RqqNVYoaJ/YZ5sVg+aYgU19ZVb4Y72C4T45FyU3/veDgjx8pWz/YcIRqi2EvjfvVordKHJBUR4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzh1g7CwYBYeNuenCO2SwR0yQunvEPRmrZ0LRL423/rw9PS/yLV
-	K0aHZ9NZmPMSQG4O3EOYG1LwgwsNekNbVusRMu8rVb+26s2MAfleAyYK
-X-Gm-Gg: AR+sD10XlVvrN9MZG+/667junuj10HrAiqH3bXpm5IN7/UtGtXmi459XSWuD8Gl8X/O
-	In7dXH/NIBZTNv3GagoPXDWyTaia7gqCsyslV2UlhFHOlp3u6WfROurvZXxovePTlYITUNSzqh0
-	0jFB3I+kR5ibdWOYuEYW3sleg+xrN0BHOLd62yA2PBWChsbj/EuCTyaz9xYY3ZB37fLoW6Pm6Gd
-	/yj1m+x4h1wwXQKXSSJS85yRKIqOklkbfSNWz1UbAvv5ria4IYkCnbX0G0LBYarvKIz0gkWAcFc
-	1tQg10IHqWjTi1kDHCOhdU5FXCuJ0s7LZ722Stn+WXKHpl1Kv2lZWz4clYLwPTh60y0zk+eNfIq
-	2+RYTZ9YK5Cgs5cJDMXkK8NEkZiOAEDxUHMz8ffRYu6npSU9azAaA2pWUr8OFLk8ZgvL1vp3db9
-	kYC1HNAOI+UQh4FutoXK9JkLEIHHF8y8u48o4ItRPpVdIKawgP5/n7OmRp6ntWyOXZVoeVo6PEK
-	rGw2GC/KDg69KuI37KWqiK5nx3nGEndw37RqBwVgnJN9ll0kp4=
-X-Received: by 2002:a17:90b:448b:b0:38e:524:8797 with SMTP id 98e67ed59e1d1-3909d8c3b9cmr10953639a91.13.1786150656297;
-        Fri, 07 Aug 2026 17:57:36 -0700 (PDT)
-Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:d7e9:6449:7464:1dfa])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925fc6c13asm4205182a91.2.2026.08.07.17.57.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 17:57:35 -0700 (PDT)
-Sender: Yuyang Huang <uyoko90@gmail.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Chris J Arges <carges@cloudflare.com>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	David Wei <dw@davidwei.uk>,
-	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Willem de Bruijn <willemb@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-Id:In-Reply-To:References:MIME-Version:
+	Content-Transfer-Encoding; bh=TNDApsOsnp2m2lDrTJuIAVtUvQ2U/qmosQ
+	3lDWNOF4A=; b=QepjMXocUszGkTzHW3esG5/gCgz7RAoajs/svlf+M2KcxcwnWs
+	Tw9XF/U1iwB2SXPfdwrqjJ5eB87NWOxdorrxSAb3C33RPYEaoyiIApK8ccez4N0e
+	tsKxgPwN1eAsWXPSGbqGpMw+JigNC9jpAzsIfRWOfuUjZrYT8ts5DW9KU=
+Received: from gpu-server-2.tailcd67b0.ts.net (unknown [101.52.241.91])
+	by web2 (Coremail) with SMTP id yQQGZQCHgrQOf3ZqgbvKAA--.21278S2;
+	Sat, 08 Aug 2026 08:58:04 +0800 (CST)
+From: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+To: linux-sctp@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v6 10/10] selftests: net: verify RTA_DEL_REASON on route deletion
-Date: Sat,  8 Aug 2026 09:56:42 +0900
-Message-ID: <20260808005642.26901-11-sigefriedhyy@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260808005642.26901-1-sigefriedhyy@gmail.com>
-References: <20260808005642.26901-1-sigefriedhyy@gmail.com>
+Cc: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	stable@vger.kernel.org,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	yyxroy22@gmail.com
+Subject: [PATCH net v2] sctp: fix use-after-free of cached ASCONF chunk
+Date: Sat,  8 Aug 2026 08:57:48 +0800
+Message-Id: <20260808005748.1981039-1-yangyx22@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <CADvbK_ekVxEzb=-sbphAtmzYYXqfggWX2h3CK24s84MmQvahJg@mail.gmail.com>
+References: <CADvbK_ekVxEzb=-sbphAtmzYYXqfggWX2h3CK24s84MmQvahJg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -94,277 +56,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:yQQGZQCHgrQOf3ZqgbvKAA--.21278S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxuF4kuw43CFyfZrWrAr4rGrg_yoW5Ar17pa
+	98Wr4ayry5AryxurWfJr1Duw43Krs5J3y3Gr9YqwsYyFs8XryYkry7Ka4jqrWkCF4kAa43
+	KryYqFn8Gr90yaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvK1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4j6r4UJwA2
+	z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0x
+	vYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIEY20_
+	GrWkJr1UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zV
+	CS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAI
+	w28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
+	VjvjDU0xZFpf9x0JUEAp5UUUUU=
+X-CM-SenderInfo: 51dqw5r0ssqzpdlo2hxwvl0wxkxdhvlgxou0/
 
-Extend rtnetlink.py to check the reason reported in RTM_DELROUTE:
+addip_last_asconf caches the outstanding outbound ASCONF chunk. The normal
+ASCONF-ACK completion path releases the chunk and clears the pointer.
 
-- expired: route with a 2s lifetime collected by the fib6 GC
-  (gc_interval lowered like fib_tests.sh fib6_gc_test does);
-- ra-withdrawn: a single RA advertises a default route (router
-  lifetime), an on-link prefix route (RFC 4861 prefix information
-  option) and a route information option route (RFC 4191), then a
-  second RA withdraws all three with zero lifetimes; the RAs are
-  crafted over a raw ICMPv6 socket so the test does not depend on an
-  external RA tool;
-- absence: a userspace deletion request records no cause and must not
-  carry the attribute at all.
+However, sctp_asconf_queue_teardown() releases the cached chunk without
+clearing addip_last_asconf. During peer restart handling,
+sctp_sf_do_dupcook_a() queues SCTP_CMD_PURGE_ASCONF_QUEUE, which invokes
+sctp_asconf_queue_teardown() while the association remains alive and leaves
+the pointer dangling.
 
-Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+A delayed authenticated ASCONF-ACK can then reach sctp_sf_do_asconf_ack(),
+which accesses the stale chunk and passes it to sctp_process_asconf_ack(),
+causing a use-after-free and a second release.
+
+Clearing the pointer exposes a race with T4 expiry. Peer restart handling
+queues the timer stop before the purge, but SCTP_CMD_TIMER_STOP uses
+timer_delete(), which does not wait for a callback already running on
+another CPU. Such a callback can reach sctp_sf_t4_timer_expire() after
+the purge and dereference NULL.
+
+Clear addip_last_asconf after releasing the cached chunk, and make
+sctp_sf_t4_timer_expire() consume a stale T4 expiry if no outstanding
+ASCONF remains.
+
+Fixes: a000c01e60e4 ("sctp: stop pending timers and purge queues when peer restart asoc")
+Cc: stable@vger.kernel.org
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Assisted-by: Claude-Code:GLM-5.2
+Signed-off-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
 ---
- .../testing/selftests/net/lib/py/__init__.py  |   4 +-
- tools/testing/selftests/net/lib/py/ynl.py     |   7 +-
- tools/testing/selftests/net/rtnetlink.py      | 187 +++++++++++++++++-
- 3 files changed, 193 insertions(+), 5 deletions(-)
+Changes in v2:
+- Guard sctp_sf_t4_timer_expire() against a cleared cached ASCONF pointer,
+  as requested by Xin Long.
+- Explain why the T4 callback may run after the restart purge.
 
-diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
-index e58bdbdc58ee..34935886b6ad 100644
---- a/tools/testing/selftests/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/net/lib/py/__init__.py
-@@ -17,7 +17,7 @@ from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
-     wait_file, tool, tc
- from .bpf import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
- from .ynl import NlError, NlctrlFamily, YnlFamily, \
--    EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily
-+    EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily, RtnlRouteFamily
- from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily, Netlink
+ net/sctp/associola.c    | 4 +++-
+ net/sctp/sm_statefuns.c | 6 +++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+index 5b0ae61..737f8ea 100644
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -1713,6 +1713,8 @@ void sctp_asconf_queue_teardown(struct sctp_association *asoc)
+ 	sctp_assoc_free_asconf_queue(asoc);
  
- __all__ = ["KSRC",
-@@ -34,4 +34,4 @@ __all__ = ["KSRC",
-            "NetdevSim", "NetdevSimDev",
-            "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
-            "YnlFamily", "EthtoolFamily", "NetdevFamily", "RtnlFamily",
--           "NlctrlFamily", "RtnlAddrFamily", "Netlink"]
-+           "NlctrlFamily", "RtnlAddrFamily", "RtnlRouteFamily", "Netlink"]
-diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/selftests/net/lib/py/ynl.py
-index 2e567062aa6c..08deff756f29 100644
---- a/tools/testing/selftests/net/lib/py/ynl.py
-+++ b/tools/testing/selftests/net/lib/py/ynl.py
-@@ -29,7 +29,7 @@ except ModuleNotFoundError as e:
+ 	/* Free any cached ASCONF chunk. */
+-	if (asoc->addip_last_asconf)
++	if (asoc->addip_last_asconf) {
+ 		sctp_chunk_free(asoc->addip_last_asconf);
++		asoc->addip_last_asconf = NULL;
++	}
+ }
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 708fa07..3a8e16b 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -6145,8 +6145,12 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
+ 					struct sctp_cmd_seq *commands)
+ {
+ 	struct sctp_chunk *chunk = asoc->addip_last_asconf;
+-	struct sctp_transport *transport = chunk->transport;
++	struct sctp_transport *transport;
++
++	if (!chunk)
++		return SCTP_DISPOSITION_CONSUME;
  
- __all__ = [
-     "NlError", "NlPolicy", "Netlink", "YnlFamily", "SPEC_PATH",
--    "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily",
-+    "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily", "RtnlRouteFamily",
-     "NetdevFamily", "NetshaperFamily", "NlctrlFamily", "DevlinkFamily",
-     "PSPFamily",
- ]
-@@ -54,6 +54,11 @@ class RtnlAddrFamily(YnlFamily):
-         super().__init__((SPEC_PATH / Path('rt-addr.yaml')).as_posix(),
-                          schema='', recv_size=recv_size)
++	transport = chunk->transport;
+ 	SCTP_INC_STATS(net, SCTP_MIB_T4_RTO_EXPIREDS);
  
-+class RtnlRouteFamily(YnlFamily):
-+    def __init__(self, recv_size=0):
-+        super().__init__((SPEC_PATH / Path('rt-route.yaml')).as_posix(),
-+                         schema='', recv_size=recv_size)
-+
- class NetdevFamily(YnlFamily):
-     def __init__(self, recv_size=0):
-         super().__init__((SPEC_PATH / Path('netdev.yaml')).as_posix(),
-diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
-index 0c67c7c00d84..5cc3ebdcf08d 100755
---- a/tools/testing/selftests/net/rtnetlink.py
-+++ b/tools/testing/selftests/net/rtnetlink.py
-@@ -5,7 +5,9 @@ import socket
- import struct
- import time
- from lib.py import bkg, ip, ksft_exit, ksft_run, ksft_eq, ksft_ge, ksft_true, KsftSkipEx
--from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily
-+from lib.py import ksft_not_in, ksft_not_none
-+from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily, RtnlRouteFamily
-+from lib.py import defer
- 
- IPV4_ALL_HOSTS_MULTICAST = b'\xe0\x00\x00\x01'
- IPV4_TEST_MULTICAST = b'\xef\x01\x01\x01'
-@@ -134,8 +136,189 @@ def ipv4_devconf_notify() -> None:
-     ksft_true(f"inet {ifname} forwarding on" in cmd_obj.stdout,
-               f"No 'forwarding on' notificiation found for interface {ifname}")
- 
-+def _rtnl_route_subscribe(ns):
-+    with NetNSEnter(str(ns)):
-+        rtnl = RtnlRouteFamily()
-+    defer(rtnl.close)
-+    rtnl.ntf_subscribe("rtnlgrp-ipv6-route")
-+    return rtnl
-+
-+
-+def _wait_route_ntf(rtnl, name, dst_len, dst=None, deadline=10):
-+    """Return the attrs of the first matching notification, None on timeout."""
-+
-+    for msg in rtnl.poll_ntf(duration=deadline):
-+        if msg['name'] != name:
-+            continue
-+        attrs = msg['msg']
-+        if attrs['rtm-dst-len'] != dst_len:
-+            continue
-+        if dst is not None and attrs.get('dst') != dst:
-+            continue
-+        return attrs
-+    return None
-+
-+
-+def _collect_route_ntfs(rtnl, name, want, deadline=10):
-+    """Gather attrs of matching notifications, keyed by (dst_len, dst)."""
-+
-+    seen = {}
-+    for msg in rtnl.poll_ntf(duration=deadline):
-+        if msg['name'] != name:
-+            continue
-+        attrs = msg['msg']
-+        key = (attrs['rtm-dst-len'], attrs.get('dst'))
-+        if key in want:
-+            seen[key] = attrs
-+            if len(seen) == len(want):
-+                break
-+    return seen
-+
-+
-+def _write_ipv6_sysctl(name, value):
-+    with open(f"/proc/sys/net/ipv6/{name}", "w") as f:
-+        f.write(f"{value}\n")
-+
-+
-+def ipv6_route_del_reason_expired() -> None:
-+    """An expired route reports RTA_DEL_REASON == expired."""
-+
-+    with NetNS() as ns:
-+        rtnl = _rtnl_route_subscribe(ns)
-+        with NetNSEnter(str(ns)):
-+            _write_ipv6_sysctl("route/gc_interval", 2)
-+        ip("link add name dummy1 type dummy", ns=str(ns))
-+        ip("link set dev dummy1 up", ns=str(ns))
-+        ip("-6 route add 2001:db8:2::/64 dev dummy1 expires 2", ns=str(ns))
-+
-+        attrs = _wait_route_ntf(rtnl, 'delroute-ntf', 64, '2001:db8:2::',
-+                                deadline=15)
-+        ksft_not_none(attrs, "no RTM_DELROUTE for the expired route")
-+        if attrs is not None:
-+            ksft_eq(attrs.get('del-reason'), 'expired')
-+
-+
-+def _send_ra(sock, ifindex, lifetime, rio=None, pio=None):
-+    """The kernel fills in the ICMPv6 checksum on raw ICMPv6 sockets."""
-+
-+    # type, code, cksum, hop limit, flags, router lifetime,
-+    # reachable time, retrans timer
-+    ra = struct.pack('!BBHBBHII', 134, 0, 0, 64, 0, lifetime, 0, 0)
-+    if rio is not None:
-+        prefix, plen, rio_lifetime = rio
-+        # RFC 4191 route information option, /64 prefix (8 bytes)
-+        ra += struct.pack('!BBBBI', 24, 2, plen, 0, rio_lifetime)
-+        ra += socket.inet_pton(socket.AF_INET6, prefix)[:8]
-+    if pio is not None:
-+        prefix, plen, valid_lft = pio
-+        # RFC 4861 prefix information option, on-link only (L set, A clear)
-+        ra += struct.pack('!BBBBIII', 3, 4, plen, 0x80, valid_lft, 0, 0)
-+        ra += socket.inet_pton(socket.AF_INET6, prefix)
-+    sock.sendto(ra, ('ff02::1', 0, 0, ifindex))
-+
-+
-+def _ra_router_sock(ns_r, ifname):
-+    with NetNSEnter(str(ns_r)):
-+        sock = socket.socket(socket.AF_INET6, socket.SOCK_RAW,
-+                             socket.IPPROTO_ICMPV6)
-+        sock.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_MULTICAST_HOPS, 255)
-+        defer(sock.close)
-+        return sock, socket.if_nametoindex(ifname)
-+
-+
-+def _ra_advertise_routes(rtnl, sock, ifindex, want, **ra_opts):
-+    """
-+    Sending fails with EADDRNOTAVAIL while the router's link-local
-+    address is still tentative. addrconf_dad_start() only queues
-+    addrconf_dad_work(), and IFA_F_TENTATIVE is cleared when that work
-+    item runs, so retry until it does.
-+    """
-+
-+    seen = {}
-+    for _ in range(10):
-+        try:
-+            _send_ra(sock, ifindex, **ra_opts)
-+        except OSError:
-+            time.sleep(0.2)
-+            continue
-+        seen.update(_collect_route_ntfs(rtnl, 'newroute-ntf',
-+                                        want - set(seen.keys()), deadline=2))
-+        if len(seen) == len(want):
-+            break
-+    return seen
-+
-+
-+def ipv6_route_del_reason_ra_withdrawn() -> None:
-+    """
-+    Routes withdrawn by a zero-lifetime RA (router lifetime, RFC 4861
-+    PIO, RFC 4191 RIO) report RTA_DEL_REASON == ra-withdrawn.
-+    """
-+
-+    # (rtm-dst-len, dst); the default route carries no RTA_DST
-+    routes = {(0, None), (64, '2001:db8:6::'), (64, '2001:db8:5::')}
-+
-+    with NetNS() as ns_h, NetNS() as ns_r:
-+        ip(f"link add veth0 netns {ns_h} type veth peer name veth1 netns {ns_r}")
-+        with NetNSEnter(str(ns_h)):
-+            _write_ipv6_sysctl("conf/veth0/accept_ra", 2)
-+            _write_ipv6_sysctl("conf/veth0/forwarding", 0)
-+            try:
-+                _write_ipv6_sysctl("conf/veth0/accept_ra_rt_info_max_plen", 64)
-+            except FileNotFoundError:
-+                raise KsftSkipEx("no CONFIG_IPV6_ROUTE_INFO")
-+        with NetNSEnter(str(ns_r)):
-+            # skip the DAD probe so the router's link-local source only
-+            # has to wait for addrconf_dad_work() to clear IFA_F_TENTATIVE
-+            _write_ipv6_sysctl("conf/veth1/accept_dad", 0)
-+        ip("link set dev veth0 up", ns=str(ns_h))
-+        ip("link set dev veth1 up", ns=str(ns_r))
-+
-+        rtnl = _rtnl_route_subscribe(ns_h)
-+        sock, ifindex = _ra_router_sock(ns_r, "veth1")
-+
-+        seen = _ra_advertise_routes(rtnl, sock, ifindex, routes,
-+                                    lifetime=1800,
-+                                    rio=('2001:db8:5::', 64, 600),
-+                                    pio=('2001:db8:6::', 64, 600))
-+        ksft_eq(set(seen), routes, "not all RA routes were installed")
-+        if set(seen) != routes:
-+            return
-+
-+        _send_ra(sock, ifindex, 0, rio=('2001:db8:5::', 64, 0),
-+                 pio=('2001:db8:6::', 64, 0))
-+        seen = _collect_route_ntfs(rtnl, 'delroute-ntf', routes)
-+        for key in routes:
-+            attrs = seen.get(key)
-+            ksft_not_none(attrs, f"no RTM_DELROUTE for {key}")
-+            if attrs is not None:
-+                ksft_eq(attrs.get('del-reason'), 'ra-withdrawn')
-+
-+
-+def ipv6_route_del_reason_absent() -> None:
-+    """
-+    A deletion path that records no cause (here a userspace request)
-+    must not carry RTA_DEL_REASON at all.
-+    """
-+
-+    with NetNS() as ns:
-+        rtnl = _rtnl_route_subscribe(ns)
-+        ip("link add name dummy1 type dummy", ns=str(ns))
-+        ip("link set dev dummy1 up", ns=str(ns))
-+        ip("-6 route add 2001:db8:1::/64 dev dummy1", ns=str(ns))
-+        ip("-6 route del 2001:db8:1::/64 dev dummy1", ns=str(ns))
-+
-+        attrs = _wait_route_ntf(rtnl, 'delroute-ntf', 64, '2001:db8:1::')
-+        ksft_not_none(attrs, "no RTM_DELROUTE for 2001:db8:1::/64")
-+        if attrs is not None:
-+            ksft_not_in('del-reason', attrs,
-+                        "user deletion must not carry del-reason")
-+
-+
- def main() -> None:
--    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify])
-+    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify,
-+              ipv6_route_del_reason_expired,
-+              ipv6_route_del_reason_ra_withdrawn,
-+              ipv6_route_del_reason_absent])
-     ksft_exit()
- 
- if __name__ == "__main__":
+ 	/* ADDIP 4.1 B1) Increment the error counters and perform path failure
 -- 
-2.43.0
+2.25.1
 
