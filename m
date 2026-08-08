@@ -1,82 +1,59 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39EE3AB292
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 19:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C264B04AF;
+	Sat,  8 Aug 2026 19:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786218250; cv=none; b=N0YUYgYibJqSj0zZ5ASCa63/OUWBr5e31N7n1hzyKiRghyBOSRnU9qsDjMaAcbaz5mKwSiTmFPcF/P5tDvDQUGjeFM0g2TBflrB1jyWX9jQOOp0lnknWZqf6ZJR+HdaZpASy1yu9FpnDp1kdecwHFqNs6bgnUps5B+AcPPb9UDA=
+	t=1786218499; cv=none; b=fX6ieRGc2VDB0Luh4WjbXcC7a31BTFiMlkI94hyfQWL4XreeNQPJVmtbatVGjX76KdKt6ZDDQO/GE2Yf1clkDpfEsuY1P1J+clEsOfhi9OTRY78gUd45K4yjbvfae2t4ucIL6kIWEp9WCKKmSoFFaVEpFS+r2lPrXX4mBHG8r3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786218250; c=relaxed/simple;
-	bh=FQYWuQZWGGBXPvS2LUjG9GwTO7VFydczucFNprVTDwc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i5R+mIu78vd1EhmzaWWV4BnnwnItI9vgPDsAHua7gJ74CZsdjIniCVp/TSvw7Gs+ytY6YF5bKoJHv00JVzxBrISvFNOgOe8dKFheyJP+3ew8fQJzzv0v1RQbc6HkbVaf+0IGb8bolQUXl3tc/m5l85ZhANtsLqL4E9GVB2Vx6WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l/TLsoFi; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786218499; c=relaxed/simple;
+	bh=KLV4CmbiWTS8J+FNdgj/1RCKEQOajCmgSWApmBY3yMo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KGG0wdyM2lkjt5h28bJLyosQssqw89ROuCsBGVkntacLvb6PWrAOYJxDinkoJ+/xkRvUWtzT5oqaEy5RBpynFQ7Ot60P8vEP8dVCAhZ+6BUNA+oeZflThnCNZAibe2j86I4+CZmmvbyP7hg6dg49t2GekvlJkQr7sSPmCmgDD9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIb6eqjc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l/TLsoFi"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47f904e80eeso451654f8f.1
-        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 12:44:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786218247; x=1786823047; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=G/t8sJ5LOSZibo69U8WXLyP0rFjkd69TP+Q4li3mm3s=;
-        b=l/TLsoFisPjS43RqFm1yGADM4a79hd1ghG2Xq9GC+1ggOfB/ItUwXsXGcyOeZTBd8c
-         SGGmSbvlzdKAq8QKm7Cxv0fDyroC19Qh+gwjiM08vau5zO2PXv439QzYuigpFxkSVCje
-         xo3x5wjRdTny3fmmiYH5ZDjPw6EM/jNhG4kzwCKPL5pxmhJYG5++ezKMmq8cFP1qNJ37
-         WWIdzlkwqrBlAceolqn0v21Z8TXQTtdHK2x9TGEj619nhU7RRVQY3i6eygOBVV+bvlBi
-         JCe3C3ai210RMOrFtWPfXNM3kFTFArkZYr9/9R3x7fUBsSsaT6CXdTM2/co47mQnH3an
-         XAXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786218247; x=1786823047;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G/t8sJ5LOSZibo69U8WXLyP0rFjkd69TP+Q4li3mm3s=;
-        b=o619b8J+CLJiYBEgHNzuZkNqgkhrLswP9jxmcxAAa/I62QEL4vYK+a/LXy4CJOL8B4
-         sMpssEE1TZ2K1nnNepw5U506jh9k4ZZDdW1fWbpBD7IyyCdeYCNW0JBKOFY+Ct4+PSOt
-         vJl6iXVIc3FIPTUTLTFQXVGIB8dGUa1pLtO8K5KoMxHvkuo5pbZ4U/GfY4u6Kahn5FPi
-         B/auENJoSZc9okV1nsGOag6JNRm5GmYka+XF3kI+M25FIfkeAlCbvOJM5BIxQHCOWcPQ
-         pq+XT7LA1ttCrlPvU/upACeCw4dULXc922s/r+nfgN1UKcJQ7CIEIc/skzhs9bR9x2UI
-         9CgQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpQHu4/GLn6XMqh3YXoE3eo1I3Y95lnMVDUyREryuJwje/Iys+KEnQnldxudxFQya8ybYXbr1w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywrei637gcDDgboIsrXRnFRyyG2QeAl15hGuzw+7OpkPY8w8L8t
-	PSjoW7oLDxoscgLC6yAXFzrz2hZ9bK3suXLmj+Cd1nrl28/ub/Y2AHmG
-X-Gm-Gg: AR+sD13zQCUhBNWaTf5gohsvt+iYWHCORgS+1sV1jUsz75bAOBn3d9MRrNHJitHFZr0
-	gpWKA4myiYR97pEa7t2zHddpdRA2is98nsnaod4/SyUJLZcpUvfkqsdSF8/kvLelYmTUsUZeJpE
-	f1dc0xCJL7guPbkpsjPE5Pt/DdCK1862vLRyu6Fg2xTGcis9vsIluVEpQjVRMY3YigNYg8Q7V/B
-	/RZbulHaFosn2nfwoWnN+LxLX5lLArncZgKnEU3bckuT3pYl34zEODMmuDJ6SMm7hGp2c6+Bkfi
-	458Dm7F0bhY6bUSZRhJHlw35z/KXGKc2DOoLfncFwNUwkwXKoKS7GRURJGae27GRGWsPg25NV1b
-	tJEdun0hPUh/xBvAIOImrInrYbMDNfAa61srWRdGpcCdKbzZaqcc8ka3aYe8we967/FWGvnp+Bo
-	M8gnbdMll8rBwYf/RhHISpbO6XzPj6qSgaOxiKQ7k8Z5ygk6yAXIz0ghdoS6K9DuLU+QC4FO8qw
-	EJVx3iE2Q==
-X-Received: by 2002:a5d:4c89:0:b0:47f:86af:8fe7 with SMTP id ffacd0b85a97d-47fec6283d0mr37624758f8f.22.1786218246895;
-        Sat, 08 Aug 2026 12:44:06 -0700 (PDT)
-Received: from LAPTOP-AVI.taile24b5.ts.net ([46.31.101.127])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48002145966sm16281318f8f.5.2026.08.08.12.44.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Aug 2026 12:44:05 -0700 (PDT)
-From: Avi Weiss <thnkslprpt@gmail.com>
-To: Mark Einon <mark.einon@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Michael Grzeschik <mgr@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Alan Cox <alan@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIb6eqjc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5661F000E9;
+	Sat,  8 Aug 2026 19:48:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786218497;
+	bh=CkcUnKoEWvBgRRdFNTHQoXsTzjHIKtGAHBkZ7/leYyc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=FIb6eqjcVilsRjU4afSLBaSf2bwJsBUocJhWEA6bnyD69ksb6ZEkulVkib35gt3Qh
+	 vTwicJNV+O4YZeLBFenmhgLtmMS/1vyix42eAC//3DVIfFQdtIcYShH0hJk8zytviV
+	 smp9ofDpjjKhOt2ryIwHq+o6ZghN6lOhm0EkfYKrVSLcJ7aJLfF2htlkQiS5T/1WRW
+	 xxrW+/UDWTloq6ishSoSwr0myBInvbcrnW5O7MrjZzxRcE4Noo+j4q4TQ/GEIoACfl
+	 lY4Sycym9oMX8MuQoefnoQFhFgX8VmN0htvc05ZVEh9ntXsfE/doLQB8MjNr+7jjFY
+	 e1q+axExZX/vA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: nagadheeraj.rottela@amd.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	srinivas.neeli@amd.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	richardcochran@gmail.com,
+	michal.simek@amd.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	horms@kernel.org,
+	linux@armlinux.org.uk,
 	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Avi Weiss <thnkslprpt@gmail.com>
-Subject: [PATCH net] et131x: propagate EEPROM readiness errors
-Date: Sat,  8 Aug 2026 22:43:47 +0300
-Message-ID: <20260808194347.813242-1-thnkslprpt@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	linux-arm-kernel@lists.infradead.org,
+	git-dev@amd.com
+Subject: Re: [PATCH 01/20] dt-bindings: net: add Xilinx TSN Endpoint Ethernet MAC
+Date: Sat,  8 Aug 2026 12:48:15 -0700
+Message-ID: <20260808194815.132344-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260807104431.157230-2-nagadheeraj.rottela@amd.com>
+References: <20260807104431.157230-2-nagadheeraj.rottela@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,41 +62,291 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-eeprom_wait_ready() returns a negative error when the LBCIF status
-cannot be read or the device does not become ready for some other
-reason.
-
-eeprom_write() propagates this error before starting a write, but
-currently returns 0 when the same readiness check fails after the
-write begins.
-
-This behavior was introduced when the EEPROM code was refactored to
-use Linux error-return conventions (from 0 = failure to 0 = success).
-
-Return the error so callers do not treat a failed EEPROM write as
-successful and the function contract is maintained.
-
-Fixes: b802ce0c705f ("Staging: et131x: tidy eeprom code up")
-Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
- drivers/net/ethernet/agere/et131x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+dt-bindings: net: add Xilinx TSN Endpoint Ethernet MAC
 
-diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
-index 1b465a167672..4b6a579e9c66 100644
---- a/drivers/net/ethernet/agere/et131x.c
-+++ b/drivers/net/ethernet/agere/et131x.c
-@@ -567,7 +567,7 @@ static int eeprom_write(struct et131x_adapter *adapter, u32 addr, u8 data)
- 		 */
- 		err = eeprom_wait_ready(pdev, &status);
- 		if (err < 0)
--			return 0;
-+			return err;
- 
- 		/* Check bit 3 of the LBCIF Status Register.  If  equal to 1,
- 		 * an error has occurred.Don't break here if we are revision
+This adds a new binding for the Xilinx TSN Endpoint Ethernet MAC IP,
+describing a wrapper node that owns the six IP clocks and
+xlnx,num-priorities, plus an endpoint MAC child and a three-port switch
+child.  A MAINTAINERS entry is added for the new file.
 
-base-commit: dd057113ac7ba5bdd2aed3d9405305911152f911
--- 
-2.43.0
+A few questions about the schema below.
 
+> diff --git a/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> new file mode 100644
+> index 000000000000..00f52b7b623c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> @@ -0,0 +1,343 @@
+
+[ ... ]
+
+> +properties:
+> +  compatible:
+> +    const: xlnx,tsn-endpoint-ethernet-mac-3.0
+> +
+> +  reg:
+> +    maxItems: 1
+
+[Severity: Low]
+Should the wrapper node have a reg at all?  It is listed in the top-level
+required list alongside ranges, and in the example the two describe the
+same window:
+
+    reg = <0x80040000 0x40000>;
+    ranges = <0x0 0x80040000 0x40000>;
+
+Every child window (mac1 0x0+0x14000, ep-mac 0x16000+0xa000, mac2
+0x20000+0x14000, switch 0x38000+0x8000) falls inside the parent's own
+reg.
+
+The commit message says the wrapper only owns the six shared clocks and
+xlnx,num-priorities, and the wrapper driver in this series never maps
+that region:
+
+drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c:tsn_ip_probe() {
+    ...
+    ret = devm_clk_bulk_get(dev, TSN_NUM_CLOCKS, w->clks);
+    ...
+    return devm_of_platform_populate(dev);
+}
+
+Would it be cleaner for a bus node that translates its children through
+ranges to either drop reg or describe only a wrapper-private register
+block that no child window overlaps?
+
+> +
+> +  clocks:
+> +    items:
+> +      - description: GTX clock for transmitter logic and RTC
+> +      - description: GTX 90-degree phase shifted clock for RGMII
+> +      - description: Host RX FIFO clock
+> +      - description: Host TX FIFO clock
+> +      - description: Reference clock for IDELAY control
+> +      - description: AXI-Lite register interface clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: gtx
+> +      - const: gtx90
+> +      - const: host_rxfifo
+> +      - const: host_txfifo
+> +      - const: ref
+> +      - const: s_axi
+
+[Severity: Low]
+Are all six clocks present in every IP configuration?
+
+A fixed items list implies minItems == maxItems == 6, and both clocks and
+clock-names are in the top-level required list, so each DT must supply all
+six phandles.  Two of them are documented as RGMII specific, gtx90 ("GTX
+90-degree phase shifted clock for RGMII") and ref ("Reference clock for
+IDELAY control"), while the switch ports below also allow:
+
+              phy-mode:
+                enum:
+                  - gmii
+                  - rgmii
+                  - rgmii-id
+
+For a GMII-only build with no IDELAY primitives, would a DT author have to
+invent phandles for clocks the IP does not instantiate?  If those two are
+optional in some configurations, could they be made conditional rather
+than unconditionally required?
+
+Note the wrapper driver in this series is consistent with what is written
+here, it requests exactly these six names non-optionally via
+devm_clk_bulk_get(dev, TSN_NUM_CLOCKS, w->clks), so the question is only
+about the hardware.
+
+[ ... ]
+
+> +patternProperties:
+> +  "^ep-mac@":
+> +    type: object
+> +    $ref: /schemas/net/ethernet-controller.yaml#
+> +    description:
+> +      Endpoint MAC sub-node. Provides the host-side data path through the
+> +      DMA channels described by its dmas / dma-names.
+> +    properties:
+> +      compatible:
+> +        const: xlnx,tsn-ep-mac
+> +
+> +      reg:
+> +        maxItems: 1
+
+[ ... ]
+
+> +    required:
+> +      - compatible
+> +      - reg
+> +      - dmas
+> +      - dma-names
+> +      - tx-queues-config
+> +
+> +    unevaluatedProperties: false
+
+[Severity: Low]
+How is an Endpoint-only instance described here?  The top-level
+description says the IP:
+
+  "provides low-latency network connectivity in either Endpoint-only or
+   Bridged Endpoint configurations"
+
+and
+
+  "It also supports GMII/RGMII interfaces for connection to an external
+   PHY"
+
+The ep-mac node declares no interrupts/interrupt-names, and
+ethernet-controller.yaml contains no interrupt properties either, so with
+unevaluatedProperties: false any interrupt or MDIO child on the endpoint
+MAC is rejected.  All interrupts and both MDIO buses live only on the
+optional switch@ child, whose interrupt-names list is fixed to MAC1/MAC2
+plus one ptp_timer.
+
+An Endpoint-only DT (wrapper plus ep-mac, no switch child) is allowed by
+the top-level required list, but ends up with no interrupt and no MDIO
+description at all, and there is one compatible string with no if/then to
+tell the two configurations apart.
+
+Should ep-mac gain its own interrupts/interrupt-names and a way to reach
+its PHY, or should the description be narrowed to the Bridged Endpoint
+configuration the drivers in this series implement?  Nothing appears
+broken today, the endpoint driver requests no interrupts and drives the
+data path entirely through dmaengine.
+
+> +
+> +  "^switch@":
+> +    type: object
+> +    $ref: /schemas/net/dsa/dsa.yaml#/$defs/ethernet-ports
+
+[ ... ]
+
+> +      mdio-mac1:
+> +        $ref: /schemas/net/mdio.yaml#
+> +        description:
+> +          MDIO bus controller for MAC1. Registers reside inside the mac1
+> +          reg-names window.
+> +        unevaluatedProperties: false
+> +
+> +      mdio-mac2:
+> +        $ref: /schemas/net/mdio.yaml#
+> +        description:
+> +          MDIO bus controller for MAC2. Registers reside inside the mac2
+> +          reg-names window.
+> +        unevaluatedProperties: false
+
+[Severity: Low]
+This isn't a bug, but the child node names contradict the $nodename
+patterns of the generic schemas this binding references.
+
+mdio.yaml documents:
+
+    pattern: '^mdio(-(bus|external))?(@.+|-([0-9]+))?$'
+
+and -mac1 / -mac2 matches none of the allowed suffixes (-bus, -external,
+@<addr>, -<digits>).  Similarly the patternProperties key "^ep-mac@"
+forces names like the example's ep-mac@16000, while
+ethernet-controller.yaml documents:
+
+    pattern: "^ethernet(@.*)?$"
+
+Other in-tree bindings that $ref mdio.yaml for a child use a conforming
+name (qca8k.yaml, realtek.yaml, renesas,rzn1-a5psw.yaml,
+renesas,etheravb.yaml, faraday,ftgmac100.yaml, microchip,lan7800.yaml).
+Would mdio@<offset> (or mdio-0 / mdio-1) and ethernet@<offset> work here
+instead?
+
+Related: the mdio-mac<N> nodes carry no reg, so nothing in DT locates the
+MDIO block inside the parent mac1/mac2 window.  The offset is instead
+hard-coded in the driver added later in this series:
+
+drivers/net/dsa/xilinx/xilinx_tsn.h:
+    #define TSN_MDIO_MC_OFFSET		0x00000500
+
+Could the buses be described as mdio@500 with a reg so the offset comes
+from DT?
+
+> +
+> +      ethernet-ports:
+> +        type: object
+> +        additionalProperties: true
+> +
+> +        properties:
+> +          port@0:
+> +            type: object
+> +            additionalProperties: true
+> +            description:
+> +              CPU port. Wired internally to the ep-mac sibling.
+> +
+> +            properties:
+> +              reg:
+> +                const: 0
+> +
+> +              phy-mode:
+> +                const: internal
+> +
+> +        patternProperties:
+> +          "^port@[1-2]$":
+> +            type: object
+> +            additionalProperties: true
+> +            description:
+> +              External Ethernet port (port@1 is wired to MAC1, port@2 to
+> +              MAC2). Its PHY is reached through the corresponding
+> +              mdio-mac<N> bus.
+> +
+> +            properties:
+> +              phy-mode:
+> +                enum:
+> +                  - gmii
+> +                  - rgmii
+> +                  - rgmii-id
+
+[Severity: Medium]
+Can a valid device tree bypass all of these port constraints?
+
+The switch node uses $ref: /schemas/net/dsa/dsa.yaml#/$defs/ethernet-ports,
+and the referenced schemas accept both container and port spellings:
+
+Documentation/devicetree/bindings/net/ethernet-switch.yaml:
+    patternProperties:
+      '^(ethernet-)?ports$':
+    ...
+        patternProperties:
+          '^(ethernet-)?port@[0-9a-f]+$':
+    ...
+    oneOf:
+      - required:
+          - ports
+      - required:
+          - ethernet-ports
+
+The local constraints are attached only under properties: ethernet-ports:
+and only to the keys port@0 and "^port@[1-2]$", and that container is
+declared additionalProperties: true.
+
+So a DT spelling the container ports { port@0 ... } (the spelling most
+existing DSA device trees use), or spelling the ports
+ethernet-port@0/1/2, passes dt_binding_check while none of the hardware
+rules apply: the CPU port's reg: const: 0 and phy-mode: const: internal,
+the gmii/rgmii/rgmii-id enum on external ports, and the port@1/port@2
+only topology of this three-port IP.  A fourth port or phy-mode =
+"sgmii" then validates cleanly and is only caught at probe:
+
+drivers/net/dsa/xilinx/xilinx_tsn.c:xlnx_tsn_setup() {
+    ...
+    if (!dsa_is_user_port(ds, XLNX_TSN_PORT_MAC1) ||
+        !dsa_is_user_port(ds, XLNX_TSN_PORT_MAC2))
+	    return dev_err_probe(sw->dev, -EINVAL,
+			         "both MAC1 and MAC2 must be enabled as switch ports\n");
+    ...
+}
+
+Would matching both container spellings ('^(ethernet-)?ports$') and both
+port spellings, and dropping additionalProperties: true inside the
+container, close this?
+
+[ ... ]
