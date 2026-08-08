@@ -1,65 +1,65 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0352F8E81
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 00:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934A72F8BC3
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 00:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786150643; cv=none; b=bsE8TjScW8FYKm+uuEYlg7pGr9rAIP+h9MBxzvBxfQFDhuRWx4w12hxPVvMD5y8eT42Ru2XGAo9ErZSr/hG2ieWUP4TG07USisoX7E52WmzW4QQux23UVYSHAHk8EL0tvZRhJ7XueiiJuAEfvDhToys3O9oXraALBoaQpeMLlfA=
+	t=1786150647; cv=none; b=DArNI+FMBcXTzULntqU8gvO9FkFAu8dJx7cGXbtMskiY8Q5Knb07S6+7mTloPcfKvC4YBRaXPEWxquZdI/y4HJFugFVD7iJyIFSBpHBQ1ptLm+V5E6HgeGODPNoCMVCOeUnh7znAAyzTcmnyChvdO1vUJD/3fhadJ5tAXn0GlEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786150643; c=relaxed/simple;
-	bh=B7TewygujZnaDoAvFCdYw3/qv+UCkSEJvMuQcq5Qjm4=;
+	s=arc-20240116; t=1786150647; c=relaxed/simple;
+	bh=/1aVlWW0aqZciYFSw+AOVrBgxkbF7Mvd+1bStEYFWQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohSlBjCwBHkoPbvEbB/Yu1PI9AgHA3DCdyBb7rBF6si06t+t4+w2uoD31oaehZG29XZO4/iEI23uiIuwYNNgqm/4tsUriDyvelc3itPAaYxsCjlc9V813Ea6lvRvYaUGIy1rgkpxXjO3RU2Pb/nX0NKjChzntcSfUBVEUmmcoO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=auylG6Ts; arc=none smtp.client-ip=209.85.216.45
+	 MIME-Version; b=svts93j95W/czuPfLWMN3JP39QkGk/cvLDNohxIxfYzNbPnmaGzsVCTDmiv98Yvm81XGRbSAZCM0LljYFLwvCocIgKzicfth8TUlh73JjWVQkB/98Lz1Vzf2ZHIn0em18CMf+0eOVla4NTW6N3w2ZKJ7rbGXEFMk5QJiLL63QR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=okFlVBKO; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="auylG6Ts"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38e7109321dso56529a91.3
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 17:57:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="okFlVBKO"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38deea72eebso89883a91.1
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 17:57:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786150642; x=1786755442; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786150646; x=1786755446; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Gzb9FT9wUkGMcUEIoMcEc4INRD8xMXaz2c0lYN6UOZs=;
-        b=auylG6Ts5PHtDVCNxO+NEniCxMYwPWfPjBTM2A7jVmRXGQOIEUW9BJ7b/c7ktYAOmP
-         VS+kr6heR5f2bYeEsHlmCmjmi7jmrfEcYkFb2Ua8hhJeOBVQVxbaqa5x/Vxk1VJODSyW
-         Q2u3+c0Di5bOJtYmvOLOzKxjCsb2neRweVZZec+vYou7+9jcP/CUMMQcqM/gvU4bciJM
-         dpxmet/odXmct0ibSpgn8eixzEDMBTwiWHICAcu5qRjU8E7/XlLhLQj9ACCbt7t3oaxw
-         gPO7IPp0EKmEkvX0fde3h4Db2h/MIJGt2gyAJLmwMZi5a0UJdmrlA5hrY2z+TFVvUTxZ
-         7EXA==
+        bh=yuxY4tXM3iR0bUsRR6CCNuiHoOS0/eoyg0oTXxAyJpU=;
+        b=okFlVBKOC752/QidXq6WJmPC8WPZfQpgKT+E+4pX06HnXaaY7tcP3tS+YCAHRy38k7
+         +wW0pV/pkgYYNmUcvEmYeSndORXgS7VOUWwx3p7Zb2ErVBnAbouAs3+O2jFlUY7d9YQu
+         qm2l/K7493H7c91Al5svUEFG/KUY+NR2hwehEy+c4GkuaGalfhlFA3XhtKubDL8g79ZI
+         iTT9xGv3gvhU4KSE5XNTKJxTpg7W/+tLXao3KAKKyq3JNPhRI3Bt15r209c9s0Vjkifs
+         ZalZEen9Pka8QuoHr+iirsxWYttju+5nLH/AwfJxTOd6Mga8T0KGvJJfhIM57ZQVI03L
+         zdxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786150642; x=1786755442;
+        d=1e100.net; s=20251104; t=1786150646; x=1786755446;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Gzb9FT9wUkGMcUEIoMcEc4INRD8xMXaz2c0lYN6UOZs=;
-        b=MYNydJ6r/C/i1s77rwzAmaYpOjW0RtoyzcKlDHHWnFknYLAXIkb3Lac258fe0L6KOS
-         lYL2GiTwEUYzsLFdmMurEnhWjEBHCH3675DbxncUWq+kbmThBHTKfOj1kr5jKLiNG0zp
-         dyWpvWCMdBlFkHVWAXy80bKqHqEitdVWzEIt9+eITFVRB3LY5oDsRRZGloP9rxzzU+wq
-         grruBUMiDhi9mcE8HvYn63tRMQM3cg48bT0bnR5oXhfNR6sArfz7g3KJ8rOzElzECqpu
-         h38b3vVOONXPGc0HL96C4ZdAvS27FyZxg4wKDjHI956Kf9H7dpg2PUkhON3yEiXpSh/T
-         R11w==
-X-Forwarded-Encrypted: i=1; AHgh+Rq08wtABXdVlORtBxVPgOV6IQNgxHKIR+RudsPgIGW/bwO6xURJU97/ZedB9w2GppEKd7pP9q0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrvBwfRiS5J1/6KFllLKg8Eg3SkuRbsPX0p1Xh39GC778Y/WY4
-	8+TSVsRv/UQZ3GHWDyJenqS1SyjQkS9NhXdmdFyjC3tpcrZIZofJvheL
-X-Gm-Gg: AR+sD10fT1td2Nj7eoUQcLogQ31GhpS07U/4o++cpD2rCRPMq1u/UZJ2skBA85inPxN
-	/ULAwhGIPtfKAsIuHmo5fjpFhM84mwMLED63CRNxc+kUaaM8Wk03u0eWUN+WFXX1+iSFGcnOxhS
-	9GRUa5ja0YS1A09g8CYRyA54MpPraPXT0S90P+Pud6Mccv2xYApzHSBU33maYPEWr6Rdbmtkg2j
-	blNEJSNmDzKWZQOHxAxMvyJNlDnvjJXtNYhryuOyfnY40CVUxRSLvTNtoNBgSWHkS9+OQTwQwJS
-	x3gkZkgR+8b/BGoAA2TIf3cujg6PhC5T9XVqyNk1Y1MrZ7QDoVDblG6YubOZS/f+Bv3C/qxZ3RY
-	uiuzDmm7iRPVKZb700P20zMKCVQiQQXo4wbvZX3N4csuPkvBkKwWj/Hbx+em0YJEcATGkU1fA8v
-	zoRikHwSXywhliInfkSbuBIC7mGy4STgROKvaprTHWf2lloyXef56LtAQa3pN3a5H+65ndK7nDn
-	1+Zli5uJX1MvI4M5tiMMX3Yn+RYx19L9np2C0RjbpcR2/6yCvc=
-X-Received: by 2002:a17:90b:4c45:b0:38f:efed:5448 with SMTP id 98e67ed59e1d1-392822b7b78mr3257943a91.8.1786150641757;
-        Fri, 07 Aug 2026 17:57:21 -0700 (PDT)
+        bh=yuxY4tXM3iR0bUsRR6CCNuiHoOS0/eoyg0oTXxAyJpU=;
+        b=HCstUPhnvu5mlGq2kGhGOMo7ebHJcGx1lApHOhrl4SIYXgxsReqjZI28GD82n4V0FM
+         R2bstN5j+AoTZvx6qTh3frjH7lAogR8xMW++tR4eJh6rvwxXT8xmjwZKvz4FF05aUFzy
+         mPXOj6yaKDHhPYdybJtZwZahFF9NCa9Rwfz3PlmNQsSw+lI+zRCjD45XZ4UROHbV4JdY
+         F8YhPvfyCxOLAe1bdLy/0RgLhBu/6RXW0XkcS9vYkv5nhHbKQAPcagx8OCCwFdq3V/4b
+         FIKTlfJnqeSXxrJX450EiNGwYJzAv4AzzNpv5kmBGOxtHEvzkeB80eG0QBXjhPX3Pz0d
+         RcPQ==
+X-Forwarded-Encrypted: i=1; AHgh+RonSovSZ4gIuiW0qHSsD3nQt4ZHvMgxwefsSxJPVD6UXAbk4jIKpEYEXJ2Ln0Cb60AdFyzmg80=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZ8tqTF/knAc6eJJORCbvGTBTT2+qn0rFipjcelv05Wnp55pAj
+	R3gxEKPiNDdcXkw16+zhZLpK9nxFcy7BKxiOTs0e7k3wAATGXKVC5wy6
+X-Gm-Gg: AR+sD12gKHx8upafO/6x+bpgOVxUFcwCHiv4TNFyXIqUk3xHfgiUuYP4wdssIJr3KEm
+	L012HI3RLnHl0jfZhVW19U9ReI11FIooN2HDZ/pFuRYHKbgt2CIubhwUNeMqTwxL6T7chQxKI6Z
+	SM9qWGsX6Cw5epxrrQHJT5HYPVaF3k9Fuk+UmOgPmK6+dxH+/FxsUEUKRERfMcyrvBOfwCsd5sg
+	BpUO6/4qUChi5XFp692JeGCCyHCv522sfPM8ju78PIiiFmc/rcZOh6jaP2hxE8QcdZHgTsf6Efl
+	ceni1OCud8v6eGidK/QdOGnWtk705Xr8Wv/a5piA0cjGfXKBBqZ0B/DsY4yf0fTC3GYBTV+JURh
+	DyvsKyKJ692c1tUnvz4zPLP93BRBOA1jBWuGEYNPg5DtsHzdVvt22/q/Vt8pB3Bw+8jjU9SIhiD
+	NVm/aW/QUT4JWGHPFjHgoXHt5KpzOIP0XXAfOlVAdA6Y2WMvtMEajCaeA2uE9EZytkOZ67OHP/D
+	9fQr8bxpSlhkU+UyvmVLmBKvTCCQqfX2KEYOXTt0jy6v0yhXHE=
+X-Received: by 2002:a17:90b:4f81:b0:38c:e9e9:e7ce with SMTP id 98e67ed59e1d1-392822bf6abmr3156672a91.3.1786150645933;
+        Fri, 07 Aug 2026 17:57:25 -0700 (PDT)
 Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:d7e9:6449:7464:1dfa])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925fc6c13asm4205182a91.2.2026.08.07.17.57.17
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925fc6c13asm4205182a91.2.2026.08.07.17.57.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 17:57:21 -0700 (PDT)
+        Fri, 07 Aug 2026 17:57:25 -0700 (PDT)
 Sender: Yuyang Huang <uyoko90@gmail.com>
 From: Yuyang Huang <sigefriedhyy@gmail.com>
 To: Yuyang Huang <sigefriedhyy@gmail.com>
@@ -81,9 +81,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v6 07/10] netlink: specs: rt-route: add route notifications
-Date: Sat,  8 Aug 2026 09:56:39 +0900
-Message-ID: <20260808005642.26901-8-sigefriedhyy@gmail.com>
+Subject: [PATCH net-next v6 08/10] netlink: specs: rt-route: split out the request attribute list
+Date: Sat,  8 Aug 2026 09:56:40 +0900
+Message-ID: <20260808005642.26901-9-sigefriedhyy@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260808005642.26901-1-sigefriedhyy@gmail.com>
 References: <20260808005642.26901-1-sigefriedhyy@gmail.com>
@@ -95,42 +95,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Declare the RTM_NEWROUTE and RTM_DELROUTE notifications and the route
-multicast groups, so that generated clients can subscribe to route
-changes. Both notifications reuse the getroute reply attributes.
+The newroute and delroute requests alias the same attribute list as the
+getroute reply, but requests and replies do not carry the same
+attributes. Give the requests their own list.
+
+The two lists are identical today, so the generated code does not
+change.
 
 Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
 ---
- Documentation/netlink/specs/rt-route.yaml | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ Documentation/netlink/specs/rt-route.yaml | 32 +++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
 diff --git a/Documentation/netlink/specs/rt-route.yaml b/Documentation/netlink/specs/rt-route.yaml
-index 33195db96746..62b215614210 100644
+index 62b215614210..9f4a1a253676 100644
 --- a/Documentation/netlink/specs/rt-route.yaml
 +++ b/Documentation/netlink/specs/rt-route.yaml
-@@ -322,3 +322,22 @@ operations:
+@@ -313,7 +313,35 @@ operations:
+       do:
+         request:
+           value: 24
+-          attributes: *all-route-attrs
++          attributes: &route-req-attrs
++            - dst
++            - src
++            - iif
++            - oif
++            - gateway
++            - priority
++            - prefsrc
++            - metrics
++            - multipath
++            - flow
++            - cacheinfo
++            - table
++            - mark
++            - mfc-stats
++            - via
++            - newdst
++            - pref
++            - encap-type
++            - encap
++            - expires
++            - pad
++            - uid
++            - ttl-propagate
++            - ip-proto
++            - sport
++            - dport
++            - nh-id
++            - flowlabel
+     -
+       name: delroute
+       doc: Delete an existing route
+@@ -321,7 +349,7 @@ operations:
+       do:
          request:
            value: 25
-           attributes: *all-route-attrs
-+    -
-+      name: newroute-ntf
-+      doc: Notification about a created route.
-+      value: 24
-+      notify: getroute
-+    -
-+      name: delroute-ntf
-+      doc: Notification about a deleted route.
-+      value: 25
-+      notify: getroute
-+
-+mcast-groups:
-+  list:
-+    -
-+      name: rtnlgrp-ipv4-route
-+      value: 7
-+    -
-+      name: rtnlgrp-ipv6-route
-+      value: 11
+-          attributes: *all-route-attrs
++          attributes: *route-req-attrs
+     -
+       name: newroute-ntf
+       doc: Notification about a created route.
 -- 
 2.43.0
 
