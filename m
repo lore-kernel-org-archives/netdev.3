@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E12C3B2FD4;
-	Sat,  8 Aug 2026 19:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F58397B02;
+	Sat,  8 Aug 2026 19:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786218501; cv=none; b=kgJV3oc0ERd6QzZd421BHhfTxSkyRbtYA6DWsQxs4HxMWHzL+rVRKieIDb3WPqhRREpCJEkXgmS91F7XA0fZFbV6UQNWEfAd8e9G06abVztwNXXG3Tl9g8iwsIp1O5M82UJmBNVw/1Dj46ipFh6Wj/bySpX+rbyiNESr01YCZYY=
+	t=1786218503; cv=none; b=g8dBsUuECYsBg/PDZOC/UlKN2Ia0p9lur8ea/8wB0tqHl7V0j97Rp8DRpPNAIt33fS19AfT/Dvvzukfbd8mNihMV97I0hEZ11VWHCCWtN8B1zuQhrBP+Co3J+ZmX5jaqxT34czGkMgW05rFToTcoqVfIkBrZJtRG2Cb3gf9HZkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786218501; c=relaxed/simple;
-	bh=z/3iBkvT0+HMIIgLNzbNFzPqXqwkDUmYJ3q4Vgi8jIA=;
+	s=arc-20240116; t=1786218503; c=relaxed/simple;
+	bh=6NalNkalcCuf9+DMMsni+w7mwhgsVA+OqeRusTbXKrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYJ3XCiz3YZ3czX3YXL/wtn4+RaEXDNB9lclna8d4ZBdmJGctboMft6zXXSqNeHVN7bGH5WngPI/Vjvm7VCzK2/VxzbPBwjcdEK/zf0fCo+Ckv/+Wl2zp8ibXyMrPkuxmfLLHYoDU9/Z8GkStj6wUr0lTpN6OGb5FcQOPyxzxEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOLig0RI; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=r6p0Jdhx9cfbmDXL8+5Xlgi/OgucHmvXA1CEswlxB5C3eTdqmhfLhvrkJ1l8rrr6nGqnWvl1KH6wEsimudBFNKt/kycn2kuIPfDGXZsPe7jPa0+y3g5GIRx8OgDecBqJ6xq0BsJuoaTCzVfMQ9okF6cEMvUt+kkWT5c6KAqB4SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ICOXrmFF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOLig0RI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F701F000E9;
-	Sat,  8 Aug 2026 19:48:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ICOXrmFF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D7E1F00A3A;
+	Sat,  8 Aug 2026 19:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786218500;
-	bh=MGD6E8SCA+Po+3uOFW/2mkaHZhiiytiha/CMS5Pt8Y0=;
+	s=k20260515; t=1786218501;
+	bh=PVOgcIDXslwG7YzEc0WE2zy47deznp5eDRaasdxW1Eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HOLig0RIfD/3dc2MOEjBu//CqUJYkrk/4i0JBMwYAmYhEhO+EpFAeknHOZ1kVXJiF
-	 lS84tik6ybyp3hvetalR6G5jabz+IUI0DE1zR3ZYDrHZHfuKb0YjfqEBc3NywC/zAi
-	 fbv/JJVNViEpOVtr+V2QaIJ74ZkrIs+JbTaaRIyTH+S1rucAYbm/1V/8MsYdGR7Gh2
-	 lYUaBy5ZlnCftgBs4gsNp456Xz2vEzghQi3BePRkhJ+uyCUj9S6C0w7jNn16PAUJUV
-	 3si7G6BjaNKWobV7QY2pMc7getpfNkC6rdtzQiVQT4a02CXOU2UhOnL8NtxPNhDMf3
-	 WabSueRTZTBhA==
+	b=ICOXrmFF+UrpjC/X8xXdapdZytmK4Q6EzLNZR4M9eBbAzHc0+UJHBneCBKNvXWbWb
+	 xzP4/SC4pWxjtoS70JFiae2NBguB213CnFZGqr8gD0x3C2CKKExzMyO/x16r3KAoig
+	 Ujme6fspwwSrMHdnnbGrDWRY1B1PLa7d6vsHuEvkxLaIISyhpNoJjJVcSPhQ+eciKQ
+	 7XlZBVdBki+OGPJ3kWEeaFuHlAmB+nvYP6q4WqGDfCxSuxY1YcG03WpkY4WKbuXvQE
+	 umEB/FaJP5wh4Rcrgba+2/kdpwomUYqayi2nekBPA9OI5QoMx/aV8YcdiaXol3l1d9
+	 0xa1KdTw9H4Iw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: nagadheeraj.rottela@amd.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -48,12 +48,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	git-dev@amd.com
-Subject: Re: [PATCH 03/20] net: xilinx: tsn: add endpoint MAC driver skeleton
-Date: Sat,  8 Aug 2026 12:48:18 -0700
-Message-ID: <20260808194819.132574-1-kuba@kernel.org>
+Subject: Re: [PATCH 04/20] net: xilinx: tsn: parse endpoint DMA channel configuration
+Date: Sat,  8 Aug 2026 12:48:20 -0700
+Message-ID: <20260808194820.132670-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260807104431.157230-4-nagadheeraj.rottela@amd.com>
-References: <20260807104431.157230-4-nagadheeraj.rottela@amd.com>
+In-Reply-To: <20260807104431.157230-5-nagadheeraj.rottela@amd.com>
+References: <20260807104431.157230-5-nagadheeraj.rottela@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,136 +65,241 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: xilinx: tsn: add endpoint MAC driver skeleton
+net: xilinx: tsn: parse endpoint DMA channel configuration
 
-This adds a platform driver for the AMD/Xilinx TSN endpoint MAC
-("xlnx,tsn-ep-mac"), registering a netdev named "ep" with minimal netdev
-and ethtool ops.  There is no data path yet: ndo_open only starts the
-queues and ndo_start_xmit drops frames.
+This patch counts the TX and RX MCDMA channels listed in "dma-names",
+allocates the conduit netdev with that many hardware queues, and parses the
+"tx-queues-config" child node to build a logical TX queue to physical DMA
+channel map.
 
 > diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-> new file mode 100644
-> index 000000000000..9b556edf5423
-> --- /dev/null
+> index 9b556edf5423..062cb94c2153 100644
+> --- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
 > +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
 
 [ ... ]
 
-> +static const struct net_device_ops ep_netdev_ops = {
-> +	.ndo_open		= ep_open,
-> +	.ndo_stop		= ep_stop,
-> +	.ndo_start_xmit		= ep_start_xmit,
-> +	.ndo_validate_addr	= eth_validate_addr,
-> +	.ndo_set_mac_address	= eth_mac_addr,
-> +};
+> @@ -22,16 +24,32 @@
+>  
+>  #define DRIVER_NAME			"xilinx_tsn_ep"
+>  
+> +#define TSN_DMA_CH_INVALID		0xFFU
+> +#define TSN_MAX_TX_QUEUE		8
+> +#define TSN_MAX_RX_QUEUE		16
+> +
 
 [ ... ]
 
-> +static int xlnx_tsn_ep_probe(struct platform_device *pdev)
+> @@ -72,15 +90,116 @@ static const struct ethtool_ops ep_ethtool_ops = {
+>  	.get_drvinfo	= ep_get_drvinfo,
+>  };
+>  
+> +/*
+> + * Parse the "tx-queues-config" child of the EP node. The logical queue
+> + * index is taken from the "queue<N>" node name, so the mapping does not
+> + * depend on the order the child nodes appear in the device tree.
+> + */
+> +static int ep_parse_tx_queue_config(struct xlnx_tsn_ep *ep,
+> +				    struct device_node *txcfg_np)
 > +{
-> +	struct device *dev = &pdev->dev;
-> +	struct net_device *ndev;
-> +	struct xlnx_tsn_ep *ep;
-> +	u8 mac_addr[ETH_ALEN];
+> +	DECLARE_BITMAP(chan_seen, TSN_MAX_TX_QUEUE) = {};
+> +	DECLARE_BITMAP(queue_seen, TSN_MAX_TX_QUEUE) = {};
+> +	unsigned int count = 0;
 > +	int ret;
 > +
-> +	ndev = alloc_netdev(sizeof(*ep), "ep", NET_NAME_UNKNOWN, ether_setup);
-> +	if (!ndev)
-> +		return -ENOMEM;
+> +	for_each_child_of_node_scoped(txcfg_np, qnode) {
+> +		u32 chan, queue;
+> +
+> +		if (!str_has_prefix(qnode->name, "queue") ||
+> +		    kstrtou32(qnode->name + strlen("queue"), 10, &queue) ||
+> +		    queue >= ep->num_tx_queues)
+> +			return dev_err_probe(ep->dev, -EINVAL,
+> +					     "tx-config: invalid queue node %pOFn (have %u queues)\n",
+> +					     qnode, ep->num_tx_queues);
+> +
+> +		if (test_and_set_bit(queue, queue_seen))
+> +			return dev_err_probe(ep->dev, -EINVAL,
+> +					     "tx-config: queue %u described twice\n",
+> +					     queue);
+> +
+> +		ret = of_property_read_u32(qnode, "xlnx,dma-channel-num", &chan);
+> +		if (ret)
+> +			return dev_err_probe(ep->dev, ret,
+> +					     "tx-config: queue %u missing xlnx,dma-channel-num\n",
+> +					     queue);
+> +
+> +		if (chan >= ep->num_tx_queues)
+> +			return dev_err_probe(ep->dev, -EINVAL,
+> +					     "tx-config: queue %u channel %u has no matching tx_chan (have %u)\n",
+> +					     queue, chan, ep->num_tx_queues);
 
 [Severity: Medium]
-Can a second TSN IP instance ever probe successfully with this fixed name?
-"ep" carries no "%d", so the name is not auto-uniquified and
-register_netdev() ends up returning -EEXIST:
+Is xlnx,dma-channel-num being validated against the wrong thing here?
 
-net/core/dev.c:dev_prep_valid_name() {
-	...
-	if (netdev_name_in_use(net, want_name))
-		return -dup_errno;
-	...
-}
+The binding in
+Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+describes it as the physical TX channel number, with range 0..15:
 
-reached from register_netdev() -> dev_get_valid_name(), which passes
-dup_errno = EEXIST.
+              xlnx,dma-channel-num:
+                $ref: /schemas/types.yaml#/definitions/uint32
+                description:
+                  DMA TX channel number connected to this priority queue.
+                minimum: 0
+                maximum: 15
 
-The binding added earlier in the series places the ep-mac@ child under the
-soft-IP wrapper node and puts no singleton restriction on the wrapper:
+and the tx-queues-config description in the same file spells out an
+example:
 
-Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml:
-patternProperties:
-  "^ep-mac@":
-    type: object
+          transmit packets for each priority queue. For example, queue0
+          with xlnx,dma-channel-num set to 5 means priority queue 0 uses
+          tx_chan5 for data transfer.
 
-So an FPGA design with two "xlnx,tsn-endpoint-ethernet-mac-3.0" instances is
-a valid device tree, and the second xlnx_tsn_ep_probe() would fail at
-register_netdev(), free the netdev, and leave that IP's DSA switch without
-its conduit.  The same collision happens if any unrelated interface already
-holds the very generic global name "ep", for example after a udev rename.
-Would something like "ep%d" be preferable here?
+But ep->num_tx_queues is only a count: ep_count_dma_queues() does
+str_has_prefix(name, "tx_chan") and increments a counter, so the numeric
+suffix of each tx_chan<N> name is never recorded.
 
-Also, since the name is chosen deterministically by the driver rather than
-being of unknown origin, should this be NET_NAME_PREDICTABLE instead of
-NET_NAME_UNKNOWN?  include/uapi/linux/netdevice.h describes
-NET_NAME_UNKNOWN as "unknown origin (not exposed to userspace)", so as
-written sysfs name_assign_type hides the provenance from udev.
+So for an endpoint with two TX channels using the binding's own documented
+mapping (queue0 with xlnx,dma-channel-num = <5>), does this test reject a
+schema-valid device tree with -EINVAL?
 
-This still reads the same way at the end of the series, where the call
-becomes alloc_netdev_mqs(sizeof(*ep), "ep", NET_NAME_UNKNOWN, ether_setup,
-num_tx, num_rx), so no later patch changes it.
+Likewise, since the dma-names pattern ^(tx|rx)_chan(1[0-5]|[0-9])$ does not
+require channel 0 to exist, would dma-names = "tx_chan4", "tx_chan5", ...
+have every legitimate channel number rejected here?
+
+The error string says the channel "has no matching tx_chan", but no name
+match is attempted - would it be clearer to record the channel indices
+actually listed in dma-names and validate against that set, or else state
+in the binding that the value is a 0-based index bounded by the number of
+tx_chan entries and that TX channels must be named densely from tx_chan0?
+
+Related: the follow-on patch "net: xilinx: tsn: bring up the endpoint MCDMA
+channels" requests channels by a synthesized name:
+
+	snprintf(name, sizeof(name), "tx_chan%d", i);
+	ep->tx_chans[i] = ep_alloc_dma_chan(ep, name, true, TX_BD_NUM_DEFAULT);
+
+for i in 0..num_tx_queues-1, so a sparse or non-zero-based naming that the
+schema accepts would also make dma_request_chan() fail there.
 
 > +
-> +	SET_NETDEV_DEV(ndev, dev);
-> +	ndev->netdev_ops = &ep_netdev_ops;
-> +	ndev->ethtool_ops = &ep_ethtool_ops;
-> +	ndev->features = NETIF_F_SG;
+> +		if (test_and_set_bit(chan, chan_seen))
+> +			return dev_err_probe(ep->dev, -EINVAL,
+> +					     "tx-config: channel %u already assigned to another queue\n",
+> +					     chan);
 > +
-> +	ep = netdev_priv(ndev);
-> +	ep->ndev = ndev;
-> +	ep->dev = dev;
-> +
-> +	ep->regs = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(ep->regs)) {
-> +		ret = PTR_ERR(ep->regs);
-> +		goto err_free_ndev;
+> +		ep->tx_dma_chan_map[queue] = chan;
+> +		count++;
 > +	}
 > +
-> +	ret = of_get_mac_address(dev->of_node, mac_addr);
-> +	if (ret == -EPROBE_DEFER) {
-> +		goto err_free_ndev;
-> +	} else if (!ret && is_valid_ether_addr(mac_addr)) {
-> +		eth_hw_addr_set(ndev, mac_addr);
-> +	} else {
-> +		eth_hw_addr_random(ndev);
-> +		dev_info(dev, "no valid MAC in DT, using random address %pM\n",
-> +			 ndev->dev_addr);
-> +	}
+> +	if (count != ep->num_tx_queues)
+> +		return dev_err_probe(ep->dev, -EINVAL,
+> +				     "tx-config: described %u queues but expected %u\n",
+> +				     count, ep->num_tx_queues);
 
 [Severity: Low]
-Is ep->regs meant to be used by this patch?  Grepping
-drivers/net/ethernet/xilinx/tsn/ at the end of the series, ep->regs is only
-ever assigned and error-checked in xlnx_tsn_ep_probe() and never
-dereferenced by any read or write, so the mapped window is dead state.
-Would it be better to map it in the patch that first programs it?
+Does the binding require exactly one queue node per tx_chan entry?
 
-Related question about the address handling: the station address is only
-ever set in software here (eth_hw_addr_set(), or eth_hw_addr_random() when
-the DT has no valid address), and ndo_set_mac_address is the generic
-eth_mac_addr(), which just updates ndev->dev_addr.  If the endpoint MAC
-holds its own unicast address or filter words in that window, does the
-address advertised to userspace end up permanently diverging from what the
-bitstream or bootloader left in the hardware, and does a later
+The tx-queues-config node in xlnx,tsn-endpoint-ethernet-mac.yaml only
+constrains the shape of its ^queue[0-7]$ children; it has no required list
+and no minimum child count, so a node with fewer queue children than
+tx_chan entries (even none) validates.
 
-	ip link set ep address ...
+A device tree with 8 tx_chan entries and 4 queue nodes would then fail
+probe with "tx-config: described 4 queues but expected 8".
 
-ever reach the device?
+Separately, xlnx,num-priorities (minimum 2, maximum 8) is in the parent's
+required list and is documented as the property that "determines the number
+of priority queues available for QoS scheduling", but no driver under
+drivers/net/ethernet/xilinx/ reads it - the priority queue count is instead
+taken from the dma-names TX count via alloc_netdev_mqs() below.
 
-There is some counter-evidence that no hardware filtering is intended at
-all: the driver implements neither ndo_set_rx_mode nor any promiscuity
-handling, while DSA adds user-port addresses to the conduit via
-dev_uc_add() in net/dsa/user.c and net/dsa/port.c.  If that is the design,
-could the commit message say so, and could the unused register mapping be
-dropped for now?
+Should the binding require one queue node per tx_chan entry (with the
+driver cross-checking xlnx,num-priorities), or should the driver drop the
+exact-equality requirement?
 
-Cross-instance finding from sashiko-gemini (e8e82d52a83540aba64fbedc360b0969d77529c63fbeb8f2b749e3809191d7cb):
-[Severity: Medium]
-Dropped packets are freed using `dev_kfree_skb()`, which aliases to `consume_skb()` and incorrectly signals successful transmission to tracepoints.
+> +
+> +	return 0;
+> +}
+> +
+> +static int ep_count_dma_queues(struct device *dev, u32 *out_tx, u32 *out_rx)
+> +{
+> +	u32 tx = 0, rx = 0;
+> +	int n, i;
+> +
+> +	n = of_property_count_strings(dev->of_node, "dma-names");
+> +	if (n < 0)
+> +		return dev_err_probe(dev, n, "failed to read dma-names\n");
+> +
+> +	for (i = 0; i < n; i++) {
+> +		const char *name;
+> +
+> +		if (of_property_read_string_index(dev->of_node, "dma-names",
+> +						  i, &name))
+> +			continue;
+> +		if (str_has_prefix(name, "tx_chan"))
+> +			tx++;
+> +		else if (str_has_prefix(name, "rx_chan"))
+> +			rx++;
+> +	}
+> +
+> +	if (!tx || tx > TSN_MAX_TX_QUEUE)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "invalid TX queue count (%u, max %u)\n",
+> +				     tx, TSN_MAX_TX_QUEUE);
+
+[Severity: Low]
+Is the TX maximum here inconsistent with the binding?
+
+The dma-names schema allows tx_chan0..tx_chan15:
+
+        items:
+          pattern: "^(tx|rx)_chan(1[0-5]|[0-9])$"
+
+with maxItems: 32, so 9 to 16 TX channel names validate, while this test
+refuses anything above TSN_MAX_TX_QUEUE (8).
+
+The RX side matches (binding maximum 16, TSN_MAX_RX_QUEUE 16), which makes
+the TX side the outlier. Since the TX queue nodes are limited to
+^queue[0-7]$ and xlnx,num-priorities maxes at 8, more than 8 TX channels
+can never be used - should the TX name pattern be narrowed to
+tx_chan[0-7], or should the driver accept 16?
+
+> +
+> +	if (!rx || rx > TSN_MAX_RX_QUEUE)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "invalid RX queue count (%u, max %u)\n",
+> +				     rx, TSN_MAX_RX_QUEUE);
+> +
+> +	*out_tx = tx;
+> +	*out_rx = rx;
+> +
+> +	return 0;
+> +}
+> +
+>  static int xlnx_tsn_ep_probe(struct platform_device *pdev)
+>  {
+>  	struct device *dev = &pdev->dev;
+> +	struct device_node *txcfg_np;
+>  	struct net_device *ndev;
+>  	struct xlnx_tsn_ep *ep;
+>  	u8 mac_addr[ETH_ALEN];
+> +	u32 num_tx, num_rx;
+>  	int ret;
+> +	int i;
+>  
+> -	ndev = alloc_netdev(sizeof(*ep), "ep", NET_NAME_UNKNOWN, ether_setup);
+> +	ret = ep_count_dma_queues(dev, &num_tx, &num_rx);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ndev = alloc_netdev_mqs(sizeof(*ep), "ep", NET_NAME_UNKNOWN,
+> +				ether_setup, num_tx, num_rx);
+>  	if (!ndev)
+>  		return -ENOMEM;
+>  
+
+[ ... ]
+
+For all three points above, the binding file and both of these functions
+are unchanged at the end of the series, so none of them appear to be
+resolved by a later patch.
