@@ -1,63 +1,63 @@
 Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB90D4C6D
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 02:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E367244694
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 02:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786154986; cv=none; b=HGoj2YiGqJdNJVZ4DcremnW/yA6pJCzNsZrFyJEivVzWTq3cCh/kOhgH2VEVSXbyyE9mlQOI5inCvD2vZ1DjM4diiuyqRMs2AlhF91NZktASPEmJuzt90sgRVvzfwHsAGCTmQ1ov1KHgLUz6d2gLp20uW26D6kFc2b3i5JD/XbM=
+	t=1786155003; cv=none; b=rOeC5HO5ODVeliARBVS4RyaPXHKNg0qjW9RklJgLs0/Jz+4bA5jTFXS/sTNEo8u0E4t3F/g8JC263OpY76y6eLyTQmVxsdmNfNcyOroqZeHwBeIWmzbc7MUy7ers4VivWkMDbziyy46Sf/HpRhXBrhkZ3GA6Ot7xqKtY291g6B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786154986; c=relaxed/simple;
+	s=arc-20240116; t=1786155003; c=relaxed/simple;
 	bh=0Hj0QlaYSTyFYEXSfFbeWe+iEXPNu+H/OM3iwIGQxoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5uzqV1UJ46KIThIMJcD3TZAVjot2o641LGKH0lQouTBx9micxZFsbihQ3Np1nqVeSRyFYmg0jupv9w8NbmObosBWxLPykaniUKnJ4wh2GHlwBXuEIpoyD7R5qcaPdKbl0npwhvLXWhMu4G8v1lDRf+SLLoWDXA7hAAnDT3AUpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DkJYFvcm; arc=none smtp.client-ip=209.85.214.180
+	 MIME-Version; b=eu71Z3QsMKFWYBLz5RMIpvFHQCB6sviuIYeFPHinxnnFfSMJxIZd2dIRs278kJ59pdMPiqjzXtc5Q+BznW08bVcQOQ4RFqe9SgC1ZGiQ0M0RfkGTSSpgrRTmk+ktaYUVoC6+7sdgPH5QLidIjNPxj/GH/iq9ttawYTWEBM1nesM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h9x0tnT4; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DkJYFvcm"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ce87c7e3bbso2115265ad.1
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 19:09:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h9x0tnT4"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cacf197759so3262905ad.2
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 19:10:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786154984; x=1786759784; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786155002; x=1786759802; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
         bh=9bWoXHbpk4foxcIrHN4t0PDZwpmsKGgehGiQpXNvjYU=;
-        b=DkJYFvcm5KXWLTulE8gG5m8ceDKo32Jjld+fn/F/tt0Rm2eaGM8JM+ZLefJ/l4UTAH
-         FUM8O3kJmk9boVjvM6aXTcArpyChTiZ/KiTYHhpjWKgPp6ak+FtQ8tcR1TPpnonvFxtv
-         oU9X3Buw+54mqEGLL++h2lGDs0oIyCG/iZekdIQeoPvVTLqSs4/oOFN+UnRfXV+8SvKx
-         VAwCAUTEaXVld5hUG9WdOiQErfKdd88U7IHmAQuNa/y/sAqPTJWz7cR7MzRZp/uFxoWi
-         6FgXcSW9s12qXVpLHik93m0Ol2rxzGBckjGeh2Axlv2NnVtsS57oVXI2TCMg9hj5RRCs
-         M21Q==
+        b=h9x0tnT4DHG21LE0EQSEiQ7UibZ+7MrknKpJ1CsDPwmkWqDep011G3VfTzfAmb3eqV
+         S7IaXeEyjTSCyTPKC5jvNUnIA8OMQnyHj+YZctl85dWifPbxdDzGGuvFnzVFz7Nl4A+3
+         iOwJZVDO9c8ckDg/Hqs3SVOwBvhjssNKsw/sidE2+wc32EHoEleQk3hDyAxvZG5DrCxv
+         xr1wS8+Ce9226munF16qOlX/sS9Da65mQCrAhGPHIC2V1tvVHg5ZjbCaoXmIE7Rs6MyF
+         qmMQvhwsdm8OVE7FyiXwnoi4ivf11QYd24Kh5ToRfNwBQOl1LeihyCgSzD/BoZyzYhPH
+         on/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786154984; x=1786759784;
+        d=1e100.net; s=20251104; t=1786155002; x=1786759802;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
         bh=9bWoXHbpk4foxcIrHN4t0PDZwpmsKGgehGiQpXNvjYU=;
-        b=cvKQ2HRhsY+njYSqO1mHAxSF17xVXgVT38QWoyIA5/N+24ZbN0GGy08cadp4gPxGvc
-         nXOqgQcLoIjVxKxdYbn2XzG45M+AxQdJNUB46VfD3Et4l/t8Wnd1huaK3n0mA2Tdd/bt
-         ZHcgMYWas70kY0G7vvdzfETisSnpR5oc9jEpGDLy83lHWLKMULVC3Zi3CGkJQR6B32Qq
-         ZEw8uXaheeFGtLwXRo/J3jRfsnQ7/nxKmjzDmlcdOysXhKFACzhWCMw+Q3n/vXjL28XV
-         EWsiqwnSqZDywKE7Wc/BCHApCVS4pCTXySplk8AxR6k+LFrIWZEGTzkerVd24489KXbr
-         ss3g==
-X-Gm-Message-State: AOJu0YzafuzcwlTeZNS2WNBdgmkW5SWqbeMwq45G2EmQAoPI9foqdhVO
-	TawXYz4bnFjrCtHT8a+3tzR5YABCXuiodCCTdhfLbV/2UL+BkWM3mCQOOzTUONCwGJc=
-X-Gm-Gg: AR+sD11yLOM5BRyHeHw2uLAbQOGRqShvII1Wrr68ot/NdUyUEeXiJwboTNqTYsUH4LC
-	C/LaYaoiyPRh/zA7bs6cEtP79WAyBimgKLhW1khITszYp21pNbPaLFB6McETnahPNnaDMuStwRS
-	eotPciP1e5IXUXB9TW0y8A8XqVWaCqxPjFfttp1xLpL/bpoKECbBRt3YIF6s0HccUHYx4OXejfX
-	ypPkzYm3IumK1CE9oGDPIduGIO9M5xx9o+bsCLUC4rhv4Y/8y3+3eJdQyJYJY8NBsOmJ9SO3X8U
-	6OwTO5fEUxM69wmQaRWD8iAnOM6i+Do7hVB1VbJtVlr8Czn+ZBIrQdvTq1GNvxN92MwQJM3KvAT
-	mjwGpNkxZOY16z0Oeg+NgirmnvEAL21cm+wfV6q8lSek5nTc2ofiN54fWpQLuWeINp+vTFbOyGj
-	2OtYGWuxa5kX/yuF+Z3tUaaKOhA55jxUMnsm235vtTo03oIyWvkLQMwe+lEFbo6gb9aNO7lLvxO
-	cQFfEIF17JgheaTxZaUbNaQd0I7fJUO3+am8R0LK7WysjvskwAP+g==
-X-Received: by 2002:a17:90b:580b:b0:38e:9e9d:9209 with SMTP id 98e67ed59e1d1-3903c5c51cdmr28221153a91.17.1786154984223;
-        Fri, 07 Aug 2026 19:09:44 -0700 (PDT)
+        b=OhxK1knleQLTy64mb3Inywi2NrKxdfNrSBeQugjtHSh8KexEbgFLQRdj8JS8SUzBgA
+         VcYXF+paCokXRq/Xc0/YtKEQNxti0EHKqNRG7JcvXnd4wM6ehEMg5Q/l4MisLqpIpvy0
+         kiOLkdGDmIioBoOL5pM51YL7/vqYO293C5aA9zTvQLWktJvtlHieT1SlVQHUjJv0RF87
+         Y4cI3qk92XZDBnFy0pbVyvMRZibHUP2lbM8r3ek1+aivKPhndVVLUHJzaE462wTJ5T9w
+         RU/jX+Q11TWFgMMbmhGC8aA5F95mM8xRwrpcUq4ZxI3CbUOj1a/HaU630fg9Fp6Ukhau
+         r2xw==
+X-Gm-Message-State: AOJu0YzAFbCzQNc7jmogFRWe+1dX+5GYroKuA8iOjn9/ZbZbhZSaF5MR
+	hxwjLHRRDWR78TeZBqJMMRMISMHGbl+2kc3+IU8b3HU306QDfmS0oHm+jBlKgSQNEEY=
+X-Gm-Gg: AR+sD11VelsRo9IV8uit4JxpY8uNvxrlhu+BreZ+QybRAtOCoYWwCWNerwkWzCJQlcZ
+	YvfeYNNDcC+YWN1Cxm05mi8SwkciMA4tFwdexKywKEs0LSJZbBP26gCGxRIRB2H1QwYNj5UmxEf
+	oWxH1vUoNt4St3nu6405FzumhyGqe9xQxsmM3M3sJirhvB35mkMpTWyjUQrFE+8cfljjN7dN2bR
+	mRWKk6LNrFQ+BBUg/Cc83KBPgcfNxazqnfZp0HK0P8Et+wOLTu7IIINsNfZFXqAZ71k59NfaraH
+	6VEbwzac2ks1GLP1s/22L5w/Ja3z5tJq4bRrN/sZ6ptn5Mb2zhBVmgSR2UEa4nRCPMSccXBNvAm
+	DcbRn41ogsLHQ2leD+rEhU81Ee900LT2ZW2dJ0505Wy2BlpSfw94IYzoR6UfEcqoL7fxBNv9YFA
+	7Jo3hX++uLxWjt3wTLTlS+PzFa5fKCliVLEbZNWH/bkY8jUWO5GGTyQnQztllX9z5UVVJMyoOs8
+	2Z+QemrkffAhsWiDkhTm+RzqEvtzJZX/bI+0wB4c5XxvAjeW/NUdA==
+X-Received: by 2002:a17:902:fc85:b0:2ca:a03a:29b2 with SMTP id d9443c01a7336-2d294b44102mr107977335ad.8.1786155001847;
+        Fri, 07 Aug 2026 19:10:01 -0700 (PDT)
 Received: from ubuntu-openwrt.tail1b3f25.ts.net ([123.201.0.80])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315beb87d3bsm13851142eec.14.2026.08.07.19.09.40
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315be86e917sm14910162eec.5.2026.08.07.19.09.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 19:09:43 -0700 (PDT)
+        Fri, 07 Aug 2026 19:10:01 -0700 (PDT)
 From: Sandeep Sondagar <sandeepsondagar@gmail.com>
 To: netdev@vger.kernel.org
 Cc: linux@armlinux.org.uk,
@@ -65,18 +65,18 @@ Cc: linux@armlinux.org.uk,
 	hkallweit1@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernochenel.org,
+	kuba@kernel.org,
 	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org,
 	j4g8y7@gmail.com,
 	robert.marko@sartura.hr,
 	Sandeep Sondagar <sandeepsondagar@gmail.com>
 Subject: [PATCH net v2] net: phylink: treat PSGMII as an inband capable interface
-Date: Sat,  8 Aug 2026 07:39:37 +0530
-Message-ID: <20260808020937.787537-1-sandeepsondagar@gmail.com>
+Date: Sat,  8 Aug 2026 07:39:55 +0530
+Message-ID: <20260808020955.787569-1-sandeepsondagar@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260807194937.785825-1-sandeepsondagar@gmail.com>
-References: <20260807194937.785825-1-sandeepsondagar@gmail.com>
+In-Reply-To: <20260712194937.785825-1-sandeepsondagar@gmail.com>
+References: <20260712194937.785825-1-sandeepsondagar@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
