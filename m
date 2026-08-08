@@ -1,165 +1,206 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223173A4F4A
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 19:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B922D314A73
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 19:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786216225; cv=none; b=tkYdzpf+aAM+En6n5JMIajqNREyUUoMQLRrY4gB+nkGgUwGpKGI3Gs9FpNbTHAlfS0zrTVEgAZp14GFwOVrlcvPrCuwfHrJ6UOCj/23u5LVIoQE4Mhjs94Huvmu6zaOloxTD1HMp2swlXhHMPRbsY4ullmy4Ji27qnDM05ADuDg=
+	t=1786218004; cv=none; b=h0VSIgQiI2sbIfllet2GFep3CfPcBCIFp8CWdoTN+VJ+Z5uR9Jjejs5BV2WW3DPiCB74IoOuZcEj0vTLEwl2DLKxTsaos2uc3oDLvumUnrmN9BmUpNBYjyB3wS1wfyh9qA9OysPMypChKDbDS5qg8fnCyCnUsElOYtpPsnohkqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786216225; c=relaxed/simple;
-	bh=S4mpYqMd0/Ct8+6tq7W2kh+rr/6yuokdVT2g6hiCips=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TSGrGWTymsuzy6RTdEve+Y7Qphj77WWFjXATUTiGPJytGGkHALyN7pjDuoOQmQF5Yx9MWpitBU6IlkXOSt1aYQnVubyLoQQkMYZJaVCgONhzx/UfP3VKCuXWoodsDSIgkG0jTYB3Xak0W7V6tScNh5whtaxt/4LjN5My8961bkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmUDyGLm; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786218004; c=relaxed/simple;
+	bh=H5TMl5rNJ1IibifCOGtsMwmW/S7e8fp8V0L/BxCHanE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=I2YOYVfGzJJTpeyuGGH5aNXrhlIVIblOHHmxCAlXXqBu5a9ZEfqwoj/oeXxWrpGs1Ii/wq0Nx1EME9sQPqFyo5Ua1Z7+kucVmxFILzD89lVT5uSEzvqe56sJrRQyro7tu6fx8rvyGsYOXLrn9KSkxR6cxdJ4RMKI2GYSuve/igQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rW7CzWiM; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmUDyGLm"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84830c774a0so499526b3a.1
-        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 12:10:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rW7CzWiM"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cc5faecf01so14969515ad.1
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 12:40:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786216223; x=1786821023; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=y4wD+x2lcQbQxh5BgV6YYsoRTfpHiShzTcIKLPwOniI=;
-        b=cmUDyGLmg/dHkWn4l0LtoZ16S5mt8bv0axPQqMehxeOTlKiHT2nLk8YPPZccRZ6q03
-         PMlMnElunlKlEbyAiyab9rb8fqT75iRgmFmgGmHHrWQhK+onGuKypcnfS5LeCcGVf3Nj
-         bBNNHuebM7JrBLsdr57eD4IG30/U6w+K6IC9ywHzAq6Hdl1A2/Oxv0o+jB+7FRFgwEZT
-         mtQZg1ToHaW+XiLpBrDXDMm8aNrbxQHqa3Q8SyQsSgbQ1gwy0E6FIU6sTe2ALhS4ya+X
-         nixHV5OUiBvzlLd86XxcxeB+rA23UPnadFuvLCup5Rov165QEr3vjPA7SfHqptjRCNW9
-         I5gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786216223; x=1786821023;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786218002; x=1786822802; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=y4wD+x2lcQbQxh5BgV6YYsoRTfpHiShzTcIKLPwOniI=;
-        b=VGOFv/iPLiIfYZ6b6N7Ed7M/dNKsWYCvH3PwodiCngoqBVQk2CZ3cGEcpEdJBqwRRb
-         S4XjRGosjwTCdCx7eMSazoj+h2zlpLKovCqofGbwEDondQ2Wsr9lwM+iFCzL7Tm9LjAX
-         Uu+F/Lgw4C1Ov1HeskHGpJQiPHuHpNM5wujiDH8n1NNrUQKPlfVtNi7/0GNWfVNLU2MT
-         cndNgCxNSK4o2SIZqC9oELwPd34HW+8/bhCbsFD/SR2ScuJMZFdwTa9aqHDOHXjUEN3u
-         GMeyjthRLKBSBmIhGQjMGKZdvgsk5E6zU7/0Bm64oV6ALOmnFofAR6/+70EqpcGrDSOK
-         ejGg==
-X-Forwarded-Encrypted: i=1; AHgh+Rps0hfS8J8mRQYcsO9ZmfqSknd8m6LvqC3y4YDo53IGGCKoiNK/CYAf7GTGWoaZkLz7ps+WxiU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUw49nzAgJ8MBhgL0eY+PnwieNmgSyptz6O63U+rbRnHqvoa6h
-	1DKotGr1WrYKLuTD7hjozQa5s0IwyCluspNAjVCa0XNF9DeZwHXm/VG1
-X-Gm-Gg: AR+sD12zOMvNmzTBgN/ddyoAUBIsqOUvzlfc6JiyU6GrmqsIiEbqVyjymGPUbu85ym+
-	Mgco1bUCOWbui1Fzx2ODOck1gmmT+GyPIVZZqD4siYjLTrkL79AGZpwUlYTmTS109c/k5get25p
-	3PLo9TOd98Y1WYh4389yRrTwCOoYOb3tlC3uUYpQ2BXpA9BYTc24z8+OM6b7wsuQoih/GAtiKid
-	9B3Z5Zivpe93zGdKVPGnKQrZVu8V7jSgqMJqcVtk50RY/8sFeMTwWva5BYRtA4AKxPpao1op1MJ
-	bpZ0YRRh64i3ZHLGgnIquINEK1jO4xp0s9gh1kNx5Mn9AgajeHcHf4d6icYD9T6X3LgElHNuulY
-	Gp6LPv+PFT5JP4B/2IGuQbAUW4iS4KcCa/X0qhGTQVsnVi331UVAbeBt7qSvh61k+maEs16ncLu
-	ujVkHnDifEfzWD1DszKHdPe3r4kh7EphLX+dCqf2Je17+4smzua3VDirvqvfPLPVEx
-X-Received: by 2002:a05:6a21:6816:b0:3bf:6237:4d49 with SMTP id adf61e73a8af0-3cbce8d8e50mr10397119637.23.1786216223277;
-        Sat, 08 Aug 2026 12:10:23 -0700 (PDT)
-Received: from user ([2405:201:c052:b00b:e5fc:7669:b85:3eb7])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1410199cf49sm18817125c88.3.2026.08.08.12.10.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Aug 2026 12:10:22 -0700 (PDT)
-Date: Sun, 9 Aug 2026 00:39:21 +0530
-From: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
-To: Kohei Enju <kohei@enjuk.jp>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-Subject: Re: [Intel-wired-lan] [PATCH] e100: prevent shift out-of-bounds in
- e100_eeprom_load
-Message-ID: <and-4dPXVkwerqZU@user>
-References: <20260807145626.52692-1-pavankumaryalagada@gmail.com>
- <andBqsDhcLG9vDmn@x1>
+        bh=XIStZjJg1C75vvBayYABRbCAeMqKZ7aNtHgRfMull94=;
+        b=rW7CzWiMqtf4rxvwHiA7ggiluCQND5uagh0k/0MJLxWFjcxfN5bI1tX/vTjawEc8Ow
+         IEGR/DJENihemF9FGPGoQJ55zwaIouQlvKFkJ0cyzn5LCXhnJ5XZ7EwZWrART7MDv8EL
+         cBxQlPzBZiieLIwPWxGHwpnqYHeuRupZ+J8g1AJnInU3F97Hee8lEq+qHAlADKaofwC6
+         iQgIx9tpFyZryvd7MJCmil8onWyotHlcty9VLU8e+g0xvm27ZL5nrjN4v6EV1pN1gnKK
+         hpGRXPK4pr1A/KwsBDpQIoC/d6glVKzAN2JZwXlTy+BeyElNNN9N3DV8FCsTv5bKl2zD
+         xFKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786218002; x=1786822802;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XIStZjJg1C75vvBayYABRbCAeMqKZ7aNtHgRfMull94=;
+        b=Kk5hQ7AZkcEbAJ1gSVdJfF0V1pZDBYzWFy/YSRACq5HLOmFa7I4Cc7XsRrMSE210+a
+         G+Dy/hfqu4C5vu6lJ1EBVIrRYjGNPAanFUJPyzt2uJZxDg7hc0uebP96f6IJ0rX+2hss
+         f3C8YTVBgv15GmSNUwyMyEPGQVVBiDDoki6nLzR4bMNpeexW/JVwswQW6JiuSalhprvY
+         1DEQrUPW1vAUIIqbsu7WX+0VdF3FYb4jKdbp1RyxCoPteCxzFZ6bbO9LXxTXDE8ZofaH
+         4uYbYIdvomM9fBGrcEBQlm6fI7J3lu1aMwq2hkjfJK3ZF4MhRLmsH9FxybOJod4VzKKF
+         VEkw==
+X-Forwarded-Encrypted: i=1; AHgh+RqO6mRYzIvOktECk/AdfQBJKQ4BUwEFv0kgmlaA1mXXlJ1+ao8kdati+bCJhaTypVbZVMYkvAQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw94/ETdy9stOt9uyozc+HxkiP3Fr5AxdW3P4irTQEyO1GbJ5cr
+	ptrjJy33Zc8/LXAWD7uUYKtuwf0jEHGkHexImKq990rCB4Xr2M8uWBd4z2jalM/Jnz8PIXMvFNk
+	otVqV1w==
+X-Received: from plbkw14.prod.google.com ([2002:a17:902:f90e:b0:2cc:da2c:808b])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ea12:b0:2ca:6eca:492f
+ with SMTP id d9443c01a7336-2d0ca7fc8f3mr374679925ad.14.1786218001810; Sat, 08
+ Aug 2026 12:40:01 -0700 (PDT)
+Date: Sat,  8 Aug 2026 19:38:52 +0000
+In-Reply-To: <b58876297f7d45de008f2e94b6ecab8b2ed84d21.1786088695.git.petalzu987@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <andBqsDhcLG9vDmn@x1>
+Mime-Version: 1.0
+References: <b58876297f7d45de008f2e94b6ecab8b2ed84d21.1786088695.git.petalzu987@gmail.com>
+X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
+Message-ID: <20260808194001.853434-1-kuniyu@google.com>
+Subject: Re: [PATCH net v2 1/1] ip6_tunnel: snapshot encap in xmit
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: weir@nebusec.ai
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, petalzu987@gmail.com, tom@herbertland.com, vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Aug 09, 2026 at 12:12:31AM +0900, Kohei Enju wrote:
-> On 08/07 20:26, pavankumaryalagada@gmail.com wrote:
-> > From: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
-> > 
-> > When reading the EEPROM address length, e100_eeprom_read() can return
-> > an invalid length (0 or >= 16). Passing an invalid addr_len to bit-shift
-> > operations causes a shift out-of-bounds, triggering a kernel panic or
-> > UBSAN warning.
-> > 
-> > Validate addr_len after reading it from EEPROM and return -EINVAL if
-> > the value is out of bounds. Additionally, use 1U to prevent
-> > signed integer overflow when calculating eeprom_wc.
-> > 
-> > Reported-by: syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-> > Tested-by: syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=e0abb1d45ac291ebebeb
-> > Signed-off-by: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
-> > ---
-> > Tested using syzbot c reproducer.
-> > ---
-> >  drivers/net/ethernet/intel/e100.c | 17 +++++++++++++++--
-> >  1 file changed, 15 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/intel/e100.c b/drivers/net/ethernet/intel/e100.c
-> > index 29960762e64a..1de5cd41ea0c 100644
-> > --- a/drivers/net/ethernet/intel/e100.c
-> > +++ b/drivers/net/ethernet/intel/e100.c
-> > @@ -744,7 +744,12 @@ static __le16 e100_eeprom_read(struct nic *nic, u16 *addr_len, u16 addr)
-> >  		 * complete address.  Use this to adjust addr_len. */
-> >  		ctrl = ioread8(&nic->csr->eeprom_ctrl_lo);
-> >  		if (!(ctrl & eedo) && i > 16) {
-> > -			*addr_len -= (i - 16);
-> > +			u16 len = i - 16;
-> > +
-> > +			if (len > *addr_len)
-> > +				*addr_len = 0;
-> > +			else
-> > +				*addr_len -= len;
-> >  			i = 17;
-> >  		}
-> >  
-> > @@ -765,7 +770,15 @@ static int e100_eeprom_load(struct nic *nic)
-> >  
-> >  	/* Try reading with an 8-bit addr len to discover actual addr len */
-> >  	e100_eeprom_read(nic, &addr_len, 0);
-> > -	nic->eeprom_wc = 1 << addr_len;
-> > +
-> > +	if (!addr_len || addr_len >= 16) {
-> > +		netif_err(nic, probe, nic->netdev,
-> > +			"Invalid EEPROM address length %u\n",
-> > +			addr_len);
-> > +		return -EINVAL;
+From: Ren Wei <weir@nebusec.ai>
+Date: Sat,  8 Aug 2026 16:40:49 +0800
+> From: Zixuan Chai <petalzu987@gmail.com>
 > 
-> An invalid address length here appears to indicate an unexpected
-> response from the EEPROM, rather than an invalid argument. Therefore,
-> -EINVAL seems somewhat misleading. Would -EIO be more appropriate here?
-Agreed, addr_len comes from an unexpected EEPROM response,
-so i will change -EINVAL to -EIO.
+> ip6_tnl_changelink() can update encapsulation parameters while the
+> netdevice is transmitting packets. ip6_tnl_xmit() can calculate packet
+> headroom with t->encap_hlen and later build an encapsulation header from
+> the live t->encap. A concurrent update can change the encapsulation
+> header between these accesses and make skb_push() underflow the skb head.
 > 
-> Also, e100_eeprom_save() seems to have the same pattern. Shouldn't we
-> fix that as well?
-yes, i'll fix e100_eeprom_save() as well. 
+> Take a local snapshot of t->encap before calculating the encapsulation
+> header length.
+
+This intorduce per-skb cost in the fast path for unlikely changelink.
+
+Right approach is to convert it to RCU pointer (and remove
+synchronize_net() there).
+
+0ba269933f73 geneve: convert config to RCU-protected pointer
+777434f53e77 geneve: pass geneve_config pointer to helper functions
+
+
+> Use that same snapshot for headroom accounting, metadata
+> validation, and build_header(). This keeps all encapsulation decisions
+> for an skb consistent even if changelink updates the live configuration.
 > 
-> > +	}
-> > +
-> > +	nic->eeprom_wc = 1U << addr_len;
+> Fixes: b3a27b519b22 ("ip6_tunnel: Add support for fou/gue encapsulation")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:gpt-5.4
+> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
+> ---
+>  include/net/ip6_tunnel.h | 10 +++++-----
+>  net/ipv6/ip6_tunnel.c    | 21 ++++++++++++++++-----
+>  2 files changed, 21 insertions(+), 10 deletions(-)
 > 
-> The commit message says that the U suffix prevents signed integer
-> overflow. However, after the validation addr_len is in [1, 15], so 1 <<
-> addr_len cannot overflow an int. I think what prevents the out-of-bounds
-> shift is the validation, not the U.
-Agreed, I'll remove the unnecessary U suffix.
-I made these changes and will send v2.
-> 
-> >  
-> >  	for (addr = 0; addr < nic->eeprom_wc; addr++) {
-> >  		nic->eeprom[addr] = e100_eeprom_read(nic, &addr_len, addr);
-> > -- 
-> > 2.43.0
-> > 
+> diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
+> index b99805ee2fd1..6e76e50a4406 100644
+> --- a/include/net/ip6_tunnel.h
+> +++ b/include/net/ip6_tunnel.h
+> @@ -106,22 +106,22 @@ static inline int ip6_encap_hlen(struct ip_tunnel_encap *e)
+>  	return hlen;
+>  }
+>  
+> -static inline int ip6_tnl_encap(struct sk_buff *skb, struct ip6_tnl *t,
+> +static inline int ip6_tnl_encap(struct sk_buff *skb, struct ip_tunnel_encap *e,
+>  				u8 *protocol, struct flowi6 *fl6)
+>  {
+>  	const struct ip6_tnl_encap_ops *ops;
+>  	int ret = -EINVAL;
+>  
+> -	if (t->encap.type == TUNNEL_ENCAP_NONE)
+> +	if (e->type == TUNNEL_ENCAP_NONE)
+>  		return 0;
+>  
+> -	if (t->encap.type >= MAX_IPTUN_ENCAP_OPS)
+> +	if (e->type >= MAX_IPTUN_ENCAP_OPS)
+>  		return -EINVAL;
+>  
+>  	rcu_read_lock();
+> -	ops = rcu_dereference(ip6tun_encaps[t->encap.type]);
+> +	ops = rcu_dereference(ip6tun_encaps[e->type]);
+>  	if (likely(ops && ops->build_header))
+> -		ret = ops->build_header(skb, &t->encap, protocol, fl6);
+> +		ret = ops->build_header(skb, e, protocol, fl6);
+>  	rcu_read_unlock();
+>  
+>  	return ret;
+> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+> index ebf83f090376..d47757e8a388 100644
+> --- a/net/ipv6/ip6_tunnel.c
+> +++ b/net/ipv6/ip6_tunnel.c
+> @@ -1102,6 +1102,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+>  		 __u8 proto)
+>  {
+>  	struct ip6_tnl *t = netdev_priv(dev);
+> +	struct ip_tunnel_encap ipencap;
+>  	struct net *net = t->net;
+>  	struct ipv6hdr *ipv6h;
+>  	struct ipv6_tel_txoption opt;
+> @@ -1109,10 +1110,11 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+>  	struct net_device *tdev;
+>  	int err_count, mtu;
+>  	unsigned int eth_hlen = t->dev->type == ARPHRD_ETHER ? ETH_HLEN : 0;
+> -	unsigned int psh_hlen = sizeof(struct ipv6hdr) + t->encap_hlen;
+> -	unsigned int max_headroom = psh_hlen;
+> +	unsigned int max_headroom;
+>  	__be16 payload_protocol;
+>  	bool use_cache = false;
+> +	unsigned int psh_hlen;
+> +	int encap_hlen;
+>  	u8 hop_limit;
+>  	int err = -1;
+>  
+> @@ -1202,6 +1204,15 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+>  				     t->parms.name);
+>  		goto tx_err_dst_release;
+>  	}
+> +
+> +	/* Can tear, but hlen and build_header() use the same snapshot. */
+> +	ipencap = data_race(t->encap);
+> +	encap_hlen = ip6_encap_hlen(&ipencap);
+> +	if (unlikely(encap_hlen < 0))
+> +		goto tx_err_dst_release;
+> +	psh_hlen = sizeof(struct ipv6hdr) + encap_hlen;
+> +	max_headroom = psh_hlen;
+> +
+>  	mtu = dst6_mtu(dst) - eth_hlen - psh_hlen - t->tun_hlen;
+>  	if (encap_limit >= 0) {
+>  		max_headroom += 8;
+> @@ -1251,7 +1262,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+>  	}
+>  
+>  	if (t->parms.collect_md) {
+> -		if (t->encap.type != TUNNEL_ENCAP_NONE)
+> +		if (ipencap.type != TUNNEL_ENCAP_NONE)
+>  			goto tx_err_dst_release;
+>  	} else {
+>  		if (use_cache && ndst)
+> @@ -1272,10 +1283,10 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+>  	 * needed_headroom if necessary.
+>  	 */
+>  	max_headroom = LL_RESERVED_SPACE(tdev) + sizeof(struct ipv6hdr)
+> -			+ dst->header_len + t->hlen;
+> +			+ dst->header_len + t->tun_hlen + encap_hlen;
+>  	ip_tunnel_adj_headroom(dev, max_headroom);
+>  
+> -	err = ip6_tnl_encap(skb, t, &proto, fl6);
+> +	err = ip6_tnl_encap(skb, &ipencap, &proto, fl6);
+>  	if (err)
+>  		return err;
+>  
+> -- 
+> 2.34.1
