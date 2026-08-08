@@ -1,77 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E4D4B04AF;
-	Sat,  8 Aug 2026 19:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4372D7BF
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 20:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786219195; cv=none; b=kVRWpyg6kYEjSJ/sFT0hwtTYsCPJZcOFBf8Ck4euwoi1bnuDrCwYd2eKtfZVkFfWojAzTkoYUbp+jTZYordZ/4yaWuXi80NWWbFXfOYc9Q3ewVMw5QgIPt/TCsP1OQxb0tKPLrhyMadTQpCleLbeQBZc9GfM639uersy4t1VLxA=
+	t=1786219423; cv=none; b=Cu20+rh0tlNc6Te0/+l4X20gKWlV5FXMtPSAvXIccBS5YHREqdA9wg1NukXJTBycAZ5vS+ds3AJTzvePCTXp7WpKr0aI7fKyjY+yb+1DnZ47Eu0jPMIY9rBi14tIQFvV5nsP0OG1z+RVl/2e71fkaAch9Pw9v+yza/yH8FMLxD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786219195; c=relaxed/simple;
-	bh=VN6GR4nt/xmjbSHDBoyOksQGCij76qdvtoMRbYiX6+c=;
+	s=arc-20240116; t=1786219423; c=relaxed/simple;
+	bh=9i8/x2oXoRbWlGcBX11tDG4yVHRHAV+DObuNhU/K3Xs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UXSkM4n7RL5H6z2u/7UA8fMT9CCsIPacu9kNJ6boHFnByoyEGuuCNAunh4nmMq1sq4b4jORPUOhaMzybaKERqaRy64GubNJFcJYF9f2JYD6qZCXdO/CuzM2NBpsY1dPqujCigVpl7ivzvvPFk97l7RUBZHbtZvEHa/0vOYUa2vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNMwnnOV; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Mbwb2aN9gTEOlvC8lDgAIzmjtIijSPK9+jkzYiBQ1wxeqATTC+qIkB1IqxbHYaJuWHyfqwhqu6p1ArhJj7zJfvmiL7ozECvin4iG7xZ5FxNcw2Z3FTweiQ1TF+nCkFJAl3BUGtgKN2eFKytpDCfRzdfKTQKrvqfD1jPnD5+7Ycc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1UHqmch; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNMwnnOV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01EA1F000E9;
-	Sat,  8 Aug 2026 19:59:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1UHqmch"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE811F000E9;
+	Sat,  8 Aug 2026 20:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786219194;
-	bh=XKrWoAPilpib+yPYfjFE3Q+TPQyDryTcB/pFUP55CH0=;
+	s=k20260515; t=1786219422;
+	bh=t3rHSvBgIuLaznGhqwPBKdpJW/Jp66/f+Qh/bDh+sJQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fNMwnnOVntnbcKmmCD86srsQFJ3QdNN4X1E3kLqOVb6jg/k80C6+kFZ4qJTKeqdsZ
-	 tl5Rbfi0+Synrl+WQrfY9uAkA8g7fnKPECSDSCfqRKfp1EtHs3UbWgWCHL2sg/Bbep
-	 IthedKvCDn8q8vkoXKMQKPLn151mqNFNytEhXnxU0wbWiciSZ91C/zS/b/vBXP7F0t
-	 fL3Ok34RHUGZFGges0qGrLJtVV7YjlrADsj5zofadRQ2hHoD1wDMgUQhWY+IrtHA4S
-	 cKhpm4EO6DFXOxGq8XyM6JUl6HWDM32PF8nNnpLI2JxhLy7S3BUXnTgb3qOkdrr0dP
-	 KCTk1q/QfCMYw==
-Date: Sat, 8 Aug 2026 12:59:53 -0700
+	b=o1UHqmchQrIpxVsBcwiyXvGTzQD9xO87wPXPgvwqW+0/3Fvjt5t9DDUuixXVKOwqY
+	 zd6mppuFiNi5bzNWtG2MACjMZzArNq7Y+xqulonOrn8uqNxrfebtbNPHHxjVFMlFkW
+	 zFd8iQsD1/Oj0OkZtnNYBHV+sq5vj162bS3+QQ65Bg4oI8xz5KnjNVKbyYTnpNfR8w
+	 I2mLd1Sm1QSqd0EOUT3/bg025HI9xCyZLDynkxEdF9luU2LBby3ryJqEwlc68rkgcS
+	 2/8w1J1p5o6ok9syS0o+Qr3frsqA5YJUhb5kKyaYYPH+xH12qN3g0WUWK5fisg7O/Q
+	 hZofjeF8doriw==
+Date: Sat, 8 Aug 2026 13:03:41 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Geliang Tang <geliang@kernel.org>
-Cc: Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, Christoph
- Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni
- <kch@nvidia.com>, David Ahern <dsahern@kernel.org>, Ido Schimmel
- <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Hannes Reinecke <hare@suse.de>, Geliang Tang
- <tanggeliang@kylinos.cn>, linux-nvme@lists.infradead.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev
-Subject: Re: [PATCH v2 1/3] ipv6: extract and export ip6_sock_set_tclass
- helpers
-Message-ID: <20260808125953.1e8488e3@kernel.org>
-In-Reply-To: <d06402e4fa9e1c879296dfb8ca5a73e34d4b13d2.1786171863.git.tanggeliang@kylinos.cn>
-References: <cover.1786171863.git.tanggeliang@kylinos.cn>
-	<d06402e4fa9e1c879296dfb8ca5a73e34d4b13d2.1786171863.git.tanggeliang@kylinos.cn>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, Ido Schimmel
+ <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
+ <kuni1840@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 00/13] neighbour: Namespacify arp_tbl and
+ nd_tbl.
+Message-ID: <20260808130341.03d18272@kernel.org>
+In-Reply-To: <20260807232932.3986667-1-kuniyu@google.com>
+References: <20260807232932.3986667-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat,  8 Aug 2026 14:54:59 +0800 Geliang Tang wrote:
-> IPV6_TCLASS handling in do_ipv6_setsockopt() inlines the same ECN mask
-> logic and inet6_sk(sk)->tclass write that callers need when propagating
-> a tclass value onto a newly created socket.
-> 
-> Pull this into small helpers __ip6_sock_set_tclass()/ip6_sock_set_tclass()
-> exported via <net/ipv6.h>, so external modules can apply IPV6_TCLASS
-> without duplicating the ECN handling.
-> 
-> __ip6_sock_set_tclass() will be used by MPTCP's sockopt implementation
-> (similar to __ip_sock_set_tos),
+On Fri,  7 Aug 2026 23:28:38 +0000 Kuniyuki Iwashima wrote:
+> The neighbour subsystem is almost ready to drop RTNL.
 
-not part of this series
-
-> while ip6_sock_set_tclass() will be used
-> by nvme-tcp (similar to ip_sock_set_tos).
-
-setsockopt already supports generic kernel callers, sth like:
-
-   do_sock_setsockopt(sock, false, SOL_IPV6, IPV6_TCLASS,
-  		      KERNEL_SOCKPTR(&val), sizeof(val));
-
-? Please don't export helpers for every single sockopt.
+CI says =F0=9F=AA=B2=EF=B8=8F:
+https://netdev.bots.linux.dev/contest.html?pw-n=3D0&branch=3Dnet-next-2026-=
+08-08--03-00&pw-n=3D0&pass=3D0
