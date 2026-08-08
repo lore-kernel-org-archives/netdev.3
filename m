@@ -1,323 +1,276 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197202737F8
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 14:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9622E37B40A
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 14:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786199032; cv=none; b=RCTvOodYZZ/TJVrWOAsib+ugWSG58SEVSS0ZxjcK73PhCd7qxhHzo+msTLKJA3/ICzeIifhub+xLW5k4lKtXFQ03UtDh1G8Mt/iiQ41rLtG0VwmoY4B8mPmBvE5P8hacs0NfJohKMRhXtANRccsYNPLHusYaBoJ6LNm1jfbrCu8=
+	t=1786199244; cv=none; b=sFh7dZQ2VCpO62qaBXo4ho5K/agKayAYSR1KOghEBOuX4jGIuePjeEbACJeCferOF5ekR/nojm2GRlasD1nXhHcjmAVnXnC/67MoPjTYIeaWJBMLk2IGZgmA1PEzJBpO+GsnTl3eOzxe+mvpYy3+H1tYofxtzFJragF3BQG85kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786199032; c=relaxed/simple;
-	bh=vCUWFKfgmoSEJyYU1Sgce2foXImx7j2Q2oCrHM5nlnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lJvJ2pfp8tVT+aHe/0IliKmIFkqvQvG0SvbvLv1CO2FkqI9NSc8p2t2x+g0Zya7c1E1qocYNbKkq+D7Vr5VP4tNyuW8c6CdePZZCZ8Ejd7s45jZpgdPGOK0uhy8IvrH0T8Eatmvx4hs2OrrT8e+wUwKC1i4Mihim4hZUtyG2yEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gxnHUDwK; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786199244; c=relaxed/simple;
+	bh=HU3CFgOXsAqx/ViDg/f4k9lLDf71ii6Q338ZxMiC3mM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OsqqqHf28g5o84mAarpVeH5JDH4sBeD61fmvv/msw1d0hhVgkFa5s0btjqtoxHe3OKuj+XXNQcpI0uL15YI3dwlfVZX7JpncE9I2kXIPstdCVnY+24GcXR7uAEgnNSIWOcICdHRE5qM5ZWbKmrlZAOovGeE7xhtI0AFBZWzvYY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oZ40umc0; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gxnHUDwK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786199030; x=1817735030;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vCUWFKfgmoSEJyYU1Sgce2foXImx7j2Q2oCrHM5nlnM=;
-  b=gxnHUDwKoFmTVJE4qDmIa7dsWmLZXZ+gNEyHrnfqOl6jzGy7TSztBmsn
-   t1E7a4Ztx0et9JyuPiEo5FKUEHsREUZRS4prh/dIp0jsAA0eKs5k1E31K
-   nrJx9LpAq6WgDZ0cw12M482F1FhVWyk2EP65pSoASX5Mns2rWVQG5Xxdg
-   YBgTGWy5m94cBBeDjibbJUt1S96srLBw1nuKwkDraGTPND2KKX2u5sIfc
-   FvjYzM7CAzTNdrzBqWhFDL8rqi4UmgaR0P9yy3q1ubxeni7tLrHKyIWWo
-   nxXwLAtWXy3z+2UyrnAF+j0wi/JAWB9F7+Fn6R8U65fSDvG1V2htaNTRc
-   Q==;
-X-CSE-ConnectionGUID: 3rjOOK9QQe+yvHAxnhQz0g==
-X-CSE-MsgGUID: iSSjFTZNTVmHXioXIliuIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11869"; a="90663108"
-X-IronPort-AV: E=Sophos;i="6.25,212,1779174000"; 
-   d="scan'208";a="90663108"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2026 07:23:50 -0700
-X-CSE-ConnectionGUID: KhFbMEqIQf+nDbviQasnmw==
-X-CSE-MsgGUID: D2EcDgSqSMCg7uGAHB0rmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,212,1779174000"; 
-   d="scan'208";a="260027143"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 08 Aug 2026 07:23:46 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wshxf-00000000KFR-0fRu;
-	Sat, 08 Aug 2026 14:23:43 +0000
-Date: Sat, 8 Aug 2026 22:23:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zhiling Zou <zhilinz@nebusec.ai>, netdev@vger.kernel.org,
-	dev@openvswitch.org, i.maximets@ovn.org
-Cc: oe-kbuild-all@lists.linux.dev, aconole@redhat.com, echaudro@redhat.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: Re: [PATCH net v4 1/1] net: openvswitch: reallocate update replies
- for mismatched IDs
-Message-ID: <202608082248.euvm5RXc-lkp@intel.com>
-References: <3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oZ40umc0"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-495437bb891so3700335e9.1
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 07:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786199241; x=1786804041; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rVfmWdDuT2KhVf4CTGvop1Fo4MSH/UrlPEoJtglHb4s=;
+        b=oZ40umc04TdEjNLvdIVwqvZv8ojGFQnniSs4AXfBi/ANEGgVXaja6l9MgTH37aBoBa
+         BLkA8A9j9OF2XLOMxge6gJOcCM7QsHdyTS50TmSecXp2zys2NXzYhTc0s48FZWmQb2YD
+         MZDhRxdstZ2kzOPx01PtXiP+dBZXqNqPy4/2EtYzWWyCfmtnPaZorxJdUE2EwzgV4uhM
+         XEVF+dIwcgrTG5uX/7bhcANSsb+BJO67Xis/mVQCtEuCPjkEr3bzmo4JLncCwjvcKtPT
+         wsgam+TP4qMeUa4mcgEnbLUvUdIacVakNihkxkai3ejVfkDnNSHgaowXM2Xb+CY8e+wT
+         LOjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786199241; x=1786804041;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rVfmWdDuT2KhVf4CTGvop1Fo4MSH/UrlPEoJtglHb4s=;
+        b=IGbC1X3fqWJOUnG8/pKsPn34si3KVf8LtAKscrTep/wsV7Q/cc4Zk4UW6HZdMUvvkW
+         FUh0SlbXOIqe9Jm+QX0nQQJt1sk0g65k3Or/FlunEr63L0lpDbhNAN/tUr5S6czUfWnw
+         fwN3H96sOaRkNyiQuGiT+J89fnRMJkB9vOx/JinCwl7kRgImiNfaD+RiCVnFUB6x3vD+
+         nYAOvQFc7efGlE327qU4/FjNGrbHu8ZOrbEpJxaUEvOe21fccvqXI2TZriTTUuF/RYpG
+         0f1vAsa3L5TPiBqYS+eDe8v6ruHjdQESeuMKcS7pLKG8s5lyt5nVR/+MdLehJoxouv4R
+         sohg==
+X-Gm-Message-State: AOJu0YyIBS9caCw/6E/sN+I5+2qCw0mYUPfNVT5gp4d9i/ZIn+3oS2a0
+	bGGFvW+b+CuAQrD2fH7RoJ10nYsN05xgkqlnh+MAM1nCpTyjChDO0K51ZpKYxKDV
+X-Gm-Gg: AR+sD137TGf13hQJDDPBzjpG4Dn7QLaSk0EVu6O6r47etBMOsMdToL5YJBvwR37WbNT
+	xan51rldu/Dg34BnQx0SA3/yrYbKXPbK0zAei/4NBBJvAz8pZ+p+SF/40L276H7Vy0KGEpCTCEU
+	4lpXxMzaGHyDmAHokz/l+cqGyJbB3PwhLLCkKI44alME4eKl6ydQjJ/Vr33V4a9TqPJ+Y2Rzem3
+	L07aBt0xhAtZhshACKU+0Nr0OTE+7RbHnomm2BlTFWhNEq/IoqVYvBVyj7Q7F8T+zJgsZbaPCok
+	9oLKWuEan0ihcC9YGX4SxjYbZdnWdTmodF06j3WkWugIwEMUAz36OdwS5LR3l3WJgCCVcxpbJSL
+	RSi8iDnCUaX1wQaowIwV9cCXasOoLLnb8H8hI979Fv2PKZOiGaWPyISTsHH91Qq8uNpfsrVM24p
+	iPVO5bBqlpRxNghKfXS5tGOyKDBSEe3FPHowROjMpbSAHKksY2S/HEDXbiSWbRqYvl
+X-Received: by 2002:a05:600c:4714:b0:499:5f80:83ac with SMTP id 5b1f17b1804b1-49962473fd0mr61427325e9.7.1786199240544;
+        Sat, 08 Aug 2026 07:27:20 -0700 (PDT)
+Received: from fedora ([46.205.218.69])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995ea2dc4esm140041065e9.13.2026.08.08.07.27.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 07:27:19 -0700 (PDT)
+From: Daniel Pawlik <pawlik.dan@gmail.com>
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org,
+	win847@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Daniel Pawlik <pawlik.dan@gmail.com>
+Subject: [PATCH v5] net: airoha: npu: use coherent DMA for mailbox messages
+Date: Sat,  8 Aug 2026 16:27:04 +0200
+Message-ID: <20260808142704.1873849-1-pawlik.dan@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz@nebusec.ai>
+Content-Transfer-Encoding: 8bit
 
-Hi Zhiling,
+Commit 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox
+buffer") switched airoha_npu_send_msg() to DMA_BIDIRECTIONAL so
+non-coherent CPUs invalidate caches before reading NPU GET responses.
 
-kernel test robot noticed the following build errors:
+On EN7581 + MT7996 that change regresses probe: the mailbox completes
+successfully, but WLAN_FUNC_GET_WAIT_NPU_VERSION still reads as 0.0 and
+mt76 never binds NPU offload. Healthy boards report 0.1111.
 
-[auto build test ERROR on horms-ipvs/master]
-[also build test ERROR on v7.2-rc6]
-[cannot apply to net/main net-next/main linus/master next-20260807]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+airoha_npu_send_msg() is also used from PPE foe_commit under
+spin_lock_bh(), so per-message dma_alloc_coherent(GFP_ATOMIC) is a poor
+fit. Allocate one device-managed coherent bounce buffer per NPU core at
+probe and reuse it under the existing per-core mailbox lock. That also
+keeps the buffer valid if the NPU completes a write after a mailbox
+timeout.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zhiling-Zou/net-openvswitch-reallocate-update-replies-for-mismatched-IDs/20260808-205431
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/horms/ipvs.git master
-patch link:    https://lore.kernel.org/r/3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz%40nebusec.ai
-patch subject: [PATCH net v4 1/1] net: openvswitch: reallocate update replies for mismatched IDs
-config: alpha-allmodconfig (https://download.01.org/0day-ci/archive/20260808/202608082248.euvm5RXc-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260808/202608082248.euvm5RXc-lkp@intel.com/reproduce)
+Introduce __airoha_npu_send_msg() with an optional reply pointer so GET
+callers can copy the trailing response payload once. Keep
+airoha_npu_send_msg() as a thin wrapper for SET paths that do not need
+a response buffer.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608082248.euvm5RXc-lkp@intel.com/
+Verified on Quantum Fiber / Gemtek W1700K (EN7581 + MT7996).
 
-All errors (new ones prefixed by >>):
+Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buffer")
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260805070851.2885888-1-pawlik.dan@gmail.com/
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260806072601.1815487-1-pawlik.dan@gmail.com/
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260807064058.1117747-1-pawlik.dan@gmail.com/
+Assisted-by: Cursor:composer-2
+Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
+---
+v5:
+- use u16 for reply_len and split the reply length check
+- drop inline from airoha_npu_send_msg() in the .c file
 
-   In file included from ./arch/alpha/include/generated/asm/current.h:1,
-                    from arch/alpha/include/asm/spinlock.h:6,
-                    from include/linux/spinlock.h:94,
-                    from include/linux/kref.h:16,
-                    from include/linux/mm_types.h:8,
-                    from include/linux/buildid.h:5,
-                    from include/linux/module.h:14,
-                    from net/openvswitch/datapath.c:9:
-   net/openvswitch/datapath.c: In function 'ovs_flow_cmd_new':
->> include/asm-generic/current.h:7:45: error: expected ')' before '->' token
-       7 | #define get_current() (current_thread_info()->task)
-         |                                             ^~
-   include/asm-generic/current.h:8:17: note: in expansion of macro 'get_current'
-       8 | #define current get_current()
-         |                 ^~~~~~~~~~~
-   net/openvswitch/datapath.c:1100:32: note: in expansion of macro 'current'
-    1100 |                         size_t current, desired;
-         |                                ^~~~~~~
->> net/openvswitch/datapath.c:1102:33: error: assignment to 'struct task_struct *' from 'size_t' {aka 'long unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-    1102 |                         current = ovs_flow_cmd_msg_size(acts, &new_flow->id,
-         |                                 ^
->> net/openvswitch/datapath.c:1104:25: error: 'desired' undeclared (first use in this function)
-    1104 |                         desired = ovs_flow_cmd_msg_size(acts, &flow->id,
-         |                         ^~~~~~~
-   net/openvswitch/datapath.c:1104:25: note: each undeclared identifier is reported only once for each function it appears in
+v4:
+- drop rsp_off; copy trailing reply_len bytes into reply pointer
+- split __airoha_npu_send_msg() + thin airoha_npu_send_msg() wrapper
+  so SET callers stay unchanged
+- fix reverse-christmas-tree local variable ordering
+- constify data argument; clarify reply copy comment
 
+v3:
+- move coherent mailbox buffer into struct airoha_npu_core (buf/addr)
+- allocate one buffer per core at probe
+- add optional reply buffer to avoid the extra copy in
+  airoha_npu_wlan_msg_get()
+- document AIROHA_NPU_MBOX_SIZE vs ppe_mbox_data / WLAN payloads
 
-vim +1102 net/openvswitch/datapath.c
+v2:
+- allocate one coherent mailbox buffer at probe and reuse it under the
+  per-core lock instead of per-message dma_alloc_coherent(GFP_ATOMIC)
 
-   966	
-   967	static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
-   968	{
-   969		struct net *net = sock_net(skb->sk);
-   970		struct nlattr **a = info->attrs;
-   971		struct ovs_header *ovs_header = info->userhdr;
-   972		struct sw_flow *flow = NULL, *new_flow;
-   973		struct sw_flow_mask mask;
-   974		struct sk_buff *reply;
-   975		struct datapath *dp;
-   976		struct sw_flow_key *key;
-   977		struct sw_flow_actions *acts;
-   978		struct sw_flow_match match;
-   979		u32 ufid_flags = ovs_nla_get_ufid_flags(a[OVS_FLOW_ATTR_UFID_FLAGS]);
-   980		int error;
-   981		bool log = !a[OVS_FLOW_ATTR_PROBE];
-   982	
-   983		/* Must have key and actions. */
-   984		error = -EINVAL;
-   985		if (!a[OVS_FLOW_ATTR_KEY]) {
-   986			OVS_NLERR(log, "Flow key attr not present in new flow.");
-   987			goto error;
-   988		}
-   989		if (!a[OVS_FLOW_ATTR_ACTIONS]) {
-   990			OVS_NLERR(log, "Flow actions attr not present in new flow.");
-   991			goto error;
-   992		}
-   993	
-   994		/* Most of the time we need to allocate a new flow, do it before
-   995		 * locking.
-   996		 */
-   997		new_flow = ovs_flow_alloc();
-   998		if (IS_ERR(new_flow)) {
-   999			error = PTR_ERR(new_flow);
-  1000			goto error;
-  1001		}
-  1002	
-  1003		/* Extract key. */
-  1004		key = kzalloc(sizeof(*key), GFP_KERNEL);
-  1005		if (!key) {
-  1006			error = -ENOMEM;
-  1007			goto err_kfree_flow;
-  1008		}
-  1009	
-  1010		ovs_match_init(&match, key, false, &mask);
-  1011		error = ovs_nla_get_match(net, &match, a[OVS_FLOW_ATTR_KEY],
-  1012					  a[OVS_FLOW_ATTR_MASK], log);
-  1013		if (error)
-  1014			goto err_kfree_key;
-  1015	
-  1016		ovs_flow_mask_key(&new_flow->key, key, true, &mask);
-  1017	
-  1018		/* Extract flow identifier. */
-  1019		error = ovs_nla_get_identifier(&new_flow->id, a[OVS_FLOW_ATTR_UFID],
-  1020					       key, log);
-  1021		if (error)
-  1022			goto err_kfree_key;
-  1023	
-  1024		/* Validate actions. */
-  1025		error = ovs_nla_copy_actions(net, a[OVS_FLOW_ATTR_ACTIONS],
-  1026					     &new_flow->key, &acts, log);
-  1027		if (error) {
-  1028			OVS_NLERR(log, "Flow actions may not be safe on all matching packets.");
-  1029			goto err_kfree_key;
-  1030		}
-  1031	
-  1032		reply = ovs_flow_cmd_alloc_info(acts, &new_flow->id, info, false,
-  1033						ufid_flags);
-  1034		if (IS_ERR(reply)) {
-  1035			error = PTR_ERR(reply);
-  1036			goto err_kfree_acts;
-  1037		}
-  1038	
-  1039		ovs_lock();
-  1040		dp = get_dp(net, ovs_header->dp_ifindex);
-  1041		if (unlikely(!dp)) {
-  1042			error = -ENODEV;
-  1043			goto err_unlock_ovs;
-  1044		}
-  1045	
-  1046		/* Check if this is a duplicate flow */
-  1047		if (ovs_identifier_is_ufid(&new_flow->id))
-  1048			flow = ovs_flow_tbl_lookup_ufid(&dp->table, &new_flow->id);
-  1049		if (!flow)
-  1050			flow = ovs_flow_tbl_lookup(&dp->table, key);
-  1051		if (likely(!flow)) {
-  1052			rcu_assign_pointer(new_flow->sf_acts, acts);
-  1053	
-  1054			/* Put flow in bucket. */
-  1055			error = ovs_flow_tbl_insert(&dp->table, new_flow, &mask);
-  1056			if (unlikely(error)) {
-  1057				acts = NULL;
-  1058				goto err_unlock_ovs;
-  1059			}
-  1060	
-  1061			if (unlikely(reply)) {
-  1062				error = ovs_flow_cmd_fill_info(new_flow,
-  1063							       ovs_header->dp_ifindex,
-  1064							       reply, info->snd_portid,
-  1065							       info->snd_seq, 0,
-  1066							       OVS_FLOW_CMD_NEW,
-  1067							       ufid_flags);
-  1068				BUG_ON(error < 0);
-  1069			}
-  1070			ovs_unlock();
-  1071		} else {
-  1072			struct sw_flow_actions *old_acts;
-  1073	
-  1074			/* Bail out if we're not allowed to modify an existing flow.
-  1075			 * We accept NLM_F_CREATE in place of the intended NLM_F_EXCL
-  1076			 * because Generic Netlink treats the latter as a dump
-  1077			 * request.  We also accept NLM_F_EXCL in case that bug ever
-  1078			 * gets fixed.
-  1079			 */
-  1080			if (unlikely(info->nlhdr->nlmsg_flags & (NLM_F_CREATE
-  1081								 | NLM_F_EXCL))) {
-  1082				error = -EEXIST;
-  1083				goto err_unlock_ovs;
-  1084			}
-  1085	
-  1086			/* Look for any overlapping flow. */
-  1087			if (unlikely(!ovs_flow_cmp(flow, &match))) {
-  1088				if (ovs_identifier_is_key(&flow->id))
-  1089					flow = ovs_flow_tbl_lookup_exact(&dp->table,
-  1090									 &match);
-  1091				else /* UFID matches but key is different */
-  1092					flow = NULL;
-  1093				if (!flow) {
-  1094					error = -ENOENT;
-  1095					goto err_unlock_ovs;
-  1096				}
-  1097			}
-  1098	
-  1099			if (unlikely(reply)) {
-> 1100				size_t current, desired;
-  1101	
-> 1102				current = ovs_flow_cmd_msg_size(acts, &new_flow->id,
-  1103								ufid_flags);
-> 1104				desired = ovs_flow_cmd_msg_size(acts, &flow->id,
-  1105								ufid_flags);
-  1106				if (current < desired) {
-  1107					struct sk_buff *resized;
-  1108	
-  1109					resized = ovs_flow_cmd_alloc_info(acts, &flow->id,
-  1110									  info, false,
-  1111									  ufid_flags);
-  1112					if (IS_ERR(resized)) {
-  1113						error = PTR_ERR(resized);
-  1114						goto err_unlock_ovs;
-  1115					}
-  1116					kfree_skb(reply);
-  1117					reply = resized;
-  1118				}
-  1119			}
-  1120	
-  1121			/* Update actions. */
-  1122			old_acts = ovsl_dereference(flow->sf_acts);
-  1123			rcu_assign_pointer(flow->sf_acts, acts);
-  1124	
-  1125			if (unlikely(reply)) {
-  1126				error = ovs_flow_cmd_fill_info(flow,
-  1127							       ovs_header->dp_ifindex,
-  1128							       reply, info->snd_portid,
-  1129							       info->snd_seq, 0,
-  1130							       OVS_FLOW_CMD_NEW,
-  1131							       ufid_flags);
-  1132				BUG_ON(error < 0);
-  1133			}
-  1134			ovs_unlock();
-  1135	
-  1136			ovs_nla_free_flow_actions_rcu(old_acts);
-  1137			ovs_flow_free(new_flow, false);
-  1138		}
-  1139	
-  1140		if (reply)
-  1141			ovs_notify(&dp_flow_genl_family, reply, info);
-  1142	
-  1143		kfree(key);
-  1144		return 0;
-  1145	
-  1146	err_unlock_ovs:
-  1147		ovs_unlock();
-  1148		kfree_skb(reply);
-  1149	err_kfree_acts:
-  1150		ovs_nla_free_flow_actions(acts);
-  1151	err_kfree_key:
-  1152		kfree(key);
-  1153	err_kfree_flow:
-  1154		ovs_flow_free(new_flow, false);
-  1155	error:
-  1156		return error;
-  1157	}
-  1158	
+ drivers/net/ethernet/airoha/airoha_npu.c  | 72 +++++++++++++++++------
+ include/linux/soc/airoha/airoha_offload.h |  3 +
+ 2 files changed, 56 insertions(+), 19 deletions(-)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+index b679bed952de..907e7ef6cf75 100644
+--- a/drivers/net/ethernet/airoha/airoha_npu.c
++++ b/drivers/net/ethernet/airoha/airoha_npu.c
+@@ -23,6 +23,12 @@
+ #define NPU_EN7581_FIRMWARE_RV32_MAX_SIZE	0x200000
+ #define NPU_EN7581_FIRMWARE_DATA_MAX_SIZE	0x10000
+ #define NPU_DUMP_SIZE				512
++/*
++ * Mailbox DMA payload size. Covers sizeof(struct ppe_mbox_data) (28) and
++ * WLAN TLV messages (header + payload); largest in-tree WLAN payload today
++ * is 16 bytes (INODE_TXRX_REG_ADDR). Keep headroom for future commands.
++ */
++#define AIROHA_NPU_MBOX_SIZE			256
+ 
+ #define REG_NPU_LOCAL_SRAM		0x0
+ 
+@@ -160,23 +166,34 @@ struct wlan_mbox_data {
+ 	DECLARE_FLEX_ARRAY(u8, d);
+ };
+ 
+-static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+-			       void *p, int size)
++static int __airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
++				 const void *data, int len, void *reply,
++				 u16 reply_len)
+ {
+-	u16 core = 0; /* FIXME */
+-	u32 val, offset = core << 4;
+-	dma_addr_t dma_addr;
++	struct airoha_npu_core *c = &npu->cores[0]; /* FIXME: core */
++	u32 val, offset = 0;
+ 	int ret;
+ 
+-	dma_addr = dma_map_single(npu->dev, p, size, DMA_BIDIRECTIONAL);
+-	ret = dma_mapping_error(npu->dev, dma_addr);
+-	if (ret)
+-		return ret;
++	if (len > AIROHA_NPU_MBOX_SIZE)
++		return -EINVAL;
+ 
+-	spin_lock_bh(&npu->cores[core].lock);
++	if (reply && reply_len > len)
++		return -EINVAL;
++
++	/*
++	 * Mailbox payloads are bidirectional (CPU request, NPU response).
++	 * On EN7581+MT7996, streaming DMA_BIDIRECTIONAL against the
++	 * caller kzalloc() buffer can leave WLAN_FUNC_GET_WAIT_NPU_VERSION
++	 * reading as 0.0 despite MBOX success. Reuse a probe-time coherent
++	 * bounce buffer under the per-core lock (also used from PPE
++	 * foe_commit under atomic context).
++	 */
++	spin_lock_bh(&c->lock);
+ 
+-	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, dma_addr);
+-	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(1) + offset, size);
++	memcpy(c->buf, data, len);
++
++	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, c->addr);
++	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(1) + offset, len);
+ 	regmap_read(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, &val);
+ 	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, val + 1);
+ 	val = FIELD_PREP(MBOX_MSG_FUNC_ID, func_id) | MBOX_MSG_WAIT_RSP;
+@@ -189,13 +206,21 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+ 	if (!ret && FIELD_GET(MBOX_MSG_STATUS, val) != NPU_MBOX_SUCCESS)
+ 		ret = -EINVAL;
+ 
+-	spin_unlock_bh(&npu->cores[core].lock);
++	/* Copy the trailing reply_len bytes of the response. */
++	if (!ret && reply)
++		memcpy(reply, c->buf + len - reply_len, reply_len);
+ 
+-	dma_unmap_single(npu->dev, dma_addr, size, DMA_BIDIRECTIONAL);
++	spin_unlock_bh(&c->lock);
+ 
+ 	return ret;
+ }
+ 
++static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
++			       const void *data, int len)
++{
++	return __airoha_npu_send_msg(npu, func_id, data, len, NULL, 0);
++}
++
+ static int airoha_npu_load_firmware(struct device *dev, void __iomem *addr,
+ 				    const char *fw_name, int fw_max_size)
+ {
+@@ -442,8 +467,9 @@ static int airoha_npu_ppe_stats_setup(struct airoha_npu *npu,
+ 	ppe_data->func_id = PPE_FUNC_SET_WAIT_FLOW_STATS_SETUP;
+ 	ppe_data->stats_info.foe_stats_addr = foe_stats_addr;
+ 
+-	err = airoha_npu_send_msg(npu, NPU_FUNC_PPE, ppe_data,
+-				  sizeof(*ppe_data));
++	err = __airoha_npu_send_msg(npu, NPU_FUNC_PPE, ppe_data,
++				    sizeof(*ppe_data), ppe_data,
++				    sizeof(*ppe_data));
+ 	if (err)
+ 		goto out;
+ 
+@@ -497,9 +523,8 @@ static int airoha_npu_wlan_msg_get(struct airoha_npu *npu, int ifindex,
+ 	wlan_data->func_type = NPU_OP_GET;
+ 	wlan_data->func_id = func_id;
+ 
+-	err = airoha_npu_send_msg(npu, NPU_FUNC_WIFI, wlan_data, len);
+-	if (!err)
+-		memcpy(data, wlan_data->d, data_len);
++	err = __airoha_npu_send_msg(npu, NPU_FUNC_WIFI, wlan_data, len,
++				    data, data_len);
+ 	kfree(wlan_data);
+ 
+ 	return err;
+@@ -770,6 +795,15 @@ static int airoha_npu_probe(struct platform_device *pdev)
+ 	if (err)
+ 		return err;
+ 
++	for (i = 0; i < ARRAY_SIZE(npu->cores); i++) {
++		struct airoha_npu_core *core = &npu->cores[i];
++
++		core->buf = dmam_alloc_coherent(dev, AIROHA_NPU_MBOX_SIZE,
++						&core->addr, GFP_KERNEL);
++		if (!core->buf)
++			return -ENOMEM;
++	}
++
+ 	err = airoha_npu_run_firmware(dev, base, &res);
+ 	if (err)
+ 		return dev_err_probe(dev, err, "failed to run npu firmware\n");
+diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
+index 7589fccfeef6..16a988ad7467 100644
+--- a/include/linux/soc/airoha/airoha_offload.h
++++ b/include/linux/soc/airoha/airoha_offload.h
+@@ -173,6 +173,9 @@ struct airoha_npu {
+ 		/* protect concurrent npu memory accesses */
+ 		spinlock_t lock;
+ 		struct work_struct wdt_work;
++		/* Coherent bounce buffer for mailbox cmd/rsp */
++		void *buf;
++		dma_addr_t addr;
+ 	} cores[NPU_NUM_CORES];
+ 
+ 	int irqs[NPU_NUM_IRQ];
+-- 
+2.55.0
+
