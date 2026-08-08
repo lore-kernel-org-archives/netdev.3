@@ -1,65 +1,65 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E113931E84B
-	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 00:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B510D30C143
+	for <netdev@vger.kernel.org>; Sat,  8 Aug 2026 00:57:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786150634; cv=none; b=LwpIjW7DeUNvFwAZkCQvX0/1W9Q4PwlJ8U6f4z2tcvsIAdkX9xOVSoNI+EI6c9SYRNFHiAOyJvyck9cHwnpgoSn5E4Sn6Mdyock7xJO5LxZNLP5Byofx/6GqACJu7cMYhwmIvbbidu4kheVoGriOE8BnxH9xX+BwQdpW94IMJqI=
+	t=1786150639; cv=none; b=ZLUnefSZiHRKjGwU2g2OJ+uGaQSYEgQz1nE4m/HsTWiv8ji6HzX2+BGgmaq/1gGq5Zk1gBHeEN3Xivde1+2PGGSUvsmogY4LzPgHcx9nW0Xs68yPNsnLS0Da0I8c7tKz0nBefXZFLFsSoEFPa5qj9ImqNazCo97DW+sonEYS868=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786150634; c=relaxed/simple;
-	bh=LptUurOI+OXACGzviKpmnx9OsYV5snEdOTU9fBVihMQ=;
+	s=arc-20240116; t=1786150639; c=relaxed/simple;
+	bh=soWQVDbmNe3rLyARwyMn+CIEuPoaMlH8d+636m3QLlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOj8LxRg+w9TxqQDT4kVslWhwJPk0Cppf2sc0qfAjc2dalq4Vs5+DjsjGx/mqLMYOe3z3Gd9CwV+UytV7c8TW1YOSjfHzwKsWZV2Qu+p0Ybp97eCK4UcCq+pfUwhrkQoaexA28uMLJeHd62jnGkgjQ7LoXFbv0HG4Ih+TUscqhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eyb/d6aS; arc=none smtp.client-ip=209.85.216.52
+	 MIME-Version; b=h0N44OdPF9Ie7OzPfZiT2p53mYDFOLN+hWxXl9VoOM+KKRf3YiYI6eCsGyvhhraHZpQHOwv22iXOfCFmHMmi+mSIUPrRfPZFh+ozsPkKlAjQNivYckUAgCJQrrIFSdDbvIwAXfczOG/BZwFQF26nywECTl6VmGt0HQqrtla0s/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gtC9kngM; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eyb/d6aS"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38dc69c74b8so120943a91.0
-        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 17:57:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gtC9kngM"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38deea72eebso89847a91.1
+        for <netdev@vger.kernel.org>; Fri, 07 Aug 2026 17:57:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786150632; x=1786755432; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786150637; x=1786755437; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1EE695Rdk07hMzYmc0ZAJFaWL6Cw+K0q24XElbn1AAE=;
-        b=Eyb/d6aSA3WBRlA9fYoSr5aWS9jh2mDRwK7fIH913cZRfNbX3+g3fOFuGZ5ik/gXc4
-         HAnYUgARUufGej8vCWcV086d1Dsiyr5I2nO9qJKIOImy9Rp7/MvszERPdgHDuSVt6CKU
-         1EU58W7LNf04LXef/dVkex2NxxZRxXujsLZaVhdnxI2NSDJUq+7xfnMHLKS417ikFcFL
-         DNpGe6lL6iisyWtVsSCxQeUDqvSP7yJvw4LRNv+9WXuRKIi5s3sStniItcgbgKQeTWrs
-         ikpmEy0UjnCuKpS1szNxUhh06OqUajqk+z5UbnXPVdlmj9Lg/JA5e5pseX7eyK4atvQe
-         mHdw==
+        bh=yPn1wpDRn2+ycNh5bc3DMlHMWn7d+nIkppWcoRCSD9Y=;
+        b=gtC9kngMYcdl46SW232zBxEqLIEWoKEY7A5aZmKpABnF35g4jqXZYRpacCrFRFRIoz
+         fcfo3v3HrWnt2bUymYp8lMu20slR1Z2F2Lm5xLBcD3YWK1lBRV8db3dO0TetrJL/2u+0
+         RI7cPzzw1LHNq9o2WZw6z9qkGHGTVitWqGGFFTC4lZfy2RAlvlNPghKjJ9GvZ5Hz6OpR
+         RIN+lerg4cmEfo3dkjK/hNdfCcuYvZXAHh2CN1enbBXbTpI6lg7BJnkpNIt+Y31yAcvM
+         LwWFlq+OsdOx2l/LyupbNn2y1iBu4IXftd3a1+8ZxXkuTV/JPRJ62eVxDG5dB4QwlzpE
+         gjhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786150632; x=1786755432;
+        d=1e100.net; s=20251104; t=1786150637; x=1786755437;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1EE695Rdk07hMzYmc0ZAJFaWL6Cw+K0q24XElbn1AAE=;
-        b=FyfD2Rj7J86U2AhO4Hfcl+L7I01iCDe4DIqFtjA4ELtB3Tovz5gDvAuxcUWr0NWdxs
-         vw+PzdcFdz0HyQdGl70XLxt4jzx5wDM5sw56pkBGvI0SJcT4P8hgbiyRoOaracpAwFJL
-         /SkkFFzgy6Q0J9j6QP2TyFKecZUVyDxIWdSTge0cZW7z9dUr8rEVLgWlgAljLcbS09VQ
-         MUxFNf80skPIkIbVvjTr/XzhE18qEK5V1GaJgicQ1vfgw2zAC3+NPvwMGmgBLu07/C70
-         wGfV1eSu5+sGWeeyJvQtF7Jh8XOAjj4SkM0FZTfWVyOGtY/riPKr8B1XBvwMXCWZG9ru
-         ClFQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqUns/wfGEeFeyPmW6zaHYPUkdMV7WtlpOoX3hGdL9F6LzYPuj/SSKskecAfZnqrkSn1OSPIGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCbr6kTjMcSr6d4fHfeKsqmpOEwgAkxCs3kuEf7nnYgp339Ncm
-	411B0Cj4LxHojH8aRahuUyKYtkp5BKr907WkIuh6V+3nl5y+RKuA5b0Z
-X-Gm-Gg: AR+sD13eMrgGU1w+ZhqNQOznXCgQgo2xeIDIJA2OjOCJkBMopM7OB++wa63+8mJEBq3
-	meFT3zlb6yLYf3d6/84bBVvdFHy8ER9Own104yIKSjkN2xV0mok1lQP5UR5mTYs2sVJpE54yzZs
-	H5J1LMVx8BtDUsUglswiMMlwLmNEk17D0t8M8lyQPTLSOHWYOMu0PF7KwTJVgX5qUnASjh7ZR1k
-	ERFslfbhltUpOPwKOtyEvLwxvZTFu5a4RFGMfkLK20PpuzzvmN5mHcQ6/h3VUggjZ6iPiFAmZ0K
-	ffTCXAewcEvJNDPlkWiw9gUPbO78ZKlr4UQje+iYF6kB4r+jiyScuZfMoWmyXXrm9a3wVAxLpUA
-	TWDyY6zazAo9XcGny2FYSrKQBhh8ERqssLS+CUgwbpDRvywJ+6GTyjYggxstHzf0aX9peUPCBGP
-	67ONYcdt9SQYD9w4ne8TfQZlPGW61fbZIMm6epC/i2ImDzgc0ZJeMH4frqcTpH2/MxO7Rzmwr9/
-	naAQlUJUPOXsvu6bk8RFCN3jeyVUqFXreimgikwUG+rMS7s8mMOz6x+oiX1Bw==
-X-Received: by 2002:a17:90b:2590:b0:37d:f983:7b5 with SMTP id 98e67ed59e1d1-3903c56fff5mr27286985a91.9.1786150632199;
-        Fri, 07 Aug 2026 17:57:12 -0700 (PDT)
+        bh=yPn1wpDRn2+ycNh5bc3DMlHMWn7d+nIkppWcoRCSD9Y=;
+        b=J4DheFyKMzofy2BQ3tfg0SZWsIZ19S5cTGpepYRjHfro2FfTIj/FnjmhWZzfEdRamz
+         +1AhMHy+iT6s36K4WteTGeRifsIBPVb/wbbE2oUZnB8Lvs1YFgjuame1I56aTRlTOk0x
+         HVBxE3y8pbqcyqYbxeCr1vIZPCzDAwxxFNpXDA6aMYbmEEbro184/yO2sSZtE4ADQsOq
+         lXi6Qn5nWA7fkUk+ozH1vD4oIToCwbo6JXoWz371d/pbqHOFQBCO4xpAOPJincKFWHZ0
+         YSEn++on6ntybNLBlzCX6LvrO75up4CqH4MMfLfFEsSw1MgxIYjt6IGphK8zeYVGwGci
+         Up1w==
+X-Forwarded-Encrypted: i=1; AHgh+RqzBpHdfWwvZ2ucZbsvPUz+Xvb4BTSOn+UTTigxEL+ra6g9r/8Dqc83asIrdwrz2E/K7UEpu/A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywn0x1QDw3q5Hs2A0ku5PFDEwEKbQejHb2J42BXdWJ7j9rSSgsE
+	ek5z44KC+VrOkF2qzc4GZqbCEr7VJ7nRxWwO5Suju8Vy3JMD+BnJfcL4
+X-Gm-Gg: AR+sD13RrHoyKEOkUfj22SVlKkFSNGOOcu6V7ZtoH0NMyL6LyI3CCaWcVGvyipvUKN+
+	UXtN477tXfqudPtpXiumJIVeltnZDeRJQpqHuPh6YsNoshry97KhXvsgGI91y6yayHXsVbMjp2l
+	JdUEiqpu+IhfM0b8i9KPruaMramsQYa1nvMcDL+u3Qj46r+Wmcy+1PuKA/Gum0IBWtM5s1hYbNB
+	eMSjRbihQBOg7hm8JdUmHx6niOiDxJNM9K0r9oTEGzsK/VR7dnbsVJREZmaGQ/1i/BnpHT2aQ+b
+	YwkN/VGOmL31Z2AMBwYU6v3L6ukX/neW4n3xxoqXub+3aih+GEUbzdsGLhVmulj4ylGQuWj+XmJ
+	spwu4lUesgkbB56zQcoBR3DwhnXTttMNOnNISK9eM+30Rt4tGXSYkBKMbKkvDqUwXnM+B6G3ATw
+	LqIV3RTjAyEKaBOHDu5JQDE5pmIiEeaEvHmAU6lPy0v+rlJ9CFjgkIJnxrFY1C1Kde7RzgWTzwX
+	mLSYuiUaeYMWr8cu5ODlwPb2sD7sXWZJ5gZ6sVjj4x6zpZapjI=
+X-Received: by 2002:a17:90a:e706:b0:38e:b400:a860 with SMTP id 98e67ed59e1d1-392824a96eamr3586255a91.13.1786150637002;
+        Fri, 07 Aug 2026 17:57:17 -0700 (PDT)
 Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:d7e9:6449:7464:1dfa])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925fc6c13asm4205182a91.2.2026.08.07.17.57.08
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925fc6c13asm4205182a91.2.2026.08.07.17.57.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 17:57:11 -0700 (PDT)
+        Fri, 07 Aug 2026 17:57:16 -0700 (PDT)
 Sender: Yuyang Huang <uyoko90@gmail.com>
 From: Yuyang Huang <sigefriedhyy@gmail.com>
 To: Yuyang Huang <sigefriedhyy@gmail.com>
@@ -81,9 +81,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v6 05/10] ipv6: expose the route deletion reason in RTM_DELROUTE
-Date: Sat,  8 Aug 2026 09:56:37 +0900
-Message-ID: <20260808005642.26901-6-sigefriedhyy@gmail.com>
+Subject: [PATCH net-next v6 06/10] ipv6: add inet6_rt_del_notify()
+Date: Sat,  8 Aug 2026 09:56:38 +0900
+Message-ID: <20260808005642.26901-7-sigefriedhyy@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260808005642.26901-1-sigefriedhyy@gmail.com>
 References: <20260808005642.26901-1-sigefriedhyy@gmail.com>
@@ -95,41 +95,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Emit RTA_DEL_REASON from rt6_fill_node() when the deletion reason is
-not RT_DEL_REASON_UNSPEC, and reserve room for it in
-rt6_nlmsg_size().
+Move the body of inet6_rt_notify() to __inet6_rt_notify() and give it
+the deletion reason. inet6_rt_notify() keeps its prototype, so the
+route addition path does not change.
 
-Every caller still passes RT_DEL_REASON_UNSPEC.
+Add inet6_rt_del_notify() and call it from fib6_del_route().
+RTA_DEL_REASON now reaches user space on RTM_DELROUTE for routes the
+kernel deleted on its own.
 
 Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
 Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 ---
- net/ipv6/route.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/net/ip6_fib.h |  2 ++
+ net/ipv6/ip6_fib.c    |  2 +-
+ net/ipv6/route.c      | 20 ++++++++++++++++----
+ 3 files changed, 19 insertions(+), 5 deletions(-)
 
+diff --git a/include/net/ip6_fib.h b/include/net/ip6_fib.h
+index 0ba5d3c56543..232289b439c3 100644
+--- a/include/net/ip6_fib.h
++++ b/include/net/ip6_fib.h
+@@ -533,6 +533,8 @@ static inline void fib6_rt_update(struct net *net, struct fib6_info *rt,
+ #endif
+ void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
+ 		     unsigned int flags);
++void inet6_rt_del_notify(struct fib6_info *rt, struct nl_info *info,
++			 enum rt_del_reason del_reason);
+ 
+ void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_args,
+ 			 unsigned long now);
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index f8a9ec7fa616..3e382ba1573e 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -2057,7 +2057,7 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
+ 			call_fib6_entry_notifiers_replace(net, replace_rt);
+ 	}
+ 	if (!info->skip_notify)
+-		inet6_rt_notify(RTM_DELROUTE, rt, info, 0);
++		inet6_rt_del_notify(rt, info, del_reason);
+ 
+ 	fib6_info_release(rt);
+ }
 diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 6732e95bf7b3..d3bf2dd209bd 100644
+index d3bf2dd209bd..1704359d3960 100644
 --- a/net/ipv6/route.c
 +++ b/net/ipv6/route.c
-@@ -5751,6 +5751,7 @@ static size_t rt6_nlmsg_size(struct fib6_info *f6i)
- 	       + nla_total_size(sizeof(struct rta_cacheinfo))
- 	       + nla_total_size(TCP_CA_NAME_MAX) /* RTAX_CC_ALGO */
- 	       + nla_total_size(1) /* RTA_PREF */
-+	       + nla_total_size(4) /* RTA_DEL_REASON */
- 	       + nexthop_len;
+@@ -6378,8 +6378,9 @@ static int inet6_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	return err;
  }
  
-@@ -5966,6 +5967,10 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
- 	if (rtnl_put_cacheinfo(skb, dst, 0, expires, dst ? dst->error : 0) < 0)
- 		goto nla_put_failure;
+-void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
+-		     unsigned int nlm_flags)
++static void __inet6_rt_notify(int event, struct fib6_info *rt,
++			      struct nl_info *info, unsigned int nlm_flags,
++			      enum rt_del_reason del_reason)
+ {
+ 	struct net *net = info->nl_net;
+ 	struct sk_buff *skb;
+@@ -6398,8 +6399,7 @@ void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
+ 		goto errout;
  
-+	if (del_reason != RT_DEL_REASON_UNSPEC &&
-+	    nla_put_u32(skb, RTA_DEL_REASON, del_reason))
-+		goto nla_put_failure;
+ 	err = rt6_fill_node(net, skb, rt, NULL, NULL, NULL, 0,
+-			    event, info->portid, seq, nlm_flags,
+-			    RT_DEL_REASON_UNSPEC);
++			    event, info->portid, seq, nlm_flags, del_reason);
+ 	if (err < 0) {
+ 		kfree_skb(skb);
+ 		/* -EMSGSIZE implies needed space grew under us. */
+@@ -6420,6 +6420,18 @@ void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
+ 	rtnl_set_sk_err(net, RTNLGRP_IPV6_ROUTE, err);
+ }
+ 
++void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
++		     unsigned int nlm_flags)
++{
++	__inet6_rt_notify(event, rt, info, nlm_flags, RT_DEL_REASON_UNSPEC);
++}
 +
- 	if (nla_put_u8(skb, RTA_PREF, IPV6_EXTRACT_PREF(rt6_flags)))
- 		goto nla_put_failure;
- 
++void inet6_rt_del_notify(struct fib6_info *rt, struct nl_info *info,
++			 enum rt_del_reason del_reason)
++{
++	__inet6_rt_notify(RTM_DELROUTE, rt, info, 0, del_reason);
++}
++
+ void fib6_rt_update(struct net *net, struct fib6_info *rt,
+ 		    struct nl_info *info)
+ {
 -- 
 2.43.0
 
