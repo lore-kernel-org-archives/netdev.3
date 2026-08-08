@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCB91A6814;
-	Sat,  8 Aug 2026 01:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2D026AC3;
+	Sat,  8 Aug 2026 01:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786151120; cv=none; b=GaE7vY1FP1WgQrRtK9Yx3j0NPSb1Asuxmcv+nwxrUPVru/eDrP3q9rnoSIubsqSMyA6hF4t6K2R/e51AMau37Njat5WwP0Zavptam2CU80e67WhkoupwmdkoL0lu3ZQmcAs2QaVgwX2LBOtuJa41KLbXTEaGRRv8rMtCHAtJtyM=
+	t=1786151231; cv=none; b=f6dTjQHnW1HEDMaMJ1leietyjKSClQl5un8jMENmxOqtGEHm1oa/g2IoXH4IK47LQwTfxpYS59+cF7cGfqH4chvD3UskUFu1vij/5atay5EsZxqQ6WUswd+jeq+lz2sOEpWbMpfDofP94hiozQ9EwflFTdBxZjrN5b3msuY3S70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786151120; c=relaxed/simple;
-	bh=8+fdE8j3a7Hlv0lyHS3fKmGh77uXsR/05i+Fl4uw8Y0=;
+	s=arc-20240116; t=1786151231; c=relaxed/simple;
+	bh=hLY3y5m+xW/EOHr3olRy0N8NIN9E4C/A436qlb9hK+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vya++WxCUafYfc/3p9PRajBFkUxvpzKO0sQTrhpQgK6s6RWV63HLik3teEvvWyGj6NpRl7d1+XPkW7wpyh2zb2yVtS8kOWTXL6+75YSlvwxcD7gxPa49NiKHeJdppXW5Hk+VQghkrR4+bPjz05YZ6bqA3o3KuNkraAHeO4gJono=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jyDp96CJ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=a/0coia1N0EzVyUJSgSsAwuID8VGMA3l4LaMSnLxywN0rt4c80guRr7oUlrRq/nZjrGOj27t4DJ9unWKIpMUjSwgva6DjOHFzm0MNuJ9+gealvuHW1p+gTj2ajqXnAAih35HI9tBcuTbdnL91ZJI7lsgIOvAQIKFQJo3uMZlCmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gBbmZxtQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jyDp96CJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AED1F000E9;
-	Sat,  8 Aug 2026 01:05:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gBbmZxtQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF73F1F000E9;
+	Sat,  8 Aug 2026 01:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786151119;
-	bh=Wl1NojbxYlCFC8IRtpseNB09uIGnB+TGYTWDPKi4M3w=;
+	s=k20260515; t=1786151230;
+	bh=z/2BGGjV0zJcUvZzXGXmS2anusXPas9uC4FDRLhddqA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=jyDp96CJrKXGbFTFwjiUfOYXGxIil4NIhYi4sPXnXt0KJstU4lSqjUo9JcXETeqEf
-	 3k4B9c9d37njpCNOlxKCB8bTOngBdkruQJCT2t+3nk89mv8EEjJBa7/qcIksWBgZWo
-	 7hRhxGKV9mBnej3p9N6ViyU12VkU5SOaWGvy/T742vBC3P8uop0AqW8+zS1VNCKROK
-	 A0GW5JBQm/f+DWQSlpyQdD9S31riS8tkkwrrGzOfYFEC6Y3VcW350CsaIGencyfvtI
-	 9hav5edLRhrI5XvjLHgFCZf/0HuLJznltw7J/gLI8GPkGlVuRGaxSFrp/K5tRHi7j4
-	 E7sL0y+s4mRyw==
-Date: Fri, 7 Aug 2026 18:05:18 -0700
+	b=gBbmZxtQbR+4OLMlUQOJd0cR6xOh2hfPmr7InlIlFFeMIe/+oeKIsd2+9zA+6BX9O
+	 d2AB7Vz8n5C0NoQMynnduoIONWzddAUuicvvZq9yMVT99PtVcTOEsd3z4LsjYrYlf8
+	 l5uP7GXo84eHsvQn1AsIBL0N9QuO8QyZTxW4ihayXlDNWtp5CGw6a2YeWsQ/T8t7GE
+	 67sw3x296Y/I1cDRkKtMeKRu2Df/GlVEvaWJlzETJxATYTGFKaS75/EYJQpMW4fTbl
+	 /3ZfiPuxj25CdasV+L5Yhfho05KDkzC1HhZzWyeIXpZWdsW149JVkHmdua37fXOEIL
+	 T1XTSPTB4SkpA==
+Date: Fri, 7 Aug 2026 18:07:09 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: netdev@vger.kernel.org, Marc Dionne <marc.dionne@auristor.com>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v6 00/10] rxrpc: Fix CHALLENGE packet handling
-Message-ID: <20260807180518.0287b58e@kernel.org>
-In-Reply-To: <20260806091511.46a2fabb@kernel.org>
-References: <20260804172639.2844491-1-dhowells@redhat.com>
-	<20260806091511.46a2fabb@kernel.org>
+To: Nam Cao <namcao@linutronix.de>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH net-next v4 1/1] af_unix: Do not wait for garbage
+ collector in sendmsg()
+Message-ID: <20260807180709.6fb7f2b2@kernel.org>
+In-Reply-To: <bc759ceba26d6e20fab3bcf7333ee7e6246696b6.1785824313.git.namcao@linutronix.de>
+References: <cover.1785824313.git.namcao@linutronix.de>
+	<bc759ceba26d6e20fab3bcf7333ee7e6246696b6.1785824313.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,15 +49,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 6 Aug 2026 09:15:11 -0700 Jakub Kicinski wrote:
-> On Tue,  4 Aug 2026 18:26:27 +0100 David Howells wrote:
-> > [!] Note that this entails a significant change in the UAPI for AF_RXRPC,
-> > with the CMSG types and sockopt to support the OOB queuing being removed
-> > and replaced with a new single CMSG type that conveys the user key ID.  I
-> > don't think it likely anyone is using this outside of my kafs-utils
-> > package.  
-> 
-> If the remaining Sashiko issues are false-positives - should we queue
-> this to net-next, then?
+On Tue,  4 Aug 2026 08:46:16 +0200 Nam Cao wrote:
+> AF_UNIX sockets' sendmsg() schedules and blocks on the garbage collector if
+> user has too many inflight unix sockets and there is cyclic reference in
+> the system. This causes real-time issues, as cyclic reference can be
+> created by any task in the system, and high priority tasks who do need to
+> send lots of AF_UNIX sockets get blocked by the garbage collector which
+> runs as workqueue, causing a priority inversion scenario.
 
-Blah, doesn't apply or pull cleanly now to either tree :(
+Hi Kuniyuki! Any thoughts?
