@@ -1,114 +1,156 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D8C224AF9
-	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 21:09:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773532C0260
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 21:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786309780; cv=none; b=mtw+PzOmlEsNGKhkQc2WZ4XUY/sngEKM8EgKvW5BWUGAUOA5YNYbDShDC/Apj9TEYMGuenhvIMONsttgeaachPpfuTBpm09YelaWHP+kXyWwJLbQqN18qQIgqk6R31MNHsmvvb4cMUxhhyKYV+FfQ/EsNSTtGG4tdMoWTvl51Zk=
+	t=1786310510; cv=none; b=ANPNgtXLwPo/ibcsLW1lx1HWYWstEutanbuysYTsa7P6wa+JfS3RtKlWclhrArCQp7tRxd6QpGcwXVa1acB+AemCGwtqd+sAIxV3eBmBw6tdEO8ka1OfRcWYf30BvyV2eYl+07MgW3G7dcN3uLZ5aSnorxhChanLlUwOmR3o8Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786309780; c=relaxed/simple;
-	bh=mZq1CLdRY7Lk6EdAQkrmQTGO2vP6dfwbBPRpgZ1mK9Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aqIhuPtacqROaVDCO00eyVmJ2YSqIez1ICdVKzw1Hfef6BlfiV+hdWr93nxWJkE5m1Aeuwo7t6+kXICc0h8Gf5Obr7Ub/QzhaXhscpmlu1uZxAXOAbufO/OEOPvT1rEi297qlEfl3aefqpb6u2YfwMyVPWTXffI+LG8afKvAP0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=jRUuV83R; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1786310510; c=relaxed/simple;
+	bh=etVI0yjaaakMG75+rtIMPYoj3ECGHUwCgXykny0Rcuk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tS+t5wAGhCH9cpgU31b6JqT3DAVtSxziuo/KJUHp8KkWeOujIhIClne54UEs25ESGd2TC3fjKpelZEHGGwgxLoqY4MRcV+x6/dDvT1S+VPAmRoV1l6yohqgx4cebDzQNpo2jngCBFMgfCqeyIfwDANzkm7xv6wKGsfn84owdx7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=C/stbQGP; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="jRUuV83R"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=WOnJ9N1TdyfSKAgK7BCbceD4b1RjPnAyxlPgnzNNiQ0=; b=jRUuV83RPH7TVnUglKHjeDRNhz
-	w+o95wsYbwkfzwqy0SZ7kOkoGFoKppo6R/icFntcQhXvUcg9AhY5/NxNQg1YkB2jmZ2iRxyQno7IE
-	DtBBT1bKB2ZhfUvtrgXGdZECp72vCqubI0rlC4D4oEmiIc+/oWsnCqb+XzBg7WypVQ5p76N3TZh7s
-	mIgsAyCLnRwdUcRtY3bk/hy1bMZ/KYmiHBqDWIhO9a2DBTCLWardcg4+rF31KE6wiIU0S454Yw4Ii
-	EqOQ0Ie/P4oLXF6wQwVGllWhlB17Pq0fPnkVP2iP/yJCc5Jsqo5oojadkniK6liJausjoRQroOwFX
-	GJmuVvuw==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1wtAlk-0002U6-2z;
-	Sun, 09 Aug 2026 23:09:21 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1wtAlk-000Etp-2d;
-	Sun, 09 Aug 2026 23:09:20 +0200
-Message-ID: <5522c930-70fa-443b-a1ec-c39299a5cd8f@iogearbox.net>
-Date: Sun, 9 Aug 2026 23:09:19 +0200
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="C/stbQGP"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47fde295992so925110f8f.0
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 14:21:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1786310507; x=1786915307; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=10rEbDfjFih00sY01YWUyBbZUGocDKlJTNwE8WVbpPo=;
+        b=C/stbQGPZrtFnAeFpY8bE5hNiTsXwcoRdY8aXITsz1vzeUs4mmTl87OBrD2pq/GfJj
+         xZa8OgOcSty/Av3oZH5eHvw33E8AQuxgOWQA/74t/pDqjFHmTgBc6kknmDgjG5Pt8LiO
+         v8RAOtggsfcZmc+FejWD+6yYiALjvqEmTWIOxUbxSUKV/LT57addW3F95WWVRKVge2yq
+         j3nLYjPEnlaHdXDtikwaJa8n+EGJKgnGQkBztbXKIHvbxyRws4U+C6T6Vs/TxAjVYiMo
+         pBRQrpj7ck5p3CG6f1P0AQm3O3qLAuFemAMY8+erESfrz1ssVXvXIFCjuuDeyrOmSiL3
+         3izA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786310507; x=1786915307;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=10rEbDfjFih00sY01YWUyBbZUGocDKlJTNwE8WVbpPo=;
+        b=pXxNUPEcJzYe8NcN4WY3uDKskDQKcvSAgMsMSBGg+F7bCppLou/tva29671dKsjlTC
+         TfftV/cE2ePNUnFDT3XPqPe2HJ1EsYojRzPhTqwOP9iDMrrz8Ivdx3ETNpuLowZmUN2W
+         cSZcUjbUrbvMeaxchcNCnnxPlRF430nvBHzBXBdZgNpR172AluIj/2TniUbiRCyeLzqB
+         0qoIQhsG7Eluuz/oT9LYcJ8wsDja8YSVP3cDDjdil2iFFWHdtdgtp3O3cShJZaRIdPF3
+         nKGiqBJAcSVyqYYYRR/3UjUjz1tfOFb74wQ7hBmLYRitT59XhsR59ZpXFgVD6kWZDCqV
+         lMQw==
+X-Gm-Message-State: AOJu0YzEjKSPyG1KCih3FwCZ6TkUNnq/Dplc5jumYj0KNhDkTrRS+AVe
+	4wQBnw1OO4Tx2mRRhAznxNOlFkyJylmEzZ9f5viFt0BRicEVWVU3O94oQRkzhEDY4D0zsb6C5hg
+	M29iUBZ+y4IeEzcSDFjT2s7cXng7JhtS0uQFOa/ibv1D4XpIj59cwwB1SO3pNozor
+X-Gm-Gg: AR+sD12YYf+bQX0Dz7LSNF0xdEnIDcySnqSr9dlp79U7gvn/7WFiae7/pKkK1wbYPpv
+	b+266F5uHmXd1j2kpQ2e7dP8qp4xfwP+qPqXzW60W+kKJ4AtJLXNfKW/9En3T7V4f/85/s1Mr4+
+	vtFgBPOYCiRv2kwj5iy4oCfDZ8vV1JHG1Dbs7p9Ygh9SQVZ9guQ6L8io8D4zhNfdh5RpyIPVHtW
+	IBuvMGZtP0OVGQC0ZSacsxflTT74Q/BFR4PedyK2nU2bzDG7UBpj4nkmpAe4uYiw5/gUpkUa4Q5
+	DQ3ZNJnIm1xXI8C4pNeBmVNRSzHjyQ2SsSA0EfU7bpCWl3MazHgBr5p1Bo6RlHp02ZvMc75J1P3
+	yr+Z/XOhVY5sfwxsTQpVu0I2FnfPhtdMg7a55uOpKk7Dd8LbezuZnOviMgaQulLa3a5bOuPdRRV
+	8s31jxJlC/HNt/WeVokuRkw3CwSuS8zeTC+r9kxEsjaWzaFFBvTETpK58z1gdf6z0YQ1OdaqJQw
+	pXzahHE9uIWpYGk7F/0aDM=
+X-Received: by 2002:a05:6000:2913:b0:47f:7fe0:a287 with SMTP id ffacd0b85a97d-481319275b3mr12939932f8f.2.1786310506527;
+        Sun, 09 Aug 2026 14:21:46 -0700 (PDT)
+Received: from inifinity.homelan.mandelbit.com ([2001:67c:2fbc:1:58c9:fa0e:8293:9eba])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48002206effsm24976651f8f.32.2026.08.09.14.21.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Aug 2026 14:21:45 -0700 (PDT)
+From: Antonio Quartulli <antonio@openvpn.net>
+To: netdev@vger.kernel.org
+Cc: Antonio Quartulli <antonio@openvpn.net>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Ralf Lici <ralf@mandelbit.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net 0/4] pull request: fixes for ovpn 2026-08-09
+Date: Sun,  9 Aug 2026 23:21:25 +0200
+Message-ID: <20260809212142.2249027-1-antonio@openvpn.net>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] netdev: check for nla_put_u32() failures
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, bobbyeshleman@gmail.com,
- joe@dama.to, razor@blackwall.org, sdf@fomichev.me, dw@davidwei.uk
-References: <20260809000609.327659-1-kuba@kernel.org>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <20260809000609.327659-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28087/Sun Aug  9 08:24:56 2026)
+Content-Transfer-Encoding: 8bit
 
-On 8/9/26 2:06 AM, Jakub Kicinski wrote:
-> Make sure we check if nla_put_u32(id) was successful after creating
-> objects. This is theoretical today, the skbs are large enough to
-> always fit the ID.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Hi all!
 
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+This is a resend of the patchset from Aug 7th, with the
+alloc_workqueue() warning fixed. I hope I am not too late!
+
+This batch collects four ovpn fixes for net that I considered critical
+enough. Anything else has been postponed to after the release (or will
+directly go to net-next).
+
+All patches in this set are from Ralf, addressing key-slot and workqueue
+lifetime issues:
+* a NULL dereference when killing a key that is not installed on the
+  peer;
+* crypto completion callbacks that could continue their cleanup after
+  releasing the peer reference gating netdev and module teardown;
+* deferred work running on the global workqueues with no driver-owned
+  drain point at module exit;
+* AEAD transforms being freed from an RCU callback even though
+  crypto_free_aead() may sleep.
+
+The series went through six rounds of sashiko pre-review on
+openvpn-devel and should now be sashiko-free[tm].
+
+Sashiko will still report pre-existing issues, but like I said above,
+they are not critical and will be addressed later.
+
+
+Please pull or let me know of any issue!
+
+Thanks a lot,
+	Antonio
+
+The following changes since commit 594d905195024b228c962627ae5ae7c17bd582a4:
+
+  af_unix: Unlink scc_entry in unix_del_edge(). (2026-08-06 11:52:48 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/OpenVPN/ovpn-net-next.git tags/ovpn-net-20260809
+
+for you to fetch changes up to 2da3dfa1ddfe55a065f484750c83660e3bd4ac00:
+
+  ovpn: defer key slot crypto freeing to workqueue (2026-08-09 22:47:57 +0200)
+
+----------------------------------------------------------------
+Included fixes:
+* release key slot crypto transforms from a workqueue rather than an RCU
+  callback, because crypto_free_aead() may sleep with async or hardware
+  implementations
+* run all deferred ovpn work on a module-owned workqueue and drain it on
+  module exit, so no work item can still be executing module text after
+  the module is unloaded
+* finish crypto callback cleanup (key slot release and leftover skb)
+  before dropping the peer reference that gates netdev unregistration
+  and module removal
+* avoid dereferencing a NULL key slot when userspace asks to kill a key
+  that is not installed on the peer
+
+----------------------------------------------------------------
+Ralf Lici (4):
+      ovpn: fix NULL dereference when killing missing key
+      ovpn: finish crypto callback cleanup before peer release
+      ovpn: run deferred work on a module-owned workqueue
+      ovpn: defer key slot crypto freeing to workqueue
+
+ drivers/net/ovpn/crypto.c      | 26 +++++++++++---------------
+ drivers/net/ovpn/crypto.h      |  4 +++-
+ drivers/net/ovpn/crypto_aead.c | 19 ++++++++++++++-----
+ drivers/net/ovpn/crypto_aead.h |  1 -
+ drivers/net/ovpn/io.c          | 10 +++++-----
+ drivers/net/ovpn/main.c        | 19 ++++++++++++++++++-
+ drivers/net/ovpn/ovpnpriv.h    |  4 ++++
+ drivers/net/ovpn/peer.c        |  8 ++++----
+ drivers/net/ovpn/tcp.c         |  9 ++++-----
+ 9 files changed, 63 insertions(+), 37 deletions(-)
