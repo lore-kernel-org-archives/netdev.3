@@ -1,125 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FDF299927;
-	Sun,  9 Aug 2026 00:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786236667; cv=none; b=VvQDjTx6oBV+Y9wf+JIHLJpnrgYY4hqk6mt2wOP4qnuUnGlLaKbCi5OggCdcdTPUF/3ettNxlbTtrIexZF0BoyEBLzRjmkNqb6AVcMfKjfiI57m8NVqMZA1V5tary8qcb/1cIl5MqRxWrAXIJ+gBv6ms+QT+LAb9xYNEMxRkPS8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786236667; c=relaxed/simple;
-	bh=8j9CD6m8Itx2ZpsamzfTnqCF8le5/dmUln3uYzB5AQg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q84RQYFhbaA0OirkEgJRl+f9hEwd5G4kgw74PIEQl/lq/K1B7o+Kn8bTcy9452ZV81aaKKJydQLJsBePfL7Y1KOLTcT90d8AMiQC1E0fK7wdRSr5HU1GSJnjmhcBRLrjY6fYuZU5j6G+fjj4ACh1PgIEmnNfSyAUiLYJrxWHPK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IeKR/jbe; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030183A1B5
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 00:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786236732; cv=pass; b=YoanpZ1zFa7MYxDmZt9U2HYiB51gMA3L5zDG78YUTcU7ar5CMMBjmCdPluMhMtMcXPmSqGH33GlVTrh8tD8bcMryFtLukHvMxQrgJFx42crUcoGqxYLtmQRYMmpdw+68IG3QRpJcRE8jjMjjofUE8icn/bl69CG3oG6LPhW5Ghc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786236732; c=relaxed/simple;
+	bh=v4liCDh36/+ZyZXBwFufBk0+NwnQDPX73vt+RUacM7I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ePXBLLd8TE7NFesCdSpd312QZxb8zBh+PcPC5xQK54t5JgywAjobyktsZqj3sjdkVbFE6VIN0KPRtWGdzQW3imbXjDIbFZhdz+b9pFplA5brhKUn5lhGCns6jKKrDOe3lWZgZ1rlD1KSnWy3sILnR9EHxp4EKzbkTPc3Lt35cY4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IoienVJQ; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IeKR/jbe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC6D1F00A3A;
-	Sun,  9 Aug 2026 00:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786236666;
-	bh=xT1Xwy/gSNdl4WFX7xH2jJ4HH2GmcqJT9bQgJ5zKDB8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IeKR/jbeiAN0eV0k6JPxiMmHByify70ODGvUUox3Vsz1hgeROr4myepGXFOPd7dmo
-	 5SCarya9g5ne+/6OaMctw6XFXvZN0is7NZGqA0K96GZgeUj0GZaKvz3wIhovJ4YXL3
-	 NBi1k0O1/5dYA6r6/aQGv2V05mQ5CIriUASa6vTY6TIEzrl4pehJmPFcppuYOnLc/0
-	 FgPLlI7bU9wHl6k2wHnhL2cEObwkFdGVaAoy8k1+MSp6i0+DovvZ08IPgw65m0gC+M
-	 fjuq3Ym9uqs4S/bWM3/2tDLuKZzAjdSW6c4yUdu1EkFv/S/eje5iCIIH+y0+s/kULK
-	 i+eIw7wYt7OFQ==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org
-Cc: achender@kernel.org,
-	jhubbard@nvidia.com,
-	leon@kernel.org
-Subject: [PATCH net-next v2 2/2] net/rds: initialize i_conn_path in rds_inc_init()
-Date: Sat,  8 Aug 2026 17:51:03 -0700
-Message-Id: <20260809005103.82371-3-achender@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260809005103.82371-1-achender@kernel.org>
-References: <20260809005103.82371-1-achender@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IoienVJQ"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c01c79467so136051cf.0
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 17:52:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786236730; cv=none;
+        d=google.com; s=arc-20260327;
+        b=h59POFIcF5uWb9NsJCIwa61WvKPwoZ/mAUZfPuq7WdK8geOhUJNcUjrt+GUAJZxoAJ
+         N59fikl/aZlz8zOpl+6JGmFy3tjY/lc1QeS4VSo5jJGanLmBNY7J8pRdpe1MyV1lIb7g
+         tMFTEynJDFoJjiJU2OMY0oQxT5+hZyfqkPuwSbutHorruUGr+32R2/QWCqfh+Y5IejPh
+         mMu2UnEARwMbX/3FRP2qmQ1wnBuomuhruDM/HF9lqG+TnFn7OqCE/WcU0KdAA/xdCBB3
+         8rSTxPJulFUzTJxl1BAYfRVa3FtpWfdaxPpB478L/Nk28Ktq+ruzSYoibieyaW8bfLH2
+         NLjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=v4liCDh36/+ZyZXBwFufBk0+NwnQDPX73vt+RUacM7I=;
+        fh=ueDGRK9tK+zzhInwt7ttsoLJElltjoiOZ3w8TVxdRFY=;
+        b=jXchEqdmkKvEIvr+EyHNFJzQmsfHOF698+SHzvBcA4m/ctkrFH8PN5WDCSJoPTSJEz
+         wpN27M5wBLC0Jfsqfmu5znmF9zwx8VN2ieIYPF+B6LEQ15v8tLzSHeX5/IazFHPC1Tk+
+         FSXunLRFD779GvcX0xo7cEx1ekx1jLZ5NCOnRD5zTzT44IMjMmCqGg9eK8zFnJ7JSf51
+         ap9zsxiByfKtgWKdS40Fg7ffK9AigoreEpVjAQJy3ur8Snxer3wk8yN/2slpZmDXVr5+
+         KoIwapFxmHCsaO/OD9gndodXPd6FMXI3QV0IekUjae4H5a4CAxO4yL7B8s/dDCWbBZka
+         dFAg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786236730; x=1786841530; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=v4liCDh36/+ZyZXBwFufBk0+NwnQDPX73vt+RUacM7I=;
+        b=IoienVJQMlefOb1bpDXDLa/WMbztK3dHcRq1YHAmMCsGAUlQoewW1SuS5WOi40Cbft
+         FxL4lea5Q9TmnyyrY0KJT/3+a+Wr0lHbQQKkvvFDT9CNAG0XgDrrAcR9JZuEBlZZbs2Y
+         Qj7wWgRTD8fuOdKTox7J7mcJ9ok9EnVK+hx8RPPPJoAaHx7n5Pq/n+/FlAaJOldh+y8b
+         n90Qw8iHtm5N3i2E4rihJxehlS/vS9e+B/PEwqyAcNKqg/zLSiSrgOyT6K8tFEVxcdgY
+         SdPmuWe7hFKunkGKU49yYOBYYpxovd8HDpflVn2FUMsq1ISkfkH1F9fKSmBIn2SDv2ug
+         64Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786236730; x=1786841530;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v4liCDh36/+ZyZXBwFufBk0+NwnQDPX73vt+RUacM7I=;
+        b=oiVon1NIPo0+mJIY3REw+XZ3rA1P3eqVjjxO4u6602tyoJbolaM9/cSnl6MQaLQ4f6
+         AEE/htgeE9pMVU/hNUj5ieguSOgGhqC47YnPbRmHoezoTtbcwxdibvPmr7p9O4izFhkY
+         sdk/CbpVDQvMNaKPJAYroS5cmulxBERzWMeHv+9qm7jCmVK00aeOMnKK2Isx+ynW0p1X
+         PoX7QU7H9+B9AAl7zSb6gnNRzznWUjjUz0590LZcdrqsQkPnLOrUaL0/k/z8QhSDf1xE
+         cXFpEXeZNxSUx5H4iYfityGRduhlToW1zvUQ49A/WHqTm09PrnHENUK6cU3JmLSyc17R
+         QqIA==
+X-Forwarded-Encrypted: i=1; AHgh+RpMwLMQeXOzHe1Go1wKl7lr4I2Fqos50DbZo33MnpKUsmO3UIoNJOh/QIeGPif322wMEUE7Z1M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHpfMOnzjyfW6dlN/KtVmNfC+l2RdNeYlHJ7FQWUQGJAhRAhpH
+	TU/ByUkYNHM5C0XIKuhjzo+U8gKZfvApgoCYuJqj0g5oUhvTFsBwNM05wRIWS37SruqYM4Iogas
+	6T2Bilx3K/uq7J+XSqQY+4/Lwm+9O6bplwNrqWrKr
+X-Gm-Gg: AR+sD12+5o+Afa1Dck9DbEva4SfJVY5YYx3N92CtjSHtxJvyeXWZylN6AP7cKHFPN3D
+	BEKpLc4+/cTU+h8Uh+H8+YKzYnSyRN/FfVanGdFzW0CZYUW8Rkn8mwmlo9h6+zveelja6VYvyD4
+	sAlwbijavomRSwe0rfp73skOEgjBCw837ESxUXWUg1E6GWsesdNVOUjJubcYaHyFU4Cn2vWNA+X
+	bjweBtV2NE3YgXuiiEsSFeNgOTEk5AyR0QrS/i+qppruFh72Exznkzh9AT2dgWD53+FegLo/3ss
+	LSVA1PQCbeK3VcnZFeBryQhE4JawsaGBz/Io0koV8dkspl50kqOkR24=
+X-Received: by 2002:a05:622a:1f12:b0:51c:6b7:d3de with SMTP id
+ d75a77b69052e-52d2810403cmr12830401cf.5.1786236729475; Sat, 08 Aug 2026
+ 17:52:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260806200548.3124802-1-surenb@google.com> <20260806200548.3124802-6-surenb@google.com>
+ <anbaJuYXEoldvtPn@casper.infradead.org>
+In-Reply-To: <anbaJuYXEoldvtPn@casper.infradead.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sat, 8 Aug 2026 17:51:58 -0700
+X-Gm-Features: AUfX_mz0H2dhrc0_RWDLxxG1OQBtlVHwDKim8LfHEsvh69mmXopyqhXcVVjfQFo
+Message-ID: <CAJuCfpHh1E34LVTd=4y8m+2ugGABc3MSU2Z5N4pFY4ttH0a5Rw@mail.gmail.com>
+Subject: Re: [PATCH v4 5/5] tcp: Remove mmap_lock fallback path
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org, 
+	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
+	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org, syzbot@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: William Kucharski <william.kucharski@oracle.com>
+On Sat, Aug 8, 2026 at 12:26=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> On Thu, Aug 06, 2026 at 01:05:48PM -0700, Suren Baghdasaryan wrote:
+> > Previously, the per-VMA locking could fail in the face of writers
+> > which necessitates a fallback to mmap_lock. The new
+> > lock_vma_under_rcu_wait() will wait for writers instead of failing.
+>
+> It's not called that any more ...
 
-rds_inc_init() initializes every field of the embedded rds_incoming
-except i_conn_path, and incomings are not zero-allocated (IB carves
-them out of a slab cache).  The field therefore holds stale garbage
-for incs created by rds_ib.
+Ack. Will fix. It's obvious that I took over someone else's patch, isn't it=
+? :)
 
-The loopback transport is different: rds_loop_xmit() re-runs
-rds_inc_init() on the message's embedded inc after
-rds_send_queue_rm() has already stored the connection path in it, so
-there the field holds a live value rather than garbage, and a NULL
-store would discard it.  Switch rds_loop_xmit() to
-rds_inc_path_init() with the connection's single path, which is
-exactly the value readers of the field reconstruct for a
-non-multipath transport.
-
-With loopback preserving the field, initialize it to NULL in
-rds_inc_init() so that any future reader trips over a clean NULL
-pointer instead of a stale one, and so the two init helpers
-(rds_inc_init/rds_inc_path_init) leave the structure in an
-equivalent, fully-initialized state.  Hardening only; no reader
-dereferences i_conn_path for a non-multipath transport today.
-
-This mirrors Oracle UEK commit "rds: rds_inc_init() should initialize
-the inc->i_conn_path field".
-
-Signed-off-by: William Kucharski <william.kucharski@oracle.com>
-[achender: port to net-next; keep loopback's i_conn_path valid by
- switching rds_loop_xmit() to rds_inc_path_init(); update commit
- message]
-Assisted-by: Claude-Code:claude-fable-5
-Signed-off-by: Allison Henderson <achender@kernel.org>
----
-v2: keep loopback's i_conn_path valid by switching rds_loop_xmit() to
-rds_inc_path_init(); rewrite the commit message - for loopback the
-field held a live value, not garbage.
-v1: https://lore.kernel.org/netdev/20260806072045.1092968-3-achender@kernel.org/
- net/rds/loop.c | 6 +++++-
- net/rds/recv.c | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/net/rds/loop.c b/net/rds/loop.c
-index ac9295a766b1..e6b0750bbeda 100644
---- a/net/rds/loop.c
-+++ b/net/rds/loop.c
-@@ -89,7 +89,11 @@ static int rds_loop_xmit(struct rds_connection *conn, struct rds_message *rm,
- 
- 	BUG_ON(hdr_off || sg || off);
- 
--	rds_inc_init(&rm->m_inc, conn, &conn->c_laddr);
-+	/* rds_send_queue_rm() stored the connection path in this embedded
-+	 * inc; use the path init so the re-initialization keeps the field
-+	 * valid instead of discarding it.
-+	 */
-+	rds_inc_path_init(&rm->m_inc, &conn->c_path[0], &conn->c_laddr);
- 	/* For the embedded inc. Matching put is in loop_inc_free() */
- 	rds_message_addref(rm);
- 
-diff --git a/net/rds/recv.c b/net/rds/recv.c
-index cf3884d87931..f1513dfb2716 100644
---- a/net/rds/recv.c
-+++ b/net/rds/recv.c
-@@ -47,6 +47,7 @@ void rds_inc_init(struct rds_incoming *inc, struct rds_connection *conn,
- 	refcount_set(&inc->i_refcount, 1);
- 	INIT_LIST_HEAD(&inc->i_item);
- 	inc->i_conn = conn;
-+	inc->i_conn_path = NULL;
- 	inc->i_saddr = *saddr;
- 	inc->i_usercopy.rdma_cookie = 0;
- 	inc->i_usercopy.rx_tstamp = ktime_set(0, 0);
--- 
-2.25.1
-
+>
