@@ -1,67 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF8437C0E2
-	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 18:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C7F1EE7C6;
+	Sun,  9 Aug 2026 19:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786299854; cv=none; b=TmLu/vQmItun77sOoLjt8dFU2/WoSwgMnXZYKZfJe1e1zXtgJ+T2NQ4yEU8pKcuXFKaNpzMLwhTpXygDEQfDKqIJDFUYc+HC0LPzYDWXU4R7QxS9xHnf7CqZmexIa8RmaUTSfJYEMOEYz0kJuu0ywWb9ksWuAlSAj9wq+nvDs8E=
+	t=1786302083; cv=none; b=U4W755Ppf+FhENcx0uO158Ko0mGxSRpNpindxr1eaOiOs29wHdJpCgMlx10jH9ERWGF9W+uJfVgERdtYaSN2EiAxf4hR6aVletDAB9QXCBTQ7dMZpoT0FKxTcLfXC9355Un6Idvm2ITUUFAsdVYEFen+g3J9qqsRNTGlMgihp3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786299854; c=relaxed/simple;
-	bh=vYO0WeHNrFw4Px8+7ptkWRw855MPvpN7TIk4sbw1vL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+tuPkknwP1lbybQUQX/Sc12xbrCOzR7YpBaVLW56rngjTMh2hunVJpx51y0AMzmlTkyqn4UX7vt0nyT0zSzUDEkYAlOVR0uKD+vg4O6ws/iqrmA/EFROMfXnD1lzDfoqLYogmKWdV3swovX1qVd1LeYFNzMpivjjPx4F7bXEmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iYUh/gdp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iYUh/gdp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786299850;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ywj3Ox55+64qC+LLZSuqobMyifCN0SXuGWJPoERO1So=;
-	b=iYUh/gdpEzDkjd+fYQPEdQqfKSL2wAj93fBjqHTHU7GCsaxoiXmazP0MpjlXPfiiMbN2Tw
-	0dEGNdC45Yr+CaXItnmXlLY29+3xK2exI4a0wys3p7taOZoWhBhXu8/yJfPRx0wYc2bOZQ
-	spNF5JAOhmoy4HuCVZ2CRMPb4UaD824=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-4cjxt7NhNh6sNQpk9C-MAg-1; Sun,
- 09 Aug 2026 14:24:07 -0400
-X-MC-Unique: 4cjxt7NhNh6sNQpk9C-MAg-1
-X-Mimecast-MFC-AGG-ID: 4cjxt7NhNh6sNQpk9C-MAg_1786299845
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 012C81800578;
-	Sun,  9 Aug 2026 18:24:05 +0000 (UTC)
-Received: from p16v.luc.cera.cz (unknown [10.44.32.36])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EF93B19560AB;
-	Sun,  9 Aug 2026 18:23:59 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Chris du Quesnay <Chris.duQuesnay@microchip.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	s=arc-20240116; t=1786302083; c=relaxed/simple;
+	bh=s5tcFmNwZFA1J3xK6oZv5nXPDgKWwFFvPtkhIoxLZOw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gy1BmjNpUpFJ2CYL98W/OCIS/tMAY8FFgGWToG+34pJBxGHBrAKN5ujiuKQxfRHKC4enEmWhCAYkVfvdGP9TDrvpCjeb7L7x08/kiq7xk6pJG/In0RfFKzCGC+5puGsIGJmkvmG9iGmS+v5cJBH3q72ilhpJB/+SCgqQNDPmAag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id AAB6F20B7166; Sun,  9 Aug 2026 12:00:53 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AAB6F20B7166
+From: Long Li <longli@microsoft.com>
+To: Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Min Li <min.li@microchip.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v6 3/3] dpll: zl3073x: add PTP clock support
-Date: Sun,  9 Aug 2026 20:23:40 +0200
-Message-ID: <20260809182340.1081610-4-ivecera@redhat.com>
-In-Reply-To: <20260809182340.1081610-1-ivecera@redhat.com>
-References: <20260809182340.1081610-1-ivecera@redhat.com>
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	shradhagupta@linux.microsoft.com,
+	Simon Horman <horms@kernel.org>,
+	ernis@linux.microsoft.com,
+	stephen@networkplumber.org
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v5 0/7] net: mana: HW channel reliability and hardening fixes
+Date: Sun,  9 Aug 2026 12:00:34 -0700
+Message-ID: <20260809190047.2086368-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,593 +47,149 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Add PTP clock support for the ZL3073x DPLL driver. A PTP clock device
-is registered for each DPLL channel regardless of the initial channel
-state, providing gettimex64, settime64, adjtime, adjfine, adjphase
-and getmaxphase callbacks.
+This series fixes a set of latent bugs and robustness gaps in the MANA
+Hardware Channel (HWC), the control path the driver uses to talk to the
+device.  The issues range from a use-after-free of completion queues
+during teardown to buffer mis-sizing, unsafe teardown ordering, missing
+validation of device-supplied RX metadata, and stale-response handling
+after a command timeout.
 
-Callback availability depends on the current channel state:
-- adjfine: when NCO pin is connected (returns -EOPNOTSUPP otherwise)
-- adjphase: available when tracking a reference, uses TIE write
-- adjtime: always available and uses
-  * phase step for sub-second deltas when NCO pin is connected
-  * TIE write when tracking a reference
-  * plain ToD read-modify-write otherwise
-- gettime/settime: always available
+Patch overview:
 
-The adjtime callback splits multi-second adjustments into a ToD
-read-modify-write for the seconds part and a sub-second mechanism
-(phase step or TIE write) for the remainder. On partial failure
-where seconds were already committed, success is returned to
-prevent the PTP servo from retrying and applying seconds again.
+  1  RCU-protect gc->cq_table lookups against concurrent CQ destroy
+     The EQ interrupt handler dereferences CQ pointers from gc->cq_table
+     while teardown can free them.  Put the table under RCU and wait a
+     grace period before freeing, closing the use-after-free.
 
-All PTP callbacks are serialized by the existing per-DPLL zldpll->lock
-mutex, which is also used by DPLL pin and device callbacks.
+  2  fix HWC RQ/SQ buffer size swap
+     init_queues() sized the RQ with max_req_msg_size and the SQ with
+     max_resp_msg_size -- backwards.  Correct the swap; both sizes are
+     equal in practice, so this is a latent-correctness fix.
 
-Reviewed-by: Petr Oros <poros@redhat.com>
-Tested-by: Chris du Quesnay <Chris.duQuesnay@microchip.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/zl3073x/Kconfig |   6 +-
- drivers/dpll/zl3073x/dpll.c  | 431 +++++++++++++++++++++++++++++++++--
- drivers/dpll/zl3073x/dpll.h  |   5 +
- 3 files changed, 414 insertions(+), 28 deletions(-)
+  3  free HWC comp_buf after destroying the EQ
+     Reorder teardown so the EQ is destroyed (readers quiesced) before
+     comp_buf and the CQ are freed, preventing a late EQ-handler access
+     to freed memory.
 
-diff --git a/drivers/dpll/zl3073x/Kconfig b/drivers/dpll/zl3073x/Kconfig
-index 5bbca140058131..da1731ace15f02 100644
---- a/drivers/dpll/zl3073x/Kconfig
-+++ b/drivers/dpll/zl3073x/Kconfig
-@@ -2,7 +2,7 @@
- 
- config ZL3073X
- 	tristate "Microchip Azurite DPLL/PTP/SyncE devices" if COMPILE_TEST
--	depends on NET
-+	depends on NET && PTP_1588_CLOCK
- 	select DPLL
- 	select NET_DEVLINK
- 	select REGMAP
-@@ -16,7 +16,7 @@ config ZL3073X
- 
- config ZL3073X_I2C
- 	tristate "I2C bus implementation for Microchip Azurite devices"
--	depends on I2C && NET
-+	depends on I2C && NET && PTP_1588_CLOCK
- 	select REGMAP_I2C
- 	select ZL3073X
- 	help
-@@ -28,7 +28,7 @@ config ZL3073X_I2C
- 
- config ZL3073X_SPI
- 	tristate "SPI bus implementation for Microchip Azurite devices"
--	depends on NET && SPI
-+	depends on NET && SPI && PTP_1588_CLOCK
- 	select REGMAP_SPI
- 	select ZL3073X
- 	help
-diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-index 0488ae6ac486c8..a686dd52bfac9e 100644
---- a/drivers/dpll/zl3073x/dpll.c
-+++ b/drivers/dpll/zl3073x/dpll.c
-@@ -2,6 +2,7 @@
- 
- #include <linux/bits.h>
- #include <linux/bitfield.h>
-+#include <linux/cleanup.h>
- #include <linux/bug.h>
- #include <linux/container_of.h>
- #include <linux/dev_printk.h>
-@@ -13,6 +14,7 @@
- #include <linux/netlink.h>
- #include <linux/platform_device.h>
- #include <linux/property.h>
-+#include <linux/ptp_clock_kernel.h>
- #include <linux/slab.h>
- #include <linux/sprintf.h>
- 
-@@ -2275,45 +2277,375 @@ zl3073x_dpll_init_fine_phase_adjust(struct zl3073x_dev *zldev)
- 	return zl3073x_write_u8(zldev, ZL_REG_SYNTH_PHASE_SHIFT_CTRL, 0x01);
- }
- 
-+/* Maximum frequency adjustment: +-1% of nominal in ppb */
-+#define ZL3073X_DPLL_PTP_MAX_ADJ	10000000
-+
- /**
-- * zl3073x_dpll_alloc - allocate DPLL device
-- * @zldev: pointer to zl3073x device
-- * @ch: DPLL channel number
-+ * zl3073x_dpll_ptp_gettimex64 - read current time from ToD counters
-+ * @info: PTP clock info
-+ * @ts: timespec to store current time
-+ * @sts: optional system timestamp pair for cross-timestamping
-  *
-- * Allocates DPLL device structure for given DPLL channel.
-+ * Return: 0 on success, <0 on error
-+ */
-+static int zl3073x_dpll_ptp_gettimex64(struct ptp_clock_info *info,
-+				       struct timespec64 *ts,
-+				       struct ptp_system_timestamp *sts)
-+{
-+	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
-+						   ptp_info);
-+
-+	guard(mutex)(&zldpll->lock);
-+
-+	return zl3073x_chan_tod_read(zldpll->dev, zldpll->id, false, ts, sts);
-+}
-+
-+/**
-+ * zl3073x_dpll_ptp_settime64 - set ToD counters to given time
-+ * @info: PTP clock info
-+ * @ts: timespec with time to set
-  *
-- * Return: pointer to DPLL device on success, error pointer on error
-+ * Return: 0 on success, <0 on error
-  */
--struct zl3073x_dpll *
--zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch)
-+static int zl3073x_dpll_ptp_settime64(struct ptp_clock_info *info,
-+				      const struct timespec64 *ts)
- {
--	struct zl3073x_dpll *zldpll;
-+	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
-+						   ptp_info);
- 
--	zldpll = kzalloc_obj(*zldpll);
--	if (!zldpll)
--		return ERR_PTR(-ENOMEM);
-+	guard(mutex)(&zldpll->lock);
- 
--	zldpll->dev = zldev;
--	zldpll->id = ch;
--	mutex_init(&zldpll->lock);
--	INIT_LIST_HEAD(&zldpll->pins);
-+	return zl3073x_chan_tod_write(zldpll->dev, zldpll->id, *ts);
-+}
- 
--	return zldpll;
-+/**
-+ * zl3073x_dpll_ptp_adjtime_phase_step - adjust sub-second time via phase step
-+ * @zldpll: DPLL channel
-+ * @delta: time adjustment in nanoseconds (must be within (-NSEC_PER_SEC,
-+ *         NSEC_PER_SEC))
-+ *
-+ * Uses the output phase step mechanism with tod_step=1 to adjust both
-+ * the output clock phase and the ToD counter simultaneously. This keeps
-+ * outputs and ToD coherent. Only valid for NCO.
-+ *
-+ * Outputs are grouped by synthesizer since the phase step value is in
-+ * synthesizer clock cycles. The first synth group with enabled outputs
-+ * uses tod_step to adjust both outputs and the ToD counter. Remaining
-+ * groups step outputs only. If no synth has enabled outputs, the ToD
-+ * counter is stepped alone using an empty output mask (the FW uses
-+ * the first enabled synth's period for the conversion).
-+ *
-+ * Return: 0 on success, -EOPNOTSUPP if no synths available, <0 on error
-+ */
-+static int zl3073x_dpll_ptp_adjtime_phase_step(struct zl3073x_dpll *zldpll,
-+					       s64 delta)
-+{
-+	u16 synth_mask[ZL3073X_NUM_SYNTHS] = {};
-+	struct zl3073x_dev *zldev = zldpll->dev;
-+	const struct zl3073x_synth *synth;
-+	struct zl3073x_dpll_pin *pin;
-+	u32 first_synth_freq = 0;
-+	bool tod_stepped = false;
-+	s32 step_cycles;
-+	u32 synth_freq;
-+	int rc;
-+	u8 i;
-+
-+	/* Build per-synth output masks from registered output pins */
-+	list_for_each_entry(pin, &zldpll->pins, list) {
-+		u8 out_id, synth_id;
-+
-+		if (zl3073x_dpll_is_input_pin(pin))
-+			continue;
-+
-+		out_id = zl3073x_output_pin_out_get(pin->id);
-+
-+		if (!zl3073x_dev_out_is_stepped(zldev, out_id))
-+			continue;
-+
-+		synth_id = zl3073x_dev_out_synth_get(zldev, out_id);
-+		if (synth_id >= ZL3073X_NUM_SYNTHS) {
-+			dev_warn(zldev->dev, "Unexpected synth id for OUT%u\n",
-+				 out_id);
-+			continue;
-+		}
-+		synth_mask[synth_id] |= BIT(out_id);
-+	}
-+
-+	/* Process each synth group */
-+	for (i = 0; i < ZL3073X_NUM_SYNTHS; i++) {
-+		synth = zl3073x_synth_state_get(zldev, i);
-+		if (!zl3073x_synth_is_enabled(synth) ||
-+		    zl3073x_synth_dpll_get(synth) != zldpll->id)
-+			continue;
-+
-+		synth_freq = zl3073x_synth_freq_get(synth);
-+
-+		/* Remember first enabled synth freq for ToD-only fallback */
-+		if (!first_synth_freq)
-+			first_synth_freq = synth_freq;
-+
-+		if (!synth_mask[i])
-+			continue;
-+
-+		/* Safe for s32: max synth freq is 750 MHz */
-+		step_cycles = div_s64(delta * synth_freq, NSEC_PER_SEC);
-+
-+		rc = zl3073x_chan_phase_step(zldev, zldpll->id,
-+					     synth_mask[i], step_cycles,
-+					     !tod_stepped);
-+		if (rc) {
-+			if (tod_stepped) {
-+				dev_warn(zldev->dev,
-+					 "Partial phase step failure\n");
-+				return 0;
-+			}
-+			return rc;
-+		}
-+		tod_stepped = true;
-+	}
-+
-+	if (!first_synth_freq)
-+		return -EOPNOTSUPP;
-+
-+	/* No enabled outputs found; step ToD counter only using the
-+	 * first enabled synth's period (empty output mask).
-+	 */
-+	if (!tod_stepped) {
-+		step_cycles = div_s64(delta * first_synth_freq, NSEC_PER_SEC);
-+		return zl3073x_chan_phase_step(zldev, zldpll->id, 0,
-+					       step_cycles, true);
-+	}
-+
-+	return 0;
- }
- 
- /**
-- * zl3073x_dpll_free - free DPLL device
-- * @zldpll: pointer to zl3073x_dpll structure
-+ * zl3073x_dpll_ptp_adjtime - adjust PTP clock time
-+ * @info: PTP clock info
-+ * @delta: time adjustment in nanoseconds
-  *
-- * Deallocates given DPLL device previously allocated by @zl3073x_dpll_alloc.
-+ * For NCO, large deltas (>= 1 second) are split into a ToD
-+ * read-modify-write for the seconds part and an output phase step for
-+ * the sub-second remainder. Sub-second deltas use phase step directly,
-+ * falling back to ToD read-modify-write if phase step is unavailable.
-+ * In AUTO/REFLOCK modes, large deltas are split into ToD
-+ * read-modify-write for seconds and TIE write for the sub-second
-+ * remainder. Sub-second deltas use TIE write directly.
-+ *
-+ * Return: 0 on success, <0 on error
-  */
--void
--zl3073x_dpll_free(struct zl3073x_dpll *zldpll)
-+static int zl3073x_dpll_ptp_adjtime(struct ptp_clock_info *info, s64 delta)
- {
--	WARN(zldpll->dpll_dev, "DPLL device is still registered\n");
-+	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
-+						   ptp_info);
-+	struct zl3073x_dev *zldev = zldpll->dev;
-+	const struct zl3073x_chan *chan;
-+	bool sec_adjusted = false;
-+	struct timespec64 ts;
-+	int rc;
- 
--	mutex_destroy(&zldpll->lock);
--	kfree(zldpll);
-+	if (!delta)
-+		return 0;
-+
-+	guard(mutex)(&zldpll->lock);
-+
-+	/* Modes without phase step or TIE use plain ToD adjust */
-+	chan = zl3073x_chan_state_get(zldev, zldpll->id);
-+	if (!zl3073x_chan_mode_is_nco(chan) &&
-+	    !zl3073x_chan_mode_supports_tie(chan))
-+		return zl3073x_chan_tod_adjust(zldev, zldpll->id,
-+					       ns_to_timespec64(delta));
-+
-+	/* Split off seconds via ToD read-modify-write so the sub-second
-+	 * remainder can be applied through the output-coherent mechanism
-+	 * (phase step or TIE write).
-+	 */
-+	if (delta >= NSEC_PER_SEC || delta <= -NSEC_PER_SEC) {
-+		s32 remainder;
-+
-+		ts.tv_sec = div_s64_rem(delta, NSEC_PER_SEC, &remainder);
-+		ts.tv_nsec = 0;
-+		delta = remainder;
-+
-+		rc = zl3073x_chan_tod_adjust(zldev, zldpll->id, ts);
-+		if (rc)
-+			return rc;
-+
-+		/* No sub-second remainder, done */
-+		if (!delta)
-+			return 0;
-+
-+		/* Wait for the ToD write to be applied at the 1 Hz edge
-+		 * before issuing phase step or TIE write, so the pending
-+		 * WR_NEXT_1HZ does not overwrite the sub-second adjustment.
-+		 */
-+		rc = zl3073x_chan_tod_ready_wait(zldev, zldpll->id);
-+		if (rc)
-+			return rc;
-+
-+		sec_adjusted = true;
-+	}
-+
-+	/* Apply sub-second delta via phase step (NCO) or TIE write */
-+	if (zl3073x_chan_mode_is_nco(chan)) {
-+		rc = zl3073x_dpll_ptp_adjtime_phase_step(zldpll, delta);
-+		if (!rc)
-+			return 0;
-+	} else {
-+		rc = zl3073x_chan_tie_write(zldev, zldpll->id, delta);
-+		if (!rc)
-+			return 0;
-+	}
-+
-+	/* Phase step or TIE write failed, fall back to ToD adjust */
-+	rc = zl3073x_chan_tod_adjust(zldev, zldpll->id,
-+				     ns_to_timespec64(delta));
-+
-+	/* In the unlikely event that both phase step/TIE write and fallback
-+	 * ToD adjust fail after seconds were already committed, return
-+	 * success to prevent the PTP servo from retrying the full delta and
-+	 * applying seconds again. The sub-second residual will self-correct
-+	 * in the next servo cycle.
-+	 */
-+	if (rc && sec_adjusted) {
-+		dev_warn(zldev->dev,
-+			 "Sub-second adjustment failed after seconds applied\n");
-+		return 0;
-+	}
-+
-+	return rc;
-+}
-+
-+/**
-+ * zl3073x_dpll_ptp_adjfine - adjust PTP clock frequency
-+ * @info: PTP clock info
-+ * @scaled_ppm: frequency adjustment in scaled ppm (ppm * 2^16)
-+ *
-+ * Only supported for NCO. Writes the delta frequency offset register.
-+ *
-+ * Return:
-+ * * %0			- success or @scaled_ppm is zero (no-op)
-+ * * %-EOPNOTSUPP	- NCO pin is not connected and @scaled_ppm is non-zero
-+ * * negative		- other error
-+ */
-+static int
-+zl3073x_dpll_ptp_adjfine(struct ptp_clock_info *info, long scaled_ppm)
-+{
-+	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
-+						   ptp_info);
-+	const struct zl3073x_chan *chan;
-+	s64 offset;
-+
-+	/* Convert scaled_ppm to df_offset in 2^-48 steps:
-+	 *   df_offset = -(scaled_ppm * 2^32) / 10^6
-+	 *
-+	 * Simplify to avoid overflow:
-+	 *   df_offset = -(scaled_ppm * 2^26) / 5^6
-+	 *   df_offset = -(scaled_ppm * 67108864) / 15625
-+	 */
-+	offset = -div_s64((s64)scaled_ppm * 67108864LL, 15625);
-+
-+	guard(mutex)(&zldpll->lock);
-+
-+	chan = zl3073x_chan_state_get(zldpll->dev, zldpll->id);
-+	if (!zl3073x_chan_mode_is_nco(chan))
-+		return scaled_ppm ? -EOPNOTSUPP : 0;
-+	if (offset == chan->df_offset)
-+		return 0;
-+
-+	return zl3073x_chan_df_offset_set(zldpll->dev, zldpll->id, offset);
-+}
-+
-+/**
-+ * zl3073x_dpll_ptp_adjphase - adjust PTP clock phase
-+ * @info: PTP clock info
-+ * @delta: phase adjustment in nanoseconds
-+ *
-+ * Only supported in AUTO and REFLOCK modes. Uses TIE write for
-+ * nanosecond resolution phase adjustment.
-+ *
-+ * Return:
-+ * * %0			- success or @delta is zero (no-op)
-+ * * %-EOPNOTSUPP	- mode does not support TIE and @delta is non-zero
-+ * * negative		- other error
-+ */
-+static int zl3073x_dpll_ptp_adjphase(struct ptp_clock_info *info, s32 delta)
-+{
-+	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
-+						   ptp_info);
-+	struct zl3073x_dev *zldev = zldpll->dev;
-+	const struct zl3073x_chan *chan;
-+
-+	if (!delta)
-+		return 0;
-+
-+	guard(mutex)(&zldpll->lock);
-+
-+	chan = zl3073x_chan_state_get(zldev, zldpll->id);
-+
-+	if (!zl3073x_chan_mode_supports_tie(chan))
-+		return -EOPNOTSUPP;
-+
-+	return zl3073x_chan_tie_write(zldev, zldpll->id, delta);
-+}
-+
-+static s32
-+zl3073x_dpll_ptp_getmaxphase(struct ptp_clock_info *info __always_unused)
-+{
-+	/* HW limits TIE write to +-1 second. Return the constant HW
-+	 * limit and let adjphase handle mode-specific checks.
-+	 */
-+	return NSEC_PER_SEC - 1;
-+}
-+
-+static const struct ptp_clock_info zl3073x_dpll_ptp_clock_info = {
-+	.owner		= THIS_MODULE,
-+	.max_adj	= ZL3073X_DPLL_PTP_MAX_ADJ,
-+	.gettimex64	= zl3073x_dpll_ptp_gettimex64,
-+	.settime64	= zl3073x_dpll_ptp_settime64,
-+	.adjtime	= zl3073x_dpll_ptp_adjtime,
-+	.adjfine	= zl3073x_dpll_ptp_adjfine,
-+	.adjphase	= zl3073x_dpll_ptp_adjphase,
-+	.getmaxphase	= zl3073x_dpll_ptp_getmaxphase,
-+};
-+
-+/**
-+ * zl3073x_dpll_ptp_register - register PTP clock for a DPLL channel
-+ * @zldpll: DPLL channel to register PTP clock for
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+static int zl3073x_dpll_ptp_register(struct zl3073x_dpll *zldpll)
-+{
-+	struct zl3073x_dev *zldev = zldpll->dev;
-+	struct ptp_clock *ptp_clock;
-+
-+	snprintf(zldpll->ptp_info.name, sizeof(zldpll->ptp_info.name),
-+		 "%s-dpll%u", dev_name(zldev->dev), zldpll->id);
-+
-+	ptp_clock = ptp_clock_register(&zldpll->ptp_info, zldev->dev);
-+	if (IS_ERR(ptp_clock)) {
-+		dev_err(zldev->dev, "Failed to register PTP clock for DPLL%u\n",
-+			zldpll->id);
-+		return PTR_ERR(ptp_clock);
-+	}
-+
-+	zldpll->ptp_clock = ptp_clock;
-+
-+	return 0;
-+}
-+
-+/**
-+ * zl3073x_dpll_ptp_unregister - unregister PTP clock for a DPLL channel
-+ * @zldpll: DPLL channel to unregister PTP clock for
-+ */
-+static void zl3073x_dpll_ptp_unregister(struct zl3073x_dpll *zldpll)
-+{
-+	if (!IS_ERR_OR_NULL(zldpll->ptp_clock)) {
-+		ptp_clock_unregister(zldpll->ptp_clock);
-+		zldpll->ptp_clock = NULL;
-+	}
- }
- 
- /**
-@@ -2398,6 +2730,48 @@ zl3073x_dpll_ref_sync_pairs_register(struct zl3073x_dpll *zldpll)
- 	return 0;
- }
- 
-+/**
-+ * zl3073x_dpll_alloc - allocate DPLL device
-+ * @zldev: pointer to zl3073x device
-+ * @ch: DPLL channel number
-+ *
-+ * Allocates DPLL device structure for given DPLL channel.
-+ *
-+ * Return: pointer to DPLL device on success, error pointer on error
-+ */
-+struct zl3073x_dpll *
-+zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch)
-+{
-+	struct zl3073x_dpll *zldpll;
-+
-+	zldpll = kzalloc_obj(*zldpll);
-+	if (!zldpll)
-+		return ERR_PTR(-ENOMEM);
-+
-+	zldpll->dev = zldev;
-+	zldpll->id = ch;
-+	zldpll->ptp_info = zl3073x_dpll_ptp_clock_info;
-+	mutex_init(&zldpll->lock);
-+	INIT_LIST_HEAD(&zldpll->pins);
-+
-+	return zldpll;
-+}
-+
-+/**
-+ * zl3073x_dpll_free - free DPLL device
-+ * @zldpll: pointer to zl3073x_dpll structure
-+ *
-+ * Deallocates given DPLL device previously allocated by @zl3073x_dpll_alloc.
-+ */
-+void
-+zl3073x_dpll_free(struct zl3073x_dpll *zldpll)
-+{
-+	WARN(zldpll->dpll_dev, "DPLL device is still registered\n");
-+
-+	mutex_destroy(&zldpll->lock);
-+	kfree(zldpll);
-+}
-+
- /**
-  * zl3073x_dpll_register - register DPLL device and all its pins
-  * @zldpll: pointer to zl3073x_dpll structure
-@@ -2428,6 +2802,13 @@ zl3073x_dpll_register(struct zl3073x_dpll *zldpll)
- 		return rc;
- 	}
- 
-+	rc = zl3073x_dpll_ptp_register(zldpll);
-+	if (rc) {
-+		zl3073x_dpll_pins_unregister(zldpll);
-+		zl3073x_dpll_device_unregister(zldpll);
-+		return rc;
-+	}
-+
- 	return 0;
- }
- 
-@@ -2441,7 +2822,7 @@ zl3073x_dpll_register(struct zl3073x_dpll *zldpll)
- void
- zl3073x_dpll_unregister(struct zl3073x_dpll *zldpll)
- {
--	/* Unregister all pins and dpll */
-+	zl3073x_dpll_ptp_unregister(zldpll);
- 	zl3073x_dpll_pins_unregister(zldpll);
- 	zl3073x_dpll_device_unregister(zldpll);
- }
-diff --git a/drivers/dpll/zl3073x/dpll.h b/drivers/dpll/zl3073x/dpll.h
-index faebc402ba1b70..993221dc63249d 100644
---- a/drivers/dpll/zl3073x/dpll.h
-+++ b/drivers/dpll/zl3073x/dpll.h
-@@ -5,6 +5,7 @@
- 
- #include <linux/dpll.h>
- #include <linux/list.h>
-+#include <linux/ptp_clock_kernel.h>
- 
- #include "core.h"
- 
-@@ -22,6 +23,8 @@
-  * @type: DPLL type (PPS or EEC)
-  * @lock_status: last saved DPLL lock status
-  * @pins: list of pins
-+ * @ptp_info: PTP clock info
-+ * @ptp_clock: registered PTP clock (or NULL)
-  */
- struct zl3073x_dpll {
- 	struct list_head		list;
-@@ -36,6 +39,8 @@ struct zl3073x_dpll {
- 	enum dpll_type			type;
- 	enum dpll_lock_status		lock_status;
- 	struct list_head		pins;
-+	struct ptp_clock_info		ptp_info;
-+	struct ptp_clock		*ptp_clock;
- };
- 
- struct zl3073x_dpll *zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch);
+  4  validate hardware-supplied values in the HWC RX path
+     Bounds-check the SGE, verify the recovered slot index and SGE
+     address, and validate response length and msg_id before use, so
+     malformed or hostile DMA metadata cannot cause wrong-slot completion
+     or out-of-bounds access.
+
+  5  fix HWC teardown safety with setup_active flag and destroy ordering
+     Track setup activation explicitly, tear the EQ/CQ down before the
+     TXQ/RXQ, and on an unrecoverable teardown failure leak the HWC
+     resources rather than free memory the device may still DMA into.
+
+  6  fix stale HWC response after command timeout
+     Replace the inflight-slot semaphore with a bitmap + waitqueue and
+     per-slot refcount/lock; latch the channel on timeout so no new slots
+     are handed out, drop duplicate/late responses, and ignore a zero
+     firmware-supplied timeout.
+
+  7  keep max_num_cqs immutable once cq_table is allocated
+     gc->max_num_cqs is set once when cq_table is allocated and never
+     reset, so a spoofed post-init HWC event cannot inflate the bound
+     past the allocation and drive an out-of-bounds cq_table access.
+
+Follow-up feature work (net-next, sent separately):
+
+The original series also contained two patches that are improvements, not
+fixes:
+
+  net: mana: support concurrent HWC requests
+  net: mana: add dynamic HWC queue depth with reinit path
+
+Per the netdev tree rules, fixes go to 'net' and features/improvements go
+to 'net-next', and the two must not be combined in a single submission.
+Those two patches build on the locking and teardown groundwork in this
+series, so they will be posted as a separate net-next series only after
+these fixes have propagated from net into net-next through the usual
+periodic merge.
+
+Changes since v4:
+
+ - No code changes.  Resending as a standalone thread; v4 was
+   accidentally sent in-reply-to the v3 thread.
+ - v4: https://lore.kernel.org/netdev/20260808023417.1746886-1-longli@microsoft.com/
+ - v3: https://lore.kernel.org/netdev/20260803234355.636038-1-longli@microsoft.com/
+
+Changes since v3:
+
+Addressed the netdev-ai and sashiko.dev automated reviews of v3.
+
+ - New patch 7 ("keep max_num_cqs immutable once cq_table is
+   allocated"): gc->max_num_cqs is set once and never reset, so a
+   spoofed post-init HWC event cannot inflate the bound past the
+   allocation and cause an out-of-bounds cq_table access.
+ - patch 1: replaced the per-CQ synchronize_rcu() in the netdev teardown
+   paths with a two-pass quiesce/free that takes a single grace period
+   per teardown; snapshot cq->id and max_num_cqs with READ_ONCE() so the
+   same value sizes, bounds and indexes cq_table; corrected the
+   gc->cq_table lifetime comment; rescoped the changelog to the
+   use-after-free fix.
+ - patch 2: reworded the changelog as a latent-correctness fix (both
+   message sizes are 0x1000, so the swap has no observable overflow) and
+   dropped the incorrect note about hoisting the queue dimensions.
+ - patch 4: removed the short-response early return so a malformed
+   response reaches verify_resp_msg() -> -EPROTO and completes the
+   sender instead of hanging it; account leaked RX WQEs and trip
+   hwc_timeout on RQ exhaustion; read the device-supplied
+   inline_oob_size_div4 (through its u32 flags word, as it is a
+   bit-field) and sge->address with READ_ONCE() and reject any value
+   other than the one the driver programs; reframed the msg_id check as
+   defense in depth.
+ - patch 5: arm setup_active immediately after mana_smc_setup_hwc()
+   succeeds; destroy the EQ (IRQ deregister + drain) before the CQ; drop
+   the redundant teardown in mana_hwc_establish_channel() that caused a
+   double hardware timeout and masked the original error.
+ - patch 6: take both the sender and response-side references up front in
+   mana_hwc_get_msg_index() (refcount initialised to 2, under the lock
+   that publishes the slot) so an early/stale/forged response cannot free
+   the slot before the sender posts; changed caller_ctx::error from u32
+   to int; reject a zero firmware-supplied HWC timeout in the query path
+   as well as the reconfig path; access hwc_timed_out with READ_ONCE()/
+   WRITE_ONCE(); comment and changelog fixes.
+ - Assorted comment and commit-message clarifications throughout.
+
+Changes since v2:
+
+ - Per maintainer feedback, split the original combined series: the
+   fixes here target 'net'; the two feature patches now go to 'net-next'
+   and are sent separately (see above).  Rebased the fixes onto net.
+ - Dropped the pcie_flr()-based reset fallback from the teardown path.
+   pcie_flr() resets device config without the save/restore that
+   pci_reset_function() provides, and cannot be used as a drop-in here.
+   On an unrecoverable teardown failure the driver now leaks the HWC
+   resources instead of touching memory the device may still DMA into.
+ - patch 2: store the HWC queue dimensions before creating the CQ so the
+   RX completion handler can never observe a zero max_resp_msg_size
+   divisor or a stale num_inflight_msg bound.
+ - Assorted commit-message and comment clarifications.
+
+Long Li (7):
+  net: mana: RCU-protect gc->cq_table lookups against concurrent CQ
+    destroy
+  net: mana: fix HWC RQ/SQ buffer size swap
+  net: mana: free HWC comp_buf after destroying the EQ
+  net: mana: validate hardware-supplied values in the HWC RX path
+  net: mana: fix HWC teardown safety with setup_active flag and destroy
+    ordering
+  net: mana: fix stale HWC response after command timeout
+  net: mana: keep max_num_cqs immutable once cq_table is allocated
+
+ drivers/infiniband/hw/mana/cq.c               |  46 +-
+ .../net/ethernet/microsoft/mana/gdma_main.c   |  48 +-
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 452 +++++++++++++++---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 136 ++++--
+ include/net/mana/gdma.h                       |  40 +-
+ include/net/mana/hw_channel.h                 |  44 +-
+ 6 files changed, 652 insertions(+), 114 deletions(-)
+
+
+base-commit: dd057113ac7ba5bdd2aed3d9405305911152f911
 -- 
-2.54.0
+2.43.0
 
