@@ -1,176 +1,152 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FD030ACE6
-	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 10:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786272011; cv=pass; b=U/rMcpjfcouOsVgKpzHkTjXU8olNo3+8j6eBUCTADjH2wHj0Lo8UL+bxvTOm0MjyeXDir+QUpSevZ9moOx/Kanqbp7+4ULmM2Gt7vo3/vWs8ZbDGAyv/D1eGPSrWK5LZQK4KQecapPTJOPnDn3wcG4b6FaCiuuTMnkHh4RrsFiU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786272011; c=relaxed/simple;
-	bh=QM1sGGuS0vaAOd8KtfMYyxFzhT/qyqbhYms3edkJ8fs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YleBgiuULvhLN45ZMFlbSi9vMiriV7y3qYEVnRpO41ECAcBE4FGBywFS0B+XTgolbl2YguFYvaDLLCP7MC3cHswXM6IBjC3kp5AQNvDUAivPv1hGK7czzBLMDJ5vBKhKGmetYmWDjLhCsedG4KtaH/HWs4PY5lRB4a3mm9kAwYk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F0QU5pca; arc=pass smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F273CC310;
+	Sun,  9 Aug 2026 10:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786272963; cv=none; b=WFpiUmlUduaZUlRIQvuVCAGNIETygUduKcJT9CvrD7ZPwKRxCJnCCtnHzqdhYfhPDqRBY+OGV8mklpbMWCraFtjvftLcoNpX+62zXjPl/MpQ1/87mp9vRSeYB6RKazDQRgI9RoBsmB2o9eG7tv+Tw9KwxLbHXhhmXAW393htKn0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786272963; c=relaxed/simple;
+	bh=KcooomG/N7c42eTuLgNXB5Qr0Tr88R+Byg8Pv/56GBA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A6eYVgoIrDakt7oAzYEvbjv5rEvT/mYHMirMWXf4R2KGYBjlZVvhPk88m1dpiHrjHnVwg8oHkdk8jyALwXZc/kPq3hxJS7+WwJfF8qAoEuF1eHvfF7ymzr2Pphv3Mf6K0tFQPCwXLOHmMf8WPVp7QQyjoCZKJ20FgFbcH6q1Q1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=H1H9iJU2; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F0QU5pca"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-81ff017d420so47247947b3.0
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 03:40:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786272009; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SDDFDMOm2FbmmcN+bDlsqpSb7QUf1P6rT8toDdl8qVfO9tFgiRgJFeOZRiWuPBWITv
-         YZyHYVYGDxWzFa/TKEuu3+DLoFNzRzMyfqbTlMmH5yZ9hIlDQ/5Bw6KaYpm4Ez+jmZ6n
-         rC6DHDedsGZPt1VBidMdY9am8cAryFinF7+cU441jUNmqj8KPJCaa2ifIg/E4ONBHaW0
-         dcQyn85q92ykBezcJOEPGR/labjJVahe5/iZ9bhnNW+d3VZKJ3gMKkYOUJz4VvWPHuw3
-         Zg1r6vid5nkpXezQ4VE50yNqyJEay8hC8Ws2LC4u3nF/C6s1SyDxvbrNRp3r1fMJdGFD
-         XHRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5OEHnesK7EakdoIkkPsJgHCKsy+uVd8phvK+XOFpozg=;
-        fh=foAwvQjx0QfPNfNmsDyL0l6VxUVjNeSP8rNLWQUtepI=;
-        b=p2Ko9VIeHkX+meHPi72ZzNf9/nJ1VUOGcf+0cRthtnjXp6A8I2dYiLbjpvaFHXsicg
-         hjnyrTWdZn4hcojK0VABZVozV3c4mEZbYPw1xhDUpZNPoLZV05tclYPB6wPNLON2S4JM
-         0ZgjsT3MZPVMZ+YspiozhmYM88GgEwqLTC0kcmYRI1tpyxLdyqTI2q28e87UYK4y3RT0
-         YWMOGLMHF/BstQEJef3V14v37lmEgA69pVgladJLz+3v69wpQ5DbCmFDl6LhgmLFmvdU
-         wZ5TArQCJzWj2yuE3BAQ+h0G90doOmpOhvXITp5x8YAl1b4XQ8GsFGkxPWN4jvn3aBM/
-         3hGQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786272009; x=1786876809; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5OEHnesK7EakdoIkkPsJgHCKsy+uVd8phvK+XOFpozg=;
-        b=F0QU5pcarzCE0nSrGr06qXJHnfL4DtiQVZgX7oFW9S3GzJ6CLq/T7/xXIzFdev3XR5
-         aezunP8VllEQ2zHziYmUM1bqmorcCmZ93U6h0v+Ml0mnUbRpBBE928vfZfifTc8DIzme
-         Gwc084itHAJJQyP4eSPbqawGYOQrKWtHdQ3XeOFznOPXSjSqZbZoyeibA3lpp3rqOMux
-         vQlHmokBLo3gp47LEnCyzSRTwOg2b3v9J3cQGfQ34FOnCnilI/Q0njayimlozZQU94As
-         vfUqwd2YIBraWwnOLboBkEP5cWLlcVMsmE3fI7j6to4fgpSNybDmL27Dqy0zAeVD4J9x
-         PfXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786272009; x=1786876809;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5OEHnesK7EakdoIkkPsJgHCKsy+uVd8phvK+XOFpozg=;
-        b=DlwVOUCBTt3BCtUlxRjQSnEvfiqsN3sg4IVFMg3N8WM0FKZ8MsXFKEs6Hno/EG2oLD
-         JO7C4EykM7oKB52Z0j+3e9VmlqzIfznzYr090U7SaWvNKrHNLmCnvR5JjqMOcMZm2rvu
-         7n2/IuMA4TMyQqnZ1LsZc4dURVDgBplmlJfw9zVHIVvJeg4Jjxj0WU+2Whd3ozVdVocK
-         b/9Dm74AAmim+s6b6ddON2HeVeULei+6xwRCC7WRrhxlqz75KRwlZlHHnZd2iKXwZRp0
-         WlAhaM3v3QvSH8XFinZ9+UnpRLmvB32hh/qD2bxSorrZ+QE6jaA2BBeCoMrcbT4bqjeK
-         JqfQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrIWDaeFCf4lw6UWl5M5AXm2fWM+kMFU17MRLJrsHjEPfI19GSIMINLGt/FSY4VdmdYcCAOfs8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqSDRCPazFcGfvZ4CIlG3xJJUnKUNKGvc1AGH8JtkdVCD87HFP
-	UnWnk3cPYqjUuHYFXQB07oQMdxCgXczwszlLGR6lXIgbnYgRPGyFa1NqR6xeFhhMiZ+8OGkFrTO
-	6rgHbOe2I2BhRHLfYKlGDsAfFKDmmtMM=
-X-Gm-Gg: AR+sD12OJyxcUcKa9/kJLyxJ72cX3JhkXmRMds6gSM7LX3gxC1Gg0CF7MbnX3IFYLZM
-	NORYL3N8IzbFbgt9DsptCFnI+CciFAa3kN/hT4tGDvcjTI94TeZZsdkDxNlfom63J4CKYvafTB4
-	LM37QL8VZEiZ7Azq+K7GW25ulHBlb+YJEbEQ69RBMUhErp1IKtD5x8Bm7gHHUje7oGVXuwoda6F
-	JIlZW1tkaMVUkVL1/jPqS6s8DxCt8vqy6EiJ1nyND4t7kjwoqeEJ53Fhd+GUPLMic9UZKFbp01z
-	GU0RpHny5nDGfw8YoHhTZNoh/qUNk62cUiJjsdbOlk3pos8dTJ7tnOvedRHcbbkod2jhVM7zQRf
-	Rcn0Vff41oEmKiFCLEXmfNp3RJuPgVGf4OXUByIUPScqIVR+zt8D7mfXAh20C7DgLKxPI90yW9z
-	i8qVki5aIcRlvLe+0KwPA=
-X-Received: by 2002:a05:690c:6e81:b0:826:8d02:8e97 with SMTP id
- 00721157ae682-8268d02e38fmr49818597b3.11.1786272008843; Sun, 09 Aug 2026
- 03:40:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="H1H9iJU2"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6799201D2444502;
+	Sun, 9 Aug 2026 10:55:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=QIvO4B8LUmClQ2MRTWfabEAyNVq3RyN7PxlvvMOFH
+	UQ=; b=H1H9iJU24O1qTpfkoJ2GH3+LRxgjtsH+LC0ojFUIc5xzeIuN9UP1qQF5e
+	fG+P9nuAGehxc9pH/PWtVglo6nnAtt5cSJ7tWMf3ru/2e3xrc2wUFPmda81EJWq/
+	kayTiXyCIHGZbpRLJw7Rs0fxqMF0zwOi2sMngAYmqtZgWI282Z1B5GZBgaZXCE7K
+	fxTK3OMWUTqROaed00PI1McGCj1EmZOyGos343F/S9L4ynwKAzCr+AalHQbmS6/c
+	8KTwM4WA4Ab7qJrxLUvjEgPQD0gHzpm0L0eLE1YTXCCv6ySDfjtj1WD5RVcGD1u2
+	H33R0aVDpKyvX3u9pyeVuVscfq52g==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvkckqba-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Aug 2026 10:55:41 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 679AfnNa026952;
+	Sun, 9 Aug 2026 10:55:40 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxh0g0xr7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Aug 2026 10:55:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 679AtaN935586336
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 9 Aug 2026 10:55:36 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A8F372004B;
+	Sun,  9 Aug 2026 10:55:36 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C01320040;
+	Sun,  9 Aug 2026 10:55:36 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun,  9 Aug 2026 10:55:36 +0000 (GMT)
+From: Aswin Karuvally <aswin@linux.ibm.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Alexandra Winter <wintera@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
+        jeff@garzik.org, stable@vger.kernel.org
+Subject: [PATCH net] s390/ctcm: Prevent XID null dereference
+Date: Sun,  9 Aug 2026 12:55:36 +0200
+Message-ID: <20260809105536.541453-1-aswin@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260809093934.28098-1-zajec5@gmail.com>
-In-Reply-To: <20260809093934.28098-1-zajec5@gmail.com>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Sun, 9 Aug 2026 12:39:58 +0200
-X-Gm-Features: AUfX_mzSbd1f7h_hXr21SaLryqm2UUb69zbUmNg27YTIZGmdKgCQY0p4TyF9vDM
-Message-ID: <CAOiHx==_HzdmNN5BY4DMh3Cr6JK5oQri3ZCNWN9v+xQPjzQZkg@mail.gmail.com>
-Subject: Re: [PATCH net] net: dsa: b53: skip EAP mode setup on Northstar SoCs
- when using port 5 or 7
-To: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Vladimir Oltean <olteanv@gmail.com>, 
-	netdev@vger.kernel.org, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Semih Baskan <strst.gs@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: NGijARh0JhpdpY3-rge1sH6WGfOF_BKC
+X-Authority-Analysis: v=2.4 cv=J86aKgnS c=1 sm=1 tr=0 ts=6a785cae cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=OtRM_J3iQteCy_yeMqoA:9
+X-Proofpoint-ORIG-GUID: mtY_biLqyrpEQxQsmnQ-GGY3hxHW1hPe
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA5MDA5MyBTYWx0ZWRfX9n0th8hqHwmO
+ zPq5QiNIEgDqRQyAoxdqE/ckaj0CXI1MIe+8Q6Yhh6/aHzhnLx4xyi2UnK+nRuGfo9lro7zakI5
+ AqEDnIcMhK6XJFFHFLAc+jWx0YuRZo4HZlUpeGyawwa5buGndIeFCx4ARYaaJl1w3V/5F+0KZUB
+ 61JyKnYz+nMmjfpDMOY4Fj5Xh6Wq6TG7B4IHGCrqxBctXMOSFl4482II/Nq2gEMBbfqxPPudab6
+ f72SuhLQLR+FKsHadcSBRcl21VDkP40/ffn4jyztaAoVkOCOONJJrDrmarZfohDRAihouB4JIJ5
+ uSauYFlbQJWktP+3WiW1AGmeveAGgyisDO35WzZxlS2ZRGoUFBQOKFfCDIPHtLXzd6JYADeVdGA
+ LkxRzkMnC+zECGoweo461/M2FXAfsMkuUSA1IjdHAGgo87aKvqK0XkZCj4lx3IpJMqGLcjB8Uom
+ Lk1yEBCe9IzYQRPxkWg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA5MDA5MyBTYWx0ZWRfX3bN1F5WOEeXy
+ t98/rTBrsPiDZzSDlRsTCSI8h6GTi1XrzQMFez+yBeHNXRVNU61olLKWr/xAVRxDBEkrKpLGidg
+ sA2bM9IXYRuDPnHaxlvZWYmZ5gJ3QFw=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-09_03,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0
+ phishscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608090093
 
-On Sun, Aug 9, 2026 at 11:39=E2=80=AFAM Rafa=C5=82 Mi=C5=82ecki <zajec5@gma=
-il.com> wrote:
->
-> From: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
->
-> Northstar devices have 3 CPU ports. This design was meant for dual IMP
-> setups when WAN traffic goes to port 5 (IMP1) and LAN traffic goes to
-> port 8 (IMP0). While all 3 ports support Broadcom header some features
-> are not available for ports 5 and 7. Trying to set EAP mode when using
-> those ports breaks standalone ports.
->
-> Fixes: 4227ea91e265 ("net: dsa: b53: prevent standalone from trying to fo=
-rward to other ports")
-> Cc: Semih Baskan <strst.gs@gmail.com>
-> Signed-off-by: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
-> ---
-> This fixes a regression. A very similar fix was carried by OpenWrt for
-> about half a year now.
->
-> A recent discussion in
-> [PATCH net 0/2] net: dsa: b53: fix 8021q uppers on standalone ports
-> allowed understanding the issue a bit better so I decided to send an
-> upstream PATCH finally.
->
->  drivers/net/dsa/b53/b53_common.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_c=
-ommon.c
-> index 3f5b9592794d..4b4a9258ecd4 100644
-> --- a/drivers/net/dsa/b53/b53_common.c
-> +++ b/drivers/net/dsa/b53/b53_common.c
-> @@ -332,6 +332,21 @@ static void b53_set_eap_mode(struct b53_device *dev,=
- int port, int mode)
->  {
->         u64 eap_conf;
->
-> +       /*
-> +        * Northstar devices (SoCs with BCM53011 / BCM53012) have 3 Ether=
-net
-> +        * controllers connected to 3 switch ports: 5 (IMP1), 7 and 8 (IM=
-P0).
-> +        * Each of those ports can be used as CPU one as all support Broa=
-dcom
-> +        * header but ports 5 and 7 have some limitations.
-> +        *
-> +        * Setting EAP_MODE_SIMPLIFIED with port 5/7 used as CPU port bre=
-aks
-> +        * standalone ports, see:
-> +        * https://lore.kernel.org/netdev/ce4d9b7b-aaf6-4796-94fb-8c3d6a1=
-dcd4d@gmail.com/
-> +        */
-> +       if (is5301x(dev) && !dsa_is_cpu_port(dev->ds, B53_CPU_PORT)) {
-> +               dev_warn_once(dev->dev, "skipping EAP setup because of no=
-t using CPU port 8\n");
+The mpc_validate_xid() function sets grp->saved_xid2->xid2_flag2 to 0x40
+to signal XID validation error. If peer XID is NULL or r/w channel
+pairing mismatch happens, grp->saved_xid2 is never initialized. An
+attempt to set the flag in such case leads to NULL dereference.
 
-We should print a bit fat warning at probe time, since this is
-essentially a broken device tree configuration.
+Fix this by guarding grp->saved_xid2->xid2_flag2 with a NULL check.
+Also update mpc_action_go_ready() to treat uninitialized grp->saved_xid2
+as validation error.
 
-EAP isn't the only feature not working, anything that relies on trap
-to CPU is broken. E.g STP also won't work, likely (if ever
-implemented) bonding would not work (LACP frames won't be correctly
-trapped), I assume LLDP would be broken, and any other protocols that
-rely on reserved multicast addresses as well.
+Fixes: 293d984f0e36 ("ctcm: infrastructure for replaced ctc driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Aswin Karuvally <aswin@linux.ibm.com>
+---
+ drivers/s390/net/ctcm_mpc.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-So we should strongly encourage users to fix the device tree and use
-port 8 as CPU port.
+diff --git a/drivers/s390/net/ctcm_mpc.c b/drivers/s390/net/ctcm_mpc.c
+index aeb102537e7f..a5b55fe6b110 100644
+--- a/drivers/s390/net/ctcm_mpc.c
++++ b/drivers/s390/net/ctcm_mpc.c
+@@ -826,7 +826,7 @@ static void mpc_action_go_ready(fsm_instance *fsm, int event, void *arg)
+ 
+ 	fsm_deltimer(&grp->timer);
+ 
+-	if (grp->saved_xid2->xid2_flag2 == 0x40) {
++	if (!grp->saved_xid2 || grp->saved_xid2->xid2_flag2 == 0x40) {
+ 		priv->xid->xid2_flag2 = 0x00;
+ 		if (grp->estconnfunc) {
+ 			grp->estconnfunc(grp->port_num, 1,
+@@ -1636,7 +1636,13 @@ static int mpc_validate_xid(struct mpcg_info *mpcginfo)
+ 			"The XID used in the MPC protocol is not valid, "
+ 			"rc = %d\n", rc);
+ 		priv->xid->xid2_flag2 = 0x40;
+-		grp->saved_xid2->xid2_flag2 = 0x40;
++
++		/* If xid is NULL (rc=1) or r/w channel pairing mismatch
++		 * (rc=2) happens, grp->saved_xid2 is never initialized
++		 * and becomes NULL
++		 */
++		if (grp->saved_xid2)
++			grp->saved_xid2->xid2_flag2 = 0x40;
+ 	}
+ 
+ 	return rc;
+-- 
+2.53.0
 
-Also can you try to move the CPU port on all devices you have access
-to and send patches for that where it works successfully?
-
-Best regards,
-Jonas
