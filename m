@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0311823AE87;
-	Sun,  9 Aug 2026 17:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E06383C95;
+	Sun,  9 Aug 2026 17:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786296925; cv=none; b=azayaSmOECnlkbQ96dXpFc1EW/x2yYztpxCDJ00kinkME1y7MxpYY5jgBLgegJi1u0Hr0WYEDkgVsPijlV36Xbbih4KVp50WCWFbIHfeqA1uokXAyoIzBnrINf50i/IMvuGyH2CIPLHmiwno0mai/gqDFe6V49BSe4FYL/gUK0U=
+	t=1786297507; cv=none; b=f5v4K12R1dQU3vwTjTXOOnjtazbdPwI4Ue7q6M44/O0RJ3zJpR5JK8R7gTtXpJipsQNp0FYxB9mccuIqwiUiJcQfwum8EGePubde/MHIRdE9GODzsPQC6DuPsD51xdcDGuEcaDsxGJQuWQHrKwkpZLcg+2121b9Pt0ZYaeDbFmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786296925; c=relaxed/simple;
-	bh=5plvVDWWzIfJ0pdYaDwijuANiAKYDhvAgT2JOXoC1kw=;
+	s=arc-20240116; t=1786297507; c=relaxed/simple;
+	bh=1ZDTtViuZZo9p3Px3qbbEDk5yZ19M7yzr95nTJZTqG8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WMCH60n+SODLarQoA09cOZz9XLJVft9eCZ6VCa0Vp2M/r9Vg/c8VqZeiHX1z0VPLnr4jOlmQgQa64uIrQDNybj+zbZZWuxfuP2NuokuQ/xc5rxLhjLc7QOo/752rSbJnBOEYJ/8AtCSdFCCc07nA5Dps2Qj9mxYd4jYUsxgK0ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=e17QXMv5; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=hYzFT1P8+Y1sf3qKL2jSI1r8p4eV23X2jFCrF3qiAV1lYsql++h2y16vySp6ThM9RFr1yFXBMa6Grer2WSM8oR/u0ztvEYcJDUODtSy4FSWACcjrBo92LRVbpSUAJxV1097stldYjY1uYlU8YKJfSkCC2L0/+dxFxMl2oFXM3h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=C3nZo2n6; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="e17QXMv5"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="C3nZo2n6"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FMzsNibpkbclybef2IiC1pkGWDkaFZm31qCdxzMS/OY=; b=e17QXMv5usqgSTF6AttFhTz4d8
-	1yCkfpV+MuoLt8Fjrb8fDyWwbdXorx21EOpwYDH87hnZwDfb2+1hq+AdWBF5xKyl4iendvsJr4r24
-	sgXdpnCpkpbuoFpH1NXfvpGaYZ6pppRDfs/aUw4bewQo7iCt9VVErf2O70igG+ojgzWQ=;
+	bh=eg7DRK6dMUJej+ht+LW9yIFJ4JaBecaPx8FR8PWTaeA=; b=C3nZo2n62+uKCCnCUZs/k/kw1Q
+	/sKvWP5860UuBFknFOYWHzw0S8560ib2H1PAO/rV+/icA9W6bfCBdg+GBsdBvZ7/qUUr1//nnO5D3
+	XJJXKG4aCO4sAfaMjs+jZR/v9dvTUDAoXvevblCehV4mZjObRmrKqIn1YQyKrxZNnJlc=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wt7QX-00Gpvc-S0; Sun, 09 Aug 2026 19:35:13 +0200
-Date: Sun, 9 Aug 2026 19:35:13 +0200
+	id 1wt7Zv-00Gq0k-SA; Sun, 09 Aug 2026 19:44:55 +0200
+Date: Sun, 9 Aug 2026 19:44:55 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Christian Marangi <ansuelsmth@gmail.com>
 Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
@@ -51,11 +51,10 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
-Subject: Re: [PATCH net-next v11 06/12] net: phylink: support late PCS
- provider attach
-Message-ID: <de79d628-e149-42bd-a21b-90db2e70a7cb@lunn.ch>
+Subject: Re: [PATCH net-next v11 00/12] net: pcs: Introduce support for
+ fwnode PCS
+Message-ID: <4c595c15-17d9-4c23-bb44-344c48d36e9a@lunn.ch>
 References: <20260807131301.192060-1-ansuelsmth@gmail.com>
- <20260807131301.192060-7-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,32 +63,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260807131301.192060-7-ansuelsmth@gmail.com>
+In-Reply-To: <20260807131301.192060-1-ansuelsmth@gmail.com>
 
-On Fri, Aug 07, 2026 at 03:12:48PM +0200, Christian Marangi wrote:
-> Add support for late PCS provider attachment to a phylink instance.
-> Similar to FWNODE_PCS_PROVIDER_DEL, FWNODE_PCS_PROVIDER_ADD is added to
-> address the case where a PCS provider is added after a phylink instance is
-> created and started.
-> 
-> The PCS notifier will emit the event FWNODE_PCS_PROVIDER_ADD every time
-> a new PCS provider is added.
-> 
-> If a related PCS is found, then such PCS is added to the phylink
-> instance PCS list.
-> 
-> Then we link the PCS to the phylink instance and we refresh the supported
-> interfaces of the phylink instance.
-> 
-> Finally we check if we are in a major_config_failed scenario and trigger
-> an interface reconfiguration in the next phylink resolve.
-> 
-> In the example scenario where the link was previously torn down due to
-> removal of PCS, the link will be established again as the PCS came back
-> and is now available to phylink.
-> 
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+On Fri, Aug 07, 2026 at 03:12:42PM +0200, Christian Marangi wrote:
+> This series introduce a most awaited feature that is correctly
+> provide PCS with fwnode without having to use specific export symbol
+> and additional handling of PCS in phylink.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+One of Russells complaints was the phylink has too many bits of code
+for ideas which did not work out and were replaced by new ways of
+doing things.
 
-    Andrew
+We want .mac_select_pcs to go away, this framework should replace it.
+Please could you convert one of the exist users of .mac_select_pcs, so
+we get an idea of what that involved. If that conversion is pretty
+mechanical, i think we should have a second patchset which converts
+all the current users, and then remove support for .mac_select_pcs.
+
+Overall i think the direction of this patchset is good.
+
+   Andrew
