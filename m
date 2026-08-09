@@ -1,50 +1,49 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3DF175A72;
-	Sun,  9 Aug 2026 18:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE6A373C1A
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 18:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786299498; cv=none; b=J4n65QP8fpU2yuoYig9WRxNy0p7IIbTeHroA9lfTarkUElaDRXf9KRCul/uY5kX2+ex94ts2VBDEjP/2BqgT9vXdzONj0UKPCdDYQmw3zoNjLh33MX7jcywNytzUFM1mTnyhaIdymTYLVraFNPr2tOVw8EKjEoZYEmWiEuDPJW4=
+	t=1786299783; cv=none; b=Sm/wAYt7HflzYMPZvsKjlmZ6oZAJ0xE1EzkgEeHU1s+Wd7ATtE0GsxYHeEMMlmvkY+ylP0hPBALtooXPYNQ2yyxPPtBOZcuHfcXqA6g/LU0mKwlNIKUYT6dce3lT7ow5SOhvUykrIBvcxWxRTiT7hCQBK/nJLtrDllrtron6GqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786299498; c=relaxed/simple;
-	bh=xV+6tYVfOqbogQVlN5gaRWH20RfNA9LytNQ+i8Bgzc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qV2ZSxe5aBfP+fXA1Iz9jAd9EWTyFBg9xuBedNNVg5L5AmruFaOeOyuD5cRULOxJE9qxE5OmkwxY9fxuPYGVHjbmGj2cEfqfaHnaObinxkGZHlMxiXPBtxLPxR53N2sPbasShsReK7rjyY4RjCCs1xKtET1SmScWGsBl5198prc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=vlu5y6tX; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=L7EfFiAB; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1786299783; c=relaxed/simple;
+	bh=mtIiJqwqJ5mvXxzTwOuORacuIEDSYBlWw3WChdH1rXE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=PSvNR5zj134pcJ5iBCgBuafTjqeEHr4cDQaKxgeX04ZvCsvJFwbN+g1VKWCsZPfWCdHuSGlW1zzacdWYiUbncgQRPR4M4SYHvOlHPqsrTxHRfF8D09uEaNWzUJB3OZONUMn3shPMjZy8AOYSc/gPzNToHLGhQnAi41pPq1AME1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KDRsuBuD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="vlu5y6tX";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="L7EfFiAB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1786299495;
-	bh=xV+6tYVfOqbogQVlN5gaRWH20RfNA9LytNQ+i8Bgzc4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vlu5y6tXj9AHtbkAiZo7oCBOIURSi3ggJWdSIQf9eb5Wxkl82jMQPybWNI4Yfd0Ud
-	 uUsZ6AvBRVi3l+gSZIlKYkE/vtkwousVj+anKxiau/1zK4xDGkYWeRNAwETt1xCcd7
-	 IOG+psSKR4O6Z0kl5x62rcwFuBKREL3h3AuUX7NYQjtz3K10RDt62JzgA7QXfxTqI2
-	 wuXMcYcFB6vLGkLKRYwF8LdRPyH0rTkkVpCoL98yA1pG14GkZ0ahmcmix9gePzk4X3
-	 IKHCk/MUfQcGHUXiaJvJPsk56PCyn6wf1/44bPjxKWtBxK9/T0MXeuaRRGdsoG3k/N
-	 kfabUvd/1p0+A==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 496164975C; Sun,  9 Aug 2026 18:18:15 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1786299494;
-	bh=xV+6tYVfOqbogQVlN5gaRWH20RfNA9LytNQ+i8Bgzc4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L7EfFiAB3XnOfSb8ad1psvAMqFDW+FIS6A5LbjfihOU7fYLHeGFHi55nbKb00T30c
-	 lsdpAohX/5RbS+gEKLMdcMibBwsOeW1EZXfmq0HzwPyUVxOm4DflAkmqTuvsvkBHhI
-	 KGL13PydeStC8WuetWc1OyvW/7ptpBOlFvsTL1W3KXrQR5g6qUm4TnBBHlc/f6NxVf
-	 sK3L9KOo0BRxCQpoDR6f5W+YfpkqJPfQHtDndnuipMPHh4Up8ooPOtHagraqACEg66
-	 OFw/Hme1+fSqfVGG4KFHzmO8yLYEGlg1m3NkqjElvPE6rzf4J1vYb++lsSFMklcxNh
-	 WjQJaREB+t/5g==
-Received: from [IPV6:2003:c6:9f06:3400:fea5:65ce:776d:88e8] (p200300c69f063400fea565ce776d88e8.dip0.t-ipconnect.de [IPv6:2003:c6:9f06:3400:fea5:65ce:776d:88e8])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 239A349753;
-	Sun,  9 Aug 2026 18:18:14 +0000 (UTC)
-Message-ID: <f5bb129b-ca61-401e-a76e-cb2a55cd9077@birger-koblitz.de>
-Date: Sun, 9 Aug 2026 20:18:12 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KDRsuBuD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786299780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=scMyVWvoXyL/VuKW66NWEYrXv8U7Cnr2Dq8xlsoBFsU=;
+	b=KDRsuBuDbw8vO8jxuxzuEZAsQ14ZJDLMW3K/MH0+6OxjCj5fR9pPZVVdMWmHfG7R7mYErb
+	V5f+sC1ulp9Ajjx+tj1FeRf5jldrmaOMedp1wPHJ/4QQCVhVSq30+altffTOXiU+pILi9b
+	Cr3XBDTdOdIlwKODRqrTa0D4vpyj80Y=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-LbVeloBoOTWel8o5qOAC7w-1; Sun,
+ 09 Aug 2026 14:22:45 -0400
+X-MC-Unique: LbVeloBoOTWel8o5qOAC7w-1
+X-Mimecast-MFC-AGG-ID: LbVeloBoOTWel8o5qOAC7w_1786299763
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 89B06180034F;
+	Sun,  9 Aug 2026 18:22:43 +0000 (UTC)
+Received: from [10.44.32.36] (unknown [10.44.32.36])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 324491800347;
+	Sun,  9 Aug 2026 18:22:39 +0000 (UTC)
+Message-ID: <667c004b-6181-41c5-bea1-0a66e354bc96@redhat.com>
+Date: Sun, 9 Aug 2026 20:22:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,47 +51,109 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 13/13] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
-References: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
- <20260802-ax88179a-v5-13-dcb9fea4acd4@birger-koblitz.de>
- <5f32ac56-1c2f-474a-ab2a-f51464172d6d@lunn.ch>
- <4a203340-c2f1-48b3-b16f-93c31cbe2727@birger-koblitz.de>
- <f2a99d04-6d61-4cc2-814d-cfe1ef9b1395@lunn.ch>
- <7a91e550-ac70-4423-9aed-9f4406e71fe8@birger-koblitz.de>
- <527d31e5-1731-4925-bf7f-a567f3fb3774@lunn.ch>
- <6c165b0d-5e24-4b01-8057-1bef9fac851b@birger-koblitz.de>
- <67e2bfa6-438d-4ec2-addd-6a1c1959ec0a@lunn.ch>
-From: Birger Koblitz <mail@birger-koblitz.de>
+Subject: Re: [PATCH net-next v5 2/3] dpll: zl3073x: add channel ToD, phase
+ step and TIE operations
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+ Chris du Quesnay <Chris.duQuesnay@microchip.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+ Min Li <min.li@microchip.com>, Paolo Abeni <pabeni@redhat.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org
+References: <20260807095826.386756-1-ivecera@redhat.com>
+ <20260807095826.386756-3-ivecera@redhat.com>
 Content-Language: en-US
-In-Reply-To: <67e2bfa6-438d-4ec2-addd-6a1c1959ec0a@lunn.ch>
+In-Reply-To: <20260807095826.386756-3-ivecera@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 09/08/2026 17:28, Andrew Lunn wrote:
->> I'll fix that in v7.
+On 8/7/26 11:58 AM, Ivan Vecera wrote:
+> Add low-level DPLL channel operations for ToD read/write/adjust,
+> output phase step, delta frequency offset write and TIE (Time
+> Interval Error) write. These serve as building blocks for the PTP
+> clock callbacks added in the next patch.
 > 
-> Great.
+> ToD operations use a wait-before-write pattern to avoid blocking
+> after each operation.
 > 
->> I would like to give Jianhui time to test v6, first,
->> tough. There were definitely bugs regarding suspend/resume and the MAC configuration
->> introduced in v4/v5, that I would like to be sure have been fixed.
+> The tod_ready_wait helper selects the poll timeout based on the
+> current ToD command - write operations use a longer timeout (1000 ms)
+> than reads (30 ms).
 > 
-> No rush. It is getting close to the v7.3 merge window, you probably
-> won't make it, so you have around 8 weeks to make the v7.4 merge
-> window.
+> The ToD read captures system timestamps (ptp_system_timestamp) around
+> the HW command and completion poll to support cross-timestamping.
 > 
-Thanks for the heads-up, Andrew!
+> The TIE write operation provides sub-picosecond resolution phase
+> adjustment for modes where the DPLL is tracking a reference
+> (AUTO and REFLOCK).
+> 
+> Add output step-time mask to struct zl3073x_dev and
+> zl3073x_dev_out_is_stepped() helper to check if an output
+> participates in step-time operations.
+> 
+> Reviewed-by: Petr Oros <poros@redhat.com>
+> Tested-by: Chris du Quesnay <Chris.duQuesnay@microchip.com>
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+> ---
+>   drivers/dpll/zl3073x/chan.c | 321 +++++++++++++++++++++++++++++++++++-
+>   drivers/dpll/zl3073x/chan.h |  32 ++++
+>   drivers/dpll/zl3073x/core.c |  13 ++
+>   drivers/dpll/zl3073x/core.h |  23 +++
+>   drivers/dpll/zl3073x/regs.h |  52 ++++++
+>   5 files changed, 439 insertions(+), 2 deletions(-)
+> 
+> ...
+> +/**
+> + * zl3073x_chan_tod_adjust - atomic ToD read-modify-write with rollover guard
+> + * @zldev: pointer to zl3073x device
+> + * @ch: DPLL channel index
+> + * @delta: time adjustment to apply
+> + *
+> + * Reads the next-Hz ToD and current ToD, then checks whether enough time
+> + * remains before the next 1 Hz rollover to safely complete the write.
+> + * Re-reads if the 1 Hz tick crossed between the two reads or if less
+> + * than 20 ms remains before the next rollover. Applies @delta and writes
+> + * the result back.
+> + *
+> + * Context: Caller must serialize all zl3073x_chan_tod_* calls externally.
+> + * Return: 0 on success, <0 on error
+> + */
+> +#define ZL_TOD_MAX_RETRIES	20
+> +int zl3073x_chan_tod_adjust(struct zl3073x_dev *zldev, u8 ch,
+> +			    struct timespec64 delta)
+> +{
 
-The issue Jianhui found is indeed a bug in the firmware of the controllers
-and we will probably need his workaround to fix it. But maybe there are other
-options, we will use the time to investigate further and test.
+Oops, wrongly placed macro causing...
 
-Birger
+
+/logs/build/1142084/14736686/kdoc/stdout 0 ok |
+raw
+
+Warnings before patch:
+files: ['drivers/dpll/zl3073x/chan.c', 'drivers/dpll/zl3073x/chan.h', 
+'drivers/dpll/zl3073x/core.c', 'drivers/dpll/zl3073x/core.h', 
+'drivers/dpll/zl3073x/regs.h']
+
+Current warnings:
+files: ['drivers/dpll/zl3073x/chan.c', 'drivers/dpll/zl3073x/chan.h', 
+'drivers/dpll/zl3073x/core.c', 'drivers/dpll/zl3073x/core.h', 
+'drivers/dpll/zl3073x/regs.h']
+Warning: drivers/dpll/zl3073x/chan.c:399 expecting prototype for 
+zl3073x_chan_tod_adjust(). Prototype was for ZL_TOD_MAX_RETRIES() instead
+
+Warnings before: 0 after: 1 (add: 1)
+
+New warnings added:
+Warning: drivers/dpll/zl3073x/chan.c:399 expecting prototype for 
+zl3073x_chan_tod_adjust(). Prototype was for ZL_TOD_MAX_RETRIES() instead
+Per-file breakdown:
+      1 drivers/dpll/zl3073x/chan.c
+
+
+Will fix in v6.
+
+Ivan
+
