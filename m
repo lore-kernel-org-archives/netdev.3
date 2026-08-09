@@ -1,44 +1,54 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853A6397321;
-	Sun,  9 Aug 2026 15:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB712475CB;
+	Sun,  9 Aug 2026 15:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786289100; cv=none; b=fR+BVyqxsbMHRJDLJdmtqGdu5VjfdB6RSHK9JSgnHujdodiDPknBJBE6bk7QnwMwUm4olUw9VohrKDlbc3Q4prfKxrETXtIlMVgFoChKTIXMTHNeZYL1oA4tV60h28Wtj//RkHKafxY8CMNsTvH5ZEJsgRh1ck9LELyfLvjW1WA=
+	t=1786289316; cv=none; b=p7EzESxTur5Jn9EeVKac4wXklCCPVF+x8q8XAqMASzpokvH6upA8JYM+52b0DbsHLAKJCmdEZJrNwlGVrC+BVADGuQjK4Fp1oU6BmxrxQr7h2N5vMOzthhLvZXF1NY71UXctV7p9Q8fKz/oks0Y8Ds+YzC4rhnTEyuthghwizrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786289100; c=relaxed/simple;
-	bh=cuUJh+50zehlMz+YLNrryEu5fGtwlRvptvWygfPha7s=;
+	s=arc-20240116; t=1786289316; c=relaxed/simple;
+	bh=7TshMjSyxLW0GG/HHQ+xDcD5T5AXokmXOx5pR2iOB+k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p5/+ae33RNN6RmJj4owzrfU9pOek6egVct64sZby0E/ppIhEIGXHi5FR5bzwPsKLts3qVLT3ysFpMnZgtvuuj+Qp9geyxJj0bpqNBv7qqLNDyN90YEe1+N1B+B5hTUN84IUNlTixWNR/HyhBPBzib7gPy7e/P0JbHBpDjdSjdKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Pg5XCser; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=LKjpFrEdgL2w0MRouMSaIgrcDim1RfvFUa4wHoYYqTigbtLCvdltUv+QR1FOeB64TyGPEdrF5mxEQX7zSREoczWOCxWNu0tlnTeaMuDnj40LtDVj+qdxZtPOz9+rLawIk9tC6U8rZ7b9gi/ANMhmuNp3B510e8/c9LEYeDCIlP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=s0+TIaYo; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Pg5XCser"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="s0+TIaYo"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QlFQdlpYQXVze/i0pns9IvhVr3wSIHheJL2cxAvWdPU=; b=Pg5XCserdxQ320AjIIF23feJBu
-	O2wcnaPXG0xuzz84xL5dbCvQ4B+NylAgFNOypzvNTCktcbD5VhXUlF3zDPS9QAH7kk4kqL5V3ukau
-	dXYfrdOXC36ZJJS0lsYKPGAfnbRCq1W0L3ODNdemA6aoKdHyMzFKWsbh4blBpbJ0+xI8=;
+	bh=wWKJcZweMkkj41xMwTO+SbluLJuHLmGKxxgmeOJ2sZg=; b=s0+TIaYoQYagMTnRysU2Qos54L
+	Z1Eq1qojFas3YFreVBWS/A43mS68pZanlFbNZuhrrWLJiCi/rZtfSgHzNhrCPrl5Keau8PZE66S6T
+	iQDuwdqj6lXv1enW0NPM1GjyMACJIsAhLHzWyXcWThn5rOeQdkoqKd98O/ycPwfZiv60=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wt5OM-00Gp8O-GO; Sun, 09 Aug 2026 17:24:50 +0200
-Date: Sun, 9 Aug 2026 17:24:50 +0200
+	id 1wt5Rq-00Gp9l-VG; Sun, 09 Aug 2026 17:28:26 +0200
+Date: Sun, 9 Aug 2026 17:28:26 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Sandeep Sondagar <sandeepsondagar@gmail.com>
-Cc: netdev@vger.kernel.org, linux@armlinux.org.uk, hkallweit1@gmail.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-kernel@vger.kernel.org, j4g8y7@gmail.com,
-	robert.marko@sartura.hr
-Subject: Re: [PATCH net v2] net: phylink: treat PSGMII as an inband capable
- interface
-Message-ID: <da51c001-c18d-40e2-9757-39e9d759e3c1@lunn.ch>
-References: <20260712194937.785825-1-sandeepsondagar@gmail.com>
- <20260808020955.787569-1-sandeepsondagar@gmail.com>
+To: Birger Koblitz <mail@birger-koblitz.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>, linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jianhui Xu <neuromoments@gmail.com>
+Subject: Re: [PATCH net-next v5 13/13] ax88796b: Add support for AX88772D,
+ AX88179A and AX88279
+Message-ID: <67e2bfa6-438d-4ec2-addd-6a1c1959ec0a@lunn.ch>
+References: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
+ <20260802-ax88179a-v5-13-dcb9fea4acd4@birger-koblitz.de>
+ <5f32ac56-1c2f-474a-ab2a-f51464172d6d@lunn.ch>
+ <4a203340-c2f1-48b3-b16f-93c31cbe2727@birger-koblitz.de>
+ <f2a99d04-6d61-4cc2-814d-cfe1ef9b1395@lunn.ch>
+ <7a91e550-ac70-4423-9aed-9f4406e71fe8@birger-koblitz.de>
+ <527d31e5-1731-4925-bf7f-a567f3fb3774@lunn.ch>
+ <6c165b0d-5e24-4b01-8057-1bef9fac851b@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,27 +57,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260808020955.787569-1-sandeepsondagar@gmail.com>
+In-Reply-To: <6c165b0d-5e24-4b01-8057-1bef9fac851b@birger-koblitz.de>
 
-On Sat, Aug 08, 2026 at 07:39:55AM +0530, Sandeep Sondagar wrote:
-> PSGMII (the Qualcomm 5-port SGMII) conveys the link negotiation result
-> from the PHY back to the MAC through per-channel in-band SGMII words,
-> exactly like SGMII and QSGMII.
-> 
-> However, PHY_INTERFACE_MODE_PSGMII is missing from
-> phylink_get_inband_type(), so phylink reports INBAND_NONE for it and
-> phylink_pcs_neg_mode() falls back to PHYLINK_PCS_NEG_NONE. The PCS is
-> then programmed in force mode and its control-register speed bits (which
-> default to 1000base) are used, so a slower copper link - e.g. 100base-T
-> - is reported as 1Gbps and cannot pass traffic.
-> 
-> Classify PSGMII alongside SGMII and QSGMII as INBAND_CISCO_SGMII so the
-> PCS negotiates in-band and the resolved link speed comes from the PHY
-> in-band word.
-> 
-> Fixes: 83b5f0253b1e ("net: phy: Introduce PSGMII PHY interface mode")
-> Signed-off-by: Sandeep Sondagar <sandeepsondagar@gmail.com>
+> I'll fix that in v7.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Great.
 
-    Andrew
+> I would like to give Jianhui time to test v6, first,
+> tough. There were definitely bugs regarding suspend/resume and the MAC configuration
+> introduced in v4/v5, that I would like to be sure have been fixed.
+
+No rush. It is getting close to the v7.3 merge window, you probably
+won't make it, so you have around 8 weeks to make the v7.4 merge
+window.
+
+	Andrew
