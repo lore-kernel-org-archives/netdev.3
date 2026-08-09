@@ -1,130 +1,182 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993F2282F0E;
-	Sun,  9 Aug 2026 15:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19C928506F
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 16:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786290668; cv=none; b=Oo0bgBRG2FH82lMKPYNRqxIrxySg553vid07ik4RgYlYRcOyjBqQdLKdF1JIKijiJScLdK312Z1swsfu/87rpEiNge2YYbFpbYt+XNsQrkyHCzv1TgV+uU4xPL6O5+I706F0CGcgVYRJfshFQdjArQ72EC37c38pp6nj9q/SnG4=
+	t=1786291309; cv=none; b=UehiviEaE5Ip4V2SAC3YYrrs4qhpn3LyzhbxTZk+Oaxhyq8paHO3NpL9RMaFJGWLp1zxgKaS5eHrrpShbonP5jYDrx6KCAujALwqfisv7MNinotm180q7l8vtc2wkN4KmdKIppZklB6uAM3XkE0DqipI0oqBK9p2kuiFRlZQ2xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786290668; c=relaxed/simple;
-	bh=w+Itt6ZD1Vs4N2aUI7pQaqQBvvL8sDAcH0olZuIcjvU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NqERPKjdkNrpLVKSvBJoF+bC8LiUf0YznpujqPyAw7TGMQGlmI7//iCzWx0YkF0iLh+SntWgfKybAkLEIk6gfzkqhLGe491KLJmXF1kug+5zylB5zQi8EYV4wQpA/S4MKk0J/4ZdVLNzKc/tr9YjVIHci4kGe5S9LQzWdwTHSP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VlWXoG0d; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786291309; c=relaxed/simple;
+	bh=JFpoyHgm5GyydrgU0EIwnMkmtDfqznZohBF+D+l8oXQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PANCdfYfgLUrwOumqZomLOlA+ao/BDTkaFbC3j4AJbplZbvupVupVHDt/ovnq8V6FjCXsmEvPyUd7vGpQp6oDBLkANO9A3INKZt2dyN0tkXJ6ZfEGYnfAToKfOntnq+O0MlBLBQKipp0ZCmNLQMTKEGQVN1ZZH+wMsYVWHFIFDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OWBFVcYB; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VlWXoG0d"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FgNLfj3pfkm7LDmMsixDlk5BWQLGphalBVmSeIOSmRU=; b=VlWXoG0doB9riYD5Hmpl5/zZwi
-	+IG8ajM40E3Mz2kKc1lZxfmmnDhZlu0QphOlr1F4PNfkem6mgCRZQfV9Dm4jE6St6PTf8wWSg3iGc
-	Ho13wYhuVzyXUKaY2BWFQrfQFLimWeAN4I+AxquKGPRmHV+LL9PdWHZ2UMzopQ6jipls=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wt5nd-00GpEc-5p; Sun, 09 Aug 2026 17:50:57 +0200
-Date: Sun, 9 Aug 2026 17:50:57 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, mfd@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v4 4/4] net: phy: add X-Powers AC200/AC300 EPHY
- driver
-Message-ID: <c78c2c35-52e7-4393-9714-06039d8a3f28@lunn.ch>
-References: <20260806-submit-acx00-of-dynamic-v1-v4-0-9bf2f7441632@gmail.com>
- <20260806-submit-acx00-of-dynamic-v1-v4-4-9bf2f7441632@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OWBFVcYB"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so784144a91.0
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 09:01:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786291307; x=1786896107; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Ey9ID6BlPfSQP74G4aQENA12QCbeo+NzYrkTNceu870=;
+        b=OWBFVcYBZewtLCTI06dJGJjFZkHxWpYupYlxCzoX8E8JSq/1K0HdQ26vdICte+sgmv
+         VaidpYWXIf00sV7K7XZ17aa9NZPu9TluOL1Y0fmxpfG4xws8hkCkz57QqYu/3FBGYEug
+         IY42iEFkpdJ1V8g6fgwEN2wxC7g7I5EIrJ75+o6X0q/GLLO4ACC/1N3e4t6Tl51d2xrI
+         V5UadnlbYPPeGCuKDB7tKJvpBxQrfiuLDxblDYsmjZpJpxO2zMgf1JexzQUgn/sLwNW+
+         tDghvbCZG1xtQjmi4Pam16I5yQ/OzV5wfE1eySDmG3OvbXaZm3I4dx9LvpNOAqfIO58W
+         wxHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786291307; x=1786896107;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Ey9ID6BlPfSQP74G4aQENA12QCbeo+NzYrkTNceu870=;
+        b=K28Y3c8xjBYoeF05rfsMMA2XSCJOK+r2ZHtynLB4rI0UXWwhcuyCLJtxGhBux9n0mL
+         zDLmTD0WI+e1/tw+bUo9WbSUtTaWkxnT/GDy1lJntvt02/NFGFWRnyjIt5z5b1uGzO/g
+         0gZTdq3tpO9q2IWeSF6/GRx//teH7woxq0YDT6ObBuBmzsHx5fjONKQyRnXwweDYSLba
+         K7TNJ4d2KmS09PzQ9s6ek7gfxKyzwF6t6pJif5CsdkjYKf3b14VY3JVDZQx4glZFzF9U
+         3lcVFQXAgxRhw9g0IgoG9EitsPXp/T854kQbqWebea8XNctdwe8qSWmdzE65giT7WWhw
+         q8gg==
+X-Gm-Message-State: AOJu0YwFGXEGU2DvKg6lJN0/l1ti7EvIEHmvTUdhpw+byFGltLuqQxGx
+	EupumuikoyE7cQm3vHPB0t8sISdW4RV8VUr0s64PE8J2jM+VHHvMw30n
+X-Gm-Gg: AR+sD13w7GKGv9w18eYBSOQD2IMQgAN3ttI8nVe9nWQs05wuM0NLfqddfrCj/Frl2lz
+	SYvSTt8Hx3H5O7rEQUgLrU3wKsnAWeD6KIdUHN+rlK3OFj3GoKRghDxYzl69mhMs6SWeVo9avLq
+	DRG48VyxxVKJAQrJEInuJCKrUx95L/4iYnL9jvCzVOJgB5jg3Y9FUAb8VuSIjz0IpmwnEspaxUe
+	uNL1Wjvu1gEyhyvWzX55/EAb479U3C70pmjmGcslPH531vCp/wKBw36zooUmO/3ghhkcNZa8iiJ
+	u7wLNzvoxzDkeBilEoPUyTaqBLbPoOAY7K+8GTB4CZbh166rN2RK0ZVsK5x8QDG6hxxQoBPWNid
+	oSPLE7rCAdo39b2Smv4lJXjp0jWHZMTmTJyc4TzCI8HW0LNbPcL+arKnGB64Z3z5AhA3oLLQFZz
+	XUTCuPxBiaNrh52k/DFm99UnPDZQpIVUnwvtQjWS9UgLPR5hvYEwWzQ+EPGq27t1h/XEM6yyfPs
+	hx+roxdWI6Tg+NhrMJq86/SWO2tZA6nvBM183tQYw==
+X-Received: by 2002:a17:90b:4b91:b0:38d:ddc2:7ccb with SMTP id 98e67ed59e1d1-3909d7a4839mr21073351a91.1.1786291306864;
+        Sun, 09 Aug 2026 09:01:46 -0700 (PDT)
+Received: from ubuntu-openwrt.local ([175.100.133.108])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1410cc132c1sm13029552c88.8.2026.08.09.09.01.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Aug 2026 09:01:46 -0700 (PDT)
+From: Sandeep Sondagar <sandeepsondagar@gmail.com>
+Date: Sun, 09 Aug 2026 21:31:41 +0530
+Subject: [PATCH net v3] net: phylink: treat PSGMII as an inband capable
+ interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806-submit-acx00-of-dynamic-v1-v4-4-9bf2f7441632@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260809-phylink-psgmii-v3-1-908dcd3a9e3d@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAGSkeGoC/yWMQQ6CMBQFr0Le2iZNVQpexbCw8IGvWJt+NBDC3
+ S2wnElmFghFJsEtWxDpx8Ifn+B8ylD3D9+R4iYxjDa5LnSpQj8P7F8qSPdmVtfCuvZirKPGIkU
+ hUsvTPrzD04jqkPJ1T6rHbYV1/QP4ue0XdwAAAA==
+X-Change-ID: 20260809-phylink-psgmii-587bf427bed7
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Gabor Juhos <j4g8y7@gmail.com>, Robert Marko <robert.marko@sartura.hr>, 
+ Sandeep Sondagar <sandeepsondagar@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openssh-sha256; t=1786291302; l=3651;
+ i=sandeepsondagar@gmail.com; h=from:subject:message-id;
+ bh=JFpoyHgm5GyydrgU0EIwnMkmtDfqznZohBF+D+l8oXQ=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgWL6/5cLb314YjVwn3WCpMi6P3C0wG
+ GH40C6yYF9u5GIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QLgH1EKB+8E3TlrPH/2Vo9N+CrVjJFYABV0MxqcUNcr9tzXTW/+WM2VKhcd15XImD3HlECAZ2ec
+ Vvpn1dN6XJgk=
+X-Developer-Key: i=sandeepsondagar@gmail.com; a=openssh;
+ fpr=SHA256:ki2iXEGRLBiw/R2sikL7Qg80oJ7p+KMkU88RlzgzZDU
 
-On Thu, Aug 06, 2026 at 10:51:29PM -0600, James Hilliard wrote:
-> The AC200 and AC300 contain compatible Fast Ethernet link PHYs, but the
-> link endpoint is inaccessible until package-specific control registers
-> have powered and configured it.
-> 
-> Add one PHY driver which binds the link child and joins its parent
-> Ethernet PHY package. Fixed package compatibles select the corresponding
-> backend. The generic ACx00 compatible reads one packed configuration field
-> and selects the backend before touching backend-specific resources. The
-> AC300 path therefore does not resolve or enable the candidate AC200 I2C
-> device.
-> 
-> AC200 obtains the regmap of the referenced I2C MFD and keeps it bound
-> with a device link. If CONFIG_OF_DYNAMIC is available
+PSGMII (the Qualcomm 5-port SGMII) conveys the link negotiation result
+from the PHY back to the MAC through per-channel in-band SGMII words,
+exactly like SGMII and QSGMII.
 
-Please drop all the CONFIG_OF_DYNAMIC code.
+However, PHY_INTERFACE_MODE_PSGMII is missing from
+phylink_get_inband_type(), so phylink reports INBAND_NONE for it and
+phylink_pcs_neg_mode() falls back to PHYLINK_PCS_NEG_NONE. The PCS is
+then programmed in force mode and its control-register speed bits (which
+default to 1000base) are used, so a slower copper link - e.g. 100base-T
+- is reported as 1Gbps and cannot pass traffic.
 
->  drivers/net/phy/Kconfig               |  11 +
->  drivers/net/phy/Makefile              |   3 +
->  drivers/net/phy/xpowers-acx00-ac200.c | 388 ++++++++++++++++++++++++
->  drivers/net/phy/xpowers-acx00-ac300.c | 404 +++++++++++++++++++++++++
->  drivers/net/phy/xpowers-acx00-main.c  | 536 ++++++++++++++++++++++++++++++++++
->  drivers/net/phy/xpowers-acx00.h       |  28 ++
+Classify PSGMII alongside SGMII and QSGMII as INBAND_CISCO_SGMII so the
+PCS negotiates in-band and the resolved link speed comes from the PHY
+in-band word.
 
-Since there are 4 files, i would suggest a subdirectory.
+Also add PSGMII to the generic clause 22 PCS helper functions which
+handle the SGMII in-band word. Without this, a PCS using these helpers
+would still fall through to the default handling and force the link
+state to false in phylink_mii_c22_pcs_decode_state(), fail to encode
+the SGMII advertisement, and get rejected by phylink_get_link_timer_ns().
 
-> +struct ac200_ephy_ctl {
-> +	struct acx00_ephy_control control;
-> +	struct regmap *regmap;
-> +	struct device *dev;
-> +	struct mutex lock; /* Serializes power sequencing and state. */
-> +	u16 ephy_ctl;
+Fixes: 83b5f0253b1e ("net: phy: Introduce PSGMII PHY interface mode")
+Signed-off-by: Sandeep Sondagar <sandeepsondagar@gmail.com>
+---
+This series classifies PHY_INTERFACE_MODE_PSGMII (the Qualcomm 5-port
+SGMII) as an in-band capable interface in phylink, and adds the mode to
+the generic clause 22 PCS helpers so that the in-band SGMII word is
+actually used to derive the resolved link speed and state.
 
-What is this locking against?
+Currently PSGMII is missing from phylink_get_inband_type(), so phylink
+reports INBAND_NONE and the PCS falls back to PHYLINK_PCS_NEG_NONE,
+being programmed in force mode with its control-register speed bits
+(default 1000base). A slower copper link, e.g. 100base-T, is therefore
+reported as 1Gbps and cannot pass traffic.
+---
+ drivers/net/phy/phylink.c | 3 +++
+ include/linux/phylink.h   | 1 +
+ 2 files changed, 4 insertions(+)
 
-> +	client = of_find_i2c_device_by_node(ac200_node);
-> +	of_node_put(ac200_node);
-> +	if (!client) {
-> +		ret = IS_ENABLED(CONFIG_I2C) ? -EPROBE_DEFER : -ENODEV;
-> +		return ERR_PTR(dev_err_probe(dev, ret,
-> +					     "AC200 device is not registered\n"));
-> +	}
-> +
-> +	if (!device_link_add(dev, &client->dev,
-> +			     DL_FLAG_AUTOREMOVE_CONSUMER)) {
-> +		ret = dev_err_probe(dev, -EINVAL,
-> +				    "failed to link AC200 device\n");
-> +		goto out_put_client;
-> +	}
-> +
-> +	if (!device_trylock(&client->dev)) {
-> +		ret = dev_err_probe(dev, -EPROBE_DEFER,
-> +				    "AC200 driver is not ready\n");
-> +		goto out_put_client;
-> +	}
-> +
-> +	if (device_is_bound(&client->dev))
-> +		priv->regmap = dev_get_regmap(&client->dev, NULL);
-> +	device_unlock(&client->dev);
-> +	if (!priv->regmap) {
-> +		ret = dev_err_probe(dev, -EPROBE_DEFER,
-> +				    "AC200 driver is not ready\n");
-> +		goto out_error;
-> +	}
-
-Please take a look at syscon, and syscon_regmap_lookup_by_phandle().
-I think it will make this code a lot simpler.
-
-    Andrew
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 18d2ead97aa5..1ce9d2266774 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1040,6 +1040,7 @@ static enum inband_type phylink_get_inband_type(phy_interface_t interface)
+ {
+ 	switch (interface) {
+ 	case PHY_INTERFACE_MODE_SGMII:
++	case PHY_INTERFACE_MODE_PSGMII:
+ 	case PHY_INTERFACE_MODE_QSGMII:
+ 	case PHY_INTERFACE_MODE_QUSGMII:
+ 	case PHY_INTERFACE_MODE_USXGMII:
+@@ -4183,6 +4184,7 @@ void phylink_mii_c22_pcs_decode_state(struct phylink_link_state *state,
+ 		break;
+ 
+ 	case PHY_INTERFACE_MODE_SGMII:
++	case PHY_INTERFACE_MODE_PSGMII:
+ 	case PHY_INTERFACE_MODE_QSGMII:
+ 		if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED)
+ 			phylink_decode_sgmii_word(state, lpa);
+@@ -4263,6 +4265,7 @@ int phylink_mii_c22_pcs_encode_advertisement(phy_interface_t interface,
+ 			adv |= ADVERTISE_1000XPSE_ASYM;
+ 		return adv;
+ 	case PHY_INTERFACE_MODE_SGMII:
++	case PHY_INTERFACE_MODE_PSGMII:
+ 	case PHY_INTERFACE_MODE_QSGMII:
+ 		return 0x0001;
+ 	default:
+diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+index 2bc0db3d52ac..1dda5c7ed5f1 100644
+--- a/include/linux/phylink.h
++++ b/include/linux/phylink.h
+@@ -791,6 +791,7 @@ static inline int phylink_get_link_timer_ns(phy_interface_t interface)
+ {
+ 	switch (interface) {
+ 	case PHY_INTERFACE_MODE_SGMII:
++	case PHY_INTERFACE_MODE_PSGMII:
+ 	case PHY_INTERFACE_MODE_QSGMII:
+ 	case PHY_INTERFACE_MODE_USXGMII:
+ 	case PHY_INTERFACE_MODE_10G_QXGMII:
 
 ---
-pw-bot: cr
+base-commit: 594d905195024b228c962627ae5ae7c17bd582a4
+change-id: 20260809-phylink-psgmii-587bf427bed7
+
+Best regards,
+--  
+Sandeep Sondagar <sandeepsondagar@gmail.com>
+
