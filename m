@@ -1,74 +1,125 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF08E1474CC
-	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 06:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CC83A5433
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 06:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786257484; cv=none; b=Fy9zqLI/6m9AdSl8Hjh0tKe/OHHW9o2l9AIbTFMpayQegimp3lf9rXIHeRTjpd7LKw39tik5+tCNLF7DeWswhJSz1bCeBxbbJDKzkiEIQxkK+TwGZsGYmlbslKCOf9716RGvD4FPLCq6SEo5hNsmm21Xquz1airdG81+5+H0eSg=
+	t=1786257917; cv=none; b=fw0/LjAPDRJtCRYF4HS6x2j/035PWcsmyNALNqPLoQa5VRaLlTGL4Hyu6xkApWJmCMLqHT6Fa3oAn3zcScXnfleH1NEujttrpMbdaXnOy520YaDkk6WvIoQQCY9xJ+VmMsvpqXlf6TSMMeQNJSAPBMKyryBXbzN9Ygld1cMVaQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786257484; c=relaxed/simple;
-	bh=SY4DL4uLHqobukZmLqNiH8TmJ30ZuFc4y8pwa61yOEs=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=RNPHeUDt8SUvvc+rZlrL3pEcr1aAWbzU3P5ORERa1z9WSPNkCHXy5B31FTQ/r0EuHoT9DYeqM5cjSqdWtC3DStbYBap4gnVE7inyEA9yFnzymEzNEfSxpr2Yz1VKq0/ZeqdkedFYu2WKISD3yEKKvFrLXjjr1Sh0yy9+crcJCo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4a41f46d629so1378865b6e.3
-        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 23:38:02 -0700 (PDT)
+	s=arc-20240116; t=1786257917; c=relaxed/simple;
+	bh=nB1hW7MtM3EsPo8aHptljn66e8/QvrnZV50AbZ154jo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kuYA3lqPw2PxZhyU+uV1dQ3oQu0IKzTBV/4tRuKx0Pm5QJmi3GUeVMP0B0GeKk0kAp43SVy5Qmhjg2lut1mCtSztWFCtI1Kdzyncv9xfotQXHzgreZ99/YlwPMcg+CCEebS2v2K2pJaUwyx5K7dcIeVKH7hwIWQ++LOVZyeqL7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D55YkJdR; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D55YkJdR"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cacb8416a1so8027425ad.1
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 23:45:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786257915; x=1786862715; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nE/y360woHSjvYFnukflvjTswiorQVMHnIf8Hn9PrxQ=;
+        b=D55YkJdRGd4kYWgNkYt+kghr99o/33YK+aTHAXStxoYoDKWMHL1KAKCXwhIrzxZdq0
+         aZT7leQcY9u2u7gKTHds5+puGqElxsBAVFswl+QSy7RurxI7xkMtmCS9dQ2Wf/WkrFq6
+         /3B1Re6sRrTln7vR6ML4tssUkR2NTL19qtFQigfZoXgQiHeXb+xyQ5Wk2HWRu5d4fdV5
+         /DBpTr5kmbnlUn1kCaPJFEV0/x5bbVMBbwFYD/Ibd89I9Z/HIiYgnkolFAlDxRO5Du4B
+         X49Z8RdKRdM84lXAywB7w2pDB6KipTd1jKSiaq3x69OBuNj8snKlxOvE8xeVGa39MH4m
+         89AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786257482; x=1786862282;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=viNDMipSqjRd9R+0lF4zimk5nSHhhcfEVlL1GEV2GRQ=;
-        b=Bgy9wGLunhubEWVLaqX62hMRezfkXLwGVbl8zoyVHnUlefcbhXG9zfKmmo8fQIHcT+
-         TbbaB9NlUmRRWHccVD0K+QTApc+irB0+XTC+LCqXTy4qQEd40BF33DJdXauZkM57VG6e
-         dG4wPRCImfGeXVO9qE9vatud3lCxZEnpaFrExBN5kYbmqw/Wz6s6eRKC5V2DQBMEyd5c
-         7twzl9W7TOB8lR3PXjUNPdF8UgtNT765gbgsF++4hktTCIE4xxyc/JzwsDXugZpyDgpK
-         beXNFuDvnYyb2UT1ooNTogWGiSx6yDi3YOlMv2KZYTwjtL7Xc6u5OKxVk7Z8ehcSMRhu
-         WX/A==
-X-Forwarded-Encrypted: i=1; AHgh+RoatOpTcEkGHg7zhC9y4o1hThA5SnJHIF/EyUhvbWI/Pww06JMhM9cINd73QXD7lYRnNCkTiPg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy28YL60zmZfpmTrqPnkQvn4ci1IvfPEK4Dszq2/I/cjDGGRmAq
-	RvJyTFFSGR4hzNfXljXrsYE7hRG0vORRqvnyXIC+CqNT4PXUT4sPP+wSPY5eXeZKxBiyE+aSOBU
-	Fe5QqXL6CNXlj3e3dU3eGqareqnbZbzsqwo9Hc4fb0UO83UhSMw8FtPTZo9M=
+        d=1e100.net; s=20251104; t=1786257915; x=1786862715;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nE/y360woHSjvYFnukflvjTswiorQVMHnIf8Hn9PrxQ=;
+        b=aahEu2GxCdf3hPr2TTjQk03Jtc9tH8Q+/3IKovaUXjNPp+WOqouQjdDNQkM8J7so7x
+         PXsKPiqJ8fma6Fn0+vmxbeyOFc7/aeVzS72SsM84hekepLnJzXXEPaEtT7WG5wsHaMlp
+         nSlOr4WiBvWV4MNfpkkjCyDY+++sEyiGycqnpMKRpWS5r8ZXdu0XJG35+y2+uBM7kK+0
+         Rp46sVl7KMgJ0hmEiEuo4AxgKZ3Mt7oAhTGdrNPR6y4kf7fH444hJtIUWfPVwuo64MN7
+         G/yFGSw/zesEUGfEyEJtp3kekR/WFsNst4lei5NQU51z/aH6rkGFI0eju1BuEFy2Fn38
+         r2kw==
+X-Forwarded-Encrypted: i=1; AHgh+RpEmGhIySnrdGwg03e3teqhm9hCYcvVXArdwXRPd5YRag9CbhXTXdJefmzF/kA4k0Atx5wDndc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPE5ug1Ed98FBiiaoO/qlj/18nYWGZWPhacBg6dPzaz8GTrJNq
+	5doZWFTXgqjnqFZsOF54PtVZ5WFvgeborCXoKdi/UpFpz7yz1Rg3K7/y
+X-Gm-Gg: AR+sD12ImKDOAFpxKCVHX0FALYO+m1BV1q0DWEX4fv9Z/nOzI2F+DStZ+i/8kWv3FiC
+	T90CC/i8CU5dLaT1BRpDjAb+LcTjUBQTDKn+8FDTBvfZgCX+LDTnmwTDFNsYupymEkM8PAXQ9i+
+	MhTYwT+jsD1MtiPqbYwReM4HtM09PW39NuPg3hyzp/KRMevS8uf6ognk3tR7hbg2AOQwrFX2qhU
+	W1B4YaOMuiY4MKy0fPQ1wyq1MRF9aZEQvaasPcP949V500wEAcp3UnaYdq3CrW6hJCeyB7VYQka
+	jGeRzMczH8uWn9xDBFerCSPFN/SYOlOfWtofCGggd/8HYvZGfqy4ySTozQBNWaNqlkK6jt7PJeX
+	Vi8MhHSoe3vjjJU55htUpbpVuyq1YSrcIUfOMvTjaQtrKk7SEg9sihGgLOkFi9UQgXrD6mhHToA
+	uqvhR43zxwv1XIRWg+E6eRCEGxNk8Ln9OIsxSbHbPNoFIxYYoDJwNuusYgNSFQ2j70U7UvIYzEe
+	OzXB4dLk+qMAYJoML2MHoXYYZq3pqm+IqEPew==
+X-Received: by 2002:a17:903:3806:b0:2cc:8267:31b5 with SMTP id d9443c01a7336-2d2a8e941d5mr142212115ad.19.1786257914980;
+        Sat, 08 Aug 2026 23:45:14 -0700 (PDT)
+Received: from localhost.localdomain ([152.59.178.168])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315be8a7395sm28043292eec.9.2026.08.08.23.45.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 23:45:14 -0700 (PDT)
+From: Krishan Singh <krishanmohan298@gmail.com>
+To: linux@armlinux.org.uk
+Cc: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krishan Singh <krishanmohan298@gmail.com>
+Subject: [PATCH net-next v2] net: sfp: fix hwmon_name memory leak on hwmon registration failure
+Date: Sun,  9 Aug 2026 12:15:04 +0530
+Message-Id: <20260809064504.70579-1-krishanmohan298@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:2512:b0:4ab:230c:5faa with SMTP id
- 5614622812f47-4b1a101502fmr9190710b6e.18.1786257481845; Sat, 08 Aug 2026
- 23:38:01 -0700 (PDT)
-Date: Sat, 08 Aug 2026 23:38:01 -0700
-In-Reply-To: <CAL+tcoAR9WTmrFiM0GtWhtvgWX467vAD9fRRJ-Hds9Q346EB=w@mail.gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a782049.9c11d2ce.289b96.00ca.GAE@google.com>
-Subject: Re: [syzbot] [net?] WARNING in ipgre_xmit (2)
-From: syzbot <syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, kerneljasonxing@gmail.com, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+hwmon_sanitize_name() allocates sfp->hwmon_name before
+hwmon_device_register_with_info() is called. If the registration
+fails, sfp->hwmon_dev is left pointing to an error while
+sfp->hwmon_name remains allocated.
 
-syzbot tried to test the proposed patch but the build/boot failed:
+Later, when the SFP module is removed, sfp_hwmon_remove() only frees
+hwmon_name when hwmon_dev is valid. As a result, hwmon_name is leaked
+if hwmon_device_register_with_info() fails.
 
-failed to apply patch:
-error: corrupt patch at line 6
+Free hwmon_name independently of hwmon_dev. Continue to unregister the
+hwmon device only when hwmon_dev was successfully registered.
 
+Fixes: 3f118c449c8e ("net: sfp: use hwmon_sanitize_name()")
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Krishan Singh <krishanmohan298@gmail.com>
 
+---
+v2:
+- Move hwmon_name cleanup to sfp_hwmon_remove().
+- Free hwmon_name independently of hwmon_dev.
+---
+ drivers/net/phy/sfp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Tested on:
-
-commit:         06cf6189 Merge tag 'x86-urgent-2026-08-08' of git://gi..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4e38b15c29e6a1d9
-dashboard link: https://syzkaller.appspot.com/bug?extid=f16c1b285c9f63994eec
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=16e27fb9580000
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index f52020673..bfa2b821f 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -1916,7 +1916,11 @@ static void sfp_hwmon_remove(struct sfp *sfp)
+ 	if (!IS_ERR_OR_NULL(sfp->hwmon_dev)) {
+ 		hwmon_device_unregister(sfp->hwmon_dev);
+ 		sfp->hwmon_dev = NULL;
++	}
++
++	if (!IS_ERR_OR_NULL(sfp->hwmon_name)) {
+ 		kfree(sfp->hwmon_name);
++		sfp->hwmon_name = NULL;
+ 	}
+ }
+ 
+-- 
+2.34.1
 
