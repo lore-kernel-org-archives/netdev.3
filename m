@@ -1,71 +1,71 @@
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3FE3D6CC6
-	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 20:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E533D667F
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 20:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786307346; cv=none; b=NdyBqwKmDNMNsuI8G1M8/6HUFllLGEZSrzgfZPt/kN8f6DZxu77xHcbRKRA4Mv5zmwOtV5oxRe5IaoSBFzTjomh49GxW9X1RNIqKanPVNYrDrshuTWsEj99o3UFY1e8dccNzk4xNPcoTubNS+izDdd8yp7j9ADul2XB9E/sIvl8=
+	t=1786307351; cv=none; b=RY+rZyP6L5nDx+MzHJP0bh6aLKJzxZhbMllRnncyVpE4fn+ZlbGUqdz44vbX7MlvTQ1PnpM1OVt/YX89p6d8HFSq071pkCT79h052E9Vt3MPiz4GdvtiWZ7MbNnPsv++TfC/2CpqCkXPP79u38WLasAVs7KW2DZnbjUa1Kvw9kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786307346; c=relaxed/simple;
-	bh=IzRlEU23yfQQ6x4BYmQXGZqejxD9TteX1wiEO5R8YME=;
+	s=arc-20240116; t=1786307351; c=relaxed/simple;
+	bh=f16CR4wsF11AJHtigJu/UDcYZkiDz9qNNN8F9f7jf/I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aUAGiddbeTj5AoNCxRV6OY+wl52HHpn07U/2+xTbsjfWG4YU9sUSBQE3NA3b6H9Pef27o7VlS4540xS3ijrxemg83rxZLmGScUgKiOa9+dgwZ9BpasJ1VeD6gKT6/e2kQhOYoYPs4wCjI1h/7W0rDdMeFa4oMSTqFKZ1RkUQVQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g7SfrSMK; arc=none smtp.client-ip=209.85.160.46
+	 In-Reply-To:To:Cc; b=ZHZqzb3JNdA6o4jFUR0Pb8AFJtPeK2dVxkMDGz6Cvpc95h3MbT7cr8AXMjPIzjtc2LTvz0+nnuvmvk9K375nG67+XaFcV0p4qN5P6Zh0xSpyKQx2bLT7BVxzSE7jCxkvFbaQfkg7dWWNG4SZ4V1VSiG3diOPi07d3/txxxUWOss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cXtc1Yh7; arc=none smtp.client-ip=209.85.160.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g7SfrSMK"
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-4566a5bc186so485400fac.1
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 13:29:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cXtc1Yh7"
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-448de0cc236so724943fac.2
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 13:29:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786307343; x=1786912143; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786307346; x=1786912146; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gyzPxN0hN+8W2JU9IAdx12pcVnDBJDk0tQrb35djIKE=;
-        b=g7SfrSMKNLekcPmr078XrJ2wA+XQzpsrlAONOUPHs7tSKxgc1g7tbb3NtAZcSGCEqS
-         yX4XOzQargS1FWzGzOpoZ3WV3JoQUFaOeri23j/moRyReuKZHuIcNtDwJVaCzzvpDB6x
-         sao/HJfzy9ANUTBza3rbHxa/1fs8Z1McWVfHsA41YZcx2Rs8EiAX6eXbFo/hPJMG96uq
-         RcXJd1IASpJKzXBvaUPcNerDByVs3jUyoUON523YQP1WSyGODjl/PdNfXtYL+ZeiXp0Y
-         cK/yqzbmKpiFGcOMcBxvwil0jC33ed7+J6UJkTzmhBDXl1O6oK4HSL8PGMpRZxCZbSTn
-         xhWA==
+        bh=4H5+HCVFStmSzg+aAxnJnPK9AusNX/B0D2xVSvE2xvw=;
+        b=cXtc1Yh7QaF6Ne7a9nnCTZCxgkPxi21aLGeev/dqeKF9FxIePJgcCcNf+yYomelN1E
+         10kpBR0mz01hyi1EnnB2uNNwtwwJmQAYGnOWhBA5Axb80E+C6KbmswLJ1wElwhFy1lbJ
+         kYL+8g2SnAqXYs1MIZD+3mS2pbiaeGhTIryknVJlMDJXpIOpu0qUkUzUp8gc/4/tqE8g
+         8dCNVvU+xGWMmf60er79UBej3F0+LyZpT6oqng2jbPWb+PGwlytGHIgtcBuhwcwlOTyq
+         6MGffAZ7yR2ar+84GntAStxudcV2LQ+UoC/EtQvV2yroftZmkrs9yHLVkKaRV8jN3bFe
+         QeyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786307343; x=1786912143;
+        d=1e100.net; s=20251104; t=1786307346; x=1786912146;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gyzPxN0hN+8W2JU9IAdx12pcVnDBJDk0tQrb35djIKE=;
-        b=UY84NH+kjIUdnXKjLyMGer5HG6tlBWbGBAXvfQzWm+EDK+zwVzko9Xd5qTgcDEdnIl
-         QUpp+Qni7njaTq2gnWJPxiPyYCpb0RkgExg4st0VAZqOUwySz+vA1lutwd7pi0+iSQxZ
-         iqhCMAC7XTsWO41aN9CPc9d6GjYsFszwWGmnilUBAfVPVaobBWUH2wTzuL7RygbsSukU
-         7GPXMwGTLhcGJHssSC2luiW/JlgsZHFu3IijF3Va9Fg07gZDCC3/OaClHmiWJP6rxhd3
-         h7TlsWPHPcRDQtMh8PCkNIZAzD/9m0q+SrxiZNnpqTT4MJA+ktkHtPegj2PAyoLlCqBH
-         i7pw==
-X-Forwarded-Encrypted: i=1; AHgh+RqrdPLoOzEYgH1yGJ2DhwXRh4eK0nenC579Sc4NNMIYWzBWw1VYAMnS9V0KWet2bbLsc+4BTdw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK0pBpmNZdp4+RZgRO34ikjPkyvXzSjULyuPRvihw3M8HZ9BG/
-	v+XdPjuTKSmFk4EBgWaG7vhU4tUsZPFsTlqE3hXzh/f6oPWTBvEGXHH7
-X-Gm-Gg: AR+sD13tTSrLZccXIi7xXutgL/mw/0EpWCdOGdVFsxsLUmMwm7XrmDQTyFbuo054x7g
-	m9i21QxhayQMOqQn07lX6olM7o3HZ0rRwCJT1QQ0ysWy/4xArTfPwnw/y/VjggyPcvmdR56XNvK
-	BnS/wPBHrqRxKXd3f16nUd4FDdlmUzDIE7ZChobDq6wI8+4X1Xfvq4tMXUwlK5e/n925oqDEQlJ
-	p3qZqv9tVMBRSaly+qTWxKf0SOBLgvzH8TzT89+NRT1m4bfWNb3lqGvgOQCMpRZB+NwW+ooaQkU
-	adTG6+wVnlLjWIQfdCMWNkMWlU37n56iMxER/wMUoi9Wbi9Q1If04gSvFO/5AC0KBfNqEP7HDWb
-	dRaeBEgWxuLfcb+tempsjsHtQLbRNWeGAkWlAFlLhtDk/1YWIe4XAZFi7jvLjO4Ygy8raDig2U3
-	WQimj89zhGWLwC3pLYZMOUvlw4Eo2PFcdb9RMr3QO0SwN7tJW1qJ/0cRhOZB63orfWuIPsIub9h
-	IMKne0DDc0+cFxGAxuO4yYLUB9Eaupqf9xZbL0ibh7auimpsf9Hqnv+sYuVh3RoQzt77hBUG9kj
-	/IO0+ZsNbVB4QsTrFI17qYZfh5kquLmZRMpe+49Glq0YvJA/A5axbpl/eDsbDOQ2WHLsyK8Ff5+
-	9tlJtQ/S+h4tUR8jw
-X-Received: by 2002:a05:6870:2482:b0:451:ecac:2c13 with SMTP id 586e51a60fabf-459e2a47b11mr13178902fac.8.1786307343529;
-        Sun, 09 Aug 2026 13:29:03 -0700 (PDT)
+        bh=4H5+HCVFStmSzg+aAxnJnPK9AusNX/B0D2xVSvE2xvw=;
+        b=i5GYuMWyDtFvXZcMnjmTdsVnGT7d3axIEzjP6SZYbdaJrj2jvT6FsfYIEkOVoyZOrA
+         L9Cm1vHhT4UtS2B4ZiCBCrExbJuQ9AfqF93733j/7mjMAHj2K+PWeREYQw3K6ZvitIzU
+         J8Am6UChXzeBDDXZ8vDwrJEYjGVUugQ0Jyh8Q4bCVIPz6Flgtmq19N9bIZOrjA6xzye7
+         yH1P3Rg36IShDJNdXBRHty77WOJpOCnBNiIYVGceK95DfjEu3fJ9eULTuEZaCXSQJbvq
+         AqQPFxPhORrj7gQQwOzJSyEgfN1f/XefnMnc9z2R05iP0Pp7Y/CXrBgn640lN0k+zNBV
+         wpoA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq4iNu5tVFim8NzFznDXFI4vXpLR7GFdjLwuveeHJ6BumCiB68TjHfNJw4eQoHwAmDxaJt6zIo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2j0I3+1GNdUR2ILfoWDN35wV7w6WLgbaQNJj88SyIj2jt1u6H
+	0TYXq3+5xLRSt72KUE/sCRyiMFCmRGwSdJOE0sPhPYp6fJLZtz+vzRne
+X-Gm-Gg: AR+sD13vrS33M90LvI7ucGAlL3M268Ct5eWWNEAdtZsh55kItkYTej8uP9KjRl5KjgS
+	A/DrD35kW6UZMKC69FPghkiBJ7v4uwIA6NkT3eY8HrEh89OOnGyvZTR40ZLqmjN063RidgWm59b
+	S5ee2ezEmr99zdmfEd8HWUPiwDiK7yHaz1ZuRUUxMW2YHxPVwR3x/TQl5VZfBNxmg8FoEq19jVJ
+	i5xOyKmf54mMJWs2eXJflVFAL8OhSH/FsIMKfJWkHkHo5KEmmkSTwtfXuo3WHo+SAyrjPICSn3S
+	Sm0JpXiowlYXHUKLEgDLr/hWqmzYvs3g6hXxczevPgocsHeCux5L1Morgj8rEWXrAdrXAfIffNc
+	BWZr0P5o3SneEaSQ+JhaMeJQYX6lbvyd15fALswGxoIbBZWRgz2ukLdiUkdAf4l1vhwG1xQGr3O
+	E5yUn/2e+iPV8YGF0teqL1uI8Nab54JVCh178rLymq9TkA3XIKEZQPivNGToU9pzBse8iuHCrv+
+	LKrzWpXaJ+bJpzrnzP3ncu3IEYP0K8/gEXejQgq1A676Uy2rspDLHI5N9LWhTTYzIDaOkNbk638
+	KxnwtVsIWT3pBJP0nJ+e1lRfu3nVK2tXT/n1/WzeYOItXFncN1BBgPAsZOtDJppm6inidCX9aUj
+	0pIwJmOiSaCjMcOk4T76wekMKQd4=
+X-Received: by 2002:a05:6871:79c:b0:451:ca3d:4b0d with SMTP id 586e51a60fabf-4599ebf1927mr18411696fac.9.1786307346168;
+        Sun, 09 Aug 2026 13:29:06 -0700 (PDT)
 Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-459f19fd31csm6975362fac.1.2026.08.09.13.29.02
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-459f19fd31csm6975362fac.1.2026.08.09.13.29.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2026 13:29:02 -0700 (PDT)
+        Sun, 09 Aug 2026 13:29:05 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 09 Aug 2026 14:28:32 -0600
-Subject: [PATCH net-next v5 2/5] mfd: syscon: Add managed registration for
- external regmaps
+Date: Sun, 09 Aug 2026 14:28:34 -0600
+Subject: [PATCH net-next v5 4/5] dt-bindings: net: x-powers: add
+ AC200/AC300 EPHY packages
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,7 +74,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260809-submit-acx00-of-dynamic-v1-v5-2-bfa1f8518b28@gmail.com>
+Message-Id: <20260809-submit-acx00-of-dynamic-v1-v5-4-bfa1f8518b28@gmail.com>
 References: <20260809-submit-acx00-of-dynamic-v1-v5-0-bfa1f8518b28@gmail.com>
 In-Reply-To: <20260809-submit-acx00-of-dynamic-v1-v5-0-bfa1f8518b28@gmail.com>
 To: Lee Jones <lee@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
@@ -90,193 +90,249 @@ Cc: mfd@lists.linux.dev, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 X-Mailer: b4 0.15.2
 
-of_syscon_register_regmap() publishes an externally owned regmap in the
-global syscon list, but provides no way for a removable driver to
-withdraw it. Registering a devm-managed regmap from such a driver would
-therefore leave a stale pointer after unbind.
+The AC200 and AC300 contain compatible Fast Ethernet link PHYs which
+report the same Clause 22 identifier and use the same link-side register
+layout. Their package control paths differ: AC200 uses registers in its
+I2C MFD, while the AC300 control range is at a second Clause 22 address
+fixed at 16 plus the link address.
 
-Factor external registration through an internal helper and add
-devm_of_syscon_register_regmap(). The managed action removes the entry
-under the syscon list lock before later devres actions release the
-regmap. Hold a device-node reference for the lifetime of every
-externally registered entry so its lookup key also remains valid.
+Describe both variants as Ethernet PHY packages. The package reg value is
+the link PHY base address and the child supplies the documented PHY ID,
+because the identification registers cannot be read until package setup
+has completed. The AC300 driver reaches its control range with the PHY
+package offset helpers. The AC200 package instead references its MFD.
 
-Consumers of a removable provider remain responsible for ordering
-teardown, for example with a managed device link.
+Give fixed hardware variant-specific compatibles. Also provide an ACx00
+compatible for systems which can contain either package, with one packed
+NVMEM field containing calibration in bits 3 through 0, the AC300 selector
+in bit 8 and its low-calibration selector in bit 9. Such a description
+contains the potential resources for both backends; the driver consumes
+only those selected by the configuration field.
+
+Describe the package clock, supply and optional xMII receive-clock
+inversion needed by some integrations. A fixed AC200 package may omit the
+NVMEM field and use its internal calibration copy. Limit AC300-capable link
+addresses to 0 through 7 so the control address remains in the documented
+range 16 through 23.
 
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- drivers/mfd/syscon.c       | 87 ++++++++++++++++++++++++++++++++++------------
- include/linux/mfd/syscon.h | 12 +++++++
- 2 files changed, 77 insertions(+), 22 deletions(-)
+ .../bindings/net/x-powers,acx00-ephy-package.yaml  | 207 +++++++++++++++++++++
+ 1 file changed, 207 insertions(+)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 21a7fcdd2737..448422fe4f21 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -10,6 +10,7 @@
- 
- #include <linux/cleanup.h>
- #include <linux/clk.h>
-+#include <linux/device.h>
- #include <linux/err.h>
- #include <linux/hwspinlock.h>
- #include <linux/list.h>
-@@ -193,53 +194,95 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
- 	return syscon->regmap;
- }
- 
--/**
-- * of_syscon_register_regmap() - Register regmap for specified device node
-- * @np: Device tree node
-- * @regmap: Pointer to regmap object
-- *
-- * Register an externally created regmap object with syscon for the specified
-- * device tree node. This regmap will then be returned to client drivers using
-- * the syscon_regmap_lookup_by_phandle() API.
-- *
-- * Return: 0 on success, negative error code on failure.
-- */
--int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
-+static struct syscon *
-+of_syscon_register_regmap_internal(struct device_node *np,
-+				   struct regmap *regmap)
- {
- 	struct syscon *entry, *syscon = NULL;
--	int ret;
- 
- 	if (!np || !regmap)
--		return -EINVAL;
-+		return ERR_PTR(-EINVAL);
- 
- 	syscon = kzalloc_obj(*syscon);
- 	if (!syscon)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* check if syscon entry already exists */
- 	mutex_lock(&syscon_list_lock);
- 
- 	list_for_each_entry(entry, &syscon_list, list)
- 		if (entry->np == np) {
--			ret = -EEXIST;
--			goto err_unlock;
-+			mutex_unlock(&syscon_list_lock);
-+			kfree(syscon);
-+			return ERR_PTR(-EEXIST);
- 		}
- 
- 	syscon->regmap = regmap;
--	syscon->np = np;
-+	syscon->np = of_node_get(np);
- 
- 	/* register the regmap in syscon list */
- 	list_add_tail(&syscon->list, &syscon_list);
- 	mutex_unlock(&syscon_list_lock);
- 
--	return 0;
-+	return syscon;
-+}
+diff --git a/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml b/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml
+new file mode 100644
+index 000000000000..ae0c5e980c39
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml
+@@ -0,0 +1,207 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/x-powers,acx00-ephy-package.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+/**
-+ * of_syscon_register_regmap() - Register regmap for specified device node
-+ * @np: Device tree node
-+ * @regmap: Pointer to regmap object
-+ *
-+ * Register an externally created regmap object with syscon for the specified
-+ * device tree node. This regmap will then be returned to client drivers using
-+ * the syscon_regmap_lookup_by_phandle() API.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
-+{
-+	return PTR_ERR_OR_ZERO(of_syscon_register_regmap_internal(np, regmap));
-+}
-+EXPORT_SYMBOL_GPL(of_syscon_register_regmap);
++title: X-Powers AC200 and AC300 Ethernet PHY packages
 +
-+static void devm_of_syscon_register_regmap_release(void *data)
-+{
-+	struct syscon *syscon = data;
- 
--err_unlock:
-+	mutex_lock(&syscon_list_lock);
-+	list_del(&syscon->list);
- 	mutex_unlock(&syscon_list_lock);
++maintainers:
++  - James Hilliard <james.hilliard1@gmail.com>
 +
-+	of_node_put(syscon->np);
- 	kfree(syscon);
--	return ret;
- }
--EXPORT_SYMBOL_GPL(of_syscon_register_regmap);
++description:
++  The AC200 and AC300 contain compatible Fast Ethernet PHY blocks which report
++  the same Clause 22 PHY ID and use the same link-side register layout. The
++  package control paths differ. AC200 control registers are part of an I2C MFD,
++  while AC300 control registers occupy a second Clause 22 address fixed at 16
++  plus the link PHY address.
 +
-+/**
-+ * devm_of_syscon_register_regmap() - Register a managed external syscon regmap
-+ * @dev: Device that owns the regmap
-+ * @np: Device tree node associated with the regmap
-+ * @regmap: Pointer to the externally created regmap
-+ *
-+ * Register an externally created regmap object with syscon and remove it when
-+ * @dev is unbound. Consumers must stop using the regmap before the provider is
-+ * unbound, for example by establishing a managed device link to @dev.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int devm_of_syscon_register_regmap(struct device *dev,
-+				   struct device_node *np,
-+				   struct regmap *regmap)
-+{
-+	struct syscon *syscon;
++  Systems with a known package use the corresponding AC200 or AC300 compatible.
++  Systems which can contain either package use the ACx00 compatible and a
++  packed NVMEM configuration field to select the backend at runtime.
 +
-+	syscon = of_syscon_register_regmap_internal(np, regmap);
-+	if (IS_ERR(syscon))
-+		return PTR_ERR(syscon);
++  The link PHY cannot report its ID until the package control sequence has
++  completed, so its child node supplies the documented PHY ID. The package and
++  child use the same base address. The AC200 driver programs that address into
++  the package, while the AC300 driver derives its control address from it.
 +
-+	return devm_add_action_or_reset(dev,
-+					devm_of_syscon_register_regmap_release,
-+					syscon);
-+}
-+EXPORT_SYMBOL_GPL(devm_of_syscon_register_regmap);
- 
- /**
-  * device_node_to_regmap() - Get or create a regmap for specified device node
-diff --git a/include/linux/mfd/syscon.h b/include/linux/mfd/syscon.h
-index aad9c6b50463..3e804fc1b03e 100644
---- a/include/linux/mfd/syscon.h
-+++ b/include/linux/mfd/syscon.h
-@@ -15,6 +15,7 @@
- #include <linux/errno.h>
- 
- struct device_node;
-+struct device;
- 
- #ifdef CONFIG_MFD_SYSCON
- struct regmap *device_node_to_regmap(struct device_node *np);
-@@ -30,6 +31,9 @@ struct regmap *syscon_regmap_lookup_by_phandle_optional(struct device_node *np,
- 							const char *property);
- int of_syscon_register_regmap(struct device_node *np,
- 			      struct regmap *regmap);
-+int devm_of_syscon_register_regmap(struct device *dev,
-+				   struct device_node *np,
-+				   struct regmap *regmap);
- #else
- static inline struct regmap *device_node_to_regmap(struct device_node *np)
- {
-@@ -75,6 +79,14 @@ static inline int of_syscon_register_regmap(struct device_node *np,
- 	return -EOPNOTSUPP;
- }
- 
-+static inline int
-+devm_of_syscon_register_regmap(struct device *dev,
-+			       struct device_node *np,
-+			       struct regmap *regmap)
-+{
-+	return -EOPNOTSUPP;
-+}
++select:
++  properties:
++    compatible:
++      enum:
++        - x-powers,ac200-ephy-package
++        - x-powers,ac300-ephy-package
++        - x-powers,acx00-ephy-package
++  required:
++    - compatible
 +
- #endif
- 
- #endif /* __LINUX_MFD_SYSCON_H__ */
++properties:
++  compatible:
++    enum:
++      - x-powers,ac200-ephy-package
++      - x-powers,ac300-ephy-package
++      - x-powers,acx00-ephy-package
++
++  reg:
++    maximum: 31
++
++  clocks:
++    maxItems: 1
++    description:
++      AC300 input clock, running at 24, 25, or 27 MHz. The AC200 input clock
++      belongs to the referenced AC200 MFD instead.
++
++  vcc-supply:
++    description:
++      3.3 V package supply. This is connected to EPHY_VCC on AC200 and VCC1
++      on AC300.
++
++  nvmem-cells:
++    maxItems: 1
++    description:
++      Packed EPHY configuration field. Bits 3 through 0 contain the analog
++      calibration code, bits 7 through 4 are reserved, bit 8 selects AC300
++      when set and AC200 when clear, and bit 9 requests the AC300
++      low-calibration tuning sequence. A fixed AC200 package may provide only
++      the low calibration bits or omit the cell and use its internal eFuse
++      copy instead.
++
++  nvmem-cell-names:
++    const: configuration
++
++  x-powers,ac200:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: Reference to the AC200 MFD containing this Ethernet PHY
++
++  x-powers,xmii-rx-clock-inverted:
++    type: boolean
++    description:
++      Invert the xMII receive clock inside the PHY. This is required by some
++      SoC integrations, including the Allwinner H6 AC200 connection.
++
++patternProperties:
++  ^ethernet-phy@[a-f0-9]+$:
++    $ref: ethernet-phy.yaml#
++    properties:
++      compatible:
++        const: ethernet-phy-id0044.1400
++    required:
++      - compatible
++    unevaluatedProperties: false
++
++required:
++  - compatible
++  - vcc-supply
++
++dependentRequired:
++  nvmem-cells: [ nvmem-cell-names ]
++  nvmem-cell-names: [ nvmem-cells ]
++
++allOf:
++  - $ref: ethernet-phy-package.yaml#
++  - if:
++      properties:
++        compatible:
++          const: x-powers,ac200-ephy-package
++    then:
++      properties:
++        clocks: false
++      required:
++        - x-powers,ac200
++  - if:
++      properties:
++        compatible:
++          const: x-powers,ac300-ephy-package
++    then:
++      properties:
++        reg:
++          maximum: 7
++        x-powers,ac200: false
++      required:
++        - clocks
++        - nvmem-cells
++        - nvmem-cell-names
++  - if:
++      properties:
++        compatible:
++          const: x-powers,acx00-ephy-package
++    then:
++      properties:
++        reg:
++          maximum: 7
++      required:
++        - clocks
++        - nvmem-cells
++        - nvmem-cell-names
++        - x-powers,ac200
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-phy-package@0 {
++            compatible = "x-powers,acx00-ephy-package";
++            reg = <0>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++            clocks = <&pwm 5>;
++            vcc-supply = <&reg_3v3>;
++            nvmem-cells = <&ephy_configuration>;
++            nvmem-cell-names = "configuration";
++            x-powers,ac200 = <&ac200>;
++
++            ethernet-phy@0 {
++                compatible = "ethernet-phy-id0044.1400";
++                reg = <0>;
++            };
++        };
++    };
++
++  - |
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-phy-package@0 {
++            compatible = "x-powers,ac300-ephy-package";
++            reg = <0>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++            clocks = <&pwm 5>;
++            vcc-supply = <&reg_3v3>;
++            nvmem-cells = <&ephy_configuration>;
++            nvmem-cell-names = "configuration";
++
++            ethernet-phy@0 {
++                compatible = "ethernet-phy-id0044.1400";
++                reg = <0>;
++            };
++        };
++    };
++
++  - |
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-phy-package@1 {
++            compatible = "x-powers,ac200-ephy-package";
++            reg = <1>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++            vcc-supply = <&reg_3v3>;
++            x-powers,ac200 = <&ac200>;
++            nvmem-cells = <&ephy_configuration>;
++            nvmem-cell-names = "configuration";
++
++            ethernet-phy@1 {
++                compatible = "ethernet-phy-id0044.1400";
++                reg = <1>;
++            };
++        };
++    };
++...
 
 -- 
 2.53.0
