@@ -1,181 +1,298 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF751F8755;
-	Sun,  9 Aug 2026 01:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E16B1A6806
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 01:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786238965; cv=none; b=rvcXW9BXpo3h/+rc5Gul6EVAG30wbguAZ67MtPgjnDIhlK49RDBdfT9+tV7muLTAAw62yDypiEkyeVIc+KLHvOLrr3C+IVAVT6IuAA2JZ2OtrhFZGQUFovrLNTwLAc4gQ5wmea0xHSwvCK2CtAd1XEUKjlSG8qV9VoAv5FKv5x8=
+	t=1786239405; cv=none; b=FcHRZOCJLhM89b14u88YdOsG1F5FQs6jz4+DJDrIEn8CYihcPHW7p5J0ks3MYv8aLWv521u03v9CIIpEFVdOgVGcpwnWi8Vtx80aDEbMUIpdhlQ0IUKsqAJGB31T7VKOFrSr68YX4HRyS3f3DlBEX5bXNC50vUj4gzl47cWUtyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786238965; c=relaxed/simple;
-	bh=65zC6bgiIOa+ZNTw/BhxTe/xKIHf84mMOgPh/jQyIMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CKhJQ3z2mB4CFbG1buj0MarWM9IH/mns4xzCf2g08tSElHT3Mfp98K5ba7gl/1zlppa/Lte8FXePAXsi9OfjdhFAdvWDeWBXC7uYSWfGGKjDhzf1+HcCTnbOuVlSnsh4ICEz9Ph4jmDSFQNIbrjWWZewHqYvl9E48J2O4zVewak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wsrze-0000000068e-1gYP;
-	Sun, 09 Aug 2026 01:06:26 +0000
-Date: Sun, 9 Aug 2026 02:05:51 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, horms@kernel.org, corbet@lwn.net,
-	skhan@linuxfoundation.org, andrew@lunn.ch, olteanv@gmail.com,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v9 4/5] net: dsa: mxl862xx: recover switch stuck
- in MCUboot rescue mode
-Message-ID: <20260809005030.GA31337@makrotopia.org>
-References: <6ab6dd06b95c01e30cf3a7387817a53cdb5e84f9.1785728574.git.daniel@makrotopia.org>
- <20260806112621.164297-1-pabeni@redhat.com>
+	s=arc-20240116; t=1786239405; c=relaxed/simple;
+	bh=Ei3pMhsnf4GkPq0oKct7APjsPc/h+psB/WbM00ANjyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eHnhL0DKXrk4igsN71Dn8TfsOJZHXT5LTmVT06sEfamkbU5YwUrYecb5EPzFuW4bLUxpENSQNVKmN1slC34EoNVpWS90+5oSbfZ7RyTuLlAIGrt2W+FsBudCr3/0s99qTOZ0OXWjsgXmS8zcOF7GTIPUM9e1czMqLw8Y7J7IvX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T3s7UHZP; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T3s7UHZP"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38759bcd877so742267a91.2
+        for <netdev@vger.kernel.org>; Sat, 08 Aug 2026 18:36:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786239403; x=1786844203; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gVEVrHlkZUaS9xykoBr5aP1PUFTxMVcNoMBJNyWrgMI=;
+        b=T3s7UHZPqmsogmbHmwq7RfMdaA90A/XSB5V6w2oBKD+5w2n8rQAzsDA2/USgtVlnhO
+         4aU+x3m+11Pj4RfEE0jvwNlVH44b8T2XjLYN0IYBqcBLd1Hb/+av/qahsTrmmOxwITSb
+         OJWfeQFnUTi3Tqpi3RkFw5NE5jS73W965NPA+g/EZysW0SU7A5Timy2k3Uq9kQlsLH/b
+         icxLNtPGdv8rxC4De26YPdADVYDc+tuedvsqeZsM/kymrOXQ3p86GOYl92BHDUBC/JNd
+         +4/oWcv/OdEkynklR6+jB62H0W4DcgBKyuYudGRjT6hedGmOdrXmHLX0iklYOqMI/VMO
+         tMlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786239403; x=1786844203;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gVEVrHlkZUaS9xykoBr5aP1PUFTxMVcNoMBJNyWrgMI=;
+        b=gmQn+fQfLRphEmlpZEwR4l8d5mEWJcy4oFkyPEcAH3XO9+mywT4U6vbbj19/e8OjDE
+         IMhMCezFCuBePkminAorjFg0RcA+3KSlAUr2nF/a2vmDqZd0cNrWHcAihtdDZ+dbxYNx
+         hjTxkQVIILi+k5E1DGiPVyU/b9b+0/hzqhVJEXm0qwXEokzBBatFK7EZwEJulYX8KuSt
+         196UaZDfv7Svsyr5K0veh8Zxj0lO1wBurtLyYd9BWQYID3oAc4jfVgOP54s2F0sWBffz
+         Pd3BFajY17ywfezk89MgJvP/tukf5z7ufk3Y7d9m52ypTYh0R4wO5R6WrUUZtj7yfulB
+         KfcQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp+yQhkDD7pqkOnEvr1n04Mkp5y09kb4KR9Fqe3axh1M5qWT9DNSoZ0B90dA1Tk/VlDxLQNV70=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMeKYKGqNRew3+fmJHpyB3y9dgan4awf9t4+ZkASyzDFMG0YgM
+	2OJ3dvDiVEj0JlAJOhyByjxNV31wMQYSBc1TCJ/IYJgV4Fsn45HNWNc0
+X-Gm-Gg: AR+sD10gi2Y7VSK5nl1lty3zYqe/PW0swhmNQYmM6BV/zLvb0+OJmLoCaR5jtnZwc/7
+	fxwF7l1RV0fEAAsZb2pIGUIZIg4jT0Kb9TnndSsbdduFwn6XmKByjPPxzUycltLEyeT3GkNbJZ5
+	HBdCWs2DAwGvOI6wx8/taSv3lBtASVRFRsITUA9tZKqbGL8f8m5dVROnvCOEPOzuBH+Rd79hjmr
+	OEjuhFydQjfToXiOAyuPImJo4cCkWAB6AHGWixYVqFgK/Ytqkp0QNHMXgm8ChvMmofatmcDiyLA
+	YSEz67bWR8Xq8qb+PVvmcIk0e/+JRy9tRMDcf27n7NPpcQ8MsSQDqW2GaJjjIyOI3SH/66AJlu7
+	75v6PfiJDotoE8Ja0k94bo7nXNHD9LNqImLSHlu8ii3N2h8M5cNQ8ep4qKbaA0M4SOd1ED2Cweo
+	RrtDVdedjkzvw7Fbdgu62gy/a5l057N8GUfHYP+fDENkjwoJxJhHkaudoV7vBBLQ4=
+X-Received: by 2002:a17:90b:2d84:b0:38f:18f9:785 with SMTP id 98e67ed59e1d1-3903c538263mr33513410a91.8.1786239403199;
+        Sat, 08 Aug 2026 18:36:43 -0700 (PDT)
+Received: from Inspiron5409 ([138.199.21.246])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-390b33225e0sm3823275a91.4.2026.08.08.18.36.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Aug 2026 18:36:42 -0700 (PDT)
+From: Jianhui Xu <neuromoments@gmail.com>
+To: mail@birger-koblitz.de
+Cc: andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	hkallweit1@gmail.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux@armlinux.org.uk,
+	netdev@vger.kernel.org,
+	neuromoments@gmail.com,
+	pabeni@redhat.com
+Subject: Re: [PATCH net-next v6 00/13] ax88179_178a: Add support for AX88179A-based chips
+Date: Sun,  9 Aug 2026 09:36:28 +0800
+Message-ID: <20260809013628.3165246-1-neuromoments@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260806-ax88179a-v6-0-fde7414619e6@birger-koblitz.de>
+References: <20260806-ax88179a-v6-0-fde7414619e6@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806112621.164297-1-pabeni@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 06, 2026 at 01:26:21PM +0200, Paolo Abeni wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
+Hi Birger,
 
-Thanks. I traced all six findings. One is a real bug, two become
-comment and commit message fixes, and the rest I believe the loader
-protocol answers.
+I tested v6 on the same ASIX AX88179B adapter (USB 0b95:1790,
+bcdDevice 0x0200, firmware 1.3.0.0).
 
-For context, since several findings concern state classification: v9
-was tested on hardware in all three states the detection has to tell
-apart, that is WSP firmware running, loader idle at READY, and a
-loader wedged in the payload receive loop after an interrupted
-download. Classification was correct in each case, and the wedged case
-drained back to READY and reprobed into a flashable rescue mode.
+The 13 patches applied to net-next commit
+df13c1df8147675470213ffff29dd5762fa321f5 and built successfully as
+7.2.0-rc3-ax88179b-v6. The full build and focused W=1 builds for ax88179.o
+and ax88796b.o were clean.
 
-[main-4-7] the queued reprobe cannot be cancelled
+All 13 fresh direct-kernel QEMU starts completed a new DHCPDISCOVER at
+1000baseT/Full without reloading the driver. This includes five functional
+runs and the eight independent suspend/resume runs described below, so
+I did not reproduce the v5 cold zero-RX failure.
 
-Real, and I will fix it. dsa_switch_shutdown() only unlinks the
-netdevs, so dst->ports keeps entries whose dp->ds points at the devm
-allocated switch, and the tree stays on dsa_tree_list.
-mxl862xx_shutdown() then clears drvdata. A reprobe queued earlier
-fires 500 ms later and finds dev->driver still set, since shutdown
-does not unbind, so it detaches: mxl862xx_remove() returns early on
-the NULL drvdata, dsa_unregister_switch() never runs, devres frees
-priv and ds under the live tree, and the rebind walks those stale
-ports in dsa_switch_find().
+However, I reproduced the intermittent 100-Mbit carrier-without-RX problem
+in two of the five functional runs. In both failures, advertise 0x008
+negotiated 100baseT/Full and reported carrier, but ARP remained incomplete,
+bound pings to both the gateway and test host failed, and the RX counter
+did not move (60 to 60 and 61 to 61) while TX increased. The same
+transition passed in the other three runs.
 
-Two corrections. The probe failure variant is already covered, because
-mxl862xx_probe() cancels the heal work when dsa_register_switch()
-fails and that path calls dsa_switch_release_ports(), leaving no stale
-ports. And the mechanism came in with patch 3: every user flash queues
-the same uncancellable reprobe. The realistic reproducer is "devlink
-dev flash, then reboot within 500 ms", so the fix belongs there.
+In both failed runs, the subsequent advertise 0x002 transition negotiated
+10baseT/Full and passed traffic, and restoring the default advertisement
+negotiated 1000baseT/Full and passed traffic.
 
-The simple fixes do not hold. cancel_delayed_work_sync() from teardown
-deadlocks, as the work calls device_reprobe() which takes device_lock
-while device_shutdown() holds it across ->shutdown(). A drvdata or
-system_state test inside the work is check then act: it can pass,
-block on device_lock behind shutdown, and detach anyway. For v10 I
-plan to track the pending reprobe in priv under heal_lock and have
-teardown do an asynchronous cancel_delayed_work() with an ownership
-handoff, so whoever wins the cancel drops the module and device
-references. For a work item already executing when teardown starts, I
-will drop devm for priv and ds and free them in mxl862xx_remove().
-The early return on cleared drvdata then leaks them on a dying system
-instead of freeing them under a live tree, dsa_switch_find() returns
-the old ds, parse fails with a clean -EEXIST, and the reprobe only
-logs that the device was left unbound.
+Default 1000baseT/Full, 10baseT/Full-only, restored 1000baseT/Full, EEE
+disable/restore, pause enable/restore, and a read-only EEPROM query
+otherwise passed in all five functional runs. In the fifth run,
+I additionally unloaded and reloaded ax88179 and ax88796b; DHCP, both bound
+traffic paths, and RX growth passed afterward. QEMU USB detach/reattach
+also removed the device, reprobed it, reacquired DHCP, and passed both
+traffic paths with RX growth.
 
-[main-1-1] inconsistent timeouts for the same loader step
+I also ran eight independent QEMU ACPI S3 suspend/resume trials: two with
+Wake-on-LAN disabled and six with magic-packet wake configured. QEMU's
+monitor confirmed every guest was paused in S3, and I resumed each guest
+with system_wakeup. All eight returned SSH and 1000baseT/Full carrier,
+passed bound gateway and test-host traffic immediately after resume, and
+showed RX growth immediately and again during the 10- and 20-second delayed
+checks. Thus I did not reproduce the v5 post-resume frozen-RX state in
+these eight v6 trials.
 
-Agreed, fixed for v10. FW_WRITE_TIMEOUT_MS drops from 120 s to 60 s.
-DRAIN_DONE_MS becomes SB_PDI_VERIFY_MS, still 15 s, and now covers the
-verdict wait on both paths; flush_last() cannot see the boundary
-between programming the last slice and verifying, so it gets the sum
-of the write and verify budgets. DRAIN_POLL_MS becomes SB_PDI_STEP_MS
-at 2 s, and both detection waits use it too. RESCUE_READY_TIMEOUT_MS
-is gone. There is now one constant per loader operation.
+I then investigated the reproducible 100baseT/Full failure further. The
+immediate failure mechanism is that the adapter's MAC loses
+AX_MEDIUM_RECEIVE_EN (0x0100) after link configuration.
 
-I would keep the sticky verdict. With the budgets aligned, a STAT
-still holding 1 after the verify window means a genuinely wedged
-loader, usually a counter underflowed by an earlier oversized chunk,
-and only a power cycle clears that. I will document that power cycling
-the switch alone does not clear rescue_failed while the driver stays
-bound.
+With a diagnostic register dump, a successful 100baseT/Full transition
+reported:
 
-[main-3-5] is STAT == 0 unambiguous enough?
+medium mode: 0x0102
+RX_CTL: 0x0198
+MAC path: 0x03
+bulk-in: 05 c0 04 06 0f
 
-I do not think the ambiguous state exists. The loader leaves the
-receive loop exactly when r_remain reaches zero, so "in the loop,
-asking for the next chunk" and "out of the loop, publishing verdict 0"
-cannot overlap in time. Once it has left, a STAT write is a command
-rather than a decrement, so there is nothing to underflow. Verdict 0
-ending a drain would also require the zero stuffed remains of an
-interrupted image to pass the checksum. What the hardware does at the
-end of a drain is the other branch: STAT lingers at 1 during verify,
-then the loader resets into READY, which is what
-mxl862xx_rescue_drain_finish() waits out.
+A failed transition reported:
 
-The post reset case cannot arrive that early either. The second
-detection call runs only after mxl862xx_reset() and after
-mxl862xx_wait_ready() has spent its whole budget, an unconditional 2 s
-sleep plus polling to timeout, while MCUboot reaches its loop in
-milliseconds. It is also self correcting: a booting MCU publishes
-READY or a firmware status word, a freshly booted loader sits in the
-console loop where the 1-byte advance is not a count, and the drain
-converges through the "firmware booted while draining" branch. I will
-add a comment so the next reader need not re-derive this.
+medium mode: 0x0002
+RX_CTL: 0x0198
+MAC path: 0x03
+bulk-in: 05 c0 04 06 0f
 
-[main-3-6] alloc failure after a successful drain
+Thus the only captured difference was AX_MEDIUM_RECEIVE_EN being clear.
+ftrace from a separate failure also showed that bulk-IN URBs stopped
+completing after the link transition even though usbnet_bh continued to
+run.
 
-The hole is real: a NULL from mxl862xx_reprobe_alloc() leaves both
-rescue_ready and rescue_failed clear and logs nothing, so flash
-answers "retry shortly" forever. I would rather not set rescue_ready
-before queueing the reprobe, though. That flag is what stops a user
-flash from starting while the reprobe is pending, given that the flash
-path's own guard is skip_teardown, which the heal path never sets, so
-setting it early would let a flash begin and then be detached mid
-transfer. v10 will log the failure and set rescue_failed instead. The
-try_module_get() leg needs nothing, as it only fails during rmmod.
+An immediate readback in mac_link_up() was not sufficient. An exact build
+with that diagnostic reproduced zero RX after an EEE restore, showing that
+AX_MEDIUM_RECEIVE_EN can be lost after mac_link_up() has returned.
 
-[main-1-0] "left untouched" and the -ENODEV cases
+As an experiment, I therefore added a delayed check one second after
+link-up. If carrier is still present and AX_MEDIUM_RECEIVE_EN is clear, the
+worker restores the bit and verifies it by readback. The work is cancelled
+on link-down and synchronously cancelled during stop, suspend, and detach.
 
-Fair, the commit message overstates it. The presence probe does write
-the CTRL/ADDR/DATA scratch latches of a running firmware. It never
-writes STAT, and the writes are inert on the tested firmware, but I
-will reword it rather than claim the firmware is untouched.
+In the first run with this final experimental patch, the worker directly
+detected and repaired the condition twice, after the 100baseT/Full link-up
+in stress cycles 03 and 07. Both cycles then passed bound gateway and
+test-host traffic. All ten 100baseT/Full -> 1000baseT/Full stress cycles
+passed, as did cold DHCP, 10 Mbit/s, EEE, pause, module reload, and USB
+detach/reattach.
 
-A live switch with a relocated SB PDI window would indeed fail to
-probe now. Those offsets are the OTP reset defaults and no supported
-compatible moves them, so I would document the behaviour rather than
-consult the probe only after clause-45 has failed, which brings back
-the CRC error storm for genuinely absent switches. Happy to
-reconsider.
+A second fresh run passed another ten stress cycles without a failure.
+Separate deep-S3 cycles with both wol d and wol g passed immediate,
+10-second, and 20-second post-resume traffic and RX checks.
 
-[main-1-2] the -ENXIO outcome
+The experimental patch builds from v6 head b61cb69fb19f0 and passes focused
+W=1 builds plus strict checkpatch (0 errors, 0 warnings, 0 checks). For
+reference, the experimental diff is:
 
-Deliberate, and I will say so in the commit message. The RDREG
-challenge is what separates a loader idle at READY from a running
-firmware whose status word happens to read 0xc55c. Treating an
-unresponsive challenge as flashable would sometimes classify healthy
-firmware as a flash target, which is worse than refusing to bind.
-Every loader I have tested services it.
+    diff --git a/drivers/net/usb/ax88179_lib.h b/drivers/net/usb/ax88179_lib.h
+    --- a/drivers/net/usb/ax88179_lib.h
+    +++ b/drivers/net/usb/ax88179_lib.h
+    @@ -319,6 +319,7 @@ struct ax88179_data {
+     	struct phy_device *phydev;
+     	struct phylink *phylink;
+     	struct phylink_config phylink_config;
+    +	struct delayed_work rx_check;
+     	int (*resume)(struct usb_interface *intf);
+     	int (*suspend)(struct usb_interface *intf, pm_message_t message);
+     };
+    diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
+    --- a/drivers/net/usb/ax88179a_devices.c
+    +++ b/drivers/net/usb/ax88179a_devices.c
+    @@ -124,6 +124,7 @@ static int ax88179a_suspend(struct usb_interface *intf, pm_message_t message)
+     	u8 tmp8;
+     
+     	priv = dev->driver_priv;
+    +	cancel_delayed_work_sync(&priv->rx_check);
+     	ax88179_set_pm_mode(dev, true);
+     
+     	if (netif_running(dev->net)) {
+    @@ -417,16 +418,56 @@ static int ax88179a_init_phy(struct usbnet *dev)
+     	return 0;
+     }
+     
+    +static void ax88179a_rx_check(struct work_struct *work)
+    +{
+    +	struct ax88179_data *data;
+    +	struct usbnet *dev;
+    +	u16 mode;
+    +	int i, ret;
+    +
+    +	data = container_of(to_delayed_work(work), struct ax88179_data,
+    +			    rx_check);
+    +	dev = netdev_priv(to_net_dev(data->phylink_config.dev));
+    +
+    +	if (!netif_device_present(dev->net) || !netif_running(dev->net) ||
+    +	    !netif_carrier_ok(dev->net))
+    +		return;
+    +
+    +	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
+    +			       2, 2, &mode);
+    +	if (ret != 2 || (mode & AX_MEDIUM_RECEIVE_EN))
+    +		return;
+    +
+    +	netdev_warn(dev->net, "RX disabled after link configuration, restoring\n");
+    +	for (i = 0; i < 3; i++) {
+    +		mode |= AX_MEDIUM_RECEIVE_EN;
+    +		ret = ax88179_write_cmd(dev, AX_ACCESS_MAC,
+    +					AX_MEDIUM_STATUS_MODE, 2, 2, &mode);
+    +		if (ret != 2)
+    +			continue;
+    +
+    +		ret = ax88179_read_cmd(dev, AX_ACCESS_MAC,
+    +				       AX_MEDIUM_STATUS_MODE, 2, 2, &mode);
+    +		if (ret == 2 && (mode & AX_MEDIUM_RECEIVE_EN))
+    +			return;
+    +	}
+    +
+    +	netdev_err(dev->net, "failed to restore RX after link configuration\n");
+    +}
+    +
+     static void ax88179a_mac_config(struct phylink_config *config, unsigned int mode,
+     				const struct phylink_link_state *state)
+     {
+     	/* Nothing to do */
+     }
+     
+     static void ax88179a_mac_link_down(struct phylink_config *config,
+     				   unsigned int mode, phy_interface_t interface)
+     {
+    -	/* Nothing to do */
+    +	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
+    +	struct ax88179_data *data = dev->driver_priv;
+    +
+    +	cancel_delayed_work(&data->rx_check);
+     }
+     
+     static void ax88179a_mac_link_up(struct phylink_config *config,
+    @@ -544,6 +585,8 @@ static void ax88179a_mac_link_up(struct phylink_config *config,
+     
+     	tmp8 = AX_MAC_RX_PATH_READY | AX_MAC_TX_PATH_READY;
+     	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_MAC_PATH, 1, 1, &tmp8);
+    +
+    +	mod_delayed_work(system_wq, &ax179_data->rx_check, HZ);
+     }
+     
+     static void ax88179a_mac_disable_tx_lpi(struct phylink_config *config)
+    @@ -741,6 +784,7 @@ static int ax88179a_bind(struct usbnet *dev, struct usb_interface *intf)
+     		return -ENOMEM;
+     
+     	dev->driver_priv = ax179_data;
+    +	INIT_DELAYED_WORK(&ax179_data->rx_check, ax88179a_rx_check);
+     
+     	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_CHIP_STATUS,
+     			       1, 1, &ax179_data->chip_version);
+    @@ -840,6 +884,7 @@ static void ax88179a_unbind(struct usbnet *dev, struct usb_interface *intf)
+     	u16 tmp16;
+     	u8 tmp8;
+     
+    +	cancel_delayed_work_sync(&ax179_data->rx_check);
+     	/* Configure RX control register => stop operation */
+     	tmp16 = AX_RX_CTL_STOP;
+     	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_RX_CTL, 2, 2, &tmp16);
+    @@ -1149,6 +1194,7 @@ static int ax88179a_stop(struct usbnet *dev)
+     	u16 reg16;
+     	u8 reg8;
+     
+    +	cancel_delayed_work_sync(&ax179_data->rx_check);
+     	ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE, 2, 2, &reg16);
+     	reg16 &= ~AX_MEDIUM_RECEIVE_EN;
+     	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE, 2, 2, &reg16);
 
-[main-2-4] documented return values
+Because the unmodified v6 series still reproduces the intermittent
+100baseT/Full carrier-without-RX failure, I cannot add a Tested-by for v6.
 
-Both mismatches are real and will be fixed. Detection can also return
-the -ETIMEDOUT from mxl862xx_sb_pdi_poll_stat() when READY is never
-re-armed, and drain_finish() also returns -EIO and SMDIO bus errors.
-I lean towards mapping the challenge timeout to -ENXIO so the
-documented set becomes true.
-
-
-Cheers
-
-Daniel
+Thanks,
+Jianhui
