@@ -1,39 +1,61 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5026D3B0AE3;
-	Sun,  9 Aug 2026 17:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1BB26F2BF;
+	Sun,  9 Aug 2026 17:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786295365; cv=none; b=afo88BZ3pO+qe+cuCb0h+eyRrfEDOdHApFk6MULC6TqmDWNIE8OJCmHH2mKZKDaGlIg6HTz/IJafZG+kb+gMWm8AeWVBql/7/nD22o9+OMAuxr1YycdRiVo3t9OJ16lmN+tTkREqP8XItyQwZ7EY9WtLwtzxVFmGAGsIhWwj+10=
+	t=1786296367; cv=none; b=CjQSAVaJKLLHpycoYimC6DIpUQnJVzqkHuziNBqoblXRmnOvOBcOVXvjMSIND1bl0QhuVGFCZUjqd0aphh9eeIFu6B3wTrJm2M9nMjRaQY0NLHwjYDmIwxk72OOri0QzdDytSJNkkuueVc9VIOnfQ2lCXvDE4/RqrEC8acrJEr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786295365; c=relaxed/simple;
-	bh=MdYkuAgf2+KP/Gc3lb3DWHOV43ibGRy0XMjJ9Ea7ExE=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d40BugXVjUwbflr97Vj9cf5P74cf8coNOaXAurnYbJPu8kFTzCM3d1fV5qTE4rex8bf2WVc7ciBi9HiTUomurh53Bx8dEoQrEChw01TgSLQCd7tTvLyPljrK5aFXWwNoNX+nirXKsuLppbIsoL8klHYrf/PyWDR+8yrzLDil3EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wt71S-000000000RQ-3ay9;
-	Sun, 09 Aug 2026 17:09:19 +0000
-Date: Sun, 9 Aug 2026 18:09:07 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1786296367; c=relaxed/simple;
+	bh=6UrDoWCemHZaHTA5t+2EbSF//z0gX4NZCttaryizV5Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fK6+n09CZa1Cps06QkZEeH5Oe3ePDy9/iOnDT1SUa4fzRkoHFOXvxq91WcH9cvMCzqMJNeGHDgVWPtG/V5sO5jls1YTCqteItmNnLvGr/Of61usO1PMr/D1EbN7q5yn+g6eOrA4oQg3b2VwG1Ls0w/s3XTYevt2sY39yTbWxbvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=voAcElwK; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="voAcElwK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ry9fk0XG9JYbqeFPh0yNld54SQt3A83a8vQYvm01BjY=; b=voAcElwKJGsW/1k0o6ZQjOjwA9
+	AMbOZ2HQBU3A0RvorYkukinZR6ZouFHHTdmG8KGPGhEEN3r8qJQRl96TthwUiGUgzBjetNnHIY2Au
+	HW3Wn2WZC8EXW2fv/AJLKQKJ50eoNV6mMfIgg/0JmkTa5VPk4PhweO3gtL6NeEHGxVfc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wt7HW-00Gpot-Ip; Sun, 09 Aug 2026 19:25:54 +0200
+Date: Sun, 9 Aug 2026 19:25:54 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
-	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v10 5/5] net: dsa: mxl862xx: document devlink flash
- and info support
-Message-ID: <995eae5a0da8f8420266177755d81a41beaddbc6.1786294649.git.daniel@makrotopia.org>
-References: <cover.1786294649.git.daniel@makrotopia.org>
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
+Subject: Re: [PATCH net-next v11 02/12] net: phylink: introduce internal
+ phylink PCS handling
+Message-ID: <72c39d88-f901-48e0-ac3d-c7aca6e98dd5@lunn.ch>
+References: <20260807131301.192060-1-ansuelsmth@gmail.com>
+ <20260807131301.192060-3-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,142 +64,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1786294649.git.daniel@makrotopia.org>
+In-Reply-To: <20260807131301.192060-3-ansuelsmth@gmail.com>
 
-Describe the devlink info versions and the flash update behaviour,
-including the MCUboot rescue mode recovery, in a dedicated file under
-Documentation/networking/devlink/ and link it from the index. Add the
-new file to the driver's MAINTAINERS entry.
+> +++ b/drivers/net/phy/phylink.c
+> @@ -60,6 +60,9 @@ struct phylink {
+>  	/* The link configuration settings */
+>  	struct phylink_link_state link_config;
+>  
+> +	/* List of available PCS */
+> +	struct list_head pcs_list;
+> +
+>  	/* What interface are supported by the current link.
+>  	 * Can change on removal or addition of new PCS.
+>  	 */
+> @@ -154,6 +157,8 @@ static const phy_interface_t phylink_sfp_interface_preference[] = {
+>  
+>  static DECLARE_PHY_INTERFACE_MASK(phylink_sfp_interfaces);
+>  
+> +static void phylink_run_resolve(struct phylink *pl);
 
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
-v10: document that a switch power cycled on its own needs the driver
-     unbound and rebound before a failed recovery is re-examined
-v9: no changes, picked up Andrew's v5 Reviewed-by
-v8:
- - asic.id and asic.rev are omitted whenever the part number reads
-   zero, not only in MCUboot rescue mode (found by Sashiko AI review)
- - drop the claim that "0.0.0" marks a switch that never ran firmware;
-   rescue mode always reports it (found by Sashiko AI review)
- - document devlink dev flash as the signal that says whether a
-   recovery is still running, including the -EIO it returns once the
-   recovery has failed (found by Sashiko AI review)
-v7: no changes
-v6: no changes
-v5: new patch, splitting the devlink documentation out of the flash
-    update and rescue mode recovery patches so each keeps to code
-    (Jakub Kicinski asked for the documentation)
+forward definitions are not liked. Please add a patch which moves it
+earlier.
 
- Documentation/networking/devlink/index.rst    |  1 +
- Documentation/networking/devlink/mxl862xx.rst | 74 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 3 files changed, 76 insertions(+)
- create mode 100644 Documentation/networking/devlink/mxl862xx.rst
-
-diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
-index 4745148fecf4..058999d0dc56 100644
---- a/Documentation/networking/devlink/index.rst
-+++ b/Documentation/networking/devlink/index.rst
-@@ -94,6 +94,7 @@ parameters, info versions, and other features it supports.
-    mlx5
-    mlxsw
-    mv88e6xxx
-+   mxl862xx
-    netdevsim
-    nfp
-    octeontx2
-diff --git a/Documentation/networking/devlink/mxl862xx.rst b/Documentation/networking/devlink/mxl862xx.rst
-new file mode 100644
-index 000000000000..5b24d8cb57bc
---- /dev/null
-+++ b/Documentation/networking/devlink/mxl862xx.rst
-@@ -0,0 +1,74 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+========================
-+mxl862xx devlink support
-+========================
-+
-+This document describes the devlink features implemented by the
-+``mxl862xx`` device driver.
-+
-+Info versions
-+=============
-+
-+The ``mxl862xx`` driver reports the following versions
-+
-+.. list-table:: devlink info versions implemented
-+   :widths: 5 5 5 85
-+
-+   * - Name
-+     - Type
-+     - Example
-+     - Description
-+   * - ``asic.id``
-+     - fixed
-+     - 8628
-+     - The chip part number read from the CHIP ID registers. Omitted
-+       when the part number reads as zero, which happens for a switch
-+       sitting in MCUboot rescue mode (the registers need a running
-+       firmware), for an unfused part, and after a failed flash.
-+   * - ``asic.rev``
-+     - fixed
-+     - 0
-+     - The chip version read from the same register word, so it is
-+       omitted whenever ``asic.id`` is.
-+   * - ``fw``
-+     - running, stored
-+     - 1.0.70
-+     - Version of the firmware running on the switch, reported as both
-+       running and stored since the switch boots it from its own flash.
-+       It is omitted while no firmware version is known: after a failed
-+       flash, and in MCUboot rescue mode while an interrupted download
-+       is still being recovered in the background. Once the loader is
-+       ready to accept a new image the version appears as "0.0.0",
-+       which no released firmware reports, so version-comparing tools
-+       offer any available release as an upgrade. Use ``devlink dev
-+       flash`` to tell a recovering switch from a ready one, see below;
-+       a missing version on its own does not say why.
-+
-+Flash update
-+============
-+
-+The ``mxl862xx`` driver implements support for ``devlink dev flash``.
-+The signed firmware image is transferred to the switch over the same
-+MDIO bus which is also used to manage the switch, then verified and
-+installed by the MCUboot bootloader running on the switch. All ports
-+of the switch are closed for the duration of the update and the driver
-+reprobes the switch after it has rebooted into the new firmware. A
-+complete flash and reprobe cycle takes about one minute.
-+
-+A switch stuck in MCUboot rescue mode, e.g. after an interrupted
-+update, is registered without user ports. If the previous download was
-+interrupted mid-transfer the loader is wedged; the driver drains it
-+back to a clean ready state in the background, one byte at a time,
-+which takes tens of minutes for a large image and is reported through
-+the kernel log as it progresses. During that recovery ``devlink dev
-+flash`` returns ``-EBUSY`` with an extack message saying so, and
-+``devlink dev info`` reports no firmware version. Once the loader is
-+ready the firmware version appears and flashing a firmware image
-+through the regular update flow recovers the switch.
-+
-+If the recovery fails, the loader needs a power cycle: ``devlink dev
-+flash`` then returns ``-EIO`` and says so in its extack message. The
-+driver only re-examines the switch when it binds, so on a board where
-+the switch can be power cycled on its own, unbind and rebind the driver
-+afterwards to have the recovered switch recognised.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 03bfb79fca2a..8d9b1ea3faad 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16107,6 +16107,7 @@ M:	Daniel Golle <daniel@makrotopia.org>
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/dsa/maxlinear,mxl862xx.yaml
-+F:	Documentation/networking/devlink/mxl862xx.rst
- F:	drivers/net/dsa/mxl862xx/
- F:	net/dsa/tag_mxl862xx.c
- 
--- 
-2.55.0
+	Andrew
