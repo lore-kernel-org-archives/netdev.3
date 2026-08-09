@@ -1,102 +1,107 @@
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E1314900E;
-	Sun,  9 Aug 2026 03:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9196D2F7EF4;
+	Sun,  9 Aug 2026 03:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786246566; cv=none; b=Ak0syPjqsUEV6+Nv3Iy7P8iUH+P2wdNsHX1nr+6Bi38AeCN0C3WaRNz/Pb3NO3DBNUCnBpH3TJp1GhbGQ4XSl23zJq0Nkc4QTfQ4p3oV8VHzcwjevoU3IGelrPC5lnlGE6pHdoLDYxVivAois6p52AfpWMXvw3ptBp9mKK4ElqQ=
+	t=1786246800; cv=none; b=auOsx+JmppdT5zgQSKImrP5VQlFr3xnW+BLBFMCrQPrjdA9fzvKB3846Yf79yMPaM+TQU7kegHRePp6xveswQdJRFakryJWcNqRV0TW+BijUjJnevHh/UjNkG4Of+M35Ftw87aX3dSY+5oHs7/XVBiJ6gNeH+j3g3WOWhl24KkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786246566; c=relaxed/simple;
-	bh=IWPAPGy9vH7MTxWAG9zcneAboQuUaGBJtRUA2MuRx7g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L6+96hdVezlFektTgcxCWTrsF0czoZEFV1w7/EyigjMcw6xGAAg+cl54dD8X7ZJvXxvHWwkw3IOJaqx0UY0v/mILD3qCHx1GLyJrBoAori7wh7ZZXCmdEWhWzdmx5vQJc/Yc/GuWkF3AvV33LYbZaDjR7s+ZU9mqkF2etwDRqPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=162.243.164.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wAH4j6L9Xdq1915AA--.27924S3;
-	Sun, 09 Aug 2026 11:35:40 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app4 (Coremail) with SMTP id zi_KCgDXCjKL9XdqUFEIAw--.44444S2;
-	Sun, 09 Aug 2026 11:35:39 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: netdev@vger.kernel.org
-Cc: Simon Horman <horms@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Dipayaan Roy <dipayanroy@microsoft.com>,
-	Sahil Chandna <sahilchandna@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: mana: fix reset work race with device removal
-Date: Sun,  9 Aug 2026 03:34:26 +0000
-Message-Id: <20260809033426.104315-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260807124945.713853-1-horms@kernel.org>
-References: <20260807124945.713853-1-horms@kernel.org>
+	s=arc-20240116; t=1786246800; c=relaxed/simple;
+	bh=a52wR0nLqljWi//sJy/SOb9afT+Om7Jn0lmH6gabtHU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rCpVV8kQm558tQyTuUnqTzE8RatchxMKfP1Jn7Td9rIIusRNoP+69A+rvyDsBrA6wYAffPQjCN8ZyX0islRKZ22aziskaOYDbZoNrHkYmMzQ6e64OvE5fouBtVw/6uFGfB6wX7W8t18Wa+e0aDy/oY1IeAdSe70Q0aZs3hHHy4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=qdO7pT5b; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=KjoCEsae; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="qdO7pT5b";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="KjoCEsae"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1786246790;
+	bh=a52wR0nLqljWi//sJy/SOb9afT+Om7Jn0lmH6gabtHU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qdO7pT5b8V7EymWc0SdAt7WVOYpNlaWFlXW1hOQv48SaM8cuuCoAGRbiyUgq6as7g
+	 7b/sGyxuBfYW+VsETIAEKRyGV2iI1pKAq9vRgqECKRt4M1eFF393T6AETBC/Gf3JD0
+	 QPpsTGsbQh/H0s/YhRTbOTpPCyoDTHPk0xaJKb1mFHbZ+7NLW7gT0ZaPg6d5A0uGRx
+	 FacDvsr4uYSBrjs5YC64MMPgzNU9JGCzTWN0YNs2XBQIh9fncF98PqCU8bxnbaUxau
+	 1+o0dW+llwX7l8KleMsD/ibs8an0mHCQ1F34MFh+kukKONxJqaSw0i4E1cUn4wmgZG
+	 fcY75QvTMMdnA==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 453DE49750; Sun,  9 Aug 2026 03:39:50 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1786246789;
+	bh=a52wR0nLqljWi//sJy/SOb9afT+Om7Jn0lmH6gabtHU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KjoCEsaedZaOm6kU7AVj/dRKGpDbG7AY7R5jxW8xdgafAmuiUCP2h1GzL5TLmnVNj
+	 Y5V3jDVwEXBpbbGpwv2BkROULIZZPwHXEgGLuCFe65ghzPU20zP3RQArRjjMob3mhM
+	 Mch5gjRHhehXnskFexAedFb27KOY9WEjbEs1cfwr6lHOLM5Y+9y+cZ4/WWQRqI5L/B
+	 yjDf+rq9+0MpaoUE/A34qIWh66hGMELIDzZodqI/Gs2aUtNeyxmeYGrm+36J/jL8xw
+	 AJgI/XAKeyaLzNM60AZqR8wZkcjEjIPTiltMG1YspFTZavTpFvmZK/JN9zc1ZhAshF
+	 80C8dWBgvmtpg==
+Received: from [IPV6:2003:c6:9f06:3400:435a:e092:2ab7:871f] (p200300c69f063400435ae0922ab7871f.dip0.t-ipconnect.de [IPv6:2003:c6:9f06:3400:435a:e092:2ab7:871f])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 017554130F;
+	Sun,  9 Aug 2026 03:39:48 +0000 (UTC)
+Message-ID: <66570e9e-97fa-4fc6-8238-0968c59e15be@birger-koblitz.de>
+Date: Sun, 9 Aug 2026 05:39:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zi_KCgDXCjKL9XdqUFEIAw--.44444S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?jWzTmwXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnXz+g1OQfMo27QHy5TwQyZz/GESoQyYY5g5ROxLVgloiSWibBz7tv/ix5d2wiXMFtG7d
-	zgFok0WJcWaj/I/E15vN5RPxYw6l01w8CbPzC/8w
-X-Coremail-Antispam: 1Uk129KBj93XoW7tF4fJF4rCFW7Gw45AFy8tFc_yoW8Xw13pr
-	y5Ga1kCr97W3yxG3yqvr1xXFy8Crs5Ja13CwnFg3W8Cwn8Ar15tr42qr4Y9ry7Crs5Gwn0
-	vFWYqw1rZa1jqFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
-	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
-	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
-	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0E
-	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
-	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
-	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8ructUUUUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 02/13] ax88179_178a: Split driver into library
+ and device specific code
+To: Jianhui Xu <neuromoments@gmail.com>
+Cc: andrew+netdev@lunn.ch, andrew@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, hkallweit1@gmail.com, kuba@kernel.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, pabeni@redhat.com
+References: <20260806-ax88179a-v6-2-fde7414619e6@birger-koblitz.de>
+ <20260809005732.3084198-1-neuromoments@gmail.com>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <20260809005732.3084198-1-neuromoments@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thanks for the review.
+On 09/08/2026 02:57, Jianhui Xu wrote:
+> Hi Birger,
+> 
+> I noticed what looks like a typo in the newly added `ax88179_read_cmd()`:
+> 
+> ```c
+> if (size == 2) {
+> 	u16 buf = 0;
+> 
+> 	ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf);
+> 	le16_to_cpus(&buf);
+> 	*((u16 *)data) = buf;
+> } else if (size == 2) {
+> 	u32 buf = 0;
+> 
+> 	ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf);
+> 	le32_to_cpus(&buf);
+> 	*((u32 *)data) = buf;
+> }
+> ```
+> 
+> The second condition should presumably be:
+> 
+> ```c
+> } else if (size == 4) {
+> ```
+> 
+> The original implementation before this code was moved to `ax88179_lib.c`
+> also used `else if (4 == size)`.
+> 
+> As written, the `u32` branch is unreachable, so 4-byte reads fall through
+> to `__ax88179_read_cmd()` without the `le32_to_cpus()` conversion.
+Thanks Jianhui for reporting this. Indeed, this was a typo introduced when
+updating the coding style for the original driver function that was copied to the
+new library file. checkpatch complained about the old style.
+Will fix to read (size == 4) in v7.
 
-On the service-gating concern: I will keep GC_IN_SERVICE set on the
-failed-resume rescan exit, so the existing gate is preserved until the
-old device is removed.  A freshly probed device starts with clear flags,
-so the bit naturally resets across the rescan, and no second service or
-tx-timeout work can be admitted while mana_serv_rescan() tears the device
-down.
-
-On the lock scope: agreed that holding the driver-core device lock across
-mana_gd_suspend() + the msleep() + mana_gd_resume() is far too broad.
-Narrowing it is not as simple as swapping in a driver-private mutex,
-though.  A mutex embedded in struct gdma_context cannot itself protect the
-drvdata lookup, which happens before such a lock can be taken, and
-mana_gd_remove() cannot take-then-free-then-release a lock that lives
-inside the object being freed.  What this race actually needs is a drain
-boundary: close admission of new reset work, wait for the already-admitted
-work to finish, and only then clear drvdata and tear the context down.
-
-I am aligning this with Long Li's in-flight series "[PATCH net v4 0/7]
-net: mana: HW channel reliability and hardening fixes", which is
-establishing the HWC teardown lifecycle model (the setup_active state and
-explicit destroy ordering), so that the reset/remove rework follows the
-same HWC lifecycle and teardown ordering, rather than introducing an
-independent synchronization scheme that could conflict with that work.
-
-I will send a reworked version once that direction is settled.
-
+Birger
