@@ -1,208 +1,361 @@
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAE2305057
-	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 17:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42012372071
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 17:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786297738; cv=none; b=lM9YOENhNQEMKudqRxpmHmmRWo06U3O6SDeNiWMWMqhwskcenTK0UYh1RNgdyriLSGag9jun6RnLF1WUptcEbQkPw68WcdIIlx0e2S3rRywFCtLG8FFq9HfC0SQjvs7LqBN6/XmgkE00ZIMV1/UGB51H3GTIG13EeYoOGsyT3Fw=
+	t=1786297803; cv=none; b=HUDuifDo0dxI5npBylBC8YsDGOJjaJO+FbOT+VcAx8jUQcTtUVOzVdVShtAStSVSaTF9JguqOhXKFqrNYHlhfsr0G1H/Zdf9Uwwh1LdiEQpvXRNf2xuwAv6YxDY3Fb/Fe3O1wANNg6nrEnUDXzvzGTBH+FqBdqOv7BLx/53A1qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786297738; c=relaxed/simple;
-	bh=h80ROkZ1L41leW4D/oQCviDZGdtRRFwIi2wBKy1ffS8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sNK/4EZ2Ua9uUgUyxslrmr3q0tuEW9jxZReLTJXto10pLvtltUYzUezJcPT5iFZXC6LhjzYUgF2Xx+lKrRhZVjhEzXvxgBmr6h9vqpaBUVgg+FmtwfehX/iaFs3/BfvDaR4GxvO2eYbZpfUOeoaZU9U9Q/t0m4fKLytHvpgb4EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bB4BHefX; arc=none smtp.client-ip=209.85.216.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1786297803; c=relaxed/simple;
+	bh=ihEhCpdOiQJ7RiLVFIbBDlHDMYkCQhxi8LGrQZaYQO8=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GFyrHlPt39p6c5wr/wSN+kBE202ab5LGT8/kuh5ad8ikkhN6GT7UX1hJ6VR0aNgfIlkffVStX/dHG6+NCiFy4pzGL4OUMBHcSqY7B/6548Jwm0vWd3Ndn+hHev16X+Hr25FUdVuV62aD59/FCUAS8caAs/H1bw3nT4wQ+7jx42A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LxGVtrKT; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bB4BHefX"
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3900e39d935so1095627a91.0
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 10:48:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786297736; x=1786902536;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=7Cf/GU5DQwzJNWY6jfFN6+m9rxncZDrtcffGDCTuspw=;
-        b=iGjYDlaWJ/0VWVTV9AcqMn6R5o8SzkFmQ+HEkiBf/SYignWT+I7fu86yqtLhNERmmI
-         VbYileLXwDEl5BQ9Xd++heA9P2gC4382LQSFjw56GK6tiJGgo1a6GrwA+a78vjFV31E/
-         rZGBUVV4aDaKAx02FBaVIGnYmF8U1YWycKcxK3FjSNcxFmJB5FNPYMGowW9Ru9U91tLo
-         JdPL3Nhdnt1DgHygmPEZTzqfya5mLqcsV1QOgKZc2AQBd328fbrN7rQje4p5X1bWV+UJ
-         RWp6O0TfxNVmA2JmJKbyIHUPaaxan0qF7UAzv03Nzb5oZRJ/1yERGBn7qJ5AcztaJN/a
-         DqGA==
-X-Forwarded-Encrypted: i=1; AHgh+RqPUNhMcxT031KCeFSq+eAneAGWooN36MoDUpiXFiWcNCo8jtvncHqM7Uinboy5BDwoIzdHsQo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5+Ohy72tVd0Wu2YKSStYg6aJurQPUXRekQGbLUm7T+y5L3XIb
-	kAF7wAJ+llB80UgjeD3T5E9aARJzPxUkj9D0kefqfbdybKUpMWGKymgdxuS/dEbGwXu7lkhxNyw
-	k9+qt/JrF5TplpO9v3TGJ4FZ5iZg0mBLRbfq0wvW9eZG6wT/zbJLBI6qqnbKcwFvWNKa04Ftcgg
-	NbcD9R5TXs1wt2Pf5aw/ZQv6oww7teCrepP+re+nRPtq56O4EFDDjH/+dFIhUhwXZMCkpPxzm4P
-	7mAdE+CNEECeXgI
-X-Gm-Gg: AR+sD13iax7hoV1nvtrQ5NsCOx2iPF9IjbNJdnxGDCY0Rv/0y9se/CPNolxx4R3cX9d
-	3NY1iolLD4X94CvNaKo7wAfUtsyRy7MzUQkZ+0k+qxaxBdpYdePJhBn68bQcG3wAhBMaQh3LpmN
-	e6pWZihdkiQ54QvHAY9zihiqTlwsJE34pNVYMM93t6B4VgcBI/yhdPoeZKv277PZjGsEjdXDFUT
-	YIymuS7s6/aFrF7m/zor/0v2WcMfhp5QNMI7L8NiB0W/cF65rQ+XUr7Wr42roulLaqXQeiSPiLS
-	A1ejQ/Jfeq5GpKTgwdSj4MUJCjloNRpq5zKXgWTSaH6lD3n0C9jwfBsf5/zbhUctb4MiE2SLvrM
-	X8ToL7h+mgPqJFw3oHgc2HCBy3RV9w4hc585At8I0ApmAlm8pZ+hb/HviFegMFduO09R5/XBg68
-	ndEDf6OuIBKKZ6HI/A29xC5vln3YPx1qq2uyRzpg==
-X-Received: by 2002:a17:90b:2dc1:b0:38f:de97:b06 with SMTP id 98e67ed59e1d1-3903c535d79mr41902549a91.5.1786297736429;
-        Sun, 09 Aug 2026 10:48:56 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-0.dlp.protect.broadcom.com. [144.49.247.0])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39085c4670fsm5490483a91.0.2026.08.09.10.48.55
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 09 Aug 2026 10:48:56 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb6cf425e86so1569880a12.1
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 10:48:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LxGVtrKT"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-496bb7cdf51so16247785e9.2
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 10:50:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1786297734; x=1786902534; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1786297799; x=1786902599; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XCnEd7tGfLsvqQ9t4dLxlXhkU3vDq79dR6i/bF6oDRI=;
+        b=LxGVtrKTVKTZ3gLIsflWNx+JaeCprkBnpbXUh0ytcUWI/eq779xH7Cb8TvB2sf58D9
+         YlreMHyB209yDGsds9GPbXLvjGBvtabpftNmo+hzOagsndzMnRzXKkDtBAwGBPn67RbW
+         4+J30Tu4URJaw6PdjQY6aqcfU/6fyFyBK1FwatkWzU4lkZMt8JSk2xEDm8K7fzh1CXcD
+         qqrEyrXdFiNYMNaPtRsKwaXy5yk1GS3dne1cgOy8daje/UvhLOALRm6Skb/osKWdGNY6
+         F4sup/ixyIuZfYkCYvXgKsDZodDWkXcuQSDIeJrhBLb9HlN6fV0ctUQWugauX9uNoiY7
+         IhEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786297799; x=1786902599;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7Cf/GU5DQwzJNWY6jfFN6+m9rxncZDrtcffGDCTuspw=;
-        b=bB4BHefX74jVtGNdymq33hoBSPEoIOFEgk10PFUlRGuniptk8VuvowpvyVgoSemVa7
-         pNu8sWK2ZsOX0bWcU8Asg0Xoro0IhXGN7G9V/0r6dqMgVIYGYYvwNqEsPf2tCPGE5r7l
-         t1Dl/e+sfGTapdDkwHtReKYPf0UuuIJEGAuCw=
-X-Forwarded-Encrypted: i=1; AHgh+RpymO/H9gy2y8Xlrlik0RyhXKDtlAS+xnbuXtDpUxQ+ZWUQGl9/EbLqHKyR8XKyMHM04m4Donc=@vger.kernel.org
-X-Received: by 2002:a05:6a20:728f:b0:3a2:d316:de53 with SMTP id adf61e73a8af0-3cb85c0732fmr41638832637.0.1786297734531;
-        Sun, 09 Aug 2026 10:48:54 -0700 (PDT)
-X-Received: by 2002:a05:6a20:728f:b0:3a2:d316:de53 with SMTP id adf61e73a8af0-3cb85c0732fmr41638791637.0.1786297734003;
-        Sun, 09 Aug 2026 10:48:54 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315be8a6809sm34437245eec.10.2026.08.09.10.48.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Aug 2026 10:48:53 -0700 (PDT)
-Message-ID: <d5b85dc7-31ac-4888-98fc-2cd3197dbb7f@broadcom.com>
-Date: Sun, 9 Aug 2026 10:48:52 -0700
+        bh=XCnEd7tGfLsvqQ9t4dLxlXhkU3vDq79dR6i/bF6oDRI=;
+        b=Fx5ndOVEs9Bp4CMQy0lQ0bh4cKMNcwOUtnxQWk4/a+qZnuuwarc/cQ08YgUD9LtBMZ
+         DOTiR3MmxR7uZBAmhddcNq+gEKtfyPE9KmnF641dHlkF1rN+fnEgOS522rAGFhn5TJCP
+         XXhkxHdUqaKlfKzKSfmVq/8dLrv5+esGwmzcvuvB2Jdspm2mzJQo3qnCvrvUVlU6LYc3
+         f0ipItXjawGiZoAIbO0W+7WieWAUkR70OotffkAYsMTkmOKcjmlT6iUjXzCTzR9JaCpd
+         9AEN1SAOXbhgaabZUXDttHrii/vM8PdXRf03z55++NL4f8rT2cJto4O1/CVnZFlODsTU
+         mPMA==
+X-Forwarded-Encrypted: i=1; AHgh+RoO3GT1eckVkS9qavfmz4Fz5vLHISKZ1D6k74tKq7BzjwuRPn0FACSs9nYz+NWPwjL8Ny8oJto=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6krw/XKrdPPe/Warr/5W5l5aUfzL8lC1KzXOeMH+qX1lNF+kV
+	j8ydae8LOIGxbPGGvo5v8af2TgF6ajDqXW6NeOLsZOd23v64olKcIAYx
+X-Gm-Gg: AR+sD11hVla2+omAEfFsKhAO/scJFqm+wEscplUzCG2yfAJ0IGzHjTpSK4kR8MQLJ1N
+	PEKEJuOsqe1sUgNnC5anN8aZ0TDxfzOjRD59eeOSopCjhbmmu8CETLKZNAleFb+zx1azyIOqouv
+	IXzJoM0R7nBLYZbzwNVUXcZbKoe9w3OyyQBRuYvf4Xy6BCdcYJfXoS/GI0fEzRA12woT6xTJ7HG
+	EKZTWLSScomfC+SNIOTBe/KOILx+Dbw7WuARgqS9LGPfAVTdJFpmxK2yjCSXr9dk+De2dEB2/UB
+	vTUHIZod3J+JfMNLy/WuKFeC+vdc5liOWw4nQQVA/tMwS5rPqNCe6UjkO8wRBWlpfD1HSq1NrFF
+	ydXe0gW//EHcz10HqDaiusM3Eb7nXJAZ+udp3YPRFONiZ4IeFjp4W2eJBHypekf8wlEFgqlAl8j
+	EtIr+1ySt1fxd082pOKG/Qb7KnedeYTHNyj+5fiC9J+jLCjWHAsLTv4HI0r9ghMFuaiuoXhaaL8
+	j4LyDAAugKQRc748VW/l6x24o0RLuv8sOnIYWrWgzE=
+X-Received: by 2002:a05:600c:630c:b0:493:f140:c3fb with SMTP id 5b1f17b1804b1-4994e71c87bmr402295485e9.7.1786297799337;
+        Sun, 09 Aug 2026 10:49:59 -0700 (PDT)
+Received: from Ansuel-XPS. (host-87-20-3-207.retail.telecomitalia.it. [87.20.3.207])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995421934asm340945865e9.5.2026.08.09.10.49.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Aug 2026 10:49:58 -0700 (PDT)
+Message-ID: <6a78bdc6.89544747.3fcae.b8e0@mx.google.com>
+X-Google-Original-Message-ID: <ani9wg-GiHuUV9ab@Ansuel-XPS.>
+Date: Sun, 9 Aug 2026 19:49:54 +0200
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
+Subject: Re: [PATCH net-next v11 00/12] net: pcs: Introduce support for
+ fwnode PCS
+References: <20260807131301.192060-1-ansuelsmth@gmail.com>
+ <4c595c15-17d9-4c23-bb44-344c48d36e9a@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: dsa: b53: skip EAP mode setup on Northstar SoCs
- when using port 5 or 7
-To: Andrew Lunn <andrew@lunn.ch>, Jonas Gorski <jonas.gorski@gmail.com>
-Cc: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Vladimir Oltean <olteanv@gmail.com>,
- netdev@vger.kernel.org, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Semih Baskan <strst.gs@gmail.com>
-References: <20260809093934.28098-1-zajec5@gmail.com>
- <CAOiHx==_HzdmNN5BY4DMh3Cr6JK5oQri3ZCNWN9v+xQPjzQZkg@mail.gmail.com>
- <1ec9fffb-77a5-42c9-874a-8a8e807e6e50@lunn.ch>
-Content-Language: en-US
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <1ec9fffb-77a5-42c9-874a-8a8e807e6e50@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4c595c15-17d9-4c23-bb44-344c48d36e9a@lunn.ch>
 
-
-
-On 8/9/2026 8:00 AM, Andrew Lunn wrote:
-> On Sun, Aug 09, 2026 at 12:39:58PM +0200, Jonas Gorski wrote:
->> On Sun, Aug 9, 2026 at 11:39 AM Rafał Miłecki <zajec5@gmail.com> wrote:
->>>
->>> From: Rafał Miłecki <rafal@milecki.pl>
->>>
->>> Northstar devices have 3 CPU ports. This design was meant for dual IMP
->>> setups when WAN traffic goes to port 5 (IMP1) and LAN traffic goes to
->>> port 8 (IMP0). While all 3 ports support Broadcom header some features
->>> are not available for ports 5 and 7. Trying to set EAP mode when using
->>> those ports breaks standalone ports.
+On Sun, Aug 09, 2026 at 07:44:55PM +0200, Andrew Lunn wrote:
+> On Fri, Aug 07, 2026 at 03:12:42PM +0200, Christian Marangi wrote:
+> > This series introduce a most awaited feature that is correctly
+> > provide PCS with fwnode without having to use specific export symbol
+> > and additional handling of PCS in phylink.
 > 
->>> +       /*
->>> +        * Northstar devices (SoCs with BCM53011 / BCM53012) have 3 Ethernet
->>> +        * controllers connected to 3 switch ports: 5 (IMP1), 7 and 8 (IMP0).
->>> +        * Each of those ports can be used as CPU one as all support Broadcom
->>> +        * header but ports 5 and 7 have some limitations.
->>> +        *
->>> +        * Setting EAP_MODE_SIMPLIFIED with port 5/7 used as CPU port breaks
->>> +        * standalone ports, see:
->>> +        * https://lore.kernel.org/netdev/ce4d9b7b-aaf6-4796-94fb-8c3d6a1dcd4d@gmail.com/
->>> +        */
->>> +       if (is5301x(dev) && !dsa_is_cpu_port(dev->ds, B53_CPU_PORT)) {
->>> +               dev_warn_once(dev->dev, "skipping EAP setup because of not using CPU port 8\n");
->>
->> We should print a bit fat warning at probe time, since this is
->> essentially a broken device tree configuration.
+> One of Russells complaints was the phylink has too many bits of code
+> for ideas which did not work out and were replaced by new ways of
+> doing things.
 > 
-> I was wondering how we got here, is it a device tree problem, but the
-> commit message is a bit vague.
+> We want .mac_select_pcs to go away, this framework should replace it.
+> Please could you convert one of the exist users of .mac_select_pcs, so
+> we get an idea of what that involved. If that conversion is pretty
+> mechanical, i think we should have a second patchset which converts
+> all the current users, and then remove support for .mac_select_pcs.
 > 
-> I agree, for a DT problem, it should be reported at probe. After that,
-> the driver can do its best, but should be quiet.
-> 
->> EAP isn't the only feature not working, anything that relies on trap
->> to CPU is broken. E.g STP also won't work, likely (if ever
->> implemented) bonding would not work (LACP frames won't be correctly
->> trapped), I assume LLDP would be broken, and any other protocols that
->> rely on reserved multicast addresses as well.
->>
->> So we should strongly encourage users to fix the device tree and use
->> port 8 as CPU port.
->>
->> Also can you try to move the CPU port on all devices you have access
->> to and send patches for that where it works successfully?
-> 
-> I agree. This should be changed into a patchset.
+> Overall i think the direction of this patchset is good.
+>
 
-Also agree here, using ports 5 and 7 likely stemmed from limited 
-understanding at the time, given all of these ports are internal and are 
-all functional, there should really be no reason not to use port 8 
-unconditionally as the IMP port, it's the most capable and it has no 
-limitations.
+Thanks for the initial check.
 
-> 
-> 1. Move the warning into probe
-> 2. Update the binding .yaml to indicate such a setup is invalid.
-> 3. Fix all in tree .dts{i} files to make the new warning go away.
+Maxime converted one device with this and the patch delta was small... let
+me copy those patch here. (it was referenced in v9)
 
-Sounds good to me.
+I think the most annoying one will be stmmac with the 3 different PCS
+implementation but we already handled that in a upcoming ipq50xx driver
+currently present in OpenWrt mainline.
 
-> 
-> If there are any boards which cannot be fixed because the correct CPU
-> port is not wired up, we need to think further about what needs to
-> happen.
+Maybe if Maxime is O.K. I can include his patch in this series.
 
-I don't think that can happen.
+From 38ad94b1e62bf3523097983dfb515f59b1634477 Mon Sep 17 00:00:00 2001
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Date: Tue, 21 Jul 2026 13:52:57 +0200
+Subject: [PATCH] net: marvell: mvpp2: Convert to the new PCS API
+
+Following the introduction of the PCS framework, port mvpp2 to the new
+PCS API.
+
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 161 +++++++++++-------
+ 1 file changed, 95 insertions(+), 66 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index ccc24a1301f2..8d9663c7a023 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -6499,21 +6499,6 @@ static void mvpp2_gmac_config(struct mvpp2_port *port, unsigned int mode,
+                writel(ctrl4, port->base + MVPP22_GMAC_CTRL_4_REG);
+ }
+
+-static struct phylink_pcs *mvpp2_select_pcs(struct phylink_config *config,
+-                                           phy_interface_t interface)
+-{
+-       struct mvpp2_port *port = mvpp2_phylink_to_port(config);
+-
+-       /* Select the appropriate PCS operations depending on the
+-        * configured interface mode. We will only switch to a mode
+-        * that the validate() checks have already passed.
+-        */
+-       if (mvpp2_is_xlg(interface))
+-               return &port->pcs_xlg;
+-       else
+-               return &port->pcs_gmac;
+-}
+-
+ static int mvpp2_mac_prepare(struct phylink_config *config, unsigned int mode,
+                             phy_interface_t interface)
+ {
+@@ -6786,7 +6771,6 @@ static int mvpp2_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
+ }
+
+ static const struct phylink_mac_ops mvpp2_phylink_ops = {
+-       .mac_select_pcs = mvpp2_select_pcs,
+        .mac_prepare = mvpp2_mac_prepare,
+        .mac_config = mvpp2_mac_config,
+        .mac_finish = mvpp2_mac_finish,
+@@ -6808,7 +6792,10 @@ static void mvpp2_acpi_start(struct mvpp2_port *port)
+        };
+        struct phylink_pcs *pcs;
+
+-       pcs = mvpp2_select_pcs(&port->phylink_config, port->phy_interface);
++       if (mvpp2_is_xlg(port->phy_interface))
++               pcs = &port->pcs_xlg;
++       else
++               pcs = &port->pcs_gmac;
+
+        mvpp2_mac_prepare(&port->phylink_config, MLO_AN_INBAND,
+                          port->phy_interface);
+@@ -6823,6 +6810,78 @@ static void mvpp2_acpi_start(struct mvpp2_port *port)
+                          SPEED_UNKNOWN, DUPLEX_UNKNOWN, false, false);
+ }
+
++static int mvpp2_port_fill_pcs(struct phylink_config *config,
++                              struct phylink_pcs **available_pcs,
++                              unsigned int num_possible_pcs)
++{
++       struct mvpp2_port *port = mvpp2_phylink_to_port(config);
++
++       available_pcs[0] = &port->pcs_gmac;
++
++       if (mvpp2_port_supports_xlg(port)) {
++               if (num_possible_pcs < 2)
++                       return -EINVAL;
++
++               available_pcs[1] = &port->pcs_xlg;
++       }
++
++       return 0;
++}
++
++static void mvpp2_port_init_pcs_xlg(struct phylink_pcs *pcs, bool has_comphy,
++                                   phy_interface_t phy_mode)
++{
++       if (has_comphy) {
++               __set_bit(PHY_INTERFACE_MODE_5GBASER,
++                         pcs->supported_interfaces);
++               __set_bit(PHY_INTERFACE_MODE_10GBASER,
++                         pcs->supported_interfaces);
++               __set_bit(PHY_INTERFACE_MODE_XAUI,
++                         pcs->supported_interfaces);
++       } else if (phy_mode == PHY_INTERFACE_MODE_5GBASER) {
++               __set_bit(PHY_INTERFACE_MODE_5GBASER,
++                         pcs->supported_interfaces);
++       } else if (phy_mode == PHY_INTERFACE_MODE_10GBASER) {
++               __set_bit(PHY_INTERFACE_MODE_10GBASER,
++                         pcs->supported_interfaces);
++       } else if (phy_mode == PHY_INTERFACE_MODE_XAUI) {
++               __set_bit(PHY_INTERFACE_MODE_XAUI,
++                         pcs->supported_interfaces);
++       }
++}
++
++static void mvpp2_port_init_pcs_gmac(struct phylink_pcs *pcs, bool has_comphy,
++                                    phy_interface_t phy_mode)
++{
++       if (has_comphy) {
++               /* If a COMPHY is present, we can support any of the
++                * serdes modes and switch between them.
++                */
++               __set_bit(PHY_INTERFACE_MODE_SGMII,
++                         pcs->supported_interfaces);
++               __set_bit(PHY_INTERFACE_MODE_1000BASEX,
++                         pcs->supported_interfaces);
++               __set_bit(PHY_INTERFACE_MODE_2500BASEX,
++                         pcs->supported_interfaces);
++       } else if (phy_mode == PHY_INTERFACE_MODE_2500BASEX) {
++               /* No COMPHY, with only 2500BASE-X mode supported */
++               __set_bit(PHY_INTERFACE_MODE_2500BASEX,
++                         pcs->supported_interfaces);
++       } else if (phy_mode == PHY_INTERFACE_MODE_1000BASEX ||
++                  phy_mode == PHY_INTERFACE_MODE_SGMII) {
++               /* No COMPHY, we can switch between 1000BASE-X and SGMII
++                */
++               __set_bit(PHY_INTERFACE_MODE_1000BASEX,
++                         pcs->supported_interfaces);
++               __set_bit(PHY_INTERFACE_MODE_SGMII,
++                         pcs->supported_interfaces);
++       }
++
++       /* RGMII and MII are still routed through the gmac PCS */
++       phy_interface_set_rgmii(pcs->supported_interfaces);
++       __set_bit(PHY_INTERFACE_MODE_MII, pcs->supported_interfaces);
++}
++
+ /* In order to ensure backward compatibility for ACPI, check if the port
+  * firmware node comprises the necessary description allowing to use phylink.
+  */
+@@ -7082,28 +7141,17 @@ static int mvpp2_port_probe(struct platform_device *pdev,
+                        port->phylink_config.mac_capabilities |=
+                                MAC_SYM_PAUSE | MAC_ASYM_PAUSE;
+
+-               if (mvpp2_port_supports_xlg(port)) {
+-                       /* If a COMPHY is present, we can support any of
+-                        * the serdes modes and switch between them.
+-                        */
+-                       if (comphy) {
+-                               __set_bit(PHY_INTERFACE_MODE_5GBASER,
+-                                         port->phylink_config.supported_interfaces);
+-                               __set_bit(PHY_INTERFACE_MODE_10GBASER,
+-                                         port->phylink_config.supported_interfaces);
+-                               __set_bit(PHY_INTERFACE_MODE_XAUI,
+-                                         port->phylink_config.supported_interfaces);
+-                       } else if (phy_mode == PHY_INTERFACE_MODE_5GBASER) {
+-                               __set_bit(PHY_INTERFACE_MODE_5GBASER,
+-                                         port->phylink_config.supported_interfaces);
+-                       } else if (phy_mode == PHY_INTERFACE_MODE_10GBASER) {
+-                               __set_bit(PHY_INTERFACE_MODE_10GBASER,
+-                                         port->phylink_config.supported_interfaces);
+-                       } else if (phy_mode == PHY_INTERFACE_MODE_XAUI) {
+-                               __set_bit(PHY_INTERFACE_MODE_XAUI,
+-                                         port->phylink_config.supported_interfaces);
+-                       }
++               if (!mvpp2_port_supports_xlg(port))
++                       port->phylink_config.num_possible_pcs = 1;
++               else
++                       port->phylink_config.num_possible_pcs = 2;
++
++               port->phylink_config.fill_available_pcs = mvpp2_port_fill_pcs;
+
++               mvpp2_port_init_pcs_xlg(&port->pcs_xlg, comphy, phy_mode);
++               mvpp2_port_init_pcs_gmac(&port->pcs_gmac, comphy, phy_mode);
++
++               if (mvpp2_port_supports_xlg(port)) {
+                        if (comphy)
+                                port->phylink_config.mac_capabilities |=
+                                        MAC_10000FD | MAC_5000FD;
+@@ -7115,35 +7163,16 @@ static int mvpp2_port_probe(struct platform_device *pdev,
+                                        MAC_10000FD;
+                }
+
+-               if (mvpp2_port_supports_rgmii(port)) {
+-                       phy_interface_set_rgmii(port->phylink_config.supported_interfaces);
+-                       __set_bit(PHY_INTERFACE_MODE_MII,
+-                                 port->phylink_config.supported_interfaces);
+-               }
++               phy_interface_copy(port->phylink_config.pcs_interfaces,
++                                  port->pcs_gmac.supported_interfaces);
+
+-               if (comphy) {
+-                       /* If a COMPHY is present, we can support any of the
+-                        * serdes modes and switch between them.
+-                        */
+-                       __set_bit(PHY_INTERFACE_MODE_SGMII,
+-                                 port->phylink_config.supported_interfaces);
+-                       __set_bit(PHY_INTERFACE_MODE_1000BASEX,
+-                                 port->phylink_config.supported_interfaces);
+-                       __set_bit(PHY_INTERFACE_MODE_2500BASEX,
+-                                 port->phylink_config.supported_interfaces);
+-               } else if (phy_mode == PHY_INTERFACE_MODE_2500BASEX) {
+-                       /* No COMPHY, with only 2500BASE-X mode supported */
+-                       __set_bit(PHY_INTERFACE_MODE_2500BASEX,
+-                                 port->phylink_config.supported_interfaces);
+-               } else if (phy_mode == PHY_INTERFACE_MODE_1000BASEX ||
+-                          phy_mode == PHY_INTERFACE_MODE_SGMII) {
+-                       /* No COMPHY, we can switch between 1000BASE-X and SGMII
+-                        */
+-                       __set_bit(PHY_INTERFACE_MODE_1000BASEX,
+-                                 port->phylink_config.supported_interfaces);
+-                       __set_bit(PHY_INTERFACE_MODE_SGMII,
+-                                 port->phylink_config.supported_interfaces);
+-               }
++               if (mvpp2_port_supports_xlg(port))
++                       phy_interface_or(port->phylink_config.pcs_interfaces,
++                                        port->phylink_config.pcs_interfaces,
++                                        port->pcs_xlg.supported_interfaces);
++
++               phy_interface_copy(port->phylink_config.supported_interfaces,
++                                  port->phylink_config.pcs_interfaces);
+
+                phylink = phylink_create(&port->phylink_config, port_fwnode,
+                                         phy_mode, &mvpp2_phylink_ops);
+--
+2.55.0
+
+
+
 -- 
-Florian
-
+	Ansuel
