@@ -1,64 +1,64 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D433CE0A2
-	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 12:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8013CFF50
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 12:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786277702; cv=none; b=eGa21s79kybVHCGrrZ3UuzWTZpXQ5ZH4SJGMCpm7CvlvYnQKnkQHzqJpMd1+Ct2AeYAUiDDn8HTrD330CX7t7wJvtg0YDZkm4cnGBm2xK/Sv393J/t54i1iNzyfDu7sHnuXFEYjt6R601Wlx4UVj+kDiLSQ+9WmxMnCuecztGRw=
+	t=1786277704; cv=none; b=gvuXr99X44NIMEGAVlK63Cl5PC+u5xNRG2pFUYxR54wtEJ1rdc5mh8ewTm1wjbCJ/5hx74LU8Zf1hpcY/w+zp9e2mMLTmVD6jPApFvusD6yl+ucyD+Zy6W6RE3jtrXoVqHbnqCZSEADJT0l10FtHFzhRJ1L22Wb2yQc8P4RNHGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786277702; c=relaxed/simple;
-	bh=nUOVeBFFUPO0EXBKrcOK+AXygJbNMgByifpoRqFKklY=;
+	s=arc-20240116; t=1786277704; c=relaxed/simple;
+	bh=uacT/jei5dgba42+Tsf6fcoe45L0FIC0Fpqbwa8RlWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXcaIHRXiIuCeCePA4oIBGU5L/HUDG0tLIx8ytyqCgsaId/dr+5x6tQSEUGobqr8EJgojJHZerih6sV5k3d2tl2UJSNZJx9FvAHSDyRjgTy1e8qkN6WiXpA7sYMwa80AW/a5sbZ9k8JctpoOyqVZLk3ITXHp7Hqq5tqlgmSO3bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rpFVWZVL; arc=none smtp.client-ip=209.85.221.44
+	 MIME-Version; b=aV06D3WgIU/FO6v7vyfhTvIwiGHZODWOWpTW7U9bZvx0naGTv1/HTdDu8Fl2zb7y2C9fY1btlPrloSN/8vPdHQwTCvAa9rUUkDivdbofXkdAqnWYwktTEmpmFGEeoRmMykNWf1Pv/niiCapyI5K00SmwwpmDeEwORwcHeyBwzjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R0ll42kZ; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rpFVWZVL"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47fe45db360so119547f8f.2
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 05:15:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R0ll42kZ"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47df6a5655aso132652f8f.1
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 05:15:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786277698; x=1786882498; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786277700; x=1786882500; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Tjt5VhvveBeVhJ7gVkQsZLN+QtuDGPYHnEEQcH//h8s=;
-        b=rpFVWZVLH3wwUN0P/t6fs6jFdpeP9LNUcUVSNpK04vDbyeKwUZ0CeSAVHswpA4yEJY
-         pv4P0mRJ6Yd7Mhg6Nu5xoxwHpHcu0DBtg2d7Oyfy8S2tA6n5MRIG/hglnAYaalxT92jw
-         +n71l5NpbtmPyTBXpVhv3faUBOOFumjhjP0cNe3+6bLcB5DWFhtaJhmqar0carvqkhDS
-         uSMn8qYHq2LT4ZsdAknkDsWbZTWD4LDN8GHo37gjOyylJ9tACzU+xnsc5A0Lkyt0vGvJ
-         6EAyCMWlaYoryDnMiiEFdL56rJbg/jlizLkmgc7+A63waBOxIj+2s6elGO4IG/UFkQ0O
-         F9Fg==
+        bh=QTUwYlCoLFw4wVzo6jM7Q/KRvDXTLX460FJlpDvikKk=;
+        b=R0ll42kZXuVmbJXoWrTzcwH2M6oHcn74Qs4x/MpIbFDPgqjClEjCqZA8oEumUMAY2D
+         FLO8j3JY/7LpDvqIXdEGl9TosNItsoPtIQVmjsx9JO3D6F/LxDQixYxLuMEUCG6nEpX3
+         mmTeHQ76lNblm7Rscm/aHnyhjJyvpVf6agogCKm4ze2lxPTrRl0KG6eLTHNLjv1T47QE
+         2HKujjKWucH7JMCJHe3qDpG1atqTvYvxXPEkzu3edENTvBNwwS/7FbT5Kf1PqpctYyEU
+         CvweAzvRcfemeMshhMxZoulokaS9HRy6zdUoGo5g+PyLSoJfb0EhiVUv4MFAsVqd3X53
+         edyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786277698; x=1786882498;
+        d=1e100.net; s=20251104; t=1786277700; x=1786882500;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Tjt5VhvveBeVhJ7gVkQsZLN+QtuDGPYHnEEQcH//h8s=;
-        b=hDN3nAQAc6wruQhBuHdkWSfyC3TIzyaA4ZjiNVW0J+eX1tO9DGYxZ4XENVv5IvJTXR
-         FDLC6y04Ko4ABD0K7eFWwztr7NowL1dSx0PuP2YsfOGS2o0yxHOnwMR5n5s1Uh+rumwX
-         2bEmEn+CMLk03eYou4vB8Cg1wYrYPuKwehRB/dsdixVDsGottq6ybIASRkyE4wnbgSyq
-         ap9lMI7DNExNF2BFd3Xk6lBZovFvPfnSBbQeD7pd7NVSxlP09WHS4MPoZxoKEzmjm1im
-         80yncsrKohF0k9ADnnuzrNAbX45pnb966CcBvsDFmAgCGWcce4GNoDufIMzaBDIcgZ0j
-         bfzg==
-X-Gm-Message-State: AOJu0Yz6Fbw2CCWRt1AdjRYGu+CFJtq6uRTySNHbb0tHVunfbCUnobud
-	Y3sOZD8Jy+8PukqKDMlw+sbAqE24SzB4uYenmt3o6DuAa1VXeRomtF+ItwOJpApmS6k=
-X-Gm-Gg: AR+sD107PZrlPuT+qTKDqb2DFRQURBwBIaXH6PT2IKjrqx93CRdfly5dIEoPSDEk8xm
-	9VFUyyxr0yxYMg8SV8QMYXGAk3J3w3RMAU08yxY4ZFL2aRc0sATRwqj4mTcBOI9ZE0R7Sjz/8Bw
-	x6WFXLSVl3C3rVojpjX40NewbqhKsBd1Io6AdVVVDPCnNhGXl+8ovHtFrmhyI8KjwHqDcJe0EPF
-	o9761/YZJE+BGV2dlGvcmCsAO+no9r1IFdfU260YALzGhoNg/B3HLCxuYtAI2IHBI/Ct5EhHkwx
-	TzRpJjL+wY0mN7H+4D7KILNFVEOJjD7LD9XwIFOZw731W+wpw1GVkeNqbz2IoNzH5uq0r6LKn5P
-	kAG/3okYKg1TY7MKXO3NBPEgDqiIyD5hmiyv7yNivbFqbFpIZv92dgBDM0jMwtKGe1//hlwGgrG
-	gWyj158qWrec96djOuXuo9VYkC+zZP56HqLyq6N0l/9PyqHjMukksap5mWSNFmnLcDoMAupts0v
-	O+h/BEyhnQqKzhYQ4wvi+/ykq1J28Ry8c2z3ylGsQKr/twdn3KgsiUk7jYqOGDl9SXBFdF5hXs6
-	diun1JMB6e++DsdPwOw+
-X-Received: by 2002:a05:600c:1d10:b0:498:8e6:d463 with SMTP id 5b1f17b1804b1-4994e79b14emr243848055e9.1.1786277698245;
-        Sun, 09 Aug 2026 05:14:58 -0700 (PDT)
+        bh=QTUwYlCoLFw4wVzo6jM7Q/KRvDXTLX460FJlpDvikKk=;
+        b=EbcjdRwGM9GL7iq5WOdSia6anyHuOF2WJJt3Q8bZlWtwQv7HoucLYVw17lmUfkwsLs
+         uSOhro7lwH002zJ0nxSDFnIB1Gdz0wwWpoHFNovmzcI9LaHQVxY+YCN3XLhGWd/1TcOc
+         SuBY58Sc9cVS6AARa1SkS6DcF9RHndPi6GaUTp3GdFDA3lTabSsZDpaoNnOSBfkjofPO
+         ODR71t1ErDEroPJXPu80NW7+fBRlPQ9DKNQzO8qIMzmDaPx6yabZvIM9UeS6DSm+2N6M
+         iOy7cG3pUtUYvWsCkRBsQ8y5oXYB1e3Zd5yHHglW0uH070CVdwm93wWZwt6Uo+4XHXOa
+         Hkjg==
+X-Gm-Message-State: AOJu0YzIr0hfPVdtUSq+46utHGQr5OSjYFyBj7eRfABywLm6ge2zM/0O
+	g7p12zUZnxzCUjt3tD9fddNiYQjYHTfWzwDPsg3zVbibJSOC9jqZkC+8JeVgSQwuB74=
+X-Gm-Gg: AR+sD10Ogy37ujd0YHmPsZQ6MDductFT8RseXYZVoUoLLTc5LDxCh6WfDVV4oQ8MLEJ
+	14E/nUhNeSEvVynYh1XXPnB0jc53kQbZZyYxngim0qkMW7lwJSDKF0XXSevuA7GzXMIG10ppCQg
+	raTXHloJBxaOWn3Sfi9VG5dPh8CYKpSfjU+zsr1RfaF99McabwvZ1394rRJ1t9ObptaBWB5sKPJ
+	Xi0pqlwimucb1XJRP9cciXG6NjOrDU8Au4FxBKObuXU/5ftf8QrIABU1Pymh2MLbOCcAHJnAn0O
+	sPIrWjYQPL8teQyLdHLP5/3aL2ZElBjl4+6OiJ9Fn/Buhza9ydNyrU+rKAF5bKUzLyNRp7WNpXr
+	YEzoqQ7k/qz25tXlbcoNzRQH381AGDpTwQab7SkjPWwl63P2RSQoXVmjhoQnbQwpFyDhZBHMgP6
+	3WTjqmmXsrzf/tMwu30Eh7aV9k1GUJGfpjUR6GOFoIQ+bcEh6kLwHux+B6dBXtHB/lKWLbLFowi
+	oVZPQx2iQ+gf6Z/aM1E9xcsv3HxthixIj+e+cENZgynN35eKTwilLmQoZFM82Ydm+vKBoLxqEBy
+	brJzq1uLPZ59uKkVafic1A==
+X-Received: by 2002:a05:600c:1393:b0:495:650b:4c61 with SMTP id 5b1f17b1804b1-4994e7d0166mr247269495e9.3.1786277699563;
+        Sun, 09 Aug 2026 05:14:59 -0700 (PDT)
 Received: from L-022584.energy.envision.com (dynamic-077-012-133-135.77.12.pool.telefonica.de. [77.12.133.135])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021e7b3fsm25158434f8f.20.2026.08.09.05.14.57
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021e7b3fsm25158434f8f.20.2026.08.09.05.14.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2026 05:14:57 -0700 (PDT)
+        Sun, 09 Aug 2026 05:14:59 -0700 (PDT)
 From: Xin Xie <xiexinet@gmail.com>
 To: netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
@@ -81,10 +81,11 @@ Cc: davem@davemloft.net,
 	liuhangbin@gmail.com,
 	stable@vger.kernel.org,
 	sdf.kernel@gmail.com,
-	Xin Xie <xiexinet@gmail.com>
-Subject: [PATCH 1/4] net: hsr: fix packet drops caused by GRO superpackets
-Date: Sun,  9 Aug 2026 14:14:51 +0200
-Message-ID: <20260809121455.1745-2-xiexinet@gmail.com>
+	Xin Xie <xiexinet@gmail.com>,
+	syzbot+fbf74291c3b7e753b481@syzkaller.appspotmail.com
+Subject: [PATCH 2/4] net: hsr: shrink seqnr_lock to sequence counter updates
+Date: Sun,  9 Aug 2026 14:14:52 +0200
+Message-ID: <20260809121455.1745-3-xiexinet@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260809121455.1745-1-xiexinet@gmail.com>
 References: <20260809121455.1745-1-xiexinet@gmail.com>
@@ -96,115 +97,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-HSR/PRP process each wire frame separately for tagging and duplicate
-discard. GRO on a lower device hides multiple frames in one skb, which
-cannot be forwarded with valid per-frame metadata.
+Commit 06afd2c31d33 ("hsr: Synchronize sending frames to have always
+incremented outgoing seq nr.") and commit 430d67bdcb04 ("net: hsr: Use
+the seqnr lock for frames received via interlink port.") hold
+seqnr_lock across the whole forwarding path. Transmitting while
+holding the lock can create lock-dependency issues when HSR devices
+are stacked with other net devices, up to a real deadlock (see
+Reported-by/Closes).
 
-Disable GRO and GRO_HW when a lower device is enslaved, matching the
-existing LRO handling.
+Since commit aae9d6b616b5 ("hsr: Implement more robust duplicate
+discard for HSR"), duplicate discard is order-independent (sparse
+bitmaps), so only the sequence counter updates need serialization.
+Limit seqnr_lock to the counter updates in handle_std_frame(); the
+master TX path (hsr_dev_xmit()) and the interlink RX path
+(hsr_handle_frame()) drop their outer lock, and the supervision frame
+builders release it right after their counter update.
 
-This is best effort because GRO may be re-enabled and some devices cannot
-disable GRO_HW. The forward-entry segmentation fix handles plain,
-trailer-free GSO skbs that still arrive; device-specific fixed-on GRO_HW
-output is outside this guarantee.
+Concurrent forwarding may emit frames out of allocation order, which
+sparse-bitmap discard tolerates. The master/interlink tx statistics are
+no longer serialized; consistent per-cpu/per-queue statistics for all
+HSR paths are handled in a separate series.
 
-Fixes: f421436a591d ("net/hsr: Add support for the High-availability Seamless Redundancy protocol (HSRv0)")
-Cc: stable@vger.kernel.org
+Fixes: 06afd2c31d33 ("hsr: Synchronize sending frames to have always incremented outgoing seq nr.")
+Fixes: 430d67bdcb04 ("net: hsr: Use the seqnr lock for frames received via interlink port.")
+Reported-by: syzbot+fbf74291c3b7e753b481@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fbf74291c3b7e753b481
+Cc: <stable@vger.kernel.org> # aae9d6b616b5: hsr: Implement more robust duplicate discard for HSR
 Signed-off-by: Xin Xie <xiexinet@gmail.com>
 ---
- include/linux/netdevice.h |  2 ++
- net/core/dev.c            | 15 +++++++++++++++
- net/core/dev_api.c        | 21 +++++++++++++++++++++
- net/hsr/hsr_slave.c       |  5 +++++
- 4 files changed, 43 insertions(+)
+ net/hsr/hsr_device.c  | 15 ++++-----------
+ net/hsr/hsr_forward.c |  3 ++-
+ net/hsr/hsr_slave.c   | 11 +----------
+ 3 files changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 9981d637f8b5..eba2c26a49ba 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3434,6 +3434,8 @@ void dev_close(struct net_device *dev);
- void netif_close_many(struct list_head *head, bool unlink);
- void netif_disable_lro(struct net_device *dev);
- void dev_disable_lro(struct net_device *dev);
-+void netif_disable_gro(struct net_device *dev);
-+void dev_disable_gro(struct net_device *dev);
- int dev_loopback_xmit(struct net *net, struct sock *sk, struct sk_buff *newskb);
- u16 dev_pick_tx_zero(struct net_device *dev, struct sk_buff *skb,
- 		     struct net_device *sb_dev);
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 5933c5dab09e..f20d5ab0cf72 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1840,6 +1840,21 @@ void netif_disable_lro(struct net_device *dev)
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 5555b71ab19b..3fd1762d8916 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -232,9 +232,7 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		skb->dev = master->dev;
+ 		skb_reset_mac_header(skb);
+ 		skb_reset_mac_len(skb);
+-		spin_lock_bh(&hsr->seqnr_lock);
+ 		hsr_forward_skb(skb, master);
+-		spin_unlock_bh(&hsr->seqnr_lock);
+ 	} else {
+ 		dev_core_stats_tx_dropped_inc(dev);
+ 		dev_kfree_skb_any(skb);
+@@ -335,6 +333,7 @@ static void send_hsr_supervision_frame(struct hsr_port *port,
+ 		hsr_stag->sequence_nr = htons(hsr->sequence_nr);
+ 		hsr->sequence_nr++;
+ 	}
++	spin_unlock_bh(&hsr->seqnr_lock);
+ 
+ 	hsr_stag->tlv.HSR_TLV_type = type;
+ 	/* HSRv0 has 6 unused bytes after the MAC */
+@@ -356,14 +355,10 @@ static void send_hsr_supervision_frame(struct hsr_port *port,
+ 		ether_addr_copy(hsr_sp->macaddress_A, hsr->macaddress_redbox);
+ 	}
+ 
+-	if (skb_put_padto(skb, ETH_ZLEN)) {
+-		spin_unlock_bh(&hsr->seqnr_lock);
++	if (skb_put_padto(skb, ETH_ZLEN))
+ 		return;
+-	}
+ 
+ 	hsr_forward_skb(skb, port);
+-	spin_unlock_bh(&hsr->seqnr_lock);
+-	return;
+ }
+ 
+ static void send_prp_supervision_frame(struct hsr_port *master,
+@@ -390,6 +385,7 @@ static void send_prp_supervision_frame(struct hsr_port *master,
+ 	spin_lock_bh(&hsr->seqnr_lock);
+ 	hsr_stag->sequence_nr = htons(hsr->sup_sequence_nr);
+ 	hsr->sup_sequence_nr++;
++	spin_unlock_bh(&hsr->seqnr_lock);
+ 	hsr_stag->tlv.HSR_TLV_type = PRP_TLV_LIFE_CHECK_DD;
+ 	hsr_stag->tlv.HSR_TLV_length = sizeof(struct hsr_sup_payload);
+ 
+@@ -397,13 +393,10 @@ static void send_prp_supervision_frame(struct hsr_port *master,
+ 	hsr_sp = skb_put(skb, sizeof(struct hsr_sup_payload));
+ 	ether_addr_copy(hsr_sp->macaddress_A, master->dev->dev_addr);
+ 
+-	if (skb_put_padto(skb, ETH_ZLEN)) {
+-		spin_unlock_bh(&hsr->seqnr_lock);
++	if (skb_put_padto(skb, ETH_ZLEN))
+ 		return;
+-	}
+ 
+ 	hsr_forward_skb(skb, master);
+-	spin_unlock_bh(&hsr->seqnr_lock);
+ }
+ 
+ /* Announce (supervision frame) timer function
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index 0774981a65c1..8e4158a9b57c 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -621,9 +621,10 @@ static void handle_std_frame(struct sk_buff *skb,
+ 	if (port->type == HSR_PT_MASTER ||
+ 	    port->type == HSR_PT_INTERLINK) {
+ 		/* Sequence nr for the master/interlink node */
+-		lockdep_assert_held(&hsr->seqnr_lock);
++		spin_lock_bh(&hsr->seqnr_lock);
+ 		frame->sequence_nr = hsr->sequence_nr;
+ 		hsr->sequence_nr++;
++		spin_unlock_bh(&hsr->seqnr_lock);
  	}
  }
  
-+void netif_disable_gro(struct net_device *dev)
-+{
-+	struct net_device *lower_dev;
-+	struct list_head *iter;
-+
-+	dev->wanted_features &= ~(NETIF_F_GRO | NETIF_F_GRO_HW);
-+	netdev_update_features(dev);
-+
-+	netdev_for_each_lower_dev(dev, lower_dev, iter) {
-+		netdev_lock_ops(lower_dev);
-+		netif_disable_gro(lower_dev);
-+		netdev_unlock_ops(lower_dev);
-+	}
-+}
-+
- /**
-  *	dev_disable_gro_hw - disable HW Generic Receive Offload on a device
-  *	@dev: device
-diff --git a/net/core/dev_api.c b/net/core/dev_api.c
-index 437947dd08ed..3ca2515ad048 100644
---- a/net/core/dev_api.c
-+++ b/net/core/dev_api.c
-@@ -269,6 +269,27 @@ void dev_disable_lro(struct net_device *dev)
- }
- EXPORT_SYMBOL(dev_disable_lro);
- 
-+/**
-+ * dev_disable_gro() - disable Generic Receive Offload on a device
-+ * @dev: device
-+ *
-+ * Best-effort disable of Generic Receive Offload (GRO) on a net
-+ * device.  Must be called under RTNL.  This is needed if received
-+ * packets may be forwarded to another interface.
-+ *
-+ * The disable is best-effort: a device with a fixed-on feature (for
-+ * example GRO_HW on a virtio-net device negotiated without
-+ * VIRTIO_NET_F_CTRL_GUEST_OFFLOADS) keeps it enabled.  Callers that
-+ * need a hard guarantee must inspect the resulting feature state.
-+ */
-+void dev_disable_gro(struct net_device *dev)
-+{
-+	netdev_lock_ops(dev);
-+	netif_disable_gro(dev);
-+	netdev_unlock_ops(dev);
-+}
-+EXPORT_SYMBOL(dev_disable_gro);
-+
- /**
-  * dev_set_promiscuity() - update promiscuity count on a device
-  * @dev: device
 diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index 01c73b4b50dd..bb2182a169a3 100644
+index bb2182a169a3..8b96eafe15b3 100644
 --- a/net/hsr/hsr_slave.c
 +++ b/net/hsr/hsr_slave.c
-@@ -171,6 +171,11 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
- 		goto fail_rx_handler;
- 	dev_disable_lro(dev);
+@@ -73,16 +73,7 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buff **pskb)
+ 	}
+ 	skb_reset_mac_len(skb);
  
-+	/* GRO disabling is best-effort: fixed-on GRO_HW cannot be
-+	 * forced off, and GRO may be re-enabled later via ethtool.
-+	 */
-+	dev_disable_gro(dev);
-+
- 	return 0;
+-	/* Only the frames received over the interlink port will assign a
+-	 * sequence number and require synchronisation vs other sender.
+-	 */
+-	if (port->type == HSR_PT_INTERLINK) {
+-		spin_lock_bh(&hsr->seqnr_lock);
+-		hsr_forward_skb(skb, port);
+-		spin_unlock_bh(&hsr->seqnr_lock);
+-	} else {
+-		hsr_forward_skb(skb, port);
+-	}
++	hsr_forward_skb(skb, port);
  
- fail_rx_handler:
+ finish_consume:
+ 	return RX_HANDLER_CONSUMED;
 -- 
 2.43.0
 
