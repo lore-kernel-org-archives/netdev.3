@@ -1,226 +1,299 @@
-Received: from mx0a-0002e601.pphosted.com (mx0a-0002e601.pphosted.com [148.163.150.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906B023EA8B;
-	Sun,  9 Aug 2026 20:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.150.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786307290; cv=fail; b=p+7hn9ZFB11mYrRC6h4+EGbuivW0xfgRfenU/K83WI5iCNlrC9B7a8TTba90QPPJvNFtIzJ/ask9rFL4iDQLw1v6vRoXSPGqLBbDavZBuOH/IZ+pAv1x4AACqAj2NFAImoWlM8n6+mP4C5jHuYb6Ak5CX34bKX/Wz58Aljj2atQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786307290; c=relaxed/simple;
-	bh=QB+rnQ6DF9saFHwiGzdLCd9opYqmDT97D1OQHCRa0MY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JO0ERi8lu/dTbBr+fm2Jvm64UPHbXSJm2OdZjoZwWEOvCZEhFo1DVpSi1shfXj6TZhzbvP+NG42w8R9ds7H5y9xmWWeoGHogW/l2RvwY1XJVZmslCSBSIkT5faXvn04lYHeXKSdmBcLfFp2I7lUgpvqLFWF4bWWMeURd3GpY/Ng=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=UWJdPdwi; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=rM2VHEaR; arc=fail smtp.client-ip=148.163.150.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F213AEB29
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 20:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786307344; cv=none; b=bH3VCCPDpoHig9NTXIGHqGSGQWqGRj3I+tDjNTtaaM27h/bk0gzvdRJNxvMkdpYa/W/Y3JLQND1gnNaPqfuCOv4nF3NHgO6Ld9Zf1oUAWaaP+aF4QkGa4hUnaLbKJ5DCDg+iaLzUbU22Yo+MHNfo3IcsbQOXWcIkqm23XSgoFx4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786307344; c=relaxed/simple;
+	bh=fyiGki5oL1mtR50fYa+K1BlQfwrl2hRsAgPG/8W6kq0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cBflwlGERLsc3Q8NjHPf3SLeJtYafUbyyOBWj7MSSxvUWhbDvOHVm3bpUgeJGfgLUIH1cyMw2m5V7JlgKbTFqUGk30J5O53BEiFgsJAR6kzfJ+KQF9SRAqtK6kS2P/c3DzjvB13h+nhxSHCJu6sOBhS6e5Fv/fNdlNf+ZCaT2hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NpkFV+1f; arc=none smtp.client-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="UWJdPdwi";
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="rM2VHEaR"
-Received: from pps.filterd (m0380145.ppops.net [127.0.0.1])
-	by m0380145.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 679I9wpP647437;
-	Sun, 9 Aug 2026 15:27:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	proofpoint-05-2026; bh=EneIel0hi3yzdvnGmC8ZhH7vqzouCuDEqESnqQYsM
-	3k=; b=UWJdPdwiYrXE/B9RCx+S2p7AMOLahWKhuy35dEBWxFkVntX9+ZiaXMg71
-	CISCDr2PuDYAyUPm2cVBXx/mGwjdWogvYr/Nu0EhOvqH8Evdw/8ooIH0Z45TlQZb
-	8rXIr7rfGXeq3QivIpIW2cWSVxr2XFPd3uosTvh2qTAWjaMfeyTHIbXTFQTilSij
-	MRy3OZ1Y1ZyfxL+30fp6hSf528BJ9tRB+XKi1Pgf+md7Pt1k79p0SLGqJSulU8um
-	jhEk1hAXR1rBcv7oUfHQ4ifqs7onPkC+cuwEwzocP1j47ifRvb/XUg3lIHUUIo1W
-	704LJaSL5s++I23WuOH0LUHmlQyFQ==
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011061.outbound.protection.outlook.com [52.101.52.61])
-	by m0380145.ppops.net (PPS) with ESMTPS id 4fxnfna6d0-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sun, 09 Aug 2026 15:27:16 -0500 (CDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L2rOgbS9NDrFx9tSntjyRcGWJMMQpp0OqSAgM5PP3RWyl6Sff94slyw/kVj9ZOeR8oqc4J2twFQmZ5/VpO73FRFLxsbCsRbLWGhkyI3IX8aZ4ote2oIwDklkpWyA3UwUxtTOEi3sS9caQye3odQC470njclycHV5IjiCWPm1CmdfbuNSX4fD2WeWvZgJKh/s7oYaADqE5m6m2T8qFKdeyrgBYr5ctpgMcYsXar/mnti1VkSd6Ivk1M+wjNAt7QVfmJZs/9zJOHwko7S2BT0hj2aI6XX1Uo3ZNKqg7Q1NG67VnI5ZEwExG03AY16LdvgcoH2zmfWMZ6O/g3+CGLlfmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EneIel0hi3yzdvnGmC8ZhH7vqzouCuDEqESnqQYsM3k=;
- b=VJAQJ3+iUfDdhxJ4dsXJDm31NqoPmsT+37MJxmfhQJR9sT5zUVZ0BnuNMPI8uNtEwDP1sUWurRV52FWuIbcjELRgb4ibpC2bYKrvWVtuzjFpcWgN5+PD5GwOeWU1oqSpMnnquhOkIffgYOxqFpoB+Bssif6pPTleP/dLyIE3hHGQLT82xATISzLMO1tzSvproAP1VLf0atJgi+L7LoproA0qY9v6BWhSpTJp1294mjCa7m3mkTnj5pX9vbIOh4Oqn5na4o3ge2j0KUvp8azhs2SGW6f0W2VbkC47gKP5EnbiKWpGzOMEFRfkX9APOh1VLAsMpWo2iXjuYnGVKRaCpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EneIel0hi3yzdvnGmC8ZhH7vqzouCuDEqESnqQYsM3k=;
- b=rM2VHEaRZERR6ltPdRL0SwXFvHwRvTj5zwwmaUjAy39LoxaUyBjSh3BwEfP3IULRsC8mRbcCFSLa106aHhPV1TjYtj8QoG6IpjSeRErA+q2+HrdgmcW+fYG6F8BnufMfRVBLdxXQQ7VlCiVg+YOsHnHVXK1QOBk5NO/Ejx5dFuU=
-Received: from SA1PR04CA0003.namprd04.prod.outlook.com (2603:10b6:806:2ce::7)
- by BN0PR10MB5112.namprd10.prod.outlook.com (2603:10b6:408:12c::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Sun, 9 Aug
- 2026 20:27:14 +0000
-Received: from SA2PEPF00003F66.namprd04.prod.outlook.com
- (2603:10b6:806:2ce:cafe::43) by SA1PR04CA0003.outlook.office365.com
- (2603:10b6:806:2ce::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.25 via Frontend Transport; Sun, 9
- Aug 2026 20:27:14 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
-Received: from lewvzet200.ext.ti.com (198.47.23.194) by
- SA2PEPF00003F66.mail.protection.outlook.com (10.167.248.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Sun, 9 Aug 2026 20:27:14 +0000
-Received: from DLEE215.ent.ti.com (157.170.170.118) by lewvzet200.ext.ti.com
- (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Sun, 9 Aug
- 2026 15:27:14 -0500
-Received: from DLEE210.ent.ti.com (157.170.170.112) by DLEE215.ent.ti.com
- (157.170.170.118) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Sun, 9 Aug
- 2026 15:27:13 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE210.ent.ti.com
- (157.170.170.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Sun, 9 Aug 2026 15:27:13 -0500
-Received: from [172.24.231.164] (chintan-thinkstation-p360-tower.dhcp.ti.com [172.24.231.164])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 679KR8ih1720399;
-	Sun, 9 Aug 2026 15:27:09 -0500
-Message-ID: <45dec3bc-eee9-4014-b519-d1cd78c3440b@ti.com>
-Date: Mon, 10 Aug 2026 01:57:08 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NpkFV+1f"
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6ae9b721927so814914eaf.0
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 13:29:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786307341; x=1786912141; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=v96AfPjp7gXHhBL7+XCzQDRCuy+dlaYHJlcDmlcO34A=;
+        b=NpkFV+1fyLwuspeEDu/HlI2cu0S0WRLhQDHhipnowtAB6sS80DwxVkcGA/ih0PlJ9T
+         A4cuQJSRgOL6mE7Qu/AjPMpIq5zcWTsnVvx+8f6mqNepJXFUkrB80xJg7Q/M7FvvdQJ3
+         HLNQoAF4rN1Jcsv0PD06agexa7HRfStPtZaM1jhUS0Er5p+BgRnRpflpx7amzyhn8YBk
+         uwZylVpXV78FrHQLUHEUH6Q6TWuxGolmGtgnR0rdqHyNCPzUMSW7J3wnXsqZeHwRKgHb
+         uvLbr1oYZt8o8cBMGdIfiCVg3kq5LmSP1gQl150cHs0WQEarjVOBLMWmns2UEAnH82dE
+         iXcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786307341; x=1786912141;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=v96AfPjp7gXHhBL7+XCzQDRCuy+dlaYHJlcDmlcO34A=;
+        b=Jt3KboCaHGVDg3k+zQlh6rjxw+XUMOJa+s/rX+lSxw4M9H4zRiQcGISrglikc+virf
+         DoF8/H0/2MHTCWOXaDBoxasTwxHaaq3DWl4gTCutl+iotTBfiegfK0hXr2ITH6Xl9jQx
+         Q/E52VzGFw21UlqsqbqEW/tU9qEAG0L9a8GMUqMinV5REIYYd8/sNFatmTMHZ4zjwpN0
+         +Wr/w4Hyhm9oOS9maOJxhvcu8y3Y/1JkY5MHE0VBz+JWsVNjs4MEh/S3XDN2YuMk8s0r
+         e/ZmS+skf4HGmYqbOT8But6MMsPtMyyLj7Z72obqE7UYp9QbU11kYBT6Y2uKqONxSHLt
+         ckSw==
+X-Forwarded-Encrypted: i=1; AHgh+RpGrKgg2OHd0+KozLWsqSqueSpMdi16MOOe9gaQex38Fjvwio8drCNfl5c0+Asa1EXAnxpZKPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxNjfeqHJseMkr8zicQ4Jfs3eFn/up2hNkRu1sPeKOATUPJDId
+	Ly/eOl90kDrzgOswQ3K8OZxxWy8WfYSW/VJjRxa9QL4eV3EHBc3SrTmT
+X-Gm-Gg: AR+sD12cdFBrTNpnTiA71NI3nZSsnfJF3N4dRxu35gmndQq5oZDU2to+/FNVK09xvjM
+	wr6bGi2m1WCYATtrXwA/O1ghiNusTsx6SzSHMPnstkp9NMRwrb7rSB8lZdpyKBjPZXmwEKIuD2N
+	mEsd6G4AXkud9ZUPuhn+leGYq4eQYUwNmtocQ542z5OFEsTi5hlztooXtOYqo9/7bfSiDZg3FXm
+	fgIT6WxEzZ30WmcnRX2HSREAj4gsBTrsl3ADwV8kJ28ux3fjuUQwiN0XQIC3GdJ3tZ6ZKDECYyl
+	w/EExv/ZBPDNjFSlm2ayrn4zigEefhgpcaCLnON0+uF11UPjjYXwm3RMmNz8C9J+qsnNzymIfkr
+	KJt8im5md+DvXXRIdG7SVd/oCfMzsIzKPoCQSULjTIBOqWXAPQkToJQz8sEmXC0T3xDV7y/egj5
+	0cQX0BNPENktzfrrW/c3IAjAU4wbE2l+VDD1BtvQUNSBqkqT9a0pbhjBvYIuvbi1jARIq3HLTt1
+	kyFBVA/PCk2TdIevZ6TnMTVLZQNwfbXvqyQtz20m8eM5/wiFKR1qN/Gc3AuWlrQhyNfKCMcBnPq
+	9qFjdyVsmDi0zgC4fuZKRDa95tgeoY5PVWYkrprfMjdCZkGQB9DbjRWm0tc1eB5niDn/EFVXg+Y
+	L88d1cK8lG3kqA3lt
+X-Received: by 2002:a05:6820:c88:b0:6ac:a8ef:9a86 with SMTP id 006d021491bc7-6ae96cf7403mr20483686eaf.15.1786307341184;
+        Sun, 09 Aug 2026 13:29:01 -0700 (PDT)
+Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-459f19fd31csm6975362fac.1.2026.08.09.13.28.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Aug 2026 13:29:00 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net-next v5 0/5] net: phy: add X-Powers AC200/AC300 EPHY
+ support
+Date: Sun, 09 Aug 2026 14:28:30 -0600
+Message-Id: <20260809-submit-acx00-of-dynamic-v1-v5-0-bfa1f8518b28@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: ethernet: ti: am65-cpsw-nuss: Fix port_id
- extraction from SRC TAG
-To: Siddharth Vadapalli <s-vadapalli@ti.com>, <andrew+netdev@lunn.ch>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <horms@kernel.org>, <vadim.fedorenko@linux.dev>,
-        <v-singh1@ti.com>, <nm@ti.com>, <daniel.zahka@gmail.com>,
-        <nora.schiffer@ew.tq-group.com>, <oss@vassilevski.com>,
-        <grygorii.strashko@ti.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-References: <20260807111738.2055900-1-s-vadapalli@ti.com>
-Content-Language: en-US
-From: Chintan Vankar <c-vankar@ti.com>
-In-Reply-To: <20260807111738.2055900-1-s-vadapalli@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003F66:EE_|BN0PR10MB5112:EE_
-X-MS-Office365-Filtering-Correlation-Id: 13435390-5a31-4058-6cb8-08def654995a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|36860700016|23010399003|82310400026|22082099003|10067099003|18002099003|56012099006|921020;
-X-Microsoft-Antispam-Message-Info:
-	vdWr1eQ3g+m3oOBOd2Rd9vnEJACclP1yQUy0uk9o3v4R5OP56stIPH/K4RDqxtk2WxOtRL4WcWff1ZCjHSQjmjMQOHfo0d5JkcuQasd0juLzfWbNqJK+9LfwuLW+nxyOx8SOYXs7KG4yRxtpqwKyrWN/sJ6cnyf+uWnyrP8oXD2tcBz0OlFOpOo78Va2y2fVEAkYM6kY4GPreqMzHmB8P7yTalWB/34YX5pOsHtmYhqLX+MqMhHXTXmzjgDBR1CYFzRL7R98CutNWfSdARpfrHZW7xwiWwLRCAegqHAb6V7Ho5uCbTjNcP0k35kBbFlkj7TXqn07t61sDI1sWs+zE0rorng62L391yW18w/Ppk9woiZVDapgb3+0RE7TsjeC4PVZQ9snb94Nb7XAhY9PFfswBnje769Fp6uUmdRQzmKVM5It6UnKbtWCMtOLX7cuBlcBaEhY7lozRaIrIQdAtXWoeVlIZO/WPIYuX3L8URn4UtA0bufZspzZa32Uc3UjEqTReLi35CjqQLimrPdayNuHLGOWZQgQyDA6ySnZuQi4L7Qe656zowtjaUxDetLGxd+kqUEDMGS47Xq9eXqAm53+TjRlE6tUWJ0dw4A0XVcDINxgde56Cswj4Ar+pxZ625WF5XoEOBSVG13jsx8wkO9VQSkmYRDAlFmm9z3MqeRMwbkYfrO63ybfUetRejet1gBI9pYqLMCutWmuLNnNVFBAV1SgMDss4xqjOxp+PBZH6h7A5+1DbjS70XXLD4zZ
-X-Forefront-Antispam-Report:
-	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(36860700016)(23010399003)(82310400026)(22082099003)(10067099003)(18002099003)(56012099006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Pi70H7cwGvAMmUku+1+VjWq5Bz7yz4Rg6l4ZRxkrdajz558gsj8H2bAhFUeuVzBYah9OrhxtHcR0iz45JNBUkDXYWXSmg1kfJUWnj/QkIFC4OYQ1Mf8l+R5Hr6EzwBbJxxXQ4gmb5KDlEL9ACDprtPVLEFEJc+QSy9F8D9VahtXZ/z5hdPZOHWhAKzgHUDkp+/lPdodLrDxoS+NRCmMRBOZ3laNlZMuYnv53bVufefq0BSDnpqbCdYhOBN5xLtK9H/l/Q/X2HBke0xVbnaFSxYn/m6c5iLF8NsKuaU6f8P1YvNJLvbLLSSL2U3/NeP4nSaJ+gnXYVVgJyew3mPzQbb4otKdICIqPMn/7ncL9zMOku7goCKeTFcyNCtsRN3lc0vEb5DFyTpTCFKQFR2sWFGaKrqjiban0qu9IvVC6gy/AmOo1lVyoTYSBs1aMZ4bz
-X-Exchange-RoutingPolicyChecked:
-	cBs+kX2TH99Ikvu8PK8z417qgELYMQJD9HuBU1m35thR3ZpbVasEce8r6mLr9lpjR62rYic8j+gf0ex5Y0yIdEQbK65vbjs8IyuioHZQUdWEPkgKbBZ6OCXvLqGaiaJ8xUWIXfOPrXbs/t6H2wLhDCVY4xYC8lPPJJlEtjkWcecEhUo6l43YjuzHwTs+W0y9uZrRwq7jb0rU+oOdFGGBmlDbpAnWYY+u0dSn4ptIj6FjwxRtMADHTsDoKlvY682WMYcKn/4fS1fos4yjtTdQZRfkF/A7zAUoLrdc9fECBmg2DBXSIzUcqoQ2qfQUl8s10VJFDN2aBGqTRyNjX2wQ2g==
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2026 20:27:14.3053
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13435390-5a31-4058-6cb8-08def654995a
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003F66.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB5112
-X-Proofpoint-GUID: LPdAjXMDYTmMINhi8Ms9zjLgHYEdT8hU
-X-Authority-Analysis: v=2.4 cv=QeRWeMbv c=1 sm=1 tr=0 ts=6a78e2a4 cx=c_pps
- a=2g0TT6LSTZPcbpz8VOOaeA==:117 a=WotqVVQAdb04rnGuttW3Kw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
- a=s63m1ICgrNkA:10 a=V5UXEbMT0ywA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Z8NIEmU8O1QQgoT56wFK:22 a=gO1vWkAQAl3rybz1DQOp:22 a=sozttTNsAAAA:8
- a=VwQbUJbxAAAA:8 a=uaIRmOerGBg_cDUUTbIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: LPdAjXMDYTmMINhi8Ms9zjLgHYEdT8hU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA5MDE4NSBTYWx0ZWRfXwNw1faMrsOT0
- BJlw8xN2kHEKCPaUl63ZEK2KE9Oe7xnVBq1ToOK4/lqTwVioSNBcpAGXvt8uFaydCtg4lYaUM1J
- FuIS3M+nXE7WjBPqNaD/TFRDxVq1TtZnuhKMLcieKUz03WZapul7G4z9V+tRJbWr5Y7G4dIX/vF
- bk1CnEnS1GAn0QWFyIXjbl9EriuCraldlkp31M6SRqbNRncaR0FxyxWgdTeWGAF8x8wACxtOhLp
- dqSnUyZya9b0gl1KNGMnov2eqYDwyz/HJ/eOhikWtpV7h5DtESEhzZShIaeaPfNMhnTa4G49ibo
- /cKzgOE3EdPw/LPvzfgXo/MGyKlgZXxPbrqDLPT1UNgRzsDUcS8QHfVNxn5y0mZLw5JE1IlXdQ6
- Qx8WxuQF83p8Vj+xh3NOjG4jzmolpVcOPRSbVRL8R6m5fVgxw+SmnpO9IOs3YGmgwFeDA0YDod3
- gIMP0Pp6niA7Xj88BzA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA5MDE4NSBTYWx0ZWRfX3629jfbx+Xr3
- wj3ZjfvkvARCEGLjioa7E/Ld7np41Zo9/+HdrUW8lNKyx0S1EspOWSQofrwYO/0XSXb+twhXkDd
- N/yclHZvRj21cRkMmnH4vSTCFwOoIfE=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-09_06,2026-08-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 suspectscore=0 adultscore=0 lowpriorityscore=0
- bulkscore=0 malwarescore=0 impostorscore=0 clxscore=1011 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608090185
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33OwQ6CMAwG4FchO1szuoHiyfcwHubYsEaGYXOBG
+ N7dgR44cfzT9vv7Yd70ZDw7ZR/Wm0ieOpdCscuYvivXGKA6ZYYcS37kCP59aymA0gPn0FmoR6d
+ a0hBzqKTitc4Li0dkCXj1xtKw4BfmTABnhsCuv0lyHkaH2Z537+RD14/LH1EsF//KYqsyCuAgU
+ AvMuSotFuemVfTc665diqJcU+UmJRNV3Szag5R5KXBNTdP0BZ/L4worAQAA
+X-Change-ID: 20260802-submit-acx00-of-dynamic-v1-94a0dc15f282
+To: Lee Jones <lee@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ James Hilliard <james.hilliard1@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: mfd@lists.linux.dev, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+X-Mailer: b4 0.15.2
 
+The AC200 and AC300 contain compatible Fast Ethernet link PHYs which
+report the same Clause 22 identifier and use the same link-side register
+layout. The link endpoint is inaccessible until package-specific control
+registers have powered and configured it.
 
+Version 2 represented those control ranges as separate devices. Version 3
+instead modeled each variant as a standard Ethernet PHY package with one
+forced-ID link-PHY child. The package reg value is the link address.
+AC300's control range is a fixed package-relative offset of 16 and is
+accessed with the PHY package helpers; it has no separate DT node or MDIO
+driver. AC200 references its I2C MFD because the corresponding control
+registers reside in that multi-function device.
 
-On 07/08/26 16:47, Siddharth Vadapalli wrote:
-> On the packet reception path, the ID of the MAC Port on which the packet
-> was received, is embedded in the RX DMA Descriptor's metadata. The ID is
-> extracted using the helper function cppi5_desc_get_tags_ids() which fills
-> in the 16-bit Source Tag into the 'port_id' variable. However, it is only
-> the lower 8-bits of the 16-bit Source Tag that represent the MAC Port ID,
-> while the upper 8-bits are Hardware-Reserved and carry an arbitrary value.
-> With the existing logic, sporadic kernel crash is observed due to the
-> subsequent driver code accessing out-of-bound memory because of an invalid
-> port_id.
-> 
-> Hence, fix the port_id extraction logic to use only the lower 8-bits of the
-> Source Tag as the MAC Port ID.
-> 
-> Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> ---
-> 
-> Hello,
-> 
-> This patch is based on commit
-> f9a2394a2348 Merge tag 'mm-hotfixes-stable-2026-08-06-18-44' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> of Mainline Linux.
-> 
-> I have observed it in practice that the RESERVED field contains non-zero
-> value (such as 0xFF on one instance) causing port_id to be set to an
-> invalid value (such as 0xFF01 in that instance) resulting in the subsequent
-> driver code accessing out-of-bound / incorrect memory and corrupting it and
-> causing a kernel crash. To summarize, this patch is fixing a real issue and
-> not a hypothetical one.
-> 
-> Regards,
-> Siddharth.
-> 
->   drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> index 434a31080855..6330540979d7 100644
-> --- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> +++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-> @@ -1310,6 +1310,8 @@ static int am65_cpsw_nuss_rx_packets(struct am65_cpsw_rx_flow *flow,
->   	k3_udma_glue_rx_cppi5_to_dma_addr(rx_chn->rx_chn, &buf_dma);
->   	pkt_len = cppi5_hdesc_get_pktlen(desc_rx);
->   	cppi5_desc_get_tags_ids(&desc_rx->hdr, &port_id, NULL);
-> +	/* Port ID is contained in the lower 8-bits of the 16-bit Source Tag */
-> +	port_id &= 0xFF;
->   	dev_dbg(dev, "%s rx port_id:%d\n", __func__, port_id);
->   	port = am65_common_get_port(common, port_id);
->   	ndev = port->ndev;
+This revision retains that package model and publishes the AC200 regmap
+through syscon. It adds managed registration for externally created
+syscon regmaps so a removable provider can withdraw its entry before the
+regmap is released. The PHY establishes a managed device link to the AC200
+I2C device before looking up the regmap through its firmware reference,
+which keeps the supplier bound until its PHY consumer has unbound.
 
+Fixed hardware uses an AC200- or AC300-specific package compatible. Systems
+which can contain either package use the ACx00 package compatible and one
+packed SID configuration field. Bits 3 through 0 carry the analog
+calibration, bit 8 selects AC300, and bit 9 selects its low-calibration
+tuning. The driver chooses the backend before acquiring any
+backend-specific resource, so an AC300 system does not instantiate or
+access the AC200 I2C device.
 
-Reviewed-by: Chintan Vankar <c-vankar@ti.com>
+One xpowers-acx00 PHY module binds the link child, joins the parent package
+and runs the selected AC200 or AC300 backend. Only the link PHY registers a
+driver. The common implementation and the private backends live in an
+X-Powers subdirectory and are linked into the same module. Thus the PHY
+driver owns the complete Ethernet PHY while the AC200 MFD owns the shared
+mixed-signal chip and its regmap.
 
-Regards,
-Chintan.
+The package node owns a common vcc-supply, connected to EPHY_VCC on AC200
+and VCC1 on AC300. The PHY driver manages that function supply and can turn
+it off while the PHY is suspended. The AC200 MFD keeps ownership of the
+chip-wide system input clock.
+
+The series contains no CONFIG_OF_DYNAMIC code and no generic MDIO
+reconfiguration. Firmware must make the selected AC200 provider path
+available before the PHY probes.
+
+The common link implementation performs the vendor analog initialization,
+supports MII and RMII, preserves automatic MDI/MDI-X, and restores package
+state across suspend and resume. It preserves standard MAC-managed EEE
+advertisement while disabling only the vendor PHY-autonomous Intelligent
+EEE mode.
+
+The five patches add the minimal AC200 MFD binding, managed registration
+for external syscon regmaps, the AC200 regmap provider, the AC200/AC300
+PHY package binding and the combined PHY driver. Board Device Trees and
+optional PHY features remain outside this initial series.
+
+The AC200 portions build on earlier work by Jernej Skrabec and Andre
+Przywara:
+
+  https://github.com/jernejsk/linux-1/commits/ac200-v4
+
+Public AC200 and AC300 documentation is linked from:
+
+  https://linux-sunxi.org/AC200
+
+Validation completed for v5:
+
+  - arm64 defconfig vmlinux and module builds with W=1;
+  - x86_64 allmodconfig object builds with W=1;
+  - a built-in AC300-only configuration with I2C and MFD_SYSCON disabled;
+  - dt_binding_check for both new schemas;
+  - strict checkpatch checks for all five patches, with only the generic
+    FILE_PATH_CHANGES prompt ignored; and
+  - managed syscon registration, lookup, supplier removal and re-registration
+    on the running kernel.
+
+The final AC200 path was hardware-tested on an H616 board. The packed
+configuration was 0x001, selecting AC200. The MFD reported revision 0x101
+in package 1, the PHY obtained its regmap through syscon after establishing
+the supplier device link, and the link PHY bound at address 0. It applied
+RMII mode, negotiated a 100 Mbps full-duplex link and passed eight MiB of
+traffic in each direction and 100 consecutive pings without loss.
+
+An administrative link down/up cycle dropped the package regulator
+consumer count from one to zero, restored it and renegotiated the same link
+mode. With the link administratively down, unbinding the AC200 supplier
+unbound the PHY consumer before removing the syscon regmap. Rebinding the
+supplier re-registered the regmap; rebinding the PHY then restored the
+device link and the 100 Mbps full-duplex link.
+
+The final AC300 path was hardware-tested on the connected H616 board. The
+driver read the packed SID field as 0x106, selected AC300 without enabling
+the AC200 I2C path, accessed the control range at package base plus 16,
+bound the link PHY at address 0, applied RMII mode and negotiated a
+100 Mbps full-duplex link after a cold boot. Eight MiB of traffic passed
+in each direction. An administrative link down/up cycle disabled and
+restored the package regulator and renegotiated the same link mode.
+
+Assisted-by: OpenAI Codex (gpt-5.6-sol, max)
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Changes v2 -> v3:
+  - model AC200 and AC300 as standard Ethernet PHY packages
+  - remove the standalone AC200 and AC300 control bindings and drivers
+  - put the common link implementation and both private backends in one
+    xpowers-acx00 module
+  - access the AC300 control range at package base plus 16 with PHY package
+    helpers
+  - access AC200 package registers through its referenced MFD regmap and a
+    managed device link
+  - add an ACx00 package compatible which selects the backend from one
+    packed SID configuration field
+  - combine calibration, package selection and AC300 tuning into that field
+  - optionally activate only a selected fail-needs-probe AC200 path when
+    CONFIG_OF_DYNAMIC is available
+  - preserve standard MAC-managed EEE advertisement and disable only the
+    PHY-autonomous Intelligent EEE mode
+  - reduce the series from eight patches to four
+  - Link to v2:
+    https://patch.msgid.link/20260804-submit-acx00-of-dynamic-v1-v2-0-3eef49ff1d8c@gmail.com
+
+Changes v3 -> v4:
+  - rebase onto current net-next
+  - always restore the PHY page and release the MDIO bus lock after a
+    page-selection error
+  - preserve AC300 external-VDD configuration until package status
+    identifies the supply arrangement
+  - remove the unsupported AC300 MDIO-error clear/readback sequence,
+    which is absent from the BSP initialization
+  - remove AC200 post-reset waits not required by its documentation or
+    hardware testing
+  - report the failing AC200 control register
+  - follow MFD subject and driver-data naming conventions
+  - use the AC200 teardown callback directly, follow reverse Christmas-tree
+    declaration ordering and use a named I2C ID initializer
+  - use named input-clock rates and simplify MII/RMII selection
+  - avoid blocking on the AC200 supplier lock while checking driver
+    readiness
+  - Link to v3:
+    https://patch.msgid.link/20260805-submit-acx00-of-dynamic-v1-v3-0-32c3210a6f25@gmail.com
+
+Changes v4 -> v5:
+  - remove CONFIG_OF_DYNAMIC path activation from the submitted series
+  - publish the AC200 regmap through syscon and add managed registration
+    for externally created regmaps
+  - resolve the AC200 regmap through its phandle after establishing a
+    managed device link to the I2C supplier
+  - move EPHY_VCC and VCC1 ownership to a common PHY-package vcc-supply and
+    manage it across suspend and resume
+  - move the four PHY source files into an X-Powers subdirectory
+  - remove private backend mutexes because phylib serializes these
+    lifecycle callbacks and neither backend has an independent worker or
+    interrupt path
+  - rebase onto current net-next
+  - Link to v4:
+    https://patch.msgid.link/20260806-submit-acx00-of-dynamic-v1-v4-0-9bf2f7441632@gmail.com
+
+To: Lee Jones <lee@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: James Hilliard <james.hilliard1@gmail.com>
+To: Arnd Bergmann <arnd@arndb.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: mfd@lists.linux.dev
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+
+---
+James Hilliard (5):
+      dt-bindings: mfd: x-powers: Add AC200
+      mfd: syscon: Add managed registration for external regmaps
+      mfd: ac200: Add X-Powers AC200 support
+      dt-bindings: net: x-powers: add AC200/AC300 EPHY packages
+      net: phy: add X-Powers AC200/AC300 EPHY driver
+
+ .../devicetree/bindings/mfd/x-powers,ac200.yaml    |  49 ++
+ .../bindings/net/x-powers,acx00-ephy-package.yaml  | 207 ++++++++
+ drivers/mfd/Kconfig                                |  12 +
+ drivers/mfd/Makefile                               |   1 +
+ drivers/mfd/ac200.c                                | 170 +++++++
+ drivers/mfd/syscon.c                               |  87 +++-
+ drivers/net/phy/Kconfig                            |  11 +
+ drivers/net/phy/Makefile                           |   1 +
+ drivers/net/phy/xpowers/Makefile                   |   3 +
+ drivers/net/phy/xpowers/ac200.c                    | 315 ++++++++++++
+ drivers/net/phy/xpowers/ac300.c                    | 387 +++++++++++++++
+ drivers/net/phy/xpowers/acx00.c                    | 536 +++++++++++++++++++++
+ drivers/net/phy/xpowers/acx00.h                    |  28 ++
+ include/linux/mfd/syscon.h                         |  12 +
+ 14 files changed, 1797 insertions(+), 22 deletions(-)
+---
+base-commit: 001b5d347d8ba39b2dccaefcc57967b18caec8fe
+change-id: 20260802-submit-acx00-of-dynamic-v1-94a0dc15f282
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
