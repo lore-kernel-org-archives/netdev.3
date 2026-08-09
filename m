@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2BC189F43;
-	Sun,  9 Aug 2026 22:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B87B78F2B;
+	Sun,  9 Aug 2026 22:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786313638; cv=none; b=KGb9ww9os6N2kQYsbHRS8E+FV7h5sGCNKi7GyNSWVBcsy7rh4HXIeEHT+53V0180D6tw2crXxwmacOjrvpSQWG68WxJNPknOd1t80fQ3kSgYDfkg3aHVFLwlwhX6HQe6Ks8FQn6/V00bqnphtnoorg5SdwoTvyHOzYFYURbItnk=
+	t=1786313771; cv=none; b=bj53sFROEZPZF/Qa26D34920xTcZK82j6uCTjojz8am0ZURsrtmKRswupJh2uItgIJsC9XP2vhIMd0ysrSk2H1h0uq3jS2C2winPy2P7nEWmX74TK1uAuqqUQjTyOA2be1QLuy/ArooOQxMpww9W++PGLN/drhgVJky6avBlbpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786313638; c=relaxed/simple;
-	bh=jSAxDpoSwVnH9k1vDcyjncz+XpU0O/S9VrZIzGFf6YY=;
+	s=arc-20240116; t=1786313771; c=relaxed/simple;
+	bh=I2Z83duViEIg4XPGQzEdz159TOf87756TjSS5gqliII=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NLln+llpB43lH2+MLG6fBcbq9VsAL75rTtNUZu9cD+wCfcbfzIC5Va5Eqocw/SigbdSYayDLZlLvBsy+xbvSzhMosEZZF0zkY8s/dAmKXdcxi4fMdAP34R1P3cXsi+FnNApNiyCONOcdUqEOpvWaFGYH+mg+USGHziXmIO8faXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ro0oIa+u; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=T7q2wXkvIznYhJMpzUl5vF0NjPIOU4/Fmypf6AhzRuW8LkUFQpYcsN9h80a+aTRMuMK9/Ry8hyuFlrt6MnV2yDDw81/Ts9QqoysS2czFyNeHaGd7l8BkVTc0mAKoQnvhkNSG4PdYXQBQ24nldVY0tOF5BqP5cLN9nT4VIkrqtKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Fd7z7g2L; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ro0oIa+u"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Fd7z7g2L"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=X0MPD616GVY0pSuq8IuVS1hZWFWn0v9P4o/g72ShMBw=; b=ro0oIa+uFRieV26ajWlT6Rhvo5
-	C3EXKvg3dF2tGW29HPYQ1p1oLmPpVmc6zK6dJoHRZovDb3uJkx//cwvKMwompAaulDd0LNV1NvdhI
-	kDNu93oQZV+dUcVttonNkQFcTdZ0f0xuiGcgUlsfrO/35jLu8sbaWbpgITL6ihbjjTiE=;
+	bh=7k1jyJemPlKCxwerRRIhwGNrpwN1AjU8NhaVyzp/wLQ=; b=Fd7z7g2LKDj0PUZsKoOzzx9baX
+	PFCb2NfEXIhhMfSRdsRVTdkeF+PyOBpvmMy2tA6gCSMzqGOp0zyUzXz4aMC325vOMVLaisXJokwOH
+	GAtuDxD+qfxoPpWdhnGFU2sHJXhhtQUTdDTj2llZOwigpTfeER4T7SiwsGc/YKIG7Uvo=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wtBm1-00GrLw-OW; Mon, 10 Aug 2026 00:13:41 +0200
-Date: Mon, 10 Aug 2026 00:13:41 +0200
+	id 1wtBoC-00GrMx-AK; Mon, 10 Aug 2026 00:15:56 +0200
+Date: Mon, 10 Aug 2026 00:15:56 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Markus Stockhausen <markus.stockhausen@gmx.de>
 Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
@@ -35,11 +35,11 @@ Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
 	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
 	daniel@makrotopia.org, robh@kernel.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v13 08/11] net: mdio: realtek-rtl9300: Check for
- C45 support during setup
-Message-ID: <b0c92f66-859c-4b45-9b15-b001c216b423@lunn.ch>
+Subject: Re: [PATCH net-next v13 09/11] net: mdio: realtek-rtl9300: Add
+ support for RTL838x
+Message-ID: <fbc693a0-37f8-4816-a655-ab7578aada02@lunn.ch>
 References: <20260807171058.522833-1-markus.stockhausen@gmx.de>
- <20260807171058.522833-9-markus.stockhausen@gmx.de>
+ <20260807171058.522833-10-markus.stockhausen@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,31 +48,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260807171058.522833-9-markus.stockhausen@gmx.de>
+In-Reply-To: <20260807171058.522833-10-markus.stockhausen@gmx.de>
 
-On Fri, Aug 07, 2026 at 07:10:55PM +0200, Markus Stockhausen wrote:
-> The to-be-merged RTL83xx devices have only 1G ports. Thus the MDIO
-> bus always runs with C22 mode. For now it makes no sense to add
-> those devices with C45 helpers that are not used at all. Add a
-> consistency check in the mapping helper so that it aborts setup
-> if devicetree defines a C45 PHY for a device that has no such
-> read/write functions.
+On Fri, Aug 07, 2026 at 07:10:56PM +0200, Markus Stockhausen wrote:
+> The MDIO driver has been prepared for multiple device support. Add all
+> required bits for the RTL838x (aka maple) series. This is straightforward
+> but some things are worth mentioning.
+> 
+> - The device has a lot in common with the RTL930x series. It has 28 ports,
+>   4096 (Realtek) pages and 4 MMIO registers. With this a lot of the
+>   existing RTL9300 defines could be reused. But to avoid confusion and
+>   for better readability duplicate the defines with a proper prefix.
+> - The MDIO engine has no fail bit. Thus the mask is set to zero.
+> - There is only one SMI bus for 1G PHYs. No bus_map_base register exists.
+> - The setup_controller() function needs no C45 setup but must activate
+>   the PHY access.
+> 
+> As per the SDK the PHYs on a RTl83xx bus are mainly C22 driven. The
+> polling unit works in C22 mode and the devicetree usually does not
+> make use of the ethernet-phy-ieee802.3-c45 flag. Nevertheless there are
+> some PHY MMD registers (e.g. EEE) that might be of interest for the
+> future development of the hardware. Until that is really needed keep
+> the C45 read/write helpers out of the driver.
+> 
+> Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
 
-I know the concept of an MDIO bus is completely messed up with this
-hardware, but C22 transactions and C45 transactions are a bus
-concept.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-ethernet-phy-ieee802.3-c45 is not about MDIO transactions, but C22 and
-C45 address spaces. The PHY has its registers in the C22 address
-space, or the C45 address space. A PHY with ethernet-phy-ieee802.3-c45
-can use C22 bus transactions, C45 over C22, to access the C45 address
-space.
-
-So what you are testing is conceptually wrong. It might in practice
-work because of the way the hardware is broken, but that does not make
-it correct.
-
-A PHY with ethernet-phy-ieee802.3-c45 should fail to enumerate, and
-that should be obvious. So i don't think you need this.
-
-	Andrew
+    Andrew
