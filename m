@@ -1,109 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender-of-o58.zoho.eu (sender-of-o58.zoho.eu [136.143.169.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F41C2E401;
-	Sun,  9 Aug 2026 22:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786316397; cv=none; b=k4r+HQRjs1v38CcTw3xLIPUL871M33Q5p9S0tLv4wGlpUhcuXlB3/DvnpzI0P1a4lfabeocQQHfgj1zL9VF0kO6myWuKqS4BXb1mqgFvsA9nLBztGhMO8Hs3nZnlUq3fPgLDLyI+INg8hdP3Q8o5c/+QXcr1G0wFAK+jNm3Z8lI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786316397; c=relaxed/simple;
-	bh=MeG1JHCxdTPYhdA8gPrNnSG128VlzDImgDHYuaWWVzs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZTGOKHCC9IoIgD0k0qbtp4QR3DHFds72KKW/Lptdp/+dh6ih/Glqk8CLFB4By7dI7v8b0EZ20MFc0qIrXYCnsJXy5PJT+jVD4kQh15hWlFyYM68JwMfNGzLhmG2xA3v3EZv9gWb+L7JUMN3X4OVkNBtDfX/pE73VHatOznXl+tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EeypgvGa; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CCD126C02
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 23:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786316610; cv=pass; b=TinUaTQbbatio0P8CsG/oPv7dQuhVj8YV2DXUe05L9T8btDuZl837b8sIQrYA+LA3dk2bjF8Azi8VhtHdqZEmvfkos+jjFIcyaTGtTROpzwUrPGi1CY5nof4zcN4xM8Efw6BxArZQhdfkBnes88qrh/glFFUyWmBKp4SUujkWNE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786316610; c=relaxed/simple;
+	bh=yUt/eCSIwHeda2sRTW3mHkj7tHB2dVZKWIpImZGob0U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a8N6cBtpZSZXGsl1GgFd20CYdh54U5tftqF0LmlK4qad3i1LRE27anIb14aYjpgWoSiu9RNOaRx1xEiWiSHKH65N2ysdZ7tNi08LTXhqZ6/uowsC6Nztx13uy3l4zS65uHRwHG/lQy3cKZhrqFVxqyswxKdD/gD1s7gQvNZYrPI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com; spf=pass smtp.mailfrom=iusegentoo.com; dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b=LUjypAj3; arc=pass smtp.client-ip=136.143.169.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iusegentoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EeypgvGa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E47C1F000E9;
-	Sun,  9 Aug 2026 22:59:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786316395;
-	bh=uCfs6JnngAsCGxEZurlWbRhpnJV4fGj9ne3IG+7xnkI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EeypgvGaQp3oTRLtItcMXqwCbePkxd10FJR7CtYiHWGK/I1/EhTr3Eml2jA4XA2+a
-	 RL9gzA3psIjU7NCtsxyA40tVOfhPoWOHmFTOzhhyoNNZhvFlno7k/h509sd9APtFKa
-	 LZD1BmZkK8/Er6Y3MfT8KLVDx7smFLPEADz5LzdffFiuAnTj1YOpdKMQcUd7LYsxVL
-	 s/tPnn02gsljvC7Bq4xmaoPAxJxxPIhngIrJxIwjEjdk6/3LMzCTgOKYKjuS5+ORwG
-	 gnm+7unM0athgwP/duJfT9Eox/MMYScr3QAIpY1GJPT0Sln0LK7nMdR+K/4CZk82lM
-	 qk7trScXkxOZg==
-Received: by pali.im (Postfix)
-	id 68D297C6; Mon, 10 Aug 2026 00:59:54 +0200 (CEST)
-Date: Mon, 10 Aug 2026 00:59:54 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Guillaume Nault <gnault@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Eric Woudstra <ericwouds@gmail.com>, Felix Fietkau <nbd@nbd.name>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Paul Mackerras <paulus@ozlabs.org>,
-	Michal Ostrowski <mostrows@gmail.com>
-Subject: Re: [RFC net-next] pppoe: remove session socket receive support
-Message-ID: <20260809225954.i36fajv6twbnjfdp@pali>
-References: <20260806091626.231225-1-qingfang.deng@linux.dev>
- <20260809145836.5pqf2rgf574fjlds@pali>
- <76232f9c-2a5a-454a-905e-e046b6c78cef@linux.dev>
+	dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b="LUjypAj3"
+ARC-Seal: i=1; a=rsa-sha256; t=1786316593; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=ikNwEpwovMgWuJ0mIJk4lrm25NpZt7uNdH8yQwU8C4DyQtoXNXHYxIEEFY0r+KSu2rGPdQhHBk5+Obl1uKFmtV2KhiwrBAN4FhQvZJJReeF7ow3klLnr9xprW3wrWGAWIBZ4h7LGQL7wWrP97mfBuR/JPctbqA+/QO23Ity4rpU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1786316593; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yUt/eCSIwHeda2sRTW3mHkj7tHB2dVZKWIpImZGob0U=; 
+	b=CQiRyVzs8KRefH0/TZIhXTvkzqLtF2pw3znjK5tOTNMZy+CnbTAPajmfanWAe6fD+bWt0S0qU6sxde/K+ZuYebPgHRm5hftk2DuQqmXZuSQMK/OUjESZ1fcI92d11n06XBcyUs4FAnS4fIQIw7IaPknSrn1bQ3jygyApyiDfVtk=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=iusegentoo.com;
+	spf=pass  smtp.mailfrom=ali@iusegentoo.com;
+	dmarc=pass header.from=<ali@iusegentoo.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786316593;
+	s=zmail; d=iusegentoo.com; i=ali@iusegentoo.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=yUt/eCSIwHeda2sRTW3mHkj7tHB2dVZKWIpImZGob0U=;
+	b=LUjypAj3ZO0BQlIcRr2WeN7XsP7iP84UfIAbeE/Me8plasuJtq7WOyuKl9tD+SqI
+	nTzQpFrZOGUnc/PK4znQvNdamG2LfY96CEMH5wXuwktctiMQJK1D/5KIEuPq0O63lC4
+	orMVhJof/XyAscIVzwlz3Z+DgL5HEXcGGxcgGhCE=
+Received: by mx.zoho.eu with SMTPS id 1786316590763226.00613751345168;
+	Mon, 10 Aug 2026 01:03:10 +0200 (CEST)
+From: Ali Ahmet Memis <ali@iusegentoo.com>
+To: Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	netdev@vger.kernel.org
+Subject: Copa congestion control: in-tree or BPF struct_ops?
+Date: Sun,  9 Aug 2026 23:02:58 +0000
+Message-ID: <20260809230259.726772-1-ali@iusegentoo.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <76232f9c-2a5a-454a-905e-e046b6c78cef@linux.dev>
-User-Agent: NeoMutt/20180716
+X-ZohoMailClient: External
 
-On Monday 10 August 2026 00:17:14 Qingfang Deng wrote:
-> Hi Pali,
-> 
-> On 8/9/2026 10:58 PM, Pali Rohár wrote:
-> > Hello, I would like to point out that "no know open source
-> > userspace implementation" does not have to mean that there cannot be
-> > some closed source or not publicly available. But I agree that
-> > probability is too low.
-> > 
-> > Anyway, could you describe what is this functionality (which is being
-> > removed) doing? Or how to use it? From the code and description I have
-> > not figure out how it is suppose to be used or for what kind of scenario
-> > or use case can be it hypothetically used.
-> > 
-> > Would be nice to know what exactly is being removing and what userspace
-> > applications cannot do after applying this change.
-> 
-> pppoe_recvmsg()/sendmsg() can be used to receive/send PPPoE session packets
-> without the generic layer. I just found out that the RP-PPPoE package,
-> maintained by Dianne Skoll, actually provides a standalone PPPoE client that
-> does not depend on pppd and instead uses these syscalls. So long as the
-> package is still being maintained, these syscalls should not be removed.
+Hi,
 
-Yes, that is right. I completely forgot that there are real userspace
-implementations of PPPoE which are in use. RP-PPPoE is one of them.
-RP-PPPoE provides plugin for pppd, but that plugin does not use kernel
-PPPoE module.
+I'm considering implementing Copa congestion control for Linux TCP, and
+wanted to check whether an in-tree implementation would make sense before
+doing the work.
 
-> The state transition still needs to be fixed, though. It's done by the
-> PPPIOCGCHAN ioctl. Note that despite the "Getter" semantic, it actually
-> alters a socket's internal state by setting the PPPOX_BOUND bit, to indicate
-> that the socket is now "bound" to the generic PPP layer. The code is carried
-> over from the very first version of the PPPoX driver and the intention of
-> this behavior was not known. A fix may move the transition to a non-getter
-> ioctl and drain the socket receive queue once a socket is bound.
-> 
-> Best regards,
-> Qingfang
+As far as I can tell, there is no in-tree Copa implementation in mainline
+Linux today. Copa has been implemented using CCP, with an out-of-tree Linux
+kernel datapath and the congestion-control logic running through CCP. There
+is also a Copa implementation in mvfst for QUIC.
 
-I see. Maybe you could ask developers of the first version of driver if
-they remember something. But probably nobody would remember old things.
+Meta evaluated Copa with QUIC on Facebook Live at scale. Their initial
+deployment used a fixed delta without Copa's competitive mode, and they
+reported lower latency than CUBIC together with good goodput results.
 
-Clearing the queue after the transition happens sounds like a good idea.
-If I understand correctly, it does not make sense to get packets into
-userspace once the socket is bound to PPP layer.
+I don't see anything obviously missing from tcp_congestion_ops that would
+prevent a native implementation. Copa needs RTT history for its RTTmin and
+RTTstanding estimates, pacing, and per-flow state for delta and competitive
+mode. BBR already maintains its own min-RTT state and controls the pacing
+rate, so these parts seem possible with the existing TCP congestion-control
+interface.
 
-I have feeling that kernel PPP layer and its API do fully fit into the
-API for network devices and netlink layer for userspace.
+On the other hand, the real-world Copa use I can find is mostly in
+userspace QUIC rather than Linux TCP. BPF struct_ops also supports
+tcp_congestion_ops, including cong_control, so perhaps that is a better
+place for an algorithm like this initially.
+
+Would an in-tree Copa implementation be worth submitting, or would you
+rather see it implemented using BPF struct_ops?
+
+If an in-tree implementation is reasonable, what kind of evaluation would
+you want to see with it? I can compare it with CUBIC and BBR across
+different RTTs and buffer sizes, and test coexistence with CUBIC and
+variable-rate paths. I'd rather focus on the cases that would matter for
+review.
+
+Some references I looked at:
+
+Copa paper:
+https://www.usenix.org/conference/nsdi18/presentation/arun
+
+Copa over CCP:
+https://github.com/venkatarun95/ccp_copa
+https://github.com/ccp-project/ccp-kernel
+
+Meta's Copa/QUIC evaluation:
+https://engineering.fb.com/2019/11/17/video-engineering/copa/
+
+Current Linux TCP BPF struct_ops implementation:
+https://github.com/torvalds/linux/blob/master/net/ipv4/bpf_tcp_ca.c
+
+BBR implementation for comparison:
+https://github.com/torvalds/linux/blob/master/net/ipv4/tcp_bbr.c
+
+Thanks,
+Ali
