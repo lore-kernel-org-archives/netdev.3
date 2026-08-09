@@ -1,176 +1,160 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B442034F270;
-	Sun,  9 Aug 2026 19:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786302087; cv=none; b=LdCFBrsW1VNF8EIPD2Tk7brj6DHWXJ3/NrUkfguUfU+G74NSFWzqjvT9LswJMXIbkhMgERCvpyBbkcd3fhxIu/GaC2khPMQIG5I/8gEQB4QVW0ZN4FVDQZR1mSIQbE43zIGR9u3lUFTGICfNiBgED+u6cSWpU4nPTELF9zd0FvI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786302087; c=relaxed/simple;
-	bh=dU5urSqD5BDA2UPZlc3eGr7rb9QevdWLpxxclkKZF/I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDJ1HUzkd4Zu1/YeU8kj/J3tXQCyZimpbzq0lPTHO+i0bTug4TDEt1FJsdt77ek+9OorzInYtO4KQmL0XdS7Yly/exFLnm2HosDmOT8TjA9I7LbNuHc76DZ43uQNobaY4PpBDNTguKfCqaAUv3gQ+K8Wcbwbfpgaxmee5otNb8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 8FB5620B712D; Sun,  9 Aug 2026 12:00:59 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8FB5620B712D
-From: Long Li <longli@microsoft.com>
-To: Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	shradhagupta@linux.microsoft.com,
-	Simon Horman <horms@kernel.org>,
-	ernis@linux.microsoft.com,
-	stephen@networkplumber.org
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v5 7/7] net: mana: keep max_num_cqs immutable once cq_table is allocated
-Date: Sun,  9 Aug 2026 12:00:41 -0700
-Message-ID: <20260809190047.2086368-8-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260809190047.2086368-1-longli@microsoft.com>
-References: <20260809190047.2086368-1-longli@microsoft.com>
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8AF34DCE3
+	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 19:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786304017; cv=pass; b=TQNb4pqJ0sf4JpEpQs6BOZ31jC3Ri8+uUmW4+inX31bG79JaCwqQtU6IsurTvBzkUsOYEbNxFDpjdwLaNoB9f43XATpaQONCKGY2768Vaf0CEHI1J1vyt+h770QTuQyIn4Ca1yJk8i7/BsoFj41a7/rLPruOIJZBT+HOUuDGcB0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786304017; c=relaxed/simple;
+	bh=RPr4HbeOYBx0UUfRs5eyQeh6mneGGhSTFXdVw6+j5y4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LpbYMfetxU7evIOu39VX2+DwuORGvA8x9h+y5pFAUkR+W9Y/AaIFOs9LCTPR4Bo9Pe8ggHh09y6zakzodMnYFjpKCM7FP5BWXpFYOQpZ+D8aaf7E1yq7YwqAoNWfmTxjkkWpMLuqpYh+5QZvnug+ACzSEMp6R3Mzcky028Nc0mM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dGchOm0l; arc=pass smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dGchOm0l"
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-97727c2064fso872465241.0
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 12:33:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786304015; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Bai3iePpJ8h768zYDbNTXyAwAB5uyipU3iM93LRR1i3b58+a6LcNIExURJwR+/+c39
+         wYlHrRen+1JmPOWQJ0RkRkxUWuPrRr2ZqPYOHFguH8S/yCtYbFeVoxvkWFWcgKDXySoH
+         6ZU1NUKyDz3lQsWAMK7Di9DVh2Gx4cyQEAJIz07HldWc/Exq342AQWm2Z09uJmIyvO3Q
+         u/F7l6h4Xcs35+GuVXtR2HN85w9YT/5UWIb1YdyfABp+eXArLAz8JY6sY8A+pnoSMzxu
+         BGS3C025GTSGNSoEVTUyOT+bVJKbmTqroZqkoqU7LUHJDTETGZn1xtyysRSvH0U5rUqw
+         QHQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TGS68oaa5am41wZZT817t30c1pv9fxqQGsu7xsnoMpU=;
+        fh=tWwIrHCmpDSHYRf2m1pIshgk3qltI7Q6Yx9kx/DegIs=;
+        b=m+tVeoXUJk+mMK/OTQbdTM4ousiaTyimiDC5XZrU6keOUerEvZ7n+6D/0OZjlhb6Dx
+         eHwhbK5PJLgn4psZSnDl8OmojqyyCYkUu1V5KK8Y0cRRhdkYVr5qDj0R5rjatZJINUh/
+         Gs26xaNd9UrGDWgjJKjPUwg1RVq+yEWlLZfu7zTlhzcMGNlXz7aBen2lhw0nzs1DVc4m
+         CVIP3fFSkOvZ4ydZYPivt9fAKIfatqHwATFBvKI/j+0BMjAXyk9jTwx/P3CE2NiF5gZV
+         LHOcsPbyYlhyCom9l/wQmElqtOgVnj7g4VssBHmHTcrWZ6wu5r43PwEmOhh5s6OTa5Hm
+         OdtQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786304015; x=1786908815; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TGS68oaa5am41wZZT817t30c1pv9fxqQGsu7xsnoMpU=;
+        b=dGchOm0lZ3GI5CKC/QppD8tK1h1Sl5Phx79Rn0lUGlvzBYd84feRbiN7LBtjwbsNpb
+         FBGYdCpCXdONGzxn197nWUsLvIsel2ulXVGAJ2tkxvOm8PK9X25kPux1TusxX/j+eFu/
+         rTBJ9xekAU9zfzkzKmjwXWiR9MPr3gcjv7EygW6At4KrS95V0AgF6VVXZF9CsNo45bj/
+         D1xL+l8hQ0DG9dlz/GcjCAayKhx6Vx9jnFsmBbRarPUet0uyNnY1mkXxzZb0DruLq9fl
+         A/JnJ2EYoiGltuT8FCWIEYv+QQOIOHgIY/D1Hq74InEU34txdJ2LgPQZcVNV7P+098rJ
+         6rdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786304015; x=1786908815;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TGS68oaa5am41wZZT817t30c1pv9fxqQGsu7xsnoMpU=;
+        b=eSVUK6kA3/PXP2cpmR+yN/Rlw3jrzSDkf8knjD1S3ZZm9LJ5E83eyqxbPGpi6Y5Ue8
+         RH7IDouIbnqv5j6PjdPLJcmqvTZRsARq6JrtSocHUpdIu+71ZcuOb0Hr0iUMJI46oA1a
+         AtbA6sFKl0tXfvGHI1j03Qj6zeZq+katXwoTrYx5eu9VhHbhw59a3wurRCo0cP1lXTTq
+         NyycH0FqC3cExFaOdMRqAfabdoHT7ieuEb3OUVV8Hv6GNa9YCzGCgMuHgFLRx8AulA34
+         TjDkxF0yQxF4UxHjZmIEaGQ1ib/wlVOjP/enOjt2dVhB4N4dSA1XucOxtedfJNfQTb09
+         h8FQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqn08u6+vVkFqF9egTGF7+uTLPRU6pzl3oS24ip9UR1HkQjrK/Mdco+l2apaGuz+5M0ZMaa2ac=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxrRigZ0O+JzrQesojrA2o2wvKEfCCIqyEyzLXWUIGK+YXN97K
+	ZDC9c2N09jQxI+YoDKQsYs4OdaIp+z/sSgI7Y1SSLt4VrPU0gWvsOgLOnnldm2mM8/sNYp/ARbl
+	dpPGwOQOLCmcP0ZvNA414IiB6iEjIovU=
+X-Gm-Gg: AR+sD11O0nhJ/DypiEGKtDmoAZwGa9HP4GiOO4sfdnHBOR10XrHMQZzetoskwY22t9h
+	T0n32Z0F/kSU9O6ttMUdWOMHTBkoZRj4HKGAvb1dUKQWdtAF6iyyomN5udhFmOXQCLiDp9c0mjU
+	oCqwAMUVhjf50mgknDTiLeORoFg2mGoH3GFOCaDWq+hwe0SSZF8KSCUlgaYe8g2wc0Rd7053Sn9
+	Mrgddzjpf9UaIaWjDGw2X/Po1ZzgcwR8hIDTn/ysHlL7VDnUaauL5gZ5aGTrv+OMLuHzXmrGWEP
+	qXvlCBft+F2cZU03T24GUTJBD6DU87A1mHMK11cJextmYMkppZ0Y+hwQFQER2FZRaEiJ12cFqJv
+	Nw16HDWrcJDc/oiR+4/198ZfcjXoD76Pfat+KJSK2AcPk3MJ84h6zUcFDonp6JapJA5tXVDLWK6
+	PpR1SZAyD3ofbC+rMfW9tRwl1kiCPusFrogCjYPeeMmNepquk=
+X-Received: by 2002:a05:6102:801b:b0:744:dd70:a364 with SMTP id
+ ada2fe7eead31-7634d10f5c8mr7573848137.9.1786304015056; Sun, 09 Aug 2026
+ 12:33:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260806-submit-acx00-of-dynamic-v1-v4-0-9bf2f7441632@gmail.com>
+ <20260806-submit-acx00-of-dynamic-v1-v4-1-9bf2f7441632@gmail.com> <0cdd9998-51e7-40eb-8c01-54684f6944dc@lunn.ch>
+In-Reply-To: <0cdd9998-51e7-40eb-8c01-54684f6944dc@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Sun, 9 Aug 2026 13:33:22 -0600
+X-Gm-Features: AUfX_mzOq97FjaI0PSkDYysmL-_ryYIJwwwtqJFoOnJ9tJbRQVWAa9v1yb6KcCE
+Message-ID: <CADvTj4oa=G0WYAG1Hw9se3dCXxer24X-L0Oe2X-D14m7FpLOFg@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 1/4] dt-bindings: mfd: x-powers: Add AC200
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, mfd@lists.linux.dev, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-mana_hwc_init_event_handler() applied every HWC_INIT_DATA_MAX_NUM_CQS
-event straight to gc->max_num_cqs.  That handler stays live for the whole
-channel lifetime -- it also services runtime reconfig and link events --
-so it is not confined to the initial bootstrap.
+On Sun, Aug 9, 2026 at 9:34=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > +description:
+> > +  The AC200 is a mixed-signal companion IC containing audio, video, RT=
+C and
+> > +  Fast Ethernet PHY functions. Its control registers are accessed over=
+ I2C.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: x-powers,ac200
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  clocks:
+> > +    maxItems: 1
+> > +    description:
+> > +      AC200 input clock. When using the Ethernet PHY, its configured r=
+ate must
+> > +      be 24 or 27 MHz, matching the rates encoded by the documented EP=
+HY clock
+> > +      selector.
+>
+> What is the scope of this clock. Is the PHY the only consumer?
 
-gc->cq_table is allocated once, sized to the max_num_cqs seen at bootstrap,
-and every reader (mana_gd_process_eqe(), mana_create_rxq() and
-mana_create_txq()) bounds-checks a CQ index against gc->max_num_cqs before
-indexing gc->cq_table.  A device -- or a malicious host in a confidential
-VM -- that sends a later HWC_INIT_DATA_MAX_NUM_CQS with a larger value
-inflates the bound past the allocation.  This includes an event timed to
-land while mana_hwc_establish_channel() is between reading the count and
-publishing cq_table.  A subsequent out-of-range CQ id then passes the
-bounds check and indexes cq_table out of bounds: an out-of-bounds read in
-the EQ fast path, or an out-of-bounds pointer write in
-mana_create_rxq()/mana_create_txq(), corrupting guest kernel memory.
+No. This is the AC200's external CKI system-clock input, not an
+EPHY-local clock. SYS_CLK_CTL selects that input as the source of the
+chip-wide SYS_CLK, and the audio, EPHY and TVE blocks have separate
+downstream clock gates. The audio clock tree also uses the 24 MHz
+system clock.
 
-Stop writing gc->max_num_cqs from the event handler.  Store the reported
-value in hwc_init_max_num_cqs, and let mana_hwc_establish_channel() commit
-it to gc->max_num_cqs once, from the same snapshot that sizes cq_table.
-The handler store uses WRITE_ONCE() and the establish-time read uses
-READ_ONCE(), since the two run concurrently (EQ interrupt vs process
-context); the single, non-reloadable read is what guarantees the value
-that sizes cq_table is the same one published as the bound, even across
-the sleeping vcalloc().  gc->max_num_cqs then always matches the
-allocation and no later event can change the bound after the table is
-published, so the existing bounds checks are sufficient.
+The AC200 core therefore owns and enables this shared input. The EPHY
+driver only checks its rate in order to program the EPHY-specific
+CLK_SEL bit.
 
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Signed-off-by: Long Li <longli@microsoft.com>
----
-Changes in v5:
- - No code changes since v4 (resend as a standalone thread).
+> > +  ephy-vcc-supply:
+> > +    description: 3.3 V supply for the Ethernet PHY analog front end
+>
+> This sounds to be specific to the PHY, so the PHY driver should be the
+> consumer, not the MFD as a whole. That then would allow the PHY to
+> perform power management, turn the regulator off when the link is
+> admin down, so suspended.
 
-Changes in v4:
- - New patch in v4, split out of the v3 teardown-safety work in response
-   to review: gc->max_num_cqs is set once when cq_table is allocated and
-   never reset, so a spoofed post-init HWC event cannot inflate the
-   bound past the allocation.
+EPHY_VCC is specific to the Ethernet PHY, even when a board connects it
+to the same physical 3.3 V regulator as other AC200 supply pins. The
+regulator core will retain the shared rail while any other consumer
+still has it enabled.
 
- .../net/ethernet/microsoft/mana/hw_channel.c  | 34 ++++++++++++++++---
- include/net/mana/hw_channel.h                 |  1 +
- 2 files changed, 30 insertions(+), 5 deletions(-)
+For v5 I have removed ephy-vcc-supply from the AC200 MFD node and moved
+the supply to the Ethernet PHY package. Both variants now use a common
+vcc-supply property, connected to EPHY_VCC on AC200 and VCC1 on AC300.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 2f0dae353955..03b5e2f02e35 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -246,7 +246,15 @@ static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
- 			break;
- 
- 		case HWC_INIT_DATA_MAX_NUM_CQS:
--			gd->gdma_context->max_num_cqs = val;
-+			/* Store, don't apply: mana_hwc_establish_channel()
-+			 * commits this to gc->max_num_cqs once, together
-+			 * with sizing cq_table, so a spoofed post-init event
-+			 * cannot inflate the bound past the allocation.
-+			 * WRITE_ONCE() pairs with the READ_ONCE() there:
-+			 * this store runs in EQ interrupt context,
-+			 * concurrently with that process-context read.
-+			 */
-+			WRITE_ONCE(hwc->hwc_init_max_num_cqs, val);
- 			break;
- 
- 		case HWC_INIT_DATA_PDID:
-@@ -852,6 +860,8 @@ static int mana_hwc_establish_channel(struct gdma_context *gc, u16 *q_depth,
- 	struct gdma_queue *eq = hwc->cq->gdma_eq;
- 	struct gdma_queue *cq = hwc->cq->gdma_cq;
- 	struct gdma_queue __rcu **cq_table;
-+	u32 num_cqs;
-+	u32 cq_id;
- 	int err;
- 
- 	init_completion(&hwc->hwc_init_eqe_comp);
-@@ -881,15 +891,29 @@ static int mana_hwc_establish_channel(struct gdma_context *gc, u16 *q_depth,
- 	*max_req_msg_size = hwc->hwc_init_max_req_msg_size;
- 	*max_resp_msg_size = hwc->hwc_init_max_resp_msg_size;
- 
--	/* Both were set in mana_hwc_init_event_handler(). */
--	if (WARN_ON(cq->id >= gc->max_num_cqs))
-+	/* Snapshot the device-reported CQ count and CQ id into locals and
-+	 * use only the locals below, so the same value that sizes cq_table
-+	 * also bounds and indexes it -- even across the sleeping vcalloc().
-+	 * Both fields are written by mana_hwc_init_event_handler() from EQ
-+	 * interrupt context: hwc_init_max_num_cqs under WRITE_ONCE() (paired
-+	 * here), and cq->id as an ordinary store.  READ_ONCE() keeps each
-+	 * read tear-free and, crucially, non-reloadable, so a spoofed
-+	 * post-init event cannot make the WARN_ON() pass against one value
-+	 * while the allocation or the index uses another.
-+	 */
-+	num_cqs = READ_ONCE(hwc->hwc_init_max_num_cqs);
-+	cq_id = READ_ONCE(cq->id);
-+
-+	if (WARN_ON(cq_id >= num_cqs))
- 		return -EPROTO;
- 
--	cq_table = vcalloc(gc->max_num_cqs, sizeof(*cq_table));
-+	cq_table = vcalloc(num_cqs, sizeof(*cq_table));
- 	if (!cq_table)
- 		return -ENOMEM;
- 
--	rcu_assign_pointer(cq_table[cq->id], cq);
-+	gc->max_num_cqs = num_cqs;
-+
-+	rcu_assign_pointer(cq_table[cq_id], cq);
- 	/* Publish the fully-initialised table last; pairs with the
- 	 * rcu_dereference(gc->cq_table) in mana_gd_process_eqe().
- 	 */
-diff --git a/include/net/mana/hw_channel.h b/include/net/mana/hw_channel.h
-index 23bf83e2a3ec..c275150baf49 100644
---- a/include/net/mana/hw_channel.h
-+++ b/include/net/mana/hw_channel.h
-@@ -203,6 +203,7 @@ struct hw_channel_context {
- 	u16 hwc_init_q_depth_max;
- 	u32 hwc_init_max_req_msg_size;
- 	u32 hwc_init_max_resp_msg_size;
-+	u32 hwc_init_max_num_cqs;
- 
- 	struct completion hwc_init_eqe_comp;
- 
--- 
-2.43.0
-
+>
+>         Andrew
