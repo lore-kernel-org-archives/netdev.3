@@ -1,361 +1,174 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42012372071
-	for <netdev@vger.kernel.org>; Sun,  9 Aug 2026 17:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D861A9F97;
+	Sun,  9 Aug 2026 18:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786297803; cv=none; b=HUDuifDo0dxI5npBylBC8YsDGOJjaJO+FbOT+VcAx8jUQcTtUVOzVdVShtAStSVSaTF9JguqOhXKFqrNYHlhfsr0G1H/Zdf9Uwwh1LdiEQpvXRNf2xuwAv6YxDY3Fb/Fe3O1wANNg6nrEnUDXzvzGTBH+FqBdqOv7BLx/53A1qg=
+	t=1786298621; cv=none; b=PQLpWrcUdtssBqcKT9EXwD3SmAEvZKZBk2vo5hYDiUt+7ymfQnOfdaJNK/QcKHzuhGcPjl34AHb1hrRSP8mp6HQDcE1vvD46QPMGK4SQRxPkuh0qQL9m5uTQsco8gOIvAqY//Xpr3mhPbAObOB5DYxdRwR8AUq7kNC2E1hSq64c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786297803; c=relaxed/simple;
-	bh=ihEhCpdOiQJ7RiLVFIbBDlHDMYkCQhxi8LGrQZaYQO8=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GFyrHlPt39p6c5wr/wSN+kBE202ab5LGT8/kuh5ad8ikkhN6GT7UX1hJ6VR0aNgfIlkffVStX/dHG6+NCiFy4pzGL4OUMBHcSqY7B/6548Jwm0vWd3Ndn+hHev16X+Hr25FUdVuV62aD59/FCUAS8caAs/H1bw3nT4wQ+7jx42A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LxGVtrKT; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786298621; c=relaxed/simple;
+	bh=a/EftZtQS7ASezEqXYlNIwKxlARantvOPOdduisv4+g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T33mEbkO9b7/8bdCp2v/xcen7XezDllKggp8Y2K16gpg/gWlnmRdFJglUzkPSkwD/6lYbdFevv+C5j5+SgvLRw8z0o80dnYfyf18z7TwCWfhSQJd/3kC46z7DQ5kYedNXDETiVl9rhHO5Vk4g2hd/V78mVebfgG1pwL+7jVN1I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hii7hPjp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LxGVtrKT"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-496bb7cdf51so16247785e9.2
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 10:50:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786297799; x=1786902599; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XCnEd7tGfLsvqQ9t4dLxlXhkU3vDq79dR6i/bF6oDRI=;
-        b=LxGVtrKTVKTZ3gLIsflWNx+JaeCprkBnpbXUh0ytcUWI/eq779xH7Cb8TvB2sf58D9
-         YlreMHyB209yDGsds9GPbXLvjGBvtabpftNmo+hzOagsndzMnRzXKkDtBAwGBPn67RbW
-         4+J30Tu4URJaw6PdjQY6aqcfU/6fyFyBK1FwatkWzU4lkZMt8JSk2xEDm8K7fzh1CXcD
-         qqrEyrXdFiNYMNaPtRsKwaXy5yk1GS3dne1cgOy8daje/UvhLOALRm6Skb/osKWdGNY6
-         F4sup/ixyIuZfYkCYvXgKsDZodDWkXcuQSDIeJrhBLb9HlN6fV0ctUQWugauX9uNoiY7
-         IhEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786297799; x=1786902599;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XCnEd7tGfLsvqQ9t4dLxlXhkU3vDq79dR6i/bF6oDRI=;
-        b=Fx5ndOVEs9Bp4CMQy0lQ0bh4cKMNcwOUtnxQWk4/a+qZnuuwarc/cQ08YgUD9LtBMZ
-         DOTiR3MmxR7uZBAmhddcNq+gEKtfyPE9KmnF641dHlkF1rN+fnEgOS522rAGFhn5TJCP
-         XXhkxHdUqaKlfKzKSfmVq/8dLrv5+esGwmzcvuvB2Jdspm2mzJQo3qnCvrvUVlU6LYc3
-         f0ipItXjawGiZoAIbO0W+7WieWAUkR70OotffkAYsMTkmOKcjmlT6iUjXzCTzR9JaCpd
-         9AEN1SAOXbhgaabZUXDttHrii/vM8PdXRf03z55++NL4f8rT2cJto4O1/CVnZFlODsTU
-         mPMA==
-X-Forwarded-Encrypted: i=1; AHgh+RoO3GT1eckVkS9qavfmz4Fz5vLHISKZ1D6k74tKq7BzjwuRPn0FACSs9nYz+NWPwjL8Ny8oJto=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6krw/XKrdPPe/Warr/5W5l5aUfzL8lC1KzXOeMH+qX1lNF+kV
-	j8ydae8LOIGxbPGGvo5v8af2TgF6ajDqXW6NeOLsZOd23v64olKcIAYx
-X-Gm-Gg: AR+sD11hVla2+omAEfFsKhAO/scJFqm+wEscplUzCG2yfAJ0IGzHjTpSK4kR8MQLJ1N
-	PEKEJuOsqe1sUgNnC5anN8aZ0TDxfzOjRD59eeOSopCjhbmmu8CETLKZNAleFb+zx1azyIOqouv
-	IXzJoM0R7nBLYZbzwNVUXcZbKoe9w3OyyQBRuYvf4Xy6BCdcYJfXoS/GI0fEzRA12woT6xTJ7HG
-	EKZTWLSScomfC+SNIOTBe/KOILx+Dbw7WuARgqS9LGPfAVTdJFpmxK2yjCSXr9dk+De2dEB2/UB
-	vTUHIZod3J+JfMNLy/WuKFeC+vdc5liOWw4nQQVA/tMwS5rPqNCe6UjkO8wRBWlpfD1HSq1NrFF
-	ydXe0gW//EHcz10HqDaiusM3Eb7nXJAZ+udp3YPRFONiZ4IeFjp4W2eJBHypekf8wlEFgqlAl8j
-	EtIr+1ySt1fxd082pOKG/Qb7KnedeYTHNyj+5fiC9J+jLCjWHAsLTv4HI0r9ghMFuaiuoXhaaL8
-	j4LyDAAugKQRc748VW/l6x24o0RLuv8sOnIYWrWgzE=
-X-Received: by 2002:a05:600c:630c:b0:493:f140:c3fb with SMTP id 5b1f17b1804b1-4994e71c87bmr402295485e9.7.1786297799337;
-        Sun, 09 Aug 2026 10:49:59 -0700 (PDT)
-Received: from Ansuel-XPS. (host-87-20-3-207.retail.telecomitalia.it. [87.20.3.207])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995421934asm340945865e9.5.2026.08.09.10.49.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2026 10:49:58 -0700 (PDT)
-Message-ID: <6a78bdc6.89544747.3fcae.b8e0@mx.google.com>
-X-Google-Original-Message-ID: <ani9wg-GiHuUV9ab@Ansuel-XPS.>
-Date: Sun, 9 Aug 2026 19:49:54 +0200
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
-Subject: Re: [PATCH net-next v11 00/12] net: pcs: Introduce support for
- fwnode PCS
-References: <20260807131301.192060-1-ansuelsmth@gmail.com>
- <4c595c15-17d9-4c23-bb44-344c48d36e9a@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hii7hPjp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0E41F000E9;
+	Sun,  9 Aug 2026 18:03:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786298619;
+	bh=61cs1Wdrbr0AZr0ie9jpePC83AtXC1J7PEfOU0Q2Jnk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Hii7hPjpXFAbBtDs0FtOyGAsqGtqI8MkZqXaK/mz0iwM09wQ53RsN93zUfWZLx/Hy
+	 JNh89DbHT/P8pTsm/SPs6b3yKML8jE1B1iTCBfWAr6BTIcs4SmgyG+6i10ZokC9mh/
+	 VQgcxjboCkvmWccduJK3csEkmRrxhFtxWYVol0t9VO6m+ofx9pZV3L9rt8vT6wsJVx
+	 ytHTowm+za+T1pVEy7cy61kiCyinnMBhfdVvEy9iopIHruJi7ZNZS0NVyv5DYBOGrk
+	 4FgI08bZ07uOd8vQPEx0Z5e7cPn21yzmSmP9/XYYB5SfXe3S7lzZ6aAYJs3wSxdNFB
+	 PAseBB/6ivxdQ==
+Message-ID: <5ac3773c-4a6f-4796-a43f-545c3c42271c@kernel.org>
+Date: Sun, 9 Aug 2026 20:03:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4c595c15-17d9-4c23-bb44-344c48d36e9a@lunn.ch>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v3 2/2] mptcp: fix MP_CAPABLE token migration when
+ cloning reqsk
+Content-Language: fr
+To: Ren Wei <weir@nebusec.ai>, netdev@vger.kernel.org, mptcp@lists.linux.dev
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, daniel@iogearbox.net, kafai@fb.com,
+ kylebot@openai.com, david.lee@trailofbits.com, vega@nebusec.ai,
+ caoruide123@gmail.com, sashiko-bot@kernel.org
+References: <cover.1785995291.git.caoruide123@gmail.com>
+ <a12d76b7f2305b5a8d64c3d6c3585e39684ff792.1785995291.git.caoruide123@gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <a12d76b7f2305b5a8d64c3d6c3585e39684ff792.1785995291.git.caoruide123@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Aug 09, 2026 at 07:44:55PM +0200, Andrew Lunn wrote:
-> On Fri, Aug 07, 2026 at 03:12:42PM +0200, Christian Marangi wrote:
-> > This series introduce a most awaited feature that is correctly
-> > provide PCS with fwnode without having to use specific export symbol
-> > and additional handling of PCS in phylink.
+Hi Ren, Ruide,
+
+On 06/08/2026 13:14, Ren Wei wrote:
+> From: Ruide Cao <caoruide123@gmail.com>
 > 
-> One of Russells complaints was the phylink has too many bits of code
-> for ideas which did not work out and were replaced by new ways of
-> doing things.
+> TCP request migration clones pending request sockets with
+> inet_reqsk_clone().  For MPTCP MP_CAPABLE requests this byte-copies the
+> token_node hlist state into the clone even though the token table still
+> names the original request.
 > 
-> We want .mac_select_pcs to go away, this framework should replace it.
-> Please could you convert one of the exist users of .mac_select_pcs, so
-> we get an idea of what that involved. If that conversion is pretty
-> mechanical, i think we should have a second patchset which converts
-> all the current users, and then remove support for .mac_select_pcs.
+> Moving the token only after inet_ehash_insert() succeeds leaves a window
+> where the cloned request is already globally visible from the ehash but
+> the token table still points at the original request.  Reordering the
+> move after clone but before ehash exposure closes that window, but
+> concurrent RX can still race on the old request and observe that the
+> token was already moved.
 > 
-> Overall i think the direction of this patchset is good.
->
+> Move MP_CAPABLE token request ownership during MPTCP request cloning
+> under the token bucket lock.  Make mptcp_token_accept() and
+> mptcp_token_destroy_request() re-check token_node under the same lock and
+> treat an already moved or removed request as a normal race instead of
+> warning.
+> 
+> If the passive MP_CAPABLE socket cannot claim the token, fail
+> mptcp_sk_clone_init() and let the subflow fall back instead of
+> installing a socket with mismatched token ownership.
 
-Thanks for the initial check.
+Thank you for the new version!
 
-Maxime converted one device with this and the patch delta was small... let
-me copy those patch here. (it was referenced in v9)
+I have one major comment, please see below:
+> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:gpt-5.4
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/86e2514b533bf4d55d4aa2fdbf1404022e8c9430.1776149210.git.caoruide123%40gmail.com
+> Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
+> ---
+>  net/mptcp/protocol.c   | 12 +++++----
+>  net/mptcp/protocol.h   |  4 ++-
+>  net/mptcp/subflow.c    |  2 ++
+>  net/mptcp/token.c      | 61 +++++++++++++++++++++++++++++++++++++-----
+>  net/mptcp/token_test.c |  4 +--
+>  5 files changed, 68 insertions(+), 15 deletions(-)
+> 
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index ca644ec53eed..07eaa6858d05 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
+> @@ -3608,17 +3608,19 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+>  	 */
+>  	mptcp_set_state(nsk, TCP_ESTABLISHED);
+>  
+> +	if (!mptcp_token_accept(subflow_req, msk)) {
+> +		mptcp_release_sched(msk);
+> +		inet_csk_prepare_forced_close(nsk);
+> +		tcp_done(nsk);
 
-I think the most annoying one will be stmmac with the 3 different PCS
-implementation but we already handled that in a upcoming ipq50xx driver
-currently present in OpenWrt mainline.
+Here, you cannot call tcp_done(nsk): nsk is an MPTCP socket, not a TCP
+one. You probably want to destroy the msk instead.
 
-Maybe if Maxime is O.K. I can include his patch in this series.
+(In theory, your reproducer launched on a kernel with your patches
+applied on top of MPTCP's export branch [1] should produce a warning)
 
-From 38ad94b1e62bf3523097983dfb515f59b1634477 Mon Sep 17 00:00:00 2001
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Date: Tue, 21 Jul 2026 13:52:57 +0200
-Subject: [PATCH] net: marvell: mvpp2: Convert to the new PCS API
+Apart from that, Clashiko has a few comments. Do you mind checking them
+and reply to each comment here, before sending a new version, whether
+you agree/disagree or if it is unclear, please?
 
-Following the introduction of the PCS framework, port mvpp2 to the new
-PCS API.
+[1] https://github.com/multipath-tcp/mptcp_net-next/
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 161 +++++++++++-------
- 1 file changed, 95 insertions(+), 66 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index ccc24a1301f2..8d9663c7a023 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -6499,21 +6499,6 @@ static void mvpp2_gmac_config(struct mvpp2_port *port, unsigned int mode,
-                writel(ctrl4, port->base + MVPP22_GMAC_CTRL_4_REG);
- }
-
--static struct phylink_pcs *mvpp2_select_pcs(struct phylink_config *config,
--                                           phy_interface_t interface)
--{
--       struct mvpp2_port *port = mvpp2_phylink_to_port(config);
--
--       /* Select the appropriate PCS operations depending on the
--        * configured interface mode. We will only switch to a mode
--        * that the validate() checks have already passed.
--        */
--       if (mvpp2_is_xlg(interface))
--               return &port->pcs_xlg;
--       else
--               return &port->pcs_gmac;
--}
--
- static int mvpp2_mac_prepare(struct phylink_config *config, unsigned int mode,
-                             phy_interface_t interface)
- {
-@@ -6786,7 +6771,6 @@ static int mvpp2_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
- }
-
- static const struct phylink_mac_ops mvpp2_phylink_ops = {
--       .mac_select_pcs = mvpp2_select_pcs,
-        .mac_prepare = mvpp2_mac_prepare,
-        .mac_config = mvpp2_mac_config,
-        .mac_finish = mvpp2_mac_finish,
-@@ -6808,7 +6792,10 @@ static void mvpp2_acpi_start(struct mvpp2_port *port)
-        };
-        struct phylink_pcs *pcs;
-
--       pcs = mvpp2_select_pcs(&port->phylink_config, port->phy_interface);
-+       if (mvpp2_is_xlg(port->phy_interface))
-+               pcs = &port->pcs_xlg;
-+       else
-+               pcs = &port->pcs_gmac;
-
-        mvpp2_mac_prepare(&port->phylink_config, MLO_AN_INBAND,
-                          port->phy_interface);
-@@ -6823,6 +6810,78 @@ static void mvpp2_acpi_start(struct mvpp2_port *port)
-                          SPEED_UNKNOWN, DUPLEX_UNKNOWN, false, false);
- }
-
-+static int mvpp2_port_fill_pcs(struct phylink_config *config,
-+                              struct phylink_pcs **available_pcs,
-+                              unsigned int num_possible_pcs)
-+{
-+       struct mvpp2_port *port = mvpp2_phylink_to_port(config);
-+
-+       available_pcs[0] = &port->pcs_gmac;
-+
-+       if (mvpp2_port_supports_xlg(port)) {
-+               if (num_possible_pcs < 2)
-+                       return -EINVAL;
-+
-+               available_pcs[1] = &port->pcs_xlg;
-+       }
-+
-+       return 0;
-+}
-+
-+static void mvpp2_port_init_pcs_xlg(struct phylink_pcs *pcs, bool has_comphy,
-+                                   phy_interface_t phy_mode)
-+{
-+       if (has_comphy) {
-+               __set_bit(PHY_INTERFACE_MODE_5GBASER,
-+                         pcs->supported_interfaces);
-+               __set_bit(PHY_INTERFACE_MODE_10GBASER,
-+                         pcs->supported_interfaces);
-+               __set_bit(PHY_INTERFACE_MODE_XAUI,
-+                         pcs->supported_interfaces);
-+       } else if (phy_mode == PHY_INTERFACE_MODE_5GBASER) {
-+               __set_bit(PHY_INTERFACE_MODE_5GBASER,
-+                         pcs->supported_interfaces);
-+       } else if (phy_mode == PHY_INTERFACE_MODE_10GBASER) {
-+               __set_bit(PHY_INTERFACE_MODE_10GBASER,
-+                         pcs->supported_interfaces);
-+       } else if (phy_mode == PHY_INTERFACE_MODE_XAUI) {
-+               __set_bit(PHY_INTERFACE_MODE_XAUI,
-+                         pcs->supported_interfaces);
-+       }
-+}
-+
-+static void mvpp2_port_init_pcs_gmac(struct phylink_pcs *pcs, bool has_comphy,
-+                                    phy_interface_t phy_mode)
-+{
-+       if (has_comphy) {
-+               /* If a COMPHY is present, we can support any of the
-+                * serdes modes and switch between them.
-+                */
-+               __set_bit(PHY_INTERFACE_MODE_SGMII,
-+                         pcs->supported_interfaces);
-+               __set_bit(PHY_INTERFACE_MODE_1000BASEX,
-+                         pcs->supported_interfaces);
-+               __set_bit(PHY_INTERFACE_MODE_2500BASEX,
-+                         pcs->supported_interfaces);
-+       } else if (phy_mode == PHY_INTERFACE_MODE_2500BASEX) {
-+               /* No COMPHY, with only 2500BASE-X mode supported */
-+               __set_bit(PHY_INTERFACE_MODE_2500BASEX,
-+                         pcs->supported_interfaces);
-+       } else if (phy_mode == PHY_INTERFACE_MODE_1000BASEX ||
-+                  phy_mode == PHY_INTERFACE_MODE_SGMII) {
-+               /* No COMPHY, we can switch between 1000BASE-X and SGMII
-+                */
-+               __set_bit(PHY_INTERFACE_MODE_1000BASEX,
-+                         pcs->supported_interfaces);
-+               __set_bit(PHY_INTERFACE_MODE_SGMII,
-+                         pcs->supported_interfaces);
-+       }
-+
-+       /* RGMII and MII are still routed through the gmac PCS */
-+       phy_interface_set_rgmii(pcs->supported_interfaces);
-+       __set_bit(PHY_INTERFACE_MODE_MII, pcs->supported_interfaces);
-+}
-+
- /* In order to ensure backward compatibility for ACPI, check if the port
-  * firmware node comprises the necessary description allowing to use phylink.
-  */
-@@ -7082,28 +7141,17 @@ static int mvpp2_port_probe(struct platform_device *pdev,
-                        port->phylink_config.mac_capabilities |=
-                                MAC_SYM_PAUSE | MAC_ASYM_PAUSE;
-
--               if (mvpp2_port_supports_xlg(port)) {
--                       /* If a COMPHY is present, we can support any of
--                        * the serdes modes and switch between them.
--                        */
--                       if (comphy) {
--                               __set_bit(PHY_INTERFACE_MODE_5GBASER,
--                                         port->phylink_config.supported_interfaces);
--                               __set_bit(PHY_INTERFACE_MODE_10GBASER,
--                                         port->phylink_config.supported_interfaces);
--                               __set_bit(PHY_INTERFACE_MODE_XAUI,
--                                         port->phylink_config.supported_interfaces);
--                       } else if (phy_mode == PHY_INTERFACE_MODE_5GBASER) {
--                               __set_bit(PHY_INTERFACE_MODE_5GBASER,
--                                         port->phylink_config.supported_interfaces);
--                       } else if (phy_mode == PHY_INTERFACE_MODE_10GBASER) {
--                               __set_bit(PHY_INTERFACE_MODE_10GBASER,
--                                         port->phylink_config.supported_interfaces);
--                       } else if (phy_mode == PHY_INTERFACE_MODE_XAUI) {
--                               __set_bit(PHY_INTERFACE_MODE_XAUI,
--                                         port->phylink_config.supported_interfaces);
--                       }
-+               if (!mvpp2_port_supports_xlg(port))
-+                       port->phylink_config.num_possible_pcs = 1;
-+               else
-+                       port->phylink_config.num_possible_pcs = 2;
-+
-+               port->phylink_config.fill_available_pcs = mvpp2_port_fill_pcs;
-
-+               mvpp2_port_init_pcs_xlg(&port->pcs_xlg, comphy, phy_mode);
-+               mvpp2_port_init_pcs_gmac(&port->pcs_gmac, comphy, phy_mode);
-+
-+               if (mvpp2_port_supports_xlg(port)) {
-                        if (comphy)
-                                port->phylink_config.mac_capabilities |=
-                                        MAC_10000FD | MAC_5000FD;
-@@ -7115,35 +7163,16 @@ static int mvpp2_port_probe(struct platform_device *pdev,
-                                        MAC_10000FD;
-                }
-
--               if (mvpp2_port_supports_rgmii(port)) {
--                       phy_interface_set_rgmii(port->phylink_config.supported_interfaces);
--                       __set_bit(PHY_INTERFACE_MODE_MII,
--                                 port->phylink_config.supported_interfaces);
--               }
-+               phy_interface_copy(port->phylink_config.pcs_interfaces,
-+                                  port->pcs_gmac.supported_interfaces);
-
--               if (comphy) {
--                       /* If a COMPHY is present, we can support any of the
--                        * serdes modes and switch between them.
--                        */
--                       __set_bit(PHY_INTERFACE_MODE_SGMII,
--                                 port->phylink_config.supported_interfaces);
--                       __set_bit(PHY_INTERFACE_MODE_1000BASEX,
--                                 port->phylink_config.supported_interfaces);
--                       __set_bit(PHY_INTERFACE_MODE_2500BASEX,
--                                 port->phylink_config.supported_interfaces);
--               } else if (phy_mode == PHY_INTERFACE_MODE_2500BASEX) {
--                       /* No COMPHY, with only 2500BASE-X mode supported */
--                       __set_bit(PHY_INTERFACE_MODE_2500BASEX,
--                                 port->phylink_config.supported_interfaces);
--               } else if (phy_mode == PHY_INTERFACE_MODE_1000BASEX ||
--                          phy_mode == PHY_INTERFACE_MODE_SGMII) {
--                       /* No COMPHY, we can switch between 1000BASE-X and SGMII
--                        */
--                       __set_bit(PHY_INTERFACE_MODE_1000BASEX,
--                                 port->phylink_config.supported_interfaces);
--                       __set_bit(PHY_INTERFACE_MODE_SGMII,
--                                 port->phylink_config.supported_interfaces);
--               }
-+               if (mvpp2_port_supports_xlg(port))
-+                       phy_interface_or(port->phylink_config.pcs_interfaces,
-+                                        port->phylink_config.pcs_interfaces,
-+                                        port->pcs_xlg.supported_interfaces);
-+
-+               phy_interface_copy(port->phylink_config.supported_interfaces,
-+                                  port->phylink_config.pcs_interfaces);
-
-                phylink = phylink_create(&port->phylink_config, port_fwnode,
-                                         phy_mode, &mvpp2_phylink_ops);
---
-2.55.0
-
-
-
+Cheers,
+Matt
 -- 
-	Ansuel
+Sponsored by the NGI0 Core fund.
+pw-bot: cr
+
