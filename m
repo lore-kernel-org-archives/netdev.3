@@ -1,130 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B67635C681;
-	Mon, 10 Aug 2026 08:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3193A6F11
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786350717; cv=none; b=diyMGqMvY8BAItWhdaOlCnCB08ujMNXAJoK6H99ndhNkahXv2etsoFAZ9VB91us/wECuOBMtO18Z2zyYLdVbo5tZ+BFxeuM1jRaNC5c/1wET5n5w4efYcxLcABu9+7HHUu/1u9Ksmk7sXaAMBCUXc4xBPgY3vSeTDekxdGILsqw=
+	t=1786350862; cv=none; b=UyHndvLkmpsQP1i+D3cRNVsWD7YqZsqS1MUBs2Exsrguc3ddnAy/kfn8z7+pJelJzi8wiTQe3vPgns4JWaR1iqfw/DVnV5waS9TfgPx/21aq2ChMDt/knMbyfWz8wzUXlaqU2NaMWdM6p5m34CnwRy7LhVaENyRzgq5WeFkIyYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786350717; c=relaxed/simple;
-	bh=p2Aez8y+S4iFXcqAEaFnFenGBxfIFXsswxSI8k9AifE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NGg9TCLzkJYMk4IjfYXtOy80bUQuiGC/1cBeKm0w/wQZhgbby6eQ783PEM3OfyYucqCxYzwtId7/ryzjDPltiYkxNq8GR8g3iEb99NfNqKeev+Fd5J1UbEF6JhrgHAmR7EMC9zuZZJalO4S0GsUJ0gRH33vi0ZWLQYy8FRJVJdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a1fiQvVC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786350862; c=relaxed/simple;
+	bh=Llvu/Ofu6HBJHbIlTQ4QgrB2Mm+whGTtQvvjGGP1f9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TA6+gF5K6oz2yWEpuc2j0HvjXprPdnIaAlxKc+psLrASBax0JKU9lJleFVVyeOD+r4h4UCklBaioSDETpcjDEimrHUvxPf2S7AE08Myvk3jvh/uSKF72/CO+EfjVgYhfot8gGQ3BERJDgEzO9Dco1GIn0QSTzc8y7sD+FwALmsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RHEY1l29; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a1fiQvVC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB0C1F000E9;
-	Mon, 10 Aug 2026 08:31:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786350716;
-	bh=4l0swO3smaX+kbPAAIsSAOE2kNoQUe8ddUF0L1vy6+E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=a1fiQvVC85dQr9nz2IAOKNcIresPTbvJ4HyJp0a3NjxSgULFtO1SLgndv500E8wvP
-	 lRswDFvtMZpN24Wg6Vw1rtkZPYtD6jwNPLE+EjW/lXlGjZDB52P3jd9vEGY2yqaFtJ
-	 I+T6J3wUffDwCcW38VmcPr8m7g5iCL1/sjMRdEedCDLtqIGvcOgwRjoc791Lh7QBTX
-	 gNTQ+hn6ZSCvD5bnfE0dEFdMYPwfwe+Z8pEQHugBHtVfYHRjIwxxAWMYZPAzcvo8+h
-	 oJEwT2UZ6aqUAvT55eEgN8FATXi1VZ34dMU2Gyq7KaOqTEbEElziLJw7xw00E5iK40
-	 qkX7Yc8F9nQBQ==
-Message-ID: <f2e4fcfc-0713-491c-9749-bc75b1169776@kernel.org>
-Date: Mon, 10 Aug 2026 10:31:50 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RHEY1l29"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cea3004256so19584855ad.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 01:34:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786350859; x=1786955659; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wx/dR5BeT9JtgYuBtWLK4gYFoR3mxTUHjHYo0mlT1ww=;
+        b=RHEY1l29TyEFnFIDC9zszyGsiXbephwPAPZohV0WXlZvzniSZDLbGdLYBVkZ/5eJH/
+         /8VyAtJTySuJqIglPx/1eDOJ5hHELWyAEhy5XqC7MQ9dEVXh1C499wy1B7oT5hr32PZp
+         KpYap4GNDhec7d6CfRKX/pLtwEujiFkpP8Lx8q8m8/gPRw4VqFU1l8iCKq/aB1r5Gr4t
+         1Eij3m2TrZYPcEovfndOYcbU82xKXfuiaDs2iVL5s5l2mbmA+5pNn5n9cbNxq1cY2Efb
+         FdaCrnRWPTb4vdwp8RewubxGsaArrlEuvm2RdXWSz10XyqxZj1owGU5Kg+ssTTjIKmLA
+         9IUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786350859; x=1786955659;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wx/dR5BeT9JtgYuBtWLK4gYFoR3mxTUHjHYo0mlT1ww=;
+        b=gTWnkt1EqKEGqPRfpOfF7/XARznmhHxWqjMRbsWe93j3dNsnWjsdoPlSupnE6B4zDb
+         3RlcxGkHmHt9gc9drtQid1IZctOPGOWDvME1EjPX5U1xODXjHUue4PxyL8tVFV9rAvFn
+         8MBboCjS4KtQxbEdSNjKpvm8mlQau4BlimwVaLBznTWxulslEDOltOq4lU6PCNHDY5xz
+         4gB/UjU72vxGwJRWK6brrOqekqBQrK+TSRYQSsxn5yutbu2jIa7874oSfOukXWwPdQ1N
+         LwtVPIphcGkDZlYbSIqOD2k+HZiZTOrpJdslJhifctWvgI0Lonaix9QwWaN6GF/ffWoJ
+         wmlA==
+X-Forwarded-Encrypted: i=1; AHgh+RrHmxLjcDfxRGybd95izFHjbdp5kh6ZrwzeBUvCCp8mxCS6Xo7ExweO6dWFh5a7hasXy9dO6LU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ8A7q0FtgztuJLtJrjcvu5Q+5SaxIj5wGRC6V85vTnwTOfI8v
+	nHLL2UFS2yCbPhf8DXPJ2B6qt/k4LSqVHZ4rnL9ot5B1iNBLPOFGn+s8
+X-Gm-Gg: AR+sD13yhSxHzO8I/nMQed0RCqyJfketw2FGGaHQoxN7L/yfOPaEiFRNBg5NHQNGZgW
+	6YedXZM22bb9MJqjbc+v8NNvZVfYPAI/L3+JkReYNUIGNHZa2Oz676yzNtUTm8BzNhLpi7GksuQ
+	icy9PDbvfdCgjozI01gMv4J6PPZebiKvHFwBUu+MwDgDBqU0ket2lurWBOk7PFiSsTL+xa206ff
+	vBC+Zq1VgglA3BEA4ZcvbyDQSVqtyZ+u68eV2PXcxbZwr24oppddKPIEEONcZz2rohoGJ6Aw7RA
+	LF3y9qo6q9BnN46fGE9uZMavQLW7dB2+DCnBVqhjjKGiTDYYElHXtDxHWtpT2tC8yZYKIpm4ZFA
+	xmlp2JjfIzJ7IqOV0a/TIKPhOer/QVjMvC3ejW7oDWfHUW9biwJCPZ+7ArzXhhda62A6U8Mdg06
+	V5DuQkl/GUCwsN9+FrS3ezuySqYx+sjBhYT+loWKEEVEGpy62Po4pBe1rU0AQytq4oKdUQ
+X-Received: by 2002:a05:6a21:485:b0:3c4:3b16:2979 with SMTP id adf61e73a8af0-3cb85f0397fmr51639254637.30.1786350859021;
+        Mon, 10 Aug 2026 01:34:19 -0700 (PDT)
+Received: from user.. ([2405:201:c052:b00b:9a9f:f6f8:5800:36c0])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315bebee8d0sm38776661eec.24.2026.08.10.01.34.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 01:34:18 -0700 (PDT)
+From: pavankumaryalagada@gmail.com
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com,
+	Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
+Subject: [PATCH v2] e100: prevent shift-out-of-bounds in e100_eeprom_load()
+Date: Mon, 10 Aug 2026 14:03:55 +0530
+Message-ID: <20260810083355.21631-1-pavankumaryalagada@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 2/3] dt-bindings: net: wiznet,w5100: add
- link-gpios
-To: Arnd Bergmann <arnd@arndb.de>,
- =?UTF-8?Q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Netdev <netdev@vger.kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net>
- <20260806-wiznet-link-gpio-v3-2-532d4a143805@marmottus.net>
- <20260810-arrogant-anteater-of-economy-ef2078@quoll>
- <9e8fb566-e372-4519-ac0b-b8ca6de275e3@app.fastmail.com>
- <105fcc5b-e1d9-4bd8-a697-2d68e185aa38@kernel.org>
- <anmH0NR42wC4EwG-@pc-du-fromage>
- <44b4c6f3-3414-47ac-baaf-bca2f68df4c4@kernel.org>
- <ed92fe3b-2fef-4343-8ef9-314e8753ce69@app.fastmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <ed92fe3b-2fef-4343-8ef9-314e8753ce69@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 10/08/2026 10:25, Arnd Bergmann wrote:
-> On Mon, Aug 10, 2026, at 10:21, Krzysztof Kozlowski wrote:
->> On 10/08/2026 10:12, Arthur Crépin Leblond wrote:
->>>
->>> We use this line to detect a link change but don't read its value in
->>> the interrupt handler, we read the i2c PHYCFGR register to get the
->>> link status.
->>
->> I know, but won't you have soon the same problem with active? Otherwise
->> are you going to keep polling for the active link, since it is not
->> reported through the main interrupt?
-> 
-> I don't see how we'd ever want to report 'active' state back to
-> the kernel, this just means it's either receiving or transmitting,
-> and the kernel already knows when a data transfer happened
-> because it either started sending or it receives an interrupt for
-> a received frame.
+From: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
 
-True, that was just an example so the author thinks about it instead of
-just solving one problem now. For example neither speed nor duplex are
-reported in the main interrupt and you might need to configure something
-if they change.
+When reading the EEPROM address length, e100_eeprom_read() can return
+an invalid length (0 or >= 16). Passing an invalid addr_len to bit-shift
+operations causes a shift out-of-bounds, triggering a kernel panic or
+UBSAN warning.
 
-Best regards,
-Krzysztof
+Validate addr_len after reading it from EEPROM in both
+e100_eeprom_load() and e100_eeprom_save(), and return -EIO if the value
+is out of bounds.
+
+Reported-by: syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e0abb1d45ac291ebebeb
+Signed-off-by: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
+---
+Tested in QEMU using syzbot c reproducer.
+
+v2:
+- Return -EIO instead of -EINVAL for an invalid EEPROM address length.
+- Validate addr_len in e100_eeprom_save() as well.
+- Drop the unnecessary 1U change in the shift.
+- Update the commit message.
+
+v1:
+https://lore.kernel.org/all/20260807145626.52692-1-pavankumaryalagada@gmail.com/T/
+---
+ drivers/net/ethernet/intel/e100.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/e100.c b/drivers/net/ethernet/intel/e100.c
+index 1de5cd41ea0c..464dc2d6cdb5 100644
+--- a/drivers/net/ethernet/intel/e100.c
++++ b/drivers/net/ethernet/intel/e100.c
+@@ -775,10 +775,10 @@ static int e100_eeprom_load(struct nic *nic)
+ 		netif_err(nic, probe, nic->netdev,
+ 			"Invalid EEPROM address length %u\n",
+ 			addr_len);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 
+-	nic->eeprom_wc = 1U << addr_len;
++	nic->eeprom_wc = 1 << addr_len;
+ 
+ 	for (addr = 0; addr < nic->eeprom_wc; addr++) {
+ 		nic->eeprom[addr] = e100_eeprom_read(nic, &addr_len, addr);
+@@ -804,6 +804,14 @@ static int e100_eeprom_save(struct nic *nic, u16 start, u16 count)
+ 
+ 	/* Try reading with an 8-bit addr len to discover actual addr len */
+ 	e100_eeprom_read(nic, &addr_len, 0);
++
++	if (!addr_len || addr_len >= 16) {
++		netif_err(nic, probe, nic->netdev,
++			"Invalid EEPROM address length %u\n",
++			addr_len);
++		return -EIO;
++	}
++
+ 	nic->eeprom_wc = 1 << addr_len;
+ 
+ 	if (start + count >= nic->eeprom_wc)
+-- 
+2.43.0
+
