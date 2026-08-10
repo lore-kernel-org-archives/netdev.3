@@ -1,130 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F304390C88
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 07:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D091DDA18;
+	Mon, 10 Aug 2026 07:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786348654; cv=none; b=Vl6t2kWBaiCtM1jTHS+QLmHlAkmxuuptnkt/MWzIk+DdGHDsrBG7RhYQPZx4nfB4Ln1jlFLCtolOP7eNSAjyaZvrWVAQ+bz0F9B3UjiX3HhZd9ziTGZBYj12syO5U1yHwVPSzH9tzamAplmZAwZu817CeZedjZVAXyYTtDm6nRc=
+	t=1786348767; cv=none; b=QH+A08ZnOD1BW0GY46Qw48Xm6Dkl6rwvd4Z9/SShSftLyPh63a0dvEx4q02a4k3kIIP7ksXbJqd2UBGOoq3AViU2fplHEQZNPM1n+4YOlawUeL/yzcQ6BKmighYbfkmRyAmROolwg+9mLZoegwB8LBTdm0sMgeZ2ZKsXi7LbYz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786348654; c=relaxed/simple;
-	bh=Q+/ssEHzlQooBUf9Jokz3i6r7X6BdwTkGLYLXKCuspQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DGEO0l1P3dKuJ2FvyrP3Xrw+kdo5T0M0+64OT+MIay0xa2e3Z4QBomLIbG9iEviQdKm1uSqq+OT6hYXb2IBuB2QS07ts++MRpRkfMaTkmseW21nmaKV3UkfdMUNvP7JhiXyWAQuwMyyw3u9D3kRl1qshL5y/A9VHF/EFPk0VE5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hl8OiWAd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y+QOYfQl; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786348767; c=relaxed/simple;
+	bh=nO6rLw9lb79JeosjQImJ0ccUes1FZjcWX+Pj/sO21nM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BANuNG7JLoo2SsZkECosQhRvEn0YXTeSzh8BgiHd8kgc4319hQRA3Kqt/I/ALqUsGrLwNlJ47R6slHeJWJ3cq1ZgvcYoaoGul2FEKwI7rIF8MZKIT2LcBzBvM5MJVWhqcOJhIeeWEjiUIVsqHzR1SyRHangPnQRdI8BWp8xT8uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+N7gk6s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hl8OiWAd";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y+QOYfQl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786348650;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=faSl/UkvZhLeViesyQBAMKjmyR5NNeTyZ1tUwhC4yBU=;
-	b=hl8OiWAdea8+i7CvrmQPrc4koWzz2ksDH4OZ+XqfEH/9GYNC6JmHXIYCx7uFTnZbGH3Oa4
-	J4ZfcWp+CbCQ2pLTmccZHf+PBvoEAAHYKnHJElYlhnioY+2yzVbGAziHN1cpjpsfgwTuBC
-	Udne/Z1Sjy93xoOGb9TKWXI7CeInbr0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-Mry9IIYTMqixbepQXmDzlg-1; Mon, 10 Aug 2026 03:57:29 -0400
-X-MC-Unique: Mry9IIYTMqixbepQXmDzlg-1
-X-Mimecast-MFC-AGG-ID: Mry9IIYTMqixbepQXmDzlg_1786348648
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47feac2021eso988766f8f.3
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 00:57:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786348648; x=1786953448; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=faSl/UkvZhLeViesyQBAMKjmyR5NNeTyZ1tUwhC4yBU=;
-        b=Y+QOYfQlxkT+6VEnP2akMUWJT5x7bPL1uhmFAZFmjOtSmKV7vfO38UceaNTgwEdqRn
-         9nVsPKgGBavcawksjtpFs0inrP7YGG0wQfbxb3Ax+9GwR/n1QOJCpxVV7hBr8C8RfC/u
-         XuGE6661Unrz1AeplXCu6Wmmrp8hj9DYI5ywiWVpOmjzcjMyTXtt+52HaFWncBlKD+AB
-         pPLZhUJlgBY+TDDqrc+v3TW5ylIhZYeroVAJciq9FulM6Mhs6rZxDdIQarGogA0F+8NQ
-         JVTi62li/GcUmWLNrCxTxVZXlHCEpj8WeLFW30l1L8D7aTc2o16ZOOEAJmfMKZCplShI
-         pRIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786348648; x=1786953448;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=faSl/UkvZhLeViesyQBAMKjmyR5NNeTyZ1tUwhC4yBU=;
-        b=lFPIZVbDD6mMUrotZoB9UsRDsx9v6Kcavxi9un9nWYXyugq/Qwl6Odf7szk457Vfo5
-         AJCQcl1Jb+7wzeAqeowzw+l+hE1dWow2AWp20Yg6XD2y3jLa/61kkRgaO/BcL+U5/OGl
-         ZCc3B8EXTXOYIqp64x9E+F7X1zWZ6/CXhZugLxKPZP3lG+gEq/wVSMtRaI15a3QDaDPC
-         EGa1LN5Eh8fIU7TPTVfQAVaQ0Iub70eq/GBOR8xDNze/57vvn11lj9d3gp0uLAmetZ9r
-         YuRMBV7DyzXAU+/kV9nX2jTnBQY/AXogNYdICnGS7ZHBjPkd5la38Vh1ENtz8aO40A9j
-         NIAA==
-X-Gm-Message-State: AOJu0YyiEyPdbLpnLn7TZwZsscyWBo6qiiwVpZl9F9a5SJkhmFX27G+1
-	ifJbKgdd7Uzb7MEIYIqfm6nAOpTE7JDe5KqRE+Uvo6IY0UOjgPrH5hVLZ79h5Ktvtp3TAjjdMF6
-	zTiHpUp5yA54/kItOh7yrPS2bulg5nHMzretWM0zNi01JbvTOHrMkpymUuQ==
-X-Gm-Gg: AR+sD119nVs/1a7vkwi8CUo/kRQ7DG3VHPDu1o2o28tk3L53CV0+oYMB5Xz/+JC9Dh+
-	hbxbJkxVsJ+jaL1JUk4/pT4TjN4hTlD2DbyZB/OSPTpJ3k/+ghzf3Uzsk5L0kIzgNx2sD7eXIiH
-	eTVI1k+XG99fMSE96Vz9kprHLzFoSHAoeM/0WlncrFL9sgE5HIF9inXktnUTRAF6Dyk+0yKo6X+
-	yRC0AaHl/9tu1AABTpU5DiTTLMhpxRXHlMHf5BQAZGeZzSdo2N8wJ/gWvhIwqMUCJnq7idX19dK
-	+IvltQBzQ4GNwXdHyiS7kUOFjfTd7QFiUth5jqnQJN/YH1H8jpbxC243yunUjue4F6bQAWS63FY
-	=
-X-Received: by 2002:a05:6000:2988:20b0:47f:eb80:ff42 with SMTP id ffacd0b85a97d-47fec4e2975mr52858451f8f.4.1786348647964;
-        Mon, 10 Aug 2026 00:57:27 -0700 (PDT)
-X-Received: by 2002:a05:6000:2988:20b0:47f:eb80:ff42 with SMTP id ffacd0b85a97d-47fec4e2975mr52858392f8f.4.1786348647534;
-        Mon, 10 Aug 2026 00:57:27 -0700 (PDT)
-Received: from localhost ([2a01:e11:1007:ea0:8374:5c74:dd98:a7b2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021506c0sm29711749f8f.11.2026.08.10.00.57.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 00:57:26 -0700 (PDT)
-Date: Mon, 10 Aug 2026 09:57:26 +0200
-From: Davide Caratti <dcaratti@redhat.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, vega@nebusec.ai,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net] net/sched: act_api: fix TOCTOU NULL deref on
- a->goto_chain
-Message-ID: <anmEZqiY_XEdzR_T@dcaratti.users.ipa.redhat.com>
-References: <20260809090928.868186-1-jhs@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+N7gk6s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1666E1F000E9;
+	Mon, 10 Aug 2026 07:59:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786348766;
+	bh=P27qAVT77kvl9fg4eXWL9CT6nQpZIU/wG6WI/N4Smg4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=I+N7gk6sq1C3mYJnSjXujowwjo1nWWELBrHSJ81qVihYYy4OAVO4+2FlZvhgbZdFY
+	 tMeckEzDSm3NIoQuJL1lmBAUMZl1iaqaLwViM9s54OpMk8kGTBy/hGt1jUqBuUGaH/
+	 Ay38L67wVqblH6YvsenjwgJGAaAqb+JnyOMFkifFmlBPsEHHEN8XnBv2LyfalwyLrj
+	 LRnOUEpXxEtEdw6FDy4omidPccXbjozyiJ1K8dgL2yuSFInnRnuB6CtENh6k4XchXk
+	 KCMItpSKHp8h3/JbQc6LX9nbddd/sv/k1Dw2sQKsiA7xjPBieic66kf8vsEXlIJDw6
+	 YeL0umAblrVsg==
+Message-ID: <105fcc5b-e1d9-4bd8-a697-2d68e185aa38@kernel.org>
+Date: Mon, 10 Aug 2026 09:59:18 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260809090928.868186-1-jhs@mojatatu.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 2/3] dt-bindings: net: wiznet,w5100: add
+ link-gpios
+To: Arnd Bergmann <arnd@arndb.de>,
+ =?UTF-8?Q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Netdev <netdev@vger.kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net>
+ <20260806-wiznet-link-gpio-v3-2-532d4a143805@marmottus.net>
+ <20260810-arrogant-anteater-of-economy-ef2078@quoll>
+ <9e8fb566-e372-4519-ac0b-b8ca6de275e3@app.fastmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <9e8fb566-e372-4519-ac0b-b8ca6de275e3@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, Aug 09, 2026 at 05:09:28AM -0400, Jamal Hadi Salim wrote:
-> tcf_action_exec() handles TC_ACT_GOTO_CHAIN by first checking
-> rcu_access_pointer(a->goto_chain) and then calling
-> tcf_action_goto_chain_exec(), which does a second, independent
-> rcu_dereference_bh(a->goto_chain) read and immediately dereferences
-> chain->filter_chain. A concurrent tcf_action_set_ctrlact() (e.g. the gact
-> replace path) can clear a->goto_chain between the two reads, so the second
-> read returns NULL and tcf_action_goto_chain_exec() dereferences NULL.
+On 10/08/2026 09:53, Arnd Bergmann wrote:
+> On Mon, Aug 10, 2026, at 09:43, Krzysztof Kozlowski wrote:
+>> On Thu, Aug 06, 2026 at 05:00:01PM +0200, Arthur Crépin Leblond wrote:
+>>>  
+>>> +  link-gpios:
+>>> +    description:
+>>> +      An optional GPIO line that can be wired to the LINKLED pin of the w5500
+>>> +      as an interrupt to detect link status changes.
+>>
+>> The message is confusing. If you describe it from the host (system point
+>> of view), then interrupts are not GPIOs but "interrupts".
+>>
+>> But maybe this is OUT GPIO from the system to the device?
 > 
-> Fix the race by doing a single rcu_dereference_bh() read of a->goto_chain
-> in tcf_action_exec(), checking it once for NULL, and passing the resulting
-> chain pointer into tcf_action_goto_chain_exec(). This turns the split
-> check/use into a single check/use on one value.
-> 
-> Fixes: ee3bbfe806cd ("net/sched: let actions use RCU to access 'goto_chain'")
-> Reported-by: vega@nebusec.ai
-> Tested-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> From the device point of view, it's an LED output, but from the
+> system side we should describe it as an IRQ_TYPE_EDGE_BOTH
+> "interrupts" property rather than a gpio line.
 
-[...]
+Then probably we should list all four other pins as well (speed, duplex
+and active).
 
-Reviewed-by: Davide Caratti <dcaratti@redhat.com>
-
-Thanks!
-
--- 
-davide
-
+Best regards,
+Krzysztof
