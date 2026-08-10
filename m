@@ -1,250 +1,152 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021108.outbound.protection.outlook.com [52.101.125.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D512A4343EC;
-	Mon, 10 Aug 2026 16:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.108
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786380733; cv=fail; b=T8PxBd8FtnFMGUu5uLd2GDFAcdT91jhMY46ahB30A6FoKjjfql+Si+NC3eBRtVh3yYQIJLH8cnmLBkNiyzlRP0GnXBLlAlO8QgV2vk9SJ01ipdiJ/vZFsS3zlLwdWSHnysB6buiO87KT6AKUN73yPT+NJVjrNlWIsKU2GiHXSYg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786380733; c=relaxed/simple;
-	bh=8YWkWA4MaDPhSv0mSCaqIq1KBD01csge8CjO08BRPes=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D26D427F92;
+	Mon, 10 Aug 2026 16:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786381006; cv=none; b=VbeMfQJDGmWTsfsT1qb0WEzyTbWiTfXXbChFS870fmkOyLYBzWMwwXtbrhrjbwwuArljuuylW5GvDJjD+yvEvoyXh1qqqCNrK01vD8MC6h7Otw0XS8n00bG9uXDO5e7+EmLTBsMRUxLuCz7hv/vInCYRcYhcOlkTSDvy9mt8eMU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786381006; c=relaxed/simple;
+	bh=zT57Kc6VYIRBHTmTRV3FJ+T2sBeZpTE6lG0pmkv1WjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sBLZF8RD9Pu54D+TlKEZ4xCCoYKkff1RGer70Qboni8Kf5otwzwJHNZrmxQP5WvllcBENps8xFGoV97HhFbDx1qe+Jrip7lbzkHZ5WqfASLnO4mFkkJUFSul47upCjeI9lTP9SHPbssmgkq9AfOjK8dvhKCN9NsJHygf7G0RsXM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=UN3i/PP5; arc=fail smtp.client-ip=52.101.125.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	 MIME-Version; b=Bnhw2911Bdi/MGliGkNIh7E4zb4Mm3fSJPNMXJmIhI0yX9jjJcMZzzQX26ByXoYJCei8ChqthUiw8/gCSgs0yB8/f2EMffvZDThWsDQj2nHZys13pRSkRPYJQXXPl4omHTgQ4NBrDyTLBroJnEqvNAeQoy+y3jK02F1B8QEd/iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HWS7g+vU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="UN3i/PP5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hsN5KHBdj+bNKC7C/XfmKsljb226ji/xaWhHyPU7EULSRo0tVVQoUA9OUx/Q2ujBkpDXqkM6xZAQnS52uoLNkqwKzFi/QjCUH3EmaENWqw2cjIjn57qgVR4VtbFS93J1LmSCVJTH2oqNL2e/xnzFYG70f5DHYvA3lSZY87Xre309zyIhom3vy79QLIZ2SxxW2XYYIN4Gb1Oh3bUpIVuD6HvXqc8Ibns7U16wf2jlusbFEu/WgIMTZsMuNtOMyfjbTT+cFQJMCB9HKchgdounsR9MJoR+SeUcRBb0QuWTTi4kYpUlY9vffA+dFY5zYVVswjltSZUGKFOtx3wPpIyqpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iF62hONaQn4t7rqOMRi8RUKGGPpU7L2fc3dH3If2XmM=;
- b=evD5uIk4N2Pl0JCgxoHG+N3/RqzGRvpB7h6/YtZIsaJbyQ6wc9J9QWMq2x+3ae3UWacDkz0hkaZWLyBbK/QdxiTTn8pqw4dZxjzAfMkA6H+XnWuz6IY20jC3hxH055edpG+WSPdBr8dmuZU0mDALJl2YiNxGQY09bIm1yHkdwxRK2T6+FJunSw8hgpitTEd2q1gw6w66FgarNcoh0qPoJCgNZOplL6Ut9ZWB/p+mzI1caqcFmFr1CGV1XPcUnQ9zTNQ8s7V3pCvnjNDu3wX34UtndAHuIjBaTEwHNb+6d4vQwKY3xQN0D6a9gMSN3ayAqul5Ltno9JjyW+LV5AB9QA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iF62hONaQn4t7rqOMRi8RUKGGPpU7L2fc3dH3If2XmM=;
- b=UN3i/PP5EPYWbSGOZnlYWYqO307U552PQUnJL1jWQfFYCOovv0PuFCw77AByV8r5xRbizW4Swwgp0cgnxgn8tE7sUF20FDiy1UqK6/IoGTLMXgGOPn/g1EfgvZ81rrAq5ee7KpvvgXQz7O3nkgLRjxz3PpDVw5S+BnrNzDV3LLk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by OS7P286MB6729.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:42d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 16:51:56 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
- 16:51:56 +0000
-From: Koichiro Den <den@valinux.co.jp>
-To: Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Frank Li <Frank.Li@kernel.org>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Nicholas Bellinger <nab@linux-iscsi.org>
-Cc: ntb@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HWS7g+vU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966D21F000E9;
+	Mon, 10 Aug 2026 16:56:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786381004;
+	bh=BWPkusVLENAArrc+B6J/z1uCewfn9djaIMTUNSKz/qg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HWS7g+vUPZ7eqc0C6di91ihuRonCUGeSB3zlT8bkHNhaniPRzZBGshWJ9yRXngdVo
+	 hQe9gJSLCjV6BuvEPawqC533bAKbg7HJpcvv6OIBstXJPyFkIazCmFoG+XxOj3UMcG
+	 v6fDY+cHfPP7qwZzk+2JEFkn2U/AD0MT/TpmWgUPdBluWLnRdHdkPoiaOWeWItV9Bq
+	 +1NVQkQUInlPlSoJFDFrL0vBE2qTBtH1HuGBLw23hc5J8+8/BywafrEVM/K8VM7Cbm
+	 CYwallFc+lzldg+nlhOF0oMOaP/kuBySqRLKthlkKjQMTQNXNqadt2R8tckeqnceAb
+	 /T0VUJz6do0JQ==
+From: Simon Horman <horms@kernel.org>
+To: s-vadapalli@ti.com
+Cc: Simon Horman <horms@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	c-vankar@ti.com,
+	vadim.fedorenko@linux.dev,
+	v-singh1@ti.com,
+	nm@ti.com,
+	daniel.zahka@gmail.com,
+	nora.schiffer@ew.tq-group.com,
+	oss@vassilevski.com,
+	grygorii.strashko@ti.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 16/16] NTB: ntb_transport: Add optional polling for direct-DMA RX
-Date: Tue, 11 Aug 2026 01:51:35 +0900
-Message-ID: <20260810165136.2292436-17-den@valinux.co.jp>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260810165136.2292436-1-den@valinux.co.jp>
-References: <20260810165136.2292436-1-den@valinux.co.jp>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYWP286CA0022.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:262::8) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH net] net: ethernet: ti: am65-cpsw-nuss: Fix port_id extraction from SRC TAG
+Date: Mon, 10 Aug 2026 17:56:29 +0100
+Message-ID: <20260810165629.788002-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260807111738.2055900-1-s-vadapalli@ti.com>
+References: <20260807111738.2055900-1-s-vadapalli@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OS7P286MB6729:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef047b7f-b105-42f6-1907-08def6ffb01d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|23010399003|376014|1800799024|366016|5023799004|56012099006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Gq3vthl1d++7/PxzNNRDVdUdyDG2AGYfFi3MdWm3OAWgrSwbi3R2hFccuXs4okLEYxynZXHL4GIqQ8VuJ/ucdpxAjJ7Zpswh7dAhkP7i5psCzIBk/LjcYmHgMOJVhNoPN30sVV6yk6OxLmJf6+7tHlnlOPQQk5XxMMwtXuidO2yx+ZpyTRSzlLl0a9pjxPLKA5vodSeZaxpiZQINyMEaIy0iSfaXX24tIuKVC/1Y5HwXUABZ8Xsgfv0p6r7pSGtju5Qg1Bzv2RcVWR9u8T7wCR1PhDjbnoiLczTFaoX8CXW45qUaAreA2x8I2aVpKZCOn89EXoXR2RnmtTBENlUxOXPttAPGQBSRfIvsuey5aTreGHdU5cSR7WMuxytsB8bhER+qxJ8OPbQs0EPJj5oBphMvf2xq/Vo4ZhI7SnKJEdZs3vZffaH3zzdKjQmHGdm36RGtyWinxexqckLPvAogebgdlXZ4ShfFM5YYPI9hwZlSw99vUFToJrxqYal8A/XbhuIkOYnkY6NVxXaksQa9G+7R90bWKFMMvelyv7TyjOKg9NiZ9JAq8vOO52lRzAD1D5drpbud0oH0BHpGy5Gin56UiaTd1bDlWEOaW3GGYOydKmqPXWk2qgiPanV8nkGZStFuO9cAtj4uE6qnrO0VpsUmD5fh+tf9keNFQjui9Nk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(23010399003)(376014)(1800799024)(366016)(5023799004)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RkkoAV3FcOKxAK5t4+FZn1RjwZ1l310WOIHo1hX8225JjJSIibeii2vPMP1u?=
- =?us-ascii?Q?9TypW7gIh7BOMUQHn5BnliXoSxfwt2TkBaih++EVHpj+hbUEmHQ+RKBHzdTJ?=
- =?us-ascii?Q?H7cn7z3OgeMHgBx7iqrsBpH+BtKSA57a7ckwfJW2vql/63wLMyyqp6MziL4+?=
- =?us-ascii?Q?pn1Ev6bC9kiBZJJBmBkeKvf8UdXzpWNBXQoGvCLzYArPtXXWqNbMIvFQa7pM?=
- =?us-ascii?Q?jKIDiATGrSnCbwwI2W8AB0l6GBMi39TPNpuvaw56IDobTE8E2tVUNT61mYtz?=
- =?us-ascii?Q?8e6qRFrzCTWolQhIPnOJlwFyvzSFhUvqJgF/MjViFaDsfnCg+jpPOS7i2wJx?=
- =?us-ascii?Q?g4LQ9sLgmfrDjIPBpmr1y0RrC1v0SmhnRhqzrAofPBwTbL3SmicGsJ6dQZoH?=
- =?us-ascii?Q?ISBDpbkaWqyJshf3wkXi+1yHGFRX1BemG4A+DQV77t4ctuzYOxDFwlRFESig?=
- =?us-ascii?Q?cx9IW3eAbWZhvUE7whsK/+kCfyhp4qVlueGewvlRQL5nER2jL1GWgZ9CUyXp?=
- =?us-ascii?Q?CDkCW8VR2zph4tZA1U0ZakPMyjAjKY+DYYcra+5dXv7yFxLHFc8rxkcak6SJ?=
- =?us-ascii?Q?iETZQjqqz5kX62hxuxrg8t+ZVsl7jiFh0nxbP7TH+V70iTiHB7CASAY7uI5J?=
- =?us-ascii?Q?8HPPaMSyxmTwaoKdEtytUln5gHF/LeFQqmPlSu3buWdDbTQNNHjLmf2JYNdW?=
- =?us-ascii?Q?7m1RT6nFh5H/JpTsDBoXRy4i47JqQMRpAz0k7jhXz7iPy4ZZl97y5a6F6Y1f?=
- =?us-ascii?Q?JGRj8HqpG9nluL0RJb53Z0nOsxrzV4tAlR1MhOSZDuIKeZgH+oYYIncp83DM?=
- =?us-ascii?Q?vPdyb8D7FB1YlKGf1ylMh0Cghpj7kYiKumtlW5OBVsZAeausEZ1ddwabLX9P?=
- =?us-ascii?Q?Za7yGojF8sHANF+bXTndis1YyCpPxkpHwjVgeoxtVDnRyEf7y/GhH3bURaEv?=
- =?us-ascii?Q?Dg7Pm4H4WGX1QadIUEeKyYHOxp/izYTgprZTtg9HutQnFIAi0cPoTWsHiHwc?=
- =?us-ascii?Q?JOx8YMgq0HI5sk6k+wOexhTgxP8lyosSxKTY3Ttqg544xzheWHvmfaKgLvRU?=
- =?us-ascii?Q?oJci4I4FcCHbj5DXS+qH3gr8N5dszIKjPKWaW6Uo8jRGalSqBOYMutCdmMd/?=
- =?us-ascii?Q?CTuib7IzGyzxv4yOU6T6o7eGIJD2SdGQO0P3tQ3TVfo3HZpryfx9rtZngQO9?=
- =?us-ascii?Q?bOMU8e2ZewFbmOKPyQd2VWeKct/dkPxQ/jZmDO1nppiPK5p645vKicDOwdiN?=
- =?us-ascii?Q?whmEthIoZZT+g7x0+UKC4iYufd7oACCi78JsMIDfJSVzzXYgyu9LCw7JV8Ud?=
- =?us-ascii?Q?A3+AYIUMzM44cuyGdSc0ynoqVZWJaSiD7sy0S747mjPVOTdt7N53X248EPwr?=
- =?us-ascii?Q?sUkvMBj0mFhPzunoBjQ5GSl7QHqtmpy0sdEfAqjml+qjOS7j/I3LTsqH15v3?=
- =?us-ascii?Q?kQZFQdnE9v137LdAAhYyIKNpnZD7Ghkrr8P2FnjB4dBBJ9xPS/dVkTVPjJXU?=
- =?us-ascii?Q?hxWbWAD5UxeMnW6p5OorRJ+SAK1ZBPmx/pa0wdBfQD3mxENyh0Oo54l7jqhN?=
- =?us-ascii?Q?uND8R2I2sVi6Kc629Mxf3/gSOnimS1XLdyA4lfkPRuabxNs7j7lfpfYVqKp4?=
- =?us-ascii?Q?oDjpXtSDqkLDCFeWpfZBD+ZYkZQTrK8iSz4jGVHasZ9bZKeE6/oBKPXvGhWg?=
- =?us-ascii?Q?/iqCsYX+E99ao93x2Wk3QoY/thVRzKveqqXR68B+FfQx+Z6wdJu6hBc1fIAl?=
- =?us-ascii?Q?S2FIoqdsPOFHOPbocJDO9d2FBDPXLxNNA8KZIdyBsbhFoQcsWMIn?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef047b7f-b105-42f6-1907-08def6ffb01d
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 16:51:56.5478
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XU3DtQEtVL/VYIP7ejCKeISQp+yEGYtPjTD6l8zrCRa62NGGj7vCB2tQrQIWxbNdAmlxmjfs1myPu4YKa3BpFA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7P286MB6729
+Content-Transfer-Encoding: 8bit
 
-Direct RX normally relies on peer MSI or doorbell notifications.
-Polling the completion state once per jiffy lets RX buffers be recycled
-sooner, keeps the DMA engine saturated, and raises the throughput
-ceiling.
-
-Add an opt-in direct_dma_poll parameter. Notification-driven operation
-remains the default, so continuous polling is enabled only when
-requested.
-
-The poll continues even after all currently visible completions are
-consumed. The posted MWr transactions carrying data and completion can
-theoretically be overtaken by the CPU MMIO write used for peer
-notification. The notification may go through another PCI function and
-ordering domain. Without polling, the last completion could remain
-pending if no later notification arrives. This has not been observed.
-
-Reading back each completion destination would close this window, but
-the non-posted PCIe round trip significantly lowers throughput.
-
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260807111738.2055900-1-s-vadapalli@ti.com?part=1
 ---
- drivers/ntb/ntb_transport.c | 35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+--- Patch [1]: [PATCH net] net: ethernet: ti: am65-cpsw-nuss: Fix port_id extraction from SRC TAG ---
+commit b0ed959d350c90d8b49f6f81eba7461fbc86dcf4
+Author: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index 2f69328d5201..d3eb4e2106b0 100644
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -104,6 +104,11 @@ module_param(use_direct_dma, bool, 0644);
- MODULE_PARM_DESC(use_direct_dma,
- 		 "Use PCI endpoint DMA to transfer directly to peer RX buffers");
- 
-+static bool direct_dma_poll;
-+module_param(direct_dma_poll, bool, 0444);
-+MODULE_PARM_DESC(direct_dma_poll,
-+		 "Poll direct-DMA RX completion state once per jiffy");
-+
- static unsigned int direct_dma_func;
- module_param(direct_dma_func, uint, 0644);
- MODULE_PARM_DESC(direct_dma_func,
-@@ -234,6 +239,7 @@ struct ntb_transport_qp {
- 	dma_cookie_t last_cookie;
- 	struct work_struct rxc_db_work;
- 	struct delayed_work direct_rx_retry;
-+	struct delayed_work rxc_poll;
- 
- 	void (*event_handler)(void *data, int status);
- 	struct delayed_work link_work;
-@@ -835,6 +841,8 @@ EXPORT_SYMBOL_GPL(ntb_transport_rx_queue_size);
- 
- static void ntb_transport_rxc_db(struct work_struct *work);
- static void ntb_direct_rx_retry_work(struct work_struct *work);
-+static void ntb_transport_rxc_poll(struct work_struct *work);
-+static bool ntb_direct_rx_can_complete(struct ntb_transport_qp *qp);
- static void ntb_direct_rx_reclaim(struct ntb_transport_qp *qp);
- static const struct ntb_ctx_ops ntb_transport_ops;
- static struct ntb_client ntb_transport_client;
-@@ -1523,6 +1531,7 @@ static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
- 	if (ntb_direct_link_capable(qp)) {
- 		qp->active = false;
- 		cancel_delayed_work_sync(&qp->direct_rx_retry);
-+		cancel_delayed_work_sync(&qp->rxc_poll);
- 		cancel_work_sync(&qp->rxc_db_work);
- 		/* Catch a retry armed while draining RX work. */
- 		cancel_delayed_work_sync(&qp->direct_rx_retry);
-@@ -1808,8 +1817,11 @@ static void ntb_qp_link_work(struct work_struct *work)
- 		if (qp->event_handler)
- 			qp->event_handler(qp->cb_data, qp->link_is_up);
- 
--		if (qp->active)
-+		if (qp->active) {
-+			if (direct_dma_poll && ntb_direct_rx_can_complete(qp))
-+				queue_delayed_work(system_dfl_wq, &qp->rxc_poll, 1);
- 			queue_work(system_dfl_wq, &qp->rxc_db_work);
-+		}
- 	} else if (nt->link_is_up)
- 		schedule_delayed_work(&qp->link_work,
- 				      msecs_to_jiffies(NTB_LINK_DOWN_TIMEOUT));
-@@ -1900,6 +1912,7 @@ static int ntb_transport_init_queue(struct ntb_transport_ctx *nt,
- 
- 	INIT_WORK(&qp->rxc_db_work, ntb_transport_rxc_db);
- 	INIT_DELAYED_WORK(&qp->direct_rx_retry, ntb_direct_rx_retry_work);
-+	INIT_DELAYED_WORK(&qp->rxc_poll, ntb_transport_rxc_poll);
- 
- 	return 0;
- }
-@@ -2629,6 +2642,25 @@ static void ntb_transport_rxc_db(struct work_struct *work)
- 	}
- }
- 
-+static void ntb_transport_rxc_poll(struct work_struct *work)
-+{
-+	struct ntb_transport_qp *qp =
-+		container_of(work, struct ntb_transport_qp, rxc_poll.work);
-+	bool completion, control;
-+
-+	if (!qp->active || !ntb_direct_rx_can_complete(qp))
-+		return;
-+
-+	control = ntb_direct_control_pending(qp);
-+	completion = ntb_direct_rx_completion_word(qp);
-+
-+	if (completion || control)
-+		queue_work(system_dfl_wq, &qp->rxc_db_work);
-+
-+	/* keep checking completion and control state */
-+	queue_delayed_work(system_dfl_wq, &qp->rxc_poll, 1);
-+}
-+
- static void ntb_tx_copy_callback(void *data,
- 				 const struct dmaengine_result *res)
- {
-@@ -3517,6 +3549,7 @@ void ntb_transport_free_queue(struct ntb_transport_qp *qp)
- 
- 	ntb_db_set_mask(qp->ndev, qp_bit);
- 	cancel_delayed_work_sync(&qp->direct_rx_retry);
-+	cancel_delayed_work_sync(&qp->rxc_poll);
- 	cancel_work_sync(&qp->rxc_db_work);
- 	/* Catch a retry armed while draining RX work. */
- 	cancel_delayed_work_sync(&qp->direct_rx_retry);
--- 
-2.51.0
+net: ethernet: ti: am65-cpsw-nuss: Fix port_id extraction from SRC TAG
 
+The RX path extracts the ingress MAC port ID from the CPPI5 descriptor's
+16-bit Source Tag. Only the lower 8 bits carry the port ID, so the patch
+masks the value with 0xFF before it is used as an index into
+common->ports[].
+
+> diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+> index 434a31080855..6330540979d7 100644
+> --- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+> +++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+> @@ -1310,6 +1310,8 @@ static int am65_cpsw_nuss_rx_packets(struct am65_cpsw_rx_flow *flow,
+>  	k3_udma_glue_rx_cppi5_to_dma_addr(rx_chn->rx_chn, &buf_dma);
+>  	pkt_len = cppi5_hdesc_get_pktlen(desc_rx);
+>  	cppi5_desc_get_tags_ids(&desc_rx->hdr, &port_id, NULL);
+> +	/* Port ID is contained in the lower 8-bits of the 16-bit Source Tag */
+> +	port_id &= 0xFF;
+>  	dev_dbg(dev, "%s rx port_id:%d\n", __func__, port_id);
+>  	port = am65_common_get_port(common, port_id);
+>  	ndev = port->ndev;
+
+[Severity: High]
+[Finding: main-1-0]
+[Sources: opus-5]
+
+The missing range check on port_id is pre-existing and not introduced by
+this patch, but since the change is specifically about avoiding the
+out-of-bounds access, would it be worth validating the value instead of
+relying only on the mask?
+
+After the mask, port_id is still an unvalidated hardware-supplied value in
+the range 0..255, and am65_common_get_port() does raw pointer arithmetic
+with no bounds check:
+
+drivers/net/ethernet/ti/am65-cpsw-nuss.h:
+    #define am65_common_get_port(common, id) (&(common)->ports[(id) - 1])
+
+common->ports is a devm_kcalloc() array of exactly common->port_num
+entries (1..AM65_CPSW_MAX_PORTS, checked in am65_cpsw_nuss_probe()), which
+is typically 1 or 2 on shipping parts. So port_id == 0 gives ports[-1] and
+any port_id above common->port_num reads past the end of the allocation.
+The resulting pointer is dereferenced right away in
+am65_cpsw_nuss_rx_packets():
+
+    port = am65_common_get_port(common, port_id);
+    ndev = port->ndev;
+    ...
+    if (port->xdp_prog) {
+
+and ndev then flows into am65_cpsw_build_skb(), netdev_priv(),
+netif_dormant() and ndev->stats.*. Can a stray low byte still produce the
+same class of crash the commit message describes?
+
+The driver already enforces the required index domain for this accessor on
+the device tree path in am65_cpsw_nuss_init_slave_ports():
+
+    if (!port_id || port_id > common->port_num) {
+        dev_err(dev, "%pOF has invalid port_id %u %s\n",
+            port_np, port_id, port_np->name);
+        ret = -EINVAL;
+        goto of_node_put;
+    }
+
+    port = am65_common_get_port(common, port_id);
+
+Would the same !port_id || port_id > common->port_num test in the RX path,
+dropping the packet and requeueing the page (bumping rx_errors, perhaps
+with a WARN_ON_ONCE), be a more robust fix than the mask alone?
+
+There is a second case even when the index is in range: ports disabled in
+the device tree never get an ndev allocated, and every other iteration site
+guards for that, for example in am65_cpsw_nuss_set_offload_fwd_mark():
+
+    if (!port->ndev)
+        continue;
+
+The RX path uses port->ndev unconditionally, so an in-range port_id
+belonging to a disabled port would hand a NULL net_device to
+am65_cpsw_build_skb() and netdev_priv(). Should that case be rejected too?
+
+As a small nit, would a named mask defined alongside the other CPPI5/AM65
+definitions read better here than the bare 0xFF literal?
