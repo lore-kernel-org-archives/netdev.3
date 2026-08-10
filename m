@@ -1,98 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender-op-o11.zoho.eu (sender-op-o11.zoho.eu [136.143.169.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59985345725;
-	Mon, 10 Aug 2026 05:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786341394; cv=none; b=k5aDCUOwWYD40fAXnFN8/v/v70Y97cqoEnnKtBwpQAaa8ziZY5obpIa2WolibbYqqtVQEm3+1Ey2cuVWj0OAx2Z8z2nV7+bQkwspk8zDpq3qTWn4H09t2OVF7aQkqCbYfAl7WZoSl5MMP9OJqui4dkL8eaXwKcbEBP+NYH1THWc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786341394; c=relaxed/simple;
-	bh=KTjh8lAlmcoYZ75rcUMwLWnHs/49bhWdFxtitsrDals=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kbwVyVeU8TGkZyRtWiOBPJCZTZMh3p+eQAoPOXzGGG8aE2aeFjHPxsbXyACDTdG9ipcvmhlu1onFhQWb2un9bG92MnilTSAWr7oiLrdpoqYW7cEvhLSDwr9wYj3pic79oaoRcfMwEfO9tI60W1RJqIbFrr8/ofd2+kxEtrzC2II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7bdwIZ3; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12867081A
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786342627; cv=pass; b=RBO95GzoT6+WZI/2qZgSwhvQrleJXiBnbOi4+8ZC7DzN7caewqRrCL+smwruhOk6VwTrS168brX/TLtRz46y6MD+aCABK73IECxrn/el/6QwZdAbz75stA4Bx7ZxtvUDvFYH1Cn//6zDfrDKJBIdpu6+kxDE7JYQjZ8+lEzSGH0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786342627; c=relaxed/simple;
+	bh=EbqO2IPJ+kWymDkkXpLZhgYoGGdsuW6I9JN6vXgEPB0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o5jy0XGSrf+Ry6wTt9J5X4sqhTt6HbP2deilbVEvMyRaDQN4ZEZpjVGLiAA6QF+DNtdIPYuh/zFbDv4tsCuQmfWwmItSwxvrSHd2iHwLLAZ1Emi1+y9XQJNvU3H7Eb6uKxBF+kE3zFqB/RZJFc+i3YYya6YMjc6cq0LHUtwqNPc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl; spf=pass smtp.mailfrom=kempniu.pl; dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b=N2fO7XN7; arc=pass smtp.client-ip=136.143.169.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kempniu.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7bdwIZ3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F211F000E9;
-	Mon, 10 Aug 2026 05:56:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786341392;
-	bh=BncztfFJGzxfXeWtPbVlIXbET/3khWP8Izjtjfnd1Lc=;
-	h=From:To:Cc:Subject:Date;
-	b=S7bdwIZ3ygeDDWp78HlsROiJp++wsEL+/YqtGokRSx9CATYRt97nQnFQat/TkJ8fb
-	 23ZO3591UlXVZIOH8l3TwnsUnHBagv2pJ+hfcT0wklOR8k19Mm2Jg+Sbm0Y+4jF33G
-	 qKj32Z6vvPzdInhVrVMlV5V4Jveh+Ix6jIBKk4B0odnLwAW0DXPxbnEY75eVqDCwXs
-	 7Su/2Wy9HfUVt2AMdM+Ixt3OD1dRNZCcvNQjSgLxwBI9uRSKPjJ1OYcnquohBqO4Hf
-	 RVPsEqRTM8fOLPHqvusUY0RgzGyBpmuR9uvlCgNfxyVjW/8Gd4AdfBhfmd6FSCjGfG
-	 uhVz3/iD7bCGg==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org
-Cc: achender@kernel.org,
-	jhubbard@nvidia.com,
-	leon@kernel.org
-Subject: [PATCH net-next] net/rds: clear i_rx_lat_trace in rds_inc_path_init()
-Date: Sun,  9 Aug 2026 22:56:31 -0700
-Message-Id: <20260810055631.299558-1-achender@kernel.org>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b="N2fO7XN7"
+ARC-Seal: i=1; a=rsa-sha256; t=1786342590; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=ZDbLIOq4KnvgR6AFAkLIjGwdip0mHxbaImrhEu0fROL9N1mmR5MxueDLgiyYDikCQJm39eBmbUgifldl9QyVMsmprYZ9u7ArhvaW6cJV0zcNGmNx4PNT/378WH99FkQgnTdJLUCwBij007pVqvifm3aVN7iQQ1bZd00oPuRmAk4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1786342590; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Hvd8rWDn/9IkybD/Ou3YB8z8+tLH3CK9WGf92NYfFLY=; 
+	b=T7OkC0LCZTIzgDOegzskIuL+meNu68n8G9zhQxCdusRBDJOB+y08NlBLQcmGjQ458s68SJ68whFqVB/qDpEekBk0hTE6KDz6gwy2DXD5tAo0U7fy4dmvH4oKOOhQ9Pu98kybHQXqPjEz4w0c+blx18Hec6z51KpaqJE0RdXFKWc=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=kempniu.pl;
+	spf=pass  smtp.mailfrom=kernel@kempniu.pl;
+	dmarc=pass header.from=<kernel@kempniu.pl>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786342590;
+	s=zmail; d=kempniu.pl; i=kernel@kempniu.pl;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Hvd8rWDn/9IkybD/Ou3YB8z8+tLH3CK9WGf92NYfFLY=;
+	b=N2fO7XN70hhH8c/5ecfD3amrlfpDBuAXEEMF0dgjB7uMoMqROd+SfIrq58PcaZ0H
+	XoUUFkq63mekXb3WsaaE3W0XUfhilcj2Hs2aRkb53FD3eyspSM6s6vyxcLom7m75Wwi
+	HbrAj/tZ33gm3FlmgjOClu+MWY7p1qAnKv19SWWs=
+Received: by mx.zoho.eu with SMTPS id 1786342589464656.4039236454545;
+	Mon, 10 Aug 2026 08:16:29 +0200 (CEST)
+From: =?UTF-8?q?Micha=C5=82=20K=C4=99pie=C5=84?= <kernel@kempniu.pl>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: dsa: qca8k: Disable mgmt Ethernet for qca8327
+Date: Mon, 10 Aug 2026 08:15:53 +0200
+Message-ID: <20260810061612.23745-1-kernel@kempniu.pl>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-The commit that introduced the receive-path latency trace added the
-clearing of inc->i_rx_lat_trace[] to rds_inc_init() only;
-rds_inc_path_init() never got it.
+While the qca8327 switch appears to support in-band mgmt Ethernet,
+prolonged use of that protocol (e.g. for polling link state) makes the
+device unstable: within minutes, ports randomly go down and no traffic
+is forwarded anymore.  The same issues do not occur when MDIO is used
+exclusively, so ensure mgmt Ethernet is not used on the qca8327.
 
-That asymmetry matters for the one caller that reuses memory:
-rds_tcp_data_recv() carves its rds_tcp_incoming out of a kmem_cache
-with no zeroing and no constructor, so after rds_inc_path_init() the
-array still holds the timestamps of whatever message previously
-occupied that slab object.  No stale value is user-visible today -
-every message that reaches the socket happens to overwrite all four
-slots (RX_HDR at allocation, RX_START when the header completes,
-RX_END at delivery, RX_CMSG at recvmsg time) before
-RDS_CMSG_RXPATH_LATENCY reads them back as deltas - but that is a
-property of the current writers, not of the init contract, and a
-future trace point or an early-exit path would expose another
-message's timestamps to userspace.
-
-Clear the array in rds_inc_path_init() too, so both init helpers
-leave the inc fully initialized.  memset is the form the clearing
-already takes on the rds_inc_init() side since commit 1635bb548f84
-("net: rds: use memset to optimize the recv").  Hardening only; no
-user-visible bug in the current code.
-
-Assisted-by: Claude-Code:claude-fable-5
-Signed-off-by: Allison Henderson <achender@kernel.org>
+Signed-off-by: Michał Kępień <kernel@kempniu.pl>
 ---
- net/rds/recv.c | 2 ++
- 1 file changed, 2 insertions(+)
+I came across this while migrating an AR9344-based router with a QCA8327
+rev. 4 switch to a DSA-aware driver.  This glitch is a pain in the neck
+to troubleshoot any further as it occurs randomly, anywhere between a
+minute to an hour after the switch is set up; traffic load exerted on
+the switch does not seem to matter as the problem can be triggered on a
+virtually idle device.  Previously working links are reported as going
+down (one by one, not all at once), even though port LEDs still blink;
+no traffic is forwarded; reloading qca8k does not alleviate the problem,
+only power cycling seems to help.  Nothing like this happens when only
+MDIO is used.  However, qca8k currently only uses MDIO as a fallback.  I
+figured that simpler is better and that mgmt Ethernet should simply be
+disabled for the qca8327, but I would be happy to work on some
+configurable solution if that would be preferable.
 
-diff --git a/net/rds/recv.c b/net/rds/recv.c
-index f1513dfb2716..6204e577a90a 100644
---- a/net/rds/recv.c
-+++ b/net/rds/recv.c
-@@ -66,6 +66,8 @@ void rds_inc_path_init(struct rds_incoming *inc, struct rds_conn_path *cp,
- 	inc->i_saddr = *saddr;
- 	inc->i_usercopy.rdma_cookie = 0;
- 	inc->i_usercopy.rx_tstamp = ktime_set(0, 0);
-+
-+	memset(inc->i_rx_lat_trace, 0, sizeof(inc->i_rx_lat_trace));
+ drivers/net/dsa/qca/qca8k-8xxx.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index 4c928983b8623..1d90a23aba6bb 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -160,6 +160,11 @@ qca8k_set_page(struct qca8k_priv *priv, u16 page)
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(rds_inc_path_init);
  
-
-base-commit: 4fa4977a0d900f936bcae5cd2c510be5554e8dd6
-prerequisite-patch-id: ac6fbdba01fa66022d37321e8270d4f9f9fb834b
-prerequisite-patch-id: 45883e7cfa080a48b943e4ba58e0da22767c4c01
++static bool qca8k_mgmt_eth_disabled(const struct qca8k_priv *priv)
++{
++	return priv->switch_id == QCA8K_ID_QCA8327;
++}
++
+ static void qca8k_rw_reg_ack_handler(struct dsa_switch *ds, struct sk_buff *skb)
+ {
+ 	struct qca8k_mgmt_eth_data *mgmt_eth_data;
+@@ -316,6 +321,9 @@ static int qca8k_read_eth(struct qca8k_priv *priv, u32 reg, u32 *val, int len)
+ 	bool ack;
+ 	int ret;
+ 
++	if (qca8k_mgmt_eth_disabled(priv))
++		return -ENXIO;
++
+ 	skb = qca8k_alloc_mdio_header(MDIO_READ, reg, NULL,
+ 				      QCA8K_ETHERNET_MDIO_PRIORITY, len);
+ 	if (!skb)
+@@ -368,6 +376,9 @@ static int qca8k_write_eth(struct qca8k_priv *priv, u32 reg, u32 *val, int len)
+ 	bool ack;
+ 	int ret;
+ 
++	if (qca8k_mgmt_eth_disabled(priv))
++		return -ENXIO;
++
+ 	skb = qca8k_alloc_mdio_header(MDIO_WRITE, reg, val,
+ 				      QCA8K_ETHERNET_MDIO_PRIORITY, len);
+ 	if (!skb)
+@@ -630,6 +641,9 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
+ 	int ret, ret1;
+ 	bool ack;
+ 
++	if (qca8k_mgmt_eth_disabled(priv))
++		return -ENXIO;
++
+ 	if (regnum >= QCA8K_MDIO_MASTER_MAX_REG)
+ 		return -EINVAL;
+ 
 -- 
-2.25.1
+2.55.0
 
