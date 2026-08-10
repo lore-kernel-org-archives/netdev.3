@@ -1,165 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8819B3B05BF;
-	Mon, 10 Aug 2026 10:24:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989F43B95EB;
+	Mon, 10 Aug 2026 10:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786357469; cv=none; b=shMqviQf3uOXmaI0/dg9d1Wi1sugQQVvneCvUFALgGC0zF19sLBeMcFWEA1n7HV38nhcfhO3OO0lQD5axikCtmJ39qWh0Gdt5O79VMpEcHclBMd1FyjGFaCwEQcTkHRChobvR5M3oxK2eVu7Uh4e46yPlj2Ujm2ganj8j9PDuLY=
+	t=1786357641; cv=none; b=Tqu6RwZR1sTa0xIUtUYclp3TToIum/2jWkVETmy3hwwRYO+QShj1pymFRNoUvt2HOi+jvsUFngqSouqrHxRyIMFly5k3sqAYQHW/RArde1VU1jsCrhdMF9K4w15/M2PFeoJy5Wg273SHZ2GjL4iIlFj/GVXr7Ax/OzVDSkHnuao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786357469; c=relaxed/simple;
-	bh=TwBrygGoLaYh0Mod4Q467d4Ua87QqCapzKX4D+nyNVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LWGVSxDvtmvaK4bxr0tdLd75fey/ZYQSvBIxzZEhqV0UOiy3FdGzoAAYviVmNInxcnxrZZ0yMQzy3WclTWMfpIVFrqZ2BRbe5urlsVbqqjxNzKFx3qwhMHzRFTG8EnLe0YerXqvq1yeIOpxf/7RkIeUAR88intWXrrLAyVPV6/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSIvhxVM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786357641; c=relaxed/simple;
+	bh=BrNKlhLeSKhNkE9d2uZgFIpuXJ/DeJydzuTFOY4pE4s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vGIBxqD/COEmVpcfJVtU2ZhCxYiNwD4ROdX6P8c5XZRAkQbFUWgmNGGt0P36GNgE3gWffvpkB+BLozcjMzvbPrHVuOctr+KVNkaIRPLrwebfeRcGECXZKMx0I2vJs6dCSwpzZJLira36vT7FmeZh9pPBijlS6mMAS1gB8Vr4n/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=A0cN5Xrh; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSIvhxVM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338BD1F000E9;
-	Mon, 10 Aug 2026 10:24:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786357468;
-	bh=V+30XIEt4axj88eYlJLK7TU4i6nGzQ+Od4GX/hv+/YY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iSIvhxVMigb3vQKU577R3rcnVFfHYAu+hl+Vi3T+Q+aHUI7L4/7aJjvZWvKP49+2g
-	 Kt1yEntPq9LXZxpjNn30YSZgJxOsi9irJsmFS7+eIenlwqOsDcGHjIyoZ9NlyomAiv
-	 2x+sKlUE+RBLQWNm5cse3yIGmtV+vhS7awfNW3CD34L+y423TJQf70m2phSG+Mz6+j
-	 cJavjieztY+lw7sEhvHsFrw6qpIm5QVDKgOXzr33JezLv5z/ChK3WLy63mLWSo7QHq
-	 xT8RyByrKcIPJ/C5bsiQ1g6DX52J+NIM4VpLBsxr+eKLKlG+EiJMM7QfUcfWEa7l55
-	 b+VVh2iHoIAGw==
-Date: Mon, 10 Aug 2026 11:24:08 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, 
-	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@kernel.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, 
-	arve@android.com, cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
-	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 3/5] mm: Add RCU-based VMA lookup helper that waits
- for writers
-Message-ID: <anmmd0tIiqu2V6Lr@lucifer>
-References: <20260806200548.3124802-1-surenb@google.com>
- <20260806200548.3124802-4-surenb@google.com>
- <anbZpzFbtYG7Ngit@casper.infradead.org>
- <CAJuCfpGdyNq10F15G9Z=TrkcGL8my5RB1w+nZMKOTaH1o9mrGA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="A0cN5Xrh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=WJtbWzUkUc+nbq/ZWIZwAmTeculgZTNHJKJew/M4EEA=; b=A0cN5Xrh7pMnalEtXmczbjspVe
+	5amrs+gni6vwoTV2sa2uOeAYm0OIpurIU84ucB7AxyGqsGnO4oUaXUgna1MhqNae7mnkx/TKVgXp2
+	5Q+Kl0Ua+z6QmDnUzDkDy8+kTVWPgQuuooqclUHyHQZVo+oeukNS2vX1uDaeCuqr2mfw6yZcJ4lUH
+	xXJ9RbjZ7fLCd+KsGX3LnyFM+WNIEHjyp96WmunjOtz+C5ss8/Soqij4Ctj7jvDAsumgBEyhAKx3c
+	dVkWPqn4DxV0dHW2M1DoraXpqcrpIHA79P/Qr4bd9KOXvjauYr5gtT7mti0wIeuS83Dt5F9+F5GDU
+	3041Adxg==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wtNDv-000Gp1-0U;
+	Mon, 10 Aug 2026 12:27:15 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wtNDu-000Ea7-2t;
+	Mon, 10 Aug 2026 12:27:14 +0200
+Message-ID: <d89500d5-fe43-47e4-bf3e-77203b5a5d51@iogearbox.net>
+Date: Mon, 10 Aug 2026 12:27:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpGdyNq10F15G9Z=TrkcGL8my5RB1w+nZMKOTaH1o9mrGA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: expect instance lock in
+ netdev_queue_get_dma_dev()
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, stable@vger.kernel.org,
+ syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com, axboe@kernel.dk,
+ io-uring@vger.kernel.org, asml.silence@gmail.com
+References: <20260806225627.3998672-1-kuba@kernel.org>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <20260806225627.3998672-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28088/Mon Aug 10 08:24:15 2026)
 
-On Sat, Aug 08, 2026 at 06:07:41PM -0700, Suren Baghdasaryan wrote:
-> On Sat, Aug 8, 2026 at 12:24 AM Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Thu, Aug 06, 2026 at 01:05:46PM -0700, Suren Baghdasaryan wrote:
-> > > From: Dave Hansen <dave.hansen@linux.intel.com>
-> > >
-> > > == Background ==
-> >
-> > I think we can do without the headings?
-> >
-> > > There are basically two parallel ways to look up a VMA: the
-> > > traditional way, which is protected by mmap_read_lock, and the RCU-based
-> > > per-VMA lock way which is based on RCU and refcounts.
-> > >
-> > > == Problem ==
-> > >
-> > > The mmap_lock one is more straightforward to use but it has a big
-> > > disadvantage in that it can not be mixed with page faults since those
-> > > can take mmap_lock for read, which can deadlock when mixed with nested
-> > > page faults and parallel writers.
-> > > For example:
-> > >
-> > >       mmap_read_lock(mm);
-> > >       // Another thread does mmap_write_lock().
-> > >       // New mmap_lock readers are blocked.
-> > >       vma = vma_lookup(mm, address);
-> > >       // This deadlocks on mmap_read_lock() if it faults:
-> > >       copy_from_user(address);
-> > >       mmap_read_unlock(mm);
-> > >
-> > > The per-VMA lock can be mixed with faults, but they can fail and need to
-> > > be able to fall back to the traditional way.
-> >
-> > Umm.  I don't see how this avoids deadlock.  Assuming the next patch
-> > converts copy_from_user() to use the VMA lock, surely the following
-> > situation would obtain:
-> >
-> > A takes mmap_read_lock
-> > B tries to take mmap_write_lock, blocks
-> > A calls copy_from_user()
-> > A calls vma_start_read_unlocked() (because it doesn't know A actually
-> > holds the mmap_read_lock() already)
-> > A does a lookup under RCU, but gets NULL back (maybe it's calling
-> > c_f_u() with an invalid address?)
-> > A tries to take the mmap_read_lock again to make sure.  Deadlock
-> > because B is waiting for A to release the mmap_read_lock.
-> >
-> > Am I missing something?
->
-> I think Dave's idea was that A would take a VMA lock (which might
-> require taking mmap read lock temporarily) and then call
-> copy_from_user() with VMA lock only, which allows copy_from_user() to
-> take the mmap lock. This was used in the last patch [1] of the
-> original RFC. That patch is dropped from the series because this
-> approach has a conceptual lock ordering problem - it takes VMA lock
-> and then mmap_lock (see explanation at [2]).
-
-Yeah I wonder about the value of this. Dave can write all this up when he makes
-the change to use this in the relevant shadow stack (I think it was?) code.
-
-Having it here when just adding the function is not really helpful I don't think.
-
-Other use cases are stronger arguments for it anyway - we are essentially doing
-stuff like this in places and falling back to mmap when we don't need to - when
-we have the option to 'twiddle' the mmap lock and get a VMA lock.
-
->
-> [1] https://lore.kernel.org/all/20260429182005.00BF70D8@davehans-spike.ostc.intel.com/
-> [2] https://lore.kernel.org/all/CAJuCfpHBzYUNEe_LBpeERf68_fso=Hy+UZWtqejTUkm1O4NLfA@mail.gmail.com/
->
-> So, yeah. I need to rewrite this commit message.
->
-> >
-> > > +/**
-> > > + * vma_start_read_unlocked() - Find the VMA covering 'address' and read-lock it.
-> > > + * @mm: the mm_struct of the address space to search
-> > > + * @address: address that the vma should contain
-> > > + *
-> > > + * The fast path does not take mmap_lock. Waits for writers to finish if the
-> > > + * VMA is being modified by taking mmap_lock.
-> > > + * Use when mmap_lock is not held, otherwise use vma_start_read_locked().
-> > > + * Nothing prevents VMAs being unmapped/mapped before or after the VMA is
-> > > + * looked up, if a stronger guarantee is required, take an mmap_lock.
-> > > + *
-> > > + * Return: If a VMA exists which spans @address, return that VMA, read-locked.
-> > > + * If no VMA is mapped there or, very unlikely, a reference count overflow
-> > > + * occurred, return NULL.
-> > > + */
-> > > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
-> > > +                                            unsigned long address)
-> > > +{
-> > > +     struct vm_area_struct *vma;
-> > > +
-> > > +     /* Fast path: return stable VMA covering 'address': */
-> > > +     vma = lock_vma_under_rcu(mm, address);
-> > > +     if (vma)
-> > > +             return vma;
-> > > +
-> > > +     /* Slow path: preclude VMA writers by temporarily getting mmap read lock. */
-> > > +     mmap_read_lock(mm);
-> > > +     vma = vma_lookup(mm, address);
-> > > +     if (vma && !vma_start_read_locked(vma))
-> > > +             vma = NULL;
-> > > +     mmap_read_unlock(mm);
-> > > +
-> > > +     return vma;
-> > > +}
-
---
-Cheers, Lorenzo
+On 8/7/26 12:56 AM, Jakub Kicinski wrote:
+> netdev_queue_get_dma_dev() uses "compat" locking assert which wants
+> either the rtnl_lock or netdev instance lock. This is not right,
+> the callers are taking the instance lock unconditionally. All entry
+> points for queue config are purely instance locked.
+> 
+> In other words the callers use netdev_get_by_index_lock(), not
+> netdev_get_by_index_lock_ops_compat(). All the state we will
+> access is effectively instance lock protected (it's const for
+> devices which are not ops-locked).
+> 
+> Update the assert to avoid false positive warnings.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: b6c5f9454ef34 ("io_uring/zcrx: call netdev_queue_get_dma_dev() under instance lock")
+> Reported-by: syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
