@@ -1,186 +1,522 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDD43FFFAB
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 16:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786380067; cv=pass; b=VY8CMVVRFtnGMlB73zJpEP/VLF+wcEKRdj/XQfvTTQXa6bGT4B49j8r2fuvNMrq2zZ9ulyXh4qln9ZkjCxH4WrfyMkC/2iQtnFdExXW9OVyxndat2SwHf9zEvSW65O/zPr7QXU3JuF6jDFX74DXEaCWwNzjZq5VgGSo6wz2jZ8c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786380067; c=relaxed/simple;
-	bh=zD1nz9FVNtMUeJtdOWfkiJCLM7hpCKvd9Ocg3Udeak4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e028tnFe+MKwYUVv/Avf3BShTtJW1LdT4j1Qdh3wWUOVCjHY3a9JfZ28ln4hTgq9AHTYFqhaAMTG2N/unISvdsSuFfNLR3gMaDzjVWx1d7hlDTkyz19RM6YiqSlU22OJXHmTzQ7vtN3wgtVzCJD7JDXjZkKeIZVDQHqukisAIoI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VpLZUcHc; arc=pass smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B1035C1AE
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 16:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786380252; cv=none; b=tT1B+GYcQ35armS1BZWkRNLYDZjqVm7TUyutLaM2THAmvo/lH6TKB6grCJCJe4wjugMeTINo37vzblEP2h1qIyRGkIlxyLm58IvNhkCZ0PtEArrbHimIhTzmDlneyv7ileQ8/gjYmu6MetTHhR0NE2zRY2a173ByVrq/wxvJK1w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786380252; c=relaxed/simple;
+	bh=wmF7ZVZGdXAfw4PkyaH/73X+aXiSz7PHfX6/3GD1+Zo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lYsmMjzefDl+tHZFmpS7BrW3OpW98MsYwHsmlYbNAwCnlt3UrznOFbxWdBoQ7W4j6aI4ZXbNHuMq78cKTb7a+2PR2wAa3K3Z6XeROpqj3XTLv8KDepxgxJcqZwvmQuDl4GqzPe78EBQGYjPkxG0n5sk+zWPp9ZW4tG/N7ld41Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=glnzjOLy; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VpLZUcHc"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51c01c79467so426001cf.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 09:41:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786380064; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kCCOHBRUd8zwjWjQsiUdUKhRp8TGi30NEOGvyMywRlJpRNKjQHGrXHZAUNp9YQmRjs
-         wyvEJxclaeQQzgm98laPHil6xz1C6Ivw6KMYKJs40i24JBtrC+D2p/YshhqLYiAz01PX
-         rIoghqfneHIN2z9aFZkXoieUFl3rqBJStUVJN95kkPbiP6PFcBXIiUvCVy7n3dh/aFNb
-         iuR+KhEeHIIpprfPJMYPtgxj7dnWO6rvapuG6MwxCm4YTrkYw/TlROwFSyz3bxrzMLA5
-         /DznlOVEsWRdf7jqJir+5uK83vFwxwpdRY0t19tukG/0nI/i5qKY/B9PqY+LsMEeWCnH
-         QNcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=m17UbQGMqxi7cFAb0MblsfMgzscucpvWwE8sKi+3QSo=;
-        fh=x4/Rl8LfAFvsjd/+Mr2FqpGQLdJxZG6KLpBAkHEwIV4=;
-        b=agcBArD1KDElqdXPkVC9gpRThAB1QJCBHe7tl98StJasDOqBkLJoGF8JB7ylC7OIK+
-         Tdcc5Pqvtq5GNmROCLQlIna4yqmt8Z1BU/CIkiUVV6eQtmifemWGk5pAghIPa2Fmcrtl
-         Kik/65VoShMRWfNpDPj1Jy7EOuAfDIFqxMrh3ZeFZq10fa7jop7Oo/eCe0lH45AMzY+F
-         7kB4iPYUX50neUGpi+j+AzhcZYv/pcKVCYEFGmv4eXidCxKWI29cpb5NnC+YbHUOqBhE
-         Il/fHb2EWIVC2Cq9yA6cUETqNOcHFfBHvNZGNqk4nrYArmqK6ILp5Sp4/jkQysdXWrza
-         QDPQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="glnzjOLy"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84a2c90e383so73719b3a.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 09:44:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786380064; x=1786984864; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=m17UbQGMqxi7cFAb0MblsfMgzscucpvWwE8sKi+3QSo=;
-        b=VpLZUcHcjABrw5eNDpVUbVnkPRdn+imJ/Ho4nbp5560yA8Z4rv+TKlFEXH632XShms
-         2zbPheSoPnMFEXrexq1quJR+cySrLDX+jSdMNqx7johFzhNcDGPs7v1wXYcIJZalz70w
-         6iNDYICbkx3QspXKCySvkaHMFip6VjtXukiRDNJLvRjyiCT2r47yJSnycdCJ1csF2f16
-         I4pYfqP381QNsuCeOhxflE7KVdbmhWlk9zub4rpbznUaGSR01i2RDtC6YuzuVCQmDgOY
-         RHm4WruzQdmxyuFigbC7jCjr56LfP90AlOFHgKKLhmX5L8wSBJPJWrlpvz+fpNPISzDw
-         qCvg==
+        d=mojatatu.com; s=google; t=1786380247; x=1786985047; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Z4PgUaF46dAUvPebBbLF5rOzOGcPgt5TC4dwUtafpLA=;
+        b=glnzjOLyfDhXTLL8PbC9xdUzVbE+WzVILMGgfkOG0f29nyIrzPy9KNUmkaaJVEX9Cg
+         eVIi8rscAcqo1GrKp6aX7v/XHdH66k0nhhwvnSIgZIoFtRApP6Pz1cy7LTlebG/o4sHd
+         xIvpnoi3/Ex7ioNNVdH7Nn+p67cblpLgn0PYU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786380064; x=1786984864;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=m17UbQGMqxi7cFAb0MblsfMgzscucpvWwE8sKi+3QSo=;
-        b=EhDAZ25URDoOmzl67+r5artEiUpF746eI4DgD0FheZMTzVCGvJAPjB4W3mbCzHUGF3
-         76Rdkz1fLblBTXS8uqQDreX8leD5vVKGRCFG3M2+WzIytIlD/Insg0Pz2FkLB3e0j5GJ
-         z3Bv5tgcH6ZX1+5Qi4GiJr7XOP81W19eIo9V66nw0WrtIwj0/vLBVBoeJsXEtVzf4Nxs
-         hTEsWzSE3onA4IVSssQyS2ghbBwY1QYwuaRWHi77DGmszLODNBn60/apo6KcRzm+0NZr
-         6+VgX1sW5n3svDSMKCBzmyIt9tbjgM8gYm61jH63QjKhNiWsan7KRWAoLsDAi9ZjfnAY
-         E1og==
-X-Forwarded-Encrypted: i=1; AHgh+Rq4q/qX2ce3kQ8gwNgbvj4ozwAn5EkQeDnYbiqMzqrAurN43mnrU1VV2FgqQbcYU3N+1iCyLk8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl6mtcUknesjTxXUWS70liY7fK15FR+LH84/xclMvdqpdDWTGY
-	6onsfcbRb+Hvvs3zXQ3w0v91QiXvHdZUcVNgAK1lns6cSxEyI/dvfv3Zvra2MVLQmusxJECWCnP
-	hRbju9h9NxFqJlvUneX5Rb5QfHIW0ZdlL72u9zApU
-X-Gm-Gg: AR+sD12dJB+tLavDc5RGmFfEje5f9zTiFV9ceN9ln197K/TvRbq6cN2Vnx4Y4nxG+/9
-	eGyph+35acV/Ue7kzvOw0XSF3RiS55SdSmFBHGuF7j2O3SOxdC4eCsGWsPVpCfkZroF41D22VJ/
-	N2aI7SEPdfj+a/Kk8qjTeWZZ8c4J+aj44VeSlGRHcdxRUnsBnDtlPcISyk8WEm1XRkZJJzAAthf
-	XPKo3G7JcRMQelIjNMm8/bk3eK9+Oqi5VXF7XebQbufRupjvckTjhr2uNn5r5Gp6Kd5+7VydwVP
-	4AAI0XQMveDPNEMTKdAQt3O9cTPdLu7UfhLxWLPjDpA=
-X-Received: by 2002:a05:622a:4a8a:b0:528:38d6:71b4 with SMTP id
- d75a77b69052e-52d28159aafmr36460991cf.11.1786380063820; Mon, 10 Aug 2026
- 09:41:03 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786380247; x=1786985047;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Z4PgUaF46dAUvPebBbLF5rOzOGcPgt5TC4dwUtafpLA=;
+        b=AsSNbaL5JgpNxu4mlzKMf3MVC00HDqKPeCv8zjY50AhKaNyaP1e9+tSA5waAWUetWv
+         LMr0RT03IJ/GpsRqp8BeX3LNoyq+btWSsykyhtB74Qda8Bzm5YvzP1Kv2ebz3x5MxgxH
+         SLIM06/Kg+zUOFeQtrcR5Q/Rbgf0I7KaL1R7FnTTimodfA9ciOjjH4nk7gF+CFPHexBU
+         F2bjPs4iDdU0KI+RQY2afph9bzsCu/CiXlkXljdOdgj7XDRCaCjnIUGhrTWRh+nUIZve
+         ndYV2EOvvvfcHKI6GbGoqGtq6MM9l1yoE/E8zt8STd6AruYslOcacLr/ocyLBedEx+tI
+         T7Bg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp4ngKzURilDBXLNXuX1augfmxsP8uNczf7ygOvtoX/aQiCJyxEtNv2ZHzAbOvBusVf9V85gwo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1IiFSp2YbxmKgz+mTcVNPM3EYEm5fHEHDtO8KcZTh8rKwhncu
+	a+4P/jYBo8+fxDEoCJ897jGnzgQ2Gz9Qw/z8+y7rQwKqXSJa3wgCoiaVrkPoJ6taiQ==
+X-Gm-Gg: AR+sD12xU1q+We2QImPV08r9ts1vyNvvLzbqGQnQbAfjSI/t0CogDmG4B08LXP2i+WZ
+	mJIe7kqaOOOH9CibL37r0mucu0dfVwRFElY5Db/kbyjTITVBxQrWd+yxoe0nMGuTthDxwZ419tb
+	nh/M/HRarAgfUYuv6Q56h7MnbWubs9zyeW0jFq+q8j2abasGvE6j71pw9xNncEBDOcYfEv07fFV
+	+id/J4UzeegjYFyc/fGrBBSyVVbFntTgYYpj3dAKA3b9TTG2l2kKhH2RQK5FA9nP9zumDC1ZTmc
+	VLChmKJosu6lebK6uhqZr2f+Kq1cq77wiGOj2go3P/TV/WMWkX3mpNp1nMiuFdyIV5Ez8vciW8J
+	KhehHQXPgxZ/VdT1GMI70yKDTp559byW2bVaWH+e71JHfY5yP7MaGDRyWIocK8ZuPHQn1x7Es5q
+	8atsQ5aI6Au3qantDF2EFJmDPMXbNTTxgO1XMkkJ9jliY=
+X-Received: by 2002:a05:6a20:9398:b0:3bf:8de9:c64e with SMTP id adf61e73a8af0-3cbd373a437mr21654446637.2.1786380246952;
+        Mon, 10 Aug 2026 09:44:06 -0700 (PDT)
+Received: from exu-caveira ([2804:14d:5c54:4d67::2000])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe8f1af992sm4321859a12.14.2026.08.10.09.44.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 09:44:06 -0700 (PDT)
+From: Victor Nogueira <victor@mojatatu.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	daniel@iogearbox.net,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	martin.lau@linux.dev,
+	ast@kernel.org
+Cc: andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	song@kernel.org,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	horms@kernel.org,
+	vega@nebusec.ai,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net] net/sched: add get_fill_size callbacks for actions missing them
+Date: Mon, 10 Aug 2026 13:43:57 -0300
+Message-ID: <20260810164357.1653956-1-victor@mojatatu.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806200548.3124802-1-surenb@google.com> <20260806200548.3124802-2-surenb@google.com>
- <anaCkrk55EQoE2aS@casper.infradead.org> <anmQIeQIGkZdCKVU@lucifer> <anmcwYilggkd_-B5@lucifer>
-In-Reply-To: <anmcwYilggkd_-B5@lucifer>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 10 Aug 2026 09:40:52 -0700
-X-Gm-Features: AUfX_mxHsauyQeZO29u25G5ulMG58oqaTVi8Qutjp1dLMmIvZ6xLXUZCqjxNRn0
-Message-ID: <CAJuCfpHngcCttUaUtAJVxF5J4-WGGscx+mEu7LPqd4K61kLOdw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/5] mm: Make per-VMA locks available universally
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, 
-	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@kernel.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
-	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 10, 2026 at 2:43=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
-rg> wrote:
->
-> On Mon, Aug 10, 2026 at 09:52:11AM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Sat, Aug 08, 2026 at 02:12:50AM +0100, Matthew Wilcox wrote:
-> > > On Thu, Aug 06, 2026 at 01:05:44PM -0700, Suren Baghdasaryan wrote:
-> > > > +++ b/kernel/bpf/stackmap.c
-> > > > @@ -272,13 +272,8 @@ struct stack_map_vma_lock {
-> > > >  /*
-> > > >   * Acquire a stable read-side reference on the VMA covering @ip.
-> > > >   *
-> > > > - * With CONFIG_PER_VMA_LOCK=3Dy this returns a VMA with its per-VM=
-A read
-> > > > - * lock held and mmap_lock dropped, so the caller may sleep.
-> > > > - *
-> > > > - * With CONFIG_PER_VMA_LOCK=3Dn it returns a VMA with mmap_lock st=
-ill
-> > > > - * held; the caller must snapshot any fields it needs and pin vm_f=
-ile
-> > > > - * with get_file() before stack_map_unlock_vma() drops mmap_lock, =
-as
-> > > > - * the VMA may be split, merged, or freed after that.
-> > > > + * This returns a VMA with its per-VMA read lock held and mmap_loc=
-k
-> > > > + * dropped, so the caller may sleep.
-> > >
-> > > I don't know if BPF is compatible with !MMU or not, but the comment
-> > > is inconsistent with the code.  How about:
-> >
-> > <requisite nommu rant>
-> >
-> > I do think there are components that simply don't think to depend on CO=
-NFIG_MMU
-> > even though they do.
-> >
-> > In fact more than think - have run into exactly that before.
-> >
-> > It's another thing that speaks to nommu being a legacy barnacle that ba=
-shes us
-> > on the head fairly regularly for little to no gain (and nobody is testi=
-ng it for
-> > tip kernel AFAICT).
-> >
-> > </requisite nommu rant>
-> >
-> > >
-> > >  * On NOMMU configurations, returns with the mmap_lock held.  If the =
-MMU
-> > >  * is enabled, the per-VMA lock will be held instead.  The lock
-> > >  * should be released with stack_map_unlock_vma() which will release =
-the
-> > >  * appropriate lock.  Once the lock is released, the VMA may be freed=
-.
-> >
-> > I mean I suppose it's accurate but I don't love the idea of essentially=
- implying
-> > nommu+bpf is a thing and also treating it as so important that it must =
-be called
-> > out here.
-> >
-> > I'd rather it be inaccurate for nommu as are most comments in mm and mm=
--adjacent
-> > components, it's kinda implied in general. Those who care can look at t=
-he code.
->
-> Actually scratch that I'm wrong, firstly Suren's series explicitly does s=
-ome
-> nommu-specific logic in the bpf code and secondly BPF already has nommu-s=
-pecific
-> stuff in it.
->
-> It seems nommu bpf is (kinda) a supported path.
+Several tc actions (act_police, act_bpf, act_pedit, act_ife, act_sample,
+act_ct, act_ctinfo, act_tunnel_key) provide no get_fill_size() callback,
+so tcf_action_fill_size() falls back to tcf_action_shared_attrs_size()
+which does not account for the action-specific netlink attributes emitted
+inside TCA_ACT_OPTIONS by their dump functions.
 
-Ok, I'll change it the way Matthew suggested then.
+When an RTM_NEWACTION request with NLM_F_ECHO (or an RTNLGRP_TC
+listener) creates several actions, tcf_add_notify_msg() allocates the
+echo skb from this underestimated size. act_bpf is the clearest case:
+TCA_ACT_BPF_OPS alone reaches 32KB per action (BPF_MAXINSNS), so two
+actions are enough to overrun the allocation. act_pedit overruns with
+32 actions of four munge keys each, act_police with 32 policers once the
+optional rate/peakrate/result/avrate attributes are present, and
+act_tunnel_key with a single action carrying a maximum-sized geneve
+option blob, whose 63 class/type/data attribute triplets expand to about
+1.2KB. tca_get_fill() then fails and the request returns -EINVAL, but
+tcf_action_init() has already committed the actions via
+tcf_idr_insert_many(), so they stay installed even though userspace is
+told the request failed.
 
->
-> >
-> > >
-> > > >   * Returns NULL on failure, in which case no lock is held.
-> > > >   */
->
-> --
-> Cheers, Lorenzo
+To fix this, add the missing get_fill_size callbacks returning the
+worst-case size of each action's dump attributes, following the pattern
+used by act_gact/act_skbedit/act_vlan.
+
+Note: We only provided fixes for the actions we reproduced this bug with
+as of today. We can send a separate hardening patch for the remaining
+actions to net-next later.
+
+Fixes: 4e76e75d6aba ("net sched actions: calculate add/delete event message size")
+Reported-by: Vega <vega@nebusec.ai>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+---
+ net/sched/act_api.c        |  5 ++-
+ net/sched/act_bpf.c        | 21 ++++++++++
+ net/sched/act_ct.c         | 46 ++++++++++++++++++++++
+ net/sched/act_ctinfo.c     | 11 ++++++
+ net/sched/act_ife.c        | 23 +++++++++++
+ net/sched/act_pedit.c      | 24 ++++++++++++
+ net/sched/act_police.c     | 12 ++++++
+ net/sched/act_sample.c     |  9 +++++
+ net/sched/act_tunnel_key.c | 80 ++++++++++++++++++++++++++++++++++++++
+ 9 files changed, 230 insertions(+), 1 deletion(-)
+
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index f141634df214..9b8d91030381 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -454,7 +454,10 @@ static size_t tcf_action_shared_attrs_size(const struct tc_action *act)
+ 		/* TCA_STATS_QUEUE */
+ 		+ nla_total_size_64bit(sizeof(struct gnet_stats_queue))
+ 		+ nla_total_size(0) /* TCA_ACT_OPTIONS nested */
+-		+ nla_total_size(sizeof(struct tcf_t)); /* TCA_GACT_TM */
++		/* TCA_GACT_TM; actions dump their tcf_t with nla_put_64bit(),
++		 * which may emit an extra NLA_PAD attribute.
++		 */
++		+ nla_total_size_64bit(sizeof(struct tcf_t));
+ }
+ 
+ static size_t tcf_action_full_attrs_size(size_t sz)
+diff --git a/net/sched/act_bpf.c b/net/sched/act_bpf.c
+index 09d46e195e33..db4a5ffbb0df 100644
+--- a/net/sched/act_bpf.c
++++ b/net/sched/act_bpf.c
+@@ -389,6 +389,26 @@ static void tcf_bpf_cleanup(struct tc_action *act)
+ 	tcf_bpf_cfg_cleanup(&tmp);
+ }
+ 
++static size_t tcf_bpf_get_fill_size(const struct tc_action *act)
++{
++	struct tcf_bpf *prog = to_bpf(act);
++	size_t size = nla_total_size(sizeof(struct tc_act_bpf));
++
++	if (tcf_bpf_is_ebpf(prog)) {
++		/* TCA_ACT_BPF_NAME */
++		size += nla_total_size(ACT_BPF_NAME_LEN + 1);
++		size += nla_total_size(sizeof(u32)); /* TCA_ACT_BPF_ID */
++		size += nla_total_size(BPF_TAG_SIZE); /* TCA_ACT_BPF_TAG */
++	} else {
++		size += nla_total_size(sizeof(u16)); /* TCA_ACT_BPF_OPS_LEN */
++		/* TCA_ACT_BPF_OPS */
++		size += nla_total_size(prog->bpf_num_ops *
++				       sizeof(struct sock_filter));
++	}
++
++	return size;
++}
++
+ static struct tc_action_ops act_bpf_ops __read_mostly = {
+ 	.kind		=	"bpf",
+ 	.id		=	TCA_ID_BPF,
+@@ -397,6 +417,7 @@ static struct tc_action_ops act_bpf_ops __read_mostly = {
+ 	.dump		=	tcf_bpf_dump,
+ 	.cleanup	=	tcf_bpf_cleanup,
+ 	.init		=	tcf_bpf_init,
++	.get_fill_size	=	tcf_bpf_get_fill_size,
+ 	.size		=	sizeof(struct tcf_bpf),
+ };
+ MODULE_ALIAS_NET_ACT("bpf");
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index be535a261fa0..e9c6d420ab88 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1636,6 +1636,51 @@ static int tcf_ct_offload_act_setup(struct tc_action *act, void *entry_data,
+ 	return 0;
+ }
+ 
++static size_t tcf_ct_get_fill_size(const struct tc_action *act)
++{
++	const struct tcf_ct_params *p;
++	size_t size;
++
++	size = nla_total_size(sizeof(struct tc_ct)) /* TCA_CT_PARMS */
++		+ nla_total_size(sizeof(u16)); /* TCA_CT_ACTION */
++
++	rcu_read_lock();
++	p = rcu_dereference(to_ct(act)->params);
++
++	if (p->ct_action & TCA_CT_ACT_CLEAR)
++		goto out;
++
++	/* TCA_CT_MARK, TCA_CT_MARK_MASK */
++	if (IS_ENABLED(CONFIG_NF_CONNTRACK_MARK))
++		size += nla_total_size(sizeof(p->mark))
++			+ nla_total_size(sizeof(p->mark_mask));
++
++	/* TCA_CT_LABELS, TCA_CT_LABELS_MASK */
++	if (IS_ENABLED(CONFIG_NF_CONNTRACK_LABELS))
++		size += nla_total_size(sizeof(p->labels))
++			+ nla_total_size(sizeof(p->labels_mask));
++
++	if (IS_ENABLED(CONFIG_NF_CONNTRACK_ZONES))
++		size += nla_total_size(sizeof(p->zone)); /* TCA_CT_ZONE */
++
++	if (p->ct_action & TCA_CT_ACT_NAT)
++		/* TCA_CT_NAT_IPV6_{MIN,MAX}, the larger of the two address
++		 * variants, plus TCA_CT_NAT_PORT_{MIN,MAX}.
++		 */
++		size += 2 * nla_total_size(sizeof(struct in6_addr))
++			+ 2 * nla_total_size(sizeof(__be16));
++
++	/* TCA_CT_HELPER_{NAME,FAMILY,PROTO} */
++	if (p->helper)
++		size += nla_total_size(NF_CT_HELPER_NAME_LEN)
++			+ nla_total_size(sizeof(u8))
++			+ nla_total_size(sizeof(u8));
++out:
++	rcu_read_unlock();
++
++	return size;
++}
++
+ static struct tc_action_ops act_ct_ops = {
+ 	.kind		=	"ct",
+ 	.id		=	TCA_ID_CT,
+@@ -1645,6 +1690,7 @@ static struct tc_action_ops act_ct_ops = {
+ 	.init		=	tcf_ct_init,
+ 	.cleanup	=	tcf_ct_cleanup,
+ 	.stats_update	=	tcf_stats_update,
++	.get_fill_size	=	tcf_ct_get_fill_size,
+ 	.offload_act_setup =	tcf_ct_offload_act_setup,
+ 	.size		=	sizeof(struct tcf_ct),
+ };
+diff --git a/net/sched/act_ctinfo.c b/net/sched/act_ctinfo.c
+index 1886ffd2ca95..fced4b1094af 100644
+--- a/net/sched/act_ctinfo.c
++++ b/net/sched/act_ctinfo.c
+@@ -356,6 +356,16 @@ static void tcf_ctinfo_cleanup(struct tc_action *a)
+ 		kfree_rcu(cp, rcu);
+ }
+ 
++static size_t tcf_ctinfo_get_fill_size(const struct tc_action *act)
++{
++	return nla_total_size(sizeof(struct tc_ctinfo)) /* TCA_CTINFO_ACT */
++		+ nla_total_size(sizeof(u16)) /* TCA_CTINFO_ZONE */
++		/* TCA_CTINFO_PARMS_{DSCP_MASK,DSCP_STATEMASK,CPMARK_MASK} */
++		+ 3 * nla_total_size(sizeof(u32))
++		/* TCA_CTINFO_STATS_{DSCP_SET,DSCP_ERROR,CPMARK_SET} */
++		+ 3 * nla_total_size_64bit(sizeof(u64));
++}
++
+ static struct tc_action_ops act_ctinfo_ops = {
+ 	.kind	= "ctinfo",
+ 	.id	= TCA_ID_CTINFO,
+@@ -364,6 +374,7 @@ static struct tc_action_ops act_ctinfo_ops = {
+ 	.dump	= tcf_ctinfo_dump,
+ 	.init	= tcf_ctinfo_init,
+ 	.cleanup= tcf_ctinfo_cleanup,
++	.get_fill_size = tcf_ctinfo_get_fill_size,
+ 	.size	= sizeof(struct tcf_ctinfo),
+ };
+ MODULE_ALIAS_NET_ACT("ctinfo");
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 065228026c58..ff2b16e35b9b 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -878,6 +878,28 @@ TC_INDIRECT_SCOPE int tcf_ife_act(struct sk_buff *skb,
+ 	return tcf_ife_decode(skb, a, res);
+ }
+ 
++static size_t tcf_ife_get_fill_size(const struct tc_action *act)
++{
++	struct tcf_ife_info *ife = to_ife(act);
++	const struct tcf_ife_params *p;
++	struct tcf_meta_info *e;
++	size_t size = nla_total_size(sizeof(struct tc_ife)) /* TCA_IFE_PARMS */
++		+ nla_total_size(ETH_ALEN) /* TCA_IFE_DMAC */
++		+ nla_total_size(ETH_ALEN) /* TCA_IFE_SMAC */
++		+ nla_total_size(2) /* TCA_IFE_TYPE */
++		+ nla_total_size(0); /* TCA_IFE_METALST */
++
++	rcu_read_lock();
++	p = rcu_dereference(ife->params);
++	if (p) {
++		list_for_each_entry_rcu(e, &p->metalist, metalist)
++			size += nla_total_size(sizeof(u32));
++	}
++	rcu_read_unlock();
++
++	return size;
++}
++
+ static struct tc_action_ops act_ife_ops = {
+ 	.kind = "ife",
+ 	.id = TCA_ID_IFE,
+@@ -886,6 +908,7 @@ static struct tc_action_ops act_ife_ops = {
+ 	.dump = tcf_ife_dump,
+ 	.cleanup = tcf_ife_cleanup,
+ 	.init = tcf_ife_init,
++	.get_fill_size = tcf_ife_get_fill_size,
+ 	.size =	sizeof(struct tcf_ife_info),
+ };
+ MODULE_ALIAS_NET_ACT("ife");
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index d4d47a9921f4..99d7e36510bd 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -626,6 +626,29 @@ static int tcf_pedit_offload_act_setup(struct tc_action *act, void *entry_data,
+ 	return 0;
+ }
+ 
++static size_t tcf_pedit_get_fill_size(const struct tc_action *act)
++{
++	const struct tcf_pedit_parms *parms;
++	size_t size;
++
++	rcu_read_lock();
++	parms = rcu_dereference(to_pedit(act)->parms);
++	size = nla_total_size(struct_size_t(struct tc_pedit, keys,
++					    parms->tcfp_nkeys));
++	if (parms->tcfp_keys_ex) {
++		/* TCA_PEDIT_KEYS_EX, holding one TCA_PEDIT_KEY_EX nest with a
++		 * HTYPE and a CMD attribute per key.
++		 */
++		size += nla_total_size(0)
++			+ parms->tcfp_nkeys * (nla_total_size(0)
++					       + nla_total_size(sizeof(u16))
++					       + nla_total_size(sizeof(u16)));
++	}
++	rcu_read_unlock();
++
++	return size;
++}
++
+ static struct tc_action_ops act_pedit_ops = {
+ 	.kind		=	"pedit",
+ 	.id		=	TCA_ID_PEDIT,
+@@ -635,6 +658,7 @@ static struct tc_action_ops act_pedit_ops = {
+ 	.dump		=	tcf_pedit_dump,
+ 	.cleanup	=	tcf_pedit_cleanup,
+ 	.init		=	tcf_pedit_init,
++	.get_fill_size	=	tcf_pedit_get_fill_size,
+ 	.offload_act_setup =	tcf_pedit_offload_act_setup,
+ 	.size		=	sizeof(struct tcf_pedit),
+ };
+diff --git a/net/sched/act_police.c b/net/sched/act_police.c
+index b16468a98c55..1a5a69768702 100644
+--- a/net/sched/act_police.c
++++ b/net/sched/act_police.c
+@@ -484,6 +484,17 @@ static int tcf_police_offload_act_setup(struct tc_action *act, void *entry_data,
+ 	return 0;
+ }
+ 
++static size_t tcf_police_get_fill_size(const struct tc_action *act)
++{
++	return nla_total_size(sizeof(struct tc_police)) /* TCA_POLICE_TBF */
++		+ nla_total_size_64bit(sizeof(u64)) /* TCA_POLICE_RATE64 */
++		+ nla_total_size_64bit(sizeof(u64)) /* TCA_POLICE_PEAKRATE64 */
++		+ nla_total_size_64bit(sizeof(u64)) /* TCA_POLICE_PKTRATE64 */
++		+ nla_total_size_64bit(sizeof(u64)) /* TCA_POLICE_PKTBURST64 */
++		+ nla_total_size(sizeof(u32)) /* TCA_POLICE_RESULT */
++		+ nla_total_size(sizeof(u32)); /* TCA_POLICE_AVRATE */
++}
++
+ MODULE_AUTHOR("Alexey Kuznetsov");
+ MODULE_DESCRIPTION("Policing actions");
+ MODULE_LICENSE("GPL");
+@@ -497,6 +508,7 @@ static struct tc_action_ops act_police_ops = {
+ 	.dump		=	tcf_police_dump,
+ 	.init		=	tcf_police_init,
+ 	.cleanup	=	tcf_police_cleanup,
++	.get_fill_size	=	tcf_police_get_fill_size,
+ 	.offload_act_setup =	tcf_police_offload_act_setup,
+ 	.size		=	sizeof(struct tcf_police),
+ };
+diff --git a/net/sched/act_sample.c b/net/sched/act_sample.c
+index 2ceb4d141b71..44319a159b55 100644
+--- a/net/sched/act_sample.c
++++ b/net/sched/act_sample.c
+@@ -315,6 +315,14 @@ static int tcf_sample_offload_act_setup(struct tc_action *act, void *entry_data,
+ 	return 0;
+ }
+ 
++static size_t tcf_sample_get_fill_size(const struct tc_action *act)
++{
++	return nla_total_size(sizeof(struct tc_sample)) /* TCA_SAMPLE_PARMS */
++		+ nla_total_size(sizeof(u32)) /* TCA_SAMPLE_RATE */
++		+ nla_total_size(sizeof(u32)) /* TCA_SAMPLE_TRUNC_SIZE */
++		+ nla_total_size(sizeof(u32)); /* TCA_SAMPLE_PSAMPLE_GROUP */
++}
++
+ static struct tc_action_ops act_sample_ops = {
+ 	.kind	  = "sample",
+ 	.id	  = TCA_ID_SAMPLE,
+@@ -324,6 +332,7 @@ static struct tc_action_ops act_sample_ops = {
+ 	.dump	  = tcf_sample_dump,
+ 	.init	  = tcf_sample_init,
+ 	.cleanup  = tcf_sample_cleanup,
++	.get_fill_size = tcf_sample_get_fill_size,
+ 	.get_psample_group = tcf_sample_get_group,
+ 	.offload_act_setup    = tcf_sample_offload_act_setup,
+ 	.size	  = sizeof(struct tcf_sample),
+diff --git a/net/sched/act_tunnel_key.c b/net/sched/act_tunnel_key.c
+index b14807761d82..ff401ace4f3d 100644
+--- a/net/sched/act_tunnel_key.c
++++ b/net/sched/act_tunnel_key.c
+@@ -835,6 +835,85 @@ static int tcf_tunnel_key_offload_act_setup(struct tc_action *act,
+ 	return 0;
+ }
+ 
++static size_t
++tunnel_key_geneve_opts_fill_size(const struct ip_tunnel_info *info)
++{
++	const u8 *src = ip_tunnel_info_opts(info);
++	int len = info->options_len;
++	size_t size = 0;
++
++	while (len > 0) {
++		const struct geneve_opt *opt = (const struct geneve_opt *)src;
++
++		/* TCA_TUNNEL_KEY_ENC_OPT_GENEVE_{CLASS,TYPE,DATA} */
++		size += nla_total_size(2)
++			+ nla_total_size(1)
++			+ nla_total_size(opt->length * 4);
++
++		len -= sizeof(struct geneve_opt) + opt->length * 4;
++		src += sizeof(struct geneve_opt) + opt->length * 4;
++	}
++
++	return size;
++}
++
++static size_t tunnel_key_opts_fill_size(const struct ip_tunnel_info *info)
++{
++	size_t size;
++
++	if (!info->options_len)
++		return 0;
++
++	/* TCA_TUNNEL_KEY_ENC_OPTS and the per-protocol nest inside it */
++	size = nla_total_size(0) + nla_total_size(0);
++
++	if (test_bit(IP_TUNNEL_GENEVE_OPT_BIT, info->key.tun_flags)) {
++		size += tunnel_key_geneve_opts_fill_size(info);
++	} else if (test_bit(IP_TUNNEL_VXLAN_OPT_BIT, info->key.tun_flags)) {
++		/* TCA_TUNNEL_KEY_ENC_OPT_VXLAN_GBP */
++		size += nla_total_size(sizeof(u32));
++	} else if (test_bit(IP_TUNNEL_ERSPAN_OPT_BIT, info->key.tun_flags)) {
++		/* TCA_TUNNEL_KEY_ENC_OPT_ERSPAN_{VER,INDEX,DIR,HWID} */
++		size += nla_total_size(sizeof(u8))
++			+ nla_total_size(sizeof(__be32))
++			+ nla_total_size(sizeof(u8))
++			+ nla_total_size(sizeof(u8));
++	}
++
++	return size;
++}
++
++static size_t tunnel_key_get_fill_size(const struct tc_action *act)
++{
++	struct tcf_tunnel_key *t = to_tunnel_key(act);
++	const struct tcf_tunnel_key_params *params;
++	/* TCA_TUNNEL_KEY_PARMS */
++	size_t size = nla_total_size(sizeof(struct tc_tunnel_key));
++
++	rcu_read_lock();
++	params = rcu_dereference(t->params);
++	if (params->tcft_action == TCA_TUNNEL_KEY_ACT_SET) {
++		const struct ip_tunnel_info *info =
++			&params->tcft_enc_metadata->u.tun_info;
++
++		/* In dump order: TCA_TUNNEL_KEY_ENC_KEY_ID, the IPv6 address
++		 * pair (larger than the IPv4 one), ..._ENC_DST_PORT,
++		 * ..._NO_CSUM, ..._NO_FRAG, the options and ..._ENC_{TOS,TTL}.
++		 */
++		size += nla_total_size(sizeof(__be32))
++			+ 2 * nla_total_size(sizeof(struct in6_addr))
++			+ nla_total_size(sizeof(__be16))
++			+ nla_total_size(sizeof(u8))
++			+ nla_total_size(0)
++			+ tunnel_key_opts_fill_size(info)
++			+ nla_total_size(sizeof(u8))
++			+ nla_total_size(sizeof(u8));
++	}
++	rcu_read_unlock();
++
++	return size;
++}
++
+ static struct tc_action_ops act_tunnel_key_ops = {
+ 	.kind		=	"tunnel_key",
+ 	.id		=	TCA_ID_TUNNEL_KEY,
+@@ -843,6 +922,7 @@ static struct tc_action_ops act_tunnel_key_ops = {
+ 	.dump		=	tunnel_key_dump,
+ 	.init		=	tunnel_key_init,
+ 	.cleanup	=	tunnel_key_release,
++	.get_fill_size	=	tunnel_key_get_fill_size,
+ 	.offload_act_setup =	tcf_tunnel_key_offload_act_setup,
+ 	.size		=	sizeof(struct tcf_tunnel_key),
+ };
+-- 
+2.55.0
+
