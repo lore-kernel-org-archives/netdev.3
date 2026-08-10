@@ -1,60 +1,62 @@
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3915A439F78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08560439F8A
 	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 18:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786387676; cv=none; b=jZLxhI4FzaWamwVIzfsnk2L8C/AW+PlbBS0TTutySyeYtOFCfsYI3HqVcd8LXIogxBdGej8M8vFGi/aVlWayNCIzf5EDd6Z5ZAxzia4T/FRTN/GruQTymuzwzlhpwK3ZExpBEg5yeBoDdfZgwMDpx5YAxa8dnb+xeNKnD+gjZOk=
+	t=1786387678; cv=none; b=rkbcXL19nwY4EUOtFpqlRElWQm3frN5TQm48PNw3cafFZ/xeXVTqNsKi07HZVFGip5i6mm7M/H+96Dr1SOyRYGfBQ7B2WRF/hIfkHAl9ANmD4fZUfX2TOqJ74Wy037PFIHrmeGuyCkqWfnVNDDICbEwh5FjI1N7UglJXzx/FEbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786387676; c=relaxed/simple;
-	bh=x0QsXYnYa8Y8GiWNms+Noz+9KVQO46lMTo5YQMfvmJ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZqNcIMtwi3EK+fkexg5aT86zVzlnhcc9On3KOa1Bjbc/xuA3lfv5cRiiOoo3EilEhZaMOHZPXWI/qdiEx+MIv6R+/UUDEVAIW8tqoNatFdkFLymX4ZdIeNFF8ZfIiTC3bQXyLst5HgrnO9eCoV3dr4gCcfP8HjyAa0HmdCVqtD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/9BWBF4; arc=none smtp.client-ip=74.125.228.1
+	s=arc-20240116; t=1786387678; c=relaxed/simple;
+	bh=rWuyKW0qJTLaz8U9Q47FHhUR/2b+JV9Wuz0CfR5JtWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LYaGoqJ1NdQrE2fkET2pkfoOoMJP9HyLJww9H4DHj0zTAyLATANDRvipdIBHTB11fG9QWm/wko3iyBaH/K+AtWdx6wrBCmWPjMwXe85rhue2XeAc1qx2pF/jFCKQJ3Gg0X6Q2zdx3tob36YsKjYEunSUfNfQbcLFxDOviWHo30w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kq/ve03q; arc=none smtp.client-ip=74.125.227.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/9BWBF4"
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca034c989e2so1225628a12.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kq/ve03q"
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-38dbe53179bso801058a91.0
         for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 11:47:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786387674; x=1786992474; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/bAxJNp2NmtcJDSfK/A8JjF0qJRtyo/oUMnpIAtF1l8=;
-        b=e/9BWBF4ZeTaqLUqsEBNK4tfCva1JyzfOeJ8VCbeRT2eVn88TiLrqMY3lFT6fGDjvf
-         ZUGumvmG8t56mlRr5M7Qu/Yb45SxpQIqm9wKdFRaB5W0UrSyahKIuucm2nSVvgDhu5DC
-         +2VoNpdgCSBf/BsDeek3mdvTLFN3ozpFpFz8jFk4/eu3lLshlmukGxPBQkhXLrk0e67H
-         GVNM4zPQFYPaquk9yzq5MRvm3Yte+4C2jyAUaxbhZZu+NOHBMdDJy6f00l9bM9Yz+tEv
-         7/O/ygkKvBrld6qw1ITeOS4CY4REWxK+BpfiOSOKlHU4dHfSqWxLYfJ+ZCizztAFvye0
-         RiPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786387674; x=1786992474;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786387675; x=1786992475; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/bAxJNp2NmtcJDSfK/A8JjF0qJRtyo/oUMnpIAtF1l8=;
-        b=h/HJD6XhieUq628JkN4tqxMxGs7SrJAqEuNsuIVgtY09Bv1z3nJFEpLdY88osIl3Uj
-         hU2qOlihDWLQsbvevoGGQ5DdrPjUkjIf1F4FlkxsKGZKlxiSK2SrrPPxpT4GYdbdpMB8
-         crejzOiYzNMokLg04FCI453U0Bl6rDWMx81xCAgWF3yYmy2kBb+o93Xy+Dq3tz/dnS3s
-         kTlPjt/3EzXMEdo3AmPmvQDucveBXDn4g65SaBcTykmF3A8GHt6qBvFUoFKLr/ZWTuYZ
-         PukdhgJ3eP6otx+Ag/cRlrtGEXGqSfYtjfSBvNA7VPALib9O+nt3bOJi1ddK0UFomTOn
-         lr9w==
-X-Gm-Message-State: AOJu0Yw9uX3WokQn/xKzqU0ccYleltD+3zc6Qj8cP0ASKz6gMCCDT2dK
-	Ny9lWpt0cvvC9oZ8oWHhEiF8U3aw+7Ad1Kmd2d24CCsvtIh/sh6X8K2mL7GELdfU
-X-Gm-Gg: AR+sD11gH16NU4r7EEkgF+Ba3Kfw0BnMi5R4G+WeeXuUrrd39Fp1vDgtHVOwL5jKfg/
-	84GRI7s/Hxb8tSQ5ITXVhMeERx9efnrpxZz7wg6T22sJSCm8ZkEC75b+xPX1eUBe9hFwCiuKFop
-	9NhKK+BlAIbgIyFjXKzNrvb5uIJETwnjgAihz3U2fT+C3uTL5MqW1H7UZIzzlTwBVUGQoRs0/cz
-	mp7mtdxRqVZTAii9L/PlVOtDq/kLuwvS3T1NmTg25HyFd2tRX1TVMhsgjJ4/BREV3t1QzFjo+LQ
-	JQ5Y2hXd8ZMzJmNCEg3iURAJl6QCcpmvf4AtBfHGFGwlCrb676o8ryOo/Sby9aL3E7FHXPdtZC7
-	KqNjdejh7gEp4QlGPnBGI7NVsJHrLQihJ9HBzRQzcwEwsEGXGKSoz6mdjJJeyZbZZRCqC+/Bb1p
-	sZMhNZUTvuP5jqlMMzn2OUUlRDgF4tRC4g+6qOVGTdZ4yoQUQSQk/3sg==
-X-Received: by 2002:a05:6a00:3987:b0:837:e9cc:d46e with SMTP id d2e1a72fcca58-84f9c965aacmr3341745b3a.21.1786387674437;
-        Mon, 10 Aug 2026 11:47:54 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:72::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f5a51d88dsm4244979b3a.29.2026.08.10.11.47.53
+        bh=k/Ax58T4Q8crjfyLzO+c1sFhNTHsEbLvFPcefzRdh9g=;
+        b=Kq/ve03qzmFnoMRnaL8Ei9J6t/Zycq8s2QZ7Qknc64MryfT5AsuShhuIT6lmF+tL/r
+         zp4QsbNaxGE1h7IgdVXqUhaQkNkO2f4v/L3klsGABGwEaa3CXMr0uDpIv6CHcyQs96QZ
+         2pxB+7shYnB1vjNPyGdjKSyyy/+KenV81MQjsgybVgSqc5yMR3K2OQAT4JPTjmn8eGqV
+         e3Edgm33+0BezzYp7tukLPRRGcUi9G9AOH7nu3zU5D7byzl1f9L3dn/IYmXhU6fXzpH2
+         2icpGaPZu2iJl3+25Bz0QdLkqhII2ngFv1r65RP/hJ7ZMrKlmG/ZKYGTK8KjHFca+azY
+         iksQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786387675; x=1786992475;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=k/Ax58T4Q8crjfyLzO+c1sFhNTHsEbLvFPcefzRdh9g=;
+        b=J2npfZZIZUbXwUqdYjMggh4HHCI+1uxf4Jx9cj87fdKlMeX5TINyn3zpv44XwnllIl
+         AjabEYgmsCf1LW4KfqunBprCrSpreP8JxU298Eo8lKDWUBQIzqoKQ5XUOT6WDif/UoTS
+         8UqC00uyrydhN8sftYiCGUxuIhH6BzZm/lOEuoLN3T7dDMH/osoYLUerGjz8UMFvAyXn
+         dLnDQTbWnyKkJE2XKaQpMK58zpszED1khJHGI7A1/4r3NZ8Omv3nT/3/8t74eZIQU5TT
+         tyxmbK2c9EUNvrMZD24wCIhxizfJGV5a49OH2MEK4NZsZy/hyi61NvtEFIQEVmYA3En4
+         jb/Q==
+X-Gm-Message-State: AOJu0YzkJYs8TrfFv7lKBwvQ+lySrIMmltHfBRZBKKzeEY8cgqkgqiGc
+	HQ7VNbsil75OihBNoYUEYS9xh71eTWnrBJ+4WSTakOQowx2g6YTkbb9c0ylnfoal
+X-Gm-Gg: AR+sD119RN9f9AirVCVpJhpwskjaCcoXbeImc6E+uwiO4bkonaJBhuQBqg7/kQNcEag
+	AjrX2ymdG2gdcIgPVxAEv3bDHj1+rc2M0rmSCUSmVBeDMJmY4PTCsaEGOE0cXFBauAuZccoq+LU
+	WJ+4Wv7auZ6El139tNk8hsfKg1YqKjx+IRJs2KDMc4CwR9E77OO0BDvdTj54bfPD4mGKxBdJkqs
+	xhu+78peED9Y5+eWK5+dvumtktG0cXp5hUmgC+uYSNec5gwszX9RyioDKcjxthSn7b3lwJJ3OgY
+	4iQ9FbgbQL2KuTwhUbNQj23Q58jZs1797+X/kSmkJO2Ph/7R9m1QapQ5kYaiUxYULoZI8V/O1cd
+	z0NhA5PkzLe0NHEoshy+HEOTCcQbTL6S3ZeSARpi5cgaEVe2mDUz15ZOo02HR6clJ/yXr/R2Lnn
+	6NFf8R0+pyCz1alp6savhq3F5nP4f5EUF/R1TfxNoqU6DUVGz9+85ja8nCIRJvGxYc
+X-Received: by 2002:a17:90b:1807:b0:38e:6dd:a9ad with SMTP id 98e67ed59e1d1-39281b1b0c8mr20842462a91.0.1786387675358;
+        Mon, 10 Aug 2026 11:47:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:48::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392d5226b40sm611653a91.13.2026.08.10.11.47.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 11:47:54 -0700 (PDT)
+        Mon, 10 Aug 2026 11:47:55 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -93,10 +95,12 @@ Cc: davem@davemloft.net,
 	linux-arm-kernel@lists.infradead.org,
 	bpf@vger.kernel.org,
 	leon@kernel.org
-Subject: [PATCH net-next 0/3] xsk: pre-existing AF_XDP TX metadata fixes from Sashiko
-Date: Mon, 10 Aug 2026 11:47:50 -0700
-Message-ID: <20260810184753.135756-1-sdf@fomichev.me>
+Subject: [PATCH net-next 1/3] xsk: align TX metadata layout across ABIs
+Date: Mon, 10 Aug 2026 11:47:51 -0700
+Message-ID: <20260810184753.135756-2-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260810184753.135756-1-sdf@fomichev.me>
+References: <20260810184753.135756-1-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -105,24 +109,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A few fixes to address pre-existing issues from Sashiko review.
+Add explicit padding before launch_time so xsk_tx_metadata has the same
+layout on 32-bit and 64-bit systems. This intentionally replaces the
+incompatible 32-bit launch-time layout while the interface is still new.
 
-Stanislav Fomichev (3):
-  xsk: align TX metadata layout across ABIs
-  xsk: honor XDP_TX_METADATA in zero-copy path
-  net: stmmac: skip queueMaxSDU check for AF_XDP
+Fixes: ca4419f15abd ("xsk: Add launch time hardware offload support to XDP Tx metadata")
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+---
+ include/uapi/linux/if_xdp.h       | 1 +
+ tools/include/uapi/linux/if_xdp.h | 1 +
+ 2 files changed, 2 insertions(+)
 
- drivers/net/ethernet/intel/igc/igc_main.c     |  3 ++-
- .../ethernet/mellanox/mlx5/core/en/xsk/tx.c   |  2 +-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 10 ++-------
- include/net/libeth/xsk.h                      |  2 +-
- include/net/xdp_sock_drv.h                    | 22 +++++++++++--------
- include/net/xsk_buff_pool.h                   |  3 ++-
- include/uapi/linux/if_xdp.h                   |  1 +
- net/xdp/xsk_buff_pool.c                       |  7 ++++--
- tools/include/uapi/linux/if_xdp.h             |  1 +
- 9 files changed, 28 insertions(+), 23 deletions(-)
-
+diff --git a/include/uapi/linux/if_xdp.h b/include/uapi/linux/if_xdp.h
+index 23a062781468..50d67df78911 100644
+--- a/include/uapi/linux/if_xdp.h
++++ b/include/uapi/linux/if_xdp.h
+@@ -149,6 +149,7 @@ struct xsk_tx_metadata {
+ 			__u16 csum_start;
+ 			/* Offset from csum_start where checksum should be stored. */
+ 			__u16 csum_offset;
++			__u32 reserved;
+ 
+ 			/* XDP_TXMD_FLAGS_LAUNCH_TIME */
+ 			/* Launch time in nanosecond against the PTP HW Clock */
+diff --git a/tools/include/uapi/linux/if_xdp.h b/tools/include/uapi/linux/if_xdp.h
+index 23a062781468..50d67df78911 100644
+--- a/tools/include/uapi/linux/if_xdp.h
++++ b/tools/include/uapi/linux/if_xdp.h
+@@ -149,6 +149,7 @@ struct xsk_tx_metadata {
+ 			__u16 csum_start;
+ 			/* Offset from csum_start where checksum should be stored. */
+ 			__u16 csum_offset;
++			__u32 reserved;
+ 
+ 			/* XDP_TXMD_FLAGS_LAUNCH_TIME */
+ 			/* Launch time in nanosecond against the PTP HW Clock */
 -- 
 2.53.0-Meta
 
