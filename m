@@ -1,116 +1,100 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E7637CD5A
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 20:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8EE3644CA;
+	Mon, 10 Aug 2026 20:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786392748; cv=none; b=IVaR+ekSbRzvCQFWKmf9zIT2Ua4moEITTmJGos/U7SKxImNUY1wlPwabUc5BrmC7QZhiiDl69aAWwyJqaIjb+lwvjEtnyelqR510cH9ojDNje1QkxsOBEda+als5KUATeoLTO52GmXBdi0WaHVbHCcAmDFItnKcPT6kuCUStw5Y=
+	t=1786393865; cv=none; b=f4RUbF+5G3Z5vmglmvv5RUBVibnIl6vMs4lviAln9iLJHJhDsg1eE0uR4DK3+qyuWaBlrr+crT00QTj4eNlBj14rGIPzASEP1mcx9s7IS/zr0wUuh7PMMPIJTo3M7RTfG87v87ra9cwg1ie9HWUYzYS7Cr0Nb7EXQ2kkDf1mvoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786392748; c=relaxed/simple;
-	bh=j15p9kqnLsoZnkKuv4K6BS9p5IaOdB8PIeHyQYw3k4I=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qHuLgf5OJGNpT+mWwByM4DsfbMX/W6x88YcY/SBS48O/HX7zmfFYwwjzKIusajd8MYDdbRPEuNhE9VhGqGrKL+6wZR+yC1Y/GVNWcxB0MZ7Vd4J3rhIbOeS/IgkSGdSDVrdcsmyapXA9gY3j9ZIn7hbO4GbKQCITcBIe02FXXvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qxt20KpL; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	s=arc-20240116; t=1786393865; c=relaxed/simple;
+	bh=eLqJZVsbNMVPw4Su568i8+DFgZWbxMdi1OgK7MAYdfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tlfXKXjMvMFCgcs8CAkRWQG+QhtiuTxal9Ov7onUnbUAPBawU0qK4DFnJg9ddSe/HrZIlcOAH9+riusVLOynnHNMTydxP82toX7fOVFMuKLQBnq6RXM7h9G4X7z24oC35imRHFUUw3/SaUDpto/TY7qv6NpSRSlf1Ue31k45QHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ieOBzgUY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qxt20KpL"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb4bd11ddf8so2846181a12.3
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 13:12:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786392746; x=1786997546; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EI/HoHClRGKxnybzwHOOhYmWsnX7Q/D3wFeZtFxK35I=;
-        b=Qxt20KpLvRSV8RBeTQVCTJohDUQ1zTXGpCa0RrAgHg0Yv7zORu+uh0sUCO5K7nPxO9
-         rHu+Cx+EcIXFWbTFwy8bGmjIIZNR/hCXIbpv14pECUKPlBlpYF3EJ6bu/BAtIGWS0qAT
-         AexeDYBRK0FToOw0V9gE5yPnMwbcD8fF+NVy1432Hzzff75SyzABER8xaEbjCExHpmWA
-         u3uw3pdJDMxXsR53qYBsbWEc9cO4YLvd3Po3zM5ZgZnUGWGCIyNV6GR0gpvr1jeesnbp
-         tOJvDiFAVipuBYHJ41m24fUNERuOmMMGWiLZEOIcUWk0Wc9xAzZD07Ha+niKYV8TF5B7
-         9aHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786392746; x=1786997546;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EI/HoHClRGKxnybzwHOOhYmWsnX7Q/D3wFeZtFxK35I=;
-        b=GG5F7zcisOUdMgfGV20A6GOQxal3OhDh5RsAP0aKJxHf0cbZI6P3gfwMyz3gs/pHgK
-         X71Um7M1k83AUYf0VISVl3RyAm0/oH1sXw7375WouFJgQOQM9hMIL8gxwo8QMepcDC2c
-         q/lQnR7VQSZz3HUr7+HMiV3xrbheEO/XnA90B63GBQMJLGn2XSCzon3R2r8jFyfWFN6B
-         Cnz+AfrG6NQ5dgij9OX1YDTvzmUyt5MWMjXNyJf+53fnixdukL/VjcLj9GheO9YRrIab
-         Rm/zI2MY63XIVUFu/PjlpBTkj7bvKAFNJYkuUvFjcNAH6UmD5vsjlB+kHszetq3nE4i6
-         gj3w==
-X-Gm-Message-State: AOJu0YzZNoISxMVzZKUMoSBUUIfPmxnVzLaV2uiX2WN5op51r6FdCrWW
-	p7u6msoW2B9o83l9PGJVMf+bp1E9ZSpam1md1L5Q0UKFlUDACml9bGVxAPGPiz0IrRpg8ssfuBS
-	RkYOu/y1iZE3+OfhOaObZfxGvF4MTXVCN9FCOPrmMaSVAtNhGqHyX3MNz0jrj5cnKdCIRdZ7WYd
-	OcGTwRiSWkrRdHAbOdiE7w7S0TRQKVj7n8E+Izcs/6b43NGdXrKlJzF9vSM5Q4Wbk=
-X-Received: from dled12-n2.prod.google.com ([2002:a05:701b:42cc:20b0:13b:9ad0:582f])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:4d8c:b0:3b4:75c0:3ec0 with SMTP id adf61e73a8af0-3cbce94fef7mr25905237637.30.1786392745845;
- Mon, 10 Aug 2026 13:12:25 -0700 (PDT)
-Date: Mon, 10 Aug 2026 20:11:48 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ieOBzgUY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBC51F000E9;
+	Mon, 10 Aug 2026 20:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786393864;
+	bh=fLLSPUGa7hV6YByxrdNAEWzwRgQO1sw+rDyrjIKtFLs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ieOBzgUYuWoNWkYd7DOsKs+HHMy0KapEeBI/s9CmQtWECqTcIyBbkTjF3E/3jc3xo
+	 wTUkJ7DIZjqdkJZhr2YcXFVUiemUvuC4bUpTEErJco4+wkcsZmBNNm4GGcQ96CjpTh
+	 LzkgxXfWPunEG/6/Od6nTULp5N6xg9L3IzqnYBTSglPX4UU+J0f+RNxH46cHi09Npy
+	 53ncmfHbkrQqLZDJXapJWJNGdF7QRfuhFgPcNoPqV4HM1XDm/UUQ2nFIHuekyIEjGR
+	 Tkt1WNHNijjJi/pQ2oA83txxBwe9qnx4m1MoM+9OMnvRUUGOrIsJ9+RJoLXyEuY96w
+	 nvjHKMnkqXvNw==
+Date: Mon, 10 Aug 2026 13:31:02 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Cosmin Ratiu <cratiu@nvidia.com>
+Cc: Tariq Toukan <tariqt@nvidia.com>, Patrisious Haddad
+ <phaddad@nvidia.com>, "davem@davemloft.net" <davem@davemloft.net>,
+ "daniel.zahka@gmail.com" <daniel.zahka@gmail.com>, Chris Mi
+ <cmi@nvidia.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
+ <horms@kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "kees@kernel.org" <kees@kernel.org>, Dragos
+ Tatulea <dtatulea@nvidia.com>, Boris Pismenny <borisp@nvidia.com>, Rahul
+ Rameshbabu <rrameshbabu@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>,
+ "leon@kernel.org" <leon@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
+ "shuah@kernel.org" <shuah@kernel.org>, "andrew+netdev@lunn.ch"
+ <andrew+netdev@lunn.ch>, Mark Bloch <mbloch@nvidia.com>, Alex Lazar
+ <alazar@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>, Gal Pressman
+ <gal@nvidia.com>, "sd@queasysnail.net" <sd@queasysnail.net>, Raed Salem
+ <raeds@nvidia.com>, "Jacob.e.keller@intel.com" <Jacob.e.keller@intel.com>,
+ "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "edumazet@google.com" <edumazet@google.com>, Lama Kayal
+ <lkayal@nvidia.com>, "linux-kselftest@vger.kernel.org"
+ <linux-kselftest@vger.kernel.org>, "sdf.kernel@gmail.com"
+ <sdf.kernel@gmail.com>, "doruk@0sec.ai" <doruk@0sec.ai>, "sdf@fomichev.me"
+ <sdf@fomichev.me>, "aleksandr.loktionov@intel.com"
+ <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH net-next V2 13/13] selftests: drv-net: psp: Add a test
+ for PSP with HW-GRO
+Message-ID: <20260810133102.7b406e35@kernel.org>
+In-Reply-To: <35b40fcde5439a9ff50054fa9d264b77307ee103.camel@nvidia.com>
+References: <20260804083535.2946459-1-tariqt@nvidia.com>
+	<20260804083535.2946459-14-tariqt@nvidia.com>
+	<20260807180054.380be9d0@kernel.org>
+	<35b40fcde5439a9ff50054fa9d264b77307ee103.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260810201213.2708375-1-almasrymina@google.com>
-Subject: [PATCH net-next v2] net: devmem: return EMSGSIZE on type mismatch
-From: Mina Almasry <almasrymina@google.com>
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Ralf Lici <ralf@mandelbit.com>, 
-	Will Deacon <will@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Bobby Eshleman <bobbyeshleman@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When a devmem payload mixes with a standard page payload, return
--EMSGSIZE instead of -EFAULT. This enables tcp_sendmsg to seamlessly
-fall back to creating a new segment instead of failing the socket send.
+On Mon, 10 Aug 2026 14:30:19 +0000 Cosmin Ratiu wrote:
+> I'll move the hw gro tests into a dedicated psp_gro.py test for the
+> next version and increase the assertion strength similar to other HW
+> GRO tests.
+> 
+> I found a way to spawn multiple psp_responders to verify cross-stream
+> assembly errors and other weird edge cases.
 
-Fixes: bd61848900bff ("net: devmem: Implement TX path")
-Cc: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
-Signed-off-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+No, please follow how the GRO tests work. Can we not pass 2 Rx
+keys encoded in hex when you spawn the sender, and use AF_PACKET
+to check the geometry of the received data?
 
----
-v2: Sent to net-next instead of net (Jakub). Otherwise no changes.
-v1: https://lore.kernel.org/r/20260801125308.1342897-2-almasrymina@google.com
----
- net/core/datagram.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> In order to avoid duplicating a lot of psp connection management code,
+> I hope it's fine to move shared stuff in a psp_lib.py file (similar to
+> hw/devmem_lib.py). I know you're against frameworkifying stuff, but in
+> this case I think it's a good choice.
+> 
+> All of this will push the series to 15 patches.
 
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index 173b5d97bd409..6f8ffd61bcab4 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -638,7 +638,7 @@ int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
- 	int frag = skb_shinfo(skb)->nr_frags;
- 
- 	if (!skb_frags_readable(skb))
--		return -EFAULT;
-+		return -EMSGSIZE;
- 
- 	while (length && iov_iter_count(from)) {
- 		struct page *head, *last_head = NULL;
-@@ -713,7 +713,7 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
- 	struct net_iov *niov;
- 
- 	if (i && skb_frags_readable(skb))
--		return -EFAULT;
-+		return -EMSGSIZE;
- 
- 	/* Devmem filling works by taking an IOVEC from the user where the
- 	 * iov_addrs are interpreted as an offset in bytes into the dma-buf to
+Try to think 
+what the point of the rule is. It's to keep series small _in order to_
+make incremental progress, in reliable (form process perspective),
+comprehensible chunks.
 
-base-commit: 001b5d347d8ba39b2dccaefcc57967b18caec8fe
--- 
-2.55.0.679.g6767b8d81c-goog
+You could split the first 9 patches out and merge them separately.
+Internal metadata reshuffles and decap may be required for your
+implementations but aren't inherently part of HW-GRO, IMO...
 
+No point keeping the first 9 patches hostage to HW-GRO and ksft work.
