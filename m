@@ -1,319 +1,155 @@
-Received: from mta1.migadu.com (out-10.mta1.migadu.com [95.215.58.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C3237B02D
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898AB3F20E3
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786371390; cv=none; b=akB2DTcXfTR/ez9xEnFXxyLjY5flhOiNg4a0UUvBpW4w3Wg57lmPN5iDc/QjRoj7aqOaGEGv/AbV8i71P90jsqiDhCff/1ZUMB/CJb079y+xjNPInXIoggCkQ1GTDfSb34w5ubWROgCkxLv9N/bwsF7+eCh8y7mWd9AzKWrRcX4=
+	t=1786371530; cv=none; b=sjolHP38AA+gb9hR+VuiNkBIhWgaxwdAijTyI7mFxGwM2ajx+zz7tawsDRQNoOpokDr1nbksLjFeRGSkDuAueEfpqzYfkYQpe01h/R28OfANrMNtwk4Ti99xJlNFXMcpUOq8tiyoZo9GBmvrKsLE+AqGYM1IL73rxgvP4ajNySQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786371390; c=relaxed/simple;
-	bh=biZsx2Bnu9KsJd1BzfwIzSBKMqjNhGlw4cKL10cV89E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQKwInt6CT6v5okDtdo5e6QNOCkyBF+hWr22YmTrrx9QxZHCdXYGr090shS+8Qtfn+AOlZ8tYxbTH2zD6PF6WSABpx83hm+0c4k3+sqvOY1efBSciEeIhnq8g8WGCsvrFlzKXqayUxF41s0oARHhLGr1qke3YqBSlzs5mmCmzP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FWlJgJWT; arc=none smtp.client-ip=95.215.58.10
+	s=arc-20240116; t=1786371530; c=relaxed/simple;
+	bh=sV/xUiJusUADCJH1PKiVs1z2uNzuCmI2B/os38CX5pc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SrihGzKPPl6L/vBbipLzHzJDnp5C1jLF8vSpNgvKIo2VXFbEoFVsSzN61BtLEOIY+9HMGhUjFZA/9i87/U6ogSC/oGxpj3LmP29ervq6fmsJVTUPyM9bJEVE4k3sxjVgxE4cifgnJhlNHQyQXWfFjX1TDpmZRPtHDasKyn8Sc0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j9ZkqE3k; arc=none smtp.client-ip=91.218.175.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FWlJgJWT"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=biZsx2Bnu9KsJd1BzfwIzSBKMqjNhGlw4cKL10cV89E=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786371385; v=1; x=1786976185;
- b=FWlJgJWT3pZBPSjAx/2IHyV5SPmr9BwmvmHv8eB4sz0GbkubtuH/LILhATmpNEbuGgm00mtn
- uMOZl0VS34dX2+sk1uYP3FgzhBp0IjtrZY4HjJc/t9qlt5ydULhcjFiGtSca4uJ7a2tnckDsfGf
- KwJu+ucdttqOVfKjJXQOHXNU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from localhost.localdomain (116.128.244.171)
-	by mta10.migadu.com with ESMTPS id f161e80d93ea2720;
-	Mon, 10 Aug 2026 14:16:25 +0000
-X-Migadu-Scanner: mta10.migadu.com
-Authentication-Results: mta10.migadu.com;
-	none
-From: xuanqiang.luo@linux.dev
-To: netdev@vger.kernel.org,
-	andrew@lunn.ch
-Cc: kuba@kernel.org,
-	richardcochran@gmail.com,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	maxime.chevallier@bootlin.com,
-	luoxuanqiang@kylinos.cn,
-	Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Subject: [PATCH net v5 4/4] net: phy: dp83640: fix per-bus clock lifetime
-Date: Mon, 10 Aug 2026 22:15:11 +0800
-Message-ID: <20260810141511.73204-5-xuanqiang.luo@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260810141511.73204-1-xuanqiang.luo@linux.dev>
-References: <20260810141511.73204-1-xuanqiang.luo@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j9ZkqE3k"
+Message-ID: <9869d26b-1f0e-4b37-8488-5aa763176c2d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1786371526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sV/xUiJusUADCJH1PKiVs1z2uNzuCmI2B/os38CX5pc=;
+	b=j9ZkqE3kG8QWzkUWDHkiEegkByar39EMuZscMhHJESXZFUWR+g6tn3eAfOkxTto92hoaY+
+	16VaBvDIVAwgn7xpJfb1W3PlmJUvFYRMgWasBpZLOf0FpXrWFuxbR/BYGox4UydijgWUQE
+	0tXN8baTQHy+WY71ScXfy+KW55xsrVY=
+Date: Mon, 10 Aug 2026 22:18:24 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH net v4 4/4] net: phy: dp83640: fix per-bus clock lifetime
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, richardcochran@gmail.com,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, maxime.chevallier@bootlin.com,
+ luoxuanqiang@kylinos.cn
+References: <20260807070729.12545-1-xuanqiang.luo@linux.dev>
+ <20260807070729.12545-5-xuanqiang.luo@linux.dev>
+ <58f132b1-74f8-4297-b904-fd4bf18d37c5@lunn.ch>
+ <4f186cfc-7aba-4d3c-8f4e-837b555e9428@linux.dev>
+ <b96bf600-80ca-486e-b96e-af9ff3d55afd@lunn.ch>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: luoxuanqiang <xuanqiang.luo@linux.dev>
+In-Reply-To: <b96bf600-80ca-486e-b96e-af9ff3d55afd@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Hi Andrew,
+在 2026/8/9 23:24, Andrew Lunn 写道:
 
-Commit 42e2a9e11a1d ("net: phy: dp83640: improve phydev and driver
-removal handling") moved per-bus clock cleanup from module exit to the
-remove path. This leaves two lifetime problems.
+>> Thanks. I tried to work through the suggested design, but I am still not
+>> sure I understand how the different lifetime requirements are meant to
+>> fit together.
+>>
+>> The reason v4 uses devm_phy_package_join() is that dp83640_probe() can
+>> return successfully and phy_probe() can fail later. The driver's
+>> .remove() callback is not called on that path, so devres is needed to
+>> release both the per-PHY state and the package reference.
+> You need to be careful with devm_ it can be a footgun. devm_ works
+> best when all resources are devm_. It gets messy when you need to mix
+> devm_ resources with resources which are not devm_.
+>
+> So the rules are, if .probe() fails, the probe needs to cleanup
+> whatever it did, because as you said, .remove is not called.
+>
+>> If I switch to phy_package_join() and release the package explicitly
+>> during driver removal, that failure path will retain the package
+>> reference.
+> It should not, if you correctly undo what you did. So if the first PHY
+> to probe calls phy_package_join(), and creates the shared clock, it
+> needs to destroy the shared clock and do a phy_package_leave() if
+> probe fails. In this situation, when the second PHY probes, it will
+> call phy_package_join(), find that phy_package_init_once() is true,
+> and create the shared clock. Now, i've not audited the phy_package
+> code, it might be broken, and you might need to fix it. probe()
+> failing does not happen to often, so it is not tested well.
+>
+>> I do not see how to pair a phy_package_release_once() helper with package
+>> leave without losing the managed probe unwind. Am I missing an existing
+>> mechanism here?
+> Maybe you actually need a devm_phy_package_init_once() where you pass
+> as a parameter the function to call as the release function.
+>
+> I _think_ that will work, but i don't actually like it. I personally
+> would throw away of the devm_ calls and do the cleanup manually. It is
+> much easier to reason about.
 
-dp83640_clock_get_bus() publishes a newly allocated clock before the
-driver allocates its per-PHY data and registers the PTP clock. If either
-operation fails, no PHY is bound and the remove callback cannot release
-the clock, leaking the clock and the MII bus device reference.
+I agree. In the next version, I will remove the devm_ calls and manage
+the resources explicitly with phy_package_join() and
+phy_package_leave().
 
-The remove path can also free a clock after dropping clock_lock. A
-concurrent probe may already have found the clock under
-phyter_clocks_lock and be waiting for clock_lock, allowing it to acquire
-a freed mutex and access the freed clock.
+If the DP83640 driver's .probe() returns successfully but a later PHY
+core initialization step fails, the current PHY core does not call the
+driver's .remove() callback. This is a generic PHY core rollback issue,
+which I will address separately in a follow-up patch rather than include
+in this series.
 
-Use the PHY package infrastructure for the per-bus clock. PHY packages
-are tracked per MII bus, and the driver uses BROADCAST_ADDR as the
-package key so the DP83640 PHYs on the same bus share the same clock
-storage. Call phy_package_join() during probe and phy_package_leave() on
-probe errors and in remove.
+>> The PHY list is not only used during release. recalibrate() uses it to
+>> enumerate the fully initialized non-chosen PHYs, read their timestamps,
+>> and adjust their clock offsets. The package API does not currently
+>> provide equivalent member enumeration. When you mentioned that all list
+>> manipulation could go away, did you mean only the list handling for the
+>> final member?
+> I did not realise the list was used in other places. So yes, i don't
+> think you need it for create/destroy of the shared clock.
+>
+>> The PTP clock is also tied to clock->chosen rather than to the final
+>> package member. For example, ptp_dp83640_gettime() obtains the PHY device
+>> directly from clock->chosen->phydev and uses it for the subsequent MDIO
+>> accesses.
+> This is wrong. They should be using __phy_package_write() &
+> __phy_package_read() since you are accessing a package resource, not
+> an individual PHY resources.
+>
+>> Should release_once govern only the lifetime of the package-private
+>> storage, or do you expect the PTP clock to remain registered until the
+>> last package member leaves as well?
+> Yes, the clock should be a package resource, so should have the same
+> lifetime as the package.
+>
+I revisited this part. Extending the lifetime of the registered PTP clock
+until the last package member leaves would require broader changes.
 
-Serialize the one-time clock initialization with the package lock because
-phy_package_probe_once() elects an initializer but does not wait for
-initialization to finish.
+The current PTP clock relies on clock->chosen to provide the actual PHY.
+For example, ptp_dp83640_enable() and periodic_output() use
+clock->chosen->phydev for non-broadcast writes that configure the EXTS
+and PEROUT GPIOs.
 
-Fixes: 42e2a9e11a1d ("net: phy: dp83640: improve phydev and driver removal handling")
-Signed-off-by: Xuanqiang Luo <xuanqiang.luo@linux.dev>
----
- drivers/net/phy/dp83640.c | 112 +++++++++-----------------------------
- drivers/ptp/Kconfig       |   1 +
- 2 files changed, 28 insertions(+), 85 deletions(-)
+If the chosen PHY leaves before the last package member while the PTP
+clock remains registered, the driver would need to define the behavior of
+all callbacks after the chosen PHY has left. clock->chosen is also used
+by recalibrate() as the calibration reference, so this is more than a
+change to the register accessors; it requires redefining the hardware
+selection and synchronization semantics.
 
-diff --git a/drivers/net/phy/dp83640.c b/drivers/net/phy/dp83640.c
-index 7aa5cf0a7bb03..6867e7c6f3b7e 100644
---- a/drivers/net/phy/dp83640.c
-+++ b/drivers/net/phy/dp83640.c
-@@ -21,6 +21,7 @@
- #include <linux/ptp_clock_kernel.h>
- 
- #include "dp83640_reg.h"
-+#include "phylib.h"
- 
- #define DP83640_PHY_ID	0x20005ce1
- #define PAGESEL		0x13
-@@ -128,10 +129,6 @@ struct dp83640_private {
- };
- 
- struct dp83640_clock {
--	/* keeps the instance in the 'phyter_clocks' list */
--	struct list_head list;
--	/* we create one clock instance per MII bus */
--	struct mii_bus *bus;
- 	/* protects extended registers from concurrent access */
- 	struct mutex extreg_lock;
- 	/* remembers which page was last selected */
-@@ -208,10 +205,6 @@ static void dp83640_gpio_defaults(struct ptp_pin_desc *pd)
- 	}
- }
- 
--/* a list of clocks and a mutex to protect it */
--static LIST_HEAD(phyter_clocks);
--static DEFINE_MUTEX(phyter_clocks_lock);
--
- static void rx_timestamp_work(struct work_struct *work);
- 
- /* extended register access functions */
-@@ -955,10 +948,8 @@ static void decode_status_frame(struct dp83640_private *dp83640,
- 	}
- }
- 
--static void dp83640_clock_init(struct dp83640_clock *clock, struct mii_bus *bus)
-+static void dp83640_clock_init(struct dp83640_clock *clock)
- {
--	INIT_LIST_HEAD(&clock->list);
--	clock->bus = bus;
- 	mutex_init(&clock->extreg_lock);
- 	mutex_init(&clock->clock_lock);
- 	INIT_LIST_HEAD(&clock->phylist);
-@@ -982,10 +973,6 @@ static void dp83640_clock_init(struct dp83640_clock *clock, struct mii_bus *bus)
- 	clock->caps.verify	= ptp_dp83640_verify;
- 	/* Initialize the runtime pin configuration from gpio_tab. */
- 	dp83640_gpio_defaults(clock->caps.pin_config);
--	/*
--	 * Get a reference to this bus instance.
--	 */
--	get_device(&bus->dev);
- }
- 
- static int choose_this_phy(struct dp83640_clock *clock,
-@@ -1000,51 +987,6 @@ static int choose_this_phy(struct dp83640_clock *clock,
- 	return 0;
- }
- 
--static struct dp83640_clock *dp83640_clock_get(struct dp83640_clock *clock)
--{
--	if (clock)
--		mutex_lock(&clock->clock_lock);
--	return clock;
--}
--
--/*
-- * Look up and lock a clock by bus instance.
-- * If there is no clock for this bus, then create it first.
-- */
--static struct dp83640_clock *dp83640_clock_get_bus(struct mii_bus *bus)
--{
--	struct dp83640_clock *clock = NULL, *tmp;
--	struct list_head *this;
--
--	mutex_lock(&phyter_clocks_lock);
--
--	list_for_each(this, &phyter_clocks) {
--		tmp = list_entry(this, struct dp83640_clock, list);
--		if (tmp->bus == bus) {
--			clock = tmp;
--			break;
--		}
--	}
--	if (clock)
--		goto out;
--
--	clock = kzalloc_obj(struct dp83640_clock);
--	if (!clock)
--		goto out;
--
--	dp83640_clock_init(clock, bus);
--	list_add_tail(&clock->list, &phyter_clocks);
--out:
--	mutex_unlock(&phyter_clocks_lock);
--
--	return dp83640_clock_get(clock);
--}
--
--static void dp83640_clock_put(struct dp83640_clock *clock)
--{
--	mutex_unlock(&clock->clock_lock);
--}
--
- static int dp83640_soft_reset(struct phy_device *phydev)
- {
- 	int ret;
-@@ -1394,20 +1336,31 @@ static int dp83640_ts_info(struct mii_timestamper *mii_ts,
- 
- static int dp83640_probe(struct phy_device *phydev)
- {
--	struct dp83640_clock *clock;
- 	struct dp83640_private *dp83640;
--	int err = -ENOMEM, i;
-+	struct dp83640_clock *clock;
-+	int err, i;
- 
- 	if (phydev->mdio.addr == BROADCAST_ADDR)
- 		return 0;
- 
--	clock = dp83640_clock_get_bus(phydev->mdio.bus);
--	if (!clock)
--		goto no_clock;
-+	err = phy_package_join(phydev, BROADCAST_ADDR, sizeof(*clock));
-+	if (err)
-+		return err;
-+
-+	clock = phy_package_get_priv(phydev);
-+	/* Ensure other PHY probes wait for shared clock initialization. */
-+	phy_package_lock(phydev);
-+	if (phy_package_probe_once(phydev))
-+		dp83640_clock_init(clock);
-+	phy_package_unlock(phydev);
-+
-+	mutex_lock(&clock->clock_lock);
- 
- 	dp83640 = kzalloc_obj(struct dp83640_private);
--	if (!dp83640)
-+	if (!dp83640) {
-+		err = -ENOMEM;
- 		goto no_memory;
-+	}
- 
- 	dp83640->phydev = phydev;
- 	dp83640->mii_ts.rxtstamp = dp83640_rxtstamp;
-@@ -1444,7 +1397,8 @@ static int dp83640_probe(struct phy_device *phydev)
- 	} else
- 		list_add_tail(&dp83640->list, &clock->phylist);
- 
--	dp83640_clock_put(clock);
-+	mutex_unlock(&clock->clock_lock);
-+
- 	return 0;
- 
- no_register:
-@@ -1455,8 +1409,8 @@ static int dp83640_probe(struct phy_device *phydev)
- 	phydev->priv = NULL;
- 	kfree(dp83640);
- no_memory:
--	dp83640_clock_put(clock);
--no_clock:
-+	mutex_unlock(&clock->clock_lock);
-+	phy_package_leave(phydev);
- 	return err;
- }
- 
-@@ -1465,7 +1419,6 @@ static void dp83640_remove(struct phy_device *phydev)
- 	struct dp83640_clock *clock;
- 	struct list_head *this, *next;
- 	struct dp83640_private *tmp, *dp83640 = phydev->priv;
--	bool remove_clock = false;
- 
- 	if (phydev->mdio.addr == BROADCAST_ADDR)
- 		return;
-@@ -1478,7 +1431,8 @@ static void dp83640_remove(struct phy_device *phydev)
- 	skb_queue_purge(&dp83640->rx_queue);
- 	skb_queue_purge(&dp83640->tx_queue);
- 
--	clock = dp83640_clock_get(dp83640->clock);
-+	clock = dp83640->clock;
-+	mutex_lock(&clock->clock_lock);
- 
- 	if (dp83640 == clock->chosen) {
- 		ptp_clock_unregister(clock->ptp_clock);
-@@ -1493,22 +1447,10 @@ static void dp83640_remove(struct phy_device *phydev)
- 		}
- 	}
- 
--	if (!clock->chosen && list_empty(&clock->phylist))
--		remove_clock = true;
--
--	dp83640_clock_put(clock);
-+	mutex_unlock(&clock->clock_lock);
- 	kfree(dp83640);
- 
--	if (remove_clock) {
--		mutex_lock(&phyter_clocks_lock);
--		list_del(&clock->list);
--		mutex_unlock(&phyter_clocks_lock);
--
--		mutex_destroy(&clock->extreg_lock);
--		mutex_destroy(&clock->clock_lock);
--		put_device(&clock->bus->dev);
--		kfree(clock);
--	}
-+	phy_package_leave(phydev);
- }
- 
- static struct phy_driver dp83640_driver[] = {
-diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig
-index b93640ca08b72..feb50f8cc406a 100644
---- a/drivers/ptp/Kconfig
-+++ b/drivers/ptp/Kconfig
-@@ -78,6 +78,7 @@ config DP83640_PHY
- 	depends on PHYLIB
- 	depends on PTP_1588_CLOCK
- 	select CRC32
-+	select PHY_PACKAGE
- 	help
- 	  Supports the DP83640 PHYTER with IEEE 1588 features.
- 
--- 
-2.43.0
+Given the additional scope, would it be acceptable to retain the existing
+MDIO access paths and keep the PTP clock lifetime tied to the chosen PHY,
+rather than keep it registered until the last package member leaves?
+
+That would introduce the PHY package only to manage the lifetime of the
+shared struct dp83640_clock. This would keep the change focused on the two
+lifetime bugs described in the commit message.
+
+I've sent v5 with these changes.
+
+Thanks,
+Xuanqiang
 
