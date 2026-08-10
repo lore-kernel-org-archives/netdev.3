@@ -1,47 +1,47 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021108.outbound.protection.outlook.com [52.101.125.108])
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021113.outbound.protection.outlook.com [52.101.125.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA872430302;
-	Mon, 10 Aug 2026 16:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F9E42C4F3;
+	Mon, 10 Aug 2026 16:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.113
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786380721; cv=fail; b=o97HMBUNlWy4ocBQOjmP5dH1HqoAoOkHrDT71OipMXU6XNmI41wVs9x36eQNPG6Tud2y+JgB8J+MIP63rpo/Pg9/RZjb1FVGxiBSUnnYTROwoIcuJhrEerjLry6NYpBLj/i4Og8YfqztGMuqKVo/CVF6p+qYlXfnLRoZV1gaiqc=
+	t=1786380721; cv=fail; b=JBn/DlfZnyL5aEd/y27qfKmGhiavywkXRcFY6gvNCtnGCGm9MVXlwK9fmikRxCq99MOsV9B1lusmIY4ggxJVXCawiLr2WpeD/tn7hMx9+3Z5VNX+1v6xyfjPRhOgdV7NsoJ3B6HmMhpl6Mq2Mf6mIzqaiLDoIfObv1pzbrInPmw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786380721; c=relaxed/simple;
-	bh=oDUF+fpP+SBxcoaeoTCs0rE7V+AEjm0uy0WfmCpjsPg=;
+	bh=0CrQv01CmptK0tXHhyjzoZ2LXem1si2q+3iArIzCef4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q+5J5jQQIjSINOCN6zTIRb5shtbuSn7G+yRiYlRLrqZbxRh612D01h9SH0E9BVbSOy+DldY8fSbP/+sHjxXuGQjKSzZ8nhjWCf9imtdZOd5fBZe4qAgKNal+F3ltBEOSqjdhc+48eq+cL9ns6tWdgcAjMLOOw+QsaGal/60AGyA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=kWm+Tt3h; arc=fail smtp.client-ip=52.101.125.108
+	 Content-Type:MIME-Version; b=rZOzs9JTNmVmrG2Nf0+jPgm6vzBsYl7rT6PgpLytbvl2woHizYc9XiOU/XQ205dWYjsRFaRwi5DdXIeRoHZ6d6lU+2e/oA0pNeJGEpY+jNsOvxm/BcNwkAqCEccizC2SaO0iP5wjwi1mG7Uj8WKwAucW0ze+evuarfyLqhkF03s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=f3HXxnRF; arc=fail smtp.client-ip=52.101.125.113
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="kWm+Tt3h"
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="f3HXxnRF"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A7sKXPanU2Y/OxmIwY/IR0zaSS0LDbEN5inZwM5YTfKxVDLWCC/Y9LMfvB5SCn8z8Zuda5V/rWLG9wnT1A2lQyU7GGcASe3m8yAK+XSAbamN9pe2XuHhVaaL6lqiIeoo9XZqr9dZ53i80GMxTxVpI3vU3xcphh9+Vz0ykxQd7mqkAwPwhl4PP8DdV5v+3h4VHO8sJU52huoiwkvYK959tsLlNHuBOdoaTTOcIC0w19KSgeN1DtU3x8g/SZKnyfzUlTDbgewMhDTSs/1XLgbyaAahpy2PVxfPTXtIqgS8DzymoKBjqE91rSog52EgQllqMUDNS6rT1erJrp3Rk77VNg==
+ b=syZIhblXLirA2TOEZ7T9bt7c+eulHvR1uIxk5WvuO/qbCc+yBaCLps8h+E7HciD4myjj3z1MmE1DDR7RarO2jgl/OFGNl/Yh6ln3nIozahD4hxEQ/X13/cv1oe2oyue7/BYL8GKKlIBlWAEcA7GWAhUUt4fth/eanzDXHBhaX8mFmC6ICybL1eJ0rPA6zVEiHnPPOBYltO6zqS36sHWhFNv7N8bMT2WnM1i9hRa4Ryj/TbCooR3WsJTo1JUCRrJ0KZOVIJNKt788TdWmpOrzsXBiwRJ4w9ME8nZctkY/LaLptePyqAE6XqUAWmf+2QIjtw21JvlyF0H2hHFsoIjmmg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pxIamREPtHvIVIJOLW1rHGaPlQFWNNwauMnL526pIDU=;
- b=suMdLUyBcxIA5N1JK3K/w0RXyW50gzCtmYkUKboBmT0A5tjpDs6J1T3PUPCZO/IjAJHQ6ZjHWRJTcGHUJDW/VVV1DLI5eVq4dTY/GuPPMd7k6wRJlKQcYzTfMwmBHhFNbx/gYb1apR4MXxV8BdmcPsG6f1xru1qk3F8+9ZBY8JlapFow/mJVgx8ZPGKeldICJUWwc8NHeOv0qmM0Ie/TmsCmOAZ/VjFREMRMB+gq4hduJ4CACO53OZElEM7iRH9YAs30aiwPHaIiz8G70WnhzAyX9jGA/4UdfdJBNnZhJHfxU4K173oBtaAXyN72gIh+22fYlP/KIOLnTjtWytPDIA==
+ bh=Lp6ioj2wPWXkqFLJOwgadldjUN4GHwIp4dBLeY3eXNQ=;
+ b=bu2bI3DZjBekAt7cN4dHudOoFxfBeXyDPEhxT0PE1CLotE5Dkkdozk0f6n6vr53pLUhki608TAXW4Kb3/ePiU7OmccxBBT2l86LpJ6NomDBjt/DTolpc1ezRCYeYEEas+tZfQb02YOnWE5yUkfihVmNlVvbaAjfue4M91jubCykwHH+RyYZqqg+ksepgi87WnJy9A1pKR5AZcoRx2fC21XgJ9kpFtcePFK+a5MEUuqApRSJ69mSult9FzllXnBZM8pl/oqGMAQ/ZnslTYhxv/UZq9kr5Doale5nt2Yo91JoRr7JuTprLZWjWgXOImIa5dRI/11yo61VL5KoAJuWqXQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
  header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pxIamREPtHvIVIJOLW1rHGaPlQFWNNwauMnL526pIDU=;
- b=kWm+Tt3hHPZ8QL4zZFWF5/qNF0G4Nu/UQUMcrI6TOoaqj9Pyry9TNhwnOS3qKNf/KUZsDUUC9Lor6Tn+xuuFgZBkvXoSW4Ny+ZMkOd8DgNSpYJd5/dzY6+PuA60yj2ZAjMM6bd1hAXM8C/GaZqkZUfQxWrwiM5m5NpNj6lfyrMs=
+ bh=Lp6ioj2wPWXkqFLJOwgadldjUN4GHwIp4dBLeY3eXNQ=;
+ b=f3HXxnRFILzQbnMr1pCG5G0AjvwF0O4OyZjlEibxFuRoEAkAF+gcy1pCqgvElDHg3i+Oi1KhaVMaVmADaEQF0bKwwOo3i43rj6HjmTkx364lHEQIuCa2WPcv3TNSx+Xqg7vwLXLPVBDWaT9CtBQcL8IBByOJXsbwUehQ19rahm4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=valinux.co.jp;
 Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
  by OS7P286MB6729.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:42d::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 16:51:50 +0000
+ 2026 16:51:49 +0000
 Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
  ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
  ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
- 16:51:50 +0000
+ 16:51:49 +0000
 From: Koichiro Den <den@valinux.co.jp>
 To: Jon Mason <jdmason@kudzu.us>,
 	Dave Jiang <dave.jiang@intel.com>,
@@ -53,16 +53,16 @@ To: Jon Mason <jdmason@kudzu.us>,
 Cc: ntb@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 08/16] NTB: ntb_transport: Add opt-in direct-DMA channel reservation
-Date: Tue, 11 Aug 2026 01:51:27 +0900
-Message-ID: <20260810165136.2292436-9-den@valinux.co.jp>
+Subject: [PATCH 07/16] NTB: ntb_transport: Negotiate direct-DMA queue layout
+Date: Tue, 11 Aug 2026 01:51:26 +0900
+Message-ID: <20260810165136.2292436-8-den@valinux.co.jp>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260810165136.2292436-1-den@valinux.co.jp>
 References: <20260810165136.2292436-1-den@valinux.co.jp>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: TYCP286CA0129.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:2b6::17) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-ClientProxiedBy: TYCP286CA0210.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:385::19) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
  (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -72,256 +72,372 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OS7P286MB6729:EE_
-X-MS-Office365-Filtering-Correlation-Id: b6246149-fab5-4eb5-402f-08def6ffac55
+X-MS-Office365-Filtering-Correlation-Id: 4f6af79f-9a57-48b5-f3b9-08def6ffabe3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|23010399003|376014|1800799024|366016|6133799003|56012099006|10067099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|10070799003|7416014|23010399003|376014|1800799024|366016|6133799003|3023799007|56012099006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	SWBGY4DJuWtiPnECQJqKdiJ5l+lF/AsCIHr5Md97++pYLJkdVvuPpXmgwD1JfLpozfoNcSuBrzuwZTT8Hkga3nEyCykRgV3NV3T35n1pG1yYGLyaX7Iy0TafcCJ2pURQL7C6kDTXBWv4IWPo5mfdeQzvFyA52nBQi2242WKDygPU+ouFZZo8CDTNsC/kHfJCpkogOY5l1TW5TmID/EsJTz0nuO6t7VGzItrmPe/+Aup8iW4X2fXt1lTu16wqv2sjvt3cTWHZ0XlHSpjkHuDNMrFKQRoYnAGqJvrhFQlFI97dvfN96HfheshH/R4BOIHKJGqUjrfZ45YYwcOtQyuVoLaX/REcPWmKTeb46n1SwORe7vnKoJXkjgrIb39LuhYnxNdHqnMw8an1iUI1JwDMvc+ilAiLfpmTq7ULC9DkNRPaCQE8937GL1pEBAkITlQ/YCbpdvPBrQ3F5RFXwsMPpLPPhSn7+jXdnVTJBOJ0teUoWyDNmkIwZCOb8iWr6KsYoAU9rtViREsMVmYqYaPCrqotDIX1mPY9zXn2LOClogd2SFOjSvp0VfoQYxRfen5ysAvaNijKkXBg0LdhCRW/1Pz7BI1ekf03RaDVqUMlkT5wz6RmFeql2JhobltPAa4bi8EBSATGe8fBA0jRCSB/xOIZH3tHpW4fIlwI64aDsAw=
+	iuZ+kQ3WrozGF9mzXw7WjfT0Pp6LUyP8TX0h+A6Uu8yzEx1CUN28OPE3D5KY//c/nmbtqwBQxw6X348SztKzEPF8qz5Z95qOi43nq5rNNQArcFmFd2cx8GG5nAYVWKTemRwrOnE1AyGUCTIzIWQdaSs9pOUzf+qyvKXpYNteoRo6qFHMS27qrIDPR4G4XlJYhi6sgQKWyM/EffX82tHDHqVIuKrrYnYB07ItZsxCkLySlBETr8enVvhyaJ2GCC/RXt1xcX1EJrFxLxNb1EafFcR+3i2MJ5AmJTJ69sBb64hX0fgPj9w9vJHUM0bD5jcUNMw6rRmnqvSvRX0FXpJ4G8AZGiwyLBsURp8HV7kB0ZMTx4yFl7tliib3If6jH3cXUBXFpdJtFibpbTl/FPqrOuYSdXj6VgINZJFEL9gp9Qv5DgGGM0sGVbdYi/CPdJX6wCym0NZOFX+jeBSD/NsAfLcipshta5MibKbjXO2xpIVGyO2BUqZCmVUr4VD76Ay/uB3uwxnctapvTbIet0OboPeOGFow4OLNmCli5f14kwmJWt5CNX2fihbr4ZiD+iPpxJvjdRMX+8sdjkzjNYkRjvwGTvazWMLM1SSG2yz4hzl3L7EbpNSrIkx/E19ETtvYhBTEbV11pUiHi2B0CUKttLIEUrrgZ71TEaN6XLaoSdg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(23010399003)(376014)(1800799024)(366016)(6133799003)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(23010399003)(376014)(1800799024)(366016)(6133799003)(3023799007)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?R7DoMEw0iSFSHqiV10GMcZEtxK4VHNYNFZOBvqLitxkjs5TJKaiy9NGgqCK3?=
- =?us-ascii?Q?FYnkeS12ZKxRB2SA5iVK94ubDWss7R550JFRhXJ27nG6ThY1UiOAGPYlYCYy?=
- =?us-ascii?Q?FCZUr/xKo+vvP7wqe924XrXt42NLWNpMxEed6UXo8Gh+ZO2SG6z8m9CqyrLh?=
- =?us-ascii?Q?tczwtT3COPO4BSyYz96HKjC3AsILbkl9YjSWLV4MIIVNpJfPWKrzmAZ66nsk?=
- =?us-ascii?Q?bIcQmpMptTRapcPNtpqqrSya4bstPoss58JuNIL+HemjBRT/b4NceIUX9zoB?=
- =?us-ascii?Q?PlP9wH1FGUN9uQKORRtGBJXqkPOs0dn5YyO3cPRadgFHAWIRmJ6zzEPI3gkB?=
- =?us-ascii?Q?Oh1phe5GHt3jI+xkPLhlsOCSVn2WfakPbIXBcGbqkWof6eL+KyDMZ2NHGT/d?=
- =?us-ascii?Q?R+e8S9SXrwOb3qUXr6Udxi6sxSgOw1YUQ95KX05y+CajoiRP7ecdbn/NnKaT?=
- =?us-ascii?Q?xdBbCaYHN4mfoL6YFgYOYdaPSDGTGtWkUHo9o4VGHDNlxAqPARHDp55C4ato?=
- =?us-ascii?Q?ShUa6aMfLAqmbuTqvSrHiY+6cJ9YQBIpC9CP41OK6KiN/l0YToiHzXO5Lc8u?=
- =?us-ascii?Q?pq0RRQVhPLkCxJXsywJcBCSvO+4JwCMbtSS2q2N0HDojFuj6ZhLGp3Z5kbQC?=
- =?us-ascii?Q?jQ4VnWWI4qGXLGSpjXgN2YShjvc0LXTUun/eLChZLrESMcfj/DjDsGPWL2Sf?=
- =?us-ascii?Q?MpBpkytuVOIIRclcnW2DB2CQumMPjY7CD2ctUZAiSKC/6g6cqyEqxsT7dg9S?=
- =?us-ascii?Q?HdpniBJ+I62EwEybFcpZoYg5Vt+F6IbP2fE7a9MKzcj4E24QUokFuXrvZFhj?=
- =?us-ascii?Q?JcqClEnwp01IWTIp/uMWGXuQcztpW58f/85yBlzJca//N1gA13+eVE3BRO6A?=
- =?us-ascii?Q?7x0lae00VGoqzCIdNfTRQs/fmyLyjK3yaLEzVpwMFRY3OyG928U2jOFLER/V?=
- =?us-ascii?Q?f/X+jWyAj1u7vv65WcltatHyVfnzfTKbuoic1EVO1OFjUfFjS8R4ihkBgYu2?=
- =?us-ascii?Q?uADHP876Z8krdIOAZZkfgbfAOI5h5jmLfFnLRAAicidqR9kqdPiylFZMc+08?=
- =?us-ascii?Q?2L8EFM5C9uXNKP+O10UYJVOuEjYBd2vqzM2e3/5msynNbeifcI5ysKe4XhqC?=
- =?us-ascii?Q?InCA+RG9exQCygM+gr1QKpLz4RrBAmmzIL9lbbRFdhpjmyRR1LUHDz/rx1Om?=
- =?us-ascii?Q?by2iT5qcK9knlUANeiP4Jge9PyvYcLS9JGhby6kYU/0Jy2FhwbmLlGUXr9o9?=
- =?us-ascii?Q?hRohgmW4dEjT2z0fuR+GeD/6yRdk18/uwIC602PxpDUrZXqP/LNe5zhkPlKp?=
- =?us-ascii?Q?ZrE1kXp/iuN3UHh0ySQPeVjtutqu/ZDJ8Xyzd/NbuDZTIJpQErv+vWozoUjq?=
- =?us-ascii?Q?V+loFEJWZVdJIwXz/YNKwtnP7ZVDNXrXcutYUff83kJrZ9ElQL3HXonleAZ+?=
- =?us-ascii?Q?ZLIDotvcYT67y4U8QPyZ0jFFJwi8Tx+9yzC45yibweCyLXpY70AzHU9cZuo3?=
- =?us-ascii?Q?ItTPEmbAX4ii5RuQeqRUMcVqsWhMREdg1OmqJmQt0f3+fA2VN5961xxZpkiy?=
- =?us-ascii?Q?1SoDM9wFYXrHKeKIW4h7OTjruU/mkR/iiHSGq3YnnDCvgAGOcHFezb9BkHCr?=
- =?us-ascii?Q?QNvDVxaSAZ2/HuLqP75TrAKREXLVvRwUFx/9soinWJ9dszuKerQHphyqzPSo?=
- =?us-ascii?Q?qrgf2t1x/UZ2v7O47yK1bOAj5jKCTBVcf6VOInjG7+t1IaxZUFf3YxfgC1sc?=
- =?us-ascii?Q?WTDQxwtSqlEurxa11rGNZ23WZZUC2pQmATaV/cs7U5bWo60cN6Ef?=
+	=?us-ascii?Q?5yCGaYg2fGBMqI/SFCAYWUs4zJhaegLYB6AVUgLtsMp3O2DAcnel8RuXwaXw?=
+ =?us-ascii?Q?6zC8Uhw+G4l2QE93PEJ6bQ3wwTf5+ME9F+TA0vF1ts4rBU3OKBEACj08hWJI?=
+ =?us-ascii?Q?1qD12sOjb39mM5ZyiprlzRsdw5oM92r2fbyQpfuYOKmQXg7gQczCIYCs1YNq?=
+ =?us-ascii?Q?VbA7RmxL8sO6cwHgVbRsD/7VI5IQEUPiqV8GH/zS7s5AUqJ0Uexml+EVPBby?=
+ =?us-ascii?Q?/xO0G8sL1ThHKTBkZ2BIOUyPH8rP8wnXy2OAc/wGIeb6Uhh5NBSPcD/1u6DX?=
+ =?us-ascii?Q?oGennel7SLuWth0qS4lYVsp7+JW7Xa7IxoV5UFUua7YjrAfjwT8GIk7sU1Yb?=
+ =?us-ascii?Q?MVC8vgNi3ibR5hu7GUOX8SV0HYMLvMBOzPALmPR6Q1GhqBqIpxuN8Wm4pN6t?=
+ =?us-ascii?Q?JsgzNmJOREsZaopNG8LXiXgr6NetH4wLEtQPsFFMyoNWbC2GS74HxN3lAwhA?=
+ =?us-ascii?Q?2Sxrs12rIcfCHG1i/Utvpe3lQSRj+lHTFYZev5IZ2DmpO/2L7qFsD6EUUlZq?=
+ =?us-ascii?Q?X1JwnVIOFRKPP7k2EEkbCatQph1YwmOAhfGW/W5wBgDWtK3QWiX+V2Ag44Q2?=
+ =?us-ascii?Q?d1jOx5bAz3EEFS73lM4nEnfG7sWxUwb4H2PmN6EkppTP/mMBoRv0zOG95g1y?=
+ =?us-ascii?Q?eXXUYYXlsOD7VBx7jg7nfscS+JbnEDbthnmzAvA345IRAk+oOwacTrawoFKX?=
+ =?us-ascii?Q?F2P+as9TczGG1AC5jJleJPXPB1P4EUHviGrFgwbVApm68dphWr+usOv7OSJV?=
+ =?us-ascii?Q?RaGhqlUHIU9jrJUcryaUpMVwqBqFRMsGm4ow29j6jtCWxtC81lZdj/jubxka?=
+ =?us-ascii?Q?js0pwHzZueJb+7+DyjmT9Q2wjNc/qt562R5IFouPwhMfrc1bTXskuIi30Aoc?=
+ =?us-ascii?Q?CV7f4SK+s4aE8HGna4rP9NNwoMtElUcDhb64SmT6A0ljQGRAQD3ix2ZZ3njg?=
+ =?us-ascii?Q?Bno+Pl74hECWxA2nJHQrqasJxt0BThHJIUREObVRmORXyxfV30il34v22Bsb?=
+ =?us-ascii?Q?LxAw3dYfxCmk72yga/4Y8DrV3lUQ76ALW9OBBSWq9+ygi0q4cr/5STE+afYt?=
+ =?us-ascii?Q?unDLDy+xwbPwwv9ffEGc0QpwXtOT7gGerNfKzx4O0e7bq+h36XZoMG+2lIJv?=
+ =?us-ascii?Q?LjmUT5yJ2pOk7hFJgp3AFQEkASpsMgE1Z9s1mNJ59QbPYfLfbGZHroqpBYfV?=
+ =?us-ascii?Q?8r5JhlFnxe7dRaDctka4pFcNzQCw50901FpfXRWSeqglK2sNgs89T6YHJ2gb?=
+ =?us-ascii?Q?SSRscaJUubegs/m3ZaalPdw9oZxfudZix2W7wHtT4BKaWRTBju43lvoGVbHj?=
+ =?us-ascii?Q?/oZbo+0nVA7Ux5vX6lZ4HN/dis4Ean/A+Y5ZM3jT5kW2b6u0GLo5iplqAEIf?=
+ =?us-ascii?Q?0MGCJwqLKfceMNb7mklhmimn/U5BNlG6rOX07hRZWX0pExfXrwZTD7b4XA35?=
+ =?us-ascii?Q?jnts/7ejLObRPAUtgWCBNvKwU4XwFCYY5zkzzKqs4oOoHaE8RURvyhsSILoR?=
+ =?us-ascii?Q?wPunW5CwBbO99y+ujQJH1ChuzQe8cLZqAcTfZN/YDQBlpTpJkqOEUloytxEv?=
+ =?us-ascii?Q?+R7QUq5FJ7elc56kl7XSw3TlPLa6u2hwlHEMhXN8lOYaoeogFAwFqOQMnrjy?=
+ =?us-ascii?Q?DlEHCB6KOcNK4BGxkT+ofCinb9525rMYz2miZ1Chus6SOy1Gftg+WHzFk/oM?=
+ =?us-ascii?Q?KNmump7qc+H2xUM10jTcNOpy8XRRzyPdiyLTGqTimj+uA6VVEexr/NBHjsZO?=
+ =?us-ascii?Q?miboEmuaigjCg9Lit23fWEl41WMt599tp/NHz+8thiTP7/zw1VFU?=
 X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6246149-fab5-4eb5-402f-08def6ffac55
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f6af79f-9a57-48b5-f3b9-08def6ffabe3
 X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 16:51:50.1994
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 16:51:49.4565
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y40m8rRLVdjBA16LQmr6Pz0+qb6b0Vv/MOzKrwxXy14Tl8zqknI8XsiHt1uJ1yiPJ7jczIiqg3Wbl7x+sIOFRw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: rLsqIFpbNpXWZE2oYeeo8+a+HEVoag0UegNBOyXgYQaddtWidQ58vHx5feYvzYYrmM4NW4UbXe4nc6kJsRQimQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7P286MB6729
 
-Direct DMA is opt-in. Add 'use_direct_dma' module parameter to request
-it. Some endpoint integrations expose NTB and DMA through sibling PCI
-functions, so add direct_dma_func to select the DMA function when the
-NTB device cannot return the DMA device directly.
-
-When use_direct_dma is set and negotiation scratchpads are available,
-locate the DMA device and reserve one suitable channel for every QP
-before registering clients. This avoids negotiating direct TX before a
-later-created QP discovers that no channel is available. If the full set
-is unavailable, leave direct TX disabled. Note that direct RX does not
-require these channels.
+The direct-DMA shared area occupies part of each QP memory-window slice,
+so both peers must agree on its size and placement. Exchange direct-DMA
+capabilities and ring depth in spare scratchpads, and reserve the area
+only when both peers advertise compatible settings. Otherwise retain the
+protocol v4 copy layout.
 
 Signed-off-by: Koichiro Den <den@valinux.co.jp>
 ---
- drivers/ntb/ntb_transport.c | 120 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 120 insertions(+)
+ drivers/ntb/ntb_transport.c | 170 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 161 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index f873eacd532b..6051d8abfc0d 100644
+index 44957c11d1c8..f873eacd532b 100644
 --- a/drivers/ntb/ntb_transport.c
 +++ b/drivers/ntb/ntb_transport.c
-@@ -98,6 +98,16 @@ static bool use_dma;
+@@ -98,6 +98,11 @@ static bool use_dma;
  module_param(use_dma, bool, 0644);
  MODULE_PARM_DESC(use_dma, "Use DMA engine to perform large data copy");
  
-+static bool use_direct_dma;
-+module_param(use_direct_dma, bool, 0644);
-+MODULE_PARM_DESC(use_direct_dma,
-+		 "Use PCI endpoint DMA to transfer directly to peer RX buffers");
++static unsigned int direct_dma_ring_entries = 64;
++module_param(direct_dma_ring_entries, uint, 0644);
++MODULE_PARM_DESC(direct_dma_ring_entries,
++		 "Number of entries in each direct-DMA queue");
 +
-+static unsigned int direct_dma_func;
-+module_param(direct_dma_func, uint, 0644);
-+MODULE_PARM_DESC(direct_dma_func,
-+		 "PCI function number of a sibling endpoint DMA function");
-+
- static unsigned int direct_dma_ring_entries = 64;
- module_param(direct_dma_ring_entries, uint, 0644);
- MODULE_PARM_DESC(direct_dma_ring_entries,
-@@ -147,6 +157,7 @@ struct ntb_transport_qp {
- 	void *cb_data;
- 	struct dma_chan *tx_dma_chan;
- 	struct dma_chan *rx_dma_chan;
-+	struct dma_chan *direct_dma_chan;
- 
- 	bool client_ready;
- 	bool link_is_up;
-@@ -269,6 +280,7 @@ struct ntb_transport_ctx {
+ static bool use_msi;
+ #ifdef CONFIG_NTB_MSI
+ module_param(use_msi, bool, 0644);
+@@ -174,6 +179,15 @@ struct ntb_transport_qp {
+ 	struct list_head rx_free_q;
+ 	/* ntb_rx_q_lock: synchronize access to rx_XXXX_q */
+ 	spinlock_t ntb_rx_q_lock;
++	struct ntb_direct_shared *direct_shared;
++	struct ntb_direct_shared __iomem *peer_direct_shared;
++	unsigned int direct_ring_entries;
++	u32 *direct_tx_cpl;
++	dma_addr_t direct_tx_cpl_dma;
++	u32 direct_rx_prod;
++	u32 direct_rx_cons;
++	u32 direct_tx_issue;
++	u32 direct_tx_cons;
+ 	void *rx_buff;
+ 	unsigned int rx_index;
+ 	unsigned int rx_max_entry;
+@@ -255,6 +269,9 @@ struct ntb_transport_ctx {
  	struct work_struct link_cleanup;
  
  	struct dentry *debugfs_node_dir;
-+	struct device *direct_dma_dev;
- 	u32 direct_features;
- 	u32 peer_direct_features;
- 	unsigned int direct_ring_entries;
-@@ -352,6 +364,97 @@ static inline u32 ntb_direct_ring_used(u32 head, u32 tail)
- 	return head - tail;
++	u32 direct_features;
++	u32 peer_direct_features;
++	unsigned int direct_ring_entries;
+ 
+ 	/* Make sure workq of link event be executed serially */
+ 	struct mutex link_event_lock;
+@@ -315,11 +332,26 @@ struct ntb_direct_shared {
+ /* Zero is pending, U32_MAX is an error, and other values are lengths. */
+ #define NTB_DIRECT_CPL_ERROR		U32_MAX
+ 
++enum {
++	NTB_DIRECT_FEAT_RX = BIT(0),
++	NTB_DIRECT_FEAT_TX = BIT(1),
++};
++
+ static inline size_t ntb_direct_shared_size(unsigned int entries)
+ {
+ 	return struct_size_t(struct ntb_direct_shared, pub, entries);
  }
  
-+static bool ntb_direct_dma_filter_fn(struct dma_chan *chan, void *data)
++static inline u32 ntb_direct_ring_idx(struct ntb_transport_qp *qp, u32 val)
 +{
-+	struct dma_slave_caps caps;
-+
-+	if (chan->device->dev != data || dma_get_slave_caps(chan, &caps))
-+		return false;
-+
-+	/* Payload and completion descriptors must complete in order. */
-+	return caps.cmd_terminate &&
-+	       !dma_has_cap(DMA_COMPLETION_NO_ORDER, chan->device->cap_mask) &&
-+	       (caps.directions & BIT(DMA_MEM_TO_DEV));
++	return val & (qp->direct_ring_entries - 1);
 +}
 +
-+static struct device *ntb_direct_get_dma_dev(struct ntb_dev *ndev)
++static inline u32 ntb_direct_ring_used(u32 head, u32 tail)
 +{
-+	struct pci_dev *pdev = ndev->pdev;
-+	struct pci_dev *dma_pdev;
-+	struct device *dev;
-+
-+	if (ndev->ops->get_dma_dev) {
-+		dev = ntb_get_dma_dev(ndev);
-+		return dev ? get_device(dev) : ERR_PTR(-ENODEV);
-+	}
-+
-+	if (!pdev || !pdev->bus || direct_dma_func > 7)
-+		return ERR_PTR(-ENODEV);
-+
-+	dma_pdev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
-+					       pdev->bus->number,
-+					       PCI_DEVFN(PCI_SLOT(pdev->devfn),
-+							 direct_dma_func));
-+	if (!dma_pdev)
-+		return ERR_PTR(-ENODEV);
-+
-+	return &dma_pdev->dev;
-+}
-+
-+static void ntb_direct_dma_release_channels(struct ntb_transport_ctx *nt)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < nt->qp_count; i++) {
-+		if (!nt->qp_vec[i].direct_dma_chan)
-+			continue;
-+
-+		dma_release_channel(nt->qp_vec[i].direct_dma_chan);
-+		nt->qp_vec[i].direct_dma_chan = NULL;
-+	}
-+}
-+
-+static void ntb_direct_dma_release(struct ntb_transport_ctx *nt)
-+{
-+	ntb_direct_dma_release_channels(nt);
-+	if (nt->direct_dma_dev) {
-+		put_device(nt->direct_dma_dev);
-+		nt->direct_dma_dev = NULL;
-+	}
-+}
-+
-+static void ntb_direct_dma_init(struct ntb_transport_ctx *nt)
-+{
-+	dma_cap_mask_t mask;
-+	unsigned int i;
-+
-+	if (!use_direct_dma)
-+		return;
-+
-+	nt->direct_dma_dev = ntb_direct_get_dma_dev(nt->ndev);
-+	if (IS_ERR(nt->direct_dma_dev)) {
-+		dev_info(&nt->ndev->dev, "direct DMA device unavailable: %pe\n",
-+			 nt->direct_dma_dev);
-+		nt->direct_dma_dev = NULL;
-+		return;
-+	}
-+
-+	dma_cap_zero(mask);
-+	dma_cap_set(DMA_SLAVE, mask);
-+
-+	for (i = 0; i < nt->qp_count; i++) {
-+		nt->qp_vec[i].direct_dma_chan =
-+			dma_request_channel(mask, ntb_direct_dma_filter_fn,
-+					    nt->direct_dma_dev);
-+		if (!nt->qp_vec[i].direct_dma_chan) {
-+			dev_info(&nt->ndev->dev,
-+				 "not enough direct DMA channels for all QPs\n");
-+			ntb_direct_dma_release_channels(nt);
-+			return;
-+		}
-+	}
++	return head - tail;
 +}
 +
  struct ntb_payload_header {
  	unsigned int ver;
  	unsigned int len;
-@@ -1476,6 +1579,16 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
+@@ -335,6 +367,32 @@ enum {
+ 	MW0_SZ_LOW,
+ };
+ 
++enum {
++	DIRECT_SPAD_FEATURES,
++	DIRECT_SPAD_RING_ENTRIES,
++	DIRECT_SPAD_COUNT,
++};
++
++static unsigned int ntb_direct_spad_offset(struct ntb_transport_ctx *nt)
++{
++	/* Skip two SPADs per QP reserved for optional v4 MSI descriptors. */
++	return nt->msi_spad_offset + nt->qp_count * 2;
++}
++
++static bool ntb_direct_spads_available(struct ntb_transport_ctx *nt)
++{
++	return ntb_direct_spad_offset(nt) + DIRECT_SPAD_COUNT <=
++		ntb_spad_count(nt->ndev);
++}
++
++static bool ntb_direct_layout(struct ntb_transport_ctx *nt)
++{
++	return ((nt->direct_features & NTB_DIRECT_FEAT_RX) &&
++		(nt->peer_direct_features & NTB_DIRECT_FEAT_TX)) ||
++	       ((nt->direct_features & NTB_DIRECT_FEAT_TX) &&
++		(nt->peer_direct_features & NTB_DIRECT_FEAT_RX));
++}
++
+ #define dev_client_dev(__dev) \
+ 	container_of((__dev), struct ntb_transport_client_dev, dev)
+ 
+@@ -635,6 +693,38 @@ static struct ntb_queue_entry *ntb_list_mv(spinlock_t *lock,
+ 	return entry;
+ }
+ 
++/*
++ * Protocol v4 uses the whole area before rx_info for copy slots. Reserve the
++ * tail for direct state only when both peers negotiated a direct direction.
++ */
++static int ntb_transport_setup_qp_tx_layout(struct ntb_transport_qp *qp)
++{
++	unsigned int tx_size = qp->tx_mw_size;
++	size_t direct_size = 0;
++
++	if (ntb_direct_layout(qp->transport))
++		direct_size = ntb_direct_shared_size(qp->direct_ring_entries);
++	if (direct_size &&
++	    tx_size < direct_size + sizeof(struct ntb_rx_info) +
++		      2 * sizeof(struct ntb_payload_header))
++		return -ENOSPC;
++
++	qp->rx_info = qp->tx_mw + tx_size - sizeof(struct ntb_rx_info);
++	tx_size -= sizeof(struct ntb_rx_info);
++	if (direct_size) {
++		tx_size -= direct_size;
++		qp->peer_direct_shared = qp->tx_mw + tx_size;
++	} else {
++		qp->peer_direct_shared = NULL;
++	}
++
++	/* Ring housekeeping requires at least two buffers. */
++	qp->tx_max_frame = min(transport_mtu, tx_size / 2);
++	qp->tx_max_entry = tx_size / qp->tx_max_frame;
++
++	return 0;
++}
++
+ static int ntb_transport_setup_qp_mw(struct ntb_transport_ctx *nt,
+ 				     unsigned int qp_num)
+ {
+@@ -644,6 +734,8 @@ static int ntb_transport_setup_qp_mw(struct ntb_transport_ctx *nt,
+ 	struct ntb_queue_entry *entry;
+ 	unsigned int rx_size, num_qps_mw;
+ 	unsigned int mw_num, mw_count, qp_count;
++	size_t direct_size = 0;
++	void *rx_base;
+ 	unsigned int i;
+ 	int node;
+ 
+@@ -662,10 +754,24 @@ static int ntb_transport_setup_qp_mw(struct ntb_transport_ctx *nt,
+ 		num_qps_mw = qp_count / mw_count;
+ 
+ 	rx_size = (unsigned int)mw->xlat_size / num_qps_mw;
+-	qp->rx_buff = mw->virt_addr + rx_size * (qp_num / mw_count);
++	rx_base = mw->virt_addr + rx_size * (qp_num / mw_count);
++	if (ntb_direct_layout(nt))
++		direct_size = ntb_direct_shared_size(qp->direct_ring_entries);
++	if (direct_size &&
++	    rx_size < direct_size + sizeof(struct ntb_rx_info) +
++		      2 * sizeof(struct ntb_payload_header))
++		return -ENOSPC;
++
++	qp->rx_buff = rx_base;
+ 	rx_size -= sizeof(struct ntb_rx_info);
+-
+ 	qp->remote_rx_info = qp->rx_buff + rx_size;
++	if (direct_size) {
++		rx_size -= direct_size;
++		qp->direct_shared = qp->rx_buff + rx_size;
++		memset(qp->direct_shared, 0, direct_size);
++	} else {
++		qp->direct_shared = NULL;
++	}
+ 
+ 	/* Due to housekeeping, there must be atleast 2 buffs */
+ 	qp->rx_max_frame = min(transport_mtu, rx_size / 2);
+@@ -1070,6 +1176,7 @@ static void ntb_transport_link_work(struct work_struct *work)
+ 	struct ntb_dev *ndev = nt->ndev;
+ 	struct pci_dev *pdev = ndev->pdev;
+ 	resource_size_t size;
++	unsigned int direct_spad;
+ 	u32 val;
+ 	int rc = 0, i, spad;
+ 
+@@ -1106,6 +1213,15 @@ static void ntb_transport_link_work(struct work_struct *work)
+ 	ntb_peer_spad_write(ndev, PIDX, NUM_MWS, nt->mw_count);
+ 
+ 	ntb_peer_spad_write(ndev, PIDX, NUM_QPS, nt->qp_count);
++	if (ntb_direct_spads_available(nt)) {
++		direct_spad = ntb_direct_spad_offset(nt);
++		ntb_peer_spad_write(ndev, PIDX,
++				    direct_spad + DIRECT_SPAD_FEATURES,
++				    nt->direct_features);
++		ntb_peer_spad_write(ndev, PIDX,
++				    direct_spad + DIRECT_SPAD_RING_ENTRIES,
++				    nt->direct_ring_entries);
++	}
+ 
+ 	ntb_peer_spad_write(ndev, PIDX, VERSION, NTB_TRANSPORT_VERSION);
+ 
+@@ -1125,6 +1241,26 @@ static void ntb_transport_link_work(struct work_struct *work)
+ 	if (val != nt->mw_count)
+ 		goto out;
+ 
++	nt->peer_direct_features = 0;
++	if (ntb_direct_spads_available(nt)) {
++		direct_spad = ntb_direct_spad_offset(nt);
++		val = ntb_spad_read(ndev,
++				    direct_spad + DIRECT_SPAD_FEATURES);
++		val &= NTB_DIRECT_FEAT_RX | NTB_DIRECT_FEAT_TX;
++		if (val) {
++			u32 entries;
++
++			entries = ntb_spad_read(ndev,
++						direct_spad +
++						DIRECT_SPAD_RING_ENTRIES);
++			dev_dbg(&pdev->dev,
++				"Remote direct DMA features = %#x, ring entries = %u\n",
++				val, entries);
++			if (entries == nt->direct_ring_entries)
++				nt->peer_direct_features = val;
++		}
++	}
++
+ 	for (i = 0; i < nt->mw_count; i++) {
+ 		u64 val64;
+ 
+@@ -1143,6 +1279,9 @@ static void ntb_transport_link_work(struct work_struct *work)
+ 
+ 	nt->link_is_up = false;
+ 	for (i = 0; i < nt->qp_count; i++) {
++		rc = ntb_transport_setup_qp_tx_layout(&nt->qp_vec[i]);
++		if (rc)
++			goto out1;
+ 		rc = ntb_transport_setup_qp_mw(nt, i);
+ 		if (rc)
+ 			goto out1;
+@@ -1164,6 +1303,8 @@ static void ntb_transport_link_work(struct work_struct *work)
+ 	for (i = 0; i < nt->qp_count; i++) {
+ 		struct ntb_transport_qp *qp = &nt->qp_vec[i];
+ 
++		qp->direct_shared = NULL;
++		qp->peer_direct_shared = NULL;
+ 		qp->rx_buff = NULL;
+ 		qp->remote_rx_info = NULL;
+ 	}
+@@ -1254,22 +1395,20 @@ static int ntb_transport_init_queue(struct ntb_transport_ctx *nt,
+ 
+ 	tx_size = (unsigned int)mw_size / num_qps_mw;
+ 	qp_offset = tx_size * (qp_num / mw_count);
++	mw_base += qp_offset;
+ 
++	qp->direct_ring_entries = nt->direct_ring_entries;
+ 	qp->tx_mw_size = tx_size;
+ 	qp->tx_mw = nt->mw_vec[mw_num].vbase + qp_offset;
+ 	if (!qp->tx_mw)
+ 		return -EINVAL;
+ 
+-	qp->tx_mw_phys = mw_base + qp_offset;
++	qp->tx_mw_phys = mw_base;
+ 	if (!qp->tx_mw_phys)
+ 		return -EINVAL;
+ 
+-	tx_size -= sizeof(struct ntb_rx_info);
+-	qp->rx_info = qp->tx_mw + tx_size;
+-
+-	/* Due to housekeeping, there must be atleast 2 buffs */
+-	qp->tx_max_frame = min(transport_mtu, tx_size / 2);
+-	qp->tx_max_entry = tx_size / qp->tx_max_frame;
++	if (ntb_transport_setup_qp_tx_layout(qp))
++		return -ENOSPC;
+ 
+ 	if (nt->debugfs_node_dir) {
+ 		char debugfs_name[8];
+@@ -1337,6 +1476,7 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
  		return -ENOMEM;
  
  	nt->ndev = ndev;
-+	if (use_direct_dma &&
-+	    (direct_dma_ring_entries < 2 ||
-+	     direct_dma_ring_entries > NTB_DIRECT_MAX_RING_ENTRIES ||
-+	     !is_power_of_2(direct_dma_ring_entries))) {
-+		dev_err(&ndev->dev,
-+			"direct DMA ring entries must be a power of two between 2 and %u\n",
-+			NTB_DIRECT_MAX_RING_ENTRIES);
-+		rc = -EINVAL;
-+		goto err;
-+	}
- 	nt->direct_ring_entries = direct_dma_ring_entries;
++	nt->direct_ring_entries = direct_dma_ring_entries;
  
  	/*
-@@ -1582,6 +1695,11 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
- 		if (rc)
- 			goto err2;
- 	}
-+	if (ntb_direct_spads_available(nt))
-+		ntb_direct_dma_init(nt);
-+	else if (use_direct_dma)
-+		dev_info(&ndev->dev,
-+			 "not enough scratchpads for direct DMA negotiation\n");
+ 	 * If we are using MSI, and have at least one extra memory window,
+@@ -1412,6 +1552,18 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
+ 	nt->qp_bitmap = qp_bitmap;
+ 	nt->qp_bitmap_free = qp_bitmap;
  
- 	mutex_init(&nt->link_event_lock);
- 	INIT_DELAYED_WORK(&nt->link_work, ntb_transport_link_work);
-@@ -1605,6 +1723,7 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
- err3:
- 	ntb_clear_ctx(ndev);
- err2:
-+	ntb_direct_dma_release(nt);
- 	kfree(nt->qp_vec);
- err1:
- 	while (i--) {
-@@ -1648,6 +1767,7 @@ static void ntb_transport_free(struct ntb_client *self, struct ntb_dev *ndev)
- 		iounmap(nt->mw_vec[i].vbase);
- 	}
- 
-+	ntb_direct_dma_release(nt);
- 	kfree(nt->qp_vec);
- 	kfree(nt->mw_vec);
- 	kfree(nt);
++	if (ntb_direct_spads_available(nt)) {
++		unsigned int spad = ntb_direct_spad_offset(nt);
++
++		/* Old v4 peers do not overwrite stale extension SPADs. */
++		rc = ntb_spad_write(ndev, spad + DIRECT_SPAD_FEATURES, 0);
++		if (rc)
++			goto err1;
++		rc = ntb_spad_write(ndev, spad + DIRECT_SPAD_RING_ENTRIES, 0);
++		if (rc)
++			goto err1;
++	}
++
+ 	nt->qp_vec = kcalloc_node(qp_count, sizeof(*nt->qp_vec),
+ 				  GFP_KERNEL, node);
+ 	if (!nt->qp_vec) {
 -- 
 2.51.0
 
