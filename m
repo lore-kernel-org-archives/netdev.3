@@ -1,144 +1,75 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05723939A4;
-	Mon, 10 Aug 2026 06:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DAA36C581;
+	Mon, 10 Aug 2026 07:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786345098; cv=none; b=JnWIuzXqBTrwzCeRC55ivps0X1lHUexkaemAaUGZcB/Ph8phFXZ+YMRxyifXA7gKNuZodv29yi4B5JMWfkIrnMw1fq3FmWMbZJU4e+FGn+Mxv3TFirrFvdq9QEMNX9BV0vBtxfVGI822lasqrbKoImMK0MjUYBuwXqPzeCGq+sA=
+	t=1786345388; cv=none; b=rzx4SX8KxyUH/hXAqDWp1CVYbvAtLFzczoouYo0TshaCEaWBSXrtnXhlwwtGf2thx9WsPLj6jet93EO7hqK6qY9G+j1apE6ySKiBTFLItscawShZfYTwXSaeKYhVHIF1akn4G761VFKd5eMbWHh2MwQeUv9lB6P82GWjKZ6aVYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786345098; c=relaxed/simple;
-	bh=7WlPeWCWTJ+S0FMnLOLkCGqMPWXTgxckC0ljdW2sEGw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CcTBz2IoyGzJ2cRA/aU/SGL99LUqGII05qg9i0QQZm0t5DRhXU3ZszPyz7COBALUVYJxkAAWpabax6RLy3g9odPkLa8YF1N8o9FNg2os7MWfUhI/+5VOQq1/6XX9fdNhtbLXjW37LXj3uTrM7ytDNV4991RjO2+liVfuAUubd7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=bMi4LUef; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1786345388; c=relaxed/simple;
+	bh=KBTz6r+JeBs9O1VpvPejsZmn2FVLnyeLkBnM0bvWAJw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jm+hYjBBpoxjNaCqoZK//Dau1qKZOBaH4ELQ9r4WHCqNMQ4WA9tXx7sLhcNq85OQLymPvRWbOkS+zQJuv91XOTqSegYYUTKxRJ/5d0fcKVykbirCTZkhztmNmgQ6H0gcG+bGPNi4TaJE6ww04L9K/ae8wTGKCKMu9aqxeZpvU4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IX+mcSDH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="bMi4LUef"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 67A6viQN31514129, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1786345065; bh=oAJl7fPPZqm2YPpWeuSwRmWowSoWPb5vYe00HxOiy9s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=bMi4LUefoGWIa3H5nV86hOf8YPw38c6TyseJSQFr1UUKBwzBtKnU6OuHXy0xaL67S
-	 i0TsBypZnEunCJsXmYqBpAwM8b0dQhnZqtE++bjSLBZ26ChtqRSyrf6MeF7qA0x+dq
-	 pTG5bxH5P9ZpNnGMl32oQSZdu/U1eE4mb+vkpZsyFo/xW7b6vWj9oJD2bihNRKRlYD
-	 3gMfqzDu5WCFvxGO2aLEbJXiVm8ax95StK0eGxkJNXkPpWc5oXVZFLJZZcu9UDP/pJ
-	 IzrjRWlvtfQadb8Y9NxNRcR5JVzMeil9svSIJ5kReyj3dE1oRLhSL4JNJKQfoAeuF4
-	 8q5Pv7ohdpE4Q==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 67A6viQN31514129
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 10 Aug 2026 14:57:44 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 10 Aug 2026 14:57:45 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 10 Aug 2026 14:57:44 +0800
-Received: from fc40.realtek.com.tw (172.22.241.7) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server id
- 15.2.2562.43 via Frontend Transport; Mon, 10 Aug 2026 14:57:44 +0800
-From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>
-CC: <netdev@vger.kernel.org>, <nic_swsd@realtek.com>,
-	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-	<edumazet@google.com>, <bjorn@mork.no>, <pabeni@redhat.com>,
-	<hsu.chih.kai@realtek.com>
-Subject: [PATCH net-next] r8152: use GFP_NOIO during system suspend
-Date: Mon, 10 Aug 2026 14:57:41 +0800
-Message-ID: <20260810065741.4019-1-nic_swsd@realtek.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IX+mcSDH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A531F000E9;
+	Mon, 10 Aug 2026 07:03:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786345386;
+	bh=9lGpz6Zt2dO5Xy8l3cKhsN+96f+fJRqLVb2vOIjzLQ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IX+mcSDH6NRxncfESgodMHXM1/bLTX1vVLDP2o6sEa3+8zxF0v433gq0+Ndb/1p3r
+	 rUJmF+Wd9QuTWzlhYXMIFlq83E452UMUrut7W2WAiFrG6jFBIWrPjQRPANdJE6p8Z9
+	 WwV0GGbHKRAUe/zm/t1LpKRFtv+WiAKYXZqMR1Uog+Lp/xEFMJFwJQwMU/Kk1y4sCi
+	 DaEj+KBych3hUSauSCHL2gZ4xEag/UcLFAMoU0hT7kJyPLQEEvuLwTlfPtd/uMII8n
+	 HzebmHojVwRnwt1zStTxTdlUR4qyDeZxi1vySy8tD1PrX+Rjldkixumka2oh7UQicS
+	 cnL2n60xlWFwg==
+Date: Mon, 10 Aug 2026 09:03:02 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Luke Howard <lukeh@padl.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Vivien Didelot <vivien.didelot@gmail.com>, Gregory CLEMENT <gregory.clement@bootlin.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Richard Cochran <richardcochran@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, 
+	Simon Horman <horms@kernel.org>, Cedric Jehasse <cedric.jehasse@gmail.com>, 
+	Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>, Max Hunter <max@huntershome.org>, 
+	Christoph Mellauner <christoph.mellauner@joyned.at>, Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v4 4/5] dt-bindings: net: dsa: add EDSA
+ arrival-timestamp tag protocol
+Message-ID: <20260810-adorable-nimble-newt-8eb03c@quoll>
+References: <20260727-mv88e6xxx-ptp-fixes-v4-0-10b4020155fc@padl.com>
+ <20260727-mv88e6xxx-ptp-fixes-v4-4-10b4020155fc@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260727-mv88e6xxx-ptp-fixes-v4-4-10b4020155fc@padl.com>
 
-During system suspend, memory allocation with GFP_KERNEL can block
-waiting for I/O to complete. If that I/O depends on a device that is
-itself suspended, a deadlock results.
+On Mon, Jul 27, 2026 at 01:59:15PM +1000, Luke Howard wrote:
+> Add edsa-ptp-reserved2-ts to the dsa-tag-protocol enum. This
+> EDSA-derived protocol lets a board select in-frame embedding of the PTP
+> arrival timestamp, which the switch writes over the reserved2 field of
+> the PTP common header, on switches that support it. Giving it its own
+> identifier keeps the wire format discoverable via dsa/tagging.
+> 
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Luke Howard <lukeh@padl.com>
+> ---
+>  Documentation/devicetree/bindings/net/dsa/dsa-port.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 
-Introduce RTL8152_SYSTEM_SUSPEND flag to track when the driver is
-operating in the system suspend/resume context. Set the flag at the
-start of rtl8152_system_suspend() and clear it at the end of
-rtl8152_system_resume(), following the same pattern used by
-SELECTIVE_SUSPEND for runtime suspend.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-In get_registers() and set_registers(), select GFP_NOIO when the flag
-is set so that the kmalloc and kmemdup calls in those paths do not
-trigger I/O reclaim.
-
-Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
----
- drivers/net/usb/r8152.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index f61686433031..57d04af6368c 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -792,6 +792,7 @@ enum rtl8152_flags {
- 	IN_PRE_RESET,
- 	PROBED_WITH_NO_ERRORS,
- 	PROBE_SHOULD_RETRY,
-+	RTL8152_SYSTEM_SUSPEND,
- };
- 
- #define DEVICE_ID_LENOVO_USB_C_TRAVEL_HUB		0x721e
-@@ -1370,9 +1371,12 @@ static
- int get_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
- {
- 	int ret;
-+	gfp_t gfp;
- 	void *tmp;
- 
--	tmp = kmalloc(size, GFP_KERNEL);
-+	gfp = test_bit(RTL8152_SYSTEM_SUSPEND, &tp->flags) ? GFP_NOIO :
-+							     GFP_KERNEL;
-+	tmp = kmalloc(size, gfp);
- 	if (!tmp)
- 		return -ENOMEM;
- 
-@@ -1394,9 +1398,12 @@ static
- int set_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
- {
- 	int ret;
-+	gfp_t gfp;
- 	void *tmp;
- 
--	tmp = kmemdup(data, size, GFP_KERNEL);
-+	gfp = test_bit(RTL8152_SYSTEM_SUSPEND, &tp->flags) ? GFP_NOIO :
-+							     GFP_KERNEL;
-+	tmp = kmemdup(data, size, gfp);
- 	if (!tmp)
- 		return -ENOMEM;
- 
-@@ -8693,6 +8700,9 @@ static int rtl8152_system_resume(struct r8152 *tp)
- 		usb_submit_urb(tp->intr_urb, GFP_NOIO);
- 	}
- 
-+	clear_bit(RTL8152_SYSTEM_SUSPEND, &tp->flags);
-+	smp_mb__after_atomic();
-+
- 	return 0;
- }
- 
-@@ -8758,6 +8768,9 @@ static int rtl8152_system_suspend(struct r8152 *tp)
- {
- 	struct net_device *netdev = tp->netdev;
- 
-+	set_bit(RTL8152_SYSTEM_SUSPEND, &tp->flags);
-+	smp_mb__after_atomic();
-+
- 	netif_device_detach(netdev);
- 
- 	if (netif_running(netdev) && test_bit(WORK_ENABLE, &tp->flags)) {
--- 
-2.34.1
+Best regards,
+Krzysztof
 
