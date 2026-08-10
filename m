@@ -1,138 +1,310 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021094.outbound.protection.outlook.com [52.101.125.94])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A99E42F700
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 16:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786380479; cv=none; b=Pe4cNWM8mKPiE4UAEgdJvwVlBBVh2vztUanKyww8RKzIfIlOiBSj6zVpKttgqCagtUx/IADzvb18dRsay1O5qCHyt5BU7LShEsvPgxAQonpED8gms3Xt31rSysUqTbnfi7z9irtcaMIBwWAGY2oRM/itDEwAL4kaTVDc/ZP/bkY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786380479; c=relaxed/simple;
-	bh=t/OvjGuVBrq4uGHwkR+woHevYj6ykvarkJcjPcBQJoU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EESVyxPl10mZueRvuGXc5Sbawwy3xlndXCSPZKacjqQqS5fs197qAlzUpAIssQJl/gZKgf7ldVxfgmvVcY0U53IKO8TZ2pBjBdhMNH+9YU3XXS2qS4Oxxbo6nZS+5oiACyOT4yIVE+gt/amj6m5HAMjWDnfzzDUzvJviGZy6r3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fJsw18VA; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A2A42BEBB;
+	Mon, 10 Aug 2026 16:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.94
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786380709; cv=fail; b=KD9C24G4mZZjwXGpwQMomxTYYly1uggD2viMasIJ7JOMrW/dsLd2aTQeq6J8fKc4LxktV8No9mxUez0Kd9QMFLL0mCphM/yXTm02MHYTR9tKljrPH0YoPitK9bD5QK9zdD23fyUl2zmQZWKR5g0nMY/208UmhskqqVDR5yJ0rPk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786380709; c=relaxed/simple;
+	bh=HlXcuUGEJ478lRxvAmyTxmGhcKF4Gi8SgT90jbnSs3E=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ajF+TDE8tOZ88xhskzblP4u/SvJDdTJsxwQOOtbPxPwriA2xm7aFBklB7+/lZaoJ44ZoDBbUymXjNVLizkAVt4pBpdrCsBaI0DvEgjNR9PMqfPp8wEFW22eBeFSOEPG1uYetLQ8ND48uXqnwWA/s6ezOGpWc8vcuRlnUrTYtwcI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=g5UK5kMg; arc=fail smtp.client-ip=52.101.125.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fJsw18VA"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4957799b92fso1662925e9.1
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 09:47:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786380476; x=1786985276; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=niH2tRwcLSsfyl44V3yKY7PLg2udy6rA81mInPPAQuA=;
-        b=fJsw18VAkq5WrvPSvvJapr2ndNSsyeswp76ss/UOR1O7CRC5DDS7e67Mn/VTH0eEj6
-         Esp6ZxDOcGL6up6OkUH89XjQE2PF42DlEfazVIeZ6Jmqdxa5YDL8NnUqI89xW9PZ/IrU
-         rmFiq4f3LwWSOCPPY9jD8Ujridu0+2f3fSDvd+VyrF05y+G4xf+PcomzVn82TlWFZfVH
-         96Dp+WOaDwpS+DGuZhQNXGIuguj0l3CBINKXGU4G+g5+WPaJ+W6lMfcoRjZ8esQfJ2G0
-         OHcJSs1+SaaGMgeYVIFlklcrUQW7UdOgXvdSTOMNJEjUCnvB2xXJGsCwvR3tpoT5+ow9
-         poew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786380476; x=1786985276;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=niH2tRwcLSsfyl44V3yKY7PLg2udy6rA81mInPPAQuA=;
-        b=Ra6uf4+oZO6FdnDVU+MoI5gaV6+FO3/VPUTkLLl8BJKDHQJW7rGfEU+y0jsT9cxl8y
-         Tju4L6q2BuBKOZCKn/fmJrLFrKyGVi50Xm0Gs6AtrN4MffIW1n3PCBMSmqKUHyBQSnba
-         71Rb4qIBAbQ5JwRZ7/qlLr91YL6U0kAtkzwf6Cn1c2BNeTf4j4rY6K7wUzgKi3lKh+uQ
-         W/R2MlbYenk0VwThGpE5cpONTMZ7LY1BbHDhPwGS0uEciFngHpjSvHOMrWFZY9YwCuAq
-         E3Xyv8o1siumBmHJgb47a0ZWiIkuxH6BEzYkInsTTNX9cmeUoTAdDBRCA5ketyNeFtn9
-         CGcw==
-X-Gm-Message-State: AOJu0YxV4Pr7EIbk5dcTRObvM7DirD0HJgnGGufU16s2cMEtzE40+a/Y
-	qMYauA7Pi8CioUkxTz1IvjhF1pK5kcPRTLxPZPYFle5wCMlIMb2lt2bBKRH29cKO
-X-Gm-Gg: AR+sD11EKT4zknkSRoE432OcyDORSZsWF+SB49RrE7f36cL3u7l1QU/lzhs+55fk/kx
-	8TFZ65rNdc6lWN15GMRh957KB7DiJJYf095k6DbN7gM2zhUYsceuM8W1Hhz8SjKP4n5MQ4FRzf8
-	g7luoHuH3VIrvzYYdgJ0zu7NLoQGjincQ+zrXwC227gb+Tg4qr+/oZdhI3YhLGgh4uaHuwdUN7Y
-	mEth/6GLGpjio4tEof9lNQ/WfqZh8pYaYfflbXFNSTWnLuKqEcLZ75eYl/r9M5YgXho3iFk4CM9
-	eDfqDH9ludtAybAd2ZpbyB3jhPgpJ+hmPNdAv4myCOktifIM2S7HM3UBvdjlb3URuTfm0uijXQx
-	KiMfujbVAoa+eLwzqEb5gvzi+qYEiKXX9BjVSoRuUzdL6EWAE+cqfcnA+pD2rmV6FK3fDnXxpB5
-	Dv5YlccIbgrcu/W6DZDVo27bcKSdpg0SAcmNPXT5J+OFs=
-X-Received: by 2002:a05:6000:40cb:b0:47f:946b:d3fc with SMTP id ffacd0b85a97d-47fec51b36emr34596331f8f.2.1786380475418;
-        Mon, 10 Aug 2026 09:47:55 -0700 (PDT)
-Received: from localhost ([2620:10d:c092:500::7:692b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021f9182sm37080453f8f.28.2026.08.10.09.47.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 09:47:53 -0700 (PDT)
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Mon, 10 Aug 2026 17:47:30 +0100
-Subject: [PATCH net-next v2 6/6] netconsole: move struct inet_addr into
- netconsole.c
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="g5UK5kMg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cx4/IxzsM+ej+pYJ0J7UCEfBl3eU+/l5dZL4FxfsIJUgk35ycZ3S4KCchcMXjhIrYBsjX9oy5RQYXTt8zFouwgFWkxLO+UF6YaX1UiCvHZgObdeIYUTIGQ10Bh9qkY5OIWED6hunuCz+k7RQrRomuklWmFTkcpJ+GV4WEGReXDV+z5bqn0R5ciR1stmCJV8JBTedcFHVQLpB5ITmBWsdihV3zVkzgYqMWEO3Z7i/uZK0OhHxh67j4iWBoP5LeKvzeVJEarXxA1xS4hMedzLfuctv4BdNIUP3mD5hc32a6M+02i7JLamChYOtliWZp/mTYU7psguHczpMLThWEKgsYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5ymARv5I12rgiqXW+nuFZDbTjjU4TsyqOISrRMde+C4=;
+ b=kmWbMFqfCli/DRkptFQ0cCVBWGBEqW4n10nyuOBiNGvWHHpYb2MKc/2wYiHqlbnUyHM857Yk4nLbJwT/65PT5cqy529eHBcNqY+iGXFEDZMRfXb/Aji09GrOAvw3LH5HUGeAiRbdindOmhZ3Tsc7ZHNHRDPA/pkWgC1AawhNEZ+M4h/TNrzzPMPEXKqTvnH7EXhEnIsJsAZMo5/xu6J9CpocxA7NTC378BKSHXWS601p6JX1i4vjnY/ouvfoySNCRfav5hTj16jWGKkUBFGkfRb7xVmgsY5wdAiSk8OeC7PfY5q8/phMckj7HbxL0TISH4+xqMbQHeCzixXIyZRAxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5ymARv5I12rgiqXW+nuFZDbTjjU4TsyqOISrRMde+C4=;
+ b=g5UK5kMgXpRmUfTY6bwo9bmF3e07AlHnevOxUsQylZRPeiquADv081sUrPzUIpBGhbJjppHv6MTJ2QF/FtmhdtR5XRMEVLSbZ6uEPDpuffzwoCkjJN3KP1ee9a6nAxlVWD9asHABLf3IlTYI0fwHV/r/IiFVQAY1MwFV3Wr4XPs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by OS7P286MB6729.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:42d::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
+ 2026 16:51:43 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
+ 16:51:43 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Frank Li <Frank.Li@kernel.org>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Nicholas Bellinger <nab@linux-iscsi.org>
+Cc: ntb@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 00/16] NTB: Add direct TX/RX using PCI endpoint DMA
+Date: Tue, 11 Aug 2026 01:51:19 +0900
+Message-ID: <20260810165136.2292436-1-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TY4PR01CA0092.jpnprd01.prod.outlook.com
+ (2603:1096:405:37d::17) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260810-netcons_ipv6-v2-6-3d4fc987a90f@gmail.com>
-References: <20260810-netcons_ipv6-v2-0-3d4fc987a90f@gmail.com>
-In-Reply-To: <20260810-netcons_ipv6-v2-0-3d4fc987a90f@gmail.com>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gustavo Luiz Duarte <gustavold@gmail.com>
-X-Mailer: b4 0.15.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OS7P286MB6729:EE_
+X-MS-Office365-Filtering-Correlation-Id: a74ff241-54ca-4434-c7d0-08def6ffa86a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|7416014|23010399003|376014|1800799024|366016|6133799003|3023799007|56012099006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	pjyDFEj8dKAMxgQJZc7sQVv608svxP5zGSe69aIdtw3Z1asbJGeNfxzdI92+KGThXpEgg5mCRwcUMxzeDvOAWtw7+QY5aQpEPMdBceBXZeuE3i53CcBXnDJ+ltoTTRL26OKaZ2tSLXPWmzCkn6Wp2AlNr0GwbemMLz7X/u+LUBpoI8QycEFrTA4BnFc03jLpGra4B0BCqcadPwukPPPSAsrTYZls4aBJm8CJMH4BKIPrUGzgDKvlBWLP3xrepHJlQX2uzuwYRvhpRb4SeYz+WhYmGhp9LeDkLtCi151DFyDBv6vo0yWyzsmOp2a6zckBCXqYBxqn5PK5waoJ33jSFXXy1woOrVGgCRh+fIk2pGlMRuGn/WC7gEDSKgN6bdBJcyN5C5zDwatrJOWtcKRP8rY9jDLkA6cclOyPKKWKTNCCIARCeHvsbCEc5VPJkEs0xAY1MOHY85hCEknFFs4xGIsERjhWsOjyeHJ6UuDEKo7RNKqXva6Z6bYcV9cqyCqfdkINoMF+SJB/J4xeULDdKoietXzet80hUsKDUblc3fmflo8RUCsyc1+FvwK0eT8u+byWSYUQJ1SP3rdePkY3hvYIHJNwgG7b6jQT/r6fI2RzZCdCHxfU+UdWj2N4c5uV5mf7zXEnXoYrib5p5shPU5TAwptGJPdTyyBzf3D7tZM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(23010399003)(376014)(1800799024)(366016)(6133799003)(3023799007)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GzDD1cTnTQUhDG3WLzfe/Um06MgfiWTf0hTQ/wpEa0EZuDdPaLrSkNc2ang5?=
+ =?us-ascii?Q?NvIDwlBj1BcKwipnKgThXBG4ijCYa5bCT/+6JIU5MWldYYx6RkN6GGzxDHk8?=
+ =?us-ascii?Q?Jb/sZqEEjKgDStcWduwwejSBbpdkrxIGxvjB6timpHsWoDDmP17WMVv6n4g7?=
+ =?us-ascii?Q?Yb/hnGJr5i/HihsHiDX/0q11JgU64L48auysth9FpdFibvAGsv0r0VrWv52m?=
+ =?us-ascii?Q?fdyCeysQFxHvRV56xisjEhSz+S26I0x/LZFXft7UHjWp+UV0v+Wj2QkHMLc4?=
+ =?us-ascii?Q?WtGMmrgwJGzEW1AwApdpFiG5H+lB6jAUxnR7ZfbNF5bWp3dluFZkeobNl/Bc?=
+ =?us-ascii?Q?6+/1vHXOpZLbiwfJ0ay9qruMCqDDQfBrWiYSut+pkS+xAP9I0HsPJSjxY8pM?=
+ =?us-ascii?Q?ftcThDgoszHvUCecx2BNBL3h1NizPtQa0XgVfw85TOcjxiFNC/1nWwkTWyNJ?=
+ =?us-ascii?Q?e5GPxnMKIz9UyT8RoZVVWcMK2cmuo4T0pyzL5tzylgPfIkjidJCop5OgLAm+?=
+ =?us-ascii?Q?3BeJh1hS1Z6Wdi6CTaixHsrDKvVy+m/DPizYCJ+dSW2nqzU0j75x1D1xdA7X?=
+ =?us-ascii?Q?OuOQu9Pivedviu+Fe30Ua6u92WpTF3GlaRjWzbYrwu82UtfOEl1DZ12Occi2?=
+ =?us-ascii?Q?kmhPRIuczZZxAI3BY6XrsrM//3EFl6PKY38LidHM+WXc9NRK0FyV/Y1WC3uF?=
+ =?us-ascii?Q?w2vcB5gLhArJ0LqYg4p97pVjv2wOKoNI4kfsZ3jcqP92cK3O0S6tQAg4GTtf?=
+ =?us-ascii?Q?16+22fhjaasFW6sd66mxI/mBY6QCdMR9jDOjOMXKjTMCi5b60jqLF6lCABV/?=
+ =?us-ascii?Q?scGmDZqQduoHWKF1HE6i7b7QHoEPCJgX/k8UM+jzHwSEAlZW+ATfsN8DYY9r?=
+ =?us-ascii?Q?un6VP5VYgC5Yc6YEJtOXUeBiQdTsQwjsX4rjzuD/4twSettiOM/9Qiz/Fghj?=
+ =?us-ascii?Q?PBnDXuUReacYtkb34jqXhLauymTqRgBIemgi1+wWEY898jgWEk6llUike/1l?=
+ =?us-ascii?Q?shPnyy7j+qO3mLVpRagM3kMknHi3eVf1DTBZQK8cgq+CZPOZtVf30HcEB7+J?=
+ =?us-ascii?Q?iXDjkSdmRM9o0NmYA8wPmpMf/5BWUsQnaH+hbp4O3PBUcPohsjXW9iYtTV96?=
+ =?us-ascii?Q?oUUpVgAuEQA65ioLAzhjo1Hgvr5CNfIZemAoA/kLPuACex42nzEXhHDV9Twq?=
+ =?us-ascii?Q?RX5kWz4k0Gf1XPbjH3sBbzgAFmiwzIqOO1GgdUZYETnnH2DWxymWIezXlTSN?=
+ =?us-ascii?Q?tQ8NkGwIS+/zXhpiuMNDlLyq+z71AanoqtQeJ29iS734/TTO7MxKxJggEDZ5?=
+ =?us-ascii?Q?V6eriEMHLpaLc1Stvw0ciHZWmz2FLUyqxHiVuh08AOj+oa2kQEcgAE1P5ZmN?=
+ =?us-ascii?Q?OqG261v6AswOZEjFBs9FshSSqvk3P4Gw1Qlx98ViHbuVUKEWqNQgdjlnOZi4?=
+ =?us-ascii?Q?Nd8n8SPKV87jsA8XquO3DNuL8P3k+RLCItFQzTkNOU64Y+LlKevbsDUBan9z?=
+ =?us-ascii?Q?c+M9fEofc7J2LereogbqCwQmP4pkOU685pHO1Fb8Vc0W326aBoNBIjNRcsi3?=
+ =?us-ascii?Q?rk4fngc93GhNNJYeQEnHXoaihTXGoCWqVJjBrxRmrA0601KxX2J+/lqZ8JrI?=
+ =?us-ascii?Q?ZugFT+kh2JEo79RPbXEw10fda5bsfHoJJqqmne7atTazl/D68sAaiZ4f355L?=
+ =?us-ascii?Q?fI1zr7lHHuENVnD+EU/Z+WX5b8pknQbQpc56cImVimauS3pza9nUTBy1F9lW?=
+ =?us-ascii?Q?+nGvtuHaLOnsEBpwWQWjK9GPtoEUH7LIrBrAWwVGq05L33FcUqW6?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: a74ff241-54ca-4434-c7d0-08def6ffa86a
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 16:51:43.6599
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AuOBY9LkR/UkT/whjNv9x0HSocjDe/yBLwQWwHdJ9+iLLKPuhOodCDdmy9LzcbhpKlbdhYaxYaHkQvQIw6eqTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7P286MB6729
 
-The struct inet_addr lives in netpoll.h, but since commit a1116396476f
-("netconsole: move local_ip/remote_ip/ipv6 to netconsole_target") the
-only user is netconsole. Move the definition into netconsole.c
+Hi,
 
-Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
-Suggested-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/netconsole.c | 9 +++++++++
- include/linux/netpoll.h  | 9 ---------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+This series lets ntb_transport transfer packets directly from client TX
+buffers to peer RX buffers using PCI endpoint DMA, avoiding the
+memory-window copy path. It raises throughput significantly.
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 0418031b6bc9..810ded6e48f3 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -151,6 +151,15 @@ enum target_state {
- 	STATE_DEACTIVATED,
- };
- 
-+struct inet_addr {
-+	/* Address family: AF_UNSPEC when unset, else AF_INET or AF_INET6 */
-+	u8			family;
-+	union {
-+		__be32		ip;
-+		struct in6_addr	in6;
-+	};
-+};
-+
- /**
-  * struct netconsole_target - Represents a configured netconsole target.
-  * @list:	Links this target into the target_list.
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index de97f001a0f9..ec0821a5b02d 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -16,15 +16,6 @@
- #include <linux/ip.h>
- #include <linux/udp.h>
- 
--struct inet_addr {
--	/* Address family: AF_UNSPEC when unset, else AF_INET or AF_INET6 */
--	u8			family;
--	union {
--		__be32		ip;
--		struct in6_addr	in6;
--	};
--};
--
- struct netpoll {
- 	struct net_device *dev;
- 	netdevice_tracker dev_tracker;
+My previous attempt at the same goal was:
+
+  [RFC PATCH v4 00/38] NTB transport backed by PCI EP embedded DMA
+  https://lore.kernel.org/r/20260118135440.1958279-1-den@valinux.co.jp/
+
+Since that RFC, prerequisite work has entered mainline in a different
+form. Unlike that RFC, this series extends ntb_transport itself and can
+fall back to the existing memory-window copy path at runtime.
+
+Some work needed to run this series on my R-Car S4 testbed is still under
+review; see Dependencies below.
+
+The series contains:
+
+  * Patches 1-5   : small fixes and prerequisites
+  * Patches 6-14  : the main implementation for direct TX/RX
+  * Patches 15-16 : optional features
+
+
+Summary
+=======
+
+ntb_transport currently copies each packet through a fixed slot in a
+memory window. This series adds an optional path where the receiver
+publishes client-buffer DMA addresses and the sender's DMA writes
+packets directly to them. The existing copy path remains available, and
+direct RX and TX are negotiated independently.
+
+Bidirectional direct TX/RX requires a multi-function PCI endpoint. vNTB
+uses one function, while the PCI DMA EPF on another exposes the endpoint
+DMA controller to the host. Each sender needs an ordered channel that can
+transfer from mapped system memory to peer-published DMA addresses. The
+tested setup used dw-edma with the PCI DMA EPF on PF0 and vNTB on PF1.
+
+
+Design
+======
+
+Session
+-------
+
+ntb_transport automatically reconnects a logical QP while the physical
+NTB link and its shared MW remain up. One peer may therefore start the
+next direct-DMA "session" while the other is still finishing the
+previous teardown. A fresh session ID distinguishes the two instances,
+and direct DMA remains disabled until both peers have acknowledged it.
+Otherwise, stale RX addresses from the previous instance could be reused
+after their mappings have been released.
+
+Resetting the physical NTB link on every QP close would avoid this
+overlap, but would also tear down all QPs for ordinary operations such
+as ntb_netdev close/open, MTU changes, or queue reconfiguration. This
+series keeps the existing automatic QP reconnect behavior instead.
+
+Quiesce
+-------
+
+A published RX address must stay mapped until the sender can no longer
+write to it. Closing the local QP alone does not prove this. During
+teardown, each QP publishes its final issued TX boundary, then writes a
+quiesce marker to tell the peer that this boundary is final and no more
+TX will be issued for the session. The CPU-written marker can arrive
+before earlier DMA writes when the two paths use different PCIe ordering
+domains. The peer therefore waits until it has consumed completion words
+through that boundary before acknowledging quiesce and releasing the RX
+mappings. Local TX mappings remain owned until DMA completes or the
+channel has been stopped and synchronized.
+
+Completion ordering
+-------------------
+
+The payload and its completion word are submitted to the same ordered
+DMA channel. A separate CPU MMIO completion would not provide that
+ordering: its posted write could pass an earlier DMA write. The MSI or
+doorbell sent after the DMA callback can still reach the peer before the
+completion word is visible. A read-back from the completion destination
+would close that window, but would add a non-posted PCIe round trip to
+every packet. It hurt throughput in testing. Notifications are therefore
+hints, while the completion word decides when an RX buffer can be
+reused. Optional polling lets the receiver find a completion that
+arrives after its notification.
+
+Per-direction negotiation
+-------------------------
+
+A side may be able to map direct RX buffers even when it cannot reserve
+all TX DMA channels. RX and TX are therefore negotiated separately,
+allowing direct DMA in one direction while the other keeps using the
+copy path.
+
+Protocol compatibility
+----------------------
+
+The extension keeps protocol version 4 and the original QP layout for
+peers that do not advertise direct DMA. Version 4 has been in use for
+about 11 years.
+
+
+Dependencies
+============
+
+The multi-function endpoint setup described above requires:
+
+  1. [PATCH v6 0/6] PCI: endpoint: Expose endpoint DMA resources (part 2/3)
+     (https://lore.kernel.org/r/20260804033855.2115817-1-den@valinux.co.jp/)
+
+  2. [PATCH v5 0/3] PCI: endpoint: Add PCI DMA endpoint function (part 3/3)
+     (https://lore.kernel.org/r/20260717050953.2145851-1-den@valinux.co.jp/)
+
+  3. [PATCH 0/3] PCI: endpoint: Support vNTB as a non-first EPF
+     (https://lore.kernel.org/r/20260728172306.2751813-1-den@valinux.co.jp/)
+
+Series 1 and 2 will be combined in the next revision after the part 2
+review settles, per Frank's feedback.
+
+
+Performance improvement
+=======================
+
+The test used two R-Car S4 Spider boards connected with an OCuLink cable,
+one as EP and the other as RC. The link was PCIe Gen4 x2 with DWC PCIe
+controller IP v5.20 and eDMA (not HDMA). The workloads were:
+
+- UDP: sudo iperf3 -ub0 -c $peer -l 65507 -w 512M -P 4 -t 10
+- TCP: sudo iperf3 -Z -c $peer -l 65507 -P 8 -t 10
+
+The results were:
+
+  (unit: Gbps) (UL=EP->RC, DL=RC->EP)
+
+          UL UDP  DL UDP   UL TCP  DL TCP
+  ------- ------  -------  ------  ------
+  Before  ~0.6     ~0.6     ~0.6     ~0.6
+  After   ~19.5    ~17.3    ~12.3    ~10.8
+
+Reaching the above throughput on R-Car S4 also requires:
+
+- [PATCH 00/11] PCI/NTB: endpoint: packed vNTB memory windows
+  (https://lore.kernel.org/r/20260803180439.1963864-1-den@valinux.co.jp/)
+- [PATCH v4 00/24] dmaengine: dw-edma: Support dynamic LL appends
+  (https://lore.kernel.org/r/20260729143036.3087722-1-den@valinux.co.jp/)
+
+The test setup also used two unsubmitted platform changes: adding the PCIe
+controller to the IPMMU allowlist and capping the EP DMA MRRS at 128 bytes.
+
+The "After" result used:
+- packed_mws=4 and `ethtool -L eth0 combined 4`
+- `modprobe ntb_transport use_direct_dma=1 direct_dma_func=0 \
+    direct_dma_ring_entries=256 direct_dma_poll=1`
+
+Best regards,
+Koichiro
+
+
+Koichiro Den (16):
+  NTB: ntb_transport: Abort link setup on QP MW allocation failure
+  NTB: ntb_transport: Reject oversized TX buffers
+  NTB: ntb_transport: Start TX offload thread after queue setup
+  NTB: ntb_transport: Stop QP work before freeing a queue
+  NTB: ntb_transport: Run RX processing on system workqueue
+  NTB: ntb_transport: Define direct-DMA shared state
+  NTB: ntb_transport: Negotiate direct-DMA queue layout
+  NTB: ntb_transport: Add opt-in direct-DMA channel reservation
+  NTB: ntb_transport: Allocate direct-DMA queue state
+  NTB: ntb_transport: Implement direct-DMA QP session handshake
+  NTB: ntb_transport: Implement direct-DMA RX buffer publication
+  NTB: ntb_transport: Implement direct-DMA TX submission
+  NTB: ntb_transport: Implement safe direct-DMA teardown
+  NTB: ntb_transport: Enable direct-DMA queues
+  NTB: ntb_transport: Report the direct-DMA payload limit
+  NTB: ntb_transport: Add optional polling for direct-DMA RX
+
+ drivers/net/ntb_netdev.c      |    4 +-
+ drivers/ntb/ntb_transport.c   | 1523 +++++++++++++++++++++++++++++++--
+ include/linux/ntb_transport.h |    1 +
+ 3 files changed, 1456 insertions(+), 72 deletions(-)
 
 -- 
-2.55.0
+2.51.0
 
