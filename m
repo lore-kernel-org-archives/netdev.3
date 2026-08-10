@@ -1,120 +1,133 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013015.outbound.protection.outlook.com [52.101.72.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8949E3EFD24
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 15:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786374292; cv=none; b=nIPj4B4KjYahrV1isdg97DpD/lAc/on712z2p06kNezOiMHAIkmcoMtqkXzxBZpnP9Hd3erdoFWjvZIsO+7xKOHqkvgFZ68erf2N+l0XHFOWyzOl8YZrFAkNvxXOHBxzjXvULV1671L+z+D+Sxs9SG1FVmN43+EW8uRdiV/imRk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786374292; c=relaxed/simple;
-	bh=zER0wkYX3iSzsm40MvX7Nxqogzjt8Sqal+OJ9BrC1f4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Gn2w1otRat2aiYeT3adFIePIGyktx54nazRKossnCRZyIT95jVMPpE3lL/E3wQiz6HAnp5yu36XjMbOVMTf7GfHl4rqmAwtkhNYAAmWdJa+EZqveS3HPYe1Bs7dWhDPoZsv9tv/JXpKPxVZzRFBitA/mAatrGkhH3CfLTYKJMx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r66c9XBQ; arc=none smtp.client-ip=209.85.222.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811113ED5D9;
+	Mon, 10 Aug 2026 15:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786374487; cv=fail; b=HcCs/0THCpcae16WZgDqSjNZlzTCUbdt5So883MOSaG688OeZpMcFCwl9oYhKr9wItRQERS89ebD8oGuLA6mkq+mAe7JE+4LjeWs88BSUxcIjBE4OQeHrjHwFq/n2bIfgMjHe9RupJNAwDPAC0M0miY5pcKeDG+6WxKfX1aogN0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786374487; c=relaxed/simple;
+	bh=TVmaaq+gC/4JZmOYIOsU6npGhuJ4iobHrdu+PFSSSqk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VJCj+UIHJkFGTmqkKxwzlewMOMtKS5/emT4UEJfRP6KiymPpU5jqpi45R0z/b2lnCPV6RelGVDbiCW1TEMozp0asa7AygjM8vgzfXyqXzJwVFDPjsuQWoSxiFCNF22ogeLksYwQOWarN79j2UCWdJifvmRKkbTH9CUlvYlEAXEY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=E5WEOfSz; arc=fail smtp.client-ip=52.101.72.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r66c9XBQ"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e8004d60eso330376785a.1
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:04:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786374289; x=1786979089; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=A7cjWhwol8wJn8aBMNX9NVOJq20sc1AbVESHzoeztM8=;
-        b=r66c9XBQVU5TuhqGCvsw4xFlFpvnYrSVC9dP2SM6G+tJxbqig7227NsPqElqrm7XL1
-         so+9RB7snYsb+oMvS6U3xget3HXFsDBQvKMxTelV3r+nGkshnKtT/+16SAGXuyTOE34W
-         vjZkUcwTK8QOsadQVodSmBngiC0uIPQvgzrJ5yuxGKWZmCtfK1gJoQVe9mQkidC+hSAm
-         jPzohvEI2aPcJIftqbH+nD9xUsB/jwcpn0Ab5KM+WfW3/WDDV3c46N5H7aYJepjjv0MQ
-         wQuH/JNoprfrGlHtnaPZMxTsSfSXHagotqyYccFrNO33DevTGPpy92rXNikGrXJVzMFn
-         mTxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786374289; x=1786979089;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A7cjWhwol8wJn8aBMNX9NVOJq20sc1AbVESHzoeztM8=;
-        b=dotpCa8DqQdmG2e6hB+MsJSwX9NDT2ZbRhglQKZeZH5hKQToCyqLN+5iiLv9sLcrVK
-         BE3uAA+XowDRZL6wI0KUF4ZbENwSL204j4GxkBL6LbJhNOb6uUepTzNgtfyInCD2+FB0
-         or82hqgwex7ofvyTbjXawuywuCfFkPWnHYsiDYZTpWOup6P9C2jpv1LKDZAblTmEVAAA
-         /F1JPAZ+hbWsCrTdNCcp0eU0RMK9Le0eQI0oI2bMKhlOpb/QxQzmD0+8whzvfp5x78fs
-         hiBYs44lL78ZabAlkomHD+/5/2C7JuMDIbbImhrWrZd1Tta6JoNR2u+mmRY5+p7ObJIJ
-         hA4A==
-X-Forwarded-Encrypted: i=1; AHgh+RqGaDS0YiTjyOr7JSfmBq1J7evgSy4RHH9O3kJWi8hQV37aDE9d6CvGUkogYE8U4IdgkXYGpP0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0c8OU01ziA+VxC3UpWcHzQPowMLUVZXF/3XSY2PxtppQq7SPy
-	yy/m0qZeyWCfZEClfoUZnomtH9jY+S6wiqDGDqdUoPAEkD7km5ck7Bc/rDE3yQk9H1gSM4tE/FP
-	rEhSxxNesdVO+HQ==
-X-Received: from qkkk7.prod.google.com ([2002:a05:620a:7e7:b0:932:dbfe:de8b])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:440d:b0:92e:9ceb:24af with SMTP id af79cd13be357-93666624388mr2881390485a.41.1786374288646;
- Mon, 10 Aug 2026 08:04:48 -0700 (PDT)
-Date: Mon, 10 Aug 2026 15:04:47 +0000
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="E5WEOfSz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PU9R1DP4owD4WqrSSD3F4kDWV5sRt3jM2EIgQDVQAsLZ8C+wde4cwnigU9ACfBABQacKESwE6KJau+x11e0gLA5FRRJPkDftRwMMcAfhKWzC8alpjnrD5IhdhHKYRAQNGmb82mzyGwhdUAGvYlLfjZCf3lZ2pahQq047rovZ0BugdFmAyxwLQVvpW1geUbTiRqI1p+tPAnfe4ki7ocv5WxCX8xXQIiNMJLiYMa1R0lUZtcnZnE/p/3RG+v25s9mP34CxTFe4Xq4VQK21yFPMROGk+dof6d8v25ZKM1jJ6cFvLCmmDawI1fdClWkWABHE3uBBKz5zyvGOLP6WbL2PlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hMBZPRTvAiFGpApHDxYY/NKstZx3j51GlZqgdgBLWyI=;
+ b=iMZBHb6hMH2O8Evz0G/FbcffOF/cWTvqNelVDj06YDOAKA9JgQgEhL6gVUhbU+2rIjQRNbVoWG6QHt1RqCuzFNBhN0fRC9ae3203U+nvdDkukT3r9Gx8RufdeKzppIs8blVfXVABUw1dCVlsi6hYzT34lk+sdeu0k7yazFG+V9oe4gZ+RyOa7RbmXEaACXKFHCqrKu5NmJA8nbCcI1fsj44MoZxFRyYZEflKiVTMNgU4zl1oRxZhoefGLqMBfy/mirQej5a+UxQ7JMacYvkj550tNsnFo82HKsqliRWNZX0d/vb7PI07LVa0HQjXgcQzhXMfBVfazCKCEZEpVvk0Qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.60) smtp.rcpttodomain=lunn.ch smtp.mailfrom=foss.st.com; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hMBZPRTvAiFGpApHDxYY/NKstZx3j51GlZqgdgBLWyI=;
+ b=E5WEOfSzqyJlEQcRcpcfC6XLOsGGUYUbNNdrHqyntoFmMr8lhMxEyW+5drsy2uEGZQv0Hqsik1cBcL+0Sbyf0EbO+tPFujmNpFOHhLI60kRZhaZ7APEGvkTeC2mRh0I9syc8pgokdVQWeaJ2HN8FkX9OCSGHu1R7F8CUhlue7U3KRHT032Dbqa9oOyoXvCEm0MJKcKIPMiWlYZdVOWTKuGnL5bM1rLf2i8iVoFvxvvGE/FAO9OSTffQs8VpNXFqL8TsAKzIffaV9sra2viQlcIfN/O3oVO328/QWJP7eRGhyTH/6qL/7p1pqwFTSTSs8/+BHIlQY0qy17qEaf/RlKA==
+Received: from AM0PR02CA0186.eurprd02.prod.outlook.com (2603:10a6:20b:28e::23)
+ by DU0PR10MB7285.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:447::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
+ 2026 15:08:01 +0000
+Received: from AMS1EPF00000041.eurprd04.prod.outlook.com
+ (2603:10a6:20b:28e:cafe::ab) by AM0PR02CA0186.outlook.office365.com
+ (2603:10a6:20b:28e::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.25 via Frontend Transport; Mon,
+ 10 Aug 2026 15:08:01 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.60)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.60 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.60; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.60) by
+ AMS1EPF00000041.mail.protection.outlook.com (10.167.16.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.6 via Frontend Transport; Mon, 10 Aug 2026 15:08:01 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpO365.st.com
+ (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Mon, 10 Aug
+ 2026 17:12:55 +0200
+Received: from localhost (10.48.87.235) by STKDAG1NODE2.st.com (10.75.128.133)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Mon, 10 Aug
+ 2026 17:08:00 +0200
+From: Christophe Roullier <christophe.roullier@foss.st.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Christophe Roullier <christophe.roullier@foss.st.com>
+CC: <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: [net-next,PATCH 0/1] Fix pm_runtime for stmac_main
+Date: Mon, 10 Aug 2026 17:07:48 +0200
+Message-ID: <20260810150749.458682-1-christophe.roullier@foss.st.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
-Message-ID: <20260810150447.1220864-1-edumazet@google.com>
-Subject: [PATCH net] af_packet: Don't send zero-byte data in tpacket_snd().
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+30b93b6845b19cc38581@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS1EPF00000041:EE_|DU0PR10MB7285:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2db7aa34-266e-4539-1ed3-08def6f12ba7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|376014|7416014|1800799024|82310400026|13003099007|921020|10067099003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	5nj6s8qc+IKyLfM95O97ymA2EOlhQlTRukTcJJ/oXFy43/RVpGWTEoEHerOhtcPi+xgYGdzpU21jshOkl+a1yItmURsd5wgJPhkNWgbKYj4ZaaPmvWw9sFs0W3p68o47pbc/NgNt9qxHp0s82GEKybzzHvqqNhzN/pNvLlh6d7n4tHQfiQRkYUD6As8bHbn26/RIVAs0Aw7d3ZUzJbeL90Xzw3NzwEziOw/J8nA4nKBFrq2BNFWYTSgxJodaTxF7PpKgvs5ZpegRE0lws3xqTeKeTUVJXh7Jweff/+knXnajYRPA/23C/O1nba3RvX69M5T3roQewQ03p9OHOZOOWYAQr4N97CresYK0vYp6KLdPT6+Q2b6WdMEKvcV0efHgYSiJwurapvbH+UTo+cNRedcMSogJj+b3XyYS8dQV3t1pN1QZIPYmKkpOFra5keKVaaFyZfaRy8pgS9b7QwS7nbaQ9bCmou8hxWnCBmJ9eTIw2OOpnBiNgnlM3mFpjtf2I4NnNBUYCmAGeaXvgzdjGPzKQDrKxVbOT7G2LLMBw0f2QJlTEdDGwQyW74+MbklWSH88IxPid6NoWsA4gnUeVu+EzSqYZDD9+YINHX0wNDZOiugtQN1uBgO9CieerhJrANHVFTMguAX/kKGR3hleuSbL6YN1nkI/wvqlHsjc/y5cLqUg6zTqH6o6ndXOi4avRVjoBa7p/IDkSGi6pO4U7NO9ptGHdoi7UUyr5kD8GJ1btBc/wQgYos1h7IwGBFaS
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(376014)(7416014)(1800799024)(82310400026)(13003099007)(921020)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	4lCh28OTdWhxc1PCtMvudT4csGz7vIb0rfuwUSRmTE3jcQz7zyQ4cHHpFLEzkp44JMcCnWiFdntiaxZj7Dzhk81LtP9fllyCilUnJ2oiQxZFMkTsOaPGap/WhCSixRtgUh0kKzMOxgVy1Ew7J/ao7zyALHYQaDJnP4pElmNtMFYbApaY0X4QMVCkqh/JTwZxDqOx2UaInYW4AdfATpnpVx94HUOTtAxNRYiT0/P73OadfQZL2Nyr5RIwOYXCTAkT89PpBkoxBoCPkmATLmjTBr2rjTmA/TlssCYnrLjXBl/nSc1VU8V1E6/863SfStS1lLI+arBeJQuLLQ9MDAx2r/rctQPImDBFH2Msmug94TUiQ9IZgRb/fSCaTJJxfmT/TOqglKDLcZ9rdIIGKXrX/YOeYsD/loJr7LLrHQTzGTxk7Q20l29E2dadsUCKm2cR
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 15:08:01.2332
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2db7aa34-266e-4539-1ed3-08def6f12ba7
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF00000041.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB7285
 
-syzbot reported a WARNING in __dev_queue_xmit() triggered via tpacket_snd():
+Fix an error during ethernet probe (deferred because IOExpander used for
+Reset Ethernet of STM32MP13-DK is not ready).
+The pb is the Ethernet probe initialize pm-runtime but when error occur 
+and exit from probe there is no deinit of pm-runtime so when the reprobe
+is called (after init of IOExpander) pm-runtime is already enable and
+the balance between "put" and "get" is not symmetric, so Ethernet genpd
+is always active. 
 
-skb_assert_len
-WARNING: at include/linux/skbuff.h:2753 skb_assert_len
-WARNING: at __dev_queue_xmit+0x21bc/0x4970 net/core/dev.c:4781
+Already review on series pushed on :
+18/02/2026 https://lkml.iu.edu/2602.2/02822.html, 
+and 04/08/2026 https://lkml.iu.edu/2608.0/08550.html
 
-Call Trace:
- <TASK>
- dev_queue_xmit include/linux/netdevice.h:3448 [inline]
- packet_xmit+0x243/0x310 net/packet/af_packet.c:276
- tpacket_snd net/packet/af_packet.c:2907 [inline]
- packet_sendmsg+0x28d6/0x4eb0 net/packet/af_packet.c:3134
+Christophe Roullier (1):
+  net: stmmac: Fix manage error case during stmmac_dvr_probe
 
-When sending 0-byte packets via TPACKET ring buffer on devices with no
-hard header (e.g. dev->hard_header_len == 0), tpacket_fill_skb()
-populates an skb with skb->len == 0 and returns 0. tpacket_snd() then
-forwards this empty skb to packet_xmit(), causing __dev_queue_xmit() to
-hit skb_assert_len(skb).
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Similar checks exist in packet_snd() via commit dc633700f00f
-("net/af_packet: check len when min_header_len equals to 0") and in
-packet_sendmsg_spkt() via commit 6a341729fb31 ("af_packet: Don't send
-zero-byte data in packet_sendmsg_spkt().").
-
-Return -EINVAL in tpacket_fill_skb() when skb->len is zero to reject
-zero-length packets in tpacket_snd().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+30b93b6845b19cc38581@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a79e807.01d0871a.3a0d52.00ac.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/packet/af_packet.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 435756877abaa1ab4c0edcc2346bcb2de3625605..103025c4625fb317e0ecedd12c15857af86b7a65 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2660,6 +2660,9 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 		len = ((to_write > len_max) ? len_max : to_write);
- 	}
- 
-+	if (unlikely(!skb->len))
-+		return -EINVAL;
-+
- 	packet_parse_headers(skb, sock);
- 
- 	return tp_len;
 -- 
-2.55.0.654.g21b8a5bc05-goog
+2.43.0
 
