@@ -1,132 +1,179 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDE242F6E3
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 17:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786381858; cv=none; b=TfhSCjn27vzjRcYTP7qbYb6SkpYisbTl+PY5PKGOInkmHZg4+4qLp/0EsQlpwTn/RMMxzjx9sOsu7x1PxUPd1JfK3gymIbJvHRDoSQ8YOQ6PCnJOqWE0VYtGcBz7jOVTxVGnWtmwnbo0bepykzAlN/Mcxfg5Ul1IVcP5y3gxNME=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786381858; c=relaxed/simple;
-	bh=P9yChhC5nEAPRJBgrn49F1A2elik1HxqQF0r8qN6qek=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWr2lxBnuyDS9vz7AsWbQmMGq8/0gzbM/JJsncWTvUECIFqhFA+8HEVtrcTf3gJsHAtSkGbWTdE14LTnvsxTdTUt0/Yyre7IykhxCkvIHrz7rRVdHKaCNFVs8yenFKHVNElphGSviFgV2pRYUSRtYgiQ+KYVN0wVgRPKvZjlr2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Avd80ZSk; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96885386C1E
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 17:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786383333; cv=pass; b=dyNSF1Ix05s0WaVQ+A5KhdhoobXLL9vmMRctWrxi4Ptp30g21062mHvJgLY5h51BDT8Km7rVEr0jXL+BPcu2GXVhAarnpB/1ZQRilik2ZP0IdXrgn9KhSEL50IMThkJbxUhduwp1k1LmNvM584ivdXx9zMPCjqWroNc0s6Dbj28=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786383333; c=relaxed/simple;
+	bh=83OM+ZzwBqa7cwrYDUl8bybUqf5wsaalrEjaBLUCVyU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NSeowEmOsRvTzgquCevogQVg227E5l/HUFm02rcFgo+k4IilDxoamDBrFddNzr0q7NxukMdXfmyj1YVQJYCUwFdZwKXlvG0vlBcuZ8CEdI+1O4Nw8aENTO5n1kSfUYgJz4N3U0auWuGSh00MyW4A0utp9us2fMSDLFUszoSDSyM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fpg1E56S; arc=pass smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Avd80ZSk"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c96c92c0980so1230958a12.3
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:10:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fpg1E56S"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cacef7d299so7385ad.1
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:35:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786383332; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UIXKohhsZ8R5nSAspM0knrNdsyllLl9n5ebkM03KF/vCIB1IpLEMSuEiYR4ED/zc+N
+         Tqj1WFWF2eHZp6NnlazjLgUvQfK4YhPnVpoNRQcAXrY4MUG+CTfvKZB745HdMuhUtYtD
+         EpCo2AxWR/cj0EUaUtWvpGNO158Vb07wn7IABzwLkSTy5jSxctvN4PR4dPiZluGqygA1
+         fRS8Xylq8gtr8YfcS3tlyztDNRoixqv0KKNv6XoNqlxcIACPpce0KxDD2SK3qM04lq6C
+         sfmuHgs1WA/2D+9/6jVmaZj/sHvYvDZ5+QRBCfCnDC7NQQrr7Y6cw9fJcQ3cAq0Y9dul
+         Btjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/YgXeISO2SBRzBurpPsKMrMG8HxjECkp46NJHBU6gTk=;
+        fh=hzzKNC/K8wA1iOpmHmzqXHbSBy5E3LICNCjOjn1tYJc=;
+        b=FaVShVP5H24AJA28T4x+UXQiPpyME/wgacf2n4/5vuujSklkqqhMuUZWsHKcPP9Sa+
+         d9DZ4Hy5mgOGSD/3IRllUeW5PeYvuKrjU+P8sgHtFLvKiuyrYTWEfQwigeTtQkpI+K8Z
+         HqWjc8v/uNXQ8LMUwuAip2KAfwUFE89TxuFcgJ8qe7E3KdEnNmCJ58HpsDuZHh+hI8Y/
+         ahcWVQi2D5/vWSh+HgvQ/ohSkc1LmBuZCr0LAhgKcm5mp3P3Azo64VUsIQRi6D7UDHZB
+         uJBTMoWeWC4Qh0mXTN6g1Qm2oyE+fMUiqwXWZVZ2HEXaqF7rsICBtLjtDpcMZkebfq9j
+         P95Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786381856; x=1786986656; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JhsqyhzE48bljLLTr+dFhyiqwriY9sOBMtlHTtICd3s=;
-        b=Avd80ZSkOicBcGVtsD7BWjbpvUVp7NwN6QlSYiW6CREUAFYkKlqLm5aiiYUI7208fs
-         Bf22+zgU+p/3MuzcRv8pHoTwF66dX1vaZPzP3EYe2fzRCB2CbLMW/jatm7LTgpPF6c1n
-         B5TxyLckYSvXZZIGd3wOgsQRSXYbJ0xX+CWOFq0y0pgPzdWYDeV+DuFLqsbK/Oi8DwNN
-         0gkUKU0s0+0aOKRKe9XIpf71w3Qoq4E1HFzGQYQ5yXTqKpDVsuWMQDdOX89glmxKzLx7
-         zamE3SNtI0ITKIoNAEpG7jhUUq4yF5wgFi0uUgkaE7QDYbtd7+qgUgUzl0XN12g+0YaS
-         ciQA==
+        d=google.com; s=20251104; t=1786383332; x=1786988132; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/YgXeISO2SBRzBurpPsKMrMG8HxjECkp46NJHBU6gTk=;
+        b=Fpg1E56SIJuUUUF/qPjcHjm90y854v6vEBZt/RkPRRfEQ1sjiURIHtaegNMdGt5otS
+         LHmwSd+nWZbZb+2jysooigZcGKxEeB8WfWdkJzfrpqhsoU6KnU1J4F3XiE++YKEc/Zyb
+         3SwOF+PG2D/Ffx+XVT1MLcKp8aA1RQQwvdPqlxzPLtXo4ppvb706J4Uokck/1axpMPcW
+         Aa9FMeg6juhQJQqA7SZ+kTsxdC9GJI1nl0DUfzMaGeIkVo+YNS//QOi1NisEDmhp8sHz
+         xD62VPXikCADvwOCK2o6dBAjdhLPucKybVpl8KakRKmtjy5ShU3pf590j4S2f0iapnj9
+         FNeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786381856; x=1786986656;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JhsqyhzE48bljLLTr+dFhyiqwriY9sOBMtlHTtICd3s=;
-        b=PzvroFSvumjHVVpdFTVwlCpRxgl4Njgvjd2Piqdx1J9UX8ulK3yoCnLOPvDNfE56sX
-         MFqL+IkQOW8wJLEA/UKZsKAOju004nuEcYBRoiPUwa2qdHSZbW21eFXeYvc6UlJOinDZ
-         BPHTxbJWKcKMEVJAG4BlthIplOpjFOlOr9E+BHxOcneY+bTZ7wYtZTfU+AQz24KZE+zP
-         R6F3QhIEdpxacfQIx1PD3RSCypJA9dyDzZF1RLNTxcuOEOphVBkaBRTNPQ5T7duFMERq
-         ys8k9Z7LDRA5BLCI9+DRHhYt80Lo8YvZhtxJ/sL2YQEv7ccwHvNiVNxrGbpmMbznP4zV
-         0+JQ==
-X-Forwarded-Encrypted: i=1; AHgh+RplYIrScptcFXC+Casod6UVONTKrQA8sYprOhdHiT9VE5XGCe8vw8+uPwyG9RnhHaFEn0E1Bvs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2UWh6+zgXbVFmAvbqkaWs//FaXw96br7CikE/QnfeMtQpJqi1
-	WkbisPcLo64T906GYiYHoTPsx8xFV934jiKgSmn4gt4zPfPzXBDJMjjZ
-X-Gm-Gg: AR+sD13/eEzlGA6ruSkiKfFuZs/m2A3HmjtSoTW7nuRBvKPx6ICIuGSDEHlfnp02Nhd
-	UXmMTIcBMgZrvu3hTGsaEuxmq9FlTJAE5PMLyZJLc7Z87y9wE3NkPARvpSDqSO43g0Dw7ZmsBan
-	1mNFAOfnppCEGv5iO8Aa2QrVT7k78ZrYIWc4SPyWF3J0zXGjhw2aJtJPkiHCu3pXcDzC9JWLziW
-	f3RQeEUQFxU3khQouiAac/ENf2izBS8Af3PsgPz10+alJrzL7bR+UruWNE2VHIP69PPBOLSrT4Y
-	GNOZ/eJTSG3UvC+E6Iw0CEFaYcnAs25Wkv8t/vfEBe+zNYPE6dOGVtKA6+rgv+PTViCf4HjHMJa
-	2c20HZj2D9O3hGrTwPZITnfxGEDJn29cX6fmLlH7R1PpeB3dRMRfWGTl/77dDXimhoxLXDdah9h
-	ab6LyGcDC/XpB+hhdtA+BlKppxBl3uTDwXeJIgj9kdXH2mnxagtoAwFUSjieWUUg==
-X-Received: by 2002:a05:6a20:7344:b0:3b4:5ff3:45cb with SMTP id adf61e73a8af0-3cbada660a2mr33795635637.8.1786381856114;
-        Mon, 10 Aug 2026 10:10:56 -0700 (PDT)
-Received: from phi.nguyendp ([116.86.160.247])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1410199cf49sm37194663c88.3.2026.08.10.10.10.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 10:10:55 -0700 (PDT)
-From: Nguyen Dinh Phi <phind.uet@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Dmitry Torokhov <dtor@vmware.com>,
-	Andy King <acking@vmware.com>,
-	George Zhang <georgezhang@vmware.com>
-Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 3/3] vsock: use sock_error() to consume sk_err after a failed connect
-Date: Tue, 11 Aug 2026 01:09:32 +0800
-Message-ID: <20260810170935.2242314-4-phind.uet@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260810170935.2242314-1-phind.uet@gmail.com>
-References: <20260810170935.2242314-1-phind.uet@gmail.com>
+        d=1e100.net; s=20251104; t=1786383332; x=1786988132;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/YgXeISO2SBRzBurpPsKMrMG8HxjECkp46NJHBU6gTk=;
+        b=DLDJSYNJW0Ycx5IctWIY0XiPe6olHvzDcu3H3Kt1nBpk4mitgol3IPoJIIICvt9dej
+         0lwZYhV50zCnBBrEOHN5n+IulbbNjlOJ/I1xGRqOO8V5S0ufyHY9aACNg8Nko+5HzwrJ
+         5bFMy+cMNJBt/vraJL0yowI7Mrx0i02TbJYuqbq9MGlC/Dr0dhEnoOARMamOxvHuDD46
+         kF9HacpXWb8yW4PbC+8Odtk8JgFWcMu+SZcPlv/V8MxDURi0KcDrNcLEG7kNAN6dxPOA
+         /8AbIRIacX01O/Ip507dEsrXTPt7PUzDKog41AVqhZxTEXkZbPDY1lgK80qeCwvq0QZg
+         QK7g==
+X-Forwarded-Encrypted: i=1; AHgh+RrGcxZXteZWLCchYwqITaL0bi4NDtYKLXzysLoSXVorgIIPHpsldZLnowhkZvfl3P74t8l1UuQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGXZeUX1PijV5tF1fCvuHEBSDTXgKps9W7ikpDJe2QB4arFJhe
+	P/2FdSLvG/6VQeAcfmxcAe95Qr+fqy5b+BRoTLBWkZFJXGtPpntzsN1qGHlvhphYgZgD+iwA0a4
+	/C9YUr/nKYvG6mMRccND6BG8jh4Lll0+PQOqC76Bu
+X-Gm-Gg: AR+sD10P7ExDOmWBMQmWhow4U/sJrjyX9vF3yOJxm8E3TApcgqD4OoFsoT2JjMKxF0R
+	4isIK8UzRSj2tydR6maAZVuOn/Y85mUvVnYKTkM5vCOvhtd2K1NvLZKBi3vutRO+GEchNiIYho6
+	Bs6poSxJheldOMH/t04+24Twq4oRe6l/HuzUZi0IIyCJ6WQkjoidkKaSMRcJnf9JWsHOB2UNEhZ
+	untPwa/moV7kpWUS6SCxebcgD8lQN2b3vm/bNh3xfPwAL/ZrRH+abbDvXoaeXxENZzwIKvOGu47
+	nJIyU7Kmf0fqfsByqvwCtn6qDBBbm6Z3Y+3R/vG3V5ZARXbKuFcfRXq/IOTItauh+33fhyP7TOo
+	=
+X-Received: by 2002:a17:902:db03:b0:2ca:4bb4:4bd with SMTP id
+ d9443c01a7336-2d3108232b4mr346535ad.5.1786383331114; Mon, 10 Aug 2026
+ 10:35:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1786108672.git.asml.silence@gmail.com> <f769116a3f5267f06cb9a9a819d482ddea2e0852.1786108672.git.asml.silence@gmail.com>
+In-Reply-To: <f769116a3f5267f06cb9a9a819d482ddea2e0852.1786108672.git.asml.silence@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 10 Aug 2026 10:35:18 -0700
+X-Gm-Features: AUfX_mzuy_QSJjW1U_c3IkRCXmj6khIsaNUIONuibsGj5y0tANytNqlwlv2Nwqs
+Message-ID: <CAHS8izN4SAUCUQySd+VTbdayX-Stj+eYOqAof+Vhi=EsRb93_w@mail.gmail.com>
+Subject: Re: [PATCH io_uring 02/16] io_uring/zcrx: move RQ head/tail to
+ separate cache lines
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-vsock_connect() returns sk_err to userspace but does not clear it:
-  if (sk->sk_err) {
-            err = -sk->sk_err;
+On Fri, Aug 7, 2026 at 6:25=E2=80=AFAM Pavel Begunkov <asml.silence@gmail.c=
+om> wrote:
+>
+> RQ head and tail are currently put into the same cache line, which can
+> cause false sharing problems when refill is run on another CPU. Put them
+> into separate cache lines.
+>
+> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> ---
+>  io_uring/query.c | 2 +-
+>  io_uring/zcrx.c  | 8 ++++----
+>  io_uring/zcrx.h  | 7 ++++++-
+>  3 files changed, 11 insertions(+), 6 deletions(-)
+>
+> diff --git a/io_uring/query.c b/io_uring/query.c
+> index 88a325736992..4321f0b94b4b 100644
+> --- a/io_uring/query.c
+> +++ b/io_uring/query.c
+> @@ -38,7 +38,7 @@ static ssize_t io_query_zcrx(union io_query_data *data)
+>         e->register_flags =3D ZCRX_SUPPORTED_REG_FLAGS;
+>         e->area_flags =3D IORING_ZCRX_AREA_DMABUF;
+>         e->nr_ctrl_opcodes =3D __ZCRX_CTRL_LAST;
+> -       e->rq_hdr_size =3D sizeof(struct io_uring);
+> +       e->rq_hdr_size =3D sizeof(struct zcrx_rq_hdr);
+>         e->rq_hdr_alignment =3D L1_CACHE_BYTES;
+>         e->features =3D ZCRX_FEATURES;
+>         e->__resv2 =3D 0;
+> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+> index a096d44f7b52..fbc190075e2f 100644
+> --- a/io_uring/zcrx.c
+> +++ b/io_uring/zcrx.c
+> @@ -379,9 +379,9 @@ static void io_zcrx_get_niov_uref(struct net_iov *nio=
+v)
+>
+>  static void io_fill_zcrx_offsets(struct io_uring_zcrx_offsets *offsets)
+>  {
+> -       offsets->head =3D offsetof(struct io_uring, head);
+> -       offsets->tail =3D offsetof(struct io_uring, tail);
+> -       offsets->rqes =3D ALIGN(sizeof(struct io_uring), L1_CACHE_BYTES);
+> +       offsets->head =3D offsetof(struct zcrx_rq_hdr, head);
+> +       offsets->tail =3D offsetof(struct zcrx_rq_hdr, tail);
+> +       offsets->rqes =3D ALIGN(sizeof(struct zcrx_rq_hdr), L1_CACHE_BYTE=
+S);
+>  }
+>
+>  static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
+> @@ -409,7 +409,7 @@ static int io_allocate_rbuf_ring(struct io_ring_ctx *=
+ctx,
+>                 return ret;
+>
+>         ptr =3D io_region_get_ptr(&ifq->rq_region);
+> -       ifq->rq.ring =3D (struct io_uring *)ptr;
+> +       ifq->rq.ring =3D (struct zcrx_rq_hdr *)ptr;
+>         ifq->rq.rqes =3D (struct io_uring_zcrx_rqe *)(ptr + off);
+>
+>         memset(ifq->rq.ring, 0, sizeof(*ifq->rq.ring));
+> diff --git a/io_uring/zcrx.h b/io_uring/zcrx.h
+> index c1005f23caff..9ae0bf1c632f 100644
+> --- a/io_uring/zcrx.h
+> +++ b/io_uring/zcrx.h
+> @@ -44,9 +44,14 @@ struct io_zcrx_area {
+>         struct io_zcrx_mem      mem;
+>  };
+>
+> +struct zcrx_rq_hdr {
+> +       u32             head ____cacheline_aligned_in_smp;
+> +       u32             tail ____cacheline_aligned_in_smp;
+> +};
+> +
+>  struct zcrx_rq {
+>         spinlock_t                      lock;
+> -       struct io_uring                 *ring;
+> +       struct zcrx_rq_hdr              *ring;
 
-For a blocking connect() the error has already been delivered as
-connect()'s return value, so leaving it set causes subsequent operations
-like poll()/epoll() to keep reporting POLLERR even though the connect
-failure was already delivered.
+Is this not a problem in general for everything/most/a lot of using
+struct io_uring? Should you make this change to struct io_uring
+itself?
 
-The error should be consumed once it has been returned to userspace.
-Switch to sock_error(), which reads and clears sk_err atomically,
-matching the behavior of other protocol implementations such as
-__inet_stream_connect().
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Tested-by: Wupeng Ma <mawupeng1@huawei.com>
-Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
----
- net/vmw_vsock/af_vsock.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index b59890bbd217..1a287719f24a 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1842,12 +1842,10 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
- 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
- 	}
- 
--	if (sk->sk_err) {
--		err = -sk->sk_err;
-+	err = sock_error(sk);
-+	if (err) {
- 		sk->sk_state = TCP_CLOSE;
- 		sock->state = SS_UNCONNECTED;
--	} else {
--		err = 0;
- 	}
- 
- out_wait:
--- 
-2.53.0
-
+--=20
+Thanks,
+Mina
