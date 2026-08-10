@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811913B6BFD;
-	Mon, 10 Aug 2026 23:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791FE3B6BFD
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 23:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786405252; cv=none; b=oPe8rirwLQZKn/iRDEoAzr1KQPTXiyK5Qpz/J6Zc2v8ShNCQAk0Nkzmb/5EZsxs6Ci6rQFulu0WsShfnpD/qjPgNknxW4X6xh7MMOdVLDdUyuSd4EvY6bFKaTnA9oo9KfdFlF2ZVB7vrBgPYRFaKnAZAgondudPkapPlFWjOHkA=
+	t=1786405258; cv=none; b=NEpCRSynOZiHnCHz3Dr6GirsmRuSrc+iyIfOCEqHmDfLbaAEcKNSenMlJNTu3e6lfEfXL+QT4UVHHltDKw9OSNoVn6xbCh0AXFJn0IU51YpArpb36Gs01Gu68uV5N4vtaO0AMMWjiQFQ18F/LN3+aW5YbrJc9oqMLu0fEfcDE54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786405252; c=relaxed/simple;
-	bh=jkcMwrKVVK8447gJahzt3XxXmie987PHKSdD5enZTvQ=;
+	s=arc-20240116; t=1786405258; c=relaxed/simple;
+	bh=U5OFjWCu2ns6gExqt+HwrpGv4d72+kFS4r0oDSxZNw8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PytztrxyZjEoaJbvmpR8T97XvVAHYF5E5OIQYPSF82krsfmpqQqBtWSafSb5x4Uhza15jLpxBnkaCl5AGHC0Ufl+roQH++rV18yz+4WLlWxRYzOVCB14P48k9VllOGxy4LfLaRxFlKbltoXkCzUwncCifj5f3nTtNSwi8EcuC9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVysRlxt; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=e46by4nPJc0TkRV0DcIakTWAwJV/yWCdSi7mxtR1yDs6UKcH9Hq8FnXFJqPdFY9DTCjhrkWUyJvzT6x6iyINoy+C+6oJPAwQf2skYsOMduIZMlrRT5MBg7H1kGbSA2ObHZbFYKqD6qKcklhN/JYNNUMOJYX9Q8BJsLcHjtscda8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmywOP1c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVysRlxt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC3A1F000E9;
-	Mon, 10 Aug 2026 23:40:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmywOP1c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197381F000E9;
+	Mon, 10 Aug 2026 23:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786405251;
-	bh=e94jut7BDx2TeLjil2fsKpSXP24Q6d6ykiaNSn52s6A=;
+	s=k20260515; t=1786405257;
+	bh=a6z6dz0gsrmTBYa6wsW95j9SI8xv1ZWu8Cf4xm9g2AM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=iVysRlxt8aH2RKYYjf7M8oQdMjvsGOqxaL0bmNDRnWFBgbNzobOvA+YaxGC8V/40d
-	 jjxfzjR5FqNFzuCbVU7FITVbOpaHft48zARG9j6MeFlv0ShP5kOkckqe+PUFsXYxsr
-	 RHgS2LsUBW324Ooq82AVNujtW7MIEQrhCtgo2VlrsTG8gh1qhL/D1Jvd36ZZu+NYdC
-	 3+fhi3LE6biDSyaqldNjc6ULBs3t0yaK/zHgLWR6cNEjAzvFX3VZxL2IPqts+9zKSM
-	 43c+c562+6izbC3ZczmKBF+cx5PIoZpc/BfXCMgON/xkS9S01jBYF/+tRp5z8XssgD
-	 1KHCnc2e+vbCA==
+	b=NmywOP1cxmAzd/9k/TonWUXie+LuXjye9Sbmaxtco0AXIhSwfg+wMYi5VOxXYCfZN
+	 Tj+soBFpHLlumA9OO7nF6xag/pd4fXvUR4UtNlQ5HPaEqEA7tXWihTV9qIlx7b+fqf
+	 j16eNKLiweL/cCE4NvFrdx17VMzemcSkw25ypBLrAQQ/cL+O0Y7JQhSftyUIpqc0mi
+	 Y5/qglEY8s2dfGtXliTaFUdC9UbHsH+gUxIoBH2p2JNQYYUi3ZnXhyBOimHxr+QQ1A
+	 vb/iG3nr8xEOjHYO2wyaYMSVYbfjz2Idu8BRLLgozZfcWO9QRUo3SiPH33NFwGCYhq
+	 C3bBdPbJxHIGA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0988392626C;
-	Mon, 10 Aug 2026 23:40:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09AB392626C;
+	Mon, 10 Aug 2026 23:40:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 1/2] net/sched: act_ct: fix sk_buff leak when the
- header checks reject a packet
+Subject: Re: [PATCH net v2] tap: fix incorrect variable used for USO check in
+ set_offload()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178640520739.254991.6676555820239919462.git-patchwork-notify@kernel.org>
-Date: Mon, 10 Aug 2026 23:40:07 +0000
-References: <20260806101235.809370-1-hj351016@gmail.com>
-In-Reply-To: <20260806101235.809370-1-hj351016@gmail.com>
-To: Hyunjung Ko <hj351016@gmail.com>
-Cc: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- shuah@kernel.org, taoliu828@163.com, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+ <178640521338.254991.9428922162633399342.git-patchwork-notify@kernel.org>
+Date: Mon, 10 Aug 2026 23:40:13 +0000
+References: <20260807070914.112698-1-clementwei90@163.com>
+In-Reply-To: <20260807070914.112698-1-clementwei90@163.com>
+To: Rongguang Wei <clementwei90@163.com>
+Cc: willemdebruijn.kernel@gmail.com, kuba@kernel.org, jasowangio@gmail.com,
+ andrew+netdev@lunn.ch, netdev@vger.kernel.org, weirongguang@kylinos.cn,
+ willemb@google.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  6 Aug 2026 19:12:34 +0900 you wrote:
-> tcf_ct_handle_fragments() runs its header sanity checks before handing
-> anything to the defragmentation engine:
+On Fri,  7 Aug 2026 15:09:14 +0800 you wrote:
+> From: Rongguang Wei <weirongguang@kylinos.cn>
 > 
-> 	if (family == NFPROTO_IPV4)
-> 		err = tcf_ct_ipv4_is_fragment(skb, &frag);
-> 	else
-> 		err = tcf_ct_ipv6_is_fragment(skb, &frag);
-> 	if (err || !frag)
-> 		return err;
+> The USO features in set_offload() incorrectly uses feature_mask and
+> features argument.
+> 
+> The USO feature was written to the local features variable instead of
+> feature_mask. All other offload bits (TSO, TSO_ECN) are stored in
+> feature_mask which becomes tap->tap_features and is used by
+> tap_handle_frame() for GSO segmentation. Without NETIF_F_GSO_UDP_L4
+> in tap->tap_features, making USO on tap effectively non-functional.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/2] net/sched: act_ct: fix sk_buff leak when the header checks reject a packet
-    https://git.kernel.org/netdev/net/c/8a7ed561671a
-  - [net,v2,2/2] selftests: tc-testing: add act_ct test for malformed header handling
-    https://git.kernel.org/netdev/net/c/f1b3416ceaf7
+  - [net,v2] tap: fix incorrect variable used for USO check in set_offload()
+    https://git.kernel.org/netdev/net-next/c/fac7973f004d
 
 You are awesome, thank you!
 -- 
