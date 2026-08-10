@@ -1,59 +1,59 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BAA3ED132
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 22:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A911215161
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 22:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786399843; cv=none; b=Du4JEy7LMCVl/+QZBzQ1mE+D86PRXz6q1730BGm6KtPukumhFX2rDTad5L052lPvdvQe4TIrZybathI3fO1BDb+gGLmXy8qD0M5YcEbWb9ZzJpyk2HwDOYFirpyYPa4NmMvaTUa4ZaKp7HCg2iAJiq8zf1ZsDR5y3AnAjOPKz58=
+	t=1786400079; cv=none; b=Vy2eGQPlj57J5nXO/8ceaPqGwisFY5VQCKxxpDYWxtYIgCHpwy8rwFoI5uGckgMhQvu+puDh/xZpM/FQfoSbygotF3fNRtzcGrNffqV0I78og+JaL484zDaVu3jNJK483wn503IzQ3kXXSlo3CPTJeYY9ffaGaEt7JWUzDMkPm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786399843; c=relaxed/simple;
-	bh=+vyoAMTlwmEGbof4bMxmgk90RIXqVlKcKeRZlqjp1cw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qBwHbJDFg+8RPm2PbMwvaeCgzlJ8RFF4rIFIZG7eJBdsWRrLPjPSXLqN1QOOD9jMlxrHxF3qSQDuBOhWSqQPoPXNXThzpaXLWNvhBOR+n0sfTbhFLJJLFoAxjolwvr/SgIg8J9OqXWD5sk1pLcuKJ4QFq3Ej19MfDuGD28pzO2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=OGP8BmVA; arc=none smtp.client-ip=209.85.216.49
+	s=arc-20240116; t=1786400079; c=relaxed/simple;
+	bh=R+nJgBHLUg5G8FqOw6sYG/0O0FQzt2QBmneJAqQJ1SA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iWVzYiYojdR+WF9K7xf8AO7ZgIp3rZYGYtvcURCRbZ88037uaxIcUgjFxxsMC2siWg/FvGMkxPjKJQRbOx1gIvJSbE/tR12KGzWC6yVsE8YMI8OlKG/94cxEuZxoH5FPgiBMWAOwpQMYjkD2PGbZ0/iVllJhyOqqoClFt2F+1ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=HcZnci5k; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="OGP8BmVA"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso3068961a91.2
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 15:10:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="HcZnci5k"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cbe6295f05bso275254a12.1
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 15:14:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1786399841; x=1787004641; darn=vger.kernel.org;
+        d=openai.com; s=google; t=1786400077; x=1787004877; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GMn9iDYzK+mzxIlQbYoX1t508noteCegqfO7arIOGKg=;
-        b=OGP8BmVAJGzyRO8M/zxWo5ohbf41WJXFwU70H7eMQxXovcMWr1hAfF6g8avV+WuB0i
-         MvVDmyLv01NZeRR+S2TFquHl2TehU6PdyT6TzJj4XXXhDMkNGRuXJnEPIwB/+sr7wXVv
-         llPg/ieZPvXIB70zAGs+BGpxPkiMiga1ETSKA=
+        bh=TcWTILMa3E47IXaacxZ6F1frXvBazt7YqfOX/WCkxYQ=;
+        b=HcZnci5k54jVcI7Y8ArEsKajaXDBUk93zcEtlhBs+8FhaBXUrCABsVoagpo7aQX+n+
+         b4IpPT34pcagRYWTlZJTl+yfOG/FiONi5JT0kRNEUqouM2MhXk1XFN9jpDTBpSNqdVmG
+         V6oEcO72UWWORBHz6vDvmoA5Dc+XuiLQeQmGI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786399841; x=1787004641;
+        d=1e100.net; s=20251104; t=1786400077; x=1787004877;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GMn9iDYzK+mzxIlQbYoX1t508noteCegqfO7arIOGKg=;
-        b=E2+QS2IeXjTd3zIPO7frdxOeNhtq2eeUUFvMn9yGB/C6KhMXe/7U0ca2F/WL2gTs1l
-         BBWoE4R/EV9myIwR8kVcoWicjJCulHBQZmdsQj3pb5o3Y/apS8mUPC7OMoulAgyA7O74
-         ADWJzDmyreXY8C6BZr7uGbQY33syOB0DhoApV+o/BYoJwjYXAxUz3MKET3hWG9GgIWnl
-         Pey6CUjkNqDssgpsPHLuGk+Eqy8FNfVssIrkHQ4Jx63oGO93O6bfnPOUC3pbz4SAQwol
-         nSksJi9F4qKZ3WddNHPzh2xML/TCP8of5UDf1gCmHNchtPKVqduVa/D9FC+4EXaZJSsN
-         RVgg==
-X-Gm-Message-State: AOJu0YxxQzm3xulGxA1QEwN80Dywh9eibPTfRrX9fA+U+lKWU+fC1Tw5
-	ajqXrqL4oHlJErMq0kJGP9u/6x4R/a+4qME5t65jgZBvaE2nCSvfQOmlUMrHT/OQkpBfOF7TytK
-	xQjILKJ9wIg==
-X-Gm-Gg: AR+sD13VI/A4uhNrXTU9RkoN2ezZfloGNhjSTUD/v3SfePQCG2m5JKCAzrrSuoipxmR
-	SC8miaIHahfbwDg4b32v+1gZG4DZeYRL0ui7Art57Ci9P3KhpXB1zfj3gOSRDRVaccg9/6cUV1y
-	OPO389JLCXM1PvXIg0Do+u4fdUqLr1Pmk4WnlX6VOg4MsMWr6yut8GHdvPC1ysTOVmIapQRu/IO
-	mGzJO+LPFcqnmkuaHEJ1iLmQ26IQayqhFCSexNdHrnyH61QyQ6K30C9AUWZhqR+ogkfcBR/yNls
-	p/v2X4BSN9jpdQqHAZ+gaSgNnpUf19ysGYYj5HK2ma8LArM321AItLOqn4ecZk9vfSWLcZvDm5Q
-	0WMX8tL4pedhVYtgy8IXpgrwsZrMKg6hL9GaocC7VkIbmL+xr1zveatPPY9fvP9VqiLNPygWFD5
-	qmFCkdUWb35UL2Sc0kIfxRExti5QEd4MElrWImU4joOXYQQSMKgJUwS16DCkHQ3e3SSsE/kJqBC
-	pZ/87gvo6jNvadMAIevLmVmamivvf1WUOEHAyPRoZXKfV9yZutusLmW+wdbnMjh
-X-Received: by 2002:a17:90b:1d47:b0:36d:b424:4f17 with SMTP id 98e67ed59e1d1-39261f724admr30384368a91.1.1786399841085;
-        Mon, 10 Aug 2026 15:10:41 -0700 (PDT)
+        bh=TcWTILMa3E47IXaacxZ6F1frXvBazt7YqfOX/WCkxYQ=;
+        b=gJ0gkyj6KbYWmJa79jyore4Q0ZZr7SMk4TNKZoBEXp0gZlmAbrrjhfFGC4xXoODSwh
+         h4G834T9W2FSEhqqS/7aKTg4+L/qq8CPxFne650TssEBlYHXT3gDbW0l/bjqwm7niicj
+         jSiIbc+cNwIM/cr4pLThRWadrpDFprwFnylHfymMGCwwTiwpWNlCSAbR4jE3SQiJJu3d
+         m4h6MttXOwC8OoCELsz1wf9RPmzSX7yLLOTP/I3JA3jdJmAyeE41/7+Jt9pkBegdWRCQ
+         z4Qz50OtIc7MlhBKW1gwvoVNO+D9LcB+5vYKCe06lwo7VZSb+wkuKAf4uNnCTSVp5a5f
+         iJ9g==
+X-Gm-Message-State: AOJu0YxfQ0c6NDyDrUET6TTfiERb1x93LHJwPntncnDv3IXWSQtJeGHy
+	HluOfzUB2NJENRphogw5otNyDVICyRQschrOJQsy89JcEc/cwidCHb0Oj1EwglOCPQThw3CLooS
+	GOOzF7TRFDg==
+X-Gm-Gg: AR+sD12AxesOgHBxQeU2dvS0SV7i4S6GRNh8aCpguJcijpjcIpV8Vz7/cZVhlrKoNAH
+	7HGeyTt0L25D4ObdeW5HWsw8O0KCeDW6OuCZ7nmV5qIR27pZwgMGESxSdWhAOSIzHQVtzJ8efqq
+	pXuaXLBWQ5+VOrGiuy2C6qtLpEK1MNZH+0ij3JvBszG7liVnJybx0z441iFreImfVSeDYiTVTbD
+	sdK6LMKtaFDr0CAolkSBtjzrnu5IBO9F+FqZr4y0KJfVf0q2BB3BUNhFhfsWBBHjO41yay7F8uL
+	G3AOAzn/1ZKEJ4DDGyhTfpSDLxz4RTxZZgNRHEJn15KPz2U2NeLo7lvFxfD0adiWCx+SWjbvHDk
+	2wm7972kX3hsEYZBrycc6o6zagaLYCaJqOvmqIi98MyH+6SrUiR8YbFpGSh7JM0KqMiXIGhqSBY
+	BJii2RMqTjfFBRqI3S2SLdZOAASJyc9H9+Jck5sq+Nag92CrT4wiCu3RZ6SsviARXjeC32tPujV
+	gDnij4w3SBUYZFn76IexHwqtATyMLVCrrvHF9LLgJQwk2dlvck9sfF3V0m6gXte
+X-Received: by 2002:a05:6a21:7317:b0:3bf:a7d5:df34 with SMTP id adf61e73a8af0-3cc22addd19mr2082694637.0.1786400077512;
+        Mon, 10 Aug 2026 15:14:37 -0700 (PDT)
 Received: from com-75606.corp.openai.org ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14101b7b39bsm38509700c88.14.2026.08.10.15.10.38
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141019b41d9sm37709398c88.5.2026.08.10.15.14.36
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 10 Aug 2026 15:10:40 -0700 (PDT)
+        Mon, 10 Aug 2026 15:14:37 -0700 (PDT)
 From: Kyle Zeng <kylebot@openai.com>
 To: netdev@vger.kernel.org
 Cc: Simon Horman <horms@verge.net.au>,
@@ -63,11 +63,10 @@ Cc: Simon Horman <horms@verge.net.au>,
 	Phil Sutter <phil@nwl.cc>,
 	"David S. Miller" <davem@davemloft.net>,
 	linux-kernel@vger.kernel.org,
-	Kyle Zeng <kylebot@openai.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ipvs: reject invalid states in connection template sync records
-Date: Mon, 10 Aug 2026 15:10:34 -0700
-Message-ID: <20260810221034.33751-1-kylebot@openai.com>
+	Kyle Zeng <kylebot@openai.com>
+Subject: [PATCH] ipvs: fix reversed sequence option serialization
+Date: Mon, 10 Aug 2026 15:13:47 -0700
+Message-ID: <20260810221347.34267-1-kylebot@openai.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -77,56 +76,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-IPVS sync receivers validate protocol states before creating or updating a
-connection. For connection templates, however, they only log states outside
-the template state range and still store the value in the connection.
+hton_seq() expects the host-order source first and the unaligned
+network-order destination second. The version 1 sync sender passes these
+arguments in reverse for both sequence blocks. This leaves 24 bytes of the
+kmalloc-backed message unwritten. It may disclose stale heap data and
+replace the live connection sequence state with values read from the
+buffer.
 
-A template can be returned by ordinary connection lookup. TCP and SCTP then
-use the invalid state as an index into their transition tables.
+Pass the connection sequence state as the source and the message payload as
+the destination for both blocks.
 
-Reject invalid template states in both sync protocol versions before
-looking up or modifying a connection. The version 1 path handles both
-IPv4 and IPv6 records.
-
-Fixes: 275411430f89 ("ipvs: add assured state for conn templates")
-Cc: stable@vger.kernel.org
+Fixes: 986a07579533 ("IPVS: Backup, Change sending to Version 1 format")
 Assisted-by: Codex:gpt-5.6-sol
 Signed-off-by: Kyle Zeng <kylebot@openai.com>
+---
+ net/netfilter/ipvs/ip_vs_sync.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
-index 93038ab..6f0c2a4 100644
+index 93038abbf..f6ea6c953 100644
 --- a/net/netfilter/ipvs/ip_vs_sync.c
 +++ b/net/netfilter/ipvs/ip_vs_sync.c
-@@ -1002,10 +1002,10 @@ static void ip_vs_process_message_v0(struct netns_ipvs *ipvs, const char *buffer
- 					pp->name, state);
- 				continue;
- 			}
--		} else {
--			if (state >= IP_VS_CTPL_S_LAST)
--				IP_VS_DBG(7, "BACKUP v0, Invalid tpl state %u\n",
--					  state);
-+		} else if (state >= IP_VS_CTPL_S_LAST) {
-+			IP_VS_DBG(7, "BACKUP v0, Invalid tpl state %u\n",
-+				  state);
-+			continue;
- 		}
- 
- 		ip_vs_conn_fill_param(ipvs, AF_INET, s->protocol,
-@@ -1162,10 +1162,10 @@ static inline int ip_vs_proc_sync_conn(struct netns_ipvs *ipvs, __u8 *p, __u8 *m
- 			retc = 40;
- 			goto out;
- 		}
--	} else {
--		if (state >= IP_VS_CTPL_S_LAST)
--			IP_VS_DBG(7, "BACKUP, Invalid tpl state %u\n",
--				  state);
-+	} else if (state >= IP_VS_CTPL_S_LAST) {
-+		IP_VS_DBG(7, "BACKUP, Invalid tpl state %u\n", state);
-+		retc = 40;
-+		goto out;
+@@ -747,9 +747,9 @@ sloop:
+ 	if (cp->flags & IP_VS_CONN_F_SEQ_MASK) {
+ 		*(p++) = IPVS_OPT_SEQ_DATA;
+ 		*(p++) = sizeof(struct ip_vs_sync_conn_options);
+-		hton_seq((struct ip_vs_seq *)p, &cp->in_seq);
++		hton_seq(&cp->in_seq, (struct ip_vs_seq *)p);
+ 		p += sizeof(struct ip_vs_seq);
+-		hton_seq((struct ip_vs_seq *)p, &cp->out_seq);
++		hton_seq(&cp->out_seq, (struct ip_vs_seq *)p);
+ 		p += sizeof(struct ip_vs_seq);
  	}
- 	if (ip_vs_conn_fill_param_sync(ipvs, af, s, &param, pe_data,
- 				       pe_data_len, pe_name, pe_name_len)) {
+ 	/* Handle pe data */
 -- 
 2.53.0
 
