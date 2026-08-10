@@ -1,123 +1,156 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEC2330301
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 02:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3912A32B111
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 02:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786327289; cv=none; b=nAoUgsNWfAx9DVUkFRObGcRoPoEpOm5n651zwJx20+0TXVmMpX1rDlH4BBx4HQ//kkmB5donC4fT2IDNDTL1KsaF4w1iYZgt22RQI6G/TIVswtLLf4bmbra+lTQwuMjoMcFiFI1H0AGIbt+nljNM3VO8WHqDMJWlMoNdPjlCsvM=
+	t=1786327340; cv=none; b=bDQyrJsw8RIAJ97j+UprwxzZGAcjR5r0PCRtnwJtWdKhfCNcLNqXcNKwalxyyxnpNLtXyNrUGSwGOGeB3p7DWb7l+x9ekzLUOEv3fe8tkqMBXy0K1P4AaaLKGGoKb8wqc+BiLwsbsETQ6PdKO9RADi3Z3JOQekm5srLzJqLel1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786327289; c=relaxed/simple;
-	bh=Tv0zLmDeyTEBTC/Bsc9TLlppJY9tcTDER5w6lsnWK/s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VdfrdQLni+o2UYsMNiTIuIdVvHQUVk824e0xCMz0ByGufe/n65pOeeMLvnu6XYURclFi55z53MC6j3gVIkSLQJ+H/cuyu3Dv4wEoTPLp5sDfMWOjzukQ9GesbzwbOiF9YeuSvxd1WNICiHpGnI2RYxPFV9roXnMSTI9rs65zrxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=OR97nI7d; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1786327340; c=relaxed/simple;
+	bh=xGVbTqcbmXKJDuCBlsOgJcwXwqXfOP2u9fxjxnzVUh4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eY551cLtoLv+lEc2RSNCQln0vbKpzwURSuX/1m6Rxzf3FWUILug2ZdCrn2ctRgk5OCM7HRGt8xvvZyfCsnoiBXNr5YpNjROuNwpw+Wn9ygsWNyZdR2dMUeNgSADPl366NHYR7MGFS7RDVjg5D+E1hvi8rhTyPc/aYgZuZjA6mlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O3ieLwwh; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="OR97nI7d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=kHWJYk34ETFXOP89G8WuVgapFZS/H61rmp20OjWEYlY=;
-	b=OR97nI7dS2iXMGnjgR7Er9BsNkd4mWeP2GyBVkVTXH3/8uHIAHzX5zcSFSLaQ7
-	QmBfxJwyxrkp6JJWxJ93jMpKqBTHYXYk8O8CWqt7Ct2bwoNcEiRe/CvzMNoerTy3
-	lAc/QHNIA5EvbDg5Tv3We5ZW8t6ddT4dYbFpDgm3nLg78=
-Received: from [10.42.20.136] (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wCXfXrRMHlqQXuUNA--.59973S2;
-	Mon, 10 Aug 2026 10:00:50 +0800 (CST)
-Message-ID: <09030f3e-811c-48a8-ad9c-6bf9432e73e4@163.com>
-Date: Mon, 10 Aug 2026 10:00:49 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O3ieLwwh"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so1445270a91.0
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 19:02:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786327337; x=1786932137; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6bMsTpWX3mOf0fEaABifWS6yDxE6k9F3K84LoGarf68=;
+        b=O3ieLwwhciqa/vy+ySo9fbIAeNEcaeio2oOtDvkUu8oCG32W+M6YSXxXPM5k2wZzWu
+         lLihcBJBb4Fiya9s7hL19D4Hh2XDtPYTo2PNHEmOAAaDiaHzmm431d3iCKRC+rI9e9Vz
+         0gi+kVUioRmKgvlKim5Q7Q+tOxK4sg5CWfDppnCzCp4UYn/uzCvZb/5Up7qQo6QRiHYu
+         K0RWgQWetx58+yjMHfFKyHOWXtEcc+DBeyK5dDZbxMpBI+ou3RnBuLum1v8vhk0iwH0n
+         wf8zlytrYNtGU3XEQA/em4B0hlcEBBTe+VMV9wvEWZyefP0UVcyFThEPcmZC4AnzvjO4
+         1ikw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786327337; x=1786932137;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6bMsTpWX3mOf0fEaABifWS6yDxE6k9F3K84LoGarf68=;
+        b=HcQ2dgBP27W4vzA5HSWGX2YhaDFNUC8TOvcfixtHk+0At41QubwwjN+HwwFTwYZOoe
+         LYFRhDaIqnlMHbZQRLUZlWy2uUF3PfR+D4PkGwE+pt2oqdbpNEesPxdya+DPipxviCIj
+         WgSs0psxSnR0agpscDnkIKHCONEsuERsAPkfVaCrrI/ZXiE9XzKVbjuKWdyZUvIoP9fu
+         3qz0zmvbaihCO1he+78vMKfpRTOYzB13cmc5aFepJnC0cEURiRdO0jDwZZ7Eg7ry3AvF
+         o0tEjJbrFFsq/vGPtspP29N6AkBTqS92/CIiqyEKtG9ivWd+NrIgP1pRZ6lPk/1uc5uD
+         yi8Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpETAm0d2tUJ5YpjxbRU2bvTWe4bXP7OjsuscsZUdIUqu11q8IgCIwCr45pbJSboyDTYU1TzBQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6+CTTBtMtXFP4PftCidbthl5tlvaVzriHSuqKwcRI7ou2wcX9
+	2Q+RZZLfCTzq3AJgnnSXPTf2gd99XyqTwrRTVFVvj4/mSU4did0Z2ryr
+X-Gm-Gg: AR+sD118riI/9gCoyXRKsA28gTVZPErV9+IzdNbuWAPO2r39TitTmTBA/lOOIXw22Ni
+	ygFSuvc+qcwHuO8IynPi3vUutE6SRSvjb+d/fdUQsiZFnOscoLnKXtZWZ/y0K7GJ121SC+zEw/F
+	PIMEtQVn0Jyv8uhAh9ZS72OeVKmXN14p8tUCmH5GI8frkARXKzodUTPlZoON/4SH03Zf5swbE3O
+	vZaTy71b8IhQPDzbpzIttPhwdFmcfrqu+RetlJKrkKV5+0x9z3oi9GMK4/JB9l1b6TCOvDLWGuI
+	hJFJaCkBHh7PIE06Rng3FEaE4HeYoVXxJraFAsyCgJCUIdwadOucz7sNc3xWsBzcuhIGOqwiUNa
+	BZzGut0/mxP44q4f+4wWqRy1SH5uz59G8BKwHDbcgVcGFcfQ8lYxexnLm7IF+m9IfAIMEXgtbfz
+	7OYikzskspli20AraMpc8WGfYcotRv6R1RiciQHIzCbIof+yjK8v4Idgk=
+X-Received: by 2002:a17:90b:224e:b0:38e:2524:724f with SMTP id 98e67ed59e1d1-3903c5b353bmr33888345a91.12.1786327337076;
+        Sun, 09 Aug 2026 19:02:17 -0700 (PDT)
+Received: from fedora ([203.175.12.242])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-390b370b145sm5025301a91.2.2026.08.09.19.02.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Aug 2026 19:02:16 -0700 (PDT)
+Date: Mon, 10 Aug 2026 10:02:10 +0800
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	jv@jvosburgh.net, shuah@kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next] selftests: bonding: disable DAD for IPv6
+ addresses
+Message-ID: <ankxIiVLu3qY5jw5@fedora>
+References: <20260808162345.2442594-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] tap: fix incorrect variable used for USO check in
- set_offload()
-Content-Language: en-US
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, kuba@kernel.org,
- jasowangio@gmail.com, andrew+netdev@lunn.ch
-Cc: netdev@vger.kernel.org, Rongguang Wei <weirongguang@kylinos.cn>,
- Willem de Bruijn <willemb@google.com>
-References: <20260807070914.112698-1-clementwei90@163.com>
- <willemdebruijn.kernel.2e2d53367799a@gmail.com>
-From: Rongguang Wei <clementwei90@163.com>
-In-Reply-To: <willemdebruijn.kernel.2e2d53367799a@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wCXfXrRMHlqQXuUNA--.59973S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXF45ZF45ur45JFWrAF47Jwb_yoW5Xry3pa
-	1UAa12yr4vqryjka1UAw10qrW5Xws8Ja9rGF4qya4Fvr98WF40kFWS9a10qa4qg3yUWFy2
-	vFy2vFy3A3Z8Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UfnY7UUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-hQ6pWp5MNS-YgAA3f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260808162345.2442594-1-kuba@kernel.org>
 
-Willem de Bruijn wrote:
-> Rongguang Wei wrote:
->> From: Rongguang Wei <weirongguang@kylinos.cn>
->>
->> The USO features in set_offload() incorrectly uses feature_mask and
->> features argument.
->>
->> The USO feature was written to the local features variable instead of
->> feature_mask. All other offload bits (TSO, TSO_ECN) are stored in
->> feature_mask which becomes tap->tap_features and is used by
->> tap_handle_frame() for GSO segmentation. Without NETIF_F_GSO_UDP_L4
->> in tap->tap_features, making USO on tap effectively non-functional.
->>
->> Keeping the USO handling inside the TUN_F_CSUM block avoids enabling
->> GRO/LRO when userspace requests USO without CSUM.
->>
->> Fixes: 399e0827642f ("driver/net/tun: Added features for USO.")
->> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
->> Reviewed-by: Willem de Bruijn <willemb@google.com>
+On Sat, Aug 08, 2026 at 09:23:45AM -0700, Jakub Kicinski wrote:
+> bond_reset() waits up to 2 seconds for IPv6 connectivity.
+> With default settings DAD itself may take almost 2 seconds,
+> causing flakes on debug builds. It used to flake once or
+> twice a week, recently it started failing once a day.
+> Probably some downstream changes to scheduler, or our machines
+> go busier.
 > 
-> Reviewed-by: Willem de Bruijn <willemb@google.com>
-> 
-> Substantially changed patch, please don't keep Reviewed-by tags across
-> non-trivial changes. That said, I do agree, so adding it again.
-> 
->> ---
->> v2: Fix more incorrect variable in USO check.
->>     https://lore.kernel.org/netdev/20260806163949.2807698-1-kuba@kernel.org/
->> v1: https://lore.kernel.org/netdev/20260805072121.117472-1-clementwei90@163.com/
->> ---
->>  drivers/net/tap.c | 5 ++---
->>  1 file changed, 2 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
->> index 5d2d34d24ce8..d4ca2fee538b 100644
->> --- a/drivers/net/tap.c
->> +++ b/drivers/net/tap.c
->> @@ -883,7 +883,7 @@ static int set_offload(struct tap_queue *q, unsigned long arg)
->>  
->>  		/* TODO: for now USO4 and USO6 should work simultaneously */
->>  		if ((arg & (TUN_F_USO4 | TUN_F_USO6)) == (TUN_F_USO4 | TUN_F_USO6))
->> -			features |= NETIF_F_GSO_UDP_L4;
->> +			feature_mask |= NETIF_F_GSO_UDP_L4;
-> 
-> Drivers/net/tun seems to have this same issue.
-> 
-> Do you want to take a look or shall I?
-> 
-Hi,
-I have check the code in drivers/net/tun.c.
-In tun.c, the tun's all offload bits go into features argument and
-I think tun.c does not have this issue.
-> 
->>  	}
->>  
->>  	/* tun/tap driver inverts the usage for TSO offloads, where
->> @@ -894,8 +894,7 @@ static int set_offload(struct tap_queue *q, unsigned long arg)
->>  	 * When user space turns off TSO, we turn off GSO/LRO so that
->>  	 * user-space will not receive TSO frames.
->>  	 */
->> -	if (feature_mask & (NETIF_F_TSO | NETIF_F_TSO6) ||
->> -	    (feature_mask & (TUN_F_USO4 | TUN_F_USO6)) == (TUN_F_USO4 | TUN_F_USO6))
->> +	if (feature_mask & (NETIF_F_TSO | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4))
->>  		features |= RX_OFFLOADS;
->>  	else
->>  		features &= ~RX_OFFLOADS;
+> A lot of selftests already use nodad, let's use nodad in bonding, too.
+> I don't see an obvious reason why DAD would be important to the test.
 
+In this case, how about add nodad to all IPv6 address setting on bonding
+tests, e.g. bond_options.sh, bond_macvlan_ipvlan.sh.
+
+After that, we may event remove the sleep time in bond_macvlan_ipvlan.sh.
+In my local testing all the macvlan/ipvlan test passed with nodad set.
+
+Thanks
+Hangbin
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: liuhangbin@gmail.com
+> CC: jv@jvosburgh.net
+> CC: shuah@kernel.org
+> CC: linux-kselftest@vger.kernel.org
+> ---
+>  .../selftests/drivers/net/bonding/bond_topo_2d1c.sh    | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/drivers/net/bonding/bond_topo_2d1c.sh b/tools/testing/selftests/drivers/net/bonding/bond_topo_2d1c.sh
+> index 167aa4a4a12a..903c7a6c7287 100644
+> --- a/tools/testing/selftests/drivers/net/bonding/bond_topo_2d1c.sh
+> +++ b/tools/testing/selftests/drivers/net/bonding/bond_topo_2d1c.sh
+> @@ -48,7 +48,7 @@ gateway_create()
+>  	ip -n ${g_ns} link add br0 type bridge
+>  	ip -n ${g_ns} link set br0 up
+>  	ip -n ${g_ns} addr add ${g_ip4}/24 dev br0
+> -	ip -n ${g_ns} addr add ${g_ip6}/24 dev br0
+> +	ip -n ${g_ns} addr add ${g_ip6}/24 dev br0 nodad
+>  }
+>  
+>  gateway_destroy()
+> @@ -75,7 +75,7 @@ server_create()
+>  
+>  	ip -n ${s_ns} link set bond0 up
+>  	ip -n ${s_ns} addr add ${s_ip4}/24 dev bond0
+> -	ip -n ${s_ns} addr add ${s_ip6}/24 dev bond0
+> +	ip -n ${s_ns} addr add ${s_ip6}/24 dev bond0 nodad
+>  }
+>  
+>  # Reset bond with new mode and options
+> @@ -97,9 +97,7 @@ bond_reset()
+>  
+>  	ip -n ${s_ns} link set bond0 up
+>  	ip -n ${s_ns} addr add ${s_ip4}/24 dev bond0
+> -	ip -n ${s_ns} addr add ${s_ip6}/24 dev bond0
+> -	# Wait for IPv6 address ready as it needs DAD
+> -	slowwait 2 ip netns exec ${s_ns} ping6 ${c_ip6} -c 1 -W 0.1 &> /dev/null
+> +	ip -n ${s_ns} addr add ${s_ip6}/24 dev bond0 nodad
+>  }
+>  
+>  server_destroy()
+> @@ -124,7 +122,7 @@ client_create()
+>  
+>  	ip -n ${c_ns} link set eth0 up
+>  	ip -n ${c_ns} addr add ${c_ip4}/24 dev eth0
+> -	ip -n ${c_ns} addr add ${c_ip6}/24 dev eth0
+> +	ip -n ${c_ns} addr add ${c_ip6}/24 dev eth0 nodad
+>  }
+>  
+>  client_destroy()
+> -- 
+> 2.55.0
+> 
