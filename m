@@ -1,179 +1,136 @@
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+Received: from mta1.migadu.com (out-236.mta1.migadu.com [95.215.58.236])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB14E3EDAA2
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:11:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C20032B111
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786371094; cv=none; b=JTlNMUFepqRUzxxnXWGQAh4iQCndM5ZWh1dl5t9XX9MnfRquaqMrTy95dqaB0+jtj2N31JRoVWm8j8fwpVDDGZaVgiVcr1QsqfAlXHNyLOsdEjgPKtOcSej2mZ9s9Id9+8pBc7Cx2jz+6tqE3uUxzcoFvjexCyJm0hmZzrVKtz4=
+	t=1786371341; cv=none; b=EcOGtLXUYu6odY2IgFZWGZlTTAUNckycaZVxCp6gBjwVIKfFVcP/lS9/KjmImoUegx7Z8rosAZZVmRmhCUe1zRVUQyx+SuEpqHRGeadhdWxmaHLGHiPhVg4Tevsw3/n/MZNdH1E633x8r/ANMSC/DPghiWkmO/3l6pIAyb0ZwV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786371094; c=relaxed/simple;
-	bh=MLI2dy+CITZJUfRn+r4FhLKr2mO4v8ccuzCmNCGIA2Q=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=naI5TNFiq/ybPSHMTdwvyBxhbGRPfO853ECXubGKw2X/8xBbIshhkDY1+TLESfxnxnugOMcaRwBwZiOkHeEuJqiroVP9Bto7eJNCVo4eFF9ylJVt+7hj1E18J32kXoknrFsPtVSQ9PeQ4XcjK37CRJ3uwdEXUCSUZl9F4l/UbCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PoY8nSp+; arc=none smtp.client-ip=209.85.160.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1786371341; c=relaxed/simple;
+	bh=cwdws7dQB5UT2+8IkuCqQuSUtAVNDKWPhooGtxCAy1E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ohvvl2XZywFwGpbhn3GhbZ+NhBeQTXgroEYdN4MzdxstcWp3xwMyT1/BkK7nV9lCKaQjjuGccICHBCF901ITv6PBOAcTJR7qXtdOl833pWIAbkDiEsQlT1ONIyg9lKvqeK9kLDQzNWqd12EJWVQQ+xelfUfgM1I9LvPXBiG7auk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=o5HEdddM; arc=none smtp.client-ip=95.215.58.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PoY8nSp+"
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-526da7e3c9dso16742401cf.1
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 07:11:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786371089; x=1786975889; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CcHS/nuwmsgjwiAf8ICCrjjP61LEdpQ/ArmgBJs6ppI=;
-        b=PoY8nSp+bQdXg5qQhmXft5bVhgTgCKKc4hl/kyKLknh/laxpMC73uuK+/e9g4madVz
-         19OdMUkvlN/hFizZH+RqAXvbiIYBqOWR1UpIDb8ft62qChWCG99m3+WJyqoZR6XeFIVU
-         454E4aKKDu1QPdXH9Mgm/Rfv70ATzkfpkhaUVeEFY4PJr1XanbM6ooLWr4O9+BzfZvPG
-         t9Yn2drujLr+QFj+1Hk12K/xd8MS8k8KrLAp+kqP02WUhNE7SPI5xOrZU5o8As1pDqhQ
-         VWPHqCfSCBh6MyYIkvMSddfv2u6ZcIeKYESisY/4BsH8X73+anruPSx7n2ZrYEO29N7e
-         718w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786371089; x=1786975889;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CcHS/nuwmsgjwiAf8ICCrjjP61LEdpQ/ArmgBJs6ppI=;
-        b=Zmp4b+cebALpQpEa7AQgTUTHrUOY2aXcPg9c8Pyes0vfUaGyvprW+xrqPCwmzJodxG
-         g8C6KifwoEk+QNW9VUjnG7vxOIc8LwltJlTObMpdtRzXoSsmSiycxa0d8o2hO4piQvro
-         0DRbRbvX9gewWR2QkhJKw8pFBOKK8Nh1RhlzdJht8nSX06PL8B+dIVSlkmv9/FnKpo1s
-         ZsZmNZFilt9cq/8+AnSYKpHhs3GAsF+LZ02iaOQ64ZwgDzLas0wHdorAtnkXWAYd0OGN
-         WEahd4JbdVluYUbMn1RoLw36tyO4HjZW79bcBK4+WgI65Td5VntMfwiUyTeqrho/XIgx
-         jzCQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpIvPyAcgNKEaWvV3xJdvMBU18UEd2+eFMVowiMocQSGYxNApu0g1mDnuv+09w45F3SxupYC9I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytnHTOehQ80h632xgKGm4RswYUoWXSJbgLHAZ2KexSvIJQI9z6
-	H+agQPpvdOe1RPJP9iGmMWuhOoUkMBG07bFLnlkmjcbVOTpl7Xnev1iI3INSNImocO37aUruSNd
-	ZwB2Iiy4NESGf7Q==
-X-Received: from qtam7-n1.prod.google.com ([2002:a05:622a:e107:10b0:51c:9f19:4c92])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:6205:b0:51c:b900:5136 with SMTP id d75a77b69052e-52d4bb87e3cmr23454641cf.0.1786371087258;
- Mon, 10 Aug 2026 07:11:27 -0700 (PDT)
-Date: Mon, 10 Aug 2026 14:11:25 +0000
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="o5HEdddM"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=cwdws7dQB5UT2+8IkuCqQuSUtAVNDKWPhooGtxCAy1E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786371335; v=1; x=1786976135;
+ b=o5HEdddMRj524MF2bF2H9QT1EBbLNAruymrBINu7MfeKiOxlG2dgIR/Lk3eJJFpT39NAxSVh
+ Cw1WoGv3ba27+cNdOX1YTEJRCWocyCaLN6TAcZTMws+B4WeTBlSFXvsCnliwh6b7AqU4hE8ZSzP
+ PCciIJx9t4CG3VNJvd0ihZb8=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from localhost.localdomain (116.128.244.171)
+	by mta10.migadu.com with ESMTPS id c75130e72eb424e2;
+	Mon, 10 Aug 2026 14:15:35 +0000
+X-Migadu-Scanner: mta10.migadu.com
+Authentication-Results: mta10.migadu.com;
+	none
+From: xuanqiang.luo@linux.dev
+To: netdev@vger.kernel.org,
+	andrew@lunn.ch
+Cc: kuba@kernel.org,
+	richardcochran@gmail.com,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	maxime.chevallier@bootlin.com,
+	luoxuanqiang@kylinos.cn,
+	Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Subject: [PATCH net v5 0/4] net: phy: dp83640: fix shared clock lifetime and probe error cleanup
+Date: Mon, 10 Aug 2026 22:15:07 +0800
+Message-ID: <20260810141511.73204-1-xuanqiang.luo@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
-Message-ID: <20260810141125.1176545-1-edumazet@google.com>
-Subject: [PATCH v2 net] l2tp: fix tunnel and session refcount leak on seq_file release
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com, 
-	James Chapman <jchapman@katalix.com>, Guillaume Nault <gnault@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-In pppol2tp_proc_open() and l2tp_dfs_seq_open(), iteration state
-(pd->tunnel and pd->session) is kept in seq_file private data to allow
-iteration across multiple read() system calls.
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 
-However, if userspace closes /proc/net/pppol2tp or /sys/kernel/debug/l2tp/tunnels
-before reading to end-of-file (EOF), any tunnel or session reference stored in
-pd->tunnel / pd->session is left un-dropped when seq_file private data is freed.
+The DP83640 driver shares one PTP clock between all PHYs on the same MII
+bus.
 
-Fix this by dropping any remaining pd->tunnel and pd->session references in
-pppol2tp_proc_release() and l2tp_dfs_seq_release() when closing the file.
+Its driver-local clock lookup and removal scheme can leak the shared clock
+on probe failure or free it while another probe is acquiring it.
 
-Fixes: 0e0c3fee3a59 ("l2tp: hold reference on tunnels printed in pppol2tp proc file")
-Fixes: f726214d9b23 ("l2tp: hold reference on tunnels printed in l2tp/tunnels debugfs file")
-Reported-by: syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a760f32.01d0871a.3a0d52.004f.GAE@google.com/T/#u
-Assisted-by: Jetski:Gemini-3.1-Pro
-Cc: James Chapman <jchapman@katalix.com>
-Cc: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+This series moves the shared clock to the PHY package infrastructure.
+
+Patch 1 adds PHY package locking helpers.
+
+Patch 2 embeds the pin configuration in the shared clock.
+
+Patch 3 clears per-PHY state when PTP clock registration fails.
+
+Patch 4 fixes the shared clock lifetime using the PHY package
+infrastructure.
+
 ---
- net/l2tp/l2tp_debugfs.c |  4 ++++
- net/l2tp/l2tp_ppp.c     | 51 +++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 53 insertions(+), 2 deletions(-)
+Changes:
+v5:
+  Patch 1 ~ 3:
+  - Add Reviewed-by tags. (Andrew Lunn.)
 
-diff --git a/net/l2tp/l2tp_debugfs.c b/net/l2tp/l2tp_debugfs.c
-index b26986fda9d6cf096519d56032fe3deb5034c7c8..c12d5e1ee550ccc2608b6128cb653ca373280373 100644
---- a/net/l2tp/l2tp_debugfs.c
-+++ b/net/l2tp/l2tp_debugfs.c
-@@ -306,6 +306,10 @@ static int l2tp_dfs_seq_release(struct inode *inode, struct file *file)
- 
- 	seq = file->private_data;
- 	pd = seq->private;
-+	if (pd->session)
-+		l2tp_session_put(pd->session);
-+	if (pd->tunnel)
-+		l2tp_tunnel_put(pd->tunnel);
- 	if (pd->net)
- 		put_net_track(pd->net, &pd->ns_tracker);
- 	kfree(pd);
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index f8881699e1cad88e6f312e6ca47ae0af94c6137c..1bcf447f2f8b08235fdec747d33fd188e869a382 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -1597,6 +1597,53 @@ static const struct seq_operations pppol2tp_seq_ops = {
- 	.stop		= pppol2tp_seq_stop,
- 	.show		= pppol2tp_seq_show,
- };
-+
-+static int pppol2tp_proc_open(struct inode *inode, struct file *file)
-+{
-+	struct net *net = pde_data(inode);
-+	struct pppol2tp_seq_data *pd;
-+
-+	net = maybe_get_net(net);
-+	if (!net)
-+		return -ENXIO;
-+
-+	pd = __seq_open_private(file, &pppol2tp_seq_ops, sizeof(*pd));
-+	if (!pd) {
-+		put_net(net);
-+		return -ENOMEM;
-+	}
-+
-+#ifdef CONFIG_NET_NS
-+	pd->p.net = net;
-+	netns_tracker_alloc(net, &pd->p.ns_tracker, GFP_KERNEL);
-+#endif
-+	return 0;
-+}
-+
-+static int pppol2tp_proc_release(struct inode *inode, struct file *file)
-+{
-+	struct seq_file *seq = file->private_data;
-+	struct pppol2tp_seq_data *pd = seq->private;
-+
-+	if (pd->session)
-+		l2tp_session_put(pd->session);
-+	if (pd->tunnel)
-+		l2tp_tunnel_put(pd->tunnel);
-+
-+#ifdef CONFIG_NET_NS
-+	put_net_track(pd->p.net, &pd->p.ns_tracker);
-+#else
-+	put_net(&init_net);
-+#endif
-+	return seq_release_private(inode, file);
-+}
-+
-+static const struct proc_ops pppol2tp_proc_ops = {
-+	.proc_open	= pppol2tp_proc_open,
-+	.proc_read	= seq_read,
-+	.proc_lseek	= seq_lseek,
-+	.proc_release	= pppol2tp_proc_release,
-+};
- #endif /* CONFIG_PROC_FS */
- 
- /*****************************************************************************
-@@ -1608,8 +1655,8 @@ static __net_init int pppol2tp_init_net(struct net *net)
- 	struct proc_dir_entry *pde;
- 	int err = 0;
- 
--	pde = proc_create_net("pppol2tp", 0444, net->proc_net,
--			      &pppol2tp_seq_ops, sizeof(struct pppol2tp_seq_data));
-+	pde = proc_create_data("pppol2tp", 0444, net->proc_net,
-+			       &pppol2tp_proc_ops, net);
- 	if (!pde) {
- 		err = -ENOMEM;
- 		goto out;
+  Patch 4:
+  - Replace devm_phy_package_join() with explicit phy_package_join() and
+    phy_package_leave(). (Andrew Lunn.)
+
+v4: https://lore.kernel.org/all/20260807070729.12545-1-xuanqiang.luo@linux.dev/
+  Patch 1 (new):
+  - Add PHY package locking helpers for shared package data.
+    (Andrew Lunn.)
+
+  Patch 2 (new):
+  - Split the pin configuration storage change into a separate patch and
+    clarify that the pin functions remain configurable at runtime.
+    (Andrew Lunn.)
+  - Clarify the locking comments for pin_config. (Sashiko.)
+
+  Patch 3 (new):
+  - Split the PTP registration failure cleanup into a separate patch.
+
+  Patch 4:
+  - Use the PHY package locking helpers instead of accessing the MII bus
+    shared lock directly. (Andrew Lunn.)
+  - Adapt the lifetime fix to the preparatory changes split into separate
+    patches. (Andrew Lunn.)
+
+v3: https://lore.kernel.org/all/20260805072725.169431-1-xuanqiang.luo@linux.dev/
+  - Drop the Suggested-by tag. (Jakub Kicinski.)
+  - Set err to -ENOMEM on the kzalloc_obj() failure path. (Sashiko.)
+  - Let devres handle cleanup on driver detach instead of explicitly
+    releasing the action from .remove(). (Jakub Kicinski.)
+
+v2: https://lore.kernel.org/all/20260730064451.32261-1-xuanqiang.luo@linux.dev/
+  - Replace the driver-local clock list and kref with the PHY package API.
+    (Jakub Kicinski.)
+  - Use devres to avoid leaking the new package reference on later PHY core
+    initialization failures.
+  - Embed the pin configuration in the package private data to simplify
+    lifetime management.
+
+v1: https://lore.kernel.org/all/20260724023532.14583-1-xuanqiang.luo@linux.dev/
+
+Xuanqiang Luo (4):
+  net: phy: add PHY package locking helpers
+  net: phy: dp83640: embed pin configuration in clock
+  net: phy: dp83640: clear state after PTP registration failure
+  net: phy: dp83640: fix per-bus clock lifetime
+
+ drivers/net/phy/dp83640.c     | 131 +++++++++-------------------------
+ drivers/net/phy/phy_package.c |  23 ++++++
+ drivers/net/phy/phylib.h      |   2 +
+ drivers/ptp/Kconfig           |   1 +
+ 4 files changed, 61 insertions(+), 96 deletions(-)
+
 -- 
-2.55.0.654.g21b8a5bc05-goog
-
+2.43.0
