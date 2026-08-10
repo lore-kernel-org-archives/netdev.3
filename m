@@ -1,200 +1,289 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011022.outbound.protection.outlook.com [40.107.208.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CB243C7A9;
-	Mon, 10 Aug 2026 20:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBB93314AE
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 21:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786395549; cv=fail; b=Zx1fTbidSjiLM9D/m2S7K3XfmY6QczcFq+wa+1X16D8Mb4uxrK9TlGDqSJ6gu/gu0du0vux6h8zULrfi+OAOnyvRLY3vTS5ALrtgtFDfYjQrME3aDkSwle+MS6Fhs1WElYw5rMt/4BSza3MwWnuu5C8KP1rFprf8AdAp+blJWhQ=
+	t=1786395632; cv=pass; b=kVByxyaTgdMmpWC5vLnn3EhT0nHJAC5GRwssorGcoPV6x0RAvMZgZJ9WW676UsMmR291WUlVScEH6Az+i0T0RH1httaleknqTT3t+e73bdCu2aGC3YGoueJAGD+jHnCZIYUwA/q9+eyNGVQocelMEKKb76z5aUzLFdKxIhK9lQo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786395549; c=relaxed/simple;
-	bh=r4QW32XKrE02xCyVLsokxcWAjuZW7mvmGCxwcRUE2P0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a9wt5Nx627uuwUqugSAJFP7Wqkyq5AYReukdIp6zrKzkSUwwaP0bgOkMIWrrru4XqLxjjvv2Y6MrA4+MCfkGH+RLzncOpN0O7yKFmw7FhrfaavpiGLNhiKYTvkSLAVk+q16fk8n6KyaF0EgtrLyXJ5nqc2iWqnzAoX2t+C8BGDA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LpDe+HcH; arc=fail smtp.client-ip=40.107.208.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1786395632; c=relaxed/simple;
+	bh=xDyhBIlFQ2M2YwfJkbeeNRFOFm9lLHN1aGofw78q3ds=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=vCPrAYEoRbgtTYqe46N0KCxXJd8eXXPf0BztorRPP17+WOxZebj7Yk5rszCdgDRxn7SmkBdat3kOp1HGhG95oy12OA7mh+G/GaR9RrtRHsm+TjEii0tHsybcOy8YVW5HQXnQsiOXmjcm3EtX+/PvMmWNqnOQDf3CfcYY8+YqmJU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Un7zEnmk; arc=pass smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LpDe+HcH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mi57/t8+6VnQ/6ZRGU9ERSIrV0AuimeaoBM2bUGj98mr6zaZ7qXN5t2dMGeRW/X9zI+WfgvNVsP1IyO3HlJDC7eUWh2bjw4YA8ypA4Er3C/oCTipV0mHXPeqxgkqdPThsElar43lrLRhwuwWUgJAjkZg4MPxbh2oM4FRZyR7h5fh4fHaU3hOcYnUHYvmDCCqZFCeQ0W3EBPVje3GSaVehFNBacZJM17E9/tOVTAQOL6r4+lN60DlFooild/RxmwlKtTWTiY7nrxh/uP4gDevw1/rexiQKQMK3B/KvHXTsZeMIjcTkmsa/G/H4c5akXrEVzc2IiFcY3TSywseU3Htww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V90bPVCoAbn6YH5NwPfYGNZ6WyUmliYPxZ9O1cTjcLA=;
- b=HS3VdJjs0CHt9+HPhcQ0PJVlG9C6FjrgHlRKbQoXgOArT0xq0NXMCwyS5lrM6SLQypebuowPUl0vvPh+aZ15infYAH9MW9PqDBtG5KzCg3DCnuXveLqugiFcKJbKAqBFJOsHQAPnxygJVmHoZLFayyIBx7dOHF0LJCu6hLNH5wOKZDj0Iz9ZZJ1vYKhoQOBYNnjZFXuWepdQeiI5+pnP/QEmItqsljyMsfmSzSfaeuhZAiy48CcGLbxPFbWNDeAxAUH6xXHwAt+rhyYNegqxIkpGGftum7VXkhmsMW1k3rOsbedAX6QzrE8oGdCc7G4x19TL6+Q8D719m7heiPg/VQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V90bPVCoAbn6YH5NwPfYGNZ6WyUmliYPxZ9O1cTjcLA=;
- b=LpDe+HcHZq0m8s5DyIa8O5J3lLBisO50X3mND5guyEwirb+xobMRMpR/OXFAdsh9hQxfsSzjGMZjvGtJdUuSQXOO6ReTvo7dXGB4M7A/m6GlT2nDAmeCg2qLjw3lg6/LRaKIujwcrE/G0QaoQSEj7kUS6LnSchTWbKZC5jR/idMQo07kbvLRj+ZDMeelRDTQVE4jeW3OoxA7I8ozDoWZF2rSRTfrYRHpSo3deIRBcw+sQ6n+6HRGiU9Zp2crFXi4sJP63mDDv9kg9ix9HvPGAdBH7Ruemr2sSvLkk35p8Eis08HBIMjkrn7rize/keLrnQUf5x1PPfSAhOB6PoviKw==
-Received: from PH1PEPF000132F2.NAMP220.PROD.OUTLOOK.COM (2603:10b6:518:1::35)
- by DS0PR12MB6485.namprd12.prod.outlook.com (2603:10b6:8:c6::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.25; Mon, 10 Aug 2026 20:59:01 +0000
-Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
- (2a01:111:f403:f90f::2) by PH1PEPF000132F2.outlook.office365.com
- (2603:1036:903:47::3) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.25 via Frontend Transport; Mon,
- 10 Aug 2026 20:59:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Mon, 10 Aug 2026 20:59:00 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 10 Aug
- 2026 13:58:43 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 10 Aug
- 2026 13:58:42 -0700
-Received: from f43.com (10.127.8.9) by mail.nvidia.com (10.129.68.6) with
- Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 10 Aug
- 2026 13:58:40 -0700
-From: Dragos Tatulea <dtatulea@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: Dragos Tatulea <dtatulea@nvidia.com>, <tariqt@nvidia.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next] net: devmem: add netdev_has_dmabuf_binding() helper
-Date: Mon, 10 Aug 2026 20:54:45 +0300
-Message-ID: <20260810175446.3945358-2-dtatulea@nvidia.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Un7zEnmk"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c01c79467so26611cf.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:00:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786395629; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ruxd3cnKwFSlb4WL+p9PZy7Otv2GoikTG7qO3usscX5pa5jJbm+nxa602uzUQ+QrKK
+         YBPUyHJkOb8Fhwy6F8KRRLrPUXAwsLP8eMXG0A9qeEFeh6WjDOb5fS9jItxcQzhay3wp
+         8MZUv2A6ahbTi2pxXC/1y/psY5iuLYJ2XUZNPC8Q0W0uw8kEf86ca2q7jS+dFh/E6ESc
+         YdoPceQJI8s5j476oRJOGhXRDGSQpouw5Xzsu+386tflfA9frzOhqfCgVN4Eqs4Lr4p0
+         pzf+T2WYCJ+fTlpa8qXiYELybZroFEhQ0jRdAzSZM1NthTzUyPrcchjO5URIkvUcflL/
+         MBYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
+        fh=nf8ux0i4Vo1tH1S1HEQjxcULSvEuVWNxEaXqmI/wHtw=;
+        b=NkAGQhRI+wMGXzAh9+oNk0G/aIPrJKAzJU772zEIN4TxmsZanKUTSQaEzfBgLUdrTs
+         iMwOclRCX6GQuBXpa22SIhPPdZXcbJTHAd+NqoF+GXCWNtskb8Z9JHtFs6ucDsCyKpQI
+         tJnMCeUW+I/QOURaB7pontRGQ6K4AZb8MiJ3waRF3Jj8QioDxJew0ewNBGVPkgIYJRRH
+         zJLjw2OY281T5RI2RqsaJBKdt66ZRhbB/++HURinlctQgWxjjnhYBPC9YTgucgvIqumR
+         sGVPcqpdo3kk+evQskshJNrbGmO0BKQsAWyZt11KL9I7F4ND2gGM74j5Q0lKbRH1KV/4
+         0Wpw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786395629; x=1787000429; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
+        b=Un7zEnmk5YirYUGcHnEBxx4y8Z0SlcvvDFiRHsNFQOFzKKhvzJ++qWgvMymzkBdrxg
+         eUUfH1TytywMYpgY2qcV/uAm2eArhatqqghrlvF9OsVigbhV8SU7vftaZElxWfKzeMjd
+         Mpc6Ery+utsEJVdYgLBtTB76l6O96Q/xqB2jnXOuL9HoceWzj1an1g2gy6om0gyv/JmZ
+         AXzeMljbNDF26QuheIHBMXuFrHnYCRovqJDp5RwLxMfopVrM5ui+n71Uf0gfm3OUIGM/
+         0XrZQnu5eROWUwzzDgPtWiRWek0qLXM1oO+vHDIdXiQ259qbw6hPE6vWFJjdNzkGqWz+
+         k60g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786395629; x=1787000429;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
+        b=tUoOn2E35hQyfz+xU7cK8fJt5FxaK7O6I6j/wm/m6O1T/nTJGkL+GrhSE2/zdP36rh
+         qBWLwbeHa8r0kYNhuKhLKTPd6Kh0N934x8psS9ZCyHbdelVXmJlWSXhf5o6w23hE4e3R
+         sxsb2NzdXjOuJK8sbefURyZqcJ1tHziio8HCXRjDmrdJv/X2LTXKPJ8JW29ku5/Fo8A/
+         Hm9Qjv+nLDg36e97dU5J9wgkqB2nS2hG6AgH/LVChunlgBgbRy2RhR/b/7perlolOp2P
+         4Hx1kGPCbaw8mZkkaCn5ryzeM0LYeUB8UdC71lx+cb811gu9mFUZT07rYh24weocS0Qt
+         32dA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0/4px3aVJRlZZ4ZiZ+D5PGWDK922hryVLErwLUv/KjASUmdNWekN1dVlQkxjNdvdBDzpjYH4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwC2nu3zXtVU81SzsQGpBQYYNEJjQmuT/NOcuFe26TAJY8V/UF9
+	BqcBpphgxBpyWiEwZVYgMXtFmfmugenZxDPfqcdi67WKpE+69Y73lm76uOPYsm6QlXBX//ydrYD
+	lQY6WovPFdeW/DX5Ph+AF4f6wrw0QaAMIMDg4d0Tt
+X-Gm-Gg: AR+sD12z9s7NMRzAtf9wcnt3/0tEWr1eEGNTqwAGkZEAbni4/W1Jq2N98v73jj15SDK
+	XlsBnwM9h/GEmVzvidE5GYEHyKiAWm5HmnSl6rPHNBHDOiJ/urFAS0h+eS0SaW5xL1TCGw8TuI/
+	653LU+/0AAa9l8xQf8oI33QnmUlFbU5mEZcLLf64WTT0Cvm7aDqamNvSrin2B8+iuuWtLBcCVxE
+	cpOcKkfKUi91ditlg+3s66WWh1yoeQMV2mz9/+uvuJni5JpIpCgdqXbN+c69nfq9g/LNlKBkKZe
+	wMcg60Kfu8yHXGArGgkVj3oovtBRrc6ocMxoEc+/zMxpFz4IetzZDw==
+X-Received: by 2002:ac8:6104:0:b0:517:5e32:2d14 with SMTP id
+ d75a77b69052e-52d511fb9ddmr2293481cf.10.1786395628636; Mon, 10 Aug 2026
+ 14:00:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|DS0PR12MB6485:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d129701-479d-45f8-728d-08def72233b3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|376014|36860700016|11063799006|56012099006|10067099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ucKPYPHqlx2KbhPoVU0nfIaZe9qvydnLIU3dzkxGtbl2zcRGA1pDDZnT8SIBbPGa7DmvVxw4tFh4csOzbUsKqP0cyeUAcfAaKAsWchEBiOuQnbq8H6mMw5JZWiJsLNoqzmpCoWQt155CY7rqSJtcHIt8PdyCrubSPXm2EcKw2ZvCVobH1m76oi2qqYmtfELUTOKecXlmzfIAqHOAiIdm1z0y4K3Y5Sd1U8qV9XUuleqK0lRjPwk/8m8dIiHot/JU0WPBSVpgPGV1TbcTKYH1Urd3cM0zsq5e/LH2/QAfLuuwcJW0U1hA0U7kI3lsWeN6mPr408apRZPrgfRusjjKc9ILF66fwdEZ+cYHTF4DGWaMxyW7RHxyQ68AnzEDegMMokNsXf8nByM+7LXJZUjJENzvJiJOXbwvu/UmdV1Wldkg04fxOv7Y8OTZCxvYlG9+bWLx/3gS9ts1pZpE4clZENQ772QBHqQsLL3b+k+SBUoYVfwze5EvvL7kA/RcPb4LMVDmdlftB4+hbHSwVCRG1snb23uWKe3ky6dkYZcjbSsKad5ul2xxp9xD8g9/ZfS33BCoM+UN+4UdTkDMcYhXIUiGgEqwGWaDZctnyFD38ygEmj8u0pbgdYwiQXta2sTJ39ZnNlS+UilMWzY79WSj5r6jphDc/gCiDnXNzeUMcKkTe+SxatrwSgRDpL4saXSXyAzmvzQ+qe7BnaZyo0ba8A==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(376014)(36860700016)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	AxOR5W7QZzMBd5seWSkEU/3m5KTBxIEI86oYt8RqMMyZUiCt5zfrLEJ7sFMoytksY1l2bsSNN4pvVjAUmXcbxtT5Rj/8/OK+B2jcnxdeFunj1bF+GEGgu6StBaoTshz3nLwSOnIIsUA9s0h2I69EqTH9N9T0P6aoqSVk/aEsKINIRdRDo3F29VuoYudGPrK1/4o5HapZSdmfU2ZoXYWq4v5IiKTDAjRDzgLwt92Uq4VkHs78ewf6zBxcb60RdjJGXK6RoqmN0mUwln4OAKjRNCfTfCkuLOHVQHcdnY2mW63Ig41lmwvxEmj57Wb8x+uW+gR6gsVw5bm/jhMCz9nhCUisskpLm2kMPjmEyf3eo+clIyoBJ88/lDv/S34SVXIT6OluJO9BZQQUOVqUj4Y2g11RRwy3QHlqIv6Kjwp1wT1aaXSzziRwY5M94mNoC2u5
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 20:59:00.0179
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d129701-479d-45f8-728d-08def72233b3
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F3F.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6485
+References: <20260806200548.3124802-1-surenb@google.com> <20260806200548.3124802-3-surenb@google.com>
+ <anoZL76y3WGXMArB@google.com> <CAJuCfpFCK5ycO6s+dD35YtU6zgNdivfe6P3cVnd2VxPYfGXHDQ@mail.gmail.com>
+ <anojoFPijbCloUXL@google.com>
+In-Reply-To: <anojoFPijbCloUXL@google.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 10 Aug 2026 14:00:14 -0700
+X-Gm-Features: AUfX_mwveKCjTyY76ZUcAzzSSNA4_OUdgAUMYP4JBZHh4wah9m0LDMZjkeG4kRk
+Message-ID: <CAJuCfpGXBTRUUtCCpLPT9v1LZA6UHo0yM3y68Kwhxs7S03z+5A@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
+To: Carlos Llamas <cmllamas@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org, 
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently there is no way to check if there is a dmabuf bound on a TX
-queue. RX side has netif_rxq_has_unreadable_mp() which gives a hint of
-it.
+On Mon, Aug 10, 2026 at 12:16=E2=80=AFPM Carlos Llamas <cmllamas@google.com=
+> wrote:
+>
+> On Mon, Aug 10, 2026 at 11:54:04AM -0700, Suren Baghdasaryan wrote:
+> > On Mon, Aug 10, 2026 at 11:32=E2=80=AFAM Carlos Llamas <cmllamas@google=
+.com> wrote:
+> > >
+> > > On Thu, Aug 06, 2026 at 01:05:45PM -0700, Suren Baghdasaryan wrote:
+> > > > From: Dave Hansen <dave.hansen@linux.intel.com>
+> > > >
+> > > > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do bot=
+h
+> > > > it and mmap_read_trylock().
+> > > >
+> > > > Long Version:
+> > > >
+> > > > =3D=3D Background =3D=3D
+> > > >
+> > > > Historically, binder used an mmap_read_trylock() in its shrinker co=
+de.
+> > > > This ensures that reclaim is not blocked on an mmap_lock. Commit
+> > > > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> > > > support for the per-VMA lock, but left mmap_read_trylock() as a
+> > > > fallback.
+> > > >
+> > > > This was presumably because the per-VMA locking can fail for severa=
+l
+> > > > reasons and most (all?) lock_vma_under_rcu() callers have a fallbac=
+k
+> > > > to mmap_read_trylock().
+> > > >
+> > > > =3D=3D Problem =3D=3D
+> > > >
+> > > > The fallback is not worth the complexity here. lock_vma_under_rcu()=
+ is
+> > > > essentially already a non-blocking trylock. The main reason it fail=
+s
+> > > > is also the reason mmap_read_trylock() fails: something is holding
+> > > > mmap_write_lock().
+> > > >
+> > > > The only remedy for a collision with mmap_write_lock() is to wait,
+> > > > which this code can not do. So the "fallback" after
+> > > > lock_vma_under_rcu() failure is not really a fallback: it is really
+> > > > likely to just be retrying in vain. That retry in an of itself isn'=
+t
+> > > > horrible. But it adds complexity.
+> > > >
+> > > > =3D=3D Solution =3D=3D
+> > > >
+> > > > Now that per-VMA locks are universally available, lock_vma_under_rc=
+u()
+> > > > will not persistently fail. Rely on it alone and simplify the code.
+> > > > The removal of the fallback does not affect NOMMU case because bind=
+er
+> > > > driver depends on CONFIG_MMU.
+> > > >
+> > > > Full disclosure: I originally tried to do this with
+> > > > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lo=
+ck
+> > > > trylock semantics. Claude caught this in a review and suggested the
+> > > > approach in this path. It seemed sane to me. So, Suggesed-by: Claud=
+e,
+> > > > I guess.
+> > > >
+> > > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > > > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> > > > Cc: linux-mm@kvack.org
+> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+> > > > Cc: Todd Kjos <tkjos@android.com>
+> > > > Cc: Christian Brauner <christian@brauner.io>
+> > > > Cc: Carlos Llamas <cmllamas@google.com>
+> > > > Cc: Alice Ryhl <aliceryhl@google.com>
+> > > > Cc: "David S. Miller" <davem@davemloft.net>
+> > > > Cc: David Ahern <dsahern@kernel.org>
+> > > > Cc: netdev@vger.kernel.org
+> > > > ---
+> > > >  drivers/android/binder_alloc.c | 45 ++++++++++++++++--------------=
+----
+> > > >  1 file changed, 21 insertions(+), 24 deletions(-)
+> > > >
+> > > > diff --git a/drivers/android/binder_alloc.c b/drivers/android/binde=
+r_alloc.c
+> > > > index e4488ad86a65..c13a588c37de 100644
+> > > > --- a/drivers/android/binder_alloc.c
+> > > > +++ b/drivers/android/binder_alloc.c
+> > > > @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct=
+ list_head *item,
+> > > >       struct vm_area_struct *vma;
+> > > >       struct page *page_to_free;
+> > > >       unsigned long page_addr;
+> > > > -     int mm_locked =3D 0;
+> > > >       size_t index;
+> > > >
+> > > >       if (!mmget_not_zero(mm))
+> > > > @@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(stru=
+ct list_head *item,
+> > > >       index =3D mdata->page_index;
+> > > >       page_addr =3D alloc->vm_start + index * PAGE_SIZE;
+> > > >
+> > > > -     /* attempt per-vma lock first */
+> > > > +     /*
+> > > > +      * Attempt per-vma lock. This is essentially a
+> > > > +      * "trylock". It can fail even if the VMA exists
+> > > > +      * for 'page_addr'.
+> > > > +      */
+> > >
+> > > Do we need to explain how lock_vma_under_rcu() works here?
+> > >
+> > > >       vma =3D lock_vma_under_rcu(mm, page_addr);
+> > > >       if (!vma) {
+> > > > -             /* fall back to mmap_lock */
+> > > > -             if (!mmap_read_trylock(mm))
+> > > > -                     goto err_mmap_read_lock_failed;
+> > > > -             mm_locked =3D 1;
+> > > > -             vma =3D vma_lookup(mm, page_addr);
+> > > > +             /*
+> > > > +              * If the vma exists, we can't continue because we ca=
+nnot
+> > > > +              * remove the page from the vma. However, if the vma =
+was
+> > > > +              * unmapped, it's okay to continue.
+> > > > +              */
+> > > > +             if (binder_alloc_is_mapped(alloc))
+> > > > +                     goto err_vma_lock_failed;
+> > >
+> > > The comments seem redundant, the label is enough. This works:
+> > >
+> > >         vma =3D lock_vma_under_rcu(mm, page_addr);
+> > >         if (!vma && binder_alloc_is_mapped(alloc))
+> > >                 goto err_vma_lock_failed;
+> >
+> > Yeah, for the binder maintainers what's happening here is probably
+> > obvious, but when Alice explained the logic to me, this comment really
+> > clarified what's going on, so I added it here. If you insist on
+> > removing it, I'll do that of course.
+> >
+> > >
+> > >
+> > > >       }
+> > > >
+> > > >       if (!mutex_trylock(&alloc->mutex))
+> > > >               goto err_get_alloc_mutex_failed;
+> > > >
+> > > > -     /*
+> > > > -      * Since a binder_alloc can only be mapped once, we ensure
+> > > > -      * the vma corresponds to this mapping by checking whether
+> > > > -      * the binder_alloc is still mapped.
+> > > > -      */
+> > > > -     if (vma && !binder_alloc_is_mapped(alloc))
+> > > > -             goto err_invalid_vma;
+> > > > -
+> > >
+> > > This introduces an "extra" change. We'll now release pages without a
+> > > valid vma (e.g. after munmap()). Before, these pages were expected to=
+ be
+> > > released via close() in binder_alloc_deferred_release() later.
+> > >
+> > > I don't see anything wrong with it. However, it does seem out of the
+> > > scope of this patch which just drops the mmap_read_lock() calls. Or a=
+t
+> > > least I don't see how this part is necessary.
+> >
+> > This check came from this discussion:
+> > https://lore.kernel.org/all/anGrFIYiPhjxWSkD@google.com/
+> > It's added for consistency when handling cases where the original
+> > Binder VMA is gone.
+>
+> Oh sorry I missed that thread. Yes, I agree we can reclaim these pages
+> earlier if really needed but my point is this is unrelated to the change
+> done here IMO. I couldn't figure out why that was needed.
+>
+> If you are keeping that in the same commit it's probably worth adding an
+> explanation to the commit log?
 
-To help with that, this patch add a helper to check whether a devmem
-dmabuf binding is active on a given netdev, optionally filtered by the
-DMA device the dmabuf was mapped against.
+Ok, I'll amend the commit log with an explanation for this change.
+Are you ok with keeping the other comment, or do you want it removed?
 
-This API is necessary for the upcoming support of data direct in mlx5e
-to allow blocking accidental swapping of DMA devices while devmem is active.
-
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
----
- include/net/netmem.h | 19 +++++++++++++++++++
- net/core/devmem.c    | 20 ++++++++++++++++++++
- 2 files changed, 39 insertions(+)
-
-diff --git a/include/net/netmem.h b/include/net/netmem.h
-index bccacd21b6c3..0e332e04ea16 100644
---- a/include/net/netmem.h
-+++ b/include/net/netmem.h
-@@ -363,16 +363,35 @@ static inline unsigned long netmem_get_dma_addr(netmem_ref netmem)
- 	return netmem_to_nmdesc(netmem)->dma_addr;
- }
- 
-+struct net_device;
-+
- #if defined(CONFIG_NET_DEVMEM)
- static inline bool net_is_devmem_iov(const struct net_iov *niov)
- {
- 	return niov->type == NET_IOV_DMABUF;
- }
-+
-+/**
-+ * netdev_has_dmabuf_binding - is there a dmabuf binding for a
-+ * given @dev and @dma_dev
-+ *
-+ * @dev: netdev to check bindings
-+ * @dma_dev: dma device to check, when NULL it will not be checked
-+ *
-+ * Return: true if a binding is found under @dev and possibily @dma_dev
-+ */
-+bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dma_dev);
- #else
- static inline bool net_is_devmem_iov(const struct net_iov *niov)
- {
- 	return false;
- }
-+
-+static inline bool netdev_has_dmabuf_binding(struct net_device *dev,
-+					     struct device *dma_dev)
-+{
-+	return false;
-+}
- #endif
- 
- void __get_netmem(netmem_ref netmem);
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index 957d6b96216b..f13a0e343684 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -364,6 +364,26 @@ struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id)
- 	return binding;
- }
- 
-+bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dma_dev)
-+{
-+	struct net_devmem_dmabuf_binding *binding;
-+	unsigned long id;
-+	bool found = false;
-+
-+	rcu_read_lock();
-+	xa_for_each(&net_devmem_dmabuf_bindings, id, binding) {
-+		if (READ_ONCE(binding->dev) == dev &&
-+		    (!dma_dev || binding->attachment->dev == dma_dev)) {
-+			found = true;
-+			break;
-+		}
-+	}
-+	rcu_read_unlock();
-+
-+	return found;
-+}
-+EXPORT_SYMBOL_GPL(netdev_has_dmabuf_binding);
-+
- void net_devmem_get_net_iov(struct net_iov *niov)
- {
- 	net_devmem_dmabuf_binding_get(net_devmem_iov_binding(niov));
--- 
-2.54.0
-
+>
+> --
+> Carlos Llamas
