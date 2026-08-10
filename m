@@ -1,167 +1,88 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B6840A95F
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 15:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786374682; cv=pass; b=OyWlq13WNcREGEgpwiouwtNgxTe9SemLbdWy48bG3ZN1y5SZFh09viYJO7lr35+NavtKifWkZqEbAjI6+dfY0eVO+MAcgPxJsTePWrd3/LrXxiX8MZwQ8yQc6+bzVi2wMKhacj0spHzvyowH/upp34xQXbsCkkzqmUochCpaSnA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786374682; c=relaxed/simple;
-	bh=dvOsuGCRuuFNV19WB7MGPxVxTbqTFJLuplEvwMIpxBg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=elVdLD54qdjzgR26PbPvK5g+dtu2OrkTjNI1++eYpn0/BPJqRtD8iJrSetHAwQUlwXbqXg6dVYTKlc/u27TsFvBnCTN70Mgy6NtqzCBZF6YH7w2Qvwx8NJqhD44jCMWMeYZ3D2pszhozCtV7WTlzRAlD6+91G7AFBWFIGuM1bOI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=o+FKa3VM; arc=pass smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839ED4048B1
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 15:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786374855; cv=none; b=KQRUXJ8qZ44Rpr1zrlNYqqmjV52Af80Bpa10KZHjuwliSuei4N9Qwiq5qS9l7pooYLDN73m8mjRHo/4fU1fO09Qc4SfoKvr4pOyaEsCJrs0+/u/m/3p82oLWOq2qGOC0iWcBu1hUtDEMjVZliHe335wgExxlVWaDTkLHtv7qxDs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786374855; c=relaxed/simple;
+	bh=FLAVg3jBfNRSDF/zBVKGKqYckKhzF97qKqgPXAfK0BY=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fmO1vmCr8H0sHJ2YJq44cQQtIG0o18pjd2eqC2wRguNPIwus7J4j8E8Fl6Vv+OKJn268GTv174e2Mb++KTCvb2wGEPCULP7BOKkz42VwR/Q93qrpJqVnDMrBPj1hc+6seWGji64GxpDm9qTTrDx6M9WJScI0OZI06n0yJxRsqU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WvQEfT1D; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="o+FKa3VM"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c966b9ee9cbso1228767a12.1
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:11:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786374680; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VS2PalOJGxu562Ot21aVGkpnEevLEqoJtUgfoqnxba5YhEgfw6VylmVmkY5EfWMghp
-         oWCAYoy7EgH0QSmsV4lJOTfobsPOd64OjKactlCFBop/W2KxRFwl91A3MdB5soDQ/oFx
-         kk6xjriTCxCtZ+oKfG23RwYlv7WLru4AnByUjP76fd6YSI2Jc8diVGGEemPlQFs32Ltm
-         IiVNbE1UFxV3ZHEY6XGYWoP8HpY4BiGy79BtLua63aC6HSoHBbco9g8Rd9ANWhW1PGXK
-         FNKHvGUo7L93twChl8q4bGdQzfhua6om6MtxxvVtk7s/T2rjjBcq7KnIfxBoF+WXYo3x
-         ScvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=D8szI0hqUv6+iUnY3aNmAXxizDPZaGWeVWOU8t/ttHs=;
-        fh=I8+XpoA6cPYptQ2+bOQZA1J9iM3Ad4x9TJ52+RRaTRw=;
-        b=ZzFGeXvmVPuVFPDe75eOJYwCGVr8N7M1QA8dpc9TKKReBL092eHyWzEhd7xqD7Ko9w
-         wjI1eXiTE5c+1buaE1uuIDNxpZv3ltRweIzxLVP5zphbnBVf5RPrr6HAuVd9y56NsK23
-         briKHQUBDMqfUepPqhbU6GsCivQVbYTXST6w0G82dqRA748zVN70crSwmHT4u28Xq8YW
-         sqG6HPwt8CWOvU/VrM/vCJZfcqzY8Xw+oFk+ZYbAFjrV3T4TDKCy9GWAt7kKejkOB+n7
-         HZSYw+kRz054KUdl2gTvtbXy7c/TjsIQO0vXrgo46GuUsvMYyE0ZaP5f0o5dGfGCcqiI
-         DrNw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WvQEfT1D"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cc891373e0so23503665ad.2
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:14:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1786374680; x=1786979480; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1786374854; x=1786979654; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:date:subject:cc:to:from:message-id:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=D8szI0hqUv6+iUnY3aNmAXxizDPZaGWeVWOU8t/ttHs=;
-        b=o+FKa3VMYGadiP2S42oQGyIB1OEI5Xxzdmls7uwI/NMYO2bT99jz6RJPjTVjbvtmkx
-         ExqWFGgF059Wc2jMCcVUOUizMnW3jpEn7KCmMm15cmeU1VinXVPuiOoPlNIVtUXg8Mjb
-         OhOPYBA9C8Cp1eK+hgenZ1IxomNkb/+HuwH3M=
+        bh=FLAVg3jBfNRSDF/zBVKGKqYckKhzF97qKqgPXAfK0BY=;
+        b=WvQEfT1DwTlRS06+3F3WJFdq9AD6vSebUZKfjobIZIrxU4Wl+OaC4GX437KGrriYTj
+         dHSP33J6GSR1QHQDIDOESM5FM+rPJmzKxCB0p8uXYbrRI6c7rMnnMZP53O6j4zXJQxIB
+         o71xQ0n45AvxPRprMQpHaKWfuBP4HqCyEPu9Qaik5Zv3XxG8Ne9sRcQrTycqqTvyJrff
+         PyPLOvwAm3DSGj8vHfFfkR54sEAahZsFT6qTQ4PDBcv8/JOj9upf24mVtpB4nupgX8p0
+         tMw2g//NthHTLu/Se3PRT625VPaNRkj2acXFkzlTVC6lHpOUaa/XQyP1TB0RYJbRrB0b
+         +rEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786374680; x=1786979480;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1786374854; x=1786979654;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:date:subject:cc:to:from:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=D8szI0hqUv6+iUnY3aNmAXxizDPZaGWeVWOU8t/ttHs=;
-        b=M2COaHvjC0hlVm0fCgj6Hr6VMgyquAJNsXZPulgZNyKNZWqDHCEYgkFE1qbN0RNLc8
-         9wjGsvfWAYhPFABNTdZUZuZMg1X3TeX9rdzbev3cVYtXmfzfqbweNERBfKmHDHfjrFAE
-         A/V/65WhNeM6Vq9S0S0Z0+N2XsU+WfEWZhobF0BZXKA1p2xSGys7FUAYPyu55l7mbUCr
-         XMMNYIAGH3MdUfKO4BAezWCzgT1+8GeuiHFp9Sm7kjXqYDYhxlQAUtYzwn/g+aQs9IsE
-         OSAQ4EMUwfEOBumNVkMGiFESRJ8gqUMdWjlnfbr2X96DqL7mfs0HFV8ySxtAvVVjM6Rk
-         hu6g==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/Xih8Y+Vkemk68b1fimiDVHeUfadQ+GsWTg82UylBm8dg82Vo3yhidsvjHdLJuKgqsaqdwbA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZCyqCXJbg/2hbdaZFWb4R+uCbrIz1+U0DCFoj5NnlKyJqzWXM
-	iHIAjbf4Fv9bfeZ0IuKB8/v2GyOVPgJZTHo4z0AjUcdKMd/VgZesN/zG6HgOwOMLNaHMtbVCEEV
-	5iEQ44pr+K82BSK8aj42TI2yLEHeHbh0mqY5kfGYY
-X-Gm-Gg: AR+sD12Loukjff5VMBpsJBiEftp8F6j2rIyQu65Av9Sshc/c+8Vo7GJjNJyjyiOFZNQ
-	/zsWMWAfRqhB6+tgBhY7PvQtrJTomrgQzztTIbQ2efBJjvk9DGf9eokGarTKZmvwjgaQ7jx3z24
-	ob9qzy+2OhEcGtk1Gmf/VYTl/bdbbC+n39Smjw7/jmkos2AlYtMfaZnmXggcVqzeCDAdE7yonFF
-	lnKraFXkGHiqjmfy6h/0qdLVttsl46ANl7IZF5O7mpjvxQ7PnYCAVh7bObWtKIvEpu4hmRnKfwV
-	rpP5jl82M8ZxLtkPuNZBYEp3bdX3wonAGhbUCnxgTfY9e++KMZJjWxGQlg==
-X-Received: by 2002:a05:6a00:2d81:b0:845:e9ff:5d97 with SMTP id
- d2e1a72fcca58-84f9c92d8e3mr2179465b3a.12.1786374679851; Mon, 10 Aug 2026
- 08:11:19 -0700 (PDT)
+        bh=FLAVg3jBfNRSDF/zBVKGKqYckKhzF97qKqgPXAfK0BY=;
+        b=tCaur5u+zjE2lFlOtOmnMrmrInqSMqIbFIYfnvtPDS0xa0IEmbUuczUyVqe3lm//Oc
+         +7lbunfELNS4gTCPHLpFbH/zkiKj2PrmhAEDT88I8RqN3UN5dvtwkl00c3xBkrG1lSyp
+         PBu21srd5sBYI4888+O0ResU/6LOOLxnk2cw6pCfzuteccUqKDBZ7u8IMp4NqqKur05I
+         /tUQ7fAhN/2M83rpebt5EZnBF0bfsh7HddRTl2kbhvpQIL0kGZtFcRx9RhrZQXF8jy6X
+         2Q/zmFgRKUQmVxZlUx6pmsBWvABvPhJijynWw9wQfa5+yuFlAVbVYnMuj3e38JdkonXR
+         8dtg==
+X-Gm-Message-State: AOJu0Yz4qz5A1KuQ0vgLfE2amlBJ6Pk4akUr8mhtkmR1H7ghGJ3NJCot
+	xrMkkmsJyxiAjEL1wiEg3QnSRwjp66Z6qWbNpCHtxLKJBW2utRx/hQuEcTaw5ZFW
+X-Gm-Gg: AR+sD101cVymMuqQvz7MSfbcSdTT0wcUxOKdgDXpwGMjMNmPmbMQHoPvu5aTSUSzjsn
+	Vc6aovDCKD22FAPqDBMMVGnCm+yiPW5PorLGNR36CzZ4OvPFpR3xlP///eiLaV46WDG6mca9WwR
+	GTkW/5jV1rxt0nSFwc57fcej23cZyBrt5b3EXG6N5DkeYhqoeK+u6OOQIpA+LynxPTML4BIeRpV
+	5UyMXLT+MVq4LxnIaSG+2ASZ2j4tNVlMVaC4J9r86vMlGNNJHvifkUq0ROCvAPhPgRUPkESPmjS
+	fVqyOor8h/WoB46C3okGebKtEoWfuOJUO9GCIVQ7aLb/C5ESGBGpNNUcQ+PM3rK5+hozuJS424g
+	c5opVyiSGIOzhW0EWJ7aIUmnpuCV9hsRRZLoWuEMMTTOA+MzhBC3GoPqjmdPbNf9G0HJ+LEaKmO
+	ogGE+l8xHVZAvC6OmLzp2X1NU9uqxscICbYUFvER50Dd0bkaHPk93TkA==
+X-Received: by 2002:a17:903:1a90:b0:2c9:b8b7:5d27 with SMTP id d9443c01a7336-2d2ffb432f3mr28112645ad.1.1786374853680;
+        Mon, 10 Aug 2026 08:14:13 -0700 (PDT)
+Received: from [127.0.1.1] ([47.253.114.73])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d16c4ea722sm37764105ad.79.2026.08.10.08.14.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 08:14:13 -0700 (PDT)
+Message-ID: <6a79eac5.b8c88a87.21f9a.a28b@mx.google.com>
+From: win847@gmail.com
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v12 12/12] net: airoha: add phylink support
+Date: Mon, 10 Aug 2026 23:14:08 +0800
+In-Reply-To: <6a79e6fa.332d3c56.21a33c.b60f@mx.google.com>
+References: <6a79e6fa.332d3c56.21a33c.b60f@mx.google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806155253.50252-1-163wangjack@gmail.com>
-In-Reply-To: <20260806155253.50252-1-163wangjack@gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 10 Aug 2026 11:11:07 -0400
-X-Gm-Features: AUfX_myB1sAn4BjBR7SxAWVBKkuSQTY9bAbl7nGn-2WWz--99NqBpjB6WTYt9uQ
-Message-ID: <CAM0EoMnaLkyZQZOufdpRZErHpWT9Xd=fNvsN=mQ0nyk+t0iAGQ@mail.gmail.com>
-Subject: Re: [PATCH] net/sched: cbs: perform rate conversions in signed 64-bit arithmetic
-To: Jack Wang <163wangjack@gmail.com>
-Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 6, 2026 at 11:53=E2=80=AFAM Jack Wang <163wangjack@gmail.com> w=
-rote:
->
-> cbs_set_port_rate() and cbs_change() multiply link rates and slope values
-> by BYTES_PER_KBIT, an unsigned long constant.  On 32-bit architectures,
-> the multiplications therefore take place in 32-bit unsigned arithmetic
-> before the results are assigned to s64 fields.
->
-> For port rates above approximately 34.36 Gbit/s this wraps port_rate.
-> The same conversion turns a negative sendslope into a large positive
-> value, reversing the CBS credit adjustment.  This affects software CBS;
-> port_rate is also refreshed on NETDEV_UP and NETDEV_CHANGE notifications.
->
-> Cast the first operand of each multiplication to s64 so all intermediate
-> operations use signed 64-bit arithmetic and preserve the value's sign on
-> every architecture.
->
+On Mon, Aug 10, 2026 at 10:57:59PM +0800, Christian Marangi wrote:
+> If you are ok, I can integrate the change in the next revision.
 
-Check what the sashikos are saying please  - i agree with their view.
-I believe we need a v2:
-I'd suggest a v2 that addresses both (and optionally validates the
-idleslope sign and a negative idleslope can arm the watchdog in the
-past and busy-loop).
+Thanks Christian, please go ahead and integrate it in the next revision.
 
-For completeness, the pre-existing timediff_to_credits() s64 overflow
-that gemini sashiko flagged is a separate follow-up, not part of this
-patch.
+Either the `goto err_phy_stop` unwind or moving `phylink_start()` after the
+GDM VIP configuration so fewer error exits need teardown works for me —
+whichever you find cleaner. Happy to review the diff when you post v13.
 
-cheers,
-jamal
-
-> Fixes: 585d763af09c ("net/sched: Introduce Credit Based Shaper (CBS) qdis=
-c")
-> Fixes: 397006ba5d918 ("net/sched: cbs: Fix integer overflow in cbs_set_po=
-rt_rate()")
->
-> Signed-off-by: Jack Wang <163wangjack@gmail.com>
-> ---
->  net/sched/sch_cbs.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/net/sched/sch_cbs.c b/net/sched/sch_cbs.c
-> index 1c93469c56e3..9ef31ecdaa05 100644
-> --- a/net/sched/sch_cbs.c
-> +++ b/net/sched/sch_cbs.c
-> @@ -335,7 +335,7 @@ static void cbs_set_port_rate(struct net_device *dev,=
- struct cbs_sched_data *q)
->                 speed =3D ecmd.base.speed;
->
->  skip:
-> -       port_rate =3D speed * 1000 * BYTES_PER_KBIT;
-> +       port_rate =3D (s64)speed * 1000 * BYTES_PER_KBIT;
->
->         atomic64_set(&q->port_rate, port_rate);
->         netdev_dbg(dev, "cbs: set %s's port_rate to: %lld, linkspeed: %d\=
-n",
-> @@ -405,8 +405,8 @@ static int cbs_change(struct Qdisc *sch, struct nlatt=
-r *opt,
->         /* Everything went OK, save the parameters used. */
->         WRITE_ONCE(q->hicredit, qopt->hicredit);
->         WRITE_ONCE(q->locredit, qopt->locredit);
-> -       WRITE_ONCE(q->idleslope, qopt->idleslope * BYTES_PER_KBIT);
-> -       WRITE_ONCE(q->sendslope, qopt->sendslope * BYTES_PER_KBIT);
-> +       WRITE_ONCE(q->idleslope, (s64)qopt->idleslope * BYTES_PER_KBIT);
-> +       WRITE_ONCE(q->sendslope, (s64)qopt->sendslope * BYTES_PER_KBIT);
->         WRITE_ONCE(q->offload, qopt->offload);
->
->         return 0;
-> --
-> 2.53.0
->
+Best regards,
+Wayen
