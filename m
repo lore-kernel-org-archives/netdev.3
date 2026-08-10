@@ -1,79 +1,67 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D187F391828
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5F83939D7;
+	Mon, 10 Aug 2026 06:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786343937; cv=none; b=L2I9yqLUZtuVAOl0If/HOnzDNo6cZbo12UXLhDdJ7AN+f4YN5Zm8FyEvAW1osY6S6b03/izV9Ac/KQ7uKSoJVVe/ZE0iEH9960UImx3CMoAyB+LFWA64sQxbLzD8AC9LnIM1kuiiNvTztZtDtqKzcge7TXOKoGDq3o5tpV6i8PA=
+	t=1786344065; cv=none; b=BXr9mljMde/GQYzZPotnXzmIXRcetivyxnT8cIL+VcZ66UjU3+xmR1Cpm++XQUGxVZzkIj5fHbuWZMVfh91zbiESzZnpCzyHR2ywzTOp8iZlQ3NHx4BhvYOjY++bq8tmeVifvZzDWjIt/nqPjw6T3Rxp1H6SjD0UTCZARIyD3q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786343937; c=relaxed/simple;
-	bh=eOhyBaxVU3H5GsJyGAc5oPRoZW7pggT5TSaQxAt2Px0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NI2QNbK95PzezyLDL90aXxKUZBkXok1rUMpZh/OX6uz5hxQR7N7L9551faqwPALPkXcsv0OofePlMAKQXpsHB+RuItBysLLUcsHsLGVOYR2olRVk/nNm1Hiy9JcSPM21Rje26FPumcBC/e3+TDZ9aWHuQRHYblpDTAt6b4zTD9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqK0vVyf; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786344065; c=relaxed/simple;
+	bh=irOsHIsjQFnCgXpbVIJoXrWkBbPVuThlKCsiOgQsgsA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z5xhHZC41kwPPR3xNHLldOUoJ1UUx5hQV7AyAEBtntkLU+KLtaqAv1VQutxuQJ6J7rA4d6YGACK34l3Z73C9xk20IibJVEsX3aUxe7bftLjEl548pLoADROWRt1HrLnkpQs+X6TX9nEy/awdDZVALzbcV6rSvQVKX8XOBBT4sO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZZQrkEvG; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqK0vVyf"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d049069377so12058665ad.0
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 23:38:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786343935; x=1786948735; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cQPgo7/ImwAyna2sJScM9HYP43JmyinkJZImCKBlm+8=;
-        b=CqK0vVyfiHcyBjSGlMVyRksfqw10qeiLe4vpUKJHI1wfNltlUuVHdMfQMVJd7e6/ER
-         bUaVkkz5fA2qHPpUQZ12OWg79iF/WtZqxkcnlIrYzcz7tXvGtdIwzbevE+kwhVYcsM6l
-         qeHFfoG/pEbaj/2TT6bEHbxiKhyXmUY2fM/1RcMGkBeQUI+Mhm9+P3UA24RVfivNRId7
-         YjKVwfKQlCtLbdXbawYINSsqGdvnpgNwwrksCp+O8QxXqmcb1u7c8cEtVyAk/WZiRl7g
-         ZpE2f8RU1dqDOSJ1kGdQFOqDVWMUrVFgkv35OC9jqJPogVyPMFLDSQmzGlIn8rryaP7b
-         9eiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786343935; x=1786948735;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cQPgo7/ImwAyna2sJScM9HYP43JmyinkJZImCKBlm+8=;
-        b=Wyk5n+bPfHM4fZ2dMVrLtNObMRCFJzhYIa4VUd271lp0omfOxzBpu3sqcdkvT8/meB
-         UihWlZzjTnSWejWbIIXjfKeflKhPFJsq8hE42OdjaCE2/Fmp9CAj1rSmiQlMxBQPfTag
-         J4p9WXX0z3EhLFI6MQHtQOqlOMzc+n+aVHLVIsvzdFR1PWTyR1iLGZg+S9tyP2TMie0/
-         YPBVs6o6k7kN78RZtVCi+hLjPXmZIm9Nrx89AiGFD9OKI7Uqb1hWT4R2zd69flXPDo+V
-         hxJdpCf2wqNihTy6NdBzz36m8s9iknZu4X8ekSPFjgb/Kh/GeaQTKdNF7QQNx3CMBPQw
-         oiIA==
-X-Forwarded-Encrypted: i=1; AHgh+RoYpx6+fHaoGG1zzIm3QMhx03Kwi9c7nvw8lSrydLQ+EFSViG11z3a0sC+vAxD4ecCg4IEZPSA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTdIbb3JCZMr/b+hXAu5Ip7FriDHH4CTlScleOqZF/H2n2TIWN
-	TAdql46aWrtre35LBvmoOzczrRAWwSzGKBrvc9wKcJ5YcPYeSe1Rgkis
-X-Gm-Gg: AR+sD10CbYoGMkkgDzNEj+M5JYjip8UYhVilUSqRymzgUz9hcOienZ8N+TBWPnLr3j9
-	OW/33PzREFTPRBz5YJB9srPTQBkfNkbMSALoON8NLAxyqh58cCV8ECbinxQPmnxB9jgTAjneGhG
-	zOT7Q4Paj+ghYENmVtR9p3Uril20WMZbdCaPk65r22UXDOUERlaun+mT9KqklGFlXl2G+a4nzOm
-	J3B6mwHECKpjEi/RM04Hms3uyrGcacZ/p9L+nkAvKbH5inQhRWR/CWFKnzMun3gvY4Fge2CMTdV
-	6CrFAODfKnK+0jOZLNHqt2C0g++o821XXGlkOnSrJZWMis40zEAFakMYFL204vF10fCYHcHZJVb
-	WFSTNAVt35GCyYHHM4DwoG+6EUSFrtH7yHbiAFSpgBTeyDZ0MWik28re99OFSw1BoHW1sDMSb9T
-	tt0TKHY1osplboyvLHWbCbAhpluqOErR0SyMwHqBt5Mppq9sGju0cKTXdIQCXbxmhrSQAHM5A0X
-	Bu6bJGz5fM0n/vAljCKfjI8QwI=
-X-Received: by 2002:a05:6a20:9c94:b0:3c3:91f5:82c2 with SMTP id adf61e73a8af0-3cbadb861admr30450624637.16.1786343935121;
-        Sun, 09 Aug 2026 23:38:55 -0700 (PDT)
-Received: from amd.ban-spse ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315bebde308sm39626282eec.20.2026.08.09.23.38.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2026 23:38:54 -0700 (PDT)
-From: Malathi <malathi.a2000@gmail.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Malathi <malathi.a2000@gmail.com>,
-	syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-Subject: [PATCH net] e100: fix shift-out-of-bounds in e100_eeprom_load()
-Date: Mon, 10 Aug 2026 06:38:15 +0000
-Message-ID: <20260810063815.151326-1-malathi.a2000@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZZQrkEvG"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67A5Vab8621195;
+	Mon, 10 Aug 2026 06:40:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=zoVg7bDT5XsSdd29XppNleSOEenkEEItlAzHHEY2x
+	Sw=; b=ZZQrkEvGur5zaFq9XHKwY2mH6zZP+kDHcyu5COzvNgiCi9D7D+7OFuGrf
+	tZyf+b8x4PPIJtJERom/yNqBKAqrd7bU60uuuw95kGB0K7vJ47vRvvUG6F4dRGkq
+	k2OzQETSefdH8wSy4zSWoBm7uItDJ9BwIGil1hN8mwSxHgjo0LU0ZZqA0Dw4v7ez
+	hz9O3gSp8xm1BXYuPnIi1hDJW8sydFkZUfTzdww7ctTLqceHsQG0LcRfPrqHKZsl
+	1MbF1xG/A2UO8qqJutHXMxFNN80wQJ8/F9/uan76jNG24+hcB5uONyGHCHxonjdA
+	JjBTmtfntvEmV6+66UrNE33Gqwezg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvkcp784-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 06:40:46 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67A6QHKV023884;
+	Mon, 10 Aug 2026 06:40:45 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxh0g3h0f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 06:40:45 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67A6efHE30998800
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Aug 2026 06:40:41 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B9F7F20043;
+	Mon, 10 Aug 2026 06:40:41 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 873AA20040;
+	Mon, 10 Aug 2026 06:40:41 +0000 (GMT)
+Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 10 Aug 2026 06:40:41 +0000 (GMT)
+From: Hidayath Khan <hidayath@linux.ibm.com>
+To: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
+        sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch
+Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        horms@kernel.org, pasic@linux.ibm.com, hidayath@linux.ibm.com,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH net] net/smc: fix use-after-free in smc_rx_pipe_buf_release()
+Date: Mon, 10 Aug 2026 08:40:41 +0200
+Message-ID: <20260810064041.720441-1-hidayath@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,67 +69,117 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: vPpIq3dr5kiL5YlXlFuc84gMPL36jWC2
+X-Authority-Analysis: v=2.4 cv=J86aKgnS c=1 sm=1 tr=0 ts=6a79726e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=El3dwMI6zd4-qOQQ5tQA:9
+X-Proofpoint-ORIG-GUID: V8R-_RCcoFtQdBZ27GEBxJsIcTvtz9Ey
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDA1NCBTYWx0ZWRfX6DWR4lcXeYOC
+ JQLIO2p+l6AxmCvz12mEi1LVoK9Na+AlAqQN4CzcyIu2TLWTAtwYIbpw3WulTdfPJcBtuuK3ufZ
+ 4yKIB1/SgXBc2nyHMvBXzUO9k/KjJz3nM7VlBFhiC1yZWJvioKrpME2Mu80KoPQMGbglZsd28sO
+ Ls6HBLWbfZ1o0Rhwi/H+7arsiQk1zggO8M+8x+AhT7xn/04aVwqdLSMkpVE0WOCSZ5kvKnX1rt/
+ BzerajmOnp6JZmDr11c8AnBfemTSu0qbJO0G5MIitAMEZkDkrBPaRgUFQmZ/J6shrjn6Bue4/jC
+ 3mwhb3kygTBawUfSAXGGpE2UqnbTGPu5P92QWgs+EAcIlF9JNlM3ZA/nkuGowhLj/0nttbv7zNo
+ YJy586//A+uE5d6BEO7UzWbtQFLBkqSMMKOvwWn+oxeEVFyF6YJVMKTX+cUD0/zoqGHLdNE1ikn
+ E0lx7tepB15ywCJTPmw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDA1NCBTYWx0ZWRfXw9KCxTDdTa6k
+ Q11dPELG20sj+kS3rwaCQhEagB6NrGReazTvHTcexD8kGQ9WBCSAIv0qelrLFcoNuC57hp15Eza
+ iQBgN8KMxVvwUHbEB9HChw+rse0E4ak=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-10_01,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0
+ phishscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608100054
 
-e100_eeprom_load() and e100_eeprom_save() start with an address length
-of 8 and call e100_eeprom_read() to auto-detect the real EEPROM address
-length. e100_eeprom_read() adjusts the length with
+smc_rx_splice() hands RMB pages to a pipe and takes a socket reference for
+each entry, so the smc_sock survives until the reader is done.  The
+connection does not: a close in between runs smc_conn_free(), which
+releases the link group and returns the receive buffer to the link group's
+pool.
 
-	*addr_len -= (i - 16);
+smc_rx_pipe_buf_release() tries to detect that by testing sk_state, but it
+does so before taking the socket lock, and then dereferences the connection
+anyway:
 
-based on when the EEPROM drives a dummy zero onto EEDO. A malfunctioning
-or emulated device that drives EEDO low too early makes (i - 16) exceed
-the current length, underflowing the u16 addr_len to a large value such
-as 65529.
+        if (sk->sk_state == SMC_CLOSED || ...)
+                goto out;
+        conn = &smc->conn;
+        lock_sock(sk);
+        smc_rx_update_cons(smc, priv->len);
 
-That value is then used as a shift count:
+smc_rx_update_cons() reads conn->rmb_desc->len twice and then calls
+smc_tx_consumer_update(), which walks conn->lgr and conn->lnk.  The state
+can change between the test and the lock, and on the is_reg_err path
+smcr_buf_unuse() does not recycle the descriptor but frees it outright, so
+this is a use-after-free rather than a stale read.
 
-	nic->eeprom_wc = 1 << addr_len;
+sk_state is also the wrong thing to test.  Take the socket lock first so
+the test and the cursor update cannot be separated, and test the receive
+buffer itself, which is what the code goes on to dereference.
 
-which is undefined behaviour and additionally overflows the fixed-size
-nic->eeprom[256] cache.
+For that test to mean anything, smc_buf_unuse() has to stop leaving a
+pointer to a descriptor it has just released; clear conn->rmb_desc there.
+Nothing in smc_conn_free() reads it afterwards, and smc_ism_unset_conn()
+already returns early on a NULL rmb_desc, so an SMC-D teardown that reaches
+it twice becomes a no-op instead of indexing smcd->conn[] with a stale
+sba_idx.
 
-  UBSAN: shift-out-of-bounds in drivers/net/ethernet/intel/e100.c:768:21
-  shift exponent 65529 is too large for 32-bit type 'int'
-
-The EEPROM cache holds at most 256 words, so a valid address length is
-never larger than 8. Reject larger values before using addr_len.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e0abb1d45ac291ebebeb
-Signed-off-by: Malathi <malathi.a2000@gmail.com>
+Fixes: 9014db202cb7 ("smc: add support for splice()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
 ---
- drivers/net/ethernet/intel/e100.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/smc/smc_core.c |  1 +
+ net/smc/smc_rx.c   | 10 ++++++----
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e100.c b/drivers/net/ethernet/intel/e100.c
-index 29960762e64a..a236273f5e65 100644
---- a/drivers/net/ethernet/intel/e100.c
-+++ b/drivers/net/ethernet/intel/e100.c
-@@ -765,6 +765,11 @@ static int e100_eeprom_load(struct nic *nic)
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index c0027d2fe4e8..def65ebc0b53 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1248,6 +1248,7 @@ static void smc_buf_unuse(struct smc_connection *conn,
+ 			WRITE_ONCE(conn->rmb_desc->used, 0);
+ 		}
+ 		SMC_STAT_RMB_SIZE(smc, is_smcd, true, false, bufsize);
++		conn->rmb_desc = NULL;
+ 	}
+ }
  
- 	/* Try reading with an 8-bit addr len to discover actual addr len */
- 	e100_eeprom_read(nic, &addr_len, 0);
-+	if (addr_len > 8) {
-+		netif_err(nic, probe, nic->netdev,
-+			  "invalid EEPROM address length %u\n", addr_len);
-+		return -EINVAL;
+diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
+index c1d9b923938d..c17d4757ec84 100644
+--- a/net/smc/smc_rx.c
++++ b/net/smc/smc_rx.c
+@@ -116,15 +116,17 @@ static void smc_rx_pipe_buf_release(struct pipe_inode_info *pipe,
+ {
+ 	struct smc_spd_priv *priv = (struct smc_spd_priv *)buf->private;
+ 	struct smc_sock *smc = priv->smc;
+-	struct smc_connection *conn;
++	struct smc_connection *conn = &smc->conn;
+ 	struct sock *sk = &smc->sk;
+ 
++	lock_sock(sk);
+ 	if (sk->sk_state == SMC_CLOSED ||
+ 	    sk->sk_state == SMC_PEERFINCLOSEWAIT ||
+-	    sk->sk_state == SMC_APPFINCLOSEWAIT)
++	    sk->sk_state == SMC_APPFINCLOSEWAIT ||
++	    !conn->rmb_desc) {
++		release_sock(sk);
+ 		goto out;
+-	conn = &smc->conn;
+-	lock_sock(sk);
 +	}
- 	nic->eeprom_wc = 1 << addr_len;
- 
- 	for (addr = 0; addr < nic->eeprom_wc; addr++) {
-@@ -791,6 +796,11 @@ static int e100_eeprom_save(struct nic *nic, u16 start, u16 count)
- 
- 	/* Try reading with an 8-bit addr len to discover actual addr len */
- 	e100_eeprom_read(nic, &addr_len, 0);
-+	if (addr_len > 8) {
-+		netif_err(nic, probe, nic->netdev,
-+			  "invalid EEPROM address length %u\n", addr_len);
-+		return -EINVAL;
-+	}
- 	nic->eeprom_wc = 1 << addr_len;
- 
- 	if (start + count >= nic->eeprom_wc)
+ 	smc_rx_update_cons(smc, priv->len);
+ 	release_sock(sk);
+ 	if (atomic_sub_and_test(priv->len, &conn->splice_pending))
+
+base-commit: 1c2c67f1a9009f643d1233fa6bb8f888deb797ba
 -- 
-2.43.0
+2.52.0
 
