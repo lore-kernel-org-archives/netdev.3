@@ -1,212 +1,326 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011026.outbound.protection.outlook.com [40.93.194.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90BB3D952D;
-	Mon, 10 Aug 2026 12:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786365948; cv=none; b=PRHfemhbv4hABHp54084N021Tqf41YeTrsBGHk5r0Y6qH5UX2hM72Mv4biloYgV8SDC4S7ngoqGLc+JPODkAWZo7UypvbBxUoojjo/lHGPdV5HytuR5SKk3DPP6j36JylHLp2ZF822fSWW+kCQKmez1ZQrJEUwMV3u2yutHVV38=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786365948; c=relaxed/simple;
-	bh=ZWvvMLjvTWqhwpwTMBNxqZRYDMtpzCTp6gJisn/74g8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qDIheoeWbfjIyiBkwgDBouHqDd9x8UGl4uhQYx+qds9k4fTQaoF17bGgn1qLEQQrd71lmLF6N0TS79uI0I8Du2Qp6nv8MjBmgVg9hA50kd17QNu6cun8uInjoWXN8gmpVC+XIF/owSVkdTqGm89wC89Rb8GmXLFd2A9NRkPJBE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfU2UZxo; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14673DAACF;
+	Mon, 10 Aug 2026 12:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786365951; cv=fail; b=lU5Wk8nd2dqpDL6oAd9dnCqJHxEYaFoViHtRqAewdXbM9KpATKxdvGNCjfGNIG2XigWOgEASArEIh+9jJqdrD61NVYuUl2APp2+AlOCOGw1mkTVAgjEK5B1WWUgvlkaKE3YI7TE+ukBz4iOi4VJACvEi3IcFII2uCHtN+a3MbRI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786365951; c=relaxed/simple;
+	bh=lDeedrwpI3K6iKAJuE7Tw1k72dgIglgkUBZwN2/tK9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dLlTKTkts73Gmlbu6+TUuqKlRdmCAVvCyRxWYiAXGdNCiVvLzCHNbJnUB3s2VfrPhL973GGaY4C50A4G00F6IemMnxpM3ru8CUYhNY/liRXfNV3WrzxQy94FxJy9KWNu7c86KC0HYlwk0IIvzRh7Topl9P+ljQB6Jc+HNKHg4x0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=E4EqUqeh; arc=fail smtp.client-ip=40.93.194.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfU2UZxo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000941F000E9;
-	Mon, 10 Aug 2026 12:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786365946;
-	bh=I5wEaWc4U+7KZtLpZjRcGt/xrB8BGrdsX1iOtZY0Ua4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jfU2UZxoHSmWm42YsYQXPQWZVs9aXphWKENvSI9WLZAnZ62inaCpEsxMi0e+KOh/R
-	 vcIdx63ont0izUPzLj4ECuIVevdbKiZtKcNgJSC0WuztspWb+01oi2OvhbEx0B6Zi6
-	 zvSXI0ddCcyHGguoybV4tPNjE1RlOXpjN59tehrz6o0CLEIIfpEu4uU+M9TMILmjGs
-	 cTkQiefIQ4iwykeBqn0mpnTFoA9fLCuQBCgTm0akD4oIzMH1tI/TaGNa5JQKpuNvBo
-	 h/0+syLYbIalZ4qHqHTHkqKB1y16HcrMFMubJfUNKShOgRco2N3q2wx9wNAiOjBAnm
-	 3ImK/syf82S/w==
-Message-ID: <adc624c6-6ebd-49d6-bba4-06319d86a492@kernel.org>
-Date: Mon, 10 Aug 2026 14:45:39 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="E4EqUqeh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oWJMHaiFDWO9wxvi9SonSkM/+mLzvkwaVoe4kG1RKl0s12PX+N6erPTkT7coDeurmH7oJajd4DAWdg4oVC/EknJihFj9uqdy7kIj6fSkK5ik7oy1hU499sAMXvPUUnryMOyMK4+XOtP7um++bOlmhr5z0uTG102kW5Lalk5sTyBm4fZZpel/gUuqBurfuO14+cARxJOjbr3NgmeuvyZALxf6C5sT7CM9LF2xdyrOs4zqjO43hUURMnXPFnfW8tNX/zxtdRUP2H+yLxCMcE4b8n24vlwZZCfpEg3KdAMnY0ajdZeL5JJOfijtPX0iABwYmQJYhQQzYhfvYabZupy5Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PxiIj94A9+0hFqyrOFWADnQErx5xtsNhITVuHt86tP0=;
+ b=isJB+sxA2ppb5lT/HTTgJrnj/rNJWb9XZcUEGgP/w7tve4MDtdldFTP3OyAG8gEmyPbacFDdzBm35n6B4DhjFb+I2WNWMCrMWTq01p/0oc45DB6KMhKpwI8Xvsw+Qa74RGjO5d+CZwCInoZKQPn1rv9fagpvdEedbZCSkUcCWDvd7jJNlacTSYmW2AAZXsFwlDY/TkzDJCyJAYbvv2rQ3Dmu/31R+WnaM2W2dVFj6SsoAaEps1xgw0Vt9rGcbt4CTRFEm+oJS1td4mthkWLZxML0obOzA73d795ZWCKm9aeUZ55HFQvjrc5yxUh8EK+LWRP2ft+NNnpPOaj4bQpXiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PxiIj94A9+0hFqyrOFWADnQErx5xtsNhITVuHt86tP0=;
+ b=E4EqUqehdABayuNn2A3Sy2z387ZePQBouhyt41loyOKy6QLpMif4izs1WdKkoctIG3JVQliUuQ6QfaZcCGTg0GJn/Dl51TlROHLJnNINT2T3D1lhe3S99w2DQBZhS3jJOBIkDktl/6z0i/FLclgavhYnqKPPmvWDxIPlwAAk0TqPUjcTHP+WQJMYMtZ7gU8jl76Y/Is9TQFsEwHvRo/cpW9viAoFG2c/eBNtqWagLUI7ioNaCKAuKzXftnLgicJ5IIBO+WPr5qPZWEVFyNr9WcnTu8qLUVll7PIh0hRtr7Ui/ZrjiSpuK/PWJpoJMMwGtP1FAxxfNWzd4O21sCWYzQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by PH7PR12MB7916.namprd12.prod.outlook.com (2603:10b6:510:26a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
+ 2026 12:45:42 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
+ 12:45:42 +0000
+Date: Mon, 10 Aug 2026 15:45:31 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Zhiling Zou <zhilinz@nebusec.ai>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, daniel@iogearbox.net,
+	razor@blackwall.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	dsahern@kernel.org, horms@kernel.org, yuehaibing@huawei.com,
+	kuniyu@google.com, aleksander.lobakin@intel.com,
+	maoyixie.tju@gmail.com, thorsten.blum@linux.dev, kees@kernel.org,
+	kylebot@openai.com, vega@nebusec.ai
+Subject: Re: [PATCH net v3 1/1] net: cap advertised IP tunnel headroom
+Message-ID: <20260810124531.GA2704117@shredder>
+References: <0ac01576f92412e8fa35cc3eb44336797a9d11d0.1786021595.git.zhilinz@nebusec.ai>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ac01576f92412e8fa35cc3eb44336797a9d11d0.1786021595.git.zhilinz@nebusec.ai>
+X-ClientProxiedBy: TL0P290CA0013.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::20) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net] mptcp: reject a DSS option that follows an
- incompatible suboption
-Content-Language: fr
-To: Fourie Zhang <littleddfu@gmail.com>, martineau@kernel.org,
- mptcp@lists.linux.dev
-Cc: Fourie Zhang <fouriezhang@tencent.com>, stable@kernel.org,
- TencentOS Corvus AI <corvus@tencent.com>, Geliang Tang <geliang@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Peter Krystad <peter.krystad@linux.intel.com>,
- Davide Caratti <dcaratti@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Christoph Paasch <cpaasch@openai.com>
-References: <20260810114616.2709245-1-fouriezhang@tencent.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260810114616.2709245-1-fouriezhang@tencent.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|PH7PR12MB7916:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b3e86ec-0c6b-408e-70e1-08def6dd48e0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|22082099003|18002099003|10067099003|56012099006|11063799006|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	nunJjLJpwWhNFnt0uB+i7ROZSw/axqvkeZhDfShJ/hfHw6fUSi8EpZ+R0J6N1p0+0IW8YOF+maW+GZIb2cH3t7nhfqiGhEBoWN/CxD1woWLLs5jHYjhyZbSurqLzsbO90/O/PjFnULaAQLNm2swQqcY7tggJOkuiXMCKq3UU8icnALNySSJ0mv/blMd2TUaO3vMHqS3jzycHhrCcbtSOH+FOyAi+cVkth48QfFYIxj1jghU713hf0y9XhfMN2aM4bxZz6U60JjGxzjQ8QZALBzMVZqY+jMV7kgnTYvpj0VBRRycZ+cjnT92TRFujszX0TYlYiwfnkCcy+aKi0hokr3YNa8s1vEB4K4hkY3IzZYpFh9aLTw5INifdia2kdLqWJwk306YWNHLAGCCu6KoXRObSPgMjRv77Go4VBxRB2XYhxYPRrsDzxAJHt73rcumRgR10ss+1gsEKmkhcpOXI48KEru3WP36DMM+YcsvYVw6NH57JRQLKfboIpG46bUXOhgivWmPbZV02a98aB17rMio0WdbEQzJ8zlmvgE6J+LUxY6qihOQjM+AKAqoiYLr31iCaRNEbravHxXkL+NKOitLZ2OAeXsz0NIV6IBqhMnB++k3oGnt7BNHNwLXhGD/MvMWGglcTvsezVDXfCmPoPtSMiktjLsdTLW/kz/fK3Gk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(10067099003)(56012099006)(11063799006)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IZg65Y9bT39M5ZsGAvHZWTkxgtHVW3dl8glc9EdrbgcgIucd7ff3zPe5D9u0?=
+ =?us-ascii?Q?b+OjLNGhzL1/54aHmhO+o35MNB2m5BZmpgHwVD8VU1ze8Sct2UGvDxH81ZUP?=
+ =?us-ascii?Q?CT7t5N/go0jcj3vfCO3BVeYDBhiMBBmxQ7omZck1HXWpEQK47KC644CD9rm2?=
+ =?us-ascii?Q?8Rm4uERxCFdD+swn9J5il6AxvAVoElBdzxiiU0sZuTezF7q/pnXRzLLBleAL?=
+ =?us-ascii?Q?OYMxJPNAlSIze1VD6rbkuBsxMeHot9U2vfOJOYUZSIvgPldbeOjruoZFdNR1?=
+ =?us-ascii?Q?bEEZOQmd3zbzB/AkypDcskFkTve30O0ZiPBHLBmRLVthNRSWh8Uj3ma9WZ47?=
+ =?us-ascii?Q?I64tGLmr4U3obk1UbMDtCk9XEU3VsQQohgNAKVAz9kta1Dj0T0skM1EeLOO+?=
+ =?us-ascii?Q?QWJSIOmMvLjbs1Scyj8Gsiig1Wvx+XxE/F/dwZlriIqY6Oe/OzeGqEWZAn3N?=
+ =?us-ascii?Q?RAmHMhSJ/XKLeOB+m6mOM8GQsFv9Bl3MoRUq/I0T7XMLDHq2SqvBec1EOq1h?=
+ =?us-ascii?Q?AsaPnthzwhGdHgHxq6j2qbogz2ALiQgpeyP0J8/MuIa0eFMjClZ7NrjrdjVO?=
+ =?us-ascii?Q?OIFa8YZVTK3Tz+OTffIynIKnLM2SL86zC1UztsR6H/WHQXdRno+f5ePPa78V?=
+ =?us-ascii?Q?Ejy4d8dLZgKiEMQTGYUa5E5EUwGa3HzyO/mjwOGWNCrYZ/tqnev6ksDF3mwU?=
+ =?us-ascii?Q?TwTSl06BbR/HyaiCfCIpJq3a12oPiS89P2m2+PrKs79/n/ovJDG2D3UA7OZ2?=
+ =?us-ascii?Q?zD38OOQAv8Mii3uRMZHWR5O5c84kmZz8hVMttmlLOCzIXwwfhKGskm0S1xc6?=
+ =?us-ascii?Q?6IiZekVRkP98TB5szs59v1Pk2+CUDQICkLp4b2yHRwI38ozMgGKJyue8c9r/?=
+ =?us-ascii?Q?H6wJUNiDqm14OZuX/E5ebLxmZKQC45bnobcT1MgAYaxZVgelbQQzaP88n7op?=
+ =?us-ascii?Q?tqwWxMtaPz06YMGIOBqW+N9o3EL36g4rE+xZWPMOOWJXAI0RmgRzTLb6OD7a?=
+ =?us-ascii?Q?m3KaoqfzIRInj8qAA7M/s7JZ4MgT4spu94LEcpDET1I17Fa6St4wIbp3zywE?=
+ =?us-ascii?Q?oXWKk7rdxZoTU8G7xoFCQDY/rSt5csMuWj5gl4C+8MosaIdGzCuLFJC++i2F?=
+ =?us-ascii?Q?FobTidkm5j6SNi/jrJyLhFUiQXvSuF1qOIXOMVb8Ie9hy0I/2MNop7u41EHY?=
+ =?us-ascii?Q?9OpzBNGw52XgwARjUxxyqDyW/UQBSAIllO9WMifCDvGvLCTrueqfxEBdK/WQ?=
+ =?us-ascii?Q?Bamv96eB8qrJ6gFp0v345dqXsv2eCL0ZKGDoelibhF7EL3ET9dnkjhsmMi9d?=
+ =?us-ascii?Q?nuKSzaq0S9frOyxhZi3C74D2JMOW/QNDsqPd5W7AxFRQ10+9wKgnywHyUhMk?=
+ =?us-ascii?Q?pZDkHMU/eXjwQRioT4TA5m4YyHv8tzXu8ZB96Z32DEJbaMPV1MRBrtik+FNp?=
+ =?us-ascii?Q?yM+/aEZEFk3rtc9HZzNyHuZ3Zy3RHNHyIie0iEp33ffhIvJmY2a02WsP/fCB?=
+ =?us-ascii?Q?oU0vjz7Xc1BKuei5GHh+7aahYTWC12eKf/4vSn5yAT3gXGBpJjrlsMNkgQJn?=
+ =?us-ascii?Q?MnesPhqoXJSAyuWoErBnfrumQ2YclhC7TS2Cz3ffN4ZP0AQKwUYKzWAQ9cET?=
+ =?us-ascii?Q?1vsXKKoNRv9h8RHIL++puxlS9yZXzajfj1y6RyN7vR8N/NEBU005WP5Tl9BI?=
+ =?us-ascii?Q?Qk1NbPdkxRVktNQ+2k0W9Z2oPv3MTZSZCJp8w/ERHozcc/Wx?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b3e86ec-0c6b-408e-70e1-08def6dd48e0
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 12:45:42.0197
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: omWVlwMf3eggaIR4PMpa0WJuchbSJXpr8tBArGVDjc0UT8YcMGg6Akkv3VZ8beKLvIBrhYhTBAZFC0eZEyoeQQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7916
 
-Hi Fourie,
-
-Thank you for the patch.
-
-On 10/08/2026 13:46, Fourie Zhang wrote:
-> All file:line references below are against v7.2-rc4 (ac5b0e5651b1). The
-> KMSAN trace was captured on 7.2.0-rc6-kmsan72rc6 (075b74841bd0), where the
-> same lines apply.
+On Thu, Aug 06, 2026 at 09:21:52PM +0800, Zhiling Zou wrote:
+> IP tunnel devices derive their advertised needed_headroom and, for IP6GRE
+> devices with header_ops, hard_header_len from lower output devices. A stack
+> of user-created devices can make the derived value larger than the 16-bit
+> skb header offsets can represent. Once IP output reserves it, skb head
+> expansion can wrap those offsets.
 > 
-> mptcp_parse_option() writes the DSS status flags before it validates the
-> option length. For MPTCPOPT_DSS it assigns dsn64, use_map, ack64 and
-> use_ack at net/mptcp/options.c:160-163, computes expected_opsize at
-> :165-180, and only then rejects a bad length with a plain break at
-> :190-192. That break leaves use_map set.
+> The runtime transmit path already caps a growing needed_headroom at 512.
+> Apply the cap when configuration publishes headroom or header lengths
+> derived from a lower output device.
 > 
-> OPTION_MPTCP_DSS is a separate, sticky bit set at :194, and the mapping
-> fields data_seq, subflow_seq and data_len are written only inside the
-> use_map branch at :207-220, i.e. after the length check.
+> Capping the advertised value is safe: IP tunnel transmit still expands the
+> skb when the packet needs more headroom. A nonsensical stacked configuration
+> can therefore incur an extra reallocation, but it cannot publish an unbounded
+> reservation to upper layers.
 > 
-> mptcp_get_options() clears only the four-byte status group
-> ("*(u32 *)&mp_opt->status = 0", :370). data_seq, subflow_seq and data_len
-> are declared ahead of struct_group(status, ...) in struct
-> mptcp_options_received (net/mptcp/protocol.h:145-177), so they are left
-> uninitialised, and the caller declares "struct mptcp_options_received
-> mp_opt;" on the stack (:1137).
-> 
-> So a single segment carrying two DSS options -- first a well-formed
-> ACK32-only DSS, which sets OPTION_MPTCP_DSS but no mapping, then a
-> truncated DSS whose flags claim a mapping, which sets use_map and then
-> fails the length check -- ends parsing with OPTION_MPTCP_DSS set and
-> use_map == 1 while the mapping fields were never written.
-> mptcp_incoming_options() passes the OPTION_MPTCP_DSS test at :1210 and
-> copies them into the skb extension at :1253-1258; get_mapping_status()
-> then branches on the uninitialised data_len:
-> 
->   BUG: KMSAN: uninit-value in mptcp_subflow_data_available+0x2428/0x4c70
->    get_mapping_status (net/mptcp/subflow.c:1152)
->    subflow_check_data_avail (net/mptcp/subflow.c:1369)
->    mptcp_subflow_data_available (net/mptcp/subflow.c:1466)
->    subflow_data_ready
->    tcp_data_queue
->    tcp_rcv_established
->    tcp_v4_do_rcv
-> 
->   Uninit was stored to memory at:
->    mptcp_incoming_options (net/mptcp/options.c:1258)
->    tcp_data_queue
->    tcp_rcv_established
->    tcp_v4_do_rcv
-> 
->   Local variable mp_opt created at:
->    mptcp_incoming_options (net/mptcp/options.c:1137)
-> 
->   CPU: 0 UID: 1000 PID: 137 Comm: poc 7.2.0-rc6-kmsan72rc6 #1
-> 
-> Reject a DSS option when an incompatible suboption is already present. The
-> test runs before any DSS flag is read, so a malformed duplicate can no
-> longer mutate state retained from an earlier valid option. ADD_ADDR,
-> RM_ADDR, MP_PRIO and MP_FAIL stay permitted alongside DSS: once
-> mptcp_established_options_dss() has run, those are the only options
-> mptcp_established_options() can still add (:843-878).
-
-The fix is correct, but this patch is targeting 'net', but it doesn't
-apply there. That's because commit b6ee36152464 ("mptcp: avoid combining
-some incoming suboptions") is already addressing this bug (and others),
-the same one:
-
-
-https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=b6ee36152464
-
-Plus, see below...
-
-> Fixes: 648ef4b88673 ("mptcp: Implement MPTCP receive path")
-> Cc: stable@kernel.org
-> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-> Assisted-by: tencentos-corvus-ai:kimi-k3
-> Signed-off-by: Fourie Zhang <fouriezhang@tencent.com>
+> Fixes: 1a37e412a022 ("net: Use 16bits for *_headers fields of struct skbuff")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
 > ---
-> A KMSAN reproducer for this issue is available if requested.
+> changes in v3:
+> - Split netkit handling into a separate follow-up.
+> - Explain why capping advertised headroom is safe.
+> - Use local variables for derived headroom.
+> - v2 Link: https://lore.kernel.org/all/0ae4aa29223b89049727aec4d36f144bad41537e.1785476387.git.zhilinz@nebusec.ai/
 > 
->  net/mptcp/options.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> changes in v2:
+> - Move the fix from IP send paths to tunnel and netkit device control paths.
+> - Cap advertised IP tunnel headroom at 512 and reject netkit headroom
+>   values above that limit at device creation.
+> - v1 Link: https://lore.kernel.org/all/0c6c64e9bbd71a0decc8504a384061e0e631be13.1785054561.git.zhilinz@nebusec.ai/
 > 
-> diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-> index c664023d37ba..7ec18fa1bef6 100644
-> --- a/net/mptcp/options.c
-> +++ b/net/mptcp/options.c
-> @@ -153,6 +153,13 @@ static void mptcp_parse_option(const struct sk_buff *skb,
->  		break;
+>  include/net/ip_tunnels.h | 11 +++++++++--
+>  net/ipv4/ip_tunnel.c     |  2 +-
+>  net/ipv6/ip6_gre.c       | 10 ++++++----
+>  net/ipv6/ip6_tunnel.c    |  7 +++++--
+>  net/ipv6/sit.c           |  2 +-
+>  5 files changed, 22 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+> index d708b66e55cda..85e3455cea259 100644
+> --- a/include/net/ip_tunnels.h
+> +++ b/include/net/ip_tunnels.h
+> @@ -629,8 +629,7 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
+>  int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
+>  			  int headroom, bool reply);
 >  
->  	case MPTCPOPT_DSS:
-> +		/* Can be used with a restricted number of other options */
-> +		if ((mp_opt->suboptions & ~(OPTION_MPTCP_ADD_ADDR |
-> +					    OPTION_MPTCP_RM_ADDR |
-> +					    OPTION_MPTCP_PRIO |
-> +					    OPTION_MPTCP_FAIL)) != 0)
-> +			break;
+> -static inline void ip_tunnel_adj_headroom(struct net_device *dev,
+> -					  unsigned int headroom)
+> +static inline unsigned int ip_tunnel_limit_headroom(unsigned int headroom)
+>  {
+>  	/* we must cap headroom to some upperlimit, else pskb_expand_head
+>  	 * will overflow header offsets in skb_headers_offset_update().
+> @@ -640,6 +639,14 @@ static inline void ip_tunnel_adj_headroom(struct net_device *dev,
+>  	if (headroom > max_allowed)
+>  		headroom = max_allowed;
+>  
+> +	return headroom;
+> +}
+> +
+> +static inline void ip_tunnel_adj_headroom(struct net_device *dev,
+> +					  unsigned int headroom)
+> +{
+> +	headroom = ip_tunnel_limit_headroom(headroom);
+> +
+>  	if (headroom > READ_ONCE(dev->needed_headroom))
+>  		WRITE_ONCE(dev->needed_headroom, headroom);
+>  }
+> diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+> index 9d114bd575f92..5b1f180485d42 100644
+> --- a/net/ipv4/ip_tunnel.c
+> +++ b/net/ipv4/ip_tunnel.c
+> @@ -317,7 +317,7 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
+>  		mtu = min(tdev->mtu, IP_MAX_MTU);
+>  	}
+>  
+> -	dev->needed_headroom = t_hlen + hlen;
+> +	dev->needed_headroom = ip_tunnel_limit_headroom(t_hlen + hlen);
+>  	mtu -= t_hlen + (dev->type == ARPHRD_ETHER ? dev->hard_header_len : 0);
+>  
+>  	if (mtu < IPV4_MIN_MTU)
+> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+> index b843116e9b703..cc757586be90a 100644
+> --- a/net/ipv6/ip6_gre.c
+> +++ b/net/ipv6/ip6_gre.c
+> @@ -1137,13 +1137,15 @@ static void ip6gre_tnl_link_config_route(struct ip6_tnl *t, int set_mtu,
+>  			return;
+>  
+>  		if (rt->dst.dev) {
+> -			unsigned short dst_len = rt->dst.dev->hard_header_len +
+> -						 t_hlen;
+> +			unsigned int headroom;
+> +
+> +			headroom = rt->dst.dev->hard_header_len + t_hlen;
+> +			headroom = ip_tunnel_limit_headroom(headroom);
+>  
+>  			if (t->dev->header_ops)
+> -				dev->hard_header_len = dst_len;
+> +				dev->hard_header_len = headroom;
+>  			else
+> -				dev->needed_headroom = dst_len;
+> +				dev->needed_headroom = headroom;
 
-This chunk with the exact same comment corresponds to what I sent in my
-v1, a month ago:
+There is a pre-existing issue here that results in the hardware header
+length being accumulated over stacked devices and it should be fixed
+before capping the headroom.
 
+Commit 832ba596494b ("net: ip6_gre: set dev->hard_header_len when using
+header_ops") is correct that when "header_ops->create is used,
+dev->hard_header_len should reflect the length of the header created".
 
-https://lore.kernel.org/mptcp/20260709-mptcp-harden-combine-opt-v1-1-378b0a47c1b5@kernel.org
+For ip6gretap and ip6erspan that's the Ethernet header (14 bytes). For
+ip6gre tunnels without a remote (NBMA tunnels), that's what
+ip6gre_header() is pushing: GRE header + possible FOU / GUE header +
+outer IPv6 header.
 
-That's not because it is generated by AI it can copy code without
-mentioning the source... Please avoid this next time.
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-pw-bot: rejected
+So the problems are:
 
+1. hard_header_len shouldn't include the hard_header_len of the lower
+device. IOW, for NBMA tunnels it should be 't_hlen', not
+'rt->dst.dev->hard_header_len + t_hlen'.
+
+2. hard_header_len must not be changed for ip6gretap and ip6erspan which
+have a fixed hardware header length (Ethernet header, 14 bytes).
+
+Following diff should fix it. Please test with both locally generated
+traffic and forwarded traffic out of an NBMA tunnel. This should be the
+first patch in the series and it should blame commit 832ba596494b ("net:
+ip6_gre: set dev->hard_header_len when using header_ops") and carry a
+stable tag:
+
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index b843116e9b70..70c171091020 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -1137,13 +1137,8 @@ static void ip6gre_tnl_link_config_route(struct ip6_tnl *t, int set_mtu,
+ 			return;
+ 
+ 		if (rt->dst.dev) {
+-			unsigned short dst_len = rt->dst.dev->hard_header_len +
+-						 t_hlen;
+-
+-			if (t->dev->header_ops)
+-				dev->hard_header_len = dst_len;
+-			else
+-				dev->needed_headroom = dst_len;
++			dev->needed_headroom = rt->dst.dev->hard_header_len +
++					       t_hlen;
+ 
+ 			if (set_mtu) {
+ 				int mtu = rt->dst.dev->mtu - t_hlen;
+@@ -1171,8 +1166,8 @@ static int ip6gre_calc_hlen(struct ip6_tnl *tunnel)
+ 
+ 	t_hlen = tunnel->hlen + sizeof(struct ipv6hdr);
+ 
+-	if (tunnel->dev->header_ops)
+-		tunnel->dev->hard_header_len = LL_MAX_HEADER + t_hlen;
++	if (tunnel->dev->header_ops && tunnel->dev->type == ARPHRD_IP6GRE)
++		tunnel->dev->hard_header_len = t_hlen;
+ 	else
+ 		tunnel->dev->needed_headroom = LL_MAX_HEADER + t_hlen;
+
+There is a pre-existing bug / assumption in the code that NBMA tunnels
+don't change to point-to-point tunnels (and vice-versa), so the fix
+ignores it as well.
+
+>  
+>  			if (set_mtu) {
+>  				int mtu = rt->dst.dev->mtu - t_hlen;
+> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+> index bf8e40af60b08..2c941acb081fa 100644
+> --- a/net/ipv6/ip6_tunnel.c
+> +++ b/net/ipv6/ip6_tunnel.c
+> @@ -1522,8 +1522,11 @@ static void ip6_tnl_link_config(struct ip6_tnl *t)
+>  			tdev = __dev_get_by_index(t->net, p->link);
+>  
+>  		if (tdev) {
+> -			dev->needed_headroom = tdev->hard_header_len +
+> -				tdev->needed_headroom + t_hlen;
+> +			unsigned int headroom;
+> +
+> +			headroom = tdev->hard_header_len + tdev->needed_headroom;
+> +			headroom += t_hlen;
+> +			dev->needed_headroom = ip_tunnel_limit_headroom(headroom);
+>  			mtu = min_t(unsigned int, tdev->mtu, IP6_MAX_MTU);
+>  
+>  			mtu = mtu - t_hlen;
+> diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+> index a38b24fb83842..19b7fa8d1a2a0 100644
+> --- a/net/ipv6/sit.c
+> +++ b/net/ipv6/sit.c
+> @@ -1131,7 +1131,7 @@ static void ipip6_tunnel_bind_dev(struct net_device *dev)
+>  		WRITE_ONCE(dev->mtu, mtu);
+>  		hlen = tdev->hard_header_len + tdev->needed_headroom;
+>  	}
+> -	dev->needed_headroom = t_hlen + hlen;
+> +	dev->needed_headroom = ip_tunnel_limit_headroom(t_hlen + hlen);
+>  }
+>  
+>  static void ipip6_tunnel_update(struct ip_tunnel *t,
+> -- 
+> 2.43.0
