@@ -1,623 +1,245 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFAF3B6370
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 22:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786402346; cv=none; b=aPhSNYzFt0j2h165Ifyc4xxj855x6revs1OcnXG1MiRwLdqXRdxym7vGRQWvHF7Uitrgi31ZkNPMbll7oPZ34GyQ/oA1eIgk0ZK0fbLuVfEKYSfG/vr1euVLlNPSsTjDeBagmVMvojR4+BPGpBrBJuc3+wbc/Y9Z7S5zeX6DUjo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786402346; c=relaxed/simple;
-	bh=Yqmub7req9z9BbkT3FWr2LCkNs6GXmZiHF4rD8W8EiM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p+qsPpOBmIjBLZ75IWMJMGgK1Ap1x7P9aMnE/cuHsU7gno4XPLYzc7k4Gzv6j4cQmr2jixum3EgjbXm5TsbxmYA4vEwnqNz/6yULih3FniVSYLmpWTfgV0p0/43XBvqStkOe1SRmrSnwKC1MiCbLvGBMVWKdX9oggPVCDdOxPPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PUqLcevC; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EB23BBA0E;
+	Mon, 10 Aug 2026 23:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.129.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786403100; cv=fail; b=Ee+Jen1qmBPFF7+bLoYUBQiby6i3T7zqw7U/Y9aNQ5bjRHJWde+yCKSHNLe8xq4RiKlIpEmHD0jTFXM1ENhfsQ9X0l56GJQT2TsRL4AFDENS6Xz6YAppTnab5EX4wQ2oMjywiYpcrEGIvG2I6hdtduJ22HE+K5k0jkyjgs4jScI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786403100; c=relaxed/simple;
+	bh=LRJTHBK5MRsQiU1Rds53NcVSVuJz4QO9kkBVMeRGAeg=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=pNyTpW2LGO5oazADTh7iXAfjOsjIwovfobefFN0HvFpLKru+dLK76FbzzLQ0uFxSsDQPgOwhzogBAhTLSMKUjI1wAMGXJt2lldAq4dtXJOfUefa+fJ8EWMN84f2ZHN1+rXr4nxm/utSVZW/iQOq2ZGcvHlEhisA9yDeeLO7y59A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=fU5EjLP4; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=NFrReK7b; arc=fail smtp.client-ip=148.163.129.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sitime.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PUqLcevC"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AK1eWD2599775;
-	Mon, 10 Aug 2026 22:52:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=JviW1a
-	0tjojqkf8hee/v0Frlk7BrvmtzYl+RwvwBE9Y=; b=PUqLcevCFe5RFy/q6uqCn5
-	31RH6vuNxYggwrjf9RVA4lkLxtDsAEv6INbUgLJ1CP6zvIJ5h5D/zlZkHyKsqavq
-	FaD56goKvfGIX2MT18CP+C3nAjEieN0n16PebpuLx8JPs2E3ykQSBNuS4uTP3Kvh
-	NMs+Z2DCroqUM765q8A5OPtuXOSpHfsk3sdnSu7bcVCCW2wT6ng8zpAfuOrAlIba
-	RBc+gopXudHEq9QT4G+li+hUaG/Mifgv0RuPsQwu0CEmXIUf3jgrUEqSBFfC5k0M
-	ut9Iy2DjjXmdfmXzF4XYuK3Mx31AJgH2O0+fpAodfyD+5Wrbxi2ma/9Vt++TCI8w
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvm9jevc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Aug 2026 22:52:04 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67AMfFav026701;
-	Mon, 10 Aug 2026 22:52:03 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxespxvnb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Aug 2026 22:52:03 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67AMq20S52167116
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Aug 2026 22:52:02 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 059AC5805B;
-	Mon, 10 Aug 2026 22:52:02 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 86EE658059;
-	Mon, 10 Aug 2026 22:51:59 +0000 (GMT)
-Received: from [9.67.152.96] (unknown [9.67.152.96])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 10 Aug 2026 22:51:59 +0000 (GMT)
-Message-ID: <f29118c5-fc97-46c1-8c69-2b5bae0e843a@linux.ibm.com>
-Date: Mon, 10 Aug 2026 15:51:58 -0700
+	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="fU5EjLP4";
+	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="NFrReK7b"
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8E90A445534;
+	Mon, 10 Aug 2026 23:04:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitime.com;
+ h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:message-id:message-id:mime-version:mime-version:subject:subject:to:to;
+ s=mail; bh=i+rirupMa7rs9xCh9CwFf+6dVTvQHW8aPyGK4OecI3k=;
+ b=fU5EjLP4Q92KMoymDszLPvPnqyvgptgC/px0svis2qG5gypMbwVgK+Lxrh7gQwbMgg1oxDBMmykTWctYxW9ikekm3SSmu4ou6W8BGlVOwHuRvRabehNvpZU6+4RAOLD9rGMaiXU4zqlNBWStwioQ9GVqCGjVr3rcJ1mh7KAS/3jTXTwPVPYdrl9U+xLqXDCrrdRF3RAqIYf0/mI/PDhdPf2pn+PCtgpXeRo78Q4p4rxyxAzJGi1WS2Vr/WbYxC46t5Wnm2Jfx489aZcTocg//2qgAQy3kx0jbzevq8HTappKnB1oRlGKlKNdMxkGqB7Gw/jmjGZhsHqddx+j9IlKvA==
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11022098.outbound.protection.outlook.com [40.107.209.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 4BE91AC007E;
+	Mon, 10 Aug 2026 23:04:50 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T4gQL0q/FDbu8QjqzR3Anz39qq4scHdF4lSWcOWy1oxgieDqUhbedmOpQc/eWJSu65fAiQORJenFgpnSL4GUa/YLIm7mH5nTO61qGNqSXaF1thrxk5h5J8+yGQjtMxZ5Zd3ZHckuul+Cm8gFgb7T2y1dKbE/MklelTXhjyFHxhQ1OIMjinZiXowgQoj5tLMO2w71p/8nONx8/FDob+5dbnqvEuotTS8O0QWgFzDkvE4nIXPWlvjqUl4QbOOYMN/8r24IM7kzCHPis1HkhfZQOYGDCd5wxgzj7dTyrwj9XHfTb3lPy5Ngj8CCx785lXlwWrGSTXWalJ9NhxfxEk/cNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i+rirupMa7rs9xCh9CwFf+6dVTvQHW8aPyGK4OecI3k=;
+ b=OS1bD5/BtI6NThETBN2ML6L9/oR7bq8hNps0LtR6cxMHe8eGM2bS+xqMk17iz+4uXY5LzEVL1SjVolAS7XXGdaPU9E78Fo4ycoY1jquk7F4DexMwI8junVsvMpp3AvQ1kMAUfRFPsywMe/M+9U1Z7ZPtDdFs/G6REYSb3l9t5Dk4LnFaUIf4yl8mAs15OqiGyFjPDzkF+91shNZ0Zje2jaBGyOHOCo1Cw2Qc7zMeQyx/ccA2INladfM3vsDSk6p64kg3IqPgf6lFo7n600EvXPiCqNDUl9E3aNaDB3uoQjKYVkXbna1mEMtN084+KuR+sBWYWSMwk9UECoVPVap6gQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=sitime.com; dmarc=pass action=none header.from=sitime.com;
+ dkim=pass header.d=sitime.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=Sitime.onmicrosoft.com; s=selector1-Sitime-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i+rirupMa7rs9xCh9CwFf+6dVTvQHW8aPyGK4OecI3k=;
+ b=NFrReK7bi3bywlYK/xp+qZIvscIxOsPOeV/j5QFpwRxcWtgalMgyDczC879euQt+LVoXbOmYlDMhCJuCGI/nn6NjKc3Y9N5VFb9EWF0lC/yAqWw1S+fPP43UGpuDSz2AWp6BsOb+VloT5+W1Jcvcz7l4pyN2RBT6T1qmTHTxP9NC+ee2BUILePJok9bg3MS7ziH9B2J77m9137OT5FbU3UIP40uo5v5hJ4QhGBfvTVF7lkZgKsigbS8PqhJ34AYAx6Bu01QgmzvHHPDbN1bpPp4zX+YZbgkLvTeMmBbBr7zBVLfguBXnPgJ/xEyhCv/tfsxaWH9mX6rOaTt74YA5ug==
+Received: from LVWPR20MB994915.namprd20.prod.outlook.com
+ (2603:10b6:408:3bf::16) by SA1PR20MB4516.namprd20.prod.outlook.com
+ (2603:10b6:806:23d::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
+ 2026 23:04:40 +0000
+Received: from LVWPR20MB994915.namprd20.prod.outlook.com
+ ([fe80::9551:3864:128b:8c01]) by LVWPR20MB994915.namprd20.prod.outlook.com
+ ([fe80::9551:3864:128b:8c01%5]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
+ 23:04:40 +0000
+From: Ali Rouhi <arouhi@sitime.com>
+To: "jiri@resnulli.us" <jiri@resnulli.us>
+CC: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
+	"arkadiusz.kubalewski@intel.com" <arkadiusz.kubalewski@intel.com>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"cjubran@nvidia.com" <cjubran@nvidia.com>,
+	"Oleg.Zadorozhnyi@devoxsoftware.com" <Oleg.Zadorozhnyi@devoxsoftware.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ali Rouhi
+	<arouhi@sitime.com>
+Subject: [PATCH net-next v5 0/3] dpll: add SiTime SiT9531x DPLL clock driver
+Thread-Topic: [PATCH net-next v5 0/3] dpll: add SiTime SiT9531x DPLL clock
+ driver
+Thread-Index: AQHdKRyfQ2fK6CQ8EUyOQJshRDrm8g==
+Date: Mon, 10 Aug 2026 23:04:40 +0000
+Message-ID: <20260810230439.22866-1-arouhi@sitime.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=sitime.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: LVWPR20MB994915:EE_|SA1PR20MB4516:EE_
+x-ms-office365-filtering-correlation-id: 2e0652e2-8996-4673-220e-08def733c23b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|18002099003|56012099006|10067099003|5023799004|38070700021|6133799003|3023799007;
+x-microsoft-antispam-message-info:
+ 72IdwJ30XYORdoWXXrJBGPXXkfkKnGqR1gDzZsxCoGGFfjTMEMKABSl5tQfBEEF4UQq3jBm02gMyEraE6d9xRT0NYUNCnFFnb2H8AvWjaAXYSRGiedrXwpDXHl6Lo+Z77nGYpa87CLGHBNQORGFhexPBPVfWQB5D8pgxsRnjiXNiJdu2DBuvwHK9YsCM9+WrJqXyBuZ/xkF+9eW3nLiljPpxhjQ0LNDet7x43Xf3JleCmBFp4IDcHvwRh1m9IgDVcCZPrEd3Dxph48gpxmOwVUZMAqCWQEZSgec5P6aD2lMYug46pduh6yzhcIt1K3f8veCK7YBiKL6qCsYOXHe9zg1Tl8Bd3NPC2nsCz4JawTXQvm7GN0SP6RRNr6nLG2spLu1ms8DYLcVjwYwp8t76qLrO7JiohUa+5x9VrZTDmBPBUljb1JJV9eIUEr+vyZeHPcoWwY+mIdREC6jGgWoqXfXG9Xq+cAoMIvF0F4BGN3JoBROoBSTDAVOGB3G5Yxz9VmqJnQlCbZT5Ey/KShUXxQXWc1o6ufICBGYFueSFH7vPPGMLkj5rDhfQMZxwGDU5KvO5SQZjoVGWZ8ibO2dTrhqAjiMn+ak4std6X6xd4eNJiDezT5oGUBHVCQERtd6Z4Ajzjuynm/0psFU/UtxCjHgnrmO+htdYxYRgxJcZgQlyhpMKMO8nDvpJvH4A7HyqVCkRtY4aGn5YzM0ORgCvLv0VdqHonyQDAPTU0BYi/Qk=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(18002099003)(56012099006)(10067099003)(5023799004)(38070700021)(6133799003)(3023799007);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?mC2BNXVXg7EErwRt5zHWM2UTspfyssEcvoKVeKuD50puioqBx0wIBJ5ifW?=
+ =?iso-8859-1?Q?ygF8akOqT1GkSkr5qr6Q4nWZrJW4HEp8W1htJswV1oZlc/w3+YFCJOcwsZ?=
+ =?iso-8859-1?Q?Od/ja30ZD6e312qLgWx8cs3gycUTaFXsb49QOMXfS8OrhEIvxJNouYs5pN?=
+ =?iso-8859-1?Q?Qig27JpOqD6zYIc8ZCR11e1gCcISXtXdqpnprTS59U6oolHvYQ4K/TNc94?=
+ =?iso-8859-1?Q?gHU6ybULXS+E6SSRLTMi5jMG5gzioxC1fZqPLjBZcQ6Ev9K6rCsQoA1dJe?=
+ =?iso-8859-1?Q?K/ErURa7iai/59RuZRqNtUWTwSnR1/yoygfy4VBCUJNHb2ecNe6V/V7h9Y?=
+ =?iso-8859-1?Q?bmla2JxVSqKHnhFbIdL5neMowYJ/qJeO1nDaNAaFYrFtSJu1Jo7znNW/Nu?=
+ =?iso-8859-1?Q?ZTts6J3GJfy/VYBtOtdHd7YnSgmz+QaD1DKezWgOePy9DwS47jB8II6Ns7?=
+ =?iso-8859-1?Q?ocfu+2/7YLzPxpLHReO5+VD8+kaD8aoP1GiAuZUt9tUi3L+UqqieM6tNzi?=
+ =?iso-8859-1?Q?d2kBR0t4w9QMXh/15IWBBimLng9539DqXrt5Maul3J2ikRbzx/nd8NtJ4F?=
+ =?iso-8859-1?Q?YEww945gQ9n5Pus08Vs0hoIfLoYAWiHkphUQXXcZy8zUBbcKASlfeLsuiM?=
+ =?iso-8859-1?Q?BRjKxymyiUKiSpAuC/e32e++wKyT317/y26TtM8+2ONbTqSGynz9S4RkFM?=
+ =?iso-8859-1?Q?RTYmayzlKfsR/CDkJEzzE1ZLtwEDJ7NHy3D1aDBXQV7UyJBY93MR6/AmNa?=
+ =?iso-8859-1?Q?grVucRP5MKCT+PnaFs/w4NF1099v2naqt+4zoOj4Ybpp29P+JF4b5iBmjc?=
+ =?iso-8859-1?Q?1iu3kHxTGlji+2Jo/c6bXwsTyffHwgSXRoz1DQ9FJhNPNvX+5OXjcIvcUy?=
+ =?iso-8859-1?Q?P7IIUoMLt+2SfrcDOyj/yjoVytM/GPn4VYF0zu4VSnUB6J9alv6qCqg95Y?=
+ =?iso-8859-1?Q?4x6MHBkjToxZ5RVi2B6rHt0abzc710fA6u30ACqCUSUOjadDzkO54D2JuQ?=
+ =?iso-8859-1?Q?v50JIsKwF/p6W4KNEp2jmLHOUnzk0yt4nxe4djTNqiCR5FkBFgZ+GW0LeE?=
+ =?iso-8859-1?Q?Q/x2tfv6mI3Ir5bme0BMiw7VYNZ+TfP4FQOgPRU7od3zvSAPDLiYzM6BHL?=
+ =?iso-8859-1?Q?Dt0a5lbFY3PUKF8juZqOOX4e4QoKSuFIErIFUV+RrCvrGxEOjckJg3Dz2y?=
+ =?iso-8859-1?Q?iZ9p6BLKwbD478iLele0K1bE0fEPMiMJ8ukxQJaht+ewZeiWV49C2wkZhQ?=
+ =?iso-8859-1?Q?dgvVofQw/82MKf7WktZL9Rz0WNSzOApnaOop3VraHA3gQGuovRd3nJAljH?=
+ =?iso-8859-1?Q?YaFdWkCg0najmoBXImxSYLYkBSO+/WowtBH3oUpxPAQDdYpMTqZvdH4Nxo?=
+ =?iso-8859-1?Q?a3VTPB9NzkO8AiNMD5vB5TGMzETN9cRDhnfjTcrVDGGzLQMhQLnnBEXi11?=
+ =?iso-8859-1?Q?ziuvFZhX1bJrOM8/xZ4ALKgHRuJzVC/VdyNgUVQAtKq7DNIG0YGgVHcBw7?=
+ =?iso-8859-1?Q?rWk+nO9o5t84s6yGWIlC1ZV+myTgFJTzVvhj3RofeE9irtFsIzbHC6LcG5?=
+ =?iso-8859-1?Q?TgDlN2zzkl7C5H5y66TGE4jxvlnLu9FpusFnu+JMMCWwDnpbIB7up+l2/V?=
+ =?iso-8859-1?Q?Dl6U7lHtSI+OxP3bZfCS7Vm3HaQRNDte6U6xcZiwj62+0AV2vFqy15LKq0?=
+ =?iso-8859-1?Q?5AT1Gf9gRhAtqKTjtad8C5pVUmZs4OfUelwdNvmdVsJCUD1x+kOnifMkPC?=
+ =?iso-8859-1?Q?fRgmRmbHxhMnlQ1khfZcZJ95YCBqd80hhak+/AIvTz+cHJ?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 08/14] ibmveth: Add queue-aware RX buffer
- submit helper for MQ
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, horms@kernel.org, bjking1@linux.ibm.com,
-        haren@linux.ibm.com, ricklind@linux.ibm.com, edumazet@google.com,
-        pabeni@redhat.com, davem@davemloft.net, linuxppc-dev@lists.ozlabs.org,
-        maddy@linux.ibm.com, mpe@ellerman.id.au, simon.horman@corigine.com,
-        shaik.abdulla1@ibm.com, davemarq@linux.ibm.com
-References: <358f3660dbf83279a5218792d432746bc8b845ac.1785457143.git.mmc@linux.ibm.com>
- <20260806183707.3175525-1-kuba@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <20260806183707.3175525-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDE5MSBTYWx0ZWRfXzGKos6D6TAU3
- igR7xHXZ2XGrN61ICISwjIJgaIDr3cDXj/f7ZdMdaeDhDYUYuyWBVCjHEyu9BgPzjKNdjSZ/zFc
- 3wuDDOpCum9a1aQGFRj2NrGzmx5YZqI8reV4SgC4EE7Q1/ZVkGEwtqQIvjOx45zDpQ3anZPDKGt
- pzVKVEXgWnDl/AeeQeM8P6FHKDAhieY9atPxsBaqugK2WoXyQUblqHn734+xhTqtQTG1H5C3QsH
- 4HIxzkvARYhG0BhsDDbprg7oTm+bxJW2k6Aw1J3UAwwyohqkdJw286pH69+ElfA1sAbgNscDqtL
- EStMRbEunPkhE43fOKW1gfgSMuI4jiYwGPXzIGkucC0mLRHe1BHg0Z81oMIUypl/Kab7c2pQxmG
- LN7H7J8E8RujIdVQcxQNGQEh1y9LehQ1stETdcNWLeVJReF2p8eRc2vBmN5cCwa8WDAvOlbNVrT
- RhXkrkDaXIu8oyGAzIA==
-X-Proofpoint-ORIG-GUID: v989vMb3JwVGo4859Ni5EVtqmak8MAlO
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDE5MSBTYWx0ZWRfX9Mz/rMGqaQBD
- gL1voi84li2ChQsg/cqP8+2yLAcub1aNV0bIa/xOP/JjhIdBcYt4XVr2Xbr0Xjt7BbBv/cpVivV
- Xls3FfHOsja7xX9Zyqlj1Chav6vxS5s=
-X-Authority-Analysis: v=2.4 cv=IfK3n2qa c=1 sm=1 tr=0 ts=6a7a5614 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=Fa47dAiymvHwYbY31YUA:9
- a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
-X-Proofpoint-GUID: FNKBMeaJAYCpnP26sdPq7OlfVktzJysv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-10_05,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
- lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608100191
+X-Exchange-RoutingPolicyChecked:
+	N41OKcaeTFYUrgvnDPzgRD92EyZQXzGjaOiDTcVixvFTI8ny+CLSu+6KzQc9HXoGfjwdc6ygZCc0M93F9n5yA1A6Xsaj9yX+BrtEvAj4u2WejVNSB8fWti4iUy1rOM22tElLei/J4NOrZDj3fFyk9O6WBMa+jgGHqiJ6ZhpqiS7AUGtC08GEuXl5qFLzwEm/zu/cJn23c+3bKXzNDWSpghFEgLBDNBQViQOkSeb2+UDe6A8LiFVp20O5Qaw1Wu4/yFXqVsA3IJB9c1GDZRz1Unx2HAj88RgGTG1/a6SCMOgbup7eX2gx7US1OQinzQl8sZ6q7Yq60lBefVaNIwfnlw==
+X-OriginatorOrg: sitime.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: LVWPR20MB994915.namprd20.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e0652e2-8996-4673-220e-08def733c23b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2026 23:04:40.7148
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8fb55916-cf10-4b0d-96f4-cf3952657263
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IXWPaelH307BQDKr68tRX4KtwK5hEwfM1TTQAeo+xGv/XENRwBLEW1jhgQf1ZzFbbyYjLHOjtZWQgEw5VfcPCA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR20MB4516
+X-MDID: 1786403091-Ei1tr7uEUun6
+X-PPE-STACK: {"stack":"us1"}
+X-MDID-O:
+ us1;ut7;1786403091;Ei1tr7uEUun6;<arouhi@sitime.com>;ee4c095510f4a2bc549243be2f087a38
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-
-On 8/6/26 11:37 AM, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> ibmveth: Add queue-aware RX buffer submit helper for MQ
->
-> This adds ibmveth_add_logical_lan_buffers() to choose between the legacy
-> single/multi-buffer hcalls and the new per-queue buffer hcall, threads a
-> queue_index argument through the RX accessors, harvest and replenish
-> helpers, and adds a per-queue replenish_lock plus reworked H_FUNCTION
-> handling.
->
-> A few questions below about the new failure handling, the new lock and the
-> logging changes.
-Hi Jakub,
-
-Thanks for the review.
-
-This patch introduces more than helper reshaping. It establishes the
-replenish locking and error-handling model that later MQ RX behavior
-depends on.
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index 9d1242dbcb19d..cb93659fc0576 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> [ ... ]
->
->> @@ -588,11 +598,75 @@ static inline void ibmveth_flush_buffer(void *addr, unsigned long length)
->>   		asm("dcbf %0,%1,1" :: "b" (addr), "r" (offset));
->>   }
->>   
->> +/**
->> + * ibmveth_add_logical_lan_buffers - Add receive buffers to hypervisor
->> + * @adapter: ibmveth adapter structure
->> + * @descs: array of buffer descriptors to add
->> + * @filled: number of valid descriptors in the array
->> + * @buff_size: size of each buffer (multi-queue mode only)
->> + * @queue_index: RX queue index
->> + *
->> + * Return: hypervisor return code
->> + */
->> +static long ibmveth_add_logical_lan_buffers(struct ibmveth_adapter *adapter,
->> +					    union ibmveth_buf_desc *descs,
->> +					    int filled,
->> +					    unsigned long buff_size,
->> +					    int queue_index)
->> +{
->> +	struct vio_dev *vdev = adapter->vdev;
->> +	unsigned long rc;
->> +
->> +	if (adapter->multi_queue) {
-> [ ... ]
->
->> +		rc = h_add_logical_lan_buffers_queue(vdev->unit_address,
->> +						     handle,
->> +						     buffersznum,
->> +						     ioba[0], ioba[1], ioba[2],
->> +						     ioba[3], ioba[4], ioba[5]);
->> +		adapter->hcall_stats.add_bufs_queue++;
->> +	} else if (filled == 1) {
->> +		rc = h_add_logical_lan_buffer(vdev->unit_address,
->> +					      descs[0].desc);
->> +		adapter->hcall_stats.add_buf++;
->> +	} else {
->> +		rc = h_add_logical_lan_buffers(vdev->unit_address,
->> +					       descs[0].desc, descs[1].desc,
->> +					       descs[2].desc, descs[3].desc,
->> +					       descs[4].desc, descs[5].desc,
->> +					       descs[6].desc, descs[7].desc);
->> +		adapter->hcall_stats.add_bufs++;
->> +	}
-> [Severity: Medium]
->
-> These hcall_stats fields are plain non-atomic u64 counters on the
-> adapter, but the only serialization this patch adds is the per-queue
-> rx_queue[i].replenish_lock taken in ibmveth_replenish_task().
->
-> Two NAPI instances replenishing different queues hold different locks, so
-> can these increments lose counts once MQ is enabled later in the series and
-> num_rx_queues becomes larger than 1?
->
-> The same question applies to the other adapter-wide counters reached from
-> this path:
->
-> 	adapter->replenish_task_cycles++;
-> 	adapter->replenish_add_buff_success += filled;
-> 	adapter->replenish_add_buff_failure += filled;
->
-> and to ibmveth_update_rx_no_buffer(), which ibmveth_replenish_task() calls
-> while holding queue N's lock only, although it rewrites adapter-global
-> state for every queue:
->
-> 	adapter->rx_no_buffer = 0;
-> 	for (i = 0; i < adapter->num_rx_queues; i++) {
-> 		...
-> 		adapter->rx_qstats[i].no_buffer_drops = drops;
-> 		adapter->rx_no_buffer += drops;
-> 	}
->
-> Would rx_no_buffer and rx_qstats[].no_buffer_drops be clobbered when two
-> queues replenish concurrently?  ibmveth_close() calls the same helper with
-> no lock held at all.
-Yes, once MQ is live those adapter-global counters can lose updates
-across queues. I agree they need a better concurrency model, but I see
-that as broader accounting follow-up work rather than one of the main
-correctness blockers in this series. The pool-availability path is
-already using `atomic_t` for correctness; these adapter-global counters
-are diagnostic/accounting state and should either move to a per-queue
-model or use a safer aggregation strategy.
->>   /* replenish the buffers for a pool.  note that we don't need to
->>    * skb_reserve these since they are used for incoming...
->>    */
->>   static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
->> -					  struct ibmveth_buff_pool *pool)
->> +					  struct ibmveth_buff_pool *pool,
->> +					  int queue_index)
->>   {
->>   	union ibmveth_buf_desc descs[IBMVETH_MAX_RX_PER_HCALL] = {0};
->>   	u32 remaining = pool->size - atomic_read(&pool->available);
->> @@ -678,24 +752,16 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
-> [ ... ]
->
->> +		lpar_rc = ibmveth_add_logical_lan_buffers(adapter, descs,
->> +							  filled,
->> +							  pool->buff_size,
->> +							  queue_index);
->> +
->>   		if (lpar_rc != H_SUCCESS) {
->>   			dev_warn_ratelimited(dev,
->> -					     "RX h_add_logical_lan failed: filled=%u, rc=%lu, batch=%u\n",
->> +					     "RX h_add_logical_lan %s failed: filled=%u, rc=%lu, batch=%u\n",
->> +					     adapter->multi_queue ?
->> +					     "_queue" : "",
->>   					     filled, lpar_rc, batch);
->>   			goto hcall_failure;
->>   		}
-> [Severity: Low]
->
-> The interpolated hcall name never matches an actual symbol.  In MQ mode
-> this prints
->
-> 	RX h_add_logical_lan _queue failed: ...
->
-> with a stray space, and in legacy mode
->
-> 	RX h_add_logical_lan  failed: ...
->
-> with a double space.  Would a full literal per branch read better?
->
-> The two new H_FUNCTION messages added below also print batch with %d,
-> although batch is declared u32 in this function ("u32 i, filled, batch;"),
-> while this warning uses %u for the same variable.
-Yes. Full literal hcall names would read better here, and `batch`
-should use `%u`. I'll fold that cleanup back into the owning patch
-rather than leave it as a tail fixup.
->> @@ -736,24 +802,23 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
->>   		}
->>   		adapter->replenish_add_buff_failure += filled;
->>   
->> -		/*
->> -		 * If multi rx buffers hcall is no longer supported by FW
->> -		 * e.g. in the case of Live Partition Migration
->> -		 */
->> -		if (batch > 1 && lpar_rc == H_FUNCTION) {
->> -			/*
->> -			 * Instead of retry submit single buffer individually
->> -			 * here just set the max rx buffer per hcall to 1
->> -			 * buffers will be respleshed next time
->> -			 * when ibmveth_replenish_buffer_pool() is called again
->> -			 * with single-buffer case
->> -			 */
->> -			netdev_info(adapter->netdev,
->> -				    "RX Multi buffers not supported by FW, rc=%lu\n",
->> -				    lpar_rc);
->> -			adapter->rx_buffers_per_hcall = 1;
->> -			netdev_info(adapter->netdev,
->> -				    "Next rx replesh will fall back to single-buffer hcall\n");
->> +		if (lpar_rc == H_FUNCTION) {
->> +			if (adapter->multi_queue) {
->> +				netdev_err(adapter->netdev,
->> +					   "MQ buffer add H_FUNCTION (q=%d, batch=%d)\n",
->> +					   queue_index, batch);
->> +			} else if (batch > 1) {
-> [Severity: High]
->
-> The multi_queue arm logs and breaks without changing any state:
-> adapter->multi_queue stays set, rx_buffers_per_hcall is untouched, there is
-> no fallback to h_add_logical_lan_buffer()/h_add_logical_lan_buffers(), and
-> no schedule_work(&adapter->work).
->
-> ibmveth_add_logical_lan_buffers() picks the hcall purely on
-> adapter->multi_queue, and that field is only written in ibmveth_probe(),
-> which is not re-run on resume (ibmveth_resume() only calls
-> ibmveth_schedule_rx_queue()).
->
-> So once the hypervisor stops implementing H_ADD_LOGICAL_LAN_BUFFERS_QUEUE
-> - exactly the Live Partition Migration case the legacy arm below exists for
-> - can this queue ever post another RX buffer again?  pool->available stays
-> at 0, PHYP drops every inbound frame, and the interface still reports the
-> link up, so recovery would need an administrative down/up.
->
-> Every other unrecoverable condition in this driver schedules the reset
-> work (ibmveth_remove_buffer_from_pool(), ibmveth_rxq_get_buffer(), and the
-> new enable_irq failure path in ibmveth_poll()).  Should this arm do the
-> same, or fall back to the legacy hcalls the way the legacy arm downgrades
-> batch?
->
-> Separately, netdev_err() here is not rate limited, while the warning for
-> the same failure a few lines above uses dev_warn_ratelimited(), so a
-> dried-out pool can emit several console lines per poll cycle per pool.
->
-> This arm appears unchanged through the end of the series.
-
-Yes. As written, the MQ `H_FUNCTION` path can strand the queue in a
-permanent dry-pool state.
-
-I'm planning to add real recovery here rather than paper over it by
-shrinking the batch size, because that still leaves the driver calling
-the dead queue-buffer hcall.
-
-The safer direction is to treat this as an unexpected MQ `H_FUNCTION`
-event, mark fallback, and recover through the normal reset path rather
-than trying to half-switch modes on the live datapath. I'll also make
-that path rate-limited.
-
-With the clarified project assumption that HMC blocks LPM into LPARs
-without MQ-capable veth, I do not think this should be framed as a
-supported in-place MQ-to-SQ downgrade path.
-
-
->> +				/*
->> +				 * Live Partition Migration may drop multi-
->> +				 * buffer support. Fall back to single-buffer
->> +				 * on the next replenish; do not continue with
->> +				 * a stale local batch size (infinite loop).
->> +				 */
->> +				netdev_warn(adapter->netdev,
->> +					    "Legacy batch add H_FUNCTION (batch=%d), fallback\n",
->> +					    batch);
->> +				adapter->rx_buffers_per_hcall = 1;
->> +			}
->>   		}
->>   		break;
->>   	}
->> @@ -775,21 +840,33 @@ static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter)
->>   }
->>   
->>   /* replenish routine */
->> -static void ibmveth_replenish_task(struct ibmveth_adapter *adapter)
->> +static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
->> +				   int queue_index)
->>   {
->> +	struct ibmveth_rx_q *rxq = &adapter->rx_queue[queue_index];
->> +	unsigned long flags;
->>   	int i;
->>   
->> +	if (queue_index >= adapter->num_rx_queues)
->> +		return;
->> +
->>   	adapter->replenish_task_cycles++;
->>   
->> +	spin_lock_irqsave(&rxq->replenish_lock, flags);
->> +
->>   	for (i = (IBMVETH_NUM_BUFF_POOLS - 1); i >= 0; i--) {
->> -		struct ibmveth_buff_pool *pool = &adapter->rx_buff_pool[0][i];
->> +		struct ibmveth_buff_pool *pool =
->> +			&adapter->rx_buff_pool[queue_index][i];
->>   
->>   		if (pool->active &&
->>   		    (atomic_read(&pool->available) < pool->threshold))
->> -			ibmveth_replenish_buffer_pool(adapter, pool);
->> +			ibmveth_replenish_buffer_pool(adapter, pool,
->> +						      queue_index);
->>   	}
->>   
->>   	ibmveth_update_rx_no_buffer(adapter);
->> +
->> +	spin_unlock_irqrestore(&rxq->replenish_lock, flags);
->>   }
-> [Severity: High]
->
-> Can this lock deadlock against itself when netconsole runs over this
-> ibmveth device?
->
-> ibmveth_replenish_buffer_pool() printk()s from inside the locked region:
-> netdev_info() on an invalid map index, dev_warn_ratelimited() on hcall
-> failure, and the two new H_FUNCTION messages.  With netconsole on this
-> interface a printk from there re-enters the driver:
->
-> netconsole write_msg()
->    netpoll_send_udp()
->      netpoll_send_skb()
->        __netpoll_send_skb()
->          netpoll_poll_dev()
->            ops->ndo_poll_controller()  ->  ibmveth_poll_controller()
->              ibmveth_replenish_task(adapter, i)
->
-> __netpoll_send_skb() calls netpoll_poll_dev() whenever the xmit does not
-> go through on the first try, and netpoll_poll_dev() only declines when
-> down_trylock(&ni->dev_lock) fails, when !netif_running(dev), or when
-> netif_local_xmit_active(dev):
->
-> 	if (!ni || down_trylock(&ni->dev_lock))
-> 		return;
->
-> 	if (!netif_running(dev) || netif_local_xmit_active(dev)) {
-> 		up(&ni->dev_lock);
-> 		return;
-> 	}
-> 	...
-> 	if (ops->ndo_poll_controller)
-> 		ops->ndo_poll_controller(dev);
->
-> None of those covers the replenish path, so ibmveth_poll_controller() loops
-> ibmveth_replenish_task() over every queue and re-takes the same
-> replenish_lock on the same CPU, with interrupts already disabled.
->
-> Before this patch ibmveth_poll_controller() also called
-> ibmveth_replenish_task(), but with no lock the recursion was harmless.
->
-> This code appears unchanged through the end of the series.
-Yes. That deadlock looks plausible with netconsole on this device.
-
-I'm planning to move the logging and recovery actions out from under
-`replenish_lock`, because that is the real issue here.
-
-The helper should return outcome/state while the actual logging and
-reset scheduling happen after unlock, so netconsole cannot recurse back
-into the same queue's replenish path while the lock is held.
-
-> [Severity: Medium]
->
-> Does this need to be spin_lock_irqsave()?  The lock now brackets the whole
-> multi-pool loop, so every netdev_alloc_skb(), every dma_map_single() and
-> every H_ADD_LOGICAL_LAN_BUFFER[S][_QUEUE] hypervisor call for all five
-> pools runs with local interrupts hard-disabled.
->
-> On a cold fill from ibmveth_open() or the first NAPI poll that is roughly
-> 768 allocations and DMA maps and around 96 hcalls per queue at the default
-> MTU (pool_count[] = { 256, 512, 256, 256, 256 }), and more when the large
-> pools are active.
->
-> None of the protected state is written from hardirq context, and the commit
-> message says the lock exists only "so later concurrent NAPI/resize paths
-> can serialize buffer posting", so would spin_lock_bh(), dropping and
-> re-acquiring per batch, or preparing buffers outside the critical section
-> be enough?
-Fair point. That `spin_lock_irqsave()` critical section is heavier than
-I would like, but I still see it as a secondary issue compared to the
-main correctness problems in this patch.
-
-I do not want to rewrite that lock protocol in this series while the
-higher-priority fixes here are the MQ `H_FUNCTION` recovery, no logging
-under `replenish_lock`, and making the producer/consumer locking model
-complete.
->>   
->>   /* empty and free ana buffer pool - also used to do cleanup in error paths */
-> [ ... ]
->
->> @@ -1004,50 +1083,55 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
-> [ ... ]
->
->> -	free_index = adapter->rx_buff_pool[0][pool].producer_index;
->> -	adapter->rx_buff_pool[0][pool].producer_index++;
->> -	if (adapter->rx_buff_pool[0][pool].producer_index >=
->> -	    adapter->rx_buff_pool[0][pool].size)
->> -		adapter->rx_buff_pool[0][pool].producer_index = 0;
->> -	adapter->rx_buff_pool[0][pool].free_map[free_index] = index;
->> +	free_index = adapter->rx_buff_pool[queue_index][pool].producer_index;
->> +	adapter->rx_buff_pool[queue_index][pool].producer_index++;
->> +	if (adapter->rx_buff_pool[queue_index][pool].producer_index >=
->> +	    adapter->rx_buff_pool[queue_index][pool].size)
->> +		adapter->rx_buff_pool[queue_index][pool].producer_index = 0;
->> +	adapter->rx_buff_pool[queue_index][pool].free_map[free_index] = index;
->>   
->>   	mb();
->>   
->> -	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
->> +	atomic_dec(&adapter->rx_buff_pool[queue_index][pool].available);
-> [Severity: High]
->
-> This isn't a bug introduced by this patch, but the new replenish_lock only
-> covers the producer half of this bookkeeping, so it is worth asking whether
-> the consumer half is still unprotected.
->
-> ibmveth_remove_buffer_from_pool() mutates free_map[], producer_index,
-> skbuff[], dma_addr[] and available for the same pool that
-> ibmveth_replenish_buffer_pool() mutates under replenish_lock, but takes no
-> lock:
->
-> producer: ibmveth_poll_controller()
->              ibmveth_replenish_task()        /* holds replenish_lock */
->                ibmveth_replenish_buffer_pool()
->
-> consumer: ibmveth_poll()                   /* holds nothing */
->              ibmveth_rxq_harvest_buffer()
->                ibmveth_remove_buffer_from_pool()
->
-> netpoll_poll_dev() serializes netpoll users against each other via
-> ni->dev_lock, and __napi_poll()'s netpoll_poll_lock() only stops netpoll
-> from re-polling a NAPI instance that is already running; neither prevents
-> ndo_poll_controller from running on one CPU while the same queue's NAPI
-> poll runs on another.
->
-> Can free_map[]/producer_index/consumer_index then hand the same pool index
-> out twice, so a buffer is posted to the hypervisor while its skb has
-> already gone up the stack, or lose a free index permanently?
->
-> Since the future work described in the commit message ("so later concurrent
-> NAPI/resize paths can serialize buffer posting") builds on this lock, should
-> the consumer side take it as well?
->
-> [ ... ]
-Yes. That race looks real, and the consumer side should participate in
-the same per-queue locking protocol.
-
-I'm planning to serialize harvest-side mutation with the same lock so
-the producer/consumer model is actually complete.
-
-The important point here is that the race is not "two NAPIs on one
-queue"; it is harvest on one CPU versus netpoll-driven replenish on the
-same queue.
->> @@ -1993,34 +2076,45 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
->>   
->>   static int ibmveth_poll(struct napi_struct *napi, int budget)
->>   {
->> -	struct ibmveth_adapter *adapter =
->> -			container_of(napi, struct ibmveth_adapter, napi[0]);
->> -	struct net_device *netdev = adapter->netdev;
->> +	struct net_device *netdev = napi->dev;
->> +	struct ibmveth_adapter *adapter = netdev_priv(netdev);
->>   	int frames_processed = 0;
->>   	unsigned long lpar_rc;
->> +	int queue_index, rc;
->>   	u16 mss = 0;
->>   
->> +	queue_index = napi - adapter->napi;
->> +
->> +	if (WARN_ON(queue_index < 0 || queue_index >= adapter->num_rx_queues))
->> +		return 0;
->> +
-> [ ... ]
->
->> @@ -2097,14 +2197,19 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
->>   	/* We think we are done - reenable interrupts,
->>   	 * then check once more to make sure we are done.
->>   	 */
->> -	lpar_rc = ibmveth_enable_irq(adapter, 0);
->> -	if (WARN_ON(lpar_rc != H_SUCCESS)) {
->> +	lpar_rc = ibmveth_enable_irq(adapter, queue_index);
->> +	if (lpar_rc != H_SUCCESS) {
->> +		netdev_err(netdev,
->> +			   "Failed to enable IRQ for queue %d (rc=0x%lx), scheduling reset\n",
->> +			   queue_index, lpar_rc);
->>   		schedule_work(&adapter->work);
->>   		goto out;
->>   	}
->>   
->> -	if (ibmveth_rxq_pending_buffer(adapter) && napi_schedule(napi)) {
->> -		lpar_rc = ibmveth_disable_irq(adapter, 0);
->> +	if (ibmveth_rxq_pending_buffer(adapter, queue_index) &&
->> +	    napi_schedule(napi)) {
->> +		lpar_rc = ibmveth_disable_irq(adapter, queue_index);
->> +		WARN_ON(lpar_rc != H_SUCCESS);
->>   		goto restart_poll;
->>   	}
-> [Severity: Low]
->
-> Two diagnostic changes here are not described in the commit message, which
-> only says callers were updated "so arity stays consistent": the WARN_ON()
-> around the ibmveth_enable_irq() failure is replaced by an unconditional
-> netdev_err(), which drops the taint and backtrace that test harnesses key
-> on, and a new WARN_ON() is added on the ibmveth_disable_irq() result.
-> Would it help to mention or split out that change?
->
-> Also, the new guard added at the top of ibmveth_poll()
->
-> 	if (WARN_ON(queue_index < 0 || queue_index >= adapter->num_rx_queues))
-> 		return 0;
->
-> returns less than budget from a NAPI poll callback without calling
-> napi_complete_done(), which leaves the instance scheduled with the
-> hypervisor IRQ still masked.  The guard is unreachable at this commit,
-> since IBMVETH_MAX_RX_QUEUES is 1 and queue_index is always 0, but the same
-> early return is still there at the end of the series.  Should it complete
-> NAPI before returning?
->
-> [ ... ]
-Yes. The bad-queue-index guard should complete NAPI before returning,
-otherwise that defensive path can leave the instance scheduled with the
-IRQ still masked.
-
-The diagnostic reshaping around the enable/disable IRQ paths belongs
-with the owning poll work rather than being overclaimed here.
-
-Thanks,
-Mingming
-
->> @@ -2229,9 +2334,13 @@ static int ibmveth_change_mtu(struct net_device *dev, int new_mtu)
->>   static void ibmveth_poll_controller(struct net_device *dev)
->>   {
->>   	struct ibmveth_adapter *adapter = netdev_priv(dev);
->> +	int i;
->>   
->> -	ibmveth_replenish_task(adapter);
->> -	ibmveth_schedule_rx_queue(adapter, 0);
->> +	for (i = 0; i < adapter->num_rx_queues; i++)
->> +		ibmveth_replenish_task(adapter, i);
->> +
->> +	for (i = 0; i < adapter->num_rx_queues; i++)
->> +		ibmveth_schedule_rx_queue(adapter, i);
->>   }
->>   #endif
-> [ ... ]
+This series adds a DPLL subsystem driver for the SiTime SiT95316 and=0A=
+SiT95317 I2C clock generators. Each device integrates four PLLs with=0A=
+automatic/manual reference selection and on-chip TDC phase-offset=0A=
+measurement, and is used for synchronization in telecom, networking,=0A=
+and data-center timing.=0A=
+=0A=
+The series contains the device-tree binding, the driver under=0A=
+drivers/dpll/sit9531x/, and the MAINTAINERS entry.=0A=
+=0A=
+v1: https://lore.kernel.org/netdev/20260511211143.19792-1-arouhi@sitime.com=
+/=0A=
+v2: https://lore.kernel.org/netdev/20260520191943.73938-1-arouhi@sitime.com=
+/=0A=
+v3: https://lore.kernel.org/netdev/20260731180951.65725-1-arouhi@sitime.com=
+/=0A=
+v4: https://lore.kernel.org/netdev/20260806232439.27551-1-arouhi@sitime.com=
+/=0A=
+=0A=
+Changes since v4 (address Krzysztof Kozlowski's review):=0A=
+=0A=
+  Binding:=0A=
+  - Rename sitime,sit9531x.yaml to sitime,sit95316.yaml, naming the file=0A=
+    after the first compatible rather than a wildcard the parts do not=0A=
+    carry, and drop "SiT9531x" from the title for the same reason.=0A=
+  - Correct the input count: both parts expose eight selectable=0A=
+    references (four differential pairs whose lanes can also be driven=0A=
+    separately as single-ended inputs).=0A=
+  - Drop the clock-frequency fallback and the schema branch that allowed=0A=
+    it; the oscillator is always described through the clock framework, so=
+=0A=
+    clocks/clock-names are now required.=0A=
+  - Explain why sitime,pll-fvco carries no unit suffix (the values exceed=
+=0A=
+    the 32 bits "-hz" allows and are not whole megahertz), and add it,=0A=
+    together with sitime,output-pll-map, to the example.=0A=
+  - Keep a single example.=0A=
+=0A=
+  Driver:=0A=
+  - Drop the debugfs interface and the orphaned DCO steering backend that=
+=0A=
+    only fed it.=0A=
+  - Rework the DPLL init/teardown so the error path unwinds explicitly=0A=
+    instead of probing internal state, registering the managed cleanup=0A=
+    action only after every field it touches is initialized.=0A=
+  - Drop the clock-frequency fallback for the XO rate; the clock is=0A=
+    required, so devm_clk_get_enabled() replaces the _optional_ variant.=0A=
+  - Drop the i2c_device_id table; the OF table alone suffices.=0A=
+  - Take dev_err_probe()'s return value directly.=0A=
+  - Say nothing on success; an unknown dpll-types string becomes a=0A=
+    warning rather than an info log.=0A=
+  - Move DPLL registration next to probe, drop the kernel-doc formalism=0A=
+    from internal helpers, and cut the narration out of the comments.=0A=
+  - Name the page-0 status registers after what they hold (register 0x06=0A=
+    is outer loss-of-lock, not holdover) and remove the register defines=0A=
+    left with nothing to define after the DCO/SYSREF removals.=0A=
+  - Rebased onto current net-next; base-commit recorded below.=0A=
+=0A=
+=0A=
+Ali Rouhi (3):=0A=
+  dt-bindings: vendor-prefixes: add SiTime Corporation=0A=
+  dt-bindings: dpll: add SiTime SiT95316 clock generator=0A=
+  dpll: add SiTime SiT9531x DPLL clock driver=0A=
+=0A=
+ .../bindings/dpll/sitime,sit95316.yaml        |  171 +=0A=
+ .../devicetree/bindings/vendor-prefixes.yaml  |    2 +=0A=
+ MAINTAINERS                                   |    7 +=0A=
+ drivers/dpll/Kconfig                          |    1 +=0A=
+ drivers/dpll/Makefile                         |    1 +=0A=
+ drivers/dpll/sit9531x/Kconfig                 |   17 +=0A=
+ drivers/dpll/sit9531x/Makefile                |    4 +=0A=
+ drivers/dpll/sit9531x/core.c                  | 2939 +++++++++++++++++=0A=
+ drivers/dpll/sit9531x/core.h                  |  367 ++=0A=
+ drivers/dpll/sit9531x/dpll.c                  | 1151 +++++++=0A=
+ drivers/dpll/sit9531x/dpll.h                  |   69 +=0A=
+ drivers/dpll/sit9531x/prop.c                  |  397 +++=0A=
+ drivers/dpll/sit9531x/prop.h                  |   39 +=0A=
+ drivers/dpll/sit9531x/regs.h                  |  318 ++=0A=
+ 14 files changed, 5483 insertions(+)=0A=
+ create mode 100644 Documentation/devicetree/bindings/dpll/sitime,sit95316.=
+yaml=0A=
+ create mode 100644 drivers/dpll/sit9531x/Kconfig=0A=
+ create mode 100644 drivers/dpll/sit9531x/Makefile=0A=
+ create mode 100644 drivers/dpll/sit9531x/core.c=0A=
+ create mode 100644 drivers/dpll/sit9531x/core.h=0A=
+ create mode 100644 drivers/dpll/sit9531x/dpll.c=0A=
+ create mode 100644 drivers/dpll/sit9531x/dpll.h=0A=
+ create mode 100644 drivers/dpll/sit9531x/prop.c=0A=
+ create mode 100644 drivers/dpll/sit9531x/prop.h=0A=
+ create mode 100644 drivers/dpll/sit9531x/regs.h=0A=
+=0A=
+=0A=
+base-commit: 001b5d347d8ba39b2dccaefcc57967b18caec8fe=0A=
+-- =0A=
+2.43.0=0A=
+=0A=
