@@ -1,238 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1668824E016
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 07:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F304390C88
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 07:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786348623; cv=none; b=qDvtB8ZQu52DvS60RqxyEO+38iNICXnclZsVYvjWilX4PDDbA64QrgOsA1nvABAU9ZqqUEmQI1kICs0mMynmFIJNNCxVR4el2hgpGR4NcqABY4CUlN4XVlYkX6tA1t95M3+LZ4YORgD9i0Wqq0fhcQLDrXxviT7puWcsk2X/YA8=
+	t=1786348654; cv=none; b=Vl6t2kWBaiCtM1jTHS+QLmHlAkmxuuptnkt/MWzIk+DdGHDsrBG7RhYQPZx4nfB4Ln1jlFLCtolOP7eNSAjyaZvrWVAQ+bz0F9B3UjiX3HhZd9ziTGZBYj12syO5U1yHwVPSzH9tzamAplmZAwZu817CeZedjZVAXyYTtDm6nRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786348623; c=relaxed/simple;
-	bh=K3dGZxx+dFdUL7gnm6sbE+ZMC4jTvvyK6dHc60lLDNg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W329rnaj0YgOBZLFIw+c4oDlQLbb43tpi3L+h25QM9ww3/RjHRdoJ929MhO+ZGW8OhZ30zIRTdRid/YRMJDGL6hW9qPwt8mT4ZMxcREtBF+ltsS11vzdIPw1xhcEtqvMrNyfiODTIgS84ZThQEBfTUdAD3Ub8y5Xpy05mH2XX3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KZYBNsuS; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1786348654; c=relaxed/simple;
+	bh=Q+/ssEHzlQooBUf9Jokz3i6r7X6BdwTkGLYLXKCuspQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DGEO0l1P3dKuJ2FvyrP3Xrw+kdo5T0M0+64OT+MIay0xa2e3Z4QBomLIbG9iEviQdKm1uSqq+OT6hYXb2IBuB2QS07ts++MRpRkfMaTkmseW21nmaKV3UkfdMUNvP7JhiXyWAQuwMyyw3u9D3kRl1qshL5y/A9VHF/EFPk0VE5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hl8OiWAd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y+QOYfQl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KZYBNsuS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786348621; x=1817884621;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=K3dGZxx+dFdUL7gnm6sbE+ZMC4jTvvyK6dHc60lLDNg=;
-  b=KZYBNsuS3rnPMXFFMmToQ8DSh6bFN1fQO+biDIHNzjYBaMZmKqgxuAFU
-   T3oj4UtFTJaJkTyXnLHeXMxtcip6AXl7F65az3jxOpd0bLBGpbl5TUvvr
-   x50XuDUZjgzE6cuvSbknnBodzrVV2XrxdLDdWdbzzU8V6Af7ziFupttyF
-   DZP3ItHtpvMJIJObp1Z8WixhSTggvqdUyYJcjVYLVTCz6ch18yO2iiQ+z
-   xnDvZasm7kLXfzUIjYyS0vaDgkWUOqtyIHE/WsUPbl9Tyl1W/7ihNkKJd
-   1RfLEHYX7WnkrcP4IwCrqGi8g7Ne1ZlqUIcJz8GS2vhgZuOk/9LMef6eQ
-   g==;
-X-CSE-ConnectionGUID: NplBfpiVSdKQuLJ8KT2Ogw==
-X-CSE-MsgGUID: imyTXlLCRPKxas4GolxJrA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="86615161"
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="86615161"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 00:57:00 -0700
-X-CSE-ConnectionGUID: ZK3DD+3aS3aczdK1fDddXw==
-X-CSE-MsgGUID: h0HSaT1WTHqmvps8KTSS2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="256756179"
-Received: from os-delivery.igk.intel.com ([10.123.220.8])
-  by fmviesa009.fm.intel.com with ESMTP; 10 Aug 2026 00:56:53 -0700
-From: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
-Subject: [iwl-next] ixgbe: implement Total Port Shutdown for E610
-Date: Mon, 10 Aug 2026 09:56:52 +0200
-Message-ID: <20260810075652.27915-1-tomasz.lichwala@linux.intel.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hl8OiWAd";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y+QOYfQl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786348650;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=faSl/UkvZhLeViesyQBAMKjmyR5NNeTyZ1tUwhC4yBU=;
+	b=hl8OiWAdea8+i7CvrmQPrc4koWzz2ksDH4OZ+XqfEH/9GYNC6JmHXIYCx7uFTnZbGH3Oa4
+	J4ZfcWp+CbCQ2pLTmccZHf+PBvoEAAHYKnHJElYlhnioY+2yzVbGAziHN1cpjpsfgwTuBC
+	Udne/Z1Sjy93xoOGb9TKWXI7CeInbr0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-634-Mry9IIYTMqixbepQXmDzlg-1; Mon, 10 Aug 2026 03:57:29 -0400
+X-MC-Unique: Mry9IIYTMqixbepQXmDzlg-1
+X-Mimecast-MFC-AGG-ID: Mry9IIYTMqixbepQXmDzlg_1786348648
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47feac2021eso988766f8f.3
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 00:57:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786348648; x=1786953448; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=faSl/UkvZhLeViesyQBAMKjmyR5NNeTyZ1tUwhC4yBU=;
+        b=Y+QOYfQlxkT+6VEnP2akMUWJT5x7bPL1uhmFAZFmjOtSmKV7vfO38UceaNTgwEdqRn
+         9nVsPKgGBavcawksjtpFs0inrP7YGG0wQfbxb3Ax+9GwR/n1QOJCpxVV7hBr8C8RfC/u
+         XuGE6661Unrz1AeplXCu6Wmmrp8hj9DYI5ywiWVpOmjzcjMyTXtt+52HaFWncBlKD+AB
+         pPLZhUJlgBY+TDDqrc+v3TW5ylIhZYeroVAJciq9FulM6Mhs6rZxDdIQarGogA0F+8NQ
+         JVTi62li/GcUmWLNrCxTxVZXlHCEpj8WeLFW30l1L8D7aTc2o16ZOOEAJmfMKZCplShI
+         pRIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786348648; x=1786953448;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=faSl/UkvZhLeViesyQBAMKjmyR5NNeTyZ1tUwhC4yBU=;
+        b=lFPIZVbDD6mMUrotZoB9UsRDsx9v6Kcavxi9un9nWYXyugq/Qwl6Odf7szk457Vfo5
+         AJCQcl1Jb+7wzeAqeowzw+l+hE1dWow2AWp20Yg6XD2y3jLa/61kkRgaO/BcL+U5/OGl
+         ZCc3B8EXTXOYIqp64x9E+F7X1zWZ6/CXhZugLxKPZP3lG+gEq/wVSMtRaI15a3QDaDPC
+         EGa1LN5Eh8fIU7TPTVfQAVaQ0Iub70eq/GBOR8xDNze/57vvn11lj9d3gp0uLAmetZ9r
+         YuRMBV7DyzXAU+/kV9nX2jTnBQY/AXogNYdICnGS7ZHBjPkd5la38Vh1ENtz8aO40A9j
+         NIAA==
+X-Gm-Message-State: AOJu0YyiEyPdbLpnLn7TZwZsscyWBo6qiiwVpZl9F9a5SJkhmFX27G+1
+	ifJbKgdd7Uzb7MEIYIqfm6nAOpTE7JDe5KqRE+Uvo6IY0UOjgPrH5hVLZ79h5Ktvtp3TAjjdMF6
+	zTiHpUp5yA54/kItOh7yrPS2bulg5nHMzretWM0zNi01JbvTOHrMkpymUuQ==
+X-Gm-Gg: AR+sD119nVs/1a7vkwi8CUo/kRQ7DG3VHPDu1o2o28tk3L53CV0+oYMB5Xz/+JC9Dh+
+	hbxbJkxVsJ+jaL1JUk4/pT4TjN4hTlD2DbyZB/OSPTpJ3k/+ghzf3Uzsk5L0kIzgNx2sD7eXIiH
+	eTVI1k+XG99fMSE96Vz9kprHLzFoSHAoeM/0WlncrFL9sgE5HIF9inXktnUTRAF6Dyk+0yKo6X+
+	yRC0AaHl/9tu1AABTpU5DiTTLMhpxRXHlMHf5BQAZGeZzSdo2N8wJ/gWvhIwqMUCJnq7idX19dK
+	+IvltQBzQ4GNwXdHyiS7kUOFjfTd7QFiUth5jqnQJN/YH1H8jpbxC243yunUjue4F6bQAWS63FY
+	=
+X-Received: by 2002:a05:6000:2988:20b0:47f:eb80:ff42 with SMTP id ffacd0b85a97d-47fec4e2975mr52858451f8f.4.1786348647964;
+        Mon, 10 Aug 2026 00:57:27 -0700 (PDT)
+X-Received: by 2002:a05:6000:2988:20b0:47f:eb80:ff42 with SMTP id ffacd0b85a97d-47fec4e2975mr52858392f8f.4.1786348647534;
+        Mon, 10 Aug 2026 00:57:27 -0700 (PDT)
+Received: from localhost ([2a01:e11:1007:ea0:8374:5c74:dd98:a7b2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021506c0sm29711749f8f.11.2026.08.10.00.57.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 00:57:26 -0700 (PDT)
+Date: Mon, 10 Aug 2026 09:57:26 +0200
+From: Davide Caratti <dcaratti@redhat.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, vega@nebusec.ai,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net] net/sched: act_api: fix TOCTOU NULL deref on
+ a->goto_chain
+Message-ID: <anmEZqiY_XEdzR_T@dcaratti.users.ipa.redhat.com>
+References: <20260809090928.868186-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260809090928.868186-1-jhs@mojatatu.com>
 
-Implement Total Port Shutdown (TPS) for E610. When TPS is provisioned
-in the NVM (by the platform firmware), the port's PHY is powered down
-whenever the interface is administratively down.
+On Sun, Aug 09, 2026 at 05:09:28AM -0400, Jamal Hadi Salim wrote:
+> tcf_action_exec() handles TC_ACT_GOTO_CHAIN by first checking
+> rcu_access_pointer(a->goto_chain) and then calling
+> tcf_action_goto_chain_exec(), which does a second, independent
+> rcu_dereference_bh(a->goto_chain) read and immediately dereferences
+> chain->filter_chain. A concurrent tcf_action_set_ctrlact() (e.g. the gact
+> replace path) can clear a->goto_chain between the two reads, so the second
+> read returns NULL and tcf_action_goto_chain_exec() dereferences NULL.
+> 
+> Fix the race by doing a single rcu_dereference_bh() read of a->goto_chain
+> in tcf_action_exec(), checking it once for NULL, and passing the resulting
+> chain pointer into tcf_action_goto_chain_exec(). This turns the split
+> check/use into a single check/use on one value.
+> 
+> Fixes: ee3bbfe806cd ("net/sched: let actions use RCU to access 'goto_chain'")
+> Reported-by: vega@nebusec.ai
+> Tested-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-When the PORT_DIS bit is set in the Link Default Override TLV in
-the NVM PFA area, enable Total Port Shutdown (TPS). This forces the
-link-down-on-close private flag and prevents the user from changing
-it via ethtool, ensuring the PHY is powered down when the interface
-is brought down as provisioned in the NVM.
+[...]
 
-The Link Default Override TLV (0x134) is read from the NVM PFA during
-driver init. Each port has its own 10-word configuration block within
-the TLV. If the PORT_DIS bit is set in the port's link_options field,
-the driver sets both TOTAL_PORT_SHUTDOWN_ENA and LINK_DOWN_ON_CLOSE
-flags.
+Reviewed-by: Davide Caratti <dcaratti@redhat.com>
 
-Signed-off-by: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 38 +++++++++++++++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |  2 +
- .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 13 +++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 14 ++++++-
- .../ethernet/intel/ixgbe/ixgbe_type_e610.h    | 13 +++++++
- 6 files changed, 80 insertions(+), 1 deletion(-)
+Thanks!
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index 02e7d6f0d852..41f43294465b 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -684,6 +684,7 @@ struct ixgbe_adapter {
- #define IXGBE_FLAG2_API_MISMATCH		BIT(23)
- #define IXGBE_FLAG2_FW_ROLLBACK			BIT(24)
- #define IXGBE_FLAG2_LINK_DOWN_ON_CLOSE		BIT(25)
-+#define IXGBE_FLAG2_TOTAL_PORT_SHUTDOWN_ENA	BIT(26)
- 
- 	/* Tx fast path data */
- 	int num_tx_queues;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index c92a586ee9b6..46a7c3ef7396 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -4051,6 +4051,44 @@ static int ixgbe_get_pfa_module_tlv(struct ixgbe_hw *hw, u16 *module_tlv,
- 	return -ENODATA;
- }
- 
-+/**
-+ * ixgbe_get_link_default_override - Get link default override from NVM
-+ * @hw: pointer to hardware structure
-+ * @ldo: pointer to link default override struct to populate
-+ *
-+ * Read the Link Default Override TLV from the NVM PFA and return
-+ * the per-port override configuration.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int ixgbe_get_link_default_override(struct ixgbe_hw *hw,
-+				    struct ixgbe_link_default_override_tlv *ldo)
-+{
-+	struct ixgbe_adapter *adapter = hw->back;
-+	u16 tlv, tlv_len;
-+	u32 tlv_start;
-+	u8 pf_func;
-+	int err;
-+
-+	err = ixgbe_get_pfa_module_tlv(hw, &tlv, &tlv_len,
-+				       IXGBE_E610_SR_LINK_DEFAULT_OVERRIDE_PTR);
-+	if (err)
-+		return err;
-+
-+	pf_func = PCI_FUNC(adapter->pdev->devfn);
-+
-+	tlv_start = tlv + IXGBE_E610_SR_PFA_TLV_HDR_SIZE +
-+		    pf_func * IXGBE_E610_SR_PFA_LINK_OVERRIDE_WORDS;
-+
-+	if (tlv_start + IXGBE_E610_SR_PFA_LINK_OVERRIDE_WORDS >
-+	    tlv + IXGBE_E610_SR_PFA_TLV_HDR_SIZE + tlv_len)
-+		return -ERANGE;
-+
-+	return ixgbe_read_ee_aci_buffer_e610(hw, tlv_start,
-+					     IXGBE_E610_SR_PFA_LINK_OVERRIDE_WORDS,
-+					     (u16 *)ldo);
-+}
-+
- /**
-  * ixgbe_read_pba_string_e610 - Read PBA string from NVM
-  * @hw: pointer to hardware structure
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-index 1f4c8b022698..fc96d67e018e 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-@@ -82,6 +82,8 @@ int ixgbe_read_ee_aci_e610(struct ixgbe_hw *hw, u16 offset, u16 *data);
- int ixgbe_read_ee_aci_buffer_e610(struct ixgbe_hw *hw, u16 offset,
- 				  u16 words, u16 *data);
- int ixgbe_validate_eeprom_checksum_e610(struct ixgbe_hw *hw, u16 *checksum_val);
-+int ixgbe_get_link_default_override(struct ixgbe_hw *hw,
-+				    struct ixgbe_link_default_override_tlv *ldo);
- int ixgbe_reset_hw_e610(struct ixgbe_hw *hw);
- int ixgbe_get_flash_data(struct ixgbe_hw *hw);
- int ixgbe_aci_nvm_update_empr(struct ixgbe_hw *hw);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index 6a35630f8421..1e1db8435506 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -3852,6 +3852,19 @@ static int ixgbe_set_priv_flags(struct net_device *netdev, u32 priv_flags)
- 		}
- 	}
- 
-+	/* Do not allow any change to link-down-on-close when Total Port
-+	 * Shutdown is enabled - the flag is managed by TPS exclusively.
-+	 */
-+	if (adapter->flags2 & IXGBE_FLAG2_TOTAL_PORT_SHUTDOWN_ENA) {
-+		bool cur = !!(adapter->flags2 & IXGBE_FLAG2_LINK_DOWN_ON_CLOSE);
-+		bool req = !!(priv_flags & IXGBE_PRIV_LINK_DOWN_ON_CLOSE);
-+
-+		if (req != cur) {
-+			e_warn(probe, "Setting link-down-on-close not supported on this port\n");
-+			return -EOPNOTSUPP;
-+		}
-+	}
-+
- 	flags2 &= ~IXGBE_FLAG2_LINK_DOWN_ON_CLOSE;
- 	if (priv_flags & IXGBE_PRIV_LINK_DOWN_ON_CLOSE) {
- 		if (adapter->hw.mac.type == ixgbe_mac_e610) {
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 79d5d652d3cf..5f8f9884cbea 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -7001,9 +7001,21 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
- 	if (hw->mac.ops.init_swfw_sync)
- 		hw->mac.ops.init_swfw_sync(hw);
- 
--	if (hw->mac.type == ixgbe_mac_e610)
-+	if (hw->mac.type == ixgbe_mac_e610) {
-+		struct ixgbe_link_default_override_tlv ldo = {};
-+		int err;
-+
- 		mutex_init(&hw->aci.lock);
- 
-+		err = ixgbe_get_link_default_override(hw, &ldo);
-+		if (!err && (ldo.link_options & IXGBE_LINK_OVERRIDE_PORT_DIS)) {
-+			adapter->flags2 |=
-+				IXGBE_FLAG2_TOTAL_PORT_SHUTDOWN_ENA |
-+				IXGBE_FLAG2_LINK_DOWN_ON_CLOSE;
-+			e_dev_info("Total Port Shutdown enabled\n");
-+		}
-+	}
-+
- #ifdef IXGBE_FCOE
- 	/* FCoE support exists, always init the FCoE lock */
- 	spin_lock_init(&adapter->fcoe.lock);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-index 959cacecae49..43e2d3e1cd59 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-@@ -29,6 +29,19 @@
- #define IXGBE_E610_SR_NETLIST_BANK_PTR		0x46
- #define IXGBE_E610_SR_NETLIST_BANK_SIZE		0x47
- 
-+/* Link Default Override TLV in PFA */
-+#define IXGBE_E610_SR_LINK_DEFAULT_OVERRIDE_PTR	0x134
-+#define IXGBE_E610_SR_PFA_LINK_OVERRIDE_WORDS	10
-+#define IXGBE_E610_SR_PFA_TLV_HDR_SIZE		2
-+
-+#define IXGBE_LINK_OVERRIDE_PORT_DIS		BIT(2)
-+
-+struct ixgbe_link_default_override_tlv {
-+	u16 link_options;
-+	u16 phy_options;
-+	u16 phy_types[8];
-+};
-+
- /* The OROM version topology */
- #define IXGBE_OROM_VER_PATCH_MASK		GENMASK_ULL(7, 0)
- #define IXGBE_OROM_VER_BUILD_MASK		GENMASK_ULL(23, 8)
 -- 
-2.54.0
+davide
 
