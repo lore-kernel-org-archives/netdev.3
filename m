@@ -1,110 +1,178 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68903CF047
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 12:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404753D4126
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 12:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786363708; cv=none; b=uka2C1mTaK+XSClkPoC4HvyabHD9jduPJMcezwyafe8+kMHOOpyx9z3rXRsT76uDhaI6eqB05Q41WTdTOwPjWZy5aQ0g9T18G/X3AT3b1dUcuKoSJnyBNZk4ntlKa6q223qMjTOd4BzduttmA4gKn3Xm3GqoL2abNKggWKt0Irw=
+	t=1786363883; cv=none; b=rfokRNaBTXhs+4U+t8LNrJii3tnDT9xOfu9EVtP+59nncYijy1bOjrX9i25CcCKOqkFhcOQYcp8fjW7q+FtQCMhIqtu2AtPZK3yHDiPfRthOJAKxThBtZ6OAiNKOMG1oTDl9ogkA+/J3qmxG3GXvrGojtvbioYcGnmkHO6eURow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786363708; c=relaxed/simple;
-	bh=59PT6rbU4y6QwPmgwDv+vHQDeXEZEP7P0amDCOaxd0c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YvJjKKw8g92t6TgEj976XQ09LC7cHeZeKLNeeYhWlvJg68+yuJFtsa+igUvcuPa7hmQ2AcxbB8HqsqFlDXwaD2fCIwiqIZIMSzn0an7U9Gj73osh3yxZn8Ni33Uipk+jZJzi+690qoBm2FWkQNCXtGH6EOIjqTxVqFFXHWIPF/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BSz8NfuS; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1786363883; c=relaxed/simple;
+	bh=1f2i6W0vyHl79CUHTsi6bEFRN5mv8GDVDw+FXRd6Vv8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rzbSDEeLZchwDJSyCaXclkQhED9MYL0cLyG6uITIK2xf1hpBFs5joDDWBTGep12OAKvsbDjjkcpGfPNZPaj3UfJejNjm2KbYKhUAke7kg7ETG2Pvvg4Tkmf7tyFk/oFbwpMiAMueMd0Qv641HiCFQuKX3tAeNdZHeLZqwCXQACw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kwMbNZRE; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BSz8NfuS"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4954c08a7c8so1109695e9.3
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 05:08:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kwMbNZRE"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c2022323c37so232368666b.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 05:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786363705; x=1786968505; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rM7fwhth577JB5kWDfukkUHPix4kNnhkobEipbHGSH8=;
-        b=BSz8NfuSXZ62yS2N6NjgU0+AVmQwBmsyZ66NZ8NsUUFhQRnq7C/uk9ppIw8IcXhNUw
-         8KDxsIndCd0k96o2sfC6wYtzNjmtfU1fZ65EJNA/eEpCf554bXZ389tPRECVZbQ/Cg4m
-         2awz75+c9/GolgtPCvm70o9dJoNzCq5Upo0nS9POIi00nFiqcx0dw8F1FYOBMDTa6WDD
-         3uoZQ39Kl4X6mJzERsZlt2punehhExqRXU57bMcjvmDcP2/Yz7hRnXfcE9aN8MCw2JIM
-         ak+QtPRAo7TJMS6A83Ptv2XchBA8+QxOFRZy5Fk15mCQjW9SN91s+rkMQ49u0ZiwyiLD
-         U0gg==
+        d=gmail.com; s=20251104; t=1786363879; x=1786968679; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7Dx+uV5z3Gz7QSpQU4UjHouuce9bSyjAkH9OsOZse78=;
+        b=kwMbNZREL8O+pjH9b7f2RLTpoJrLyA42tSpfyMgxQawpr99IOBM4eSTN3SyS1zQJ0i
+         tqEGc66XVoIS9zE9jYzn92m7KlqZ58eM5fanCNXWflKiAAt9OxWO+WOLFeauh0cHPYKg
+         WgCP9ixc78iLwgsKt/HB7mUiplm/FhFFU7/8H+bP7m+fbIki0IAHl0jw0SJAQxATx4Ul
+         tFHzuJ1d+/fpKn29EzZaihQ4OmBbsVYhK1d2FH9hvLEIdW7kmJhHfdUMnRiZRngxeJCb
+         pHiedIQErVvCks27q6GrjJ85SXVvi7FmanR+bDsljjTc3QXdaO90bfS+dmUyEJ3EumXX
+         Yqtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786363705; x=1786968505;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1786363879; x=1786968679;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:mime-version:date:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rM7fwhth577JB5kWDfukkUHPix4kNnhkobEipbHGSH8=;
-        b=lduL0pj69Q0E9Ok+eELHffJGQpORrHG3oal2FZElYu+zVCuzVrh0n4eRse52rE8Yhc
-         Wr6on1Djvy4oD7DpYA4lj5Ti2iBVbXe8zQ+UdEjo1diB/EfomAB3fvigoXXpa58zFFfF
-         0NXl7XjCY9pa7F6ZDLQgRfnefMjTaSh7CKNdAvAThAQSA5HF3sUdip7SxGSKNuQCuPrL
-         K5RvV+aIBWZjR79TquvqpqqIrRVeNW/KyRuP6xYePMw/Y3Gzlch6x04HdHLCbc0YSd3g
-         sGZtuM1yFX9oyUQ+dCYDuJmc3+sopxcIOEOLS7KxvNRTeB84tEu6kHTj5FFlUFA1Cc0l
-         6H1g==
-X-Forwarded-Encrypted: i=1; AHgh+RphbIySs5o4ybUvjTXlS7lf8RK/brMXXZZIA6X2n+j9bMRbvJhElEBXgvWO13UPvxQANE1PkSI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvlcBQI8W9UecfQtUeo4mF4iYwRhEJnah9Ctgkd0rSifa6qVIs
-	1k+R0LO/gkin/OxZmAyT2PA7artWw/YePm4UmmVEW3y+oG+z4g+2wKYi
-X-Gm-Gg: AR+sD11oTB177g8x0gr7qMZI6s7tCAizUuiYuJYxbmUIx+Q0AvN21Di2o55COlLjE+8
-	l7juSQdARLBnxhXSLhsA3Tx0gUhOgby3SI3VLPB4aSZ17mZuWbRhXzMB6SAPsELomJFXmAE2P40
-	wYjTVMct3PtRfhi2Kdowq9m+cMGx6zuk0I6F9FjGM/HkFAOIcQNsNy+poZl+JI2apcsGw5N4Ern
-	Hbs93dh80jizYRx5IEtMtZgAqF90VTTdvnYsar1o0+sTfT/lmGqOah3tKxElh9qZtBiaTEskmuX
-	MNGOmUMuDDNShuD5y5MB5dinLetAS8IIXEcRRlxl8hW8f+1tROa8BRRwS/pgI5wglTBcCq0EOUv
-	hX/zeVSM7+sXCApsqiVnCGGwfmTH/P9iwJJv0J2lrUOksQ7B/FKo/J6Ca6G9QmvpkbFYXTwg263
-	VnMp53DLjbNt2E/St9+Ye0kqG3Uj1xFOTiA5DNfoKqlneN+fa2
-X-Received: by 2002:a05:600c:3b14:b0:499:5b0f:72b with SMTP id 5b1f17b1804b1-4995b0f077amr172795665e9.1.1786363704877;
-        Mon, 10 Aug 2026 05:08:24 -0700 (PDT)
-Received: from skbuf ([86.127.220.200])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48002145679sm33009417f8f.3.2026.08.10.05.08.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 05:08:24 -0700 (PDT)
-Date: Mon, 10 Aug 2026 15:08:21 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Semih Baskan <strst.gs@gmail.com>
-Cc: florian.fainelli@broadcom.com, jonas.gorski@gmail.com, andrew@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, vladimir.oltean@nxp.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/2] net: dsa: let drivers offload 8021q uppers on
- standalone ports
-Message-ID: <20260810120821.lykofvogbrn2y2ps@skbuf>
-References: <20260806073119.387-1-strst.gs@gmail.com>
- <20260806073119.387-2-strst.gs@gmail.com>
- <20260806111523.gjlhjfmb526f2y4g@skbuf>
- <CAAsRjRnhdPJOCE5BwU7zUTJ0mtSYCOA3xLcF5ejZQT8OFjYiYQ@mail.gmail.com>
- <20260806124313.see74vgu4dlqqse7@skbuf>
- <CAAsRjR=RyiraYdLkOcHEagGKXK5+4zwQbT-Zq-1DwVkPiKUNpg@mail.gmail.com>
+        bh=7Dx+uV5z3Gz7QSpQU4UjHouuce9bSyjAkH9OsOZse78=;
+        b=VKKpOm5XadjfY0DutFm/UTGLeWS/YHQqsbg2hVEe8BdscDsS11p8omzYctrj/tYLrb
+         Ko+KPMOYyzFsKVma4xtp7u5BeDriAtJgIpLTvgSslPZnHlEFr8r1KOT+zXKmQKh5pVaG
+         0gukys/FuHrSoj27HRDj0dv2kaKpEPYqb4GckbX56PNgjJe3p/rzPFT7XjFHKh1YZbwa
+         FQovEgLRLaKsJWf4ja/WLsTlLxBMxdmC7bZhlcG6X2qteXhhsZdX2DX8sx7G232/YqwS
+         yUEJY5Mce9BD7Oeh6hagVQsKmiscJxN5aIp5C5LoOd1/1AS0LMGURmKcnEOMRItkrNHc
+         IaHQ==
+X-Forwarded-Encrypted: i=1; AHgh+RozZry1P4L3ooQQxzTr1I/WmnXXDtlbp7qJnT7/FaeXF2Cwn+oJmyTkcNquhEETYPDWLNFOnC8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpFIwoGr09Hi6GtJaUrxm1rmZAwx8xQVYWGsHitbPdf+S2eEj5
+	K61So0x0t6cH6+PaLaPXjKuCX2anERkC1t87R3E562ckSdj/XiqN06pJ
+X-Gm-Gg: AR+sD10XgBnqxUWN0EXe3ZuA0+VrkzAsiqV3NaMsyJgfSps6nFYxj+d3AXEIRaGllWs
+	y+KcWCxsdG06QwT6H7Lm5K7L3YbJPJBxivIjTiYwKIOJNJDRdtSIibbRheZhEn2pHABVW4SOC/6
+	plek0wlauVNCX4O4FzfEjymY83xEUljqqmdQPEbnPmuBvMqavi7AYYEdALNNnOgpCQeT3sYSbtE
+	wWKRWMCLeWKtTO/PXsZXPrN1k1270tc9CxELVc57ZQpaSiW+O0ABP5cgsFt97U1fHdQXNgQESgo
+	lc6c+XyRSgN1FodXSfTADObwROZTn6VMCVZwnEYaGcPFdfH6sL4ElW8BTXJnBSm7dcDTzsFwGBu
+	G21eMj9Pu6+8aQv3AB6bm7ezXl2EPRmpksV6NF8LfiwbWzzlQnyi5BhzdjSX4Mw3RkKlkxMtnfu
+	BGJpQ6fAPNrs0T8qGjbHAUmuIQmciizfgsH7xUSwl7r6amaAecIXtKr2fmizs=
+X-Received: by 2002:a17:907:3f96:b0:c1f:9cdb:9965 with SMTP id a640c23a62f3a-c20731a96c5mr1422487966b.2.1786363878945;
+        Mon, 10 Aug 2026 05:11:18 -0700 (PDT)
+Received: from localhost ([45.10.155.15])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2080c90eb4sm369219966b.35.2026.08.10.05.11.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Aug 2026 05:11:18 -0700 (PDT)
+Message-ID: <9e741e85-76ff-4625-85b0-62ee679aa2b0@gmail.com>
+Date: Mon, 10 Aug 2026 14:11:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAsRjR=RyiraYdLkOcHEagGKXK5+4zwQbT-Zq-1DwVkPiKUNpg@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next] net: gro: coalesce padded small IPv4 TCP
+ segments
+To: Glenn Judd <gmj@meta.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Kees Cook <kees@kernel.org>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org
+References: <20260731185431.2777685-1-gmj@meta.com>
+From: Richard Gobert <richardbgobert@gmail.com>
+In-Reply-To: <20260731185431.2777685-1-gmj@meta.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 06, 2026 at 04:39:00PM +0300, Semih Baskan wrote:
-> Hi Vladimir,
+Glenn Judd wrote:
+> Software GRO fails to coalesce small IPv4/TCP segment that was
+> padded up to the 60-byte minimum Ethernet frame.
 > 
-> > But it doesn't, at least not in a sane way. If it still only accepts
-> > those VLANs that have been added to filters by higher layers, it's not
-> > VLAN-unaware. If a solution is not found to the problem, the driver must
-> > reject operation as VLAN-unaware.
+> The selftest tools/testing/selftests/drivers/net/hw/gro.py subtest
+> sw_ipv4_data_lrg_1byte sends {100, 1} expecting to receive {101}.
+> In current code, it receives {100, 1} (no coalescing) instead.
 > 
-> You are right that the port is not VLAN-unaware. It cannot be: the VID
-> lookup on this silicon cannot be turned off without the ARL loss from
-> the other subthread. My mistake in the previous mail was arguing around
-> that instead of saying it.
+> Cause: inet_gro_receive() computes its flush term from
+> tot_len ^ skb_gro_len() before skb_gro_pull(), while skb_gro_len()
+> still includes trailing Ethernet padding. A small IPv4/TCP segment
+> padded up to the 60-byte minimum frame has tot_len != skb_gro_len(),
+> so flush is set and the runt never coalesces.
+> 
+> Assisted-by: Claude:claude-opus-4-8
+> Assisted-by: Codex:gpt-5.6
+> Assisted-by: Meta:internal-AI-tooling
+> Signed-off-by: Glenn Judd <gmj@meta.com>
+> ---
+> 
+> Notes:
+>     RFC notes
+>     ---------
+>     Per Jakub Kicinski, the open question is fast-path cost: this adds two
+>     operations to the common IPv4 GRO path for every packet -- reading
+>     iph->tot_len and the skb_gro_len() comparison.  Everything expensive
+>     (linear check, trim, pointer refresh, csum recompute) is behind unlikely()
+>     on the slow path.  Is that per-packet cost worth the coalescing win for
+>     padded runts?
+>     
+>     Testing: netdevsim cannot reproduce this -- it never pads short frames to
+>     ETH_ZLEN -- so sw_ipv4_data_lrg_1byte passes trivially there.  Reproduced
+>     and fixed on a real NIC (cx7): baseline FAIL -> patched PASS.  Also
+>     validated locally under KASAN + CONFIG_FAIL_SKB_REALLOC (no UAF).
+> 
+>  net/ipv4/af_inet.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+> index 32d006c1a8ee..998ff77fd7b9 100644
+> --- a/net/ipv4/af_inet.c
+> +++ b/net/ipv4/af_inet.c
+> @@ -1470,6 +1470,7 @@ struct sk_buff *inet_gro_receive(struct list_head *head, struct sk_buff *skb)
+>  	const struct net_offload *ops;
+>  	struct sk_buff *pp = NULL;
+>  	const struct iphdr *iph;
+> +	unsigned int tot_len;
+>  	struct sk_buff *p;
+>  	unsigned int hlen;
+>  	unsigned int off;
+> @@ -1498,6 +1499,25 @@ struct sk_buff *inet_gro_receive(struct list_head *head, struct sk_buff *skb)
+>  		goto out;
+>  
+>  	NAPI_GRO_CB(skb)->proto = proto;
+> +
+> +	tot_len = ntohs(iph->tot_len);
+> +	if (unlikely(skb_gro_len(skb) > tot_len)) {
+> +		if (!skb_is_nonlinear(skb)) {
+> +			if (tot_len < sizeof(*iph) ||
+> +			    pskb_trim_rcsum(skb, off + tot_len))
+> +				goto out;
+> +
+> +			NAPI_GRO_CB(skb)->frag0 = skb->data;
+> +			NAPI_GRO_CB(skb)->frag0_len = skb->len;
+> +			iph = skb_gro_header(skb, hlen, off);
+> +			if (unlikely(!iph))
+> +				goto out;
+> +			if (skb->ip_summed == CHECKSUM_COMPLETE)
+> +				NAPI_GRO_CB(skb)->csum =
+> +					skb_checksum(skb, off, tot_len, 0);
+> +		}
+> +	}
+> +
+>  	flush = (u16)((ntohl(*(__be32 *)iph) ^ skb_gro_len(skb)) | (ntohl(*(__be32 *)&iph->id) & ~IP_DF));
+>  
+>  	list_for_each_entry(p, head, list) {
+> 
+> base-commit: 2fbade66245059c78daeaccfce13ecf499fffb51
 
-I understand from your discussion with Jonas that with the right IMP
-port selection, you do get frames copied to the CPU even despite the
-VLAN table miss. This is more in line with the expectations of higher
-layers.
+To address Jakub's question on the fast-path cost: I benchmarked GRO
+forwarding with two-minute long iperf sessions using 1, 2 and 4 TCP streams
+(17 runs per configuration) and CPU frequency scaling disabled. I also
+disabled RSS during the benchmarks because it caused a lot of noise - up to
+20% variance in the deltas.
 
-What about VLAN-unaware bridging? Can packets with VID=100 be forwarded
-autonomously between two ports of a vlan_filtering=0 bridge if that VLAN
-is not programmed to hardware? Does the behaviour depend on silicon
-capabilities, or is it the same for all switches handled by the b53
-driver?
+| streams | baseline (Gbit/s)  | patched (Gbit/s)  | delta  |
+|---------|--------------------|-------------------|--------|
+|    1    | 14.083 ± 1.01      | 14.065 ± 0.67     | −0.13% |
+|    2    | 13.891 ± 0.75      | 13.926 ± 0.78     | +0.25% |
+|    4    | 13.008 ± 1.26      | 13.029 ± 0.97     | +0.16% |
+
+The two added fast-path operations (iph->tot_len read + the skb_gro_len()
+comparison on every IPv4 GRO packet) produce no measurable throughput
+change. The deltas are all well under the 95% confidence interval and
+indistinguishable from noise.
