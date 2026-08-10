@@ -1,149 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948ED36C581;
-	Mon, 10 Aug 2026 06:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E598348C7D
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786343434; cv=none; b=g5qrEIShVzbKYDJN4aWTzhL+KLa9AheccnrveHZ9W2Of2V/bCGIfCs43aKi8orQHxXfUw9Wcf/noSmf+s/S3B7yqMybm69osrtp/ETAzJOkssZch79cfmGfLQU7xSbV4M+L0a8CDbg0fwYtMcDo9V2FxA1gjv4cJ9i28HnRwahM=
+	t=1786343511; cv=none; b=Z/pMrx9KHuVF99fbjg7f5u8t6fXBeLCSy9GD3ieVJYYOx1clSlOdl5bxdRLPMR4XR7XtmibT1oLaQHe0Zv5GL23kPPlMOfNxho6lLBm+nTyHNXuCjxC20s2+fNSpJdxrIL+M6XP2OslSt60/irgbuTsN45ko4zCK9cTCaTvtz4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786343434; c=relaxed/simple;
-	bh=60jnFqpb/LmHonOhuYmnGZSf8WD1ASP7uGW4zgaoVFU=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=tfUNk/4hy4PkSE2nCfRfVMDqA5EGsYWuK/dAhlvuwcHZ9hZnLAwmKjuJ6GZakTwW8C20rBn5tmoGPOQlQLtOTkE6j2Q+spSlcfA3PNO/i1R+sLWMKRLhDJy+xblRAUgjItM5rwfjKZr2UmQzQZemHisM0fybOH9Z5HaAkW8Tzd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gweq0US7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786343511; c=relaxed/simple;
+	bh=sy+ikOIF7jlqcRtDfJFORY8Yy6sZXFR0XbWp9D3uWKI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X+YGthaNnlEYuX2oAHlU//e3/x1b4+6iXmlcb0/AnHsB8OeSAwHWGAa+nUXX1CtMwV/tSJ1xfK5GLDdJNIx7s1YQoSD4zIhhGO+ynF5ryJDai8rw4MR+tnMjhLK5brgaLPcDqc/gZXBqKw8PU+bli19BxZgF6IVQyGgMEmz271A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=mTkM8Bmk; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gweq0US7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580BD1F000E9;
-	Mon, 10 Aug 2026 06:30:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786343432;
-	bh=jkxDNm7jv/YXMf4Ku9V00dGtBGq9McwrSnGQ/iRhy1Y=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=Gweq0US7H18EbMIGQSM/oUsey4vcHo9S2FgMZRYTybnHRSUUJ3wM1iz9zow6y6zdT
-	 1vf9xi+rIqnfBA5LAN26SzlOx5ReKizwceGsP0mgBstYFCObnOMdHr0sGq4b8lUGpq
-	 C2lTzOifjcrGpkaWuVN5MKb1BYoa2mMUemx0WUl3Npz12aHp7cycr+qYh4mUecIqOL
-	 FsZp7VfgSF3WBOE4mWieivZsUA4UvCKHObC1PQQNKTuW1HkXtDZ4/4g68QqHI4b37T
-	 87Wmr8CjeJA0qnVhBBAMC5sKPxS3HuDtplYeokGteSqlCagtKEyY0E88SXwqPdA+Ex
-	 qPxV2dLj7YHAA==
-Content-Type: multipart/mixed; boundary="===============2538369999496004894=="
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="mTkM8Bmk"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47f84023916so1300853f8f.3
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 23:31:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1786343507; x=1786948307; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Svz2rEyXrYuBIjG8VHu1ZYcyOMdHhrrxXeEbTj9Kros=;
+        b=mTkM8BmkokNkaKx5suNy9RKmifV5mbpJvh+Wk0zXPtFHx8p3RRv6VB2Q3iyyWWoZ7q
+         zj2m2iDGw0tvnzX3mHIIjjIKft3FUnLmYUkJyQG1nwcZt3mxSsvRYE5Thlzvlup71bCv
+         5I+jOecKQ0jKExk3k3kgqUjaeP60KqZtcjFzAG+muB7nmRTooGImy2E0f0ptGlS2ptA+
+         rhBwwfCu3U9AdgNCI7P+wLFYpyXTVOuiw42ruyuXoMI5N863a/h6kYy5p11aab71JEDC
+         exHW0dN9t7LrwGSGkcBRnjemlIQS9kef/wPmdPsv478PNJ/QVnpscivIEkpNMyH3sJar
+         qByw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786343507; x=1786948307;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Svz2rEyXrYuBIjG8VHu1ZYcyOMdHhrrxXeEbTj9Kros=;
+        b=UjvCQ/jbilz68hFyLv4LqvXnyX/T1oq0+x4RMfru5alzHDTSfogvSEz6VVjKAVqY4A
+         6hduSUFvjjGq1rd9K87TfgH6geKXqwHHAG4ZqpAFHU+aB3/cWIqSI+uyGnuf5tl18CNq
+         wAYyoYM7nEg2tE1QWpq1u4YfTzvp1XV/4n/BGbUWv7mu7vEe1v9wHH7Iv7fiWNCHlSZM
+         yMvxqvmAzlJ9PtDdISYnew+oyjgPqU+fsBluCJ1XwXlf+yHs+IwG11bJ/l5ph0jKrfB3
+         BMrpJE/iXJJIWAn85g+r7hbnc105TO6LFFeYVRv2D/1oY8NWa660kOd/WvQkV409xhPl
+         NHzg==
+X-Gm-Message-State: AOJu0YxEul4sMwmxbpJLkwFaeuLxO/D5k8E7YpAHYhMaf+vun8BdeZ0y
+	6lvTN24cpsrPJiNRi86OWihF2Bj26p5aZawzneln1r5a5ucFBcCUfCl0fdsfW26pe+U=
+X-Gm-Gg: AR+sD10Sgl/jqK2+84/g0SZb7JA/B6qMjDziRXgllB6WzXgWE8OmfQ2+wMAf9oEzeyx
+	Te2pIgZ21f75GbAfn9fGUQM9tcobd5PL9Fox7A4/eheAaZKRzwmXCewN6Ql1Ygni2QUdC2Tz6fi
+	/cAzIY0BSQNxdG5XEEn4GRcqVyKeIZtEMfBNlJRKPmder2uekeGqxNhIyddCDjWbW/eSM58XMQi
+	4Ya7G0ODTEdnjI/P65RI4Pn9RY4efzShKArCthifXsykpzkz3WR1uho/11676ZeFJYODP7rZwS3
+	ZJWvqIQP09Mme8vIvi6Z6mv5h82dwYv8PvrbrdK+uHt6e5zXB9q19tTWAgPDrya+i0oV4OmeuuC
+	cnOOs2Dja0AaCQdqraabw6XJ6romWaGdkda15xJ0MrcVnSzDmAPSoh/xRTM/kvgQG5qFvqQwpAM
+	KuWOrJSWwlM8wnfEWBmTe+KtWmrJc1fHSD9asNG5BNRJOemXOOQ6OGo8RLZ8cH9eswj9dFciTkr
+	XpyhIGGerbmggZuddI=
+X-Received: by 2002:adf:f184:0:b0:47f:8fc8:af01 with SMTP id ffacd0b85a97d-47fec63302bmr47818413f8f.27.1786343506867;
+        Sun, 09 Aug 2026 23:31:46 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021f8f33sm36497853f8f.27.2026.08.09.23.31.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Aug 2026 23:31:46 -0700 (PDT)
+Message-ID: <6381a88c-d7a7-4fba-ab7f-650eba504291@blackwall.org>
+Date: Mon, 10 Aug 2026 09:31:45 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <27e4d2dcac92f295b98dcc4678e3a87bc3cecb4e29c2c889077af9840c990cbe@mail.kernel.org>
-In-Reply-To: <20260810050621.82035-4-jiayuan.chen@linux.dev>
-References: <20260810050621.82035-4-jiayuan.chen@linux.dev>
-Subject: Re: [PATCH bpf-next v4 3/3] selftests/bpf: xdp: test dev_xdp_install() rejects device-bound program
-From: bot+bpf-ci@kernel.org
-To: jiayuan.chen@linux.dev,bpf@vger.kernel.org
-Cc: jiayuan.chen@linux.dev,ast@kernel.org,daniel@iogearbox.net,john.fastabend@gmail.com,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,hawk@kernel.org,sdf@fomichev.me,shuah@kernel.org,kuniyu@google.com,liuhangbin@gmail.com,krikku@gmail.com,skhawaja@google.com,mkarsten@uwaterloo.ca,linux-kernel@vger.kernel.org,netdev@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Mon, 10 Aug 2026 06:30:31 +0000 (UTC)
-
---===============2538369999496004894==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] netdev: check for nla_put_u32() failures
+Content-Language: en-US, bg
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, daniel@iogearbox.net,
+ bobbyeshleman@gmail.com, joe@dama.to, sdf@fomichev.me, dw@davidwei.uk
+References: <20260809000609.327659-1-kuba@kernel.org>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260809000609.327659-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_dev_bound_only.c b/tools/testing/selftests/bpf/prog_tests/xdp_dev_bound_only.c
-> index 7dd18c6d06c6..4a13f8ec4300 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/xdp_dev_bound_only.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/xdp_dev_bound_only.c
-> @@ -1,9 +1,11 @@
->  // SPDX-License-Identifier: GPL-2.0
->  #include <net/if.h>
-> +#include <linux/if_link.h>
->  #include <test_progs.h>
->  #include <network_helpers.h>
->
->  #define LOCAL_NETNS "xdp_dev_bound_only_netns"
-> +#define LINK_UPDATE_NETNS "xdp_dev_bound_only_lu_netns"
->
->  static int load_dummy_prog(char *name, __u32 ifindex, __u32 flags)
->  {
-> @@ -59,3 +61,50 @@ void test_xdp_dev_bound_only_offdev(void)
->  	 */
->  	SYS_NOFAIL("ip netns del " LOCAL_NETNS);
->  }
+On 09/08/2026 03:06, Jakub Kicinski wrote:
+> Make sure we check if nla_put_u32(id) was successful after creating
+> objects. This is theoretical today, the skbs are large enough to
+> always fit the ID.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> v2:
+>   - don't handle, just WARN
+> v1: https://lore.kernel.org/20260609190804.1137085-2-kuba@kernel.org
+> 
+> CC: daniel@iogearbox.net
+> CC: bobbyeshleman@gmail.com
+> CC: joe@dama.to
+> CC: razor@blackwall.org
+> CC: sdf@fomichev.me
+> CC: dw@davidwei.uk
+> ---
+>   net/core/netdev-genl.c | 12 +++++++++---
+>   1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+> index c0a86f3ae33b..fa9edfdb32c2 100644
+> --- a/net/core/netdev-genl.c
+> +++ b/net/core/netdev-genl.c
+> @@ -1119,7 +1119,9 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
+>   			goto err_unbind;
+>   	}
+>   
+> -	nla_put_u32(rsp, NETDEV_A_DMABUF_ID, binding->id);
+> +	/* rsp was allocated large enough */
+> +	WARN_ON_ONCE(nla_put_u32(rsp, NETDEV_A_DMABUF_ID, binding->id));
 > +
-> +/* A device-bound program must not run on the XDP software path.
-> + * dev_xdp_attach() rejected such programs, but bpf_xdp_link_update() reaches
-> + * dev_xdp_install() directly and bypasses it, so the check has to live in
-> + * dev_xdp_install(). Create a generic (SKB) XDP link with a normal program,
-> + * then try to swap in a device-bound program via BPF_LINK_UPDATE.
-> + */
-> +void test_xdp_dev_bound_only_link_update(void)
-> +{
-> +	LIBBPF_OPTS(bpf_link_create_opts, lopts, .flags = XDP_FLAGS_SKB_MODE);
-> +	int base_fd = -1, devbound_fd = -1, link_fd = -1;
-> +	struct nstoken *tok = NULL;
-> +	__u32 ifindex;
-> +	int err;
+>   	genlmsg_end(rsp, hdr);
+>   
+>   	err = genlmsg_reply(rsp, info);
+> @@ -1253,7 +1255,9 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
+>   		goto err_unlock_bind_dev;
+>   	}
+>   
+> -	nla_put_u32(rsp, NETDEV_A_DMABUF_ID, binding->id);
+> +	/* rsp was allocated large enough */
+> +	WARN_ON_ONCE(nla_put_u32(rsp, NETDEV_A_DMABUF_ID, binding->id));
 > +
-> +	SYS(out, "ip netns add " LINK_UPDATE_NETNS);
-> +	tok = open_netns(LINK_UPDATE_NETNS);
-> +	if (!ASSERT_OK_PTR(tok, "open_netns"))
-> +		goto out;
+>   	genlmsg_end(rsp, hdr);
+>   
+>   	if (bind_dev != netdev)
+> @@ -1420,7 +1424,9 @@ int netdev_nl_queue_create_doit(struct sk_buff *skb, struct genl_info *info)
+>   
+>   	netdev_rx_queue_lease(rxq, rxq_lease);
+>   
+> -	nla_put_u32(rsp, NETDEV_A_QUEUE_ID, queue_id);
+> +	/* rsp was allocated large enough */
+> +	WARN_ON_ONCE(nla_put_u32(rsp, NETDEV_A_QUEUE_ID, queue_id));
 > +
-> +	SYS(out, "ip link add eth42 type veth");
+>   	genlmsg_end(rsp, hdr);
+>   
+>   	netdev_unlock(dev_lease);
 
-A subsystem pattern flags this as potentially concerning: the new test
-hand-rolls the network-namespace lifecycle with SYS("ip netns add") plus
-open_netns() here and close_netns()/SYS_NOFAIL("ip netns del") at the
-teardown, but the BPF selftest framework already provides this as a
-single pair netns_new(name, true) and netns_free(netns), declared at
-tools/testing/selftests/bpf/test_progs.h and implemented at
-tools/testing/selftests/bpf/test_progs.c.
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-The shared version additionally brings lo up and wires up traffic-monitor
-start/stop for -m runs, neither of which the hand-rolled sequence does.
-Both LINK_UPDATE_NETNS and the paired add/del strings are also duplicated
-state that netns_new() would own.
-
-The new function is a deliberate copy of the sibling
-test_xdp_dev_bound_only_offdev() at lines 27-63 of the same file, which
-uses exactly the same SYS/open_netns/close_netns/SYS_NOFAIL sequence,
-and 28 other files under prog_tests/ create namespaces the same way
-rather than via netns_new(). Keeping the two functions in one file
-structurally symmetric has clear readability value.
-
-The functional deltas (lo not brought up, no traffic monitor) do not
-affect this test, which never sends traffic. Would you prefer
-netns_new()/netns_free() here for consistency with the framework helpers,
-or is the structural symmetry with the sibling function the better choice?
-
-> +	ifindex = if_nametoindex("eth42");
-> +	if (!ASSERT_NEQ(ifindex, 0, "if_nametoindex"))
-> +		goto out;
-> +
-> +	devbound_fd = load_dummy_prog("devbound", ifindex, BPF_F_XDP_DEV_BOUND_ONLY);
-> +	if (!ASSERT_GE(devbound_fd, 0, "load_dummy_prog devbound"))
-> +		goto out;
-> +
-> +	base_fd = load_dummy_prog("base", 0, 0);
-> +	if (!ASSERT_GE(base_fd, 0, "load_dummy_prog base"))
-> +		goto out;
-> +
-> +	link_fd = bpf_link_create(base_fd, ifindex, BPF_XDP, &lopts);
-> +	if (!ASSERT_GE(link_fd, 0, "bpf_link_create"))
-> +		goto out;
-> +
-> +	err = bpf_link_update(link_fd, devbound_fd, NULL);
-> +	ASSERT_EQ(err, -EINVAL, "link_update device-bound rejected");
-> +
-> +out:
-> +	close(link_fd);
-> +	close(base_fd);
-> +	close(devbound_fd);
-> +	close_netns(tok);
-> +	SYS_NOFAIL("ip netns del " LINK_UPDATE_NETNS);
-> +}
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31358779411
---===============2538369999496004894==--
