@@ -1,135 +1,264 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A64369D63;
-	Mon, 10 Aug 2026 10:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65690380FC5
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786356116; cv=none; b=qeQdReHnzHRzRRfpZg7jpGj0EZMyluIl5BxM6Z9/MiG/l2GxreuX17WivEY7VMoo7JPhHN2c2F3PAapHxXgI3XVwmlwMPIW0fDnGO88vymterFDE1GRs6qBaOITbaAGObuDGkYQeUvmW5tau8F8QpP7ptmor74zU1po296fWRlg=
+	t=1786356160; cv=none; b=WclPCdeaVemDTgzxAjkozfD6gV7aHnbGovnIcSlgH/Q8VHQ3m3zGCqMunYxHgNy+MzoWXkDTnDVRsOnMuSlMtb2fcTizjMHYD7YGdAzteJ4G87cz7wG5jYcNOR9SGM6j8uuucOeWMD7haaQVpQg8cbn+zgzLtWbHdcLeTRggZaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786356116; c=relaxed/simple;
-	bh=2u7WR45fdwk7K/czlnqoUIfX37QB1Gg2xz8pc35hIU8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KrseMG5UDCx7QQ8NwWnToHqPZWGO3E3C1JM+0+XGhw8VTKzZI7ubrFNxdRpxJAq+hB763FpnrrKFucVwqQXzJOSLJnXYkT/A2AHxROsSN0pbGVTCLlen13/2I+wHeEPwXCJapwzqJTEWNQYlBZGo15z8CKfi+yDmrh3A/0rRahE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOBl2NVz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786356160; c=relaxed/simple;
+	bh=vVC6bFqLBN+Sc3MqkzfB4gj/onQ/NGJNYg/RvyeI9X0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kQlpkKOLdI7a7ekZnysnGRld6gKV+nkHgl56KF3l005Gg73fwtl0m4aesreJNKuMjDv4KaAg+EFmjzNLHGfgWO2YcUBgBzTbg1H3PguSJeaGDeBTIpfF51q5Jh9y5EjlcdhdWTRQF86nfdQFAyRC7AWAz5wxnETpCEi7XJSeSSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lx5Wrsk0; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOBl2NVz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCE31F000E9;
-	Mon, 10 Aug 2026 10:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786356114;
-	bh=HW3GX6I3wLPnT6+ysjemWmbbHJD7ingYVdNWRjY+rhA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iOBl2NVzxlO09qwfYE3kn2bUuIVS9Y4zppQAYDx8oB2rgRp2Tbgk+xphWyERzl9WE
-	 Yybk277qlZbSdmIeb1m4DrpLQx4S21iBARl4mVG5Trn1wVAzHKOisIn48UcNzdvBMl
-	 pUcYWy2EAJmCY6TzQDi7lYBuKz7pzdPZODl2XoSzTu3wJeiMocMrcm3UMzUBSKW4+f
-	 uBa9DC8RMyB7MqhGLcmjYArk2U6VngwuKIoV6q8bRZDr5Ux+cgE64MY5YXr8+9u4yi
-	 bt772TXdY2m98ViwsnHhO3kZ5tCK3fcptPOR00m1wlcZXZZcfzOQn/lzLLFNN7/B7f
-	 KwGa5Vayjb1CQ==
-Message-ID: <8d1f2ccc-df93-41b0-9873-a159aca7c03c@kernel.org>
-Date: Mon, 10 Aug 2026 12:01:47 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lx5Wrsk0"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso1513956b3a.1
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 03:02:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786356155; x=1786960955; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0wEYkzBcMdzXW3DkDjCq2S2tZx0eg9Z7Yp+aB3llSto=;
+        b=lx5Wrsk0Iz9G36FNVXDwOYKDW7Tpwc36vv1F9/8yQXixqfl61J1ZR/KZg9yKYuNrMp
+         ZvCbc7xTqTGVi5TVHrj5KeeMlmeH5jV38TFJBTo4UzFEqiJkjYOuQd5YR/xQDnvCEMLT
+         gruPXZgJxAUKqq9F8yVtu7D4cavqpUTLFK37pZmGSKL5wo3vXfcItVrCPPNbBea6EiEk
+         GZVkau/cFF0dGFyERVzus4c9eEhQ7wvDyazBdMjy9JobVfnnDLMJWOiBSKQPLvmqaCO1
+         O3R0sqr8APMyCInXNnOaO2NlyMmo+7tH5FzQGluP4AwNIPwnLcPrdj+rV1k1XgXaKbej
+         /2rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786356155; x=1786960955;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0wEYkzBcMdzXW3DkDjCq2S2tZx0eg9Z7Yp+aB3llSto=;
+        b=UxXySlmbQI1+YW8zs9gc+BuwpO1cL4yAF+L8J3ajXQRae5Vd3UDQjK5QN7dzU+SqLD
+         0qDVtRuPioamkh5GxLJrRdVmkricDiJTi35ByPzSazjFutETHRbs2gRIhOhviBpO85aG
+         ahd/jyPRwt8mFNiTk6fjA/eIi8YLKikjkKy/EQW04qhufpxLE1UN3YwS8ukBrfENLj8u
+         ZkAKDyuVvR6mBCbKneSMvu4dEUkHWZMn8X6GP3EEwMP80G75waCcmMWgcwepQbjKv5+J
+         vXz4hjcY56oTREM9LMn15OedbQyyHZTCkO+dpo54SrolZrk0KZ6mIPGnpmf4+XM4oG+v
+         pAiw==
+X-Forwarded-Encrypted: i=1; AHgh+RqDVfWo+P6HRcu6bUOj/n23SrouE0IDa5mcX9nqHuEYCIW53d4ierzeWZ1SQu1SQ2RYtn39MQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeJuE79G3MVGyNvjxeFVR6xb07O+g61xGl17yBMpFTVa/CZkEy
+	yrh8m36HiDiixVF7yQRuqIWO+DElkuSoaTBcAh1bwsWRi9J/cfOFMUYx
+X-Gm-Gg: AR+sD10SkbBuFFUx8ig00N+2+rwEG7X3fQ+cnxNgxv+q+rAE2wn+exibRxGgg9RvAlc
+	uuz8ivpmGQ0W0YrWopQWmHAt6OdoFZ4X83SldHulXzn3ttcXPtvS58vZMjrazrRrVPz0jDBsf84
+	cHeQKTKg7M9C4e/LxDHd/ufG0b/UfcxVm9JWRrrvJOVFSZTvay89xciG2pHI/OpgvWJnLnEnVVY
+	vMZabm3cirf7cWbG/t2QIgsQSqcDWBQMd4ZyKtfCQFtX2dAA4guTaRPeHOvNhF97YkY52dEPOmT
+	26ml8VUxLSVkjoeYYOh6vwcEHp6xiGxwW/5OTTTHCCBYL45rBGNgY5LoLtSGFvbIOUqQiZVkIl0
+	7nLcyvxxuEyDjdRPvkuZS3XtzR1z+mLjHF5nBNiL+X0GfgN5FOJYGeXURJA8RdibUVZMnDs2FNg
+	yF0ZEhy9O18YLutRthCZmIlG8DRDinSWltsK13e7q9xD9GplcG0MSB01kmfDJ7mwowFY7aI0ILZ
+	Y9h1g==
+X-Received: by 2002:a05:6a00:c0ce:20b0:84f:72f7:de58 with SMTP id d2e1a72fcca58-84f72f7e7cemr11081899b3a.17.1786356155075;
+        Mon, 10 Aug 2026 03:02:35 -0700 (PDT)
+Received: from zhuxin.hobot.cc ([2409:8a28:54b5:7840:a4d2:402b:802:4ee])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f5a58998bsm3604775b3a.55.2026.08.10.03.02.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 03:02:34 -0700 (PDT)
+From: Zxyan Zhu <zxyan0222@gmail.com>
+To: maxime.chevallier@bootlin.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	andrew+netdev@lunn.ch,
+	richardcochran@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Zxyan Zhu <zxyan0222@gmail.com>
+Subject: [PATCH net-next v2] net: stmmac: dwxgmac2: add XGMAC timestamp interrupt support
+Date: Mon, 10 Aug 2026 18:02:21 +0800
+Message-Id: <20260810100221.9166-1-zxyan0222@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net] mptcp: upgrade network refcount before socket lock
-Content-Language: fr
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>, Mat Martineau <martineau@kernel.org>
-Cc: Geliang Tang <geliang@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, mptcp@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn,
- stable@vger.kernel.org
-References: <20260809091949.3618191-1-runyu.xiao@seu.edu.cn>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260809091949.3618191-1-runyu.xiao@seu.edu.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Runyu,
+DWXGMAC2 uses XGMAC_TIMESTAMP_STATUS at offset 0xd20, while the
+generic stmmac PTP handler reads the dwmac4 offset GMAC_TIMESTAMP_STATUS
+(0xb20).  Before this change, the DWXGMAC2 and DWXLGMAC2 hwif entries
+used &stmmac_ptp, whose timestamp_interrupt callback read the wrong
+register and whose config_hw_tstamping callback never enabled the
+XGMAC timestamp interrupt (XGMAC_TSIE was not in XGMAC_INT_DEFAULT_EN).
+As a result, auxiliary snapshot events were never reported on XGMAC
+platforms.
 
-On 09/08/2026 11:19, Runyu Xiao wrote:
-> sk_net_refcnt_upgrade() calls get_net_track() with GFP_KERNEL and can enter
-> direct reclaim. Calling it while holding the newly created subflow socket
-> lock can create a reclaim-to-socket-lock dependency cycle.
-> 
-> Upgrade the network reference before taking the socket lock. The socket is
-> newly created and has not been exposed to other code at this point, so the
-> fields changed by sk_net_refcnt_upgrade() are not accessed concurrently.
-> The error path still releases the socket normally after the upgrade.
+Add a dedicated DWXGMAC2 timestamp interrupt handler that:
+- reads XGMAC_TIMESTAMP_STATUS before checking
+  STMMAC_FLAG_EXT_SNAPSHOT_EN, so that the timestamp interrupt status is
+  cleared even when auxiliary snapshots are disabled
+- derives the pending auxiliary snapshot count from the persistent
+  ATSNS field instead of the transient AUXTSTRIG status bit
+- generates the corresponding PTP_CLOCK_EXTTS events
 
-Thank you for the patch! Even if I agree with Gang that the commit
-message could be improved, the code looks good to me, and probably best
-not to increase the traffic on the netdev list. So it looks good to me:
+Also enable XGMAC_TSIE in XGMAC_INT_DEFAULT_EN and hook the new
+handler into the DWXGMAC2 and DWXLGMAC2 hwif entries.
 
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+---
+v1: https://lore.kernel.org/netdev/20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com/
+v2:
+- reads XGMAC_TIMESTAMP_STATUS before checking
+  STMMAC_FLAG_EXT_SNAPSHOT_EN, so that the timestamp interrupt status is
+  cleared even when auxiliary snapshots are disabled.
+- Drop the unnecessary (u64) cast in dwxgmac2_get_mac_tx_timestamp().
+- Reword the changelog to describe the real problem: the generic handler
+  read the wrong register offset (0xb20 vs 0xd20) and the interrupt was
+  never enabled, so auxiliary snapshot reporting never worked on XGMAC.
+- Update the comment to clarify that TXTSC is cleared by
+  XGMAC_TXTIMESTAMP_SEC, not by XGMAC_TIMESTAMP_STATUS.
+---
+ .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  2 +-
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 43 +++++++++++++++++++
+ drivers/net/ethernet/stmicro/stmmac/hwif.c    |  4 +-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h    |  1 +
+ .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 12 ++++++
+ .../net/ethernet/stmicro/stmmac/stmmac_ptp.h  |  1 +
+ 6 files changed, 60 insertions(+), 3 deletions(-)
 
-@Net maintainers: this patch can be applied to net directly.
-
-> The PatchProof static-analysis tool detected a GFP_KERNEL allocation while
-> the socket lock is held. Manual source review of v7.1.5 and current
-> mainline confirmed the lock and allocation ordering.
-> 
-> A source-level check found `sk_net_refcnt_upgrade()` after
-> `lock_sock_nested()` in the original function and before it after this
-> change. A POSIX-thread lock-order model made the reclaim lock unavailable
-> while the socket lock was held, observed `EBUSY` for the reclaim lock, and
-> then completed with the reclaim-first order. The model checks the ordering
-> invariant only; it does not execute the kernel MPTCP path. No live lockdep
-> MPTCP test or reclaim fault injection was run.
-
-Interesting. By chance, any reproducer to share?
-
-Cheers,
-Matt
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+index 61b6d45a02f5..76e2860a9517 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+@@ -87,7 +87,7 @@
+ #define XGMAC_TSIE			BIT(12)
+ #define XGMAC_LPIIE			BIT(5)
+ #define XGMAC_PMTIE			BIT(4)
+-#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE)
++#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE | XGMAC_TSIE)
+ #define XGMAC_Qx_TX_FLOW_CTRL(x)	(0x00000070 + (x) * 4)
+ #define XGMAC_PT			GENMASK(31, 16)
+ #define XGMAC_TFE			BIT(1)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index f02b434bbd50..b849cebf9b29 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -1154,6 +1154,49 @@ static int dwxgmac2_get_mac_tx_timestamp(struct mac_device_info *hw, u64 *ts)
+ 	return 0;
+ }
+ 
++void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv)
++{
++	u32 ts_status, pending_snapshots, acr_value, channel;
++	struct ptp_clock_event event;
++	unsigned long flags;
++	u64 ptp_time;
++	int i;
++
++	/* Read XGMAC_TIMESTAMP_STATUS to get the AUX snapshot
++	 * count.  This read also clears the TSIS bit in
++	 * XGMAC_INT_STATUS.
++	 * TX timestamp polling may have already cleared TSIS
++	 * and AUXTSTRIG, so rely on ATSNS instead.
++	 * TXTSC is cleared by XGMAC_TXTIMESTAMP_SEC, not by
++	 * this register, so there is no conflict.
++	 */
++	ts_status = readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
++
++	if (!(priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN))
++		return;
++
++	pending_snapshots = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, ts_status);
++	if (!pending_snapshots)
++		return;
++
++	acr_value = readl(priv->ptpaddr + PTP_ACR);
++	channel = FIELD_GET(PTP_ACR_MASK, acr_value);
++	if (!channel)
++		return;
++	channel = ilog2(channel);
++
++	for (i = 0; i < pending_snapshots; i++) {
++		read_lock_irqsave(&priv->ptp_lock, flags);
++		stmmac_get_ptptime(priv, priv->ptpaddr, &ptp_time);
++		read_unlock_irqrestore(&priv->ptp_lock, flags);
++
++		event.type = PTP_CLOCK_EXTTS;
++		event.index = channel;
++		event.timestamp = ptp_time;
++		ptp_clock_event(priv->ptp_clock, &event);
++	}
++}
++
+ static int dwxgmac2_flex_pps_config(void __iomem *ioaddr, int index,
+ 				    struct stmmac_pps_cfg *cfg, bool enable,
+ 				    u32 sub_second_inc, u32 systime_flags)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+index 511b0fd5e834..9718582b8480 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+@@ -258,7 +258,7 @@ static const struct stmmac_hwif_entry {
+ 		.dma = &dwxgmac210_dma_ops,
+ 		.mac = &dwxgmac210_ops,
+ 		.vlan = &dwxgmac210_vlan_ops,
+-		.hwtimestamp = &stmmac_ptp,
++		.hwtimestamp = &dwxgmac2_ptp,
+ 		.ptp = &stmmac_ptp_clock_ops,
+ 		.mode = NULL,
+ 		.tc = &dwmac510_tc_ops,
+@@ -280,7 +280,7 @@ static const struct stmmac_hwif_entry {
+ 		.dma = &dwxgmac210_dma_ops,
+ 		.mac = &dwxlgmac2_ops,
+ 		.vlan = &dwxlgmac2_vlan_ops,
+-		.hwtimestamp = &stmmac_ptp,
++		.hwtimestamp = &dwxgmac2_ptp,
+ 		.ptp = &stmmac_ptp_clock_ops,
+ 		.mode = NULL,
+ 		.tc = &dwmac510_tc_ops,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+index e6317b94fff7..818ab3daa91c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+@@ -671,6 +671,7 @@ extern const struct stmmac_desc_ops ndesc_ops;
+ 
+ extern const struct stmmac_hwtimestamp stmmac_ptp;
+ extern const struct stmmac_hwtimestamp dwmac1000_ptp;
++extern const struct stmmac_hwtimestamp dwxgmac2_ptp;
+ 
+ extern const struct stmmac_mode_ops ring_mode_ops;
+ extern const struct stmmac_mode_ops chain_mode_ops;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+index b9a985fa772c..9d7d24259abd 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+@@ -277,3 +277,15 @@ const struct stmmac_hwtimestamp dwmac1000_ptp = {
+ 	.get_ptptime = dwmac1000_get_ptptime,
+ 	.timestamp_interrupt = dwmac1000_timestamp_interrupt,
+ };
++
++const struct stmmac_hwtimestamp dwxgmac2_ptp = {
++	.config_hw_tstamping = config_hw_tstamping,
++	.init_systime = init_systime,
++	.config_sub_second_increment = config_sub_second_increment,
++	.config_addend = config_addend,
++	.adjust_systime = adjust_systime,
++	.get_systime = get_systime,
++	.get_ptptime = get_ptptime,
++	.timestamp_interrupt = dwxgmac2_timestamp_interrupt,
++	.hwtstamp_correct_latency = hwtstamp_correct_latency,
++};
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
+index 3fe0e3a80e80..dade09614163 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
+@@ -103,6 +103,7 @@ int dwmac1000_ptp_enable(struct ptp_clock_info *ptp,
+ 
+ void dwmac1000_get_ptptime(void __iomem *ptpaddr, u64 *ptp_time);
+ void dwmac1000_timestamp_interrupt(struct stmmac_priv *priv);
++void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv);
+ 
+ extern const struct ptp_clock_info stmmac_ptp_clock_ops;
+ extern const struct ptp_clock_info dwmac1000_ptp_clock_ops;
 -- 
-Sponsored by the NGI0 Core fund.
+2.34.1
 
