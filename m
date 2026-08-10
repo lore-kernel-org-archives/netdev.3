@@ -1,71 +1,77 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E082FFFA4;
-	Mon, 10 Aug 2026 17:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5215735B64C
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 18:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786384648; cv=none; b=AKlJ9YGtpzlSQnXDZy2tsB71+hiYNGbQxahZVggEBaxCXqwz8AOaux9J6EMp/E1YSyif8+g2TxC/aP4iw5vlI5cSBKPg80awbccNS82LUmGPz8WoeT3QV+m2jx26BVz0H367TK4ullzMVUix+ARNw5VrxgaeTFmReYv7hhVGDEc=
+	t=1786384915; cv=none; b=b3yaQjO72rSx9PMaSari1OQguGGlcQNKPtS/WrlBvXnX3Fyobgan8dyUbthbzKF4fIj7pbs0yEA3f4h/NRk4hAb9kVFJJHPtN+opi8WaHymtpVXZCJVHQc/ueC0/z/pjS6sQHuZNPkPx1ZyP9SO40FZ/SmJIPcrgwE12jvsZX/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786384648; c=relaxed/simple;
-	bh=MW4+WxcWsrUf86xPnHKpvBCUjLqwAdhixQa/DSm8Efg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SZ3X7GfkOLXSLvPKux7TYpCBYxIA5ZGueukA3WG0B2L605pOTW/oReefh23r6mTZrdSAFBOlEp3d5JX8/fmlB1Sow2kMM1Qrnlc2CjIuIyBJB50bs9ie0Rra0WM8itVRA3AeaOnNR+7P9XEetCuY98vtGdMjJOhIQqXZ1AYysT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NmFzVmim; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786384915; c=relaxed/simple;
+	bh=tkSchSFp4xgTTAdZ0dmhJNFX3SMXVsUXoY36/f2E1SQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BTtcweBGQr5WHztMAaCFjcROiLSkq7k1AJRgiobaxjv4Bdyp80sX2cJ4LjrLKo9cb1oEqblB1H++0XaIjnhizWLq6cdJozoe7zCZioS+TMB92N38bHZQ7vJz0X+lrnfrlfB+AvjYzTBWHIN+rQ1YMCby3g4p1vU2mxiuJ/OdV24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9ZSzVIk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NmFzVmim"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=sJGjyJAfrE29E39fw5p9eEIjpaHCubsz58nYmECUolI=; b=NmFzVmimdna6vCG42MyuFQ82H4
-	SkxIOP9K6N5Le3hQ3I2oJHA6gPM2538b87rRWSkmMtOQkwkRo1T9UsCBw9PzLBGsmIK7/4c1HXRzl
-	st5YBeQQcVb9lViTD2C5mPh6NgxjsWqkjkcZKwU6R/GoI7HM0VC2Rk13U43/7wAkKBXo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wtUFN-00Gxot-Ae; Mon, 10 Aug 2026 19:57:13 +0200
-Date: Mon, 10 Aug 2026 19:57:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Malathi <malathi.a2000@gmail.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] e100: fix shift-out-of-bounds in e100_eeprom_load()
-Message-ID: <0b5374f0-54ef-4730-8282-54cd9509dfee@lunn.ch>
-References: <20260810063815.151326-1-malathi.a2000@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9ZSzVIk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B017B1F000E9;
+	Mon, 10 Aug 2026 18:01:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786384914;
+	bh=6areEHj8cE2ql0cL4pBXm2JD7AA23Hb5Qa30Qm1ev9I=;
+	h=From:To:Cc:Subject:Date;
+	b=b9ZSzVIkwnuWDWt3IGqP0IL5sAicss5P6IewQl/XAOR1RWW2llEg5HnXHdRP+NfL3
+	 YP/WD2qAFSS77O7TSz+LPK3TvF1sMGeyxP0AyI1kv7bHEp46ahLhG4ZFnXU7laHAbS
+	 y/T6LTcuCqOGl9R2j54Z/zc7pd4SAlBlHyUUH0X/vuqpaVxejRDq1HAFbt+bnx6m1U
+	 iCxTTUqVp93G7BaVvVc/AulWv/wLLNPhJHcW2cXfdrSTTwr9np+LbeyrDpI06LIAwq
+	 p5fJi9cidNr9MVfxY0AJpB94Bx1G3NiTS9IqHfSJCG5vxRg9JvrycTEh6s3VAbSzJa
+	 Hg+sp4uxuioDQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	jmaloy@redhat.com,
+	tung.quang.nguyen@est.tech
+Subject: [PATCH net-next] MAINTAINERS: make Tung an official TIPC maintainer
+Date: Mon, 10 Aug 2026 11:01:48 -0700
+Message-ID: <20260810180148.680425-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260810063815.151326-1-malathi.a2000@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 10, 2026 at 06:38:15AM +0000, Malathi wrote:
-> e100_eeprom_load() and e100_eeprom_save() start with an address length
-> of 8 and call e100_eeprom_read() to auto-detect the real EEPROM address
-> length. e100_eeprom_read() adjusts the length with
-> 
-> 	*addr_len -= (i - 16);
-> 
-> based on when the EEPROM drives a dummy zero onto EEDO. A malfunctioning
-> or emulated device that drives EEDO low too early makes (i - 16) exceed
-> the current length, underflowing the u16 addr_len to a large value such
-> as 65529.
+Tung Quang Nguyen has been working as the de facto TIPC maintainer
+for a few years now. Make sure the MAINTAINERS file reflects this
+reality. Dealing with the flood of AI patches is a significant
+effort, and Tung's work and responsiveness is exemplary.
 
-So this is a theoretical issue which never happens, and bothers
-nobody. This does not meet the requirements for stable. Please target
-net-next and drop the Fixes tag.
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: jmaloy@redhat.com
+CC: tung.quang.nguyen@est.tech
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-	Andrew
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a82b6ec9c567..ee4a9da0eb83 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -27257,6 +27257,7 @@ F:	tools/testing/selftests/timers/
+ 
+ TIPC NETWORK LAYER
+ M:	Jon Maloy <jmaloy@redhat.com>
++M:	Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+ L:	netdev@vger.kernel.org (core kernel code)
+ L:	tipc-discussion@lists.sourceforge.net (user apps, general discussion)
+ S:	Maintained
+-- 
+2.55.0
+
