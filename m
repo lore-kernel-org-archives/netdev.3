@@ -1,143 +1,271 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012028.outbound.protection.outlook.com [40.93.195.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E3237F725;
-	Mon, 10 Aug 2026 06:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786344848; cv=fail; b=JG7fxHgcqNstmi6Aes+oSzmExB4SHZJC+DlQD1Ivw1BQawE+kUtau7tw+Fe5Rc1XYjzFsRyDemIfpvWwZGtSaNng8/wOtDgINc0sLTa43xz9laq4lxbwQbcYEPFsSUOkYauCOjKjxaAZ5FtVdi1oVIf04TpcOfwKBcfoIuCDIn8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786344848; c=relaxed/simple;
-	bh=3Nxob+JX4vcxP9l6PzvYbLPoqaQYbNmOHcz63hqM/AM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eM9+oH8fIfVC4+PMoGHw8POHf6IbbKrrPGZr0679vsD2MHcZkFccQY9XCO3XpoJuC92mrtogaVfextCqUD3xCD9129R4ANod3mJX70O3XhQ+q+VTuHzI78lAk3Q/ZE3dNC6XW9lTHzjwRYdzp4bUoVfTuiY+KO/njJG+WUqCQHk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=i8LmhKsi; arc=fail smtp.client-ip=40.93.195.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA6339A078
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786345085; cv=none; b=U2oXrXll9kEquSl9YjtpU7UON7jeSifjswAtAiRWpc3tm1VFMa/WcWz6KlJ7YneEF7INOpGMPSdZV1GmQ4SCzqNIU9jLodZlgOxNzZ1hFwnhIeHwDaDBilFd3WiC1iYbzEDDCBBRkma8lzKdKgQjMMh4LKtCSwELqY/rCd5vYzo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786345085; c=relaxed/simple;
+	bh=zcK/CtUFnpS0k20y6oRda6La7dWyLcqSsoUQS0OjXyM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oTIBEV1an+rIlfCixjioSLbXTUdGXYbFuxkoHcjamPw//eArZrbUDGjE0y3Oe63ZkwB9SdBr2oi8SZy+LUJmTgoUVKD5DFAfrUH3VVK5h1b5cZZ8e2fKVI9WqpbPHxQMZEvMXo7rRGWk6t04sZiWtRY21uYShmdz3A7gQg1J9PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--shivajikant.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rn3cKNUR; arc=none smtp.client-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--shivajikant.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="i8LmhKsi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W6eNfv9L406aEMpPs7OArMF1L28C/A9s4Bb4cFI5JaqJw6oOC8Xdw+iBDQ8cj7AX6MmMKQMvBdPNomyB/T9RJJIYaA6AWsMS6n8IOCT6B+fgnFYzlJN6q/yDk2oC76MRIow5ojr7ywDoxIwUVe1y+9YGpcUWe6SNtwxyYlxqwelbWwjO/sXhn8N/1obrzD6BOYhMchblfQhJMJSvgYUBPwrRLvfTaiqysaviuNe203VsDVxSeSwjHaV51F1v4zyY+njvvHXDx3fAyG3mJeJqTZ1kFVWBQYRs3wNl4ymSXLG70SisxQRATuENvVsc1aHYeFaPhiW2mgxTKioQiJCAuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TVmDL0Hr2hCh1D0FgkhcNgAzoHeQ5f7G4SkCFqoIIro=;
- b=QGXZ4z+CawSzRHg/Kfk4QYMWmu0jnx61Rcs6FJ6X0QGmP+iwPrWnTEFeHNzev/ypo4E1joXthRVvF+oiPHiro6P2TlvBh3kNgwe6aA+bpjQxgWlX0aKMkB6VlP/Zg+zp271D2gdyfczvH80/MUsOxUiTD1PzjoZOs/1xp+MlM7uNY/T2i44H4nbK04oYDm3YQgOOeh6MIZF906Cu4C+qRvC2RhbaC5Y0nbzBYPH97p/XW9ZgK2JlK4/MPskALbdR7kJOfTjXdWGXBCHbbhc7nInL3bq5n1x/tZMRDqQhM2o4udmXutQB6WGQ+QRH62W9wOgpgxLfugqjDZvPrpL9dQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TVmDL0Hr2hCh1D0FgkhcNgAzoHeQ5f7G4SkCFqoIIro=;
- b=i8LmhKsiXrmeCbymWH7SAIwNcZGrHFbBQHZSCMPYpL+3ZPdjNA+uT8X95nuUjMt5GVTip0O5jJ752JLinluHLWWoeCcsqr5oUGZO9JNMxvHOiSOEJ4YuJSXRjVyv5QPrNfRefNOd3N5FgxsArM7HoqA2KEYs7VUSIS/CVJGl7SSu9h2IFfooptP0tPebZgkPNftzVOkSiNpFuyNYBizXRqRTUEt+Ub39/GuhV5A/qffIsDHS7DjndLyMTCBrpsCeAJHkdmFkgrlR5AdC2gqm2KyBwnf8i81nJa+OQqyL31jpu2fKFOjoVspa/DOHyGkzGFTPN1rodk1PFkZrlW4SqQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by SA0PR12MB7461.namprd12.prod.outlook.com (2603:10b6:806:24b::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 06:54:03 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
- 06:54:03 +0000
-Date: Mon, 10 Aug 2026 12:51:36 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Pimyn Girgis <pimyn@google.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
-Subject: Re: [PATCH] ipv6: addrconf: drop "BUG: " prefix from pr_warn()
-Message-ID: <20260810095136.GA2582170@shredder>
-References: <20260807131300.2677228-1-pimyn@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807131300.2677228-1-pimyn@google.com>
-X-ClientProxiedBy: TL2P290CA0023.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::12) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rn3cKNUR"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38f5ac7416eso1978302a91.3
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 23:58:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786345084; x=1786949884; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=l3VRlw1pks8LWzs6IX7SIYNDXvrFG8BZNOogDxjD1Xc=;
+        b=Rn3cKNUR2O567j6pvGaGNKsbdvlxjkKt+jkmHEdRaZeuSSyM7WBj233CoMeagnuF4g
+         h0NLEQEs9zDudrKHtTRAmI0KA66++OzU9EBVntUXHGErchSb+0xMXQlRX7YAXZJr3Ke4
+         mXpNlnQdcQ1wnVM0x31GLn64MjQ1xtIHjqMrH7oWfkSIwZ53YNK6b+J/lQSNRMJe+9Pp
+         WOre5opf7sL0C8mvtzfHf8MgxFJxUTQRRzZNiSe9eqHMJFBwsyh2Q0KYDvCVmSBrn0D3
+         ihUf4kGmGiQyCD/yc/75xpASMP2ddR8U4y550UaXn9kek4XbDqwPRFMK+4rAj7xYsw4S
+         D+1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786345084; x=1786949884;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=l3VRlw1pks8LWzs6IX7SIYNDXvrFG8BZNOogDxjD1Xc=;
+        b=rhPAOVLCxuGii8DryUQ8yLVPBRvkkiPAC0EAKu2F7xDBt64axajW+87y+fUbwd2bTe
+         4qHuTV6DY+mhppPO7r80xrep7a639qrPD5UgVa5MHvqblj2jXIb+qj64PaKmrbjjmHG/
+         Z9S4R6pgzwf2BjgltdurU+AfNQfmqQcwJ77dYIlhuSsKX+urdfw1SqsmOWq3zrmbRNyJ
+         TUuYBCnJQ5Oz3tIJim2wfiV+Eg8Ep0qu/ksz/5fI/35H+SLkDLZM3qrlD0EzAb5qOYu6
+         NjoDWtnEs2xx4mQoNZuOxBwBz7XV4Ms0cglUfd7ztj4LiQWl54WBNr7lhSBjAj/EGzjF
+         L2zw==
+X-Gm-Message-State: AOJu0YwZcGy/1sDlQT7UqrouC681D71/nk5LHQfjJ6NzFbzJX70u8XlZ
+	JWhiJsJCVydBGvULdeFmNABiOCAjMGZk0xPIc4+4YS+/wB35L3jJlpMRnNEDQsbDNMvAaHy9LmP
+	yiwT6yLgoCAfILbKny9tjOQNM/kKk7HNvAankh0KNdaS68e8ChXWSSx2UjBAngRJo87tvlc/GyP
+	+22EjZWoksC5DXHQGmZyc2EX+6XKNByFEuLYJYqlNi4djHvGAxwX2moX9x8TdbLRE=
+X-Received: from pjor3.prod.google.com ([2002:a17:90a:9403:b0:38e:afc7:ab5b])
+ (user=shivajikant job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:35c8:b0:38d:adae:4866 with SMTP id 98e67ed59e1d1-39282494777mr18798614a91.21.1786345083325;
+ Sun, 09 Aug 2026 23:58:03 -0700 (PDT)
+Date: Mon, 10 Aug 2026 06:57:39 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SA0PR12MB7461:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c4779f9-8097-4618-48ac-08def6ac29e6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|6133799003|3023799007|56012099006|10067099003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	mxYK47iR7iMvBtuRjpI/LD9O0n/9Z1FRUximWTZenjhqX/VWGCkJMr/J0/rk0aEH5e/WSMtWZnp2R2DKbfArnTBQIZAHJKQu7D+74kQiTpYb5FPOSfBZZ+rdLeNLeX/qblkhHgT8SmK/AhKP+rA/fn3MXhTPFtvbbTwPmtZt5lgafShFJQqjfAcY4xQ5J8+hKEYz2+AcOU9CUVoxRDHlxGXM13xn0M8TGVo+C5zJ506yapY6sLzfoVuNdfqMPIyFf61o3atavdizYGgpFl4bvNqrPrBA4lxWXlMNHenhfypVFUjDxTqfhdXtnfrdjbEP/NktU1bCxH/jMLwyO3u+8yMTlU+qBaDQI3jYEzKmgNimgJiF8eLr4W6BLGtaolu+ucTSSN8Wq1crIHE+Ws7rA6vTpcequlUM6CQV5G1F39MZnmwEgmLWnjmfUk27VGtlzlNq3K95Fg1lnpuzPRWYF1+3tROZDesOgnOKn5JkQ6yAfLxOb6Uuro4xPWCkFnjYeqZdKFrVT6iedjo4liVL2kTvlwxRayRDhGYt8FftgrwOlng0FoBkBrDculKgG2dBULY8sVmO0JigRpvM7hkdKGT6UNl1BxFi958chEV0WipT5fyTtfFRBHY38TyQxdxkTI5Tfq2VGbN2sBPfCj/h/9nXbBpz1sJyoKMZ2xtbSm8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(6133799003)(3023799007)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ay36fkYvr0IdPqOfDWQ0cbS8dkz19Yi6F3XNxYKpQV5ty0+SGJmNj0TBbqaj?=
- =?us-ascii?Q?1NLnBJ5RXJLi+43C28DUtePVrzmuRQAexEAvicotXaj4ZcFFAkHY8N8QJtZE?=
- =?us-ascii?Q?WpKlZAlkESdCVYfAO+LmlJqajmJ6XkvgBEpAcVD3ESPSvGaxVa9TC+sej51z?=
- =?us-ascii?Q?BR1ptAZ37GgmCa0fXnTd2sjYQnbdmx3LQ9evZy00TleHW3pqzOrXj5C7fH7u?=
- =?us-ascii?Q?X3KFcdMQOtfn2WiWHfJgiyK/cLHr5CIFmjTWqCcxycSz+vsjvR6A1tlDubAk?=
- =?us-ascii?Q?AOlFMsRe4RNMoZLUqDExYT9YQmEPz7BJ95VqjX0kccVEk69vGQ+EYoq0n+Oa?=
- =?us-ascii?Q?45WrpdWDe7h5ZkKq++1KV//2xYHgSdbPSRk6YYRQu5RWQshQT+O+B/ahAWXc?=
- =?us-ascii?Q?acCafwtPl3FvsUggaW+55/ccGwo/8Y7lysaTCzdiioa87T69zbHGxvWNUHtP?=
- =?us-ascii?Q?y4vTkNk8e7bHJW/Xo6/5/hsRANF/kLSUmiK47kZ5M7mSwdY9RHzwKwvHqa/g?=
- =?us-ascii?Q?NwpQoXK6fRNlg+Zq1v1jgF4APgqjZGN3WDpRFhjtxgEAtmh3yFiSJcHszPVf?=
- =?us-ascii?Q?quB8+M3BccOjaAJ1kMR+WGS0MyREiyzNCslL7tqwGTpPVEU0VKKNuYs0E4nl?=
- =?us-ascii?Q?BFQ2X9ZVWeaO8WPLkYtWYEQd1pXV2nX9eJAj9P5hbEzLveTRKxn644CMh73V?=
- =?us-ascii?Q?/e7ZDOw1HUtz4onE5mRvfFMmB09Q15Vd9GSX6NOSgi7X9aV6CNFq/ydMiaNF?=
- =?us-ascii?Q?mX75ZH6E1TSit36+mbModJj6E64h/Ajp96ee+OK5FVZpujKBD7DHmPuMFE++?=
- =?us-ascii?Q?SjADkZp4Y2uiKq5g8PDJnf4b1OoudBtAbJvE16pPCQOz0ZjpFq5qiTf3ZyCD?=
- =?us-ascii?Q?tVGjmqKPDKQ3uvHVjUsD98ZqpdVuI+4ahrG86QqEpuD15iP6Vujh7CSyLs34?=
- =?us-ascii?Q?F4aO2+BFPhjNexpyVMogy6b4NMx3AZC45A01/IgFujlLoLHrkRPCeHBU+oWu?=
- =?us-ascii?Q?jl4wG2KiVD2U9k53VzsplI/9Cg59JMC+q9CddZcrm52x9+o5jOSTfonb3l9Q?=
- =?us-ascii?Q?1BN52fSnZcKgpT/Qgo2SqQ7thc1BrK5KEbc8frqTQ46dEQcOE6tze/FnMFGh?=
- =?us-ascii?Q?hQk5OWVmqxh9eRz3NoPtDHEVJOMD7UkQxSeg7OtmFwmo1XDnW/QT7ObgJSSp?=
- =?us-ascii?Q?+rVqD/yKEd91na/IEJKDog3Qi9V1VJMl8mOBNOSXtxXU6sci2EM3yx4ERypL?=
- =?us-ascii?Q?ezcgmAbBgWGz2/eJ7dNIY6zzM54B5okS6FtBOB21c4QXBtKL6czbhRaeLlMw?=
- =?us-ascii?Q?7Dq2iIzXxJJyMA1FkRNFemhcJpMJpuYAx7z7X1QmA8VhgSI+i4MXSwfcNH1S?=
- =?us-ascii?Q?tagLlEzkPVyVWt+80KscNq6WS/ciGjBW+EzufSIvQBi/2Jj7p3NzRdL8JrlZ?=
- =?us-ascii?Q?OVgTWH/nSAHRg23OHhpR6GKOIQRaiuKDANYpdVE7IK3EF1F6zXtSHd9BFsEn?=
- =?us-ascii?Q?4ZOFN32Uqa5HYieN28PcZnfTd7XZfEv6nWYS1j1FW8Er6mYGVtZIu2ahfMAn?=
- =?us-ascii?Q?Jxo8gnHZJRGUA/uu5hirpdN+p+vGTTe4u543a6F0kA5ny7rkbCUGU7b4Wfd/?=
- =?us-ascii?Q?jw8TOklPW9GQa8BIyd1h13qK8zzz4wRFTvdcQGvg9n5FqxWvbYj/d+TLcOEG?=
- =?us-ascii?Q?nB5UQx8zCpS1LJsLxXf2LfFeoOsuUdCsyIfJcgks5eXpj0ew?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c4779f9-8097-4618-48ac-08def6ac29e6
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 06:54:03.3166
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uRK2WSppjsL2+v59TY1/K/0I9jvQ3uSIUbG8BjT761CWJmmGGWpldQ9FgeeYWrdCYhKkJ0oitIqp+NK+mOIZdg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7461
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
+Message-ID: <20260810065759.3735934-1-shivajikant@google.com>
+Subject: [PATCH] net: convert netdev_nl_sock bindings list to xarray
+From: Shivaji Kant <shivajikant@google.com>
+To: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com
+Cc: praan@google.com, Shivaji Kant <shivajikant@google.com>, 
+	Mina Almasry <almasrymina@google.com>, Simon Horman <horms@kernel.org>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, Kees Cook <kees@kernel.org>, 
+	David Carlier <devnexen@gmail.com>, Yue Haibing <yuehaibing@huawei.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Nikolay Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, 
+	Maoyi Xie <maoyixie.tju@gmail.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Aug 07, 2026 at 03:13:00PM +0200, Pimyn Girgis wrote:
-> Kernel warning messages emitted via pr_warn() already have the
-> appropriate log level (KERN_WARNING) and should not include manual
-> prefixes such as "BUG: " or "WARNING: ".
-> 
-> Explicit "BUG: " prefixes in log strings can mislead testing tools
-> like syzkaller, which scan kernel console output for "BUG: " to
-> identify kernel oopses, panics, and fatal conditions.
-> 
-> Remove the manual "BUG: " prefix from the pr_warn() call in
-> __ipv6_ifa_notify().
-> 
-> Fixes: 2d819d250a1393 ("ipv6: Handle missing host route in __ipv6_ifa_notify")
-> Reported-by: syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=ded267b328e950a7c0c4
-> Signed-off-by: Pimyn Girgis <pimyn@google.com>
+netdev_nl_sock previously used a struct list_head bindings to keep
+track of active netdev netlink bindings, protected by a per-socket
+struct mutex lock (priv->lock).
 
-I am able to reproduce this (there is no reproducer from syzbot, so I'm
-not sure if it's the same one) and will investigate if we can avoid
-getting into this state. If so, there wouldn't be any need to touch this
-message.
+Since list modifications and iterations are not concurrency-safe,
+priv->lock was introduced to serialize operations on priv->bindings.
+However, xarray manages its own internal locking (xa_lock) for store,
+erase, and iteration operations.
 
-Currently busy with more pressing issues, so this will take a while.
+Convert bindings in struct netdev_nl_sock from struct list_head to
+struct xarray and remove priv->lock. This simplifies the code by
+removing explicit mutex locking in netdev_nl_bind_rx_doit(),
+netdev_nl_bind_tx_doit(), and socket initialization/teardown functions.
+
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Signed-off-by: Shivaji Kant <shivajikant@google.com>
+---
+ include/net/netdev_netlink.h |  5 ++---
+ net/core/devmem.c            | 13 ++++++++++---
+ net/core/devmem.h            |  4 ++--
+ net/core/netdev-genl.c       | 25 ++++++-------------------
+ 4 files changed, 20 insertions(+), 27 deletions(-)
+
+diff --git a/include/net/netdev_netlink.h b/include/net/netdev_netlink.h
+index 075962dbe743..45a4a482d42e 100644
+--- a/include/net/netdev_netlink.h
++++ b/include/net/netdev_netlink.h
+@@ -2,11 +2,10 @@
+ #ifndef __NET_NETDEV_NETLINK_H
+ #define __NET_NETDEV_NETLINK_H
+ 
+-#include <linux/list.h>
++#include <linux/xarray.h>
+ 
+ struct netdev_nl_sock {
+-	struct mutex lock;
+-	struct list_head bindings;
++	struct xarray bindings;
+ };
+ 
+ #endif	/* __NET_NETDEV_NETLINK_H */
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index 957d6b96216b..52fda18b80ef 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -134,8 +134,8 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
+ 	 */
+ 	synchronize_net();
+ 
+-	if (binding->list.next)
+-		list_del(&binding->list);
++	if (binding->sock_priv)
++		xa_erase(&binding->sock_priv->bindings, binding->id);
+ 
+ 	xa_for_each(&binding->bound_rxqs, xa_idx, rxq) {
+ 		const struct pp_memory_provider_params mp_params = {
+@@ -193,6 +193,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 	struct dma_buf *dmabuf;
+ 	unsigned int sg_idx, i;
+ 	unsigned long virtual;
++	void *res;
+ 	int err;
+ 
+ 	if (!dma_dev) {
+@@ -325,7 +326,13 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 	if (err < 0)
+ 		goto err_free_chunks;
+ 
+-	list_add(&binding->list, &priv->bindings);
++	binding->sock_priv = priv;
++	res = xa_store(&priv->bindings, binding->id, binding, GFP_KERNEL);
++	if (xa_is_err(res)) {
++		err = xa_err(res);
++		xa_erase(&net_devmem_dmabuf_bindings, binding->id);
++		goto err_free_chunks;
++	}
+ 
+ 	return binding;
+ 
+diff --git a/net/core/devmem.h b/net/core/devmem.h
+index 3852a56036cb..bf77e5a9a8fe 100644
+--- a/net/core/devmem.h
++++ b/net/core/devmem.h
+@@ -49,10 +49,10 @@ struct net_devmem_dmabuf_binding {
+ 	 */
+ 	struct percpu_ref ref;
+ 
+-	/* The list of bindings currently active. Used for netlink to notify us
++	/* The socket priv this binding belongs to. Used for netlink to notify us
+ 	 * of the user dropping the bind.
+ 	 */
+-	struct list_head list;
++	struct netdev_nl_sock *sock_priv;
+ 
+ 	/* rxq's this binding is active on. */
+ 	struct xarray bound_rxqs;
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index c15d8d4ca1f8..d3f3a91a6d93 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -1044,13 +1044,11 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
+ 		goto err_genlmsg_free;
+ 	}
+ 
+-	mutex_lock(&priv->lock);
+-
+ 	err = 0;
+ 	netdev = netdev_get_by_index_lock(genl_info_net(info), ifindex);
+ 	if (!netdev) {
+ 		err = -ENODEV;
+-		goto err_unlock_sock;
++		goto err_genlmsg_free;
+ 	}
+ 	if (!netif_device_present(netdev))
+ 		err = -ENODEV;
+@@ -1102,8 +1100,6 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	netdev_unlock(netdev);
+ 
+-	mutex_unlock(&priv->lock);
+-
+ 	return err < 0 ? err : 0;
+ 
+ err_unbind:
+@@ -1112,8 +1108,6 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
+ 	bitmap_free(rxq_bitmap);
+ err_unlock:
+ 	netdev_unlock(netdev);
+-err_unlock_sock:
+-	mutex_unlock(&priv->lock);
+ err_genlmsg_free:
+ 	nlmsg_free(rsp);
+ 	return err;
+@@ -1185,12 +1179,10 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
+ 		goto err_genlmsg_free;
+ 	}
+ 
+-	mutex_lock(&priv->lock);
+-
+ 	netdev = netdev_get_by_index_lock(genl_info_net(info), ifindex);
+ 	if (!netdev) {
+ 		err = -ENODEV;
+-		goto err_unlock_sock;
++		goto err_genlmsg_free;
+ 	}
+ 
+ 	if (!netif_device_present(netdev)) {
+@@ -1233,7 +1225,6 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
+ 	if (bind_dev != netdev)
+ 		netdev_unlock(bind_dev);
+ 	netdev_unlock(netdev);
+-	mutex_unlock(&priv->lock);
+ 
+ 	return genlmsg_reply(rsp, info);
+ 
+@@ -1242,8 +1233,6 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
+ 		netdev_unlock(bind_dev);
+ err_unlock_netdev:
+ 	netdev_unlock(netdev);
+-err_unlock_sock:
+-	mutex_unlock(&priv->lock);
+ err_genlmsg_free:
+ 	nlmsg_free(rsp);
+ 	return err;
+@@ -1418,19 +1407,17 @@ int netdev_nl_queue_create_doit(struct sk_buff *skb, struct genl_info *info)
+ 
+ void netdev_nl_sock_priv_init(struct netdev_nl_sock *priv)
+ {
+-	INIT_LIST_HEAD(&priv->bindings);
+-	mutex_init(&priv->lock);
++	xa_init(&priv->bindings);
+ }
+ 
+ void netdev_nl_sock_priv_destroy(struct netdev_nl_sock *priv)
+ {
+ 	struct net_devmem_dmabuf_binding *binding;
+-	struct net_devmem_dmabuf_binding *temp;
+ 	netdevice_tracker dev_tracker;
+ 	struct net_device *dev;
++	unsigned long xa_idx;
+ 
+-	mutex_lock(&priv->lock);
+-	list_for_each_entry_safe(binding, temp, &priv->bindings, list) {
++	xa_for_each(&priv->bindings, xa_idx, binding) {
+ 		mutex_lock(&binding->lock);
+ 		dev = binding->dev;
+ 		if (!dev) {
+@@ -1446,7 +1433,7 @@ void netdev_nl_sock_priv_destroy(struct netdev_nl_sock *priv)
+ 		netdev_unlock(dev);
+ 		netdev_put(dev, &dev_tracker);
+ 	}
+-	mutex_unlock(&priv->lock);
++	xa_destroy(&priv->bindings);
+ }
+ 
+ static int netdev_genl_netdevice_event(struct notifier_block *nb,
+-- 
+2.55.0.654.g21b8a5bc05-goog
+
