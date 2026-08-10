@@ -1,289 +1,487 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBB93314AE
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 21:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786395632; cv=pass; b=kVByxyaTgdMmpWC5vLnn3EhT0nHJAC5GRwssorGcoPV6x0RAvMZgZJ9WW676UsMmR291WUlVScEH6Az+i0T0RH1httaleknqTT3t+e73bdCu2aGC3YGoueJAGD+jHnCZIYUwA/q9+eyNGVQocelMEKKb76z5aUzLFdKxIhK9lQo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786395632; c=relaxed/simple;
-	bh=xDyhBIlFQ2M2YwfJkbeeNRFOFm9lLHN1aGofw78q3ds=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vCPrAYEoRbgtTYqe46N0KCxXJd8eXXPf0BztorRPP17+WOxZebj7Yk5rszCdgDRxn7SmkBdat3kOp1HGhG95oy12OA7mh+G/GaR9RrtRHsm+TjEii0tHsybcOy8YVW5HQXnQsiOXmjcm3EtX+/PvMmWNqnOQDf3CfcYY8+YqmJU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Un7zEnmk; arc=pass smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D08344040
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 21:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786396334; cv=none; b=rxacTEsVUB3rVMUB0VLi2GXEBd+JxntRdYCvOUkyARa3cb1LNSAG/kqQYU3fWjKE7WWouUmbaYOS+rO16Q8d0diIVnA4ww37CnbvpFVBEAqfa7Wy75u4UDDv/f11YXiEyXZ0Q4GV2F1J0VbnHtUWiWQNtBLI5SMvwMCYN96SBH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786396334; c=relaxed/simple;
+	bh=IlogOof3xHhAko8u04TNt3nfTPXi1DVWOUNsFfXamlY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nJuHzZYb0MIT5xsEiIWiPLTy0MIiSbHwC5xMtEnWPD6WYkXxwT+lz05d/dYx+emXtOgJNsIggprvEXb6XLkp/Sp4Ex1pStaAECmZ55LB5bGATcc3pPTaVCQWXcowVjayNpd2mdb+U/5CCNhWTuTHC/OUH4eJdSZt3wXQ6l/Q20Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Td5NEsLD; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Un7zEnmk"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c01c79467so26611cf.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:00:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786395629; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ruxd3cnKwFSlb4WL+p9PZy7Otv2GoikTG7qO3usscX5pa5jJbm+nxa602uzUQ+QrKK
-         YBPUyHJkOb8Fhwy6F8KRRLrPUXAwsLP8eMXG0A9qeEFeh6WjDOb5fS9jItxcQzhay3wp
-         8MZUv2A6ahbTi2pxXC/1y/psY5iuLYJ2XUZNPC8Q0W0uw8kEf86ca2q7jS+dFh/E6ESc
-         YdoPceQJI8s5j476oRJOGhXRDGSQpouw5Xzsu+386tflfA9frzOhqfCgVN4Eqs4Lr4p0
-         pzf+T2WYCJ+fTlpa8qXiYELybZroFEhQ0jRdAzSZM1NthTzUyPrcchjO5URIkvUcflL/
-         MBYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
-        fh=nf8ux0i4Vo1tH1S1HEQjxcULSvEuVWNxEaXqmI/wHtw=;
-        b=NkAGQhRI+wMGXzAh9+oNk0G/aIPrJKAzJU772zEIN4TxmsZanKUTSQaEzfBgLUdrTs
-         iMwOclRCX6GQuBXpa22SIhPPdZXcbJTHAd+NqoF+GXCWNtskb8Z9JHtFs6ucDsCyKpQI
-         tJnMCeUW+I/QOURaB7pontRGQ6K4AZb8MiJ3waRF3Jj8QioDxJew0ewNBGVPkgIYJRRH
-         zJLjw2OY281T5RI2RqsaJBKdt66ZRhbB/++HURinlctQgWxjjnhYBPC9YTgucgvIqumR
-         sGVPcqpdo3kk+evQskshJNrbGmO0BKQsAWyZt11KL9I7F4ND2gGM74j5Q0lKbRH1KV/4
-         0Wpw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786395629; x=1787000429; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
-        b=Un7zEnmk5YirYUGcHnEBxx4y8Z0SlcvvDFiRHsNFQOFzKKhvzJ++qWgvMymzkBdrxg
-         eUUfH1TytywMYpgY2qcV/uAm2eArhatqqghrlvF9OsVigbhV8SU7vftaZElxWfKzeMjd
-         Mpc6Ery+utsEJVdYgLBtTB76l6O96Q/xqB2jnXOuL9HoceWzj1an1g2gy6om0gyv/JmZ
-         AXzeMljbNDF26QuheIHBMXuFrHnYCRovqJDp5RwLxMfopVrM5ui+n71Uf0gfm3OUIGM/
-         0XrZQnu5eROWUwzzDgPtWiRWek0qLXM1oO+vHDIdXiQ259qbw6hPE6vWFJjdNzkGqWz+
-         k60g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786395629; x=1787000429;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aeKlJo/C9IF2FWChtlIU4TSN9rzPXmzQ3Z7bbkbSSDc=;
-        b=tUoOn2E35hQyfz+xU7cK8fJt5FxaK7O6I6j/wm/m6O1T/nTJGkL+GrhSE2/zdP36rh
-         qBWLwbeHa8r0kYNhuKhLKTPd6Kh0N934x8psS9ZCyHbdelVXmJlWSXhf5o6w23hE4e3R
-         sxsb2NzdXjOuJK8sbefURyZqcJ1tHziio8HCXRjDmrdJv/X2LTXKPJ8JW29ku5/Fo8A/
-         Hm9Qjv+nLDg36e97dU5J9wgkqB2nS2hG6AgH/LVChunlgBgbRy2RhR/b/7perlolOp2P
-         4Hx1kGPCbaw8mZkkaCn5ryzeM0LYeUB8UdC71lx+cb811gu9mFUZT07rYh24weocS0Qt
-         32dA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp0/4px3aVJRlZZ4ZiZ+D5PGWDK922hryVLErwLUv/KjASUmdNWekN1dVlQkxjNdvdBDzpjYH4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwC2nu3zXtVU81SzsQGpBQYYNEJjQmuT/NOcuFe26TAJY8V/UF9
-	BqcBpphgxBpyWiEwZVYgMXtFmfmugenZxDPfqcdi67WKpE+69Y73lm76uOPYsm6QlXBX//ydrYD
-	lQY6WovPFdeW/DX5Ph+AF4f6wrw0QaAMIMDg4d0Tt
-X-Gm-Gg: AR+sD12z9s7NMRzAtf9wcnt3/0tEWr1eEGNTqwAGkZEAbni4/W1Jq2N98v73jj15SDK
-	XlsBnwM9h/GEmVzvidE5GYEHyKiAWm5HmnSl6rPHNBHDOiJ/urFAS0h+eS0SaW5xL1TCGw8TuI/
-	653LU+/0AAa9l8xQf8oI33QnmUlFbU5mEZcLLf64WTT0Cvm7aDqamNvSrin2B8+iuuWtLBcCVxE
-	cpOcKkfKUi91ditlg+3s66WWh1yoeQMV2mz9/+uvuJni5JpIpCgdqXbN+c69nfq9g/LNlKBkKZe
-	wMcg60Kfu8yHXGArGgkVj3oovtBRrc6ocMxoEc+/zMxpFz4IetzZDw==
-X-Received: by 2002:ac8:6104:0:b0:517:5e32:2d14 with SMTP id
- d75a77b69052e-52d511fb9ddmr2293481cf.10.1786395628636; Mon, 10 Aug 2026
- 14:00:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Td5NEsLD"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AK1mAX2555573;
+	Mon, 10 Aug 2026 21:11:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=l8hcVb
+	k5Gm9Jj015QPefcGbEzAg75gxxHIpny+Tgm+A=; b=Td5NEsLD3+IfnJWewTfauQ
+	8MzlCwS99YtbRB1BoqyUHLOiHugmGrq+fdBBBEwWDyCvDyP0YwCHnW+Fvxg0buAY
+	frrSUrBZMH7XxxaIpPs8CNfRj4k8EWRxULs6PMbrZhur/sDF9OALHoUXjfbu+jhq
+	YQZjNT76dfHX6/fXxiwF014j4IYPOa+labIog3xTd5n3fZWu9tj2U4hRJmP+xn+Y
+	POUMo+QP/aH+39lzdgxu2oRlDTL9GphofRsfoyH1B5iZZ+koWycPPAOpsceZ7sn8
+	rx2FRZLn9gm1pGRbQeAoooU52lSW1qn32sc6Ex/8GcSitRjtLa1wPlk6yVAZ5gkA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9a3kv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 21:11:57 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67ALBLsQ021843;
+	Mon, 10 Aug 2026 21:11:56 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxespxksq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 21:11:56 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67ALBsuC53936484
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Aug 2026 21:11:55 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A8FC558064;
+	Mon, 10 Aug 2026 21:11:54 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D385A5803F;
+	Mon, 10 Aug 2026 21:11:52 +0000 (GMT)
+Received: from [9.67.152.96] (unknown [9.67.152.96])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 10 Aug 2026 21:11:52 +0000 (GMT)
+Message-ID: <9ed6bafa-04b1-4462-91b7-035c17c158ff@linux.ibm.com>
+Date: Mon, 10 Aug 2026 14:11:52 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806200548.3124802-1-surenb@google.com> <20260806200548.3124802-3-surenb@google.com>
- <anoZL76y3WGXMArB@google.com> <CAJuCfpFCK5ycO6s+dD35YtU6zgNdivfe6P3cVnd2VxPYfGXHDQ@mail.gmail.com>
- <anojoFPijbCloUXL@google.com>
-In-Reply-To: <anojoFPijbCloUXL@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 10 Aug 2026 14:00:14 -0700
-X-Gm-Features: AUfX_mwveKCjTyY76ZUcAzzSSNA4_OUdgAUMYP4JBZHh4wah9m0LDMZjkeG4kRk
-Message-ID: <CAJuCfpGXBTRUUtCCpLPT9v1LZA6UHo0yM3y68Kwhxs7S03z+5A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
-To: Carlos Llamas <cmllamas@google.com>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, ljs@kernel.org, david@kernel.org, 
-	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
-	jannh@google.com, aliceryhl@google.com, arve@android.com, 
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 04/14] ibmveth: Refactor buffer pool
+ management for per-queue MQ RX
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, horms@kernel.org, bjking1@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, edumazet@google.com,
+        pabeni@redhat.com, davem@davemloft.net, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, simon.horman@corigine.com,
+        shaik.abdulla1@ibm.com, davemarq@linux.ibm.com
+References: <e22471625e6a04bee87f099f467d575bcfd0c2c6.1785457143.git.mmc@linux.ibm.com>
+ <20260806183702.3175208-1-kuba@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260806183702.3175208-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: uvuyZSKGZEdob86CehjXwviSKwx-LS-G
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7a3e9d cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=A_GA2y18t1HRMksttx4A:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDE3OCBTYWx0ZWRfX78oVn4Z0zRwf
+ 39g6wtcGnHdqqAhTP1iHrfiWz0+e4LSdnNBLuWRCIDkZlYoV+Okr118xfOA18e7hL5ZdjwS8liY
+ K7PNZpZ5PHYZeyttqQxiE0ibegRbdy2lso8yUXrpelGqhs1lRNAHaAM2yRDMmyulwAgLyeeN+3G
+ 68QaTCFshXmW2shr4dvQRhMuQd/Z46UshVcRKaFpaW8Mg14+ua9KNPnHtIFXtCeFU0bQjh5EpRU
+ cPmTZbVquyx6uB0S9ZlWnyC20qh+jN8yMH4ItQK8JFzwPI/PPkqWJQJU3FVZ5mwYWmSEKirUw4k
+ hW/g2Cy37PpstrCeJmoKOmKsvQLyjH3hBsoC/YLtF7N4/jBpw6sc/VxJeq1mChRzMguT21r9z+r
+ gNyPRQkwPNQI02fPprGa1PPoTnxVwzXo83ILdOUL36GMR0bzSqVwphVofLs7lopiR0BQD+zFXiD
+ NtC3IBT+djP/lLZP9Fw==
+X-Proofpoint-ORIG-GUID: 6Q3xwxTgMG-YTWeTJ7bdABI9SfpBBW5Z
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDE3OCBTYWx0ZWRfX64yDcnMBCVUW
+ SGeA3LkskVRyJb1MWilQm/hJrt8+EgBGbs4oBt2AzAmFs5+iR8a4iNWaV2sCzgBQKYws9ERdW4N
+ 1f3Wid6Q3v3WoGO/gEBbi/IQv0NObL8=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-10_05,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608100178
 
-On Mon, Aug 10, 2026 at 12:16=E2=80=AFPM Carlos Llamas <cmllamas@google.com=
-> wrote:
->
-> On Mon, Aug 10, 2026 at 11:54:04AM -0700, Suren Baghdasaryan wrote:
-> > On Mon, Aug 10, 2026 at 11:32=E2=80=AFAM Carlos Llamas <cmllamas@google=
-.com> wrote:
-> > >
-> > > On Thu, Aug 06, 2026 at 01:05:45PM -0700, Suren Baghdasaryan wrote:
-> > > > From: Dave Hansen <dave.hansen@linux.intel.com>
-> > > >
-> > > > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do bot=
-h
-> > > > it and mmap_read_trylock().
-> > > >
-> > > > Long Version:
-> > > >
-> > > > =3D=3D Background =3D=3D
-> > > >
-> > > > Historically, binder used an mmap_read_trylock() in its shrinker co=
-de.
-> > > > This ensures that reclaim is not blocked on an mmap_lock. Commit
-> > > > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-> > > > support for the per-VMA lock, but left mmap_read_trylock() as a
-> > > > fallback.
-> > > >
-> > > > This was presumably because the per-VMA locking can fail for severa=
-l
-> > > > reasons and most (all?) lock_vma_under_rcu() callers have a fallbac=
-k
-> > > > to mmap_read_trylock().
-> > > >
-> > > > =3D=3D Problem =3D=3D
-> > > >
-> > > > The fallback is not worth the complexity here. lock_vma_under_rcu()=
- is
-> > > > essentially already a non-blocking trylock. The main reason it fail=
-s
-> > > > is also the reason mmap_read_trylock() fails: something is holding
-> > > > mmap_write_lock().
-> > > >
-> > > > The only remedy for a collision with mmap_write_lock() is to wait,
-> > > > which this code can not do. So the "fallback" after
-> > > > lock_vma_under_rcu() failure is not really a fallback: it is really
-> > > > likely to just be retrying in vain. That retry in an of itself isn'=
-t
-> > > > horrible. But it adds complexity.
-> > > >
-> > > > =3D=3D Solution =3D=3D
-> > > >
-> > > > Now that per-VMA locks are universally available, lock_vma_under_rc=
-u()
-> > > > will not persistently fail. Rely on it alone and simplify the code.
-> > > > The removal of the fallback does not affect NOMMU case because bind=
-er
-> > > > driver depends on CONFIG_MMU.
-> > > >
-> > > > Full disclosure: I originally tried to do this with
-> > > > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lo=
-ck
-> > > > trylock semantics. Claude caught this in a review and suggested the
-> > > > approach in this path. It seemed sane to me. So, Suggesed-by: Claud=
-e,
-> > > > I guess.
-> > > >
-> > > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > > > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > > > Cc: linux-mm@kvack.org
-> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-> > > > Cc: Todd Kjos <tkjos@android.com>
-> > > > Cc: Christian Brauner <christian@brauner.io>
-> > > > Cc: Carlos Llamas <cmllamas@google.com>
-> > > > Cc: Alice Ryhl <aliceryhl@google.com>
-> > > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > > Cc: David Ahern <dsahern@kernel.org>
-> > > > Cc: netdev@vger.kernel.org
-> > > > ---
-> > > >  drivers/android/binder_alloc.c | 45 ++++++++++++++++--------------=
-----
-> > > >  1 file changed, 21 insertions(+), 24 deletions(-)
-> > > >
-> > > > diff --git a/drivers/android/binder_alloc.c b/drivers/android/binde=
-r_alloc.c
-> > > > index e4488ad86a65..c13a588c37de 100644
-> > > > --- a/drivers/android/binder_alloc.c
-> > > > +++ b/drivers/android/binder_alloc.c
-> > > > @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct=
- list_head *item,
-> > > >       struct vm_area_struct *vma;
-> > > >       struct page *page_to_free;
-> > > >       unsigned long page_addr;
-> > > > -     int mm_locked =3D 0;
-> > > >       size_t index;
-> > > >
-> > > >       if (!mmget_not_zero(mm))
-> > > > @@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(stru=
-ct list_head *item,
-> > > >       index =3D mdata->page_index;
-> > > >       page_addr =3D alloc->vm_start + index * PAGE_SIZE;
-> > > >
-> > > > -     /* attempt per-vma lock first */
-> > > > +     /*
-> > > > +      * Attempt per-vma lock. This is essentially a
-> > > > +      * "trylock". It can fail even if the VMA exists
-> > > > +      * for 'page_addr'.
-> > > > +      */
-> > >
-> > > Do we need to explain how lock_vma_under_rcu() works here?
-> > >
-> > > >       vma =3D lock_vma_under_rcu(mm, page_addr);
-> > > >       if (!vma) {
-> > > > -             /* fall back to mmap_lock */
-> > > > -             if (!mmap_read_trylock(mm))
-> > > > -                     goto err_mmap_read_lock_failed;
-> > > > -             mm_locked =3D 1;
-> > > > -             vma =3D vma_lookup(mm, page_addr);
-> > > > +             /*
-> > > > +              * If the vma exists, we can't continue because we ca=
-nnot
-> > > > +              * remove the page from the vma. However, if the vma =
-was
-> > > > +              * unmapped, it's okay to continue.
-> > > > +              */
-> > > > +             if (binder_alloc_is_mapped(alloc))
-> > > > +                     goto err_vma_lock_failed;
-> > >
-> > > The comments seem redundant, the label is enough. This works:
-> > >
-> > >         vma =3D lock_vma_under_rcu(mm, page_addr);
-> > >         if (!vma && binder_alloc_is_mapped(alloc))
-> > >                 goto err_vma_lock_failed;
-> >
-> > Yeah, for the binder maintainers what's happening here is probably
-> > obvious, but when Alice explained the logic to me, this comment really
-> > clarified what's going on, so I added it here. If you insist on
-> > removing it, I'll do that of course.
-> >
-> > >
-> > >
-> > > >       }
-> > > >
-> > > >       if (!mutex_trylock(&alloc->mutex))
-> > > >               goto err_get_alloc_mutex_failed;
-> > > >
-> > > > -     /*
-> > > > -      * Since a binder_alloc can only be mapped once, we ensure
-> > > > -      * the vma corresponds to this mapping by checking whether
-> > > > -      * the binder_alloc is still mapped.
-> > > > -      */
-> > > > -     if (vma && !binder_alloc_is_mapped(alloc))
-> > > > -             goto err_invalid_vma;
-> > > > -
-> > >
-> > > This introduces an "extra" change. We'll now release pages without a
-> > > valid vma (e.g. after munmap()). Before, these pages were expected to=
- be
-> > > released via close() in binder_alloc_deferred_release() later.
-> > >
-> > > I don't see anything wrong with it. However, it does seem out of the
-> > > scope of this patch which just drops the mmap_read_lock() calls. Or a=
-t
-> > > least I don't see how this part is necessary.
-> >
-> > This check came from this discussion:
-> > https://lore.kernel.org/all/anGrFIYiPhjxWSkD@google.com/
-> > It's added for consistency when handling cases where the original
-> > Binder VMA is gone.
->
-> Oh sorry I missed that thread. Yes, I agree we can reclaim these pages
-> earlier if really needed but my point is this is unrelated to the change
-> done here IMO. I couldn't figure out why that was needed.
->
-> If you are keeping that in the same commit it's probably worth adding an
-> explanation to the commit log?
 
-Ok, I'll amend the commit log with an explanation for this change.
-Are you ok with keeping the other comment, or do you want it removed?
+On 8/6/26 11:37 AM, Jakub Kicinski wrote:
+> his is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> ibmveth: Refactor buffer pool management for per-queue MQ RX
+>
+> This reworks the five RX buffer pools into per-queue arrays
+> (rx_buff_pool[queue][pool]) with new alloc/free helpers, wires those
+> helpers into ibmveth_open()/ibmveth_close(), and clones pool geometry from
+> queue 0 to queues 1..N.  It also flips the default active flag of the
+> 64 KiB pool to 0.
+>
+> A few questions below.
+Hi Jakub,
+
+Thanks for the careful read.
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index 1007dd95cde02..7a2ed49cad4f1 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+>> @@ -625,6 +625,145 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
+>>   	}
+>>   }
+>>   
+>> +/**
+>> + * ibmveth_alloc_queue_buffer_pools - Allocate buffer pools for a single queue
+>> + * @adapter: ibmveth adapter structure
+>> + * @queue: queue index
+>> + *
+>> + * Allocates all active buffer pools for the specified queue.
+>> + * Pool metadata must be initialized before calling this function.
+>> + *
+>> + * Return: 0 on success, negative error code on failure
+>> + */
+>> +static int ibmveth_alloc_queue_buffer_pools(struct ibmveth_adapter *adapter,
+>> +					    int queue)
+>> +{
+>> +	struct net_device *netdev = adapter->netdev;
+>> +	int i;
+>> +
+>> +	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+>> +		struct ibmveth_buff_pool *bpool =
+>> +			&adapter->rx_buff_pool[queue][i];
+>> +
+>> +		if (!bpool->active)
+>> +			continue;
+>> +
+>> +		if (ibmveth_alloc_buffer_pool(bpool)) {
+>> +			netdev_err(netdev,
+>> +				   "pool %d/%d alloc failed (size=%u count=%u)\n",
+>> +				   i, queue,
+>> +				   bpool->buff_size,
+>> +				   bpool->size);
+>> +			bpool->active = 0;
+>> +
+>> +			/* Free pools allocated so far for this queue */
+>> +			while (--i >= 0) {
+>> +				struct ibmveth_buff_pool *fpool =
+>> +					&adapter->rx_buff_pool[queue][i];
+>> +
+>> +				if (fpool->active)
+>> +					ibmveth_free_buffer_pool(adapter,
+>> +								 fpool);
+>> +			}
+> [Severity: Low]
+>
+> Is the free predicate here meant to differ from the one used by the sibling
+> helper added in the same patch?
+>
+> This unwind path keys off fpool->active, while
+> ibmveth_free_queue_buffer_pools() deliberately frees by allocation
+> presence:
+>
+> 	if (pool->free_map || pool->dma_addr || pool->skbuff)
+> 		ibmveth_free_buffer_pool(adapter, pool);
+>
+> and the changelog states "free paths release by real allocations
+> (free_map/dma_addr/skbuff), not only pool->active".
+>
+> So on the queue that fails, a pool holding allocations with active == 0 is
+> never released, which is exactly the case the allocation-based predicate
+> was added for.  Since a failing ndo_open means ibmveth_close() is never
+> called, would those free_map/dma_addr/skbuff arrays be leaked?
+>
+> ibmveth_free_buffer_pool() already NULLs all three pointers and is
+> idempotent, so could the unwind just call ibmveth_free_queue_buffer_pools()
+> on the same queue (or use the same predicate)?  The same helper is reused
+> by the incremental resize path later in the series, where pools can hold
+> memory while active is clear.
+Agreed. That unwind is wrong because allocation state and `active` can
+diverge on the failure path.  I will make the failure unwind match
+`ibmveth_free_queue_buffer_pools()` by freeing on allocation presence
+rather than `active`, so partially allocated pools are not skipped just
+because `active` was cleared early.
+>> +			return -ENOMEM;
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +/**
+>> + * ibmveth_free_queue_buffer_pools - Free buffer pools for a single queue
+>> + * @adapter: ibmveth adapter structure
+>> + * @queue: queue index
+>> + *
+>> + * Frees all active buffer pools for the specified queue.
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+>
+> [Severity: Low]
+>
+> The kernel-doc summary says "all active buffer pools", but the body
+> intentionally ignores the active flag and frees on allocation presence, and
+> the in-body comment says the opposite of the summary.  Could the summary be
+> reworded to say pools that have allocations?  Later MQ patches reuse this
+> helper and depend on that distinction.
+Agreed. I will update the kerneldoc to match the actual
+allocation-presence free rule.
+>> + */
+>> +static void ibmveth_free_queue_buffer_pools(struct ibmveth_adapter *adapter,
+>> +					    int queue)
+>> +{
+>> +	int i;
+>> +
+>> +	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+>> +		struct ibmveth_buff_pool *pool =
+>> +			&adapter->rx_buff_pool[queue][i];
+>> +
+>> +		/* Free pool if it has allocated memory, regardless of
+>> +		 * active flag. Pools may have memory allocated but not
+>> +		 * marked active during queue scale-up, so we must check
+>> +		 * for actual allocations.
+>> +		 */
+>> +		if (pool->free_map || pool->dma_addr || pool->skbuff)
+>> +			ibmveth_free_buffer_pool(adapter, pool);
+>> +	}
+>> +}
+>> +
+> [ ... ]
+>
+>> +static int
+>> +ibmveth_alloc_buffer_pools(struct ibmveth_adapter *adapter)
+>> +{
+>> +	struct net_device *netdev = adapter->netdev;
+>> +	int i, q, rc;
+>> +
+>> +	/* Initialize pool metadata for queues 1-15 from queue 0 settings */
+>                                              ^^^^^^^^^^
+>
+> [Severity: Low]
+>
+> IBMVETH_MAX_RX_QUEUES is 1U at this commit, so queues 1-15 do not exist yet
+> and this loop body cannot run.  Should the comment say "queues 1..N" until
+> the bound is raised later in the series?
+Agreed. I will make that comment generic rather than hard-coding a queue
+range.
+>> +	for (q = 1; q < adapter->num_rx_queues; q++) {
+>> +		for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+>> +			struct ibmveth_buff_pool *src =
+>> +				&adapter->rx_buff_pool[0][i];
+>> +			struct ibmveth_buff_pool *dst =
+>> +				&adapter->rx_buff_pool[q][i];
+>> +
+>> +			dst->size = src->size;
+>> +			dst->index = src->index;
+>> +			dst->buff_size = src->buff_size;
+>> +			dst->threshold = src->threshold;
+>> +			dst->active = src->active;
+>> +		}
+>> +	}
+> [Severity: Low]
+>
+> This turns the per-pool sysfs knobs into a per-queue template.  Is that
+> intended to stay undocumented?
+>
+> Only queue 0 gets sysfs objects, in ibmveth_probe():
+>
+> 	struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
+> 	...
+> 	error = kobject_init_and_add(kobj, &ktype_veth_pool, &dev->dev.kobj,
+> 				     "pool%d", i);
+>
+> and veth_pool_show()/veth_pool_store() read and write that single instance.
+> After this change the queue-0 values are cloned above and each queue
+> allocates its own copy, so writing num = 4096 to one pool multiplies the
+> real allocation by adapter->num_rx_queues while sysfs still reports the
+> single-queue value.
+>
+> The multiplier is 1 everywhere in this series (IBMVETH_DEFAULT_RX_QUEUES is
+> 1), so nothing changes today.  Should these knobs stay adapter-wide (counts
+> divided across queues), gain per-queue nodes, or should the multiplier be
+> documented?
+For this series, queue 0's pool sysfs nodes remain the shared
+configuration/template interface: they define the pool geometry copied
+into each RX queue rather than queue-0-only state. Later in the series I
+add debugfs visibility for per-queue runtime information, but not
+separate per-queue pool sysfs controls. I will make that split explicit
+in the patch and cover letter so the multiplier effect is documented
+rather than implicit.
+>> +
+>> +	/* Allocate actual buffers for all queues */
+>> +	for (q = 0; q < adapter->num_rx_queues; q++) {
+>> +		rc = ibmveth_alloc_queue_buffer_pools(adapter, q);
+>> +		if (rc) {
+>> +			/* Free pools for all previous queues */
+>> +			while (--q >= 0)
+>> +				ibmveth_free_queue_buffer_pools(adapter, q);
+>> +			return rc;
+>> +		}
+>> +	}
+>> +
+>> +	netdev_dbg(netdev, "allocated buffer pools for %d queue(s)\n",
+>> +		   adapter->num_rx_queues);
+>> +	return 0;
+>> +}
+>> +
+> [ ... ]
+>
+>> @@ -927,14 +1055,10 @@ static int ibmveth_close(struct net_device *netdev)
+>>   
+>>   	ibmveth_update_rx_no_buffer(adapter);
+>>   
+>> +	ibmveth_free_buffer_pools(adapter);
+>>   	ibmveth_cleanup_rx_resources(adapter);
+>>   	ibmveth_free_filter_list(adapter);
+>>   
+>> -	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+>> -		if (adapter->rx_buff_pool[0][i].active)
+>> -			ibmveth_free_buffer_pool(adapter,
+>> -						 &adapter->rx_buff_pool[0][i]);
+>> -
+> [Severity: Low]
+>
+> The teardown order changed here, which the changelog does not mention (it
+> only says the helpers are wired into open()/close()).
+>
+> Baseline:
+>
+> 	ibmveth_update_rx_no_buffer()
+> 	ibmveth_cleanup_rx_resources()
+> 	ibmveth_free_filter_list()
+> 	free active pools
+>
+> New:
+>
+> 	ibmveth_update_rx_no_buffer()
+> 	ibmveth_free_buffer_pools()
+> 	ibmveth_cleanup_rx_resources()
+> 	ibmveth_free_filter_list()
+>
+> h_free_logical_lan(), napi_disable() and free_irq() have all run by this
+> point, so neither PHYP nor NAPI still references the pool buffers or the RX
+> queue, and the swap looks safe.  Could the reorder be called out in the
+> changelog, since a future per-queue drain may need the RX completion queue
+> still present while pools are released?
+Agreed. The reorder looks safe in the current shutdown path, since LAN
+teardown, NAPI shutdown, and IRQ teardown have already happened by then,
+but it is still a real teardown-sequencing change. I will call that out
+in the changelog, especially since later per-queue drain/free ordering
+may care whether the RX completion queue is still present when pools are
+released.
+>>   	for (i = 0; i < netdev->real_num_tx_queues; i++)
+>>   		ibmveth_free_tx_ltb(adapter, i);
+>>   
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+>> index 8eaa3942fc40b..abcd4054c67e2 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.h
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+>> @@ -265,7 +265,7 @@ static inline long h_illan_attributes(unsigned long unit_address,
+>>   static int pool_size[] = { 512, 1024 * 2, 1024 * 16, 1024 * 32, 1024 * 64 };
+>>   static int pool_count[] = { 256, 512, 256, 256, 256 };
+>>   static int pool_count_cmo[] = { 256, 512, 256, 256, 64 };
+>> -static int pool_active[] = { 1, 1, 0, 0, 1};
+>> +static int pool_active[] = { 1, 1, 0, 0, 0};
+>                                            ^^^
+>
+> [Severity: High]
+>
+> Does this drop large-receive support for existing single-queue users?
+>
+> Pools 2 (16 KiB) and 3 (32 KiB) are already inactive by default, so with
+> the 64 KiB pool off the largest buffer ever posted at MTU 1500 becomes
+> 2048 bytes.  ibmveth_probe() seeds each pool from this array:
+>
+> 	ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
+> 				 pool_count[i], pool_size[i], pool_active[i]);
+>
+> and the new helper skips inactive pools, so nothing larger is handed to
+> PHYP:
+>
+> 	if (!bpool->active)
+> 		continue;
+>
+> ibmveth_poll() does receive hypervisor-aggregated frames longer than the
+> MTU:
+>
+> 	if ((length > netdev->mtu + ETH_HLEN) || lrg_pkt ||
+> 	    iph_check == 0xffff) {
+> 		ibmveth_rx_mss_helper(skb, mss, lrg_pkt);
+> 		adapter->rx_large_packets++;
+> 	}
+>
+> Those arrive as single non-scatter buffers, and TSO/large-send is enabled
+> by default in ibmveth_probe() when firmware reports
+> IBMVETH_ILLAN_LRG_SND_SUPPORT.  With no buffer larger than 2 KiB posted,
+> are such frames simply dropped by PHYP and counted in the no-buffer counter
+> read by ibmveth_update_rx_no_buffer()?
+Agreed. With the default RX queue count still at 1, disabling the 64
+KiB pool here changes the historical single-queue default rather than
+only reducing future MQ memory use. That makes any large-receive
+dependency on the 64 KiB pool a regression risk for existing
+single-queue users, not just an MQ tuning choice.
 
 >
-> --
-> Carlos Llamas
+> The changelog says:
+>
+>      "MTU changes activate it when required; leaving it enabled would pin
+>      about 16 MiB per RX queue in MQ mode."
+>
+> Is the first half accurate?  ibmveth_change_mtu() activates pools only up
+> to the first pool whose buff_size covers the new MTU:
+>
+> 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+> 		adapter->rx_buff_pool[0][i].active = 1;
+> 		if (new_mtu_oh <= adapter->rx_buff_pool[0][i].buff_size) {
+> 			...
+> 			return 0;
+> 		}
+> 	}
+>
+> At MTU 1500 that stops at the 2 KiB pool, so the 64 KiB pool is never
+> re-enabled; ibmveth_set_tso() does not touch pool->active either.  Recovery
+> then requires a manual write to pool4/active in sysfs.
+You are right that the changelog claim about MTU changes re-enabling it
+was not accurate for the MTU 1500 case: `ibmveth_change_mtu()` stops
+once the first pool covers the MTU, so pool 4 does not come back
+automatically there.
+>
+> The second half describes MQ, but IBMVETH_DEFAULT_RX_QUEUES is 1 both at
+> this commit and at the end of the series (a3781f4ae789 still has
+> pool_active[] = { 1, 1, 0, 0, 0}), so the only configurations affected are
+> today's single-queue ones.  Would it be better to keep the default at 1 and
+> scale the 64 KiB count (or deactivate it) when RX queues are actually
+> scaled up?
+Yes. If MQ memory pressure still needs separate handling, that should be
+done only when RX queues are actually scaled up, not by changing the
+single-queue default.
+>
+> Note also that commit cd7c7ec3687986 ("ibmveth: change rx buffer default
+> allocation for CMO") enabled this pool on purpose and added
+> pool_count_cmo[] = { 256, 512, 256, 256, 64 } specifically to reduce the
+> 64 KiB count under CMO, which suggests the default was deliberate.
+>
+> As a side effect, ibmveth_get_desired_dma() sums only active pools:
+>
+> 	if (adapter->rx_buff_pool[0][i].active)
+> 		ret += adapter->rx_buff_pool[0][i].size *
+> 		       IOMMU_PAGE_ALIGN(adapter->rx_buff_pool[0][i].buff_size,
+> 					tbl);
+>
+> so does the CMO entitlement the driver requests shrink silently as well?
+Yes. Because desired DMA is summed only over active pools, disabling the
+
+64 KiB pool here also shrinks the requested CMO footprint....
+
+and the earlier CMO change also suggests the 64 KiB default was
+
+intentional rather than incidental.
+
+In v5 I will restore the default pool activation so the 64 KiB pool
+remains enabled in the normal single-queue baseline.
+
+Thanks again for the careful review,
+Mingming
+
+>>   
+>>   #define IBM_VETH_INVALID_MAP ((u16)0xffff)
