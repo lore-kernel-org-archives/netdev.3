@@ -1,181 +1,275 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E77443B3EE
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 19:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786390791; cv=pass; b=THmXn4BRVWH8lHfpCUoLNIYPYB+zy8fLEnNA4ItuXx5rDp3YQhWb6dJpjIBB92IKc3tqTTccd6ajS4bz0lFBC5lxrPKmO9GJRg1YLb1CX9tof+njdOWl+BhmJEHWBLeZwu4MegwC2Z7W5AQ0d4tzUP6do6YOpCapRx2jYfDfO/k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786390791; c=relaxed/simple;
-	bh=zhdQS7XPp9VZ1H76Y4geotDJLYL3RmF7weVlppNeOig=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U65XXJKWhc/D5dIAyLru1Op2f0r5cb13+ImmYoy/dDhCUVDbzNMcvXgF1FNww+Q4L8Ck1xXN4JfirJLFBCAEDiwv1ZkiD40uMRAIC5VWyWcfce4dwnQI/poMaI48Ee1o4GCZtkCbxg3ZCgi6lJCJx2Sdxr1/lAG5IfvtVfsSwnI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IsXm14BA; arc=pass smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2472B44237A
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 19:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786390834; cv=none; b=TZZcw2Wqlp9o2gHk0S7vD/lHGqLFRewj5eQIpSQOSjbYNXvDGFN4zisUoT7YAGbuSrWzATztMFwK5V4dP5UvNM/vCE1Ptd/sDAadLSSI8fMmt55w49WnjJu2qIZVksmndshBk/kGfnoZaM+oeeV9Hxr47bBqCNGgUVRs2Xqp3j0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786390834; c=relaxed/simple;
+	bh=DjQes21fwRAXgPVXccX0a1axS0lr/xS6VVRJL/Caels=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H+79sOkUIR/7AlcVVklY15VDW9eSH/4xC4qawcDTLitiBvs3F3PyTtccvWLyFW3IxmO+MYaQRc9ZeG1aB6EjiggL4qapM9UDLml66c9+mzDzT6uHQO4Km8jez3XqaiNaQU3JqEbPjfyljwlNKnYxZuFibTo9oSbnIzaWrQtFjss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cLh9VD8y; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IsXm14BA"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ccdf36f63dso1545ad.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 12:39:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786390789; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xo6fMtPu7grDlyRUjMpt2oDndA6rxudwPY56AmXzp70ZI6nCKa/V4+iAnkwQbtrbBz
-         FBkwV0odjs5kxUX1M/Xh70QxFeH5ULbb8fzOSSQOxZUWFYyhFQ9tJ0UoMsxe9TKzD+zh
-         0z8IAsrpdNxqQnDyJ7mSLBPdbgY5Joizbms3J1DqESi+itrzSnlSuvNWvhanwQNftV7o
-         Hxmq5zGJrdS009oHkzd9MOmHfKXzW3u1rQOqOy+mnNX8x9vHgyaSltphcZXwDbo4878A
-         vGLT8dnBxYT2B+rh4inl7y5dx9xyH09maXW7ZDVGMaXNCLp5tAV/ZbBP/bNRLz76f1Dw
-         Km2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SkZ+v/6uQewpz8xhjKmBT4IBABIllan0Fgft5e2M+G4=;
-        fh=/mWY6iOvXeiXSjfPff5WzqpHpkxo4CEemXSdc02n0BY=;
-        b=lg3cspgfOw+M1eRcW/ZN/OVxsz/wmj9iqjEF2AaDUjK67sAWEEgc7t6ul9S0POHpFt
-         laDlr5RPO74p/Nnwr0te5GtLZm6SD7xWvEjwnUT/+dJpX7urM2V2+4ZyjE4qf6k0ejOL
-         AQ7jfF0s/ETQpyusWmVXk/9Eo1GYYhZQeU8JkEkbBLndk8UyvFKbaiyY4nquj8FeX9KB
-         d26JvtYJ+WWek32X7zPk0r5L4SM4X1YE0VnwjFfYx0SyGVnPAsPkdvQts/W8x7SsjZh2
-         X4eXAI1p1Y8sGHzdnMeNLOhRRj/ch1egdd8lRCJssmYawuXhk2vlDDQtJgGcyaL4Es0y
-         s48w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786390789; x=1786995589; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SkZ+v/6uQewpz8xhjKmBT4IBABIllan0Fgft5e2M+G4=;
-        b=IsXm14BAoe3o2HIJeU3bv/oHdoCbMEhDw0tGvQXBaMZyJW8NR680uwGRwJ9/Yn43WN
-         DiN8M/30L/A6BanGQuVHM+XBVTFe+ywHAWqYy0sATvJiYyburNRyDLKwUo98c3gLFBN/
-         XKqWYz5d14/mtvOvBDNv97JPLj4vgUNUKEHMDBKFvYOAPZlcLYZTUR05jzbm45/Upqpb
-         lMJIu7CWu3L6MprkFf7AezQaotOp+s//duKmjSsZeC1ZJhTTwbmgsnEzOHzRIxt4LEWp
-         zgmHqfECZObJpvfObeCcXQNkOo1dYYkmQ+BazPg5AXwHUD7J1Aqwf7iiz45HIjkWscYj
-         o64g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786390789; x=1786995589;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SkZ+v/6uQewpz8xhjKmBT4IBABIllan0Fgft5e2M+G4=;
-        b=ByinkGINbmwNWFsoz1jIgyA8cFD+wDxdb4VfnFc4XaX0ZSjHLasDm+rwh7hzAlSUyq
-         ES3huSJTsug0UxwUQy1DsM5IGg1soOK1QHq06dvlL0qtTizypN8krQa/OG+NxpC0h/6M
-         86UrjUJo28Zjcs4m27dsZU6mDb1oFxWp+uYBWfPDpARRd9sFuv3dUud9TH1Z+IMyGSqd
-         W5jWqw76plS8m8q8xWVGjUVihJ/fTtl/BrUqJHWoPrc8TE/RJ731kK1jjaW8Ji87niMm
-         RMCpIl8Dj4YSibwT3gzN85zxaBwT+Fi6DcXR52dTEk4Ep1DU75QBcdNMwyTMRZhre+2Z
-         bDwg==
-X-Gm-Message-State: AOJu0YxBNidFIGDQrAPYVvH3pey+sZOK6mhjW5MByWOJl/z2uArwTeAr
-	7Z0uh5z/NxLoqeqhbo+HAo7NVDVIkI8cmw8pR1RR0zfueLFF50ZPjlOGGeFo1+nWpzMocCLUvru
-	nvZ6/XR89AA5k6D2MXdka/3TYQVO1SnNl7zEqwzkS
-X-Gm-Gg: AR+sD116teGPMqo2pKV0G0Txcyqqvlp63L+jyAti5gBrhEIQdKKMczI/kWqz2GWG3k5
-	MuuSG4VxO1dT9wKFA4hvQxHqYGBJwJpLe4j+LPwGYtx10aVuV3PYZv+FHLgEj4whKL/NEGydd5v
-	dDNQrF609GmxZ+J9bhC0DmdJ9X/RASgMleWC+YsJlOoBRhcdx5QTukxIsqNM9TXJahMCWJAaNGk
-	a7TS1h48RuVhD6aloF7r6oCUamky5wyoAJTMIGi+gY/hpcSLGuPHrnPlNq6FMD2vVV52Agvv+pi
-	zam+dlrYJmwd0SYEoj55sNVhK/H36Sp3VZFygX8GSg3ZaJwkXc/bj75j+XTxhTTLja+41Hincaj
-	MpNxFhTHsaA==
-X-Received: by 2002:a17:903:19c3:b0:2ca:e0ff:eaa0 with SMTP id
- d9443c01a7336-2d310480f06mr2350435ad.2.1786390788188; Mon, 10 Aug 2026
- 12:39:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cLh9VD8y"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AJ2RgV614215;
+	Mon, 10 Aug 2026 19:40:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=EiK8Nc
+	/8g9e5BOlFq1LqBdc5Znsmifsx/YVK5cFDjTk=; b=cLh9VD8y7khfvZlmolAg8I
+	fBCt75i3MoTvGzb/W6MoXcDiPGVkTqi/AUFP5rT5eyMwdkstyDyTKNC8gNZH+3Nn
+	lrjwKHnnvt6s9cvbMw6hSosM12tCdj4r51X0Q2gjfm7hC1sXCtf1xEl0wRHeSaNc
+	ftD9Exx0Ac3y6jpCC+ZOis1ie11TYJwElzPFl7KsUy6nPslqLqIrav/Ey9F8wBNs
+	SUnSNAnnPqne399JS1UpaA5NT3FTEzKmeK+WUQDnqahNKRQZ2s7rlZ65fAVGl2Ol
+	Yt9J/+p8rBhkZwxC/FW6EUVHeEmDHUlw/SBfm5aukWrI3sakLD99ZZbSj5UTY9Hg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvjyssqq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 19:40:08 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67AJQEHh031272;
+	Mon, 10 Aug 2026 19:40:08 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxespxbea-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 19:40:08 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67AJe72C65929722
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Aug 2026 19:40:07 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E04B45806A;
+	Mon, 10 Aug 2026 19:40:06 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9D83258059;
+	Mon, 10 Aug 2026 19:40:04 +0000 (GMT)
+Received: from [9.67.152.96] (unknown [9.67.152.96])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 10 Aug 2026 19:40:04 +0000 (GMT)
+Message-ID: <5876f9ca-11cd-4184-b998-1415c4273b2e@linux.ibm.com>
+Date: Mon, 10 Aug 2026 12:40:03 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260810180956.2348280-1-almasrymina@google.com> <eea5d4c1-af06-4210-b7ac-b783dc44a819@ovn.org>
-In-Reply-To: <eea5d4c1-af06-4210-b7ac-b783dc44a819@ovn.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 10 Aug 2026 12:39:33 -0700
-X-Gm-Features: AUfX_mzVVWg6LNEjY9uq1pS9xgYMCNK6qwbmNzBSX2Zyn2zqzRODYppEujF76Ag
-Message-ID: <CAHS8izMYMurSBRmyZhE9U12YC1vgRHj4X2Q2PfAwh1anKB4OAQ@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] net: core: propagate unreadable flag in skb_zerocopy
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, dev@openvswitch.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
-	Jason Xing <kerneljasonxing@gmail.com>, Pavel Begunkov <asml.silence@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
-	Florian Westphal <fw@strlen.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Aug 10, 2026 at 11:55=E2=80=AFAM Ilya Maximets <i.maximets@ovn.org>=
- wrote:
->
-> On 8/10/26 8:09 PM, Mina Almasry wrote:
-> > skb_zerocopy() fails to propagate the unreadable flag when copying
-> > devmem fragments, causing target skbs to appear as readable memory.
-> >
-> > This patch fixes the flag propagation. Additionally, it returns -EFAULT
-> > if standard payload is mixed with unreadable devmem fragments during
-> > extraction, and clamps unreadable skb lengths in openvswitch
-> > queue_userspace_packet() to avert truncated invalid payloads.
-> >
-> > Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
-> > Cc: Pavel Begunkov <asml.silence@gmail.com>
-> > Cc: Stanislav Fomichev <sdf@fomichev.me>
-> > Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
-> > Cc: Florian Westphal <fw@strlen.de>
-> > Cc: Aaron Conole <aconole@redhat.com>
-> > Cc: Eelco Chaudron <echaudro@redhat.com>
-> > Cc: Ilya Maximets <i.maximets@ovn.org>
-> > Signed-off-by: Mina Almasry <almasrymina@google.com>
-> > Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-> >
-> > ---
-> > v2:
-> > - Return -EFAULT when mixing unreadable and readable frags (Pavel).
-> > - Clamp unreadable skb lengths for openvswitch queue drops (sashiko).
-> > v1: https://lore.kernel.org/r/20260801125308.1342897-1-almasrymina@goog=
-le.com
-> >
-> > Openvswitch maintainers: PTAL at the openvswitch changes closely. They
-> > are reported by sashiko as an also-need part of this fix:
-> > https://sashiko.dev/#/patchset/20260706155219.23757-1-fw%40strlen.de
->
-> Hmm.  FWIW, I do not see anything about openvswitch at that page.
->
-> > diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-> > index ae69b2cabab9e..7c663d7846174 100644
-> > --- a/net/openvswitch/datapath.c
-> > +++ b/net/openvswitch/datapath.c
-> > @@ -480,6 +480,8 @@ static int queue_userspace_packet(struct datapath *=
-dp, struct sk_buff *skb,
-> >       }
-> >
-> >       skb_len =3D min(skb->len, cutlen);
-> > +     if (!skb_frags_readable(skb))
-> > +             skb_len =3D min_t(size_t, skb_len, skb_headlen(skb));
->
-> I'm not very familiar with the devmem and the unreadable frags, but if
-> there is really no way to read 'skb_len' bytes of the packet, it must not
-> be delivered to userspace.  Delivering truncated packet will confuse
-> ovs-vswitchd and the packet will be dropped or delivered truncated to the
-> destination.  We should return something like -EFAULT here and the caller
-> will drop the packet (MISS upcall) or continue processing if the failure
-> is not fatal (ACTION upcall).
->
-> This practically makes devmem incompatible with OVS, I suppose, as upcall=
-s
-> are the primary mechanism for initial packet processing, before the datap=
-ath
-> flows are installed.
->
-> If there is a way to read this memory, we should make a full copy here.
-
-There is indeed 'no way' to read this memory. That's the short version
-at least. The long version is that they can read it on the GPU but
-this requires the userspace/caller to understand it's in the GPU.
-
-OK, sounds like the right thing to do is return -EFAULT here. In the
-future someone may see value in making openvswitch unreadable skb
-compatible I guess.
-
-I'll rev after 24hrs, and see if there is any other feedback.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 02/14] ibmveth: Prepare MQ RX adapter data
+ structures
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, horms@kernel.org, bjking1@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, edumazet@google.com,
+        pabeni@redhat.com, davem@davemloft.net, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, simon.horman@corigine.com,
+        shaik.abdulla1@ibm.com, davemarq@linux.ibm.com
+References: <5aceac43fd2da5d06bee7aba36e2983e1a7bc007.1785457143.git.mmc@linux.ibm.com>
+ <20260806183659.3175041-1-kuba@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260806183659.3175041-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDE2NiBTYWx0ZWRfX0CgBzmajG4k2
+ ophgHpWx+QNHdzw9FhaiACNr6tKTp+xCy5HCYZTemq6cuhBwE2a43E6MWMv3vFLfoWVci4Vyv1d
+ BzeiqnCURdNbwtFJ7tuh6ZLF8gt3z2ewZlI1lqJhz7WnIzc+GRYoHgHb+E5e1e52P47joa2N3St
+ 4wWHRhtKT1XHvfh0tm8WN922RLimOtRJMq5MIXod0wiU1nMP/HWrGZVHlP3lVBBi9Oqta/yULtb
+ cuVzpb7wBEZ+XWEWi2EtXMFmmNGUc335zL3FiRTrwiSRyAmSpv4ENQuWxwIkgFkYerad0clgI77
+ S5XqLii5K+ycnKgelDcJ0GYzdvd/nFvYvdMn7GF1qqFYtclChzFhJs1IDgRUrv9CneWMfWnNp1f
+ aNxYMsUZpF3Kmi4K9XIHqDcoXH/MyjY5p5roMcIhC+1EG1mbeu0wv0WrRhsYPCsbmlVSlDNIkFp
+ 2koXRBry6SUBY9HBVzw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDE2NiBTYWx0ZWRfX4t1Td4vTlY+S
+ 7s1W2YAZO+g2OlrirwmWyXxez6ft2Ne94j2izP1aRa1tSOppcXHNCFqWjx1XVBZp871ibiEviST
+ ubwWqi94LShEiur3Lfy999g1IN4dSPQ=
+X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a7a2919 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=TVwaTaYQaYbKLQx6PuUA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: vF8oThFOY9hjVpfRMMigIGkGMzKJylAN
+X-Proofpoint-ORIG-GUID: nFn7Hny7cgJYZh4OcozixbeIZv9S2Q9s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-10_05,2026-08-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608100166
 
 
---=20
-Thanks,
-Mina
+On 8/6/26 11:36 AM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> ibmveth: Prepare MQ RX adapter data structures
+>
+> This converts the single-instance RX state in struct ibmveth_adapter
+> (napi, rx_queue, buffer_list_addr/dma, rx_buff_pool) into queue-indexed
+> arrays sized by the new IBMVETH_MAX_RX_QUEUES, adds multi_queue and
+> num_rx_queues, and mechanically rewrites all existing references to
+> index 0.  IBMVETH_MAX_RX_QUEUES stays at 1 in this patch.
+>
+> A couple of observations below, neither of which changes runtime
+> behaviour today.
+Hi Jakub,
+
+Thanks for the notes.
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index 73e051d26b9d8..8e758362cb263 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
+>
+>> @@ -482,42 +486,44 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+>>   	mb();
+>>   
+>> -	atomic_dec(&(adapter->rx_buff_pool[pool].available));
+>> +	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
+>>   
+>>   	return 0;
+>>   }
+>>   
+>>   /* get the current buffer on the rx queue */
+>> -static inline struct sk_buff *ibmveth_rxq_get_buffer(struct ibmveth_adapter *adapter)
+>> +static inline struct sk_buff *
+>> +ibmveth_rxq_get_buffer(struct ibmveth_adapter *adapter)
+> [Severity: Low]
+> This isn't a bug, but the patch carries a few edits that are not part of
+> the stated mechanical index-0 conversion:
+>
+>    - dropping the redundant parentheses in the atomic_dec() call in
+>      ibmveth_remove_buffer_from_pool()
+>    - reflowing the ibmveth_rxq_get_buffer() prototype
+>    - rewriting the kernel-doc of ibmveth_get_desired_dma() from
+>      "Return value:" to "Return:"
+>    - inserting a blank line in struct ibmveth_adapter after
+>      rx_large_packets
+>
+> The commit message says:
+>
+>      This patch keeps behavior unchanged by mechanically switching existing
+>      references to index 0
+>
+> Could these cosmetic edits move to a separate cleanup patch, or be
+> mentioned in the changelog?  As it stands each hunk has to first be
+> classified as conversion or cleanup before the "behavior unchanged" claim
+> can be confirmed.
+>
+> [ ... ]
+Agreed. Those edits are not part of the stated index-0 conversion, so
+for v5 I will drop them from patch 2. If they are still worth doing, I
+can send them later as a separate cleanup patch.
+
+>> @@ -1693,8 +1704,7 @@ static void ibmveth_poll_controller(struct net_device *dev)
+>>    *
+>>    * @vdev: struct vio_dev for the device whose desired IO mem is to be returned
+>>    *
+>> - * Return value:
+>> - *	Number of bytes of IO data the driver will need to perform well.
+>> + * Return: Number of bytes of IO data the driver will need to perform well.
+>>    */
+>>   static unsigned long ibmveth_get_desired_dma(struct vio_dev *vdev)
+>>   {
+> [ ... ]
+>
+>> @@ -1898,10 +1912,10 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>>   		memcpy(pool_count, pool_count_cmo, sizeof(pool_count));
+>>   
+>>   	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+>> -		struct kobject *kobj = &adapter->rx_buff_pool[i].kobj;
+>> +		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
+>>   		int error;
+>>   
+>> -		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
+>> +		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
+>>   					 pool_count[i], pool_size[i],
+>>   					 pool_active[i]);
+>>   		error = kobject_init_and_add(kobj, &ktype_veth_pool,
+> [ ... ]
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+>> index c88dbeb7cd967..8eaa3942fc40b 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.h
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+> [ ... ]
+>
+>> @@ -294,18 +296,23 @@ struct ibmveth_rx_q {
+>> -	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+>> -	struct ibmveth_rx_q rx_queue;
+>> +	struct ibmveth_buff_pool
+>> +		rx_buff_pool[IBMVETH_MAX_RX_QUEUES][IBMVETH_NUM_BUFF_POOLS];
+>> +	struct ibmveth_rx_q rx_queue[IBMVETH_MAX_RX_QUEUES];
+> [Severity: Low]
+> Is replicating the whole struct ibmveth_buff_pool per queue the layout you
+> want here?
+>
+> struct ibmveth_buff_pool embeds a struct kobject, which is the per-pool
+> sysfs tuning object.  Only row 0's kobjects are ever initialized and
+> registered, in ibmveth_probe():
+>
+> 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+> 		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
+> 		...
+> 		error = kobject_init_and_add(kobj, &ktype_veth_pool,
+> 					     &dev->dev.kobj, "pool%d", i);
+>
+> and only row 0's are dropped, in ibmveth_remove():
+>
+> 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+> 		kobject_put(&adapter->rx_buff_pool[0][i].kobj);
+>
+> So every row above 0 carries a kobject that is never initialized and never
+> used.
+
+Correct. Only row 0's pool kobjects are initialized; rows 1..N-1 carry
+unused embedded kobjects in the current layout.
+
+>
+> Later in the series IBMVETH_MAX_RX_QUEUES is raised to 16U, at which point
+> the netdev private area unconditionally holds 16 x 5 pool structs
+> regardless of num_rx_queues, of which 75 embedded kobjects are dead
+> weight.
+>
+> The follow-on code also shows that only part of the struct is really
+> per-queue: ibmveth_alloc_single_rx_queue() copies size, index, buff_size,
+> threshold and active from row 0 into each new row, so the pool
+> configuration is shared while free_map/dma_addr/skbuff/producer_index/
+> consumer_index/available are the genuinely per-queue state.
+Only part of ibmveth_buff_pool is truly per-queue; the sysfs-visible
+tuning fields are effectively shared in this series.
+> Would it be cleaner to split the struct into one shared, sysfs-visible
+> configuration object plus a small per-queue state array, given this patch
+> is the one that fixes the layout for the rest of the series?
+
+Longer term, splitting this into a shared sysfs-visible configuration
+object plus smaller per-queue runtime state would be cleaner. I am
+deferring that redesign for this series.
+
+>
+> Is it also intentional that the per-pool sysfs tuning interface now
+> implicitly means "queue 0 configures all queues"?  If so, could that be
+> stated in the changelog?
+Yes, that is intentional for this series. Queue 0 is acting as the
+shared pool configuration/template surface rather than as a queue-0-only
+tuning interface. In v5 I will make that explicit in the changelog and
+cover letter:
+
+- only queue 0's `poolN` sysfs nodes are registered
+- those nodes represent the shared pool geometry/template policy
+   (`buff_size`, `size`, `active`)
+- open() and resize copy that template into each RX queue's pool row
+- queues 1..N do not get separate pool sysfs controls in this series
+
+Thanks again for the review,
+Mingming
