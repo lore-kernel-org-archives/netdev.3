@@ -1,73 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E62943802B;
-	Mon, 10 Aug 2026 18:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642F743746C;
+	Mon, 10 Aug 2026 18:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786386935; cv=none; b=pY36XyZE4SoFN8C85porNq+KjS29CBZ6wLcxuDZ5uWSO5s4TzAd5l9bAadGYngHHvQ3p6e5/m+4NhFfXOhZGpDZOO2vxse9FMrgit8DYJfx1efO8sDLUdhv+XOt6MpHsXV76qR+/lbttMydpi+8tPxJ9pjzUAOtLXvPE3zefQz4=
+	t=1786386952; cv=none; b=D6iWgQmEfRfg9lI1tIxImAmuRtvm/zJ3LyL/eMq4+Fkd+lyv+00swpZGI/n2NCTBsvPaIrsH0Vw36hvvxnWg245VM7R/PT+RrNLzRNEVY6dkofXz4/0DCikOdPZDkSX3ShkHxeBqfs9ft9WLF8gsJsyTQXZHs+7mG5Jvj+wTlVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786386935; c=relaxed/simple;
-	bh=nvuI13/LGBv0RGYETa+J5+rfACdZHAHlV+Vu4HnaQTw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rHJG3YOd6k3crOxMsznl785u0VAgaj5BsnwodO37iICpyhjBPsqCzFS3qevga1eXLUeei8yPd4ai8Jr4gLbLlx5wfO5ajkMm1MyBNrMWbiC/oR9PJUbCvj/eaH54SawKU6DL5uay9b3kXbfXle1ccR2r+NieRv7wHehI6KASNzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aYmWygaB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786386952; c=relaxed/simple;
+	bh=J+7Qf4C+BCkphTM5Iv8Y9G8botn3Z1MPiWmfqLgbhk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OcFiD7n8A4t3lBbYy9CYrOGVTrSDiqIDXZNeRb1a8rkze0SXN1baSughLM8gu8U+D6EQT3ZuhrlVtofl9M1b+lmOI810y4uSNhl1iG4jxC4OU9MA2vP1GzkU1iG9whPqhCqyMD9vd3oMv982AAl5E0KGhMXxRokJsF4HwMq4xb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HlzpUbYz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aYmWygaB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757FF1F000E9;
-	Mon, 10 Aug 2026 18:35:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HlzpUbYz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FA21F000E9;
+	Mon, 10 Aug 2026 18:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786386933;
-	bh=tnho4rrrB5eB1gkI1817NuCvPB/07wS2vcTVe6IMdjg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aYmWygaBYAucXKZxr787sYh3qGARvpJY86Je5DMJbNxZnDYa7l4yTzD28oj2EN7My
-	 o16ZB4rA22AlKYA1iX9FaZmrfdsNTTCRTV/WPlPJ+6NU/tSdl9trogupy27ac8akVw
-	 W1jOqDlWA8sH77vJPHLrtw6E86dVQl2szMWzkz/N+Pn21+3nd0BYPRu0vrADgp1aZR
-	 mXeB39csRtttxUctgTLpcq4/b+87TcJ/JiL/l+vE1aoILzVQeZ/fJMzc9+zpd+N2bC
-	 1U/Rz+ddRw9ycDmW3gcRoKL/nZYv4fIDIb3qawaUhEkTHEwMD8kW9Lya/1AXaY6amD
-	 XXQqwkfHzAXJw==
-Date: Mon, 10 Aug 2026 13:35:32 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Manikandan Muralidharan <manikandan.m@microchip.com>
-Cc: conor+dt@kernel.org, mwalle@kernel.org, richardcochran@gmail.com,
-	richard@nod.at, linux-mtd@lists.infradead.org, pratyush@kernel.org,
-	nicolas.ferre@microchip.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	takahiro.kuwano@infineon.com, miquel.raynal@bootlin.com,
-	alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev,
-	linusw@kernel.org, vigneshr@ti.com, srini@kernel.org,
-	linux-arm-kernel@lists.infradead.org, michael@walle.cc,
-	krzk+dt@kernel.org, linux@armlinux.org.uk, arnd@arndb.de
-Subject: Re: [PATCH v6 2/7] dt-bindings: nvmem: layouts: add Microchip/SST
- SFDP EUI layout
-Message-ID: <178638693216.2623305.17648873474456731679.robh@kernel.org>
-References: <20260729043026.1811147-1-manikandan.m@microchip.com>
- <20260729043026.1811147-3-manikandan.m@microchip.com>
+	s=k20260515; t=1786386950;
+	bh=J+7Qf4C+BCkphTM5Iv8Y9G8botn3Z1MPiWmfqLgbhk8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=HlzpUbYzcJ3KMfPEvXyW3Fdt/nE5/mxqLTwgQd16JMs1HWaHaTGufcH6czd6tgMZ3
+	 q5k786zQ4Zphisf702b1r/G+BCt2fll3h81IcQ/S7RBIcdpBCzVhVl3q9xYVFRN2Vz
+	 0GGN5j1vEs1t6jvao2VddGT+ws7pP6d+v2bHKphI1pn1tTPDEqyUsOX+KFYWVffcO0
+	 KcPlP0Kgse5B/lTHtocl0cfyMJ+M/6J6ri+2vdoc/Av1RK3s5Sjfya7g2NycTE7g9y
+	 gW0gdlCAV7+3XC0Z/bokVCVPUn6q4uJA4xXHDEl8ujcjS5IbLCpjdH5z2Aa43Yh0wB
+	 d1O782y0QFKdw==
+Date: Mon, 10 Aug 2026 11:35:48 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Vladislav Leonov <vlad@zlab.su>
+Cc: linux-rockchip@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, Simon Glass <sjg@chromium.org>,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Andi Shyti <andi.shyti@kernel.org>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, Aurelien Jarno <aurelien@aurel32.net>, Brian
+ Masney <bmasney@redhat.com>, Conor Dooley <conor+dt@kernel.org>, Daniel
+ Golle <daniel@makrotopia.org>, "David S. Miller" <davem@davemloft.net>,
+ David Wu <david.wu@rock-chips.com>, Eric Dumazet <edumazet@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Heiko Stuebner
+ <heiko@sntech.de>, Herbert Xu <herbert@gondor.apana.org.au>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Mark Brown <broonie@kernel.org>, Maxime
+ Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Michael Turquette <mturquette@baylibre.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Nicolas Frattaroli
+ <nicolas.frattaroli@collabora.com>, Olivia Mackall <olivia@selenic.com>,
+ Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>, Vinod Koul
+ <vkoul@kernel.org>, linux-crypto@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
+ linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH 00/25] ARM: rockchip: Add peripheral support for RV1106
+Message-ID: <20260810113548.7fd24d56@kernel.org>
+In-Reply-To: <20260810121121.210040-1-vlad@zlab.su>
+References: <20260810121121.210040-1-vlad@zlab.su>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729043026.1811147-3-manikandan.m@microchip.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 10 Aug 2026 15:10:51 +0300 Vladislav Leonov wrote:
+> Basic support for the Rockchip RV1106/RV1103 SoCs currently under review.
+> This series builds on top of that and enables the peripherals needed to
+> bring up a board beyond a serial console:
 
-On Wed, 29 Jul 2026 10:00:21 +0530, Manikandan Muralidharan wrote:
-> Add a binding for the NVMEM layout that exposes the factory-programmed
-> EUI-48 identifier from the Microchip/SST vendor-specific SFDP parameter
-> table (e.g. SST26VF064BEUI) as a "mac-address" NVMEM cell, and reference
-> it from nvmem-layout.yaml.
-> 
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
-> ---
->  .../layouts/microchip,sst26vf-sfdp-eui.yaml   | 60 +++++++++++++++++++
->  .../bindings/nvmem/layouts/nvmem-layout.yaml  |  1 +
->  2 files changed, 61 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/nvmem/layouts/microchip,sst26vf-sfdp-eui.yaml
-> 
-
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-
+Don't expect maintainers to dig out patches for their subsystems
+from a big series. This is not how upstream development works.
+Repost 4+5 as a separate series to networking..
