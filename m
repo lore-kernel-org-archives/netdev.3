@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E872877C3;
-	Mon, 10 Aug 2026 23:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811913B6BFD;
+	Mon, 10 Aug 2026 23:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786404688; cv=none; b=LGbbblsBh8TVORDWtT0LaayRSDNuG3M778a6e7IWaN0SB+X4TFvABZ525KhtctPraBoM7U11OjZkTviQ6efm0gXObVFZMxVW6yE8Z4RVvkAmYkCimKgVZ+rG5Te6LY4eenvGtpA/DpA30YzSSlON1zKAMki7P3OoixEmeL4XdSA=
+	t=1786405252; cv=none; b=oPe8rirwLQZKn/iRDEoAzr1KQPTXiyK5Qpz/J6Zc2v8ShNCQAk0Nkzmb/5EZsxs6Ci6rQFulu0WsShfnpD/qjPgNknxW4X6xh7MMOdVLDdUyuSd4EvY6bFKaTnA9oo9KfdFlF2ZVB7vrBgPYRFaKnAZAgondudPkapPlFWjOHkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786404688; c=relaxed/simple;
-	bh=In/z93l5IXG90SUxrU93rlsvLaIb0JfBG+J3Q4KZbm0=;
+	s=arc-20240116; t=1786405252; c=relaxed/simple;
+	bh=jkcMwrKVVK8447gJahzt3XxXmie987PHKSdD5enZTvQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cNh5iVU8Od46aaAItulDnLN9O9N0wBOxowilrzBw3khfRmEpFNdr8cv7lgK2eN5rkfsNAHMZWHYXihMJn574cWLF1D7uPl2tjsMn1S3AKFo2G7PStSaK+TDc5KiY6LbpM/FNBkhCT/wObiSynTh+LR4lRGw91jCu7UC4RRNMyxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e27rjdD4; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=PytztrxyZjEoaJbvmpR8T97XvVAHYF5E5OIQYPSF82krsfmpqQqBtWSafSb5x4Uhza15jLpxBnkaCl5AGHC0Ufl+roQH++rV18yz+4WLlWxRYzOVCB14P48k9VllOGxy4LfLaRxFlKbltoXkCzUwncCifj5f3nTtNSwi8EcuC9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVysRlxt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e27rjdD4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16EE1F000E9;
-	Mon, 10 Aug 2026 23:31:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVysRlxt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC3A1F000E9;
+	Mon, 10 Aug 2026 23:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786404686;
-	bh=XtD6jRe0JNx/lSspmAA7VRMMoMs3mfWDzUfiDwItiUE=;
+	s=k20260515; t=1786405251;
+	bh=e94jut7BDx2TeLjil2fsKpSXP24Q6d6ykiaNSn52s6A=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=e27rjdD4+rE82sbbbs2HdQ5dOO1WeK4K9N7Ogg/dB9vGCGfoRev1/fAek7kTOaERM
-	 8x4q16M1eGjRj+4Al2RH5xi7+8evr+YX6nbSSrjHBrhKkvJnl1h+Q0bPMLl2i/eN8i
-	 5PwHFJZYX8OyCFD5hQjCsEGjKfrWa0IzJgcDD9AyJptKTXIDLxjwO1n6vIQ5E2VuIU
-	 7wUrS/oKgQaqs11UvFs+763QpxJBrAKLfkVGR5oj2fx7pbEbgOvJZvWOWKUmuBADQ+
-	 +9dEUMp+h2MLelznFCW81x+U/+iSxTIGmJOHHrXribsRCV3jDnPbNdVeshFN79dY8o
-	 LFPO8N+IqoCzg==
+	b=iVysRlxt8aH2RKYYjf7M8oQdMjvsGOqxaL0bmNDRnWFBgbNzobOvA+YaxGC8V/40d
+	 jjxfzjR5FqNFzuCbVU7FITVbOpaHft48zARG9j6MeFlv0ShP5kOkckqe+PUFsXYxsr
+	 RHgS2LsUBW324Ooq82AVNujtW7MIEQrhCtgo2VlrsTG8gh1qhL/D1Jvd36ZZu+NYdC
+	 3+fhi3LE6biDSyaqldNjc6ULBs3t0yaK/zHgLWR6cNEjAzvFX3VZxL2IPqts+9zKSM
+	 43c+c562+6izbC3ZczmKBF+cx5PIoZpc/BfXCMgON/xkS9S01jBYF/+tRp5z8XssgD
+	 1KHCnc2e+vbCA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93986392626C;
-	Mon, 10 Aug 2026 23:30:44 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0988392626C;
+	Mon, 10 Aug 2026 23:40:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4] keys,
- dns: Drop unused NUL terminator from upayload->data
+Subject: Re: [PATCH net v2 1/2] net/sched: act_ct: fix sk_buff leak when the
+ header checks reject a packet
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178640464339.252892.10493634079145220840.git-patchwork-notify@kernel.org>
-Date: Mon, 10 Aug 2026 23:30:43 +0000
-References: <20260806200454.245444-3-thorsten.blum@linux.dev>
-In-Reply-To: <20260806200454.245444-3-thorsten.blum@linux.dev>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, tim.bird@sony.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178640520739.254991.6676555820239919462.git-patchwork-notify@kernel.org>
+Date: Mon, 10 Aug 2026 23:40:07 +0000
+References: <20260806101235.809370-1-hj351016@gmail.com>
+In-Reply-To: <20260806101235.809370-1-hj351016@gmail.com>
+To: Hyunjung Ko <hj351016@gmail.com>
+Cc: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ shuah@kernel.org, taoliu828@163.com, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  6 Aug 2026 22:04:54 +0200 you wrote:
-> upayload->data includes an extra NUL terminator even though it is never
-> used as a C string. In-tree users access only the first
-> upayload->datalen bytes.
+On Thu,  6 Aug 2026 19:12:34 +0900 you wrote:
+> tcf_ct_handle_fragments() runs its header sanity checks before handing
+> anything to the defragmentation engine:
 > 
-> Remove the redundant NUL terminator and allocate one byte less for
-> upayload->data in dns_resolver_preparse().
+> 	if (family == NFPROTO_IPV4)
+> 		err = tcf_ct_ipv4_is_fragment(skb, &frag);
+> 	else
+> 		err = tcf_ct_ipv6_is_fragment(skb, &frag);
+> 	if (err || !frag)
+> 		return err;
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v4] keys, dns: Drop unused NUL terminator from upayload->data
-    https://git.kernel.org/netdev/net-next/c/f1529936c0b6
+  - [net,v2,1/2] net/sched: act_ct: fix sk_buff leak when the header checks reject a packet
+    https://git.kernel.org/netdev/net/c/8a7ed561671a
+  - [net,v2,2/2] selftests: tc-testing: add act_ct test for malformed header handling
+    https://git.kernel.org/netdev/net/c/f1b3416ceaf7
 
 You are awesome, thank you!
 -- 
