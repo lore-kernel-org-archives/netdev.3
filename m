@@ -1,75 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DAA36C581;
-	Mon, 10 Aug 2026 07:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F302ECE91;
+	Mon, 10 Aug 2026 07:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786345388; cv=none; b=rzx4SX8KxyUH/hXAqDWp1CVYbvAtLFzczoouYo0TshaCEaWBSXrtnXhlwwtGf2thx9WsPLj6jet93EO7hqK6qY9G+j1apE6ySKiBTFLItscawShZfYTwXSaeKYhVHIF1akn4G761VFKd5eMbWHh2MwQeUv9lB6P82GWjKZ6aVYU=
+	t=1786345505; cv=none; b=MS8aTz1df0VtfqQSgrROM4MhGusGV15Y+xkpp7nhCfE1ExzMZ8XgPtRs3eYONlvOTIciZrN4EFWwxbdOPfumMlYAtk36nUduaK8PFj+ywUUdrdIqS0Ix+say/ND2aMobVgGomGsGIwwsR7A4NR1U9iONGiqC+xa53Ur6aVAwk8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786345388; c=relaxed/simple;
-	bh=KBTz6r+JeBs9O1VpvPejsZmn2FVLnyeLkBnM0bvWAJw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jm+hYjBBpoxjNaCqoZK//Dau1qKZOBaH4ELQ9r4WHCqNMQ4WA9tXx7sLhcNq85OQLymPvRWbOkS+zQJuv91XOTqSegYYUTKxRJ/5d0fcKVykbirCTZkhztmNmgQ6H0gcG+bGPNi4TaJE6ww04L9K/ae8wTGKCKMu9aqxeZpvU4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IX+mcSDH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786345505; c=relaxed/simple;
+	bh=J8PmxqFOrhkbedwVzgb3/HZ2GmbPkvGslDvkma8bsTI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Cp5KTmJtXgC9H/PiYcXGy41d8p56N7Rp4DQJYc3ER2ANgJPhWFXbTr8MlKl/fa9QZOsQ0gvyMQaODIRCcwZGPEbxsM9J4Ytbd24PiQCOsZUmikIVbNA7ldvY4fxjwcCUAuUoF1TEV5Pxl6pcJ9lXqWgVGQBlITYsulSGMR8yr/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MlWdsl+a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fukFOPcR; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IX+mcSDH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A531F000E9;
-	Mon, 10 Aug 2026 07:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786345386;
-	bh=9lGpz6Zt2dO5Xy8l3cKhsN+96f+fJRqLVb2vOIjzLQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IX+mcSDH6NRxncfESgodMHXM1/bLTX1vVLDP2o6sEa3+8zxF0v433gq0+Ndb/1p3r
-	 rUJmF+Wd9QuTWzlhYXMIFlq83E452UMUrut7W2WAiFrG6jFBIWrPjQRPANdJE6p8Z9
-	 WwV0GGbHKRAUe/zm/t1LpKRFtv+WiAKYXZqMR1Uog+Lp/xEFMJFwJQwMU/Kk1y4sCi
-	 DaEj+KBych3hUSauSCHL2gZ4xEag/UcLFAMoU0hT7kJyPLQEEvuLwTlfPtd/uMII8n
-	 HzebmHojVwRnwt1zStTxTdlUR4qyDeZxi1vySy8tD1PrX+Rjldkixumka2oh7UQicS
-	 cnL2n60xlWFwg==
-Date: Mon, 10 Aug 2026 09:03:02 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luke Howard <lukeh@padl.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vivien Didelot <vivien.didelot@gmail.com>, Gregory CLEMENT <gregory.clement@bootlin.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Richard Cochran <richardcochran@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, 
-	Simon Horman <horms@kernel.org>, Cedric Jehasse <cedric.jehasse@gmail.com>, 
-	Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>, Max Hunter <max@huntershome.org>, 
-	Christoph Mellauner <christoph.mellauner@joyned.at>, Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v4 4/5] dt-bindings: net: dsa: add EDSA
- arrival-timestamp tag protocol
-Message-ID: <20260810-adorable-nimble-newt-8eb03c@quoll>
-References: <20260727-mv88e6xxx-ptp-fixes-v4-0-10b4020155fc@padl.com>
- <20260727-mv88e6xxx-ptp-fixes-v4-4-10b4020155fc@padl.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MlWdsl+a";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fukFOPcR"
+Date: Mon, 10 Aug 2026 09:04:53 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1786345495;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O7pNtl3hHfQqX1Bg1nl8gCISMc2h+9ryXu4fgZpV5kg=;
+	b=MlWdsl+a/3xuToZHevjpzF4OS5ZXYaHIYIWijgCufINNah4sHThNOvzt2iEE3P5dNPNiif
+	M0p7Di8Amwq0jsjmmKqCNz4N3/1+HCVZPNR604ZsnQAYMM2n8B8nPq4rUdnGdBIZIIxVJj
+	sIOnbuzvow0JyAPK6EgO5SxUHZIyETlMZmhj2a0YoywSImh/x7XxG/liTuzhayZ19KZNUm
+	jSXRQBhJWlRTS76lL+WnVfri78Nrdz308MC2RIh8xGwU//tfmdboE9AyxvG2ehDb01qrB3
+	Y4aajmzfR/yvcHiXQLvDcyfvHLuyOr+tnKhPD5M+tQDLzWTVB0Ge5mMaMat8oA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1786345495;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O7pNtl3hHfQqX1Bg1nl8gCISMc2h+9ryXu4fgZpV5kg=;
+	b=fukFOPcRq25uhAYVYn2La93NzDOKUapCoMZGlhy7GsTH7sEM6ciotdUM2ag4Lq+8RGFtqn
+	7AO7jhG8N6ycIdAQ==
+From: Benedikt Spranger <b.spranger@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Vasilij Strassheim <v.strassheim@linutronix.de>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean
+ <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Martin Kaistra
+ <martin.kaistra@linutronix.de>
+Subject: Re: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
+ bindings
+Message-ID: <20260810090453.77e896a5@mitra>
+In-Reply-To: <cce12342-8352-4e59-a646-1a1cd1054f7d@lunn.ch>
+References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	<20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
+	<20260730-loutish-labrador-of-joviality-6e6c79@quoll>
+	<411ec84fd55e152e94ac1f4edba497eac3a5623d.camel@linutronix.de>
+	<590a933f-85af-4eaa-b9ee-be689dc15c69@lunn.ch>
+	<20260805153220.3860b262@mitra>
+	<9f8ac30b-6579-4e48-abe3-823302a3da0e@lunn.ch>
+	<20260805162705.1a3467ea@mitra>
+	<b47e0589-a3a2-4f88-ba90-72d176efccd3@lunn.ch>
+	<20260806172541.009f1295@mitra>
+	<cce12342-8352-4e59-a646-1a1cd1054f7d@lunn.ch>
+Organization: Linutronix GmbH
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260727-mv88e6xxx-ptp-fixes-v4-4-10b4020155fc@padl.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 27, 2026 at 01:59:15PM +1000, Luke Howard wrote:
-> Add edsa-ptp-reserved2-ts to the dsa-tag-protocol enum. This
-> EDSA-derived protocol lets a board select in-frame embedding of the PTP
-> arrival timestamp, which the switch writes over the reserved2 field of
-> the PTP common header, on switches that support it. Giving it its own
-> identifier keeps the wire format discoverable via dsa/tagging.
+Am Sun, 9 Aug 2026 18:52:42 +0200
+schrieb Andrew Lunn <andrew@lunn.ch>:
+
+> > > Does any of this surrounding logic need software?
+> > In our case: No.
 > 
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Luke Howard <lukeh@padl.com>
-> ---
->  Documentation/devicetree/bindings/net/dsa/dsa-port.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> Great, you have a nice simple integration.
+At least for now. The backing project has an estimated service livespan
+of 25 years - bad things may come...
+*knock on wood* 
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> But stmmac shows us, integrators do often put additional things around
+> the stmmac core.
+I am aware of this freak show.
 
-Best regards,
-Krzysztof
+> So you should keep in mind that others will add extra things around
+> this device. Is that going to cause an issue?
+Hopefully not. But I am well aware of: "If you can fix it in software,
+It is not a hardware problem..."
 
+> Can they do that without breaking your device?
+Hopefully yes.
+
+> Spend a little bit of time thinking about this.
+We will spend some time and discussing the bindings. Especially with
+the background of the STMAC. More on that in next version.
+
+Thanks for the input.
+
+    Bene
