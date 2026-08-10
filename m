@@ -1,303 +1,190 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4E33AB496
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 11:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B417B3AD531;
+	Mon, 10 Aug 2026 11:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786360840; cv=none; b=EmhJDFnpcCKlT2U5Y8JSqJJKLa73cF9M/LrgahH4J+ZOIfj+eOChP24ZoRldP999wYssYzSzbIXyO3EQTThwz9L2U8APDRS4mDMv41DXjOykAChhnGzMvnyk2LOAVJjEKSiyo/1ZNSM3dRMyUjgGizN2Rk7YhkmrxXqpeJ016Wc=
+	t=1786361016; cv=none; b=KSpkGS2G8AMm1zZkzWnZjjMDOvZ8hawhdQqXmm2Lc8e5JNV/Vl17w+jD528Z7VDJNumnkmKIO8cd/dBsivIWdIT4u8cevh6JDNTEVLcF8vn7qnMiWSy26srTcjWkE4kWYs0muhNFBp+XX4ZoK1JLhLC6dkUGkEjdmol+itLlmBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786360840; c=relaxed/simple;
-	bh=z4xDF+9bp9QQvbFU55qOoRrC0n6y39VOJSTNB6rBof4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQIK7mAkf9W1mOBGQa8JuycCMNqMnpVlOkkC+MlR0v+BKLjvJFO02RAcESyb2TanVOP/MQwYopwFeLAsNLtcmOZdDX4e0hlTJWTP9ANIFscQQbBLBv0e/p4I6P/gg4+Nv5ICQVPzBa2dkRT0P/k1h0lnnJBWx8nBJlTzCpylNAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hJzav1G1; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786361016; c=relaxed/simple;
+	bh=AjAr5gjAkQ1Yp4bxsaEgjcFfiPlkVc5weZHWpMGWB5s=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=kh5JSgFE8iTYq7yBRawhNPh0V7nq19mitGCxD49o4pa+VtGt6+298M5a2DA2LDhvyftOXFqdNrbuwVN5KEeCQYtD7dAckQ/P6NSYcWV80giSKP8k5jtefgMYPKisAlnd7n7KQRsGfPdvfBVLJNewSuLjAdaAUp1XRx6Iu/FXTbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=DPru+EMd; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hJzav1G1"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="DPru+EMd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786360838; x=1817896838;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=z4xDF+9bp9QQvbFU55qOoRrC0n6y39VOJSTNB6rBof4=;
-  b=hJzav1G1vy6LfBEbd0gmzECmoGKzQby9vltx1pykJmI+6SgkJk4UpLmZ
-   /d2iXRC6l84MZwMbPKcNWejuuXT5Gu11zKwpzxzkw5kU9TCr+1qcANrjH
-   XemxtDD3C3NkJToheli8z4cSiMRG8Dc+XVBTndidu3/maZTq3iFbl92gZ
-   K9kHaLFkL06KRdNsV5s4Ngp7YQQ9mQGQLSobHM2Dg9FNq2WLVEjhPLEGq
-   7rl+WzuFTfXBxoxOEPLX31GDprOy6tuLrGmza5G73ON2r5lFt/q6KL72+
-   +JRsX+CWuE/idofmx9/cST7jZ1AkKA67AUeDDdhMTs/Z3tnLGtrBk6lf9
-   A==;
-X-CSE-ConnectionGUID: KPoRC3RQR0Wg2sdvQv+XGQ==
-X-CSE-MsgGUID: G+gw7VMzQUG3I7PIQBc8tQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="97220947"
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1786361015; x=1817897015;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=AjAr5gjAkQ1Yp4bxsaEgjcFfiPlkVc5weZHWpMGWB5s=;
+  b=DPru+EMdTfu+ij7GADMr8bbXaFoxC47iqAjDi8SGjUy3zFir+fKm7zsR
+   iTvqpf6OsdN4f8i6BGn3KSi/kSsWAhTBEuKUyWlo6hy2X3UEa/NgOBX1v
+   BxxFUFYYK+1Sr8MJfVYW31PJyYbb4nZzJGxnaPu2wvfuqMlwl3az0d9Io
+   n+Jx306kNau9Eh5JQETQvF9OBo6EtpfKWimvtrszyknTfzE3IquIJ6Gre
+   +zdNqaU6ASXzvsi7SghtRcWYAD3wOLYrhEHAFhACwWrGUOCsmClP4tLjS
+   fGRn0lPTCgXRfaY60j0VEqnS2eGlv9lzg1vRRgg8L9/7tdRE/QJHXX+H0
+   Q==;
+X-CSE-ConnectionGUID: ZtIVA3FtSgartEHIy3eibg==
+X-CSE-MsgGUID: tKBHExnvT4qjsvu4DAk5aw==
 X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="97220947"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 04:20:38 -0700
-X-CSE-ConnectionGUID: HEWE1GgCQJS1yC127j2rpw==
-X-CSE-MsgGUID: YVPxZ02fS+uGJSGocq0z7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="264998325"
-Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 04:20:33 -0700
-From: Riana Tauro <riana.tauro@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org
-Cc: aravind.iddamsetty@linux.intel.com,
-	anshuman.gupta@intel.com,
-	rodrigo.vivi@intel.com,
-	joonas.lahtinen@linux.intel.com,
-	kuba@kernel.org,
-	simona.vetter@ffwll.ch,
-	airlied@gmail.com,
-	pratik.bari@intel.com,
-	joshua.santosh.ranjan@intel.com,
-	ashwin.kumar.kulkarni@intel.com,
-	shubham.kumar@intel.com,
-	ravi.kishore.koppuravuri@intel.com,
-	raag.jadav@intel.com,
-	maarten.lankhorst@linux.intel.com,
-	mallesh.koujalagi@intel.com,
-	soham.purkait@intel.com,
-	Riana Tauro <riana.tauro@intel.com>
-Subject: [PATCH v7 2/2] drm/xe/xe_ras: Report correctable/uncorrectable error events to userspace
-Date: Mon, 10 Aug 2026 16:50:11 +0530
-Message-ID: <20260810112008.1858731-6-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260810112008.1858731-4-riana.tauro@intel.com>
-References: <20260810112008.1858731-4-riana.tauro@intel.com>
+   d="scan'208";a="293272590"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 04:23:28 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.45; Mon, 10 Aug 2026 04:23:26 -0700
+Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 10 Aug 2026 04:23:23 -0700
+From: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
+	<jensemil.schulzostergaard@microchip.com>
+Subject: [PATCH net-next v2 0/9] net: sparx5: add L3 unicast routing
+ offload
+Date: Mon, 10 Aug 2026 13:20:45 +0200
+Message-ID: <20260810-sparx5_l3_routing-v2-0-59e68cc8c8ca@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAA20eWoC/22NQQqDMBBFryKzbkoSNdSuvEcRkTjqQE1kkopFv
+ HtD1l0+Hv/9EwIyYYBncQLjToG8S6BvBdhlcDMKGhODltpIraQI28BH3b/Lnv0nkptFY3RVP7A
+ ay3GAtNsYJzpy8wUOo3B4ROiSWShEz998tqvsc9co/ae7KyHFZEurpDJyqpp2JcveLrTdrV+hu
+ 67rByxTUh3AAAAA
+To: Horatiu Vultur <horatiu.vultur@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Daniel Machon
+	<daniel.machon@microchip.com>, Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Robert Marko <robert.marko@sartura.hr>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-hardening@vger.kernel.org>,
+	=?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
+	<jensemil.schulzostergaard@microchip.com>
+X-Mailer: b4 0.15-dev
 
-When an interrupt is received for correctable errors indicating that error
-counter has crossed its threshold, read the current counter value and
-deliver a drm-ras error-event to userspace for each affected component.
+Add L3 unicast route offloading for IPv4 and IPv6 on Sparx5 and
+LAN969x. This enables hardware-accelerated l3 routing between VLAN
+upper interfaces on a bridge, with ECMP support.
 
-Also send drm-ras error-event to userspace for uncorrectable errors on
-receiving an AER.
+This series covers the core unicast data path: FIB offload, nexthop
+groups, ARP/NDP neighbour resolution, and router leg management.
 
-To avoid sending duplicate events when the same component appears multiple
-times in the response, send the error-event once per component.
+Routes are programmed into the hardware LPM (Longest Prefix Match)
+VCAP, with nexthops resolved through the hardware ARP table for ECMP
+or inline VCAP actions for single nexthops.
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Raag Jadav <raag.jadav@intel.com>
+The LPM VCAP also requires type_id-aware rule decoding, since it has
+actionsets of identical length that differ only in their type_id
+field.
+
+Patch 1 fixes a latent bug in the VCAP rule-move algorithm that
+becomes reachable once the LPM VCAP is added, since LPM is the first
+VCAP to use rules of coprime size (2 and 3).
+
+Patches 2-4 are the remaining preparatory commits for the shared VCAP
+API. They add the LPM VCAP keysets and actionsets to the autogenerated
+model for lan969x and sparx5, update the action-side rule decoder to
+differentiate actionsets by type_id, and expose two helpers
+(vcap_val_add_rule() and vcap_rule_mod_action_bit()) used by the LPM
+driver.
+
+Patch 5 adds autogenerated register macros for the L3 routing blocks
+on sparx5 and lan969x.
+
+Patch 6 adds the LPM VCAP implementation for sparx5 and lan969x.
+
+Patches 7-9 add L3 unicast routing to sparx5 and lan969x. The router
+code is split into three patches:
+
+Patch 7 (infrastructure + legs): Router leg lifecycle tied to VLAN
+uppers on a bridge, address event handling, base MAC tracking,
+blackhole leg for blackhole routes, and the hardware enable sequence.
+
+Patch 8 (FIB + nexthop + neighbour CRUD): This is a large patch.
+Splitting it further is difficult because the neighbour and nexthop CRUD
+is shared between the leg-teardown path and the neighbour-event path: leg
+teardown flushes the legs neighbours and refreshes their dependent
+nexthops, and the NETEVENT_NEIGH_UPDATE handler in patch 9 drives the
+same helpers.
+
+Patch 9 (neighbour events): Registers the netevent notifier for
+NETEVENT_NEIGH_UPDATE used in ARP/NDP resolution, wiring up the final
+piece.
+
+The Super VCAP shared-register race reported on v1 is fixed separately by
+commit d7a8d500d7e4 ("net: microchip: vcap: fix races on the shared Super
+VCAP block"), which is now in net-next.
+
+Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
 ---
-v2: add BUILD_BUG_ON and use BITS_PER_TYPE
-    combine correctable/uncorrectable patches (Raag)
-    use correct parameters for get_counter (Sashiko)
----
- drivers/gpu/drm/xe/xe_drm_ras.c | 31 +++++++++++++++
- drivers/gpu/drm/xe/xe_drm_ras.h |  3 ++
- drivers/gpu/drm/xe/xe_ras.c     | 69 +++++++++++++++++++++++++++++++++
- 3 files changed, 103 insertions(+)
+Changes in v2:
+- Reworked neighbour lifetime: anchor neighbours to the router leg
+  instead of the most-specific covering FIB entry (matching
+  mlxsw/prestera). Fixes a neighbour-entry leak (memory + VMID + host
+  VCAP rule + netdev reference) and lets the software LPM be removed
+  entirely.
+- Fixed a heap overflow in the fib6 nexthop prune path.
+- Fixed a leak on the router_init() error path.
+- Hardening: netns filtering and offload-ownership checks on the global
+  notifiers, and a NETDEV_UNREGISTER leg-teardown backstop.
+- Fixed do_div() misuse on a 32-bit value. Added the missing RCU
+  annotation on in_dev->ifa_list.
+- Zero-initialise the actionfield data in vcap_rule_mod_action_bit().
+- Updated the sparx5_router.c header comment to describe the
+  leg-anchored model.
+- Link to v1: https://lore.kernel.org/r/20260612-sparx5_l3_routing-v1-0-fc3c10160f49@microchip.com
 
-diff --git a/drivers/gpu/drm/xe/xe_drm_ras.c b/drivers/gpu/drm/xe/xe_drm_ras.c
-index 7937d8ba0ed9..bf1b921f4183 100644
---- a/drivers/gpu/drm/xe/xe_drm_ras.c
-+++ b/drivers/gpu/drm/xe/xe_drm_ras.c
-@@ -185,6 +185,37 @@ static int register_nodes(struct xe_device *xe)
- 	return ret;
- }
- 
-+/**
-+ * xe_drm_ras_event() - Report drm-ras error event to userspace
-+ * @xe: xe device structure
-+ * @component: error component (see &enum drm_xe_ras_error_component)
-+ * @severity: error severity (see &enum drm_xe_ras_error_severity)
-+ * @value: value of error counter
-+ *
-+ * Report an error-event to userspace.
-+ */
-+void xe_drm_ras_event(struct xe_device *xe, u32 component, u32 severity, u32 value)
-+{
-+	struct xe_drm_ras *ras = &xe->ras;
-+	struct xe_drm_ras_counter *info = ras->info[severity];
-+	struct drm_ras_node *node;
-+	int ret;
-+
-+	/* Event is supported only if drm-ras is enabled */
-+	if (!xe->info.has_drm_ras)
-+		return;
-+
-+	node = &ras->node[severity];
-+
-+	if (!info || !info[component].name)
-+		return;
-+
-+	ret = drm_ras_nl_error_event(node, component, info[component].name, value);
-+	if (ret)
-+		drm_err_ratelimited(&xe->drm, "drm-ras error-event failed: %d for %s %s\n", ret,
-+				    info[component].name, error_severity[severity]);
-+}
-+
- /**
-  * xe_drm_ras_init() - Initialize DRM RAS
-  * @xe: xe device instance
-diff --git a/drivers/gpu/drm/xe/xe_drm_ras.h b/drivers/gpu/drm/xe/xe_drm_ras.h
-index 365c70e93e82..723229b2cffb 100644
---- a/drivers/gpu/drm/xe/xe_drm_ras.h
-+++ b/drivers/gpu/drm/xe/xe_drm_ras.h
-@@ -5,11 +5,14 @@
- #ifndef _XE_DRM_RAS_H_
- #define _XE_DRM_RAS_H_
- 
-+#include <linux/types.h>
-+
- struct xe_device;
- 
- #define for_each_error_severity(i)	\
- 	for (i = 0; i < DRM_XE_RAS_ERR_SEV_MAX; i++)
- 
- int xe_drm_ras_init(struct xe_device *xe);
-+void xe_drm_ras_event(struct xe_device *xe, u32 component, u32 severity, u32 value);
- 
- #endif
-diff --git a/drivers/gpu/drm/xe/xe_ras.c b/drivers/gpu/drm/xe/xe_ras.c
-index 352f056fd9ef..48532447e1d8 100644
---- a/drivers/gpu/drm/xe/xe_ras.c
-+++ b/drivers/gpu/drm/xe/xe_ras.c
-@@ -90,6 +90,8 @@ static const char * const gpu_health_states[] = {
- };
- static_assert(ARRAY_SIZE(gpu_health_states) == XE_RAS_HEALTH_MAX);
- 
-+static int get_counter(struct xe_device *xe, struct xe_ras_error_class *counter, u32 *value);
-+
- static u8 drm_to_xe_ras_severity(u8 severity)
- {
- 	switch (severity) {
-@@ -102,6 +104,18 @@ static u8 drm_to_xe_ras_severity(u8 severity)
- 	}
- }
- 
-+static u8 xe_to_drm_ras_severity(u8 severity)
-+{
-+	switch (severity) {
-+	case XE_RAS_SEV_CORRECTABLE:
-+		return DRM_XE_RAS_ERR_SEV_CORRECTABLE;
-+	case XE_RAS_SEV_UNCORRECTABLE:
-+		return DRM_XE_RAS_ERR_SEV_UNCORRECTABLE;
-+	default:
-+		return DRM_XE_RAS_ERR_SEV_MAX;
-+	}
-+}
-+
- static u8 drm_to_xe_ras_component(u8 component)
- {
- 	switch (component) {
-@@ -120,6 +134,24 @@ static u8 drm_to_xe_ras_component(u8 component)
- 	}
- }
- 
-+static u8 xe_to_drm_ras_component(u8 component)
-+{
-+	switch (component) {
-+	case XE_RAS_COMP_DEVICE_MEMORY:
-+		return DRM_XE_RAS_ERR_COMP_DEVICE_MEMORY;
-+	case XE_RAS_COMP_CORE_COMPUTE:
-+		return DRM_XE_RAS_ERR_COMP_CORE_COMPUTE;
-+	case XE_RAS_COMP_PCIE:
-+		return DRM_XE_RAS_ERR_COMP_PCIE;
-+	case XE_RAS_COMP_FABRIC:
-+		return DRM_XE_RAS_ERR_COMP_FABRIC;
-+	case XE_RAS_COMP_SOC_INTERNAL:
-+		return DRM_XE_RAS_ERR_COMP_SOC_INTERNAL;
-+	default:
-+		return DRM_XE_RAS_ERR_COMP_MAX;
-+	}
-+}
-+
- static int ras_status_to_errno(u32 status)
- {
- 	switch (status) {
-@@ -236,6 +268,26 @@ static void ras_usp_aer_init(struct xe_device *xe)
- 	dev_dbg(&usp->dev, "Uncorrectable Internal Errors downgraded and unmasked\n");
- }
- 
-+static void ras_send_error_event(struct xe_device *xe, u8 severity, u8 component)
-+{
-+	struct xe_ras_error_class counter = {0};
-+	u8 drm_severity, drm_component;
-+	u32 value;
-+	int ret;
-+
-+	counter.common.severity = severity;
-+	counter.common.component = component;
-+
-+	ret = get_counter(xe, &counter, &value);
-+	if (ret)
-+		return;
-+
-+	drm_severity = xe_to_drm_ras_severity(severity);
-+	drm_component = xe_to_drm_ras_component(component);
-+
-+	xe_drm_ras_event(xe, drm_component, drm_severity, value);
-+}
-+
- static u8 handle_core_compute_errors(struct xe_ras_error_array *arr)
- {
- 	struct xe_ras_compute_error *error_info = (void *)arr->details;
-@@ -330,8 +382,10 @@ void xe_ras_counter_threshold_crossed(struct xe_device *xe,
- 	struct xe_ras_threshold_crossed *pending = (void *)&response->data;
- 	struct xe_ras_error_class *errors = pending->counters;
- 	u32 id, ncounters = pending->ncounters;
-+	u8 sent = 0;
- 
- 	BUILD_BUG_ON(sizeof(response->data) < sizeof(*pending));
-+	BUILD_BUG_ON(BITS_PER_TYPE(sent) < XE_RAS_COMP_MAX);
- 	xe_device_assert_mem_access(xe);
- 
- 	if (!ncounters || ncounters > XE_RAS_NUM_COUNTERS)
-@@ -350,6 +404,13 @@ void xe_ras_counter_threshold_crossed(struct xe_device *xe,
- 
- 		xe_warn(xe, "[RAS]: %s %s detected\n",
- 			comp_to_str(component), sev_to_str(severity));
-+
-+		/* Send event once per component */
-+		if (sent & BIT(component))
-+			continue;
-+		sent |= BIT(component);
-+
-+		ras_send_error_event(xe, severity, component);
- 	}
- }
- 
-@@ -406,12 +467,14 @@ enum xe_ras_recovery_action xe_ras_process_errors(struct xe_device *xe)
- 	enum xe_ras_recovery_action final_action;
- 	u32 remaining = XE_SYSCTRL_FLOOD_LIMIT;
- 	struct xe_ras_get_soc_error response;
-+	u8 sent = 0;
- 	size_t rlen;
- 	int ret;
- 
- 	if (!xe->info.has_sysctrl)
- 		return XE_RAS_RECOVERY_ACTION_RESET;
- 
-+	BUILD_BUG_ON(BITS_PER_TYPE(sent) < XE_RAS_COMP_MAX);
- 	/* Default action */
- 	final_action = XE_RAS_RECOVERY_ACTION_RECOVERED;
- 
-@@ -452,6 +515,12 @@ enum xe_ras_recovery_action xe_ras_process_errors(struct xe_device *xe)
- 			xe_info(xe, "[RAS]: %s %s detected\n", comp_to_str(component),
- 				sev_to_str(severity));
- 
-+			/* Send event once per component */
-+			if (!(sent & BIT(component))) {
-+				sent |= BIT(component);
-+				ras_send_error_event(xe, severity, component);
-+			}
-+
- 			switch (component) {
- 			case XE_RAS_COMP_CORE_COMPUTE:
- 				action = handle_core_compute_errors(arr);
+---
+Jens Emil Schulz Østergaard (9):
+      net: microchip: vcap: fix rule move for rules of coprime size
+      net: microchip: vcap: add lpm vcap to autogen vcap api
+      net: microchip: vcap: make vcap actionset decoding type_id aware
+      net: microchip: vcap: expose helpers in vcap api and update debugfs
+      net: sparx5: add l3 routing registers
+      net: sparx5: vcap: add lpm vcap implementation
+      net: sparx5: add L3 router infrastructure and leg management
+      net: sparx5: add L3 FIB, nexthop and neighbour entry management
+      net: sparx5: add neighbour event handling for L3 routing
+
+ drivers/net/ethernet/microchip/sparx5/Makefile     |    2 +-
+ .../ethernet/microchip/sparx5/lan969x/lan969x.c    |    2 +
+ .../microchip/sparx5/lan969x/lan969x_regs.c        |   20 +-
+ .../microchip/sparx5/lan969x/lan969x_vcap_ag_api.c |  373 ++-
+ .../microchip/sparx5/lan969x/lan969x_vcap_impl.c   |   12 +
+ .../net/ethernet/microchip/sparx5/sparx5_main.c    |   13 +-
+ .../net/ethernet/microchip/sparx5/sparx5_main.h    |   44 +
+ .../ethernet/microchip/sparx5/sparx5_main_regs.h   |  691 ++++-
+ .../net/ethernet/microchip/sparx5/sparx5_regs.c    |   20 +-
+ .../net/ethernet/microchip/sparx5/sparx5_regs.h    |   20 +-
+ .../net/ethernet/microchip/sparx5/sparx5_router.c  | 3021 ++++++++++++++++++++
+ .../ethernet/microchip/sparx5/sparx5_vcap_ag_api.c |  373 ++-
+ .../ethernet/microchip/sparx5/sparx5_vcap_ag_api.h |    6 +-
+ .../ethernet/microchip/sparx5/sparx5_vcap_impl.c   |  159 +-
+ .../ethernet/microchip/sparx5/sparx5_vcap_impl.h   |    5 +
+ drivers/net/ethernet/microchip/vcap/vcap_ag_api.h  |   94 +-
+ drivers/net/ethernet/microchip/vcap/vcap_api.c     |  219 +-
+ drivers/net/ethernet/microchip/vcap/vcap_api.h     |    4 +-
+ .../net/ethernet/microchip/vcap/vcap_api_client.h  |    6 +
+ .../net/ethernet/microchip/vcap/vcap_api_debugfs.c |   13 +-
+ .../net/ethernet/microchip/vcap/vcap_api_kunit.c   |   81 +-
+ .../net/ethernet/microchip/vcap/vcap_model_kunit.c |    6 +-
+ 22 files changed, 5047 insertions(+), 137 deletions(-)
+---
+base-commit: 001b5d347d8ba39b2dccaefcc57967b18caec8fe
+change-id: 20260210-sparx5_l3_routing-962458e4d3da
+
+Best regards,
 -- 
-2.47.1
+Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
 
