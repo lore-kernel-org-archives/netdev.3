@@ -1,194 +1,222 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E302348C7D
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:21:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093093AE187;
+	Mon, 10 Aug 2026 10:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786357316; cv=none; b=HJtwOD/5kWHv6rdu+A4fBKb0SumLT+8YKoqGiTMZclV11SBU2Mv12GYxCdee7CIohXUWp0bxBJfFxXbu+5enuWOvkeGrfSVv+1DVyHG1102/+IZ5Ku4L6bcOcNQ7svPzBOkNBW71fxpDjS4Rm5MroV+qtWatkQZfjfR1RY4x5L8=
+	t=1786357345; cv=none; b=OfRETolu5oaB6g5BGpos1l9paKmnH3Fb6PBBLOePyWtVA3H4jp68bAx0jQsPgJEdWlpYX01Ia8Im/z+hDH2mlbFyl79vKDj/9nLxrMvowPrm7fzK0GDhk43CoV3F1IgGUpx3FAZs9E+ohO0GqOM1ZeAFxZwNd0R2Om/kJe3I7Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786357316; c=relaxed/simple;
-	bh=N0a0VyfMDuAZFQ4HwZdfzk6ZPA98cYPKeprLlO+KLrg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kLma4Dd3IE+rrJKWKqBL0u09pWCpWJ0w61qaDLunYbvbgLAhIUtmPI9igx6o8BwlUDp9rUFOjHlaf1KV2dD/AII+CvL6FuByhJvibsdm3UOhfGlW5g/d1CWskggG4kmj8O/KzNpY1PgINYD701m/lJtkwVSAeB9I6z/AhaRGMLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MIxMKHTe; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786357345; c=relaxed/simple;
+	bh=LA8Dh/Gj2sUrMslXm2SYntkDjnSThjjC5hpoojG2krw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sJDbVrZ0NAoCDavcsPwUOrlfZpPTazdG0RJM921LjU6kwLbHbUI++NvDQtTd4CLRkoZL1KjsKZl8kfBMDo9h71griL5JmxpE3WvqVZJTCZ4gVbix6U6lj7SmUoTho8oJJwWKwSKkzSClLI05kjb0iaBGjKL9XMdk99uXT30AQK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F4DFGiUo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MIxMKHTe"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38e3efab7e0so1229735a91.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 03:21:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786357315; x=1786962115; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=a8TnDdD7JeBKEvlgDXkEdPPoGn4jr50a8UvM6DK5uhI=;
-        b=MIxMKHTeioRFfOUA2N2UKplwfjzLeW8cSNGM1Lev+vAM6VwRzTiQ3AvSK8XymmntLl
-         dpRuQb7SwKXn+bA97u09fy1mxyeso6fjSeAr90I8ayxnCrd8BJjzf0IBY3JYIWr8TLl+
-         AVW8RzoK5zwRG6YtJrSLLV6jzhgO5ViahTQjORqC5zTwRiwpkOxK5ROMI7Qrf35sF0VK
-         6czyxFjytYIHHqxAfiys1GHdnQc9xh8eTfGQNWt0lwisnkKiAq8INxQIagsExRYMmpOT
-         qMX4uz7FQkT8opUAuXkg+uINjSQEYnSemat2VR8LcBUczbVYo8QXCeulru1MTjwuSB9x
-         enMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786357315; x=1786962115;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=a8TnDdD7JeBKEvlgDXkEdPPoGn4jr50a8UvM6DK5uhI=;
-        b=Cfs3BHlF0u+zcvLhZjzC+2VsWjddbhNtkeKg+WpwvI7itOV5HU37ZyjJW0thq5yNW7
-         EInS16PrdSYESz3p+1EqbanJCHQElyRVRxgUWP/Um91UW+gx1cxCOSfb4yOyc98yAt/8
-         hl3FeB3MHFAqxZyLsEY0r/56FxwQSeayCrgzs0piPsRJtOF26AZzY2j9QTlx64j1wYwC
-         BwwtFxPJe61oZXqlYZoJ5QUwvZ4uyw1xcrSXqGKSQegZYz/q6hNUbXKv12c0pg/2rHI/
-         g4LznvQtz4m9bn6RUSqhqgR6eS+N7stFj2cBqyiJOI27SjjjDFUeKz1PUuSjMmgUF/Zl
-         qJ4g==
-X-Gm-Message-State: AOJu0Yy2v0rclnuUQ/O4aM/lPxJ8HhZLvjx2etBQM7nC3YHk3GAIlxze
-	idmEe7ikePq+4jSm1n0WhQY555/3J7J77FPSNma7SXllkwhE85K9/ys/v6GLKMRpYmgTyQ==
-X-Gm-Gg: AR+sD12FAiteasT9zMYVOSasw2qFg6EGHvAE7qDCGCdxLbHo/88ptHra1QOGowujyx4
-	YTNIFHfM/SY0EAGha7/iEtovh22faelN2ZL0R1jtm9fGztzxyHKjHysT5nrZ9JwGj4RpkZXU9Z5
-	/rzLE30n/nEKTHgt/Xm4Bd7G5Kpnc8dCAXiczkK+4Z57YjFgTTgP3aZgCNsvzMyrfE5g6+DoEkj
-	+OxhpLlL02AXn0uml51rOxxz5sD9+ynYzOUBsgTZCbQebyG8vrrRwT44dndGQ73FScQ8m309H1K
-	VuIn+WX0nmbBEUaZklGLTsWSYpO4QWPFtMCZ1fLmJjGMvznhtVtSEDOs8umSV1YqP8/NUPlY8Ne
-	5C+Lgq9bPEl02WggGzh4aMbKhCu0IHyzCPxMQZ/QRuPjTzbRNcfLr6dqLmNQmu8cKSP9lzMC45h
-	1VzVhjV7ob8C4o2hT7ndxZhlt/c+i698CzVMc4vvr0OlMsw8ajtQqd82KgFsLUJ5Rorfw1EWRiH
-	E3lZqL0HfvFwWOPTBSWw5wnJYc8NnpP+t0m3g==
-X-Received: by 2002:a17:90b:33c6:b0:384:927f:3db9 with SMTP id 98e67ed59e1d1-392845e20b2mr8225931a91.1.1786357314667;
-        Mon, 10 Aug 2026 03:21:54 -0700 (PDT)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-390b1389e1fsm6423998a91.0.2026.08.10.03.21.50
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 10 Aug 2026 03:21:54 -0700 (PDT)
-From: Jun Yang <juny24602@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	Jon Maloy <jmaloy@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ying Xue <ying.xue@windriver.com>,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] tipc: read le->link under the node lock in tipc_node_link_down()
-Date: Mon, 10 Aug 2026 18:21:38 +0800
-Message-ID: <20260810102147.48191-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F4DFGiUo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1941F00A3A;
+	Mon, 10 Aug 2026 10:22:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786357343;
+	bh=NwWyhFg/k6MrmsUSXMiKAMqnHT9uyrXn8kBQTew3w3E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=F4DFGiUogDGpvWOhBc03f9eNfgF1LMtt/2L2dIaYpep9XEijeB8ET1w/ArB1+ePzR
+	 sG3dh/9uOGKG3SZNiQ3cyq/FW5WkVTVRJ5dRhEne3kLdDM1KRzsfPDrLX983W5lUxr
+	 svMHHvpZas2a48IV4ul8miZCjHaPQvy3/bGy/tyqfLs5avvTAVjqPegCXm5n9JTnHl
+	 1TND+v4Q4Y6zpU4DXq+ViR6FT+E4nhq85aFVbUr6qNar1iAVeOThgwsHF2SyVVV4si
+	 mxqbvTpgY0N3ZgtCJeFqIrYIGw0KCFtlUH8+tbn3GDSfslxbw961odYqt4ajxzjXkE
+	 Puk1uLltxxjJg==
+Date: Mon, 10 Aug 2026 11:22:03 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, david@kernel.org, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <anmlTpwKW-c51wYB@lucifer>
+References: <20260806200548.3124802-1-surenb@google.com>
+ <20260806200548.3124802-3-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260806200548.3124802-3-surenb@google.com>
 
-From: Jun Yang <junvyyang@tencent.com>
+On Thu, Aug 06, 2026 at 01:05:45PM -0700, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+>
+> tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> it and mmap_read_trylock().
+>
+> Long Version:
+>
+> == Background ==
+>
+> Historically, binder used an mmap_read_trylock() in its shrinker code.
+> This ensures that reclaim is not blocked on an mmap_lock. Commit
+> 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> support for the per-VMA lock, but left mmap_read_trylock() as a
+> fallback.
+>
+> This was presumably because the per-VMA locking can fail for several
+> reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> to mmap_read_trylock().
+>
+> == Problem ==
+>
+> The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> essentially already a non-blocking trylock. The main reason it fails
+> is also the reason mmap_read_trylock() fails: something is holding
+> mmap_write_lock().
+>
+> The only remedy for a collision with mmap_write_lock() is to wait,
+> which this code can not do. So the "fallback" after
+> lock_vma_under_rcu() failure is not really a fallback: it is really
+> likely to just be retrying in vain. That retry in an of itself isn't
+> horrible. But it adds complexity.
+>
+> == Solution ==
+>
+> Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> will not persistently fail. Rely on it alone and simplify the code.
+> The removal of the fallback does not affect NOMMU case because binder
+> driver depends on CONFIG_MMU.
+>
+> Full disclosure: I originally tried to do this with
+> lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> trylock semantics. Claude caught this in a review and suggested the
+> approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> I guess.
+>
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-tipc_node_link_down() caches the link pointer before taking n->lock:
+Thanks, LGTM so:
 
-	struct tipc_link *l = le->link;		/* unlocked */
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-	if (!l)
-		return;
-	tipc_node_write_lock(n);
-	if (!tipc_link_is_establishing(l)) {	/* deref l */
-	...
-		tipc_link_reset(l);		/* write into l */
-	if (delete) {
-		kfree(l);
-		le->link = NULL;
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arve Hjønnevåg <arve@android.com>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Ahern <dsahern@kernel.org>
+> Cc: netdev@vger.kernel.org
+> ---
+>  drivers/android/binder_alloc.c | 45 ++++++++++++++++------------------
+>  1 file changed, 21 insertions(+), 24 deletions(-)
+>
+> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+> index e4488ad86a65..c13a588c37de 100644
+> --- a/drivers/android/binder_alloc.c
+> +++ b/drivers/android/binder_alloc.c
+> @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	struct vm_area_struct *vma;
+>  	struct page *page_to_free;
+>  	unsigned long page_addr;
+> -	int mm_locked = 0;
+>  	size_t index;
+>
+>  	if (!mmget_not_zero(mm))
+> @@ -1151,27 +1150,25 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	index = mdata->page_index;
+>  	page_addr = alloc->vm_start + index * PAGE_SIZE;
+>
+> -	/* attempt per-vma lock first */
+> +	/*
+> +	 * Attempt per-vma lock. This is essentially a
+> +	 * "trylock". It can fail even if the VMA exists
+> +	 * for 'page_addr'.
+> +	 */
+>  	vma = lock_vma_under_rcu(mm, page_addr);
+>  	if (!vma) {
+> -		/* fall back to mmap_lock */
+> -		if (!mmap_read_trylock(mm))
+> -			goto err_mmap_read_lock_failed;
+> -		mm_locked = 1;
+> -		vma = vma_lookup(mm, page_addr);
+> +		/*
+> +		 * If the vma exists, we can't continue because we cannot
+> +		 * remove the page from the vma. However, if the vma was
+> +		 * unmapped, it's okay to continue.
+> +		 */
+> +		if (binder_alloc_is_mapped(alloc))
+> +			goto err_vma_lock_failed;
+>  	}
+>
+>  	if (!mutex_trylock(&alloc->mutex))
+>  		goto err_get_alloc_mutex_failed;
+>
+> -	/*
+> -	 * Since a binder_alloc can only be mapped once, we ensure
+> -	 * the vma corresponds to this mapping by checking whether
+> -	 * the binder_alloc is still mapped.
+> -	 */
+> -	if (vma && !binder_alloc_is_mapped(alloc))
+> -		goto err_invalid_vma;
+> -
+>  	trace_binder_unmap_kernel_start(alloc, index);
+>
+>  	page_to_free = alloc->pages[index];
+> @@ -1182,7 +1179,12 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	list_lru_isolate(lru, item);
+>  	spin_unlock(&lru->lock);
+>
+> -	if (vma) {
+> +	/*
+> +	 * Since a binder_alloc can only be mapped once, we ensure
+> +	 * the vma corresponds to this mapping by checking whether
+> +	 * the binder_alloc is still mapped.
+> +	 */
+> +	if (vma && binder_alloc_is_mapped(alloc)) {
+>  		trace_binder_unmap_user_start(alloc, index);
+>
+>  		zap_vma_range(vma, page_addr, PAGE_SIZE);
+> @@ -1191,23 +1193,18 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	}
+>
+>  	mutex_unlock(&alloc->mutex);
+> -	if (mm_locked)
+> -		mmap_read_unlock(mm);
+> -	else
+> +	if (vma)
+>  		vma_end_read(vma);
+>  	mmput_async(mm);
+>  	binder_free_page(page_to_free);
+>
+>  	return LRU_REMOVED_RETRY;
+>
+> -err_invalid_vma:
+>  	mutex_unlock(&alloc->mutex);
+>  err_get_alloc_mutex_failed:
+> -	if (mm_locked)
+> -		mmap_read_unlock(mm);
+> -	else
+> +	if (vma)
+>  		vma_end_read(vma);
+> -err_mmap_read_lock_failed:
+> +err_vma_lock_failed:
+>  	mmput_async(mm);
+>  err_mmget:
+>  	return LRU_SKIP;
+> --
+> 2.55.0.654.g21b8a5bc05-goog
+>
 
-The delete=true caller frees that very object under n->lock, so the lock
-does not protect the cached pointer against it:
-
- - CPU A, delete=false: tipc_rcv() on TIPC_LINK_DOWN_EVT, or the link
-   supervision timer via tipc_node_timeout(), reads l unlocked and then
-   dereferences it under n->lock;
- - CPU B, delete=true: netlink TIPC_NL_BEARER_DISABLE -> bearer_disable()
-   -> tipc_node_delete_links() -> tipc_node_link_down(n, bearer_id, true)
-   -> kfree(l).
-
-The link is freed with plain kfree(), not kfree_rcu(), and for UDP bearers
-disable_media() only schedules the asynchronous cleanup_bearer() work, so
-its synchronize_net() runs after the links are already gone.  An in-flight
-CPU A that has read l therefore dereferences freed memory once B frees it:
-a use-after-free read in tipc_link_is_establishing(), and a use-after-free
-write via tipc_link_reset() on the establishing branch.
-
-The following trace was captured on 7.2.0-rc5-00284-gaf39eb111ce6:
-
-  BUG: KASAN: slab-use-after-free in tipc_link_is_establishing (net/tipc/link.c:285)
-  Read of size 4 at addr ffff88802e2aa068 by task swapper/2/0
-   tipc_link_is_establishing (net/tipc/link.c:285)
-   tipc_node_link_down (net/tipc/node.c:1076)
-   tipc_node_timeout (net/tipc/node.c:843)
-  Allocated by task 9549:
-   tipc_link_create (net/tipc/link.c:490)
-   tipc_node_check_dest (net/tipc/node.c:1279)
-   tipc_disc_rcv (net/tipc/discover.c:252)
-   tipc_udp_recv (net/tipc/udp_media.c:389)
-  Freed by task 9549:
-   tipc_node_link_down (net/tipc/node.c:1084)
-   tipc_node_delete_links (net/tipc/node.c:1320)
-   bearer_disable (net/tipc/bearer.c:414)
-   __tipc_nl_bearer_disable (net/tipc/bearer.c:992)
-
-Move the le->link read inside tipc_node_write_lock(), so it is serialised
-against the kfree() in the delete path.  A racing teardown now either has
-not run yet, and we see a valid link, or has already run, and we see NULL.
-
-Fixes: 73f646cec354 ("tipc: delay ESTABLISH state event when link is established")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:kimi-k3
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-A KASAN reproducer for this issue is available if requested.
-
-v2:
- - Take &n->links[bearer_id] under tipc_node_write_lock() as well.
- - Use tipc_node_write_unlock_fast() on the NULL link path.
- - Decode the KASAN report with scripts/decode_stacktrace.sh, re-taken on
-   7.2.0-rc5-00284-gaf39eb111ce6.
-
-v1: https://lore.kernel.org/netdev/20260731102145.33622-1-juny24602@gmail.com/
-
- net/tipc/node.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index 8e4ef2630ae4..683a136e53ef 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -1061,18 +1061,23 @@ static void __tipc_node_link_down(struct tipc_node *n, int *bearer_id,
- 
- static void tipc_node_link_down(struct tipc_node *n, int bearer_id, bool delete)
- {
--	struct tipc_link_entry *le = &n->links[bearer_id];
- 	struct tipc_media_addr *maddr = NULL;
--	struct tipc_link *l = le->link;
- 	int old_bearer_id = bearer_id;
-+	struct tipc_link_entry *le;
- 	struct sk_buff_head xmitq;
--
--	if (!l)
--		return;
-+	struct tipc_link *l;
- 
- 	__skb_queue_head_init(&xmitq);
- 
-+	/* Synchronize the link lookup with bearer teardown. */
- 	tipc_node_write_lock(n);
-+	le = &n->links[bearer_id];
-+	l = le->link;
-+	if (!l) {
-+		tipc_node_write_unlock_fast(n);
-+		return;
-+	}
-+
- 	if (!tipc_link_is_establishing(l)) {
- 		__tipc_node_link_down(n, &bearer_id, &xmitq, &maddr);
- 	} else {
--- 
-2.55.0
-
+--
+Cheers, Lorenzo
