@@ -1,106 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30033955EB;
-	Mon, 10 Aug 2026 21:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2156E367F21;
+	Mon, 10 Aug 2026 21:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786397371; cv=none; b=osRFTle3QUVSxGKbZYkpsB32lp4/f/Lo4NxG7Iq4wNb5ehIVBHu8j6JHXFyjU5KVcniU5Mpb10y6WmX7Vd8+ZxBhTK9xo70jTwZvdiDGtxdyUAdw/tpwu57fcyCGD6xwLwunN/xKV7EIEPQGRnxFDVMXEbbVw53cYXC++zSk2Nw=
+	t=1786397467; cv=none; b=RV0ywNqdyy4yJ498VfEZbjl438nXOrLaziZOfuVz6WNPadxSKQ+VmumI5ApFwN74/pW6rTIFT5Wwr0SYly5BL6ZUj2juCxr/k13iu8iv5TetgSOdXfZBqZn+z+Ji82/lxUz4/zp2Ymi2krMjUwxZ1z7Xry4TJr9lQNx32pU2V2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786397371; c=relaxed/simple;
-	bh=uA9wePrIIBAHC/u3KARhb1laFiMN6j+NazzVlk8xF9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KtzgmBvTSyG859XD21Ryr1jgLp3u2GxwXTCenwtZ9k8bD3gj4Ro6EaNZyIMndfSaelcCa2UDwYv2cd/krpA5LfMPu3FbA9cvbuHkeUfdlUpEkzCOxse4LgtaWiJ47L3IB2gvbODwnDMUUwpEnr9I8sNjF5wIv6Z8Xk/4MI9byOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nD2oGsSm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786397467; c=relaxed/simple;
+	bh=N51HxUOZMs2Lbq5K4mssRfAfcrdE5kefb5BQfn+pvR4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CTZwQE2oY4FmrJ9RYVJOyYlqNbNOXW6Bp4eefJP392LNUKLVHp6NUdv+rC4akS5QPbde/lj6cwiisJ7gauqsjlNxmXlmLHILR0FXd6BtJKpldasBrFTOa41UIUVMIgpK9TnE2LvF/MBuuB4m+J38F29s6hZ3FzEE8/lBU2QjeEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAWzfEI1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nD2oGsSm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4951F000E9;
-	Mon, 10 Aug 2026 21:29:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAWzfEI1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACAE1F000E9;
+	Mon, 10 Aug 2026 21:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786397369;
-	bh=gwm1Ou+RfGa1oAFMQHL3o3ZMRdhZs0f6XLx/rWHXY04=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nD2oGsSmqPHY1NPZgD0fNneyqyttgPxZ7rgb5DM9vIc405XZkHyypPiVyWFHAdlQE
-	 QONVlKAOs3cX3uFh5cAVWjPPged/fGttDSU5v1K82adyp4g8EWhEjVHagqZd7YX5Xi
-	 NkJ2wnzw6kX5Y/ESYiAQDr4rLfkiVE4BOcx77HP9++gs9w79iMaySv2IkpZGmLxZUT
-	 +BTZk4u7THa5a2iYuksRCobrnEVKunXJyFXoSpkXT/hOFB0YLLVKu5C7K7Pyd7ONsM
-	 a4TPtfV8N+X/rlAnN4PPkt58aDZ5Zkd/Rs/rsvkFp4/tEYjhewKYWfWelobJzjLP4k
-	 E1s0nej+mj5Hg==
-Date: Mon, 10 Aug 2026 14:29:28 -0700
+	s=k20260515; t=1786397465;
+	bh=b7V5POBNPQ5QnJuKExPYA65GV6vIW4UASQxkPEue1mE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LAWzfEI19tKk4iess3kFGVWKnMWyNX/JEdEPPdZArgGTfd957oZOVdDblVd8f0NZh
+	 3gJLOR/mar755nEUq/Vh09K+BAFUZDrTRCZLAju2+tiE4ps7MMxkLaW56GnhDPK9uZ
+	 gFpuviESwQA1qmxin2b0BlZr9U2AVp9bPBUomtW2v8JHl3wjMr3k9QVvwhtufcDIuC
+	 ZWLstYtGwnQex6PvIZDHsD0W3FwwBlOLO1Sjmd9XUA7sXlO+RRgaH7gViPEBmSFfCd
+	 IWLEDGuVG849vA441dippwkZbf731FzC31Sxkh8F/wffcT45QQMkh2V1cPwYN2bcCx
+	 iRMq6eisSFBxA==
 From: Jakub Kicinski <kuba@kernel.org>
-To: javen <javen_xu@realsil.com.cn>
-Cc: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <horms@kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v10 3/7] r8169: add support for new interrupt
- mapping
-Message-ID: <20260810142928.0e53be5b@kernel.org>
-In-Reply-To: <20260803021305.488-4-javen_xu@realsil.com.cn>
-References: <20260803021305.488-1-javen_xu@realsil.com.cn>
-	<20260803021305.488-4-javen_xu@realsil.com.cn>
+To: javen_xu@realsil.com.cn
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	hkallweit1@gmail.com,
+	nic_swsd@realtek.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v10 4/7] r8169: enable new interrupt mapping
+Date: Mon, 10 Aug 2026 14:31:04 -0700
+Message-ID: <20260810213104.853262-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260803021305.488-5-javen_xu@realsil.com.cn>
+References: <20260803021305.488-5-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 3 Aug 2026 10:13:01 +0800 javen wrote:
-> +static int rtl8169_poll_msix_rx(struct napi_struct *napi, int budget)
-> +{
-> +	struct net_device *dev = napi->dev;
-> +	struct rtl8169_private *tp;
-> +	int work_done = 0;
-> +	int message_id;
-> +
-> +	tp = netdev_priv(dev);
-> +	message_id = napi - tp->rtl8169_napi;
-> +
-> +	if (message_id < tp->num_rx_rings)
-> +		work_done += rtl_rx(dev, tp, &tp->rx_ring[message_id], budget, napi);
-> +
-> +	if (work_done < budget && napi_complete_done(napi, work_done))
-> +		rtl8169_enable_hw_interrupt_msix(tp, message_id);
-> +
-> +	return work_done;
-> +}
-> +
-> +static int rtl8169_poll_msix_tx(struct napi_struct *napi, int budget)
-> +{
-> +	struct net_device *dev = napi->dev;
-> +	struct rtl8169_private *tp;
-> +
-> +	tp = netdev_priv(dev);
-> +
-> +	rtl_tx(dev, tp, budget);
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+r8169: enable new interrupt mapping
 
-This seems not to be ring aware? Is that because we can only have 1 Tx
-ring at this point? maybe add a comment to this effect, it's somewhat
-unusual.
+This patch enables new interrupt mapping for the RTL8127 device. It sets up
+vector mapping if the device is configured with multiple MSI-X vectors.
 
-> +	if (napi_complete_done(napi, 0))
-> +		rtl8169_enable_hw_interrupt_msix(tp, (int)(napi - tp->rtl8169_napi));
-> +
-> +	return 0;
-> +}
-> +
-> +static int rtl8169_poll_msix_other(struct napi_struct *napi, int budget)
-> +{
-> +	struct net_device *dev = napi->dev;
-> +	struct rtl8169_private *tp;
-> +
-> +	tp = netdev_priv(dev);
-> +
-> +	if (napi_complete_done(napi, 0))
-> +		rtl8169_enable_hw_interrupt_msix(tp, (int)(napi - tp->rtl8169_napi));
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index 6a7e9d875cf00..31f6d0c2e3d15 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
 
-Why are we using a NAPI for "other" ? NAPI is for packet processing.
-This handler only acks the IRQ and does nothing (even after all the
-later patches in the series, AFAICT) so why schedule the NAPI in the
-first place, and not handle all the work in the IRQ directly?
+[ ... ]
 
-> +	return 0;
-> +}
+> @@ -3945,6 +3954,9 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
+>  	RTL_W32(tp, RSS_CTRL_8125, 0);
+>  	RTL_W16(tp, Q_NUM_CTRL_8125, 0);
+>  
+> +	if (tp->irq_nvecs > 1)
+> +		rtl8169_hw_enable_vec_mapping(tp);
+> +
+
+[Severity: Medium]
+With multiple MSI-X vectors enabled here, will concurrent NAPI polling cause
+data races on the shared dev->stats counters?
+
+When multiple NAPI instances process packets on different CPUs, rtl_rx() and
+rtl8169_check_rx_desc_error() directly increment shared counters without
+synchronization:
+
+drivers/net/ethernet/realtek/r8169_main.c:rtl8169_check_rx_desc_error() {
+    ...
+    dev->stats.rx_length_errors++;
+    if (status & RxCRC)
+        dev->stats.rx_crc_errors++;
+    ...
+}
+
+Could this lead to lost increments or torn reads on these network statistics?
+
+[Severity: Medium]
+Also, regarding the multiple RX rings setup for these vectors, is there a
+memory leak in the teardown path?
+
+The rx_ring array is allocated dynamically in rtl_init_one() during probe,
+but rtl_remove_one() doesn't seem to free it:
+
+drivers/net/ethernet/realtek/r8169_main.c:rtl_remove_one() {
+    ...
+    unregister_netdev(tp->dev);
+    r8169_free_napi(tp);
+    if (tp->dash_type != RTL_DASH_NONE)
+        rtl8168_driver_stop(tp);
+    rtl_release_firmware(tp);
+    /* restore original MAC address */
+    rtl_rar_set(tp, tp->dev->perm_addr);
+}
+
+Should there be a call to kfree(tp->rx_ring) here when the driver unbinds?
+
+>  	/* disable UPS */
+>  	r8168_mac_ocp_modify(tp, 0xd40a, 0x0010, 0x0000);
+>
