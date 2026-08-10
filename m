@@ -1,227 +1,68 @@
-Received: from smtpo75.interia.pl (smtpo75.interia.pl [217.74.67.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826F43A7F6F
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.74.67.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664AE3A7F70;
+	Mon, 10 Aug 2026 09:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786352295; cv=none; b=lrs11yIkjLoeTdgOhJATtThFH3TYBrJ3aXjiWl1rcrfv37/xAU7Sz71cYUkugsbHlKeIULGERrJGV28GC3U34Z+U0B0eyFy9Sz5MEEqSeL8dA2uwsH2W//u2Eg0fE0XuxaK25+XhlwcaDc9w71INHu/Jco+R9D9qgGBajLxcn6w=
+	t=1786352585; cv=none; b=JNYhHWRcN3m2T3FUjjVjPrwJ3BmblnVCY2WWg/eJXwdFrwcJrQH15UuRzMBT6YfkkMFif4T3LwhLXsoOiV01tWBKVv65XbX6Z7WsmVI4FLQfyHm8WAd72yi7I/BYYXqjwG/6HqpCGuJfjX1JC5W41xWtDWH06nYwnS8vQToc3vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786352295; c=relaxed/simple;
-	bh=E5zXS3Kqqb7CwM+0T0bL1MNJipOkT2/vfhJTw7iHQL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g1OB6v7qraLDq6xmtgus428essE51w3GxW3KQB533U6ITBDAPoNWQ8fik2wjG4rkPt95XBGjfK+Z05768iXetrjh8v5lUshaszegfityaRx8vubWx/GbTtodh8KAP0+eNJ7Q0Ytoas7/W3QHmnKcp0O+8kOz9aVcejan2F3nTNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm; spf=pass smtp.mailfrom=poczta.fm; dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b=xGPplLCO; arc=none smtp.client-ip=217.74.67.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
+	s=arc-20240116; t=1786352585; c=relaxed/simple;
+	bh=/2uZwumGt/ZXteExYMBlsPb0ZBj0kcYhk2JZpnsFq/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=En2Ootq9hlwTtTPylwPgfy7Nh1XHT4J2jfgz0cI/QZtSkx9DXmP7LMQq2UQaKphbslsl8hH65Fhq+8hc3KISsKpdOH7/jHxzKDl8b6FGvK6LRLxhjpANOBcmiteZqmZt8i8ABPwYYyswqdQ03m6FxlWLoDLM5TmOwohD+LbplJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=mnWhq6j0; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b="xGPplLCO"
-Received: from localhost (unknown [80.68.231.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-	Mon, 10 Aug 2026 10:58:07 +0200 (CEST)
-From: Slawomir Stepien <sst@poczta.fm>
-To: kuba@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	syzbot@lists.linux.dev,
-	Slawomir Stepien <sst@poczta.fm>,
-	syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
-Subject: [PATCH v2] netdevsim: drop the ability to change max_vfs via debugfs
-Date: Mon, 10 Aug 2026 10:57:17 +0200
-Message-ID: <20260810085717.570382-1-sst@poczta.fm>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="mnWhq6j0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=tpKqHS25l3eXJnK+XCFqL4sXwz2jVJLk04lOccvzrac=; b=mnWhq6j03gU9JfYHJSlxAgDX0r
+	M9lZTO+bxNRPSWdGzIT/hwBRDvIueavF0UNLql/fR3eM+c/kKI8MqJFHhKsjxggtaC/D4YGnYuX81
+	1l+ivPZ4Q6HWipo8jBhopWoXo+MclPs8rAHcXD3bR+beohc6UsiHmnufXq0Xx/SVPYcv5STfOf6xn
+	wOMGaYL6LvNpkcQicZ5e2sQm7ABY7CVv7jPLClIPoj172D99tef13sGCSG8QgeA/Qyhfww5wYlNVJ
+	5CUuR6rCqmwgEGGXM+A84BtWSfS3laetT6hAqdQNo1Fbj9XrvrYCUW141O3LRgmr/lSSBGJGl8fdJ
+	TYJI5hJg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtLu7-002ddk-0l;
+	Mon, 10 Aug 2026 09:02:43 +0000
+Date: Mon, 10 Aug 2026 02:02:33 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, gustavold@gmail.com, 
+	asantostc@gmail.com, kernel-team@meta.com
+Subject: Re: [PATCH net-next v2 0/2] netconsole: replace target_list_lock by
+ RCU on userdata hot path
+Message-ID: <anmTnb3a1m6edg9H@gmail.com>
+References: <20260805-netcons-userdata-rcu-v2-0-c5e80f6a7a46@debian.org>
+ <20260807170908.53188cee@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
-	t=1786352290; bh=xrTw5PAADgmBNSmc3t2wM6SDOYwJszQY+/tmBuBo4HU=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=xGPplLCOSyvlmxlf8ZLiius2mOgEG6tyrxujq18bPdExT1nmi8VVBw2VTNnyW5TGZ
-	 K3ylQnwEjNt+ZWzvA6ssR0e5baXpyityvoZDUP6n46d6FSoiYryaGbgUrogxm8OGzg
-	 G4Yl75PI/S8AIQl6Js135GOkp79hTDCG72u5irhw=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260807170908.53188cee@kernel.org>
+X-Debian-User: leitao
 
-This debugfs file isn't used by kernel's selftests, so drop it.
+On Fri, Aug 07, 2026 at 05:09:08PM -0700, Jakub Kicinski wrote:
+> On Wed, 05 Aug 2026 03:58:18 -0700 Breno Leitao wrote:
+> > I would like to move netconsole to use RCU on the hot path for
+> > a while instead of target_list_lock. My goal is to have no lock on the
+> > tx side at all and eventually drop CON_NBCON_ATOMIC_UNSAFE, if that is
+> > possible [1].
+> 
+> Bot says this didn't apply when it was posted.
 
-Reported-by: syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3147c5de186107ffc7a1
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Slawomir Stepien <sst@poczta.fm>
----
-v2:
-* Changed the approach as suggested by Jakub
-* Subject line has changed
-
-v1:
-* https://lore.kernel.org/all/b7bf56ea-7522-4163-acd5-aaa69ad03b3a@mail.kernel.org/T/
----
- drivers/net/netdevsim/bus.c       |  3 --
- drivers/net/netdevsim/dev.c       | 79 +------------------------------
- drivers/net/netdevsim/netdevsim.h |  2 +-
- 3 files changed, 3 insertions(+), 81 deletions(-)
-
-diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
-index 41483e371f05..5c55c308487b 100644
---- a/drivers/net/netdevsim/bus.c
-+++ b/drivers/net/netdevsim/bus.c
-@@ -443,8 +443,6 @@ static const struct bus_type nsim_bus = {
- 	.num_vf		= nsim_num_vf,
- };
- 
--#define NSIM_BUS_DEV_MAX_VFS 4
--
- static struct nsim_bus_dev *
- nsim_bus_dev_new(unsigned int id, unsigned int port_count, unsigned int num_queues)
- {
-@@ -464,7 +462,6 @@ nsim_bus_dev_new(unsigned int id, unsigned int port_count, unsigned int num_queu
- 	nsim_bus_dev->port_count = port_count;
- 	nsim_bus_dev->num_queues = num_queues;
- 	nsim_bus_dev->initial_net = current->nsproxy->net_ns;
--	nsim_bus_dev->max_vfs = NSIM_BUS_DEV_MAX_VFS;
- 	/* Disallow using nsim_bus_dev */
- 	smp_store_release(&nsim_bus_dev->init, false);
- 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index aed9ad5f1b43..4482f8c5417b 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -225,78 +225,6 @@ static const struct file_operations nsim_dev_trap_fa_cookie_fops = {
- 	.owner = THIS_MODULE,
- };
- 
--static ssize_t nsim_bus_dev_max_vfs_read(struct file *file, char __user *data,
--					 size_t count, loff_t *ppos)
--{
--	struct nsim_dev *nsim_dev = file->private_data;
--	char buf[11];
--	ssize_t len;
--
--	len = scnprintf(buf, sizeof(buf), "%u\n",
--			READ_ONCE(nsim_dev->nsim_bus_dev->max_vfs));
--
--	return simple_read_from_buffer(data, count, ppos, buf, len);
--}
--
--static ssize_t nsim_bus_dev_max_vfs_write(struct file *file,
--					  const char __user *data,
--					  size_t count, loff_t *ppos)
--{
--	struct nsim_vf_config *vfconfigs;
--	struct nsim_dev *nsim_dev;
--	char buf[10];
--	ssize_t ret;
--	u32 val;
--
--	if (*ppos != 0)
--		return 0;
--
--	if (count >= sizeof(buf))
--		return -ENOSPC;
--
--	ret = copy_from_user(buf, data, count);
--	if (ret)
--		return -EFAULT;
--	buf[count] = '\0';
--
--	ret = kstrtouint(buf, 10, &val);
--	if (ret)
--		return -EINVAL;
--
--	/* max_vfs limited by the maximum number of provided port indexes */
--	if (val > NSIM_DEV_VF_PORT_INDEX_MAX - NSIM_DEV_VF_PORT_INDEX_BASE)
--		return -ERANGE;
--
--	vfconfigs = kzalloc_objs(struct nsim_vf_config, val,
--				 GFP_KERNEL | __GFP_NOWARN);
--	if (!vfconfigs)
--		return -ENOMEM;
--
--	nsim_dev = file->private_data;
--	devl_lock(priv_to_devlink(nsim_dev));
--	/* Reject if VFs are configured */
--	if (nsim_dev_get_vfs(nsim_dev)) {
--		ret = -EBUSY;
--	} else {
--		swap(nsim_dev->vfconfigs, vfconfigs);
--		WRITE_ONCE(nsim_dev->nsim_bus_dev->max_vfs, val);
--		*ppos += count;
--		ret = count;
--	}
--	devl_unlock(priv_to_devlink(nsim_dev));
--
--	kfree(vfconfigs);
--	return ret;
--}
--
--static const struct file_operations nsim_dev_max_vfs_fops = {
--	.open = simple_open,
--	.read = nsim_bus_dev_max_vfs_read,
--	.write = nsim_bus_dev_max_vfs_write,
--	.llseek = generic_file_llseek,
--	.owner = THIS_MODULE,
--};
--
- static int nsim_dev_debugfs_init(struct nsim_dev *nsim_dev)
- {
- 	char dev_ddir_name[sizeof(DRV_NAME) + 10];
-@@ -343,9 +271,6 @@ static int nsim_dev_debugfs_init(struct nsim_dev *nsim_dev)
- 	debugfs_create_bool("fail_trap_policer_counter_get", 0600,
- 			    nsim_dev->ddir,
- 			    &nsim_dev->fail_trap_policer_counter_get);
--	/* caution, dev_max_vfs write takes devlink lock */
--	debugfs_create_file("max_vfs", 0600, nsim_dev->ddir,
--			    nsim_dev, &nsim_dev_max_vfs_fops);
- 
- 	nsim_dev->nodes_ddir = debugfs_create_dir("rate_nodes", nsim_dev->ddir);
- 	if (IS_ERR(nsim_dev->nodes_ddir)) {
-@@ -1673,7 +1598,7 @@ int nsim_drv_probe(struct nsim_bus_dev *nsim_bus_dev)
- 	dev_set_drvdata(&nsim_bus_dev->dev, nsim_dev);
- 
- 	nsim_dev->vfconfigs = kzalloc_objs(struct nsim_vf_config,
--					   nsim_bus_dev->max_vfs,
-+					   NSIM_BUS_DEV_MAX_VFS,
- 					   GFP_KERNEL | __GFP_NOWARN);
- 	if (!nsim_dev->vfconfigs) {
- 		err = -ENOMEM;
-@@ -1872,7 +1797,7 @@ int nsim_drv_configure_vfs(struct nsim_bus_dev *nsim_bus_dev,
- 		ret = -EBUSY;
- 		goto exit_unlock;
- 	}
--	if (nsim_bus_dev->max_vfs < num_vfs) {
-+	if (num_vfs > NSIM_BUS_DEV_MAX_VFS) {
- 		ret = -ENOMEM;
- 		goto exit_unlock;
- 	}
-diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-index 64f77f93d937..a0490d522778 100644
---- a/drivers/net/netdevsim/netdevsim.h
-+++ b/drivers/net/netdevsim/netdevsim.h
-@@ -472,6 +472,7 @@ nsim_psp_handle_ext(struct sk_buff *skb, struct skb_ext *psp_ext) {}
- int nsim_setup_tc(struct net_device *dev, enum tc_setup_type type,
- 		  void *type_data);
- 
-+#define NSIM_BUS_DEV_MAX_VFS 4
- struct nsim_bus_dev {
- 	struct device dev;
- 	struct list_head list;
-@@ -480,7 +481,6 @@ struct nsim_bus_dev {
- 	struct net *initial_net; /* Purpose of this is to carry net pointer
- 				  * during the probe time only.
- 				  */
--	unsigned int max_vfs;
- 	unsigned int num_vfs;
- 	bool init;
- };
--- 
-2.55.0
-
+Sorry, let me rebase it and update.
