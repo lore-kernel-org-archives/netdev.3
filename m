@@ -1,118 +1,139 @@
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79D73839B7;
-	Mon, 10 Aug 2026 07:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0460388E55;
+	Mon, 10 Aug 2026 07:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786348419; cv=none; b=Ar1IbEGrM4veV1rMl9kLWgLsQL2gXJxEGigl0Ew+ErGq6yMDNuUVQ+iwWdFCRfMfUdhskHnkNFGu8PIn9uDAGYrq8Hbvk978+kxElIAVT3weG+8HZx/Qs/N9SHhvpcxPHvdemcIB6jspRK2+vBgCe/9U/BABxQ56znh9f/Rjy4U=
+	t=1786348533; cv=none; b=GO1/4iehCnuXkqtxEEIB6itWx08zAO1TclaGHnjjdN+bnzxJEkKYU/4lT52e0587y1DTOWrDztzLeJmYRGZFLoVrKPmbxxUxy46kg55I/nfEe+DZQGAY8XcuJNzcDa0Y1B6qb0916V2fiKvnHVmxF6wMIEbjk+TRyApdP1As5YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786348419; c=relaxed/simple;
-	bh=nMZrEt1Xx2wttWxdikFSYeWvFbbsZATKRUOwyBwFIcw=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=GWcHUUTCKmrNjlVKJL882eIsHlyGvXTf4vRl/1Gj9CAxrv0tlg7wAS6gHmPifok7X22AhXY+93zPDP1eaRO6ecMW8aVUcwZNqanyC7YizMmUN595vkRi/6zxAhnMEO5lCDxCRnupmDWYxuiXRx9G6AABPhAaPcnfXHRdrD7t8/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=aX61iko2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZVIvd2NZ; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1786348533; c=relaxed/simple;
+	bh=S4dZUy84ansteXj3J/r2ZjzvSdLzFwEggQRJhGWqFH0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=KZiJ3Q0YvXlO2hkJFSguA+G5FasCxLw5MqI271Mz0QQRqBddJ1qgTP9zikb+/8EYMPR9yQIt8CQLVJW1EQTk4CwA+4XP/WEnE8LBWzIpA2oSz4eK4ZKOd0dz4VgzlcCWIvIROhgWuveYgCRLQq9Yz/hqHSkprIvIGx6YzP1h1B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpGXD7q9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="aX61iko2";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZVIvd2NZ"
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id B9FB71400079;
-	Mon, 10 Aug 2026 03:53:35 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Mon, 10 Aug 2026 03:53:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1786348415;
-	 x=1786434815; bh=runD0U6EWuHy0e8dF08rJ7oF2cXWENn2Kbh9AqCq5wQ=; b=
-	aX61iko21XS2w+ehKVVG5600g4ulzyQwiFLE5k0LLiUGlUX1u4UOqcrkRBv7DI9d
-	2ledx8RN0pFMhahErPM9IBabBK45TGzk0JBEpJCOAI47Blg+S4Pod3TM4XCjrL3N
-	dSzK9A+pF/Q5aYg75pvmR+g7mTiZNNmvcYNBIO7/22dpL4OQf2YaodENUUQC4Un3
-	DY7gq8Zj13zfNx9USrKY8vbdz/zUd3Lm/9cv3ly1kxqN1g0iRHgUJ9fPEnEvBwKv
-	OakNcTgbR8HBkqgYjbBQ1kjQ3CvNxlepjxl7rhfyQ4EmD6J3qNxt0O28QXjL9H4r
-	J24elYfCgMd24tOTFUU15g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786348415; x=
-	1786434815; bh=runD0U6EWuHy0e8dF08rJ7oF2cXWENn2Kbh9AqCq5wQ=; b=Z
-	VIvd2NZnccN1aq8Gg0awnAgQFEldXpmwUXTryoptmnk55oYwfbIRoxkIJ+uHmvp5
-	4icIH12WWerTfWBDaC/cMtR16Iaulqy/CBmNeg0j2a7lcDjGGfSUxiVgMvpiy8cW
-	atwUyBsCYFq514tvPth+81WIP6Pc/EWnbKn97qAhwHxnlCvSo8/vz+lEwRRv+2K1
-	GQi7H7ovjkB2wDRdVWtmjoqvggpcJBzUCjDSOahXlMURj9olsbwFisw2x7ESNPve
-	JX6ixYcyH2lA9Jj1xyTqx0piohUqxkrZbyHMcIgFP1IPL0wn9T5oN/LoSVbpxuR2
-	nD+H2sMbgccu2hZpjBuvQ==
-X-ME-Sender: <xms:eIN5anSCCh5v7FYK8y2dpH458eukVQtWKBUBG9YI1irFkO6Y_upyJw>
-    <xme:eIN5ajmXLPLVYywd3sGTWKrnyAzrhS-rtRtBUxL--LrLIobSMmf39qDI7ecwzak7V
-    nmqrLuOftqQaSP2rWzZvlbD4qnmrMNQ_tjdWQPVnhLsxFgSWyYNdnlX>
-X-ME-Proxy-Cause: dmFkZTG3KJHUy5DZByjZ18dD0N4Bjz8bSsstts7L8TWP0BmgEF+vmOwPbQ3C3vJIpS2wNT
-    WxdrMKu++JrIpcluQK1nHCn3vp5K5hYnF9VQ2/As3M8fkqKY8j+Ilt81by6hexQ6yZFslq
-    1xvHFZG+4gp9qtk+ETFsw+e5qRhKDUEICQdL9IwU14W/5Tl3Ck66224px795utxM2cb9WT
-    y9gMrgpQukFkbk+tiacfvFAanTx0PjhKIi4Pp0Axa1j2xYMCB4rbAhd0FAikWA8MbDuxq8
-    l/RFpzNObSXnOllZAJHH9GzWSbs/LdHBoCiKXHdHhzVoKZOKdZhVu6vKPcguttrQmEcxX5
-    zMW9r1LWyeZe+o3w0TzU6S+xU9RfeCsMTd1bsA7kyPffdkAf9UO42/G8qYhBMIct+VRbKN
-    3gvsL2W0SlYvQAPvUCMD4dNN6t5QplzdP1ajXJDZl5xSXg9Xx/fYWFACQ4LP7YdI0yQSWK
-    RObZ7aJorUJ7czBRnTH9hpMr57XlYV8o6gXWD7ROLCpEcgZyPc1XeMfu7KIvCbBxoFY2BM
-    u0TDUzOehxNByoAZwaYZ1AbdLOOAvDlcTGAaaIaI4RfyBGOXA8JqK7KrOYlFkZTeOP5N2Z
-    P3sCPFYDf+Qc3EITFAE9qgvl5q7+FKp1Nidcql5bs7vqFhh8FxZ2xxdCoBiA
-X-ME-Proxy: <xmx:e4N5aqB8kUMFImQJHNcdcYFQ_DG3i3G12dLYI4u3Nmbz5f-3GfHAHg>
-    <xmx:e4N5aoPDL7yUCT111I8YHaN3rjVr3vtbsy0By6db-am3vbpta2IXPA>
-    <xmx:e4N5amM-OaidR6gI8U5CPhuuy22c2zMMBobBv0OOYZmSFVyFeJemWw>
-    <xmx:e4N5aqLJMJzPP2elJ4xPhVXfYOwuEdOrFiiLectB0vU57SMhLe0baQ>
-    <xmx:f4N5at4ElwPqWsfHhzCoBBCYccNHfvIBK5vz_dDcHkxFHnaGjMP4048p>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id B99CF32A006A; Mon, 10 Aug 2026 03:53:28 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpGXD7q9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C29E1F000E9;
+	Mon, 10 Aug 2026 07:55:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786348532;
+	bh=kBLbIMgTXqINzSs76AQPCvPUga9OZFpNe9a8KjfvCuw=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=LpGXD7q9dZZxtKlc5vTIWPheMBSrbxk8BWAVqruydo8JBkbpot8OkXjSNIT0EGIp7
+	 DRc7lFbPbtvPoAQtQyCZVW/dyEkvEX1u1Kqb0/MArv1CXrBFmb6/Gltg0C/fupwf39
+	 5mhfR1OXhAFH7Mh6Vo/SUWS1ap569zup/F/S/ZVKy7Ul4NpcwEJOIewaI6cNWo3yL7
+	 t3C/zXIv/MBQzw26/qTohklhh0jBrK3xT2R8erD4Utkbtc3V/QYrQoDiFePbjbwo/c
+	 TS6f8JXK1XrSKs8qLt7Hc6kVMmtGbzySuZPTJ4PFNFcf2W5KRt4u1tDpD8q2fDDZXF
+	 VWdmWvZlXVaNA==
+Message-ID: <f2183f1f-f690-4721-9e91-4fefd56d1b89@kernel.org>
+Date: Mon, 10 Aug 2026 09:55:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A9hGE10fN-aw
-Date: Mon, 10 Aug 2026 09:53:08 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Krzysztof Kozlowski" <krzk@kernel.org>,
- =?UTF-8?Q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>
-Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, Netdev <netdev@vger.kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <9e8fb566-e372-4519-ac0b-b8ca6de275e3@app.fastmail.com>
-In-Reply-To: <20260810-arrogant-anteater-of-economy-ef2078@quoll>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 2/3] dt-bindings: net: wiznet,w5100: add
+ link-gpios
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: =?UTF-8?Q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 References: <20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net>
  <20260806-wiznet-link-gpio-v3-2-532d4a143805@marmottus.net>
  <20260810-arrogant-anteater-of-economy-ef2078@quoll>
-Subject: Re: [PATCH net-next v3 2/3] dt-bindings: net: wiznet,w5100: add link-gpios
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260810-arrogant-anteater-of-economy-ef2078@quoll>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 10, 2026, at 09:43, Krzysztof Kozlowski wrote:
-> On Thu, Aug 06, 2026 at 05:00:01PM +0200, Arthur Cr=C3=A9pin Leblond w=
-rote:
->> =20
+On 10/08/2026 09:43, Krzysztof Kozlowski wrote:
+> On Thu, Aug 06, 2026 at 05:00:01PM +0200, Arthur Crépin Leblond wrote:
+>> Add the link-gpios property which describes an optional GPIO line that
+>> can be wired to the LINKLED pin of the w5500 as an interrupt to detect
+>> link status changes.
+>>
+>> Signed-off-by: Arthur Crépin Leblond <arthur@marmottus.net>
+>> ---
+>>  Documentation/devicetree/bindings/net/wiznet,w5100.yaml | 7 +++++++
+>>  1 file changed, 7 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+>> index 641c9ddbde9e..cebf437ad3c4 100644
+>> --- a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+>> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+>> @@ -35,6 +35,12 @@ properties:
+>>        however, board designs may need to limit this value.
+>>      maximum: 80000000
+>>  
 >> +  link-gpios:
 >> +    description:
->> +      An optional GPIO line that can be wired to the LINKLED pin of =
-the w5500
+>> +      An optional GPIO line that can be wired to the LINKLED pin of the w5500
 >> +      as an interrupt to detect link status changes.
->
-> The message is confusing. If you describe it from the host (system poi=
-nt
+> 
+> The message is confusing. If you describe it from the host (system point
 > of view), then interrupts are not GPIOs but "interrupts".
->
+> 
 > But maybe this is OUT GPIO from the system to the device?
+> 
 
-From the device point of view, it's an LED output, but from the
-system side we should describe it as an IRQ_TYPE_EDGE_BOTH
-"interrupts" property rather than a gpio line.
+So I read your driver and hardware datasheet. This is not an interrupt,
+just output pin, so drop the "interrupt" wording here.
 
-     Arnd
+This output pin can be wired to LED or to GPIO on the host side, so
+ideally this would be mutually exclusive, but representing this as GPIO
+is fine for now. Description could be:
+"Active low LINKLED output pin reporting status of the link"
+
+Best regards,
+Krzysztof
