@@ -1,41 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34EE3E7633;
-	Mon, 10 Aug 2026 13:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDACA3C10A4;
+	Mon, 10 Aug 2026 13:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786367118; cv=none; b=bmJBH2M+/zjKCzAfostitRO2mXji/vIZbUrhBY+tVMu8AVYMQzk3GCl6qnnKCWQJA/9xIAN6XcTgm8xvTEEvLBssJhPStXW4ocvn1tLzZUmxZTT2h1LZ0VU1SiREgblDV+mlKMFP/B2/mBSup6RH+mlmw0/mu4BrowUEZKWR80w=
+	t=1786367238; cv=none; b=A5l1XUoc58DWhUl0R+KYJlA0fl8KRRfOnGlBSc+cxYEphPo5RTf6MQTllClyVb507RANprsZNbK6ZNQZadAtZyMGiteUnyRB6p111V05TDoTLJXX8ihXoALmtqpkE75CNPsodvILcNdlIe0RVPJSyV0fjckNjRgFViLNpsn/Gcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786367118; c=relaxed/simple;
-	bh=SI7rS+wrO8NrHX2bjLVDJfhdPM6X2tKBj6YpYYkVG5E=;
+	s=arc-20240116; t=1786367238; c=relaxed/simple;
+	bh=RSsagnmt0uB+R5PLVeR69Qc0rXEGxi/FAZhNcAeJdD4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J6ZtNJtKxQSZBSIgFcFkd9wmAXEDYi6NK8WmLaP5pI6E1eyQlYJQ1PGNcG9Bz4P/SvgNoQKUK9g5ud8GkGywalZ91TopWsiFznmuWnzWDH+NPj3jSfbzDkHLnU9FZiuu5/ySknxd0aK9fRYQLU3Ygg8NSwhXU3G9oCG38/6H0AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJU7pMki; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=LBpZS880CJpw7y+5wztSKxNhTS1KdKv4s0SMOI3qHU43gFLLgIvAdG2aqYerp5VR5rVAvAq70+NCt3qmk7o+R0+TQAOLgUw0bxvZvMDbkwI+8kGkrSCkO+XW1e5MXujkCrNJNVa6UuQjOnbZXDJmdM65AP1+3DD99OVvn/5HufE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=vsHQDwMy; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJU7pMki"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9131F000E9;
-	Mon, 10 Aug 2026 13:05:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786367116;
-	bh=TBvVqD6xlWW1BUcQzsSV2rAh8UoSNAz3Lc8JWdfBxWI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mJU7pMkixuMQCh/QnrFaVT86aaOBeP22kN4iKrW6CbrOh4ktiiXfcyObr/qPRJrY3
-	 4jrIkNGps/VPH1FyJ6+Pq/F/XJcVHfoyhm8JLNvsBEJRr5dFHGkKmRqybe2DsRBuA9
-	 n4VrottPLAmqlzWZ1lrW22NCxz18ZIyIGmRBb3aDWhQzGiJJbTJGLOovqQN07WjHIX
-	 +3lHL7ckJ91tYMHs3sQYFubDlzEydueRb655LL4ZWe2XCoRXWl2UXb522HzJAwcJWr
-	 L6wlRMLfnLKHZssK3mBmp8Nap4FpAoVK4vAYibScJV8PvWWMRHPQNpjV59afjylN3Y
-	 dedkDuCEQ/9TA==
-Date: Mon, 10 Aug 2026 16:05:10 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Michael Gur <michaelgur@nvidia.com>
-Cc: jgg@ziepe.ca, linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-	Edward Srouji <edwards@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>
-Subject: Re: [PATCH rdma-next 00/15] RDMA: Support HW requiring relaxed
- ordering and add Unordered access flag
-Message-ID: <20260810130510.GA90355@unreal>
-References: <20260726092943.2880176-1-michaelgur@nvidia.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="vsHQDwMy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9traob+/jbB3iPmvdcasV8tC2hfuwT9wN5GPpDQZHcM=; b=vsHQDwMywuVYL4wCvC9tcNpvl1
+	3fPV0arPQlTk/cm2sMwzh2Y3CNjIji6pSY9fW0YFj2VuEjj5EUxZDU5aZTa5WYy1VMjgmsaOWPrmo
+	hdWsFYaSJn8dJEGSfqYT/kZGLavNuARLLHGlFqZcdh4LkKHBhxzm5akjsk9ib2sf1ojyib9LUhil/
+	lEuhoI8HK/T9zGtphNJcxgbAhcrkVNyQRvMjBLNi+TGWCWK1MZd/G/rVKYFT1bCxK9QpXjgh2UyMA
+	SwxkiF4f3WpVelb0ZQRus9uATiMpyVtmTMnKZ0qbIwTugcTPFGiLFSBKW40Wp3MS9/7zXngZcNGA/
+	a70jTNpw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtPie-002lrn-3D;
+	Mon, 10 Aug 2026 13:07:09 +0000
+Date: Mon, 10 Aug 2026 06:07:04 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: =?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: usb: qmi_wwan: add Telit Cinterion FE990D50
+ composition
+Message-ID: <annMvEUa7sUvVIfr@gmail.com>
+References: <20260810103409.133796-1-fabio.porcedda@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,90 +52,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260726092943.2880176-1-michaelgur@nvidia.com>
+In-Reply-To: <20260810103409.133796-1-fabio.porcedda@gmail.com>
+X-Debian-User: leitao
 
-On Sun, Jul 26, 2026 at 12:29:14PM +0300, Michael Gur wrote:
-> This series prepares the mlx5 stack for hardware that restricts strong-
-> ordered memory accesses, i.e. HW whose fabric doesn't guarantee memory
-> operation ordering. The HW may choose to reject creation of an mkey that
-> doesn't request relaxed ordering, so every mkey the driver creates -
-> internal and user-facing - has to be handled accordingly.
+On Mon, Aug 10, 2026 at 12:34:09PM +0200, Fabio Porcedda wrote:
+> Add the followin Telit Cinterion FE990D50 composition:
 > 
-> The previously added 'ConnectX-10 NVLink-C2C' PCI device is such a device,
-> as will be any future PCIe Gen7 UIO devices. 
+> 0x0991: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+>         tty (diag) + ADPL + adb
+> T:  Bus=01 Lev=01 Prnt=01 Port=06 Cnt=03 Dev#= 10 Spd=480  MxCh= 0
+> D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+> P:  Vendor=1bc7 ProdID=0991 Rev=06.06
+> S:  Manufacturer=Telit Cinterion
+> S:  Product=FE990
+> S:  SerialNumber=2aa802d2
+> C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+> I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+> E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+> I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+> E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+> E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+> E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+> E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+> E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 > 
-> The series does four things:
-> 
-> 1. Allow optional access flags on all memory registration
->    The uverbs ABI defines the optional access flags range as best-effort:
->    drivers must accept any flag in this range and treat support as
->    opportunistic, never failing registration. Several registration paths
->    (DM, DEVX UMEM, dmabuf ioctl, reg_mr ioctl) did not allow this range
->    and would reject such requests. These are fixed to allow newly added
->    optional access flag added later in the series and any future optional
->    access flag.
-> 
-> 2. Groundwork and internal mkeys
->    Rename the relaxed-ordering IFC fields to the new naming, add the new
->    ordering capability and mkey-context bits, and consolidate RO-setting
->    to a single helper in mlx5_core so all consumers share one cap-gated
->    implementation. Then enable relaxed ordering on the internal mkeys that
->    don't require strong ordering (resource dump, vfio live-migration data,
->    ODP null mkey, memory window mkey), so they keep working on strict-RO
->    HW.
-> 
-> 3. New Unordered access flag and enforcement
->    Add IB_ACCESS_UNORDERED, an optional access flag that additionally
->    allows read-after-write reordering, and wire up mlx5 support for it.
-> 
-> 4. Enforce no-strong-ordering in user MR registration on HW that requires
->    it.
-> 
-> Michael Gur (15):
->   RDMA/mlx5: Allow optional access flags in DM registration
->   RDMA/mlx5: Allow optional access flags in DEVX UMEM registration
->   RDMA/core: Allow optional access flags in dmabuf reg ioctl
->   RDMA/core: Allow optional access flags in reg mr ioctl
->   mlx5: Rename IFC bits of relaxed ordering fields
->   net/mlx5: Add IFC bits for new ordering caps
->   mlx5: Move RO setting helper to core and consolidate mlx5 consumers
->   net/mlx5: Enable relaxed ordering on resource dump mkey
->   vfio/mlx5: Enable relaxed ordering on the live migration data mkey
->   RDMA/mlx5: Enable relaxed ordering on ODP null mkey
->   RDMA/mlx5: Enable relaxed ordering on Memory Window mkey on strict-RO
->     HW
->   RDMA/mlx5: Converge UMR access-flag cap checks
->   RDMA/uverbs: Add new Unordered MR access flag
->   RDMA/mlx5: Support new Unordered access flag
->   RDMA/mlx5: Enforce relaxed ordering when HW requires it
-> 
->  drivers/infiniband/core/umem.c                |  2 +-
->  drivers/infiniband/core/uverbs_std_types_mr.c |  4 +-
->  drivers/infiniband/hw/mlx5/devx.c             |  2 +-
->  drivers/infiniband/hw/mlx5/main.c             |  8 +-
->  drivers/infiniband/hw/mlx5/mlx5_ib.h          |  4 +-
->  drivers/infiniband/hw/mlx5/mr.c               | 79 ++++++++++---------
->  drivers/infiniband/hw/mlx5/odp.c              |  1 +
->  drivers/infiniband/hw/mlx5/umr.c              | 18 ++---
->  drivers/infiniband/hw/mlx5/umr.h              | 45 ++++++-----
->  .../mellanox/mlx5/core/diag/rsc_dump.c        |  1 +
->  drivers/net/ethernet/mellanox/mlx5/core/en.h  |  1 -
->  .../ethernet/mellanox/mlx5/core/en/params.c   |  2 +-
->  .../ethernet/mellanox/mlx5/core/en_common.c   | 13 +--
->  .../net/ethernet/mellanox/mlx5/core/en_main.c |  4 +-
->  drivers/net/ethernet/mellanox/mlx5/core/mr.c  | 21 +++++
->  drivers/vfio/pci/mlx5/cmd.c                   |  7 +-
->  include/linux/mlx5/driver.h                   |  1 +
->  include/linux/mlx5/mlx5_ifc.h                 | 24 ++++--
->  include/rdma/ib_verbs.h                       |  1 +
->  include/uapi/rdma/ib_user_ioctl_verbs.h       |  1 +
->  20 files changed, 134 insertions(+), 105 deletions(-)
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+> ---
+> Changes:
+> v2: 
+> - Add stable@vger.kernel.org
 
-Sashiko is not happy about this series.
-
-Thanks
-
-> 
-> -- 
-> 2.52.0
-> 
+Why CCing stable?
