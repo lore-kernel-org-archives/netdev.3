@@ -1,188 +1,269 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012024.outbound.protection.outlook.com [52.101.48.24])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEAF281530;
-	Mon, 10 Aug 2026 10:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786358461; cv=fail; b=kpUWztRdnC6SrqIyt1OgoObfDjfTPHwjLxs2B55ghxWx0CcXcCn2clyqsWSv8+2FN45tFNnm1ZYiJb9gXy37V1SgM5F2ej7qLNmk3mtEBFHIbcnvyCksc4UcpcLuB2j+sCdlJpn4P8LpmzD30fQ86+rMzbCZ1YmD3q17h1ZpvJY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786358461; c=relaxed/simple;
-	bh=K2aWi9U7ybnAxMiuktwxnznr52XfSKrMPiuKlqiArjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sjUQDgfhuLBXOQ4/KOzfrF4uxFFdUK8LeYrjUkC2g1QNd7fDhNO7djBZ81s6NKWhHyGMLrLcLFlSEzK3799PHuZmbHj1bDppWemYEZ96MzFt+shrs4gsEUc66mJihEhwPFDnIh2FGghzOxzWcXqWzJjlaNm2SWCastKRDDZBWHE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rdz8Hvud; arc=fail smtp.client-ip=52.101.48.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E423A7F50;
+	Mon, 10 Aug 2026 10:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786358531; cv=none; b=dzyQNpGUSiOnQiND+rIxb3l7z9uki9x9ZRB+rOhKi6Btrl1u1gX5IJqXXHi7LYALWJoluakcl0bVz2LjcY3fVqAjvKFDqjIYSqkkS1v9I6mGy1Pm1qsWHmvGJ7nJC2P8DPhlbjnm/Xg91SmpDaxPxTAQRQuJEljLHbY2bRFjYtY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786358531; c=relaxed/simple;
+	bh=WGxTiMDkmqQLtSX1485WkmUTOlARMqKeHYhSxpm0huw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qO7fUbCIUAQ9mtyNlhHGnB8+RmEvoiKQANUvPmi+HaBAg85wajZcuv01FITm8jqfGcIbSCYWmxXcplk4ohmVi0YRvRRf3/Xj3+29KpFE08CJJWBDR8WRlastJJgfk5soBK9Ygbl1rhoTJlK5wDpx/VyHrKPsyuJwF1YMvRDt/Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lPvKTRDH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rdz8Hvud"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cTtG4CT2U+LYZitsV8vwjh5F7UYWhk0kHInHesPXrxK2S0hvgbsLwYDxHJ1qKVM/EZzJqY/vmFMl2zxgPHJXc/gOASuGudkrA9udJawY0RcIOGvmf3rfyD8FxieIWygvzRlmYQlfTrZ3l9C9wb+7xxc6QRWxR5xqXY7vch2W5mwwUGm3SUD/OHFU/Ke2xef3TMokTrZqghPl320C3uGSLdVDQrWSlWAL4Ct4C6SmVzBkwLgD0TM75Y1OMODE64Dxrpo1Wj1ZdShICQXtdoyHJArPFDN1nheZZiq7/c1qGTBNA1Y0tP0ebAZmt9ySW088GOlKVbCFem4RSFGKeT5ePQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+FMGiAiMBmCYSjNEx0C79l2npPT5Y6MDIcsXK9YKAkQ=;
- b=Bo7qHj4ONkN1kv0tJ1hmxjjWacL9XYwCUuExcsl0C6N8gDWGV59+C9YGRWpoykAQuY5ngEydSJqCprxFmdLc4i2rsIQpzIGzi2Rwm7mH2MXaONMdT043gLZMheBV5bf7A88L59slaKMsJUBbBZnprUlF4U1Wkw0ysbuF4zv9gwYSk//8mGAVk+/i042GZw0W1sB/ggoOXSBBsGx1PLU2Sdzs3VvAiAXHJ/NNPbD+nCRb3NdWqERyBYvPvIp4xMvwApCNBESrV+3zEeSyZX0esvF33aTuHBfZwwOMe9qFueDirQ7xqDC9knynH2ZGHjQSQpbzlu/iU7zL9ZSI3ajdUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+FMGiAiMBmCYSjNEx0C79l2npPT5Y6MDIcsXK9YKAkQ=;
- b=rdz8Hvudy09rh8PXNiXuVpLiOXxQorKnkGfqRboPljlgVRByKsTgcab4OrxW3x5ZTjA1k8Ju/qsg22Wr3cb+KRS9a5uM2KM/yMLxDj+lhcgrvBkdOggLiGdJfCDBjjQmxymp4Z+ZnTs06sX/bwhp4euwX2tDvrenq40oDa5XN4zTf87nWX3erlGPKi6wV8khOeYOpcq+xTACn2VtUYBoSbfew9atUbZH9aisiy70OVn+d8CdE41NI7Kar1/ZJV9WZ9a289bj+DgKO0udJ2jXS0V0SY0H96Q6khyp2/NhA2sXoVSl8WrC0hchTDjjyzQrEgrrq1U1plHwpROo4j13JA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by DS5PPFBB8C78349.namprd12.prod.outlook.com (2603:10b6:f:fc00::660) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 10:40:56 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
- 10:40:56 +0000
-Date: Mon, 10 Aug 2026 13:40:47 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Pimyn Girgis <pimyn@google.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
-Subject: Re: [PATCH] ipv6: addrconf: drop "BUG: " prefix from pr_warn()
-Message-ID: <20260810103517.GA2626301@shredder>
-References: <20260807131300.2677228-1-pimyn@google.com>
- <20260810095136.GA2582170@shredder>
- <CAJWNTGyLJubRHn2KbqQMeV_jqexSgaLbzTe+xJnGzUw=RUtntA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJWNTGyLJubRHn2KbqQMeV_jqexSgaLbzTe+xJnGzUw=RUtntA@mail.gmail.com>
-X-ClientProxiedBy: FR0P281CA0269.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b5::7) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lPvKTRDH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8495C1F00A3A;
+	Mon, 10 Aug 2026 10:42:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786358529;
+	bh=TfDEpbXj9Skvq0RQ7XQBYjnmsLgpmOAdrHJWVqiBMAo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lPvKTRDHEB+uKRPoWeR6D/YeT/rUTkGXFwbDrQ98m/iDDJ3bmK8saddWm4WCwXZFm
+	 u6IH48pvyLJSgRM2ghH3EGYffp7eSbJUnO3fow7dFpesG8pD0hIta+fN2wXlJI7JD9
+	 Oe33b54M+bQ/tWbVs0kVjEM1r1m1XTbBHHb016T01AyQpv1hH6KjHpigL1IvqVDF8/
+	 Ku8lpLAHZ0bn2GJBqzs6SNnvMl18qhHPXfRRaKkBRnIuN2BOP1OPcgTPGVZZpH03qD
+	 bLkOf0Pu728XFi7TISj4VGlk9QffTfjPuiFRBQLhhTGSxj5w6ofVFiBiLOG8QNQr+U
+	 uRk940HN2pIgQ==
+Date: Mon, 10 Aug 2026 11:41:50 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, david@kernel.org, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 3/5] mm: Add RCU-based VMA lookup helper that waits
+ for writers
+Message-ID: <anmm18_pG4HXMZo_@lucifer>
+References: <20260806200548.3124802-1-surenb@google.com>
+ <20260806200548.3124802-4-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|DS5PPFBB8C78349:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e19332f-8c13-496d-fdd5-08def6cbdbee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|22082099003|18002099003|10067099003|56012099006|11063799006|5023799004|4143699003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	tYTU2n0uuQ5KrhNYsR9CA5T2D226vY6hn+eg6c0pZ4k/D5zFWIBZ73Fb2O641ZSTGEX58BWEAeo1J3S3w2mwJOCoFZ+3DxvAFteUF97nEmGBZoQTlJ65oVL6oxKn4uj3FzMkAhHDYeFhokPFY+Dc7X6kjgU5+UUBy1RUM1S+OdGJKONataegUoJuKzjcg3iA1S+RSub/Dnv4gZKirxJmM/sjNgMoe9nlsq/KrcJ92ayPSwznb5gLAVlERWCMvD/DoUwbkZCRz1+0j/X/SDxVHSManF2wpiK1rLxMfg5H3JZJ1Xc3NqV9Eph3r4GVkkI7+pMknSn2ZIp8gD2EKpApggd+VdC9Gh/SrHYAPjhplOje38woixJQJh9Ta0TDUE6NwPSr6t57BUgW90Zu3UU2gUVaVulfNqN1832Zc7u7qz+pdgV0j9zN4HRw2g9WY05qnXkRr7fm0iz2Fln7/1k2z/82W9XAYdFyg1ep8zRgXFgVs7jFo9qFfiqAABfJd71iCAMOFd8GeBymZizzWIx7oG81oI7Wp1Jj3SRuJqR1i9jVpeERtJN3EIphewbgSIPE9pEiMlb8r9/9Vyu4jqoBQUGSahdo030AVWIUskzuiX232xfHypTu+tkdHq2L8uEiGn4gaU6YTLxCFGDM5J6RcPPKiUra7e1IWljdvQjJJeA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(22082099003)(18002099003)(10067099003)(56012099006)(11063799006)(5023799004)(4143699003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UXhKWnR0eEF1eC82TEZwd2VwTHhBZ3d5TkE0R2FROFpVNy95VEVUQnJyUFNk?=
- =?utf-8?B?WGxZc001TWR3NmREbmcxa1ptb3h5RisyMmlQWlpCUTNoMHRyejdMZ25xMkFQ?=
- =?utf-8?B?V093WnJMN09yYmNhbDN4d3YyM2JNL2NVenljeGNSVDE4TDJ6RmN6R2dpYnFV?=
- =?utf-8?B?YmprR3VnSkRLVTNlQ1VDT3lqdWJveG56dkNyK2g2RGtvblJBNUNuWHJkb3pS?=
- =?utf-8?B?U2VrcWV4SEkzTjAxZk05WFBUN0NIUzF1aVRhYTJiaDBnZVl3VVhNdDA3UER5?=
- =?utf-8?B?ZjQ5cEc1Q1ZQdHlqajlUcU1ud1RlbzZkRXdneTg3d290RmlCc0M2R3o2SWRL?=
- =?utf-8?B?aHNmenFaOWxPMkRWSmRzdTdVcVpwVTJzZDRucHlleTBPNjJmMXZLM1QwNm0z?=
- =?utf-8?B?RWJWUyt2dE1iSTFLSzlNZkx4NmtuQ0JXRUF0L3RCOTgraFZyZmtPRjN5WWJ4?=
- =?utf-8?B?WkQ4TElDdDFKK3VidW9xZlVjMWtBenRDZWtHaVlzbVNaSzJKM2V3UnpHMzFY?=
- =?utf-8?B?RlZwNUpVY0FodlNsRXJtOXdXVkhhaldsa1ZNRXp2dEpCamRXKzM2SHlmVUVm?=
- =?utf-8?B?N0JkYUoyUkVhOUFoUElQNFAyM0tkNG1vUlRiaGdhV0VuWWdSMDVPcXVOV3d2?=
- =?utf-8?B?bDhudEZVRDc1NXNQcDYzT3lmSzBNS2o4ZjI0OXpUOExUa1VvYk9aKzJ5NGcy?=
- =?utf-8?B?dzdhT3RxYitKM3BXM3ozdTNudWRTaUx4V09CWTVUbldldTkxa1lQSURGalVR?=
- =?utf-8?B?RTZuRHVFS2FQSlNZcDU4dmloM2YvbWRkbXlkYXFZd0dycVNlU1oyU2pUd2Fo?=
- =?utf-8?B?UzhlRC9mV3hRc3lXc0RUTEppekNhQzdwTmRETjNkeXA1bHY2WjUwblhzSHdO?=
- =?utf-8?B?aGRXb0lZeDhtcmNGMDRzakMxTDc5dzlwbEpMLzhTenJhQUJLclBpNkI0S21n?=
- =?utf-8?B?WHM3Z3czcHhRbWVaVUJvMXNwZUE3U3dPV3l5ZTR4d1pvSXVPOUR2cjRvdm0x?=
- =?utf-8?B?S2NVSGk2c0Y3L2pqc1o4VnR1d01zUzNYK2I1WitsTWxQNVF4RWVNWllpV2Jm?=
- =?utf-8?B?OTVCTjQvSEFuenU2b05kSk8ybHpGNDZWdXU5QU81TW1LR1c3cnBTRTZiNUw0?=
- =?utf-8?B?VHhvWFNHTmVYa3Bjai8zQkhJMTRvUDdKbXR3djBpQzRRUzdqZVBqMEtwWTNY?=
- =?utf-8?B?eDlpSlowd2Q0QXgvTlVWVHNpdjlYK0FTUkNLajdBVmk2bTMzaTFPc01qaGho?=
- =?utf-8?B?MUFpazVsQ1NybXc5SFdOWlg1emdJSG44cnMxTUVLbjRFeGttQlFoS2xLNlc0?=
- =?utf-8?B?Z1E2QWptSTBBRVpGMEoyanZiZUFkbUdwdXgxbGR6bXl5aytzbjBHdG9qM3dl?=
- =?utf-8?B?SVQrMkU5T3poM2k3UURIODZkUUlkbEhpNTJzWXNRWnpsUmwrM0t3Q0REZW5s?=
- =?utf-8?B?ekxueCtSOGsrN0s5ZGdxNmtLSm5CNUxvS3RqZy9OS3lsWWo0Q1NKcVJSQk9M?=
- =?utf-8?B?ejZqT3cxVEZYRmZuVWxVeTlaSzU3eHRPMHk1cm9hcm44Wm5VT052eDVJY3F6?=
- =?utf-8?B?RVFvMzZNQmZaN2owSnRaSGR5S2p1Q2dtU1FzMlZKMHVPNTJOV0o4QW8vaVM0?=
- =?utf-8?B?VFc2TGQwYnQ3RjBaV1FSd2xnUDZtTHIwNmR0WDBQUG1xMGcvU1QydUZhajhE?=
- =?utf-8?B?RzJzdE1ndEVwUGNLNEUvdVlxL1JqV3lVZlE0NzIxMFNLM1JJQ0hJMHlNdUNn?=
- =?utf-8?B?amNBREFjUEJWeDVnODZwK1lDMWtpbjljN2xBSUNtYkplcTlhUlUwd0FRUFVv?=
- =?utf-8?B?TjdqL2ZWbmVNS0pXOW9aUE1UZGRtMVQ1bVNOa1JnSFpQcS94Y1o4VkxZYkw5?=
- =?utf-8?B?ZGJZZ3QrMlNMWk5KQmhXSmgvR1NLYTY3dHRCYm5BV1ZvRk9kakFsem9qUkcw?=
- =?utf-8?B?Q1dyRTN0S29PMHdIVUFoZVlvZlRQT0sxeXVZS0U3ZXhFMWhkSVBoanJMcUE4?=
- =?utf-8?B?VjZ0ZmJGN0E1UFI5a3h1Ukg0S2pGVUptNkNsdEQyODJNYStWZzhFcnlTcGJo?=
- =?utf-8?B?UzJyWXc3K1pHc3ovL1ViTUJnaUtJRyt2UFk2QkhLYytYcDkwaGEvVFRiSllN?=
- =?utf-8?B?TVE3SG1ENk5IOE90clhLdktKV2gwMkVnUk9rTFBtZzJQOWxld0xZV2cvUms1?=
- =?utf-8?B?cU93bTJXSHZvL3FTK3JFR3pBUEJEWnc0bFIwTk5FNGViNHR6cWY0YTk3Vity?=
- =?utf-8?B?MEhIejUxYTlKcTFOenhWemhCWlVlQm1QU1dUMjk2WlNtQk5DVlV2SUdSSkt2?=
- =?utf-8?Q?SNug4uv1e2LOmkKZwy?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e19332f-8c13-496d-fdd5-08def6cbdbee
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 10:40:56.3367
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oWAvN7fhfxWZ/6GVrZKFI5ezquhOx43+v1w4J7TNDkkQW/O/LYM/wdbFttTXcP0BzLyEWzSQrCbfGGu0hq9cbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFBB8C78349
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260806200548.3124802-4-surenb@google.com>
 
-On Mon, Aug 10, 2026 at 10:54:58AM +0200, Pimyn Girgis wrote:
-> On Mon, Aug 10, 2026 at 8:54â€¯AM Ido Schimmel <idosch@nvidia.com> wrote:
-> >
-> > On Fri, Aug 07, 2026 at 03:13:00PM +0200, Pimyn Girgis wrote:
-> > > Kernel warning messages emitted via pr_warn() already have the
-> > > appropriate log level (KERN_WARNING) and should not include manual
-> > > prefixes such as "BUG: " or "WARNING: ".
-> > >
-> > > Explicit "BUG: " prefixes in log strings can mislead testing tools
-> > > like syzkaller, which scan kernel console output for "BUG: " to
-> > > identify kernel oopses, panics, and fatal conditions.
-> > >
-> > > Remove the manual "BUG: " prefix from the pr_warn() call in
-> > > __ipv6_ifa_notify().
-> > >
-> > > Fixes: 2d819d250a1393 ("ipv6: Handle missing host route in __ipv6_ifa_notify")
-> > > Reported-by: syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
-> > > Closes: https://syzkaller.appspot.com/bug?extid=ded267b328e950a7c0c4
-> > > Signed-off-by: Pimyn Girgis <pimyn@google.com>
-> >
-> > I am able to reproduce this (there is no reproducer from syzbot, so I'm
-> > not sure if it's the same one) and will investigate if we can avoid
-> > getting into this state. If so, there wouldn't be any need to touch this
-> > message.
-> 
-> Hi Ido,
-> 
-> Thanks for looking into this!
-> 
-> Correct me if I'm misunderstanding the code comment above that check:
-> 
-> /*
-> * If the address was optimistic we inserted the route at the
-> * start of our DAD process, so we don't need to do it again.
-> * If the device was taken down in the middle of the DAD
-> * cycle there is a race where we could get here without a
-> * host route, so nothing to insert. That will be fixed when
-> * the device is brought up.
-> */
-> 
-> It seems this state is somewhat expected/handled and otherwise
-> harmless. The main issue here is simply that pr_warn() includes the
-> literal string "BUG: ", which leads syzkaller to treat a non-fatal
-> warning as a critical kernel panic/crash.
+On Thu, Aug 06, 2026 at 01:05:46PM -0700, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+>
+> == Background ==
+>
+> There are basically two parallel ways to look up a VMA: the
+> traditional way, which is protected by mmap_read_lock, and the RCU-based
+> per-VMA lock way which is based on RCU and refcounts.
+>
+> == Problem ==
+>
+> The mmap_lock one is more straightforward to use but it has a big
+> disadvantage in that it can not be mixed with page faults since those
+> can take mmap_lock for read, which can deadlock when mixed with nested
+> page faults and parallel writers.
+> For example:
+>
+> 	mmap_read_lock(mm);
+> 	// Another thread does mmap_write_lock().
+> 	// New mmap_lock readers are blocked.
+> 	vma = vma_lookup(mm, address);
+> 	// This deadlocks on mmap_read_lock() if it faults:
+> 	copy_from_user(address);
+> 	mmap_read_unlock(mm);
+>
+> The per-VMA lock can be mixed with faults, but they can fail and need to
+> be able to fall back to the traditional way.
 
-The comment refers to the case where the device is down, but the warning
-fires when the device is up. According to the blamed commit, the state
-where the warning fires should be impossible to reach: "Add a warning if
-the host route is missing AND the device is up; this is a situation that
-should never happen". I guess that is why "BUG: " was used.
+As discussed in reply to Matthew, this isn't so useful to have here I don't
+think.
 
-I have a reproducer that always ends up in this state, so it's not
-impossible to reach. I need to see if we can avoid ending up in this
-state, and then it should be fine to keep the message since it should
-never fire unless there's an actual bug.
+>
+> == Solution ==
+>
+> Add vma_start_read_unlocked() - a variant of the RCU-based lookup that
+> waits for writers. This is basically the same as the existing RCU-based
+> lookup, but on a failure to lock it temporarily takes mmap_lock for read
+> and waits for writers to finish before locking the VMA, dropping the
+> mmap_lock and returning the locked VMA. This has some advantages:
+
+Nitty but maybe reads better as something like:
+
+	..., on failing to acquire the VMA lock it waits for writers to
+	finish by temporarily acquiring the mmap read lock and taking the
+	VMA lock with it held via vma_start_read_locked() before dropping
+	it again.
+
+>
+>  1. Callers do not need to have a fallback path for when they
+>     collide with writers.
+>  2. It can be used in contexts where page faults can happen because
+>     it can take the mmap_lock for read but never *holds* it.
+>  3. Its fast path does not require taking mmap_lock for read.
+>
+> Basically, when applied correctly, this approach results in faster
+> *and* simpler code.
+
+I think this suffices as justification for the function with the above
+deadlock scenario simply excised.
+
+>
+> While at it, fix the comments for vma_start_read_locked(),
+> vma_start_read_locked_nested(), and uffd_lock_vma().
+>
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Thanks :>)
+
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+
+LGTM, so with the changes to commit message applied feel free to add:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arve Hjønnevåg <arve@android.com>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Ahern <dsahern@kernel.org>
+> Cc: netdev@vger.kernel.org
+> ---
+>  include/linux/mmap_lock.h | 19 +++++++++++++++----
+>  mm/mmap_lock.c            | 35 +++++++++++++++++++++++++++++++++++
+>  mm/userfaultfd.c          |  6 ++++--
+>  3 files changed, 54 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> index 7b2bbb09a952..a23fe6cbe301 100644
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -228,10 +228,14 @@ static inline void vma_refcount_put(struct vm_area_struct *vma)
+>  }
+>
+>  /*
+> - * Use only while holding mmap read lock which guarantees that locking will not
+> - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
+> + * Use only while holding mmap read lock which guarantees that vma lock is not
+> + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
+>   * not be used in such cases because it might fail due to mm_lock_seq overflow.
+>   * This functionality is used to obtain vma read lock and drop the mmap read lock.
+> + *
+> + * VMA can't be detached while we are holding mmap lock, therefore in practice this
+> + * function can fail only when there are so many readers that vm_refcnt overflows.
+> + * The failure case is very unlikely and is already annotated as such internally.
+>   */
+>  static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int subclass)
+>  {
+> @@ -247,16 +251,23 @@ static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int
+>  }
+>
+>  /*
+> - * Use only while holding mmap read lock which guarantees that locking will not
+> - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
+> + * Use only while holding mmap read lock which guarantees that vma lock is not
+> + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
+>   * not be used in such cases because it might fail due to mm_lock_seq overflow.
+>   * This functionality is used to obtain vma read lock and drop the mmap read lock.
+> + *
+> + * VMA can't be detached while we are holding mmap lock, therefore in practice this
+> + * function can fail only when there are so many readers that vm_refcnt overflows.
+> + * The failure case is very unlikely and is already annotated as such internally.
+>   */
+>  static inline bool vma_start_read_locked(struct vm_area_struct *vma)
+>  {
+>  	return vma_start_read_locked_nested(vma, 0);
+>  }
+>
+> +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+> +					       unsigned long address);
+> +
+>  static inline void vma_end_read(struct vm_area_struct *vma)
+>  {
+>  	vma_refcount_put(vma);
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index e20d01e8d38f..1c4902131e98 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -338,6 +338,41 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  	return NULL;
+>  }
+>
+> +/**
+> + * vma_start_read_unlocked() - Find the VMA covering 'address' and read-lock it.
+> + * @mm: the mm_struct of the address space to search
+> + * @address: address that the vma should contain
+> + *
+> + * The fast path does not take mmap_lock. Waits for writers to finish if the
+> + * VMA is being modified by taking mmap_lock.
+> + * Use when mmap_lock is not held, otherwise use vma_start_read_locked().
+> + * Nothing prevents VMAs being unmapped/mapped before or after the VMA is
+> + * looked up, if a stronger guarantee is required, take an mmap_lock.
+
+Great thanks!
+
+> + *
+> + * Return: If a VMA exists which spans @address, return that VMA, read-locked.
+> + * If no VMA is mapped there or, very unlikely, a reference count overflow
+> + * occurred, return NULL.
+> + */
+> +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+> +					       unsigned long address)
+> +{
+> +	struct vm_area_struct *vma;
+> +
+> +	/* Fast path: return stable VMA covering 'address': */
+> +	vma = lock_vma_under_rcu(mm, address);
+> +	if (vma)
+> +		return vma;
+> +
+> +	/* Slow path: preclude VMA writers by temporarily getting mmap read lock. */
+> +	mmap_read_lock(mm);
+> +	vma = vma_lookup(mm, address);
+> +	if (vma && !vma_start_read_locked(vma))
+> +		vma = NULL;
+> +	mmap_read_unlock(mm);
+> +
+> +	return vma;
+> +}
+> +
+>  static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_struct *mm,
+>  							    struct vma_iterator *vmi,
+>  							    unsigned long from_addr)
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index edd90892f8cc..c3a0c38a3dc3 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -129,8 +129,10 @@ struct vm_area_struct *find_vma_and_prepare_anon(struct mm_struct *mm,
+>   *
+>   * Should be called without holding mmap_lock.
+>   *
+> - * Return: A locked vma containing @address, -ENOENT if no vma is found, or
+> - * -ENOMEM if anon_vma couldn't be allocated.
+> + * Return: A locked vma containing @address, -ENOENT if no vma is found,
+> + * -ENOMEM if anon_vma couldn't be allocated, or -EAGAIN if vma refcount
+> + * overflow happened due to high number of readers and the caller should
+> + * retry later.
+>   */
+>  static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
+>  				       unsigned long address)
+> --
+> 2.55.0.654.g21b8a5bc05-goog
+>
+
+--
+Cheers, Lorenzo
