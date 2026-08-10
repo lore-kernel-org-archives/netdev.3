@@ -1,63 +1,68 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6529A435529
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 18:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E862F3C0613
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 18:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786385400; cv=none; b=CwsVFL+plmnRAyKMAShFM0Wxbko29OccRjTwDz+Db7ACPy3HwJZzBVb8fiojt5p/ObnSfbgPEnR5A00AKHgJwLWmyKs42IxVNYvWrebZiXl6ZuzsCBQX/t2HZQzjwF94DU/FJsm8H2jt3wdqbPKm3Kh7AEElF6SalhHXFcksUZQ=
+	t=1786385400; cv=none; b=h1OBUNlUQrgDs6FvOLCsIN8orAwXB1e7RgEP7/42qkOctzkWZtC9rvcze1CbCZeiX2JawuICIPdTaWVYbDQqYc1S/zrHtv5w9YcBQqd4X2mAECVFHPTqMzXUG8n3HCkwai42BLw1rRV8X4HS01DkTX3yyqFf4mk+Y7W4jZn+2kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786385400; c=relaxed/simple;
-	bh=x7tIsrbMyUPwgd1k03RHVrZSUrj+/5nLv/vrSIRF7kI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gqGbISchzuFGNUvNWaWBDL570meqHAaGFcX7Q4drQT3DEa119Z1nxOLHFpZFlNTL0aymx5B46DMRCzj74FVPxYqGxEzBLSISYuJKtv7D2J4RGcANoYV8f181816oBaWMd0m0/p42g9ib/qeADTwHyOFrXM1AsWHHzYc99zqjjeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e+upRU50; arc=none smtp.client-ip=209.85.214.198
+	bh=Tng8g144ubL7cdWL7PLGD3awMbDgm0zKMUbyJxPrw44=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WL9C6nojOM8yjuk17dTMGag1sogdz+txlx4pmn0XHFX4slXK9xPQ7b+EXAGEeA8eshN1b+GRkenihexwd/HSdXd0QUdJFF2QdmKdVteJ9WaH1T+ELtZYzXh2ilTY3QsPk+IYxp8SB7vVZoEaNXFfUHEfeHhQgWjVZ7hSypc9Q0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P6IOQknI; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e+upRU50"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cc6dd43737so52856015ad.2
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 11:09:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P6IOQknI"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e22137fb3so3367663a91.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 11:09:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786385397; x=1786990197; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XKDruZQ0TN5xeCIrhjnVIOzXHZSGCKivlM0ICoimkCg=;
-        b=e+upRU50eGGwmvtVtyt44gnQa71k0YE7umS8uosTmTkb3OZCkbNfLfQCRg6rcOKzKX
-         8mZsqzPAR7qBOBzxiRSj3w/zZTqeLVGWylfXfjGCR9HJE2rHAwLA9R8tjFajycIpGrGs
-         dr6q1gfWSgNzobpP+VUdsWfGpvAepk/trfPH6Yj+D46ZymvV/T8mwXDbyBWF7oezEkrS
-         Y9dzQbMrWIRZyiqw5ps9spcOaa57E6uCZ3X+bfD1Mb969Jve+9PY2U2cRUnQgn97Me7T
-         mmSabipLYtCy7QWhhPEpKxWq9tHQMtGeX022hShuaC7yu4uXEwHQ6BU4ky0cCLJpUatL
-         Pnsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786385397; x=1786990197;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1786385398; x=1786990198; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XKDruZQ0TN5xeCIrhjnVIOzXHZSGCKivlM0ICoimkCg=;
-        b=VIt1A2cCM4nvmdCzkYdh0CDUopgoVQcEiPLBILWU75ZA1hjsEUcnztu8NeBvi20y6i
-         ythQ+zj0NT8U//tNMfdrVAweM9BhDAsX0wbYUhvUVKwxfFhVZ8gEUz3ViwClm7CCe7nV
-         Qm3HE7H3byhyDc69ZWoNvBFONbYnEl/4Hn/MVqjowER4qJ3wWc7BTas6KtmTVdNqsJW6
-         OuGFc0ILo370ezPCNSE6y4QTAPhCIAtNoAgy+lQ1qpSjWPMm8IipISsyYUZNcABXiKQU
-         ExATjTlShemu7W63LzYXxftlITOXYcLeUcfxtKNSNKIFFInuTucG4i5LhriHXM5pXavc
-         jk+g==
-X-Gm-Message-State: AOJu0YwXLXcjL2WwpN8zPvMfFmcp2JfntNFWesPeyLYB/3v+nZ14bRQd
-	VIp2Y95aIGthl0+yYFIAEo/GYCbv/in1Ia5+taMOZoI0qnLvX/ZAynYRvBzSYyC/ao3noQlSPSp
-	jPhKSssSZYuhsJD4rZw4O91rbgxH+ztjbW4dlKOaZJy7K0Gvd4PQr1ebic79fjNXUNE9EN52she
-	5pSyAE9Ylm1YP0qZnSpPh+jk1ALZE/fxSQszLqNCuWPVjwLP/OW7+K5A2t00XX5uI=
-X-Received: from dycog4.prod.google.com ([2002:a05:7301:9a84:b0:313:cf74:cf85])
+        bh=SvfrgljYlAUv+7lnNBQs3scDd9aa1SmFKhsRXetGHN4=;
+        b=P6IOQknI0Bk+Af5kPIcsRUPTch8YK+XIr9VBVxQk26mPtt3/2RctvUlVKwpw4xaMXt
+         pPuKmsk8O0sRPWOiWHPy/mGvXU2kH/bjStzn++ZvuBkyhnPITgOwxgEF9VWhzzjPfwZh
+         QBUpS1VXXfks4p3xD1HwzU/d4zgTOG3fKDOI6ik17C98BXFCvawtudzPQ4gt/vS6ZVc8
+         30UuoOnuNvKcZVBfJWvoDhjoEmGHm88TT8PuG9V/nSBNMCGU3LdWaD7oM0prZNS7bN6d
+         VekmkFK74WmGxyQ/t9uVLjsaERYpJYzHAomX4ElwgEUwxIe4ZcixsmigbDjlTujAVXIG
+         21+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786385398; x=1786990198;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SvfrgljYlAUv+7lnNBQs3scDd9aa1SmFKhsRXetGHN4=;
+        b=GthoCvCuNwsQv+z9BNey/crSk6CVAcgd1nhIPNf7l1xastpAAzkgRal0Nm8HN2hcSk
+         rRiIbBz31rknV563E35cj3qknAg8iIWD/F7DTlYLETVJkXKfxZ0ke5LvPhHBFcpXzqyv
+         xfkeSVz2mGNT6PmZe/IRzoXWOT0/hYUFfeXVkDTcwtu4j7BqTJvzQ/O5F2Bi5bOQ7k8o
+         kCXXHBrcUh0qQgdeCYI1b2lcyphq1yMu7R18pyfagtVGaS3P95BV3LVZjc/pmJxJ5SCd
+         5hSfBgYrM+C/BC9iClmMLqCkHYL2iVuJjhexrmtpwT5yTornkUObvvohjgKiD+KEdU1H
+         EvXQ==
+X-Gm-Message-State: AOJu0Yx7PaMwRX8kdR1DJ45r7rUMAP/sPZDytGCo+rPzzKyEfmwUT2xt
+	RMnURInnVvgUucZ9O7GzIuEM+uF21qEzxyqQDxFKbHTvYnG1gc51DwioDElyqwBNUFmDeYSN9ko
+	aQulDDP4IQaZVzf6Pgzq/wxQV9AP4SQ0CYcoR5PkvvjzdtcvOqaux5QGiu+bMtpVYkig9eZWlHr
+	wSc8xCLIPmYWkpNVJBqVfVCHX8J8oN2Lb2AkalZgrp+TLs0sJBpjn0Izz6T/oOxS4=
+X-Received: from dyka37.prod.google.com ([2002:a05:7300:83a5:b0:314:fa60:e9ff])
  (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:d58e:b0:2c9:e835:ac67 with SMTP id d9443c01a7336-2d0caa03d1fmr563084775ad.19.1786385397137;
- Mon, 10 Aug 2026 11:09:57 -0700 (PDT)
-Date: Mon, 10 Aug 2026 18:09:43 +0000
+ 2002:a17:90b:3a4f:b0:38e:57a3:f218 with SMTP id 98e67ed59e1d1-392cca5bb14mr3886435a91.13.1786385398088;
+ Mon, 10 Aug 2026 11:09:58 -0700 (PDT)
+Date: Mon, 10 Aug 2026 18:09:44 +0000
+In-Reply-To: <20260810180956.2348280-1-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260810180956.2348280-1-almasrymina@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260810180956.2348280-1-almasrymina@google.com>
-Subject: [PATCH net v2 1/2] net: core: propagate unreadable flag in skb_zerocopy
+Message-ID: <20260810180956.2348280-2-almasrymina@google.com>
+Subject: [PATCH net v2 2/2] net: tcp: block standard payload injection into
+ devmem skbs
 From: Mina Almasry <almasrymina@google.com>
 To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, dev@openvswitch.org
 Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
@@ -70,96 +75,39 @@ Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.ne
 	Florian Westphal <fw@strlen.de>
 Content-Type: text/plain; charset="UTF-8"
 
-skb_zerocopy() fails to propagate the unreadable flag when copying
-devmem fragments, causing target skbs to appear as readable memory.
+Protect tcp_sendmsg_locked() from mistakenly appending non-zerocopy
+page fragments to unreadable devmem skbs. Create a new segment instead.
 
-This patch fixes the flag propagation. Additionally, it returns -EFAULT
-if standard payload is mixed with unreadable devmem fragments during
-extraction, and clamps unreadable skb lengths in openvswitch
-queue_userspace_packet() to avert truncated invalid payloads.
-
-Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+Fixes: bd61848900bff ("net: devmem: Implement TX path")
 Cc: Pavel Begunkov <asml.silence@gmail.com>
 Cc: Stanislav Fomichev <sdf@fomichev.me>
 Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Aaron Conole <aconole@redhat.com>
-Cc: Eelco Chaudron <echaudro@redhat.com>
-Cc: Ilya Maximets <i.maximets@ovn.org>
 Signed-off-by: Mina Almasry <almasrymina@google.com>
 Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
 
 ---
-v2:
-- Return -EFAULT when mixing unreadable and readable frags (Pavel).
-- Clamp unreadable skb lengths for openvswitch queue drops (sashiko).
-v1: https://lore.kernel.org/r/20260801125308.1342897-1-almasrymina@google.com
-
-Openvswitch maintainers: PTAL at the openvswitch changes closely. They
-are reported by sashiko as an also-need part of this fix:
-https://sashiko.dev/#/patchset/20260706155219.23757-1-fw%40strlen.de
+v2: No changes.
+v1: https://lore.kernel.org/r/20260801125308.1342897-3-almasrymina@google.com
 ---
- net/core/skbuff.c          | 13 ++++++++++++-
- net/openvswitch/datapath.c |  2 ++
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ net/ipv4/tcp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index ba3dbac80fb49..d21af68156950 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -3870,7 +3870,8 @@ EXPORT_SYMBOL_GPL(skb_zerocopy_headlen);
-  *	Return value:
-  *	0: everything is OK
-  *	-ENOMEM: couldn't orphan frags of @from due to lack of memory
-- *	-EFAULT: skb_copy_bits() found some problem with skb geometry
-+ *	-EFAULT: skb_copy_bits() found some problem with skb geometry, or readable head
-+ *      payload would be mixed with unreadable frags.
-  */
- int
- skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
-@@ -3905,10 +3906,17 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
- 		}
- 	}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 455441f1b6949..186a36c698798 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1278,6 +1278,11 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 		if (copy > msg_data_left(msg))
+ 			copy = msg_data_left(msg);
  
-+	if (!skb_frags_readable(from) && j > 0 && len) {
-+		put_page(virt_to_head_page(from->head));
-+		return -EFAULT;
-+	}
++		if (zc != MSG_ZEROCOPY && unlikely(!skb_frags_readable(skb))) {
++			tcp_mark_push(tp, skb);
++			goto new_segment;
++		}
 +
- 	skb_len_add(to, len + plen);
- 
- 	if (unlikely(skb_orphan_frags(from, GFP_ATOMIC))) {
- 		skb_tx_error(from);
-+		if (j > 0)
-+			put_page(virt_to_head_page(from->head));
- 		return -ENOMEM;
- 	}
- 	skb_zerocopy_clone(to, from, GFP_ATOMIC);
-@@ -3928,6 +3936,9 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
- 	}
- 	skb_shinfo(to)->nr_frags = j;
- 
-+	if (i > 0 && from->unreadable)
-+		to->unreadable = 1;
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(skb_zerocopy);
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index ae69b2cabab9e..7c663d7846174 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -480,6 +480,8 @@ static int queue_userspace_packet(struct datapath *dp, struct sk_buff *skb,
- 	}
- 
- 	skb_len = min(skb->len, cutlen);
-+	if (!skb_frags_readable(skb))
-+		skb_len = min_t(size_t, skb_len, skb_headlen(skb));
- 	if (nla_attr_size(skb_len) > USHRT_MAX) {
- 		err = -EFBIG;
- 		goto out;
-
-base-commit: dd057113ac7ba5bdd2aed3d9405305911152f911
+ 		if (zc == 0) {
+ 			bool merge = true;
+ 			int i = skb_shinfo(skb)->nr_frags;
 -- 
 2.55.0.679.g6767b8d81c-goog
 
