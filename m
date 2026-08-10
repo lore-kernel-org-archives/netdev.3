@@ -1,164 +1,152 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF0B3E1CE8
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786372880; cv=none; b=UnsxB7LRZBdWLwatdpFzNCTAZMpvDx5GvloOQ2o+vqj/Dw50POVTsCytyIS30CnuWKmqhVbKWkSYXc6Jgo8tmB739SXBSyn7/1eQ9mNsIhqUHKgVBrgv3c7oXCDgyV0gOrVX5gUlKB65Ckbk0U2MLCIuKPjQ4AlRyY4YlWgyEPE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786372880; c=relaxed/simple;
-	bh=NT4hmTQV7asOzfynA9Axntikhqqvbc1Sr29Lb2gduPQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=amhHvcVYiLsB+EAHJ5/nbhxoyPQJuAMiNKb/eYJYmOz+Dgep1rQjraN55MO9pg3q8Sc6MD4Cxl9POEIC/HgEZzbzdQ2q2Zpf2TwoCdfQnGzxnJf1FF+O8ygGlHcBHT5bMlx51Kr/ya/XtikOhtg79n9dZBhetVHhHoZo53j9EU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=XxsoWo6I; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD3C3F8EA1
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786372914; cv=pass; b=MOLfcg77AAeA26xpJhaTRR/hEwDUPZvNzXdvtqKosA413kUlqkQuQcLK1pwYIUCKOcbHs7LjsNDNXYdO31tWa7FK5RneRoHi+K3n7n6+uSd31aYKE7gTDKjWJWwpBkew9Qsxf7RKgXzE4ub0S0CSQQ7QTgx6r9JEMaP/C82IsrU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786372914; c=relaxed/simple;
+	bh=gTzERpZlT5pEm9qhy0tz3+HBCuqqxoWXkb1wQQ+nw3U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nlYtS0W+RVRCfVnj4DQ6p4NCZV3tYqWuaUCm1H8zzLpg5YEmR289WwFV66VGKlK8l15qies9TvC/+BCJVjiVhABqImpxzjGLqfXCOVd4/H3e0fQuhrlRSP4I7kywLQZZPT+PyVkmk8O2ncxpPlvTrWx2lNUzu1ZccIRmN47I3cs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=U6V2X7SW; arc=pass smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="XxsoWo6I"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8ff5d1b0f91so11264726d6.2
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 07:41:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="U6V2X7SW"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84f38f3b36eso1353975b3a.1
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 07:41:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786372912; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YGY53tT4/mORm8Koi5VAtLZMohwiCQ/rXTNTsOaxHLeWmwdyq9GEpma1HHlrl9fQkE
+         /KVn4YXNNj12ZaMbyyEUnZfj9YXwbA09clIxi8sSk+1b9QEO7sGGEEIKDjuUFMzR1A3I
+         UHN8xOuTIDexg3tsH3UXuwFW9rbpQZg2WuOz0P0+2rDyYjuxzf/vhA7ktb4YjRxouUBj
+         FFUX6FTjzjqokq3sfz7ogGGHtD/szI06XOs4qzwlxw14R+B4geGQUPHVii798VafqJbo
+         hEvddPo0SpICfdOG0NlAhI8NyhnwQu7C20IdDi8yB/qLBn1YJrfTiYrhYsDihsXMkmMT
+         bwbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LkJXFDhdwzVaI4vHWxe4E3DcB81VQH0ovvJhCbGwt+U=;
+        fh=v199mbaAeQPWDMGn/jBylf836NfxFcyy4Z8lKzAIB44=;
+        b=DrkU/NlpntqENzYVYSRDliwxQcoT7VoaSLSRbKuiFzUkXzrnULPTbOQtizpFiZU1ep
+         kiQlJyvlveRNoQgw3giVD2VMk4kL9LKI6vyilLqddS45x6prnfxAmC0pkFmtW0ULUeJ+
+         QB5t316wRODlZZhfVHgdyOLx0+HEtgmZZD80SaLRw41GDi9t5hSMnTqTMgPPWpVSs3ke
+         fIzfv77sRyJaveo5vBK+SjkF0l60V3R5XPBKwv5GpSU5RzLnbgKrGw2GWyIwTznxLekc
+         jdc8n8KPSDCaSHgfLeksL5cgqXqR+QiS1sYhNJNC8h7w3Gjs/Sx/ziJT7Au1eDbcmPOR
+         JGjQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1786372877; x=1786977677; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zF8J7vucF9ejv5mC84LVI8cP3TWHPkQougefaqK2FnM=;
-        b=XxsoWo6IbNXsRnCzr/jOsexPMUwAcGetoB/V+HOE6Dtq0CkPgMKlmQd9TLVBCDWLVV
-         ixPKvsKftjC1vaF0Pm8s1HebN3Dl6eDoGJL2qkd8CR1ehQFVrH3GAh0bZfHOUGbkFkie
-         2YKPYLOloTD8+BaGR9Vzd0bL9Kug8U23iIm6DmKhxGmq4618QWUCMqSNZG3GJa/WYZsm
-         VaTbS0MVaKtIQYastOD/QxvlwXbEuMU8pJz3g0Iy+q8pdNV/ndJn6UFN68QplrEBUeXB
-         9QV4b0xVNeKmT6i/s9+oVDtp6jevW3o0dt1kl+w/oyeC4hFEGb9Em0dAbqKHFoKEj8XE
-         m75g==
+        d=mojatatu.com; s=google; t=1786372912; x=1786977712; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LkJXFDhdwzVaI4vHWxe4E3DcB81VQH0ovvJhCbGwt+U=;
+        b=U6V2X7SWJ8XH82PWLdaJQsmPG6pMy81lk25NBY0z+6G546N0jMFXlK3QcLWqwfURxX
+         qsUdKYBRQiy/7cat1Ftw8GoiNOBmQeecopBk1X+KbrcyZidllo+WeZOWQvrGSTP9TwxS
+         +5cGJJ7FGpPTyxweq14Sd9n3ADCk8EptVzu94=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786372877; x=1786977677;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zF8J7vucF9ejv5mC84LVI8cP3TWHPkQougefaqK2FnM=;
-        b=hM7D7U9h7uZ7coVN6VFgMHDbTuZo+MRy2fK0WEAH/+2yCp0UdbVFUKbKbReeie8lgE
-         5dnxHOu0QgMBXuVtWj4youNYM8l8sJUK5X++Rap04f9Obp9q2taXVJxffu45k8XoELlt
-         l4KJOTCmCF1G/q0yfrH4P/zUPwtELtKggN/tzyQFEzHfIossedhlkuV/NEYrKdlQCwN7
-         8PT6da/DpLjiuWoMD8K7K/G5PLLs2axoslqO/UkKlJuYNCRAoPBsht4I/5tuau1haNHj
-         zr4AsK9Eqihi7TzI31Z5uW2SPbq2upeLqgHPPP2it+8KdIR5nosIbkmo3Fu2qxBJHaSK
-         8EuQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqYkRs30ajNHm5rXi9Qmdujgyl1wGBxk2ZOQkHJMurUpdsvvdTSOZgS9kK038sQJIcPaVkFcok=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8M3OvNjmKw6aymwKSwdO2kTXunhm1uP01qN5kST9atc0Pcl0q
-	RZafweS3q1Hsc9xWxLe423e4x/d/RfoaDLNZ8zqwBg6UmYVK6697iJ72vfxpOx4S1jA=
-X-Gm-Gg: AR+sD128EUAG/ADAp6ZIrJ/mlJ0CQp/T8zWqbqhr0kvu4C3Rhjm8pT3MrrEOSS5v/vz
-	5eWI9YvnahWGxDFS+6GeqNGC4KXBzuyi+w3UQvBVvmPCOguPK9idAKFzzvw/jUJEyoOtjx3rs0V
-	n4nY+GjJpKsPmiVZT7W06e6tpcWTaFiHxnmRmgiZ/E31ya89yuYiD3J7r083m2ca2i+mvynfh+S
-	VaENegCrVRBZ1d+imk0jcMXeXf8O7lL5gWucZymOPBKXWU24EiIBODeDzZP6SvTrDKNn5uvGNPx
-	Gm62Hvcs+3WuYgiG9FxOZfkj6LNNx6aHcrY7z/xRF2hIFdtD6OKLc5SXF+D/gCRJtEWmQLXCxD3
-	gOqIddZEDgQqf2jsUiUgruW91ojoZUkbKNzpAgPTpffNmuiExt441lAQjPm2wJmQ+G25+sbyM8Y
-	eFwleoy6AFRcYdYQxJOcOtwcXiP4zMPHy4mAz1GIwrrWRvM6kdETIHL1IgqNJnaOwlTg==
-X-Received: by 2002:a05:6214:4709:b0:908:949c:43a6 with SMTP id 6a1803df08f44-908949c4882mr384537146d6.6.1786372877154;
-        Mon, 10 Aug 2026 07:41:17 -0700 (PDT)
-Received: from localhost ([146.190.222.192])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-908a932a417sm73682786d6.37.2026.08.10.07.41.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Aug 2026 07:41:16 -0700 (PDT)
-From: David Lee <david.lee@trailofbits.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Kyle Zeng <kylebot@openai.com>,
-	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Petr Machata <petrm@nvidia.com>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	David Lee <david.lee@trailofbits.com>
-Subject: [PATCH net v3] vxlan: keep the last remote linked during FDB flush
-Date: Mon, 10 Aug 2026 14:41:14 +0000
-Message-ID: <20260810144115.821654-1-david.lee@trailofbits.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1786372912; x=1786977712;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LkJXFDhdwzVaI4vHWxe4E3DcB81VQH0ovvJhCbGwt+U=;
+        b=hF8bNWoejkO6ldKlpvXkKnj1XsmF6tQOHEhuYleYi9KT4XOBqEkgGdynJPpHrMcQS2
+         qq/7k5Ymg6fPPQ5/cHFWcHFZOhtmm5R6y22F11sz2HYoemGKvaa1G2tihNOVLI+8//ki
+         kLm2TmMUJ9irc4IALxsmYNTBMv2fzhmCEZ6hCU2QBHl1IPmme5hmCNYW8bEi7nKNpVGH
+         EgwTUUtHQK80/TqbacGbdHwSFdE1/YZxTsSwN9E5J8q2LXBXq5pin/G0dHpquA3UkWSP
+         6YYWDDHCS3fSCejRnDF3BkQfGI0acIZwE58mzyZ8Uq/0bCWtYSh+iMlY6VNrowUGbhAM
+         JlqA==
+X-Forwarded-Encrypted: i=1; AHgh+RqeXRQ3ASV14f0RIMVxx0h2L3e/QZ26nB/gqQVL+66sXizK+EFcI9eOKB04o+quzumwJc84F5Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1C9EffkJ9gXeM/xsl+NiGNqw0ApIDKneyH8rqKrAsoWnE767o
+	M9Yjf4dlZsfhiDN7DWiV4xpcBQIRcoNd0IEEWgorsH+eTGpqHgaPd3wA82d1JujFLCyZoQ2NLVw
+	m+lJ64P3eMn2dGe4dunP2diAUMjbSQe04POYJWyEh
+X-Gm-Gg: AR+sD13g1IrhuHvqO7/xs9M9qTDQdvKCVI9DdyLs/r+1P7fCMOAQED/Bif+9NsOf1g2
+	hThQzJ1UW+iDVG3TG+2GcALcqXNaaUpAn0LqpokpWO+7b2s+p4lkGIOO3cL/+78K31yO2ADqRQJ
+	lWacC4W/7KSulBDGD2jEwU3XYSO4aAe8c1PTlHXlFbTL7xSIutNwWcSmbNnyN30WPAgMsUPv64a
+	5+y5FB5Orb4cFCrYoSq3tnXzDv+KrI7KIYwJD+ZYFtfqbBuvkZ0fuBiNrgammBsBTrV0rR3xigi
+	cFvG6D7vF6E4AxG5ll7GxgzER0a9kF8MvJ+eS8giWEoWxZOMzymXyLM+
+X-Received: by 2002:a05:6a00:398d:b0:848:4ff5:5316 with SMTP id
+ d2e1a72fcca58-84f4fe9f91dmr31267739b3a.19.1786372912067; Mon, 10 Aug 2026
+ 07:41:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1786089038-36366-1-git-send-email-zhangchangzhong@huawei.com>
+In-Reply-To: <1786089038-36366-1-git-send-email-zhangchangzhong@huawei.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 10 Aug 2026 10:41:40 -0400
+X-Gm-Features: AUfX_myBH5dRx8tXs1_g4SlvAteqoQ5KvAKBwAsm0K7OlTpbdnKoqnTqaKHWAOE
+Message-ID: <CAM0EoMm01eieGx7P=PPa9=J7LnBuCufpMM0L0WmW2H6fJrQndw@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: cls_u32: skip hash tables in u32_bind_class()
+To: Zhang Changzhong <zhangchangzhong@huawei.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jiri Pirko <jiri@resnulli.us>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Wei Yongjun <weiyongjun1@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Kyle Zeng <kylebot@openai.com>
+On Fri, Aug 7, 2026 at 2:58=E2=80=AFAM Zhang Changzhong
+<zhangchangzhong@huawei.com> wrote:
+>
+> u32_walk() enumerates both struct tc_u_hnode and struct tc_u_knode
+> through the walker callback. u32_bind_class() unconditionally casts the
+> passed fh to tc_u_knode and accesses &n->res, so when fh is actually a
+> tc_u_hnode, which has no tcf_result member, this results in a
+> slab-out-of-bounds read of res->classid in tc_cls_bind_class().
+>
+> The issue can be reproduced with the following commands:
+>
+>     tc qdisc add dev lo root handle 1: hfsc
+>     tc class add dev lo parent 1: classid 1:1 hfsc sc rate 1000kbit
+>     tc filter add dev lo parent 1:1 protocol ip prio 1 u32 match u32 0 0 =
+flowid 1:1
+>     tc class add dev lo parent 1: classid 1:2 hfsc sc rate 2000kbit
+>
+> Fix this by skipping hash tables via the TC_U32_KEY(handle) check.
+>
 
-A non-nexthop FDB entry is expected to have at least one remote while it
-remains reachable through the FDB hash table. A filtered bulk flush
-violates this invariant when every remote matches: It unlinks the last
-remote in vxlan_fdb_dst_destroy() and only afterwards tells vxlan_flush()
-to destroy the parent FDB entry.
+Reproduced.
+The commit message would be better with what the sashikos prescribed:
+example to describe the type-confusion impact accurately (wrong-field
+read/write + spurious refcount, OOB read only under the tracker
+config) rather than "slab-out-of-bounds read" or "OOB store".
+Dont want to push for v2:
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-An RCU reader can find the parent during this interval.
-first_remote_rcu() then applies list_entry_rcu() to the empty list head,
-producing an invalid remote pointer that the receive learning path can
-read from and write to.
+cheers,
+jamal
 
-When a matching remote is the sole remaining remote, leave it linked and
-ask the caller to destroy the entire FDB entry. vxlan_fdb_destroy() keeps
-the remote attached while sending the deletion notification and removing
-the parent from the lookup structures.
 
-Fixes: c499fccb71cb ("vxlan: vxlan_core: Support FDB flushing by destination VNI")
-Cc: stable@vger.kernel.org
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Co-developed-by: David Lee <david.lee@trailofbits.com>
-Signed-off-by: David Lee <david.lee@trailofbits.com>
----
-Changes in v3:
-- Remove remotes_flushed and the redundant final p_destroy_fdb assignment,
-  as suggested by Ido Schimmel; the caller initializes the flag to false.
-
-Changes in v2:
-- Add the net tree prefix to the subject.
-- Restore Kyle Zeng as the patch author and correct the sign-off chain.
-- Move the research credit below the commit-message separator.
-- Add the recipients reported by netdev CI.
-
-v1: https://lore.kernel.org/all/20260731141311.570187-1-david.lee@trailofbits.com/
-
-Bug found and triaged by OpenAI Security Research and
-validated by Trail of Bits.
-
-Trail of Bits has a reproducer for this bug that triggers a
-KASAN slab-out-of-bounds read in vxlan_snoop() and can share if needed.
-
- drivers/net/vxlan/vxlan_core.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index d834a4865..0c42cfd96 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -3051,18 +3051,19 @@ vxlan_fdb_flush_match_remotes(struct vxlan_fdb *f, struct vxlan_dev *vxlan,
- 			      const struct vxlan_fdb_flush_desc *desc,
- 			      bool *p_destroy_fdb)
- {
--	bool remotes_flushed = false;
- 	struct vxlan_rdst *rd, *tmp;
- 
- 	list_for_each_entry_safe(rd, tmp, &f->remotes, list) {
- 		if (!vxlan_fdb_flush_remote_matches(desc, rd))
- 			continue;
- 
-+		if (list_is_singular(&f->remotes)) {
-+			*p_destroy_fdb = true;
-+			return;
-+		}
-+
- 		vxlan_fdb_dst_destroy(vxlan, f, rd, true);
--		remotes_flushed = true;
- 	}
--
--	*p_destroy_fdb = remotes_flushed && list_empty(&f->remotes);
- }
- 
- /* Purge the forwarding table */
--- 
-2.53.0
+> Fixes: 07d79fc7d94e ("net_sched: add reverse binding for tc class")
+> Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+> ---
+>  net/sched/cls_u32.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+> index 34d25f7..90ad80b 100644
+> --- a/net/sched/cls_u32.c
+> +++ b/net/sched/cls_u32.c
+> @@ -1250,6 +1250,9 @@ static void u32_bind_class(void *fh, u32 classid, u=
+nsigned long cl, void *q,
+>  {
+>         struct tc_u_knode *n =3D fh;
+>
+> +       if (TC_U32_KEY(n->handle) =3D=3D 0)
+> +               return;
+> +
+>         tc_cls_bind_class(classid, cl, q, &n->res, base);
+>  }
+>
+> --
+> 2.9.5
+>
