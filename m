@@ -1,68 +1,86 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA251AC44D
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 05:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67CC3812D2
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 05:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786338478; cv=none; b=SPAVY11vR12A59USLkr4fofZcSaVgMy+DsaU47Ugbn28tn2lI+Vd5hgNEzcn+/cJhQK09PFLS/9NO45DaTKXzVe0kgvvc9LeoBsKwyA9xmVquYx92O9e7Pjhsy+X+Dgi7INT72vbkhOT/97+QiKgob1oPnjgaFihHGB/jfGtqm0=
+	t=1786338882; cv=none; b=SKAbeXXS/LnD53/8tKBp6jxqVWE81AyACZ/mXC2DERan3CS0MmxzoFC5/DsIBtxZTOU6Ht4ZTcmSfpCNlYGnB3rVvbbIvaXk0T85TTMM5IBLH2bqmlZnKob6OkTzrpocv74u/6DSOY/ZMqFyXOVz4sBTJ0HL5U+lHLFyN37n1nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786338478; c=relaxed/simple;
-	bh=+YSbpdbT+Zge2HjdLE2Zq2WHeNNB187uBYIbE44yNzc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOOkua+bR1WyxSxpFV5zgMq9WtagA3E7pPCe7NUrpLwz8INeJ5+a865ma272Uzue0xKdV4uXJy1GYmj+DBN0CqDLfkVEBXw4Xh9g1wxqS3jLiCsKpxQw5RV1B5byHjFO4wgdBIDZcOJfEmDvx+23k5BNNPeKKghQCtQnomss/1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sSxaY8kt; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786338882; c=relaxed/simple;
+	bh=t9FQ3A9mEseT+Duvi8HZlUp3GSfuowElm+hKDRi+cGA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OIbMLTxRfvIkDqxpE4yN7OB6avrUtrpx4Jo1+3et2WcWsJAUXs3PmAtMXEh0X2WiILgbI5Se0cJXgDF/pFRr+JnO+A1srWozZ0jdm1rJ9jHsKAiMxUX2Y9Fu/pcyp4cGPKHCZgqMly9kzavum7xoi5cyksDrB6GXfe9/QmEkJ0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=S1083bGK; arc=none smtp.client-ip=209.85.216.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sSxaY8kt"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786338474;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3rcfqxJg8M6JJRKe48ru/DMT5hmYQqatFee02hdYv+k=;
-	b=sSxaY8ktCP9jwlWUWN8nFQNsmzJ2zXFXK6h+PkAiUNdkuM90PXG/gEgI6EN0Kb2qZIiBfc
-	vURmzeraQ+fsynY+iWbkvR3u/TfhQart++AKz5JQBSqEeeBc0Jo9vxvHrPA2iIAd6xU3xQ
-	tnIY6Du2MhloWtEU/711axZA0D7J7K8=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Shuah Khan <shuah@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Krishna Kumar <krikku@gmail.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf-next v4 3/3] selftests/bpf: xdp: test dev_xdp_install() rejects device-bound program
-Date: Mon, 10 Aug 2026 13:06:01 +0800
-Message-ID: <20260810050621.82035-4-jiayuan.chen@linux.dev>
-In-Reply-To: <20260810050621.82035-1-jiayuan.chen@linux.dev>
-References: <20260810050621.82035-1-jiayuan.chen@linux.dev>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="S1083bGK"
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso1171070a91.1
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 22:14:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786338880; x=1786943680;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UCf2bXdgmutT/THMTQgCZs8y1c1rlzeGzPri2rqohXs=;
+        b=PEYCzph7mQtLm5lCTjBbbcAL8fp5IYyoAxQaKzwM2HIIqwXfHpsjS+XoUw+4ydiBl2
+         QR2sDZr4HVSGJhm7EgNfuvBv5ciUGI2J2jLzdX6HaOFMBXecMDrFDO1t1L+lxTq60BR0
+         4gf/mXVgt6FlicjHxuO+1VWMQQRq8VpdBCAQojLmMgTUTfbTCBALO3lRK1pYJNKY9ygd
+         VL8XrCzRTffzSPO8jSmZGZBlGTD1vo1buhc30D49IJbVzInPvOOzZza1VsPV1qH27ddn
+         0drVoK6i/MnGU9WSY8iJlc6rqecRwZXUFUNMsrpq9wDTw8AJjGkcR3IHNJN5eXpZR/as
+         +B1A==
+X-Gm-Message-State: AOJu0YxATHezLJ01dTn6a8t2b1H8AJo5+T5N18O6WaoJA+ZB7ChoESEg
+	Co16xqQfZkcz5bFmbh1u+cfmxlzH1hS6F8ToQbMthDSxNokCvcnpN5YIp6lwTB9l+tcySdkpsMY
+	gjT40S5wfkMcaqSxiseBmrmg9XTCvZjCK90IUpmW6a0FqlTRoIBMH+20QaZ7o84rdgCF5nj+HMr
+	NFnHI+x8vGM4kX1FZ9ejXlFSBGCxCBP8Y+W8+EEnE+3KPv2hJeYVQgH7U46jDYwzz/2x0JMlpjS
+	PPGGPqHwdE=
+X-Gm-Gg: AR+sD12Umejy6Hhl3j1E2o0O8dWfeC6bTOarCXCI+dO8MVUsonb97sAnhxpCzs14AgQ
+	dpY3Mp/qx7yD+2eFS/uFeiL3nj9O7HdiTMiR3og+vohShg4cz9rMK9aYPwU9lHyKBwmmpP+HPNW
+	K2rCQ300CiAgFxtDHXzO0G2pFvBu7E/27yEhXVVkaIzlj3yZD4c8jUcpEESlBynK516rCl9pEZs
+	8BtvLaiTmQ1rvzeaQ+Ti/ZrB5YZW5FHMp+WHpitwivKrf5YIbbd3jao6XM8/23KBNLc1QTJzSD9
+	r80pPorvdlA2XmCB3FKyNZwH+3DCnYy9zBy/Wh5d23XlHN0uVHp6Ud/v826Cofzv9d6p/jXTbmb
+	DzW4X7NNGPq6sVT68b1u+0/J1aVxsGgofMZXJO4GWnqRbCEyyWKcMt+hw5OnFRgHKsRqZgzOs0f
+	KYLA6+/MO76MMXFttqJcbq/UQ/9uPBpdwqcOA=
+X-Received: by 2002:a17:90b:3a84:b0:38e:c232:9d2c with SMTP id 98e67ed59e1d1-392845e20bdmr6846889a91.2.1786338880051;
+        Sun, 09 Aug 2026 22:14:40 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-392825d6e6bsm3954759a91.10.2026.08.09.22.14.39
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 09 Aug 2026 22:14:40 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5283fa0656dso49045011cf.1
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 22:14:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1786338879; x=1786943679; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UCf2bXdgmutT/THMTQgCZs8y1c1rlzeGzPri2rqohXs=;
+        b=S1083bGKXKUb+3ZdG3JaNxfBmuVWLLPrrd/CijNwJ8nXfaXAbbbuo5nz0CV0WlYHyK
+         +CTGxiME58g1HB8CNZgJ2pYqAm4mczB/axMnnfHoMtURZkM5QIGwAaLEvq3XipF/xAIS
+         0xVk7q0tFmU6ImdwLjjqTXn4ICyP5BQZjMwYo=
+X-Received: by 2002:a05:622a:1ba7:b0:516:d83d:b28 with SMTP id d75a77b69052e-52d237e90abmr157431141cf.17.1786338878746;
+        Sun, 09 Aug 2026 22:14:38 -0700 (PDT)
+X-Received: by 2002:a05:622a:1ba7:b0:516:d83d:b28 with SMTP id d75a77b69052e-52d237e90abmr157430931cf.17.1786338878318;
+        Sun, 09 Aug 2026 22:14:38 -0700 (PDT)
+Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52d165f2c76sm64862701cf.24.2026.08.09.22.14.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Aug 2026 22:14:37 -0700 (PDT)
+From: Michael Chan <michael.chan@broadcom.com>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	pavan.chebbi@broadcom.com,
+	andrew.gospodarek@broadcom.com
+Subject: [PATCH net-next v6 00/15] bnxt_en: Add kTLS TX offload support
+Date: Sun,  9 Aug 2026 22:13:43 -0700
+Message-ID: <20260810051358.1244418-1-michael.chan@broadcom.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,84 +88,170 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-bpf_xdp_link_update() used to skip the checks in dev_xdp_attach(). Add a
-test that makes a generic XDP link with a normal program and then tries
-to swap in a device-bound program, which must fail.
+This patchset adds kTLS offload support for TX direction.  A number
+of new files are added:
 
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- .../bpf/prog_tests/xdp_dev_bound_only.c       | 49 +++++++++++++++++++
- 1 file changed, 49 insertions(+)
+bnxt_mpc.[ch] handle midpath channels (MPCs) used to offload kTLS
+connections to the chip's crypto blocks without going through FW.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_dev_bound_only.c b/tools/testing/selftests/bpf/prog_tests/xdp_dev_bound_only.c
-index 7dd18c6d06c6..4a13f8ec4300 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_dev_bound_only.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_dev_bound_only.c
-@@ -1,9 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <net/if.h>
-+#include <linux/if_link.h>
- #include <test_progs.h>
- #include <network_helpers.h>
- 
- #define LOCAL_NETNS "xdp_dev_bound_only_netns"
-+#define LINK_UPDATE_NETNS "xdp_dev_bound_only_lu_netns"
- 
- static int load_dummy_prog(char *name, __u32 ifindex, __u32 flags)
- {
-@@ -59,3 +61,50 @@ void test_xdp_dev_bound_only_offdev(void)
- 	 */
- 	SYS_NOFAIL("ip netns del " LOCAL_NETNS);
- }
-+
-+/* A device-bound program must not run on the XDP software path.
-+ * dev_xdp_attach() rejected such programs, but bpf_xdp_link_update() reaches
-+ * dev_xdp_install() directly and bypasses it, so the check has to live in
-+ * dev_xdp_install(). Create a generic (SKB) XDP link with a normal program,
-+ * then try to swap in a device-bound program via BPF_LINK_UPDATE.
-+ */
-+void test_xdp_dev_bound_only_link_update(void)
-+{
-+	LIBBPF_OPTS(bpf_link_create_opts, lopts, .flags = XDP_FLAGS_SKB_MODE);
-+	int base_fd = -1, devbound_fd = -1, link_fd = -1;
-+	struct nstoken *tok = NULL;
-+	__u32 ifindex;
-+	int err;
-+
-+	SYS(out, "ip netns add " LINK_UPDATE_NETNS);
-+	tok = open_netns(LINK_UPDATE_NETNS);
-+	if (!ASSERT_OK_PTR(tok, "open_netns"))
-+		goto out;
-+
-+	SYS(out, "ip link add eth42 type veth");
-+	ifindex = if_nametoindex("eth42");
-+	if (!ASSERT_NEQ(ifindex, 0, "if_nametoindex"))
-+		goto out;
-+
-+	devbound_fd = load_dummy_prog("devbound", ifindex, BPF_F_XDP_DEV_BOUND_ONLY);
-+	if (!ASSERT_GE(devbound_fd, 0, "load_dummy_prog devbound"))
-+		goto out;
-+
-+	base_fd = load_dummy_prog("base", 0, 0);
-+	if (!ASSERT_GE(base_fd, 0, "load_dummy_prog base"))
-+		goto out;
-+
-+	link_fd = bpf_link_create(base_fd, ifindex, BPF_XDP, &lopts);
-+	if (!ASSERT_GE(link_fd, 0, "bpf_link_create"))
-+		goto out;
-+
-+	err = bpf_link_update(link_fd, devbound_fd, NULL);
-+	ASSERT_EQ(err, -EINVAL, "link_update device-bound rejected");
-+
-+out:
-+	close(link_fd);
-+	close(base_fd);
-+	close(devbound_fd);
-+	close_netns(tok);
-+	SYS_NOFAIL("ip netns del " LINK_UPDATE_NETNS);
-+}
+bnxt_crypto.[ch] handle the crypto interface and resources.
+
+bnxt_ktls.[ch] handle kTLS offload.
+
+A new CONFIG_BNXT_TLS is added to enable all of the above.  The first 6
+patches add the MPC logic including resource accounting and reservations.
+The next 5 patches add the crypto logic to handle the crypto resources
+and to send/receive control data using the MPCs.  The last 4 patches
+add kTLS offload for the TX direction.
+
+There will be a follow-on patchset to make the TX offload more complete
+and to add the RX direction offload.
+
+v6:
+Fix more Sashiko reported issues:
+
+Patch #1:
+Make sure mpc capability is only updated during reset or ifdown/up.
+
+Patch #10:
+Handle both long and short MPC completions.
+Leave one empty slot in the MPC ring just like TX ring.
+Use memory barrier when updating tx_cons for MPC ring.
+
+Patch #11:
+Disable NAPI during MPC ring restart.
+Add bnxt_free_mpc_entries() called during shutdown like other rings.
+Simplify bnxt_xmit_crypto_cmd() error path.
+
+Patch #13:
+Goto kick_pending if kTLS transmit failed to flush the DB.
+Handle the case of BPF truncating the TX packet.
+
+Patch #14:
+Clear is_push and inline_data_bds during TX ring free.
+
+v5:
+https://lore.kernel.org/netdev/20260710042400.3996847-1-michael.chan@broadcom.com/
+
+Fix most valid Sashiko reported issues or add comments to clarify:
+
+Patch #2:
+Clarify in the commit log that kTLS, MPC rings are only supported on
+P5_PLUS chips in response to some Sashiko comments.
+
+Patch #3:
+Improve the ethtool -L MPC calculation to use the actual MPC rings
+during ring check.
+
+Add a comment in the code to explain the bnxt_trim_mpc_ring() call.
+
+Patch #5:
+Check for P5_PLUS before allocating mpc_info to more clearly document that
+MPC rings are only supported on P5_PLUS chips.
+
+Patch #8:
+Pre-existing Sashiko issue not addressed.
+
+Patch #9:
+More clearly document and explain that bnxt_clear_crypto() has no
+concurrent readers/writers.
+
+Add comment to explain that the bnxt_free_one_ctx() caller is reponsible
+to check the epoch value when needed.
+
+Patch #10:
+Add description in commit log that crypto engines use short completions
+only.
+
+Already explained that only P5_PLUS supports MPC.
+
+Patch #11:
+Defer the MPC ring reset to bnxt_sp_task() just like other resets to
+avoid any possibility od deadlock.
+
+Add more comments to explain the MPC ring disable, stop, start.
+
+Patch #12:
+The bnxt_drv_busy() is the existing driver scheme to wait for activities
+to stop during shutdown.
+
+Patch #13:
+The kTLS software counters match the other driver software counters
+using plain u64.  We can add u64_stats_sync for 32-bit systems but it
+makes more sense to add it to all the existing counters as well.
+
+Use BNXT_NO_FW_ACCESS() to fix possible massive AER timeout.
+
+Patch #15:
+Use bool instead of bit fields to keep track of kTLS states (requested by
+Paolo).
+
+v4:
+https://lore.kernel.org/netdev/20260629184921.3496727-1-michael.chan@broadcom.com/
+
+Fix kerneldoc prototype warning and uninitialized variable warnings reported
+by Jakub.
+
+Fix most valid Sashiko reported issues.
+
+v3:
+https://lore.kernel.org/netdev/20260614072407.2761092-1-michael.chan@broadcom.com/
+
+Fix most AI reported issues from Jakub.
+
+v2:
+https://lore.kernel.org/netdev/20260512212105.3488258-1-michael.chan@broadcom.com/
+
+Fix unused variable compile warnings in patch 10 and 12 by reorganizing
+the patches (reported by Jakub)
+
+Fix some error recovery issues in patch 12
+
+v1:
+https://lore.kernel.org/netdev/20260504235836.3019499-1-michael.chan@broadcom.com/
+
+Michael Chan (15):
+  bnxt_en: Add Midpath channel information
+  bnxt_en: Account for the MPC TX and CP rings
+  bnxt_en: Set default MPC ring count
+  bnxt_en: Rename xdp_tx_lock to tx_lock
+  bnxt_en: Allocate and free MPC software structures
+  bnxt_en: Allocate and free MPC channels from firmware
+  bnxt_en: Allocate crypto structure and backing store
+  bnxt_en: Reserve crypto RX and TX key contexts on a PF
+  bnxt_en: Add infrastructure for crypto key context IDs
+  bnxt_en: Add MPC transmit and completion functions
+  bnxt_en: Add crypto MPC transmit/completion infrastructure
+  bnxt_en: Support kTLS TX offload by implementing .tls_dev_add/del()
+  bnxt_en: Implement kTLS TX normal path
+  bnxt_en: Add support for inline transmit BDs
+  bnxt_en: Add kTLS retransmission support
+
+ drivers/net/ethernet/broadcom/Kconfig         |   9 +
+ drivers/net/ethernet/broadcom/bnxt/Makefile   |   1 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 303 +++++--
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  96 ++-
+ .../net/ethernet/broadcom/bnxt/bnxt_crypto.c  | 618 ++++++++++++++
+ .../net/ethernet/broadcom/bnxt/bnxt_crypto.h  | 230 +++++
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  61 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c |   2 +-
+ .../net/ethernet/broadcom/bnxt/bnxt_ktls.c    | 578 +++++++++++++
+ .../net/ethernet/broadcom/bnxt/bnxt_ktls.h    | 174 ++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c | 795 ++++++++++++++++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h | 232 +++++
+ .../net/ethernet/broadcom/bnxt/bnxt_sriov.c   |   6 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |   8 +-
+ include/linux/bnxt/hsi.h                      |  37 +
+ 15 files changed, 3083 insertions(+), 67 deletions(-)
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_crypto.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_crypto.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_ktls.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_ktls.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h
+
 -- 
-2.43.0
+2.51.0
 
