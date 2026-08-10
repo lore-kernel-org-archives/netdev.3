@@ -1,159 +1,227 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpo75.interia.pl (smtpo75.interia.pl [217.74.67.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6573A59A8
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786352113; cv=pass; b=ZEQEYIqurRC5pSAKgNpS1AqMZC3pPCXVPUUdlehV2EYHYJxHXzE4C28mZzMfUUqkogDxhthydBhbfcdj5ruRij798LQ9JrqrJ6CFUKGBX1pR2z2bXdEy90UiPV7Xn4u8NoOEdThumuC49Vgy850whfaG9Gn5yI6OVgfKXRkikvg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786352113; c=relaxed/simple;
-	bh=tDOXiVg0+h1h6bIO200hP40p0eMZwTt7k6rDajhWCvM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=akyzAH/4R5OnMtabfX4DRykhbcmq4pFR+mWG+/aj6fz20tyM87iRF9Fmqi8vS2eqG/WLyxDA4XTld91av1dJn2H6PNaV7gYZzWwODLdqO52u69uVYnGg2da4RFU7TWKMUZ5w9zUp9Hzo6AcTrWzJ9Qxv8cjESn6yGObibJNR+x4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QenO65i1; arc=pass smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826F43A7F6F
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.74.67.75
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786352295; cv=none; b=lrs11yIkjLoeTdgOhJATtThFH3TYBrJ3aXjiWl1rcrfv37/xAU7Sz71cYUkugsbHlKeIULGERrJGV28GC3U34Z+U0B0eyFy9Sz5MEEqSeL8dA2uwsH2W//u2Eg0fE0XuxaK25+XhlwcaDc9w71INHu/Jco+R9D9qgGBajLxcn6w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786352295; c=relaxed/simple;
+	bh=E5zXS3Kqqb7CwM+0T0bL1MNJipOkT2/vfhJTw7iHQL0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g1OB6v7qraLDq6xmtgus428essE51w3GxW3KQB533U6ITBDAPoNWQ8fik2wjG4rkPt95XBGjfK+Z05768iXetrjh8v5lUshaszegfityaRx8vubWx/GbTtodh8KAP0+eNJ7Q0Ytoas7/W3QHmnKcp0O+8kOz9aVcejan2F3nTNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm; spf=pass smtp.mailfrom=poczta.fm; dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b=xGPplLCO; arc=none smtp.client-ip=217.74.67.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QenO65i1"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8efec2c28f8so9357116d6.2
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 01:55:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786352110; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kpxGwE2n19IbAzvyi+g9vH4TNWmiBnCBWX40ns2sXbs8fc9dth5TRvAA29NDCJ5smz
-         I6RMpLTrU+zF43w5U7wpqpBoJsbFYafzTCRuQHbjXUPThPpLYUtiMJrV1LNFtmVcuxL6
-         dQO/8h3yjQgBXuwqQbCCTLReFTG3P9B++ar8g4nEuv2OKlL73K6Dhj7htz3+dWWkx24L
-         agf6c7ytzvOlatAwKKkeNO7aKfZzNH0a4/tBU0Eb/g2ZBQFWjH+opVb1vOjfquoGN1s0
-         VOfFNShx7hqiDrrpqd2H3egwgx0vO0AoXHXNdvmxCvhyeC1Cc0SJPVwMERmM8hpUjW0U
-         WTzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tDOXiVg0+h1h6bIO200hP40p0eMZwTt7k6rDajhWCvM=;
-        fh=HB5Aq1fvgQ2lFLhm3VAYhjRMYiL9iJjmWnVa+qyj33Y=;
-        b=lzNfNKEN/Jz72MF6rDJqyd0ivgQZU8CmMZV8KgCxvDdlmnJymUym2Ik0A+KNBDuRSF
-         x7DqFCTqKmuTGazQgKHX8lsZ0YJj2bPUxrgyhzFAmxs7EaEEEmlarPrAo67GG05l1+3/
-         Iht6Wh/lOtGgCuuk7MGavyE4YaAXtwqWwaJjEVBkEXPklRi+7TwZqzLO7ja0zFEn4C8q
-         Z5EkcULcmqTIbAcTrfJgu4EW16Uikc+nUSqF9OzITtGFWsv/4Min/sc6LF8pgZGArGkE
-         t4CkiYJb25ZYO9KigiHZVKjss6pPuIhSyzvsyi+GTXr2wYj9kLxivXcO+SA9ld+8bz9w
-         WQqA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786352110; x=1786956910; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tDOXiVg0+h1h6bIO200hP40p0eMZwTt7k6rDajhWCvM=;
-        b=QenO65i1yo37nFW4Zp9wL9ajszlkxK4+/mdsf0p6dDHy9RAbVSuuqiCJBn+0qn0GSE
-         S4KUF8HbHqGVYKW7D4JFE7clHIrlvzzgbgM0GC97J1l6Ho2lO/C3/rDyyDzhks1ASeU4
-         DTniIuiyAd7kxg+RXpjA7zI71scAo2RVHNmbDhfvT/lmLhrWeGtDAL1C7ID1lfdc1Gck
-         GCFwNwvrL/Ee0eTPInCGWw0PnwM9gMP/K59usuGCS1gV4cWOIs9TjuewEX4kmZtk/I7/
-         xLq0A2GyziYjRe75EEjyZ1azGF2BSJtrTYudyLORoiYVnj6Dap0jeiFVvHDTQ+CBY6s/
-         nHrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786352110; x=1786956910;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tDOXiVg0+h1h6bIO200hP40p0eMZwTt7k6rDajhWCvM=;
-        b=iBkDQeejc23QzPIZUVyIw9X+9WU8VUu/Tuo+p3AhVwYezwQ/aCAUWFksod0DouABwO
-         rgrTS0Dw8IALo12Bn+NfY0mE6KGARWeVEaTm78R6ao5oidDVPs9Ir9T1nwl/GV4jLms+
-         sEGrc9IxeTSnNncy3xEhQ7BTfuHGu9dTU1z5FK1nsCbtB/1BQKmoqubEebNbyydwxcm1
-         X09kwBdfUKWacIX0CXK9l4G2kpCpjkHQi3cDnlMKazIxg0qCwk7mmhmQYjAaOEOPNSbs
-         cKPpT75feH0mCQd4l6AumZg+Qw049MESSwGrMN6xsL2IJTpKuFeyu6/D/TQyO01AnMKR
-         gcwQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roo566xWrTBufm3KvimlFhkf5jyahPscuD6kP3UgY8h2uUB9+Wl5l9apg4Ok81ivBUITIcVb2s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYr1gsMqklXvHHqkjOh5JjMfNBq/gjSkNd+AfcAPc3/6UnKZCP
-	Yq9z5JG9sPFCn6zRy9hum4h+BL/6JfQjmaZ62HRGErAH1SEkbiRIuWYbpgwPKa9d4y3tjIxLOs+
-	AnisHdkUBExJRvjaMCWpl5dMYe4OnpIBZG0cDhnwZVgLyj93xWduFQGZm
-X-Gm-Gg: AR+sD13o5tVmNjjNZTRCGbXvxkM8iR4KYq6UEtSg8AiVCI5tXsswgANT53M+HYT7ImE
-	ko9CqjnflOrABysF5LsvO2xQpFmsOQPQ9M2EOC/Gsuk7dTh6ncohoNjm0AW1v9wheNUI4ZBnVWP
-	EF0fPv8q4lLByP/NHUgQapwOF/H+0lhTCwMKJZ3thz/kqAhHnzTXgv/+Wz2RxrrbVvCWWsY7s5r
-	BinKhfKa0ta4CoJC1jsQf2NB9eydxqqAzrwh8jsVpZ8wMgILQDMPaTEQbRcRX+kn4sdpyXckYNY
-	YRBtgR+Ef4Wb9DixjPxMpV21bEziJxBF/nhQ+iN3vNO22WjpHh8GcPRFvmff6i1R3nSF2OEP0jP
-	fDyMKoONs79Rr6RTHgYxH3uiB04JUsKwy4As7FKAFa9C2uPHG6XT7
-X-Received: by 2002:a05:6214:4306:b0:8f0:4e44:79e0 with SMTP id
- 6a1803df08f44-908a6f63f06mr248133046d6.1.1786352109674; Mon, 10 Aug 2026
- 01:55:09 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b="xGPplLCO"
+Received: from localhost (unknown [80.68.231.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
+	Mon, 10 Aug 2026 10:58:07 +0200 (CEST)
+From: Slawomir Stepien <sst@poczta.fm>
+To: kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	syzbot@lists.linux.dev,
+	Slawomir Stepien <sst@poczta.fm>,
+	syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
+Subject: [PATCH v2] netdevsim: drop the ability to change max_vfs via debugfs
+Date: Mon, 10 Aug 2026 10:57:17 +0200
+Message-ID: <20260810085717.570382-1-sst@poczta.fm>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260807131300.2677228-1-pimyn@google.com> <20260810095136.GA2582170@shredder>
-In-Reply-To: <20260810095136.GA2582170@shredder>
-From: Pimyn Girgis <pimyn@google.com>
-Date: Mon, 10 Aug 2026 10:54:58 +0200
-X-Gm-Features: AUfX_mzeFnxMLcy1L81sTY1-qh7OQ_ghwVT3wmFd0bJN3PpKGbIqieXYq9LY5wg
-Message-ID: <CAJWNTGyLJubRHn2KbqQMeV_jqexSgaLbzTe+xJnGzUw=RUtntA@mail.gmail.com>
-Subject: Re: [PATCH] ipv6: addrconf: drop "BUG: " prefix from pr_warn()
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
+	t=1786352290; bh=xrTw5PAADgmBNSmc3t2wM6SDOYwJszQY+/tmBuBo4HU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=xGPplLCOSyvlmxlf8ZLiius2mOgEG6tyrxujq18bPdExT1nmi8VVBw2VTNnyW5TGZ
+	 K3ylQnwEjNt+ZWzvA6ssR0e5baXpyityvoZDUP6n46d6FSoiYryaGbgUrogxm8OGzg
+	 G4Yl75PI/S8AIQl6Js135GOkp79hTDCG72u5irhw=
 
-On Mon, Aug 10, 2026 at 8:54=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wr=
-ote:
->
-> On Fri, Aug 07, 2026 at 03:13:00PM +0200, Pimyn Girgis wrote:
-> > Kernel warning messages emitted via pr_warn() already have the
-> > appropriate log level (KERN_WARNING) and should not include manual
-> > prefixes such as "BUG: " or "WARNING: ".
-> >
-> > Explicit "BUG: " prefixes in log strings can mislead testing tools
-> > like syzkaller, which scan kernel console output for "BUG: " to
-> > identify kernel oopses, panics, and fatal conditions.
-> >
-> > Remove the manual "BUG: " prefix from the pr_warn() call in
-> > __ipv6_ifa_notify().
-> >
-> > Fixes: 2d819d250a1393 ("ipv6: Handle missing host route in __ipv6_ifa_n=
-otify")
-> > Reported-by: syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=3Dded267b328e950a7c0c4
-> > Signed-off-by: Pimyn Girgis <pimyn@google.com>
->
-> I am able to reproduce this (there is no reproducer from syzbot, so I'm
-> not sure if it's the same one) and will investigate if we can avoid
-> getting into this state. If so, there wouldn't be any need to touch this
-> message.
+This debugfs file isn't used by kernel's selftests, so drop it.
 
-Hi Ido,
+Reported-by: syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=3147c5de186107ffc7a1
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Slawomir Stepien <sst@poczta.fm>
+---
+v2:
+* Changed the approach as suggested by Jakub
+* Subject line has changed
 
-Thanks for looking into this!
+v1:
+* https://lore.kernel.org/all/b7bf56ea-7522-4163-acd5-aaa69ad03b3a@mail.kernel.org/T/
+---
+ drivers/net/netdevsim/bus.c       |  3 --
+ drivers/net/netdevsim/dev.c       | 79 +------------------------------
+ drivers/net/netdevsim/netdevsim.h |  2 +-
+ 3 files changed, 3 insertions(+), 81 deletions(-)
 
-Correct me if I'm misunderstanding the code comment above that check:
+diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
+index 41483e371f05..5c55c308487b 100644
+--- a/drivers/net/netdevsim/bus.c
++++ b/drivers/net/netdevsim/bus.c
+@@ -443,8 +443,6 @@ static const struct bus_type nsim_bus = {
+ 	.num_vf		= nsim_num_vf,
+ };
+ 
+-#define NSIM_BUS_DEV_MAX_VFS 4
+-
+ static struct nsim_bus_dev *
+ nsim_bus_dev_new(unsigned int id, unsigned int port_count, unsigned int num_queues)
+ {
+@@ -464,7 +462,6 @@ nsim_bus_dev_new(unsigned int id, unsigned int port_count, unsigned int num_queu
+ 	nsim_bus_dev->port_count = port_count;
+ 	nsim_bus_dev->num_queues = num_queues;
+ 	nsim_bus_dev->initial_net = current->nsproxy->net_ns;
+-	nsim_bus_dev->max_vfs = NSIM_BUS_DEV_MAX_VFS;
+ 	/* Disallow using nsim_bus_dev */
+ 	smp_store_release(&nsim_bus_dev->init, false);
+ 
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index aed9ad5f1b43..4482f8c5417b 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -225,78 +225,6 @@ static const struct file_operations nsim_dev_trap_fa_cookie_fops = {
+ 	.owner = THIS_MODULE,
+ };
+ 
+-static ssize_t nsim_bus_dev_max_vfs_read(struct file *file, char __user *data,
+-					 size_t count, loff_t *ppos)
+-{
+-	struct nsim_dev *nsim_dev = file->private_data;
+-	char buf[11];
+-	ssize_t len;
+-
+-	len = scnprintf(buf, sizeof(buf), "%u\n",
+-			READ_ONCE(nsim_dev->nsim_bus_dev->max_vfs));
+-
+-	return simple_read_from_buffer(data, count, ppos, buf, len);
+-}
+-
+-static ssize_t nsim_bus_dev_max_vfs_write(struct file *file,
+-					  const char __user *data,
+-					  size_t count, loff_t *ppos)
+-{
+-	struct nsim_vf_config *vfconfigs;
+-	struct nsim_dev *nsim_dev;
+-	char buf[10];
+-	ssize_t ret;
+-	u32 val;
+-
+-	if (*ppos != 0)
+-		return 0;
+-
+-	if (count >= sizeof(buf))
+-		return -ENOSPC;
+-
+-	ret = copy_from_user(buf, data, count);
+-	if (ret)
+-		return -EFAULT;
+-	buf[count] = '\0';
+-
+-	ret = kstrtouint(buf, 10, &val);
+-	if (ret)
+-		return -EINVAL;
+-
+-	/* max_vfs limited by the maximum number of provided port indexes */
+-	if (val > NSIM_DEV_VF_PORT_INDEX_MAX - NSIM_DEV_VF_PORT_INDEX_BASE)
+-		return -ERANGE;
+-
+-	vfconfigs = kzalloc_objs(struct nsim_vf_config, val,
+-				 GFP_KERNEL | __GFP_NOWARN);
+-	if (!vfconfigs)
+-		return -ENOMEM;
+-
+-	nsim_dev = file->private_data;
+-	devl_lock(priv_to_devlink(nsim_dev));
+-	/* Reject if VFs are configured */
+-	if (nsim_dev_get_vfs(nsim_dev)) {
+-		ret = -EBUSY;
+-	} else {
+-		swap(nsim_dev->vfconfigs, vfconfigs);
+-		WRITE_ONCE(nsim_dev->nsim_bus_dev->max_vfs, val);
+-		*ppos += count;
+-		ret = count;
+-	}
+-	devl_unlock(priv_to_devlink(nsim_dev));
+-
+-	kfree(vfconfigs);
+-	return ret;
+-}
+-
+-static const struct file_operations nsim_dev_max_vfs_fops = {
+-	.open = simple_open,
+-	.read = nsim_bus_dev_max_vfs_read,
+-	.write = nsim_bus_dev_max_vfs_write,
+-	.llseek = generic_file_llseek,
+-	.owner = THIS_MODULE,
+-};
+-
+ static int nsim_dev_debugfs_init(struct nsim_dev *nsim_dev)
+ {
+ 	char dev_ddir_name[sizeof(DRV_NAME) + 10];
+@@ -343,9 +271,6 @@ static int nsim_dev_debugfs_init(struct nsim_dev *nsim_dev)
+ 	debugfs_create_bool("fail_trap_policer_counter_get", 0600,
+ 			    nsim_dev->ddir,
+ 			    &nsim_dev->fail_trap_policer_counter_get);
+-	/* caution, dev_max_vfs write takes devlink lock */
+-	debugfs_create_file("max_vfs", 0600, nsim_dev->ddir,
+-			    nsim_dev, &nsim_dev_max_vfs_fops);
+ 
+ 	nsim_dev->nodes_ddir = debugfs_create_dir("rate_nodes", nsim_dev->ddir);
+ 	if (IS_ERR(nsim_dev->nodes_ddir)) {
+@@ -1673,7 +1598,7 @@ int nsim_drv_probe(struct nsim_bus_dev *nsim_bus_dev)
+ 	dev_set_drvdata(&nsim_bus_dev->dev, nsim_dev);
+ 
+ 	nsim_dev->vfconfigs = kzalloc_objs(struct nsim_vf_config,
+-					   nsim_bus_dev->max_vfs,
++					   NSIM_BUS_DEV_MAX_VFS,
+ 					   GFP_KERNEL | __GFP_NOWARN);
+ 	if (!nsim_dev->vfconfigs) {
+ 		err = -ENOMEM;
+@@ -1872,7 +1797,7 @@ int nsim_drv_configure_vfs(struct nsim_bus_dev *nsim_bus_dev,
+ 		ret = -EBUSY;
+ 		goto exit_unlock;
+ 	}
+-	if (nsim_bus_dev->max_vfs < num_vfs) {
++	if (num_vfs > NSIM_BUS_DEV_MAX_VFS) {
+ 		ret = -ENOMEM;
+ 		goto exit_unlock;
+ 	}
+diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
+index 64f77f93d937..a0490d522778 100644
+--- a/drivers/net/netdevsim/netdevsim.h
++++ b/drivers/net/netdevsim/netdevsim.h
+@@ -472,6 +472,7 @@ nsim_psp_handle_ext(struct sk_buff *skb, struct skb_ext *psp_ext) {}
+ int nsim_setup_tc(struct net_device *dev, enum tc_setup_type type,
+ 		  void *type_data);
+ 
++#define NSIM_BUS_DEV_MAX_VFS 4
+ struct nsim_bus_dev {
+ 	struct device dev;
+ 	struct list_head list;
+@@ -480,7 +481,6 @@ struct nsim_bus_dev {
+ 	struct net *initial_net; /* Purpose of this is to carry net pointer
+ 				  * during the probe time only.
+ 				  */
+-	unsigned int max_vfs;
+ 	unsigned int num_vfs;
+ 	bool init;
+ };
+-- 
+2.55.0
 
-/*
-* If the address was optimistic we inserted the route at the
-* start of our DAD process, so we don't need to do it again.
-* If the device was taken down in the middle of the DAD
-* cycle there is a race where we could get here without a
-* host route, so nothing to insert. That will be fixed when
-* the device is brought up.
-*/
-
-It seems this state is somewhat expected/handled and otherwise
-harmless. The main issue here is simply that pr_warn() includes the
-literal string "BUG: ", which leads syzkaller to treat a non-fatal
-warning as a critical kernel panic/crash.
-
->
->
-> Currently busy with more pressing issues, so this will take a while.
-
-Thanks again, and no rush. Whenever you have time to look into it!
-
-
---
-=E2=B2=A0=E2=B2=9F=E2=B2=93=E2=B2=99=E2=B2=8F=E2=B2=9B =E2=B2=84=E2=B2=89=
-=E2=B2=B1=E2=B2=A3=E2=B2=85=E2=B2=93=E2=B2=9F=E2=B2=A5 - Pimyn Girgis
-Software Engineer
-Kernel Dynamic Analysis
-pimyn@google.com
