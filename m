@@ -1,73 +1,76 @@
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67CC3812D2
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 05:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4D9390C85
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 05:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786338882; cv=none; b=SKAbeXXS/LnD53/8tKBp6jxqVWE81AyACZ/mXC2DERan3CS0MmxzoFC5/DsIBtxZTOU6Ht4ZTcmSfpCNlYGnB3rVvbbIvaXk0T85TTMM5IBLH2bqmlZnKob6OkTzrpocv74u/6DSOY/ZMqFyXOVz4sBTJ0HL5U+lHLFyN37n1nw=
+	t=1786338885; cv=none; b=YzG9fVe0ERdgkcNAWaURPixSZeJmek3ZawMja+5RbZUeKhe5yr/0hr4vsmNjXzLfOUupJBi1jeuqcRGjJspEMBnHT0SZ2FcDIfnYzhxotjOi5sRA1voI0b254BoVgQjfoukhSJL96WASubsIY9MQzVCP6y71Ne7vnLugLiy+cRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786338882; c=relaxed/simple;
-	bh=t9FQ3A9mEseT+Duvi8HZlUp3GSfuowElm+hKDRi+cGA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OIbMLTxRfvIkDqxpE4yN7OB6avrUtrpx4Jo1+3et2WcWsJAUXs3PmAtMXEh0X2WiILgbI5Se0cJXgDF/pFRr+JnO+A1srWozZ0jdm1rJ9jHsKAiMxUX2Y9Fu/pcyp4cGPKHCZgqMly9kzavum7xoi5cyksDrB6GXfe9/QmEkJ0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=S1083bGK; arc=none smtp.client-ip=209.85.216.100
+	s=arc-20240116; t=1786338885; c=relaxed/simple;
+	bh=eCssZys0Hn6a4+ZLYncsAF1JZfudlQz2mvC+Ys50qC8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VkfAkAAlVvc3sMbrRftK/wrnsD1itTBjfzTX5moZWreoxCf925K6SM3JV3lUbKOsMezovuafdw9dYYWQzZwGZ5vD9QIfjXYtcdKaOihzPmtba7GyIvz+3HX1i412wWH4o3ZS/5XErF2UPbQOjHfol8qbJpmtClnh6qVaEB90+Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=S/4lP5OE; arc=none smtp.client-ip=209.85.216.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="S1083bGK"
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso1171070a91.1
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 22:14:40 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="S/4lP5OE"
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso1944807a91.2
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 22:14:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786338880; x=1786943680;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=UCf2bXdgmutT/THMTQgCZs8y1c1rlzeGzPri2rqohXs=;
-        b=PEYCzph7mQtLm5lCTjBbbcAL8fp5IYyoAxQaKzwM2HIIqwXfHpsjS+XoUw+4ydiBl2
-         QR2sDZr4HVSGJhm7EgNfuvBv5ciUGI2J2jLzdX6HaOFMBXecMDrFDO1t1L+lxTq60BR0
-         4gf/mXVgt6FlicjHxuO+1VWMQQRq8VpdBCAQojLmMgTUTfbTCBALO3lRK1pYJNKY9ygd
-         VL8XrCzRTffzSPO8jSmZGZBlGTD1vo1buhc30D49IJbVzInPvOOzZza1VsPV1qH27ddn
-         0drVoK6i/MnGU9WSY8iJlc6rqecRwZXUFUNMsrpq9wDTw8AJjGkcR3IHNJN5eXpZR/as
-         +B1A==
-X-Gm-Message-State: AOJu0YxATHezLJ01dTn6a8t2b1H8AJo5+T5N18O6WaoJA+ZB7ChoESEg
-	Co16xqQfZkcz5bFmbh1u+cfmxlzH1hS6F8ToQbMthDSxNokCvcnpN5YIp6lwTB9l+tcySdkpsMY
-	gjT40S5wfkMcaqSxiseBmrmg9XTCvZjCK90IUpmW6a0FqlTRoIBMH+20QaZ7o84rdgCF5nj+HMr
-	NFnHI+x8vGM4kX1FZ9ejXlFSBGCxCBP8Y+W8+EEnE+3KPv2hJeYVQgH7U46jDYwzz/2x0JMlpjS
-	PPGGPqHwdE=
-X-Gm-Gg: AR+sD12Umejy6Hhl3j1E2o0O8dWfeC6bTOarCXCI+dO8MVUsonb97sAnhxpCzs14AgQ
-	dpY3Mp/qx7yD+2eFS/uFeiL3nj9O7HdiTMiR3og+vohShg4cz9rMK9aYPwU9lHyKBwmmpP+HPNW
-	K2rCQ300CiAgFxtDHXzO0G2pFvBu7E/27yEhXVVkaIzlj3yZD4c8jUcpEESlBynK516rCl9pEZs
-	8BtvLaiTmQ1rvzeaQ+Ti/ZrB5YZW5FHMp+WHpitwivKrf5YIbbd3jao6XM8/23KBNLc1QTJzSD9
-	r80pPorvdlA2XmCB3FKyNZwH+3DCnYy9zBy/Wh5d23XlHN0uVHp6Ud/v826Cofzv9d6p/jXTbmb
-	DzW4X7NNGPq6sVT68b1u+0/J1aVxsGgofMZXJO4GWnqRbCEyyWKcMt+hw5OnFRgHKsRqZgzOs0f
-	KYLA6+/MO76MMXFttqJcbq/UQ/9uPBpdwqcOA=
-X-Received: by 2002:a17:90b:3a84:b0:38e:c232:9d2c with SMTP id 98e67ed59e1d1-392845e20bdmr6846889a91.2.1786338880051;
-        Sun, 09 Aug 2026 22:14:40 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-392825d6e6bsm3954759a91.10.2026.08.09.22.14.39
+        d=1e100.net; s=20251104; t=1786338883; x=1786943683;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7hzn58ICnunINZQSBCbPlBNIGjo8oSCyrNMdluBbATs=;
+        b=s0rjSk+0vMR/qnCNjKkSLbTekZaf8nQNjd93imttJGm6q00kQlTyNF+T8hfnD6w3+d
+         AL+9t52Xh6CKYlJLwngVF2egjvZyttiPzf+vlFkDX3cdFJ8CcKQdsMlKy9N+xBWrQfUQ
+         gT/yu68kSMnnAL71kKuarrH23HIo/emv5qLBcMkHTc5UrEMPy2fXjP/1vXDxEo2bTXXY
+         1ARTYylK2Tp0uo9CPSztMbeFSafQPFqKtyVHqJd6mkt933RUiIyf7DjcdH0PuZmAt7uk
+         vlDFXzMEZHmhO9XLZLFdLWAvDYWQFORIgMJvLnExpjNzCKJ6yVHK0HXlqwAI2p7q+qAv
+         8ZtQ==
+X-Gm-Message-State: AOJu0YwtEupMl1pK5DhJDnLdI6/LfxX/Y51sZgbXmYp6De4gjdm0wWXa
+	LByuOteG9mFyNKDQpnjWo7m7NwCcRTceYcfKq5hm+0V/Y1/ZjE6ogjsHS01EUSPMSTjrhxuYUzv
+	iaIJjK1iVIRbPEgxF95CXAigUBVcF8/DycfjVSBjX2Mk49KA7S2/nGSMcnlk9EaOcE0nfpCMzyQ
+	j5SC+vQLOYcyRLqjXTgQ4n7UMz8h0+fR1koIkaOZSiza8OkvcGfKFtwv7N785TZXaUgvHvTqYxl
+	jBTf/gGUdk=
+X-Gm-Gg: AR+sD12uoiXL3xFtgyT15u6SmMC+VKl+q59yd3wLUN3u1QAxAmcvnWTAChJFeTBJRm8
+	RMMDaEPMX6M/g7+bjpGQq25MWcq8RLe/55meZ3On8RR4vW4R/kngjpKAm5sDT9rjAEgKTBQh1DJ
+	lMO2ESfShr1WZAL1JDHpn0oqgdkkcdDlU72QsB+/YXvEgA3bEsBSzXdZiRPpI/pxjhqkzGNHGs7
+	RF8KyAAcZhv0WuApXiTyIRF9BAjP4QToQF+u98tJvrxPwVq+hasymXyxPgwWFJ2kOxqH1Eh+gB/
+	fm6108rVlCIlw1vLuPicfI78Ets56dwSciz0ogr5TmuOzbl826gahLNX9c7d5eQyk/SG5Us3A7O
+	U2xup4Mh0ozam5F6eZjzcZ5hfsgOsBxfpFK+SPTJgDcl22rjtCqOijr/NCbRey3z+/EeAPN3qhg
+	TnhYQbkIdnLvKged/rQnTriKYdgQLFQA0jIOo=
+X-Received: by 2002:a17:90b:52c4:b0:38d:ef48:b04 with SMTP id 98e67ed59e1d1-392620e70b5mr23926471a91.10.1786338882801;
+        Sun, 09 Aug 2026 22:14:42 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-20.dlp.protect.broadcom.com. [144.49.247.20])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3925fe8ee28sm4885705a91.3.2026.08.09.22.14.42
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 09 Aug 2026 22:14:40 -0700 (PDT)
+        Sun, 09 Aug 2026 22:14:42 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5283fa0656dso49045011cf.1
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 22:14:39 -0700 (PDT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-51bf321d786so18868861cf.1
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 22:14:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1786338879; x=1786943679; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UCf2bXdgmutT/THMTQgCZs8y1c1rlzeGzPri2rqohXs=;
-        b=S1083bGKXKUb+3ZdG3JaNxfBmuVWLLPrrd/CijNwJ8nXfaXAbbbuo5nz0CV0WlYHyK
-         +CTGxiME58g1HB8CNZgJ2pYqAm4mczB/axMnnfHoMtURZkM5QIGwAaLEvq3XipF/xAIS
-         0xVk7q0tFmU6ImdwLjjqTXn4ICyP5BQZjMwYo=
-X-Received: by 2002:a05:622a:1ba7:b0:516:d83d:b28 with SMTP id d75a77b69052e-52d237e90abmr157431141cf.17.1786338878746;
-        Sun, 09 Aug 2026 22:14:38 -0700 (PDT)
-X-Received: by 2002:a05:622a:1ba7:b0:516:d83d:b28 with SMTP id d75a77b69052e-52d237e90abmr157430931cf.17.1786338878318;
-        Sun, 09 Aug 2026 22:14:38 -0700 (PDT)
+        d=broadcom.com; s=google; t=1786338881; x=1786943681; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7hzn58ICnunINZQSBCbPlBNIGjo8oSCyrNMdluBbATs=;
+        b=S/4lP5OEdmPOKikZbX/cBXyfYmwQoYk7nZnnBBjy+XoL5mEB4moKHjTHcsPefsNelh
+         o3iefJ9x9px506uJMnQ7+cJqsRaZ/F+fkodnrVDJoYk0Vc7W6mT5X/wsd8ppY8Nwg3BV
+         Q219weWFUtM90BRm26kadgvL6mwXyCjNb7D5k=
+X-Received: by 2002:a05:622a:356:b0:51c:1d18:2fe9 with SMTP id d75a77b69052e-52d18e1a65fmr208417421cf.5.1786338881424;
+        Sun, 09 Aug 2026 22:14:41 -0700 (PDT)
+X-Received: by 2002:a05:622a:356:b0:51c:1d18:2fe9 with SMTP id d75a77b69052e-52d18e1a65fmr208417191cf.5.1786338880954;
+        Sun, 09 Aug 2026 22:14:40 -0700 (PDT)
 Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52d165f2c76sm64862701cf.24.2026.08.09.22.14.36
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52d165f2c76sm64862701cf.24.2026.08.09.22.14.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2026 22:14:37 -0700 (PDT)
+        Sun, 09 Aug 2026 22:14:39 -0700 (PDT)
 From: Michael Chan <michael.chan@broadcom.com>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -76,11 +79,15 @@ Cc: netdev@vger.kernel.org,
 	pabeni@redhat.com,
 	andrew+netdev@lunn.ch,
 	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com
-Subject: [PATCH net-next v6 00/15] bnxt_en: Add kTLS TX offload support
-Date: Sun,  9 Aug 2026 22:13:43 -0700
-Message-ID: <20260810051358.1244418-1-michael.chan@broadcom.com>
+	andrew.gospodarek@broadcom.com,
+	Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Subject: [PATCH net-next v6 01/15] bnxt_en: Add Midpath channel information
+Date: Sun,  9 Aug 2026 22:13:44 -0700
+Message-ID: <20260810051358.1244418-2-michael.chan@broadcom.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260810051358.1244418-1-michael.chan@broadcom.com>
+References: <20260810051358.1244418-1-michael.chan@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,168 +97,211 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-This patchset adds kTLS offload support for TX direction.  A number
-of new files are added:
+Midpath channels (MPCs) are rings for hardware control paths.  These
+control paths are used to offload kTLS directly to the hardware
+without going through firmware.  This patch adds the basic information
+structures for these MPCs.
 
-bnxt_mpc.[ch] handle midpath channels (MPCs) used to offload kTLS
-connections to the chip's crypto blocks without going through FW.
+An MPC is basically a TX and completion ring pair with a HW TLS block
+as the destination.  Two MPC channel types are used to offload
+connections to the TX crypto engine (TCE) and the RX crypto
+engine (RCE) respectively.  In the driver, we re-use the
+bnxt_tx_ring_info and bnxt_cp_ring_info control structs for the MPCs.
 
-bnxt_crypto.[ch] handle the crypto interface and resources.
+This patch also adds the CONFIG_BNXT_TLS Kconfig option to conditionally
+include the MPC logic.  The first few patches in the series add the MPC
+support.  kTLS support will be added later in the series.
 
-bnxt_ktls.[ch] handle kTLS offload.
-
-A new CONFIG_BNXT_TLS is added to enable all of the above.  The first 6
-patches add the MPC logic including resource accounting and reservations.
-The next 5 patches add the crypto logic to handle the crypto resources
-and to send/receive control data using the MPCs.  The last 4 patches
-add kTLS offload for the TX direction.
-
-There will be a follow-on patchset to make the TX offload more complete
-and to add the RX direction offload.
-
+Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+---
 v6:
-Fix more Sashiko reported issues:
-
-Patch #1:
 Make sure mpc capability is only updated during reset or ifdown/up.
-
-Patch #10:
-Handle both long and short MPC completions.
-Leave one empty slot in the MPC ring just like TX ring.
-Use memory barrier when updating tx_cons for MPC ring.
-
-Patch #11:
-Disable NAPI during MPC ring restart.
-Add bnxt_free_mpc_entries() called during shutdown like other rings.
-Simplify bnxt_xmit_crypto_cmd() error path.
-
-Patch #13:
-Goto kick_pending if kTLS transmit failed to flush the DB.
-Handle the case of BPF truncating the TX packet.
-
-Patch #14:
-Clear is_push and inline_data_bds during TX ring free.
-
-v5:
-https://lore.kernel.org/netdev/20260710042400.3996847-1-michael.chan@broadcom.com/
-
-Fix most valid Sashiko reported issues or add comments to clarify:
-
-Patch #2:
-Clarify in the commit log that kTLS, MPC rings are only supported on
-P5_PLUS chips in response to some Sashiko comments.
-
-Patch #3:
-Improve the ethtool -L MPC calculation to use the actual MPC rings
-during ring check.
-
-Add a comment in the code to explain the bnxt_trim_mpc_ring() call.
-
-Patch #5:
-Check for P5_PLUS before allocating mpc_info to more clearly document that
-MPC rings are only supported on P5_PLUS chips.
-
-Patch #8:
-Pre-existing Sashiko issue not addressed.
-
-Patch #9:
-More clearly document and explain that bnxt_clear_crypto() has no
-concurrent readers/writers.
-
-Add comment to explain that the bnxt_free_one_ctx() caller is reponsible
-to check the epoch value when needed.
-
-Patch #10:
-Add description in commit log that crypto engines use short completions
-only.
-
-Already explained that only P5_PLUS supports MPC.
-
-Patch #11:
-Defer the MPC ring reset to bnxt_sp_task() just like other resets to
-avoid any possibility od deadlock.
-
-Add more comments to explain the MPC ring disable, stop, start.
-
-Patch #12:
-The bnxt_drv_busy() is the existing driver scheme to wait for activities
-to stop during shutdown.
-
-Patch #13:
-The kTLS software counters match the other driver software counters
-using plain u64.  We can add u64_stats_sync for 32-bit systems but it
-makes more sense to add it to all the existing counters as well.
-
-Use BNXT_NO_FW_ACCESS() to fix possible massive AER timeout.
-
-Patch #15:
-Use bool instead of bit fields to keep track of kTLS states (requested by
-Paolo).
-
-v4:
-https://lore.kernel.org/netdev/20260629184921.3496727-1-michael.chan@broadcom.com/
-
-Fix kerneldoc prototype warning and uninitialized variable warnings reported
-by Jakub.
-
-Fix most valid Sashiko reported issues.
-
-v3:
-https://lore.kernel.org/netdev/20260614072407.2761092-1-michael.chan@broadcom.com/
-
-Fix most AI reported issues from Jakub.
-
-v2:
-https://lore.kernel.org/netdev/20260512212105.3488258-1-michael.chan@broadcom.com/
-
-Fix unused variable compile warnings in patch 10 and 12 by reorganizing
-the patches (reported by Jakub)
-
-Fix some error recovery issues in patch 12
-
-v1:
-https://lore.kernel.org/netdev/20260504235836.3019499-1-michael.chan@broadcom.com/
-
-Michael Chan (15):
-  bnxt_en: Add Midpath channel information
-  bnxt_en: Account for the MPC TX and CP rings
-  bnxt_en: Set default MPC ring count
-  bnxt_en: Rename xdp_tx_lock to tx_lock
-  bnxt_en: Allocate and free MPC software structures
-  bnxt_en: Allocate and free MPC channels from firmware
-  bnxt_en: Allocate crypto structure and backing store
-  bnxt_en: Reserve crypto RX and TX key contexts on a PF
-  bnxt_en: Add infrastructure for crypto key context IDs
-  bnxt_en: Add MPC transmit and completion functions
-  bnxt_en: Add crypto MPC transmit/completion infrastructure
-  bnxt_en: Support kTLS TX offload by implementing .tls_dev_add/del()
-  bnxt_en: Implement kTLS TX normal path
-  bnxt_en: Add support for inline transmit BDs
-  bnxt_en: Add kTLS retransmission support
-
- drivers/net/ethernet/broadcom/Kconfig         |   9 +
- drivers/net/ethernet/broadcom/bnxt/Makefile   |   1 +
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 303 +++++--
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  96 ++-
- .../net/ethernet/broadcom/bnxt/bnxt_crypto.c  | 618 ++++++++++++++
- .../net/ethernet/broadcom/bnxt/bnxt_crypto.h  | 230 +++++
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  61 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c |   2 +-
- .../net/ethernet/broadcom/bnxt/bnxt_ktls.c    | 578 +++++++++++++
- .../net/ethernet/broadcom/bnxt/bnxt_ktls.h    | 174 ++++
- drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c | 795 ++++++++++++++++++
- drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h | 232 +++++
- .../net/ethernet/broadcom/bnxt/bnxt_sriov.c   |   6 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |   8 +-
- include/linux/bnxt/hsi.h                      |  37 +
- 15 files changed, 3083 insertions(+), 67 deletions(-)
- create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_crypto.c
- create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_crypto.h
- create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_ktls.c
- create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_ktls.h
+---
+ drivers/net/ethernet/broadcom/Kconfig         |  9 ++++
+ drivers/net/ethernet/broadcom/bnxt/Makefile   |  1 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 12 +++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  2 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c | 26 ++++++++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h | 47 +++++++++++++++++++
+ 6 files changed, 97 insertions(+)
  create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c
  create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h
 
+diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet/broadcom/Kconfig
+index f0bac0dd1439..b33b66f038b8 100644
+--- a/drivers/net/ethernet/broadcom/Kconfig
++++ b/drivers/net/ethernet/broadcom/Kconfig
+@@ -255,6 +255,15 @@ config BNXT_HWMON
+ 	  Say Y if you want to expose the thermal sensor data on NetXtreme-C/E
+ 	  devices, via the hwmon sysfs interface.
+ 
++config BNXT_TLS
++	bool "Broadcom NetXtreme-C/E TLS offload support"
++	default y
++	depends on BNXT && TLS_DEVICE
++	depends on TLS=y || BNXT=m
++	help
++	  Say Y if you want to enable Transport Layer Security (TLS) hardware
++	  encryption and decryption offload on supported NetXtreme-C/E devices.
++
+ config BNGE
+ 	tristate "Broadcom ThorUltra Ethernet device support"
+ 	depends on PCI
+diff --git a/drivers/net/ethernet/broadcom/bnxt/Makefile b/drivers/net/ethernet/broadcom/bnxt/Makefile
+index debef78c8b6d..0506574c007a 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/Makefile
++++ b/drivers/net/ethernet/broadcom/bnxt/Makefile
+@@ -5,3 +5,4 @@ bnxt_en-y := bnxt.o bnxt_hwrm.o bnxt_sriov.o bnxt_ethtool.o bnxt_dcb.o bnxt_ulp.
+ bnxt_en-$(CONFIG_BNXT_FLOWER_OFFLOAD) += bnxt_tc.o
+ bnxt_en-$(CONFIG_DEBUG_FS) += bnxt_debugfs.o
+ bnxt_en-$(CONFIG_BNXT_HWMON) += bnxt_hwmon.o
++bnxt_en-$(CONFIG_BNXT_TLS) += bnxt_mpc.o
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 25099077fe4f..ae3b8b1b8228 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -76,6 +76,7 @@
+ #include "bnxt_hwmon.h"
+ #include "bnxt_gso.h"
+ #include <net/tso.h>
++#include "bnxt_mpc.h"
+ 
+ #define BNXT_TX_TIMEOUT		(5 * HZ)
+ #define BNXT_DEF_MSG_ENABLE	(NETIF_MSG_DRV | NETIF_MSG_HW | \
+@@ -9953,6 +9954,15 @@ static int __bnxt_hwrm_func_qcaps(struct bnxt *bp)
+ 	}
+ 	bp->tso_max_segs = le16_to_cpu(resp->max_tso_segs);
+ 
++	/* mpc capability can only change during FW reset and ifdown/ifup */
++	if (!test_bit(BNXT_STATE_OPEN, &bp->state) ||
++	    test_bit(BNXT_STATE_IN_FW_RESET, &bp->state)) {
++		if (resp->mpc_chnls_cap)
++			bnxt_alloc_mpc_info(bp, resp->mpc_chnls_cap);
++		else
++			bnxt_free_mpc_info(bp);
++	}
++
+ hwrm_func_qcaps_exit:
+ 	hwrm_req_drop(bp, req);
+ 	return rc;
+@@ -16569,6 +16579,7 @@ static void bnxt_remove_one(struct pci_dev *pdev)
+ 	bp->ptp_cfg = NULL;
+ 	kfree(bp->fw_health);
+ 	bp->fw_health = NULL;
++	bnxt_free_mpc_info(bp);
+ 	bnxt_cleanup_pci(bp);
+ 	bnxt_free_ctx_mem(bp, true);
+ 	bnxt_free_crash_dump_mem(bp);
+@@ -17240,6 +17251,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	bnxt_ethtool_free(bp);
+ 	kfree(bp->fw_health);
+ 	bp->fw_health = NULL;
++	bnxt_free_mpc_info(bp);
+ 	bnxt_cleanup_pci(bp);
+ 	bnxt_free_ctx_mem(bp, true);
+ 	bnxt_free_crash_dump_mem(bp);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index 44ea8fc7b766..f204e2a6b769 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2453,6 +2453,8 @@ struct bnxt {
+ 
+ 	u8			tph_mode;
+ 
++	struct bnxt_mpc_info	*mpc_info;
++
+ 	unsigned int		current_interval;
+ #define BNXT_TIMER_INTERVAL	HZ
+ 
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c
+new file mode 100644
+index 000000000000..86087e538550
+--- /dev/null
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (c) 2026 Broadcom Inc. */
++
++#include <linux/stddef.h>
++#include <linux/types.h>
++#include <linux/slab.h>
++#include <linux/bnxt/hsi.h>
++
++#include "bnxt.h"
++#include "bnxt_mpc.h"
++
++void bnxt_alloc_mpc_info(struct bnxt *bp, u8 mpc_chnls_cap)
++{
++	if (!bp->mpc_info)
++		bp->mpc_info = kzalloc_obj(*bp->mpc_info);
++	if (bp->mpc_info)
++		bp->mpc_info->mpc_chnls_cap = mpc_chnls_cap;
++	else
++		netdev_warn(bp->dev, "Unable to allocate MPC info\n");
++}
++
++void bnxt_free_mpc_info(struct bnxt *bp)
++{
++	kfree(bp->mpc_info);
++	bp->mpc_info = NULL;
++}
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h
+new file mode 100644
+index 000000000000..cd3f268a3a29
+--- /dev/null
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h
+@@ -0,0 +1,47 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright (c) 2026 Broadcom Inc. */
++
++#ifndef BNXT_MPC_H
++#define BNXT_MPC_H
++
++/* Mid path channel (MPC) definitions.  An MPC is special TX/completion
++ * ring pair to send/receive control plane data to the TCE and RCE
++ * (Transmit/Receive Crypto Engine) HW blocks.
++ */
++
++enum bnxt_mpc_type {
++	BNXT_MPC_TCE_TYPE = RING_ALLOC_REQ_MPC_CHNLS_TYPE_TCE,
++	BNXT_MPC_RCE_TYPE = RING_ALLOC_REQ_MPC_CHNLS_TYPE_RCE,
++	BNXT_MPC_TYPE_MAX,
++};
++
++#define BNXT_MAX_MPC		8
++
++struct bnxt_mpc_info {
++	u8			mpc_chnls_cap;
++	u8			mpc_cp_rings;
++	u8			mpc_ring_count[BNXT_MPC_TYPE_MAX];
++	struct bnxt_tx_ring_info *mpc_rings[BNXT_MPC_TYPE_MAX];
++};
++
++#define BNXT_MPC_CRYPTO_CAP    \
++	(FUNC_QCAPS_RESP_MPC_CHNLS_CAP_TCE | FUNC_QCAPS_RESP_MPC_CHNLS_CAP_RCE)
++
++#define BNXT_MPC_CRYPTO_CAPABLE(bp)					\
++	((bp)->mpc_info ?						\
++	 ((bp)->mpc_info->mpc_chnls_cap & BNXT_MPC_CRYPTO_CAP) ==	\
++	  BNXT_MPC_CRYPTO_CAP : false)
++
++#ifdef CONFIG_BNXT_TLS
++void bnxt_alloc_mpc_info(struct bnxt *bp, u8 mpc_chnls_cap);
++void bnxt_free_mpc_info(struct bnxt *bp);
++#else
++static inline void bnxt_alloc_mpc_info(struct bnxt *bp, u8 mpc_chnls_cap)
++{
++}
++
++static inline void bnxt_free_mpc_info(struct bnxt *bp)
++{
++}
++#endif	/* CONFIG_BNXT_TLS */
++#endif	/* BNXT_MPC_H */
 -- 
 2.51.0
 
