@@ -1,77 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5215735B64C
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 18:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3964838BF72;
+	Mon, 10 Aug 2026 18:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786384915; cv=none; b=b3yaQjO72rSx9PMaSari1OQguGGlcQNKPtS/WrlBvXnX3Fyobgan8dyUbthbzKF4fIj7pbs0yEA3f4h/NRk4hAb9kVFJJHPtN+opi8WaHymtpVXZCJVHQc/ueC0/z/pjS6sQHuZNPkPx1ZyP9SO40FZ/SmJIPcrgwE12jvsZX/Y=
+	t=1786385007; cv=none; b=BjlvUuCN76kYvQIMylwOw+KclS4zz1Tq+HzlmVKDn768J+agKD15BypL2tDuYEXAaeTOp5az1NrttjOdSAYJURsXlFVCABo+uTsj/jxNCeGik6xywNR8hb20cg8albRPBufGUs+7Gx3T1nUWbpTZ3amgU+3xYZ/qLdfJLYDL+gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786384915; c=relaxed/simple;
-	bh=tkSchSFp4xgTTAdZ0dmhJNFX3SMXVsUXoY36/f2E1SQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BTtcweBGQr5WHztMAaCFjcROiLSkq7k1AJRgiobaxjv4Bdyp80sX2cJ4LjrLKo9cb1oEqblB1H++0XaIjnhizWLq6cdJozoe7zCZioS+TMB92N38bHZQ7vJz0X+lrnfrlfB+AvjYzTBWHIN+rQ1YMCby3g4p1vU2mxiuJ/OdV24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9ZSzVIk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786385007; c=relaxed/simple;
+	bh=MPk28tW9IaFNravdfW+vVd7/hzQhHKSQLveQ5Z7BM+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ON78by7uae+6GZKc4Lf8hZliKBFGqg792YCONewCBickI/s7zst3PA85zlpjkroUc2QzEo+pFa/Wi/ATfDmBmOrdwlm7ovGUrfbawNLRwtzuHJUdcJWkt7Khsat6cQ1Vd0Y2sy816S62MRWYB9pKzKLP3n/bv3aj4MgIEijVxb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E5SrZ72V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9ZSzVIk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B017B1F000E9;
-	Mon, 10 Aug 2026 18:01:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E5SrZ72V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08F21F000E9;
+	Mon, 10 Aug 2026 18:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786384914;
-	bh=6areEHj8cE2ql0cL4pBXm2JD7AA23Hb5Qa30Qm1ev9I=;
-	h=From:To:Cc:Subject:Date;
-	b=b9ZSzVIkwnuWDWt3IGqP0IL5sAicss5P6IewQl/XAOR1RWW2llEg5HnXHdRP+NfL3
-	 YP/WD2qAFSS77O7TSz+LPK3TvF1sMGeyxP0AyI1kv7bHEp46ahLhG4ZFnXU7laHAbS
-	 y/T6LTcuCqOGl9R2j54Z/zc7pd4SAlBlHyUUH0X/vuqpaVxejRDq1HAFbt+bnx6m1U
-	 iCxTTUqVp93G7BaVvVc/AulWv/wLLNPhJHcW2cXfdrSTTwr9np+LbeyrDpI06LIAwq
-	 p5fJi9cidNr9MVfxY0AJpB94Bx1G3NiTS9IqHfSJCG5vxRg9JvrycTEh6s3VAbSzJa
-	 Hg+sp4uxuioDQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	jmaloy@redhat.com,
-	tung.quang.nguyen@est.tech
-Subject: [PATCH net-next] MAINTAINERS: make Tung an official TIPC maintainer
-Date: Mon, 10 Aug 2026 11:01:48 -0700
-Message-ID: <20260810180148.680425-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	s=k20260515; t=1786385005;
+	bh=+47nB+ymVQpumJdoiL7i0y+0QEYSSwSbPBEdZ3OfrBg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E5SrZ72VDXJbAtd0U9iOidzNeHCawXN+u5dsLBP7qBo2pJzTegMWiPiO/SjD33Dl0
+	 0s7LAwspsNl+NzMXa2B+Seg1OtoD/Hc0tN3twuQ/GTBUjfV8v8N6PnY3lKuTXpYQPf
+	 HfS9exE/RtVdAcJW8p30pJpDeQN88wOINYcwDqZR4jhKNTRShG/aYTsGrqptP909RK
+	 2yXqp0EHNeyHRkyOMJfP5FlGajUUj/AFHG3l5XnWP8/Mdlvn4c5MObzjufaSxi6uv/
+	 M5ojLqlXtohKQzlRWmJlxd1HHLiXIP18Ituk5+RVZ7VjHFWDnBGekuLRko6lnDMHo7
+	 d2qz0ZNuIsIyQ==
+Date: Mon, 10 Aug 2026 13:03:24 -0500
+From: Rob Herring <robh@kernel.org>
+To: Manikandan Muralidharan <manikandan.m@microchip.com>
+Cc: pratyush@kernel.org, mwalle@kernel.org, takahiro.kuwano@infineon.com,
+	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+	krzk+dt@kernel.org, conor+dt@kernel.org, srini@kernel.org,
+	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev, linux@armlinux.org.uk,
+	richardcochran@gmail.com, arnd@arndb.de, linusw@kernel.org,
+	michael@walle.cc, linux-mtd@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v6 1/7] dt-bindings: mtd: jedec,spi-nor: allow the SFDP
+ to be exposed via NVMEM
+Message-ID: <20260810180324.GA2352629-robh@kernel.org>
+References: <20260729043026.1811147-1-manikandan.m@microchip.com>
+ <20260729043026.1811147-2-manikandan.m@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260729043026.1811147-2-manikandan.m@microchip.com>
 
-Tung Quang Nguyen has been working as the de facto TIPC maintainer
-for a few years now. Make sure the MAINTAINERS file reflects this
-reality. Dealing with the flood of AI patches is a significant
-effort, and Tung's work and responsiveness is exemplary.
+On Wed, Jul 29, 2026 at 10:00:20AM +0530, Manikandan Muralidharan wrote:
+> Add an optional "sfdp" child node (compatible "jedec,sfdp") that
+> describes the SFDP as a read-only NVMEM provider via nvmem.yaml, so its
+> contents (e.g. a vendor EUI-48/EUI-64) can be read through NVMEM cells.
+> 
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+> Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
+> ---
+>  .../devicetree/bindings/mtd/jedec,spi-nor.yaml | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
+> index 587af4968255..98fd954598ab 100644
+> --- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
+> +++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
+> @@ -103,6 +103,20 @@ properties:
+>    spi-cpol: true
+>    spi-cpha: true
+>  
+> +  sfdp:
+> +    $ref: /schemas/nvmem/nvmem.yaml#
+> +    unevaluatedProperties: false
+> +    description:
+> +      The Serial Flash Discoverable Parameters (SFDP) tables exposed as a
+> +      read-only NVMEM device. This allows standard or vendor-specific SFDP
+> +      data (for example a factory-programmed EUI-48/EUI-64 identifier) to be
+> +      consumed through NVMEM cells.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: jmaloy@redhat.com
-CC: tung.quang.nguyen@est.tech
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+blank line
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a82b6ec9c567..ee4a9da0eb83 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27257,6 +27257,7 @@ F:	tools/testing/selftests/timers/
- 
- TIPC NETWORK LAYER
- M:	Jon Maloy <jmaloy@redhat.com>
-+M:	Tung Quang Nguyen <tung.quang.nguyen@est.tech>
- L:	netdev@vger.kernel.org (core kernel code)
- L:	tipc-discussion@lists.sourceforge.net (user apps, general discussion)
- S:	Maintained
--- 
-2.55.0
+> +    properties:
+> +      compatible:
+> +        const: jedec,sfdp
 
+blank line
+
+With that,
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
