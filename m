@@ -1,212 +1,245 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C1A348C4C
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 23:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECA13B9D97;
+	Mon, 10 Aug 2026 23:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786403913; cv=none; b=aFkpZlgk0BsDavnBViO4cdECNdFylOdyfBPHk/JzpTz2DXOxgSVscVAKYKLQXIEJpjaVSQCo/N5FXEq43OcpDo+XE3QIR5o7tJNk4Al+uG/U9eokq/Sa4Bg462fCGzfcKByp/clf3WtsoqDbs4xOuZlhmCma+OYNmVDw1zfYz8s=
+	t=1786403957; cv=none; b=P3kTQ2qcfKNqqXt7yZn9PaGigMv9U/ua3Z2bn/XJaAVcdG8CZGcT4jTbcKPQYvBbMnD9eBpOJwWbysiEoiZyy6Qdhmy3fvgvOTIe1nMm7Vkh4buyTuAPtF/YEYCLkAxAPl7iU+y8ADJ8LALSgL/fJboN//ot6dcQoldjlZX+ePE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786403913; c=relaxed/simple;
-	bh=lQOFcQpS75/8Jqf+KkFR95eQ4Cjthj5L4QAlXBcqNuE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fScCZ4ApZ5e2Q3w6dZOsgtM4tekrff6OcwgcQITSOPTUd0Z19NHaSBaRFJaXQSdgJfHgEOQ8WYt8vcbAYmSwY8CNtRfnlk0GdZEhA7PQINaKEWrltuKY7rcb/BxbSDx/xDBsp1rl2iHyA7LPY2vYE3Q08odQNj+yk6gxe588d78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qFPml5uX; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786403957; c=relaxed/simple;
+	bh=L0AKXJBvAZGKXAPVIct0/GrD2ytU2lnsU3MeywuN4NU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GxiY/2G3zPb5sQNxlAIwnEiVQztiDJPpEW6fIkNZrhwkzJcUVso2AZDGcOCcsxzB5ZhHtzSuyV0pym3JRK45fLdBeIx3E740VopfOFCysKmrJh/LW3WuUYCvEmdKFbZALlYthV/EgQM0BcWvXok5Gce9fOpp2SeKkkV5IBaJAC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCqLTf15; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qFPml5uX"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4706f016316so180179f8f.3
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 16:18:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786403910; x=1787008710; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L0G1LhQH45+FBFyTubKs6iZM/Vc1A1blzDgpoJPDaQk=;
-        b=qFPml5uX6xecsK2L/pKY222JDmXSETUp86Sz5lKKjF8aDCEIR3eLR/2UdJWUUPNEre
-         xCwbC3rozeWnzhTnqEPTM4+wngMGBNnf4Ml0MjsRjD8vJQXSO7raQU2S7DBE4dvwdnG0
-         Nfj3jt5hbAo/IvNgpZwp65P+elay2s0n0wSXzyqUd4EamsiUkSmhjVIio48TECu5GjsZ
-         Uks8vhIzA4k10wabLxPWZKjnjJXWAsUlwwZCL3mKPoF2klA2Oxt7iK65wObl9eZ+4Idj
-         /i3LP/g32gcsbziqIRr5HyopjVt3MRFJj6zywPEdf82a9e8I8yqBe/iNJ2o5wA9mHA0z
-         Rr6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786403910; x=1787008710;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=L0G1LhQH45+FBFyTubKs6iZM/Vc1A1blzDgpoJPDaQk=;
-        b=q9f2sxSDG4zyzwRzqSOT3bhJ5fABfg8AxRYvY7yc78oc1f3ML+zHm3fV1iwhQw8xUu
-         hjsXIMsPqe4FNx4jzMWUoh32q+NIz7AJlaU2yfhHjVvLWjqQtwSX3b3LRusVGzjd5Dlx
-         aXRCxnDEUO8Ni9w8TZPyxVyKS38ivnM68dqxhtiIrd/a/mVlVmfLfNIR7OF6JUg1MnxJ
-         2A2A8StSACTwtfTXAnrJlbDKmrqlvdiCT50Srg+45HGlCxD4SyrlsLupuIgarxb6abru
-         yYskAKvdVtm3uuk8cqS/rT3KMs2HpElPauoRQnpgWNpMxMkMNAvouXAuQ8j2UNyBUOiG
-         uYqw==
-X-Forwarded-Encrypted: i=1; AHgh+Rru2gUgUpkwwztom1l+M1nSmETBMPh6ElBREool03377/+NiI6/PBhFlCNrrnzf34Eg19PGpGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqEZOLLybzPa0QBqu0l2MFkDxyh8KkdCu/K9xpjGPK4wKKZ48c
-	9FzlZAnSoawtF8vq5nota0QqI/wt9WH2oeWfzGl9ZgCYxMhChfTa2jVk
-X-Gm-Gg: AR+sD12hr0TLvdBp93Pm7NR1dGJZMiXI9iLfCYyOfbwgGBkg98MLl0VLucw1/Nn5jOc
-	qtyAk5jxTcK4xnPIjnkWiHs/+lIHIWyFzxv6K/Zwf2Al9DrKo1DZigYOFNkCjzt5NmtGiRDnVRR
-	NvaWyox/dqcRp1xYYdXkQU1I3tftaU90dLodH0AL0SdMOUV0xsHlVn2pgBcKvDCrHSlGvW8vMLp
-	cQMcnV/p4suzPbZpSJzkfGkime2tUSfteQN0Vbsg+etMWwrRw9+uQK7/60Dr2WpQfKnZC0QiM1t
-	XZIWDFu4efSRDkPjqJbw8sRGMbjvcjthISNANw96yVsWI0E/IC/0vk3KWXUsUf/cm6ss2gNA0hI
-	xrGaohxgtnAgFjffp9YzV+WAQV5n5qvC3daiMmlyd0gQr7jNoEtf5WRB71r7T1dSdzkvZURgThZ
-	thoZ+b56QdS3t0dAejYIW+PvwRbcNCktxEy/XqYl+W82j44jMTaNtS62jRr53/QFmaMSbDlFBVB
-	RmSW1/SZf4BGGvUffX0h7cr1S8JeK0ptLKXNiaJLY9obOD8W9MUQIkt3A52p/XoEx72Se4kFFix
-	YPORrWWIyd5n
-X-Received: by 2002:a5d:5f83:0:b0:47f:80e0:53bf with SMTP id ffacd0b85a97d-47fec5322c9mr33773964f8f.3.1786403910273;
-        Mon, 10 Aug 2026 16:18:30 -0700 (PDT)
-Received: from [192.168.2.69] (dynamic-077-187-035-246.77.187.pool.telefonica.de. [77.187.35.246])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021f8f33sm44251330f8f.27.2026.08.10.16.18.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Aug 2026 16:18:29 -0700 (PDT)
-Message-ID: <8ee040eb-29c2-4bad-88eb-0817d2270a15@gmail.com>
-Date: Tue, 11 Aug 2026 01:18:27 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCqLTf15"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACFD1F000E9;
+	Mon, 10 Aug 2026 23:19:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786403955;
+	bh=rgO7H61q+f+FhrghRlHGl5HqKQjbNf8XYgfJ8GAU0uY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=CCqLTf150Y+7Pu00FGxWA+WBl4ChAyYlEGC3eglzJgxY+eQAOiK9UoW2UjYWujZAN
+	 DCiNfqRHPL68FD5BrxX2KlYZ6sUjFK7E9C7S423VLb3qJwi4wUaCuXIXcWKxgoyZAu
+	 r3tiJMX5bMJ7JndG/QqAOq/mC34Vr7ss/D5p3kHVQ7nrNTr/yXbsNXaowZNcy74flG
+	 PERrRlDVQSTIqipZU9T9oCGx1MMupdmzpHB/4M2IPnnolRbl6LtpqWtntjf41fAg7w
+	 vLRjA/5aMnFYr6Yza5XnN1AUXwf3NoKBQTWj087u7WfRbEKql8hKhyLcYjmrKEImyU
+	 C+f/Sf30eoj+A==
+From: Jakub Kicinski <kuba@kernel.org>
+To: hidayath@linux.ibm.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	alibuda@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	sidraya@linux.ibm.com,
+	mjambigi@linux.ibm.com,
+	andrew+netdev@lunn.ch,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	pasic@linux.ibm.com,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net] net/smc: drop the abort_work reference when the work is cancelled
+Date: Mon, 10 Aug 2026 16:19:13 -0700
+Message-ID: <20260810231913.969204-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260806081549.595001-1-hidayath@linux.ibm.com>
+References: <20260806081549.595001-1-hidayath@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 3/3] selftests: net: hsr: add shared-mutation
- regression test
-To: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com
-Cc: edumazet@google.com, horms@kernel.org, shuah@kernel.org, lukma@denx.de,
- m-karicheri2@ti.com, fmaurer@redhat.com, luka.gejak@linux.dev,
- bigeasy@linutronix.de, ali@iusegentoo.com, qingfang.deng@linux.dev,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260808004525.1551-1-xiexinet@gmail.com>
- <20260808004525.1551-4-xiexinet@gmail.com>
-Content-Language: en-GB
-From: Xin Xie <xiexinet@gmail.com>
-Autocrypt: addr=xiexinet@gmail.com; keydata=
- xsDNBGpiHugBDADJ5KuJaOYfUx7TGbRw0UE1km4dLnJomCSNtgq2T9BqgZ6TRPEy37soAmW3
- XxCPvhfL6CPLldzy6O6EkUD7/8zlbQP1DM6gUIQUyKxxkb8uR+oCogDKjsxt0QPycP/dR9fk
- SL4qKReprnkOOcGeLahLHzofVdn46mc5igCBsAA/PPSpo1GqsfGk+zYV97rSVa8zhnSXsqZ/
- 9DbUfQynZKVqYN4tm1B30JE5SEWDCko95Qw9fAORX2W356MOQJGr05z9qMSy7CkF7bAUkziG
- d6ZSPsGEsel5jYByP8ZvwQ2A8kdKpRy8+zQCaC+vEotTH7Fs7SIzE/Z5mEVIi1xQqEzN1rqG
- BW7KgzRDWjw8lKsoBbxv20nfhUzuZLan2HzUJ+LxZ18Os4zkWg9sxHgMi+AGqn/+0ppbDcOH
- 9Jm072/xA7O1MCXLgr4FOP+4PJH1vcqU+0EZVz7KCjrwkdz+l5Ojso2FLXq2MGoqWGShIsDV
- bF1JYpgm4spdPbnISkidUC0AEQEAAc0cWGluIFhpZSA8eGlleGluZXRAZ21haWwuY29tPsLB
- DQQTAQgANxYhBAHOahKZFnMu2n/CxrTrSufyPi3LBQJqYh7oBQkFo5qAAhsDBAsJCAcFFQgJ
- CgsFFgIDAQAACgkQtOtK5/I+LctmngwAlmrGPWnWxDW6PSJeR9SM0faqwuY33TWAE35nshm/
- EEkBgpVVhG4z4Cdy7L+6TG6NHVDnvl+IHLyyOZlL3LQPQIpiKVgo6jHmm9TF6mK+Vo3nsXAA
- uSJYu9iY9Aywmy2JVQ15ttQ0NfcoZ0sV14bT7pSr9zXB6D8p3XA4AQI6IBeLvj993Z1+tPyC
- 6BJ+2aWWLBx7xGpFo3X8dhjS/Lm8QoietKbI+ACefKKCDNiM2KG53P76wdXJp52u4dqP6eFc
- +Qv35QefnALoPkOGQEdd1qvUycyZhuaCj8h0AxDu7bL3G/IM8G2K8qsbSJuui8zCSZ9b/QZf
- H7u1nevPOgxyWC1Pep/TbRZ62ktn8lrmWA8PZjuaJJQGjahuK1GgTQZNG+7DB7NwjLr6aXIm
- JirtT4FeR+IUovvL/ll+VHzpGpFbgXz4GTsWsikQkT1huFSB8MRLlWMXdAKblL96L754j8Z5
- p/YV26YTppXI56uJ3XyOwZSrfrK1pfqNIp2Yr9vUzsDNBGpiHukBDACePM1YZ1FvAiFay/2v
- KVDNpuazmpVb1CBFy+rqM9HcuHe+5CuxLd4RI4hb0qmjlm5Vi5M8+AuNB/wi/f8oDuhJwlMn
- v9L0lfgpRRdShnB26hnt2wWwWFgOU3BwymSruxhEYq+eIjjxCAo6yW7Qm+ArZ+riETMI67sy
- ZyLx6o4yRiWxOrh1nhwV/f6PIOl+Iv4yLAG3eFXpU7/EZpim610bKMwcXEpiRkf3NjiflIha
- adoKHV0LCiVNrU7r8TICjjnugpl1tXAR2RlaRcSxmvOzrXY2O/xBLpwPr5erbdk8RCaxUzS0
- kK0hw+/On3Sr4Z4gtLl2xtDkjRh3KQ9ZqMPrFD/5XOs842ueNivwIyAf2kQJjKfJGWc771EM
- 0ZWo1r1AthbuM+IeN5QM74rMJxaf5WyDX3ZeqBA55fCJGJ3zrp7Tqeoq8DYufiNkppE9S71z
- Cvxva2f8mUWTlTUf8s33sRD7C87XpT0whKpn1I9/nJB9Kb0dKyRCdcsT4o1ynxUAEQEAAcLA
- /AQYAQgAJhYhBAHOahKZFnMu2n/CxrTrSufyPi3LBQJqYh7pBQkFo5qAAhsMAAoJELTrSufy
- Pi3L/iwL/3aoCeq19Pog3fqisRyEZeX8pXw2GYlrJWYoM0mQ1USaTpdsMwCXaoFMoSBqid0F
- VPrqlH4bSIEEAzVmFPX0NjGhREDMrQ9eR5S9yqSpBvX+hz+xgpt4NOPhbVQmV+9f4lX9TJT7
- GOO3EX2eeokg6ZAISycCAx7srXuc8oyRTJtnUQziH9GXrEeon88LHf1QHg0Z0sL/c7DfDqvW
- 9924M4ngQAZ8RgCBGZocoWuXCemSPkfQVLt5DzycSgSQODhbNSEmr+jb1V9Svf9D9k0CQfEY
- cB3uwOHWb6Z/yaEARbGZPSPn89YjXBncQTpgSvUM578b5x3pKi6PjZB/hwtUsRgrWGWoIwRi
- +ZmcHnCzsuo6uuNYX8VvmWqYsVajykjnpjdCGmU89QUsVmrtnDPBrfr8VVJcZPnCJhE595Pk
- LO29Oj0au9kr7kMW5Q+fBeHj5zz6VggAaRRU74/sgtwLODBWESPZ9LqUUdB5L/XbrSq2VDlD
- sNySbH3veZ/55EtlXA==
-In-Reply-To: <20260808004525.1551-4-xiexinet@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Dispositions for the AI-review findings on this patch (the review is
-published on the web only, not mailed to the list):
+This is an AI-generated review of your patch. The human sending this
+email says "*shiko finds more issues with the work termination here.
+Can you please TAL and fix these all in one series?"
+---
+net/smc: drop the abort_work reference when the work is cancelled
 
-> The header calls this subtest "F2 (path/LAN ID)" and the changelog
-> says "Add regression coverage for both shared-data corruptions",
-> but is any path ID actually checked anywhere in the script?
->
-> This link is created with proto 1, so only the PRP path is
-> exercised, and the checks below only decode the PRP RCT LAN-ID
-> nibble.  That covers prp_create_tagged_frame()'s frame->skb_prp
-> branch.
->
-> The sibling branches in hsr_create_tagged_frame() are not touched
-> by either subtest: [...]
->
-> Would it be worth adding an HSR-tagged (proto 0, version 1) case
-> with captures on the slave peers so those branches are covered too?
+The patch makes smc_conn_free() drop the socket reference handed to
+conn->abort_work when cancel_work_sync() reports that the work was still
+pending, so the sock_hold() taken by the scheduler of the work is not
+leaked.  It follows the pattern smc_close_cancel_work() already uses for
+conn->close_work.
 
-The analysis is correct: only the PRP RCT branch is exercised.  Note
-the F1 link is HSR_V0, which assigns the same path ID to both slaves,
-so a path-ID check would indeed need a version-1 link as suggested;
-the NETIF_F_HW_HSR_TAG_INS branches additionally need offload
-hardware that a veth topology does not provide.
+A few questions about the surrounding cancel logic follow.
 
-> Every other capability this script needs is probed and turned into
-> a skip: ip/tc/python3 via require(), sch_netem via the tc qdisc
-> probe, and HSR/PRP plus HSR RedBox via the ip link add probes.
-> AF_PACKET is the exception.
->
-> tools/testing/selftests/net/hsr/config lists only: [...]
->
-> and CONFIG_PACKET in net/packet/Kconfig is a plain tristate with no
-> default y.  On a kernel built from this fragment,
-> socket(AF_PACKET, ...) raises OSError(EAFNOSUPPORT), python3 exits
-> 1, run_f2() returns 1 and the merge reports a hard FAIL rather than
-> a skip.
->
-> Should CONFIG_PACKET be added to the hsr config fragment?
+> diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+> index b4208cb186c5e..3d4a86d99dd6b 100644
+> --- a/net/smc/smc_core.c
+> +++ b/net/smc/smc_core.c
+> @@ -1252,6 +1252,7 @@ static void smc_buf_unuse(struct smc_connection *conn,
+>  /* remove a finished connection from its link group */
+>  void smc_conn_free(struct smc_connection *conn)
+>  {
+> +	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
+>  	struct smc_link_group *lgr = conn->lgr;
+>  
+>  	if (!lgr || conn->freed)
+> @@ -1275,8 +1276,13 @@ static void smc_buf_unuse(struct smc_connection *conn,
+>  		tasklet_kill(&conn->rx_tsklet);
+>  	} else {
+>  		smc_cdc_wait_pend_tx_wr(conn);
+> -		if (current_work() != &conn->abort_work)
+> -			cancel_work_sync(&conn->abort_work);
+> +		/* If the work was pending (cancel returns true) it never ran,
+> +		 * so the sock_hold taken by its scheduler was never released.
+> +		 */
+> +		if (current_work() != &conn->abort_work) {
+> +			if (cancel_work_sync(&conn->abort_work))
+> +				sock_put(&smc->sk);
+> +		}
 
-Correct.  In practice a kselftest-merge picks up CONFIG_PACKET=y
-from other net selftests' fragments, so this only bites on a kernel
-built from the hsr fragment alone.
+[Severity: High]
+This isn't a bug introduced by this patch, but can this cancel_work_sync()
+deadlock against a already-running abort_work?
 
-> The capture loop above also exits when the four second deadline
-> expires, leaving i_src as None.  Since None != RB is true, does
-> that make a missed vIp capture report as "interlink did not carry
-> the RedBox MAC"?
->
-> The m_src check that follows is the assertion this subtest exists
-> for [...] and it is skipped because the i_src check already called
-> sys.exit(1).  [...]
->
-> Could F1 get an equivalent explicit check for m_src is None / i_src
-> is None before the value comparisons, so a timeout is
-> distinguishable from a wrong MAC?
+The worker takes the socket lock as its first action:
 
-Yes, the subtest still fails in that case, but the printed reason is
-misleading and the primary assertion never runs; an explicit None
-check would separate the two outcomes.
+net/smc/smc_core.c:smc_conn_abort_work() {
+	lock_sock(&smc->sk);
+	smc_conn_kill(conn, true);
+	release_sock(&smc->sk);
+	sock_put(&smc->sk); /* sock_hold done by schedulers of abort_work */
+}
 
-> The changelog says the results are merged "so packet-socket
-> pressure or a skip cannot hide a failure".  Does the merge hold for
-> statuses that are not one of the kselftest constants?
->
-> Both run_f2() and run_f1() end with nsx python3 /dev/stdin, so ret
-> is the raw exit status of ip netns exec python3.  A signal-killed
-> interpreter gives 128+N (137 for a SIGKILL/OOM, 139 for SIGSEGV),
-> and an ip netns exec failure gives 255.
->
-> ksft_status_merge() only ranks four values: [...]
->
-> With ret=137, ${weights[137]} expands to the empty string, which
-> bash evaluates as 0 inside [[ ]], so 0 -ge 0 succeeds and the
-> function echoes a, i.e. 0.  rc stays 0, the branch above prints
-> "[ OK ]" and exit "$rc" returns 0 for a subtest that was killed
-> mid-run.  [...]
->
-> Would normalising ret to $ksft_fail for anything outside
-> 0/$ksft_xfail/$ksft_skip/$ksft_fail before merging address this?
+and the callers of smc_conn_free() reach it while holding that same lock:
 
-Yes, normalising ret to the ksft constants before merging addresses
-it.  This only affects abnormal exits; normal outcomes always return
-the ksft codes, which merge correctly.
+net/smc/af_smc.c:__smc_release()
+	lock_sock(sk);
+	...
+	if (!smc->use_fallback)
+		smc_conn_free(&smc->conn);
 
-All four are test-code remarks; none changes the verdict direction on
-the configurations the test runs (it fails on the unfixed kernel and
-passes with the series), so no respin is planned for them.
+net/smc/smc_close.c:smc_close_passive_work()  (inside lock_sock(sk))
+	if ((sk->sk_state == SMC_CLOSED) &&
+	    (sock_flag(sk, SOCK_DEAD) || !sk->sk_socket)) {
+		smc_conn_free(conn);
 
--- 
-Xin
+net/smc/smc_close.c:smc_close_active_abort()  (SMC_PEERCLOSEWAIT1/2,
+SMC_PEERFINCLOSEWAIT, SMC_PROCESSABORT, SMC_APPFINCLOSEWAIT)
+		smc_conn_free(&smc->conn);
+
+So if abort_work has already started on another CPU and is blocked in
+lock_sock(), the closing task holds the socket lock and waits in
+cancel_work_sync() for that worker, which cannot proceed.  The
+current_work() != &conn->abort_work test only covers the case where the
+same task is running abort_work itself.
+
+Note both abort_work and close_work are queued on smc_close_wq, so
+close_work running smc_close_passive_work() can be the blocking canceller.
+
+The commit message cites smc_close_cancel_work() as the model:
+
+	if (cancel_work_sync(&smc->conn.close_work))
+		sock_put(sk);
+
+but that helper drops the socket lock around the cancel:
+
+net/smc/smc_close.c:smc_close_cancel_work() {
+	release_sock(sk);
+	if (cancel_work_sync(&smc->conn.close_work))
+		sock_put(sk);
+	cancel_delayed_work_sync(&smc->conn.tx_work);
+	lock_sock(sk);
+}
+
+Should the abort_work cancel do the same, and would that change where the
+new sock_put() has to live?
+
+[Severity: High]
+This is a pre-existing ordering issue rather than something the patch adds,
+but does cancel_work_sync() here actually keep abort_work from being
+re-armed?
+
+The cancel happens before smc_lgr_unregister_conn(conn), so the receive
+path can still find the connection:
+
+net/smc/smc_cdc.c:smc_cdc_rx_handler() {
+	read_lock_bh(&lgr->conns_lock);
+	conn = smc_lgr_find_conn(ntohl(cdc->token), lgr);
+	if (!conn || conn->out_of_sync) {
+		read_unlock_bh(&lgr->conns_lock);
+		return;
+	}
+	smc = container_of(conn, struct smc_sock, conn);
+	sock_hold(&smc->sk);
+	read_unlock_bh(&lgr->conns_lock);
+
+and then queue the work again:
+
+net/smc/smc_cdc.c:smc_cdc_msg_validate() {
+		sock_hold(&smc->sk); /* sock_put in abort_work */
+		if (!queue_work(smc_close_wq, &conn->abort_work))
+			sock_put(&smc->sk);
+
+cancel_work_sync() passes cflags 0, so it re-enables the work before
+returning:
+
+kernel/workqueue.c:__cancel_work_sync() {
+	ret = __cancel_work(work, cflags | WORK_CANCEL_DISABLE);
+	...
+	if (wq_online)
+		__flush_work(work, true);
+
+	if (!(cflags & WORK_CANCEL_DISABLE))
+		enable_work(work);
+
+which means a queue_work() issued after the cancel returns succeeds.  The
+freshly queued worker then runs smc_conn_abort_work() -> smc_conn_kill() on
+a connection with conn->freed == 1 whose lgr reference smc_conn_free()
+already dropped, and dereferences conn->lgr:
+
+net/smc/smc_core.c:smc_conn_kill() {
+	if (conn->lgr->is_smcd && conn->lgr->peer_shutdown)
+
+Would unregistering the connection from lgr->conns_all before cancelling,
+or gating the queueing on conn->freed under conns_lock, close that window?
+
+>  	}
+>  	if (!list_empty(&lgr->list)) {
+>  		smc_buf_unuse(conn, lgr); /* allow buffer reuse */
+
+[Severity: High]
+This is also a pre-existing problem and not something introduced here, but
+the patch documents smc_conn_free() as the place that disposes of a pending
+abort_work, and one exit path of the function skips that disposal:
+
+net/smc/smc_core.c:smc_conn_free() {
+	if (!smc_conn_lgr_valid(conn))
+		/* Connection has already unregistered from
+		 * link group.
+		 */
+		goto lgr_put;
+	...
+lgr_put:
+	if (!lgr->is_smcd)
+		smcr_link_put(conn->lnk); /* link_hold in smc_conn_create() */
+	smc_lgr_put(lgr); /* lgr_hold in smc_conn_create() */
+}
+
+On that path neither the cancel nor the new sock_put() runs, yet the
+connection's link and link-group references are still dropped, and
+conn->lgr is not reset.  A pending abort_work then dereferences it:
+
+net/smc/smc_core.c:smc_conn_kill() {
+	if (conn->lgr->is_smcd && conn->lgr->peer_shutdown)
+
+Concretely, a peer sends a CDC message with prod_flags.failover_validation
+and a stale seqno, so smc_cdc_msg_validate() queues abort_work.  Meanwhile
+__smc_lgr_terminate() calls smc_conn_kill(), which does
+smc_lgr_unregister_conn() (clearing alert_token_local) and then
+smc_close_active_abort() -> smc_conn_free(); smc_conn_lgr_valid(conn) is
+now false, so the goto lgr_put path is taken.  __smc_lgr_terminate() then
+calls smc_lgr_free(), whose smc_lgr_put() drops the last reference and
+kfree()s the lgr while abort_work is still queued.
+
+Can the queued abort_work read a freed struct smc_link_group here, and
+should this exit path also cancel the work and return its reference?
