@@ -1,270 +1,127 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39F4211A09
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 13:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F7F3D9DC9
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 13:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786367948; cv=none; b=HW3Gk+hS1eUjtlqbSrL/ZF8b84im6blVLSrGLK0TnKkko+QGb7b0TUfyK1gSQG9lF13Td9kl05LhzhdylBa06VmjNXvJaljTYZmoRgsWBymbBmZW5cn1n2I9SW1QhQLzpMLGuMWuSu7S4xXnKt+TqkUBG1jI+KyBI5Rq9q30Rf4=
+	t=1786367970; cv=none; b=d9UcfQ5UE/79Jxm21n+4mHlAe4m324Hiq3FALwm7zJkg89TtjvU/cUOfatgjU5LeytuqoYZwJ1h/BOANImd674TfMLKOi+nCbDpVlsTTwAXdXMHC+w2uhikPceOYfqYJ/UQ9h7yh3l0SRPo2/yv75ObIxehBwsakJGMvpWnzzg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786367948; c=relaxed/simple;
-	bh=uYXXrV7oSscJ5Nd+4n9xWTL4xDguLt2hrWucJg9Rh7g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hd737bgsoavNId3aqSCA+LFUYSw3Tto6nRWJNbLm8TJkILJLpP6yXjnYSOLjTQeV9EjKwmSoxTD5JZT/wNF7hpoG3MDDoASllADu8YLhQXUVITvHIuAbDapRBxc2vmDq3nedpordl4oDJQAQfptzssG/kTJ6npcHER1+k2sqybU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GH9D6vRA; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786367970; c=relaxed/simple;
+	bh=RCnjMXak1vWRXkY+8P2qCv5I5tPqfGPlUI3npCNQYJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o3nYlcVEA7yjf0LG/BEPUDI+PPIg5FIQm1KC3XqTUnJT03l7l/s56KaALP16Lc2Vo2qJ+Q5e+97V6No2jIKHDvjw2eq6ScRmw3Jr7IQeVIfDpfV5nxA46gm9tJQD6PYQngwZbHM8kub07zCNf8nNrbHjpjrRk2G3EWkywoI5eH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a5S556LP; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GH9D6vRA"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so1682135a91.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:19:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786367944; x=1786972744; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+VW3i74IAPjVY0OS6V/IwE4IE06dAM439Do4xlSGaIc=;
-        b=GH9D6vRAcuJkbrDvQh2rZSKtwaE8pMkavaDpIWbE4NzONZA69OxTXZ+mKvIppY/fFM
-         TApLZvpOKQtLh9/jYB2ks8mxe6PmLIpblJxmCEFCeIOAO33L8gMwvrxFSHCgDl/U6Rj0
-         4TjQ+CodsNqkMGd0Rl6DAQ7AZygOK55nYfg83gFzZHwnXUUdxaq+PxxRsTm2GbUJvUJK
-         WB1C9cqJF4Q40VDUg4LkNSRodS6lwkzT9p+xufynpzG/z9SGac8vFkoiUYuEDGM6g6NM
-         m92yHIFhz1DqW6/TQE8ey1qxJgPgXlAAAr/R3eNJgu6bYyX9IexEvzENG4bmWDdO0gzi
-         3daQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786367944; x=1786972744;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+VW3i74IAPjVY0OS6V/IwE4IE06dAM439Do4xlSGaIc=;
-        b=jlpKPUqelubkuXHXYGZIvKKEBNFNC/4JHMof8rd4/Dj6OLW1dny0UdDxvvBmLFpiT5
-         JyE4sk9Q3AXQUTveui3DTnR1NNSUN/2eaRnojhid9+Yhr+FXMgGisbiCqCBJTn7NoZt4
-         OnUS8bemang4cOZAiBT/Cas3qgY5F5DXM0EcLKnwnd3nVJFe3gWEW02zDiW1whKauqVZ
-         VsEg4tPJXgKi+z0QISkB4FIFVxkN0TC0s1MckpOZ6EVvrtoeXDgcItgALaxhxBkeq2mK
-         NVp7NCBKXEjNmM6djGauePKlll8pi2JWQQFRmGX6aUUi8Nmn/XC9hjvrN+9Dc3/ATN8Q
-         E3PQ==
-X-Forwarded-Encrypted: i=1; AHgh+RohD2qOCNsOcR1M6HlpjZ6cy50b+0ypMSTMS5izwHwjs2wm1ri9/GyPyQhzWlQiMQ9DYEZzac8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypWgJonrRZsn41a08V4L4DedXJuRsQExZE77ao82oLU8XCDA9Q
-	rOiuwlJTW+hxRUa+SBGiIxQ0fsYPhtTk7UU/0HXIkLUePnu2QyVJ26l0
-X-Gm-Gg: AR+sD135BB/i/7+6utQFceObJinJk9UR7opvjqs9N9P4DbnApoX0jh34rao5nCx0GG6
-	KUKy2zMcCCOidp0ohUyo8eD3TUWue3GUHkqqf6mw0qJ0O3uUJ9kE03HKsetmsBK/yEDCxk+H44u
-	brfQU/bHE1hO+sI4R+VCK77WIawB/QhkSE5osh/XNdNl0O3U/BZrfPO1EOPcubis9OTvJnlc6Ge
-	81WutFnemNXxR0GHnUkqPH9sNYufpCgYUnwNZalWSGm3oj4ymrY9bxpo7AkOPBmU+7mxA8BHcnN
-	9wcXD8yj57KJSfm4fw/VbmvyOIrsAZMxHtHrajpkWXxcD02DDweut+0gNpAjj4tnIq7wQsXSnhm
-	MhShpeUWEm4eIbGLFAMgL6rmpqT67QQQ68xJsyNj2u/JLHI6GypPeV7KX+4AC11Ci25mnFck8AP
-	g8b4+ayBnd2PX2mrx2Fhwu7vkrFR8T09jLbeO4UCUKAFBZ8nO71kZbsuDdof1oTTpVrVOIA3avn
-	MRGbg==
-X-Received: by 2002:a17:90b:5251:b0:38e:4cb:51f with SMTP id 98e67ed59e1d1-3903c59212bmr44426513a91.11.1786367943952;
-        Mon, 10 Aug 2026 06:19:03 -0700 (PDT)
-Received: from localhost ([2402:e280:3e0d:544:91b3:77c4:f31d:d706])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315beb88413sm73961999eec.18.2026.08.10.06.19.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 06:19:03 -0700 (PDT)
-From: Vaibhav Nagare <nagarevaibhav@gmail.com>
-X-Google-Original-From: Vaibhav Nagare <vnagare@redhat.com>
-To: horms@kernel.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com
-Cc: andrew+netdev@lunn.ch,
-	matvey.kovalev@ispras.ru,
-	Pavel.Zhigulin@kaspersky.com,
-	aelior@marvell.com,
-	manishc@marvell.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Vaibhav Nagare <vnagare@redhat.com>
-Subject: [PATCH net v4] qede: Fix NULL pointer dereference in TPA fragment processing
-Date: Mon, 10 Aug 2026 18:48:59 +0530
-Message-ID: <20260810131859.1870628-1-vnagare@redhat.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a5S556LP"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 648131A1525;
+	Mon, 10 Aug 2026 13:19:24 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F9626033B;
+	Mon, 10 Aug 2026 13:19:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 69F4311C4A678;
+	Mon, 10 Aug 2026 15:19:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1786367958; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=0Cngfd3pTrBt3w1pSRyXt2FrQZwtm1iuY9S6c178uPg=;
+	b=a5S556LPGtJDWULJBOBm1QZCs3uZ35TIQLmIYMDqpoUbPY3C8VrodMGnXG6DmVZnZmRpZm
+	CaWQEHqwxrxY20XIzOP/OPctM5YBCPUkro5tirC9SKO7KouAJ8lU4PHFfwDSYoyvU5j6Ky
+	Nlpvjkf4AHYlLXRD0kYX89+FGijPy0HHVbYpXGnpX1UFI8jz405m79vw+X3RGWZACOMK01
+	p5r43xrNQXoj8w3WCYWLe6YlIi2/9lzdiB86c4TqBq0sDy901zJ/johgfBfk7O6/iXxDze
+	uTikUz6K3Vi3PfIGDXWxX9HpX65YUc5+Uz/ibVDIN8l/9+pf+cENXjZZLuE7dA==
+Date: Mon, 10 Aug 2026 15:19:14 +0200
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Simon Horman <horms@kernel.org>
+Cc: github@szelinsky.de, o.rempel@pengutronix.de, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] net: pse-pd: stop async event sources before
+ freeing PI data in unregister
+Message-ID: <20260810151914.5d2389a1@kmaincent-XPS-13-7390>
+In-Reply-To: <20260717110734.443214-2-horms@kernel.org>
+References: <20260711121611.1639086-2-github@szelinsky.de>
+	<20260717110734.443214-2-horms@kernel.org>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Under memory pressure, the qede driver encounters NULL pointer
-dereferences when processing TPA continuation fragments.
+On Fri, 17 Jul 2026 12:07:35 +0100
+Simon Horman <horms@kernel.org> wrote:
 
-As identified by Jakub Kicinski, commit 8a8633978b84
-("qede: Add build_skb() support.") accidentally dropped
-the assignment of tpa_info->buffer.data in qede_tpa_start().
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> https://sashiko.dev/#/patchset/20260711121611.1639086-2-github@szelinsky.=
+de?part=3D1
+> ---
+> --- Patch [1]: [PATCH net v2 1/2] net: pse-pd: stop async event sources
+> before freeing PI data in unregister --- commit
+> bc4c653b9b2b42b2c22ca8b6cae3af394c8add0e Author: Carlo Szelinsky
+> <github@szelinsky.de>
+>=20
+> net: pse-pd: stop async event sources before freeing PI data in unregister
+>=20
+> This commit reorders the teardown process in pse_controller_unregister().
+> It disables the IRQ and flushes the notification worker before flushing p=
+ower
+> domains and releasing the PI array. This is intended to prevent use-after=
+-free
+> issues caused by asynchronous accessors referencing freed data structures.
+>=20
+> > diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_cor=
+e.c
+> > index a5e6d7b26b9fd..6045b6c399c26 100644
+> > --- a/drivers/net/pse-pd/pse_core.c
+> > +++ b/drivers/net/pse-pd/pse_core.c
+> > @@ -1114,11 +1114,15 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
+> >   */
+> >  void pse_controller_unregister(struct pse_controller_dev *pcdev)
+> >  {
+> > -	pse_flush_pw_ds(pcdev);
+> > -	pse_release_pis(pcdev);
+> > +	/* Stop the IRQ and notification worker before freeing what they
+> > +	 * reach: both touch pcdev->pi, and the IRQ also uses pw_d->supply
+> > +	 * that pse_flush_pw_ds() drops.
+> > +	 */
+> >  	if (pcdev->irq)
+> >  		disable_irq(pcdev->irq); =20
+>=20
+> [Severity: High]
+> Does this code call disable_irq() on an already freed IRQ line?
+>=20
+> In tps23881.c, devm_pse_controller_register() is called before
+> tps23881_setup_irq(). Because devres executes teardown actions in LIFO or=
+der,
+> the IRQ is freed before pse_controller_unregister() runs.
+>=20
+> Calling disable_irq() here operates on a freed IRQ descriptor, which can =
+cause
+> warnings or corrupt state.
 
-When memory pressure causes an SKB allocation failure in qede_tpa_start(),
-the driver sets tpa_start_fail = true and attempts to recycle the physical
-page later in qede_tpa_end(). However, because buffer.data was left
-uninitialized (NULL), qede_reuse_page() pushes a "ghost"
-page (valid mapping but NULL data pointer) back into the
-active Rx ring. The next time the hardware uses this descriptor,
-it passes a NULL page to qede_fill_frag_skb(), causing a kernel
-panic.
+This is not relevant because on the sashiko case the pcdev->irq is zero as =
+long
+as tps23881_setup_irq()->devm_pse_irq_helper() is not call, therefore the I=
+RQ
+won't be freed two times.
 
-Example crash from production system:
- BUG: unable to handle kernel NULL pointer dereference at 0x8
- RIP: qede_fill_frag_skb+0x96/0x430 [qede]
- Call Trace:
-   qede_rx_int+0xb06/0x1de0
-   qede_poll+0x2f4/0x6c0
-   __napi_poll+0x2d/0x130
+All others are reported as possible pre existed issues and PSE lifetime is
+what you are trying to fix so on my side:
 
-Observed on HPE Synergy 480 Gen11 running RHEL 8.10
-(4.18.0-553.134.1.el8_10.x86_64), but the vulnerable code path
-exists in mainline.
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
-Fix the root cause by:
-1. Restoring the tpa_info->buffer.data assignment in qede_tpa_start().
-2. Reverting the error recovery block in qede_tpa_end() to rely on
-   tpa_start_fail, which safely recycles the page without causing
-   double DMA unmaps.
-
-Additionally, harden the surrounding TPA flow:
-3. Add NULL page validation in qede_fill_frag_skb() before dereferencing.
-4. Correct bounds checking logic in TPA error loops (evaluating bounds
-   before reading the array elements to prevent out-of-bounds reads).
-5. Check error state early in qede_tpa_end() and qede_tpa_cont() before
-   processing fragments.
-6. Ensure NULL buffer descriptors are consumed rather than recycled, and
-   correct buffer capacity tracking (rxq->filled_buffers--) to avoid
-   Rx ring starvation.
-
-Fixes: 8a8633978b84 ("qede: Add build_skb() support.")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vaibhav Nagare <vnagare@redhat.com>
----
-  v4: Fix err: label handling as identified by Jakub Kicinski:
-    - Restored tpa_info->buffer.data assignment in qede_tpa_start(),
-      which was dropped by commit 8a8633978b84
-    - Reverted err: label in qede_tpa_end() to use tpa_start_fail flag
-      instead of buffer.data check (ownership semantics)
-    - Updated Fixes: tag to 8a8633978b84
-    - Added Suggested-by: Jakub Kicinski
-  v3: Addressed additional AI review feedback:
-    - Fixed NULL pointer recycling in qede_tpa_cont() and qede_tpa_end()
-    - Fixed array bounds check order in TPA error loops
-    - Moved version notes after --- per Markus Elfring feedback
-    - Resent as independent thread per netdev-bot feedback
-  v2: Addressed AI review feedback from Simon Horman:
-    - Added net_ratelimit() to prevent printk storm in NAPI fast path
-    - Fixed NULL buffer recycling in qede_fill_frag_skb()
-    - Added proper cleanup in qede_tpa_end() early exit path
-  v1: https://lore.kernel.org/netdev/20260709044704.141507-1-vnagare@redhat.com/
-
- drivers/net/ethernet/qlogic/qede/qede_fp.c | 56 ++++++++++++++++++++--
- 1 file changed, 51 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-index 33e18bb69774..bf0448b035b4 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-@@ -670,13 +670,23 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
- 							 NUM_RX_BDS_MAX];
- 	struct qede_agg_info *tpa_info = &rxq->tpa_info[tpa_agg_index];
- 	struct sk_buff *skb = tpa_info->skb;
-+	struct page *page = current_bd->data;
- 
- 	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START))
- 		goto out;
- 
-+	/* Avoid NULL pointer dereference when under severe memory pressure */
-+	if (unlikely(!page)) {
-+		if (net_ratelimit())
-+			DP_NOTICE(edev,
-+				  "Failed to allocate RX buffer for TPA agg %u\n",
-+				  tpa_agg_index);
-+		goto out;
-+	}
-+
- 	/* Add one frag and update the appropriate fields in the skb */
- 	skb_fill_page_desc(skb, tpa_info->frag_id++,
--			   current_bd->data,
-+			   page,
- 			   current_bd->page_offset + rxq->rx_headroom,
- 			   len_on_bd);
- 
-@@ -684,7 +694,7 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
- 		/* Incr page ref count to reuse on allocation failure
- 		 * so that it doesn't get freed while freeing SKB.
- 		 */
--		page_ref_inc(current_bd->data);
-+		page_ref_inc(page);
- 		goto out;
- 	}
- 
-@@ -698,8 +708,12 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
- 
- out:
- 	tpa_info->state = QEDE_AGG_STATE_ERROR;
--	qede_recycle_rx_bd_ring(rxq, 1);
--
-+	if (current_bd->data) {
-+		qede_recycle_rx_bd_ring(rxq, 1);
-+	} else {
-+		qede_rx_bd_ring_consume(rxq);
-+		rxq->filled_buffers--;
-+	}
- 	return -ENOMEM;
- }
- 
-@@ -845,7 +859,7 @@ static void qede_tpa_start(struct qede_dev *edev,
- 					      pad, false);
- 	tpa_info->buffer.page_offset = sw_rx_data_cons->page_offset;
- 	tpa_info->buffer.mapping = sw_rx_data_cons->mapping;
--
-+	tpa_info->buffer.data = sw_rx_data_cons->data;
- 	if (unlikely(!tpa_info->skb)) {
- 		DP_NOTICE(edev, "Failed to allocate SKB for gro\n");
- 
-@@ -959,8 +973,24 @@ static inline void qede_tpa_cont(struct qede_dev *edev,
- 				 struct qede_rx_queue *rxq,
- 				 struct eth_fast_path_rx_tpa_cont_cqe *cqe)
- {
-+	struct qede_agg_info *tpa_info = &rxq->tpa_info[cqe->tpa_agg_index];
- 	int i;
- 
-+	/* Don't process fragments if TPA start failed */
-+	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START)) {
-+		for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++) {
-+			struct sw_rx_data *rx_bd = &rxq->sw_rx_ring[rxq->sw_rx_cons &
-+								NUM_RX_BDS_MAX];
-+				if (likely(rx_bd->data)) {
-+					qede_recycle_rx_bd_ring(rxq, 1);
-+				} else {
-+					qede_rx_bd_ring_consume(rxq);
-+					rxq->filled_buffers--;
-+				}
-+		}
-+		return;
-+	}
-+
- 	for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++)
- 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
- 				   le16_to_cpu(cqe->len_list[i]));
-@@ -986,6 +1016,22 @@ static int qede_tpa_end(struct qede_dev *edev,
- 		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
- 			       PAGE_SIZE, rxq->data_direction);
- 
-+	/* Drop the packet if TPA start failed */
-+	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START || !skb)) {
-+		/* Recycle BDs from cqe->len_list to keep ring synchronized */
-+		for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++) {
-+			struct sw_rx_data *rx_bd = &rxq->sw_rx_ring[rxq->sw_rx_cons &
-+								NUM_RX_BDS_MAX];
-+			if (likely(rx_bd->data)) {
-+				qede_recycle_rx_bd_ring(rxq, 1);
-+			} else {
-+				qede_rx_bd_ring_consume(rxq);
-+				rxq->filled_buffers--;
-+			}
-+		}
-+		goto err;
-+	}
-+
- 	for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++)
- 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
- 				   le16_to_cpu(cqe->len_list[i]));
--- 
-2.54.0
-
+Thank you!
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
