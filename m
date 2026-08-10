@@ -1,169 +1,175 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011047.outbound.protection.outlook.com [52.101.57.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931592D1907;
-	Mon, 10 Aug 2026 15:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E72B30EF9A
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 15:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786376932; cv=fail; b=e+0GWlSZ4nXeqU40GbRvj9uKhO3hqovql6B+tEFd/WYrgckkxGa5KT63UfgyidVb+sc6k0t3zj1aKtr/qSPqDJgVFR2EXHq/83v0eBsdNnh2oW7JHlixTReG0E8OyD4M8i+cbAcOf+FVFGyHdHBbHdHAI8nRI1gAyGm5+MKgJwE=
+	t=1786377337; cv=pass; b=XOEyHkbLqvFeyQCqZPiexk0ynCHy1Q+g6CXHpBLYBVgNU+wfQB1Qq6DHjanL+tyrhZcmQIK+eXRse1SteqoqQn5wFgNyoFgyUU4I6EFBKy90TSSoYUbloaUSs4ja1HAiIg/lPluNlnbwkac4U1p9WeqzhqGdWtV/GAZimnqXp2Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786376932; c=relaxed/simple;
-	bh=hikQYiZKGBP/dUrBUnm2AapK+z6Xp+9aXTuFjt3gJg0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sqxhQn+Y96D5d4xm/0+H4HNCYKG1V3FYyY0CfgKrcC/agSIevfAJGGXJT8fEwcevnWPb4jSW0+kXb9SQJSPY2RjDdSJElp+qyll+EKbJFdKli9Ej1dT1ht1C/pDFXB6GhOLRqIlpVFWPZwTh4iiFaDbWG+/dY07hTrgbFZZptmc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LB/Q6swr; arc=fail smtp.client-ip=52.101.57.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1786377337; c=relaxed/simple;
+	bh=5Uf9/VcM5B9RSVuaqj+cody+JCYqoXGghFsCIUOSork=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u6118WDYA1gY8t497hfGtBQBhMsWrpNdhSHM9t9nN2peguZWQgUNaeYsk0gY3bBTGT+xHx6ytk9WiNtumw1O+ay4ryNBsshkDG8gJcA4FDnzOdHB3HudFUo3qn+hLPq3Xv2Bij1fEPNkvcRhNwjGWefwb/XlwZ7Og48xM7V5iok=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lJVZAclM; arc=pass smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LB/Q6swr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p6cYHGXo1Jvbqf3O9JndKaw5DcFyQMtHY/8XHzJxF6pOcuKvqt2lywnx19a/UoCcpif0nbZ70rPlEEoiAjKOWxyGOtuVEskcjwn1oh/MwK8QJ+wAkP9+W1AHzeqGHW0teBPK9KTr4W+UQn49qfPtuh+0W5fQURTVLq4ws+9tfqqqc5EAE02IiceXWUImbey0LqY8cFERYkdb8XR+k4mIEPBhX849YVI9Ss6J0KsUnWgJfO0K8iQ3gJ/ng+t9ywxIwAguPN16kDzS2gajPGU04PjhReAI06kSBX97gFosBs2pYIt1CdOWBs4pI09MLiyFkAwAdyCb3d8BOYRlmN34/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rp/848+j9IiqdZAe1YdGGfrl4hbBcdQ0tr0avKitAUI=;
- b=OZ+T+KWqU0ArTYf4+dwu7jn6yZcCTkJFifPFJRa/nRkagUDnIxKyC92z7ok2Oz+R93DoMqc0/4FgMHg1Mx4k1nK4uPHzB9K2SWlfB7MXU1rouWHQgaWCh1uDVqmdW+91URZC9Loo/++EQoaSlAXYF9Nsm2jiKXRr5OnzD4sGSSmb1jaXLkmYZ1ZJ+6M/BPFfwI9gEylD+SvE5UpDhs2AcBdEFXA62rfHdLq76WT0MGGUo2RMqU9r0zuTBS+GUOs8PJHKrvTCeaf/eV6gC52QafQtvZoCLXbcDYzYwz489t9aN8ll76SUniafYI5IDZd4sxzFuGi8kl956QuIGdZ8Ww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rp/848+j9IiqdZAe1YdGGfrl4hbBcdQ0tr0avKitAUI=;
- b=LB/Q6swrhyA0cuoVvAe18JoZaqWuHcfhwDP+R8fnJg/3KhyYB61dZPsYcU34YeWqVI/+9HnY8WDzPL40zv3ThWeyyCvN+XdQhrsGbcNqHh2np667NhfNB9ySKXyx/QwIqGCZse/3qz+MtPW8Xeg+UH6b9S+Ke9ZmSGFHb7pjMNhA2G4TFeZZ0M2YmfbPvbWAs2erLwTpSRxo+xDAjDgWF+pYBKSWf7VX80RlRXioYBpD4A0cVIKuoobfrP2obaIGyg6/y8jCRL3qx6dt3endhdH8xvnK6CRYis9445u06s0oOptIzruCoStKlLPs//aJjBH/Pzl7Wptkr65N/xEHSQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by DS0PR12MB8072.namprd12.prod.outlook.com (2603:10b6:8:dd::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 15:48:42 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
- 15:48:42 +0000
-Date: Mon, 10 Aug 2026 18:48:34 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Baul Lee <baul.lee@xbow.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, federico.kirschbaum@xbow.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] vxlan: do not arm the ageing timer on a device that
- is down
-Message-ID: <20260810154834.GB2803521@shredder>
-References: <20260809111829.78834-1-baul.lee@xbow.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260809111829.78834-1-baul.lee@xbow.com>
-X-ClientProxiedBy: FR5P281CA0042.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f3::15) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lJVZAclM"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a1f8757b4eso13365a12.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:55:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786377334; cv=none;
+        d=google.com; s=arc-20260327;
+        b=a7ks0J0OFOmcP5qUld3nggNWZCay1PlqgIODFzdLZIkZOhvWBV9i2DPUWwnt54w38V
+         9TJur7FMxFTerXF5997Sdcu/HPK1JKrLy/LpVhqLb9NbQVQxQUG2MPDtHjK4Iiaz0IaZ
+         dcD2boDm2qD3586BibMvOTEwm3Pf2tzs4xgaiueqap1liX22+c95eo4WZjKKlkBh/Dvz
+         F8st7CO2QPn5UCb0AujuxKrOZDpX9L7Y5MG8AgpwXI0c1UhgSv3k6TCpWjcpkrqveP+x
+         oIN2wwvszwlqub4j6Z4my4ttF/X9lF2zzLnyhziYUtzglrrZBT5iXjzko6HfhzQKYn8u
+         uPNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rbA1CHur0GUQ4jEFBypZks8oGwisaoU+6uuW/eNA0YM=;
+        fh=WqpL5wU7XYeBorTa8uvSERAcgAPUmoPLlXJewZa986o=;
+        b=Zm+zlufNra5sRsQRGlXUHIUcBv67l9Z2npw91/9C89sxfc0bXw61mi42lfHfGgxgge
+         DuCiiXe3Mk51DsB9bsXxj/29lsq4iwMevJYtH7fHJ0mbJFkjLSqjSz9Bl68/OrJiLiYj
+         iw+InTcVYMVGd8mlBFBq20jBztvCUdNwG3rdpySes/VBcG3A3utVitpMDj3meCZUZU8x
+         7hdZBMlhbPgoi6kvcLTVbWuncl3r9A+LNfyEH8DlfwRsCaM4G3c1p7UHRXF21UxUUP+s
+         Z82m8xFvBt6pAY6abi5I5nJM1Joj+8MaQ3XcfckJUp7RxUYJZTemnMm/PsMzspysM3sT
+         vojg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786377334; x=1786982134; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rbA1CHur0GUQ4jEFBypZks8oGwisaoU+6uuW/eNA0YM=;
+        b=lJVZAclMckdIv3T/BrhyppoMo0miY300yVILAIfKFNDZMUJpJ9dx49DHg46/4c93eJ
+         JUIzQEd+fV8i8RkMTX2Z7ZEpUKDUegsxe70VuFsC7DlcKWSf7sjdq28JstRY3Q2sTe8Q
+         XxR+R0OT1PQQBYxAmhK9dOKbkE8pzgoaU98c341ZWynW5TP6NQzuv/NZhvAHSHflyr9P
+         fA6f+/99LokJu3FIWr94YFOWv5fo6vnd63bylw1pbPj5W4ruMDmXlrEiy4MXWr54DSLg
+         sCdPPrNonC/FgDeaWX4wsdZU1yQz0IhaR0FzeEmpQnznJmfjXaKYj8XnUhwiKWO4shki
+         lWMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786377334; x=1786982134;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rbA1CHur0GUQ4jEFBypZks8oGwisaoU+6uuW/eNA0YM=;
+        b=OBU9ZouNQtLEUGtM4ehOLUz9uOc5U/kS6aZwvHWdPJZiR6TRS/z2W61pjkH76Shxlh
+         ce4yx+aIx+qVibNfHAcvIm9bRm8yn6ewi/aWZzvqAmFMq15ZBiI3vNpc004gFJNlYqv0
+         AvNauCgeqNeom6hZGvQKpq3bXQT0FtF9bo5lieMupK3tq+cPcj1m/lyX4VHtobrV6Z3i
+         gw9vagNZJdccOqRDE1T8AtGTis8lCc5XUpY6FgbmpMMgMC2KguwxWYNiMQebwZki2q9X
+         aH8vED4zyTYO/jOcbPbErS87P8JNSFC7bEIgCdsEt9DHCK2TwIrLABnfEBUEYH+xl/k/
+         Lcjw==
+X-Forwarded-Encrypted: i=1; AHgh+RpKY00Y3sZEpZ+ZK+9IXoIEC5B2R/sTHGxzFaqFaPUi5cAgww4PFaJ3RgYhKwA5P8uz24Ry/TA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6kpjVebTam8HRuiqo6Iamj1n9RNI3T2b6hJ08LDZgrMy3XXpr
+	eXZb0ySFMxoWjoXWZOpUT3G9nioTIklhNucl986Knd1zxeXs0HN5VpIeGs8sj6c9c8ydJWhAMsH
+	hY2YMFMhGM1xcx7v0vcZAkSn8W2HKirsp2eLn3hVW
+X-Gm-Gg: AR+sD10f1VJiPBuKx0ZrRMXFImQ/mDyu4FSmPHQSb3wIt96kzH2B6pKgSqijVuTGkfs
+	I2oe3tTab1gc/kSVLK/1wuVYngtcHBwhrIgEu4xWNZB7JVkfKjN5wGOUV2JdJGJx4fs8bvoxdsx
+	yu33ZdwottRHe1YNM7y1ND3SfT6FBMsgGAoPX71DlPNfBBcgLoMVX4oSf8mg82azhVloSfdLkDh
+	SUYFBvN/6uecodczH6GS7Bb1t0qgVcuwqHs+55bnrmwy+TddDWC86stJupqMfrREVyyq3ud9fo+
+	2zugmSdpPon5Hnl0mxH4/AtplER9tQUTJCZ+cU+GHZuJ2iS6gkZ5bMt+lGr7IU/hIFGcqXjtL4k
+	=
+X-Received: by 2002:aa7:ca56:0:b0:69e:98c8:e958 with SMTP id
+ 4fb4d7f45d1cf-6a1f8abc5f9mr93172a12.7.1786377333065; Mon, 10 Aug 2026
+ 08:55:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|DS0PR12MB8072:EE_
-X-MS-Office365-Filtering-Correlation-Id: 33ee1131-4507-497f-7613-08def6f6daaa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|22082099003|18002099003|56012099006|10067099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	Y/P4GQmXcVZ8s8LeOX2I9L4Aaln/G8O9aapWuhiK5AOIQ0Mfsu1aEMPLUMDFeOpfAvwfwFX4ipEFWjjRhMLFbOpJRtqiyb/HoqbOLeV0fWXUD6/eSA9ROxB7IAS+SDsicxq3aW+bW0X0U4tV4HPr74DeJzplcFnetWUJRpw2o6/CHA5yXDP0Rypb61JaoRR/uqwp2MnLt9Gto4DQL20e6YDV01txyvx+lbGylzvmBMY+aLY01aCIAUrTyM5w1JwxxbemUxnv4tH/wTCPmsskBFj4Hfo6rwVQZ5Oxq3sD3RNXx6r8g3Ao2RCB7e8ZdgLVVTv68ZWYFQFAazwOle8n/nT2zrI1XUFiYwYKZUgQmT6bhLDN5RnrPPIY7/TaZxTWpQ3VfIqhLMpxJgNgaepiWkSEt7FjQDgUyslH0hw7TP2PgeSgZCkKuhqQh4qKuENJ4gxLtShMUv6F2vYOXoSXMIrxsDepWKNKBUE75/XgUz+auXYuN7Ew09qtXPq2uYRIAS77Q1TIIYmChBEqSqjt7tQT8n/JE/2/3+/7rcpIJ9pXfepQxCFXePDj2xPFUzsHv9q4UgdXafRJaRZK+QxaBMlA72OeI8P/kD0qPA6nltjY6Sad/uritj0GIa+nXLZLWar21pV3NI5WCFHXc0PsSKWTDl4WyNu7sokjQRJaSbo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(22082099003)(18002099003)(56012099006)(10067099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Vl+xujnzML3ZJRN2P2h/Aa4C+hVEc1bn/nldtZkXLm3lQBYvdX3qucHIH3hq?=
- =?us-ascii?Q?r0ccpOFrfFX+zGHNDEJFaWLXzFXu5Gx1r/rlFmXJPuu4jwkO7DX3GL7xc/M4?=
- =?us-ascii?Q?5GdYTwhqbaAxLcb8fjGj9ROLSyU1FaNKgxHxJNcQ+6M5Rj5txIUGpnn66KcO?=
- =?us-ascii?Q?GjelNwLuOrW70wsZtQITW5MBKtEgh5ORumEUz//5vvjwhHpjpDXFcqpxwLCB?=
- =?us-ascii?Q?y1h2ERkigM9c+gCNm6VrHC3p1WW9GgaJdnWHrdILMsKiysnStBydCKlh7mBk?=
- =?us-ascii?Q?JTnwncd7WMS/QmeSrWbL0hEuQLJnd4KRwZ4SvNQEqrzYF1TfJJ1yrnylvHE3?=
- =?us-ascii?Q?vh/l0rvZ5L6ebmK8R2EtA6j63SLViw47csmEMUFaPMbHvqA5Lot5tXHSOIvM?=
- =?us-ascii?Q?+RmuMVlN56l9qE5aCNAdpcwCQK5EnbMUjRU2QafgxXULkpJdHx10skdnG05S?=
- =?us-ascii?Q?KEnr1hTgEkB/bz0pswv7/shKYjXo30ry+idxdWk/sxol7lxwpE5ncq4Aj/bE?=
- =?us-ascii?Q?wXqcQAhO+JMldbtHO+/26sNqdKSWgKCYSgSWZ4gQwALprByk9d2MXMvrXR6K?=
- =?us-ascii?Q?5QGre7kYIBkDPENfuZQc5HjX/1AciGqbr2F1IG+P4x18R9ArADRk1g/3ZsOP?=
- =?us-ascii?Q?aDTOI1sSSBS7kGKRVTkeT61v2L0Fo/OdEGJgx8AHzikXlFaC50D2pby5l3sP?=
- =?us-ascii?Q?VBZ+ydWPqVb3VoSE97Dsq+FJHSfUFZapGkpsNMsjBNrFvHCRyGVO6+b2YO1K?=
- =?us-ascii?Q?KYpnrenpLkJ+Q6Lq/L/0L0yPGWEAlY6fky0pL+IhEP8tcF1P8/OwFda0FZWK?=
- =?us-ascii?Q?XP53HpCoYYlGMm+k0A/jVZiROnAU3Qy9bzQzBBvgMD1RiMpk7CmEAlZScZxz?=
- =?us-ascii?Q?1zSrvK2EnNg+/Z2aFg4yI30WbnkN5sPqONNu0XALujeBGoT9wSvQBe9MIwXv?=
- =?us-ascii?Q?/iptYhTu0RU2Qno+T7tZXJF2/pl60h0xVqv/awtXJrXd4luFi+3rc2gJd5Jh?=
- =?us-ascii?Q?AL0SDYBBzRDielkOGE7gJTRQ3NhDH+ffHY7SrV2+XLMhRj9jA05qFGjINfWg?=
- =?us-ascii?Q?oAp9k+sfS32X0GczWtbOV6c81L5Oj9HAyCptuo/EfXSSAWfxFf4jcgMmTziV?=
- =?us-ascii?Q?wIKyAFPP4FF4WpnY8y+Uxf3b5Gy+dyXH7YWVC4nlNRZ5bj4ikFM763cZQ5mc?=
- =?us-ascii?Q?Td4e20EXJm2Gxqc99jaiGX1S5QRN2ZBCMfgypDxHk7TjJK+xxkBtG9KlJWWI?=
- =?us-ascii?Q?vsW3J7ePVPW2R+aeNB8VG99QMsOoyvqwEGydQouM21yI4GK/lRy7AIJSY1qi?=
- =?us-ascii?Q?BqOYPT+k4p5+IX6qEibVtcE2Qsteyf9arDagaFVdMGlimEkt5rh/QcnYDetQ?=
- =?us-ascii?Q?nvhy5NrE997j/ssTwk90AuURTt/MWU6H9GsTvFze/eyfENQrI6jNAmPhrg5m?=
- =?us-ascii?Q?jSyaoDEcd+Lc0j6rIdILhyn/M9PB4xQt076BX/bh3PxASoJ8zB5+f3wI4YS4?=
- =?us-ascii?Q?x0mpAPV1GC6QTvVFYhyOztWCCPGG066RzmGg1dy7jqQwT9oq19mkrt51AeI1?=
- =?us-ascii?Q?sPp1Zr9ekYID7GLv3qQt7YWNYb8C/eohG/xMbm/UbTqa9azvTRlXZpYwd8b+?=
- =?us-ascii?Q?Bfv7dRYwZF15nUpVFKM73+9Nl4BCmt8CkRw+I7McA+Seo95CpWvwlYb3NTz+?=
- =?us-ascii?Q?MGtaq4yBMz02AUXNCWA5jOkO72Y9VZwAcLmxj3wDu0+yhY2D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33ee1131-4507-497f-7613-08def6f6daaa
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 15:48:42.6563
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hpHa7RRhAzMjecyJP32yxRP9SAW/ZRBPtk5FNoRfSkgbryjifaTvuezabx+5ZX0jgSHGqdJmZxoCBiSipfnVhg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8072
+References: <20260807224315.234152-1-hramamurthy@google.com>
+ <20260807224315.234152-3-hramamurthy@google.com> <724b2c8d-1481-4418-a10a-4331a620cd91@linux.dev>
+In-Reply-To: <724b2c8d-1481-4418-a10a-4331a620cd91@linux.dev>
+From: Jordan Rhee <jordanrhee@google.com>
+Date: Mon, 10 Aug 2026 08:55:21 -0700
+X-Gm-Features: AUfX_myD3XTlTxUQqL4tvfBeD_iQAwj02FudsC5BYAQgffmKvKyl1JjnqkX3W50
+Message-ID: <CA+mzVttPSW=NKqqBwY9kxdL_r0hKzQfu38eZtmfUB6iaeHcNRw@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] gve: fix NULL dereference due to missing ptp adjfine
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org, joshwash@google.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com, 
+	thostet@google.com, ziweixiao@google.com, willemb@google.com, 
+	nktgrg@google.com, pkaligineedi@google.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 09, 2026 at 08:18:29PM +0900, Baul Lee wrote:
-> vxlan_changelink() arms vxlan->age_timer whenever the requested ageing
-> interval differs from the configured one:
-> 
-> 	if (conf.age_interval != vxlan->cfg.age_interval)
-> 		mod_timer(&vxlan->age_timer, jiffies);
-> 
-> There is no netif_running() test, so the timer is armed even on a device
-> that was never brought up.  The only synchronous cancel in the driver is
-> the timer_delete_sync() in vxlan_stop(), which is .ndo_stop.
-> netif_close_many() drops devices without IFF_UP before
-> __dev_close_many() runs, so that cancel is skipped for such a device.
-> 
-> vxlan_setup() sets dev->needs_free_netdev = true and age_timer is a
-> member of struct vxlan_dev, so free_netdev() releases the allocation the
-> timer lives in while it is still queued on a timer_base.
-> expire_timers() unlinks the entry before it loads timer->function, so
-> the timer core writes through the freed object's list pointers:
-> 
->   BUG: KASAN: slab-use-after-free in __run_timers+0x208/0x654
->   Write of size 8 at addr ffff00001adace68 by task true/192
->    __asan_store8+0x84/0xac
->    __run_timers+0x208/0x654
->    run_timer_softirq+0x154/0x18c
->   Allocated by task 189:
->    alloc_netdev_mqs+0x64/0x720
->    rtnl_create_link+0x4ac/0x520
->    rtnl_newlink+0x758/0xd00
->   Freed by task 191:
->    netdev_release+0x40/0x58
->    netdev_run_todo+0x4a4/0x8c0
->    rtnl_dellink+0x200/0x4e8
-> 
-> The rtnl operations involved are netns-scoped, so an unprivileged user
-> can perform them in a new user and network namespace.
-> 
-> Arming the timer on a down device never had an effect: vxlan_cleanup()
-> returns early on !netif_running(), and vxlan_open() arms the timer for
-> any non-zero interval once the device is brought up.  Add the missing
-> test.
-> 
-> Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
-> 
-> Fixes: 40051c4dcad5 ("vxlan: Allow changing ageing time")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Baul Lee <baul.lee@xbow.com>
+On Sat, Aug 8, 2026 at 8:27=E2=80=AFAM Vadim Fedorenko
+<vadim.fedorenko@linux.dev> wrote:
+>
+> On 07/08/2026 23:43, Harshitha Ramamurthy wrote:
+> > From: Jordan Rhee <jordanrhee@google.com>
+> >
+> > Fix NULL dereference due to missing implementation of adjfine, which ca=
+n
+> > be triggered from usermode as follows:
+> >
+> > sudo ./testptp -d /dev/ptp0 -f 0
+> > [  551.943697] BUG: kernel NULL pointer dereference, address: 000000000=
+0000000
+> > [...]
+> > [  552.061946] Call Trace:
+> > [  552.064487]  <TASK>
+> > [  552.066681]  ptp_clock_adjtime+0x1c0/0x2c0
+> > [  552.070874]  ? get_clock_desc+0x6b/0xb0
+> > [  552.074825]  pc_clock_adjtime+0x78/0xc0
+> > [  552.078755]  __do_sys_clock_adjtime+0x85/0x110
+> > [  552.083293]  do_syscall_64+0xea/0x610
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: acd16380523b ("gve: Add initial PTP device support")
+> > Signed-off-by: Jordan Rhee <jordanrhee@google.com>
+> > Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> > ---
+> >   drivers/net/ethernet/google/gve/gve_ptp.c | 6 ++++++
+> >   1 file changed, 6 insertions(+)
+> >
+> > diff --git a/drivers/net/ethernet/google/gve/gve_ptp.c b/drivers/net/et=
+hernet/google/gve/gve_ptp.c
+> > index 06b1cf4a5efc..1d6c59f4ead3 100644
+> > --- a/drivers/net/ethernet/google/gve/gve_ptp.c
+> > +++ b/drivers/net/ethernet/google/gve/gve_ptp.c
+> > @@ -26,6 +26,11 @@ int gve_clock_nic_ts_read(struct gve_priv *priv)
+> >       return 0;
+> >   }
+> >
+> > +static int gve_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm=
+)
+> > +{
+> > +     return -EOPNOTSUPP;
+> > +}
+> > +
+> >   static int gve_ptp_gettimex64(struct ptp_clock_info *info,
+> >                             struct timespec64 *ts,
+> >                             struct ptp_system_timestamp *sts)
+> > @@ -60,6 +65,7 @@ static long gve_ptp_do_aux_work(struct ptp_clock_info=
+ *info)
+> >   static const struct ptp_clock_info gve_ptp_caps =3D {
+> >       .owner          =3D THIS_MODULE,
+> >       .name           =3D "gve clock",
+> > +     .adjfine        =3D gve_ptp_adjfine,
+> >       .gettimex64     =3D gve_ptp_gettimex64,
+> >       .settime64      =3D gve_ptp_settime64,
+> >       .do_aux_work    =3D gve_ptp_do_aux_work,
+>
+> .adjtime has to be implemented as well - neither adjfine nor adjtime are
+> checked within ptp_clock_adjtime()
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+adjtime() can only be reached if gettimex64() succeeds. Since GVE
+currently returns -EOPNOTSUPP in gettimex64(), ptp_clock_adjtime()
+will short circuit before calling the driver's adjtime callback. We
+will need to provide a stub for adjtime() when we implement
+gettimex64().
+
+My understanding is that fixes should only address real, reproducible
+issues which is why we only sent adjfine in this patch. If the
+maintainers would prefer we send adjtime() as well, just let us know.
+That said, our preference would be not to delay the other patch in
+this series ("gve: fix zero-length skb frag with header-split").
