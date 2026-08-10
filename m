@@ -1,184 +1,179 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4B139EF2A
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 13:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786370400; cv=pass; b=un7jQ/LII5TYeWDhsl17IkubDXJ9o8HLJWeRMeE4zzI1rK3vJVnk9b5G/ytwRdGFaJ9Dz0OrdDLKmeKkff4ffVNHKZZbeQUhkTkeLh4NxEfIH13JZm5ZxEYuA67wdVaO98Pq1j8OiZe4LDKwv7cLltMSpSLiBpFJT6/L567+/T8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786370400; c=relaxed/simple;
-	bh=216somtno/5OJTGWhEpg7rNFOlcyGSpXRqRobuTtA68=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ECrPmSUAo0lZ/XzZ6/BIcwP/bTI3TK7tmIKnNEy4WTTdfR9cZ2rstWyR+iIDUZIlkxcYrEznU4VdRUdLgcO9hbqWisD/z0uM4e7tcIk7+Zy3LbDFDVkf1vV/bI4yklznIV5pqYM/WsLgf6DNOhkBOvTHrIKUhvdl3OsHFUB/3n4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=WIpzMfKS; arc=pass smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB14E3EDAA2
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:11:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786371094; cv=none; b=JTlNMUFepqRUzxxnXWGQAh4iQCndM5ZWh1dl5t9XX9MnfRquaqMrTy95dqaB0+jtj2N31JRoVWm8j8fwpVDDGZaVgiVcr1QsqfAlXHNyLOsdEjgPKtOcSej2mZ9s9Id9+8pBc7Cx2jz+6tqE3uUxzcoFvjexCyJm0hmZzrVKtz4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786371094; c=relaxed/simple;
+	bh=MLI2dy+CITZJUfRn+r4FhLKr2mO4v8ccuzCmNCGIA2Q=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=naI5TNFiq/ybPSHMTdwvyBxhbGRPfO853ECXubGKw2X/8xBbIshhkDY1+TLESfxnxnugOMcaRwBwZiOkHeEuJqiroVP9Bto7eJNCVo4eFF9ylJVt+7hj1E18J32kXoknrFsPtVSQ9PeQ4XcjK37CRJ3uwdEXUCSUZl9F4l/UbCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PoY8nSp+; arc=none smtp.client-ip=209.85.160.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="WIpzMfKS"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84874b52eabso2421478b3a.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:59:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786370398; cv=none;
-        d=google.com; s=arc-20260327;
-        b=okf6EAsg8cHRSMXzA7iSkbHg7jT5ZCrBoptucFOpOVuU7IZLLIiCtbeu+I0AulJOI2
-         wE2d5FtkiqfX4aIufwYp5RUVmE9WFiabxavHJXi6GDKik8LrYywCDZylacEpN3XWqEiA
-         TzoNHTy+K7c+2/m42X0Li4w2jwuvpXin56XMqU2PI7WRfH4rUvPkspftghU1AUcVR41C
-         0k4bEBw2maFsI1jb233VZXna2WI8WHabxqTvKbY9sWJ4z8SOjyvMEQeJ6P0WTXaAyJ24
-         TaP7w6VHn1qhYFsJG5rCrsUOrd4NyQZr2H77GZzWZ51YLFAPr5hc6xCrICvytElUAJY0
-         qSoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=46MZNjNXhKCE5DS6Jx+nsMAYwugJX53AXQsLnuBwmDo=;
-        fh=RhkXHQa/3HGSPk2QgG9eCLunyg1AkwIlxRB67aVbxOI=;
-        b=srvAe3an/c3fqKfcHvTJwvDMEbfeUWvoQpp+jh76x+dbmujY+zdftp3IXLB0RtmSPh
-         FhgzckFtLoYPY3Ru3upBxHYLV0H1YSbHg27+sT+SrrkoxYUF1e4ub5RE15/VF6cz7sl6
-         imx/R3Qy7XVEo2M2YyBiWukjtn9y5SJ1lgUi8xGEIE9dvF/za35bg3uOGqwstOzrIXN/
-         ixjlzoE2uDvn9R5oVMJjkKmtMN7mZcr8NosMfecnfThKsI1sukEEpT+EQ/W2HbhsrW2W
-         g3JP43T+eytvI024oeFAR8zu6GHBGubgnPgjOXS97tT677hDMmnnLJKCwSjAo5/2sIh/
-         UHZA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PoY8nSp+"
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-526da7e3c9dso16742401cf.1
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 07:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1786370398; x=1786975198; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=46MZNjNXhKCE5DS6Jx+nsMAYwugJX53AXQsLnuBwmDo=;
-        b=WIpzMfKS41Bd2KwJvSnf2Kul1IzSHVyXDZxgAwtObaTuMn3n27wMtJaoo5GSotIk3x
-         3kptEWPGePpo/cPlF0fzOF7S/2myVQ+2QNZYE2chaXgcFaYXXDczU5FBKFKOMCNFgXdN
-         b1Q4o4rSgQyfTn5HRXBAfrB/8RDIp7ldl0PmM=
+        d=google.com; s=20251104; t=1786371089; x=1786975889; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CcHS/nuwmsgjwiAf8ICCrjjP61LEdpQ/ArmgBJs6ppI=;
+        b=PoY8nSp+bQdXg5qQhmXft5bVhgTgCKKc4hl/kyKLknh/laxpMC73uuK+/e9g4madVz
+         19OdMUkvlN/hFizZH+RqAXvbiIYBqOWR1UpIDb8ft62qChWCG99m3+WJyqoZR6XeFIVU
+         454E4aKKDu1QPdXH9Mgm/Rfv70ATzkfpkhaUVeEFY4PJr1XanbM6ooLWr4O9+BzfZvPG
+         t9Yn2drujLr+QFj+1Hk12K/xd8MS8k8KrLAp+kqP02WUhNE7SPI5xOrZU5o8As1pDqhQ
+         VWPHqCfSCBh6MyYIkvMSddfv2u6ZcIeKYESisY/4BsH8X73+anruPSx7n2ZrYEO29N7e
+         718w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786370398; x=1786975198;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1786371089; x=1786975889;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=46MZNjNXhKCE5DS6Jx+nsMAYwugJX53AXQsLnuBwmDo=;
-        b=IiKLXzalBzmoflv9YWL3KfMOUw+eho9Qqu1vnVeLB9y2PEjaoq/1ve2+TymOcGRF/y
-         aUgvrnj/7pUgIJjh7X7RyvPw/Dwy/8J1ZU6NVme+PQy1GqG1SHR8bAEKVd466deQeWKm
-         3L44eVc6sxUe2w899Kui1v8Ij5vfNRyqcoq2gFSY3GiOdE0qVQ1pE+WbkbqbHHi6b56C
-         +NldjtOiqcE3ehT7jva8MhtmjtKXl/lV7p0tz/U0uFOx2MedM/wx/vMppRUisHMuyjm2
-         +3zrxLece1/ax+U3A/Z8TP4trTHh9qYSBCuHpn53iUTmR8z3IrtJadGfln3znlY8uFu0
-         45sQ==
-X-Gm-Message-State: AOJu0Yw0UejK6udm/cmdEllUXdXFYtN4LZlILm5LM05suTFyi7iY5XT4
-	WYq/NQVtXjX+IBqqVp5COrLRB2iKCoamKHeYmpRPV2n/PuqA1RCCa1DbElb124fwcZ2IPSyc0pE
-	yiumSpJh8fe8FsOUTxg9HlScfcVUHoCQ/JlzjzQza
-X-Gm-Gg: AR+sD129gxQY/3HM/fA5eaXSFx72nuoNTBCqqJ0EvzgjX1NRY2JatX9SKBFVJV6xVx1
-	wySlXZ0YVP/KTWzAG4aQnoguJhjw3D8Af2DTKGr7fiGZ9ew5hS8N/O+FSoFJywTzpnjnuBPU6hB
-	m9MVSIO9TDMLJ7yPYSXudY5A2RIhNs3mVwcf1OFB5QZCjJUEkmittQ2/dTC/h0HjD8Oase10k5p
-	cW4NEduqYqi5sfZp0uvMGzhqcKLXgnY2h9C4dLMzG6od9IzzWERyXMD3kyURvTNfQX+XjTzAwuM
-	tLi6fEbd9Qep0nFYooCo1bkkhCNwXKCpv3fa1ZqynaEZFQ==
-X-Received: by 2002:a05:6a00:3310:b0:848:5540:2377 with SMTP id
- d2e1a72fcca58-84f5dfbad07mr26834874b3a.17.1786370397896; Mon, 10 Aug 2026
- 06:59:57 -0700 (PDT)
+        bh=CcHS/nuwmsgjwiAf8ICCrjjP61LEdpQ/ArmgBJs6ppI=;
+        b=Zmp4b+cebALpQpEa7AQgTUTHrUOY2aXcPg9c8Pyes0vfUaGyvprW+xrqPCwmzJodxG
+         g8C6KifwoEk+QNW9VUjnG7vxOIc8LwltJlTObMpdtRzXoSsmSiycxa0d8o2hO4piQvro
+         0DRbRbvX9gewWR2QkhJKw8pFBOKK8Nh1RhlzdJht8nSX06PL8B+dIVSlkmv9/FnKpo1s
+         ZsZmNZFilt9cq/8+AnSYKpHhs3GAsF+LZ02iaOQ64ZwgDzLas0wHdorAtnkXWAYd0OGN
+         WEahd4JbdVluYUbMn1RoLw36tyO4HjZW79bcBK4+WgI65Td5VntMfwiUyTeqrho/XIgx
+         jzCQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpIvPyAcgNKEaWvV3xJdvMBU18UEd2+eFMVowiMocQSGYxNApu0g1mDnuv+09w45F3SxupYC9I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytnHTOehQ80h632xgKGm4RswYUoWXSJbgLHAZ2KexSvIJQI9z6
+	H+agQPpvdOe1RPJP9iGmMWuhOoUkMBG07bFLnlkmjcbVOTpl7Xnev1iI3INSNImocO37aUruSNd
+	ZwB2Iiy4NESGf7Q==
+X-Received: from qtam7-n1.prod.google.com ([2002:a05:622a:e107:10b0:51c:9f19:4c92])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:6205:b0:51c:b900:5136 with SMTP id d75a77b69052e-52d4bb87e3cmr23454641cf.0.1786371087258;
+ Mon, 10 Aug 2026 07:11:27 -0700 (PDT)
+Date: Mon, 10 Aug 2026 14:11:25 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260807100356.1083774-1-jedrzej.jagielski@intel.com>
-In-Reply-To: <20260807100356.1083774-1-jedrzej.jagielski@intel.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 10 Aug 2026 09:59:46 -0400
-X-Gm-Features: AUfX_mxRG5jLc08nNMpM49kTVM0uIbxQQVBUXgRTCxaHxX5AM-qtREHzLHaaOE4
-Message-ID: <CAM0EoM=L4LBAnyxf+NG1D_dY2nre8fKgVxoycXK=sY-9Ruc9+w@mail.gmail.com>
-Subject: Re: [PATCH net v1] net/sched: cls_u32: feed u32_replace_hw_knode()
- with correct set of flags
-To: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Cc: netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	anthony.l.nguyen@intel.com, kuba@kernel.org, jiri@resnulli.us, 
-	edumazet@google.com, stable@vger.kernel.org, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Marcin Szycik <marcin.szycik@linux.intel.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
+Message-ID: <20260810141125.1176545-1-edumazet@google.com>
+Subject: [PATCH v2 net] l2tp: fix tunnel and session refcount leak on seq_file release
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com, 
+	James Chapman <jchapman@katalix.com>, Guillaume Nault <gnault@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+In pppol2tp_proc_open() and l2tp_dfs_seq_open(), iteration state
+(pd->tunnel and pd->session) is kept in seq_file private data to allow
+iteration across multiple read() system calls.
 
-On Fri, Aug 7, 2026 at 6:23=E2=80=AFAM Jedrzej Jagielski
-<jedrzej.jagielski@intel.com> wrote:
->
-> Fix u32_change() to pass proper variable to u32_replace_hw_knode().
->
-> When trying to offload u32 cmd by adding skip_sw attributes it gets
-> ignored and it cannot be correctly processed by HW and tc_cls_u32_offload
-> struct which is then passed to driver lacks skip_sw var enabled.
->
-> u32_replace_hw_knode is fed with the TCA_ACT_* flags (bits 16+)
-> instead of TCA_CLS_* flags (bits 0-4) which actually stores the flags
-> parsed by tc, so tc_skip_sw() always returns false. This leads to
-> ignoring some of the attibutes which are meant to be configured on filter
-> setup.
->
-> None of the TCA_ACT_FLAGS_* is actually used within
-> u32_replace_hw_knode(), so there is no point in passing them.
->
-> Looks like commit 695176bfe5de ("net_sched: refactor TC action init API")
-> shadowed the local flags variable which used to be set with
-> nla_get_u32(tb[TCA_U32_FLAGS]) with the flags as the new function param
-> while not replacing for none of the u32_replace_hw_knode() calls.
->
+However, if userspace closes /proc/net/pppol2tp or /sys/kernel/debug/l2tp/tunnels
+before reading to end-of-file (EOF), any tunnel or session reference stored in
+pd->tunnel / pd->session is left un-dropped when seq_file private data is freed.
 
-The sashiko reviews look legit to me. Mainly: your change makes
-u32_replace_hw_knode() able to fail for the first time (with the
-action flags it always returned 0), which turns three previously-dead
-error paths into reachable bugs.
-So IMO, this needs a v2.
-Suggestions for v2 from the sashiskos (I typically suck at these
-summaries, so may miss something):
-- Release n->ht_down on the create-path error (e.g. drop the reference
-explicitly before kfree(n), or reuse __u32_destroy_key()).
-- Consider switching the update path to tc_setup_cb_replace() (as
-cls_bpf's cls_bpf_offload_cmd does) so old/new flags and in_hw_count
-are accounted for correctly, and the old rule is re-installed on
-failure.
-- Mention in the commit message that skip_sw add/replace commands that
-used to succeed (and were silently skipped by u32_classify()) will now
-return -EOPNOTSUPP or -EINVAL when the block/driver cannot offload.
+Fix this by dropping any remaining pd->tunnel and pd->session references in
+pppol2tp_proc_release() and l2tp_dfs_seq_release() when closing the file.
 
-Also seems worth Cc: stable backport.
+Fixes: 0e0c3fee3a59 ("l2tp: hold reference on tunnels printed in pppol2tp proc file")
+Fixes: f726214d9b23 ("l2tp: hold reference on tunnels printed in l2tp/tunnels debugfs file")
+Reported-by: syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6a760f32.01d0871a.3a0d52.004f.GAE@google.com/T/#u
+Assisted-by: Jetski:Gemini-3.1-Pro
+Cc: James Chapman <jchapman@katalix.com>
+Cc: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/l2tp/l2tp_debugfs.c |  4 ++++
+ net/l2tp/l2tp_ppp.c     | 51 +++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 53 insertions(+), 2 deletions(-)
 
-cheers,
-jamal
+diff --git a/net/l2tp/l2tp_debugfs.c b/net/l2tp/l2tp_debugfs.c
+index b26986fda9d6cf096519d56032fe3deb5034c7c8..c12d5e1ee550ccc2608b6128cb653ca373280373 100644
+--- a/net/l2tp/l2tp_debugfs.c
++++ b/net/l2tp/l2tp_debugfs.c
+@@ -306,6 +306,10 @@ static int l2tp_dfs_seq_release(struct inode *inode, struct file *file)
+ 
+ 	seq = file->private_data;
+ 	pd = seq->private;
++	if (pd->session)
++		l2tp_session_put(pd->session);
++	if (pd->tunnel)
++		l2tp_tunnel_put(pd->tunnel);
+ 	if (pd->net)
+ 		put_net_track(pd->net, &pd->ns_tracker);
+ 	kfree(pd);
+diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+index f8881699e1cad88e6f312e6ca47ae0af94c6137c..1bcf447f2f8b08235fdec747d33fd188e869a382 100644
+--- a/net/l2tp/l2tp_ppp.c
++++ b/net/l2tp/l2tp_ppp.c
+@@ -1597,6 +1597,53 @@ static const struct seq_operations pppol2tp_seq_ops = {
+ 	.stop		= pppol2tp_seq_stop,
+ 	.show		= pppol2tp_seq_show,
+ };
++
++static int pppol2tp_proc_open(struct inode *inode, struct file *file)
++{
++	struct net *net = pde_data(inode);
++	struct pppol2tp_seq_data *pd;
++
++	net = maybe_get_net(net);
++	if (!net)
++		return -ENXIO;
++
++	pd = __seq_open_private(file, &pppol2tp_seq_ops, sizeof(*pd));
++	if (!pd) {
++		put_net(net);
++		return -ENOMEM;
++	}
++
++#ifdef CONFIG_NET_NS
++	pd->p.net = net;
++	netns_tracker_alloc(net, &pd->p.ns_tracker, GFP_KERNEL);
++#endif
++	return 0;
++}
++
++static int pppol2tp_proc_release(struct inode *inode, struct file *file)
++{
++	struct seq_file *seq = file->private_data;
++	struct pppol2tp_seq_data *pd = seq->private;
++
++	if (pd->session)
++		l2tp_session_put(pd->session);
++	if (pd->tunnel)
++		l2tp_tunnel_put(pd->tunnel);
++
++#ifdef CONFIG_NET_NS
++	put_net_track(pd->p.net, &pd->p.ns_tracker);
++#else
++	put_net(&init_net);
++#endif
++	return seq_release_private(inode, file);
++}
++
++static const struct proc_ops pppol2tp_proc_ops = {
++	.proc_open	= pppol2tp_proc_open,
++	.proc_read	= seq_read,
++	.proc_lseek	= seq_lseek,
++	.proc_release	= pppol2tp_proc_release,
++};
+ #endif /* CONFIG_PROC_FS */
+ 
+ /*****************************************************************************
+@@ -1608,8 +1655,8 @@ static __net_init int pppol2tp_init_net(struct net *net)
+ 	struct proc_dir_entry *pde;
+ 	int err = 0;
+ 
+-	pde = proc_create_net("pppol2tp", 0444, net->proc_net,
+-			      &pppol2tp_seq_ops, sizeof(struct pppol2tp_seq_data));
++	pde = proc_create_data("pppol2tp", 0444, net->proc_net,
++			       &pppol2tp_proc_ops, net);
+ 	if (!pde) {
+ 		err = -ENOMEM;
+ 		goto out;
+-- 
+2.55.0.654.g21b8a5bc05-goog
 
-
-
-
-> Fixes: 695176bfe5de ("net_sched: refactor TC action init API")
-> Cc: <stable@vger.kernel.org>
-> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-> Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-> ---
->  net/sched/cls_u32.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-> index 8f30cc82181d..dc6e455e64ec 100644
-> --- a/net/sched/cls_u32.c
-> +++ b/net/sched/cls_u32.c
-> @@ -935,7 +935,7 @@ static int u32_change(struct net *net, struct sk_buff=
- *in_skb,
->
->                 u32_bind_filter(tp, new, base, tb);
->
-> -               err =3D u32_replace_hw_knode(tp, new, flags, extack);
-> +               err =3D u32_replace_hw_knode(tp, new, userflags, extack);
->                 if (err) {
->                         u32_unbind_filter(tp, new, tb);
->
-> @@ -1161,7 +1161,7 @@ static int u32_change(struct net *net, struct sk_bu=
-ff *in_skb,
->                 struct tc_u_knode __rcu **ins;
->                 struct tc_u_knode *pins;
->
-> -               err =3D u32_replace_hw_knode(tp, n, flags, extack);
-> +               err =3D u32_replace_hw_knode(tp, n, userflags, extack);
->                 if (err)
->                         goto errunbind;
->
-> --
-> 2.31.1
->
