@@ -1,178 +1,111 @@
-Received: from mail-wm2-f9.google.com (mail-wm2-f9.google.com [74.125.225.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF3B3DEAD6
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 18:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB06361963;
+	Mon, 10 Aug 2026 18:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786388132; cv=none; b=GspCDPxnVFY5OwgOcEKQBeJ3ZL2DoD6ciCrZYUTAoUrbCm/ZCXVfOa5OO8WdIdRmrRj9yPGSsq5DhNPJP3WCjYcee5Z6REKRj/ND+QGLgBPVbfLjXFrTiOn5RVyR43EuvPA9FqANQAoA10qdQnSvGU7PZGYUtQmTbyxTNsSnq2w=
+	t=1786388184; cv=none; b=YWyah2uZ3EJ+jKF9bxiXVI7FO/jkuwi7AetdS0I7usxyTVOA6a3sHGGNx6ApmJ2EQPUdBXgdb6UU4wV2EljnBXlSSP4UEhBBEM1d1Y1HZb7rbgFbH2K0AWtWnR+iGEoGqfnVpXPWuEtoKnweLKMFuTEdcSjI/H67M9B+Ww63Eiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786388132; c=relaxed/simple;
-	bh=e6eOL0FJC5ket9uPlrfy/upR4VpR9UnwvB9RfL7zehw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lcfcrazgG+FhXwFECyaOStHvHPfTLuQbY8DdbIIZS2ZROCT19azEZJL55s8uF6w3hY6s20hE5Z/qCnDa2tCNvRq6cn3uKrNRtjdHkkkT1a6a1CQw1bTta5W3km6HnQR0SVgfZUsbqD+AZKsMb/IvnjgzWQhoWKtwcoSunuwRinI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f9.google.com with SMTP id 5b1f17b1804b1-49556ce3549so8496475e9.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 11:55:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786388129; x=1786992929;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eDPDzOSNgjKp5sZX+BjdxXLjvfDLRA/UmcvVnE0yrDg=;
-        b=USRtd4vaY307ZCrbjsXjh5flNSnmz4dh79Uk/zX3m2PgcJTjPkU5EsaiFQWSb1EVVJ
-         7yBL2k9CHiwwEmE2V+oJojPmMzT5rF0O1Kxbdt9x/uB7JVtQVpn0dx3NO723IyxWJ8YO
-         fj58vt7YnTrTyhvKIqR/yvykCcnkPfMiB6eg1ozGWsuE6YsLolWPGQ4/7zKhoHNfSfG9
-         Tl6T9ElAZHwkf068SaL/xbwxFRM2Jsl14Vd5d7p1vO2CUmd1z/On3QasCCbTaczcNEEM
-         48Fs77GIU2JaErx+Yk8a26k0cBN0haA3u5gyj5v6q0TQ6kMO7cXZt1v8UV9n8KP0ZvAL
-         8JwQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrN8xpsroh7W3xIOFIURTQY4ZCPEmzBGTVuvkp86PZGxF8fXYaA8TbkEe/2UsOBAnUHoqNP41I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVyo53dyGhCi6jmcch0Tgzs4Gddc0LQYMa8GHgYUOLRBedIRIW
-	4Ej8Yr0lc1LJq1GjeXif7O6xcdsxwZ9qKBC5SpyhPjgphTI3AnOG4uEi
-X-Gm-Gg: AR+sD12+y64jkvBtIglKRqQi5zPxAwLkHlW3b9LUKm++gNyEO3cGYZs7BL7m+BN+9Nt
-	j8WSatZ+MxYZqF6XIUck1xJ5bDv8y9KtQH6PI0lsMUzykb52Nm5niDWjkurQEvcRYpSQ8wZuf27
-	mPhYRxd9ETXetw2fGP3lopLkLBPgY+E0TxU7zm9RP9KA/mlXt1PZnhpeI93ybHTxO0RWV/NCL53
-	33o/PhEb59wdpqNQRTiE9X3SzQAqo8eiQnXa1pRW6bj2eb7BrE5s10ziH4w2dLRBhWgrZhZkBMr
-	yLONEqyh/pm+EeZsCqWGarZ8gGjYpVRjZGdkqjfFAg1pZMSAgxtWTe+8YT/CjE03pCTpkZ9O6ue
-	NcGEMdEuUDt9I+drFbjinOpKhmFUl7w0+2ySULHHVL9GiYnsGNRvi9hmYFFNumlJmtLEG9qIfB4
-	fZEEgDTRYHp/I3uZQPf2PBLT9crnRLyhbn/1BaXul8kAFTKpksygXlzy0ZviiIP+86P4ovXkVUT
-	PHs02ISz4DIYWPJYQ==
-X-Received: by 2002:a05:600c:6d90:b0:495:4a22:d684 with SMTP id 5b1f17b1804b1-49959e2f00emr346681905e9.10.1786388128609;
-        Mon, 10 Aug 2026 11:55:28 -0700 (PDT)
-Received: from [192.168.88.241] (89-24-57-65.nat.epc.tmcz.cz. [89.24.57.65])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499740db139sm11106045e9.7.2026.08.10.11.55.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Aug 2026 11:55:28 -0700 (PDT)
-Message-ID: <eea5d4c1-af06-4210-b7ac-b783dc44a819@ovn.org>
-Date: Mon, 10 Aug 2026 20:55:26 +0200
+	s=arc-20240116; t=1786388184; c=relaxed/simple;
+	bh=gVRs3AeSdilOG2pi51SsbkyBClk2vsu77Ogq3gtnbdg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YA6HPCuGpdDuSYF2mVb2A6eVewuXxXQrT+v+CR1gv8z1o8h/+zfYtMTRrmHy2L6rRMReGTwL7fh7DxJvgjIy51bKGSwrHBnEeXC1t/i+1mdOyBa6Pogp5ptlkxzIt/kkY2JWlc8r/soFP1iRwgM54obvtOdirwnZrEypzJCM8wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ayKMI+HI; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ayKMI+HI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786388183; x=1817924183;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gVRs3AeSdilOG2pi51SsbkyBClk2vsu77Ogq3gtnbdg=;
+  b=ayKMI+HIh6zGK2ZdDz3snElIaMcoIOWFaeFIrh/5kPAxv5g69pd5YPZJ
+   6OH3+kH1He2Y7fwiozx9S8r/4lVW/9I9N3eF2d33YyfHbFT8sI15gEmFr
+   qqrcSsu6IeB/e5iRQicIpLBaaw2UOZvBKfZetSTAnl0rz30YAYJRI0E87
+   QzRRjDPqeoPNZb1Ex6Iiso+lEjbM+6eIg2hve8gjUSZ4cuapsEJHBEV8h
+   oR5O10T3I2KA0VfwJYH5eHM/I7pfhHQ56C02boipaXji3apdySnO1qtwF
+   /seEmlTVPkKoV6ZugWTJCwdYNiVSce4r6XhxI7fwGr0OXTl3aY0Xkeec7
+   A==;
+X-CSE-ConnectionGUID: R2a/nUwDTMSMZ1OkBBWA+A==
+X-CSE-MsgGUID: tlpgp7tyRYmMLjDEM5MeeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="97263535"
+X-IronPort-AV: E=Sophos;i="6.25,216,1779174000"; 
+   d="scan'208";a="97263535"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 11:56:22 -0700
+X-CSE-ConnectionGUID: 5H2exk9yTx2BNZC+q6TmBg==
+X-CSE-MsgGUID: pfyz1KfHQgul1r4my4h+sg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,216,1779174000"; 
+   d="scan'208";a="266607290"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.99])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 11:56:18 -0700
+Date: Mon, 10 Aug 2026 21:56:16 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: fy15309206903@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Mika Westerberg <westeri@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH net v2 1/2] net: thunderbolt: Release the Rx HopID that
+ was handed out on mismatch
+Message-ID: <anoe0LCeiR9NIz2o@ashevche-desk.local>
+References: <20260810-b4-tbnet-hopid-v2-0-0eee557e75df@gmail.com>
+ <20260810-b4-tbnet-hopid-v2-1-0eee557e75df@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/2] net: core: propagate unreadable flag in
- skb_zerocopy
-To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, dev@openvswitch.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>, Jason Xing <kerneljasonxing@gmail.com>,
- Pavel Begunkov <asml.silence@gmail.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Bobby Eshleman <bobbyeshleman@gmail.com>,
- Florian Westphal <fw@strlen.de>
-References: <20260810180956.2348280-1-almasrymina@google.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260810180956.2348280-1-almasrymina@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810-b4-tbnet-hopid-v2-1-0eee557e75df@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 8/10/26 8:09 PM, Mina Almasry wrote:
-> skb_zerocopy() fails to propagate the unreadable flag when copying
-> devmem fragments, causing target skbs to appear as readable memory.
+On Mon, Aug 10, 2026 at 09:39:14AM +0000, Fan Ye via B4 Relay wrote:
+
+> tbnet_connected_work() asks for a specific input HopID and treats getting
+> a different one as a failure:
 > 
-> This patch fixes the flag propagation. Additionally, it returns -EFAULT
-> if standard payload is mixed with unreadable devmem fragments during
-> extraction, and clamps unreadable skb lengths in openvswitch
-> queue_userspace_packet() to avert truncated invalid payloads.
+> 	ret = tb_xdomain_alloc_in_hopid(net->xd, net->remote_transmit_path);
+> 	if (ret != net->remote_transmit_path) {
+> 		netdev_err(net->dev, "failed to allocate Rx HopID\n");
+> 		return;
+> 	}
+
+No need to cite the code, we all able to see it well from the source tree.
+
+> That call ends in ida_alloc_range(&xd->in_hopids, hopid,
+> xd->local_max_hopid, GFP_KERNEL), which allocates the lowest free id at
+> or above the one asked for. When the
+> wanted HopID is already taken it does not fail - it succeeds with the next
+> one - so this path returns with an id allocated and no reference to it
+> left anywhere. It stays allocated for the rest of the XDomain connection.
 > 
-> Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
-> Cc: Pavel Begunkov <asml.silence@gmail.com>
-> Cc: Stanislav Fomichev <sdf@fomichev.me>
-> Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
-> Cc: Florian Westphal <fw@strlen.de>
-> Cc: Aaron Conole <aconole@redhat.com>
-> Cc: Eelco Chaudron <echaudro@redhat.com>
-> Cc: Ilya Maximets <i.maximets@ovn.org>
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
-> Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+> Forcing the branch by occupying the wanted HopID first shows the returned
+> id is a live allocation, not an error code:
 > 
-> ---
-> v2:
-> - Return -EFAULT when mixing unreadable and readable frags (Pavel).
-> - Clamp unreadable skb lengths for openvswitch queue drops (sashiko).
-> v1: https://lore.kernel.org/r/20260801125308.1342897-1-almasrymina@google.com
+>   LEAKPROBE squat=8 requested=8 local_max_hopid=27
+>   LEAKPROBE real alloc ret=9
+>   thunderbolt-net 0-1.0 thunderbolt0: failed to allocate Rx HopID
 > 
-> Openvswitch maintainers: PTAL at the openvswitch changes closely. They
-> are reported by sashiko as an also-need part of this fix:
-> https://sashiko.dev/#/patchset/20260706155219.23757-1-fw%40strlen.de
+> Release the id when it is not the one we wanted, matching what the error
+> unwind at the end of the function already does for the expected id.
 
-Hmm.  FWIW, I do not see anything about openvswitch at that page.
+General hint: do not blindly copy'n'paste the Dostoevsky saga from AI. Squeeze
+it and show (by rephrasing) that you also understand what's going on there.
 
-> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-> index ae69b2cabab9e..7c663d7846174 100644
-> --- a/net/openvswitch/datapath.c
-> +++ b/net/openvswitch/datapath.c
-> @@ -480,6 +480,8 @@ static int queue_userspace_packet(struct datapath *dp, struct sk_buff *skb,
->  	}
->  
->  	skb_len = min(skb->len, cutlen);
-> +	if (!skb_frags_readable(skb))
-> +		skb_len = min_t(size_t, skb_len, skb_headlen(skb));
+-- 
+With Best Regards,
+Andy Shevchenko
 
-I'm not very familiar with the devmem and the unreadable frags, but if
-there is really no way to read 'skb_len' bytes of the packet, it must not
-be delivered to userspace.  Delivering truncated packet will confuse
-ovs-vswitchd and the packet will be dropped or delivered truncated to the
-destination.  We should return something like -EFAULT here and the caller
-will drop the packet (MISS upcall) or continue processing if the failure
-is not fatal (ACTION upcall).
 
-This practically makes devmem incompatible with OVS, I suppose, as upcalls
-are the primary mechanism for initial packet processing, before the datapath
-flows are installed.
-
-If there is a way to read this memory, we should make a full copy here.
-
-Best regards, Ilya Maximets.
