@@ -1,142 +1,161 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B690941D650
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 14:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BFC40A926
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 15:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786373886; cv=none; b=LWwy/3xEWSprlonn9aXeh4AodAfGQDBBDnChUZJFpBdj3gC5UhTsISS8kTlYgfKyNnhYcmfdqTgBzjR4QZJRqNwCTtrA9LpBt5uGELwSt8akPk3I1vb9yDUJEUIWvnjZGnDUvLjBnxNjKB8NoS1WhkhBJxcWkcVlPKBFk75k2yw=
+	t=1786374154; cv=none; b=hXstT3juf27Dygf47F3l/v2R9G0B6/B2qn+jzilOXQHi6Sz/MNtq+l9bpDMwzOe2r446BYfEuQ+p1wXAzP1nnfKJscd3L3QUljPW5DkAoEr/BAnOtXx056iycS0lRa/1gYB7/AwGFkj14bKjfMz5SUUP4QPkdpC5houHC1nnIh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786373886; c=relaxed/simple;
-	bh=4cHvPrven/t3rFp+sVGIdSivHgadia9WTgjF+LFzIUo=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FoZSTONAAu/nyo78bwWxBpp55b0GRs4K2KtJSTVKXR54cMQcLrIbA/9h8YEpLkKc37p0dc51kLfXUDOzOhkt91no8VSlkgtkhctsu8p6vm+H058dasnM13kcV1+jAV2rLn/i+XFdrS4wjtAGUOX688SMTlDBE/AHIapHfFqnT50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DuUGfzrn; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DuUGfzrn"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47f96c5b722so1109210f8f.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 07:58:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786373883; x=1786978683; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=w/Gl87v4Znt+XuHHm3+kxa4WFKqWvFzpNTkn7r5FQfI=;
-        b=DuUGfzrnmb9SpA+mGoNTu5VRxxTZpTLRiJrrgV1IzjQ3aoGkFTGVAE6xBO7LEKnS70
-         PU1S3HUcVmI46HspT/t4XDcG9RXpuOP36q5tcT705N3FvL8jCbXxdqf51Blhz0nr44bh
-         6ZovEfhesUzkH+3MDG2NVpYQUryBnSGuwLX1LtFNGqtyX+00sY9aGDde25DIdaHmMSAG
-         tQdsHVqVhvEgCatOK8w211N2AfFk3aGJat3QzsuC+XhI1lptno67VHiWOEZYjB+vckK7
-         7LMVF3LiA9Zsp1Afxn95ZynWxkhqUvKZc65873aXdjPArnoLLB/WKnQLJvPJh9PFho2M
-         Z/sw==
+	s=arc-20240116; t=1786374154; c=relaxed/simple;
+	bh=Jq62E+3qxTTpgr/y0/42GQ7T0lONh5L3aBDqQDxHaHM=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=LaB6F4uk1lD1VIXravq6Lgn8ZbYv4GN5fZ0AZBpXtKUqATdT7FAfffkMBlqyHAauYoNzrXOtzu/7y5eatoUI4LuljQJmIWYVxXjLr8ilxyWW+Hg5qV6GQ9kUQ61mVg3jHw8dt3y+xYK0DuWw4MMjoo0lLYuVFSaQTsCbuGqFVbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-6ae41d34275so1838464eaf.3
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:02:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786373883; x=1786978683;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:x-gm-gg
+        d=1e100.net; s=20251104; t=1786374151; x=1786978951;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=w/Gl87v4Znt+XuHHm3+kxa4WFKqWvFzpNTkn7r5FQfI=;
-        b=VNvgQrO0LlAqykRe2YQf3fMOXD1HxWbMg6L8ekDIAz7VVmTFvVGxg+nS7g/7EmwozH
-         67O8cAxTtaghK04Ub1bTxAGkx8MwWMSSa2TTnTEKQDut7zF+A1Wkce0rWgVLJ3op6JfH
-         2pRQt4GFPM6a4H77W7yB+hEuF1j78Ig4VCf70PhpQX4Aii7w6eND68ZJEjfsl4kk+6aa
-         v3cspRSSFBqXHo0E6CvrYhLQ9DeCJGFXAlBsw9399ydgsQpm5Wz0Arx1arjIomCnaBCi
-         eXKzu9mMtSWEmzR/+APZyR0BQbW1COfOphybPipHf5u539amDYsMKqja9QnJdy7tiHHP
-         gc1w==
-X-Gm-Message-State: AOJu0YyUECF/cfOt0Xq4BEIpgAUURL7hxXD3+6Hitq6PJYZY7b3bJljF
-	u2WbZ29i4zm8guJhxCGnSU2/fidpK+dsQt6IimQKTv02w1advLmiCoBbdhO8s8mC
-X-Gm-Gg: AR+sD10CYYjzFlGIEjF59uxZ+s7AxmbSulC/3c4hIYpn4tEs/WfmtTpD9rhwFWm8AeN
-	0Teucm/JWGKg3aWbU9a0IZdtgkhSwZIlxAEx/pFXWWKBE/saEvKC0voz63aeBl5Zm7CTe418Xhp
-	Ne5QDxU0Nzk6rjm9tuZbbmJczBCtNu7BLhMqbgYM42z7Z5tgBzwgLaznx/XfG4uJJHBfc2wCiii
-	O30k7xqBrpkvhEoeKR7OqhPZxjx8nd0bsBrYj8r6XdQp7+yyJcCqQa/+1bFcbMs4CAJwheHjeiE
-	Pxoy1f1FoH3AKpQWQVxvAKBV+OBRDv28UVs2UXbBQxUlWRp9ne9Qocy4ZMQ8Wo0jdU0Rfu+HFkq
-	2MldM1xJ1Q1Z/fQxjmR1pIG/8lm1p5n2ctzHwrL6jVEj6TWMovm7QzGwgbKRrjRcci8VI6Xy2QR
-	F14pQum2cLEi2x/KFiYafj+lEbeF4j/Ds2PZ0hRr85z94wASop7GxpQZTP4r/Vco6EYZ+Rl3nLY
-	MN39KxORMsWWOmOYrEqWsJI+hoqxJo=
-X-Received: by 2002:a5d:6f13:0:b0:47f:ecbb:5a2e with SMTP id ffacd0b85a97d-4814564fc0emr4540457f8f.28.1786373882870;
-        Mon, 10 Aug 2026 07:58:02 -0700 (PDT)
-Received: from Ansuel-XPS. (host-87-20-3-207.retail.telecomitalia.it. [87.20.3.207])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021e8d50sm34620638f8f.24.2026.08.10.07.58.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 07:58:02 -0700 (PDT)
-Message-ID: <6a79e6fa.332d3c56.21a33c.bff8@mx.google.com>
-X-Google-Original-Message-ID: <annm9xX93WnLqjOk@Ansuel-XPS.>
-Date: Mon, 10 Aug 2026 16:57:59 +0200
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: win847@gmail.com
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v12 12/12] net: airoha: add phylink support
-References: <20260809203116.640271-13-ansuelsmth@gmail.com>
- <6a79e5dd.e59e62a9.3bd15b.cd58@mx.google.com>
+        bh=KLF0SDRD6elYaH9H4nlQOFBkwrP0OZh6Z0oOkhFeE5E=;
+        b=mrGQiwlQHDaA/P6PNEvOkmY/1nJ+BlsbSFQz1K070B5DMtFNHe5HcMcQsLY9i7igst
+         yClEBixV6tyDhsd8eZ+bskz4zgxAEgXfjlxXPit/7Kymj52vfyqHeG/2Su+Ti7GJ3MTe
+         sr917wiYkeeBlDEv2838HS5cJmjE5HloeTLL9ChoSq2+eNDg/mBKMIaQLq4sIPxRXe5v
+         FS8eauPdk5Nji1jOTQwYEnVxrmS9cGVNJCvslqIDoshRnwjMrUWm4C1UA9OT+hzpFiUr
+         8P9tG7DmMD0gqdkny6uKy6/Jbw4S7/ElJx2cagLzfWhyknPB25m4UZ+twbPBindH/8J+
+         pFSw==
+X-Forwarded-Encrypted: i=1; AHgh+RrVmNkOENKgV50xW542Xh0e9z7R7pymARd8OqRATnbdwOa+LIXGA/q32ZaNjsnUrrgGgVPcMYY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxtdjckq7xq2nVrtahK9koqNRFwsLWrxfCZwwkYAqjrfmfpnVZ/
+	x+TxfDx9h+VWMjckO/vIaox0y25qQt6r6tumQZUjH5hpyhTq/8ovuk9E++iZ0eO1zWkGB/z9RtQ
+	CBEHB3edA+8LfmLrrFT89zPoTh0qH/kDG+L8a4z8Fq9Up3HsEWGX5d8Fla7w=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a79e5dd.e59e62a9.3bd15b.cd58@mx.google.com>
+X-Received: by 2002:a05:6820:208a:b0:6a3:1e40:6329 with SMTP id
+ 006d021491bc7-6ae96cc8e23mr24245025eaf.13.1786374151224; Mon, 10 Aug 2026
+ 08:02:31 -0700 (PDT)
+Date: Mon, 10 Aug 2026 08:02:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a79e807.01d0871a.3a0d52.00ac.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in __dev_queue_xmit (6)
+From: syzbot <syzbot+30b93b6845b19cc38581@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
+	willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Aug 10, 2026 at 10:53:13PM +0800, win847@gmail.com wrote:
-> On Sun, 9 Aug 2026, Christian Marangi wrote:
-> > Subject: [PATCH net-next v12 12/12] net: airoha: add phylink support
-> 
-> Hi Christian,
-> 
-> Thanks for the series. I have a question about the error path in
-> `airoha_dev_open()` introduced in this patch, and a suggested cleanup.
-> 
-> In the new code:
-> 
->     err = phylink_of_phy_connect(dev->phylink, netdev->dev.of_node, 0);
->     if (err) {
->         netdev_err(netdev, "could not attach PHY: %d\n", err);
->         return err;
->     }
-> 
->     phylink_start(dev->phylink);
-> 
->     netif_tx_start_all_queues(netdev);
->     err = airoha_set_vip_for_gdm_port(dev, true);
->     if (err)
->         return err;
-> 
-> If `airoha_set_vip_for_gdm_port(dev, true)` fails after both
-> `phylink_of_phy_connect()` and `phylink_start()` have already run, we
-> return `err` directly without doing `phylink_stop()` or
-> `phylink_disconnect_phy()`. That leaves the phylink in a started /
-> PHY-connected state. On the next `ndo_open`, `phylink_of_phy_connect()`
-> will be called again and may fail because the PHY is already connected,
-> preventing the interface from ever coming back up again.
-> 
-> I understand `airoha_set_vip_for_gdm_port()` currently always returns 0
-> (based on v12), so today this is a dead path, but it is easy to make the
-> error handling correct and defensive so a future change to that helper
-> does not silently break reopen.
-> 
-> Suggested change: add an `err_phy_stop` error label and unwind phylink
-> before returning:
-> 
->     netif_tx_start_all_queues(netdev);
->     err = airoha_set_vip_for_gdm_port(dev, true);
->     if (err)
->         goto err_phy_stop;
-> 
->     return 0;
-> 
-> err_phy_stop:
->     netif_tx_stop_all_queues(netdev);
->     phylink_stop(dev->phylink);
->     phylink_disconnect_phy(dev->phylink);
->     return err;
-> 
-> Would you be open to folding this in (or reordering so `phylink_start()`
-> runs after the VIP setup, leaving fewer error exits that need phylink
-> teardown)? Happy to write it up as a proper patch if useful.
-> 
+Hello,
 
-If you are ok, I can integrate the change in the next revision.
+syzbot found the following issue on:
 
--- 
-	Ansuel
+HEAD commit:    f9a2394a2348 Merge tag 'mm-hotfixes-stable-2026-08-06-18-4..
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=165f2132580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3e8a402093abe6b2
+dashboard link: https://syzkaller.appspot.com/bug?extid=30b93b6845b19cc38581
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12038fb9580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13357e49580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/ef40f2831e11/disk-f9a2394a.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/083195a6f16a/vmlinux-f9a2394a.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/08e150858f10/bzImage-f9a2394a.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+30b93b6845b19cc38581@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+skb_assert_len
+WARNING: ./include/linux/skbuff.h:2753 at skb_assert_len include/linux/skbuff.h:2753 [inline], CPU#0: syz-executor184/5631
+WARNING: ./include/linux/skbuff.h:2753 at __dev_queue_xmit+0x1fb8/0x3820 net/core/dev.c:4781, CPU#0: syz-executor184/5631
+Modules linked in:
+CPU: 0 UID: 0 PID: 5631 Comm: syz-executor184 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+RIP: 0010:skb_assert_len include/linux/skbuff.h:2753 [inline]
+RIP: 0010:__dev_queue_xmit+0x1fbf/0x3820 net/core/dev.c:4781
+Code: 48 c7 44 24 10 00 00 00 00 e9 50 fe ff ff e8 28 45 26 f8 90 0f 0b 90 e9 d6 e1 ff ff 48 8d 3d 48 00 c6 06 48 c7 c6 7c bf 43 8e <67> 48 0f b9 3a 80 3d ee 0a a0 06 01 0f 85 86 03 00 00 e8 fa 44 26
+RSP: 0018:ffffc900038c7660 EFLAGS: 00010246
+RAX: ffffffff89a09fa1 RBX: ffff88801b04e5d0 RCX: 0000000000000000
+RDX: ffff88807f661f00 RSI: ffffffff8e43bf7c RDI: ffffffff9066bdc0
+RBP: ffffc900038c7910 R08: ffff88807ae068a7 R09: 1ffff1100f5c0d14
+R10: dffffc0000000000 R11: ffffed100f5c0d15 R12: dffffc0000000000
+R13: 1ffff92000718eec R14: 0000000000000000 R15: ffff88801b04e5d0
+FS:  0000555586b70400(0000) GS:ffff888124f55000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005628d19fb000 CR3: 0000000073c3e000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ tpacket_snd net/packet/af_packet.c:2907 [inline]
+ packet_sendmsg+0x1f38/0x4e80 net/packet/af_packet.c:3134
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+ __sock_sendmsg net/socket.c:790 [inline]
+ __sys_sendto+0x408/0x5a0 net/socket.c:2252
+ __do_sys_sendto net/socket.c:2259 [inline]
+ __se_sys_sendto net/socket.c:2255 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2255
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fda58f481c9
+Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff9aa6f188 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000200000000200 RCX: 00007fda58f481c9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+RBP: 00007fda58fb3489 R08: 0000200000000000 R09: 0000000000000014
+R10: 0000000004000010 R11: 0000000000000246 R12: 00007fda58fb33f1
+R13: 0000000000000001 R14: 00007fff9aa6f1e0 R15: 0000000000000003
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	48 c7 44 24 10 00 00 	movq   $0x0,0x10(%rsp)
+   7:	00 00
+   9:	e9 50 fe ff ff       	jmp    0xfffffe5e
+   e:	e8 28 45 26 f8       	call   0xf826453b
+  13:	90                   	nop
+  14:	0f 0b                	ud2
+  16:	90                   	nop
+  17:	e9 d6 e1 ff ff       	jmp    0xffffe1f2
+  1c:	48 8d 3d 48 00 c6 06 	lea    0x6c60048(%rip),%rdi        # 0x6c6006b
+  23:	48 c7 c6 7c bf 43 8e 	mov    $0xffffffff8e43bf7c,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	80 3d ee 0a a0 06 01 	cmpb   $0x1,0x6a00aee(%rip)        # 0x6a00b24
+  36:	0f 85 86 03 00 00    	jne    0x3c2
+  3c:	e8                   	.byte 0xe8
+  3d:	fa                   	cli
+  3e:	44                   	rex.R
+  3f:	26                   	es
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
