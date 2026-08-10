@@ -1,129 +1,109 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB1A37E5E8
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 16:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B773AB28E;
+	Mon, 10 Aug 2026 16:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786378543; cv=none; b=evr3OXh4RsoljK2lElwFxmU80YvfB+/59OIqV3+HL70rLVaYreJnec4u0pYDcbMsOJTXRCkClDhqw5IgOUj9znn0LJtVw6f/TUErEr/TTVD5mMXnxrsPEvGpAsa56Sgo3AN/bRzq0hPN1Q1wf8LJh1ufMMrHHW58tlRtIpHRUe4=
+	t=1786378634; cv=none; b=jHNafQpq0yQfSQhCDdAERuj6fyOZcq/c86lGcV6u/tx0wR1Uf8dcKaOyHXyzRFpgttzp0N0+R0BpwFZ6Dbjy+7RMAaiegacu+oC/RcGZMGQVlKzNQnoP+WbQ3c+Ry53fJ09IN0vYQJ2d7V1g/BbkDBOcTd4WjjWHpq9iHjee1Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786378543; c=relaxed/simple;
-	bh=ls8jXR7z4yRoxt7WuuegDOenuGMvt9OxwYTIfOfjYnc=;
+	s=arc-20240116; t=1786378634; c=relaxed/simple;
+	bh=nHDjAqs60zYrahzt+nKdZ75WY4hjyGhwhcO1BdaA+Gs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rc/OjCPrr9QVe7r5Kw3pp1CuJg49LQM8guHajmhNYEtOnjwSNag19Zu+uRchKYqOflnNf7PmcA8J8kdmBTqNpc650jVg4UubflW9Q8vZ1AutH9DGTZB3Pyp64UE15QuF/gKGThz1ScyPc3509hxBH4v9+QCerdONmniZ7NEYGTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TurWUar5; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=m/4+sw46QE3QHrjGr3uxHnA+S2BLjdjush8XIOJhjn4HELBDJHq0njHuji+owcOU5FkDHDPWAmrQUpVQbaePhiE+6VH1MOe1WNzdZBrpBw22GGjbQhee5+J2rQTNv6gorySg+HtERleBu4AIBj7K8DDmtintXETvK2ZP57k9R84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=QmIGRBUL; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=xQB1UZzU; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TurWUar5"
-Message-ID: <ae8068c8-ece8-4c6b-9c0b-65d9cbedf84f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786378529;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ucEznkl+fQA3uTG/r3zs1YKQpu/sFtIRxu3JT0SliEM=;
-	b=TurWUar5fGcoAcOUIE6TAn/45H/Wjjjm8yECIEtdpFenB3dO7cF7tz1ndKAlXUSG9JEMkF
-	aCHoenfZwXolFUJfgvpmsc7fiwP0VHXmZOMZO8/RhZ1Dca3PEbZCg5xJX+Ts4S22DZcsar
-	WXvZUtaJ712VMYhoy//SyoLoJdILz1A=
-Date: Mon, 10 Aug 2026 17:15:25 +0100
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="QmIGRBUL";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="xQB1UZzU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1786378629;
+	bh=nHDjAqs60zYrahzt+nKdZ75WY4hjyGhwhcO1BdaA+Gs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QmIGRBULpOH9EyTKKlgK2a2byf/gotpzNYPhpPs1E8xPZOK4/jEvANw+xbuZso2pH
+	 ul54mFrRQ83GZM1Df0DFAJbjBA1nLW36mtyY66CkZtivBz3SDQhXeRx12SW5sX0OdX
+	 UODtDIJzH9kEDNX0rUCVnNwRCMK1GCzx1q3PdS/AKHXK0ECY6grwanK6eXUuOR8ba1
+	 v3rNE4Rl9RyrItTk/wClYgH9z+O1pCara2iP6GQasQNVJSb9W04fFAPZFXUvEyDZQY
+	 jiwCUFduU82bnJNCiUpaYGBB2fOjqswV0NGlL92XjVr38wfZKXMTOAS286fs5CW/CD
+	 9NfJch2K6q6lg==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id A6C4349784; Mon, 10 Aug 2026 16:17:09 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1786378627;
+	bh=nHDjAqs60zYrahzt+nKdZ75WY4hjyGhwhcO1BdaA+Gs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=xQB1UZzUp5rmzIKsYW9bUmwS7a0aaLe+CaSO/GMxs6Kq8OP2pm6MDBRcQStlX6rq9
+	 1kMOcgTOmbmCP9KRdNx4wHx/qBFRX9FcX6gVmT7mCSD3JOzFW2VyWgF4GtKpQq97k7
+	 Xy+Suevo3pu6YMFT+ZtMnGv03sKk6zGcRrbl9zD7YNhJJuFY0Z3iytYsA5qHCKS4kX
+	 QMVx1RkRnivfy7qnIEH8SMmyYK+Fb++6ysCsVznxKjPMJscXIiaH0Lw8MaV3UVdg1V
+	 HztWVGLHSAeg+Ev/EZmasw7tXrDSx7YydJzFuh5d7oaHEaji3moXyU6QqkmEp8eNAY
+	 dUiWZq0O9StnQ==
+Received: from [IPV6:2003:c6:9f06:3400:60dd:238c:9273:a789] (p200300c69f06340060dd238c9273a789.dip0.t-ipconnect.de [IPv6:2003:c6:9f06:3400:60dd:238c:9273:a789])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 20AD64977A;
+	Mon, 10 Aug 2026 16:17:07 +0000 (UTC)
+Message-ID: <904f166a-b3c4-4579-9614-6ebe3dc18277@birger-koblitz.de>
+Date: Mon, 10 Aug 2026 18:17:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net 2/2] gve: fix NULL dereference due to missing ptp
- adjfine
-To: Jordan Rhee <jordanrhee@google.com>
-Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org,
- joshwash@google.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, thostet@google.com, ziweixiao@google.com,
- willemb@google.com, nktgrg@google.com, pkaligineedi@google.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260807224315.234152-1-hramamurthy@google.com>
- <20260807224315.234152-3-hramamurthy@google.com>
- <724b2c8d-1481-4418-a10a-4331a620cd91@linux.dev>
- <CA+mzVttPSW=NKqqBwY9kxdL_r0hKzQfu38eZtmfUB6iaeHcNRw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 00/13] ax88179_178a: Add support for
+ AX88179A-based chips
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Jianhui Xu <neuromoments@gmail.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, hkallweit1@gmail.com,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, pabeni@redhat.com
+References: <2eeb01b5-7d3d-425e-9865-4e2fe1614e67@birger-koblitz.de>
+ <20260810013549.2510969-1-neuromoments@gmail.com>
+ <5b2c4498-2e3c-4ae6-b078-deeccf8b7a5c@birger-koblitz.de>
+ <60e05662-5f0d-4b2e-9646-f7d42e04ef13@lunn.ch>
+From: Birger Koblitz <mail@birger-koblitz.de>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <CA+mzVttPSW=NKqqBwY9kxdL_r0hKzQfu38eZtmfUB6iaeHcNRw@mail.gmail.com>
+In-Reply-To: <60e05662-5f0d-4b2e-9646-f7d42e04ef13@lunn.ch>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 7bit
 
-On 10/08/2026 16:55, Jordan Rhee wrote:
-> On Sat, Aug 8, 2026 at 8:27 AM Vadim Fedorenko
-> <vadim.fedorenko@linux.dev> wrote:
->>
->> On 07/08/2026 23:43, Harshitha Ramamurthy wrote:
->>> From: Jordan Rhee <jordanrhee@google.com>
->>>
->>> Fix NULL dereference due to missing implementation of adjfine, which can
->>> be triggered from usermode as follows:
->>>
->>> sudo ./testptp -d /dev/ptp0 -f 0
->>> [  551.943697] BUG: kernel NULL pointer dereference, address: 0000000000000000
->>> [...]
->>> [  552.061946] Call Trace:
->>> [  552.064487]  <TASK>
->>> [  552.066681]  ptp_clock_adjtime+0x1c0/0x2c0
->>> [  552.070874]  ? get_clock_desc+0x6b/0xb0
->>> [  552.074825]  pc_clock_adjtime+0x78/0xc0
->>> [  552.078755]  __do_sys_clock_adjtime+0x85/0x110
->>> [  552.083293]  do_syscall_64+0xea/0x610
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: acd16380523b ("gve: Add initial PTP device support")
->>> Signed-off-by: Jordan Rhee <jordanrhee@google.com>
->>> Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
->>> ---
->>>    drivers/net/ethernet/google/gve/gve_ptp.c | 6 ++++++
->>>    1 file changed, 6 insertions(+)
->>>
->>> diff --git a/drivers/net/ethernet/google/gve/gve_ptp.c b/drivers/net/ethernet/google/gve/gve_ptp.c
->>> index 06b1cf4a5efc..1d6c59f4ead3 100644
->>> --- a/drivers/net/ethernet/google/gve/gve_ptp.c
->>> +++ b/drivers/net/ethernet/google/gve/gve_ptp.c
->>> @@ -26,6 +26,11 @@ int gve_clock_nic_ts_read(struct gve_priv *priv)
->>>        return 0;
->>>    }
->>>
->>> +static int gve_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
->>> +{
->>> +     return -EOPNOTSUPP;
->>> +}
->>> +
->>>    static int gve_ptp_gettimex64(struct ptp_clock_info *info,
->>>                              struct timespec64 *ts,
->>>                              struct ptp_system_timestamp *sts)
->>> @@ -60,6 +65,7 @@ static long gve_ptp_do_aux_work(struct ptp_clock_info *info)
->>>    static const struct ptp_clock_info gve_ptp_caps = {
->>>        .owner          = THIS_MODULE,
->>>        .name           = "gve clock",
->>> +     .adjfine        = gve_ptp_adjfine,
->>>        .gettimex64     = gve_ptp_gettimex64,
->>>        .settime64      = gve_ptp_settime64,
->>>        .do_aux_work    = gve_ptp_do_aux_work,
->>
->> .adjtime has to be implemented as well - neither adjfine nor adjtime are
->> checked within ptp_clock_adjtime()
+On 8/10/26 15:25, Andrew Lunn wrote:
+>> I have finally understood what is happening: There is a race condition between
+>> the controller of the AX88179A trying to set up and optimize the link and
+>> phylink trying to configure the link on the mac-side.
 > 
-> adjtime() can only be reached if gettimex64() succeeds. Since GVE
-> currently returns -EOPNOTSUPP in gettimex64(), ptp_clock_adjtime()
-> will short circuit before calling the driver's adjtime callback. We
-> will need to provide a stub for adjtime() when we implement
-> gettimex64().
+> This is why i dislike any hardware/firmware which thinks it is smarter
+> than Linux and directly access the hardware. Such features often break
+> stuff, because it does not respect the mutex Linux uses to serialise
+> access to the device.
+The hardware by default uses CDC_NCM and even needs to be switched to the
+vendor mode in order to allow any manual configuration of MAC and PHY.
+As much as possible is supposed to work automagically. Linux support looks
+very much like an afterthought.
+
 > 
-> My understanding is that fixes should only address real, reproducible
-> issues which is why we only sent adjfine in this patch. If the
-> maintainers would prefer we send adjtime() as well, just let us know.
-> That said, our preference would be not to delay the other patch in
-> this series ("gve: fix zero-length skb frag with header-split").
+>> I will provide a v7 with an additional phylink function phylink_mac_interrupt()
+>> being introduced as suggested by Andrew, which is called by ax88179a_status()
+>> in response to usbnet receiving the link change interrupt. I tested changing
+>> the link a couple of dozen times and it always worked, now.
+> 
+> This will make it safer, but might not stop all the problems. Does the
+> PHY have LEDs? Does it have temperature sensors? Features like this
+> operate asynchronously to link state. The user can configure them at
+> any time. Such register writes might collide with what the firmware is
+> doing. I don't suppose you have physical access to the MDIO bus and
+> can put a logic analyser on it? Are there bus transactions happening
+> during normal operation which are not from Linux?
+> 
+The device has LEDs, but they are entirely controlled by firmware. The behaviour
+can be configured from the EEPROM. Writing to the EEPROM involves stopping
+the firmware on the device. There are no temperature sensors, or maybe there are,
+but the firmware hides them from us.
 
-ah, yeah, I see that gve_ptp_gettimex64 is -EOPNOTSUPP.
+There is no physical access to the MDIO bus, as MAC and PHY are in the same
+chip. I hope that otherwise we are safe from firmware interference, though.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Birger
+
