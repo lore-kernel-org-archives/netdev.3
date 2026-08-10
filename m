@@ -1,47 +1,47 @@
 Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021094.outbound.protection.outlook.com [52.101.125.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70E142C4FF;
-	Mon, 10 Aug 2026 16:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D892542C51A;
+	Mon, 10 Aug 2026 16:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.94
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786380721; cv=fail; b=QQK8iNJwnwG49uRrXAktDLEF6lH+cbF42kAwGW5Mrt8uta39zruO+/vrp1ltEqrLd+trRfIDQe6q0oA68Q9bcMmiJFvGGWOngI5aLHnQzZ+V+LK8lWL7UiV5UmEXezjTlrpl8mEOVR7lpSaYfJo45wkelyQ1NtUu0kfnf4pjZ9c=
+	t=1786380725; cv=fail; b=X2jKjRoR3Ge8aX/qdliHLuw2tcMb9cWR//eTPW+hgNjg6+YnLCCbUYxN8ifCMzlgh2JjTxuD7RhrHvWot3SNGbLGGOcjQddoqwepk/UxWvlDdLWQNHI+CX+RA2XaX5E7NzMl9nIY0Vl6bUo7v5eFR8fricBpiFZc+dy89U8v/jE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786380721; c=relaxed/simple;
-	bh=8KP5IfrBivGTEEtqMvHG6IQCxy9j8Vw5m3uWp0HbzoE=;
+	s=arc-20240116; t=1786380725; c=relaxed/simple;
+	bh=Lmsd6IFhS5ADDhb1U/WzbzhiblRZIkoHT5VIU+ClpVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gjhOZinGLAHGU44o76CkVsfX/2Uh1uCR+tZ3jUwhOv+/FyLUT03Ict4ukxJvKttI2M8NMLga2j2pd0HTP6DzPV40HDmPfI1DloAxZkco8J9K8dXa6SCr8AmDxq48yIukPHdJnFnjLHkecJijyNqHtZJHLrP0qMQYvJ6bE66nB0k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=ngbUp/cA; arc=fail smtp.client-ip=52.101.125.94
+	 Content-Type:MIME-Version; b=u9S1TW+klmQEhgnNhwjstI6NpL/b98Qahm7SucZndgNoO1uDSzEv+5FxKDaqvtTF4Mc9Av8BeJVjrxfyHMNhPEHnfjcc+KwENoqqBnIJlYPlpsIOR4nL1u+Xx5mHWdxK7uibPuoPJyIKBQeWKkcw8Me/4WZ/nGPjLTU/4KomtIg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=tsaFgxEd; arc=fail smtp.client-ip=52.101.125.94
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="ngbUp/cA"
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="tsaFgxEd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IpIR3Xl3CRFMYcs2CgwfByNfvDM5ziFdydEg/GaibBrzgnB1ghv9gWKrHU3FYEnjnWxwpLAevMFUnasYNE69X2hI0Z7xdOO4w5kDuUdgk5xpJn7ASj8/J1LKvJ+xlK/vib7+Mc0puWJBTfc8hEhdNAOH6fDgEfBqerPKsBiEpjgMomKQbDm2YFyOxDLNn9H1+4hbkt19wQXGK+SvBoKrl5+m8FFKwINYLcMHItZRHeikDLs0bm8EVl9wwaub3ZZSrviexWjf5w+7piSJcCJTcIpMGo39v+ZMtj4i3JRSYbL/VYh3PZ44ji9B057WOhdE2kBo+W6PHF74RCUBGjRSkQ==
+ b=hXLa5eUaf9qO7RyyUefQ3Ua5yyU5e/xkq6PRchLfnNYNNVIwyF5FS9OOij9BfASNGRf7WHGg6yXxtfCovz8fbLRjh7Nu/fBbjmx8XPFeyNtUvLMi15BRIaMyi8SYGm0bb/aghbnrGqYLImz5V3fvNypvfJDeXmn8fr6o4sQm/qlikJcm6ccvM+tokGCmyia9GOvESsZ4IlnK7m+FwoSeROlQV1R5a2YLP6FKe2LQiiKmmWBqUfZmHk7EOUnhc53Hrb7f89z0iq1HT4TnGm4Mh0wXDryccf1wlMle3li9dSipYN48LTPx3T2Xjo6QIIwZuTKgc0jVXIPTWhqpnp6lew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uY80pfjVMLEM7gNDioM3DgPKrGvkqwmU1NhF/Ocgfv8=;
- b=BUXDBFUvX1pe9I6Qz/vzXeOgqRs+hsQeqjwtGrDMypzTWmo2CZFcC883tjkYVnW/nvc+dvZeWwQaCV5bDHeFCbJsNttTdb9VNppDNzXq5PQYZr5y6VKFOgW5fI3nhN/MpTrP3N10ru0t5bn5m7WBjeiEaJ3gCBim7+ecRn2CkwNzFTIv+pQgwIU3RAVGN9glX875QiJndq91y0BAi6kM6RU1FR9mF1DUeSZ0GzULOVFU+oqCuUttvK/gBSp+fN+vxh14YW8+XZKYzDEDYJy19ziUMAcz4aPeFHq8bpXHmTTDSpwWOIESsmhTOqivDEvH0BA72MrMJACmSgWHq8Ng2A==
+ bh=vmltISzTcli3Hk2+SGcFUEALTn0sjGGhUgWxWL+FRF4=;
+ b=CPnN0cpF0hJMpzvLYOjd273u5VT1gSYSqelrBuKZJcL1zWtUiwfl4+Rv0U7xZ6i6WQaQVpaaHCLaEl4EWvWf8IfEt+OAvlw5M6/P/fTUUJ5fbB4cFmJL+9QmD5Yrxz8+gRO6Is+xGFciQ4yFKuSX6gOmGaq4Fawwljnb5scR6Lu+6EhIROqHt7RJ2TtlWHwkVWJcCedr6PTfhDxVhU0pyzCU20Qhjdmr2C2ObHOOUtP7xU3s92FajOpct3bILD10e1e8ogQqRuH4/aSaaFBQQ8ZqiMRIK1IVzaBDWCAJXroTbR6f3qrsy0Dvw83OWzPTOp4qG5qU+QmYcLMbe1H/1A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
  header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uY80pfjVMLEM7gNDioM3DgPKrGvkqwmU1NhF/Ocgfv8=;
- b=ngbUp/cA6cShN2GxxCnbSd5ZRdVg1TzmdqZ8gJVujNZ4YeDwBWQD0HeILnkM1/lDDiodniGuwsfiVMGmR/1weNcyI7OHxtc1PXxBt2+k3494wUrCbY7ccVUyEUOTEcln0VBnZmpEfFDq6u5Fgfa3vAO289y6pCpdI7b3albp9Dg=
+ bh=vmltISzTcli3Hk2+SGcFUEALTn0sjGGhUgWxWL+FRF4=;
+ b=tsaFgxEdkVnOtKmeUQfxogjYofuwNp3lqWCg7eK8yBiucogHuz4juyDoZ6G4RnHqigQoFPYSkdKk72argk354ntHT2ZrishfWgKqjTQcF0ME2D+kBxEmYZpZzX4evmUQ5ocNHWndc9KduZvQwt5bFVJ7nFLp9/hdFot5LTMTN3E=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=valinux.co.jp;
 Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
  by OS7P286MB6729.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:42d::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
- 2026 16:51:51 +0000
+ 2026 16:51:52 +0000
 Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
  ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
  ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
- 16:51:50 +0000
+ 16:51:52 +0000
 From: Koichiro Den <den@valinux.co.jp>
 To: Jon Mason <jdmason@kudzu.us>,
 	Dave Jiang <dave.jiang@intel.com>,
@@ -53,16 +53,16 @@ To: Jon Mason <jdmason@kudzu.us>,
 Cc: ntb@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 09/16] NTB: ntb_transport: Allocate direct-DMA queue state
-Date: Tue, 11 Aug 2026 01:51:28 +0900
-Message-ID: <20260810165136.2292436-10-den@valinux.co.jp>
+Subject: [PATCH 11/16] NTB: ntb_transport: Implement direct-DMA RX buffer publication
+Date: Tue, 11 Aug 2026 01:51:30 +0900
+Message-ID: <20260810165136.2292436-12-den@valinux.co.jp>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260810165136.2292436-1-den@valinux.co.jp>
 References: <20260810165136.2292436-1-den@valinux.co.jp>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: TYCP286CA0369.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:79::13) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-ClientProxiedBy: TYCP286CA0120.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29c::20) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
  (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -72,271 +72,365 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OS7P286MB6729:EE_
-X-MS-Office365-Filtering-Correlation-Id: c768dfdd-d03b-4df3-8980-08def6ffacc4
+X-MS-Office365-Filtering-Correlation-Id: 8e6b7f58-577b-4154-1721-08def6ffadba
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|23010399003|376014|1800799024|366016|6133799003|56012099006|10067099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|10070799003|7416014|23010399003|376014|1800799024|366016|5023799004|56012099006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	8jIrtOsrFczzZITc7wzuEMTS+7fBdR24Xs+nHj3LogiElcQ+GvLhsiAWedGrKy+OGb4T6HGWfmr2ovgZNzVu5FY4VxGBct1BjirwHunGU1nkRSeMjFVUfOZWYjR1Rt8h6JgajSYI0zD7dKx3kYuR8biTP8nxLZCIiohlawjLQVgvlDRVWLWyz1a4GHtj51XKYm0hpfnTxvg0YzmlkQe8NC3981UJH7hA08peVc/HZD7MdKBqDzUQKbppd614GLhgnLAGHNW9Z019o1mWHt1pUkMZQp2fJumGdzNUSzmkyhJDDTqwNqgLlecOzrjP1Jk+ebz2AB9bE9CNRffOjgMy5YumtHBPtlkps9XkmLinZsKcMJAH9+gUGFyqSNAFBeirVxNrvSCP6vj0qkCViBFyto6BCVFAXpHyJC010dgQLy3iyLUewoNy8h0/oHQfjOOpEqCXJqozx4QQgy7f70mN0L51XYvrxTNKdM43IbfRvx2tL0cg9XTJA5HGqg3zXij2By3XS3ZhB69Xe0fOXRp4g/OL605qBbmEZB4wmynvvsl8WOddN2EmWHd9y4qDDKlf2eputE4kkxJpqgPTqY+Z3D9TOmVGFui8//gJ3Yj2nNQtHURNp3IRaHvhJAkzk2L63ZlgzFM8MtC16xQKpGnpgXbX6Pl0VFXfE000Rzg5yOg=
+	RWMuFxD6OcTRpVC/QDchp9V+ExSrvU9nTaMKyClWcr2b8MdO4k7TdHkCvycEbHs5gZhIpZqg/Ugtg89ygdwZWHohaMEFxgEs9fDvRfdjp82ckYm2PtSImeXh2K1L4fxqT769CtNctBzR83GpjrnK2reQC6GSZ2gylPJ33YkUo7rac/EDWKAmaOVQIOPqNPRm/dLxkMK0zj+SkurEilolvxEgsteX5aFfH50xUOAn2O2MIa4h9n+MRVF5Xx8/WYlxUhPJ7lF6W71U8QtysNjY9i4l/jc5OpnGyythMI0+D11Bb4NNdln2zSZiun+R3wKUIXOa9fymbarhBO7raSuChEj0aeSFCa30D9L6QoGBosCfyTsZRWXeM3G+jo68rVyrsFwqLAnxT37wCon6QUhkuuST0bGgl7Raf5+g4jz7Dh3IqvfZyEVa7lujO+LkmUGu2WoX/dNpZK1TNjpcmrgfoPwwfGP2uAzC+uuPOHMuFzqrrkYpiT9dA97xJXIeIYyjq/7HA6bMgOIux5658dJNhXOl+P/ACzqC2n4ro8M7bxZLQC8zDXRIRj5N+Jf2AekqvZhJ+lfPzzhe4y6BbyXloRM6fCJw6dYgq24sBGbNMKgThNTy75kUx4n/K5KvlQl3uGz4Rs9p5eAkZSFp9bS4rKoeNd9muFgDecBYWmxrgtQ=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(23010399003)(376014)(1800799024)(366016)(6133799003)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(23010399003)(376014)(1800799024)(366016)(5023799004)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?smG0l+OmvQy6aZ/7sAe3yRHPrJtVdUcowlrppNqN9hdQnEFkTCVZZnI4j9xs?=
- =?us-ascii?Q?FmLZ3fkD93z4XX/GjQ+oN1Pqt/9Tt8EA9JhaclnBu1Hf/tvCwY6F3uCMOI5A?=
- =?us-ascii?Q?/rnziRFqnS0L6k8OdKZOidjrjzcvQfCatWx7gaX4INzh2utlLWssrcLd+BXn?=
- =?us-ascii?Q?mEOp98N7Vvs1YsKdIU5PEYKMjlYxlnMQSoK7t7I3V9AUA913TkdIaJKEr86X?=
- =?us-ascii?Q?if+EvYbTbPZpw+//hM5WG1ItKjuV7NeB04FAe2S5towO17T3NCJ0qGXUvoXY?=
- =?us-ascii?Q?k7mdv/3e1myL+Aw4OzQMDrmL41KAaT0p1iS81TIGdkkutMQ3MFP+sZLx9JCP?=
- =?us-ascii?Q?51XQEZySNgPWYGA2a/IZ6b7HcmdhGNWJUFmiRaLUJ513WlrQNDmD5t/qFraS?=
- =?us-ascii?Q?Gev0hsy2ny8nmsVwj6msm8HkGEryfbd3bhYSOfHOMwy3Ng8MEAFScgKqPBPB?=
- =?us-ascii?Q?V8oVZzmr1ubRcOvBMLz4sUBP65YsWuYYY1PqBU8r1DF0OsWPmJsdYhcm0/vb?=
- =?us-ascii?Q?lLJxvraU3S6DD2+01q28uORv2BdeJ0D+3Yi19HjjiJp/mxHaksgCzCtncAeI?=
- =?us-ascii?Q?eVS9+mxifMKTjZf+AVDYGtyNyxObOKnrFgpgVlwkE7lpGKivtpHW+q/b9N20?=
- =?us-ascii?Q?PQkskh4TycIzTZFEmA8CYzFQu9o8uw7nAlkilfV8gQK3JcjC/3xTYs0O+hjv?=
- =?us-ascii?Q?X6CAL31sFajqfPb+QkoTPvuCN7ecorVZCtO9Pq79k2/Ic2hWDNQ0wPIpoSEJ?=
- =?us-ascii?Q?eEDsCf05XttYopVcJF/KNRxorXu529XboZg5xsJtDSH2luhXOtrzOGvqhi5s?=
- =?us-ascii?Q?dBL6QyxkuqH7G5wa3gAbLUNX8obdCfF85znSZ6X4u+CoCbjicqgwV2/x7qLe?=
- =?us-ascii?Q?31JLkTnBMhRWUTGyl3lh3Veug3RZdd9ludVWhRm8QQFdTLAq9QAll3HvwGCS?=
- =?us-ascii?Q?fuv+cwliLwJx6VNyE8gVDBYIm3doxHlKgbsabxUDAw6hI0zWtpHET80IsWBX?=
- =?us-ascii?Q?zKgkC8qTUOVX8lysREH55ot3dwgAFqTBT1ZWyhbtqkR/sF4f49d4Zj7hemV4?=
- =?us-ascii?Q?qfEY0s+8U+x+Y4PcxtkYw7ICU1QDjGIlmKyy8Vqp1197QeTlLzPu3joSHjvM?=
- =?us-ascii?Q?FYTzf2ngn/UtD18iOp7IdriA8FJ7+oqHtC5IO7jq80JBkxAWAIZs8+ghjR9f?=
- =?us-ascii?Q?1jRafcG/a1s3DeXATGBT20pN+OGfkI6SD4fAeyMZNMfoEigkDAmteQ57A9KN?=
- =?us-ascii?Q?a3Tq4io1sE1DY41hJEmYuztdXKgRysOwZikv7fHfV+tV6R1VxEzCzera8r2H?=
- =?us-ascii?Q?QqKptgFCkxhb+6sGX/mK2cedwOnStCpN5UhsPOJaPVgiOO0Gd9ewFnQ9Py9E?=
- =?us-ascii?Q?at5Vm2VOX6b6VDqP5+pOlKif540Gx/MHRtTt2BrhQyNQtv0XkIeZegXeZxmw?=
- =?us-ascii?Q?ciy4DU1ETTrH8AoUsrxAfnqE/jHS4GdpZA6+15gnU51o+yFs2qzvBgZW7H67?=
- =?us-ascii?Q?MCwPld59p2HCTBnVVRbAqJ2R3g+s4GhT2aPqeaeV9ez5Cw4o4VZACb1KTEG6?=
- =?us-ascii?Q?9kkyz1jvcSk3NKBSIx1RUeqF7hreiArZmyDmUnd0fIce0WFCh1toPeoRjeCp?=
- =?us-ascii?Q?ybNCmZ32Iqj4JRJK3uMl59ONNupK30WMsa0a4g3YSGV8HOvyY9uCK1Mo0l53?=
- =?us-ascii?Q?lumVPh7bVzw8nx8ojcXuf+ZPgEFq5cDwTswt/3mwAocNiCEOb4gnhsqbq/Jd?=
- =?us-ascii?Q?WxiIXy8Synv2Y42A6Pq/mQ86QayYi4qRa3aXN5vsC0VDRLfybgWN?=
+	=?us-ascii?Q?zuYG3y4V66ofEUhjEyS5Hhnw7a8Pl2eLoU9HJiRsWYsV06xh0qwkiVQcg8QA?=
+ =?us-ascii?Q?W7ziXGvyMGVmXbtX6PY3m/c3lL1W3UUAIJB0r4J/PoONbzs7RC2WhGkoV1RQ?=
+ =?us-ascii?Q?GiIRccAWBY4xQMNr0A921+slp9a90KQGZRyGmtKn+pjY6bLF9vvd4MGf6bWD?=
+ =?us-ascii?Q?jXTDXT/iCtU/9zD46lsBQKBolB4RekOda7Cji+rmX51yDaPJngTbwJsCJJMm?=
+ =?us-ascii?Q?AZgPxOKTpR5GrWHRod0jktQyVgaW5BOF0W2VRAfX14pETm0gJd/7E3bFAS49?=
+ =?us-ascii?Q?XhBzS/srgACokjWkTaWUaxNyT572fqg/ttSNg4nF+FzalELWFpbni0G0yWaq?=
+ =?us-ascii?Q?YQ4sWNDg0ztXLYmEETOW/Oeu+y1XOSIxDg2oM4hfj+lNTyWjrDCWGY09jXN2?=
+ =?us-ascii?Q?XsoUpImL7uAfyb3zdysN1scj7xYzPAAvu3VTBAozVpntBF1pOxb7XSKYlGYL?=
+ =?us-ascii?Q?2E6XCDu5AGXuveGWWNUyUKMEIpmqJKzzgeyG08jNrL3iS08OYW4mZhmOCMio?=
+ =?us-ascii?Q?XmgcjXqfJcWWhlm7InJli3aHtTrrxH9+Kv1wuKDvg1U035zHBoL9NQttYwy8?=
+ =?us-ascii?Q?Z2qHPZ+UkB/4rlOmNdkDEnKzF5eA7vZflnmo0pG5VjNg+DjABKk4unFbgKm0?=
+ =?us-ascii?Q?T7XrUUXI56wXQVjXdS+F9HkO+xd4/xEXJB/i4Bl0VQRIPVYsRBZIolSpHg/V?=
+ =?us-ascii?Q?20pJCsuqxKzmunoc4U4wXK53xaAyNAUbJCU/JtAEb+DwUs963SGx4mFU1I4C?=
+ =?us-ascii?Q?ibMedAP2zYPlkU8Q8UtS647ce48+eBzGsjxQJFROANNkSlna9uIHri9WpELz?=
+ =?us-ascii?Q?B+u1n9oGQr/ysNhLvCqu/B7xoMm/MkqbeCv7s3RVbsEP9dPKo2mMDUqKGQiA?=
+ =?us-ascii?Q?RaB6xRLiFJav3XSTMETFai2jP28k6UHiW9HyjzFQECtqWqcwoK2ENXaX4/dP?=
+ =?us-ascii?Q?SpLJPFhgdInbYv6D8+w1TzBugDxNgWxWsWid2w1PSl/kS7tOcX5HJrkrYzTw?=
+ =?us-ascii?Q?32vxNTjKWzqFQWP9e6QmKtjlahHDHZdKJYNNW2uZjMDFLFNoli0kU83ujx8B?=
+ =?us-ascii?Q?4K8OlDw8cRAgpaDFVrGx1YQ0NCByYzg77HE5YJlFGn1YgoCoQs2DA/pdtEPN?=
+ =?us-ascii?Q?BNo0HfhOAbmiBG/aqoIfvyRM/kEUbP+YZlMV4aR10n/soVRhURujkw17WKC6?=
+ =?us-ascii?Q?XOCuPoJPcQvfixGb9QkrFHrv0XS7uO6iZSlRiDVUYYpQ2G4ytCB4Hpw4OD+V?=
+ =?us-ascii?Q?A5CH3SLXV+h6lhr/tkOyoo2z4nHssTUM2vyIiFhV4iHAMxdIvUYD5mYqUqbo?=
+ =?us-ascii?Q?7Kn+GBl6PTuUwKOXdnLgNdftA5dGumua0PdClvyGtBZ/JPFTA0ZdcGY04KoS?=
+ =?us-ascii?Q?wc2UCzdF0mxaxt48hIdh0SPm96G5wze6OVX6gm80fJ/L2M7JJXz0pF85iQI+?=
+ =?us-ascii?Q?Od1fBkSsRnQzqWH+GQDd99FYpAvwktyO+FdfjG27zo6T1tOdM0u916xUpcwg?=
+ =?us-ascii?Q?h8xXlNr5c6C+3neON/tJKfDpiigVswGKHkWjtfIAIzv2wjertE7E2kzB8mKC?=
+ =?us-ascii?Q?esWrdLVKrDiBNXMqD3B/HD51E5jkJbUiKvv0Hbw0pM2xn2YPzo85TJx4YQJd?=
+ =?us-ascii?Q?NLzKG+ZcKeIqeTVIl8NnIb2pklSMgIWnOZVqtEqHe+Y1v6ndnQ/RzqTh0Ppq?=
+ =?us-ascii?Q?L1EbUD485oicr5S3a2NAUWtlXlWt9OYHTAqNYrKCqm4HgJWaQMNt9GeTijol?=
+ =?us-ascii?Q?ruSsO50iavoa5OziqwzgsIMfkiVBrWh6TYGTejLXtpjV2OqWnGb2?=
 X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: c768dfdd-d03b-4df3-8980-08def6ffacc4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e6b7f58-577b-4154-1721-08def6ffadba
 X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 16:51:50.9276
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 16:51:52.5401
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6pHpxvSRiDWwOw2h+5R7vGrB9WKKpAW62GeTeAKvScQ77zMCiIfWRLSP264SmZOUNLVMdYIXZy091PTvyGZmiw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: yXOrC/YZoISkfsg8WtTnL+RXePh5uepa7KSFvqg73r1RaUV7CP3d2OIYIYfKNpXyXdNv8jJkHUVpL1JC/g/QJA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7P286MB6729
 
-A direct-DMA ring can be deeper than the existing queue pools, and each
-slot needs DMA-visible completion storage.
+A direct-DMA sender needs the peer's RX buffer addresses, but reading a
+peer-owned ring would add a non-posted PCIe round trip to the TX path.
 
-Allocate the completion arrays with the QP and size its software entries
-for the larger ring. Expose the RX queue depth so clients can post
-enough buffers.
+Have the receiver map posted buffers and write each address and length
+into the sender's local publication ring. Keep each mapping until its
+completion is consumed, then unmap it before invoking the client
+callback.
 
 Signed-off-by: Koichiro Den <den@valinux.co.jp>
 ---
- drivers/net/ntb_netdev.c      |  4 +-
- drivers/ntb/ntb_transport.c   | 78 +++++++++++++++++++++++++++++++++--
- include/linux/ntb_transport.h |  1 +
- 3 files changed, 78 insertions(+), 5 deletions(-)
+ drivers/ntb/ntb_transport.c | 219 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 219 insertions(+)
 
-diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
-index c3a6ba96fc8a..62c5a5c1dfed 100644
---- a/drivers/net/ntb_netdev.c
-+++ b/drivers/net/ntb_netdev.c
-@@ -47,7 +47,6 @@ struct ntb_netdev {
- };
- 
- #define	NTB_TX_TIMEOUT_MS	1000
--#define	NTB_RXQ_SIZE		100
- 
- static void ntb_netdev_update_carrier(struct ntb_netdev *dev)
- {
-@@ -82,10 +81,11 @@ static void ntb_netdev_queue_rx_drain(struct ntb_netdev_queue *queue)
- static int ntb_netdev_queue_rx_fill(struct net_device *ndev,
- 				    struct ntb_netdev_queue *queue)
- {
-+	unsigned int rxq_size = ntb_transport_rx_queue_size(queue->qp);
- 	struct sk_buff *skb;
- 	int rc, i;
- 
--	for (i = 0; i < NTB_RXQ_SIZE; i++) {
-+	for (i = 0; i < rxq_size; i++) {
- 		skb = netdev_alloc_skb(ndev, ndev->mtu + ETH_HLEN);
- 		if (!skb)
- 			return -ENOMEM;
 diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index 6051d8abfc0d..67044d0ea0ff 100644
+index ca08cb690311..152400feb6d6 100644
 --- a/drivers/ntb/ntb_transport.c
 +++ b/drivers/ntb/ntb_transport.c
-@@ -139,6 +139,8 @@ struct ntb_queue_entry {
- 	int errors;
- 	unsigned int tx_index;
- 	unsigned int rx_index;
-+	dma_addr_t direct_dma_addr;
-+	dma_addr_t direct_cpl_addr;
- 
- 	struct ntb_transport_qp *qp;
- 	union {
-@@ -193,6 +195,8 @@ struct ntb_transport_qp {
- 	struct ntb_direct_shared *direct_shared;
- 	struct ntb_direct_shared __iomem *peer_direct_shared;
+@@ -206,6 +206,11 @@ struct ntb_transport_qp {
  	unsigned int direct_ring_entries;
-+	u32 *direct_rx_cpl;
-+	dma_addr_t direct_rx_cpl_dma;
+ 	/* Serialize direct session, TX ring, and RX publication state. */
+ 	spinlock_t direct_lock;
++	/*
++	 * rxc_db_work owns the direct RX queue and counters while active; teardown
++	 * accesses them only after cancel_work_sync().
++	 */
++	struct list_head direct_rx_q;
+ 	u32 *direct_rx_cpl;
+ 	dma_addr_t direct_rx_cpl_dma;
  	u32 *direct_tx_cpl;
- 	dma_addr_t direct_tx_cpl_dma;
- 	u32 direct_rx_prod;
-@@ -506,6 +510,23 @@ static bool ntb_direct_layout(struct ntb_transport_ctx *nt)
+@@ -224,6 +229,7 @@ struct ntb_transport_qp {
+ 	unsigned int rx_alloc_entry;
+ 	dma_cookie_t last_cookie;
+ 	struct work_struct rxc_db_work;
++	struct delayed_work direct_rx_retry;
+ 
+ 	void (*event_handler)(void *data, int status);
+ 	struct delayed_work link_work;
+@@ -524,6 +530,7 @@ static bool ntb_direct_layout(struct ntb_transport_ctx *nt)
  #define NTB_QP_DEF_NUM_ENTRIES	100
  #define NTB_LINK_DOWN_TIMEOUT	10
+ #define NTB_DIRECT_TEARDOWN_RETRY_INTERVAL_MS	10
++#define NTB_DIRECT_RX_RETRY_INTERVAL_MS	10
  
-+/**
-+ * ntb_transport_rx_queue_size - Query the RX queue depth
-+ * @qp: NTB transport layer queue to be queried
-+ *
-+ * Return: Number of RX buffers the client should allocate
-+ */
-+unsigned int ntb_transport_rx_queue_size(struct ntb_transport_qp *qp)
-+{
-+	if (!qp)
-+		return 0;
-+
-+	return qp->transport->direct_dma_dev ?
-+		max(NTB_QP_DEF_NUM_ENTRIES, qp->direct_ring_entries - 1) :
-+		NTB_QP_DEF_NUM_ENTRIES;
-+}
-+EXPORT_SYMBOL_GPL(ntb_transport_rx_queue_size);
-+
+ static bool ntb_direct_rx_mode(struct ntb_transport_qp *qp)
+ {
+@@ -764,6 +771,8 @@ unsigned int ntb_transport_rx_queue_size(struct ntb_transport_qp *qp)
+ EXPORT_SYMBOL_GPL(ntb_transport_rx_queue_size);
+ 
  static void ntb_transport_rxc_db(struct work_struct *work);
++static void ntb_direct_rx_retry_work(struct work_struct *work);
++static void ntb_direct_rx_reclaim(struct ntb_transport_qp *qp);
  static const struct ntb_ctx_ops ntb_transport_ops;
  static struct ntb_client ntb_transport_client;
-@@ -1179,6 +1200,10 @@ static void ntb_qp_link_context_reset(struct ntb_transport_qp *qp)
- 	qp->tx_err_no_buf = 0;
- 	qp->tx_memcpy = 0;
- 	qp->tx_async = 0;
-+	qp->direct_rx_prod = 0;
-+	qp->direct_rx_cons = 0;
-+	qp->direct_tx_issue = 0;
-+	qp->direct_tx_cons = 0;
- }
+ static int ntb_async_tx_submit(struct ntb_transport_qp *qp,
+@@ -1447,6 +1456,15 @@ static void ntb_qp_link_context_reset(struct ntb_transport_qp *qp)
  
  static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
-@@ -2343,6 +2368,23 @@ static bool ntb_dma_filter_fn(struct dma_chan *chan, void *node)
- 	return dev_to_node(&chan->dev->device) == (int)(unsigned long)node;
+ {
++	if (ntb_direct_link_capable(qp)) {
++		qp->active = false;
++		cancel_delayed_work_sync(&qp->direct_rx_retry);
++		cancel_work_sync(&qp->rxc_db_work);
++		/* Catch a retry armed while draining RX work. */
++		cancel_delayed_work_sync(&qp->direct_rx_retry);
++		ntb_direct_rx_reclaim(qp);
++	}
++
+ 	ntb_qp_link_context_reset(qp);
+ 	if (qp->remote_rx_info)
+ 		qp->remote_rx_info->entry = qp->rx_max_entry - 1;
+@@ -1811,8 +1829,10 @@ static int ntb_transport_init_queue(struct ntb_transport_ctx *nt,
+ 	INIT_LIST_HEAD(&qp->rx_free_q);
+ 	INIT_LIST_HEAD(&qp->tx_free_q);
+ 	INIT_LIST_HEAD(&qp->tx_offl_q);
++	INIT_LIST_HEAD(&qp->direct_rx_q);
+ 
+ 	INIT_WORK(&qp->rxc_db_work, ntb_transport_rxc_db);
++	INIT_DELAYED_WORK(&qp->direct_rx_retry, ntb_direct_rx_retry_work);
+ 
+ 	return 0;
+ }
+@@ -2219,6 +2239,195 @@ static void ntb_async_rx(struct ntb_queue_entry *entry, void *offset)
+ 	qp->rx_memcpy++;
  }
  
-+static void ntb_direct_free_queue(struct ntb_transport_qp *qp)
++static bool ntb_direct_rx_enabled(struct ntb_transport_qp *qp)
 +{
-+	size_t cpl_size = array_size(qp->direct_ring_entries, sizeof(u32));
++	return READ_ONCE(qp->direct_state) == NTB_DIRECT_ACTIVE &&
++	       ntb_direct_rx_mode(qp);
++}
 +
-+	if (qp->direct_tx_cpl) {
-+		dma_free_coherent(dmaengine_get_dma_device(qp->direct_dma_chan),
-+				  cpl_size,
-+				  qp->direct_tx_cpl, qp->direct_tx_cpl_dma);
-+		qp->direct_tx_cpl = NULL;
++static bool ntb_direct_rx_can_complete(struct ntb_transport_qp *qp)
++{
++	enum ntb_direct_state state = READ_ONCE(qp->direct_state);
++
++	return (state == NTB_DIRECT_ACTIVE || state == NTB_DIRECT_QUIESCING) &&
++	       ntb_direct_rx_mode(qp);
++}
++
++static int ntb_direct_rx_publish(struct ntb_transport_qp *qp,
++				 struct ntb_queue_entry *entry)
++{
++	struct ntb_direct_pub __iomem *pub;
++	struct device *dma_dev;
++	dma_addr_t dma_addr;
++	u32 head, idx;
++	int rc = 0;
++
++	dma_dev = qp->transport->direct_dma_dev;
++	dma_addr = dma_map_single(dma_dev, entry->buf, entry->len,
++				  DMA_FROM_DEVICE);
++	if (dma_mapping_error(dma_dev, dma_addr))
++		return -EIO;
++
++	scoped_guard(spinlock_bh, &qp->direct_lock) {
++		if (!ntb_direct_rx_enabled(qp)) {
++			rc = -EOPNOTSUPP;
++			goto unmap;
++		}
++
++		head = qp->direct_rx_prod;
++		if (ntb_direct_ring_used(head, qp->direct_rx_cons) >=
++		    qp->direct_ring_entries - 1) {
++			rc = -ENOSPC;
++			goto unmap;
++		}
++
++		idx = ntb_direct_ring_idx(qp, head);
++		entry->direct_dma_addr = dma_addr;
++		list_add_tail(&entry->entry, &qp->direct_rx_q);
++
++		WRITE_ONCE(qp->direct_rx_cpl[idx], 0);
++		/* Publish the slot only after its completion target is clear. */
++		dma_wmb();
++		pub = &qp->peer_direct_shared->pub[idx];
++		iowrite32(lower_32_bits(dma_addr), &pub->addr_lo);
++		iowrite32(upper_32_bits(dma_addr), &pub->addr_hi);
++		iowrite32(entry->len, &pub->len);
++		iowrite32(head + 1, &qp->peer_direct_shared->pub_head);
++		WRITE_ONCE(qp->direct_rx_prod, head + 1);
 +	}
-+	if (qp->direct_rx_cpl) {
-+		dma_free_coherent(qp->transport->direct_dma_dev, cpl_size,
-+				  qp->direct_rx_cpl, qp->direct_rx_cpl_dma);
-+		qp->direct_rx_cpl = NULL;
++
++	return 0;
++
++unmap:
++	dma_unmap_single(dma_dev, dma_addr, entry->len, DMA_FROM_DEVICE);
++
++	return rc;
++}
++
++static void ntb_direct_rx_retry_work(struct work_struct *work)
++{
++	struct ntb_transport_qp *qp =
++		container_of(to_delayed_work(work), struct ntb_transport_qp,
++			     direct_rx_retry);
++
++	queue_work(system_dfl_wq, &qp->rxc_db_work);
++}
++
++static void ntb_direct_rx_replenish(struct ntb_transport_qp *qp)
++{
++	struct ntb_queue_entry *entry;
++	int rc;
++
++	while ((entry = ntb_list_rm(&qp->ntb_rx_q_lock, &qp->rx_pend_q))) {
++		rc = ntb_direct_rx_publish(qp, entry);
++		if (!rc)
++			continue;
++
++		ntb_list_add(&qp->ntb_rx_q_lock, &entry->entry,
++			     &qp->rx_pend_q);
++		if (rc == -EIO) {
++			dev_warn_ratelimited(&qp->ndev->pdev->dev,
++					     "qp %d: failed to map direct RX buffer; retrying\n",
++					     qp->qp_num);
++			/* Avoid hot-looping rxc_db_work on a persistent failure. */
++			mod_delayed_work(system_dfl_wq, &qp->direct_rx_retry,
++					 msecs_to_jiffies(NTB_DIRECT_RX_RETRY_INTERVAL_MS));
++		}
++		break;
 +	}
 +}
 +
- /**
-  * ntb_transport_create_queue - Create a new NTB transport layer queue
-  * @data: pointer for callback data
-@@ -2368,7 +2410,9 @@ ntb_transport_create_queue(void *data, struct device *client_dev,
- 	struct ntb_transport_qp *qp;
- 	u64 qp_bit;
- 	unsigned int free_queue;
-+	unsigned int tx_entries;
- 	dma_cap_mask_t dma_mask;
-+	size_t direct_cpl_size;
- 	int node;
- 	int i;
- 
-@@ -2415,6 +2459,28 @@ ntb_transport_create_queue(void *data, struct device *client_dev,
- 		qp->rx_dma_chan = NULL;
- 	}
- 
-+	if (nt->direct_dma_dev) {
-+		direct_cpl_size = array_size(qp->direct_ring_entries,
-+					     sizeof(*qp->direct_rx_cpl));
-+		qp->direct_rx_cpl =
-+			dma_alloc_coherent(nt->direct_dma_dev, direct_cpl_size,
-+					   &qp->direct_rx_cpl_dma, GFP_KERNEL);
-+		if (!qp->direct_rx_cpl)
-+			goto err1;
++static u32 ntb_direct_rx_completion_word(struct ntb_transport_qp *qp)
++{
++	u32 cons, prod, idx;
++
++	cons = READ_ONCE(qp->direct_rx_cons);
++	prod = READ_ONCE(qp->direct_rx_prod);
++	if (!ntb_direct_ring_used(prod, cons))
++		return 0;
++
++	idx = ntb_direct_ring_idx(qp, cons);
++	return READ_ONCE(qp->direct_rx_cpl[idx]);
++}
++
++static bool ntb_direct_rx_complete_one(struct ntb_transport_qp *qp)
++{
++	struct ntb_queue_entry *entry;
++	struct device *dma_dev;
++	void *cb_data;
++	bool notify;
++	int cb_len;
++	u32 word;
++
++	word = ntb_direct_rx_completion_word(qp);
++	if (!word)
++		return false;
++
++	entry = list_first_entry_or_null(&qp->direct_rx_q,
++					 struct ntb_queue_entry, entry);
++	if (WARN_ON_ONCE(!entry))
++		return false;
++
++	/* The completion DMA follows the payload on the same channel. */
++	dma_rmb();
++	list_del(&entry->entry);
++	WRITE_ONCE(qp->direct_rx_cons, READ_ONCE(qp->direct_rx_cons) + 1);
++
++	dma_dev = qp->transport->direct_dma_dev;
++	dma_unmap_single(dma_dev, entry->direct_dma_addr, entry->len,
++			 DMA_FROM_DEVICE);
++	cb_data = entry->cb_data;
++
++	if (word == NTB_DIRECT_CPL_ERROR) {
++		cb_len = -EIO;
++	} else if (word > INT_MAX || word > entry->len) {
++		qp->rx_err_oflow++;
++		cb_len = -EIO;
++	} else {
++		qp->rx_bytes += word;
++		qp->rx_pkts++;
++		cb_len = word;
 +	}
 +
-+	if (qp->direct_dma_chan) {
-+		direct_cpl_size = array_size(qp->direct_ring_entries,
-+					     sizeof(*qp->direct_tx_cpl));
++	notify = qp->client_ready && qp->rx_handler;
++	if (notify)
++		ntb_list_add(&qp->ntb_rx_q_lock, &entry->entry, &qp->rx_free_q);
++	else
++		ntb_list_add(&qp->ntb_rx_q_lock, &entry->entry, &qp->rx_pend_q);
 +
-+		qp->direct_tx_cpl =
-+			dma_alloc_coherent(dmaengine_get_dma_device(qp->direct_dma_chan),
-+					   direct_cpl_size,
-+					   &qp->direct_tx_cpl_dma, GFP_KERNEL);
-+		if (!qp->direct_tx_cpl)
-+			goto err1;
++	if (notify)
++		qp->rx_handler(qp, qp->cb_data, cb_data, cb_len);
++
++	return true;
++}
++
++static void ntb_direct_rx_complete(struct ntb_transport_qp *qp)
++{
++	unsigned int count;
++
++	for (count = 0; count < qp->direct_ring_entries; count++)
++		if (!ntb_direct_rx_complete_one(qp))
++			break;
++}
++
++static void ntb_direct_rx_reclaim(struct ntb_transport_qp *qp)
++{
++	struct ntb_queue_entry *entry;
++	struct device *dma_dev;
++	LIST_HEAD(reclaim);
++
++	dma_dev = qp->transport->direct_dma_dev;
++	list_splice_init(&qp->direct_rx_q, &reclaim);
++
++	list_for_each_entry(entry, &reclaim, entry) {
++		dma_unmap_single(dma_dev, entry->direct_dma_addr, entry->len,
++				 DMA_FROM_DEVICE);
 +	}
 +
- 	qp->tx_mw_dma_addr = 0;
- 	if (qp->tx_dma_chan) {
- 		qp->tx_mw_dma_addr =
-@@ -2434,7 +2500,7 @@ ntb_transport_create_queue(void *data, struct device *client_dev,
- 	dev_dbg(&pdev->dev, "Using %s memcpy for RX\n",
- 		qp->rx_dma_chan ? "DMA" : "CPU");
- 
--	for (i = 0; i < NTB_QP_DEF_NUM_ENTRIES; i++) {
-+	for (i = 0; i < ntb_transport_rx_queue_size(qp); i++) {
- 		entry = kzalloc_node(sizeof(*entry), GFP_KERNEL, node);
- 		if (!entry)
- 			goto err1;
-@@ -2443,9 +2509,12 @@ ntb_transport_create_queue(void *data, struct device *client_dev,
- 		ntb_list_add(&qp->ntb_rx_q_lock, &entry->entry,
- 			     &qp->rx_free_q);
- 	}
--	qp->rx_alloc_entry = NTB_QP_DEF_NUM_ENTRIES;
-+	qp->rx_alloc_entry = i;
- 
--	for (i = 0; i < qp->tx_max_entry; i++) {
-+	tx_entries = qp->tx_max_entry;
-+	if (qp->direct_dma_chan)
-+		tx_entries = max(tx_entries, qp->direct_ring_entries - 1);
-+	for (i = 0; i < tx_entries; i++) {
- 		entry = kzalloc_node(sizeof(*entry), GFP_KERNEL, node);
- 		if (!entry)
- 			goto err2;
-@@ -2480,6 +2549,7 @@ ntb_transport_create_queue(void *data, struct device *client_dev,
- 	while ((entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q)))
- 		kfree(entry);
- err1:
-+	ntb_direct_free_queue(qp);
- 	qp->rx_alloc_entry = 0;
- 	while ((entry = ntb_list_rm(&qp->ntb_rx_q_lock, &qp->rx_free_q)))
- 		kfree(entry);
-@@ -2591,6 +2661,8 @@ void ntb_transport_free_queue(struct ntb_transport_qp *qp)
- 	while ((entry = ntb_list_rm(&qp->ntb_tx_offl_q_lock, &qp->tx_offl_q)))
- 		kfree(entry);
- 
-+	ntb_direct_free_queue(qp);
++	guard(spinlock_irqsave)(&qp->ntb_rx_q_lock);
++	list_splice_tail(&reclaim, &qp->rx_pend_q);
++}
 +
- 	qp->transport->qp_bitmap_free |= qp_bit;
+ static int ntb_process_rxc(struct ntb_transport_qp *qp)
+ {
+ 	struct ntb_payload_header *hdr;
+@@ -2304,6 +2513,12 @@ static void ntb_transport_rxc_db(struct work_struct *work)
+ 		ntb_direct_control_progress(qp);
+ 	if (!qp->active)
+ 		goto clear_db;
++	if (ntb_direct_rx_can_complete(qp)) {
++		ntb_direct_rx_complete(qp);
++		if (ntb_direct_rx_enabled(qp))
++			ntb_direct_rx_replenish(qp);
++		goto clear_db;
++	}
  
- 	dev_info(&pdev->dev, "NTB Transport QP %d freed\n", qp->qp_num);
-diff --git a/include/linux/ntb_transport.h b/include/linux/ntb_transport.h
-index 7243eb98a722..41ba7c51cf75 100644
---- a/include/linux/ntb_transport.h
-+++ b/include/linux/ntb_transport.h
-@@ -71,6 +71,7 @@ struct ntb_queue_handlers {
+ 	/* Limit the number of packets processed in a single interrupt to
+ 	 * provide fairness to others
+@@ -2886,11 +3101,15 @@ void ntb_transport_free_queue(struct ntb_transport_qp *qp)
+ 	qp_bit = BIT_ULL(qp->qp_num);
  
- unsigned char ntb_transport_qp_num(struct ntb_transport_qp *qp);
- unsigned int ntb_transport_max_size(struct ntb_transport_qp *qp);
-+unsigned int ntb_transport_rx_queue_size(struct ntb_transport_qp *qp);
- struct ntb_transport_qp *
- ntb_transport_create_queue(void *data, struct device *client_dev,
- 			   const struct ntb_queue_handlers *handlers);
+ 	ntb_db_set_mask(qp->ndev, qp_bit);
++	cancel_delayed_work_sync(&qp->direct_rx_retry);
+ 	cancel_work_sync(&qp->rxc_db_work);
++	/* Catch a retry armed while draining RX work. */
++	cancel_delayed_work_sync(&qp->direct_rx_retry);
+ 
+ 	/* Catch cleanup queued while draining RX processing. */
+ 	cancel_work_sync(&qp->link_cleanup);
+ 	cancel_delayed_work_sync(&qp->link_work);
++	ntb_direct_rx_reclaim(qp);
+ 	ntb_qp_link_context_reset(qp);
+ 
+ 	qp->cb_data = NULL;
 -- 
 2.51.0
 
