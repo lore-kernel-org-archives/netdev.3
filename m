@@ -1,63 +1,63 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EF43AEB29
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 13:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EF13E168A
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 13:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786369265; cv=none; b=Gs47rvBYimh7bbDx7zjiqNNUkp58wyKrtd4XK8FO9z+Yx7vtC/Icbhyn3ZfRJWDpggJ00BMBlyF8UPYs8nJujh9DWbGYPdwCA0JSR5V+dlXHgYeGEHNsGpR6FOhpMos8wtGbcaktBxhdPgcL5og0Ias1YxCVTyItMbUM6FbM+2Q=
+	t=1786369267; cv=none; b=jmTlH6R9IdSPKMyAZgdz60H8ex437kmiIu/e5ODlO1cZRdOxNRyWcWoaE2if6p4/e18qte+bgpcem7UG16pO60jLUXeGddACL23CNi7kBCE1WaF99AfrQRW+VTui0BR8s257gPVqKe0GqSpOXEH5hLlmhN8ZN4Xs6tCnkIwWr2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786369265; c=relaxed/simple;
-	bh=m53EkhQFEeVWYP+OkPDmqEJQ4fOSY+ZFOJarQope3ZQ=;
+	s=arc-20240116; t=1786369267; c=relaxed/simple;
+	bh=OR5SJbAjYqfNbWbLK/Xp9DBpEIRw6MZvXrZYmbjvOZs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H2079dDHj28Awd6i2IF+2XZFZR6nAV1QBFToSpPd9KL8GKs6ZNwuKmumRzmTW5u2poLH09dQaMa1x+Ba8VZf4dilDGjv3IrInphRneZZ+xahXAWdyT/oW2udig5K54g5NBBNaZ8wt9tExXvX0+wT3f0TZzcdYX2VepqkLyLplIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hUUIcsdO; arc=none smtp.client-ip=209.85.210.174
+	 MIME-Version; b=YICN0bLvreezQmLDz1fyCHMY7C2eC/vzUBN0q+2LMsw3hP0vgef0aL8Ed9kXfjEeZB+RRGSOF01s5/D1yZC7Xy+q3dLuDAp1VFRhDUobSMSmM1kmS5FitqiinKb0D1iwCOJSozbgtPPpyBWCBzks1DQAvWziwCuDGCBaGwtJ8LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nkgeGrME; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hUUIcsdO"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84867f07d63so2166115b3a.2
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:41:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nkgeGrME"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84847482584so1257003b3a.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:41:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786369263; x=1786974063; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786369266; x=1786974066; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rWtRbZHwwJKxr9m3CvsahX+FmG6nPUQO4TaHyIPdRr8=;
-        b=hUUIcsdO8n63I3MroaQ5IychCQiR9EfZj0Kq8Cyp3XKBszsMXOkvVVpAaHQSf2PX8Z
-         ZpYuxJPvQDy2lnM2GeTTvHNXnEsHUjAWzHsuTg0xP6choYgZ3AwzexC1iXFk+GeU/GqY
-         f9OqMM9AhvfgOnj2Ae/Ln8buaoIex2A5wVhZhDLohHInm7qMiRz7mYdyVq5IxjQBBDV5
-         fk9etYiJmRziMezg1T8GuS2oZDEfi8aRK6cP/wkk4LsnqN02e3yAQ1davXhTMjTDi3ue
-         OmHZCzsFOCyrNZPWxSZ6IKB0+9CzkxlkfoT0PTSzWLtJ88qhFxEjv1pwJCzNXKKUHNFA
-         w7/w==
+        bh=WBpRbjDpae64ONOAIzC7CQyuvwbiULpdksSC8EfBNlY=;
+        b=nkgeGrMED/BnADIseGgNwE9yKH7QWUbfP5ObzPqSkJ+/7xlEh194AXD7TRUE+WVR6P
+         OPDuhf/M4n/k+aWQcEKsp5H1F60SHbLG3fII4pf4yersSf3NIEvGNuDpmttSRofGb13y
+         y/wctwLotJomgvKjx7sECk9I43+P20XChjK81yucRep2NAu5pVqowHvZFMkMwWwnG+TL
+         fHa3J7/g77mZ/CUrNkPFzfL6Ky1lyIUjf56XfMOOk+Mb8BQBig5T5h2roEXjMJ9GTlOr
+         XKyg97mYhhC80Sl33kTyO2qT9i1WF6fQDZhBsXvAEpIxHaN+/IqLZ/xzk+cGErokDpzt
+         8/Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786369263; x=1786974063;
+        d=1e100.net; s=20251104; t=1786369266; x=1786974066;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rWtRbZHwwJKxr9m3CvsahX+FmG6nPUQO4TaHyIPdRr8=;
-        b=bwiDhDPhQCNleac/yjRHEDi1ac4GpZea/OrO5iikc3aK29smBZnHBwssrEyz6BspIk
-         87j5WgLkwLT/D3NkFhjfO3FYw6+RXUmnu2vJSbj4tvPoMIpRDHCAoTRjY18znf74ONhX
-         jeXeisSbZMrPcNCJY8f5VTRqO1P/6qqhQjKo9I2IpbIGDdUBYUvjdkZjCQkZru2bUlAJ
-         54qJpfGIz8WdFzSztmEusQJ0ITmKp9ZV+WnulzaiwdgMORSdzvZHHAhUbso8KP3zfBdX
-         80uUk9umYarvQ/2J63DgmUenYvnPzyMevBWtcn8gdULFBpTCZ1hV6MpDn4qv9ixK6GbB
-         5Vgg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro5ElbJVvWjnPgfN6HgiPKhK7v/GZCwj97Lfm4CZYULFfF9TpSj+czn0ydghXcthHf7wUqv64c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBf4eFkGZPl2QRakWyZ5zq3M7IorizXEjHn1mLKQQBXIm+WHAg
-	80VuTg4Ryi3N+pYtAwoC9tY3Q6a/v3g9XF8k22+fkG4xKlVXbWAWBd7G
-X-Gm-Gg: AR+sD13kUomHpOjYrRAU1BooFwxl5NDHUq9IzmPenKJ5mawcMsDfVwi1o4mCJSrD+xg
-	tebkQ6G9K3eEJK9CXzm+u1X4u6Wxx7ksuc+bdsy2ZpDwxrh79PzUDB+ZEZWOJQ+v20g8LUNVg/w
-	oz5u1RPd5PBOp4WqW6DyHUauJpgVz5RXh+JmDj047wk5EvjKmELJW/BUUKsC3hEubbDFpGYc3TK
-	n/ldvFdJySs52wFcd0MQCars8ga9lMpJoP/QY+UoeT8TEJqB0Bqc/BdffbW8bN2/01Q2lcXi/oG
-	sUfkplWtPRSXy8ZvtuEyWffaySFnb2SFSusS+qQlWSAgQVIOg5lpemIbXLguKi8W++0Ufn/Pf9j
-	RkHF5xkZcnpufZvS7R2s3rN9XooQx+wtrR+n/HJWtSOZyOPRCTanEjrm3oz5kOmNN2/SRBz+J2U
-	3SS8w3PlNM/7c9Vok+erYexS76d00Bb5dZPC8lzNCaH3ZaM1T1FKjdiGcp5dk=
-X-Received: by 2002:a05:6a00:4086:b0:847:b16b:46d9 with SMTP id d2e1a72fcca58-84f9c9983d1mr1774067b3a.34.1786369262252;
-        Mon, 10 Aug 2026 06:41:02 -0700 (PDT)
+        bh=WBpRbjDpae64ONOAIzC7CQyuvwbiULpdksSC8EfBNlY=;
+        b=IKObamgKsXXIeefVwGNSa5RcVObccZSFUewf88qqPVd91QKpwmaQB3whsaThgUOrmF
+         BeHTUP92j3/M+1UOb37Aw1lX9667o5s+AOQcYh4NJy1p2EFHTq8MQUMIto7vcFSiNWui
+         MH9pfrIHTuSmZ+/efX9Rj82hatr8YWZU14woQ91QyEbU3S8Pm8paM4smjFDuiD4Wgi3T
+         4tW2BWuoy+GUvFWmsJkbOCpztTEqVUzOFPxCGhViKIU8E2j4igCO4+Gmbag+l5y3w4Ca
+         RjiaNt9CngJo8cVsXShqK9tBDpsp7ZEbhSH2MGcVUcK7nNP07qYIweLEyTnHAE8ixP9x
+         ZOqA==
+X-Forwarded-Encrypted: i=1; AHgh+Rowuksi4RIvHEX0rqohNv+ZJDUz3uqYAfA8wRjCCBuzkF6uctKrpsX1UPMT+6pdMzNq3PWpRgQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2dvs7Fi6P1oCsIqWa8Hh6FXS1wylZVS6dfogi1p5rNUakWgdt
+	gqpf6MhA9lYKzczCtJPHa3RNcnV+7a+Z8wVPvvCeSN2V6cMA8JLYn+Zu
+X-Gm-Gg: AR+sD13vlcmPiEeabXjhK6XWbu+nsfyPokJMCewkZLKoMZ3TfkinwsV1wmintNrzKVv
+	0gPQDAoUnVMZ3Cz3PBA1bJOh4AtxZA9AlSuJsGTac4EcAIWgev/z/anWl576cfsjY67a8+QD5w2
+	wmgXu6pZdIuGWnGY5/miNr4y6aRDLZ2p0DnM/DptvkiAZn6ZHjhkZDfOVl3TVigf1z1W5K0ccyR
+	6x+d+bv8FppOCRJfqkbj/BglAcnxHoJahzCQzBrVDzWH5bRwcT+d704ePHwGbRY8tjvg3BxkQw5
+	GzclAovMtqbm87XIdT2lInCTE8rKbXA9+wADrVSty/JfCNUWhxNenOWwa70j90dOFIxTelIwlhb
+	I8poGq90/MJp1YUFmjmjFCcv9/NBgzEkoZb3RzFOEu0TN7K0WXrasL5Quu2TrzzMqNJClIE8iIW
+	82fEl9H7pn2wnigb2XBMqKgz7PDHAnhQvkODLE8JHJdtQovG6mHHfPTvD2yHz1RKIr6KIdmbY=
+X-Received: by 2002:a05:6a00:4b45:b0:84e:cd14:aeba with SMTP id d2e1a72fcca58-84f6b6f2e61mr17355422b3a.6.1786369265853;
+        Mon, 10 Aug 2026 06:41:05 -0700 (PDT)
 Received: from gmail.com ([123.118.75.63])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f5a51f166sm4006236b3a.35.2026.08.10.06.40.59
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f5a51f166sm4006236b3a.35.2026.08.10.06.41.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 06:41:01 -0700 (PDT)
+        Mon, 10 Aug 2026 06:41:05 -0700 (PDT)
 From: Jia Jia <physicalmtea@gmail.com>
 To: stefanha@redhat.com,
 	sgarzare@redhat.com,
@@ -68,9 +68,9 @@ Cc: eperezma@redhat.com,
 	virtualization@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/2] vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
-Date: Mon, 10 Aug 2026 21:40:17 +0800
-Message-Id: <20260810134018.143973-2-physicalmtea@gmail.com>
+Subject: [PATCH v3 2/2] vhost/vsock: keep IOTLB across feature updates
+Date: Mon, 10 Aug 2026 21:40:18 +0800
+Message-Id: <20260810134018.143973-3-physicalmtea@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260810134018.143973-1-physicalmtea@gmail.com>
 References: <20260810134018.143973-1-physicalmtea@gmail.com>
@@ -82,84 +82,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-vhost_vsock_set_features() leaves the device IOTLB attached when
-userspace clears VIRTIO_F_ACCESS_PLATFORM. Descriptors can therefore
-continue to use translations installed before the feature change,
-including HVAs made stale by a later memory table update.
+VHOST_SET_FEATURES is also used to update logging while a device is
+running. When ACCESS_PLATFORM stays enabled, allocating a new empty
+IOTLB on every call drops valid translations and forces avoidable
+misses.
 
-Detach the device IOTLB before acknowledging a feature mask without
-ACCESS_PLATFORM. Serialize each virtqueue handoff with its own mutex
-while clearing its IOTLB pointer, resetting its metadata cache, and
-updating its acknowledged features. Keep the old IOTLB alive until all
-virtqueues have dropped their references, then free it.
+Initialize the device IOTLB only when one does not already exist.
 
-Also drop queued IOTLB miss messages and wake readers now that the
-device no longer accepts IOTLB updates.
-
-Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Jia Jia <physicalmtea@gmail.com>
 ---
- drivers/vhost/vsock.c | 39 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ drivers/vhost/vsock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 9aaab6bb8061..7372c22691de 100644
+index 7372c22691de..1beae7f5b9a9 100644
 --- a/drivers/vhost/vsock.c
 +++ b/drivers/vhost/vsock.c
-@@ -851,6 +851,30 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vsock, u64 guest_cid)
- 	return 0;
- }
- 
-+/* Caller must hold the device mutex. */
-+static void vhost_vsock_clear_iotlb(struct vhost_vsock *vsock, u64 features)
-+{
-+	struct vhost_iotlb *iotlb;
-+	struct vhost_virtqueue *vq;
-+	int i;
-+
-+	iotlb = vsock->dev.iotlb;
-+	vsock->dev.iotlb = NULL;
-+
-+	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
-+		mutex_lock(&vsock->vqs[i].mutex);
-+		vq = &vsock->vqs[i];
-+		vq->iotlb = NULL;
-+		memset(vq->meta_iotlb, 0, sizeof(vq->meta_iotlb));
-+		vq->acked_features = features;
-+		mutex_unlock(&vsock->vqs[i].mutex);
-+	}
-+
-+	vhost_clear_msg(&vsock->dev);
-+	vhost_iotlb_free(iotlb);
-+	wake_up_interruptible_poll(&vsock->dev.wait, EPOLLIN | EPOLLRDNORM);
-+}
-+
- static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
- {
- 	struct vhost_virtqueue *vq;
-@@ -872,11 +896,16 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
- 
- 	vsock->seqpacket_allow = features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET);
- 
--	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
--		vq = &vsock->vqs[i];
--		mutex_lock(&vq->mutex);
--		vq->acked_features = features;
--		mutex_unlock(&vq->mutex);
-+	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
-+	    vsock->dev.iotlb) {
-+		vhost_vsock_clear_iotlb(vsock, features);
-+	} else {
-+		for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
-+			vq = &vsock->vqs[i];
-+			mutex_lock(&vq->mutex);
-+			vq->acked_features = features;
-+			mutex_unlock(&vq->mutex);
-+		}
+@@ -889,7 +889,8 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
+ 		goto err;
  	}
- 	mutex_unlock(&vsock->dev.mutex);
- 	return 0;
+ 
+-	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
++	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
++	    !vsock->dev.iotlb) {
+ 		if (vhost_init_device_iotlb(&vsock->dev))
+ 			goto err;
+ 	}
 -- 
 2.34.1
 
