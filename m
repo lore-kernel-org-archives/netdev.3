@@ -1,114 +1,124 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F8442E8CF
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 17:09:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786381779; cv=pass; b=ip3T/e8A2a5ofKYzOSsIfv4hgyOwh6rTxw1j4viqNYKiFkrrtLSeIq+uCZvKEuCWhVpjE6PK9a5jVynZOmpNyub4eqBEw4DHJjginKIT/CrxtFmaBDlv4C0+Esp/E0iqkzu8c7GAgtOc/Z7nRL7PxthR1jlhMAqXGIfIRgQW+NY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786381779; c=relaxed/simple;
-	bh=s+j5d61c3OSpvPdkGdTdwVzk8U68zaEBU5tnTm+IZgo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lzpPoC1uHuSX0J+pXf7PUje3yQVK5hn23Evu7+A5xTKkRQrzUd86fNCMOWgxLKa8/ikIp7bLrfFB9itX+RRp/b4Jc9+fyd7qj7M9hz5DyP1ICCfC7TQFtPyLEUoskkQRQvIGUuxMdHWXkcu535L8r7xwknyV0iqTl+wxOFFODs8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ViL9b3Xf; arc=pass smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348F7411A07
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 17:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786381844; cv=none; b=sbbFW4qGXBnfEMmTc5fcUFS+0xItaDsV/xWN6sz+a0DlpuwYBZHZHuOqWfczBPR66StkvH6AVKKtj+9Cg4qTpenpjH4IWCsCFL1u6h7m+YIOLah1uX1ba9+xMua+dZ+XNZs2b4S33buCXoM38IFHhFWk1sCPEUT6J88oTY+GKOU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786381844; c=relaxed/simple;
+	bh=u/03OJopUWpYIZLPOmNno1ZcdLO9Vd/Dsn+H/2t7RQE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nQy9WEb/0aIuMsSvoM3qZe2tD0+m5bddErHdXl7wbU+7I5DdSvUgGRr3nOXQsODgVoPJyxY8eUPCui/0G/swodUTIEy7d+67cciqRaApgvd1IzQMf4CCzspwGlLazvkt1c/uMlMPcT9TxdKKOJfQ+fW5/8HVRFUTFcRXgK///5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q6S4imYx; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ViL9b3Xf"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c15a5b265so6851cf.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:09:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786381773; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IWzuxCC5u1XFp9wpJEOxNjEj9kwNx82VDLxWjDk/Bv4u/yGhIK1JrpMxhaFiUu6ntl
-         yYiO2rmeDxebuVKrAblfxaw/qOONvh//z/KXXqNVZuVMl+1WlshoDc1Q4YX/zB+X1MQw
-         9UhJf03NO2iZ7L+Jnpm99K9DnmOumq5sdAghfNzw13CSuM9svbWzOKmEMKDSr6xarv2R
-         fxFnFFE+zXO3WF0iNR2DidtDTXkwRf9xDNsSntm0FbU+tul7cI2zEiK32E+zkELgUqNP
-         +dx0QXNUL1P4qCEk062WQPUfvNFc3JvZorsZWHLrDgnNHF9cUecZGXryfPymR5eOjaus
-         Yz9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=s+j5d61c3OSpvPdkGdTdwVzk8U68zaEBU5tnTm+IZgo=;
-        fh=1nRns9m6p7aXVf5OLDi7C5nYgCtewnNxfeAb1yj4TuQ=;
-        b=o22wyHU8zAryIriSdJuEFP/TYGYpgNWf+kMz6d94utThiR5wkIgtfCZqLbrMayymd7
-         jXATWO/Jy9yX1MCiSRPjVabtjVpPAyOip2a6IBwYs9KuAk/OmlpEBjGJVs8rhRWsSfhE
-         N4vQZuhSEcmMmJsREJlNxbDQrwQeyjlPC1q25hqq5FMG2aI92+rqYYKi1qXGld84LYP4
-         GweGiXAYtZ3+esj5/eRoUl0hJbCIf7waOqK1VQkU2n0EIfq0IADrWCKrD/ZtIF0DzqDD
-         066KSdNj4bLmhjIPsHMkNGFNQ2CrclhupABmRUk2At231WF+bI5BeQETFUa9qvusgzyD
-         sn+g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q6S4imYx"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-ca88130e09aso1505853a12.3
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:10:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786381773; x=1786986573; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=s+j5d61c3OSpvPdkGdTdwVzk8U68zaEBU5tnTm+IZgo=;
-        b=ViL9b3XfYcw4YD8wsCLWdJrRRXFp2CdoC3W/KqXrArk7t1s20DyAIWnVKwsgz2m3ZV
-         Qnm0d5IU7+1Cad2zPyaaJHaraidzdwvL+QihLTCtOKUCO6M2co8RSyz0ITGJHJKbiNOK
-         jqYTCZC+sXVAnGXGk1U0xmFfRtTBD+sTwNRTUdg9w6vOJFgHe98FEOYQjrniTjvIqc3E
-         6vfFaMQZfKpcQoP5HXfY7b/qpquaAeC2ciEmSHLbF89WHL5ZkDBhdpV0yEp9upARQWYT
-         XXrZB5LRrFNNvZevBsfmSjWBS1rA/A0k26/J89mV+nhiFmXvBD40Y9cD3eea8eMIhLfh
-         5ZlQ==
+        d=gmail.com; s=20251104; t=1786381842; x=1786986642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YwnNatVO8vJ44aB8viIABkdP11ZOZYuCLz8W0eTqLj8=;
+        b=q6S4imYxecYXPy0FJL4W3KSm+8av5+fn0PVSFfVyzYCVJmwTzBYw4G5/wDwoWzb1ih
+         itCau3a3cXtEF3ZY5tumQ4Newo+el8aoBZRcx4RhjH7RjBu2yS95BN2jprLL33s4B/1p
+         GvyDxKXRekVMA3ZduVtM1Zv+WOC60HzxqCRxhTOuBgAC06TH748ES684lyA2hTPt3d+h
+         7UvoUfY8XfXZIOpYCWZbkuo1L+Mg/kiEN8blBdnDzmdXIP7odARNIVBlgSP+EJdBPAc1
+         MnXDeevSmmxaim5RUbn9KksqeI8tB0hSOEjfrkiWD44WqriolUptR98CG+nKAbQ+Puxb
+         DgPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786381773; x=1786986573;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=s+j5d61c3OSpvPdkGdTdwVzk8U68zaEBU5tnTm+IZgo=;
-        b=UrfvX5sUVHrDlaltArt40XNaU2Y9r5B4bGMHXD/XiL/WSowDO4xexG8eoTeh0XkLoJ
-         gjnUwXf4KmNBagRBIfQ3IKVCmbKyg5cMGvMMxKla4GoZyb378AIKDDMppvTAc+IsqjWU
-         Gwi0kelihIQN8lStoNmBxvKoS2LUEgy/1xUV2P2l+NBn1cnouaQAwqKgk+YbDJoS/Q2+
-         5vX49V6ih0MxG+ZUQKiC30jk6WoHAWeDzHk8dMv/8snP0ul9c1KuW7qgm8HDecn88gk/
-         IMZYPBraAl/LWnBNkXdOtwIAlN7LbgIj+sXJ8RBkGFFh9GXWf5l7iqgCkS2xHVXYcaGz
-         N3sA==
-X-Forwarded-Encrypted: i=1; AHgh+RrjLVacSJEUIMXiuTDTmVkD/O/tLV5O3/zmrORqstsBJbnmn3788N1ba0nyAP1WlsFTD7jIB6c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbQ8llKL2SIedtMLuYAmoIGhu5gjcqIzFV8ZRbbW5JZY4Ut9B/
-	T0tyE+r6XFaQJeQ1rt1HV2IzSeIXT9bBv6i8DmvjAqp7aOdp4g4wV/RxpmyyiWsREHyexsDBKIq
-	pqfyPnwJswWbTgTH6BxZ248t8nGsvoHKd+fXqG7AA
-X-Gm-Gg: AR+sD11XEUlLTo2Td12fO3CT37doHoMzyX0/KlbgZTUdDzS6D1gZwmjLTooZG5d4wGV
-	xVMwpe6Ubxiyv+qOdEkSph5H+Ju5srvkPdLGRS/F572+gY5/m1Xjs3RbEaFvhDne7uzG+U62ToI
-	ai607YfZbbZ4aD10uvO34W0pngIcoOCFtidoFc8AObGiDIlIPoXtI1LgffXBLfGtwV3OMFHD+OQ
-	jP5o6eFpHjbwpF3jqzSp2qbdjF3K7YFsHLC1Qv9Ga/Gq+T5FSpViFsY166pPAwLA8Fbe32yR4+J
-	V1YpRjs4Mehs3F25pXBdhAtTF+t1WazzkT6trLxHNW8=
-X-Received: by 2002:ac8:7e91:0:b0:50e:5eba:cadd with SMTP id
- d75a77b69052e-52d51123088mr435601cf.2.1786381772424; Mon, 10 Aug 2026
- 10:09:32 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786381842; x=1786986642;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YwnNatVO8vJ44aB8viIABkdP11ZOZYuCLz8W0eTqLj8=;
+        b=f0OLK5PkEJcZh47PhRAkwYdGjQsest0Qg2+Y6JelUuCw7qaqNWLNgnx7llqpy9bCCb
+         SUbG8ffoYyoUyBJBWuUFP2q6gWGwDfmfXuEMSe/to2m1sciWHTj/Alr9fkJShJhLu/Rt
+         bE529t8BMwOfgYnbh6ttbGVB0A+v7Q1+0fQvaIEIAMrQBRj/9mfwzavxZ4oHXiv0Os9u
+         UZVvUef0VPuqy2PnZaDlrUvGdr4KUXthJ/j1mTV3K5Gk0L+Kvm6v0r3Uof7nuvQ2c0eL
+         rzlqpiU1RaspMmMlK1VqZW7GO+yaPCV3aXD3DAqrg1czQ9i1g3limow8LUhEYB0V66II
+         /llg==
+X-Forwarded-Encrypted: i=1; AHgh+Rqg5NU1sLHkET3oNcE2tGpYL+YpnlI4x/6ePHgu6C1fNmACDwwbxhPitrMVKFimDmWkySmcWkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbxYDJnXQXqpX4dPqsI7Y/dod4dZ/VNnAkOhQwtTtC+kBZE2QN
+	x0vW4+NLdFTl5XKm9GSaoKsRZxrmXzxmfLHGYSvXcx7orUk45e0J8u0M
+X-Gm-Gg: AR+sD138ekNmXtBfTM/DdddNi7ZB8ZcOW7H3TSKziq/IuvPpWQp8IzCymD18boUZO+7
+	yC5g9tolE1ArTD39/O5O2KVi7eumVggJ61jnkBskz3MXxEXiLRuLM3W1qlutpo+Rx2u2abGIOqO
+	1um2zJDahG56FiqHVviuruMsj1MTwHsyL9ljdII4VvRgqRHqLkDhiCEeptxKpfqXvbgWP5jCq6P
+	iwBz2ueQzlnJv4kyyiskKBoucNMoQQZS/ZD1YrLl6iZpy1GQsD/VkEXjshgUR6EHJalSyL0H9u2
+	SGnx+IZ8dcAUEQbATvKem+GsK8AH0zd29r10HndOjArg9i354MMQ+I13usUK4atxhHoQfmk1VEO
+	RyutlPzjPJkOw7WhPyMOH6an2f0518TaGS7cfg/EnM8ewaOKrQhMGOZF/q/gU2vBjiF7jVFrxxc
+	pvk8db3qlZVrhDof2nLrMEcE666e3lF42N2GbyuQCEQznkuK8UqA1/t2sQ8QA02A==
+X-Received: by 2002:a05:6a20:6a05:b0:3c4:3112:3b with SMTP id adf61e73a8af0-3cb85e771acmr47912530637.18.1786381842462;
+        Mon, 10 Aug 2026 10:10:42 -0700 (PDT)
+Received: from phi.nguyendp ([116.86.160.247])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1410199cf49sm37194663c88.3.2026.08.10.10.10.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 10:10:41 -0700 (PDT)
+From: Nguyen Dinh Phi <phind.uet@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andy King <acking@vmware.com>,
+	Dmitry Torokhov <dtor@vmware.com>,
+	George Zhang <georgezhang@vmware.com>
+Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/3]  vsock: fix stale sk_err handling after a failed connect
+Date: Tue, 11 Aug 2026 01:09:29 +0800
+Message-ID: <20260810170935.2242314-1-phind.uet@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806200548.3124802-1-surenb@google.com> <20260806200548.3124802-6-surenb@google.com>
- <anbaJuYXEoldvtPn@casper.infradead.org> <CAJuCfpHh1E34LVTd=4y8m+2ugGABc3MSU2Z5N4pFY4ttH0a5Rw@mail.gmail.com>
- <13c444ae-9da6-4fbc-be98-f107fc3bd0bb@intel.com>
-In-Reply-To: <13c444ae-9da6-4fbc-be98-f107fc3bd0bb@intel.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 10 Aug 2026 10:09:21 -0700
-X-Gm-Features: AUfX_mwx6ocz62ooVQSWbPu7_NupWXDrDYExCS9WPkUtwBsAoq_oeAqr4fQySK8
-Message-ID: <CAJuCfpFkyGrN7173CDhZZ01+qovRqW0K=SEz+wNJHZm9Ha2Dtw@mail.gmail.com>
-Subject: Re: [PATCH v4 5/5] tcp: Remove mmap_lock fallback path
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, 
-	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
-	david@kernel.org, shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
-	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org, syzbot@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 10, 2026 at 8:26=E2=80=AFAM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> On 8/8/26 17:51, Suren Baghdasaryan wrote:
-> > Ack. Will fix. It's obvious that I took over someone else's patch, isn'=
-t it? =F0=9F=99=82
->
-> BTW, Suren, thanks again for taking over the series!
+A socket whose connect() failed keeps sk_err set. If that socket is
+later reused as a listener, vsock_accept() rejects an unrelated
+incoming connection, and on virtio/hyperv the resulting child socket
+is leaked.
 
-My pleasure! Thanks for starting this cleanup!
+Patch 1 removes the listener's sk_err check from vsock_accept(), since
+no vsock transport ever sets sk_err on a TCP_LISTEN socket. This will
+fix what the syzbot reported.
+
+Patch 2 removes vsock_sock.rejected, now unreachable after patch 1.
+
+Patch 3 is a related but separate fix: vsock_connect() now consumes
+sk_err via sock_error() once it has been returned to userspace, so a
+failed blocking connect() doesn't keep reporting the same error a
+second time.
+
+---
+Changes in v5:
+- Split into a series
+- Remove the now-unused rejected flag from vsock_sock
+v4: https://lore.kernel.org/netdev/20260804135238.386417-1-phind.uet@gmail.com/
+- Remove sk_err checks from vsock_accept()
+v3: https://lore.kernel.org/netdev/20260730081843.287563-1-phind.uet@gmail.com/
+- Fix truncated title and add annotations to reproducer steps.
+v2: https://lore.kernel.org/netdev/20260727071305.45826-1-phind.uet@gmail.com/
+- Add reproducer steps to commit message.
+v1: https://lore.kernel.org/netdev/20260719220103.684489-1-phind.uet@gmail.com/
+
+Nguyen Dinh Phi (3):
+  vsock: don't check the listener's sk_err in vsock_accept()
+  vsock: remove the now-unused rejected flag
+  vsock: use sock_error() to consume sk_err after a failed connect
+
+ include/net/af_vsock.h   |  5 +---
+ net/vmw_vsock/af_vsock.c | 62 +++++++++++++---------------------------
+ 2 files changed, 21 insertions(+), 46 deletions(-)
+
+-- 
+2.53.0
+
