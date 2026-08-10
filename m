@@ -1,196 +1,139 @@
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013003.outbound.protection.outlook.com [40.107.159.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0D73CB561
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 13:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BD937F8DD;
+	Mon, 10 Aug 2026 13:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.3
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786367375; cv=pass; b=EcegpcXaK6uLN8CFckXOakUShKyEkIeX/5nUEbYSf1Yv9b95c2Fn+uTT7RDXVJE/v98wGjzXt1OONkj2ukSuRDY+XW+phFXXyEfRzyJY1oWFWQhSKnpRbMj2Tqn4PaI7ykympMBjivHhNGasPJR/jBVjkOJ0KeeL1Y2Xta6QdTo=
+	t=1786367447; cv=fail; b=FsbD7Lq61Wy6SW1g1Lcgsfeb6WsISxAMOPmo8vORc+tNnltp4DBlBPxcx/KhPf8pmdbShCfPEzB/K+30cfBTh1yIt4OqQvnGUqQ32KY+1GNv6ZtdabNH3NxsVIQk5kJlMxYZA7qRE662y3d5KD6dCdFpNEQZtSxMiCicDwS+CAI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786367375; c=relaxed/simple;
-	bh=/OsoJ6WFMuNprCL2My0grk6w6fmGF77nobg7rrCwVqE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ud97TqJ+aHJjOMsKqsjac4RnNTtksfxsyg4W1L35Y2o/g0IA94oPLBR2u3TQpZpAbCe5OcJQdYfb/y23MLExX6CSQaloVGePARdhHXt6IHj5RkZBNwTEP3pHujJN6NuwBuWdG7FxDs6siGg2oZP5/iqv3YRgnBIsjO4mtFA4GqY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L6DnQ0Lz; arc=pass smtp.client-ip=209.85.217.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786367447; c=relaxed/simple;
+	bh=upoOLoV438gjxxBLAx6QM2c4thxAVYdbpUyGQRmOa6E=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k0E3H74oIwUrrOYcwtCFkb9cBH7n31BkHKNN50tha4zrx8pIHYRLR2cvny/Id3ktLOKarFaUDZKcDRuXIYBmtNgi1YWYdpAhpLrZyV0L3EcAj/xy7236u3WjpWQNLN2BLJf7XQkzXZ4io90Z6QNuVIq3h6PDWxbrSZn9Y5WlWTo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=P4ZGzk2P; arc=fail smtp.client-ip=40.107.159.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L6DnQ0Lz"
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-7389cff36bdso203345137.1
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:09:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786367371; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cZ+AsRk0bl7c7QP6taagc3cKLYDbfk14oI+W3mP2RfGjnxtxCQOus/KQHUbKvmUxNW
-         4OB1yv7q8RonUDwJ+wRdAAvgfDvOxISpzRF6T+U6+qpxdKtZq/YF3TaYeviDe1/pmtT5
-         Dj8dYgHGmVxEOV1ZcwF4Cq5zFMaucgGkTrj5+3i96eBOR6+4gHX9DMnKURq8S7QC9D51
-         WBrdYQcTGmn0wUnymVL8Ijpwd8aL08mOKO6T4RBYhsjUkhkdXrxiJAMT6kexfNbYsr/Q
-         9o+ckO2SKTI+Bh43fF/i/itUnJP+4zNWubDLLrW1VaRrwH3JpIltT/qQnvsEN/gjiu8l
-         Tk6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NHKwQBIE8Wzfaah998DNpv9XkkL4runk8ryU+O/Sfu0=;
-        fh=4kekgCMt2n5dxDFk13/mMP6y8UzUbhkcjnRCQHlfi6M=;
-        b=aEXfZloxqPpujPYG+GRo7wN7uJDAk1eSKCBL3wzioIBaXAeVzPiSzsFeAdZjXI4py0
-         IDTAHOrpCi0XaoVJU27pq3FoJdmIdQqvZDEz625qTnWEKNpMb1cMUo5kgvA6D9a0F/jC
-         drTuHfpKsAgtLCUDIW3AayX8PWnoDwhG6q8XZ8RV3k9KaQ/HQVkxEh8mG9Bi0qvdbqFk
-         bd5peIfcE6NC0BtxlJ+2/cC/73+VveSwvsLfsu1upbvZS34jSai1o0kXouMNfJ60sIHG
-         4q8lLP+BgXAlyd1hf0j0OYOY++QUyYffobUMMOZDP/KrqxoQ1NvvLyu80xVgItqPRVjr
-         0pBQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786367371; x=1786972171; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NHKwQBIE8Wzfaah998DNpv9XkkL4runk8ryU+O/Sfu0=;
-        b=L6DnQ0LzA47xitcNNBNQLWHnYPE19sdz1coiB3IPO/kpJ26H9gBu4G9AZ7fiL6XjDE
-         AAzhV7AzPcmm07tYax+nxgWDisgvw/2RPlXmp3NHlPhohLxZvPKDtxxFSxL8on2WFyWk
-         HqWfBZZEaH9uOM4WnOKc6jhK8JKhf+iz2Q+cj3isgriqdlHWE3KFEDvpiH7/Jt/pDtC8
-         k1s8us28Z0vjE5xFRDx1CcrORzfoepNf1JBHaB22jKwvDobhO2sr81fGA6ef+scx15OG
-         TJWMs47plcfp+gnGGL737PS/rf/o1BiqqqEr4f/QFDoVrxNSGIbeLVLwMHtTpCbEnP8p
-         UOfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786367371; x=1786972171;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NHKwQBIE8Wzfaah998DNpv9XkkL4runk8ryU+O/Sfu0=;
-        b=jlBgzB2rQb0oZkZvJZ2joIwSSAOxTUIzXveLETVwaE2UXL26JDGfJo6kfkrpnMELih
-         +HtLPjtue/r6D7yE8Esm7GPlSUFHbR9tqcq+TBmdVggw4KsvXoNZbsAs+V3Dviwurpsg
-         8LjMew3iIOOSCt5OlBQpFHi6Bl2sJ8/gn7S1ptgAqCq3rCHMHxfjDRbtHD9nwWyvVHJV
-         KhaLhnuNP4B3Q85/3kzjyind0EVikiipEK3Skc/kXOUuneDZ13gYJrmp4S3JO/vVxTM1
-         zmxoN9DRO+tEp5ObOs4jOIIGzEKAyaVbAhj8OXB4pAmevYpIpuoBldFNPnjupxhIyFE/
-         E2KQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+hb7RdsegKblLuRNVenZGmOGTvYeMp7Qiny9qF7zk36qJsAPFEqDFbk3dhN0GupLZzJnuE78=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyH+HItmvAZ2hzVBHk+iH3nIV2zuos71JsNrLJU8QArdCgT/na3
-	qwFEsjNugosyH9rfZs6IjkQbpiZhofBZVwD0A5VwdGMXtrDhnhQ26RaHcu2iybJbUL6YtbJ1beb
-	wBgPheyEqCSoYovkXmTWye3/Ko8Eiric=
-X-Gm-Gg: AR+sD11U8pUO3qetR8yGS4CWfqK3Yz9XhcZzqLRRe0etbb4xq3CVhM8TATAtrH694tV
-	jDwvyODbH/ObO+1S+Nenv2JcMEX/7RaNDe5z5uvHubwkEZz5n8SDvCb1ZkqUpholU3VMZbhNLj6
-	OXCHi9osw65GFI14b5dql0g/9mmS7OTBg3xvEFWxQcAEZVrPCveq1ugniVwu860OtFEy5M9lmKW
-	YzDknjSRIuNmD6B6YUCZfThiIAbaC954IkRZY13kmgZ1HQKGPX6onLMHobYIhV7R6FxdUGttZpk
-	3+f0EC2BikolrfFCXDO0fuB4lxMLFWRzdJ+ocWc51d1cOSdNLmszyRNxVxnqXBClt64kJqTPAzf
-	/rzEPdypVRWOc+juE7mPS+EevF7ZWe6nvogYRuzyjqJkjHQ==
-X-Received: by 2002:a05:6102:f84:b0:73a:128b:ea07 with SMTP id
- ada2fe7eead31-760e8f3a718mr10041605137.14.1786367371255; Mon, 10 Aug 2026
- 06:09:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="P4ZGzk2P"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yeilD4qhEwJkU2yxiYfz3qMLCLGImIgXTS0Rfw3yngs0CTy5NKFyeLWenNynb9A3Vv9ntVwWCngzWOrf+ufDMeQkyDc4kbtdFLiAWGDrkEMqEVVx7bY9AlvWjwJpI1GvcidOvEAIZU7xmoF2mqytvosJP4jP1NIxKO8jta8Oumx2amg9ZJfqZdlRvL1hjErGS4aiMoBl69A08g/VnB9Lur2uXM8+1nyILwQoJ3Uo6+DKxdewB3p0r+wX/EWOlwdSTHyFWGJ//e1/ZqwgbgpfCJjYoSvVmvhyTRmWmXfYr59yDAWzALBF9eGe6/sbptD5hoZhiWxm1bji4+hdozh1oQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fztU8m3MhYy8ptCoILS5OqZgo/t0IA++3B4AcS4zWN0=;
+ b=SIg9fDYBPtOmGbnzPCD+avLBHZ/qUsvRqsLt/plm8i/RzpHGpRipefSIq1ceoJOe8hPP5IyrcKe4PUIvcCbmLheibxuZKprpfxsvfz286jK5w1MgY2PS5Wvrf5Sn6Zk0BYyw0WeNoBkUBNMFVmIVwuH0+AfTqhW4Q+kNEIgDWGa25tPwNlo0+pQXlH7/kHc1wU3CIfQUuuJ6PQk98IGyPP3nphFK9H+YIxIUwUvh6gvTNJEk0zGbQUYcLcbTtAvMrhQe1hpOeTSS9e1Qyri9ZtMuLj8sKZA7is2c1pXJU4+8AP+kjoqhcHd37PG2112XwlAAQ3YK3G28fAJbK2IUKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.60) smtp.rcpttodomain=lunn.ch smtp.mailfrom=foss.st.com; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fztU8m3MhYy8ptCoILS5OqZgo/t0IA++3B4AcS4zWN0=;
+ b=P4ZGzk2PTQV1vnc0FXNK12cczLhY/KPkd+9gMU+A3iavN5EGRQsrKQapw1EIDYqvs0ZhuD+h7kcfpc2nMXTwVnqQ+eb8Zjf3x1HejwHVvAaz4jgf/177AD9JsIkw0DxajaljvSYCUubR6gq2kJfrReLUzbVeI+PP7GGJBeq/anShl3uWAGhNz41EEVq37oLXrXYTWYYgodSM4zWxWb+ZdELjhIrxec3XDPpMO9BYx4sMA/96aoHdxzGwpxtzNE3cJ78FGgiQSjEJaLxt5EUMUuqc3FxFwynqNHatgwLP+Uj7BnWZsuGwRh/Rd+jSBAF/SBkHmdUguuvNdLz6z33Jow==
+Received: from AS9PR05CA0093.eurprd05.prod.outlook.com (2603:10a6:20b:498::18)
+ by AS5PR10MB8269.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:67e::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
+ 2026 13:10:42 +0000
+Received: from AM2PEPF0001C716.eurprd05.prod.outlook.com
+ (2603:10a6:20b:498:cafe::79) by AS9PR05CA0093.outlook.office365.com
+ (2603:10a6:20b:498::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.25 via Frontend Transport; Mon,
+ 10 Aug 2026 13:10:42 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.60)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.60 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.60; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.60) by
+ AM2PEPF0001C716.mail.protection.outlook.com (10.167.16.186) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.6 via Frontend Transport; Mon, 10 Aug 2026 13:10:42 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpO365.st.com
+ (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Mon, 10 Aug
+ 2026 15:15:36 +0200
+Received: from localhost (10.48.87.235) by STKDAG1NODE2.st.com (10.75.128.133)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Mon, 10 Aug
+ 2026 15:10:41 +0200
+From: Christophe Roullier <christophe.roullier@foss.st.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>, <linusw@kernel.org>,
+	<antonio.borneo@foss.st.com>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Christophe Roullier <christophe.roullier@foss.st.com>
+CC: <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/3] arm64: dts: st: add 3v3 regulator to ethernet on stm32mp235f-dk
+Date: Mon, 10 Aug 2026 15:10:30 +0200
+Message-ID: <20260810131032.455435-2-christophe.roullier@foss.st.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260810131032.455435-1-christophe.roullier@foss.st.com>
+References: <20260810131032.455435-1-christophe.roullier@foss.st.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260809043806.2768302-1-yangyx22@mails.tsinghua.edu.cn>
-In-Reply-To: <20260809043806.2768302-1-yangyx22@mails.tsinghua.edu.cn>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 10 Aug 2026 09:09:15 -0400
-X-Gm-Features: AUfX_mzsbeYdYkOlQZHCVgoV17rwfrw_tCfsBSPvbAc2yHIWo94HLmGEcrDrukY
-Message-ID: <CADvbK_cv+Wkb5r-8_sGnKsuA5tfErvLoiPZYVN=yXALbWfBOGw@mail.gmail.com>
-Subject: Re: [PATCH net v3] sctp: fix use-after-free of cached ASCONF chunk
-To: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>, Ao Wang <wangao@seu.edu.cn>, 
-	Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>, 
-	yyxroy22@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM2PEPF0001C716:EE_|AS5PR10MB8269:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71e7ccb7-1ebf-4682-60ca-08def6e0c846
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|82310400026|36860700016|921020|56012099006|10067099003|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	YwkPw26VLv9z2XTH1VgkP9o2gFkDAIOAROuWEFG9cUFMggxwEwiA0FypSx/0+Sbvu9/Ggal5RM+r/L3qkU/z+4Xub7L5LFCIZlOQP4UWoAN/ESScERrHQljab8h5sPBOtyY/rxZstBzyGg+BVoyuTZSFh3sB4R/7plU1TQOt9D1zBAZNly/I5z/kR+4vYmJnaAYzkoilhzN9pSfqzrKKvq9alR1lWeYjLxzCKmbh0dZsumL03CuNI/ORzzmFcSD1bU8JeHay3Oy4UKhgBRJ/oPXSxM8Jj+mTTryxFia79eW4xsIXOk8FtDNND7osoxdGY70t4r71ntsRz1v4ApX0ZsiU0CHsFJTHg7qj4KhMfEBOU7E41w8R48+E/Ch1j5h0DX8b2N4j9KscDq2gmN4zvg3gjUg0QOMZ7mZV9dpyfVzQtuaFGhHHxr0QVUQD6sUrAMS1xYMYMDghY/djpS2L3ZeGzJsKsDIDQ8ly66yKgIKwiuYulkD7wO/hx18fvRxiRh0I4doCXoNhAYqgKnp09M3BeY4HkqSyB7amURbuvjsZg8aM84JnPuaIKsfXCyT/0GI3luKGq2gTkDS4e1HtzpeGcSG4o4+QOWHquWnpkHT7MdxvlDWTR7JaYN0JNIaP+yeSq1+YwJgoD43Jow9vpqUhDqy5bvHzVosKipphr/tQRjZ0pfidy/EQZupsswwmMQKzQ5bcrg0F1inJ+pZuvRipnZLZtwUnMQjMCIqiJeD1XSjj40v008wzXvtachFo
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(82310400026)(36860700016)(921020)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	hqAiCk3HgliolMbU98KfBliMRC3RX6tqeFGI/PEHPdDkkbTkL60TrHVzTNqdcqThcLUmPQmNFU3lbL7i3akBLu7C5XOJHMkkWJwqLvpnYC7mSZ3FxFQRTVCBkw87pyuPaE2lxzCSk4wpJnysV2FyY7PBYBVSyCeQn7b83oEll87PoDKdDxhGqq5J1PG4wt1kXuF2dqFE4AVPzbWPJ38pecDNP8VW+g9Rkbw9q7/xJ/13JW/ZWq3BfMwYc8gMo/iJXzICT+kpGc+6rVJ03hwPNnLxZgfCQ0hquVy9X9kEijyp+MdOblm+N4XpmdwlLO+CUWclu6RZoN9u3GrFuDwocVRyPcXnywdhP59cTBUA9Xyz48+3GEK5I4ljht5Ff1RsgimSXJIIwtogeeEQhVIjQjti7TT2EPVTFIV8jHBeuJ+5PsytVrIiY1RTPbxrgvik
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 13:10:42.5284
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71e7ccb7-1ebf-4682-60ca-08def6e0c846
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM2PEPF0001C716.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR10MB8269
 
-On Sun, Aug 9, 2026 at 12:38=E2=80=AFAM Yuxiang Yang
-<yangyx22@mails.tsinghua.edu.cn> wrote:
->
-> addip_last_asconf caches the outstanding outbound ASCONF chunk. The norma=
-l
-> ASCONF-ACK completion path releases the chunk and clears the pointer.
->
-> However, sctp_asconf_queue_teardown() releases the cached chunk without
-> clearing addip_last_asconf. During peer restart handling,
-> sctp_sf_do_dupcook_a() queues SCTP_CMD_PURGE_ASCONF_QUEUE, which invokes
-> sctp_asconf_queue_teardown() while the association remains alive and leav=
-es
-> the pointer dangling.
->
-> A delayed authenticated ASCONF-ACK can then reach sctp_sf_do_asconf_ack()=
-,
-> which accesses the stale chunk and passes it to sctp_process_asconf_ack()=
-,
-> causing a use-after-free and a second release.
->
-> Clearing the pointer exposes a race with T4 expiry. Peer restart handling
-> queues the timer stop before the purge, but SCTP_CMD_TIMER_STOP uses
-> timer_delete(), which does not wait for a callback already running on
-> another CPU. Such a callback can reach sctp_sf_t4_timer_expire() after
-> the purge and dereference NULL.
->
-> Clear addip_last_asconf after releasing the cached chunk, and make
-> sctp_sf_t4_timer_expire() consume a stale T4 expiry if no outstanding
-> ASCONF remains.
->
-> Fixes: a000c01e60e4 ("sctp: stop pending timers and purge queues when pee=
-r restart asoc")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Xin Long <lucien.xin@gmail.com>
-> Assisted-by: Claude-Code:GLM-5.2
-> Signed-off-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-> ---
-> Changes in v3:
-> - Resend as a new, independent thread as requested by pv-bot. No code
->   changes.
-> - Link to v2:
->   https://lore.kernel.org/netdev/20260808005748.1981039-1-yangyx22@mails.=
-tsinghua.edu.cn/
->
-> Changes in v2:
-> - Guard sctp_sf_t4_timer_expire() against a cleared cached ASCONF pointer=
-,
->   as requested by Xin Long.
-> - Explain why the T4 callback may run after the restart purge.
->
->  net/sctp/associola.c    | 4 +++-
->  net/sctp/sm_statefuns.c | 6 +++++-
->  2 files changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-> index 5b0ae61..737f8ea 100644
-> --- a/net/sctp/associola.c
-> +++ b/net/sctp/associola.c
-> @@ -1713,6 +1713,8 @@ void sctp_asconf_queue_teardown(struct sctp_associa=
-tion *asoc)
->         sctp_assoc_free_asconf_queue(asoc);
->
->         /* Free any cached ASCONF chunk. */
-> -       if (asoc->addip_last_asconf)
-> +       if (asoc->addip_last_asconf) {
->                 sctp_chunk_free(asoc->addip_last_asconf);
-> +               asoc->addip_last_asconf =3D NULL;
-> +       }
->  }
-> diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-> index 708fa07..3a8e16b 100644
-> --- a/net/sctp/sm_statefuns.c
-> +++ b/net/sctp/sm_statefuns.c
-> @@ -6145,8 +6145,12 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
->                                         struct sctp_cmd_seq *commands)
->  {
->         struct sctp_chunk *chunk =3D asoc->addip_last_asconf;
-> -       struct sctp_transport *transport =3D chunk->transport;
-> +       struct sctp_transport *transport;
-> +
-> +       if (!chunk)
-> +               return SCTP_DISPOSITION_CONSUME;
->
-> +       transport =3D chunk->transport;
->         SCTP_INC_STATS(net, SCTP_MIB_T4_RTO_EXPIREDS);
->
->         /* ADDIP 4.1 B1) Increment the error counters and perform path fa=
-ilure
-> --
-> 2.25.1
->
+The Ethernet PHY is supplied by 3v3 PMIC regulator, add it to Ethernet
+node.
 
-Acked-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Christophe Roullier <christophe.roullier@foss.st.com>
+---
+ arch/arm64/boot/dts/st/stm32mp235f-dk.dts | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/boot/dts/st/stm32mp235f-dk.dts b/arch/arm64/boot/dts/st/stm32mp235f-dk.dts
+index dd4efbe5a46e..fb49cd2da2c6 100644
+--- a/arch/arm64/boot/dts/st/stm32mp235f-dk.dts
++++ b/arch/arm64/boot/dts/st/stm32mp235f-dk.dts
+@@ -137,6 +137,7 @@ &ethernet1 {
+ 	pinctrl-names = "default", "sleep";
+ 	phy-handle = <&phy1_eth1>;
+ 	phy-mode = "rgmii-id";
++	phy-supply = <&scmi_v3v3>;
+ 	status = "okay";
+ 
+ 	mdio {
+-- 
+2.43.0
+
