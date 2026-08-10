@@ -1,100 +1,126 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4743D9DBD;
-	Mon, 10 Aug 2026 12:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86BA3DAABB;
+	Mon, 10 Aug 2026 12:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786365990; cv=none; b=Wl7RT3e9vkoqmZyXIwxqMRshVQe+gjZ6fwMQgIh44ZZiSD3f5NwyYuHacdMe4L7sf20NHmpC+nq8zdzs0fEjGAnhjWxGBHOECp1sdbZpO0L5+fORKVxbqX8wl+/Lnb16kzKX9WzeukrnVUOJ0L1/E+dtFgCf8CmyLWhp/7/f6S4=
+	t=1786366150; cv=none; b=QtedG+G0aYZiHm3facM+s7yW2sypWl2qbY9ASrtZ/EKBupm0oHtq9GO/6oNfdADMXq1CGY+GsWiaQ8eS3k8jKUpAvOHIgWtzT1CklskTTVwARyb4tw5NgBNPvLBmkJk0HIUJOCp0VIBBKWlnq1NuVcbFG/fmJumrsHVS19oJB4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786365990; c=relaxed/simple;
-	bh=hKXYGb7dCfWITqy4vCn2RRePI+KZ1rbbveIGIpJ4K9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fQ7x+3ESsw6Xrtzk2/4NdukgIa+vmat23la6dCgfjKNa7Agps23oSS2UYxn20/f/u8VTWJxVF++qI2dFnZnwNOKwEdHbGyvY1+78e9Va/JGP7iHusPqP6TJcP/JalSEwNW9I2A6syYqv5Kl2nXOn3d6KuYEavfs5M1MXJY+CDk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EbpetKcW; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1786366150; c=relaxed/simple;
+	bh=CIDEHp8pZ8V4yvdoIPqxN4OATMI4JpS4FDXSzD6SSiw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t0cYP9G5wJCfVGWCwv1nHJP3At2ct0Kl0E9L+BYluHw6Bo2eS23ZJDitYLleVhHsq1XsX9EH7IKKhQQB1LPrZ8W7mz8CvDUzYW1QtLeK0kgM6P+mGdCWmiXqoHosB1i/mgsANwq4grWzUF64W8uwRIjLPw8lKG+UgoLDS8mK9Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=kD14nDfU; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EbpetKcW"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id F162E4E41198;
-	Mon, 10 Aug 2026 12:46:25 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C68616033B;
-	Mon, 10 Aug 2026 12:46:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2AA2011C4A55B;
-	Mon, 10 Aug 2026 14:46:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786365984; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=GXXe5YdkhDgbxuhV28Geck2k2s7V8UKykgkin4EBB6E=;
-	b=EbpetKcW2MXX8NMz9aj2C2k/3mtHC5/lCQ2v4KUjJtQk79BzYdIwTgwLrJJcvu2RYYfSB0
-	jw+Oht7404jFgj6s1bvwvvKYslAVcR7HjT73YGwMCuo4wtEAdrlrFuj/K6o+CPpO/doi6E
-	GhfF4gTHlI7ONPCXeRde+wcKfsVc21hlRHZZJVdEy3MK1xqbOAWlocOo7ewAN5+c+bGhNa
-	XE4B7ANs7Fu59Se752vv4IzsYWdWAO3KODwhcb9yjC2fENEfNFKe8rT1SGTTX2IrfW4Z75
-	+Ao9NWz/P6Wagm59HGpHJbLMpjZYG4qXgA1X/jpUzFpzMIunNTFS3slCWO0Scg==
-Date: Mon, 10 Aug 2026 14:46:21 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Daniel Golle <daniel@makrotopia.org>,
- =?UTF-8?B?QmrDuHJu?= Mork <bjorn@mork.no>, Sander Vanheule
- <sander@svanheule.net>
-Subject: Re: [PATCH net-next v12 2/4] net: pse-pd: add Realtek PSE MCU core
-Message-ID: <20260810144621.23c14dce@kmaincent-XPS-13-7390>
-In-Reply-To: <20260809112251.5797-3-jelonek.jonas@gmail.com>
-References: <20260809112251.5797-1-jelonek.jonas@gmail.com>
-	<20260809112251.5797-3-jelonek.jonas@gmail.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="kD14nDfU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=kPqgsopBsOGoIwjvTqVnsk5MAA/fpSIVwqcFNthrXfg=; b=kD14nDfUTypLiKPVAwSCNo7BNW
+	dwSzLJEhGZMPP0mmECCfDMHtqcxk/WDwBOCybC1nqU8uPT372v0NUWxcv3PyKWCAIkKjBx4PRAvnC
+	sxevWjGfsVpHhNwFk4C17/mO7grKJzDNMDh2hGVk+OH91VnSZ/HpgfX6FMXeuOcJYpItY4PhX4wcf
+	zjD4+xWBNRdnlR0eK0EtIudmVUBIQzDaIbU+HGt2EsvAsEsOitDEJxNXVM3nG9a/S3uG2srNQCf8b
+	zstnzAk7a/cE65jF+uDnLKInLNHDSy51mdVR2yiFLdNBzPOilbHpxwj3jKgOE21UPu5pZiP4yYCxc
+	8UiUbUtw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtPR4-002lDD-0l;
+	Mon, 10 Aug 2026 12:48:58 +0000
+Date: Mon, 10 Aug 2026 05:48:53 -0700
+From: Breno Leitao <leitao@debian.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 1/2] ipv4: mcast: getsockopt: do not overwrite past
+ optlen
+Message-ID: <anm9gImFEz6EkUZ9@gmail.com>
+References: <20260806-mcast_fix-v1-0-bed0a5518e57@debian.org>
+ <20260806-mcast_fix-v1-1-bed0a5518e57@debian.org>
+ <20260807174402.2dfc12d6@pumpkin>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260807174402.2dfc12d6@pumpkin>
+X-Debian-User: leitao
 
-On Sun,  9 Aug 2026 11:22:48 +0000
-Jonas Jelonek <jelonek.jonas@gmail.com> wrote:
+Hello David,
 
-> A range of managed Realtek-based PoE switches use a small microcontroller
-> on the PCB to front the actual PSE silicon. The host CPU talks to that
-> MCU over I2C/SMBus or UART using a fixed 12-byte request/response
-> protocol with a trailing checksum; the PSE chips are managed by the MCU
-> and are not accessed directly. Two generations of the protocol exist -
-> both Realtek's - diverging in opcode numbering and a few response
-> layouts; the driver handles this with a per-dialect opcode table and
-> parser hooks for the responses that differ, selected by the compatible.
-> The specific PSE chip behind the MCU is detected at runtime and only
-> influences per-chip constants (power scaling and the per-port cap).
->=20
-> This core module implements the protocol, message framing, the dialect
-> machinery and the pse_controller_ops glue, and exports a registration
-> helper for transport modules. The I2C and UART transports that drive it
-> follow in the next patches; the core (PSE_REALTEK_MCU) is selected
-> automatically by those transports and is not user-selectable on its own.
->=20
-> The realtek-pse-mcu-* files and PSE_REALTEK_MCU* symbols match the
-> realtek,pse-mcu-* compatibles (see the binding for the naming rationale).
-> The two protocol generations - gen1 on older Broadcom-PSE boards, gen2 on
-> Realtek's own PSE silicon - are both Realtek's, handled by the same shared
-> core, each selecting its dialect via the compatible.
->=20
-> Power budgeting is left to the MCU firmware; the driver advertises
-> PSE_BUDGET_EVAL_STRAT_DYNAMIC accordingly.
+On Fri, Aug 07, 2026 at 05:44:02PM +0100, David Laight wrote:
+> On Thu, 06 Aug 2026 02:42:00 -0700
+> Breno Leitao <leitao@debian.org> wrote:
+> 
+> > getsockopt(MCAST_MSFILTER) can write past the end of the buffer the caller
+> > declared.
+> > 
+> > This is because the copy_to_user() does not respect the optlen, and can
+> > write over the allocated buffer, overwriting userspace undesired
+> > memory
+> 
+> Nak. This is just the way it is defined.
+> The application provides a length that is just the header.
+> As you noted the header contains details of the real buffer.
+> 
+> There are quite a few sockopt like it, you have to support them.
+> There may be some where the length isn't checked and is just assumed
+> to be the right size - they have to continue to work as well.
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Thanks for the review.
 
-Thank you!
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+The generic getsockopt(2) contract says otherwise.
+
+      For getsockopt(), optlen is a value-result argument, initially
+      containing the size of the buffer pointed to by optval, and modified
+      on return to indicate the actual size of the value returned.
+
+You are saying that we have userspace program in the wild that doesn't honour
+the contract above, right?
+
+On the set side (setsockopt) of the same option takes the opposite view.
+It rejects calls if optlen is not properly set.
+
+	err = -EINVAL;
+	if (GROUP_FILTER_SIZE(gsf->gf_numsrc) > optlen)
+		goto out_free_gsf;
+
+Back to getsockopt(2), I was trying to look for users it, and glibc
+passes the full length for both options, with optlen and numsrc coming
+from the same variable:
+
+      /* sysdeps/unix/sysv/linux/getsourcefilter.c */
+      socklen_t needed = GROUP_FILTER_SIZE(*numsrc);
+      gf->gf_numsrc = *numsrc;
+      result = __getsockopt (s, sol, MCAST_MSFILTER, gf, &needed);
+
+and
+
+      /* sysdeps/unix/sysv/linux/getipv4sourcefilter.c */
+      socklen_t needed = IP_MSFILTER_SIZE (*numsrc);
+      imsf->imsf_numsrc = *numsrc;
+      int result = __getsockopt (s, SOL_IP, IP_MSFILTER, imsf, &needed);
+
+So the clamp is a no-op for every caller that goes through libc. 
+
+So my conclusion is that this is a bug: setsockopt and glibc both treat optlen
+as the buffer size, and I could not find anything relying on the get side not
+doing so.
+
+If you know of a caller that does, I will drop the series - I would rather
+look at it than assume it exists and assume that it will break someone that is
+leveraging a buggy behavior.
+
+Thanks,
+--breno
