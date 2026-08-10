@@ -1,145 +1,297 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012006.outbound.protection.outlook.com [52.101.53.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FEB39BFEC
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786357747; cv=none; b=UfdG6yLYR+ltZgKSQ1+20O/27Girc7ka98T0oSab7vg7Ed1PmE+UX3JDS0SohJN6V2uyR3w+0NEfA6y177jc1tphuDvVpN1AWbl7rDHF3IbJp0LX15MrUqEK55CmfEGi3/kNGrp4wJs3r9bzpNcIx3Bus704cegwoitagMWCFHM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786357747; c=relaxed/simple;
-	bh=lABGybqrOfA/5F7rLlcKuLSPW3KayZdePUYNTXr1NxY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OXiadCs+9o5jTLLXjOW9Dk9j5D3I0xabOoUiIyGbqu047LADRWo3aUXf2y6tn5VmDm6aeuuziYyM+zHUIreP/fhR/7Gy9cx2+1sSTBKoRAHvfBJoeKOGMwtZYboT9tb+nQ2cr8oD5MOgYHL5oFkN74X6vTZD/8UX9jLBu/289Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EF2s0QrM; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3473B27E7;
+	Mon, 10 Aug 2026 10:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786358016; cv=fail; b=tsVyivvgB9Kdn9kaGxpqzfakFwCX97VS0sfhJuzRqGfJusPYmXnE/4MHxIDE/3tKiexJrZNSy2on7SpEgLuj5SyGnQKjyLqMHhAPxQiLHNUnFR/zxdzKzOEH75yPB+renSk3l9pb/RsJFQE9vgm70inwG/YwiUicGbJDuJ7R0gM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786358016; c=relaxed/simple;
+	bh=nsiPpD2WMvdgGZyngEHAtcnT6cnKNym29ujA5rN2rmw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Dc/MDY8wnQ3wY1UrzPl/7uImlAPuYGuCdxMjEVdVuyUgldX0+2d/oyWHcy1XIHlQbEnSCx4ZFPC2+oKj1q5dIWJp/YMrCmKia14TIDuvcif6pWQDBI1UvDWaK1XQ8QjXBLVfXuZDpYJ0HaCjuW4P56Q3YZI6IlP6SSTiPSBmv5g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UwXf8Dys; arc=fail smtp.client-ip=52.101.53.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EF2s0QrM"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so15285725e9.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 03:29:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786357744; x=1786962544; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=boYBSecBRl5T+XjjQzpMdytsU7Qux9bXP/GDQdqKxko=;
-        b=EF2s0QrMvqJp+DGhV7+6GXGOqn+fgRztAa5UaKpx4plfuEa4uoP7bK9/Whuvl1PNSu
-         fexBfiw3JAbGdKxNVFDnGteW6ImhIK6hnLWhUEcV4c/8v0+h4CAD8dK+uPHtd3ZQKUAI
-         1NJ9xjdXt3FVyVKedVwsrxQoTZ2HNY3TvmSEqBzhbHCp0SlE6V11GiOcCMi2iRQAtmsz
-         huauI67W0qJVsFcDt16JJoXqeHJ6HSlVzkjGVYoB7wIKkaPTYUhxArz6DOaX7p+4hcfW
-         Im+wTAH8JHSPu9fcDJvo3lPRdSn0OmLqrN+La2J/ZpaDWZLajIJHVF/dymQHjelafq7G
-         k67Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786357744; x=1786962544;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=boYBSecBRl5T+XjjQzpMdytsU7Qux9bXP/GDQdqKxko=;
-        b=NYt9vkFVExTjEwBQcTmD+4na9+fyit3MvK6wrarxWF6WZ7juVC1onScYSrTBEUurw3
-         I4WM7tieDkBXpkHDLUqDEXA2Z/Q+dHzKRaeiQ5/D1wByhM/0SK7c+J9Hmz+B/oFj4FQF
-         sOJkUfFOmLTS5M8JPGANLNSncgEwo1nC6GxjfM8a3RjA7Y5TCabJtk/68iw51rbiWZz4
-         wUoNjkLKMLdwOaJD3Q9h3iafcXgxvtZV4TAEWRUEMwEDZlT1H3WugO2GXt2mRNJskeLE
-         nMlbPpDfXWICXk7vEAA1SXwAzok69ZAPVQPbbarIMY5JLEmR9mxMsSj4Vc03HKI0HrEX
-         csqg==
-X-Forwarded-Encrypted: i=1; AHgh+RqifhLnWFJEemmWni9YobV0QdV3GkmrK5dwXbBSBJHFf2/eTzCJF7cNLAY0Y/4ZoB90Y6euJxo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN78/dcp/fz2UtLnu3OFBFiM4iM6ZIRjFhMIfeDIw2mvj2zdxr
-	z/zX7okPjWsIybNZchpjGA4HY2Kwzr5dU50r/G/AX0ctRYGydPTr0YSy
-X-Gm-Gg: AR+sD12N6V4QjT/R3z/oHu7s3YjXNgsXDlRsbhhNIKqklYj0Cj9tHLdGAXAootZvwfp
-	M41m/kujSUvE9pO9nvFYOHuyNImxvqT/8uS9mHf/hYjKR9q9FxNFJ6PyKjv11zG9OiZVYgMo7oa
-	pV4A9mjZY2nkjfZG/TrWaRF8r9BeVsbKntkc8wyK6Gq9emEglPocro3YIQ+zUSMVcEyI/GkBTEo
-	MygXw7FDo53tsYteVw8h4z4uRdXzcvU/KHCoZIlYnQiVGuZOa8CkDtYCgmBz0Es449FsK5oy6yr
-	wBv09NSULk4EpQrDifzz830vTIMhF1DuWSM0Al7UhHSKTER5ld5YB9cI6uzts9IyMAKc5anuazS
-	/x4Cq72BkgD5h6gaD8rh4QheAxB9MAR48G6AjCrTSbeUjKcNPIEDsRyUa2ynt5dCTr1iSn/SzwH
-	SHBly4MeZtX39g+ARKOMOl1STI2178ZQDhnoLtn5dZ5X4vmCygcnHAJV7wFs0arvMIiXQzeK1QH
-	4cTZogXIsCj2hInYMYALUe6O+xQrowodAeZRI3JbvtqNRWesn6JquQFdywTKivw4WvUDLu5LC56
-	cAvS
-X-Received: by 2002:a05:600c:4f45:b0:493:c47f:3c55 with SMTP id 5b1f17b1804b1-49972764ed2mr11353955e9.5.1786357743613;
-        Mon, 10 Aug 2026 03:29:03 -0700 (PDT)
-Received: from labdl-itc-sw01.tmt.telital.com ([2a01:7d0:4800:7:a04:488a:882a:de93])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995ea27ec7sm297309075e9.10.2026.08.10.03.29.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 03:29:02 -0700 (PDT)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-To: =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Fabio Porcedda <fabio.porcedda@gmail.com>
-Subject: [PATCH] net: usb: qmi_wwan: add Telit Cinterion FE990D50 composition
-Date: Mon, 10 Aug 2026 12:28:40 +0200
-Message-ID: <20260810102840.125473-1-fabio.porcedda@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UwXf8Dys"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=x8q4Byt3w6HrMOMrbis27TdVa/BMPZ5kH4W4IYoWm1RKay32uAX2XtRrjXlYNpFIZlpTYJepn0SLViqw38CMFYg8wi3JOPGMEnu4e3CfWVesccLOV7FbvaS2eFExxEIX0bhXjPGaLPH0in6JxWKJBTUXNkEcmPoxMkC0dxvVUQ+FpSXFTKj9t8LphwxMAEyE2IbZiaZW6eR2XE9n5Giil7yAcuzyHo2SIW+uTgM2hEADMIS+H0oSjcEhBOyN+ThQwrseNlB1sCtnPraclUAXfsT0+Gztpm8kA6wfn/p++zu98bn1QdgQ30omEZO0Xtn3rJVtAibrM/QqF+368fWhIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NUbDSzlq4446V46MFqIicw+upjlVpM3WseE/5v6P2mM=;
+ b=JcS4uz7lYFaJCsVyFGMkkfKSntWq+rKSjRob3FUXXORU/k3LEbQewsUrXeiW3BQXl0ZyXWaOFtQtEIp9lJbY+QMEXSEJ163ZI4lPqSvgCWjgiOxRMzatIt4JZB7B3K0GjqElWti6ZsZn5lYjxUh/NZ/YUzXJ52WhrEsUYKI+NpH/r2Fo/2ziTk1lp6RPUZhguuCsI/l7oyMgTqTpGkzXynx/UOlHX7T29vAGwusdY+wCFVECh6o1RmvNoeI+Mo+3VnXpWnDVmM8egw2OoQdN2INVApOGhcUgQJCS54y0WbZaovLIYDrEwL5462X9FHbpS6+LRWTZTb0V01FQlfGvcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NUbDSzlq4446V46MFqIicw+upjlVpM3WseE/5v6P2mM=;
+ b=UwXf8DyssGcZR9JsgfMx+pGjrTXO80tSu8Rgg3VRLN67M/kS557ySgR2p5RkaTmJw48UQmxpZq0j43n1+A9Rokp5BNlVUOAz9kbmZ73wfx4C6L0o/tcR9lwRrDmjdxiLrjtLTpTXKNSj3jYLMfsE57vdP0HfSqUZFukjktvNfT0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14)
+ by SJ0PR12MB6942.namprd12.prod.outlook.com (2603:10b6:a03:449::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Mon, 10 Aug
+ 2026 10:33:29 +0000
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b]) by SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b%4]) with mapi id 15.21.0292.024; Mon, 10 Aug 2026
+ 10:33:28 +0000
+Message-ID: <21ee2a8b-4699-436a-8a52-4285853d77c2@amd.com>
+Date: Mon, 10 Aug 2026 16:03:21 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 4/4] net: macb: Add TSN CBS TC offload support
+To: Conor Dooley <conor@kernel.org>,
+ Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, git@amd.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260807095012.640223-1-vineeth.karumanchi@amd.com>
+ <20260807095012.640223-5-vineeth.karumanchi@amd.com>
+ <20260807-kissing-liver-2ab4ec49c015@spud>
+Content-Language: en-US
+From: "Karumanchi, Vineeth" <vineeth@amd.com>
+In-Reply-To: <20260807-kissing-liver-2ab4ec49c015@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4P287CA0124.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:2b2::10) To SJ2PR12MB8953.namprd12.prod.outlook.com
+ (2603:10b6:a03:544::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8953:EE_|SJ0PR12MB6942:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ef3df37-26d2-431f-693b-08def6cad134
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|22082099003|18002099003|4143699003|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	QWZtfSdRDbbm8TTqdlBJolDSw1/toyeLHNlIA7EelpCh8pmai22yD2wyaFiwHVCMFPPi/0xX7i1/EVlRy0hewd0G8UMdom9D74Y1H3Aw1gTYL3QPFeSeTV4prptv/tulJbluh/MyT1FKEauHb5gYXcvBbPR3MKO9VutQlbsn+8YHJqsyHRKR/ui4EIHZwY+Jjs8Sv70sxK+DHCBhpqzn0Sm7At/H/XqSX4dhgFP7WHzjSozLmo1tKJguT85oZCmtC06kgRBbFTE5ARk6qdfEt2anbwOKTStCFvHJQKJ8gLH6MAukiH9KEGE7F4qm27AUAWvRF3c55/2rTgI5mxgPuPPZBrjecI5BnFJrA/TwJfN8IRULVb+H0Dgb74PWbRKad5IMSP+UzuSn/yVI+/2V9sRKxUMH68ewd/5OXhg5Px4SGD0DIMyCw0Lgu3NVLJhOZtvxz5/QMZYkyFhPNDc4doOlGiEbhWrsjY5FrBUp1amy0y1CTYRuBLhjYmteOYR/ShxQ9xcefc55CIbLgksfn59MT1bEAU6sFDcLE9bRDf5KVpjPZvRqcLsNnMvQdc/XLvPfT8nU8htC4liOKQtD29dyiHajR+qxy3nTF7ttWFMmnE0puOzQnSWXXNwecVdeRn5p4U3x5CLWNM1wNaEyskm6imeCCrFznxZKE37NQL4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YmtrZko1cUl2TXNDUFpFSFZ4VEtLRTRkMjFpL1l5L1dMK09ZKzRjdm93ZEc2?=
+ =?utf-8?B?QVBId0dzVStGQzdCalFoakwvWVB1MmlHVlNYYnlHdkR5MXZoZkhhWVpDZElt?=
+ =?utf-8?B?RHVFUml5dDhjZlhjT2xFRGVCYkZJSnJNMDl3eDhpeUZXWmg3b0gvVEZNQW5D?=
+ =?utf-8?B?ZjBNUFBDNVZEdk1rZ2g5TVBjVjBHWktTZlIwUE1KSU82dThPajFvSmlTbzho?=
+ =?utf-8?B?RWRkUmRJcEJGMk1HdnpLVnZCNE4wVHF1bVlTWlpCYks1M0xjakt0MithRDJH?=
+ =?utf-8?B?aTFIUGh1NGVTRUdOZlp5dGJoU0dOY2ZQdFZoTWtuSENlZTl3UTJhWFMzTkc4?=
+ =?utf-8?B?K2JZVTJEQ09ueVFYUTk2bUNMSHpNanVGbmlNS2REcXdITXdPSW9abDVWb2ly?=
+ =?utf-8?B?T25waUR0SWt0YnI1Tk1mM2o0TGV6eitxa1BHMjNDSGRaOVZqUnQza1dYZWMy?=
+ =?utf-8?B?V0J4ZktxUWNvRUovQU1DeVNFSTkrNWhQU1VRNzYrVWdKU0NsbnNVNHVzd1B1?=
+ =?utf-8?B?TzV1N3NlMFpONFF6MGs0eUo2Q0pKWjRUclRNR3E4cklKRmNxR3g4elpJTEMr?=
+ =?utf-8?B?S3RmSS9Mb2NIejhaeGo4dUM5OFUwc0E4alRlU3drcnNvZnZxd0pRcFBJVVBN?=
+ =?utf-8?B?eWs2WEhKRnlza2Z5Ty9aZGZNM0xEMS9wOXZ2RUtHak15MUhLaFFGTkdXekxY?=
+ =?utf-8?B?WEdtM3ZsT29EVHE4ZnZZVVlXTVVIUm41ZlliNU1WWTRQN2ZXcEpOOTloMm5u?=
+ =?utf-8?B?b1Z1cER2NmQzL3FmNU9yOXFmSUxQZWt3eTkwbWZ6MTByN0U2aGZmVC9DVk1O?=
+ =?utf-8?B?SHpPWU1QWWZjT0JQT254NjlCRjFSWlhIQjJBcWxmK0w2azd6TnlYb1RMdFJv?=
+ =?utf-8?B?VGM5enI5bDVRV1BLWnhBWnZ2MjQ0MERjMmJpTmFSdVJTZFR5SFVJd1BmZXFu?=
+ =?utf-8?B?NW9DcmxyUnJ2VkRJMzN5MEJNckQ0aldseVlUM1c0RzF2aDVCbVE0cDVGMjEz?=
+ =?utf-8?B?UGxtSVg2bnM2VnFUK1Y2UTAyYXpiZ0g0MFM3N1c4eEo5WlRFcXhuU3N3aDVw?=
+ =?utf-8?B?cm5ONytySWZ2VWJrNzVNWWdyRzhZTEQyREUzZml0QUFsSmRlbmU2VjhPRlJJ?=
+ =?utf-8?B?QnJFVTRTVlQvMEdRWm5oMktVL2pMVm9VSC9YU1ZVWFlnSjIyMTJFRmFNOFd2?=
+ =?utf-8?B?WjU2TGFrS2JzMGlyNVlpSFdOTmJzcVRhQjB2KzJrZERRcW91L2lneDBOVUZU?=
+ =?utf-8?B?M21HbmVvM0taOHJNdGhIeVhRYUNhZkM1TVNFcW0rRlpsSGl3OVYzUnhVN3Nr?=
+ =?utf-8?B?eCt3UWlYNy91ZjhVSlFBbFBwYVFEdEZLNXhaaDhxa0I4eit1ZmkrMWcweUk2?=
+ =?utf-8?B?aUhLbTdWdlVWYzRjaFdmSFNZaE9mNGJ6bDdPdkZMYUdKNjRCY3BUTTIvRUF4?=
+ =?utf-8?B?djBWZllpY0R3T2lvL3JvUUxSWkViY3JLZHZFUlRjNjUzYXo0bDVOUTBUZ0ZL?=
+ =?utf-8?B?RUFrQTZDdnM5YjczR09yUlRScHFBRFJmMlNMSG96ajUxUUR1alNxV0pSM2xC?=
+ =?utf-8?B?OHRwUEgwTDNMQmNpektqYnN4OEtwSjVJS0JPenFLQUs2YjNYZUhMcFNyQzY5?=
+ =?utf-8?B?VDNrRTM3Y1N2VTBNK2F1UEJmQXFXNUlQN25uZmlBR3FQWGpYQ0ZocmpsVVBv?=
+ =?utf-8?B?R0JxYUhYMUxSZUpJd0gzMXNuYUFOWDR2MWNteVZNelIxRCs0ZnFFNTRRNnVm?=
+ =?utf-8?B?K1RNWmYzZk84aXMvblJpVzZkL0k5NGJpajBmbHZLYUwyMjNxNHZkMlVyUEpi?=
+ =?utf-8?B?NVg0U2swVHNoWi9lT0xPZ3dGdFZXZUVZMG1KM0FGblhwR1FiS1hKRTJRcjJH?=
+ =?utf-8?B?SkdGUHB3dXA2NUFjYndibisybGd4OUlJTzhaUEZrVlVJdHpSL1lXdm5mRXZB?=
+ =?utf-8?B?WGZKMHdQMCtRZUI5SUJsZWlnYWU5bHN2V2UzdnNET3NJN1R6dXg0akdLTW1u?=
+ =?utf-8?B?bFZGY2hwZ0hsVWVweG5IVTNtNjBWaDZLQTloU3R1OE1Bd1IyVDJYVmJJQ2pX?=
+ =?utf-8?B?dW9BTXF2TWZiWnlCd1Nadm5LbWVjb0tpenJIVnVoNkxSMUdRcVZDU3gxem5U?=
+ =?utf-8?B?YmNoam4zREpENFc3am9KVGpJUnZ5UnpLVVRwcFRhOUJKYUJjb0VzSDZKQ2Iy?=
+ =?utf-8?B?bko4OUZRVnZNZFhyZmVOZHR3UGpOenNFQlNLL0trUEtEOXpXSW5oUnI3TWg3?=
+ =?utf-8?B?ZktWb2hRU0x6bmgvT280elcvd0ZEaVUvTFppWmFtSWJKVnBhWnlVUkhXbjNG?=
+ =?utf-8?Q?7xKlfk763JVQa9vliZ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ef3df37-26d2-431f-693b-08def6cad134
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8953.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 10:33:28.8791
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: shhu6whzE+s4/RDJmYAVS/oviyC0DvhsQPLtPlYhImQlciXvZ8V/O2d5Mmaj6Zt2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6942
 
-Add the followin Telit Cinterion FE990D50 composition:
+Hi Conor,
 
-0x0991: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
-        tty (diag) + ADPL + adb
-T:  Bus=01 Lev=01 Prnt=01 Port=06 Cnt=03 Dev#= 10 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=0991 Rev=06.06
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE990
-S:  SerialNumber=2aa802d2
-C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
----
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+On 8/7/2026 11:02 PM, Conor Dooley wrote:
+> On Fri, Aug 07, 2026 at 03:20:12PM +0530, Vineeth Karumanchi wrote:
+>> +static int macb_cbs_get_queue_params(struct macb *bp, u8 queue_num,
+>> +				     u32 *enable_bit, bool *is_queue_a)
+>> +{
+>> +	/* Queue A is highest priority (num_queues - 1) */
+>> +	if (queue_num == bp->num_queues - 1) {
+>> +		*enable_bit = GEM_BIT(CBS_ENABLE_QUEUE_A);
+>> +		*is_queue_a = true;
+>> +		return 0;
+>> +	}
+>> +
+>> +	/* Queue B is second highest priority (num_queues - 2) */
+>> +	if (queue_num == bp->num_queues - 2) {
+>> +		*enable_bit = GEM_BIT(CBS_ENABLE_QUEUE_B);
+> 
+> What's the point of making enable_bit a parameter if everything you do
+> using it bounds a conditional section gated on is_queue_a?
+> 
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 94cdb61dca83..147beaa61340 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1360,6 +1360,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x1bbb, 0x0203, 2)},	/* Alcatel L800MA */
- 	{QMI_FIXED_INTF(0x2357, 0x0201, 4)},	/* TP-LINK HSUPA Modem MA180 */
- 	{QMI_FIXED_INTF(0x2357, 0x9000, 4)},	/* TP-LINK MA260 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x0991, 0)}, /* Telit LE910C1-EUX */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1031, 3)}, /* Telit LE910C1-EUX */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1034, 2)}, /* Telit LE910C4-WWX */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1037, 4)}, /* Telit LE910C4-WWX */
--- 
-2.55.0
+yes, agreed. This approach initially enabled optimization of the idle
+slope update path. However I have found a better approach and will
+include it in the next revision (v2).
+
+>> +		*is_queue_a = false;
+>> +		return 0;
+>> +	}
+>> +
+>> +	return -EINVAL;
+>> +}
+>> +
+>> +static int macb_cbs_add(struct net_device *ndev,
+>> +			struct tc_cbs_qopt_offload *qopt)
+>> +{
+>> +	u32 enable_bit, idleslope, speed_kbps, ctrl;
+>> +	struct macb *bp = netdev_priv(ndev);
+>> +	struct ethtool_link_ksettings kset;
+>> +	bool is_queue_a;
+>> +	int err;
+>> +
+>> +	err = macb_cbs_get_queue_params(bp, qopt->queue, &enable_bit, &is_queue_a);
+>> +	if (err) {
+>> +		netdev_err(ndev, "CBS: Queue %d not eligible (only top 2 queues support CBS)\n",
+>> +			   qopt->queue);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	/* idleslope is calibrated for the current link speed; CBS is not
+>> +	 * reprogrammed on link-speed changes, so it must be reconfigured
+>> +	 * if the link speed changes.
+>> +	 */
+>> +	phylink_ethtool_ksettings_get(bp->phylink, &kset);
+>> +
+>> +	if (!kset.base.speed || kset.base.speed == SPEED_UNKNOWN) {
+>> +		netdev_err(ndev, "CBS: Invalid link speed\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	speed_kbps = kset.base.speed * 1000;
+>> +
+>> +	if (qopt->idleslope <= 0 || (u32)qopt->idleslope > speed_kbps) {
+>> +		netdev_err(ndev, "CBS: invalid idleslope %d (must be 1..%u kbps)\n",
+>> +			   qopt->idleslope, speed_kbps);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	/* Calculate idleslope for hardware register:
+>> +	 * - High-speed GEM: scale to full 32-bit register range
+> 
+>> +	 * - Standard MACB: multiply by port transmit rate factor
+> 
+> I think this comment should probably mention that the register expects
+> bytes/sec in 1G mode and nibbles/sec in 10/100.
+> 
+> This generally looks sane to my naive eyes otherwise.
+> 
+
+OK.
+
+Thanks,
+Vineeth
+
+> Thanks,
+> Conor.
+> 
+>> +	 */
+>> +	if (bp->caps & MACB_CAPS_HIGH_SPEED)
+>> +		idleslope = DIV_ROUND_UP_ULL((u64)qopt->idleslope * U32_MAX, speed_kbps);
+>> +	else
+>> +		idleslope = (u32)qopt->idleslope * (kset.base.speed >= 1000 ?
+>> +					       MACB_CBS_PORT_RATE_1G : MACB_CBS_PORT_RATE_10_100M);
+>> +
+>> +	scoped_guard(spinlock_irqsave, &bp->lock) {
+>> +		/* Disable CBS for the queue before updating idleslope */
+>> +		ctrl = gem_readl(bp, CBS_CONTROL) & ~enable_bit;
+>> +		gem_writel(bp, CBS_CONTROL, ctrl);
+>> +		/* Update idleslope for the queue */
+>> +		if (is_queue_a)
+>> +			gem_writel(bp, CBS_IDLESLOPE_Q_A, idleslope);
+>> +		else
+>> +			gem_writel(bp, CBS_IDLESLOPE_Q_B, idleslope);
+>> +
+>> +		/* Re-enable CBS for the queue with new idleslope */
+>> +		gem_writel(bp, CBS_CONTROL, ctrl | enable_bit);
+>> +	}
+>> +
+>> +	netdev_dbg(ndev, "CBS: Configured queue %d with idleslope 0x%x\n",
+>> +		   qopt->queue, idleslope);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void macb_cbs_destroy(struct net_device *ndev, u8 queue_num)
+>> +{
+>> +	struct macb *bp = netdev_priv(ndev);
+>> +	bool is_queue_a;
+>> +	u32 enable_bit;
+>> +
+>> +	if (macb_cbs_get_queue_params(bp, queue_num, &enable_bit, &is_queue_a))
+>> +		return;
+>> +
+>> +	scoped_guard(spinlock_irqsave, &bp->lock) {
+>> +		gem_writel(bp, CBS_CONTROL, gem_readl(bp, CBS_CONTROL) & ~enable_bit);
+>> +		if (is_queue_a)
+>> +			gem_writel(bp, CBS_IDLESLOPE_Q_A, 0);
+>> +		else
+>> +			gem_writel(bp, CBS_IDLESLOPE_Q_B, 0);
+>> +	}
+>> +
+>> +	netdev_dbg(ndev, "CBS: Disabled queue %d\n", queue_num);
+>> +}
+>> +
+>> +static int macb_setup_cbs(struct net_device *ndev,
+>> +			  struct tc_cbs_qopt_offload *qopt)
+>> +{
+>> +	if (qopt->enable)
+>> +		return macb_cbs_add(ndev, qopt);
+>> +
+>> +	macb_cbs_destroy(ndev, qopt->queue);
+>> +	return 0;
+>> +}
+>> +
+>>  static int macb_setup_mqprio(struct net_device *ndev,
+>>  			     struct tc_mqprio_qopt_offload *mqprio)
+>>  {
+>> @@ -4594,6 +4713,8 @@ static int macb_setup_tc(struct net_device *dev, enum tc_setup_type type,
+>>  	switch (type) {
+>>  	case TC_SETUP_QDISC_MQPRIO:
+>>  		return macb_setup_mqprio(dev, type_data);
+>> +	case TC_SETUP_QDISC_CBS:
+>> +		return macb_setup_cbs(dev, type_data);
+>>  	case TC_SETUP_QDISC_TAPRIO:
+>>  		return macb_setup_taprio(dev, type_data);
+>>  	default:
+>> -- 
+>> 2.44.4
+>>
+
+
 
