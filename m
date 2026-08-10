@@ -1,61 +1,63 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348F7411A07
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 17:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366163382E8
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 17:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786381844; cv=none; b=sbbFW4qGXBnfEMmTc5fcUFS+0xItaDsV/xWN6sz+a0DlpuwYBZHZHuOqWfczBPR66StkvH6AVKKtj+9Cg4qTpenpjH4IWCsCFL1u6h7m+YIOLah1uX1ba9+xMua+dZ+XNZs2b4S33buCXoM38IFHhFWk1sCPEUT6J88oTY+GKOU=
+	t=1786381849; cv=none; b=sQUsobe5TnKgjBh2JVmAb+gSwHp2/ICKE9v4DU6ZayhyGxtjUuv4hF4EErjCqOviUYL6DiHg+qOFICCQtQApbKITJCZFiVyetTegOfFWGCngVLo0CZ0ReyhRVJtzF9JsvSmg3njOnjHWT/dbfciw929u/TLjdomZOuuyyLEYC7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786381844; c=relaxed/simple;
-	bh=u/03OJopUWpYIZLPOmNno1ZcdLO9Vd/Dsn+H/2t7RQE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nQy9WEb/0aIuMsSvoM3qZe2tD0+m5bddErHdXl7wbU+7I5DdSvUgGRr3nOXQsODgVoPJyxY8eUPCui/0G/swodUTIEy7d+67cciqRaApgvd1IzQMf4CCzspwGlLazvkt1c/uMlMPcT9TxdKKOJfQ+fW5/8HVRFUTFcRXgK///5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q6S4imYx; arc=none smtp.client-ip=209.85.215.171
+	s=arc-20240116; t=1786381849; c=relaxed/simple;
+	bh=j+tqaF49vVrcAgCqivH0Q0gH+G4z0Uw2YSxLSLYQ6dc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qXqsF1lAH5cn0zj80rkCV1B+zuRZcqigqfJ1arDo9HD+2Lule6ZEKnVK/5g3l3sDVbot24cUWir86AwLtQpRqGbDLUS11v3VukQTLlyVpLkbo3YQ5NcTKnKPCLel59WR0+TVOqabCAt5xnwg4jjzIPFTMjjwPrY75NfGqjOUP58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2ektfiN; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q6S4imYx"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-ca88130e09aso1505853a12.3
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:10:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2ektfiN"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84eb992a881so1555208b3a.2
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:10:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786381842; x=1786986642; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YwnNatVO8vJ44aB8viIABkdP11ZOZYuCLz8W0eTqLj8=;
-        b=q6S4imYxecYXPy0FJL4W3KSm+8av5+fn0PVSFfVyzYCVJmwTzBYw4G5/wDwoWzb1ih
-         itCau3a3cXtEF3ZY5tumQ4Newo+el8aoBZRcx4RhjH7RjBu2yS95BN2jprLL33s4B/1p
-         GvyDxKXRekVMA3ZduVtM1Zv+WOC60HzxqCRxhTOuBgAC06TH748ES684lyA2hTPt3d+h
-         7UvoUfY8XfXZIOpYCWZbkuo1L+Mg/kiEN8blBdnDzmdXIP7odARNIVBlgSP+EJdBPAc1
-         MnXDeevSmmxaim5RUbn9KksqeI8tB0hSOEjfrkiWD44WqriolUptR98CG+nKAbQ+Puxb
-         DgPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786381842; x=1786986642;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786381847; x=1786986647; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YwnNatVO8vJ44aB8viIABkdP11ZOZYuCLz8W0eTqLj8=;
-        b=f0OLK5PkEJcZh47PhRAkwYdGjQsest0Qg2+Y6JelUuCw7qaqNWLNgnx7llqpy9bCCb
-         SUbG8ffoYyoUyBJBWuUFP2q6gWGwDfmfXuEMSe/to2m1sciWHTj/Alr9fkJShJhLu/Rt
-         bE529t8BMwOfgYnbh6ttbGVB0A+v7Q1+0fQvaIEIAMrQBRj/9mfwzavxZ4oHXiv0Os9u
-         UZVvUef0VPuqy2PnZaDlrUvGdr4KUXthJ/j1mTV3K5Gk0L+Kvm6v0r3Uof7nuvQ2c0eL
-         rzlqpiU1RaspMmMlK1VqZW7GO+yaPCV3aXD3DAqrg1czQ9i1g3limow8LUhEYB0V66II
-         /llg==
-X-Forwarded-Encrypted: i=1; AHgh+Rqg5NU1sLHkET3oNcE2tGpYL+YpnlI4x/6ePHgu6C1fNmACDwwbxhPitrMVKFimDmWkySmcWkY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbxYDJnXQXqpX4dPqsI7Y/dod4dZ/VNnAkOhQwtTtC+kBZE2QN
-	x0vW4+NLdFTl5XKm9GSaoKsRZxrmXzxmfLHGYSvXcx7orUk45e0J8u0M
-X-Gm-Gg: AR+sD138ekNmXtBfTM/DdddNi7ZB8ZcOW7H3TSKziq/IuvPpWQp8IzCymD18boUZO+7
-	yC5g9tolE1ArTD39/O5O2KVi7eumVggJ61jnkBskz3MXxEXiLRuLM3W1qlutpo+Rx2u2abGIOqO
-	1um2zJDahG56FiqHVviuruMsj1MTwHsyL9ljdII4VvRgqRHqLkDhiCEeptxKpfqXvbgWP5jCq6P
-	iwBz2ueQzlnJv4kyyiskKBoucNMoQQZS/ZD1YrLl6iZpy1GQsD/VkEXjshgUR6EHJalSyL0H9u2
-	SGnx+IZ8dcAUEQbATvKem+GsK8AH0zd29r10HndOjArg9i354MMQ+I13usUK4atxhHoQfmk1VEO
-	RyutlPzjPJkOw7WhPyMOH6an2f0518TaGS7cfg/EnM8ewaOKrQhMGOZF/q/gU2vBjiF7jVFrxxc
-	pvk8db3qlZVrhDof2nLrMEcE666e3lF42N2GbyuQCEQznkuK8UqA1/t2sQ8QA02A==
-X-Received: by 2002:a05:6a20:6a05:b0:3c4:3112:3b with SMTP id adf61e73a8af0-3cb85e771acmr47912530637.18.1786381842462;
-        Mon, 10 Aug 2026 10:10:42 -0700 (PDT)
+        bh=o17hX9psIIM1rya7TZerzwkpY1R4GKMlzn2vF2QyCKI=;
+        b=C2ektfiN94yCBjhkL/mjM+Dpb9Uqj0uRcDTvOMp1VPZAQp0B06RRE2DXc9hU2wYIOV
+         mgKSpnILRm9v1AZvOtijFG114SUUBGLZgyO9gexQBQuOzR9kf1Fks6wA+RV/UmLsdB6Q
+         jpVI6fmD6QYuILwlFTWhXesySsTMpe706NcAcASlnXz9IQB2WOBQtUrbPmUJLaC3pFPZ
+         nIwTesGiPTaVrt4XTMkRgCxKbp7CNry494xcjPhZVW+74dd7uhER5Vl9BjQJezQf7Tz8
+         EaDUFnN/JsKQbtv0sPkJ9246hQJDGWXtNr5cvg/zcCbphy6P1jffbF5o6nZ9eMfrBXuT
+         j9nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786381847; x=1786986647;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=o17hX9psIIM1rya7TZerzwkpY1R4GKMlzn2vF2QyCKI=;
+        b=FCuDlHaabhrjT8q87iC/EUOUBSCLr9T67Fy0x3DcC1kSSvImQOZr2eW7FqoUVXXp5A
+         sgM4ntneZg6lLueQSCk1LGz2XnZM4hcQNi3pPEDa/XNtPMRRC5+lQ8rQ6LkHej5z5kSW
+         lpOZCs4M+KnXRpW1RFtrh6vYaLCoJ77wxeiQuXKngEB2RARIu+t2r2/tQnZD4K5zmse3
+         mP88mrReRvMUcPNiRYOun1c5BIxGfShbXrDdkzGWpnPFtobbSnzJLAxGYGum9q1etduX
+         d0No5jxUVTLRda0pSTugb7Tc27HvsJr6ptIhOWHKMH6A03YUJQF5NA+CbTkwg/3wkuR2
+         kFMQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq/0rkeWCZnaCAvW4QNasjqjws28vd/rEnCr5OPihCNWcCW5DctxzJuFZac6IN558tsgW8jaeM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzaawjqowe3aSMnRBsHguzVy1atHQwiBI2asFoqvK4pe7Pd5a1X
+	w5F41jZTloDUdOBXA7lBez/rdpyOGI/5FI9LzOfElHm7JT7wjvaJkaxH
+X-Gm-Gg: AR+sD13pa7oQPonUO4XrZkWn0R6q9CZZLWe0Xqo0WoCjA6UMQCUUW2G7mbzQFKrtT8w
+	Frvlo0emxQqBRRYhgztVjNsfEO/+/uWUxxq+zXLdsyB+bud7QBsnbkmwlOK8cO36N78/2LMg+QT
+	eAPy59LSZCvpDPkYYSHCS/9XmyXB0vimzYApqSY2YNrlN9NPyAIEjhKxYeHXXf25XWD0w/zXP00
+	asK+1aLdHz6Sj0kzjMd0WayJSezp4x+Dok7j+UUUWzOfXUpJygZLkNBlceXxQvalYSrUMw724qW
+	EmM0ab6Ur3QaJ+1YtkLgmzZXTlr3zPAG5bVqWy1aR3ZBqIgavAOkV7hLGED1PkkiKXo953cjY9c
+	RLlm4HO+DH+khstekmgdglJlTd/txay5ua3hr3u+/e5UWNU/xLsYNG15RGT6eOkflZ+3Y+S/Yow
+	E46JjP3qQ4ee3xHXDxFfe0J50MzmALYNGm97q5SHv3cPWl+CZTWOF5TQyYBWa0QQ==
+X-Received: by 2002:a05:6a20:db92:b0:3c4:147e:98f1 with SMTP id adf61e73a8af0-3cbadcfd00emr37452298637.31.1786381847406;
+        Mon, 10 Aug 2026 10:10:47 -0700 (PDT)
 Received: from phi.nguyendp ([116.86.160.247])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1410199cf49sm37194663c88.3.2026.08.10.10.10.38
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1410199cf49sm37194663c88.3.2026.08.10.10.10.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 10:10:41 -0700 (PDT)
+        Mon, 10 Aug 2026 10:10:46 -0700 (PDT)
 From: Nguyen Dinh Phi <phind.uet@gmail.com>
 To: Stefano Garzarella <sgarzare@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -63,17 +65,21 @@ To: Stefano Garzarella <sgarzare@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Andy King <acking@vmware.com>,
+	George Zhang <georgezhang@vmware.com>,
 	Dmitry Torokhov <dtor@vmware.com>,
-	George Zhang <georgezhang@vmware.com>
+	Andy King <acking@vmware.com>
 Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
+	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
+	Michal Luczaj <mhal@rbox.co>,
 	virtualization@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 0/3]  vsock: fix stale sk_err handling after a failed connect
-Date: Tue, 11 Aug 2026 01:09:29 +0800
-Message-ID: <20260810170935.2242314-1-phind.uet@gmail.com>
+Subject: [PATCH v5 1/3] vsock: don't check the listener's sk_err in vsock_accept()
+Date: Tue, 11 Aug 2026 01:09:30 +0800
+Message-ID: <20260810170935.2242314-2-phind.uet@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260810170935.2242314-1-phind.uet@gmail.com>
+References: <20260810170935.2242314-1-phind.uet@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,43 +88,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A socket whose connect() failed keeps sk_err set. If that socket is
-later reused as a listener, vsock_accept() rejects an unrelated
-incoming connection, and on virtio/hyperv the resulting child socket
-is leaked.
+Syzbot reported an issue which can be reproduced with these steps:
+	r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
+	bind(r0, {VMADDR_CID_ANY, PORT})
+	connect(r0, {VMADDR_CID_LOCAL, PORT}) -> -1, EPROTO (self-connect)
+	listen(r0, backlog)                   -> 0
+	r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
+	connect(r1, {VMADDR_CID_LOCAL, PORT}) -> 0
+	accept(r0)                            -> -1, EPROTO (stale sk_err)
 
-Patch 1 removes the listener's sk_err check from vsock_accept(), since
-no vsock transport ever sets sk_err on a TCP_LISTEN socket. This will
-fix what the syzbot reported.
+Basically, it creates a socket (r0) and triggers a self-connect after
+binding it. This self-connect fails with EPROTO because it loops back
+to r0 while the socket is still in the TCP_SYN_SENT state, causing it
+to be incorrectly dispatched to the connecting-client path. The
+unexpected packet type encountered there sets sk_err to EPROTO.
 
-Patch 2 removes vsock_sock.rejected, now unreachable after patch 1.
+After that, it invokes a listen() call on the same socket. This
+listen() call succeeds because the kernel's listening path never
+inspects or clears sk_err. Then, a new socket (r1) is created as a
+normal client and connects to r0. However, vsock_accept() rejects this
+incoming connection because the listener's sk_err still holds the
+EPROTO error from the earlier failed self-connect.
 
-Patch 3 is a related but separate fix: vsock_connect() now consumes
-sk_err via sock_error() once it has been returned to userspace, so a
-failed blocking connect() doesn't keep reporting the same error a
-second time.
+This rejection causes the child socket created for r1's connection to
+never be freed on virtio or hyperv transports; only the VMCI transport
+implements pending_work to revisit and clean up a rejected socket.
 
+For a non-blocking connect(), vsock_connect() may return -EINPROGRESS
+immediately, and vsock_connect_timeout() can later set sk->sk_err
+asynchronously.
+
+Since no vsock transport ever sets sk_err on a socket while it is in
+TCP_LISTEN state, checking it in vsock_accept() serves no purpose and
+only carries forward errors left behind by earlier, unrelated
+connection attempts on the same socket. Remove the checks so accept()
+no longer rejects valid incoming connections because of a stale
+error, which also avoids the resource leak described above.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+Suggested-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
 ---
-Changes in v5:
-- Split into a series
-- Remove the now-unused rejected flag from vsock_sock
-v4: https://lore.kernel.org/netdev/20260804135238.386417-1-phind.uet@gmail.com/
-- Remove sk_err checks from vsock_accept()
-v3: https://lore.kernel.org/netdev/20260730081843.287563-1-phind.uet@gmail.com/
-- Fix truncated title and add annotations to reproducer steps.
-v2: https://lore.kernel.org/netdev/20260727071305.45826-1-phind.uet@gmail.com/
-- Add reproducer steps to commit message.
-v1: https://lore.kernel.org/netdev/20260719220103.684489-1-phind.uet@gmail.com/
+ net/vmw_vsock/af_vsock.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-Nguyen Dinh Phi (3):
-  vsock: don't check the listener's sk_err in vsock_accept()
-  vsock: remove the now-unused rejected flag
-  vsock: use sock_error() to consume sk_err after a failed connect
-
- include/net/af_vsock.h   |  5 +---
- net/vmw_vsock/af_vsock.c | 62 +++++++++++++---------------------------
- 2 files changed, 21 insertions(+), 46 deletions(-)
-
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 622dbd046799..ff507761f472 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1893,7 +1893,7 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
+ 	timeout = sock_rcvtimeo(listener, arg->flags & O_NONBLOCK);
+ 
+ 	while ((connected = vsock_dequeue_accept(listener)) == NULL &&
+-	       listener->sk_err == 0 && timeout != 0) {
++		timeout != 0) {
+ 		prepare_to_wait(sk_sleep(listener), &wait, TASK_INTERRUPTIBLE);
+ 		release_sock(listener);
+ 		timeout = schedule_timeout(timeout);
+@@ -1906,12 +1906,6 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
+ 		}
+ 	}
+ 
+-	if (listener->sk_err) {
+-		err = -listener->sk_err;
+-	} else if (!connected) {
+-		err = -EAGAIN;
+-	}
+-
+ 	if (connected) {
+ 		sk_acceptq_removed(listener);
+ 
+@@ -1941,6 +1935,8 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
+ 
+ 		release_sock(connected);
+ 		sock_put(connected);
++	} else {
++		err = -EAGAIN;
+ 	}
+ 
+ out:
 -- 
 2.53.0
 
