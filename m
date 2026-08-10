@@ -1,126 +1,145 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989F43B95EB;
-	Mon, 10 Aug 2026 10:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FEB39BFEC
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 10:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786357641; cv=none; b=Tqu6RwZR1sTa0xIUtUYclp3TToIum/2jWkVETmy3hwwRYO+QShj1pymFRNoUvt2HOi+jvsUFngqSouqrHxRyIMFly5k3sqAYQHW/RArde1VU1jsCrhdMF9K4w15/M2PFeoJy5Wg273SHZ2GjL4iIlFj/GVXr7Ax/OzVDSkHnuao=
+	t=1786357747; cv=none; b=UfdG6yLYR+ltZgKSQ1+20O/27Girc7ka98T0oSab7vg7Ed1PmE+UX3JDS0SohJN6V2uyR3w+0NEfA6y177jc1tphuDvVpN1AWbl7rDHF3IbJp0LX15MrUqEK55CmfEGi3/kNGrp4wJs3r9bzpNcIx3Bus704cegwoitagMWCFHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786357641; c=relaxed/simple;
-	bh=BrNKlhLeSKhNkE9d2uZgFIpuXJ/DeJydzuTFOY4pE4s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vGIBxqD/COEmVpcfJVtU2ZhCxYiNwD4ROdX6P8c5XZRAkQbFUWgmNGGt0P36GNgE3gWffvpkB+BLozcjMzvbPrHVuOctr+KVNkaIRPLrwebfeRcGECXZKMx0I2vJs6dCSwpzZJLira36vT7FmeZh9pPBijlS6mMAS1gB8Vr4n/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=A0cN5Xrh; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1786357747; c=relaxed/simple;
+	bh=lABGybqrOfA/5F7rLlcKuLSPW3KayZdePUYNTXr1NxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OXiadCs+9o5jTLLXjOW9Dk9j5D3I0xabOoUiIyGbqu047LADRWo3aUXf2y6tn5VmDm6aeuuziYyM+zHUIreP/fhR/7Gy9cx2+1sSTBKoRAHvfBJoeKOGMwtZYboT9tb+nQ2cr8oD5MOgYHL5oFkN74X6vTZD/8UX9jLBu/289Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EF2s0QrM; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="A0cN5Xrh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=WJtbWzUkUc+nbq/ZWIZwAmTeculgZTNHJKJew/M4EEA=; b=A0cN5Xrh7pMnalEtXmczbjspVe
-	5amrs+gni6vwoTV2sa2uOeAYm0OIpurIU84ucB7AxyGqsGnO4oUaXUgna1MhqNae7mnkx/TKVgXp2
-	5Q+Kl0Ua+z6QmDnUzDkDy8+kTVWPgQuuooqclUHyHQZVo+oeukNS2vX1uDaeCuqr2mfw6yZcJ4lUH
-	xXJ9RbjZ7fLCd+KsGX3LnyFM+WNIEHjyp96WmunjOtz+C5ss8/Soqij4Ctj7jvDAsumgBEyhAKx3c
-	dVkWPqn4DxV0dHW2M1DoraXpqcrpIHA79P/Qr4bd9KOXvjauYr5gtT7mti0wIeuS83Dt5F9+F5GDU
-	3041Adxg==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1wtNDv-000Gp1-0U;
-	Mon, 10 Aug 2026 12:27:15 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1wtNDu-000Ea7-2t;
-	Mon, 10 Aug 2026 12:27:14 +0200
-Message-ID: <d89500d5-fe43-47e4-bf3e-77203b5a5d51@iogearbox.net>
-Date: Mon, 10 Aug 2026 12:27:13 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EF2s0QrM"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so15285725e9.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 03:29:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786357744; x=1786962544; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=boYBSecBRl5T+XjjQzpMdytsU7Qux9bXP/GDQdqKxko=;
+        b=EF2s0QrMvqJp+DGhV7+6GXGOqn+fgRztAa5UaKpx4plfuEa4uoP7bK9/Whuvl1PNSu
+         fexBfiw3JAbGdKxNVFDnGteW6ImhIK6hnLWhUEcV4c/8v0+h4CAD8dK+uPHtd3ZQKUAI
+         1NJ9xjdXt3FVyVKedVwsrxQoTZ2HNY3TvmSEqBzhbHCp0SlE6V11GiOcCMi2iRQAtmsz
+         huauI67W0qJVsFcDt16JJoXqeHJ6HSlVzkjGVYoB7wIKkaPTYUhxArz6DOaX7p+4hcfW
+         Im+wTAH8JHSPu9fcDJvo3lPRdSn0OmLqrN+La2J/ZpaDWZLajIJHVF/dymQHjelafq7G
+         k67Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786357744; x=1786962544;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=boYBSecBRl5T+XjjQzpMdytsU7Qux9bXP/GDQdqKxko=;
+        b=NYt9vkFVExTjEwBQcTmD+4na9+fyit3MvK6wrarxWF6WZ7juVC1onScYSrTBEUurw3
+         I4WM7tieDkBXpkHDLUqDEXA2Z/Q+dHzKRaeiQ5/D1wByhM/0SK7c+J9Hmz+B/oFj4FQF
+         sOJkUfFOmLTS5M8JPGANLNSncgEwo1nC6GxjfM8a3RjA7Y5TCabJtk/68iw51rbiWZz4
+         wUoNjkLKMLdwOaJD3Q9h3iafcXgxvtZV4TAEWRUEMwEDZlT1H3WugO2GXt2mRNJskeLE
+         nMlbPpDfXWICXk7vEAA1SXwAzok69ZAPVQPbbarIMY5JLEmR9mxMsSj4Vc03HKI0HrEX
+         csqg==
+X-Forwarded-Encrypted: i=1; AHgh+RqifhLnWFJEemmWni9YobV0QdV3GkmrK5dwXbBSBJHFf2/eTzCJF7cNLAY0Y/4ZoB90Y6euJxo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN78/dcp/fz2UtLnu3OFBFiM4iM6ZIRjFhMIfeDIw2mvj2zdxr
+	z/zX7okPjWsIybNZchpjGA4HY2Kwzr5dU50r/G/AX0ctRYGydPTr0YSy
+X-Gm-Gg: AR+sD12N6V4QjT/R3z/oHu7s3YjXNgsXDlRsbhhNIKqklYj0Cj9tHLdGAXAootZvwfp
+	M41m/kujSUvE9pO9nvFYOHuyNImxvqT/8uS9mHf/hYjKR9q9FxNFJ6PyKjv11zG9OiZVYgMo7oa
+	pV4A9mjZY2nkjfZG/TrWaRF8r9BeVsbKntkc8wyK6Gq9emEglPocro3YIQ+zUSMVcEyI/GkBTEo
+	MygXw7FDo53tsYteVw8h4z4uRdXzcvU/KHCoZIlYnQiVGuZOa8CkDtYCgmBz0Es449FsK5oy6yr
+	wBv09NSULk4EpQrDifzz830vTIMhF1DuWSM0Al7UhHSKTER5ld5YB9cI6uzts9IyMAKc5anuazS
+	/x4Cq72BkgD5h6gaD8rh4QheAxB9MAR48G6AjCrTSbeUjKcNPIEDsRyUa2ynt5dCTr1iSn/SzwH
+	SHBly4MeZtX39g+ARKOMOl1STI2178ZQDhnoLtn5dZ5X4vmCygcnHAJV7wFs0arvMIiXQzeK1QH
+	4cTZogXIsCj2hInYMYALUe6O+xQrowodAeZRI3JbvtqNRWesn6JquQFdywTKivw4WvUDLu5LC56
+	cAvS
+X-Received: by 2002:a05:600c:4f45:b0:493:c47f:3c55 with SMTP id 5b1f17b1804b1-49972764ed2mr11353955e9.5.1786357743613;
+        Mon, 10 Aug 2026 03:29:03 -0700 (PDT)
+Received: from labdl-itc-sw01.tmt.telital.com ([2a01:7d0:4800:7:a04:488a:882a:de93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4995ea27ec7sm297309075e9.10.2026.08.10.03.29.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 03:29:02 -0700 (PDT)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+To: =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Fabio Porcedda <fabio.porcedda@gmail.com>
+Subject: [PATCH] net: usb: qmi_wwan: add Telit Cinterion FE990D50 composition
+Date: Mon, 10 Aug 2026 12:28:40 +0200
+Message-ID: <20260810102840.125473-1-fabio.porcedda@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: expect instance lock in
- netdev_queue_get_dma_dev()
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, stable@vger.kernel.org,
- syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com, axboe@kernel.dk,
- io-uring@vger.kernel.org, asml.silence@gmail.com
-References: <20260806225627.3998672-1-kuba@kernel.org>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <20260806225627.3998672-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28088/Mon Aug 10 08:24:15 2026)
+Content-Transfer-Encoding: 8bit
 
-On 8/7/26 12:56 AM, Jakub Kicinski wrote:
-> netdev_queue_get_dma_dev() uses "compat" locking assert which wants
-> either the rtnl_lock or netdev instance lock. This is not right,
-> the callers are taking the instance lock unconditionally. All entry
-> points for queue config are purely instance locked.
-> 
-> In other words the callers use netdev_get_by_index_lock(), not
-> netdev_get_by_index_lock_ops_compat(). All the state we will
-> access is effectively instance lock protected (it's const for
-> devices which are not ops-locked).
-> 
-> Update the assert to avoid false positive warnings.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: b6c5f9454ef34 ("io_uring/zcrx: call netdev_queue_get_dma_dev() under instance lock")
-> Reported-by: syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Add the followin Telit Cinterion FE990D50 composition:
+
+0x0991: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + ADPL + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=06 Cnt=03 Dev#= 10 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=0991 Rev=06.06
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE990
+S:  SerialNumber=2aa802d2
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+---
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 94cdb61dca83..147beaa61340 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1360,6 +1360,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x1bbb, 0x0203, 2)},	/* Alcatel L800MA */
+ 	{QMI_FIXED_INTF(0x2357, 0x0201, 4)},	/* TP-LINK HSUPA Modem MA180 */
+ 	{QMI_FIXED_INTF(0x2357, 0x9000, 4)},	/* TP-LINK MA260 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x0991, 0)}, /* Telit LE910C1-EUX */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1031, 3)}, /* Telit LE910C1-EUX */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1034, 2)}, /* Telit LE910C4-WWX */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1037, 4)}, /* Telit LE910C4-WWX */
+-- 
+2.55.0
+
