@@ -1,80 +1,349 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335743B9D97
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 23:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BA423AE87
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 23:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786405901; cv=none; b=e5Sd0p1q3Dus3P6EpeEYQtbjIM8pOduJe+bLpdLfFQvj5BBIjK+8/DcT+l3D67i5SzPG5IzKZBwxbRL6JTOe1YB9obRsvqJfFyAIlu7JYd5p9PO1w0NSyCYtH0h02mgFE3kaq8xC4GMFZ/3Xqi5pUt4KPEKi9OaLVB1MTkg6inA=
+	t=1786406041; cv=none; b=qHxuZEYlS6hvxxGl6pGkJZVGimsZeVJ7ySW6oiaRpMjWHXp/FN+N/4b7Q4M20faigLdFEVrlncJCTiAOV2IZLR7/00MJlPZPcHnLkDN0qlSnP7boOtqxWw4vzqVDw3Ic/HuB3uknHZnFVpUPJSXYzED6q+kfEeNGQz5ortqqYk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786405901; c=relaxed/simple;
-	bh=Rs12tqQ6ibMc1aUO2DC20onPNc+HOGSS/y9mgvCEl+k=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=tAUAg091xUqMEmAYYkboLz9Zs44p2kIZ5teMJVhOAGJbST4Uq7a9+IFtWkPAnH+c/+fYM/g4x7K6SnYla7gDIO3OwRp0brdbaTWMhR1N9LDytDVr5SFoPTgVLk8sxXXRfz2J8adHpXV9ZQdH8j5OheRCQ2nIWAzbClhhi6TIMl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oFFnzEGR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786406041; c=relaxed/simple;
+	bh=WleTlQdjenugk/p1vDOSLQpNKknH/Vf1g/n6WOzicPU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I84RL4ewTzE5QxC1QkJNcVfE7rOw6+6YjknyEpmF1JYJy4V+esLMB/NimyM8/JDxYcndKmqal1vKf9yDs+JXLC6v7Ecec+0Y2LtbtLzXQeoJHHP3wt/yew6SeL84JSjlUYFBAtmuNebBhY6eyLHFUUZS7D0lXIK2JV4ekAU8zik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fCiiQ58g; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oFFnzEGR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190C21F000E9;
-	Mon, 10 Aug 2026 23:51:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786405900;
-	bh=iJPG2nyeehd+FvTFn18FcDPwT+qREgZP8/FMrN0IqpU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oFFnzEGR/W0EzzcLSMwO+M3hpFqpPKj1BQZa9h6Kq529UTfrYOqjUJbL9SMML/9q7
-	 VNhF9bIIohoXUdMmbYCOpSgbseI9WycEevloB6NxxctzfhTWcLmuVdLrZAw+yefZ1q
-	 uz58S95hWuvSV/yWNz7MPcG29F+/xYCmbZogNu07l2bWdG+Vhg7rD3ZluJsldw7MXJ
-	 xBjp5prObZHdkLuaY6aD1vHu7wnH7osQdgmRgG3t7dWyFlDDrITrczGIz4aw4jdLjw
-	 RgbvWq+SlZokJ33zl2cp9G7/fXFyMmCLf/6OTCEQ3RaRcE3lRaFNdLGjG1U8i7nRHA
-	 mIcwUMLgL1XwA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0995392626C;
-	Mon, 10 Aug 2026 23:50:57 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fCiiQ58g"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AN1pE31102358;
+	Mon, 10 Aug 2026 23:53:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=V7k38V
+	+9jPNBn3ruKclQzBy7GCZvcM+CLVXMgnFiGo8=; b=fCiiQ58gZcpjlVNkSJGCOx
+	Aj1QgwCIh19ZlylzPE6ZZ03vtJVoyY9eGadFChUU/ZLBK1p6koiubUs8EgB9sSLi
+	AK4aZ9PzCuDh2CtbPnWp9R2YqJmyXVUqja/AlhOZQaimanu9ejRwSpLXHjZ5cbcG
+	wSwASOhGr9nlJT7rQ01/JS4m0oA4jLW8j8LE2XX5nxOPz0H+GbCfi7L59mRxJ2uB
+	MHMDk7CrGhdqht1iHgUsmxi0IxVkl1r9lPnhjAkZ38jbnRTpkd1hJSO1kIjjO8SN
+	xWA79tOf6OMuIyICJe9LKAEEuPJfjWfkv1hsWvrDUPGzA1FOA1q6eNeSDqBx2cgw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvjytjxg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 23:53:45 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67ANfFVF016160;
+	Mon, 10 Aug 2026 23:53:44 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfxxnnq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 23:53:44 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67ANrgCn13959836
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Aug 2026 23:53:43 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9794458061;
+	Mon, 10 Aug 2026 23:53:42 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C609B5803F;
+	Mon, 10 Aug 2026 23:53:40 +0000 (GMT)
+Received: from [9.67.152.96] (unknown [9.67.152.96])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 10 Aug 2026 23:53:40 +0000 (GMT)
+Message-ID: <2e4871b5-366c-4dda-9f6e-c30cdee2064e@linux.ibm.com>
+Date: Mon, 10 Aug 2026 16:53:40 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] netdev: check for nla_put_u32() failures
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178640585636.257874.12469697387477130082.git-patchwork-notify@kernel.org>
-Date: Mon, 10 Aug 2026 23:50:56 +0000
-References: <20260809000609.327659-1-kuba@kernel.org>
-In-Reply-To: <20260809000609.327659-1-kuba@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 11/14] ibmveth: Expose per-queue buffer pool
+ details via debugfs
 To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- daniel@iogearbox.net, bobbyeshleman@gmail.com, joe@dama.to,
- razor@blackwall.org, sdf@fomichev.me, dw@davidwei.uk
+Cc: netdev@vger.kernel.org, horms@kernel.org, bjking1@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, edumazet@google.com,
+        pabeni@redhat.com, davem@davemloft.net, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, simon.horman@corigine.com,
+        shaik.abdulla1@ibm.com, davemarq@linux.ibm.com
+References: <fa6f1b5f19acd2b54f6b2c19d27bd79f4ff60599.1785457143.git.mmc@linux.ibm.com>
+ <20260806183710.3175754-1-kuba@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260806183710.3175754-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDIwMCBTYWx0ZWRfX1BKDp3rSl2p5
+ cK2WGMRHu714CpwjjTBjRkThH5XsfZvr/OTNQvMYgE+t6GlyHbw3o5G65yvMnNFyZBHpFKZg0tH
+ tcMgk90kVPpPqz+nxQSJLHR7iRkPXjYjZVGwN08SabI/+FXTMvASOzdLt/3U+rUnqi8fmC+bzGy
+ j2+zQQk1xXEysJw8zyqwpzwwp76iSiWVldZNjzGJS2rhKS4sN1R0A894qJ/32c3bLQzsESGD8hO
+ Qxe4axodatr4lCHzCw0/oBMpbxMNTGKvZc5NWtaRtKjZcPUeOc+GvC2JjIR5vX7YfwS+3Ulp9ML
+ 5iFOW7kpi/CLKDEDZjc39BZNZ+E5hbrmYGh5V/knF+UhqIUnFq3N8m+k2wwy0tUQ2j1Fyf7NrHB
+ NW1iIjWFvGGx95+ifqp69QPTlPRdkPEmXi7NA2dcDoqIbwaMSYaCb1VI3k/vHTimG7gQXMYsxh6
+ dR9+wsNOG5tZwK9J78w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDIwMCBTYWx0ZWRfX2a/OMLUV0LNv
+ RQj3KLu/BBb4+MwDvo266jKLfN+hVgvKR0+kCXN44f3DkDkkaq60wgYP1BTRMOa9f/tAgdKUxo6
+ F1gTVgA0QDo5tzADWO4+O3CTH65REbc=
+X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a7a6489 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=WjwCMHg84dksKkLecc8A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: BzEKP3R4CAqQV91SBqEgA9pxKN40-67g
+X-Proofpoint-ORIG-GUID: Z5bna1R5QPP-_VFX__ZU3vQp5Gmp-25F
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-10_06,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608100200
 
-Hello:
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat,  8 Aug 2026 17:06:09 -0700 you wrote:
-> Make sure we check if nla_put_u32(id) was successful after creating
-> objects. This is theoretical today, the skbs are large enough to
-> always fit the ID.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On 8/6/26 11:37 AM, Jakub Kicinski wrote:
+> his is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > ---
-> v2:
->  - don't handle, just WARN
-> v1: https://lore.kernel.org/20260609190804.1137085-2-kuba@kernel.org
-> 
-> [...]
+> ibmveth: Expose per-queue buffer pool details via debugfs
+>
+> This adds a read-only buffer_pools debugfs file that dumps size,
+> buff_size, active and available for every RX queue and buffer pool, and
+> wires creation into ibmveth_probe() and teardown into ibmveth_remove().
+> The existing queue-0 poolN sysfs files are left unchanged.
+>
+> A few questions about the new code below.
+Hi Jakub,
 
-Here is the summary with links:
-  - [net-next] netdev: check for nla_put_u32() failures
-    https://git.kernel.org/netdev/net-next/c/ae2998ab62e4
+Thanks for the review.
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index dbb47a42b4cb5..db13747466025 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
+>
+>> @@ -2985,6 +2986,44 @@ static const struct net_device_ops ibmveth_netdev_ops = {
+>>   #endif
+>>   };
+>>   
+>> +static int ibmveth_buffer_pools_show(struct seq_file *m, void *v)
+>> +{
+>> +	struct ibmveth_adapter *adapter = m->private;
+>> +	int i, j;
+>> +
+>> +	seq_puts(m, "Queue  Pool  Size  BuffSize  Active  Available\n");
+>> +	seq_puts(m, "-----  ----  ----  --------  ------  ---------\n");
+>> +
+>> +	for (i = 0; i < adapter->num_rx_queues; i++) {
+>> +		for (j = 0; j < IBMVETH_NUM_BUFF_POOLS; j++) {
+>> +			struct ibmveth_buff_pool *pool =
+>> +				&adapter->rx_buff_pool[i][j];
+> [Severity: Low]
+> Should this dump be taken under rtnl_lock()?
+>
+> ibmveth_buffer_pools_show() reads adapter->num_rx_queues plus
+> pool->size, pool->buff_size, pool->active and pool->available with no
+> lock held, but every writer of those fields runs under RTNL:
+>
+> veth_pool_store() {
+> 	...
+> 	rtnl_lock();
+> 	...
+> 	pool->active = newactive;
+> 	pool->buff_size = newbuff_size;
+> 	pool->size = newsize;
+> 	...
+> 	/* on ibmveth_open() failure, the same three fields are
+> 	 * written back with the old values */
+> 			pool->active = oldactive;
+> 			pool->buff_size = oldbuff_size;
+> 			pool->size = oldsize;
+> 	...
+> }
+>
+> ibmveth_alloc_buffer_pools() likewise copies the queue-0 geometry into
+> queues 1..N-1 field by field under RTNL from ibmveth_open(), and the
+> reset path goes through dev_close()/dev_open() under rtnl_lock().
+>
+> Can a concurrent read of buffer_pools therefore print a torn snapshot,
+> for example active=1 paired with the previous size/buff_size, or a
+> half-copied per-queue template, or the transient rollback state that was
+> never an actual configuration?
+>
+> There does not appear to be a memory-safety consequence here, since
+> rx_buff_pool[] is a fixed-size array embedded in struct ibmveth_adapter
+> and only scalar members are read, so the concern is limited to the
+> values printed.
+Yes. The writers already run under RTNL, so the dump can otherwise
+print a torn snapshot.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I'm planning to take rtnl_lock() around
+ibmveth_buffer_pools_show() so the output stays consistent.
 
+>> +
+>> +			seq_printf(m, "%5d  %4d  %4u  %8u  %6d  %9d\n",
+>> +				   i, j, pool->size, pool->buff_size,
+>> +				   pool->active,
+>> +				   atomic_read(&pool->available));
+> [Severity: Low]
+> Are Active and Available meaningful while the interface is down?
+>
+> ibmveth_free_buffer_pool() frees free_map, unmaps and frees all
+> skbuffs, and frees dma_addr/skbuff, but leaves pool->active set and
+> never decrements pool->available:
+>
+> 	kfree(pool->free_map);
+> 	pool->free_map = NULL;
+> 	...
+> 	if (pool->skbuff) {
+> 		kfree(pool->skbuff);
+> 		pool->skbuff = NULL;
+> 	}
+> 	/* pool->active and pool->available untouched */
+>
+> available is only cleared later, in ibmveth_alloc_buffer_pool() via
+> atomic_set(&pool->available, 0) on the next open.
+>
+> So a read after ibmveth_close() -> ibmveth_free_buffer_pools() ->
+> ibmveth_free_queue_buffer_pools() -> ibmveth_free_buffer_pool() reports
+> every configured pool as Active=1 with the last non-zero Available,
+> even though the skbuffs and DMA mappings are gone.
+>
+> Related: for queues 1..N-1 the table prints all-zero rows before the
+> first open, because the queue-0 template is only copied into those
+> queues inside ibmveth_alloc_buffer_pools() during open.
+>
+> The commit message says "Per-queue runtime pressure is what debugfs
+> shows" - could the down/uninitialized cases be either reflected in the
+> output or documented?
 
+Yes. The down/pre-open view needs to be more honest.
+
+As written, the dump can present stale pool state as if it were live
+runtime state after close, and it can also show all-zero subordinate
+queues before the first open even though that is not the eventual
+runtime shape. I'm planning to make that state more explicit by
+clearing the down-state availability, treating pools without live
+backing state as not active runtime pools in the dump, and adding a
+short note when the adapter is not opened.
+
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +DEFINE_SHOW_ATTRIBUTE(ibmveth_buffer_pools);
+>> +
+>> +static void ibmveth_debugfs_init(struct ibmveth_adapter *adapter)
+>> +{
+>> +	adapter->debugfs_dir = debugfs_create_dir(adapter->netdev->name,
+>> +						  NULL);
+>> +	debugfs_create_file("buffer_pools", 0400, adapter->debugfs_dir,
+>> +			    adapter, &ibmveth_buffer_pools_fops);
+>> +}
+> [Severity: Medium]
+> Is the mutable interface name a safe key for a directory created
+> directly in the debugfs root?
+>
+> Three separate things follow from passing NULL as the parent and
+> netdev->name as the name.
+>
+> First, the name goes stale. The directory is created once, as the last
+> statement of ibmveth_probe(), and the driver installs no netdev
+> notifier and never calls debugfs_rename(). After the udev/systemd
+> predictable-name rename that happens right after register_netdev(), or
+> after any later ip link set dev ethN name foo, does the debugfs
+> directory keep the obsolete name for the lifetime of the device?
+>
+> Second, with the debugfs root as parent the name has to be globally
+> unique there. Consider the sequence: first adapter probes as eth0, udev
+> renames it to enP1p1s0, a second ibmveth adapter probes and
+> alloc_etherdev_mqs() names it eth0 again because eth0 is free in the
+> netdev namespace. debugfs_create_dir("eth0", NULL) then collides with
+> the first adapter's stale directory:
+>
+> fs/debugfs/inode.c:debugfs_start_creating() {
+> 	...
+> 	dentry = simple_start_creating(parent, name);
+> 	if (IS_ERR(dentry)) {
+> 		if (dentry == ERR_PTR(-EEXIST))
+> 			pr_err("'%s' already exists in '%pd'\n", name, parent);
+> 	...
+> }
+>
+> The ERR_PTR is stored in adapter->debugfs_dir and handed to
+> debugfs_create_file() as the parent, which returns immediately:
+>
+> fs/debugfs/inode.c:debugfs_start_creating() {
+> 	...
+> 	if (IS_ERR(parent))
+> 		return parent;
+> 	...
+> }
+>
+> Does the second and every subsequent adapter then end up with no
+> buffer_pools file at all, with only that debugfs pr_err as an
+> indication?
+>
+> Third, netdev->name is read here after register_netdev() has published
+> the device, without rtnl_lock(), while dev_change_name() rewrites
+> net_device->name under RTNL. Can the string handed to
+> debugfs_create_dir() be a partially updated name?
+>
+> Would a driver-owned parent directory plus a stable identifier such as
+> dev_name(&dev->dev) avoid all three?
+
+Yes. This is the main design issue in the patch.
+
+Using `netdev->name` at the debugfs root means the directory can go
+stale after rename, collide with a later adapter that reuses the old
+name, and race with rename while the name is being read. I'm planning
+to move this under a driver-owned `ibmveth/` parent and key each
+adapter directory off the stable VIO device name instead.
+
+I agree that once the naming is fixed, leaving debugfs creation
+best-effort is much easier to justify. The bigger problem here is the
+choice of key and parent, not the lack of hard failure handling.
+
+>> +
+>> +static void ibmveth_debugfs_exit(struct ibmveth_adapter *adapter)
+>> +{
+>> +	debugfs_remove_recursive(adapter->debugfs_dir);
+>> +	adapter->debugfs_dir = NULL;
+>> +}
+>> +
+>>   static void ibmveth_put_pool_kobjs(struct ibmveth_adapter *adapter,
+>>   				  int pools_ready)
+>>   {
+>> @@ -3182,6 +3221,8 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>>   
+>>   	netdev_dbg(netdev, "registered\n");
+>>   
+>> +	ibmveth_debugfs_init(adapter);
+>> +
+>>   	return 0;
+>>   }
+> [ ... ]
+>
+> Cross-instance finding from sashiko-gemini (b6bfc50872782421f7178a42615ea39fe861918e607d995ed830a5a2db8a4460):
+> [Severity: Medium]
+> Addition of driver-private ethtool -S strings for standard queue statistic
+
+I agree with the underlying point, but that belongs with the patch-10
+stats/interface cleanup rather than this debugfs patch.
+
+So my updated view is that the main patch-11 issue is the debugfs
+naming and lifetime design, while the RTNL and down/pre-open reporting
+points are real but lower-severity cleanup. I'm planning to tighten
+those pieces here, but I still think debugfs is the right place for the
+all-queue dump.
+
+Thanks,
+Mingming
