@@ -1,143 +1,147 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E598348C7D
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D187F391828
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786343511; cv=none; b=Z/pMrx9KHuVF99fbjg7f5u8t6fXBeLCSy9GD3ieVJYYOx1clSlOdl5bxdRLPMR4XR7XtmibT1oLaQHe0Zv5GL23kPPlMOfNxho6lLBm+nTyHNXuCjxC20s2+fNSpJdxrIL+M6XP2OslSt60/irgbuTsN45ko4zCK9cTCaTvtz4s=
+	t=1786343937; cv=none; b=L2I9yqLUZtuVAOl0If/HOnzDNo6cZbo12UXLhDdJ7AN+f4YN5Zm8FyEvAW1osY6S6b03/izV9Ac/KQ7uKSoJVVe/ZE0iEH9960UImx3CMoAyB+LFWA64sQxbLzD8AC9LnIM1kuiiNvTztZtDtqKzcge7TXOKoGDq3o5tpV6i8PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786343511; c=relaxed/simple;
-	bh=sy+ikOIF7jlqcRtDfJFORY8Yy6sZXFR0XbWp9D3uWKI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X+YGthaNnlEYuX2oAHlU//e3/x1b4+6iXmlcb0/AnHsB8OeSAwHWGAa+nUXX1CtMwV/tSJ1xfK5GLDdJNIx7s1YQoSD4zIhhGO+ynF5ryJDai8rw4MR+tnMjhLK5brgaLPcDqc/gZXBqKw8PU+bli19BxZgF6IVQyGgMEmz271A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=mTkM8Bmk; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1786343937; c=relaxed/simple;
+	bh=eOhyBaxVU3H5GsJyGAc5oPRoZW7pggT5TSaQxAt2Px0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NI2QNbK95PzezyLDL90aXxKUZBkXok1rUMpZh/OX6uz5hxQR7N7L9551faqwPALPkXcsv0OofePlMAKQXpsHB+RuItBysLLUcsHsLGVOYR2olRVk/nNm1Hiy9JcSPM21Rje26FPumcBC/e3+TDZ9aWHuQRHYblpDTAt6b4zTD9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqK0vVyf; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="mTkM8Bmk"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47f84023916so1300853f8f.3
-        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 23:31:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqK0vVyf"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d049069377so12058665ad.0
+        for <netdev@vger.kernel.org>; Sun, 09 Aug 2026 23:38:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1786343507; x=1786948307; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Svz2rEyXrYuBIjG8VHu1ZYcyOMdHhrrxXeEbTj9Kros=;
-        b=mTkM8BmkokNkaKx5suNy9RKmifV5mbpJvh+Wk0zXPtFHx8p3RRv6VB2Q3iyyWWoZ7q
-         zj2m2iDGw0tvnzX3mHIIjjIKft3FUnLmYUkJyQG1nwcZt3mxSsvRYE5Thlzvlup71bCv
-         5I+jOecKQ0jKExk3k3kgqUjaeP60KqZtcjFzAG+muB7nmRTooGImy2E0f0ptGlS2ptA+
-         rhBwwfCu3U9AdgNCI7P+wLFYpyXTVOuiw42ruyuXoMI5N863a/h6kYy5p11aab71JEDC
-         exHW0dN9t7LrwGSGkcBRnjemlIQS9kef/wPmdPsv478PNJ/QVnpscivIEkpNMyH3sJar
-         qByw==
+        d=gmail.com; s=20251104; t=1786343935; x=1786948735; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cQPgo7/ImwAyna2sJScM9HYP43JmyinkJZImCKBlm+8=;
+        b=CqK0vVyfiHcyBjSGlMVyRksfqw10qeiLe4vpUKJHI1wfNltlUuVHdMfQMVJd7e6/ER
+         bUaVkkz5fA2qHPpUQZ12OWg79iF/WtZqxkcnlIrYzcz7tXvGtdIwzbevE+kwhVYcsM6l
+         qeHFfoG/pEbaj/2TT6bEHbxiKhyXmUY2fM/1RcMGkBeQUI+Mhm9+P3UA24RVfivNRId7
+         YjKVwfKQlCtLbdXbawYINSsqGdvnpgNwwrksCp+O8QxXqmcb1u7c8cEtVyAk/WZiRl7g
+         ZpE2f8RU1dqDOSJ1kGdQFOqDVWMUrVFgkv35OC9jqJPogVyPMFLDSQmzGlIn8rryaP7b
+         9eiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786343507; x=1786948307;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1786343935; x=1786948735;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Svz2rEyXrYuBIjG8VHu1ZYcyOMdHhrrxXeEbTj9Kros=;
-        b=UjvCQ/jbilz68hFyLv4LqvXnyX/T1oq0+x4RMfru5alzHDTSfogvSEz6VVjKAVqY4A
-         6hduSUFvjjGq1rd9K87TfgH6geKXqwHHAG4ZqpAFHU+aB3/cWIqSI+uyGnuf5tl18CNq
-         wAYyoYM7nEg2tE1QWpq1u4YfTzvp1XV/4n/BGbUWv7mu7vEe1v9wHH7Iv7fiWNCHlSZM
-         yMvxqvmAzlJ9PtDdISYnew+oyjgPqU+fsBluCJ1XwXlf+yHs+IwG11bJ/l5ph0jKrfB3
-         BMrpJE/iXJJIWAn85g+r7hbnc105TO6LFFeYVRv2D/1oY8NWa660kOd/WvQkV409xhPl
-         NHzg==
-X-Gm-Message-State: AOJu0YxEul4sMwmxbpJLkwFaeuLxO/D5k8E7YpAHYhMaf+vun8BdeZ0y
-	6lvTN24cpsrPJiNRi86OWihF2Bj26p5aZawzneln1r5a5ucFBcCUfCl0fdsfW26pe+U=
-X-Gm-Gg: AR+sD10Sgl/jqK2+84/g0SZb7JA/B6qMjDziRXgllB6WzXgWE8OmfQ2+wMAf9oEzeyx
-	Te2pIgZ21f75GbAfn9fGUQM9tcobd5PL9Fox7A4/eheAaZKRzwmXCewN6Ql1Ygni2QUdC2Tz6fi
-	/cAzIY0BSQNxdG5XEEn4GRcqVyKeIZtEMfBNlJRKPmder2uekeGqxNhIyddCDjWbW/eSM58XMQi
-	4Ya7G0ODTEdnjI/P65RI4Pn9RY4efzShKArCthifXsykpzkz3WR1uho/11676ZeFJYODP7rZwS3
-	ZJWvqIQP09Mme8vIvi6Z6mv5h82dwYv8PvrbrdK+uHt6e5zXB9q19tTWAgPDrya+i0oV4OmeuuC
-	cnOOs2Dja0AaCQdqraabw6XJ6romWaGdkda15xJ0MrcVnSzDmAPSoh/xRTM/kvgQG5qFvqQwpAM
-	KuWOrJSWwlM8wnfEWBmTe+KtWmrJc1fHSD9asNG5BNRJOemXOOQ6OGo8RLZ8cH9eswj9dFciTkr
-	XpyhIGGerbmggZuddI=
-X-Received: by 2002:adf:f184:0:b0:47f:8fc8:af01 with SMTP id ffacd0b85a97d-47fec63302bmr47818413f8f.27.1786343506867;
-        Sun, 09 Aug 2026 23:31:46 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021f8f33sm36497853f8f.27.2026.08.09.23.31.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Aug 2026 23:31:46 -0700 (PDT)
-Message-ID: <6381a88c-d7a7-4fba-ab7f-650eba504291@blackwall.org>
-Date: Mon, 10 Aug 2026 09:31:45 +0300
+        bh=cQPgo7/ImwAyna2sJScM9HYP43JmyinkJZImCKBlm+8=;
+        b=Wyk5n+bPfHM4fZ2dMVrLtNObMRCFJzhYIa4VUd271lp0omfOxzBpu3sqcdkvT8/meB
+         UihWlZzjTnSWejWbIIXjfKeflKhPFJsq8hE42OdjaCE2/Fmp9CAj1rSmiQlMxBQPfTag
+         J4p9WXX0z3EhLFI6MQHtQOqlOMzc+n+aVHLVIsvzdFR1PWTyR1iLGZg+S9tyP2TMie0/
+         YPBVs6o6k7kN78RZtVCi+hLjPXmZIm9Nrx89AiGFD9OKI7Uqb1hWT4R2zd69flXPDo+V
+         hxJdpCf2wqNihTy6NdBzz36m8s9iknZu4X8ekSPFjgb/Kh/GeaQTKdNF7QQNx3CMBPQw
+         oiIA==
+X-Forwarded-Encrypted: i=1; AHgh+RoYpx6+fHaoGG1zzIm3QMhx03Kwi9c7nvw8lSrydLQ+EFSViG11z3a0sC+vAxD4ecCg4IEZPSA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTdIbb3JCZMr/b+hXAu5Ip7FriDHH4CTlScleOqZF/H2n2TIWN
+	TAdql46aWrtre35LBvmoOzczrRAWwSzGKBrvc9wKcJ5YcPYeSe1Rgkis
+X-Gm-Gg: AR+sD10CbYoGMkkgDzNEj+M5JYjip8UYhVilUSqRymzgUz9hcOienZ8N+TBWPnLr3j9
+	OW/33PzREFTPRBz5YJB9srPTQBkfNkbMSALoON8NLAxyqh58cCV8ECbinxQPmnxB9jgTAjneGhG
+	zOT7Q4Paj+ghYENmVtR9p3Uril20WMZbdCaPk65r22UXDOUERlaun+mT9KqklGFlXl2G+a4nzOm
+	J3B6mwHECKpjEi/RM04Hms3uyrGcacZ/p9L+nkAvKbH5inQhRWR/CWFKnzMun3gvY4Fge2CMTdV
+	6CrFAODfKnK+0jOZLNHqt2C0g++o821XXGlkOnSrJZWMis40zEAFakMYFL204vF10fCYHcHZJVb
+	WFSTNAVt35GCyYHHM4DwoG+6EUSFrtH7yHbiAFSpgBTeyDZ0MWik28re99OFSw1BoHW1sDMSb9T
+	tt0TKHY1osplboyvLHWbCbAhpluqOErR0SyMwHqBt5Mppq9sGju0cKTXdIQCXbxmhrSQAHM5A0X
+	Bu6bJGz5fM0n/vAljCKfjI8QwI=
+X-Received: by 2002:a05:6a20:9c94:b0:3c3:91f5:82c2 with SMTP id adf61e73a8af0-3cbadb861admr30450624637.16.1786343935121;
+        Sun, 09 Aug 2026 23:38:55 -0700 (PDT)
+Received: from amd.ban-spse ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315bebde308sm39626282eec.20.2026.08.09.23.38.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Aug 2026 23:38:54 -0700 (PDT)
+From: Malathi <malathi.a2000@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Malathi <malathi.a2000@gmail.com>,
+	syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
+Subject: [PATCH net] e100: fix shift-out-of-bounds in e100_eeprom_load()
+Date: Mon, 10 Aug 2026 06:38:15 +0000
+Message-ID: <20260810063815.151326-1-malathi.a2000@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] netdev: check for nla_put_u32() failures
-Content-Language: en-US, bg
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, daniel@iogearbox.net,
- bobbyeshleman@gmail.com, joe@dama.to, sdf@fomichev.me, dw@davidwei.uk
-References: <20260809000609.327659-1-kuba@kernel.org>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260809000609.327659-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 09/08/2026 03:06, Jakub Kicinski wrote:
-> Make sure we check if nla_put_u32(id) was successful after creating
-> objects. This is theoretical today, the skbs are large enough to
-> always fit the ID.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> v2:
->   - don't handle, just WARN
-> v1: https://lore.kernel.org/20260609190804.1137085-2-kuba@kernel.org
-> 
-> CC: daniel@iogearbox.net
-> CC: bobbyeshleman@gmail.com
-> CC: joe@dama.to
-> CC: razor@blackwall.org
-> CC: sdf@fomichev.me
-> CC: dw@davidwei.uk
-> ---
->   net/core/netdev-genl.c | 12 +++++++++---
->   1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-> index c0a86f3ae33b..fa9edfdb32c2 100644
-> --- a/net/core/netdev-genl.c
-> +++ b/net/core/netdev-genl.c
-> @@ -1119,7 +1119,9 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
->   			goto err_unbind;
->   	}
->   
-> -	nla_put_u32(rsp, NETDEV_A_DMABUF_ID, binding->id);
-> +	/* rsp was allocated large enough */
-> +	WARN_ON_ONCE(nla_put_u32(rsp, NETDEV_A_DMABUF_ID, binding->id));
-> +
->   	genlmsg_end(rsp, hdr);
->   
->   	err = genlmsg_reply(rsp, info);
-> @@ -1253,7 +1255,9 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
->   		goto err_unlock_bind_dev;
->   	}
->   
-> -	nla_put_u32(rsp, NETDEV_A_DMABUF_ID, binding->id);
-> +	/* rsp was allocated large enough */
-> +	WARN_ON_ONCE(nla_put_u32(rsp, NETDEV_A_DMABUF_ID, binding->id));
-> +
->   	genlmsg_end(rsp, hdr);
->   
->   	if (bind_dev != netdev)
-> @@ -1420,7 +1424,9 @@ int netdev_nl_queue_create_doit(struct sk_buff *skb, struct genl_info *info)
->   
->   	netdev_rx_queue_lease(rxq, rxq_lease);
->   
-> -	nla_put_u32(rsp, NETDEV_A_QUEUE_ID, queue_id);
-> +	/* rsp was allocated large enough */
-> +	WARN_ON_ONCE(nla_put_u32(rsp, NETDEV_A_QUEUE_ID, queue_id));
-> +
->   	genlmsg_end(rsp, hdr);
->   
->   	netdev_unlock(dev_lease);
+e100_eeprom_load() and e100_eeprom_save() start with an address length
+of 8 and call e100_eeprom_read() to auto-detect the real EEPROM address
+length. e100_eeprom_read() adjusts the length with
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+	*addr_len -= (i - 16);
+
+based on when the EEPROM drives a dummy zero onto EEDO. A malfunctioning
+or emulated device that drives EEDO low too early makes (i - 16) exceed
+the current length, underflowing the u16 addr_len to a large value such
+as 65529.
+
+That value is then used as a shift count:
+
+	nic->eeprom_wc = 1 << addr_len;
+
+which is undefined behaviour and additionally overflows the fixed-size
+nic->eeprom[256] cache.
+
+  UBSAN: shift-out-of-bounds in drivers/net/ethernet/intel/e100.c:768:21
+  shift exponent 65529 is too large for 32-bit type 'int'
+
+The EEPROM cache holds at most 256 words, so a valid address length is
+never larger than 8. Reject larger values before using addr_len.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e0abb1d45ac291ebebeb
+Signed-off-by: Malathi <malathi.a2000@gmail.com>
+---
+ drivers/net/ethernet/intel/e100.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/e100.c b/drivers/net/ethernet/intel/e100.c
+index 29960762e64a..a236273f5e65 100644
+--- a/drivers/net/ethernet/intel/e100.c
++++ b/drivers/net/ethernet/intel/e100.c
+@@ -765,6 +765,11 @@ static int e100_eeprom_load(struct nic *nic)
+ 
+ 	/* Try reading with an 8-bit addr len to discover actual addr len */
+ 	e100_eeprom_read(nic, &addr_len, 0);
++	if (addr_len > 8) {
++		netif_err(nic, probe, nic->netdev,
++			  "invalid EEPROM address length %u\n", addr_len);
++		return -EINVAL;
++	}
+ 	nic->eeprom_wc = 1 << addr_len;
+ 
+ 	for (addr = 0; addr < nic->eeprom_wc; addr++) {
+@@ -791,6 +796,11 @@ static int e100_eeprom_save(struct nic *nic, u16 start, u16 count)
+ 
+ 	/* Try reading with an 8-bit addr len to discover actual addr len */
+ 	e100_eeprom_read(nic, &addr_len, 0);
++	if (addr_len > 8) {
++		netif_err(nic, probe, nic->netdev,
++			  "invalid EEPROM address length %u\n", addr_len);
++		return -EINVAL;
++	}
+ 	nic->eeprom_wc = 1 << addr_len;
+ 
+ 	if (start + count >= nic->eeprom_wc)
+-- 
+2.43.0
 
