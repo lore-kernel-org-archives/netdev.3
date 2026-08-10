@@ -1,176 +1,206 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012062.outbound.protection.outlook.com [40.107.200.62])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0211417B505;
-	Mon, 10 Aug 2026 11:05:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786359928; cv=fail; b=IdixgIBTA4s7z29/h2wvUda6H/38CDeBHr+3i1DLkMxZ5QW3GxZjdxrPzeNCr9icyY8mXjr222nr+p8l2f18TpExunYKrboxH07/bLnWh9ucV3J6FfsOpexeSFs9xWbqzj8erRQRmJQTK3XpAJ8Dxyv7iIFY0xgZQJRne7+i09M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786359928; c=relaxed/simple;
-	bh=/Ru3lpXpj9XmQjFwRXuJWLRYQCbt6R3IpMXSGmRh4jc=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UwktauJDS9JideEW0JUC1VuCiMn7dIAhTQNxlbi2vc+eP0/L8/HWUrseqP1S4Dus2GdGn24JjmzJv1lpvlgvkHXsyiqdvRqHcP88Ni3/u3JkQumvaeTsJuFuHrorBLw+NtATXLwLxQUUbKNTVzyGgBeWM1XwuxwtlUkerBlLSbo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Bbstk31k; arc=fail smtp.client-ip=40.107.200.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB0C3BE659;
+	Mon, 10 Aug 2026 11:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786360492; cv=none; b=iXR3yBqDelBn161XhN0HHdRrz7Ab2gR0qTsQDJxZilgt27MNKRxlU1F58/Ez1W4C2JgE65udGP8tSFIVBmpOxINJiHSFs0QDbZFFsveyPIO5Z4laOxosu0koxusf94lc+DcopCDYGLu66wOs4K6lckKa4IOmBp5OyRICkzsAcgw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786360492; c=relaxed/simple;
+	bh=DAcPtw5y/AR4X6DapdtZe+gtfW6tp4upzGmyim5ulp8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o7xRxoh+BtdNJiqvPa+ozJ3BEEMtjYMmvmzpelmE8rQWTeO0+UgHAuT62FyKe3AsD+esO8cFXcUfKKvg3NLo2n6mH2/14mEdCJ3lnIIQloJcvdoHAUACC8v1043OniqWcXGjcShV+bngYOsqeKo9R9f7T2xWbGqIvD0ithiHVnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=If4Va1Nm; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Bbstk31k"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fMOAAYDOtuSjRzx8oZqP61gKklXzYL0jXkUn1AVfpSOPz1ieK2DLL7fJT00je/XB7gPy1JXltTSk2L3FKbJlK8JpFozX5HiAHDJHjCZqlZk/TWoiow+mleNK3sT8XXvl1ROhveKevlY1aR1ZtFxVUyMfiKxGW6DmAXSqSyD3OUJOvt7kYoUodHrSc0831ki9BH1TKC2a6FA45ziwBjLC0lAtLKjYk4/Q7Xj6JqGS/75Pmvaf6RDVye9qtJkR4xz196+pt2fRLC/7GFvG1ZE4avXWKa8tEb95kRIzcmcqz63sPw6w1NIha9gJ0sglIADYljaAG8ZR5gvvg52uJ+9mLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ArWsXd3uKiiRHfHHOD0AYMbTCwL2G2OGTXffteT+ooI=;
- b=tBQQ+Y46Ky9uABE7xjhB6HUJsj+cgJYCa9f7PR0WZKKCopE7RtOKyntsJG48axPeVDwIsmJ784+OPv1CWvMkplImzGe5u7d4p8hzeNReogA7kuq4nM9TQJka/dF9u2INliTzSDw4uh0wC63/ZNXmXqUZG1X8VdzK9ldfInJd54/+bEvLuTMZcT3A5pfXyvX0OUAngTn7gmV5755LDOEsev2S3EE+cmJ0lia66llEdpFygmt59D4MyU3dGy9nR12KMUwfh1pT/JbsmvrbniRLgCG0P+83zqiaca2A+dUUZodipw0W+mUaZqGx146XEQfoLyAkBk616ehuvLNnrj4vPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ArWsXd3uKiiRHfHHOD0AYMbTCwL2G2OGTXffteT+ooI=;
- b=Bbstk31kc8c6ht3eQKcqLDoxpHJawOC8RMlmXyVo5xR5BMs3CbAN8nQl+sI2RZofkhl8a1gZ+W4mTQAV+PwcWJVzYoXe/3j+dAzidQI49cJj6GdWWrJHXLSLI1C2Du9fes0XipylGQAEP4xAxw8ZwWVeWRKVMScLY/ZNbycL81FR37z1xACMOGDLx0eGIwpUT44McnEOE5PH8OUNJ5H+KgRC21xv2PlN2s/nUBkFZaMr1I1E1xfrgjV5ARBL1VzyExZcpWeC6oOM0AAXxl/J6JXAMQwAWg16iyk48msaHNZbX15qHOHc68RpgeHt3yockHM2IW1TnGduvEnGq7g59A==
-Received: from SN7PR04CA0229.namprd04.prod.outlook.com (2603:10b6:806:127::24)
- by DS0PR12MB8293.namprd12.prod.outlook.com (2603:10b6:8:f3::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.25; Mon, 10 Aug 2026 11:05:19 +0000
-Received: from SA2PEPF0000150B.namprd04.prod.outlook.com
- (2603:10b6:806:127:cafe::24) by SN7PR04CA0229.outlook.office365.com
- (2603:10b6:806:127::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.25 via Frontend Transport; Mon,
- 10 Aug 2026 11:05:19 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF0000150B.mail.protection.outlook.com (10.167.242.43) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.6 via Frontend Transport; Mon, 10 Aug 2026 11:05:19 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 10 Aug
- 2026 04:05:02 -0700
-Received: from tuxedo (10.126.230.37) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 10 Aug
- 2026 04:04:57 -0700
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<danieller@nvidia.com>, <petrm@nvidia.com>, <shuah@kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next] selftests: drv-net: hide the devlink
- port_split test
-In-Reply-To: <20260808164843.2475226-1-kuba@kernel.org> (Jakub Kicinski's
-	message of "Sat, 8 Aug 2026 09:48:43 -0700")
-References: <20260808164843.2475226-1-kuba@kernel.org>
-User-Agent: mu4e 1.12.15; emacs 30.2
-Date: Mon, 10 Aug 2026 13:04:48 +0200
-Message-ID: <87jypy9qy7.fsf@pmachata.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="If4Va1Nm"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67A9VT6P1208869;
+	Mon, 10 Aug 2026 11:14:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=F5sSozvRRGqo7fHQ1ImoJqlEG1S5UNjiqXB4AJUFP
+	OY=; b=If4Va1NmBXltcjMnYSt7H89awqygrBAi9UopHqFJeqopUjYF/UiV0JmSr
+	ZzwU+yrDcw5ad3z+IWX1Hummt1WNwZmxzYt1lCqmuEDXlbRuFZA2dlFKOu3Dn/mN
+	qJM3leDVwioDoBYvLfJ8I2vR7v/DrVARbRy/QrmGBkQgfop3gZO6xcauz7BGqxpL
+	q23wFn/YmUM/LrrPdORHa+y1bajLfveGerNKekVv4+2poMo+0vDqWuOQhxjAVOj6
+	1N3I+X/Q8KSmLj9fGKxXjEPttfAkRHjRTYIhJiQZoRdIrQLtQwxd9bB/CA+b58Ba
+	8ay5vvTj92xCJYpMgQDcDc1+PvA8Q==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq97jq9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 11:14:37 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67ABBL7v031225;
+	Mon, 10 Aug 2026 11:14:36 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxh0g4c1b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 11:14:36 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67ABEXDL51446234
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Aug 2026 11:14:33 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 261A52004E;
+	Mon, 10 Aug 2026 11:14:33 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E5C392004B;
+	Mon, 10 Aug 2026 11:14:32 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 10 Aug 2026 11:14:32 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
+	id CC6F21603D2; Mon, 10 Aug 2026 13:14:32 +0200 (CEST)
+From: Alexandra Winter <wintera@linux.ibm.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Hidayath Khan <hidayath@linux.ibm.com>,
+        Dust Li <dust.li@linux.alibaba.com>, stable@vger.kernel.org,
+        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>
+Subject: [PATCH net] net/dibs: Correct freeing of dmb_clientid_arr
+Date: Mon, 10 Aug 2026 13:14:32 +0200
+Message-ID: <20260810111432.2334900-1-wintera@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF0000150B:EE_|DS0PR12MB8293:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9df85765-a269-4064-deb7-08def6cf4430
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|82310400026|36860700016|1800799024|376014|18002099003|22082099003|56012099006|10067099003|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	RR3UtKdY9NlICbuVFQlvsqVYDqyR/6pwOj026zoPraH+Rn0qYuqt2fox26bIXWpR43jlU6F0qgrmR4WsPlTKiEVix6NXNAlMA5mpvvRWUlWS7eNcpb4pTUaciPaT+xvGZfb3Vd67d9NXp0eXjazbFmpG8nC8fCxQiscPp+Qh4phr6IX7Cz0U7LLDWK3o4wmGAC6JwD7OHSlbCsOlIuQ8LFFTv6xBWsJT4AD99RILwa2+2c5K+zkIAHD17+6UXvdV8vIOLrFCDqNw5K3f4+Wa/19ijAiUr4FEcnK9AByWj+e1Lu7AYTBiL6x731FViM8uV4937opDQNeJ7GvwQ1lWUKWbvmU7wCuLxUVTQu2eZmN80yb5kq01Igik7S869bRg1zrdjU1c8UeNpdpkDtBlgzukXuovN8gTz4MI3HIaTKv4aJ5wMGvwZ0eU/law+XC68vNw8V51+9Xw5irtGPo230XLJ1q+1cgCa9n2hK+wuQSrU/0dEFuKcRYX/M7753mOsHh6wmrBI1IDxcqPQev8k316Ys79xkkJVjwg+1EdwwDZ6Liq8Ijh2CBCHg6MpOYU/2F846Ih9rv2GmM47/nTx44gZG3Z2EgaxyVEftSyQTnZTNdzXVJ8c8jzejcUMlQYjKIWZfhJ0kvXMb9l+mUjKOGefRMeOLl0PoGrFg6C/TBPrUsQebF+905xteurRvY6WgwYAtunixtOcSWpMD5EUQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(36860700016)(1800799024)(376014)(18002099003)(22082099003)(56012099006)(10067099003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	dS/sXPgSb/PRqiNgRoJT4fQNGkv226TTKXWAFQsqWDqkkkaau1GiYRvBx7h7S84pRZJcdHe8zpb8p1JpA5q1TIT1W6PGStuqvsobjAWaps27MNU8IawBwr+cIbuOnmcdJrQouyaG37EZldYff8uxSbLxtkOCHH/aLKYqBPuvdpsT89YjrEOzwBHBkKKN/9Olx2zUDbfUQuSZ58OYDkoDTVqTxU1INiBsxINI8MhKxHjnF5ErZlZhRMZcX437UJKp2QamiifSmi2wACq4jqkuqrTJ7TBifNZfQkQaQ0x2TZU6A7HJt9QXZbDFaunL3V/6FUoaiIcUrBDzwfAr1rBMQBYhPdbTDaBVgTg49jUeir2J1b6kK0//STn4vYYsLciPukIQPgk7ATdk5mIAQATzo/Sa1jwGnSam3TYGL9Gi3cNBwHTA8D9o0qj3IWdrrFrI
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2026 11:05:19.4367
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9df85765-a269-4064-deb7-08def6cf4430
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF0000150B.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8293
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: 7791h2VxduCO9UthnV-Ac9au4tE09Tb9
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a79b29e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=higaAn-RmfpUlMDw3n0A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDA5NiBTYWx0ZWRfX+cuDUCCq4/e0
+ 9tEOyExZxaj4RcBUPJo/Haet9kBl0Znw5DnZ1zyHIgEhpM3Y2QlxbWXfC7dIh3GhuVhd5YUETGE
+ 8CkWGTZ8FRxuzyFZUXsJEnUzGNelhtBxButOoEoGKSWewKV2oaNd1G0emK5o+cnLk9AzIO84cG6
+ ejoCk2cjg8KueiozALjprJI2sg7X1+aAcaeH83YYDTcZm1h3iDzPbKs3K5pYNg8MkLrvKzAOj+f
+ n31e0al5pQ9jPXcz84PD4g8Zk+LQ5dgG4sFpL/E5AkXUlSl7atZwh+zSO+7EavI7xwLIshPFmjM
+ j9FoSiams+i1B0gURsdP+OtEghPhUFsxV1MiQ17TSD9zaI8pWibRc/4ICu8fObybNmknFGasArF
+ 9B/3HDLlN0rE6z82wsbGO/rLPPKh3UFzogYxe6CXWIszq9yEcQft5WIK8ll5k3IH4yWk5T7f5oU
+ 40gvjcSPXh4Nw06yt1g==
+X-Proofpoint-ORIG-GUID: QYjAPgBnpCfl6JChPmiEr0ehuy95yLb9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDA5NiBTYWx0ZWRfX4c9+oWD1kS+g
+ HQGygNvTqNRHhsLQ8cPscKvaYsQIWHaAtjIsW/PS4v5jhLJClmdLNNhRtv4BIqyYHv1AitBYOLH
+ WinwnBZISkIr7jIjs5+fTTGG+8A9Tu0=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-10_02,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608100096
 
-Jakub Kicinski <kuba@kernel.org> writes:
+A dibs device interrupt handler can be active after dibs_dev_del() and
+may still access dmb_clientid_arr. (UAF)
 
-> The devlink port_split test has limited applicability.
-> NICs (as opposed to switches) require at least a re-probe
-> to apply the split configuration.
+In case of a failure in dibs_dev_add() being called by dibs_lo_dev_probe(=
+)
+dmb_clientid_arr is freed twice (double free).
 
-Interesting, apparently some NICs require reboot after devlink port
-split. Hmm, should I just move the test to drivers/mlxsw?
+Free dmb_clientid_arr in dibs_dev_release() after last reference is gone.
+Note that allocating in dibs_dev_add() instead of dibs_dev_alloc() is ok
+for now, because no dmbs can be registered before dibs_dev_add().
 
-> On top of that the test is not compatible with our driver env,
-> it just splits all ports on the system, not only what NETIF
-> points at.
->
-> Long term we may want to add some indication in devlink whether
-> the port splitting is runtime (cmode of sorts), and fix the
-> test to follow driver env. But since no (known) NIC driver can
-> support runtime anyway let's just hide the test from the selftest
-> framework by moving it to extra files.
+Fixes: cc21191b584c ("dibs: Move data path to dibs layer")
+Cc: stable@vger.kernel.org
+Co-developed-by: Hidayath Khan <hidayath@linux.ibm.com>
+Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+---
+This is a squash of [1] and [2] as requested by Jakub.
 
-Sure, go for it.
+Simon and Dust Li, I'd appreciate, if you could double-check whether
+you can give R-b again.
 
-> Having this test randomly break unrelated NICs within the DUT
-> makes people implement allow-lists for ksft, which then means
-> their setups don't run new tests.
+Link: https://lore.kernel.org/netdev/20260806120447.596164-1-hidayath@lin=
+ux.ibm.com/ [1]
+Link: https://lore.kernel.org/netdev/20260804085848.3579518-1-wintera@lin=
+ux.ibm.com/ [2]
 
-So I'm fine with the patch, but I don't buy this argument. People
-presumably understand that allow-listing implies that only the, well,
-allowed tests will be run. Presumably there was a history of new stuff
-blowing up, or gradual enablement or whatever, otherwise why not just
-blacklist the one problematic one? I.e. don't blame the existence of
-allow-lists on devlink_port_split.
+=20
+---
+ drivers/dibs/dibs_loopback.c |  1 -
+ drivers/dibs/dibs_main.c     | 14 ++++----------
+ 2 files changed, 4 insertions(+), 11 deletions(-)
 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
+index fd5caf1e19a8..649e4e375be3 100644
+--- a/drivers/dibs/dibs_loopback.c
++++ b/drivers/dibs/dibs_loopback.c
+@@ -335,7 +335,6 @@ static int dibs_lo_dev_probe(void)
+ 	return 0;
+=20
+ err_reg:
+-	kfree(dibs->dmb_clientid_arr);
+ 	/* pairs with dibs_dev_alloc() */
+ 	put_device(&dibs->dev);
+ 	kfree(ldev);
+diff --git a/drivers/dibs/dibs_main.c b/drivers/dibs/dibs_main.c
+index 4c26fd06973f..2b53a9d277dc 100644
+--- a/drivers/dibs/dibs_main.c
++++ b/drivers/dibs/dibs_main.c
+@@ -128,6 +128,7 @@ static void dibs_dev_release(struct device *dev)
+=20
+ 	dibs =3D container_of(dev, struct dibs_dev, dev);
+=20
++	kfree(dibs->dmb_clientid_arr);
+ 	kfree(dibs);
+ }
+=20
+@@ -194,12 +195,13 @@ int dibs_dev_add(struct dibs_dev *dibs)
+=20
+ 	ret =3D device_add(&dibs->dev);
+ 	if (ret)
+-		goto free_client_arr;
++		return ret;
+=20
+ 	ret =3D sysfs_create_group(&dibs->dev.kobj, &dibs_dev_attr_group);
+ 	if (ret) {
+ 		dev_err(&dibs->dev, "sysfs_create_group failed for dibs_dev\n");
+-		goto err_device_del;
++		device_del(&dibs->dev);
++		return ret;
+ 	}
+ 	mutex_lock(&dibs_dev_list.mutex);
+ 	mutex_lock(&clients_lock);
+@@ -214,13 +216,6 @@ int dibs_dev_add(struct dibs_dev *dibs)
+ 	mutex_unlock(&dibs_dev_list.mutex);
+=20
+ 	return 0;
+-
+-err_device_del:
+-	device_del(&dibs->dev);
+-free_client_arr:
+-	kfree(dibs->dmb_clientid_arr);
+-	return ret;
+-
+ }
+ EXPORT_SYMBOL_GPL(dibs_dev_add);
+=20
+@@ -247,7 +242,6 @@ void dibs_dev_del(struct dibs_dev *dibs)
+ 	mutex_unlock(&dibs_dev_list.mutex);
+=20
+ 	device_del(&dibs->dev);
+-	kfree(dibs->dmb_clientid_arr);
+ }
+ EXPORT_SYMBOL_GPL(dibs_dev_del);
+=20
+--=20
+2.39.5 (Apple Git-154)
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-
-> ---
-> CC: danieller@nvidia.com
-> CC: petrm@nvidia.com
-> CC: shuah@kernel.org
-> CC: linux-kselftest@vger.kernel.org
-> ---
->  tools/testing/selftests/drivers/net/hw/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-> index 234db5c2c90c..ab13f58d703e 100644
-> --- a/tools/testing/selftests/drivers/net/hw/Makefile
-> +++ b/tools/testing/selftests/drivers/net/hw/Makefile
-> @@ -19,7 +19,6 @@ TEST_GEN_FILES := \
->  
->  TEST_PROGS = \
->  	csum.py \
-> -	devlink_port_split.py \
->  	devlink_rate_cross_esw.py \
->  	devlink_rate_tc_bw.py \
->  	devmem.py \
-> @@ -55,6 +54,7 @@ TEST_PROGS = \
->  	#
->  
->  TEST_FILES := \
-> +	devlink_port_split.py \
->  	devmem_lib.py \
->  	ethtool_lib.sh \
->  	#
