@@ -1,122 +1,184 @@
-Received: from mta-65-227.siemens.flowmailer.net (mta-65-227.siemens.flowmailer.net [185.136.65.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E613CAA57
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 13:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.227
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786370381; cv=none; b=IjhM6YpQku2zuu8/SMla3AqE05b95kC/WEE8hi6oHk9kAzbFx6Nm0d0bjPLD8YaUIrytK9KRRWMvse0H5sqA5OKZ784N0PKAs4yKCm9ZvevBgl06YTnjEQUYYXOZHcxENouB2PwuYwOxsK8lZHaLE5kzcsgs+TVYPkD6DUfWqf0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786370381; c=relaxed/simple;
-	bh=LNR9irp27/9ZIGeSfR/hSo4oAQFZGjwDcuFbX1E0I2M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FvHKC04cFugxxlhv/gK1OsT6P4rMC2uT7n/670MYdsnAAbmar21czqNvctaREiO3yRa0jZ9z2QzGTgZLDBx7bRVRBxN8O1yIAE7/GH7vho0WWQ2lGkQji3ZvomfsQm60+3fybYK3aZQ313CnUvf3B7iX+YOgdTZeYEWoCGI1xR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=ASZFePPV; arc=none smtp.client-ip=185.136.65.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4B139EF2A
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 13:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786370400; cv=pass; b=un7jQ/LII5TYeWDhsl17IkubDXJ9o8HLJWeRMeE4zzI1rK3vJVnk9b5G/ytwRdGFaJ9Dz0OrdDLKmeKkff4ffVNHKZZbeQUhkTkeLh4NxEfIH13JZm5ZxEYuA67wdVaO98Pq1j8OiZe4LDKwv7cLltMSpSLiBpFJT6/L567+/T8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786370400; c=relaxed/simple;
+	bh=216somtno/5OJTGWhEpg7rNFOlcyGSpXRqRobuTtA68=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ECrPmSUAo0lZ/XzZ6/BIcwP/bTI3TK7tmIKnNEy4WTTdfR9cZ2rstWyR+iIDUZIlkxcYrEznU4VdRUdLgcO9hbqWisD/z0uM4e7tcIk7+Zy3LbDFDVkf1vV/bI4yklznIV5pqYM/WsLgf6DNOhkBOvTHrIKUhvdl3OsHFUB/3n4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=WIpzMfKS; arc=pass smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="ASZFePPV"
-Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id 20260810131918e6d20506dc000207b2
-        for <netdev@vger.kernel.org>;
-        Mon, 10 Aug 2026 15:19:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=florian.bezdeka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=1K5nMdBJ3F0LWFyBOgVo9wQEt2vYV/K/0BEbypgk2Ok=;
- b=ASZFePPVed4fX53qu+qLG0Qkkyld7u75e9Sq5Nw9EsL5g0+b5XKPA/u4Mh1HLbbztmNwtk
- 3VfmwbH+NMGhrGeOSDHeP9BQPPJRD0QoSGYErRhvfsHqSpIQZj3c50sWyAVgvLkCOVSWwutr
- j70BZA4It/i7ea7A8+Q4gK6p5KAZq/mc8P/GSbQkVTVLWH3GyoJTk9SaFhiIUW3BKxZ8PTw3
- QtYdwV6+lemXt0lVV1t7Yb+EaddtdF23Sqp3twbHT/PyxQ0gGNuUmG/eAC0S1Ob6hy1yQDls
- 01AnM1JW3qbej+dVYoSgxxSRu9cRx0cOv0zjt+v/L7FyUYWMDr5BNhzA==;
-From: Florian Bezdeka <florian.bezdeka@siemens.com>
-Date: Mon, 10 Aug 2026 15:19:17 +0200
-Subject: [PATCH net-next v2] net: stmmac: intel: Add missing
- pci_free_irq_vectors() calls
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="WIpzMfKS"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84874b52eabso2421478b3a.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 06:59:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786370398; cv=none;
+        d=google.com; s=arc-20260327;
+        b=okf6EAsg8cHRSMXzA7iSkbHg7jT5ZCrBoptucFOpOVuU7IZLLIiCtbeu+I0AulJOI2
+         wE2d5FtkiqfX4aIufwYp5RUVmE9WFiabxavHJXi6GDKik8LrYywCDZylacEpN3XWqEiA
+         TzoNHTy+K7c+2/m42X0Li4w2jwuvpXin56XMqU2PI7WRfH4rUvPkspftghU1AUcVR41C
+         0k4bEBw2maFsI1jb233VZXna2WI8WHabxqTvKbY9sWJ4z8SOjyvMEQeJ6P0WTXaAyJ24
+         TaP7w6VHn1qhYFsJG5rCrsUOrd4NyQZr2H77GZzWZ51YLFAPr5hc6xCrICvytElUAJY0
+         qSoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=46MZNjNXhKCE5DS6Jx+nsMAYwugJX53AXQsLnuBwmDo=;
+        fh=RhkXHQa/3HGSPk2QgG9eCLunyg1AkwIlxRB67aVbxOI=;
+        b=srvAe3an/c3fqKfcHvTJwvDMEbfeUWvoQpp+jh76x+dbmujY+zdftp3IXLB0RtmSPh
+         FhgzckFtLoYPY3Ru3upBxHYLV0H1YSbHg27+sT+SrrkoxYUF1e4ub5RE15/VF6cz7sl6
+         imx/R3Qy7XVEo2M2YyBiWukjtn9y5SJ1lgUi8xGEIE9dvF/za35bg3uOGqwstOzrIXN/
+         ixjlzoE2uDvn9R5oVMJjkKmtMN7mZcr8NosMfecnfThKsI1sukEEpT+EQ/W2HbhsrW2W
+         g3JP43T+eytvI024oeFAR8zu6GHBGubgnPgjOXS97tT677hDMmnnLJKCwSjAo5/2sIh/
+         UHZA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1786370398; x=1786975198; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=46MZNjNXhKCE5DS6Jx+nsMAYwugJX53AXQsLnuBwmDo=;
+        b=WIpzMfKS41Bd2KwJvSnf2Kul1IzSHVyXDZxgAwtObaTuMn3n27wMtJaoo5GSotIk3x
+         3kptEWPGePpo/cPlF0fzOF7S/2myVQ+2QNZYE2chaXgcFaYXXDczU5FBKFKOMCNFgXdN
+         b1Q4o4rSgQyfTn5HRXBAfrB/8RDIp7ldl0PmM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786370398; x=1786975198;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=46MZNjNXhKCE5DS6Jx+nsMAYwugJX53AXQsLnuBwmDo=;
+        b=IiKLXzalBzmoflv9YWL3KfMOUw+eho9Qqu1vnVeLB9y2PEjaoq/1ve2+TymOcGRF/y
+         aUgvrnj/7pUgIJjh7X7RyvPw/Dwy/8J1ZU6NVme+PQy1GqG1SHR8bAEKVd466deQeWKm
+         3L44eVc6sxUe2w899Kui1v8Ij5vfNRyqcoq2gFSY3GiOdE0qVQ1pE+WbkbqbHHi6b56C
+         +NldjtOiqcE3ehT7jva8MhtmjtKXl/lV7p0tz/U0uFOx2MedM/wx/vMppRUisHMuyjm2
+         +3zrxLece1/ax+U3A/Z8TP4trTHh9qYSBCuHpn53iUTmR8z3IrtJadGfln3znlY8uFu0
+         45sQ==
+X-Gm-Message-State: AOJu0Yw0UejK6udm/cmdEllUXdXFYtN4LZlILm5LM05suTFyi7iY5XT4
+	WYq/NQVtXjX+IBqqVp5COrLRB2iKCoamKHeYmpRPV2n/PuqA1RCCa1DbElb124fwcZ2IPSyc0pE
+	yiumSpJh8fe8FsOUTxg9HlScfcVUHoCQ/JlzjzQza
+X-Gm-Gg: AR+sD129gxQY/3HM/fA5eaXSFx72nuoNTBCqqJ0EvzgjX1NRY2JatX9SKBFVJV6xVx1
+	wySlXZ0YVP/KTWzAG4aQnoguJhjw3D8Af2DTKGr7fiGZ9ew5hS8N/O+FSoFJywTzpnjnuBPU6hB
+	m9MVSIO9TDMLJ7yPYSXudY5A2RIhNs3mVwcf1OFB5QZCjJUEkmittQ2/dTC/h0HjD8Oase10k5p
+	cW4NEduqYqi5sfZp0uvMGzhqcKLXgnY2h9C4dLMzG6od9IzzWERyXMD3kyURvTNfQX+XjTzAwuM
+	tLi6fEbd9Qep0nFYooCo1bkkhCNwXKCpv3fa1ZqynaEZFQ==
+X-Received: by 2002:a05:6a00:3310:b0:848:5540:2377 with SMTP id
+ d2e1a72fcca58-84f5dfbad07mr26834874b3a.17.1786370397896; Mon, 10 Aug 2026
+ 06:59:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260810-flo-net-stmmac-default-affinity-core-v2-1-d2105780b8ca@siemens.com>
-X-B4-Tracking: v=1; b=H4sIANTPeWoC/42OQQ6CMBBFr2Jm7RhaS42uvIdhUcpUJoHWtIVAC
- He3cgKX///kvb9BosiU4HHaINLMiYMvQZ5PYHvj34TclQyykroS4o5uCOgpY8rjaCx25Mw0ZDT
- Osee8og2R0NbKGVU70tcOCqo1ibCNxtu+wPw0DKX8RHK8HO4X/JCelgxNWXpOOcT1ODWLYz/8U
- lT/+WeBFSq6aS2kUorEMzGN5NPFhhGafd+/Ep+10PkAAAA=
-X-Change-ID: 20260119-flo-net-stmmac-default-affinity-core-c54fa45fe63d
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Ong Boon Leong <boon.leong.ong@intel.com>, 
- Voon Weifeng <weifeng.voon@intel.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Florian Bezdeka <florian.bezdeka@siemens.com>
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-68982:519-21489:flowmailer
+References: <20260807100356.1083774-1-jedrzej.jagielski@intel.com>
+In-Reply-To: <20260807100356.1083774-1-jedrzej.jagielski@intel.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 10 Aug 2026 09:59:46 -0400
+X-Gm-Features: AUfX_mxRG5jLc08nNMpM49kTVM0uIbxQQVBUXgRTCxaHxX5AM-qtREHzLHaaOE4
+Message-ID: <CAM0EoM=L4LBAnyxf+NG1D_dY2nre8fKgVxoycXK=sY-9Ruc9+w@mail.gmail.com>
+Subject: Re: [PATCH net v1] net/sched: cls_u32: feed u32_replace_hw_knode()
+ with correct set of flags
+To: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Cc: netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+	anthony.l.nguyen@intel.com, kuba@kernel.org, jiri@resnulli.us, 
+	edumazet@google.com, stable@vger.kernel.org, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The IRQ vectors allocated in stmmac_config_multi_msi() or
-stmmac_config_single_msi() where never explicitly cleaned up. As
-pcim_enable_device() is used, all sorts of other functions are switched
-to managed mode. The missing cleanup here isn't actually missing, it's
-buried in the depths of PCI code.
+Hi,
 
-But: There are some ongoing activities to remove that cleanup magic.
-See the linked discussions below.
+On Fri, Aug 7, 2026 at 6:23=E2=80=AFAM Jedrzej Jagielski
+<jedrzej.jagielski@intel.com> wrote:
+>
+> Fix u32_change() to pass proper variable to u32_replace_hw_knode().
+>
+> When trying to offload u32 cmd by adding skip_sw attributes it gets
+> ignored and it cannot be correctly processed by HW and tc_cls_u32_offload
+> struct which is then passed to driver lacks skip_sw var enabled.
+>
+> u32_replace_hw_knode is fed with the TCA_ACT_* flags (bits 16+)
+> instead of TCA_CLS_* flags (bits 0-4) which actually stores the flags
+> parsed by tc, so tc_skip_sw() always returns false. This leads to
+> ignoring some of the attibutes which are meant to be configured on filter
+> setup.
+>
+> None of the TCA_ACT_FLAGS_* is actually used within
+> u32_replace_hw_knode(), so there is no point in passing them.
+>
+> Looks like commit 695176bfe5de ("net_sched: refactor TC action init API")
+> shadowed the local flags variable which used to be set with
+> nla_get_u32(tb[TCA_U32_FLAGS]) with the flags as the new function param
+> while not replacing for none of the u32_replace_hw_knode() calls.
+>
 
-This patch prepares the dwmac-intel code for the removal.
+The sashiko reviews look legit to me. Mainly: your change makes
+u32_replace_hw_knode() able to fail for the first time (with the
+action flags it always returned 0), which turns three previously-dead
+error paths into reachable bugs.
+So IMO, this needs a v2.
+Suggestions for v2 from the sashiskos (I typically suck at these
+summaries, so may miss something):
+- Release n->ht_down on the create-path error (e.g. drop the reference
+explicitly before kfree(n), or reuse __u32_destroy_key()).
+- Consider switching the update path to tc_setup_cb_replace() (as
+cls_bpf's cls_bpf_offload_cmd does) so old/new flags and in_hw_count
+are accounted for correctly, and the old rule is re-installed on
+failure.
+- Mention in the commit message that skip_sw add/replace commands that
+used to succeed (and were silently skipped by u32_classify()) will now
+return -EOPNOTSUPP or -EINVAL when the block/driver cannot offload.
 
-Link: https://lore.kernel.org/netdev/27fec7d0ed633218a7787be3edce63c3038c63e2.camel@mailbox.org/
-Link: https://lore.kernel.org/netdev/7e024db2557a4d5822a0dd409ae678d10d815d9c.camel@mailbox.org/
-Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
----
-Hi all,
+Also seems worth Cc: stable backport.
 
-This are some fallouts of a quick stmmac "review", while trying to
-understand some issues that we have around the IRQ spreading implemented
-by stmmac.
+cheers,
+jamal
 
-The root cause turned out to be something more generic, so not limited
-to stmmac. I will try to prepare a discussion starting point later. This
-is more a RT specific problem, so I have to bring in more people.
----
-Changes in v2:
-- Patch 1: Rework patch description as suggested by Russell
-- Patch 2: Drop, will be handled separately
-- Link to v1: https://lore.kernel.org/r/20260210-flo-net-stmmac-default-affinity-core-v1-0-4e76612444e1@siemens.com
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-index 4d207f41a43b3eac64b6ae269765590107f1b30b..f5f9fa67ecd77f6b8a9b5ad5b39f338c4ba49a5f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-@@ -1348,6 +1348,7 @@ static int intel_eth_pci_probe(struct pci_dev *pdev,
- err_alloc_irq:
- 	clk_disable_unprepare(plat->stmmac_clk);
- 	clk_unregister_fixed_rate(plat->stmmac_clk);
-+	pci_free_irq_vectors(pdev);
- 	return ret;
- }
- 
-@@ -1367,6 +1368,7 @@ static void intel_eth_pci_remove(struct pci_dev *pdev)
- 
- 	clk_disable_unprepare(priv->plat->stmmac_clk);
- 	clk_unregister_fixed_rate(priv->plat->stmmac_clk);
-+	pci_free_irq_vectors(pdev);
- }
- 
- #define PCI_DEVICE_ID_INTEL_QUARK		0x0937
 
----
-base-commit: aa2e13ae8d3cbe2c15ef4f7e971b2de0832794aa
-change-id: 20260119-flo-net-stmmac-default-affinity-core-c54fa45fe63d
 
-Best regards,
--- 
-Florian Bezdeka <florian.bezdeka@siemens.com>
-
+> Fixes: 695176bfe5de ("net_sched: refactor TC action init API")
+> Cc: <stable@vger.kernel.org>
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+> Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+> ---
+>  net/sched/cls_u32.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+> index 8f30cc82181d..dc6e455e64ec 100644
+> --- a/net/sched/cls_u32.c
+> +++ b/net/sched/cls_u32.c
+> @@ -935,7 +935,7 @@ static int u32_change(struct net *net, struct sk_buff=
+ *in_skb,
+>
+>                 u32_bind_filter(tp, new, base, tb);
+>
+> -               err =3D u32_replace_hw_knode(tp, new, flags, extack);
+> +               err =3D u32_replace_hw_knode(tp, new, userflags, extack);
+>                 if (err) {
+>                         u32_unbind_filter(tp, new, tb);
+>
+> @@ -1161,7 +1161,7 @@ static int u32_change(struct net *net, struct sk_bu=
+ff *in_skb,
+>                 struct tc_u_knode __rcu **ins;
+>                 struct tc_u_knode *pins;
+>
+> -               err =3D u32_replace_hw_knode(tp, n, flags, extack);
+> +               err =3D u32_replace_hw_knode(tp, n, userflags, extack);
+>                 if (err)
+>                         goto errunbind;
+>
+> --
+> 2.31.1
+>
