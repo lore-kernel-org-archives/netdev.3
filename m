@@ -1,82 +1,110 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtpo49.interia.pl (smtpo49.interia.pl [217.74.67.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C022E37C900;
-	Mon, 10 Aug 2026 08:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386CC38E8D0
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:06:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.74.67.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786348872; cv=none; b=bnmVUiMhlXU9bP42koxLT51VgXBO8RbvSl03RrVb1PNvoPswvahxLMRoSVQEFMsUzAgIHjoWckX1V4AIEBjPdSppclm3xMhonnaO0AchcC9oKjND7Fz47BQPK180ViUxi/xkJ7UNzRgurQkzp07bBr7GbyC7SFR3ttiOh4VK/VM=
+	t=1786349190; cv=none; b=A1Qszi8+RCaYJSFefPGi60EYpb8TTkM8OFIGXGxDV/AbudRX9itc2SfbZxpKohKXoHPLRFBUy0YcoGpiWWqmKm2bWY4smod/03RYrcXerY69EQI7mLXVTfGy0gQbsMJiBNKsqXG33ZfenOD8mk3bcSJrFV7On9OpyMA8fYjG+iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786348872; c=relaxed/simple;
-	bh=MQgZ6qYvB49t+7+YYCJGgcNvepS7+xoZ7fKBM6lNzLY=;
+	s=arc-20240116; t=1786349190; c=relaxed/simple;
+	bh=2R0N38cQyg+9z4f6+8mKllGslg3z8WpbANxKatSrqQk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MaGg4AX6pbrXa2DfToLcm35zbkQAx75oOA6VaxOpZNRE0MCOw18AXh3GJ5wOhpwIXFLfSrOf0fN/3/5eLA//QlkbllK95ILHKa1PaLm3G0FZxOnzhaZExbvI+fS8pN7aDsBlnOLyef983ILXozrABHf1yKvrH3VtQm1QfwXSoSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=i5tLCJZM; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=nKpIuHgzKkgZfE6YwPUO2rwAUMoBx7d7OMjKwh0pvExwvtfIa/2Jq7KtLROgcMQK5WJZOtU+nM+adbRHnjY/3PCqHgiP58ycwOZQKSPq82pvtLspM6gW0Rru9VOJZU9T5bOr1jJURDiJJnP9hAuKbWnFQCcazzZzbIR1ShhyMNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm; spf=pass smtp.mailfrom=poczta.fm; dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b=EQ4LvqCp; arc=none smtp.client-ip=217.74.67.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="i5tLCJZM"
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 84C2C58151B;
-	Mon, 10 Aug 2026 07:50:28 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1A7EA3EB1D;
-	Mon, 10 Aug 2026 07:50:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1786348220;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MQgZ6qYvB49t+7+YYCJGgcNvepS7+xoZ7fKBM6lNzLY=;
-	b=i5tLCJZMfIwDwhN3HoS08GcZakWL5i/sTY+1DH3QUTGmy9Ds287uic86Fjyr02XSV4ak4I
-	UOm7fCpdNIPQWEDnLp6te6WaWtuw07OQSewoa3OqGMuK/u8XSbEgKet5ZVX1ut+MbHQ8TX
-	pq9WtsNB9pS3Tign7FvhUnueRMFOs1d6D0/lQjNHnEDN4qnd2ymY+s9UuruYRdL0q9BlQV
-	nULyvEJOZz9PJlmJcVQtoe2ow7qUBgOXHib+stqk2R9SpplFl3SImpWVW1g5qXIKIswUKz
-	kXLPUegIPlMxmIKavKMYOCrp0E/s8tMjTNs9pSUaPYfHse3IEtZ1/5CeoJ2Mmg==
-Date: Mon, 10 Aug 2026 09:50:11 +0200
-From: Arthur =?utf-8?Q?Cr=C3=A9pin?= Leblond <arthur@marmottus.net>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b="EQ4LvqCp"
+Received: from nr200 (unknown [80.68.231.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
+	Mon, 10 Aug 2026 10:06:16 +0200 (CEST)
+Date: Mon, 10 Aug 2026 10:06:14 +0200
+From: Slawomir Stepien <sst@poczta.fm>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: syzbot <syzbot@kernel.org>, syzkaller-bugs@googlegroups.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/3] dt-bindings: net: wiznet,w5100: add
- link-gpios
-Message-ID: <anmCs5tld5qMxyza@pc-du-fromage>
-References: <20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net>
- <20260806-wiznet-link-gpio-v3-2-532d4a143805@marmottus.net>
- <20260810-arrogant-anteater-of-economy-ef2078@quoll>
+	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+	syzbot@lists.linux.dev
+Subject: Re: [PATCH] netdevsim: fix deadlock in nsim_bus_dev_max_vfs_write()
+Message-ID: <anmGdjgYCnH1G9gd@nr200>
+References: <b7bf56ea-7522-4163-acd5-aaa69ad03b3a@mail.kernel.org>
+ <20260805160851.571ed66f@kernel.org>
+ <anWJyHCic8XvA0Q2@nr200>
+ <20260807144755.49141d2d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260810-arrogant-anteater-of-economy-ef2078@quoll>
-X-GND-Sasl: arthur@marmottus.net
-X-GND-Cause: dmFkZTFSnS5kAs9pSLL+ecXo24vhCBLycYFoCUboiCCFmaskT7MEj1xd9brI8v0zdaTP2sTyJ5SJqKMFmcIyM4YI3y0N1hHHDytR7UHfNTo9CoBzfEWdjpnrBDDx7wVzWOS3ylhkQiCHFe3u6AXkrZyQCoQI/PQuMqUpPRXH0v3aP+hR34HH4i0MbMSwyqM7pT9DKcynMgQF09TPHSjE84qxQb2z+Okvqx6+q+FRr3sct5cSX2clO8R3v4tQMWpgh4W9RvmlHymkiUUDwtsqDUtCKAPOsxT3npvsha+MMEOkPWQbbJy3F1RduDM9DbuROFRwYSPJ9WZz5gwBKBrCTsHMhZG6r+Vrc3Bsw7cfGkaKDaChH94tJfwI9k7/rMpKOXeyxgZ6lbqN7O1H4Uhn5beIMd0IHS8qgcpNHb7ZPUOiLBywn1AGUSpP+uaMnXFjEhFsAnre2KJP8OER09BXLjHAMeQGysIYBOBxOK6xDOCldnUaP8IGbZbkGjUp7Kjxgd5gzBz2ntyvEFKpKA2PYKvGdMYgkXYBWyYtkYclYT9QEuTqWfAGCRyY+Cz7A+sX+HGfB32CXx0nxZocJobpN6qyt5S89M1u/latLoF36Hp7s8+ofFm60sNVPSD5CdFPZuJS8iQTaeNMJP+Sv8Dpgr/+Srx+PDGHfEuJWmgWSgvXSaUZGA
-X-GND-State: clean
-X-GND-Score: -100
+In-Reply-To: <20260807144755.49141d2d@kernel.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
+	t=1786349178; bh=5MUEEcbuzgwtEAb5xoGkQk/hmb6TxNRvXJ7Qdg1Xaj8=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	b=EQ4LvqCpT8yDo8zvSmmHec/5WaYI85L3iVIoOKe+2EWR30mPMKh8eC1R4dpMSkttQ
+	 tqWqAlnd3jBiOj/ZtHbVEWQAz3TkTjrgQQ8Cz3yMi4m0ynvyXNkBQjuAfMDe4rknUo
+	 HjxnX3cWOiFQuBK/mU3fa7HSFPqd7J/q/9RO8WYc=
 
-On Mon, Aug 10, 2026 at 09:43:21AM +0200, Krzysztof Kozlowski wrote:
->The message is confusing. If you describe it from the host (system point
->of view), then interrupts are not GPIOs but "interrupts".
->
->But maybe this is OUT GPIO from the system to the device?
->
->Best regards,
->Krzysztof
->
+On sie 07, 2026 14:47, Jakub Kicinski wrote:
+> On Fri, 7 Aug 2026 09:31:20 +0200 Slawomir Stepien wrote:
+> > That's true, but is netdevsim used *just* by the selftests (or was
+> > designed with only selftests in mind)? What if someone is using it
+> > without selftests?
+> 
+> Quoting documentation:
+> 
+>   netdevsim
+>   ~~~~~~~~~
+>   
+>   ``netdevsim`` is a test driver which can be used to exercise driver
+>   configuration APIs without requiring capable hardware.
+>   Mock-ups and tests based on ``netdevsim`` are encouraged when
+>   adding new APIs with complex logic in the stack. The tests should
+>   be written so that they can run both against ``netdevsim`` and a real
+>   device (see ``tools/testing/selftests/drivers/net/README.rst``).
+>   ``netdevsim``-only tests should focus on testing corner cases
+>   and failure paths in the core which are hard to exercise with a real driver.
+>   
+>   ``netdevsim`` in itself is **not** considered
+>   a use case/user. You must also implement the new APIs in a real driver.
+>   
+>   We give no guarantees that ``netdevsim`` won't change in the future
+>   in a way which would break what would normally be considered uAPI.
+>   
+>   ``netdevsim`` is reserved for use by upstream tests only, so any
+>   new ``netdevsim`` features must be accompanied by selftests under
+>   ``tools/testing/selftests/``.
+>   
+> See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#netdevsim
+> 
+> > On the other hand: what sashiko found:
+> > https://netdev-ai.bots.linux.dev/sashiko/#/patchset/b7bf56ea-7522-4163-acd5-aaa69ad03b3a%40mail.kernel.org
+> > is true: the same issue will be with e.g. break_health. So it seems
+> > to me that a better approach would be to change when the debugfs
+> > files are removed.
+> 
+> I seem to recall being annoyed at the fact that the health API takes
+> devlink lock. It should be callable from IRQ even. Forcing drivers
+> to worry about calling context is annoying for real drivers too.
+> 
+> > It seems to me that change in nsim_drv_remove() might be easy, but
+> > what about nsim_dev_reload_down()...it seems it will have the same
+> > deadlock. Or am I missing something for this case?
+> 
+> netdevsim is just a test mock. Fixing it for the sake of fixing
+> netdevsim is a waste of everyone's time. The first question you should
+> be asking yourself is "do I understand what this code was *designed
+> for*"..
 
-It's an input on the host that triggers an interrupt on the host.
-So, yes, you are right I will change the description.
+Thanks Jakub, this is now clear for me. I will create a patch that removes this not used part then.
 
-Thanks
-
-Arthur
+-- 
+Slawomir Stepien
