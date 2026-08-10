@@ -1,126 +1,109 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86BA3DAABB;
-	Mon, 10 Aug 2026 12:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DBE3C1D73
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 12:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786366150; cv=none; b=QtedG+G0aYZiHm3facM+s7yW2sypWl2qbY9ASrtZ/EKBupm0oHtq9GO/6oNfdADMXq1CGY+GsWiaQ8eS3k8jKUpAvOHIgWtzT1CklskTTVwARyb4tw5NgBNPvLBmkJk0HIUJOCp0VIBBKWlnq1NuVcbFG/fmJumrsHVS19oJB4Y=
+	t=1786366157; cv=none; b=EIuo0fwovzho6cmob3OFwdXQLssJRuqzQn41K8hUwHjHqlZ3s8oYHmI5mYsvGnX0d6v9hP3EUPOwTbfe+21LBRqcAWsCe+bZdoYeiyNri0QwFokCeemonx3DSopGUKAD7/c/g4tRhdVVr2J6Bm1lAY9u2rqICeuEbb8NqL4AmtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786366150; c=relaxed/simple;
-	bh=CIDEHp8pZ8V4yvdoIPqxN4OATMI4JpS4FDXSzD6SSiw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t0cYP9G5wJCfVGWCwv1nHJP3At2ct0Kl0E9L+BYluHw6Bo2eS23ZJDitYLleVhHsq1XsX9EH7IKKhQQB1LPrZ8W7mz8CvDUzYW1QtLeK0kgM6P+mGdCWmiXqoHosB1i/mgsANwq4grWzUF64W8uwRIjLPw8lKG+UgoLDS8mK9Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=kD14nDfU; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1786366157; c=relaxed/simple;
+	bh=Mb/hA1HXPT4Bnq1UiYb25B7njxnyG9hjVQ+B93Af55c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QQrJxe5y4mZpKVNKZhNB7PEHQVXF0L2QBBIFanOjHPQ/uYFXDR8HwknAStAtcpBMgxv6JD9zJmycYfQL6FKzVR1BQBSjD2G2r8ExUwqsu5z7VU6ARtBlbiA0xqQIUpMJyP+2LpLFu6zIJjvZH+n+dAnIeb8MdrxeevkGtM3Ve8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lCCjqe0T; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="kD14nDfU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=kPqgsopBsOGoIwjvTqVnsk5MAA/fpSIVwqcFNthrXfg=; b=kD14nDfUTypLiKPVAwSCNo7BNW
-	dwSzLJEhGZMPP0mmECCfDMHtqcxk/WDwBOCybC1nqU8uPT372v0NUWxcv3PyKWCAIkKjBx4PRAvnC
-	sxevWjGfsVpHhNwFk4C17/mO7grKJzDNMDh2hGVk+OH91VnSZ/HpgfX6FMXeuOcJYpItY4PhX4wcf
-	zjD4+xWBNRdnlR0eK0EtIudmVUBIQzDaIbU+HGt2EsvAsEsOitDEJxNXVM3nG9a/S3uG2srNQCf8b
-	zstnzAk7a/cE65jF+uDnLKInLNHDSy51mdVR2yiFLdNBzPOilbHpxwj3jKgOE21UPu5pZiP4yYCxc
-	8UiUbUtw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wtPR4-002lDD-0l;
-	Mon, 10 Aug 2026 12:48:58 +0000
-Date: Mon, 10 Aug 2026 05:48:53 -0700
-From: Breno Leitao <leitao@debian.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 1/2] ipv4: mcast: getsockopt: do not overwrite past
- optlen
-Message-ID: <anm9gImFEz6EkUZ9@gmail.com>
-References: <20260806-mcast_fix-v1-0-bed0a5518e57@debian.org>
- <20260806-mcast_fix-v1-1-bed0a5518e57@debian.org>
- <20260807174402.2dfc12d6@pumpkin>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lCCjqe0T"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-ca957432c7fso1736735a12.1
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 05:49:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786366155; x=1786970955; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Mb/hA1HXPT4Bnq1UiYb25B7njxnyG9hjVQ+B93Af55c=;
+        b=lCCjqe0TKEHA7E7hMXfJqU7f2qT07kKpllHai4k1CxachKsST6OK4QU3hFAK3uSb+4
+         Y+q2BiHFaFi7cJAkwZYXt1uRIrNCwZZ1ZjwhzQNxQfCJcy65MPDBzmieaNgbSOlejaKC
+         BfEeQhGKDv8GSJqL3WWLnLXGfNVQvLitioMNvobVHRoDJFwsI9uLY7UZ1Z0M7UdVT+6i
+         guumJewgr52xZMd96S7N9YnJkeBZgDqk6Vj6Kf13dnU2p/qFIl5+4ZtUq57rqyjtFoiR
+         s8mnjLeZccJmdeqVZz8xsCJUs8oAsE3SgQ2hqDlNrrWG+ZhQ9V7uUlkuXInD60wujMiD
+         Nk+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786366155; x=1786970955;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mb/hA1HXPT4Bnq1UiYb25B7njxnyG9hjVQ+B93Af55c=;
+        b=fp/mjMm13hhBpCkQ0tlWme+eVYqhKbX36Ic5vyoBk0MNmZL6kLwyScviLKW8hzcAdP
+         8oeL/hLvYzDY63SZL6h61VTt9Tgua7JzIvnWbKK6kmOpJH6CeD4i0OiVBmPmVXubaJvg
+         q2HwCeisCjTX8sRzXvFgZjl02hoidRuWSh3FxMC8/03aTRaNfHQatRRLze+hiPwAbsrw
+         RYQ1o1b2YSmwGZ+n6Ve3ahf4YSqGw0CMnw43hAArduDwBmx4zwGYDHFebQUMbsPrLdAz
+         j8+ZMkCSLlAKm78X7MECeOmjQPyiBbQnePltWN6qPwAhm/r44dVx1nXHVhlVHpHhy13T
+         FTRQ==
+X-Gm-Message-State: AOJu0YymL4zxE0S0HaNguCTXNbgydZU6PYjIWo+GSBdce9PN2FuG9+Gp
+	hUFBWYP/gWdauwpDPDO6YVxALKy8LeVI38SFh2LkiJ4Dw53P3A2oTEGS3nmc5H8E
+X-Gm-Gg: AR+sD10/NIDgk1pvI6JAnSw3p4hGKAGhURLDdYGN8RFXw9/qBCv1QX/Jm7i43+hk9yG
+	rxylbAaBVC2cOwcWwp4Q4YuIFb6JzjEtHoy4B75oVgoaNuGLyRP5jri4prYKqGdIwVRfNAucF0l
+	fbSZvNTycrIwbBLeMMfJfuN0YRUH38DzyDqh+EEElwQhyKmD1yb3fPIR9+g/Q3r+BMt/nmxrMel
+	9hVSZfALcj5XpHTdwO6oVYq07g+gPLIHdSdm+YuKL2UwVOD9WhwKCXtB5HmuKz03s4X+CsRKWqM
+	G2DTQ3bf5BM/r09aO+XUtK3fbvc1UO7S2KxqonuqsozyKtpyuBu37XAMYPQRvM+6kaknVP3r9uy
+	uPriQEGvThofex7PVLa1catfReMmqmsxSHrR6PORkwFI/kDgo7VYpGN5muV/nVj21F2efgOctFm
+	csZZUYnuLB3AHtEJW831HWXpTXYRj3XXbxSjNzBSlvO0xWNZCPRRbzCHPjYr8yNFzlcvdI/h+tf
+	p4hn4TVpAsRpBN8rOqXByuVE5fBIw/aWav6D+1bcqN8gE08sLdh3H47
+X-Received: by 2002:a05:6300:141:b0:3c3:a08d:5b44 with SMTP id adf61e73a8af0-3cc1a35b155mr2142812637.23.1786366155463;
+        Mon, 10 Aug 2026 05:49:15 -0700 (PDT)
+Received: from ubuntu-openwrt.tail1b3f25.ts.net ([219.91.181.237])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315bebde353sm47455493eec.23.2026.08.10.05.49.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 05:49:15 -0700 (PDT)
+From: Sandeep Sondagar <sandeepsondagar@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Sandeep Sondagar <sandeepsondagar@gmail.com>,
+	nb@tipi-net.de,
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	j4g8y7@gmail.com,
+	robert.marko@sartura.hr
+Subject: Re: [PATCH net v3] net: phylink: treat PSGMII as an inband capable interface
+Date: Mon, 10 Aug 2026 18:19:08 +0530
+Message-ID: <20260810124908.145701-1-sandeepsondagar@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260809-phylink-psgmii-v3-1-908dcd3a9e3d@gmail.com>
+References: <20260809-phylink-psgmii-v3-1-908dcd3a9e3d@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807174402.2dfc12d6@pumpkin>
-X-Debian-User: leitao
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Hello David,
+Hi Nicolai,
 
-On Fri, Aug 07, 2026 at 05:44:02PM +0100, David Laight wrote:
-> On Thu, 06 Aug 2026 02:42:00 -0700
-> Breno Leitao <leitao@debian.org> wrote:
-> 
-> > getsockopt(MCAST_MSFILTER) can write past the end of the buffer the caller
-> > declared.
-> > 
-> > This is because the copy_to_user() does not respect the optlen, and can
-> > write over the allocated buffer, overwriting userspace undesired
-> > memory
-> 
-> Nak. This is just the way it is defined.
-> The application provides a length that is just the header.
-> As you noted the header contains details of the real buffer.
-> 
-> There are quite a few sockopt like it, you have to support them.
-> There may be some where the length isn't checked and is just assumed
-> to be the right size - they have to continue to work as well.
+Thanks for your email.
 
-Thanks for the review.
+This was noticed while working on the OpenWrt support for the Jio
+AirFiber router (JIDU6J11) based on the IPQ9554 SoC, which exposes
+5x gigabit ports (1 WAN + 4 LAN) through a Qualcomm PSGMII interface.
 
-The generic getsockopt(2) contract says otherwise.
+While testing I found that the QSGMII mode works correctly, but the
+PSGMII mode has both a hotplug issue and an incorrect link detection
+issue: a 100Mbps copper link is reported as 1Gbps, so the link can't
+pass traffic at the negotiated speed. While tracing it, I found
+PHY_INTERFACE_MODE_PSGMII was missing from the phylink in-band
+handling, so the PCS was being programmed in force mode with its
+default 1000base control-register speed bits instead of using the
+in-band SGMII word.
 
-      For getsockopt(), optlen is a value-result argument, initially
-      containing the size of the buffer pointed to by optval, and modified
-      on return to indicate the actual size of the value returned.
-
-You are saying that we have userspace program in the wild that doesn't honour
-the contract above, right?
-
-On the set side (setsockopt) of the same option takes the opposite view.
-It rejects calls if optlen is not properly set.
-
-	err = -EINVAL;
-	if (GROUP_FILTER_SIZE(gsf->gf_numsrc) > optlen)
-		goto out_free_gsf;
-
-Back to getsockopt(2), I was trying to look for users it, and glibc
-passes the full length for both options, with optlen and numsrc coming
-from the same variable:
-
-      /* sysdeps/unix/sysv/linux/getsourcefilter.c */
-      socklen_t needed = GROUP_FILTER_SIZE(*numsrc);
-      gf->gf_numsrc = *numsrc;
-      result = __getsockopt (s, sol, MCAST_MSFILTER, gf, &needed);
-
-and
-
-      /* sysdeps/unix/sysv/linux/getipv4sourcefilter.c */
-      socklen_t needed = IP_MSFILTER_SIZE (*numsrc);
-      imsf->imsf_numsrc = *numsrc;
-      int result = __getsockopt (s, SOL_IP, IP_MSFILTER, imsf, &needed);
-
-So the clamp is a no-op for every caller that goes through libc. 
-
-So my conclusion is that this is a bug: setsockopt and glibc both treat optlen
-as the buffer size, and I could not find anything relying on the get side not
-doing so.
-
-If you know of a caller that does, I will drop the series - I would rather
-look at it than assume it exists and assume that it will break someone that is
-leveraging a buggy behavior.
-
-Thanks,
---breno
+Best regards,
+Sandeep
