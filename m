@@ -1,138 +1,116 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F413D9535
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 12:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786366284; cv=pass; b=fzCVEXGIgM1i7mFkXPoxlkfl+1FH/Nt826oz+Do5Df/Hjyzq6yWXzzA5tYsWpbZbZlffPqZs/lM62CmVWC6P7RvgCh6mUd+k1FDi2lmwuqrsIJllTCLLZ4vUH8YJL7hOTgMSjcAgQoJM+lc09D4R7yCr+1pc4j9T6z2Fmswltvo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786366284; c=relaxed/simple;
-	bh=Crv4KgfOE+Xtxush3rEXQDkv5GM/zqtnns5DaHmFCKo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uwNzieXmRlgbmoyDMl5PH4rslkNO1nkHzCNxhBWLuiooewqQ/0refSHVRxd/DocIBzKsDw3HPiB6/BF2usW4qxa5Ab0eFfS0OSJtEXQzAd64M8agKQC21+x85FS+UWtFKd+KTR2eAR7hiJDE9SVqHhQBFtWcmyNAkKaFmxdVdB0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XjjB3cVU; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B993C1974;
+	Mon, 10 Aug 2026 12:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786366494; cv=none; b=i9Nq0b/hzB+aVyOBZ7gK88q/LhXkkrc/jlGKGuJQ0vAzkAQAES6r0hmeATx/j2d3uvpMwqPRqePdKBUVmBOWkOKAeU28R5akgwTj+FpUNaj9Smw9V+SjJ6hafkwNLAAcy5t9POK7vnYED1sYtngPCWmlSKv2Lgs3XcmsAwdGnv8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786366494; c=relaxed/simple;
+	bh=zc/RDvDVK4DufbmJwMGIGnQ3RA75fdRCPw8hS2Yw/9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fK1x61zYBrqqo1j7G20MBy+4p8amIAVXedHq4qEjjye8ljCeZqnQOwSBNp470dIgobOscc3XmqatyYFyrH7HMCB3x7bPaHDFGvn5ucZZLgitS/3hAhYOiOeNJdihL9LS3PwWzV1qRH+XEJxYZtTBP/sOdJbCLNaB6vyu3jUwpkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cg5nEjGm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XjjB3cVU"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-52d354b1061so7642061cf.3
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 05:51:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786366282; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sm0rw6eNmrbZlnyLtxAqcTnGRU/+UFKFcbGKHFmJN8HDwBR2fzPXOYaHWoieFw/SzO
-         Z/lxW87DzX5af0/DtQTABJEYjz45hnJuaTO3sXQ8/fZqwzWQCIXraFDKZeQ2z0QbW7By
-         rbrPeU+tRGa6somxc5Cfs74zX9dj+m3YglHLWy9t87UHhczOxm2zq592xteZFTnYuGYi
-         RwckrhQkKHXwWZSyTajxm0uxwWWmJ8a69qpzxwU9LSY+HHoTMAPZIg/i0+7PptPHTmJc
-         ABYdjL7XGzi5dlgyvbiLL4p2Ag4bMOB0rBynwScZAvixep6KGiw1u8eFOIQ78Oap4dot
-         walQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=R3rERGLehyZyoa+gmHCa5mwnC48oPkKGAEl7e/XnSlM=;
-        fh=NedyThYAnBGNZe5NkXMR3qyS0CgvoPmGw8v+yo6ptvc=;
-        b=r7oZJUnaSYVy5Urqywj1Wc1VvB6Z92bcpX4m+I8bBftftbbj6/xI2VDWIIbm040ip6
-         CrJ8au3W154pUE44mZEwZ6RhUHEtPrZsOF0+UrSIGuNYBO0izYlagTcTh7ZK+whqdcMG
-         u49DaoPSrhWq5yz/nxOINU3hmRpvFsgsZalCvbVjvPYIEICdp5nNL1A3pdB7Xz3XJ85v
-         8pdgCiqiqo+u8MHCibFX4vLpdSACynh69Cl+TLrX1g3iemvmzhlMUBJHpvPd83CH52Ca
-         oDqYrwk7tOVGoTg3EKKrzNePc1lPetdKprfhJ/NFpBMzogwQ52Iu4BlXqkr+ypCYL71t
-         h6/Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786366282; x=1786971082; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=R3rERGLehyZyoa+gmHCa5mwnC48oPkKGAEl7e/XnSlM=;
-        b=XjjB3cVUmsox+a4nUTF0v3tBKZu7AzWrmkamcQ3/MnWfDZSQ28TWbAzqV7oTTYeR9M
-         bSBctF6fmWqSkHnUCW3EejhqFHi/hTWmfckhYNapYLzWDvuBvvNenGRXuE65FuB+hmwJ
-         8dEMth8bpKW/TrPJoGnQkyo9BwfIAJIwogSTpq9xSoxNBI2PX5NZHuCcRzCxn9E2LGEr
-         VQC5HMk46y9OQb4EYvMXz0Cok4TXN7LqgGV5ddQTQPxBwnYk5rOL//mUVGvB/8ftBzL0
-         +s9Tag5IDEYT+9HLuc8x5lO/N0AyI0FQvaxJDIPQq4ZEEjeZh/Oa8A+KkICjxqNDGCHS
-         3ugA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786366282; x=1786971082;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R3rERGLehyZyoa+gmHCa5mwnC48oPkKGAEl7e/XnSlM=;
-        b=LnLIvPuqjTXk4PX5ewaZkw/fUR2U4uUbBUEi70LaeGfvk5x6M8SEytq6g4iwvS5cHF
-         LZQTmMVhXyD3IdKfdBrvLhhJbzkueqm6rZiuGuapNWZQ5qlbNbyJg6jKAhqdSvt3v5OH
-         ceYjIS9vuGL66o7QTA+nfD5gQ1bm+Axee0W9hEHxlONF/1cxWfJ69FUUNnATCg8cdAbK
-         p4E3DKdBbzxkZDjdN/3wbMN/YfLAo+Z23o7iIB1MCHzAyJSpPJh/Ghqf64UzHEqz8uky
-         09jK7mMndOxgzod0wHhW2MJrgdK/k7Sa/ZeneqDqhzdSWs/CwXo9PLKcGkeosI6vrhlv
-         z4/Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrthK1vnHWRyMvFYfDTPFi1UXeISS6z89YE5MHFcczo6YIjjtsQ3WBaVCQuAaxWQD6T1Kg4sRs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhUo1jLf9F/Rjh+TXM/BuCgkAcjCsntJI7XcJl7I7dNCBLfutG
-	CNGm1+AAyiRvInvRospRqSaippnjIIc/g2kcBpFSYrXK+soqBodmAg8GPF3xweCOPeyuuS1plnh
-	IB3koNE1pUBwCWvJuXpf7OxF3CtnNSiBsBMK9Xgw2
-X-Gm-Gg: AR+sD10cGMwU5Sm0qN3cpd/Mf5wqR3xthubS4UD2KNoykww7xswzayscvSs7VNXtB1K
-	Lo6Ziz51hyG0Xy1Pr3EGBhScx4sY7aK5REQPwMLjjXZIiS0oUTxl8H5W4D/aePqEElTZJWkMeuw
-	OxOz9JEXjzrUaTQx+aQvRFpbe5+wMH6vwJ/m0MXPqnaVasZUT2Q0PIRv0TJWHuAl+ecA2Hvi5Qa
-	rmkqrEjRB9RB0iBfgbK8Kb8QiEEhoVAeIy7ePweJje15vi9ZzrgXm+CDdFnPmPZDi8GVm8BQmRW
-	NlZ6qLW2I5qQP/jNjTwKm29bocp1ABNhhtZJgX4mMzeb5KlwB6Aaj+8wbE/v/oj3givofWmnrt+
-	y9Ul8RHdGD4bSbiTpMslkude7nvMj5aAKC3CMJ+EqFrXVKlV1+4y8bcPFjPOYtVgdav8keTrjan
-	cYrwOEoKWi6oO6Z2owq3SATigQrQ==
-X-Received: by 2002:a05:622a:261a:b0:516:d83c:edb6 with SMTP id
- d75a77b69052e-52d0b06e247mr322732891cf.12.1786366281088; Mon, 10 Aug 2026
- 05:51:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cg5nEjGm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499371F000E9;
+	Mon, 10 Aug 2026 12:54:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786366493;
+	bh=wYUL9JULG5KyBd66yTm1qDSHFyVxoNVEIMssJeQFfYk=;
+	h=From:To:Cc:Subject:Date;
+	b=cg5nEjGm/HKWJmnkQs0GAECTRDh/dBv9X/mR4Zh4rEKHVdF7ObDvQTUWBtK1OWyb9
+	 9TJot6apUwToPfsKlUvkfzRbSyHcbao5+8HO09omIxfT44hGAUqcUTVmkueommW4Ej
+	 pLWIKHmAkg+ZpfJ7AWIlB3Yy2Fc++a1I8CMkdFvI2PUGzB90Zqqk87jkwU3VwbY4IM
+	 S+ldDUDNpW1w1gZFgvFbNTRKZCcNkqmkTu4B/SvZ3mYJSXpFRs5qR3QJz9TdacB4se
+	 ZTg4knVAQTnjMrCoZvq77NILb/2cfhvGP9i84pePxYbphOeZoarrBlWgSSkTN4Hbmm
+	 GB5PwC4/TwKTQ==
+From: Dinh Nguyen <dinguyen@kernel.org>
+To: netdev@vger.kernel.org
+Cc: dinguyen@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Subject: [PATCH] MAINTAINERS: update entry for socfpga dwmac and gmii/sgmii
+Date: Mon, 10 Aug 2026 07:54:15 -0500
+Message-ID: <20260810125415.1717893-1-dinguyen@kernel.org>
+X-Mailer: git-send-email 2.42.0.411.g813d9a9188
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260808110054.6892-1-zhangcoder@yeah.net>
-In-Reply-To: <20260808110054.6892-1-zhangcoder@yeah.net>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 10 Aug 2026 14:51:09 +0200
-X-Gm-Features: AUfX_mw879mFwRTQSix6anuup_0juMu7CZx8dbI2qaB8P49iC5I551VZ6p7LZpU
-Message-ID: <CANn89iK8KSx+EfuANe6JuP=K0DrgTAiToPDH5L0chOj+uO9NUA@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: use likely() for srtt check in tcp_rtt_estimator()
-To: Ziran Zhang <zhangcoder@yeah.net>
-Cc: Neal Cardwell <ncardwell@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 8, 2026 at 1:01=E2=80=AFPM Ziran Zhang <zhangcoder@yeah.net> wr=
-ote:
->
-> In tcp_rtt_estimator(), srtt is initialized to a non-zero value
-> after the first RTT measurement (srtt =3D m << 3) and never returns
-> to zero for the lifetime of the connection. Thus, the "srtt !=3D 0"
-> branch is almost always true.
->
-> Marking it with likely() helps the compiler generate better code
-> for this hot path.
->
-> No functional change is introduced.
->
-> Signed-off-by: Ziran Zhang <zhangcoder@yeah.net>
-> ---
->  net/ipv4/tcp_input.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index 5b6378b94..a4c4d4760 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -1089,7 +1089,7 @@ static void tcp_rtt_estimator(struct sock *sk, long=
- mrtt_us)
->          * does not matter how to _calculate_ it. Seems, it was trap
->          * that VJ failed to avoid. 8)
->          */
-> -       if (srtt !=3D 0) {
-> +       if (likely(srtt !=3D 0)) {
->                 m -=3D (srtt >> 3);       /* m is now error in rtt est */
->                 srtt +=3D m;              /* rtt =3D 7/8 rtt + 1/8 new */
->                 if (m < 0) {
+Mathew Gerlach is no longer at Altera, so remove his entry as a
+maintainer for the SoCFPGA DWMAC ethernet glue layer and the GMII/SGMII
+dt-bindings files.
 
-Many flows are short lived, unfortunately.
+Maxime Chevalier has volunteered to maintain the dt-bindgings YAML files
+as well.
 
-I would suggest not adding a likely() here, and let FDO/LTO decide
-here on a case by case.
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+---
+ .../devicetree/bindings/net/altr,gmii-to-sgmii-2.0.yaml   | 2 +-
+ .../devicetree/bindings/net/altr,socfpga-stmmac.yaml      | 2 +-
+ MAINTAINERS                                               | 8 ++------
+ 3 files changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/altr,gmii-to-sgmii-2.0.yaml b/Documentation/devicetree/bindings/net/altr,gmii-to-sgmii-2.0.yaml
+index aafb6447b6c22..cfb53080dba26 100644
+--- a/Documentation/devicetree/bindings/net/altr,gmii-to-sgmii-2.0.yaml
++++ b/Documentation/devicetree/bindings/net/altr,gmii-to-sgmii-2.0.yaml
+@@ -8,7 +8,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Altera GMII to SGMII Converter
+ 
+ maintainers:
+-  - Matthew Gerlach <matthew.gerlach@altera.com>
++  - Maxime Chevallier <maxime.chevallier@bootlin.com>
+ 
+ description:
+   This binding describes the Altera GMII to SGMII converter.
+diff --git a/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml b/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+index fc445ad5a1f1a..8f5d63bb2187a 100644
+--- a/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
++++ b/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+@@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Altera SOCFPGA SoC DWMAC controller
+ 
+ maintainers:
+-  - Matthew Gerlach <matthew.gerlach@altera.com>
++  - Maxime Chevallier <maxime.chevallier@bootlin.com>
+ 
+ description:
+   This binding describes the Altera SOCFPGA SoC implementation of the
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5114e6db7307d..04e7fd1861037 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3597,15 +3597,11 @@ M:	Dinh Nguyen <dinguyen@kernel.org>
+ S:	Maintained
+ F:	drivers/clk/socfpga/
+ 
+-ARM/SOCFPGA DWMAC GLUE LAYER BINDINGS
+-M:	Matthew Gerlach <matthew.gerlach@altera.com>
+-S:	Maintained
+-F:	Documentation/devicetree/bindings/net/altr,gmii-to-sgmii-2.0.yaml
+-F:	Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+-
+ ARM/SOCFPGA DWMAC GLUE LAYER
+ M:	Maxime Chevallier <maxime.chevallier@bootlin.com>
+ S:	Maintained
++F:	Documentation/devicetree/bindings/net/altr,gmii-to-sgmii-2.0.yaml
++F:	Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+ F:	drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+ 
+ ARM/SOCFPGA EDAC BINDINGS
+-- 
+2.42.0.411.g813d9a9188
+
