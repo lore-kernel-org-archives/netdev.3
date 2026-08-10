@@ -1,136 +1,96 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CDB397933
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786349467; cv=pass; b=YoIiQrD2t8/gDGzrZsnJSTyy8DWkmXzH42gAYpOj7G7LV0Rdza76lyrONxc1ED50b4oPfYPGj3TcFDzLIumlZWqxX7d5E1+0+XjLxgRDoGhsUzZUuEhTcdES1F/n5lHZJFi4LBxL82GpbE+2WYPJIjTNLOsavYrsn2W4HiM4r4k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786349467; c=relaxed/simple;
-	bh=Ul0/DVXPUY8V3mImYLK8uMDT9XqPjTHYQpkTHb8gJCk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZPOO2RoAiUnUlOKyKbaMNCd2lHh7PjvVtXUdEZW6HkoB/N+4QTU0LvSncYZNkn9YrMYejs+hVUOPdzzNM5L8oITEE3O+P+ldjC+cCD9Nc0Ms/7BZfHXbSc1xgjrN8ybOcvHjkP6Fkfg3/zZTpUV6nzlB2qrFA6a7RG7SW5AHpp8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q9sNAsJ6; arc=pass smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131F8331EC0;
+	Mon, 10 Aug 2026 08:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786349537; cv=none; b=pv71N6VsTqstNEjzkLiK3DWfe1FWRTlL+3PHk9MD8FiP9ZbBKg8uRqJgucWjrKq/Jm+b2QbTxVqN/Uj4fGUoPgGIQJC5GpNTUxiZxWVhiZwDjc9pg68BTOAp3/1kzl9DtezEYTMNe8fc4cVRDUDLDdKDVHaF50W+pkLs5W5g2+I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786349537; c=relaxed/simple;
+	bh=7JIMFAz5G4K06JMHrQKTddhQ9cceZsFjkNIp3OFFeiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AkK86rpFKosK11izm3EiwoNyJmTTp3ZX1PSd/vcT5d2E+ErNrc6+PS0wadk8kmOsDHZga4XsFerkRkai4TQRscxEvDgpM3oLMP1OLksoOG+8XS/dGVoslDqrMB7cyFy++JVMkqxCC3Yv7epLJ4GNera2IWSolH+EaobyiokbOGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=M1wXZJ6D; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q9sNAsJ6"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e6391b114so116943785a.3
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 01:11:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786349465; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sr2pfW4z54ORBvmMgJK69MYPDEn1JXsYsP7SriMqNGfllnFgmYzhZ82egWAIqzG83L
-         cuP8ntVTJTZeRz+kWkDzUuXLmr0nAEFSh84ttEoO1Z+772lJSmlwI6uD/hNCGlCqfs04
-         af6HP1Z/xsC+zY1/c/nhaDyW+E3K3QquZE0o3ady7VdfjeK21NWiEtYmRzvWjXxbP8IM
-         4KHrS8Pm9ecS4vWm6iiEdr2p641deiCQma82g3xmKyjfPHTT85rNh/gmh8TqE8QGVmKB
-         OJ9j6lAv4AQFNTP5+wGAoYBqXjqAT+cBcO2SqMrhmNm7emO92aIRwoSEoh5Z8P8tFjU4
-         rJGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DMNTg7s6iuYq9HTrdlr0s0RVepF8iEFcEW++6XrG3nU=;
-        fh=QW1aoQrxZo1vTNrzgXtpqobJ4qpSlmKiIl1DJYz1vY0=;
-        b=AuBvjvub84O173G6MdCsNe/aMdF4s9GgvYwih3dZdxlQOzWwO9xlms1do5rUiiU3wY
-         gxMpe8m/8KRaLeyMqpQVJ9Hr/JxRmoVDYXbptvz/2meifJifqjEFJ3h0oGcD60uRgInw
-         R7zuuEpE4IeHsipG/j4xTOMXYlwxkeQrsAd4TD6tMzG4tcJbYIaDFcb6oHPIzVUv5g+r
-         pLiNG8LLR3My3afP968ScnYfOqQcgDmhXsfZxv1eh9TKTLh3yZ65FnfXS0mHVpTSwpbv
-         2zTn72gGzzE0Y7HcezWvoKgwJwANOrSb6OaX1DkR8/TqMdrtKhfkmXZoPb0FTg93x6nr
-         FxUA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786349465; x=1786954265; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DMNTg7s6iuYq9HTrdlr0s0RVepF8iEFcEW++6XrG3nU=;
-        b=q9sNAsJ6Z/MWuZfkpgwKAqgDPoO8x/Li6A2uxkigsLHNJ8RYmHkPY4Q27PEPYRSgSI
-         /OXO006Qh+rzOEbqnkawK6VJxAX763BW9kJC8bkkheSnaOa/LobNC2ewNZJ+xTP6Dpjl
-         F/yd3DJXafk3F1MASzrw4ZNHMlWsOQunH2+7/0ld7zkYplsXmvyjNOeMmXjYtmTj5t1l
-         9tRruICkGLqjLLczUuF19KVoynFfGunI/9amko96INv1gxfNsxdiRmdCSLAt/Nt5AQ2U
-         44UOpr96toB+2P1T0yRZqGkliWUMXXIAaxtFdqKtYK6xfqv3/s5+B1dXV9sdAuD8xcBS
-         gaFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786349465; x=1786954265;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DMNTg7s6iuYq9HTrdlr0s0RVepF8iEFcEW++6XrG3nU=;
-        b=bPvyrdWIVkZRt+WPY2dd2QgfDoiHTnWaIXcg2a43VtksMUg9ZVqfxwYBj5/mbe8loy
-         za5y8sx2h+UZsp8G1MzU7mVs6QPOxqi/vZ/i2OUKP1IB+F2NZmzrLxDkiXEwlN73tSmB
-         f044OVblH6xPy5sWT7rbCmSEzz3b8mndB0iiKED1bVdsk1TKVcOZ5lgau8/PZvI7McTY
-         Ijy5uHD9hZHWsTPPDNHuILcIgy04BLNb0BNE9GSKBFjfotvglJlXxfk7+eqN2SHIZ8lk
-         kj8Qk6hKUyzHgWxc175r7mmZdx6P5Av/vs9Wg9e7z8go6AehL0PifGE0v0+yLLLzqWlc
-         uHng==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/7DsTvY2dKfaRtxfGcumusn7NaIHmZPKQZpDFZ0PcnSo4Nf9uRv87cKRYZLsezsidyAJ93TE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzc8HIbpFmHTLI5R0BWwthxVkAY9D+OA6cg5OhKspJQZEnMPpoQ
-	33fvOVBd1882fxaywOPjfnRYCEKqAE/48xLwDbKS7kOyPc/5Qd2FBVgBx6j+rAQKh6nx5bzHBme
-	vrXGU4lbaQ/GI1eOATp62D1w00E8yNFwWTZKIT8aN
-X-Gm-Gg: AR+sD11f0Zm6x0/RktlRlPxL1OnOxK/iDQPWhk6V9k/LBFMSx8uZn9onkioKtW1TGE3
-	ZBxq9gqitC5fqI/lbIoIiQuF29Kj3VBa9wyyWAR+QzzjgLXlWTm1XCNYzJwXHCvKlqLjzRPjDdD
-	2uqZTHXTG1vCBChCTisqVyg5fOnH8pyOQXW6t1SRYisxSwiA35aX4ggGRNdkz61xz5zEwPtx+oh
-	OIJoW349Njcfu+3aP0mdShiBYEF87UCkGmyQjF5VIsXvGYRehoeDj8F+AwRgGuon+FnzaLFs/i1
-	BoxROvbt69yWLASDdQlxVY/zGdyGwKd3YdpJv5LjyRVgi4rNbsgz9Iqcjtrrkc8z0SRu/1dQ0ed
-	yj1r0L9PnIzN5sv0Lsm0tIlbHX+x/3ZMHuDi8N6nPtohxbG5iTYEuxJQ=
-X-Received: by 2002:a05:620a:489c:b0:930:e2ea:2881 with SMTP id
- af79cd13be357-936665d520cmr2844934685a.36.1786349464133; Mon, 10 Aug 2026
- 01:11:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="M1wXZJ6D"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C67F01F6B5;
+	Mon, 10 Aug 2026 08:12:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1786349526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+vFz3+D4XJViTRjZy52bDeSuEFMncn+BYlQG2XjGXrE=;
+	b=M1wXZJ6DasWcUAhQMMKoFlAP3c7Mly7o23mHl4w0rlL/H4AolroCsPTYsgS7rk4CI9+Jhm
+	R4/CZTUHU/6W9R43pg4AAh5K2TGvX8wvVV7zRpSWDkpQvzhME29MDs5CscTtOW/1awxb5z
+	xdUO0HJFSGOjhMJx30MNsmnm0aVe8/ImlrAtvAiAQMGNQBWvMfDzl8cNrUzq4xQt5OAj8q
+	hrt00ekv3lFJaQ1f0EGzArYGFCfI8dTGi5bpfHRG1HHea25UfzMLZ3RmNv+og3jz9Isixz
+	6iEqNrhQVbqom30bDEM7ORZ8s//OCabd1m7zlmHlPilQizXWiR2EMQ7xXoKIyQ==
+Date: Mon, 10 Aug 2026 10:12:00 +0200
+From: Arthur =?utf-8?Q?Cr=C3=A9pin?= Leblond <arthur@marmottus.net>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Netdev <netdev@vger.kernel.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 2/3] dt-bindings: net: wiznet,w5100: add
+ link-gpios
+Message-ID: <anmH0NR42wC4EwG-@pc-du-fromage>
+References: <20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net>
+ <20260806-wiznet-link-gpio-v3-2-532d4a143805@marmottus.net>
+ <20260810-arrogant-anteater-of-economy-ef2078@quoll>
+ <9e8fb566-e372-4519-ac0b-b8ca6de275e3@app.fastmail.com>
+ <105fcc5b-e1d9-4bd8-a697-2d68e185aa38@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260807102802.1696827-1-zhangfeionline@gmail.com>
- <CANn89iKByRiWyVdPCzvb5+0WWrPcaeLSXDqP6GqUHbqRwMF9bA@mail.gmail.com> <20260810075935.2961699-1-zhangfeionline@gmail.com>
-In-Reply-To: <20260810075935.2961699-1-zhangfeionline@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 10 Aug 2026 10:10:51 +0200
-X-Gm-Features: AUfX_myeVfc4yGRooJPQY1bzyiwcFrBllK68PnQyh7yYUACU0ELbnCQAAX8Quac
-Message-ID: <CANn89iKHSfHhrDVVsyFcu+dDwx9GM-Zc0e+p519-ERaRJ9ojdQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: ethernet: drop skbs with a short linear
- part in eth_type_trans()
-To: Pengfei Zhang <zhangfeionline@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, zhangpengfei16@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <105fcc5b-e1d9-4bd8-a697-2d68e185aa38@kernel.org>
+X-GND-Sasl: arthur@marmottus.net
+X-GND-Score: -100
+X-GND-Cause: dmFkZTF1eFA26jUND3JewQV6q3aeJ5oZlj9FE6mpvZSNm2BdaZaBZbFDXWWDP5Ud80ur+CvicwMByhgQ5Y1AC8LK0xhgj3LdcvtTm90AM038SECyaNBCwg7BBc67MP6dNbu6JW62MAcQYo0VPb8qRI3+9ThtWbLY3EtBq5JyEmB8euwbOv6fyhaOqW+OWobOmzzq5nE0gcOt/FKDxwSJfN6c5wR5mOmYeKPeI/hMqZ8oZCPApME2tzqDqn2ImrgCXN8uq57mq9ofAmzTyd3MuSCpWIFv0Efhc7AZ3kEVDYVlde47B+sIN1QRN2d0isdYsSkGBYLNMHU/Hql+RogkHgAPiypzdKL2GSjQxbWggSN0pEqatRqE5iKsuyBORZ0nC1iyaKz2agpRWIlWDfKtZe5D9UHtN0NQYiu7ols1jaWnujAa9N2sq04HtLTTbe+0JqycEQZnpnaR6PnvPyGAAEOA3y5O/a4PgvfInzBPUmCHZuFi18gWJqIooPMi7Dv7EGgRoHW37ljh53C7sABYP2le/NV6ibTC0bDceQDqrYSr9pHhoWIIaijInFGTMgAulutZ69D5sZUBetf4qoJcIDqYCDCqZdtqyGpLM6Js802Tz/4uTLPpEHyBpauUU1Qb9bwcEatC9OZhz2bxUn5p70gb4pEygNvgLwc0chrmJI7BGJuMkQ
+X-GND-State: clean
 
-On Mon, Aug 10, 2026 at 9:59=E2=80=AFAM Pengfei Zhang <zhangfeionline@gmail=
-.com> wrote:
+On Mon, Aug 10, 2026 at 09:59:18AM +0200, Krzysztof Kozlowski wrote:
+>On 10/08/2026 09:53, Arnd Bergmann wrote:
+>> On Mon, Aug 10, 2026, at 09:43, Krzysztof Kozlowski wrote:
+>>> On Thu, Aug 06, 2026 at 05:00:01PM +0200, Arthur Crépin Leblond wrote:
+>>>>
+>>>> +  link-gpios:
+>>>> +    description:
+>>>> +      An optional GPIO line that can be wired to the LINKLED pin of the w5500
+>>>> +      as an interrupt to detect link status changes.
+>>>
+>>> The message is confusing. If you describe it from the host (system point
+>>> of view), then interrupts are not GPIOs but "interrupts".
+>>>
+>>> But maybe this is OUT GPIO from the system to the device?
+>>
+>> From the device point of view, it's an LED output, but from the
+>> system side we should describe it as an IRQ_TYPE_EDGE_BOTH
+>> "interrupts" property rather than a gpio line.
 >
-> On Fri, Aug 7, 2026 at 6:52 PM Eric Dumazet <edumazet@google.com> wrote:
-> > This is obviously a wrong patch. Please fix  faulty drivers instead of
-> > adding more code in our fast path.
-> >
-> > If you use header split, you are supposed to use modern NAPI api, like
-> > napi_gro_frags() which will take care of that.
+>Then probably we should list all four other pins as well (speed, duplex
+>and active).
 >
-> Thanks for the review.
->
-> I put the test in eth_type_trans() because I thought the stack should not
-> be brought down by a driver handing it a malformed skb.  I take your poin=
-t
-> about the cost on the fast path, and that napi_gro_frags() already takes
-> care of this.
->
-> I will drop the patch.  I do not have amd-xgbe or dwc-xlgmac hardware, so
-> I will not send an untested driver change; if I can get access to a devic=
-e
-> that behaves this way, I will fix and verify the driver there.
+>Best regards,
+>Krzysztof
 
-This function is primarily used by Ethernet drivers.
+We use this line to detect a link change but don't read its value in
+the interrupt handler, we read the i2c PHYCFGR register to get the
+link status.
 
-An Ethernet frame must at least contain an Ethernet header.
-
-A frame smaller than that should be dropped early by the NIC.
-
-If a NIC and/or driver provides the upper stack a packet without an
-Ethernet header,
-the bug is on them.
-
-Let's not add checks in our fast path for a situation that should never hap=
-pen.
+Arthur
