@@ -1,444 +1,623 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55B739AD3B;
-	Mon, 10 Aug 2026 22:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFAF3B6370
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 22:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786402295; cv=none; b=OoesuRdLUnC70KW+Uy8kjfz8byAJz8dbXEqQsoASSq09RPIhML+r59Bec8zT+v/JndVgpyjrakTvm7nD3NfB58em5605NQ+njqdHstx3nyyf/J0AaudDUEPqxFD6DlxdjxQCaPv9fseK4+LyAfr+w04Eebe/+5ae3GpNctXLHok=
+	t=1786402346; cv=none; b=aPhSNYzFt0j2h165Ifyc4xxj855x6revs1OcnXG1MiRwLdqXRdxym7vGRQWvHF7Uitrgi31ZkNPMbll7oPZ34GyQ/oA1eIgk0ZK0fbLuVfEKYSfG/vr1euVLlNPSsTjDeBagmVMvojR4+BPGpBrBJuc3+wbc/Y9Z7S5zeX6DUjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786402295; c=relaxed/simple;
-	bh=Xbor0olV3ZeQBE+Pc+GHpNflu7yAvdbDsyzECtYKIOk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXY2FI1e3yB5aSCZRw7k9FBuwf2sGI3w1WkbfnLElUiBDqmyQ7fsCTHrOxQD7IxRzcBEqgl41afzseNJF7r9DtN/tNMJY4iUXV/dNHQtIOJ+Z1z5zTgip1jMrokmMey3I6spk5z2xEJZDRJna5J0BQDuXEXD/KaBye1FSOBeRqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5rwvgDM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786402346; c=relaxed/simple;
+	bh=Yqmub7req9z9BbkT3FWr2LCkNs6GXmZiHF4rD8W8EiM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p+qsPpOBmIjBLZ75IWMJMGgK1Ap1x7P9aMnE/cuHsU7gno4XPLYzc7k4Gzv6j4cQmr2jixum3EgjbXm5TsbxmYA4vEwnqNz/6yULih3FniVSYLmpWTfgV0p0/43XBvqStkOe1SRmrSnwKC1MiCbLvGBMVWKdX9oggPVCDdOxPPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PUqLcevC; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5rwvgDM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09981F000E9;
-	Mon, 10 Aug 2026 22:51:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786402293;
-	bh=1sTXx+30oR2gYl133k+FZnm1EIMDomwGL/YwT/7LbdI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e5rwvgDMyBuf7Y6dw37n/jSFVl8XIqbTRFas3Bm+UebfQ1Ut5UqKtg+wOmt1DsEbF
-	 Vja0NU+W3Kdo0qblKUb6Y6sCyDanNtM3n0Ydl0sfzZygS5ZJhDsWqrW5+BbYsMoFtT
-	 2jgx2M2btOB9NPJc9oATue1dYyMaYKbMKnLdBhuHlmBVVfp6tSRJirY3EBUPnX6OMG
-	 CmkdnBqWKR/slZGqp7uzkOLXE7UkgaTYQLjJTV4qit7eVhOE7KQQz5TJ3skQ9fN6Hx
-	 KwD//KKe54bKf2WvSNjBS0BnOVnz8OwI64flJthBbyJLObzl2PzMWklu4ulThwyaFa
-	 z95yiWEQ9sImw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: tariqt@nvidia.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	aleksandr.loktionov@intel.com,
-	aleksander.lobakin@intel.com,
-	akiyano@amazon.com,
-	daniel.zahka@gmail.com,
-	dsahern@kernel.org,
-	gal@nvidia.com,
-	jiri@nvidia.com,
-	jiri@resnulli.us,
-	corbet@lwn.net,
-	leon@kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	mbloch@nvidia.com,
-	nikolay@nvidia.com,
-	razor@blackwall.org,
-	petrm@nvidia.com,
-	przemyslaw.kitszel@intel.com,
-	rkannoth@marvell.com,
-	saeedm@nvidia.com,
-	skhan@linuxfoundation.org,
-	horms@kernel.org,
-	vdumitrescu@nvidia.com
-Subject: Re: [PATCH net-next V5 2/2] net/mlx5: implement max_sfs parameter
-Date: Mon, 10 Aug 2026 15:51:31 -0700
-Message-ID: <20260810225131.933746-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260806073037.3001886-3-tariqt@nvidia.com>
-References: <20260806073037.3001886-3-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PUqLcevC"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AK1eWD2599775;
+	Mon, 10 Aug 2026 22:52:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=JviW1a
+	0tjojqkf8hee/v0Frlk7BrvmtzYl+RwvwBE9Y=; b=PUqLcevCFe5RFy/q6uqCn5
+	31RH6vuNxYggwrjf9RVA4lkLxtDsAEv6INbUgLJ1CP6zvIJ5h5D/zlZkHyKsqavq
+	FaD56goKvfGIX2MT18CP+C3nAjEieN0n16PebpuLx8JPs2E3ykQSBNuS4uTP3Kvh
+	NMs+Z2DCroqUM765q8A5OPtuXOSpHfsk3sdnSu7bcVCCW2wT6ng8zpAfuOrAlIba
+	RBc+gopXudHEq9QT4G+li+hUaG/Mifgv0RuPsQwu0CEmXIUf3jgrUEqSBFfC5k0M
+	ut9Iy2DjjXmdfmXzF4XYuK3Mx31AJgH2O0+fpAodfyD+5Wrbxi2ma/9Vt++TCI8w
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvm9jevc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 22:52:04 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67AMfFav026701;
+	Mon, 10 Aug 2026 22:52:03 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxespxvnb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 22:52:03 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67AMq20S52167116
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Aug 2026 22:52:02 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 059AC5805B;
+	Mon, 10 Aug 2026 22:52:02 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 86EE658059;
+	Mon, 10 Aug 2026 22:51:59 +0000 (GMT)
+Received: from [9.67.152.96] (unknown [9.67.152.96])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 10 Aug 2026 22:51:59 +0000 (GMT)
+Message-ID: <f29118c5-fc97-46c1-8c69-2b5bae0e843a@linux.ibm.com>
+Date: Mon, 10 Aug 2026 15:51:58 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 08/14] ibmveth: Add queue-aware RX buffer
+ submit helper for MQ
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, horms@kernel.org, bjking1@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, edumazet@google.com,
+        pabeni@redhat.com, davem@davemloft.net, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, simon.horman@corigine.com,
+        shaik.abdulla1@ibm.com, davemarq@linux.ibm.com
+References: <358f3660dbf83279a5218792d432746bc8b845ac.1785457143.git.mmc@linux.ibm.com>
+ <20260806183707.3175525-1-kuba@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260806183707.3175525-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDE5MSBTYWx0ZWRfXzGKos6D6TAU3
+ igR7xHXZ2XGrN61ICISwjIJgaIDr3cDXj/f7ZdMdaeDhDYUYuyWBVCjHEyu9BgPzjKNdjSZ/zFc
+ 3wuDDOpCum9a1aQGFRj2NrGzmx5YZqI8reV4SgC4EE7Q1/ZVkGEwtqQIvjOx45zDpQ3anZPDKGt
+ pzVKVEXgWnDl/AeeQeM8P6FHKDAhieY9atPxsBaqugK2WoXyQUblqHn734+xhTqtQTG1H5C3QsH
+ 4HIxzkvARYhG0BhsDDbprg7oTm+bxJW2k6Aw1J3UAwwyohqkdJw286pH69+ElfA1sAbgNscDqtL
+ EStMRbEunPkhE43fOKW1gfgSMuI4jiYwGPXzIGkucC0mLRHe1BHg0Z81oMIUypl/Kab7c2pQxmG
+ LN7H7J8E8RujIdVQcxQNGQEh1y9LehQ1stETdcNWLeVJReF2p8eRc2vBmN5cCwa8WDAvOlbNVrT
+ RhXkrkDaXIu8oyGAzIA==
+X-Proofpoint-ORIG-GUID: v989vMb3JwVGo4859Ni5EVtqmak8MAlO
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDE5MSBTYWx0ZWRfX9Mz/rMGqaQBD
+ gL1voi84li2ChQsg/cqP8+2yLAcub1aNV0bIa/xOP/JjhIdBcYt4XVr2Xbr0Xjt7BbBv/cpVivV
+ Xls3FfHOsja7xX9Zyqlj1Chav6vxS5s=
+X-Authority-Analysis: v=2.4 cv=IfK3n2qa c=1 sm=1 tr=0 ts=6a7a5614 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=Fa47dAiymvHwYbY31YUA:9
+ a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
+X-Proofpoint-GUID: FNKBMeaJAYCpnP26sdPq7OlfVktzJysv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-10_05,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608100191
 
-This is an AI-generated review of your patch. The human sending this
-email says "second one looks legit at least (about the max value)?"
----
-net/mlx5: implement max_sfs parameter
 
-This adds the generic devlink permanent parameter max_sfs to mlx5, so the
-number of light-weight subfunctions a PF may create can be set through
-devlink instead of vendor tooling.  The setter enables the global
-per_pf_num_sf bit and then programs the per-PF SF fields in the MNVDA
-non-volatile configuration.
+On 8/6/26 11:37 AM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> ibmveth: Add queue-aware RX buffer submit helper for MQ
+>
+> This adds ibmveth_add_logical_lan_buffers() to choose between the legacy
+> single/multi-buffer hcalls and the new per-queue buffer hcall, threads a
+> queue_index argument through the RX accessors, harvest and replenish
+> helpers, and adds a per-queue replenish_lock plus reworked H_FUNCTION
+> handling.
+>
+> A few questions below about the new failure handling, the new lock and the
+> logging changes.
+Hi Jakub,
 
-A few questions on the new code below.
+Thanks for the review.
 
-> diff --git a/Documentation/networking/devlink/mlx5.rst b/Documentation/networking/devlink/mlx5.rst
-> index cf1dffa676696..9421c89951a05 100644
-> --- a/Documentation/networking/devlink/mlx5.rst
-> +++ b/Documentation/networking/devlink/mlx5.rst
-> @@ -45,8 +45,13 @@ Parameters
->       - The range is between 1 and a device-specific max.
->       - Applies to each physical function (PF) independently, if the device
->         supports it. Otherwise, it applies symmetrically to all PFs.
-> +   * - ``max_sfs``
-> +     - permanent
-> +     - The range is between 0 and a device-specific max.
-> +     - Applies to each physical function (PF) independently.
->  
-> -Note: permanent parameters such as ``enable_sriov`` and ``total_vfs`` require FW reset to take effect
-> +Note: permanent parameters such as ``enable_sriov``, ``total_vfs`` and ``max_sfs``
-> +      require FW reset to take effect
->  
->  .. code-block:: bash
->  
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
-> index 4a7275e8b62e3..72cc8da5f1193 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
-> @@ -68,7 +68,9 @@ struct mlx5_ifc_mnvda_reg_bits {
->  
->  struct mlx5_ifc_nv_global_pci_conf_bits {
->  	u8         sriov_valid[0x1];
-> -	u8         reserved_at_1[0x10];
-> +	u8         reserved_at_1[0xa];
-> +	u8         per_pf_num_sf[0x1];
-> +	u8         reserved_at_c[0x5];
->  	u8         per_pf_total_vf[0x1];
->  	u8         reserved_at_12[0xe];
->  
-> @@ -93,9 +95,11 @@ struct mlx5_ifc_nv_global_pci_cap_bits {
->  };
->  
->  struct mlx5_ifc_nv_pf_pci_conf_bits {
-> -	u8         reserved_at_0[0x9];
-> +	u8         log_sf_bar_size[0x8];
-> +	u8         pf_total_sf_en[0x1];
->  	u8         pf_total_vf_en[0x1];
-> -	u8         reserved_at_a[0x16];
-> +	u8         reserved_at_a[0x6];
-> +	u8         total_sf[0x10];
->  
->  	u8         reserved_at_20[0x20];
->  
-> @@ -158,6 +162,8 @@ struct mlx5_ifc_nv_sw_accelerate_conf_bits {
->  #define MLX5_GET_CFG_HDR_LEN(_mnvda_ptr) \
->  	MLX5_GET(mnvda_reg, _mnvda_ptr, configuration_item_header.length)
->  
-> +#define MLX5_DEFAULT_LOG_SF_BAR_SIZE 12
-> +
->  static int mlx5_nv_param_read(struct mlx5_core_dev *dev, void *mnvda,
->  			      size_t len)
->  {
-> @@ -755,6 +761,115 @@ static int mlx5_devlink_total_vfs_validate(struct devlink *devlink, u32 id,
->  	return 0;
->  }
->  
-> +static int mlx5_devlink_max_sfs_get(struct devlink *devlink, u32 id,
-> +				    struct devlink_param_gset_ctx *ctx,
-> +				    struct netlink_ext_ack *extack)
-> +{
-> +	struct mlx5_core_dev *dev = devlink_priv(devlink);
-> +	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
-> +	void *data;
-> +	int err;
-> +
-> +	err = mlx5_nv_param_read_global_pci_conf(dev, mnvda, sizeof(mnvda));
-> +	if (err) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Failed to read global PCI configuration");
-> +		return err;
-> +	}
+This patch introduces more than helper reshaping. It establishes the
+replenish locking and error-handling model that later MQ RX behavior
+depends on.
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index 9d1242dbcb19d..cb93659fc0576 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
+>
+>> @@ -588,11 +598,75 @@ static inline void ibmveth_flush_buffer(void *addr, unsigned long length)
+>>   		asm("dcbf %0,%1,1" :: "b" (addr), "r" (offset));
+>>   }
+>>   
+>> +/**
+>> + * ibmveth_add_logical_lan_buffers - Add receive buffers to hypervisor
+>> + * @adapter: ibmveth adapter structure
+>> + * @descs: array of buffer descriptors to add
+>> + * @filled: number of valid descriptors in the array
+>> + * @buff_size: size of each buffer (multi-queue mode only)
+>> + * @queue_index: RX queue index
+>> + *
+>> + * Return: hypervisor return code
+>> + */
+>> +static long ibmveth_add_logical_lan_buffers(struct ibmveth_adapter *adapter,
+>> +					    union ibmveth_buf_desc *descs,
+>> +					    int filled,
+>> +					    unsigned long buff_size,
+>> +					    int queue_index)
+>> +{
+>> +	struct vio_dev *vdev = adapter->vdev;
+>> +	unsigned long rc;
+>> +
+>> +	if (adapter->multi_queue) {
+> [ ... ]
+>
+>> +		rc = h_add_logical_lan_buffers_queue(vdev->unit_address,
+>> +						     handle,
+>> +						     buffersznum,
+>> +						     ioba[0], ioba[1], ioba[2],
+>> +						     ioba[3], ioba[4], ioba[5]);
+>> +		adapter->hcall_stats.add_bufs_queue++;
+>> +	} else if (filled == 1) {
+>> +		rc = h_add_logical_lan_buffer(vdev->unit_address,
+>> +					      descs[0].desc);
+>> +		adapter->hcall_stats.add_buf++;
+>> +	} else {
+>> +		rc = h_add_logical_lan_buffers(vdev->unit_address,
+>> +					       descs[0].desc, descs[1].desc,
+>> +					       descs[2].desc, descs[3].desc,
+>> +					       descs[4].desc, descs[5].desc,
+>> +					       descs[6].desc, descs[7].desc);
+>> +		adapter->hcall_stats.add_bufs++;
+>> +	}
+> [Severity: Medium]
+>
+> These hcall_stats fields are plain non-atomic u64 counters on the
+> adapter, but the only serialization this patch adds is the per-queue
+> rx_queue[i].replenish_lock taken in ibmveth_replenish_task().
+>
+> Two NAPI instances replenishing different queues hold different locks, so
+> can these increments lose counts once MQ is enabled later in the series and
+> num_rx_queues becomes larger than 1?
+>
+> The same question applies to the other adapter-wide counters reached from
+> this path:
+>
+> 	adapter->replenish_task_cycles++;
+> 	adapter->replenish_add_buff_success += filled;
+> 	adapter->replenish_add_buff_failure += filled;
+>
+> and to ibmveth_update_rx_no_buffer(), which ibmveth_replenish_task() calls
+> while holding queue N's lock only, although it rewrites adapter-global
+> state for every queue:
+>
+> 	adapter->rx_no_buffer = 0;
+> 	for (i = 0; i < adapter->num_rx_queues; i++) {
+> 		...
+> 		adapter->rx_qstats[i].no_buffer_drops = drops;
+> 		adapter->rx_no_buffer += drops;
+> 	}
+>
+> Would rx_no_buffer and rx_qstats[].no_buffer_drops be clobbered when two
+> queues replenish concurrently?  ibmveth_close() calls the same helper with
+> no lock held at all.
+Yes, once MQ is live those adapter-global counters can lose updates
+across queues. I agree they need a better concurrency model, but I see
+that as broader accounting follow-up work rather than one of the main
+correctness blockers in this series. The pool-availability path is
+already using `atomic_t` for correctness; these adapter-global counters
+are diagnostic/accounting state and should either move to a per-queue
+model or use a safer aggregation strategy.
+>>   /* replenish the buffers for a pool.  note that we don't need to
+>>    * skb_reserve these since they are used for incoming...
+>>    */
+>>   static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>> -					  struct ibmveth_buff_pool *pool)
+>> +					  struct ibmveth_buff_pool *pool,
+>> +					  int queue_index)
+>>   {
+>>   	union ibmveth_buf_desc descs[IBMVETH_MAX_RX_PER_HCALL] = {0};
+>>   	u32 remaining = pool->size - atomic_read(&pool->available);
+>> @@ -678,24 +752,16 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+> [ ... ]
+>
+>> +		lpar_rc = ibmveth_add_logical_lan_buffers(adapter, descs,
+>> +							  filled,
+>> +							  pool->buff_size,
+>> +							  queue_index);
+>> +
+>>   		if (lpar_rc != H_SUCCESS) {
+>>   			dev_warn_ratelimited(dev,
+>> -					     "RX h_add_logical_lan failed: filled=%u, rc=%lu, batch=%u\n",
+>> +					     "RX h_add_logical_lan %s failed: filled=%u, rc=%lu, batch=%u\n",
+>> +					     adapter->multi_queue ?
+>> +					     "_queue" : "",
+>>   					     filled, lpar_rc, batch);
+>>   			goto hcall_failure;
+>>   		}
+> [Severity: Low]
+>
+> The interpolated hcall name never matches an actual symbol.  In MQ mode
+> this prints
+>
+> 	RX h_add_logical_lan _queue failed: ...
+>
+> with a stray space, and in legacy mode
+>
+> 	RX h_add_logical_lan  failed: ...
+>
+> with a double space.  Would a full literal per branch read better?
+>
+> The two new H_FUNCTION messages added below also print batch with %d,
+> although batch is declared u32 in this function ("u32 i, filled, batch;"),
+> while this warning uses %u for the same variable.
+Yes. Full literal hcall names would read better here, and `batch`
+should use `%u`. I'll fold that cleanup back into the owning patch
+rather than leave it as a tail fixup.
+>> @@ -736,24 +802,23 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>>   		}
+>>   		adapter->replenish_add_buff_failure += filled;
+>>   
+>> -		/*
+>> -		 * If multi rx buffers hcall is no longer supported by FW
+>> -		 * e.g. in the case of Live Partition Migration
+>> -		 */
+>> -		if (batch > 1 && lpar_rc == H_FUNCTION) {
+>> -			/*
+>> -			 * Instead of retry submit single buffer individually
+>> -			 * here just set the max rx buffer per hcall to 1
+>> -			 * buffers will be respleshed next time
+>> -			 * when ibmveth_replenish_buffer_pool() is called again
+>> -			 * with single-buffer case
+>> -			 */
+>> -			netdev_info(adapter->netdev,
+>> -				    "RX Multi buffers not supported by FW, rc=%lu\n",
+>> -				    lpar_rc);
+>> -			adapter->rx_buffers_per_hcall = 1;
+>> -			netdev_info(adapter->netdev,
+>> -				    "Next rx replesh will fall back to single-buffer hcall\n");
+>> +		if (lpar_rc == H_FUNCTION) {
+>> +			if (adapter->multi_queue) {
+>> +				netdev_err(adapter->netdev,
+>> +					   "MQ buffer add H_FUNCTION (q=%d, batch=%d)\n",
+>> +					   queue_index, batch);
+>> +			} else if (batch > 1) {
+> [Severity: High]
+>
+> The multi_queue arm logs and breaks without changing any state:
+> adapter->multi_queue stays set, rx_buffers_per_hcall is untouched, there is
+> no fallback to h_add_logical_lan_buffer()/h_add_logical_lan_buffers(), and
+> no schedule_work(&adapter->work).
+>
+> ibmveth_add_logical_lan_buffers() picks the hcall purely on
+> adapter->multi_queue, and that field is only written in ibmveth_probe(),
+> which is not re-run on resume (ibmveth_resume() only calls
+> ibmveth_schedule_rx_queue()).
+>
+> So once the hypervisor stops implementing H_ADD_LOGICAL_LAN_BUFFERS_QUEUE
+> - exactly the Live Partition Migration case the legacy arm below exists for
+> - can this queue ever post another RX buffer again?  pool->available stays
+> at 0, PHYP drops every inbound frame, and the interface still reports the
+> link up, so recovery would need an administrative down/up.
+>
+> Every other unrecoverable condition in this driver schedules the reset
+> work (ibmveth_remove_buffer_from_pool(), ibmveth_rxq_get_buffer(), and the
+> new enable_irq failure path in ibmveth_poll()).  Should this arm do the
+> same, or fall back to the legacy hcalls the way the legacy arm downgrades
+> batch?
+>
+> Separately, netdev_err() here is not rate limited, while the warning for
+> the same failure a few lines above uses dev_warn_ratelimited(), so a
+> dried-out pool can emit several console lines per poll cycle per pool.
+>
+> This arm appears unchanged through the end of the series.
 
-[Severity: Low]
+Yes. As written, the MQ `H_FUNCTION` path can strand the queue in a
+permanent dry-pool state.
 
-Can this extack message show up as a warning on a perfectly successful
-param dump?  mlx5_nv_param_read() maps every mlx5_core_access_reg()
-failure to -EOPNOTSUPP:
+I'm planning to add real recovery here rather than paper over it by
+shrinking the batch size, because that still leaves the driver calling
+the dead queue-buffer hcall.
 
-	mlx5_core_warn(dev, "Failed to read mnvda reg: ...");
-	return -EOPNOTSUPP;
+The safer direction is to treat this as an unexpected MQ `H_FUNCTION`
+event, mark fallback, and recover through the normal reset path rather
+than trying to half-switch modes on the live datapath. I'll also make
+that path rate-limited.
 
-and the dump path in net/devlink/param.c swallows that code without
-clearing cb->extack:
+With the clarified project assumption that HMC blocks LPM into LPARs
+without MQ-capable veth, I do not think this should be framed as a
+supported in-place MQ-to-SQ downgrade path.
 
-devlink_nl_param_get_dump_one()
-	if (err == -EOPNOTSUPP) {
-		err = 0;
-	} else if (err) {
-		state->idx = param_id;
-		break;
-	}
 
-netlink_dump_done() then attaches extack->_msg to the NLMSG_DONE even
-when the reported error is 0, so on firmware that does not implement the
-global PCI configuration item every "devlink dev param show" would print
-"mlx5_core: Failed to read global PCI configuration".
+>> +				/*
+>> +				 * Live Partition Migration may drop multi-
+>> +				 * buffer support. Fall back to single-buffer
+>> +				 * on the next replenish; do not continue with
+>> +				 * a stale local batch size (infinite loop).
+>> +				 */
+>> +				netdev_warn(adapter->netdev,
+>> +					    "Legacy batch add H_FUNCTION (batch=%d), fallback\n",
+>> +					    batch);
+>> +				adapter->rx_buffers_per_hcall = 1;
+>> +			}
+>>   		}
+>>   		break;
+>>   	}
+>> @@ -775,21 +840,33 @@ static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter)
+>>   }
+>>   
+>>   /* replenish routine */
+>> -static void ibmveth_replenish_task(struct ibmveth_adapter *adapter)
+>> +static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
+>> +				   int queue_index)
+>>   {
+>> +	struct ibmveth_rx_q *rxq = &adapter->rx_queue[queue_index];
+>> +	unsigned long flags;
+>>   	int i;
+>>   
+>> +	if (queue_index >= adapter->num_rx_queues)
+>> +		return;
+>> +
+>>   	adapter->replenish_task_cycles++;
+>>   
+>> +	spin_lock_irqsave(&rxq->replenish_lock, flags);
+>> +
+>>   	for (i = (IBMVETH_NUM_BUFF_POOLS - 1); i >= 0; i--) {
+>> -		struct ibmveth_buff_pool *pool = &adapter->rx_buff_pool[0][i];
+>> +		struct ibmveth_buff_pool *pool =
+>> +			&adapter->rx_buff_pool[queue_index][i];
+>>   
+>>   		if (pool->active &&
+>>   		    (atomic_read(&pool->available) < pool->threshold))
+>> -			ibmveth_replenish_buffer_pool(adapter, pool);
+>> +			ibmveth_replenish_buffer_pool(adapter, pool,
+>> +						      queue_index);
+>>   	}
+>>   
+>>   	ibmveth_update_rx_no_buffer(adapter);
+>> +
+>> +	spin_unlock_irqrestore(&rxq->replenish_lock, flags);
+>>   }
+> [Severity: High]
+>
+> Can this lock deadlock against itself when netconsole runs over this
+> ibmveth device?
+>
+> ibmveth_replenish_buffer_pool() printk()s from inside the locked region:
+> netdev_info() on an invalid map index, dev_warn_ratelimited() on hcall
+> failure, and the two new H_FUNCTION messages.  With netconsole on this
+> interface a printk from there re-enters the driver:
+>
+> netconsole write_msg()
+>    netpoll_send_udp()
+>      netpoll_send_skb()
+>        __netpoll_send_skb()
+>          netpoll_poll_dev()
+>            ops->ndo_poll_controller()  ->  ibmveth_poll_controller()
+>              ibmveth_replenish_task(adapter, i)
+>
+> __netpoll_send_skb() calls netpoll_poll_dev() whenever the xmit does not
+> go through on the first try, and netpoll_poll_dev() only declines when
+> down_trylock(&ni->dev_lock) fails, when !netif_running(dev), or when
+> netif_local_xmit_active(dev):
+>
+> 	if (!ni || down_trylock(&ni->dev_lock))
+> 		return;
+>
+> 	if (!netif_running(dev) || netif_local_xmit_active(dev)) {
+> 		up(&ni->dev_lock);
+> 		return;
+> 	}
+> 	...
+> 	if (ops->ndo_poll_controller)
+> 		ops->ndo_poll_controller(dev);
+>
+> None of those covers the replenish path, so ibmveth_poll_controller() loops
+> ibmveth_replenish_task() over every queue and re-takes the same
+> replenish_lock on the same CPU, with interrupts already disabled.
+>
+> Before this patch ibmveth_poll_controller() also called
+> ibmveth_replenish_task(), but with no lock the recursion was harmless.
+>
+> This code appears unchanged through the end of the series.
+Yes. That deadlock looks plausible with netconsole on this device.
 
-The same applies to the "Failed to read PF configuration" message below.
-The pre-existing mlx5_devlink_enable_sriov_get() and
-mlx5_devlink_total_vfs_get() return the error without touching extack.
+I'm planning to move the logging and recovery actions out from under
+`replenish_lock`, because that is the real issue here.
 
-> +
-> +	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-> +	if (!MLX5_GET(nv_global_pci_conf, data, per_pf_num_sf)) {
-> +		ctx->val.vu32 = 0;
-> +		return 0;
-> +	}
-> +
-> +	memset(mnvda, 0, sizeof(mnvda));
-> +	err = mlx5_nv_param_read_per_host_pf_conf(dev, mnvda, sizeof(mnvda));
-> +	if (err) {
-> +		NL_SET_ERR_MSG_MOD(extack, "Failed to read PF configuration");
-> +		return err;
-> +	}
-> +
-> +	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-> +	if (MLX5_GET(nv_pf_pci_conf, data, pf_total_sf_en))
-> +		ctx->val.vu32 = MLX5_GET(nv_pf_pci_conf, data, total_sf);
-> +	else
-> +		ctx->val.vu32 = 0;
-> +
-> +	return 0;
-> +}
-> +
-> +static int mlx5_devlink_max_sfs_validate(struct devlink *devlink, u32 id,
-> +					 union devlink_param_value *val,
-> +					 struct netlink_ext_ack *extack)
-> +{
-> +	if (val->vu32 > U16_MAX) {
-> +		NL_SET_ERR_MSG_FMT_MOD(extack,
-> +				       "Max SFs allowed value is %u", U16_MAX);
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
+The helper should return outcome/state while the actual logging and
+reset scheduling happen after unlock, so netconsole cannot recurse back
+into the same queue's replenish path while the lock is held.
 
-[Severity: Low]
+> [Severity: Medium]
+>
+> Does this need to be spin_lock_irqsave()?  The lock now brackets the whole
+> multi-pool loop, so every netdev_alloc_skb(), every dma_map_single() and
+> every H_ADD_LOGICAL_LAN_BUFFER[S][_QUEUE] hypervisor call for all five
+> pools runs with local interrupts hard-disabled.
+>
+> On a cold fill from ibmveth_open() or the first NAPI poll that is roughly
+> 768 allocations and DMA maps and around 96 hcalls per queue at the default
+> MTU (pool_count[] = { 256, 512, 256, 256, 256 }), and more when the large
+> pools are active.
+>
+> None of the protected state is written from hardirq context, and the commit
+> message says the lock exists only "so later concurrent NAPI/resize paths
+> can serialize buffer posting", so would spin_lock_bh(), dropping and
+> re-acquiring per batch, or preparing buffers outside the critical section
+> be enough?
+Fair point. That `spin_lock_irqsave()` critical section is heavier than
+I would like, but I still see it as a secondary issue compared to the
+main correctness problems in this patch.
 
-The documentation hunk in this patch states:
+I do not want to rewrite that lock protocol in this series while the
+higher-priority fixes here are the MQ `H_FUNCTION` recovery, no logging
+under `replenish_lock`, and making the producer/consumer locking model
+complete.
+>>   
+>>   /* empty and free ana buffer pool - also used to do cleanup in error paths */
+> [ ... ]
+>
+>> @@ -1004,50 +1083,55 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+> [ ... ]
+>
+>> -	free_index = adapter->rx_buff_pool[0][pool].producer_index;
+>> -	adapter->rx_buff_pool[0][pool].producer_index++;
+>> -	if (adapter->rx_buff_pool[0][pool].producer_index >=
+>> -	    adapter->rx_buff_pool[0][pool].size)
+>> -		adapter->rx_buff_pool[0][pool].producer_index = 0;
+>> -	adapter->rx_buff_pool[0][pool].free_map[free_index] = index;
+>> +	free_index = adapter->rx_buff_pool[queue_index][pool].producer_index;
+>> +	adapter->rx_buff_pool[queue_index][pool].producer_index++;
+>> +	if (adapter->rx_buff_pool[queue_index][pool].producer_index >=
+>> +	    adapter->rx_buff_pool[queue_index][pool].size)
+>> +		adapter->rx_buff_pool[queue_index][pool].producer_index = 0;
+>> +	adapter->rx_buff_pool[queue_index][pool].free_map[free_index] = index;
+>>   
+>>   	mb();
+>>   
+>> -	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
+>> +	atomic_dec(&adapter->rx_buff_pool[queue_index][pool].available);
+> [Severity: High]
+>
+> This isn't a bug introduced by this patch, but the new replenish_lock only
+> covers the producer half of this bookkeeping, so it is worth asking whether
+> the consumer half is still unprotected.
+>
+> ibmveth_remove_buffer_from_pool() mutates free_map[], producer_index,
+> skbuff[], dma_addr[] and available for the same pool that
+> ibmveth_replenish_buffer_pool() mutates under replenish_lock, but takes no
+> lock:
+>
+> producer: ibmveth_poll_controller()
+>              ibmveth_replenish_task()        /* holds replenish_lock */
+>                ibmveth_replenish_buffer_pool()
+>
+> consumer: ibmveth_poll()                   /* holds nothing */
+>              ibmveth_rxq_harvest_buffer()
+>                ibmveth_remove_buffer_from_pool()
+>
+> netpoll_poll_dev() serializes netpoll users against each other via
+> ni->dev_lock, and __napi_poll()'s netpoll_poll_lock() only stops netpoll
+> from re-polling a NAPI instance that is already running; neither prevents
+> ndo_poll_controller from running on one CPU while the same queue's NAPI
+> poll runs on another.
+>
+> Can free_map[]/producer_index/consumer_index then hand the same pool index
+> out twice, so a buffer is posted to the hypervisor while its skb has
+> already gone up the stack, or lose a free index permanently?
+>
+> Since the future work described in the commit message ("so later concurrent
+> NAPI/resize paths can serialize buffer posting") builds on this lock, should
+> the consumer side take it as well?
+>
+> [ ... ]
+Yes. That race looks real, and the consumer side should participate in
+the same per-queue locking protocol.
 
-     - The range is between 0 and a device-specific max.
+I'm planning to serialize harvest-side mutation with the same lock so
+the producer/consumer model is actually complete.
 
-but mlx5_devlink_max_sfs_validate() only rejects values above U16_MAX,
-which is the width of nv_pf_pci_conf.total_sf[0x10] rather than any
-device property, and neither the getter nor the setter reads
-nv_global_pci_cap for an SF limit.  Compare
-mlx5_devlink_total_vfs_validate(), which reports the real bound:
+The important point here is that the race is not "two NAPIs on one
+queue"; it is harvest on one CPU versus netpoll-driven replenish on the
+same queue.
+>> @@ -1993,34 +2076,45 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
+>>   
+>>   static int ibmveth_poll(struct napi_struct *napi, int budget)
+>>   {
+>> -	struct ibmveth_adapter *adapter =
+>> -			container_of(napi, struct ibmveth_adapter, napi[0]);
+>> -	struct net_device *netdev = adapter->netdev;
+>> +	struct net_device *netdev = napi->dev;
+>> +	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+>>   	int frames_processed = 0;
+>>   	unsigned long lpar_rc;
+>> +	int queue_index, rc;
+>>   	u16 mss = 0;
+>>   
+>> +	queue_index = napi - adapter->napi;
+>> +
+>> +	if (WARN_ON(queue_index < 0 || queue_index >= adapter->num_rx_queues))
+>> +		return 0;
+>> +
+> [ ... ]
+>
+>> @@ -2097,14 +2197,19 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+>>   	/* We think we are done - reenable interrupts,
+>>   	 * then check once more to make sure we are done.
+>>   	 */
+>> -	lpar_rc = ibmveth_enable_irq(adapter, 0);
+>> -	if (WARN_ON(lpar_rc != H_SUCCESS)) {
+>> +	lpar_rc = ibmveth_enable_irq(adapter, queue_index);
+>> +	if (lpar_rc != H_SUCCESS) {
+>> +		netdev_err(netdev,
+>> +			   "Failed to enable IRQ for queue %d (rc=0x%lx), scheduling reset\n",
+>> +			   queue_index, lpar_rc);
+>>   		schedule_work(&adapter->work);
+>>   		goto out;
+>>   	}
+>>   
+>> -	if (ibmveth_rxq_pending_buffer(adapter) && napi_schedule(napi)) {
+>> -		lpar_rc = ibmveth_disable_irq(adapter, 0);
+>> +	if (ibmveth_rxq_pending_buffer(adapter, queue_index) &&
+>> +	    napi_schedule(napi)) {
+>> +		lpar_rc = ibmveth_disable_irq(adapter, queue_index);
+>> +		WARN_ON(lpar_rc != H_SUCCESS);
+>>   		goto restart_poll;
+>>   	}
+> [Severity: Low]
+>
+> Two diagnostic changes here are not described in the commit message, which
+> only says callers were updated "so arity stays consistent": the WARN_ON()
+> around the ibmveth_enable_irq() failure is replaced by an unconditional
+> netdev_err(), which drops the taint and backtrace that test harnesses key
+> on, and a new WARN_ON() is added on the ibmveth_disable_irq() result.
+> Would it help to mention or split out that change?
+>
+> Also, the new guard added at the top of ibmveth_poll()
+>
+> 	if (WARN_ON(queue_index < 0 || queue_index >= adapter->num_rx_queues))
+> 		return 0;
+>
+> returns less than budget from a NAPI poll callback without calling
+> napi_complete_done(), which leaves the instance scheduled with the
+> hypervisor IRQ still masked.  The guard is unreachable at this commit,
+> since IBMVETH_MAX_RX_QUEUES is 1 and queue_index is always 0, but the same
+> early return is still there at the end of the series.  Should it complete
+> NAPI before returning?
+>
+> [ ... ]
+Yes. The bad-queue-index guard should complete NAPI before returning,
+otherwise that defensive path can leave the instance scheduled with the
+IRQ still masked.
 
-	max = MLX5_GET(nv_global_pci_cap, data, max_vfs_per_pf);
-	if (val->vu16 > max) {
-		NL_SET_ERR_MSG_FMT_MOD(extack,
-				       "Max allowed by device is %u", max);
+The diagnostic reshaping around the enable/disable IRQ paths belongs
+with the owning poll work rather than being overclaimed here.
 
-Relatedly, mlx5_devlink_max_sfs_set() below sets the global
-per_pf_num_sf bit with no capability check, while
-mlx5_devlink_total_vfs_set() and mlx5_devlink_enable_sriov_set() gate the
-equivalent per-PF mode switch on
-nv_global_pci_cap.per_pf_total_vf_supported and return -EOPNOTSUPP
-otherwise.  No per_pf_num_sf_supported bit is added to
-mlx5_ifc_nv_global_pci_cap_bits here.
+Thanks,
+Mingming
 
-Should a value beyond the device's actual SF maximum, or a device without
-per-PF SF support, fail with something more specific than the generic
-"Failed to change PF PCI configuration" that comes from the firmware
-write?
-
-> +
-> +static int mlx5_devlink_max_sfs_set(struct devlink *devlink, u32 id,
-> +				    struct devlink_param_gset_ctx *ctx,
-> +				    struct netlink_ext_ack *extack)
-> +{
-> +	struct mlx5_core_dev *dev = devlink_priv(devlink);
-> +	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
-> +	void *data;
-> +	int err;
-> +
-> +	/* we don't explicitly disable per_pf_num_sf when max_sfs is 0 because
-> +	 * another PF may be using SFs
-> +	 */
-> +	if (ctx->val.vu32) {
-> +		err = mlx5_nv_param_read_global_pci_conf(dev, mnvda,
-> +							 sizeof(mnvda));
-> +		if (err) {
-> +			NL_SET_ERR_MSG_MOD(extack,
-> +					   "Failed to read global PCI configuration");
-> +			return err;
-> +		}
-
-[Severity: Medium]
-
-With value 0 this whole block is skipped, so on a device that is still in
-global SF mode (per_pf_num_sf == 0) only the per-PF fields
-pf_total_sf_en, total_sf and log_sf_bar_size are written.
-
-mlx5_devlink_max_sfs_get() treats exactly those per-PF fields as
-meaningless while per_pf_num_sf is clear:
-
-	if (!MLX5_GET(nv_global_pci_conf, data, per_pf_num_sf)) {
-		ctx->val.vu32 = 0;
-		return 0;
-	}
-
-If the per-PF fields are inert in that mode, can
-
-	devlink dev param set pci/<bdf> name max_sfs value 0 cmode permanent
-
-actually stop SF creation, given that the SF budget keeps coming from the
-global configuration?
-
-The call still returns 0 with the "requires a FW reset" extack, and a
-later param show reports 0 through the same early return, so user space
-sees the disable as successful.  The commit message says:
-
-    A value of 0 will effectively disable creation of new subfunction
-    devices.
-
-For comparison, mlx5_devlink_total_vfs_get() reports the global
-total_vfs value in the equivalent situation instead of 0.
-
-> +
-> +		data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-> +		/* always enable per_pf_num_sf because another PF may use SFs */
-> +		MLX5_SET(nv_global_pci_conf, data, per_pf_num_sf, 1);
-
-[Severity: Medium]
-
-per_pf_num_sf lives in the device-global item, not in the per-host-PF
-one:
-
-mlx5_nv_param_read_global_pci_conf()
-	MLX5_SET_CFG_ITEM_TYPE(global, mnvda, type_class, 0);
-	MLX5_SET_CFG_ITEM_TYPE(global, mnvda, parameter_index,
-			       MLX5_CLASS_0_CTRL_ID_NV_GLOBAL_PCI_CONF);
-
-so flipping it selects, for the whole device, whether the SF quota comes
-from the global configuration or from each PF's own total_sf, while only
-this PF's pf_total_sf_en/total_sf are programmed below.
-
-What happens on a sibling PF whose per-PF total_sf was never programmed -
-after the FW reset, does its SF capacity get derived from an unprogrammed
-(zero) field and SF creation start failing there?
-
-The comment above acknowledges the cross-PF coupling for the disable
-direction; the extack at the end only warns about the FW reset and PCI
-rescan, not about SF provisioning changing for other functions.
-
-> +
-> +		err = mlx5_nv_param_write(dev, mnvda, sizeof(mnvda));
-> +		if (err) {
-> +			NL_SET_ERR_MSG_MOD(extack,
-> +					   "Failed to change per_pf_num_sf global PCI configuration");
-> +			return err;
-> +		}
-> +		memset(mnvda, 0, sizeof(mnvda));
-> +	}
-
-[Severity: Medium]
-
-This read-modify-write touches the device-global nv_global_pci_conf item,
-but mlx5_nv_param_register_dl_params() registers these params on each
-PF's own devlink instance:
-
-	if (!mlx5_core_is_pf(devlink_priv(devlink)))
-		return 0;
-
-	return devl_params_register(devlink, mlx5_nv_param_devlink_params,
-				    ARRAY_SIZE(mlx5_nv_param_devlink_params));
-
-so the devlink instance lock is per-PF and cannot serialize accesses to a
-shared item.  Can two PFs of the same device lose each other's update?
-
-PF0: mlx5_devlink_max_sfs_set()
-       mlx5_nv_param_read_global_pci_conf()   /* reads the shared item */
-
-PF1: mlx5_devlink_total_vfs_set()
-       mlx5_nv_param_read_global_pci_conf()
-       MLX5_SET(nv_global_pci_conf, data, sriov_valid, 1);
-       MLX5_SET(nv_global_pci_conf, data, per_pf_total_vf, 1);
-       mlx5_nv_param_write()                  /* commits */
-
-PF0:   MLX5_SET(nv_global_pci_conf, data, per_pf_num_sf, 1);
-       mlx5_nv_param_write()                  /* stale copy, clears the
-                                                 bits PF1 just wrote */
-
-Both commands report success plus the FW-reset warning, so neither
-administrator learns the persistent configuration is not what was asked
-for.  The same pattern already exists for enable_sriov and total_vfs, but
-this adds a new writer of the shared item.
-
-> +
-> +	err = mlx5_nv_param_read_per_host_pf_conf(dev, mnvda, sizeof(mnvda));
-> +	if (err) {
-> +		NL_SET_ERR_MSG_MOD(extack, "Failed to read PF configuration");
-> +		return err;
-> +	}
-
-[Severity: Medium]
-
-The two non-volatile writes are not atomic and the first one is never
-rolled back.  If this read fails (mlx5_nv_param_read() returns
--EOPNOTSUPP for any mlx5_core_access_reg() failure), or the
-mlx5_nv_param_write() below fails on a busy or restricted firmware, the
-function returns an error to user space while per_pf_num_sf stays
-committed in the NV configuration and this PF's
-pf_total_sf_en/total_sf were never programmed.
-
-Since that state survives reboot, is the device left in per-PF SF mode
-with an effective budget of 0 after the FW reset even though the devlink
-operation reported failure?
-
-Would programming the per-host-PF item first, or restoring the
-per_pf_num_sf value that was just read on the failure paths, keep the two
-steps balanced?
-
-> +
-> +	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-> +	MLX5_SET(nv_pf_pci_conf, data, log_sf_bar_size,
-> +		 ctx->val.vu32 ? MLX5_DEFAULT_LOG_SF_BAR_SIZE : 0);
-
-[Severity: Medium]
-
-log_sf_bar_size is a separate persistent knob - the size of each SF's
-BAR/doorbell window, the same quantity the device reports as
-mlx5_ifc_sf_partition_bits.log_sf_bar_size - and max_sfs does not claim
-to control it.
-
-The read above preserves whatever the device is currently programmed
-with, and this overwrites it with the hardcoded
-MLX5_DEFAULT_LOG_SF_BAR_SIZE (12), or with 0 on the disable path.
-
-Should setting max_sfs also reset the SF BAR window size?  Neither the
-commit message nor the documentation hunk mentions it, and 12 is not
-validated against any device capability or against the BAR space implied
-by total_sf, which may be up to 65535.
-
-> +	MLX5_SET(nv_pf_pci_conf, data, pf_total_sf_en, !!ctx->val.vu32);
-> +	MLX5_SET(nv_pf_pci_conf, data, total_sf, ctx->val.vu32);
-> +
-> +	err = mlx5_nv_param_write(dev, mnvda, sizeof(mnvda));
-> +	if (err) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Failed to change PF PCI configuration");
-> +		return err;
-> +	}
-> +	NL_SET_ERR_MSG_MOD(extack,
-> +			   "Modifying max_sfs requires a FW reset and PCI bus rescan");
-> +
-> +	return 0;
-> +}
-> +
-
-[ ... ]
+>> @@ -2229,9 +2334,13 @@ static int ibmveth_change_mtu(struct net_device *dev, int new_mtu)
+>>   static void ibmveth_poll_controller(struct net_device *dev)
+>>   {
+>>   	struct ibmveth_adapter *adapter = netdev_priv(dev);
+>> +	int i;
+>>   
+>> -	ibmveth_replenish_task(adapter);
+>> -	ibmveth_schedule_rx_queue(adapter, 0);
+>> +	for (i = 0; i < adapter->num_rx_queues; i++)
+>> +		ibmveth_replenish_task(adapter, i);
+>> +
+>> +	for (i = 0; i < adapter->num_rx_queues; i++)
+>> +		ibmveth_schedule_rx_queue(adapter, i);
+>>   }
+>>   #endif
+> [ ... ]
