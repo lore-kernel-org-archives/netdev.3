@@ -1,173 +1,123 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199B8175A79
-	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 01:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEC2330301
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 02:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786327174; cv=none; b=Pkkb6Ra0+lMnfOlQMcE8s2KazGBT8qUBZAEIDpjFzLU6rimVo6QIAnfIORw8iyiJXGfyJ9IbC8DyQ5FEeo7j9BJUK0Gg10wOt+uEH5vEOTwWco87u3ZsKLAlH50uLirBYgM5RRAYzfQyBm2dgr5GjKNbAFtE/21wXQRvoFZlBfY=
+	t=1786327289; cv=none; b=nAoUgsNWfAx9DVUkFRObGcRoPoEpOm5n651zwJx20+0TXVmMpX1rDlH4BBx4HQ//kkmB5donC4fT2IDNDTL1KsaF4w1iYZgt22RQI6G/TIVswtLLf4bmbra+lTQwuMjoMcFiFI1H0AGIbt+nljNM3VO8WHqDMJWlMoNdPjlCsvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786327174; c=relaxed/simple;
-	bh=/OvbaL8KTP3ySpTWRBsx162Pho9Kv/QSjRAlqlRYHdU=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=FU1Yj56CaojUbHu8ThrBeUUk9zImpEdkOuJl81oTuBh02kikwOyxrDA6CylUs580jJXTg9Fe2fr62o5HQOe6GvQ0wm+mE/ic3mzLHgslLiL9Ea76w/M1zD+2AoUm2htzFQBcKBIK/dJHepoYtn/PI11UOwzXm4ei3NwTZcO6npc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LU5JD8n9; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786327289; c=relaxed/simple;
+	bh=Tv0zLmDeyTEBTC/Bsc9TLlppJY9tcTDER5w6lsnWK/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VdfrdQLni+o2UYsMNiTIuIdVvHQUVk824e0xCMz0ByGufe/n65pOeeMLvnu6XYURclFi55z53MC6j3gVIkSLQJ+H/cuyu3Dv4wEoTPLp5sDfMWOjzukQ9GesbzwbOiF9YeuSvxd1WNICiHpGnI2RYxPFV9roXnMSTI9rs65zrxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=OR97nI7d; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LU5JD8n9"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="OR97nI7d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=kHWJYk34ETFXOP89G8WuVgapFZS/H61rmp20OjWEYlY=;
+	b=OR97nI7dS2iXMGnjgR7Er9BsNkd4mWeP2GyBVkVTXH3/8uHIAHzX5zcSFSLaQ7
+	QmBfxJwyxrkp6JJWxJ93jMpKqBTHYXYk8O8CWqt7Ct2bwoNcEiRe/CvzMNoerTy3
+	lAc/QHNIA5EvbDg5Tv3We5ZW8t6ddT4dYbFpDgm3nLg78=
+Received: from [10.42.20.136] (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wCXfXrRMHlqQXuUNA--.59973S2;
+	Mon, 10 Aug 2026 10:00:50 +0800 (CST)
+Message-ID: <09030f3e-811c-48a8-ad9c-6bf9432e73e4@163.com>
+Date: Mon, 10 Aug 2026 10:00:49 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786327171;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yhKBG07NgjbV88z5PyXBU/EsEEP+BqBeiN00w24gQvQ=;
-	b=LU5JD8n994QqhU8jAs0wc13L36UNwvy80gs6mWrOrmD3h/ZwPh6UICoSJXn0dqF/7vq2u0
-	C38yml6cmr74UMU0QWTDyhYs0Vh0Vo5N0y3v+jxXjmBf1ffNDZ+i1XwJVd10b9LEkt4lIp
-	BUhpnzwrlv1Y0Krtd1etQ5OAlNLtO0k=
-Date: Mon, 10 Aug 2026 01:59:28 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: gang.yan@linux.dev
-Message-ID: <4e57509daf45aa8968140e7a7279ad0699249bf6@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH net] mptcp: upgrade network refcount before socket lock
-To: "Runyu Xiao" <runyu.xiao@seu.edu.cn>, "Matthieu Baerts"
- <matttbe@kernel.org>, "Mat Martineau" <martineau@kernel.org>
-Cc: "Geliang Tang" <geliang@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, mptcp@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- runyu.xiao@seu.edu.cn, jianhao.xu@seu.edu.cn, stable@vger.kernel.org
-In-Reply-To: <20260809091949.3618191-1-runyu.xiao@seu.edu.cn>
-References: <20260809091949.3618191-1-runyu.xiao@seu.edu.cn>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] tap: fix incorrect variable used for USO check in
+ set_offload()
+Content-Language: en-US
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, kuba@kernel.org,
+ jasowangio@gmail.com, andrew+netdev@lunn.ch
+Cc: netdev@vger.kernel.org, Rongguang Wei <weirongguang@kylinos.cn>,
+ Willem de Bruijn <willemb@google.com>
+References: <20260807070914.112698-1-clementwei90@163.com>
+ <willemdebruijn.kernel.2e2d53367799a@gmail.com>
+From: Rongguang Wei <clementwei90@163.com>
+In-Reply-To: <willemdebruijn.kernel.2e2d53367799a@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wCXfXrRMHlqQXuUNA--.59973S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXF45ZF45ur45JFWrAF47Jwb_yoW5Xry3pa
+	1UAa12yr4vqryjka1UAw10qrW5Xws8Ja9rGF4qya4Fvr98WF40kFWS9a10qa4qg3yUWFy2
+	vFy2vFy3A3Z8Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UfnY7UUUUU=
+X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-hQ6pWp5MNS-YgAA3f
 
-August 9, 2026 at 5:19 PM, "Runyu Xiao" <runyu.xiao@seu.edu.cn mailto:run=
-yu.xiao@seu.edu.cn?to=3D%22Runyu%20Xiao%22%20%3Crunyu.xiao%40seu.edu.cn%3=
-E > wrote:
-
+Willem de Bruijn wrote:
+> Rongguang Wei wrote:
+>> From: Rongguang Wei <weirongguang@kylinos.cn>
+>>
+>> The USO features in set_offload() incorrectly uses feature_mask and
+>> features argument.
+>>
+>> The USO feature was written to the local features variable instead of
+>> feature_mask. All other offload bits (TSO, TSO_ECN) are stored in
+>> feature_mask which becomes tap->tap_features and is used by
+>> tap_handle_frame() for GSO segmentation. Without NETIF_F_GSO_UDP_L4
+>> in tap->tap_features, making USO on tap effectively non-functional.
+>>
+>> Keeping the USO handling inside the TUN_F_CSUM block avoids enabling
+>> GRO/LRO when userspace requests USO without CSUM.
+>>
+>> Fixes: 399e0827642f ("driver/net/tun: Added features for USO.")
+>> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
+>> Reviewed-by: Willem de Bruijn <willemb@google.com>
+> 
+> Reviewed-by: Willem de Bruijn <willemb@google.com>
+> 
+> Substantially changed patch, please don't keep Reviewed-by tags across
+> non-trivial changes. That said, I do agree, so adding it again.
+> 
+>> ---
+>> v2: Fix more incorrect variable in USO check.
+>>     https://lore.kernel.org/netdev/20260806163949.2807698-1-kuba@kernel.org/
+>> v1: https://lore.kernel.org/netdev/20260805072121.117472-1-clementwei90@163.com/
+>> ---
+>>  drivers/net/tap.c | 5 ++---
+>>  1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+>> index 5d2d34d24ce8..d4ca2fee538b 100644
+>> --- a/drivers/net/tap.c
+>> +++ b/drivers/net/tap.c
+>> @@ -883,7 +883,7 @@ static int set_offload(struct tap_queue *q, unsigned long arg)
+>>  
+>>  		/* TODO: for now USO4 and USO6 should work simultaneously */
+>>  		if ((arg & (TUN_F_USO4 | TUN_F_USO6)) == (TUN_F_USO4 | TUN_F_USO6))
+>> -			features |= NETIF_F_GSO_UDP_L4;
+>> +			feature_mask |= NETIF_F_GSO_UDP_L4;
+> 
+> Drivers/net/tun seems to have this same issue.
+> 
+> Do you want to take a look or shall I?
+> 
 Hi,
+I have check the code in drivers/net/tun.c.
+In tun.c, the tun's all offload bits go into features argument and
+I think tun.c does not have this issue.
+> 
+>>  	}
+>>  
+>>  	/* tun/tap driver inverts the usage for TSO offloads, where
+>> @@ -894,8 +894,7 @@ static int set_offload(struct tap_queue *q, unsigned long arg)
+>>  	 * When user space turns off TSO, we turn off GSO/LRO so that
+>>  	 * user-space will not receive TSO frames.
+>>  	 */
+>> -	if (feature_mask & (NETIF_F_TSO | NETIF_F_TSO6) ||
+>> -	    (feature_mask & (TUN_F_USO4 | TUN_F_USO6)) == (TUN_F_USO4 | TUN_F_USO6))
+>> +	if (feature_mask & (NETIF_F_TSO | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4))
+>>  		features |= RX_OFFLOADS;
+>>  	else
+>>  		features &= ~RX_OFFLOADS;
 
-Thanks for your patch.
-
->=20
->=20sk_net_refcnt_upgrade() calls get_net_track() with GFP_KERNEL and can=
- enter
-> direct reclaim. Calling it while holding the newly created subflow sock=
-et
-> lock can create a reclaim-to-socket-lock dependency cycle.
->=20
->=20Upgrade the network reference before taking the socket lock. The sock=
-et is
-> newly created and has not been exposed to other code at this point, so =
-the
-> fields changed by sk_net_refcnt_upgrade() are not accessed concurrently=
-.
-> The error path still releases the socket normally after the upgrade.
->=20
->=20The PatchProof static-analysis tool detected a GFP_KERNEL allocation =
-while
-> the socket lock is held. Manual source review of v7.1.5 and current
-> mainline confirmed the lock and allocation ordering.
->=20
->=20A source-level check found `sk_net_refcnt_upgrade()` after
-> `lock_sock_nested()` in the original function and before it after this
-> change. A POSIX-thread lock-order model made the reclaim lock unavailab=
-le
-> while the socket lock was held, observed `EBUSY` for the reclaim lock, =
-and
-> then completed with the reclaim-first order. The model checks the order=
-ing
-> invariant only; it does not execute the kernel MPTCP path. No live lock=
-dep
-> MPTCP test or reclaim fault injection was run.
->=20
-
-Maybe=20the commit message seems too long. Could you please send a v2 wit=
-h a more
-concise commit message? For your reference, here is a suggested simplifie=
-d version:
-
-'''
-sk_net_refcnt_upgrade() performs a GFP_KERNEL allocation (via get_net_tra=
-ck()
-=E2=86=92 ref_tracker_alloc()), which can enter direct reclaim and establ=
-ish a
-socket_lock =E2=86=92 fs_reclaim dependency. Move it before lock_sock_nes=
-ted(), mirroring
-the convention documented in net/rds/tcp.c:rds_tcp_tune().=20
-
-The=20socket is freshly created and unpublished at this point, so sk_net_=
-refcnt/
-ns_tracker are not touched by any concurrent path; the error path still r=
-eleases
-via sock_release() which handles both refcounted and non-refcounted track=
-ers.
-'''
-
-Please note that this suggested text is generated by AI, so please review=
- it
-carefully before adopting it. Also, the next patch can only be sent to mp=
-tcp@lists.linux.dev,
-no need to cc to others.
-
-
-> Fixes: 1d2f3d3c6268 ("mptcp: adjust to use netns refcount tracker")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
-> ---
->  net/mptcp/subflow.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
->=20
->=20diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-> index e1f20ff8fdb4..a9f951cc6a0e 100644
-> --- a/net/mptcp/subflow.c
-> +++ b/net/mptcp/subflow.c
-> @@ -1786,6 +1786,12 @@ int mptcp_subflow_create_socket(struct sock *sk,=
- unsigned short family,
->  if (err)
->  return err;
->=20=20
->=20+ /* kernel sockets do not by default acquire net ref, but TCP timer
-> + * needs it.
-> + * Update ns_tracker to current stack trace and refcounted tracker.
-> + */
-> + sk_net_refcnt_upgrade(sf->sk);
-> +
->  lock_sock_nested(sf->sk, SINGLE_DEPTH_NESTING);
->=20
->=20 err =3D security_mptcp_add_subflow(sk, sf->sk);
-> @@ -1795,11 +1801,6 @@ int mptcp_subflow_create_socket(struct sock *sk,=
- unsigned short family,
->  /* the newly created socket has to be in the same cgroup as its parent=
- */
->  mptcp_attach_cgroup(sk, sf->sk);
->=20=20
->=20- /* kernel sockets do not by default acquire net ref, but TCP timer
-> - * needs it.
-> - * Update ns_tracker to current stack trace and refcounted tracker.
-> - */
-> - sk_net_refcnt_upgrade(sf->sk);
->  err =3D tcp_set_ulp(sf->sk, "mptcp");
->  if (err)
->  goto err_free;
-
-LKGM!
-You can add 'Acked-by: Gang Yan <gang.yan@linux.dev>' in your next patch.
-
-Thanks
-Gang
-
-> --=20
->=202.34.1
->
