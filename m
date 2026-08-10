@@ -1,128 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D33539D6F2;
-	Mon, 10 Aug 2026 08:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786351946; cv=none; b=Jw6/z1Zkp0ydZVwKWHmuP5j2yYc1a8Osf7gJiikUrGtAThAS7rVGVlslY3JXIU48JHHIv9vwGkMmj8uLdv0aJKoqQtmzphTqqeFmo1btb122JoCvxr4UrC48BtlIto8agT/gyVhLPFnCJTIGOksn89GthoUkI4/sgLMbbVRsjGw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786351946; c=relaxed/simple;
-	bh=9fXe0wPPrPf7LEsugMCL6cx+2x0oY+kpAVnhj5p+61g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uKnhT0uUdCjMKAZ3TdDRHRyvg0zZc5GhtW+Dt3Cu7kG39RjHlnNlgPFfSbK06xREpiZqR54aj0xc5Pav0buooYsiYqT+hV3Q/32wHhwoprOOO+aDptKLrzMbxhUb2XZnerRChy5OA5ztToEaO41sfiRmmer7l+lWtq1tFSv6GXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZvEc+zMN; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6573A59A8
+	for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 08:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786352113; cv=pass; b=ZEQEYIqurRC5pSAKgNpS1AqMZC3pPCXVPUUdlehV2EYHYJxHXzE4C28mZzMfUUqkogDxhthydBhbfcdj5ruRij798LQ9JrqrJ6CFUKGBX1pR2z2bXdEy90UiPV7Xn4u8NoOEdThumuC49Vgy850whfaG9Gn5yI6OVgfKXRkikvg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786352113; c=relaxed/simple;
+	bh=tDOXiVg0+h1h6bIO200hP40p0eMZwTt7k6rDajhWCvM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=akyzAH/4R5OnMtabfX4DRykhbcmq4pFR+mWG+/aj6fz20tyM87iRF9Fmqi8vS2eqG/WLyxDA4XTld91av1dJn2H6PNaV7gYZzWwODLdqO52u69uVYnGg2da4RFU7TWKMUZ5w9zUp9Hzo6AcTrWzJ9Qxv8cjESn6yGObibJNR+x4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QenO65i1; arc=pass smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZvEc+zMN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EA11F000E9;
-	Mon, 10 Aug 2026 08:52:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786351944;
-	bh=ja+bbx5/k6Ur1P7gZyvdceXvb5QS4sd8f7Hohxvn9oM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZvEc+zMNW/8pT1cKRhb+nZuoMlg8vdkHd5yuLE0Zg2dtbFRoUlPsDVJq/FLUCnzRF
-	 La41lPi+VTuopR4OysD0A1dMw2M42MuSZZUFs+qq6QRzoAVJ0mUkjB/RIUGzYzIxsh
-	 8HnQlkioNc97hH//K4APckBNNLx4SsIxHr6LHABqM86ZmR4h3L29Y8b2RA2UHQvlOC
-	 H2+Lzf7M60DlULqEK8kb6Tp2a/r4+MEgoErg2PEfESuaO9CQH0rdoZUZ3CBqBcWZMi
-	 HLwID1l/RyAc/ZSHUbV8BPFjJ1B3yYzPWmWzkQOMDS7ZpAmVDruN/Q8TbJ3gaIqXO6
-	 zlnsg5aWbiGiQ==
-Date: Mon, 10 Aug 2026 09:52:04 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
-	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@kernel.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, 
-	arve@android.com, cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
-	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] mm: Make per-VMA locks available universally
-Message-ID: <anmQIeQIGkZdCKVU@lucifer>
-References: <20260806200548.3124802-1-surenb@google.com>
- <20260806200548.3124802-2-surenb@google.com>
- <anaCkrk55EQoE2aS@casper.infradead.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QenO65i1"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8efec2c28f8so9357116d6.2
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 01:55:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786352110; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kpxGwE2n19IbAzvyi+g9vH4TNWmiBnCBWX40ns2sXbs8fc9dth5TRvAA29NDCJ5smz
+         I6RMpLTrU+zF43w5U7wpqpBoJsbFYafzTCRuQHbjXUPThPpLYUtiMJrV1LNFtmVcuxL6
+         dQO/8h3yjQgBXuwqQbCCTLReFTG3P9B++ar8g4nEuv2OKlL73K6Dhj7htz3+dWWkx24L
+         agf6c7ytzvOlatAwKKkeNO7aKfZzNH0a4/tBU0Eb/g2ZBQFWjH+opVb1vOjfquoGN1s0
+         VOfFNShx7hqiDrrpqd2H3egwgx0vO0AoXHXNdvmxCvhyeC1Cc0SJPVwMERmM8hpUjW0U
+         WTzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tDOXiVg0+h1h6bIO200hP40p0eMZwTt7k6rDajhWCvM=;
+        fh=HB5Aq1fvgQ2lFLhm3VAYhjRMYiL9iJjmWnVa+qyj33Y=;
+        b=lzNfNKEN/Jz72MF6rDJqyd0ivgQZU8CmMZV8KgCxvDdlmnJymUym2Ik0A+KNBDuRSF
+         x7DqFCTqKmuTGazQgKHX8lsZ0YJj2bPUxrgyhzFAmxs7EaEEEmlarPrAo67GG05l1+3/
+         Iht6Wh/lOtGgCuuk7MGavyE4YaAXtwqWwaJjEVBkEXPklRi+7TwZqzLO7ja0zFEn4C8q
+         Z5EkcULcmqTIbAcTrfJgu4EW16Uikc+nUSqF9OzITtGFWsv/4Min/sc6LF8pgZGArGkE
+         t4CkiYJb25ZYO9KigiHZVKjss6pPuIhSyzvsyi+GTXr2wYj9kLxivXcO+SA9ld+8bz9w
+         WQqA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786352110; x=1786956910; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tDOXiVg0+h1h6bIO200hP40p0eMZwTt7k6rDajhWCvM=;
+        b=QenO65i1yo37nFW4Zp9wL9ajszlkxK4+/mdsf0p6dDHy9RAbVSuuqiCJBn+0qn0GSE
+         S4KUF8HbHqGVYKW7D4JFE7clHIrlvzzgbgM0GC97J1l6Ho2lO/C3/rDyyDzhks1ASeU4
+         DTniIuiyAd7kxg+RXpjA7zI71scAo2RVHNmbDhfvT/lmLhrWeGtDAL1C7ID1lfdc1Gck
+         GCFwNwvrL/Ee0eTPInCGWw0PnwM9gMP/K59usuGCS1gV4cWOIs9TjuewEX4kmZtk/I7/
+         xLq0A2GyziYjRe75EEjyZ1azGF2BSJtrTYudyLORoiYVnj6Dap0jeiFVvHDTQ+CBY6s/
+         nHrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786352110; x=1786956910;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tDOXiVg0+h1h6bIO200hP40p0eMZwTt7k6rDajhWCvM=;
+        b=iBkDQeejc23QzPIZUVyIw9X+9WU8VUu/Tuo+p3AhVwYezwQ/aCAUWFksod0DouABwO
+         rgrTS0Dw8IALo12Bn+NfY0mE6KGARWeVEaTm78R6ao5oidDVPs9Ir9T1nwl/GV4jLms+
+         sEGrc9IxeTSnNncy3xEhQ7BTfuHGu9dTU1z5FK1nsCbtB/1BQKmoqubEebNbyydwxcm1
+         X09kwBdfUKWacIX0CXK9l4G2kpCpjkHQi3cDnlMKazIxg0qCwk7mmhmQYjAaOEOPNSbs
+         cKPpT75feH0mCQd4l6AumZg+Qw049MESSwGrMN6xsL2IJTpKuFeyu6/D/TQyO01AnMKR
+         gcwQ==
+X-Forwarded-Encrypted: i=1; AHgh+Roo566xWrTBufm3KvimlFhkf5jyahPscuD6kP3UgY8h2uUB9+Wl5l9apg4Ok81ivBUITIcVb2s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYr1gsMqklXvHHqkjOh5JjMfNBq/gjSkNd+AfcAPc3/6UnKZCP
+	Yq9z5JG9sPFCn6zRy9hum4h+BL/6JfQjmaZ62HRGErAH1SEkbiRIuWYbpgwPKa9d4y3tjIxLOs+
+	AnisHdkUBExJRvjaMCWpl5dMYe4OnpIBZG0cDhnwZVgLyj93xWduFQGZm
+X-Gm-Gg: AR+sD13o5tVmNjjNZTRCGbXvxkM8iR4KYq6UEtSg8AiVCI5tXsswgANT53M+HYT7ImE
+	ko9CqjnflOrABysF5LsvO2xQpFmsOQPQ9M2EOC/Gsuk7dTh6ncohoNjm0AW1v9wheNUI4ZBnVWP
+	EF0fPv8q4lLByP/NHUgQapwOF/H+0lhTCwMKJZ3thz/kqAhHnzTXgv/+Wz2RxrrbVvCWWsY7s5r
+	BinKhfKa0ta4CoJC1jsQf2NB9eydxqqAzrwh8jsVpZ8wMgILQDMPaTEQbRcRX+kn4sdpyXckYNY
+	YRBtgR+Ef4Wb9DixjPxMpV21bEziJxBF/nhQ+iN3vNO22WjpHh8GcPRFvmff6i1R3nSF2OEP0jP
+	fDyMKoONs79Rr6RTHgYxH3uiB04JUsKwy4As7FKAFa9C2uPHG6XT7
+X-Received: by 2002:a05:6214:4306:b0:8f0:4e44:79e0 with SMTP id
+ 6a1803df08f44-908a6f63f06mr248133046d6.1.1786352109674; Mon, 10 Aug 2026
+ 01:55:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anaCkrk55EQoE2aS@casper.infradead.org>
+References: <20260807131300.2677228-1-pimyn@google.com> <20260810095136.GA2582170@shredder>
+In-Reply-To: <20260810095136.GA2582170@shredder>
+From: Pimyn Girgis <pimyn@google.com>
+Date: Mon, 10 Aug 2026 10:54:58 +0200
+X-Gm-Features: AUfX_mzeFnxMLcy1L81sTY1-qh7OQ_ghwVT3wmFd0bJN3PpKGbIqieXYq9LY5wg
+Message-ID: <CAJWNTGyLJubRHn2KbqQMeV_jqexSgaLbzTe+xJnGzUw=RUtntA@mail.gmail.com>
+Subject: Re: [PATCH] ipv6: addrconf: drop "BUG: " prefix from pr_warn()
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 08, 2026 at 02:12:50AM +0100, Matthew Wilcox wrote:
-> On Thu, Aug 06, 2026 at 01:05:44PM -0700, Suren Baghdasaryan wrote:
-> > +++ b/kernel/bpf/stackmap.c
-> > @@ -272,13 +272,8 @@ struct stack_map_vma_lock {
-> >  /*
-> >   * Acquire a stable read-side reference on the VMA covering @ip.
-> >   *
-> > - * With CONFIG_PER_VMA_LOCK=y this returns a VMA with its per-VMA read
-> > - * lock held and mmap_lock dropped, so the caller may sleep.
-> > - *
-> > - * With CONFIG_PER_VMA_LOCK=n it returns a VMA with mmap_lock still
-> > - * held; the caller must snapshot any fields it needs and pin vm_file
-> > - * with get_file() before stack_map_unlock_vma() drops mmap_lock, as
-> > - * the VMA may be split, merged, or freed after that.
-> > + * This returns a VMA with its per-VMA read lock held and mmap_lock
-> > + * dropped, so the caller may sleep.
+On Mon, Aug 10, 2026 at 8:54=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wr=
+ote:
 >
-> I don't know if BPF is compatible with !MMU or not, but the comment
-> is inconsistent with the code.  How about:
-
-<requisite nommu rant>
-
-I do think there are components that simply don't think to depend on CONFIG_MMU
-even though they do.
-
-In fact more than think - have run into exactly that before.
-
-It's another thing that speaks to nommu being a legacy barnacle that bashes us
-on the head fairly regularly for little to no gain (and nobody is testing it for
-tip kernel AFAICT).
-
-</requisite nommu rant>
-
->
->  * On NOMMU configurations, returns with the mmap_lock held.  If the MMU
->  * is enabled, the per-VMA lock will be held instead.  The lock
->  * should be released with stack_map_unlock_vma() which will release the
->  * appropriate lock.  Once the lock is released, the VMA may be freed.
-
-I mean I suppose it's accurate but I don't love the idea of essentially implying
-nommu+bpf is a thing and also treating it as so important that it must be called
-out here.
-
-I'd rather it be inaccurate for nommu as are most comments in mm and mm-adjacent
-components, it's kinda implied in general. Those who care can look at the code.
-
->
-> >   * Returns NULL on failure, in which case no lock is held.
-> >   */
-> > @@ -288,7 +283,6 @@ stack_map_lock_vma(struct stack_map_vma_lock *lock, unsigned long ip)
-> >  	struct mm_struct *mm = lock->mm;
-> >  	struct vm_area_struct *vma;
+> On Fri, Aug 07, 2026 at 03:13:00PM +0200, Pimyn Girgis wrote:
+> > Kernel warning messages emitted via pr_warn() already have the
+> > appropriate log level (KERN_WARNING) and should not include manual
+> > prefixes such as "BUG: " or "WARNING: ".
 > >
-> > -	/* noop under !CONFIG_PER_VMA_LOCK */
-> >  	vma = lock_vma_under_rcu(mm, ip);
-> >  	if (vma) {
-> >  		lock->vma = vma;
-> > @@ -308,21 +302,20 @@ stack_map_lock_vma(struct stack_map_vma_lock *lock, unsigned long ip)
-> >  		return NULL;
-> >  	}
+> > Explicit "BUG: " prefixes in log strings can mislead testing tools
+> > like syzkaller, which scan kernel console output for "BUG: " to
+> > identify kernel oopses, panics, and fatal conditions.
 > >
-> > -#ifdef CONFIG_PER_VMA_LOCK
-> > +#ifdef CONFIG_MMU
-> >  	if (!vma_start_read_locked(vma)) {
-> >  		mmap_read_unlock(mm);
-> >  		return NULL;
-> >  	}
-> >  	mmap_read_unlock(mm);
-> >  #endif
-> > -
-> >  	lock->vma = vma;
-> >  	return vma;
-> >  }
+> > Remove the manual "BUG: " prefix from the pr_warn() call in
+> > __ipv6_ifa_notify().
+> >
+> > Fixes: 2d819d250a1393 ("ipv6: Handle missing host route in __ipv6_ifa_n=
+otify")
+> > Reported-by: syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=3Dded267b328e950a7c0c4
+> > Signed-off-by: Pimyn Girgis <pimyn@google.com>
+>
+> I am able to reproduce this (there is no reproducer from syzbot, so I'm
+> not sure if it's the same one) and will investigate if we can avoid
+> getting into this state. If so, there wouldn't be any need to touch this
+> message.
+
+Hi Ido,
+
+Thanks for looking into this!
+
+Correct me if I'm misunderstanding the code comment above that check:
+
+/*
+* If the address was optimistic we inserted the route at the
+* start of our DAD process, so we don't need to do it again.
+* If the device was taken down in the middle of the DAD
+* cycle there is a race where we could get here without a
+* host route, so nothing to insert. That will be fixed when
+* the device is brought up.
+*/
+
+It seems this state is somewhat expected/handled and otherwise
+harmless. The main issue here is simply that pr_warn() includes the
+literal string "BUG: ", which leads syzkaller to treat a non-fatal
+warning as a critical kernel panic/crash.
+
+>
+>
+> Currently busy with more pressing issues, so this will take a while.
+
+Thanks again, and no rush. Whenever you have time to look into it!
+
 
 --
-Cheers, Lorenzo
+=E2=B2=A0=E2=B2=9F=E2=B2=93=E2=B2=99=E2=B2=8F=E2=B2=9B =E2=B2=84=E2=B2=89=
+=E2=B2=B1=E2=B2=A3=E2=B2=85=E2=B2=93=E2=B2=9F=E2=B2=A5 - Pimyn Girgis
+Software Engineer
+Kernel Dynamic Analysis
+pimyn@google.com
