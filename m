@@ -1,86 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE01436B90C;
-	Mon, 10 Aug 2026 07:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3203E4A32;
+	Mon, 10 Aug 2026 07:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786347807; cv=none; b=uLz+IhyFcFaB0l+C0tiHtvgID/4FcIafr7gKZvcKawDMVWS/PJw0ommRWkFi56kdnuLX6H9VVXNOCSccFBByX4T/yRYK0UFsloufbWIdyYm6oYWuPOvwhCUTogmqbbS5xdEs0ZhNL2BKWGH9czphTTPF1SeI47ZWFvwKj8A1ACY=
+	t=1786348058; cv=none; b=eGVvUa71DGSg1oFrF8CnVxxbXOv80fKnV7Z7kAXSBHgrcr2TAkqWn7x1vupCjK2C0DWP33AZ9EN7p5WcjWix3PD3UY3c9FxZrGBUlWbrZiusBrU2imJ3m/yfVP8IW1LcJ2+evhP1SxOD4zQ52ap+E0MZVkWv2wINOOo5OZwFvO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786347807; c=relaxed/simple;
-	bh=4MagS9iisHzl/4qdqTszR1iBWSX/MBhQQU6tEBmzPWQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J35yr2OkWp84vfj8g3bjedpzfv8r7rpHqHOZF0vxf2QNTQR8gmQBauoGh2iRx53U3j2pXqVPvuxF2uge64pZyPMwN26toKTf98UVmo5RXtlGytXEqRBzOvOTmkeiWLnAvjzu/MTKTQQmQqXvvL8YJAW2mUfQG3tU3+LRJcANZR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdiAAuio; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786348058; c=relaxed/simple;
+	bh=g7MIX4GKv7NDCNx6HOis0FNG6NziKw6qgJWUn+u4pKM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hWaKvbSJFd3dxYW6dogy1c5FiAKeaH1i1s8x0mmaF0pgQ9kVq8hnfO3Pmh1ctmOavteCg3zkuru0dvlBZ75VdHd8kvcyS4AKlx/oz9BWmiodjp/R8yF8cmWyICV/KNHuGGsP014TDtICs0DkVfoDBIdgWZPVpvfK37IVaQbuB6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=R40WBjjL; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdiAAuio"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53A01F000E9;
-	Mon, 10 Aug 2026 07:43:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786347805;
-	bh=iSpgfwWFuV2LWLb4OwQdWzuS5dQxVgbxFzrJVmhNvVE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kdiAAuioFX/H1cgjVRsCUXbHrnp+bBuPNw7tOOF4YK3cuAP9CfKb58qSDHwOnKG4R
-	 FXN3aR51riXYyK6CKicSMauujLHgdyuUQxaBugHgSG8LxoW8WCjl3R+XuJqJTVBvvA
-	 EnaPjzjLNcLAA6PuphK9Vr2kCWF4Ys7lL19CPz0Vl4F6QKVPwoxE16DtveTaZor1xr
-	 N5Q3RBgSaH3yXpYRVGgnZorhEhDr9N0JoZU8tv7N9kXSDQMbIgd1XXGpqsrABfRR9D
-	 /9hxYzv0m+4RGI8ZFBPAsux9TpNYPnK3r5dfsoNg+VOrrYJ4as0yyLiV2Pwc3VwKHI
-	 KWatEI/2nfL0A==
-Date: Mon, 10 Aug 2026 09:43:21 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Arthur =?utf-8?Q?Cr=C3=A9pin?= Leblond <arthur@marmottus.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/3] dt-bindings: net: wiznet,w5100: add
- link-gpios
-Message-ID: <20260810-arrogant-anteater-of-economy-ef2078@quoll>
-References: <20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net>
- <20260806-wiznet-link-gpio-v3-2-532d4a143805@marmottus.net>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="R40WBjjL"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67A5VRk6752139;
+	Mon, 10 Aug 2026 07:47:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=g7MIX4
+	GKv7NDCNx6HOis0FNG6NziKw6qgJWUn+u4pKM=; b=R40WBjjLVYmflnTmwsS8Ce
+	ZJletgeZJsz2/thjphld6DvwML/jBO8DQ3UsofIDf3IMqJzbVElkEQzXeFH3rFuz
+	nEoogST66u9OVTNO9nORFa1eQBimeG+Ul3nC1ixHK+SsGhoVjzXLwpuPK6pBEP62
+	Q5x1dY0hl1WS1ZE2QXslJ8/+7ITAfBrNO9KV52FLT8kFeXPqOmIyAN6apccVIqka
+	jDWWjZrMXPpGdhJUYozcFeW0bzGg8SwAfC+JSN3KSqC4U/Kr7jXMPJtYNSyVmGC4
+	tEo3OUPe+IxATbxmoFAWbu8DMpT3IFKgECfBQYHnOnCvxACn7r0R7/f5EfPzEyRg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvm9eugm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 07:47:18 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67A7QO9x016210;
+	Mon, 10 Aug 2026 07:47:17 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5vuya6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Aug 2026 07:47:17 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67A7lDOE38535652
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Aug 2026 07:47:13 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EBC582004E;
+	Mon, 10 Aug 2026 07:47:12 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD1D52004B;
+	Mon, 10 Aug 2026 07:47:12 +0000 (GMT)
+Received: from [9.224.91.49] (unknown [9.224.91.49])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 10 Aug 2026 07:47:12 +0000 (GMT)
+Message-ID: <6f82c1f5-06f5-431d-9b23-4e34c8572c8a@linux.ibm.com>
+Date: Mon, 10 Aug 2026 09:47:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260806-wiznet-link-gpio-v3-2-532d4a143805@marmottus.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] net/iucv: af_iucv socket locking - accounting, and a staged
+ plan
+To: Bryam Vargas <hexlabsecurity@proton.me>
+Cc: Hidayath Khan <hidayath@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thorsten Winkler <twinkler@linux.ibm.com>
+References: <20260724222917.134769-1-hexlabsecurity@proton.me>
+ <f74b9587-c09c-4fce-9415-e2d3b49d0247@linux.ibm.com>
+ <20260809014911.752106-1-hexlabsecurity@proton.me>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260809014911.752106-1-hexlabsecurity@proton.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEwMDA2MyBTYWx0ZWRfX+y70lmAPLu74
+ nAvsmNKs03aYW6TForlczlil/RUIJ7dwMHaiUjV5fjisV6YOyQHwnfW2DdujlwT+wf5gh+lJGl0
+ WKZRkYz9P5oTbdZ1m2y/QpwKpxxUtEveXJHQ1ep2vM41EYdho1yr4fbV1lr0/B7lMBCQR+HvCou
+ 6KpujKIZEyatOzBnNJ6seg2sL+PmJdgZFVGlj5L5jy4f+O80dhUv0rxeBlYXqlRl3JJYsUAm3Hl
+ wKuJ3QraX3JPoLu6ZFnHG4FIZ1SQBG4OKQ7uhZ2CQwuDjeQUPz2SzcuJ1WuThAul00QXxmwGuSE
+ GIpCVPnOCBgBRCY+GUNI7nbIs2lA5o6T5/VK5HdcfnK7h9ns8CMb1+TZqMoUPG4aGRjxqlARCs1
+ NEuILIRPXmbjU0QveBkrkNQ4GFiieX2m2FrctyAZmSnx/Q/1WbHAsxYNjbzR/6OxZyl+7wwL/QG
+ rNUnP0sYUh2Rw8250gA==
+X-Proofpoint-ORIG-GUID: 1sRoKFbtWRwXFM--b_9dg4Ib6fOgmHk3
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEwMDA2MyBTYWx0ZWRfXyz5ijW14Bi/t
+ 7mJBAakkaivEyOAoDCcyJNbbiNU6EHd0ESM6a8Bm7kplRob9+QWj1z68H2JnuGMJ08JLOrjBuQH
+ dl8JJtx5Lj8KT5pnorIyREddnZ0FZlk=
+X-Authority-Analysis: v=2.4 cv=IfK3n2qa c=1 sm=1 tr=0 ts=6a798206 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=V45w1f9ymux-jMZoJjQA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: N-i0qHDQlNPloHC5238KVQ-iZp6VoD_5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-10_01,2026-08-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608100063
 
-On Thu, Aug 06, 2026 at 05:00:01PM +0200, Arthur Cr=C3=A9pin Leblond wrote:
-> Add the link-gpios property which describes an optional GPIO line that
-> can be wired to the LINKLED pin of the w5500 as an interrupt to detect
-> link status changes.
->=20
-> Signed-off-by: Arthur Cr=C3=A9pin Leblond <arthur@marmottus.net>
-> ---
->  Documentation/devicetree/bindings/net/wiznet,w5100.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Do=
-cumentation/devicetree/bindings/net/wiznet,w5100.yaml
-> index 641c9ddbde9e..cebf437ad3c4 100644
-> --- a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-> @@ -35,6 +35,12 @@ properties:
->        however, board designs may need to limit this value.
->      maximum: 80000000
-> =20
-> +  link-gpios:
-> +    description:
-> +      An optional GPIO line that can be wired to the LINKLED pin of the =
-w5500
-> +      as an interrupt to detect link status changes.
 
-The message is confusing. If you describe it from the host (system point
-of view), then interrupts are not GPIOs but "interrupts".
 
-But maybe this is OUT GPIO from the system to the device?
+On 09.08.26 03:49, Bryam Vargas wrote:
+>> That would be great, we are also working on several small fixes. Let's get them out of the way.
+> The connack patch is written: bh_lock_sock() in iucv_callback_connack(), the one
+> site whose context is unambiguous, since connrej and shutdown run in the same
+> tasklet and already take it. Fixes: eac3731bd04c - the function has held no lock
+> since 2007. checkpatch --strict is quiet and it builds for s390x. Which tree do
+> you want it against?
 
-Best regards,
-Krzysztof
-
+net, please.
