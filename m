@@ -1,48 +1,42 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3964838BF72;
-	Mon, 10 Aug 2026 18:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640D43DEAD2;
+	Mon, 10 Aug 2026 18:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786385007; cv=none; b=BjlvUuCN76kYvQIMylwOw+KclS4zz1Tq+HzlmVKDn768J+agKD15BypL2tDuYEXAaeTOp5az1NrttjOdSAYJURsXlFVCABo+uTsj/jxNCeGik6xywNR8hb20cg8albRPBufGUs+7Gx3T1nUWbpTZ3amgU+3xYZ/qLdfJLYDL+gw=
+	t=1786385008; cv=none; b=tM7Fo5dyJGOj3Qk62Ts1DQBrratGdpxyXNuzQYmyCKUSvW+bnyeHUfHRZDf+icRCEjShatbsBNlMiWq3OjKOE4a0Kq6AMAIFlWa8pCBsFvN6RjBJvCLPmgN8NcIacodRlgve8J7vgzMRNxplj5N9BokwoS1d98z3Z+2UUAI0LKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786385007; c=relaxed/simple;
-	bh=MPk28tW9IaFNravdfW+vVd7/hzQhHKSQLveQ5Z7BM+g=;
+	s=arc-20240116; t=1786385008; c=relaxed/simple;
+	bh=aau2JbmbqI4POU+jcJwxQL4ZmAPvr3uK5Z4vSyBv9KA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ON78by7uae+6GZKc4Lf8hZliKBFGqg792YCONewCBickI/s7zst3PA85zlpjkroUc2QzEo+pFa/Wi/ATfDmBmOrdwlm7ovGUrfbawNLRwtzuHJUdcJWkt7Khsat6cQ1Vd0Y2sy816S62MRWYB9pKzKLP3n/bv3aj4MgIEijVxb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E5SrZ72V; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=E1Jl/IhR+Q9tTbDZRR6y1nWGf2+yjYsywYxyRzQlNi6cr9eicnPKNMTItBlTn3IBTuw4FnBohSbD8Jh45pPXkgV1xyWCU/W4P+5sb0IRDtEkDoj5I9p/vw92azImoMPOuBe4sEtPYDd2jDkae4Te/PeIiSZdaxrpYDyvSo5Fp5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=CxepX+QQ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E5SrZ72V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08F21F000E9;
-	Mon, 10 Aug 2026 18:03:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786385005;
-	bh=+47nB+ymVQpumJdoiL7i0y+0QEYSSwSbPBEdZ3OfrBg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E5SrZ72VDXJbAtd0U9iOidzNeHCawXN+u5dsLBP7qBo2pJzTegMWiPiO/SjD33Dl0
-	 0s7LAwspsNl+NzMXa2B+Seg1OtoD/Hc0tN3twuQ/GTBUjfV8v8N6PnY3lKuTXpYQPf
-	 HfS9exE/RtVdAcJW8p30pJpDeQN88wOINYcwDqZR4jhKNTRShG/aYTsGrqptP909RK
-	 2yXqp0EHNeyHRkyOMJfP5FlGajUUj/AFHG3l5XnWP8/Mdlvn4c5MObzjufaSxi6uv/
-	 M5ojLqlXtohKQzlRWmJlxd1HHLiXIP18Ituk5+RVZ7VjHFWDnBGekuLRko6lnDMHo7
-	 d2qz0ZNuIsIyQ==
-Date: Mon, 10 Aug 2026 13:03:24 -0500
-From: Rob Herring <robh@kernel.org>
-To: Manikandan Muralidharan <manikandan.m@microchip.com>
-Cc: pratyush@kernel.org, mwalle@kernel.org, takahiro.kuwano@infineon.com,
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-	krzk+dt@kernel.org, conor+dt@kernel.org, srini@kernel.org,
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev, linux@armlinux.org.uk,
-	richardcochran@gmail.com, arnd@arndb.de, linusw@kernel.org,
-	michael@walle.cc, linux-mtd@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v6 1/7] dt-bindings: mtd: jedec,spi-nor: allow the SFDP
- to be exposed via NVMEM
-Message-ID: <20260810180324.GA2352629-robh@kernel.org>
-References: <20260729043026.1811147-1-manikandan.m@microchip.com>
- <20260729043026.1811147-2-manikandan.m@microchip.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="CxepX+QQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=gqy8bFAdRc5tA53S/q2so8gy5IUZwXdGNR4ByzEtuh8=; b=CxepX+QQ7WJkbjNa+fxbrsVIkD
+	DsWSHW3k4jKTx0wb0Ja/2v1sm7kDRnm7lzEXUkPbqsDLCsns2cAxlkFDW7qjNZUnAJsachkWhw6f1
+	AFxsJOhMF6gvU2UzAw2D1C5owlNca+1vXNPuS07+hTMNigaGt29VeYVJx7Zyaq5YG5/Y=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wtULJ-00Gxsg-At; Mon, 10 Aug 2026 20:03:21 +0200
+Date: Mon, 10 Aug 2026 20:03:21 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+	nic_swsd@realtek.com, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, edumazet@google.com, bjorn@mork.no,
+	pabeni@redhat.com
+Subject: Re: [PATCH net-next] r8152: use GFP_NOIO during system suspend
+Message-ID: <918676ef-efcc-4524-a779-62eb2c3eb608@lunn.ch>
+References: <20260810065741.4019-1-nic_swsd@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,44 +45,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260729043026.1811147-2-manikandan.m@microchip.com>
+In-Reply-To: <20260810065741.4019-1-nic_swsd@realtek.com>
 
-On Wed, Jul 29, 2026 at 10:00:20AM +0530, Manikandan Muralidharan wrote:
-> Add an optional "sfdp" child node (compatible "jedec,sfdp") that
-> describes the SFDP as a read-only NVMEM provider via nvmem.yaml, so its
-> contents (e.g. a vendor EUI-48/EUI-64) can be read through NVMEM cells.
+On Mon, Aug 10, 2026 at 02:57:41PM +0800, Chih Kai Hsu wrote:
+> During system suspend, memory allocation with GFP_KERNEL can block
+> waiting for I/O to complete. If that I/O depends on a device that is
+> itself suspended, a deadlock results.
 > 
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
-> ---
->  .../devicetree/bindings/mtd/jedec,spi-nor.yaml | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+> Introduce RTL8152_SYSTEM_SUSPEND flag to track when the driver is
+> operating in the system suspend/resume context. Set the flag at the
+> start of rtl8152_system_suspend() and clear it at the end of
+> rtl8152_system_resume(), following the same pattern used by
+> SELECTIVE_SUSPEND for runtime suspend.
 > 
-> diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-> index 587af4968255..98fd954598ab 100644
-> --- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-> +++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-> @@ -103,6 +103,20 @@ properties:
->    spi-cpol: true
->    spi-cpha: true
+> In get_registers() and set_registers(), select GFP_NOIO when the flag
+> is set so that the kmalloc and kmemdup calls in those paths do not
+> trigger I/O reclaim.
+
+Do you have a reproducer for this? Or is it theoretical?
+
+> @@ -8693,6 +8700,9 @@ static int rtl8152_system_resume(struct r8152 *tp)
+>  		usb_submit_urb(tp->intr_urb, GFP_NOIO);
+>  	}
 >  
-> +  sfdp:
-> +    $ref: /schemas/nvmem/nvmem.yaml#
-> +    unevaluatedProperties: false
-> +    description:
-> +      The Serial Flash Discoverable Parameters (SFDP) tables exposed as a
-> +      read-only NVMEM device. This allows standard or vendor-specific SFDP
-> +      data (for example a factory-programmed EUI-48/EUI-64 identifier) to be
-> +      consumed through NVMEM cells.
+> +	clear_bit(RTL8152_SYSTEM_SUSPEND, &tp->flags);
+> +	smp_mb__after_atomic();
+> +
+>  	return 0;
+>  }
+>  
+> @@ -8758,6 +8768,9 @@ static int rtl8152_system_suspend(struct r8152 *tp)
+>  {
+>  	struct net_device *netdev = tp->netdev;
+>  
+> +	set_bit(RTL8152_SYSTEM_SUSPEND, &tp->flags);
+> +	smp_mb__after_atomic();
+> +
+>  	netif_device_detach(netdev);
+>  
+>  	if (netif_running(netdev) && test_bit(WORK_ENABLE, &tp->flags)) {
 
-blank line
+It seems odd to me that every driver needs to track if it is in
+suspend/resume or not. Doesn't the struct device tell you? Is there no
+global state somewhere?
 
-> +    properties:
-> +      compatible:
-> +        const: jedec,sfdp
-
-blank line
-
-With that,
-
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+       Andrew
