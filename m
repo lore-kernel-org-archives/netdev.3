@@ -1,73 +1,84 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76165317162;
-	Tue, 11 Aug 2026 20:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ED638C2BF
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 20:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786479818; cv=none; b=U7YS7jTrMr70tDTQtdbwbYyeL71UawLiOUKgvoBFp63MK865LE3+ka6sPhDcx4xWaEFaUtezUyPoX/zXW/Hz4GXnL+0VGhwTRYPnoze9ol0Xv46JZ6IwCIjbM4iJIvG1vx1L21RSmk/g0QEej+Cw4nU3srUmLFtEKjtHWH7vfBc=
+	t=1786480349; cv=none; b=KWsolHet/IGkNHg4vlkjEJmle6+HSEKDJfcEY23IbfpkZQ7FSay43MpoGpFIgYNMITOjBNl0WoEdaXaBDOa6d/mVjbEm/34kHVGoMHycZhzZzXIdVpSCohq7iPR/byirIRIZZfWEwtrgCjUa4QV9jOFiClzK6hjThEBoNBvX1x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786479818; c=relaxed/simple;
-	bh=rFuFtSTnSBdb7eBzCn6bcuwS2zhAQklee4DbQNkhdTc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qu8hijge4zTeaX9rbw7355Qss9aGv5YOXotkEkSkWrredHAVvpbcY/6dbI7aRjnoOvhCWe4chO9maXJ4/6bWkRxpTenGsR1WvZJjvGr2KDLj0FiP7uZJSEIkLebeTkbLUeogLscEsr5zb2P5ThMQwwiLkF5mTNRwQl6bDUv52Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id B9AF560455; Tue, 11 Aug 2026 22:23:33 +0200 (CEST)
-Date: Tue, 11 Aug 2026 22:23:33 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
-	horms@kernel.org, ja@ssi.bg
-Subject: Re: [PATCH net 00/13] Netfilter/IPVS fixes for net
-Message-ID: <anuEqSHXJtF9bqTi@strlen.de>
-References: <20260810190621.894119-1-pablo@netfilter.org>
- <20260811124434.76ab55d9@kernel.org>
+	s=arc-20240116; t=1786480349; c=relaxed/simple;
+	bh=spRcelJ+0EB7EsxzK2xoB+gtOqYn4w6FB0zwIMJJn20=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=PucqKijWlcqvpAio1s9x0BVBaORWHezcPYdBZS5eVXtV5FJLA8+hWW8AV5f0Q4LC5zOCHh9k1Z5tZNJqAmYrZv9LsC5STxOQU5xAfchZfT7QIGiouLbxt9XFbTo8sobcTjhK1cXyalaAG0X3JlzDqLwl7Te4oiEtEVMuNGVh2vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4ab260600easo1809825b6e.1
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 13:32:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786480346; x=1787085146;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1LqL5TggMkhC4wrO4V0tjN9INYAr5s6XDVGPuhKjlpQ=;
+        b=BW/Y4qw2mghl5Bn99OWSoTb8jFnltI2wrrdDisFbVIddGr+qu1nDboCAeeVr/+EiHT
+         31ErNvPtY1mn+yl388MUSddEUKatKRPFxqpX6XP15iSawqSnRVv0jow5aHKYnVlEFYF+
+         v2SeFrHAiXYvtyqHe1Ldl2QY0EvHK4Mq6nKepBcD1+h5y+S1/c1s3I+KBgeKNm7KfC/g
+         zzxzF2rkiMGFpMhffVlyPFq8ZDQJuf5HzDfE2+xGoWfeqX6ikWYODTw3jPjSwq3hHv2B
+         5SI51pcbNIvyBK4b+ST8mDybX3USZqIAvQIbstjzx5wRJhEIudLyZe0OcFFkmAToh9e8
+         P+/Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqsLyqYuN271v3nEpeq764jXMqCMN58aioHXh5Ddad+MeE+Lsrg8C1sNOvkpE5EjnN6X1QJdt0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7Xny9oT07jmzgNb3YTLJd8d8wfXFBlW1AudIPX7CeMnsbBoH+
+	lBgyHncyBgSnNgY5QbIxv8GVG9Dw/EFshaLAJIBXa7ObCTSWY073JocoRkGpTlJpQ2gU/cPyXAb
+	6IoXtV9dNTHY6DWKMMhJXJn2GNba0eXZAR2G3taBowEttiNglC3dq7UKqIK4=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811124434.76ab55d9@kernel.org>
+X-Received: by 2002:a05:6808:1c0b:b0:4a4:989:bb1f with SMTP id
+ 5614622812f47-4b20900d6bamr2225175b6e.9.1786480346381; Tue, 11 Aug 2026
+ 13:32:26 -0700 (PDT)
+Date: Tue, 11 Aug 2026 13:32:26 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a7b86da.3668565d.e8814.0004.GAE@google.com>
+Subject: [syzbot] Monthly intel-wired-lan report (Aug 2026)
+From: syzbot <syzbot+list9a0236217be7a8ef1662@syzkaller.appspotmail.com>
+To: intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Jakub Kicinski <kuba@kernel.org> wrote:
-> On Mon, 10 Aug 2026 21:06:08 +0200 Pablo Neira Ayuso wrote:
-> > The following patchset contains Netfilter/IPVS fixes for net. Still
-> > large batch for this late -rc cycle but at least have of these fixes in
-> > this batch have been cooking for several weeks before:
-> 
-> Does any of the AI-detected issues seem concerning?
-> 
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810190621.894119-4-pablo@netfilter.org
+Hello intel-wired-lan maintainers/developers,
 
-Only commenting on those patches that I worked on or commented during
-review:
+This is a 31-day syzbot report for the intel-wired-lan subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/intel-wired-lan
 
-Patch 6: [PATCH net 06/13] netfilter: nf_conntrack: defer invalid log until after unlock
+During the period, 3 new issues were detected and 0 were fixed.
+In total, 3 issues are still open and 2 have already been fixed.
+There is also 1 low-priority issue.
 
-Its fine.  This is for debugging.  We could restore the removed info if
-anyone needs it, I even was about to suggest to original author to
-simply remove the invalid logging but decided against it (since you can
-log the packet to userspace via nfnetlink).  I prefer the simpler
-version that doesn't snapshot data while under lock.
+Some of the still happening issues:
 
-Patch 7: [PATCH net 07/13] netfilter: nfnetlink_log: wait for rcu grace period before freeing pernet state
+Ref Crashes Repro Title
+<1> 9       Yes   BUG: unable to handle kernel paging request in e1000_get_variants_82571
+                  https://syzkaller.appspot.com/bug?extid=0ddf1022b4d5c391c09b
+<2> 8       No    kernel panic: UBSAN: panic_on_warn set ... (3)
+                  https://syzkaller.appspot.com/bug?extid=167d8196c0bada4210fa
+<3> 3       No    BUG: unable to handle kernel paging request in e1000_get_cfg_done_82571
+                  https://syzkaller.appspot.com/bug?extid=8ce4dba751e79facdc38
 
-Yes, one could have added this Fixes tag or Cc stable to the patch.
-Don't think this warrants a respin by itself.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Patch 12: [PATCH net 12/13] netfilter: ipset: fix list type element drift bug
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-Even if the ordering is "wrong", the patch that
-added it is ancient (even in RHEL7) so its long established behaviour.
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-ipset test suite also has test for this and those tests pass, so
-changing kernel behaviour will need to adjust (old..) test cases as
-well.
+You may send multiple commands in a single email message.
