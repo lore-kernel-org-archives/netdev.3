@@ -1,85 +1,104 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CEA34040D;
-	Tue, 11 Aug 2026 14:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECB01A3160
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 14:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786457715; cv=none; b=BDkTBbWJdZSlTZyzLgaslz4chOeopEjvkpExatpIe9/1WHxAxM+PaxC5LRcXTS8acpUU2EBcb0unVBesBjPGh8vfXIueyHrpgBUe1UtVAYMCF8NmlnaieuLunRy1XcZDrzO2aoMoMmQ/JUqxsayuvnsrsx6CQ2s4JIceiHyXI+0=
+	t=1786458200; cv=none; b=qEEODlF0E3GlPIUydM2ByDqsMoWySIL2pO8MoqgIlC2xU2Z/wXem0ioqQHE9CSwW9fuRY8Of/1CB+CnIl4EurId1C8FiNCMwDUBNJP+YGuuAJ85LiyWcdJuunEUDOyViqa7W8vZPv2NJ4XKpatHJTlVR7Dr6OA/NtBqIy/Q+0EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786457715; c=relaxed/simple;
-	bh=hff+GetzW23/4CRB88uLQZxKIlNWZLJA01JhWrZ1o6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eTxwHb4CrSZ/KfMbZrTPsXqFdqNCGDQeBlEaXEvTFS4xs4k6cs0HusAYZf3jR5ZWiYlTYNiqnRoIdqoKI/OQL7dimgmov9Oz8qeP6Nw/tjCfArPgyTmoJbGyBDZtp6afPWtrDkOqcfsdkji41DkZruOptw9ODRmdW5YjeqeYjwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=K+0ZQKNh; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1786458200; c=relaxed/simple;
+	bh=G3CQLb9SdueQin5wBr8nwwb++DWwFwUzHq3otv/6yxA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=pmChLq9F7rA5TqSZTzl2lvgZdLsiySjwNvnO8mpKLxYANKG1x7A/sweI8ZsPVeisIYdH0DPDTN4v75QHZjtp2+p8jZCjndoFOEpVTeZKMUpnckSRt0jBnStIWF8/+FQa275iV9V+Z0JLy8A+bN8ipG3SizDc5Jw7bi3+rXLbs2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8LpvPW7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="K+0ZQKNh"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DA3DC3ECF1;
-	Tue, 11 Aug 2026 14:15:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1786457705;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dWw44zpzNqo6YaMY19rOprxLGahTztOgmFF9cvilol0=;
-	b=K+0ZQKNhyE33FOMpfJ+8mxce0aNTgHNIav6JfGCeSoEvqDPTTbSoQoid9zv6S94hEQuHiU
-	RpPB9093TvauAs5aa2kZRC3woibVr0PO7aKtqXczBxY5oNfH7EjZRe26VwIq6fbjRD77k7
-	1t1zzltJtBciIpt5wgO0fuK3awFpr4laNCE/DM0JJ/VrKSebQGh3KNTbnGgPQ+olpxEXhf
-	768k2HgzTTtpNiXESdstuWpE2LhqEoCe0qNLmzMYk/+GwIrkIZDJsOUDt5Xl6bPPA+yO6O
-	teeoDYZFoDjvp5SFDYlhNMroT5K5D9AHstBKOUw/CI+r64CG6Oi+/CLjma4Lrg==
-Date: Tue, 11 Aug 2026 16:14:57 +0200
-From: Arthur =?utf-8?Q?Cr=C3=A9pin?= Leblond <arthur@marmottus.net>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Netdev <netdev@vger.kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: Re: [PATCH net-next v4 1/3] dt-bindings: net: wiznet,w5100: convert
- to DT schema
-Message-ID: <ansuYaT2GAMAA0hF@pc-du-fromage>
-References: <20260811-wiznet-link-gpio-v4-0-4d5f7da885a8@marmottus.net>
- <20260811-wiznet-link-gpio-v4-1-4d5f7da885a8@marmottus.net>
- <5812d452-5dbe-436b-ae6e-af062a873f7a@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8LpvPW7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF8C1F000E9;
+	Tue, 11 Aug 2026 14:23:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786458198;
+	bh=Jbqd9yNqpaIV+hwHQdsiOiPypqoGsa/bVT+4r+E2ETk=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=h8LpvPW78PFMASO4w0iKMb/OlZTEe9xPXXtkd1JxHKf7xnbW7ksH6jlvtgP7P7s7N
+	 qoa05kNJxla8isQjnIKmkJ3R8vqhxSydipYOLEJi4TUaw8M08eS8gVj/aXzDpY9VLO
+	 7HzSQ+oLP86Z2GK3OWPoAV+SjUd1ekXcF0tdGxi5fvSOg+IBlqP14CGBYT8gJk+7G/
+	 isSAceFq+dFC+6hiEsHTkSETRdHAaanigK2cNQGWyjp0qr9UfPiMthG6GkV+d9uXgz
+	 jAUzdFXJ/HcLAFP3Udk4OiBhJEY4UGwBPY9qS/gs5FbM8MXkP7XzdYgGnI9eIMiXCg
+	 V1DwEtborxueQ==
+Message-ID: <8c0e9e58-df43-4c4f-a3c3-3f58264ff09a@kernel.org>
+Date: Tue, 11 Aug 2026 08:23:17 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iproute2-next 3/7] misc: put help to stdout and usage to
+ stderr
+Content-Language: en-US
+To: Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org
+References: <20260807154306.111200-1-stephen@networkplumber.org>
+ <20260807154306.111200-4-stephen@networkplumber.org>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260807154306.111200-4-stephen@networkplumber.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5812d452-5dbe-436b-ae6e-af062a873f7a@app.fastmail.com>
-X-GND-Sasl: arthur@marmottus.net
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: dmFkZTFNhpqs686JAHk0xx0MEzMcDAhHwLrEfZwlQs4xTFISFeJops4AyxV3U5s2XwVaBbziRL651+1mRnb4ezcc+0A8oYPRkuLe+FIxNokTQWzOBjM0STvumiUqCsDcQqi8JFer8Y6rwsDQ8DLY0MOGG3CQbEJltgHmeJpbUVAXDg7oA43sgJaBqWHNbkLdyqHDiJ2fiJ0QmXLM0X59yvj6CNxJ92GDSnSf3p/ne/MBBc2O1vUVWyVRkEh7LoZEVtxlEViHHDBaS2qXaEmbe/Asj2uSpjqbxAH1TydhsM9YeAuby/9Wko/UtGA++qNdF6YrlcyPA3s//S0HdDlktIdG/2kqeCqB8TrSpyJ6n2bjaQ5lP/5ASQL6HcZ48XdQMXP7FLNKWmGLde0unqcukKrxk/vSkvEFWqYw6D1eol6CjKnxIcLrGPTmzP7boHvjILY1ORHqfpcGY/KpL+By/tgLebFYjmHThS1Wvh24gafZ2HSKDRu32jyP7mIsZysaTraSsHeOCNu+q6FoEJBDJQZ1Ln71MEtGLBCLqNTrHG1QfYsLeedzFi2wzGNrh5GgMFIwN8k4C3i5hs6Q/imk1PEPyFDymRM02eu7Zoxnjrt7qvsylHWSAlq3N/bY2LDgU8a/fHjLOXFjyUTbHEXzVV192aEeOYomE2//KaN7vOX5XqDUbQ
 
-On Tue, Aug 11, 2026 at 02:57:40PM +0200, Arnd Bergmann wrote:
->On Tue, Aug 11, 2026, at 14:34, Arthur Crépin Leblond wrote:
->> +        ethernet@0 {
->> +            compatible = "wiznet,w5500";
->> +            reg = <0>;
->> +            pinctrl-names = "default";
->> +            pinctrl-0 = <&eth1_pins>;
->> +            interrupt-parent = <&gpio>;
->> +            interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
->
->I think this needs to be IRQ_TYPE_EDGE_BOTH instead of IRQ_TYPE_EDGE_FALLING
->to make sense.
->
->      Arnd
+On 8/7/26 9:42 AM, Stephen Hemminger wrote:
+> diff --git a/misc/rtacct.c b/misc/rtacct.c
+> index cd84b7f0..0e2c03af 100644
+> --- a/misc/rtacct.c
+> +++ b/misc/rtacct.c
+> @@ -412,14 +412,13 @@ static int verify_forging(int fd)
+>  	return -1;
+>  }
+>  
+> -static void usage(void) __attribute__((noreturn));
+> +static void usage(bool help) __attribute__((noreturn));
+>  
+> -static void usage(void)
+> +static void usage(bool help)
+>  {
+> -	fprintf(stderr,
+> -"Usage: rtacct [ -h?vVzrnasd:t: ] [ ListOfRealms ]\n"
+> -		);
+> -	exit(-1);
+> +	fprintf(help ? stdout : stderr,
+> +		"Usage: rtacct [ -h?vVzrnasd:t: ] [ ListOfRealms ]\n");
+> +	exit(help ? 0 : 1);
+>  }
+>  
+>  int main(int argc, char *argv[])
+> @@ -469,7 +468,7 @@ int main(int argc, char *argv[])
+>  		case 'h':
+>  		case '?':
+>  		default:
+> -			usage();
+> +			usage(ch == 'h');
+>  		}
+>  	}
+>  
 
-This interrupt is for the main one which is active low, we don't need
-to catch the rising one.
-Only The link interrupt needs to be both edges.
 
-Arthur
+rtacct.c:415:19: error: unknown type name ‘bool’
+  415 | static void usage(bool help) __attribute__((noreturn));
+      |                   ^~~~
+rtacct.c:29:1: note: ‘bool’ is defined in header ‘<stdbool.h>’; did you
+forget to ‘#include <stdbool.h>’?
+   28 | #include "version.h"
+  +++ |+#include <stdbool.h>
+   29 |
+rtacct.c:417:19: error: unknown type name ‘bool’
+  417 | static void usage(bool help)
+      |                   ^~~~
+rtacct.c:417:19: note: ‘bool’ is defined in header ‘<stdbool.h>’; did
+you forget to ‘#include <stdbool.h>’?
+rtacct.c: In function ‘main’:
+rtacct.c:471:25: warning: implicit declaration of function ‘usage’
+[-Wimplicit-function-declaration]
+  471 |                         usage(ch == 'h');
+      |                         ^~~~~
+make[1]: *** [Makefile:25: rtacct] Error 1
+make: *** [Makefile:72: all] Error 2
