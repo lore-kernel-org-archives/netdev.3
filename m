@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042C53AFB03;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04212368D45;
 	Tue, 11 Aug 2026 11:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786448757; cv=none; b=TOLS1F0JjDn6JwEXLIwWnC8bQm2gnbCQL8dNt6GNmc7RJllZbjJDXKmlmBa0OWqMvxNcXQT3aVpkX6o3b3+BdPyxZ63GhVzs9tQcQbm+kwY2Hnxp3/gHo2raJCn81gezjUVG/vlniJnUhTaD9os+fLQqbv0x1vPXdPDD9xg1ZhA=
+	t=1786448757; cv=none; b=PK7jKfI3GUJDGIgYZossRt/H/YT+X5g0Iy1lXDfUvnKx2D6ygktKmxCA+6ydRjJTTvJMuPc2xy/8oj5ynSuQKAHkYbxM+F+1+NHn1jqF/8pt9UJdURJ2ahD76Kqbf94AYLNUn5HMjigms1iEFQVKLKrPMcl/JyOrgB6ul3KZ8GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786448757; c=relaxed/simple;
-	bh=B4bQSI2L9KrzAEcIP4HLvbYVCODqikvBn0mglsjGQz8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jpBH49sGwMj852j17M8+eGf2Fa/gV9hmHYVDLZaiu3XVf58gDyCRshdsUdF3S1vcQW0Dydu4sgY+L3wMYlnVCZbvh5sgT0UK56zub8UO0OB0hdlLCeJIn9aMfG9/7DhM4lFCr7DQR5rhWS+Wo+bUxv8BXhYcmfgEKOrrwiZ91UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHc4x4ja; arc=none smtp.client-ip=10.30.226.201
+	bh=bL+dw7nZ4smpe5+bHljStvN1ejOmLM/lXKfbhLG7gMo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=EPIaFp+QrV75wxc1K1UilyGBvCfurDQING+md/LK5lbe9hrAaAh0m18IknCT9rAF/GwNnQtzzihSIAmxsHWQ5N1yy7axn8uVDFosmOB2rxHtqqcGOUChoaqeBM1yKH8Zy2yCXLqOfu5qFHgtgeksXpjuVJXkjkZIwha/TWxY5Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4MD9SMG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHc4x4ja"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8E6F7C2BCC7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4MD9SMG"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AA03AC2BCFA;
 	Tue, 11 Aug 2026 11:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1786448756;
-	bh=B4bQSI2L9KrzAEcIP4HLvbYVCODqikvBn0mglsjGQz8=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=OHc4x4jaAQAGzwspjSuRlSPHDJMepi+ZRzHturjj6PEatxLqJHhqqZrWtMNRkasnR
-	 lpQyrpyrkU8xGyEvlj60xIBAoBgBc8MwdvQpV4EbUxrLUwgy0qYn2W1zet64FbmdBL
-	 qjedwxFd5qR1HcH+D89dx9gAsykVOV6SeECY1Z+AhS7rJrjESET6hgsAbWVmgtX5z2
-	 wv++7rqJv9Pea/eZNvhwVCCe3X2Tpggmw1mTllrB7U+a08vKEYT3FJ/STaujeoKdro
-	 v4YtSe4miqi9sHCm/26vnFqycSRlB7/bGw1iv8Ohi47x5Ake5HjTnYAO5as6sX5ACK
-	 X/bJx4/hkg8IQ==
+	bh=bL+dw7nZ4smpe5+bHljStvN1ejOmLM/lXKfbhLG7gMo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=s4MD9SMGqMktRS8kt2K6Q22Fs1wZX4Hy/rURQ6hhjNVNqe1mPGU4sd0N1d6adXkXe
+	 uW0i3EpyuWxDSm83JbEnxN3jzQYAj0wVnqn7l3sX18dLhejmN5fhVH/1OwGOV5/c8Q
+	 x7JDKtGeDg45EmqyB4DaTumfsYEvSf9Q+adu3chb9pYzJmFY6Q4aT3UrD7q7QA2uy3
+	 e+lLJwe8EaMLLDP5NBqCNeZ6j7KWNHlBHk3QFNzrUyAZngglfIzie/pcy8zvtoty1G
+	 0Jf9uPWqf0npKAgqNYjB6A9SmPTDU9F6PAhe7Q41OgV7zer7QfI1jC6E/0Hl766G0V
+	 cIvf9lXbu/FGQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6791FC5AC67;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B122C5CFC1;
 	Tue, 11 Aug 2026 11:45:56 +0000 (UTC)
 From: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>
-Subject: [PATCH net-next v8 0/3] net: dsa: mv88e6xxx: add support for
- credit based shaper
-Date: Tue, 11 Aug 2026 13:45:46 +0200
-Message-Id: <20260811-net-next-mv88e6xxx-cbs-v8-0-10d0baab2905@luminex.be>
+Date: Tue, 11 Aug 2026 13:45:48 +0200
+Subject: [PATCH net-next v8 2/3] net: dsa: mv88e6xxx: use the hw tx queues
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,14 +39,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAGoLe2oC/3XQzW7DIAwA4FepOI8JDBjYae9R9RD+VqQ1nZIsy
- lTl3edFmpYp4sDBGH+2ebAxDzWP7OX0YEOe61jvPQXu6cTitevfMq+JYgYCUGgleJ8nOsvEb7N
- zGZdl4TGMHCRIiT52HTpGxR9DLnXZ4DP7rWEXylzrON2Hr63jLLf8hhuAFj5LLnh0tqO7EKOIr
- ++ft0oPn0PezBn2DjYdIEeqHLSP4INTB0ftHdt0FDlQlLM5mFLw6Oi945qOJseFJFXwArWxB8f
- 8OSja/2N+9vLorXFJlu44D+4d3XSQnIAuCik1JJkPjt07vulYcmwyySpIxWjzz1nX9RuMU+3Hd
- wIAAA==
-X-Change-ID: 20260430-net-next-mv88e6xxx-cbs-2121169caa68
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260811-net-next-mv88e6xxx-cbs-v8-2-10d0baab2905@luminex.be>
+References: <20260811-net-next-mv88e6xxx-cbs-v8-0-10d0baab2905@luminex.be>
+In-Reply-To: <20260811-net-next-mv88e6xxx-cbs-v8-0-10d0baab2905@luminex.be>
 To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -60,11 +55,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Cedric Jehasse <cedric.jehasse@gmail.com>, 
  Cedric Jehasse <cedric.jehasse@luminex.be>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786448754; l=3858;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786448754; l=11508;
  i=cedric.jehasse@luminex.be; s=20260213; h=from:subject:message-id;
- bh=B4bQSI2L9KrzAEcIP4HLvbYVCODqikvBn0mglsjGQz8=;
- b=VNW0VLwrPxfkUJfWVb77qtkSsp2u1/vd8HHA/ch5X149QN0na8Y/jElM9fRcG7A94dqUtOWC3
- 8LsTmCKX0K9C5KOpsPPB2FzK8QnTgg6MtCSA0Z0Sz9WLUCh0Blz3WZa
+ bh=+d3GarFIv+8jgYa2BdKPESoxgq5Xh3C5c/F3WWG67NU=;
+ b=udc3HLmCyDMr4KResFzuYujzL8yzPf3vWnbzj9Hu+TUguPoWm4X7LKg1iKYSIwsKHNFAc5h/e
+ HLY0K5L1vdKBPeNNyCdZiuloEX6BNTw8x2UsWHS757pR5CzLDPmiUc5
 X-Developer-Key: i=cedric.jehasse@luminex.be; a=ed25519;
  pk=DL2RaHc2bc7tTDTMJdugm42BtJk4Ip+7V41Gkj+Avjk=
 X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
@@ -72,94 +67,356 @@ X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
 X-Original-From: Cedric Jehasse <cedric.jehasse@luminex.be>
 Reply-To: cedric.jehasse@luminex.be
 
-Several of the switch families in this driver have switches with AVB
-support. The switches with AVB support have support for Credit based
-shaping. This series adds support for the 6341, 6352, 6390 and 6393
-families.
-The difference between the families is:
-- total number of queues
-- which queues support credit based shaping
-- shaping granularity
+From: Cedric Jehasse <cedric.jehasse@luminex.be>
 
-Eg. setting up 20mbps credit based shaper on a 1GBit link:
-tc qdisc add dev p8 parent root handle 100: mqprio \
-    num_tc 8 \
-    map 0 0 6 7 0 5 0 0 0 0 0 0 0 0 0 0 \
-    queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 \
-    hw 0
-
-tc qdisc replace dev p8 parent 100:8 cbs locredit -1470 hicredit 30 \
-    sendslope -980000 idleslope 20000 offload 1
+When transmitting fill in the PRI field in the dsa tag to select the
+egress queue is sent to.
+From the datasheets i've looked at these switches have 4 or 8 transmit
+queues per port.
+Note: skbs with skb->offload_fwd_mark set use the DSA_CMD_FORWARD
+tag. These are processed as normal ingress frames, meaning the queue
+they end up in can still be altered by other switch config. eg. priority
+overrides, tcam policies.
+This isn't done for vlan tagged frames because this would overwrite the
+PCP value in the vlan tag (The PRI field in the dsa
+tag is used as the PCP value in the vlan tag).
 
 Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
 ---
-Changes in v8:
-- add an extack into tc_cbs_qopt_offload and use it to report the reason
-  for rejection back to the user (Jakub)
-- Link to v7: https://lore.kernel.org/r/20260609-net-next-mv88e6xxx-cbs-v7-0-7d5d732df545@luminex.be
+ drivers/net/dsa/mv88e6xxx/chip.c | 35 +++++++++++++++++++++++++++++++++++
+ drivers/net/dsa/mv88e6xxx/chip.h |  1 +
+ net/dsa/tag_dsa.c                | 11 ++++++++++-
+ 3 files changed, 46 insertions(+), 1 deletion(-)
 
-Changes in v7:
-- fix incorrect hilimit_mask for the 6341
-- remove dead code in rollback (clearing a bit in cbs_active_queue which
-  is already 0)
-- fix typo in commit message
-- Link to v6: https://lore.kernel.org/r/20260604-net-next-mv88e6xxx-cbs-v6-0-b68c01142d1e@luminex.be
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 80b877c74513d..47e531f24e5f2 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -3990,6 +3990,7 @@ static int mv88e6xxx_setup(struct dsa_switch *ds)
+ 
+ 	chip->ds = ds;
+ 	ds->user_mii_bus = mv88e6xxx_default_mdio_bus(chip);
++	ds->num_tx_queues = chip->info->num_tx_queues;
+ 
+ 	/* Since virtual bridges are mapped in the PVT, the number we support
+ 	 * depends on the physical switch topology. We need to let DSA figure
+@@ -5706,6 +5707,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		 */
+ 		.num_ports = 7,
+ 		.num_internal_phys = 2,
++		.num_tx_queues = 4,
+ 		.invalid_port_mask = BIT(2) | BIT(3) | BIT(4),
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x8,
+@@ -5728,6 +5730,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 64,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x08,
+ 		.phy_base_addr = 0x00,
+@@ -5750,6 +5753,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 10,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5774,6 +5778,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 11,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+@@ -5795,6 +5800,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 11,
+ 		.num_internal_phys = 8,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5820,6 +5826,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 1024,
+ 		.num_ports = 3,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5845,6 +5852,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 8,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+@@ -5867,6 +5875,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 6,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 11,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5892,6 +5901,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 1024,
+ 		.num_ports = 6,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5918,6 +5928,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 6,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5943,6 +5954,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5969,6 +5981,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5994,6 +6007,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6020,6 +6034,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6045,6 +6060,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 10,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+@@ -6068,6 +6084,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6093,6 +6110,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6117,6 +6135,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 16384,
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6142,6 +6161,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 8,
+ 		.internal_phys_offset = 1,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6168,6 +6188,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 8,
+ 		.num_tcam_entries = 256,
+ 		.internal_phys_offset = 1,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6198,6 +6219,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 2,
+ 		.invalid_port_mask = BIT(2) | BIT(3) | BIT(4),
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x08,
+ 		.phy_base_addr = 0x00,
+@@ -6222,6 +6244,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6247,6 +6270,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 64,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x08,
+ 		.phy_base_addr = 0x00,
+@@ -6271,6 +6295,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
+ 		.num_tcam_entries = 256,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6299,6 +6324,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 2,
+ 		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6327,6 +6353,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 2,
+ 		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6354,6 +6381,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 5,
+ 		.num_ports = 6,
+ 		.num_gpio = 11,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6380,6 +6408,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6405,6 +6434,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6431,6 +6461,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6459,6 +6490,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.invalid_port_mask = BIT(1) | BIT(2) | BIT(8),
+ 		.num_internal_phys = 5,
+ 		.internal_phys_offset = 3,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6485,6 +6517,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
+ 		.num_tcam_entries = 256,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6512,6 +6545,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6538,6 +6572,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 8,
+ 		.num_tcam_entries = 256,
++		.num_tx_queues = 8,
+ 		.internal_phys_offset = 1,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index f4894bdc21ba8..3a1d79a117dca 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -136,6 +136,7 @@ struct mv88e6xxx_info {
+ 	unsigned int num_internal_phys;
+ 	unsigned int num_gpio;
+ 	unsigned int num_tcam_entries;
++	unsigned int num_tx_queues;
+ 	unsigned int max_vid;
+ 	unsigned int max_sid;
+ 	unsigned int port_base_addr;
+diff --git a/net/dsa/tag_dsa.c b/net/dsa/tag_dsa.c
+index d5ffee35fbb53..2bb71cd343e79 100644
+--- a/net/dsa/tag_dsa.c
++++ b/net/dsa/tag_dsa.c
+@@ -179,8 +179,17 @@ static struct sk_buff *dsa_xmit_ll(struct sk_buff *skb, struct net_device *dev,
+ 			dsa_header[2] &= ~0x10;
+ 		}
+ 	} else {
++		u16 queue = skb_get_queue_mapping(skb) & 0x7;
+ 		u16 vid;
+ 
++		/* The PRI field is 3 bits. According to the documentation the
++		 * 2 highest bits specify the egress queue in From_CPU DSA
++		 * tagged frames. On devices with 8 queues it's possible to
++		 * send to the 8 queues, which means the 3 bits are used.
++		 */
++		if (dp->ds->num_tx_queues == 4)
++			queue <<= 1;
++
+ 		vid = br_dev ? MV88E6XXX_VID_BRIDGED : MV88E6XXX_VID_STANDALONE;
+ 
+ 		skb_push(skb, DSA_HLEN + extra);
+@@ -191,7 +200,7 @@ static struct sk_buff *dsa_xmit_ll(struct sk_buff *skb, struct net_device *dev,
+ 
+ 		dsa_header[0] = (cmd << 6) | tag_dev;
+ 		dsa_header[1] = tag_port << 3;
+-		dsa_header[2] = vid >> 8;
++		dsa_header[2] = (queue << 5) | vid >> 8;
+ 		dsa_header[3] = vid & 0xff;
+ 	}
+ 
 
-Changes in v6:
-- consitently use hilimit naming isof a mixing hilimit and hi_limit
-- Link to v5: https://lore.kernel.org/r/20260602-net-next-mv88e6xxx-cbs-v5-0-1969758d1fa3@luminex.be
-
-Changes in v5:
-- only set the scheduling mode when no queues are active
-- use u32 for rate calculation to avoid truncation
-- Link to v4: https://lore.kernel.org/r/20260528-net-next-mv88e6xxx-cbs-v4-0-8bd13b906457@luminex.be
-
-Changes in v4:
-- add qav info for the 6341
-- remove max_rate from mv88e6xxx_qav_info. It looks like the max rate
-  mentioned in the docs is just the maximum rate that fits in the
-  registers. This is already represented by rate_mask.
-- remove validation on sendslope. This isn't used by the driver.
-- use accessors for qav_write and set_scheduling
-- Link to v3: https://lore.kernel.org/r/20260527-net-next-mv88e6xxx-cbs-v3-0-2f387eb5ff63@luminex.be
-
-Changes in v3:
-- clear cbs_active_queues bit when the rate is set to 0 on
-  port_set_scheduling_mode failure
-- wait for the MV88E6390_PORT_QUEUE_CTL_UPDATE bit to be cleared after
-  writing the scheduling mode
-- add num_tx_queues for mv88e6191 based on it's family, as nobody is
-  able to find a datasheet for this device
-- reverse christmas tree variable declarations
-- fix egress queue selection for devices with 4 queues
-- Link to v2: https://lore.kernel.org/r/20260526-net-next-mv88e6xxx-cbs-v2-0-13eb49c29b83@luminex.be
-
-Changes in v2:
-- tx_queues defined for all devices (which could be found). Thanks to Marek Behún.
-- Link to v1: https://lore.kernel.org/r/20260522-net-next-mv88e6xxx-cbs-v1-0-c87a8e6bcc0c@luminex.be
-
----
-Cedric Jehasse (3):
-      net/sched: cbs: add extack to struct tc_cbs_qopt_offload
-      net: dsa: mv88e6xxx: use the hw tx queues
-      net: dsa: mv88e6xxx: add support for credit based shaper
-
- drivers/net/dsa/mv88e6xxx/chip.c        | 176 ++++++++++++++++++++++++++++++++
- drivers/net/dsa/mv88e6xxx/chip.h        |  21 ++++
- drivers/net/dsa/mv88e6xxx/global2.h     |   3 +
- drivers/net/dsa/mv88e6xxx/global2_avb.c |  21 ++++
- drivers/net/dsa/mv88e6xxx/port.c        |  63 ++++++++++++
- drivers/net/dsa/mv88e6xxx/port.h        |  20 ++++
- include/net/pkt_sched.h                 |   1 +
- net/dsa/tag_dsa.c                       |  11 +-
- net/sched/sch_cbs.c                     |   4 +-
- 9 files changed, 318 insertions(+), 2 deletions(-)
----
-base-commit: 4e8f1e2c1e3b95fc86754e40c43d8483e01ff806
-change-id: 20260430-net-next-mv88e6xxx-cbs-2121169caa68
-
-Best regards,
 -- 
-Cedric Jehasse <cedric.jehasse@luminex.be>
+2.43.0
 
 
