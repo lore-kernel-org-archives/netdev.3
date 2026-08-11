@@ -1,109 +1,164 @@
-Received: from mail-m3286.qiye.163.com (mail-m3286.qiye.163.com [220.197.32.86])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C868339362
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DEC339362
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786464139; cv=none; b=pjMSXk7Iicl2gusdV4ZaeWF7lKw7tlLt/R18ZvQ1OuMMq5EdmCCwoSSLyD9+w//699+J14ZZXlI146qY3tyvCN5q7pT2Mfadv+6R0NzKCAnTQ96B3ypgI9T/z9lt4E3uEZgKEGnNxpYVvnv1h/Orws1C43ctBsA0XSYULpFr2+c=
+	t=1786464143; cv=none; b=Kn3UaRnCBPSuNtUBfN/gQ0DTuZTNRNpgm5ZTaj2fbKhO9Ah3ZZ+LL9gzw36TffA9gaBir0FM6FFhzbsp/37bPXD4mf+E23O7sK6f246JGhQbm/PgtUp9nvQwZO9MUW+4iPwNDwB0arEvogHuy/KIBrqebqgTu7bPzmGA9YZ+DOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786464139; c=relaxed/simple;
-	bh=uCv4WWV/SkS+1Kc7tJxMQYIfaDXgev6XfbRRCNwjgDw=;
-	h=Content-Type:Message-ID:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:From:Date; b=U1sg7G65GVS6XmolQIkelBTYnpLKciVD9cOv9e0xANdWsjuvTh5Gugong+29QwXIuLULtGMBfuYNsj83hI4+V70geL9Vz6NdvNjvK9l5RbXpqyI8TlhIoMIXYoVlC2qAvUJCk/46yWDXMfctBgeI4KuAggrradrJ+6cF3u58Lj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=iFdUXQLr; arc=none smtp.client-ip=220.197.32.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1786464143; c=relaxed/simple;
+	bh=vpJ2m3WVJ+ZWlwZ45XrmIJUfYLUSFJ4thsDQKkfwywA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fH/DIBfZkWKNoEul4hmtl3zc303YNxxKVE3UVvDCQB20/LN+5N5+EjlRO00ZnZWeQTxiR1C79WeC7XkSjIKljzDnNA/dwnu1GitRAKGqUp0ImwR8XFAFHOt0Icu7iBrUhrS32bdCYGYCuAQ+te2X3QKjKK5szXU2rSnNbDFL1bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bhM9IePM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="iFdUXQLr"
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AJkAWQAnKi56swdGxAYI84oA.3.1786451567411.Hmail.220255722@seu.edu.cn>
-To: Simon Horman  <horms@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, netdev <netdev@vger.kernel.org>, 
-	andrew+netdev <andrew+netdev@lunn.ch>, davem <davem@davemloft.net>, 
-	edumazet <edumazet@google.com>, kuba <kuba@kernel.org>, 
-	pabeni <pabeni@redhat.com>, sashal <sashal@kernel.org>, 
-	zilin <zilin@seu.edu.cn>, 
-	"kory.maincent" <kory.maincent@bootlin.com>, 
-	"marco.crivellari" <marco.crivellari@suse.com>, 
-	"felix.manlunas" <felix.manlunas@cavium.com>, 
-	"ricardo.farrington" <ricardo.farrington@cavium.com>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	"jianhao.xu" <jianhao.xu@seu.edu.cn>, 
-	stable <stable@vger.kernel.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBuZXRdIG5ldDogbGlxdWlkaW86IGxvY2sgdXBzdHJlYW0gYnJpZGdlIGZvciBmdW5jdGlvbiByZXNldA==?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_WIN_1.65.3
-In-Reply-To: <20260811091539.815827-1-horms@kernel.org>
-References: <20260809105715.3669436-1-runyu.xiao@seu.edu.cn> <20260811091539.815827-1-horms@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bhM9IePM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786464140;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M57msK1gt394tHHb8/wcEXScUoSQF7jRkGcnZ1po3R4=;
+	b=bhM9IePM3eiAF9wImxd0zICfrM6DCpSEcYhdDfDj7+GlbMC8ssgT5eAp5QzWZzYUnL6lsH
+	aTdfzckvIj+xI/7cmR3EgZEQRw1A2oEr6qr6/lBKQoGb5+jEk3MbeukQR7xs2YZXiTPxOV
+	Ek83CHMr8XwAjNnT2LRLCdYlJtdwd88=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-27-4SHOdkvxNMqOKSwFbm3M6A-1; Tue,
+ 11 Aug 2026 12:01:50 -0400
+X-MC-Unique: 4SHOdkvxNMqOKSwFbm3M6A-1
+X-Mimecast-MFC-AGG-ID: 4SHOdkvxNMqOKSwFbm3M6A_1786464109
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 772DA195604C;
+	Tue, 11 Aug 2026 16:01:49 +0000 (UTC)
+Received: from jramaseu-thinkpadt14gen5.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C4E2A19560AB;
+	Tue, 11 Aug 2026 16:01:47 +0000 (UTC)
+From: Jakub Ramaseuski <jramaseu@redhat.com>
+To: przemyslaw.korba@intel.com
+Cc: anthony.l.nguyen@intel.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	przemyslaw.kitszel@intel.com,
+	jramaseu@redhat.com
+Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2] ice: fix posted write support for sideband queue operations
+Date: Tue, 11 Aug 2026 18:01:39 +0200
+Message-ID: <20260811160140.2161988-1-jramaseu@redhat.com>
+In-Reply-To: <20260319111659.551039-1-przemyslaw.korba@intel.com>
+References: <20260319111659.551039-1-przemyslaw.korba@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: from 220255722@seu.edu.cn( [222.191.246.242] ) by ajax-webmail ( [127.0.0.1] ) ; Tue, 11 Aug 2026 20:32:47 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Date: Tue, 11 Aug 2026 20:32:47 +0800 (GMT+08:00)
-X-HM-Tid: 0a9ff0cd34e302f2kunmf3b7ffc1dae8
-X-HM-MType: 1
-X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMTUS6Y2fHkyPT6dc03QDwVaZPGiA09TnwhbhTj
-	hLfuFZO94YXwX6xgvkjGVFFRKj5FTlUp4ibMu3LjbJqkzUirKIkshCL4DwobCwmqEl+iToklIC+5
-	oJ5WddS7xBApRMVj/KXqF9KFKHuMUpDM645Zo=
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaHkhLVh9MQh5NGUNLGk9DT1YVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVU
-	JCSU5LVUpLS1VKQktCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=iFdUXQLr4cIT6ta+EMX5Kjplo/jSRrJKxdve8sEqKRcT/KbogKoq/KLKhKS6lsL1oYlk0Z+7sQhtHcLTyV5LcMXTxfBa7BKxFQI7gcUPPicL4sshfO65I2vMsMBrwWNMgvyqYKbBvvyGU1xn6zvkXm4cNX76NhAcWqmBz3+yEE0=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=uCv4WWV/SkS+1Kc7tJxMQYIfaDXgev6XfbRRCNwjgDw=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-SGksCgpUaGFua3MgZm9yIHRoZSBkZXRhaWxlZCByZXZpZXcuCgomZ3Q7IFRoaXMgaXNuJ3QgYSBi
-dWcgaW50cm9kdWNlZCBieSB0aGlzIHBhdGNoLCBidXQgdGhlIGtlcm5lbC1kb2MgZGlyZWN0bHkK
-Jmd0OyBhYm92ZSBvY3Rlb25fcGNpX2ZscigpIHN0aWxsIHNheXMgIlBDSSBGTFIiIHdoaWxlIHRo
-ZSBib2R5IGNhbGxzIHRoZQomZ3Q7IGdlbmVyaWMgcmVzZXQgaGVscGVyLiBXb3VsZCBpdCBtYWtl
-IHNlbnNlIHRvIHVwZGF0ZSB0aGUgZG9jIHN0cmluZz8KClRoZSBkb2N1bWVudGF0aW9uIGlzc3Vl
-IGlzIHZhbGlkIGFuZCBwcmVkYXRlcyB0aGlzIHBhdGNoLiBIb3dldmVyLCBpdCBpcwpzZWNvbmRh
-cnkgdG8gdGhlIGxvY2tpbmcgcHJvYmxlbS4gU2luY2UgdGhlIGN1cnJlbnQgbG9ja2luZyBhcHBy
-b2FjaCBpcwp1bnNhZmUsIEkgd2lsbCBub3QgdXBkYXRlIHRoZSBjb21tZW50IGluIHRoaXMgcGF0
-Y2guCgomZ3Q7IENhbiB0aGlzIGFjcXVpc2l0aW9uIG9yZGVyIGRlYWRsb2NrIGFnYWluc3QgdGhl
-IFBDSSBjb3JlPwoKWWVzLCB0aGlzIGNvbmNlcm4gaXMgdmFsaWQuIG9jdGVvbl9wY2lfZmxyKCkg
-aXMgY2FsbGVkIGZyb20gdGhlIHJlbW92ZQphbmQgcHJvYmUtZmFpbHVyZSBwYXRocyB3aGlsZSB0
-aGUgZW5kcG9pbnQgZGV2aWNlIGxvY2sgaXMgYWxyZWFkeSBoZWxkLgpUYWtpbmcgdGhlIHVwc3Ry
-ZWFtIGJyaWRnZSBjb25maWd1cmF0aW9uIGxvY2sgZnJvbSB0aGVyZSBjYW4gY29uZmxpY3QKd2l0
-aCB0aGUgYnJpZGdlLWZpcnN0IGxvY2tpbmcgb3JkZXIgdXNlZCBieSB0aGUgUENJIGNvcmUuCgom
-Z3Q7IFNpbmNlIGJsb2NrX2NmZ19hY2Nlc3MgaXMgbm90IGxvY2tkZXAtdHJhY2tlZCwgd291bGQg
-dGhpcyBzaG93IHVwIG9ubHkKJmd0OyBhcyBhIGh1bmcgdGFzaywgd2l0aCB0aGUgYnJpZGdlJ3Mg
-Y29uZmlndXJhdGlvbiBhY2Nlc3MgZmxhZyBsZWZ0CiZndDsgYmxvY2tlZD8KClRoYXQgaXMgcG9z
-c2libGUuIFRoZSB3YWl0IGluIHBjaV9jZmdfYWNjZXNzX2xvY2soKSBpcyBub3QgcmVwcmVzZW50
-ZWQKYXMgYSBub3JtYWwgbG9ja2RlcCBkZXBlbmRlbmN5LCBzbyB0aGlzIG9yZGVyaW5nIHByb2Js
-ZW0gbWF5IGFwcGVhciBhcyBhCmh1bmcgdGFzayByYXRoZXIgdGhhbiBhIGxvY2tkZXAgcmVwb3J0
-LgoKJmd0OyBCZWZvcmUgdGhpcyBjaGFuZ2UgdGhlIGRyaXZlciB0b29rIG9ubHkgdGhlIGVuZHBv
-aW50J3Mgb3duCiZndDsgY29uZmlndXJhdGlvbiBsb2NrLCB3aGljaCB0aGUgY29yZSBhbHNvIGFj
-cXVpcmVzIGFmdGVyCiZndDsgZGV2aWNlX2xvY2soZW5kcG9pbnQpLCBzbyB0aGVyZSB3YXMgbm8g
-aW52ZXJzaW9uLgoKSSBhZ3JlZSB0aGF0IHRoZSBuZXcgYnJpZGdlLWxvY2sgYWNxdWlzaXRpb24g
-aW50cm9kdWNlcyB0aGlzIGFkZGl0aW9uYWwKaW52ZXJzaW9uLiBUaGUgb3JpZ2luYWwgbWlzc2lu
-ZyBicmlkZ2Ugc2VyaWFsaXphdGlvbiBpcyBhIHNlcGFyYXRlCnByb2JsZW0sIGJ1dCBhZGRpbmcg
-dGhlIGJyaWRnZSBsb2NrIGF0IHRoaXMgcG9pbnQgaXMgbm90IGEgc2FmZSBmaXggZm9yCml0LgoK
-Jmd0OyBXb3VsZCBkZWZlcnJpbmcgdGhlIGJyaWRnZSBsb2NrIHRvIGEgcGF0aCB0aGF0IGRvZXMg
-bm90IGFscmVhZHkgaG9sZAomZ3Q7IHRoZSBlbmRwb2ludCBkZXZpY2UgbG9jaywgb3IgdXNpbmcg
-dGhlIGNvcmUncyBwY2lfcmVzZXRfZnVuY3Rpb24oKQomZ3Q7IHN0eWxlIGJyaWRnZS1maXJzdCBz
-ZXF1ZW5jZSwgYXZvaWQgdGhlIGN5Y2xlPwoKWWVzLCB0aGUgcmVzZXQgbXVzdCBiZSByZWRlc2ln
-bmVkIGFyb3VuZCB0aGUgUENJIGNvcmUgbG9ja2luZyBvcmRlci4KVGFraW5nIHRoZSBicmlkZ2Ug
-bG9jayBmcm9tIHRoZSBjdXJyZW50IGNhbGxiYWNrIGlzIHVuc2FmZSBiZWNhdXNlIHRoZQplbmRw
-b2ludCBkZXZpY2UgbG9jayBpcyBhbHJlYWR5IGhlbGQuIFNpbXBseSBzd2l0Y2hpbmcgdG8KcGNp
-X3Jlc2V0X2Z1bmN0aW9uKCkgd291bGQgbm90IHNvbHZlIHRoZSBwcm9ibGVtIGJlY2F1c2UgdGhh
-dCBoZWxwZXIKYWxzbyB0cmllcyB0byBhY3F1aXJlIHRoZSBlbmRwb2ludCBkZXZpY2UgbG9jay4K
-ClRoZXJlIGlzIGFsc28gYSBtb3JlIGRpcmVjdCBpc3N1ZSB3aXRoIHRoZSBjdXJyZW50IGFwcHJv
-YWNoLiBJZgpfX3BjaV9yZXNldF9mdW5jdGlvbl9sb2NrZWQoKSBzZWxlY3RzIHRoZSBidXMtcmVz
-ZXQgbWV0aG9kLApwY2lfYnVzX2xvY2soKSBsb2NrcyB0aGUgdXBzdHJlYW0gYnJpZGdlIGFuZCB0
-aGVuIHRyaWVzIHRvIGxvY2sgdGhlCmVuZHBvaW50IGFnYWluLiBUaGUgZW5kcG9pbnQgbG9jayBp
-cyBhbHJlYWR5IGhlbGQgYnkgdGhlIGNhbGxlciBpbiB0aGlzCnBhdGguCgpUaGUgZXhpc3Rpbmcg
-dXNlci1zcGFjZSBtb2RlbCBkaWQgbm90IG1vZGVsIHRoZSBlbmRwb2ludCBkZXZpY2UgbG9jawpi
-ZWluZyBoZWxkIGJlZm9yZSB0aGUgcmVzZXQuIEl0IHRoZXJlZm9yZSBkb2VzIG5vdCB2YWxpZGF0
-ZSB0aGUKc3VibWl0dGVkIHBhdGNoIGFuZCBzaG91bGQgYmUgZGlzY2FyZGVkLgoKSSB3aWxsIHdp
-dGhkcmF3IHRoaXMgZHJpdmVyLW9ubHkgYXBwcm9hY2ggYW5kIHdpbGwgbm90IHNlbmQgYSByZXZp
-c2VkCnZlcnNpb24gdXNpbmcgdGhlIHNhbWUgbG9ja2luZyBzZXF1ZW5jZS4KClJlZ2FyZHMsClJ1
-bnl1IFhpYW8=
+On Thu, Mar 19, 2026 at 12:15 PM Przemyslaw Korba <przemyslaw.korba@intel.com> wrote:
+>
+> On E830, PTP time adjustment commands sent via
+> SBQ don't generate completion responses, causing the driver to
+> timeout waiting and return -EIO, when trying:
+>
+> phc_ctl eth8 get adj 2 get
+> dmesg: ice 0000:1a:00.0: PTP failed to adjust time, err -5
+>
+> Add support for posted mode not to wait for completion response.
+>
+> Fixes: 8f5ee3c477a8 ("ice: add support for sideband messages")
+> Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+> ---
+> v2:
+> - change "postpone" to "posted"
+> - init struct with {} instead of {0}
+> v1:
+> https://lore.kernel.org/intel-wired-lan/20260310110700.345904-1-przemyslaw.korba@intel.com/
+>
+>  drivers/net/ethernet/intel/ice/ice_common.c   | 7 ++++++-
+>  drivers/net/ethernet/intel/ice/ice_controlq.c | 4 ++++
+>  drivers/net/ethernet/intel/ice/ice_controlq.h | 1 +
+>  3 files changed, 11 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+> index 8866902efb91..c89c6ca1281b 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_common.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
+> @@ -1765,6 +1765,7 @@ int ice_sbq_rw_reg(struct ice_hw *hw, struct ice_sbq_msg_input *in, u16 flags)
+>  {
+>         struct ice_sbq_cmd_desc desc = {0};
+>         struct ice_sbq_msg_req msg = {0};
+> +       struct ice_sq_cd cd = {};
+>         u16 msg_len;
+>         int status;
+>
+> @@ -1785,10 +1786,14 @@ int ice_sbq_rw_reg(struct ice_hw *hw, struct ice_sbq_msg_input *in, u16 flags)
+>                  */
+>                 msg_len -= sizeof(msg.data);
+>
+> +       if (in->opcode == ice_sbq_msg_wr)
+> +               cd.posted = 1;
+> +
+>         desc.flags = cpu_to_le16(flags);
+>         desc.opcode = cpu_to_le16(ice_sbq_opc_neigh_dev_req);
+>         desc.param0.cmd_len = cpu_to_le16(msg_len);
+> -       status = ice_sbq_send_cmd(hw, &desc, &msg, msg_len, NULL);
+> +       status = ice_sbq_send_cmd(hw, &desc, &msg, msg_len, &cd);
+> +
+>         if (!status && !in->opcode)
+>                 in->data = le32_to_cpu
+>                         (((struct ice_sbq_msg_cmpl *)&msg)->data);
+> diff --git a/drivers/net/ethernet/intel/ice/ice_controlq.c b/drivers/net/ethernet/intel/ice/ice_controlq.c
+> index dcb837cadd18..a6008dc77fa4 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_controlq.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_controlq.c
+> @@ -1086,6 +1086,10 @@ ice_sq_send_cmd(struct ice_hw *hw, struct ice_ctl_q_info *cq,
+>         wr32(hw, cq->sq.tail, cq->sq.next_to_use);
+>         ice_flush(hw);
+>
+> +       /* If the message is posted, don't wait for completion. */
+> +       if (cd && cd->posted)
+> +               goto sq_send_command_error;
+> +
+>         /* Wait for the command to complete. If it finishes within the
+>          * timeout, copy the descriptor back to temp.
+>          */
+> diff --git a/drivers/net/ethernet/intel/ice/ice_controlq.h b/drivers/net/ethernet/intel/ice/ice_controlq.h
+> index 788040dd662e..c50d6fcbacba 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_controlq.h
+> +++ b/drivers/net/ethernet/intel/ice/ice_controlq.h
+> @@ -77,6 +77,7 @@ struct ice_ctl_q_ring {
+>  /* sq transaction details */
+>  struct ice_sq_cd {
+>         struct libie_aq_desc *wb_desc;
+> +       u8 posted : 1;
+>  };
+>
+>  /* rq event information */
+>
+> base-commit: acd2abc52dea91c3bc3d1b6dd8a92b9631d48bbf
+> --
+> 2.43.0
+>
+This is actually a valid fix to a,
+885c5e57924dc0 ("ice: fix 'adjust' timer programming for E830 devices"),
+which allows the E830 HW to continue in the function 
+and then invoke the following: (with some ice_debug() messages enabled)
+
+[ 2946.907728] ice 0000:6c:00.0: Failed to send message to PHY, err -5
+[ 2946.907731] ice 0000:6c:00.0: Failed to prepare PHY ports for timer command 2, err -5
+[ 2946.907733] ice 0000:6c:00.0: PTP failed to adjust time, err -5
+
+But the patchwork lists it as Changes Requested. Any idea what happened with it?
+
+Tested-by: Jakub Ramaseuski <jramaseu@redhat.com>
+
