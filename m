@@ -1,222 +1,367 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FF441F349;
-	Tue, 11 Aug 2026 09:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786440180; cv=fail; b=JWEiJq4M1Jt+c9tl5sWZAQ/1sWhPayxjl8DxHlnmjdtyJtZTd35lMXsIkSVTr+LeQcH/3oHWJ3u46R6iFVSEAIry3fkvh+/vGDXAmWYyvQXg6nqmOpD9y8VcgEQJJYRMBJYmUJdviEuuWSxp/1ET9XSKIhHAxYjnjWwNfdjvy9Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786440180; c=relaxed/simple;
-	bh=xhrmhmKQnBiMqyuZBIrkTcD39j+vBf27BgA5PWPxugQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=mf1FYcOK7T2SsGQ9hnkCwGrYFBYg8nSJ9NVxiZ4U6rt+z3O10fVwNA82jiiGqCMfGl42pFRb53jeR1kkL2ivcZHKX2EuR/fKWdJCkUBk7L0IRbpc7L8GOfqHG6iiAdAUSctTZgwhejtZbo729QAxa+RpSxbo1MI++leuWX0n2yw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FajpfZ5Y; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4247425878
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 09:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786440542; cv=none; b=dBeqnB/ZDT/xazPfyMOesgul1GUpNL/Ek9X2L9igvOaYAsw8Htz//cLrhu6ug+n6NV5Ij8e/Nt5IjYveWeC0gYUN4E3WXthidx6spiQPPjXUCmB2hEGCbvCdfg2Jf/WWYwE3tz/x+uWmpd+7E1TSpfhLnNnwCxs0KX8gLwd8WAY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786440542; c=relaxed/simple;
+	bh=CjpoJheB7PAeB2wB1rvVXztAx7FAGgejx+0nyrwke6I=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Rq6JQ3uhY/oHNPjJgOtCtYOQ00/BrHQML9JP9v9Lu67OII9MWBD7z2gOTxjRrIsCYChPK/W+742qe7QPkcwWusEVAMGQJCH8cVKSxCtVZeMTbr0nqDAF5/K3afCqA/u1tWDe/5kfU3vyUMSeNTpI/3rW4g11rPxamNNI66wwW+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YhnTpk9N; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FajpfZ5Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786440176; x=1817976176;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=xhrmhmKQnBiMqyuZBIrkTcD39j+vBf27BgA5PWPxugQ=;
-  b=FajpfZ5YHKc4rFcyy54F0WU91o64BQMWMkl5UHYvZb725LfNnzqhd6BU
-   6PBf/h66ETuB9x4IzkghchcusJclKf9/AuA6+PeugQN2zXWLF4TSCTz1A
-   A+WS8dRi6PAW1HrXTeHrchk1jAYZvZEKgiezPSygvAfRzzej4eUtGpzaT
-   hcz8deM8YG0iqpD0zwLupcpHDW78XvZWcfJNFO1qwWZHIk6N34b3VPs51
-   Z67TMvjxJEJHEANbd+HTMvZGN7TdU/NnY7KbATYMd3aJyvOz+plizsuGA
-   Eq9jN1DrLubqcwEPk3IQfcJAWZB2nN0SeP1yWIyJaqMH78sSIvUKss+4t
-   g==;
-X-CSE-ConnectionGUID: AoDQT8BASqCWs+iHg0qSZA==
-X-CSE-MsgGUID: 9jGgvCc+T4O9+OR9Rp9W0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="74499154"
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="74499154"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 02:22:55 -0700
-X-CSE-ConnectionGUID: M95dA21MTdGII2Z90eGi3Q==
-X-CSE-MsgGUID: C+kxEGfWQ/u0dKEZ4Kb8jg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
-   d="scan'208";a="261527265"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 02:22:55 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 11 Aug 2026 02:22:54 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Tue, 11 Aug 2026 02:22:54 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.43) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 11 Aug 2026 02:22:52 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b9XyqE57YqKbkzNe2hB/RIlC+bdk0cOYVOZX2EICgadxxkVAbM5lkSPJL8OdN3jOgU55gsFr0Ee3EaaDIqfqswgMUb2diqFk+4wMmdUqyBNdnTz5+GtsGM5CwBKvI5hma/fpj2zSP/Zu+dUGpwXqp4+2exkZczIZN8myamv/LsnY6k55vgYbXWBhreyPljJ2Pt/QJrfBUYW7chja8uVoKCYhZREt26xD5dPwg76IkoG67JfPMsuW6PVtvJQtx+vAH9AZRnCnrF6U8RBPxY/t0GmrNw2CXlj2w9RGdU88osBH0L+MMPXfWqRzZMqS96eAAqCSa8/txzMVRGCSDtMcRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xhrmhmKQnBiMqyuZBIrkTcD39j+vBf27BgA5PWPxugQ=;
- b=H1L7PyMeR0jMuCOcyPbOpwERSu4uqBFvBMN7c3VnjeHG+Q7FWVgGyk/bjEv23+qvGFvgYdYCoDtQdC2Ei4nZFVDA8ofHEHCAFdQLA0O1TpsymFWXZXcBQXCLtw4GjjweaypSRelvJd1eZ4qJ6zW7MyjtYnAR1y77rr8mS9eODFkGi4DMcIUZDLQJ1JnTnKAdNwjsGuLawqbun9tFCbTO36zYFQruWC49b1iKkatW0nR+kpcvhUM1WGH2pDdqzEvstL2aQqzlbML5nV6GM9CLS79pAjFp1A2ER/ZmEUwpv5d4597RjWczZKLHOVyy+OoXcrERQM+wwCkvWQZ+Vmkvrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH0PR11MB5902.namprd11.prod.outlook.com (2603:10b6:510:14d::19)
- by PH7PR11MB8012.namprd11.prod.outlook.com (2603:10b6:510:24b::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
- 2026 09:22:43 +0000
-Received: from PH0PR11MB5902.namprd11.prod.outlook.com
- ([fe80::f95a:602a:34d3:5d37]) by PH0PR11MB5902.namprd11.prod.outlook.com
- ([fe80::f95a:602a:34d3:5d37%4]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
- 09:22:43 +0000
-From: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
-To: "Hadi Salim, Jamal" <jhs@mojatatu.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "jiri@resnulli.us" <jiri@resnulli.us>,
-	"edumazet@google.com" <edumazet@google.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, Marcin Szycik <marcin.szycik@linux.intel.com>
-Subject: RE: [PATCH net v1] net/sched: cls_u32: feed u32_replace_hw_knode()
- with correct set of flags
-Thread-Topic: [PATCH net v1] net/sched: cls_u32: feed u32_replace_hw_knode()
- with correct set of flags
-Thread-Index: AQHdJlbew182irbzCU2Dp6CwznRq97aXVFIAgAFCp7A=
-Date: Tue, 11 Aug 2026 09:22:43 +0000
-Message-ID: <PH0PR11MB590230F7DFE8FE5FA6C16ADAF0DD2@PH0PR11MB5902.namprd11.prod.outlook.com>
-References: <20260807100356.1083774-1-jedrzej.jagielski@intel.com>
- <CAM0EoM=L4LBAnyxf+NG1D_dY2nre8fKgVxoycXK=sY-9Ruc9+w@mail.gmail.com>
-In-Reply-To: <CAM0EoM=L4LBAnyxf+NG1D_dY2nre8fKgVxoycXK=sY-9Ruc9+w@mail.gmail.com>
-Accept-Language: pl-PL, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR11MB5902:EE_|PH7PR11MB8012:EE_
-x-ms-office365-filtering-correlation-id: f32bc0cd-4991-4718-aa5c-08def78a1943
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|38070700021|11063799006|4143699003|3023799007|56012099006|10067099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: Op6xgxs2NFyRW24s+/zf2XOzUxi0vTC5YoUHg4zpS0zlBatImvP8AhHqkGP56ld44t9CPDoQYZzBnE7YAhg9Nf8p3e/CxyeNv+999N+Yn8X0FIWhh/8mCvYy7fJQDqkmR4cmfHcUG/hXMEydDZEARqIXXib3olmKDd9GC2UPsvcOsnS8dSnHXk8Nm39VInz2/bnKBeu8m60dMv1CzNGCAvsK9E+nX5Yq21jn5aWyekhoPVrlVhpIHi4mcccU2leFsmnsYwDKOdgnHjMnjwB66DL5ZJqVpPfFQvLGFKilg+s6Fmbe+VGPMHxzBAc2MmjV7MKfzYdj5IOnQWwcfI/ir5B2nUJ+8FZDSG6+fdkg+FiNyUQpW3sw1o9btfeYIS4hf+/KPE9b02mFQ/m7G23xfReHGqN70Bp0AzBe19erx5dOERQu5HWx6Yy+jBV0/EHK72cWxkvJXaQs+LXoKA7nfHdJ5egYUp0Qa3Kl4lKO3Vvfe/FSd8qQR9aFeR1zjZ6bHk2tF4QDTEsSEeY4P2pgpjxgiTJOA5r8fnHPr4HvROaYEAQx/y74oOXo24W26mpAi7olqWr3tWli3EMs0cyXs9FBC647lbZKk3DP/BTg0l7ObaCCW54VRoD7vrAj5vt5XfvIeXaXCYUC1R6gRXuzpuhxDhbi+xSRhOH/DNN95p4ZYdaRwIU/28XZd1IesR4xkhZ/GKg1k2BVJxJShx+CUonzf4fXfp1iPFLWx7AqEm4=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5902.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(38070700021)(11063799006)(4143699003)(3023799007)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Wm9XdFZVeENmSUw0TGpSWWphQ0ozN2txWFY2SzJ3enV0ZUhjQUYxU1N4MkM1?=
- =?utf-8?B?MWFDdkprYUJWQTg2SzhINFBoMlBJYkkrOUV2SXdScytKRDlWM0ZqMHBaUnhB?=
- =?utf-8?B?VFh5MHpKM0lmczFVdStValFsdmJmaWp5ZHlGaUIzTTFHdXhReUs1TktkV0NX?=
- =?utf-8?B?OUp1UExFRmU3M08vYXFCSVNBbE42TXZpNm5vTW4yT0pIcE1QQkpUVXNXNEVM?=
- =?utf-8?B?RDVRSDhnSlBlcG8wTEZNTWxTdGFrbE14d0xPSXprSXc5cEZHQlI1VytJTTdl?=
- =?utf-8?B?V3JoTHdaRWxDZFJlWGJWWEl1Vy92OVFMbmJianhxVm1ITHBkV3IveDQxbHVw?=
- =?utf-8?B?RHM3RS90VjcxeDVBWFo1QVEyZHM3ck9BZEpZYitMeHgwTnNLTGxuVDdPOHdq?=
- =?utf-8?B?bnJMQmhLUmdCcDEzNUhGTCtsNy9La3RiTytlcU9ybmhyVFc1eGl3ajdsajI4?=
- =?utf-8?B?ck5DWVVETUg5bXNqVXJ1TmpucXRyRGdjWFF0WWYrY0NBTVUvOW1lQ3g3UmN3?=
- =?utf-8?B?c1pmNzVyUHgvM2ZyU1dIdVpESjdRaFcvbFJiM1Bod0xYc2tubVFUVEFhcFRu?=
- =?utf-8?B?Kzh3d2libXlRcmZ0Vk81L3Fub1lRNloxeGZvRzZ6MFptRE5CaVE2azZ0OXpq?=
- =?utf-8?B?Y3NGTjROc0liL0ppMDQwOUdBOHEzUVN1SVp3QjJ2VHNHS0NBb2orS25IK1Rn?=
- =?utf-8?B?MXFodGxvRHJGR1llcG5oUmNBU3pPVDJzSjh5ZTFrMFN5bURRQksvOTB4K3pN?=
- =?utf-8?B?eFBwWEF2UVFWWVBIeEFFMWZ3QkRHUWwyOXM0bXVPbEZpT09ZVWRWeWt2Y0Vi?=
- =?utf-8?B?VTROZm5hRTNLRlc5SkdBTXl2SVRNMnNMc2tqOU5yTkx0aDRRNmVGSmtGUUVw?=
- =?utf-8?B?Y2tuQ21TaFNOd3hGWVFkQTNheFFRWllMOU9MRG9Eck1VWWFpNjhiU2lKRGIw?=
- =?utf-8?B?WWw1RkRpSVF6cnR1SkdURVFlZ0NLTHNoUG5OcWNGN0x1VmtYTTFhR3ZOL0dD?=
- =?utf-8?B?aE4vakhMemJoR010SVRQeFFMdjlGWjRVT29WdkhyV21neWZtbmJZODM4ZmI4?=
- =?utf-8?B?c0VKai81ejBTV0QrUTNrNGNjK3F5dXRlVW9lajlyekY1VFBVWHNodzhZY0Nn?=
- =?utf-8?B?Y29yR1dnMkMzQS83ZnlXbTlPdk8yT1VlZ1FNdjk4V2FpeWFkK3RiU0s4OTV6?=
- =?utf-8?B?Y0tJS0NHczY2Y1VCSXdQalV3SHF4VkNHdEZOcis0WDJMdVVmdWlKR2pMSk11?=
- =?utf-8?B?NkhxK1pnUVdDd2Z1NllYTWorcUpHUXhESXFSNGNRQmtuU0NnbjhWdjZxK2dU?=
- =?utf-8?B?cVNyQnJRSlZPTUNpaUpsdzVadkJTOWRrbHI0MmR0RkdXdzVyQmk5QmVDMm1P?=
- =?utf-8?B?WEljQ08xVm5DYjNxWWowdmI4ZEFxVGRsQ0szRHdpQTV2Zmo5UjUvRFhwRVJL?=
- =?utf-8?B?bDlqcVY5allURFVUY0VxWFkyMkhMR2J6TFJ5c3EzaUswNTlUbFc5czRkZit1?=
- =?utf-8?B?clpEUkxIa2ZYQ1pzTEFPeU92c0VuMStWaDc5ZUhJVVdDRGpZY0RPSTlJbVkw?=
- =?utf-8?B?ZmxLTmhRWWlJMUNHRWw1NDAwY0R3N04xNzgwem1NT29SVkFjQzRCM0dIdjNw?=
- =?utf-8?B?RlE1dDI2UzZUd0s2dmhQdjMzK1hXTiswME9TdnpFV2lRTnIxQjloOU8wZUNY?=
- =?utf-8?B?bjNQcjFqZXVrV0Q4bTVtU0tQNjZrV2VvZFNXQ2ovNGkyUG9mZVBmS2RDQkY5?=
- =?utf-8?B?bkd4WGdRVzNEd01jRERTR3dIUVhhL3JnVE9JMm5GTU5QR0luNElubTNDU3ZM?=
- =?utf-8?B?a0IzY3B4ZDMzeHFWK1NzdEFRODJoNGpQL1VSUTY0Zm5mZDRMenJscjRVbTAy?=
- =?utf-8?B?RWs1TnIwc1F1YVZoMFJNb0V5SkNoaGh2dkFlRldxN3U0YTNzRUJxNGZaS1Rk?=
- =?utf-8?B?MWhHb1ZGeVUyZGxTR2QvTlB5YzRLeE1CdDJMSlQ5MkJSaUkrd2xlWkdkOHVK?=
- =?utf-8?B?cnZnK29PSy9wbmhEaUFLZTJ2eFdxbElvbnhXT25VQUkzaEM1ejBBeWZQN3hn?=
- =?utf-8?B?VUNIekpYNmp1WUxoZzRhMjhKV3o4bDhJUnB3RDVNRkE3dGZ0MDFqZTNFQWpo?=
- =?utf-8?B?djNTNys5TjZrUGRqbFJKbDQrQ2FPZlR4dlJuVjdoZTkvL0IzanJlY0hkcUMr?=
- =?utf-8?B?TWVSQWNiRVo2QUNNSkxiazJybEhReG9UNmRiTVROUUdnblo1enBxeTdMUmh6?=
- =?utf-8?B?K3I4cmdUdlFNRmNJZ2NLRW9pSm9mank5OEx3aFpoaVRKSUJQTDdxK3l5Wm9F?=
- =?utf-8?B?NzBKR1ljaysxU2xTMFFNLzVVNUx0L3lVRUlzSklJSjh1RXk5VldCQT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YhnTpk9N"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so25191475e9.0
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 02:28:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786440537; x=1787045337; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=K3kHI5WlPwE2M3dIR2WbgFSYIKpTXPkjJExuyS/OV1Q=;
+        b=YhnTpk9N0XaOgYWY4rqxOvQHxBnd/NOeXYcaICOZvv7erd5ENpQg/lVY6RTGvtOxXb
+         8eVBwXP+zatgLkfFFsadeD00mwkPU295jVE0KPbxiEWjEjVAFUi3LpjQqTdiRTs8yC5X
+         mjnTMXbTqSRoh82NtiFDd88CMwjwbovhcBvsUPFzGOu70eOCom+XPHJcdX2p8SKvBox0
+         7L8nCbLc4CI9P4SHtGzoa1/GlCb01L1j18ijQfBRSc0Bj6npYE39L0vIloYuwxgleIpG
+         RBaGzVJEklv7JKqFoj0KceYBL68qyJHFYoeww3j7BeTDQEcIgVb8ffFFxSvyfccrjhG5
+         NzPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786440537; x=1787045337;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=K3kHI5WlPwE2M3dIR2WbgFSYIKpTXPkjJExuyS/OV1Q=;
+        b=W/eNN6fADJ9f/WONFe2sd8gn5BOToQ9yR0ef4KT5x95N7XuMGjoASDUvHgGf+6LEbU
+         5zmshG2ppm/LTgpHNUAX3RfJQ65olnhz9rH+r8EcmWtQjMjRg83X+06WmzUDgr0SS4+v
+         KRU5U/JP4BAAqebuo8Vl9X7wq7IIWBYiqOv1STN8NG359usjQMz/mkMBBE0LWVitFmSu
+         f49WClDUIyPjqEZ48hABmEvkp+EOtjB7oZ0wmnEgjteOaGT0AcMPcHJaNguiAiUYf3gz
+         jl9BJY8IhGbtO+RriP94bTenmgIfbiSQRW82C/Ye6TR6LGMu1w/SHSh9JdDY3zHh4Yor
+         ySKQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqo5SIxZn2WzHHH7/KrmRhyTR2jvVTARkomnNjBIcOQPZxP4VWzMZg0bXKj5GEZMd2IwEG1l2s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzgxkom8OfJMvWEj/cjb5rIdczLL/Bq2bml0KJVWjAjYSQ6eTYP
+	jAePizp7AAUJnFXpu0fCqja4TT/WEkf6mlxYMgIFo56p8q2gyMXDfsWc
+X-Gm-Gg: AR+sD131HdYZLRLZP3MB9RBr19JDYahJ9m8/0fYsue4+6mTDMFj494PPtQAYwZv8C6N
+	OrbwPpatSssWGvrtbI9b30ac9DlYM8Suw+ATR4Nfh5zFx2xkTPgdlfqLO24TwOttgYF3GoJuwQ6
+	IPK0kyBLTKiEjGg3+k/qIRASTGHlgoIWraj4h5iWhZavu1UdHq9GxG39l9fM1ftku91eBfVFb5A
+	gZeAnL9/Lf7gVBxeZPghhvGol7CYcDSWw30c3ISycp29yMGbvG328uiQkHuM7M14s+fyKM93k0T
+	heROJEJfL5rJdkiwoLtPweBVH/wgGZ/Bg0OUL/i1r6jCfjPsr0ai1Y+awdQ2zm74GbvU9IY2D2p
+	te0PmRpkXNZ+eVqDL3iUMTCaB7fa8TNy6mCiRrVY5ghoR84YHGEj+mu/Zc4nqZTZJfQUAcQVggG
+	PeawDqmONdTaWK6Z75T2AxWqMfSqAik4/ygBhiINAOtcCRc0ETvSIPMdp+/j++lM4oEi3l0isTE
+	xvdaYCFbGlPddPXFgPH2n3SydgmWS+qtbPWD5bgf4P/raTS
+X-Received: by 2002:a05:600c:3553:b0:493:cc25:85cb with SMTP id 5b1f17b1804b1-4997844ed1cmr25730015e9.8.1786440536873;
+        Tue, 11 Aug 2026 02:28:56 -0700 (PDT)
+Received: from Ansuel-XPS24.localdomain (host-87-20-3-207.retail.telecomitalia.it. [87.20.3.207])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4997402a89bsm56135735e9.0.2026.08.11.02.28.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 02:28:55 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	llvm@lists.linux.dev
+Subject: [PATCH net-next v13 00/12] net: pcs: Introduce support for fwnode PCS
+Date: Tue, 11 Aug 2026 11:28:25 +0200
+Message-ID: <20260811092843.673837-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: qk3QuIkmu2UFekBKJjomyf9jRQurUMKCMKnpq0vaongT8YJqd8a1+YruNGJ2w9ljo2T5TlrKENWrBNJIaqa1CtfaU8mzEv2q6eJ/w2v6xCuRL2M5MT41NLrD4U3o0+ymdq7b/ddmnZjvgPFgUsMCNMuV7o9Pn7mFqOfb/NEzstnv+nPWvv1xJZgvALS7lJ7G2WYXzQrd5HGTKB//LxAhRdzDoqTBAQJGfLcP0aMp9dNhlKjBfMgXJNvJAfYHY3nl6BmKE4mMj3pDw4tI+b7U94OgptasJduHviv1af3bQYHcejDzO5/X4677cDgd3EaId7kOBpSlYq2pSojcnS0EMA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5902.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f32bc0cd-4991-4718-aa5c-08def78a1943
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Aug 2026 09:22:43.4004
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eA2uJ5WDlJVrz9FN45pwTmDF6grbn3suS4cJ+DVTiOjg8lwZV31qr0c3jgzRqvW0AG6a978Q4JaWdg+xnE3sU68ZEpgpQHSr3q1+T9sZY8A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8012
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-RnJvbTogSmFtYWwgSGFkaSBTYWxpbSA8amhzQG1vamF0YXR1LmNvbT4gDQpTZW50OiBNb25kYXks
-IEF1Z3VzdCAxMCwgMjAyNiA0OjAwIFBNDQoNCj5IaSwNCj4NCj5PbiBGcmksIEF1ZyA3LCAyMDI2
-IGF0IDY6MjPigK9BTSBKZWRyemVqIEphZ2llbHNraQ0KPjxqZWRyemVqLmphZ2llbHNraUBpbnRl
-bC5jb20+IHdyb3RlOg0KPj4NCj4+IEZpeCB1MzJfY2hhbmdlKCkgdG8gcGFzcyBwcm9wZXIgdmFy
-aWFibGUgdG8gdTMyX3JlcGxhY2VfaHdfa25vZGUoKS4NCj4+DQo+PiBXaGVuIHRyeWluZyB0byBv
-ZmZsb2FkIHUzMiBjbWQgYnkgYWRkaW5nIHNraXBfc3cgYXR0cmlidXRlcyBpdCBnZXRzDQo+PiBp
-Z25vcmVkIGFuZCBpdCBjYW5ub3QgYmUgY29ycmVjdGx5IHByb2Nlc3NlZCBieSBIVyBhbmQgdGNf
-Y2xzX3UzMl9vZmZsb2FkDQo+PiBzdHJ1Y3Qgd2hpY2ggaXMgdGhlbiBwYXNzZWQgdG8gZHJpdmVy
-IGxhY2tzIHNraXBfc3cgdmFyIGVuYWJsZWQuDQo+Pg0KPj4gdTMyX3JlcGxhY2VfaHdfa25vZGUg
-aXMgZmVkIHdpdGggdGhlIFRDQV9BQ1RfKiBmbGFncyAoYml0cyAxNispDQo+PiBpbnN0ZWFkIG9m
-IFRDQV9DTFNfKiBmbGFncyAoYml0cyAwLTQpIHdoaWNoIGFjdHVhbGx5IHN0b3JlcyB0aGUgZmxh
-Z3MNCj4+IHBhcnNlZCBieSB0Yywgc28gdGNfc2tpcF9zdygpIGFsd2F5cyByZXR1cm5zIGZhbHNl
-LiBUaGlzIGxlYWRzIHRvDQo+PiBpZ25vcmluZyBzb21lIG9mIHRoZSBhdHRpYnV0ZXMgd2hpY2gg
-YXJlIG1lYW50IHRvIGJlIGNvbmZpZ3VyZWQgb24gZmlsdGVyDQo+PiBzZXR1cC4NCj4+DQo+PiBO
-b25lIG9mIHRoZSBUQ0FfQUNUX0ZMQUdTXyogaXMgYWN0dWFsbHkgdXNlZCB3aXRoaW4NCj4+IHUz
-Ml9yZXBsYWNlX2h3X2tub2RlKCksIHNvIHRoZXJlIGlzIG5vIHBvaW50IGluIHBhc3NpbmcgdGhl
-bS4NCj4+DQo+PiBMb29rcyBsaWtlIGNvbW1pdCA2OTUxNzZiZmU1ZGUgKCJuZXRfc2NoZWQ6IHJl
-ZmFjdG9yIFRDIGFjdGlvbiBpbml0IEFQSSIpDQo+PiBzaGFkb3dlZCB0aGUgbG9jYWwgZmxhZ3Mg
-dmFyaWFibGUgd2hpY2ggdXNlZCB0byBiZSBzZXQgd2l0aA0KPj4gbmxhX2dldF91MzIodGJbVENB
-X1UzMl9GTEFHU10pIHdpdGggdGhlIGZsYWdzIGFzIHRoZSBuZXcgZnVuY3Rpb24gcGFyYW0NCj4+
-IHdoaWxlIG5vdCByZXBsYWNpbmcgZm9yIG5vbmUgb2YgdGhlIHUzMl9yZXBsYWNlX2h3X2tub2Rl
-KCkgY2FsbHMuDQo+Pg0KPg0KDQpIaSBKYW1hbA0KDQo+VGhlIHNhc2hpa28gcmV2aWV3cyBsb29r
-IGxlZ2l0IHRvIG1lLiBNYWlubHk6IHlvdXIgY2hhbmdlIG1ha2VzDQo+dTMyX3JlcGxhY2VfaHdf
-a25vZGUoKSBhYmxlIHRvIGZhaWwgZm9yIHRoZSBmaXJzdCB0aW1lICh3aXRoIHRoZQ0KPmFjdGlv
-biBmbGFncyBpdCBhbHdheXMgcmV0dXJuZWQgMCksIHdoaWNoIHR1cm5zIHRocmVlIHByZXZpb3Vz
-bHktZGVhZA0KPmVycm9yIHBhdGhzIGludG8gcmVhY2hhYmxlIGJ1Z3MuDQoNCm9oaCBub3cgaSBz
-ZWUgdGNfc2V0dXBfY2JfYWRkKCkgaW5kZWVkIHdvbid0IG1ha2UgaXQgZmFpbCBhcyBhbHdheXMN
-CnJldHVybnMgPj0gMA0KcHJvYmFibHkgd291bGQgYmUgYWxzbyB3b3J0aCB0byBjbGVhbiBpdCBp
-biBvcmRlciB0byBub3QgY29uZnVzZSBwZW9wbGUsDQp3ZHV0Pw0KDQo+U28gSU1PLCB0aGlzIG5l
-ZWRzIGEgdjIuDQoNCldpbGwgYmUgcHJlcGFyZWQsIHN1cmUNCg0KVGhhbmtzIGZvciB0aGUgc3Vn
-Z2VzdGlvbnMhDQoNCj5TdWdnZXN0aW9ucyBmb3IgdjIgZnJvbSB0aGUgc2FzaGlza29zIChJIHR5
-cGljYWxseSBzdWNrIGF0IHRoZXNlDQo+c3VtbWFyaWVzLCBzbyBtYXkgbWlzcyBzb21ldGhpbmcp
-Og0KPi0gUmVsZWFzZSBuLT5odF9kb3duIG9uIHRoZSBjcmVhdGUtcGF0aCBlcnJvciAoZS5nLiBk
-cm9wIHRoZSByZWZlcmVuY2UNCj5leHBsaWNpdGx5IGJlZm9yZSBrZnJlZShuKSwgb3IgcmV1c2Ug
-X191MzJfZGVzdHJveV9rZXkoKSkuDQo+LSBDb25zaWRlciBzd2l0Y2hpbmcgdGhlIHVwZGF0ZSBw
-YXRoIHRvIHRjX3NldHVwX2NiX3JlcGxhY2UoKSAoYXMNCj5jbHNfYnBmJ3MgY2xzX2JwZl9vZmZs
-b2FkX2NtZCBkb2VzKSBzbyBvbGQvbmV3IGZsYWdzIGFuZCBpbl9od19jb3VudA0KPmFyZSBhY2Nv
-dW50ZWQgZm9yIGNvcnJlY3RseSwgYW5kIHRoZSBvbGQgcnVsZSBpcyByZS1pbnN0YWxsZWQgb24N
-Cj5mYWlsdXJlLg0KPi0gTWVudGlvbiBpbiB0aGUgY29tbWl0IG1lc3NhZ2UgdGhhdCBza2lwX3N3
-IGFkZC9yZXBsYWNlIGNvbW1hbmRzIHRoYXQNCj51c2VkIHRvIHN1Y2NlZWQgKGFuZCB3ZXJlIHNp
-bGVudGx5IHNraXBwZWQgYnkgdTMyX2NsYXNzaWZ5KCkpIHdpbGwgbm93DQo+cmV0dXJuIC1FT1BO
-T1RTVVBQIG9yIC1FSU5WQUwgd2hlbiB0aGUgYmxvY2svZHJpdmVyIGNhbm5vdCBvZmZsb2FkLg0K
-Pg0KPkFsc28gc2VlbXMgd29ydGggQ2M6IHN0YWJsZSBiYWNrcG9ydC4NCg0KY2MgdGFnIGFscmVh
-ZHkgdGhlcmUsIGlzbid0IGl0PyBvciBkbyBpIG5lZWQgdG8gZG8gYW55IGV4dHJhIHN0ZXA/DQoN
-CnJlZ2FyZHMsDQpqZWRyZWsNCg0KPg0KPmNoZWVycywNCj5qYW1hbA0KPg0KPg0KPg0KPg0KPj4g
-Rml4ZXM6IDY5NTE3NmJmZTVkZSAoIm5ldF9zY2hlZDogcmVmYWN0b3IgVEMgYWN0aW9uIGluaXQg
-QVBJIikNCj4+IENjOiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NCj4+IFJldmlld2VkLWJ5OiBQ
-cnplbWVrIEtpdHN6ZWwgPHByemVteXNsYXcua2l0c3plbEBpbnRlbC5jb20+DQo+PiBSZXZpZXdl
-ZC1ieTogTWFyY2luIFN6eWNpayA8bWFyY2luLnN6eWNpa0BsaW51eC5pbnRlbC5jb20+DQo+PiBT
-aWduZWQtb2ZmLWJ5OiBKZWRyemVqIEphZ2llbHNraSA8amVkcnplai5qYWdpZWxza2lAaW50ZWwu
-Y29tPg0K
+This series introduce a most awaited feature that is correctly
+provide PCS with fwnode without having to use specific export symbol
+and additional handling of PCS in phylink.
+
+At times there were 2 different implementation (this and the one
+from Sean) but Sean agreed that this can be picked and used in favor
+of his implementation as long as his case with race condition is
+correctly handled.
+
+---
+First the PCS fwnode:
+
+The concept is to implement a producer-consumer API similar to other
+subsystem like clock or PHY.
+
+That seems to be the best solution to the problem as PCS driver needs
+to be detached from phylink and implement a simple way to provide a
+PCS while maintaining support for probe defer or driver removal.
+
+To keep the implementation simple, the PCS driver devs needs some
+collaboration to correctly implement this. This is O.K. as helper
+to correctly implement this are provided hence it's really a matter
+of following a pattern to correct follow removal of a PCS driver.
+
+A PCS provider have to implement and call fwnode_pcs_add_provider() in
+probe function and define an xlate function to define how the PCS
+should be provided based on the requested interface and phandle spec
+defined in fwnode (based on the #pcs-cells)
+
+fwnode_pcs_get() is provided to provide a specific PCS declared in
+fwnode at index.
+
+A simple xlate function is provided for simple single PCS
+implementation, fwnode_pcs_simple_xlate.
+
+A PCS provider on driver removal must call fwnode_pcs_del_provider()
+to delete itself as a provider.
+
+---
+Second PCS handling in phylink:
+
+We have the PCS problem for the only reason that in initial
+implementation, we permitted way too much flexibility to MAC driver
+and things started to deviate. At times we couldn't think SoC
+would start to put PCS outside the MAC hence it was OK to assume
+they would live in the same driver. With the introduction of
+10g in more consumer devices, we are observing a rapid growth
+of this pattern with multiple PCS external to MAC.
+
+To put a stop on this, the only solution is to give back to phylink
+control on PCS handling and enforce more robust supported interface
+definition from both MAC and PCS side.
+
+It's suggested to read patch 0003 of this series for more info, here
+a brief explaination of the idea:
+
+This series introduce handling of PCS in phylink and try to deprecate
+.mac_select_pcs.
+
+Phylink now might contain a linked list of available PCS and
+those will be used for PCS selection on phylink_major_config.
+
+MAC driver needs to define pcs_interfaces mask in phylink_config
+for every interface that needs a dedicated PCS.
+
+These PCS needs to be provided to phylink at phylink_create time
+by setting the .fill_available_pcs and .num_possible_pcs in phylink_config.
+Helpers to parse PCS from fwnode are provided
+fwnode_phylink_pcs_count() that will return the count of PCS entries
+described in the firmware node and fwnode_phylink_pcs_parse() that will
+fill a preallocated array of PCS pointer with the actual available PCS
+(ignoring the one that still needs to be probed).
+
+phylink_create() will fill the internal PCS list with the passed
+array of PCS. phylink_major_config and other user of .mac_select_pcs
+are adapted to make use of this new PCS list.
+
+The supported interface value is also moved internally to phylink
+struct. This is to handle late removal and addition of PCS.
+(the bonus effect to this is giving phylink a clear idea of what
+is actually supported by the MAC and his constraint with PCS)
+
+The supported interface mask in phylink is done by OR the
+supported_interfaces in phylink_config with every PCS in PCS list.
+
+PCS removal is supported by forcing a mac_config, refresh the
+supported interfaces and run a phy_resolve().
+
+PCS late addition is supported by introducing a global notifier
+for PCS provider. If a phylink have the pcs_interfaces mask not
+zero, it's registered to this notifier.
+
+PCS provider will emit a global PCS add event to signal any
+interface that a new PCS might be available.
+
+The function will then check if the PCS is related to the MAC
+fwnode and add it accordingly.
+
+A user for this new implementation is provided as an Airoha PCS
+driver. This was also tested downstream with the IPQ95xx QCOM SoC
+and with the help of Daniel also on the various Mediatek MT7988
+SoC with both SFP cage implementation and DSA attached.
+
+Lots of tests were done with driver unbind/bind and with interface
+up/down also by adding print to make sure major_config_fail gets
+correctly triggered and reset once the PCS comes back.
+
+The dedicated commits have longer description on the implementation
+so it's suggested to also check there for additional info.
+
+It's worth to mention that OpenWrt is currently using this on
+Mediatek SoC and QCOM ipq807x/ipq60xx/ipq50xx and Airoha are
+already ported in staging tree for testing.
+
+---
+
+Changes v13:
+- Fix regression in fwnode_pcs_get_from_pcsspec from v12
+- Fix reverse lock for phy_lock and state_mutex
+- Better handle lock in phylink_validate_mac_and_pcs and inband
+- Fix wrong pointer to fwnode_pcs_add_provider notifier
+- Fix compilation error for new C type in pcs_provider_notify
+Changes v12:
+- Fix kdoc for function
+- Rework PCS provider add and delete to be provider driven (instead of
+  relaying on scan of fwnode every time) (this also handle
+  multi PCS scenario)
+- Even further rework state mutex locking for concurrent pcs list
+- Restore MAC supported_interfaces validation in phylink_create()
+  wrongly dropped.
+- Use get/put for fwnode reference
+- Fix possible unment depndency for FWNODE_PCS
+- Fix almost impossible problem for PCS calibration
+- Hold rtnl with PCS deletion
+Changes v11:
+- Rework PCS release to notifier way (fix race as pointed out by bot)
+- Add Ack from Lorenzo for Airoha Ethernet driver
+- Introduce devm variant for pcs_provider_add
+- Better support firmware node reference for PCS late attach
+- Better protect list iteration with state mutex
+- Minor fixup to airoha pcs driver (flow control fixup)
+- Rebase on top of net-next
+Changes v10:
+- Minor code cleanup and fixes as suggested by bot
+- Drop devlink patch
+- Add reviewed by tag
+- Configure old_link_state on PCS release
+- Unlink PCS on error in phylink_create()
+- Use list_add_tail
+- Fix typo in Airoha PCS driver
+- Update phylink migration guide
+- Better handle late PCS attach (idempotent function and
+  add unser state_mutex)
+- Use dedicated lock in Airoha ethernet driver
+Changes v9:
+- Rebase on top of net-next/main
+- Drop early verification of supported_interface
+  (it can also be provided by get_capabilites MAC OP)
+Changes v8:
+- Back to RFC (net-next closed)
+- Address additional bug reported by Sashiko bot
+  - Better handle priv interface for Airoha PCS driver
+  - Better handle locking for modifying the PCS list in
+    phylink code
+  - Improve fwnode_phylink_pcs_parse() parsing on -ENOENT
+  - Better handle error condition in phylink_create()
+  - Turn down the link when current PCS is released
+- Fix compilation warning caused by copy paste error
+Changes v7:
+- Address all the bug from the Sashiko bot
+- Rename .num_available_pcs to .num_possible_pcs
+- Link PCS in phylink_create()
+- Correctly unregister the notifier on phylink_destroy()
+- Introduce fwnode_phylink_pcs_count()
+- Better handle locking in phylink for PCS handling
+- Better handle unavailable PCS at phylink_create() time
+- Improve Documentation file
+- Other minor fixes to address suggestion from bot
+- Rebase on top of net-next
+Changes v6:
+- Rebase on top of net-next
+- Add Documentation files
+- Add fw_devlink patch
+- Fix some comments typo
+- Rework the airoha_eth.c implementation with new multi serdes code
+- Extend PCS code with PCIe and USB support
+- Align schema to new property
+Changes v5:
+- Rebase on top of net-next
+- Use the new force_major_config
+- Reword some comments and commit description
+- Return -ENODEV instead of -EPROBE_DEFER to perevent race condition
+- Drop phy_interface_copy patch (Russell pushed an equivalent version)
+Changes v4:
+- Move patch 0002 phy_interface_copy to 0002 (fix bisectability
+  problem)
+- Address review from Lorenzo for Airoha ethernet driver
+- Fix kdoc error with missing Return (actually missing : before Return)
+- Fix UNMET dependency reported error for CONFIG_FWNODE_PCS
+- Revert to pcs.c instead of core.c (due to name conflict with other kmod)
+- Fix clang compilation error for Airoha PCS driver
+- Add missing inline function to pcs.h function
+Changes v3:
+- Out of RFC
+- Fix various spelling mistake
+- Drop circular dependency patch
+- Complete Airoha Ethernet phylink integration
+- Introduce .pcs_link_down PCS OP
+Changes v2:
+- Switch to fwnode
+- Implement PCS provider notifier
+- Better split changes
+- Move supported_interfaces to phylink
+- Add circular dependency patch
+- Rework handling with indirect addition/removal and
+  trigger of phylink_resolve()
+
+Christian Marangi (12):
+  net: phylink: keep and use MAC supported_interfaces in phylink struct
+  net: phylink: introduce internal phylink PCS handling
+  net: pcs: implement Firmware node support for PCS driver
+  net: phylink: save phylink instance fwnode on phylink_create
+  net: phylink: support PCS provider release
+  net: phylink: support late PCS provider attach
+  net: Document PCS subsystem
+  MAINTAINERS: add myself as PCS subsystem maintainer
+  net: phylink: add .pcs_link_down PCS OP
+  dt-bindings: net: pcs: Document support for Airoha Ethernet PCS
+  net: pcs: airoha: add PCS driver for Airoha AN7581 SoC
+  net: airoha: add phylink support
+
+ .../bindings/net/pcs/airoha,pcs.yaml          |  261 ++
+ Documentation/networking/index.rst            |    1 +
+ Documentation/networking/pcs.rst              |  234 ++
+ Documentation/networking/sfp-phylink.rst      |   35 +-
+ MAINTAINERS                                   |    9 +
+ drivers/net/ethernet/airoha/Kconfig           |    2 +
+ drivers/net/ethernet/airoha/airoha_eth.c      |  199 +-
+ drivers/net/ethernet/airoha/airoha_eth.h      |    5 +
+ drivers/net/ethernet/airoha/airoha_regs.h     |   12 +
+ drivers/net/pcs/Kconfig                       |    8 +
+ drivers/net/pcs/Makefile                      |    3 +
+ drivers/net/pcs/airoha/Kconfig                |   12 +
+ drivers/net/pcs/airoha/Makefile               |    7 +
+ drivers/net/pcs/airoha/pcs-airoha-common.c    | 1303 ++++++++++
+ drivers/net/pcs/airoha/pcs-airoha.h           | 1311 ++++++++++
+ drivers/net/pcs/airoha/pcs-an7581.c           | 2100 +++++++++++++++++
+ drivers/net/pcs/pcs.c                         |  314 +++
+ drivers/net/phy/phylink.c                     |  419 +++-
+ include/linux/pcs/pcs-provider.h              |   70 +
+ include/linux/pcs/pcs.h                       |  174 ++
+ include/linux/phylink.h                       |   28 +
+ 21 files changed, 6447 insertions(+), 60 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/pcs/airoha,pcs.yaml
+ create mode 100644 Documentation/networking/pcs.rst
+ create mode 100644 drivers/net/pcs/airoha/Kconfig
+ create mode 100644 drivers/net/pcs/airoha/Makefile
+ create mode 100644 drivers/net/pcs/airoha/pcs-airoha-common.c
+ create mode 100644 drivers/net/pcs/airoha/pcs-airoha.h
+ create mode 100644 drivers/net/pcs/airoha/pcs-an7581.c
+ create mode 100644 drivers/net/pcs/pcs.c
+ create mode 100644 include/linux/pcs/pcs-provider.h
+ create mode 100644 include/linux/pcs/pcs.h
+
+-- 
+2.53.0
+
