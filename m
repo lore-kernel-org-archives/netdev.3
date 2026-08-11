@@ -1,110 +1,74 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8056445AF6
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 12:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8978347506;
+	Tue, 11 Aug 2026 12:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786451178; cv=none; b=LH4H/3XWQLl86ohYGpkrZgYYiWhs3dk3RwrduLzD5gWUZ5d5z0nf5Mj+4rLP9Lg5VWTdxOL9mDMOCLOejVLu/CKlkubP2diq4V5743Nvmoj4LFLhOU1VNl5ObkAuuRYBnUjVTTR3w9kNs+9F/VsifH6S8KM95dHVF0oZiIjadfQ=
+	t=1786451333; cv=none; b=ehrTgj9rgyLJg7hDjFbDsfLVPsHCBtjQ+VurMQ646ap9XoVkUf3HNfTwQlZSbdw7LPxpg8yYGZeunzSZDC43ZpDoixwbkzGGw6jXKR8HrtBSAAUwUZQXQsRbjqL8HI5XN4rSZqTmnfDVUPQu490SFu8TKHOhnjylHvAQW8eMOoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786451178; c=relaxed/simple;
-	bh=BYdEHONWqi/8SXoQTMBuYE9+HuCXANbCzYEYTuU+KZg=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=og3dXTNoMNIMCyCKe61m5HsAR9sorkYPjWLa7XfeFTc9yLUQMZuXjQg5VriVMOzTbKrxSIf5mX9gy2xb/LyndVtdspQwz1PvFFDt2lS75ATCop2OO40ni96aLdvlrHwJkfoq4fRe3CnEv37hbrM/wy1c0qRbUOwLyW3qdMaFhQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZTAendi/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786451333; c=relaxed/simple;
+	bh=1HJM2k2JV3t2FQTApIRUtJS3EfIQx0T4Q8RZFnZ1pCY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cavm1vE85VEOQevj0kmynhgsHdjJvqItJc6o1Dr5vwYEzXHkbetUsQ8B0B8JrtR/FfHfYVH2ntey7q+qGuBzUyyr7qDkvFt5nvG2iSqSEJ5B/PRScrBlJ5t9fcrWG3Wn0SKKDCeTrNDdtLkC98UxLK+31WKjjsKssvlcBhBvYog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nvnqsi03; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZTAendi/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786451174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BYdEHONWqi/8SXoQTMBuYE9+HuCXANbCzYEYTuU+KZg=;
-	b=ZTAendi/8hHGbe/EgSfPqr3K7Xt8zfN78K4UEvliMPrjkHHaJa+CpzaKE4BFm1q9NvWAjo
-	cpW3lq4aPkUQB2zO86gDKtJdiaAD/a4nJZRtGQ7UmO2+OYmRfx7dg+4WXrCtYER4tbmA6g
-	SArr5f6o5WaH1BZdMJhWaCNTcmQ1+Qw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-146-dRD6R3-ANOCrfJvlaNO23Q-1; Tue,
- 11 Aug 2026 08:26:09 -0400
-X-MC-Unique: dRD6R3-ANOCrfJvlaNO23Q-1
-X-Mimecast-MFC-AGG-ID: dRD6R3-ANOCrfJvlaNO23Q_1786451167
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 46650195609D;
-	Tue, 11 Aug 2026 12:26:07 +0000 (UTC)
-Received: from [10.43.2.199] (unknown [10.43.2.199])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 006D3195DF91;
-	Tue, 11 Aug 2026 12:26:03 +0000 (UTC)
-Message-ID: <dc80c37d-6db1-49ed-8eb3-1e23eca0700f@redhat.com>
-Date: Tue, 11 Aug 2026 14:26:02 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nvnqsi03"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753801F000E9;
+	Tue, 11 Aug 2026 12:28:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786451332;
+	bh=UdIsiKVFhDlUuCmo+fjPrnJmZm9dNzKypop6Jsqk+DY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Nvnqsi03F+RfEqUTxbHVk4abr18YXEWVCCrDXlLBMcqDVcVUMHQKjBe+rTy10zjrR
+	 nvGI8iMn94HEUCE2YgUDchFhUss04at+jYO36ynOfDrqY9Geab3qSitraUVxIJTL3o
+	 HoMkM5l1aDheIiTj3GbUX6kY024CeyPuo9ZQaxT5XKBFalTXyBM4hGceXIbkk5zzrQ
+	 ttiZLVixvpiHINlPVQdV/gL1K0LP2E6zY6WQzbfzgLfaDOv3pPWXLkn/lir0BDo0PQ
+	 jnwJwoa0tPjGWYEC5oHXzkNDLQZUHmOHxk2BorFkxci5zk0+kNXAwNhwnPAtElzePU
+	 JTipzctWNekHQ==
+Date: Tue, 11 Aug 2026 13:28:48 +0100
+From: Simon Horman <horms@kernel.org>
+To: raoxu <raoxu@uniontech.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, kees@kernel.org,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: usb: lg-vl600: fix Ethernet header on fragmented RX
+ packets
+Message-ID: <20260811122848.GE51943@horms.kernel.org>
+References: <30CC616506DE5BC4+20260810084435.2099229-1-raoxu@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 3/3] dpll: zl3073x: add PTP clock support
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
- Chris du Quesnay <Chris.duQuesnay@microchip.com>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
- Min Li <min.li@microchip.com>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- linux-doc@vger.kernel.org
-References: <20260809182340.1081610-1-ivecera@redhat.com>
- <20260809182340.1081610-4-ivecera@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260809182340.1081610-4-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <30CC616506DE5BC4+20260810084435.2099229-1-raoxu@uniontech.com>
 
-Sashiko findings and my replies:
+On Mon, Aug 10, 2026 at 04:44:35PM +0800, raoxu wrote:
+> From: Xu Rao <raoxu@uniontech.com>
+> 
+> The LG VL600 RX path can assemble one device frame from multiple USB RX
+> URBs.  In the single-URB case, the input skb passed by usbnet is also the
+> buffer being parsed, so @skb and @buf point to the same skb.
+> 
+> When a frame is completed from current_rx_buf, however, @buf points to
+> the assembled skb while @skb still points to the last URB fragment.
+> vl600_rx_fixup() returns @buf to the network stack in that path, but it
+> currently obtains the Ethernet header from @skb.
+> 
+> As a result, the source/destination address fixups and the IPv6 ethertype
+> fixup can be applied to the final fragment instead of the assembled skb
+> that is actually delivered.  Use @buf for the Ethernet header so the
+> fixups are applied to the packet being parsed and returned.
+> 
+> This has likely gone unnoticed because the common single-URB path has
+> @skb == @buf and therefore behaves correctly.
+> 
+> Fixes: 7a635ea98999 ("net/usb: Ethernet quirks for the LG-VL600 4G modem")
+> Signed-off-by: Xu Rao <raoxu@uniontech.com>
 
- > By returning rc directly here, does this bypass the sec_adjusted
- > check at the end of the function? [...]
- > Should this path handle the timeout failure similarly to the fallback
- > path?
-
-If tod_ready_wait fails, we cannot be certain that WR_NEXT_1HZ was
-actually applied. Returning the error and letting the caller handle
-the retry is the safer choice, because masking the error would
-silently report success when the adjustment may not have been applied
-at all.
-
- > If a previous API call (like zl3073x_dpll_ptp_settime64) issued a
- > ToD write and returned without waiting for the 1 Hz edge, could a
- > subsequent sub-second adjustment clobber it? [...]
- > Does the driver need to wait for pending ToD writes before issuing
- > sub-second adjustments regardless of the delta size?
-
-All PTP callbacks are serialized by zldpll->lock. A subsequent
-sub-second adjtime goes through zl3073x_chan_tod_adjust() which calls
-zl3073x_chan_tod_read() which starts with zl3073x_chan_tod_ready_wait()
-— this waits for any pending WR_NEXT_1HZ to complete. Phase step and
-TIE write operate on independent hardware blocks and do not conflict
-with pending ToD writes.
-
- > Similarly, zl3073x_dpll_ptp_adjphase() issues a TIE write without
- > checking for pending ToD writes. Could this phase adjustment also be
- > overwritten?
-
-TIE write adjusts the DPLL input-to-output phase through a separate
-hardware block. It does not modify the ToD counter and is not affected
-by a pending WR_NEXT_1HZ.
-
-Thanks,
-Ivan
+Reviewed-by: Simon Horman <horms@kernel.org>
 
