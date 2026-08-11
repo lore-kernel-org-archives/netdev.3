@@ -1,162 +1,129 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61EE35676A
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 23:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0208341F349
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 23:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786490353; cv=none; b=C58CZM9d5phlJBjHJLFJBTIK3IPYCmJEyvOcLi4XifjMOxH2Zzog0ZGFR2p4mymUJ6Fqxjb8/YHMNBY9KpycAAq+sD8DUI7g856gixlPt+Lqsa+v0IB2lleC5RDwQRHwIeM2bR+j5NxxVK9/gnsHbjJ1fCt84R6nU0xuvH5RfZs=
+	t=1786490409; cv=none; b=BRTnEJBMf/P0s/7EpR/las5RDg65GaIFR3scHpifv58mP6q0Mo0dt6hnQQM9osR4dX2fxXvWhn4/aUxN2vjZ1EPdCi8fr7GQ75aX8ijUtMZn8Gu2UUbcZcwIhXiGfwY2vqy+nvMws+53DtyjklYcxZnORpMSaY+kp1fTrHVXue0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786490353; c=relaxed/simple;
-	bh=InKmnI0Ba9idJtgF+HdWs4qS3HezrgoaJ4WBkzPxx2I=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=OMp0v2H3c1kFgb9+r/eMWHQTzX2jlmUNr3KSqVqQUDLdCNot7kf5VjKyNbOhNT0EjVYire/aDuYpX7WhD2SJN131imE6inKuxN1neYsY5EDn3nxi98VEDVFojjz6nwBt5jbFZQnMusITqoEPCSQkvzEFNSszDu/XV3OUwRzXG2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nZtN5VF1; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786490409; c=relaxed/simple;
+	bh=9IHT31oTZmV0VeYxdRkHXlkyLp1UBl78qnhC3GuV9I8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZFSxk0UiBNtAELZIS+ivCuacZvi2z7EEjUKMp4yGm8td28u8jv4t2XUp5OyYVuIv4WBEqdBFpstxe4/LC1+pHOv3zMLpxJXlUmQCPJqWnvwt6byUGAcvn/jFFD27sAdfvxIy3gYTPfs0e6fafWnOaWL1pBFW3cKfby1ZYEi52MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=B//ZdEyq; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nZtN5VF1"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-476a130c138so250769f8f.0
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:19:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="B//ZdEyq"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c9cf07d2df6so202027a12.2
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:20:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786490350; x=1787095150; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NKWFCfgsTlLlt4GmvjwvhUR2/Nc7HI3joWyPH2vxn8s=;
-        b=nZtN5VF1i7qlxG7fzcqF1qenBHyqBEZlZKpJyYVLXxpI75oV8Krel948Cr0sV/6Z61
-         TGOpF71VmRn13hg5VCUtYSWOUemT4q6jszezarByCM5R3hrEVDzP2xUoylbbayfgIpLV
-         u+ksFEuGdnbd3vWqzcr8kvDkHclMega9iwFErwiw3spt7SmCntGS49H9AuQA/aOsdhpo
-         C4Dn7+fk4HbuCsLHpS4zsNraGGJQKji2JBplhEWBKN1xIQ98sqydRQmNdE7pT1Wjj1Tu
-         RF5enSM6ArLASKBLcC0iY3mvZsL8g0eCfNkUgvm/IdgxAO/9MQSNM/anYh3MyWxAwvxv
-         dGDQ==
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1786490405; x=1787095205; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8gUR5XNd4P4Fr5D6DF/rwFxtm19io3AVFBF1yERCCmA=;
+        b=B//ZdEyq0eHyplW1VuMeZfathIb4Cy9FarpRcqrYluvBh36Yg3VNqjGnb6Daf6zRru
+         if8zqlIX6HuFyENTZHx5MiNxoZmqomD9CuKNI8bPOCY5+lt5YbGAEAkF1vbRrayjwkzi
+         AfBtKa9p58Kpfu1FaUU+ACvMTdi8JxETsxsUUyzjw7JCrDdfOc4xe4caTVOgeQooyWDE
+         yfrDOHUZm1dCt5bGkieWR76LndaJrt8XfKrQ76QBP7XrMVXLOhsWf3lsTc4Ofq3Qmbq2
+         eY76lI4UpCATWh//JDZSWVUZoMbmK6bcctf5RAH6XU/C7bm6Y6SWZQAT98AWLOh12ghh
+         U9CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786490350; x=1787095150;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NKWFCfgsTlLlt4GmvjwvhUR2/Nc7HI3joWyPH2vxn8s=;
-        b=L36Cb6m8s5IuJAykVkc+o4WDdFNJm7MXZkLh2S88H1POjzQ78K1A+6Jx74qqDWX3gw
-         pkz/TKgUxsXL57jCH7t1x7TZRR5qBPKBVuhD8Jr+fQ8GIDVjMiy9d9LDbrPyDWoc2kVp
-         YMrqRNEBar+lCzyGZBeG2yuf7B2Synny1qo7kUo48Gs0kGNxKMAawpatKR9gNOFZteeM
-         kiU6jNog6/G5AoxeyGOTBblcDnmFoP+9VRNvwGcdcYrFOLnAmY3fEzdD9a2sPPeVh9rm
-         u0RqkYPd0PqAzWGMELKEqMSAIGF2uXKzK3AN7Gm28lE/HnRIO/AjMpNbXZsbaD7F/RvD
-         M5wg==
-X-Forwarded-Encrypted: i=1; AHgh+RrBndJgZ3p4z6EWnagTXiPOQYP2EauLKEaQs7kDaFQKqweLa0QBmd8DM36SwEJEcgzgSeCHrTg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzngwTOtIIe4xad+D7b2X5KaAwjieCxc70OJpqX1ScRvSQxTEa7
-	PNhzoPYPf1TMIqDieCuTL6q4Ct/ZVAbc7G2acdwJ3FQWeGxiuMA+DJBq
-X-Gm-Gg: AR+sD13rZaP/VeAD8jxqj61Bmxft4LrgLuWhia+0b93l8ZQHWi/jFGLnEeA4AKEs/94
-	enTqmlaGTMWAooUahqJxXJNT6auDGP9nVtdcDL5a3HhiaGNW6Xg6Exm0Sj0g4pqKijRvetBjoK3
-	CT43zJJJIXIfAaLiO3VpMv9Rup+KOkeJeUhfPGRyuRf05SVZEHvJAiavoYpGe/0UrQyMgW8x3Py
-	y00aEmPet9j8WiPh/wXOdLXt7V7O/wcUf0Ick95YTPavedNuLxv67hqwurncwPBWgdR0H4xFcvh
-	TVENoLIk6EyqmRPcwNY3/WZ5enufgTcfLP9fPgM8eIeo+V4fZ/K9TSSs6/ftL8PsEdmm8wJVr26
-	X0ldQVBTZqWm5PD29Ii06HrDlXr73Zo1oGLjpM6LR85P/fn1UgX9ydqnNXUfXw4PyE7pQWU6+OG
-	3/ubFeqUwfTC5ksaq7st+OtkmJrYoTh85Dr6NLMjosmpR/vd5syh0UJtBOrqf287T3jzPM/eY2x
-	wmukxTQJRlZ1js2+0odYdWx3o4zfEY=
-X-Received: by 2002:a05:6000:4006:b0:47f:9266:9bde with SMTP id ffacd0b85a97d-48152b15f62mr542628f8f.4.1786490349894;
-        Tue, 11 Aug 2026 16:19:09 -0700 (PDT)
-Received: from [127.0.0.1] ([193.252.113.11])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48150d4e260sm2094006f8f.17.2026.08.11.16.19.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Aug 2026 16:19:09 -0700 (PDT)
-From: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
-X-Google-Original-From: Alexandre Ferrieux <alexandre.ferrieux@orange.com>
-Message-ID: <64228e38-b619-4836-aa41-1594567db082@orange.com>
-Date: Wed, 12 Aug 2026 01:19:07 +0200
+        d=1e100.net; s=20251104; t=1786490405; x=1787095205;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8gUR5XNd4P4Fr5D6DF/rwFxtm19io3AVFBF1yERCCmA=;
+        b=AUsDJ/IOGeptyyyDCnJITaZKMSFMi7W+vO+lR7fAQRppqsrUmxpT8oECNf4JDEpOSd
+         cd9NH/R9xWGpg543pHuoWV+hTBrp4EynyTgEGvyYFpliw/etD8tkDtrpcqEMJrgG9icY
+         pFhmkhiaIPKjr5QMubMl2JGPSBZelFnGleA4+Vd2a9cH1F5rULGURdm0c42TCiDuZmBK
+         OMSXed4FKT67NeaETboRz0tv5f+G17BbH0zfSVwkq7hDf/Nopz+p15iYVUlcjiCAayvZ
+         AOBHDZp9t9oY0gLyMX7qAqeyqkmmc/F2j5u6MTqQV3t0T9xineNpuwvlPxHXYnxG+jcZ
+         i0Tw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp/6brKgJwmpysM3ocpnQEOxUEuMJcBhyfTfwZqagerLqfmfOYTKtS79Qoa+DLZ7IOA580j3eg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY/tWh4j41LpwqScBPT0UM/mXLWrGREhAzWQLcEw2VltlX0xfv
+	vVqkGlIDoU42P09aj0fRPrj0k+9iEkSLskEB86LvUORM94cFj0CqxkkZhyEnltUq7H0=
+X-Gm-Gg: AR+sD12rDOXdls9rHpUIy35lixaDjY2A9xBTQMCRrQ+bf391CDbL7uf7eYFGaaHF480
+	hCRtJVjUz6UrldBqfaNEXilniPkZiA5sBVy39OaDK2kOxqXczbklUmkEAfQYgEbJ6oZ3G0TyVuj
+	I7dXjqiZEoQ+vSKTEcct+ACQaIrgXWlXYFYYHxD7yH8taloIck5MUyAZz9EQYHZNX3zCAKP7kws
+	k4J4agj8M7Gxv7wRt7zSuF27ZStN0P9XZ0XYhFraxKoE6f/uvxL2UrWwNC/FH0xXgWHnQoXc+9/
+	W9vHN+dpLaxqJQQwp/G8BqUjgzwfiuVugdIaMisvOIcwf//ur+7uP7iHxJVQNNmE9cG/jEgAoGN
+	ey6EJ41mDbVC4vd8dZWC9EpouloRdR521UHAgChgVXMUmIwd47tAzpsQjj7eQo9qYjseHXdZpfX
+	eWMwstX03AbT1TkZt6A+19v6Md5B8sd9zcMz9yH+OeMOqVi8TlxMAuJ8b+bBnIXo9VqCee4jnvH
+	ZqfOx7kkZc=
+X-Received: by 2002:a05:6a21:b90:b0:3c3:c080:71ca with SMTP id adf61e73a8af0-3cc3f218cc3mr674091637.0.1786490404833;
+        Tue, 11 Aug 2026 16:20:04 -0700 (PDT)
+Received: from yhlee-960QFG.Davolink ([2406:5900:1044:110c:365f:6c09:b402:1986])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbedbac8842sm1177810a12.30.2026.08.11.16.19.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 16:20:04 -0700 (PDT)
+From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+To: alibuda@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	sidraya@linux.ibm.com,
+	wenjia@linux.ibm.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com
+Cc: leitao@debian.org,
+	horms@kernel.org,
+	mjambigi@linux.ibm.com,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com,
+	guangguan.wang@linux.alibaba.com,
+	kees@kernel.org,
+	gustavoars@kernel.org,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+Subject: [PATCH net v6 0/3] net/smc: fix out-of-bounds and use-after-free in SMC-Rv2 LLC processing
+Date: Wed, 12 Aug 2026 08:18:59 +0900
+Message-ID: <20260811231902.47089-1-yhlee@isslab.korea.ac.kr>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] netfilter: nf_dup_netdev: scrub duplicates to
- preserve the direct path
-To: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>,
- Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
- edumazet@google.com, netdev@vger.kernel.org
-References: <20260804201150.16364-1-alexandre.ferrieux@orange.com>
- <anLzQeYulW2CQItC@chamomile>
- <7b7fbe75-1531-49f9-8134-033c34fa13cb@orange.com>
-Content-Language: fr, en-US
-Organization: Orange
-In-Reply-To: <7b7fbe75-1531-49f9-8134-033c34fa13cb@orange.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Patch 1 fixes a use-after-free of the LLC queue entry in
+smc_llc_srv_add_link(), patch 2 bounds the peer's rkey counts, and patch 3
+carries the tail of an oversized v2 message in the queue entry so that both
+readers are bounded by what arrived.  All three are tagged for stable: a
+tree that takes 1 and 2 without 3 still deletes rkeys read from whatever an
+earlier message left in the shared receive buffer.
 
->> On Tue, Aug 04, 2026 at 10:11:50PM +0200, Alexandre Ferrieux wrote:
->>>
->>> In other words, the "dup" path has the potential to wreak havoc
->>> in the direct path as a consequence of secondary link failures. This
->>> is very bad behavior for a monitoring tool, which is the most
->>> obvious application of 'dup'.
->>
->> Can you describe your use-case a bit and how it breaks?
-> Sure:
-> 
->  - assume hosts A.eth0 and B.eth0 have active production traffic (say TCP)
->  - assume we have a monitoring tool on A that dups eth0's egress to some other
-> interface $MON
-> 
->     nft add chain netdev ta ch '{type filter hook egress device "eth0" priority
-> filter ; policy accept ; }'
->     nft add rule netdev ta ch dup to $MON
-> 
->  - assume something goes wrong on $MON generating link failures. In my case it
-> was a GRETAP with L3 destination suddenly unreachable.
-> 
->  - The next A->B packet goes through normally, but its duplicate hits
-> ipv4_link_failure(), hence the dst (which is B) is expired.
-> 
->  - As a result, (say) TCP disruptions occur. The thermometer killed the patient :)
-> 
-> Note: as a straightforward repro, you can simply witness "noise" in simple ping
-> sessions, with ghost unreach reports muxed with normal measurement:
-> 
->     ip link add gre1 type gretap remote 192.168.1.99 ;# on the LAN, nonexistent
-> IP => will generate link failures
->     ip link set dev gre1 up
->     nft add table netdev ta
->     nft add chain netdev ta ch '{type filter hook egress device "eth0" priority
-> filter ; policy accept ; }'
->     nft add rule netdev ta ch counter dup to gre1
->     ping -n 8.8.8.8
->  =>
->     PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
->     64 bytes from 8.8.8.8: icmp_seq=1 ttl=115 time=19.9 ms
->     64 bytes from 8.8.8.8: icmp_seq=2 ttl=115 time=12.8 ms
->     64 bytes from 8.8.8.8: icmp_seq=3 ttl=115 time=36.0 ms
->     64 bytes from 8.8.8.8: icmp_seq=4 ttl=115 time=30.3 ms
->     From 192.168.1.13 icmp_seq=5 Destination Host Unreachable
->     64 bytes from 8.8.8.8: icmp_seq=5 ttl=115 time=31.0 ms
->     From 192.168.1.13 icmp_seq=6 Destination Host Unreachable
->     64 bytes from 8.8.8.8: icmp_seq=6 ttl=115 time=38.0 ms
->     From 192.168.1.13 icmp_seq=7 Destination Host Unreachable
->     64 bytes from 8.8.8.8: icmp_seq=7 ttl=115 time=36.8 ms
->     From 192.168.1.13 icmp_seq=8 Destination Host Unreachable
->     64 bytes from 8.8.8.8: icmp_seq=8 ttl=115 time=23.5 ms
->     ^C
-> 
-> 
->>
->>> This patch fixes all similar scenarii by calling skb_scrub_pkt()
->>> on the clone, severing its link to precious direct-path state.
->>
->> This patch is targetted at the net tree, but nf.git is preferred.
-> Okay, will retarget :)
-> 
->> As for the conntrack and dst, you have to explain what it breaks on
->> your end.
-> Dst as shown above. Conntrack is more speculation, but my take is that in any
-> case the dup path should *never* have any kind of retroaction on the observed
-> path, so any "complex state" attached to the direct path should be absolutely
-> isolated from "whatever happens on the dup path". Am I mistaken ?
-What do you think ? Is the description of the problem satisfactory ? Is the
-proposed solution acceptable ?
+Changes since v5:
+ - 1/3: leave through the existing exit label instead of repeating the two
+   kfree()s (Breno Leitao).  The object code is unchanged.
+ - 3/3: add the Fixes: and Cc: stable tags (Simon Horman).
+ - 3/3: assert that the two DELETE_RKEY_V2 layouts agree on the offset of
+   rkey[], since the parsing code indexes one and the existing assert
+   constrains the other.
+ - 3/3: limit the copied tail to the largest one either reader can use,
+   so the size of the queue entry is not chosen by the peer.
+ - 3/3: the comment in smc_wr_init_sge() described the memcpy() this patch
+   removes; correct it.
 
--Alex
+Yehyeong Lee (3):
+  net/smc: fix use-after-free of the LLC qentry in
+    smc_llc_srv_add_link()
+  net/smc: bound the peer rkey counts in SMC-Rv2 LLC messages
+  net/smc: carry oversized SMC-Rv2 LLC messages in the queue entry
+
+---
+v5: https://lore.kernel.org/netdev/20260801094208.1937951-1-yhlee@isslab.korea.ac.kr/
+
+ net/smc/smc_llc.c | 122 ++++++++++++++++++++++++++++++++++++----------
+ net/smc/smc_wr.c  |   6 +--
+ 2 files changed, 98 insertions(+), 30 deletions(-)
+
+-- 
+2.43.0
+
