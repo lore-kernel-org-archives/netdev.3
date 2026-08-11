@@ -1,120 +1,163 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [84.42.129.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3142C3D6CCF
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786474521; cv=pass; b=UmYiIdccTzqeGOxCW9f5yjcMQ7oG0ggT5tGSkgG8kapUbZ8sQXvw9vCchRTw9A7sm3TNu0j8+2md8sYFU+Xa0OtYkrED8yBdp7ytOZ7A/q0H5ADimtaC3g/wE/MXjwKOiMVF8qdzNgRf6aUPJc6ZD2uNcztb9ZlnOBN/rMOrE48=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786474521; c=relaxed/simple;
-	bh=PK5DpGIYIZ4Q5mypA8J7nQL3JpavjxnvYneVp4Wv71c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nawyaCgHYJBQry4V/MANYZ3PGbyBIYWRVG1woJfSYMgM9vZZMoXp9uHI3dID/+NBQS4OiQgLSoLlw2ebJukXoV4407hH8KHzMC5/HgLJ7P9x+rXW+zSQGeWxenF/eC9UBdg9s5CdCtubJk/YDVbRdOtqDP+UThDyUvNVQIGlHYw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MvA8cOKC; arc=pass smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407C63CB54C;
+	Tue, 11 Aug 2026 18:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786474564; cv=none; b=BzZpY51myCXUUW4Y324noeZf2mWsBmgk7mVYpu0hfOi8FD56wyrwtAqSrDDS/fbWU3JRATyf2Tryg/cCGWshzsOV61X95TyWsve0gXcJu23lFU7f9NjXXsL0xM1YsLikJ6+5zWC2dqL+qpVDACRubd4MNu+uiLzUEkvFO5dBg2k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786474564; c=relaxed/simple;
+	bh=of9HkXv70DbMLnw6nwnIJ9wAZJIdlh4bf0Kp9FhycE8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r5Hid4dHBDq1fcYDymFn9H8e+5962nCagYkCzreD3MoJn5apUmbpJIfPGmiigcHWH5hByYnGpYTDOjbHUV7iAfOxDXKzFzlPRR3wMHppzUYBjjMeKrM/d824loq1IfAph/M7lrbO/ZfO7J+6V6rcF1soZPmQuvWgaMhArpmMVGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=pyjO9qyx; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MvA8cOKC"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3900e39d935so280135a91.0
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 11:55:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786474519; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lpPy05tBWVMD3Ncv90V/WEG0EpgxIQ+3DncYjhkIxEqEW4B1HG2VvWGYPnmUknld9L
-         e4dKi7vqBFXrmwAEn6DMa/JNY3R1fGXbUJHvYek28KKFYWLRbQhQUQc22EfUFKRzNya7
-         ogubG8hlVGz+sbxBKRnPNomNR8HWbwb9zfIhKoW8K3muSHo1+ri1qp7RGjnQ0AD+IA3G
-         fkjmuOrRA9iiqgF6wqgAPesKBXesQCojhyGaDNy+6cdZvGR8xl+xQcebWqjMFq/7Xtpc
-         5ZoK9TvsF2TC1IwYKTVLn/4U7SZr/niO1kiWXXBG/kc7HAxWdpb+kzi1xdi5iAWGkAld
-         0CsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PK5DpGIYIZ4Q5mypA8J7nQL3JpavjxnvYneVp4Wv71c=;
-        fh=OrQUNgp4jD1QcsIWHJOdYOC7o7y77eyX1uL6Z5ZXGrc=;
-        b=agBagp+IEdkwo0xPZFKHbkl44JEbGLrmnUYwY9MkEL1Z3k94a4HaHja4fzXfDDVq1V
-         Q8m40c2V/q7bZjqYAb07TDbjenCE1aji7yygJQHH7cckhpftZTtqWZtJiuF2Y0kxipTW
-         6HgMcRB9a37D+/gW3NyTaQHn0Iw9jqA4fYCP2fW6AYt3htRTLCoAeSz40z6ITn4dkmuM
-         y3mxM6l0P88k3cGTDyqvQKic7USXhHZb+GwIa8lZtGwBUGrMW5PlzoIKwcxrNMhvMcl1
-         l2UWBDpqoGSZIEWHIkXa8SRQAtH1uEjPPfp1rgPUWP1QXmrd9oeSQfB1QHp56nFrWyQu
-         xLkw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786474519; x=1787079319; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PK5DpGIYIZ4Q5mypA8J7nQL3JpavjxnvYneVp4Wv71c=;
-        b=MvA8cOKCCXQQlEI5MpSTG7Uni96YcPS5b/rfl+m9QzwZ1k6yGDSnhcD5xe8meOnssX
-         Xs0Pr8pUP4mCgH1sBCVHw7bmve95hnxFLe3DncNcFRrJA2JIGbtAVbfry5z0a1Ab+mNI
-         IgK8R9sRjwIR1fvw8R9WTX/fWpLuPoVEQZpFQNK+i24csuxgw/43lNUo7K3VmfphX6c5
-         x3tVIMLV1Gxw1UdGkArwhiAMJERGpENe+zSp+zEUY2KLf7F1VBCg9VutYYWuBru7qC3+
-         qrJ9hWdcklkm0d6YOqad+x6T1VLz5HHA139/xswx5aDGzlj+eybfBSs4kV9otrqwGUeJ
-         cwRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786474519; x=1787079319;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PK5DpGIYIZ4Q5mypA8J7nQL3JpavjxnvYneVp4Wv71c=;
-        b=iDmfiSkGwBg1plmOdSCqOQ04mm42Sns2C1pqZvE6yTMYT4Na0Kd7i2+8oVJ3lN6HId
-         syLWBzBNe3clZrPAsnVxbxRUwB4ioN80Jn8ERIQpYRLx2kT0p4Zqv+IS/QNjFBgFtl+I
-         JmYZVVju8yehGRzppmHjw2bitkGBtQFEyuHCJ7dMEUKZei7axO9trOigOcv3VCPFeFuo
-         indWEZyNaUXKibYIvs8+49uifUbbkY+muZhOlT4vhGnPVULX58Ldx3cA+a6Me+Y9dGAt
-         prgM1JdcsAFstqPl1wDCOnp1Bo446p9F3PYy6MX2bV9o45Dkg4qPtunbL3k4OFrD7tco
-         5V8Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpkNKRZwEjHlP9eDABF8JTucL4x9rhneMEA3vu9v0/wehZSxlyZAJXgxObwWvmNL2H8as6erTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6OeM266pSKltuUhtUsExjuLbWHh/DSoflafXSZ3wNEnlltPg4
-	gImir8qiD30jfhuvPJ/VLNsCVhZ3Bj+q20WivdQvvO0keoW4HuXj7tNA8xzrcYJvqcbz7dcnE/i
-	2Yjri18dWM6mFOXabNxScGtAq6THOlJn5sk2NEgbC
-X-Gm-Gg: AR+sD13eG4pCRDypW3aR87dhwKkeyuMhwQ1KO34B1hZie9eSOnVc0evaii3l9i1IA15
-	SGfowuwkO25lQlE4Pn287QVbhsTnVpq6ZeJ3zZYUfDYyFvt66d+H+lb3SK4op9E8q77BJ9c1gwc
-	YqO6/0kerG0bgZzxM1phmWK0BSE9U0yPNlHGUzcSbjWgezyLysRYL8hMky8gsfqHgNoWLNZvRL9
-	rkZBdEKEONLpOaJh0xSp0dzcw9oydr9Oq1mHELm6yR9wIUopmjQ3LxaMBQWwD83C0EufjosesIu
-	qX1pteIyLsV52c5OcqC3xeJ2w595DNpRahKGZZDDICNc
-X-Received: by 2002:a17:90a:ec90:b0:38e:2860:253f with SMTP id
- 98e67ed59e1d1-392ec53e6c1mr6200831a91.12.1786474518666; Tue, 11 Aug 2026
- 11:55:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="pyjO9qyx"
+Received: from [10.0.0.152] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 9D4215340357;
+	Tue, 11 Aug 2026 20:55:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1786474559;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Hc249VhCOdr+BckjhwSO6JsZoEPEQpWK/mAZ08N31/I=;
+	b=pyjO9qyxQxwHke/KwHfeSV1ZhCUVmlIct2XG8VnCtp+5vG2sY2VbFJ6HzKRyJssk5S+/xB
+	TrSIds26rjglYyhPZE+3vDa/dn1RskOjJBDsYjiFtA0M0GGzc0z6w8G3TroT1c4xEUHmgp
+	N5669AWYh7JMg/DBvOvqxqKlLIb+UAw=
+Message-ID: <28b1e429-39ad-4bc1-aea5-a17def952da3@ixit.cz>
+Date: Tue, 11 Aug 2026 20:55:59 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com> <20260805183702.GA72896@nvidia.com>
-In-Reply-To: <20260805183702.GA72896@nvidia.com>
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 11 Aug 2026 11:54:50 -0700
-X-Gm-Features: AUfX_mzn4PfVgkS4FrNbhoBz42phR-uhV7z36r-0P3XLSgGGUO-8rzrUFVLpZk0
-Message-ID: <CALzav=f5oUW+B9RvOyaRGtG=6CX_4g-2Di+obFZ4O6B-chZtAQ@mail.gmail.com>
-Subject: Re: [PATCH v3 00/11] mlx5 support for VFIO self test
-To: jgg@ziepe.ca
-Cc: Alex Williamson <alex@shazbot.org>, Justin Stitt <justinstitt@google.com>, kvm@vger.kernel.org, 
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, llvm@lists.linux.dev, 
-	Mark Bloch <mbloch@nvidia.com>, Bill Wendling <morbo@google.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org, 
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] nfc: nci: fix use of uninitialized memory in
+ NFC-DEP general bytes
+To: Muhammad Bilal <meatuni001@gmail.com>, =?UTF-8?B?TGVrw6sgSGFww6dpdQ==?=
+ <snowwlake@icloud.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, oe-linux-nfc@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, netdev@vger.kernel.org
+References: <20260728132836.41868-1-meatuni001@gmail.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260728132836.41868-1-meatuni001@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 5, 2026 at 11:39=E2=80=AFAM <jgg@ziepe.ca> wrote:
->
-> On Thu, Jul 16, 2026 at 02:03:16PM -0300, Jason Gunthorpe wrote:
-> > Add an mlx5 driver to VFIO self test. This is largely a remix of the
-> > existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
-> > to issue RDMA WRITE operations which effectively perform memory
-> > copies using DMA. Since mlx5 has a stable programming ABI this
-> > should work on devices from CX5 to current HW. The device FW must
-> > support the QP loopback configuration.
->
-> David I was going to respin this to fix the minor nits, do you have
-> any more feedback or are we good to merge it ?
+On 28/07/2026 15:28, Muhammad Bilal wrote:
+> nci_store_general_bytes_nfc_dep() derives the length of the NFC-DEP
+> general bytes by subtracting the fixed general-bytes offset from the ATR
+> length:
+> 
+>    atr_res_len - NFC_ATR_RES_GT_OFFSET   (poll, offset 15)
+>    atr_req_len - NFC_ATR_REQ_GT_OFFSET   (listen, offset 14)
+> 
+> It never checks that the ATR is at least that long. When a
+> RF_INTF_ACTIVATED_NTF reports an ATR shorter than the offset the
+> subtraction is negative; because min_t() casts its arguments to __u8 the
+> negative value becomes large and is then capped at
+> NFC_ATR_RES_GB_MAXSIZE / NFC_ATR_REQ_GB_MAXSIZE. remote_gb_len is thus
+> set to up to 47/48 even though only atr_res_len/atr_req_len bytes of the
+> on-stack atr_res/atr_req buffer were copied from the packet, and the
+> following memcpy() reads the uninitialized remainder into
+> ndev->remote_gb.
+> 
+> Skip storing the general bytes when the ATR is shorter than the
+> general-bytes offset. remote_gb_len is already zeroed unconditionally
+> at the top of the function by commit 9c328f54741b ("net: nfc: nci: Add
+> parameter validation for packet data"), so the short-ATR case needs no
+> separate zeroing here anymore, unlike in the v2 posted upstream.
+> 
+> Fixes: a99903ec4566 ("NFC: NCI: Handle Target mode activation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+> ---
+> v3: Rebased onto current net.git for-next, requested by David
+>      Heidelberg. The function moved and gained an unconditional
+>      "remote_gb_len = 0" at entry (from commit 9c328f54741b, landed
+>      after v2 was posted), which made v2's explicit zeroing inside the
+>      short-ATR branch redundant, so this version drops it and only adds
+>      the missing length checks.
+> v2: Also zero remote_gb_len explicitly in the short-ATR branch so a
+>      stale value from a previous activation doesn't survive into the
+>      new session.
+> 
+>   net/nfc/nci/ntf.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+Hello Muhammad and Lekë.
 
-Sorry for the delay. This has been on my to-do list, but it keeps
-getting preempted.
+I see you recently addressing same issues, such as this patch:
 
-I will do a pass through it today and make sure there's nothing else
-needed in the respin.
+nfc: nci: fix use of uninitialized memory in NFC-DEP general bytes
+
+and later Lekë's:
+
+nfc: nci: fix u8 underflow in nci_store_general_bytes_nfc_dep [1].
+
+As I see you finding similar bugs and addressing them, I would be more than 
+happy if you would be interested to sync who's working on what and - that's huge 
+value here - cross review your patches, as you working in the similar field. 
+Sending good patch is great, but giving a good review can have a huge value and 
+move things forwards [2] (as you can see Tested-by and Reviewed-by is important 
+number too :) ).
+
+Thank you both for your work
+David
+
+[1] https://lore.kernel.org/r/20260729011547.19191-1-snowwlake@icloud.com
+[2] https://lwn.net/Articles/1077425/
