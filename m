@@ -1,111 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752601F12FB;
-	Tue, 11 Aug 2026 00:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513C22E542C;
+	Tue, 11 Aug 2026 00:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786409209; cv=none; b=uolh11//Jcj+fBkn4jhUWMsKUJKSqlz+84Gor/2sz0LxmyL4zdUy/KGZDQY6EBpo5JIeYEuP3I4+1GCg3qND78rQlF4zRL8z7LL+MTCQUHhbA/3pLeWaaS3tku2E4DTQGcVPIWjItIfoGhn2sQR54gGBrNduLhTjYh2x+wRrp+I=
+	t=1786409270; cv=none; b=Ia9Irh83u0WisdkJHalSmAeql8ca/f5XIIXhd0KL6cNg2F56U1BKm3FUnFMouWQQUD8pjmH6lLp4Nu55zzIh0wnrPCTu6NSCGjfKCEkjOVALxE7ipRewkbVC+HHa+HkRdGYUCkEm2Mb/w8ZatOG6OrEDwFL+X2QQV329g7/UIT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786409209; c=relaxed/simple;
-	bh=TdbAYwImypxnphYGIRFHvgfYIaZVDjOlu+3E8FqPa0E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bvvPj6A8b4y74iNeBWNJDYBi/rBQj0un00lSnuuvjt2CtVwuakNiLZyGLfzMB4cqD99V22LTxINN/7uIDwkWQLZsGfkA+nqYSuVrZIcZ+VjahwLyANgH+A+MMN8cSRUKlG6rVw20dExBBFSZv4CPMOquaLCmbkKrnCdx2lTcvfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFjI6lS1; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFjI6lS1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA27A1F000E9;
-	Tue, 11 Aug 2026 00:46:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786409208;
-	bh=0C6wnVcLsZr9CuU/8FjVtnOu4RPEnRWbc5uFWvIj8vw=;
-	h=From:To:Cc:Subject:Date;
-	b=MFjI6lS1+jrkDand1Diqp1NizYK+2haSsCQZjibRYynxVQtuJ9gNIauuZr3uEuodZ
-	 b6f1+CyjcgL6h1ovEsJHgbmY31awbkZBA+otnXj7AMtY/BYslaY/l8mqVILlPc7eTz
-	 X4yGiCLJ0ehRm5SGobne6cisBCZA31B0lL+UIORv6eH+90TuZIufzDSuRXsZeMB9nT
-	 mGOyqUz9VJu9NmC5Lb1JV2Fgr2Rehnke3xVKJgzCIYIWNNjE53qwumPSdunJS6MrZc
-	 Qfv1ipvRvcXjF2wVvrf+d280kRZurF08OAbBNWx7B9lxZfeY5xl9F7iFzoI44qXTZs
-	 IfK13+DA0A+qQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Petr Machata <petrm@nvidia.com>,
-	danieller@nvidia.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v2] selftests: drv-net: hide the devlink port_split test
-Date: Mon, 10 Aug 2026 17:46:45 -0700
-Message-ID: <20260811004645.1072124-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1786409270; c=relaxed/simple;
+	bh=hZCc3+/7fiKHfzoZpA4FmywnCEr6I2Rvr13bxqcrhOM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=SLYyGSItjJsc4ZUZsL7HKVjfoySpsc3xj+p+GWmf58EcSftylO+rpEy3JWgpT2jaYQfnQKyTZIJ4OrqhLZdXJM2bUwa4Nxvq53lzCENNEPMIa76ZLQHvurXq5F+vtDWY/Qi5j9iKihpBh+Ol1tqM0HDUJKwW2kx/LPEymYiPE+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wtaeT-000000001Ka-45n1;
+	Tue, 11 Aug 2026 00:47:34 +0000
+Date: Tue, 11 Aug 2026 01:47:17 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, driver-core@lists.linux.dev,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	linux-wireless@vger.kernel.org,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>
+Subject: [RFC PATCH 0/4] device_schedule_reprobe(): core helper and
+ conversions
+Message-ID: <anpxFdwNxk0XwPjQ@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The devlink port_split test has limited applicability.
-NICs (as opposed to switches) require at least a re-probe
-to apply the split configuration.
+Three in-tree drivers (iwlwifi, hci_h5, btintel_pcie) schedule a
+deferred re-probe of their own device from a work item in module
+text. The hand-rolled copies share two bug classes: the work function
+ends with module_put(THIS_MODULE), racing a concurrent rmmod freeing
+the module text (the race module_put_and_kthread_exit() exists to
+close for kthreads), and nothing synchronizes the deferred detach
+against device_shutdown() or an administrative unbind.
 
-On top of that the test is not compatible with our driver env,
-it just splits all ports on the system, not only what NETIF
-points at.
+Patch 1 moves the deferred work into the driver core.
+device_schedule_reprobe() runs builtin code, so no module reference
+is needed; it checks under a single __device_driver_lock() hold that
+the device is still bound to the driver that scheduled the re-probe,
+and skips the detach once device_shutdown() has reached the device
+(a new one-bit shutdown_done flag in struct device_private). Patches
+2 and 3 are mechanical conversions. Patch 4 (btintel_pcie) also
+removes that driver's remove()-from-own-work contract; it changes
+more and can be dropped without affecting patches 1-3.
 
-Long term we may want to add some indication in devlink whether
-the port splitting is runtime (cmode of sorts), and fix the
-test to follow driver env. But since no (known) NIC driver can
-support runtime anyway let's just hide the test from the selftest
-framework by moving it to extra files.
+This grew out of review of the mxl862xx DSA series [1][2], which
+copied the iwlwifi pattern. There ->shutdown() clears drvdata so that
+->remove() becomes a no-op, a stale re-probe escalates to
+use-after-free, and its v10 cover letter walks through why a driver
+cannot fully close the race itself: device_shutdown() holds
+device_lock() across ->shutdown() and device_reprobe() takes the same
+lock, so any driver-side check remains a TOCTOU. The helper closes it
+in the core; mxl862xx will convert once it lands.
 
-Having this test randomly break unrelated NICs within the DUT
-makes people implement allow-lists for ksft, which then means
-their setups don't run new tests. It's very useful during test
-review to see whether the test works across all the runners.
+Testing: checkpatch --strict and kernel-doc clean. Patches 1-3 were
+runtime-tested (backported to 7.0.11) on Intel AX101 hardware with
+PROVE_LOCKING and DEBUG_OBJECTS_WORK, driving iwlwifi's crash
+escalation into the re-probe path: normal detach+rebind, an unbind
+racing a pending re-probe (the unbind is not undone), rmmod with a
+re-probe pending (now succeeds instead of EBUSY), and reboot with a
+re-probe pending; no lockdep or debugobjects reports. hci_h5 and
+btintel_pcie are compile-tested only.
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-v2:
- - use TEST_PROGS_EXTENDED instead of TEST_FILES
-v1: https://lore.kernel.org/20260808164843.2475226-1-kuba@kernel.org
+[1] https://lore.kernel.org/all/cover.1786294649.git.daniel@makrotopia.org/
+[2] https://sashiko.dev/#/patchset/cover.1786294649.git.daniel%40makrotopia.org
 
-CC: danieller@nvidia.com
-CC: petrm@nvidia.com
-CC: shuah@kernel.org
-CC: linux-kselftest@vger.kernel.org
----
- tools/testing/selftests/drivers/net/hw/Makefile | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Daniel Golle (4):
+  driver core: add device_schedule_reprobe()
+  wifi: iwlwifi: use device_schedule_reprobe()
+  Bluetooth: hci_h5: use device_schedule_reprobe()
+  Bluetooth: btintel_pcie: use device_schedule_reprobe() after reset
 
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index 234db5c2c90c..78bb0169350b 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -19,7 +19,6 @@ TEST_GEN_FILES := \
- 
- TEST_PROGS = \
- 	csum.py \
--	devlink_port_split.py \
- 	devlink_rate_cross_esw.py \
- 	devlink_rate_tc_bw.py \
- 	devmem.py \
-@@ -54,6 +53,10 @@ TEST_PROGS = \
- 	xsk_reconfig.py \
- 	#
- 
-+TEST_PROGS_EXTENDED := \
-+	devlink_port_split.py \
-+# end of TEST_PROGS_EXTENDED
-+
- TEST_FILES := \
- 	devmem_lib.py \
- 	ethtool_lib.sh \
+ drivers/base/base.h                           |  5 ++
+ drivers/base/core.c                           |  3 +
+ drivers/base/dd.c                             | 82 +++++++++++++++++++
+ drivers/bluetooth/btintel_pcie.c              | 48 ++++++-----
+ drivers/bluetooth/hci_h5.c                    | 41 ++--------
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    | 40 +--------
+ include/linux/device.h                        |  2 +
+ 7 files changed, 122 insertions(+), 99 deletions(-)
+
 -- 
 2.55.0
-
