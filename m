@@ -1,50 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1B52E1F06
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B014188CC9
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786408524; cv=none; b=V35cuvT54w9qkct7FF9iYx3ZK1snJoRbpwq0WZaXQDTBW1XWAGCeumtVEEbuDOE8RZCR3vIRbzHU0tuCnvATHJVQIy+fwacNJGpJd32YP0nbpJ8N9CkOiWVb0EUg/Jx6kdK+pmFjjs7/yjhpO1oXLSfyqBrnoJWRpEFlZ0/mm04=
+	t=1786408579; cv=none; b=lBYmhIy29BU4myntoObaP6xpV0yCJ+bPuX4DPdK5rY6+//IVptd4lD0mHjXSQdB3ftO3W6FLtu6OPwS65idjiscURWbT5JEqVfpB1blkFuFVn5f/iOzySoIQQyMiEuEjr9vrX87BQBSan09AHepa8IhRGNj51LYcYaopF9UiUc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786408524; c=relaxed/simple;
-	bh=4QLdm9O7kl6OeIHf1D7vu8J6kCt7jTEZj4tm0gcjSs8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WkaP5XT1kFfq/gx3SVlAs4KERk673Ynv82hvzdJJBi4EDeFCUZctq9BSadUR1ScVrUQlkDkCshmIEHtvdiMpvuum7gtPAoQJcri8gcqAa4p0hyCnNoIYOCaHTQu/hqYcPMTP3cpB8TfxBHpTBO1CFNeoLk0XdT4x60E/8d3a/Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nq/ILpoI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786408579; c=relaxed/simple;
+	bh=DX8pVUfZEgyplmk04LfsiN19ml5nMNGHM+ADEJiHV7c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gTX2MH5cuSFqjUjMatWYuQ68sIFNBhpKjdcbusCjTaH57BPk8TvB0sohZoi7xVD97b+FL55uXXVzxSd7/UvoCR0kOhSAAjerHOfQk+UT8MWH4m8KSZ1X7TekNb1iXrYZV/dmcOHq+5k57AGgeUAElMyNtcMFp70oZy/d3CrHa9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=evalinux.com; spf=pass smtp.mailfrom=evalinux.com; dkim=pass (2048-bit key) header.d=evalinux.com header.i=@evalinux.com header.b=PLxjr5KV; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=evalinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=evalinux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nq/ILpoI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A6C1F00A3D;
-	Tue, 11 Aug 2026 00:35:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786408522;
-	bh=FfywaJ7BIxWyOhQir5skv4TtdmyZV8iRpmwEb3E5p3I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Nq/ILpoIYAXU4674XD+LqqSyInq59TZrYTSgyhrQ/O2YEpb3UaiIxxSRr4zJskmpq
-	 N3wC4lviWRnl5FAgzplRyom8ULyZvJFLp6mxBr1BMTlisIXxVA/H+KYGk0h8FIVXij
-	 Qglqri8tEToPAwC0R45bhY5RticYvhGVr50ubzu5XYlRwYX3UPm8znn9c0ev4KFHC/
-	 glpvme63CUQfzhnYRQcTo2haZBN3bqeuWUJKI/nnWWM+PuVGdH9kiJ5RprVeNIxjFw
-	 c3J540QNGKMwW/BmeZHSStZwHzcmUoy27fWNbxDyULw80X4R/omwDE83tgYJCv3/RO
-	 hl6UWZzPHBd9g==
-From: Jakub Kicinski <kuba@kernel.org>
-To: anthony.l.nguyen@intel.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	tactii@gmail.com,
-	dima.ruinskiy@intel.com,
-	aleksandr.loktionov@intel.com,
-	pmenzel@molgen.mpg.de,
-	michalx.cohen@intel.com
-Subject: Re: [PATCH net-next 15/15] e1000e: Avoid DMA re-mapping on RX copybreak
-Date: Mon, 10 Aug 2026 17:35:20 -0700
-Message-ID: <20260811003520.1057053-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=evalinux.com header.i=@evalinux.com header.b="PLxjr5KV"
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-6b051b557f6so1367672eaf.2
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 17:36:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=evalinux.com; s=google; t=1786408577; x=1787013377; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PSWiEpelW7KW6ZP6fu658nEfdOUDpoSUD/jD0E6v+hc=;
+        b=PLxjr5KVwRCuDCvI70CxVKf3F344tgm9wWBwdXxoUyDqpLKgpcDiJOOCCFOIZNU/u5
+         TzZKfYXebAK2+04yC0rM4kWegEPffkK4xOsWUU/qoUlUhVDmJAsgsMyQJ/E6tmwUmqlP
+         xgBtwfAXhYjEW6PLB55HZZmBvy1tPEi7wx4JOWstlgRL+mGHluRPjfkLBd41YOdRzuZ3
+         MDfYGZBIWIdITo8rkynppolmFfK+PIiwGX8Kt8b7HNaTlJBgSkkAlNJ/UBjd9ah+14MN
+         6qB19PmLIIYP+YVTbEtLUYFk4Nl1285MA0jAfKrR1BLRGXgrJu1Sjx953BKCbXE5vjWr
+         OPbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786408577; x=1787013377;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PSWiEpelW7KW6ZP6fu658nEfdOUDpoSUD/jD0E6v+hc=;
+        b=X+JGvA5VX4Ix9AlTvVG8Mv5IT5V125hCMl/9xHQwtooIP+VUU2wAvnTAdR0JxCwwyS
+         ON7GpHbjihgnlzz4F7U65SSYelrfdUhHfSCapO+OJp0hVBWjlJkHEUZLfaYlWGpEdecB
+         X2wP3jTwnura6LueE7PdISQr59byjMo2M3quFura37kVCDYETXf4XiDGu8oNDSD2G7Vv
+         s16q20z0peKJbfD0deAbqI1vTcSb0uLtT3/KKv1LJtYjS7H4qpy4t5AB7r1f2Qs3SLv9
+         AdsoccxtIhLjRJuYMY9+3cjF20ezcfeADKz/gM/CLSLGeTaz7WNe6ZcODXf/R2ekFFBl
+         4BJw==
+X-Gm-Message-State: AOJu0YxSNtkmanw5Vu9nYn5yLYPW66wfxbFbOEF4aeG2774gBfgNz85P
+	UljGB0CW7dxHCqO25twKiV8dM3JeCX6YnDJ9fNxpviugV3vHpyUOuxdVB9Bd8gdEUEo=
+X-Gm-Gg: AR+sD10ylrOuyHO36wL/CQcR4VC15Z/eiK0GtfZSoTTXXx+2hp2QfqYNT2wEOXaTMsW
+	1EbbLmKBl5JznEffM1WCev1bdw3aePzix5kZMWD/voILfHymSlC6VjT/8oTCZg+umbgGaq4Pi/y
+	asTCK9YiqCdtJwwbWl1Pw/xkkmc7/GY845SUSu3fC8r1t+6NQrNxmRY44n7XvgD7exIOl11F1lG
+	By6mDXNS3yxfVi9bcyIWHtwQTCODG1u/W8x05PmqdtbcuzoTmCumfh9JKjQmtJeoxur50cBYQkb
+	fgLYxqUceDqIIXStAqPQnv+n8YOCz0HcHUFzj6aJeq/oH+akDKsTZf91MeKYervcpdt6IDkGRnc
+	1wLL6JDZBjVVbDeFuzOsh9hqh4V8BmMsf5mN9sQSPm5LRIO7dwYr7x7qdo37T/DZ9rP5L6tqlOF
+	5AQomZK8Aimxd1HCVRQ369slS2fLZVjJJ2fHxXest+uVAnvjpUgoo3GgVOuPa1uOVFQl3TuA/H9
+	KeLcBVvh+i1YuyA0AEzkg==
+X-Received: by 2002:a05:6820:1c85:b0:6ac:a5a3:460e with SMTP id 006d021491bc7-6b0352ab430mr12242564eaf.19.1786408577058;
+        Mon, 10 Aug 2026 17:36:17 -0700 (PDT)
+Received: from desktop.lan ([2001:470:1f0f:2e4:14ce:9fa2:a97a:cd20])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b09fce1741sm97299eaf.7.2026.08.10.17.36.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 17:36:15 -0700 (PDT)
+From: =?UTF-8?q?R=C3=A9nich=20Bon=20=C4=86iri=C4=87?= <renich@evalinux.com>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: netdev@vger.kernel.org,
+	Joshua Washington <joshwash@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	=?UTF-8?q?R=C3=A9nich=20Bon=20=C4=86iri=C4=87?= <renich@evalinux.com>
+Subject: Re: [PATCH net v2] gve: use gve_schedule_reset() on AdminQ flow rule timeout
+Date: Mon, 10 Aug 2026 18:36:11 -0600
+Message-ID: <20260811003611.509920-1-renich@evalinux.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805213541.2281287-16-anthony.l.nguyen@intel.com>
-References: <20260805213541.2281287-16-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,223 +79,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-e1000e: Avoid DMA re-mapping on RX copybreak
+On Mon, 10 Aug 2026 14:13:00 -0700, Harshitha Ramamurthy wrote:
+> gve_reset() does not acquire the rtnl_lock(). Also, there is no inner
+> driver lock context that is acquired at this point. The inner driver
+> lock context that the AI is complaining about is possibly
+> priv->adminq_lock but that is already released on error by
+> gve_adminq_execute_cmd(). gve_reset() is also written in such a way
+> that the onus is on the caller to acquire the appropriate locks -
+> either through the ethtool core when calling
+> gve_user_reset()/gve_set_rxnfc() or explicitly by gve_handle_reset().
+> 
+> Sashiko has also called out a few issues this change could introduce.
+> Considering this issue hasn't actually been encountered in the wild,
+> there is no lockdep splat and the commit message is inaccurate, I
+> don't think this qualifies for the net tree.
+> 
+> For the net-next tree, a more holistic change is in the works for the
+> reset path that also changes this path and removes the synchronous
+> reset anyway.
 
-The patch stops unmapping the RX buffer before the copybreak and error
-checks, so recycled skbs keep their DMA mapping and only the consumed path
-unmaps. The refill loop is adjusted to skip mapping when buffer_info->dma is
-already set, and the copybreak path now uses dma_sync_single_for_cpu() /
-dma_sync_single_for_device() around the copy.
+Understood. Thanks for clarifying the gve_reset() lock mechanics and
+adminq_lock release behavior.
 
-No Link: tags are present in the commit header.
-
-> e1000e: Avoid DMA re-mapping on RX copybreak
->
->     The buffer allocation loop is adjusted to not assume that DMA is
->     unmapped, handling mapping errors gracefully.
-
-[Severity: Low]
-Is "handling mapping errors gracefully" the whole story for the new
-buffer_info->dma = 0 assignment in e1000_alloc_rx_buffers()?
-
-Before this patch, a failed dma_map_single() there left DMA_MAPPING_ERROR
-(~(dma_addr_t)0) in buffer_info->dma and broke out of the loop.
-e1000_clean_rx_ring() gates its unmap on a non-zero value:
-
-	if (buffer_info->dma) {
-		if (adapter->clean_rx == e1000_clean_rx_irq)
-			dma_unmap_single(&pdev->dev, buffer_info->dma,
-					 adapter->rx_buffer_len,
-					 DMA_FROM_DEVICE);
-
-so a down or reset before the next refill unmapped an address that was never
-mapped. The new assignment closes that, which makes this hunk a bug fix on
-top of the performance work.
-
-Would it make sense to split that one line out with a Fixes: bc7f75fa9788
-tag (and possibly Cc: stable), so stable triage can see it separately from
-the rest of the change?
-
-> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-> index 844f31ab37ad4..b08bcbdb19d97 100644
-> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
-> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-> @@ -675,6 +675,8 @@ static void e1000_alloc_rx_buffers(struct e1000_ring *rx_ring,
->  		skb = buffer_info->skb;
->  		if (skb) {
->  			skb_trim(skb, 0);
-> +			if (likely(buffer_info->dma))
-> +				goto write_desc;
->  			goto map_skb;
->  		}
->  
-> @@ -692,10 +694,12 @@ static void e1000_alloc_rx_buffers(struct e1000_ring *rx_ring,
->  						  DMA_FROM_DEVICE);
->  		if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
->  			dev_err(&pdev->dev, "Rx DMA map failed\n");
-> +			buffer_info->dma = 0;
->  			adapter->rx_dma_failed++;
->  			break;
->  		}
->  
-> +write_desc:
->  		rx_desc = E1000_RX_DESC_EXT(*rx_ring, i);
->  		rx_desc->read.buffer_addr = cpu_to_le64(buffer_info->dma);
->  
-
-[Severity: High]
-This isn't a bug introduced by this patch, but should the two sibling
-refill routines in the same file be brought in line with the
-"buffer_info->dma == 0 means not mapped" contract this hunk makes explicit?
-
-e1000_alloc_rx_buffers_ps() still leaves the error cookie behind:
-
-		if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
-			dev_err(&pdev->dev, "Rx DMA map failed\n");
-			adapter->rx_dma_failed++;
-			/* cleanup skb */
-			dev_kfree_skb_any(skb);
-			buffer_info->skb = NULL;
-			break;
-		}
-
-buffer_info->skb is cleared but buffer_info->dma keeps DMA_MAPPING_ERROR,
-which is non-zero, so e1000_clean_rx_ring() on a subsequent down or reset
-calls dma_unmap_single() on an address that was never mapped.
-
-e1000_alloc_jumbo_rx_buffers() already uses the same map-skip idiom this
-patch adopts, and also skips the zeroing:
-
-		if (!buffer_info->dma) {
-			buffer_info->dma = dma_map_page(&pdev->dev,
-							buffer_info->page, 0,
-							PAGE_SIZE,
-							DMA_FROM_DEVICE);
-			if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
-				adapter->alloc_rx_buff_failed++;
-				break;
-			}
-		}
-
-After that break, rx_ring->next_to_use points at the failed entry, so the
-next refill finds buffer_info->skb and buffer_info->page set, evaluates
-!buffer_info->dma as false, skips the mapping and programs the descriptor:
-
-		rx_desc = E1000_RX_DESC_EXT(*rx_ring, i);
-		rx_desc->read.buffer_addr = cpu_to_le64(buffer_info->dma);
-
-Can that arm a hardware RX descriptor with the DMA_MAPPING_ERROR cookie as
-the bus address after the tail write, and is the same cookie later passed to
-dma_unmap_page() from e1000_clean_rx_ring()?
-
-> @@ -967,9 +970,6 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
->  
->  		cleaned = true;
->  		cleaned_count++;
-> -		dma_unmap_single(&pdev->dev, buffer_info->dma,
-> -				 adapter->rx_buffer_len, DMA_FROM_DEVICE);
-> -		buffer_info->dma = 0;
->  
->  		length = le16_to_cpu(rx_desc->wb.upper.length);
->  
-
-[ ... ]
-
-> @@ -994,8 +992,6 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
->  
->  		if (unlikely((staterr & E1000_RXDEXT_ERR_FRAME_ERR_MASK) &&
->  			     !(netdev->features & NETIF_F_RXALL))) {
-> -			/* recycle */
-> -			buffer_info->skb = skb;
->  			goto next_desc;
->  		}
->  
-> @@ -1022,19 +1018,33 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
->  			struct sk_buff *new_skb =
->  				napi_alloc_skb(&adapter->napi, length);
->  			if (new_skb) {
-> +				dma_sync_single_for_cpu(&pdev->dev,
-> +							buffer_info->dma,
-> +							adapter->rx_buffer_len,
-> +							DMA_FROM_DEVICE);
->  				skb_copy_to_linear_data_offset(new_skb,
->  							       -NET_IP_ALIGN,
->  							       (skb->data -
->  								NET_IP_ALIGN),
->  							       (length +
->  								NET_IP_ALIGN));
-
-[Severity: High]
-This is a pre-existing issue, but since this hunk rewrites the block, is
-this a good place to bound length against adapter->rx_buffer_len?
-
-length comes straight from the descriptor written by the NIC:
-
-		length = le16_to_cpu(rx_desc->wb.upper.length);
-
-The new sync window is adapter->rx_buffer_len, while the copy source is the
-ring skb and the copy size is length + NET_IP_ALIGN. Can this read past the
-end of the RX buffer allocation and hand those bytes to the stack via
-e1000_receive_skb() when length exceeds adapter->rx_buffer_len?
-
-The precondition seems to be documented in the driver itself.
-e1000_change_mtu() shrinks the allocation to 1522 bytes:
-
-	/* adjust allocation if LPE protects us, and we aren't using SBP */
-	if (max_frame <= (VLAN_ETH_FRAME_LEN + ETH_FCS_LEN))
-		adapter->rx_buffer_len = VLAN_ETH_FRAME_LEN + ETH_FCS_LEN;
-
-but e1000_setup_rctl() programs the hardware size from the default case:
-
-	switch (adapter->rx_buffer_len) {
-	case 2048:
-	default:
-		rctl |= E1000_RCTL_SZ_2048;
-		rctl &= ~E1000_RCTL_BSEX;
-		break;
-
-and sets E1000_RCTL_SBP when NETIF_F_RXALL is enabled, which is user
-settable through hw_features. With rx-all on, the frame error drop above is
-also bypassed, so an oversize single-descriptor frame reaches this copy.
-
-Note the copybreak=2048 setting recommended in the commit message puts a
-1523..2048 byte length inside the length < copybreak window.
-
-The sibling e1000 driver took the corresponding fix in commit 9c72a5182ed9
-("e1000: fix OOB in e1000_tbi_should_accept()"), which added:
-
-	if (unlikely(length > adapter->rx_buffer_len))
-		return false;
-
-> +				dma_sync_single_for_device(&pdev->dev,
-> +							   buffer_info->dma,
-> +							   adapter->rx_buffer_len,
-> +							   DMA_FROM_DEVICE);
-> -				/* save the skb in buffer_info as good */
-> -				buffer_info->skb = skb;
->  				skb = new_skb;
-> +				goto copybreak_done;
->  			}
->  			/* else just continue with the old one */
->  		}
-> -		/* end copybreak code */
-> +
-> +		buffer_info->skb = NULL;
-> +		dma_unmap_single(&pdev->dev, buffer_info->dma,
-> +				 adapter->rx_buffer_len,
-> +				 DMA_FROM_DEVICE);
-> +		buffer_info->dma = 0;
-> +
-> +copybreak_done:
->  		skb_put(skb, length);
-
-[Severity: High]
-Same unvalidated length on the fall-through path: the ring skb was allocated
-with bufsz = adapter->rx_buffer_len, so can skb_put(skb, length) push
-skb->tail past skb->end and reach skb_over_panic() for the oversize case
-described above?
-
-[ ... ]
+We will drop this patch from the net tree and look out for Google's
+upcoming reset path refactoring in net-next.
