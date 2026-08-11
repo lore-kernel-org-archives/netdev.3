@@ -1,89 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20331F4631
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 15:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786462951; cv=none; b=W17JJmwN6Cgj7v+Mvg2MqqqsI4LTiX/E8f7xb5hq571xNQoxJH0P0BQmYW6KZkTCoYsTtBCXZ1GoRBzg/ZGW2qW7orpvKv1xHy8jml2IQQ8Qz8oFBKJ1QViUzHeLaLp8IX9FK93ZxT3ey0o5dKafsF/FDuLgHEisiTg93BWjWDo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786462951; c=relaxed/simple;
-	bh=fBhK9E6T76/CETycbev/y4lAnQM+WBJpfCoqHexfnJM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rRddBNC1PcAa+Kf2r+/UK9u4EA0vMaz9Bt5rsNX5f4Q4D2wph5Ed28YjsWMBH3ACdeDhrsYJcJx7MCrNvb9ixwFtFSrm/ih0M0oE6skQ/1SRsnpnl+fQQs15tZV2N+QXKXDbykMJvlWjWT6LFBx3iPkiqTcWIzp7+K6/6kQ2E2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pjwi9rM/; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B39B3B47E9
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 15:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786463104; cv=pass; b=b3n87BO7pj/tZIilEYCWE0p6at8cWUGgs0POG28XdwlPksE+kdRTfYP6MMPZa0FBBnJS6UuJ7zcwQi+M8U6xI2QCW2h89YyE2JnnSA/PDR5NwjkbmDq1n4KNcozjQ3E5ugE14NXA574AfIe3NqHRXI0hQSTgh682fZeJOuIm3/A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786463104; c=relaxed/simple;
+	bh=kiBeJRw3F0UCXM6tUWHubLSiJlh1qedjzGoqp1q+qD8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E8Wb3KfEaXPwqRRewtV2X8nL+//215/mLeZkEWGXMlHTWCXn92WbHRcokdT3vgCfX5lTm5U973MfVx0k7ZCUKKpGPQhUgdWCyN447+jE0bjUlgOu3tJzVjx6E0cbQmqpH8dCc1fMGqxgQ0EVrD5e2kF+SKKEMv4fX+wdrAoLnqo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nYHCYE+K; arc=pass smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pjwi9rM/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9F51F000E9;
-	Tue, 11 Aug 2026 15:42:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786462950;
-	bh=+UvIubeMbDV226VLlx20SVBvFh/LAcXJjxm1IP+jovg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Pjwi9rM/25pdo0aQgH2TzuhLsqwYTO2CpQYNqCijeaIwqpcIYNEbwZgiu2fGrb0Y3
-	 NsWEkFvJgNL8lvoLZPseGhfxE8zIyHpU0PHPl+uAeZeaYLvI1+A5LvMpJNu7wkTnRl
-	 QMWv9L2qU1/XtsK0RSu3yKqRWxowsg9RskbmwsrAwC8vDTRgYlX7TdolxIwoOQZMVu
-	 VCEvOozq2MEcpQ0YR92yl63ZEgQvPC8L0/1HsUshKN8a6Ax8KEc3lPNUhk/5CXbvxv
-	 pYECpWHngVIwPxrTLe3+PGLrjEO2NdFbzepE4xpNgV1FRrDrU6KyXAjeYSzdfEjlP6
-	 bm2H++AG07cnA==
-Message-ID: <ee6e639c-558c-4538-afdb-3ab6c1c3476f@kernel.org>
-Date: Tue, 11 Aug 2026 09:42:29 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nYHCYE+K"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8487b7b3fc8so1096528b3a.3
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 08:45:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786463101; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JUncexYsgbDRThD4aLiv5Jg/VFqbbk3Ec6v4cbEOlZ6J+parRdlAqLgCiLtY0vVVPp
+         lCx9rMNvRLcbtbRPfSbPYnisDtmQMX8urG5rzqxUhOknK+rOH+ozaA7e5LSLlNR4yIyc
+         DBU2qieBnVsgqwYUBm0vUyWKkazc7d/vGNM4tyiryFJ1ph1kzITHoPlu7neO7DOBXLXq
+         4nOT/ou44QIWw2uXAJ7YpMZdedzpZMEpydaJwA8Uu+Qq4N9gakio+3f7fT3x9RGJFgeg
+         OhP8Jf9zANkFuX4kg/MktLjs6dr/SdDV2IF59lyWqSBKO7l7tw036qtjOCUagW9PjMaw
+         J5Mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4gtUlPd4QXnv5aJSE6TKQZzjopWrXWWTIrsnHYKRiVU=;
+        fh=l3EO5N9mceXjcpEWwJsv22rOwo0ZZzdNLDp9gIiAOFI=;
+        b=XPvY4Xmp+emyDHJwz3wR6epWh4hdEzq+uDLDVlCawtLvO3ZE8EKCI7LwX+qtB+NEoC
+         C7ZhmDOlLLi9uXqYQM1fxBYBBauCgqsfYR+BrIvi8v0v13Sg1Jt8lqxBFNUpj6WpIMa2
+         LVL2iVxHLFm5ovmmsaEppnN5CT/m+WBu++CHcNp8O8mftvNympaczfQKujutTxNa/9J/
+         XjIzdrmWtt3hX1ktMrzonOByBHhfIJb746JDzoWxo8alrf2PhaiJEdb7DokeBHK8pHUE
+         FJq1RyIyZkC2xXk+gY1MX5XrnwkkiUi6nd7UiyrM3jtWK2jIodE7z0sViFVP4Id/Wg7i
+         9QAg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786463101; x=1787067901; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4gtUlPd4QXnv5aJSE6TKQZzjopWrXWWTIrsnHYKRiVU=;
+        b=nYHCYE+K93wg5yhBFxoAnHVK2YzFGdIbZ3sqpsHErwga52haBlJBzdIe/0Jgn9Oj0e
+         zTDxuXz6XvM76hSsDd/t9RM4zlF4Fb6UCZwed98yo1rZikQc/OaBSbeTVF3S8+jnUnAP
+         Q267m4mHNKZ2EQgPjjmJ/OZIH691TUbLQ0q46JqCfE1IWlgSKcDsQ2Dovtz18Pe2IXzV
+         MBqtV43rxFtSIujgqo1+8S6jOrQD7qY6hJ+eN7rfGL49LdVDziiHDzZ4VegU5ZtvoNjK
+         sQcDrVoxtCB3YAQR+UnVHUToJYs7YjlsRA7Qu5ldJU09QizTtPybuaUyezz8EERfHwpp
+         oVcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786463101; x=1787067901;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4gtUlPd4QXnv5aJSE6TKQZzjopWrXWWTIrsnHYKRiVU=;
+        b=nD32uWPvB5y1P9+d9y1NLe/duCRoRsHbjCjQk9hVCmvybDum3XmzkXLAdY9S+tNdbQ
+         ykBjXjYgklf6lRmg9yyrwO1PkJZYwg6wuuc5Htdj+6IUKJ2EO/xegUWA9PFVwRWpcloz
+         iV56zBiZD3w/s8xvdIpJUlmM4GtZQROEBA0Pif+LcIG5S2UjiZk5epNwHU8xdn34igPe
+         wKaHGtztAdH4aJEVOhLVjIx3CFJxqKaU+CzT2LLYIsOkS4akoOXm2meQRg5ZHLFaklxC
+         1WoPx4Dhe4nuZwNjMHf3o7uUfDQiInEdpgDR6tTt+GxCtWLaBXRSU1t0iSa6s8WalRtv
+         8AdA==
+X-Forwarded-Encrypted: i=1; AHgh+RotTGodE1ZB1jKPuYSjwvARsszg0Y79Lhw2I94kOX6HrcruMLuybR9g2bTEkqCBv+iiMycqEqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEsg1urTpyfe9iQz8okJzH7mhRyitayJWr3ffU/whyeTFK5NIa
+	3qs8dynGXYtJGgLVvv0/vEnqmJFWKPDXBFrUrzoIc+xR0hAcEOJflCGm1Td9PNOxnZDPcFynXLq
+	as3ZL3d0s8zIqI6wXVTLTAhIB1WiGVxY=
+X-Gm-Gg: AR+sD10xpl8V/qG/GPb2vBOueZxWS5n/ARW1QFE/YmT1LB6zVN7joORteuqQEBmVhoN
+	eqTgnkTLV9XYcZV1JuEP7vgZFQB7kphjTeMSCx2ophgOENA689Fkvvu02ZbVNEbkIan+FFfASDB
+	M4aEPifs+wAWnIn33VczyKHQUZsGpEMWl87ENAegHgnOEsw9psZpBiO4QKyIlBaAd8gGc+qqQPL
+	RLXN5X4N7xGkVzGHlXnpO+oeam/MSMHCE6iFV4jmXMeIkhEAU1BnJLPGneoNTRED1CdKEZxR7s2
+	rhUxdetN9CPyIHeopOB4CXzxsaTDW4QcDNtOH1worqNw9t6dGZAQtm7npZELu8NJ1+iUs7KxTLw
+	kXQyQR0etsp0IDX+7q3NKRmH4TNMGzAJXOCcgyHoU2Vy+
+X-Received: by 2002:a05:6a00:3686:b0:84e:1a9d:d879 with SMTP id
+ d2e1a72fcca58-84fafa00b17mr1347220b3a.28.1786463101312; Tue, 11 Aug 2026
+ 08:45:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net-next 08/15] ipv4: Replace &arp_tbl with
- arp_table(net).
-Content-Language: en-US
-To: Kuniyuki Iwashima <kuniyu@google.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Ido Schimmel <idosch@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- netdev@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Elad Nachman <enachman@marvell.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
- Petr Machata <petrm@nvidia.com>, Jiri Pirko <jiri@resnulli.us>,
- Edward Cree <ecree.xilinx@gmail.com>,
- Nikolay Aleksandrov <razor@blackwall.org>
-References: <20260811022448.116235-1-kuniyu@google.com>
- <20260811022448.116235-9-kuniyu@google.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260811022448.116235-9-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260811152803.5629-1-a0yami@mailbox.org>
+In-Reply-To: <20260811152803.5629-1-a0yami@mailbox.org>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 11 Aug 2026 11:44:49 -0400
+X-Gm-Features: AUfX_mxJP8h_5PE3kHQzF7Hk7Dth_b-NuFIjAwOMUfCbiQUPxt95mvRzMhw8ci0
+Message-ID: <CADvbK_d8r56n6FHFEeyz0cpmdoFJ5HXJ4m0XipQqYXTiL-YLjw@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: clear new_transport when removing a peer
+To: Qing Ming <a0yami@mailbox.org>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Michio Honda <micchie@sfc.wide.ad.jp>, linux-sctp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/10/26 8:23 PM, Kuniyuki Iwashima wrote:
-> We will allocate per-netns neigh_table in net->neigh_tables[].
-> 
-> Let's replace &arp_tbl with arp_table(net) and remove extern
-> definition for arp_tbl.
-> 
-> Three notes:
-> 
->   1. mlx5e_rep_netevent_event() and nfp_tun_neigh_event_handler()
->      have code assuming neigh_table other than &arp_tbl and
->      &nb_tbl, and the part is removed as it will be false once
->      per-netns table is allocated.
-> 
->   2. prestera and rocker uses init_net because they set
->      dev->netns_immutable to true.
-> 
->   3. mlx5e_tc_update_neigh_used_value() dereferences nhe->neigh_dev
->      in trace_mlx5e_tc_update_neigh_used_value().
-> 
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+On Tue, Aug 11, 2026 at 11:28=E2=80=AFAM Qing Ming <a0yami@mailbox.org> wro=
+te:
+>
+> sctp_process_asconf_param() stores a newly added peer transport in
+> asoc->new_transport. After all parameters in the ASCONF chunk have been
+> processed, sctp_sf_do_asconf() uses this pointer to send a HEARTBEAT to t=
+he
+> new transport.
+>
+> An authenticated ASCONF from a remote SCTP peer can add a transport and
+> remove it again with a wildcard DEL-IP parameter in the same chunk. The
+> wildcard deletion preserves the transport on which the ASCONF arrived, bu=
+t
+> removes the newly added transport through
+> sctp_assoc_del_nonprimary_peers(). The removal does not clear
+> asoc->new_transport, leaving it pointing to the removed transport.
+>
+> sctp_sf_do_asconf() then creates a HEARTBEAT whose chunk->transport point=
+s
+> to the removed transport without holding a transport reference. During
+> local address replacement, src_out_of_asoc_ok keeps this HEARTBEAT on
+> control_chunk_list. After the transport is freed by RCU, a successful
+> ASCONF_ACK for the replacement address releases the queued HEARTBEAT and
+> sctp_outq_select_transport() reads the freed transport's state.
+>
+> The issue was found during a static audit of SCTP objects. With an
+> authenticated peer, the reproducer triggered the same KASAN report in 2
+> of 2 unpatched runs on a KASAN-enabled netdev/main kernel:
+>
+>   BUG: KASAN: slab-use-after-free in sctp_outq_select_transport
+>   Read of size 4 at addr ffff88800b9bd95c by task python3/197
+>
+>   Call Trace:
+>    sctp_outq_select_transport+0x549/0x8b0 [sctp]
+>    sctp_outq_flush+0x306/0x2c60 [sctp]
+>    sctp_transport_immediate_rtx+0xaf/0x260 [sctp]
+>    sctp_process_asconf_ack+0xa48/0xf70 [sctp]
+>
+>   Allocated by task 197:
+>    sctp_transport_new+0x68/0x650 [sctp]
+>    sctp_assoc_add_peer+0x258/0x12a0 [sctp]
+>    sctp_process_asconf+0x5e9/0x1090 [sctp]
+>
+>   Last potentially related work creation:
+>    __call_rcu_common.constprop.0+0x77/0xb70
+>    sctp_assoc_del_nonprimary_peers+0x7c/0xd0 [sctp]
+>    sctp_process_asconf+0xd9c/0x1090 [sctp]
+>
+> The first invalid access was a four-byte read of transport->state at
+> net/sctp/outqueue.c:833. The same reproducer completed the full
+> authenticated ASCONF and local-address replacement sequence with this
+> change without a KASAN report or oops.
+>
+Could you also post the reproducer, at least to the maintainers?
+
+Thanks.
+
+> Clear new_transport when its peer is removed, before it can be used to
+> create the HEARTBEAT.
+>
+> Fixes: 6af29ccc223b ("sctp: Bundle HEAERTBEAT into ASCONF_ACK")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5
+> Signed-off-by: Qing Ming <a0yami@mailbox.org>
 > ---
-> v2: Add note about mlx5e_tc_update_neigh_used_value()
-
-
-Seems like this is not a bisectable patch set. References for arp_tbl
-and nd_tbl need to be fixed up before switching to per network namespace
-tables.
-
-
-
+>  net/sctp/associola.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+> index 5b0ae616e1ff..c65c83638cce 100644
+> --- a/net/sctp/associola.c
+> +++ b/net/sctp/associola.c
+> @@ -543,6 +543,9 @@ void sctp_assoc_rm_peer(struct sctp_association *asoc=
+,
+>             asoc->addip_last_asconf->transport =3D=3D peer)
+>                 asoc->addip_last_asconf->transport =3D NULL;
+>
+> +       if (asoc->new_transport =3D=3D peer)
+> +               asoc->new_transport =3D NULL;
+> +
+>         /* If we have something on the transmitted list, we have to
+>          * save it off.  The best place is the active path.
+>          */
+>
+> base-commit: cba9ccb47e9fa4cc77692fb896cc5ab57a667882
+> --
+> 2.53.0
+>
