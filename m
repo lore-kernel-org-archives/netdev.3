@@ -1,107 +1,119 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77808356751
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786465831; cv=none; b=RrFOER4fqMKeFs/mGmkHd0+luuzBGuxs+L4PsNvoWbwFWl15WEiU12Mk/xbFdJLVTkEIyGw504M0tl8TM5A4ZJ9zVi4Ze7v2xA/9zemFXP1mJMi5TBtQiI22OKEpCyeBUzTlkKMlgVndb0bzcY8V6lV1IEJhCfe46VAjqI+BYxQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786465831; c=relaxed/simple;
-	bh=SM6qLrDNeg9vFk8KqzmJ/DQe6oNlCHUaqP/o60YF8d0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWrMk+P5O0xLsCzzBZkDK34WWWPz9rB3H5pjZ8+rjbtbwtEK6jKi+1OQI75jfysv7DdUg6TIPHJAsB4gGk0JfYBiboGcBVkptc6OUDMPB8TRT4Wo2r/ly5220Qe+wwSnA3BYo4EIoNK+4+rLTyBIi0G5R2A8Vt0VqxcMmwtvVrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=knLdXF3C; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BD4331ED2
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786465947; cv=pass; b=JYDa89isknC+dShbSVkkJGBU1rkUHNyRT3tfUD8c+CUlaXPY5xSVofngrAr2IGEpxPhBR4ulkyCYdM3/Madx8ctstRQDzkVbDfGrjqNOwL/OX7/DXty/C09McEBA6bG3B/Ossaon08wiSTlUFceRUJi7qSCbu0ocWfB1SmqehrI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786465947; c=relaxed/simple;
+	bh=mf+KSmcxtgfXYW6Z9QcWxbnUfBBM00iSjX1HIUD9v3E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=txNDI2N1PHr8uGPHgfemMB+tpPxXGrp6oybKRGZxckWJI+pT5GH+BVlsK0eD+BYPCFI1syJ64Mt58H86IsY+eIBQVhDZFik917WyGo8Eu+hOik3/DrOBduiWVlqe/7nESWKh38so10MFaW9PU1MSIdeT1XNDqMigJYRRcf6PbPw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o3qVJYhB; arc=pass smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="knLdXF3C"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-908a2ca5becso321376d6.0
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 09:30:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o3qVJYhB"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cedda2ce6fso1095435ad.1
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 09:32:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786465946; cv=none;
+        d=google.com; s=arc-20260327;
+        b=loukP0HhULP9Wv5XcH6w0Co1/A4zQ6Q6Gxb24Y8f9tTs7GI/IXMnBDMttJw1Ei3Xu6
+         37PREckMz3moLLuCyRaRBQMHXuQ2Ob2wyECfQzQXcMIk7zbBc0S4BAhR0AqqNoPaJL9y
+         oNNqF405Msqh/NdI3OFJTQ2vIMqqHi8V5P1ZjxaBoQJAKlBht23jYKQeEXSUjXZJGb9d
+         dMltuA3J8URjniZOhjQDWYKMYuZkCeuBXHFh+F3rJzBZwmg9GEdBmXT5JxdRIDrIXq3c
+         /+mVqwQGU0f0itBAW2O0Nmx9dMmDXOqk16XK4FiM1a6A/9ZLn7eSrjAtWV4W6kzSzGxU
+         oObA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0cTW1UgpeYqfbodN7bFCdd1XBNTuMUSt3nEktmTyI+w=;
+        fh=xuIUr00ZQ80YVGnFjZuc/vC3rTjMH9HKoLE8/cPR2dw=;
+        b=UVzjjeKxEsnSdBhgvs70ZLLEQIZan/KMUqGUvnRFZyxRxsfR5NLSaEoSFkAhBY/Fm6
+         PMqzoy8xZrFJTGdLSugdQIQ0pcXzpB8xXPr2rNoU/Xu6oXbBXHKGFIK9AWAOIhwOTWMH
+         qdcKyyiwGtoqAGTuxJE7s1cxe7LiCgp3oh48mbPdeFTXwfBj4vtYRkj8h9MTLlh6FyYz
+         zYIXkKr3jd7vm6GoJQyblqAnnq7WgGgEka4sDagGQIlb7g9YMMN4PxevWyt6/GhLp2yn
+         wDsXjDOzdtwTQkanPLoxpJ1eN829g0bqwkJYCzzO4/ok4uP8KY8+a9upct13wi4n9fle
+         t8jg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1786465827; x=1787070627; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1786465946; x=1787070746; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=fd5GTS91/o1W5I/k7tggRvZ4xiPBkudvkWkOp9orKvI=;
-        b=knLdXF3C8fjEEZzNk5yqADaLCSm6IvAi0vcf1UahmI6WcWmORGXuqyghjkpMJZpnOm
-         xUVZMXMSr1bMD5Lurol3nHDNgZa2X+o0y0H2AvugRyfz+5eUHa4wiuYgL4v8DpNLsRBx
-         GSfQsyQ+pbkhtwyhUK0hMvkT3Ryrsx7T2aUWswxxJPUds+KAQIkf+8vxyEaQueDjKJMm
-         jAG1SjaN2eBOvhZd4CaB/knsPDZn9gZ7MNIXThn0r2l5VTrCp1ySxMkrJg20c4QgcJF9
-         SXbbFenZX+Q2A1ToD4Lim5Q9gilJzhKnkSqkWv51c0Eys2DHnbDyxJUeJp34DebFP928
-         zJcA==
+        bh=0cTW1UgpeYqfbodN7bFCdd1XBNTuMUSt3nEktmTyI+w=;
+        b=o3qVJYhB9fVqijac8mVLjVe6dYd3f8WsEHpPKv1E80fa85lp84TQeWfhXOQbre8EPe
+         haewQzQ1tn16WaytGIP22kemZIjC1c6ZzxrUC1Ta+iyAXksbUIFHomCwtkHmLB/82BJF
+         So1l3vJFqv/wJ2F0WpqxGfNSLF+zFTuq4DctcdkmjIXCvI6GLRNd8kW1qIxebH0PzmCY
+         JwDqRHymZyoYW90gn5XTCT04inMJ29bDzRCh+mw7hMm4UC8FrsNwpm3VCo37XqeV0aO3
+         q8AEQ1JHglhFMeuB8pNM1anazG5CK7nztUtMprcMe+Ra4zlfEVQuEAKniW3/nKWyOSke
+         EgPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786465827; x=1787070627;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1786465946; x=1787070746;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fd5GTS91/o1W5I/k7tggRvZ4xiPBkudvkWkOp9orKvI=;
-        b=lyLYG79TCKxGisvU31vUpza/5GzeKX5JCRYE7Lkbb+GZrznnZaj/lmEpnFw6Ghs4mL
-         h5Le/vRTLQycHOQE/JbgbdaTIMraazIiOcLKgFwqAeq98lkWAqne8RAGU1n8nLyoIhEW
-         iWAVS4oNI0fu+C4n13yMp5eRqW5sn5EQiZP7fpUQrYWdQmVRYlNyf1l4NY121vJyb3c2
-         g3q4p7hZwehyz63FVfxG4HINgCPEsXNBpqiYDt9OOIPk4Q6xUV2/INMPG1rOduoQOwyO
-         nrKfd4pm4V82kDICraL0Qm/ga1BukuClMOZkiyGmktD04vakXbadoJUqJ3lZB71psdZ/
-         JCMg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7OO3OBd6OSSsv58n8z3QbGhFqTSkKs2bHZKLjigyVgJmEgl6FPztzWXzhuaKvesxpa3tFQLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLFzj02dOm3O/sDhfz51hOmOEfR0cFnT8i+y7HYQzMaeGdUsFV
-	Cr2a23p/8UdQUFRosbLAL1IrQ4mSvXbYgUZJSGIhVsqWqzr/U0meLbdcZd6tKlfLiWw=
-X-Gm-Gg: AR+sD12knfSoUy+vWrnuuCDdQUUMy0WhN6gDcC/zDtLx3oYFMKsQwNSXaN1WSf4lv3+
-	vtgU/xAabhusIVsJB3zHsSRPdsvtb6gSmNu7kOlnXQFOCSjxQZW1jhkRy3RylyB95d/QI1Zyn5m
-	EGiGUEb94RzLZCaKjQMMfDqwJHBahK+uq9djUcae1YycFokNCZYN8LK7sCmEldRx8lKMCuQqMWH
-	G/u7nnkKjq5PDLmwUinuzV9jb+LZPx6V3kVIBZU5frvkFR44MFwh/9RMI5mfkPPHvwpTQ3tLFM8
-	bqM8jAnB3S0WnjSGn96I7irIyXsuH+jKoOUwZz/o6cAL1Ms8THA+FdyRhWRaVyu+u5xPMZ37+qF
-	h6ieR9xqgrvcpN/9Ihi3FeMPlfKj9bhW0VMf7QMg8FxCWYR1s90Wobjrzb4Luy+l8IKsSygw/Yu
-	sixgKGt/IfIPcZZcfVow9/qQM5Cu1j9iXJVHuT7Q==
-X-Received: by 2002:a05:6214:588f:b0:905:6e01:b9a3 with SMTP id 6a1803df08f44-90a66b6ea11mr44100186d6.31.1786465827094;
-        Tue, 11 Aug 2026 09:30:27 -0700 (PDT)
-Received: from ziepe.ca ([142.166.156.215])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c3c0338sm2416026d6.40.2026.08.11.09.30.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 09:30:25 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wtpMv-00000002YJ3-0Ae6;
-	Tue, 11 Aug 2026 13:30:25 -0300
-Date: Tue, 11 Aug 2026 13:30:25 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Krystian Kaniewski <krystianmkaniewski@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	linux-rdma@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	syzbot+5fe14f2ff4ccbace9a26@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v3] RDMA/core: Reject unregistering netdevs in
- ib_get_eth_speed
-Message-ID: <20260811163025.GM544626@ziepe.ca>
-References: <20260810133124.44513-1-krystianmkaniewski@gmail.com>
- <20260810113308.5db6937e@kernel.org>
- <20260810183902.GD507588@ziepe.ca>
- <de87c6a6-44c9-4b78-991b-ff858e21e806@gmail.com>
+        bh=0cTW1UgpeYqfbodN7bFCdd1XBNTuMUSt3nEktmTyI+w=;
+        b=Plsa0svIO8wnnZbbP2MxODO3kkQsdCfA54KVbld3JSgDkLOGm/V5XIBvwEVKiwrrHu
+         nbrWPZgHJAdV7zeZda2/VLIJ2QxPGTk8IORhIa+iFX0Qwyvv1YGXmrudA0mCQsKaiicT
+         ow4OlTDEklcgfmJgEdlOd7HWFFgCCDOAXgteCTzInX7ixN8Fw/eFGcx7k3ixr9T1wv+E
+         e5XODVIeggivV/yx8gPVK/YAm+e92EsFftqoApxLYVmboc6l2b63+NWIa8q10vNy6tOH
+         RiG9BHpsFc9MtaIFGa/1DJECZuRZEKyPnbBN3aQ3dA3QxkxzEeW2Dva/vr5dOg83Dt6m
+         R1ng==
+X-Forwarded-Encrypted: i=1; AHgh+RoYaBo2XWyBZ+HrG37xw6LbUOf74Kd/3DQIeq9Ge8/oKUMzQ+w05U3b9k6lWkiRu7oKPcyMSmE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ5HZFgBGfRBlOQE3Y/Am5cEHznzMFAU2OMTuwCtQmbA6CL7ma
+	b7QciWhnIj3w4/gINzIFJQTxOksKNE2t4iaNtXWoZ3MRoXvkItEu5/YxPpGxDoiWMJkx+XrxftX
+	mJC7y+2vdg4VyMxnnOje3eAYk9/R4Und8pmBP2XoIZzaJjWGDiuyToTsx1AM=
+X-Gm-Gg: AR+sD11WnyPLMnLP0u/y+7egMnUV8YrRkhdw2A6F7nrilXGhghJa8OfbqUR0b6VZ5WH
+	P6DX0OK4rkyAY1UVD8/yFpDItKVFl9Adxzh2GJWWuOKOoA+peVDohB4LKpATgkriDaCMT7L2Wli
+	BmYBQD9IUVestS91eF8irF4rScKoC7IiCzyyp/QyBCwaBqKJ1ZCwSUCQVTxqQ3UVvOF+wIs1t3G
+	I58NWZsLg/8xfJUfkARBDx0Tev83ztVaEXPUHf2ZlNjsn7/9o5bq7tBTVLKUEOkvRYGCiKi+65Q
+	Vu0ztyvWn2xvstbMbBDzb0kFEtQ3Rm9bqF8CBxr9kQccOkLTh0w9QamU/lW+FcQFWKRq+gUiJ6K
+	oNcjfAxpnnhapObePo0K0C2TLlfNiBfy0cUlQLDt+zhiZWfd4GLteXnUZ2R4jh9qvHNVK7IEV8y
+	xKDzW+3smpf+Nn
+X-Received: by 2002:a17:90b:1f92:b0:381:11eb:d78e with SMTP id
+ 98e67ed59e1d1-392f483bfcbmr1312239a91.14.1786465945349; Tue, 11 Aug 2026
+ 09:32:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de87c6a6-44c9-4b78-991b-ff858e21e806@gmail.com>
+References: <20260811022448.116235-1-kuniyu@google.com> <20260811022448.116235-9-kuniyu@google.com>
+ <ee6e639c-558c-4538-afdb-3ab6c1c3476f@kernel.org> <CAAVpQUATfZAif2brwjaqdWTH_JzKzRjFdZ+Yrj07TrTkcYXQWw@mail.gmail.com>
+ <0426ecca-d0e0-4329-b47e-6e281996ea28@kernel.org>
+In-Reply-To: <0426ecca-d0e0-4329-b47e-6e281996ea28@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 11 Aug 2026 09:32:12 -0700
+X-Gm-Features: AUfX_mwFCF-x0oFV7PHpZ0SW0ywz8hmErYZrkTGrOmTEjA3iMwOjdv3fO1LAcAw
+Message-ID: <CAAVpQUAB4y+DrjvAY6PDNnH2Eun2spZFFfYCRT8uXNr0ZGjxcA@mail.gmail.com>
+Subject: Re: [PATCH v3 net-next 08/15] ipv4: Replace &arp_tbl with arp_table(net).
+To: David Ahern <dsahern@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Elad Nachman <enachman@marvell.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
+	Boris Pismenny <borisp@nvidia.com>, Petr Machata <petrm@nvidia.com>, Jiri Pirko <jiri@resnulli.us>, 
+	Edward Cree <ecree.xilinx@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 11, 2026 at 11:21:19AM +0200, Krystian Kaniewski wrote:
-> Thanks for your comments. It's my first contribution really, so I'm still
-> learning on how to do it properly.
-> 
-> I'll do the requested changes by both of you.
-> 
-> Should I rebase the v4 patch on top of any specific branches for rdma?
-> 
-> I found "for-rc" branch while looking at
-> https://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma.git, would it be a
-> good target?
+On Tue, Aug 11, 2026 at 9:25=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
+ote:
+>
+> On 8/11/26 10:10 AM, Kuniyuki Iwashima wrote:
+> > It's still bisectable
+>
+> After patch 7 (before applying 8 and on), data path and ip neigh show
+> both work correctly?
 
-At this point the for-next branch is a better choice
-
-Jason
+Yes, net->neigh_tables[] still points to the global arp_tbl and nd_tbl
+till patch 12.  Patch 7 ~ 9 changes how it's accessed but does not
+change what's accessed.
