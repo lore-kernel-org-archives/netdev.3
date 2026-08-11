@@ -1,133 +1,115 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3067B43800B;
-	Tue, 11 Aug 2026 11:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0417B3603F8;
+	Tue, 11 Aug 2026 11:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786448656; cv=none; b=PmgJv57hZe9IBUyOETrpc9xtRoXzpMvUDWy/6LuaJrpGZeFUjvO6EPGe7mHayRiQU7zpQBtgKAdh+mpxDMpsaRY5y5dR8JS/Lk8zgYBbP6/jWtDx+Or5JxNYc6oY4GbKXX1mO205RQliw73oXge53L47gHbw+6Zwjr9+4DQv2GY=
+	t=1786448757; cv=none; b=QFiiPLni40ZIFaNIpdKv/yNY0sUS42HmWCMG+4WJ+QbmzjC6N7RpGRF/aaoohsMIaIefSP4wnQA+8YG7DVjXNXTkFynpbeaj71I14Prmo+RRm+cdCx5P2H/f1rOhFZx/8s4dl8LJazM1nYLq4X8zsF7TysuP0xLJcdtzBPS3Dho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786448656; c=relaxed/simple;
-	bh=aKcHfZtH0PqJRxo5ON3bY99gAedM8k6F67oOVHHOl0s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gvr9+MFZqAo4PGWtYxvNAi6h1i4OqbxzryMS2tSWfCjIeD2wfNJbmx+wEte1DiAwzmI0v/YYfvW6Pqo/8eFvfLu0WlkucGW60UpXjbORpOyZ3VvpCNDJHqnKOzHiYdF+KSy1MiZlDhcrA3FKW97rT+av7SZHlyrl2BYZIRxwkYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=TQGk9eQd; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1786448757; c=relaxed/simple;
+	bh=une3Jz7mmYJxLNfmJT5dY1vwBR13DWmia6kGVSZevmM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=oJx8Vz5CYE19909I8C/eVjufBiIpanSNjwJiCSfGxYIE/gb+l7udJhrgVvZgiY5Il/R4fyUMgU8FhyNs0ttku1E+Mi3W32x6N/0w5OFvW7yXa377eeYfvgdEQCkNFDG7lTCtpyaLlU2ifu7QOKXskqd0QnFqSwOIwFhlcMqFqpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DuFIo6Uz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="TQGk9eQd"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=413gHxUCocv8Yk4mjtkav76BxsrjOjkJp7/QRl5D8oI=;
-	b=TQGk9eQdx63xM+AAskLcpqwrL7hLYMJn4O2F4E85CJ47MpvPUQnxif8xVSIMIYR5WuZTz8+3t
-	LQxQzUn5ZiyS7ibX/ASXt6kLjfSqj3EKy3KziSDvdKgiozeLsyzyNViMqEnX4JBPG1C65Flc0tz
-	6JDeumwpaiNe3m4AILxYPMQ=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hK8dQ6lhyzLlTg;
-	Tue, 11 Aug 2026 19:33:30 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 469914056C;
-	Tue, 11 Aug 2026 19:44:07 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 11 Aug 2026 19:44:05 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: Fan Gong <gongfan1@huawei.com>, Teng Peisen <tengpeisen@huawei.com>, Wu Di
-	<wudi234@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Larysa Zaremba
-	<larysa.zaremba@intel.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chen Anwen
-	<chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>, Zhang Min
-	<zhangmin548@huawei.com>, luosifu <luosifu@huawei.com>, Xin Guo
-	<guoxin09@huawei.com>, Zhou Shuai <zhoushuai28@huawei.com>, Wu Like
-	<wulike1@huawei.com>, Shi Jing <shijing34@huawei.com>
-Subject: [PATCH net v04] hinic3: Fix skb linearization mismatch and drop skb when skb_checksum_help() failed
-Date: Tue, 11 Aug 2026 19:43:59 +0800
-Message-ID: <78d8c61cab588240948eaddcb437d59add9f77ae.1786448013.git.tengpeisen@huawei.com>
-X-Mailer: git-send-email 2.50.1.windows.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DuFIo6Uz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9A7FFC2BCF6;
+	Tue, 11 Aug 2026 11:45:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786448756;
+	bh=une3Jz7mmYJxLNfmJT5dY1vwBR13DWmia6kGVSZevmM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=DuFIo6UzZTPXIsmy4k25Nnf+NwIU1Ny56c4oH23/w9khzxJ+Z+owGgaKXTRWY+89c
+	 Xc5/MG5lNeoDci26iV6bTXwjdaeoFfSK1u/vFwLYyQY/7cJaxWoXtpaeR4EDT/iIVJ
+	 7k4IrqQ+Vi9RN2L/sbo4ha08ZiN5jsGEQH3aUjxk4pAc7uItcAharfVHlgAN1EpehF
+	 Eu1l9+2RLm9FAbyGn0UPgojkLLxctfjMEgMiaLtne2miC4WppEUy44Yg8KrkaLjqU0
+	 kcNJPxe20VqgYvzb6Z9ox/mSPi+7mX1uGlkBHfkMcmKB9vZS3x4Zd/fjdXD5SRPQsD
+	 LAecZrj3APyFA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78B69C5B56A;
+	Tue, 11 Aug 2026 11:45:56 +0000 (UTC)
+From: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>
+Date: Tue, 11 Aug 2026 13:45:47 +0200
+Subject: [PATCH net-next v8 1/3] net/sched: cbs: add extack to struct
+ tc_cbs_qopt_offload
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260811-net-next-mv88e6xxx-cbs-v8-1-10d0baab2905@luminex.be>
+References: <20260811-net-next-mv88e6xxx-cbs-v8-0-10d0baab2905@luminex.be>
+In-Reply-To: <20260811-net-next-mv88e6xxx-cbs-v8-0-10d0baab2905@luminex.be>
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luke Howard <lukeh@padl.com>, 
+ =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
+ Cedric Jehasse <cedric.jehasse@gmail.com>, 
+ Cedric Jehasse <cedric.jehasse@luminex.be>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786448754; l=1288;
+ i=cedric.jehasse@luminex.be; s=20260213; h=from:subject:message-id;
+ bh=aNoIWhFNHrFQcCZfGOBB7BByzBoikUxu5dgW0xHObus=;
+ b=eYcjP2tH+oPltczi2zPEVpvlrxZi/b8CgfAogNIgpdatuzALLD0WbWedHb6jOGXVpbqfJGUVu
+ 6mW+tPhQHM2BcZLq2xEmw7eudDCM5o27KlNkVJa09M0qjQ4Waiow9jA
+X-Developer-Key: i=cedric.jehasse@luminex.be; a=ed25519;
+ pk=DL2RaHc2bc7tTDTMJdugm42BtJk4Ip+7V41Gkj+Avjk=
+X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
+ with auth_id=638
+X-Original-From: Cedric Jehasse <cedric.jehasse@luminex.be>
+Reply-To: cedric.jehasse@luminex.be
 
-Previously, hinic3_send_one_skb() cached the skb fragment count before
-calling hinic3_tx_offload(). If hinic3_tx_csum() falls back to
-skb_checksum_help() for unsupported tunnel packets, the skb may be
-linearized. Continuing to build the TX descriptor with the stale
-fragment count leads to a descriptor mismatch, which can trigger
-out-of-bounds DMA reads or IOMMU faults.
+From: Cedric Jehasse <cedric.jehasse@luminex.be>
 
-Furthermore, the old code ignored the return value of skb_checksum_help(),
-transmitting corrupted packets with incomplete checksums upon failure.
+To be able to report reason for rejection when cbs offloading fails.
 
-Fix this by:
-1. Moving the hinic3_tx_offload() call before calculating 'num_sge' to
-   ensure the correct fragment count is used if the SKB is linearized.
-2. Propagating skb_checksum_help() errors and returning
-   HINIC3_TX_OFFLOAD_INVALID to properly drop the skb.
-
-Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
-Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
-Co-developed-by: Wu Di <wudi234@huawei.com>
-Signed-off-by: Wu Di <wudi234@huawei.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
+Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
 ---
- drivers/net/ethernet/huawei/hinic3/hinic3_tx.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ include/net/pkt_sched.h | 1 +
+ net/sched/sch_cbs.c     | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-index 9306bf0020ca..cc541e7a2318 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-@@ -261,8 +261,7 @@ static int hinic3_tx_csum(struct hinic3_txq *txq, struct hinic3_sq_task *task,
- 		    ((struct udphdr *)skb_transport_header(skb))->dest !=
- 		    VXLAN_OFFLOAD_PORT_LE) {
- 			/* Unsupported tunnel packet, disable csum offload */
--			skb_checksum_help(skb);
--			return 0;
-+			return skb_checksum_help(skb);
- 		}
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index 18a419cd9d949..d35c87004c279 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -150,6 +150,7 @@ struct tc_cbs_qopt_offload {
+ 	s32 locredit;
+ 	s32 idleslope;
+ 	s32 sendslope;
++	struct netlink_ext_ack *extack;
+ };
+ 
+ struct tc_etf_qopt_offload {
+diff --git a/net/sched/sch_cbs.c b/net/sched/sch_cbs.c
+index 1c93469c56e3d..87c2eda108c8c 100644
+--- a/net/sched/sch_cbs.c
++++ b/net/sched/sch_cbs.c
+@@ -307,10 +307,12 @@ static int cbs_enable_offload(struct net_device *dev, struct cbs_sched_data *q,
+ 	cbs.locredit = opt->locredit;
+ 	cbs.idleslope = opt->idleslope;
+ 	cbs.sendslope = opt->sendslope;
++	cbs.extack = extack;
+ 
+ 	err = ops->ndo_setup_tc(dev, TC_SETUP_QDISC_CBS, &cbs);
+ 	if (err < 0) {
+-		NL_SET_ERR_MSG(extack, "Specified device failed to setup cbs hardware offload");
++		NL_SET_ERR_MSG_WEAK(extack,
++				    "Specified device failed to setup cbs hardware offload");
+ 		return err;
  	}
+ 
 
-@@ -412,6 +411,10 @@ static u32 hinic3_tx_offload(struct sk_buff *skb, struct hinic3_sq_task *task,
- 		offload |= HINIC3_TX_OFFLOAD_TSO;
- 	} else {
- 		tso_cs_en = hinic3_tx_csum(txq, task, skb);
-+		if (tso_cs_en < 0) {
-+			offload = HINIC3_TX_OFFLOAD_INVALID;
-+			return offload;
-+		}
- 		if (tso_cs_en)
- 			offload |= HINIC3_TX_OFFLOAD_CSUM;
- 	}
-@@ -545,6 +548,7 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- 		skb->len = MIN_SKB_LEN;
- 	}
+-- 
+2.43.0
 
-+	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
- 	num_sge = skb_shinfo(skb)->nr_frags + 1;
- 	/* assume normal wqe format + 1 wqebb for task info */
- 	wqebb_cnt = num_sge + 1;
-@@ -560,7 +564,6 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- 		return NETDEV_TX_BUSY;
- 	}
-
--	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
- 	if (unlikely(offload == HINIC3_TX_OFFLOAD_INVALID)) {
- 		goto err_drop_pkt;
- 	} else if (!offload) {
-
-base-commit: 2195424c3da2ef1829a63b807e3a900a90e57d85
---
-2.54.0
 
