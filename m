@@ -1,75 +1,49 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37E8443A9D
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 13:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483F8443A9D;
+	Tue, 11 Aug 2026 13:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786453889; cv=none; b=oSxRi/L3KB7GCfyURV4VQDs1OrzL2e0LxaF0IE6BXqtfBsQeGUyL9aFm7hezYhB7y8VS1d88g3VNSlXyBEn730TXSaBMaKMkXueKUgwEatrFS6N76Qt6X7bbF+C2yB58VUn8hNGSHMeHZCNFytCDBj8wi6zSwoUgx39KbI1IQKY=
+	t=1786453924; cv=none; b=ILkkzqpGfQvy5D8tLYlXGDmM+rHasjiqclqjD6uoDJw/Su+j8XNXHhfuSGBrG4Zi7gG1g4Vbj2AwwP3iYfWjJwt50Y+K5HAK10G8PzFLrqryZVJyupdexvNMTHvAG7+JeKoBkY/EyEuha7jtEGQKhS475q4c4XBx9Itw+svuybY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786453889; c=relaxed/simple;
-	bh=fyC7qCdAGgKFXRo5HzXaG/a9KatYhG3SnGw75Jh3aPA=;
+	s=arc-20240116; t=1786453924; c=relaxed/simple;
+	bh=RjZZ2yCni2PMSeTIf5TeX6diZAMIl7qfOCDGmZsVn+A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l9VItiqSzctsMaD95opdENQHtI0nL5t8CCxxRIfftDiSiiqgSkGya2BROYKRA4tiwQgTHYlLxo9avB5Qj4heyERarMofYdO7nTosdyyf3/VPCVm+dI7li4BVErgYSTIvJx0tJ6E40fZQQrlhe33sAiDhAEc2tU01SrEKduHlBoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ft/xzfaM; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=kEQSZYzo0edi5V6PLx36PMqIYLSHrQkkSkDD2mJf/2iwU3K1L9H5TlKmEVyH2oyNDYYhP77cK1ZfQv2VFabv/a0Ko5yfz7NVDLORxi9X7sWL5ug6cEFGbiQBBmfbdIhNartr8UPGizWCcAIpsGAsyORUZw5Vg89+3prifIRKYAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=EK1NqaTw; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ft/xzfaM"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-81f36179d72so43728117b3.2
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 06:11:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786453886; x=1787058686; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=izDQyL6NbpJ0TpxD2kVmywM/e6A/0gtwrw2z5KQfU/0=;
-        b=Ft/xzfaMst3TVPw7pqeQQFUhpRWmE0cF26Z/AAPlC8PGmYJikl4wsBaDTqVHMDbQ4j
-         R35/cEk2FKReMTBc/gPODubWz87xeQXX4mqTBwg1BTi/9CSlen4mRBKlBnsIGM1SfXHD
-         Z2nXWhZPOkhKdTeuc/D/BaIYIVc84Yn4XdX4KO4NgLVZeu8zLIqqXPToTrjaDdW50e70
-         fUJIdL411otQmGRaxZu0PdTAjAGvBzAWsQW0UUWpBEHOk+CweaheU3k1/h6eU5mdiZ9R
-         zMYWKN4ECOGGBkLtjAtdDKI2lLBg4VshoA7lbpxKnjR6vQuJi9FFgodB+yv1UxjJjb7z
-         t9XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786453886; x=1787058686;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=izDQyL6NbpJ0TpxD2kVmywM/e6A/0gtwrw2z5KQfU/0=;
-        b=mMF1b3RZCdIU9mBjdNeEvlTmZwBFd3xHYtaZJEkUaqxtp1GRXUFwRFdMovtYsbQUm+
-         eaEQysviZpPze43h03+0jpyy5A2Dq4A92aoFDclLvrkBzlRs1U3fLXDTlrGcqaHm4rmP
-         4l/MkETrhhEYMnoR06VPRdV5bqDhun6LVzHYlqdTplvaLpdKVaX/jdOfSCWvYSbaGbft
-         WwA2uRsuDpAVuir3P0+rAib5BqraznDJxuQjDaxHV3wJ+Owkxl3aX9nXuM2hF7iEyL4A
-         vRw1xQGeKpXZIGwBsmkELj7eEGByRU1U4domOdE5e2a7uZR/11GYwhvTKiDTjd7q0x6F
-         +fGg==
-X-Gm-Message-State: AOJu0YzxoimPLbxKKqzMBcFHNiMI+PeGKHUk8r8N5C15oN46f3uEJG+j
-	qGq85HSn+A+BTDfXGN9f5UcO+uBwp2eX5+hL6pwod44N3XzUIvwlENsR
-X-Gm-Gg: AR+sD10SiT+LcAXQHn/dXcmXWM4wxM5BzhTRn0oc3SYfFQ1er9JcvnPAg4aniZbK472
-	HKqJi5h/2Us6UpxK/AOrWkt2tQdlCIagfCypGGfzGmQ1qdEDVFPHrJ8Miy6qnniBw+HRLAemlV+
-	Aq7ofs1fgBCZJv9eZi8vUIX11p0ZJKVD/mFWIMRW/badBAfFqoDvF9FLTWtKYe5pYxvMJc0iehp
-	0Fa9GSP9r/Fs/ep5n/VrUVEc1r0Q4oLABkHsY8FrymUxr55yMwQp87bPmaa3Spe2zCvx4ioDoa4
-	+Hd1VBwp7wIaoUIY6ZD4FokQaUpKvGVpdw2mwGr0MV7B83fyziSAZdd4AmRGAesg+KNYeddpMT0
-	/7T8NEpwnOgdYEkse1/I1v+HVFUzDmNkWaWhFVIyt4uQFuFS4xdWBSESjtm9xRRRgJ7W297jx7l
-	+KcXwg/mTDiZntNW9thhA9HoJskDGRLuqrNd3UMRnJo0Ui4pMFMGXOBUcfZ9u04ca0VugsdcqOZ
-	QJNtTM=
-X-Received: by 2002:a05:690c:698d:b0:81f:650c:98cd with SMTP id 00721157ae682-82f2dc957b4mr22521957b3.28.1786453886329;
-        Tue, 11 Aug 2026 06:11:26 -0700 (PDT)
-Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6e:e2d5:5eff:fea5:802f])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-82ec44b14fesm8563677b3.39.2026.08.11.06.11.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 06:11:24 -0700 (PDT)
-Date: Tue, 11 Aug 2026 06:11:21 -0700
-From: Richard Cochran <richardcochran@gmail.com>
-To: xuanqiang.luo@linux.dev
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, kuba@kernel.org,
-	hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com,
-	maxime.chevallier@bootlin.com, luoxuanqiang@kylinos.cn
-Subject: Re: [PATCH net v4 0/4] net: phy: dp83640: fix shared clock lifetime
- and probe error cleanup
-Message-ID: <ansfeXGe8k3bwkW1@hoboy.vegasvil.org>
-References: <20260807070729.12545-1-xuanqiang.luo@linux.dev>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="EK1NqaTw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=psQpiW8vFmThWD8MlC5BR+ZqAcAhux0yCCpapRRC7Rw=; b=EK1NqaTwBWMehnj6/lHnLcG5UW
+	akc9d+fifvlXtvyLQKDSDKkrBhE54t9NfPyEt+iaGeV0o7g+TgFqbVncCq8FOc8pQHczPfAo51hov
+	vQQIr5w7c/+trVokfDbjkoDnhiGTcN9slqR0gmuri1TQFTbzneEPAEi27KmO8J87+dZG/qXtZJm8s
+	t3bVEzwqJQFjOuHPSXtP6d+KmMY1d07JJoCrEZFoGr+x3CkIiZSdN1kJ05G2BzZLMlqY9lNOBzvU9
+	I8+2sqBiXfE/91hyD+m0cvTDgpp1EJIzb4pf6kVhpnlbsKzf7W6xMy5XI4CTzE6DIAby3KM6T7jcn
+	aarrmq1g==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtmGo-003aLI-33;
+	Tue, 11 Aug 2026 13:11:55 +0000
+Date: Tue, 11 Aug 2026 06:11:50 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/6] netconsole: add an address family to
+ struct inet_addr
+Message-ID: <ansfiT014RsCOJNZ@gmail.com>
+References: <20260810-netcons_ipv6-v2-0-3d4fc987a90f@gmail.com>
+ <20260810-netcons_ipv6-v2-1-3d4fc987a90f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,18 +52,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260807070729.12545-1-xuanqiang.luo@linux.dev>
+In-Reply-To: <20260810-netcons_ipv6-v2-1-3d4fc987a90f@gmail.com>
+X-Debian-User: leitao
 
-On Fri, Aug 07, 2026 at 03:07:25PM +0800, xuanqiang.luo@linux.dev wrote:
-> From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+On Mon, Aug 10, 2026 at 05:47:25PM +0100, Gustavo Luiz Duarte wrote:
+> netconsole_target stores a single 'bool ipv6' to denote the target's
+> address family. This makes it hard to detect conditions like "no address
+> set" or ipv4/ipv6 mixup between local_ip and remote_ip.
 > 
-> The DP83640 driver shares one PTP clock between all PHYs on the same MII
-> bus.
+> Add a 'family' field to inet_addr so each address stores its own address
+> family: AF_UNSPEC while unset, else AF_INET or AF_INET6.
 > 
-> Its driver-local clock lookup and removal scheme can leak the shared clock
-> on probe failure or free it while another probe is acquiring it.
+> Nothing reads the new field yet. The next patch switches the users over
+> and removes the bool. No functional change.
+> 
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
 
-Is this an actual problem that you have seen in the real world?
-
-Thanks,
-Richard
+Reviewed-by: Breno Leitao <leitao@debian.org>
