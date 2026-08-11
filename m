@@ -1,30 +1,32 @@
 Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E5943C7DA
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 10:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DA542DA23
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 10:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786444716; cv=none; b=qwWBCYK+PfByInHiSqoMDUFx9mCh1M8AIc45rWvaqUaGmJK5kqVOlWVX53daUUphm4PB5ryp4+0cS46vvGKEw/NKo1IWDdGx6xPh0txP7g+aE/OsPF1RQBxt9whSE4qZH70L87EIdW4yw3R4ct5ACbcNB7e4ttU/u7+ihBNDaIk=
+	t=1786444753; cv=none; b=LMZ9M1VYcbQXenF18E3PjEhAAD94BwmlbBRNsmWSaBz0k3Mw0ehUIRb72TqvHSI7SlsGcb01bi5d+CsSPc3Ex8H2Ybi0SD3qgR0XIZXimsUMUKjmmu+/O5M0alrVweR9sKMOAwlfVb6hfwuSs/0O0/QcRmWoUj1mudygacIdQC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786444716; c=relaxed/simple;
-	bh=HZv5nZWLw3BgxB/qX8toj994Rb0AWVsDgi9cLIvTv64=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hOCcN1hKvdlpdKAn0RC0xs4PMzJvG5jYryKcV7yfIEgIy5wlS2xdhlZzRdg4QyVpf1AEU2ujrZX8L7K0i4weoKw/fh4iECbRWjyK8tbq+jglwcQ+EsTTdtxGueaQ9moERf83h9fnySbpopo8fGBfmcMZ3A3bfWHt0cBpf5mewK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qrW3kvzJ; arc=none smtp.client-ip=91.218.175.172
+	s=arc-20240116; t=1786444753; c=relaxed/simple;
+	bh=2ZHwp6+DisNJlZr/Ej+2cYjgEhwlm8PU0xfq5F2VDjM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ufN/Ev0U6H7OnrixF+4z+eLs2C+E8hjajIEZXN2DG+UuKdGx+3v7Pc5R5/++1xEg3FnklWG2DEHSQX5taOTh4Gs7afTm6nNfDcP9cLXJZvJ1AoaJY9hgZfef287ORqRaMBEO3m1+4x5BNZil/y3uN2RGVT6yGFpOubF/hkdR4dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rkeAkIcp; arc=none smtp.client-ip=91.218.175.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qrW3kvzJ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rkeAkIcp"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786444702;
+	t=1786444749;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yNTwC1rGcqWZrSlVej/Mu2ygchThiUoxpRGozzzwlDA=;
-	b=qrW3kvzJt0s5hl/AltKuKol+s3vca8XM+Lxh/R4gKaxfR4NaS/JkEYhEPAP3UfSnwCBfS5
-	JZ4An+ig7WIE5QhHlYuUvT00fzUpZYE8b/2E8exH347NCPo6ZXcOBKlR17W7gum7N2Jjma
-	T5hmnChVQ2tR7LuvQ9Gvmi4hHSBEC2A=
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iZf/htlsFgNcS+35IOEXNe4Ql4XRBRXaDRHFFsmjgFk=;
+	b=rkeAkIcpG7i6F6Da1VVGpMnMNEA1FMzDR5zLIJdOeYNrbe9x7Si6Fe+VZj9Ci2r9FLNRL4
+	rgFxtJsuz2M65j898+hhxlWamS+i4MVySM5+orZ2YNxezU2rw41XWLHLRGW3rTgGbChcbc
+	OaqxjqkWMkKPqb7AMc0AjxAKi00XMgo=
 From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 To: linux-renesas-soc@vger.kernel.org,
 	netdev@vger.kernel.org,
@@ -38,81 +40,148 @@ Cc: paul@pbarker.dev,
 	pabeni@redhat.com,
 	richardcochran@gmail.com,
 	masaru.nagai.vx@renesas.com,
-	luoxuanqiang@kylinos.cn
-Subject: [PATCH net v4 0/2] net: ravb: fix PTP clock lifetime
-Date: Tue, 11 Aug 2026 18:37:31 +0800
-Message-ID: <20260811103733.62599-1-xuanqiang.luo@linux.dev>
+	luoxuanqiang@kylinos.cn,
+	stable@vger.kernel.org
+Subject: [PATCH net v4 2/2] net: ravb: serialize PTP clock teardown
+Date: Tue, 11 Aug 2026 18:37:33 +0800
+Message-ID: <20260811103733.62599-3-xuanqiang.luo@linux.dev>
+In-Reply-To: <20260811103733.62599-1-xuanqiang.luo@linux.dev>
+References: <20260811103733.62599-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-This series fixes RAVB PTP clock lifetime handling. It reports a cached PHC
-index without accessing the clock pointer and drains PTP interrupts before
-unregistering the clock.
+ravb_ptp_interrupt() can race with ravb_ptp_stop() and pass the clock to
+ptp_clock_event() while ptp_clock_unregister() is freeing it. This can
+lead to a use-after-free.
 
-Patch 1 caches the PHC index and handles registration failures.
+Use READ_ONCE() and WRITE_ONCE() for lockless access to the clock pointer.
+Atomically detach it with xchg() before disabling PTP interrupts, then
+synchronize all IRQs which can invoke ravb_ptp_interrupt() before
+unregistering the detached clock.
 
-Patch 2 detaches the clock with xchg() and drains the PTP IRQs before
-unregistering it.
+A handler which read the old pointer completes before the clock is
+unregistered, while later handlers read NULL and skip the event.
 
+Fixes: a0d2f20650e8 ("Renesas Ethernet AVB PTP clock driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
-Changes:
-v4:
-  - Rebase onto Linux 7.2-rc7.
-  Patch 1:
-  - Cache the PHC index separately instead of locking clock access.
-    (Vadim Fedorenko)
-  - Reword the subject and update the commit message for the cached PHC
-    index approach.
-  - Add Vadim Fedorenko's Reviewed-by tag.
-  Patch 2:
-  - Replace priv->lock serialization with PTP interrupt disabling and IRQ
-    draining before unregistering the clock. (Vadim Fedorenko)
-  - Use READ_ONCE() and WRITE_ONCE() for lockless clock pointer access and
-    xchg() to detach the clock atomically.
-  - Track the error and management IRQs and synchronize all IRQs that can
-    invoke the PTP handler.
-  - Update the commit message to describe the interrupt handler race and
-    the new teardown sequence.
+ drivers/net/ethernet/renesas/ravb.h      |  2 ++
+ drivers/net/ethernet/renesas/ravb_main.c |  6 ++--
+ drivers/net/ethernet/renesas/ravb_ptp.c  | 37 +++++++++++++++++++-----
+ 3 files changed, 35 insertions(+), 10 deletions(-)
 
-v3: https://lore.kernel.org/all/20260806095126.57803-1-xuanqiang.luo@linux.dev/
-  Patch 1:
-  - Omit Niklas Söderlund's Reviewed-by tag because the implementation he
-    reviewed has changed.
-  - Describe the NULL pointer dereference before the first open as the most
-    likely failure mode in the commit message. (Jakub Kicinski, Sashiko)
-  - Normalize PTP clock registration failures to NULL.
-    (Jakub Kicinski, Sashiko)
-  - Keep hardware timestamping capabilities independent of PHC
-    availability. (Jakub Kicinski, Sashiko)
-  Patch 2 (new):
-  - Serialize PTP clock publication and access with priv->lock, and detach
-    the clock before unregistering it. (Jakub Kicinski, Sashiko)
-
-v2: https://lore.kernel.org/all/20260802090750.116215-1-xuanqiang.luo@linux.dev/
-  - Only advertise hardware timestamping support when a PHC is available
-    (Niklas Söderlund).
-
-v1: https://lore.kernel.org/all/20260731063254.71260-1-xuanqiang.luo@linux.dev/
-
-Xuanqiang Luo (2):
-  net: ravb: avoid dereferencing an invalid PTP clock
-  net: ravb: serialize PTP clock teardown
-
- drivers/net/ethernet/renesas/ravb.h      |  3 ++
- drivers/net/ethernet/renesas/ravb_main.c |  9 +++--
- drivers/net/ethernet/renesas/ravb_ptp.c  | 44 ++++++++++++++++++++----
- 3 files changed, 47 insertions(+), 9 deletions(-)
-
-
-base-commit: db2ddb87143519e20a95aa36c60b36107b736a58
+diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
+index 2a4fcb12a63cb..3ee4c61081890 100644
+--- a/drivers/net/ethernet/renesas/ravb.h
++++ b/drivers/net/ethernet/renesas/ravb.h
+@@ -1124,6 +1124,8 @@ struct ravb_private {
+ 	int msg_enable;
+ 	int speed;
+ 	int emac_irq;
++	int err_irq;
++	int mgmt_irq;
+ 
+ 	unsigned no_avb_link:1;
+ 	unsigned avb_link_active_low:1;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index db0229e008494..ea1c7e536791e 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2885,11 +2885,13 @@ static int ravb_setup_irqs(struct ravb_private *priv)
+ 		return error;
+ 
+ 	if (info->err_mgmt_irqs) {
+-		error = ravb_setup_irq(priv, "err_a", "err_a", NULL, ravb_multi_interrupt);
++		error = ravb_setup_irq(priv, "err_a", "err_a", &priv->err_irq,
++				       ravb_multi_interrupt);
+ 		if (error)
+ 			return error;
+ 
+-		error = ravb_setup_irq(priv, "mgmt_a", "mgmt_a", NULL, ravb_multi_interrupt);
++		error = ravb_setup_irq(priv, "mgmt_a", "mgmt_a", &priv->mgmt_irq,
++				       ravb_multi_interrupt);
+ 		if (error)
+ 			return error;
+ 	}
+diff --git a/drivers/net/ethernet/renesas/ravb_ptp.c b/drivers/net/ethernet/renesas/ravb_ptp.c
+index cbec7c057d715..43218bc15b151 100644
+--- a/drivers/net/ethernet/renesas/ravb_ptp.c
++++ b/drivers/net/ethernet/renesas/ravb_ptp.c
+@@ -289,16 +289,17 @@ static const struct ptp_clock_info ravb_ptp_info = {
+ void ravb_ptp_interrupt(struct net_device *ndev)
+ {
+ 	struct ravb_private *priv = netdev_priv(ndev);
++	struct ptp_clock *clock = READ_ONCE(priv->ptp.clock);
+ 	u32 gis = ravb_read(ndev, GIS);
+ 
+ 	gis &= ravb_read(ndev, GIC);
+-	if (gis & GIS_PTCF) {
++	if ((gis & GIS_PTCF) && clock) {
+ 		struct ptp_clock_event event;
+ 
+ 		event.type = PTP_CLOCK_EXTTS;
+ 		event.index = 0;
+ 		event.timestamp = ravb_read(ndev, GCPT);
+-		ptp_clock_event(priv->ptp.clock, &event);
++		ptp_clock_event(clock, &event);
+ 	}
+ 	if (gis & GIS_PTMF) {
+ 		struct ravb_ptp_perout *perout = priv->ptp.perout;
+@@ -334,19 +335,39 @@ void ravb_ptp_init(struct net_device *ndev, struct platform_device *pdev)
+ 		clock = NULL;
+ 	}
+ 
+-	priv->ptp.clock = clock;
++	WRITE_ONCE(priv->ptp.clock, clock);
+ 	if (clock)
+ 		WRITE_ONCE(priv->ptp.phc_index, ptp_clock_index(clock));
+ }
+ 
+-void ravb_ptp_stop(struct net_device *ndev)
++static void ravb_ptp_disable(struct net_device *ndev)
+ {
+-	struct ravb_private *priv = netdev_priv(ndev);
+-
+ 	ravb_write(ndev, 0, GIC);
+ 	ravb_write(ndev, 0, GIS);
++}
++
++static void ravb_ptp_sync_irqs(struct net_device *ndev)
++{
++	struct ravb_private *priv = netdev_priv(ndev);
++
++	synchronize_irq(ndev->irq);
++	if (priv->info->err_mgmt_irqs) {
++		synchronize_irq(priv->err_irq);
++		synchronize_irq(priv->mgmt_irq);
++	}
++}
++
++void ravb_ptp_stop(struct net_device *ndev)
++{
++	struct ravb_private *priv = netdev_priv(ndev);
++	struct ptp_clock *clock;
+ 
+ 	WRITE_ONCE(priv->ptp.phc_index, -1);
+-	if (priv->ptp.clock)
+-		ptp_clock_unregister(priv->ptp.clock);
++	clock = xchg(&priv->ptp.clock, NULL);
++
++	ravb_ptp_disable(ndev);
++	ravb_ptp_sync_irqs(ndev);
++
++	if (clock)
++		ptp_clock_unregister(clock);
+ }
 -- 
 2.43.0
+
