@@ -1,92 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m3286.qiye.163.com (mail-m3286.qiye.163.com [220.197.32.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580EC382298;
-	Tue, 11 Aug 2026 15:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C868339362
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786463596; cv=none; b=mHqiZjwQ7sLj21sOtjVkK3mD6lLaLUbvUsU1HY3Xy0tgXcvQ7p5WD/QKlkI+VbXIkivpf6Mn79WeBKg3clO+SqwzzUfqJM5SSAXJqD9EweY9tw6vdu6Vq0dIjnBVmmKjN+5O1XJHDJ6uyiWKrgHj7YfmDGtPDnxnPiUQReeUiec=
+	t=1786464139; cv=none; b=pjMSXk7Iicl2gusdV4ZaeWF7lKw7tlLt/R18ZvQ1OuMMq5EdmCCwoSSLyD9+w//699+J14ZZXlI146qY3tyvCN5q7pT2Mfadv+6R0NzKCAnTQ96B3ypgI9T/z9lt4E3uEZgKEGnNxpYVvnv1h/Orws1C43ctBsA0XSYULpFr2+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786463596; c=relaxed/simple;
-	bh=DnF3aQdkXNx4oU+Fl+i9D15DW8KRXhFLW9FERxBFTB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pf0KHz/HXir6hiHBh8EQCYWLAmM8nsnYEGLmNyDcgHNfqyeCodvDvwO/njwpYbgWBULQpwXgu9exwh9igBJ/qqfVIfDh712ck7FpyJ/bOj2+p9R7Bmy/hyN7tAos0ndRCmamC2CJYhNiY2NwgGrlafHXlIoBxzvHLrIZHfgUKqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AnBX8YUZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786464139; c=relaxed/simple;
+	bh=uCv4WWV/SkS+1Kc7tJxMQYIfaDXgev6XfbRRCNwjgDw=;
+	h=Content-Type:Message-ID:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:From:Date; b=U1sg7G65GVS6XmolQIkelBTYnpLKciVD9cOv9e0xANdWsjuvTh5Gugong+29QwXIuLULtGMBfuYNsj83hI4+V70geL9Vz6NdvNjvK9l5RbXpqyI8TlhIoMIXYoVlC2qAvUJCk/46yWDXMfctBgeI4KuAggrradrJ+6cF3u58Lj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=iFdUXQLr; arc=none smtp.client-ip=220.197.32.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AnBX8YUZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16171F000E9;
-	Tue, 11 Aug 2026 15:53:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786463595;
-	bh=DnF3aQdkXNx4oU+Fl+i9D15DW8KRXhFLW9FERxBFTB4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AnBX8YUZAaCz4DWFbJVo8gwN0rMr0SQ87izcGiOCA8nKHT0RqjFPMsRZojovf1ARD
-	 R5XkNTvGzeFQAU5mg2idWrFbIwVVzAD9RSLBSFdfsCWYwNHz4H+gjbsAPn88kJWRk+
-	 wveagclyOQ7huxROaH9sdj2yv6rNO1qXpteNII8BFYSFExL2MDPOcYxWHR7f3mm5LR
-	 /jU41Z3dF5zhd1omvwkQVRIy5/zaud7PaVIy3tHMqxf3jNtOXwVGNc/ZXUC3X6uwqq
-	 DjWjoFk+g0u02Vd8xPFPyxWH/V95eAmH0jPD/oqP3vkmOrLhHgrclkzlhC5O0382d6
-	 uCdkZ/wtPpeJA==
-Date: Tue, 11 Aug 2026 08:53:13 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>
-Cc: Vladislav Leonov <vlad@zlab.su>, linux-rockchip@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, Simon Glass <sjg@chromium.org>,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Andi Shyti <andi.shyti@kernel.org>, Andrew
- Lunn <andrew+netdev@lunn.ch>, Aurelien Jarno <aurelien@aurel32.net>, Brian
- Masney <bmasney@redhat.com>, Conor Dooley <conor+dt@kernel.org>, Daniel
- Golle <daniel@makrotopia.org>, "David S. Miller" <davem@davemloft.net>,
- David Wu <david.wu@rock-chips.com>, Eric Dumazet <edumazet@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Heiko Stuebner
- <heiko@sntech.de>, Herbert Xu <herbert@gondor.apana.org.au>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Mark Brown <broonie@kernel.org>, Maxime
- Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Michael Turquette <mturquette@baylibre.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Nicolas Frattaroli
- <nicolas.frattaroli@collabora.com>, Olivia Mackall <olivia@selenic.com>,
- Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Vinod Koul
- <vkoul@kernel.org>, linux-crypto@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH 00/25] ARM: rockchip: Add peripheral support for RV1106
-Message-ID: <20260811085313.379ac489@kernel.org>
-In-Reply-To: <anq1ouUnKA02Eauj@monoceros>
-References: <20260810121121.210040-1-vlad@zlab.su>
-	<20260810113548.7fd24d56@kernel.org>
-	<anq1ouUnKA02Eauj@monoceros>
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="iFdUXQLr"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AJkAWQAnKi56swdGxAYI84oA.3.1786451567411.Hmail.220255722@seu.edu.cn>
+To: Simon Horman  <horms@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, netdev <netdev@vger.kernel.org>, 
+	andrew+netdev <andrew+netdev@lunn.ch>, davem <davem@davemloft.net>, 
+	edumazet <edumazet@google.com>, kuba <kuba@kernel.org>, 
+	pabeni <pabeni@redhat.com>, sashal <sashal@kernel.org>, 
+	zilin <zilin@seu.edu.cn>, 
+	"kory.maincent" <kory.maincent@bootlin.com>, 
+	"marco.crivellari" <marco.crivellari@suse.com>, 
+	"felix.manlunas" <felix.manlunas@cavium.com>, 
+	"ricardo.farrington" <ricardo.farrington@cavium.com>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	"jianhao.xu" <jianhao.xu@seu.edu.cn>, 
+	stable <stable@vger.kernel.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCBuZXRdIG5ldDogbGlxdWlkaW86IGxvY2sgdXBzdHJlYW0gYnJpZGdlIGZvciBmdW5jdGlvbiByZXNldA==?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_WIN_1.65.3
+In-Reply-To: <20260811091539.815827-1-horms@kernel.org>
+References: <20260809105715.3669436-1-runyu.xiao@seu.edu.cn> <20260811091539.815827-1-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Received: from 220255722@seu.edu.cn( [222.191.246.242] ) by ajax-webmail ( [127.0.0.1] ) ; Tue, 11 Aug 2026 20:32:47 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Date: Tue, 11 Aug 2026 20:32:47 +0800 (GMT+08:00)
+X-HM-Tid: 0a9ff0cd34e302f2kunmf3b7ffc1dae8
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMTUS6Y2fHkyPT6dc03QDwVaZPGiA09TnwhbhTj
+	hLfuFZO94YXwX6xgvkjGVFFRKj5FTlUp4ibMu3LjbJqkzUirKIkshCL4DwobCwmqEl+iToklIC+5
+	oJ5WddS7xBApRMVj/KXqF9KFKHuMUpDM645Zo=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaHkhLVh9MQh5NGUNLGk9DT1YVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVU
+	JCSU5LVUpLS1VKQktCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=iFdUXQLr4cIT6ta+EMX5Kjplo/jSRrJKxdve8sEqKRcT/KbogKoq/KLKhKS6lsL1oYlk0Z+7sQhtHcLTyV5LcMXTxfBa7BKxFQI7gcUPPicL4sshfO65I2vMsMBrwWNMgvyqYKbBvvyGU1xn6zvkXm4cNX76NhAcWqmBz3+yEE0=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=uCv4WWV/SkS+1Kc7tJxMQYIfaDXgev6XfbRRCNwjgDw=;
+	h=date:mime-version:subject:message-id:from;
 
-On Tue, 11 Aug 2026 07:43:16 +0200 Uwe Kleine-K=C3=B6nig wrote:
-> On Mon, Aug 10, 2026 at 11:35:48AM -0700, Jakub Kicinski wrote:
-> > On Mon, 10 Aug 2026 15:10:51 +0300 Vladislav Leonov wrote: =20
-> > > Basic support for the Rockchip RV1106/RV1103 SoCs currently under rev=
-iew.
-> > > This series builds on top of that and enables the peripherals needed =
-to
-> > > bring up a board beyond a serial console: =20
-> >=20
-> > Don't expect maintainers to dig out patches for their subsystems
-> > from a big series. This is not how upstream development works. =20
->=20
-> I see this from time to time and I personally think it's fine to have
-> these patches together. Also the only the patch that affects my
-> subsystem was Cc:d to me which is how I like it (but I think opinions
-> differ on that one, too).
->=20
-> `b4 am -P _` is great!
-
-We have automation and CI systems which ignore anything that isn't
-scoped to networking to save cost. Not sure if there's a polite way=20
-to say this but the smaller the subsystem the more flexibility can=20
-be afforded? Let's stick to the existing process, please.
+SGksCgpUaGFua3MgZm9yIHRoZSBkZXRhaWxlZCByZXZpZXcuCgomZ3Q7IFRoaXMgaXNuJ3QgYSBi
+dWcgaW50cm9kdWNlZCBieSB0aGlzIHBhdGNoLCBidXQgdGhlIGtlcm5lbC1kb2MgZGlyZWN0bHkK
+Jmd0OyBhYm92ZSBvY3Rlb25fcGNpX2ZscigpIHN0aWxsIHNheXMgIlBDSSBGTFIiIHdoaWxlIHRo
+ZSBib2R5IGNhbGxzIHRoZQomZ3Q7IGdlbmVyaWMgcmVzZXQgaGVscGVyLiBXb3VsZCBpdCBtYWtl
+IHNlbnNlIHRvIHVwZGF0ZSB0aGUgZG9jIHN0cmluZz8KClRoZSBkb2N1bWVudGF0aW9uIGlzc3Vl
+IGlzIHZhbGlkIGFuZCBwcmVkYXRlcyB0aGlzIHBhdGNoLiBIb3dldmVyLCBpdCBpcwpzZWNvbmRh
+cnkgdG8gdGhlIGxvY2tpbmcgcHJvYmxlbS4gU2luY2UgdGhlIGN1cnJlbnQgbG9ja2luZyBhcHBy
+b2FjaCBpcwp1bnNhZmUsIEkgd2lsbCBub3QgdXBkYXRlIHRoZSBjb21tZW50IGluIHRoaXMgcGF0
+Y2guCgomZ3Q7IENhbiB0aGlzIGFjcXVpc2l0aW9uIG9yZGVyIGRlYWRsb2NrIGFnYWluc3QgdGhl
+IFBDSSBjb3JlPwoKWWVzLCB0aGlzIGNvbmNlcm4gaXMgdmFsaWQuIG9jdGVvbl9wY2lfZmxyKCkg
+aXMgY2FsbGVkIGZyb20gdGhlIHJlbW92ZQphbmQgcHJvYmUtZmFpbHVyZSBwYXRocyB3aGlsZSB0
+aGUgZW5kcG9pbnQgZGV2aWNlIGxvY2sgaXMgYWxyZWFkeSBoZWxkLgpUYWtpbmcgdGhlIHVwc3Ry
+ZWFtIGJyaWRnZSBjb25maWd1cmF0aW9uIGxvY2sgZnJvbSB0aGVyZSBjYW4gY29uZmxpY3QKd2l0
+aCB0aGUgYnJpZGdlLWZpcnN0IGxvY2tpbmcgb3JkZXIgdXNlZCBieSB0aGUgUENJIGNvcmUuCgom
+Z3Q7IFNpbmNlIGJsb2NrX2NmZ19hY2Nlc3MgaXMgbm90IGxvY2tkZXAtdHJhY2tlZCwgd291bGQg
+dGhpcyBzaG93IHVwIG9ubHkKJmd0OyBhcyBhIGh1bmcgdGFzaywgd2l0aCB0aGUgYnJpZGdlJ3Mg
+Y29uZmlndXJhdGlvbiBhY2Nlc3MgZmxhZyBsZWZ0CiZndDsgYmxvY2tlZD8KClRoYXQgaXMgcG9z
+c2libGUuIFRoZSB3YWl0IGluIHBjaV9jZmdfYWNjZXNzX2xvY2soKSBpcyBub3QgcmVwcmVzZW50
+ZWQKYXMgYSBub3JtYWwgbG9ja2RlcCBkZXBlbmRlbmN5LCBzbyB0aGlzIG9yZGVyaW5nIHByb2Js
+ZW0gbWF5IGFwcGVhciBhcyBhCmh1bmcgdGFzayByYXRoZXIgdGhhbiBhIGxvY2tkZXAgcmVwb3J0
+LgoKJmd0OyBCZWZvcmUgdGhpcyBjaGFuZ2UgdGhlIGRyaXZlciB0b29rIG9ubHkgdGhlIGVuZHBv
+aW50J3Mgb3duCiZndDsgY29uZmlndXJhdGlvbiBsb2NrLCB3aGljaCB0aGUgY29yZSBhbHNvIGFj
+cXVpcmVzIGFmdGVyCiZndDsgZGV2aWNlX2xvY2soZW5kcG9pbnQpLCBzbyB0aGVyZSB3YXMgbm8g
+aW52ZXJzaW9uLgoKSSBhZ3JlZSB0aGF0IHRoZSBuZXcgYnJpZGdlLWxvY2sgYWNxdWlzaXRpb24g
+aW50cm9kdWNlcyB0aGlzIGFkZGl0aW9uYWwKaW52ZXJzaW9uLiBUaGUgb3JpZ2luYWwgbWlzc2lu
+ZyBicmlkZ2Ugc2VyaWFsaXphdGlvbiBpcyBhIHNlcGFyYXRlCnByb2JsZW0sIGJ1dCBhZGRpbmcg
+dGhlIGJyaWRnZSBsb2NrIGF0IHRoaXMgcG9pbnQgaXMgbm90IGEgc2FmZSBmaXggZm9yCml0LgoK
+Jmd0OyBXb3VsZCBkZWZlcnJpbmcgdGhlIGJyaWRnZSBsb2NrIHRvIGEgcGF0aCB0aGF0IGRvZXMg
+bm90IGFscmVhZHkgaG9sZAomZ3Q7IHRoZSBlbmRwb2ludCBkZXZpY2UgbG9jaywgb3IgdXNpbmcg
+dGhlIGNvcmUncyBwY2lfcmVzZXRfZnVuY3Rpb24oKQomZ3Q7IHN0eWxlIGJyaWRnZS1maXJzdCBz
+ZXF1ZW5jZSwgYXZvaWQgdGhlIGN5Y2xlPwoKWWVzLCB0aGUgcmVzZXQgbXVzdCBiZSByZWRlc2ln
+bmVkIGFyb3VuZCB0aGUgUENJIGNvcmUgbG9ja2luZyBvcmRlci4KVGFraW5nIHRoZSBicmlkZ2Ug
+bG9jayBmcm9tIHRoZSBjdXJyZW50IGNhbGxiYWNrIGlzIHVuc2FmZSBiZWNhdXNlIHRoZQplbmRw
+b2ludCBkZXZpY2UgbG9jayBpcyBhbHJlYWR5IGhlbGQuIFNpbXBseSBzd2l0Y2hpbmcgdG8KcGNp
+X3Jlc2V0X2Z1bmN0aW9uKCkgd291bGQgbm90IHNvbHZlIHRoZSBwcm9ibGVtIGJlY2F1c2UgdGhh
+dCBoZWxwZXIKYWxzbyB0cmllcyB0byBhY3F1aXJlIHRoZSBlbmRwb2ludCBkZXZpY2UgbG9jay4K
+ClRoZXJlIGlzIGFsc28gYSBtb3JlIGRpcmVjdCBpc3N1ZSB3aXRoIHRoZSBjdXJyZW50IGFwcHJv
+YWNoLiBJZgpfX3BjaV9yZXNldF9mdW5jdGlvbl9sb2NrZWQoKSBzZWxlY3RzIHRoZSBidXMtcmVz
+ZXQgbWV0aG9kLApwY2lfYnVzX2xvY2soKSBsb2NrcyB0aGUgdXBzdHJlYW0gYnJpZGdlIGFuZCB0
+aGVuIHRyaWVzIHRvIGxvY2sgdGhlCmVuZHBvaW50IGFnYWluLiBUaGUgZW5kcG9pbnQgbG9jayBp
+cyBhbHJlYWR5IGhlbGQgYnkgdGhlIGNhbGxlciBpbiB0aGlzCnBhdGguCgpUaGUgZXhpc3Rpbmcg
+dXNlci1zcGFjZSBtb2RlbCBkaWQgbm90IG1vZGVsIHRoZSBlbmRwb2ludCBkZXZpY2UgbG9jawpi
+ZWluZyBoZWxkIGJlZm9yZSB0aGUgcmVzZXQuIEl0IHRoZXJlZm9yZSBkb2VzIG5vdCB2YWxpZGF0
+ZSB0aGUKc3VibWl0dGVkIHBhdGNoIGFuZCBzaG91bGQgYmUgZGlzY2FyZGVkLgoKSSB3aWxsIHdp
+dGhkcmF3IHRoaXMgZHJpdmVyLW9ubHkgYXBwcm9hY2ggYW5kIHdpbGwgbm90IHNlbmQgYSByZXZp
+c2VkCnZlcnNpb24gdXNpbmcgdGhlIHNhbWUgbG9ja2luZyBzZXF1ZW5jZS4KClJlZ2FyZHMsClJ1
+bnl1IFhpYW8=
