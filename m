@@ -1,142 +1,204 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3183BE172
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786464658; cv=pass; b=RQg76qxHk59CScgBXV7IsyKLdo+B1o5Bq2LX9Dw4fgV5/3BHLZpsfnBeBvdGO3+sH+E81XxlZms2vHvVGcvacnOLMaoKQ4V8Nj/PyZau4e/uMKeVAlOkkFauPRlwrbMdFFC2sr+80dk9fVn6Tq4WlUch5cAyOKslPz8ZGQRE4Xs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786464658; c=relaxed/simple;
-	bh=vuoLOK/rnYLKL8Mx67lQ0cuVc/C7UhzCs9iR/P/EQf8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iU3r01ERrNl3fTpvNeyOKbT5r/peFsN1zE9xByTWWvh18yYhisCVAufese/ObKP7ss73Qd/joZ059j2sJS+9wh2mUyalRJpOsWgn4/CD/JVVN+sA+DzP3HZWu9Qz+9DknoJFRpDJzD+NfJRJ+NNWMWQR1483X3K9X+i9w8GwGbE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=COQSUHpt; arc=pass smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F0C39659A
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786464816; cv=none; b=LpbsZsAitZuwHwzEIiN/Myep6iJzTGhqwc92ddVx6Xii0yKXhpp7EZyk6+ra8ko/71lHIOINbC71SKPN8XIxWMdQg6oUSkhf96FNlXKsatNqFD71g8RhKy6avDV8A1O9lb6QkX2exfoxAXXsqGuh4bmUcWAP+ZjRiPmy/ZOS/W0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786464816; c=relaxed/simple;
+	bh=qwF8d4vNNFCnN9agV0+J5z2DL43blTty4pDpRo/c9PY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IMY6QqkJyzYgDVDHtKs3Ov2MY9sCueQGkrLDtIG1hj9F4LVFGRXifOO7ZBydnTzDnBcrpmdjqVIJGDNCLVF73rREZBBbhsNteSfEv9a1D9URK3D5DGOu9N1Y6ULa8Punc8TBfNZCbCP+K5NaMcNQG2i8V5Yuxdf+4QURbc12KX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Mq31cAaf; arc=none smtp.client-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="COQSUHpt"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so1497465ad.1
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 09:10:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786464656; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rTmX/tMHO4ZIJ6f4jb/ZRgyV6aEocadMwdl+w5v7cQCf7nPnn4WFY+9fRB1wPx+ZAA
-         MIhykvx2XvIlrZBD1cCDPpwvae1qw04dQuGCcVuQ3dtxOZbApidsMV23BMuVNOQ8TVam
-         Se5xuFYHMC3XNgDSIrcSkyo/XX4sdh+0TKSCwH+vdMgjOdVjtTPRqPun9YOBGCd8Ahfo
-         F02uW3lClSzIKiA+OvMF/vsiB4mXoz1fz1yzKTmIvXV0IZ+JmO48UZ/K35xTtSISS+yQ
-         JmWv5QXaj3qHrpOKMyFXlfo8ChgOI9Nr0ZecWKRPw4BQk3SiB9/UmzM/2LG22dMTYJJW
-         FZFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oR6Lfn10OI2dMXCG9wKlSbygEMyQ0mqk7f3Zkb4+G84=;
-        fh=mbPXVwsxSyhcVeUFQs5uePk2gwN4DQITrm3CWJW6sTQ=;
-        b=hPz00oa+7+4k1KkNnNRE+XYTSzEk2YTewU7SIbKH2brW7Qkve/Tp7oHlYzwjIRZo7c
-         i46AwouDtSocbkMAuPjUrrNr+ruxxcyNLVOEEjLkAJKqFUnI0gB3/9nS3Efqva7n+Wld
-         gO2lgOfeZdQpsfNKQOBgfhLEg1M7HpKoNORf4D4ByzfBMAHjKj09DLqyZxHPMYrLx0SD
-         RJGhfjLJzPjU/2CBsY7NMiEyxre3omhrq/9cj/ZpPi5PXdJJZ/C3XfeCY9Yb5nxikqyb
-         fxupWzNSFlp18SJ+Eb0fvCLHQVEZTvyWv5GPhhWCbGB6pCem83+z6jusldGo93sQT/BT
-         ih9A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786464656; x=1787069456; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oR6Lfn10OI2dMXCG9wKlSbygEMyQ0mqk7f3Zkb4+G84=;
-        b=COQSUHptmpmqLVucnAPzUZCEpWOZXXXLGirfhCPmyenlPim9HPTL0cKFu/8dp+JiSD
-         WSY+lIPBjqc/pGcgk4v/2IHQEPJ22eX3LnBFNbbV2j7BFGyY9xtFzVjivrSMH5jqc+dh
-         NhNxf0r0WhVcsG2lhwMhSdUDtyC91feD+S+djqOjFgHDnUc44O/NI5kcOG4TV+SxpQXy
-         DZ7dsoSubf3jE+Mxfkrvkmj34KhY9CxP12aKoKtrzwMpO+9KWnTkmKQMQouVCYEWiwO9
-         VVqJc3dffkHJRS3Pes/tcP/0czyATdwRnOY6GaQBwedGjui7Rpyy67Bz9j6M+WOyMBYx
-         hzug==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Mq31cAaf"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3900e39d935so78867a91.0
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 09:13:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786464656; x=1787069456;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=1e100.net; s=20251104; t=1786464815; x=1787069615;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=B1mcyQU5zL02/TDzlYz/gT52O4+epVO/lG3nwQ2h8yM=;
+        b=IybbaAHKfC8KWFybD4bYsqpKDNIu1Np2iXRLxpsNm/2g7HXW1ZqBh/A/bZ6dBGty5b
+         9rdoaR1W4HNDBKea4MjG/vVmB5ef9X58HyMV4aM3BhxsEmLqbSvDeApebakrAhEmilvK
+         ujqBBOsZpjEI/WPtp8025OFbK0WFsvzI0Iz+CtAOUh/m+4BvZq+zMGdh0/d4GNjjGpbc
+         MLzn3r3bcoBqp6eBcN2lN12GDdznVBObnvYxO7BloZOM0mV/M4wF/3L/sTsstg5lNqmh
+         AwxgNNTkFVortOTlKFss/PIBVzvzrjR5QbDGIH+nSc495O12Z0RxFqC9DZJuzDxxQAQP
+         gyTA==
+X-Forwarded-Encrypted: i=1; AHgh+RqaSNAeYo0cEDs5myiAOc1h4d9F594dM5iNwov4PJhC8KRtAYLYnVbsbw2SzarfLx1gKiQUHEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJSE/zyMFWmbjXKe8SY2Vl9Dx7durdqGFTY6vKzZ0zZ/I1O+xf
+	RzicC7tpGeqlvINQnIq1pu50EjzmsNF0bL8VFh77i6t5slkaF5oXU0H/jce4sC30VhpvLl17oDR
+	RGT/VtK+5uCDOIvSxYwTyJpRWflvintZdkK2GPIBaLFvydMtlN7fNQ3lPX74jy1NFrr9JK6XA1n
+	QlrSaNJHf8fWGTGmZHP20JgHqRc7waSv+OWEAyZ2xgtmx1aiyqaVoYM44sHXGQOuaI2vqovI2W8
+	RbenMyfIQMQXY86
+X-Gm-Gg: AR+sD11i0UANgEHCZhtM1/5zzyl8n+IyYkALqAcA0OYANPRhbH8ectLFgTU1n+VQvYt
+	s1RIT/KEDAn+yO9yKkZSP9HUStxEwnO4HOtb5O7GrBF/qLMWqV5ctRDfJaBZq+wt4oFx2PzOXHS
+	VWO01lzGWmIfr77Ny4moWrrtOIefnxFpBt/ga2BzEtBaFSIMP51b6aIsUC7rYsdOjfi/1+RwQIz
+	oCkmmRAx1CCcLyVyp/ZLFR1B4DcdXsRpJrY3GSDSXAh1QgSB+DkzNdjiUSJ/rlfcZR4oPaSQBHC
+	AdqNBB0y+sZr3TX9v42FgrA6OAtH+OQHYilGe5pcy9JwGCGrujSp8K3tZ0f4at6swHcLhgJfhjK
+	5Q2wc+G9f0fH73k0b/J86wO2U0l5WMHceQFAX+tJMwmxmsLiPE44bZzVzgzCtJjk643GdaxVnoo
+	Who2cjbSdlaZpQ5lE+JjZEgkXcK2yPoM0YqyYQIKbBBvM=
+X-Received: by 2002:a17:90b:2751:b0:392:e5b1:d833 with SMTP id 98e67ed59e1d1-392ec557b4bmr5713884a91.13.1786464814503;
+        Tue, 11 Aug 2026 09:13:34 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-392f94f18a4sm9993a91.10.2026.08.11.09.13.33
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Aug 2026 09:13:34 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38ea32e57e2so53570a91.1
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 09:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1786464812; x=1787069612; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oR6Lfn10OI2dMXCG9wKlSbygEMyQ0mqk7f3Zkb4+G84=;
-        b=JJiuZ8817Xuy/u9Dydv5NxTUeH2cGTbXieruyczMa04I7CgcBe6+7I691ZDxkL5wMO
-         6hNXPpVgWdM6SGTk7s+Ca6Rj6bjB58fUacFalPJ1pXcbOJ+9W6Y2y0ASLbfBG2E0xn+Z
-         e5DlmHXdlmpsYafb/MvUShPHQd7Yvtsp1b/hC9THcFHg/G7175GbtKd3qhg9WKE5ZsVT
-         Fg26lLj51hTwoNENp6DIpAsZgSK79hqWnvqOMQOwSdXInyOgAxLOsfsuAPCNz3bgA3Cm
-         fdUsYQmbGwCEvbL01+gb5+0+p49sva/Bnxp5W4Wu+Dnp9jX4KCxqb0vhV86Wx5YcqhF8
-         5t0g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr6jjS7nm7rNfjQfI8v1y64dKGbZMnu223LW68Qrp0yPKgFZqPuRuyke+qZRRwkywEAToWL6Uk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0G5SaDBaTy3YVNnJ3IGk9mopqIKxVD77vePPcq0B19QBl12qz
-	yH4daSLqxXTHoOdBw4c9MnHYrX+HgrQME+TW5VbFb+JXYn7tNOAxnh3QJgGg0pEJeJ6Syk05hBK
-	Sx5zvI8b9zW/UeQQvW4MTIdixN9WyalnPikaMwPFX
-X-Gm-Gg: AR+sD13R8kew127z021iBNGrO3J3dne8hcQorNL1NWXXzicczHtkX/IYHskLJ4T+x6k
-	+ADL79lpV8QdDXqZzOLSz6GHwXxJV4EihiQybKgh2zonUjj280i6b43WPFym8zeXpyHuA3TB8Gs
-	/6++ethmBMgxLOi+4G+IbPgITeAgEgi9LBd/aGpmNiwihVeMRbRYuwvFgPfO7XNU10h4QKVSoxz
-	6EDd5P4/lkm7Q96BDQrOAwsYbcbqzeyhYjEZvoS5sxQOyUslwOQQTxFaOjQtWx7Mv8jpBvxT+HN
-	TBvFFzAlKTVFMox06gKOEXYvrM5H03AhU13wwL54FeIiSRTd8/s2rdRbbZW+GXWpvi1fl2LyDlr
-	ryEiCa6SKbUpSe0WF9uWLyUfcGT5zHamGINclwMpuSi9k/yQaI82dqJSV8LNB19F6WO5eLqiOOs
-	WTUrWoAEpQpoDGITj3lQ35BK0=
-X-Received: by 2002:a17:90b:2747:b0:380:f34a:6ff1 with SMTP id
- 98e67ed59e1d1-392ec673319mr4988797a91.17.1786464655648; Tue, 11 Aug 2026
- 09:10:55 -0700 (PDT)
+        bh=B1mcyQU5zL02/TDzlYz/gT52O4+epVO/lG3nwQ2h8yM=;
+        b=Mq31cAafMUBnZFnv4wbterSzU02ZyNPg21emVYS5cLevxD3uGXPFWEG5B6bMkannwA
+         hdhoudfBkCavwCr3KUjkR7yuLZk3qOVtSNrH51aSmAThkoyZZXQJncJk6zyz7RWUgGew
+         E0vJZa197zghRc4XuDKlzVMClzQ9/hNB/bheM=
+X-Forwarded-Encrypted: i=1; AHgh+RrFk3x4+0UbsVQoACy4BZ1ya3uD/+iKdYrnkGXmZDARFuYdFXcfAw26IkY1k7tlwVKKAMRbsFs=@vger.kernel.org
+X-Received: by 2002:a17:90b:520a:b0:38e:fea2:df53 with SMTP id 98e67ed59e1d1-392ec2e8461mr5585324a91.4.1786464812299;
+        Tue, 11 Aug 2026 09:13:32 -0700 (PDT)
+X-Received: by 2002:a17:90b:520a:b0:38e:fea2:df53 with SMTP id 98e67ed59e1d1-392ec2e8461mr5585170a91.4.1786464811546;
+        Tue, 11 Aug 2026 09:13:31 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31cf628ef6csm1003882eec.16.2026.08.11.09.13.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Aug 2026 09:13:30 -0700 (PDT)
+Message-ID: <b5bfe3c3-317a-47a8-9cdf-8b9535b6348c@broadcom.com>
+Date: Tue, 11 Aug 2026 09:13:28 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811022448.116235-1-kuniyu@google.com> <20260811022448.116235-9-kuniyu@google.com>
- <ee6e639c-558c-4538-afdb-3ab6c1c3476f@kernel.org>
-In-Reply-To: <ee6e639c-558c-4538-afdb-3ab6c1c3476f@kernel.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 11 Aug 2026 09:10:43 -0700
-X-Gm-Features: AUfX_mxQ-eWKgCcOc7LkSBADPKEU1AcWofnuzPewaL16HDTe5JFxHaWkGGMhxqA
-Message-ID: <CAAVpQUATfZAif2brwjaqdWTH_JzKzRjFdZ+Yrj07TrTkcYXQWw@mail.gmail.com>
-Subject: Re: [PATCH v3 net-next 08/15] ipv4: Replace &arp_tbl with arp_table(net).
-To: David Ahern <dsahern@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Elad Nachman <enachman@marvell.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
-	Boris Pismenny <borisp@nvidia.com>, Petr Machata <petrm@nvidia.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Edward Cree <ecree.xilinx@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
+To: Jonas Gorski <jonas.gorski@gmail.com>, Vladimir Oltean <olteanv@gmail.com>
+Cc: Semih Baskan <strst.gs@gmail.com>, andrew@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ vladimir.oltean@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260805072641.402-1-strst.gs@gmail.com>
+ <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
+ <20260806102327.wrig23oltjzogyi7@skbuf>
+ <CAOiHx=kqmZSM2Vzusc_bcpJfTjJC=jYPgU3wnz_xX+_nnuiNtw@mail.gmail.com>
+ <20260810120442.255nahzmurjhi5jn@skbuf>
+ <CAOiHx==noeBoE97kgrUm_-HkRNBpEuUVs49r5uFTiUSxWVdL_w@mail.gmail.com>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <CAOiHx==noeBoE97kgrUm_-HkRNBpEuUVs49r5uFTiUSxWVdL_w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Tue, Aug 11, 2026 at 8:42=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
-ote:
->
-> On 8/10/26 8:23 PM, Kuniyuki Iwashima wrote:
-> > We will allocate per-netns neigh_table in net->neigh_tables[].
-> >
-> > Let's replace &arp_tbl with arp_table(net) and remove extern
-> > definition for arp_tbl.
-> >
-> > Three notes:
-> >
-> >   1. mlx5e_rep_netevent_event() and nfp_tun_neigh_event_handler()
-> >      have code assuming neigh_table other than &arp_tbl and
-> >      &nb_tbl, and the part is removed as it will be false once
-> >      per-netns table is allocated.
-> >
-> >   2. prestera and rocker uses init_net because they set
-> >      dev->netns_immutable to true.
-> >
-> >   3. mlx5e_tc_update_neigh_used_value() dereferences nhe->neigh_dev
-> >      in trace_mlx5e_tc_update_neigh_used_value().
-> >
-> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > ---
-> > v2: Add note about mlx5e_tc_update_neigh_used_value()
->
->
-> Seems like this is not a bisectable patch set. References for arp_tbl
-> and nd_tbl need to be fixed up before switching to per network namespace
-> tables.
+On 8/11/26 01:06, Jonas Gorski wrote:
+> On Mon, Aug 10, 2026 at 2:04 PM Vladimir Oltean <olteanv@gmail.com> wrote:
+>>
+>> On Thu, Aug 06, 2026 at 01:09:03PM +0200, Jonas Gorski wrote:
+>>>> static int b53_arl_rw_op(struct b53_device *dev, unsigned int op)
+>>>> {
+>>>>          u8 reg;
+>>>>
+>>>>          if (op > ARLTBL_RW)
+>>>>                  return -EINVAL;
+>>>>
+>>>>          b53_read8(dev, B53_ARLIO_PAGE, B53_ARLTBL_RW_CTRL, &reg);
+>>>>          reg |= ARLTBL_START_DONE;
+>>>>          if (op)
+>>>>                  reg |= ARLTBL_RW;
+>>>>          else
+>>>>                  reg &= ~ARLTBL_RW;
+>>>>          if (dev->vlan_enabled)
+>>>>                  reg &= ~ARLTBL_IVL_SVL_SELECT;
+>>>>          else
+>>>>                  reg |= ARLTBL_IVL_SVL_SELECT;
+>>>
+>>> This ARLTBL_IVL_SVL_SELECT bit is only implemented for a small subset
+>>> of switches (bcm5302x / bcm58* and bcm53134). Additionally, according
+>>> to the register description, this also requires enabling "per port
+>>> IVL/SVL" mode, which is not enable by b53. The description of that
+>>> also says that the VIDs used in SVL ports must not be used in IVL
+>>> ports. No idea what the consequences are if they do.
+>>
+>> What does enabling per port IVL/SVL mode do?
+> 
+> I don't have access to a datasheet or a device to test, Florian will
+> need to answer that completely.
 
-It's still bisectable, and this comment is just to make human review
-(against AI)
-easier because Sashiko keeps asking "Is it safe to dereference dev here ?
-previously only the pointer value was used for comparison", which is false.
-Sashiko just misses that trace_mlx5e_tc_update_neigh_used_value() does.
+Not a whole lot of details in the datasheet, but essentially what is 
+being provided is:
+
+IVL: a given MAC address can only appear in one VLAN
+SVL: a given MAC address can appear on different ports as long as the 
+ports are not in the same VLAN.
+
+> 
+> I can only guess from the register descriptions, which imply that
+> enabling SVL for port makes any ARL lookups SVL based, i.e. VID is
+> ignored/forced to 0. Presumably this essentially only applies to for
+> frames received on that port for lookup / learning.
+> 
+> There is a global option for configuring IVL or SVL, but this option
+> is only valid when VLAN-aware is enabled in the switch. Without it,
+> learning is always SVL.
+> 
+> I do not know how the per port IVL/SVL actually register works, and
+> whether you can enable IVL in VLAN-unaware mode (I would guess not).
+
+IVL/SVL applies to 802.1Q (VLAN enabled) mode, double tagging mode and 
+individual double tagging mode, so yes this depends on VLAN being 
+enabled globally.
+
+> 
+> Note that there is no differentiation in ARL entries themselves
+> whether they are IVL or SVL entries, only the table index calculation
+> changes.
+> 
+> Best regards,
+> Jonas
+
+
+-- 
+Florian
