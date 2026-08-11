@@ -1,67 +1,88 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF02446845;
-	Tue, 11 Aug 2026 14:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC091445AEA;
+	Tue, 11 Aug 2026 14:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786456855; cv=none; b=IdxY5wio8/BJj6Z4hDXQH8rO1AP1GByB6K7PjJCmua4mhTNxjtW9TLoOFtinLiEvS85V3U4M7NS4XoQ5YgjPzXHaN9sN8a9Py/PxJN9YlkGZ7m/kSgi5fZrnvOa/113aNNRmyDjgTSaAnvlAWsIN3YfJvFkgTFo58DIig/YjrZI=
+	t=1786456881; cv=none; b=nQQi5Ceo+ZsOlD3pVFKSxacRiCDD733BiMSmmqRZ8dKfd2n8q6/p6K0ln/EqkKEPPAXRp17i9a0+d8O3Bg1+Knld90GGzx2SkFIw+cK6Oooi78icIMDfzxHlhz+F9NZB9mn2mvQVJNPQiJxSBcQx8ZsTmB59nmI0UpCFUnljS3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786456855; c=relaxed/simple;
-	bh=idtaSrZWpmB+b9o5Kz3JOpm+3XXo2BmjptG6NNKytyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lcaklK7EeBNUr3YlajO5GqjBDzo9AKKF1Jk5mVtuDzWsy/2bKwYc1vlEP3vmtRJXK59/cl+LK7XvmHer8rZdHjHqLM27cRIhQLD6YCKuzbmdipmFRTvVF0o6thZzTdBbMPZDFey1401KpNh+VkTorMeC1wZjE09Y9z0nwKaxMCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=H2TmSP0E; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786456881; c=relaxed/simple;
+	bh=jqTs4iS8D7RGhw5yaVH4FgQaBl3+9PWxPBozsT6WBH0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=gEFghXcAFuoAWsgWC3rs7OlQ4MWFtFZBjLVDtD8zjEZ6/IOujH1TtZLlK6/py+3gIGIdsl4i6ef11ZoThOJ1eIGwnAGtGeCHAEcByEmPFWAflZc0IVnR04bB/zC8OclYi5Pa3cz3Gw7FxWlvI84Zx8u30KvEPKm+fVHyIep51W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8lA4PJs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="H2TmSP0E"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=mUmyIQbRCPKT8jWk090I7pGzIqwkHGmRsIxVhiD6wnc=; b=H2TmSP0EjPaPtAKiMYkl36hbwl
-	cslsffN9q5kcq70FHv21eBB77njYgCN+EOTowKtpAIqozYAXfIl+4bYmUR3X0uSzNDLQJ/peqd4Wm
-	pH0gnvdZpv8KuH8cvihO49yVnC7jHKNJwRdBVmp1mKIB9EXEDm1gDewkojqfbZ3YzJbM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wtn21-00H6LY-RM; Tue, 11 Aug 2026 16:00:41 +0200
-Date: Tue, 11 Aug 2026 16:00:41 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Sandeep Sondagar <sandeepsondagar@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Gabor Juhos <j4g8y7@gmail.com>,
-	Robert Marko <robert.marko@sartura.hr>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] net: phylink: treat PSGMII as an inband capable
- interface
-Message-ID: <a687331e-d077-48e0-9ae8-097c4f80dca9@lunn.ch>
-References: <20260809-phylink-psgmii-v3-1-908dcd3a9e3d@gmail.com>
- <61dd4a2e-ef14-46b6-bfc5-c5b6463deb38@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8lA4PJs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BC01F000E9;
+	Tue, 11 Aug 2026 14:01:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786456875;
+	bh=QzyvIYOP2Mwj4NRGE/J6LThHaLgt9Izv3pfrsW6JwBc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=S8lA4PJsNjQFQJJ6JJM2rte3Mk7slQkhlCqlVeswoq6qGzr0eNg9xtXGEu25rYuS5
+	 e03hsTdrDAB8aBu8+3T8XX8SxyZ98lpJiC+/JyT2Pc6OaOgOcBXTRkAFyvMo4ydlwm
+	 4zAOKEuw3uug4VPBLt4qGzT9PXAyrduYkqtrL4ggDCkkIFbFwyfNSfDIH8CMkaOErE
+	 s64ta+sd6ABZqeY1vsS0fmf6eMFC7iC884p240bul37bMagN93OA7goqa65LPJpN/D
+	 VFuddR/xDHwfzeg961LGtcia1BiAc5CxSgkFdJdfzOkQuupUoEN9VoFFoco+qk7hAs
+	 MsZnB3bWrRqSw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1988A3810900;
+	Tue, 11 Aug 2026 14:00:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <61dd4a2e-ef14-46b6-bfc5-c5b6463deb38@redhat.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] tipc: read le->link under the node lock in
+ tipc_node_link_down()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178645683164.537263.7714780493708130841.git-patchwork-notify@kernel.org>
+Date: Tue, 11 Aug 2026 14:00:31 +0000
+References: <20260810102147.48191-1-juny24602@gmail.com>
+In-Reply-To: <20260810102147.48191-1-juny24602@gmail.com>
+To: Jun Yang <juny24602@gmail.com>
+Cc: netdev@vger.kernel.org, junvyyang@tencent.com, stable@kernel.org,
+ corvus@tencent.com, jmaloy@redhat.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ying.xue@windriver.com, tipc-discussion@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org
 
-> > Fixes: 83b5f0253b1e ("net: phy: Introduce PSGMII PHY interface mode")
-> > Signed-off-by: Sandeep Sondagar <sandeepsondagar@gmail.com>
-> Sashiko noted no in-tree driver is affected. At very least, this should
-> go via the net-next tree without any fixes tag, but I'm wondering if we
-> want it at all?
+Hello:
 
-I thought there was a device which needs this. Sandeep? Is it in tree?
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-I would accept it, but the question is net-next or net.
+On Mon, 10 Aug 2026 18:21:38 +0800 you wrote:
+> From: Jun Yang <junvyyang@tencent.com>
+> 
+> tipc_node_link_down() caches the link pointer before taking n->lock:
+> 
+> 	struct tipc_link *l = le->link;		/* unlocked */
+> 
+> 	if (!l)
+> 		return;
+> 	tipc_node_write_lock(n);
+> 	if (!tipc_link_is_establishing(l)) {	/* deref l */
+> 	...
+> 		tipc_link_reset(l);		/* write into l */
+> 	if (delete) {
+> 		kfree(l);
+> 		le->link = NULL;
+> 
+> [...]
 
-  Andrew
+Here is the summary with links:
+  - [net,v2] tipc: read le->link under the node lock in tipc_node_link_down()
+    https://git.kernel.org/netdev/net/c/cba9ccb47e9f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
