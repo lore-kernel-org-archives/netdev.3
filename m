@@ -1,123 +1,187 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92125334C1F
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 17:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786468668; cv=none; b=GL0R2/5bx6hb8+NrEWxMVVTrOjVs4C/1oli8ER72cCk9BdVn872aUZF4Uih/nwUioF2804Okx8Jsv0YdUsZsVbavSGdXnYfxhJ/mIJJbQD/TNd1NKurmcY5/V8PyECw79ctrzi+CKXk2Uds2Z+36QASAZrmZq9yFj0sQ/Y3WBG4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786468668; c=relaxed/simple;
-	bh=pLbyMQYE8Aq6GirsTWhIic/NlIg0CHyFaHO9DYKDLYU=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=GqshXkRtxyd3HIW/9/GIcOPzYoEBoFHhJIkKtElwZUsY2EhL8XS7i8SC7T2D1MHqxL9TUUFa1FJiPgFBYT2OX4YjQQs4zSEQo1dR4HxPlxVSddZat076RPuj7OooAO7vD7keCyBiGB2mIchmO2wv88h3D2TKduoB8GSlwEdB92s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GlJVYvS6; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338B93B3C17
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 17:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786469162; cv=pass; b=gfOsmUC8JloctQmfzKtCYss/7cZ14lC4mcL/JQOKSA1dZ7Jb7yoOXkglg0QL0rIb/JZXr+/uk+HFXz2hDH2BA/PXfzf4KHSaMJHwOGUwFdIYSyU+0CZZP3y8AQQML9EWzTAOXqPjvAPRa3GM+paGrjhRTsAEAoZ9/GwLVZOI6Dc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786469162; c=relaxed/simple;
+	bh=z3p62sv8iuyO382QUxDR5nSCmlxpeKqu16eEfm0/Sm8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=leYTmI40qZBTOAK81GKI7ikKZoMDE5c/Ep1GSxJUCGlI6NThMwWSDkUFMZSLpWvNGdUn91xJMOZotxJdMYgXDfIEBDZT/01rplORPwuq3zRWfHMlqB2yeJGfihFizRftRmIRVRiOx0j3dL1Bo9Lz+uG1nkCSKL5Y7POWgEuUhms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kot+6o1d; arc=pass smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GlJVYvS6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786468667; x=1818004667;
-  h=from:to:cc:subject:date:message-id;
-  bh=pLbyMQYE8Aq6GirsTWhIic/NlIg0CHyFaHO9DYKDLYU=;
-  b=GlJVYvS6lYjg8wKiEKTbXrFT75S2ULouXbcP/509HGetwPf5mqTFXEKn
-   0prMqw86yek43duYbG5YI50ugzTFQKcbNMBidsQ98HhjuiUI/L5drzFgg
-   2vfRY31SPtOuVyeYsZG/1S5bS1IiueRXviPcQU3Rh0XaSqYCppJyBZn0Y
-   bwxrc/zvcXgoA6e+ko2J5v/pl1zCI2jakZA/SvGkq2dDpiwZK3FsMfOTH
-   1HzUDwoYIz8hLGKzX3Oxynn0jIdQVQQauL+CV/Qo/7Ijl56+Mm+n0WR/T
-   aCmvis4Yh4Bp18i+1z12FmVhRYmgnJBNwp0CteQBXWGLXrP261WO/AAXZ
-   A==;
-X-CSE-ConnectionGUID: AbTv9FOFSOSJsbU4b7jKWg==
-X-CSE-MsgGUID: uhPM8ViSTRKR4hcfDpvFWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="98524028"
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="98524028"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 10:17:46 -0700
-X-CSE-ConnectionGUID: jVcwHTueSJS5qhT6N12w7g==
-X-CSE-MsgGUID: PW778NRWTKmYmGXFbI7Xqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="261640800"
-Received: from estantil-desk.jf.intel.com ([10.166.241.24])
-  by orviesa006.jf.intel.com with ESMTP; 11 Aug 2026 10:17:46 -0700
-From: Emil Tantilov <emil.s.tantilov@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	joshua.a.hay@intel.com
-Subject: [PATCH iwl-net] idpf: fix possible race on remove during a reset
-Date: Tue, 11 Aug 2026 10:17:51 -0700
-Message-Id: <20260811171751.22165-1-emil.s.tantilov@intel.com>
-X-Mailer: git-send-email 2.17.2
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kot+6o1d"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cacef7d299so5825ad.1
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 10:26:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786469160; cv=none;
+        d=google.com; s=arc-20260327;
+        b=imEp6AlElyLbMSw42TV/XztKbqBH0N4WX17Ln6d1Y3tSC2hoAzR+2FfhTU/cAEtky+
+         i3nMZJv9GC4qTLsLwxBIOfoHHXV2SXB7gxWgySvN98+zIOnaaeqQU5M8NFpk+f0OTv7G
+         SB9PTwEvNercmlSxH92SK/1otLCG9N/Fxka3/hJbSp9yxMW3ShsVgjxXnKJFuXgGPl0c
+         UeXMMefJmjzbzlJ9qBN6lZt8Hiv5n/nG9zp/IJPZEIz6SJe9KbZbmnu+eVtTJLJBGS+8
+         CiFaIfNinaGG1TboEK0KHFlqAOnnFUl611l+UKYP2533kOvw3/V5jNH9upb9Vnv9Rs62
+         5b9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VQxqTVTvnKCPFdyBQjMkdm7NzasgJgC6YzkMYe1Piqo=;
+        fh=wM4yZON0x8MN2uWcqZlvj9pgi1+5crKDWXeq4a2Bh3E=;
+        b=MXct6TFEblvtcmWiaOudzolrrpLKYE4kzitm7AmIUIsci0nzQdTmehV5rj5YRA1JhC
+         zxTEugLEN4wiPxOq23ZUsba4q8ruhw0tyUokvlh89rv/vkIGAftU45VTlNXOpW7gIs0k
+         eCrb59/XkrYsPhVZnAqh0jgZaITJ8zhDMyQmmR0qQb+5lqkv4myE/Lvy0XCeA3sYAA7x
+         563v1YW7kh5x/gZiFcDJgMUrA84EcF44RBZWbK05JJVsls5xEP09YdlTGStVTyr5zuE+
+         /VcyzMbp2039I5+0ypERnAdA35wu5SyzeN7lC4OFsSP7JF6SywLnriQbzGlnzNTiWUF8
+         7AIA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786469160; x=1787073960; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VQxqTVTvnKCPFdyBQjMkdm7NzasgJgC6YzkMYe1Piqo=;
+        b=Kot+6o1dt2nGcxJyj3IpV4lNSznlskmzaufrwgkeNpu74hj7Js2g5L/S8ki5YtOjJP
+         6+M/1J85vLAxhgWdWjZ4F0GijB4XQVPwfBxJRFipFGsdmsAWL1i85Q0fAkEzpjYAIXxF
+         I4JXxYsx67URKC6DZT04IDOYmgeLF2yzhi/V2+p0yV7Xd5MMI3kHEycnsunvNyTpoVL6
+         g7bFwp43revgGb/OXmGpyM4MoxBlgVcnFWlznWfOT4okhoS7C1MYNuyTikuuLDu14ZLP
+         0zrxvP65jSW5zHZ2j/ol4I396k2PrApcOFezJIyHYj38nJcAjk96EWMhdO65BGgETUvY
+         bd8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786469160; x=1787073960;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VQxqTVTvnKCPFdyBQjMkdm7NzasgJgC6YzkMYe1Piqo=;
+        b=NGidwySFLKGXNV1Ygtbd+1TTfapK/kfin30OEdZO2olqyFdU9oInv3PaDBenaM5p3L
+         a0b7i0R8qLN9gCL65Nkysy2FRCHaQL3UvdZDaSuxduER2kAywbHqzO1kZMjC6yEjo3ap
+         zinA5GX2g7U1kKxkhHA42edHiOCQObv4yhI68RLufOrlf1vzy3xWDObo0Lz6zcVSIl1y
+         lmvn5U2FFQXmZwXhDVYZaLueUiUMKb+7Y1nnNSq6AEaBpYnjpA4VuZ6hq2ljsY8vN1Tk
+         QokDXY+3SsIS8SBq+Cb21d4DcsKRUyAo+AiV9QPJSMt2zVgH7lZZzf9Uei3v1oiPy3hK
+         sHbQ==
+X-Forwarded-Encrypted: i=1; AHgh+RreLNX+kFWxL+RH8Olc8Um9/tAHBqHjW7am6rUczSnaEQ/+18iR2KkhacvPArwYlrZKQwnoWoc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVlmnGay0Kc/YmgFlouqHlyIzpk3XOXTVacPYJCmSjxVWQRfvh
+	V7jrpIbG/Ut0Ux3MSVzDZuwaNwCY96iqhHHv6T0i60KXtTqFocnfi8FXnQ9gM2SOnW/OVW+gKrY
+	XVgKwFEo5GvS7JgjDsX98zJgGwdcDJ6IizS2wTpWf
+X-Gm-Gg: AR+sD10pOliVulhp5nECSULyivpNz2qptIdgLpWs8Pz2WY3H91uMe3Ht+4ipyI+ySh/
+	dCGDK4J7+gM1YeuFJ9IPjqy6kyTd/jJkwqLGFWaUNa4Ua0a81oV8KgQlDjMOEe4CrhrSVGURv1U
+	t3rig54RRgaUTSlxDfMGpzXIL8N4+qMZjVTruWlQ2EGNRF10b7qEvRU+ySRQZJ9QZ195izlf4o3
+	bIP8u+XPlWGRULeWWe1TZgIsUVsHEVIM2R2mwJaqU3BBtQM3gefEI+4DxqPG+eWZZrL+dLJ23xL
+	LDSoL/V5vz0DqtmZmA4NKnCz6xj6A+rnqwbPaDGQ2gz0W6CzFI7XZXzb7kzFp+ntcH6wrlh2VvK
+	NvQLL0VPIFQ==
+X-Received: by 2002:a17:902:ce0c:b0:2d3:153d:acae with SMTP id
+ d9443c01a7336-2d33a3fa139mr647685ad.0.1786469159791; Tue, 11 Aug 2026
+ 10:25:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260810175446.3945358-2-dtatulea@nvidia.com>
+In-Reply-To: <20260810175446.3945358-2-dtatulea@nvidia.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Tue, 11 Aug 2026 10:25:43 -0700
+X-Gm-Features: AUfX_mzzTPG3fXKSIJoOjl_90bMZJP1JVoiyE14MyuZ1YtTMTYvQDg5G333NaXc
+Message-ID: <CAHS8izNLCCcxQwH3oYL1ch+UDf0Ok_LF0KuyJtA_S+daFye1mQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: devmem: add netdev_has_dmabuf_binding() helper
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	tariqt@nvidia.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reset and remove can race, leaving NAPI registered and enabled:
+On Mon, Aug 10, 2026 at 1:59=E2=80=AFPM Dragos Tatulea <dtatulea@nvidia.com=
+> wrote:
+>
+> Currently there is no way to check if there is a dmabuf bound on a TX
+> queue. RX side has netif_rxq_has_unreadable_mp() which gives a hint of
+> it.
+>
+> To help with that, this patch add a helper to check whether a devmem
+> dmabuf binding is active on a given netdev, optionally filtered by the
+> DMA device the dmabuf was mapped against.
+>
+> This API is necessary for the upcoming support of data direct in mlx5e
+> to allow blocking accidental swapping of DMA devices while devmem is acti=
+ve.
+>
+> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+> ---
+>  include/net/netmem.h | 19 +++++++++++++++++++
+>  net/core/devmem.c    | 20 ++++++++++++++++++++
+>  2 files changed, 39 insertions(+)
+>
+> diff --git a/include/net/netmem.h b/include/net/netmem.h
+> index bccacd21b6c3..0e332e04ea16 100644
+> --- a/include/net/netmem.h
+> +++ b/include/net/netmem.h
+> @@ -363,16 +363,35 @@ static inline unsigned long netmem_get_dma_addr(net=
+mem_ref netmem)
+>         return netmem_to_nmdesc(netmem)->dma_addr;
+>  }
+>
+> +struct net_device;
+> +
+>  #if defined(CONFIG_NET_DEVMEM)
+>  static inline bool net_is_devmem_iov(const struct net_iov *niov)
+>  {
+>         return niov->type =3D=3D NET_IOV_DMABUF;
+>  }
+> +
+> +/**
+> + * netdev_has_dmabuf_binding - is there a dmabuf binding for a
+> + * given @dev and @dma_dev
+> + *
+> + * @dev: netdev to check bindings
+> + * @dma_dev: dma device to check, when NULL it will not be checked
+> + *
+> + * Return: true if a binding is found under @dev and possibily @dma_dev
+> + */
+> +bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dm=
+a_dev);
+>  #else
+>  static inline bool net_is_devmem_iov(const struct net_iov *niov)
+>  {
+>         return false;
+>  }
+> +
+> +static inline bool netdev_has_dmabuf_binding(struct net_device *dev,
+> +                                            struct device *dma_dev)
+> +{
+> +       return false;
+> +}
+>  #endif
+>
+>  void __get_netmem(netmem_ref netmem);
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index 957d6b96216b..f13a0e343684 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -364,6 +364,26 @@ struct net_devmem_dmabuf_binding *net_devmem_lookup_=
+dmabuf(u32 id)
+>         return binding;
+>  }
+>
+> +bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dm=
+a_dev)
+> +{
+> +       struct net_devmem_dmabuf_binding *binding;
+> +       unsigned long id;
+> +       bool found =3D false;
+> +
+> +       rcu_read_lock();
 
-modprobe idpf& sleep 1; ip link set eth0 up& rmmod idpf
+Why do you need rcu locking? I thought xarrays handle concurrency
+inside their helpers.
 
-[145561.805104] WARNING: net/core/dev.c:7699 at __netif_napi_del_locked+0x11a/0x130, CPU#30: rmmod/22393
-...
-[145561.810238] RIP: 0010:__netif_napi_del_locked+0x11a/0x130
-...
-[145561.817678] Call Trace:
-[145561.818125]  <TASK>
-[145561.818653]  free_netdev+0x110/0x2a0
-[145561.819109]  idpf_vport_dealloc+0x452/0x460 [idpf]
-[145561.819668]  ? enable_work+0x9f/0x100
-[145561.820133]  idpf_deinit_task+0x51/0x70 [idpf]
-[145561.820694]  idpf_vc_core_deinit+0x32/0x170 [idpf]
-[145561.821193]  idpf_remove+0x40/0x200 [idpf]
-[145561.821667]  pci_device_remove+0x40/0xa0
-[145561.822132]  device_release_driver_internal+0x1a9/0x210
-[145561.822691]  driver_detach+0x4b/0x90
-[145561.823161]  bus_remove_driver+0x70/0x100
-[145561.823721]  pci_unregister_driver+0x2e/0xb0
-[145561.824207]  __do_sys_delete_module.constprop.0+0x190/0x2e0
-[145561.824715]  ? kmem_cache_free+0x312/0x550
-[145561.825213]  do_syscall_64+0xc8/0x6b0
-[145561.825709]  ? clear_bhb_loop+0x30/0x80
-[145561.826216]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[145561.826602] RIP: 0033:0x7fe628130beb
 
-Make sure to call idpf_vport_stop() in idpf_stop(), irrespective of the
-IDPF_REMOVE_IN_PROG state, to allow a reset racing with remove to tear
-down NAPI in idpf_detach_and_close(), which runs under RTNL lock.
-
-Fixes: 2e281e1155fc ("idpf: detach and close netdevs while handling a reset")
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Joshua Hay <joshua.a.hay@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index bb81e620c5c8..c2d7d92d0bf1 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1031,12 +1031,8 @@ static void idpf_vport_stop(struct idpf_vport *vport, bool rtnl)
-  */
- static int idpf_stop(struct net_device *netdev)
- {
--	struct idpf_netdev_priv *np = netdev_priv(netdev);
- 	struct idpf_vport *vport;
- 
--	if (test_bit(IDPF_REMOVE_IN_PROG, np->adapter->flags))
--		return 0;
--
- 	idpf_vport_ctrl_lock(netdev);
- 	vport = idpf_netdev_to_vport(netdev);
- 
--- 
-2.37.3
-
+--=20
+Thanks,
+Mina
