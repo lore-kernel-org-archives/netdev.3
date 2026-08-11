@@ -1,84 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B736386C37;
-	Tue, 11 Aug 2026 09:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FB0424D70;
+	Tue, 11 Aug 2026 09:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786441254; cv=none; b=MxmSQbUxbsC2dSTIdw4NuoDqybKx/CeATIa0IwL9QVWnpwGowiMbZ3bNao71lJgUjJzhWb917zW1Qje3tgrmbJjbsSLeCgGzQbLGrxkW4CiC1YHAYklLlQnbUiICe6GfVbRwmtv1+54k9rt11SBF1aOmomMvhkZbagPSEbKf/LY=
+	t=1786441296; cv=none; b=oyOIjCNLKtEbqZjN6E01HuBblvsQJoSLQew+Lyv8HrRi2FcWR04k7ODsRmVWWQh8+7+2jI5Tdomy89fac/44gxpmz+UHIQZYxBrvzfu4X15ZaLNO4EeQKIAkPd2pW29UFCQqzR5PZqcAbyEayUcacwWq6/ixJ3u7NQr9Jd5rAAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786441254; c=relaxed/simple;
-	bh=q+29RmvT6pJbKyfVxMOa9GGLc0rod4KMB37X8tUyzoU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=MAPvR43d1M1b9OjjpOS3ArNry8104atBwBqzHNyqT4lhsQieWzI00DHbK+/DzThLhePNIFGKvx7FXuYsc2P9+7COwr0zm6ywD/CrRRVWu7cCJhfEI2PouGKXuPtoc8VvLZOIi6rDyCaqGcEymEUszXWYHgKAoEAFnQddyxni1i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFLZWkpt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786441296; c=relaxed/simple;
+	bh=Nj5KpPQH7NBYJ8Dh6iUkF5S0m0GsMognXPcuDCVqJJM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pfaQ4vqNtjRGIzIATcb6xjJOtBOL+T+j7iaTkJaWuR/M1cE0mD/o36TasYBOzBqXqAhESTlTEMAvtW5SLhZoZdmmp2N7JjvrTAN1loY0RTPfhyAIG7h6O2jwDJ8mOX73/qkvHMIXVJpb0qGkWPGMO+PUB75pgtzArcD028YBjVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=D/nYuJ3H; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFLZWkpt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFC81F000E9;
-	Tue, 11 Aug 2026 09:40:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786441252;
-	bh=mq9nngAjq/TgFj/gai+l2DSeGBHwJOHE/ZrHqC+0Ed4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=dFLZWkptU4gH2CuawNzeECopfQHkzKGQavLHwv0CZtLgrCkO0F2TlC4RHNrTRLsj3
-	 vQp2WW4vR7Pbr/PcjxpqExdZGxvMaR+hjeyC6TzUW2CmQPN+w/dRykQhlNtzojr4ok
-	 s6rdliNGEiBeio4p0wNGg3DDZNxFEsKesXUaW+AmRyqrCL+HwKgnYVvbZPUuIXmKSP
-	 ZPk+7WceE0Otn1FXp/QSq8eDKnbOYfoilZ4w1hJhU/AoF/MPJqelEkkCULQUOdVZjU
-	 IboKQax66yxmgNg0ChuI/BvpmGMUU2OHV+6WSo+ImeVshEVeWHj4vyIE/sYiSI/y4f
-	 cfS6gUrBv9FPw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198A539263B0;
-	Tue, 11 Aug 2026 09:40:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="D/nYuJ3H"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=x0LXuradjaBDUdpGwitgnO9x+jEP9InHi11OJSjcI94=; b=D/nYuJ3Hcz5TRtVovyUaHZmT7U
+	8rln9h6E5TVT+7/uIDI0cMfME2QHSshc7n6rs7qUxWhaeDR+QbbjjbL8b0qltJ9bokepkXWK6IPv+
+	HEU5Hm5FKziYHbIxhsfkM9lauO+H4y23vEQR9Nak5eSqVMIa1OjHIEz0pjJr5CwkIJ6FMQS6h9iLw
+	/AdqEBLHXiIYobSjxV/J8D7vOPsr2G5h3k92oJK6/eTHUxPgzRkKunKHSap6W+yRfSXfp5xA71CKi
+	t3DcsvQrEDliCp0FfoM0+ha5j5wn5J0WPNJ9vw/xDAUKIoFsBW1xCRnp9doqLZjCO8LRr/R+gdjk7
+	1owHtKeA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtiz4-003TEq-0q;
+	Tue, 11 Aug 2026 09:41:22 +0000
+Date: Tue, 11 Aug 2026 02:41:17 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Norbert Szetei <norbert@doyensec.com>, Taegu Ha <hataegu0826@gmail.com>, linux-ppp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] ppp: annotate lockless queue empty check
+Message-ID: <anrt_vOzR6rNQdXp@gmail.com>
+References: <20260811060236.322284-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/2] dpll: use pin owner's dpll ref for
- pin-level
- set callbacks
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178644120889.442634.3282180900336189180.git-patchwork-notify@kernel.org>
-Date: Tue, 11 Aug 2026 09:40:08 +0000
-References: <20260807095926.386923-1-ivecera@redhat.com>
-In-Reply-To: <20260807095926.386923-1-ivecera@redhat.com>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, arkadiusz.kubalewski@intel.com, kuba@kernel.org,
- jiri@resnulli.us, min.li@microchip.com, pabeni@redhat.com, poros@redhat.com,
- richardcochran@gmail.com, vadim.fedorenko@linux.dev,
- linux-kernel@vger.kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
- linux-doc@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811060236.322284-1-qingfang.deng@linux.dev>
+X-Debian-User: leitao
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri,  7 Aug 2026 11:59:24 +0200 you wrote:
-> Pin-level attributes (frequency, phase adjust, embedded sync, reference
-> sync) are properties of the pin itself. The get callbacks already use
-> only the pin owner's DPLL reference, but the set callbacks iterate over
-> all registered DPLL devices, resulting in redundant HW writes for
-> drivers that share a pin across multiple DPLLs.
+On Tue, Aug 11, 2026 at 02:02:29PM +0800, Qingfang Deng wrote:
+> ppp_poll() checks whether pf->rq contains a packet without holding the
+> queue lock. skb_peek() requires appropriate locking or a private queue,
+> neither of which applies because ppp_input() can enqueue concurrently.
 > 
-> This series simplifies the set side to match the get side: call the set
-> callback only through the owner's reference.
+> Only queue emptiness is needed, so use skb_queue_empty_lockless()
+> instead.
 > 
-> [...]
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
 
-Here is the summary with links:
-  - [net-next,v3,1/2] dpll: zl3073x: update all DPLL channels on ref_sync_set
-    https://git.kernel.org/netdev/net-next/c/346630e46b38
-  - [net-next,v3,2/2] dpll: use pin owner's dpll ref for pin-level attribute setting
-    https://git.kernel.org/netdev/net-next/c/84e85c325e5e
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Breno Leitao <leitao@debian.org.
