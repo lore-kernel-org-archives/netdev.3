@@ -1,203 +1,182 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5968846D54A
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 21:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA4847CC72;
+	Tue, 11 Aug 2026 21:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786482556; cv=none; b=STo3As06t6eePeTNoxxWAdDkJZQ2kZK7k8b/4345pXwk0l9m7GqyzSjueJIKxanl8ykZQwZLArHNwj+C6zLhoNi/Bh5ITv2o6Frbj7Hlhbxeotcgxr+NDYSnIUq1jDPA5QcZnwkaeTroKFfVERX0bpBNY71KhhRYVWQbj+jxM1Y=
+	t=1786482647; cv=none; b=sf1w87gNvRi8+pd+o4Ktul4YJN16tgdQ5RgBI1dbfKtSP398FsoRvJkMRtDtB9rT5mT/A5fnh2SjoAde3YToPjoFTT/ZwWOl1Um0vqCZEOiCJgos64G4Ml9ybugHC8FJOONRp7zmadAAV66BzFSw6XTcPNxquowmR0Xn+gKWVso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786482556; c=relaxed/simple;
-	bh=FwNARzcbMbLf7kTkzLZos3PP0XC44XFJ9Kq/f19ElGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Luv5ci1EKvcRA9FlnwfUF4Ca8LOiasRWRfh1NDUgTbBE9DmijMmuKUH38geGnLrlM0KTqCUItWX6DuaLOk0xu4C8c4h8eDSwyNUt6qrH9tq3spI23RwxwWnpR8fa8aquSVUzXN7aNh9fvXZcLmix4ztJ/GFv6QAG1lJSGvYnxFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=foy9iZUV; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1786482647; c=relaxed/simple;
+	bh=6HIsaC5HxG4NdDGE9sUM/bNXwqfJM9H3QlSlL2IN8XU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LFB2x6ff06FOF5tchb07igmItG/lV3UjeSoC248Iyc4muOm+vs+ldeCN5wzYyBfNZz1xZ9Z/GT7CT9f+TxIJRUdOi91LlMnXJSwAy3VxAIqTZjrKot5qgycXOTMw0XcLXrS4O/4iLPgfIRYNASAzXWpLmG7AFmW2UIferVCRjtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=o1jsJnhd; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="foy9iZUV"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84e3007a2b7so310013b3a.0
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 14:09:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786482554; x=1787087354; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FCfe6U3NJnWWh5FIk3E/yNJv391SUeQXzwUsI84caIo=;
-        b=foy9iZUVOTorzawNa69ViPer6GywjUCRuHMiQX9DDcq/zR5DQDUip2I+seA5xEwp+/
-         obrm4G/NrkFlgvFT1rp2vHu732Q5Amhl6oofT2qpx9JpzVUvvXjGaJIJeQCrxFIwD0ba
-         bPxJwtmzRAPtZc4sexwMoREbo7aULpRojkdFkciUUZy8VvQk2KQhU7gOHTnDJv1ygng5
-         tVogFQx2qeyB6K8lA3ABXgGd3QL+ZGA/Y8BZCwvuJiGEmFKDm3SK4l5WRNXsv8YXizqz
-         /5mU7LAu8+hTiYX9ucAVuOMVISYmb7I1A5hCA7VH/8FPeJt0EEzmKRljuiwfJ54MqNj/
-         VgfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786482554; x=1787087354;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FCfe6U3NJnWWh5FIk3E/yNJv391SUeQXzwUsI84caIo=;
-        b=MGaeZuxXPqCaxjJ3Gc5s3w+VbeJyTQVNnoFnVLDidMsT2Wu7+98gSpVvKveK9ccnsX
-         M+I7Oe99h/xwrvJjlhqk2ofsF4Y+cg0zaLAiqFiOmDJn9+sM/gvqTIyXJuJCQeBU9Suk
-         zJoeI4EnIpy1SNp6FZRvW9BiSRH9MfUnSSsQPq0vINDylegim4UxQsMVFAMXsRnz2NT7
-         1UINqxFpryZADmzriSXtfjjFGUN6Yqx/bZzXyhpVGWs7bzC0Wze+kKYpkQ8hdpVRrZ/D
-         l8VOg1EjB7+GOv620KfhPO7iMbsQRFkYkDHzKBXQ9NccVrI4R+ZHf6ZyHcmH59gpgBIM
-         5Ahw==
-X-Forwarded-Encrypted: i=1; AHgh+RrMw5p/vBMb0UsQCofcL4WiiEh5o6UPQjPNsED1jIwunOvS0Oprib3SxMSvGkwROwUO2zkENg8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy67UnruWamFcjKcWgyf00GzjglzvpQ2Bm4Ce/aNsJA/Q+sCKIo
-	36gYAC5Vz8pauh5e0WFfIdM2TaTnXKcmmUChDRvHKNGb5gm+qnd/SWLVJ7jPRbQMKg==
-X-Gm-Gg: AR+sD12vvmzJ75jzvaNelSNW8mbeEthJnii0TzSCZH1EZcfz4j6wxpdTtqjp5yKlFJh
-	gDW6A9d4WEUfdbad/vukd+LglxXp04jDlHbhqeunfIUeT3GH94aQcIIu3lg+yp5XQfNK6BwSr3C
-	BB64ZOawgY4s3wZIWKW+kwfMFaXQZNUeR6ee44kCDck796UMkqnsZDmym8BjKYHlgfpj66gpgkz
-	dpRjMGr8417EwjmqOQLuk4bRTOwipV2d4r7aE5/kQP6HUMz8cczbgWP3YOcEN9ezZlrmNc4ZNLk
-	Q+eDZq3QIUxtfLJ0CrtfEnRrE5eBn6GfP2LUjfNeJMBSH/VHHCzZxXIEzPrV22aqGMKvRJknuXn
-	OnQzmEPPvAk2OYG/bAfH6Gh1KfmzRY6P+wxA9o/JfJn5Q1hc+GkE+wWDVk6x7OL2fc698ne+inU
-	Ewn1SHyZjniRu0V4FjYjoIo8Kz5MUba5JDF8NOppp3a/aZRRF5/yyfWL6FRdwXSRT7aUIp6OyoS
-	2wNjo67MhQm6s7VmIOk6N5f9Xci8w==
-X-Received: by 2002:a05:6a00:4217:b0:84f:3f5e:f072 with SMTP id d2e1a72fcca58-84fb53ff444mr185899b3a.10.1786482553078;
-        Tue, 11 Aug 2026 14:09:13 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84fb1f6b2e2sm237294b3a.55.2026.08.11.14.09.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 14:09:12 -0700 (PDT)
-Date: Tue, 11 Aug 2026 21:09:09 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Justin Stitt <justinstitt@google.com>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, llvm@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>, Bill Wendling <morbo@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, patches@lists.linux.dev
-Subject: Re: [PATCH v3 07/11] vfio: selftests: Allow drivers to specify
- required region size
-Message-ID: <anuPdf84cFtZbeE1@google.com>
-References: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
- <7-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="o1jsJnhd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1786482632;
+	bh=6HIsaC5HxG4NdDGE9sUM/bNXwqfJM9H3QlSlL2IN8XU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=o1jsJnhdJFPmY+c4EElh1ZNOsLMGQuBRp4TvD9KeleLKd8IwQm0GWc63M0NHaZE8B
+	 8A/+03LSuSovymaWFLP27uYWoiD9UjbR8ZoT8yDayyPWpjv0HIR1qmc1pJiKb+myJj
+	 kDUUmEh2v89MxmEjkOcGZloS0V5/oAVCvqb7J39QS4zPTvxcv1cyCMbRKffb9ALTbI
+	 ZCPO9tpViJ8QUrReZ2E6DK8vOoeDj5YYLGs7+skF/EdrQut/PPIch5o9+y05ti+b8L
+	 M/C7Fylvz7Nb5+j3w6BjvxDEh68PzxPmbMvdK0mdGt2LeDLMdRMQ0V6YTq9EOt1sBy
+	 BVXYcRzaQhu4A==
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 4CA0D600C1;
+	Tue, 11 Aug 2026 21:10:32 +0000 (UTC)
+Received: by x201s (Postfix, from userid 1000)
+	id 287BC20156C; Tue, 11 Aug 2026 21:09:25 +0000 (UTC)
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
+To: Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>
+Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kristian Nielsen <knielsen@knielsen-hq.org>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3] tcp: reset late connection after listening socket close
+Date: Tue, 11 Aug 2026 21:09:23 +0000
+Message-ID: <20260811210925.1751466-1-ast@fiberby.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 2026-07-16 02:03 PM, Jason Gunthorpe wrote:
-> Add a region_size field to struct vfio_pci_driver_ops so drivers can
-> declare how much DMA-mapped region they need. The mlx5 driver will need
-> ~18MB for firmware pages. Existing drivers pass in the sizeof their state
-> struct. The core code will round up and minimize it to SZ_2M so as not to
-> change any test behavior.
+When __inet_inherit_port() returns -ENOENT, the new connection is
+dropped silently.
 
-Please update this last sentence to match the patch.
+In that case the client sees the connection as ESTABLISHED, however in
+tcp_v{4,6}_syn_recv_sock() the call to __inet_inherit_port() returns
+-ENOENT, and the new connection is dropped by put_and_exit.
 
-> 
-> Assisted-by: Claude:claude-opus-4.6
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c         | 1 +
->  tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c       | 1 +
->  .../selftests/vfio/lib/include/libvfio/vfio_pci_driver.h   | 6 ++++++
->  tools/testing/selftests/vfio/lib/vfio_pci_driver.c         | 7 +++++++
->  tools/testing/selftests/vfio/vfio_pci_driver_test.c        | 3 ++-
->  5 files changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-> index 19d9630b24c23f..40b8541b588eee 100644
-> --- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-> +++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-> @@ -418,6 +418,7 @@ static void dsa_send_msi(struct vfio_pci_device *device)
->  
->  const struct vfio_pci_driver_ops dsa_ops = {
->  	.name = "dsa",
-> +	.region_size = sizeof(struct dsa_state),
->  	.probe = dsa_probe,
->  	.init = dsa_init,
->  	.remove = dsa_remove,
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-> index a871b935542bad..c9b28365c5eb6b 100644
-> --- a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-> +++ b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-> @@ -226,6 +226,7 @@ static void ioat_send_msi(struct vfio_pci_device *device)
->  
->  const struct vfio_pci_driver_ops ioat_ops = {
->  	.name = "ioat",
-> +	.region_size = sizeof(struct ioat_state),
+A client may therefore hang indefinitely on a blocking read() if the
+used data communication protocol is initiated by the server, like SMTP
+and the reporter[1]'s MariaDB protocol both are.
 
-When you rebase on top of vfio/next please also make these changes to
-the NV Falcon and IGB drivers that have recently landed.
+Had the new connection been processed before the listening socket was
+closed, it would either have been added to the accept queue, or
+inet_csk_reqsk_queue_add() should have sent RST.
 
->  	.probe = ioat_probe,
->  	.init = ioat_init,
->  	.remove = ioat_remove,
-> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
-> index e5ada209b1d102..547369c5cff95a 100644
-> --- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
-> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
-> @@ -9,6 +9,12 @@ struct vfio_pci_device;
->  struct vfio_pci_driver_ops {
->  	const char *name;
->  
-> +	/*
-> +	 * Size of the driver's state structure overlaid on
-> +	 * device->driver.region.vaddr
-> +	 */
-> +	u64 region_size;
-> +
->  	/**
->  	 * @probe() - Check if the driver supports the given device.
->  	 *
-> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-> index 6827f4a6febe99..e13bbb7ee423dc 100644
-> --- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-> @@ -1,5 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  #include "kselftest.h"
-> +#include <linux/sizes.h>
-> +#include <linux/log2.h>
->  #include <libvfio.h>
->  
->  #ifdef __x86_64__
-> @@ -28,6 +30,11 @@ void vfio_pci_driver_probe(struct vfio_pci_device *device)
->  			continue;
->  
->  		device->driver.ops = ops;
-> +
-> +		VFIO_ASSERT_NE(ops->region_size, 0);
-> +		device->driver.region.size =
-> +			max_t(u64, roundup_pow_of_two(ops->region_size),
-> +			      getpagesize());
+The call to __inet_inherit_port() returns -ENOENT because
+inet_csk(sk)->icsk_bind_hash is NULL, after inet_put_port() has been
+called by tcp_set_state(sk, TCP_CLOSE).
 
-Blegh this is because the IOVA allocator insists on a power-of-2 size as
-you pointed out [1]. Can you add a comment here to document that? Or
-better yet, move the rounding up into iova_allocator_alloc() so the
-callers don't have to deal with it like this.
+This patch adds -ENOENT handling to both __inet_inherit_port() call
+sites, and ensures that RST is sent before the connection is dropped.
 
-[1] https://lore.kernel.org/all/20260529173753.GB128816@nvidia.com/
+Reproducer:
+  https://files.fiberby.net/ast/2026/kernel/socket_teardown_test.c
 
->  	}
->  }
->  
-> diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> index afa0480ddd9b2a..f68239da574f5a 100644
-> --- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> +++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> @@ -80,7 +80,8 @@ FIXTURE_SETUP(vfio_pci_driver_test)
->  	driver = &self->device->driver;
->  
->  	region_setup(self->iommu, self->iova_allocator, &self->memcpy_region, SZ_1G);
-> -	region_setup(self->iommu, self->iova_allocator, &driver->region, SZ_2M);
-> +	region_setup(self->iommu, self->iova_allocator, &driver->region,
-> +		     driver->region.size);
->  
->  	/* Any IOVA that doesn't overlap memcpy_region and driver->region. */
->  	self->unmapped_iova = iova_allocator_alloc(self->iova_allocator, SZ_1G);
-> -- 
-> 2.43.0
-> 
+Reported-by: Kristian Nielsen <knielsen@knielsen-hq.org>
+Link: https://lore.kernel.org/87sf0ldk41.fsf@urd.knielsen-hq.org # [1]
+Fixes: c2f34a65a61c ("tcp/dccp: fix potential NULL deref in __inet_inherit_port()")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+---
+
+Changelog:
+v3:
+  - Rewrite commit message around fixing commit c2f34a65a61c.
+  - Call tcp_v{4,6}_send_reset() directly again (but with sk, not newsk).
+  - Nest the two return value checks, and wrap in unlikely().
+  (Thanks again Kuniyuki)
+v2: https://lore.kernel.org/20260810205642.1611338-1-ast@fiberby.net
+  - Use return from __inet_inherit_port() to trigger send_reply()
+  - Use req->rsk_ops->send_reset.
+  - Clarity commit message, and update to reflect the changes.
+  (Thanks Kuniyuki)
+v1: https://lore.kernel.org/20260807194513.1263310-1-ast@fiberby.net
+
+ net/ipv4/tcp_ipv4.c | 9 ++++++++-
+ net/ipv6/tcp_ipv6.c | 9 ++++++++-
+ 2 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index b8887cdd66c5..9a14c2e56ec3 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1690,6 +1690,7 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
+ 	int l3index;
+ #endif
+ 	struct ip_options_rcu *inet_opt;
++	int ret;
+ 
+ 	if (sk_acceptq_is_full(sk))
+ 		goto exit_overflow;
+@@ -1756,8 +1757,12 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
+ 		goto put_and_exit; /* OOM, release back memory */
+ #endif
+ 
+-	if (__inet_inherit_port(sk, newsk) < 0)
++	ret = __inet_inherit_port(sk, newsk);
++	if (unlikely(ret < 0)) {
++		if (ret == -ENOENT)
++			goto send_reset_and_exit;
+ 		goto put_and_exit;
++	}
+ 	*own_req = inet_ehash_nolisten(newsk, req_to_sk(req_unhash),
+ 				       &found_dup_sk);
+ 	if (likely(*own_req)) {
+@@ -1784,6 +1789,8 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
+ exit:
+ 	tcp_listendrop(sk);
+ 	return NULL;
++send_reset_and_exit:
++	tcp_v4_send_reset(sk, skb, SK_RST_REASON_TCP_STATE);
+ put_and_exit:
+ 	newinet->inet_opt = NULL;
+ 	inet_csk_prepare_forced_close(newsk);
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 9e9155b1b3aa..ecb0b405703c 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1400,6 +1400,7 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 	int l3index;
+ #endif
+ 	struct flowi6 fl6;
++	int ret;
+ 
+ 	if (skb->protocol == htons(ETH_P_IP))
+ 		return tcp_v4_syn_recv_sock(sk, skb, req, dst,
+@@ -1512,8 +1513,12 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 		goto put_and_exit; /* OOM */
+ #endif
+ 
+-	if (__inet_inherit_port(sk, newsk) < 0)
++	ret = __inet_inherit_port(sk, newsk);
++	if (unlikely(ret < 0)) {
++		if (ret == -ENOENT)
++			goto send_reset_and_exit;
+ 		goto put_and_exit;
++	}
+ 	*own_req = inet_ehash_nolisten(newsk, req_to_sk(req_unhash),
+ 				       &found_dup_sk);
+ 	if (*own_req) {
+@@ -1547,6 +1552,8 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ exit:
+ 	tcp_listendrop(sk);
+ 	return NULL;
++send_reset_and_exit:
++	tcp_v6_send_reset(sk, skb, SK_RST_REASON_TCP_STATE);
+ put_and_exit:
+ 	inet_csk_prepare_forced_close(newsk);
+ 	tcp_done(newsk);
+
+base-commit: cba9ccb47e9fa4cc77692fb896cc5ab57a667882
+-- 
+2.55.0
+
