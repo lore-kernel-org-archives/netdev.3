@@ -1,109 +1,176 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B2C64
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 04:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A092EB84E
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 05:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786423582; cv=none; b=UJTl7KsekN2m6xALyadM4Ism1/g9mV0H1LJM0aoRHXje79LBf1MnSMCXdpT3H2nM4zdY8DjuezbiLhWJ9+ym7A9YpIcI8IXjNz8/ZkEYgHzyXu+xf68HJ1UxXMzVw/C3ZL9ebyQCbzRsk9k14xmDaxbsjifudScib+6qxfU9MGc=
+	t=1786424569; cv=none; b=Ku+5edQvB4eDkVemHPP0q0yjGgxwvZgxzAZ9bidLcHLbhTTTSxghjkqdcOSxx8639iX5+ARGaH77q8ymixM+LTD0vozOR1nVrIrpIsTSFMI/75GgxThJRYN9uKExJgKzGJ0pyoKzJvl9Z8rxI4FHMVupOyFYy7Ocj/mN4qQ66tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786423582; c=relaxed/simple;
-	bh=B/HD8Bp/oG5QVAO8ZP1em58UM5cOHMj+I4bCMjpwcUM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rbxv++mOg6R3SSXHKzyvB9O+RoUi/8mTy5bgsM18rjebr4Vt4CgDJV5Zi4bnOUcbEBBa2zZONG+gpf65F5JEurK2Ho/8thJbVa8n1onZb9hzvAzlxGmpZDFGJ4qfBP0AlBW5gkABnU3pMDk//RyoBj6VqfSvtRiTapk2pjHSV1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MQZ4163m; arc=none smtp.client-ip=209.85.214.171
+	s=arc-20240116; t=1786424569; c=relaxed/simple;
+	bh=0XOITciiOnBra/r3Ajx1I6Wub7Yecid0iLcQTSs3v3Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bf/cik0qiKtSFFMa7jwXIGg/+izFI4bHDBvdfLXl3djoBRCOReXN+yH4IJYxKUFxkB47X8b+HP19FRf4aspqlKhGicakoWzfbo5XXkf17Ru7hLKh16LGMG4PvM9DEM5kSBRDh1CWatbASRcD0PqfQn3p3VVnfiLQX1D5HQD49Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xvzb3w7Z; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MQZ4163m"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cf50c6f235so4823535ad.0
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 21:46:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xvzb3w7Z"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cca0c5799eso26167545ad.0
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 22:02:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786423581; x=1787028381; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=B/HD8Bp/oG5QVAO8ZP1em58UM5cOHMj+I4bCMjpwcUM=;
-        b=MQZ4163meWwVvFjKnw8GYscoCW3boX3IsjS8Cpw/Et0gZmANS2+2EEhZ/RnHiOYPXV
-         3TzTNW9orBYyru7gE16yAPasxaom7lM7pWx9r3vh1ssCksE7WCZZpT92TkmmqjRRSoV6
-         9BozLwanENGeUGw1XhxX7xDSIAaK5NOOaHQ54iPegLl7cVd1WVuXM1Z6ERtAIRRaK6eI
-         DR6SLksscXWD0n8MVwF72Xt6XIHNHyDA75sNDSUNNQCTOcj9hKfVP8lFrMudq5efvzl1
-         7sDIwDQzkBJxZl+6uTIanivbLQEqkZGjCU+x9BwuO2DB9G0Gd45HeMZBmV5WOyTJGLRx
-         m8eA==
+        d=gmail.com; s=20251104; t=1786424567; x=1787029367; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7O7xUkoYVY8AeKODvISm0XPf0ZextZDIpWMTL9lvpDk=;
+        b=Xvzb3w7ZLk6dETwQdORGpKtV0vwwKLDWbylROHo7Us7vXc8RrMCcRwoNLFWiY1soPM
+         yNZGhJpER4bwG9pMH8mHmcCrhrIxBhgnOTWStP1PWGtdacc5TL2imElITMqDqJRV93r/
+         wFbAjW6TKRZQsGoCKdyNSQ6fm74AicspL3kIwxWZwe80H+jv1DNzSffqHA9K6YmM0Hx1
+         4a5WlbW6DD7fPU/cFAR/IO9AdYqhb7mlz3t81QMTXe11WnH2cUMY1PkxeyBMJcJB2Yvz
+         9M+auKNTLD1z7fFwZgWJUFPXVn4+4MbUPnsLVo7nOM1tU0Gb1cT9sxyTzRJY8uJnl2rW
+         PBFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786423581; x=1787028381;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B/HD8Bp/oG5QVAO8ZP1em58UM5cOHMj+I4bCMjpwcUM=;
-        b=oY7B8715ZXaUi5jb9vQPZxytBFXAAf4djrPXU/Lo9TSiemIvZRkOmF7hnpm4PtVGU8
-         ump/beuHlB+DU3+uLTwVdZy/ysilcEuxhRplJ41ZvcWMqd/26yoNdnxEnKBEaDLsPKjx
-         prhdXyEUfFwDRgzCKOp3xQj0wSUvYEj+vJ3b+KXfO9xKWLPKGRoo6kppNWczjRRtEVZl
-         q14rMDqF4UdjoYPiCv6PPyIUj35m5pqesDrZFtb0F2vR/c+vnQpqLfyWExReMK5eLJPn
-         iuZyLGUspoWaGLtZoDWdgdlR5fOg2eXunB2ild00Hzpsh3qLgOYZMbHwFcHxbcki5wQ2
-         VIQw==
-X-Gm-Message-State: AOJu0YzglFZpFx4ERJpGGCG0p+p0c9wXiwQvuUHJ29HCrZ61zQvTedfL
-	MJyPsWMLyQ7tUvc1/sRqkw8qd8padA1mm7U0erwRNIp1w5/mAZlO0eLagy1mr7pV
-X-Gm-Gg: AR+sD11nkLGhVfZKpyzB3BWx++33m7G7A9Z8rgniRLz3sV7sjYKpF/8CkzbqSfaT50C
-	b0PWNdPZCFZZbZmZ7v5epNuzG1dXvQ91mqrRJRASBQZel9PaTrDaeZbkpfA97VqxbUxCUnXO5QB
-	HPiyffO5FS0/2g3bt9t5IXAqT2X/snpYEITaeoAyi7WqA7V2xhEV/mFKZKlGfy/hIFAV2k+UOiS
-	3Q8Vcjqw8ErSmrbqcc3xMucoHUGq3Nh3EdGIntnpcgMPSdFcGRWCVTvJpE1sY/Q3cqrxHHABEgO
-	KG/R/D/KUjbcJCCtesP1aK4zqaNU6fsVdofvi/AE30UPR4VGhPMTBo3g/XXsl9gFvr4M8E7eAPL
-	x6MYWaUbJC2/mmuMDxCYs5YOsM2knV802pSPCNwPwP5OI15+nSgOwvK4SrzoNAQRHtISZHekHEG
-	RZR7oKrIrKDEmh+96pUClvcJvbPWzKbiMrJhBKVSO5l/l2PGe5CTScfpsLt8GVYokcEQRTuSmEg
-	Yv/30Oj7Bhx4G0ECrDAmn5Wrf84jVkCKqETZX2EWt7sIm7CJw==
-X-Received: by 2002:a17:902:cecd:b0:2c7:f2c6:89e0 with SMTP id d9443c01a7336-2d3177d62b6mr8527975ad.4.1786423580617;
-        Mon, 10 Aug 2026 21:46:20 -0700 (PDT)
-Received: from WR5220G5-Peking-BMC.labs.lenovo.com ([103.244.59.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d315ef0e37sm1326665ad.7.2026.08.10.21.46.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 21:46:20 -0700 (PDT)
-From: Yuqi Xu <xuyuqiabc@gmail.com>
-To: kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	vega@nebusec.ai,
-	tonanli66@gmail.com,
-	enjou1224z@gmail.com
-Subject: Re: [PATCH net v4 1/1] openvswitch: Fix CT limit teardown use-after-free
-Date: Tue, 11 Aug 2026 12:46:15 +0800
-Message-ID: <20260811044615.1458463-1-xuyuqiabc@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260810224356.927424-2-kuba@kernel.org>
-References: <20260810224356.927424-2-kuba@kernel.org>
+        d=1e100.net; s=20251104; t=1786424567; x=1787029367;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7O7xUkoYVY8AeKODvISm0XPf0ZextZDIpWMTL9lvpDk=;
+        b=BT93ZHNrC7EWlsbzEW+WFQOMSdWE9bWMSwt7ijKsD0n7wKXfeeZvhOTtACVGKfOayx
+         ZUCKdIklTosYEM3UCsGV5HhNJI4q1PtTZ6ATEY6fR/JolVjpY0BNSH8wPdCiLwBsQw1j
+         VHpNCXADc88l8V9rQrpmpvtonVkWQOPfYdSRUDfbWXjQGjAsR82p1hVo3PpPtQl1LvK2
+         Wwjb7lQhq5r8oLlxDlHtnvAIKbzm7SC6HkO+mdXeXEyo4P44Nyz1ri2u4Ul1osGITXat
+         t/ZiOY75uFDjttPZzWVv7uEg5qMTWGxEeF3d4jlwhx+3oC97c4lezGNBfHlLhJxHZSpu
+         6XJQ==
+X-Gm-Message-State: AOJu0YyZ2Y7WWVW7uf3U+lplIggjpdIQA7RSiR453dU01sx5kP2m/uI7
+	BJBXsl8sbC6DO/7GdhleHoGTejIDrbbuCMtnGCP8zZ6VBtF25eiOTOjBNUgR1HSgQ7Y=
+X-Gm-Gg: AR+sD13+EiSUYcU5Kl7gchgXOQRQmxSnwTuO4hK93XQYLnRsF4pTU3N7RH5qr6+2bRO
+	XSqqxhnqeMRlvzf6u6Ji9yJPCCPk+RtoWKXAOpKT4bBhCn9JCl8Bx/3xmz7zpDcbjhpQLTdiVr2
+	0ZQHdTjxyAr2VtR+m/WJd6pekAUEg0Z5riPPzWptlp3eu1NhnojvyFzlBS7EEJZYeMdTjfe64VI
+	CzxT6TrplxstKHzCnFF2iBOL333dBqLrpTJDUI4d0xuBJTuH+eqmiRpCzZ/J2nyF/8VH8oAWj1l
+	IwquJwmwzeM2gascC1ekxNPu3a7MYxUbgF4MmryzJUzTbxTIcrw+j0p5YnJ41IOhqH0i950f68U
+	XnRJTD67+wOs0hhONWckSTMkPMiBcT8T8qr5JVX9NRwsewxpgIFc/qfRYHayCK5YehZXJdiBujA
+	MmYjvVWCbQZu1VL7z/xVuHNKaNOh4+qYL3lcrWwbC3Hb7ZlQ1odQzzHfZeLH1Bu1qhOZlUcRE2H
+	D3Niq7qalYosNKWdWNMtqK4MTYeiyaSvoQv34PcWA5Ba7Fddg==
+X-Received: by 2002:a17:90b:4b0c:b0:37f:df85:272f with SMTP id 98e67ed59e1d1-392ec617514mr576960a91.19.1786424566907;
+        Mon, 10 Aug 2026 22:02:46 -0700 (PDT)
+Received: from Mac.localdomain (198-27-228-154.fiber.dynamic.sonic.net. [198.27.228.154])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31c619cf07dsm660421eec.4.2026.08.10.22.02.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 10 Aug 2026 22:02:46 -0700 (PDT)
+From: Ahmad Byagowi <ahmadexp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nam Tran <trannamatk@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Peter Rosin <peda@lysator.liu.se>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH net-next v3 0/5] ptp: ocp: Add R4006 and V9 I2C peripheral support
+Date: Mon, 10 Aug 2026 22:02:39 -0700
+Message-ID: <cover.1786423898.git.ahmadexp@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Jakub,
+Add the generic LED and I2C-mux support needed to describe peripherals
+behind the FPGA I2C controller, then use it to instantiate the R4006 and
+Time Card V9 board topologies from software nodes.
 
-Thanks for the review. You are right that the CT-limit netlink command
-handlers cannot race with netns teardown.
+Patches 1 and 2 add the binding and LED-class driver for the Lumissil
+IS32FL3207. The driver supports individual and multicolor LEDs, enforces
+per-output current limits, and keeps the controller shut down until every
+channel has been configured.
 
-The handlers derive their netns from sock_net(skb->sk), while the
-userspace netlink socket holds an active reference to that netns and
-delivery to the kernel receiver is synchronous. Therefore
-ovs_ct_limit_exit() cannot run concurrently with SET, DEL, or GET for
-that socket's netns.
+Patch 3 propagates software-node channel descriptions to adapters created
+by i2c-mux, including a software node attached behind a primary ACPI node.
 
-For v5, I will remove the unreachable NULL handling from SET and DEL,
-including the uninstalled-allocation free, and remove the GET NULL check
-and its new -ENOENT result. This restores the previous command-path
-semantics and removes the corresponding teardown-race explanation.
+Patch 4 adds the R4006 profile for the temperature, humidity, pressure,
+GNSS LED, and four SMA LEDs. The BNO08x channel remains empty because no
+upstream driver binds that device. Profile selection is fail-closed and
+requires a supported PCI device plus a printable fixed-width EEPROM ID
+with valid padding and an R4006 prefix.
 
-The RCU pointer replacement and grace period remain necessary for packet
-processing, which can access ct_limit_info while netns teardown removes
-the state. GET will retain its RCU read-side section for traversal of the
-RCU-protected limit list.
+Patch 5 adds the V9 BME280, BNO055, two GNSS LEDs, and four SMA LEDs. It
+uses the exact EEPROM ID "TIMECARD-V9" because earlier revisions expose
+the same detectable I2C devices with different LED routing.
 
-I will also update the ovs_net::ct_limit_info kernel-doc to document the
-RCU protection, ovs_mutex serialization for updates and teardown, and the
-transient NULL state during teardown.
+The prerequisite patches touch DT bindings, LED, and I2C code. Reviews or
+acks from those maintainers are requested so the complete dependency
+series can be carried through net-next.
 
-Thanks again,
-Yuqi
+Hardware and build validation:
+  - Exercised the R4006 LED routing on hardware.
+  - Checked the V9 controller address, 4.7 kohm RISET, sequential RGB
+    routing, and second GNSS LED against the V9 schematic.
+  - Ran dt_binding_check for issi,is32fl3207.yaml.
+  - Built i2c-mux.o, leds-is32fl3207.o, and ptp_ocp.o with W=1 for x86-64
+    and arm64.
+  - Ran strict checkpatch with an 80-column limit on all five patches.
+  - Applied the generated mailbox to the stated base and compared the
+    resulting tree with the source branch.
+
+Changes since RFC v2:
+  - Drop the board-ID over-read fix, now upstream as 6b69f2ef10cd
+    ("ptp: ocp: Fix board ID over-read").
+  - Fold non-mutating fixed-width ID validation into the R4006 topology
+    patch for fail-closed profile selection.
+  - Clarify zero-based LED outputs and correct binding color, naming, and
+    nonempty-group constraints.
+  - Use fail-safe LED reset and enable sequencing, serialize scaling
+    writes, validate node structure, and use the driver-specific subject
+    prefix and private-data variable name.
+  - Preserve secondary software nodes behind ACPI primary firmware nodes
+    and balance their adapter lifetime.
+  - Validate profile indices and make mux channel, RISET, and current
+    limits explicit per profile.
+  - Gate topology work before EEPROM access, avoid core device locks around
+    client probing, and continue low-rate recovery after retry exhaustion.
+  - Confirm the V9 address, RISET, RGB order, and second GNSS LED from the
+    schematic.
+  - Resolve every 80-column warning reported for RFC v2.
+
+RFC v2:
+https://lore.kernel.org/r/20260803205011.1249-1-ahmadexp@gmail.com/
+
+Ahmad Byagowi (5):
+  dt-bindings: leds: Add IS32FL3207 controller
+  leds: is32fl3207: Add controller driver
+  i2c: mux: Propagate software nodes to channel adapters
+  ptp: ocp: Add R4006 I2C peripheral topology
+  ptp: ocp: Add Time Card V9 I2C peripheral topology
+
+ .../bindings/leds/issi,is32fl3207.yaml        | 251 +++++
+ MAINTAINERS                                   |   7 +
+ drivers/i2c/i2c-mux.c                         |  69 +-
+ drivers/leds/rgb/Kconfig                      |  11 +
+ drivers/leds/rgb/Makefile                     |   1 +
+ drivers/leds/rgb/leds-is32fl3207.c            | 687 ++++++++++++++
+ drivers/ptp/ptp_ocp.c                         | 881 +++++++++++++++++-
+ 7 files changed, 1859 insertions(+), 48 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/leds/issi,is32fl3207.yaml
+ create mode 100644 drivers/leds/rgb/leds-is32fl3207.c
+
+
+base-commit: d67e5dbda22604d0fcde32fce58c65f88676e676
+-- 
+2.50.1 (Apple Git-155)
