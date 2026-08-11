@@ -1,128 +1,154 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012033.outbound.protection.outlook.com [40.93.195.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817B14334C5
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 10:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786442933; cv=none; b=PEITdcHDebyMXDLqmUH4ZMkkt3LnBB4hdHrHSUe1jODtYy9dHaw3Yt4irbVHN0Gosj2gANnxywqKMgeRIrvB7wZtNtSIqZe8PiBXWwPpAUADmbmPgmKrDdWcw7cJD7Wg04RL4d1RJX7MKOsmw+3GubqYmtt4yE8cftMyqNYL/rY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786442933; c=relaxed/simple;
-	bh=/6AUMIZeRBxlDUEZRogfSOe948t0zelhB9ITgCs98To=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YlvBzMEKIcpRcT0ZNpt1Q45R1X+hD9R4IyabdpSfNU8VF29LIqLzDjG1v05hwe9sRzmhKoO0YsXIv42vH2sJ9rb9u+bXVSATvW+iBb4Z1JPk73jhlIfj1jS4f8IoYd+P7lhAKsFZJj7vnpHKgzHY8xS2kSwMzDBPaU8zXG5Y9fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lHndeW7Q; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E46D43B6E4;
+	Tue, 11 Aug 2026 10:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786443464; cv=fail; b=guRuS64E8I/+/Zmd5NoGVn8iH67JrjnZN+mFZfd1O2+tEr6ieKabFYx5Y9DvKk7bKoKdRiPkch5RMma7n2q7AmMMblaylOhC8Lm/2ciB1iTgg8s4/byVXsKQO0wYlPMkaIJnCA9NptHulVhI1DO0ltpsrIVfIV7bqPOQoFSj+Lo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786443464; c=relaxed/simple;
+	bh=tMI6P2HHUvGyRvikRLpiyoXVMHrisl1d/UNYpel4sQ8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=egE0/scC4M0zIw0GlDVjcWjPeNKya5kJ5ZycafBSmwMkaCVR7D4Ok8k6kAcEoDRassDy1QXuJJw0jAQecudKwTnwp1lCgo2959JsqD0KOpnCBJOyZt/gCh5d3UvONmtvOAHydvojJ19FSnIIN0hnQ2xLfyQ4oM5Fgze9xO6Vy0c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DG6xRfF0; arc=fail smtp.client-ip=40.93.195.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lHndeW7Q"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4654E4E41104;
-	Tue, 11 Aug 2026 10:08:37 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 08A576033C;
-	Tue, 11 Aug 2026 10:08:37 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D39FF11C4BE4F;
-	Tue, 11 Aug 2026 12:08:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786442912; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=m9/67X/LTqY7+uC3dFrJVHFQgK16jDeYcGuHeHobhes=;
-	b=lHndeW7QJdEGn4ZG//J7fO4qbmQ90K8+WMK73B6JHfnlhc800us7XKEmPwV0UJbQVOhMld
-	aBsc2APDG5U/g2UZBQTES/0rByUDKlJWCKgWIRprK3lFt+JsIfENdmqR9BCFGmn+L7MoST
-	nVFc7O7r/1Y0U8dEJCEM2UPotuad7C9EqFcktw6nwlbi5zpIi+zqKBRNLlab2RjEYCrwjm
-	dHbu0mDuOUA3UvuhE1ulF8vckJblz0SSMuH1fSJGmDknJAH1unfLz+XZd81ScolRV2rThS
-	Mgdh7cRmUxsax7proZmq2PfmnpdP0Dh6QRmuYkUOze/BVW2+rjz+BKw+WaZzPg==
-Message-ID: <16c11b73-7d38-4856-9100-d27993ae0fa3@bootlin.com>
-Date: Tue, 11 Aug 2026 12:08:25 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DG6xRfF0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Js+F+dF6nQP8cg97cvP5psjkRhkOO8W2gvyQkGQ1cKjBWSegitUT2F5Z09xDVX2vu5jqIytWUxEs/E1aqyAHSbHzUtAh4iDcx6Mt+nvk25wlnq4uuJ5SRoVcRIxU+AX/WFyA3CSQt2ZfT84dchVUuKxtIM2UZvqqZJslK32FugQoBOhBOlZmeveejgavbiFZ9k7DuLZgHxwbKlf/vv77MQT4wFIUwgpdnRrS5nIU5oQ52W0bI085B1j/hBraQ+hrFuVH/I5YGz2W1xqn/vD30wDtLtrRFW6GAPTlAhQ//nic0KJj38/xgxALFcoKtHaSP1pMh8zpzyLWpzRGkvTGBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bta6qV3nzUFBrdz6ev0SHZIhWwVe/vJUojxwrrYoi+s=;
+ b=D4pwzaKtmxGWGas+q9n++zJBHvSOkQXxH58SbpwYhXIFuw9zJQd7KcELLjGGDwBB8JGvfeZxJnWZBPTsfnnvHWUMb4Fle7hoqTZit53fKb5GBxRY9Zm9WRN6aMazY0/hsEGdn1Lse1jPeQy2xJ1NZLCzljJGNXbxK2aWMAZ7nwB3hLSgT7+lJIFxxnOLBfwzwRULUkERliTBo9ySufY5IVNpFTpoFpCseCekYhIlURxVjZm7khiU93PPg4UfaPBPvMim4oUi5xk1f0/YI92VLyWEx/g9MLBJCnNKqfc/zNRc7a/2iBJsD+YObbabTa1xlCUAcD85B54NxedKoe6ihA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bta6qV3nzUFBrdz6ev0SHZIhWwVe/vJUojxwrrYoi+s=;
+ b=DG6xRfF0USzwu9hr8XIdYn/P1aUq8SOZr593CXsg/lUP70LLiXFCyUGChZfflEXylla1K4qhhGNxJOFpe5FlCpD+ASokLHeC8ayyOfaXg6Vygudl+juZi53z89nTBk5VWbbmy/yJM2Ap4eu5ogK8srx+pvxLkGX93yDX1mJ2Tv4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14)
+ by SJ5PPF6785369A4.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::997) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 10:17:32 +0000
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b]) by SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b%4]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
+ 10:17:30 +0000
+Message-ID: <4c719349-132b-4dcd-b332-a84d3a92b7df@amd.com>
+Date: Tue, 11 Aug 2026 15:47:24 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: macb: configure ENST registers for all queues
+To: Jakub Kicinski <kuba@kernel.org>, vineeth.karumanchi@amd.com
+Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, git@amd.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260805044204.272989-1-vineeth.karumanchi@amd.com>
+ <20260806162557.2762166-1-kuba@kernel.org>
+ <20260810181813.0d1fe0f6@kernel.org>
+Content-Language: en-US
+From: "Karumanchi, Vineeth" <vineeth@amd.com>
+In-Reply-To: <20260810181813.0d1fe0f6@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0026.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:17a::9) To SJ2PR12MB8953.namprd12.prod.outlook.com
+ (2603:10b6:a03:544::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: stmmac: keep gso_enabled_types in sync with
- netdev features
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20260808-stmmac-fix-tso6-features-v1-1-f82b17595052@oss.qualcomm.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260808-stmmac-fix-tso6-features-v1-1-f82b17595052@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8953:EE_|SJ5PPF6785369A4:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19cc2ce8-f9f5-4bdc-246d-08def791c053
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|4143699003|5023799004|11063799006|56012099006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	IV/GesYs17OEpDoqLIgdOAkM0gVV9PkYA6KK3Oj3Z83E1/qX7cbr8meYnDirgha7+m9UZhYDSJIDuEtpgcx6ZmP4QsjNwRj46fpAtQI2W3xVhcN0HyPnFkmW9NMPyUQW5TiVLLn1hVj2mBRykigPWN3SM+5HKU9XkQjm9DDdJJW4ouPQ4aoed9aSpHAw0pLCfOmAtA/2MZzSlNHUug0pnfNjWXsza3Uj3vArXuf8HgG0u+fRhalflWYVwYgHP/6aSpFdBchw2iZdNpScFpy/iBrOR1BuOCbeQjF2bxd0u12/T8Mbccmh8DLNRXAi8XelypfRDCLNAkKgodwFAXeqZW+ZFR0Ro6nb25OR3P25fgSbnzDSVTqxDX3SWsskVKuUwZFQifJB7yLfWwVRoOjjKaX9rp++b+agAozDQi5Rdb+wnGFk4aw02KX+5YYOwcalC5G4KQwJ9p9AVjwQhxh8ac8wEwpO+2OMcjs7KLfAUpoF7LngHjDdu2m2Quoatvh62nVHz4Ce5J+PBg1jpH7lB9iBlhXyZ/psf6oCCaoLJFQ8OAa1Jb2aZD18rosUmm4R/OHkpd+vEnLjsF6V1/ggJPT61XUWN8F1Q/gTkeyqOyJ59dbGm4H/m38Y2Tb9VCO2AAiyoDZFSH0+8WApNZFILOIGKXuHZvVLBRWQvE1/44g=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(4143699003)(5023799004)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MytlYm5Kd2FwMkRtTGw1U2wzdDZteHJCSy95UHpGWmxUMjNkYmFLemlSc2ty?=
+ =?utf-8?B?UERKZG9kTWxreEhMdWFmNlFmbDdNaFE3MUZKa3hzb3FyTDAwZTFYQTlQU0Vj?=
+ =?utf-8?B?aW1wTTdQakF4OGRzd24zSFdTN25DTEVuZVVuMkpaVXNTZHdDR0VuSEtDVksz?=
+ =?utf-8?B?VWlBQStvaERGWGsxZFJXNW1BQ3RNVGdWRGJrUWR4L0RnS1Y3bVBmNHhBallI?=
+ =?utf-8?B?SG5GRVhPWnJQZXd3N21hSkgyc25tUDJRVXVKbjAzQktFelBkdWt2eUlqMU5S?=
+ =?utf-8?B?S2lxQXlLakxFRitDb1ovZURIcThvRklQYm9jbURZTlVjenkrZ0dhQTNHQ05U?=
+ =?utf-8?B?QkdWWXFCNkx2b0Zxa2Q4OFZ3UURvV3F1YW0xR3h3WG14czh6YzBuSU5tWCtB?=
+ =?utf-8?B?dXVRajl4NC8vcVVHSGVYbXFFTko1dy9yZE9QWWJCMXZIWk1nOWpTMU56c0R4?=
+ =?utf-8?B?WVdSTGJ0OENYNjVYZzNRdGpZNG45dXVZQXBFLy8rc3pEOHVlZlVFRkpjOUVT?=
+ =?utf-8?B?YkdjWUhSMHNRZVVzMm1jQ2dUaDc0Y0o5VGpBU0RXTlRJY3RkVllMSWxVL3I5?=
+ =?utf-8?B?VXJlSVV0bC9tcWl6KzJaN29GMjdoZ2dnOFptVlVXNGJ1MjhSb2UrT2dKbVdx?=
+ =?utf-8?B?dkR5U3VXdFZuc09NY0VRUWdzaWJWdTRPWjVBSk50MXNCZnRvOWg3Wm1ja0xq?=
+ =?utf-8?B?QlZIb1N3RWVrZG44YWJhdkFaZTk2NXhMY04rRjJhS0VFS0xhQ0EwMlJaaGU4?=
+ =?utf-8?B?SnpxVzNIemVibjB0VVp1SkpGbnVHa0toY3lkM3JONHJFNzByTXNRNWtucFpE?=
+ =?utf-8?B?WnA3dUtVamQvV25MN0NodDZJSnd4cVNrRmZUWHJKWkJVc1RsSWhRSFMvY0hp?=
+ =?utf-8?B?OHhOa2JjcHFURGRvM0xlZGR6NlNmZGFPN2U4aEdXNnh6S28rN24wR1VWeWRX?=
+ =?utf-8?B?VWtKRmJyM1c1djNhZUxyM0YwTEphVExqMXpReThRQ3F6cm5iZFl3L0RVZGU5?=
+ =?utf-8?B?a3M5a25rdWg3V2ozRTNDMFpqN1Z4enF0OEJWcjdPamMyeTVaakhHdUNCK3Vo?=
+ =?utf-8?B?WFEyL1ZVZi80MUp0OWlKa2E0bDBXd0pVeHE1NUkxUXU0Yk1FSXozUFBWL09o?=
+ =?utf-8?B?ZEcreWRhMFd0VEZDZTJ4SDArZkt0U1pOQjdDQjlsekhRRTJQTEZJQ0xGNnNm?=
+ =?utf-8?B?OFFJTzZmNUVSbjJRS0JGZXc4d3o1VmlWRXBNVDF3TU9PVnZwMnNQTnNmeVRI?=
+ =?utf-8?B?aGJUNzlobExJMEtCYytoUmhJYzE4OXJaZkJQOGVNS0k0andKZG9tMVBSZkt1?=
+ =?utf-8?B?RW8xS0FwU1BFTEdIZk1seUI5VDY4cnlsWW0xYjN6bmR0NGlnUFJQY2RLWklP?=
+ =?utf-8?B?VUdxMXFsTTFsenJpUXBkR2NSNlR6YmthVjVpR0podFhwaEpDdDJ2UWFRY1Vv?=
+ =?utf-8?B?R25rSXZJbzRueW5vV2loSHk2ay9OeXVnRDR1clpPVEJoQXdoSHh2WW1BOFl3?=
+ =?utf-8?B?djVFdWtvWW1hZWUxVkVPVkRmWURxNGFlVlNvNGQ5QzJoVXBhaFNhejAzUURt?=
+ =?utf-8?B?TW9vOG5HclRQMDFwdHg2RGhCK1VTaEdQSHhPZVJUaTFHc1RQdjM3UkxoMFI0?=
+ =?utf-8?B?Umd2VE1ncXNRdEt1NDlTR0dSa1YyeXYyV1RMRzFVTXp6NWFJZHNneUZybmgx?=
+ =?utf-8?B?UUwvRlRBZnFHQjFMOUhOV0VreHVOcUY3QVA5WXFwMTVxN2gvaDNKYkVpSk94?=
+ =?utf-8?B?a1IyaGkwUy9oNTZRWnR1Y2NCUzYvVFpKY0xjQzdoV05wdHJsSURxUmpLTVZw?=
+ =?utf-8?B?c1l3VHdEaXhGK29pVURNMnNyeWFkdGJiNmp1bzU2ZG8zaERsaUora1VqS0pT?=
+ =?utf-8?B?d203RmZweUdyQXpqUzFGbUlBQ2dSZ2M2T3lpdGl2QTNQUk5WdzZMb1gyQkZO?=
+ =?utf-8?B?UVcyRjJORUo2aW8rMDAvY3IzU1d3OFFRSE83QWhCN1Z0NXQvMlc5ZEZMN2po?=
+ =?utf-8?B?Z3NOQkx5RmNmSUpsWFJRaTEzVWx1alRQZ2NDcmhxM2R3TWN1V1Z2d1U1Tzh0?=
+ =?utf-8?B?RlF5WDVKRGk5ZE1mVVg1YmZhZGd4NUpvbmJEbGUxL0xVSVd5WXFSVk8ySGlt?=
+ =?utf-8?B?RUNWMnBhRkRyWEdQeUFwd2tCelJ4S3dWallBcWttL0J1N0NQa3JZTk1scHBx?=
+ =?utf-8?B?WWx0eEFnTGpzcms3NkFIcDN1aUZtMnJHdGhIenF1REZCVDYxclFxZU1UeVBE?=
+ =?utf-8?B?OWpNOXFqbUp3N1VUN0JWQmlxb3d1WGJLVXhqZjQyRCtvQjBoWDJNcE53Uk9u?=
+ =?utf-8?B?RVdaVDRLY2E1SkhrQjZOdGlZbE5xc0djQzAxd1hjTnJBdWloNXZZQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19cc2ce8-f9f5-4bdc-246d-08def791c053
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8953.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 10:17:30.4033
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qWkGxsknbK0jLHaexbTaGDmxTRryBeMOnZD7XnpCIjkaqHLe7EHwIY9gbL7EGfWK
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF6785369A4
 
-Hi Lorenzo,
+Hi Jakub,
 
-On 8/8/26 20:00, Lorenzo Bianconi wrote:
-> stmmac_set_gso_types() derives priv->gso_enabled_types all-or-nothing
-> from NETIF_F_TSO, but stmmac_set_gso_features() advertises NETIF_F_TSO,
-> NETIF_F_TSO6 and (on GMAC4) NETIF_F_GSO_UDP_L4 as independently
-> toggleable features. Since netdev_fix_features() only ties TSO6 to the
-> checksum features, disabling TSO (ethtool -K ethX tx-tcp-segmentation
-> off) leaves TSO6 enabled in dev->features while gso_enabled_types
-> becomes 0.
-> 
-> For a TCPv6 GSO skb the stack then keeps the frame unsegmented
-> (NETIF_F_TSO6 is still set), stmmac_features_check() does not clear the
-> GSO mask, and the stmmac_xmit() gate (gso_type & gso_enabled_types) is
-> false, so the multi-MSS skb is transmitted through the ordinary
-> descriptor path as a single oversized frame.
-> 
-> Derive each GSO type from its own feature bit instead, so the mask stays
-> in sync with dev->features and TCPv6 (or UDP L4 on GMAC4) segmentation
-> keeps working when only TSO is disabled.
+On 8/11/2026 6:48 AM, Jakub Kicinski wrote:
+> On Thu,  6 Aug 2026 09:25:57 -0700 Jakub Kicinski wrote:
+>> This is an AI-generated review of your patch. The human sending this
+>> email says "What's the expectation for the other queues?"
+>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> Highlighting this (human) question in case it was missed in the wall 
+> of (AI) text.
 
-Thanks for tackling this :)
+Sorry, I missed your comment.
 
-> 
-> Fixes: 2e4082e4b739 ("net: stmmac: simplify GSO/TSO test in stmmac_xmit()")
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 24 ++++++++++++-----------
->  1 file changed, 13 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index a71f0df26378..3d3042afcdf4 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -4371,16 +4371,18 @@ static void stmmac_flush_tx_descriptors(struct stmmac_priv *priv, int queue)
->  	stmmac_set_queue_tx_tail_ptr(priv, tx_q, queue, tx_q->cur_tx);
->  }
->  
-> -static void stmmac_set_gso_types(struct stmmac_priv *priv, bool tso)
-> +static void stmmac_set_gso_types(struct stmmac_priv *priv,
-> +				 netdev_features_t features)
->  {
-> -	if (!tso) {
-> -		priv->gso_enabled_types = 0;
-> -	} else {
-> -		/* Manage oversized TCP frames for GMAC4 device */
-> -		priv->gso_enabled_types = SKB_GSO_TCPV4 | SKB_GSO_TCPV6;
-> -		if (priv->plat->core_type == DWMAC_CORE_GMAC4)
-> -			priv->gso_enabled_types |= SKB_GSO_UDP_L4;
-> -	}
-> +	priv->gso_enabled_types = 0;
-> +
-> +	if (features & NETIF_F_TSO)
-> +		priv->gso_enabled_types |= SKB_GSO_TCPV4;
-> +	if (features & NETIF_F_TSO6)
-> +		priv->gso_enabled_types |= SKB_GSO_TCPV6;
-> +	/* Manage oversized UDP frames for GMAC4 devices */
-> +	if (features & NETIF_F_GSO_UDP_L4)
-> +		priv->gso_enabled_types |= SKB_GSO_UDP_L4;
->  }
+I verified the behavior both with and without this patch. In both cases,
+the other queues remain disabled, and all traffic is transmitted only
+through the ENST enabled queues. which is the expected behavior.
 
-Sashiko says this could be racy, as there's a short window where the enabled_types is 0.
-
-Maxime
+Thanks,
+-- 
+🙏 Vineeth
 
