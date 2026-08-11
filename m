@@ -1,155 +1,54 @@
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D511237DAB5
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 11:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786447676; cv=pass; b=LzFK2aXpl0SxDrMmfq+QnUq1smUbocFoOeKBQt9rQPTwj/jrMtdXafxLhpfS1vygbBfbg/1dznQVTO1lYTTiWiOqDtnRycM/Z+79nM+uVPfct4Y6A8EueI0SI+tV4IwlkzvYxdE5waNKwV4S1cr6bRndn9wYFr8ycebFUpRuHVM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786447676; c=relaxed/simple;
-	bh=gPTYVYThqebcr7g7jbldMUzk2xfbciKkyRSUFniOnIU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=alxWYHPFGaG+c4MyDLRbSCOtagR9wuV2eolChRdnNSW9E+KeEDcOm2kPgkMtWuAR0zsYGm1zII1IpqDs3i3F8/x5/Es5uFQ0ERJ84Gv0vJ9nawID8kg7HXWlJ5eAZi5Gg+UMKiwJOGRh3yiHL8n5dyqqdnFPyfDRxuIDqahmvlc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZIxT5qgu; arc=pass smtp.client-ip=74.125.224.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZIxT5qgu"
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-66899c7b57bso956378d50.1
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 04:27:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786447674; cv=none;
-        d=google.com; s=arc-20260327;
-        b=keFVzk2wyl5MmSBXaDqQnRae3ijNGtIYMJLqdeDoH4TapCr6EF+qsoEddYXaCQbvX2
-         bDH/FCwdG+Qe/N2cpvXvUJswfRMArWUIeHCaD+eicVkx1PsWC1iWZse4/RhRvux6ZAx2
-         5wlp+/aOmyfiOgBDg+AiMI0ArZzho6D3ZeBKhKkrT7MkX6w6+9lJbkzSd1O2EQcR7AEJ
-         J7M5s6wbky9R3jL3Ww6vjitbcqAzbCOV8oEI1N48LGapaHUyk/hbTULQHYylMxnulc+m
-         5FuXjwLPaRyniEwT8ux7TldB5uUvjepuypQD/IA+gd6DRPq2n8M1d48Xoowb9YXb4UEG
-         yp1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hGg8ESNguwrB+ZU7MPbpG1BXMHhTtkw2FRy/dmstgjc=;
-        fh=4o95rT6t7wozb50H+sw/iH7xXf9RJTEUWdFIA6HMHo4=;
-        b=Fr70MUXdmLnP5DBZNhrbpdIC/E/guIEcXFzsg5xgisT2IGZ1rFGtJ9wTea+D+l7kwt
-         p2Af9KW8fylA3Flg2QgnzJHJeefuA/YNiL7OdiK6PgjG1O+syd67XjSlxjsHU6PMkJIU
-         zT5JUjQ44hVjwIoBBcNGfJWDsADYLCgfvNAjxPlqBUIRn8bHEmZ3XIMMrO3nUYJsqVPX
-         SDohzka4kmCWSoqpfFvqLnFoo3M78BujXU3slMXvV4Ha4APhdaj+5KyI24osl2ZeM8pt
-         jn7oDI4NL++G2qx9gFKgZvUg/YgIqn1L4zeNRmISuD80e/jW/U/LqJP+COb+/D/FBDTJ
-         OK3g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786447674; x=1787052474; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hGg8ESNguwrB+ZU7MPbpG1BXMHhTtkw2FRy/dmstgjc=;
-        b=ZIxT5qgurIp/wIfAe026pB3P5dvU9CREJFHgOf5f9Obezx2fCC14+iNrePje3CJry3
-         b2hcQUSOMpPf57wo/BflO2ItB1B0fc3z9EFJJN8M4QtDT69zARPnYPqKp7Ef/P03QK7k
-         Gl/6tSO4TSJ26AagCZXkQkAE4xbPXZl1ueosfkuTTSjkyzBe+JpHxVZXw3omTYuDX4w0
-         NloM4gvJLSuIjkWZ4YfxID/AbQs3uozEkFLj5uYXnmlD+zugAaOQc/4Wh//FkDw0Z8af
-         whSRJBwIbCW62wPsgTlOOTZNVTleW3l1M38CTEYDyyAIycFuUHl/mASTtoeT+3wy8opX
-         VoDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786447674; x=1787052474;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hGg8ESNguwrB+ZU7MPbpG1BXMHhTtkw2FRy/dmstgjc=;
-        b=UcTelEIEbtgIhg2c4xgG0SGbm/2DNBrjehjsDX3aUOuTrIQFJzLLk32jrat92wnWYE
-         64ZxmyvqxlASuBRbwuY4+Ist+BvDWhVRdP+36/4rV1h1ONlgpQU2AXFya6eDjySxBo1z
-         w8XQaPViWeXoNO6dDZmjKAptHbllGqa3HKrsINEqp0bMc7jVLstTmlncxQga/VLSDoZY
-         4v1MBd1ED7B1J9ACqUkrxn8ykvns75Yw/o+XZbiwyef/OHKR4P2SN4q/yJDYFCExQMFp
-         ca9E93gnl/ZNzsiwA4JcBQI0/+LfjmDx7twIHScXaNWIl00C+SQtan3nW08yWt0CU/kP
-         CAaA==
-X-Forwarded-Encrypted: i=1; AHgh+RpNar87F0+zfeTofkh4c8eB+mY47JVh3qZZKwfAaCR4OwPFNme6x0L+hJgq7TlOnGZvuwhbThk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx60tIUoOeQmUUORl6obs1jMQkBujuMi1IZqEunHxnYLvWdByNz
-	+rNc7Bc9mcWfH2MZ5IUDa/ZrLKcaXb/rv8CNSLj/qleuH91lNh7v0I1PdtqYVvd659WIWeTQfMm
-	XHCIP1jxKGU1Z/+cWsrdESB/QHJoPWiZTGSRlTxw=
-X-Gm-Gg: AR+sD11Ip5KmMyspyb3k9FwSV7eaJsWtXheFjPJWa5Hjs3UBFUtSjH6VirEM1bT96zu
-	2jkzf3D9RMT4D7YCD+6eK5njVsUQqs5peC11fV7QRmtnBVSF0Qdd8rOhVr/RJ/mBEQ71ojx+Kum
-	2HF/tnr4sGWB3rYcylGTqyrec05dRxV7TPY0HpJFeZngPwljCmOM7k8ZxLcP10LKMhnbsdQHELh
-	t+cT6QLMfjMn100jn8C0KK88HNlpG8PjZOsCiKAjMYfFwsxfgA6ecPfLShS5qANMVnBVNxGwXhV
-	BsUeQ1tVl7/8vphcPPAKbjEc8FPcbEgUdxVu0bKXzXN4
-X-Received: by 2002:a05:690e:1c07:b0:668:9ea4:775d with SMTP id
- 956f58d0204a3-66b22e3e170mr1420801d50.37.1786447673539; Tue, 11 Aug 2026
- 04:27:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7904F39E177;
+	Tue, 11 Aug 2026 11:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786447949; cv=none; b=PNIBzhxEqnOjvwH+nZFIZKFu4EUl2fuRxwi+afni7vflRtT/fDxquF4cCZgIwQNvSv3QAIPq54ybIdCtsDDRmSML/LRo66p1COESYQnpNZ1Qv7YG8rwx5mSG5GG96FM3vEipd3SbSqjSKY0EOa46gX/c9woYKRj89vmazdS+Nro=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786447949; c=relaxed/simple;
+	bh=Z78MZaK8DRBVinq5Q4HCh8R9g6hfmivhjCgUpWGK350=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qxwvLDY9/1XP9tHryiZ9iVGfO7XrM1VHDif76L507H3wQgPEZJ0ZcmG4GoNkFBOWNsI3yhmS6WgU2OZvSgDnopIBMFsRHVZvMCx0TSoFZlX/T5FmXtzbB5GfkCuOxI81R6vXgv27RtkY4sUojEoOKoa4oEp1Mqq4jlUoTuS4EqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id F002360299; Tue, 11 Aug 2026 13:32:24 +0200 (CEST)
+Date: Tue, 11 Aug 2026 13:32:24 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Wei Fang <void0red@gmail.com>
+Cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org,
+	netdev@vger.kernel.org, k.chen@smail.nju.edu.cn
+Subject: Re: [nf_tables] pipapo: inserting an interval that strictly contains
+ an existing one is accepted; rbtree rejects the same insert
+Message-ID: <ansISMIJIOfIUrAA@strlen.de>
+References: <CANE+tVp8_NhE+KL6ZNPGjaGMLPxrCWw_A5sY0jotrvThB6idXg@mail.gmail.com>
+ <anr3YZJrnS_2RbEp@strlen.de>
+ <CANE+tVr69qqyreBbWWk_2FqpMfQAqde-JF=weECditGJF=uZ3g@mail.gmail.com>
+ <anr-MVb8okTwL1X2@strlen.de>
+ <CANE+tVqc+NNN8EfpK+cEYV63Pmn3OHS81PBAGqB1RHidraChLw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANE+tVp8_NhE+KL6ZNPGjaGMLPxrCWw_A5sY0jotrvThB6idXg@mail.gmail.com>
- <anr3YZJrnS_2RbEp@strlen.de> <CANE+tVr69qqyreBbWWk_2FqpMfQAqde-JF=weECditGJF=uZ3g@mail.gmail.com>
- <anr-MVb8okTwL1X2@strlen.de>
-In-Reply-To: <anr-MVb8okTwL1X2@strlen.de>
-From: Wei Fang <void0red@gmail.com>
-Date: Tue, 11 Aug 2026 19:27:41 +0800
-X-Gm-Features: AUfX_mwvsDU-qXxy_qbgABFDC9LTIWgX6fiPFU7ZohbABZckOCzaNv_l_-hoJo8
-Message-ID: <CANE+tVqc+NNN8EfpK+cEYV63Pmn3OHS81PBAGqB1RHidraChLw@mail.gmail.com>
-Subject: Re: [nf_tables] pipapo: inserting an interval that strictly contains
- an existing one is accepted; rbtree rejects the same insert
-To: Florian Westphal <fw@strlen.de>
-Cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org, 
-	netdev@vger.kernel.org, k.chen@smail.nju.edu.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANE+tVqc+NNN8EfpK+cEYV63Pmn3OHS81PBAGqB1RHidraChLw@mail.gmail.com>
 
-Hi,
+Wei Fang <void0red@gmail.com> wrote:
+> The report is about inserting a *new interval that strictly
+> contains an existing one*.  On a pipapo set: first insert
+> [1.1.1.1..1.1.1.11), then insert [1.1.1.0..1.1.1.12).
+> On the kernel under test:
 
-Thanks for the detailed explanation.  I agree with the
-auto-merge/no-op behaviour for the case you described: with an
-existing interval 10.0.0.1-10.0.0.5, adding 10.0.0.2 (an element
-fully contained in the interval) being a no-op is the expected
-default.  The reported sequence is the opposite containment
-direction, so I would like to make sure we are talking about the
-same case.
+There is currently no way to detect this is in an efficient
+manner.
 
-The report is about inserting a *new interval that strictly
-contains an existing one*.  On a pipapo set: first insert
-[1.1.1.1..1.1.1.11), then insert [1.1.1.0..1.1.1.12).
-On the kernel under test:
+Kernel would have to lookup all combinations of
+1.1.1.0..1.1.1.12: 1.1.1.1, 1.1.1.2, 1.1.1.3, ...
 
-- the second insert is accepted (errno 0);
-- the new interval is actually added, it is not a no-op: a raw
-  GETSETELEM dump afterwards lists two elements,
-  [1.1.1.1..1.1.1.11) and [1.1.1.0..1.1.1.12), side by side;
-- the identical sequence on an rbtree interval set is rejected
-  with -EEXIST.
-
-So in this direction the set ends up containing two overlapping
-intervals, which makes membership lookups ambiguous for keys in the
-overlap region.  (As a side effect, `nft list set` aborts with an
-assertion failure on such a set - userspace interval aggregation
-does not expect overlapping intervals to exist.)
-
-If accepting this direction is intentional - i.e. the two backends
-are deliberately allowed to behave differently here - that is fine;
-I would just like to confirm that this is intended behaviour rather
-than a gap in the pipapo overlap check.
-
-On Tue, Aug 11, 2026 at 6:49=E2=80=AFPM Florian Westphal <fw@strlen.de> wro=
-te:
->
-> Wei Fang <void0red@gmail.com> wrote:
-> > On Tue, Aug 11, 2026 at 6:20=E2=80=AFPM Florian Westphal <fw@strlen.de>=
- wrote:
-> > >
-> > > Wei Fang <void0red@gmail.com> wrote:
-> > > > -------------------
-> > > > expected: both backends reject the overlapping insert (-EEXIST)
-> > >
-> > > Why?
->
-> Maybe I was too terse.  Default behaviour for interval sets (Rbtree) is
-> auto-merge: if we have 10.0.0.1-10.0.0.5, add for 10.0.0.2 will work
-> (no-op).
->
-> Behaviour for pipapo is to accept a new element that is fully contained
-> in an existing entry (no add takes place).
->
-> Sure, it could be changed to reject but that would alter user-visible
-> behaviour, so I would expect complaints.
+It checks start and end key only.
