@@ -1,30 +1,32 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99953A383C
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 15:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6703B14B5
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 15:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786461354; cv=none; b=BKI/Gsi5tjF8okRb8PjzCtr1vj59q7kalCkojiLuJ63VhbPF75dJLip+Vix8EEMrJkGbtEdngOy/3ool8Slv0K+mgWqQ8HqwEwmUz1/3m1PqxnqaQBPsaPyOX3BsRe3w3M+fy1yYpAVIPKpqbMHx00pE/n1+nOL7ajwKLpOfYOI=
+	t=1786461359; cv=none; b=IuVXyf9qthe5v14FuoLqRegX7PQLxILur/gR/wq/bPaUEaQpzeSxaG9bCBdhXxdhsYNUh/QYkBrQ3R+voglmcpaAbMILVXi/3c1MioBSp/sTqPyjjeaPRbTGxotdgwHF56f54Kh4H460wVqF7EWJBG5V6KG2damZEN1o5DaYfA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786461354; c=relaxed/simple;
-	bh=fxRMRAK4IBpsAVOxaRXejM27KUifdStAsC0bJ8QRIwQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pK6PZ9WYFhGm9suCce6dxrOaHYBVUag4ynsC30IOkPyUx2Pmnrjyy6hnVUIi3X/KjETTaQ7djCxARgphzgXugZ4ps8XfBY7Z0EnuKRqCZoMXefIHweEBHlrHc622LvuhUa9Zp4d9fo4YknmVWa3+bEzcXHAgYgDr4hvE+TbseWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=egkc+g3z; arc=none smtp.client-ip=95.215.58.176
+	s=arc-20240116; t=1786461359; c=relaxed/simple;
+	bh=ff4LuV6jHqcdhp0XotpOVpYLtl8eBcAQM+iD7p+pNgI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O0JYIRyAWajOhEtvHMKDNOQ7qrrRqyKahNKUZrJVcnY2y+RVTvnC6UqwXlafl2aqNOVrmDgq1f70XbkbPH2tPXkm58kWGKHHmP0AlRqHh4/wkTEdUKjk85f0oSYV47n1FDMOkYkJBxs14mGABoCkCph3/crE1/QLnQl5y+1L5ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=K4Pd5o3H; arc=none smtp.client-ip=95.215.58.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="egkc+g3z"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="K4Pd5o3H"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786461349;
+	t=1786461355;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7kcpdHYfxtR+9B3meSOf/Uom6EfKgyCH+FVbrO6G2PM=;
-	b=egkc+g3zg1q9ZYH1QqMM709W7kptSC/fw7ygzcg7UYf1hxIVA1kBlEtPd/NAwjKU7MUupu
-	nOX2QlSknsDv+0uYja+KgTJ6FO6lYqSoa/SpQNy4qJwg7XjKOwrEjzYY7QiHuf+1VcDJV6
-	1lCOkakiTyoSrQPpgiV1DoprdRbvToU=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C5+6swnw3GFAYX/60gnSRu3oidse+vvnuunIbdCZxIA=;
+	b=K4Pd5o3HViTV/W2q78fop9nKBPCCHZ2mKMDs49RGBx98gTeENOd/smajScEksNwyNnfckx
+	LVSngTpRs41H+ZndrkzWgiNUa3Slhz0fWjHVlbvN06ahAhUINY1bHpqnT8qUgy0L5n56Qs
+	NusPdvfxMy+dBIikvHKiAX2kpMDlOV8=
 From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 To: netdev@vger.kernel.org,
 	andrew@lunn.ch
@@ -37,9 +39,11 @@ Cc: kuba@kernel.org,
 	pabeni@redhat.com,
 	maxime.chevallier@bootlin.com,
 	luoxuanqiang@kylinos.cn
-Subject: [PATCH net v6 0/4] net: phy: dp83640: fix shared clock lifetime and probe error cleanup
-Date: Tue, 11 Aug 2026 23:13:41 +0800
-Message-ID: <20260811151345.73582-1-xuanqiang.luo@linux.dev>
+Subject: [PATCH net v6 1/4] net: phy: add PHY package locking helpers
+Date: Tue, 11 Aug 2026 23:13:42 +0800
+Message-ID: <20260811151345.73582-2-xuanqiang.luo@linux.dev>
+In-Reply-To: <20260811151345.73582-1-xuanqiang.luo@linux.dev>
+References: <20260811151345.73582-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,85 +55,67 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-The DP83640 driver shares one PTP clock between all PHYs on the same MII
-bus.
+The PHY package API provides private data shared by all PHYs in a
+package. Drivers are responsible for synchronizing access to this data,
+but the API does not provide a lock for that purpose.
 
-Its driver-local clock lookup and removal scheme can leak the shared clock
-on probe failure or free it while another probe is acquiring it.
+Add phy_package_lock() and phy_package_unlock() for drivers to serialize
+access to package-private data, including its initialization.
 
-This series moves the shared clock to the PHY package infrastructure.
-
-Patch 1 adds PHY package locking helpers.
-
-Patch 2 embeds the pin configuration in the shared clock.
-
-Patch 3 clears per-PHY state when PTP clock registration fails.
-
-Patch 4 fixes the shared clock lifetime using the PHY package
-infrastructure.
-
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
-Changes:
-v6:
-  Patch 4:
-  - Correct the author and Signed-off-by email address.
-  - Add Reviewed-by tag. (Andrew Lunn.)
+ drivers/net/phy/phy_package.c | 23 +++++++++++++++++++++++
+ drivers/net/phy/phylib.h      |  2 ++
+ 2 files changed, 25 insertions(+)
 
-v5: https://lore.kernel.org/all/20260810141511.73204-1-xuanqiang.luo@linux.dev/
-  Patch 1 ~ 3:
-  - Add Reviewed-by tags. (Andrew Lunn.)
-
-  Patch 4:
-  - Replace devm_phy_package_join() with explicit phy_package_join() and
-    phy_package_leave(). (Andrew Lunn.)
-
-v4: https://lore.kernel.org/all/20260807070729.12545-1-xuanqiang.luo@linux.dev/
-  Patch 1 (new):
-  - Add PHY package locking helpers for shared package data.
-    (Andrew Lunn.)
-
-  Patch 2 (new):
-  - Split the pin configuration storage change into a separate patch and
-    clarify that the pin functions remain configurable at runtime.
-    (Andrew Lunn.)
-  - Clarify the locking comments for pin_config. (Sashiko.)
-
-  Patch 3 (new):
-  - Split the PTP registration failure cleanup into a separate patch.
-
-  Patch 4:
-  - Use the PHY package locking helpers instead of accessing the MII bus
-    shared lock directly. (Andrew Lunn.)
-  - Adapt the lifetime fix to the preparatory changes split into separate
-    patches. (Andrew Lunn.)
-
-v3: https://lore.kernel.org/all/20260805072725.169431-1-xuanqiang.luo@linux.dev/
-  - Drop the Suggested-by tag. (Jakub Kicinski.)
-  - Set err to -ENOMEM on the kzalloc_obj() failure path. (Sashiko.)
-  - Let devres handle cleanup on driver detach instead of explicitly
-    releasing the action from .remove(). (Jakub Kicinski.)
-
-v2: https://lore.kernel.org/all/20260730064451.32261-1-xuanqiang.luo@linux.dev/
-  - Replace the driver-local clock list and kref with the PHY package API.
-    (Jakub Kicinski.)
-  - Use devres to avoid leaking the new package reference on later PHY core
-    initialization failures.
-  - Embed the pin configuration in the package private data to simplify
-    lifetime management.
-
-v1: https://lore.kernel.org/all/20260724023532.14583-1-xuanqiang.luo@linux.dev/
-
-Xuanqiang Luo (4):
-  net: phy: add PHY package locking helpers
-  net: phy: dp83640: embed pin configuration in clock
-  net: phy: dp83640: clear state after PTP registration failure
-  net: phy: dp83640: fix per-bus clock lifetime
-
- drivers/net/phy/dp83640.c     | 131 +++++++++-------------------------
- drivers/net/phy/phy_package.c |  23 ++++++
- drivers/net/phy/phylib.h      |   2 +
- drivers/ptp/Kconfig           |   1 +
- 4 files changed, 61 insertions(+), 96 deletions(-)
-
+diff --git a/drivers/net/phy/phy_package.c b/drivers/net/phy/phy_package.c
+index 16ae8d1c1f89a..735806c5bea88 100644
+--- a/drivers/net/phy/phy_package.c
++++ b/drivers/net/phy/phy_package.c
+@@ -52,6 +52,29 @@ void *phy_package_get_priv(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL_GPL(phy_package_get_priv);
+ 
++/**
++ * phy_package_lock - acquire the PHY package lock
++ * @phydev: PHY device that has joined the package
++ *
++ * Use this to serialize access to package-private data. Release the lock
++ * with phy_package_unlock().
++ */
++void phy_package_lock(struct phy_device *phydev)
++{
++	mutex_lock(&phydev->mdio.bus->shared_lock);
++}
++EXPORT_SYMBOL_GPL(phy_package_lock);
++
++/**
++ * phy_package_unlock - release the PHY package lock
++ * @phydev: PHY device that has joined the package
++ */
++void phy_package_unlock(struct phy_device *phydev)
++{
++	mutex_unlock(&phydev->mdio.bus->shared_lock);
++}
++EXPORT_SYMBOL_GPL(phy_package_unlock);
++
+ static int phy_package_address(struct phy_device *phydev,
+ 			       unsigned int addr_offset)
+ {
+diff --git a/drivers/net/phy/phylib.h b/drivers/net/phy/phylib.h
+index 0fba245f97458..c6e26ac6b28f0 100644
+--- a/drivers/net/phy/phylib.h
++++ b/drivers/net/phy/phylib.h
+@@ -12,6 +12,8 @@ struct mii_bus;
+ 
+ struct device_node *phy_package_get_node(struct phy_device *phydev);
+ void *phy_package_get_priv(struct phy_device *phydev);
++void phy_package_lock(struct phy_device *phydev);
++void phy_package_unlock(struct phy_device *phydev);
+ int __phy_package_read(struct phy_device *phydev, unsigned int addr_offset,
+ 		       u32 regnum);
+ int __phy_package_write(struct phy_device *phydev, unsigned int addr_offset,
 -- 
 2.43.0
+
