@@ -1,97 +1,186 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692AB385D64
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 07:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86983403ED;
+	Tue, 11 Aug 2026 07:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786434626; cv=none; b=rr+ri1zh7NS2QhWyxBNpD5BH7OnNkf4oqpRJQo0u065lwnqaXMn6wrV76Y9WitZstuof/M9TP3didtplz7qBv1Vi+8JVSAro0HtyVFmEsy598SThhTNiBbU0YISTzU0SNEdPHV6B8JYIwDbDBJe25/mXpaaT4P/YBEm6ialBMcI=
+	t=1786434790; cv=none; b=j3jG4kPoNzM/IRcgRpjzpFZeOiJ3Ll1L9WzxkjImZjZ3sZQCmvbjLH2/x4VOLjQ0BzkjZM9U38J4BqFu1AMXF71KfoMq/b1oCCs862XSVEq92C/AO/6PUzPq0kpHOIrV/Rw/lEKNnBlaLMpG+oihtovr8R08cs2Sr4hBIB+P/sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786434626; c=relaxed/simple;
-	bh=IexRW26cqTS/6jJaeDSWPMpThAjO9N7+EsEgDs0gn1k=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=UJ+fPbEpCy2Fdq9pDMO4NH9RXADFX/JrZ/jFJQq59bpQ2GCzvnLTBNdSB1kpDmFI7JUIVjhXjfr24Tdx1JHYCwKgmsk13LI/XqtGld9ln+OE7toA6j8MdibwaE4kHRST/1puey9h5NVouLAeJQDRZkcwbpJvhNg2XWbuFTrFVo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=V84vqvG7; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786434790; c=relaxed/simple;
+	bh=6UhfDLt02W+w1aSf5PwyzTuLgfXlAuEK3jciPocEXbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NFFXgycVEB7fr64cxPFxwNug8Mhgx3qhb1uH/XtRIroK1NKxOB0EZHaNKwJY0gkVsmiUuaOa5feuTkmLPpL/ltVRudKP2FslXCTcWUAOhq45kK9Mn8zmR8oqckxi0aIGvXj2++qZvmO78WFFSD/XOpqYxiIxGeLpBC7PgPFYKmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+Z/P+1y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="V84vqvG7"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786434613;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=etp5o1HT7t0iFGspzQ9CmM4vdczDWcYY3Wv44aynvY8=;
-	b=V84vqvG7CPSl1vX+kJ6DTAidek0d+VcJrUXFoaZHg3+I7GVtzGwBOxJmcmWFt6sNUZDM32
-	OPGCopzHufzAV2TLpo0MVuGGDNWUu39mglIwWpg5UoPDIU3M1SnBMQT9z/GI5n0cBrJz+3
-	76ZT4i7kYZInHD1CXSBPe40x5J3TqHM=
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Dmitry Kozlov <xeb@mail.ru>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] pptp: drop packets received before connect
-Date: Tue, 11 Aug 2026 15:49:47 +0800
-Message-ID: <20260811074948.345834-1-qingfang.deng@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+Z/P+1y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E061F000E9;
+	Tue, 11 Aug 2026 07:53:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786434788;
+	bh=8S+yPkqlGljd464X8KgFc9m70P1r8YKi+gX4Vwc11pY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N+Z/P+1yaiowxaFgLulkwg8mn6JB5Mi33afAUO81GBDwVkoDKA9FTrG6wa1SzJkDU
+	 ftFk0gRu60W8fSfKTHa0kS7yvT3pyeR+NZug5eKc7kujWdt75BY6XQDP7UWr5uQW52
+	 lG0ApD6vs/5Ag8lvGs/Co4bu177dKjRUQeT6r5zjtmXxaPjq3R9Qww8MHIDigJwHKl
+	 /mBBkg3TOVAlJEn4CHWfKKCxhcVkkPg9Q4r4aE8Df7n1u/Cfg5pE9cZg1zuezgKoe0
+	 XuX7Vmq6+k2zIg0i+ls/gBzb89K1okUjvEVd+JcKT6XOYxNYqOLspktiGOlxrNsSwI
+	 1Qmq1UXgDWguA==
+Date: Tue, 11 Aug 2026 09:53:04 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
+Cc: David Heidelberg <david@ixit.cz>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Conor Dooley <conor.dooley@microchip.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Luca Weiss <luca.weiss@fairphone.com>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev
+Subject: Re: [PATCH v4 5/6] nfc: s3fwrn5: support the S3NRN4V variant
+Message-ID: <20260811-beautiful-mink-of-advertising-3cde65@quoll>
+References: <20260807021001.239389-1-jorijnvdgraaf@catcrafts.net>
+ <20260807021001.239389-6-jorijnvdgraaf@catcrafts.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260807021001.239389-6-jorijnvdgraaf@catcrafts.net>
 
-pptp_bind() publishes the socket by its local call ID before it is
-connected, so GRE packets can reach pptp_rcv_core() while
-PPPOX_CONNECTED is clear.
+On Fri, Aug 07, 2026 at 04:10:00AM +0200, Jorijn van der Graaf wrote:
+> +/*
+> + * S3NRN4V RF calibration data update: the HW and SW blobs merged into one
+> + * stream (HW first), pushed as START_UPDATE, one SET_OPTION per 252-byte
+> + * section, then STOP_UPDATE carrying a 16-bit checksum (running sum of the
+> + * merged stream as 32-bit words).
+> + */
+> +int s3fwrn5_nci_rf_configure_dual(struct s3fwrn5_info *info,
+> +				  const char *hw_name, const char *sw_name)
+> +{
+> +	struct nci_prop_dual_set_option_cmd set_option;
+> +	struct device *dev = &info->ndev->nfc_dev->dev;
+> +	const struct firmware *hw_fw, *sw_fw;
+> +	size_t merged_size, i, len;
+> +	u8 *merged = NULL;
+> +	u8 stop_cmd[3];
+> +	u32 checksum;
+> +	u8 sub_oid;
+> +	int ret;
+> +
+> +	ret = firmware_request_nowarn(&hw_fw, hw_name, dev);
+> +	if (ret < 0)
+> +		return ret;
+> +	ret = firmware_request_nowarn(&sw_fw, sw_name, dev);
+> +	if (ret < 0)
+> +		goto out_hw;
+> +
+> +	merged_size = hw_fw->size + sw_fw->size;
+> +
+> +	/*
+> +	 * The stream is checksummed as 32-bit words and pushed in at most 256
+> +	 * sections (the section index is a single byte); reject blobs that
+> +	 * would silently break either.
+> +	 */
+> +	if (!merged_size || merged_size % 4 ||
+> +	    merged_size > 256 * NCI_PROP_DUAL_SECTION_SIZE) {
+> +		dev_err(dev, "invalid calibration data size: %zu\n", merged_size);
+> +		ret = -EINVAL;
+> +		goto out;
 
-Such packets are queued on sk_receive_queue, but PPTP provides no recvmsg
-operation and never drains the queue after connect. The packets therefore
-remain there until socket destruction.
+Why does this error path kfrees the 'merged'? It's not yet allocated.
 
-Drop such packets immediately instead. Since PPTP no longer queues packets
-on sk_receive_queue, remove the corresponding destructor purge.
+> +	}
+> +
+> +	/*
+> +	 * Ask the chip for its current calibration versions and skip the
+> +	 * upload when both already match the blobs; a mismatch or an
+> +	 * unparseable answer means the upload proceeds. GET_VER answers with
+> +	 * versions, not a status byte, so nci_prop_cmd()'s return carries no
+> +	 * meaning here.
+> +	 */
+> +	sub_oid = NCI_PROP_DUAL_SUB_GET_VER;
+> +	info->dual_rsp_len = 0;
+> +	nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION, 1, &sub_oid);
+> +	if (s3fwrn5_nci_dual_cal_current(info, hw_fw, sw_fw)) {
+> +		dev_dbg(dev, "calibration data already current\n");
+> +		ret = 0;
+> +		goto out;
 
-Assisted-by: Codex:GPT-5.6
-Fixes: 00959ade36ac ("PPTP: PPP over IPv4 (Point-to-Point Tunneling Protocol)")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
- drivers/net/ppp/pptp.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Same here
 
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index cc8c102122d8..a797a0606f6b 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -278,11 +278,8 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buff *skb)
- 	__u8 *payload;
- 	struct pptp_gre_header *header;
- 
--	if (!(sk->sk_state & PPPOX_CONNECTED)) {
--		if (sock_queue_rcv_skb(sk, skb))
--			goto drop;
--		return NET_RX_SUCCESS;
--	}
-+	if (!(sk->sk_state & PPPOX_CONNECTED))
-+		goto drop;
- 
- 	header = (struct pptp_gre_header *)(skb->data);
- 	headersize  = sizeof(*header);
-@@ -539,7 +536,6 @@ static void pptp_sock_destruct(struct sock *sk)
- 		del_chan(pppox_sk(sk));
- 		pppox_unbind_sock(sk);
- 	}
--	skb_queue_purge(&sk->sk_receive_queue);
- 	dst_release(rcu_dereference_protected(sk->sk_dst_cache, 1));
- }
- 
--- 
-2.43.0
+> +	}
+> +
+> +	merged = kvmalloc(merged_size, GFP_KERNEL);
+> +	if (!merged) {
+> +		ret = -ENOMEM;
+> +		goto out;
+> +	}
+> +	memcpy(merged, hw_fw->data, hw_fw->size);
+> +	memcpy(merged + hw_fw->size, sw_fw->data, sw_fw->size);
+> +
+> +	checksum = 0;
+> +	for (i = 0; i + 4 <= merged_size; i += 4)
+> +		checksum += get_unaligned_le32(merged + i);
+> +
+> +	dev_info(dev, "calibration data update: %s + %s\n", hw_name, sw_name);
+
+Drop
+
+> +
+> +	/* START_UPDATE */
+> +	sub_oid = NCI_PROP_DUAL_SUB_START_UPDATE;
+> +	ret = nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION, 1, &sub_oid);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Unable to start calibration data update\n");
+> +		goto out;
+> +	}
+> +
+> +	/* SET_OPTION per section */
+> +	set_option.sub_oid = NCI_PROP_DUAL_SUB_SET_OPTION;
+> +	set_option.index = 0;
+> +	for (i = 0; i < merged_size; i += NCI_PROP_DUAL_SECTION_SIZE) {
+> +		len = min_t(size_t, merged_size - i, NCI_PROP_DUAL_SECTION_SIZE);
+> +		memcpy(set_option.data, merged + i, len);
+> +		ret = nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION,
+> +				   len + 2, (__u8 *)&set_option);
+> +		if (ret < 0) {
+> +			dev_err(dev, "calibration data update error: %d\n",
+> +				ret);
+> +			/* Abort form: STOP_UPDATE with the sub-OID alone. */
+> +			sub_oid = NCI_PROP_DUAL_SUB_STOP_UPDATE;
+> +			nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION, 1,
+> +				     &sub_oid);
+> +			goto out;
+> +		}
+> +		set_option.index++;
+> +	}
+> +
+> +	/* STOP_UPDATE with checksum */
+> +	stop_cmd[0] = NCI_PROP_DUAL_SUB_STOP_UPDATE;
+> +	put_unaligned_le16(checksum, &stop_cmd[1]);
+> +	ret = nci_prop_cmd(info->ndev, NCI_PROP_DUAL_OPTION, 3, stop_cmd);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Unable to stop calibration data update\n");
+> +		goto out;
+> +	}
+> +
+> +	dev_info(dev, "calibration data update: success\n");
+
+dev_dbg, drivers should be silent on success, unless this is somehow
+important and unusual message.
+
+> +out:
+> +	kvfree(merged);
+> +	release_firmware(sw_fw);
+> +out_hw:
+> +	release_firmware(hw_fw);
+> +	return ret;
+
+Best regards,
+Krzysztof
 
