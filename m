@@ -1,150 +1,161 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50447446073
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 13:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24D7338936
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 13:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786456574; cv=none; b=TTJAPtOe2qu2J0CP5sgtAJcl2ixg1uXZ/oCEoWNTUDU4604LFSRG3VyG+IXIAoPRkLdthSVCGQIGCEkE/hA3SNzQwaj8VsmbU+7y1lDSIZ6QGVA4CpHk/GhFaNkLejJyKQzD1MunDZ7OQPxaw3HmwjDf0tj//PKwSFASUcD7+wM=
+	t=1786456647; cv=none; b=ShkQl+51yyB557QzY6hBuzsfjndYDHP0ZSV5Xi0XmiD90akkKP6mhlfJhv2XSmuOckWgUNO06X6xAvVSgbFmQK6IatqNgfMiPJs557kKX8fHPLFmQAFpff9j4IA8fwDtb4SrmYD6L0/lFP80Znh4w1y5rOoeGVHRIuzsl6tjUiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786456574; c=relaxed/simple;
-	bh=mPX092SAxdnLkN/6z9ICmIXNghJissgSgQYrcMNDQ88=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WwG4PRhNN/mpnGw5J547FksA1MuvLWptA6DLT6PHV6+YsGOz71TofUTpXVVpEp0M1vAN1wLKHGzwcuhxDfWuMWXGohGPre8NXY4TyBzB53v3jnC6GXpPx6c2KyRmfOPXuZAdm30kgZmGhjKc1KDhw/HOk430Vk02kB64tIRMq+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hC4Agfhz; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1786456647; c=relaxed/simple;
+	bh=h6vWeDEGOjjGH3o0m1xIdoZGF0A/FBWD6mHvcTvOxwU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sLZ35aM1Nfr8W9qxlM/GLsq/gZOMSI5vAnI4SSSYTdSFQcVc84f6+f6mNz5in/J4YJmhiYypPygE20k18cDm14QQ2QrsNsScuxo4NPDdPJDHaaKQkBEkPhjv/ISuj6hn4ZtEssSxfAf712+RvXJnpCaK6rdXh+IRPprvmrlEQhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UsJS56E7; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hC4Agfhz"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4731f5ffa74so254939f8f.1
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 06:56:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UsJS56E7"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-495590dde14so12580055e9.0
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 06:57:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786456570; x=1787061370; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QKydGfzalUMU8QK5vpmVMtplqbkcNF1gUk8nxhRQcp8=;
-        b=hC4Agfhz5Fswem8ScJFdVM4gJwnPSHTmKttvqDNjs17JbasXU6MgP5FMLKtikGQcTQ
-         W00rejijq+UNJHL9I5ljJfNUQMoNztMne6obQ864gevr09FEbkwIbH/gpmLKTbizDFPs
-         f0YgQVwE84lqlJYd2U+E7f/yxFKtBJEsO0d91CvCFqKuRE91WLgOa6rfmuxAb0uP0J2F
-         cpd2RjApUAnbv99iyJnjZ/bDXH9n7ab1UkTs/EAcCDgq5w4aMy69Psm/KoPBinvnlle5
-         juqil1UXck2zieKh/vfEYGQwo7XORBvS9oewHO+CXXTND0BC3puzu3aR8Fu+0VBSdaqW
-         QIdQ==
+        d=gmail.com; s=20251104; t=1786456643; x=1787061443; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=59fOkSeentgYghePxXH4AyN2xsYGYkot1z1ezyk8r3w=;
+        b=UsJS56E7jTSRwuhK59GR+Dyax+IVV+xzazNNxyjolN1OT+nVJa3ZTs7L7lvi3rvxI6
+         CKTLUcAczYCmgaXGfF8000oYUghv5ek6e6hZar+gk0BOu4F8WFJkrOlq1O6K3gxT3j2F
+         8LnsWuNIj8ncyvZPe2Kd9Hx6RT3eeVZq11pcypuYcVBjjy5yWkD9YueNs/hNCa1NfM7x
+         p/ZPU6AXHbLHBq7qML2eyEyuA6PSkai9ZMwH+F+/WPWf1UwwzOFOIXeerjVmmzVQADYE
+         pNukDb97wYjIhCT1ggN4LwfJ4/f3r+5axOY5Pzsvhcb1Z6hqF31ipmoAkHOmClF9s5U4
+         322g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786456570; x=1787061370;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1786456643; x=1787061443;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QKydGfzalUMU8QK5vpmVMtplqbkcNF1gUk8nxhRQcp8=;
-        b=pFfCYKeyMeB8viXuHtU2TULzLGVdK7tsjzVSX/JD9FItlzL6e+rDC4XXO6I0JUzlYQ
-         BmL7VDhmQ/Mrxnu5/qRrJCR9IL5HrOKAkMYV79UPNu6BdlkD/tRwKe5IatNmtVuDaWed
-         n30x8ZkNIWc6Fe9M63FhRdK1kDP9pnW9bhYBEBpx0/F/ietxycnkAo4xTVfRWxE2vZyL
-         SimQo4HD1vdWVs4JCVrVlp5Sz+yXrFAYC9pKGl/kb3cvzOWgVI/tk+nDUdNUxzMTmA4y
-         uyMjMCQ5zjzcmvf+rdbshY1kYojTaJ8wIUr6CdiRuY1TlHOAEW9lXZqMVi5CV1rYUGdZ
-         Otbg==
-X-Gm-Message-State: AOJu0Ywpyxtvbei6TSvWKnZWzh78zELMN22+buAZ+CGav0QCrf2IESDA
-	JEzibFQ5Iuk5q/O8ijyNzMFTBTsPw3CONZhYydMf6+K0xlBc/6Xw6Mb7
-X-Gm-Gg: AR+sD10W/NmmO15r+x9fHqizpljmMRNVS8SoRJU4p82U6HRNV5tZBCHvc1AGCLMelpk
-	hqDKBMHyYZqRdx/j0gC1TrbOaPIEfmoCnw5Y2utfgwUxDpnq9ebcRRcGBAmOmYxd0s08i0FQeHl
-	jaFghw9WnrLO+wwm0TikvvaTbHVsaUAm5xi118MHurRd2YNYGq2I0LALuKaOXTpauOmRqJ4zGyC
-	mWRnJewzqbd4y8xwXbg9XbXQdXoAomywgHuVaZrBBcyALgpUdURtMwA2cjA8mwx7z44UvQHFPF6
-	SjV+gBvEZM9xoi3mB+bu7+MPwSYtAGF9GeR/b6mlc/7JP75bqSaHr1Lxoko11oxKgBBOkQEoo1Q
-	dhyjbm1YpBPjybAu1MeZpE1xIxnHOk6vlBykUY64d9pm2S6b10FiDMi9nI0M1h9LmheCumbkgB2
-	/SGKtb/YLWrPkxYvDJtSoZuSFPZJ4H8i5kZn4bvcwBgQjCu76UjDttXb1JJfl5TTTJ/EHYb7Qyv
-	n5djkJxfP4PX0vU661apb77ohHdssGWFvCaDbnaeCE862ytfKgh34KjyS4+yQyYaNoEBH2xRuAo
-	B4Jkk0PUbygP
-X-Received: by 2002:a05:600c:35cb:b0:499:73ca:c419 with SMTP id 5b1f17b1804b1-4997846a357mr36107395e9.4.1786456570151;
-        Tue, 11 Aug 2026 06:56:10 -0700 (PDT)
-Received: from [192.168.2.69] (dynamic-077-179-054-188.77.179.pool.telefonica.de. [77.179.54.188])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499793ce27bsm27603255e9.3.2026.08.11.06.56.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Aug 2026 06:56:09 -0700 (PDT)
-Message-ID: <063eb98e-95d2-4d95-9720-08b351fb6e6e@gmail.com>
-Date: Tue, 11 Aug 2026 15:56:08 +0200
+        bh=59fOkSeentgYghePxXH4AyN2xsYGYkot1z1ezyk8r3w=;
+        b=VXQ9FxZeHfX3PSzI/fqBM3F5ORbi2Rto/9eu8wST7XVZLZSIbKRraomMCvCO/h9bWJ
+         X/EY0yFrquJstPeMLZDVwm8D6X6uX6PbmqsQmwq0qzh0YWCk87KCyM3JpaqYRiZuaMpg
+         rV6UWQgx6FvSQpYrtEpILk2Jht16mInIbtqYUygNyWTsGsP+Gfd+ZQHGZVDXHibpKhNF
+         YAeY+Wy4EjJjkaLEhFRjWlM3At/QvGF8ADrjGzXuttEB7fEfPA1nrCZ6UCL7y04zw7AS
+         l3elIFjeac5+7h4kuA7FabdCYUxt5wEhjTDpUo3K8Twxz2caXHTIwwua6OXkeqVkQwtO
+         2syQ==
+X-Gm-Message-State: AOJu0Ywvqz/szN/rW590fV6xCJwPDti9H6dRHlX3bKGgrQ7tWI3oxgVN
+	Sf+dO6C9yQtD4QDNHfqQbVB0m3gq3v7Z0iedWdFtII2rL3qKNJ9J/uxkXkiCZzn/
+X-Gm-Gg: AR+sD10+bSgIh+bjT9xgKt/nqiHMg7XVoVHt/mGIARBOxVcY9+5hj40uDNelia681y4
+	3IEtd9CeVet5cc3nKR42Z0X198nmtqpo/yfq75ZgOR3J67e5te3Sjy3rLh2dO4HfnZTE71fG4Vd
+	OZQaLH/nAapFywCogRepOCt9dj6OaPgdPI/R93FYAE90BPRBU6wmZrSSyBl96russU0klCYhn3H
+	Hqgx1sn8h/piz2sLLEdQ6uvtKbS7virM3QtQW5a82AYxVdq7Vo9Ilv3JVyslNwndtkL1Od3yuwH
+	9K2IjFZXcuPE0KHKvaAvd/2/3Wfdn9664UMW0GCnTEMgfL64m8/YC6FAWWOU5qh4TfJ4AncF9VC
+	6BYHa8geodqzXaPeefjC9Tb5IG9I7n5AHFKu8mvT7Dn2dSFilLqhQNS4CaZhlxJB+rRmkgUP5rT
+	ImrkEk5msHmpxomMsbWnwsiJ5ROV+wfTk/fqJRTGDmbCjOui3wnlW0vyobRbCtG1dgJVC/7ksPl
+	wWvP2z6J/wH8NtRKFh7B8S+Yso29Z+9no0y
+X-Received: by 2002:a05:600c:470d:b0:499:7a86:4145 with SMTP id 5b1f17b1804b1-4997a864166mr708845e9.13.1786456642791;
+        Tue, 11 Aug 2026 06:57:22 -0700 (PDT)
+Received: from fedora.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499788a6cdfsm34095085e9.6.2026.08.11.06.57.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 06:57:22 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: vadim.fedorenko@linux.dev,
+	richardcochran@gmail.com,
+	kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net-next v11 0/2] ptp: ocp: add TAP CPLD support for ADVA TimeCard X1
+Date: Tue, 11 Aug 2026 16:57:18 +0300
+Message-ID: <20260811135720.109580-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: hsr: free learned nodes on device setup failure
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, fmaurer@redhat.com,
- luka.gejak@linux.dev, kexinsun@smail.nju.edu.cn, arvid.brodin@alten.se,
- linux-kernel@vger.kernel.org
-References: <20260808110814.1637-1-xiexinet@gmail.com>
- <ankqCHe8D9y09aN3@fedora>
-Content-Language: en-GB
-From: Xin Xie <xiexinet@gmail.com>
-Autocrypt: addr=xiexinet@gmail.com; keydata=
- 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
- sNySbH3veZ/55EtlXA==
-In-Reply-To: <ankqCHe8D9y09aN3@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/08/2026 03:31, Hangbin Liu wrote:
-> Should we use this fix tag? The proxy_node_db is added in
-> 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)").
-> 
-> Thanks
-> Hangbin
+The ADVA TimeCard X1 (PCI device 0x0410) carries a Lattice MachXO3 CPLD
+on the TMC I2C bus.  This series adds access to it and an update path
+through the kernel firmware-upload subsystem.
 
-Thanks for checking. I believe 81ba6afd6e64 is the right tag.
+The card has two I2C controllers.  Linux registers only the one at
+0x00150000, normally routed to the config EEPROMs; the one at 0x00120000
+belongs to the on-card MicroBlaze and is routed to the TMC or M.2 bus as
+its firmware selects.  A request/grant handshake re-routes the host
+controller onto the TMC bus, where the PCA9548 and the CPLD behind its
+channel 0 live.  Everything here is built on that handshake.
 
-The demonstrated leak is node_db, and the window that creates it was
-born in 81ba6afd6e64: that commit moved per-device RX handler
-registration into hsr_dev_finalize(), ahead of steps that could still
-fail (the second handler registration, self-node allocation,
-register_netdevice()), while the failure unwind never released nodes
-learned through the already-live handler. Before it, reception used
-the module-global dev_add_pack() handler, which could not reach an
-instance until register_hsr_master() at the successful end of
-finalize, so there was nothing to leak.
+Patch 1 adds the arbitration and the read-only interfaces on top of it.
+Patch 2 adds the flashing, as requested in review.
 
-proxy_node_db cannot hold entries on any current finalize error
-exit: it is fed only by interlink-port RX, and the interlink add is
-the last failable step in finalize. On this path, the second
-hsr_del_nodes() call is a harmless no-op on an empty list, keeping
-the unwind symmetric with hsr_dellink().
+v10:    https://lore.kernel.org/all/20260805083154.3821-1-maimon.sagi@gmail.com/
+Review: https://lore.kernel.org/all/20260810230735.955188-2-kuba@kernel.org/
 
-Using 5055cccfc2d1 would instead keep the fix away from older stable
-trees, where the node_db leak does exist.
+One review point did not become a code change, so to answer it here: the
+CPLD paths leaving the PCA9548 with all channels deselected is harmless.
+The mux sits on the TMC bus, which the EEPROM paths never see - by the
+time the grant is dropped and the host controller is back on the EEPROM
+segment, the mux is not reachable from that adapter at all.  Deselect-all
+is also the PCA9548 power-on state, so the MicroBlaze finds it exactly as
+it would after a cold boot.  v11 documents this above the CPLD helpers
+rather than leaving it to be re-derived.
+
+Changes since v10:
+
+ - Split into two patches, separating the firmware flashing from the
+   bus access and the read-only interfaces (Jakub).
+ - Report the Lattice device ID as the fixed devlink version "cpld.id"
+   and drop the cpld_device_id sysfs attribute (Jakub).  The value is
+   cached, so the bus arbitration is paid once per card.
+ - Hold the i2c core adapter lock across the whole grant window and use
+   __i2c_transfer(); while the host controller is routed onto the TMC
+   bus the EEPROMs are not behind that adapter at all, so an unarbitrated
+   transfer from ptp_ocp_read_eeprom(), the nvmem attributes or the at24
+   sysfs files would be issued onto the wrong bus.
+ - Register the firmware-upload node per card as adva-cpld.N; the fixed
+   name made the second X1 board in a host fail with -EEXIST.
+ - Unregister the upload first on detach, so an in-flight programming
+   cycle is cancelled and flushed while the I2C controller is still up.
+ - Restrict cpld_status to 0400 and take cpld_lock interruptibly, so a
+   reader cannot sit unkillable for the length of an upload or stall
+   device removal.
+ - Fix adva_x1_cpld_wait_ready(): it polled floor(max_ms / 100) times and
+   never re-read after the last sleep, so the 100 ms per-page budget
+   allowed exactly one poll.  Use read_poll_timeout() with a wall-clock
+   deadline that also accounts for the I2C transactions.
+ - Cancellation: keep a request that arrives before prepare() runs,
+   annotate the flag with READ_ONCE/WRITE_ONCE, honour it inside the long
+   waits, and report it as CANCELED rather than HW_ERROR.
+ - Set cpld_in_config_mode before EN_CFG_TP and clear it once REFRESH is
+   accepted, so DIS_CFG is neither skipped after a failed wait nor sent
+   to a device that already rebooted.
+ - Retry the post-REFRESH mux reselect; its return was discarded, so a
+   NAK failed an update whose image was already running.
+ - Drop I2C_M_NOSTART: two messages in one transfer already give the
+   repeated-START read the ISC protocol needs, and the flag asks for the
+   opposite on adapters that honour it.
+ - Withdraw the MicroBlaze request when the grant times out, and drop the
+   -EBUSY check that only ever read back its own write.
+ - select FW_LOADER and FW_UPLOAD; without them the documented update
+   path does not exist.
+ - Correct the IDCODE to 0x612bc043 and the part to LCMXO3LF-2100.
+ - Add lockdep_assert_held() to the callbacks and context annotations for
+   the lock handed from prepare() to cleanup().
+
+Sagi Maimon (2):
+  ptp: ocp: add TAP CPLD access for ADVA TimeCard X1
+  ptp: ocp: add TAP CPLD firmware upload for ADVA TimeCard X1
+
+ Documentation/ABI/testing/sysfs-timecard |  24 +
+ drivers/ptp/Kconfig                      |   2 +
+ drivers/ptp/ptp_ocp.c                    | 655 ++++++++++++++++++++++-
+ 3 files changed, 677 insertions(+), 4 deletions(-)
 
 -- 
-Xin
+2.47.0
+
