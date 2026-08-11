@@ -1,111 +1,93 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077DB36C9D9
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 19:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDE93FB042;
+	Tue, 11 Aug 2026 20:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786478049; cv=none; b=MsxEQW4CTwLWLZk0Yg5+QayqZ2yR8/PVboodiWHF6CDT3yVNuGFc4a7LSX0inXEs8NywhBvNLDCI1b7RtVsSKmAPz81J3f2unZqb0kE5oCsAeQXQ3VuZnOzGcDpynlczeQQPNT0aXCgACW4MZ+bn0yrjufns1S8nIfFthRHOKbA=
+	t=1786479071; cv=none; b=SodB1NOTbRGBB5RPxlmAcvX7zo9dIl4dMBO82izbPCYVJGONvmkbsyXpt7yarU/gzu/Am3AK9rxDliMXo7t3h9RtfGHQberUZ4ebFP4DFvJyQ5cOh5XiyCJ92XTvjw/xt95q+A1MHFd3odKJ+6xV9PAOfWcdw0DQuGKVJ2/cPik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786478049; c=relaxed/simple;
-	bh=28XwPiTnc/bQviIDqY6ionfhJmC/QatzIK3B9Agw7WU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QVFwMmR7vTfHAVUNE0Mlgw3XR1EkcFaOi1XU+7wFtXjCtQPQYghbfDdnAOhjphJOCHujsAzxhNgS7Acwkb/XEJ5rck7tFBomXDr3BU9aAHB2/b5+9onyeuIdV4UP2zxMp9M61EdTTbg8YzZsaFfFgz0Ln/SFWmUSWvSRjcUqPBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QmRxwjB9; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	s=arc-20240116; t=1786479071; c=relaxed/simple;
+	bh=6Dy/OS86gSpvZMA5tCLmFQ86giF+rTsvPulpYOp4kCM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fHz7CoDKymeOY8FVbV2dDoY/p6VIeehLhfTnMK/OLL2bxpQ5XMrQs4DkSAI6m+oRZ6X5q99xDUERyuAmuCI76tP5U2B36exTDv7V6l1HXFd+SeZgys3iPjPOUdBaVNP5Zj4JirA3DPCd0XrqyuKmUOdh7dEiE6H9+srhI+3UiEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JC9MSUYg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QmRxwjB9"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cc640dfde3so4340565ad.1
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 12:54:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786478047; x=1787082847; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FD4i/S8HEvVnfQ1viZFcuK4hcEaWLd5tD4+oJ4rJGX0=;
-        b=QmRxwjB9MDBe5sgV7vNNkHouQzvT1E2yzsp8Feb/MTpVk9DM2/EHKcRWNexb8vuY2c
-         G0Y9md9EjcfhlQBh5sgNsJEv+YKV4pOdYdxlKRBPYwqad7m6EBH34PPV475+G+/NZZNL
-         OBoPsSa56VbRmo1KxI3+I35HuLF61KyPE9sup5sthpsgFoo/pxIdr1wpfGit94aLN8De
-         KvOEjX6APOfXsfPHYSwXET96e7ZAFJsM27RRcxMbzarKdq1XAoL1jTcTMK9jL4mKKOYN
-         2Dzv2vHRx1TELySCOD5jlZ8dupioA6VFgnxdDHhLnzhJVHzoufljD13Ccn8xmu99rOlf
-         +/zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786478047; x=1787082847;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FD4i/S8HEvVnfQ1viZFcuK4hcEaWLd5tD4+oJ4rJGX0=;
-        b=CqJow9UWCH8bJWK5bFAIyu4lF5dqStFPqvAr/YMyOwT5H49DNya1UuZPXPK8RPY6Ks
-         OemAV5TT6QNFP9sAW1SzdR2uqItGcZacXckBtEyEMadcEzkVMBQcVxCCM34LdrOETqtu
-         EPQ0yWA6plmbl5TXUPzRBHfBYxTsMfC+P12K4ciP9Mxvj4wkzCWIQfg5X+KNkOoeOHm/
-         avulEoiH+fRszKbfDwdSLa8sNePM7DPB+lF3u9xKT3fbYlMZENOGYk0f3ca2NKRJF4tV
-         R+uHAvibaXEvoaXr9S6lFTtmFwBZfgaeq3W5Eq3YbtX13DqlbTDBP6Y9KpII/od5kWDk
-         nxdA==
-X-Forwarded-Encrypted: i=1; AHgh+RqU/f9Bw+77iSzJ0MXQOEbKYDM8Jb9xdnl9asb27cgNoKBUIsQb3M6+geIOoJ6iqefYUZI9/OI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwGnGrP37lTYjY4V6PGCZaqer6DUVXoqIJsMhXWdU3TFkA/WIt
-	LRFsjERK8R4ewJW5HjZqB8CoU5wS8c8cOnrPDDVa2p/g2h/5a7kDDtY6JRnAocFxxyUHHhhSQok
-	vnY/GHabq9D4ss07wMk6FwcCaPA==
-X-Received: from dyjh11.prod.google.com ([2002:a05:7300:560b:b0:313:fb09:e2c0])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2f0c:b0:2bf:7b62:a038 with SMTP id d9443c01a7336-2d3177e63eemr80682875ad.9.1786478046955;
- Tue, 11 Aug 2026 12:54:06 -0700 (PDT)
-Date: Tue, 11 Aug 2026 19:53:39 +0000
-In-Reply-To: <20260811195405.3979177-1-almasrymina@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JC9MSUYg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01B21F000E9;
+	Tue, 11 Aug 2026 20:11:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786479065;
+	bh=jfR76n9X1g0cgadpwIjGW675t6sVNVPHiz7Lm/jz1cs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=JC9MSUYgS8gUoeIKmy3FHDGT59uDMjV/7BsePhU7NDOaIGQIyvJ3o7UrO5r2scfXn
+	 F6QqNsOlZkkqOSogstrjCWcoZ+pB3cnukUIyTQ95fvj2zp1lnK4C6qB1fAZLLx7Se4
+	 ImhEKYS15ReY0M9jz7pA2+yFT4HiWh6brzfCMCIGNeacWy+LAFgy2IHBhrxYTnPKal
+	 z9POYC9Tq57AfLAzCZVH/gYG22KxjHe8n/jJJdlbmTjq/G7UgwRzxhEPGRKVX8q8lw
+	 1Swz5f6Wgmalu/2i3JELBJt+BHUiaWmDZtd86qpqbwU3a5wwJicEyv2u55VTI48vgd
+	 8braFHm+ZFfjw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09CD3809A0A;
+	Tue, 11 Aug 2026 20:10:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260811195405.3979177-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260811195405.3979177-2-almasrymina@google.com>
-Subject: [PATCH net v3 2/2] net: tcp: block standard payload injection into
- devmem skbs
-From: Mina Almasry <almasrymina@google.com>
-To: Jakub Kicinski <kuba@kernel.org>, Willem de Bruijn <willemb@google.com>, 
-	Eric Dumazet <edumazet@google.com>, Mina Almasry <almasrymina@google.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>, Stanislav Fomichev <sdf@fomichev.me>, Paolo Abeni <pabeni@redhat.com>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, dev@openvswitch.org
-Cc: "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
-	Ilya Maximets <i.maximets@ovn.org>, Jason Xing <kerneljasonxing@gmail.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
-	Florian Westphal <fw@strlen.de>, Bobby Eshleman <bobbyeshleman@meta.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] Bluetooth: mgmt: fix 'hdev->discovery.uuids' NULL
+ dereference
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <178647902138.1134064.3407354756099050470.git-patchwork-notify@kernel.org>
+Date: Tue, 11 Aug 2026 20:10:21 +0000
+References: <20260808163128.288740-1-pashpakovskii@salutedevices.com>
+In-Reply-To: <20260808163128.288740-1-pashpakovskii@salutedevices.com>
+To: Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
+Cc: marcel@holtmann.org, luiz.dentz@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ avkrasnov@salutedevices.com, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel@salutedevices.com, rulkc@linuxtesting.org,
+ linux-amlogic@lists.landau.one
 
-Protect tcp_sendmsg_locked() from mistakenly appending non-zerocopy
-page fragments to unreadable devmem skbs. Create a new segment instead.
+Hello:
 
-Fixes: bd61848900bff ("net: devmem: Implement TX path")
-Cc: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Signed-off-by: Mina Almasry <almasrymina@google.com>
----
- net/ipv4/tcp.c | 5 +++++
- 1 file changed, 5 insertions(+)
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 455441f1b6949..186a36c698798 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1278,6 +1278,11 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
- 		if (copy > msg_data_left(msg))
- 			copy = msg_data_left(msg);
- 
-+		if (zc != MSG_ZEROCOPY && unlikely(!skb_frags_readable(skb))) {
-+			tcp_mark_push(tp, skb);
-+			goto new_segment;
-+		}
-+
- 		if (zc == 0) {
- 			bool merge = true;
- 			int i = skb_shinfo(skb)->nr_frags;
+On Sat, 8 Aug 2026 19:31:11 +0300 you wrote:
+> 'uuid_count' member of struct 'discovery_state' is assigned and read
+> without any locks, so there is a chance of situation when
+> uuid_count != 0, but uuids is NULL and there will be NULL pointer
+> dereference.
+> 
+> Possible race:
+> 'hci_update_passive_scan_sync'
+>   'hci_discovery_filter_clear'
+>     hdev->discovery.uuid_count = 0;
+>       <----------------------preempted----------------------------->
+>                         'start_service_discovery'
+>                           // Set uuid_count to value != 0
+>                           hdev->discovery.uuid_count = uuid_count;
+>                           hdev->discovery.uuids = kmemdup(...);
+>       <----------------------preempted----------------------------->
+>     spin_lock(&hdev->discovery.lock);
+>     kfree(hdev->discovery.uuids);
+>     hdev->discovery.uuids = NULL;
+>     spin_unlock(&hdev->discovery.lock);
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2] Bluetooth: mgmt: fix 'hdev->discovery.uuids' NULL dereference
+    https://git.kernel.org/bluetooth/bluetooth-next/c/99672791e9c9
+
+You are awesome, thank you!
 -- 
-2.55.0.679.g6767b8d81c-goog
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
