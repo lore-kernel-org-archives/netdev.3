@@ -1,67 +1,113 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6C82DECA1;
-	Tue, 11 Aug 2026 13:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39352DCBFA
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 13:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786454197; cv=none; b=kpgshTMhCdkyeAGSKiQyyXhCzQ1sXJqehE+Ao7SbZTSBcFQhvhn6DI+Bea84mkXpLdeo8+aCk2xISHcKzj0QvXflEX7mXXKMAodOwvK0ocaluFltqBxbXpWXXmcmUnk3KhHw1Qxqe2Geb6ppW84unJFCpzt3aBogDQI2ld5pycY=
+	t=1786454197; cv=none; b=aah3NGxrbCTEJb7Dy1EeMwMgd43iauSInHNeb3wT51O+qfTgKqHT+ckAPi7YWU03sNUeChoiRS9+KvW2MaUQWV+iQ0Mow/xtLOmXSLpZGDNBh/j1MQx1s2fZx/X6YYvDkMSOM/doFb5CpOlYWty1QH9X8Hj/3Hu6bP34kziBqJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786454197; c=relaxed/simple;
-	bh=JNy2Hx/fepk3RqsnhMinkiiqUY0ke/+SDON8dH4JN9w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jNadZ7F5wuwgn/VKjjqRFeGqEPqjG2q8FwGBQKQtNZTBmJDQu61pmr5VX14+tZQfP9tCOs2BAwMjFtjX1jXlhdWax221GHqkLt5ykqCQBG1nvgefystWGkEMqsUCS8BsOyb2RinTuZb4yDVZHThj08/yBqYsBHvKhNmiPieRrE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=fhh0wqM9; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	bh=EV61FYb5D/7ZN7WKyu4faP8LVXNRQBmvH2wEtYT2LmY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LvXy+TCAlPo/miitGRQ0vMs/920ZyHZ8cHUdDxZYCEgo2XA8chZHf69hL9CBskNecNxYBxNm5LVCKwjxCb4qvtbaphVFImqh3b67nzz1Ag56zFZaheI9AxnJviI1BfBe+oL2egV04+qyWNdMQliLJdyNXLnbCJHp2KWJN6UBxas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFj2Oo3i; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="fhh0wqM9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=IhDsGhdaL3ubLtCH1gN0eAwKGsMmTdmTqfCwPgpf8AA=; b=fhh0wqM9AAaODH00nmXIZn1LAX
-	8dO853IbMzmRbth2RZj5yYHoJ4wWiL3szfYN3od3CYaYFGGqKVD4K4f4A1kq1YCiabKL2uzcSsplx
-	+C+EarqjS6EGpBXxi4ChnUn9nw2eke+KCZF1g0Dn2+MrF9iLK7hwcALhw5jx7LgoW1VMHSq+OZIwM
-	zTJx2Jx+60Y/YX8hZVx6HW7zsWJuvaFwiBtizWunNpjBKpT71xy1IsfyZzIrTffuFf6nBqIUa2dMQ
-	5suIg1ovczvRfnG4JlTC9gFGCnkvENKlFqAC5YRoYfTY1iymZtxnBFKicb+vkSrmXCobF+qeO5TMT
-	INkEDS4w==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wtmLF-003aV0-2g;
-	Tue, 11 Aug 2026 13:16:30 +0000
-Date: Tue, 11 Aug 2026 06:16:25 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 3/6] netconsole: reject enabling a target
- with no remote IP address
-Message-ID: <ansgn22UpFY46qIA@gmail.com>
-References: <20260810-netcons_ipv6-v2-0-3d4fc987a90f@gmail.com>
- <20260810-netcons_ipv6-v2-3-3d4fc987a90f@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFj2Oo3i"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a205b0df35so1612328a12.1
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 06:16:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786454194; x=1787058994; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Eytp0kWHTMpraBTsJPqytmrRy48FIzv9b11elB9I5zw=;
+        b=gFj2Oo3ih2LWB9sX0cOs8ZSvucFrigSyLmQI0TWju/RM/kfml1Ql1JheN6p1glvO8N
+         ghvzi735tveXrnStYtlDuqvDVxQKWV3iMEJwS/C6fSokLKo1Bh3N0bWtAdsByN0LZ6WS
+         U5mQBmRHFRs5FSwBBwFVKLyhuHZFMs7fSPTFdB+8IAGRqglaZo9RDDJSCNxuOZsN9msK
+         j47LdM4ayOpXbiqVfqhsG5DxNoBtUPYOhiT72gqXQ7h7R181ilzV5sKbjcAXlM/srOY6
+         uuk1Vot7Y+/s9g8tH8nX2ZBhyp/FuNxKvk2RZ1OnVO7vQWDV30GlL4EE4mTneoz3tqGA
+         K8Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786454194; x=1787058994;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Eytp0kWHTMpraBTsJPqytmrRy48FIzv9b11elB9I5zw=;
+        b=LlqPvG8/vLlYCcd49UE1swCLvFXmUo2DqciFsz1jU7Ok1tdWX0L457SqSi0YLHs1Iw
+         0kkcGU4Q6PL3y2B9Nr1Mk2KgIVpFRnvsduPL2QEdVVkgkkgJMM5PWZNNHpqsk+k8Exlv
+         iAJ+ONfzatxQ+SK0zX5eZwOsQF1kEPo1UK++OczF5N4oPnPGht6uoMrUkayHbpyA/g+l
+         sSARj3tWw16g+oRDeu2BFPsUj9i23agUrPHobtXkUql+gfSmWY9Xp6YFqSl9+198x1nP
+         pdlefhkP3wY4h5J5sCFx/qGE0Oy395cPkY4d86R6fYisvs0FFSANMtH5+toq6tG12oej
+         NGRg==
+X-Forwarded-Encrypted: i=1; AHgh+RrTTzo+YhLQMWFqxJSg7bpjTldFoGVsPIcMD5/VZ/YJ8ccKG+F8muyF4nC6fdxTpAKF5GI70d0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXCmamfSzz3GOVzWJDzVwQp7MxQN6FIeDngquOCLeIn1IaNfMX
+	C58e0HyjK0OtzKjzd0d9Ga8X/N88rrzYTh1IGSPvRpayQzTGtd41vyTF
+X-Gm-Gg: AR+sD13KA1xI4ujP4UnEkLz8xRoz1SPqLYiTCwnZ1rSlTkGd9VEWfw8WyAzon2571wy
+	F7DKbFq8tAsTA1lJMkt79OwMB9VxISWN7UasuMCrkda/1b8jKbKDZCvrFVDxnmizleHGDkkRRfe
+	pcq9gO07hgWp6v+Y1Gt5jKt2L9RpBJLQQ4aUZIZeYLMbKYYvjPSe5y8Uqa4sGokVQmD/JbxZY+K
+	007tOnHqzn+8fSnV4BSp2qKz3Gg5EP+f5ObFnQYodkDp8h5STw4ZC7DEwosp1ayDJ3Ov+e4tojl
+	U3lmpbBsB5LaKs3yVAwyOvXybuI9+DnomNdHD/zZCKo99vv2h4Si/HghTQyidiXAQxqsvJmMeEY
+	gpNBF1Jb/N4LX2GOO5ZVKWwoNA82bWew8HNDRDXyzRdGOhZsaC4UKiGq84nPdUeuUbB8f8S1HZ4
+	xpKVQ3VTEajj7KukiYWJsZgeomLLgxJi4WIstLyRDh2pShGE7gHIwz4lkN47+ye+kTjsToLFkkA
+	ajY+3BSftL+BU9EQP1s1SanSptJ3+SvJQxOsTiES3HsjbghKfnp9HtG2BsIZEvWCn/i093AshHf
+	HAwAy+ILfcGS5fPyA0fp3TgTliX30nXnSTd/Cu0=
+X-Received: by 2002:a17:907:d08e:b0:c1a:5d49:f99d with SMTP id a640c23a62f3a-c20ec8d8396mr17558566b.7.1786454193602;
+        Tue, 11 Aug 2026 06:16:33 -0700 (PDT)
+Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c20e431f414sm50782666b.36.2026.08.11.06.16.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Aug 2026 06:16:32 -0700 (PDT)
+Message-ID: <70b36cb8-bcb3-400f-a3f6-d038bff88723@gmail.com>
+Date: Tue, 11 Aug 2026 14:16:29 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260810-netcons_ipv6-v2-3-3d4fc987a90f@gmail.com>
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH io_uring 02/16] io_uring/zcrx: move RQ head/tail to
+ separate cache lines
+To: Mina Almasry <almasrymina@google.com>
+Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org
+References: <cover.1786108672.git.asml.silence@gmail.com>
+ <f769116a3f5267f06cb9a9a819d482ddea2e0852.1786108672.git.asml.silence@gmail.com>
+ <CAHS8izN4SAUCUQySd+VTbdayX-Stj+eYOqAof+Vhi=EsRb93_w@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izN4SAUCUQySd+VTbdayX-Stj+eYOqAof+Vhi=EsRb93_w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 10, 2026 at 05:47:27PM +0100, Gustavo Luiz Duarte wrote:
-> The command-line path already requires a remote address, but if a user
-> creates a dynamic target and enables it without setting a remote
-> address, we currently try sending netconsole traffic to "0.0.0.0".
+On 8/10/26 18:35, Mina Almasry wrote:
+> On Fri, Aug 7, 2026 at 6:25 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>>
+>> RQ head and tail are currently put into the same cache line, which can
+>> cause false sharing problems when refill is run on another CPU. Put them
+>> into separate cache lines.
+...>> +struct zcrx_rq_hdr {
+>> +       u32             head ____cacheline_aligned_in_smp;
+>> +       u32             tail ____cacheline_aligned_in_smp;
+>> +};
+>> +
+>>   struct zcrx_rq {
+>>          spinlock_t                      lock;
+>> -       struct io_uring                 *ring;
+>> +       struct zcrx_rq_hdr              *ring;
 > 
-> Refuse to enable a target if the remote address is unset.
-> 
-> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+> Is this not a problem in general for everything/most/a lot of using
+> struct io_uring? Should you make this change to struct io_uring
+> itself?
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+No, io_uring headers are usually accessed by the same task,
+that's unlike zcrx where the consumer and the producer are
+two distinct entities.
+
+-- 
+Pavel Begunkov
+
