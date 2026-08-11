@@ -1,77 +1,81 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6805537C90A;
-	Tue, 11 Aug 2026 13:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDAF44331E;
+	Tue, 11 Aug 2026 13:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786454086; cv=none; b=Kqjo52Tljx6ktXT093Nn4fsBixLdbcbJg97Rrv9jCxUW3/d9WMl+KI4vdvNW+VpwB7n7Gd04aGEhd66qPULxYdRjznf2x4MD9q2SsbOZgncVoLXDnKpE+Z483DvF+U71qRqFL5pONhPo1VQsG2teF4fB/4N6lRHMPgU3FB6ibDI=
+	t=1786454100; cv=none; b=fdhnbNt62f3lIdr48cWOpiZIHRejALyQKBR8ozoOZo1540t9WBkm+X/mbvu/ne9KPa2WMgJdx9FUlrsmCHxo04r54+UOu3rGuYO6FfW9OZQ/mXnVcHbxwS3HuhoY71U2cCd2Bx2OT3YW/RVlEOShbi6FleVGjQ0wqMV/yKfN9m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786454086; c=relaxed/simple;
-	bh=x0M2ebb4YGCTw57vP6EAz1gS4hevjwIbdS/kTKIzesU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=sYsE28AbtCibs+EfehIjrA+q+Ut/e/QDKyYEjONG2Voju7SVU2K1Huzibx14TIiDh+i+em7Js6s8ZQveOvuYOls4j+TY0r8qdGsb9I3wH2uSK7b+5ztC5mK3/9duxd1YwTfIxumzmpc7GEIOVwOjmvOYr+ZALFE1MRjlit7QTSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TxsyJp6v; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1786454100; c=relaxed/simple;
+	bh=S7FRhNitoEtV4TO/HFHinokjgrtn8fyv2bqew1kFrmU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sf1Nt9T06mguhWbIdMa0To5VbicNqpZ41MYfVy9/NaSj42R6M0JrGpTtbnKVgjUW6a6QF7qJHR364kY9LcCmv3uYi+32qBeBcUdCe617GCM/fb9BuUWy/3zS2+Oiee1eTLdx1wxuy64kaM0w0fnAVkmB020jLQF8Im+3YZ/oq6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=H/DYzcJ6; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TxsyJp6v"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7A3A71A1570;
-	Tue, 11 Aug 2026 13:14:36 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4B0EF6033C;
-	Tue, 11 Aug 2026 13:14:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5489911C48B99;
-	Tue, 11 Aug 2026 15:14:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786454075; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=x0M2ebb4YGCTw57vP6EAz1gS4hevjwIbdS/kTKIzesU=;
-	b=TxsyJp6vpip6ZK2Pwk+FYoiRoecSZpKedunO4WsL9GFo+87sJE32da2w779sqlYoYr0bjS
-	6lxfY2bzYXm79nN8QqlCtRYzffUmGCtf4sVXbVxykg2ljgL8pN4OPGdXqVwXBhdNvWkosM
-	J0UcXIaHvLFEqe8I91e/dIPreK0F6HdlaevWZS/fkMMC5k7cPiBpKEoklcOAPr1VmZutKJ
-	awvnFL0l150nFR6mDgmEI/qE+Rz42tfR3IfwIjLyEpz0MmPiP0SV8/prdU9vRz/ssBHo33
-	s0Awr6+rYqNQY8ZexMNjIxKKrP2JR0CZ5XZY5Ch2DBLq+lh94QH4VeVKFanVJw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Fan Wu <12321260@zju.edu.cn>
-Cc: Fan Wu <fanwu01@zju.edu.cn>,  linux-wpan@vger.kernel.org,  Stefan
- Schmidt <stefan@datenfreihafen.org>,  Alexander Aring
- <alex.aring@gmail.com>,  Varka Bhadram <varkab@cdac.in>,  Andrew Lunn
- <andrew+netdev@lunn.ch>,  "David S . Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
- Abeni <pabeni@redhat.com>,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] ieee802154: cc2520: fix RX tasklet use-after-free
-In-Reply-To: <491F951B-3C7A-45AF-8842-C581A2BA6ED4@zju.edu.cn> (Fan Wu's
-	message of "Tue, 11 Aug 2026 17:48:26 +0800")
-References: <20260811010359.131381-1-fanwu01@zju.edu.cn>
-	<20260811010359.131381-3-fanwu01@zju.edu.cn>
-	<87ik5hoycq.fsf@bootlin.com>
-	<491F951B-3C7A-45AF-8842-C581A2BA6ED4@zju.edu.cn>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Tue, 11 Aug 2026 15:14:27 +0200
-Message-ID: <87v79gol3g.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="H/DYzcJ6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=JWbpkoLGAkUzuTBUwUUawFS+dlA9P0+DrUN4qtnP/Sk=; b=H/DYzcJ6NbH+HF5/tdxFsSjpuP
+	kolrTY0zwfNfGCrhhoy9BqPzHucxEd+NXdbQ3+4C0llWT3TYrtWLSy4UjHYgsZoVIkOYL/sanURto
+	vOSGvQvikA05sa+klTWZHlU2ez+LSeuLcjBJ6f1AwEOsugQ2Vp4jSfo+vXomB2N6vgQB0HMXdwfnK
+	Mi3OofVmk2LUF+QwETIpxqV3TWNjHf+4L5BQsZ2MvGZIMfn6LvRndyvPna+OZvoCcAmF17k858Qua
+	gTW3I6XcR56SnZ7UroWPz5LQklfoDujZHtg3fpMD5kxplKd1MpZc7K4+Z3xXaNVitiZ4zGEKv2Vqh
+	xp365rIw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtmJg-003aU4-2K;
+	Tue, 11 Aug 2026 13:14:52 +0000
+Date: Tue, 11 Aug 2026 06:14:48 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/6] netconsole: use the address family
+ instead of the ipv6 flag
+Message-ID: <ansfpqRSBvmMJEJi@gmail.com>
+References: <20260810-netcons_ipv6-v2-0-3d4fc987a90f@gmail.com>
+ <20260810-netcons_ipv6-v2-2-3d4fc987a90f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810-netcons_ipv6-v2-2-3d4fc987a90f@gmail.com>
+X-Debian-User: leitao
 
-Hi,
+On Mon, Aug 10, 2026 at 05:47:26PM +0100, Gustavo Luiz Duarte wrote:
+> Now that we have the address family in inet_addr, use that and remove
+> nt->ipv6.
+> 
+> We no longer need netcons_local_ip_unset() to check that all bytes are
+> zeroes, as that is now denoted by (family == AF_UNSPEC).
+> 
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
 
-On 11/08/2026 at 17:48:26 +08, Fan Wu <12321260@zju.edu.cn> wrote:
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
-> You're right. I failed to trace the receive-enable path, please drop patch
-> 2/2. Patch 1/2 is unchanged.
->
-> Sorry for the noise, and thanks for catching this.
+> - * Test whether the caller left nt->local_ip unset, so that
+> - * netcons_netpoll_setup() should auto-populate it from the egress device.
 
-Please send a v4 with a single patch.
+This will change the behaviour when a user setting an explict 0.0.0.0 IP
+would not have auto-populate (which only happens with family ==
+AF_UNSPEC).
 
-Thanks,
-Miqu=C3=A8l
+At the same time, I don't think this is a big deal, but, I think it is
+worth getting this documented.
+
+Please add an additional patch that would make it clear that, if the
+user passes an IP (even 0.0.0.0, it will be used, and auto-populate is
+only used when no IP is passed)
