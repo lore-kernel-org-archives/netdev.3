@@ -1,162 +1,142 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149F63C061C
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3183BE172
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786464417; cv=pass; b=kuc2qbMt2KmWTSpk+NW5Ay5nYmH7TXaMecrwXAstz4xZqNQ7QTTnBR0a6L2JFqd10t+lk7fkrHryBlwUach986+nLX9ZyoQk61mLUKGBXHYztvCDB9Q8kzv8ttzBzy86u/L8QrRnAMqbpiOrMxgYyHZ8ktcp6d5yHjQjg54iLOQ=
+	t=1786464658; cv=pass; b=RQg76qxHk59CScgBXV7IsyKLdo+B1o5Bq2LX9Dw4fgV5/3BHLZpsfnBeBvdGO3+sH+E81XxlZms2vHvVGcvacnOLMaoKQ4V8Nj/PyZau4e/uMKeVAlOkkFauPRlwrbMdFFC2sr+80dk9fVn6Tq4WlUch5cAyOKslPz8ZGQRE4Xs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786464417; c=relaxed/simple;
-	bh=EpZfoLYbJcIPSxl/oTc6thafxuEwE0MFlEgXgQgfH4Y=;
+	s=arc-20240116; t=1786464658; c=relaxed/simple;
+	bh=vuoLOK/rnYLKL8Mx67lQ0cuVc/C7UhzCs9iR/P/EQf8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qCmGQZewT8lk57aP4f1MWy6NtR0JkE/Ce1wOhMb6oADNOn4fbDPT3s1gV8CS8tgmZwpUKHQUQzsFiT+yxWi1C6UBdA+w/ecmGebsLw8KT4J6s61VDwHUqkoQ8DWkHb19t3IM5yobiTFMNtNTYkjDaQWqNm0aOfZ65Yftt5xeWCo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KKW4m1Z2; arc=pass smtp.client-ip=209.85.208.49
+	 To:Cc:Content-Type; b=iU3r01ERrNl3fTpvNeyOKbT5r/peFsN1zE9xByTWWvh18yYhisCVAufese/ObKP7ss73Qd/joZ059j2sJS+9wh2mUyalRJpOsWgn4/CD/JVVN+sA+DzP3HZWu9Qz+9DknoJFRpDJzD+NfJRJ+NNWMWQR1483X3K9X+i9w8GwGbE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=COQSUHpt; arc=pass smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KKW4m1Z2"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-69fab5a852cso4243474a12.0
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 09:06:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786464414; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="COQSUHpt"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so1497465ad.1
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 09:10:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786464656; cv=none;
         d=google.com; s=arc-20260327;
-        b=rJCQVV22scLy7F9MArgUYwuUhp+UGrvhMJ6UgK/RUg9zFHJE7lTOXqRiE37BIz64L9
-         p4902OjeqTBZkRgcHaaANw2uGHzDyApNgx4Lqyvhk2V1/IkSF9nDGCHLkfF4QeyYZgn4
-         7xZTgrf5yl3WcCfv8Nlzwt6Nwg6PeQyd7loM7g/4naEau7JU6OSjeNaHZexdpH6MkPxJ
-         D4gmNzKbMe1/8DLpvPZbeONXgxxWpc8/d0q38LoLi9TURBOlqCcQNc8FQlHeSiLn9miq
-         8BdHX1Zm/PN0INNgV6pvdy8h7mhshJlGh0Tdap1wVPw9BNWXnCwCg2LtivRc6+AfrE6F
-         DtUg==
+        b=rTmX/tMHO4ZIJ6f4jb/ZRgyV6aEocadMwdl+w5v7cQCf7nPnn4WFY+9fRB1wPx+ZAA
+         MIhykvx2XvIlrZBD1cCDPpwvae1qw04dQuGCcVuQ3dtxOZbApidsMV23BMuVNOQ8TVam
+         Se5xuFYHMC3XNgDSIrcSkyo/XX4sdh+0TKSCwH+vdMgjOdVjtTPRqPun9YOBGCd8Ahfo
+         F02uW3lClSzIKiA+OvMF/vsiB4mXoz1fz1yzKTmIvXV0IZ+JmO48UZ/K35xTtSISS+yQ
+         JmWv5QXaj3qHrpOKMyFXlfo8ChgOI9Nr0ZecWKRPw4BQk3SiB9/UmzM/2LG22dMTYJJW
+         FZFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=NxBXsvZDfR8x8hVJHrORxprKXoQusJH8uCvAZ74aEb4=;
-        fh=IxCkeNmpUVjZ06S6NUPN4iw0hd3LZoSHeXJBRFOxuzQ=;
-        b=jObZvhCFFIIngJkxpbB7Tevfef9nh1W+rJQqKA5Ayf57V30jAAOa8bl/LqvQMGoDpa
-         hx2eQWj0TwV/nukEsMb24koSGOLiGqJZsuUST+/yLZD3BggMJtkXzhIVjt/9q+nOZHMf
-         oqdzBea8dvHISJuSWUUaSCpfpr60TlOVfhhjfJ1Y/4zUNCZUMGTIcRkSV/A9JV7YZAtt
-         FiIifDIphI3uzJ5AVGs4oEWU6BxMTGX7T6qN8rnuX2rqqPcdjaPCx/Rg9M3/Ep0i6fWB
-         K87q4CA/O47N7OK7Q++1ipPmJSf6bfFaz6kkWSRALugPm0ldOuEpJ9LE41cE2E5OB4DO
-         tl0Q==;
+        bh=oR6Lfn10OI2dMXCG9wKlSbygEMyQ0mqk7f3Zkb4+G84=;
+        fh=mbPXVwsxSyhcVeUFQs5uePk2gwN4DQITrm3CWJW6sTQ=;
+        b=hPz00oa+7+4k1KkNnNRE+XYTSzEk2YTewU7SIbKH2brW7Qkve/Tp7oHlYzwjIRZo7c
+         i46AwouDtSocbkMAuPjUrrNr+ruxxcyNLVOEEjLkAJKqFUnI0gB3/9nS3Efqva7n+Wld
+         gO2lgOfeZdQpsfNKQOBgfhLEg1M7HpKoNORf4D4ByzfBMAHjKj09DLqyZxHPMYrLx0SD
+         RJGhfjLJzPjU/2CBsY7NMiEyxre3omhrq/9cj/ZpPi5PXdJJZ/C3XfeCY9Yb5nxikqyb
+         fxupWzNSFlp18SJ+Eb0fvCLHQVEZTvyWv5GPhhWCbGB6pCem83+z6jusldGo93sQT/BT
+         ih9A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786464414; x=1787069214; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786464656; x=1787069456; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=NxBXsvZDfR8x8hVJHrORxprKXoQusJH8uCvAZ74aEb4=;
-        b=KKW4m1Z2go0uAS0iaWWYqtWv3xh4Y04VR7uISR6f/RcZJSbTO6chGpXwvEbQAhcFf+
-         YM1rZFU6x3U937e1Q7hPfFxNU1Nhb3KeRYToJLFh6MRrgAPu6o8KQNbUTBrcJ9RqC1B9
-         qNdgzpwq9G2vlB71NM6KA0ecWxOAYd8rC5IK1CAxXKq8fRJHQGYMeOUH47AH0Ck0F6rn
-         n4BVtnTewDwMwFEBamhHgOqjbtHykH3CPUvwXig+6u/F5bDr3pnbV5FMTh8Y3xWI3swX
-         +Ox5d7b5a0Khu7oZMgWnXWClc2MwVQZzdk+PMZ83BleW8UwpymO5uNF3dJP7pNeser2e
-         Li2g==
+        bh=oR6Lfn10OI2dMXCG9wKlSbygEMyQ0mqk7f3Zkb4+G84=;
+        b=COQSUHptmpmqLVucnAPzUZCEpWOZXXXLGirfhCPmyenlPim9HPTL0cKFu/8dp+JiSD
+         WSY+lIPBjqc/pGcgk4v/2IHQEPJ22eX3LnBFNbbV2j7BFGyY9xtFzVjivrSMH5jqc+dh
+         NhNxf0r0WhVcsG2lhwMhSdUDtyC91feD+S+djqOjFgHDnUc44O/NI5kcOG4TV+SxpQXy
+         DZ7dsoSubf3jE+Mxfkrvkmj34KhY9CxP12aKoKtrzwMpO+9KWnTkmKQMQouVCYEWiwO9
+         VVqJc3dffkHJRS3Pes/tcP/0czyATdwRnOY6GaQBwedGjui7Rpyy67Bz9j6M+WOyMBYx
+         hzug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786464414; x=1787069214;
+        d=1e100.net; s=20251104; t=1786464656; x=1787069456;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NxBXsvZDfR8x8hVJHrORxprKXoQusJH8uCvAZ74aEb4=;
-        b=H0O3h5qOoM4TJPl/0vXwdS0n1nhUq0qoMYqXC0BMAGoIKFQrzwp0M/PU2yCtSTw93b
-         giS/knztkaSyAkJpQ7jQI6eLEw26l9slWflQg2yocgSA8aTUrDdlRFnsxLkYP3lgYUul
-         IkDEKUMO/ajZurDjzk2xGjMB8oMxiwRK9sIEh8VkUIoQ953sAY3IKaS0z1Lq0fIxHX3c
-         p/SLQ0dItmy5mLregv6y0e9gZZ6MUEMIgeitm9EIRHBNr1doS9G9uqJQn/57r8xGmeEm
-         joBc19tA2ew3sColnUhNTUxh6LhoesFDi4chDulKwsWkO2G7XYuRvG9gPoof3q/mh52r
-         loXA==
-X-Forwarded-Encrypted: i=1; AHgh+RpiZ/5jCfweicEsnomElclTufHnYTnVVAfk1eVP3X5tbch6RTDU8m84LsYurR5EMOagkoR52HU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyivZ/OSr135ZteD+fqplThYn/kpAI/LXLaVSfgCfPotiDnqaZ8
-	FNnX5Sxht2B0g4/7yIYyawz5wtRM0oDfDiJQqnffrx0wiagXks+efBtbJvDcDroPgfCMzwdQj54
-	3fNM9W9ueNrxBzJqMrwkFvDkaYLVokDoBKqwaVrl8
-X-Gm-Gg: AR+sD120t6FZVufTcMaWH9EBUei048ihXgM7tOKCVI8URf+9mUZ17TO44L7XFBXFnBv
-	au4FgGo5j1i5MRvrTJKtXdt+/AAY2ffLJlGNK7Fdgferu0sSkNzw96XrkUL3ZmJ83vYrpAqYvjG
-	mzj4EHcq1HbeNlfYZOChpRrHoEkjOZFz3tQgY2BTtfJGSEfvDLq4QMsrR/2kffofH+SmIBN5pba
-	KGAO4elVsvOZc494BhFYLobORY6sNdH6I3TISRMaZE0airFkAxvoQm54FbdpqqiTso2qKpHhu9J
-	OKP+OLfR1UPBdL1zouwBIX6tQQVLE877dyCeag5XoToO965EgXeUEi54vgOaKu+hRg4r2QLkuK5
-	zyWpMQX4wdahFzahXiEg1TknV4qwiStwDNS38YA8Cw/cgXbAFqm2pYc5mSUb3iKK7d2P8wCgEO7
-	QOV0M/OfJFI/sv8iL8Zn3xj3+UzjTEuKWlrDI=
-X-Received: by 2002:a17:906:9fcd:b0:c1c:332b:74a1 with SMTP id
- a640c23a62f3a-c20e61fc956mr224405766b.28.1786464413459; Tue, 11 Aug 2026
- 09:06:53 -0700 (PDT)
+        bh=oR6Lfn10OI2dMXCG9wKlSbygEMyQ0mqk7f3Zkb4+G84=;
+        b=JJiuZ8817Xuy/u9Dydv5NxTUeH2cGTbXieruyczMa04I7CgcBe6+7I691ZDxkL5wMO
+         6hNXPpVgWdM6SGTk7s+Ca6Rj6bjB58fUacFalPJ1pXcbOJ+9W6Y2y0ASLbfBG2E0xn+Z
+         e5DlmHXdlmpsYafb/MvUShPHQd7Yvtsp1b/hC9THcFHg/G7175GbtKd3qhg9WKE5ZsVT
+         Fg26lLj51hTwoNENp6DIpAsZgSK79hqWnvqOMQOwSdXInyOgAxLOsfsuAPCNz3bgA3Cm
+         fdUsYQmbGwCEvbL01+gb5+0+p49sva/Bnxp5W4Wu+Dnp9jX4KCxqb0vhV86Wx5YcqhF8
+         5t0g==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6jjS7nm7rNfjQfI8v1y64dKGbZMnu223LW68Qrp0yPKgFZqPuRuyke+qZRRwkywEAToWL6Uk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0G5SaDBaTy3YVNnJ3IGk9mopqIKxVD77vePPcq0B19QBl12qz
+	yH4daSLqxXTHoOdBw4c9MnHYrX+HgrQME+TW5VbFb+JXYn7tNOAxnh3QJgGg0pEJeJ6Syk05hBK
+	Sx5zvI8b9zW/UeQQvW4MTIdixN9WyalnPikaMwPFX
+X-Gm-Gg: AR+sD13R8kew127z021iBNGrO3J3dne8hcQorNL1NWXXzicczHtkX/IYHskLJ4T+x6k
+	+ADL79lpV8QdDXqZzOLSz6GHwXxJV4EihiQybKgh2zonUjj280i6b43WPFym8zeXpyHuA3TB8Gs
+	/6++ethmBMgxLOi+4G+IbPgITeAgEgi9LBd/aGpmNiwihVeMRbRYuwvFgPfO7XNU10h4QKVSoxz
+	6EDd5P4/lkm7Q96BDQrOAwsYbcbqzeyhYjEZvoS5sxQOyUslwOQQTxFaOjQtWx7Mv8jpBvxT+HN
+	TBvFFzAlKTVFMox06gKOEXYvrM5H03AhU13wwL54FeIiSRTd8/s2rdRbbZW+GXWpvi1fl2LyDlr
+	ryEiCa6SKbUpSe0WF9uWLyUfcGT5zHamGINclwMpuSi9k/yQaI82dqJSV8LNB19F6WO5eLqiOOs
+	WTUrWoAEpQpoDGITj3lQ35BK0=
+X-Received: by 2002:a17:90b:2747:b0:380:f34a:6ff1 with SMTP id
+ 98e67ed59e1d1-392ec673319mr4988797a91.17.1786464655648; Tue, 11 Aug 2026
+ 09:10:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811022448.116235-1-kuniyu@google.com> <20260811022448.116235-7-kuniyu@google.com>
- <c90385b9-28f6-49ea-b4cf-9eb90604af10@kernel.org>
-In-Reply-To: <c90385b9-28f6-49ea-b4cf-9eb90604af10@kernel.org>
+References: <20260811022448.116235-1-kuniyu@google.com> <20260811022448.116235-9-kuniyu@google.com>
+ <ee6e639c-558c-4538-afdb-3ab6c1c3476f@kernel.org>
+In-Reply-To: <ee6e639c-558c-4538-afdb-3ab6c1c3476f@kernel.org>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 11 Aug 2026 09:06:39 -0700
-X-Gm-Features: AUfX_mw45djgaea9_LsyXh8uOiUuplSqLBi1MNNRvjC3gN8gcUiDvnup1aRDzAQ
-Message-ID: <CAAVpQUD3R-Vi6CQYS5MRtE13u5LgxZ1JNnn3MDkT78VE5zWTzQ@mail.gmail.com>
-Subject: Re: [PATCH v3 net-next 06/15] neighbour: Store arp_tbl and nd_tbl in net->neigh_tables[].
+Date: Tue, 11 Aug 2026 09:10:43 -0700
+X-Gm-Features: AUfX_mxQ-eWKgCcOc7LkSBADPKEU1AcWofnuzPewaL16HDTe5JFxHaWkGGMhxqA
+Message-ID: <CAAVpQUATfZAif2brwjaqdWTH_JzKzRjFdZ+Yrj07TrTkcYXQWw@mail.gmail.com>
+Subject: Re: [PATCH v3 net-next 08/15] ipv4: Replace &arp_tbl with arp_table(net).
 To: David Ahern <dsahern@kernel.org>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
 	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Elad Nachman <enachman@marvell.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
+	Boris Pismenny <borisp@nvidia.com>, Petr Machata <petrm@nvidia.com>, Jiri Pirko <jiri@resnulli.us>, 
+	Edward Cree <ecree.xilinx@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 11, 2026 at 8:19=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
+On Tue, Aug 11, 2026 at 8:42=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
 ote:
 >
 > On 8/10/26 8:23 PM, Kuniyuki Iwashima wrote:
-> > diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
-> > index d409f606aec0..bad17d5aeafc 100644
-> > --- a/net/ipv4/arp.c
-> > +++ b/net/ipv4/arp.c
-> > @@ -1495,15 +1495,34 @@ static const struct seq_operations arp_seq_ops =
-=3D {
+> > We will allocate per-netns neigh_table in net->neigh_tables[].
 > >
-> >  static int __net_init e(struct net *net)
-> >  {
-> > +     int err;
-> > +
-> > +     err =3D neigh_table_register(net, &arp_tbl, NEIGH_ARP_TABLE);
-> > +     if (err)
-> > +             goto err;
-> > +
-> > +#ifdef CONFIG_PROC_FS
-> >       if (!proc_create_net("arp", 0444, net->proc_net, &arp_seq_ops,
-> > -                     sizeof(struct neigh_seq_state)))
->
-> proc_create_net already handles CONFIG_PROC_FS. It is not clear to me
-> why you need to add the check here and below.
-
-Actually it does not handle the case well because the =3Dn case returns
-NULL and setup_net() fails to initialise init_net and dies.
-
-Most callers have the same issue (e.g. NFS can boot w/ =3Dn but triggers
-oops immediately) and it can be followed up if needed, but I didn't want
-them as the prereq series.
-
-
->
-> > -             return -ENOMEM;
-> > +                          sizeof(struct neigh_seq_state))) {
-> > +             err =3D -ENOMEM;
-> > +             goto err_proc_create;
-> > +     }
-> > +#endif
-> > +
-> >       return 0;
-> > +
-> > +#ifdef CONFIG_PROC_FS
-> > +err_proc_create:
-> > +     neigh_table_unregister(net, NEIGH_ARP_TABLE);
-> > +#endif
-> > +err:
-> > +     return err;
-> >  }
+> > Let's replace &arp_tbl with arp_table(net) and remove extern
+> > definition for arp_tbl.
 > >
-> >  static void __net_exit arp_net_exit(struct net *net)
-> >  {
-> >       remove_proc_entry("arp", net->proc_net);
-> > +     neigh_table_unregister(net, NEIGH_ARP_TABLE);
-> >  }
+> > Three notes:
 > >
-> >  static struct pernet_operations arp_net_ops =3D {
+> >   1. mlx5e_rep_netevent_event() and nfp_tun_neigh_event_handler()
+> >      have code assuming neigh_table other than &arp_tbl and
+> >      &nb_tbl, and the part is removed as it will be false once
+> >      per-netns table is allocated.
+> >
+> >   2. prestera and rocker uses init_net because they set
+> >      dev->netns_immutable to true.
+> >
+> >   3. mlx5e_tc_update_neigh_used_value() dereferences nhe->neigh_dev
+> >      in trace_mlx5e_tc_update_neigh_used_value().
+> >
+> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > ---
+> > v2: Add note about mlx5e_tc_update_neigh_used_value()
 >
+>
+> Seems like this is not a bisectable patch set. References for arp_tbl
+> and nd_tbl need to be fixed up before switching to per network namespace
+> tables.
+
+It's still bisectable, and this comment is just to make human review
+(against AI)
+easier because Sashiko keeps asking "Is it safe to dereference dev here ?
+previously only the pointer value was used for comparison", which is false.
+Sashiko just misses that trace_mlx5e_tc_update_neigh_used_value() does.
