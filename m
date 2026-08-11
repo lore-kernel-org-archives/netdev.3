@@ -1,327 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013059.outbound.protection.outlook.com [40.93.201.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E592C3FF1B7;
-	Tue, 11 Aug 2026 07:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786432525; cv=none; b=uttzwKNx3Lb33xwxFkHc4nco2vT60D04dwsivMnIUA2JuFZd+XxsQgnrpH5vjC8tNfxR1k56iMF0rfHfbQN/4frZQTMznJuoSJvMAFpxgAmTh3wKWUsRL+EYe1e9F23fJKMzLgv+5D2xME13tk49HNhsoN8xhzQKr3YulCBYAU4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786432525; c=relaxed/simple;
-	bh=I3JcvC5oTHnJrY/p7dKkXNjVsxbYm7hTwxFI6iwbUns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kbeV4E96QoM7NhnXun/bw+oJAIs7O+QVE1c+gpsksXw+/0l6RBYXgwhzJZFt26rXRsStpFxHhcBFIYTZJ4WI2vK4ZNzWO4rTn6rbNUXKBwDt7QDBsxM3A9woChChlEdo21asMeM2Hwm56Dd2j2cqg+lu+mZdxLKkimkv9uS2Mn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JsTuDwVa; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93922236F7
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 07:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786432863; cv=fail; b=GflTxKNJGCykpKVSdWEJGe0MqkdVULg1K0O/97Vsjy8apTXbyv2pj+AIPYaarIui0GzGqolWHpTL/2OiqApBCNDvDJKG9vSD+ijC7KRj6NsawR1HXeHz3oOXjlBhrjEKBRRK76j1BZUaomfiihDG9HxWCmZK25bFXjnDC4hsFZk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786432863; c=relaxed/simple;
+	bh=aDN5zQ1Un6+ZZxzM54LzSII40LFnho5L1xiBVUxAfxk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Yl/b4Xex+mxMdj5oa5zYNXqpDUFX7kIXWLlAj2VlYmy4vPcxN/OyUTikX9pSk825qGp32DnkhH0nsT0iNSAhLvZA+zaDJuNI0wBsYO8uYWfDx3xB5TVb7ViJ7ViVry/osuzCw0iu2EUyd2iqU89Mc6MQeCIX0wLGlw5Fe/iIavA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ItrQCAVJ; arc=fail smtp.client-ip=40.93.201.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JsTuDwVa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593701F00A3D;
-	Tue, 11 Aug 2026 07:15:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786432517;
-	bh=RtnopSDY9LgO14LF3vwgLskfXZkmvLWqpT4jVjmFoX8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JsTuDwVaxj7Tswl2f65hiEXtO37LPlohUa//m34dIPkpN90j6yvcN44qnQP/VUG9v
-	 iYPg1s+B1coX/FigWu05xUx/AVO8we8UpKfvQG704vrdUuoE2mpFSGSg8HkbDQg5wr
-	 mQeY3iksQULPBIGZznIZn4BAiqfz7TIYHuHLjg1fIHmudxymAmlWBmohJ+4ga120X2
-	 JdDNsqsxAqKhMC5n9uaQP5/jDxJdwuxRCX7xtH8g/pr8Ll2W7KYxoYiLlJBiIvEwpW
-	 quNJdH993S64cDFZvMA13VIuOfq/MzH69uqJod81HUP01Sj5If/r6ZyLF4DrCEyM1B
-	 gKSuzorkhjxNw==
-Message-ID: <9d596af3-be5f-4f02-aeaf-ae5d627475c5@kernel.org>
-Date: Tue, 11 Aug 2026 09:15:07 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ItrQCAVJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZySxYRS+0EIPQJGEcvG06cN6o2DKQPZr0uS6D7AqcStLWCrPa+JxMHcBg3rYtBVIT4sJvsDD+Cxwi0CpQA+6aKX7rO5lCSST0aJq6jQnaFzoAoJMD7sgqok+2KAVp3ZksDpUz4x6pjJ/JdSctU22WEqUdgNteZpr9b6F3LCIYsukIqVpxZuwjjCjS4ahfIn09nUcx/LOnSkxivbeQ4SNdc6HHOb4WV1mTg9/LOfgE0kTfsFAoBiS/C3Ffl53WtScCoQM7o4f1mJEa/5zXcJ9295uZ8duCEB040PVPeyVlnb9FMF6KnkRvj6p30fZlqAImIGoKJQFI4yCC9QNjIey1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=znUc6z7KO3wqrRT15m07Yzs7rcsqPFLgcKgTVnLunao=;
+ b=G8JHKcpR4oaoNIkCwjvE7zjhBtAiBCcR0kd2A9eQoTpJiCwI6Ba70AdSIg3LendkE7xCHmbFRSZS7zD6B5NTgDoh4JDsTxnnrG2CJlxqrozzWAwnsxKkNopoYa75/Op7jw6KNl7CwzaVO7E9ZkrR4QRFWijrZ60K3ClASJwMJF58uC7s+r0yH7zmFW4o6hBHceSL8D9gJCxa2gCR5SS70kKByRRb4ZlA5c9J6j+6nCx1UVXQKeLKVQsR77bl/DkmUKSJXrT/iaTHGBgyzkrni81yX9iMna+xQqGl24Zk6NUY8yhs4YWNAead6PusrQo8q7A3VUwRjt9q9GN8JH5gSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=znUc6z7KO3wqrRT15m07Yzs7rcsqPFLgcKgTVnLunao=;
+ b=ItrQCAVJO8TgZtIUd2zdH1EtlbhMnRDtrPUUPghAC1YQ2nQtrO/oRbqJddL9G7mkswcbmVPEMKHrcV9XFUXcAzv3me6yugrLj+EJ7+PEzlGQfBDICBdSPVZ/Xf3Jq/BCQoQCIZkwOHfqftV6j25acZZktBuiBPGgo45TmDVeWAmlTwBH78Qm4i45spw5A6413SuGpMBqYVAoBU6DB4+YIN19GNwtlFLgpMS0UJFWY/wsMmVw8KC25U9rOvcGUYToUWmkqnYwf3RkzW6JxnX6yLSvfOs9tELAAKnHMW/PC1yRTPcmKbS7YfnTOcTcHSWNiIdQggSis6gsLI0WZ7Il0A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6802.namprd12.prod.outlook.com (2603:10b6:303:20f::19)
+ by SJ0PR12MB6686.namprd12.prod.outlook.com (2603:10b6:a03:479::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 07:20:57 +0000
+Received: from MW4PR12MB6802.namprd12.prod.outlook.com
+ ([fe80::51f4:a3d9:b44e:9587]) by MW4PR12MB6802.namprd12.prod.outlook.com
+ ([fe80::51f4:a3d9:b44e:9587%5]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
+ 07:20:57 +0000
+Message-ID: <7caf12fd-f63b-46f0-a5bd-e9887cb25f9d@nvidia.com>
+Date: Tue, 11 Aug 2026 10:20:52 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [TEST] CX7 timeouts on reconfig w/ page pool failure injection
+To: Jakub Kicinski <kuba@kernel.org>, Dragos Tatulea <dtatulea@nvidia.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <20260804094518.53b56d24@kernel.org>
+Content-Language: en-US
+From: Nimrod Oren <noren@nvidia.com>
+In-Reply-To: <20260804094518.53b56d24@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0248.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f5::14) To MW4PR12MB6802.namprd12.prod.outlook.com
+ (2603:10b6:303:20f::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 4/5] dt-bindings: net: x-powers: add
- AC200/AC300 EPHY packages
-To: James Hilliard <james.hilliard1@gmail.com>, Lee Jones <lee@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: mfd@lists.linux.dev, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260809-submit-acx00-of-dynamic-v1-v5-0-bfa1f8518b28@gmail.com>
- <20260809-submit-acx00-of-dynamic-v1-v5-4-bfa1f8518b28@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20260809-submit-acx00-of-dynamic-v1-v5-4-bfa1f8518b28@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6802:EE_|SJ0PR12MB6686:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c9d66b8-f777-4e22-c272-08def779161a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|18002099003|22082099003|5023799004|56012099006|11063799006|3023799007|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	yQsQLzCpNrtFEpHS5eU+He5mOCGTn/qnZkM3VBOC/zFV96eJPmiiGaaWaNpTo27z2PrlI2SlyzQR6hiJ/50w8Eyap0M7FIELSxJymFx4oDJuZLkBCh3BpYeE2fdZeNDU3GbcEVFnqDTBMZ5unukKcTS+TXg9FEEeFgdFVwjIfkJS30/PLL3QYEnucnoWtjsohKXmu/7skLxJ7kIhQHdC0hijQzvEnOnELLNwFDb6vgQc+JoqrIiVftRcH1EOK2d21vbqZVvzede7FLnLPJW+DKCpV4TnS7mG+62Du+qvPFcviDAJPI7cjoj3HsofJbWnQCIx/vnvMoWrwFPr27MjpB3StbobZddnLVPPEaGWgUvOiu7Dn1YCyCQwE4YaejHyJyO9Izd/6nEH4mhRvLxwMitFBYrpfNLlVHPOQHYXn6PvSKvToPZo+fj1Wj69rKSzDlhh9JyAJsVeY7+33H+Iyl7Ne5RxvSiadr4PHPp/FIhU76x2RaIjXTt69X9O/1RaqzoS+tQf1l+bxt8hp4E70m9tTtkK4XOmsFOAtwfgYOH2sRUliDkGwlbwwiprIZmuFCx9qh3HVELIghShkyVXoLdEQNn3CBbPOuB2l1FT77RLw6QgTwIoSFIY1Dr/gGAzeVKifLKnUDNrCiNOGfzXqqMlJS0f3gNMbtT8WnlSdkU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6802.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(18002099003)(22082099003)(5023799004)(56012099006)(11063799006)(3023799007)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?d3FoNzVrMlM5dUN4Y0VMbC9UOCtHZ3BibEx3UzluTlR2cFNwRlFiSStvc3ZW?=
+ =?utf-8?B?Kzh0Wjd6WkRrcWVEL1JKa1VHN1REN3lFcjhDWTZPemxZNE9xT3F1Sm1IblhL?=
+ =?utf-8?B?eHdybFB6d0IxZXNNaWZRT0YzMEQ2ZWoxaituVnBmeW5oc2JVbkhTL2JDQ2Q5?=
+ =?utf-8?B?UTRkTW1zZTVCTDg5dFZDV3kxTWVpaG9memU3TjhPTXNKek91cTFqSTFweGhn?=
+ =?utf-8?B?RmxpTTdvMS9BS3RGWWdoaDVHaThDN2twWXhSV1hrcFVaSWNjTFdmbnFYQmpt?=
+ =?utf-8?B?bkd2UXFyNmU2WDRmN2JSb0lWZTJIMFZGNHd3aE1EVi9nLzQrQlYyai90M1Nz?=
+ =?utf-8?B?VEN6cjh1T3JwR01xOU02TCtzNWtLUnNXa0lMNjVGVElNOVdzR1N1NE1GRHZX?=
+ =?utf-8?B?MnlBOWZ0YVlBOUJyUlB4MVQ3UjJKbE1uQWVkelpWL3RjZVJlNjlyOHJKKzUv?=
+ =?utf-8?B?eE9xR1ZCbitHbXZYalNWZXhURDZXRHUyRzBxek9nckFjbGk5TXlaNHAxOVcw?=
+ =?utf-8?B?MW5yWDRQTys2LzNEZkVMQXdubVVVc2gyRUMvay9TZG51L0JKSVVabEZYR2lR?=
+ =?utf-8?B?Sk9jbW91Tjc0dDB3T204bGFHWXA1a3NLWUVab2xzNlZyTndwb2ExenIwNE1h?=
+ =?utf-8?B?OHpuaE4zZ0g5bERQMGwwWk5uaU54UElXVjF0cU4rRFVKM0lkTUJLUG9sRlJK?=
+ =?utf-8?B?VmdNY3FDNXZJV1VQNmFKQUpOT1NjZEg3RXhUVTBPQm91dTQ3VE9ndzJHaEU5?=
+ =?utf-8?B?YzVqVjNFaWZ4R082RU5talp3SC9BZEthOXhXNE1oOVBvdkhQdDBSTE5SUysx?=
+ =?utf-8?B?NC9vbzJpRjZyaEpwT2szWUd2eGFyUDFFQVYxN0d6S0xqNE5OZklZSnZvNE1R?=
+ =?utf-8?B?WW0wSWdkcXdiYmNWeFhsWGNiRFR5MUZVbWNyNmh2dnVKK0syVGhiSXpVQWZZ?=
+ =?utf-8?B?VE1PMXUvZEFqZ29rRmNxdHV3R1B3WEVJbzBHT1lJSDY5Sno0YmM4dUNTZUxT?=
+ =?utf-8?B?VG5jUS9URDk4dklOcEhPVWx2am1HaU9yekpiUzhuc0podExmOVBjQ29YNTNw?=
+ =?utf-8?B?WWgzek1udG5iUG9BbkZKL0FQZWdBV3M2QmNSS3ltWHZXOVh3YVdvRTlGQmxi?=
+ =?utf-8?B?NmZ2RXMxVjhkZEpwTFdzMFEycWJZTkNmYWFYSmFIZlRRL0J6TlloVjByWjhF?=
+ =?utf-8?B?VFdtOGVPMzZCZmtTZCtWM0pmeU91M001Y1dTYUVROHdzMUo0OWR3ZzBTb0xQ?=
+ =?utf-8?B?OU9hU3VPcjB4QU55aFJYS2JlbVNGZXJNWkx5K0JucVZmZmZhWXA4b3RiKy9V?=
+ =?utf-8?B?Ui8yeU1VT0dUaTdsODNGQWw2TGdQL2ttc2wwVWJ6ajFubmFZTjBFbUJKYndI?=
+ =?utf-8?B?bVlQNU8vQ2NYZFg4RFpseU40c25RRkFOT0lSdjEzUTd2ZERBVDVYdmdWcG1Y?=
+ =?utf-8?B?bUZ1aEtNS3Y5cGhnRGFJMFNKc2RrVU9CNUJlc1pGbXZyeUhudlBtc3BTNzlT?=
+ =?utf-8?B?T3dvdVJRank5RUZhKzQrOWlSY1UrTEdxMDByQmVQSFI2Qm9iUXV3SFdTYkRD?=
+ =?utf-8?B?UGNGQ0kxUW4zYlkwdHZ6cnBvNlFlUEdhRko4R25mRWQ3VmlMT2hIOFE2dk9R?=
+ =?utf-8?B?c2Fjdk5WbDE2QUFvRGkrUkFjTC9abDlCbUVMSGYvTDhXZExFNmpnbW11dWJm?=
+ =?utf-8?B?WmtTeS81YjR2bnMvT2VXQjhxN1NsVi8vYzRDVVZ2ZVFTZjZNMjRQUjlwSG1E?=
+ =?utf-8?B?SmVPQVBoRndFd2FqamdOQ0YwTmlWT0JVZTRHVkZLUmN4REFGMFlnaDU2ZDF4?=
+ =?utf-8?B?eHN0Rm16RngzUEpUSHh6T1dINFU4OHNQbVQ5UDRCMitmVVdTYm8zd2RiTkUz?=
+ =?utf-8?B?aXFZeEkwcVhXeWN5NXM2QXFuekhIVm1IaHIyWjcraGVmT3BBNE80cWdldVps?=
+ =?utf-8?B?R0hIVTFhZnNDdk1uWXFSai84OE9SRHB3UnZ5NmZDOE5Bck5zSDZHaHlQQWNq?=
+ =?utf-8?B?cUg3SUhlVWFVbmhYTkZJRDJoTlpJYkxKRnFVUWFOVmplYVg3eXZYbXZrNS84?=
+ =?utf-8?B?cy9kaXVkTWxCTnlmWVdEOFg0bEV6RDlzeVVsb25RMW9xVUkydEdsbUY5NDEy?=
+ =?utf-8?B?enpkUUUzVkFGRFVieVRHMDBvWkVQa0piSHJiOXFSQ0l3OFdwQjFrNUJOSW9i?=
+ =?utf-8?B?cGpUdm02aDhMOG42aTNvU2VyVk5zSTUxbEdxU2F3KzRET1lMS2FXYkZ6UVhp?=
+ =?utf-8?B?SU9aVGdyRFJZbHBQR29kL3Zwc3dCZ0xYY0YwSG4rTTFEMmtKN25DNlhvOVc3?=
+ =?utf-8?Q?bkhGHLR2GsigEuv2j4?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c9d66b8-f777-4e22-c272-08def779161a
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6802.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 07:20:57.3551
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RVh1fiK/MnDG+oCNKar/71eLeojtTZ9pnGaSj3jXe0w1JDQgDR1vGhWcmxr9n83mWe4Rk+MTHz8pCltkkNeNeA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6686
 
-On 09/08/2026 22:28, James Hilliard wrote:
-> The AC200 and AC300 contain compatible Fast Ethernet link PHYs which
-> report the same Clause 22 identifier and use the same link-side register
-> layout. Their package control paths differ: AC200 uses registers in its
-> I2C MFD, while the AC300 control range is at a second Clause 22 address
-> fixed at 16 plus the link address.
+On 04/08/2026 19:45, Jakub Kicinski wrote:
+> Hi!
 > 
-> Describe both variants as Ethernet PHY packages. The package reg value is
-> the link PHY base address and the child supplies the documented PHY ID,
-> because the identification registers cannot be read until package setup
-> has completed. The AC300 driver reaches its control range with the PHY
-> package offset helpers. The AC200 package instead references its MFD.
+> The CX7 testing in NIPA is looking pretty good, one major source of
+> noise, tho, is that the pp-alloc test sometimes locks rtnl for
+> a minute.
 > 
-> Give fixed hardware variant-specific compatibles. Also provide an ACx00
-> compatible for systems which can contain either package, with one packed
-> NVMEM field containing calibration in bits 3 through 0, the AC300 selector
-> in bit 8 and its low-calibration selector in bit 9. Such a description
-> contains the potential resources for both backends; the driver consumes
-> only those selected by the configuration field.
+> Here's a failure in that test itself:
 > 
-> Describe the package clock, supply and optional xMII receive-clock
-> inversion needed by some integrations. A fixed AC200 package may omit the
-> NVMEM field and use its internal calibration copy. Limit AC300-capable link
-> addresses to 0 through 7 so the control address remains in the documented
-> range 16 through 23.
+> # # Exception| subprocess.TimeoutExpired: Command '['ethtool', '-G', 'ens25f1np1', 'rx', '2048']' timed out after 20 seconds
+> # # Exception| 
+> # not ok 1 pp_alloc_fail.test_pp_alloc
 > 
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> ---
->  .../bindings/net/x-powers,acx00-ephy-package.yaml  | 207 +++++++++++++++++++++
->  1 file changed, 207 insertions(+)
+> https://netdev.bots.linux.dev/logview.html?f=/logs/hwksft/CX7-dbg/results/763842/test-outputs/36-pp-alloc-fail-py/stdout
 > 
-> diff --git a/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml b/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml
-> new file mode 100644
-> index 000000000000..ae0c5e980c39
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml
-> @@ -0,0 +1,207 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/x-powers,acx00-ephy-package.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: X-Powers AC200 and AC300 Ethernet PHY packages
-> +
-> +maintainers:
-> +  - James Hilliard <james.hilliard1@gmail.com>
-> +
-> +description:
-> +  The AC200 and AC300 contain compatible Fast Ethernet PHY blocks which report
-> +  the same Clause 22 PHY ID and use the same link-side register layout. The
-> +  package control paths differ. AC200 control registers are part of an I2C MFD,
-> +  while AC300 control registers occupy a second Clause 22 address fixed at 16
-> +  plus the link PHY address.
-> +
-> +  Systems with a known package use the corresponding AC200 or AC300 compatible.
-> +  Systems which can contain either package use the ACx00 compatible and a
-> +  packed NVMEM configuration field to select the backend at runtime.
-> +
-> +  The link PHY cannot report its ID until the package control sequence has
-> +  completed, so its child node supplies the documented PHY ID. The package and
-> +  child use the same base address. The AC200 driver programs that address into
-> +  the package, while the AC300 driver derives its control address from it.
-> +
-> +select:
-> +  properties:
-> +    compatible:
-> +      enum:
-> +        - x-powers,ac200-ephy-package
-> +        - x-powers,ac300-ephy-package
-> +        - x-powers,acx00-ephy-package
-> +  required:
-> +    - compatible
+> Then the next test that runs also times out during setup:
+> 
+> # subprocess.TimeoutExpired: Command '['ip', '--json', '-d', 'link', 'show', 'dev', 'ens25f1np1']' timed out after 20 seconds
+> not ok 1 selftests: drivers/net/hw: rss_api.py # exit=1
+> 
+> https://netdev.bots.linux.dev/logs/hwksft/CX7-dbg/results/763842/test-outputs/37-rss-api-py/stdout
+> 
+> pp_alloc test can fail, but spilling into the next test is a problem.
+>
 
-Why do you need the select?
+Seems like the bigger culprit is the earlier xdp test, which leaves MTU
+at 9000:
 
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - x-powers,ac200-ephy-package
-> +      - x-powers,ac300-ephy-package
-> +      - x-powers,acx00-ephy-package
-> +
-> +  reg:
-> +    maximum: 31
-> +
-> +  clocks:
-> +    maxItems: 1
-> +    description:
-> +      AC300 input clock, running at 24, 25, or 27 MHz. The AC200 input clock
-> +      belongs to the referenced AC200 MFD instead.
+# # Defer Exception| net.lib.py.utils.CmdExitFailure: Command failed
+# # Defer Exception| CMD: ip link set dev ens25f1np1 mtu 1500 xdpdrv off
+# # Defer Exception|   EXIT: -15
+# # Defer Exception|
+# not ok 17 xdp.test_xdp_native_adjst_head_grow_data.ipv4
+# # Totals: pass:14 fail:3 xfail:0 xpass:0 skip:0 error:0
+not ok 1 selftests: drivers/net: xdp.py # TIMEOUT 360 seconds
 
-Drop last sentence. Just confusing - what is a referenced MFD? There is
-no such thing in the bindings as MFD and the bindings cannot depend on
-Linux subsystem.
+https://netdev.bots.linux.dev/logview.html?f=/logs/hwksft/CX7-dbg/results/763842/test-outputs/13-xdp-py/stdout
 
-> +
-> +  vcc-supply:
-> +    description:
-> +      3.3 V package supply. This is connected to EPHY_VCC on AC200 and VCC1
-> +      on AC300.
-> +
-> +  nvmem-cells:
-> +    maxItems: 1
-> +    description:
-> +      Packed EPHY configuration field. Bits 3 through 0 contain the analog
-> +      calibration code, bits 7 through 4 are reserved, bit 8 selects AC300
-> +      when set and AC200 when clear, and bit 9 requests the AC300
-> +      low-calibration tuning sequence. A fixed AC200 package may provide only
-> +      the low calibration bits or omit the cell and use its internal eFuse
-> +      copy instead.
-> +
-> +  nvmem-cell-names:
-> +    const: configuration
-> +
-> +  x-powers,ac200:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: Reference to the AC200 MFD containing this Ethernet PHY
+I'll try to reproduce this internally and investigate what happened.
 
-Confusing. "Containing" means this is part of the other one, but
-phandles do not express that. Anyway, there is no such thing as MFD so
-describe properly without using Linuxisms what do you need here. Then
-say what for (purpose).
+Also, I noticed that the pp-alloc test isn't properly restoring the rx
+ring size due to the timeout. In the subsequent retry, it's attempting
+to double it again, this time from 2K to 4K:
 
+# # Exception| subprocess.TimeoutExpired: Command '['ethtool', '-G',
+'ens25f1np1', 'rx', '4096']' timed out after 20 seconds
+# # Exception|
+# not ok 1 pp_alloc_fail.test_pp_alloc
 
-> +
-> +  x-powers,xmii-rx-clock-inverted:
-> +    type: boolean
-> +    description:
-> +      Invert the xMII receive clock inside the PHY. This is required by some
-> +      SoC integrations, including the Allwinner H6 AC200 connection.
-> +
-> +patternProperties:
-> +  ^ethernet-phy@[a-f0-9]+$:
-> +    $ref: ethernet-phy.yaml#
-> +    properties:
-> +      compatible:
-> +        const: ethernet-phy-id0044.1400
-> +    required:
-> +      - compatible
-> +    unevaluatedProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - vcc-supply
-> +
-> +dependentRequired:
-> +  nvmem-cells: [ nvmem-cell-names ]
+https://netdev.bots.linux.dev/logs/hwksft/CX7-dbg/results/763842/test-outputs/36-pp-alloc-fail-py-retry/stdout
 
-Only this is needed
+The high MTU and ring size along with the heavy debug kernel likely make
+the pp-alloc test significantly slower. I'll also prepare a patch to fix
+this pp-alloc cleanup issue.
 
-> +  nvmem-cell-names: [ nvmem-cells ]
+Thanks,
+Nimrod
 
-This is not.
-
-> +
-> +allOf:
-> +  - $ref: ethernet-phy-package.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: x-powers,ac200-ephy-package
-> +    then:
-> +      properties:
-> +        clocks: false
-> +      required:
-> +        - x-powers,ac200
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: x-powers,ac300-ephy-package
-> +    then:
-> +      properties:
-> +        reg:
-> +          maximum: 7
-> +        x-powers,ac200: false
-> +      required:
-> +        - clocks
-> +        - nvmem-cells
-> +        - nvmem-cell-names
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: x-powers,acx00-ephy-package
-> +    then:
-> +      properties:
-> +        reg:
-> +          maximum: 7
-> +      required:
-> +        - clocks
-> +        - nvmem-cells
-> +        - nvmem-cell-names
-> +        - x-powers,ac200
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    mdio {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        ethernet-phy-package@0 {
-> +            compatible = "x-powers,acx00-ephy-package";
-> +            reg = <0>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +            clocks = <&pwm 5>;
-> +            vcc-supply = <&reg_3v3>;
-> +            nvmem-cells = <&ephy_configuration>;
-> +            nvmem-cell-names = "configuration";
-> +            x-powers,ac200 = <&ac200>;
-> +
-> +            ethernet-phy@0 {
-> +                compatible = "ethernet-phy-id0044.1400";
-> +                reg = <0>;
-> +            };
-> +        };
-> +    };
-
-One example is enough, they are all almost the same (difference in one
-property - clocks - does not warrant a new example usually).
-
-
-Best regards,
-Krzysztof
