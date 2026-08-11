@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FC733439A;
-	Tue, 11 Aug 2026 07:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76A237DE89;
+	Tue, 11 Aug 2026 07:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786431893; cv=none; b=JMnabADEFZR3d+qFMib/KbO77lWY1t5DmJGOKV2Xz7dl7Cicaq6FtUp7gvu3jNgZRnqnSQ4vhv8w3vWnoGaApvEBelQrxXRObPoca5QSlwz+jcZ0WgEHNtNL1c88TKugmTmSRD02f/30pmteTmNYTvXogDiOlgIR27PErFheUuI=
+	t=1786432042; cv=none; b=Tbq72IfprjFP3/Rf2+DbwOPO7TT/kpn0+mS1Ol0iaxs7q0iZo2fdLLyr2bngwTqjrtcE82H6JEx2mQTe+Zg+G91SJhc5fpynvXWD2cTJoepFJlo6AvGSXbY9w4W3GOPy2xiJ4NoIcidX/S4piPEH3n3kZYf/JLyyb/R39jSAzeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786431893; c=relaxed/simple;
-	bh=gLddvf9F2GtgR/+FQqLEraAIQQkxJqkonnDZ1NTUJgU=;
+	s=arc-20240116; t=1786432042; c=relaxed/simple;
+	bh=gBQh/vCtvw7C7b473CEFPi3ASp8E/HuHikGJ31CGYTY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rsFJLWvY15LNSP2T871YkaJjNvsra2gLPbMPtZLZkLNDTHdCX8LqA+UrbgtIlKQGBzG4f1+ugRpsN3ZOhXRyqQo6LTk6tAk333p1zd7q4x5h24+V/o0zNnG8ecWPoADRAgdMFTWQlpMflC4doTbCZF1TkOVULKkodqTs1zOFtEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bzM3maFu; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=SoCGbHDdiuEyGUf1zvDv7wlT8Qo3TUV/w7uoPTqYlJeP26G+JVKHow2tjb33Rel8/9hiYS432rIp1J50B+HjiisKmS4z3gAZv52dAak+BfjsHMRjPZJMfiSaEI61lXPuKJ4nb0GYA+mt0e2ZZa9kq3O6YthH0C5J7tCdrRjDx+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dRQlV66M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bzM3maFu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69FEA1F000E9;
-	Tue, 11 Aug 2026 07:04:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dRQlV66M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF221F000E9;
+	Tue, 11 Aug 2026 07:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786431885;
-	bh=RRxJD7uS+nO+wGMuqirv86ZjQLFUxpRUTbD/rtVYb3w=;
+	s=k20260515; t=1786432041;
+	bh=XXnqFfzGhDBss9AMuisywkhc4ttO3p34wab1f9k3l3g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bzM3maFu7p+zTWeUoxvY9teEXaDWe8lw0WRDptVBYW/MXrliJO4Ek+Z5WiZWnTukC
-	 n4MVGOMlpRcFWJGuVNzIHXETHBlnYpsarCfPKFy6aZTC5nkg8geRaMa3jznn6veH7o
-	 92Ttscn5ftruZdhdJZVlWN9+FTaCcHv0VV+35AxqURXvaATR0WfEtqlgq/dJZYSjrc
-	 fbkbXm7hulbuXntCtqGA6tUv4Re7klrQBECAQCJnraVUjWvhBwO4omxc/FgQjxGKBO
-	 4Gof++MhdlvM5HmxssQSTPNz0xrhXJz7Im/e2eiUXitkXagBnavVml09ZG/pXjC0k7
-	 rNpANOWbDGysA==
-Message-ID: <71458ac6-d85b-409c-a48f-ff9fbd0615dc@kernel.org>
-Date: Tue, 11 Aug 2026 09:04:34 +0200
+	b=dRQlV66MayEvv3Jl1Ffe4H9OQBGJrmIso5p3dYb2I0zr7wMJ5HA5SZn/UThmzRW7G
+	 GBxxoaHRfX6ZKYh06Ua/AdsqxzYwSx2vA8KJqr+3ixiccOdBACoanGYXjIFJGT7oSC
+	 3zEeWLq4xM5PWg4RxFgQVqYo0dn5Wimz2Igia+vHCnfYY3cbZCLXm+hpu2h+jYqx3Q
+	 dBwXwp0TiqK9U03aYb1NJmE/nOV7wKtE4mSwOwyIIOXkXFvMkcgCamIHAKva8SGS+Y
+	 Ifh17hDntIZIDdQcVV7tDFvZ9cP5j/h9CP/6OC8wKcM0HyMqBHg6AYjOa5pMfK17mf
+	 LKEcbBhWZrEsA==
+Message-ID: <ec826a71-bf33-44cc-80e0-dfc7e92ceb61@kernel.org>
+Date: Tue, 11 Aug 2026 09:07:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,35 +35,19 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+Subject: Re: [PATCH net-next v5 1/5] dt-bindings: mfd: x-powers: Add AC200
+To: James Hilliard <james.hilliard1@gmail.com>, Lee Jones <lee@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Andre Przywara
- <andre.przywara@arm.com>, Richard Genoud <richard.genoud@bootlin.com>,
- Maxime Ripard <mripard@kernel.org>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>,
- Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
- <f2cc3c90-060f-40c1-a55e-e2ed91e65487@kernel.org>
- <CADvTj4q7HnOYJZE-M070-1npEdne__Ct5D9FeUNVVXa8Bsm7qQ@mail.gmail.com>
- <e198e8fa-6c5e-4c8d-a4de-d8bb25aab0bd@kernel.org>
- <CADvTj4rjXGgF2d9Xm6TmeS2LwaM+O2wFFH=rGLA32y+aMk2KOg@mail.gmail.com>
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>
+Cc: mfd@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20260809-submit-acx00-of-dynamic-v1-v5-0-bfa1f8518b28@gmail.com>
+ <20260809-submit-acx00-of-dynamic-v1-v5-1-bfa1f8518b28@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -109,38 +93,35 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <CADvTj4rjXGgF2d9Xm6TmeS2LwaM+O2wFFH=rGLA32y+aMk2KOg@mail.gmail.com>
+In-Reply-To: <20260809-submit-acx00-of-dynamic-v1-v5-1-bfa1f8518b28@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 03/08/2026 23:34, James Hilliard wrote:
-> On Mon, Aug 3, 2026 at 2:20 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> On 03/08/2026 09:54, James Hilliard wrote:
->>> On Mon, Aug 3, 2026 at 1:07 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>>>
->>>> On 03/08/2026 07:14, James Hilliard wrote:
->>>>> The AC200 is an I2C-controlled mixed-signal companion IC containing
->>>>> audio, video, RTC and Fast Ethernet PHY functions.
->>>>
->>>> This fails when applied, because you did not explain the
->>>> dependencies/merging of this patchset.
->>>>
->>>> This is THE MOST important information of cover letter. The first thing
->>>> to explain.
->>>
->>> I did mention in the cover letter that the pwm series is a dependency:
->>> https://lore.kernel.org/all/20260703152215.192859-1-richard.genoud@bootlin.com/
->>
->> Apply this patch and test.
->>
+On 09/08/2026 22:28, James Hilliard wrote:
+> The AC200 is an I2C-controlled mixed-signal companion IC containing
+> audio, video, RTC and Fast Ethernet PHY functions.
 > 
-> How were you applying the series?
+> Describe the parent device and its shared input clock. The Ethernet PHY
+> is represented by a PHY package on its MDIO bus, with a phandle back to
+> this device for access to the package control registers, so it does not
+> require an MFD child node. Function-specific supplies belong to their
+> consumer bindings rather than the shared parent.
+> 
+> The input clock must run at 24 or 27 MHz when the Ethernet PHY is used,
+> matching the rates encoded by its documented clock selector.
+> 
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> ---
 
-b4. But it does not matter, your patchset simply fails for maintainer.
+I do not understand why MFD and net are combined. And nothing in top
+part of cover letter explains me that (which I asked already - any
+dependency or merging is THE MOST important information. Where do you
+put the most important information which maintainers should see
+immediately?)
 
-AGAIN: apply this one and test.
-
+Bundling it together suggests this is somehow incomplete and later will
+be finished, which is wrong by itself. How to fix it - decouple
+dependencies.
 
 Best regards,
 Krzysztof
