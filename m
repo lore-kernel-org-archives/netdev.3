@@ -1,80 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D1B2750E6;
-	Tue, 11 Aug 2026 12:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A272AE68;
+	Tue, 11 Aug 2026 12:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786452253; cv=none; b=d5G78x2nM1Rx3hkuPAmUh4UKFfFQd3gGklP3kpxCzG5aDd5bl99M/RzZp+NMLdMiS5rZAYoqoRZgfl0prea/ziHJrnD64GohsY69Psn0kUC+mwjvGARLfIFz6osi57crkqwnXwm1VOWDEGwBoWdHBHEayrOlvGLYUsNCA350qr8=
+	t=1786452720; cv=none; b=qP16xUhoCgWjFKeWmyejJSLM5rfmYkJmMRIwkAQqwDuUPMYI9c7SVYIC0D6eceVzWES1kAx0KeK6mxlbQfE2uQGo0/ZCuMVSHz5uYFH1uFQ5biTkhd1zuO8itOUYL/S8p1ebfbyl9Kdpp84cubzl0bQkDIA6qb0h/yxEANf8phY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786452253; c=relaxed/simple;
-	bh=YOKxPk4UQU8Q/YqmNgjD4VvTLlLmDER9b/ME3Rc29ow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jXOeHoNDLb5K8sXEtt4M7RrTmhZAmH1Ul5/5mhJR2pMg3F4IXPMcYghB2tyj+7aN3YzerR9KWK77SHo4W4ERkFar/QZGwpt2pJZZLMZubh6jy6W1WWHuKvQvDnTwG13p42t9K8RYbgCJOAEiuVZkVve7Qvt+kjSz0twMwn7UT0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bX/Tz0ld; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786452720; c=relaxed/simple;
+	bh=nwJ9YKqkbR2k+hsE/PDM5hw9eWPD8Fzc4D+yslkcfbA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=tQiHYis/XeuCBA3p5jmWyGP8ELVRPhV45rI73MxgVQFdcSE1Kx5F/yKFqi/mfVlQhcTkUMFPWuzFMLc44Hkv+HrNqq0L4O+Zgt0on2sZvguAYxFD1QLkJmAWBMYVF+ERKw01uWDfjQnPcn1T1zC0q5cl/4T2+KYSdI9wAbiknb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=YtpEFiZa; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bX/Tz0ld"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED6C1F000E9;
-	Tue, 11 Aug 2026 12:44:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786452252;
-	bh=bICxtWvih/S0Zn8lu7m4XsNzSKeJtNKZQV3DRHBuIHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bX/Tz0ldP0UhviuWyFbredbIbk2ct9oGdMnQ9m94dFB8Q2Bu8+2pCfIJqnXlJaU3t
-	 DAqpJZwgXC0DDYCfNAKsL2qsSJ56h4UOlxBxJWU/agopcyZAzSYQT+fW2hIoNI5COZ
-	 LZE6kuC0jyrwhmCz+ae9we/RrYYsXe2s+Ek7NB/VNe8evfWUVFAsynJu2EJNxCigfp
-	 YQ0Rz/SBv+ACsXmqzEhx0b9PvbIkDYKMJDxuq3e/yRwag5XhcJHOxnlD8cj3XRtotO
-	 KAN6/hPk4jgKbvcD9s+MjT6Kj1pRi0Zyregj5igUnBJGatA/G/h6FGafyEPw7zbbWj
-	 H1j8qmMiU4D2w==
-Date: Tue, 11 Aug 2026 13:44:07 +0100
-From: Simon Horman <horms@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>, Shay Drory <shayd@nvidia.com>
-Subject: Re: [PATCH net-next] net/mlx5: SD, prefer sd_group_size from vport
- context
-Message-ID: <20260811124407.GF51943@horms.kernel.org>
-References: <20260810093037.3138197-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="YtpEFiZa"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3F813A69AD;
+	Tue, 11 Aug 2026 14:51:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1786452706; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=dqGGCV7H+PfNP8j8FyeJ5Y/S+SJSQztYrkpKWX7EG2I=;
+	b=YtpEFiZan/vFCcPBVmB6R6XHD7bxvU1wWGGhU4Xb/jAe7jyMS7NAGLLSqdMXnnLajC+XyS
+	iGl9pfL5qu/5a5k01cmj8oLtyXv94VAuBbBox3NzlJv0MKvLzEyk+3QolYuIdPo8KZzilZ
+	IY0McEq7KuVnBKDiAFYvnyF75MfFP4h6A4bHOZuBTrJmGInRCgKHfPOsExotdgTzfGE/mi
+	WYpjKybufCjsGA4tLD5FhXGXBCeL84/uIHQNIs9m0puIqNIMbkZfK+WDgkaQmhLSfFTRs/
+	zpG6dQmMmv/WMkpYWnOizSjUjE6ID9+dOrEtZvXvqQ+HzKQ1aeg91vODXvdsDQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260810093037.3138197-1-tariqt@nvidia.com>
+Date: Tue, 11 Aug 2026 14:51:43 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Tapio Reijonen <tapio.reijonen@vaisala.com>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Russell King
+ <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: dsa: microchip: enable SGMII port for
+ KSZ9897
+In-Reply-To: <20260811-ksz9897-sgmii-port-v2-1-04ae287a0b27@vaisala.com>
+References: <20260811-ksz9897-sgmii-port-v2-1-04ae287a0b27@vaisala.com>
+Message-ID: <462378b275d60c704bd0d97d6383c528@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Aug 10, 2026 at 12:30:37PM +0300, Tariq Toukan wrote:
-> From: Shay Drory <shayd@nvidia.com>
+Hi Tapio
+
+On 11.8.2026 12:20, Tapio Reijonen wrote:
+> The KSZ9897 has an SGMII/1000BASE-X capable port 7, but its chip_info
+> entry never set .sgmii_port.
+
+AFAIK only the KSZ9897S variant.  AN5513 says the S "contains the same 
+SGMII
+port as the KSZ9477 however, the KSZ9897R has a second RGMII port", and
+the R data sheet never mentions SGMII at all.
+
+Unfortunately the chip id for both seems to be identical (0x00989700), 
+so
+this would apply to the R variant too. With this the R variant should
+return -ENODEV in ksz9477_pcs_create() during probe.
+
+Have a look how KSZ9563 is split off the KSZ9893 chip id, so maybe it 
+can
+be solved in a similar manner.  PORT_SGMII_SEL could also be worth a 
+look.
+
+> As a result ksz_has_sgmii_port() is false,
+> ksz9477_pcs_create() is never called, and 
+> ksz9477_phylink_mac_select_pcs()
+> returns NULL for port 7, so no PCS is ever instantiated and a
+> phy-mode = "sgmii" or "1000base-x" link on that port cannot come up.
 > 
-> Newer FW reports the SD group size directly in the NIC vport context
-> via the sd_group_size field, gated by the sd_group_size capability.
-> Switch sd_init() to source the group size from there and fall back to
-> the MPIR-based host_buses query only when the cap is absent.
-> sd_group_size might return 1 in some FW configuration. Add explicit
-> check to disable SD creation in this case.
+> The KSZ9897 shares the KSZ9477 register layout and operations
+> (ksz9477_dev_ops, ksz9477_regs) and reaches its port-7 PCS through the
+> same SPI-indirect XPCS register window. The register-identical LAN9646
+> already enables this via .sgmii_port = 7. Set the same for the KSZ9897
+> so the XPCS instance is created and 1000BASE-X / SGMII links on port 7
+> negotiate correctly.
 > 
-> While here, rename host_buses to group_size throughout sd.c to follow
-> the new name on capable FW.
+> Tested on a KSZ9897 with a 1000BASE-X fibre SFP wired directly to
+> port 7: the link negotiates at 1Gbps/full duplex and passes traffic.
 > 
-> issue: 4680618
-> Signed-off-by: Shay Drory <shayd@nvidia.com>
-> Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+> Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
+> ---
+> Changes in v2:
+> - Resend only, no functional change: v1 was dropped when the netdev
+>   patch queue overflowed.
+> - Rebased onto current net-next.
+> - Link to v1: 
+> https://lore.kernel.org/r/20260703-ksz9897-sgmii-port-v1-1-387e7632dd0b@vaisala.com
+> ---
+>  drivers/net/dsa/microchip/ksz_common.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/dsa/microchip/ksz_common.c 
+> b/drivers/net/dsa/microchip/ksz_common.c
+> index 
+> 1a9d6f83a0232830ac4996ae5f53b8bde0b3747d..a80fde0a8c7e93ea2db4baeb2f941a260e23b687 
+> 100644
+> --- a/drivers/net/dsa/microchip/ksz_common.c
+> +++ b/drivers/net/dsa/microchip/ksz_common.c
+> @@ -1484,6 +1484,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+>  		.internal_phy	= {true, true, true, true,
+>  				   true, false, false},
+>  		.gbit_capable	= {true, true, true, true, true, true, true},
+> +		.sgmii_port = 7,
+>  	},
+> 
+>  	[KSZ9893] = {
+> 
+> ---
+> base-commit: b54074ffb813aa4b97585d97ae1ead69d96432b5
+> change-id: 20260703-ksz9897-sgmii-port-48ddb100e015
+> 
+> Best regards,
 
-Hi,
-
-I'd appreciate it if you could take a look over the AI-generated review
-of this patch at https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810093037.3138197-1-tariqt%40nvidia.com
-
-But my feeling is that this patch is good as-is.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
+Thanks,
+Nicolai
