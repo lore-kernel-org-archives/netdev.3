@@ -1,57 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC16380FD1;
-	Tue, 11 Aug 2026 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08436445AF0;
+	Tue, 11 Aug 2026 13:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786455215; cv=none; b=VdTqGTadkBKdTBjAQmT/WSOViH3XZFSXu0niOi/5BCF+UTN+BGC92w8wRNS0HrbqUf1uGsdpe2N3q+xjawo38VwVEhw0eJHEk7nyQwsnhJQkQNQlPyaDqeNhXsEsuvyrg8MmTFH6ugSmz8pFbnbijPyRqG4dlKA4HynPD9FCBro=
+	t=1786455430; cv=none; b=JBM4CGN5WGH+VTpQch6vFuaVrbE4EMfmfyRRrL3+jCYo0u6wMCOLRS3wX2/UzzrYKN1oaSnPbs3omOMPa+9RkWVNR8z7lv51iTeqWLXX4Z22e7rkKVpcUCLz0vKVCzhyVPzQV/dBfILtdVwCMOzfmQByYDnsFEhfk4a4sNQa5oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786455215; c=relaxed/simple;
-	bh=URj9vqxr4q3xjVKIkem3E5lxea1cqhhIqdpiq+gQcVM=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=XOFjqw2oYQGYHXi4hv5aH0bwL9LkuyTMKJdd3qw4kyH07ObRrTfbFYCd3CkofHcPFf3mY5VejDFqEKnzeJCBuyfI/0kjkabQ7hW07+/LCUoNRJOx6AhqJobJJsG0JYeG3ujzMBXLQNXJd4Ozy21LEU7c/BNyWJj9cFMaUFbKyVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWeUh40U; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786455430; c=relaxed/simple;
+	bh=yRuaK2/yOPjxKDZE/e02I0ke0yiTQRXnc+0fEMMhEaU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ChctNhUqvC38IrslYyg/PWbpg79/Tcqs5LUKKyHapVcvvfxGFZ3jPx2rZtE785FT/2/tlMLBtnwA5LtbtyaUxbW/hb6LDuD4OIv2C+EFMnE41kgTaySjebtQnzEp4tTZbzn11o7DFqkvPwp6WAIcenr8SvLHB0qa5ElIFz1VNqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tl8C34fq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWeUh40U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD131F000E9;
-	Tue, 11 Aug 2026 13:33:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tl8C34fq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC651F00ADF;
+	Tue, 11 Aug 2026 13:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786455204;
-	bh=7Sd30aEOhfQyIe7QL6M9oxQai+0BjkdiEwllSpjP77U=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject;
-	b=mWeUh40URHxYc3olgIJ9JFK3oRYB6LqubUH6s6zOhDs+tJ/sYKt6vEkMEXNwp14Kf
-	 f3ALoV4sH+dWHmz7YQv0SBvFIUiwzIO8NUfl2ShUO3HUPOZ60wnbhtv+xinPiEGkfn
-	 Lw0PD1fMr08ABDDdAMJYESVyA3EksW2atGjCGm0FAczo4q0ZONOdLgMr4EtsegdBU+
-	 EN1RotQotrAUJFc5KOp7J5C6fSqgpbkglfETMoQWZl9ldYl2UhUw8q7/AFEq3QwTSf
-	 T+sICUA2kDmM8XTAYy7F6vo5XllAXpL6IbaVlAq6qZFyYE1RZzvuIn+d4inReyOFbg
-	 Q0gCDiT3nDRaA==
-Date: Tue, 11 Aug 2026 08:33:23 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1786455410;
+	bh=fuosRBxSUlP0qUSqeJu2V54/eSODv11IWBFQo+GtVrw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Tl8C34fqJ5s6YtKvoHMY9hbhgKQ7HACptds3slTDKjx91vUs8z6lzZfsNZmr3js+J
+	 sJ0Rxg8W0qeQz+jQ9HEbbrXBHEvgNPaO9bG2KJlVPwYE4ydquqX20yMeZ27VcJSvJC
+	 Lc09mJAseeanKIOrz0zFiIZULOQzeRRdIJQBmuEQImgrIeKClrwEEV9ro163fPKZhr
+	 IqXjnNdQtmRITBb84QcJHoSyQsKSvz9LWN81qKRVedFSAYyhlLP0U7a8IRVtuZODmr
+	 abhE83l1hnnWgvCYTD70sV0foIQ/Hu/qXji8Uw1q7sebj/0Uq9B2jnFBlDEpH5lo/3
+	 F+Mp+NMd7gBmQ==
+Message-ID: <688f57cd-a098-4904-b8cd-965470a89386@kernel.org>
+Date: Tue, 11 Aug 2026 15:36:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org, 
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, 
- linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-To: =?utf-8?q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>
-In-Reply-To: <20260811-wiznet-link-gpio-v4-2-4d5f7da885a8@marmottus.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 2/3] dt-bindings: net: wiznet,w5100: add link
+ status interrupt
+To: =?UTF-8?Q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20260811-wiznet-link-gpio-v4-0-4d5f7da885a8@marmottus.net>
  <20260811-wiznet-link-gpio-v4-2-4d5f7da885a8@marmottus.net>
-Message-Id: <178645520351.2042737.11129823914174003025.robh@kernel.org>
-Subject: Re: [PATCH net-next v4 2/3] dt-bindings: net: wiznet,w5100: add
- link status interrupt
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260811-wiznet-link-gpio-v4-2-4d5f7da885a8@marmottus.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-
-On Tue, 11 Aug 2026 14:34:34 +0200, Arthur Crépin Leblond wrote:
+On 11/08/2026 14:34, Arthur Crépin Leblond wrote:
 > Add an optional link status interrupt which can be connected to the
 > LINKLED pin on the device to detect link status changes.
 > 
@@ -60,30 +105,19 @@ On Tue, 11 Aug 2026 14:34:34 +0200, Arthur Crépin Leblond wrote:
 >  Documentation/devicetree/bindings/net/wiznet,w5100.yaml | 9 +++++++--
 >  1 file changed, 7 insertions(+), 2 deletions(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> index 641c9ddbde9e..30f013f40a77 100644
+> --- a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> @@ -24,7 +24,11 @@ properties:
+>        - wiznet,w5500
+>  
+>    interrupts:
+> -    maxItems: 1
+> +    maxItems: 2
 
-My bot found errors running 'make dt_binding_check' on your patch:
+This is redundant, instead you need "minItems: 1"
 
-yamllint warnings/errors:
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wiznet,w5100.yaml: properties:interrupts: {'maxItems': 2, 'items': [{'description': 'Main interrupt (INT pin on the device).'}, {'description': 'Optional interrupt for link status changes (LINKLED pin on w5500).'}]} should not be valid under {'required': ['maxItems']}
-	hint: "maxItems" is not needed with an "items" list
-	from schema $id: http://devicetree.org/meta-schemas/items.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.kernel.org/project/devicetree/patch/20260811-wiznet-link-gpio-v4-2-4d5f7da885a8@marmottus.net
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+Best regards,
+Krzysztof
