@@ -1,133 +1,95 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDFC1922F5
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 13:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37E8443A9D
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 13:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786453634; cv=none; b=aR4F/BOQ3Zk9SVCDbOHj7VWzjNg+IB5Z+fI5mjoEIl0rP9E/vA9QBj/ZlzI/5pbRjVXpJlMZprODzMI0EUfjjgeAg6ark53RB+XYQJW5muIP6Y1oBFgpfJHE4QA9QNrDo+Yf2d7pkDZF4diIpLwwuqFcCLVZFa7Oyxo6CPHSetE=
+	t=1786453889; cv=none; b=oSxRi/L3KB7GCfyURV4VQDs1OrzL2e0LxaF0IE6BXqtfBsQeGUyL9aFm7hezYhB7y8VS1d88g3VNSlXyBEn730TXSaBMaKMkXueKUgwEatrFS6N76Qt6X7bbF+C2yB58VUn8hNGSHMeHZCNFytCDBj8wi6zSwoUgx39KbI1IQKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786453634; c=relaxed/simple;
-	bh=YZ1BBUCn7l/hlMERPlM7zretjZDMJC2TFYZP1ju51R0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KDp1JpM0cNeF+I26ctbjpi2etS+OI/RlbiEuSqRQQn+WZeAPYAfZLEX73B9+t6KKXc//PE1vxbJr4flquOwo3ohkLV5pDsokiZZGCDx69NmMXTIMr2NQkZXUaV0G0X8CPTSHW16qszen9nXDpG6s2iX77vpPGv503WnrSGLPdeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=kkCYt5sW; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1786453889; c=relaxed/simple;
+	bh=fyC7qCdAGgKFXRo5HzXaG/a9KatYhG3SnGw75Jh3aPA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l9VItiqSzctsMaD95opdENQHtI0nL5t8CCxxRIfftDiSiiqgSkGya2BROYKRA4tiwQgTHYlLxo9avB5Qj4heyERarMofYdO7nTosdyyf3/VPCVm+dI7li4BVErgYSTIvJx0tJ6E40fZQQrlhe33sAiDhAEc2tU01SrEKduHlBoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ft/xzfaM; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="kkCYt5sW"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49553515a8bso48317525e9.1
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 06:07:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ft/xzfaM"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-81f36179d72so43728117b3.2
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 06:11:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1786453631; x=1787058431; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4xPvfqxhOS6C9wbuJGDPW41NaehObmlNxx70BnRN1t8=;
-        b=kkCYt5sWbdWDweArknD5SRTSh53w2bLS0OqAo12IaoLcW00hP4nztUJHR2E/mEBl1q
-         QwCzvdkA9y812BnSxw7mmlbb7LduDQYTgwLU25/YaNkO5Kg0CIsxk2Wtmnl0kB8E/j0Q
-         N//R5WiokEa+12a8xJQxnmW+pQK12LO+arHBY8QJz7ADUt368ydrZUHdmY/Pk1y7tBs3
-         cPn4xV03iQ5kpqU+VKcbMeK6x1M3CZWVi5VGMcU8cjo0lTR69kLoLl559F2XAGSWcXnF
-         9aJYuI1IPj3+/W2X7H9TGiB9QCkYoUL7XW4D71K3/cDuPB0ONJCWNcgt8ZmIewQhfXUO
-         v6ow==
+        d=gmail.com; s=20251104; t=1786453886; x=1787058686; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=izDQyL6NbpJ0TpxD2kVmywM/e6A/0gtwrw2z5KQfU/0=;
+        b=Ft/xzfaMst3TVPw7pqeQQFUhpRWmE0cF26Z/AAPlC8PGmYJikl4wsBaDTqVHMDbQ4j
+         R35/cEk2FKReMTBc/gPODubWz87xeQXX4mqTBwg1BTi/9CSlen4mRBKlBnsIGM1SfXHD
+         Z2nXWhZPOkhKdTeuc/D/BaIYIVc84Yn4XdX4KO4NgLVZeu8zLIqqXPToTrjaDdW50e70
+         fUJIdL411otQmGRaxZu0PdTAjAGvBzAWsQW0UUWpBEHOk+CweaheU3k1/h6eU5mdiZ9R
+         zMYWKN4ECOGGBkLtjAtdDKI2lLBg4VshoA7lbpxKnjR6vQuJi9FFgodB+yv1UxjJjb7z
+         t9XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786453631; x=1787058431;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4xPvfqxhOS6C9wbuJGDPW41NaehObmlNxx70BnRN1t8=;
-        b=Tjk8VL9/kNj+7Lr6gN3jOkqdmAxDd6vQX4Ep4BIUxE/eecgzkAxkrcxX/xX99AKCMl
-         UK77zB8o9LzmFInPttITfMNS3jc5tPTolRBxODyeWU+PcyD+4293IOHIVug3T7VGMzPo
-         JP1AObY5zbQHnC0BxQQrZu9AjzCB9lgHgYsU0f7QeTNv0hgsUcj/cHbPINtXNixLb2Lw
-         5c5JZpJR8GvoFLz1q6eSegVDIoM+GhylFJTR6D1WnnorQ4/+rtc3sX4A4QntwCuUlyZH
-         /lF0NNnn2juZvNMG3+D3+Vcd7+Q8l4TlL1+i4vcVRsavhzq48mlULWNekBteMipblsWv
-         BYpA==
-X-Forwarded-Encrypted: i=1; AHgh+RqmD3V/4Ff9n8mnRjG6OK52HnsiZbVpFHzs0Y/xh2je2K+i602drR5zQpErKy18Fq7yZUkYLco=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyw1139nMZ0Qg1exxbUssQ2kNf89ra36iKEBUTt+oqadY8TvAbE
-	aDr/N6pIsBZWVYKWD3Ub35crybcGHdVD2TOvJBrdKrlEzGi/7uIDmuIFF8LF5we1kb0=
-X-Gm-Gg: AR+sD13JCa8wIvLLMC992QypkPH4M5Ax6FcLkXxWaX3NtR5T+KkZsOvvmzxQ8NQznRN
-	D/CBIKz4rltl/Bxuh723mmUUQhiKTQwlaQ1qOFT6cRbVx5ZCj8nDeL3WMhfFT9BGTjaYMpatdwW
-	BEbHcFxZ1wBFunso0fCAotob/cPIQN6FwBSXkOETKYA5rslxAhZuFYHr16es3v5AvV8DaGI4qUB
-	qoxbB+LjA/gnHTTTEcrZXrX5yZLTG8bljVLoFwjNP1Os3GENoJxtdYoiPUuJ958u359ZB2anwgT
-	4pD9132YJxo5JvoR3Rw4lA4EYe4+2UKVNgjDsixCrChvI4AH94E6nztJmk4mnqQUQlWNojeW3zs
-	Y27joPb04KnqJFhFLUUyHoBER5zeSTzMi4kYWd9LvTWe93Mam4lSJjz0YbjrDVL8u6wVQZMWlQt
-	MeAlX2ebfl6BJVBm7UWRAogWIMROvZbhsGdRN0s6iAqilxkSeh82A0Y7vqpOgwUvGFwPKqBBaV6
-	hagOg3ne8ggTC/H8V4=
-X-Received: by 2002:a05:600c:6088:b0:496:ca1f:a428 with SMTP id 5b1f17b1804b1-49978475c11mr57265765e9.19.1786453630951;
-        Tue, 11 Aug 2026 06:07:10 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499740c5e0esm60461485e9.6.2026.08.11.06.07.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Aug 2026 06:07:10 -0700 (PDT)
-Message-ID: <8d20c7e0-d44d-4c07-bca5-ff3c9793af99@blackwall.org>
-Date: Tue, 11 Aug 2026 16:07:08 +0300
+        d=1e100.net; s=20251104; t=1786453886; x=1787058686;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=izDQyL6NbpJ0TpxD2kVmywM/e6A/0gtwrw2z5KQfU/0=;
+        b=mMF1b3RZCdIU9mBjdNeEvlTmZwBFd3xHYtaZJEkUaqxtp1GRXUFwRFdMovtYsbQUm+
+         eaEQysviZpPze43h03+0jpyy5A2Dq4A92aoFDclLvrkBzlRs1U3fLXDTlrGcqaHm4rmP
+         4l/MkETrhhEYMnoR06VPRdV5bqDhun6LVzHYlqdTplvaLpdKVaX/jdOfSCWvYSbaGbft
+         WwA2uRsuDpAVuir3P0+rAib5BqraznDJxuQjDaxHV3wJ+Owkxl3aX9nXuM2hF7iEyL4A
+         vRw1xQGeKpXZIGwBsmkELj7eEGByRU1U4domOdE5e2a7uZR/11GYwhvTKiDTjd7q0x6F
+         +fGg==
+X-Gm-Message-State: AOJu0YzxoimPLbxKKqzMBcFHNiMI+PeGKHUk8r8N5C15oN46f3uEJG+j
+	qGq85HSn+A+BTDfXGN9f5UcO+uBwp2eX5+hL6pwod44N3XzUIvwlENsR
+X-Gm-Gg: AR+sD10SiT+LcAXQHn/dXcmXWM4wxM5BzhTRn0oc3SYfFQ1er9JcvnPAg4aniZbK472
+	HKqJi5h/2Us6UpxK/AOrWkt2tQdlCIagfCypGGfzGmQ1qdEDVFPHrJ8Miy6qnniBw+HRLAemlV+
+	Aq7ofs1fgBCZJv9eZi8vUIX11p0ZJKVD/mFWIMRW/badBAfFqoDvF9FLTWtKYe5pYxvMJc0iehp
+	0Fa9GSP9r/Fs/ep5n/VrUVEc1r0Q4oLABkHsY8FrymUxr55yMwQp87bPmaa3Spe2zCvx4ioDoa4
+	+Hd1VBwp7wIaoUIY6ZD4FokQaUpKvGVpdw2mwGr0MV7B83fyziSAZdd4AmRGAesg+KNYeddpMT0
+	/7T8NEpwnOgdYEkse1/I1v+HVFUzDmNkWaWhFVIyt4uQFuFS4xdWBSESjtm9xRRRgJ7W297jx7l
+	+KcXwg/mTDiZntNW9thhA9HoJskDGRLuqrNd3UMRnJo0Ui4pMFMGXOBUcfZ9u04ca0VugsdcqOZ
+	QJNtTM=
+X-Received: by 2002:a05:690c:698d:b0:81f:650c:98cd with SMTP id 00721157ae682-82f2dc957b4mr22521957b3.28.1786453886329;
+        Tue, 11 Aug 2026 06:11:26 -0700 (PDT)
+Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6e:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-82ec44b14fesm8563677b3.39.2026.08.11.06.11.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 06:11:24 -0700 (PDT)
+Date: Tue, 11 Aug 2026 06:11:21 -0700
+From: Richard Cochran <richardcochran@gmail.com>
+To: xuanqiang.luo@linux.dev
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, kuba@kernel.org,
+	hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com,
+	maxime.chevallier@bootlin.com, luoxuanqiang@kylinos.cn
+Subject: Re: [PATCH net v4 0/4] net: phy: dp83640: fix shared clock lifetime
+ and probe error cleanup
+Message-ID: <ansfeXGe8k3bwkW1@hoboy.vegasvil.org>
+References: <20260807070729.12545-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net-next 09/15] ipv6: Replace &nd_tbl with
- nd_table(net).
-Content-Language: en-US, bg
-To: Kuniyuki Iwashima <kuniyu@google.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
- Edward Cree <ecree.xilinx@gmail.com>, Alexander Aring
- <alex.aring@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>
-References: <20260811022448.116235-1-kuniyu@google.com>
- <20260811022448.116235-10-kuniyu@google.com>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260811022448.116235-10-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260807070729.12545-1-xuanqiang.luo@linux.dev>
 
-On 11/08/2026 05:23, Kuniyuki Iwashima wrote:
-> We will allocate per-netns neigh_table in net->neigh_tables[].
+On Fri, Aug 07, 2026 at 03:07:25PM +0800, xuanqiang.luo@linux.dev wrote:
+> From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 > 
-> Let's replace &nd_tbl with nd_table(net).
+> The DP83640 driver shares one PTP clock between all PHYs on the same MII
+> bus.
 > 
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
-> Cc: Saeed Mahameed <saeedm@nvidia.com>
-> Cc: Leon Romanovsky <leon@kernel.org>
-> Cc: Tariq Toukan <tariqt@nvidia.com>
-> Cc: Mark Bloch <mbloch@nvidia.com>
-> Cc: Petr Machata <petrm@nvidia.com>
-> Cc: Edward Cree <ecree.xilinx@gmail.com>
-> Cc: Nikolay Aleksandrov <razor@blackwall.org>
-> Cc: Alexander Aring <alex.aring@gmail.com>
-> Cc: Stefan Schmidt <stefan@datenfreihafen.org>
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> ---
->   .../mellanox/mlx5/core/en/rep/neigh.c         |  7 +-
->   .../mellanox/mlx5/core/en/tc_tun_encap.c      |  2 +-
->   .../ethernet/mellanox/mlxsw/spectrum_router.c | 13 ++-
->   .../ethernet/mellanox/mlxsw/spectrum_span.c   |  5 +-
->   .../netronome/nfp/flower/tunnel_conf.c        |  4 +-
->   drivers/net/ethernet/sfc/tc_counters.c        |  2 +-
->   drivers/net/ethernet/sfc/tc_encap_actions.c   |  2 +-
->   drivers/net/vrf.c                             |  2 +-
->   drivers/net/vxlan/vxlan_core.c                |  6 +-
->   include/net/ndisc.h                           | 11 ++-
->   net/bridge/br_arp_nd_proxy.c                  |  2 +-
->   net/ieee802154/6lowpan/tx.c                   |  3 +-
->   net/ipv4/fib_semantics.c                      |  2 +-
->   net/ipv6/addrconf.c                           | 17 ++--
->   net/ipv6/ip6_output.c                         |  4 +-
->   net/ipv6/ndisc.c                              | 91 ++++++++++---------
->   net/ipv6/route.c                              | 18 ++--
->   17 files changed, 112 insertions(+), 79 deletions(-)
-> 
+> Its driver-local clock lookup and removal scheme can leak the shared clock
+> on probe failure or free it while another probe is acquiring it.
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Is this an actual problem that you have seen in the real world?
 
+Thanks,
+Richard
