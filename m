@@ -1,57 +1,57 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A9142255C;
-	Tue, 11 Aug 2026 08:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4661741A4E8;
+	Tue, 11 Aug 2026 08:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786438491; cv=none; b=ZAZ1VuTx1gYmWpRWlYApgF2nF6cvjzO3JCg8x2/d/BjQgmZA5tXr/2re72Gecy9CqpuHuDIlgRFENE1Mjha+wC299tfk/zrMqRxyVXOBrKbx2uc7vUP87Q+UPwGQp8KmoZk5yQas55K6glccgsnxIs+zPObm3oTkEXuIWDd6Mz8=
+	t=1786438504; cv=none; b=JYSZHVP43/GthBFmv3f2v+MeJcFYlWvv584E6cvMJPQfwGcppKFTZTrwXU/cHvzjIdX1nnoBDa5R3mGi4uNwad2ROrUSJIVoY0OTssb2gyQnCIf5tkVNeh4sukOGZwhRpsU0MFj3CnuTMHxhgFnyAQ4xPjynfxi3gRx01Rwwj+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786438491; c=relaxed/simple;
-	bh=KINRwl7pmC8EqrogBM3yIvSGPsZg0/PH/TvqQ87PLa0=;
+	s=arc-20240116; t=1786438504; c=relaxed/simple;
+	bh=ZWrYSVn17bHK2aijDffteVjhdKJBAnk9fXbOs78VEHE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YZLuFnLjWH68fq5zBnoapicivyidv6YPtXlpN8v2xxloMxXjKBTsmecN6GBqrJuZHfj8fD/PEYeM5Zw1Sdkz5F6O4B8jTBZn6Rw+6KkOAwTOwTHIm1LsPAb0Si/PPabZTazy2SXaixbhBYjqq2fhntd17Be0y+ncuFxoMTREMHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=g3Y+aJ2z; arc=none smtp.client-ip=67.231.148.174
+	 MIME-Version:Content-Type; b=UU0L9VLkX/6WbuxQvgQOtz7+D0xLGA/57wJQsUGCTHx6pzEle8RHO2pyhSIy2dC88JopIcAavAgCr+ls+b4i/F1B3KufJWq7JY2FspsTwAnOt5X2nThbqgm/G1ljwuKgPF20wQ7gG6bsyvW1B75ePbk07OHnMAYHr+2LdmOE5Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=js/x3dcf; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="g3Y+aJ2z"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67AMqLlv1810466;
-	Tue, 11 Aug 2026 01:54:41 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="js/x3dcf"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67ANSata2812514;
+	Tue, 11 Aug 2026 01:54:45 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=i
-	ECA8CLtPzKhl9y4b69Der0WAz33jE9t1DhICG7VHRQ=; b=g3Y+aJ2zgBGaGmK3A
-	MoVSgbejA4Ohcv8jIczy7WTKSmPALCQu0HJYUnxDjL1xjb0FPYuHYIsBILeCZl23
-	ElgHe/WXBjxr1nJ9dQ3k6App+cewMuA1HmeQZuZ4RIXsbBDQnWtkHHDoy+K5/xlk
-	uvj/CtB+wD8o5Rs23ihId9e4U2vpwGGynZPNDS4+dt80BIauy+Dw7TdRQbhTO99l
-	Okn7U1tU7YPpuz+o02wTRW0+lbyA0T+LsmuvaK2E1UPEzBbQMCI+tV1H258Ss90/
-	cuIrkfuNZXQKAiwXhyDEkwrlBMU0OImyMYfou1AoPGHVKeciQmgFQbc0nqp3+DBG
-	jOEYw==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=Q
+	CwXj936cdQNXZqsiabJC9ifbGsnAGXNAG2Pj4D57/s=; b=js/x3dcfQ17m2ukth
+	1Bm38VjX350cmsMuyBuVTq1tLWD/GiHYhg/LStieF854t5B0MGGPHYB1YrZ4wsQr
+	QpxNoX3n7orgP+tcuaVc0dmKVmQwk4a/5IxUTFjBOGTH7+bJHM225nJZ4VjiDYv+
+	+kSbIt05/FzeEC+/TpX4VbcSeLJWYdWhqHAcb3YdYYqZHTz7BSNDDa7e0ORKaqIA
+	WOKHy+JwIZ9PCa3d2j4nSYTX7qyqHah8LrxfdJtdH8ERaCV1DjTQqFKhQTbi2b4Q
+	pnwNdXpeiGeIkNrJ4rM+DqcIzsLbQw0dq0bj5su4k+PgviCGTQSmHG1QCDm01xco
+	pal6g==
 Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4fx1tmg9wu-1
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fyrbg176b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 01:54:41 -0700 (PDT)
+	Tue, 11 Aug 2026 01:54:44 -0700 (PDT)
 Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
  DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 11 Aug 2026 01:54:40 -0700
+ 15.2.1544.25; Tue, 11 Aug 2026 01:54:43 -0700
 Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
  (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 11 Aug 2026 01:54:40 -0700
+ Transport; Tue, 11 Aug 2026 01:54:43 -0700
 Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 351373F706B;
-	Tue, 11 Aug 2026 01:54:36 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id B9E763F706B;
+	Tue, 11 Aug 2026 01:54:40 -0700 (PDT)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
 CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
         <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
         "Ratheesh
  Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v8 net-next 4/9] octeontx2-af: switch: Representor for switch port
-Date: Tue, 11 Aug 2026 14:24:01 +0530
-Message-ID: <20260811085406.3227312-5-rkannoth@marvell.com>
+Subject: [PATCH v8 net-next 5/9] octeontx2-af: switch: TL1 scheduling and NPC channel control
+Date: Tue, 11 Aug 2026 14:24:02 +0530
+Message-ID: <20260811085406.3227312-6-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260811085406.3227312-1-rkannoth@marvell.com>
 References: <20260811085406.3227312-1-rkannoth@marvell.com>
@@ -63,223 +63,559 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDA3MyBTYWx0ZWRfX4g2SkiMrvBsi
- LVA4BIv2qAN/i+ilFe1xMIomsdn5igeeOJYfcyjzM9fsbXJQq3XW1fDw6LCgVoVmaDnij2pYdwR
- BJ9h95JdK+vOsl8t+wq4DFubr9BeLLI=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDA3MyBTYWx0ZWRfX4rhICHA9lN34
- Xu8AJajNngkU+nDkXi5Lm/fw3nryxzv0pJ4sX5ME6WFG7CjGhDzRm8HipzjxSz4DloTRDMeng6e
- feLT0DkPt7rv6qtiPcwktXcKz+Zj+L4nLZYSgGZn9Sq06HzidolPu/lBzrmUnrO3II1fk9u+t0F
- wjBz05vmfJ+B0wSsS3/KpRGbjtkVWeMHhMCHRTrFzpezc3flxwxQ2VuQHhVRnPLUxzdI4i1mmTq
- +fkVCVVwNBFOGpEYoUq7aFh4I7VA1irsqDltvkByPK8AjarAnMIuhYH+Xs0qATnCK1MF6fxr1BK
- QZWDgkMybTw8i8nZWcu5lXEBQ3JKhJ1NPBstdsHTX1zlj2f3N/9FX7ONQQT9GFQtN1HVtvwrmfh
- /lRNr4sdsOOU0Sot5Is2ATu7aidcks5oUIQwSDhhr3kPkBu5/a0XVlZrP0PS37d27ktSXGpuzkr
- HvWs5yJ9up4Mjokje8Q==
-X-Proofpoint-GUID: D1Fz7PbnfHLiNdT-C6HDCG6NAYS7ONao
-X-Proofpoint-ORIG-GUID: D1Fz7PbnfHLiNdT-C6HDCG6NAYS7ONao
-X-Authority-Analysis: v=2.4 cv=dPWWXuZb c=1 sm=1 tr=0 ts=6a7ae351 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=FuY1OWrq c=1 sm=1 tr=0 ts=6a7ae355 cx=c_pps
  a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
  a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=ngmFYzvsSoveWwpVfgYA:9
+ a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=b2e9Q_Z-T6RzkBTqyW8A:9
  a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: daiK1FEgoc0SRiBQRKAIYIIvPFehNXX8
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDA3MyBTYWx0ZWRfXwZLyc8gl+Cjc
+ LZcljsd1Bzxne9elH64OmFxRfQ9zCZD/6qFeV+etM3gH0Sj/4bes+1XacJK2ZisCZV0ScZDNxzw
+ MmmmHeTy8znflzoPfF+Xcj25BlG0Ujk=
+X-Proofpoint-GUID: daiK1FEgoc0SRiBQRKAIYIIvPFehNXX8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDA3MyBTYWx0ZWRfX596rfIrpUHKv
+ z+u5K8AGFulkfB29eH2pHSP0F521nLjzoWWPDtceaWRxSckw97UmLcua3AHKXD+8H3xM0QYkHe+
+ Ikkvh4QzXDPh/UbAxNDo/dRRwUthP02G4qhWRw/q68YHSbSbFKNtDmiliD3xaVuWNGz8m+e77X1
+ du06tyD1wcpUHZRluIf0d22nMcmRPxUeIYa90JronkpIKA62WtXRT+725KCM/bIoIPJLOQBRxIj
+ msL4BVwC1aQXzPJ30CHWckrfDQR9kh9k9dTArGIfP70fkmL7UnrreupJ1zF/meaa+SBrTsCspaH
+ 36+10X/3kbptd9Mnbdlc9YJJXlGvBJUAZAGUYkA+fi5fwJFou1uF9t3timM9dLv3kdmjsLpBjsS
+ tKlQGDSG69kqpNGr7rWy6vgAuWLCFfJnN/qWY3hDQXsN8Ll04BvNJMZhzhWnYHr1TOfuqxCWk0N
+ xAA2QhxoxjC9cYpd+Tw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-10_06,2026-08-10_03,2025-10-01_01
 
-Extends esw_cfg with a devlink-derived switch id, copies it into
-rvu->rswitch on the AF, adds rvu_sw_port_id(), exports
-rvu_rep_get_vlan_id().
+Switch (PAN) mode needs more than one TL1 scheduler queue index so the
+hardware can steer traffic to different links according to NPC flow
+rules, not only the PF/VF default Tx link.
+Add NIX_TXSCH_ALLOC_FLAG_PAN to nix_txsch_alloc requests: use the PAN
+link index for scheduler range calculation, allow multiple TL1 queues
+when the aggregate level spans start..end, and allocate indices in
+that range. Add TXSCHQ_FREE_PAN_TL1 so TL1 entries in that path can be
+freed via nix_txsch_free where they were previously skipped.
+For NPC install flow, add set_chanmask so callers can keep a non-default
+chan_mask when the requester is not the AF; without it, chan_mask was
+always forced to 0xFFF for non-AF functions.
+Allocate the NIX LF SQ bitmap with the same span used by
+bitmap_weight(..., BITS_PER_LONG * 16) in rvu_get_hwinfo().
+Extend struct sg_list with cq_idx and len for transmit-side metadata.
 
 Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  1 +
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  5 +++
- .../ethernet/marvell/octeontx2/af/rvu_rep.c   | 33 ++++++++++++++++++-
- .../marvell/octeontx2/af/switch/rvu_sw.c      | 26 +++++++++++++++
- .../marvell/octeontx2/af/switch/rvu_sw.h      |  5 +++
- .../net/ethernet/marvell/octeontx2/nic/rep.c  |  4 +++
- 6 files changed, 73 insertions(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  15 ++
+ .../net/ethernet/marvell/octeontx2/af/rvu.c   |  25 ++-
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |   6 +
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 180 ++++++++++++++++--
+ .../marvell/octeontx2/af/rvu_npc_fs.c         |  20 +-
+ .../marvell/octeontx2/nic/otx2_txrx.h         |   2 +
+ 6 files changed, 217 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index 1fbe9cac5eb8..c391043173b0 100644
+index c391043173b0..941a3f6a77f6 100644
 --- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
 +++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -1839,6 +1839,7 @@ struct esw_cfg_req {
- 	struct mbox_msghdr hdr;
- 	u8 ena;
- 	u64 rsvd;
-+	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
+@@ -1160,6 +1160,13 @@ struct nix_txsch_alloc_req {
+ 	/* Scheduler queue count request at each level */
+ 	u16 schq_contig[NIX_TXSCH_LVL_CNT]; /* No of contiguous queues */
+ 	u16 schq[NIX_TXSCH_LVL_CNT]; /* No of non-contiguous queues */
++	/* Set only by the single switchdev PF (rvu->rswitch.pcifunc). This is
++	 * not the eswitch representor (rvu->rep_pcifunc). That PF requests two
++	 * aggregate-level TL2 queues on the PAN link, one for CGX and one for
++	 * SDP steering. No other PF or VF sets this flag.
++	 */
++#define NIX_TXSCH_ALLOC_FLAG_PAN BIT(0)
++	u32 flags;
  };
  
- struct rep_evt_data {
+ struct nix_txsch_alloc_rsp {
+@@ -1178,6 +1185,10 @@ struct nix_txsch_alloc_rsp {
+ struct nix_txsch_free_req {
+ 	struct mbox_msghdr hdr;
+ #define TXSCHQ_FREE_ALL BIT_ULL(0)
++	/* Frees PAN TL2 queues allocated with NIX_TXSCH_ALLOC_FLAG_PAN. Used
++	 * only by the switchdev PF (rvu->rswitch.pcifunc), not by other PFs/VFs.
++	 */
++#define TXSCHQ_FREE_PAN_TL1 BIT_ULL(1)
+ 	u16 flags;
+ 	/* Scheduler queue level to be freed */
+ 	u16 schq_lvl;
+@@ -2132,6 +2143,10 @@ struct npc_install_flow_req {
+ 	u8 hw_prio;
+ 	u8  req_kw_type; /* Key type to be written */
+ 	u8 alloc_entry;	/* only for cn20k */
++	/* When set, keep caller chan_mask instead of the CPT default. Only
++	 * honored for the switchdev PF; see rvu_mbox_handler_npc_install_flow().
++	 */
++	u8 set_chanmask;
+ /* For now use any priority, once AF driver is changed to
+  * allocate least priority entry instead of mid zone then make
+  * NPC_MCAM_LEAST_PRIO as 3
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 2a5070c56bdb..a675cb79a285 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -1990,18 +1990,29 @@ int rvu_mbox_handler_msix_offset(struct rvu *rvu, struct msg_req *req,
+ 	return 0;
+ }
+ 
+-static void rvu_iface_get_qcnts(struct rvu *rvu, struct rvu_pfvf *pfvf,
+-				struct iface_info *info)
++static void rvu_iface_get_qcnts(struct rvu *rvu, u16 pcifunc,
++				struct rvu_pfvf *pfvf, struct iface_info *info)
+ {
++	int sq_bmap_bits;
++
+ 	mutex_lock(&rvu->rsrc_lock);
+ 
+ 	info->sq_cnt = 0;
+ 	info->cq_cnt = 0;
+ 	info->rq_cnt = 0;
+ 
+-	/* Use each LF queue context size; bitmaps are sized to qsize longs. */
+-	if (pfvf->sq_ctx && pfvf->sq_bmap)
+-		info->sq_cnt = bitmap_weight(pfvf->sq_bmap, pfvf->sq_ctx->qsize);
++	if (pfvf->sq_bmap) {
++		/* Match switchdev sq_bmap allocation size in nix_lf_alloc(). */
++		if (rvu_is_switch_pcifunc(rvu, pcifunc))
++			sq_bmap_bits = NIX_SQ_BMAP_BITS;
++		else if (pfvf->sq_ctx)
++			sq_bmap_bits = pfvf->sq_ctx->qsize;
++		else
++			sq_bmap_bits = 0;
++
++		if (sq_bmap_bits)
++			info->sq_cnt = bitmap_weight(pfvf->sq_bmap, sq_bmap_bits);
++	}
+ 	if (pfvf->cq_ctx && pfvf->cq_bmap)
+ 		info->cq_cnt = bitmap_weight(pfvf->cq_bmap, pfvf->cq_ctx->qsize);
+ 	if (pfvf->rq_ctx && pfvf->rq_bmap)
+@@ -2065,7 +2076,7 @@ int rvu_mbox_handler_iface_get_info(struct rvu *rvu, struct msg_req *req,
+ 		if (is_sdp_pfvf(rvu, pcifunc))
+ 			info->is_sdp = 1;
+ 
+-		rvu_iface_get_qcnts(rvu, pfvf, info);
++		rvu_iface_get_qcnts(rvu, pcifunc, pfvf, info);
+ 
+ 		if (pfvf->nix_blkaddr == BLKADDR_NIX0)
+ 			info->nix = 0;
+@@ -2098,7 +2109,7 @@ int rvu_mbox_handler_iface_get_info(struct rvu *rvu, struct msg_req *req,
+ 			if (is_sdp_pfvf(rvu, pcifunc))
+ 				info->is_sdp = 1;
+ 
+-			rvu_iface_get_qcnts(rvu, pfvf, info);
++			rvu_iface_get_qcnts(rvu, pcifunc, pfvf, info);
+ 
+ 			if (pfvf->nix_blkaddr == BLKADDR_NIX0)
+ 				info->nix = 0;
 diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index 2876c76ae61b..9174b879850a 100644
+index 9174b879850a..0b0ba1350922 100644
 --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
 +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -576,6 +576,10 @@ struct rvu_switch {
- 	u16 *entry2pcifunc;
- 	u16 mode;
- 	u16 start_entry;
-+	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
-+#define RVU_SWITCH_FLAG_FW_READY BIT_ULL(0)
-+	u64 flags;
-+	u16 pcifunc;
- };
- 
- struct rep_evtq_ent {
-@@ -1199,4 +1203,5 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu);
- void rvu_rep_update_rules(struct rvu *rvu, u16 pcifunc, bool ena);
- int rvu_rep_notify_pfvf_state(struct rvu *rvu, u16 pcifunc, bool enable);
- int npc_mcam_verify_entry(struct npc_mcam *mcam, u16 pcifunc, int entry);
-+u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc);
- #endif /* RVU_H */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
-index a2781e0f504e..672d54847c7b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/bitfield.h>
-+#include <linux/stddef.h>
- #include <linux/types.h>
- #include <linux/device.h>
- #include <linux/module.h>
-@@ -189,7 +190,7 @@ int rvu_mbox_handler_nix_lf_stats(struct rvu *rvu,
- 	return 0;
+@@ -335,6 +335,7 @@ struct nix_txsch {
+ 	u8   lvl;
+ #define NIX_TXSCHQ_FREE		      BIT_ULL(1)
+ #define NIX_TXSCHQ_CFG_DONE	      BIT_ULL(0)
++#define NIX_SQ_BMAP_BITS	      (BITS_PER_LONG * 16)
+ #define TXSCH_MAP_FUNC(__pfvf_map)    ((__pfvf_map) & 0xFFFF)
+ #define TXSCH_MAP_FLAGS(__pfvf_map)   ((__pfvf_map) >> 16)
+ #define TXSCH_MAP(__func, __flags)    (((__func) & 0xFFFF) | ((__flags) << 16))
+@@ -904,6 +905,11 @@ static inline bool is_pffunc_af(u16 pcifunc)
+ 	return !pcifunc;
  }
  
--static u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
-+u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
- {
- 	int id;
- 
-@@ -429,6 +430,30 @@ int rvu_rep_pf_init(struct rvu *rvu)
- 	return 0;
- }
- 
-+/* ESW_CFG is always the sole message in a mailbox transaction.
-+ *
-+ * The otx2 mailbox API does not batch multiple messages per sync: the
-+ * representor driver allocates only ESW_CFG before calling
-+ * otx2_sync_mbox_msg() (see rvu_eswitch_config()), and the AF processes
-+ * one message per dispatch. next_msgoff is therefore the end offset of this
-+ * message, not a cumulative offset across batched messages, so the length
-+ * check below is safe. Batching is not supported; do not flag this path.
-+ */
-+static bool esw_cfg_req_has_switch_id(const struct esw_cfg_req *req)
++static inline bool rvu_is_switch_pcifunc(struct rvu *rvu, u16 pcifunc)
 +{
-+	u16 hdr_len = ALIGN(sizeof(struct mbox_hdr), MBOX_MSG_ALIGN);
-+	u16 next_off = req->hdr.next_msgoff;
-+	u16 msg_len;
-+
-+	if (next_off < hdr_len)
-+		return false;
-+
-+	msg_len = next_off - hdr_len;
-+
-+	return msg_len >= offsetof(struct esw_cfg_req, switch_id) +
-+			  MAX_PHYS_ITEM_ID_LEN;
++	return rvu->rswitch.pcifunc && pcifunc == rvu->rswitch.pcifunc;
 +}
 +
- int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
- 			     struct msg_rsp *rsp)
+ static inline bool is_rvu_fwdata_valid(struct rvu *rvu)
  {
-@@ -436,6 +461,9 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+ 	return (rvu->fwdata->header_magic == RVU_FWDATA_HEADER_MAGIC) &&
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 9bc86fc949f3..d42e66ff247a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -1081,6 +1081,7 @@ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
+ 	u16 pcifunc = req->hdr.pcifunc;
+ 	int nixlf, blkaddr, rc = 0;
+ 	struct nix_aq_inst_s inst;
++	u64 sq_bmap_bits, max_q;
+ 	struct rvu_block *block;
+ 	struct admin_queue *aq;
+ 	struct rvu_pfvf *pfvf;
+@@ -1115,10 +1116,25 @@ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
+ 		if (!pfvf->rq_ctx || req->qidx >= pfvf->rq_ctx->qsize)
+ 			rc = NIX_AF_ERR_AQ_ENQUEUE;
+ 		break;
+-	case NIX_AQ_CTYPE_SQ:
+-		if (!pfvf->sq_ctx || req->qidx >= pfvf->sq_ctx->qsize)
++	case NIX_AQ_CTYPE_SQ: {
++		if (!pfvf->sq_ctx) {
++			rc = NIX_AF_ERR_AQ_ENQUEUE;
++			break;
++		}
++
++		/* Switchdev PF uses a fixed sq_bmap (NIX_SQ_BMAP_BITS); cap qidx
++		 * to that span so __set_bit() cannot run past the allocation.
++		 * nix_lf_alloc() also rejects sq_cnt above NIX_SQ_BMAP_BITS.
++		 */
++		sq_bmap_bits = rvu_is_switch_pcifunc(rvu, pcifunc) ?
++			       NIX_SQ_BMAP_BITS :
++			       (u64)pfvf->sq_ctx->qsize * BITS_PER_LONG;
++		max_q = min_t(u64, pfvf->sq_ctx->qsize, sq_bmap_bits);
++
++		if ((u64)req->qidx >= max_q)
+ 			rc = NIX_AF_ERR_AQ_ENQUEUE;
+ 		break;
++	}
+ 	case NIX_AQ_CTYPE_CQ:
+ 		if (!pfvf->cq_ctx || req->qidx >= pfvf->cq_ctx->qsize)
+ 			rc = NIX_AF_ERR_AQ_ENQUEUE;
+@@ -1543,18 +1559,28 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 	struct qmem *rq_ctx, *sq_ctx, *cq_ctx;
+ 	u16 bcast, mcast, promisc, ucast;
+ 	struct rvu_hwinfo *hw = rvu->hw;
++	u64 cfg, ctx_cfg, sq_bmap_bits;
+ 	u16 pcifunc = req->hdr.pcifunc;
+ 	u8 cgx_id = 0, lmac_id = 0;
+ 	bool rules_created = false;
+ 	struct rvu_block *block;
+ 	struct rvu_pfvf *pfvf;
+ 	struct cgx *cgxd;
+-	u64 cfg, ctx_cfg;
+ 	int blkaddr;
+ 
+ 	if (!req->rq_cnt || !req->sq_cnt || !req->cq_cnt)
+ 		return NIX_AF_ERR_PARAM;
+ 
++	/* Switchdev PF sq_bmap is fixed at NIX_SQ_BMAP_BITS; reject larger
++	 * sq_cnt before allocating context memory or the bitmap.
++	 */
++	sq_bmap_bits = rvu_is_switch_pcifunc(rvu, pcifunc) ?
++		NIX_SQ_BMAP_BITS :
++		(u64)req->sq_cnt * BITS_PER_LONG;
++
++	if ((u64)req->sq_cnt > sq_bmap_bits)
++		return NIX_AF_ERR_PARAM;
++
+ 	if (req->way_mask)
+ 		req->way_mask &= 0xFFFF;
+ 
+@@ -1637,7 +1663,12 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 	if (rc)
+ 		goto free_mem;
+ 
+-	sq_bmap = kcalloc(req->sq_cnt, sizeof(long), GFP_KERNEL);
++	if (rvu_is_switch_pcifunc(rvu, pcifunc))
++		/* Fixed-size bitmap; sq_cnt capped to NIX_SQ_BMAP_BITS above. */
++		sq_bmap = kcalloc(BITS_TO_LONGS(NIX_SQ_BMAP_BITS),
++				  sizeof(long), GFP_KERNEL);
++	else
++		sq_bmap = kcalloc(req->sq_cnt, sizeof(long), GFP_KERNEL);
+ 	if (!sq_bmap) {
+ 		qmem_free(rvu->dev, sq_ctx);
+ 		rc = -ENOMEM;
+@@ -2186,6 +2217,25 @@ static void nix_get_txschq_range(struct rvu *rvu, u16 pcifunc,
+ 	}
+ }
+ 
++static int nix_get_pan_tx_link(struct rvu *rvu)
++{
++	struct rvu_hwinfo *hw = rvu->hw;
++
++	return hw->cgx_links + hw->lbk_links + 1;
++}
++
++static bool nix_txsch_is_pan_schq(struct rvu *rvu, int schq)
++{
++	int pan_link = nix_get_pan_tx_link(rvu);
++
++	return schq >= pan_link && schq <= pan_link + 1;
++}
++
++static bool nix_txsch_pan_allowed(struct rvu *rvu, u16 pcifunc)
++{
++	return rvu_is_switch_pcifunc(rvu, pcifunc);
++}
++
+ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
+ 				      struct nix_hw *nix_hw,
+ 				      struct nix_txsch_alloc_req *req)
+@@ -2201,12 +2251,27 @@ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
+ 	if (!req_schq)
  		return 0;
  
- 	rvu->rep_mode = req->ena;
-+	if (esw_cfg_req_has_switch_id(req))
-+		memcpy(rvu->rswitch.switch_id, req->switch_id,
-+		       MAX_PHYS_ITEM_ID_LEN);
+-	link = nix_get_tx_link(rvu, pcifunc);
++	if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) {
++		if (!nix_txsch_pan_allowed(rvu, pcifunc))
++			return NIX_AF_ERR_TLX_ALLOC_FAIL;
++		link = nix_get_pan_tx_link(rvu);
++	} else {
++		link = nix_get_tx_link(rvu, pcifunc);
++	}
  
- 	if (!rvu->rep_mode)
- 		rvu_npc_free_mcam_entries(rvu, req->hdr.pcifunc, -1);
-@@ -449,6 +477,9 @@ int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
- 	int pf, vf, numvfs, hwvf, rep = 0;
- 	u16 pcifunc;
- 
-+	/* Called once from representor driver probe during devlink eswitch
-+	 * SWITCHDEV bring-up; not re-run during switch device operation.
-+	 */
- 	rvu->rep_pcifunc = req->hdr.pcifunc;
- 	rsp->rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
- 	rvu->rep_cnt = rsp->rep_cnt;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
-index fe143ad3f944..2451eb57ec4c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
-@@ -5,7 +5,33 @@
-  *
-  */
- 
-+#include <linux/bitfield.h>
-+
- #include "rvu.h"
-+#include "rvu_sw.h"
-+
-+/*
-+ * rep_cnt and rep2pfvf_map are populated once when the representor driver
-+ * probes via GET_REP_CNT (see rvu_get_rep_cnt() in rep.c), as part of
-+ * devlink eswitch SWITCHDEV bring-up. They are not updated during switch
-+ * device mailbox handling, so this lockless lookup cannot race with a
-+ * concurrent rep2pfvf_map resize.
-+ */
-+u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc)
-+{
-+	u16 rep_id;
-+
-+	if (!rvu->rep2pfvf_map || !rvu->rep_cnt)
-+		return RVU_SW_INVALID_PORT_ID;
-+
-+	rep_id = rvu_rep_get_vlan_id(rvu, pcifunc);
-+	if (rep_id >= rvu->rep_cnt ||
-+	    rvu->rep2pfvf_map[rep_id] != pcifunc)
-+		return RVU_SW_INVALID_PORT_ID;
-+
-+	return FIELD_PREP(GENMASK_ULL(31, 16), rep_id) |
-+	       FIELD_PREP(GENMASK_ULL(15, 0), pcifunc);
-+}
- 
- int rvu_mbox_handler_swdev2af_notify(struct rvu *rvu,
- 				     struct swdev2af_notify_req *req,
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h
-index f28dba556d80..e9ad32c84576 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h
-@@ -8,4 +8,9 @@
- #ifndef RVU_SWITCH_H
- #define RVU_SWITCH_H
- 
-+/* RVU Switch */
-+#define RVU_SW_INVALID_PORT_ID	((u32)~0U)
-+
-+u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc);
-+
- #endif
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-index 0f5d5642d3f7..257a2ae6a53e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-@@ -399,8 +399,11 @@ static void rvu_rep_get_stats64(struct net_device *dev,
- 
- static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
- {
-+	struct devlink_port_attrs attrs = {};
- 	struct esw_cfg_req *req;
- 
-+	rvu_rep_devlink_set_switch_id(priv, &attrs.switch_id);
-+
- 	mutex_lock(&priv->mbox.lock);
- 	req = otx2_mbox_alloc_msg_esw_cfg(&priv->mbox);
- 	if (!req) {
-@@ -408,6 +411,7 @@ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
- 		return -ENOMEM;
+ 	/* For traffic aggregating scheduler level, one queue is enough */
+ 	if (lvl >= hw->cap.nix_tx_aggr_lvl) {
+-		if (req_schq != 1)
++		if (req_schq != 1 && !(req->flags & NIX_TXSCH_ALLOC_FLAG_PAN))
+ 			return NIX_AF_ERR_TLX_ALLOC_FAIL;
++		if (req->schq[lvl] > MAX_TXSCHQ_PER_FUNC ||
++		    req->schq_contig[lvl] > MAX_TXSCHQ_PER_FUNC)
++			return NIX_AF_ERR_TLX_ALLOC_FAIL;
++		if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) {
++			if (link >= txsch->schq.max || link + 1 >= txsch->schq.max)
++				return NIX_AF_ERR_TLX_ALLOC_FAIL;
++			if (req_schq > 2)
++				return NIX_AF_ERR_TLX_ALLOC_FAIL;
++		}
+ 		return 0;
  	}
- 	req->ena = ena;
-+	memcpy(req->switch_id, attrs.switch_id.id, attrs.switch_id.id_len);
- 	otx2_sync_mbox_msg(&priv->mbox);
- 	mutex_unlock(&priv->mbox.lock);
+ 
+@@ -2235,9 +2300,9 @@ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
  	return 0;
+ }
+ 
+-static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+-			    struct nix_txsch_alloc_rsp *rsp,
+-			    int lvl, int start, int end)
++static int nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
++			   struct nix_txsch_alloc_rsp *rsp,
++			   int lvl, int start, int end)
+ {
+ 	struct rvu_hwinfo *hw = rvu->hw;
+ 	u16 pcifunc = rsp->hdr.pcifunc;
+@@ -2247,6 +2312,46 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 	 * on transmit link to which PF_FUNC is mapped to.
+ 	 */
+ 	if (lvl >= hw->cap.nix_tx_aggr_lvl) {
++		if (start != end) {
++			int want_contig = rsp->schq_contig[lvl];
++			int got_contig = 0, got = 0;
++			int want = rsp->schq[lvl];
++
++			for (schq = start; schq <= end; schq++) {
++				if (test_bit(schq, txsch->schq.bmap))
++					continue;
++
++				if (got_contig < want_contig) {
++					set_bit(schq, txsch->schq.bmap);
++					rsp->schq_contig_list[lvl][got_contig++] = schq;
++					continue;
++				}
++
++				if (got < want) {
++					set_bit(schq, txsch->schq.bmap);
++					rsp->schq_list[lvl][got++] = schq;
++				}
++			}
++
++			rsp->schq_contig[lvl] = got_contig;
++			rsp->schq[lvl] = got;
++
++			if (got_contig < want_contig || got < want) {
++				for (idx = 0; idx < got_contig; idx++)
++					clear_bit(rsp->schq_contig_list[lvl][idx],
++						  txsch->schq.bmap);
++				for (idx = 0; idx < got; idx++)
++					clear_bit(rsp->schq_list[lvl][idx],
++						  txsch->schq.bmap);
++				rsp->schq_contig[lvl] = 0;
++				rsp->schq[lvl] = 0;
++				dev_err(rvu->dev,
++					"Could not allocate schq at lvl=%u start=%u end=%u\n",
++					lvl, start, end);
++				return -ENOMEM;
++			}
++			return 0;
++		}
+ 		/* A single TL queue is allocated */
+ 		if (rsp->schq_contig[lvl]) {
+ 			rsp->schq_contig[lvl] = 1;
+@@ -2261,7 +2366,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 			rsp->schq[lvl] = 1;
+ 			rsp->schq_list[lvl][0] = start;
+ 		}
+-		return;
++		return 0;
+ 	}
+ 
+ 	/* Adjust the queue request count if HW supports
+@@ -2273,7 +2378,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 		if (idx >= (end - start) || test_bit(schq, txsch->schq.bmap)) {
+ 			rsp->schq_contig[lvl] = 0;
+ 			rsp->schq[lvl] = 0;
+-			return;
++			return 0;
+ 		}
+ 
+ 		if (rsp->schq_contig[lvl]) {
+@@ -2286,7 +2391,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 			set_bit(schq, txsch->schq.bmap);
+ 			rsp->schq_list[lvl][0] = schq;
+ 		}
+-		return;
++		return 0;
+ 	}
+ 
+ 	/* Allocate contiguous queue indices requesty first */
+@@ -2317,6 +2422,8 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 		/* Update how many were allocated */
+ 		rsp->schq[lvl] = idx;
+ 	}
++
++	return 0;
+ }
+ 
+ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+@@ -2341,6 +2448,10 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+ 	if (!nix_hw)
+ 		return NIX_AF_ERR_INVALID_NIXBLK;
+ 
++	if ((req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) &&
++	    !nix_txsch_pan_allowed(rvu, pcifunc))
++		return NIX_AF_ERR_TLX_ALLOC_FAIL;
++
+ 	mutex_lock(&rvu->rsrc_lock);
+ 
+ 	/* Check if request is valid as per HW capabilities
+@@ -2363,11 +2474,14 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+ 		rsp->schq[lvl] = req->schq[lvl];
+ 		rsp->schq_contig[lvl] = req->schq_contig[lvl];
+ 
+-		link = nix_get_tx_link(rvu, pcifunc);
++		if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN)
++			link = nix_get_pan_tx_link(rvu);
++		else
++			link = nix_get_tx_link(rvu, pcifunc);
+ 
+ 		if (lvl >= hw->cap.nix_tx_aggr_lvl) {
+ 			start = link;
+-			end = link;
++			end = link + !!(req->flags & NIX_TXSCH_ALLOC_FLAG_PAN);
+ 		} else if (hw->cap.nix_fixed_txschq_mapping) {
+ 			nix_get_txschq_range(rvu, pcifunc, link, &start, &end);
+ 		} else {
+@@ -2375,10 +2489,11 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+ 			end = txsch->schq.max;
+ 		}
+ 
+-		nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end);
++		if (nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end))
++			goto err;
+ 
+ 		/* Reset queue config */
+-		for (idx = 0; idx < req->schq_contig[lvl]; idx++) {
++		for (idx = 0; idx < rsp->schq_contig[lvl]; idx++) {
+ 			schq = rsp->schq_contig_list[lvl][idx];
+ 			if (!(TXSCH_MAP_FLAGS(pfvf_map[schq]) &
+ 			    NIX_TXSCHQ_CFG_DONE))
+@@ -2388,7 +2503,7 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+ 			nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
+ 		}
+ 
+-		for (idx = 0; idx < req->schq[lvl]; idx++) {
++		for (idx = 0; idx < rsp->schq[lvl]; idx++) {
+ 			schq = rsp->schq_list[lvl][idx];
+ 			if (!(TXSCH_MAP_FLAGS(pfvf_map[schq]) &
+ 			    NIX_TXSCHQ_CFG_DONE))
+@@ -2657,6 +2772,20 @@ static int nix_txschq_free(struct rvu *rvu, u16 pcifunc)
+ 	}
+ 	nix_clear_tx_xoff(rvu, blkaddr, NIX_TXSCH_LVL_TL1,
+ 			  nix_get_tx_link(rvu, pcifunc));
++	/* TL1 is at nix_tx_aggr_lvl so the loop above skips it; also clear
++	 * PAN TL1 XOFF on switch-owned links before flushing SMQs.
++	 */
++	if (nix_txsch_pan_allowed(rvu, pcifunc)) {
++		txsch = &nix_hw->txsch[NIX_TXSCH_LVL_TL1];
++
++		for (schq = nix_get_pan_tx_link(rvu);
++		     schq < txsch->schq.max &&
++		     nix_txsch_is_pan_schq(rvu, schq); schq++) {
++			if (TXSCH_MAP_FUNC(txsch->pfvf_map[schq]) != pcifunc)
++				continue;
++			nix_clear_tx_xoff(rvu, blkaddr, NIX_TXSCH_LVL_TL1, schq);
++		}
++	}
+ 
+ 	/* On PF cleanup, clear cfg done flag as
+ 	 * PF would have changed default config.
+@@ -2684,11 +2813,11 @@ static int nix_txschq_free(struct rvu *rvu, u16 pcifunc)
+ 		 /* TLs above aggregation level are shared across all PF
+ 		  * and it's VFs, hence skip freeing them.
+ 		  */
+-		if (lvl >= hw->cap.nix_tx_aggr_lvl)
+-			continue;
+-
+ 		txsch = &nix_hw->txsch[lvl];
+ 		for (schq = 0; schq < txsch->schq.max; schq++) {
++			if (lvl >= hw->cap.nix_tx_aggr_lvl &&
++			    !nix_txsch_is_pan_schq(rvu, schq))
++				continue;
+ 			if (TXSCH_MAP_FUNC(txsch->pfvf_map[schq]) != pcifunc)
+ 				continue;
+ 			nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
+@@ -2732,7 +2861,16 @@ static int nix_txschq_free_one(struct rvu *rvu,
+ 	schq = req->schq;
+ 	txsch = &nix_hw->txsch[lvl];
+ 
+-	if (lvl >= hw->cap.nix_tx_aggr_lvl || schq >= txsch->schq.max)
++	if (req->flags & TXSCHQ_FREE_PAN_TL1) {
++		if (!nix_txsch_pan_allowed(rvu, pcifunc))
++			return NIX_AF_ERR_TLX_INVALID;
++		if (!nix_txsch_is_pan_schq(rvu, schq))
++			return NIX_AF_ERR_TLX_INVALID;
++	} else if (lvl >= hw->cap.nix_tx_aggr_lvl) {
++		return 0;
++	}
++
++	if (schq >= txsch->schq.max)
+ 		return 0;
+ 
+ 	pfvf_map = txsch->pfvf_map;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index e36c68ee5d84..40d49a323814 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -1833,9 +1833,23 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
+ 		target = req->hdr.pcifunc;
+ 	}
+ 
+-	/* ignore chan_mask in case pf func is not AF, revisit later */
+-	if (!is_pffunc_af(req->hdr.pcifunc))
+-		req->chan_mask = rvu_get_cpt_chan_mask(rvu);
++	/* Non-AF callers get the CPT default chan_mask unless the authorized
++	 * switchdev PF sets set_chanmask to preserve a caller-supplied mask.
++	 * VFs and other PFs must not use set_chanmask; that would bypass
++	 * channel isolation.
++	 */
++	if (!is_pffunc_af(req->hdr.pcifunc)) {
++		if (req->set_chanmask &&
++		    !rvu_is_switch_pcifunc(rvu, req->hdr.pcifunc)) {
++			rvu_npc_free_entry_for_flow_install(rvu,
++							    req->hdr.pcifunc,
++							    allocated,
++							    req->entry);
++			return NPC_FLOW_VF_PERM_DENIED;
++		}
++		if (!req->set_chanmask)
++			req->chan_mask = rvu_get_cpt_chan_mask(rvu);
++	}
+ 
+ 	err = npc_check_unsupported_flows(rvu, req->features, req->intf);
+ 	if (err) {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
+index acf259d72008..73a98b94426b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
+@@ -78,6 +78,8 @@ struct otx2_rcv_queue {
+ struct sg_list {
+ 	u16	num_segs;
+ 	u16	flags;
++	u16	cq_idx;
++	u16	len;
+ 	u64	skb;
+ 	u64	size[OTX2_MAX_FRAGS_IN_SQE];
+ 	u64	dma_addr[OTX2_MAX_FRAGS_IN_SQE];
 -- 
 2.43.0
 
