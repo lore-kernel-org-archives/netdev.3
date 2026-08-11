@@ -1,145 +1,118 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05473B14DF
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 06:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C052F2C3257
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 07:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786431569; cv=none; b=eyl+pFDqRf+95mO7bERW/025zFs4m+W4j40awO/hO9puuCBkdcWv0oNDurJZz0hmDDQJSCm+8j2klR2BD94/EqO92VQTo9dQANy4Oz2yin+GbuoIBqvV7Ov3C44e0d2ywvdkzoK45LnhqwHNNp8uakYbXVpco1zNJ5tQXhWYPNs=
+	t=1786431799; cv=none; b=ZbIa6ohwj+GHu4tYNZ70SsX6f2sMt8HP3MKtAkwyRIYHkS+EDPQezdwaQEulxc8IdQaFD/cbQaH5+7kLTI4OPgNnSccNZCcD9Wg+nockDd3UzDiumt3a8TApyZ15Eq+0+svKryvv9PjXghMQK8EpdBoRAXx8Zl6cMAAs4Y0ywXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786431569; c=relaxed/simple;
-	bh=aAQhDnlPmj7NjZuElAotMRr2hus7SLQx/6SvcFEuqQM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MhE/s0D7H8Q+anrb+5mABsFRx4lmaKLNF3md9X/X3eest9pJAogHGM4aihrIGTzZ2pD9VmWqX87064TKvCVSP4TfjnAdRcfVxl35LDPHc0fugMEqjfnQ09OMpLGPq3Rrbq1ipMR36JmMwFokGsd36DkJkQPUe3uRbFPCK963MQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qEJEsv1M; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786431799; c=relaxed/simple;
+	bh=89iSOBFmAKZ0AVgeFq0hQz2LWETbyEQ1COJqJZZ6Fzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kfo13kT16eEH/Zw1senDihbX3dT2c0AKU/X9lUJsRIuMuY0Pz9o/jzRN5AQvXYsGMxB3fBQF4brvW75lMcW7XvAEiJME5HUUNKztxH7wpWuLlZOHPYrvxBOymIuaKCIDzPn4RRR3lnYzfkhh1o9muI78F1vHAHtxPmXwIdwkPkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCphGJEh; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qEJEsv1M"
-Message-ID: <156834bb-8e40-496e-9443-9d515fa18eab@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786431565;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=32V1eHIyFO1eGX/E3HUZeNfgF9Kyiz48JkQTaV3IfBg=;
-	b=qEJEsv1M+c2q0mKNDHkZaO4WxC7QmgpGYC4eOb+mVGR/4k08G3SpvwDTaNB36SsaW1yKc+
-	TSSKvPXsIPDM1wB7Ctr1moz5n0cF679Q3nATDOFakuW1ZqDHsMcAg8ei1VrEjJt9GW8kuU
-	+or8sXBNusChdfadS9ubZUGTVCNJ7Q4=
-Date: Tue, 11 Aug 2026 14:58:31 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCphGJEh"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84e0688b7e8so2273504b3a.1
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:03:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786431797; x=1787036597; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TowDT+Kc4G5/QaKhkzSWN2HrnNtpLmoEVbOwh7MwDKg=;
+        b=LCphGJEhTueTscfw89A7fvaB6XLV9bPL2jGBVNAUuK+do+wUv5o0zpKULfPpwKseD2
+         qab8z+qBOnZoj2obrpFSiZ8XgvuujBuflm1laDxQ8h65Od0ZLaytkuORGdjVhkJ57kW/
+         JrwIyVSPz7CzuchVSoVNMO9lVbfOwYmXfgKrSJ3KjqrkbNLgVYmGrfRtoMmOxki0bQGr
+         0pQtWgKtYpS6W0grR3YzCTQ4jNyskXJNJvWAAaUWk1fawsMiXlR2q51vmWQsZZqiQJCm
+         tAJY/ia8MWOYYSi6QPeIrxffLUmt69U9M+9asXvJy2Q5igjJbkQnwUfi/fKlKYFYhdOe
+         mfgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786431797; x=1787036597;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TowDT+Kc4G5/QaKhkzSWN2HrnNtpLmoEVbOwh7MwDKg=;
+        b=cu2+/WPWwpFYabaQ8X5JppZDOIbUFjF/56T23uQw69mCimR7xYHgoojHsKu16qGfHP
+         8tol4Zkrc6nnmSeugLAtRus0rUdZ76bTI3UibOzxIFH1g0zdyRZvjBg4yCjTi86+sSF+
+         XnwX2pxCECS2sZ+BJ49IlpspBS8v0wSOkHzjOAFkcPuCsogAJ/3X/Q+OwbmlEi4Px2cO
+         eRxltWEAEi1yaVi2AIzPqHmoOGQujc/ZoUSZR80p4Pgi081QH5zS+nCC452bQqaAMFgZ
+         0/++vtQGQQohPAJL8x9M/0RrSkZ0w0JS/L9CMvu6isVjXQcVGbu+y+J1hEtcdeadx0e+
+         K95g==
+X-Gm-Message-State: AOJu0Yz9vzQbfBwUMwHF7SzlkAybHX9F9jg5ir1wqt2yrwPe8JUaec7p
+	D5t8qhaJMEIEvYu6xQxxaSNC6inLK41zEXhxysTPPzpEn4RetKeDYqqi
+X-Gm-Gg: AR+sD12URM5/+RmhErQeUHvJ2CGX3IjJiOP6cpJHgkehyNFAwxYVQmvXvC26XCPforx
+	FCzGhhfoI210PpDlnHi9ouCJZMU8BefceODExUVAT3SOwhWbGQ86rxPlG4qYoyOnzyZZJud0f1k
+	ptExsj+9Acn08bLzd+WHpersZ1Advh3Sh4LRPh5u8zS8U1XqXCSOaYKjDJg+oGwK5cVAVRjhAVs
+	gQz5/+KXmF+cdAUGGPiW7wPdTwRCTfe1YQOmGmw9KvXGPfFw/0s6EtuDWB84Nd3yJfDvUuCwVdp
+	nTNWb6EAl9kTa8V61pgPE0bxRqST1Ieax5z9OgEdZXJM3YnCrNkhc1UzW/VPQHcoZdNtq9JEVor
+	8iCbrgMQwJRGAYheIQd2+FJP2PECXCxjtlmyQbf09GjHx+OYvLJgCEHFgbIucqHgtNcMl2LrgEQ
+	s7mTyd4Laog66QunekSZs/WynYzBzzp6rPnXAu4dxvxH3jRb2ph72ASW5hsycI94VnfPh0WPW8h
+	Rsmc4v/PVK2SA==
+X-Received: by 2002:a05:6a00:430c:b0:848:7552:3d86 with SMTP id d2e1a72fcca58-84fa872e616mr1164869b3a.23.1786431797031;
+        Tue, 11 Aug 2026 00:03:17 -0700 (PDT)
+Received: from ubuntu.. ([49.205.39.116])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-84fa954db66sm197999b3a.48.2026.08.11.00.03.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 00:03:16 -0700 (PDT)
+From: Ajith P V <ajithpv.linux@gmail.com>
+To: jmaloy@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Ajith P V <ajithpv.linux@gmail.com>
+Subject: [PATCH] net: tipc: replace deprecated strcpy with strscpy
+Date: Tue, 11 Aug 2026 07:03:06 +0000
+Message-ID: <20260811070306.59127-1-ajithpv.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next] net: core: avoid WARN_ONCE for stale RX queue
- mappings
-To: Li Xiasong <lixiasong1@huawei.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- yuehaibing@huawei.com, zhangchangzhong@huawei.com, weiyongjun1@huawei.com
-References: <20260810125029.1567742-1-lixiasong1@huawei.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260810125029.1567742-1-lixiasong1@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
+The `strcpy()` function is deprecated and moving towards code-tree
+elimination. Replacing it with `strscpy()` fixes potential buffer
+overflow vectors by ensuring safe NULL-termination based on the
+destination buffer size limit [1][2].
 
-On 8/10/26 8:50 PM, Li Xiasong wrote:
-> An skb may retain its recorded RX queue index while a network device
-> reduces its number of active RX queues. For example, when a TUN queue
-> is detached, queued skbs can still carry the queue's previous index.
->
-> Both get_rps_cpu() and netif_get_rxqueue() validate the index before
-> accessing the RX queue array. They safely fall back to local processing
-> or the first RX queue, so an invalid index does not cause an
-> out-of-bounds access.
->
-> Using WARN_ONCE() for this recoverable condition can unnecessarily
-> panic systems with panic_on_warn enabled. Replace it with
-> netdev_warn_once() to retain the diagnostic without emitting a WARN
-> splat.
->
-> Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+In `tipc_bearer_get_name()`, the 'name' parameter decays into a pointer,
+meaning `sizeof()` cannot capture the underlying array bounds directly.
+However, all parent callers allocate this buffer using the
+TIPC_MAX_BEARER_NAME macro.
 
+Replace strcpy() with strscpy() using TIPC_MAX_BEARER_NAME as the
+explicit destination bound length.
 
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
+Link: https://github.com/KSPP/linux/issues/88 [2]
 
+Signed-off-by: Ajith P V <ajithpv.linux@gmail.com>
+---
+ net/tipc/bearer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 05dcd2f9e887..951bb474c7d4 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -209,7 +209,7 @@ int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
+ 	if (!b)
+ 		return -EINVAL;
+ 
+-	strcpy(name, b->name);
++	strscpy(name, b->name, TIPC_MAX_BEARER_NAME);
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
 
-
-I just run ethtool -L rx 2 on my host and got such message..
-
-
-------------[ cut here ]------------
-veth1 received packet on queue 2, but number of RX queues is 2
-WARNING: net/core/dev.c:5132 at get_rps_cpu+0x1d1/0x4b0, CPU#2: 
-kworker/2:1/59
-  <TASK>
-  netif_rx_internal+0xa1/0x120
-  __netif_rx+0x19/0xc0
-  veth_xmit+0x267/0x360
-  dev_hard_start_xmit+0x64/0x1d0
-  __dev_queue_xmit+0x803/0x1190
-  ip6_finish_output2+0x2d2/0x700
-  ip6_finish_output+0xfb/0x3c0
-  ip6_output+0x81/0x180
-  NF_HOOK.constprop.0+0x4f/0x110
-  mld_sendpack+0x1bf/0x290
-  mld_ifc_work+0x19a/0x400
-  process_one_work+0x19c/0x3e0
-  worker_thread+0x1a8/0x330
-  kthread+0xfb/0x140
-  ret_from_fork+0x1c1/0x2c0
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
----[ end trace 0000000000000000 ]---
-
-
-> ---
->   net/core/dev.c | 19 ++++++++++---------
->   1 file changed, 10 insertions(+), 9 deletions(-)
->
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index af260ff5462a..5db98b0a853f 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -5126,10 +5126,11 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
->   		u16 index = skb_get_rx_queue(skb);
->   
->   		if (unlikely(index >= dev->real_num_rx_queues)) {
-> -			WARN_ONCE(dev->real_num_rx_queues > 1,
-> -				  "%s received packet on queue %u, but number "
-> -				  "of RX queues is %u\n",
-> -				  dev->name, index, dev->real_num_rx_queues);
-> +			if (dev->real_num_rx_queues > 1)
-> +				netdev_warn_once(dev,
-> +						 "received packet on queue %u, but number "
-> +						 "of RX queues is %u\n",
-> +						 index, dev->real_num_rx_queues);
->   			goto done;
->   		}
->   		rxqueue += index;
-> @@ -5443,11 +5444,11 @@ static struct netdev_rx_queue *netif_get_rxqueue(struct sk_buff *skb)
->   		u16 index = skb_get_rx_queue(skb);
->   
->   		if (unlikely(index >= dev->real_num_rx_queues)) {
-> -			WARN_ONCE(dev->real_num_rx_queues > 1,
-> -				  "%s received packet on queue %u, but number "
-> -				  "of RX queues is %u\n",
-> -				  dev->name, index, dev->real_num_rx_queues);
-> -
-> +			if (dev->real_num_rx_queues > 1)
-> +				netdev_warn_once(dev,
-> +						 "received packet on queue %u, but number "
-> +						 "of RX queues is %u\n",
-> +						 index, dev->real_num_rx_queues);
->   			return rxqueue; /* Return first rxqueue */
->   		}
->   		rxqueue += index;
