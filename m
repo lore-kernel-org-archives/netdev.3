@@ -1,187 +1,119 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DA542DA23
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 10:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4D641A77C;
+	Tue, 11 Aug 2026 10:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786444753; cv=none; b=LMZ9M1VYcbQXenF18E3PjEhAAD94BwmlbBRNsmWSaBz0k3Mw0ehUIRb72TqvHSI7SlsGcb01bi5d+CsSPc3Ex8H2Ybi0SD3qgR0XIZXimsUMUKjmmu+/O5M0alrVweR9sKMOAwlfVb6hfwuSs/0O0/QcRmWoUj1mudygacIdQC4=
+	t=1786444869; cv=none; b=nTh3F15IgY3Y10iUaP4HKy6QpkcuGl0XT7ld0khBVSxCNfwbXVVsoNdOjQnitS0/m/R/MVZ0S5qGW125gJyix0fUz5TW1fhJnQJgCiuiQqqbr1egg5Xpsc17pwy2hIV7ZARQ09NcZCPwD+2l6NxAfotzJf2HX5lXuVzEE3f/7HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786444753; c=relaxed/simple;
-	bh=2ZHwp6+DisNJlZr/Ej+2cYjgEhwlm8PU0xfq5F2VDjM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufN/Ev0U6H7OnrixF+4z+eLs2C+E8hjajIEZXN2DG+UuKdGx+3v7Pc5R5/++1xEg3FnklWG2DEHSQX5taOTh4Gs7afTm6nNfDcP9cLXJZvJ1AoaJY9hgZfef287ORqRaMBEO3m1+4x5BNZil/y3uN2RGVT6yGFpOubF/hkdR4dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rkeAkIcp; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786444869; c=relaxed/simple;
+	bh=tyclHrYDCHhWuufJXIrjBWusfgADQYoFaERR+jCpDKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jyWB4SLSxsoFqxediFelChnyoU4RO8tmkweB7Au1ZkFmBO7VflPe9OaQ1oWcf65m4qXGLOxxCWE+1acXLcJSWDnBPidJJjq3BZuYvNK5jV1tHNSYOqkQ8cz4vozQj8Psvrym9CUspVIS5SJYgPFegvkcyRePwl9QNNYTqa2GnCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=VO5F2StU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kA4+/zAY; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rkeAkIcp"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786444749;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iZf/htlsFgNcS+35IOEXNe4Ql4XRBRXaDRHFFsmjgFk=;
-	b=rkeAkIcpG7i6F6Da1VVGpMnMNEA1FMzDR5zLIJdOeYNrbe9x7Si6Fe+VZj9Ci2r9FLNRL4
-	rgFxtJsuz2M65j898+hhxlWamS+i4MVySM5+orZ2YNxezU2rw41XWLHLRGW3rTgGbChcbc
-	OaqxjqkWMkKPqb7AMc0AjxAKi00XMgo=
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-To: linux-renesas-soc@vger.kernel.org,
-	netdev@vger.kernel.org,
-	niklas.soderlund@ragnatech.se,
-	kuba@kernel.org,
-	vadim.fedorenko@linux.dev
-Cc: paul@pbarker.dev,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	masaru.nagai.vx@renesas.com,
-	luoxuanqiang@kylinos.cn,
-	stable@vger.kernel.org
-Subject: [PATCH net v4 2/2] net: ravb: serialize PTP clock teardown
-Date: Tue, 11 Aug 2026 18:37:33 +0800
-Message-ID: <20260811103733.62599-3-xuanqiang.luo@linux.dev>
-In-Reply-To: <20260811103733.62599-1-xuanqiang.luo@linux.dev>
-References: <20260811103733.62599-1-xuanqiang.luo@linux.dev>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="VO5F2StU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kA4+/zAY"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id F1C767A0148;
+	Tue, 11 Aug 2026 06:41:03 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Tue, 11 Aug 2026 06:41:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1786444863; x=
+	1786531263; bh=LhfTMBV0u5ndx99DLMPhYIAC66Bi8zfIMpwTBOVt0wA=; b=V
+	O5F2StUknBK9oZiR760IyT1PghodioaXSxnYVlYbeDM5rXY9HRu1AE9sG6KGQpI2
+	fXZ23btKvWHDOIH/+tg/j/4mmp9G39OPVUeBtxh2SQO3ututKnaeEnjkdUXPXiK/
+	9W8wKpS1Fwuktc3hAC/PFnwiH+3BMe2sdab1Vpj3QUErR8slb8swbkr9W2IYswvK
+	kRDc1m5BFjisfcW+Ls1xAO9km1GjGn1ElOT6NhU0hTdfLuA8eHOJQo423w7ROX3K
+	9mQXxAp8RE9E83uxNLpCzYseLYa2FqScN+2fhHLVgnSyvg2XSUKw40Mq5fwEeH4f
+	2eiR0/a8ZV0n0wLnF1PzA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786444863; x=1786531263; bh=LhfTMBV0u5ndx99DLMPhYIAC66Bi8zfIMpw
+	TBOVt0wA=; b=kA4+/zAYRbaM86lWsXdChPAG+znmYTXO3/vAIOhqUCDhp0GlxwG
+	/9u+TldD0sQAcA3Ax31MxdE+C6l9QUARKHu8YZkchREL88NoQsXSdIu2nwoIUVNk
+	fTeU2MYpvW4Fx51oEPsONG74Er8Ovi8bdYvp+rSL/xvZAL+r+FBGpsdFtr62ufEl
+	4nDkug4eb2p2Rxf6IX79c3T4xifJ2DgOP47qFxrkzUvHTShOfHbDn0maGrimzl1W
+	w1z8ehgladpPecr/jPQ15UxRaB3r2n3qwWHv5YPhNj6Pli8/5OujX9OKF85Ewuld
+	ZmuEnYB/iVTYmLt6nUb9G41ny37hqqigBLQ==
+X-ME-Sender: <xms:P_x6arQE4CmZQeV3AfuIvJZO1LeAPbv7Bn0mI27PeAjVmMIaNVGNYg>
+    <xme:P_x6aoqLcH1JifPHM9fcTm74_QH797mCfiTcSl9OepiSPfc5iOMUkVTlChH1_LF8E
+    9aA5YN7UGGDevHjzhWARNZpPj4CUISEDBb-uDM-pJ5euSL4Cgce8A>
+X-ME-Received: <xmr:P_x6at2ATKXhYGVNBVqhk--O1g58rs8etWNlgPu2qJSTqISh-5SrJN6tlXw>
+X-ME-Proxy-Cause: dmFkZTGhtI7V57Fx6tcs3/GlFdg82lPItonlqnd7qTADeeqVJI2rylRDTox7wxzy3jmGcb
+    zskKqqOUCs6zsYEloKJyLsHjh9Nyhap5U17NPmwsIT3XPpoWjFxfQXO4A7EUQaqKuzu9RA
+    tZYrWQ+o0HcvLP+oItdeInO0MeR7KWXVk6cRkReQA1lj6ReD5D8DDw/DhglzdR8fGqs3cr
+    PHFchAj6VI1G/PT6TxkBpx3uJ3nlunEzqnW5rRp14xngs+F7QTb0KzO9aZJe8cL/tHNmaQ
+    9+hYiQCVN2xl9rRf+mK+dl7fzemUDRKdj1SlFgiR25x+LXYgtejS/SMz7lYycITlhj9crn
+    irRziUIXmPE6dO89W8lszDp9mudAsDZPSzyk4WAbXDQtGA4SPLDXgOWpvpQHR1a2fJvFz5
+    7WDzMWe3gFJJTfrOx2Y7Qw7dDTev/Td9Y6yYXMU/HIpy097VlXwmy3QrBf2SzIIkxzyk0c
+    avy9RZEmNwV/9fdSr/jmxFABLvpthBrosfqLofiG7PIJpU0T76QzlVLrQ7S3E5jywgqrzo
+    tDqXwF4ANY3MfFxAlm15RkSMTzk9UllyR2pYs+gjm4oBo+M2nBIR3irpcLzKNVZIsAONPs
+    mClToD0YJ2xAF0GRTSEN+3pOjJD2VpLI3rG9wx6rQs0EeAjPlIeYCGlgPy+w
+X-ME-Proxy: <xmx:P_x6av7WRkyTpxSxTsMk_7UyKP0Rtkq85rhSdfQ7QsmoPUH0-j4icw>
+    <xmx:P_x6apT3yl2W4uZFTeVFgn-iHltNfKqBuOGKxYKYbv-5WW1M7q4GIQ>
+    <xmx:P_x6akWf-BC9j-JPxasp4nuZYsI3DC9G8RgpA0SUuXUyPl0I8eoaVw>
+    <xmx:P_x6auFkGolJNzQoxr_zIkp717X0Q9SPvFrql5EEZfnkyEyKYAstKw>
+    <xmx:P_x6amk4LGpAR7t-e0flzdmRuwH2HrXZKx_8_KaQgKPD_WQBzCgST4Um>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 11 Aug 2026 06:41:03 -0400 (EDT)
+Date: Tue, 11 Aug 2026 12:41:01 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Chuck Lever <cel@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 1/2] net/tls: Fail tls_sw_splice_read() after a
+ failed async decrypt
+Message-ID: <anr8PY66jUrIWcvJ@krikkit>
+References: <20260806-tls-splice-crypto-fix-v1-0-a2624005a286@kernel.org>
+ <20260806-tls-splice-crypto-fix-v1-1-a2624005a286@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260806-tls-splice-crypto-fix-v1-1-a2624005a286@kernel.org>
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+2026-08-06, 20:44:07 -0400, Chuck Lever wrote:
+> When an async decrypt fails, tls_decrypt_done() records the error in
+> ctx->async_wait.err and calls tls_err_abort(), which stores it in
+> sk_err. tls_sw_recvmsg() and tls_sw_read_sock() each read
+> async_wait.err once they hold the reader lock and fail the call: a
+> record that did not authenticate breaks the connection.
+> 
+> tls_sw_splice_read() has no such check, and sk_err does not stand in
+> for one. tls_rx_rec_wait() tests sk_err only inside the loop it
+> skips whenever a record is already parsed, and the first reader to
+> reach sock_error() clears it, while async_wait.err persists. A
+> splice therefore keeps delivering records on a connection that
+> recvmsg() and read_sock() refuse to read.
+> 
+> Read async_wait.err in tls_sw_splice_read() as the other two readers
+> do.
+> 
+> Fixes: f314bfee81b1 ("tls: rx: return the already-copied data on crypto error")
+> Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Chuck Lever <cel@kernel.org>
 
-ravb_ptp_interrupt() can race with ravb_ptp_stop() and pass the clock to
-ptp_clock_event() while ptp_clock_unregister() is freeing it. This can
-lead to a use-after-free.
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 
-Use READ_ONCE() and WRITE_ONCE() for lockless access to the clock pointer.
-Atomically detach it with xchg() before disabling PTP interrupts, then
-synchronize all IRQs which can invoke ravb_ptp_interrupt() before
-unregistering the detached clock.
-
-A handler which read the old pointer completes before the clock is
-unregistered, while later handlers read NULL and skip the event.
-
-Fixes: a0d2f20650e8 ("Renesas Ethernet AVB PTP clock driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
----
- drivers/net/ethernet/renesas/ravb.h      |  2 ++
- drivers/net/ethernet/renesas/ravb_main.c |  6 ++--
- drivers/net/ethernet/renesas/ravb_ptp.c  | 37 +++++++++++++++++++-----
- 3 files changed, 35 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-index 2a4fcb12a63cb..3ee4c61081890 100644
---- a/drivers/net/ethernet/renesas/ravb.h
-+++ b/drivers/net/ethernet/renesas/ravb.h
-@@ -1124,6 +1124,8 @@ struct ravb_private {
- 	int msg_enable;
- 	int speed;
- 	int emac_irq;
-+	int err_irq;
-+	int mgmt_irq;
- 
- 	unsigned no_avb_link:1;
- 	unsigned avb_link_active_low:1;
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index db0229e008494..ea1c7e536791e 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2885,11 +2885,13 @@ static int ravb_setup_irqs(struct ravb_private *priv)
- 		return error;
- 
- 	if (info->err_mgmt_irqs) {
--		error = ravb_setup_irq(priv, "err_a", "err_a", NULL, ravb_multi_interrupt);
-+		error = ravb_setup_irq(priv, "err_a", "err_a", &priv->err_irq,
-+				       ravb_multi_interrupt);
- 		if (error)
- 			return error;
- 
--		error = ravb_setup_irq(priv, "mgmt_a", "mgmt_a", NULL, ravb_multi_interrupt);
-+		error = ravb_setup_irq(priv, "mgmt_a", "mgmt_a", &priv->mgmt_irq,
-+				       ravb_multi_interrupt);
- 		if (error)
- 			return error;
- 	}
-diff --git a/drivers/net/ethernet/renesas/ravb_ptp.c b/drivers/net/ethernet/renesas/ravb_ptp.c
-index cbec7c057d715..43218bc15b151 100644
---- a/drivers/net/ethernet/renesas/ravb_ptp.c
-+++ b/drivers/net/ethernet/renesas/ravb_ptp.c
-@@ -289,16 +289,17 @@ static const struct ptp_clock_info ravb_ptp_info = {
- void ravb_ptp_interrupt(struct net_device *ndev)
- {
- 	struct ravb_private *priv = netdev_priv(ndev);
-+	struct ptp_clock *clock = READ_ONCE(priv->ptp.clock);
- 	u32 gis = ravb_read(ndev, GIS);
- 
- 	gis &= ravb_read(ndev, GIC);
--	if (gis & GIS_PTCF) {
-+	if ((gis & GIS_PTCF) && clock) {
- 		struct ptp_clock_event event;
- 
- 		event.type = PTP_CLOCK_EXTTS;
- 		event.index = 0;
- 		event.timestamp = ravb_read(ndev, GCPT);
--		ptp_clock_event(priv->ptp.clock, &event);
-+		ptp_clock_event(clock, &event);
- 	}
- 	if (gis & GIS_PTMF) {
- 		struct ravb_ptp_perout *perout = priv->ptp.perout;
-@@ -334,19 +335,39 @@ void ravb_ptp_init(struct net_device *ndev, struct platform_device *pdev)
- 		clock = NULL;
- 	}
- 
--	priv->ptp.clock = clock;
-+	WRITE_ONCE(priv->ptp.clock, clock);
- 	if (clock)
- 		WRITE_ONCE(priv->ptp.phc_index, ptp_clock_index(clock));
- }
- 
--void ravb_ptp_stop(struct net_device *ndev)
-+static void ravb_ptp_disable(struct net_device *ndev)
- {
--	struct ravb_private *priv = netdev_priv(ndev);
--
- 	ravb_write(ndev, 0, GIC);
- 	ravb_write(ndev, 0, GIS);
-+}
-+
-+static void ravb_ptp_sync_irqs(struct net_device *ndev)
-+{
-+	struct ravb_private *priv = netdev_priv(ndev);
-+
-+	synchronize_irq(ndev->irq);
-+	if (priv->info->err_mgmt_irqs) {
-+		synchronize_irq(priv->err_irq);
-+		synchronize_irq(priv->mgmt_irq);
-+	}
-+}
-+
-+void ravb_ptp_stop(struct net_device *ndev)
-+{
-+	struct ravb_private *priv = netdev_priv(ndev);
-+	struct ptp_clock *clock;
- 
- 	WRITE_ONCE(priv->ptp.phc_index, -1);
--	if (priv->ptp.clock)
--		ptp_clock_unregister(priv->ptp.clock);
-+	clock = xchg(&priv->ptp.clock, NULL);
-+
-+	ravb_ptp_disable(ndev);
-+	ravb_ptp_sync_irqs(ndev);
-+
-+	if (clock)
-+		ptp_clock_unregister(clock);
- }
 -- 
-2.43.0
-
+Sabrina
