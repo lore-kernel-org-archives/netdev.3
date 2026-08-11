@@ -1,187 +1,142 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338B93B3C17
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 17:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786469162; cv=pass; b=gfOsmUC8JloctQmfzKtCYss/7cZ14lC4mcL/JQOKSA1dZ7Jb7yoOXkglg0QL0rIb/JZXr+/uk+HFXz2hDH2BA/PXfzf4KHSaMJHwOGUwFdIYSyU+0CZZP3y8AQQML9EWzTAOXqPjvAPRa3GM+paGrjhRTsAEAoZ9/GwLVZOI6Dc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786469162; c=relaxed/simple;
-	bh=z3p62sv8iuyO382QUxDR5nSCmlxpeKqu16eEfm0/Sm8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=leYTmI40qZBTOAK81GKI7ikKZoMDE5c/Ep1GSxJUCGlI6NThMwWSDkUFMZSLpWvNGdUn91xJMOZotxJdMYgXDfIEBDZT/01rplORPwuq3zRWfHMlqB2yeJGfihFizRftRmIRVRiOx0j3dL1Bo9Lz+uG1nkCSKL5Y7POWgEuUhms=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kot+6o1d; arc=pass smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833D323AE87
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 17:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786469243; cv=none; b=UYuAT0SR0pKHXcBIJFqxj8NvoLBDdedWJgjkvUaVWj0crAm+CpS+5gEU1t6fJ+oJVbd8XL9JvWMv9fjLbQ0/EJD6yGmxrWXCFYGBBwpSDtNQG0sVTgMj/tEvzd/+8rPZbp/ib7i16pL1awel0GCn7b/HjTr6C772cTObDzkpbtY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786469243; c=relaxed/simple;
+	bh=HUxy2JwrxdIXTbwfODbFtN4QQx86WxIg73h1sEd3yYU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gUrHNY3+2cEpHD4KfDqWRCw+HjH3LwM5YNBxBGLzFtWBavxCW1AB/xj68tPa4goX6K+RlKfp7CwtZaH6Ds8SMajJX57us7Ttnb1PXPz7d5BfSTlAHAJ3gkasVhXEpKEStuxCKZYbC715VPTZDONhA2fBdIR3Kl0ktBJgkNd+HBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dHIbC/Z7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kot+6o1d"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cacef7d299so5825ad.1
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 10:26:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786469160; cv=none;
-        d=google.com; s=arc-20260327;
-        b=imEp6AlElyLbMSw42TV/XztKbqBH0N4WX17Ln6d1Y3tSC2hoAzR+2FfhTU/cAEtky+
-         i3nMZJv9GC4qTLsLwxBIOfoHHXV2SXB7gxWgySvN98+zIOnaaeqQU5M8NFpk+f0OTv7G
-         SB9PTwEvNercmlSxH92SK/1otLCG9N/Fxka3/hJbSp9yxMW3ShsVgjxXnKJFuXgGPl0c
-         UeXMMefJmjzbzlJ9qBN6lZt8Hiv5n/nG9zp/IJPZEIz6SJe9KbZbmnu+eVtTJLJBGS+8
-         CiFaIfNinaGG1TboEK0KHFlqAOnnFUl611l+UKYP2533kOvw3/V5jNH9upb9Vnv9Rs62
-         5b9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VQxqTVTvnKCPFdyBQjMkdm7NzasgJgC6YzkMYe1Piqo=;
-        fh=wM4yZON0x8MN2uWcqZlvj9pgi1+5crKDWXeq4a2Bh3E=;
-        b=MXct6TFEblvtcmWiaOudzolrrpLKYE4kzitm7AmIUIsci0nzQdTmehV5rj5YRA1JhC
-         zxTEugLEN4wiPxOq23ZUsba4q8ruhw0tyUokvlh89rv/vkIGAftU45VTlNXOpW7gIs0k
-         eCrb59/XkrYsPhVZnAqh0jgZaITJ8zhDMyQmmR0qQb+5lqkv4myE/Lvy0XCeA3sYAA7x
-         563v1YW7kh5x/gZiFcDJgMUrA84EcF44RBZWbK05JJVsls5xEP09YdlTGStVTyr5zuE+
-         /VcyzMbp2039I5+0ypERnAdA35wu5SyzeN7lC4OFsSP7JF6SywLnriQbzGlnzNTiWUF8
-         7AIA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786469160; x=1787073960; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VQxqTVTvnKCPFdyBQjMkdm7NzasgJgC6YzkMYe1Piqo=;
-        b=Kot+6o1dt2nGcxJyj3IpV4lNSznlskmzaufrwgkeNpu74hj7Js2g5L/S8ki5YtOjJP
-         6+M/1J85vLAxhgWdWjZ4F0GijB4XQVPwfBxJRFipFGsdmsAWL1i85Q0fAkEzpjYAIXxF
-         I4JXxYsx67URKC6DZT04IDOYmgeLF2yzhi/V2+p0yV7Xd5MMI3kHEycnsunvNyTpoVL6
-         g7bFwp43revgGb/OXmGpyM4MoxBlgVcnFWlznWfOT4okhoS7C1MYNuyTikuuLDu14ZLP
-         0zrxvP65jSW5zHZ2j/ol4I396k2PrApcOFezJIyHYj38nJcAjk96EWMhdO65BGgETUvY
-         bd8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786469160; x=1787073960;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VQxqTVTvnKCPFdyBQjMkdm7NzasgJgC6YzkMYe1Piqo=;
-        b=NGidwySFLKGXNV1Ygtbd+1TTfapK/kfin30OEdZO2olqyFdU9oInv3PaDBenaM5p3L
-         a0b7i0R8qLN9gCL65Nkysy2FRCHaQL3UvdZDaSuxduER2kAywbHqzO1kZMjC6yEjo3ap
-         zinA5GX2g7U1kKxkhHA42edHiOCQObv4yhI68RLufOrlf1vzy3xWDObo0Lz6zcVSIl1y
-         lmvn5U2FFQXmZwXhDVYZaLueUiUMKb+7Y1nnNSq6AEaBpYnjpA4VuZ6hq2ljsY8vN1Tk
-         QokDXY+3SsIS8SBq+Cb21d4DcsKRUyAo+AiV9QPJSMt2zVgH7lZZzf9Uei3v1oiPy3hK
-         sHbQ==
-X-Forwarded-Encrypted: i=1; AHgh+RreLNX+kFWxL+RH8Olc8Um9/tAHBqHjW7am6rUczSnaEQ/+18iR2KkhacvPArwYlrZKQwnoWoc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVlmnGay0Kc/YmgFlouqHlyIzpk3XOXTVacPYJCmSjxVWQRfvh
-	V7jrpIbG/Ut0Ux3MSVzDZuwaNwCY96iqhHHv6T0i60KXtTqFocnfi8FXnQ9gM2SOnW/OVW+gKrY
-	XVgKwFEo5GvS7JgjDsX98zJgGwdcDJ6IizS2wTpWf
-X-Gm-Gg: AR+sD10pOliVulhp5nECSULyivpNz2qptIdgLpWs8Pz2WY3H91uMe3Ht+4ipyI+ySh/
-	dCGDK4J7+gM1YeuFJ9IPjqy6kyTd/jJkwqLGFWaUNa4Ua0a81oV8KgQlDjMOEe4CrhrSVGURv1U
-	t3rig54RRgaUTSlxDfMGpzXIL8N4+qMZjVTruWlQ2EGNRF10b7qEvRU+ySRQZJ9QZ195izlf4o3
-	bIP8u+XPlWGRULeWWe1TZgIsUVsHEVIM2R2mwJaqU3BBtQM3gefEI+4DxqPG+eWZZrL+dLJ23xL
-	LDSoL/V5vz0DqtmZmA4NKnCz6xj6A+rnqwbPaDGQ2gz0W6CzFI7XZXzb7kzFp+ntcH6wrlh2VvK
-	NvQLL0VPIFQ==
-X-Received: by 2002:a17:902:ce0c:b0:2d3:153d:acae with SMTP id
- d9443c01a7336-2d33a3fa139mr647685ad.0.1786469159791; Tue, 11 Aug 2026
- 10:25:59 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dHIbC/Z7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=X6unJMePX+K+G6UtKC9LusLtaB7WxEVlPppAaRZx69A=; b=dHIbC/Z7jK2W2BT1ODRFHDm/mo
+	W/rCIu8JLYBIsdw+/SXaafcw9nC6FxCp5O6s82jP2HdKOaqTiKurj+yUy/4N7P18hPV7AcF09fqVC
+	nfVTvzI2TMM61QhhjWThHUIgVXWRlIKzKmmHcpIkJD0DeURjiigpK1VKwIeFtPQkvn8E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wtqFu-00H8Ed-KB; Tue, 11 Aug 2026 19:27:14 +0200
+Date: Tue, 11 Aug 2026 19:27:14 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: yueqiang_fan <yueqiang_fan@foxmail.com>
+Cc: netdev@vger.kernel.org, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [RFC PATCH] net: stmmac: dwmac-generic: add ACPI support for
+ Phytium FT-2000/4 and D2000
+Message-ID: <42fa592a-0504-45c2-8255-ba43f07a28f5@lunn.ch>
+References: <tencent_CB2C11C8304ACE90A0A38744ACAA1BF8060A@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260810175446.3945358-2-dtatulea@nvidia.com>
-In-Reply-To: <20260810175446.3945358-2-dtatulea@nvidia.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 11 Aug 2026 10:25:43 -0700
-X-Gm-Features: AUfX_mzzTPG3fXKSIJoOjl_90bMZJP1JVoiyE14MyuZ1YtTMTYvQDg5G333NaXc
-Message-ID: <CAHS8izNLCCcxQwH3oYL1ch+UDf0Ok_LF0KuyJtA_S+daFye1mQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: devmem: add netdev_has_dmabuf_binding() helper
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	tariqt@nvidia.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_CB2C11C8304ACE90A0A38744ACAA1BF8060A@qq.com>
 
-On Mon, Aug 10, 2026 at 1:59=E2=80=AFPM Dragos Tatulea <dtatulea@nvidia.com=
-> wrote:
->
-> Currently there is no way to check if there is a dmabuf bound on a TX
-> queue. RX side has netif_rxq_has_unreadable_mp() which gives a hint of
-> it.
->
-> To help with that, this patch add a helper to check whether a devmem
-> dmabuf binding is active on a given netdev, optionally filtered by the
-> DMA device the dmabuf was mapped against.
->
-> This API is necessary for the upcoming support of data direct in mlx5e
-> to allow blocking accidental swapping of DMA devices while devmem is acti=
-ve.
->
-> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> ---
->  include/net/netmem.h | 19 +++++++++++++++++++
->  net/core/devmem.c    | 20 ++++++++++++++++++++
->  2 files changed, 39 insertions(+)
->
-> diff --git a/include/net/netmem.h b/include/net/netmem.h
-> index bccacd21b6c3..0e332e04ea16 100644
-> --- a/include/net/netmem.h
-> +++ b/include/net/netmem.h
-> @@ -363,16 +363,35 @@ static inline unsigned long netmem_get_dma_addr(net=
-mem_ref netmem)
->         return netmem_to_nmdesc(netmem)->dma_addr;
->  }
->
-> +struct net_device;
-> +
->  #if defined(CONFIG_NET_DEVMEM)
->  static inline bool net_is_devmem_iov(const struct net_iov *niov)
->  {
->         return niov->type =3D=3D NET_IOV_DMABUF;
->  }
-> +
-> +/**
-> + * netdev_has_dmabuf_binding - is there a dmabuf binding for a
-> + * given @dev and @dma_dev
-> + *
-> + * @dev: netdev to check bindings
-> + * @dma_dev: dma device to check, when NULL it will not be checked
-> + *
-> + * Return: true if a binding is found under @dev and possibily @dma_dev
-> + */
-> +bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dm=
-a_dev);
->  #else
->  static inline bool net_is_devmem_iov(const struct net_iov *niov)
->  {
->         return false;
->  }
-> +
-> +static inline bool netdev_has_dmabuf_binding(struct net_device *dev,
-> +                                            struct device *dma_dev)
-> +{
-> +       return false;
-> +}
->  #endif
->
->  void __get_netmem(netmem_ref netmem);
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index 957d6b96216b..f13a0e343684 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -364,6 +364,26 @@ struct net_devmem_dmabuf_binding *net_devmem_lookup_=
-dmabuf(u32 id)
->         return binding;
->  }
->
-> +bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dm=
-a_dev)
-> +{
-> +       struct net_devmem_dmabuf_binding *binding;
-> +       unsigned long id;
-> +       bool found =3D false;
-> +
-> +       rcu_read_lock();
+On Tue, Aug 11, 2026 at 03:56:44AM +0000, yueqiang_fan wrote:
+> Hi all,
 
-Why do you need rcu locking? I thought xarrays handle concurrency
-inside their helpers.
+Please don't spam the list with three copies.
+
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+
+Note the bit about waiting 24 hours.
+
+> The Phytium FT-2000/4 and D2000 SoCs integrate a DesignWare GMAC that
+> is exposed to ACPI as "FTGM0001" / "PHYT0004".  The generic dwmac
+> platform driver only supports DT and legacy platform data, so on ACPI
+> (UEFI) firmware the MACs are never probed and there is no network
+> device.  Kylin ships a vendor patch for this; this RFC proposes an
+> upstream version.
+> 
+> Patch (also available at):
+> https://github.com/Bitllion/phytium-d2000-netfix/blob/main/upstream/0001-net-stmmac-dwmac-generic-ACPI-support-for-Phytium.patch
+> 
+> Summary of the change to drivers/net/ethernet/stmicro/stmmac/dwmac-generic.c:
+> 
+> - Add an ACPI device ID table (FTGM0001 / PHYT0004).
+> - Add dwmac_generic_acpi_probe_config(): mirrors the generic
+>   "snps,dwmac" DT defaults, with values from the vendor (Kylin)
+>   firmware DTB:
+>   * phy-mode rgmii-txid.  Both SoC MACs share the same two RTL8211F
+
+https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
+
+>     PHYs on a common MDIO wiring (each bus sees both PHYs at addr 0
+>     and 7), so pin each MAC to its own PHY address (0 for instance
+>     :00, 7 for :01) instead of scanning.
+
+If there is one MDIO bus, you should only instantiate one bus, and use
+the ACPI equivalent of a phandle for phy-handle to point to the
+correct device. If both devices have an MDIO bus, but one is unused,
+it is O.K. to instantiate the unused bus, but again, you need to use
+ACPI equivelents of phy-handle to point to the PHYs on the one used bus.
+
+>   * single DMA channel (dwmac1000-compatible core): use one TX/RX
+>     queue.  The netdev is always allocated with MTL_MAX_TX/RX_QUEUES
+>     queues, but the per-queue DMA arrays are only set up for
+>     tx/rx_queues_to_use queues and stmmac_xmit() has no
+>     queue >= tx_queues_to_use guard.  With real_num_tx_queues = 1,
+>     stmmac_select_queue() reduces every frame to queue 0, so the
+>     missing guard is never hit.
+>   * has_gmac (dwmac1000 hwif; the dwmac4 hwif fails MDIO on this
+>     core), AXI burst lengths 16/8/4, pbl 16 with fixed burst, FIFO
+>     sizes 0x1000.
+> - All values can be overridden through ACPI _DSD properties
+>   (phy-mode, phy-addr, tx/rx-queues-to-use, snps,pbl).
+> 
+> Tested on a Phytium D2000 board (JWIPC IF24TH01) with Ubuntu 24.04 /
+> kernel 6.8.0:
+
+You need to be working on net-next, if you want this merged.
+
+both MACs probe (PHYT0004:00/01), interfaces
+> enaphyt4i0/1 are created, and cable link-up + DHCP work with no
+> transmit watchdog and no kernel panic.
+> 
+> Two questions for the list:
+> 1. Is an ACPI match table + hardcoded platform defaults acceptable for
+>    dwmac-generic, or would a separate dwmac-phytium.c (like
+>    dwmac-intel.c) be preferred?
+
+By using a name like dwmac-generic, you are saying that any other
+vendor wanting to use ACPI has to be 100% compatible to what you are
+doing. I doubt that is going to work.
+
+What might help you is first getting the hardware working using DT.
+You then have a reference to all the properties you need, and can
+consider how to do the same in ACPI.
+
+Think about what is specific to your board/Soc, and what is generic to
+the licensed IP. This is how the stmmac DT binding works,
+snps,dwmac.yaml describes the IP core, and then we have a number of
+SoC specific .yaml files.
+
+You need to create similar ACPI binding, and put documentation for the
+binding in Documentation/firmware-guide/acpi/dsd. Take a look at
+phy.rst, you will need to describe the PHYs you have using that
+binding.
+
+Note, this is going to be a lot of work. ACPI is not used much in
+networking. A quick and simple hack will not be accepted, you need to
+do this properly. Do a deep dive into how DT describes all things
+networking, network-class.yaml, ethernet-controller.yaml, mdio.yaml,
+ethernet-phy.yaml.
 
 
---=20
-Thanks,
-Mina
+	 Andrew
