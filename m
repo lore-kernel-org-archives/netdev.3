@@ -1,182 +1,115 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56AA3403E7
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 21:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B9D41DEC4
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 21:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786484822; cv=none; b=Qt5gZXv99175xZA2dMdRrasEFainwVpIbEbEA1LTM3tD4MlaMU0q7EBtx8FZB890XT+frsOFJgZ2f1u++gE+PfG/RQI5JYkohf9zXKdbvhMuqpiy5W+Rsj1rY+tPe0KfRsZW/tpjLfNof7hkqwfE8QNK7dMG4cftWXlqT8m3v28=
+	t=1786485109; cv=none; b=T2ZvHgBZQ9NLNR5LZVNK1ptp2UZD8Dc+/PpAa3LvpwGAMsPCOvA6EWKbBiXgoGVpX7BcFrcPiTspCf9qRQol9tMIyEA2EumSqtPIbYDY/zqeHUseu1HCKnZjg9QiMkfr0lE2VbzThywH+pxaEt9jWvruDzgYAL4PM+gNBxC5Pok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786484822; c=relaxed/simple;
-	bh=rh3m1Cqo9mCNPPwXdaSvQmTI/rlxBSq+XzBXjNmFPQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sPixv6Ft2dXF14dYX00wsNBhhEN34LEYZIHkmoBrK1v7NtYpyKBYgeK80pGM4xwE9irUq1z68+dK6fYeg60vYHTdfwJSi7ujhEUwqpH8rm68E7R2vHegtqKnhGZShvN619HUgayEv+34tNhJrvnNR3no8FbPe6+8aFYgZdnYtUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T6WT8UMj; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1786485109; c=relaxed/simple;
+	bh=Azo2sCiZllD4H75gWaBzm5I3JqLlnW6xlX7nRXQnSss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RXW7uax1u/Yymr8HWwwOpf4ucs/Dg9hbMPgSN8+a2+HxBpp3eNHXpS7EDRjK74oPQ2oW7INnvDj2Kw2pyrNikvw9BsEejCFCn3qiDimK3OzhqD7mVBhN8J6KU4SCz7wigU1X6vQVLrGf1KuinBY/UhhU74DFIu1mr2eWjhHeP54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ARAlwyWV; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T6WT8UMj"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4957952e0f8so370755e9.2
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 14:47:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ARAlwyWV"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38e3efab7e0so303016a91.0
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 14:51:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786484819; x=1787089619; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TgndDYlcvXxrotByazHMiHza1kewS9hYlmxpzQFlVp0=;
-        b=T6WT8UMjrQ8kh8l08SNDpELA3BVLQGdVy9KofzrVsidiHdMqyFiAIySttQ0Z7ptoQI
-         L6J+vm/y39r/aG/Qi9uySXYWWIXvHaI/dHH6DHDDQ+tUwBzoCyWe3COMdSlFvZWDjxnW
-         OQLHSaokRGHJtdYH4W//UtSjmFBDP/Og7QD3h8JarNU18alf2JCqMwjYP4711YGPAiRh
-         80RJ5WQAnSYtTHkS6jeQ2VctcJXVs9yCd9YL/DtKbvzwEyCQ3LeN/OrkLOfaot6P9uTF
-         DV0LEQ6SOHK35hEu9n7sxeNJ5qWr8UMmy44fOoEYb1eTuoLKEVwCR5oIAPQrLagFbp+W
-         vfsQ==
+        d=gmail.com; s=20251104; t=1786485108; x=1787089908; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DKboDhjvAevX2LxnuClRbMjZPu76/sbW2vcejkifeck=;
+        b=ARAlwyWVjZdIFHSvnn/x+IxioldlQu+BtSBh2YfKlzS0y/UnVgGgJ0qk2JK1UOIU9H
+         H09haNFx2h+xVQivMsq/tA4iMdru9CfA8AHaqZgCvIFundwiezTam+o1+e9ipYMvEcht
+         IT7VSYujcvPENfuuARPSUaE/T9Vv2p18MO4hOBgymn9Fg8uTPq9VZHiqPS9L4UQGTu/t
+         NvZ3qaBkJ6RewDtejfk3ZWI2PwTeGwYev3x107go8HYT15pDz076+bXXzeRbsKlonlIH
+         Bsps89syqT2YD7myxEwrvHa4IHoCg6dMnE5P6vo6MK9hPv6YnBOkRAbJZlbOT8zc6UJ7
+         zMFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786484819; x=1787089619;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=TgndDYlcvXxrotByazHMiHza1kewS9hYlmxpzQFlVp0=;
-        b=KuagRBqDJeSaEMZqK/CDggfVV9KaTbFPNNRXOy1LpTqDclK7Wx8U18y/OCRPsvgFLm
-         EbAmwIwEh0h/NyM2+uN9o+8k56qoachhaXATOnq9+McccJ/c4Z1eenmlgaCY0KHkYLpr
-         ZdzOC8MtDa/RZXwczWXA5pkUJdWPif5gtTlXQ7sUvqrpGJNqnHNnwYH+jDgLJbEfpF9b
-         J9u5O+qvmRMC+lZv6LPIbCVBSP/4fSGk0GapCSNQSfYncXH5YWU1WlbV/U5fw9lWD/OP
-         GnIPb9WrUElnn+Pef0RSEYYHxU6GVKZdtJNFEmIZGb6XoN98GnIepidVgQvLdUaIAlh7
-         LIjQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrc/9SVn+LKKdY/EfdklWc5BpX9wG2/GDdl34ra3B0LUreupMZgK05HrxfMq80BkGxCaT6H0/8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGpmpzJAUjx1jtIfpHrCj2bwVE450SE6xvl8wuS6n2XAXhkvRO
-	/XptWZ4J3CCZoPwIoedQhX8dkDn5UsXg+XKVbqCZw4XV8L1AUHo6CkxS
-X-Gm-Gg: AR+sD10pJF/6ioRW4b+0HbVMjYP8guMhP+GPZrj09Vme6D+qtI6nS4gm1fpR7lBhVEI
-	Y0l0wnOk11JSPWN3c72i5c+XNMOKIjFIY7BzOHxN+NpVNdKMZTt08gKW2D9lnGyYG4sQhhSy99I
-	eJfg0HcX/dszGaLkgqZFO8fYVAZoRpLYL2ALA6swSqalkFYFWfP5etFV51psjeIy92qXvVnpQeG
-	3UA3Hogy+L94sR4oKFyU7lgDTJFggHOs0BFD4Jt2atMRTOaoCBro3JhdXJ6GNJuPFJisKhvneRm
-	btm8TzJ2/oc1maY2dATn7cGrhjLBeeLxIgkABAqpA+tL0DMQw7KdSz4dtYplER+YnJRdsnYJlJz
-	oX88PbPmUP0gnKm3ntrPlDtNwVWzWu/RTSioJMH6yfEi+5a7OwPMe2t9H7Hi7c1IFZ10y9chdJ8
-	fMuo4X/rXpskbnD6V4selgcSIAH9nOhmZ3XGHsjGe3sFk6DTAR
-X-Received: by 2002:a05:600c:3b8e:b0:495:4126:1e55 with SMTP id 5b1f17b1804b1-4997c11024emr1666045e9.2.1786484818882;
-        Tue, 11 Aug 2026 14:46:58 -0700 (PDT)
-Received: from skbuf ([86.127.220.200])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997abebacfsm16561195e9.10.2026.08.11.14.46.56
+        d=1e100.net; s=20251104; t=1786485108; x=1787089908;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DKboDhjvAevX2LxnuClRbMjZPu76/sbW2vcejkifeck=;
+        b=IWXx1eh9oZjbEI9T1b6hYt4mdVy/YhNjFrE4CC3Jn+Vko9i1XoN2oST2MxZxk4WOfU
+         Q86QiDJ0rj7d3rkpQbLQ4W/SDE53N43uWJqh142FA/DAnjoIeCPlgz40tQucTe0sSSoy
+         4TPLBnekn54Jwvjo6dBrXuI+D49rKJb7KF74VCLBs1IcBFH/8M/3RFiROHXi0rD0GL3c
+         lLoCl+JUtVeVsP/lsEnOOwB0lkE8YXElV2MNI0X83nhpKvV1TFAZ8FtyCsMFyK6eysal
+         0fa3R1xivajiGn+BMKYQPTux4l8Kl4Zl2g7BCBKvrCKDMUhRARhMPqdQ2vP1MVt7Qcno
+         6GsA==
+X-Gm-Message-State: AOJu0YzBdtPLJGGwL9vDJtivYcnECZqB1Wod1bK/Dy44K8sJaVjh5zLx
+	WjyqTriYJTMOpYR2DiQloyPNXKwQQHVc6hPADpxaH7+hBDPkRGBvjdckGucAZjBOuAJZ5g==
+X-Gm-Gg: AR+sD104UJB6D+tor6gAhdGNDYdNAYwUtw82lOZBP7rgulfgW12G6FXO0L3u28W+KQg
+	n5d8R2b53gqOL3PTNMRFL2DqdzbYyizr6NCbePLbjEmCmELUDI4WwkK9sKK4k2CUfjfET8hgnY4
+	HsSgW+31npquxHURLVs72bjOU9CJfYuUQ025YqesQQ598JgjJ54Y1cmBAqBtfjNNC0nllYjlxka
+	RqBWQ+47i/1VmkRItjxn37zVvqS5gpIeUkgBFAUjjTcCfm/85ZLm4M3fpgs1MEKUiX1f5spfztp
+	wybQ+f+Beg3O3H+LThINKJOs/AdJO4jF9GpxCroGVUA6rmd0RBMfRFB2E9HWWuNF8b7azoAlxZO
+	GEMqEpzFR6cOzSlypBW7E2KP8jkaJjnAEQO0ex/9AKC1ShV0OrxQui4/KOJTI+NHtxsBc7+wyK2
+	FbuwnvpdqVYHykILaBT49m6f91zu3gNAm0LZumHmxvY9Tg4XKUSFAwVRH+avSZ1nLnqdvypgP+n
+	DalehsFfOP5mD+xvcVhgDbczoIyVpbILx/7SE2qaAzx9u0=
+X-Received: by 2002:a17:90b:3810:b0:380:ce69:2669 with SMTP id 98e67ed59e1d1-392f3f7b5e3mr1932237a91.9.1786485107720;
+        Tue, 11 Aug 2026 14:51:47 -0700 (PDT)
+Received: from LAPTOP-N5EO9J2L.localdomain ([106.202.115.11])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141245a9f70sm3672334c88.15.2026.08.11.14.51.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 14:46:57 -0700 (PDT)
-Date: Wed, 12 Aug 2026 00:46:54 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>, netdev@vger.kernel.org,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	bcm-kernel-feedback-list@broadcom.com,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
-Subject: Re: [PATCH V2 RFC 2/2] ARM: dts: BCM5301X: change Luxul XWR-3150 CPU
- port from 5 do 8
-Message-ID: <20260811214654.v7elo6smkknsyax4@skbuf>
-References: <20260811193658.14304-1-zajec5@gmail.com>
- <20260811193658.14304-2-zajec5@gmail.com>
+        Tue, 11 Aug 2026 14:51:47 -0700 (PDT)
+From: Harshit Varu <harshitvaru666@gmail.com>
+To: netdev@vger.kernel.org
+Cc: mptcp@lists.linux.dev,
+	matttbe@kernel.org,
+	martineau@kernel.org,
+	security@kernel.org,
+	Harshit Varu <harshitvaru666@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH mptcp] mptcp: fix uninitialized local_id in syncookie MP_JOIN reconstruction
+Date: Wed, 12 Aug 2026 03:21:35 +0530
+Message-ID: <20260811215135.87756-1-harshitvaru666@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260811193658.14304-2-zajec5@gmail.com>
 
-On Tue, Aug 11, 2026 at 09:36:58PM +0200, Rafał Miłecki wrote:
-> From: Rafał Miłecki <rafal@milecki.pl>
-> 
-> Northstar devices have 3 CPU ports (each connected to a different
-> Ethernet interface). This design was meant for dual IMP setups when
-> WAN traffic goes to port 5 and LAN traffic goes to port 8.
-> 
-> For practical reasons we label only one of those ports as "cpu" (the
-> rest remains disabled). It's because of Linux behaviour (and it's
-> probably a bad thing since DT shouldn't "care" that that).
+mptcp_token_join_cookie_init_state() restores remote_nonce, local_nonce,
+backup, join_id, token and msk from the saved cookie entry when rebuilding
+the request socket for a MP_JOIN 4th-ACK handled under SYN cookies, but it
+does not restore local_id, even though the SYN path saved it.
+subflow_ulp_clone() then reads that uninitialized field and stores it as
+the joined subflow's address-ID. Because the request-sock slab is
+SLAB_TYPESAFE_BY_RCU and not zeroed on allocation, the value is the stale
+byte of a previously freed request socket, which an off-path peer can
+influence by sending concurrent MP_JOIN SYNs. This corrupts the path
+manager's id-based subflow bookkeeping for the connection.
 
-Did you see ds->ops->preferred_default_local_cpu_port()? You can define
-all CPU ports in the device tree as such, and let the driver select
-among them.
+Restore subflow_req->local_id from the cookie entry, as done for the other
+fields.
 
-> So far the choice of "cpu" port was based on how vendor decided to setup
-> given device originally: which of three Ethernet interfaces got MAC
-> assigned and which port was used by vendor original firmware.
-> 
-> Most vendors decided to use CPU port 5 & relevant Ethernet interface.
-> The problem is that only switch port 8 provides full functionality.
-> 
-> Change the choice of "cpu" port to 8 and make the third Ethernet
-> interface (connected to port 8) use MAC designed for the first Ethernet
-> interface (connected to port 5). This makes Linux use switch in a
-> feature full way.
-> 
-> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-> ---
-> This seems to be a slight abuse of DT. Instead of describing hardware we
-> make it steer Linux into using a more appropriate switch port. This
-> isn't strictly a setback on its own. It's a change from one choice to
-> another.
-> 
-> I'm not sure about that MAC however. We say that the third Ethernet
-> interface should use MAC that was designed for the first one.
+Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
+Cc: stable@vger.kernel.org
+Assisted-by: opencode:deepseek-v4-flash
+Signed-off-by: Harshit Varu <harshitvaru666@gmail.com>
+---
+ net/mptcp/syncookies.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-So the NVMEM is not provisioned for multiple MAC addresses for gmac0 and
-gmac2? Can they ever be used simultaneously? Even so, I'm not sure
-whether that would cause any problems (depending on whether the switch
-supports address learning on IMP ports, it might not). Do you have a
-specific concern?
+diff --git a/net/mptcp/syncookies.c b/net/mptcp/syncookies.c
+index 7f2252634..b5cac5701 100644
+--- a/net/mptcp/syncookies.c
++++ b/net/mptcp/syncookies.c
+@@ -118,6 +118,7 @@ bool mptcp_token_join_cookie_init_state(struct mptcp_subflow_request_sock *subfl
+ 	subflow_req->local_nonce = e->local_nonce;
+ 	subflow_req->backup = e->backup;
+ 	subflow_req->remote_id = e->join_id;
++	subflow_req->local_id = e->local_id;
+ 	subflow_req->token = e->token;
+ 	subflow_req->msk = msk;
+ 	spin_unlock_bh(&join_entry_locks[i]);
+-- 
+2.53.0
 
-> Is all of that acceptable?
-> 
->  .../arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts
-> index 8e487f60a2cc..7969f0f331b5 100644
-> --- a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts
-> +++ b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts
-> @@ -81,6 +81,11 @@ &gmac0 {
->  	nvmem-cell-names = "mac-address";
->  };
->  
-> +&gmac2 {
-> +	nvmem-cells = <&et0macaddr 0>;
-> +	nvmem-cell-names = "mac-address";
-> +};
-> +
->  &pcie_bridge0 {
->  	wifi@0,0 {
->  		compatible = "brcm,bcm4366-fmac", "brcm,bcm4329-fmac";
-> @@ -136,7 +141,7 @@ port@4 {
->  		};
->  
->  		port@5 {
-> -			label = "cpu";
-
-label = "cpu" doesn't really do anything and just confuses things.
-Labels are only defined for user ports. Please remove this property as a
-follow-up (or preparatory) change.
-
-> +			status = "disabled";
->  		};
->  
->  		port@7 {
-> @@ -144,7 +149,7 @@ port@7 {
->  		};
->  
->  		port@8 {
-> -			status = "disabled";
-> +			label = "cpu";
->  		};
->  	};
->  };
-> -- 
-> 2.51.0
-> 
