@@ -1,125 +1,133 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658DD3F39CD
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 21:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5455434D934
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 21:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786482054; cv=none; b=OFtcxz/kFNpzN4Y1EvD4+FHGQQ8jQwSShrNR/JqnfvC+30WyaI7w4M6hMnNxdL8GIZg2oT/QH5LayiKeLGMdKQtg7d+5F/nyZIQrmiK5I1kr5H8TGgkiHh49YamQZmdfU4AOUt/8Odz0EGJU1ROm0s4Xi9SfrPJ7RPLccttN7wE=
+	t=1786482544; cv=none; b=lyQVA/68uvm5JNGLA3nVVFGSIq9D1PA37awM0FxqOraxffx+yM5bkF+K+djg3eUFBNY42kNKN86DThn5sZ1rc7ucpsnW6/Cx8d0whgKCtGBqQObhWbUffBz3xKr04vu1eqLXYen9meex34jyHj5+NhAYXbBdsg3isqbbPMn8gqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786482054; c=relaxed/simple;
-	bh=q/EnCaP22zPPVEH7ArjSq0N2VKGgvKT2RTU+G8TxgPA=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=YkC/zJTyhMJHCSq3stHNYhwf/JNBU5QwF5Ef5M8QaXGn09O+zM+HJ7q2G6xc5P0IbYOvV4HoN6nJrr0AqUOdEQrXfu7pCMc24V7B544NoUCnEi+tnnfarKMY8/e+3rb0xEtesL7WU/bk+M6CuqapeXPPX23v5jWTXfornymiQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-49ab6a82cd5so375125b6e.2
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 14:00:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786482051; x=1787086851;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=vd26/r51jTrMLmtg5EiFxgqi0vBppi8VrKo7T8MCOMo=;
-        b=qZflyyltWmgcR3JwK/yPHfmIUWJKSf0d3M80OranzaNjWqkrxo9pQIExAVS+a4dkRG
-         RXMSPg/Jxfi+Rtx7nUNmz5C6p33NMqVrU5XkNuoakPF98qfZmf+INw/zumkmfRqHbyiU
-         bIDPVWBBhXE47TxUvAZ0DtrnAQCm5PW2rDNgPX+nG441OW9Up1/4T19f6ZQO0hBzQOOJ
-         Mgc1Zmiadq/nqgAQ1NYpUajPfljTwCp8PBTeLho5ooJ3WbtKV28O4gdb+KyXwkxypKEa
-         IX21sV4gFePU9Wz9aV5VUDlkLJ4/FREYNAD/XAc99B83UYlWDywDgNgl5mYsIZr1By5o
-         1SvQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrlKlj2YHiZe/0bZb0kXvj3TVOO5AtC0GwVvmMA9IX4UaY6iUjccMNOPydJoIW3LIIq7xm0X8c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMk/o3DtOEUmTleoBM1S3FblnbqOcanPsbdH9vtIwCYP0FmgaX
-	Q7twvLLs6UAchPSCaYmPWpc1IwUemtFn5JNXMI5/w27y4allG812nsjhiUkw0XEaO5g78TiozJ9
-	/0kFFpx6wGdvAhledpWZLJJ07gAShpMn3qmXXN/AeBUSgnK9TF/OH62Eb+7k=
+	s=arc-20240116; t=1786482544; c=relaxed/simple;
+	bh=aVi0oTxKil65uBY1E9T3MK7XfbJsxmnfyI56zDaj6Co=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OgJGWiLM4XrA3CjIXnVUDE3mGmaMfHv++4nYwVHL4mxdr+mE8n1l+MFye32Ik3fxYsOZQVWHIG1vHy22Sd81YKgsVYlCrVTrSZ7BpraM+Fayd/mrl609UVMFNHubpvMtm3RyIhUk0Ql5idDtNLvc3sFkmuwUi61BGS3h6Zj1NX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZvsDZ44g; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZvsDZ44g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786482541; x=1818018541;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=aVi0oTxKil65uBY1E9T3MK7XfbJsxmnfyI56zDaj6Co=;
+  b=ZvsDZ44gizPSdDPn0hh37QqCpXGGJR4MgP0axSLtaiuudVey3jp9rCz8
+   7pzBPzwsl0qi+zDh0k/hBWmV/e/2PkBe3XAP4qdhyt+sXb8Hcq3m02ROi
+   ZQN05A6DkTOE4JMyJs70Ny3qLxV06ylnhiNkoQL0hIXFljNBbSUyX/4sz
+   wdFYZzy9inuyaQ/04ZQVRvba6zHSNb8UoWpcTT0qKg6yFIRfrICqrqF04
+   8Zhv2kgcZDJk2BJ+9AuZvAj4bRVebG6udbqKlUB7h+wPkVg/yXMwWiDzN
+   35jyA+AeSX19xikHsb6tbsW5CNOtPmGirjwXNpLmLdg2GywmivRYv0MOx
+   w==;
+X-CSE-ConnectionGUID: ak5Hs0A+TXidIxU/arPgvw==
+X-CSE-MsgGUID: P/uqkF+KSkWEXRTx7uFPVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="98542016"
+X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
+   d="scan'208";a="98542016"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 14:09:01 -0700
+X-CSE-ConnectionGUID: nQR5LLpWTXmpD+COpJt7OQ==
+X-CSE-MsgGUID: 54rR1qTtS8CARYNUnCZzqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
+   d="scan'208";a="268594453"
+Received: from dmert-dev.jf.intel.com ([10.166.241.33])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 14:09:00 -0700
+From: Dave Ertman <david.m.ertman@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH iwl-net v2] ice: Fix incorrect LLDP filter assumptions
+Date: Tue, 11 Aug 2026 14:11:27 -0400
+Message-ID: <20260811181127.1142095-1-david.m.ertman@intel.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:6f82:b0:49a:a627:14ee with SMTP id
- 5614622812f47-4b210c5e84emr40234b6e.15.1786482051415; Tue, 11 Aug 2026
- 14:00:51 -0700 (PDT)
-Date: Tue, 11 Aug 2026 14:00:51 -0700
-In-Reply-To: <20260811205927.11228-1-ayushmanrout27@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a7b8d83.ac361c09.22ff0a.0046.GAE@google.com>
-Subject: Re: [PATCH] wifi: mac80211: guard drv_net_setup_tc() against unbound
- AP_VLAN sdata
-From: syzbot <syzbot+f1ba58d6b55abd13239e@syzkaller.appspotmail.com>
-To: ayushmanrout27@gmail.com
-Cc: ayushmanrout27@gmail.com, johannes@sipsolutions.net, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-> #syz test: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+In commit 4d5a1c4e6d49 ("ice: do not add LLDP-specific filter if not
+necessary"), it was assumed that llpd_fltr_ctrl was a unique application
+of a filter instance and the other command in the flow was generic.
+This is an incorrect assumption, they are both meant to add a filter to
+handle LLDP packets and only varied in the actual AQ call made.  The
+newer AQ call was created to handle a special case in some NVM images
+where a LLDP filter was already existent and the old AQ command would
+generate an error if a new filter was attempted to be added. The newer
+AQ command would detect this case and instead would add the current
+target to the existing filter rule.
 
-This crash does not have a reproducer. I cannot test it.
+Fix the flow so that the newer command is always used if available and
+only fall back to the older command when that is the only solution.
 
->
-> syzbot reports a NULL/invalid pointer dereference in
-> trace_event_raw_event_drv_net_setup_tc(), reached via
-> ieee80211_netdev_setup_tc() -> drv_net_setup_tc().
->
-> drv_net_setup_tc() calls get_bss_sdata(sdata) unconditionally. For an
-> NL80211_IFTYPE_AP_VLAN interface this does
-> container_of(sdata->bss, ...), but sdata->bss is only linked
-> opportunistically at interface-add time when a matching same-address
-> AP interface exists - it is not enforced, so an AP_VLAN interface can
-> be fully created and registered with sdata->bss left NULL.
-> container_of() on NULL yields a small invalid pointer rather than
-> NULL, which the trace_drv_net_setup_tc tracepoint then dereferences
-> to read the interface name.
->
-> Guard against an unbound AP_VLAN sdata before calling
-> get_bss_sdata(), matching the WARN_ON_ONCE(!bss) precondition already
-> used for this same relationship in sta_info.c. Also add
-> check_sdata_in_driver(), used by the neighboring
-> drv_net_fill_forward_path() but missing here.
->
-> The underlying gap in ieee80211_if_add() - AP_VLAN creation not
-> requiring a bound bss - is not fixed here; other get_bss_sdata()
-> callers may share the exposure.
->
-> Fixes: 61587f1556fe ("wifi: mac80211: add support for letting drivers register tc offload support")
-> Reported-by: syzbot+f1ba58d6b55abd13239e@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=f1ba58d6b55abd13239e
-> Signed-off-by: Ayushman Rout <ayushmanrout27@gmail.com>
-> ---
->  net/mac80211/driver-ops.h | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->
-> diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-> index f1c0b87fddd5..ecfdb51152f4 100644
-> --- a/net/mac80211/driver-ops.h
-> +++ b/net/mac80211/driver-ops.h
-> @@ -1702,7 +1702,23 @@ static inline int drv_net_setup_tc(struct ieee80211_local *local,
->  
->  	might_sleep();
->  
-> +	/*
-> +	 * An AP_VLAN interface created without a matching, same-address
-> +	 * AP interface present never gets sdata->bss populated (see the
-> +	 * interface-add validation in iface.c, which links bss only
-> +	 * opportunistically and does not require it). Such an sdata is
-> +	 * not safe to pass through get_bss_sdata(): container_of() on a
-> +	 * NULL sdata->bss yields a small invalid pointer, which the
-> +	 * tracepoint below then dereferences to read the interface name,
-> +	 * causing a crash.
-> +	 */
-> +	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN && !sdata->bss)
-> +		return -EIO;
-> +
->  	sdata = get_bss_sdata(sdata);
-> +	if (!check_sdata_in_driver(sdata))
-> +		return -EIO;
-> +
->  	trace_drv_net_setup_tc(local, sdata, type);
->  	if (local->ops->net_setup_tc)
->  		ret = local->ops->net_setup_tc(&local->hw, &sdata->vif, dev,
-> -- 
-> 2.54.0
->
+Also remove the obsolete state flag from the PF struct.
+
+Fixes: 4d5a1c4e6d49 ("ice: do not add LLDP-specific filter if not necessary")
+Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice.h     |  1 -
+ drivers/net/ethernet/intel/ice/ice_lib.c | 18 +++++-------------
+ 2 files changed, 5 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index fc91b6665f90..7eaa3d1e78a5 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -522,7 +522,6 @@ enum ice_pf_flags {
+ 	ICE_FLAG_MTU_CHANGED,
+ 	ICE_FLAG_GNSS,			/* GNSS successfully initialized */
+ 	ICE_FLAG_DPLL,			/* SyncE/PTP dplls initialized */
+-	ICE_FLAG_LLDP_AQ_FLTR,
+ 	ICE_PF_FLAGS_NBITS		/* must be last */
+ };
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 8cdc4fda89e9..2fe91ff8119f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -2090,24 +2090,16 @@ void ice_vsi_cfg_sw_lldp(struct ice_vsi *vsi, bool tx, bool create)
+ 		status = eth_fltr(vsi, ETH_P_LLDP, ICE_FLTR_TX,
+ 				  ICE_DROP_PACKET);
+ 	} else {
+-		if (!test_bit(ICE_FLAG_LLDP_AQ_FLTR, pf->flags)) {
++		status = ice_lldp_fltr_add_remove(&pf->hw, vsi, create);
++		if (status == -EOPNOTSUPP) {
++			/* If fltr_ctrl not supported, use legacy
++			 * add/remove command
++			 */
+ 			status = eth_fltr(vsi, ETH_P_LLDP, ICE_FLTR_RX,
+ 					  ICE_FWD_TO_VSI);
+-			if (!status || !create)
+-				goto report;
+-
+-			dev_info(dev,
+-				 "Failed to add generic LLDP Rx filter on VSI %i error: %d, falling back to specialized AQ control\n",
+-				 vsi->vsi_num, status);
+ 		}
+-
+-		status = ice_lldp_fltr_add_remove(&pf->hw, vsi, create);
+-		if (!status)
+-			set_bit(ICE_FLAG_LLDP_AQ_FLTR, pf->flags);
+-
+ 	}
+ 
+-report:
+ 	if (status)
+ 		dev_warn(dev, "Failed to %s %s LLDP rule on VSI %i error: %d\n",
+ 			 create ? "add" : "remove", tx ? "Tx" : "Rx",
+-- 
+2.55.0
+
