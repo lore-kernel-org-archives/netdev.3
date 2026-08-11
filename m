@@ -1,60 +1,39 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1815B3B14BA
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 19:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891263769E0;
+	Tue, 11 Aug 2026 19:02:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786474811; cv=none; b=qpaN284eGmzUwSpjf4eyPCnj8mBxCBLoN9Vza0VpBngfajUE+M6zb2yJaDwcsiBbSgs06IYXPLQluFrf2A9TCyg7AU8B9WtwZ7eZzu8GpL4uzOfG2yI6keu3Q89le3ziuQ3Oh0k+5uPeGt8KlGgzbIpBqJ/f8y3Y7/nI8Y3YR3M=
+	t=1786474932; cv=none; b=j6UtZZM45mjWXYjPF4QnLOsWUvtL3puhC0ZYwNdExVBaGBv6UTz5QfZAzIKGKRwW2XhVSIJFZFWE5ZZ1bsdYbJSRIrRg//80gTjOFN0My2jO7/yIphsFRQ8/WMrkyeciJ9JCJmp4jqpj4jEgu+bZzKpfbeP6rcaPjLGFHuHy7fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786474811; c=relaxed/simple;
-	bh=zJ2yODuh5xrwNkjsG1VnInG53R87f0B3Y9vJ18mGLY0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P467JZpZx5VXd+N6qbaF/tOZnOQ6ThND7TNrxopYD2LUYsy5PK7s8ynCMkEvUOSFO+WMvysf013XvLEUpUE58iDE5ilIqUHCYReKrgJgYi9VFOWTtD/cMi614V1U7wUAburSe8Mw2NgXrRCWqZQMrcb528FpbUQeoMFDJicDsY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=H0gWDBVW; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786474932; c=relaxed/simple;
+	bh=1cLeN1BgelLvqyDQUGUkP5XBpsC5natTD2ItlOj3U/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=P07Y3bZBzD84DO+QdT095a86arBNIUgxwNOrpi3U94zZ6A5dDW8C1/JAPXW4r7RPpiiDKwcGAvdd5Cr2Ggz/qk4Jly8HyWkAoKl9hxxuS+BVdntSPilyteKsDbEmqNYwbnddtcF7gO0ViFjqmRrHn9DG/aJisRf5Em+azAwekiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=q5w9y+pN; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="H0gWDBVW"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67BGWFZB965413;
-	Tue, 11 Aug 2026 18:59:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=zJ2yOD
-	uh5xrwNkjsG1VnInG53R87f0B3Y9vJ18mGLY0=; b=H0gWDBVWvGImLWpD/0DDyE
-	/bVONb+JaCgekpl6b7E5L5gCJkpJSl+/8lmpGyP7NdTwi9ETdq/MYb4rXL07P9rR
-	AqA9tPAY4mk+xBDPyY6qdTxtSg/bImBXKuiN5RVpenYBaUTXqfQcb72GnE2UJcC8
-	5Q2EGUeLsANYBr0nus1mHgffuWWrECAA8piwnDsmL89gpayw51vAz4tmsedvVKiP
-	rXSJyB0ntdMc6Ejjv4Ecj9aRnxWZ0AEJl4qJDepmlJrsqdVMYv+EviYo6tpTPoOe
-	KP8KNvTrXRMJHepazPmKhgsekbFbzlku7IHpb32tCtD2Ltb4g64SMCvIOKDs62cA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvnw5wtq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 18:59:53 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67BIuHS5017827;
-	Tue, 11 Aug 2026 18:59:52 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfy2523-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 18:59:52 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67BIxolm60752204
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Aug 2026 18:59:50 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0102D58057;
-	Tue, 11 Aug 2026 18:59:50 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4DB9858058;
-	Tue, 11 Aug 2026 18:59:48 +0000 (GMT)
-Received: from [9.67.110.153] (unknown [9.67.110.153])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Aug 2026 18:59:48 +0000 (GMT)
-Message-ID: <23fd0f9d-b13a-4454-ad29-e6c4488b79b0@linux.ibm.com>
-Date: Tue, 11 Aug 2026 11:59:47 -0700
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="q5w9y+pN"
+Received: from [10.0.0.152] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id EB9755340D28;
+	Tue, 11 Aug 2026 21:02:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1786474926;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rdFkELjn5PZN3i+Q5YPOGMZJZf9pkg+C8SSisil44Ro=;
+	b=q5w9y+pNnjplDBMuwC7ruzS0DwNgS6YaqonYJzyifI7+yJdJDcqKwfb/qvCvHykXnZJl06
+	PrlKxQnG9KmXdqj5UphHAmZk5/UAtquep+Y7s3dP+VxHgm3PRm70lP+gQYAli6cOG0tFFm
+	A8g6HKdqCI04EXuFYZUchClnjhZZJYo=
+Message-ID: <016b7162-b633-4561-a003-526c9d9c5f21@ixit.cz>
+Date: Tue, 11 Aug 2026 21:02:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,95 +41,223 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 14/14] ibmveth: Fix MQ RX poll and shutdown
- hangs after queue resize
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, horms@kernel.org, bjking1@linux.ibm.com,
-        haren@linux.ibm.com, ricklind@linux.ibm.com, edumazet@google.com,
-        pabeni@redhat.com, davem@davemloft.net, linuxppc-dev@lists.ozlabs.org,
-        maddy@linux.ibm.com, mpe@ellerman.id.au, simon.horman@corigine.com,
-        shaik.abdulla1@ibm.com, Dave Marquardt <davemarq@linux.ibm.com>
-References: <cover.1785457143.git.mmc@linux.ibm.com>
- <6c687fce21930e4ded39610717ac05862b67e7aa.1785457143.git.mmc@linux.ibm.com>
- <20260806114928.3f4adfa9@kernel.org>
+Subject: Re: [PATCH 1/1] nfc: llcp: Fix race condition in accept_queue
+ lifecycle
+To: Lee Jones <lee@kernel.org>, David Heidelberg <david+nfc@ixit.cz>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Szymon Janc <szymon.janc@tieto.com>,
+ Samuel Ortiz <sameo@linux.intel.com>, oe-linux-nfc@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260601140934.1040144-1-lee@kernel.org>
+ <20260811131433.GU2869284@google.com>
 Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <20260806114928.3f4adfa9@kernel.org>
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260811131433.GU2869284@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=RsP16imK c=1 sm=1 tr=0 ts=6a7b7129 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=-0MhZtYOHlZKH6frF0wA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: NIYYau8TTnz3hEuyRNiwpXg6OeF97yUd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODExMDE1NSBTYWx0ZWRfX9F1k/0UGw4vA
- RbzHf1JIcT/nf88QWC1W017LnhcyZDRprd02s8S1WHmqw73BSMluQUe7XhrC0IEi8SL16tHrOFr
- YTy9a3eZxKLxaMKAozP6dG1MAbRp57Ow0AEEvoaQIJy20uwi278qCaIaoQfLb/5H/1GQCZ2OaWK
- uU04gBuwVHcDL+ftdqeFjBqV9lBz3BQf1izwRWyRLpNqTkq/Qwz9+4eJqLhaxFgMSV+I2WMDFqB
- sYNe8v+qvLnCrGj7BY1C+PrKOyyCprn9h/9nLTTzbtOsxVzA/I4cJYejhKzBT01bdj/jMg3l7EV
- 7VhgUWZjFTJBKrWWeKw5qfU5hot/ENzO6gN09J1pNN/U6PA8gdjHi3sdVaI99WPDyRNYShzx+XE
- eoffPHFI4xKxH/GPlQRRd87gKNLYMwoj+wfWOAaGklUmZsyoBLJjOCFox8Y7ZjbsHTkLkO9MLbl
- DOj3XUDqW6x7kiT53Jw==
-X-Proofpoint-ORIG-GUID: 7_4BVz5zDQhHVEuNxDpic6IojvJfkOL9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODExMDE1NSBTYWx0ZWRfXygjEICSa5qXf
- fI1V7UzYm3lQ428wOvbKymiPQ1eWDgchFWB/92dJjIvQPXKE8FBgU6CqJlxwOLEfos1Geykho0P
- a4j6x1lmEz5q/3CQ05u4/2Ra9ObAw1M=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-11_04,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608110155
+Content-Transfer-Encoding: 7bit
 
+On 11/08/2026 15:14, Lee Jones wrote:
+> [INTENTIONAL TOP POST]
+> 
+> This one has been knocking around for a very long time.
+> 
+> Would you like me to [RESEND] it, or does everyone still have it?
+> 
+Hello Lee,
 
-On 8/6/26 11:49 AM, Jakub Kicinski wrote:
-> On Thu, 30 Jul 2026 17:47:17 -0700 Mingming Cao wrote:
->> After aggressive ethtool -L cycling, PHYP can leave a VALID RX descriptor
->> with a correlator that no longer matches the per-queue buffer pools. Poll
->> treated this as fatal: ibmveth_rxq_get_buffer() WARNed and returned NULL
->> without advancing the ring, then restart_poll retried the same slot
->> forever.
->>
->> Advance past bad correlators instead of spinning: validate correlators
->> without WARN_ON, skip invalid slots in poll (count as invalid_buffers),
->> and advance the RX ring when remove_buffer_from_pool cannot map the
->> correlator. Rate-limit the bad correlator message.
->>
->> Complete NAPI when the interface is down or napi_disable is pending so
->> close/quiesce can finish. Do not restart_poll in that window. Close
->> keeps hypervisor IRQ disable before napi_disable (via
->> cleanup_rx_interrupts() / related cleanup helpers).
->>
->> Also validate descriptor length against skb tailroom before skb_put(),
->> and after napi_complete_done() on the budget-exhausted shutdown path
->> return a value less than budget so NAPI does not immediately reschedule.
-> This patch looks very odd, like there's a bug somewhere and instead of
-> fixing it we're making the rx path more resilient. BTW minor coding
-> note - you're adding a bunch of heavily indented code to an already
-> long function. Please consider factoring things out. Similar comment
-> can be applied to other patches.
-Agreed. The main fix here should be in the earlier resize/teardown path,
-not in a trailing resilience patch.
+sorry, I've must missed the patch. Could you check the Sashiko comments (below)?
 
-I’ll fold that back into the owning resize work: drain before
-deregister/unmap/free, publish the surviving queue range before freeing
-queue resources, and use the same teardown path on the scale-up
-enable_irq failure path. The poll-side skip logic should stay only as
-belt-and-braces after the teardown fix, not as the primary answer.
+Feel free to ignore the pre-existing issue, the main complaint is about the 
+description.
 
-I’ll also move the new poll branches into small helpers so
-ibmveth_poll() stays a thin loop, but keep those helpers with the
-patches that introduce the logic rather than as a standalone trailer
-refactor.
+Thank you
+David
 
-I think the same cleanup principle applies to a few of the other
-patches as well, so I’ll fold helper extraction into the owning changes
-there too.
+commit 74abfc44e401a556abde5003d20ce7cf50ee958d
+Author: Lee Jones <lee@kernel.org>
 
-Thanks,
-Mingming
+nfc: llcp: Fix race condition in accept_queue lifecycle
+
+This commit attempts to fix a race condition between nfc_llcp_socket_release()
+and nfc_llcp_accept_dequeue() by replacing bh_lock_sock() with lock_sock()
+and lock_sock_nested(). It also introduces a socket popping helper and
+adds a parent check in nfc_llcp_accept_unlink().
+
+ > nfc_llcp_socket_release() walks the local sockets list and the listener
+ > socket's accept_queue under bh_lock_sock().  However, bh_lock_sock()
+ > does not provide mutual exclusion against process-context lock_sock()
+ > held by nfc_llcp_accept_dequeue() during accept().  Since socket_release()
+ > runs in process context (workqueue or kref cleanup), it never checks
+
+Is this description accurate?
+
+nfc_llcp_data_received() routinely runs from softirq/interrupt context
+via URB completion handlers like pn533_recv_response(). When it drops
+the last reference via nfc_llcp_local_put(), this triggers local_cleanup()
+and nfc_llcp_socket_release().
+
+Could this lead to a sleeping in atomic bug since lock_sock() acquires
+a mutex?
+
+ > sock_owned_by_user(), allowing both paths to manipulate the same child
+ > socket concurrently.  This leads to a double sock_put() (Use-After-Free)
+ > or a NULL pointer dereference of child->parent in nfc_llcp_accept_unlink().
+
+[ ... ]
+
+ > diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+ > index dc65c719f35f2..e51bd0d081b62 100644
+ > --- a/net/nfc/llcp_core.c
+ > +++ b/net/nfc/llcp_core.c
+ > @@ -63,21 +63,33 @@ static void nfc_llcp_socket_purge(struct nfc_llcp_sock *sock)
+ >  	}
+ >  }
+ >
+[ ... ]
+ > @@ -92,7 +104,8 @@ static void nfc_llcp_socket_release(struct nfc_llcp_local 
+*local, bool device,
+ > -	sk_for_each_safe(sk, tmp, &local->sockets.head) {
+ > +	while ((sk = nfc_llcp_sock_list_pop(&local->sockets))) {
+ >  		llcp_sock = nfc_llcp_sock(sk);
+ >
+ > -		bh_lock_sock(sk);
+ > +		lock_sock(sk);
+
+Since nfc_llcp_socket_release() can be invoked from softirq teardown paths,
+does calling lock_sock() here cause a sleeping in atomic bug because it
+acquires a mutex?
+
+[ ... ]
+ >  						 &llcp_sock->accept_queue,
+ >  						 accept_queue) {
+ >  				accept_sk = &lsk->sk;
+ > -				bh_lock_sock(accept_sk);
+ > +				lock_sock_nested(accept_sk,
+ > +						 SINGLE_DEPTH_NESTING);
+
+Does this nested lock_sock_nested() also cause a sleep in atomic context
+when nfc_llcp_socket_release() is invoked from softirq teardown paths?
+
+ >  				nfc_llcp_accept_unlink(accept_sk);
+
+This isn't a bug introduced by this patch, but does this leak the initial
+sk_alloc reference count?
+
+Sockets created for incoming connections receive an initial sk_alloc
+reference. When the listener is closed, unaccepted child sockets are
+unlinked here and their list references are dropped.
+
+Since they were never accepted by userspace, sock_release() is never called.
+Do these unaccepted sockets permanently leak?
+
+[ ... ]
+ > @@ -135,12 +143,9 @@ static void nfc_llcp_socket_release(struct 
+nfc_llcp_local *local, bool device,
+ >  		sk->sk_state = LLCP_CLOSED;
+ >  		sk->sk_state_change(sk);
+ >
+ > -		bh_unlock_sock(sk);
+ > -
+ > -		sk_del_node_init(sk);
+ > +		release_sock(sk);
+ > +		sock_put(sk);
+ >  	}
+ > -
+ > -	write_unlock(&local->raw_sockets.lock);
+ >  }
+ >
+ >  static struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local)
+
+This isn't a bug introduced by this patch, but is it possible for a dying
+object to be resurrected here?
+
+If local_release() runs local_cleanup(), it purges sockets via
+nfc_llcp_socket_release() and then waits for rx_work via cancel_work_sync().
+
+If rx_work executes concurrently, it calls nfc_llcp_local_get() which uses
+kref_get() without checking for zero. Can rx_work then allocate and link a
+new socket just before local is freed, leading to a Use-After-Free?
+
+ > diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
+ > index feab29fc62f44..3d30f0233b986 100644
+ > --- a/net/nfc/llcp_sock.c
+ > +++ b/net/nfc/llcp_sock.c
+[ ... ]
+ > @@ -622,7 +623,7 @@ static int llcp_sock_release(struct socket *sock)
+ >  		list_for_each_entry_safe(lsk, n, &llcp_sock->accept_queue,
+ >  					 accept_queue) {
+ >  			accept_sk = &lsk->sk;
+ > -			lock_sock(accept_sk);
+ > +			lock_sock_nested(accept_sk, SINGLE_DEPTH_NESTING);
+ >
+ >  			nfc_llcp_send_disconnect(lsk);
+ >  			nfc_llcp_accept_unlink(accept_sk);
+
+This isn't a bug introduced by this patch, but as mentioned above, does
+unlinking unaccepted child sockets here permanently leak their initial
+reference count?
+
+This isn't a bug introduced by this patch, but can the blocking loop in
+llcp_sock_accept() hang indefinitely?
+
+If the listener socket is shut down or released concurrently, the thread
+wakes up but doesn't check sk->sk_state:
+
+llcp_sock_accept() {
+     ...
+     while (!(new_sk = nfc_llcp_accept_dequeue(sk, newsock))) {
+         set_current_state(TASK_INTERRUPTIBLE);
+         ...
+         release_sock(sk);
+         timeo = schedule_timeout(timeo);
+         lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
+     }
+     ...
+}
+
+Will it just go back to sleep waiting for a closed socket if no new
+socket was dequeued?
