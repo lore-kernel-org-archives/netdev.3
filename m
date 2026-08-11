@@ -1,119 +1,150 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBCA3B6BFA;
-	Tue, 11 Aug 2026 15:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADAE3BA237;
+	Tue, 11 Aug 2026 15:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786462406; cv=none; b=BBj97nS3lZ91ES2zTbPnATTGQoC1quH8MoEFJOZiiJZMUx26k7OU5P53EgbiCDeKrF+dhI2LLOKUBsSmLDN3Kgc/bn1/zoqcMj7gzCueB7v4jbjg0e3whIsGoznl1NmRkX3lP0lueBrAw9qmcHVxKOetYlU6Nn2g4XP3QGKjgcc=
+	t=1786462466; cv=none; b=CrYwLmPhECqfGbJhyyKciuWn2FgXGazizcgzesuyq3i8YBuB7puqgmoVeyzdL60mP80FmwTBVVrrLOk7+uwi10CnxLuaUbSaCwP5wzSpQUmYrIxXs2mei8smdyjmWPoD+IXEPQCvupZcK0aSnrjRZhwJLYjons29GZCSdDSLKCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786462406; c=relaxed/simple;
-	bh=Ani0hyGmCJGaqxrPmXmnyKjxsRejVuS2hFDgorsnmfU=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=T/DKgfVrP3NlwGS4T0zLfSIKhffgX/jNsGUwsO+z/Hj4Jfq8jFGFVXTUSFms57Kch+tHcSTT5i1ag36YsD/nglPLv+J+vN8tDAVPfLZrBFl3NbYTuFMQE4zN4I1TSJbpXiqn6lYeEdctlo80SQngNc7FL2xgGRlBfaJVw3yGZss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=DaOzcA4d; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1786462466; c=relaxed/simple;
+	bh=J1GIza2wzG6DNTFzsp4c1ZeD7l76L+NiI0Gs3TSJzeg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tFUfEXaJIw7JVsdupTgWLCY8UXdcdMqBAgx9KA/99eYkUQIypJVFiwto7Hq+9VHX5S0dh6jKWizGIyr/ue5E2CM5aNFS/+UKwJl1e4vOZHwyEJtX9JO7fKjcwTC1EfqKPy4X2xLJ3X1YOkRbuscWI6GLa3Jld9NUrNi/oNmgr3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlEf65KJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="DaOzcA4d"
-Received: by dvalin.narfation.org (Postfix) id E374F20241;
-	Tue, 11 Aug 2026 15:33:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1786462393;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8EaiKlbpCQVAvrexAqV7FKKO4XBVCQ96a5UJP4GhPLE=;
-	b=DaOzcA4dN4lDtT6zpv1yBE6l+QU0pn+X46m8vZMg1bbbn8U63A4UvBodaEIv/lVPaIgBj3
-	jFrnngabblkcfyt/qSGJTqetkpvIFhzINeocZ/EnOBezAtjNdQWrJ60Ut3hmNG6nUgydmT
-	FAi7fwPUG5cTOXYTFKDp1bdQ85b1GHY=
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NlEf65KJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB811F00A3A;
+	Tue, 11 Aug 2026 15:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786462464;
+	bh=FLLxn78u+8+1L7m4Hy+pK/B2niPXFochyMyqpQUziq4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NlEf65KJ4XpLGNurN9j8nn2GOJSSfVMpCO9/jZwiID/Wg3+9PudhSLabjYh7IM5Wv
+	 ZKH1aarc901hJSRvdg8kScs57A8w3EUsXtkJaJAVg81NGUjDk7t/Or7LCn8O4GH9sL
+	 +Y/AgZCm8WWSvT8KcbGkApZOgJJ+l6ATmR5eqrxacLn4XDSViZp/XDqi3tnjfxvh7C
+	 14UsUyYsBFVgauUYpbvTeewa9QS2CaV8zgq9gnS1ANVDEBTkQ4wNcNO7wQf4tF+dTA
+	 JBc3kJ88y6JxPnR/mPomJY4K974XGnq9OWPa0RM/f6F3uJg9uEibYexElMM+RxmQBh
+	 SMg7C8KrVvHjw==
+Message-ID: <351d66fd-d904-4305-814c-0c3bda2361c4@kernel.org>
+Date: Tue, 11 Aug 2026 10:34:22 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 4/4] net: stmmac: dwmac-socfpga: Add support
+ for Agilex5 TSN GMAC with FPGA converter
+Content-Language: en-US
+To: "Nazle Asmade, Muhammad Nazim Amirul"
+ <muhammad.nazim.amirul.nazle.asmade@altera.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: "maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
+ "rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "robh@kernel.org" <robh@kernel.org>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260716021932.20037-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <20260716021932.20037-5-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <20260716-monumental-daring-beagle-28e81d@quoll>
+ <e3c2a7c5-35d3-4c40-9adb-39e9c8659af8@altera.com>
+From: Dinh Nguyen <dinguyen@kernel.org>
+In-Reply-To: <e3c2a7c5-35d3-4c40-9adb-39e9c8659af8@altera.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net v2] batman-adv: reject unrepresentable multicast
- TVLV offsets
-From: Sven Eckelmann <sven@narfation.org>
-To: David Lee <david.lee@trailofbits.com>
-Cc: marek.lindner@mailbox.org, sw@simonwunderlich.de, antonio@mandelbit.com, 
- sven@narfation.org, Kyle Zeng <kylebot@openai.com>, davem@davemloft.net, 
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
- Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>, 
- netdev@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260810145754.828936-1-david.lee@trailofbits.com>
-References: <20260810145754.828936-1-david.lee@trailofbits.com>
-Date: Tue, 11 Aug 2026 17:32:59 +0200
-Message-Id: <178646237968.2022359.8997893163921377425.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2745; i=sven@narfation.org;
- h=from:subject:message-id; bh=Ani0hyGmCJGaqxrPmXmnyKjxsRejVuS2hFDgorsnmfU=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDFnVDlubdYv021hWftyTbfPI+Fgax42ix4ZzptXpd3i2J
- P63mjG9o5SFQYyLQVZMkWXPlfzzm9nfyn+e9vEozBxWJpAhDFycAjCR1WaMDLvvvX61bWtO0Y4N
- cYeVpvKu+B10dkHz5vfR2iuNOo5ZJiky/Hd5senGz9y7vYcW9FmKPM2Mmad17sIsr80n99m8vMV
- hNZ8ZAA==
-X-Developer-Key: i=sven@narfation.org; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
 
-> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h                                                                                                                                                                
-> index 22eda1d54a0e8..dbeceaf5c3b39 100644                                                                                                                                                                                   
-> --- a/include/linux/skbuff.h                                                                                                                                                                                                
-> +++ b/include/linux/skbuff.h                                                                                                                                                                                                
-> @@ -3126,6 +3126,32 @@ static inline void skb_set_transport_header(struct sk_buff *skb
-> [...]
-> +static inline bool __must_check
-> +skb_set_transport_header_careful(struct sk_buff *skb, const int offset)
-> +{
-> +	long transport_offset = skb->data - skb->head + offset;
-> +
-> +	if (unlikely(transport_offset !=
-> +		     (typeof(skb->transport_header))transport_offset))
-> +		return false;
-> +
-> +	if (unlikely(transport_offset ==
-> +		     (typeof(skb->transport_header))~0U))
-> +		return false;
-> +
-> +	skb->transport_header = transport_offset;
-> +	return true;
-> +}
-> +
 
-I personally don't like the way the lines are broken down. The 80 character
-limit was replaced by a 100 character limit since commit bdc48fa11e46
-("checkpatch/coding-style: deprecate 80-column warning"). And it seems like
-there are already multiple lines in this file which are longer than 80
-characters. So it should be possible not to add a line break right after a
-comparison operator.
 
-But I leave the judgement about this part to the netdev maintainers.
+On 7/26/26 21:07, Nazle Asmade, Muhammad Nazim Amirul wrote:
+> On 16/7/2026 3:56 pm, Krzysztof Kozlowski wrote:
+>> On Wed, Jul 15, 2026 at 07:19:32PM -0700, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
+>>> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+>>>
+>>> The Agilex5 SoCDK TSN Config2 board uses a GMII-to-RGMII converter
+>>> implemented as FPGA soft IP between gmac1 and its PHY. This converter
+>>> provides the RGMII TX/RX clock delays, so the MAC interface selector
+>>> must be configured for GMII while the PHY is configured without delays.
+>>>
+>>> Add the "altr,socfpga-stmmac-agilex5-tsn" compatible to the match table
+>>> and detect it in probe to force GMII for the MAC interface selector and
+>>> strip the delay bits from phy_interface so the PHY is not configured to
+>>> add delays already provided by the FPGA converter.
+>>>
+>>> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+>>> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>>> ---
+>>> v4: Add Reviewed-by from Andrew Lunn.
+>>>
+>>>    drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 13 ++++++++++++-
+>>>    1 file changed, 12 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+>>> index 1d7f0a57d288..bf591a68502f 100644
+>>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+>>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+>>> @@ -69,12 +69,13 @@ struct socfpga_dwmac {
+>>>    	void __iomem *tse_pcs_base;
+>>>    	void __iomem *sgmii_adapter_base;
+>>>    	bool f2h_ptp_ref_clk;
+>>> +	phy_interface_t mac_interface;
+>>>    	const struct socfpga_dwmac_ops *ops;
+>>>    };
+>>>    
+>>>    static phy_interface_t socfpga_get_plat_phymode(struct socfpga_dwmac *dwmac)
+>>>    {
+>>> -	return dwmac->plat_dat->phy_interface;
+>>> +	return dwmac->mac_interface;
+>>>    }
+>>>    
+>>>    static void socfpga_sgmii_config(struct socfpga_dwmac *dwmac, bool enable)
+>>> @@ -650,6 +651,15 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
+>>>    	plat_dat->pcs_exit = socfpga_dwmac_pcs_exit;
+>>>    	plat_dat->select_pcs = socfpga_dwmac_select_pcs;
+>>>    
+>>> +	dwmac->mac_interface = plat_dat->phy_interface;
+>>> +
+>>> +	if (of_device_is_compatible(pdev->dev.of_node,
+>>> +				    "altr,socfpga-stmmac-agilex5-tsn")) {
+>>
+>> Don't add compatibles around the code. Does not scale. You have driver
+>> match data exactly for that purpose.
+>>
+>>> +		dwmac->mac_interface = PHY_INTERFACE_MODE_GMII;
+>>> +		if (phy_interface_mode_is_rgmii(plat_dat->phy_interface))
+>>> +			plat_dat->phy_interface = PHY_INTERFACE_MODE_RGMII;
+>>> +	}
+>>> +
+>>>    	ops->setup_plat_dat(dwmac);
+>>>    
+>>>    	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
+>>> @@ -674,6 +684,7 @@ static const struct of_device_id socfpga_dwmac_match[] = {
+>>>    	{ .compatible = "altr,socfpga-stmmac", .data = &socfpga_gen5_ops },
+>>>    	{ .compatible = "altr,socfpga-stmmac-a10-s10", .data = &socfpga_gen10_ops },
+>>>    	{ .compatible = "altr,socfpga-stmmac-agilex5", .data = &socfpga_agilex5_ops },
+>>> +	{ .compatible = "altr,socfpga-stmmac-agilex5-tsn", .data = &socfpga_agilex5_ops },
+>>
+>> Otherwise dvices are compatible? They why would you need this entry in
+>> the first place?
+> Hi Krzysztof,
+> 
+> Just to confirm: should we add a separate socfpga_agilex5_tsn_ops and
+> use that as .data for the TSN compatible, instead of checking the
+> compatible string in probe and reusing socfpga_agilex5_ops?
+> 
+>
+I believe that is right way to do it instead of looking for compatibles 
+around code.
 
-> diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-> index de907c07fa154..93492d393c347 100644
-> --- a/net/batman-adv/tvlv.c
-> +++ b/net/batman-adv/tvlv.c
-> @@ -438,8 +438,11 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
->  			return NET_RX_SUCCESS;
->  
->  		tvlv_offset = (unsigned char *)tvlv_value - skb->data;
-> +		if (!skb_set_transport_header_careful(skb,
-> +						      tvlv_offset + tvlv_value_len))
-> +			return -EINVAL;
-> +
->  		skb_set_network_header(skb, tvlv_offset);
-> -		skb_set_transport_header(skb, tvlv_offset + tvlv_value_len);
->  
->  		return tvlv_handler->mcast_handler(bat_priv, skb);
->  	}
 
-For the batman-adv part:
-
-Acked-by: Sven Eckelmann <sven@narfation.org>
-
--- 
-Sven Eckelmann <sven@narfation.org>
+Dinh
