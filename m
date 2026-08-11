@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB412BEC34
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1BB29D268
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786408518; cv=none; b=NNXEkzhOky4yZYtOyPtYlzG5ehvbyLzc1X+zk1CyrO3DTlr9RiawvFIIrcAMct906KPLeYuOf+sHRGQ5qupNPQemRO2Hgi7YNodifdTLeyaHVRn01xjna18HaQjjImlNguOJRM7Syaw+8TExv6HHNcYeFj2Rdz0aOyrq5Rj/hkM=
+	t=1786408519; cv=none; b=Yn8XfxNSkQpd4zhZqKoeKK5rctBpvBn3UHVCYD+gNjeo4gLZdxkInfoVUaZGTiPGpqQjKu/FyJUgtN9OrSen4ClwcIvNaLedAacTPZ5HKgz3tahPeRO8iEagL/AwQCmhMHACmonBlKVCZw9M+47H+K7H6KwDs6FH3aA7MQiah0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786408518; c=relaxed/simple;
-	bh=xg5u7z1xRNMPUPPdOLl0mjyGSxPImJI86AOXyMmhiI0=;
+	s=arc-20240116; t=1786408519; c=relaxed/simple;
+	bh=dI+KEUKwEhccpMJ9ON9qZdhi8i4VNLf6wpaRHMuzPcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1oOGZM8v8v+A3450z/T3Dv5mstu9PIT0Cdbu4MFo5GaSyiOmcm6T7YeS27MIKVWnYPWBgMyHndodsiOKQUgCtnItBS0PGgSIHZ4SCMKHdh7OUtu2pW0IWPQbj5w5bzDXhxCY4Ek+fj/Zm0z29PHvwnNnrAY44uYCCeNCIVHjMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1hJNRHH; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=KJOpbT5Ss72HA+wEHN7Z6pISJs5/ZUFuzR34smd9q1boKOyRHK1/bOh1/BxkgjcnYNxigmtYiFaW4Lmg79Gp3CFbNlCpxtB+MElSZOhK+hBuUw4IREuO/QlF5Aiwgw3v5MslDKK3GG++ddKg/ri7XOyVnDdm+b1O03ytCC/EbH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXxQ043d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1hJNRHH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C99E1F00A3D;
-	Tue, 11 Aug 2026 00:35:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXxQ043d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DFE1F000E9;
+	Tue, 11 Aug 2026 00:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786408516;
-	bh=EREOEf9BZ2TSA2rw772gaTSZFhqUihaQqgydf1lJSx8=;
+	s=k20260515; t=1786408517;
+	bh=Fo1FfNdoicSi88M8Je7ds61pKB3ElyodYdRdrHSyQ4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m1hJNRHHu9KXk7EP82WX7KD7t1HkA/5gDUoiSCSYlQzlSjewnao5RR2bVIP5bjPig
-	 QOnHBqijGGTkVbLgkG5HKwRm3IKzex2eNRZKwgo1fTalmLiCXRvKENF6N4+bbyfPCm
-	 Fs5cjYmZOxpfOJkZGf7+s1egk1qAedposBexvqcx2QUXaw+tmriLjngctnGJgAvEtD
-	 v1pyTaBUpYEHu06s5+B72N2KVjDq8+hCROUCnkRdFNM4T8GHsJz/2bJxEcn3zoMQeV
-	 uTqm9NyEQVF0LYMjS+VSRVK2ga3V2Ssj9SlLLcG7yH9dsYUO48I5dVBiUg/zdVRRAi
-	 JmT/WM6giaLug==
+	b=CXxQ043d+dqYOBD73QiqBPUNfUGJdb0OX9EUCWjJ7RFo1RF2rYOf6PqAU1CA1GovY
+	 bxVRrbYh/clVMnZ23ATrP81RVPqAtYLgSMRMjDWs4zIIlpZ1eErJuEbYxCqrCkNSQU
+	 4QT3HIbP6/QpnFqQF6DJhZIxtNJygsoknThuLC1+5pA5XxxUaS8JwWORcDVi5GJPg1
+	 RhPVsgTPs0tntKDWv+14tMgwA9E/0w/gDQ8kTLn3We3AcTKMB/fuLCvC5UeA01cVdL
+	 5md+dxqAclxkJw52B2fyKxhbqGHgfUwNNyN6P9+GafUcs2rYXVWXMhqrANHkeMCoDZ
+	 2v77EC9HDIy7g==
 From: Jakub Kicinski <kuba@kernel.org>
 To: anthony.l.nguyen@intel.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -39,12 +39,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	aleksandr.loktionov@intel.com,
 	pmenzel@molgen.mpg.de,
 	michalx.cohen@intel.com
-Subject: Re: [PATCH net-next 03/15] ice: use NETIF_F_HW_CSUM instead of IP/IPV6
-Date: Mon, 10 Aug 2026 17:35:15 -0700
-Message-ID: <20260811003515.1056735-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next 04/15] virtchnl: add VIRTCHNL_VLAN_ETHERTYPE_88E7 support
+Date: Mon, 10 Aug 2026 17:35:16 -0700
+Message-ID: <20260811003516.1056797-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805213541.2281287-4-anthony.l.nguyen@intel.com>
-References: <20260805213541.2281287-4-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260805213541.2281287-5-anthony.l.nguyen@intel.com>
+References: <20260805213541.2281287-5-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,183 +56,125 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ice: use NETIF_F_HW_CSUM instead of IP/IPV6
+virtchnl: add VIRTCHNL_VLAN_ETHERTYPE_88E7 support
 
-This switches the ice netdev checksum offload advertisement from
-NETIF_F_IP_CSUM/NETIF_F_IPV6_CSUM to NETIF_F_HW_CSUM, so IPv6 packets
-carrying extension headers are no longer pushed down the software checksum
-path.  It also removes the conditional NETIF_F_HW_CSUM advertisement for
-GCS-capable parts and the TSO/GCS mutual exclusion check in
-ice_set_features().
+This adds VIRTCHNL_VLAN_ETHERTYPE_88E7 = BIT(3) to enum
+virtchnl_vlan_support so that the 0x88E7 VLAN ethertype can be negotiated
+over VIRTCHNL_OP_GET_OFFLOAD_VLAN_V2_CAPS.  The change touches only the
+shared virtchnl header.
 
-A few questions below.
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index cc30d8c73a41c..a5e9c3114706f 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> @@ -3491,9 +3491,8 @@ void ice_set_netdev_features(struct net_device *netdev)
->  			NETIF_F_RXHASH;
->  
->  	csumo_features = NETIF_F_RXCSUM	  |
-> -			 NETIF_F_IP_CSUM  |
->  			 NETIF_F_SCTP_CRC |
-> -			 NETIF_F_IPV6_CSUM;
-> +			 NETIF_F_HW_CSUM;
+> diff --git a/include/linux/avf/virtchnl.h b/include/linux/avf/virtchnl.h
+> index 11bdab5522fd5..511c8827c640f 100644
+> --- a/include/linux/avf/virtchnl.h
+> +++ b/include/linux/avf/virtchnl.h
+> @@ -636,6 +636,7 @@ enum virtchnl_vlan_support {
+>  	VIRTCHNL_VLAN_ETHERTYPE_8100 =		BIT(0),
+>  	VIRTCHNL_VLAN_ETHERTYPE_88A8 =		BIT(1),
+>  	VIRTCHNL_VLAN_ETHERTYPE_9100 =		BIT(2),
+> +	VIRTCHNL_VLAN_ETHERTYPE_88E7 =		BIT(3),
 
 [Severity: Medium]
-Should this hunk carry a Fixes: tag and be split out from the GCS/TSO
-cleanup?
+Is there anything in the tree that can actually negotiate this bit?
 
-As far as I can tell this is not just an offload-advertisement cleanup, it
-fixes a user-visible drop.  With only NETIF_F_IP_CSUM/NETIF_F_IPV6_CSUM set,
-skb_csum_hwoffload_help() in net/core/dev.c forces the software path:
+The commit message says the bit is added "so that VF drivers can advertise
+and negotiate 0x88E7 VLAN ethertype support through the existing
+VIRTCHNL_OP_GET_OFFLOAD_VLAN_V2_CAPS handshake", but on the PF side
+ice_vc_set_dvm_caps() and ice_vc_set_svm_caps() in
+drivers/net/ethernet/intel/ice/virt/virtchnl.c only ever fill in:
 
-	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
-		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-			goto sw_checksum;
+	supported_caps->outer = VIRTCHNL_VLAN_ETHERTYPE_8100 |
+				VIRTCHNL_VLAN_ETHERTYPE_88A8 |
+				VIRTCHNL_VLAN_ETHERTYPE_9100 |
+				VIRTCHNL_VLAN_ETHERTYPE_AND;
+	caps->filtering.ethertype_init = VIRTCHNL_VLAN_ETHERTYPE_8100 |
+					 VIRTCHNL_VLAN_ETHERTYPE_88A8 |
+					 VIRTCHNL_VLAN_ETHERTYPE_9100;
 
-and skb_checksum_help() refuses GSO skbs:
+so BIT(3) never appears in the caps message stored in vf->vlan_v2_caps.
 
-	if (unlikely(skb_is_gso(skb))) {
-		skb_warn_bad_offload(skb);
-		return -EINVAL;
-	}
+On the VF side, iavf_tpid_to_vc_ethertype() in
+drivers/net/ethernet/intel/iavf/iavf_virtchnl.c maps only ETH_P_8021Q and
+ETH_P_8021AD, and iavf_get_netdev_vlan_hw_features() /
+iavf_get_netdev_vlan_features() in iavf_main.c test only the _8100 and
+_88A8 bits, so a PF that did advertise BIT(3) would be silently ignored.
 
-Since ice advertises NETIF_F_TSO6, netif_needs_gso() is false and the skb
-arrives still marked GSO, so validate_xmit_skb() takes the
-out_kfree_skb path and the frame is dropped rather than de-offloaded.
+As a consequence, the ETH_P_8021AH / VIRTCHNL_VLAN_ETHERTYPE_88E7 cases
+added by the follow-up patch in this series ("ice: add 0x88E7 handling to
+SW validation paths") look unreachable.  ice_vc_validate_vlan_tpid() ends
+with:
 
-That means TSO'd IPv6 traffic with an extension header (SRv6, HOPOPTS,
-DSTOPTS) is dropped on every ice device on stable kernels containing the
-skb_csum_hwoffload_help() change (04c20a9356f2, v6.13+).  The changelog only
-hints at this with "To not drop such packets", and there is no Fixes: tag,
-so it is hard to identify for backport.  Would it make sense to make this
-one-liner a standalone patch with a Fixes: tag, and keep the GCS/TSO
-mutual-exclusion removal (which depends on the earlier "ice: always do GCS
-if hardware supports it" patch in this series) separate?
+	if (!(filtering_caps & vlan_ethertype))
+		return false;
+
+and filtering_caps never contains BIT(3), so 0x88E7 filters are still
+rejected.  Likewise ice_vc_get_tpid() is only reached after
+ice_vc_valid_vlan_setting() has already done:
+
+	if (ethertype_setting && !(negotiated_settings & ethertype_setting))
+		return false;
+
+Should the advertisement side land in the same series, or is the intent
+that only an out-of-tree/firmware PF sets this bit?  If the latter, would
+it be worth dropping the claim in the follow-up commit that "the PF
+correctly accepts and translates 0x88E7 (ETH_P_8021AH) VLAN filters
+requested by VFs", since that is not the case at the end of the series?
 
 [Severity: Medium]
-On non-GCS parts, is NETIF_F_HW_CSUM an accurate description of what the
-legacy path in ice_tx_csum() (drivers/net/ethernet/intel/ice/ice_txrx.c)
-implements?
+Is the terminology in the commit message right?  It says:
 
-NETIF_F_HW_CSUM promises the driver honours skb->csum_start /
-skb->csum_offset for any protocol, and once it is set
-skb_csum_hwoffload_help() returns 0 unconditionally, so the core no longer
-checks that skb->csum_offset is offsetof(struct tcphdr, check) or
-offsetof(struct udphdr, check).
+	IEEE 802.1ah (Provider Backbone Bridging) uses ethertype 0x88E7 as the
+	Backbone Service Tag (B-TAG).
 
-The legacy branch of ice_tx_csum() derives the insertion point purely from
-its own header parse and never looks at skb->csum_offset:
+802.1ah uses 0x88A8 for the Backbone VLAN Tag (B-TAG), which is already
+covered by VIRTCHNL_VLAN_ETHERTYPE_88A8, and 0x88E7 for the Backbone
+Service Instance Tag (I-TAG).  The ice parser documentation in
+drivers/net/ethernet/intel/ice/ice_protocol_type.h agrees:
 
-	switch (l4_proto) {
-	case IPPROTO_TCP:
-		cmd |= ICE_TX_DESC_CMD_L4T_EOFT_TCP;
-		l4_len = l4.tcp->doff;
-		offset |= l4_len << ICE_TX_DESC_LEN_L4_LEN_S;
-		break;
-	...
+ * K = STAG or BVLAN - Outer L2 header has STAG (ethernet type 0x88a8) or
+ *		       BVLAN (ethernet type 0x88a8).
+ * L = ITAG - Outer L2 header has ITAG *ethernet type 0x88e7)
+
+Related to that, how is a 0x88E7 tag meant to be expressed through this
+ABI?  struct virtchnl_vlan in this same header carries only:
+
+	u16 tci;	/* tci[15:13] = PCP and tci[11:0] = VID */
+	u16 tci_mask;
+	u16 tpid;	/* 0x8100, 0x88a8, etc. ... */
+
+which has no room for an 802.1ah 24-bit I-SID.
+
+And on the hardware side, ICE_AQ_VSI_OUTER_TAG_TYPE_M in
+drivers/net/ethernet/intel/ice/ice_adminq_cmd.h is a two-bit field with
+only NONE/STAG/VLAN_8100/VLAN_9100 encodings, and
+tpid_to_vsi_outer_vlan_type() in ice_vsi_vlan_lib.c ends with:
+
 	default:
-		goto checksum_sw_fb;
-	}
+		*tag_type = 0;
+		return -EINVAL;
 
-So for a CHECKSUM_PARTIAL frame that parses as IPv4/IPv6 + TCP/UDP but asks
-for a different csum_offset (virtio_net_hdr/tap or AF_PACKET with a vnet
-header; skb_partial_csum_set() only checks that start/off lie inside the
-linear area), hardware writes the checksum at the standard L4 offset while
-the field the stack asked to be filled keeps the pseudo-header seed.  The
-checksum_sw_fb fallback does not catch this, since it is only reached when
-the network header is neither IPv4 nor IPv6 or when l4_proto hits the switch
-default.
+So a peer that did negotiate BIT(3) and then sent
+VIRTCHNL_OP_ENABLE_VLAN_STRIPPING_V2 would reach
+ice_vc_ena_vlan_offload() -> ice_vsi_ena_outer_stripping(vsi,
+ETH_P_8021AH) and get -EINVAL, while its own feature flags claim support.
+Could the commit message state which 802.1ah tag is meant and how it maps
+onto struct virtchnl_vlan and the hardware outer tag types?
 
-i40e has the same loose interpretation (it never references
-skb->csum_offset either), so this may well be intended precedent - is that
-the reasoning here?
+[Severity: Low]
+Should the documentation block above this enum gain a matching line?  It
+currently describes each ethertype bit:
 
->  
->  	vlano_features = NETIF_F_HW_VLAN_CTAG_FILTER |
->  			 NETIF_F_HW_VLAN_CTAG_TX     |
-> @@ -3555,12 +3554,6 @@ void ice_set_netdev_features(struct net_device *netdev)
->  	/* Allow core to manage IRQs affinity */
->  	netif_set_affinity_auto(netdev);
->  
-> -	/* Mutual exclusivity for TSO and GCS is enforced by the set features
-> -	 * ndo callback.
-> -	 */
-> -	if (ice_is_feature_supported(pf, ICE_F_GCS))
-> -		netdev->hw_features |= NETIF_F_HW_CSUM;
-> -
+ * VIRTCHNL_VLAN_ETHERTYPE_8100 - This field supports 0x8100 ethertype.
+ * VIRTCHNL_VLAN_ETHERTYPE_88A8 - This field supports 0x88A8 ethertype.
+ * VIRTCHNL_VLAN_ETHERTYPE_9100 - This field supports 0x9100 ethertype.
 
-[Severity: High]
-With NETIF_F_HW_CSUM now in csumo_features it is enabled by default
-(netdev->features |= netdev->hw_features) and also propagated into
-hw_enc_features and vlan_features.  On E830 that makes the GCS context
-descriptor path in ice_tx_csum() the default Tx checksum path.  Can the
-values programmed there be truncated?
+but there is no entry for the new bit, and the AND/XOR wording in the same
+block is written in terms of the enumerated ethertypes.  Since 0x88E7 is
+described as ETH_P_8021AH "802.1ah Backbone Service Tag" in
+include/uapi/linux/if_ether.h but as ITAG in ice_protocol_type.h, a
+third-party implementer reading this header cannot tell whether the bit
+means B-TAG or I-TAG handling.  Adding the documentation line, and
+referencing ETH_P_8021AH, would pin that down.
 
-	u16 csum_start = (skb->csum_start - skb->mac_header) / 2;
-	u16 csum_offset = skb->csum_offset / 2;
-	u16 gcs_params;
-
-	gcs_params = FIELD_PREP(ICE_TX_GCS_DESC_START_M, csum_start) |
-		     FIELD_PREP(ICE_TX_GCS_DESC_OFFSET_M, csum_offset) |
-
-The descriptor fields in ice_lan_tx_rx.h are narrow:
-
-	#define ICE_TX_GCS_DESC_START_M		GENMASK(7, 0)
-	#define ICE_TX_GCS_DESC_OFFSET_M	GENMASK(11, 8)
-
-i.e. at most 510 bytes of L2+L3 header and at most a 30-byte checksum
-offset.  Neither value is range-checked, and FIELD_PREP()'s
-__BF_FIELD_CHECK only rejects out-of-range constants, so a runtime value is
-silently masked.
-
-The driver's ndo_features_check, ice_features_check(), only bounds the two
-lengths individually:
-
-	len = skb_network_offset(skb);
-	if (len > ICE_TXD_MACLEN_MAX || len & 0x1)
-		goto out_rm_features;
-
-	len = skb_network_header_len(skb);
-	if (len > ICE_TXD_IPLEN_MAX || len & 0x1)
-		goto out_rm_features;
-
-That permits 254 + 508 = 762 combined bytes, well past the 510 bytes the
-GCS start field can express.  An IPv6 frame with roughly 498..508 bytes of
-header plus extension headers (a long HOPOPTS/DSTOPTS chain, or an SRv6 SRH
-with many SIDs over a VLAN) passes both checks, yet
-(csum_start - mac_header) / 2 = 259 becomes 3 after masking, so the NIC
-sums the wrong byte range and inserts the result inside the MAC/IPv6
-header.
-
-The same masking applies to skb->csum_offset > 30, which
-virtio_net_hdr_to_skb()/skb_partial_csum_set() allow (they only bound
-start/off against skb_headlen()), and which the core no longer filters now
-that NETIF_F_HW_CSUM is advertised.  Would a FIELD_MAX() check on both
-values before taking the GCS branch, or an added combined-length check in
-ice_features_check(), be appropriate here?
-
->  	netif_set_tso_max_size(netdev, ICE_MAX_TSO_SIZE);
->  }
->  
-> @@ -6519,18 +6512,6 @@ ice_set_features(struct net_device *netdev, netdev_features_t features)
->  	if (changed & NETIF_F_LOOPBACK)
->  		ret = ice_set_loopback(vsi, !!(features & NETIF_F_LOOPBACK));
->  
-> -	/* Due to E830 hardware limitations, TSO (NETIF_F_ALL_TSO) with GCS
-> -	 * (NETIF_F_HW_CSUM) is not supported.
-> -	 */
-> -	if (ice_is_feature_supported(pf, ICE_F_GCS) &&
-> -	    ((features & NETIF_F_HW_CSUM) && (features & NETIF_F_ALL_TSO))) {
-> -		if (netdev->features & NETIF_F_HW_CSUM)
-> -			dev_err(ice_pf_to_dev(pf), "To enable TSO, you must first disable HW checksum.\n");
-> -		else
-> -			dev_err(ice_pf_to_dev(pf), "To enable HW checksum, you must first disable TSO.\n");
-> -		return -EIO;
-> -	}
-> -
->  	return ret;
->  }
+>  	VIRTCHNL_VLAN_TAG_LOCATION_L2TAG1 =	BIT(8),
+>  	VIRTCHNL_VLAN_TAG_LOCATION_L2TAG2 =	BIT(9),
+>  	VIRTCHNL_VLAN_TAG_LOCATION_L2TAG2_2 =	BIT(10),
