@@ -1,69 +1,106 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C3D2F8EA3;
-	Tue, 11 Aug 2026 13:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B5B2F8E98;
+	Tue, 11 Aug 2026 13:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786454423; cv=none; b=R/iOW1x7i1gz5Lp8boXdmhO6FeA57HQZ7kp0McNpzNFWt0+F3SkH+VVlEEptEMa41IvfTPi9KhfUkc8jDO8///D3QGjSZkdkGtjVPQIzxzhOKdla3WjBpLkWJW+b3PVg6mEAf59zXSXA0iLlLWlU1G9M9KoLHN4pHeoGUaMcUwI=
+	t=1786454450; cv=none; b=OXs0oWMUCbHppnbI4Kmr1neBfBaug+nh6D1c4HvEf4lxalbfLbJiFsZkJsBoXP2T4iJzUuE1FsbJzph2+tRbMSaYuiok0JffqY/fbibFyn2i9WCgn5GxcyMKfdWYdsCl2PzO7LlhzmrZerFfee9Q/bSO9fmYUsxsi7crrLQADp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786454423; c=relaxed/simple;
-	bh=ppjE8g6BU9yNBbS9Snly8mVLM4yT85pcMixd/7d3/cw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UT0D0x7pm8kYlGLxfQiWRSMujVs7ReOQJblfq2mH66My0QTSPrNn/3/jGkTh8d2d4IHR+Aiv6uz0K3QFOM8OzTox6s3KxdTrbDMDKARl4eLwnGmCtgVEml6Si1hOMTGeC7wrn/Da5dwG4h0k1hCTactSrYBFgF0gfM+3sU5d/ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=SYy5ZMYi; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1786454450; c=relaxed/simple;
+	bh=1cUEhKpwhbhOlu1jJZ6mAX5yeVy7AZ4oG+h0MJFNlQA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KqQ/CMAPKdgrSo0J3oZjRsEh9CURuUEoKAXq1xIxJq6t7Dfbahb+juTanc5Y9NmFq4gL7JPNA2YrMRnosl9ILhAAEDRkwwaDr/VY/zk2mKGLnk29vgY53AzSOmtREdMjWMBzl9PWWGaH6J9aazTJeptpq3jV60IBXzdIf+FYppM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETfPsxET; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="SYy5ZMYi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8hofmMrKiO0JgQt903vqZFbWP8ReQZApFrA3vkcYy5o=; b=SYy5ZMYiCa/f4nq9nGHBmlU9fk
-	u2Nr4e05CyJnbI5U1BqzWRiZucKgqhxXXJQIFDSOTTERU0btxhu2ShdXCk8ouxDjLe3g/3uTuz8YD
-	Sr0kLAXhM5J5ioSqLRw2i40viJkT+L6C7rOB5VQExrXWuN75JYClD4Z87+uizdrkAwwpvoQ5SklvI
-	Euc1YfPNB4kSsJv3kTCOLK8VnJp8uEB0Hvevuvgbu6oRSJ3dBx6rcodK2H0Aq2oCFGZyJntJBxmYM
-	CtEY2SuO+HdgDkXBqMmfI4ELaPhHjKpBp4wNLsa6wbyFYsfj3DyO5dfCQw9mTPafEZmuf6lTYlE50
-	LlOWP9KA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wtmOt-003agI-0a;
-	Tue, 11 Aug 2026 13:20:15 +0000
-Date: Tue, 11 Aug 2026 06:20:10 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 4/6] netconsole: reject a target mixing IPv4
- and IPv6 addresses
-Message-ID: <anshcVXKS8QqBdfM@gmail.com>
-References: <20260810-netcons_ipv6-v2-0-3d4fc987a90f@gmail.com>
- <20260810-netcons_ipv6-v2-4-3d4fc987a90f@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETfPsxET"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8607CC2BCF5;
+	Tue, 11 Aug 2026 13:20:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786454449;
+	bh=1cUEhKpwhbhOlu1jJZ6mAX5yeVy7AZ4oG+h0MJFNlQA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ETfPsxETaXon5QiiAcaNd/u0gdBhTjHZkhVjkvCHWP9Y0x4JipLBO3M0McNl0Xcec
+	 NxefQfZSnuaJUjh7JgF7NTor9mZoHXwzyJXks9qyR8FRNkrdtddhhN0LMCFVbCZpP7
+	 TbUWQ95NSbv14O0maTFqpQ/9xTb+upzAdq0Wi9GQiWglSijFcYcUDQNNEV6U7lNX8T
+	 oXjAqEuG6K60NAN3SQ/5pXnaU/uqvF7kM71yvwDdL9Ce6V4owfpJu7ALsy05KUqPb1
+	 j93u4od1v70YuuAoXbx4v+ksIbFpQ7Q8xB7uR1LTT2CSWCo4SluyAiN1GAz4cBUYVe
+	 N0VhDNkq84Svw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 717D4C5B572;
+	Tue, 11 Aug 2026 13:20:49 +0000 (UTC)
+From: Fan Ye via B4 Relay <devnull+fy15309206903.gmail.com@kernel.org>
+Subject: [PATCH net v3 0/2] net: thunderbolt: two fixes for the failed
+ bring-up path
+Date: Tue, 11 Aug 2026 13:20:48 +0000
+Message-Id: <20260811-b4-tbnet-hopid-v3-0-9e75d1b51331@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260810-netcons_ipv6-v2-4-3d4fc987a90f@gmail.com>
-X-Debian-User: leitao
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALAhe2oC/yWMSQ6DMBAEv4L6nJHwwiK+EuUQ4wEmB4NsByEh/
+ h4nOVarq04kjsIJQ3Ui8i5J1lDA3CqMyzPMTOILQ9e6rXulyFnKLnCmZd3Ek2+s7qxypjUeRdo
+ iT3L8gneUGx7/Mb3di8f8TeG6PrSTBmZ3AAAA
+X-Change-ID: 20260811-b4-tbnet-hopid-d542741b363d
+To: Mika Westerberg <westeri@kernel.org>, 
+ Yehezkel Bernat <YehezkelShB@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Fan Ye <fy15309206903@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786454448; l=1416;
+ i=fy15309206903@gmail.com; s=tbnet3; h=from:subject:message-id;
+ bh=1cUEhKpwhbhOlu1jJZ6mAX5yeVy7AZ4oG+h0MJFNlQA=;
+ b=/a2kRJtmMh7Lp1jXHqXUcVtWdTmUYeqNFUSfzjP9GrQ6Y6hCcvM8EfV2eZfrLFTvgki9a1ZPo
+ eyg4x9DzkY6AFUxktvGt54Zg0SkM69UgwlMjtzCYWWd0C4ZCwVIhHJ9
+X-Developer-Key: i=fy15309206903@gmail.com; a=ed25519;
+ pk=6QsQIrI/kruYWIJyCH9ntPMXsHCqF5JtK/DCMtOCzdc=
+X-Endpoint-Received: by B4 Relay for fy15309206903@gmail.com/tbnet3 with
+ auth_id=929
+X-Original-From: Fan Ye <fy15309206903@gmail.com>
+Reply-To: fy15309206903@gmail.com
 
-On Mon, Aug 10, 2026 at 05:47:28PM +0100, Gustavo Luiz Duarte wrote:
-> The local_ip and remote_ip configfs attributes are written independently
-> and nothing stops a user from mixing ipv4 and ipv6. This leads to an
-> ipv4 address being zero-extended into an ipv6 header or an ipv6 address
-> being truncated to its first 4 bytes for an ipv4 header.
-> 
-> The command-line parser already refuses such a mismatch. This adds a
-> similar check when a dynamic target is being enabled.
-> 
-> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+Two separate defects reached through the same branch in
+tbnet_connected_work(), found on an ASMedia ASM4242 host-to-host link
+when the peer drops out while a connection is being brought up.
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+  1 releases the HopID the allocator handed out when it is not the one
+    that was asked for.  Today it stays allocated for the rest of the
+    XDomain connection.
+
+  2 marks the connection down on the failure paths, so the next
+    tbnet_tear_down() does not run a second teardown over work that was
+    already undone: stopping rings that are already stopped, which is
+    fatal under panic_on_warn, and handing back a HopID this connection
+    never owned.
+
+Patch 2 edits the lines patch 1 adds, so it has to come second.
+
+Changes in v3:
+- Cut both commit messages down after review; the code is unchanged
+  apart from the comment on the new helper in patch 2, now one line.
+- Link to v2: https://lore.kernel.org/netdev/20260810-b4-tbnet-hopid-v2-0-0eee557e75df@gmail.com/
+
+---
+Fan Ye (2):
+      net: thunderbolt: Release the Rx HopID that was handed out on mismatch
+      net: thunderbolt: Mark the connection down when bringing it up fails
+
+ drivers/net/thunderbolt/main.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+---
+base-commit: d58772d8520c7ef247c4b95c9bd76d3a25da9ff5
+change-id: 20260811-b4-tbnet-hopid-d542741b363d
+
+Best regards,
+--  
+Fan Ye <fy15309206903@gmail.com>
+
+
