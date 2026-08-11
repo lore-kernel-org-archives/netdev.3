@@ -1,86 +1,93 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD6B43A7F6;
-	Tue, 11 Aug 2026 16:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01E52ECD32;
+	Tue, 11 Aug 2026 16:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786467080; cv=none; b=pZE8ws7oYBIr0qOsySNBgMV8RMPKcoWQVYrSf95Pl4KTj1dRKQBhoeHixx3e00aeJCxi2XeEnoxi+y0Q51StN/2VlO2uJV7zUMZtDUrYE302zEZfYxiNPJL7f3v6WKhbCbd540tIBWt/+09dLgU3eJISj3h4Uq3Zn6UDc4565bI=
+	t=1786467249; cv=none; b=ktAarobk9R1R4UpAQyBvyHhEjpR0ry/MpwgvOqTuQf6kFDzhjPfJu9pfuqDm9PoJRTYyc112jszjlTAEv0OSow+BPPeK8cF/MglO38x6gWAhcL3rw5yLBQX27V6sGqQw4MyRIx8huGtwIFNW70DlPA7icfugTwg8kCyMWHFRKPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786467080; c=relaxed/simple;
-	bh=69+/ZHGaDdL78N+hcf6DDcX0TaaoP7qcAI/+G/iQa10=;
+	s=arc-20240116; t=1786467249; c=relaxed/simple;
+	bh=J+8f8VdFlqno8KOp8oAJhpLpmTOk2ot/HH8tyVoPDKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZYndZAqXdziZ1Ui8CrsgfD/LjAhAZp+Ks+Csvau43IBJ7tx8VXvqM5nHdl9HCrs6Kudvf8qDFBbxsyvSCqwi/maQad1xnppsi9YIooms4x+hqsxowwbKGkqG251wMM59o1PU/1H/wHlMA8+Y2mh5hV53udBzsfReztkCrNGxeMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=utMBsQuO; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=EZFm2bq2IrFylvJA6QLzzA+XzQ86E+AZi4BibNvOvw+vRBTRiRkJ+brHz6qB/5ptpF67tky5kjYSRNddfRO+swvs5FNhA9FdJU1+U2Xr0lSnXmjpubX9URbMuFDRkW1FodK+7y2BHa0QPDHMTjk6xGRlbrmndI9IWkTRghlpJL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uIUrd/ZA; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="utMBsQuO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1786467076;
-	bh=0GD3LIfJJQQAA8U/BgXJdNFQ3Kg5LyHM66cvG8TX1j0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=utMBsQuOdNJm1yBLI+S0YvGTs/2nfOAWAiHbM5mapgkmJYgNS/+ZIL2ilAIL7Tj6q
-	 rEPA0EFGexf4cWuNCcc/F+2znAH65vsNspmyfHvf4tdoltAg7qTpSYkciTdHGzGF+8
-	 BcfIYeKEx92G3nef1ut+swW0ZB+5ZDSGQmdn6clSr57Ks7WmhgO1x7rjTSWIitBcXn
-	 jTzxsxSBb7srN9Gy+7nKAfCbxrmvdKQ5dXdF/ezm9YzhwHJwtL6+1tUrGL4TqT0qW3
-	 EvPuRLk/MkjldVlkbru7cbupnCGZxRaM3c6EFcZmfMYlBtclsR/EH3Wx5ei78NCdcg
-	 eN1DKjLhDutMg==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id D655260060;
-	Tue, 11 Aug 2026 18:51:15 +0200 (CEST)
-Date: Tue, 11 Aug 2026 18:51:13 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Wei Fang <void0red@gmail.com>
-Cc: fw@strlen.de, netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
-	k.chen@smail.nju.edu.cn
-Subject: Re: [nf_tables] rbtree interval set: in one batch, re-adding element
- E0 makes deleting an unrelated interval E1 fail with -ENOENT
-Message-ID: <antTASZYV9q81Ucc@chamomile>
-References: <CANE+tVpU7gL3ZJ9ro4oNKsqdN01mDMBpUou0ABakiO2WrT5gSw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uIUrd/ZA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=NVNhdZBfHZby8z9L2Q7rYgiNbqq2wAlCzjhxu04hhJk=; b=uIUrd/ZA87XZB5AerIzkeHK7eZ
+	XkQFf/KGV7L4+5xJZZ2WxWAQ7PXNMujj+uCNm0R21AY0vxBJEjeCWdMtwemn8CFU9PqtJ8ClSmGY5
+	DZrsKovDRHjRausnak27cQwr15mmFUulE7CkuU64LY1pHcBPO8cq1jkzf+lDWbvY01kE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wtpje-00H7xB-Lr; Tue, 11 Aug 2026 18:53:54 +0200
+Date: Tue, 11 Aug 2026 18:53:54 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Pei Xiao <xiaopei01@kylinos.cn>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] net: natsemi: ns83820: Fix use-after-free in
+ ns83820_remove_one due to race condition
+Message-ID: <0bb90a8c-0b27-415d-9add-1398fca17304@lunn.ch>
+References: <da666a865879cf17574fb724242c742d081c4a3b.1786416553.git.xiaopei01@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANE+tVpU7gL3ZJ9ro4oNKsqdN01mDMBpUou0ABakiO2WrT5gSw@mail.gmail.com>
+In-Reply-To: <da666a865879cf17574fb724242c742d081c4a3b.1786416553.git.xiaopei01@kylinos.cn>
 
-On Tue, Aug 11, 2026 at 05:22:01PM +0800, Wei Fang wrote:
-[...]
-> Problem
-> -------
-> On an interval set that already contains two intervals, one batch
-> that does both of the following fails on the second operation:
+On Tue, Aug 11, 2026 at 10:51:47AM +0800, Pei Xiao wrote:
+> In ns83820_init_one, &dev->tq_refill is bound with queue_refill, and
+> ns83820_rx_kick can schedule this work on system_wq when it is called
+> from the IRQ handler ns83820_irq (via ns83820_do_isr) or from the rx
+> tasklet rx_action.
 > 
-> 1. re-add element E0 without NLM_F_EXCL (update semantics);
-> 2. delete a different interval E1.
+> If we remove the device, ns83820_remove_one makes cleanup and the
+> memory allocated for dev with netdev_priv() is released by
+> free_netdev(), while the work mentioned above may still be pending or
+> running. The sequence of operations that may lead to a UAF bug is as
+> follows:
 > 
-> The delete returns -ENOENT.  Sending the same two operations in
-> separate messages succeeds.  A transaction must not change what an
-> operation does: batched and unbatched execution must behave the same.
+> CPU0                                      CPU1
 > 
-> Steps to reproduce
-> ------------------
-> One batch on an ipv4_addr INTERVAL set with two existing intervals:
+>                                           | ns83820_irq
+>                                           | ns83820_do_isr
+>                                           | ns83820_rx_kick
+>                                           | schedule_work(&dev->tq_refill)
+> ns83820_remove_one                        |
+> ns83820_disable_interrupts(dev)           |
+> unregister_netdev(ndev)                   |
+> free_irq(dev->pci_dev->irq, ndev)         |
+> iounmap(dev->base)                        |
+> dma_free_coherent(...)                    |
+> free_netdev(ndev)                         |
+> // dev is freed                           |
+>                                           | queue_refill
+>                                           | // use dev (use-after-free)
 > 
-> 1. re-add E0 = [10.0.1.0..10.0.2.0) without NLM_F_EXCL;
-> 2. delete E1 = [10.0.2.0..10.0.3.0).
+> free_irq() only prevents the IRQ handler from running again. An rx
+> tasklet that was already scheduled by a previous interrupt can still
+> run afterwards, and rx_action calls ns83820_rx_kick, which can
+> re-schedule tq_refill on system_wq. This leaves a window where
+> queue_refill can still run after free_netdev() has freed dev.
 > 
-> Raw netlink is required: the nft CLI re-sorts interval elements and
-> hides the ordering.
+> Fix it by stopping the sources that can schedule the work, in order:
+> unregister_netdev() and free_irq() stop the IRQ handler, tasklet_kill()
+> waits for the rx tasklet to finish, and cancel_work_sync() then drains
+> any work that was queued before proceeding with the remaining cleanup
+> in ns83820_remove_one.
 
-What do you mean by "hides the ordering"? It sounds negative, actually
-what is does is to pass a list of elements to the kernel that make
-sense when interpreting the interval?
+Is this change tested in any way?
 
-Ordering is paramount in this loose interface, your program does:
-
-        ...
-        put_interval_elem(&q, 0, E1_END, 1);
-        put_interval_elem(&q, 1, E1, 0);
-
-Deleting E1_END element before E1, makes no sense, the interval
-representation is reversed.
+   Andrew
