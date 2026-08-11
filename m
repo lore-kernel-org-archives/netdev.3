@@ -1,24 +1,25 @@
-Received: from out-2uec-a122.jellyfish.systems (out-2uec-a122.jellyfish.systems [63.250.43.122])
+Received: from out-zbxj-a71.jellyfish.systems (out-zbxj-a71.jellyfish.systems [198.54.127.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24E042F6F6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A195441DEE1
 	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 22:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.122
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786485730; cv=none; b=th5hvStDdVwhFG96tkf0R272CjeyVF4gmrkYoIZGwgchzdXrCObnCsBqNfZDltC6MObaXCRnqcHc9oBv9qASXrbapCk6f6ViipNy8x6nKvy1aRDhKY/GGO2dqcwDbzsWSqi0qWqdumWVKjB48ZtgvkE+o49fOKslBO1EzJ+dAho=
+	t=1786485730; cv=none; b=nt7sLKLmgYBQBOIPdzUt+YzrIaoOLyU20jWFaybPeHDkB9ZeXuqg79KppYGAR9K9mzXpv6Ju36DT841q1D09dlhNuBB3m2sq3vY7P0+g12D/XpiZq9FpOfn0YXGoYOy9BT+d2+JraNdVV1jnVLq1lwAzo00HUD0rKP3VqIUKvck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786485730; c=relaxed/simple;
-	bh=ztvrrkZPCvbDggAczBJt4Z3LvULEpa3mssQRsxLsEG4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B8AXQxNZq0ybClRemaQyMud4R0hIKkK1GDQgGBm57tv5m8O93BzTZP3qZOmoiRwV8aKwoFEd9REgIMTRsIMLuHHMUqdLanpqQt6NgNKbv4KlYslTVKX+VEhrF/VcpcotzdgBDhkqsJnAq8wrePWeGM8vthzmHTYiewL8I6wK0X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net; spf=pass smtp.mailfrom=catcrafts.net; arc=none smtp.client-ip=63.250.43.122
+	bh=rFuMfLFJVq/3ks2toWLWtGVVcTS1sq3q1RxvpflL70g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jqJA8qU/7MdyAMl2y+tqFgYg3HGCma9ALFFdUkk/5PHSKz4Pf2gGFHTKj/wmw3belCXyjX7JYWUrmRAPFwAXoK2tZJ/xAwQc2cvhynifzQvOPFb1Tz7P3qT9/OhHaEGLrxf80OoVnsRkrGjBnwwIKM7hzx3HQwG/PBBDO6TMrkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net; spf=pass smtp.mailfrom=catcrafts.net; arc=none smtp.client-ip=198.54.127.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=catcrafts.net
 Received: from mail.privateemail.com (unknown [87.215.145.39])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.privateemail.com (Postfix) with ESMTPSA id 4hKQZJ2Jmcz8sWS;
-	Tue, 11 Aug 2026 22:01:44 +0000 (UTC)
+	by mail.privateemail.com (Postfix) with ESMTPSA id 4hKQZN2H6tz8sWP;
+	Tue, 11 Aug 2026 22:01:48 +0000 (UTC)
 From: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
 To: David Heidelberg <david@ixit.cz>,
 	Krzysztof Kozlowski <krzk@kernel.org>,
@@ -42,10 +43,12 @@ Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
 	netdev@vger.kernel.org,
 	oe-linux-nfc@lists.linux.dev,
 	Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-Subject: [PATCH v5 0/6] nfc: s3fwrn5: support the S3NRN4V variant
-Date: Wed, 12 Aug 2026 00:01:29 +0200
-Message-ID: <20260811220135.472380-1-jorijnvdgraaf@catcrafts.net>
+Subject: [PATCH v5 1/6] nfc: s3fwrn5: drop of_match_ptr() from the I2C driver
+Date: Wed, 12 Aug 2026 00:01:30 +0200
+Message-ID: <20260811220135.472380-2-jorijnvdgraaf@catcrafts.net>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260811220135.472380-1-jorijnvdgraaf@catcrafts.net>
+References: <20260811220135.472380-1-jorijnvdgraaf@catcrafts.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,94 +58,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Envelope-From: jorijnvdgraaf@catcrafts.net
 
-This adds support for the Samsung S3NRN4V, a later part in the Samsung
-NCI NFC controller line the s3fwrn5 driver covers, found e.g. on the
-Fairphone 6 (SM7635).
+Since commit 777fd2dab446 ("nfc: Drop __maybe_unused from of_device_id
+tables") the OF match table relies on its MODULE_DEVICE_TABLE()
+reference to count as used, while of_match_ptr() still discards the
+.of_match_table reference on !CONFIG_OF builds. Drop of_match_ptr() so
+every configuration uses the same code; the S3NRN4V support added later
+in this series carries its variant selector in this table's match data.
 
-The S3NRN4V differs from the already-supported parts in three ways:
-it ships with working firmware, and its bootloader reports a hardware
-version the driver has no flash base address for (so the firmware
-download step is skipped); it loads its RF calibration data through
-a different proprietary command (DUAL_OPTION); and its reference
-clock speed is set with the single-byte FW_CFG form the vendor HAL
-uses on this generation.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Assisted-by: Claude:claude-fable-5
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
+---
+The Reviewed-by was collected on v4; the referenced commit id was
+refreshed for the rebased for-next (same commit).
 
-Patches 1-2 are preparatory cleanups from the v2 review; patch 3 adds
-the compatible to the binding and documents the PVDD supply; patch 4
-makes the driver enable that supply; patch 5 implements the variant;
-patch 6 adds the Fairphone 6 board nodes -- included so the hardware
-can be tested, per David's v2 request; it depends on patch 3 and is
-expected to be picked up via the qcom tree (linux-arm-msm) once the
-binding has landed.
+ drivers/nfc/s3fwrn5/i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested on a Fairphone 6 running a milos-mainline kernel: reader mode
-polls and reads ISO 14443-4 tags reliably, from a fresh boot and
-across driver reloads, with the calibration files present and also
-absent (the chip keeps its stored calibration and still reads). The
-v5 changes were re-verified on the device: tag reads, with the
-version-gate skip taking the restructured exit path. The test kernel
-is v7.1.2-based; its net/nfc differs from this base only in the UART
-transport (nci/uart.c), which this driver does not use.
-
-David, the calibration scheme follows our v2 exchange: fixed
-chip-scoped paths, with a DT table selector deferred until a second
-table set exists. If you'd rather have the selector now
-(samsung,calibration-variant, or the generic firmware-name), say so
-and the next revision will add it.
-
-The two questions we put to Luca in the v2 thread (calibration-table
-variance, linux-firmware submission) are still open; nothing here
-depends on them.
-
-Changes in v5:
- - Collect Krzysztof's Reviewed-by on patches 1 and 3.
- - Patch 4: drop the redundant regulator-framework sentence from the
-   commit message and state why the uart phy is not converted
-   (Krzysztof).
- - Patch 5: restructure the exit labels so failures before the
-   allocation no longer pass through kvfree(), drop the
-   update-announcement print, and log success at dev_dbg() (all
-   Krzysztof).
- - Rebase onto the nfc tree's current for-next, which was rebased
-   since v4 (the nci parse-hardening and data.c commits v4's cover
-   referenced are no longer in for-next after the rebase); patch 1's
-   referenced commit id updated to the rebased tree (777fd2dab446,
-   was 9739e07fdb29).
-
-Changes in v4 (full list in the lore thread):
- - Drop clk-req-gpios and the driver's clock-gating machinery (A/B
-   tested as functionless) and reference the buffer the chip is
-   wired to (RPMH_LN_BB_CLK2 -- Luca; verified load-bearing).
- - New patch 4 consuming the binding's pvdd-supply.
- - FW_CFG from the ->init hook and the DUAL_OPTION upload
-   version-gated on GET_VER, both matching the vendor stack; board
-   DTS style (Konrad).
-
-v4: https://lore.kernel.org/20260807021001.239389-1-jorijnvdgraaf@catcrafts.net
-v3: https://lore.kernel.org/20260726222405.153008-1-jorijnvdgraaf@catcrafts.net
-v2: https://lore.kernel.org/20260705190621.128257-1-jorijnvdgraaf@catcrafts.net
-v1: https://lore.kernel.org/20260703202601.78563-1-jorijnvdgraaf@catcrafts.net
-
-Jorijn van der Graaf (6):
-  nfc: s3fwrn5: drop of_match_ptr() from the I2C driver
-  nfc: s3fwrn5: use the "s3fwrn5_i2c" string literal directly
-  dt-bindings: net: nfc: samsung,s3fwrn5: add the S3NRN4V
-  nfc: s3fwrn5: enable the PVDD supply
-  nfc: s3fwrn5: support the S3NRN4V variant
-  arm64: dts: qcom: milos-fairphone-fp6: Add NFC
-
- .../bindings/net/nfc/samsung,s3fwrn5.yaml     |  19 +-
- .../boot/dts/qcom/milos-fairphone-fp6.dts     |  33 +++-
- drivers/nfc/s3fwrn5/core.c                    |  34 +++-
- drivers/nfc/s3fwrn5/i2c.c                     |  26 ++-
- drivers/nfc/s3fwrn5/nci.c                     | 178 +++++++++++++++++-
- drivers/nfc/s3fwrn5/nci.h                     |  23 ++-
- drivers/nfc/s3fwrn5/s3fwrn5.h                 |  14 +-
- drivers/nfc/s3fwrn5/uart.c                    |   2 +-
- 8 files changed, 313 insertions(+), 16 deletions(-)
-
-
-base-commit: 9f69d05b5a85c417c73fa2d5c7a2d507ac81cf4b
+diff --git a/drivers/nfc/s3fwrn5/i2c.c b/drivers/nfc/s3fwrn5/i2c.c
+index 4ba762611711..cb73993446e0 100644
+--- a/drivers/nfc/s3fwrn5/i2c.c
++++ b/drivers/nfc/s3fwrn5/i2c.c
+@@ -219,7 +219,7 @@ MODULE_DEVICE_TABLE(of, of_s3fwrn5_i2c_match);
+ static struct i2c_driver s3fwrn5_i2c_driver = {
+ 	.driver = {
+ 		.name = S3FWRN5_I2C_DRIVER_NAME,
+-		.of_match_table = of_match_ptr(of_s3fwrn5_i2c_match),
++		.of_match_table = of_s3fwrn5_i2c_match,
+ 	},
+ 	.probe = s3fwrn5_i2c_probe,
+ 	.remove = s3fwrn5_i2c_remove,
 -- 
 2.55.0
 
