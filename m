@@ -1,63 +1,63 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D60365A13
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2571937C911
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786474059; cv=none; b=jYxky1HDfnaMOA3JDUw/WvaJqB1hDhoCRG1F/lmNP4h2W3WNxXTjmTJIQx2JVix1OOzFLs04OkUeKZbRICHaOOQgD3jx0gCOp9/wfGJdI6fAdCM76gUXQAtUIb69/oL5IMIdXY7AKAFmh1sorRLm1lohuGpGQR6ICac7Z+dE4gw=
+	t=1786474061; cv=none; b=Mji3cVyqycBwHMFtRTsmkpkbiOecQvWIR2mdbzIaj1UISJ7SIoP+V1pADcdzVPE14Q1uQqAGiNvw4dA6jsIqZhEwbwQHn+2xUqbEqyKIlLcKHnTGz6o26ecOJGSL9slhRmXSHma6nrrkr6kOVObVtpXK6rFc7nm6zA9HBCnp76o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786474059; c=relaxed/simple;
-	bh=2DiZ3irCZiIEKl32oG5caVRm/8aYN1MMU3tKso8r9ag=;
+	s=arc-20240116; t=1786474061; c=relaxed/simple;
+	bh=/JvXuBex0ZIBNcLxHoUAVVIfmaYEO6HfA9TY6iBxRaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIApJKTuK4bQTU9+ZvdsDZUh780pTDgUerLpeeDAv+8yvFt+F0GMK4HDWUj4D4tsGlSzsXbKQh0CSoH+0mEHMvqXQvBhg9Te/Na/FmKfJdT7wgE87qrqwxNryZW2BUmEX288onWaho9M25HGkERYKOKMUs27bG4YaGwI2Dl8qGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=Pc8QmYRq; arc=none smtp.client-ip=209.85.210.179
+	 MIME-Version; b=gHUcB4H9p91Y5V58b2N39eEAUjbSKjAODQN9u9itn9e9hu4D3dS3Ok5NC+DoMAi3uyeln1XMDw01/nQaRPaTQprTzg8HXpb4woJ7HGfyYrZeGzdlEIMDplIxMpmzZ3Wh2wsMFpd5xIIblz7Xh+Y2DYNEtmzZir5vA1IN1KOCuI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=CVO9Cr6w; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="Pc8QmYRq"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8487b7b3fc8so220118b3a.3
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 11:47:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="CVO9Cr6w"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso159886a91.3
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 11:47:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1786474057; x=1787078857; darn=vger.kernel.org;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1786474059; x=1787078859; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4ylYeUW6ISwS0E2bcw9LPY5hcAfyBnPwa8fuwoqs4yU=;
-        b=Pc8QmYRqmk6sc84CMLh4fRQt8MGuhZNYsp1wwi1LfPpRNzdaVo8huCYx9uBjDoddfh
-         cpsSqMQydmtEzI8qX2LxMbvNfMDQdcaLczk+aBi0F6/SUw3jdidTv/gxiO8/plJgMgMk
-         JopAz1RgVxzHIw8IUyl4q/KDc0DVgGuEEY0PtMypk9FGmo5FttCA4u9V1z/3Y44ePo2h
-         TAE266SpmCUL8AJ+7DAKOiaVBM4lTEBol9nRoeDu1Lx8D43CF0fkhq/IqE8b2NzPNJzY
-         ZnEqrPhmSiyLHZ4mj+pXGlWUnO/4nmn7oCqRWDAbS7hKdIs+vS6VceWosisEBlBpNW03
-         uigg==
+        bh=4hLA5ZodlddzhKEWtmu3jxQzarE3WFFxZF4tW+C08MQ=;
+        b=CVO9Cr6wgg70tB10+vp8zikAfuQZ6+Jtrtty/lKJBr7yFrCtfyYYGhs8AckKzrlWao
+         aY9pvfDWyh28vNfVw0uWdV6VCLX+0iEbk39OJZGtzL9gfuswf73KhIDrPR21i3t1afNm
+         pIuuQKiw3+FALwkCchKOHWb08oGMp0eQnRI9WGGcEGHpVzaYwLG4d3bmo59r7VoAr9ih
+         IxBszSVYqIM4slXhYNNYpjx6qs5uLLLjtyeZ9DXuqCGeVs6XL6TId0w57nWKGNbrO1Be
+         zmOglRNkmlaKC9+XiPg9v7Nldp+BmUDXC3BORrWEcM8pC3pU8gVsiudHzV0CziVdaPwW
+         7zVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786474057; x=1787078857;
+        d=1e100.net; s=20251104; t=1786474059; x=1787078859;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4ylYeUW6ISwS0E2bcw9LPY5hcAfyBnPwa8fuwoqs4yU=;
-        b=g8stx+Uol9FERInZXB8oiN7vWB1FtkAihrzczwSjiAlC7hmQxUWwXFY2YPIU+1JZ92
-         7nR0Q3IayLf5Vw0pISPOJsOL6RkZNOA6xQem4Mm/jaIVi6wWKr7SLsxgGjSTPcUbPWMn
-         lAK/eM84O94CJ148GetPacNSjBDVhbWCEL+/8n8Gq778uVNZU2hyx2WsUtRH3aTCeLaK
-         JHJwI9aRdfAlP7kNew2SQ1MiwXm9Z+C/3fjCvqkrfsNkYw95w/vqWBMGwqjJQLJtgwUC
-         ZvOzh1PV8rwqplWjpJlCL/I6SuTwxijYOqd8Sf7CdZA7AWCoS71KezzIrwpN/xwcsyu1
-         jzSg==
-X-Gm-Message-State: AOJu0Yzh14dDg0vlPom0m2CjUe3BLJPIpNcjadd2yEYRJjc8fqcze1n3
-	GQLshhblR02TIo1qWt7houNGPBGmRpW+2reF0KixAF4e/Vep8sjd3WmovCeugaPducZRf2qloAn
-	ZOBC/
-X-Gm-Gg: AR+sD12KajUi85M5+x7C64wMcDTcd/Fgah6ubmmpt6bcst4goFEvjsj5s5pX6U3NY0L
-	xh+zZP92BcQu2DgB/XLbXg43R6TXKbBg8+rk0Rs95yqrmIntty/OaUjWEoahInS0MZtpdOaBhlM
-	AWyXmwYvLnrDheGaFXQOqyEqzK84xnzCLYMkpvE7dQVH0memMilhg4LTPuRDRnTa0pbEpyjeNH5
-	daKhLJXPDlln/2Mvnvymkmtj2QQGZKnyatjvShhsnldUNdFg+afQsbiQFQHHfJ6AgH5l/txF1PJ
-	23kDPHjmk8oflEuN57LLzDFFTc+NNHmCbLCRlUje0HsnOc+lTY3YB2jjBIN9s5Oc57hvh6xsO5X
-	IUG0FyoFNOhRU76T8omI6s5XqamteYQeoHNWBdAWpULF8Eg4mF8Q5rIbdZKgx397a0HNg39DbjB
-	+wceJYqLjGOKgcQxaqQdUFRWuNM8hv3nYKOFZmHOQJsQ==
-X-Received: by 2002:a05:6a00:886:b0:845:e97d:447e with SMTP id d2e1a72fcca58-84faf9ffbf4mr2473205b3a.26.1786474056875;
-        Tue, 11 Aug 2026 11:47:36 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:47::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84fb1cf450bsm177227b3a.9.2026.08.11.11.47.36
+        bh=4hLA5ZodlddzhKEWtmu3jxQzarE3WFFxZF4tW+C08MQ=;
+        b=rFL8Z9o641ZpA1Zk/cVuiLzu+qEgrQHsoOwnoLJZDIcUT9IgNZsYXX9PDPuOGdGCsP
+         HP1pCC+RRnAfR1SCGkMzXUofspQvpgZ4KvWb+bSU87cgOHWmsa/xtspt/VShp3S8v3sB
+         jX3hbslYH0bOH9a1iec3DQNAPWCVE+35odN9Eiz9cNQnOzBhQnaxz3ABymMKlqolJMsT
+         hu7FzivdbWXyvX5r7nb2cGCGgzaGeyVu4s9t9/xG7UQTgnoFcbOVWZNsooN6vunXGngN
+         1OJJPf53D9HMX/+iQFDBfuZP4yzPWQDapB0m9O3ANq/GfURdANQpo2OiYsDtHBzbaAfz
+         w+QA==
+X-Gm-Message-State: AOJu0Yy+IkGBYSTg/5MzfwYTuJh0VzHsU6IAXOaiwZiGJCfiafL6RRG0
+	JqZNomQ91a9+TaRN49DTq98GShfIm/dhCEiFP7eRGqGNBfM0XH72EO6WYoYK8vlLeOi3n8cWLhq
+	866se
+X-Gm-Gg: AR+sD13StTW9kQuUchy5oZNpYPMI7zPa24RGZBq86RXyeuKMIMkFgJyB+XJVj/EnGbz
+	rd1GsSu/r1PmiZHoH/v4g+KSWhRhZUS7CJWFiR4gITO7R4xOlR53XQVepgpAvlnwwg3jzkk4f6U
+	wPxBfo8d/zoWDUaz3Cf1OQU6NVNlnzphlhJy/n16tKQUa6nIC7Me59bqH3IZeD83MwDts/brl9U
+	Eyfwd3MCU2aePCZ0+81J3SsURqgPXXRsumaoiFvJtv6TQd8OhZT3g4K0SamvLn/3mqX+PdXh9c/
+	cFsUb4fBChBHxkY2fc8/zS7fxnC8sxK2EDZ5vsBi7kNWmQMjCIIMnl8vLc7PP6id3xOcrsKF/Jw
+	FrUAvzIMCQcwrtTQxmOC3lrXYsQ8MXhb68JEINupp/xBlFjq5b9xDBgQaE6V6l0H03kCOXfgKfx
+	Lq07SOkHFyzmQm4707/Wit3H7rc7q9r+i+pGeEPo787A==
+X-Received: by 2002:a17:90a:fc45:b0:38e:524:8797 with SMTP id 98e67ed59e1d1-392ec609a17mr5419566a91.13.1786474059381;
+        Tue, 11 Aug 2026 11:47:39 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4a::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392f94adf39sm524365a91.11.2026.08.11.11.47.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 11:47:36 -0700 (PDT)
+        Tue, 11 Aug 2026 11:47:38 -0700 (PDT)
 From: Joe Damato <joe@dama.to>
 To: netdev@vger.kernel.org,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
@@ -70,9 +70,9 @@ Cc: andrew+netdev@lunn.ch,
 	willemb@google.com,
 	Joe Damato <joe@dama.to>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/2] net/packet: Reduce VLAN tag code duplication
-Date: Tue, 11 Aug 2026 11:47:19 -0700
-Message-ID: <20260811184722.2612345-2-joe@dama.to>
+Subject: [PATCH net-next 2/2] net/packet: Use copy_safe_from_sockptr to dedupe code
+Date: Tue, 11 Aug 2026 11:47:20 -0700
+Message-ID: <20260811184722.2612345-3-joe@dama.to>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260811184722.2612345-1-joe@dama.to>
 References: <20260811184722.2612345-1-joe@dama.to>
@@ -84,170 +84,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Reduce code duplication for VLAN tag extraction by factoring the
-repeated code into a helper and using it.
+Reduce code duplication by using copy_safe_from_sockptr instead of
+repeated length checks followed by a copy.
 
 Signed-off-by: Joe Damato <joe@dama.to>
 ---
- net/packet/af_packet.c | 95 +++++++++++++++++++++++-------------------
- 1 file changed, 53 insertions(+), 42 deletions(-)
+ net/packet/af_packet.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
 diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 435756877aba..ee60dcc639ad 100644
+index ee60dcc639ad..9d326c2b04b3 100644
 --- a/net/packet/af_packet.c
 +++ b/net/packet/af_packet.c
-@@ -568,6 +568,27 @@ static u16 vlan_get_tci(const struct sk_buff *skb, struct net_device *dev)
- 	return ntohs(vh->h_vlan_TCI);
- }
+@@ -3961,10 +3961,9 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
+ 	{
+ 		int val;
  
-+static bool packet_get_vlan_tci_tpid(const struct sk_buff *skb,
-+				     struct net_device *dev,
-+				     u16 *tci, u16 *tpid)
-+{
-+	if (skb_vlan_tag_present(skb)) {
-+		*tci = skb_vlan_tag_get(skb);
-+		*tpid = ntohs(skb->vlan_proto);
-+		return true;
-+	}
-+
-+	if (unlikely(dev && eth_type_vlan(skb->protocol))) {
-+		*tci = vlan_get_tci(skb, dev);
-+		*tpid = ntohs(skb->protocol);
-+		return true;
-+	}
-+
-+	*tci = 0;
-+	*tpid = 0;
-+	return false;
-+}
-+
- static __be16 vlan_get_protocol_dgram(const struct sk_buff *skb)
- {
- 	__be16 proto = skb->protocol;
-@@ -997,20 +1018,19 @@ static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
- 			struct tpacket3_hdr *ppd)
- {
- 	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
-+	struct net_device *dev = NULL;
-+	u16 tci, tpid;
+-		if (optlen < sizeof(val))
+-			return -EINVAL;
+-		if (copy_from_sockptr(&val, optval, sizeof(val)))
+-			return -EFAULT;
++		ret = copy_safe_from_sockptr(&val, sizeof(val), optval, optlen);
++		if (ret)
++			return ret;
  
--	if (skb_vlan_tag_present(pkc->skb)) {
--		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
--		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
--		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
--	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
--		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
--		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
-+	if (po->sk.sk_type == SOCK_DGRAM)
-+		dev = pkc->skb->dev;
-+
-+	if (packet_get_vlan_tci_tpid(pkc->skb, dev, &tci, &tpid))
- 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
--	} else {
--		ppd->hv1.tp_vlan_tci = 0;
--		ppd->hv1.tp_vlan_tpid = 0;
-+	else
- 		ppd->tp_status = TP_STATUS_AVAILABLE;
--	}
-+
-+	ppd->hv1.tp_vlan_tci = tci;
-+	ppd->hv1.tp_vlan_tpid = tpid;
- }
+ 		packet_sock_flag_set(po, PACKET_SOCK_AUXDATA, val);
+ 		return 0;
+@@ -3973,10 +3972,9 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
+ 	{
+ 		int val;
  
- static void prb_run_all_ft_ops(struct tpacket_kbdq_core *pkc,
-@@ -2247,6 +2267,7 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 		       struct packet_type *pt, struct net_device *orig_dev)
- {
- 	enum skb_drop_reason drop_reason = SKB_CONSUMED;
-+	struct net_device *vlan_dev = NULL;
- 	struct sock *sk = NULL;
- 	struct packet_sock *po;
- 	struct sockaddr_ll *sll;
-@@ -2262,6 +2283,7 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 	__u32 ts_status;
- 	unsigned int slot_id = 0;
- 	int vnet_hdr_sz = 0;
-+	u16 tci, tpid;
+-		if (optlen < sizeof(val))
+-			return -EINVAL;
+-		if (copy_from_sockptr(&val, optval, sizeof(val)))
+-			return -EFAULT;
++		ret = copy_safe_from_sockptr(&val, sizeof(val), optval, optlen);
++		if (ret)
++			return ret;
  
- 	/* struct tpacket{2,3}_hdr is aligned to a multiple of TPACKET_ALIGNMENT.
- 	 * We may add members to them until current aligned size without forcing
-@@ -2436,18 +2458,12 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 		h.h2->tp_net = netoff;
- 		h.h2->tp_sec = ts.tv_sec;
- 		h.h2->tp_nsec = ts.tv_nsec;
--		if (skb_vlan_tag_present(skb)) {
--			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
--			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
--			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
--		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
--			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
--			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
-+		if (sk->sk_type == SOCK_DGRAM)
-+			vlan_dev = skb->dev;
-+		if (packet_get_vlan_tci_tpid(skb, vlan_dev, &tci, &tpid))
- 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
--		} else {
--			h.h2->tp_vlan_tci = 0;
--			h.h2->tp_vlan_tpid = 0;
--		}
-+		h.h2->tp_vlan_tci = tci;
-+		h.h2->tp_vlan_tpid = tpid;
- 		memset(h.h2->tp_padding, 0, sizeof(h.h2->tp_padding));
- 		hdrlen = sizeof(*h.h2);
- 		break;
-@@ -3547,7 +3563,9 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 	}
+ 		packet_sock_flag_set(po, PACKET_SOCK_ORIGDEV, val);
+ 		return 0;
+@@ -3988,10 +3986,9 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
  
- 	if (packet_sock_flag(pkt_sk(sk), PACKET_SOCK_AUXDATA)) {
-+		struct net_device *vlan_dev = NULL;
- 		struct tpacket_auxdata aux;
-+		u16 tci, tpid;
+ 		if (sock->type != SOCK_RAW)
+ 			return -EINVAL;
+-		if (optlen < sizeof(val))
+-			return -EINVAL;
+-		if (copy_from_sockptr(&val, optval, sizeof(val)))
+-			return -EFAULT;
++		ret = copy_safe_from_sockptr(&val, sizeof(val), optval, optlen);
++		if (ret)
++			return ret;
  
- 		aux.tp_status = TP_STATUS_USER;
- 		if (skb->ip_summed == CHECKSUM_PARTIAL)
-@@ -3562,29 +3580,22 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 		aux.tp_snaplen = skb->len;
- 		aux.tp_mac = 0;
- 		aux.tp_net = skb_network_offset(skb);
--		if (skb_vlan_tag_present(skb)) {
--			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
--			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
--			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
--		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
-+		rcu_read_lock();
-+		if (unlikely(sock->type == SOCK_DGRAM &&
-+			     !skb_vlan_tag_present(skb) &&
-+			     eth_type_vlan(skb->protocol))) {
- 			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
--			struct net_device *dev;
- 
--			rcu_read_lock();
--			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
--			if (dev) {
--				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
--				aux.tp_vlan_tpid = ntohs(skb->protocol);
--				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
--			} else {
--				aux.tp_vlan_tci = 0;
--				aux.tp_vlan_tpid = 0;
--			}
--			rcu_read_unlock();
--		} else {
--			aux.tp_vlan_tci = 0;
--			aux.tp_vlan_tpid = 0;
-+			vlan_dev = dev_get_by_index_rcu(sock_net(sk),
-+							sll->sll_ifindex);
- 		}
-+		if (packet_get_vlan_tci_tpid(skb, vlan_dev, &tci, &tpid))
-+			aux.tp_status |= TP_STATUS_VLAN_VALID |
-+					 TP_STATUS_VLAN_TPID_VALID;
-+		rcu_read_unlock();
-+
-+		aux.tp_vlan_tci = tci;
-+		aux.tp_vlan_tpid = tpid;
- 		put_cmsg(msg, SOL_PACKET, PACKET_AUXDATA, sizeof(aux), &aux);
- 	}
- 
+ 		if (optname == PACKET_VNET_HDR_SZ) {
+ 			if (val && val != sizeof(struct virtio_net_hdr) &&
 -- 
 2.53.0-Meta
 
