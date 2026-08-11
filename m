@@ -1,199 +1,164 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39851369D76;
-	Tue, 11 Aug 2026 18:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786473091; cv=none; b=YUkdSWTmDLSkK/1dkNIpDTwxE4AB3gQ/BCfNwDgkzazL9ogNKpILwovfXGuX1FP/imD6Vhv1//+EwLercFNavcX1X1xUDgGl9OSOJgqCfIgJU/6YDJQRnv1BXAYPpHZWzEwb7qvT2jBPTvQG+hAQeRrrlHoqsf4eUjZATFr9SyU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786473091; c=relaxed/simple;
-	bh=Vo4Z3aUxM4tTHTF/z556wLMnLFj0u9fFoCoJ1zeiNhc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rF3i3Kv9TX/KALXO852JKlElgl0pFOOO83bpX/q+sOIDJ6WQlwKHGhmDfUlH+dQIHIRaFKG0jNAOFFUEMpF1aWVl+jFKkMxlTtxfz++f5YDz56flmVul19K//wi3GMm3qt9rElKhjezUOmNxlpcuL08UrDlXPcwfNIjbROSEu1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=zfCNJgqO; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAEA37DAAA
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786473403; cv=pass; b=DOCo2kfp8n9Q2g6ozYBTJP1fwD4GHm51dcip/2G1OL8Z5pzeoQUE5X0jP/ktmp52R7KxshjsJAEq3Vkah3prcGa1fc5M6AnciJrkooWha13cUQj35EkcTHTwOxBKUrnVPewLtamr0xuoLW9zV67NYiPLh+hubCJ/I4HTvIUNTvE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786473403; c=relaxed/simple;
+	bh=Ga3x7QU48MG6npSgZuy2UL0tPHEdVGKIbegpu/NQkmI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EoELUwGqUEvFX4Dw8BqOTllswDmWG4KGxY7kWOmMnfechKRmgUrzVdyF5dX0WEZh87nvpBW4g+SwgTBe3VJaDsfBGJoTTSY3f8nPjtwcF2f6c5Bb/kD6aIYiJVk/56VkrplNPw24hOAJPCAE1FPETyYdP5KV2elPISXr78R9oOc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rw72E2pe; arc=pass smtp.client-ip=74.125.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="zfCNJgqO"
-Received: from [10.0.0.152] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 2FF9953406F4;
-	Tue, 11 Aug 2026 20:31:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1786473087;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=30y1Ndtt2pEAUgoeW88Dp+uTXv0eUW/Kz+uRzJE95tE=;
-	b=zfCNJgqOvOApZRF+wiZrKukRZJ42umrNrp/zL1hg0vxeWatodDDTlabkENmkWsVZ2VMGT4
-	Hw8vb3S84Fo3BwKwcrUiS4xAIa/Eql2mzTJdJIJyHu7GowcG2yc/S9Sjc6S2jVthvj7N6W
-	GQFK/2c0qEYFcTwppdYke3KFGToYQIM=
-Message-ID: <2d2b72ad-2aac-43f6-8f47-72b2fc148192@ixit.cz>
-Date: Tue, 11 Aug 2026 20:31:27 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rw72E2pe"
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-66b2dbef6afso326229d50.2
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 11:36:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786473401; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HwoAAoL11aLV2UBiPkDbm9xHBNUZjdyEdox/q88siYGHeO3YUuDnM3TwD59nuFhtdJ
+         ujz15ZxhONVlPXeprg19ch8UpCGZ/0iWIbNQ7Uz+gx6hi84jlvIpiVXT/qYzIQH6oXGX
+         BdQc1sBImgNffv/ZikHhMadVuy5xVEySjqAxw1tW2aHh/5C9SknsN21fXEhsuQJmaGHh
+         Y39UE04cHrN9PTf3A+7nSAO5kLqsREia8BNphFpZvAAiiZ9/nTTwe7reDv4GxSrYqFZO
+         3sNhRV3lRUfgdicPEL84D6kxLBMBX5TTH6D2w0lhDx0cAov7P3Ntx4XmSjkzKqsrULi0
+         hsZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tCNeSdua54llRcFvuGJVdgECZ7CCGafyUkX6QFDUHm4=;
+        fh=aZ9z+NuKYGW/njwBX9/AxVwhkSfo1SA7FBqhDETgiEQ=;
+        b=St9eDZJPLM4+w8sW7a5JoNJwM+2bhmqDf0SP1x6Svcr769zgy1DCeVZyrN4+TAIe8q
+         6STBrygxZ22Hwe3QtjfGNucc0snVvhMWuaPt/S7i1C3HEgU+NswUIPl2M4/eSZQZVUel
+         hlV0OcmPWy9O15I9SJqShC0W3AAS+vhzSHXVThIgabWTjlrknCjI0ikluuIrLpk46TF0
+         Wk6da6furMup699I3iAi6nxU6JCxtyrFMypBsjO08OEkTvEzCvzO1aNL3tE9CMKwtBJC
+         UUsTlYQikUIEi65cTZfr9dNxd6XFw90UQl0vJafo0DZkOhlu6fsZ23AOaJ/efNxiWBvi
+         9IlQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786473401; x=1787078201; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tCNeSdua54llRcFvuGJVdgECZ7CCGafyUkX6QFDUHm4=;
+        b=Rw72E2pe/q3j9E6TWxmA+x6PEaM0NDsvr8azrENiS6O7O048tJnHQRkfDqVbXeWSHF
+         c8rTwjNvJ4FuYH+PxLIMjPXerAsXeQiO/7CvH/5iKWXSqcCwmPFCTkhV9dpCgjzunkTv
+         TTSCNxp15501Lv4nUZEtwvCugvPCQBDO8RDaFjudyiTgqNzdCvjG6hbaa2HOAaH1IRAE
+         obq0SYFaJ9QDB4fiioHpDGt1Urwp1JAecO5Nz1BaVrvA6JROG4PfFWQKTP3y8PELPsz3
+         0IPw46TtwlL24iHWqdo7+EgD6Ug41u/YoAkduuIDQAW9Qm7CTTbJKse2AEXTipwHsqRk
+         pbQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786473401; x=1787078201;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tCNeSdua54llRcFvuGJVdgECZ7CCGafyUkX6QFDUHm4=;
+        b=kPOJUrwN0+bYWKIQbP+08CVK4sx9+QJ122aE4UBzeuaObVYmsPqtNCgKP7wJEfU+GV
+         +bBCh4qJRqoeiDg/t9mJ7mwtUCxTVnifyfnB8FcEVyrev7E5nIvXxZ/CuWFoV4wMJ2qh
+         H7rKF2H3tvi2a4BD+LbmIIqNLRJ5zAn1Y5DOlf3QyBUJweWjgn2Qs+uNpWF8Vmu/mOWA
+         HHN/TuhmGuNgW7G5tRvJQd1IRDmMJUjp45c2eREq11prxIUSUO53GOWfbNK9EavnOIFM
+         kU8hp1fLp+VRLAS+P8ylRxGT7GGpJEahDgA6qi6d7j0PEshIy9JIZNtRjMDgM5aUsQI7
+         KpvQ==
+X-Gm-Message-State: AOJu0YxYhs9SeOqTMMUm42voL7I83/9qcKGq02Nnwyj0KzJ1A8rr6KlO
+	G4Px7TC6LPpN0OriRfOJ5KssJv7AKJonXuuwkUG+qEIdHYPpo3+LTzmJSMW09EXzXrX8piEKjgN
+	7v4/wnYSR79F01AA1CHx8W7QIRCBkMc8=
+X-Gm-Gg: AR+sD10B6gNaTcRcgpI0WeGMjNqhi06RIUtnnNIPFTeWIJXH56r5ka3+I/HGH6UB7Rw
+	oR2RuQw2FaFGy/e03igRRIFiH0VtzmAuyoDzni/0Oq/0qVj2v9zXnwjMyhp1tRrYAfFiaxBvi4K
+	03sE2NEXImV218szxnIrI4jXRAV+rZiRQzR3RWf1151nGOwqxq06GCkb5pNVBnRBpnDFsh26MaT
+	1GzeRKL0eD7fZAKHuZ9ceYmRtRWCIukmzRw72fR8+HcZyqqWn9GoFCy/eeRlVtPNXG+nHAg8DUW
+	XG4+Lp3r4wMBoAtWcyyRQNaoyV0XqUQZKrvcgLwXDgLeMg1gRrVdkHsCmNbhZc0XsWbDOt2G7/0
+	=
+X-Received: by 2002:a53:e690:0:b0:668:9230:e268 with SMTP id
+ 956f58d0204a3-66b22ea39f3mr2598402d50.47.1786473400764; Tue, 11 Aug 2026
+ 11:36:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] nfc: llcp: fix NULL pointer dereference race in
- nfc_llcp_send_ui_frame()
-To: Junwoong Doh <jdoh.kernel@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260725115556.1250160-1-jdoh.kernel@gmail.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260725115556.1250160-1-jdoh.kernel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260808160129.890119-1-willemdebruijn.kernel@gmail.com>
+ <20260810183118.32d5c06a@kernel.org> <CAF=yD-JsW3moq_xw+ZM5c8hxg77btODoBujMpNut3Nr04PYt4A@mail.gmail.com>
+ <20260811082723.43a9af08@kernel.org>
+In-Reply-To: <20260811082723.43a9af08@kernel.org>
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date: Tue, 11 Aug 2026 14:36:02 -0400
+X-Gm-Features: AUfX_mywdFntMkejyvZGY6wm8J1ms_WvvbdGuKJPk2EjpGYRxz0lElGJT1d09Zs
+Message-ID: <CAF=yD-+DG1YMtgDh=9qTyLFdM5GwLFSp3f-WprtdtDAFn4Ac8Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] selftests: drv-net: so_txtime: only send test
+ traffic to sch_etf
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, horms@kernel.org, andrew@lunn.ch, 
+	Willem de Bruijn <willemb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 25/07/2026 13:55, Junwoong Doh wrote:
-> nfc_llcp_send_ui_frame() checks whether sock->local is NULL, but it is
-> called by llcp_sock_sendmsg() without the socket lock held, which opens
-> a window for a race condition. Between the sock->local check and the
-> sock->dev use in nfc_alloc_send_skb(), llcp_sock_bind() can run
-> concurrently and set both sock->local and sock->dev to NULL, which can
-> lead to a NULL pointer dereference in nfc_alloc_send_skb().
-> 
-> Take the socket lock in nfc_llcp_send_ui_frame() so that the sock->local
-> check and the sock->dev use are performed under it. The message is
-> copied from user space before the lock is taken, to avoid holding the
-> lock across a user space access that can block for an unbounded amount
-> of time.
-> 
-> Fixes: dded08927ca3 ("nfc: llcp: fix NULL error pointer dereference on sendmsg() after failed bind()")
-> Signed-off-by: Junwoong Doh <jdoh.kernel@gmail.com>
-> Link: https://lore.kernel.org/all/a89d0419-8bcf-40a2-b52d-3e5d911f11da@gmail.com/
-> ---
->   net/nfc/llcp_commands.c | 17 ++++++++++++-----
->   1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-Hello Junwoong,
+On Tue, Aug 11, 2026 at 11:27=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> On Tue, 11 Aug 2026 10:29:12 -0400 Willem de Bruijn wrote:
+> > I can reproduce after
+> >
+> > tc qdisc replace dev eth0 root handle pfifo_fast
+> > tc qdisc replace dev eth0 root handle 1: pfifo_fast
+> >
+> > It is not possible to replace tc qdisc replace with a del + add pair,
+> > due to "Error: Cannot delete qdisc with handle of zero." on systems
+> > with the default 0: qdisc, like my debian trixie.
+> >
+> > The simplest change, then, is to replace the qdisc twice, first for
+> > the kind, then for the handle.
+> >
+> > @@ -45,17 +45,18 @@ def _qdisc_setup(ifname, qdisc, optargs=3D""):
+> >      """
+> >      orig =3D tc(f"qdisc show dev {ifname} root", json=3DTrue)[0].get("=
+kind", None)
+> >      defer(tc, f"qdisc replace dev {ifname} root {orig}")
+> > +    tc(f"qdisc replace dev {ifname} root {qdisc} {optargs}")
+> >      tc(f"qdisc replace dev {ifname} root handle 1: {qdisc} {optargs}")
+> >
+> > It's an extra replace, so a bit ugly. But avoiding that requires
+> > parsing the json for existing handle, branching on that.
+> >
+> > I'm testing the above some more, will send that if no concerns.
+>
+> If we are adding an extra command adding del would seem more intuitive?
+> But no preference.
 
-it seems Sashiko noted an issue, could you verify it please (see below, feel 
-free to ignore the pre-existing one)?
+Agreed. It's a slightly bigger patch, because it has to be wrapped in a try
+block. But its purpose is more obvious.
 
-Thanks
-David
+https://lore.kernel.org/netdev/20260811182856.2702163-1-willemdebruijn.kern=
+el@gmail.com/T/#u
 
---- Patch [1]: [PATCH net] nfc: llcp: fix NULL pointer dereference race in 
-nfc_llcp_send_ui_frame() ---
-commit 9c4c4bdf57043772ddc74843af1f533e7e9bc0ca
-Author: Junwoong Doh <jdoh.kernel@gmail.com>
+> The issue may be because the ring reconfig test now also sets up qdiscs.
+> And we don't have a proper way to restore previous qdisc config in the
+> tests. If another test needs to change qdiscs we should probably add
+> better infra, but for now I think the simple workaround you suggest is
+> best.
 
-nfc: llcp: fix NULL pointer dereference race in nfc_llcp_send_ui_frame()
+Interesting, and that also has special logic to work around default handle =
+0:
 
-This patch fixes a race condition in nfc_llcp_send_ui_frame() where
-concurrent bind() calls can lead to a NULL pointer dereference. It moves
-the allocation and socket state checks inside the socket lock.
+"
+    elif root is None or root["kind"] in ("mq", "noqueue"):
+        # The auto-attached root mq has handle 0: on any device (real or si=
+m),
+        # which the kernel rejects as a qdisc parent. A 0: handle means the=
+ mq
+        # is the untouched kernel default - no custom child qdiscs can hang=
+ off
+        # an unaddressable parent - so installing a real handle and restori=
+ng
+        # the default mq on exit preserves the device's effective policy.
+        mq_handle =3D "1:"
+"
 
-Link: https://lore.kernel.org/all/a89d0419-8bcf-40a2-b52d-3e5d911f11da@gmail.com/
-
- > diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
- > index 291f26facbf3a..cfd5f6aebf8df 100644
- > --- a/net/nfc/llcp_commands.c
- > +++ b/net/nfc/llcp_commands.c
-[ ... ]
- > @@ -763,7 +769,7 @@ int nfc_llcp_send_ui_frame(struct nfc_llcp_sock *sock, u8 
-ssap, u8 dsap,
- >  		pr_debug("Fragment %zd bytes remaining %zd",
- >  			 frag_len, remaining_len);
- >
- > -		pdu = nfc_alloc_send_skb(sock->dev, &sock->sk, 0,
- > +		pdu = nfc_alloc_send_skb(sock->dev, sk, 0,
- >  					 frag_len + LLCP_HEADER_SIZE, &err);
-
-Since the lock_sock(sk) critical section now covers this entire loop, could
-calling nfc_alloc_send_skb() with a hardcoded flags value of 0 cause an
-uninterruptible sleep deadlock?
-
-When the socket's write buffer is full, sock_alloc_send_skb() will invoke
-sock_wait_for_wmem() to sleep until memory is available. For datagram
-sockets, this function does not drop the socket lock while sleeping.
-
-Concurrently, any other operations needing the socket lock (such as close()
-calling llcp_sock_release) might hang in a D-state indefinitely until the
-send buffer drains.
-
- >  		if (pdu == NULL) {
- >  			pr_err("Could not allocate PDU (error=%d)\n", err);
- >  			len -= remaining_len;
-
-This is a pre-existing issue, but does the exact same race condition remain
-unpatched in nfc_llcp_send_i_frame()?
-
-In nfc_llcp_send_i_frame(), llcp_allocate_pdu() is called without holding
-the socket lock. If a concurrent disconnect frame transitions the socket to
-LLCP_CLOSED, a concurrent failed bind() can set llcp_sock->dev to NULL:
-
-net/nfc/llcp_commands.c:nfc_llcp_send_i_frame() {
-     ...
-     pdu = llcp_allocate_pdu(sock, LLCP_PDU_I,
-                             frag_len + LLCP_SEQUENCE_SIZE);
-     ...
-}
-
-Which then calls nfc_alloc_send_skb() and dereferences the nullified
-sock->dev when computing the headroom:
-
-net/nfc/core.c:nfc_alloc_send_skb() {
-     ...
-     total_size = size +
-             dev->tx_headroom + dev->tx_tailroom + NFC_HEADER_SIZE;
-     ...
-}
-
-Would it be necessary to apply a similar locking fix to
-nfc_llcp_send_i_frame() to prevent this NULL pointer dereference?
+Again, sorry for needing an extra fix to what was already a fix :/ We hit a
+corner case that even with my testing I just did not reach.
