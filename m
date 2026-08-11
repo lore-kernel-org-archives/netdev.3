@@ -1,162 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADE42C032C;
-	Tue, 11 Aug 2026 08:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B44337DE89
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 08:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786436371; cv=none; b=Jl8aqO8Aju70uT/+HUx5jQuGQBSyncp3zSDBzrArVF73e58Uem9jQRueSNIszlSOZtIbhqEN+f3FY3bj55pxFox4ZIEd9/UhsP31PVx/H/hwwgYX0Lhl4Vsipw+YHThkvO+u/oACHZy0HrLEGMZfVlWAN1i8iW1onv08hBjAUb8=
+	t=1786436676; cv=none; b=dO1vXS+cjqbeE4qE5QZfsx6FEK55xTpIVnj2HR54yi/vs8IrVHlJF4Lh9IL66VyRFVrm+TLLtiuhmR2QK2vjD+AMCVkXicghzpYGyjbFqWMxdgwQ4131g5+TaoCFsiHixZ/3l5OqQclW7IXDyQ3Pd9j+PBTWnN5rGpbCAXik5LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786436371; c=relaxed/simple;
-	bh=nWKozPvyrxJWcxJcvUKGnijZGAz7hWAYbC8jFwLPGAk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WZukrcQ6CcE43lYxE7R0q9ibj2z8W4WHIVC8NLbBSxhh6s4e7sGbKZxIrUnO2wt+I6sh1OltUfyOZlf2921cSEDc7+KMJB1b1ntKvi9E88mQvp/b07Lfyfi98Oc7mjGN/6HyV5j8wuM6siOM8fGgtopW6Qw6qvNy1oMPXDUGp7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejW4YNuj; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejW4YNuj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB06C1F000E9;
-	Tue, 11 Aug 2026 08:19:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786436370;
-	bh=vJ/nn4l998g9AAeq2RJa47GwzFPg+QFpEzPNd0q7XpY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ejW4YNujmqdWfFloDDdYwVSrzbhN/cWQf948Xbd/jgyGXjuSeqJ65EkBmSsW2Ndb4
-	 Kqd1XSR0uY0KxpKzLsqGYTKluDrukFUCVvdnypcOlUK9e/0oNrgH2STadAon2pgl5y
-	 O/UyXdy1IOz4XdAUk13DBmYTgweTWQ3fqjCTuOuvI9l/VolXNWlQ1vMzUVcR7bPtGK
-	 7A1zN/WHYtVkUVNC5gxMDxreyrx2ZO3dIMnq1q/rT4xclVNrdkwOHXfZYucxRvkrMT
-	 VBpfw4O2gSZGrPjhdDUWi2Kr9nYjFeWOPG4KLaIcvTJzFt0orfKuu0Wo9g9Iwn3pH1
-	 yf+/QE7vE/9fg==
-Date: Tue, 11 Aug 2026 09:19:24 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ren Wei <weir@nebusec.ai>
-Cc: oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, david@ixit.cz,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, pengpeng@iscas.ac.cn, kees@kernel.org,
-	error27@gmail.com, raoxu@uniontech.com, dddddd@hust.edu.cn,
-	ian.ray@gehealthcare.com, joe@dama.to, kuniyu@google.com,
-	linma@zju.edu.cn, vega@nebusec.ai, rakukuip@gmail.com
-Subject: Re: [PATCH 1/1] nfc: llcp: Pass caller buffer to
- nfc_llcp_general_bytes to fix UAF and memory leaks
-Message-ID: <20260811081924.GX51943@horms.kernel.org>
-References: <cover.1786029423.git.rakukuip@gmail.com>
- <006437e618b55acc0df69d94255244a490b11461.1786029423.git.rakukuip@gmail.com>
+	s=arc-20240116; t=1786436676; c=relaxed/simple;
+	bh=Sj42UF5/AeBVexajqf43UEswiqnqsFBUdnx2Ar8yyCU=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=AeF3iQVnLuS7iqPvl8UqZPVMGenNEHey3eWJC1DK1QPmfX0fdMmxNCCvPxpBV8sxudW4oZFQyPwXkjrUwHChnfvy0Dx5TuL2SPcx9iDdEFRsMSpC6Dp7PJynwbeB4V/TY+oftefWGYf5I9fiFQbk6cSvSa/XM/1NgrXuwMMRgsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-6ae4917006eso2027282eaf.2
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 01:24:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786436674; x=1787041474;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=IfDOdJhJ/FL4bazj7JYe8n7z0DeOhYlFBjsPHkrL6Zk=;
+        b=aJCY/R4VykV7uupLhYgYqLVgvg9lKmO8wnHyM6NsEvhi478eLcWUnvCSaQ9c84ZB7H
+         plnRYATDsVZRinmRqoAPGuHez3QoX07CTtxtptPqC6Qa8DREBvREew9kzuNaXQ7FRFnO
+         iOquME1mEfdCj0daxa18zJ02Z5Zs3AjssNXIod8eLppDkvGXsjwQqIDKt8+QL9j/7WCW
+         SsLKx8e5/PvRaZIpjYTixu2bpDorhJ2/v5te6GK5XL8Wq5Cso3QbnxLGaPn343RXMsnO
+         gxiMDYwMMXORZ8uTRqydaqseM7QJAkRkMhDe1o76EKdCd96XXY59PrPCa4dHOrP5EFX+
+         kNNg==
+X-Forwarded-Encrypted: i=1; AHgh+RpIc/TAJREkuwGDTr1UeL9Kukui65p9N0+FPm7bbLO9PBSKaQBbRDw+WDxQgaef0ai/r9pDLxY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsL+mgy/BKKTnq++7q5sxaJfYCezM7MtQPJ0a7fWY/VSMcfE1j
+	G+lgsXFGrcWUVgWq+4XcrBkrBbAbL6aLnNYG/NnkDB8W99vmjEhezD1oYbYLq0cSeA2qL1CunG+
+	Hx7xc+hiNyg/NsWVRHeOWaydHYtksXRBejpjOSHivlR2iLTSXTHTJTLv1/+U=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <006437e618b55acc0df69d94255244a490b11461.1786029423.git.rakukuip@gmail.com>
+X-Received: by 2002:a05:6820:60e:b0:6ac:9729:670d with SMTP id
+ 006d021491bc7-6b0a3254e6amr706290eaf.33.1786436674413; Tue, 11 Aug 2026
+ 01:24:34 -0700 (PDT)
+Date: Tue, 11 Aug 2026 01:24:34 -0700
+In-Reply-To: <6a7a68ea.9c11d2ce.289b96.00f3.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a7adc42.01d0871a.3a0d52.00c4.GAE@google.com>
+Subject: Re: [syzbot] [x25?] inconsistent lock state in valid_state (7)
+From: syzbot <syzbot+15cbd86f569e8b084383@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-x25@vger.kernel.org, 
+	ms@dev.tdt.de, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Aug 08, 2026 at 12:28:51AM +0800, Ren Wei wrote:
-> From: Luxiao Xu <rakukuip@gmail.com>
-> 
-> commit 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
-> attempted to fix a use-after-free (UAF) issue by
-> invoking nfc_llcp_local_put(local) after accessing local->gb. However,
-> if the reference count dropped to zero, local was freed prematurely,
-> leading to a Use-After-Free when the returned pointer was accessed.
-> Alternative approaches using dynamic allocation (such as kmemdup) introduced
-> severe memory leaks and state inconsistency because callers consistently
-> treated the returned pointer as borrowed memory.
-> 
-> Fix this properly by refactoring nfc_llcp_general_bytes() and
-> nfc_get_local_general_bytes() to accept a caller-provided output buffer
-> (out_gb) and its maximum length (gb_max_len). The general bytes are
-> safely copied into out_gb BEFORE calling nfc_llcp_local_put(local),
-> ensuring safe lifetime management without ownership transfer complications.
-> 
-> Update all callers across drivers (microread, pn533, pn544, st21nfca,
-> digital_dep, and nci) to allocate local stack buffers of size
-> NFC_MAX_GT_LEN and pass them to nfc_get_local_general_bytes().
-> 
-> Fixes: 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-> Signed-off-by: Ren Wei <weir@nebusec.ai>
+syzbot has found a reproducer for the following issue on:
 
-Hi Ren,
+HEAD commit:    3d08ff75a47a Add linux-next specific files for 20260810
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=141fca9e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5ba0556605934602
+dashboard link: https://syzkaller.appspot.com/bug?extid=15cbd86f569e8b084383
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1030a879580000
 
-Thanks for your patch.
-I've provided some minor feedback below.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/227afac921c2/disk-3d08ff75.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/236f7cfe0ac3/vmlinux-3d08ff75.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/aea89831fd96/bzImage-3d08ff75.xz
 
-> diff --git a/drivers/nfc/microread/microread.c b/drivers/nfc/microread/microread.c
-> index 4149c5d735bd..0f0a03da9ff4 100644
-> --- a/drivers/nfc/microread/microread.c
-> +++ b/drivers/nfc/microread/microread.c
-> @@ -251,9 +251,8 @@ static int microread_start_poll(struct nfc_hci_dev *hdev,
->  		param[1] |= (1 << 1);
->  
->  	if ((im_protocols | tm_protocols) & NFC_PROTO_NFC_DEP_MASK) {
-> -		hdev->gb = nfc_get_local_general_bytes(hdev->ndev,
-> -						       &hdev->gb_len);
-> -		if (hdev->gb == NULL || hdev->gb_len == 0) {
-> +		nfc_get_local_general_bytes(hdev->ndev, hdev->gb, sizeof(hdev->gb), &hdev->gb_len);
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+15cbd86f569e8b084383@syzkaller.appspotmail.com
 
-Please line wrap so that lines are 80 columns wide or less.
-Likewise elsewhere in this patch.
+================================
+WARNING: inconsistent lock state
+syzkaller #0 Not tainted
+--------------------------------
+inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+ksoftirqd/1/24 [HC0[0]:SC1[1]:HE1:SE0] takes:
+ffff88801dfcc260 (sk_lock-AF_X25){+.?.}-{0:0}, at: lock_sock include/net/sock.h:1713 [inline]
+ffff88801dfcc260 (sk_lock-AF_X25){+.?.}-{0:0}, at: x25_kill_by_neigh+0x10d/0x250 net/x25/af_x25.c:1778
+{SOFTIRQ-ON-W} state was registered at:
+  lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5908
+  lock_sock_nested+0x41/0x100 net/core/sock.c:3827
+  lock_sock include/net/sock.h:1713 [inline]
+  x25_bind+0x209/0x450 net/x25/af_x25.c:694
+  __sys_bind_socket net/socket.c:1945 [inline]
+  __sys_bind+0x2e3/0x410 net/socket.c:1976
+  __do_sys_bind net/socket.c:1981 [inline]
+  __se_sys_bind net/socket.c:1979 [inline]
+  __x64_sys_bind+0x7a/0x90 net/socket.c:1979
+  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+  do_syscall_64+0x166/0x510 arch/x86/entry/syscall_64.c:84
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+irq event stamp: 785046
+hardirqs last  enabled at (785046): [<ffffffff8188d110>] __local_bh_enable_ip+0xd0/0x130 kernel/softirq.c:457
+hardirqs last disabled at (785045): [<ffffffff8188d0b1>] __local_bh_enable_ip+0x71/0x130 kernel/softirq.c:434
+softirqs last  enabled at (784822): [<ffffffff8188fdb6>] run_ksoftirqd+0x36/0x60 kernel/softirq.c:1078
+softirqs last disabled at (784827): [<ffffffff8188fdb6>] run_ksoftirqd+0x36/0x60 kernel/softirq.c:1078
 
-> +		if (hdev->gb_len == 0) {
->  			im_protocols &= ~NFC_PROTO_NFC_DEP_MASK;
->  			tm_protocols &= ~NFC_PROTO_NFC_DEP_MASK;
->  		}
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-...
+       CPU0
+       ----
+  lock(sk_lock-AF_X25);
+  <Interrupt>
+    lock(sk_lock-AF_X25);
 
-> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-> index dc65c719f35f..1ed0ecde5872 100644
-> --- a/net/nfc/llcp_core.c
-> +++ b/net/nfc/llcp_core.c
-> @@ -635,23 +635,29 @@ static int nfc_llcp_build_gb(struct nfc_llcp_local *local)
->  	return ret;
->  }
->  
-> -u8 *nfc_llcp_general_bytes(struct nfc_dev *dev, size_t *general_bytes_len)
-> +u8 *nfc_llcp_general_bytes(struct nfc_dev *dev, u8 *out_gb, size_t gb_max_len, size_t *general_bytes_len)
->  {
->  	struct nfc_llcp_local *local;
->  
-> +	if (!out_gb || !general_bytes_len)
-> +		return NULL;
-> +
-> +	*general_bytes_len = 0;
-> +
->  	local = nfc_llcp_find_local(dev);
-> -	if (local == NULL) {
-> -		*general_bytes_len = 0;
-> +	if (local == NULL)
->  		return NULL;
-> -	}
->  
->  	nfc_llcp_build_gb(local);
->  
-> -	*general_bytes_len = local->gb_len;
-> +	if (local->gb && local->gb_len) {
-> +		*general_bytes_len = min_t(size_t, local->gb_len, gb_max_len);
-> +		memcpy(out_gb, local->gb, *general_bytes_len);
-> +	}
+ *** DEADLOCK ***
 
-x86_64 W=1 builds with GCC 16.1.0 warn that:
+locks held by ksoftirqd/1/24: 1, last CPU#1:
+ #0: ffffffff8eb5c820 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
+ #0: ffffffff8eb5c820 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
+ #0: ffffffff8eb5c820 (rcu_read_lock){....}-{1:3}, at: netif_receive_skb_core+0x33/0x2b0 net/core/dev.c:6269
 
-  net/nfc/llcp_core.c: In function 'nfc_llcp_general_bytes':
-  net/nfc/llcp_core.c:653:13: warning: the comparison will always evaluate as 'true' for the address of 'gb' will never be NULL [-Waddress]
-    653 |         if (local->gb && local->gb_len) {
-        |             ^~~~~
-  In file included from net/nfc/llcp_core.c:15:
-  net/nfc/llcp.h:77:12: note: 'gb' declared here
-     77 |         u8 gb[NFC_MAX_GT_LEN];
-        |            ^~
+stack backtrace:
+CPU: 1 UID: 0 PID: 24 Comm: ksoftirqd/1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_usage_bug+0x28b/0x2e0 kernel/locking/lockdep.c:4058
+ valid_state+0xbe/0xf0 kernel/locking/lockdep.c:4072
+ mark_lock_irq+0x36/0x380 kernel/locking/lockdep.c:4283
+ mark_lock+0x117/0x190 kernel/locking/lockdep.c:4769
+ mark_usage kernel/locking/lockdep.c:-1 [inline]
+ __lock_acquire+0x6b7/0x2e50 kernel/locking/lockdep.c:5208
+ lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5908
+ lock_sock_nested+0x41/0x100 net/core/sock.c:3827
+ lock_sock include/net/sock.h:1713 [inline]
+ x25_kill_by_neigh+0x10d/0x250 net/x25/af_x25.c:1778
+ x25_lapb_receive_frame+0x1b0/0xfb0 net/x25/x25_dev.c:138
+ __netif_receive_skb_one_core net/core/dev.c:6245 [inline]
+ netif_receive_skb_core+0x2a6/0x2b0 net/core/dev.c:6270
+ lapbeth_napi_poll+0x42/0x90 drivers/net/wan/lapbether.c:100
+ __napi_poll+0xaa/0x330 net/core/dev.c:7768
+ napi_poll net/core/dev.c:7831 [inline]
+ net_rx_action+0x61d/0xf50 net/core/dev.c:7988
+ handle_softirqs+0x225/0x840 kernel/softirq.c:624
+ run_ksoftirqd+0x36/0x60 kernel/softirq.c:1078
+ smpboot_thread_fn+0x57c/0xa80 kernel/smpboot.c:160
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: sleeping function called from invalid context at net/core/sock.c:3829
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 24, name: ksoftirqd/1
+preempt_count: 100, expected: 0
+RCU nest depth: 1, expected: 0
+INFO: lockdep is turned off.
+Preemption disabled at:
+[<ffffffff8188d30b>] softirq_handle_begin kernel/softirq.c:465 [inline]
+[<ffffffff8188d30b>] handle_softirqs+0xab/0x840 kernel/softirq.c:600
+CPU: 1 UID: 0 PID: 24 Comm: ksoftirqd/1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ __might_resched+0x378/0x4d0 kernel/sched/core.c:9195
+ lock_sock_nested+0x56/0x100 net/core/sock.c:3829
+ lock_sock include/net/sock.h:1713 [inline]
+ x25_kill_by_neigh+0x10d/0x250 net/x25/af_x25.c:1778
+ x25_lapb_receive_frame+0x1b0/0xfb0 net/x25/x25_dev.c:138
+ __netif_receive_skb_one_core net/core/dev.c:6245 [inline]
+ netif_receive_skb_core+0x2a6/0x2b0 net/core/dev.c:6270
+ lapbeth_napi_poll+0x42/0x90 drivers/net/wan/lapbether.c:100
+ __napi_poll+0xaa/0x330 net/core/dev.c:7768
+ napi_poll net/core/dev.c:7831 [inline]
+ net_rx_action+0x61d/0xf50 net/core/dev.c:7988
+ handle_softirqs+0x225/0x840 kernel/softirq.c:624
+ run_ksoftirqd+0x36/0x60 kernel/softirq.c:1078
+ smpboot_thread_fn+0x57c/0xa80 kernel/smpboot.c:160
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
->  
->  	nfc_llcp_local_put(local);
->  
-> -	return local->gb;
-> +	return out_gb;
->  }
->  
 
-...
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
