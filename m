@@ -1,50 +1,50 @@
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B3933EB06
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 03:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66871345EC3
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 03:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786420603; cv=none; b=LVOgCDjQyhkeeqiYgj0TR2rjBX+nKnxXLpLQhXWTarLjitldpi7mTejjMU/yMWxA1HNemXjDf0lrTgRTOMkyuaKwvyYa8g3VVuFVybNQuWnHvIu/bLTp/2K1cA+1Ln6EaxwuFwqGcNk1CFsdFIALAjPLlux7AiqRjNXdXqeZgHA=
+	t=1786420604; cv=none; b=Yk/zQpOdCLSeXWrnEX9zhjfgb/j6EDlPMVcXP+qhnYmodj7oX6qpj51F/NRvITiUUDlaBQQ55Z24wx/OgvGFpr4OH9bsLtULMKAppa1ETq947BmG5kqjwipxsNino9RJlVUB2s6s9MStP9yivs1NRrZwLFozZMKnhoHfzczlu0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786420603; c=relaxed/simple;
-	bh=tAilrDgFOecmnF+ZmUNYaFQxZNJMZawatTeRKKtL348=;
-	h=Message-ID:Content-Type:MIME-Version:From:To:Cc:Subject; b=FVjHDTcL/IOs0TT6zNq+WzNkYXhQyktT5q/Mp4oJBNkniyd4vIZ9bF/6zrIHMWMw/5S0ZO1KhgtEpQ/frWQeW3crm/APwkp/AOyu7YhDUGo96K67Qoy+cTbb77LopN4r41Fb9Jkvfd0Rma1nBwqzQCh546QPf9COWSA+O1iDACA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=JWAneVgU; arc=none smtp.client-ip=162.62.57.49
+	s=arc-20240116; t=1786420604; c=relaxed/simple;
+	bh=i03x4yBQ52A4+y6oLhl2EubAXP+U05Tdg090W9qB+TM=;
+	h=Message-ID:Content-Type:MIME-Version:From:To:Cc:Subject; b=h6uVB5GuIO4htNNjTxoJYWPEmB4Eqw7Uj+N7UikkLn17Z4ziw72CcWRpv7blycYRA9Imm9p/2l2pXGHK5ey+ZPlJS6Ax1MRMnUpFS71b5L/PxMchqiiuQyKF9TiE42fTCoKj3CzRam6aDthIe2C762G9uOBhYTqJ+zSVkFYWb7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=oOlygr27; arc=none smtp.client-ip=203.205.221.221
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="JWAneVgU"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="oOlygr27"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1786420595;
-	bh=tAilrDgFOecmnF+ZmUNYaFQxZNJMZawatTeRKKtL348=;
+	s=s201512; t=1786420592;
+	bh=i03x4yBQ52A4+y6oLhl2EubAXP+U05Tdg090W9qB+TM=;
 	h=From:To:Cc:Subject;
-	b=JWAneVgU57UcxjLZgdCxqZPMhIEJjXP9D5rLJ1JN+WJ1q9NzxFs02c1D7jgKVLrkh
-	 nWFtkGEN285ULhAtiRYcs2+abyM+xoFW6PLTsZL6ZLWFEBRJekypt4iddptg750WMq
-	 5fIH84QViDuP3NlN5KoIGPZzv4wCBgLzEqIHxFRg=
+	b=oOlygr27IRRR93ggj2Mt8fbtUEOjJSssNJtpJ2jSO6wqbceSm9k302pxLzJs6HRfm
+	 uolUeZ7pFdhldqAJsWZj0bwrJMu07CzyvBgEnh8z2MXiGUW/DSryRJJvoYGpk0ci2j
+	 CrsdXYdPQjpK8XNTixF34+h2YVFEFevdOa9WolMM=
 Received: from [127.0.1.1] ([113.128.173.29])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id E21944D7; Tue, 11 Aug 2026 11:56:33 +0800
-X-QQ-mid: xmsmtpt1786420593tc179cf1n
-Message-ID: <tencent_CB2C11C8304ACE90A0A38744ACAA1BF8060A@qq.com>
-X-QQ-XMAILINFO: OVFdYp27KdlJj2DM0/HkLvBm+tHSDgXaA8ugKNHsGayZC0pyNsStP3T5vYgkI3
-	 eiKvGeofXNjytd99eMghx0gbWubPlB5a/kA48A/vxIhgrP7kqlrRtpRJL5uLl9Hei6dPPO+LHh5z
-	 ozQsDuLUuRTErJFZSTA0kv29zj9e7VBfkMk/4S1azv/Q4ibneiQEU33PMSFb+JDAiZcq463GS750
-	 xoxKfLe5mqAnyzupvFc8ixiw+qKLv3AN9RNRpxwb0lSQlJeGQNhEVBZIddBqktde3GwSnFeJFXtL
-	 0veLemcot8vUVKIzpE4q+G8IWL9N6I1lNtYV4E+ZuTAYoYY3tmUURN02uMxaXQDGMQeeCFrZaPd5
-	 7TheQJvHJ1uRPmtVHhdLCKsoydLH27jSf2ZeYdMNvx4822uZoNqKx+Dy7FhlJxVFOAeo+UDyndzv
-	 x+mbFOmv0BhkZ7hO0BGbum6zHxeKNb/GO0GC4aZpPurLgsfJlLMWWVRDrL5RsHtsqDn9Gpu5bm/l
-	 7WDjfQGBr/AAFcukBzMd3Jne2BmCQ07gcq877q4nHDb+e/bJrUafThlRfT/MErCcJgjq1mRa6eki
-	 R+YQb6WMoF6QLXZZTw6aK7Fx1BUhJe/9ya49wDFnXr2HE3fvPkcvWArVYhuf2I5IYIIngIq2oHaY
-	 xUNKdbP7FvH/kWdMAsPInKzlDO5XSuqfSDXywMeq3Mahit0s0gJcvIcLC5NBZOF3pRDX2IljteeE
-	 GOzPN8U0R7DpaqGJxcuCJv3vOzRHxdX6QB4Dz7Zyh6PkwZtJjjFXWEZJs14cADPzCBdUsp7L7jwn
-	 dE5NeR4RnEW4Cz2w1mGcuj0iBRdCxAz7JND+PPNDR0ouCkUeDuopGmXwnniPhYc5lna7nBNv35js
-	 dFFAi5p1I+UxlxJCWYZV3QVLr9BOwC4lJDGr9HI7jE4m7HGf4XVg6g2vT4Cyj66zrQXmEch77qgj
-	 EPpETF2GG2dU/rDVk7ArFWMr/1fYeGJ6uZ4qtQZzX/4u55N0X8xoyXO2hA/WxX/T1WahOSDgUatP
-	 TZo1t5xuFiVKm7rcXDE1LLj1ySd+xTCQnTxk8URKOgbFRBFlSkiG5v8rUXpljJynsSD1v3aCze/i
-	 3K4MDIHfUGSK4J8zM1urdiaMs0RpsUP8Mw+WSMDv5Vu+rb2Fl2lNJmHGC2hWHTGUMa2fV0
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-Content-Type: multipart/mixed; boundary="===============2131479222234668959=="
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id DD236C07; Tue, 11 Aug 2026 11:55:18 +0800
+X-QQ-mid: xmsmtpt1786420518t9z5h8fe4
+Message-ID: <tencent_4F24380926BA5A04957A9C6FE89281CCB306@qq.com>
+X-QQ-XMAILINFO: N8xf3Kn/xs1HyGG9eH/5XufswL57avREqewtLlviBat9/gCWpMjiBLOtzDCBgm
+	 5jsmG4cGPQQPcpcsR9LpkMNNZ+CRRzEFJXMMGJNDUSWmMzSpmo9cne03kTVYd2tB2bSbzDx0Aerw
+	 QQV1pFjPpHMJ9pB4d/FcyaFsQbi7MC+44y3azRnICTLyPd0UYEQbX0Gnv/YKDKcdaNeYzu49N1Gq
+	 B2S1Ne4KXSuh1LgAifTy/Z97/vuCEKVURqQXSm334Ty+pA1Vl3zioufB4aUFGCHgnGJOn1XFmB0D
+	 Q9GVHiAuASDSI2RC2vdP5pVfvwVs/uFAv+kmNdwxaRM2XN7P3kNCeGyFgXd0giUhH3iok1PQV8yC
+	 33C7TB9RNEtbad3dzeGBvJ500qDkdvhjaNrOHC0WcVBVT4wqAcH/ydSdDqItd9r9vVHGAs7sarB9
+	 4z6YneGmsNJpzfzkdJFVnuJi2o/vNT8ptiDP2G0detvlzoX2iPl0LrVnIJiZWvLbA6bZC1R+ci1N
+	 v747R6IYRJnKoNCszjKrxjGfjv9rlLAeCyGZOYTUARNgZ0duZwlRXhcyxg2ZBMzd3awj76sJNVpi
+	 N2hp+pfQ5vdTPDjMKZeB/DelaI3F+bCO//VAtR0cQiX02nTCp51pMeuBsr6MQMibtLIos6LwdR42
+	 tD1Il3DJgPOwQ7WLItoJr/RdPd+Y2cgZU6qApl/0xSrpNYjisjBEPrwAvSstjmWH2AjlaErpY9iP
+	 BJWjcOEsrD5Oa87hKvtaqzuCSQyiMW3Hf6vSgB5doJXbVdd+MWDgt6wnohOfZXnx8pyxIy7JnBpW
+	 jMSMQTMYoyAqqxtFNvYjsqRPZIe5d058MjnZ6pbXjx4AcYoNaST8bejcC9mB1sR+GDJ9uz7fFm2M
+	 jE26L2Y92s7+5Vme2Qu9Bw60y2f2FJUogyiGWHzHkeX0yPUEk/G9fsVvVVJLc2XX6oRQkI5nzq4m
+	 zUvBMbbnKX85nk9i2/jIHjHB+K/xyfJ64yppzsABr0IEXumrLdi7ghwWizJEjDueG0dnu56L0F1V
+	 D8dtx+fKuZigpRm5jVhi2Ld01Tsu7nOF5f9My0ZA4e6S8sVo1a5E5s3Hg6ZHtt4QHtZNzFwpmOT+
+	 7ZEEctp53v7mLuZuxWLmFfsu8MBg==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+Content-Type: multipart/mixed; boundary="===============3113535094610448636=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,7 +59,7 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 Subject: [RFC PATCH] net: stmmac: dwmac-generic: add ACPI support for Phytium
  FT-2000/4 and D2000
 
---===============2131479222234668959==
+--===============3113535094610448636==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -110,7 +110,7 @@ aCBxdWV1ZSkuICBTaG91bGQgSQogICBwcmVwYXJlIGEgc2VwYXJhdGUgZml4IGZvciBzdG1tYWNf
 bWFpbi5jPwoKU2lnbmVkLW9mZi1ieTogWXVlcWlhbmcgRmFuIDx5dWVxaWFuZ19mYW5AZm94bWFp
 bC5jb20+Cg==
 
---===============2131479222234668959==
+--===============3113535094610448636==
 Content-Type: text/x-patch
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -244,5 +244,5 @@ Z2VuZXJpY19tYXRjaCwKKwkJLmFjcGlfbWF0Y2hfdGFibGUgPSBkd21hY19nZW5lcmljX2FjcGlf
 bWF0Y2gsCiAJfSwKIH07CiBtb2R1bGVfcGxhdGZvcm1fZHJpdmVyKGR3bWFjX2dlbmVyaWNfZHJp
 dmVyKTsKLS0gCjIuNDMuMAo=
 
---===============2131479222234668959==--
+--===============3113535094610448636==--
 
