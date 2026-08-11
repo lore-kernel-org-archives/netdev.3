@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDE129D268
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1B52E1F06
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786408522; cv=none; b=J3i0T1M8AfzNN9pfIXpu2hhnkeLQ2g5lKW2bC4na7sN0+Y7cy/V2Tm4R9m04wX2ivl9bBt3q8R4407KHxd0T52vDvW2ep4q5YQL8R7PmPU16Xoo/vEgDX+w0Q3WumSE+7OKwbmoxobwjxjA3DBeNBhlm2yYD2jh5bkSCLuCjo9w=
+	t=1786408524; cv=none; b=V35cuvT54w9qkct7FF9iYx3ZK1snJoRbpwq0WZaXQDTBW1XWAGCeumtVEEbuDOE8RZCR3vIRbzHU0tuCnvATHJVQIy+fwacNJGpJd32YP0nbpJ8N9CkOiWVb0EUg/Jx6kdK+pmFjjs7/yjhpO1oXLSfyqBrnoJWRpEFlZ0/mm04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786408522; c=relaxed/simple;
-	bh=WhP2lOM5w0n8maLt12F+2DFx80adq//haApkvQ4VJbY=;
+	s=arc-20240116; t=1786408524; c=relaxed/simple;
+	bh=4QLdm9O7kl6OeIHf1D7vu8J6kCt7jTEZj4tm0gcjSs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iP2mM9xzfPLnVE9qEkFDLRiu75lsdvaHJfO/8aXOptz8yeQ11QXCqPmsssm+H94uoc/S/E/PjYTk7HygdOjG0Dbkha2opedFjfTkZvpfpW2xziqRkUyJKNIIWynIdFOnnXGLESvERDdfCwKMDYVq8ixZmN55vjZNE8Mc8sIbyBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpQ4BdE+; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=WkaP5XT1kFfq/gx3SVlAs4KERk673Ynv82hvzdJJBi4EDeFCUZctq9BSadUR1ScVrUQlkDkCshmIEHtvdiMpvuum7gtPAoQJcri8gcqAa4p0hyCnNoIYOCaHTQu/hqYcPMTP3cpB8TfxBHpTBO1CFNeoLk0XdT4x60E/8d3a/Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nq/ILpoI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpQ4BdE+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651BA1F000E9;
-	Tue, 11 Aug 2026 00:35:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nq/ILpoI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A6C1F00A3D;
+	Tue, 11 Aug 2026 00:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786408520;
-	bh=ZSCpf6OJ/ilffCJiSskzsvzilKbwsxvMYFLd8Puqe7k=;
+	s=k20260515; t=1786408522;
+	bh=FfywaJ7BIxWyOhQir5skv4TtdmyZV8iRpmwEb3E5p3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TpQ4BdE+m5/VfCxCyzWyPInhNykdZGgwGyvSmfNOPtM7JE+Ua/49JvW0g4L6ija3x
-	 7CeElP0SkQqRLJESw2R8PPlMg/5JaBqQt9/zDU9VH6rffvxkLOBnVOdcy84lZBdivd
-	 /X1alpnJOjuz8YDnb6p6ydQpyVFsyHcGh7qGq334U2LEousPBhPom3JhWXYOW7Zsau
-	 8sDPxDn3EKZ8nN9ygYcuCEDmsWwQYZacT3DVn47oqgiS8RSjZjl1Wst8hsetgSwOdF
-	 fU6jcqvWDIH6YcZyXN2mI6teLu4z4TDc0U4ofEMuVHeNeifw7GY6Qn0Cat00pyFpph
-	 vpKjpHkglABeQ==
+	b=Nq/ILpoIYAXU4674XD+LqqSyInq59TZrYTSgyhrQ/O2YEpb3UaiIxxSRr4zJskmpq
+	 N3wC4lviWRnl5FAgzplRyom8ULyZvJFLp6mxBr1BMTlisIXxVA/H+KYGk0h8FIVXij
+	 Qglqri8tEToPAwC0R45bhY5RticYvhGVr50ubzu5XYlRwYX3UPm8znn9c0ev4KFHC/
+	 glpvme63CUQfzhnYRQcTo2haZBN3bqeuWUJKI/nnWWM+PuVGdH9kiJ5RprVeNIxjFw
+	 c3J540QNGKMwW/BmeZHSStZwHzcmUoy27fWNbxDyULw80X4R/omwDE83tgYJCv3/RO
+	 hl6UWZzPHBd9g==
 From: Jakub Kicinski <kuba@kernel.org>
 To: anthony.l.nguyen@intel.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -39,12 +39,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	aleksandr.loktionov@intel.com,
 	pmenzel@molgen.mpg.de,
 	michalx.cohen@intel.com
-Subject: Re: [PATCH net-next 14/15] igc: Support ACPI-based MAC pass-through
-Date: Mon, 10 Aug 2026 17:35:19 -0700
-Message-ID: <20260811003520.1056993-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next 15/15] e1000e: Avoid DMA re-mapping on RX copybreak
+Date: Mon, 10 Aug 2026 17:35:20 -0700
+Message-ID: <20260811003520.1057053-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805213541.2281287-15-anthony.l.nguyen@intel.com>
-References: <20260805213541.2281287-15-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260805213541.2281287-16-anthony.l.nguyen@intel.com>
+References: <20260805213541.2281287-16-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,157 +56,220 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-igc: Support ACPI-based MAC pass-through
+e1000e: Avoid DMA re-mapping on RX copybreak
 
-This adds igc_get_acpi_mac_passthru(), which evaluates the ACPI objects
-\_SB.AMAC and \MACA and parses the _AUXMAC_#AABBCCDDEEFF# payload into an
-Ethernet address.  igc_probe() now uses that address in preference to the
-NVM address whenever eth_platform_get_mac_address() fails.
+The patch stops unmapping the RX buffer before the copybreak and error
+checks, so recycled skbs keep their DMA mapping and only the consumed path
+unmaps. The refill loop is adjusted to skip mapping when buffer_info->dma is
+already set, and the copybreak path now uses dma_sync_single_for_cpu() /
+dma_sync_single_for_device() around the copy.
 
-> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-> index 21d2fe38a41a6..424c12c0394a3 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_main.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+No Link: tags are present in the commit header.
+
+> e1000e: Avoid DMA re-mapping on RX copybreak
+>
+>     The buffer allocation loop is adjusted to not assume that DMA is
+>     unmapped, handling mapping errors gracefully.
+
+[Severity: Low]
+Is "handling mapping errors gracefully" the whole story for the new
+buffer_info->dma = 0 assignment in e1000_alloc_rx_buffers()?
+
+Before this patch, a failed dma_map_single() there left DMA_MAPPING_ERROR
+(~(dma_addr_t)0) in buffer_info->dma and broke out of the loop.
+e1000_clean_rx_ring() gates its unmap on a non-zero value:
+
+	if (buffer_info->dma) {
+		if (adapter->clean_rx == e1000_clean_rx_irq)
+			dma_unmap_single(&pdev->dev, buffer_info->dma,
+					 adapter->rx_buffer_len,
+					 DMA_FROM_DEVICE);
+
+so a down or reset before the next refill unmapped an address that was never
+mapped. The new assignment closes that, which makes this hunk a bug fix on
+top of the performance work.
+
+Would it make sense to split that one line out with a Fixes: bc7f75fa9788
+tag (and possibly Cc: stable), so stable triage can see it separately from
+the rest of the change?
+
+> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+> index 844f31ab37ad4..b08bcbdb19d97 100644
+> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
+> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+> @@ -675,6 +675,8 @@ static void e1000_alloc_rx_buffers(struct e1000_ring *rx_ring,
+>  		skb = buffer_info->skb;
+>  		if (skb) {
+>  			skb_trim(skb, 0);
+> +			if (likely(buffer_info->dma))
+> +				goto write_desc;
+>  			goto map_skb;
+>  		}
+>  
+> @@ -692,10 +694,12 @@ static void e1000_alloc_rx_buffers(struct e1000_ring *rx_ring,
+>  						  DMA_FROM_DEVICE);
+>  		if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
+>  			dev_err(&pdev->dev, "Rx DMA map failed\n");
+> +			buffer_info->dma = 0;
+>  			adapter->rx_dma_failed++;
+>  			break;
+>  		}
+>  
+> +write_desc:
+>  		rx_desc = E1000_RX_DESC_EXT(*rx_ring, i);
+>  		rx_desc->read.buffer_addr = cpu_to_le64(buffer_info->dma);
+>  
+
+[Severity: High]
+This isn't a bug introduced by this patch, but should the two sibling
+refill routines in the same file be brought in line with the
+"buffer_info->dma == 0 means not mapped" contract this hunk makes explicit?
+
+e1000_alloc_rx_buffers_ps() still leaves the error cookie behind:
+
+		if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
+			dev_err(&pdev->dev, "Rx DMA map failed\n");
+			adapter->rx_dma_failed++;
+			/* cleanup skb */
+			dev_kfree_skb_any(skb);
+			buffer_info->skb = NULL;
+			break;
+		}
+
+buffer_info->skb is cleared but buffer_info->dma keeps DMA_MAPPING_ERROR,
+which is non-zero, so e1000_clean_rx_ring() on a subsequent down or reset
+calls dma_unmap_single() on an address that was never mapped.
+
+e1000_alloc_jumbo_rx_buffers() already uses the same map-skip idiom this
+patch adopts, and also skips the zeroing:
+
+		if (!buffer_info->dma) {
+			buffer_info->dma = dma_map_page(&pdev->dev,
+							buffer_info->page, 0,
+							PAGE_SIZE,
+							DMA_FROM_DEVICE);
+			if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
+				adapter->alloc_rx_buff_failed++;
+				break;
+			}
+		}
+
+After that break, rx_ring->next_to_use points at the failed entry, so the
+next refill finds buffer_info->skb and buffer_info->page set, evaluates
+!buffer_info->dma as false, skips the mapping and programs the descriptor:
+
+		rx_desc = E1000_RX_DESC_EXT(*rx_ring, i);
+		rx_desc->read.buffer_addr = cpu_to_le64(buffer_info->dma);
+
+Can that arm a hardware RX descriptor with the DMA_MAPPING_ERROR cookie as
+the bus address after the tail write, and is the same cookie later passed to
+dma_unmap_page() from e1000_clean_rx_ring()?
+
+> @@ -967,9 +970,6 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
+>  
+>  		cleaned = true;
+>  		cleaned_count++;
+> -		dma_unmap_single(&pdev->dev, buffer_info->dma,
+> -				 adapter->rx_buffer_len, DMA_FROM_DEVICE);
+> -		buffer_info->dma = 0;
+>  
+>  		length = le16_to_cpu(rx_desc->wb.upper.length);
+>  
 
 [ ... ]
 
-> @@ -7105,6 +7107,57 @@ static enum hrtimer_restart igc_qbv_scheduling_timer(struct hrtimer *timer)
->  	return HRTIMER_NORESTART;
->  }
+> @@ -994,8 +992,6 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
 >  
-> +static bool igc_get_acpi_mac_passthru(u8 *mac)
-> +{
-> +	static const struct {
-> +		const char *name;
-> +		acpi_object_type type;
-> +		u32 length;
-> +	} sources[] = {
-> +		{ "\\_SB.AMAC", ACPI_TYPE_BUFFER, 23 },
-> +		{ "\\MACA",     ACPI_TYPE_STRING, 22 },
-> +	};
-> +	struct acpi_buffer buffer;
-> +	union acpi_object *obj;
-> +	bool mac_found = false;
-> +	acpi_status status;
-> +	u8 buf[ETH_ALEN];
-> +	int i;
-> +
-> +	if (!IS_ENABLED(CONFIG_ACPI))
-> +		return false;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(sources) && !mac_found; i++) {
-> +		buffer.length = ACPI_ALLOCATE_BUFFER;
-> +		buffer.pointer = NULL;
-> +
-> +		status = acpi_evaluate_object(NULL, (char *)sources[i].name,
-> +					      NULL, &buffer);
-> +		if (ACPI_FAILURE(status))
-> +			continue;
-> +
-> +		obj = buffer.pointer;
-> +		if (!obj || obj->type != sources[i].type ||
-> +		    obj->string.length != sources[i].length)
-> +			goto free_obj;
-> +
-> +		if (strncmp(obj->string.pointer, "_AUXMAC_#", 9) ||
-> +		    obj->string.pointer[21] != '#')
-> +			goto free_obj;
-> +
-> +		if (hex2bin(buf, obj->string.pointer + 9, ETH_ALEN) ||
-> +		    !is_valid_ether_addr(buf))
-> +			goto free_obj;
-> +
-> +		ether_addr_copy(mac, buf);
-> +		mac_found = true;
-> +free_obj:
-> +		kfree(obj);
-> +	}
-> +
-> +	return mac_found;
-> +}
-> +
->  /**
->   * igc_probe - Device Initialization Routine
->   * @pdev: PCI device information struct
-> @@ -7268,9 +7321,16 @@ static int igc_probe(struct pci_dev *pdev,
->  	}
+>  		if (unlikely((staterr & E1000_RXDEXT_ERR_FRAME_ERR_MASK) &&
+>  			     !(netdev->features & NETIF_F_RXALL))) {
+> -			/* recycle */
+> -			buffer_info->skb = skb;
+>  			goto next_desc;
+>  		}
 >  
->  	if (eth_platform_get_mac_address(&pdev->dev, hw->mac.addr)) {
-> -		/* copy the MAC address out of the NVM */
-> -		if (hw->mac.ops.read_mac_addr(hw))
-> +		/* Look for a system-provided MAC in the ACPI table before
-> +		 * falling back to reading the address from the NVM.
-> +		 */
-> +		if (igc_get_acpi_mac_passthru(hw->mac.addr)) {
-> +			netdev->addr_assign_type = NET_ADDR_STOLEN;
-> +			dev_info(&pdev->dev, "Using ACPI pass-through MAC addr %pM\n",
-> +				 hw->mac.addr);
+> @@ -1022,19 +1018,33 @@ static bool e1000_clean_rx_irq(struct e1000_ring *rx_ring, int *work_done,
+>  			struct sk_buff *new_skb =
+>  				napi_alloc_skb(&adapter->napi, length);
+>  			if (new_skb) {
+> +				dma_sync_single_for_cpu(&pdev->dev,
+> +							buffer_info->dma,
+> +							adapter->rx_buffer_len,
+> +							DMA_FROM_DEVICE);
+>  				skb_copy_to_linear_data_offset(new_skb,
+>  							       -NET_IP_ALIGN,
+>  							       (skb->data -
+>  								NET_IP_ALIGN),
+>  							       (length +
+>  								NET_IP_ALIGN));
 
 [Severity: High]
-Can two igc ports end up with the same MAC address here?
+This is a pre-existing issue, but since this hunk rewrites the block, is
+this a good place to bound length against adapter->rx_buffer_len?
 
-igc_get_acpi_mac_passthru() takes only an output pointer and evaluates the
-absolute paths \_SB.AMAC and \MACA with a NULL handle:
+length comes straight from the descriptor written by the NIC:
 
-	status = acpi_evaluate_object(NULL, (char *)sources[i].name,
-				      NULL, &buffer);
+		length = le16_to_cpu(rx_desc->wb.upper.length);
 
-There is no reference to ACPI_HANDLE(&pdev->dev), no PCI slot/function or
-hw->device_id check, no NVM/EFUSE pass-through enable bit and no DMI match,
-so every invocation returns the same six bytes.  igc_probe() runs once per
-igc PCI function, so on a dual/quad-port i225/i226 board, or with an onboard
-igc plus an i226 add-in or Thunderbolt adapter, each probe takes the same
-system address.
+The new sync window is adapter->rx_buffer_len, while the copy source is the
+ring skb and the copy size is length + NET_IP_ALIGN. Can this read past the
+end of the RX buffer allocation and hand those bytes to the stack via
+e1000_receive_skb() when length exceeds adapter->rx_buffer_len?
 
-Is the address only a software label at that point, or does it reach the
-hardware filter?  From igc_probe() the path looks like:
+The precondition seems to be documented in the driver itself.
+e1000_change_mtu() shrinks the allocation to 1522 bytes:
 
-	igc_probe()
-	  igc_reset()
-	    hw->mac.ops.init_hw()      /* igc_init_hw_base() */
-	      igc_init_rx_addrs()
-	        hw->mac.ops.rar_set(hw, hw->mac.addr, 0);
+	/* adjust allocation if LPE protects us, and we aren't using SBP */
+	if (max_frame <= (VLAN_ETH_FRAME_LEN + ETH_FCS_LEN))
+		adapter->rx_buffer_len = VLAN_ETH_FRAME_LEN + ETH_FCS_LEN;
 
-so the duplicated address is programmed into RAR0 as each controller's real
-unicast receive filter (and magic-packet WoL filter).  The existing check
+but e1000_setup_rctl() programs the hardware size from the default case:
 
-	if (!is_valid_ether_addr(netdev->dev_addr)) {
+	switch (adapter->rx_buffer_len) {
+	case 2048:
+	default:
+		rctl |= E1000_RCTL_SZ_2048;
+		rctl &= ~E1000_RCTL_BSEX;
+		break;
 
-cannot detect this, since a duplicated address is still valid.
+and sets E1000_RCTL_SBP when NETIF_F_RXALL is enabled, which is user
+settable through hw_features. With rx-all on, the frame error drop above is
+also bypassed, so an oversize single-descriptor frame reaches this copy.
 
-These same objects are the Dell/Lenovo dock pass-through ABI already consumed
-by drivers/net/usb/r8152.c:vendor_mac_passthru_addr_read(), which uses the
-identical names, types, lengths 0x16/0x17, '#' at offset 0x15 and hex2bin at
-+9, but gates the lookup on device identity or capability first:
+Note the copybreak=2048 setting recommended in the commit message puts a
+1523..2048 byte length inside the length < copybreak window.
 
-	if (tp->lenovo_macpassthru) {
-		mac_obj_name = "\\MACA";
-		...
-	} else {
-		/* test for -AD variant of RTL8153 */
-		...
-			if ((ocp_data & PASS_THRU_MASK) != 1) {
-				... return -ENODEV;
+The sibling e1000 driver took the corresponding fix in commit 9c72a5182ed9
+("e1000: fix OOB in e1000_tbi_should_accept()"), which added:
 
-On a machine with such a dock, would an igc port now claim the address that
-firmware designated for the dock interface, colliding with it and changing
-the identity used for 802.1X MAB, DHCP reservations and MAC ACLs?  Should
-this lookup be gated on a designated port, a capability bit, or a platform
-match?
+	if (unlikely(length > adapter->rx_buffer_len))
+		return false;
 
-Relatedly, the commit message says the system MAC address "is intended to
-override the permanent MAC address of the network controller", in the
-singular.  If applying it to every igc controller in the system is intended,
-could the message say so and explain why the duplicate-address case is
-acceptable?
+> +				dma_sync_single_for_device(&pdev->dev,
+> +							   buffer_info->dma,
+> +							   adapter->rx_buffer_len,
+> +							   DMA_FROM_DEVICE);
+> -				/* save the skb in buffer_info as good */
+> -				buffer_info->skb = skb;
+>  				skb = new_skb;
+> +				goto copybreak_done;
+>  			}
+>  			/* else just continue with the old one */
+>  		}
+> -		/* end copybreak code */
+> +
+> +		buffer_info->skb = NULL;
+> +		dma_unmap_single(&pdev->dev, buffer_info->dma,
+> +				 adapter->rx_buffer_len,
+> +				 DMA_FROM_DEVICE);
+> +		buffer_info->dma = 0;
+> +
+> +copybreak_done:
+>  		skb_put(skb, length);
 
-One more thing on this path: read_mac_addr() is what normally populates
-hw->mac.perm_addr, and it is now skipped in the ACPI case, so perm_addr is
-left unset compared to the NVM path.  Is that intentional?
+[Severity: High]
+Same unvalidated length on the fall-through path: the ring skb was allocated
+with bufsz = adapter->rx_buffer_len, so can skb_put(skb, length) push
+skb->tail past skb->end and reach skb_over_panic() for the oversize case
+described above?
 
-> +		} else if (hw->mac.ops.read_mac_addr(hw)) {
->  			dev_err(&pdev->dev, "NVM Read Error\n");
-> +		}
->  	}
->  
->  	eth_hw_addr_set(netdev, hw->mac.addr);
+[ ... ]
