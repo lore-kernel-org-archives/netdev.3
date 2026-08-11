@@ -1,474 +1,127 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010039.outbound.protection.outlook.com [52.101.61.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AE33FBB7D
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 07:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786433690; cv=none; b=BIXUwmnJ5pQKQKz66veIjvycSafW+bHu0P8hovJ01Yu1PsC2vBrb+SzjEsE8L5k7VrPX3LoAqNwi6wksuUFwEuZhuq7eAT/++B1rehDzniPkmi90u6RpX0NXBKDGCi+cFmwtTxIQPmhCvkGzuSMcxj9zWXtUU1gCELI5+Q/9h/I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786433690; c=relaxed/simple;
-	bh=f4+IYnTGLF4q13/M9+5n5iXPBwuoRLcq6zbFVgvErJA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qQdPN6cAyjrEqFu8r6LZkng7k/7wd+qVFDHHtYrLMPwunmj65PdvXO+LJRbau6Cy/wXkexbr2OdsOUl5T4yq/QtSktJUZaddOUI/9FEi9G8DhEuBAKtcGg5lil+Hs++/iRhwexS/NuwudOaVmI29c7beoy0IuGm4DQuSK1pi1Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=aHcuJbZm; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6FA361DBF
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 07:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786433967; cv=fail; b=XfXPvEeB8pFcK+yuLvXUUtXrRveeAqMXcG57KsF76ndwkB/oOSoPMF08jkYWjZsICuzdIoH6uaWGJdWWQN9sTYbUimeYJdD0bJYGgn26Qvu/2RM0EnyXmMWBrA2/QjdmEkpPRbtesoLVdwLjSLn2cKUuwo1TmsLvJrzH3zlfaAk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786433967; c=relaxed/simple;
+	bh=8ebPeQvzPr7FRaKwezYKuAZeEvfLFjcD2wPGi1um2PY=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=eV3x1OBHYujsGNuptALmNObsWAzXPh0rWMPQhbas1e+nO5DTOgCJcKxt5/QOZmqoSRpQgD8xT5n1CyNl4hA9RmkfmCZnNBQcmF+sShvUY6DsZjjioe+026NVi31gYFFSC1yPKGUzNDPVW3mFVHUy8kBg18H4lCigl2t7HwndIwc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QYEx9tEt; arc=fail smtp.client-ip=52.101.61.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="aHcuJbZm"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49800c6a846so25700245e9.3
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:34:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1786433685; x=1787038485; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NVnKLZgiKZe8iYRQVbzyFRscNaqtCQyFP5/0vS+MJnE=;
-        b=aHcuJbZmYTmx+rJa2CqteaFOl2MsdaNnPJGKmbQyAkBxVBDzsY/1g3VcaHpBhkfjYl
-         hTarDeRAWBQ78H6xCocKiQlu//Y8iV+sCb2kaeKdrSmaix3f+7TT0ImuUuxl4DWxjd42
-         IUjVr4TINHTHsW8LPnCpaul+5ephMunHSvrf6Y3D0VSew/SIwfyfJgbNXEiUvF5ZUJol
-         678ubwWbHwMRxvVniHN5wlDuTLei6d92md1QkxdPYHtvosr44Bsm39MhA99Df0q8dk4V
-         1CGrPV2KrgBEVJXDL1of1a2h8XNIngh3t43lxizaQ0pcCLiCZBqoKRm88O2GZwFrUcy8
-         o5qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786433685; x=1787038485;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NVnKLZgiKZe8iYRQVbzyFRscNaqtCQyFP5/0vS+MJnE=;
-        b=F/qHta6PzJd8sLEQRrE0mGy3wQvbaAPOtJZ5FEQEs4lv4H9ANA2seknruTLiA+L1fI
-         RkRRLf9xKy8D2b+ZytrX1cpmW1qtUMfvt9sNnmR9MdX8Upr50JiTzgUqL2UjVdqfr+ba
-         QMioxCvvXoWXaEzPe//HtFcaEXnJB4vZofdphLjyxT7FlorxGa2gQPkwIHt0jYe09GHJ
-         fbweioYaMo0cSwdrhmEhN8tPuPYndiGRpGKziyHltRvI1tEx9m/a4b52HUaPF++k8kXf
-         FMT5DkYezDLqP0SJxmg+tYiNoBEc+FdEPGGqsCdBJr8a8US0p1JkjMX69J5rbPtIVhC2
-         Dw7w==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8HzWaEWsFu2DrB1NNYLeUvUAXxI5GoQJECOaZ4rp6g8PVdTCds7eLjHF02l801uNppDXKiwU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhgdCfVggurShwThKpG0Y3crj0EbPfGqh6e4I1s8g+cq++z06M
-	H8jTP8u6AkOf4QddgRiE7va3TU1T9hvQuLYCkQjdh/mLlwAhVtI9CmFYa/fzooGJ31c=
-X-Gm-Gg: AR+sD11a+/QdOoObjYSESQ7mkJfGjxFLwViXBxmmyASnb2e4w1ecAVAxp3rxKGkZpQd
-	TvosPBacsq9aznQlGT8OqYRBIL3/G2SapZMHG1epsrvkTn3gsIllf80bBI4srkGbVTUhAvYTflw
-	hTuW5at9U8JEfqMm2JJFTzhlSqOYLJjc6AYl3D/TultlMcekjD+uCufMpZGrbFTXmdzlyl7G6aS
-	qO9T37ZZjKyZnIahdj+9VeZiPornwO+dVIu7UPCG10CmgfaQxWdb3nIGqmsid8FRvdoU7y2Gm4a
-	NtC55kaFh2BwmUzGebHBetHYTdDecJTDZj5bj5y6jr2eFwPIv8nloSFt8k3/TaWioQLGRgh4V+t
-	EcEd7IUJ9o5BRYCjGQt3lwMfTb4ESq22cLnL4v7lHboFMwgAxjhkfnsHC7zN47TN0/gHZb4Z744
-	zeG7Q++8aTvEeo1i0qQfjAfUmuKjRB3g+Ur01pf1K0g4Ywnm655K0hel59w/2W3uAfY0f4fqDfA
-	EFAxGfpN2HIvZUdjpM=
-X-Received: by 2002:a05:600c:4455:b0:499:51f0:a9b2 with SMTP id 5b1f17b1804b1-4997842c101mr21893655e9.1.1786433684490;
-        Tue, 11 Aug 2026 00:34:44 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4814a5ac75dsm1949735f8f.7.2026.08.11.00.34.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Aug 2026 00:34:44 -0700 (PDT)
-Message-ID: <edf81977-7642-434e-b565-29a23605a183@blackwall.org>
-Date: Tue, 11 Aug 2026 10:34:42 +0300
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QYEx9tEt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n60tGbMI57xd+RTdWEOoQ3p5iWdV6CULPQvtUglEgxwg2p7fKHDQGQKzJ1p9p36wLLy9yBcImZqV8lkEY207ZgzevWqTGjgbihWXMhmYpPMVxM4zidGIstYsJ56xl9zDrgpTmIUyi0rTH4elw/VpGnryfUJPMCeonahtHzYwDB55+QfwclWh/Bb+dCNAebmKSr7ErdHIkgCgz9CNBB5Q2vrA56WZ+LL0xkMwG6s+oTtnpvArcwqb2CyLTTwH4AL0Ab9c/YrlM0mhSBQsgZWQJynmpqxi7KWyzXOUsjrZhukqokOgst6O9skXZI0dmWRxl7QPH3lW09o9g+zUMkUUpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q1MNZO6nCYjS1GhsbHri+xibZnZ5/KBUXEYdpceFa/w=;
+ b=ok5QjX98aQmL4c2E2afA2re8MTSN+Wfl2BLuru4eJBYdAxMH2+Wsmz/Sm5l99NSa8+XncOqnOHXCuJPhOFeL5pRiizca6eY5XEFvrxQYjkzTU4q5G5fwxyoRf+3v9BI5EqT2Rw1NVk0ToZViF32sPAaWiMc1pvjQkqfaH/hjQt2u3PiTjqTpkgxeKrVHsClZzh3OZPzrSlIQq+4GPZ3M+iD4GuFlPsaLwq4/5n7bBoambZ5BoUcWMK4qB8VQJU/TP/nVUCmWRL2fawGqzw/dNAEaa4Tawn3Feyxy3MRXGGaXEMM014k3JawnHBu4oFYkgthxzZanEwRR+F/+Dh1FEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q1MNZO6nCYjS1GhsbHri+xibZnZ5/KBUXEYdpceFa/w=;
+ b=QYEx9tEtcoo2sjrZXU+T76wqsHcciy3c/uEQ1Qq0u2BbZLf23gPo9iCDX/5eO4uO1Y4Z52cVOX/vyxrpBONAL6uaaWSrVPvPNWr/TMfchygeUprbx47+NDn0pU61lr5RDJdcIKOr31ytO8VvGD3UQmkK53mRv91Qt3JH6EO41vGKUI3hjCnxTRIF4jUDM07ildeujCDNjnuHFFNpsXslwPxbwmkqsRvqzI1XP43WUpRGSEAYQmjNnIoGXCQjdxVKY+2r5TVygLbuiRJr3NpfaF8UaNscVK74/TTHvfmXE86HG/t6Nly8o51M7Zs3cM/G3Jk9UyEko/5oQmxvcWvgNQ==
+Received: from CH2PR16CA0012.namprd16.prod.outlook.com (2603:10b6:610:50::22)
+ by IA1PR12MB6530.namprd12.prod.outlook.com (2603:10b6:208:3a5::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 07:39:19 +0000
+Received: from CH2PEPF00000141.namprd02.prod.outlook.com
+ (2603:10b6:610:50:cafe::54) by CH2PR16CA0012.outlook.office365.com
+ (2603:10b6:610:50::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.25 via Frontend Transport; Tue,
+ 11 Aug 2026 07:39:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH2PEPF00000141.mail.protection.outlook.com (10.167.244.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.6 via Frontend Transport; Tue, 11 Aug 2026 07:39:18 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 11 Aug
+ 2026 00:23:59 -0700
+Received: from tuxedo (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 11 Aug
+ 2026 00:23:56 -0700
+From: Petr Machata <petrm@nvidia.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <netdev@vger.kernel.org>, Petr Machata <petrm@nvidia.com>
+Subject: Re: [PATCH net-next 1/2] selftests: drv-net: pace ethtool_std_stats
+ packet generation
+In-Reply-To: <20260810164858.7fdd834a@kernel.org> (Jakub Kicinski's message of
+	"Mon, 10 Aug 2026 16:48:58 -0700")
+References: <20260808163653.2460381-1-kuba@kernel.org>
+	<87ecg6cnm7.fsf@pmachata.org> <20260810164858.7fdd834a@kernel.org>
+User-Agent: mu4e 1.12.15; emacs 30.2
+Date: Tue, 11 Aug 2026 09:23:52 +0200
+Message-ID: <8733wl86if.fsf@pmachata.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next V5 2/2] net/mlx5: implement max_sfs parameter
-Content-Language: en-US, bg
-To: Jakub Kicinski <kuba@kernel.org>, tariqt@nvidia.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- netdev@vger.kernel.org, pabeni@redhat.com, aleksandr.loktionov@intel.com,
- aleksander.lobakin@intel.com, akiyano@amazon.com, daniel.zahka@gmail.com,
- dsahern@kernel.org, gal@nvidia.com, jiri@nvidia.com, jiri@resnulli.us,
- corbet@lwn.net, leon@kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
- nikolay@nvidia.com, petrm@nvidia.com, przemyslaw.kitszel@intel.com,
- rkannoth@marvell.com, saeedm@nvidia.com, skhan@linuxfoundation.org,
- horms@kernel.org, vdumitrescu@nvidia.com
-References: <20260806073037.3001886-3-tariqt@nvidia.com>
- <20260810225131.933746-1-kuba@kernel.org>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260810225131.933746-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000141:EE_|IA1PR12MB6530:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb6925d9-8b58-4f65-a13b-08def77ba72c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|23010399003|36860700016|1800799024|376014|11063799006|56012099006|10067099003|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	dnzRXLFV5ZCD10kq1z6mgYvUVMed5I9sFCj3ApfvDtpuq8BYEHzyfk3PpVdGQ722Iep4edAE6Ngl/1qdeTFW8jvH957ZLfO58T4o2Ph8kKoUt7CD1IkLs0wvuJG+IAEZzO5joEZ7UxacrEt3i8sxJac+qfTN03YNtekdiEo/P9CzuBxqdS3i+T/J3UT3WNS9rwzyd5AEVrGLtYpTrnj1wpEWlUg0kg0oSWh0Ndxw7Zz7QhNfNWHSEfdbnvT4IypY6tmnLo35BB52vr47Cd6+BDnLMY4Q/WEO1XoRPW9Ese++OSwR27rs2Q+A3acO4KhSsnbx//tGAsiOyjNpHBPvMRcqgXiQPUFOQ2yH87G2dcq+pbylUtRzaDJi0dCNKdk/7WM/qZT1ONAk9fRRu0WEEHuxLXRuGBe76IWjvclOAd7b3g/tqhDoPMeRJMghzhT5szeeYGlT1lUOcjTa9l5qb+6+cfoczVAaXEOG9hZf03bWBwU243SzvrQphaHJbODIadJJm6+OTL6uxGCLrKjKrbYap3R8Yg5VOpuRAKuxkk/aUiVM+ptJnB+rxQcGcT3RM7y/EpNAY7D7VzTFKOE7YyAeBhyso26M93VjIFKTAbaf005n1POXk7NpHyxwbOzl0Hl7LgJlZoDln1dcGb/jMpp3wDc5E79UZvKvwl6unYy63ax5/pBF/eXGGArk11ANKwHNywO1hm3OcohjAdlLVg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(36860700016)(1800799024)(376014)(11063799006)(56012099006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	tLk0YXofHZgTOVy3aYbNQT0A//a04375o4a0UtdEzZLRW1wqztOGsu7cCiMUpaaS6z06oB+Crp7qLjwbyKgJOSR/T2DoK1b8hQ1kxaGSAPFHrFVIdE+y5YIUlt21XjJ6bQsWpIuZ6LmyV9niJFM50qIQDHadLAasQTRYaKcbMW6U/UzmMEzDmsLO/1PhlCodaTG0n5pvxZLt1razTu8BuBhV4QZMv3Rf82AUJzz6m/yp4gWO7Tvj+7R409FKq3x46UbZ67CLNbT592waMeRIXqYpW1YIDsOg1PChl9WT85aeGoD+4eQchBUdZk/Am6PEMCQYrt7fbL4pbV12070nDxoFyLkOUOtOHXgGsUvMdkAqq65tY4MLsjqO+aWgixhfZs5/fmdpoPCSwpkbU81LHzs/Khu1WG6O0YM8t8Jnzr6kEdcfFVqaQr6NC3KQT793
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 07:39:18.9126
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb6925d9-8b58-4f65-a13b-08def77ba72c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000141.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6530
 
-On 11/08/2026 01:51, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email says "second one looks legit at least (about the max value)?"
+Jakub Kicinski <kuba@kernel.org> writes:
 
-I went over these, the second one isn't right because there is no limit
-cap to check as opposed to VFs (noted by Sashiko as well). I've tried
-and there is no problem to set it to 65k (max_sfs: 0xffff (65535))
-so U16_MAX is a correct limit.
+> On Mon, 10 Aug 2026 11:48:32 +0200 Petr Machata wrote:
+>> Jakub Kicinski <kuba@kernel.org> writes:
+>> > mausezahn defaults to sending packets back to back at the maximum rate,
+>> > which can cause packet loss, especially if receiver is running a debug
+>> > kernel. Space the generated packets out (-d 10usec), like ethtool_rmon
+>> > already does.
+>> >
+>> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>  
+>> 
+>> Reviewed-by: Petr Machata <petrm@nvidia.com>
+>
+> FTR Petr send me a review tag on this off-list ;)
 
-The rest either aren't real problems, or are expected behaviour.
-
-Cheers,
-  Nik
-
-> ---
-> net/mlx5: implement max_sfs parameter
-> 
-> This adds the generic devlink permanent parameter max_sfs to mlx5, so the
-> number of light-weight subfunctions a PF may create can be set through
-> devlink instead of vendor tooling.  The setter enables the global
-> per_pf_num_sf bit and then programs the per-PF SF fields in the MNVDA
-> non-volatile configuration.
-> 
-> A few questions on the new code below.
-> 
->> diff --git a/Documentation/networking/devlink/mlx5.rst b/Documentation/networking/devlink/mlx5.rst
->> index cf1dffa676696..9421c89951a05 100644
->> --- a/Documentation/networking/devlink/mlx5.rst
->> +++ b/Documentation/networking/devlink/mlx5.rst
->> @@ -45,8 +45,13 @@ Parameters
->>        - The range is between 1 and a device-specific max.
->>        - Applies to each physical function (PF) independently, if the device
->>          supports it. Otherwise, it applies symmetrically to all PFs.
->> +   * - ``max_sfs``
->> +     - permanent
->> +     - The range is between 0 and a device-specific max.
->> +     - Applies to each physical function (PF) independently.
->>   
->> -Note: permanent parameters such as ``enable_sriov`` and ``total_vfs`` require FW reset to take effect
->> +Note: permanent parameters such as ``enable_sriov``, ``total_vfs`` and ``max_sfs``
->> +      require FW reset to take effect
->>   
->>   .. code-block:: bash
->>   
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
->> index 4a7275e8b62e3..72cc8da5f1193 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
->> @@ -68,7 +68,9 @@ struct mlx5_ifc_mnvda_reg_bits {
->>   
->>   struct mlx5_ifc_nv_global_pci_conf_bits {
->>   	u8         sriov_valid[0x1];
->> -	u8         reserved_at_1[0x10];
->> +	u8         reserved_at_1[0xa];
->> +	u8         per_pf_num_sf[0x1];
->> +	u8         reserved_at_c[0x5];
->>   	u8         per_pf_total_vf[0x1];
->>   	u8         reserved_at_12[0xe];
->>   
->> @@ -93,9 +95,11 @@ struct mlx5_ifc_nv_global_pci_cap_bits {
->>   };
->>   
->>   struct mlx5_ifc_nv_pf_pci_conf_bits {
->> -	u8         reserved_at_0[0x9];
->> +	u8         log_sf_bar_size[0x8];
->> +	u8         pf_total_sf_en[0x1];
->>   	u8         pf_total_vf_en[0x1];
->> -	u8         reserved_at_a[0x16];
->> +	u8         reserved_at_a[0x6];
->> +	u8         total_sf[0x10];
->>   
->>   	u8         reserved_at_20[0x20];
->>   
->> @@ -158,6 +162,8 @@ struct mlx5_ifc_nv_sw_accelerate_conf_bits {
->>   #define MLX5_GET_CFG_HDR_LEN(_mnvda_ptr) \
->>   	MLX5_GET(mnvda_reg, _mnvda_ptr, configuration_item_header.length)
->>   
->> +#define MLX5_DEFAULT_LOG_SF_BAR_SIZE 12
->> +
->>   static int mlx5_nv_param_read(struct mlx5_core_dev *dev, void *mnvda,
->>   			      size_t len)
->>   {
->> @@ -755,6 +761,115 @@ static int mlx5_devlink_total_vfs_validate(struct devlink *devlink, u32 id,
->>   	return 0;
->>   }
->>   
->> +static int mlx5_devlink_max_sfs_get(struct devlink *devlink, u32 id,
->> +				    struct devlink_param_gset_ctx *ctx,
->> +				    struct netlink_ext_ack *extack)
->> +{
->> +	struct mlx5_core_dev *dev = devlink_priv(devlink);
->> +	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
->> +	void *data;
->> +	int err;
->> +
->> +	err = mlx5_nv_param_read_global_pci_conf(dev, mnvda, sizeof(mnvda));
->> +	if (err) {
->> +		NL_SET_ERR_MSG_MOD(extack,
->> +				   "Failed to read global PCI configuration");
->> +		return err;
->> +	}
-> 
-> [Severity: Low]
-> 
-> Can this extack message show up as a warning on a perfectly successful
-> param dump?  mlx5_nv_param_read() maps every mlx5_core_access_reg()
-> failure to -EOPNOTSUPP:
-> 
-> 	mlx5_core_warn(dev, "Failed to read mnvda reg: ...");
-> 	return -EOPNOTSUPP;
-> 
-> and the dump path in net/devlink/param.c swallows that code without
-> clearing cb->extack:
-> 
-> devlink_nl_param_get_dump_one()
-> 	if (err == -EOPNOTSUPP) {
-> 		err = 0;
-> 	} else if (err) {
-> 		state->idx = param_id;
-> 		break;
-> 	}
-> 
-> netlink_dump_done() then attaches extack->_msg to the NLMSG_DONE even
-> when the reported error is 0, so on firmware that does not implement the
-> global PCI configuration item every "devlink dev param show" would print
-> "mlx5_core: Failed to read global PCI configuration".
-> 
-> The same applies to the "Failed to read PF configuration" message below.
-> The pre-existing mlx5_devlink_enable_sriov_get() and
-> mlx5_devlink_total_vfs_get() return the error without touching extack.
-> 
->> +
->> +	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
->> +	if (!MLX5_GET(nv_global_pci_conf, data, per_pf_num_sf)) {
->> +		ctx->val.vu32 = 0;
->> +		return 0;
->> +	}
->> +
->> +	memset(mnvda, 0, sizeof(mnvda));
->> +	err = mlx5_nv_param_read_per_host_pf_conf(dev, mnvda, sizeof(mnvda));
->> +	if (err) {
->> +		NL_SET_ERR_MSG_MOD(extack, "Failed to read PF configuration");
->> +		return err;
->> +	}
->> +
->> +	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
->> +	if (MLX5_GET(nv_pf_pci_conf, data, pf_total_sf_en))
->> +		ctx->val.vu32 = MLX5_GET(nv_pf_pci_conf, data, total_sf);
->> +	else
->> +		ctx->val.vu32 = 0;
->> +
->> +	return 0;
->> +}
->> +
->> +static int mlx5_devlink_max_sfs_validate(struct devlink *devlink, u32 id,
->> +					 union devlink_param_value *val,
->> +					 struct netlink_ext_ack *extack)
->> +{
->> +	if (val->vu32 > U16_MAX) {
->> +		NL_SET_ERR_MSG_FMT_MOD(extack,
->> +				       "Max SFs allowed value is %u", U16_MAX);
->> +		return -EINVAL;
->> +	}
->> +
->> +	return 0;
->> +}
-> 
-> [Severity: Low]
-> 
-> The documentation hunk in this patch states:
-> 
->       - The range is between 0 and a device-specific max.
-> 
-> but mlx5_devlink_max_sfs_validate() only rejects values above U16_MAX,
-> which is the width of nv_pf_pci_conf.total_sf[0x10] rather than any
-> device property, and neither the getter nor the setter reads
-> nv_global_pci_cap for an SF limit.  Compare
-> mlx5_devlink_total_vfs_validate(), which reports the real bound:
-> 
-> 	max = MLX5_GET(nv_global_pci_cap, data, max_vfs_per_pf);
-> 	if (val->vu16 > max) {
-> 		NL_SET_ERR_MSG_FMT_MOD(extack,
-> 				       "Max allowed by device is %u", max);
-> 
-> Relatedly, mlx5_devlink_max_sfs_set() below sets the global
-> per_pf_num_sf bit with no capability check, while
-> mlx5_devlink_total_vfs_set() and mlx5_devlink_enable_sriov_set() gate the
-> equivalent per-PF mode switch on
-> nv_global_pci_cap.per_pf_total_vf_supported and return -EOPNOTSUPP
-> otherwise.  No per_pf_num_sf_supported bit is added to
-> mlx5_ifc_nv_global_pci_cap_bits here.
-> 
-> Should a value beyond the device's actual SF maximum, or a device without
-> per-PF SF support, fail with something more specific than the generic
-> "Failed to change PF PCI configuration" that comes from the firmware
-> write?
-> 
->> +
->> +static int mlx5_devlink_max_sfs_set(struct devlink *devlink, u32 id,
->> +				    struct devlink_param_gset_ctx *ctx,
->> +				    struct netlink_ext_ack *extack)
->> +{
->> +	struct mlx5_core_dev *dev = devlink_priv(devlink);
->> +	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
->> +	void *data;
->> +	int err;
->> +
->> +	/* we don't explicitly disable per_pf_num_sf when max_sfs is 0 because
->> +	 * another PF may be using SFs
->> +	 */
->> +	if (ctx->val.vu32) {
->> +		err = mlx5_nv_param_read_global_pci_conf(dev, mnvda,
->> +							 sizeof(mnvda));
->> +		if (err) {
->> +			NL_SET_ERR_MSG_MOD(extack,
->> +					   "Failed to read global PCI configuration");
->> +			return err;
->> +		}
-> 
-> [Severity: Medium]
-> 
-> With value 0 this whole block is skipped, so on a device that is still in
-> global SF mode (per_pf_num_sf == 0) only the per-PF fields
-> pf_total_sf_en, total_sf and log_sf_bar_size are written.
-> 
-> mlx5_devlink_max_sfs_get() treats exactly those per-PF fields as
-> meaningless while per_pf_num_sf is clear:
-> 
-> 	if (!MLX5_GET(nv_global_pci_conf, data, per_pf_num_sf)) {
-> 		ctx->val.vu32 = 0;
-> 		return 0;
-> 	}
-> 
-> If the per-PF fields are inert in that mode, can
-> 
-> 	devlink dev param set pci/<bdf> name max_sfs value 0 cmode permanent
-> 
-> actually stop SF creation, given that the SF budget keeps coming from the
-> global configuration?
-> 
-> The call still returns 0 with the "requires a FW reset" extack, and a
-> later param show reports 0 through the same early return, so user space
-> sees the disable as successful.  The commit message says:
-> 
->      A value of 0 will effectively disable creation of new subfunction
->      devices.
-> 
-> For comparison, mlx5_devlink_total_vfs_get() reports the global
-> total_vfs value in the equivalent situation instead of 0.
-> 
->> +
->> +		data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
->> +		/* always enable per_pf_num_sf because another PF may use SFs */
->> +		MLX5_SET(nv_global_pci_conf, data, per_pf_num_sf, 1);
-> 
-> [Severity: Medium]
-> 
-> per_pf_num_sf lives in the device-global item, not in the per-host-PF
-> one:
-> 
-> mlx5_nv_param_read_global_pci_conf()
-> 	MLX5_SET_CFG_ITEM_TYPE(global, mnvda, type_class, 0);
-> 	MLX5_SET_CFG_ITEM_TYPE(global, mnvda, parameter_index,
-> 			       MLX5_CLASS_0_CTRL_ID_NV_GLOBAL_PCI_CONF);
-> 
-> so flipping it selects, for the whole device, whether the SF quota comes
-> from the global configuration or from each PF's own total_sf, while only
-> this PF's pf_total_sf_en/total_sf are programmed below.
-> 
-> What happens on a sibling PF whose per-PF total_sf was never programmed -
-> after the FW reset, does its SF capacity get derived from an unprogrammed
-> (zero) field and SF creation start failing there?
-> 
-> The comment above acknowledges the cross-PF coupling for the disable
-> direction; the extack at the end only warns about the FW reset and PCI
-> rescan, not about SF provisioning changing for other functions.
-> 
->> +
->> +		err = mlx5_nv_param_write(dev, mnvda, sizeof(mnvda));
->> +		if (err) {
->> +			NL_SET_ERR_MSG_MOD(extack,
->> +					   "Failed to change per_pf_num_sf global PCI configuration");
->> +			return err;
->> +		}
->> +		memset(mnvda, 0, sizeof(mnvda));
->> +	}
-> 
-> [Severity: Medium]
-> 
-> This read-modify-write touches the device-global nv_global_pci_conf item,
-> but mlx5_nv_param_register_dl_params() registers these params on each
-> PF's own devlink instance:
-> 
-> 	if (!mlx5_core_is_pf(devlink_priv(devlink)))
-> 		return 0;
-> 
-> 	return devl_params_register(devlink, mlx5_nv_param_devlink_params,
-> 				    ARRAY_SIZE(mlx5_nv_param_devlink_params));
-> 
-> so the devlink instance lock is per-PF and cannot serialize accesses to a
-> shared item.  Can two PFs of the same device lose each other's update?
-> 
-> PF0: mlx5_devlink_max_sfs_set()
->         mlx5_nv_param_read_global_pci_conf()   /* reads the shared item */
-> 
-> PF1: mlx5_devlink_total_vfs_set()
->         mlx5_nv_param_read_global_pci_conf()
->         MLX5_SET(nv_global_pci_conf, data, sriov_valid, 1);
->         MLX5_SET(nv_global_pci_conf, data, per_pf_total_vf, 1);
->         mlx5_nv_param_write()                  /* commits */
-> 
-> PF0:   MLX5_SET(nv_global_pci_conf, data, per_pf_num_sf, 1);
->         mlx5_nv_param_write()                  /* stale copy, clears the
->                                                   bits PF1 just wrote */
-> 
-> Both commands report success plus the FW-reset warning, so neither
-> administrator learns the persistent configuration is not what was asked
-> for.  The same pattern already exists for enable_sriov and total_vfs, but
-> this adds a new writer of the shared item.
-> 
->> +
->> +	err = mlx5_nv_param_read_per_host_pf_conf(dev, mnvda, sizeof(mnvda));
->> +	if (err) {
->> +		NL_SET_ERR_MSG_MOD(extack, "Failed to read PF configuration");
->> +		return err;
->> +	}
-> 
-> [Severity: Medium]
-> 
-> The two non-volatile writes are not atomic and the first one is never
-> rolled back.  If this read fails (mlx5_nv_param_read() returns
-> -EOPNOTSUPP for any mlx5_core_access_reg() failure), or the
-> mlx5_nv_param_write() below fails on a busy or restricted firmware, the
-> function returns an error to user space while per_pf_num_sf stays
-> committed in the NV configuration and this PF's
-> pf_total_sf_en/total_sf were never programmed.
-> 
-> Since that state survives reboot, is the device left in per-PF SF mode
-> with an effective budget of 0 after the FW reset even though the devlink
-> operation reported failure?
-> 
-> Would programming the per-host-PF item first, or restoring the
-> per_pf_num_sf value that was just read on the failure paths, keep the two
-> steps balanced?
-> 
->> +
->> +	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
->> +	MLX5_SET(nv_pf_pci_conf, data, log_sf_bar_size,
->> +		 ctx->val.vu32 ? MLX5_DEFAULT_LOG_SF_BAR_SIZE : 0);
-> 
-> [Severity: Medium]
-> 
-> log_sf_bar_size is a separate persistent knob - the size of each SF's
-> BAR/doorbell window, the same quantity the device reports as
-> mlx5_ifc_sf_partition_bits.log_sf_bar_size - and max_sfs does not claim
-> to control it.
-> 
-> The read above preserves whatever the device is currently programmed
-> with, and this overwrites it with the hardcoded
-> MLX5_DEFAULT_LOG_SF_BAR_SIZE (12), or with 0 on the disable path.
-> 
-> Should setting max_sfs also reset the SF BAR window size?  Neither the
-> commit message nor the documentation hunk mentions it, and 12 is not
-> validated against any device capability or against the BAR space implied
-> by total_sf, which may be up to 65535.
-> 
->> +	MLX5_SET(nv_pf_pci_conf, data, pf_total_sf_en, !!ctx->val.vu32);
->> +	MLX5_SET(nv_pf_pci_conf, data, total_sf, ctx->val.vu32);
->> +
->> +	err = mlx5_nv_param_write(dev, mnvda, sizeof(mnvda));
->> +	if (err) {
->> +		NL_SET_ERR_MSG_MOD(extack,
->> +				   "Failed to change PF PCI configuration");
->> +		return err;
->> +	}
->> +	NL_SET_ERR_MSG_MOD(extack,
->> +			   "Modifying max_sfs requires a FW reset and PCI bus rescan");
->> +
->> +	return 0;
->> +}
->> +
-> 
-> [ ... ]
-
+Oops, that was not the intention.
+My mailer setup is currently in a bit of a flux :-|
