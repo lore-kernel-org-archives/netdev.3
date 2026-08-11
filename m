@@ -1,58 +1,35 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0583843B3D9;
-	Tue, 11 Aug 2026 11:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0931242B736
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 11:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786448355; cv=none; b=GVA5iCS0UodMiMJQPkySZUOjE1t9ddS+e1ytMM4yjFJ2FqLv1C53BZrm0Yl/OMj8pew4AbENo3mHB9j6l2/EGgLY1q8uXK2d1VUKjIpSbLCwgJWpwMFtd7uve+yUH23Ibiv4TfV3+YrusYUav8yg+gFA/8J+foIN+IRALD3481w=
+	t=1786448451; cv=none; b=Nqm0Ds+CY9RrwO/5RXoaVT1R61N3aREnNy97Dr2D4mMkxnky6m4BpOf2LBBCjXHaNyNT5pqjwPjSkcvAHHpnMFDm3s4R2ZI1sHIUJgW9JZJw5aSfQRNaxkdVvTWo5OEUX4kiGGiOZnzogBoAdUDCZAYfB+dp/mnsT1w1VzXcnnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786448355; c=relaxed/simple;
-	bh=p8QWfHslY7XIMR7yvAPX/HnHz792kp4htHAIpaO8y2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfVmES4BolJNRuhXmsKwjwVBHXJVOzC512GzWLuoBoiLuOrtXqSllmBEDkS91SvgNsYe1ksWamTY/nfOuQlGLymmj7gXWRBWKtJno43nWhG8SnU6vc51xCY4s0OXAzdQKxDXlf4wZMn1NNzVF9wWncfz07DdL9sTbMvi6XYdh0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 27E3E201B51;
-	Tue, 11 Aug 2026 13:39:03 +0200 (CEST)
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wtkox-000wTA-09;
-	Tue, 11 Aug 2026 13:39:03 +0200
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wtkow-0000000D49K-4185;
-	Tue, 11 Aug 2026 13:39:02 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH net-next v2 1/2] dt-bindings: net: dsa: realtek: add RTL8365MB power supplies
-Date: Tue, 11 Aug 2026 13:39:00 +0200
-Message-ID: <20260811113901.3114169-2-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260811113901.3114169-1-o.rempel@pengutronix.de>
-References: <20260811113901.3114169-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1786448451; c=relaxed/simple;
+	bh=jVtT1y9c3mH/4qXTZja64Bu1z/Mw/g3jHlYyzdX+bBI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UTHXoa16LrirRsuDd1NQeMTsZEfWzpnXrsD2ioCzHD1IVejSkJsU25CIfVloh8dh0eI6HxdRWMQ8zSEleAUV69O7l9VocKe3ZUmiLCRy8yuic8QVPaR7joNTfHlMb0kh+6eXXdlusCT/vmUWLouE2TVphvNppXVZAqn+TpYptDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P4806XNH; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P4806XNH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69021F000E9;
+	Tue, 11 Aug 2026 11:40:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786448449;
+	bh=MbgJFZa+D4SqK0Yz87FYjrYdk+E5CVUHiFPrH+4t54Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=P4806XNHQzbJamBojol5d+IYlqJ/93JFUuQT1uEiRN2b1nTWM+5taUE6IySAe4F6e
+	 Jhzz6wWnED15UJNOD92QDnFozT7/2n//nj4cCbPxbsgWiCnsc+oyZ+/8DeC6bKP8qK
+	 X+maTpa2L8sOw7EZ52i5i4B3JS2A4MXNamF40rr/rsH+D8mDovJmmRit2/vGSZbQn7
+	 9u7tDEFHuxSLnXtVG98v78DzTsBooAyQ0hEWSIgXGpkzA+iDpxgtecGtEd+4QbHmAv
+	 4m5Zdd7blZxfrDOmRZMJqddDqf2Ee7mqeheY4SjydPTtrDBVlrrhbDfxwvQOIdhBTD
+	 7Wo/s7wuk1ofw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198BB380DBCF;
+	Tue, 11 Aug 2026 11:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,63 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: ngbe: fix NULL pointer dereference in
+ non-MSI-X
+ interrupt enabling
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178644840589.486052.17588417592857890356.git-patchwork-notify@kernel.org>
+Date: Tue, 11 Aug 2026 11:40:05 +0000
+References: <B2693E9A8BFAD110+20260807062214.410838-1-jiawenwu@trustnetic.com>
+In-Reply-To: 
+ <B2693E9A8BFAD110+20260807062214.410838-1-jiawenwu@trustnetic.com>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ aleksandr.loktionov@intel.com, weirongguang@kylinos.cn,
+ u.kleine-koenig@baylibre.com, larysa.zaremba@intel.com, leitao@debian.org
 
-Document the RTL8365MB power rails as optional supplies. They are optional
-because the rails are often always-on; some designs break them out for
-granular hwmon monitoring and regulator control.
+Hello:
 
-They are scoped to realtek,rtl8365mb: different Realtek switch families use
-different power-rail naming schemes, so these rails do not apply to other
-families such as realtek,rtl8366rb (VDDA/VDD_CORE/VDDIO/...).
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- .../devicetree/bindings/net/dsa/realtek.yaml  | 25 +++++++++++++++++++
- 1 file changed, 25 insertions(+)
+On Fri,  7 Aug 2026 14:22:14 +0800 you wrote:
+> In non-MSI-X mode (such as legacy INTx or single MSI), wx->msix_entry is
+> not allocated or initialized. Calling NGBE_INTR_MISC(wx) dereferences
+> wx->msix_entry->entry, leading to a NULL pointer dereference crash.
+> 
+> This issue was introduced by fixing the IRQ vector when the number of
+> VFs is 7. Fix the issue by explicitly checking `pdev->msix_enabled` to
+> determine the correct vector index.
+> 
+> [...]
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/realtek.yaml b/Documentation/devicetree/bindings/net/dsa/realtek.yaml
-index 473facd87a62..98ea6072bd96 100644
---- a/Documentation/devicetree/bindings/net/dsa/realtek.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/realtek.yaml
-@@ -8,6 +8,30 @@ title: Realtek switches for unmanaged switches
- 
- allOf:
-   - $ref: dsa.yaml#/$defs/ethernet-ports
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: realtek,rtl8365mb
-+    then:
-+      properties:
-+        avddh-supply:
-+          description: AVDDH high-voltage analog supply.
-+
-+        avddl-supply:
-+          description: AVDDL low-voltage analog supply.
-+
-+        dvddio-supply:
-+          description: DVDDIO digital I/O supply.
-+
-+        dvddio1-supply:
-+          description: DVDDIO_1 secondary digital I/O supply for the RGMII bank.
-+
-+        dvddl-supply:
-+          description: DVDDL digital core supply.
-+
-+        pllvddl-supply:
-+          description: PLLVDDL PLL analog supply.
- 
- maintainers:
-   - Linus Walleij <linusw@kernel.org>
-@@ -243,6 +267,7 @@ examples:
-     platform {
-             ethernet-switch {
-                     compatible = "realtek,rtl8365mb";
-+                    avddh-supply = <&avddh>;
-                     mdc-gpios = <&gpio1 16 GPIO_ACTIVE_HIGH>;
-                     mdio-gpios = <&gpio1 17 GPIO_ACTIVE_HIGH>;
-                     reset-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
+Here is the summary with links:
+  - [net,v3] net: ngbe: fix NULL pointer dereference in non-MSI-X interrupt enabling
+    https://git.kernel.org/netdev/net/c/5f3a13e0bb5e
+
+You are awesome, thank you!
 -- 
-2.47.3
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
