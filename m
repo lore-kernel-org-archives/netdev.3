@@ -1,107 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177823F9F5B;
-	Tue, 11 Aug 2026 20:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1EF416844
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 20:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786480988; cv=none; b=X9uL+++FWvp05XhbAwR/4wwwymoUplR6MkY425yLnkPSpnMIOGgXmhsrA4VJyrX45GNFdgZuiQyOEGuzVXTflXUiZXJpPWpD/j8SQQpkVctSwKE+XrzZ+Q0eLUuOIZQwYxTc40l+OS5sk83oLP9a5SlzLcPz4SEyY6waOwIrf1k=
+	t=1786481168; cv=none; b=brmCZJFrEFW929AyLp8JoGs8gaDGd9f+Dw57pcm6I8oZr1gmlOErZ+7J9ZJB4P48fhltOyD2/Dz1vIJ0GhJJkbXttNblblKjL7cXGbDhBW1Xo3uL9M1C2jYvYIMoZIbzVFBRdrDJImDdJnOM6stMod7aNEU6uf6XdBmx9i70+o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786480988; c=relaxed/simple;
-	bh=HNWrA4Npyus9iEe5/qKE4hOoR7Pg96iHGa2EDjt2768=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uV2hskp5fWV5zMc0nYGid3L8r8bN+0DTxnBYhz4/oGKW1o0fUZfW078ggnsheVXU0j9+CWQ36YGbd9vXPi98G5xdmQh7CImMHGGmwL7JCBhOpoicLLSh+eVN5anJYsvzv6qP5DQBF5WXI4PMo2Z5m9tgbz6IbxP6DcumrwDnnik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXLgdApM; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXLgdApM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049C71F000E9;
-	Tue, 11 Aug 2026 20:43:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786480986;
-	bh=tmqgrBJxUvss5ev2qg4hR/y+Shhz4DNLrdh9R3vpGbM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YXLgdApMQVjB8O5UsuRCftLgsXmP3cSJYvwGgrqZ6b+hB2edLW/uSBh3oj2DAKDLB
-	 6IioToKp+fdIkMueq1I/JRHsiwugXBDmJ97vp4UxyiCAtTlbgjkSl4kj3fA2aKAij5
-	 Qgg6Hbg7EYU+2aNCB4H6ya401I1ujfkQIF2fhblv0bLnVJ432LahjN1sFPCZeRdz14
-	 Cw5oUW8a78hswG6XALU3IdgCkVcHjig6EUfeU9hkjUA2GGFHo2hnqTAj7OaCds1AU4
-	 UNwXanpKaMexoPY5I1l0K/a0V8GThMm0LE5dEKAkZ0GBpRhjDX5FR/2e1tnXNyczMQ
-	 ftS06T2V5gAHQ==
-Date: Tue, 11 Aug 2026 13:41:01 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <contact@jaseg.de>
-Cc: Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <linux@jaseg.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Dave Young <ruirui.yang@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@linux.win>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, keyrings@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-security-module@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-nvme@lists.infradead.org,
-	linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
-	linux-afs@lists.infradead.org, netdev@vger.kernel.org,
-	linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	dm-devel@lists.linux.dev
-Subject: Re: [PATCH v2 00/13] CRASH_WIPE_SECRETS: Wipe secrets before kdump
- (was: CRASH_ZEROIZE)
-Message-ID: <20260811204101.GA1905@sol>
-References: <20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de>
- <20260811182012.GB2895176@google.com>
- <d242ab53-a39e-421d-ac39-4bee49be6ac0@jaseg.de>
+	s=arc-20240116; t=1786481168; c=relaxed/simple;
+	bh=LrvLJfAY7L1vt9PcHDjiJhIvMvofWRrRsBxg0y51ekI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pqFUI9487olLwgdpmdzztP1a+oHU5embtl38K3US0QrhbcuXQiDLD+YgEWIfHiUXsmHr5FQZACaXqRH6PcpyugImTTAYJZktyZxZbTaEXymt5tJs2D1Apk6+/+g0jNxkdc+/cIpLeMInPDn3nOPGQ83VfGHNnu2CKMxPZ6ZNcmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-4784b41f3aeso41052f8f.1
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 13:46:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786481164; x=1787085964;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8Z1sd/UmWsFc+oR/gAfLE+mwCaN52YEqoKnHBCL8tTo=;
+        b=mG4v2fiSeoqRnihBLZJJoe9tuKQ3AZ7CK6RvLqG1zg4aSYbUrk2nWlPYL+SE7S2aY3
+         GbSGHmlIIG3XJqsWSNwCEIfhODT+hj5kTtwgd6p5msDmag4Ff2Lry6t/DUvGbkFXI+ky
+         ClddNKK+s6iXjrffPlYZ+ReHA+f8McEXFHfeu2N/TSAWKM2568GkN+ZPq4TW9jq9AO5p
+         2Ua7gTVGUTr5mNHfUwfPwkyNpGXgTII0GgKLf6LB72CZR9sbVPGwIBIsqVaJWt4PpMX1
+         mE4IW79kltZ3pOPGE9xZmGhZpqV7kzVON43AMRwmO/tLVn79JCtBUq28m4XU/62aKoxh
+         jYGQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq9UNfIrq6CHSRE24pawK454LINElZIFlGOtBSqRttRUQUczQl42JJFJhFbIbfDZMQFfO0jJrw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRKAZov8UE0Bv2NxnJSdFi+fBTW+4mfyhJnUzvBaqZbQeaalTU
+	t2e1pcM2QQY6Cuk48ao0w2OHyN5N1LQ/krpGm9KOaXQ45dZmFCx1Qiym
+X-Gm-Gg: AR+sD10qHN8UFGIVkinJ58n9+kc+RQwmAMVXGjgZijtZAkObgPieIUDjgLRp3yZcNjp
+	8ja0wfDQhxxGgHgtwZRy7NSuVHc9gOi5m+19uEs6M1rz9rG3/snJxzLL5TNg30n2AN2Dh2DIll2
+	p23diL9Sx9umkL274bTeVTH6Qpjqs+Mc8SIPiHIwW0Mj2E4gStMe5fRtRtwCVOw/ltn+VFz5plG
+	IPYh1rLevhyy3Ytzn50Qv9ZJEoxBGWtQQhUQ640PnVvSGXiUeMq6EO3nn5Ly3zL5xFH4bPr5/aY
+	8OhmwZc5i8SxzCWaARUJ+j7CEZjdds+yZzKYgy/izbpKFc60vJBcS6H3CqtDWfyk9vNxLCYaoLK
+	9v+7pc61knLVR0t1YO6tKCI4S/P6ouABq92XMxOAmUtY7XQsVSBLcOMs+nIeF+wN1CT1eQg76P8
+	tASBGUORnuvNuyjpeIJE7oCC6huA5Qnq0GaiNF6FyZyUonPhP6fkMIBybj6rkSLSROxZ2fAb9yP
+	dXec+EgYwLR0FjcRA==
+X-Received: by 2002:a05:6000:2c06:b0:47f:9441:51b5 with SMTP id ffacd0b85a97d-4814ad7b6damr8946439f8f.5.1786481164448;
+        Tue, 11 Aug 2026 13:46:04 -0700 (PDT)
+Received: from [192.168.88.241] (89-24-57-65.nat.epc.tmcz.cz. [89.24.57.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48150d7010asm1110105f8f.33.2026.08.11.13.46.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Aug 2026 13:46:03 -0700 (PDT)
+Message-ID: <d91a2ae3-2aac-4fab-b041-d3004ffad39b@ovn.org>
+Date: Tue, 11 Aug 2026 22:46:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d242ab53-a39e-421d-ac39-4bee49be6ac0@jaseg.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 1/1] openvswitch: Fix CT limit teardown
+ use-after-free
+To: Ilya Maximets <i.maximets@ovn.org>, Yuqi Xu <xuyuqiabc@gmail.com>,
+ Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Yi-Hung Wei <yihung.wei@gmail.com>,
+ netdev@vger.kernel.org, dev@openvswitch.org, linux-kernel@vger.kernel.org,
+ Vega <vega@nebusec.ai>, Nan Li <tonanli66@gmail.com>,
+ Ren Wei <enjou1224z@gmail.com>
+References: <cover.1786441097.git.xuyuqiabc@gmail.com>
+ <3085b885bb348a9245c5c84364fea903d9942863.1786441097.git.xuyuqiabc@gmail.com>
+ <d7471dde-43f6-4c31-a380-8a3f91b26d59@ovn.org>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <d7471dde-43f6-4c31-a380-8a3f91b26d59@ovn.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 11, 2026 at 09:38:20PM +0200, Jan Sebastian Götte wrote:
-> > Could you perhaps narrow the scope to one or two things that actually
-> > are useful and can reasonably be supported for the application?  For
-> > example, secretmem seems to be the only thing you mentioned that you're
-> > actually planning to use.
+On 8/11/26 4:02 PM, Ilya Maximets wrote:
+> On 8/11/26 11:55 AM, Yuqi Xu wrote:
+>> Packet processing uses CT limit state under RCU, while netns teardown
+>> frees that state under ovs_mutex. The CT limit pointer was neither removed
+>> from readers nor protected by a grace period, allowing packet processing to
+>> dereference the freed state.
+>>
+>> An unprivileged user can trigger this bug from a user and network
+>> namespace, causing a slab-use-after-free in ovs_ct_execute() when the
+>> netns is torn down.
+>>
+>> Publish the CT limit pointer through RCU, remove it before teardown, and
+>> wait for readers before freeing its contents. Keep ovs_mutex around
+>> individual CT limit updates, and use the RCU read-side lock while GET
+>> traverses the RCU-protected limit lists.
+>>
+>> Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Vega <vega@nebusec.ai>
+>> Link: https://lore.kernel.org/all/cover.1784711445.git.xuyuqiabc@gmail.com
+>> Assisted-by: Codex:GPT-5.4
+>> Co-developed-by: Nan Li <tonanli66@gmail.com>
+>> Signed-off-by: Nan Li <tonanli66@gmail.com>
+>> Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+>> Reviewed-by: Ren Wei <enjou1224z@gmail.com>
+>> ---
+>> Changes in v5:
+>>
+>> - Remove unreachable command-path NULL handling because netlink sockets
+>>   keep their network namespaces alive while requests are processed.
 > 
-> I'm open to whittling down the scope of this series. In my use case I need
-> at least secretmem as well as dm-crypt, which then pulls in the crypto tfm
-> stuff. Personally, I could live without the other bits, I just thought
-> they'd be easy enough to include.
+> Please, add a note to the commit message on why the NULL checks are not
+> necessary for the code invoked from netlink handlers.  Otherwise, LGTM.
 
-Please do reduce the scope.
+May be also worth explicitly calling out the synchronization while holding
+the mutex.  It can be avoided, but should likely be a separate change.
 
-Note that even if dm-crypt is in scope, "crypto: api - wipe tfm contexts
-before kdump" is neither required nor sufficient.  For one, dm-crypt has
-its own copy of the key.  The wiping should be done by the kernel
-feature(s) that need it, as they know what actually needs to be wiped,
-and they can do so without the bottleneck of a new global list.
+> 
+> Best regards, Ilya Maximets.
 
-- Eric
