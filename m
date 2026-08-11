@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F6241CB4C
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 08:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89ADC3FB7EB
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 08:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786437608; cv=none; b=nhTzI3zjBRmU19Qp9HIuOCQetnUkb0x4lp+AkhS//LwFd40A3RPZUtQyA1Nmt9zKUeaHy6bawj8U9qu8Ug31Z0u+9s2ssczXu5s53rxvGa9PRyypttrBzmw8kUPdWQ064KQ4bdDG4sD8yo86pysdQTcrLFMNAZ0dYUW0/B39qeU=
+	t=1786437613; cv=none; b=TytImmk0ifTfUKjjMMBul65lz3no6RjlJIcQWSeQqBRDvPICP2VCeitY4Kt/G2TcNFStHbs2ddZnAE1LhNG6rCvj7TutH1Lghy2k75WaVDJJ6ytjsklaYXnXsxCJdpkHlP6S8FL4AcBus4g5EWWYcZRX42F1w2+9AjPW8+8SQPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786437608; c=relaxed/simple;
-	bh=Ki91ivYlKzP+RRHPWiPy3wSSjoN1MN972NtcTecn/n8=;
+	s=arc-20240116; t=1786437613; c=relaxed/simple;
+	bh=i0keQ4aEEl6kd8FYLEraCKYC+XydEuoMLYlYQDL7T4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opWEFpaVm3YsXzdh7PBPgY81V7BWcbJrL1yIfZ4PDiWs3qp7e3RtA1YGqLCzID7SQlu3X0BKTXz8e5Zk1GzGinTeA9ixEkv+fiYjOznxw09C9WKxFI7P1G0QWnIwfITP8l6f5BTpKWWQQpMGGnOtCfGnQuh3YIBF402Y/pPQ6uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YSjtv/F2; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=NtJSSEK2D7O8jcCEDY8BFZ+obij9Rl7uumqRCOcWCS1Fu1EXpsskauGp/tfVgjUIcfkxhxzNDBTeiztNfxomi1wOwhTILouQMh5moiqmBPVRSFGzjdu5JMpR/JHxCK+0XzXZ5wGRgSqREZloWFBFYb1nXj9GKP731tE5gP5Wbbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GZLNeHCL; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YSjtv/F2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GZLNeHCL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786437605;
+	s=mimecast20190719; t=1786437610;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9BlZh1iB5FjCkQFUxyH3k/amtFEOD8MLLGQLn1+xx/A=;
-	b=YSjtv/F2oB5JhntWtBcqUG9hQCA8z84uVfJ3BWxl3QBo9rLkEKRGbBpY0kEJV6dNJkN3I2
-	EXBS81xlv7z7IKsFD+TYE7/DCnkNNB/HvoKtUBPctBKIx6nAsLlzADaCA+BaHhEM63p/m3
-	ueI+yj1XpIv4YtxdjASFfrjSIQzgg/4=
+	bh=OYhQIkr1UHJHEKr6XYHqSWyJzRY6OBRob+m2igGi0bQ=;
+	b=GZLNeHCL+DAW/qTiUo6ly1SN2qpKK+VyLDNe1DNwO/PMhr6TNy3U0TtFz8Jtm//F+8XSQo
+	LhcHov0MsFPCE/6D+gAD/vwgMmw3Nog7EDoZkbld1ASAL1cwfeABVNaoTYttTwJsupdjxc
+	kJJtV8g5NqJLREJ8N/Mm9kP4KoLtn0c=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-lJSHwgkyPge_a0VLNmbq6Q-1; Tue,
- 11 Aug 2026 04:39:54 -0400
-X-MC-Unique: lJSHwgkyPge_a0VLNmbq6Q-1
-X-Mimecast-MFC-AGG-ID: lJSHwgkyPge_a0VLNmbq6Q_1786437592
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-21-Aq1xe_w_PsOJ-728vok8rw-1; Tue,
+ 11 Aug 2026 04:40:06 -0400
+X-MC-Unique: Aq1xe_w_PsOJ-728vok8rw-1
+X-Mimecast-MFC-AGG-ID: Aq1xe_w_PsOJ-728vok8rw_1786437604
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7883518001E3;
-	Tue, 11 Aug 2026 08:39:51 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3D9D318004BB;
+	Tue, 11 Aug 2026 08:40:03 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.44.48.134])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 73A753001D38;
-	Tue, 11 Aug 2026 08:39:44 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B666A195DF91;
+	Tue, 11 Aug 2026 08:39:55 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: parvathi@couthit.com
 Cc: andrew+netdev@lunn.ch,
@@ -67,11 +67,11 @@ Cc: andrew+netdev@lunn.ch,
 	m-malladi@ti.com,
 	krishna@couthit.com,
 	mohan@couthit.com
-Subject: Re: [PATCH net-next v3 2/3] net: ti: icssm-prueth: Add priority based RX IRQ handlers
-Date: Tue, 11 Aug 2026 10:39:33 +0200
-Message-ID: <20260811083933.24428-1-pabeni@redhat.com>
-In-Reply-To: <20260804121644.465118-3-parvathi@couthit.com>
-References: <20260804121644.465118-3-parvathi@couthit.com>
+Subject: Re: [PATCH net-next v3 3/3] net: ti: icssm-prueth: Support duplicate HW offload feature for HSR and PRP
+Date: Tue, 11 Aug 2026 10:39:51 +0200
+Message-ID: <20260811083951.24444-1-pabeni@redhat.com>
+In-Reply-To: <20260804121644.465118-4-parvathi@couthit.com>
+References: <20260804121644.465118-4-parvathi@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,556 +79,611 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
---- Patch [2]: [PATCH net-next v3 2/3] net: ti: icssm-prueth: Add priority based RX IRQ handlers ---
-commit f88c5c0ded57f1071a4ce5dab475dff188d16fb0
+--- Patch [3]: [PATCH net-next v3 3/3] net: ti: icssm-prueth: Support duplicate HW offload feature for HSR and PRP ---
+commit e6e3942b25c7905f76512f3ac3b7e21bb0915c5e
 Author: Roger Quadros <rogerq@ti.com>
 
-net: ti: icssm-prueth: Add priority based RX IRQ handlers
+net: ti: icssm-prueth: Support duplicate HW offload feature for HSR and PRP
 
-This adds shared high/low priority RX interrupt handlers and two shared NAPI
-instances for switch, HSR and PRP modes, so the host can drain both PRU port
-queues in wire-arrival order using the per-frame IEP timestamp. Dual-EMAC
-mode keeps its per-port interrupt and NAPI. A new file,
-icssm_prueth_common.c, holds the shared poll, IRQ request and IRQ free
-helpers.
+This adds NETIF_F_HW_HSR_DUP support by moving the two per-port LRE
+transmit queues onto one shared BD ring, so a frame is copied into OCMC RAM
+once and both PRU ports transmit it.  The TX path inspects the HSR tag or
+the PRP RCT trailer to decide whether to set the LAN A/LAN B duplication
+bits, and the receive path switches from the BD Port field to a new HostRecv
+bit.
+
+A few questions about the new code below.
 
 > diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-> index 138248f4a1eed..7031b78d2cc2f 100644
+> index 7031b78d2cc2f..43862946d4f14 100644
 > --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
 > +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
 
 [ ... ]
 
-> @@ -842,7 +858,7 @@ static int icssm_emac_rx_packets(struct prueth_emac *emac, int budget)
->  			rxqueue = &queue_infos[PRUETH_PORT_HOST][i];
->  		overflow_cnt = readb(&queue_desc->overflow_cnt);
->  		if (overflow_cnt > 0) {
-> -			emac->stats.rx_over_errors += overflow_cnt;
-> +			atomic64_add(overflow_cnt, &emac->stats.rx_over_errors);
->  			/* reset to zero */
->  			writeb(0, &queue_desc->overflow_cnt);
->  		}
+> @@ -567,16 +615,19 @@ static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
+>  	u16 update_wr_ptr;
+>  	u32 wr_buf_desc;
+>  	void *ocmc_ram;
+> +	__be16 proto;
+> +	u8 *hdr;
+> +
+> +	other_emac = emac->prueth->emac[(emac->port_id == PRUETH_PORT_MII0) ?
+> +				PRUETH_PORT_MII1 - 1 : PRUETH_PORT_MII0 - 1];
+> +
+> +	if (prueth_is_lre(prueth) && (emac->link || other_emac->link))
+> +		link_up = true;
 
-[Severity: Low]
-[Finding: fable-5-2-6]
-[Sources: fable-5]
+[Severity: Medium]
+[Finding: main-5-19]
+[Sources: opus-5]
+Is emac->link safe to read here without emac->lock?
 
-Is the switch branch in this function still reachable after this change?
+icssm_emac_adjust_link() mutates it under the lock:
 
-icssm_emac_rx_packets() still carries the comment
+	spin_lock_irqsave(&emac->lock, flags);
+	...
+	} else if (emac->link) {
+		new_state = true;
+		emac->link = 0;
+	}
 
-	/* Start and end queue is made common for EMAC, RSTP */
+The transmit path holds only prueth->lre_host_queue_lock[qid - 2], so the
+lockset intersection with adjust_link is empty.
 
-and the selection
+Since link_up decides whether the second write pointer of the shared queue
+is advanced, can a sample that races with adjust_link leave the two write
+pointers for one ring permanently out of step?
 
-	if (PRUETH_IS_SWITCH(emac->prueth))
-		rxqueue = &sw_queue_infos[PRUETH_PORT_HOST][i];
+>  	if (!PRUETH_IS_EMAC(prueth))
+>  		dram = prueth->mem[PRUETH_MEM_DRAM1].va;
+>  	else
+>  		dram = emac->prueth->mem[emac->dram].va;
+> -	if (eth_skb_pad(skb)) {
+> -		if (netif_msg_tx_err(emac) && net_ratelimit())
+> -			netdev_err(ndev, "packet pad failed\n");
+> -		return -ENOMEM;
+> -	}
+>  
+>  	/* which port to tx: MII0 or MII1 */
+>  	txport = emac->tx_port_queue;
 
-but the only scheduler of emac->napi is the per-port RX hardirq, and after
-this patch icssm_emac_ndo_open() requests emac->rx_irq and enables emac->napi
-only when PRUETH_IS_EMAC(prueth). Would it be clearer to drop the switch
-branch and update the comment?
+[ ... ]
 
-> @@ -1071,11 +1087,25 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
->  			goto iep_exit;
+> @@ -607,6 +661,29 @@ static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
+>  		free_blocks = buffer_desc_count;
 >  	}
 >  
-> -	ret = icssm_emac_request_irqs(emac);
-> -	if (ret)
-> -		goto rproc_shutdown;
-> +	if (PRUETH_IS_EMAC(prueth)) {
-> +		napi_enable(&emac->napi);
-> +	} else {
-> +		if (!prueth->emac_configured &&
-> +		    (PRUETH_IS_SWITCH(prueth) || prueth_is_lre(prueth))) {
-> +			napi_enable(&prueth->napi_hpq);
-> +			napi_enable(&prueth->napi_lpq);
-> +		}
-> +	}
->  
-> -	napi_enable(&emac->napi);
-> +	/* In switch and LRE modes the shared HPQ/LPQ IRQs are used,
-> +	 * register them here and reuse for both modes.
-> +	 */
-> +	if (PRUETH_IS_EMAC(prueth))
-> +		ret = icssm_emac_request_irqs(emac);
-> +	else
-> +		ret = icssm_prueth_common_request_irqs(emac);
-> +	if (ret)
-> +		goto disable_napi;
->  
->  	/* start PHY */
->  	phy_start(emac->phydev);
-
-[ ... ]
-
-> @@ -1127,12 +1167,26 @@ static int icssm_emac_ndo_stop(struct net_device *ndev)
->  	/* disable the mac port */
->  	icssm_prueth_port_enable(emac, false);
->  
-> +	netif_stop_queue(ndev);
+> +	/* Fetch queue state for the second LRE port */
+> +	if (prueth_is_lre(prueth) && link_up) {
+> +		queue_desc_other_port = emac->tx_queue_descs_other_port +
+> +					queue_id;
+> +		bd_rd_ptr_other_port = readw(&queue_desc_other_port->rd_ptr);
 > +
->  	/* stop PHY */
->  	phy_stop(emac->phydev);
->  
-> -	napi_disable(&emac->napi);
->  	hrtimer_cancel(&emac->tx_hrtimer);
-
-[Severity: Low]
-[Finding: main-5-23]
-[Sources: opus-5]
-
-Can the tx hrtimer undo this netif_stop_queue()?
-
-The queue is stopped before phy_stop() (which can sleep) and before
-hrtimer_cancel(&emac->tx_hrtimer), and the callback does:
-
-drivers/net/ethernet/ti/icssm/icssm_prueth.c:icssm_emac_tx_timer_callback() {
-	...
-	if (netif_queue_stopped(emac->ndev))
-		netif_wake_queue(emac->ndev);
-	...
-}
-
-So a timer armed by the previous HR_TIMER_TX_DELAY_US back-pressure event and
-expiring in that window re-wakes the queue.
-
-On the icssm_prueth_change_mode() path ndo_stop() is called directly from the
-netdev notifier rather than through dev_close(), so __LINK_STATE_START stays
-set and the qdisc is still active, and a re-woken queue can enter
-ndo_start_xmit() for a port whose firmware and queues are being
-reconfigured. Would cancelling the hrtimer first, or using
-netif_tx_disable(), be preferable?
-
->  
-> +	if (PRUETH_IS_EMAC(prueth)) {
-> +		napi_disable(&emac->napi);
-> +		free_irq(emac->rx_irq, ndev);
-> +	} else {
-> +		if (!prueth->emac_configured &&
-> +		    (PRUETH_IS_SWITCH(prueth) || prueth_is_lre(prueth))) {
-> +			napi_disable(&prueth->napi_lpq);
-> +			napi_disable(&prueth->napi_hpq);
-> +		}
-> +		/* Free IRQs on last port before halting PRU */
-> +		icssm_prueth_common_free_irqs(emac);
-> +	}
-> +
+> +		read_block_other_port = (bd_rd_ptr_other_port -
+> +					 txqueue->buffer_desc_offset) / BD_SIZE;
 
 [Severity: High]
-[Finding: fable-5-5-26]
-[Sources: fable-5, opus-5, sonnet-5]
+[Finding: main-3-13]
+[Sources: opus-5]
+Should this be conditional on the peer port actually having been
+configured, i.e. prueth->emac_configured & BIT(other_port)?
 
-When the first of the two ports is closed, is anything left to stop RX for
-that port?
+link_up is true whenever either port's phy link is up, so with only one LRE
+slave netdev opened this reads a descriptor that was never initialised.
+icssm_prueth_hostinit() has memset_io()'d DRAM1:
 
-This branch skips napi_disable() while the peer is still configured,
-icssm_prueth_common_free_irqs() returns early for the same reason, and
-icssm_prueth_sw_shutdown_prus() also early-returns:
+	if (prueth->eth_node[PRUETH_MAC1])
+		icssm_prueth_clearmem(prueth, PRUETH_MEM_DRAM1);
 
-drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c:icssm_prueth_sw_shutdown_prus() {
+so bd_rd_ptr_other_port reads back 0 and, with both operands promoted to
+int:
+
+	read_block_other_port = (0 - P1_Q3_TXOPT_BD_OFFSET) / BD_SIZE
+			      = (0 - 4128) / 4 = -1032
+
+	free_blocks_other_port = 194 - 0 + (-1032) = -838
+
+> +
+> +		if (write_block > read_block_other_port) {
+> +			free_blocks_other_port = buffer_desc_count -
+> +						 write_block;
+> +			free_blocks_other_port += read_block_other_port;
+> +		} else if (write_block < read_block_other_port) {
+> +			free_blocks_other_port = read_block_other_port -
+> +						 write_block;
+> +		} else {
+> +			free_blocks_other_port = buffer_desc_count;
+> +		}
+> +
+> +		if (free_blocks_other_port < free_blocks)
+> +			free_blocks = free_blocks_other_port;
+> +	}
+>  	pkt_block_size = DIV_ROUND_UP(pktlen, ICSS_BLOCK_SIZE);
+>  	if (pkt_block_size >= free_blocks) /* out of queue space */
+>  		return -ENOBUFS;
+
+With free_blocks negative, does pkt_block_size >= free_blocks not stay true
+forever, so every xmit returns -ENOBUFS and icssm_emac_ndo_start_xmit()
+loops on netif_stop_queue() plus the 100us hrtimer retry, stalling TX on
+the port that does have a link?
+
+> @@ -656,6 +733,57 @@ static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
+>  	if (PRUETH_IS_HSR(prueth))
+>  		wr_buf_desc |= BIT(PRUETH_BD_HSR_FRAME_SHIFT);
+>  
+> +	if (prueth_is_lre(prueth)) {
+> +		ethhdr = (struct ethhdr *)skb_mac_header(skb);
+> +		proto = ethhdr->h_proto;
+> +
+> +		if (proto == htons(ETH_P_8021Q)) {
+> +			vlan_hdr = (struct vlan_ethhdr *)ethhdr;
+> +			proto = vlan_hdr->h_vlan_encapsulated_proto;
+> +			is_vlan = true;
+> +		}
+> +
+> +		/* Extract HSR sequence number and LAN ID
+> +		 * from the tag for the Buffer Descriptor
+> +		 */
+> +		if (proto == htons(ETH_P_HSR)) {
+> +			hdr = skb_mac_header(skb);
+> +
+> +			if (is_vlan) {
+> +				hsr_ethhdr =
+> +					(struct hsr_txopt_ethhdr *)(hdr +
+> +								    VLAN_HLEN);
+> +			} else {
+> +				hsr_ethhdr = (struct hsr_txopt_ethhdr *)hdr;
+> +			}
+> +
+> +			/* PTP frames (ETH_P_1588) carry no LAN ID
+> +			 * in the HSR tag
+> +			 */
+> +			if (hsr_ethhdr->hsr_tag.encap_proto !=
+> +			    htons(ETH_P_1588)) {
+> +				wr_buf_desc |= PRUETH_BD_LAN_INFO_MASK;
+> +			} else {
+> +				wr_buf_desc |= (txport <<
+> +						PRUETH_BD_LAN_A_SHIFT);
+> +			}
+> +			wr_buf_desc |= PRUETH_BD_RED_PKT_MASK;
+> +		} else {
+> +			/* Read PRP RCT to extract sequence number and LAN ID */
+> +			struct prp_txopt_rct *rct =
+> +				(struct prp_txopt_rct *)(skb_tail_pointer(skb) -
+> +							 ICSSM_LRE_TAG_SIZE);
+> +
+> +			if (rct->prp_suffix == htons(ETH_P_PRP)) {
+> +				wr_buf_desc |= PRUETH_BD_LAN_INFO_MASK;
+> +				wr_buf_desc |= PRUETH_BD_RED_PKT_MASK;
+> +			} else {
+> +				wr_buf_desc |= (txport <<
+> +						PRUETH_BD_LAN_A_SHIFT);
+> +			}
+> +		}
+> +	}
+
+[Severity: Medium]
+[Finding: main-1-4]
+[Sources: opus-5]
+Should the RCT branch be gated on PRUETH_IS_PRP(prueth)?
+
+As written the else arm also runs in HSR mode, for every frame whose
+(VLAN-inner) ethertype is not ETH_P_HSR, for example an untagged PTP, ARP or
+IPv6 DAD frame sent directly on the slave netdev.  The last six bytes of
+such a frame are then reinterpreted as struct prp_txopt_rct, and if the
+final two payload bytes happen to be 0x88FB the frame gets
+
+	wr_buf_desc |= PRUETH_BD_LAN_INFO_MASK;
+	wr_buf_desc |= PRUETH_BD_RED_PKT_MASK;
+
+and is duplicated onto both LANs.  With a raw socket those two bytes are
+fully caller controlled.  The commit message says "Frames without an RCT
+are sent on the originating port only" - is that still what happens here in
+HSR mode?
+
+Also, the two comments say the sequence number and LAN ID are extracted
+from the HSR tag and from the RCT, but neither sequence_nr nor
+lan_id_and_lsdu_size is ever read.  Could the comments be reworded?
+
+> @@ -668,6 +796,10 @@ static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
+>  	update_wr_ptr = txqueue->buffer_desc_offset + (update_block * BD_SIZE);
+>  	writew(update_wr_ptr, &queue_desc->wr_ptr);
+>  
+> +	/* update the write pointer in queue descriptor of other port */
+> +	if (prueth_is_lre(prueth) && link_up)
+> +		writew(update_wr_ptr, &queue_desc_other_port->wr_ptr);
+> +
+>  	return 0;
+>  }
+
+[Severity: High]
+[Finding: main-1-5]
+[Sources: opus-5]
+The BD write and the OCMC payload copy above are unconditional, but the peer
+write pointer is only mirrored when link_up is true.  Can the two
+descriptors that describe the same ring diverge permanently?
+
+icssm_emac_ndo_open() does not stop the TX queue and emac->link stays 0
+until the first icssm_emac_adjust_link() callback, so a frame sent right
+after "ip link set ethX up" (with the peer also down) takes this path:
+
+	writel(wr_buf_desc, sram + readw(&queue_desc->wr_ptr));
 	...
-	if (prueth->emac_configured)
-		return 0;
-	...
-}
+	writew(update_wr_ptr, &queue_desc->wr_ptr);
+	/* peer wr_ptr not advanced */
 
-Both PRUs therefore keep enqueuing frames, and the shared poll has no
-per-port liveness check, so it keeps draining both host queues and calls
+On the next transmit with link_up true, update_wr_ptr is computed from the
+local descriptor and written into the peer descriptor, so does the peer PRU
+jump over BDs it never saw as pending and transmit whatever ring content is
+there now?
 
-	ret = icssm_emac_rx_packet(emac_p, &update_rd_ptr,
-				   pkt_info_p, rxqueue_p);
+Separately, because the condition is an OR of both links, a peer whose link
+is down still clamps free_blocks via free_blocks_other_port.  Should the
+peer's rd_ptr only be consulted when that peer is actually draining the
+ring?
 
-for the port that was just stopped, which ends in netif_receive_skb() with
-skb->dev set to the closed interface, plus stats and FDB updates for it.
+> @@ -680,8 +812,10 @@ void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
+>  	else
+>  		pkt_info->start_offset = false;
+>  
+> -	pkt_info->port = (buffer_descriptor & PRUETH_BD_PORT_MASK) >>
+> -			 PRUETH_BD_PORT_SHIFT;
+> +	/* Flag from BD to indicate packet is valid for HOST or not. */
+> +	pkt_info->host_recv_flag = !!(buffer_descriptor &
+> +				      PRUETH_BD_HOST_RECV_MASK);
+> +
 
-Both shared NAPIs and prueth->hp->ndev / prueth->lp->ndev are bound to the
-MII0 netdev, and icssm_prueth_remove() unregisters registered_netdevs[0]
-first. Its dev_close() takes the early-return path while MII1 is still
-configured, so can the shared IRQ and NAPI still deliver skbs into an
-already unregistered net_device and re-schedule NAPI on it?
+[Severity: Medium]
+[Finding: main-1-0]
+[Sources: opus-5]
+The commit message describes transmit-side duplicate offload only ("The
+driver writes the frame once into OCMC RAM", HSR tag and RCT inspection),
+but the patch also changes the receive path for every eth_type:
 
-Before this patch each port tore down its own IRQ and NAPI unconditionally in
-its own ndo_stop.
+- icssm_parse_packet_info() stops decoding the BD Port field and decodes
+  the new HostRecv bit for all modes
+- icssm_emac_rx_packet() silently returns 0 for HSR frames without the
+  HostRecv bit, with no drop counter, while the caller still counts the
+  descriptor as used++
+- software HSR tag removal excises six bytes from the middle of the frame
+- the OCMC to skb copy is restructured into MAC header, optional VLAN and
+  body stages for EMAC, switch, HSR and PRP alike
 
->  	/* stop the PRU */
->  	if (!PRUETH_IS_EMAC(prueth))
->  		icssm_prueth_sw_shutdown_prus(emac, ndev);
+Could the changelog mention these receive-side changes?
+
+>  	pkt_info->length = (buffer_descriptor & PRUETH_BD_LENGTH_MASK) >>
+>  			   PRUETH_BD_LENGTH_SHIFT;
+>  	pkt_info->broadcast = !!(buffer_descriptor & PRUETH_BD_BROADCAST_MASK);
 
 [ ... ]
 
-> @@ -1766,9 +1817,25 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
+> @@ -744,9 +880,19 @@ int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
+>  	/* calculate new pointer in ram */
+>  	*bd_rd_ptr = rxqueue->buffer_desc_offset + (update_block * BD_SIZE);
 >  
->  	netif_napi_add(ndev, &emac->napi, icssm_emac_napi_poll);
->  
-> +	if ((prueth->support_lre || fw_data->support_switch) &&
-> +	    emac->port_id == PRUETH_PORT_MII0) {
-> +		netif_napi_add(ndev, &prueth->napi_hpq,
-> +			       icssm_prueth_lre_napi_poll_hpq);
-> +		netif_napi_add(ndev, &prueth->napi_lpq,
-> +			       icssm_prueth_lre_napi_poll_lpq);
+> +	if (PRUETH_IS_HSR(emac->prueth)) {
+> +		if (!pkt_info->host_recv_flag)
+> +			return 0;
 > +	}
 > +
 
 [Severity: Low]
-[Finding: fable-5-2-8]
-[Sources: fable-5, sonnet-5]
+[Finding: main-2-6]
+[Sources: opus-5]
+The new bit is documented in icssm_switch.h without any protocol
+qualification:
 
-This isn't a bug, but the names are scoped to LRE while the polls are also
-used by switch (RSTP) mode, which the same patch configures via
-icssm_prueth_sw_config_packet_timestamping(). The same applies to the comment
-in icssm_prueth_common_free_irqs():
+ * 10		HostRecv	Set if the frame is destined for the host port
 
-	/* HSR/PRP: free irqs when last port is down */
+and icssm_parse_packet_info() fills host_recv_flag for every eth_type, but
+the only consumer is inside if (PRUETH_IS_HSR(...)).  In PRP mode the flag
+is parsed and then ignored, so BDs the firmware marks as not for the host
+are still copied into an skb and passed to netif_receive_skb().  Is that
+intentional, and if so should the header say the bit is HSR only?
 
-although icssm_emac_ndo_stop() calls it for every !PRUETH_IS_EMAC(prueth)
-mode, switch included. Would icssm_prueth_common_napi_poll_hpq/_lpq and a
-comment mentioning switch as well be more accurate?
-
->  	hrtimer_setup(&emac->tx_hrtimer, &icssm_emac_tx_timer_callback,
->  		      CLOCK_MONOTONIC, HRTIMER_MODE_REL_PINNED);
+>  	/* Exclude the HSR tag bytes already stripped by firmware, if any. */
+>  	actual_pkt_len = pkt_info->length - start_offset;
 >  
-> +	if ((prueth->support_lre || fw_data->support_switch) &&
-> +	    emac->port_id == PRUETH_PORT_MII0) {
-> +		prueth->hp->ndev = ndev;
-> +		prueth->hp->priority = 0;
-> +		prueth->lp->ndev = ndev;
-> +		prueth->lp->priority = 1;
+> +	if (PRUETH_IS_HSR(emac->prueth)) {
+> +		if (!start_offset && !pkt_info->timestamp)
+> +			actual_pkt_len -= ICSSM_LRE_TAG_SIZE;
 > +	}
 > +
->  	return 0;
->  free:
->  	emac->ndev = NULL;
+
+[Severity: Medium]
+[Finding: main-1-3]
+[Sources: opus-5]
+This removes six bytes from every HSR-mode frame whose BD has neither the
+start-offset bit nor the timestamp bit, without ever looking at the frame's
+ethertype.  Can that corrupt untagged frames?
+
+The same new code already reads the ethertype a few lines below for the VLAN
+test:
+
+	type = get_unaligned_be16(src_addr);
+
+and the transmit side of this patch does discriminate on
+proto == htons(ETH_P_HSR), and sends non-HSR protocols untagged on the
+directed port.  So untagged frames do appear on the ring.
+
+For such a frame, actual_pkt_len is reduced by six, src_addr is advanced by
+six past ordinary payload, and the wrapped-copy path applies the same
+adjustment to bytes.  Would gating the strip on the frame actually carrying
+an HSR tag avoid delivering the frame six bytes short with a hole after the
+MAC (and optional VLAN) header?
+
+>  	/* Allocate a socket buffer for this packet */
+>  	skb = netdev_alloc_skb_ip_align(ndev, actual_pkt_len);
+>  	if (!skb) {
 
 [ ... ]
 
-> @@ -2093,7 +2168,13 @@ static int icssm_prueth_probe(struct platform_device *pdev)
->  	platform_set_drvdata(pdev, prueth);
->  	prueth->dev = dev;
->  	prueth->fw_data = device_get_match_data(dev);
-> -	prueth->fw_offsets = fw_offsets_v2_1;
-> +
-> +	if (prueth->fw_data->fw_rev == FW_REV_V1_0)
-> +		prueth->fw_offsets = fw_offsets_v1_0;
-> +	else if (prueth->fw_data->fw_rev == FW_REV_V2_1)
-> +		prueth->fw_offsets = fw_offsets_v2_1;
-> +	else
-> +		return -EINVAL;
+> @@ -767,6 +913,29 @@ int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
+>  		   (read_block * ICSS_BLOCK_SIZE);
+>  	src_addr += start_offset;
 >  
->  	eth_ports_node = of_get_child_by_name(np, "ethernet-ports");
->  	if (!eth_ports_node)
+> +	/* Copy destination and source MAC address */
+> +	memcpy(dst_addr, src_addr, PRUETH_ETHER_TYPE_OFFSET);
+> +	src_addr += PRUETH_ETHER_TYPE_OFFSET;
+> +	dst_addr += PRUETH_ETHER_TYPE_OFFSET;
+> +
+> +	adjust_for_hsr_tag += PRUETH_ETHER_TYPE_OFFSET;
+> +
+> +	/* Check for VLAN tag */
+> +	type = get_unaligned_be16(src_addr);
+> +
+> +	if (type == ETH_P_8021Q) {
+> +		memcpy(dst_addr, src_addr, VLAN_HLEN);
+> +		src_addr += VLAN_HLEN;
+> +		dst_addr += VLAN_HLEN;
+> +		adjust_for_hsr_tag += VLAN_HLEN;
+> +	}
+> +
+> +	/* HSR tag removal handling */
+> +	if (PRUETH_IS_HSR(emac->prueth)) {
+> +		if (!start_offset && !pkt_info->timestamp)
+> +			src_addr += ICSSM_LRE_TAG_SIZE;
+> +	}
+> +
 
 [ ... ]
 
 > diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-> index a5d5bcd08bcdb..9af19617967ee 100644
+> index 9af19617967ee..2447fb8b99e79 100644
 > --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
 > +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
 
 [ ... ]
 
-> @@ -197,24 +208,26 @@ enum pruss_device {
->  struct prueth_emac_stats {
-> -	u64 tx_packets;
-> -	u64 tx_dropped;
-> -	u64 tx_bytes;
-> -	u64 rx_packets;
-> -	u64 rx_bytes;
-> -	u64 rx_length_errors;
-> -	u64 rx_over_errors;
-> +	atomic64_t tx_packets;
-> +	atomic64_t tx_dropped;
-> +	atomic64_t tx_bytes;
-> +	atomic64_t rx_packets;
-> +	atomic64_t rx_bytes;
-> +	atomic64_t rx_length_errors;
-> +	atomic64_t rx_over_errors;
+> @@ -314,9 +317,13 @@ struct prueth {
+>  	u8 emac_configured;
+>  	u8 hsr_members;
+>  	u8 br_members;
+> +
+> +	/* Per-queue TX lock - LRE uses only the two high-priority queues */
+> +	spinlock_t lre_host_queue_lock[NUM_QUEUES / 2];
 >  };
 
-[Severity: Medium]
-[Finding: fable-5-1-2]
-[Sources: fable-5, opus-5]
+[Severity: Low]
+[Finding: main-2-9]
+[Sources: opus-5]
+This isn't a bug, but the comment says "the two high-priority queues" while
+the queues the LRE transmit path can reach are PRUETH_QUEUE3 and
+PRUETH_QUEUE4:
 
-Could the commit message mention the changes beyond the RX IRQ handlers?
+	emac_pcp_tx_priority_queue_map[0..3] == {QUEUE4, QUEUE4, QUEUE3, QUEUE3}
 
-The changelog says:
+and this same patch labels them in icssm_switch.h as
 
-	Dual-EMAC mode continues to use per-port interrupts.
+	#define QUEUE_3_TXOPT_SIZE	194	/* Protocol specific - High Priority */
+	#define QUEUE_4_TXOPT_SIZE	194	/* NRT(IP,ARP, ICMP) - Low Priority*/
 
-but the patch also converts every counter in struct prueth_emac_stats from
-u64 to atomic64_t and rewrites all seven update sites plus
-icssm_emac_ndo_get_stats64(), which adds an atomic read-modify-write per
-packet and per byte to the dual-EMAC TX and RX hot paths on 32-bit ARM.
-
-Two further undescribed changes: the new enum fw_revision plus fw_rev in the
-three platform data entries makes icssm_prueth_probe() return -EINVAL when
-fw_rev is unset, a new probe failure mode for any platform data added later
-without it, and icssm_emac_ndo_stop() gains netif_stop_queue().
-
-The atomic conversion looks required by the new design, since napi_hpq and
-napi_lpq can run concurrently on different CPUs and both update the same
-emac counters. Documentation/networking/statistics.rst points at
-u64_stats_sync for per-device packet and byte counters rather than
-atomic64_t; would that be preferable here, and could the conversion be split
-into its own patch?
-
-[ ... ]
+which is one high and one low priority queue.
 
 > diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_common.c b/drivers/net/ethernet/ti/icssm/icssm_prueth_common.c
-> new file mode 100644
-> index 0000000000000..43140add81725
-> --- /dev/null
+> index 43140add81725..a99cdbb79bbf0 100644
+> --- a/drivers/net/ethernet/ti/icssm/icssm_prueth_common.c
 > +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_common.c
-> @@ -0,0 +1,281 @@
-
-[ ... ]
-
-> +static int icssm_prueth_common_emac_rx_packets(struct prueth_emac *emac,
-> +					       int quota, u8 qid1, u8 qid2)
-> +{
-
-[ ... ]
-
-> +	prueth = emac->prueth;
-> +	ocmc_ram = prueth->mem[PRUETH_MEM_OCMC].va;
-> +	shared_ram = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
-> +	other_emac = prueth->emac[(emac->port_id == PRUETH_PORT_MII0) ?
-> +			PRUETH_PORT_MII1 - 1 : PRUETH_PORT_MII0 - 1];
-> +
-> +	iep_wrap = prueth->fw_offsets.iep_wrap;
-> +	/* search host queues for packets */
-> +	queue_desc = emac->rx_queue_descs + qid1;
-> +	queue_desc_o = other_emac->rx_queue_descs + qid2;
-> +
-> +	rxqueue = &sw_queue_infos[PRUETH_PORT_HOST][qid1];
-> +	rxqueue_o = &sw_queue_infos[PRUETH_PORT_HOST][qid2];
-> +
-> +	/* skip Rx if budget is 0 */
-> +	if (!quota)
-> +		return 0;
-> +
-> +	overflow_cnt = readb(&queue_desc->overflow_cnt);
-> +	overflow_cnt_o = readb(&queue_desc_o->overflow_cnt);
-
-[Severity: High]
-[Finding: fable-5-3-13]
-[Sources: fable-5, opus-5]
-
-Can other_emac->rx_queue_descs be NULL or stale here?
-
-rx_queue_descs is assigned only in the opening port's own ndo_open path, via
-icssm_prueth_sw_emac_config() -> icssm_prueth_sw_port_config():
-
-	emac->rx_queue_descs = dram1_base + P0_QUEUE_DESC_OFFSET;
-
-The shared HP and LP IRQs are requested and both shared NAPIs enabled on the
-first port open, while prueth->emac_configured is still 0, and
-icssm_prueth_sw_boot_prus() boots both PRUs, so the first HP/LP interrupt can
-run this poll while the peer port has never been opened in this mode.
-
-icssm_prueth_change_mode() only stops and reopens ports for which
-netif_running() was true:
-
-	portstatus[i] = netif_running(ndev);
-	if (!portstatus[i])
-		continue;
-
-so this sequence enters switch mode with eth1 never configured:
-
-	ip link set eth0 down
-	ip link set eth1 down
-	ip link set eth0 master br0
-	ip link set eth1 master br0
-	ip link set eth0 up
-
-If eth1 has never been opened since probe, rx_queue_descs is the zeroed value
-from devm_alloc_etherdev() and readb(&queue_desc_o->overflow_cnt) reads a
-small fixed address. If eth1 was last opened in dual-EMAC mode, it still
-holds the EMAC value sram + HOST_QUEUE_DESC_OFFSET rather than
-dram1 + P0_QUEUE_DESC_OFFSET, so the rd/wr pointers read from it are used as
-offsets into shared RAM and OCMC below and a bogus rd_ptr is written back
-with writew(). The same recipe applies to HSR/PRP when only one slave is
-brought up.
-
-Should the poll skip a port that has no descriptors configured for the
-current mode? This looks unchanged at the end of the series, where
-icssm_prueth_lre_port_config() also sets rx_queue_descs per port.
-
-> +
-> +	if (overflow_cnt > 0) {
-> +		atomic64_add(overflow_cnt, &emac->stats.rx_over_errors);
-> +		writeb(0, &queue_desc->overflow_cnt);
-> +	}
-> +	if (overflow_cnt_o > 0) {
-> +		atomic64_add(overflow_cnt_o, &other_emac->stats.rx_over_errors);
-> +		writeb(0, &queue_desc_o->overflow_cnt);
-> +	}
-> +
-> +	bd_rd_ptr = readw(&queue_desc->rd_ptr);
-> +	bd_wr_ptr = readw(&queue_desc->wr_ptr);
-> +
-> +	bd_rd_ptr_o = readw(&queue_desc_o->rd_ptr);
-> +	bd_wr_ptr_o = readw(&queue_desc_o->wr_ptr);
-> +
-> +	port0_q_empty = (bd_rd_ptr == bd_wr_ptr);
-> +	port1_q_empty = (bd_rd_ptr_o == bd_wr_ptr_o);
-> +
-> +	while (!port0_q_empty || !port1_q_empty) {
-> +		rd_buf_desc = readl(shared_ram + bd_rd_ptr);
-> +		rd_buf_desc_o = readl(shared_ram + bd_rd_ptr_o);
-> +
-> +		icssm_parse_packet_info(prueth, rd_buf_desc, &pkt_info);
-> +		icssm_parse_packet_info(prueth, rd_buf_desc_o, &pkt_info_o);
-> +
-> +		pkt_ts = readl(ocmc_ram + ICSS_LRE_TIMESTAMP_ARRAY_OFFSET +
-> +			       bd_rd_ptr - SRAM_START_OFFSET);
-> +		pkt_ts_o = readl(ocmc_ram + ICSS_LRE_TIMESTAMP_ARRAY_OFFSET +
-> +				 bd_rd_ptr_o - SRAM_START_OFFSET);
-
-[ ... ]
-
-> +		if (used >= quota)
-> +			return used;
-> +	}
-> +
-> +	return used;
-> +}
-> +
-> +int icssm_prueth_lre_napi_poll_lpq(struct napi_struct *napi, int budget)
-> +{
-
-[ ... ]
-
-> +	num_rx_packets = icssm_prueth_common_emac_rx_packets(emac, budget,
-> +							     qid1, qid2);
-> +	if (num_rx_packets < budget && napi_complete_done(napi, num_rx_packets))
-> +		enable_irq(prueth->rx_lpq_irq);
-> +
-> +	return num_rx_packets;
-> +}
+> @@ -137,16 +137,13 @@ static int icssm_prueth_common_emac_rx_packets(struct prueth_emac *emac,
+>  			used++;
+>  		}
+>  
+> -		/* Zero the BD after consuming it, a misaligned rd_ptr
+> -		 * would otherwise mistake stale data for a valid incoming
+> -		 * frame.
+> +		/* Leave the BD intact after reading. Firmware reuses it to
+> +		 * forward the frame to the second LRE port.
+>  		 */
+>  		if (port == 0) {
+> -			writel(0, shared_ram + bd_rd_ptr);
+>  			writew(update_rd_ptr, &queue_desc->rd_ptr);
+>  			bd_rd_ptr = update_rd_ptr;
+>  		} else {
+> -			writel(0, shared_ram + bd_rd_ptr_o);
+>  			writew(update_rd_ptr, &queue_desc_o->rd_ptr);
+>  			bd_rd_ptr_o = update_rd_ptr;
+>  		}
 
 [Severity: Medium]
-[Finding: fable-5-5-25]
-[Sources: fable-5, opus-5]
+[Finding: main-1-2]
+[Sources: opus-5]
+Should this removal be gated on prueth_is_lre()?
 
-Can this enable_irq() run after the matching free_irq()?
+The justification is LRE specific, but this is the common host receive
+routine: icssm_prueth_lre_napi_poll_hpq()/lpq() are registered and enabled
+whenever PRUETH_IS_SWITCH(prueth) || prueth_is_lre(prueth), so RSTP switch
+mode loses the invalidation too.
 
-enable_irq() happens after napi_complete_done() has already cleared
-NAPIF_STATE_SCHED, and napi_disable() waits only on that bit, so in
-icssm_emac_ndo_stop():
+The immediately preceding patch in this series added the zeroing with the
+opposite reasoning, and the single-port path still does it:
 
-	napi_disable(&prueth->napi_lpq);
-	napi_disable(&prueth->napi_hpq);
-	icssm_prueth_common_free_irqs(emac);   /* -> free_irq() */
+drivers/net/ethernet/ti/icssm/icssm_prueth.c:icssm_emac_rx_packets() {
+	...
+			/* after reading the buffer descriptor we clear it
+			 * to prevent improperly moved read pointer errors
+			 * from simply looking like old packets.
+			 */
+			writel(0, shared_ram + bd_rd_ptr);
+	...
+}
 
-can complete while the poll has not yet reached enable_irq(). free_irq()
-shuts the line down leaving depth 1, so the late enable_irq() re-enables a
-line with no handler, giving an unbalanced enable warning or an unhandled
-interrupt storm, or a skewed disable depth against the next request_irq().
-
-The open error path has the same inversion: icssm_emac_ndo_open() enables
-napi_hpq and napi_lpq before requesting the IRQs, and when the LPQ
-request_irq() fails icssm_prueth_common_request_irqs() does
-
-free_rx_hpq_irq:
-	free_irq(prueth->rx_hpq_irq, prueth->hp);
-
-while napi_hpq is enabled and possibly mid-poll; napi_disable() only runs
-later at the disable_napi: label. Would requesting the IRQs before enabling
-the NAPIs, and disabling the NAPIs before freeing them, close this?
-
-The same enable_irq()-after-napi_complete_done() pattern already exists in
-the dual-EMAC icssm_emac_napi_poll(), so the idiom is not new, but the open
-path ordering is introduced here.
-
-[ ... ]
-
-> +/**
-> + * icssm_prueth_common_free_irqs - free irq
-> + *
-> + * @emac: EMAC data structure
-> + *
-> + */
-> +void icssm_prueth_common_free_irqs(struct prueth_emac *emac)
-> +{
-> +	struct prueth *prueth = emac->prueth;
-> +
-> +	/* HSR/PRP: free irqs when last port is down */
-> +	if (prueth->emac_configured)
-> +		return;
-> +
-> +	free_irq(prueth->rx_lpq_irq, prueth->lp);
-> +	free_irq(prueth->rx_hpq_irq, prueth->hp);
-> +}
-
-[ ... ]
+In switch mode, after any rd_ptr skew, including the two length-error paths
+in this same loop that force update_rd_ptr = *bd_wr_ptr_p, can a stale
+non-zero BD word be re-parsed as a valid length and flags descriptor and up
+to pkt_info->length bytes of old OCMC content be pushed to
+netif_receive_skb()?
 
 > diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
-> index 66866ea37913f..9d67fc7c23acc 100644
+> index 9d67fc7c23acc..bda2fac13d749 100644
 > --- a/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
 > +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
-> @@ -886,6 +886,14 @@ void icssm_prueth_sw_hostconfig(struct prueth *prueth)
->  		    sizeof(queue_descs[PRUETH_PORT_QUEUE_HOST]));
+
+[ ... ]
+
+> @@ -983,6 +1177,109 @@ static int icssm_prueth_sw_port_config(struct prueth *prueth,
+>  	return 0;
 >  }
 >  
-> +void icssm_prueth_sw_config_packet_timestamping(struct prueth *prueth)
+> +/* Configure TX/RX queue contexts and buffer descriptor tables for LRE port */
+> +static int icssm_prueth_lre_port_config(struct prueth *prueth,
+> +					enum prueth_port port_id)
 > +{
-> +	void __iomem *sram = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
+
+[ ... ]
+
+> +	/* queue size lookup table */
+> +	dram = dram_base + QUEUE_SIZE_ADDR +
+> +		port_id * NUM_QUEUES * sizeof(u16);
+> +	writew(HOST_QUEUE_1_SIZE, dram);
+> +	writew(HOST_QUEUE_2_SIZE, dram + 2);
+> +	writew(QUEUE_3_TXOPT_SIZE, dram + 4);
+> +	writew(QUEUE_4_TXOPT_SIZE, dram + 6);
+
+[Severity: Low]
+[Finding: main-2-10]
+[Sources: opus-5]
+For PRUETH_PORT_QUEUE_MII0 the entries QUEUE1 and QUEUE2 of
+lre_queue_infos describe host queues 3 and 4:
+
+	[PRUETH_QUEUE1] = {
+		P0_Q3_BUFFER_OFFSET,
+		...
+		P0_Q3_BD_OFFSET + ((HOST_QUEUE_3_SIZE - 1) * BD_SIZE),
+	},
+
+so the firmware is told HOST_QUEUE_1_SIZE / HOST_QUEUE_2_SIZE for rings
+whose buffer_desc_end the driver derives from HOST_QUEUE_3_SIZE /
+HOST_QUEUE_4_SIZE.  All four constants are 194 today, so nothing breaks,
+but should the sizes be derived from the same constants the queue info
+table uses?
+
 > +
-> +	writeb(1, sram + SWITCH_PRIORITY_INTRS_STATUS_OFFSET);
-> +	writeb(1, sram + SWITCH_TIMESTAMP_PKTS_STATUS_OFFSET);
+> +	/* queue table */
+> +	memcpy_toio(dram_base + queue_desc_ofs,
+> +		    &hsr_prp_txopt_queue_descs[port_id][0],
+> +		    4 * sizeof(hsr_prp_txopt_queue_descs[port_id][0]));
+
+[Severity: High]
+[Finding: main-3-13]
+[Sources: opus-5]
+Is it safe to reset these descriptors while the peer port is live?
+
+hsr_prp_txopt_queue_descs[MII0][2..3] and [MII1][2..3] both point at
+P1_Q3_TXOPT_BD_OFFSET / P2_Q1_TXOPT_BD_OFFSET, so the two per-port
+descriptor sets describe the same BD ring and the same OCMC buffer.  This
+memcpy_toio() rewinds rd_ptr and wr_ptr of that shared ring to its base.
+
+The path is reachable from ndo_open of the second slave, and again on
+"ip link set ethX down; ip link set ethX up" while the other slave is up,
+because icssm_prueth_sw_shutdown_prus() returns early while
+emac_configured is non-zero and icssm_emac_ndo_stop() only clears the
+port's bit, so both PRUs keep running.
+
+Also, this runs with no lock held, while the peer's
+icssm_emac_ndo_start_xmit() holds only prueth->lre_host_queue_lock[qid - 2]
+when it reads queue_desc_other_port->rd_ptr and writes
+queue_desc_other_port->wr_ptr.  Should the configuration path take the same
+lock?
+
+> +
+> +	/* In HSR/PRP mode both slave ports share the host receive queue
+> +	 * descriptor region (P0_QUEUE_DESC_OFFSET). The firmware arbitrates
+> +	 * ownership; the driver always reads from the same host-side descriptor
+> +	 * base regardless of which physical port the frame arrived on.
+> +	 */
+> +	emac->rx_queue_descs = dram_base + P0_QUEUE_DESC_OFFSET;
+> +	emac->tx_queue_descs = dram_base +
+> +		lre_rx_queue_infos[port_id][PRUETH_QUEUE1].queue_desc_offset;
+> +
+> +	if (port_id == PRUETH_PORT_MII0) {
+> +		emac->tx_queue_descs_other_port = dram_base +
+> +			lre_rx_queue_infos
+> +			[port_id + 1][PRUETH_QUEUE1].queue_desc_offset;
+> +	} else if (port_id == PRUETH_PORT_MII1) {
+> +		emac->tx_queue_descs_other_port = dram_base +
+> +			lre_rx_queue_infos
+> +			[port_id - 1][PRUETH_QUEUE1].queue_desc_offset;
+> +	}
+> +
+> +	return 0;
 > +}
-> +
 
 [ ... ]
 
 > diff --git a/drivers/net/ethernet/ti/icssm/icssm_switch.h b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-> index 5ba9ce14da445..13b1b93ef4c27 100644
+> index 13b1b93ef4c27..b0d623b4979b0 100644
 > --- a/drivers/net/ethernet/ti/icssm/icssm_switch.h
 > +++ b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-> @@ -331,6 +331,12 @@
->  #define P0_COL_BUFFER_OFFSET	0xEE00
->  #define P0_Q1_BUFFER_OFFSET	0x0000
->  
-> +/* Enable/disable interrupts for high/low priority instead of per port.
-> + * 0 = disabled (default), 1 = enabled
-> + */
-> +#define SWITCH_PRIORITY_INTRS_STATUS_OFFSET	0x1FAA
-> +#define SWITCH_TIMESTAMP_PKTS_STATUS_OFFSET	0x1FAB
+
+[ ... ]
+
+> @@ -49,20 +52,18 @@
+>   *				For RED, NodeTable lookup was successful.
+>   * 7		Flood		Packet should be flooded (destination MAC
+>   *				address found in FDB). For switch only.
+> - * 8..12	Block_length	number of valid bytes in this specific block.
+> - *				Will be <=32 bytes on last block of packet
+> + * 8		RED_INFO	Set if the frame carries an HSR or PRP
+> + *				redundancy tag
+> + * 10		HostRecv	Set if the frame is destined for the host port
+>   * 13		More		"More" bit indicating that there are more blocks
+>   * 14		Shadow		indicates that "index" is pointing into shadow
+>   *				buffer
+>   * 15		TimeStamp	indicates that this packet has time stamp in
+>   *				separate buffer - only needed if PTP runs on
+>   *				host
+> - * 16..17	Port		different meaning for ingress and egress,
+> - *				Ingress: Port = 0 indicates phy port 1 and
+> - *				Port = 1 indicates phy port 2.
+> - *				Egress: 0 sends on phy port 1 and 1 sends on
+> - *				phy port 2. Port = 2 goes over MAC table
+> - *				look-up
+> + * 16..17	LAN		Destination LAN for transmission:
+> + *				bit 16 = LAN A, bit 17 = LAN B, set both to
+> + *				duplicate to both LANs.
 
 [Severity: Low]
-[Finding: main-2-4]
-[Sources: opus-5, sonnet-5]
+[Finding: main-2-7]
+[Sources: opus-5]
+This header still serves the EMAC and switch firmware, but the bit table
+now only describes the LRE interpretation.  The Block_length description
+for bits 8..12 and the Port description for bits 16..17, including
+"Port = 2 goes over MAC table look-up", are gone, bits 9, 11 and 12 are
+left undocumented, and PRUETH_BD_PORT_MASK/SHIFT are removed.
 
-Are these two defines in the right section of the header?
+icssm_prueth_tx_enqueue() only programs the LAN bits inside
+if (prueth_is_lre(prueth)), so could the comment note that the RED_INFO,
+HostRecv and LAN meanings apply to the LRE firmware only, and keep the
+EMAC/switch meanings alongside them?
 
-They land in the block the header labels
-
-	/* Memory Usage of L3 OCMC RAM */
-
-right after P0_COL_BUFFER_OFFSET and P0_Q1_BUFFER_OFFSET, but the only
-consumer, icssm_prueth_sw_config_packet_timestamping(), writes them into
-prueth->mem[PRUETH_MEM_SHARED_RAM].va. Their values also match the shared RAM
-constants ICSS_LRE_PRIORITY_INTRS_STATUS_OFFSET and
-ICSS_LRE_TIMESTAMP_PKTS_STATUS_OFFSET in icssm_lre_firmware.h, so the writes
-themselves look fine and only the placement is off.
-
-The duplication is asymmetric too: switch-named mirrors are added for the two
-status bytes, yet icssm_prueth_common_emac_rx_packets() reads the arrival
-timestamps for switch-mode frames through the LRE-only
-ICSS_LRE_TIMESTAMP_ARRAY_OFFSET, and the switch memory map has no entry
-saying the switch firmware publishes that array at the same offset. Does the
-switch firmware place the timestamp array there, and could the switch memory
-map document it?
-
->  #define V2_1_FDB_TBL_LOC          PRUETH_MEM_SHARED_RAM
->  #define V2_1_FDB_TBL_OFFSET       0x2000
+Thanks for looking at these.
 -- 
 This is an AI-generated review.
 
