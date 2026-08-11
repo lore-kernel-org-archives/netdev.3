@@ -1,77 +1,63 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC0E3B71C2
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4AC2D97A6;
+	Tue, 11 Aug 2026 16:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786466116; cv=none; b=LksQendQOVMXo+fCt6ZLkIBYapOkEkVE9x5bLRKZMo2esbeNOhHcMV99NLB51DRpK2D+aVWVAF+tIQuTx5xgkk5niRZLZBmshY+G+N7tP8Vz/HFaaKCHsEwzleSFvUGyCUfZakyda0dh3kMyvB2kzq8A0AaCgnmmazSC+xyu8uY=
+	t=1786466441; cv=none; b=LGkDhpxhfbALkXA930wIcd/mivszwvMTgkNBMwQYbb9uRTl3dxkOXTSbfg9SzAWvtC+/JqrecYyMclsS9snSOrwjSt+zImTTWdPgtlnDNdVvpMeMh49EX1IfngK9ZtZ0INaU8m4Ybe/KAffqhNPuk8E1gqvAFzPjmzB8T1c0zbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786466116; c=relaxed/simple;
-	bh=pXqYG4ehQ77DOQN7Ad3xMzIuGfYmhNA6au5HUR9v+uQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FGlTPmYWbQT5BkTUX20pfoSJ2ZUIE+4YOmrgw/SvH9ixEZmNkMkmnEr491cXVzf2EDSp/v/pfGLhNAZoHwB1wM/L8KiOqWKRADuN95OrnX2DZXDM4LAgVVQNQXpk71wtbhoKCWbkVapTMob0EiTzNblfRm/QNvV6EEZcZlVaFNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QjDvxgr1; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786466441; c=relaxed/simple;
+	bh=PVJN5w1R4Ol8+oL/uorvIno/9AZHcmuf/Bm8T4uucS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PwJVe66Ft7/+SQvMLDmUSMTKYPHA8OsWgX2N2hzthAzF91EwcoLw8p8Qp3Dgy7Uh20nDfEnTEUUIkVKRsMICyVzknvnUiepQVeCk741Ft9RXRQT3ghnYtptKi3xhP71GhFi6xqOKoVzlcgWFMr44LYBaZDa/exM0r0r2VZFi97w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvMSI0h2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QjDvxgr1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=RpC7UpvEikdFHrMxoFBqRs8gLudhopjObp4s6z13FEg=; b=Qj
-	Dvxgr1SnQA8J7fCU7Gscmd102ArEGXa0VAxs2Af1JNl3T/+/20kzAdXVVg+pKMGlvjnu/Hzcpuaus
-	q88h1E9/D5GqK17raFa5PNlCOJ8VmUlSdxGgM3/+3PqsU4O/l+srGUYRP2awaAIK4FZPYBgzsq+TW
-	CPB5/7D6qUtznpM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wtpRU-00H7kG-Qc; Tue, 11 Aug 2026 18:35:08 +0200
-Date: Tue, 11 Aug 2026 18:35:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: luoxuanqiang <xuanqiang.luo@linux.dev>
-Cc: Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
-	kuba@kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	maxime.chevallier@bootlin.com, luoxuanqiang@kylinos.cn
-Subject: Re: [PATCH net v4 0/4] net: phy: dp83640: fix shared clock lifetime
- and probe error cleanup
-Message-ID: <dea76ffc-4424-45e2-8871-7ef29fc31958@lunn.ch>
-References: <20260807070729.12545-1-xuanqiang.luo@linux.dev>
- <ansfeXGe8k3bwkW1@hoboy.vegasvil.org>
- <1cb3151b-3dac-4832-ac4a-b3f2b16006ae@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvMSI0h2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1757E1F000E9;
+	Tue, 11 Aug 2026 16:40:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786466439;
+	bh=PVJN5w1R4Ol8+oL/uorvIno/9AZHcmuf/Bm8T4uucS0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=LvMSI0h2k5LcVmHQDmEhqLkGwHClMbFRKcJq/Y7qyGrifd4AxI0sqz2oMbjqlisR/
+	 na83GdMDcYnrQHewHHIjd/haT+EIMUOVh9JBVeDEXhIac3KK+biWDgtELqyBbi+MkD
+	 WRaXcitV1wgQxYX5e3vryT7vGiGTo+CcjgK2veusRUbmGHdF9M4oNPTQbwBtXSklHu
+	 B10w4TbCHDRRcYMumB252M3kOI/qGyVIWaDuyieKae/Kb6kG3Cx7C3WMzXLlBwnInK
+	 WjtsYBcU6pZfBEqQwxUHKaRlm0+B+dxb9ZaqxKOq+h/WsTHWPV0MN1iv/oj8xoRbTC
+	 t++jlquAq4eZg==
+Date: Tue, 11 Aug 2026 09:40:38 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Long Li <longli@microsoft.com>
+Cc: Konstantin Taranov <kotaranov@microsoft.com>, "David S . Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+ <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Haiyang Zhang
+ <haiyangz@microsoft.com>, "K . Y . Srinivasan" <kys@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+ shradhagupta@linux.microsoft.com, Simon Horman <horms@kernel.org>,
+ ernis@linux.microsoft.com, stephen@networkplumber.org,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 00/13] net: mana: reconfigure by replacing
+ the queue set
+Message-ID: <20260811094038.6be81ee7@kernel.org>
+In-Reply-To: <20260811063506.2428213-1-longli@microsoft.com>
+References: <20260811063506.2428213-1-longli@microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1cb3151b-3dac-4832-ac4a-b3f2b16006ae@linux.dev>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 11, 2026 at 10:34:17PM +0800, luoxuanqiang wrote:
-> Hi Richard,
-> 
-> 在 2026/8/11 21:11, Richard Cochran 写道:
-> > On Fri, Aug 07, 2026 at 03:07:25PM +0800, xuanqiang.luo@linux.dev wrote:
-> > > From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-> > > 
-> > > The DP83640 driver shares one PTP clock between all PHYs on the same MII
-> > > bus.
-> > > 
-> > > Its driver-local clock lookup and removal scheme can leak the shared clock
-> > > on probe failure or free it while another probe is acquiring it.
-> > Is this an actual problem that you have seen in the real world?
-> > 
-> > Thanks,
-> > Richard
-> 
-> No, I have not observed this on real hardware.
+On Mon, 10 Aug 2026 23:34:57 -0700 Long Li wrote:
+> MANA reconfigures a port by destroying its queues and building them again.
+> mana_detach() tears the whole queue set down, mana_attach() allocates a new
+> one, and every path that changes a queue property does this: the ethtool
+> channel, ring and private-flag setters, the MTU change and XDP attach.
 
-Do you at least have the real hardware, and are testing your patches
-on it?
-
-   Andrew
+This posting is broken. Please *wait 2 days*, practice sending patches
+to yourself (--suppress-cc=all) and the repost.
