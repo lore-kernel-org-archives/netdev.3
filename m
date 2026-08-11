@@ -1,84 +1,84 @@
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ED638C2BF
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 20:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675C5402B9E;
+	Tue, 11 Aug 2026 20:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786480349; cv=none; b=KWsolHet/IGkNHg4vlkjEJmle6+HSEKDJfcEY23IbfpkZQ7FSay43MpoGpFIgYNMITOjBNl0WoEdaXaBDOa6d/mVjbEm/34kHVGoMHycZhzZzXIdVpSCohq7iPR/byirIRIZZfWEwtrgCjUa4QV9jOFiClzK6hjThEBoNBvX1x0=
+	t=1786480425; cv=none; b=kv+3mRoojDDHx/hjluDQH8WsFA2gwX4jo3VSIrQ8nB2DuiTzsT8Z31+RerInftZQulu0Uej9qPkOt9HmBIjEazPz0LQVr+FC/g6FlefH8t2oP5n42RezzvqqwPRIDW0mffPO1GUHskFnE0mpe5gYv5YzNG0vK86IsaxXzGamUo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786480349; c=relaxed/simple;
-	bh=spRcelJ+0EB7EsxzK2xoB+gtOqYn4w6FB0zwIMJJn20=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=PucqKijWlcqvpAio1s9x0BVBaORWHezcPYdBZS5eVXtV5FJLA8+hWW8AV5f0Q4LC5zOCHh9k1Z5tZNJqAmYrZv9LsC5STxOQU5xAfchZfT7QIGiouLbxt9XFbTo8sobcTjhK1cXyalaAG0X3JlzDqLwl7Te4oiEtEVMuNGVh2vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4ab260600easo1809825b6e.1
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 13:32:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786480346; x=1787085146;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1LqL5TggMkhC4wrO4V0tjN9INYAr5s6XDVGPuhKjlpQ=;
-        b=BW/Y4qw2mghl5Bn99OWSoTb8jFnltI2wrrdDisFbVIddGr+qu1nDboCAeeVr/+EiHT
-         31ErNvPtY1mn+yl388MUSddEUKatKRPFxqpX6XP15iSawqSnRVv0jow5aHKYnVlEFYF+
-         v2SeFrHAiXYvtyqHe1Ldl2QY0EvHK4Mq6nKepBcD1+h5y+S1/c1s3I+KBgeKNm7KfC/g
-         zzxzF2rkiMGFpMhffVlyPFq8ZDQJuf5HzDfE2+xGoWfeqX6ikWYODTw3jPjSwq3hHv2B
-         5SI51pcbNIvyBK4b+ST8mDybX3USZqIAvQIbstjzx5wRJhEIudLyZe0OcFFkmAToh9e8
-         P+/Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqsLyqYuN271v3nEpeq764jXMqCMN58aioHXh5Ddad+MeE+Lsrg8C1sNOvkpE5EjnN6X1QJdt0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7Xny9oT07jmzgNb3YTLJd8d8wfXFBlW1AudIPX7CeMnsbBoH+
-	lBgyHncyBgSnNgY5QbIxv8GVG9Dw/EFshaLAJIBXa7ObCTSWY073JocoRkGpTlJpQ2gU/cPyXAb
-	6IoXtV9dNTHY6DWKMMhJXJn2GNba0eXZAR2G3taBowEttiNglC3dq7UKqIK4=
+	s=arc-20240116; t=1786480425; c=relaxed/simple;
+	bh=e0epG0zthLx3vz5Fsxg1fUceXMjB+hIkz1K1ncsMA2k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C4WmhZW1I0ahRCp9f0b6pm1QT4V3/p26MAAvYPDe5RM81YuUsvmM/1qIXzvDVN7+7EDQvx/tzwpJNWzAW0ErtTCJrMHgl3Nb7ocwoPqlMJk98UlnzEUKSDNVUAWNw1SGRGSHxIqTgb25qG6HaO//Tg8T4YHlxVLCvHMinY5zmm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lbZ+RsQZ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lbZ+RsQZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Q58NnluEd7Mdf1XEgaOf4Q0TW7uWRgkIuWPlNMdzkuA=; b=lbZ+RsQZGCcQBh5XXCpSZvo1/n
+	bufOcQurq8OHVcTaEIcSCmvU32eFJx7dSAUsIQhVDijjOQKb/IuGzNMbGa85WbG5nrV8yuove+bSu
+	fR8eftzawHZLSe7cx8s6guUBdrBGSKwj28ncTVAUnhsXbOtFOe0/idmjonZGuDoZ6kk0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wtt9w-00H98L-7M; Tue, 11 Aug 2026 22:33:16 +0200
+Date: Tue, 11 Aug 2026 22:33:16 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	bcm-kernel-feedback-list@broadcom.com,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+Subject: Re: [PATCH V2 RFC 2/2] ARM: dts: BCM5301X: change Luxul XWR-3150 CPU
+ port from 5 do 8
+Message-ID: <74a83203-9acb-4413-8952-9182f02d1e67@lunn.ch>
+References: <20260811193658.14304-1-zajec5@gmail.com>
+ <20260811193658.14304-2-zajec5@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1c0b:b0:4a4:989:bb1f with SMTP id
- 5614622812f47-4b20900d6bamr2225175b6e.9.1786480346381; Tue, 11 Aug 2026
- 13:32:26 -0700 (PDT)
-Date: Tue, 11 Aug 2026 13:32:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a7b86da.3668565d.e8814.0004.GAE@google.com>
-Subject: [syzbot] Monthly intel-wired-lan report (Aug 2026)
-From: syzbot <syzbot+list9a0236217be7a8ef1662@syzkaller.appspotmail.com>
-To: intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811193658.14304-2-zajec5@gmail.com>
 
-Hello intel-wired-lan maintainers/developers,
+> Change the choice of "cpu" port to 8 and make the third Ethernet
+> interface (connected to port 8) use MAC designed for the first Ethernet
+> interface (connected to port 5). This makes Linux use switch in a
+> feature full way.
 
-This is a 31-day syzbot report for the intel-wired-lan subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/intel-wired-lan
+> This seems to be a slight abuse of DT. Instead of describing hardware we
+> make it steer Linux into using a more appropriate switch port. This
+> isn't strictly a setback on its own. It's a change from one choice to
+> another.
 
-During the period, 3 new issues were detected and 0 were fixed.
-In total, 3 issues are still open and 2 have already been fixed.
-There is also 1 low-priority issue.
+It is a bit fuzzy, but the hardware of port 8 is better designed for
+the function of being the CPU port. We are expressing this hardware
+property via actually using it as the CPU port.
 
-Some of the still happening issues:
+> I'm not sure about that MAC however. We say that the third Ethernet
+> interface should use MAC that was designed for the first one.
+> 
+> Is all of that acceptable?
+> 
+>  .../arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts | 9 +++++++--
 
-Ref Crashes Repro Title
-<1> 9       Yes   BUG: unable to handle kernel paging request in e1000_get_variants_82571
-                  https://syzkaller.appspot.com/bug?extid=0ddf1022b4d5c391c09b
-<2> 8       No    kernel panic: UBSAN: panic_on_warn set ... (3)
-                  https://syzkaller.appspot.com/bug?extid=167d8196c0bada4210fa
-<3> 3       No    BUG: unable to handle kernel paging request in e1000_get_cfg_done_82571
-                  https://syzkaller.appspot.com/bug?extid=8ce4dba751e79facdc38
+Is this the only device in mainline which is affected?
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+   Andrew
