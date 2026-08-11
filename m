@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C3B448BBB;
-	Tue, 11 Aug 2026 14:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4227B41F5D8
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 14:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786458413; cv=none; b=QL6EsG4FDY6GBYa8Wc5TJBSU+UGB/RBbg21lCw5tiBifsnYzOxLRB/+f4HTEk7Kx82zPCRsoYX1REG4vP6+ds+hwNahv5FtmojfVsKIdsydezm5vsXqIoYvt/UIClu4X6y69IlxnXQAM2hrPmYYXcihPfCCm/IlEi130IKccoN0=
+	t=1786458472; cv=none; b=AyYnqYIr0TqHh/V7YiN/ogl8JskOHoqnOWwbYLF8dXIW64hYV8mwnAiY6x4zmt/+T/B2nYPrkeTVocIJHg5W7OldvPXn5khrrS0rJCYnpXKLmnccVLkcVb2aTToVCxyHakyemArYPb+5zOYBmeMXegmfVFqHrFhobN0XiQlB1yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786458413; c=relaxed/simple;
-	bh=Ue8zue8fhHadLkzART9NdhJHTb1WxMohxR7tgvjXXS8=;
+	s=arc-20240116; t=1786458472; c=relaxed/simple;
+	bh=xf3o/AfjOWNxGO4wyGIBlYU71iMefmCD5jB4U7YdR6k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uM/pMZucOud9Va6H5hWMMW6U6yt/dmsJvK7tbs5vz0MWxIN10Dnlv9Um0Y9O6lXXpO++t9EVSHtHjuUWBXKnRTKglmG3GVV30935HcMcEDoy2w059xsoDdZITmpjYJuPrx89qEjuCFxUuVNCDqHBWjhCb+YzTY8UBItd27VjAxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EN8nWxDw; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=U40Hm68Xb4dwfGncGZarWjOTvwH1WnXOJZwtUnfYNagS6JO1+LoEw8Yq5EQEHWGcDo8FeqHAQsG846WGxTcBP/xVLaWVVeagJSY9zDtbAa/+pHcNI9wSBZGxsApmT9db5PjXYKxhNsEKTs9g9MGE2PkseKFsEYvMPFVeDWXTt5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8Hg4VHW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EN8nWxDw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791CD1F000E9;
-	Tue, 11 Aug 2026 14:26:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8Hg4VHW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF72A1F000E9;
+	Tue, 11 Aug 2026 14:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786458408;
-	bh=Jkaoy25yfeQmT1UwUUgywiq4xtGMPE2KHeNj2B4MqLQ=;
+	s=k20260515; t=1786458471;
+	bh=wxbdeWqhWZfGgRetP8csfhUC5sKfer1hUFx+MZCPm6I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EN8nWxDwwq+3wP/wh8yscDbKWKUAMT+Zm5oyCRSqNlgTDwSzuQrIhVNIN2VVvsVMJ
-	 CAD1gY8ilgPze7S/NPztJO7JYV5VPRQh/Tnd8pv/I/TLVoPPfTYMLzeA6yaw4qxfKt
-	 fV8vCGQ0308ojkWpxAlc57KpXrqM4j7y1SgufUpD7rPig5WDfKgqErNoQz3ldVKrxv
-	 qUXKnK1PUTQ01bSRdgCg68lFEcz/iJFitIcXBNBILyvIC4WwqAhcQ2FdVHuOAW3p1F
-	 HqI00fwSHOh7/CErHWBgLiHVUwkjVqU1su49QwzO6dS3d37Aacs2DnpKzcbJVmOzVr
-	 HBQo0sHwdep9A==
-Message-ID: <a47b70d8-47e7-48e3-b0a2-331f38b665a7@kernel.org>
-Date: Tue, 11 Aug 2026 08:26:47 -0600
+	b=R8Hg4VHWsGCM9KhVuMvBVW6CqmZXey11xrOUCrhrIHJaTjBd7NEMCNYu3DzZ5DGC9
+	 NZSpfPaLo1a2wljkmmEgmtymIsFyrduEv1QDolsoywqIJbljvslxBibvYlSNnaMR5g
+	 nAeGw7sT8rGMuY9LjSYCEP8Qf2M7oNEi0DzVvr1DZn3F/7S2r7NV2lA87yC1jbe54k
+	 LqNOlr+g+/O9jt5+2AWgiYZ29/UMHFHgiUyma7PC56gzhXxCJ+/RnPzEVaVbeSu1c2
+	 /VSr2OKNutRnVr2r1jfQ2+605ivnSq80lWzbIt+Tnfziv4mryMDbgGNatwdIaMaXOP
+	 43mmNj0T7oZSw==
+Message-ID: <9f458f93-77aa-4811-adc0-0c390fe3d18c@kernel.org>
+Date: Tue, 11 Aug 2026 08:27:50 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,49 +35,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] selftests: drv-net: let ethtool stats settle
- before reading
+Subject: Re: [PATCH v3 net-next 02/15] neighbour: Remove
+ __neigh_for_each_release().
 Content-Language: en-US
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, andrew@lunn.ch, shuah@kernel.org,
- idosch@nvidia.com, ioana.ciornei@nxp.com, petrm@nvidia.com,
- linux-kselftest@vger.kernel.org
-References: <20260808163653.2460381-1-kuba@kernel.org>
- <20260808163653.2460381-2-kuba@kernel.org>
+To: Kuniyuki Iwashima <kuniyu@google.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Ido Schimmel <idosch@nvidia.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org
+References: <20260811022448.116235-1-kuniyu@google.com>
+ <20260811022448.116235-3-kuniyu@google.com>
 From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260808163653.2460381-2-kuba@kernel.org>
+In-Reply-To: <20260811022448.116235-3-kuniyu@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/8/26 10:36 AM, Jakub Kicinski wrote:
-> Some devices refresh the statistics exposed via ethtool only
-> periodically, every stats-block-usecs (as reported by ethtool -c).
-> ethtool_std_stats and ethtool_rmon sample the counters immediately
-> after generating traffic, so on such devices they can read stale
-> values and fail with a delta short of the packets just sent.
+On 8/10/26 8:23 PM, Kuniyuki Iwashima wrote:
+> Since commit 6deb53595092 ("net: remove unused ATM protocols
+> and legacy ATM device drivers"), there is no in-kernel user of
+> __neigh_for_each_release().
 > 
-> Add a hw_stats_settle() helper which sleeps for 1.25x the configured
-> stats-block-usecs (defaulting to 20ms when the device reports no, or
-> a zero, period). Use it for ethtool std stats and RMON.
-> The 1.25x/20msec heuristic matches what the Python tests do.
+> Let's remove it.
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 > ---
-> CC: andrew@lunn.ch
-> CC: shuah@kernel.org
-> CC: dsahern@kernel.org
-> CC: idosch@nvidia.com
-> CC: ioana.ciornei@nxp.com
-> CC: petrm@nvidia.com
-> CC: linux-kselftest@vger.kernel.org
-> ---
->  .../selftests/drivers/net/hw/ethtool_rmon.sh      |  2 ++
->  .../selftests/drivers/net/hw/ethtool_std_stats.sh |  2 ++
->  tools/testing/selftests/net/forwarding/lib.sh     | 15 +++++++++++++++
->  3 files changed, 19 insertions(+)
+>  include/net/neighbour.h |  2 --
+>  net/core/neighbour.c    | 31 -------------------------------
+>  2 files changed, 33 deletions(-)
 > 
-
 
 Reviewed-by: David Ahern <dsahern@kernel.org>
+
 
