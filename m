@@ -1,175 +1,126 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [84.42.129.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFC837E5DE
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786473591; cv=pass; b=p1zprJByHT2Hy8GVJcH9eGycb3ZaIoFZ0NJIvuJrjVeJBwcdnO5bl8pULnJyysdO1k4rBKkkggpXvGS0dSBd5t0Acl4lhOUiuwQbImCkSVKKPXifuD/tK95L62wHMHh5P0gLBDkDRtGg5CMIUjfQoUqMWxI2ni8UnjfrbVkSlUM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786473591; c=relaxed/simple;
-	bh=3K+rgf/oCMhDvVggYvh9dFePmAGm0zPjujux7MTkeeI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gfXQ8SJhF+fKlqpYeSSjMoTLIdMoXnTCfLoi1loxfWKW8I5V49+i/u9O4XWsJ/n5/fb7rUNViWb2wVxfCcx0MpJT5SfRFrTEoV47TSqedGCyIv+FzmZy8CJcXRpVGCWapmWJV3/mvl7K8osIqCq2c/1c5nLXcy6HIMqb5FG4NCc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vVSyztMS; arc=pass smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343F9390610;
+	Tue, 11 Aug 2026 18:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786473983; cv=none; b=CS0iz6KFwPnZZPM9G5cKzqkQvnpTlFmtvI6WRFXw/wA9qP7DW6GSDsfQxfGIv/xTkPKkf4OxvZsOo/YZB58QMqqfuTq/47w+eH7mo31PHidSX5CDP/H9P9EwglLYVb328hFXBsVnBE2afym4c2+JeNb3eE0b/C8khtwsJXohWY4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786473983; c=relaxed/simple;
+	bh=Y0artTnDdsaQZbiyrwWAJ6h3Q1wIJzOBcAdw+ttpsS8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R30oLC7tLGU/6x/qWjsyLIxPvpQE4VZ654xDB52Vg3wXmMsTbF9Us+RBRRkNa8Vyz/MoMLYkO3p0XRFxpdLMFWchgNQwxEy3YiLFJWHmQd3k1HbO1jfrHhWjH+y+YSo8EwRgjvLOWtWCbA85QtkZa9rW51/fmzyjAlkzzS8NcQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=KEn1InCd; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vVSyztMS"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38e88b60121so219689a91.3
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 11:39:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786473590; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AzYgUMoV1/2CIKeDzmCNgUoOrjN22LYN4yH37MleSeEsXPDvBrlMR2S+h0UcUn5GCL
-         AVs4Pq9yXzfAGU6UmmsUGGjQukDjFgR5xWL1YEE0Aza/pwxWdsderRWnvmvtoAa2y816
-         HQ24nCmHBbRaVDYJQGOq/ecxCEf5kjiTlNHyWUqek6Cbt516U53INcjmsaLoFK5R3EN3
-         ZzQWnvB1tn+6qyX34gg1uFc82YTyA2Zb3n4B4L4+RQ+jIggdPAZM1uXWK2yjyWJyrNvp
-         QlZYjFEo1UduccxMpKS23QMebe5fp8/6lJDe8005W0vDuP1xux/hLa9weQa8ytlFS7Q6
-         gNCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3K+rgf/oCMhDvVggYvh9dFePmAGm0zPjujux7MTkeeI=;
-        fh=TTgZChjXrklxbjzyDzl8jg6S6Vno/0MQzvQcrHuPp3E=;
-        b=fz0QR4XMs0AIitPhFF8fjWx/fyK5vFmxbNNXevTUVEanrrG2B0rZnEdVxcWkFosHAl
-         YFa0rgtq6E/NCGTV7Vgyz+1MNxllo11ndmlIbZveB+1VId8u7qkNeTEFisx6SCzaIcI+
-         3OP5Kuc2V/HSJ+dM0/lXTBqtvuQ9GT0L/+BG9eFF2gqYOanz5Q+J8RuacKVRY2iIxS6G
-         uzzMgFR/tgUegrZoLVtRVTSzMBg91YCls0N3EdJKGyUzVb2C206BlHMKe5m2+TMWXq6m
-         yXrBSDuwNqf3GRtsaDuV142jpHWuKqU/p/0Az+XBS3yuAo1Bp7v4mkmDZHMA9GErz3Pw
-         ieGA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786473590; x=1787078390; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3K+rgf/oCMhDvVggYvh9dFePmAGm0zPjujux7MTkeeI=;
-        b=vVSyztMSfrZX71aarozZiKqjLOJrIniup5D5qEKlaPZknTD1CoVfEb/GZWBAVu1wFn
-         5EeGtpN3RRfq6N2Iz9GvIf09YwtznRbG81goiudagCtNB86VWd9NjH1EYZXvd1n+NR+U
-         oqQwAnQKmYAjbdzmwPwpbiVq5rwfrlsMCeHCkhWKj6cGV/MK1/5Qa6ROaz4Q7KWAaK3Q
-         kUjP2YT9Na2YFPLq7mCs20DnwLVrUOVA2jgWeW1zEDes2iy4O000V50UbV59WxbDBsEg
-         WL0D5idRSFEV4I9swfRztMj8LCDKk1bQE+aw3UzKzLGgO7QIN2FL+yPFN/N64UnVb4p6
-         Lixg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786473590; x=1787078390;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3K+rgf/oCMhDvVggYvh9dFePmAGm0zPjujux7MTkeeI=;
-        b=beD33fvpqRZ+GNAz/VHz2Yj/yTqbSnuEd9aucydoJsSKyo5GT95B50lhrn9ZOJbZiB
-         LhU8PjVTFeGDTm3dVJhnQ/X9kvYykinb3qmzxGK2LhtLZS/vnUHS0HzlFlgLS3ryO02l
-         gguiI0Ci8KFppkV2KKp7guJAEwzO2RGNbNG3FJ6iEPB+iJEYGCuGtUHN8AXt8uVjEp3G
-         PPSENAMihy4rhN7FXWXSBs6zxKF+LqE1xA2a5y7aJWk5OQ4qLQSQklNEVGKSECSaFoN3
-         x8Y3NmNQDprkVhhDPpGeKgU3Ey6vwboy8BELCvJW7f04y8EYw5jSH3KTr27kQ6OUb/9C
-         Gz4g==
-X-Forwarded-Encrypted: i=1; AHgh+RoKVl5G89z8hUqDl9sT/PP5fdIoMKc8d08AACoTRYRtCus4l/ezKQLApKwFMR9xM5V33qlo6GU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywlhMDI2iBBPfysDYDJ7Qo/VgU+FiIo9qVN4OOC5aPRbKCO0//
-	3JsfsoeTsUFq3XfCiF2Zmu7fhnfdU9D85VWo4J+SIihinYlFyxMOp4/TeLwLqLImtTF4owjHiNA
-	k5/qZ9jTYNUc7qYrFuu2AncrpurhjrCRYfYQhOYpR
-X-Gm-Gg: AR+sD12boyNwy+RrCRWW5LZ/6mDs5CFDTZefnGX4oQGayrt678u024556N2nW5HqdFT
-	FUoI7KMXFplxRzl/zieYzPfbhlo0Poz0Zv1M3P7npwkC1eaMhdMVtzVwdREmkeo6r/drAlW+Rwn
-	GAfeI7B+MGR54VSiLXKuGL+6QW8jYRPV2SpS2cEzSilrXyDz9E5JWUDE0FdVM+b5IuneuUrsdIC
-	x7xteJBaxZ98LOloYhyo4uX5Hp1SxYf+YAFAJ4oPAk8+p2kA1etTdM6h7z7xXJvqcTaUPJY/I5T
-	VqElZutbe+VXd3pbH+YkIuZsAlDXJafxzfDo8RigidMIYadUVttxAdViftwMa8bXW9qMShmkDB0
-	+QtmyouYmOye9WgzfzuCb0K12PcZ485xyPimDq822nPX/hcXfp3EK6BMUKC1Zv2HIJw==
-X-Received: by 2002:a17:90b:4c85:b0:381:c500:b0d1 with SMTP id
- 98e67ed59e1d1-392ec721e34mr5540905a91.20.1786473589009; Tue, 11 Aug 2026
- 11:39:49 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="KEn1InCd"
+Received: from [10.0.0.152] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id C97FC53402B9;
+	Tue, 11 Aug 2026 20:46:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1786473971;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mSgsv+/IeNR/3PErszXC5lh1owkuic102AtLNb8adpk=;
+	b=KEn1InCd+83RstwYGoRK3ckfFLrEsvsY/CeS34QNOp3SDJwsBgeZw1zM0CojcoSjt5AA8S
+	HDPCWLwnXB+K/xxNrllLCN1wVVLI7RgxsPFRMOVuxUPdIZWX8My5AepcoV6AMSBBNV1BM1
+	0w3pwNh4CancTaulseo7kIOxzRQ1ijg=
+Message-ID: <8536d413-a46c-4798-8feb-d4a0e0fa78c2@ixit.cz>
+Date: Tue, 11 Aug 2026 20:46:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811022448.116235-1-kuniyu@google.com> <20260811165453.GA3163487@shredder>
-In-Reply-To: <20260811165453.GA3163487@shredder>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 11 Aug 2026 11:39:36 -0700
-X-Gm-Features: AUfX_mzqfaj4wUaQjRrPpNFoPK17KPzMzlQ39k5FuJ8aDJmiv_NZlqYx3zfp7A8
-Message-ID: <CAAVpQUCiW3pPVBCXJjtpqmfkiX496YiMwjpQxx3R8oqpupLvCg@mail.gmail.com>
-Subject: Re: [PATCH v3 net-next 00/15] neighbour: Namespacify arp_tbl and nd_tbl.
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/2] nfc: llcp: Move to .getsockopt_iter
+To: Breno Leitao <leitao@debian.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, sdf.kernel@gmail.com, kernel-team@meta.com
+References: <20260708-getsockopt_phase3-v1-0-d8394f2fc554@debian.org>
+ <amtMjiKCFJGY6DAY@gmail.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <amtMjiKCFJGY6DAY@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 11, 2026 at 9:55=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wr=
-ote:
->
-> On Tue, Aug 11, 2026 at 02:23:34AM +0000, Kuniyuki Iwashima wrote:
-> > The neighbour subsystem is almost ready to drop RTNL.
-> >
-> > However, the control paths are serialised by the global
-> > per-table lock.
-> >
-> > This series converts arp_tbl and nd_tbl to per-netns table.
-> >
-> > Patch 1 deflakes test_neigh.sh.
-> >
-> > Patch 2 ~ 3 are misc cleanup.
-> >
-> > Patch 4 ~ 7 store arp_tbl/nd_tbl to net->neigh_tables[] and
-> > remove the global neigh_tables[].
-> >
-> > Patch 8 ~ 9 replace the direct access to arp_tbl/nd_tbl to
-> > net->neigh_tables[] using new helpers.
-> >
-> > Patch 10 ~ 12 finally replace the global table with per-netns
-> > table.
-> >
-> > Patch 13 ~ 14 clean up unnecessary net_eq().
-> >
-> > Patch 15 updates test_neigh.sh.
->
-> The change is good, but the cover letter should explicitly state that
-> this patchset introduces a behavior change with a regression potential
-> (as evident by patch 15).
+On 30/07/2026 15:07, Breno Leitao wrote:
+> On Wed, Jul 08, 2026 at 04:51:57AM -0700, Breno Leitao wrote:
+>> Continue to convert the protocols to getsockopt_iter callback.
+> 
+> Hello David,
+> 
+> Have you had a chance to look at this change?
 
-Indeed, I'll add notes in the cover letter and patch 12 and
-move two parts of diff in patch 14 (neightbl_set() and
-lookup_neigh_param()) to patch 12.
+Hello Breno,
 
+sadly I don't have it inside my mailbox nor archive.
 
->
-> I'm aware of at least one deployment that will most likely regress
-> without some changes in user space before upgrading the kernel. In this
-> deployment, the host has several namespaces representing different
-> routers with hundreds/thousands neighbours in each namespace.
-> Currently, they set the GC thresholds in the initial namespace so that
-> they are high enough for all the namespaces combined. With this
-> patchset, the GC thresholds in the initial namespace will no longer
-> affect the other namespaces and the routers will fail because the
-> default thresholds (128/512/1024) are too low.
->
-> I can ask them to keep doing what they are doing, but also set the
-> per-namespace GC thresholds. It will fail on current kernels (harmless),
-> but work on future ones. Similarly for the base reachable time which
-> currently they set in the initial namespace to the maximum among all
-> namespaces.
->
-> Another thing worth a discussion is the policy regarding the initial
-> values in each namespace. With this patchset, new namespaces all get the
-> same default values instead of inheriting from the initial namespace:
->
-> # sysctl net.ipv4.neigh.default.gc_thresh1
-> net.ipv4.neigh.default.gc_thresh1 =3D 128
-> # sysctl -wq net.ipv4.neigh.default.gc_thresh1=3D129
-> # ip netns add ns1
-> # ip netns exec ns1 sysctl net.ipv4.neigh.default.gc_thresh1
-> net.ipv4.neigh.default.gc_thresh1 =3D 128
->
-> Assuming that today people configure the initial namespace before
-> creating namespaces, changing the policy to inherit from the initial
-> namespace will probably result in fewer regression reports. There is a
-> knob that controls this policy for other settings (see
-> devconf_inherit_init_net).
+Can you send it again please? Preferably in a week after another batch of fixes 
+will land?
 
-I considered adding a new knob like tcp_chlid_ehash_entries to
-control the behaviour, but I was wondering if it might be rather
-confusing to people in the future that only GC attributes are inherited.
-But I don't have strong preference here.
+Thanks
+David
+
+> 
+> Thanks
+> --breno
+
+-- 
+David Heidelberg
+
