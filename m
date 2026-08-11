@@ -1,248 +1,112 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2EB435A87;
-	Tue, 11 Aug 2026 12:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D0623393C;
+	Tue, 11 Aug 2026 12:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786453006; cv=none; b=m4lhBUv7nJ0qaM8mtf9CxxUMrfahjHsr32VdiXXkUjlvxnTlHNwFcw4Y34mFh1/38sT/p+6lY2fGm5Nj5aixCccMDZXuTyUafSmiiAF4KS6Q9Xiu7glc1LpZ0A/jnKUAeJUUCvVZxjJFLc192hVhEYei0r5xRElTkS2EKKepFr0=
+	t=1786453093; cv=none; b=WBPnQd3s+Ayijzetv18pBDPBDHcusPa20Lcc54uXQcnG/bPiWY9Z/lUUAALN0jmIlqza3vnhSytz28pSgnTqxIQy5gaAvU+djLXidmiREzNPstNLeJeZ3QROJmuLWQVTw5fYfewTd4eAFt38i2cMDer4b7i5ZIW3SQ3mpXB9wZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786453006; c=relaxed/simple;
-	bh=fJ56bbwwe3vVMnpTdoyYC18bSgyXz3u7+wNH2PeNI8o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=da2iA/hyQsk+qaCFMVcQefO0IybiMKHq7EqdRRpMMZpfKbYQnKc4jQIm/aENn1GS72aWycOwrDO4f/QiuXwlaHijdpKrALFQW35LwQ7qbswqP18M1Js43zZgOI/X9Gl9UJ2fx36xOiKmQmNDh6xqFdHU7jDf7wVsjod0KZKFpF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=KgWr3Ci8; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1786453093; c=relaxed/simple;
+	bh=t6l5A0FN/QMvzyNimLRKHdOJatFO4aETeoH9DF0U2LE=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=qogSgZtr7r5Q4Gw1zQ55zeXI/SmpyuIYjU2m/wCWRqetqZC1xAJUpROUNXQcPwKDPCkc3SzhBJ/NPVg+BGA2y/xFppKvQLZKld1Wdg7tTrIkAXvqHo4kkf/Crs8Nk5l5QGoTwzZnnv092Q4XsSvjkJ/UW3qLkbL2qdxYrML+VpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=BaRDF5zF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=UtgOTme5; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="KgWr3Ci8"
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id B51C45822F0;
-	Tue, 11 Aug 2026 12:34:56 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3D4153ECDD;
-	Tue, 11 Aug 2026 12:34:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1786451688;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EFPULwsCEQh8jxrDTdq68dQ4k9ee+NFqozFqmEB9s7g=;
-	b=KgWr3Ci8SbC3otOEJercI3u4wxKY6jX5mdTLNc4w/SarZmsiT8fKFNCTPYZePommitvmWk
-	jTwnI+1KhvYbuIIrZ/WHFkpDrxDSAO3Bn7epDxCr6Bol/OpSWugOFuCe0SwXtV2ErhVUYO
-	G3Oc6EAXzv1vkMTHMlw5eT3SuWxAgOisG7aHRTuvM0xK+QAgJI/P8wiPzCzpv5k5f4agp+
-	T2nOQkBA9mWADBdwEhBN8hia0t5Yb8d5lcPdgsWlUFniMWp5rFzLyiflBGnZZxIzx5X2Qz
-	qvWCmWqjEDhOo/amRzz++IeL53bOiA7JE8dmsAAlPMo7/12rrHkE5qlZ2NBzpw==
-From: =?utf-8?q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>
-Date: Tue, 11 Aug 2026 14:34:35 +0200
-Subject: [PATCH net-next v4 3/3] w5100: detect carrier state using link
- status bit and optional interrupt
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="BaRDF5zF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="UtgOTme5"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.phl.internal (Postfix) with ESMTP id 2F1C3EC00BB;
+	Tue, 11 Aug 2026 08:58:09 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 11 Aug 2026 08:58:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1786453088;
+	 x=1786539488; bh=iXsICp0SWc+SRdGk8ebwnVAJaKYg5Pj5HgWOakctfy8=; b=
+	BaRDF5zFfuUNk5x/lmWU4Oq16a+DIeRt4CWsHy2oqnu/OacVes7bs4Io8s5x3vad
+	7uYvCdu+t85v94qRFAA6ywtLUIF+d4MgXVWIcVT4BWbb8Pjum/dj/8wMXefsPQbb
+	SBSwRdiKOvaDwL7nXed6qyOaAS5EK56Q0klkL9HI8IRAA8tHnxCSoOGMrjXl1j8K
+	wVou8LqbcK27Z9Tk7clfi/0PX7it1LMW0HLUz/ePnn1lxmn9oZvO64ny39duXvgY
+	5TylklCIVdyV5z2dwBGbUCbXPA4na07m5law91d9p5x7CJPQgAUn1hz5K+K3oVjK
+	HcbXB0iELZC444UHLRM1Bg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786453088; x=
+	1786539488; bh=iXsICp0SWc+SRdGk8ebwnVAJaKYg5Pj5HgWOakctfy8=; b=U
+	tgOTme5c7J6umxaCaR+ZUBfdE42W+QXUoYQuaFTFKQTMMYRTO6xXfklsJooABWPF
+	zfmsM022kuyODOE/g1DhXOyHY1feOvVOt1fM6gNFX1FvOnPaHvi/mn9xnbKvuYKc
+	RrO0X5XgKZpuEZH36b2errJepWQ67gV7TArDQODqNLQplf/1Sgca552QmReenKid
+	RG3pa/eiSQVhphoT1T/357+CVw7JqLbkII9mNrhJn1wkmlb8hw8+13CYaiXfLZeQ
+	j1mOmy6hE7JKZ5wbLzrUvKzGpP24kJJBjKXo+e1uVZRMwf8f5TfBGtFwOwFhFC+P
+	UyDq77Z1PJQKmLQYs4Y8Q==
+X-ME-Sender: <xms:WRx7anSmYc1p-a-zVvikoy2N-1nz58t7hDlfuRGJFEKFsFuqoU7JqQ>
+    <xme:WRx7ajnrnhQy_rAq0_0XkNxUFgZaxVbUtN6-le94Ozjmm6ZHnGEuFqyE0Gpa5aPwL
+    zdsOF9RY7A8O-nIM2eumGCoDWcHAA8ZXccagF7orMIV3fm7cSbdJq8>
+X-ME-Proxy-Cause: dmFkZTEgwoLrKc+iCznplqVnE39SS99aEYrs3bPuibc0jIqJ39pJ8LFA0KNYQZbcyE2U0a
+    e1hVvc+2IC/Dg3levJSa7wSjF65Fj25olgJ0yc6pcqCJ3O8aT7YGtB3cJfLMa0wuJSg944
+    d9Rlvst2DYgPj7xKbgJ2Il/paO/1F/7+7hWfg1OW7NKc0iGVssxbYx7Wp0R40aBXWn+cMb
+    raHPO5Md0vO6vKuLTgKvvFJHGi8Ok5BU75f5W6b6r5Jpcq8CnwIbGY3EWQv0DBDidlLXRy
+    PqQ6ZyqrgoofnyHKFpJ/fCQwgozidi0XnfZZbu7gFB99EzLyLSdak3K7tQgcRuSv8mJZJj
+    IWr5EvciYWRGxDq3fXpCHBiNen7hKAi3dWrkE+tvy2V5dKhTL9EkvZi2aeYpK0nN8SlpEK
+    XKo8CWL7MqD6/XIErDILKUocSEpNBp7xdi5ffFXLqvJx7L4dBvBIjeJPdcnNr2QVoa6IUK
+    P+IOjuWZ3h9SLdSuwmvn+ncgntbqI3d8w+vO3Pa0fi1aCzibn31x3pvAvn2k0wRj9KTSbO
+    EHjUHKUk8ArLHzrbu9FB1kY5MEcGZLkXjkPAFiQzIM5v7E93b4hIfHZ0JoMzyk4SAoR+Mf
+    7vPReWCnCGZJjk6rs6RMkuKQtVortOvdDlJ91Qi08A8bIwbog+r00pQVdOqQ
+X-ME-Proxy: <xmx:XBx7amPiRX7kL2Rih1KpjNEtNDxxKeDWxpRj8v2WNhfQKAHokkbNFA>
+    <xmx:XBx7aqKd6krdWuCAcxMVOaJqAaG96FLEX5OVxhl_gP17zV8ugp-usw>
+    <xmx:XBx7agoyR5zqGBVKnZEduOmjsJQPOxMQQVCigX8Syy6eym4MHdvMOQ>
+    <xmx:XBx7amOJm-yLc5DaZggr5niBInlpLKGFFhCn4tsmg_FT3lWF3uPZmQ>
+    <xmx:YBx7agU3IM0hSoXEGYr3WLXId8OaNwBArjwDY3V-6jPn3poJiS3CAM8S>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id C594532A006F; Tue, 11 Aug 2026 08:58:01 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260811-wiznet-link-gpio-v4-3-4d5f7da885a8@marmottus.net>
+X-ThreadId: AE4jp8cz6WHc
+Date: Tue, 11 Aug 2026 14:57:40 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: =?UTF-8?Q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>
+Cc: Netdev <netdev@vger.kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>
+Message-Id: <5812d452-5dbe-436b-ae6e-af062a873f7a@app.fastmail.com>
+In-Reply-To: <20260811-wiznet-link-gpio-v4-1-4d5f7da885a8@marmottus.net>
 References: <20260811-wiznet-link-gpio-v4-0-4d5f7da885a8@marmottus.net>
-In-Reply-To: <20260811-wiznet-link-gpio-v4-0-4d5f7da885a8@marmottus.net>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>
-X-Mailer: b4 0.15.2
-X-GND-Sasl: arthur@marmottus.net
-X-GND-Cause: dmFkZTED/3HJKTgwxBO9D7jQ7O9WW6mZqKFTS5z9+t/FK1af0VH31e8paPNStgsQpQIYlcYucwL4cCmdHRXR1YYxqw1T8z7REX/fEaawr/SFTAReVmgPSkMSXhelgxXwGWSawVSbcpIQz1ApGSMt7N/EmbPGNzbGZYTYvDxpMYQGP1JlU5jgLN/HEWfQYe9TkhK3By7wmxsf+0M+P/IMA7PoVnge/FKBaYY9CaxM9zl0WOY5mQGtYkeKnvmiXrurdSxxCfaFLe1gD6LLRDm8B+uNjWpnFlfgPuimqtreC5Kqai1m6/hFQg5QKCoi3xpXvCY9c8GMn3Fz6R/dnpQZY+phR/sNQY9r6x+k9x1zRTatfSl2TcVGaH3AMwywSYmX+TSeRecaZq4abXGY0Yp0jO+0JP21trGrRDK197YNrLd/wiWJty2XS9YA+W94Ma0sgCxNDVkXRSjzH4e3IKYVXIy8PHXySTL1Qye/0nz9CGv/Y0ts9iFpAnoHSWMEL/R7/EWghAQwWi9h5AjvwPO1S9VYt9qLPTWD8GTCtgP3WkZAkbKaaJDC6sYIZZe/8jgo8+eX5t+5gcJpaX51ytLbna/ZRi0CNoMX4E3Y+/RcF3CpsOlcIXg4QxKYn3XKgZvqh8FcvLOCV8Wduebe13Z/qy6sgTJnzsExBOKFQ86T9tr2mINgpw
-X-GND-State: clean
-X-GND-Score: -100
+ <20260811-wiznet-link-gpio-v4-1-4d5f7da885a8@marmottus.net>
+Subject: Re: [PATCH net-next v4 1/3] dt-bindings: net: wiznet,w5100: convert to DT
+ schema
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Detect the link status on the w5500 using the Link Status bit from the
-PHY Configuration register (PHYCFGR).
+On Tue, Aug 11, 2026, at 14:34, Arthur Cr=C3=A9pin Leblond wrote:
+> +        ethernet@0 {
+> +            compatible =3D "wiznet,w5500";
+> +            reg =3D <0>;
+> +            pinctrl-names =3D "default";
+> +            pinctrl-0 =3D <&eth1_pins>;
+> +            interrupt-parent =3D <&gpio>;
+> +            interrupts =3D <25 IRQ_TYPE_EDGE_FALLING>;
 
-On w5100/w5200, which lack this register, the link is always reported
-as up.
+I think this needs to be IRQ_TYPE_EDGE_BOTH instead of IRQ_TYPE_EDGE_FAL=
+LING
+to make sense.
 
-Also add an optional interrupt, wired to the LINKLED pin of
-the w5500, to detect link status changes and read the PHYCFGR register.
-
-Commit dacf281771a9 ("w5100: remove unused gpio link detection")
-dropped the link_gpio/link_irq handling on the grounds that no
-devicetree user passed a "link" gpio at the time and that it used the
-old gpio interface.
-This isn't a plain revert of that removal: link detection is now done
-using a second interrupt rather than a gpio with a documented DT binding.
-
-Signed-off-by: Arthur Crépin Leblond <arthur@marmottus.net>
----
- drivers/net/ethernet/wiznet/w5100.c | 68 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
-
-diff --git a/drivers/net/ethernet/wiznet/w5100.c b/drivers/net/ethernet/wiznet/w5100.c
-index 53d8dc642fbd..ca5054c20993 100644
---- a/drivers/net/ethernet/wiznet/w5100.c
-+++ b/drivers/net/ethernet/wiznet/w5100.c
-@@ -21,6 +21,7 @@
- #include <linux/io.h>
- #include <linux/ioport.h>
- #include <linux/interrupt.h>
-+#include <linux/property.h>
- #include <linux/irq.h>
- 
- #include "w5100.h"
-@@ -124,6 +125,8 @@ MODULE_LICENSE("GPL");
-  */
- #define W5500_SIMR		0x0018 /* Socket Interrupt Mask Register */
- #define W5500_RTR		0x0019 /* Retry Time-value Register */
-+#define W5500_PHYCFGR		0x002e /*  PHY Configuration Register */
-+#define   PHYCFGR_LNK		  0x01 /* link status */
- 
- #define W5500_S0_REGS		0x10000
- 
-@@ -154,6 +157,7 @@ struct w5100_priv {
- 	u16 s0_rx_buf_size;
- 
- 	int irq;
-+	int link_irq;
- 
- 	struct napi_struct napi;
- 	struct net_device *ndev;
-@@ -414,6 +418,20 @@ static void w5100_get_drvinfo(struct net_device *ndev,
- 		sizeof(info->bus_info));
- }
- 
-+static u32 w5100_get_link(struct net_device *ndev)
-+{
-+	struct w5100_priv *priv = netdev_priv(ndev);
-+
-+	if (priv->ops->chip_id == W5500) {
-+		int ret = w5100_read(priv, W5500_PHYCFGR);
-+
-+		if (ret >= 0)
-+			return ret & PHYCFGR_LNK;
-+	}
-+
-+	return 1;
-+}
-+
- static u32 w5100_get_msglevel(struct net_device *ndev)
- {
- 	struct w5100_priv *priv = netdev_priv(ndev);
-@@ -616,6 +634,24 @@ static irqreturn_t w5100_interrupt(int irq, void *ndev_instance)
- 	return IRQ_HANDLED;
- }
- 
-+static irqreturn_t w5100_detect_link(int irq, void *ndev_instance)
-+{
-+	struct net_device *ndev = ndev_instance;
-+	struct w5100_priv *priv = netdev_priv(ndev);
-+
-+	if (netif_running(ndev)) {
-+		if (w5100_get_link(ndev)) {
-+			netif_info(priv, link, ndev, "link is up\n");
-+			netif_carrier_on(ndev);
-+		} else {
-+			netif_info(priv, link, ndev, "link is down\n");
-+			netif_carrier_off(ndev);
-+		}
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
- static void w5100_setrx_work(struct work_struct *work)
- {
- 	struct w5100_priv *priv = container_of(work, struct w5100_priv,
-@@ -659,6 +695,10 @@ static int w5100_open(struct net_device *ndev)
- 	w5100_hw_start(priv);
- 	napi_enable(&priv->napi);
- 	netif_start_queue(ndev);
-+
-+	if (priv->link_irq < 0 || w5100_get_link(ndev))
-+		netif_carrier_on(ndev);
-+
- 	return 0;
- }
- 
-@@ -678,6 +718,7 @@ static const struct ethtool_ops w5100_ethtool_ops = {
- 	.get_drvinfo		= w5100_get_drvinfo,
- 	.get_msglevel		= w5100_get_msglevel,
- 	.set_msglevel		= w5100_set_msglevel,
-+	.get_link		= w5100_get_link,
- 	.get_regs_len		= w5100_get_regs_len,
- 	.get_regs		= w5100_get_regs,
- };
-@@ -751,6 +792,8 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
- 	priv->ndev = ndev;
- 	priv->ops = ops;
- 	priv->irq = irq;
-+	priv->link_irq = ops->chip_id == W5500 ?
-+			 fwnode_irq_get(dev_fwnode(dev), 1) : -ENODEV;
- 
- 	ndev->netdev_ops = &w5100_netdev_ops;
- 	ndev->ethtool_ops = &w5100_ethtool_ops;
-@@ -803,8 +846,21 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
- 	if (err)
- 		goto err_hw;
- 
-+	if (priv->link_irq >= 0) {
-+		err = request_threaded_irq(priv->link_irq, NULL,
-+					   w5100_detect_link,
-+					   IRQF_TRIGGER_RISING |
-+					   IRQF_TRIGGER_FALLING |
-+					   IRQF_ONESHOT,
-+					   "w5100-link", priv->ndev);
-+		if (err < 0)
-+			goto err_link_irq;
-+	}
-+
- 	return 0;
- 
-+err_link_irq:
-+	free_irq(priv->irq, ndev);
- err_hw:
- 	destroy_workqueue(priv->xfer_wq);
- err_wq:
-@@ -820,6 +876,9 @@ void w5100_remove(struct device *dev)
- 	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct w5100_priv *priv = netdev_priv(ndev);
- 
-+	if (priv->link_irq >= 0)
-+		free_irq(priv->link_irq, ndev);
-+
- 	w5100_hw_reset(priv);
- 	free_irq(priv->irq, ndev);
- 
-@@ -842,6 +901,9 @@ static int w5100_suspend(struct device *dev)
- 		netif_carrier_off(ndev);
- 		netif_device_detach(ndev);
- 
-+		if (priv->link_irq >= 0)
-+			disable_irq(priv->link_irq);
-+
- 		w5100_hw_close(priv);
- 	}
- 	return 0;
-@@ -856,7 +918,13 @@ static int w5100_resume(struct device *dev)
- 		w5100_hw_reset(priv);
- 		w5100_hw_start(priv);
- 
-+		if (priv->link_irq >= 0)
-+			enable_irq(priv->link_irq);
-+
- 		netif_device_attach(ndev);
-+
-+		if (priv->link_irq < 0 || w5100_get_link(ndev))
-+			netif_carrier_on(ndev);
- 	}
- 	return 0;
- }
-
--- 
-2.55.0
-
+      Arnd
