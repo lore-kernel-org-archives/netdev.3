@@ -1,120 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8ADF2E1F06;
-	Tue, 11 Aug 2026 13:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2166296BBC;
+	Tue, 11 Aug 2026 13:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786454450; cv=none; b=Ouw8vvauHApanUZBjygRyhmEg6e+nFSOkY7+np/Sd/bf5gZqrU8HEbIdiavjgo4DR4Nrpoo+psAJ1niK23dHGKYEgd0GXjOZr+lrsvRRnf8Y9POMmMvbHruuOU2DijJ/FJrB+oabkb9LJxXT2HK+m62IonnWzQYKX0rU4QGZ+cs=
+	t=1786454501; cv=none; b=lAeQV844/hXCOlF1OZrupGiKMqMWzJP5OpRw61T137AheZKnx3FHS+bUCZGVtE5wcLiitOUlyAHZBz+q/Cx4FR3Umr7rSyrBBQ72qqU/6F8e1kPXeN9wuSXa10SoqHHEzUDUHRpgb2K7KBvFyslThe5mVxZQvkmLKm2AIHg2u9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786454450; c=relaxed/simple;
-	bh=X7wTZaxrYAAokBPf4nHKY5fuDPypAvFbB1h3EDD04FY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gp/QI+b7VN5aySpl7wTy5uS0ZiwtyDieix8UFbQxYhlwIFVV58E146nheojIw8sDKJOf/FnDSxheYoD4mLs5JOS8I7osV9Hqu/3wUi0kWf7TKXTKhY/VK2UT8XbkGdLfn0CjWujE2TNAxXNwLb/h4WMDHUH/rXZDyloLqUTM6C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aBmoc1hb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1786454501; c=relaxed/simple;
+	bh=iUL5T8TIiIyJ47HVvZpVXrOXhoqEfC3oN6JufiNSJH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LPD65+tPp6zlo4ppY35ipi5S+IolxOLJZOUZ7BYU4bLcTX4ts38WEiF6ObAFGnDm57HVAgJ3ktJTWMPHUbFXIRROLE5xxGxFJgyC+U2D+2UB0pXYRYfN7BFvO7QyDk8ytpE47+ULwHQJIif9nQbdHs/dB4aixtddu/YZ4OXDe+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ql9iNRVG; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aBmoc1hb"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A44D6C2BCF7;
-	Tue, 11 Aug 2026 13:20:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786454449;
-	bh=X7wTZaxrYAAokBPf4nHKY5fuDPypAvFbB1h3EDD04FY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=aBmoc1hbqWnwc59NRd2lbTnPlBZcODucyEDr/B5Q5WhVFKk/ndQLGpahJOErN3cMn
-	 o0GospP2OhzcGni04FsxgLXYsf1B6sL/kk6SW2WawkMNGLfIvw9I/ssgMJf1hH5ugd
-	 /zsaBx1Pnh6eZPG/0139PNvk3NfOHEBzYrAyK0UPczqAJamyfFZLGl2PUijLIKlK3J
-	 lBjXrKox3aU8xidmFXtshst4Ju7+IzvXFqtOANFk41DgIimYFhngHV0qu209ZFIyjH
-	 9+RS0Bxjd8Dt8aAA0RvXNshhI8CA/uDu/at8HlOnQicjY+WeSZ6Ipcx6Hqym8tdy5Q
-	 m/5iIyUl0k4Xw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8168CC5AC67;
-	Tue, 11 Aug 2026 13:20:49 +0000 (UTC)
-From: Fan Ye via B4 Relay <devnull+fy15309206903.gmail.com@kernel.org>
-Date: Tue, 11 Aug 2026 13:20:49 +0000
-Subject: [PATCH net v3 1/2] net: thunderbolt: Release the Rx HopID that was
- handed out on mismatch
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ql9iNRVG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=F0JeCqhCVST+H5HlZBzOWbt7QLzW5LHlgaVdjeyTCWo=; b=ql9iNRVGvPyxlu19San3d6pptA
+	mSP10nwkf/xL/OZJnVIGAckyinGwn4tLV+mwxkRfdDRnmN6W/8IUZlqsyAX3I1T+XBisfT4XX9vga
+	t2HkWoOp2S+2UPAEfgQefFQQ6lVZH3nnSjF2jpGw0kmpjnxDwV9Jf/F8DLAjqhAH35BR7/933SbVU
+	dI0AQPLk1vYoLUgXtN7qEeOhkz6pd2gAW66ngiUfLR02sdopLyhRhzzIyKjz7U1xnI00Om1iXckU1
+	Y+3+96zp2HCuw9URARqVSxG9BMd+Sf+8fuiqZzKgC8Mu4F326IDgfnIGbGQquBPicOsv5nPU7tRa8
+	wtn+c9Yg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wtmQ9-003agz-2F;
+	Tue, 11 Aug 2026 13:21:33 +0000
+Date: Tue, 11 Aug 2026 06:21:29 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 5/6] netconsole: show empty string for an
+ unset IP address
+Message-ID: <anshqWm04umxzebT@gmail.com>
+References: <20260810-netcons_ipv6-v2-0-3d4fc987a90f@gmail.com>
+ <20260810-netcons_ipv6-v2-5-3d4fc987a90f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260811-b4-tbnet-hopid-v3-1-9e75d1b51331@gmail.com>
-References: <20260811-b4-tbnet-hopid-v3-0-9e75d1b51331@gmail.com>
-In-Reply-To: <20260811-b4-tbnet-hopid-v3-0-9e75d1b51331@gmail.com>
-To: Mika Westerberg <westeri@kernel.org>, 
- Yehezkel Bernat <YehezkelShB@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Fan Ye <fy15309206903@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786454448; l=2078;
- i=fy15309206903@gmail.com; s=tbnet3; h=from:subject:message-id;
- bh=lESY9+I3jf4v1krnmOpqlJtStY5pn7YDNxvIAIgBURM=;
- b=l+k7+Gl4blEYewjBjyTKIRvXUm48/QslNgv9EF7v35WCJDO56STd65s/Go5ugXdYV5puJ/en5
- qn0F4sPV6vvDEAMEf/OgijEX/otAR7oGAuI1NaXr5C+9f6OOW/VHQk1
-X-Developer-Key: i=fy15309206903@gmail.com; a=ed25519;
- pk=6QsQIrI/kruYWIJyCH9ntPMXsHCqF5JtK/DCMtOCzdc=
-X-Endpoint-Received: by B4 Relay for fy15309206903@gmail.com/tbnet3 with
- auth_id=929
-X-Original-From: Fan Ye <fy15309206903@gmail.com>
-Reply-To: fy15309206903@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810-netcons_ipv6-v2-5-3d4fc987a90f@gmail.com>
+X-Debian-User: leitao
 
-From: Fan Ye <fy15309206903@gmail.com>
+On Mon, Aug 10, 2026 at 05:47:29PM +0100, Gustavo Luiz Duarte wrote:
+> An unset address (local_ip/remote_ip), now denoted by AF_UNSPEC,
+> currently shows "0.0.0.0" in configfs. Print an empty string instead,
+> which is more clear.
 
-tb_xdomain_alloc_in_hopid() passes the wanted HopID to ida_alloc_range()
-as the lower bound, so a taken id is not an error there: the allocator
-returns the next free one above it. tbnet_connected_work() asks for the
-peer's transmit path, treats any other id as a failure and returns
-without releasing what it got, so that allocation stays live for the rest
-of the XDomain connection with nothing left holding a reference to it.
+Ack. Now 0.0.0.0 is different than an empty string (AF_UNSPEC).
 
-Release the id when it is not the one we asked for, the same way the
-error unwind at the end of the function releases the expected one.
+> In netconsole_print_banner() we can be even more explicit about it, as
+> we don't have the risk of userspace trying to parse it.
+> 
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
 
-Fixes: 180b0689425c ("thunderbolt: Allow multiple DMA tunnels over a single XDomain connection")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Fan Ye <fy15309206903@gmail.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
-Reached without fault injection on an ASMedia ASM4242 host-to-host link
-when the peer drops out mid bring-up: 23 times across two hosts in one
-run of interface down/up cycling. Each one ended in the XDomain
-connection being rebuilt, which recreates the ida and disposes of the
-leaked id, so what I am claiming here is the leak, not a symptom.
-
-Patch 2/2 edits the lines this one adds and will not apply without it.
-
-v3:
-- Rewrote the commit message; dropped the quoted source and probe output.
-
-v2: https://lore.kernel.org/netdev/20260810-b4-tbnet-hopid-v2-0-0eee557e75df@gmail.com/
----
- drivers/net/thunderbolt/main.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-index 98893732bc6e..e5199a87ea7a 100644
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -647,6 +647,8 @@ static void tbnet_connected_work(struct work_struct *work)
- 	ret = tb_xdomain_alloc_in_hopid(net->xd, net->remote_transmit_path);
- 	if (ret != net->remote_transmit_path) {
- 		netdev_err(net->dev, "failed to allocate Rx HopID\n");
-+		if (ret >= 0)
-+			tb_xdomain_release_in_hopid(net->xd, ret);
- 		return;
- 	}
- 
-
--- 
-2.43.0
-
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
