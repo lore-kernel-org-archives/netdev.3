@@ -1,192 +1,454 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023079.outbound.protection.outlook.com [40.107.159.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56E943B6D2;
-	Tue, 11 Aug 2026 10:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1AF2737F8
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 10:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.180
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786443658; cv=fail; b=OGka80bSoAMQO5h04Wyz34uyyV4oouD3f4GhDBCmlFesTEOYDVBBu/y4ERZ9tVkgdbgiMa/6s0x3py1WPmcfeucHRtZ/8scb1wougV+eDvqAAVGGtI1+DWoy/ThCKB4+aVIvJcG18VSf6tP2NaKokBu/lOecYUOmz5U/fP4Xcb0=
+	t=1786444191; cv=pass; b=H9qbkYei7VqlzoG5HADn42gD3AcrslfkU7z0k9s1QnjCcAxL004Frgvx70PEXTUwHzKNvj20E1++jxS/ZWQjlVUp0u3KdRT5XXQFZ2Qg1pxaz8CqThmNQhFeX7XDbmNZb/wN+PxqFpdCTFPfikuxuTKIBXpw+/iELjWK7cDEDbc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786443658; c=relaxed/simple;
-	bh=0isHuBaCY/ko1veUOxG1E4d3gGRufWFuqx7w/UVhuig=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=FagYHkO2CuSbGIeCKE585rWUqnC4aBnzUkWULoj3lhFbX9Sicf4FSCwksDKCPvCAsRhSk9uLq8UPoQcCDm6X+iCH1osFL2PZ9F3jsL7zhJBXh6/M17vI9SDAneUCCqQnCA38XZpfJz4O046kUObyJyZBP9+QAFSsEQqCBR9tzFo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=HuxHjSG8; arc=fail smtp.client-ip=40.107.159.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
+	s=arc-20240116; t=1786444191; c=relaxed/simple;
+	bh=vV6j1s1jfNbobXfHZOJ7gVCuxdmXS7u6pIWYzTwe5+k=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=loxLduL5CvNM8iQPOAmAgcYKeZf5+enChu+Zhb0zQe/4aNTn9FgB5y9Y6M24Pdwc4a1OGu672jTCi85g/Hiak2iYzg3X5bX0lJ1Q63QDii7zJVDdK1uJBKEAqIFids0y+OrQBsh5jcHPueg+Ckab/sXI5zGBbYq+qaN2irzpA1c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mJ8JNkY2; arc=pass smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="HuxHjSG8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kvnxLGPNveFp3KljY5HqkMzx0Ojb1+8ghtOjalR0WA8FuPKsPKLp/1T7uOVIpDplGmLp80fU+TMhnBSbGGBWF9iwnukNMZIvlJ0jyw3BSm/JjOHxiu+yhHar/95XnNnLp9N3rIldXhOW0yqcBxLclphmOoZNMBAkEUDg8iOSnyuMxbie45bVg0t8oocWimsMRXpgjD1+wRWl5Kkwtb5NtTg1GfMAFSjDJMPQqvv7x1F01StuB2X1pPqT/KZfdCAGYVt25Q7zWoYCP6lN5fFm1sah0HFA+lBESqrWzX4C72sAngBGBbEmDsUzDhQSbwvr+RroQ809LurvYVRPWHeSIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j8LGXIBL9ZOw0JALU2BBQdpTEFmlHIxRgpqR+OzGm1E=;
- b=TwREJtf/U+U8gfRfQV3zrcBQ8xWtu02qgIWYF98VPdG4IdVwJ/laggzO01pA+sIqvwPQNL0vXrQYkmWEUrzIG03ZROp6SCFfp3wrb3g6WgAnRWMhVruXNAz0+/Wd0OAb0dyfyQxhU1pXmPmHMSjfmrqaDQA4gNRALCJzDbPYJcdtodGpTYxfAIJiq9p5Q1Da+SOjpVInWGJCaQw0HR3ZXeMKcH/gDYMFh0xS7wAGe9K/zAbv7+bsvYMcHZ53iZ12t4P9YrJdWWycT036TJW1L9WFjjAC9RZnfnriYVT2DOSE4Gs7KbJeae8sCqt5Vtc60w8SxzGHi6ghCEzBr96MJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j8LGXIBL9ZOw0JALU2BBQdpTEFmlHIxRgpqR+OzGm1E=;
- b=HuxHjSG8npIYytU70dh8oBhOo/pfXqiI1dAZVj+g0ozqBwbUWs3s1LYTc0LRwtxW2hdTeC5DdP9qkdo4KKQR5KxaQiu/1iBXGafd6bxwd0tmgiN5gEOmPIO+n92m4YweVvMuj3+0u6g9Kq16H2bRWb22ioYQOpQTwQ4CVXKfGgJDjw84KRcTSlDpyFbbRVApX4PPTreCyDfp7xQm05vVrW0+iOE+qOGctOZRZIb8dKcYkGZ4YoDiWXfErKmec7rMTg/wKblq3eYdXb2tnTyovX2QQywvLCK7wbmQMETCWe+XuKV+Qwwmi1Cjry/JC1cIr8hTPyGlS8RWR01fEA7NLw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AS5PR06MB9040.eurprd06.prod.outlook.com (2603:10a6:20b:676::22)
- by DU4PR06MB10453.eurprd06.prod.outlook.com (2603:10a6:10:617::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
- 2026 10:20:40 +0000
-Received: from AS5PR06MB9040.eurprd06.prod.outlook.com
- ([fe80::923e:d30b:98c0:c69]) by AS5PR06MB9040.eurprd06.prod.outlook.com
- ([fe80::923e:d30b:98c0:c69%7]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
- 10:20:40 +0000
-From: Tapio Reijonen <tapio.reijonen@vaisala.com>
-Date: Tue, 11 Aug 2026 10:20:32 +0000
-Subject: [PATCH net-next v2] net: dsa: microchip: enable SGMII port for
- KSZ9897
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260811-ksz9897-sgmii-port-v2-1-04ae287a0b27@vaisala.com>
-X-B4-Tracking: v=1; b=H4sIAG/3emoC/32NQQ6CMBBFr0Jm7Zi2KAVX3sOwKHSEidKStiEo4
- e42HMDly8t/f4NIgSnCrdgg0MKRvcugTgX0o3EDIdvMoISqhBYlvuK3qRuNcZiYcfYh4aW2tpN
- CkJBXyMM50JPXI/oARwkdrQnabEaOyYfP8bbIw/8LLxIllrUmXZXKWtHdF8PRvM259xO0+77/A
- NJQMF/AAAAA
-X-Change-ID: 20260703-ksz9897-sgmii-port-48ddb100e015
-To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tapio Reijonen <tapio.reijonen@vaisala.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786443639; l=1990;
- i=tapio.reijonen@vaisala.com; s=20250903; h=from:subject:message-id;
- bh=0isHuBaCY/ko1veUOxG1E4d3gGRufWFuqx7w/UVhuig=;
- b=BACBaEKI+HfdBOQ0AS+XxHVjLP4MK2+BmCQ+EuJbv8SZb3QO6UiKaQPFU5CEwPz4uHiqXUqQ5
- DRtVeCrLr9uDjYgBRSroaXF7CSQH3eBvhQ+PxcL/Msjo2yWoHhgHgdk
-X-Developer-Key: i=tapio.reijonen@vaisala.com; a=ed25519;
- pk=jWBz3VD84WbWgfEgIqB5iFFiyVIHZr52zVBPOm7qiGo=
-X-ClientProxiedBy: GVZP280CA0020.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:272::11) To AS5PR06MB9040.eurprd06.prod.outlook.com
- (2603:10a6:20b:676::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mJ8JNkY2"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-81eaf3709b4so37914687b3.0
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 03:29:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786444189; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fp38LyDmk+G5ni/N6ivCRxnEP+QOZGigzPbdYbSE4SP4BzGz9/4IOnWZp612DfpMps
+         jIJ/ibRPR24L0L/t50j2Crz8KvVJv6whTMaCpPDsON62+xyzHWsk8x5yVsdwLmMA+ze8
+         yEFjaXSvbLG3D9xdad/0I++OXK2qhI6UbXGunw1MhPrWS97ppsFcy9iU+s1IQYXMBngr
+         95ODQDzysibC17P09W+ulc9bArQ5rd5o9iDJy7dcJbKmI5Cu1uW+7NxkB01NrbibbKuo
+         88tm3JV3qRLsdrolqWoczTI+8JB9DPC5T16HXy5yAnuozsYvX9/mPlUDuZr3ycN+GVf5
+         dJzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=QAQsgQaaOtoDJkJmVBbHGkYWScTrg8DVQ7TUNA7V/qw=;
+        fh=bm+FEDF1E/R3fUoDa0cj9VxVB8dXLwVgfreVwTZFo/o=;
+        b=eVyGx54rjFrQCLh+lzae8sKiLT7YhoShUaB04MvSSj8oDIW32n7gbgBjV9y3HBntj8
+         +qTOlQpCgpftK/zXOjdt7Fjq6RSzFfHpPed12lTi8/c7TkLutR8KYwSG87UFuIUxE6Od
+         T9xA1vHV0HaEwgxyo0w62HunSqBty4O2mgXmzXYN0cjrdfx7PGdtpujVOdDoH43RfK+0
+         JaTxMIMMJGa7dYxn8Dip1EcUshqDq6yidYArEy71AFM35tJ9L4R24y0ZubGjLmkvFHu/
+         ZmwfkErOvh9e20ayfzV5hIk/L+Kp/jro6VzZ/fHCjW+m7SE1v57kJPFdY9jxUFU2zBHI
+         n9zQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786444189; x=1787048989; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QAQsgQaaOtoDJkJmVBbHGkYWScTrg8DVQ7TUNA7V/qw=;
+        b=mJ8JNkY2oueDl1hDjZqpA3DonkraNi/F7/JP6vPESJfJsGXPkko7SNXxrZ6652bLdZ
+         KYywDTpHmQLZh+untcnzUJ1mUgyqwDG384fyj/srz007n21uYDSBSldN3yD8qPyblLHA
+         P8pJRZuFsfKLl9B/yWcDMOqk+h9RFbCyX5rJIE0o30bwEyRoE3kkpHpbf03FL35f1E9Y
+         SlEZPlIRUIlxgO5RU7o3WzK2/7+Wyo1ZX3zvGU7aP/xrDKiJxcNuVvGC0S/wgEVDbB6n
+         WW5y2dCIwPBs2OH1zsWzF3pRCLBS8p3GoCup/eogebcRXUY8fN/nAw7Qj/DpnvKAzVnn
+         X3Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786444189; x=1787048989;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=QAQsgQaaOtoDJkJmVBbHGkYWScTrg8DVQ7TUNA7V/qw=;
+        b=CvOMElwIA9OEXKOLrtaAVuG8nvb+EH7BiXCDuC72z107551xO+Wb+m2WxLDD4WN6DJ
+         GGb3Z1w9HAKDpWncFD2eEXL7/eQb8T80IuPco9xv7MwJ46+0UplintIvQnafUoofoI5p
+         tBMGbor901cE5l85+k2KhvIBN22bbDyH5Q5Qb8+epXrFu+0YfkqCrYMEQMYCDUjUuSCD
+         y4heRln4thJzRW3GIF7DzXjaoANF5WtWpSMh2Ntv2onunaQixAzUo4zEAO3uV7JL5HAW
+         WArAgutb4WXN8wwsyf6TPgPjoNbxEhMGGd7NwdnCb0j+NIQ2r/FqmjXR5AWZBq6+Hkuv
+         rbdA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq3ES0FvnLcaKmTE+kVlHimczd9RznlOJod0R6fLHTn7IVwmF0KgSF4a+j4b/ApLmHx3BHaRr8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5xG6nJa4m7HBqBh1QVjYAEi7kTo4+O8f7ahR2VtZrs8RVKPbQ
+	xCMGRd/f8gNnX8BMEuVdR+jW6rRNb8CtyxCHR1APps/NuHiso8IChtn/SnJxUPWyy2lUpT+c4Qm
+	GGuaev6nt648Mf22thUzorfq+QKxF444U+OXyYjA=
+X-Gm-Gg: AR+sD12R/ZlkfuXbDYO8kYG88yTQtFaXim/f9H3xAjZV8bEE8azAHyJv1d9cbelLHeW
+	ZYMi9Hy1J21llJF1g51U6aYIcIjTqfsqhJ5EqNnracvlgIuMYm3DPSz5BVpLVRkGWyYjvTsMTHq
+	TQlt7KoJN4ejHqFNvD7edSW34JT2rvcFPl0H7Dh1DASVvOMYALp7b+bNyOoPLIUWPGUeWjfFBH9
+	KymUUguVy6jFN2m2gqXHo7YlSf9Km2XxcFr6Xehxi5YyiVpiLBohIj+QQZzRSl9f2yqIiWLQ0Qa
+	/Ckwt17DBifgksGcKnHj577g7lqmS6MAMZr7T+jAISLJ
+X-Received: by 2002:a05:690c:e3c8:b0:820:a55:3ca3 with SMTP id
+ 00721157ae682-82f2f1081f4mr13881517b3.33.1786444188345; Tue, 11 Aug 2026
+ 03:29:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS5PR06MB9040:EE_|DU4PR06MB10453:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ef56674-f886-4207-e234-08def79231a9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|52116014|1800799024|38350700014|5023799004|11063799006|56012099006|10067099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	y9IxAhAeLMTuNIfE0SmoYl41jJGMf8MHuBCQF72/fmppKUinDR7ihlYTZcnMHbLyYnQRcQdBP2Y87n7FQQVNO+Ir6NE5x9bhYKXM9/FsO8DGbU9sNaIxdENDnNy1SAK0Fw3J8bkKBD+3hObxMoQVGcF0GbWPSwYxGLtRHkVgU1A9o3EkVG7uBl0WOoLfH+t3TzV2ZL6t/44u1DyT12RyCf/O8hFull3AmqYatdiv8BbD7+QsE4cvHOIVt5XjWRMxKCbaJnO1Fp7QBi2IRSIHQmace0PhAjcIxGL1kk3o6JWU3dmclE+fvGrI+H4Yk/G21AkdUwxmBm2CPCI2FS4me40ouQ0auTc96uCHL6j3zS91u9y3rtnk0WmG5E+4+FIKs6luZG2MRKiqMchg4epPuX6j8CkiGU/gTudy+cq4OSYnTDEX87rcamMsxmBTIcbNfwaX3+WqD4nIjT1zZdhoRaFxXvfh2esTkDkJidvmMG/jmRnjX136IHLqcW8kP294nhMA50heCeSLvLhyiDjBc82IBx7SVV8qMBTCT4X5+qRyqxQbFe7nlXUdXR1jgyMxM2qjb2AASaph6MRyvfVxIYeHGfWGFs9yZ+2CROhum29+CoEp1TIkiDsni9Ne+Pn6zc+ZfecD66Y59yMahwwdhTS+i97KvYn/1qs4MdPb76J0Hi9cr0oC7rjSlgfjantkrziRjyhw17jCd+A7zFtA9dBFxxyL990yDpsQB98/QLM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS5PR06MB9040.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014)(5023799004)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d2xINWVDNnRuV1lzcCt0dmE2a0F0NXEwUmFYY2FrWHMvaEJZRjhxWGdUaEJq?=
- =?utf-8?B?N1AyaXkvMnhyMUhVaE5sZkp1ODhsZjEyK0VxSzd4bFFQK244TGxjVkN4YTRW?=
- =?utf-8?B?S0E4ZnBVUnBOQnFuRm1renFMYWxyWTVaYTFOZlpDMFZwTW42cExjL1lsNUlp?=
- =?utf-8?B?L2NzMGRQQkd1T2IrdTJxb3ZKQXo0dllTYWRkem4wY3lVdGN2N2N0dmJKV21N?=
- =?utf-8?B?d203UjBldmdDdzNNNmwxYXhKK2k2Tjlqb3hVMDhQb1p6QWNkSHJrK2JFZW80?=
- =?utf-8?B?N1NlQlFaZ1lEdzYvOStLdTVHelpTR2E3S3VlaGhrMllyNzJTZEdmUFhiOXFh?=
- =?utf-8?B?bEwyb1ZYZUhtM3liblBQaXBHNlhmWStIVjJ4WStBcXUyQWVvcm5MRVU4OU12?=
- =?utf-8?B?MEt4OXVQcnIvU2hEZFFJMDNLZXJBWlQ2V2grVStJVkJRQzFZRWZremovWDhj?=
- =?utf-8?B?ZjZ4OVZJMDNtRnY2SUJLT2UyRkwwMnBvKy9RSDRobVFKMGlBQ1pUZ1pINjlG?=
- =?utf-8?B?TWNUVG1BdVJIQVorc0c4OEhzcHQ2YUdyQ3c3b3JUNlp0cFVSUG9xNVZVeDJV?=
- =?utf-8?B?TUNyNlo3TnRZZUlBcWcwQ2JBditXRDB1eGpuRW1wekNheVN5MGNRZ0hSMnVE?=
- =?utf-8?B?NWIrWm9XTktGUFZvTFRKczZqNlBQQkpYZG9OS2pBdjI5SHQ3bitPc1V2N09N?=
- =?utf-8?B?Y1VoWkpidEJmVkYvRVNvOUxIWlJVVmF0WHRkdGJmQndHdlNoTS9QMmtTYkFa?=
- =?utf-8?B?aURHcmZ6aStBd3pQaTIvNlcyRnU1N2VzbFBaWUI1d2RVQlJSTXJWejdsN0xR?=
- =?utf-8?B?OThaWEJtSWY5YVlXMEwwSWZGbzdrYjBJWi9TUUZ1S0tVb3R6enh5dlFwT1NH?=
- =?utf-8?B?YUpINDMzMlB2eXRqSzUzbXRhdElDK3hZNUFJVXdBZ2lFbHV2a1VvUTRvMVFw?=
- =?utf-8?B?N1pGc1BRWFVXc3pXb3ZhZFBhZmFrZTltL0RoV2w3Sm1mMTVrZk9qdzl4SjIy?=
- =?utf-8?B?TVgyRm45NjNmODFRaVZPKzUvcFpYL2krcVVKSitXT0NzbU5nWnhFYUFCZmNx?=
- =?utf-8?B?bEVTeExlaTJBZkh1Q243R01uRkdReWlvVWxDWVJ0cVFwQm1aVjJSR3JZR1ln?=
- =?utf-8?B?bCtHbmx2bThKSGNrY1Jucm12bEwzaW82NUxkRjFWeFdOQTRKT0lSdTNYeTNE?=
- =?utf-8?B?czY5b2V0L2M5dHBudU1udDBwNVdwWUpEZ25HTzRUZ25WN2FFTm5PdGNDcjFr?=
- =?utf-8?B?eVRvME53eks3Z2NNY2tJNlgrMVE5d0JjMk0yWHdGeWg2bDJnWnlIU3ZBcjFk?=
- =?utf-8?B?UXg5NjZmU0xhcDdYSGFWMHhwWDVDL0ZIOE9tUzBDMVJHeE1QWTRKMjNaK1dy?=
- =?utf-8?B?ZFBWbVVEU2k2NXpTSE84WXNQQVNwZlE5V2pSbEt2KzRMZHpaMnIzRGdXQTBY?=
- =?utf-8?B?OEE4R3BQL2E4VUNiM281T0hFL25BMTFycG45QlhEY3M3SmxrSmZhQk1pdlVs?=
- =?utf-8?B?dUdmSVkyUEd4eURnSlBGQ3hVR0M4SjBQMzk4UXZqMWd2QTFnSmU0Z2dKQVlp?=
- =?utf-8?B?SG5YK213NER0WFhvRStWdzdBZjhGL1RQZkkyRDU5Z0gyRjFiQjRPc0UrTVAz?=
- =?utf-8?B?WklPVzljTWdqb3ZQM2ZpSHBvdFBSeG04aThEN2hxLzJmVWI5dHpjaDhpUnFB?=
- =?utf-8?B?a25IQzZFM1JzS3RERkpQdmVyWENjdUl0SGgxbE9tZHd2NCtIWkVoaGoxV2FK?=
- =?utf-8?B?dnBBODkvMWkxem1NZHdmeXYydEVNTmE2dkZ0YmRIRHgwTjlsUWpEdEtiMlV0?=
- =?utf-8?B?eXhIYVg4eUpselArbU9xVDFWSVYwai9CYmgyY0RVZ1pTQXkwdW12VzRXdWJo?=
- =?utf-8?B?cStxRDBWK1JRT05FWUZBREJDZUhwTHRPYTdUR0MvRE81elJJaTJwWjBiRXBw?=
- =?utf-8?B?cFJSdC9QVGFobCtWNUE4UlZaWlE2YjRvNWhtNWRzTGxmQ0ZyTWhaVXV5M2pl?=
- =?utf-8?B?d3p1dGF1YlJHaHpMSU1yZ0FXRERaNkFiVVkvUnpIQmJ1RDVjRFUxdStCdDdR?=
- =?utf-8?B?dm12cUtSWlZOYTYxSzlDMnNUVGJlcTE2VFFENlFoOVVJTDZBRlhUTGxmRlJM?=
- =?utf-8?B?L2loNjdGM0pXU0FLVXVoc25EZHI2d0hjQzlvN09YQm9oYnc0cTRSMVRscnE1?=
- =?utf-8?B?b0lzUFE3SGw0V3pGLzBFem1YUmhzMEZhQ3ZrWGZWNXhyRWJrNy9nS0RFYU9C?=
- =?utf-8?B?UFIzbkRXN1YzMld2V2hMMlNBKzc5WGpkZGxPRjZCMCswd25tNWJqeEIyNlI0?=
- =?utf-8?B?c25WYjQ1UVV4dVpwUEkvMis4aVFFM2FOQzlvVmNKRHNJN3lUMFVwR1UvRGU5?=
- =?utf-8?Q?icUa/94IAudHFNNc=3D?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ef56674-f886-4207-e234-08def79231a9
-X-MS-Exchange-CrossTenant-AuthSource: AS5PR06MB9040.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 10:20:40.5523
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9JSMIuoSM/Cb/NnxWajtSyhpHayWY1cECAnnsGvVdo0I2AcO5BaWDyM1nIbXOzHn96xs3xmiLv4wMHdzsMzSwT2rDVCbYI4aXst+4VrXocY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR06MB10453
+From: Wei Fang <void0red@gmail.com>
+Date: Tue, 11 Aug 2026 18:29:34 +0800
+X-Gm-Features: AUfX_mw3iYEfuoAC-d2zTxtii2YWdunbB05KKL0plR8gb7NI95vG49qfbpOJELA
+Message-ID: <CANE+tVrDeNCHQVmsqkV2ozeBqyE3GtRDMhZgsg1bhw10yGNTRQ@mail.gmail.com>
+Subject: [nf_tables] netdev chain: DELCHAIN with an exact device name matches
+ a prefix hook and deletes the chain
+To: pablo@netfilter.org
+Cc: fw@strlen.de, netfilter-devel@vger.kernel.org, netdev@vger.kernel.org, 
+	k.chen@smail.nju.edu.cn
+Content-Type: text/plain; charset="UTF-8"
 
-The KSZ9897 has an SGMII/1000BASE-X capable port 7, but its chip_info
-entry never set .sgmii_port. As a result ksz_has_sgmii_port() is false,
-ksz9477_pcs_create() is never called, and ksz9477_phylink_mac_select_pcs()
-returns NULL for port 7, so no PCS is ever instantiated and a
-phy-mode = "sgmii" or "1000base-x" link on that port cannot come up.
+Hi netfilter-devel,
 
-The KSZ9897 shares the KSZ9477 register layout and operations
-(ksz9477_dev_ops, ksz9477_regs) and reaches its port-7 PCS through the
-same SPI-indirect XPCS register window. The register-identical LAN9646
-already enables this via .sgmii_port = 7. Set the same for the KSZ9897
-so the XPCS instance is created and 1000BASE-X / SGMII links on port 7
-negotiate correctly.
+The following nf_tables issue was found by metamorphic testing on
+linux-next 7.2.0-rc6-next-20260803 (x86_64) and reproduced on four
+independent VMs.  The reproducer is a single self-contained C program
+that uses only the raw netlink API (no nft CLI involved).
 
-Tested on a KSZ9897 with a 1000BASE-X fibre SFP wired directly to
-port 7: the link negotiates at 1Gbps/full duplex and passes traffic.
+This report is about netdev-chain device matching: a chain hooked
+via the device prefix "vbug" can be deleted by a DELCHAIN request
+that names the exact device "vbug0", even though that device is not
+a member of the prefix hook.
 
-Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
----
-Changes in v2:
-- Resend only, no functional change: v1 was dropped when the netdev
-  patch queue overflowed.
-- Rebased onto current net-next.
-- Link to v1: https://lore.kernel.org/r/20260703-ksz9897-sgmii-port-v1-1-387e7632dd0b@vaisala.com
----
- drivers/net/dsa/microchip/ksz_common.c | 1 +
- 1 file changed, 1 insertion(+)
+Problem
+-------
+A chain hooked via the device prefix vbug (covering vbug0 and
+vbug1) can be deleted by specifying the exact name vbug0 in the
+DELCHAIN request - a device that is not a member of the prefix hook.
+Deleting by a non-member name must fail with -ENOENT; instead it
+succeeds and the whole chain is removed.
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 1a9d6f83a0232830ac4996ae5f53b8bde0b3747d..a80fde0a8c7e93ea2db4baeb2f941a260e23b687 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -1484,6 +1484,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.internal_phy	= {true, true, true, true,
- 				   true, false, false},
- 		.gbit_capable	= {true, true, true, true, true, true, true},
-+		.sgmii_port = 7,
- 	},
- 
- 	[KSZ9893] = {
+Steps to reproduce
+------------------
+netdev table, chain dev (filter, ingress) hooked with prefix vbug
+(veths vbug0/vbug1 exist):
 
----
-base-commit: b54074ffb813aa4b97585d97ae1ead69d96432b5
-change-id: 20260703-ksz9897-sgmii-port-48ddb100e015
+1. control: DELCHAIN with HOOK_DEVS {DEV_NAME "zzz"} (no match
+   either way) -> -ENOENT;
+2. variant: DELCHAIN with HOOK_DEVS {DEV_NAME "vbug0"} (an exact
+   name under the prefix).
 
-Best regards,
--- 
-Tapio Reijonen <tapio.reijonen@vaisala.com>
+Both requests are symmetric: neither zzz nor vbug0 is a member of
+the prefix hook's device set.
 
+Expected vs. actual
+-------------------
+expected: both -ENOENT
+actual:   control -ENOENT; variant 0 - chain fully removed
+
+Root cause
+----------
+net/netfilter/nf_tables_api.c, nft_delchain_hook(): the device in
+the delete request is matched against the registered hooks with
+nft_hook_list_find(), which uses a prefix comparison (strncmp over
+min(ifnamelen)).  The exact name "vbug0" (ifnamelen 6) compares
+equal to the registered prefix "vbug" (ifnamelen 4) up to 4 chars,
+so it is treated as a member and the hook is scheduled for removal.
+
+Reproducer
+--------------
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <linux/netfilter/nf_tables.h>
+#include <linux/netfilter/nfnetlink.h>
+#include <linux/netlink.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <time.h>
+#include <unistd.h>
+
+/* NFT_MSG_* enum comes directly from <linux/netfilter/nf_tables.h>
+ * (NEWTABLE=0, GETTABLE=1, DELTABLE=2, NEWCHAIN=3, ..., NEWRULE=6) -
+ * do not #define the same names, it would break the header enum. */
+#define NFT_MSG_TYPE(s, m) (((s) << 8) | (m))
+
+#ifndef NFTA_DEV_NAME
+/* Host headers lack the nft_dev_attributes enum; in the VM linux-next
+ * uapi NFTA_DEV_NAME=1, NFTA_DEV_PREFIX=2 (verified by the Python
+ * version). Defined only when the header lacks them. */
+#define NFTA_DEV_NAME 1
+#endif
+#ifndef NFTA_DEV_PREFIX
+#define NFTA_DEV_PREFIX 2
+#endif
+
+/* ---------------- Encoding helpers (wire matches the Python
+reference) ---------------- */
+
+static void put_u16(char **p, uint16_t v) { memcpy(*p, &v, 2); *p += 2; }
+static void put_u32(char **p, uint32_t v) { memcpy(*p, &v, 4); *p += 4; }
+
+/* attr: little-endian len/type header + payload, 4-byte aligned at
+the end (len excludes padding) */
+static void put_attr(char **p, uint16_t type, const void *data, uint16_t len)
+{
+    put_u16(p, 4 + len);
+    put_u16(p, type);
+    if (len)
+        memcpy(*p, data, len);
+    *p += len;
+    while ((uintptr_t)*p % 4) {
+        **p = 0;
+        (*p)++;
+    }
+}
+
+static void put_attr_be32(char **p, uint16_t type, uint32_t v)
+{
+    uint32_t be = htonl(v);
+    put_attr(p, type, &be, 4);
+}
+
+static void put_attr_str(char **p, uint16_t type, const char *s)
+{
+    put_attr(p, type, s, strlen(s) + 1);
+}
+
+static void put_nfgenmsg(char **p, uint8_t family, uint16_t res_id)
+{
+    char *q = *p;
+    q[0] = family;
+    q[1] = 0;
+    uint16_t be = htons(res_id);
+    memcpy(q + 2, &be, 2);
+    *p += 4;
+}
+
+/* nlmsghdr + nfgenmsg + attrs; returns total length (header included) */
+static int build_msg(char *buf, uint16_t type, uint16_t flags, uint32_t seq,
+                     uint8_t family, uint16_t res_id, char *attrs, int alen)
+{
+    char *p = buf;
+    put_u32(&p, 0);
+    put_u16(&p, type);
+    put_u16(&p, flags);
+    put_u32(&p, seq);
+    put_u32(&p, 0);
+    put_nfgenmsg(&p, family, res_id);
+    memcpy(p, attrs, alen);
+    p += alen;
+    int total = (int)(p - buf);
+    memcpy(buf, &total, 4);
+    return total;
+}
+
+/* BEGIN/END: nlmsghdr(type=0x10/0x11) + nfgenmsg(res=htons(10)) */
+static int build_batch_frame(char *buf, uint16_t type, uint16_t flags,
+                             uint32_t seq)
+{
+    return build_msg(buf, type, flags, seq, 0, NFNL_SUBSYS_NFTABLES, NULL, 0);
+}
+
+/* ---------------- netlink session (same as b16.c) ---------------- */
+
+static int nl_fd = -1;
+
+static void nl_open(void)
+{
+    nl_fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_NETFILTER);
+    if (nl_fd < 0) { perror("socket"); exit(1); }
+    struct sockaddr_nl sa = { .nl_family = AF_NETLINK };
+    if (bind(nl_fd, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
+        perror("bind"); exit(1);
+    }
+    int fl = fcntl(nl_fd, F_GETFL, 0);
+    fcntl(nl_fd, F_SETFL, fl | O_NONBLOCK);
+}
+
+/* receive acks (NLMSG_ERROR), collect seq->errno; wait at most wait_ms */
+static int collect_acks(uint32_t *wanted, int nwanted, int *errs,
+                        int wait_ms)
+{
+    int got = 0;
+    struct timeval tv = { .tv_sec = wait_ms / 1000,
+                          .tv_usec = (wait_ms % 1000) * 1000 };
+    setsockopt(nl_fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    int deadline = (int)time(NULL) + wait_ms / 1000 + 1;
+    while (got < nwanted && time(NULL) < deadline) {
+        char buf[65536];
+        int n = recv(nl_fd, buf, sizeof(buf), 0);
+        if (n < 0) {
+            if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
+            break;
+        }
+        for (int off = 0; off + 16 <= n;) {
+            struct nlmsghdr *h = (struct nlmsghdr *)(buf + off);
+            int len = h->nlmsg_len;
+            if (len < 16 || off + len > n) break;
+            if (h->nlmsg_type == NLMSG_ERROR && len >= 20) {
+                struct nlmsgerr *e = (struct nlmsgerr *)(h + 1);
+                for (int i = 0; i < nwanted; i++) {
+                    if (wanted[i] == h->nlmsg_seq && errs[i] == 0x7fffffff) {
+                        errs[i] = e->error;
+                        got++;
+                        break;
+                    }
+                }
+            }
+            off += NLMSG_ALIGN(len);
+        }
+    }
+    return got;
+}
+
+static int E(int v) { return v == 0x7fffffff ? -1 : v; }
+
+/* send batch (BEGIN + n bodies + END), collect body acks into errs[] */
+static void send_and_collect(char msgs[][512], int *lens, uint32_t *seqs,
+                             int n, uint32_t begin_seq, uint32_t end_seq,
+                             int *errs, int wait_ms)
+{
+    char blob[4096], *p = blob;
+    int b = build_batch_frame(p, NFNL_MSG_BATCH_BEGIN, NLM_F_REQUEST,
+                              begin_seq);
+    p += b;
+    for (int i = 0; i < n; i++) { memcpy(p, msgs[i], lens[i]); p += lens[i]; }
+    int e = build_batch_frame(p, NFNL_MSG_BATCH_END, NLM_F_REQUEST, end_seq);
+    p += e;
+    send(nl_fd, blob, (int)(p - blob), 0);
+    for (int i = 0; i < n; i++) errs[i] = 0x7fffffff;
+    collect_acks(seqs, n, errs, wait_ms);
+}
+
+/* DELTABLE (inside a batch); deleting a nonexistent table -ENOENT is
+harmless; used to clean leftovers */
+static void del_table(uint8_t family, const char *tbl)
+{
+    char blob[1024], *p = blob;
+    int b = build_batch_frame(p, NFNL_MSG_BATCH_BEGIN, NLM_F_REQUEST, 900);
+    p += b;
+    char attrs[64], *q = attrs;
+    put_attr_str(&q, NFTA_TABLE_NAME, tbl);
+    int len = build_msg(p, NFT_MSG_TYPE(NFNL_SUBSYS_NFTABLES, NFT_MSG_DELTABLE),
+                        NLM_F_REQUEST | NLM_F_ACK, 901, family, 0, attrs,
+                        (int)(q - attrs));
+    p += len;
+    int e = build_batch_frame(p, NFNL_MSG_BATCH_END, NLM_F_REQUEST, 902);
+    p += e;
+    send(nl_fd, blob, (int)(p - blob), 0);
+    uint32_t w = 901;
+    int er = 0x7fffffff;
+    collect_acks(&w, 1, &er, 500);
+}
+
+/* ---------------- scenario construction ---------------- */
+
+/* best-effort shell command; ignore the result (same pattern as b25.c/n18.c) */
+static void syscmd(const char *cmd)
+{
+    int rc = system(cmd);
+    (void)rc;
+}
+
+/* prefix hook needs real devices (same as Python setup()/teardown()) */
+static void setup_veth(void)
+{
+    syscmd("ip link del vbug0 2>/dev/null");
+    syscmd("ip link add vbug0 type veth peer name vbug1");
+    syscmd("ip link set vbug0 up");
+    syscmd("ip link set vbug1 up");
+}
+
+static void teardown_veth(void)
+{
+    syscmd("ip link del vbug0 2>/dev/null");
+}
+
+/* NEWTABLE: NAME(1) (netdev family) */
+static void mk_table(char *buf, int *len, uint32_t seq)
+{
+    char attrs[64], *p = attrs;
+    put_attr_str(&p, NFTA_TABLE_NAME, "t");
+    *len = build_msg(buf, NFT_MSG_TYPE(NFNL_SUBSYS_NFTABLES, NFT_MSG_NEWTABLE),
+                     NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE, seq, 5, 0,
+                     attrs, (int)(p - attrs));
+}
+
+/* NEWCHAIN: TABLE(1) NAME(3)="dev" TYPE(7)="filter" POLICY(5)=1
+ * HOOK(4){ HOOKNUM(1)=0 (netdev ingress) PRIORITY(2)=0
+ *         DEVS(4){ PREFIX(2)="vbug" } } (prefix hook, no wildcard) */
+static void mk_chain_new(char *buf, int *len, uint32_t seq)
+{
+    char attrs[256], *p = attrs;
+    put_attr_str(&p, NFTA_CHAIN_TABLE, "t");
+    put_attr_str(&p, NFTA_CHAIN_NAME, "dev");
+    put_attr_str(&p, NFTA_CHAIN_TYPE, "filter");
+    put_attr_be32(&p, NFTA_CHAIN_POLICY, 1);
+    {
+        char hook[64], *h = hook;
+        put_attr_be32(&h, NFTA_HOOK_HOOKNUM, 0);
+        put_attr_be32(&h, NFTA_HOOK_PRIORITY, 0);
+        {
+            char devs[32], *d = devs;
+            put_attr_str(&d, NFTA_DEV_PREFIX, "vbug");
+            put_attr(&h, NFTA_HOOK_DEVS, devs, (int)(d - devs));
+        }
+        put_attr(&p, NFTA_CHAIN_HOOK, hook, (int)(h - hook));
+    }
+    *len = build_msg(buf, NFT_MSG_TYPE(NFNL_SUBSYS_NFTABLES, NFT_MSG_NEWCHAIN),
+                     NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE, seq, 5, 0,
+                     attrs, (int)(p - attrs));
+}
+
+/* DELCHAIN: TABLE(1) NAME(3)="dev" HOOK(4){ DEV(3)=exact device name } */
+static void mk_chain_del(char *buf, int *len, uint32_t seq, const char *dev)
+{
+    char attrs[256], *p = attrs;
+    put_attr_str(&p, NFTA_CHAIN_TABLE, "t");
+    put_attr_str(&p, NFTA_CHAIN_NAME, "dev");
+    {
+        char hook[64], *h = hook;
+        put_attr_str(&h, NFTA_HOOK_DEV, dev);
+        put_attr(&p, NFTA_CHAIN_HOOK, hook, (int)(h - hook));
+    }
+    *len = build_msg(buf, NFT_MSG_TYPE(NFNL_SUBSYS_NFTABLES, NFT_MSG_DELCHAIN),
+                     NLM_F_REQUEST | NLM_F_ACK, seq, 5, 0, attrs,
+                     (int)(p - attrs));
+}
+
+/* ---------------- main ---------------- */
+
+int main(void)
+{
+    char msgs[3][512];
+    int lens[3];
+    uint32_t seqs[3];
+    int errs[3];
+
+    nl_open();
+    setup_veth();
+    del_table(5, "t");              /* clean leftovers from the last run */
+
+    /* control batch: del "zzz-notmatching" -> chain delete must be -ENOENT */
+    seqs[0] = 11; seqs[1] = 12; seqs[2] = 13;
+    mk_table(msgs[0], &lens[0], seqs[0]);
+    mk_chain_new(msgs[1], &lens[1], seqs[1]);
+    mk_chain_del(msgs[2], &lens[2], seqs[2], "zzz-notmatching");
+    send_and_collect(msgs, lens, seqs, 3, 10, 14, errs, 1500);
+    int ctrl_del = E(errs[2]);
+    printf("control (del zzz) ack errno: [%d, %d, %d] (chain delete
+should be -ENOENT)\n",
+           E(errs[0]), E(errs[1]), ctrl_del);
+    del_table(5, "t");
+
+    /* variant batch: del "vbug0" (exact name matching the prefix) -> must
+     * also be -ENOENT; bug: 0 (whole chain removed) */
+    seqs[0] = 101; seqs[1] = 102; seqs[2] = 103;
+    mk_table(msgs[0], &lens[0], seqs[0]);
+    mk_chain_new(msgs[1], &lens[1], seqs[1]);
+    mk_chain_del(msgs[2], &lens[2], seqs[2], "vbug0");
+    send_and_collect(msgs, lens, seqs, 3, 100, 104, errs, 1500);
+    int bug_del = E(errs[2]);
+    printf("variant (del vbug0) ack errno: [%d, %d, %d]\n",
+           E(errs[0]), E(errs[1]), bug_del);
+    del_table(5, "t");
+    teardown_veth();
+
+    if (bug_del == 0)
+        printf("REPRODUCED: exact-name delete matches the prefix hook and "
+               "removes the chain (control same op %d)\n", ctrl_del);
+    else if (bug_del == -2)
+        printf("NOT_REPRODUCED: exact-name delete correctly rejected "
+               "(-ENOENT)\n");
+    else
+        printf("UNAVAILABLE: unexpected observation (del=%d)\n", bug_del);
+
+    close(nl_fd);
+    return 0;
+}
