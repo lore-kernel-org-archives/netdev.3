@@ -1,299 +1,203 @@
-Received: from mail-oa1-f79.google.com (mail-oa1-f79.google.com [209.85.160.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82D61E9919
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FE31F12FB;
+	Tue, 11 Aug 2026 00:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786407149; cv=none; b=Ea4QWyNQs0iNa8ROVyycr1f9MQucPjDzCA3TQVyQGKZARrQ3rOLp9KFiG5ax+w7DiLp5+et8qzFS5Cla4fCPGdCPOsN5ccbgKDcZEMXqDLf38D3O6VeYTwM+G8m6VFbb6jAvpnZ9dp7Yhy6py5F0WpZjtba+3IOPOiDZnpJ06gs=
+	t=1786407272; cv=none; b=CF7hFu9BLWfHBLYlju8pgF9ncibrwbOMC8vGK3KySu470Bcysu62jkXoJx75MnT92J5+b/AIIWhXx7zwkZBqt3xZefM6vzMzizAhmoEBu5ACEhqqu8/kGKXl2GCFuurTs7KczrLurcmtt6Jiz3TS0eRULp4MCOR7ol/PC7uytDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786407149; c=relaxed/simple;
-	bh=fMAMu8Pbg4vK3SAahWljnYKkSfWlnnDfHXITbkn3rF4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=fVWXlCI4IGBnNybzGz/J3JEHRl7mKnsExYEONqz8vRoF5HHBNS2RO4vJraJRPT8Rf+FIyIVbbmDrU0PwWrSF3mkgDiMm2yBCNsU2lKSyZpP+EumTKGz1CebeVuf3vKxODr+iCBCFD+pzcKF5KNhtlhKOtXVDTTWqhNU9RdPdfRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f79.google.com with SMTP id 586e51a60fabf-43cd2d12617so3444362fac.3
-        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 17:12:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786407147; x=1787011947;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wK9kvsOWODvgjuPDmjY0aeFJRUxWIPVvNgbeBKxFK8A=;
-        b=FJagvk0/MZ4WlhBx88TZND8fHHjTTVI2my1N91nODIJQaPThrdgWAOSphGqEs0xdD+
-         toHiOjwORZ1a5jJplPMgOLJmm96szLJVPuzwFHL0nxD3CPFakHoNT/KsQet0vH7pTFDL
-         GGIbNiRZEQ47q/aSKSS55lkuBgl8sk740D/YvugKWu0FRims+aItqgqgmB1QxyGpxMFx
-         EcCjZH0FmAfSJVG7PORKKHqcF6IcDW3diHeyFgycEyY9W9NMvA7yiycUSkvTya8xSvLR
-         ZGp5HAj2ALuExjrdaiN3dURqW5SHlfcy0pnyulNXGe+sVDETCE7tgie9x7eO7PgUs8TV
-         Gdeg==
-X-Forwarded-Encrypted: i=1; AHgh+RrC4OLmvVxm2LE81NHRMgLjeOLaHmnRGx9F32/sf0N5h7GOAEtF7ciwb/Rr1Qr/TgYSlg0BrzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyba35zjvtn9+a8Kf/QWvXxmWa8WD74I56RBGmsJajoLbW3Rnuv
-	skXQZebx77649N17+z+CQyAxkcUkLDpETN2BDPr+ILRu8aVlpkOct6CtuNpNNXMA6O7RuVpfr7T
-	C0QdlZ6XTwrchbIdFmooyyxAk0rBDK1EKngGf0HhveX0o5udkPWc7K3Mb+38=
+	s=arc-20240116; t=1786407272; c=relaxed/simple;
+	bh=5CQj7Q/E9qIkGd5bbV6wqba1O1+CMuJ0RDAVHeybA7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R1GSjaPOht+qekzR2U20lHOL0maCAKx7XYNfgvT+fCB65FIeHNLDU2+RF7flP9mKxo5JFf6pJbvlA4OyNCb+hAXVmXV6m3cPzvqHuqeDza+Uz30XDAbQbfslzv+hPqu2GlSgxQVtZZ7z4lmKhYJYQGrr9QzjlEMQXAvJjWixGAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fWzfarV9; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fWzfarV9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CB01F000E9;
+	Tue, 11 Aug 2026 00:14:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786407269;
+	bh=RtSI1lkxUoksjCybS1dSucCSM8Cyan7gFYzEXHnUfuI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fWzfarV90QRXYM727vcTIYD4OUiLg2TTpClfR9KmzGZ/9Rh7tYgQlo2nphvC4VFMp
+	 zV2tOezs7Rz8Es5wBf2QDiwfMSPih/Kdu5SWnsxttVm5x6ymAPT1iyhKmxQ286qJUw
+	 YWcwBQ/pcljYYDEk3v/ZPGYoLAzBZzjebIQyog0GjcQyzk+tDYi13Tlknew0339/BC
+	 oR/IG9Ichz1yga9pNQ/RrENT8aa69J+OvkX8CGF+pOikfq+5rZ4dJKQZxp6FOUaLj5
+	 OVI0//5GrfJpPJzmg9byBTIBgf7w/rNl2PVky3ZjwtUcpYwP7t0cYVkhiVfRwJwuIf
+	 jAzL4NLCadhaQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: tillo@tillo.ch
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	maxime.chevallier@bootlin.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/2] net: sfp: allow prefix matching in quirk lookup
+Date: Mon, 10 Aug 2026 17:14:27 -0700
+Message-ID: <20260811001427.1036657-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260806074308.1996917-2-tillo@tillo.ch>
+References: <20260806074308.1996917-2-tillo@tillo.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:178c:b0:6ac:b1ae:6ce2 with SMTP id
- 006d021491bc7-6b04210f78cmr12774126eaf.24.1786407146791; Mon, 10 Aug 2026
- 17:12:26 -0700 (PDT)
-Date: Mon, 10 Aug 2026 17:12:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a7a68ea.9c11d2ce.289b96.00f3.GAE@google.com>
-Subject: [syzbot] [x25?] inconsistent lock state in valid_state (7)
-From: syzbot <syzbot+15cbd86f569e8b084383@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-x25@vger.kernel.org, 
-	ms@dev.tdt.de, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    3d08ff75a47a Add linux-next specific files for 20260810
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=1635e079580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5ba0556605934602
-dashboard link: https://syzkaller.appspot.com/bug?extid=15cbd86f569e8b084383
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/227afac921c2/disk-3d08ff75.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/236f7cfe0ac3/vmlinux-3d08ff75.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/aea89831fd96/bzImage-3d08ff75.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+15cbd86f569e8b084383@syzkaller.appspotmail.com
-
-================================
-WARNING: inconsistent lock state
-syzkaller #0 Not tainted
---------------------------------
-inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-syz.1.151/6419 [HC0[0]:SC1[1]:HE1:SE0] takes:
-ffff88807ca06260 (sk_lock-AF_X25){+.?.}-{0:0}, at: lock_sock include/net/sock.h:1713 [inline]
-ffff88807ca06260 (sk_lock-AF_X25){+.?.}-{0:0}, at: x25_kill_by_neigh+0x10d/0x250 net/x25/af_x25.c:1778
-{SOFTIRQ-ON-W} state was registered at:
-  lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5908
-  lock_sock_nested+0x41/0x100 net/core/sock.c:3827
-  lock_sock include/net/sock.h:1713 [inline]
-  x25_bind+0x209/0x450 net/x25/af_x25.c:694
-  __sys_bind_socket net/socket.c:1945 [inline]
-  __sys_bind+0x2e3/0x410 net/socket.c:1976
-  __do_sys_bind net/socket.c:1981 [inline]
-  __se_sys_bind net/socket.c:1979 [inline]
-  __x64_sys_bind+0x7a/0x90 net/socket.c:1979
-  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-  do_syscall_64+0x166/0x510 arch/x86/entry/syscall_64.c:84
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-irq event stamp: 47158
-hardirqs last  enabled at (47158): [<ffffffff8188d110>] __local_bh_enable_ip+0xd0/0x130 kernel/softirq.c:457
-hardirqs last disabled at (47157): [<ffffffff8188d0b1>] __local_bh_enable_ip+0x71/0x130 kernel/softirq.c:434
-softirqs last  enabled at (47068): [<ffffffff8188dd8a>] __do_softirq kernel/softirq.c:658 [inline]
-softirqs last  enabled at (47068): [<ffffffff8188dd8a>] invoke_softirq kernel/softirq.c:498 [inline]
-softirqs last  enabled at (47068): [<ffffffff8188dd8a>] __irq_exit_rcu+0xca/0x220 kernel/softirq.c:737
-softirqs last disabled at (47113): [<ffffffff8188dd8a>] __do_softirq kernel/softirq.c:658 [inline]
-softirqs last disabled at (47113): [<ffffffff8188dd8a>] invoke_softirq kernel/softirq.c:498 [inline]
-softirqs last disabled at (47113): [<ffffffff8188dd8a>] __irq_exit_rcu+0xca/0x220 kernel/softirq.c:737
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(sk_lock-AF_X25);
-  <Interrupt>
-    lock(sk_lock-AF_X25);
-
- *** DEADLOCK ***
-
-locks held by syz.1.151/6419: 1, last CPU#1:
- #0: ffffffff8eb5c820 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
- #0: ffffffff8eb5c820 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #0: ffffffff8eb5c820 (rcu_read_lock){....}-{1:3}, at: netif_receive_skb_core+0x33/0x2b0 net/core/dev.c:6269
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 6419 Comm: syz.1.151 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <IRQ>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_usage_bug+0x28b/0x2e0 kernel/locking/lockdep.c:4058
- valid_state+0xbe/0xf0 kernel/locking/lockdep.c:4072
- mark_lock_irq+0x36/0x380 kernel/locking/lockdep.c:4283
- mark_lock+0x117/0x190 kernel/locking/lockdep.c:4769
- mark_usage kernel/locking/lockdep.c:-1 [inline]
- __lock_acquire+0x6b7/0x2e50 kernel/locking/lockdep.c:5208
- lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5908
- lock_sock_nested+0x41/0x100 net/core/sock.c:3827
- lock_sock include/net/sock.h:1713 [inline]
- x25_kill_by_neigh+0x10d/0x250 net/x25/af_x25.c:1778
- x25_lapb_receive_frame+0x1b0/0xfb0 net/x25/x25_dev.c:138
- __netif_receive_skb_one_core net/core/dev.c:6245 [inline]
- netif_receive_skb_core+0x2a6/0x2b0 net/core/dev.c:6270
- lapbeth_napi_poll+0x42/0x90 drivers/net/wan/lapbether.c:100
- __napi_poll+0xaa/0x330 net/core/dev.c:7768
- napi_poll net/core/dev.c:7831 [inline]
- net_rx_action+0x61d/0xf50 net/core/dev.c:7988
- handle_softirqs+0x225/0x840 kernel/softirq.c:624
- __do_softirq kernel/softirq.c:658 [inline]
- invoke_softirq kernel/softirq.c:498 [inline]
- __irq_exit_rcu+0xca/0x220 kernel/softirq.c:737
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:754
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-RIP: 0010:finish_task_switch+0x417/0xc60 kernel/sched/core.c:5361
-Code: 04 00 00 41 c7 84 24 20 0e 00 00 00 00 00 00 e9 d5 06 00 00 49 83 c4 48 4c 89 e7 e8 33 c4 47 0a e8 9e e4 39 00 fb 4c 8b 65 c8 <49> 8d bc 24 10 17 00 00 48 89 f8 48 c1 e8 03 42 0f b6 04 30 84 c0
-RSP: 0018:ffffc9000da5f260 EFLAGS: 00000202
-RAX: 000000000000b807 RBX: ffff8880b873ca60 RCX: 0000000080000001
-RDX: 0000000000000000 RSI: ffffffff8e25543f RDI: ffffffff8c4c8980
-RBP: ffffc9000da5f2b0 R08: ffffffff9058fd7f R09: 1ffffffff20b1faf
-R10: dffffc0000000000 R11: fffffbfff20b1fb0 R12: ffff88803040ddc0
-R13: ffff88803040ddc0 R14: dffffc0000000000 R15: 1ffff110170e794c
- context_switch kernel/sched/core.c:5513 [inline]
- __schedule+0x1b32/0x59a0 kernel/sched/core.c:7232
- __schedule_loop kernel/sched/core.c:7309 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7324
- schedule_timeout+0xc0/0x2c0 kernel/time/sleep_timeout.c:75
- unix_wait_for_peer+0x1f5/0x2f0 net/unix/af_unix.c:1616
- unix_dgram_sendmsg+0xaf4/0x17b0 net/unix/af_unix.c:2252
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2709
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2763
- __sys_sendmmsg+0x273/0x4d0 net/socket.c:2852
- __do_sys_sendmmsg net/socket.c:2879 [inline]
- __se_sys_sendmmsg net/socket.c:2876 [inline]
- __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2876
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x510 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa86c39e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fa86d19c028 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00007fa86c625fa0 RCX: 00007fa86c39e0d9
-RDX: 0400000000000041 RSI: 0000200000000000 RDI: 0000000000000006
-RBP: 00007fa86c435024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa86c626038 R14: 00007fa86c625fa0 R15: 00007fff05bd2b28
- </TASK>
-BUG: sleeping function called from invalid context at net/core/sock.c:3829
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 6419, name: syz.1.151
-preempt_count: 101, expected: 0
-RCU nest depth: 1, expected: 0
-INFO: lockdep is turned off.
-Preemption disabled at:
-[<ffffffff8bdc27cd>] __schedule_loop kernel/sched/core.c:7308 [inline]
-[<ffffffff8bdc27cd>] schedule+0x15d/0x2b0 kernel/sched/core.c:7324
-CPU: 1 UID: 0 PID: 6419 Comm: syz.1.151 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <IRQ>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x378/0x4d0 kernel/sched/core.c:9195
- lock_sock_nested+0x56/0x100 net/core/sock.c:3829
- lock_sock include/net/sock.h:1713 [inline]
- x25_kill_by_neigh+0x10d/0x250 net/x25/af_x25.c:1778
- x25_lapb_receive_frame+0x1b0/0xfb0 net/x25/x25_dev.c:138
- __netif_receive_skb_one_core net/core/dev.c:6245 [inline]
- netif_receive_skb_core+0x2a6/0x2b0 net/core/dev.c:6270
- lapbeth_napi_poll+0x42/0x90 drivers/net/wan/lapbether.c:100
- __napi_poll+0xaa/0x330 net/core/dev.c:7768
- napi_poll net/core/dev.c:7831 [inline]
- net_rx_action+0x61d/0xf50 net/core/dev.c:7988
- handle_softirqs+0x225/0x840 kernel/softirq.c:624
- __do_softirq kernel/softirq.c:658 [inline]
- invoke_softirq kernel/softirq.c:498 [inline]
- __irq_exit_rcu+0xca/0x220 kernel/softirq.c:737
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:754
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-RIP: 0010:finish_task_switch+0x417/0xc60 kernel/sched/core.c:5361
-Code: 04 00 00 41 c7 84 24 20 0e 00 00 00 00 00 00 e9 d5 06 00 00 49 83 c4 48 4c 89 e7 e8 33 c4 47 0a e8 9e e4 39 00 fb 4c 8b 65 c8 <49> 8d bc 24 10 17 00 00 48 89 f8 48 c1 e8 03 42 0f b6 04 30 84 c0
-RSP: 0018:ffffc9000da5f260 EFLAGS: 00000202
-RAX: 000000000000b807 RBX: ffff8880b873ca60 RCX: 0000000080000001
-RDX: 0000000000000000 RSI: ffffffff8e25543f RDI: ffffffff8c4c8980
-RBP: ffffc9000da5f2b0 R08: ffffffff9058fd7f R09: 1ffffffff20b1faf
-R10: dffffc0000000000 R11: fffffbfff20b1fb0 R12: ffff88803040ddc0
-R13: ffff88803040ddc0 R14: dffffc0000000000 R15: 1ffff110170e794c
- context_switch kernel/sched/core.c:5513 [inline]
- __schedule+0x1b32/0x59a0 kernel/sched/core.c:7232
- __schedule_loop kernel/sched/core.c:7309 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7324
- schedule_timeout+0xc0/0x2c0 kernel/time/sleep_timeout.c:75
- unix_wait_for_peer+0x1f5/0x2f0 net/unix/af_unix.c:1616
- unix_dgram_sendmsg+0xaf4/0x17b0 net/unix/af_unix.c:2252
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2709
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2763
- __sys_sendmmsg+0x273/0x4d0 net/socket.c:2852
- __do_sys_sendmmsg net/socket.c:2879 [inline]
- __se_sys_sendmmsg net/socket.c:2876 [inline]
- __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2876
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x510 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa86c39e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fa86d19c028 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00007fa86c625fa0 RCX: 00007fa86c39e0d9
-RDX: 0400000000000041 RSI: 0000200000000000 RDI: 0000000000000006
-RBP: 00007fa86c435024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa86c626038 R14: 00007fa86c625fa0 R15: 00007fff05bd2b28
- </TASK>
-----------------
-Code disassembly (best guess), 1 bytes skipped:
-   0:	00 00                	add    %al,(%rax)
-   2:	41 c7 84 24 20 0e 00 	movl   $0x0,0xe20(%r12)
-   9:	00 00 00 00 00
-   e:	e9 d5 06 00 00       	jmp    0x6e8
-  13:	49 83 c4 48          	add    $0x48,%r12
-  17:	4c 89 e7             	mov    %r12,%rdi
-  1a:	e8 33 c4 47 0a       	call   0xa47c452
-  1f:	e8 9e e4 39 00       	call   0x39e4c2
-  24:	fb                   	sti
-  25:	4c 8b 65 c8          	mov    -0x38(%rbp),%r12
-* 29:	49 8d bc 24 10 17 00 	lea    0x1710(%r12),%rdi <-- trapping instruction
-  30:	00
-  31:	48 89 f8             	mov    %rdi,%rax
-  34:	48 c1 e8 03          	shr    $0x3,%rax
-  38:	42 0f b6 04 30       	movzbl (%rax,%r14,1),%eax
-  3d:	84 c0                	test   %al,%al
-
-
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+net: sfp: allow prefix matching in quirk lookup
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+This adds a prefix_match flag to struct sfp_quirk plus a
+SFP_QUIRK_F_PREFIX macro, and teaches sfp_match() to compare only the
+leading strlen() bytes of the quirk string when the flag is set.  The
+motivation is clone SFP modules whose vendor PN field is padded with
+garbage instead of spaces, which defeats the existing full-field length
+comparison.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+A couple of questions below.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+> index 6c25b73c668a7..dfb2b883d7616 100644
+> --- a/drivers/net/phy/sfp.c
+> +++ b/drivers/net/phy/sfp.c
+> @@ -516,6 +516,14 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
+>  	{ .vendor = _v, .part = _p, .support = _s, .fixup = _f, }
+>  #define SFP_QUIRK_S(_v, _p, _s) SFP_QUIRK(_v, _p, _s, NULL)
+>  #define SFP_QUIRK_F(_v, _p, _f) SFP_QUIRK(_v, _p, NULL, _f)
+> +/* Like SFP_QUIRK_F, but matches as a prefix. Use for clone modules
+> + * that fill EEPROM trailing bytes with garbage instead of the
+> + * SFF-8472-mandated space padding, so sfp_strlen can't trim the
+> + * field down to the legitimate length.
+> + */
+> +#define SFP_QUIRK_F_PREFIX(_v, _p, _f) \
+> +	{ .vendor = _v, .part = _p, .support = NULL, .fixup = _f, \
+> +	  .prefix_match = true }
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+[Severity: Low]
+Should the commit message describe what this patch alone does?
 
-If you want to undo deduplication, reply with:
-#syz undup
+At this commit SFP_QUIRK_F_PREFIX has no users: every entry in
+sfp_quirks[] still uses SFP_QUIRK/SFP_QUIRK_S/SFP_QUIRK_F, so
+q->prefix_match is false for all entries and the new branch in
+sfp_match() is not reachable.
+
+The commit message describes the end result, including the user-visible
+symptom:
+
+    The kernel then honors the module's spurious TX_FAULT signal and the
+    SFP state machine eventually disables the module.
+
+That symptom is only fixed once the follow-on patch in the series, "net:
+sfp: add quirks for OEM XGSPONST2001 and FS XGS-SFP-ONT-MACI", adds
+SFP_QUIRK_F_PREFIX("FS", "XGS-SFP-ONT-MACI", sfp_fixup_potron) and
+SFP_QUIRK_F_PREFIX("OEM", "XGSPONST2001", sfp_fixup_potron).  Splitting
+mechanism from table entries is fine; the wording just reads as if this
+patch fixes the modules by itself.
+
+>  
+>  static const struct sfp_quirk sfp_quirks[] = {
+>  	// Alcatel Lucent G-010S-P can operate at 2500base-X, but incorrectly
+
+[ ... ]
+
+> @@ -629,13 +637,16 @@ static size_t sfp_strlen(const char *str, size_t maxlen)
+>  	return size;
+>  }
+>  
+> -static bool sfp_match(const char *qs, const char *str, size_t len)
+> +static bool sfp_match(const char *qs, const char *str, size_t len, bool prefix)
+>  {
+> +	size_t qs_len;
+> +
+>  	if (!qs)
+>  		return true;
+> -	if (strlen(qs) != len)
+> +	qs_len = strlen(qs);
+> +	if (prefix ? qs_len > len : qs_len != len)
+>  		return false;
+> -	return !strncmp(qs, str, len);
+> +	return !strncmp(qs, str, qs_len);
+>  }
+>  
+>  static const struct sfp_quirk *sfp_lookup_quirk(const struct sfp_eeprom_id *id)
+> @@ -648,8 +659,10 @@ static const struct sfp_quirk *sfp_lookup_quirk(const struct sfp_eeprom_id *id)
+>  	ps = sfp_strlen(id->base.vendor_pn, ARRAY_SIZE(id->base.vendor_pn));
+>  
+>  	for (i = 0, q = sfp_quirks; i < ARRAY_SIZE(sfp_quirks); i++, q++)
+> -		if (sfp_match(q->vendor, id->base.vendor_name, vs) &&
+> -		    sfp_match(q->part, id->base.vendor_pn, ps))
+> +		if (sfp_match(q->vendor, id->base.vendor_name, vs,
+> +			      q->prefix_match) &&
+> +		    sfp_match(q->part, id->base.vendor_pn, ps,
+> +			      q->prefix_match))
+>  			return q;
+
+[Severity: Medium]
+Was it intended for the prefix relaxation to apply to vendor_name as
+well as vendor_pn?
+
+sfp_lookup_quirk() passes the same q->prefix_match to both sfp_match()
+calls, so an entry declared with SFP_QUIRK_F_PREFIX loosens the vendor
+comparison too.  The macro comment only justifies the relaxation for the
+PN field:
+
+    /* Like SFP_QUIRK_F, but matches as a prefix. Use for clone modules
+     * that fill EEPROM trailing bytes with garbage instead of the
+     * SFF-8472-mandated space padding, so sfp_strlen can't trim the
+     * field down to the legitimate length.
+     */
+
+With prefix set, the vendor test reduces to "vendor_name starts with
+q->vendor", since sfp_match() only checks:
+
+	if (prefix ? qs_len > len : qs_len != len)
+		return false;
+	return !strncmp(qs, str, qs_len);
+
+The vendor strings used by the entries added later in the series are
+short, SFP_QUIRK_F_PREFIX("FS", ...) and SFP_QUIRK_F_PREFIX("OEM", ...),
+so those entries accept any vendor_name beginning with "FS" or "OEM",
+such as "FS.COM".
+
+sfp_lookup_quirk() returns the first table hit, and the table already
+contains vendor strings where one is a prefix of another:
+
+	SFP_QUIRK("Hisense-Leox", "LXT-010S-H", sfp_quirk_2500basex,
+		  sfp_fixup_ignore_tx_fault),
+	SFP_QUIRK("Hisense", "ZNID-GPON-2311NA", sfp_quirk_2500basex,
+		  sfp_fixup_ignore_tx_fault),
+
+Can a future prefix entry then claim a module meant for a different
+entry and run the wrong fixup?  sfp_fixup_potron() masks TX_FAULT and
+LOS and extends T_START_UP, so a mis-match would suppress genuine fault
+and LOS signalling on an unrelated module.
+
+Would it make sense to keep the flag scoped to the part field, for
+example a separate part_prefix_match, since struct sfp_quirk currently
+has no way to express "prefix-match the part only"?
+
+>  
+>  	return NULL;
+
+> diff --git a/drivers/net/phy/sfp.h b/drivers/net/phy/sfp.h
+> index 879dff7afe6a4..867e45efbf3f1 100644
+> --- a/drivers/net/phy/sfp.h
+> +++ b/drivers/net/phy/sfp.h
+> @@ -12,6 +12,7 @@ struct sfp_quirk {
+>  	void (*support)(const struct sfp_eeprom_id *id,
+>  			struct sfp_module_caps *caps);
+>  	void (*fixup)(struct sfp *sfp);
+> +	bool prefix_match;
+>  };
+-- 
+pw-bot: cr
