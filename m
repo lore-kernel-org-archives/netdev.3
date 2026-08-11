@@ -1,162 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F53B258EE9;
-	Tue, 11 Aug 2026 00:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA63D2517AF
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786407276; cv=none; b=CuDIbbxPnEBGF9adiusEGiuFMU3UEFF29Z7UMpD6w6VeQhuTvtOeLlmGei+dnNT90FKNuuRrRPvHzUVjs+HtY1U6T15uwkOFph2mhV4OnMDqYCZy+osTWqpFw/pT8MrLwCUDqnBM9u1tnIBJqDAWkXK7CHhn98Pt8efB0qGd+QU=
+	t=1786407618; cv=none; b=DGWD+ocrHRMG2bGNJ0j3R9kpTglJRRAWGfLIdieSyO/eL5qPbfgFmyp+MPsd255XoOdymwQQPZds8azA59zw89tQbodMmeF98tasBFG1OLaGxkZGPceDg3QUy58VX75jogobY5pd3ZjJ/2BF/MeWqZaUfZU9pfreNGfXOBAj8vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786407276; c=relaxed/simple;
-	bh=2BOV8mQNbjbWs2FioTo1BxQOBXqYMLOmtiDlJwQ2um0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ful1OPp7HTWIv0g6eFXOEWMUaTkLypQLW9ejXUzrAYCOq/M3kLpsN/HvuhkiwYBE6zxEqdEJ+sJUYq0hT1z5VGfnZ0H4EArNXgG4uQfwMKN/0wjCu07FOId2xCR42cS8GGeEdznizH7GKvLYpFPdYW0URJaG5kIKaXPk0FHNewQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PA7YnB/7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786407618; c=relaxed/simple;
+	bh=34BReqskwWtR1yl6Msby2vfKC8qqP4piVGM5TbSXaSg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QarVjqc4IqRETnDh+nCt/xfoBxnBGpxBH8WCj9Pj77gfZRjfqchpR1GsmcZOtPvQYa9mRx8lbRcRR8IH2YAwFjmWUIubS0b0rZEplh0xdBNWPMsuCEDrDVr6gQcxsTVhRvGMPxiN078joOCkhUB+kJKIoy3kmFziwXpyNLKzlIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VwLoT6T9; arc=none smtp.client-ip=74.125.227.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PA7YnB/7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844181F000E9;
-	Tue, 11 Aug 2026 00:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786407274;
-	bh=ggt0CUGiayoEYZMB/yqTBSEvLLSn8nTvLdMoXY55vBw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PA7YnB/7+9qXGwMgYz9dwR1pmZ4IeNM4gMPpQXdP80ZIxBA6vYxYGIEEZ050PYtKY
-	 iSmSsVAE5Z5k7BfAmVBL8+ocE+CKztJPwYb15VWcEiqLGX6GMGrmO+CsaDkdxId6A9
-	 Gv8f69HQhKJ+t4bsrnUI9qiafatBTLPkOckff7MZa0hPJa9Nw17R+aulf1I/GRUpzb
-	 lFcU57CHqOkAPjrx1pCs68VkBragkZHAX/vLYVeT4l9n1yZPx+fae5pNPT5lky2hAK
-	 OVng9ijgoVgZxZyUbymba9+9Kg0ZkWSx38Ihmt+WCSrGv4Naxd8tzWx1UMbGEpWMuv
-	 PV9X/rRMjFkWQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: tillo@tillo.ch
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linux@armlinux.org.uk,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	maxime.chevallier@bootlin.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: sfp: add quirks for OEM XGSPONST2001 and FS XGS-SFP-ONT-MACI
-Date: Mon, 10 Aug 2026 17:14:29 -0700
-Message-ID: <20260811001429.1036686-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260806074308.1996917-3-tillo@tillo.ch>
-References: <20260806074308.1996917-3-tillo@tillo.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VwLoT6T9"
+Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-380fbfae1a2so291554a91.1
+        for <netdev@vger.kernel.org>; Mon, 10 Aug 2026 17:20:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786407616; x=1787012416; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fSMPhKYEtFnaF9wNw4Kn6E9+D2EN1oFL8uNonD9QGxY=;
+        b=VwLoT6T9Lsldis+su9YEaBa2yhd7CqiQ3RmWvtV/dq3pPMuB2bz/de47BGT6Vojz5b
+         nVuR+L7Sy//isWcMG0S6QC/MbcwZWgRr7n8++STGACcykW4WwambDBczh2EKGmTUfG8r
+         7xgHeHJb071NCRGsglKUvoEFQtZSZiyekiMBWpPyZYPvMRRuRMgjj5sVosbXRk//nbTY
+         V0r3WDmGQIFWSIBXsGk4oM9l3qNocTgD7a6i4JWFDYVahLHufc8VZAZ6kakGV6ikg46c
+         AQfqO0u60sEkHwYBKVFhAADlgK1GjZGSuwLIBhZa6urzRnmdO2zpFwTbZPEa0VIfKR6V
+         PZGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786407616; x=1787012416;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fSMPhKYEtFnaF9wNw4Kn6E9+D2EN1oFL8uNonD9QGxY=;
+        b=FJZ1s1PUrpel3tkLQCdJYMvlU5DUC9CTjKYloeDKsIXn7e8qpEni5bFfqq3y+1Jj+b
+         MTHS/5255s731LFG/3i/BndGViBJt9G6zA/4X7H6Ws+A4bC8BqUjV2GGfKBaROqDVClL
+         5N5SCD4gc565CYrX0T4KOP9UwcKPM6KivuQxBhBoohZvkZoGDgKpBt5pKn69GeyUwgUQ
+         NmEUUhbDoCZ8orEdPngA3FGApWtN8xr4aBR+BlXsw9zg5VKDp8bKA9mpV6fBwpJf1xMk
+         IO6BLl5RzXrr5/f8rPZvfp9npe8naeC9w/RGk4gQVqrCaKzWcjMJ5fuNoILJXm8H/83B
+         QRbw==
+X-Gm-Message-State: AOJu0YzC1zHKPOeEaLCEXRbsnv+ilDQyplzshBMTSJ/3DUZApuH1Thz5
+	ex0nGSuyu/pX87ILO1uI8xylE5r4+RF20ofwZmltEsgrEr9tyvGKAxc4
+X-Gm-Gg: AR+sD12TllpLNtFtxMf4wi5ffIqIBa1oJITWchl5YXOjN5qNXvBAZA0Xjpx2lPCago0
+	Rm3xB7Sp8cGvlZb5sO5w9Iffilw+2s42MwlrGg8eGLgLqDPc8BtIDPr6q48uHIBneNKarSmcn2J
+	r+F8BokZAC9SyC9dMI6YaDPbVE0xeY9+hzA6viM0/zraP8pksQHMChWOvV+IDj8ZN7xDRIkZpBi
+	VZMiO0NkxZSs6DZzFiIPkyu+7RXM4zis14jcNcgccYUNFTak0IOV9LrHTR57iIydybwoLe0jSbS
+	6n1I6y8bf9zk4/H7NoRnxeZq6EvoeXsXW9RmS7ADiF5WvcLuOOz1RPQx0lwmgqviAfpWfeqIwkw
+	gfM/Df4Z+6Ez/F1D3P888eZoKWEsrW8lFSxAZrcAemoUYKscGc+ZWPYlCyw9aQmep/dViXg8L5B
+	EIyvIPjVqND9NA03n5n/49ylwR71ITQZPDhFhOJZ8YdninCEBpv3I0rg==
+X-Received: by 2002:a05:6a00:23c5:b0:848:2a69:97be with SMTP id d2e1a72fcca58-84fa186ba38mr2158255b3a.10.1786407616142;
+        Mon, 10 Aug 2026 17:20:16 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:57::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f5a51e9f0sm4590857b3a.28.2026.08.10.17.20.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 17:20:15 -0700 (PDT)
+Date: Mon, 10 Aug 2026 17:20:10 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, Pavel Begunkov <asml.silence@gmail.com>, 
+	Ralf Lici <ralf@mandelbit.com>, Will Deacon <will@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Bobby Eshleman <bobbyeshleman@gmail.com>
+Subject: Re: [PATCH net-next v2] net: devmem: return EMSGSIZE on type mismatch
+Message-ID: <anpqpXH6e6r3nYON@devvm7509.cco0.facebook.com>
+References: <20260810201213.2708375-1-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260810201213.2708375-1-almasrymina@google.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: sfp: add quirks for OEM XGSPONST2001 and FS XGS-SFP-ONT-MACI
+On 08/10, Mina Almasry wrote:
+> When a devmem payload mixes with a standard page payload, return
+> -EMSGSIZE instead of -EFAULT. This enables tcp_sendmsg to seamlessly
+> fall back to creating a new segment instead of failing the socket send.
+> 
+> Fixes: bd61848900bff ("net: devmem: Implement TX path")
+> Cc: Pavel Begunkov <asml.silence@gmail.com>
+> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
+> Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+> Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
 
-This adds two sfp_quirks entries applying sfp_fixup_potron to XGS-PON ONT
-sticks that report broken TX_FAULT/LOS and need a longer T_START_UP. Both
-entries use SFP_QUIRK_F_PREFIX so the vendor PN field is matched as a
-prefix rather than by exact length.
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 
-> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-> index dfb2b883d7616..4d8219e5ed599 100644
-> --- a/drivers/net/phy/sfp.c
-> +++ b/drivers/net/phy/sfp.c
-> @@ -556,6 +556,13 @@ static const struct sfp_quirk sfp_quirks[] = {
->  	SFP_QUIRK("FS", "GPON-ONU-34-20BI", sfp_quirk_2500basex,
->  		  sfp_fixup_ignore_tx_fault),
->  
-> +	// Fiberstore XGS-SFP-ONT-MACI is a MAC-mode XGS-PON ONT stick with
-> +	// ONT-class serial-passthrough TX_FAULT/LOS wiring and slow startup;
-> +	// mask both signals and extend T_START_UP via the potron fixup. The
-> +	// EEPROM vendor PN field is not space-padded past the legitimate
-> +	// string, so match it as a prefix.
-> +	SFP_QUIRK_F_PREFIX("FS", "XGS-SFP-ONT-MACI", sfp_fixup_potron),
-
-[Severity: Medium]
-Can the prefix behaviour make any difference for this particular part
-string?  "XGS-SFP-ONT-MACI" is 16 characters, which is the full width of
-the field it is compared against:
-
-include/linux/sfp.h:
-	char vendor_pn[16];
-
-sfp_lookup_quirk() bounds the computed length to that width:
-
-	ps = sfp_strlen(id->base.vendor_pn, ARRAY_SIZE(id->base.vendor_pn));
-
-and sfp_match() then does:
-
-	if (prefix ? qs_len > len : qs_len != len)
-		return false;
-	return !strncmp(qs, str, qs_len);
-
-With qs_len == 16 and ps <= 16, "qs_len > len" and "qs_len != len" accept
-exactly the same input (ps == 16), and the strncmp() covers all 16 bytes.
-So there are no EEPROM bytes left "past the legitimate string" for this
-entry, and the part comparison is identical to what plain SFP_QUIRK_F()
-would perform.
-
-That leaves two possibilities for this module.  Either the PN field really
-does read "XGS-SFP-ONT-MACI" and SFP_QUIRK_F() would have matched just as
-well, so the commit message statement
-
-	"a plain SFP_QUIRK_F entry would silently never apply and the
-	kernel would honor the spurious TX_FAULT and eventually disable
-	the module"
-
-does not hold for this entry, or the field really does contain garbage,
-which then falls inside the 16 compared bytes and neither prefix nor exact
-matching can ever fire, making the new entry dead code.
-
-Which of the two is it, and could the comment and the commit message be
-adjusted to describe what the code actually does here?
-
->  	SFP_QUIRK_F("HALNy", "HL-GSFP", sfp_fixup_halny_gsfp),
->  
->  	SFP_QUIRK_F("H-COM", "SPP425H-GAB4", sfp_fixup_potron),
-> @@ -616,6 +623,14 @@ static const struct sfp_quirk sfp_quirks[] = {
->  	SFP_QUIRK_S("OEM", "SFP-2.5G-LH20-A", sfp_quirk_2500basex),
->  	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
->  	SFP_QUIRK_F("OEM", "RTSFP-10G", sfp_fixup_rollball_cc),
-> +
-> +	// OEM XGSPONST2001 is an XGS-PON ONT stick with broken TX_FAULT and
-> +	// LOS indicators and slow startup, just like potron. The EEPROM
-> +	// vendor PN field is filled with non-printable garbage past the
-> +	// legitimate string instead of space padding, so match it as a
-> +	// prefix.
-> +	SFP_QUIRK_F_PREFIX("OEM", "XGSPONST2001", sfp_fixup_potron),
-
-[Severity: Low]
-This isn't a bug, but both new comments and the SFP_QUIRK_F_PREFIX macro
-comment justify prefix matching purely in terms of the vendor PN field,
-while struct sfp_quirk carries a single flag:
-
-drivers/net/phy/sfp.h:
-	bool prefix_match;
-
-and sfp_lookup_quirk() hands that same flag to the vendor comparison:
-
-	if (sfp_match(q->vendor, id->base.vendor_name, vs,
-		      q->prefix_match) &&
-	    sfp_match(q->part, id->base.vendor_pn, ps,
-		      q->prefix_match))
-
-So for these two entries the vendor test also becomes a prefix test on
-very short strings, and a module reporting vendor_name "OEMTEK" or "FSCOM"
-now passes the vendor check.  The PN still has to prefix-match the full
-model string, so the practical widening is limited to close clones, but
-since sfp_fixup_potron() masks both TX_FAULT and LOS, an unintended match
-silently hides genuine fault reporting.
-
-Would it be worth either noting in the comments that the vendor field is
-matched as a prefix too, or splitting the flag so prefix semantics only
-apply to the part field?
-
->  	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
->  	SFP_QUIRK_F("Turris", "RTSFP-10", sfp_fixup_rollball),
->  	SFP_QUIRK_F("Turris", "RTSFP-10G", sfp_fixup_rollball),
+(matches my original suggestion on
+https://lore.kernel.org/netdev/ameLB_goNrMbscXO@devvm7509.cco0.facebook.com/)
