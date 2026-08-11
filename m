@@ -1,93 +1,162 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317E93502A8
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 23:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61EE35676A
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 23:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786489872; cv=none; b=Byyo0YXvAmBH4QwPYSToMKSq0JUydDLrM/uN4MDUUSaxKlTmhfy/QaJB6tWhnLYx20EEnTy7fX9hrcrYeesz3tD2tYNToYALmjZtp+Km/lyYMQwAYedF/+AyFExRxZGIf390BBhOPPriSqDU0egWACoz2xTpGKCCSwxgni1NaQM=
+	t=1786490353; cv=none; b=C58CZM9d5phlJBjHJLFJBTIK3IPYCmJEyvOcLi4XifjMOxH2Zzog0ZGFR2p4mymUJ6Fqxjb8/YHMNBY9KpycAAq+sD8DUI7g856gixlPt+Lqsa+v0IB2lleC5RDwQRHwIeM2bR+j5NxxVK9/gnsHbjJ1fCt84R6nU0xuvH5RfZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786489872; c=relaxed/simple;
-	bh=YtQIHTEzC7RyWvUtVZaWiSAzCYcMdIK+HtzcnYnM1Yg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BNnfA7tVACKouCdMUcSVrI9KKGcB5LZVqThHm14L9v0yODTwF3jtt3ZXBdaiDGZS4fhEh42uqc6GHUhjnxM5NobS7s61D+ZCXO4nywavcMNrJDslRm0+u9joOCw5EjpkC+ABuhdS7aTwY34xzVo3gY/98SSaNnhUTdO9Ua/KdDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IMl2I3Xu; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786490353; c=relaxed/simple;
+	bh=InKmnI0Ba9idJtgF+HdWs4qS3HezrgoaJ4WBkzPxx2I=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=OMp0v2H3c1kFgb9+r/eMWHQTzX2jlmUNr3KSqVqQUDLdCNot7kf5VjKyNbOhNT0EjVYire/aDuYpX7WhD2SJN131imE6inKuxN1neYsY5EDn3nxi98VEDVFojjz6nwBt5jbFZQnMusITqoEPCSQkvzEFNSszDu/XV3OUwRzXG2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nZtN5VF1; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IMl2I3Xu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786489869; x=1818025869;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=YtQIHTEzC7RyWvUtVZaWiSAzCYcMdIK+HtzcnYnM1Yg=;
-  b=IMl2I3XupUESE++X2J7YCdGrudiWghbFz2SIf6IVCJQg9dfoU97iJypS
-   chn6gRNIguleJ0s19xXRoo12vk1ZxBr0uvEC4DCpT6XDonZjU36BgZ1/n
-   S7eymkdTygNhTaco/GG8nqhhYYWNq5Tuwq0ppYYEySijcuFOKVFIpMGwO
-   PmtsjLJsjpCLGQ/EWQCBbzfei/+2Yo3S4zjbuWvKga/fhUnAqYY7YjiO/
-   ibGrdvv8gg+l3RFZtMkNVnsF6BrmdQaSPJuZTBNqoEVJLkUAwjrCVt4Rk
-   X3PWtdSXeBYY29meQllM1/OXnBo6j+u9se27mGn7zrfCzlZZhI/6NXfZQ
-   w==;
-X-CSE-ConnectionGUID: Hhl/9LiLRHefaXVlsBgZyw==
-X-CSE-MsgGUID: qzbGB+sRTv2u5lbiKNIHnw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="97626767"
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="97626767"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 16:11:08 -0700
-X-CSE-ConnectionGUID: jvgS1nFXQCG89mNUgqdpXw==
-X-CSE-MsgGUID: mPbTl7fjQ/K5Inv8TJgrsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="293401722"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa002.jf.intel.com with ESMTP; 11 Aug 2026 16:11:08 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: Maciek Machnikowski <maciej.machnikowski@intel.com>,
-	netdev@vger.kernel.org,
-	jacob.e.keller@intel.com,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH iwl-net] ice: Recalibrate PHY after settime64 on E825-C
-Date: Tue, 11 Aug 2026 16:10:56 -0700
-Message-ID: <20260811231058.220370-1-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nZtN5VF1"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-476a130c138so250769f8f.0
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786490350; x=1787095150; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NKWFCfgsTlLlt4GmvjwvhUR2/Nc7HI3joWyPH2vxn8s=;
+        b=nZtN5VF1i7qlxG7fzcqF1qenBHyqBEZlZKpJyYVLXxpI75oV8Krel948Cr0sV/6Z61
+         TGOpF71VmRn13hg5VCUtYSWOUemT4q6jszezarByCM5R3hrEVDzP2xUoylbbayfgIpLV
+         u+ksFEuGdnbd3vWqzcr8kvDkHclMega9iwFErwiw3spt7SmCntGS49H9AuQA/aOsdhpo
+         C4Dn7+fk4HbuCsLHpS4zsNraGGJQKji2JBplhEWBKN1xIQ98sqydRQmNdE7pT1Wjj1Tu
+         RF5enSM6ArLASKBLcC0iY3mvZsL8g0eCfNkUgvm/IdgxAO/9MQSNM/anYh3MyWxAwvxv
+         dGDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786490350; x=1787095150;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NKWFCfgsTlLlt4GmvjwvhUR2/Nc7HI3joWyPH2vxn8s=;
+        b=L36Cb6m8s5IuJAykVkc+o4WDdFNJm7MXZkLh2S88H1POjzQ78K1A+6Jx74qqDWX3gw
+         pkz/TKgUxsXL57jCH7t1x7TZRR5qBPKBVuhD8Jr+fQ8GIDVjMiy9d9LDbrPyDWoc2kVp
+         YMrqRNEBar+lCzyGZBeG2yuf7B2Synny1qo7kUo48Gs0kGNxKMAawpatKR9gNOFZteeM
+         kiU6jNog6/G5AoxeyGOTBblcDnmFoP+9VRNvwGcdcYrFOLnAmY3fEzdD9a2sPPeVh9rm
+         u0RqkYPd0PqAzWGMELKEqMSAIGF2uXKzK3AN7Gm28lE/HnRIO/AjMpNbXZsbaD7F/RvD
+         M5wg==
+X-Forwarded-Encrypted: i=1; AHgh+RrBndJgZ3p4z6EWnagTXiPOQYP2EauLKEaQs7kDaFQKqweLa0QBmd8DM36SwEJEcgzgSeCHrTg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzngwTOtIIe4xad+D7b2X5KaAwjieCxc70OJpqX1ScRvSQxTEa7
+	PNhzoPYPf1TMIqDieCuTL6q4Ct/ZVAbc7G2acdwJ3FQWeGxiuMA+DJBq
+X-Gm-Gg: AR+sD13rZaP/VeAD8jxqj61Bmxft4LrgLuWhia+0b93l8ZQHWi/jFGLnEeA4AKEs/94
+	enTqmlaGTMWAooUahqJxXJNT6auDGP9nVtdcDL5a3HhiaGNW6Xg6Exm0Sj0g4pqKijRvetBjoK3
+	CT43zJJJIXIfAaLiO3VpMv9Rup+KOkeJeUhfPGRyuRf05SVZEHvJAiavoYpGe/0UrQyMgW8x3Py
+	y00aEmPet9j8WiPh/wXOdLXt7V7O/wcUf0Ick95YTPavedNuLxv67hqwurncwPBWgdR0H4xFcvh
+	TVENoLIk6EyqmRPcwNY3/WZ5enufgTcfLP9fPgM8eIeo+V4fZ/K9TSSs6/ftL8PsEdmm8wJVr26
+	X0ldQVBTZqWm5PD29Ii06HrDlXr73Zo1oGLjpM6LR85P/fn1UgX9ydqnNXUfXw4PyE7pQWU6+OG
+	3/ubFeqUwfTC5ksaq7st+OtkmJrYoTh85Dr6NLMjosmpR/vd5syh0UJtBOrqf287T3jzPM/eY2x
+	wmukxTQJRlZ1js2+0odYdWx3o4zfEY=
+X-Received: by 2002:a05:6000:4006:b0:47f:9266:9bde with SMTP id ffacd0b85a97d-48152b15f62mr542628f8f.4.1786490349894;
+        Tue, 11 Aug 2026 16:19:09 -0700 (PDT)
+Received: from [127.0.0.1] ([193.252.113.11])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48150d4e260sm2094006f8f.17.2026.08.11.16.19.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Aug 2026 16:19:09 -0700 (PDT)
+From: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
+X-Google-Original-From: Alexandre Ferrieux <alexandre.ferrieux@orange.com>
+Message-ID: <64228e38-b619-4836-aa41-1594567db082@orange.com>
+Date: Wed, 12 Aug 2026 01:19:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] netfilter: nf_dup_netdev: scrub duplicates to
+ preserve the direct path
+To: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
+ edumazet@google.com, netdev@vger.kernel.org
+References: <20260804201150.16364-1-alexandre.ferrieux@orange.com>
+ <anLzQeYulW2CQItC@chamomile>
+ <7b7fbe75-1531-49f9-8134-033c34fa13cb@orange.com>
+Content-Language: fr, en-US
+Organization: Orange
+In-Reply-To: <7b7fbe75-1531-49f9-8134-033c34fa13cb@orange.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Maciek Machnikowski <maciej.machnikowski@intel.com>
+Hi,
 
-The PHY on E825-C requires recalibration after large jumps of the
-system time. Add missing PHY recalibration also on E825-C.
+>> On Tue, Aug 04, 2026 at 10:11:50PM +0200, Alexandre Ferrieux wrote:
+>>>
+>>> In other words, the "dup" path has the potential to wreak havoc
+>>> in the direct path as a consequence of secondary link failures. This
+>>> is very bad behavior for a monitoring tool, which is the most
+>>> obvious application of 'dup'.
+>>
+>> Can you describe your use-case a bit and how it breaks?
+> Sure:
+> 
+>  - assume hosts A.eth0 and B.eth0 have active production traffic (say TCP)
+>  - assume we have a monitoring tool on A that dups eth0's egress to some other
+> interface $MON
+> 
+>     nft add chain netdev ta ch '{type filter hook egress device "eth0" priority
+> filter ; policy accept ; }'
+>     nft add rule netdev ta ch dup to $MON
+> 
+>  - assume something goes wrong on $MON generating link failures. In my case it
+> was a GRETAP with L3 destination suddenly unreachable.
+> 
+>  - The next A->B packet goes through normally, but its duplicate hits
+> ipv4_link_failure(), hence the dst (which is B) is expired.
+> 
+>  - As a result, (say) TCP disruptions occur. The thermometer killed the patient :)
+> 
+> Note: as a straightforward repro, you can simply witness "noise" in simple ping
+> sessions, with ghost unreach reports muxed with normal measurement:
+> 
+>     ip link add gre1 type gretap remote 192.168.1.99 ;# on the LAN, nonexistent
+> IP => will generate link failures
+>     ip link set dev gre1 up
+>     nft add table netdev ta
+>     nft add chain netdev ta ch '{type filter hook egress device "eth0" priority
+> filter ; policy accept ; }'
+>     nft add rule netdev ta ch counter dup to gre1
+>     ping -n 8.8.8.8
+>  =>
+>     PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+>     64 bytes from 8.8.8.8: icmp_seq=1 ttl=115 time=19.9 ms
+>     64 bytes from 8.8.8.8: icmp_seq=2 ttl=115 time=12.8 ms
+>     64 bytes from 8.8.8.8: icmp_seq=3 ttl=115 time=36.0 ms
+>     64 bytes from 8.8.8.8: icmp_seq=4 ttl=115 time=30.3 ms
+>     From 192.168.1.13 icmp_seq=5 Destination Host Unreachable
+>     64 bytes from 8.8.8.8: icmp_seq=5 ttl=115 time=31.0 ms
+>     From 192.168.1.13 icmp_seq=6 Destination Host Unreachable
+>     64 bytes from 8.8.8.8: icmp_seq=6 ttl=115 time=38.0 ms
+>     From 192.168.1.13 icmp_seq=7 Destination Host Unreachable
+>     64 bytes from 8.8.8.8: icmp_seq=7 ttl=115 time=36.8 ms
+>     From 192.168.1.13 icmp_seq=8 Destination Host Unreachable
+>     64 bytes from 8.8.8.8: icmp_seq=8 ttl=115 time=23.5 ms
+>     ^C
+> 
+> 
+>>
+>>> This patch fixes all similar scenarii by calling skb_scrub_pkt()
+>>> on the clone, severing its link to precious direct-path state.
+>>
+>> This patch is targetted at the net tree, but nf.git is preferred.
+> Okay, will retarget :)
+> 
+>> As for the conntrack and dst, you have to explain what it breaks on
+>> your end.
+> Dst as shown above. Conntrack is more speculation, but my take is that in any
+> case the dup path should *never* have any kind of retroaction on the observed
+> path, so any "complex state" attached to the direct path should be absolutely
+> isolated from "whatever happens on the dup path". Am I mistaken ?
+What do you think ? Is the description of the problem satisfactory ? Is the
+proposed solution acceptable ?
 
-Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
-Signed-off-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_ptp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 84b99cfc5675..bf625b9f4991 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -1956,8 +1956,9 @@ ice_ptp_settime64(struct ptp_clock_info *info, const struct timespec64 *ts)
- 	/* Reenable periodic outputs */
- 	ice_ptp_enable_all_perout(pf);
- 
--	/* Recalibrate and re-enable timestamp blocks for E822/E823 */
--	if (hw->mac_type == ICE_MAC_GENERIC)
-+	/* Recalibrate and re-enable timestamp blocks for E822/E823/E825-C */
-+	if (hw->mac_type == ICE_MAC_GENERIC ||
-+	    hw->mac_type == ICE_MAC_GENERIC_3K_E825)
- 		ice_ptp_restart_all_phy(pf);
- exit:
- 	if (err) {
--- 
-2.47.1
-
+-Alex
