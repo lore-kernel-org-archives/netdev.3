@@ -1,182 +1,111 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA4847CC72;
-	Tue, 11 Aug 2026 21:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120C247CA91
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 21:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786482647; cv=none; b=sf1w87gNvRi8+pd+o4Ktul4YJN16tgdQ5RgBI1dbfKtSP398FsoRvJkMRtDtB9rT5mT/A5fnh2SjoAde3YToPjoFTT/ZwWOl1Um0vqCZEOiCJgos64G4Ml9ybugHC8FJOONRp7zmadAAV66BzFSw6XTcPNxquowmR0Xn+gKWVso=
+	t=1786482889; cv=none; b=hCo20M8D5NM9GEUoDbAD1FKW6ntdSZJzygYmFOccnD0QYwoUja3p3Zpnxdk6vll7wGRuTjV9rZ+6QWjoNjxE7DsGGvlJxES3kzBIa9Z6r2MpAYd1u2qoLy2DJqguMUhWos48tC8c4cAE/SrLtTYpZf4edPjdEoURxeKId9hTBA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786482647; c=relaxed/simple;
-	bh=6HIsaC5HxG4NdDGE9sUM/bNXwqfJM9H3QlSlL2IN8XU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LFB2x6ff06FOF5tchb07igmItG/lV3UjeSoC248Iyc4muOm+vs+ldeCN5wzYyBfNZz1xZ9Z/GT7CT9f+TxIJRUdOi91LlMnXJSwAy3VxAIqTZjrKot5qgycXOTMw0XcLXrS4O/4iLPgfIRYNASAzXWpLmG7AFmW2UIferVCRjtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=o1jsJnhd; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1786482889; c=relaxed/simple;
+	bh=vELLWw0jcQS3izlB2sdDvaRC3WcKac/J6CTcP0dIWC0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WUvPcrSqOw4PhPZ6l78qxRSZOWsVnLyGVqU4QdPhvlVABITAvpaSWt7PW0GBGo0VFR6gBu4uVzMOLMM7sLrPE/gVb4kByBjdW/5/j6xQJR/wth0YqmhII97JWRSoKLODBwNZ/oq0A/1jqA69W6I8IsCxGObW1wrFNghFNzq5rU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H+MFTJjL; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="o1jsJnhd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1786482632;
-	bh=6HIsaC5HxG4NdDGE9sUM/bNXwqfJM9H3QlSlL2IN8XU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=o1jsJnhdJFPmY+c4EElh1ZNOsLMGQuBRp4TvD9KeleLKd8IwQm0GWc63M0NHaZE8B
-	 8A/+03LSuSovymaWFLP27uYWoiD9UjbR8ZoT8yDayyPWpjv0HIR1qmc1pJiKb+myJj
-	 kDUUmEh2v89MxmEjkOcGZloS0V5/oAVCvqb7J39QS4zPTvxcv1cyCMbRKffb9ALTbI
-	 ZCPO9tpViJ8QUrReZ2E6DK8vOoeDj5YYLGs7+skF/EdrQut/PPIch5o9+y05ti+b8L
-	 M/C7Fylvz7Nb5+j3w6BjvxDEh68PzxPmbMvdK0mdGt2LeDLMdRMQ0V6YTq9EOt1sBy
-	 BVXYcRzaQhu4A==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 4CA0D600C1;
-	Tue, 11 Aug 2026 21:10:32 +0000 (UTC)
-Received: by x201s (Postfix, from userid 1000)
-	id 287BC20156C; Tue, 11 Aug 2026 21:09:25 +0000 (UTC)
-From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
-To: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>
-Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kristian Nielsen <knielsen@knielsen-hq.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] tcp: reset late connection after listening socket close
-Date: Tue, 11 Aug 2026 21:09:23 +0000
-Message-ID: <20260811210925.1751466-1-ast@fiberby.net>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H+MFTJjL"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84867f07d63so379546b3a.2
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 14:14:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786482886; x=1787087686; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bsIA9G0uzM6tK8/PrMCXpabodZWsD0MRjRT85WaMGF4=;
+        b=H+MFTJjL6DsFW2bzdPklh53KwLU1o6fu5ZdLvHvRyYZBSRBDNXc1mfw7Rmn9vx6wuB
+         TVL7t3DDP0gxCQVFmbfKbcee4LFVgaOGZOaUQx9FJF3AYplQJbE9EDUE87C5KLY9x3VM
+         K3o0LEMu+2mAPcQQ2tWaFzZBlhDEcv3QXxFikaf8A5j61EaZPghIAgORHVnuYl11g6P9
+         ut9OCBpauyhJ5uYP+FdxMdDsJ2RZsV+BNdYEG8y3aRr26tm9HI5uHwS2ON5THX5QAZ9h
+         bsXvRj3D6ROk1ILtMYNTwLm5ueHhrmCD6V1SuuEoA7k+faqDM810Sa50pDHDK93z2YRR
+         sKdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786482886; x=1787087686;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bsIA9G0uzM6tK8/PrMCXpabodZWsD0MRjRT85WaMGF4=;
+        b=Rs+kKKOv+TJpI/wFnWrg9pCOKPz0UT9HXpoe/rk2p+0q/fbtLr1ElMG68ghvgL/Qyj
+         PhnVk94BsFnl8Qezk+3GVy9Vbc38rytqw4jP9PSkdP5gicQroIfz4dEhH7+TXOQsEhRY
+         7cScOqDrBwRaLK6FeOTBgq/GtRJR7egHIAWU8atndJhOVPfVrEgTFt6Z7NANNeGpy+9l
+         zZwpYJUZlJZlTA2r2UlnZQtXZgEjsUwhkh4X4bOf2MWyUlhpt6XOSgIU5/W8Nrw8Wa0T
+         7uaZ7cKzgMFhBb6BVk8tsQCYcCdaRqo5wF6v2UquCO159+BRcWuXXC+xw0Lmt7Z9+7bD
+         mGDg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7sVawfLtcEsiWXeeNBkp8COzHByUKTgQw/DM3FCfMaw7800SVC4i+/DB7g6r589oG8GlMqsA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBURWqE3xoUhuuwFkN59PFm684IHMfBsYfNy0Kl13Wxy4421r3
+	gdZy1QIfs/lQXpoDuPEClS2QxrmAaxCJET52kLEuM4FhUjXYDhGCwP2ZM/cbTKBueQ==
+X-Gm-Gg: AR+sD13wBfifseK6HxwWlc5JzOYhBkhLHtseL245dgmn9eSZ3eAmutm6IrKAELW3nI0
+	H/1ODcG5oQ+aQw9jwI1S6mXan0Yhwc8wTo0/zbtjgE5sxbOqmqd6ptlzsaXPhCbpnGLlUJJ5Juv
+	8ag5Zf90QTCOtLAfJ3or5ECKgr3MOnYZpO3EP8/Z/QDWcMGtS64W5rbyqM9sR5tqnUK8evo0Y9m
+	GZFD9oPYqqE4sKWV8RsZQkHUcCZMpveJbMGsnZfx3WN4EFT3LZI0D4OQBRRjBgmEXeT3vOVqaMG
+	GPAj29sHNJAEtVDhJf/xkkG2xLDVfopUtkCmtt33eYfezxoBSsvf4+QDV4wwsvZKoeYik0PCEhE
+	TSvuGeO62I1xTZbh78AEqbnxT19RLsckd8uldVvjoi/YOndbbwQJfleDCu7qH+6x9qpTIb/ejsG
+	vEYIm6PwzxGSBeVV4brvOjG6O6wGBzMfB+/VxdHJ7I0eestmB+OKZOizC4cNlW1hYDs68d5WXpp
+	AbiWYK1UGCt6/7nkAiZJx7U3FU0LQ==
+X-Received: by 2002:a05:6a00:1d98:b0:848:4c0c:9482 with SMTP id d2e1a72fcca58-84fb5596c31mr161407b3a.35.1786482885795;
+        Tue, 11 Aug 2026 14:14:45 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84fb1f2645bsm237399b3a.50.2026.08.11.14.14.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 14:14:45 -0700 (PDT)
+Date: Tue, 11 Aug 2026 21:14:42 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Justin Stitt <justinstitt@google.com>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, llvm@lists.linux.dev,
+	Mark Bloch <mbloch@nvidia.com>, Bill Wendling <morbo@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org,
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, patches@lists.linux.dev
+Subject: Re: [PATCH v3 06/11] selftests: Fix arm64 IO barriers to match kernel
+Message-ID: <anuQwhVv5UhjS_ER@google.com>
+References: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+ <6-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
 
-When __inet_inherit_port() returns -ENOENT, the new connection is
-dropped silently.
+On 2026-07-16 02:03 PM, Jason Gunthorpe wrote:
+> The tools/include readl/writel MMIO accessors on arm64 use
+> inner-shareable barriers (dmb ish) while the kernel uses
+> outer-shareable (dmb osh).  Fix them to match.
+> 
+> Add __io_bw() and __io_ar() definitions matching the kernel's
+> arch/arm64/include/asm/io.h, including the dummy control dependency
+> in __io_ar() that orders MMIO reads against all subsequent
+> instructions.
+> 
+> Assisted-by: Claude:claude-opus-4.6
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-In that case the client sees the connection as ESTABLISHED, however in
-tcp_v{4,6}_syn_recv_sock() the call to __inet_inherit_port() returns
--ENOENT, and the new connection is dropped by put_and_exit.
+With the changes to tools/testing/selftests/lib.mk removed,
 
-A client may therefore hang indefinitely on a blocking read() if the
-used data communication protocol is initiated by the server, like SMTP
-and the reporter[1]'s MariaDB protocol both are.
+Reviewed-by: David Matlack <dmatlack@google.com>
 
-Had the new connection been processed before the listening socket was
-closed, it would either have been added to the accept queue, or
-inet_csk_reqsk_queue_add() should have sent RST.
-
-The call to __inet_inherit_port() returns -ENOENT because
-inet_csk(sk)->icsk_bind_hash is NULL, after inet_put_port() has been
-called by tcp_set_state(sk, TCP_CLOSE).
-
-This patch adds -ENOENT handling to both __inet_inherit_port() call
-sites, and ensures that RST is sent before the connection is dropped.
-
-Reproducer:
-  https://files.fiberby.net/ast/2026/kernel/socket_teardown_test.c
-
-Reported-by: Kristian Nielsen <knielsen@knielsen-hq.org>
-Link: https://lore.kernel.org/87sf0ldk41.fsf@urd.knielsen-hq.org # [1]
-Fixes: c2f34a65a61c ("tcp/dccp: fix potential NULL deref in __inet_inherit_port()")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
-
-Changelog:
-v3:
-  - Rewrite commit message around fixing commit c2f34a65a61c.
-  - Call tcp_v{4,6}_send_reset() directly again (but with sk, not newsk).
-  - Nest the two return value checks, and wrap in unlikely().
-  (Thanks again Kuniyuki)
-v2: https://lore.kernel.org/20260810205642.1611338-1-ast@fiberby.net
-  - Use return from __inet_inherit_port() to trigger send_reply()
-  - Use req->rsk_ops->send_reset.
-  - Clarity commit message, and update to reflect the changes.
-  (Thanks Kuniyuki)
-v1: https://lore.kernel.org/20260807194513.1263310-1-ast@fiberby.net
-
- net/ipv4/tcp_ipv4.c | 9 ++++++++-
- net/ipv6/tcp_ipv6.c | 9 ++++++++-
- 2 files changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index b8887cdd66c5..9a14c2e56ec3 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1690,6 +1690,7 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 	int l3index;
- #endif
- 	struct ip_options_rcu *inet_opt;
-+	int ret;
- 
- 	if (sk_acceptq_is_full(sk))
- 		goto exit_overflow;
-@@ -1756,8 +1757,12 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 		goto put_and_exit; /* OOM, release back memory */
- #endif
- 
--	if (__inet_inherit_port(sk, newsk) < 0)
-+	ret = __inet_inherit_port(sk, newsk);
-+	if (unlikely(ret < 0)) {
-+		if (ret == -ENOENT)
-+			goto send_reset_and_exit;
- 		goto put_and_exit;
-+	}
- 	*own_req = inet_ehash_nolisten(newsk, req_to_sk(req_unhash),
- 				       &found_dup_sk);
- 	if (likely(*own_req)) {
-@@ -1784,6 +1789,8 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- exit:
- 	tcp_listendrop(sk);
- 	return NULL;
-+send_reset_and_exit:
-+	tcp_v4_send_reset(sk, skb, SK_RST_REASON_TCP_STATE);
- put_and_exit:
- 	newinet->inet_opt = NULL;
- 	inet_csk_prepare_forced_close(newsk);
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 9e9155b1b3aa..ecb0b405703c 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1400,6 +1400,7 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 	int l3index;
- #endif
- 	struct flowi6 fl6;
-+	int ret;
- 
- 	if (skb->protocol == htons(ETH_P_IP))
- 		return tcp_v4_syn_recv_sock(sk, skb, req, dst,
-@@ -1512,8 +1513,12 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 		goto put_and_exit; /* OOM */
- #endif
- 
--	if (__inet_inherit_port(sk, newsk) < 0)
-+	ret = __inet_inherit_port(sk, newsk);
-+	if (unlikely(ret < 0)) {
-+		if (ret == -ENOENT)
-+			goto send_reset_and_exit;
- 		goto put_and_exit;
-+	}
- 	*own_req = inet_ehash_nolisten(newsk, req_to_sk(req_unhash),
- 				       &found_dup_sk);
- 	if (*own_req) {
-@@ -1547,6 +1552,8 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- exit:
- 	tcp_listendrop(sk);
- 	return NULL;
-+send_reset_and_exit:
-+	tcp_v6_send_reset(sk, skb, SK_RST_REASON_TCP_STATE);
- put_and_exit:
- 	inet_csk_prepare_forced_close(newsk);
- 	tcp_done(newsk);
-
-base-commit: cba9ccb47e9fa4cc77692fb896cc5ab57a667882
--- 
-2.55.0
-
+> ---
+>  tools/arch/arm64/include/asm/io.h | 20 ++++++++++++++++++++
+>  tools/include/asm/io.h            |  2 ++
+>  tools/testing/selftests/lib.mk    |  5 +++++
+>  3 files changed, 27 insertions(+)
+>  create mode 100644 tools/arch/arm64/include/asm/io.h
