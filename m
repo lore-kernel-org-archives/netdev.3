@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26AE2D739C
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77BF2DA75A
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 00:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786408520; cv=none; b=ugCekfAxgDG9ua20WJhlbJCEhmMzpD0YUwiE8zJ+lI+0rViAGcPsbwEFm1td71BievpmWxmVBYdjb1soLch4MpuHra3UogdwcwYPMLkGWKHk7kSTblKekmPR782S9tRDYK5djb+0WeHvR/AxSHqzpKlyP7yHsF8ZLaR+W6rdMz4=
+	t=1786408521; cv=none; b=T731xN8JNepAtpi/VTJA/7QtSon0HurBjUGdPQq9wnfTGHaFX5rHUcdlaJrFgbXTNsaj7L9dU4qaw060cUz68TJhRY9g5U98BMP7eBfTTcJf4mrxYIQh2O7RmFmp7laR4LJkaQ4lHpj5omVd93ZpOSxE+/MIM6rHbetyxZqFV3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786408520; c=relaxed/simple;
-	bh=qw+BIWdNfc74nj7iz5iFcT8/ZXuAKhB8BstMv6RQsTE=;
+	s=arc-20240116; t=1786408521; c=relaxed/simple;
+	bh=0O6dXgKqPwdJ/29wsoSSD4RBnNL6gM6ww/Z8vuM8dgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AdQr4VFAMbPyNxMKqKfuinAmVsFDjnbPPcAQ1EJOjhphxrMDmm0Bqk1GZy5TGQ5KYi1uoidVaeokjyKtWt1Xh+XCKE3Eu5VA0Od83xoIHyn+7EE1WJ2ayEdGDAI2/rR+h7IrZWPPqcjWnj0vHJ5/F391+/RjKprayPCap4G0C9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ce2z0yYU; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=ck2K+bWIp9/GePDNLP5SfyUlHNqd1BYYdCnQXu1FUaRuqBYmkdKMdcJH4gJg3pDzPyhGjIIBd3y9nfBqrxKGEsW7IoEAaU7YceRdCJobMDFpodClGF0uqPtRb3ii+qFXNr4nP9Z1mnllPZ0u4Yfpt/naagWP+UhRccNRMKtRH8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AMtFxgRu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ce2z0yYU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9381F00A3D;
-	Tue, 11 Aug 2026 00:35:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AMtFxgRu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7331F00A3A;
+	Tue, 11 Aug 2026 00:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786408518;
-	bh=E/jL/5+O324lKPvlHGL3mkrOwjfaELQSxCV1ZTlX6Vk=;
+	s=k20260515; t=1786408519;
+	bh=VSccGdhxMHqkAdiL8mtnO6So0yrNRw1SN1gLxUFVAf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ce2z0yYURtARkcnQpFFGRmtGszTGP5ptE7pnUAadZfx3QabU5nP6ruy8gNqEdXnqK
-	 W1hArHwDFXK4Dsdk34CXKQjKGoPAD5PgKlp5XTb3IDwlGPn9CABZI3EFrdHRWxPiYL
-	 qDGLKxj0hURMY/iLrfxN1Oiq0S5PI5TGOl/UerDrgee6BhWt5kJAKpdJmgW4uf2NGC
-	 kAiRR/K6aUpodkUHyzdVMwyvjA1Tc/lVbM1htAK8E+tt1GMSPm4v4uwUBPLn8Mb62A
-	 Hm/3/dGuJaws2MJfcA2frE7IZRNyVblzMm0XWa8w2pUUqrfkn8z2tCrRDeq5x9jGno
-	 mFY0q4qVjRpWQ==
+	b=AMtFxgRuovpPfcQna+MiUBT+zknoiZJ9hKF4vBXOMfoMkWlf2Ko6u2DadO4avfUJn
+	 rd9r2QM17eTh8NedsVz/9xcjfMEDw4qHnU8zVoF6qokYWw/jHGudf/Iuq5SXDEmCzI
+	 hQD+aBxemSme5D0otE3Lky2+G3922jA2hUaR8Mn0Xts9D8fKYlKUU8Q9+W6u/ZePtV
+	 mE1RYerRixlDbyxMIT2kLNmka1C2RtufUtYffo6T7qD3Y1FBHG8ilug83b4xYTDV3N
+	 qFemLbqxCpV8ZQIKyMQ1DRKxS7JjSIw48ayih8w4kFVmKXAsLVQGf42A+1NbDS9r47
+	 9vxljc3QP+rGQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: anthony.l.nguyen@intel.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -39,12 +39,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	aleksandr.loktionov@intel.com,
 	pmenzel@molgen.mpg.de,
 	michalx.cohen@intel.com
-Subject: Re: [PATCH net-next 05/15] ice: add 0x88E7 handling to SW validation paths
-Date: Mon, 10 Aug 2026 17:35:17 -0700
-Message-ID: <20260811003517.1056848-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next 10/15] i40e: prepare for XDP metadata ops support
+Date: Mon, 10 Aug 2026 17:35:19 -0700
+Message-ID: <20260811003519.1056926-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805213541.2281287-6-anthony.l.nguyen@intel.com>
-References: <20260805213541.2281287-6-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260805213541.2281287-11-anthony.l.nguyen@intel.com>
+References: <20260805213541.2281287-11-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,192 +56,234 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ice: add 0x88E7 handling to SW validation paths
+i40e: prepare for XDP metadata ops support
 
-This adds ETH_P_8021AH (0x88E7) to three software validation paths in ice:
-the TC flower TPID check, the per-VSI VLAN filter TPID check, and the
-virtchnl VLAN v2 TPID translation helpers.  A few questions below about
-the effect of these hunks and about the commit message.
+This adds struct i40e_xdp_buff, which wraps the xdp_buff stored on the Rx
+ring together with a pointer to the Rx descriptor, and sets that pointer
+before running the XDP program in both the normal and the AF_XDP zero-copy
+receive paths.  The ZC path also gains XSK_CHECK_PRIV_TYPE() to verify the
+new struct fits in the xdp_buff_xsk cb area.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-> index d20357c041273..4560e55c8f9c9 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-> @@ -174,6 +174,7 @@ static u16 ice_check_supported_vlan_tpid(u16 vlan_tpid)
->  	case ETH_P_8021Q:
->  	case ETH_P_8021AD:
->  	case ETH_P_QINQ1:
-> +	case ETH_P_8021AH:
->  		return vlan_tpid;
->  	default:
->  		return 0;
-
-[Severity: Medium]
-The commit message says this hunk exists "so 0x88E7-tagged flower filters
-are not rejected early".  Where was the early rejection?  The only caller
-of ice_check_supported_vlan_tpid() is ice_tc_fill_rules():
-
-	rule_info->vlan_type = ice_check_supported_vlan_tpid(vlan_tpid);
-
-There is no check for a 0 return and no -EINVAL or extack emitted, so an
-unsupported TPID previously just resulted in vlan_type == 0.
-
-The same paragraph says "no hardware offload path affected" and "does not
-alter any datapath", but rule_info->vlan_type reaches hardware rule
-programming through ice_add_adv_rule() -> ice_fill_adv_packet_vlan(),
-which stamps it into the dummy packet used to program the recipe:
-
-	hdr = (struct ice_vlan_hdr *)&pkt[offset];
-	hdr->type = cpu_to_be16(vlan_type);
-
-and it also participates in rule identity in ice_rules_equal().
-
-For a flower rule created with num_of_vlans >= 1 and protocol 0x88E7,
-cls_flower's is_vlan_key()/fl_set_key_vlan() copy any ethertype into
-key->vlan.vlan_tpid with a full mask, ice_parse_cls_flower() copies it to
-headers->vlan_hdr.vlan_tpid, and the programmed rule now carries TPID
-0x88E7 where it previously carried the dummy packet default.  Is that
-silent change of which frames the offloaded rule matches intended, and
-should the commit message describe it rather than state the opposite?
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-> index 54984966851d5..b67272e2f603c 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-> @@ -24,7 +24,8 @@ static void print_invalid_tpid(struct ice_vsi *vsi, u16 tpid)
->  static bool validate_vlan(struct ice_vsi *vsi, struct ice_vlan *vlan)
->  {
->  	if (vlan->tpid != ETH_P_8021Q && vlan->tpid != ETH_P_8021AD &&
-> -	    vlan->tpid != ETH_P_QINQ1 && (vlan->tpid || vlan->vid)) {
-> +	    vlan->tpid != ETH_P_QINQ1 && vlan->tpid != ETH_P_8021AH &&
-> +	    (vlan->tpid || vlan->vid)) {
->  		print_invalid_tpid(vsi, vlan->tpid);
->  		return false;
->  	}
-
-[Severity: Medium]
-The commit message introduces 0x88E7 as "IEEE 802.1ah B-TAG support".  Is
-that the right mapping?  ice's own in-tree documentation in
-ice_protocol_type.h says otherwise:
-
- * K = STAG or BVLAN - Outer L2 header has STAG (ethernet type 0x88a8) or
- *		       BVLAN (ethernet type 0x88a8).
- * L = ITAG - Outer L2 header has ITAG *ethernet type 0x88e7)
-
-So the 802.1ah B-TAG is 0x88a8, which the existing ETH_P_8021AD case
-already covers, and 0x88E7 is the I-TAG.
-
-That distinction matters for the filter layout.  The I-TAG is a 4-byte
-I-TCI (I-PCP/DEI/UCA/reserved plus a 24-bit I-SID) followed by 12 bytes of
-encapsulated C-DA/C-SA, but ice_fill_sw_rule() programs the requested vid
-at the 802.1Q TCI offset next to the TPID:
-
-	if (!(vlan_id > ICE_MAX_VLAN_ID)) {
-		off = (__force __be16 *)(eth_hdr + ICE_ETH_VLAN_TCI_OFFSET);
-		*off = cpu_to_be16(vlan_id);
-		off = (__force __be16 *)(eth_hdr + ICE_ETH_ETHTYPE_OFFSET);
-		*off = cpu_to_be16(vlan_tpid);
-	}
-
-For a real 0x88E7 frame those 16 bits are I-PCP/DEI/UCA/reserved plus the
-top byte of the I-SID, not a VID.  Can a "vid N, tpid 0x88E7" filter key on
-anything meaningful here?
-
-There is also an internal inconsistency: validate_vlan() now accepts
-ETH_P_8021AH while tpid_to_vsi_outer_vlan_type() in the same file still
-returns -EINVAL for it:
-
-	switch (tpid) {
-	case ETH_P_8021Q:
-	...
-	case ETH_P_QINQ1:
-		*tag_type = ICE_AQ_VSI_OUTER_TAG_VLAN_9100;
-		break;
-	default:
-		return -EINVAL;
-
-Should a TPID that can be recorded as a filter also be programmable as an
-outer tag type, or is accepting it in validate_vlan() premature?
-
-> diff --git a/drivers/net/ethernet/intel/ice/virt/virtchnl.c b/drivers/net/ethernet/intel/ice/virt/virtchnl.c
-> index ca8018e3dd428..06d2f9be93ae4 100644
-> --- a/drivers/net/ethernet/intel/ice/virt/virtchnl.c
-> +++ b/drivers/net/ethernet/intel/ice/virt/virtchnl.c
-> @@ -1702,6 +1702,9 @@ static bool ice_vc_validate_vlan_tpid(u16 filtering_caps, u16 tpid)
->  	case ETH_P_QINQ1:
->  		vlan_ethertype = VIRTCHNL_VLAN_ETHERTYPE_9100;
->  		break;
-> +	case ETH_P_8021AH:
-> +		vlan_ethertype = VIRTCHNL_VLAN_ETHERTYPE_88E7;
-> +		break;
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> index 0cd0e5597c909..4b11ae9ed8d53 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> @@ -3622,7 +3622,7 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
 >  	}
 >  
->  	if (!(filtering_caps & vlan_ethertype))
+>  skip:
+> -	xdp_init_buff(&ring->xdp, xdp_frame_sz, &ring->xdp_rxq);
+> +	xdp_init_buff(&ring->xdp_ctx.xdp, xdp_frame_sz, &ring->xdp_rxq);
 
-[Severity: Medium]
-Can this new case ever change the result?  filtering_caps comes from
-vf->vlan_v2_caps.filtering.filtering_support, and the only producers are
-ice_vc_set_dvm_caps():
+[Severity: High]
+This isn't a bug introduced by this patch, but can the state persisted in
+rx_ring->xdp_ctx outlive the pages it points at?
 
-	supported_caps->outer = VIRTCHNL_VLAN_ETHERTYPE_8100 |
-				VIRTCHNL_VLAN_ETHERTYPE_88A8 |
-				VIRTCHNL_VLAN_ETHERTYPE_9100 |
-				VIRTCHNL_VLAN_ETHERTYPE_AND;
-	caps->filtering.ethertype_init = VIRTCHNL_VLAN_ETHERTYPE_8100 |
-					 VIRTCHNL_VLAN_ETHERTYPE_88A8 |
-					 VIRTCHNL_VLAN_ETHERTYPE_9100;
+i40e_clean_rx_ring() unmaps and drains every Rx page and resets the
+next_to_* indices, but leaves the saved buffer alone:
 
-and ice_vc_set_svm_caps():
+drivers/net/ethernet/intel/i40e/i40e_txrx.c:i40e_clean_rx_ring() {
+	...
+		__page_frag_cache_drain(rx_bi->page, rx_bi->pagecnt_bias);
 
-	supported_caps->inner = VIRTCHNL_VLAN_ETHERTYPE_8100;
-	supported_caps->outer = VIRTCHNL_VLAN_UNSUPPORTED;
-	caps->filtering.ethertype_init = VIRTCHNL_VLAN_ETHERTYPE_8100;
+		rx_bi->page = NULL;
+		rx_bi->page_offset = 0;
+	}
+skip_free:
+	...
+	rx_ring->next_to_alloc = 0;
+	rx_ring->next_to_clean = 0;
+	rx_ring->next_to_process = 0;
+	rx_ring->next_to_use = 0;
+}
 
-Neither sets VIRTCHNL_VLAN_ETHERTYPE_88E7, so a VF sending
-VIRTCHNL_OP_ADD_VLAN_V2 with tpid 0x88E7 still fails the
-!(filtering_caps & vlan_ethertype) test and
-ice_vc_add_vlan_v2_msg()/ice_vc_remove_vlan_v2_msg() keep returning
-VIRTCHNL_STATUS_ERR_PARAM, exactly as before the patch.  Grepping the tree
-at this commit shows VIRTCHNL_VLAN_ETHERTYPE_88E7 appearing in ice only at
-these two new sites, with no producer of the capability bit added
-elsewhere in the series.
+On bring-up the only re-initialization is the xdp_init_buff() call above,
+and that touches rxq, frame_sz and flags only:
 
-Given that, does the commit message claim that "the PF correctly accepts
-and translates 0x88E7 (ETH_P_8021AH) VLAN filters requested by VFs" hold?
-The validate_vlan() relaxation in ice_vsi_vlan_lib.c is likewise
-unreachable from the VF path while this gate stays closed.  Should the
-capability advertisement come in the same patch, or the message be reworded
-to say the translation is added ahead of the capability?
+include/net/xdp.h:xdp_init_buff() {
+	xdp->rxq = rxq;
+	...
+	xdp->frame_sz_flags_init = frame_sz;
+	...
+}
 
-> @@ -2136,6 +2139,9 @@ static int ice_vc_get_tpid(u32 ethertype_setting, u16 *tpid)
->  	case VIRTCHNL_VLAN_ETHERTYPE_9100:
->  		*tpid = ETH_P_QINQ1;
->  		break;
-> +	case VIRTCHNL_VLAN_ETHERTYPE_88E7:
-> +		*tpid = ETH_P_8021AH;
-> +		break;
->  	default:
->  		*tpid = 0;
->  		return -EINVAL;
+So data, data_hard_start and the frag state survive an ifdown/ifup, MTU
+change, ring resize or PF reset.  If NAPI returned in the middle of a
+multi-buffer packet (the state the comment above the member says is kept on
+purpose), does the first iteration after the ring comes back up then take
+the fragment-append branch on stale data?
+
+drivers/net/ethernet/intel/i40e/i40e_txrx.c:i40e_clean_rx_irq() {
+	...
+		if (!xdp->data) {
+			...
+			xdp_prepare_buff(xdp, hard_start, offset, size, true);
+		} else if (i40e_add_xdp_frag(xdp, &nfrags, rx_buffer, size) &&
+			   !neop) {
+	...
+}
+
+i40e_add_xdp_frag() derives sinfo from data_hard_start and writes nr_frags,
+xdp_frags_size and a frag entry, which would land in a page already handed
+back by __page_frag_cache_drain(), and the following i40e_build_skb() /
+i40e_process_rx_buffs() would then operate on and drop a reference to that
+page.
+
+ice does clear the stash in this situation: ice_clean_rx_ring() calls
+libeth_xdp_return_stash(&rx_ring->xdp), described as freeing an incomplete
+buffer stash when the queue is about to be destroyed.  Would clearing
+xdp_ctx (data = NULL and the new desc = NULL) in i40e_clean_rx_ring() be
+appropriate here?
+
+The new desc pointer inherits the same lifetime problem: it is a raw
+pointer into the descriptor ring that i40e_free_rx_resources() releases via
+dma_free_coherent(), and it is only assigned on the EOP path, never
+cleared.
+
+>  
+>  	rx_ctx.dbuff = DIV_ROUND_UP(ring->rx_buf_len,
+>  				    BIT_ULL(I40E_RXQ_CTX_DBUFF_SHIFT));
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> index ef5e657816f00..7f68adb5109b0 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+
+[ ... ]
+
+> @@ -2530,6 +2531,8 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget,
+>  		if (neop)
+>  			continue;
+>  
+> +		xdp_ctx->desc = rx_desc;
+> +
+>  		xdp_res = i40e_run_xdp(rx_ring, xdp, xdp_prog);
+>  
+>  		if (xdp_res) {
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.h b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
+> index 1e5fd63d47f47..bb741ff3e5f2c 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.h
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
+> @@ -283,6 +283,11 @@ struct i40e_rx_buffer {
+>  	__u32 page_count;
+>  };
+>  
+> +struct i40e_xdp_buff {
+> +	struct xdp_buff xdp;
+> +	const union i40e_rx_desc *desc;
+> +};
+> +
+>  struct i40e_queue_stats {
+>  	u64 packets;
+>  	u64 bytes;
+> @@ -345,7 +350,7 @@ struct i40e_ring {
+>  	 * and to resume packet building for this ring in the next call to
+>  	 * i40e_clean_rx_ring_irq().
+>  	 */
+> -	struct xdp_buff xdp;
+> +	struct i40e_xdp_buff xdp_ctx;
 
 [Severity: Low]
-This makes ice the first in-tree interpreter of VIRTCHNL_VLAN_ETHERTYPE_88E7,
-but that bit is still undocumented in include/linux/avf/virtchnl.h.  The
-comment block above enum virtchnl_vlan_support lists only:
+This is a pre-existing issue, not something this patch introduced, but the
+comment just above this member names i40e_clean_rx_ring_irq() twice and
+that function does not exist; git grep for it matches only these two
+comment lines.  The function that saves and resumes this state is
+i40e_clean_rx_irq().  Since the hunk already touches the member, would it
+make sense to fix the name, and also the "Storing xdp_buff on ring" wording
+now that the member is a struct i40e_xdp_buff?
 
- * VIRTCHNL_VLAN_ETHERTYPE_8100 - This field supports 0x8100 ethertype.
- * VIRTCHNL_VLAN_ETHERTYPE_88A8 - This field supports 0x88A8 ethertype.
- * VIRTCHNL_VLAN_ETHERTYPE_9100 - This field supports 0x9100 ethertype.
+While there, could the lifetime of the new desc field be described?  It is
+set only on the EOP path in i40e_clean_rx_irq() and is not initialized by
+the xdp_init_buff() call in i40e_configure_rx_ring().
 
-while the enum itself now has:
+>  
+>  	/* Next descriptor to be processed; next_to_clean is updated only on
+>  	 * processing EOP descriptor
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+> index 9f47388eaba53..51a05ce4c7ce8 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
 
-	VIRTCHNL_VLAN_ETHERTYPE_88E7 =		BIT(3),
+[ ... ]
 
-The AND/XOR usage examples in the same block also do not mention 88E7.
-Could the documentation be extended to say which fields may carry the bit
-and how it combines with VIRTCHNL_VLAN_ETHERTYPE_AND/XOR?
+> @@ -472,6 +482,8 @@ int i40e_clean_rx_irq_zc(struct i40e_ring *rx_ring, int budget)
+>  		if (i40e_is_non_eop(rx_ring, rx_desc))
+>  			continue;
+>  
+> +		xsk_buff_to_i40e_ctx(first)->desc = rx_desc;
+> +
+>  		xdp_res = i40e_run_xdp_zc(rx_ring, first, xdp_prog);
+>  		i40e_handle_xdp_result_zc(rx_ring, first, rx_desc, &rx_packets,
+>  					  &rx_bytes, xdp_res, &failure);
 
-Also worth noting: this arm is reached only via
-ice_vc_valid_vlan_setting_msg(), which checks stripping_support and
-insertion_support, neither of which contains the 88E7 bit, and the returned
-tpid would then be rejected by tpid_to_vsi_outer_vlan_type().
+[Severity: High]
+This isn't a bug introduced by this patch either, but can "first" here
+already be a freed xsk buffer, so that this new store writes into the cb of
+a buffer that is back on the pool free list?
+
+Two places in i40e_clean_rx_irq_zc() free a buffer without advancing
+next_to_clean and without clearing the rx_bi_zc slot.  The programming
+status branch:
+
+		if (i40e_rx_is_programming_status(qword)) {
+			...
+			bi = *i40e_rx_bi(rx_ring, next_to_process);
+			xsk_buff_free(bi);
+			if (++next_to_process == count)
+				next_to_process = 0;
+			continue;
+		}
+
+and the multi-buffer error path:
+
+		if (!first)
+			first = bi;
+		else if (!xsk_buff_add_frag(first, bi)) {
+			xsk_buff_free(first);
+			break;
+		}
+
+If the loop then exits at:
+
+		size = FIELD_GET(I40E_RXD_QW1_LENGTH_PBUF_MASK, qword);
+		if (!size)
+			break;
+
+the function writes back rx_ring->next_to_clean unchanged while
+next_to_process has moved on, and i40e_alloc_rx_buffers_zc() cannot refill
+that slot because I40E_DESC_UNUSED stops at next_to_clean - 1.  So does
+rx_bi_zc[next_to_clean] keep pointing at a freed buffer that the next poll
+picks up?
+
+	if (next_to_process != next_to_clean)
+		first = *i40e_rx_bi(rx_ring, next_to_clean);
+
+That buffer is then passed to xsk_buff_set_size(), xsk_buff_add_frag() and
+i40e_run_xdp_zc(), and with this patch also written through by
+xsk_buff_to_i40e_ctx(first)->desc = rx_desc.
+
+On teardown, does the same stale pointer get freed a second time?
+i40e_xsk_clean_rx_ring() walks [next_to_clean, next_to_use):
+
+	while (ntc != ntu) {
+		struct xdp_buff *rx_bi = *i40e_rx_bi(rx_ring, ntc);
+
+		xsk_buff_free(rx_bi);
+
+and it runs before i40e_clear_rx_bi_zc() zeroes the array.
+
+ice_clean_rx_irq_zc() frees, clears first, and still advances ntc:
+
+		} else if (likely(size) && !xsk_buff_add_frag(first, xdp)) {
+			xsk_buff_free(first);
+			first = NULL;
+		}
+
+		if (++ntc == cnt)
+			ntc = 0;
+
+Would the same handling be right for i40e?
+
+The multi-buffer error leg looks hard to reach on this hardware, since
+xsk_buff_add_frag() only fails at MAX_SKB_FRAGS while rx_ctx.rxmax is
+programmed from I40E_MAX_CHAINED_RX_BUFFERS, but the programming status leg
+needs no oversized frame.
