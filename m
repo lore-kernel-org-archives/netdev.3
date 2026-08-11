@@ -1,142 +1,175 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6B633F58C
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786473460; cv=none; b=BjkE05r3OdARKyFvDePaGE+zf8GtNJmHv6trZafRhJ95u5Qoj6ktyb+pK9nuLhfffyLKaiMFLksx+Gh8I4BjgKgYE4YCo2kVQGpd+6c3D7bwvR+d5XHJUL/8TGmAKjD+tYmNRwwQNoW2b5KNKnG/F625E7U+VaCor+W4COJJ8PM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786473460; c=relaxed/simple;
-	bh=C3PQhZjzRkeYwIMqvUvgXBQtk6dt5emCbuG5WgbBFOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=F/JiY27SMnv75UPKu/7HjLd0vyg6I5XcYODOOJ8px+cYna7KDWwSiN92IbCUZx/b2d/fZhVqsVf4hW5ptasSslkFOl61ZkudM4P5iSxLsvpbmTZblK+lOmb4MBhAzospC+tWm11dNeydmYZL0hvxOXj6Rck9uPhP/49FQSNtn5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZebRqYv6; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFC837E5DE
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786473591; cv=pass; b=p1zprJByHT2Hy8GVJcH9eGycb3ZaIoFZ0NJIvuJrjVeJBwcdnO5bl8pULnJyysdO1k4rBKkkggpXvGS0dSBd5t0Acl4lhOUiuwQbImCkSVKKPXifuD/tK95L62wHMHh5P0gLBDkDRtGg5CMIUjfQoUqMWxI2ni8UnjfrbVkSlUM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786473591; c=relaxed/simple;
+	bh=3K+rgf/oCMhDvVggYvh9dFePmAGm0zPjujux7MTkeeI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gfXQ8SJhF+fKlqpYeSSjMoTLIdMoXnTCfLoi1loxfWKW8I5V49+i/u9O4XWsJ/n5/fb7rUNViWb2wVxfCcx0MpJT5SfRFrTEoV47TSqedGCyIv+FzmZy8CJcXRpVGCWapmWJV3/mvl7K8osIqCq2c/1c5nLXcy6HIMqb5FG4NCc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vVSyztMS; arc=pass smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZebRqYv6"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cc891373e0so3642375ad.2
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 11:37:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vVSyztMS"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38e88b60121so219689a91.3
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 11:39:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786473590; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AzYgUMoV1/2CIKeDzmCNgUoOrjN22LYN4yH37MleSeEsXPDvBrlMR2S+h0UcUn5GCL
+         AVs4Pq9yXzfAGU6UmmsUGGjQukDjFgR5xWL1YEE0Aza/pwxWdsderRWnvmvtoAa2y816
+         HQ24nCmHBbRaVDYJQGOq/ecxCEf5kjiTlNHyWUqek6Cbt516U53INcjmsaLoFK5R3EN3
+         ZzQWnvB1tn+6qyX34gg1uFc82YTyA2Zb3n4B4L4+RQ+jIggdPAZM1uXWK2yjyWJyrNvp
+         QlZYjFEo1UduccxMpKS23QMebe5fp8/6lJDe8005W0vDuP1xux/hLa9weQa8ytlFS7Q6
+         gNCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3K+rgf/oCMhDvVggYvh9dFePmAGm0zPjujux7MTkeeI=;
+        fh=TTgZChjXrklxbjzyDzl8jg6S6Vno/0MQzvQcrHuPp3E=;
+        b=fz0QR4XMs0AIitPhFF8fjWx/fyK5vFmxbNNXevTUVEanrrG2B0rZnEdVxcWkFosHAl
+         YFa0rgtq6E/NCGTV7Vgyz+1MNxllo11ndmlIbZveB+1VId8u7qkNeTEFisx6SCzaIcI+
+         3OP5Kuc2V/HSJ+dM0/lXTBqtvuQ9GT0L/+BG9eFF2gqYOanz5Q+J8RuacKVRY2iIxS6G
+         uzzMgFR/tgUegrZoLVtRVTSzMBg91YCls0N3EdJKGyUzVb2C206BlHMKe5m2+TMWXq6m
+         yXrBSDuwNqf3GRtsaDuV142jpHWuKqU/p/0Az+XBS3yuAo1Bp7v4mkmDZHMA9GErz3Pw
+         ieGA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786473458; x=1787078258; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Zl1MeTDKsmvedxhj+cgrM9RwNvqMLWigHdnAJqd3vD0=;
-        b=ZebRqYv6aOH1VLbU41yeu1rUSIl3+Cyg2/SAKl92inBsUTWGeOuWzu12IuLnJUzgAK
-         FdrBclC+mkbiM0wT2t5TKYtGwB83HVtpjBpWxXG5Hi/ZHx3GHPx8MBHzinQ2NrtavBQF
-         rHeOVG/okL7l9nHW6cTomBKPMsqPjdzT68SIFEyieTUmVAmAcY75HkuQuZnMDfluwKle
-         GI3VHsdusIwlNU564n+zCGsmud4b1UMoOOhXh6xkWmDjGMMCTB9KxyrFXLRRYbJYDEGO
-         lCnIaF8RCQQxcEoxWe3APbJhQI20wf6BG8C7ZmacyPdKFR6oOJzboksIWg/J97mbfHGx
-         4n5g==
+        d=google.com; s=20251104; t=1786473590; x=1787078390; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3K+rgf/oCMhDvVggYvh9dFePmAGm0zPjujux7MTkeeI=;
+        b=vVSyztMSfrZX71aarozZiKqjLOJrIniup5D5qEKlaPZknTD1CoVfEb/GZWBAVu1wFn
+         5EeGtpN3RRfq6N2Iz9GvIf09YwtznRbG81goiudagCtNB86VWd9NjH1EYZXvd1n+NR+U
+         oqQwAnQKmYAjbdzmwPwpbiVq5rwfrlsMCeHCkhWKj6cGV/MK1/5Qa6ROaz4Q7KWAaK3Q
+         kUjP2YT9Na2YFPLq7mCs20DnwLVrUOVA2jgWeW1zEDes2iy4O000V50UbV59WxbDBsEg
+         WL0D5idRSFEV4I9swfRztMj8LCDKk1bQE+aw3UzKzLGgO7QIN2FL+yPFN/N64UnVb4p6
+         Lixg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786473458; x=1787078258;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Zl1MeTDKsmvedxhj+cgrM9RwNvqMLWigHdnAJqd3vD0=;
-        b=TWy2xrpQJNl3wR+7shFJ+yhq5J6VtoUZNmosCPknEYGHWb9sqQPLnB/3TLkRUm9QiF
-         +El2xxCser3OdK/hsUyE1b1RqC7u5t/9marYWpnkLKJ3YPfacag+XHZwR54nMiOdT97D
-         UYDSEh5zvr1JLvCgF46tVOPDaFd4qtyUTwyVtQxJZxokS1SUNRbcxV/fklk+4Dygt6oJ
-         2WLWsMgEKBCh+OHScbV2S6eIEWqCUTwKxL4UPAE48w6p8rQ85No9N4hukfm5E4kAFi0S
-         trX6vQ1SC8cCxCGBo/pZsrLAOiz4Ftw+PK4Q63IAjLIpKRSm7jkM04veln2F65Vr0D3k
-         ic2w==
-X-Gm-Message-State: AOJu0YwCLsrnmmdCq/XhA16c3ZNYvfpmMre9YAah3rz6yfJ1LJ+sfnn5
-	fZP59oIq4rY24hxvPXJHaEHv8wb8Xamd9ZRY+ZmUtX40HFoZs5fuQUib
-X-Gm-Gg: AR+sD11P578WlqTFdHVTR/wf+zfcQ5Rso4bgCU7d1kr8CDJD7O9CCW9Vt7jsDMxKIwF
-	zQlsdWslI3FzSlDSvWJg1HrRpLa/Xo7XVTn4zmOHFzGt3YTzAolbkkeaG9DbXJLerwVr9XifQKS
-	NZ8XYRxJ0THCvmacjpnQ+iHBQ/f1miI8rTEHpMXymGgYJr1YXqC8o6EoRbPYM3+0DepDqNbH8ki
-	AEHoF7BCGeghJLuhNKFmPE0nHdm+ou7QJ3YQVoan1C1I2y7hzrbIkAs1r+dB1Ln76U2n61Y9z7y
-	r+ch2evcZFtuLwaaomSkpAkI/fgwbahgEFRdfx0twcDqq3iCFku6AmpBiRlioZ0RKu1CNLYzcaY
-	iryFf1I3/qmiUk+QqmlBocKGRYHsSbRNpopX0FmLJU4JMb7Us1trPfXT8HVsfIIL8t65Ar2Looc
-	7dqE6KErOntVJ/bOVg0E/PaNq1POtS1Oq8D1QcvngzMQ4Ky5sajxHn/JKchPfHRmko6Cmr/lYen
-	VfAJN157qcEjRMWjNCq
-X-Received: by 2002:a17:902:d2c7:b0:2d3:1411:3888 with SMTP id d9443c01a7336-2d3178d4190mr60583955ad.12.1786473458092;
-        Tue, 11 Aug 2026 11:37:38 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d315f2d740sm11708805ad.22.2026.08.11.11.37.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 11:37:37 -0700 (PDT)
-Date: Wed, 12 Aug 2026 03:37:33 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, willemb@google.com, fmancera@suse.de
-Cc: netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: [PATCH net] tcp: fix use-after-free of the listener's ipv6_pinfo
- after IPV6_ADDRFORM
-Message-ID: <antr7RCJAO578ZFW@v4bel>
+        d=1e100.net; s=20251104; t=1786473590; x=1787078390;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3K+rgf/oCMhDvVggYvh9dFePmAGm0zPjujux7MTkeeI=;
+        b=beD33fvpqRZ+GNAz/VHz2Yj/yTqbSnuEd9aucydoJsSKyo5GT95B50lhrn9ZOJbZiB
+         LhU8PjVTFeGDTm3dVJhnQ/X9kvYykinb3qmzxGK2LhtLZS/vnUHS0HzlFlgLS3ryO02l
+         gguiI0Ci8KFppkV2KKp7guJAEwzO2RGNbNG3FJ6iEPB+iJEYGCuGtUHN8AXt8uVjEp3G
+         PPSENAMihy4rhN7FXWXSBs6zxKF+LqE1xA2a5y7aJWk5OQ4qLQSQklNEVGKSECSaFoN3
+         x8Y3NmNQDprkVhhDPpGeKgU3Ey6vwboy8BELCvJW7f04y8EYw5jSH3KTr27kQ6OUb/9C
+         Gz4g==
+X-Forwarded-Encrypted: i=1; AHgh+RoKVl5G89z8hUqDl9sT/PP5fdIoMKc8d08AACoTRYRtCus4l/ezKQLApKwFMR9xM5V33qlo6GU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywlhMDI2iBBPfysDYDJ7Qo/VgU+FiIo9qVN4OOC5aPRbKCO0//
+	3JsfsoeTsUFq3XfCiF2Zmu7fhnfdU9D85VWo4J+SIihinYlFyxMOp4/TeLwLqLImtTF4owjHiNA
+	k5/qZ9jTYNUc7qYrFuu2AncrpurhjrCRYfYQhOYpR
+X-Gm-Gg: AR+sD12boyNwy+RrCRWW5LZ/6mDs5CFDTZefnGX4oQGayrt678u024556N2nW5HqdFT
+	FUoI7KMXFplxRzl/zieYzPfbhlo0Poz0Zv1M3P7npwkC1eaMhdMVtzVwdREmkeo6r/drAlW+Rwn
+	GAfeI7B+MGR54VSiLXKuGL+6QW8jYRPV2SpS2cEzSilrXyDz9E5JWUDE0FdVM+b5IuneuUrsdIC
+	x7xteJBaxZ98LOloYhyo4uX5Hp1SxYf+YAFAJ4oPAk8+p2kA1etTdM6h7z7xXJvqcTaUPJY/I5T
+	VqElZutbe+VXd3pbH+YkIuZsAlDXJafxzfDo8RigidMIYadUVttxAdViftwMa8bXW9qMShmkDB0
+	+QtmyouYmOye9WgzfzuCb0K12PcZ485xyPimDq822nPX/hcXfp3EK6BMUKC1Zv2HIJw==
+X-Received: by 2002:a17:90b:4c85:b0:381:c500:b0d1 with SMTP id
+ 98e67ed59e1d1-392ec721e34mr5540905a91.20.1786473589009; Tue, 11 Aug 2026
+ 11:39:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260811022448.116235-1-kuniyu@google.com> <20260811165453.GA3163487@shredder>
+In-Reply-To: <20260811165453.GA3163487@shredder>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 11 Aug 2026 11:39:36 -0700
+X-Gm-Features: AUfX_mzqfaj4wUaQjRrPpNFoPK17KPzMzlQ39k5FuJ8aDJmiv_NZlqYx3zfp7A8
+Message-ID: <CAAVpQUCiW3pPVBCXJjtpqmfkiX496YiMwjpQxx3R8oqpupLvCg@mail.gmail.com>
+Subject: Re: [PATCH v3 net-next 00/15] neighbour: Namespacify arp_tbl and nd_tbl.
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-IPV6_ADDRFORM moves an established AF_INET6 TCP socket over to tcp_prot
-and ipv4_specific. The socket is still a tcp6_sock though, so ->pinet6
-keeps pointing at the ipv6_pinfo inside it and sk_destruct stays the IPv6
-one; commit d38afeec26ed ("tcp/udp: Call inet6_destroy_sock() in IPv6
-sk->sk_destruct().") relies on that to release the IPv6 state.
+On Tue, Aug 11, 2026 at 9:55=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wr=
+ote:
+>
+> On Tue, Aug 11, 2026 at 02:23:34AM +0000, Kuniyuki Iwashima wrote:
+> > The neighbour subsystem is almost ready to drop RTNL.
+> >
+> > However, the control paths are serialised by the global
+> > per-table lock.
+> >
+> > This series converts arp_tbl and nd_tbl to per-netns table.
+> >
+> > Patch 1 deflakes test_neigh.sh.
+> >
+> > Patch 2 ~ 3 are misc cleanup.
+> >
+> > Patch 4 ~ 7 store arp_tbl/nd_tbl to net->neigh_tables[] and
+> > remove the global neigh_tables[].
+> >
+> > Patch 8 ~ 9 replace the direct access to arp_tbl/nd_tbl to
+> > net->neigh_tables[] using new helpers.
+> >
+> > Patch 10 ~ 12 finally replace the global table with per-netns
+> > table.
+> >
+> > Patch 13 ~ 14 clean up unnecessary net_eq().
+> >
+> > Patch 15 updates test_neigh.sh.
+>
+> The change is good, but the cover letter should explicitly state that
+> this patchset introduces a behavior change with a regression potential
+> (as evident by patch 15).
 
-Once such a socket is disconnected and listen()ed again, its children are
-cloned from an IPv6 parent but allocated from tcp_prot, so they have no
-ipv6_pinfo of their own and inherit the listener's ->pinet6 and its IPv6
-destructor. The only thing that would fix that up is
-tcp_v6_mapped_child_init(), which is not passed to tcp_v4_syn_recv_sock()
-on this path. A child accepted from such a listener can outlive it, and
-its destructor then runs inet6_cleanup_sock() on the freed listener.
+Indeed, I'll add notes in the cover letter and patch 12 and
+move two parts of diff in patch 14 (neightbl_set() and
+lookup_neigh_param()) to patch 12.
 
-Commit 858d2a4f67ff ("tcp: fix potential race in tcp_v6_syn_recv_sock()")
-added opt_child_init for the v4-mapped child; this is the same stale
-->pinet6 on the path that never gets it.
 
-Clear the IPv6 fields on the child. The converted listener has to keep
-its own, so there is nothing to clear on the IPV6_ADDRFORM side.
+>
+> I'm aware of at least one deployment that will most likely regress
+> without some changes in user space before upgrading the kernel. In this
+> deployment, the host has several namespaces representing different
+> routers with hundreds/thousands neighbours in each namespace.
+> Currently, they set the GC thresholds in the initial namespace so that
+> they are high enough for all the namespaces combined. With this
+> patchset, the GC thresholds in the initial namespace will no longer
+> affect the other namespaces and the routers will fail because the
+> default thresholds (128/512/1024) are too low.
+>
+> I can ask them to keep doing what they are doing, but also set the
+> per-namespace GC thresholds. It will fail on current kernels (harmless),
+> but work on future ones. Similarly for the base reachable time which
+> currently they set in the initial namespace to the maximum among all
+> namespaces.
+>
+> Another thing worth a discussion is the policy regarding the initial
+> values in each namespace. With this patchset, new namespaces all get the
+> same default values instead of inheriting from the initial namespace:
+>
+> # sysctl net.ipv4.neigh.default.gc_thresh1
+> net.ipv4.neigh.default.gc_thresh1 =3D 128
+> # sysctl -wq net.ipv4.neigh.default.gc_thresh1=3D129
+> # ip netns add ns1
+> # ip netns exec ns1 sysctl net.ipv4.neigh.default.gc_thresh1
+> net.ipv4.neigh.default.gc_thresh1 =3D 128
+>
+> Assuming that today people configure the initial namespace before
+> creating namespaces, changing the policy to inherit from the initial
+> namespace will probably result in fewer regression reports. There is a
+> knob that controls this policy for other settings (see
+> devconf_inherit_init_net).
 
-Fixes: d38afeec26ed ("tcp/udp: Call inet6_destroy_sock() in IPv6 sk->sk_destruct().")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
- net/ipv4/tcp_ipv4.c | 6 +++++-
- net/ipv6/af_inet6.c | 3 +++
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 7f413f509d7dce..f830b212d38e49 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1730,8 +1730,12 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 	sk_setup_caps(newsk, dst);
- 
- #if IS_ENABLED(CONFIG_IPV6)
--	if (opt_child_init)
-+	if (opt_child_init) {
- 		opt_child_init(newsk, sk);
-+	} else {
-+		newinet->pinet6 = NULL;
-+		newinet->ipv6_fl_list = NULL;
-+	}
- #endif
- 	tcp_ca_openreq_child(newsk, dst);
- 
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 282912a1199992..2090289408c035 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -479,6 +479,9 @@ void inet6_cleanup_sock(struct sock *sk)
- 	struct sk_buff *skb;
- 	struct ipv6_txoptions *opt;
- 
-+	if (!np)
-+		return;
-+
- 	/* Release rx options */
- 
- 	skb = xchg(&np->pktoptions, NULL);
--- 
-2.43.0
-
+I considered adding a new knob like tcp_chlid_ehash_entries to
+control the behaviour, but I was wondering if it might be rather
+confusing to people in the future that only GC attributes are inherited.
+But I don't have strong preference here.
