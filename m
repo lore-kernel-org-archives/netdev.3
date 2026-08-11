@@ -1,127 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D013CB2D4;
-	Tue, 11 Aug 2026 16:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786464405; cv=none; b=h5jNatKUYb/WSGq6xcKgcLU/xgYtdEty13J6Ec7PguQWuZNgST3NL57A7O/jkcDFL3EnU+ea3UV3xPRipS2CStxbUoN7AjYLxUEiNsf5+02bOtNCez7Rv5Gi3/b34vmlOQNlrCwRlf1QdZXqMoNiMoqM2E9Rc+UbRdAClzYUeDw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786464405; c=relaxed/simple;
-	bh=l6y6SBQuraQkb5VQ3z8ukPOghHgP1nT1Wtp4BjufNz0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T4g8F33OE0+fDacb3ecmG1sfp9zP0ORMIb+IeH8HqxSsPFWB26q2IhBEDylktjaYU0//lD7WO1/bCGvWNIaMQM4a/DBLkOclwn17je86XKkdL5kNfju0C/h1BHNv+1DdjATJn7XKx/Dpp+8UApKqt73CR7irXU8zmaSR8WPcr8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYwtWdMZ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149F63C061C
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 16:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786464417; cv=pass; b=kuc2qbMt2KmWTSpk+NW5Ay5nYmH7TXaMecrwXAstz4xZqNQ7QTTnBR0a6L2JFqd10t+lk7fkrHryBlwUach986+nLX9ZyoQk61mLUKGBXHYztvCDB9Q8kzv8ttzBzy86u/L8QrRnAMqbpiOrMxgYyHZ8ktcp6d5yHjQjg54iLOQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786464417; c=relaxed/simple;
+	bh=EpZfoLYbJcIPSxl/oTc6thafxuEwE0MFlEgXgQgfH4Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qCmGQZewT8lk57aP4f1MWy6NtR0JkE/Ce1wOhMb6oADNOn4fbDPT3s1gV8CS8tgmZwpUKHQUQzsFiT+yxWi1C6UBdA+w/ecmGebsLw8KT4J6s61VDwHUqkoQ8DWkHb19t3IM5yobiTFMNtNTYkjDaQWqNm0aOfZ65Yftt5xeWCo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KKW4m1Z2; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TYwtWdMZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B111F000E9;
-	Tue, 11 Aug 2026 16:06:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786464403;
-	bh=bsFrD+8bsJ8zTcQSeMYM7e3hb54WciAWCpQseABIlqk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TYwtWdMZ8Ao51ww1bhZblT18MUr7qDxkwcAcEbYPHbrC9TY069ydowFfdIi4cZ0Lv
-	 ERS1UVOj9x3CsUP3r4umtrc1DF47emrHnID7XpG/ci5cVHd5IDDaSRmEJpHiVJDSyH
-	 vUuQDBfUIX6WfjufpcE/0Gn8Bd0HaeK2cgvDMkxjyp3uK3tiT+Pw/tdqKkOJ9jtUNl
-	 fwhqizf9b6nF61KCY8HGWkMJ7SKUjqwc2i2Os0BSGcDJ2jrNIWtKrwprSH2lDz7DSg
-	 OzuRy9uqldfzfdgP9fiG6WWT7yuDL31/Ms1hpXehzZVDaIa8uIG5WJj4YWY5LAqds6
-	 qlHnUwAcPLFqQ==
-Date: Tue, 11 Aug 2026 17:06:33 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Vladislav Leonov <vlad@zlab.su>,
-	linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Simon Glass <sjg@chromium.org>, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Brian Masney <bmasney@redhat.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Golle <daniel@makrotopia.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Wu <david.wu@rock-chips.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Olivia Mackall <olivia@selenic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>, linux-crypto@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 00/25] ARM: rockchip: Add peripheral support for RV1106
-Message-ID: <5842f89b-ef11-41fd-a5c6-f07d4110b65a@sirena.org.uk>
-References: <20260810121121.210040-1-vlad@zlab.su>
- <20260810113548.7fd24d56@kernel.org>
- <anq1ouUnKA02Eauj@monoceros>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KKW4m1Z2"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-69fab5a852cso4243474a12.0
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 09:06:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786464414; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rJCQVV22scLy7F9MArgUYwuUhp+UGrvhMJ6UgK/RUg9zFHJE7lTOXqRiE37BIz64L9
+         p4902OjeqTBZkRgcHaaANw2uGHzDyApNgx4Lqyvhk2V1/IkSF9nDGCHLkfF4QeyYZgn4
+         7xZTgrf5yl3WcCfv8Nlzwt6Nwg6PeQyd7loM7g/4naEau7JU6OSjeNaHZexdpH6MkPxJ
+         D4gmNzKbMe1/8DLpvPZbeONXgxxWpc8/d0q38LoLi9TURBOlqCcQNc8FQlHeSiLn9miq
+         8BdHX1Zm/PN0INNgV6pvdy8h7mhshJlGh0Tdap1wVPw9BNWXnCwCg2LtivRc6+AfrE6F
+         DtUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NxBXsvZDfR8x8hVJHrORxprKXoQusJH8uCvAZ74aEb4=;
+        fh=IxCkeNmpUVjZ06S6NUPN4iw0hd3LZoSHeXJBRFOxuzQ=;
+        b=jObZvhCFFIIngJkxpbB7Tevfef9nh1W+rJQqKA5Ayf57V30jAAOa8bl/LqvQMGoDpa
+         hx2eQWj0TwV/nukEsMb24koSGOLiGqJZsuUST+/yLZD3BggMJtkXzhIVjt/9q+nOZHMf
+         oqdzBea8dvHISJuSWUUaSCpfpr60TlOVfhhjfJ1Y/4zUNCZUMGTIcRkSV/A9JV7YZAtt
+         FiIifDIphI3uzJ5AVGs4oEWU6BxMTGX7T6qN8rnuX2rqqPcdjaPCx/Rg9M3/Ep0i6fWB
+         K87q4CA/O47N7OK7Q++1ipPmJSf6bfFaz6kkWSRALugPm0ldOuEpJ9LE41cE2E5OB4DO
+         tl0Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786464414; x=1787069214; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NxBXsvZDfR8x8hVJHrORxprKXoQusJH8uCvAZ74aEb4=;
+        b=KKW4m1Z2go0uAS0iaWWYqtWv3xh4Y04VR7uISR6f/RcZJSbTO6chGpXwvEbQAhcFf+
+         YM1rZFU6x3U937e1Q7hPfFxNU1Nhb3KeRYToJLFh6MRrgAPu6o8KQNbUTBrcJ9RqC1B9
+         qNdgzpwq9G2vlB71NM6KA0ecWxOAYd8rC5IK1CAxXKq8fRJHQGYMeOUH47AH0Ck0F6rn
+         n4BVtnTewDwMwFEBamhHgOqjbtHykH3CPUvwXig+6u/F5bDr3pnbV5FMTh8Y3xWI3swX
+         +Ox5d7b5a0Khu7oZMgWnXWClc2MwVQZzdk+PMZ83BleW8UwpymO5uNF3dJP7pNeser2e
+         Li2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786464414; x=1787069214;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NxBXsvZDfR8x8hVJHrORxprKXoQusJH8uCvAZ74aEb4=;
+        b=H0O3h5qOoM4TJPl/0vXwdS0n1nhUq0qoMYqXC0BMAGoIKFQrzwp0M/PU2yCtSTw93b
+         giS/knztkaSyAkJpQ7jQI6eLEw26l9slWflQg2yocgSA8aTUrDdlRFnsxLkYP3lgYUul
+         IkDEKUMO/ajZurDjzk2xGjMB8oMxiwRK9sIEh8VkUIoQ953sAY3IKaS0z1Lq0fIxHX3c
+         p/SLQ0dItmy5mLregv6y0e9gZZ6MUEMIgeitm9EIRHBNr1doS9G9uqJQn/57r8xGmeEm
+         joBc19tA2ew3sColnUhNTUxh6LhoesFDi4chDulKwsWkO2G7XYuRvG9gPoof3q/mh52r
+         loXA==
+X-Forwarded-Encrypted: i=1; AHgh+RpiZ/5jCfweicEsnomElclTufHnYTnVVAfk1eVP3X5tbch6RTDU8m84LsYurR5EMOagkoR52HU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyivZ/OSr135ZteD+fqplThYn/kpAI/LXLaVSfgCfPotiDnqaZ8
+	FNnX5Sxht2B0g4/7yIYyawz5wtRM0oDfDiJQqnffrx0wiagXks+efBtbJvDcDroPgfCMzwdQj54
+	3fNM9W9ueNrxBzJqMrwkFvDkaYLVokDoBKqwaVrl8
+X-Gm-Gg: AR+sD120t6FZVufTcMaWH9EBUei048ihXgM7tOKCVI8URf+9mUZ17TO44L7XFBXFnBv
+	au4FgGo5j1i5MRvrTJKtXdt+/AAY2ffLJlGNK7Fdgferu0sSkNzw96XrkUL3ZmJ83vYrpAqYvjG
+	mzj4EHcq1HbeNlfYZOChpRrHoEkjOZFz3tQgY2BTtfJGSEfvDLq4QMsrR/2kffofH+SmIBN5pba
+	KGAO4elVsvOZc494BhFYLobORY6sNdH6I3TISRMaZE0airFkAxvoQm54FbdpqqiTso2qKpHhu9J
+	OKP+OLfR1UPBdL1zouwBIX6tQQVLE877dyCeag5XoToO965EgXeUEi54vgOaKu+hRg4r2QLkuK5
+	zyWpMQX4wdahFzahXiEg1TknV4qwiStwDNS38YA8Cw/cgXbAFqm2pYc5mSUb3iKK7d2P8wCgEO7
+	QOV0M/OfJFI/sv8iL8Zn3xj3+UzjTEuKWlrDI=
+X-Received: by 2002:a17:906:9fcd:b0:c1c:332b:74a1 with SMTP id
+ a640c23a62f3a-c20e61fc956mr224405766b.28.1786464413459; Tue, 11 Aug 2026
+ 09:06:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0rdiv1roUnHM6tDX"
-Content-Disposition: inline
-In-Reply-To: <anq1ouUnKA02Eauj@monoceros>
-X-Cookie: Now, let's SEND OUT for QUICHE!!
-
-
---0rdiv1roUnHM6tDX
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+References: <20260811022448.116235-1-kuniyu@google.com> <20260811022448.116235-7-kuniyu@google.com>
+ <c90385b9-28f6-49ea-b4cf-9eb90604af10@kernel.org>
+In-Reply-To: <c90385b9-28f6-49ea-b4cf-9eb90604af10@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 11 Aug 2026 09:06:39 -0700
+X-Gm-Features: AUfX_mw45djgaea9_LsyXh8uOiUuplSqLBi1MNNRvjC3gN8gcUiDvnup1aRDzAQ
+Message-ID: <CAAVpQUD3R-Vi6CQYS5MRtE13u5LgxZ1JNnn3MDkT78VE5zWTzQ@mail.gmail.com>
+Subject: Re: [PATCH v3 net-next 06/15] neighbour: Store arp_tbl and nd_tbl in net->neigh_tables[].
+To: David Ahern <dsahern@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 11, 2026 at 07:43:16AM +0200, Uwe Kleine-K=F6nig wrote:
-> On Mon, Aug 10, 2026 at 11:35:48AM -0700, Jakub Kicinski wrote:
+On Tue, Aug 11, 2026 at 8:19=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
+ote:
+>
+> On 8/10/26 8:23 PM, Kuniyuki Iwashima wrote:
+> > diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+> > index d409f606aec0..bad17d5aeafc 100644
+> > --- a/net/ipv4/arp.c
+> > +++ b/net/ipv4/arp.c
+> > @@ -1495,15 +1495,34 @@ static const struct seq_operations arp_seq_ops =
+=3D {
+> >
+> >  static int __net_init e(struct net *net)
+> >  {
+> > +     int err;
+> > +
+> > +     err =3D neigh_table_register(net, &arp_tbl, NEIGH_ARP_TABLE);
+> > +     if (err)
+> > +             goto err;
+> > +
+> > +#ifdef CONFIG_PROC_FS
+> >       if (!proc_create_net("arp", 0444, net->proc_net, &arp_seq_ops,
+> > -                     sizeof(struct neigh_seq_state)))
+>
+> proc_create_net already handles CONFIG_PROC_FS. It is not clear to me
+> why you need to add the check here and below.
 
-> > Don't expect maintainers to dig out patches for their subsystems
-> > from a big series. This is not how upstream development works.
+Actually it does not handle the case well because the =3Dn case returns
+NULL and setup_net() fails to initialise init_net and dies.
 
-> I see this from time to time and I personally think it's fine to have
-> these patches together. Also the only the patch that affects my
-> subsystem was Cc:d to me which is how I like it (but I think opinions
-> differ on that one, too).
+Most callers have the same issue (e.g. NFS can boot w/ =3Dn but triggers
+oops immediately) and it can be followed up if needed, but I didn't want
+them as the prereq series.
 
-Any cross tree thing is just always going to be more effort, at a
-minimum you need to figure out if there are actually any dependencies or
-if it's just a lot of tangentially related stuff bundled together.  Plus
-the larger CC lists and whatever.
 
-> `b4 am -P _` is great!
-
-OTOH b4 won't ingest serieses unless it can commit them to git and I
-have *no* idea what the base is supposed to be here, it's not my tree,
-Linus' tree or -next.
-
-Please resend the spi bits as a separate series.
-
---0rdiv1roUnHM6tDX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp7SIgACgkQJNaLcl1U
-h9CgzAf+Mfyz8kncpmkuFsip4V/KEWeY/74EiaopCxYZu9ER12XWRS+3hpvAP06t
-FzE4FyJ4b5uGDeBclT3D4mSAIoI1xT63Br7sqmOlocnv85dq3wqcimH5FwpoisgP
-5o7v5A2Bw9BkYeZW7XsKzJ2raxgqYKgQcbvIffN77mT78KVu2yBG3hkiD+PvJWLA
-Kv2uKKzxmBely9BaCFeZ7M/N5D6vGZMhGDL+seRSttR6Xn+3sA1AAi3RKObAWLya
-ZorJCLDgynNI5VEU2Jkv+oT3n0y9sdMToX9eDXrAI3JP8Vt4xncCBw2lhPerORRx
-ULbQrEoR959v7lubt5ZIQdwdztM4uw==
-=gZCM
------END PGP SIGNATURE-----
-
---0rdiv1roUnHM6tDX--
+>
+> > -             return -ENOMEM;
+> > +                          sizeof(struct neigh_seq_state))) {
+> > +             err =3D -ENOMEM;
+> > +             goto err_proc_create;
+> > +     }
+> > +#endif
+> > +
+> >       return 0;
+> > +
+> > +#ifdef CONFIG_PROC_FS
+> > +err_proc_create:
+> > +     neigh_table_unregister(net, NEIGH_ARP_TABLE);
+> > +#endif
+> > +err:
+> > +     return err;
+> >  }
+> >
+> >  static void __net_exit arp_net_exit(struct net *net)
+> >  {
+> >       remove_proc_entry("arp", net->proc_net);
+> > +     neigh_table_unregister(net, NEIGH_ARP_TABLE);
+> >  }
+> >
+> >  static struct pernet_operations arp_net_ops =3D {
+>
