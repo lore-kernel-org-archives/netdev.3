@@ -1,49 +1,49 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BB3442FB6
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 12:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E116F4457C4
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 12:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786450815; cv=none; b=rUNzyveiYFoq9gJmMWsT3rKLJDC3mCVXWBb64rPAqaA5pXi+1cbjdnTq2GcTX3EiyxtJTnFr6RTFfX3XMkjeovRzY4vnHYKXsH2+qVZsQ5h0UlFens9DTlEmQG/9TzYBIOQL+c9xqTATGMNzWDsPtSRJcbi+z6NnTSVbeBGCZEU=
+	t=1786450870; cv=none; b=eH9mKq1WQEM70tiTh0qLv0ElgDt8j8fq+dq9Kjj3i95ccvP32/FTSzflibg5F+VFuzcWnnUUiAGWgz13B/qOty6De2rsMF26tFzYUzxZFisHPP9eY+JoenxsmzIQNwowgzi0Rv1IdC6ggpORfWqSEUapvnfwhuBV3Byts/bnJN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786450815; c=relaxed/simple;
-	bh=bZhfQ75/tBx76bRwf/yqfxbrZJKpDXW17ur7HV4Joh0=;
+	s=arc-20240116; t=1786450870; c=relaxed/simple;
+	bh=NyJzhCVHtEmlObtZuCwoJswYMgNfPASa24UJC44h6BY=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=kBzS1ScNYmmmjQrIF/OMjWK/ROOzvblsvTH1sdHb2tNofrvWNf3xe0VdhfrFOOtjtJfuInSl2AVQkPPwJarmNjxtSpKFGPie54w2jwjIb6otlpIoraUQM+AbRGJsUkFhjqyuEz7QhZPf/1zJwofvyiBYhBNfI68q2dKyz/hzWf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IlrqSBBp; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=R9ZV9BBLhyBzgdwpx0U+hVTHfJhSdr5xlj0IB2A6DOx0a1m+gx1F8HQYpOPd6APwhfoi+8zvfd+EZWIMZSowFBLRQ2RcoRNFMU3Xtj3LgVYcdd/iHSOdCrqfTLirJ6uiv4qfZxP56Q+wkLtjuQV5DPV7cnVkzAEJPCRjV0mrE0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TZw5xo+W; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IlrqSBBp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TZw5xo+W"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786450813;
+	s=mimecast20190719; t=1786450867;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eWX499O3iR5H1HkaG3ftvTfcj6oM13J2855Qi6h6PhE=;
-	b=IlrqSBBp7C+wtcP0Vy3vajYmOzYMJDjpJ4wehAwLx2pm8JzFJXv4XE8W3iTZt8udTRSv99
-	zs4a0Hp8k/LUcWjOHVMBAk7//7yaOozE6ckY50lawMRytBV0XASRcS8n7nS3xAAct+Ou1M
-	Ss+xsJqkI4bVgi554W+HsepRp6wDnGQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=NyJzhCVHtEmlObtZuCwoJswYMgNfPASa24UJC44h6BY=;
+	b=TZw5xo+WCiXZnSBdGp5s51X8GAEPm8YGAf5vHVnUGhvTkPWiTVLAaE9f0Z+xEyQ/RcRY3S
+	ibC8wfzCAOZlSXd39aDADoSxn2e6UFvuUGM5ZYQa1ofuPp8POIsqx531wXSbYpJn9VQTRr
+	4yswV99op2YhwUUkciG3Q7ip6q4wCMQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-306-SKRFYKPRMfm9AfZj5zxrqw-1; Tue,
- 11 Aug 2026 08:20:04 -0400
-X-MC-Unique: SKRFYKPRMfm9AfZj5zxrqw-1
-X-Mimecast-MFC-AGG-ID: SKRFYKPRMfm9AfZj5zxrqw_1786450803
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-408-ULHYwyw8PBains8FvAdHyw-1; Tue,
+ 11 Aug 2026 08:20:56 -0400
+X-MC-Unique: ULHYwyw8PBains8FvAdHyw-1
+X-Mimecast-MFC-AGG-ID: ULHYwyw8PBains8FvAdHyw_1786450855
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C26751956052;
-	Tue, 11 Aug 2026 12:20:02 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3B3EC180049D;
+	Tue, 11 Aug 2026 12:20:54 +0000 (UTC)
 Received: from [10.43.2.199] (unknown [10.43.2.199])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 57C50180049F;
-	Tue, 11 Aug 2026 12:19:59 +0000 (UTC)
-Message-ID: <b2173b95-a110-4301-870f-b54145028e6f@redhat.com>
-Date: Tue, 11 Aug 2026 14:19:58 +0200
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CD16B195DF91;
+	Tue, 11 Aug 2026 12:20:50 +0000 (UTC)
+Message-ID: <86c957ed-0083-4aaa-a5b5-d744d8c604af@redhat.com>
+Date: Tue, 11 Aug 2026 14:20:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,48 +68,20 @@ Content-Language: en-US
 In-Reply-To: <20260809182340.1081610-2-ivecera@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
 Sashiko findings with comments:
 
- > Since zl3073x_poll_zero_u8() is the single shared polling helper, 
-does this
- > also change the poll granularity for all the pre-existing callers [...]
- > sleep_us becomes 500 us, 1000 us, 1000 us, 600 us and 1000 us 
-respectively
+ > Will this introduce a latency regression for fast bulk hardware
+ > operations? [...] zl3073x_flash_download() loops over data [...]
+ > This multiplies the total firmware flashing time
 
-Yes, the change affects all callers. Testing showed that the
-existing callers typically completed in low hundreds of sleep cycles
-with the fixed 10 us interval. With the scaled interval, the cycle
-count dropped to single digits — a much better fit for the actual
-hardware response times.
-
- > Does the flash path also get slower? [...]
- > over the tens of thousands of words in a firmware or utility image
- > could add a noticeable amount of time to a devlink flash.
-
-No. Firmware flash operations were tested with no observable
-regression. The overall flash time remained the same because the
-reduced number of sleep cycles compensates for the longer individual
-sleep intervals.
-
- > Would clamping the derived interval [...] reach the stated goal [...]
- > without changing the existing 25-50 ms call sites?
-
-Given the test results above, clamping is not necessary.
-
- > Reading this, one would conclude the existing 25-50 ms call sites 
-keep their
- > old behaviour [...]  Could the changelog mention the effect on the 
-existing
- > [...] polls?
-
-Fair point. Will update the changelog to mention that all callers are
-affected.
-
- > Is "approximately 50 iterations" accurate?
-
-Will reword to avoid the specific iteration count claim.
+Firmware flash operations were tested with no observable regression.
+Testing showed that the existing callers typically completed in low
+hundreds of sleep cycles with the fixed 10 us interval. With the
+scaled interval, the cycle count dropped to single digits — the
+reduced iteration count compensates for the longer per-iteration
+sleep.
 
 Thanks,
 Ivan
