@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08436445AF0;
-	Tue, 11 Aug 2026 13:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5675545517D;
+	Tue, 11 Aug 2026 13:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786455430; cv=none; b=JBM4CGN5WGH+VTpQch6vFuaVrbE4EMfmfyRRrL3+jCYo0u6wMCOLRS3wX2/UzzrYKN1oaSnPbs3omOMPa+9RkWVNR8z7lv51iTeqWLXX4Z22e7rkKVpcUCLz0vKVCzhyVPzQV/dBfILtdVwCMOzfmQByYDnsFEhfk4a4sNQa5oo=
+	t=1786455473; cv=none; b=GERu7lIPXUMDnVKtTeJPlWTvJoN/LwiDTkQhisxFUX4WQuqXv3X5871R5ZfaA76kFNZo9bGA5EaVV4nmpfEB7JC4cRqq+lE7X0xlqFlZORyoGh/tCccAd4A+GLdYR9WxuV4OHoh69hpgngOgX9DwuodA61vsB5SIhQZytkECIco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786455430; c=relaxed/simple;
-	bh=yRuaK2/yOPjxKDZE/e02I0ke0yiTQRXnc+0fEMMhEaU=;
+	s=arc-20240116; t=1786455473; c=relaxed/simple;
+	bh=uh0+o/p5jGQLpC3F2ehJKZZaXXaghzJ7kLDjKmzdJEo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ChctNhUqvC38IrslYyg/PWbpg79/Tcqs5LUKKyHapVcvvfxGFZ3jPx2rZtE785FT/2/tlMLBtnwA5LtbtyaUxbW/hb6LDuD4OIv2C+EFMnE41kgTaySjebtQnzEp4tTZbzn11o7DFqkvPwp6WAIcenr8SvLHB0qa5ElIFz1VNqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tl8C34fq; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=tod8eskeK6iWTaYmFi1xdNpPd2dqkAGEjhl459EAuWuWquBnbty1ITGp2raIbzzZ0BRESC6mNAiFgOfZbF5UwL51yvv4hSoWNl7dxnoGeeZ1vABJ/wJn0vtx+QKfaTJ922ZiYxk2h4nhANnWlnquPLqTxkPClZHsz5kr6Z09Nxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Le1ymI6X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tl8C34fq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC651F00ADF;
-	Tue, 11 Aug 2026 13:36:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Le1ymI6X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60D41F000E9;
+	Tue, 11 Aug 2026 13:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786455410;
-	bh=fuosRBxSUlP0qUSqeJu2V54/eSODv11IWBFQo+GtVrw=;
+	s=k20260515; t=1786455462;
+	bh=UArm/786/2NmZWRaPIkMj1RTcfpoUlxMmf7R9TVTcIk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Tl8C34fqJ5s6YtKvoHMY9hbhgKQ7HACptds3slTDKjx91vUs8z6lzZfsNZmr3js+J
-	 sJ0Rxg8W0qeQz+jQ9HEbbrXBHEvgNPaO9bG2KJlVPwYE4ydquqX20yMeZ27VcJSvJC
-	 Lc09mJAseeanKIOrz0zFiIZULOQzeRRdIJQBmuEQImgrIeKClrwEEV9ro163fPKZhr
-	 IqXjnNdQtmRITBb84QcJHoSyQsKSvz9LWN81qKRVedFSAYyhlLP0U7a8IRVtuZODmr
-	 abhE83l1hnnWgvCYTD70sV0foIQ/Hu/qXji8Uw1q7sebj/0Uq9B2jnFBlDEpH5lo/3
-	 F+Mp+NMd7gBmQ==
-Message-ID: <688f57cd-a098-4904-b8cd-965470a89386@kernel.org>
-Date: Tue, 11 Aug 2026 15:36:43 +0200
+	b=Le1ymI6XNhVW0KkYbHRc1HLc7pLeE3KghnVTh6uItsxjUsMsBOeOulv1V+0xjb69O
+	 62r+vVrS4bKFMY1MAikWu8XrAmM15LzJWfgrhMpcxC9FvlvkufhuOqMXLsknNS9wZp
+	 pqPEscZLiIi5scanl2+QNUeHsNIZTWTwR5VX1xdMptDri+NDIbIw+eXM1aU2BQbphZ
+	 T+9s6ypOaIBuHeE5Q6mTVgBV8cWNjWusyxUefppziJI9X6uB2Bk+/TpKzxju60R8QZ
+	 VV2C9u8yx6/N+M3Civ8UAA6czTpOmG7kK6wB0XSYrlNnQYC4Q0oPa8wO6EdKs7vb4G
+	 O6Dzi/xc1QBcw==
+Message-ID: <ab56ed98-5166-4046-a665-1395c92949ef@kernel.org>
+Date: Tue, 11 Aug 2026 15:37:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,18 +35,19 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 2/3] dt-bindings: net: wiznet,w5100: add link
- status interrupt
-To: =?UTF-8?Q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+Subject: Re: [PATCH net-next v4 0/3] w5100: restore GPIO-based link detection
+To: Arnd Bergmann <arnd@arndb.de>,
+ =?UTF-8?Q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Netdev <netdev@vger.kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 References: <20260811-wiznet-link-gpio-v4-0-4d5f7da885a8@marmottus.net>
- <20260811-wiznet-link-gpio-v4-2-4d5f7da885a8@marmottus.net>
+ <9bf826bf-cef8-434c-8fe4-e8724c90a37b@app.fastmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,32 +93,50 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20260811-wiznet-link-gpio-v4-2-4d5f7da885a8@marmottus.net>
+In-Reply-To: <9bf826bf-cef8-434c-8fe4-e8724c90a37b@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 11/08/2026 14:34, Arthur Crépin Leblond wrote:
-> Add an optional link status interrupt which can be connected to the
-> LINKLED pin on the device to detect link status changes.
+On 11/08/2026 15:01, Arnd Bergmann wrote:
+> On Tue, Aug 11, 2026, at 14:34, Arthur Crépin Leblond wrote:
+>>
+>> In the previous version of the w5100 driver, the LINKLED pin could be
+>> wired to a GPIO to detect the link status changes via an interrupt.
+>> This only works on w5500 as it is the only one documenting its LINKLED
+>> pin to hold the link status (on w5100 the LINKLED pin is changing with
+>> RX/TX activity).
+>>
+>> This series of patches is bringing back the link status detection on
+>> w5500 using the Link Status bit of the PHY Configuration Register.
+>> Additionally, the LINKLED pin can also be wired to detect link status
+>> changes and read the register in the interrupt handler.
+>>
+>> Arthur Crépin Leblond
+>>
+>> Signed-off-by: Arthur Crépin Leblond <arthur@marmottus.net>
+>> ---
+>> Changes in v4:
+>> - Use directly an interrupt line instead of gpio -> irq
+>> - Update interrupts in DT bindings
+>> - Address sashiko reviews
+>>  - drop devm_ on request_threaded_irq to avoid use after free
+>>  - disable/enable the link_irq in the suspend/resume
+>>  - only call netif_carrier_on|off if the link interrupt is present
+>> - Link to v3: 
+>> https://patch.msgid.link/20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net
 > 
-> Signed-off-by: Arthur Crépin Leblond <arthur@marmottus.net>
-> ---
->  Documentation/devicetree/bindings/net/wiznet,w5100.yaml | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+> Hi Arthur,
 > 
-> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-> index 641c9ddbde9e..30f013f40a77 100644
-> --- a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-> @@ -24,7 +24,11 @@ properties:
->        - wiznet,w5500
->  
->    interrupts:
-> -    maxItems: 1
-> +    maxItems: 2
+> This version looks good to me,
+> 
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> Krzystof said that he preferred these to be described as GPIOs
+> instead, but I think there were some other open questions with
+> your previous version. If you can come up with a version that
+> Krzystof likes better, I'm fine with that as well.
 
-This is redundant, instead you need "minItems: 1"
-
+No, interrupts are fine.
 
 Best regards,
 Krzysztof
