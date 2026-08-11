@@ -1,125 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023079.outbound.protection.outlook.com [40.107.159.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AB642C4F8
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 10:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786443659; cv=none; b=ImnyXwJHc1un+psJYwjJl+NdUR36QYpeGNhcYfrnWJXuA1jFVDs7pS7CK6Cuzxqf8yX/Av1MKvYTxmcC0A3ePDMMbec36KYVmd5+/WVmCw413L70o7pyEWT4pYLuy2m0xyuCI1KoY9Vw1EnoYOQfbG1epRpbp5q112+zLegjIuU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786443659; c=relaxed/simple;
-	bh=/G7exXCz5i9dGHZkdoXv5gBEUahK/O5+dksE2ezDf7Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SxVe9H6zki5tFu4lyrPnN9JdFyj9Q+fD0ZICn0gbeXc91igEoEG8IdhmkEagmKCaELlKRpJvVQ8h00oV/31dzL2rvT1tzAQ9+gVDjTQA3PyfQuPYXAZ+L1F0JiIS7Ddf24ids3l7Lwrd8L6A6asOsPpl3HplrU7xvfeM0C981Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D5nmgNu/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UP9LCOy7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56E943B6D2;
+	Tue, 11 Aug 2026 10:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786443658; cv=fail; b=OGka80bSoAMQO5h04Wyz34uyyV4oouD3f4GhDBCmlFesTEOYDVBBu/y4ERZ9tVkgdbgiMa/6s0x3py1WPmcfeucHRtZ/8scb1wougV+eDvqAAVGGtI1+DWoy/ThCKB4+aVIvJcG18VSf6tP2NaKokBu/lOecYUOmz5U/fP4Xcb0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786443658; c=relaxed/simple;
+	bh=0isHuBaCY/ko1veUOxG1E4d3gGRufWFuqx7w/UVhuig=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=FagYHkO2CuSbGIeCKE585rWUqnC4aBnzUkWULoj3lhFbX9Sicf4FSCwksDKCPvCAsRhSk9uLq8UPoQcCDm6X+iCH1osFL2PZ9F3jsL7zhJBXh6/M17vI9SDAneUCCqQnCA38XZpfJz4O046kUObyJyZBP9+QAFSsEQqCBR9tzFo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=HuxHjSG8; arc=fail smtp.client-ip=40.107.159.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D5nmgNu/";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UP9LCOy7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786443646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=epcLinBtBWUDj92rnkkjjKzYesqtLRs7oPU8wi2dh+U=;
-	b=D5nmgNu/QsQ3vLI6ZQuKNv9K73W1YE7jcLSPxBOJ8XHu81JE0Ezo9gY5L4MMu+i3db5D1i
-	eLgC6B9YMF+TmQPxF9hZJYJCsy3BlCud4hTZf1CsSvp5Ky7Fbaugpxx82+YZcfEZkTpvj2
-	GBCJtYVTJds/0siPKtuyk+w/Feeme6g=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-rhGWlZGbNMexkeCrvn9tLA-1; Tue, 11 Aug 2026 06:20:43 -0400
-X-MC-Unique: rhGWlZGbNMexkeCrvn9tLA-1
-X-Mimecast-MFC-AGG-ID: rhGWlZGbNMexkeCrvn9tLA_1786443642
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-496b61bd846so21769595e9.2
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 03:20:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786443642; x=1787048442; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=epcLinBtBWUDj92rnkkjjKzYesqtLRs7oPU8wi2dh+U=;
-        b=UP9LCOy7mn9AT047c2UaYfsLPsk2p+B/J+lL+y/xMnRIS6/ew/ZYrqGEXT8AsN5jFo
-         LM5OFP3ZCDi5uPZkeiUFzKaJdwh+TBSUnKxCPJmauT0ynHvTITsAa4z5zQFQEgxoEzFz
-         mXODg/hGED69iXsbk9qr11zmIxgeAuSRgzKOpJ8xNn1N0Hw8iWum883mkbZkDudD6iEo
-         PkyVzTRlG4Lh4xNcSMAVS+OAjdXv8uHCRLHOMRHl5eUI2tiSNuOH9uYVCjgK1JegJGi1
-         XJzdAcly00QoSF24qKG9pCHysz2FTjs8sRt0nf4/aH5RqXYnkbqj6bdXIZ6uGk60WkJA
-         F71w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786443642; x=1787048442;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=epcLinBtBWUDj92rnkkjjKzYesqtLRs7oPU8wi2dh+U=;
-        b=CJ/RW61jyV22EX9wox0vCI4HnmsbRAzVAmhE8Y2EImX/N1rNQ01KXvqqqFm+HJbFf3
-         laK6AnlSD3lifCV9u/Weqqa1irirFonLrROhstfB3/exd7L1eYMVHYtDxSfwNz9dIlFI
-         qy7lkcHJF/hS4zU0Xjcy3eSuHJ5IjEjBggMjgD1hZtfpOW5DH45+l0bZe97i23Jocbwx
-         NAK1f1/w5GJ7NT0Y5RV/ZAPptmMxqSxAJADvpqKCw4kXhIUTEvzytEUoAXxrkuBLvS0t
-         FShUG98zs4j3/aVhTqlMZ2s0Obi6+IxIDT0jfK3zHftHLecnO7G7PctZ/45uBPb1HY/z
-         HLGg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrz0t47cKcnZMhttCl44sBhdBXIr0+Lp3ipUpO9+Ic7HTkaeZ2X3JCuHskNUki5t7xGqRNwxCg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXK7+7xGc6Ot9CVYcgYswbCejcz+hNjX6Ew2Ho7QYA2vIIc/O5
-	oG9PKNr1lAKrgnwFEF9g6fcT8yghYLeFHASF6QrLIKFh9jNjp5/VWR2Leu5REm/lLJHAvODdEj7
-	y7gDWgMS8vwLtVJfgf630h5udyrkdAO7zXDuQifH6x2hs+aVeGBPDhA3uRg==
-X-Gm-Gg: AR+sD10jWKWRiyPGxrKn4G8xz3a3+er8gLFh2RG6K5JznUN6e1UOcEhhWK/j+cC5YvU
-	IVCsH7xEZh4eNiZK3hRysE3C0Zzu4sj3nhZVhtngdfmr3osrqByRdTU/kky7thlXRQtZwg0Dns5
-	kCJT4ch/3U7Q9i5Qn3kFhRTRubKzNdFZNyJffAFPjZ1U3JZ+l/qjKM7LZezkg4zPib/CsU9QctE
-	25fY5Z8deT+hZ1wFK9kui1VtOqaTgcjJ56/3wIFPq+OJB2fOtzliId61cEWpQNA7q4aPWn3G1z7
-	ctsmp0hCOrAZManPJTL4b9g/OV3gTrqNblVENaXsKnhW0D/Sx7lUHV1DRQ2+AS37kblG2RrgBUc
-	1UiRRzAUK9XJiJ5ZgHZVOLx+eMLIRn3bDlTG4yJgKbInuEwGqXnnJkCq9x9RW2AwgYVwFvQ2P9a
-	0=
-X-Received: by 2002:a05:600c:6085:b0:493:c634:952 with SMTP id 5b1f17b1804b1-49978430a48mr34854045e9.7.1786443642201;
-        Tue, 11 Aug 2026 03:20:42 -0700 (PDT)
-X-Received: by 2002:a05:600c:6085:b0:493:c634:952 with SMTP id 5b1f17b1804b1-49978430a48mr34853285e9.7.1786443641701;
-        Tue, 11 Aug 2026 03:20:41 -0700 (PDT)
-Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997889c2bcsm41386075e9.3.2026.08.11.03.20.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Aug 2026 03:20:40 -0700 (PDT)
-Message-ID: <4821130f-2416-42f6-b3cc-c0cfc12ffaa0@redhat.com>
-Date: Tue, 11 Aug 2026 12:20:39 +0200
+	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="HuxHjSG8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kvnxLGPNveFp3KljY5HqkMzx0Ojb1+8ghtOjalR0WA8FuPKsPKLp/1T7uOVIpDplGmLp80fU+TMhnBSbGGBWF9iwnukNMZIvlJ0jyw3BSm/JjOHxiu+yhHar/95XnNnLp9N3rIldXhOW0yqcBxLclphmOoZNMBAkEUDg8iOSnyuMxbie45bVg0t8oocWimsMRXpgjD1+wRWl5Kkwtb5NtTg1GfMAFSjDJMPQqvv7x1F01StuB2X1pPqT/KZfdCAGYVt25Q7zWoYCP6lN5fFm1sah0HFA+lBESqrWzX4C72sAngBGBbEmDsUzDhQSbwvr+RroQ809LurvYVRPWHeSIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j8LGXIBL9ZOw0JALU2BBQdpTEFmlHIxRgpqR+OzGm1E=;
+ b=TwREJtf/U+U8gfRfQV3zrcBQ8xWtu02qgIWYF98VPdG4IdVwJ/laggzO01pA+sIqvwPQNL0vXrQYkmWEUrzIG03ZROp6SCFfp3wrb3g6WgAnRWMhVruXNAz0+/Wd0OAb0dyfyQxhU1pXmPmHMSjfmrqaDQA4gNRALCJzDbPYJcdtodGpTYxfAIJiq9p5Q1Da+SOjpVInWGJCaQw0HR3ZXeMKcH/gDYMFh0xS7wAGe9K/zAbv7+bsvYMcHZ53iZ12t4P9YrJdWWycT036TJW1L9WFjjAC9RZnfnriYVT2DOSE4Gs7KbJeae8sCqt5Vtc60w8SxzGHi6ghCEzBr96MJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
+ dkim=pass header.d=vaisala.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j8LGXIBL9ZOw0JALU2BBQdpTEFmlHIxRgpqR+OzGm1E=;
+ b=HuxHjSG8npIYytU70dh8oBhOo/pfXqiI1dAZVj+g0ozqBwbUWs3s1LYTc0LRwtxW2hdTeC5DdP9qkdo4KKQR5KxaQiu/1iBXGafd6bxwd0tmgiN5gEOmPIO+n92m4YweVvMuj3+0u6g9Kq16H2bRWb22ioYQOpQTwQ4CVXKfGgJDjw84KRcTSlDpyFbbRVApX4PPTreCyDfp7xQm05vVrW0+iOE+qOGctOZRZIb8dKcYkGZ4YoDiWXfErKmec7rMTg/wKblq3eYdXb2tnTyovX2QQywvLCK7wbmQMETCWe+XuKV+Qwwmi1Cjry/JC1cIr8hTPyGlS8RWR01fEA7NLw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vaisala.com;
+Received: from AS5PR06MB9040.eurprd06.prod.outlook.com (2603:10a6:20b:676::22)
+ by DU4PR06MB10453.eurprd06.prod.outlook.com (2603:10a6:10:617::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 10:20:40 +0000
+Received: from AS5PR06MB9040.eurprd06.prod.outlook.com
+ ([fe80::923e:d30b:98c0:c69]) by AS5PR06MB9040.eurprd06.prod.outlook.com
+ ([fe80::923e:d30b:98c0:c69%7]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
+ 10:20:40 +0000
+From: Tapio Reijonen <tapio.reijonen@vaisala.com>
+Date: Tue, 11 Aug 2026 10:20:32 +0000
+Subject: [PATCH net-next v2] net: dsa: microchip: enable SGMII port for
+ KSZ9897
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260811-ksz9897-sgmii-port-v2-1-04ae287a0b27@vaisala.com>
+X-B4-Tracking: v=1; b=H4sIAG/3emoC/32NQQ6CMBBFr0Jm7Zi2KAVX3sOwKHSEidKStiEo4
+ e42HMDly8t/f4NIgSnCrdgg0MKRvcugTgX0o3EDIdvMoISqhBYlvuK3qRuNcZiYcfYh4aW2tpN
+ CkJBXyMM50JPXI/oARwkdrQnabEaOyYfP8bbIw/8LLxIllrUmXZXKWtHdF8PRvM259xO0+77/A
+ NJQMF/AAAAA
+X-Change-ID: 20260703-ksz9897-sgmii-port-48ddb100e015
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tapio Reijonen <tapio.reijonen@vaisala.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786443639; l=1990;
+ i=tapio.reijonen@vaisala.com; s=20250903; h=from:subject:message-id;
+ bh=0isHuBaCY/ko1veUOxG1E4d3gGRufWFuqx7w/UVhuig=;
+ b=BACBaEKI+HfdBOQ0AS+XxHVjLP4MK2+BmCQ+EuJbv8SZb3QO6UiKaQPFU5CEwPz4uHiqXUqQ5
+ DRtVeCrLr9uDjYgBRSroaXF7CSQH3eBvhQ+PxcL/Msjo2yWoHhgHgdk
+X-Developer-Key: i=tapio.reijonen@vaisala.com; a=ed25519;
+ pk=jWBz3VD84WbWgfEgIqB5iFFiyVIHZr52zVBPOm7qiGo=
+X-ClientProxiedBy: GVZP280CA0020.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:272::11) To AS5PR06MB9040.eurprd06.prod.outlook.com
+ (2603:10a6:20b:676::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] l2tp: fix tunnel and session refcount leak on
- seq_file release
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com,
- syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com,
- James Chapman <jchapman@katalix.com>, Guillaume Nault <gnault@redhat.com>
-References: <20260810141125.1176545-1-edumazet@google.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260810141125.1176545-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS5PR06MB9040:EE_|DU4PR06MB10453:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ef56674-f886-4207-e234-08def79231a9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|52116014|1800799024|38350700014|5023799004|11063799006|56012099006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	y9IxAhAeLMTuNIfE0SmoYl41jJGMf8MHuBCQF72/fmppKUinDR7ihlYTZcnMHbLyYnQRcQdBP2Y87n7FQQVNO+Ir6NE5x9bhYKXM9/FsO8DGbU9sNaIxdENDnNy1SAK0Fw3J8bkKBD+3hObxMoQVGcF0GbWPSwYxGLtRHkVgU1A9o3EkVG7uBl0WOoLfH+t3TzV2ZL6t/44u1DyT12RyCf/O8hFull3AmqYatdiv8BbD7+QsE4cvHOIVt5XjWRMxKCbaJnO1Fp7QBi2IRSIHQmace0PhAjcIxGL1kk3o6JWU3dmclE+fvGrI+H4Yk/G21AkdUwxmBm2CPCI2FS4me40ouQ0auTc96uCHL6j3zS91u9y3rtnk0WmG5E+4+FIKs6luZG2MRKiqMchg4epPuX6j8CkiGU/gTudy+cq4OSYnTDEX87rcamMsxmBTIcbNfwaX3+WqD4nIjT1zZdhoRaFxXvfh2esTkDkJidvmMG/jmRnjX136IHLqcW8kP294nhMA50heCeSLvLhyiDjBc82IBx7SVV8qMBTCT4X5+qRyqxQbFe7nlXUdXR1jgyMxM2qjb2AASaph6MRyvfVxIYeHGfWGFs9yZ+2CROhum29+CoEp1TIkiDsni9Ne+Pn6zc+ZfecD66Y59yMahwwdhTS+i97KvYn/1qs4MdPb76J0Hi9cr0oC7rjSlgfjantkrziRjyhw17jCd+A7zFtA9dBFxxyL990yDpsQB98/QLM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS5PR06MB9040.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014)(5023799004)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?d2xINWVDNnRuV1lzcCt0dmE2a0F0NXEwUmFYY2FrWHMvaEJZRjhxWGdUaEJq?=
+ =?utf-8?B?N1AyaXkvMnhyMUhVaE5sZkp1ODhsZjEyK0VxSzd4bFFQK244TGxjVkN4YTRW?=
+ =?utf-8?B?S0E4ZnBVUnBOQnFuRm1renFMYWxyWTVaYTFOZlpDMFZwTW42cExjL1lsNUlp?=
+ =?utf-8?B?L2NzMGRQQkd1T2IrdTJxb3ZKQXo0dllTYWRkem4wY3lVdGN2N2N0dmJKV21N?=
+ =?utf-8?B?d203UjBldmdDdzNNNmwxYXhKK2k2Tjlqb3hVMDhQb1p6QWNkSHJrK2JFZW80?=
+ =?utf-8?B?N1NlQlFaZ1lEdzYvOStLdTVHelpTR2E3S3VlaGhrMllyNzJTZEdmUFhiOXFh?=
+ =?utf-8?B?bEwyb1ZYZUhtM3liblBQaXBHNlhmWStIVjJ4WStBcXUyQWVvcm5MRVU4OU12?=
+ =?utf-8?B?MEt4OXVQcnIvU2hEZFFJMDNLZXJBWlQ2V2grVStJVkJRQzFZRWZremovWDhj?=
+ =?utf-8?B?ZjZ4OVZJMDNtRnY2SUJLT2UyRkwwMnBvKy9RSDRobVFKMGlBQ1pUZ1pINjlG?=
+ =?utf-8?B?TWNUVG1BdVJIQVorc0c4OEhzcHQ2YUdyQ3c3b3JUNlp0cFVSUG9xNVZVeDJV?=
+ =?utf-8?B?TUNyNlo3TnRZZUlBcWcwQ2JBditXRDB1eGpuRW1wekNheVN5MGNRZ0hSMnVE?=
+ =?utf-8?B?NWIrWm9XTktGUFZvTFRKczZqNlBQQkpYZG9OS2pBdjI5SHQ3bitPc1V2N09N?=
+ =?utf-8?B?Y1VoWkpidEJmVkYvRVNvOUxIWlJVVmF0WHRkdGJmQndHdlNoTS9QMmtTYkFa?=
+ =?utf-8?B?aURHcmZ6aStBd3pQaTIvNlcyRnU1N2VzbFBaWUI1d2RVQlJSTXJWejdsN0xR?=
+ =?utf-8?B?OThaWEJtSWY5YVlXMEwwSWZGbzdrYjBJWi9TUUZ1S0tVb3R6enh5dlFwT1NH?=
+ =?utf-8?B?YUpINDMzMlB2eXRqSzUzbXRhdElDK3hZNUFJVXdBZ2lFbHV2a1VvUTRvMVFw?=
+ =?utf-8?B?N1pGc1BRWFVXc3pXb3ZhZFBhZmFrZTltL0RoV2w3Sm1mMTVrZk9qdzl4SjIy?=
+ =?utf-8?B?TVgyRm45NjNmODFRaVZPKzUvcFpYL2krcVVKSitXT0NzbU5nWnhFYUFCZmNx?=
+ =?utf-8?B?bEVTeExlaTJBZkh1Q243R01uRkdReWlvVWxDWVJ0cVFwQm1aVjJSR3JZR1ln?=
+ =?utf-8?B?bCtHbmx2bThKSGNrY1Jucm12bEwzaW82NUxkRjFWeFdOQTRKT0lSdTNYeTNE?=
+ =?utf-8?B?czY5b2V0L2M5dHBudU1udDBwNVdwWUpEZ25HTzRUZ25WN2FFTm5PdGNDcjFr?=
+ =?utf-8?B?eVRvME53eks3Z2NNY2tJNlgrMVE5d0JjMk0yWHdGeWg2bDJnWnlIU3ZBcjFk?=
+ =?utf-8?B?UXg5NjZmU0xhcDdYSGFWMHhwWDVDL0ZIOE9tUzBDMVJHeE1QWTRKMjNaK1dy?=
+ =?utf-8?B?ZFBWbVVEU2k2NXpTSE84WXNQQVNwZlE5V2pSbEt2KzRMZHpaMnIzRGdXQTBY?=
+ =?utf-8?B?OEE4R3BQL2E4VUNiM281T0hFL25BMTFycG45QlhEY3M3SmxrSmZhQk1pdlVs?=
+ =?utf-8?B?dUdmSVkyUEd4eURnSlBGQ3hVR0M4SjBQMzk4UXZqMWd2QTFnSmU0Z2dKQVlp?=
+ =?utf-8?B?SG5YK213NER0WFhvRStWdzdBZjhGL1RQZkkyRDU5Z0gyRjFiQjRPc0UrTVAz?=
+ =?utf-8?B?WklPVzljTWdqb3ZQM2ZpSHBvdFBSeG04aThEN2hxLzJmVWI5dHpjaDhpUnFB?=
+ =?utf-8?B?a25IQzZFM1JzS3RERkpQdmVyWENjdUl0SGgxbE9tZHd2NCtIWkVoaGoxV2FK?=
+ =?utf-8?B?dnBBODkvMWkxem1NZHdmeXYydEVNTmE2dkZ0YmRIRHgwTjlsUWpEdEtiMlV0?=
+ =?utf-8?B?eXhIYVg4eUpselArbU9xVDFWSVYwai9CYmgyY0RVZ1pTQXkwdW12VzRXdWJo?=
+ =?utf-8?B?cStxRDBWK1JRT05FWUZBREJDZUhwTHRPYTdUR0MvRE81elJJaTJwWjBiRXBw?=
+ =?utf-8?B?cFJSdC9QVGFobCtWNUE4UlZaWlE2YjRvNWhtNWRzTGxmQ0ZyTWhaVXV5M2pl?=
+ =?utf-8?B?d3p1dGF1YlJHaHpMSU1yZ0FXRERaNkFiVVkvUnpIQmJ1RDVjRFUxdStCdDdR?=
+ =?utf-8?B?dm12cUtSWlZOYTYxSzlDMnNUVGJlcTE2VFFENlFoOVVJTDZBRlhUTGxmRlJM?=
+ =?utf-8?B?L2loNjdGM0pXU0FLVXVoc25EZHI2d0hjQzlvN09YQm9oYnc0cTRSMVRscnE1?=
+ =?utf-8?B?b0lzUFE3SGw0V3pGLzBFem1YUmhzMEZhQ3ZrWGZWNXhyRWJrNy9nS0RFYU9C?=
+ =?utf-8?B?UFIzbkRXN1YzMld2V2hMMlNBKzc5WGpkZGxPRjZCMCswd25tNWJqeEIyNlI0?=
+ =?utf-8?B?c25WYjQ1UVV4dVpwUEkvMis4aVFFM2FOQzlvVmNKRHNJN3lUMFVwR1UvRGU5?=
+ =?utf-8?Q?icUa/94IAudHFNNc=3D?=
+X-OriginatorOrg: vaisala.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ef56674-f886-4207-e234-08def79231a9
+X-MS-Exchange-CrossTenant-AuthSource: AS5PR06MB9040.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 10:20:40.5523
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9JSMIuoSM/Cb/NnxWajtSyhpHayWY1cECAnnsGvVdo0I2AcO5BaWDyM1nIbXOzHn96xs3xmiLv4wMHdzsMzSwT2rDVCbYI4aXst+4VrXocY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR06MB10453
 
-On 8/10/26 4:11 PM, Eric Dumazet wrote:
-> @@ -1608,8 +1655,8 @@ static __net_init int pppol2tp_init_net(struct net *net)
->  	struct proc_dir_entry *pde;
->  	int err = 0;
->  
-> -	pde = proc_create_net("pppol2tp", 0444, net->proc_net,
-> -			      &pppol2tp_seq_ops, sizeof(struct pppol2tp_seq_data));
-> +	pde = proc_create_data("pppol2tp", 0444, net->proc_net,
-> +			       &pppol2tp_proc_ops, net);
+The KSZ9897 has an SGMII/1000BASE-X capable port 7, but its chip_info
+entry never set .sgmii_port. As a result ksz_has_sgmii_port() is false,
+ksz9477_pcs_create() is never called, and ksz9477_phylink_mac_select_pcs()
+returns NULL for port 7, so no PCS is ever instantiated and a
+phy-mode = "sgmii" or "1000base-x" link on that port cannot come up.
 
-It looks like the above does not build with CONFIG_PROC_FS=n:
+The KSZ9897 shares the KSZ9477 register layout and operations
+(ksz9477_dev_ops, ksz9477_regs) and reaches its port-7 PCS through the
+same SPI-indirect XPCS register window. The register-identical LAN9646
+already enables this via .sgmii_port = 7. Set the same for the KSZ9897
+so the XPCS instance is created and 1000BASE-X / SGMII links on port 7
+negotiate correctly.
 
-net/l2tp/l2tp_ppp.c: In function ‘pppol2tp_init_net’:
-net/l2tp/l2tp_ppp.c:1659:33: error: ‘pppol2tp_proc_ops’ undeclared (first use in this function); did you mean ‘pppol2tp_chan_ops’?
- 1659 |                                &pppol2tp_proc_ops, net);
-      |                                 ^~~~~~~~~~~~~~~~~
-      |                                 pppol2tp_chan_ops
+Tested on a KSZ9897 with a 1000BASE-X fibre SFP wired directly to
+port 7: the link negotiates at 1Gbps/full duplex and passes traffic.
 
-/P
+Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
+---
+Changes in v2:
+- Resend only, no functional change: v1 was dropped when the netdev
+  patch queue overflowed.
+- Rebased onto current net-next.
+- Link to v1: https://lore.kernel.org/r/20260703-ksz9897-sgmii-port-v1-1-387e7632dd0b@vaisala.com
+---
+ drivers/net/dsa/microchip/ksz_common.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 1a9d6f83a0232830ac4996ae5f53b8bde0b3747d..a80fde0a8c7e93ea2db4baeb2f941a260e23b687 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -1484,6 +1484,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.internal_phy	= {true, true, true, true,
+ 				   true, false, false},
+ 		.gbit_capable	= {true, true, true, true, true, true, true},
++		.sgmii_port = 7,
+ 	},
+ 
+ 	[KSZ9893] = {
+
+---
+base-commit: b54074ffb813aa4b97585d97ae1ead69d96432b5
+change-id: 20260703-ksz9897-sgmii-port-48ddb100e015
+
+Best regards,
+-- 
+Tapio Reijonen <tapio.reijonen@vaisala.com>
 
