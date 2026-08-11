@@ -1,142 +1,114 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833D323AE87
-	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 17:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786469243; cv=none; b=UYuAT0SR0pKHXcBIJFqxj8NvoLBDdedWJgjkvUaVWj0crAm+CpS+5gEU1t6fJ+oJVbd8XL9JvWMv9fjLbQ0/EJD6yGmxrWXCFYGBBwpSDtNQG0sVTgMj/tEvzd/+8rPZbp/ib7i16pL1awel0GCn7b/HjTr6C772cTObDzkpbtY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786469243; c=relaxed/simple;
-	bh=HUxy2JwrxdIXTbwfODbFtN4QQx86WxIg73h1sEd3yYU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gUrHNY3+2cEpHD4KfDqWRCw+HjH3LwM5YNBxBGLzFtWBavxCW1AB/xj68tPa4goX6K+RlKfp7CwtZaH6Ds8SMajJX57us7Ttnb1PXPz7d5BfSTlAHAJ3gkasVhXEpKEStuxCKZYbC715VPTZDONhA2fBdIR3Kl0ktBJgkNd+HBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dHIbC/Z7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D7041F5ED
+	for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 17:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786469671; cv=pass; b=tcMnH3w5ztwB/GqPFmMO0ZeTWCrSS1mdyStyn7bdk1iKiReyNavrAVoBhxPr3Yku0k8a6O7ZZ6MFdHmJPRXN418O5JKNXs1Sgdkrlh3QU3iVdNwPRqUrAyaeDUEr164v4VDmymQ7zjgq282NsTz4p3awOCeA3z7VP9aA76l/eTM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786469671; c=relaxed/simple;
+	bh=tnkWXtTOxroBqg2brq9AdO3L8QlGxs6b1NY/Q/BKuwU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rmKREql3/AH/7gkH+nf+I0TbBD4iRaX5ig11NQKYjvGAYkdsT4N5nZusFTYqTB2ZEpA8HRC+zvynwWmbKFjyB2q7lSyoZ3Z4+oyIEdinW9YvvNJPl4SRftz9YvRkj4NTUMc4eXHJVTcaCHhjPmcUv8aOjB1JFrfNLD/6OlUKSe0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UTYVwamf; arc=pass smtp.client-ip=209.85.160.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dHIbC/Z7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=X6unJMePX+K+G6UtKC9LusLtaB7WxEVlPppAaRZx69A=; b=dHIbC/Z7jK2W2BT1ODRFHDm/mo
-	W/rCIu8JLYBIsdw+/SXaafcw9nC6FxCp5O6s82jP2HdKOaqTiKurj+yUy/4N7P18hPV7AcF09fqVC
-	nfVTvzI2TMM61QhhjWThHUIgVXWRlIKzKmmHcpIkJD0DeURjiigpK1VKwIeFtPQkvn8E=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wtqFu-00H8Ed-KB; Tue, 11 Aug 2026 19:27:14 +0200
-Date: Tue, 11 Aug 2026 19:27:14 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: yueqiang_fan <yueqiang_fan@foxmail.com>
-Cc: netdev@vger.kernel.org, Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [RFC PATCH] net: stmmac: dwmac-generic: add ACPI support for
- Phytium FT-2000/4 and D2000
-Message-ID: <42fa592a-0504-45c2-8255-ba43f07a28f5@lunn.ch>
-References: <tencent_CB2C11C8304ACE90A0A38744ACAA1BF8060A@qq.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UTYVwamf"
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-459281bc13bso1918400fac.2
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 10:34:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786469668; cv=none;
+        d=google.com; s=arc-20260327;
+        b=K0dX43X1oE1e7ePzQsmgrODudVtdOjdFLiWUh9H3iQRYrBz1Prsb5JajyDf41Xkwp8
+         5Kek4BT7h7VUK8dnoL6lZqac/HWQsB1kdvcYVp1OYYVYCxLc+3jezGlAEq1/kw5YL7xO
+         tD/2qknP8AVmtr2Chh3VmlbBbOmR5Q2Kh2QMjrwyckGMy0wqqbRD0PVx2XpMURmYmWaK
+         daMsF74pzErCbJKc1KgA0tRRKwEIThbNTVuLFqd0s1IiA/qTIl9hzKYdXW2CY6ZoAQ8U
+         PsB6mT+saizuadzfMhUgk+UhRgH108Rx0qubnXWzzXWaV30jMlAdsKW6J0d/rI1cXrY1
+         BgfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tnkWXtTOxroBqg2brq9AdO3L8QlGxs6b1NY/Q/BKuwU=;
+        fh=Y0PDYh+rGrFAKI85JTjQ2T8ROZCNRywqMWoA2YX4txs=;
+        b=U59Ab6np1vg7ETNObx/VM2mnHNDN/l0izuzaydXPN+cRVwII2KOs3a6EI5/47ChX9b
+         ex4kVl4XzBrVwT28nsS++nFBerJiOCC6gD2nyXccM5Wi2yo7+VtACLhq6pbz6K04nNR6
+         nWs2dQj2b6P/X00ng5dv+dd6Tcdyw3DXyhBKblMx4nRd2h44Cb3ncY0zetNtMoh1vkiI
+         4585A0YrgdLasGcPB/ssYQtzQ73Vy+IBCZAJMoCJgIYtEair2L73aM0Po8xjgcPxc3pQ
+         UI+YuTsDvi7JrAx+95u0zyUf11QVDExD7T6J2lwz+hcvFTosA+zGvKZOTchSBAzN/SwS
+         id3w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786469668; x=1787074468; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tnkWXtTOxroBqg2brq9AdO3L8QlGxs6b1NY/Q/BKuwU=;
+        b=UTYVwamf0HxgbyOraQ4hgqAcYs9Yc9/8PYBSAmijsyqFWuyDprwIgk0UE2dpcks8xE
+         E3/vZUZEdcyqJV3DqvBGZTJdsXvld+PA35cqURUNEYVw64ArgEU3yrTWZkveBMh3nqlH
+         +D7w2D2QliYIM7X4ir9/9w4on3rTm6y+hWw13ziczO4i7jNmNbv0BLf3df6zmy0myq0r
+         jW+q86+I5sjr92FAcwBzRE2u7kQtji3ZD0F1QuDGt9vtnQVG3dNN6FhNgRZLebvr/s8X
+         W8dU7HR8+l60OWh6xWemf+HMY5LPGZoAE/Moxt2Bwm8PcNX96rgEYI1lDwpDRRDi0nx1
+         Wpqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786469668; x=1787074468;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tnkWXtTOxroBqg2brq9AdO3L8QlGxs6b1NY/Q/BKuwU=;
+        b=iBU03C02WsrDTBU+IDTzY09PEbNvv+sk5iLNGiEPSxWOC7nYZjfTcjKRqCb5ry7njJ
+         /CkD8DUfVhHUriD30swjl97v6iWDjV+X2MsQrRoz5f34018vfAbLiP4jQERZgSoxgFRK
+         tpdzz2/pfsz4irjv+hD60B+0rGNW5OyFqF9lp7oPDpbQZh8MDljtXRRyijYn8UoV6q7k
+         7rDAjkiLZFOMuX8e19O6YIckLK0vOt7XNEnd7cLOFf3NhUhev5HPUS4eu51OKWVxKLYK
+         ddcZAjA+k2PuJxS22H5F2ZGmmahaGAOKLicjXF38eZlKEo0NyOHtPo82YmqfvJ4ELuXr
+         6sAg==
+X-Forwarded-Encrypted: i=1; AHgh+Rphdg3Iv+KTifeowiE7NPhndg8fL11guU/FOkla8GS78ZVjzfsGiSaJCl2Ry6nF7NNWExvNo9w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzn3sipln8Cg+rLfewiAzuWO8yT6ZUcW32ocr+Gzc0dx8zM1yyy
+	4fDVUaD+l9IBC7Wsfb7IR4Xe6r+7pP7+V6sqmUuCiTo1Vc250QEfGx7VyGZYGribDEX1vZm6iyY
+	RYz/kKcPDQAXFGer6Y5cS3Dg7n1iZlJ0=
+X-Gm-Gg: AR+sD11rMaYP9+akR/y1LpBALURLovooACni9JQQ/c14Uj629BwYTWt7AshCROnCyx9
+	DteVxJvVNbbKZbBYZvHVCbmE72m9AWUFjFzpW+OnNZqKv+CsXxUf9KdjC+d813MxuFI9J5dCRzA
+	fA785zOawQuQsTLzvHR/A69JCpHs7qU8HaYE3c3FiBUpXlW3KgrnQq9pw8C2D3giyLO8i1XfVLl
+	JUetASJQP7gqyc+t9rwLbXtofNfh3lOBxWiM+rRFmWkB4w/1bdh+I7ilc2yZGSupBViZvkfIUGN
+	cfIhupaSzPdpZumD7HnWr09LqNYcqwFFDBsyhE68jc7tsw==
+X-Received: by 2002:a05:6870:ac96:b0:417:4888:328b with SMTP id
+ 586e51a60fabf-45e216b92camr3614027fac.20.1786469667774; Tue, 11 Aug 2026
+ 10:34:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_CB2C11C8304ACE90A0A38744ACAA1BF8060A@qq.com>
+References: <20260721175258.87600-1-admiyo@os.amperecomputing.com>
+ <20260721175258.87600-2-admiyo@os.amperecomputing.com> <7089dd34-18e3-4b84-a01e-361a4ce6cc43@amperemail.onmicrosoft.com>
+In-Reply-To: <7089dd34-18e3-4b84-a01e-361a4ce6cc43@amperemail.onmicrosoft.com>
+From: Jassi Brar <jassisinghbrar@gmail.com>
+Date: Tue, 11 Aug 2026 10:34:15 -0700
+X-Gm-Features: AUfX_mzPlm-WvccCq2EA5quLqPvF8UaSr7_mraA5EsGjloTJ9JE3Kh6bssjcOpE
+Message-ID: <CABb+yY1R7E8WTv9wHMqu1JSA9p8oQXavncNLi7m0bWH52h68tA@mail.gmail.com>
+Subject: Re: [PATCH v45 1/7] mailbox/pcc.c: shmem map/unmap startup/teardown
+To: Adam Young <admiyo@amperemail.onmicrosoft.com>
+Cc: Adam Young <admiyo@os.amperecomputing.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
+	Huisong Li <lihuisong@huawei.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jeremy Kerr <jk@codeconstruct.com.au>, Matt Johnston <matt@codeconstruct.com.au>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 11, 2026 at 03:56:44AM +0000, yueqiang_fan wrote:
-> Hi all,
+On Fri, Jul 24, 2026 at 10:59=E2=80=AFAM Adam Young
+<admiyo@amperemail.onmicrosoft.com> wrote:
+>
+>
+> This will have to be rebased on the changes to the base PCC layer,
+> specifically to add the signature check.
+>
+At this point I would think you have Sudeep's ack on this change to the cod=
+e?
 
-Please don't spam the list with three copies.
-
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
-Note the bit about waiting 24 hours.
-
-> The Phytium FT-2000/4 and D2000 SoCs integrate a DesignWare GMAC that
-> is exposed to ACPI as "FTGM0001" / "PHYT0004".  The generic dwmac
-> platform driver only supports DT and legacy platform data, so on ACPI
-> (UEFI) firmware the MACs are never probed and there is no network
-> device.  Kylin ships a vendor patch for this; this RFC proposes an
-> upstream version.
-> 
-> Patch (also available at):
-> https://github.com/Bitllion/phytium-d2000-netfix/blob/main/upstream/0001-net-stmmac-dwmac-generic-ACPI-support-for-Phytium.patch
-> 
-> Summary of the change to drivers/net/ethernet/stmicro/stmmac/dwmac-generic.c:
-> 
-> - Add an ACPI device ID table (FTGM0001 / PHYT0004).
-> - Add dwmac_generic_acpi_probe_config(): mirrors the generic
->   "snps,dwmac" DT defaults, with values from the vendor (Kylin)
->   firmware DTB:
->   * phy-mode rgmii-txid.  Both SoC MACs share the same two RTL8211F
-
-https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
-
->     PHYs on a common MDIO wiring (each bus sees both PHYs at addr 0
->     and 7), so pin each MAC to its own PHY address (0 for instance
->     :00, 7 for :01) instead of scanning.
-
-If there is one MDIO bus, you should only instantiate one bus, and use
-the ACPI equivalent of a phandle for phy-handle to point to the
-correct device. If both devices have an MDIO bus, but one is unused,
-it is O.K. to instantiate the unused bus, but again, you need to use
-ACPI equivelents of phy-handle to point to the PHYs on the one used bus.
-
->   * single DMA channel (dwmac1000-compatible core): use one TX/RX
->     queue.  The netdev is always allocated with MTL_MAX_TX/RX_QUEUES
->     queues, but the per-queue DMA arrays are only set up for
->     tx/rx_queues_to_use queues and stmmac_xmit() has no
->     queue >= tx_queues_to_use guard.  With real_num_tx_queues = 1,
->     stmmac_select_queue() reduces every frame to queue 0, so the
->     missing guard is never hit.
->   * has_gmac (dwmac1000 hwif; the dwmac4 hwif fails MDIO on this
->     core), AXI burst lengths 16/8/4, pbl 16 with fixed burst, FIFO
->     sizes 0x1000.
-> - All values can be overridden through ACPI _DSD properties
->   (phy-mode, phy-addr, tx/rx-queues-to-use, snps,pbl).
-> 
-> Tested on a Phytium D2000 board (JWIPC IF24TH01) with Ubuntu 24.04 /
-> kernel 6.8.0:
-
-You need to be working on net-next, if you want this merged.
-
-both MACs probe (PHYT0004:00/01), interfaces
-> enaphyt4i0/1 are created, and cable link-up + DHCP work with no
-> transmit watchdog and no kernel panic.
-> 
-> Two questions for the list:
-> 1. Is an ACPI match table + hardcoded platform defaults acceptable for
->    dwmac-generic, or would a separate dwmac-phytium.c (like
->    dwmac-intel.c) be preferred?
-
-By using a name like dwmac-generic, you are saying that any other
-vendor wanting to use ACPI has to be 100% compatible to what you are
-doing. I doubt that is going to work.
-
-What might help you is first getting the hardware working using DT.
-You then have a reference to all the properties you need, and can
-consider how to do the same in ACPI.
-
-Think about what is specific to your board/Soc, and what is generic to
-the licensed IP. This is how the stmmac DT binding works,
-snps,dwmac.yaml describes the IP core, and then we have a number of
-SoC specific .yaml files.
-
-You need to create similar ACPI binding, and put documentation for the
-binding in Documentation/firmware-guide/acpi/dsd. Take a look at
-phy.rst, you will need to describe the PHYs you have using that
-binding.
-
-Note, this is going to be a lot of work. ACPI is not used much in
-networking. A quick and simple hack will not be accepted, you need to
-do this properly. Do a deep dive into how DT describes all things
-networking, network-class.yaml, ethernet-controller.yaml, mdio.yaml,
-ethernet-phy.yaml.
-
-
-	 Andrew
+Regards,
+Jassi
