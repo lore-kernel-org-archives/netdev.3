@@ -1,85 +1,79 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C7146A614
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9131401486
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786552620; cv=none; b=u7QctXYWzySZsAjF1zNwQtChwqSBcTMRPvN/cXBgAX1xa5lrHOjUFVcn3DXAvoMhmUD98T0xKyXtv65IegMf0FhtTBiuIrZj3G1IMnLPwRPWRNnKeKbB7nbHTrbuB2PXUPVG8+Sa3EKq5aqfoFYJfh5tVIkXV6yU3qNeQzrgB8s=
+	t=1786552718; cv=none; b=bAzMW3U6+yEmuLL9DI4hstyYkLS8I1lIJ9sastyMEFlK+GvK5RT3sfcD5xEhktONee6UASpJpSluKlaMMBAL2eJXSPp/a9BjoFD9oKWdMOYMKZrxrYsETMYIdL3a2smYouDoZ/4FtIQkwuDKpzVI/L91NTvODTboW2nfhKFdr24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786552620; c=relaxed/simple;
-	bh=qFJTd1Pohw19wep66XSQur8wBgQEbrCcoIQrmJ2RYwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cs4zMrKjMdNu0FNuewW3rxRV+7+nA9fOOu8oIRJhQQPuPb577s5ubHyOfmPowShr3Yo1H3u+ybXW1b8aA9xhnvEpZGQ3Ty6u6dm6+8Bq8e2Q6na4hFRrfutWXVhkwYCvz1brMtlZ2JYyozR2wOlVMRIyFgqmsdFIDg+P1K42ssw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=rNghMlrm; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1786552718; c=relaxed/simple;
+	bh=tTB85Akg23e06lVcRDLDOFesDp67PEjl11pUuq4rjmY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OpuTlTXN18ky9A2lfWtG+LfrDSviw1RguPBz+cLOGFwLwzrJIo0w7THSAKebGZsIIo6lAfbyU77VaTRWUjjy+NuA498YztoT7levuhvS00wyJLjMHBJoy9AXu98yds86TeDFvnTfCsQuhT5L9Omp2A6X3szmIUtCH0/944UIF6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=f+Pormg0; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="rNghMlrm"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38fdeaed181so1613772a91.1
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:36:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="f+Pormg0"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e5b048375so49315485a.1
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:38:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1786552619; x=1787157419; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S12B33otl+xs9aLy7HZkleNzMtJjJA/J8Sk9AZrxsWM=;
-        b=rNghMlrmo5RBAg1o3dhWY+CcoVj996S+6akPZ8h+HzbO4t2LwC0hzzt6Z9a5KdliKo
-         LK/3lty7rlcn2D0eJi750cFXC1c7RcfYFzBQmMcoDXq/a6Lxu0fxScyXzxmrOJG3R6J/
-         bvM7wU+y4MWxqDN4aaAFddt8lsPqPxAv86jGKGeLzMefu2fRFVCEkql/SGXqpCItcQCS
-         /lJUsXJ5smSnx2Wikdk6eF1a/byknFi/A8+Zh9B1te16pz346GZ/WlHwzlBhjdfWnh1I
-         9N5sDW+rvNiMr2m3F9D/6kertnIvKYxJWM9iL+kfNYpDJ22QZf+917XhD4I4oBp5M/IQ
-         7QuQ==
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1786552716; x=1787157516; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lPcSO++aLadMD+PhAcYNjZTJ5cORSmb5CC6MRR2Bwvk=;
+        b=f+Pormg0fOwrkb4FEsjvyT42FCVXKx7dyhlyqZVmCPLCz5tdHTLFe0Y+9vrzPgj7XA
+         80xmaN/mdwuPdvBVqNsvnxKSRzkGXrY3YB6VQ6ehGiZ7qYtM/xqFi/eRHc4t6kx39c05
+         pNnmdOvGvc8f7dQSa4baP7CeOANPXcj7L2oDR4q5jGQeDWL6v8CZ9FtFAiObLHmdqyeu
+         YJig4AE16mx5l4DKi94QOsZjn07pGc/K7izRSIeHgDZ42DFEwJbHqSLBKN5aoezEwSUH
+         Ygw354Jg3ycKGETJDAIUrFJBdByGZ3E3Eti7ob3LSasIo/ewP8mbR3zoXpz4zdeCimVD
+         EaIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786552619; x=1787157419;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S12B33otl+xs9aLy7HZkleNzMtJjJA/J8Sk9AZrxsWM=;
-        b=om0uZqLoy/z48KZW1B0d6HRGOBUCz+ZpNILM9DdhR0k4lnN3GkGwP8RioJIMTGKF2O
-         BM7A9Irdio2dkE30ALBfkjRnB6RGDtu/WaYR/Ewce8aFApTHjA9BSeJRQOyOEf4bxHK/
-         LSZOuNJj13xSbj3w/p2sfieoM/aUXZwKABrLDejmN/ZvsbjkySBFxL2zNAUO9toUoFeU
-         Kz0u4Dkc0x6QtyWQHXpwi6iFgLHHIvVee1oQr0h42XaoIp6Ljebf6B90duJHipg9DJP9
-         K7ad9LTyfT9+3PWss0BJ0/vIYa8OQIimQhb70khpnwEq0IlI6vlArSuZwzUvccitMuKH
-         my8A==
-X-Forwarded-Encrypted: i=1; AHgh+RrMer0ZvhMyXWDG8gzR0IKqC3HLnjLKySTiEZjipvrOucYZHiPWPvk9Po1IZiNnRk2tAKmudfA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+/IG/yUvDxhTp4Z6CqfvPFgR2XAJNTXUSyzehyfacAf6rVXFB
-	0UmS6GlA3csV7sUpbaDPQsMpV5hem90lIGu+IVW7SblYMwGrYwuaqsSQUG/79utFbVSK
-X-Gm-Gg: AR+sD11fmwA65ayutzmx5OR1iJ9IhGx3IZPuyCstza0PWTWHuNZDACiJT3Dl1y+mbPh
-	6it1KWOHxzNo/BcJov9yMDHCFNvPmmEWIAu10pi8vxujuHppR1lFFn9kN1com2NYEZtpRMirHat
-	KgwnIM9lEuP6TrZ7Lj2i6ktfKGD845wuuzG11udPpv1t7tiWfXmG6f3Tine1xjTSWHvCpDlwRXL
-	sJJSCTzGmAFky6JGCWSnFizsVD2jxdvbSf3zjOLUcCbzaMPikoy8Z8yAO/SAe9qhBddSDwDrB2B
-	3VjWS1PeJu+pBiM67kLd/wISRG89KJHrqW+QSZuuDMbzYj4vEfHUh95zVVM11aSrUKUBP0vJgMc
-	qP/KF9CTVxTvQEkYb+VMz430J809JfDYK00cm3SGXDxpv1BQT/UyZ23KwqEManWvxyAmNrM3rzN
-	6rUs7KixykWEOIEyqrTLt5ezwexngMTcL9IH3SHcWE3tWV+z01t7HxA1awB6HPO4sTm7iInBHAX
-	gkC
-X-Received: by 2002:a17:90b:1dc6:b0:392:ca3b:370a with SMTP id 98e67ed59e1d1-393013c4248mr8969661a91.2.1786552618585;
-        Wed, 12 Aug 2026 09:36:58 -0700 (PDT)
-Received: from Roxy.localdomain ([203.175.14.54])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931cd46314sm47499a91.6.2026.08.12.09.36.52
+        d=1e100.net; s=20251104; t=1786552716; x=1787157516;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lPcSO++aLadMD+PhAcYNjZTJ5cORSmb5CC6MRR2Bwvk=;
+        b=aUlGm0s1whjulzyOulr80YG2oHmcA5MflSxdoaOL0yaeAn548fdiefJ9aw5TF76TCn
+         RHGUutIS2//SzWgDJH0zjAHy5zQsZhE97VYvQQJJ5rG0gFaVEU40yo9hhx2skvuXCeX+
+         faXGg2D+ETOo2o9hTAMMCsc0bwC2TVARRQiGgveYWCYwJv9VrmbbxTZG/bofUZl8/unD
+         wQA5OWx73LUJl+xgNo9DGMEfWv/7I6HBOGvzK2++NJdrwuAhjRgnaI9Ygw1BES+IeBkJ
+         WYgXzABLiGSHL8xA7zz80LYhmE2ip+7IZ7ShgFyqsOkRnq/RwzHytaMNDiZZHpj4m404
+         Mk/g==
+X-Forwarded-Encrypted: i=1; AHgh+RrvSW3wumqP1hjYeXJtRR7zpCfI+XXv4FLwfWmeGkJ7K1j1efvDcVJaWkHNb1jcZ+1I8yfKJNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8b6rbkUV9XK0sr9pF27zhholfdszUwJgOvKU7jqUanH64oqMK
+	7VPsmnVwnUWFhkGEc7QyJXz1dA+fk3tpaxov4y9Bysn4/SEl3yUFDqKTOdAhiDWz5Xk=
+X-Gm-Gg: AR+sD12kJ93entc+/dYmMn7E+I7nGHsfGckU700LQ59y0Nr3v09D2hPy3JwPpjBJu57
+	dIAYDXUc5m+8lh3TiZeuwkbNeX6rt8p5fiPpzBe8PklNkmLDPBgPyaDodF3PVpDr3gNy+UgWBML
+	IYFhZE8x/9NOaU4SMBQ6qGbpfB4Er2DhxmVPglM1IbVLw/X+NZPupoZxZhO2qN+TnV1EFmNQ7N6
+	md/nSECSW9mRlOZqrqHaFeLC9c4fZ33YJx/jMXArjkjk1OgKi0orMpxqMkQGGsI06s6rrydHBok
+	S83jmYR+qsv2UIFQnNzsA7qUNcitYuXC+zkxAMffXnfd9H9ab7EIdfr66RJbP/L4u+YBFGTkn44
+	+97Swz3O9vOoNZQd0N8Lx+H0y2JrKQhaAPJEoiZMH56DP5fjp/x+mdQGSYODrwaxoHwBg8+DDvF
+	lBhx91royQuAtTS/ySeeBS+W/7REzXHhbWmOaDfBsiWTke0zzKlpAaF9MhUAsqR8+M
+X-Received: by 2002:a05:620a:7018:b0:931:3ff3:30b1 with SMTP id af79cd13be357-936b3a26859mr553359485a.4.1786552715597;
+        Wed, 12 Aug 2026 09:38:35 -0700 (PDT)
+Received: from zippy.localdomain ([73.62.185.64])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-936b5dd3d4dsm166040385a.3.2026.08.12.09.38.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 09:36:57 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: idosch@nvidia.com,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: dsahern@kernel.org,
+        Wed, 12 Aug 2026 09:38:35 -0700 (PDT)
+From: Alex Elder <elder@riscstar.com>
+To: maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ast@kernel.org,
-	kafai@fb.com,
-	joe@wand.net.nz,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net v3 1/1] ip: orphan prefetched skbs before multicast forwarding
-Date: Thu, 13 Aug 2026 00:36:38 +0800
-Message-ID: <0c52eb3d7532aaf8bccf37e0f7c922143c639735.1786552223.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1786552223.git.zhilinz@nebusec.ai>
-References: <cover.1786552223.git.zhilinz@nebusec.ai>
+	pabeni@redhat.com
+Cc: sashiko-bot@kernel.org,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	linux-stm32@st-md-mailman.stormreply.com,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] net: stmmac: DMA address handling fixes
+Date: Wed, 12 Aug 2026 11:38:29 -0500
+Message-ID: <20260812163832.271742-1-elder@riscstar.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,73 +82,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-IPv4 and IPv6 input preserve an skb->sk association installed by
-bpf_sk_assign() so that local delivery can use the selected socket under
-RCU. Both address families can also prefetch a socket in UDP early demux.
-In both paths (BPF and UDP early demux) a reference is not guaranteed to
-be held on the socket.
+Update jumbo_frm() (implemented in both "chain_mode.c" and "ring_mode.c")
+to ensure DMA errors don't get lost due to casting the result to an
+integer of the wrong size.  This was a Sashiko suggestion.
 
-When a multicast packet is not locally deliverable, IPv6 hands the
-original skb to ip6_mr_input(). IPv4's ip_mr_input() similarly keeps the
-original skb when local delivery is not needed. Either path can put the
-skb on an unresolved multicast route queue or forward it after the
-receive-side RCU section ends.
+In addition, add explicit calls to lower_32_bits() to DMA addresses
+before they are passed to cpu_to_le32(), to guarantee the type of
+the converted value is u32.
 
-After the prefetched socket is destroyed, a later skb free invokes
-sock_pfree() and dereferences the stale skb->sk. Orphan the skb before
-each non-local multicast forwarding path. Local delivery retains the
-original skb; the existing skb_clone() calls provide multicast forwarding
-with a socket-free clone.
-
-Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
-Fixes: 08842c43d016 ("udp: no longer touch sk->sk_refcnt in early demux")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
----
-changes in v3:
-- Describe UDP early demux consistently for both IPv4 and IPv6.
-- Drop the IPv6-specific unicast-MAC discussion from the commit message.
-- Leave the BPF-only TC redirect and bridge paths for a separate patchset.
-- v2 Link: https://lore.kernel.org/all/f968f497251dedbd1263c322a7c4e3e1a727161d.1786023177.git.zhilinz@nebusec.ai/
-
-changes in v2:
-- Cover the IPv4 multicast forwarding path.
-- Correct the IPv6 early-demux ordering and document the unicast-MAC
-  PACKET_HOST condition used by the reproducer.
-- Add the BPF socket-assignment and UDP early-demux Fixes tags.
-- v1 Link: https://lore.kernel.org/all/02db4590d0161e31a789dcdfa8d1be1a3212ec2e.1785724784.git.zhilinz@nebusec.ai/
-
- net/ipv4/ipmr.c      | 3 +++
- net/ipv6/ip6_input.c | 1 +
- 2 files changed, 4 insertions(+)
-
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index 1d9a4ac14fcef..e5f2b1c6150d2 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -2213,6 +2213,9 @@ int ip_mr_input(struct sk_buff *skb)
- 	if (IPCB(skb)->flags & IPSKB_FORWARDED)
- 		goto dont_forward;
+Maxime implied that a new version the first patch could handle both
+fixes, but I thought it better to do them separately.
  
-+	if (!local)
-+		skb_orphan(skb);
-+
- 	mrt = ipmr_rt_fib_lookup(net, skb);
- 	if (IS_ERR(mrt)) {
- 		kfree_skb(skb);
-diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
-index 8972863c93ee5..d332ec60f9150 100644
---- a/net/ipv6/ip6_input.c
-+++ b/net/ipv6/ip6_input.c
-@@ -622,6 +622,7 @@ int ip6_mc_input(struct sk_buff *skb)
- 		if (deliver) {
- 			skb2 = skb_clone(skb, GFP_ATOMIC);
- 		} else {
-+			skb_orphan(skb);
- 			skb2 = skb;
- 			skb = NULL;
- 		}
+					-Alex
+
+Here is v1 of the series (the patch):
+  https://lore.kernel.org/lkml/20260811192703.1765416-1-elder@riscstar.com/	 
+
+Alex Elder (2):
+  net: stmmac: use dma_addr_t for DMA addresses
+  net: stmmac: convert DMA address to lower 32 before assignment
+
+ drivers/net/ethernet/stmicro/stmmac/chain_mode.c |  9 +++++----
+ drivers/net/ethernet/stmicro/stmmac/ring_mode.c  | 15 ++++++++-------
+ 2 files changed, 13 insertions(+), 11 deletions(-)
+
+
+base-commit: 5e6de6a2b522f659defacb1551d0465ba6ce13cf
 -- 
-2.43.0
+2.53.0
 
