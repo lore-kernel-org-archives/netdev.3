@@ -1,65 +1,65 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCF444C4F0
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A764D367291
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786541304; cv=none; b=e6aMxMa1QSiE4nysYHqPcdgo+75BWytl7xfSq1USq2EXEzeaRhwrZfmJ4UUdU9CITL9+L4qs7Bi6rU4vS6VTmgeXTWZ+XTYAHwjzgXd6GVtC9N7WtxFfG+7wdF8QS8AK46ZXjcKHG+qhIs2o7hdrX9JKBfO+rtLQOx4hJDZIRC4=
+	t=1786541306; cv=none; b=VOZXszGRQrrJ7qd9MW2/mjJCT+lalTueA8lMaP3sA0kJxe7epIrOkhZF8Ct+0k3fwUFyD9Ypa03LbyBmhVmhKO3Nha9b2kYX4KIBYXfVZwAVmMSWmK36eTY2sBz9wQxK7V8/Ss07WFJWek6VffkfDL0XUhra+vTk3XpEaC89G1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786541304; c=relaxed/simple;
-	bh=hfm3IjAf+OeZzH6aELNfG97RQmCw3LrX/haeNb/06/U=;
+	s=arc-20240116; t=1786541306; c=relaxed/simple;
+	bh=9QTT3L3Pu9w2O25uxcDUaGMg8uCVo2PoWmNv0ctZxZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GWsw0gTrbAnVgJ2S3bMVS0r1sGu95urZgMycHiYZcXOu4BovgYRtNTc+Og30jxohypYl5hirticoLAk6WKAKI1XC8004yaCAWCHr3GBI5t4h1VFkXydBq7zcRzH09fLgMBJym7a7WMz04dF3uZknBlr/08HGXCuTL5ap8b2ROL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DFGGECYi; arc=none smtp.client-ip=209.85.128.42
+	 MIME-Version:Content-Type; b=YCwi+pk3Fuh50zakY7oLmF5+IGTZry9yr1B1yRwGg04jK4nyE3wtqhNJTJC0ofWwhJL75nqBEmMS0zDCyvL2RB6Sc3tobf0eb3WDjCrOjSk1fjN9Yz3XgPqWB6N88i/5/bXy2Q74gXQBNxnSKwWHtCEljzs6A4+iS9yV7oor7Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PZmJN3/B; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DFGGECYi"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49954b88fffso10494835e9.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:28:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PZmJN3/B"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47f703a9d05so648811f8f.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:28:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786541297; x=1787146097; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786541299; x=1787146099; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=eGyGvWCodz+0FevuarrifPNB90a1n0BY2okOjukDJ30=;
-        b=DFGGECYi4y5V8sYKdezlVSwdcLJOuWwmUvXc3YbU5AIvj3gFVjM9tKUApNhZIOIP3P
-         kxq7MaulBl6Z2YPF90ugRAEmwRi3oxEcBx0lbYuYlIp8+uW9Xk2j0zmkmKd6NXVbTIGJ
-         MHWSuhnOkMtR5A1i61te8SwOV9pUPpy7kVVyhxjehsEh8Vri+/5m1PSRsatrMaij8wVs
-         1lVAbIxVr91GeK9YrIRB6EkImUz18am6c9LnHAUFDVA99Z5p/uScnSnO6U2yZdcXNuRY
-         6nSkBh4UkDhh7fdmK/hzdg/YkwBmziVHZom2vqcc3auuSxHfEYogXv8qexMf0epsrqty
-         06BQ==
+        bh=u4+1ivRLPQ3G7Kv8GU2D8AHDkWXF6MhoqD65+o5xLeA=;
+        b=PZmJN3/Bh09iNNhZJZZw9cIaaz4y1ziZXNP9dgzVV6usNSr0hMzSSQ1cD0fIc4G1ZF
+         Z8wD8SFyd/paUvVeDkI9x3UOB/dtwcO2XZkjbOTDoT7bPGtK9pIZSIG6/ej/bZIVz+p7
+         LliSB2L9z3C9VjWhIwG/UGN9cHaBtBR2vgCHHCkNmSK142BxMf/cRz3670+ExF8DHaS6
+         N/7wC99Kc6Rc/U5/3k2rmu4gcxSEBAr3R1Nilr9kwpi2Rjbo9KhFSWET6yLrluNQ1EuS
+         TuwxNstlMpSFYvj/fMUwyFvDqzrCMVOtTugdbZapVeVqTYq0ujtJxNlB+I3/YjE6biEr
+         bpow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786541297; x=1787146097;
+        d=1e100.net; s=20251104; t=1786541299; x=1787146099;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eGyGvWCodz+0FevuarrifPNB90a1n0BY2okOjukDJ30=;
-        b=bFODCswrr3ZA1gdN4hMZdlLv1NBilcs11mJ1EdQqIKCuFgfw5QgQl60xls6ojhjpTj
-         KCfm+Bv03/1Eg9w0vRfsrno9uGfeimIA6ouLOgkri48S2p2bAOyBasyTHFVQ0+S+YNCC
-         qgPGQwP9b9QAhnCTTGqv3CbedmAlF4gqxeEuUvwoH73ESbsyM41Oi/4L1vMRhzcwDzfC
-         xppeF+iBdXwUSaN7XDxkPWnL6hQj75VQLFiK5fOoi70W4gXVHww4uHwV/STLIXlp/9hB
-         1z7k/ngd0SaxlmFGcu6Wcm5Vb63GLv1Dc4vPyQxB5QZzXklIrZFZNRxvunNLdeeDTik9
-         wRGw==
-X-Forwarded-Encrypted: i=1; AHgh+RqL9xbgxmtpLZHvnQoJvgkr5EwRQva4noJLT6O2VTLmU+gD7pQ3suXgeG5v5ooxpRIAsqK1lzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYEZtorNrcstJY30xIhNuNB1RN5J8a+u6TPiXrhPQMFNPmnpbW
-	60L7QoCgINdheinr873JZBWmJ60OZoR2Jazr3JB/7q9N9vxzFQUNuL0U
-X-Gm-Gg: AR+sD11A4bMuylh6wDnM9A5RIjhzKN0r2PFigujN2WIUFMnhVXkjyyJi7todSj+QtWW
-	uYS5DRe00byfktu/RmttoOw4p5eRQr8FFsYWancai1QEBulDnjSkPMGctwBSKTjQDEc/sXcwdvp
-	Kl7OYrXAVn8xUl5L3CaFZrAsaW6S3AMALL+K6jCFc1iDhIYF4rjQHLRN/zpQ10JJryafyJAmHa8
-	Sg9oESUo4Cc5woBmbWLdceIGh4jjQcu5kY3Japg5NvV3+/w4o8aaCR4E/c6sHZKW5xDcTO5KXBs
-	q6WGfZbHDMeWNidYvK4D53gDvjeUjL3NeoUgtBKxxyH/IGlxEliAeZvdL7eDWRD2zkH6xckK+ns
-	JTaRYOsEyyVxW4fyXkDdQmzKZxkNehilJ+ca3Miu1ZjlzCoTynqaDGu0Af48a394zzeDiD50wQS
-	YECdQKr/lbOT5yKzgKoTaRqvN9NT+mSC5ei7rt8C/ZokS19hU1qBcJh8T3UEw5Fprg8WSaip0QI
-	qKWhU4teYnS0xaPeDi6ennUZye9rg==
-X-Received: by 2002:a05:600c:b85:b0:498:2b1f:e0c6 with SMTP id 5b1f17b1804b1-4997c12caffmr71100895e9.18.1786541296817;
-        Wed, 12 Aug 2026 06:28:16 -0700 (PDT)
+        bh=u4+1ivRLPQ3G7Kv8GU2D8AHDkWXF6MhoqD65+o5xLeA=;
+        b=YIpS732c02k6lofnljtAbX4zFGJJrB3wxLxeiwZ41nCmy0MF9jywVNYEC4Y6GwUfPu
+         xnV5cycnqwRErI9mI7ZpjN6qM0LqxN51PnlZ1/U6fgU+XtaCvdSx1KwENKTLqVkKlpJ8
+         3oN7kxaECtTgXXfwVMWbGXJXd6xkhgFbgxqWr5Er7UnhvdKHQ27TbHy1+rMVFnUP0EjY
+         /9DRBzboG4nz9yL9LaF3RfDQE//x9FAnEz+BYDjVTUTesDgPwXzh+yUtrqjNDww9L8Xx
+         /A6LpDwMu5mVQMQbewUmgbXS/j6ofik7Eji8bK6j3KdG67gEm0nwtAxT5fYu62eIUtI/
+         8vuw==
+X-Forwarded-Encrypted: i=1; AHgh+RpmI33VacnzquYxJ9Qw88S1wVQL/PBTzvFy+omZ86Ni9F90We3/HHNJ6ki84FV6tdk/DzXHA6g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdEKTRZQzIvnB6Dbys4dqQlusQToLGdWO0k8pOQnx4mwaigcG/
+	GSb06MfOggtfT/IwVgA4ZVsK3j1NMDScocy1OBH0wZLDOkYbPaIEj7Z3
+X-Gm-Gg: AR+sD102a2R/uU2haa5gaRkqpqTuvTDV/xuyOYdwWROu1iq6hE+f1KAoOuP8WjGA06o
+	nchMUAE+kN/4GXknxFasfrSu08frNRVc6D6eYXSWBHIkTtfc7+bXfdpMpktj5zUAfhK/xV+GLrA
+	kor7Frwym+a3HMS3DDNDvGXIowJvEiiPB/MybWQbwdz6YSFK1cW7o/xhqgwD40sDu4z9ic3XXeZ
+	/mDhnSXlTZkh5k4sEvrOEwXYFC8Xm8V4mYk21oxF8yfp8G2TloegNRFl311nEY6BN+mR/VH6ZrD
+	RPLBqpdYYbAJmi9GvpdavDj+Lnk3dog9k7jKvDwNwPnwjXpbdicTXcETQVt41Ot5PDsYmOp1uDi
+	IrwxiYbt+jLniL9MZ/XugVbwnnm5t1MoL5zS0Al2wOOjh1D8akRpeV+5QKxB5IU8i81mXFEG6DW
+	aiX3Eu74QKcq8jzXjH8txJ/HWOFnjX/f5RBv67FR2eDVawY8CywhEdmZGyqEf4O3QNoGUn8B7jU
+	Q2A0u8En9ahORqvWC/v5KcjqLQ4/w==
+X-Received: by 2002:a05:600c:821b:b0:495:3e08:ad19 with SMTP id 5b1f17b1804b1-4997c1459cdmr73221095e9.9.1786541299017;
+        Wed, 12 Aug 2026 06:28:19 -0700 (PDT)
 Received: from localhost.localdomain.pl ([89.151.31.85])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997abf917csm87818995e9.13.2026.08.12.06.28.14
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997abf917csm87818995e9.13.2026.08.12.06.28.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 06:28:16 -0700 (PDT)
+        Wed, 12 Aug 2026 06:28:18 -0700 (PDT)
 From: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -78,9 +78,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	devicetree@vger.kernel.org,
 	bcm-kernel-feedback-list@broadcom.com,
 	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
-Subject: [PATCH V3 3/4] ARM: dts: BCM5301X: drop pointless "cpu" labels from switch CPU ports
-Date: Wed, 12 Aug 2026 15:27:54 +0200
-Message-ID: <20260812132755.32585-3-zajec5@gmail.com>
+Subject: [PATCH V3 4/4] ARM: dts: BCM5301X: Enable extra CPU ports for Netgear R8000
+Date: Wed, 12 Aug 2026 15:27:55 +0200
+Message-ID: <20260812132755.32585-4-zajec5@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260812132755.32585-1-zajec5@gmail.com>
 References: <20260812132755.32585-1-zajec5@gmail.com>
@@ -95,375 +95,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Rafał Miłecki <rafal@milecki.pl>
 
-Those labels don't really have any use.
+Just because port 8 is a preferred CPU port (because it provides a full
+switch functionality) it doesn't mean other ones can't be used. Let
+software decide which CPU port to use.
 
 Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 ---
- .../broadcom/bcm4708-buffalo-wzr-1166dhp-common.dtsi |  4 ----
- .../arm/boot/dts/broadcom/bcm4708-luxul-xap-1510.dts |  4 ----
- .../arm/boot/dts/broadcom/bcm4708-luxul-xwc-1000.dts |  4 ----
- arch/arm/boot/dts/broadcom/bcm4708-netgear-r6250.dts |  4 ----
- .../boot/dts/broadcom/bcm4708-smartrg-sr400ac.dts    |  4 ----
- .../dts/broadcom/bcm47081-buffalo-wzr-600dhp2.dts    |  4 ----
- .../boot/dts/broadcom/bcm47081-luxul-xap-1410.dts    |  4 ----
- .../boot/dts/broadcom/bcm47081-luxul-xwr-1200.dts    |  4 ----
- .../arm/boot/dts/broadcom/bcm4709-linksys-ea9200.dts |  4 ----
- arch/arm/boot/dts/broadcom/bcm4709-netgear-r8000.dts |  4 ----
- .../boot/dts/broadcom/bcm47094-asus-rt-ac3100.dtsi   | 12 ------------
- .../boot/dts/broadcom/bcm47094-dlink-dir-885l.dts    |  4 ----
- .../boot/dts/broadcom/bcm47094-dlink-dir-890l.dts    |  1 -
- .../boot/dts/broadcom/bcm47094-linksys-panamera.dts  |  6 ------
- .../boot/dts/broadcom/bcm47094-luxul-abr-4500.dts    |  4 ----
- .../boot/dts/broadcom/bcm47094-luxul-xap-1610.dts    |  4 ----
- .../boot/dts/broadcom/bcm47094-luxul-xbr-4500.dts    |  4 ----
- .../boot/dts/broadcom/bcm47094-luxul-xwc-2000.dts    |  4 ----
- .../boot/dts/broadcom/bcm47094-luxul-xwr-3100.dts    |  4 ----
- .../boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts |  4 ----
- arch/arm/boot/dts/broadcom/bcm53015-meraki-mr26.dts  |  2 --
- arch/arm/boot/dts/broadcom/bcm53016-meraki-mr32.dts  |  2 --
- 22 files changed, 91 deletions(-)
+After some extra research I discovered we can't blindly update all
+BCM5301X (Northstar) devices enabling all 3 ports (5, 7 and 8).
+Sometimes extra ports require fixed link but it seems to be device
+specific.
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm4708-buffalo-wzr-1166dhp-common.dtsi b/arch/arm/boot/dts/broadcom/bcm4708-buffalo-wzr-1166dhp-common.dtsi
-index 9f9084269ef5..b3bd99ae01f4 100644
---- a/arch/arm/boot/dts/broadcom/bcm4708-buffalo-wzr-1166dhp-common.dtsi
-+++ b/arch/arm/boot/dts/broadcom/bcm4708-buffalo-wzr-1166dhp-common.dtsi
-@@ -178,10 +178,6 @@ port@4 {
- 			label = "wan";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm4708-luxul-xap-1510.dts b/arch/arm/boot/dts/broadcom/bcm4708-luxul-xap-1510.dts
-index 72e960c888ac..efef16da1242 100644
---- a/arch/arm/boot/dts/broadcom/bcm4708-luxul-xap-1510.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm4708-luxul-xap-1510.dts
-@@ -82,10 +82,6 @@ port@4 {
- 			label = "lan";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm4708-luxul-xwc-1000.dts b/arch/arm/boot/dts/broadcom/bcm4708-luxul-xwc-1000.dts
-index 750e17482371..842dc9af6fc2 100644
---- a/arch/arm/boot/dts/broadcom/bcm4708-luxul-xwc-1000.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm4708-luxul-xwc-1000.dts
-@@ -85,10 +85,6 @@ port@4 {
- 			label = "lan";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm4708-netgear-r6250.dts b/arch/arm/boot/dts/broadcom/bcm4708-netgear-r6250.dts
-index 2bdbc7d18b0e..e480e2006657 100644
---- a/arch/arm/boot/dts/broadcom/bcm4708-netgear-r6250.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm4708-netgear-r6250.dts
-@@ -119,10 +119,6 @@ port@4 {
- 			label = "wan";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm4708-smartrg-sr400ac.dts b/arch/arm/boot/dts/broadcom/bcm4708-smartrg-sr400ac.dts
-index 03f4a6d37a67..4a72501cfdfd 100644
---- a/arch/arm/boot/dts/broadcom/bcm4708-smartrg-sr400ac.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm4708-smartrg-sr400ac.dts
-@@ -160,10 +160,6 @@ port@4 {
- 			nvmem-cell-names = "mac-address";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm47081-buffalo-wzr-600dhp2.dts b/arch/arm/boot/dts/broadcom/bcm47081-buffalo-wzr-600dhp2.dts
-index 192b8db5a89c..55f7a12001bc 100644
---- a/arch/arm/boot/dts/broadcom/bcm47081-buffalo-wzr-600dhp2.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47081-buffalo-wzr-600dhp2.dts
-@@ -142,10 +142,6 @@ port@4 {
- 			label = "wan";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm47081-luxul-xap-1410.dts b/arch/arm/boot/dts/broadcom/bcm47081-luxul-xap-1410.dts
-index 0198b5f9e4a7..a7aa8992b87d 100644
---- a/arch/arm/boot/dts/broadcom/bcm47081-luxul-xap-1410.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47081-luxul-xap-1410.dts
-@@ -78,10 +78,6 @@ port@4 {
- 			label = "poe";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm47081-luxul-xwr-1200.dts b/arch/arm/boot/dts/broadcom/bcm47081-luxul-xwr-1200.dts
-index 73ff1694a4a0..3fc4bded5cf2 100644
---- a/arch/arm/boot/dts/broadcom/bcm47081-luxul-xwr-1200.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47081-luxul-xwr-1200.dts
-@@ -145,10 +145,6 @@ port@4 {
- 			nvmem-cell-names = "mac-address";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm4709-linksys-ea9200.dts b/arch/arm/boot/dts/broadcom/bcm4709-linksys-ea9200.dts
-index 9041dc6bfa8d..23e5ae237602 100644
---- a/arch/arm/boot/dts/broadcom/bcm4709-linksys-ea9200.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm4709-linksys-ea9200.dts
-@@ -196,10 +196,6 @@ port@5 {
- 		port@7 {
- 			status = "disabled";
- 		};
--
--		port@8 {
--			label = "cpu";
--		};
- 	};
- };
- 
+ arch/arm/boot/dts/broadcom/bcm4709-netgear-r8000.dts | 4 ----
+ 1 file changed, 4 deletions(-)
+
 diff --git a/arch/arm/boot/dts/broadcom/bcm4709-netgear-r8000.dts b/arch/arm/boot/dts/broadcom/bcm4709-netgear-r8000.dts
-index a4b135d37659..bbb6b869507e 100644
+index bbb6b869507e..ef8f3b41d696 100644
 --- a/arch/arm/boot/dts/broadcom/bcm4709-netgear-r8000.dts
 +++ b/arch/arm/boot/dts/broadcom/bcm4709-netgear-r8000.dts
-@@ -242,9 +242,5 @@ fixed-link {
- 				full-duplex;
- 			};
- 		};
--
--		port@8 {
--			label = "cpu";
--		};
- 	};
- };
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-asus-rt-ac3100.dtsi b/arch/arm/boot/dts/broadcom/bcm47094-asus-rt-ac3100.dtsi
-index 2d2e7e581291..8cc9db307527 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-asus-rt-ac3100.dtsi
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-asus-rt-ac3100.dtsi
-@@ -151,18 +151,6 @@ port@4 {
- 			nvmem-cells = <&et0macaddr 1>;
- 			nvmem-cell-names = "mac-address";
- 		};
--
--		port@5 {
--			label = "cpu";
--		};
--
--		port@7 {
--			label = "cpu";
--		};
--
--		port@8 {
--			label = "cpu";
--		};
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-dlink-dir-885l.dts b/arch/arm/boot/dts/broadcom/bcm47094-dlink-dir-885l.dts
-index c5099defe9f9..74290ada098c 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-dlink-dir-885l.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-dlink-dir-885l.dts
-@@ -167,9 +167,5 @@ port@5 {
- 		port@7 {
- 			status = "disabled";
- 		};
--
--		port@8 {
--			label = "cpu";
--		};
- 	};
- };
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-dlink-dir-890l.dts b/arch/arm/boot/dts/broadcom/bcm47094-dlink-dir-890l.dts
-index 944d592dee2c..f79c9c5e2023 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-dlink-dir-890l.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-dlink-dir-890l.dts
-@@ -205,7 +205,6 @@ port@7 {
- 		};
- 
- 		port@8 {
--			label = "cpu";
- 			phy-mode = "rgmii";
- 		};
- 	};
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-linksys-panamera.dts b/arch/arm/boot/dts/broadcom/bcm47094-linksys-panamera.dts
-index 675967a1ad0a..0c89e103a95b 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-linksys-panamera.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-linksys-panamera.dts
-@@ -241,7 +241,6 @@ port@4 {
+@@ -226,8 +226,6 @@ port@4 {
  		};
  
  		port@5 {
--			label = "cpu";
- 			status = "disabled";
- 
- 			fixed-link {
-@@ -251,7 +250,6 @@ fixed-link {
- 		};
- 
- 		port@7 {
--			label = "cpu";
- 			status = "disabled";
- 
- 			fixed-link {
-@@ -259,10 +257,6 @@ fixed-link {
- 				full-duplex;
- 			};
- 		};
--
--		port@8 {
--			label = "cpu";
--		};
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-luxul-abr-4500.dts b/arch/arm/boot/dts/broadcom/bcm47094-luxul-abr-4500.dts
-index e374062eb5b7..fc518a8a28cd 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-luxul-abr-4500.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-luxul-abr-4500.dts
-@@ -104,10 +104,6 @@ port@4 {
- 			label = "lan1";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xap-1610.dts b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xap-1610.dts
-index 3a33705c2969..532d3edeec70 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xap-1610.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xap-1610.dts
-@@ -97,10 +97,6 @@ port@1 {
- 			label = "lan";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xbr-4500.dts b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xbr-4500.dts
-index cf95af9db1e6..3ba672b090cd 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xbr-4500.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xbr-4500.dts
-@@ -104,10 +104,6 @@ port@4 {
- 			label = "lan1";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwc-2000.dts b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwc-2000.dts
-index 992c19e1cfa1..9149bf85e716 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwc-2000.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwc-2000.dts
-@@ -72,10 +72,6 @@ port@0 {
- 			label = "lan";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3100.dts b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3100.dts
-index 4d0ba315a204..7133bbb94ae7 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3100.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3100.dts
-@@ -144,10 +144,6 @@ port@4 {
- 			nvmem-cell-names = "mac-address";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts
-index 8e487f60a2cc..0a5c6df78466 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-luxul-xwr-3150-v1.dts
-@@ -135,10 +135,6 @@ port@4 {
- 			nvmem-cell-names = "mac-address";
- 		};
- 
--		port@5 {
--			label = "cpu";
--		};
--
- 		port@7 {
- 			status = "disabled";
- 		};
-diff --git a/arch/arm/boot/dts/broadcom/bcm53015-meraki-mr26.dts b/arch/arm/boot/dts/broadcom/bcm53015-meraki-mr26.dts
-index 08abfdc63d18..38af5b3428d2 100644
---- a/arch/arm/boot/dts/broadcom/bcm53015-meraki-mr26.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm53015-meraki-mr26.dts
-@@ -137,8 +137,6 @@ port@0 {
- 		};
- 
- 		port@5 {
--			label = "cpu";
+-			status = "disabled";
 -
  			fixed-link {
  				speed = <1000>;
  				full-duplex;
-diff --git a/arch/arm/boot/dts/broadcom/bcm53016-meraki-mr32.dts b/arch/arm/boot/dts/broadcom/bcm53016-meraki-mr32.dts
-index 45bd27906f29..f635a49e1857 100644
---- a/arch/arm/boot/dts/broadcom/bcm53016-meraki-mr32.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm53016-meraki-mr32.dts
-@@ -178,8 +178,6 @@ port@0 {
+@@ -235,8 +233,6 @@ fixed-link {
  		};
  
- 		port@5 {
--			label = "cpu";
+ 		port@7 {
+-			status = "disabled";
 -
  			fixed-link {
  				speed = <1000>;
