@@ -1,107 +1,220 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC1F36492A
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786497051; cv=pass; b=pAoMYnxKlbT/22/NK22sGBBjyeuCtJM06GyOJJqNfg1F0flOJsoSeH1tZku87AU9QwtY4vKqj5Hzm9SdsDiv+xp6gmqEOplrOQrKF1cwAxCPTVtV8pFYFqPo+NGn7LLzqEgxTEmZB5vOFAkpfoZJRAshhdINgAP8mDv9NxnDQ2E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786497051; c=relaxed/simple;
-	bh=5t3RlIc3kEj4RmoONu8QAh7Ng832/Cl8+ScHBGHKlaM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=USPlm3HcrUrY4mZrwPI/I/djB7iHq1EAj0Jt4O33BqkpETmmmgSH+URaU70OyOwggbadyEbHUjnf5mSjazklRnNuhTCIBTA41FiPNpBIUvxAhn3Gjhczj283AtZn0m4ysxU676jcZIVLQk2cmRJr5M3uR3NhO4CbaQ77pVlntiQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i6/hjLdK; arc=pass smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F492364E9A
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:11:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786497064; cv=none; b=NJoBek5/JXQul97n8j0Ds5tc7kcLBGinIAXjJXrNqlDrlpk8tIDNrSpte4sm2152lM0ayTc61CJz9iTV9F8yv63eZrBAW1kk8NV9rL8Mvb1iTCRWidnnc7RIGHAzq0uep/55taRKyRJxKXnel6MazoA8GOV/UyNbNPtMoPTZyjU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786497064; c=relaxed/simple;
+	bh=zzxvP5H5NRA3nF4PnwW+otE7yewJqauhIe4H/ioHBak=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=roJ5+O1vTH4MTZQ+p00msHOz7LpF2eEry48/huiBVl3k8uoiydiEhnWBHJB9282M9kQcbYM0wyZrbK7onQlrEnDaHkCJnwhrBGMUdYEdNsTgNIbU0XDhf8BYHbeC7ATaIItvQwOackDpnuAgLyPgx4ZKTUQdxT5MaK9tQsC9r/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ot38mCdR; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i6/hjLdK"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-81ee6b2da98so5662417b3.3
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:10:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786497049; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NhR7U4CnRQ1TDFyeRso3PEV+jjRtwrAMig9lTrkGJ6RFSVR252MduAiw32MyGNx42C
-         kp7YWalZNytc9m/W+LX001jnAqmvEboYOb7i8/tasxQmw77+AJSA3iTC6NRkeoJwEjPK
-         8P5s1giKZkIGuSHuFJ2aFC4dhfMoLOAPnBq+do7/mTTAWMqf9lmOtsfEIEerSL2Vo5e4
-         eGUmrfKEyvi7eIkkSyZ53KxkbaQPzKDIq7SyPcVCRXh8OObZktYkSZr4eLheYxRDQrIp
-         2g0NQdnbFOCoA85sxIeQsYTF0sO5rx5CS0eNXz9pwpPPSNHotSGAdmdeoxRLhmrrti0z
-         tg0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ePxAQ1gF6Cdxv8dE9tKiquqdBA8YHy7R3qxF5nLM8Bs=;
-        fh=Wx7viPwQH2W9S1xXRhg6hVkh63lE1rYUIIToSQ4/b7A=;
-        b=GVrCerPAJGGItmRjD2GatB5mDLrR8pIIYYDuAXycd77iAgMe8BRlP4w40lrZ8xrnQH
-         zHQ98AQJrmBQARX/8Jajv2crFhcq6YTm2oYq4KQIrLadVMKtKPGnpSfmorxAfGcdRFF6
-         OSV8/jIQNd5AEL/NOeMw7yfUbu/6Ink1pOJTVJwq2Q/3u9i7i/lgDI5pIl5s6eF2lWe+
-         XsoTfEjhRDDIefryh8RknbQhoVL9jAAJjZyG6brXWkHD9YRVYrcsWCXBKjv5Y+I0uOYV
-         xYPyQPTAyYTWyGPHNozfuM4UcJpb974pQ69iSJNPUZuATyAbZRvZAQDJhkqANgcLxoun
-         5sSQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ot38mCdR"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e2f61c09dso610222a91.2
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:11:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786497049; x=1787101849; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ePxAQ1gF6Cdxv8dE9tKiquqdBA8YHy7R3qxF5nLM8Bs=;
-        b=i6/hjLdKjPNAtLaQlKA3lChB9ziBannBtT6yj4eo1dY/zPiVQoS6c6RZ4hm9YM0mKh
-         tecoacNhbX3vThbS7s4SZJIl9NSSdxRG6QPDOslu69S0KKZIz2c72pVHP7C+rlBvoYIB
-         t1f9el55QURcYsS3r7sL/X9YksPyrXcNrp9JEqQv7Rd0SLBLmzxdM9Eajk9gXtqIOdHm
-         R0AXoiV/TZWjYLZf7x7VgRHhLJMYH8t8i315JAWwec40HY5c27ZqbH6gsRBkErEgLUim
-         zRJSjlu4sv7vD3n9HcWN1UaRt1Zjm9EB6FbABURgs1tQRaFG6wcecP6CI2eNji++vmRo
-         c6Pw==
+        d=google.com; s=20251104; t=1786497059; x=1787101859; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ymmox5ngHEOJixoUwvIF+857zRrBcDTQSn1VqCUgM4A=;
+        b=Ot38mCdRVLMEOJFbAbEFqykoETHW0axQWD19emZcmFUANNyKvwhzalrXYPFsvF2FS8
+         yglbPCuKRdnOIUKhOgXB4IaXM3kC0dVpIosHTCJ1QQBbpIDRSnjc5TKAcEMBWappDnTr
+         KjpmJxxJ5XOQ7tdKxnL66+hgiNmknYRnVGrZ7HFcXea708KWra+QpBJpoAJ1JcyksvMB
+         omrewN3PFzdNsFqaPiwcwZfhExM9q3vtNM6EObrW1jvfdsV+rcYXNdSw95kjmKxgRWGc
+         iB6yIUQ46DxFyEq0Up5bG7Iz4n7m2YUon273Jp6E0gWlC6QlepeDJvEIZl8/kaSuHSEh
+         K8Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786497049; x=1787101849;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ePxAQ1gF6Cdxv8dE9tKiquqdBA8YHy7R3qxF5nLM8Bs=;
-        b=Eb8EQo+MAI9aSM/I5+feA3xHlFVdk6691ZmB3RDccI5LxAmEqWVqlo9gP/7C8DZPCc
-         BeN8MANmODkXOb7ZzAyZUD1bovj3io28PR9SGpuBxsLRACYWc9X3BCzLijnku/E3LXUY
-         MMAc0wEbXLonHsFM6AyuQG96t7AjhM25WPuwV/HVeMF6kMgelDD5XKZ2ZcHWmhaFDfJe
-         3KviIai1mMNcEnqewd+o13ABN2QkCBLhuTCtf3ogHA1G2JeiSyaUbt3G8GAds2sfXiJi
-         ajnmC54Crxgr5WIJF8Gic1GI+ysQeMZMXdx6tivPBUFVWvL8StGb6ZhwqgxqgU6CFUQ/
-         N0ig==
-X-Forwarded-Encrypted: i=1; AHgh+Rp1qvYOotAit4ezs9XK3NWmDFp7B+G/1+ZLL25jbRVJFc/kil6aiWKrmb8an2WHLS+jTXXsAcw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFvNx6wrhwUCLg5XkxQO+294UK10HWCT/zmXdCYQoENfqkwp3W
-	9B5sLKjyuiY1x3C7UOeftWPX80k7N0SwR5ptExMsjUs6bBbZRhiFekC1oFjeRfXhaMgKnz2Y+r3
-	Kugn94/KuSixVWzadPbq6TyarKtQPx88=
-X-Gm-Gg: AR+sD12sV5HSAaIPf5MekEubIswiMhWAFPTPwniRUu2Mn7VAHk1ldAwM+Cxgjf249Z8
-	Q3/QO/d+2siGOU5+Gx36RQbmKeRhvZX3lBwh9If8jfUHqGcBvjhO9cnnnAKB/TJdsAAJN83ODec
-	sLBwn0PBOPOTGlfImdwYHKQ0WwSrH200FQbYNv09B8AAq6rknltliw7M4SEpzZZUtqCBgMbAjOM
-	gCAxmvMBdBnnk26rwruBWJJdWNCYOFVDdPeiRwjZ7iaXafNaPIfMEizfNLD8LE5vG6v36LUuewc
-	DaO96ZTML8nyNCjNrdeahLGzeOc9i+8gMjg54GGyCDfR8Q==
-X-Received: by 2002:a05:690c:6e8a:b0:82d:aaf8:b263 with SMTP id
- 00721157ae682-83105644946mr10914937b3.10.1786497048925; Tue, 11 Aug 2026
- 18:10:48 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786497059; x=1787101859;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ymmox5ngHEOJixoUwvIF+857zRrBcDTQSn1VqCUgM4A=;
+        b=P/hqZpcJTFEN/62QDmWyRyyBhA4Mw+R1MV1yvs1i1bMEoqMH7FLTT0XoAHOz0lyL68
+         qk0jmzrYodOMN0Ot0kshc7pm+iHnt7dCv/hMTBkolHf0dvIoGnI8pFgXB3zexIEQv2pM
+         oC3DMe+1uhttghhk3xLFh+W5XT7IYyACKsPeR09QiSU99W2HKJllYEYXrgMdeaODzRzf
+         MYTJ+B63j91oGC0HhvqjirVkowG5CfNZRABheanJMfU9cGGNLxO0L2Upcoer4cagvkft
+         B3d3cTpkrEMb/u4Bisii+wbKpUtHZgRNrWjb8NbIfZo6nssv4ilhzl7PMdGOllbLlqkB
+         T8pA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpx2V2vN35UorVdn+/fGtkICYl0O4q3VehTNxrUB8LrR85OA7vV6tHY7X4T7oRwq7bPbN4F8P4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFhMfcbtCGjCFADsBwD7ypl825ECciXipw5NidJRRUAakBgTqd
+	p2andbgXM1I38jEsVskdbY31L6gAGajj7o82oDJAEKq16w42hdWF9L6p+6tYKnMiqP+Pf2KJMsX
+	LIjiG8g==
+X-Received: from dlbro11.prod.google.com ([2002:a05:7022:158b:b0:140:ef7c:eac])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5847:b0:381:6c5:3f63
+ with SMTP id 98e67ed59e1d1-393011f39e1mr1328797a91.6.1786497059420; Tue, 11
+ Aug 2026 18:10:59 -0700 (PDT)
+Date: Tue, 11 Aug 2026 18:10:50 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CANE+tVpU7gL3ZJ9ro4oNKsqdN01mDMBpUou0ABakiO2WrT5gSw@mail.gmail.com>
- <antTASZYV9q81Ucc@chamomile>
-In-Reply-To: <antTASZYV9q81Ucc@chamomile>
-From: Wei Fang <void0red@gmail.com>
-Date: Wed, 12 Aug 2026 09:10:38 +0800
-X-Gm-Features: AUfX_mzNPWt8-9A5YfiRwXeRO2G3IDeBrCjSbnyHuFx6225wNASGATbNgDPNNeo
-Message-ID: <CANE+tVq_U0dM7hXE3Vn5VVFR5iFD_JoSfQv0ZVn28RuepUy0cw@mail.gmail.com>
-Subject: Re: [nf_tables] rbtree interval set: in one batch, re-adding element
- E0 makes deleting an unrelated interval E1 fail with -ENOENT
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: fw@strlen.de, netfilter-devel@vger.kernel.org, netdev@vger.kernel.org, 
-	k.chen@smail.nju.edu.cn
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260812011056.902771-1-surenb@google.com>
+Subject: [PATCH v5 0/5] mm: Unconditional per-VMA locks and cleanups
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
+	david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
+	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+v2 version of this patchset [1] was written by Dave Hansen and per his
+request, I'm taking over this series.
 
-Understood - thank you for the explanation.  I accept the
-ordering point: the reproducer's delete message sent the END
-element before the START element of its interval, which does not
-follow the element ordering this interface relies on.
+tl;dr: Make per-VMA locks available in all configs. Simplify some
+of the per-VMA lock users now that they can rely on them being
+always available.
 
-Thanks again for your time.
+Binder and networking folks: Your code is the target of the cleanups.
+I'm cc'ing you now on v2 because there's emerging consensus on the mm
+side that the approach here is sane. I'm not quite sure how this pile
+would get merged, but ack/review tags would be appreciated if this
+looks good to you.
 
-Best regards,
+Longer version:
+
+When working on some x86 shadow stack code, it was a real pain to
+avoid causing recursive locking problems with mmap_lock. One way
+to avoid those was to avoid mmap_lock and use per-VMA locks instead.
+They are great, but they are not available in all configs which
+makes them unusable in generic code, or if you want to completely
+avoid mmap_lock.
+
+Make per-VMA locks available in all configs. Right now, they are
+only available on select architectures when SMP and MMU are enabled.
+But all of the primitives that per-VMA locks are built on (RCU, maple
+trees, refcounts) work just fine without SMP or MMU.
+
+The only real downside is that making VMAs a wee bit bigger on !MMU
+and !SMP builds.
+
+The upside is much cleaner code, lower complexity and less #ifdeffery.
+
+Clean up a binder VMA locking site now that it can rely on per-VMA
+locks.
+
+Building on top of universally-available per-VMA locks, introduce a
+new helper. Since the new API does not require callers to have a
+fallback to mmap_lock, it's much easier to use. Callers can
+potentially replace this very common kernel idiom:
+
+	mmap_read_lock(mm);
+	vma =3D vma_lookup()
+	// fiddle with vma
+	mmap_read_unlock(mm);
+
+with:
+
+	vma =3D vma_start_read_unlocked(mm, address);
+	// fiddle with vma
+	vma_end_read(vma);
+
+Which avoids mmap_lock entirely in the fast path.
+
+Use that new API for another binder site and one in the TCP code.
+
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+Cc: Todd Kjos <tkjos@android.com>
+Cc: Christian Brauner <christian@brauner.io>
+Cc: Carlos Llamas <cmllamas@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org
+
+Changes from v4 [2]:
+Patch 1:
+- Changed vma_assert_locked() NOMMU implementation to assert ma->vm_mm is
+  locked, per Sashiko
+- Amended patch 1 changelog to include vma_start_read_locked() and
+  lock_vma_under_rcu in NOMMU considerations section, per Lorenzo Stoakes
+- Changed comments for stack_map_lock_vma(), per Matthew Wilcox
+- Added early exit in lock_vma_under_rcu() for !CONFIG_MMU,
+  per Lorenzo Stoakes
+Patch 2:
+- Updated changelog to explain the extra change making missing VMA
+  handling consistent, per Carlos Llamas
+Patch 3:
+- Rewrote changelog to better represent the changes in the patch,
+  per Matthew Wilcox
+Patch 5:
+- Fixed vma_start_read_unlocked() function name in the changelog,
+  per Matthew Wilcox
+All patches
+- Added Acked-by and Reviewed-by, per Vlastimil Babka, Lorenzo Stoakes and
+  Alice Ryhl
+- Rebased over mm-unstable, per Lorenzo Stoakes
+
+Applies cleanly over mm-unstable
+
+[1] https://lore.kernel.org/all/20260610230409.A44D29FA@davehans-spike.ostc=
+.intel.com/
+[2] https://lore.kernel.org/all/20260806200548.3124802-1-surenb@google.com/
+
+Dave Hansen (5):
+  mm: Make per-VMA locks available universally
+  binder: Make shrinker rely solely on per-VMA lock
+  mm: Add RCU-based VMA lookup helper that waits for writers
+  binder: Remove mmap_lock fallback
+  tcp: Remove mmap_lock fallback path
+
+ arch/arm/Kconfig                       |  1 -
+ arch/arm64/Kconfig                     |  1 -
+ arch/loongarch/Kconfig                 |  1 -
+ arch/powerpc/platforms/powernv/Kconfig |  1 -
+ arch/powerpc/platforms/pseries/Kconfig |  1 -
+ arch/riscv/Kconfig                     |  1 -
+ arch/s390/Kconfig                      |  1 -
+ arch/x86/Kconfig                       |  2 -
+ drivers/android/binder/page_range.rs   | 19 +-----
+ drivers/android/binder_alloc.c         | 62 +++++++----------
+ fs/proc/internal.h                     |  2 -
+ fs/proc/task_mmu.c                     | 93 -------------------------
+ include/linux/mm.h                     | 12 ----
+ include/linux/mm_types.h               |  8 +--
+ include/linux/mmap_lock.h              | 94 +++++++++++---------------
+ kernel/bpf/stackmap.c                  | 17 ++---
+ kernel/bpf/task_iter.c                 |  2 +-
+ kernel/fork.c                          |  2 -
+ mm/Kconfig                             | 12 ----
+ mm/Kconfig.debug                       |  1 -
+ mm/debug.c                             |  4 --
+ mm/init-mm.c                           |  2 -
+ mm/memory.c                            |  2 -
+ mm/mmap_lock.c                         | 61 ++++++++++-------
+ mm/pagewalk.c                          |  2 -
+ mm/rmap.c                              |  2 -
+ mm/userfaultfd.c                       | 61 ++---------------
+ net/ipv4/tcp.c                         | 31 +++------
+ rust/kernel/mm.rs                      | 57 ++++++++++------
+ tools/testing/vma/include/dup.h        |  5 +-
+ tools/testing/vma/vma_internal.h       |  1 -
+ 31 files changed, 166 insertions(+), 395 deletions(-)
+
+
+base-commit: 1029098ee3275ea5b78e329ce132262affa2f8cc
+--=20
+2.55.0.691.gc56d675ccc-goog
+
