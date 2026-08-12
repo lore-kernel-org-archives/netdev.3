@@ -1,235 +1,301 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC083594A
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 04:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408A53290C7;
+	Wed, 12 Aug 2026 05:12:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786509519; cv=none; b=RY8lteIfymyVhh+W2/Ny4G3im8qCDa/0GUY4UBc88oNEOlPlgib2+y+IyMlbE5E7A1sn9JGqfHS6gPoaG0B6hn5VOlbL7ZFgRqXi4BZN6ge/4zojEZhVk8KAinXEOCt/ZCWwXRnvYrPyqRaaTkiZrb88S/i/zrj0t/KC8XhfOTI=
+	t=1786511572; cv=none; b=mJrF8uGtLMDi+cBilh44APZQsavq3ulBqWX4Destia6LHjkpaO0LtRdFHbSZjIG4+trLChXycQj5c+U6Qd2m4r4ylcS/huLVyAI0wGjB0MFJMYps+6po8dQ7L86xVmPNoGMskQLIfqPEEL8sA+fcR6P68zehy723W+DR7gooMOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786509519; c=relaxed/simple;
-	bh=iTz+MsOWrYRHHGjiIOhVyAFJR3EzWcm4T/qdaln7B/A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hgRENi9OcrYEL4+hBjDHIF5Ir7EWWubqDAt9zidMaWWkvKnStHa1W5XZaU1g57vmr6bvvMJcu72ng1IwZObzOK5z8gNEX677Mm07R0XjkngBmF699CezP/f+AG6e0pThwNpWdj8ZvOSfmxAlm/mV5iJjAQ8Usphk0ziCeqTdibY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dDGKzETu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=AGX+xyU+; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1786511572; c=relaxed/simple;
+	bh=mTiGf0I08I0u/Fsy3ohnrOJWDLKW+uJUe7mJY3PO5os=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W+gO/uqsjGMgjEdLMCJjFX0chxiOuzTmb8U3N+/qs01SVTzMAOPsiOHDxDo/tn5Ilsf4cQPn8x6C+h33EoSkyRqoa78NDftIuU4WYt+rUj5Qtj6v0Grwg9fjtGj7stZusdVCVQpWkGNZ9+rmoeDmMB5VAF1MRuw5cR6fnVowvOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=T9cPVTWz; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dDGKzETu";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="AGX+xyU+"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67C4UFkc2675278
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 04:38:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="T9cPVTWz"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67C57VdY994965;
+	Tue, 11 Aug 2026 22:12:39 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=KdFIJwL/ItKbdlpitmpyns
-	ip1Jdt+5SlhtYQlqlCk0g=; b=dDGKzETudy29AjLkkhcrI3J8T/ooJ3pvWamvwH
-	aZUQlH8jGMRBYkLFtMn/raO7fadcVhwKMxeuuV7MSztfP5u11IiyIO8HO/IMeSSs
-	rvegBRhU5LL+tvgGSLgRy683dW4zN1LxG8T8mRuzHWt0vxtRKGVl2kxMDlu4HiDL
-	TJnDPG7ITzrNvFPowflV2TkY2ePiTi4D2wp/hcKHlMQO4f5J/MzsWYO5VuBAz0CX
-	dKgWC+8apkGrGHVxjJCdat0AA86TXXgaNRHyOhorBUkNaisfVotUPF4ZSPC9O1pw
-	XuX37hLw06XvveTz/9ifCbtdvM52at/9Ee0+1wtcMxbNG3Gw==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g0hj1g2mq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 04:38:36 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d001671a54so13303245ad.2
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 21:38:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1786509516; x=1787114316; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=KdFIJwL/ItKbdlpitmpynsip1Jdt+5SlhtYQlqlCk0g=;
-        b=AGX+xyU+44QCXJnzlknnI7cGRVO6XdC0uc1CUXs161aNFuexw0RgvsdnuZ7oRpDBui
-         TPUFlBzg0k+tIeug21b6bF6ln97LOQJIlsFB4NH4OGPoDDxos0NzP3Wv/rKjvD/LZSAY
-         G76hYwcw9tKDg+idkl4KrPmnTbMhcw/1SuAI0Bp9+sPpAze9DczJEkAbmHNmm98A+8Le
-         DhQWGMpdynMxTlMx1pirkv4p1aAwLcffNztm4HVOtyOA7yO3WWdRv1QI3YtJmqKo9XQY
-         5WVpyCv2ag84srTzZ1WdX8ViWBP5R+yUxPzVBn7ZGUIeI0+IVrS0IvCLlzruc74ikewB
-         5RgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786509516; x=1787114316;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=KdFIJwL/ItKbdlpitmpynsip1Jdt+5SlhtYQlqlCk0g=;
-        b=spszmA2ul6lOUbywP6CP3tu4Dpl1801aH0NHcg5rxNSt1fxU6KprNMP/hG4XwgmXy/
-         yg9YSRWrYepMXil9iZHZpKYFGKok5WfRiyWz4fgL//gft22NDu+Ghk6etzLpmSgriIly
-         M2sD7jqsXt0e3yHnK9UArAJwrpt4mSPcP6P6i+cf4OaLE7TEwYQv8sAKeGZ80rJJwFna
-         W+Beunnq203guJ9yIPeEtjJdJhMRXQiUH/r+NybHvfYVqiGPVAy0e3WZ1905RH8P+sy0
-         1QOykmFdoMUz43Y3PkpNLnhDoZOWbdu8Y6uzjmAtaJTCEcRjuBu3gc9z4UXBibQX2xEw
-         TPrQ==
-X-Gm-Message-State: AOJu0YzASU8W8WN5ehRoWDdqv8GaK6EXHBZYbSi7vXSMrPFe+4QSaGPF
-	Mg0oQMfs0jmFVpBX0l0AqpAv532qaJ8k895+ajgHYyJx/969s2zPFK5kmCA1bcWh3QIQ167//95
-	P5EHq6oNc23BZAWsyYg3eiWpUWBhIHF3CMCBhz1XuFnxJJ6Z/nDpj8eI71M+0ze512ergRA==
-X-Gm-Gg: AR+sD12/MIh6F3XrAlqJAemrxyxEeXn6CVvEqA+fiqCZ07UNNoZlcxQ+prsfhwaMw5z
-	4wwFZ52Mb0dNodgDp+z6nev7ADGpihTixJBQ5iV/Nj5bT5PvgRc0kQFEOBJ/IZisBjRAW7kQq+m
-	mn7EAH0JVHbRyYFvwu7Yo3J99g5m1mZwOECfzDzBc7UgSm4Ia/NgWpgTHvDdnpMwwghX9/nGch5
-	cRApmhplzs3rfRMQD8f6tgzTylfQ2/Yfm6rHXOBPOlzz0wpS4xsFa1iJgeRyfPAG06Lo9vKmQsL
-	pyLnLzzdCNhVeghA2HHji8NivVbsOOvXDF1fWTXzz71cCQpfOFNpsMhMBDsZVjvYqJEmP9omR8R
-	JhregavZjNdQj9Q==
-X-Received: by 2002:a17:903:320b:b0:2ca:ecf6:910e with SMTP id d9443c01a7336-2d3450e0539mr33371405ad.0.1786509515768;
-        Tue, 11 Aug 2026 21:38:35 -0700 (PDT)
-X-Received: by 2002:a17:903:320b:b0:2ca:ecf6:910e with SMTP id d9443c01a7336-2d3450e0539mr33370935ad.0.1786509515282;
-        Tue, 11 Aug 2026 21:38:35 -0700 (PDT)
-Received: from localhost ([4.43.230.115])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d352208fa5sm1111035ad.62.2026.08.11.21.38.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 21:38:34 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Wed, 12 Aug 2026 06:38:13 +0200
-Subject: [PATCH net v2] net: stmmac: keep gso_enabled_types in sync with
- netdev features
+	:mime-version:subject:to; s=pfpt0220; bh=v0nslzbQBoNMORt2QqKK4z8
+	nmrnKKCPDdZF81LFPZIA=; b=T9cPVTWzDGCLvhQnXVeqe3a/tdIHWtrRiobbHTk
+	4qrPZtoW+e8lzhiWK2vnfwnLON/YBG5Ui0UcviwGuoaKBIRylFg5lfVHZXmQQNr1
+	oDpiMZ1EL71tS7apGzP1ksewYLFIzKdTBXw/RixKAa2I6ALeTH1FgbggHTcQbIsX
+	/OjNFPd5JGB33y3XFwI3R4HPpKs1zura3rwGNDAWbe94Nv1X3zbAadUpib385cjO
+	Glt2HE9rHN68/4YLBM9Kjag+uZDMLOpaqaGFEUolkiwCDSv3atoGBB4PvrNFhKEM
+	NSXRUNATkrmb2sfw9au/V6hLWljpITnyB5gqmbpisvWvLMg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g0deb0unv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Aug 2026 22:12:39 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 11 Aug 2026 22:12:38 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 11 Aug 2026 22:12:38 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id E2D9F3F7044;
+	Tue, 11 Aug 2026 22:12:33 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        Suman Ghosh
+	<sumang@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Ratheesh Kannoth
+	<rkannoth@marvell.com>
+Subject: [PATCH v2 net-next] octeontx2-af: add NPC TEID matching for GTP-U and GTP-C flows
+Date: Wed, 12 Aug 2026 10:42:15 +0530
+Message-ID: <20260812051215.456258-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260812-stmmac-fix-tso6-features-v2-1-72c3b06eb8d4@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4VNSw6CMBC9ipm1Q0pDobjyHoZFLVNpYql2CtEQ7
- m7DBdy85P03YEqeGC6nDRKtnn2cC5HnE9jJzA9CPxYOUshWaKGRcwjGovMfzBxbdGTykoixc6N
- V1DeNJgml/kpUQsf0DWbKMBRx8pxj+h53a31Y/5fXGmt0Wt7rTvVKKHmNzNV7MU8bQ6gKwLDv+
- w94huD1zAAAAA==
-X-Change-ID: 20260808-stmmac-fix-tso6-features-7fdc5e9448e2
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: 0vTA5R1RfeIvzWq1r2QeyB3UR5A7wDrj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDAzMyBTYWx0ZWRfX3I4mtieBdP6O
- wc02eGkJpjwHTYbWyxiM6CmoMDPlYYEXOkBy7QUgi6DC6U8IUIQ/yUykvwPaCOTa4aWwzSRI9+x
- dCzU//lG2DfY1HY31kqophzhi4l3ipwug1OgxmYeZMeeDUsXOEcYqTBFnva1tHBv+lmuvO/46Uu
- GiKT2twUD3S15Uofl3lQ9wC3NGuQJDRy1VZoQ84dXxUqX1ubaAKBvK36BsEZfEzNQjvZNHfovnk
- 9XvozCvLHoFrhSqm9it9ePAxrFpO0VI6wXkIElaOsuO66wn3JLqrEr0sPfjnz9klfTTQS4L5+i5
- bakslbJ/1iivwVmoz1weRf96leOJo5KNROMfxYk7sUSanE2FeAGVQoAQX/0QVSrpUMIXUcsavs2
- M2bSfLyOPlB1TPxy2Z/Th0YJnjdJdVIZIHIbx+rDU27kJBbjNHKQUxomiiIQm98YO42e+JWIDp7
- rmXRjO8Zn10hV7mn+Tw==
-X-Authority-Analysis: v=2.4 cv=K6ES2SWI c=1 sm=1 tr=0 ts=6a7bf8cc cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=f2H3biQdujjI0Mw2rri0Ng==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=3uZi2X7aTxeIN_KhKxEA:9 a=QEXdDO2ut3YA:10
- a=1OuFwYUASf3TG4hYMiVC:22
-X-Proofpoint-GUID: 0vTA5R1RfeIvzWq1r2QeyB3UR5A7wDrj
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDAzMyBTYWx0ZWRfX6qR9gZlgslRZ
- 9v6Ob8IntOdmNuXPQzGO2IoQlGzY3DSWibvWft/agOt+TuIdinb3ja3fJAiz7xloQAmfj47TKnV
- BVwkNpO3rFTpEfnjimyWqtxig4CDx3Q=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDAzNyBTYWx0ZWRfX1gW9FG0UtNLs
+ isGQORSbREwglCS8Tubey8oAGABujaUHoBfDEeBaG9wPvFWUdGxj8iOrP1bg+ySO45/6G6Xbdsg
+ n39DrqZLw7M2mrKESCu6UrTTjusNtxo=
+X-Proofpoint-ORIG-GUID: UBzy-ZJ4Hh-OQdNeTqN6KzYvspx-NvNp
+X-Proofpoint-GUID: UBzy-ZJ4Hh-OQdNeTqN6KzYvspx-NvNp
+X-Authority-Analysis: v=2.4 cv=MJxQXsZl c=1 sm=1 tr=0 ts=6a7c00c7 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=c92rfblmAAAA:8 a=M5GUcnROAAAA:8
+ a=Qfb8oaWSeBAurIiPRzwA:9 a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDAzNyBTYWx0ZWRfX6x7n3Duso0dV
+ qHq+A7bswy8kYvKBQSCqNcUWcQ8qLOrR1KqR5YCXj0DaM//f1BKa+856KCRVjbAKfH1Te4GCGtI
+ IFahb7kzB71wjf7OR1B1Ftoutb7b3YGciqVQ6C71jpRPNzYuHKzio3C8L0ElH7DpEJVwsUomOJu
+ QJZoachokxjQXs/lhNMifJZgs1D7EiQ1fJIjfZMx1YhQgHJtmK1fn1eyMNsHjId0QqUCTXGbxme
+ sKC42R6rvgCUZXSq4eflFSZbXmN+W+dnkxpv3lMQyEkb0cN3YhRepzgBPc/hNOYpqXXwa3HXAvi
+ TAIMqVB+AZNK/K82ILbooW0NIBeGDdxW0ynYCNoEnmeKuQxNxd1QS4Xv1YCrfb6KQf7BTPl71cZ
+ uAUUpVmPpE6QTw2U5nUis+NQ+/Ng0qihJ/ldTIryLfhXohS3+Knr4Q2ptR151DSU4YDISkQxRY5
+ q2hrWjQWi4dTnYKNzBw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-12_01,2026-08-10_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 adultscore=0 bulkscore=0 impostorscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 priorityscore=1501
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608120033
 
-stmmac_set_gso_types() derives priv->gso_enabled_types all-or-nothing
-from NETIF_F_TSO, but stmmac_set_gso_features() advertises NETIF_F_TSO,
-NETIF_F_TSO6 and (on GMAC4) NETIF_F_GSO_UDP_L4 as independently
-toggleable features. Since netdev_fix_features() only ties TSO6 to the
-checksum features, disabling TSO (ethtool -K ethX tx-tcp-segmentation
-off) leaves TSO6 enabled in dev->features while gso_enabled_types
-becomes 0.
+From: Suman Ghosh <sumang@marvell.com>
 
-For a TCPv6 GSO skb the stack then keeps the frame unsegmented
-(NETIF_F_TSO6 is still set), stmmac_features_check() does not clear the
-GSO mask, and the stmmac_xmit() gate (gso_type & gso_enabled_types) is
-false, so the multi-MSS skb is transmitted through the ordinary
-descriptor path as a single oversized frame.
+Add NPC_GTPU_TEID and NPC_GTPC_TEID key fields and wire them through
+the AF MCAM path so ethtool Rx flow rules can match on the TEID of
+GTP-U and GTP-C packets.
 
-Derive each GSO type from its own feature bit instead, so the mask stays
-in sync with dev->features and TCPv6 (or UDP L4 on GMAC4) segmentation
-keeps working when only TSO is disabled.
+In otx2_prepare_flow_request(), when a UDP or TCP v4/v6 ntuple rule
+targets the well-known GTP-U (2152) or GTP-C (2123) destination port,
+take the TEID value and mask from h_ext.data[1] and install the
+corresponding LE layer match in NPC.  Expose the new fields in debugfs
+MCAM dumps.
 
-Fixes: 9edfa7dab811 ("net: stmmac: enable TSO for IPv6")
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Signed-off-by: Suman Ghosh <sumang@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+
 ---
-Changes in v2:
-- Fix possible race between stmmac_set_gso_types() and stmmac_xmit().
-- Fix fixes tag.
-- Link to v1: https://lore.kernel.org/r/20260808-stmmac-fix-tso6-features-v1-1-f82b17595052@oss.qualcomm.com
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 28 +++++++++++++----------
- 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a71f0df26378..df3549f55741 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4371,16 +4371,20 @@ static void stmmac_flush_tx_descriptors(struct stmmac_priv *priv, int queue)
- 	stmmac_set_queue_tx_tail_ptr(priv, tx_q, queue, tx_q->cur_tx);
- }
+v1 -> v2: Addressed Sashiko comments
+	https://sashiko.dev/#/patchset/20260810050436.1822566-1-rkannoth%40marvell.com
+---
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  2 +
+ .../net/ethernet/marvell/octeontx2/af/npc.h   |  2 +
+ .../marvell/octeontx2/af/rvu_debugfs.c        |  8 ++++
+ .../marvell/octeontx2/af/rvu_npc_fs.c         | 38 ++++++++++++++++++-
+ .../marvell/octeontx2/nic/otx2_flows.c        | 27 ++++++++++++-
+ 5 files changed, 75 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index 73f743e4a83d..7cf07f15bdae 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1849,6 +1849,8 @@ struct flow_msg {
+ 	u8 icmp_code;
+ 	__be16 tcp_flags;
+ 	u16 sq_id;
++	__be32 gtpu_teid;
++	__be32 gtpc_teid;
+ };
  
--static void stmmac_set_gso_types(struct stmmac_priv *priv, bool tso)
-+static void stmmac_set_gso_types(struct stmmac_priv *priv,
-+				 netdev_features_t features)
- {
--	if (!tso) {
--		priv->gso_enabled_types = 0;
--	} else {
--		/* Manage oversized TCP frames for GMAC4 device */
--		priv->gso_enabled_types = SKB_GSO_TCPV4 | SKB_GSO_TCPV6;
--		if (priv->plat->core_type == DWMAC_CORE_GMAC4)
--			priv->gso_enabled_types |= SKB_GSO_UDP_L4;
--	}
-+	unsigned int gso_types = 0;
-+
-+	if (features & NETIF_F_TSO)
-+		gso_types |= SKB_GSO_TCPV4;
-+	if (features & NETIF_F_TSO6)
-+		gso_types |= SKB_GSO_TCPV6;
-+	/* Manage oversized UDP frames for GMAC4 devices */
-+	if (features & NETIF_F_GSO_UDP_L4)
-+		gso_types |= SKB_GSO_UDP_L4;
-+
-+	WRITE_ONCE(priv->gso_enabled_types, gso_types);
- }
+ struct npc_install_flow_req {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
+index 719b3618eeb5..187a50047617 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/npc.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
+@@ -226,6 +226,8 @@ enum key_fields {
+ 	NPC_TYPE_ICMP,
+ 	NPC_CODE_ICMP,
+ 	NPC_TCP_FLAGS,
++	NPC_GTPU_TEID,
++	NPC_GTPC_TEID,
+ 	NPC_HEADER_FIELDS_MAX,
+ 	NPC_CHAN = NPC_HEADER_FIELDS_MAX, /* Valid when Rx */
+ 	NPC_PF_FUNC, /* Valid when Tx */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+index 3456313d3b3c..c0b0e4d14696 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+@@ -3437,6 +3437,14 @@ static void rvu_dbg_npc_mcam_show_flows(struct seq_file *s,
+ 			seq_printf(s, "%d ", rule->packet.icmp_code);
+ 			seq_printf(s, "mask 0x%x\n", rule->mask.icmp_code);
+ 			break;
++		case NPC_GTPU_TEID:
++			seq_printf(s, "%u ", ntohl(rule->packet.gtpu_teid));
++			seq_printf(s, "mask 0x%x\n", ntohl(rule->mask.gtpu_teid));
++			break;
++		case NPC_GTPC_TEID:
++			seq_printf(s, "%u ", ntohl(rule->packet.gtpc_teid));
++			seq_printf(s, "mask 0x%x\n", ntohl(rule->mask.gtpc_teid));
++			break;
+ 		default:
+ 			seq_puts(s, "\n");
+ 			break;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index d422bdd5e8f8..773097cd8534 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -56,6 +56,8 @@ static const char * const npc_flow_names[] = {
+ 	[NPC_TYPE_ICMP] = "icmp type",
+ 	[NPC_CODE_ICMP] = "icmp code",
+ 	[NPC_TCP_FLAGS] = "tcp flags",
++	[NPC_GTPU_TEID]	= "gtp-u teid ",
++	[NPC_GTPC_TEID]	= "gtp-c teid ",
+ 	[NPC_UNKNOWN]	= "unknown",
+ };
  
- static void stmmac_set_gso_features(struct net_device *ndev)
-@@ -4416,7 +4420,7 @@ static void stmmac_set_gso_features(struct net_device *ndev)
- 	if (priv->plat->core_type == DWMAC_CORE_GMAC4)
- 		ndev->hw_features |= NETIF_F_GSO_UDP_L4;
+@@ -661,6 +663,8 @@ do {									       \
+ 	NPC_SCAN_HDR(NPC_VLAN_TAG1, NPC_LID_LB, NPC_LT_LB_CTAG, 2, 2);
+ 	NPC_SCAN_HDR(NPC_VLAN_TAG2, NPC_LID_LB, NPC_LT_LB_STAG_QINQ, 2, 2);
+ 	NPC_SCAN_HDR(NPC_VLAN_TAG3, NPC_LID_LB, NPC_LT_LB_STAG_QINQ, 6, 2);
++	NPC_SCAN_HDR(NPC_GTPU_TEID, NPC_LID_LE, NPC_LT_LE_GTPU, 4, 4);
++	NPC_SCAN_HDR(NPC_GTPC_TEID, NPC_LID_LE, NPC_LT_LE_GTPC, 4, 4);
+ 	NPC_SCAN_HDR(NPC_DMAC, NPC_LID_LA, la_ltype, la_start, 6);
  
--	stmmac_set_gso_types(priv, true);
-+	stmmac_set_gso_types(priv, ndev->hw_features);
- 
- 	dev_info(priv->device, "TSO feature enabled\n");
- }
-@@ -4766,7 +4770,7 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 		stmmac_stop_sw_lpi(priv);
- 
- 	if (skb_is_gso(skb) &&
--	    skb_shinfo(skb)->gso_type & priv->gso_enabled_types)
-+	    (skb_shinfo(skb)->gso_type & READ_ONCE(priv->gso_enabled_types)))
- 		return stmmac_tso_xmit(skb, dev);
- 
- 	if (priv->est && priv->est->enable &&
-@@ -6198,7 +6202,7 @@ static int stmmac_set_features(struct net_device *netdev,
- 			stmmac_enable_sph(priv, priv->ioaddr, sph_en, chan);
+ 	NPC_SCAN_HDR(NPC_IPSEC_SPI, NPC_LID_LD, NPC_LT_LD_AH, 4, 4);
+@@ -720,7 +724,7 @@ static void npc_set_features(struct rvu *rvu, int blkaddr, u8 intf)
+ 		*features |= BIT_ULL(NPC_IPPROTO_ICMP6);
  	}
  
--	stmmac_set_gso_types(priv, features & NETIF_F_TSO);
-+	stmmac_set_gso_types(priv, features);
+-	/* for ESP, check if corresponding layer type is present in the key */
++	/* for ESP check if corresponding layer type is present in the key */
+ 	if (npc_check_field(rvu, blkaddr, NPC_LE, intf))
+ 		*features |= BIT_ULL(NPC_IPPROTO_ESP);
  
- 	if (features & NETIF_F_HW_VLAN_CTAG_RX)
- 		priv->hw->hw_vlan_en = true;
-
----
-base-commit: 7b53449540502cb21b32bca62a6258e22cd97bbe
-change-id: 20260808-stmmac-fix-tso6-features-7fdc5e9448e2
-
-Best regards,
+@@ -1113,6 +1117,14 @@ void npc_update_flow(struct rvu *rvu, struct mcam_entry_mdata *mdata,
+ 		npc_update_entry(rvu, NPC_LE, mdata, NPC_LT_LE_ESP,
+ 				 0, ~0ULL, 0, intf);
+ 
++	if (features & BIT_ULL(NPC_GTPU_TEID))
++		npc_update_entry(rvu, NPC_LE, mdata, NPC_LT_LE_GTPU,
++				 0, ~0ULL, 0, intf);
++
++	if (features & BIT_ULL(NPC_GTPC_TEID))
++		npc_update_entry(rvu, NPC_LE, mdata, NPC_LT_LE_GTPC,
++				 0, ~0ULL, 0, intf);
++
+ 	if (features & BIT_ULL(NPC_LXMB)) {
+ 		output->lxmb = is_broadcast_ether_addr(pkt->dmac) ? 2 : 1;
+ 		npc_update_entry(rvu, NPC_LXMB, mdata, output->lxmb, 0,
+@@ -1209,6 +1221,10 @@ do {									      \
+ 
+ 	NPC_WRITE_FLOW(NPC_IPFRAG_IPV6, next_header, pkt->next_header, 0,
+ 		       mask->next_header, 0);
++	NPC_WRITE_FLOW(NPC_GTPU_TEID, gtpu_teid, ntohl(pkt->gtpu_teid), 0,
++		       ntohl(mask->gtpu_teid), 0);
++	NPC_WRITE_FLOW(NPC_GTPC_TEID, gtpc_teid, ntohl(pkt->gtpc_teid), 0,
++		       ntohl(mask->gtpc_teid), 0);
+ 	npc_update_ipv6_flow(rvu, mdata, features, pkt, mask, output, intf);
+ 	npc_update_vlan_features(rvu, mdata, features, intf);
+ 
+@@ -1805,6 +1821,26 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
+ 		req->features |= BIT_ULL(NPC_LXMB);
+ 	}
+ 
++	if ((req->features & BIT_ULL(NPC_GTPU_TEID)) &&
++	    !npc_check_field(rvu, blkaddr, NPC_GTPU_TEID, req->intf)) {
++		dev_warn(rvu->dev,
++			 "%s: mkex profile does not extract GTP-U TEID\n",
++			 __func__);
++		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
++						    allocated, req->entry);
++		return NPC_FLOW_NOT_SUPPORTED;
++	}
++
++	if ((req->features & BIT_ULL(NPC_GTPC_TEID)) &&
++	    !npc_check_field(rvu, blkaddr, NPC_GTPC_TEID, req->intf)) {
++		dev_warn(rvu->dev,
++			 "%s: mkex profile does not extract GTP-C TEID\n",
++			 __func__);
++		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
++						    allocated, req->entry);
++		return NPC_FLOW_NOT_SUPPORTED;
++	}
++
+ process_flow:
+ 	if (from_vf && req->default_rule) {
+ 		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+index 99d78fc5a2c4..7f69e386638c 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+@@ -11,6 +11,8 @@
+ #include "otx2_common.h"
+ 
+ #define OTX2_DEFAULT_ACTION	0x1
++#define GTPU_PORT		2152
++#define GTPC_PORT		2123
+ 
+ struct otx2_flow {
+ 	struct ethtool_rx_flow_spec flow_spec;
+@@ -1036,8 +1038,31 @@ static int otx2_prepare_flow_request(struct ethtool_rx_flow_spec *fsp,
+ 		return -EOPNOTSUPP;
+ 	}
+ 	if (fsp->flow_type & FLOW_EXT) {
++		int skip_user_def = false;
+ 		u16 vlan_etype;
+ 
++		switch (flow_type) {
++		case UDP_V4_FLOW:
++		case UDP_V6_FLOW:
++		case TCP_V4_FLOW:
++		case TCP_V6_FLOW:
++			if (ntohs(pmask->dport) == 0xFFFF &&
++			    ntohs(pkt->dport) == GTPU_PORT) {
++				/* Check for GTP-U packets */
++				skip_user_def = true;
++				pkt->gtpu_teid = fsp->h_ext.data[1];
++				pmask->gtpu_teid = fsp->m_ext.data[1];
++				req->features |= BIT_ULL(NPC_GTPU_TEID);
++			} else if (ntohs(pmask->dport) == 0xFFFF &&
++				   ntohs(pkt->dport) == GTPC_PORT) {
++				/* Check for GTP-C packets */
++				skip_user_def = true;
++				pkt->gtpc_teid = fsp->h_ext.data[1];
++				pmask->gtpc_teid = fsp->m_ext.data[1];
++				req->features |= BIT_ULL(NPC_GTPC_TEID);
++			}
++		}
++
+ 		if (fsp->m_ext.vlan_etype) {
+ 			/* Partial masks not supported */
+ 			if (be16_to_cpu(fsp->m_ext.vlan_etype) != 0xFFFF)
+@@ -1076,7 +1101,7 @@ static int otx2_prepare_flow_request(struct ethtool_rx_flow_spec *fsp,
+ 			req->features |= BIT_ULL(NPC_OUTER_VID);
+ 		}
+ 
+-		if (fsp->m_ext.data[1]) {
++		if (fsp->m_ext.data[1] && !skip_user_def) {
+ 			if (flow_type == IP_USER_FLOW) {
+ 				if (be32_to_cpu(fsp->h_ext.data[1]) != IPV4_FLAG_MORE)
+ 					return -EINVAL;
 -- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+2.43.0
 
