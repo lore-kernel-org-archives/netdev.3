@@ -1,200 +1,554 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBC2421EE7
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F89842CB05;
+	Wed, 12 Aug 2026 11:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786532607; cv=none; b=SNK0ZwZEc4q09mvM8AlC6+dWMYQc0kQdEhY9pwSIIYNDcvvIHONJadHr6WbLO4F0IsFfI9a2ANr2FcJSkJJHSexg+Il1iLaENzI8dD+t7ktdS7hqw064ZXj/s+IETrKqzug4oc3z/gxW3hXdt/DrFUCmj+DVOqgC2APkbwtiPhU=
+	t=1786532737; cv=none; b=iWYnxYiW7Ifekp7eFijmwGeWvZOBi6rzxLxrkn/oY26RRclraa9t52JOCEMnbmmhnOLfAvZNT50E99OSQUEYTAKXb/ZiJJuVykSDCp9xCmffMTwV6bgna1dZTTfKevNhcA/b14zXYyGjVCAj2hB+2auUNI6EIo1BpnQU7gmWJxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786532607; c=relaxed/simple;
-	bh=8xYe1xVOymzfUL3FY35nN2xScs1Bzzf+To/adTMsX10=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gSJtCTRaCEwpqE2YSwD1Q0UvJmm3xCZGyPU1l+8J4pYXFhWS53IJErlS1DSSprTwEYFiwxwuMkDQ/3bgAgMxLDUzTvFY1rFVM+Ug0ty4L1SUBb4ZOp6fs8Ky59cLWd7BZ8GXUee5K3SR359jdmtsUdEzedruo+V3HJlFRlmD180=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ENC1wtDo; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786532737; c=relaxed/simple;
+	bh=CX2sQE+M4z1/oVMH63I8DOFjElb0DNwrTbHb1A/qHWM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=N3iw/THP0BwCFfuMi9YPtFKX1Ibrm7bacHJslqdeFYeh77n0hJY5HSqGRXIvkQBEa2Pqni4XPxmo4KlPcjMn0r41y4wuo6t3ZSyECbjVsLUS9fWDH1VMX2t7IDW5NiJShHt1edpQshutq60Kq1nqjZFBoQnHgAxyczfEBOlnang=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JwcHvNtC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HMrTrjnY; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ENC1wtDo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786532604;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JwcHvNtC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HMrTrjnY"
+Date: Wed, 12 Aug 2026 13:05:31 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1786532733;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6bsxuWrGjCNJ9G3R3V0fM/GxuviKNyJjBl9DCZXobyc=;
-	b=ENC1wtDoTpFtstut/3d+cY4KHUDua1v8SJjUYGDE+moXdLyhNyZuN4hDbQaZodv1Mmj3Ha
-	ECnIfZbGqNRPXntuqVFRjQbTFte1maU6KPSgJbDVJ/MTX1x4UHj+b7wQsof2w6uthn8vVr
-	aa2QRTUe8JpaZ7fgpBv7BfNHsv1kLKA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-R1VbtQ3mOzeFJ-rLr4u1UA-1; Wed,
- 12 Aug 2026 07:02:14 -0400
-X-MC-Unique: R1VbtQ3mOzeFJ-rLr4u1UA-1
-X-Mimecast-MFC-AGG-ID: R1VbtQ3mOzeFJ-rLr4u1UA_1786532533
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DC55418000A3;
-	Wed, 12 Aug 2026 11:02:12 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.32.44])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 18F473001DAF;
-	Wed, 12 Aug 2026 11:02:08 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=X7FICkfcWroZBMS9nPAyi93guMoMtsds1KmOLRSo9As=;
+	b=JwcHvNtCVKknQHqZ9HJDHQUsGG/tsKVc7MCcQrUAXo/vlj0qZfpTXbVWddNbENmNwDio7l
+	N87yiHoHrxJwWogiWHYtvVKwKvqbzJzLbNybngl61A5547sw7F2ieGbHntTFn1YxYA4jFi
+	QdfqRf2/vBvGA3bzhalNpZeOCwzresuVp6G2XapWIIkOq3kl9Khe18k5dAExM5HRt5Wh+o
+	1cyhI1emNfaZuXgwInkhBWW3HzoQtqAvoGi6bIru9LK2wcqMlGvIsPBgoQ17fee6EIv4KI
+	3IXXIB972x332Fk4V0GR+Fy5FKG8I/9BB1EczxviSeyAPjLeWaRhRJGeClzDzg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1786532733;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=X7FICkfcWroZBMS9nPAyi93guMoMtsds1KmOLRSo9As=;
+	b=HMrTrjnYXZdU3XjlmpDGAEJVXA2WzMXxwCYMjusqJAvCeFlOziQnShBqOmkKTDgt0wmMNa
+	zwxXobkE/KlqU7AQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: linux-atm-general@lists.sourceforge.net, linux-can@vger.kernel.org,
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Remi Denis-Courmont <courmisch@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	keyrings@vger.kernel.org,
-	stable@kernel.org
-Subject: [PATCH net v7 07/11] keys: Add refcounting to user-defined key type payload
-Date: Wed, 12 Aug 2026 12:01:22 +0100
-Message-ID: <20260812110129.979970-8-dhowells@redhat.com>
-In-Reply-To: <20260812110129.979970-1-dhowells@redhat.com>
-References: <20260812110129.979970-1-dhowells@redhat.com>
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>, Petr Mladek <pmladek@suse.com>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH net-next v3] net: Replace %pK output with 0
+Message-ID: <20260812110531.ITPqiY2O@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Add refcounting to user-defined key type payload so that a kernel service
-wanting to use such a key can hold onto the payload without the RCU read
-lock held in order that it can do an allocation without having to be
-concerned with the key getting updated.
+Commit 71338aa7d050c ("net: convert %p usage to %pK") which is from
+2011 and changed the %p annotation for pointer to %pK. Back then the
+default behaviour for %p was to print the pointer. The %pK modifier was
+introduced to able to control the behaviour of specific pointer values
+without changing the behaviour of %p for everyone. It was dedicated to
+avoid leaking pointers via /proc.
 
-This is the first part of the fix for the AF_RXRPC challenge response
-generation code.
+There was also the idea to remove the check from formatting the string
+and move to the open callback with some helpers but this did not happen.
 
-Link: https://sashiko.dev/#/patchset/20260624163819.3017002-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: Jarkko Sakkinen <jarkko@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: keyrings@vger.kernel.org
-cc: stable@kernel.org
+Things changed over time. The default behaviour for %p is now to print a
+hash pointer which does not leak the address but allows to correlate if
+two pointers are equal.
+The policy on %p is to not introduce new ones. This is somehow in
+between since it already exists. The pointer are usually socket pointers
+and I don't see any value in exposing them. Therefore I am following the
+recommendation of removing them. Since their usage in /proc/ can be
+considered ABI I replace the pointer with a 0.
+
+Replace the %pK annotation with 0 value. Correct the spacing for the
+cases where pointer is at the beginning. Use %ps in CAN where the read
+callback is used.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- include/keys/user-type.h     |  2 ++
- net/dns_resolver/dns_key.c   |  1 +
- security/keys/user_defined.c | 23 ++++++++++++++++-------
- 3 files changed, 19 insertions(+), 7 deletions(-)
+v2=E2=80=A6v3: https://lore.kernel.org/all/20260720144031.oU6azheV@linutron=
+ix.de/
+ - seq_printf() with static strings have been replaced with seq_puts()
+   (checkpatch)
+ - Added missing fixed length in the CAN_EFF_FLAG case
+   (can_print_rcvlist(), sashiko)
+ - Added missing 0 in get_timewait6_sock() (Jakub)
+ - Added back padding to the unix_seq_show() output. There is a selftest
+   which checks the length of the first line. (kernel test robot
+   <oliver.sang@intel.com>)
 
-diff --git a/include/keys/user-type.h b/include/keys/user-type.h
-index 386c31432789..7002a993a472 100644
---- a/include/keys/user-type.h
-+++ b/include/keys/user-type.h
-@@ -26,6 +26,7 @@
-  */
- struct user_key_payload {
- 	struct rcu_head	rcu;		/* RCU destructor */
-+	refcount_t	ref;
- 	unsigned short	datalen;	/* length of this data */
- 	char		data[] __aligned(__alignof__(u64)); /* actual data */
- };
-@@ -37,6 +38,7 @@ struct key_preparsed_payload;
- 
- extern int user_preparse(struct key_preparsed_payload *prep);
- extern void user_free_preparse(struct key_preparsed_payload *prep);
-+void put_user_key_payload(struct user_key_payload *payload);
- extern int user_update(struct key *key, struct key_preparsed_payload *prep);
- extern void user_revoke(struct key *key);
- extern void user_destroy(struct key *key);
-diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
-index c3c8c3240ef9..aa3c058f4095 100644
---- a/net/dns_resolver/dns_key.c
-+++ b/net/dns_resolver/dns_key.c
-@@ -208,6 +208,7 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
- 		kleave(" = -ENOMEM");
- 		return -ENOMEM;
- 	}
-+	refcount_set(&upayload->ref, 1);
- 
- 	upayload->datalen = result_len;
- 	memcpy(upayload->data, data, result_len);
-diff --git a/security/keys/user_defined.c b/security/keys/user_defined.c
-index 6f88b507f927..90c1bd5d7dfe 100644
---- a/security/keys/user_defined.c
-+++ b/security/keys/user_defined.c
-@@ -67,6 +67,7 @@ int user_preparse(struct key_preparsed_payload *prep)
- 	upayload = kmalloc_flex(*upayload, data, datalen);
- 	if (!upayload)
- 		return -ENOMEM;
-+	refcount_set(&upayload->ref, 1);
- 
- 	/* attach the data */
- 	prep->quotalen = datalen;
-@@ -88,12 +89,22 @@ EXPORT_SYMBOL_GPL(user_free_preparse);
- 
- static void user_free_payload_rcu(struct rcu_head *head)
+v1=E2=80=A6v2: https://lore.kernel.org/all/20260706073824.xixrLxoD@linutron=
+ix.de
+ - This follows Kees' feedback regarding the general policy and "is it
+   really needed?". Since I don't think that this is of general usage I
+   replaced them all with 0 and corrected the spacing at the beginning.
+
+ - can_print_rcvlist() is now using a %ps to print the name of the
+   function. Everything is a sock pointer (or some other data structure)
+   and is now 0.
+
+ net/atm/proc.c           |  7 +++----
+ net/can/bcm.c            |  4 +---
+ net/can/proc.c           | 12 ++++--------
+ net/ipv4/ping.c          |  5 ++---
+ net/ipv4/raw.c           |  4 ++--
+ net/ipv4/tcp_ipv4.c      | 13 ++++++-------
+ net/ipv4/udp.c           |  5 ++---
+ net/ipv6/datagram.c      |  5 ++---
+ net/ipv6/tcp_ipv6.c      | 12 ++++++------
+ net/key/af_key.c         |  5 ++---
+ net/netlink/af_netlink.c |  5 ++---
+ net/packet/af_packet.c   |  7 ++-----
+ net/phonet/socket.c      |  5 ++---
+ net/sctp/proc.c          |  6 +++---
+ net/unix/af_unix.c       |  3 +--
+ 15 files changed, 40 insertions(+), 58 deletions(-)
+
+diff --git a/net/atm/proc.c b/net/atm/proc.c
+index 8f20b49b9c02a..ca0fc6b90998c 100644
+--- a/net/atm/proc.c
++++ b/net/atm/proc.c
+@@ -159,7 +159,7 @@ static void vcc_info(struct seq_file *seq, struct atm_v=
+cc *vcc)
  {
--	struct user_key_payload *payload;
-+	struct user_key_payload *payload =
-+		container_of(head, struct user_key_payload, rcu);
- 
--	payload = container_of(head, struct user_key_payload, rcu);
- 	kfree_sensitive(payload);
- }
- 
-+/*
-+ * Free a user defined key payload.
-+ */
-+void put_user_key_payload(struct user_key_payload *payload)
-+{
-+	if (payload && refcount_dec_and_test(&payload->ref))
-+		call_rcu(&payload->rcu, user_free_payload_rcu);
-+}
-+EXPORT_SYMBOL_GPL(put_user_key_payload);
-+
- /*
-  * update a user defined key
-  * - the key's semaphore is write-locked
-@@ -115,8 +126,7 @@ int user_update(struct key *key, struct key_preparsed_payload *prep)
- 	rcu_assign_keypointer(key, prep->payload.data[0]);
- 	prep->payload.data[0] = NULL;
- 
--	if (zap)
--		call_rcu(&zap->rcu, user_free_payload_rcu);
-+	put_user_key_payload(zap);
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(user_update);
-@@ -134,7 +144,7 @@ void user_revoke(struct key *key)
- 
- 	if (upayload) {
- 		rcu_assign_keypointer(key, NULL);
--		call_rcu(&upayload->rcu, user_free_payload_rcu);
-+		put_user_key_payload(upayload);
+ 	struct sock *sk =3D sk_atm(vcc);
+=20
+-	seq_printf(seq, "%pK ", vcc);
++	seq_puts(seq, "      0 ");
+ 	if (!vcc->dev)
+ 		seq_printf(seq, "Unassigned    ");
+ 	else
+@@ -228,9 +228,8 @@ static const struct seq_operations pvc_seq_ops =3D {
+ static int vcc_seq_show(struct seq_file *seq, void *v)
+ {
+ 	if (v =3D=3D SEQ_START_TOKEN) {
+-		seq_printf(seq, sizeof(void *) =3D=3D 4 ? "%-8s%s" : "%-16s%s",
+-			"Address ", "Itf VPI VCI   Fam Flags Reply "
+-			"Send buffer     Recv buffer      [refcnt]\n");
++		seq_puts(seq, "Address Itf VPI VCI   Fam Flags Reply "
++			 "Send buffer     Recv buffer     [refcnt]\n");
+ 	} else {
+ 		struct vcc_state *state =3D seq->private;
+ 		struct atm_vcc *vcc =3D atm_sk(state->sk);
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index 3d637a1e0ac1a..794faf83e0e4f 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -220,9 +220,7 @@ static int bcm_proc_show(struct seq_file *m, void *v)
+ 	struct bcm_sock *bo =3D bcm_sk(sk);
+ 	struct bcm_op *op;
+=20
+-	seq_printf(m, ">>> socket %pK", sk->sk_socket);
+-	seq_printf(m, " / sk %pK", sk);
+-	seq_printf(m, " / bo %pK", bo);
++	seq_puts(m, ">>> socket 0 / sk 0 / bo 0");
+ 	seq_printf(m, " / dropped %lu", bo->dropped_usr_msgs);
+ 	seq_printf(m, " / bound %s", bcm_proc_getifname(net, ifname, bo->ifindex)=
+);
+ 	seq_printf(m, " <<<\n");
+diff --git a/net/can/proc.c b/net/can/proc.c
+index de4d05ae34597..4314180fd7a14 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -192,12 +192,11 @@ static void can_print_rcvlist(struct seq_file *m, str=
+uct hlist_head *rx_list,
+=20
+ 	hlist_for_each_entry_rcu(r, rx_list, list) {
+ 		char *fmt =3D (r->can_id & CAN_EFF_FLAG)?
+-			"   %-5s  %08x  %08x  %pK  %pK  %8ld  %s\n" :
+-			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
++			"   %-5s  %08x  %08x  %-20ps %8u %8ld  %s\n" :
++			"   %-5s     %03x    %08x  %-20ps %8u %8ld  %s\n";
+=20
+ 		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
+-			   r->func, r->data, atomic_long_read(&r->matches),
+-			   r->ident);
++			   r->func, 0, atomic_long_read(&r->matches), r->ident);
  	}
  }
- 
-@@ -147,9 +157,8 @@ void user_destroy(struct key *key)
- {
- 	struct user_key_payload *upayload = key->payload.data[0];
- 
--	kfree_sensitive(upayload);
-+	put_user_key_payload(upayload);
+=20
+@@ -207,10 +206,7 @@ static void can_print_recv_banner(struct seq_file *m)
+ 	 *                  can1.  00000000  00000000  00000000
+ 	 *                 .......          0  tp20
+ 	 */
+-	if (IS_ENABLED(CONFIG_64BIT))
+-		seq_puts(m, "  device   can_id   can_mask      function          userdat=
+a       matches  ident\n");
+-	else
+-		seq_puts(m, "  device   can_id   can_mask  function  userdata   matches =
+ ident\n");
++	seq_puts(m, "  device   can_id   can_mask  function             userdata =
+ matches  ident\n");
  }
--
- EXPORT_SYMBOL_GPL(user_destroy);
- 
- /*
+=20
+ static int can_stats_proc_show(struct seq_file *m, void *v)
+diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
+index d36f1e273fde4..223a0108b74cc 100644
+--- a/net/ipv4/ping.c
++++ b/net/ipv4/ping.c
+@@ -1095,15 +1095,14 @@ static void ping_v4_format_sock(struct sock *sp, st=
+ruct seq_file *f,
+ 	__u16 srcp =3D ntohs(inet->inet_sport);
+=20
+ 	seq_printf(f, "%5d: %08X:%04X %08X:%04X"
+-		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u",
++		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d 0 %u",
+ 		bucket, src, srcp, dest, destp, sp->sk_state,
+ 		sk_wmem_alloc_get(sp),
+ 		sk_rmem_alloc_get(sp),
+ 		0, 0L, 0,
+ 		from_kuid_munged(seq_user_ns(f), sk_uid(sp)),
+ 		0, sock_i_ino(sp),
+-		refcount_read(&sp->sk_refcnt), sp,
+-		sk_drops_read(sp));
++		refcount_read(&sp->sk_refcnt), sk_drops_read(sp));
+ }
+=20
+ static int ping_v4_seq_show(struct seq_file *seq, void *v)
+diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+index d756e5e31b90d..9d01006d8189e 100644
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -1054,14 +1054,14 @@ static void raw_sock_seq_show(struct seq_file *seq,=
+ struct sock *sp, int i)
+ 	      srcp  =3D inet->inet_num;
+=20
+ 	seq_printf(seq, "%4d: %08X:%04X %08X:%04X"
+-		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u\n",
++		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d 0 %u\n",
+ 		i, src, srcp, dest, destp, sp->sk_state,
+ 		sk_wmem_alloc_get(sp),
+ 		sk_rmem_alloc_get(sp),
+ 		0, 0L, 0,
+ 		from_kuid_munged(seq_user_ns(seq), sk_uid(sp)),
+ 		0, sock_i_ino(sp),
+-		refcount_read(&sp->sk_refcnt), sp, sk_drops_read(sp));
++		refcount_read(&sp->sk_refcnt), sk_drops_read(sp));
+ }
+=20
+ static int raw_seq_show(struct seq_file *seq, void *v)
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index b8887cdd66c57..2cd8ae4a0e4b6 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -2748,7 +2748,7 @@ static void get_openreq4(const struct request_sock *r=
+eq,
+ 	long delta =3D req->rsk_timer.expires - jiffies;
+=20
+ 	seq_printf(f, "%4d: %08X:%04X %08X:%04X"
+-		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %u %d %pK",
++		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %u %d 0",
+ 		i,
+ 		ireq->ir_loc_addr,
+ 		ireq->ir_num,
+@@ -2763,8 +2763,7 @@ static void get_openreq4(const struct request_sock *r=
+eq,
+ 				 sk_uid(req->rsk_listener)),
+ 		0,  /* non standard timer */
+ 		0, /* open_requests have no inode */
+-		0,
+-		req);
++		0);
+ }
+=20
+ static void get_tcp4_sock(struct sock *sk, struct seq_file *f, int i)
+@@ -2811,7 +2810,7 @@ static void get_tcp4_sock(struct sock *sk, struct seq=
+_file *f, int i)
+ 				      READ_ONCE(tp->copied_seq), 0);
+=20
+ 	seq_printf(f, "%4d: %08X:%04X %08X:%04X %02X %08X:%08X %02X:%08lX "
+-			"%08X %5u %8d %llu %d %pK %lu %lu %u %u %d",
++			"%08X %5u %8d %llu %d 0 %lu %lu %u %u %d",
+ 		i, src, srcp, dest, destp, state,
+ 		READ_ONCE(tp->write_seq) - tp->snd_una,
+ 		rx_queue,
+@@ -2821,7 +2820,7 @@ static void get_tcp4_sock(struct sock *sk, struct seq=
+_file *f, int i)
+ 		from_kuid_munged(seq_user_ns(f), sk_uid(sk)),
+ 		READ_ONCE(icsk->icsk_probes_out),
+ 		sock_i_ino(sk),
+-		refcount_read(&sk->sk_refcnt), sk,
++		refcount_read(&sk->sk_refcnt),
+ 		jiffies_to_clock_t(icsk->icsk_rto),
+ 		jiffies_to_clock_t(icsk->icsk_ack.ato),
+ 		(icsk->icsk_ack.quick << 1) | inet_csk_in_pingpong_mode(sk),
+@@ -2844,10 +2843,10 @@ static void get_timewait4_sock(const struct inet_ti=
+mewait_sock *tw,
+ 	srcp  =3D ntohs(tw->tw_sport);
+=20
+ 	seq_printf(f, "%4d: %08X:%04X %08X:%04X"
+-		" %02X %08X:%08X %02X:%08lX %08X %5d %8d %d %d %pK",
++		" %02X %08X:%08X %02X:%08lX %08X %5d %8d %d %d 0",
+ 		i, src, srcp, dest, destp, READ_ONCE(tw->tw_substate), 0, 0,
+ 		3, jiffies_delta_to_clock_t(delta), 0, 0, 0, 0,
+-		refcount_read(&tw->tw_refcnt), tw);
++		refcount_read(&tw->tw_refcnt));
+ }
+=20
+ #define TMPSZ 150
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index af96032174441..a01db598c00bf 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -3283,15 +3283,14 @@ static void udp4_format_sock(struct sock *sp, struc=
+t seq_file *f,
+ 	__u16 srcp	  =3D ntohs(inet->inet_sport);
+=20
+ 	seq_printf(f, "%5d: %08X:%04X %08X:%04X"
+-		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u",
++		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d 0 %u",
+ 		bucket, src, srcp, dest, destp, sp->sk_state,
+ 		sk_wmem_alloc_get(sp),
+ 		udp_rqueue_get(sp),
+ 		0, 0L, 0,
+ 		from_kuid_munged(seq_user_ns(f), sk_uid(sp)),
+ 		0, sock_i_ino(sp),
+-		refcount_read(&sp->sk_refcnt), sp,
+-		sk_drops_read(sp));
++		refcount_read(&sp->sk_refcnt), sk_drops_read(sp));
+ }
+=20
+ static int udp4_seq_show(struct seq_file *seq, void *v)
+diff --git a/net/ipv6/datagram.c b/net/ipv6/datagram.c
+index 38d7b48452817..191c9733ff9fa 100644
+--- a/net/ipv6/datagram.c
++++ b/net/ipv6/datagram.c
+@@ -1102,7 +1102,7 @@ void __ip6_dgram_sock_seq_show(struct seq_file *seq, =
+struct sock *sp,
+ 	src   =3D &sp->sk_v6_rcv_saddr;
+ 	seq_printf(seq,
+ 		   "%5d: %08X%08X%08X%08X:%04X %08X%08X%08X%08X:%04X "
+-		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u\n",
++		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d 0 %u\n",
+ 		   bucket,
+ 		   src->s6_addr32[0], src->s6_addr32[1],
+ 		   src->s6_addr32[2], src->s6_addr32[3], srcp,
+@@ -1115,6 +1115,5 @@ void __ip6_dgram_sock_seq_show(struct seq_file *seq, =
+struct sock *sp,
+ 		   from_kuid_munged(seq_user_ns(seq), sk_uid(sp)),
+ 		   0,
+ 		   sock_i_ino(sp),
+-		   refcount_read(&sp->sk_refcnt), sp,
+-		   sk_drops_read(sp));
++		   refcount_read(&sp->sk_refcnt), sk_drops_read(sp));
+ }
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 9e9155b1b3aa7..87dbdc9086045 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -2103,7 +2103,7 @@ static void get_openreq6(struct seq_file *seq,
+=20
+ 	seq_printf(seq,
+ 		   "%4d: %08X%08X%08X%08X:%04X %08X%08X%08X%08X:%04X "
+-		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %d %d %pK\n",
++		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %d %d 0\n",
+ 		   i,
+ 		   src->s6_addr32[0], src->s6_addr32[1],
+ 		   src->s6_addr32[2], src->s6_addr32[3],
+@@ -2120,7 +2120,7 @@ static void get_openreq6(struct seq_file *seq,
+ 				    sk_uid(req->rsk_listener)),
+ 		   0,  /* non standard timer */
+ 		   0, /* open_requests have no inode */
+-		   0, req);
++		   0);
+ }
+=20
+ static void get_tcp6_sock(struct seq_file *seq, struct sock *sp, int i)
+@@ -2171,7 +2171,7 @@ static void get_tcp6_sock(struct seq_file *seq, struc=
+t sock *sp, int i)
+=20
+ 	seq_printf(seq,
+ 		   "%4d: %08X%08X%08X%08X:%04X %08X%08X%08X%08X:%04X "
+-		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %lu %lu %u %u %d\=
+n",
++		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d 0 %lu %lu %u %u %d\n",
+ 		   i,
+ 		   src->s6_addr32[0], src->s6_addr32[1],
+ 		   src->s6_addr32[2], src->s6_addr32[3], srcp,
+@@ -2186,7 +2186,7 @@ static void get_tcp6_sock(struct seq_file *seq, struc=
+t sock *sp, int i)
+ 		   from_kuid_munged(seq_user_ns(seq), sk_uid(sp)),
+ 		   READ_ONCE(icsk->icsk_probes_out),
+ 		   sock_i_ino(sp),
+-		   refcount_read(&sp->sk_refcnt), sp,
++		   refcount_read(&sp->sk_refcnt),
+ 		   jiffies_to_clock_t(icsk->icsk_rto),
+ 		   jiffies_to_clock_t(icsk->icsk_ack.ato),
+ 		   (icsk->icsk_ack.quick << 1) | inet_csk_in_pingpong_mode(sp),
+@@ -2211,7 +2211,7 @@ static void get_timewait6_sock(struct seq_file *seq,
+=20
+ 	seq_printf(seq,
+ 		   "%4d: %08X%08X%08X%08X:%04X %08X%08X%08X%08X:%04X "
+-		   "%02X %08X:%08X %02X:%08lX %08X %5d %8d %d %d %pK\n",
++		   "%02X %08X:%08X %02X:%08lX %08X %5d %8d %d %d 0\n",
+ 		   i,
+ 		   src->s6_addr32[0], src->s6_addr32[1],
+ 		   src->s6_addr32[2], src->s6_addr32[3], srcp,
+@@ -2219,7 +2219,7 @@ static void get_timewait6_sock(struct seq_file *seq,
+ 		   dest->s6_addr32[2], dest->s6_addr32[3], destp,
+ 		   READ_ONCE(tw->tw_substate), 0, 0,
+ 		   3, jiffies_delta_to_clock_t(delta), 0, 0, 0, 0,
+-		   refcount_read(&tw->tw_refcnt), tw);
++		   refcount_read(&tw->tw_refcnt));
+ }
+=20
+ static int tcp6_seq_show(struct seq_file *seq, void *v)
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index 1d8965d7f4f3c..d215b33b7492c 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -3803,10 +3803,9 @@ static int pfkey_seq_show(struct seq_file *f, void *=
+v)
+ 	struct sock *s =3D sk_entry(v);
+=20
+ 	if (v =3D=3D SEQ_START_TOKEN)
+-		seq_printf(f ,"sk       RefCnt Rmem   Wmem   User   Inode\n");
++		seq_puts(f, "sk RefCnt Rmem   Wmem   User   Inode\n");
+ 	else
+-		seq_printf(f, "%pK %-6d %-6u %-6u %-6u %-6llu\n",
+-			       s,
++		seq_printf(f, "0  %-6d %-6u %-6u %-6u %-6llu\n",
+ 			       refcount_read(&s->sk_refcnt),
+ 			       sk_rmem_alloc_get(s),
+ 			       sk_wmem_alloc_get(s),
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index e6b1d9758c9c9..537562aacb7ef 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2700,14 +2700,13 @@ static int netlink_native_seq_show(struct seq_file =
+*seq, void *v)
+ {
+ 	if (v =3D=3D SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+-			 "sk               Eth Pid        Groups   "
++			 "sk Eth Pid        Groups   "
+ 			 "Rmem     Wmem     Dump  Locks    Drops    Inode\n");
+ 	} else {
+ 		struct sock *s =3D v;
+ 		struct netlink_sock *nlk =3D nlk_sk(s);
+=20
+-		seq_printf(seq, "%pK %-3d %-10u %08x %-8d %-8d %-5d %-8d %-8u %-8llu\n",
+-			   s,
++		seq_printf(seq, "0  %-3d %-10u %08x %-8d %-8d %-5d %-8d %-8u %-8llu\n",
+ 			   s->sk_protocol,
+ 			   nlk->portid,
+ 			   nlk->groups ? (u32)nlk->groups[0] : 0,
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 435756877abaa..9ebf1605fec1a 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -4744,16 +4744,13 @@ static void packet_seq_stop(struct seq_file *seq, v=
+oid *v)
+ static int packet_seq_show(struct seq_file *seq, void *v)
+ {
+ 	if (v =3D=3D SEQ_START_TOKEN)
+-		seq_printf(seq,
+-			   "%*sRefCnt Type Proto  Iface R Rmem   User   Inode\n",
+-			   IS_ENABLED(CONFIG_64BIT) ? -17 : -9, "sk");
++		seq_puts(seq, "sk RefCnt Type Proto  Iface R Rmem   User   Inode\n");
+ 	else {
+ 		struct sock *s =3D sk_entry(v);
+ 		const struct packet_sock *po =3D pkt_sk(s);
+=20
+ 		seq_printf(seq,
+-			   "%pK %-6d %-4d %04x   %-5d %1d %-6u %-6u %-6llu\n",
+-			   s,
++			   "0  %-6d %-4d %04x   %-5d %1d %-6u %-6u %-6llu\n",
+ 			   refcount_read(&s->sk_refcnt),
+ 			   s->sk_type,
+ 			   ntohs(READ_ONCE(po->num)),
+diff --git a/net/phonet/socket.c b/net/phonet/socket.c
+index 631a99cdbd006..ad12b746d4fca 100644
+--- a/net/phonet/socket.c
++++ b/net/phonet/socket.c
+@@ -586,14 +586,13 @@ static int pn_sock_seq_show(struct seq_file *seq, voi=
+d *v)
+ 		struct pn_sock *pn =3D pn_sk(sk);
+=20
+ 		seq_printf(seq, "%2d %04X:%04X:%02X %02X %08X:%08X %5d %llu "
+-			"%d %pK %u",
++			"%d 0 %u",
+ 			sk->sk_protocol, pn->sobject, pn->dobject,
+ 			pn->resource, sk->sk_state,
+ 			sk_wmem_alloc_get(sk), sk_rmem_alloc_get(sk),
+ 			from_kuid_munged(seq_user_ns(seq), sk_uid(sk)),
+ 			sock_i_ino(sk),
+-			refcount_read(&sk->sk_refcnt), sk,
+-			sk_drops_read(sk));
++			refcount_read(&sk->sk_refcnt), sk_drops_read(sk));
+ 	}
+ 	seq_pad(seq, '\n');
+ 	return 0;
+diff --git a/net/sctp/proc.c b/net/sctp/proc.c
+index 43433d7e2acd7..7ea123b90aa59 100644
+--- a/net/sctp/proc.c
++++ b/net/sctp/proc.c
+@@ -174,7 +174,7 @@ static int sctp_eps_seq_show(struct seq_file *seq, void=
+ *v)
+ 		sk =3D ep->base.sk;
+ 		if (!net_eq(sock_net(sk), seq_file_net(seq)))
+ 			continue;
+-		seq_printf(seq, "%8pK %8pK %-3d %-3d %-4d %-5d %5u %5llu ", ep, sk,
++		seq_printf(seq, "%8d %8d %-3d %-3d %-4d %-5d %5u %5llu ", 0, 0,
+ 			   sctp_sk(sk)->type, sk->sk_state, hash,
+ 			   ep->base.bind_addr.port,
+ 			   from_kuid_munged(seq_user_ns(seq), sk_uid(sk)),
+@@ -260,9 +260,9 @@ static int sctp_assocs_seq_show(struct seq_file *seq, v=
+oid *v)
+ 	sk =3D epb->sk;
+=20
+ 	seq_printf(seq,
+-		   "%8pK %8pK %-3d %-3d %-2d %-4d "
++		   "%8d %8d %-3d %-3d %-2d %-4d "
+ 		   "%4d %8d %8d %7u %5llu %-5d %5d ",
+-		   assoc, sk, sctp_sk(sk)->type, sk->sk_state,
++		   0, 0, sctp_sk(sk)->type, sk->sk_state,
+ 		   assoc->state, 0,
+ 		   assoc->assoc_id,
+ 		   assoc->sndbuf_used,
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 10ed9421e43aa..8f32bafd36c86 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3555,8 +3555,7 @@ static int unix_seq_show(struct seq_file *seq, void *=
+v)
+ 		struct unix_sock *u =3D unix_sk(s);
+ 		unix_state_lock(s);
+=20
+-		seq_printf(seq, "%pK: %08X %08X %08X %04X %02X %5llu",
+-			s,
++		seq_printf(seq, "%08u: %08X %08X %08X %04X %02X %5llu", 0,
+ 			refcount_read(&s->sk_refcnt),
+ 			0,
+ 			s->sk_state =3D=3D TCP_LISTEN ? __SO_ACCEPTCON : 0,
+--=20
+2.55.0
 
