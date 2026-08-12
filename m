@@ -1,199 +1,141 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0BA3B14D2
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786534639; cv=none; b=Q2u1WkARwosRnSiozknXYPTjfdpZjdS9gkIqedMseJXt9Qje0fh5BpLpv9mbCcXG3opCYeP8MIcFI1DgHvYulmqfFdayCofi9AxorGE7DbhZYvnu7e+oMHbXolVnqbctmaH3GnID2SozMhg5glNj++/suQU/wKfXKFvZr5ahuMg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786534639; c=relaxed/simple;
-	bh=CrTvb2kGHPK7+d0R14EHkHS3bKejDJlE1grVilZoGvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g3nUiOHSUWqXJ0AVSc56R5JZ+JH7XoGDd+ImmouREjE8/ouEACpuej9qmxr3f+Nywnt9ETVoVcq8b3hyxqLT6GxNLj3nX4DI5gbOH8s7nuiaXQydg/lrod3vLoivwMKBFHXqI8jIpPr//Z9WDQj2lsXPT2mjQx1RGmQsA+o4bwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zw9Co8UR; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02108434E4F
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786534755; cv=pass; b=ntXJ5kMWnHPJuyf6qYIuqSOV/T34JKqE2utPGB+XzYFFTNqCOqfO8r0YVKwJU3iWDNeDvfgXhDWfsBFr2KZVN0qJSPe8ANu7WfFGxAW/FgCwPQWHXzh4U13g95Uri5wiPBC1y3yLp9pWiVCtnqs93zMbf+s+FR4VgdvxhObHeh8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786534755; c=relaxed/simple;
+	bh=DaN9nYB8FBMgKs+20JyrySVlwZ2Qv/MvcqfuuWBsD4k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aezsOs9+K/16xKYpgROj3F3tx5AqtNg7R9E6Gc8w1YsM4ZNH9JmITuwLX1OeT2aoYGPycYb04FTRKhhVD9XnKMQkwZzUiRFU+JgUvkzLFsKLhFF2rg3xI+oqATap3Jf28P/84whS98A/m0SEZYJOMACFJGIXypMiTBEYbSDdi6c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PuXSz90l; arc=pass smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zw9Co8UR"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ceab75934dso11620715ad.2
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 04:37:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PuXSz90l"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c05dcdf49so10314761cf.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 04:39:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786534753; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PZR4v+/aLFC2rxVzlLb3vVVIicL0LkAMKzVxA+0F+w48GcuuCdLDtpflQllPFxcEUk
+         hepo9bFjhfhscWGgnZY/leo1WfS1CAEHGg1wBQIkia7BCz6749CtREzegIYh8YLK1cbM
+         DQMrPpYfzshj6Hy4dLpCst8/ECPJ6C9lNTwUF5KwBK521b4+VcOPLfEKo3M7Z92UPle4
+         CAeUq6y9bZ1rG8bE/NvldZRqBToQwWYarjvjGTJmf/XwDtRvHMEtMCv3vGnnAudypiu1
+         SdFxfiWbp4DkKVE3xIFy77xSrkP4MDmbwb8+eqC9X+QsRtpObtrobTZE4QLxccznZZjr
+         0DwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RnlrKC6yQpr/o0E77FIxd6sNz6VZtPb046x8kNGEgp8=;
+        fh=2S92v3zl+vIxQ1DWPxmvxNXeGaNSJmAbcNvG0WebMas=;
+        b=B0tXzfHaQhAsTYz/OCe3buJZOqoR/6TxCE+BvjtT3v8F+DcvA+qom3ql5mtJhEuOB/
+         K5c2Exs8QydG1hr+Zcv17mq8/ZDV7Kjbckn0e9Ubw8rmssTeDVLAHgkBqXDNvXSIHXXS
+         OGXMk7iVV12NT03Z9vqimOy9vuywpo/ljS+OnLZ4yoStiopqbS9uuQoagEQ/zi00K+Zx
+         KT5Be+5uhkRSVpDi5xSsTN+G7y4GO82CwnhatF6U2+O435e5zojJAUTk4YEoNF129zGm
+         umk1hQJs2f9GfIxsKw1xjOehIPMQeH4m8PU1xXkpZFriNitxd/+ut7HgAwGkD+BVJISF
+         W7Uw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786534638; x=1787139438; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=awK1WKPMjKwqqW9lFazWbI/9bmuJ+2znKvkeY5ORX+M=;
-        b=Zw9Co8URzGv80bCltBNL7kV9DPRMt42wt4JR/36IvUUUPIoGBu6aCRJq1N3YvRMi0q
-         F3n9BrOvv6Gjy/eihZtoWdzBtRXUZOYSl7B5O+YGsImoG/NF81VelpZVmzxewlBy6rJ8
-         5/JjqoJTxpcV9MFIUUhQp3SLegk0DG6z/n+TGtSFgZETwoMQDi3fiHXBRScS7jIxslcq
-         Yq9IgOiPAOc2kWJuUb3Po2jWWMWubVF8k7EGkcetZhpMSKM8n6pQ6GclbUo5DZdfg+64
-         pdN8SOA9qyAGtOpqfrYoDD+AbGqtaz7b3XCQGE3RA2Q+NIemEj2YINyzWJMP0qjfFwME
-         hUlw==
+        d=google.com; s=20251104; t=1786534753; x=1787139553; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RnlrKC6yQpr/o0E77FIxd6sNz6VZtPb046x8kNGEgp8=;
+        b=PuXSz90l1EA6Pne1M1DKWrViHAItI5sBfrNBqF3MJQHYIoaMTLvoEgi1Mlx5SW+E6Y
+         xqFF9LsacuRMMceahqxDMiScL6azhkRtICTKobmUKACAPwDRf3uQlZS0eAGYnFd4yKD3
+         MJsoBwCaM1JM8OpZZoqLLxlTpC02zlk2unollvHIWKnw7K+obVfg2vc4TpLCZMO+5sq+
+         gNDLeP48LT6Y1nb18tCYE1HJuzYqziWZfj3elos8aBtknzBY+2piOztTt2L2VyuzlTsr
+         1gga7hDg4U84RqD+UYmw08GC7dyp8m/xNl/22fZikLs9yili59jfZnNT5uIqed5Y+1+s
+         CNng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786534638; x=1787139438;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=awK1WKPMjKwqqW9lFazWbI/9bmuJ+2znKvkeY5ORX+M=;
-        b=W+kSbutAOLSSKlOky970Ixcc4TROOyow7yjE4jJVFvbvOCQvS/oG8TOsdlp2w+7Lj7
-         YSuuh1xI42JHgLtYAjIWI8hymU9iuSqdf6Ak69HKKPklliR1GQOjTwWqeOM+BvhLcHOj
-         CLGo9R9eQsqLQQ5wTq61LvXwWOVX+wDQKzW7G7LQYVp863MpteXGYoHfCvcmxBzHxRrl
-         FOLnaFY8fu+NHPovz/VnGxHphZbucDoqt1eJR4xkCkxpatA7xHFFLfHh4z/dZkE8E/ft
-         FayXz/XPo0SH4gSLIMP5JL1tgPfStvjeV7Hng3u0jw7Pt252B8V2Q1fTL1Lx18bffJPm
-         ocBQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpcyLcwRLxfc0uQjeBXR6Czn2zC4qiE+WZbyEYYiBwS8PRT++6ooibyJKBkEK7WW19r+CjxSYQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVBIDTiieISOgpUXGcvVbSV2iOaMX/glUnthcTWhcoumbS0Cax
-	iEWg8qJe0kiaL4noTswXaRPa1oRSchJ9Y30u6YVPYXtNFeX5XyTdbfDq
-X-Gm-Gg: AR+sD13bj5xLoCO1m1hL8mX9yELejmDHfxtVszITEBN6ZA6tKnKIVYDYqJU2Hz10lfF
-	x7XxXE2e56xPhfO4nozjCejQ/UbyV0tClrYbfaPB164BPbU8LC2HxqDGv4KfbUaNrUSJZRaoYmL
-	I8bc6Fd7pByEHnwJX8OV8ap2BPg9QgJoqri6XC+uQ3T7YZYVMz0swHmDMc0HG4OH41z6QcTC4Dk
-	qAg0szrpWMSl5lTNqHWb/0ymllBIyssbmkWP/myy7x+3X+MfZaQObeCjlddHEvUsH1IlGFZLVjo
-	Ks/KhrMttHTpzCE2ttlneLduX6BF8uZNJyLWB2OYQz79f5/1ESgwmTz6HC7RrPTYN4htM5dckxQ
-	7//TrL11IlRNSlxTuPdaGFDhiCp2XzraT3C9l5Nd4y1VDTBDSPgeUXggd5ZoaQQBukpWk1yfNpJ
-	pTDYvWi1PRb96r6gsEieFFecLgK0eFz41bfdEnxdBxxS+IYYyn4TpmLKqmDaONlEU=
-X-Received: by 2002:a17:902:cecf:b0:2ca:f8ef:33e4 with SMTP id d9443c01a7336-2d3456e06damr50057335ad.17.1786534637562;
-        Wed, 12 Aug 2026 04:37:17 -0700 (PDT)
-Received: from TENCENT64.site ([103.7.29.106])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d35222e5b3sm4942125ad.74.2026.08.12.04.37.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 04:37:17 -0700 (PDT)
-From: Jun Yang <littleddfu@gmail.com>
-X-Google-Original-From: Jun Yang <junvyyang@tencent.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Cc: stable@vger.kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: bridge: mcast: don't truncate the port group walk on teardown
-Date: Wed, 12 Aug 2026 19:34:24 +0800
-Message-ID: <20260812113435.1854275-1-junvyyang@tencent.com>
-X-Mailer: git-send-email 2.43.7
+        d=1e100.net; s=20251104; t=1786534753; x=1787139553;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RnlrKC6yQpr/o0E77FIxd6sNz6VZtPb046x8kNGEgp8=;
+        b=APy8bSB3O9VEnCchz59oSh/RKEDzdt35dpBpI64jsCSWrlOhOouZ31uqAY6A7/Mk3F
+         3VnKIbSKfdylhIxWx3eKouB/ADUvcoiqCmf0Ohmmik8KfuE0jOBXPySN513TGQeFkUkz
+         ZwguDP7KM+eGxnpBfwNbcs34Pbqy0GjVKl0KOsIToS6iuaBInVR27OzS+equSku81VU5
+         SWWznnjIPe6KuXsUGCnOMRATWNZyBaQ81HN45HxxsgHM0xml3Ny5H7TH/pZbkVJDWxr+
+         wvUZzimGdeOoqwPZAVzU4WH/ppBXN8zmLbh1rwkDUTsaRWrKS+cfW6HF++l1T5Yctrvr
+         e1Sg==
+X-Forwarded-Encrypted: i=1; AHgh+RoLiBxj5RJD8Omhio4+a94NH8fzHu+mVS4ySaPCtzhd2DLLeTSObvzafkTnRnE+/ljdVrhVK+c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ+I8jDf8G3WZSV/LV+/NsVI0Phl4KSbz2uWloTxMxhR3r+/Ky
+	05zHLQe3gXgU6vNWJn0rZh2332QOee3ZmqWXTJLgbCE/NwneYRb/IZYA0TUo+aBVCdlZ6CCPHVJ
+	d1kLQMiOZznAzBjVeHg99sfJSF8Wn6SfE/cgbzIhW
+X-Gm-Gg: AR+sD10OxUsReUp5IcFwnxSglxNmSVynnEND0rJjOEJ3vw0kVPexMAGArx5GtpygY5m
+	CRxvbliUGur+R3e9V9crvGYl3WIP6vNAkzo8UGfBGXVWrkw4eYrNfA7BV+YBfAOf2evBhGUgUPH
+	rba2LQQdJvsGV1YPOCKBtEmklozb3X0UZMe4us8BpqbJTi8owPesypmePS8PqZ+vQp1UgMUzrdw
+	n7kCvavk/7GvKOv8iL+t5v664tHadxC9tfo2mhippEpTDZRFBpJkZyoqpOsQ59ezmKNH7Np+cJ/
+	9Xqanfj4KqHFBk6nqLLEGomxAeLEv80vdc1aunA6+lWapNE4kSAbB3q12qAbxjvREE3tRtVUM6n
+	uRzx5gTo2QkyuWbVkiCLkl1WP9/xwplFIi5Zhz7jcW3QkUIsY/1jwmcRttkHQil1QNeW/f4cXZ/
+	bvNOq3p0XdBpEJ0KaO5g4nv7qL6Q==
+X-Received: by 2002:ac8:59c4:0:b0:51b:ee11:e71e with SMTP id
+ d75a77b69052e-52d646b8dabmr31842851cf.1.1786534752356; Wed, 12 Aug 2026
+ 04:39:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260807-net-next-mptcp-oooq-pruning-v3-0-dbc1eb853cc3@kernel.org>
+ <20260807-net-next-mptcp-oooq-pruning-v3-7-dbc1eb853cc3@kernel.org>
+In-Reply-To: <20260807-net-next-mptcp-oooq-pruning-v3-7-dbc1eb853cc3@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 12 Aug 2026 13:39:01 +0200
+X-Gm-Features: AUfX_mxA46OtJnZFHzG9nKl9iGiktqoxt39eRI-qnZy1K9dxmhi-xoA6rpd0mD4
+Message-ID: <CANn89iL-rnJtxVxJEf3j0PX3X8A04vsf-XXQvb-_FyjMBBM5nw@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 7/7] mptcp: implemented OoO queue pruning
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Gang Yan <yangang@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-__br_multicast_disable_port_ctx() and br_multicast_del_port() walk
-port->mglist with hlist_for_each_entry_safe(), which only guarantees that
-the *current* node may be removed by the loop body.
+On Fri, Aug 7, 2026 at 3:50=E2=80=AFPM Matthieu Baerts (NGI0)
+<matttbe@kernel.org> wrote:
+>
+> From: Paolo Abeni <pabeni@redhat.com>
+>
+> When moving incoming skbs in the msk receive queue and the latter
+> is above limits, prune it as needed quite alike what TCP is doing
+> at the subflow level. The main difference relies in the stop condition:
+> since MPTCP does not perform collapsing, it's better off dropping the
+> bare minimum to fit the (newer) incoming packet.
+>
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> Tested-by: Gang Yan <yangang@kylinos.cn>
+> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> ---
+> v2:
+>  - Uniform the new counter with the other OFO ones.
+> v3:
+>  - prune only for new data
+>  - reorganize the code to follow more closely TCP
+> ---
 
-The body is br_multicast_find_del_pg() -> br_multicast_del_pg(), and that
-deletes further port groups of the very same port. br_multicast_del_pg()
-drops the group's sources, and br_multicast_fwd_src_remove()
-(net/bridge/br_multicast.c:583) deletes the (S,G) port group installed on
-that same port; br_multicast_star_g_handle_mode() -> __fwd_del_star_excl()
-(net/bridge/br_multicast.c:330) deletes the automatically installed
-MDB_PG_FLAGS_STAR_EXCL entries, again on that same port. All of those sit
-on the same port->mglist.
+...
 
-When one of them happens to be the node the iterator already latched as
-"next", hlist_del_init() clears its ->next, the walk sees NULL and stops.
-Every port group after it is silently left on the port. port->mglist is
-head-inserted, so this needs the cascade victim to be older than the (*,G)
-entry owning the source - a user-added, non-permanent (S,G) MDB entry added
-before the (*,G) join produces exactly that ordering.
+> +
+> +/* The stack can't drop packets for fallback socket at the msk level, or=
+ the
+> + * stream will break.
+> + */
+> +static bool mptcp_can_ingest(const struct sock *sk)
+> +{
+> +       return unlikely(sk_rmem_alloc_get(sk) <=3D READ_ONCE(sk->sk_rcvbu=
+f)) ||
+> +                       __mptcp_check_fallback(mptcp_sk(sk));
+> +}
+> +
 
-Hitting it once truncates the disable walk in
-__br_multicast_disable_port_ctx() and once more truncates the flush in
-br_multicast_del_port(), so del_nbp() goes on to free the port with port
-groups still on port->mglist - and still linked in the bridge's mdb, with a
-dangling ->key.port. Any subsequent mdb dump reads the freed port:
-
-  BUG: KASAN: slab-use-after-free in __mdb_fill_info+0x1191/0x1320
-  Read of size 8 at addr ffff88803065d008 by task bridge/9527
-   __mdb_fill_info+0x1191/0x1320
-   br_mdb_dump+0x594/0xe40
-   rtnl_mdb_dump+0x1cf/0x5d0
-  Freed by task 0:
-   kfree+0x265/0x740
-   kobject_put+0x212/0x6a0
-   rcu_core+0x5c6/0x1140
-  Last potentially related work creation:
-   __call_rcu_common.constprop.0+0xb7/0x9e0
-   br_del_if+0xdd/0x260
-
-Don't rely on the pre-latched next pointer. br_multicast_del_port() deletes
-everything, so just take the current list head each round. The filtered
-walk in __br_multicast_disable_port_ctx() keeps its iterator but restarts
-whenever the latched node has left the list; port groups are only freed by
-the multicast GC work, which takes br->multicast_lock, so the node is still
-valid memory for that check.
-
-Fixes: b08123684bd5 ("net: bridge: mcast: install S,G entries automatically based on reports")
-Cc: stable@vger.kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:kimi-k3
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-A KASAN reproducer for this issue is available if requested.
-
- net/bridge/br_multicast.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
-
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 00aa9b2879d6..624dfca4066b 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -2065,12 +2065,17 @@ void br_multicast_del_port(struct net_bridge_port *port)
- {
- 	struct net_bridge *br = port->br;
- 	struct net_bridge_port_group *pg;
--	struct hlist_node *n;
- 
--	/* Take care of the remaining groups, only perm ones should be left */
-+	/* Take care of the remaining groups, only perm ones should be left.
-+	 * Deleting one can delete others on this same port->mglist, so
-+	 * always restart from the head.
-+	 */
- 	spin_lock_bh(&br->multicast_lock);
--	hlist_for_each_entry_safe(pg, n, &port->mglist, mglist)
-+	while (!hlist_empty(&port->mglist)) {
-+		pg = hlist_entry(port->mglist.first,
-+				 struct net_bridge_port_group, mglist);
- 		br_multicast_find_del_pg(br, pg);
-+	}
- 	spin_unlock_bh(&br->multicast_lock);
- 	flush_work(&br->mcast_gc_work);
- 	br_multicast_port_ctx_deinit(&port->multicast_ctx);
-@@ -2126,11 +2132,23 @@ static void __br_multicast_disable_port_ctx(struct net_bridge_mcast_port *pmctx)
- 	struct hlist_node *n;
- 	bool del = false;
- 
--	hlist_for_each_entry_safe(pg, n, &pmctx->port->mglist, mglist)
--		if (!(pg->flags & MDB_PG_FLAGS_PERMANENT) &&
--		    (!br_multicast_port_ctx_is_vlan(pmctx) ||
--		     pg->key.addr.vid == pmctx->vlan->vid))
--			br_multicast_find_del_pg(pmctx->port->br, pg);
-+	/* br_multicast_find_del_pg() can delete further entries of this same
-+	 * port->mglist, so the node latched in @n may be unlinked by the loop
-+	 * body. Port groups are only freed by the GC work under multicast_lock,
-+	 * so @n is still valid here; if it left the list, restart.
-+	 */
-+restart:
-+	hlist_for_each_entry_safe(pg, n, &pmctx->port->mglist, mglist) {
-+		if ((pg->flags & MDB_PG_FLAGS_PERMANENT) ||
-+		    (br_multicast_port_ctx_is_vlan(pmctx) &&
-+		     pg->key.addr.vid != pmctx->vlan->vid))
-+			continue;
-+
-+		br_multicast_find_del_pg(pmctx->port->br, pg);
-+
-+		if (n && hlist_unhashed(n))
-+			goto restart;
-+	}
- 
- 	del |= br_ip4_multicast_rport_del(pmctx);
- 	timer_delete(&pmctx->ip4_mc_router_timer);
--- 
-2.55.0
-
+This unlikely() seems inverted.
