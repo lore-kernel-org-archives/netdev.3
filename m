@@ -1,170 +1,115 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B23449B35
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9F2346774;
+	Wed, 12 Aug 2026 13:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786542556; cv=none; b=uzY3iQox+AMOor74GhPpUol6z+f21Fr3mtTJQLisac9eTnnWrMJGraKyy9ibn8lPrKXRYT47oUFi7M9Z7Sd1+x+kO+JUdgNWxkjiekdY6QXEU+fOxAk6vAnSIDHgd8nvVhP42qwXEULaPj0FUX9I6wLS9nZYyQHuD1VHcsLacm8=
+	t=1786543194; cv=none; b=Sjqe29dwwiXuysvomiShqZIeTGTsHGRmSdaDHpzFGGV6sQyT5lkjGb1nmLBN9nqrx3COie2ife1Lyk2mB8aJF6r69oaKuZm3aNS9flTtZxK012v1fdymuB6uC+OnjS9bV/wWn8qqHw0gAsCgeI2eHdFEu7msW5R5vInCdGQoCBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786542556; c=relaxed/simple;
-	bh=JBovGLTQDNZvVB1kX5xGnBWZWunagAeDDllcGJP/3kI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ufGQZTGzZyu5sioH0prTmFBJoH9HIp2LMQw8Q/UvD0CGW7xEoO7GcdRyo32nStytZsvwD7NN3uUkiVwepExhhhD5xcxIoKrZTZgQHWsOoRcNsIu0ze0Yh71z39hrQAhBi4TpXhnwiyF0bOQtZuY+xtUqu/gz3yNycY4jJuH1zxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AmG6YmuO; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786543194; c=relaxed/simple;
+	bh=Jokbltb+zA1d6fucMN6E3Co3pWL6vfKPXBDjXPWTPzM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WdEx/bS5fdfQZiKObJTK8F/ggO/OX1CgojufOJLxdfhc189tPgEo7ENBLQ/FwIoJPUSuWwPM7U151FscDWtpuO4L6c1rqE6+ni+U0G/IUbjHbbV0JivhPsNDL1GKwGnpaYkS49eRg/6xxwB4pIJGsv6HQA61ebA2dCygfvRp/LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=ln8OB5sN; arc=none smtp.client-ip=85.214.127.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AmG6YmuO"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cbe827e3cb4so937071a12.3
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:49:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786542554; x=1787147354; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=hstRaZBm6Ruysx0BcAFOKD/4xYhykDDvb4hgaRpnKSo=;
-        b=AmG6YmuOHCI6Q+fwYbQJmIBKdizCshFKVE+01tYyBTs0tjKCuD8PkkYaeYK92cDsqi
-         d5jA94Otu81nu2ISSKDWqINbSM34esrpuakgW1C5K2HaSMVs0yZ4zGWJ7n0j+t2lppW7
-         L1cx8NsTYkQNFm0xuORX6yoaYgS4D/ag6sM5s3NT6u7u/l1R84D/dUgV3IERUcLJ5lDk
-         zmh/xJvL1etWBQ/QBLtGfCOuEVIRuNJm6DQAHl7wExV7hPzoUHpYILD48QJHfmTFO7II
-         hDleHc5QB7immZGpSQl7Vmx+RNRopnFUOUfTQxVnQOa/jJMFdAIRmXxTW98l4DqUXR2Q
-         iFIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786542554; x=1787147354;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=hstRaZBm6Ruysx0BcAFOKD/4xYhykDDvb4hgaRpnKSo=;
-        b=dyEKNrtRmloSTyAhYhzldcyoC7rXnemNM2D15pz9l1s2jMONbL6f5a5OKVRMdWDEPD
-         ZdYJrkmK8Ewiww9+OfTFrgmNStwow0Q5q46ao+6FUZwRnvQRkEOTl4B1WdhG/STavRtb
-         Jepr1q0/dz30VY4AmJT5ekCDAUPXOMPHLstzqq6housPhQpUGoj90d/EOCWmJSWJAnmk
-         OOpl5wwEviaGwqEoFpk4vpIfNmsnnXCpjp2NYREZeYpfLmS8ttQIcUAiQFBAJLWYNlGj
-         fX/jR0X9QMiGkWclzfGxBrz3P7EI+BwcmaxbStD090Bhns8VugawjonCYmcx6KR/ioxH
-         4JlQ==
-X-Gm-Message-State: AOJu0Yx6p7OXKyXv3lU+QKnz9CWuL7qTI7qHNiPE+LdCj9qhy3oKeFuh
-	ReidGp8z6SerlDxi5jAwrzbpwZbyUzV1N9AaoIB4biPVEx7jLqaSTkf0
-X-Gm-Gg: AR+sD11c2VMjhmCN1YG0+UzW/f4NxbHJKFCMp5QKyekBq6xHP3H4ENSNs9Fo+LmjiqI
-	hbd1Px+vZ+nseCsIhbfhTpLcFhX+WKRQ2CAt2oxc9OQrgyuRH9O2K7FsfBofzYrgqu6xTKr8853
-	aZBQeVpBqDeZOpZAWAD21H4Is6cp+knsil8KNGJcd0/hJLfQFTntmzgVAsIN22Vvzljl8kxVSO1
-	V0y3csRFTEyFGhYeNYS4vUJIHhZQhfQkoI64mWP1jbCj3QpfOu957jpMKxSJpoQn9766maZNx84
-	v+P6gQ7F1GwEaLTK5JZfbkbiWUCEfhEbzIhnkKxlOuf4bWzYspzRRQL/ETVuyLOpkrz5/YHUm01
-	MhSnAzVPnuA8wMVlFmJG4g1/KSo9I6eHhsIUc8ZcOpKnQywgl/OpETDrOB+nHWN37trolF3SNDw
-	3gq31Dk926MQJvqvU/Rf6AHnP7ojh8XDZNBsbSlmPw/2ukCl7ourFl+if7Hs/e8LKDoi2C
-X-Received: by 2002:a05:6a21:694:b0:3bf:d0c8:2aa4 with SMTP id adf61e73a8af0-3cc3f5177e3mr6404225637.8.1786542553933;
-        Wed, 12 Aug 2026 06:49:13 -0700 (PDT)
-Received: from [127.0.1.1] ([2404:f801:8028:3:d079:2e5c:2c6d:3026])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31cf3624c6dsm15956350eec.4.2026.08.12.06.49.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 06:49:13 -0700 (PDT)
-From: Subasri S <subasris1210@gmail.com>
-Date: Wed, 12 Aug 2026 19:19:06 +0530
-Subject: [PATCH] netdevsim: update rxq->napi pointer during queue reset
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="ln8OB5sN"
+Received: from localhost (localhost [127.0.0.1])
+	by szelinsky.de (Postfix) with ESMTP id C2642E8322B;
+	Wed, 12 Aug 2026 15:59:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
+	s=mail; t=1786543189;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jokbltb+zA1d6fucMN6E3Co3pWL6vfKPXBDjXPWTPzM=;
+	b=ln8OB5sN+K2EwgNKD68euK4sniTzTIs0kBq7Dc67GmkhSJ7wpm57ouRFLo66DF6Vt1HV1k
+	Ir1YoBvjXtsjTvFc61fm7ucZQ8HauwmA3aAdzaDMGGsWk2f8Pnc/n70rI2z24yDCcsM8ef
+	+UCaDFoh19yrOomPQi32L3gfL08bOjlVMQ8VZjcI8+c007NSuNgXz+yZiSXIhgaAJDoU3h
+	RQhdzXBBpc5CWjz7asWCmxBzYkbMXzmKd69LqhfkIOj2iySuXd2jvkFzbeVLivtsU9PUZM
+	Caj0a7K28RusxkY9+mveNH4vL5dd06woAXWgJasJHdmE5XyA7sXChKtEggpD+Q==
+X-Virus-Scanned: Debian amavis at szelinsky.de
+Received: from szelinsky.de ([127.0.0.1])
+ by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
+ id gKh4YMMfSl2l; Wed, 12 Aug 2026 15:59:49 +0200 (CEST)
+Received: from p14sgen5.. (tmo-120-142.customers.d1-online.com [80.187.120.142])
+	by szelinsky.de (Postfix) with ESMTPSA;
+	Wed, 12 Aug 2026 15:59:48 +0200 (CEST)
+From: Carlo Szelinsky <github@szelinsky.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Carlo Szelinsky <github@szelinsky.de>
+Subject: Re: [PATCH net v2 2/2] net: pse-pd: guard regulator ops against freed PI data during unregister
+Date: Wed, 12 Aug 2026 16:59:36 +0300
+Message-ID: <20260812135936.889119-1-github@szelinsky.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260810135233.4be3dc5d@kernel.org>
+References: <20260810135233.4be3dc5d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260812-net-netdevsim-v1-1-521a85e4fe91@gmail.com>
-X-B4-Tracking: v=1; b=H4sIANF5fGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDC0Mj3bzUEhBOSS0rzszVTUxMMTM0MLAwNklJUQLqKShKTcusAJsXHVt
- bCwD0G13kXwAAAA==
-To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Willem de Bruijn <willemb@google.com>, 
- Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com, 
- Subasri S <subasris1210@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786542548; l=3078;
- i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
- bh=JBovGLTQDNZvVB1kX5xGnBWZWunagAeDDllcGJP/3kI=;
- b=9k7BLfuE5+3VxkFzwPNSm1+ERLTHfUaxtuaP65b2YkwFDdV5LKds77A3VQw9M8Mzcs3X0Mc+v
- GYim/2OFa72D5J3/4gzNr8Fq6MPocKPuT6F5fcGc0uA5Y9gKB7tJQDp
-X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
- pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
+Content-Transfer-Encoding: 8bit
 
-In netdevsim, when queue reset is performed using debugfs, it triggers
-these sequence of operations: nsim_queue_stop() -> nsim_queue_start()
--> nsim_queue_mem_free(). nsim_queue_mem_free() frees the old
-nsim_rq struct which embeds the napi_struct. But the rxq->napi pointer
-in the struct netdev_rx_queue still points to the old nsim_rq's embedded
-napi_struct. So, any subsequent xsk_bind() which reads rxq->napi->napi_id
-after a queue reset is a use-after-free.
+On Mon, 10 Aug 2026 13:52:33 -0700 Jakub Kicinski wrote:
+> It'd be great if we can figure out the safe lifetime rules for pse-pd
+> from all entry points. Specifically the sysfs complaint on patch 1
+> (assuming it's real) makes the series seem like a bit of of a see-saw.
+>
+> Let's get it reposted and take it from there?
 
-Add netif_queue_set_napi() calls to nsim_queue_stop() and
-nsim_queue_start() which clears the rxq->napi during stop
-and sets it to the new napi instance during start.
+Thanks for the reviews, Kory.
 
-KASAN report:
+Makes sense. Let me go through everything that still touches pcdev->pi
+once pse_controller_unregister() has started freeing it, so it's clear
+what the series covers and what it doesn't.
 
-Call Trace:
- kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
- xsk_bind+0x1582/0x16c0 net/xdp/xsk.c:1758
- __sys_bind_socket net/socket.c:1920 [inline]
- __sys_bind_socket net/socket.c:1912 [inline]
- __sys_bind+0x1a9/0x260 net/socket.c:1951
+The regulator ops (pse_pi_enable/disable/is_enabled) are the sysfs case.
+It's real: the PI regulators get registered before the controller, so on
+unbind the controller goes down first and pse_release_pis() frees
+pcdev->pi while the regulators are still live. is_enabled() is
+reachable over sysfs. Patch 2 is what handles this - it checks !pcdev->pi
+in those three ops and frees under the same lock. Patch 1 just does the
+reorder, so the two really need to be read together.
 
-Allocated by task 5622:
- nsim_queue_alloc+0x3c/0x140 drivers/net/netdevsim/netdev.c:715
- nsim_queue_init drivers/net/netdevsim/netdev.c:1012 [inline]
- nsim_init_netdevsim drivers/net/netdevsim/netdev.c:1059 [inline]
- nsim_create+0xb13/0x1420 drivers/net/netdevsim/netdev.c:1152
- __nsim_dev_port_add+0x3ba/0x8f0 drivers/net/netdevsim/dev.c:1509
- nsim_dev_port_add_all drivers/net/netdevsim/dev.c:1570 [inline]
- nsim_drv_probe+0xdbd/0x13a0 drivers/net/netdevsim/dev.c:1731
+The other one is of_pse_match_pi() from of_pse_control_get(). A consumer
+probing at the same time walks pse_controller_list and reads
+pcdev->pi[i].np. Problem is we free pi before list_del(), so the
+controller is still on the list with pi already gone. The series doesn't
+touch this yet. It's a one-liner really - move list_del() before the
+free. Then a lookup either sees a valid pi or doesn't find the controller
+at all, no NULL checks anywhere. I'd add that as a patch 3.
 
-Freed by task 5659:
- slab_free mm/slub.c:6377 [inline]
- kfree+0x22b/0x6c0 mm/slub.c:6692
- nsim_queue_mem_free+0xfe/0x190 drivers/net/netdevsim/netdev.c:796
- netdev_rx_queue_reconfig+0x405/0x630 net/core/netdev_rx_queue.c:144
- netdev_rx_queue_restart+0x8f/0xc0 net/core/netdev_rx_queue.c:183
- nsim_qreset_write+0x2e3/0x410 drivers/net/netdevsim/netdev.c:887
+Last two are pse_ethtool_get_status() and __pse_control_release(), from a
+consumer still holding a pse_control. They read pcdev->pi[psec->id] too,
+but here the real issue isn't pi, it's that the consumer can outlive the
+whole controller - of_pse_control_get() only takes a module ref, no
+device link - so a NULL check buys you nothing. That's pre-existing and
+not really something to fix in net. The notifier series I have for
+net-next [1] is what deals with it: the phy layer drops phydev->psec on
+unregister before pi is freed, and phy is the only pse_control user we
+have in tree.
 
-Reported-by: syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c06674caba265dc61d46
-Fixes: 5bc8e8dbef27 ("netdevsim: add queue management API support")
-Tested-by: syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com
-Signed-off-by: Subasri S <subasris1210@gmail.com>
----
- drivers/net/netdevsim/netdev.c | 3 +++
- 1 file changed, 3 insertions(+)
+So for v3: patches 1 and 2 as they are with Kory's Reviewed-by, plus the
+small patch 3 for the list_del reorder, and I'll write all this up in the
+cover letter so the ethtool side is clearly left to [1].
 
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index 4e9d7e10b527..c18f9f540084 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -826,6 +826,8 @@ nsim_queue_start(struct net_device *dev, struct netdev_queue_config *qcfg,
- 	}
- 
- 	ns->rq[idx] = qmem->rq;
-+	netif_queue_set_napi(dev, idx, NETDEV_QUEUE_TYPE_RX,
-+			     &ns->rq[idx]->napi);
- 	napi_enable_locked(&ns->rq[idx]->napi);
- 
- 	return 0;
-@@ -838,6 +840,7 @@ static int nsim_queue_stop(struct net_device *dev, void *per_queue_mem, int idx)
- 
- 	netdev_assert_locked(dev);
- 
-+	netif_queue_set_napi(dev, idx, NETDEV_QUEUE_TYPE_RX, NULL);
- 	napi_disable_locked(&ns->rq[idx]->napi);
- 
- 	if (ns->rq_reset_mode == 1) {
+Sound ok before I send it out?
 
----
-base-commit: a59f57e2aa127c5354168d2ec4bac920df1be4f4
-change-id: 20260812-net-netdevsim-aad6100834dd
+[1] https://lore.kernel.org/netdev/20260630091125.3162481-1-github@szelinsky.de/
 
-Best regards,
--- 
-Subasri S <subasris1210@gmail.com>
-
+Thanks,
+Carlo
