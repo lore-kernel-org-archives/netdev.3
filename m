@@ -1,93 +1,46 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mdapi.ch (mail.mdapi.ch [31.3.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86825481FC1
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 15:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1482E476697;
+	Wed, 12 Aug 2026 15:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.3.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786549428; cv=none; b=DSsVnKYEoYeg1gKIhg3vrVc2NR5loIJFnn7aFKgU4EcxVAPIfERrQYablwWK0Si9LVZE/fP6KPFHkM0DE8okCqwzmKSYJni4iVS90FQzWr7Hknspz3/uXdI+HTdx/FJZ2uGIZ5JSVMo++wBImaHMVvHcfRO3P59WWTqcinau8dg=
+	t=1786549635; cv=none; b=ivt08+JBopDGbPvUbV4zz8MeaPyPEdsn6GWGK0U7lJzlyAUXXqP+vq2grvJUQ3DKV9m9GaA9p9ua3pwtNCI2mImZFaOE+xvtYG0nAxPVImCDoUNDyxn2tQPmer8BTNiWVSyPOoNW8huxmCABzyvbygRQREVTtp/jnSdr2hYfIpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786549428; c=relaxed/simple;
-	bh=/1hRk1SHJ9bnOpJQiMwghltTnPfWErph9tS6P4+D/d8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K/NpwoSSRvIQ7m2y08LzaJWxPN37oYOcynvourmoe6DV3EDhz3CuhtoVDo38QSmOPMdGbTipCBs5UccPsHq6G4pBlXDOngIsBx74k+5TuhwLs4S1l2f4GSnoyJ3dxBxMzT65vO/DQCpQ5KJoBNKIq1ZG2DKUlJG3fEZ7vEvC5bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jq6t2aef; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786549635; c=relaxed/simple;
+	bh=LOetIEQPfdeZwCVX7tE2wmOSvd7RO/fmqcN8ab7R9nU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J0QwhyQLE/U1Ll3U48i/LZaAT1cwzuhe7SrhwUChub+HeV/WX0ml7RH0FfXQSSckP0vWoZ72ZO6n8WrRK61Ocug2Rm+zCsv80Zi5SXeWtEjL+p4pn6QRihd3ywqvOAKik9WHnvsWujT4BE59dwqBZBp6cw39r33tVDL68PpqMRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tillo.ch; spf=pass smtp.mailfrom=tillo.ch; dkim=pass (2048-bit key) header.d=tillo.ch header.i=@tillo.ch header.b=iJzSSQDZ; arc=none smtp.client-ip=31.3.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tillo.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tillo.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jq6t2aef"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4980fe6b3beso162095e9.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 08:43:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786549425; x=1787154225; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kNDg/QiIFoN0GUxh1R/xojN+bAzAUI8KO6xiFja3BKM=;
-        b=jq6t2aefEI7+to5e5cvWovtvmZAcC9vGe10dRr369W6gQW/OB6+9D4hqgZBZ90p3fN
-         WfjPV8w4lUTcTUHt/P6vy1shwbnrC3Zg8XBfscLlJoVmEBT4blwGLpx0pP36RtpUtM2m
-         1sFOv1a6GlNPcRfJ0XsRAphfBV4CETegdoW5ZIzg5ycQzBa0Eak4GNUsCLktXjg/AeNL
-         XwkTbYJj/Qw1xTf8lP2GCHsa3+25zibU4MZbTdrarsgPJFInkup6LzCuzQQ7CNYn2SE8
-         i7bm7MJMV5LSU0/YeQneOURW8K2nlx756h0nEGlcEZlnnEPdTKqEBVITkJVsSfqrR2U1
-         ltww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786549425; x=1787154225;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kNDg/QiIFoN0GUxh1R/xojN+bAzAUI8KO6xiFja3BKM=;
-        b=V/yNE2JpSRL3ZNNrN7pBrYSSsRpYSqn935Mncsq0ASDxFWNbbUTiM64w7sB11jD7dG
-         z0gTDDXqxZCGEvPsBYkuOefQduWLKlU3tgjqQeJgsnEWmkolzjjjpL8q1oVvjwNgtI7y
-         KEjpPE1Sfu2+idWXmqbUFRt/BQnYMyOB3IZy+/zESYoMaOErKWyM9LIUYfQ47wLNrErK
-         cdDnaEskkUl2jf5J8b3VTI2PTrHBfWqIufYmOtTEqT/j82c9v2fcej4gqUd/BwYXCv6B
-         7H8qMYed1TmpMBgFzJnzvtWa6/wUHIMcyRj5j9zhzXzXDPGGiCMl9wr7tMHfyf+a37k0
-         xCIA==
-X-Forwarded-Encrypted: i=1; AHgh+RqKF/nu1IfZ8534iFQbu1uVKwUgmuoEO0eBKX9dN3F/bBJkpg6WRMUl15DlUUufH7qIihLpk9I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhTc2NPNLKYDLuDuo+KLxyafwF09y+eahZRMdY+j8sARyrg78l
-	v7WANMhaGDRf1inHFEBAT8tUhy59r7qe5v8SXy+5wKYzmwu0HGwShjBg
-X-Gm-Gg: AR+sD11ivmHkFJ3Bf6LmS8q6xcj/EjLBaZGCS32uZrxOjwvcVlNcIsS4HVTc6guf/bG
-	w47dQZyarcJ8lLv23HRf0MqIF7k6eQEdD2mhqf6DEdkMFX+uhKnshpT0aV6wYHr2i9ZHqmaIDhs
-	rvOfSoN7VvnvaRUiJMXRVpvcjIH/+poO26b8OgC6iKnItqcOE3pu7PvC74H3sNE3alfUosrz6WF
-	SiBMF1OetCkfTHNN3exofYUeIvZj5FfbGsnpQGnHdBu9S0G3xXxMHfBSg/FlRebqz2lEtw+6xSM
-	8PuA02r1wJ0gGneMWyI4b4UznYANBzp1oJuB8V/l/F1VqDulX6gIBrT7nWANq+EnW6p7iKk8ai5
-	2I/ByCUjvTn0CdVSXiuLRdF7UpImzhcRmkaYLwmoue5TNc36I3eWpujHkryFmiGjRR3m7hxhGQw
-	jpfGOaUyjXalK/U9S3KYsTzlwfLmDfCF3Hj2CZZyTiaixIWoJ2bT+PWE+dzM8nN93RIki+qo3s/
-	oeKTgm4BP0DPJL1uoaeBHZ2aiQQk66NIA==
-X-Received: by 2002:a05:600c:8a1:b0:495:69eb:27d3 with SMTP id 5b1f17b1804b1-49981a0aac8mr755085e9.8.1786549424755;
-        Wed, 12 Aug 2026 08:43:44 -0700 (PDT)
-Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4997c939574sm51584985e9.1.2026.08.12.08.43.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 08:43:44 -0700 (PDT)
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: bpf@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	andrii@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	eddyz87@gmail.com,
-	edumazet@google.com,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	liamwisehart@meta.com,
-	martin.lau@linux.dev,
-	pabeni@redhat.com,
-	song@kernel.org,
-	netdev@vger.kernel.org,
-	sdf.kernel@gmail.com,
-	ameryhung@gmail.com,
-	kuniyu@google.com,
-	memxor@gmail.com,
-	jiayuan.chen@linux.dev,
-	Mahe Tardy <mahe.tardy@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Subject: [PATCH bpf-next v6 5/5] selftests/bpf: Add ksock test for async callback guard
-Date: Wed, 12 Aug 2026 15:43:28 +0000
-Message-Id: <20260812154328.72834-6-mahe.tardy@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260812154328.72834-1-mahe.tardy@gmail.com>
-References: <20260812154328.72834-1-mahe.tardy@gmail.com>
+	dkim=pass (2048-bit key) header.d=tillo.ch header.i=@tillo.ch header.b="iJzSSQDZ"
+From: Martino Dell'Ambrogio <tillo@tillo.ch>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tillo.ch; s=mail202603;
+	t=1786549629;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WsEkSb4Z9ocx4eno570gO5biflEHwVrDOkX5EsCollU=;
+	b=iJzSSQDZauk3uC6WwWoc/sdNKLblRvZQWkucpI/M/JRhKFalm2zCwgEHDlLhR5Fh2KXTd6
+	4nmxfYXEE9JrIYf9LVnSiIyzV2vldjP9Gnet3iCto5d4MMb4kfNd+MUcoCCj0ZpOd20KkM
+	8msAVCNJqit375d9r/akV+qLBS3L9B3OR7RonjHJACn5vEbRQScAbhEuL4K80vPpAxHCOS
+	7FIflVR2MW6d/fkFatLRO2Ld3YYSRqG2kowx0nvp+3Oj4eTSSstl14sTge5dsrc01Rn4NR
+	x0mDuTGUTnY8Qc02C4fI567rY+2mJP2W8u/Ik1HU9Yj8rGoPltFsfMJ1kZ+y4A==
+To: netdev@vger.kernel.org
+Cc: Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	linux-kernel@vger.kernel.org,
+	Martino Dell'Ambrogio <tillo@tillo.ch>
+Subject: [PATCH net-next v3 0/2] net: sfp: quirk support for XGS-PON ONT sticks with unclean EEPROMs
+Date: Wed, 12 Aug 2026 17:47:06 +0200
+Message-ID: <20260812154708.2201266-1-tillo@tillo.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,127 +49,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Because the kfuncs are going through LSM hooks, allowing their use via
-workqueue callbacks would expose the wrong credentials. This test
-ensures the kfunc are preventing any use from these contexts.
+Some clone XGS-PON ONT sticks return EEPROM reads where the vendor PN
+field contains non-printable garbage past the legitimate string instead
+of the SFF-8472 mandated space padding. sfp_strlen() then can't trim
+the field, the exact-length check in sfp_match() rejects the quirk
+entry before the string comparison runs, and the quirk silently never
+applies - so the kernel honors the module's spurious TX_FAULT and
+eventually disables it.
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
----
- .../selftests/bpf/prog_tests/ksock_wq.c       | 34 ++++++++++
- tools/testing/selftests/bpf/progs/ksock_wq.c  | 62 +++++++++++++++++++
- 2 files changed, 96 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/ksock_wq.c
- create mode 100644 tools/testing/selftests/bpf/progs/ksock_wq.c
+Patch 1 adds an opt-in part-prefix-matching flag to the quirk table so
+such modules can still be matched; the vendor name is always matched
+exactly and existing entries behave as before. Patch 2 adds two ONT
+stick entries wired to the existing potron fixup: the "OEM"
+XGSPONST2001, which needs the prefix matching (it returns trailing
+garbage in the PN field on cold power-up reads), and the Fiberstore
+XGS-SFP-ONT-MACI, whose PN field is fully occupied by the truncated
+product name and matches exactly.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-new file mode 100644
-index 000000000000..5b9c6cc30392
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2026 Isovalent */
-+
-+#include <unistd.h>
-+
-+#include "test_progs.h"
-+#include "ksock_wq.skel.h"
-+
-+void test_ksock_wq(void)
-+{
-+	LIBBPF_OPTS(bpf_test_run_opts, opts);
-+	struct ksock_wq *skel;
-+	int err;
-+
-+	skel = ksock_wq__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "ksock_wq open and load"))
-+		return;
-+
-+	err = bpf_prog_test_run_opts(
-+		bpf_program__fd(skel->progs.ksock_wq_start), &opts);
-+	if (!ASSERT_OK(err, "run ksock_wq_start"))
-+		goto out;
-+	if (!ASSERT_OK(opts.retval, "ksock_wq_start retval"))
-+		goto out;
-+
-+	while (!__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE))
-+		usleep(1000);
-+
-+	ASSERT_EQ(skel->bss->create_err, -EOPNOTSUPP,
-+		  "workqueue create rejected");
-+
-+out:
-+	ksock_wq__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/ksock_wq.c b/tools/testing/selftests/bpf/progs/ksock_wq.c
-new file mode 100644
-index 000000000000..16a1873d132e
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/ksock_wq.c
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2026 Isovalent */
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include "bpf_experimental.h"
-+#include "bpf_tracing_net.h"
-+#include "errno.h"
-+#include "ksock_common.h"
-+
-+struct ksock_wq_value {
-+	struct bpf_wq work;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_ARRAY);
-+	__uint(max_entries, 1);
-+	__type(key, u32);
-+	__type(value, struct ksock_wq_value);
-+} work_map SEC(".maps");
-+
-+int create_err;
-+u32 callback_done;
-+
-+static int ksock_wq_callback(void *map, int *key, void *value)
-+{
-+	struct bpf_ksock_create_opts opts = {
-+		.family = AF_INET,
-+		.type = SOCK_DGRAM,
-+		.protocol = IPPROTO_UDP,
-+	};
-+	struct bpf_ksock *ks;
-+	int err = 0;
-+
-+	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
-+	if (ks)
-+		bpf_ksock_release(ks);
-+	create_err = err;
-+	__sync_fetch_and_add(&callback_done, 1);
-+	return 0;
-+}
-+
-+SEC("syscall")
-+int ksock_wq_start(void *ctx)
-+{
-+	struct ksock_wq_value *value;
-+	u32 key = 0;
-+	int err;
-+
-+	value = bpf_map_lookup_elem(&work_map, &key);
-+	if (!value)
-+		return -ENOENT;
-+	err = bpf_wq_init(&value->work, &work_map, 0);
-+	if (err)
-+		return err;
-+	err = bpf_wq_set_callback(&value->work, ksock_wq_callback, 0);
-+	if (err)
-+		return err;
-+	return bpf_wq_start(&value->work, 0);
-+}
-+
-+char __license[] SEC("license") = "GPL";
---
-2.34.1
+Both quirks are in production use on a Bananapi BPI-R4 (MT7988A)
+router on an XGS-PON uplink, backported onto 6.12.
+
+v3, addressing Jakub's review [1][2]:
+ - prefix matching is now scoped to the part field only; the vendor
+   name comparison is always exact
+ - the FS XGS-SFP-ONT-MACI entry is back to plain SFP_QUIRK_F: its PN
+   field carries the full 16-character truncated product name, so
+   prefix matching bought it nothing
+ - commit messages reworded accordingly; patch 1 now describes the
+   mechanism only
+ - dropped the Reviewed-by tags given the functional changes
+
+[1] https://lore.kernel.org/netdev/20260811001427.1036657-1-kuba@kernel.org/
+[2] https://lore.kernel.org/netdev/20260811001429.1036686-1-kuba@kernel.org/
+
+v2 (repost + checkpatch fix): https://lore.kernel.org/netdev/20260806074308.1996917-1-tillo@tillo.ch/
+v1: https://lore.kernel.org/netdev/20260705185440.136496-1-tillo@tillo.ch/
+
+Martino Dell'Ambrogio (2):
+  net: sfp: allow prefix matching in quirk lookup
+  net: sfp: add quirks for OEM XGSPONST2001 and FS XGS-SFP-ONT-MACI
+
+ drivers/net/phy/sfp.c | 38 +++++++++++++++++++++++++++++++++-----
+ drivers/net/phy/sfp.h |  1 +
+ 2 files changed, 34 insertions(+), 5 deletions(-)
+
+
+base-commit: ac155a26750a595703e7dadff84735456d75a479
+-- 
+2.47.3
 
