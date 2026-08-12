@@ -1,125 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FD22DEA7B;
-	Wed, 12 Aug 2026 19:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CE33750C9;
+	Wed, 12 Aug 2026 19:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786564692; cv=none; b=sjf+TI+MuMbTiZ70+hXsB3n91M7B5yF1DwqZeCb+0yWVRAGnHz+tdlRL1mM2qtfur3aAdVmWZMnTEZZjYFNyssb+MKbffaOO+JgEvSEorGjxqhRLoYFhEm8GktO83ntkkoEbCq7QPVH/eCDAoNGmzjX2DDrxxNb08gfI5f526ZY=
+	t=1786564710; cv=none; b=F7+bsCnvx12ffJuFP35cLufp/qD0ATcFw5wUeCCzMlDnwCikR+Q+l7i9z0WTeYPZnwLIdoTCijUrfRDfENv9jh8slfrevMsACntUZAAHmsEci5NkOp4uex6XMt1mpidRNNUlEvVOOLGYgJ6NY9cbc6mQYYwzXOl9s/E8E51yJUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786564692; c=relaxed/simple;
-	bh=JZriPIKHnwd+O1LzLaSuY4sWtN/OQY8R6zFShcKLBgQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Hi8pffqRf80TrqERhirfHLVb2hDcfdAYSreWO4OzHILL4q7kU5YtUor+Nz7eeoY/27y0oCceGCVamRPG4NbbA+xFt50kY99j9vUSqrUp84L6Iltdtj054bpfxYubHVJJTFiomt5HTkafSldmaG7dccMGXtJXe5ajrKGmS6pBSms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WGDy8lCU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786564710; c=relaxed/simple;
+	bh=tlSpxz+pW7sfd36IenC9YoBYnuzs+CeW4u1TCEPMS2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h2KT+AaCPtbficzQAjPlSo8p91yECFVQJHcmX7/X8FFNkj55Xv08ROUl/WduL9JMzxabkUWaxg2peNMsYeafGuI/ITiGbLNdVwqFVvz71ZQ0jtSivAk1ZLZtMOg7c9hwD4rpSZjq29fx+TTkaCvI8Ww3GwWeIAst7ZoWU1aU2q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O0G6wWDJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WGDy8lCU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941611F000E9;
-	Wed, 12 Aug 2026 19:58:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0G6wWDJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A961F000E9;
+	Wed, 12 Aug 2026 19:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786564691;
-	bh=Y1P55mM0dahNIB/Al0oh+EqD8rQyMQvSEpJTZ3dx90A=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=WGDy8lCUsrROHC0eWwibA8UrcTmumnr69CVrnZ19xqV6cXyGxkky/8KL6pdkApmWD
-	 QrdgRTRYa/GbG8+CiZTyVeWlJxuIZp5UeIui0IJz/iCMD4T47KYPjvw4IIX7MqEKwe
-	 PZSTdagE91eGBpBQHzAHmueLPapikVl3BVVSdSAWO8Ozpx5snjEnU2om7MSKOIVRs4
-	 Pxw3/XQxThq6yDPMb3ICfB52Wxz0tgu0QRcqNjEN4UjHeU/4AtNg4B0nsJHQjzjfsK
-	 qJMa2QeK2/lMr0Hv83RfMIn1fIsgFVOukB87VsIlzINMBNBDz7e1EXfS2cG4rO7vYt
-	 pk0ab6IjJdpeA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9E729F40066;
-	Wed, 12 Aug 2026 15:58:09 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Wed, 12 Aug 2026 15:58:09 -0400
-X-ME-Sender: <xms:UdB8arYn39IPfesgoXsIoQNjPwVjXlNcMSSSOq4GLAAfzcd_hTtcJg>
-    <xme:UdB8alNACJJplvHjJLAF0GTLqqauPPO93IYo40VIz_VUMkyVO_DauPykiiqy8PBbD
-    zAdvYCE0qyWnDMxG9bSke5lUdfo-zkYt9SqLJsnEmXJBwddrMYzsJo>
-X-ME-Proxy-Cause: dmFkZTEWzyiPOwExbhK5KCTbtWVdpNIqX5qDclII+jkPfrwpXd9yV8SuDk4G1Y42zg4Qul
-    cEOs4s2gHwVD8gLshicaNH0w/l2O2N953BVrME6zgTPFbCYsBhuHwJIY+Mr0H86TJLxr4B
-    2zPpgoRvZXBNV6XppZjkG8wV/tqj0IjqSU+jt5opp8qlMfgpYxWm03iEPa0DFOqa3Znc1C
-    0e2KSW1u2VgRL7ZjFuDJ9pbkSRdxlA3kmYD9Dw/JcDQfKTrUXPVC81D4fJ3HWuWjaYCbM3
-    W6r1EqPa/WuQhC9Yi6azguBSYM0cLyor6nw3uGhc3bZpR8ltg92PuavKaXAXmO5ff+jCPj
-    VatPHnablbfRnGkjlEDg/ihUWjz88oXKexRkU+9I6yfsr97xGtce28vOPHvW8cjngrR5kw
-    eBaZaZ/EyVmJFbM4Ah+yVSAYVu0Mo/euhgE4ZF9Asi/S6h/TtNysQOOCDAytilHOKit1t6
-    h7OwTwG0Uhtn9hVZzjFHthWO9eXSzTqxKowDbV4LxURcFl/MnQXqDNsEvbNuam4GW7H1la
-    nV6k6bBoq5ubFt7Kwge0XAoxlUcOp7LieGjsHWt7IdpzY07rjIqGk4pPB0ZVr58qfHyBlF
-    tSTkYZaSGVaJ6NhEWzPr3n32Rlh7xjdOrntp3sk2oVAXwkcrnAi1b0+CpMlw
-X-ME-Proxy: <xmx:UdB8atavH7zdhgok-UMPsDOxqotQTMV24YR0UlUxsw3h1eOfEZcOyQ>
-    <xmx:UdB8ajpadmOxf1NiPYvyZwlmCDYZXMGy3v089zstq0C47vRp0H71qA>
-    <xmx:UdB8aix7S0JDDMkFePGmIfLQuoitL1_ktO1llBOR2tYhB99whf7t4Q>
-    <xmx:UdB8ajLRLjz4876VEznhK1VE0QFk6X610GtOPnH2wOKT3P1e1bHnuQ>
-    <xmx:UdB8as5GRhkxr-TEBo0DOUlsVm-Bn8lXQUEPal3qLLgT_rtW9lu62afm>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 79933780C1A; Wed, 12 Aug 2026 15:58:09 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20260515; t=1786564709;
+	bh=o5YPmFtZG2zCjcC2+M+V37X7Um8tsyR4j5Qh/i/e6B0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=O0G6wWDJgixYjcOQrMbQk1Fo/DFF///H43Kl8QWgfl7n+/i5tL3jyK0DktmBNGysU
+	 3EMifcz1MRRuluG5BqMrZWRfNvQlfrjfRI4/qf4b9ytD0mTUtUKERiTO18UNKMu5Ib
+	 WrbjJESeb3ze4StqJTuycpgAO7C/tpdl+2gPGJOlHbH/bx5YKOiWxRFrSdk92pqvN+
+	 6J1HxC1oULa+HFZeVXt4z+z0rsKCJD1TQvtiP5SLe9yPWo6HhSm1CQgaaWYryb8wz6
+	 sFdtij7FEupcU8lL4ZSsJ6H/eJ+Yl2lDBcVKTN51CQK6odN1LHmyJ5kSUrrqtH8bTQ
+	 mvlcUaqU8c6qw==
+Date: Wed, 12 Aug 2026 14:58:28 -0500
+From: Rob Herring <robh@kernel.org>
+To: Christophe Roullier <christophe.roullier@foss.st.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, linusw@kernel.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [net-next,PATCH v2 1/5] dt-bindings: net: add phy-supply
+ property for stm32
+Message-ID: <20260812195828.GA724768-robh@kernel.org>
+References: <20260812091122.566439-1-christophe.roullier@foss.st.com>
+ <20260812091122.566439-2-christophe.roullier@foss.st.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A4afRqWdro9F
-Date: Wed, 12 Aug 2026 15:57:52 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "J. Bruce Fields" <bfields@fieldses.org>, "Shuah Khan" <shuah@kernel.org>
-Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, "Trond Myklebust" <trondmy@gmail.com>,
- linux-kselftest@vger.kernel.org
-Message-Id: <572f0269-9bf4-4a80-8e9c-3c4614d45f7e@app.fastmail.com>
-In-Reply-To: <26486c88075a0b1e3c1cb088fe97d39e0051b5d3.camel@kernel.org>
-References: <20260811-nfsd-nl-hang-v2-0-c0c92b3953c3@kernel.org>
- <20260811-nfsd-nl-hang-v2-4-c0c92b3953c3@kernel.org>
- <e1706a70-d9f8-423e-9462-2d77b2e444b1@app.fastmail.com>
- <26486c88075a0b1e3c1cb088fe97d39e0051b5d3.camel@kernel.org>
-Subject: Re: [PATCH v2 4/8] SUNRPC: undo partial rpcbind registrations when
- svc_register() fails
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812091122.566439-2-christophe.roullier@foss.st.com>
 
+On Wed, Aug 12, 2026 at 11:11:18AM +0200, Christophe Roullier wrote:
+> Phandle to a regulator that provides power to the PHY. This
+> regulator will be managed during the PHY power on/off sequence.
+> 
+> Signed-off-by: Christophe Roullier <christophe.roullier@foss.st.com>
+> ---
+>  Documentation/devicetree/bindings/net/stm32-dwmac.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+> index 987254900d0da..0c7eb1ccadd47 100644
+> --- a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+> @@ -99,6 +99,9 @@ properties:
+>        encompases the glue register, the offset of the control register and
+>        the mask to set bitfield in control register
+>  
+> +  phy-supply:
+> +    description: PHY regulator
 
+Which phy? There can be multiple for ethernet. In any case, doesn't 
+really matter because either is wrong. The supply(ies) for a device go 
+in that device's DT node. This node is not a PHY.
 
-On Wed, Aug 12, 2026, at 3:38 PM, Jeff Layton wrote:
-> On Tue, 2026-08-11 at 15:19 -0400, Chuck Lever wrote:
-
->> For an IPv4 listener, the port-zero callback falls back through
->> __svc_rpcb_register4() to rpcb_register(). PMAPPROC_UNSET ignores
->> its protocol argument, so unwinding a partially successful TCP
->> registration also removes the mappings for existing listeners on
->> other transports, I would think.
->> 
->> It might be that the best the kernel can do here is tear everything
->> down if one registration fails.
->> 
->
-> What I was thinking for NFSv2/3 was to just have the listener set
-> netlink call wait for registration to complete before returning to
-> userland. That would mean we'd have to block even longer to try and
-> unregister things if things fail.
->
-> Alternate proposal: let's just declare rpcbind reg errors to be non-
-> fatal: do a pr_warn() and just leave it up to the admin to sort it out
-> if that happens instead of trying to fail the startup.
->
-> The resulting situation for the server is no worse off (it's just
-> running instead of being down), and I move that we're better off
-> leaving it up to a human to clean up the mess instead of trying to fix
-> things up from the kernel.
-
-I was thinking of this in terms of a declarative administrative UI:
-If the kernel can't set the requested configuration, it should
-fail back to the previous configuration. Maybe that's not possible.
-
-On the other hand, what might be better is to handle the rpcbind
-registration from user space instead of the kernel, after the
-kernel listener is set up.
-
-
--- 
-Chuck Lever
+Rob
