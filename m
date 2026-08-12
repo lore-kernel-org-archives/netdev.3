@@ -1,48 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9816948CD67;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9841B48D880;
 	Wed, 12 Aug 2026 21:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786569954; cv=none; b=jS4N9hOeFFU4e5nfd87rLdiTaMFHcpS8USggtV4PStNaFgyO9gl+50tvz/piPJakKiQ0IOqnBKnrZrwnjARAERO8nNn6bWT28aKIL4v0WqKSbulbpvK/0Io1ygBtG7uCcRlZH67UXRADZjrsAsx0ubQAfbXNUNiFMS0KwoT+66E=
+	t=1786569954; cv=none; b=fFlhxEcRihLuGaQvPfK95NMXfPaY2JM7U7QM/ZKNgVB7htEUXptyUi50aUSL1w0GL01iZf2qq6M5TAry54j0eIilp5VwSKzsKo34KDAR5UGDBnpZVGHYoUa033zDbnXNOhHwyXQm0ASgp3iw+hj/y0e/YZWWd68Y6YReBLzMNMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786569954; c=relaxed/simple;
-	bh=KWDxFnVKJ8ZROr6nx/+vEOerTrPaQBhjxw74mSI2cZs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCg0GuCXWD/RRvAWQF8pJi1atfN8tAbPTAz3+sFiOwMr3RybUg5XQehEFevPH7kS9S7shhUm2HkGd105t8TNMfRb4i6Iq76QeemlmY/jsVv7lFOwMCxocLPASqe3rmymgnZlN6K79enUEAzTfx5AqEGoJNMpiyB3aitnwAcMUCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PjNBMbBt; arc=none smtp.client-ip=198.175.65.11
+	bh=JFDCqJOZSoyt4Y6mIu0+YzpFj56Vnibd4HPzYkX3pL4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LdDhdiEDpZC6EfFKA3gZUsxDMxl2SrKHEguwktTePqB/KABSoSmFjMGp2W9V8Bow/Bt4ycjhTq4MHOJqS3f6KpZG/xZ90vOhNjmi3nztXtVI1zoIbzl8JxrudGaU1lNMh2QE14ClZhYtnEvFLSoUqsyL3LUA+XHSYDGbZpPRtgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cfDSrz17; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PjNBMbBt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cfDSrz17"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786569942; x=1818105942;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KWDxFnVKJ8ZROr6nx/+vEOerTrPaQBhjxw74mSI2cZs=;
-  b=PjNBMbBtgRs9sVA6VXWkG+9mHmQVL56t23byZbPxobAR3F80iARN5H61
-   d+LZ4N2T7jIsi5bt+KFlcQQoO9GHySrA/wvTZLiMZa5vdcI7aHtfpqlZx
-   7tn/BpTaCdsQSDAJWJIRKakdL40SKeQqHKqHNAZEcn+PRmKyUHxbSMCtz
-   JXVVxUCKmXUWk5uFoaQQsAGDl+bdwiqi2/A2MC8E7lrPPPM42z8x3mnnz
-   kXmT0BVzo3mD4Up2JWvmG/YlN9Gu6HATXJbA70YhlqOend9gVHVapAtJL
-   57OQQVFR67Hqd1brl3n7MV3AAnfY1+VYCx5wWinc2CePgH3a/G/iVTD5i
-   A==;
-X-CSE-ConnectionGUID: Ye/voi2YRRy06HjiCbh8lg==
-X-CSE-MsgGUID: E8JUTPN0RkWXfyC/ZVybsw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="97485505"
+  t=1786569943; x=1818105943;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=JFDCqJOZSoyt4Y6mIu0+YzpFj56Vnibd4HPzYkX3pL4=;
+  b=cfDSrz17GO+al0+QzCI+/A+hiu+yLPiARvgDpa8wr3hu7cELSTnS+8TH
+   f4Wym+kA10+zW/yRvzgK+5H6UcAVSC/rCTHxxM8WxN1EWqpqNByKrqzul
+   r7qXliEDdwRQLJpdmt48eLOQMWSuOyGQm+Y41o8lJQQO5C9il18QdExvv
+   G/UKKTnUTD+W7SFfUx8amPHB7XODarrYX0QMIXfxLvhxlte78cbO7GhK9
+   2txOJgAL0Ha9ehz7Ny+moKx7R3QMfl2ULdymAGAyWLE1lKR7caaTfmiwP
+   +pRi+jSKPd/E6FWUt+8PqPY8wSigCFWOWx7bTzRZLXH0maJRDPgsf2KXq
+   w==;
+X-CSE-ConnectionGUID: WNI1pkNhS1WmSTmXquGwUw==
+X-CSE-MsgGUID: 9+ItU8nuSZWbSEmIFNWATw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="97485495"
 X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
-   d="scan'208";a="97485505"
+   d="scan'208";a="97485495"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
   by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 14:25:36 -0700
-X-CSE-ConnectionGUID: fv5ihfYTT5i8VTlqUWgg6w==
-X-CSE-MsgGUID: uS+85Bf3Tde9wQ7BxJjr7A==
+X-CSE-ConnectionGUID: 8UGViNWWQlKY1ufvCKpxlQ==
+X-CSE-MsgGUID: V8CdW8mNRdSddXNVfjzhbQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
-   d="scan'208";a="257546229"
+   d="scan'208";a="257546226"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa009.fm.intel.com with ESMTP; 12 Aug 2026 14:25:36 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 12 Aug 2026 14:25:35 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,7 +49,7 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Victor Raj <anthony.l.nguyen@intel.com>,
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	larysa.zaremba@intel.com,
 	przemyslaw.kitszel@intel.com,
 	aleksander.lobakin@intel.com,
@@ -67,14 +66,11 @@ Cc: Victor Raj <anthony.l.nguyen@intel.com>,
 	corbet@lwn.net,
 	richardcochran@gmail.com,
 	skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org,
-	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net-next v8 01/15] virtchnl: move virtchnl and virtchnl2 headers to 'include/linux/net/intel'
-Date: Wed, 12 Aug 2026 14:25:15 -0700
-Message-ID: <20260812212532.905873-2-anthony.l.nguyen@intel.com>
+	linux-doc@vger.kernel.org
+Subject: [PATCH net-next v8 00/15][pull request] Introduce iXD driver
+Date: Wed, 12 Aug 2026 14:25:14 -0700
+Message-ID: <20260812212532.905873-1-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260812212532.905873-1-anthony.l.nguyen@intel.com>
-References: <20260812212532.905873-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,300 +79,301 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Victor Raj <victor.raj@intel.com>
+Larysa Zaremba says:
 
-virtchnl2 headers will be used by both idpf and ixd drivers, so they have
-to be moved to an include directory. On top of that, it would be useful to
-place all iavf headers together with other intel networking headers.
+This patch series adds the iXD driver, which supports the Intel(R)
+Control Plane PCI Function on Intel E2100 and later IPUs and FNICs.
+It facilitates a centralized control over multiple IDPF PFs/VFs/SFs
+exposed by the same card. The reason for the separation is to be able
+to offload the control plane to the host different from where the data
+plane is running.
 
-Move abovementioned intel header files into 'include/linux/net/intel'.
+This is the first phase in the release of this driver where we implement the
+initialization of the core PCI driver. Subsequent phases will implement
+advanced features like usage of idpf ethernet aux device, link management,
+NVM update via devlink, switchdev port representors, data and exception path,
+flow rule programming, etc.
 
-While at it, remove the self-include from iavf_types.h.
+The first phase entails the following aspects:
 
-Suggested-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Signed-off-by: Victor Raj <victor.raj@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+1. Additional libie functionalities:
+Patches 1-5 introduce additional common library API for drivers to
+communicate with the control plane through mailbox communication.
+A control queue is a hardware interface which is used by the driver
+to interact with other subsystems (like firmware). The library APIs
+allow the driver to setup and configure the control queues to send and
+receive virtchnl messages. The library has an internal bookkeeping
+(XN API) mechanism to keep track of the send messages. It supports both
+synchronous as well as asynchronous way of handling the messages. The
+library also handles the timeout internally for synchronous messages
+using events. This reduces the driver's overhead in handling the timeout
+error cases.
+
+The current patch series supports only APIs that are needed for device
+initialization. These include APIs in the libie_pci module:
+* Allocating/freeing the DMA memory and mapping the MMIO regions for
+  BAR0, read/write APIs for drivers to access the MMIO memory
+
+and libie_cp module:
+* Control queue initialization and configuration
+* Transport initialization for bookkeeping
+* Blocking and asynchronous mailbox transactions
+
+Once the mailbox is initialized, the drivers can send and receive virtchnl
+messages to/from the control plane.
+
+The modules above are not supposed to be linked with the main libie library,
+but do share the folder with it.
+
+2. idpf:
+Patches 6-11 refactor the idpf driver to use the libie APIs for control
+queue configuration, virtchnl transaction, device initialization
+and reset and adjust related code accordingly.
+
+3. ixd:
+Patches 12-15 add the ixd driver and implement multiple pieces of the
+initialization flow as follows:
+* Add the ability to load
+* A reset is issued to ensure a clean device state, followed by
+  initialization of the mailbox
+* Device capabilities:
+  As part of initialization, the driver has to determine what the device is
+  capable of (ex. max queues, vports, etc). This information is obtained from
+  the firmware and stored by the driver.
+* Enable initial support for the devlink interface
 ---
- MAINTAINERS                                                   | 3 +--
- drivers/net/ethernet/intel/i40e/i40e.h                        | 2 +-
- drivers/net/ethernet/intel/i40e/i40e_common.c                 | 2 +-
- drivers/net/ethernet/intel/i40e/i40e_prototype.h              | 2 +-
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h            | 2 +-
- drivers/net/ethernet/intel/iavf/iavf.h                        | 2 +-
- drivers/net/ethernet/intel/iavf/iavf_common.c                 | 2 +-
- drivers/net/ethernet/intel/iavf/iavf_prototype.h              | 3 ++-
- drivers/net/ethernet/intel/iavf/iavf_types.h                  | 4 +---
- drivers/net/ethernet/intel/ice/ice.h                          | 2 +-
- drivers/net/ethernet/intel/ice/ice_common.h                   | 2 +-
- drivers/net/ethernet/intel/ice/ice_vf_lib.h                   | 2 +-
- drivers/net/ethernet/intel/ice/virt/virtchnl.h                | 2 +-
- drivers/net/ethernet/intel/idpf/idpf.h                        | 2 +-
- drivers/net/ethernet/intel/idpf/idpf_txrx.h                   | 2 +-
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.h               | 2 +-
- include/linux/{avf => net/intel}/virtchnl.h                   | 0
- .../intel/idpf => include/linux/net/intel}/virtchnl2.h        | 0
- .../idpf => include/linux/net/intel}/virtchnl2_lan_desc.h     | 0
- 19 files changed, 17 insertions(+), 19 deletions(-)
+v8:
+* validate BAR index against PCI_STD_NUM_BARS instead of PCI_NUM_RESOURCES.
+* log BAR index and offset in the unmapped-MMIO WARN_ONCE().
+* unlink before unmapping in libie_pci_unmap_fltr_regs()/libie_pci_unmap_all_mmio_regions().
+* document variadic BAR-index arg on __libie_pci_map_mmio_region()/__libie_pci_get_mmio_addr().
+* return real error from libie_ctlq_alloc_queue_res() instead of always -ENOMEM.
+* add lockdep_assert_held() to libie_ctlq_send_desc_avail()/libie_ctlq_send().
+* use atomic set_bit()/clear_bit() on xnm->free_xns_bm.
+* skip reusing an Xn slot whose small-DMA buffer may still be in-flight; track
+  it via new xn->tx_msg.
+* drop unused write-only xn->ctlq field.
+* fix __free()-goto mixing in idpf_send_get_rx_ptype_msg()
+* use libie_find_ctlq() in ixd_adapter_fill_dflt_ctlqs() instead of open-coding
+* name the 300ms/500ms delays as IXD_CTLQ_RX_TASK_DELAY_JIFFIES/IXD_INIT_TASK_DELAY_JIFFIES.
+* expand kdoc for struct ixd_adapter's init_task/vc_ver fields.
+* rename "virtchnl" info version to generic fw.mgmt.api in code and ixd.rst.
+* sort ixd before ixgbe in devlink/index.rst.
+
+v7: https://lore.kernel.org/netdev/20260804031638.1531994-1-anthony.l.nguyen@intel.com/
+* alphabetize ixd entry in Ethernet driver docs (moved before ixgbe)
+* remove redundant bool mapped = false initialization (idpf)
+* remove unused adapter parameter from idpf_mb_clean() (idpf)
+* add idpf_send_mb_msg_stack() macro with static_assert() to enforce on-stack
+  buffer size limits (idpf)
+* update kdocs for idpf_cfg_lan_memory_regions() and idpf_map_remaining_mmio_regs()
+* remove premature LIBETH Kconfig dependency (ixd)
+* remove untriggerable WARN_ON(ent->device != IXD_DEV_ID_CPF) check
+* switch from system_unbound_wq to system_dfl_wq
+* add error classification for retry logic: fail immediately on non-transient
+  errors
+* use LARGEST_ALIGN() instead of hardcoded 4K alignment for descriptor ring
+* add !qinfo->len validation check, return -EINVAL for length errors
+* clear TX tail register in libie_ctlq_init_regs() per spec
+* clear DD bit after receiving messages, to reduce dependency on correct refills
+* add new libie_ctlq_send_clean() API and refactor xn cleanup
+* use dma_pool for small buffers instead of individual DMA allocations
+* store small DMA memory directly in xn entry (small_dma_mem) instead of separate
+  allocation
+* use per-slot cookie increment instead of global counter
+* use kvzalloc_obj()/kvfree() for xn manager allocation (large)
+* add bar_idx bounds validation (< PCI_NUM_RESOURCES, >= 0)
+* add pci_resource_is_mem() check
+* improve libie kdoc
+* add WARN_ONCE() when accessing unmapped MMIO regions
+* move libie_cp_dma_mem.direction to an earlier commit
+* adjust commit messages
+
+v6: https://lore.kernel.org/netdev/20260729204505.3373950-1-anthony.l.nguyen@intel.com/
+* use idpf_mmio_region_non_static() in idpf_idc_init_aux_core_dev() to avoid
+  code duplication
+* change LIBIE_CTLQ_TYPE_TX/RX from macros to enum libie_ctlq_type
+* pull libie_ctlq_xn_shutdown() out of libie_ctlq_xn_deinit() for consistency
+  and to avoid unlikely races with send queue force-cleaning
+* remove unused send_ctx field from struct libie_ctlq_xn_clean_params
+* add missing dma_wmb() before tail register update in libie_ctlq_post_rx_buffs()
+* initialize mem->direction in libie_cp_alloc_dma_mem (purely cosmetic)
+* remove unnecessary dma_mb() for coherent DMA in libie_ctlq_xn_send_clean()
+* removed redundant list-init check
+* fixed whitespaces not flagged by checkpatch
+* improved documentation
+
+v5: https://lore.kernel.org/netdev/20260715180042.1972010-1-anthony.l.nguyen@intel.com/
+* Add length validation to libie_ctlq_add()
+* Add memory barrier before writing tail in libie_ctlq_send()
+* Reduce larger then needed size allocation in libie_ctlq_xn_init_dma()
+* Clarify error message on dev init failure in idpf_probe()
+* Nullify adapter->asq and adapter->arq on failure in idpf_init_dflt_mbx()
+* Correct virtchnl version compatibility checks in ixd_handle_vc_ver()
+* Misc documentation fixes
+
+v4: https://lore.kernel.org/netdev/0a3ceda1-a29b-4784-975b-d8c89f145d10@intel.com/
+* use check_add_overflow() for MMIO offset+size bounds check in libie_pci
+* replace iounmap() with pci_iounmap() for MMIO regions in libie_pci
+* fix missing rx_buf->offset when constructing ctlq Rx message address
+* always zero Rx descriptor before reallocation
+* do not call complete() inside spinlock, theoretical use-after-free
+* reset async xn state to IDLE before freeing in libie_ctlq_xn_shutdown()
+* zero control queue Tx descriptor before freeing memory
+* remove unused ctx field from struct libie_ctlq_xn_clean_params
+* roll back merging of idpf_deinit_dflt_mbx() and xnm shutdown,
+  those calls are separate again (so idpf refactoring becomes more trivial)
+* introduce idpf_send_vf_reset_msg() for one-way VF reset message bypassing
+  XN manager, which is shut down by now
+* guard libie_ctlq_xn_shutdown() against NULL xnm in idpf_vc_event_task(),
+  this is needed if reset fails and reschedules
+* validate response sizes in idpf more
+* fix MAINTAINERS glob pattern for include/linux/net/intel/
+* roll back linux/{net/intel -> intel}/* change (1st patch)
+* use pci_iomap_range() to map regions in libie_pci
+* improve libie_pci commit message
+* remove broken dead code for getting RSS from idpf (new patch!)
+* use maximum alignment for control queue stack buffer in ixd
+* fix ixd_ctlq_clean_sq() usage
+* do not register ixd devlink prematurely
+* improve receive buffer size validation in idpf
+
+v3: https://lore.kernel.org/netdev/20260515224443.2772147-1-anthony.l.nguyen@intel.com/
+- lock libie ctlq transaction earlier on Rx path
+- improve ctlq Rx buffer size validation both in idpf and libie
+- fix RSS LUT buf size (will also go to stable separately)
+- improve xnm shutdown handling
+- skip zero-sized BAR regions instread of returning error in idpf
+- unify treatment of initialized and uninitialized ctlq messages
+
+v2: https://lore.kernel.org/netdev/20260403194938.3577011-1-anthony.l.nguyen@intel.com/
+- improved failure handling and input validation
+- removed cp version from devlink in ixd
+
+v1: https://lore.kernel.org/netdev/20260317230905.847744-1-anthony.l.nguyen@intel.com/
+
+The following are changes since commit ac155a26750a595703e7dadff84735456d75a479:
+  Merge branch 'mptcp-out-of-order-queue-pruning'
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 200GbE
+
+Amritha Nambiar (1):
+  ixd: add devlink support
+
+Larysa Zaremba (6):
+  idpf: remove unused code for getting RSS info from device
+  idpf: make mbx_task queueing and cancelling more consistent
+  idpf: print a debug message and bail in case of non-event ctlq message
+  ixd: add basic driver framework for Intel(R) Control Plane Function
+  ixd: add reset checks and initialize the mailbox
+  ixd: add the core initialization
+
+Pavan Kumar Linga (4):
+  libeth: allow to create fill queues without NAPI
+  idpf: remove 'vport_params_reqd' field
+  idpf: refactor idpf to use libie_pci APIs
+  idpf: refactor idpf to use libie control queues
+
+Phani R Burra (3):
+  libie: add PCI device initialization helpers to libie
+  libie: add control queue support
+  libie: add bookkeeping support for control queue messages
+
+Victor Raj (1):
+  virtchnl: move virtchnl and virtchnl2 headers to
+    'include/linux/net/intel'
+
+ .../device_drivers/ethernet/index.rst         |    1 +
+ .../device_drivers/ethernet/intel/ixd.rst     |   39 +
+ Documentation/networking/devlink/index.rst    |    1 +
+ Documentation/networking/devlink/ixd.rst      |   30 +
+ MAINTAINERS                                   |    3 +-
+ drivers/net/ethernet/intel/Kconfig            |    2 +
+ drivers/net/ethernet/intel/Makefile           |    1 +
+ drivers/net/ethernet/intel/i40e/i40e.h        |    2 +-
+ drivers/net/ethernet/intel/i40e/i40e_common.c |    2 +-
+ .../net/ethernet/intel/i40e/i40e_prototype.h  |    2 +-
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.h    |    2 +-
+ drivers/net/ethernet/intel/iavf/iavf.h        |    2 +-
+ drivers/net/ethernet/intel/iavf/iavf_common.c |    2 +-
+ .../net/ethernet/intel/iavf/iavf_prototype.h  |    3 +-
+ drivers/net/ethernet/intel/iavf/iavf_types.h  |    4 +-
+ drivers/net/ethernet/intel/ice/ice.h          |    2 +-
+ drivers/net/ethernet/intel/ice/ice_common.h   |    2 +-
+ drivers/net/ethernet/intel/ice/ice_vf_lib.h   |    2 +-
+ .../net/ethernet/intel/ice/virt/virtchnl.h    |    2 +-
+ drivers/net/ethernet/intel/idpf/Kconfig       |    1 +
+ drivers/net/ethernet/intel/idpf/Makefile      |    2 -
+ drivers/net/ethernet/intel/idpf/idpf.h        |   99 +-
+ .../net/ethernet/intel/idpf/idpf_controlq.c   |  621 ------
+ .../net/ethernet/intel/idpf/idpf_controlq.h   |  144 --
+ .../ethernet/intel/idpf/idpf_controlq_api.h   |  177 --
+ .../ethernet/intel/idpf/idpf_controlq_setup.c |  169 --
+ drivers/net/ethernet/intel/idpf/idpf_dev.c    |  101 +-
+ .../net/ethernet/intel/idpf/idpf_ethtool.c    |   28 +-
+ drivers/net/ethernet/intel/idpf/idpf_idc.c    |   32 +-
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |   69 +-
+ drivers/net/ethernet/intel/idpf/idpf_main.c   |  115 +-
+ drivers/net/ethernet/intel/idpf/idpf_mem.h    |   20 -
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |    4 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |    4 +-
+ drivers/net/ethernet/intel/idpf/idpf_vf_dev.c |   96 +-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 1901 +++++++----------
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  127 +-
+ .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  310 ++-
+ drivers/net/ethernet/intel/ixd/Kconfig        |   14 +
+ drivers/net/ethernet/intel/ixd/Makefile       |   13 +
+ drivers/net/ethernet/intel/ixd/ixd.h          |   67 +
+ drivers/net/ethernet/intel/ixd/ixd_ctlq.c     |  141 ++
+ drivers/net/ethernet/intel/ixd/ixd_ctlq.h     |   34 +
+ drivers/net/ethernet/intel/ixd/ixd_dev.c      |   89 +
+ drivers/net/ethernet/intel/ixd/ixd_devlink.c  |   99 +
+ drivers/net/ethernet/intel/ixd/ixd_devlink.h  |   50 +
+ drivers/net/ethernet/intel/ixd/ixd_lan_regs.h |   68 +
+ drivers/net/ethernet/intel/ixd/ixd_lib.c      |  173 ++
+ drivers/net/ethernet/intel/ixd/ixd_main.c     |  144 ++
+ drivers/net/ethernet/intel/ixd/ixd_virtchnl.c |  190 ++
+ drivers/net/ethernet/intel/ixd/ixd_virtchnl.h |   12 +
+ drivers/net/ethernet/intel/libeth/rx.c        |   12 +-
+ drivers/net/ethernet/intel/libie/Kconfig      |   14 +
+ drivers/net/ethernet/intel/libie/Makefile     |    8 +
+ drivers/net/ethernet/intel/libie/controlq.c   | 1295 +++++++++++
+ drivers/net/ethernet/intel/libie/pci.c        |  229 ++
+ include/linux/net/intel/libie/controlq.h      |  436 ++++
+ include/linux/net/intel/libie/pci.h           |   56 +
+ include/linux/{avf => net/intel}/virtchnl.h   |    0
+ .../linux/net/intel}/virtchnl2.h              |    0
+ .../linux/net/intel}/virtchnl2_lan_desc.h     |    0
+ include/net/libeth/rx.h                       |    4 +-
+ 62 files changed, 4366 insertions(+), 2906 deletions(-)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/intel/ixd.rst
+ create mode 100644 Documentation/networking/devlink/ixd.rst
+ delete mode 100644 drivers/net/ethernet/intel/idpf/idpf_controlq.c
+ delete mode 100644 drivers/net/ethernet/intel/idpf/idpf_controlq.h
+ delete mode 100644 drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
+ delete mode 100644 drivers/net/ethernet/intel/idpf/idpf_controlq_setup.c
+ delete mode 100644 drivers/net/ethernet/intel/idpf/idpf_mem.h
+ create mode 100644 drivers/net/ethernet/intel/ixd/Kconfig
+ create mode 100644 drivers/net/ethernet/intel/ixd/Makefile
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd.h
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_ctlq.c
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_ctlq.h
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_dev.c
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_devlink.c
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_devlink.h
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_lib.c
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_main.c
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_virtchnl.c
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_virtchnl.h
+ create mode 100644 drivers/net/ethernet/intel/libie/controlq.c
+ create mode 100644 drivers/net/ethernet/intel/libie/pci.c
+ create mode 100644 include/linux/net/intel/libie/controlq.h
+ create mode 100644 include/linux/net/intel/libie/pci.h
  rename include/linux/{avf => net/intel}/virtchnl.h (100%)
  rename {drivers/net/ethernet/intel/idpf => include/linux/net/intel}/virtchnl2.h (100%)
  rename {drivers/net/ethernet/intel/idpf => include/linux/net/intel}/virtchnl2_lan_desc.h (100%)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e0e7fae5b92f..0f29ea109db5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13033,8 +13033,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue.git
- F:	Documentation/networking/device_drivers/ethernet/intel/
- F:	drivers/net/ethernet/intel/
- F:	drivers/net/ethernet/intel/*/
--F:	include/linux/avf/virtchnl.h
--F:	include/linux/net/intel/*/
-+F:	include/linux/net/intel/
- 
- INTEL ETHERNET PROTOCOL DRIVER FOR RDMA
- M:	Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 83e780919ac9..1b6a8fbaa648 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -8,8 +8,8 @@
- #include <linux/pci.h>
- #include <linux/ptp_clock_kernel.h>
- #include <linux/types.h>
--#include <linux/avf/virtchnl.h>
- #include <linux/net/intel/i40e_client.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <net/devlink.h>
- #include <net/pkt_cls.h>
- #include <net/udp_tunnel.h>
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
-index 59f5c1e810eb..8dadfef2c09f 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -1,10 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright(c) 2013 - 2021 Intel Corporation. */
- 
--#include <linux/avf/virtchnl.h>
- #include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <linux/etherdevice.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/pci.h>
- #include "i40e_adminq_cmd.h"
- #include "i40e_devids.h"
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_prototype.h b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-index 26bb7bffe361..e3d57550090e 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-@@ -5,7 +5,7 @@
- #define _I40E_PROTOTYPE_H_
- 
- #include <linux/ethtool.h>
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include "i40e_debug.h"
- #include "i40e_type.h"
- 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-index f558b45725c8..4e119c0502f3 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -4,7 +4,7 @@
- #ifndef _I40E_VIRTCHNL_PF_H_
- #define _I40E_VIRTCHNL_PF_H_
- 
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/netdevice.h>
- #include "i40e_type.h"
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index 050f8241ef5e..dc31202b2a94 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -27,6 +27,7 @@
- #include <linux/etherdevice.h>
- #include <linux/socket.h>
- #include <linux/jiffies.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <net/ip6_checksum.h>
- #include <net/pkt_cls.h>
- #include <net/pkt_sched.h>
-@@ -37,7 +38,6 @@
- #include <net/net_shaper.h>
- 
- #include "iavf_type.h"
--#include <linux/avf/virtchnl.h>
- #include "iavf_txrx.h"
- #include "iavf_fdir.h"
- #include "iavf_adv_rss.h"
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_common.c b/drivers/net/ethernet/intel/iavf/iavf_common.c
-index 614a886bca99..277193a97d91 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_common.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_common.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright(c) 2013 - 2018 Intel Corporation. */
- 
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/bitfield.h>
- #include "iavf_type.h"
- #include "iavf_adminq.h"
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_prototype.h b/drivers/net/ethernet/intel/iavf/iavf_prototype.h
-index 7f9f9dbf959a..1b1f6ede3920 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_prototype.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_prototype.h
-@@ -4,9 +4,10 @@
- #ifndef _IAVF_PROTOTYPE_H_
- #define _IAVF_PROTOTYPE_H_
- 
-+#include <linux/net/intel/virtchnl.h>
-+
- #include "iavf_type.h"
- #include "iavf_alloc.h"
--#include <linux/avf/virtchnl.h>
- 
- /* Prototypes for shared code functions that are not in
-  * the standard function pointer structures.  These are
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_types.h b/drivers/net/ethernet/intel/iavf/iavf_types.h
-index a095855122bf..35d6d8fcca04 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_types.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_types.h
-@@ -4,9 +4,7 @@
- #ifndef _IAVF_TYPES_H_
- #define _IAVF_TYPES_H_
- 
--#include "iavf_types.h"
--
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/ptp_clock_kernel.h>
- 
- /* structure used to queue PTP commands for processing */
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index fc91b6665f90..db3c7015c56c 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -36,7 +36,7 @@
- #include <linux/bpf.h>
- #include <linux/btf.h>
- #include <linux/auxiliary_bus.h>
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/cpu_rmap.h>
- #include <linux/dim.h>
- #include <linux/gnss.h>
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.h b/drivers/net/ethernet/intel/ice/ice_common.h
-index 9f5344212195..d1d674ca644f 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.h
-+++ b/drivers/net/ethernet/intel/ice/ice_common.h
-@@ -5,13 +5,13 @@
- #define _ICE_COMMON_H_
- 
- #include <linux/bitfield.h>
-+#include <linux/net/intel/virtchnl.h>
- 
- #include "ice.h"
- #include "ice_type.h"
- #include "ice_nvm.h"
- #include "ice_flex_pipe.h"
- #include "ice_parser.h"
--#include <linux/avf/virtchnl.h>
- #include "ice_switch.h"
- #include "ice_fdir.h"
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-index 7a9c75d1d07c..fa436b3b1eac 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-@@ -8,9 +8,9 @@
- #include <linux/hashtable.h>
- #include <linux/bitmap.h>
- #include <linux/mutex.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/pci.h>
- #include <net/devlink.h>
--#include <linux/avf/virtchnl.h>
- #include "ice_type.h"
- #include "ice_flow.h"
- #include "virt/fdir.h"
-diff --git a/drivers/net/ethernet/intel/ice/virt/virtchnl.h b/drivers/net/ethernet/intel/ice/virt/virtchnl.h
-index 71bb456e2d71..d11789b3ae1f 100644
---- a/drivers/net/ethernet/intel/ice/virt/virtchnl.h
-+++ b/drivers/net/ethernet/intel/ice/virt/virtchnl.h
-@@ -7,7 +7,7 @@
- #include <linux/types.h>
- #include <linux/bitops.h>
- #include <linux/if_ether.h>
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include "ice_vf_lib.h"
- 
- /* Restrict number of MAC Addr and VLAN that non-trusted VF can programmed */
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index ec1b75f039bb..984944bab28b 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -23,8 +23,8 @@ struct idpf_rss_data;
- 
- #include <linux/net/intel/iidc_rdma.h>
- #include <linux/net/intel/iidc_rdma_idpf.h>
-+#include <linux/net/intel/virtchnl2.h>
- 
--#include "virtchnl2.h"
- #include "idpf_txrx.h"
- #include "idpf_controlq.h"
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 908dfa28674e..9103580c0a3d 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -5,6 +5,7 @@
- #define _IDPF_TXRX_H_
- 
- #include <linux/dim.h>
-+#include <linux/net/intel/virtchnl2_lan_desc.h>
- 
- #include <net/libeth/cache.h>
- #include <net/libeth/types.h>
-@@ -13,7 +14,6 @@
- #include <net/xdp.h>
- 
- #include "idpf_lan_txrx.h"
--#include "virtchnl2_lan_desc.h"
- 
- #define IDPF_LARGE_MAX_Q			256
- #define IDPF_MAX_Q				16
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-index 9b1c9c86f6ea..5f8ae8c5be20 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-@@ -4,7 +4,7 @@
- #ifndef _IDPF_VIRTCHNL_H_
- #define _IDPF_VIRTCHNL_H_
- 
--#include "virtchnl2.h"
-+#include <linux/net/intel/virtchnl2.h>
- 
- #define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
- #define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
-diff --git a/include/linux/avf/virtchnl.h b/include/linux/net/intel/virtchnl.h
-similarity index 100%
-rename from include/linux/avf/virtchnl.h
-rename to include/linux/net/intel/virtchnl.h
-diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2.h b/include/linux/net/intel/virtchnl2.h
-similarity index 100%
-rename from drivers/net/ethernet/intel/idpf/virtchnl2.h
-rename to include/linux/net/intel/virtchnl2.h
-diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2_lan_desc.h b/include/linux/net/intel/virtchnl2_lan_desc.h
-similarity index 100%
-rename from drivers/net/ethernet/intel/idpf/virtchnl2_lan_desc.h
-rename to include/linux/net/intel/virtchnl2_lan_desc.h
 -- 
 2.47.1
 
