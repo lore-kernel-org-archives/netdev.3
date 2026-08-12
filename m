@@ -1,138 +1,189 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED0335AC05
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 07:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786519416; cv=none; b=RNPftr7ma/DZaCCEYY1I1RoI233erv8sO0QZCLnWQ/bXVEIZd0+zWy3uDx/b8vt1fUhK/C/E5JrQbbGSeaUEYT/AQIq5NzRR4gxthnG9yqFVM9W2JMq1ep17BwGZS6S2a6SkJoPn2osb+JnOmxdafXLNsRqDh9Prf03vCJjBslw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786519416; c=relaxed/simple;
-	bh=R8IwSnyn3Ba4lUlN4kouxwTvW4uY+Q4TLa9CIep4Mi0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ULhD7pFx3KpFpej13wiuHApJXyuo2UBbNb3Y151Q5XkbLHn8FDbMZk6khJE5XU3b2DvuM6v+p13L6HqWX4HXH3DdT+Zn618WJO6a5rOfmpZfUSOBCUDeLuh/pekXt37uzMcvdfOCoLHQylVhrlmc5QJGDRddgGxAbIkxpj1nZ8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qUlFyI6n; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2DD3655CE
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 07:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786519512; cv=pass; b=pNNSPAMDqJq6jKiSC+iu2S4HsuhIfdwD0InPl/e3SiHUOUuJcx8EIFOJ01uGC98kDfu9RnpVkKmVErYcZqlYfl9xC0P7lLngekfV4NCvXO9HFsbZNa2g4wRXNTFIbftrfHj3Kcsy1pswYEQ1Jhipzfvevs3P+bkZkgLWgn4tEZ0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786519512; c=relaxed/simple;
+	bh=u2flEmWcQ3i7kb6+5w47OpUAJboKIFbiZuuf8yBUkAs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pDcCQ/sZ+4lR2u7SeEbTxbv82tTuuFgdloNq7IObA8vSFLhiJc3GfBNzpF2JpNf1Sr0zEP42tNU6pCrO2vFarbPe0g8Rlsu5ISCaJmfNYUtOZie2bTERpG2KaJmotNiw7DFiUwC26JW7k9wkIJlozUaDEBRN7wFPYH8/RagJbuY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njHPyzt0; arc=pass smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qUlFyI6n"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id CEA241A15AD;
-	Wed, 12 Aug 2026 07:23:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A0E796045E;
-	Wed, 12 Aug 2026 07:23:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 28CC511C4C898;
-	Wed, 12 Aug 2026 09:23:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786519406; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=OeggauZLbTa0cVLjmlSBBSu9Yw/mpHbQH4f9jbYHQLU=;
-	b=qUlFyI6nSPc/fwqX33WHWVNbtlqGMROCfBplHaqgW+ysj2dvvGQ5cj0JcS3kteMbo3XCkq
-	6SKNHG+OGiXP8pRTqYOE9FKOR4TzBa5zHUUNO3HB1BM7v7IB9C3+voRA8FfnP0TGriguvJ
-	KQO7iHidOkBidpmRUDsmeMBBdkRW8b/ucyVsxjLDfGS+m89bNCf0AaINLC4hl9YzS9cwn4
-	UNpbbyivbO3fBNiaX8ws3F532qvJUwHWbURY5CHdtcZc4l3oA505dsKyLrhrvlbkYu92yr
-	wzonAP8xsfV8erQPA3A332JvA3U+NpNsNtKoShLD3ZsmnWx9OHS9U4AeMrdhTA==
-Message-ID: <65494f6d-50fe-4bdb-98d9-7150d9a4fc91@bootlin.com>
-Date: Wed, 12 Aug 2026 09:23:19 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njHPyzt0"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-80cebd41372so9168787b3.3
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 00:25:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786519510; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fGQR3XfTxcrd8V0v1z7c8SWIBlbIDUO7CSGiqRy4lZgRqw/2HEyprvbmTCJgnGKE5b
+         kU6YikddXw24RBpp8UkLrhXmKe83fCKmGNKaxlxyLF4U/n+VYofmj6apurAlQhCjXpYC
+         CsN6gUsQpXmFby1HTaTJPrEGWH3IDEadZq3IS7faeEge2+m/SSuQUrm1Sfn4L4+jhWbD
+         5Fd8VUCy+fkeZkS1uhhTwbRbOM9QaGeAR8TZdDVZM+DUkqmWUnI7RUFCQnsQtg0VBeL7
+         4wlCyJzz7OFtnLxMUL7t4/+W7jMbzOA3klB5L0mHaJsPrnhK/1eADtEX3dEI04vHX8g1
+         UADA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=u2flEmWcQ3i7kb6+5w47OpUAJboKIFbiZuuf8yBUkAs=;
+        fh=VGixOhch9ZRqjqzbHEqWEdWHB8IC5bQzVotdf8PDsn0=;
+        b=fiIkq/ZDeMVcGyBTt6/ehzJmorUR0Mf6nVVEnLHUX1xRhgWau9r4KV9oA25IsgKN5s
+         CduKbOCCflZydfzwt582sIjlaphtBM4vuu0Iwm6hrSbq/CHP0saRkYlmm2xwhScfT6DL
+         NYpw6WloQjirTIcVT4ZInYl9og41TZ4JBS86aRTnEaZHlMVu3A4I2rB4VqECZLcYfUvw
+         eWzH/m12w4elWrNwmwL50RRvwPlwXJupe7fnxL0KpP8+dICYuq/WTyanMi6xRXU35o3n
+         xf4UtH35jVXJ20chO5kmNsD3EK76duk/mkhtL+TNCiXhEr2S4SGSCSiLe9ijubl1W8Ll
+         KOCw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786519510; x=1787124310; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=u2flEmWcQ3i7kb6+5w47OpUAJboKIFbiZuuf8yBUkAs=;
+        b=njHPyzt0feuGC6z1pGuFl8ZEdoe9PvODOuME1KDrxjPPCITbYPWtE+j0u28bl3BMEE
+         Z1/iUgXnG81gEivuSY9Pyp5zKlz3XWCUfQhj1S/KFRPZDa1E2Ni9fk5Q2kr2lPXTisc6
+         DNQCVDw0PmxmOiXOOEHXbZBUmyIaT5JDc9y1qbBbQBW35eCQ2AFJ97C1l3sdVwn6rZv9
+         awHRPPORaF6mGFhOx/YsUHb0934CVm334WHRJf2AZZSbg5O2UnqLOeHPA2APL518UAQ0
+         rv3q7q6eMNapJUfA1dNa/E91zafi7cfTVysfiX5b7vkzbwhD7Upx4E3AsXNYAG32qfUy
+         VXAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786519510; x=1787124310;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=u2flEmWcQ3i7kb6+5w47OpUAJboKIFbiZuuf8yBUkAs=;
+        b=mrdrCGlLZA7L8S7/bkObPfp+1nxjoA7hJTqJ0B/6Zrufd2tA+m4aVc90y2JE5f0eSh
+         S0Ic9FcC/VcDEy5nNDbwPob9LyGsdEs+IAAxxZg5AM7Yfyq8RwzEw5r9mQJaUJr959zJ
+         MDgDkmsJZTfQ8lZ6Y/snhiqSPQ9ygqRSltojy5yj7LYoNqH/UXo4Kh5GX/Jx0ZOsnUrm
+         b0pANjVzIpbbctGf2AUqQgbpKvDiygKoROPGjRdY2LCEHH67S1rgxGl7EaRJMyXZfXy+
+         0SVMarmAbKpb5icE5vboXmlgv594XFEhulilnidA1XZUVEOS/1MPEH6yPz9lqHwiLP8C
+         Gb8Q==
+X-Forwarded-Encrypted: i=1; AHgh+Ro9jDvit2EUgKHccETXAa6qFKjZSWjAT61B+n5d2hSz1q4wZnOdnVi+4Ht36JxCNld6A5Fn58g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8uTupDRh57zGNtMa8YdH3v/G+Yfsj8FUVr82AWFYyRgJH26E1
+	qbomcJB/Xxnc1UUL3HDpjLZf9i6JG9zFKyUScfpIrqDoOhh33OPD/60iPIPCCsebaXHRiHhAU7z
+	eYzxX+9zp31QHQJHqQGbjncKZZ5J+Q54=
+X-Gm-Gg: AR+sD13/j121nCNnzOvZ6dfABjUYqk2KvB7UniThvXlq+Uu31RKT83sO9bN1bMli4xK
+	O8K001g3UMcJqB466Nvvwy2f6r2fFR8XVLz3/vNcatsQhXqEsuvbLl4EqfrGxC3B+PPKu00MtZg
+	MfbDOLD/C4Osyajb6Z7pTPGXDWneng+2XvPeKQsHtQP2FkmbSjPNPJ/a1hoJBaYUuT0e+tk41Jn
+	DuHZRIgDYB0ujSN7CRacH0Nw4n8FvSvf90Z7H8139vu2LLVsAwN4fgyrzVLVShbHpMcj1eJp1El
+	mKErAPnmPd6Af25dTM860WJC1i4fALZWfQofbSqONw3GDSY/9i1uIqcxNO9baMQZW7dxOz9ODLl
+	Mo87GxO90Qmq8iaTFblWlkMD+3spSJ56l5WYBWhRLXrVD79MjlLO1GMGX+4d428mSWUnwbq7Vg3
+	aUYJLxxHbO
+X-Received: by 2002:a05:690c:47c6:b0:80e:1ad2:afc3 with SMTP id
+ 00721157ae682-83108992147mr14379377b3.15.1786519509662; Wed, 12 Aug 2026
+ 00:25:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: stmmac: use dma_addr_t for DMA addresses
-To: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Sashiko <sashiko-bot@kernel.org>
-References: <20260811192703.1765416-1-elder@riscstar.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260811192703.1765416-1-elder@riscstar.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260806073119.387-1-strst.gs@gmail.com> <20260806073119.387-2-strst.gs@gmail.com>
+ <20260806111523.gjlhjfmb526f2y4g@skbuf> <CAAsRjRnhdPJOCE5BwU7zUTJ0mtSYCOA3xLcF5ejZQT8OFjYiYQ@mail.gmail.com>
+ <20260806124313.see74vgu4dlqqse7@skbuf> <CAAsRjR=RyiraYdLkOcHEagGKXK5+4zwQbT-Zq-1DwVkPiKUNpg@mail.gmail.com>
+ <20260810120821.lykofvogbrn2y2ps@skbuf> <CAAsRjRn7qFWy4UBL8tWGQ9pBo5q3du4e=tU9gSKkSSd7K3RaDA@mail.gmail.com>
+ <CAOiHx=n43MPXKxA7oxBjGh15pa4Uh5etxkPdrV+0GxACEnrRJA@mail.gmail.com>
+ <20260811095828.xwb4nsmx74wtzjei@skbuf> <CAAsRjRn0LNMspFCbi_7QMQsNPBhMXeAZfcvrc40k-Y87F7jHmA@mail.gmail.com>
+In-Reply-To: <CAAsRjRn0LNMspFCbi_7QMQsNPBhMXeAZfcvrc40k-Y87F7jHmA@mail.gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Wed, 12 Aug 2026 09:24:58 +0200
+X-Gm-Features: AUfX_my9peAsxHMGyOnZ61_ODwyIKwAuq9Kn2lxwUSu-ZgxiZnJgrjLyQwCEaIc
+Message-ID: <CAOiHx=mv9Ygywqbi9pR_K4vvu6tJtxdj9zObp_QB80wwV2zmCw@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net: dsa: let drivers offload 8021q uppers on
+ standalone ports
+To: Semih Baskan <strst.gs@gmail.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, florian.fainelli@broadcom.com, andrew@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	vladimir.oltean@nxp.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alex,
+On Tue, Aug 11, 2026 at 3:19=E2=80=AFPM Semih Baskan <strst.gs@gmail.com> w=
+rote:
+>
+> Hi Vladimir,
+>
+> > Then I suppose the VC4_ING_VID_CHECK_MASK affects only what happens wit=
+h
+> > VLAN membership violations (i.e. VTABLE hit, but port not in VLAN). Thu=
+s
+> > it does not influence the VC5_DROP_VTABLE_MISS=3Dfalse case, correct?
+>
+> Correct, at least on bcm5301x, and this part is measured rather than
+> read from documentation: with VC5_DROP_VTABLE_MISS clear, all three
+> VC4_ING_VID_CHECK settings behave identically for a VTABLE miss (0 of
+> 7 delivered in every combination, standalone RX probes from the
+> measurements behind the cover letter). Whatever the check field
+> controls happens independently of the miss path.
+>
+> One observation for the "is there another bit" question: on my
+> BCM53011 the running value of VLAN_CTRL5 is 0x10. That is bit 4, which
+> the driver never writes and has no name for. I do not know what it
+> does, and it may simply be the bootloader default, but it is a bit in
+> exactly the register you are asking about.
 
-On 8/11/26 21:27, Alex Elder wrote:
-> In jumbo_frm() (implemented in both "chain_mode.c" and "ring_mode.c"),
-> an unsigned integer local variable is used to hold the value returned
-> by dma_map_single().  On systems where a dma_addr_t is 64 bits, the
-> subsequent dma_mapping_error() check of the returned value operates
-> only on the low 32 bits (whose high bit won't be sign-extended).  In
-> this case, dma_mapping_error() would return 0 (no error) even if there
-> were one.
-> 
-> Fix this in both spots by using a dma_addr_t for the local variable.
+Assuming you mean VLAN_CTRL2, this bit is described for BCM5325 as
+"When set to 1, GMRP,GVRP are checked by the
+VLAN's forward map" with a default of 0.
 
-Thanks :)
+Since other bits (sort of) match with their meanings, one could assume
+it retained it, and now defaults to 1, but there is no guarantee for
+that.
 
-I was wondering if it would silently hides another address size related
-issue a little bit lower, as we now have :
+>
+> > If customizing/unifying the behaviour on VTABLE misses is a dead end,
+> > could we consider an alternative? Some switches support having the
+> > VTABLE enabled, but ignore the 802.1Q header from incoming packets
+> > (thus, all packets get classified to the port PVID). Is there any bit
+> > which achieves this in b53? What do VC0_VID_CHK_EN and VC0_VLAN_EN do
+> > exactly? Does B53_VLAN_CTRL2 maybe have some useful hidden bits?
+>
+> I cannot answer what the bits mean from documentation, but I can answer
+> what they do on bcm5301x, measured just now with two external endpoints
+> on two front ports of a vlan_filtering=3D0 bridge: neither of the two
+> candidate bits gives that mode. With VC0_VID_CHK_EN cleared, and then
+> with VC0_VID_HASH_VID cleared as well, tagged VID 100 frames still
+> deliver 0 of 7 to the far port and 0 to the CPU, exactly as at the
+> 0xe3 default, while untagged traffic keeps working in every state and
+> the default restores cleanly. So on this chip the 802.1Q header keeps
+> participating in classification as long as VC0_VLAN_EN is set, and
+> clearing those two bits under it does not change that. Clearing
+> VC0_VLAN_EN itself is
+> the earlier thread: it works but costs the VID-keyed ARL. I have not
+> probed VLAN_CTRL2 for undocumented bits; on my chip it reads 0x10.
+>
+> > How badly broken are the configurations with only port 5 as CPU port?
+> > Is other management traffic like STP also not delivered correctly?
+>
+> It splits by the port's management class, measured on the RT-N18U
+> earlier in the thread. BPDUs ingressing switch port 0 reach the CPU,
+> because port 0 is WAN class and its traps go to IMP1, which is port 5.
+> Management traps from the LAN class ports 1-4 go to IMP0, which is
+> port 8, and are lost, because GMNGCFG has no "IMP1 only" encoding: the
+> driver's OR of the field mask programs dual IMP mode and port 8 is
+> down. So on the in-tree topology STP is broken on the four LAN ports
+> and working on the one WAN port.
 
-  dma_addr_t des2;
+One thing you could try is to mark all ports as WAN ports. The
+WAN_PORT_SEL register (page 0, offset 0x26, 16 bit) has a bitmask for
+wan ports. It may allow delivery to IMP1, but the description of the
+WAN port feature is also
 
-  des2 = dma_map_single(...);
+"Select a port as a WAN port, then all that port=E2=80=99s traffic is
+forwarded to the CPU port only. The non-
+WAN port traffic from all other local ports does not flood to the WAN port.=
+"
 
-  desc->des2 = cpu_to_le32(des2);
+So it may also isolate them from each other. Also out of curiosity,
+can you wan port talk with non-wan talks in a bridge? Because the
+description implies it should not.
 
-desc->des2 is __le32, so for 64 bit addresses we silently truncate the
-address.
-
-However I don't see how jumbo would work on 64-bits anyways as des3 is the next
-chunk of the jumbo frame...
-
-I think this is good as-is, so
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-> 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://lore.kernel.org/linux-devicetree/20260606010122.21A211F00899@smtp.kernel.org/
-> Signed-off-by: Alex Elder <elder@riscstar.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/chain_mode.c | 3 ++-
->  drivers/net/ethernet/stmicro/stmmac/ring_mode.c  | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-> index fc04a23342cfc..ec25193d287bb 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-> @@ -20,9 +20,10 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, struct sk_buff *skb,
->  	unsigned int nopaged_len = skb_headlen(skb);
->  	struct stmmac_priv *priv = tx_q->priv_data;
->  	unsigned int entry = tx_q->cur_tx;
-> -	unsigned int bmax, buf_len, des2;
-> +	unsigned int bmax, buf_len;
->  	unsigned int i = 1, len;
->  	struct dma_desc *desc;
-> +	dma_addr_t des2;
->  
->  	desc = tx_q->dma_tx + entry;
->  
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/ring_mode.c b/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
-> index 78fc6aa5bbe95..664d8cfb58cdc 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
-> @@ -20,8 +20,9 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, struct sk_buff *skb,
->  	unsigned int nopaged_len = skb_headlen(skb);
->  	struct stmmac_priv *priv = tx_q->priv_data;
->  	unsigned int entry = tx_q->cur_tx;
-> -	unsigned int bmax, len, des2;
-> +	unsigned int bmax, len;
->  	struct dma_desc *desc;
-> +	dma_addr_t des2;
->  
->  	if (priv->extend_desc)
->  		desc = (struct dma_desc *)(tx_q->dma_etx + entry);
-> 
-> base-commit: 31397cf1819210bd63fa3d2c7d8c24f7c8667d99
-
+Best regards,
+Jonas
