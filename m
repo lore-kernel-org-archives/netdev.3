@@ -1,118 +1,107 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6363C9ED9
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 20:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786568230; cv=pass; b=r0TXmpAk+gNbd9OWcqUA/13kf1cEygmbmIQ+lX8sUe1QDDAF4KVbG8IjmeZvFtvUVk2CQFYfL8l/EZdzI2qcDw4vL7ytfa7+CX6ws4+kZwl1/pJLowFhy2ig/pJqD6G6KmraMNIDistO8KHzMg4KiuqMZJZutDQpZcVdyTWltTo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786568230; c=relaxed/simple;
-	bh=+7UxBRN93+sdYitbJEaeBcavKPuj4E8V6fUlzVH7bsk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fz77dI/DZXsERQyMWS2OMTgAgRWZFfVpXSkRsG03O5LAKgYBPtzUJA7pWzvxEPsNQfcbguBamUPchW0y0KZhS/bqldGo3iO2091rADe8ULF81q0meBYuCzY8M7Njm6ANTbAlUih059tZCcGSu00O3+85Wq1oO7m8INrm+GNclqI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lXs79Eq/; arc=pass smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F933DF01C
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 20:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786568391; cv=none; b=Ne4jJqFbOm4CUbsnz3Ze6mzaNN9Lub1hOFNHKow0twqB3B35WeiftzZqYCE5CHvoDIcPd8VDu4aGbNH636DgHEQI0i6GvSS8Regu1aCt2/6RYtjmKLnR9m9MtOXb+CVYm94SO8RGp99UujVLmis6sWObSZwFlm5dCNwF+j/qFvs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786568391; c=relaxed/simple;
+	bh=lxtfdgUp5PovhyJraGzJokizZpdhFjLP1J2mxK6yHXg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XJj7469Gv83kSchUJ0bRjsHcHOjalZs3prE7mhGgFVcs6wVv4gO77ByCZYpAjmoNPhEM+nJzraU2DJPu+wFxTaCuyVMohwJJrFmPeimLwZNezzSNsDnyH0fVotQwsNDwSUrdfzI7gzI8GnPws+/xVYb0sxTjnA+BrdNRWdN6MtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mIgsom4l; arc=none smtp.client-ip=209.85.222.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lXs79Eq/"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49557167508so10777805e9.1
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:57:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786568223; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mnOdyK9QIj3c801kiG3yVkHxt/NegrRkxu6P3SHhx58eT4Qv6d1gjevGN8Mg4JQDo+
-         B6CMSTZ9grzv4d1FxCHK0FuAvkhsPyCV8aP7W3CJ37Ecfu6rKCS0HiwiXVmnwHri+NQq
-         uVSPhPUNR0BmgWIV7vmiFuH/VMF7xmK4Ru0E/fSGjVA9XLd6H+TzgGaHTYGZm+xMXJt2
-         LFUnfM5bWGXMCO8YyUUWU53bos/SFClc3+3d3BT03qLSw1cNClogXoHG4HlJ20PfteJM
-         c6sLGocdCdEJQ+F864a7hvtnFA10ZGeZOPOSMEi0wihtT5v67dOSuF3TYIAKLPDAnMXD
-         Dp+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=r90klb1IoKEwH1XH9nwO0D76Cq3lPCOQOI83WPY5Wsw=;
-        fh=QRXTu9w39zctloY2KNXjhGamOLCxG/s5uV+JlYp4ZOA=;
-        b=PzrkGxGSX2C54bGCcFWhFK0pmbH2rTZSZgKxI+pgH1GowSOKL/OOQQN562IXA013e/
-         2XVVu3yyxRmah8cbL6YbPkMroBBgvnPD7eNJPsvi/mJUd8303FnGYn2rQNXTuKz/lZns
-         GNffQitXE+P/ySBYV01ilHVa/L8ChbQDPA94IgTWfVp9Anv8PQNlPzqRsWD3KUFG7ZQU
-         4uthdMOBdOy6Nq5pLzH3bKF7kS78l1XeQ6mFIYU553SF/6Wo3ljWScSwgFfekv6WJGhw
-         2ItknTzipmKQfDtF/MVKkZosy1BOUdK5ST17/+Snd8NkxJVmscU+C9WRbmEke2Vyppa2
-         hA/A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mIgsom4l"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e53b8a302so4202185a.1
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786568223; x=1787173023; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=r90klb1IoKEwH1XH9nwO0D76Cq3lPCOQOI83WPY5Wsw=;
-        b=lXs79Eq/mSl4wGCxIAp/2/l7UzkoZqvKslcoKe7He3OJcIOTVaC/QKeYIi4If901vP
-         fIUjKrWReUBATNhOZ4FB/yfB4hp8fRcttHHEnha05ZXTqwXapEOjVBVXyiv6vw4khqy5
-         Fa1vzTpwMAKSbX7cF8fHQ19Xi1ZsEi/4RQRQOX+VFVkGAB6FGnTMCuZZVQNH6ScUr041
-         uimPSwyd52iHY6ZK5nY0GC91xC72/AhKLtM6DDLAUgd7MwK3xfyPaEpi3AkK4+MWJc9A
-         kkf/IXLwmxwFQ4eY0MzXsNYDWuDys5ksbtFoVgYd2b8SnLdHgiKUpApD3iTRA48sciNQ
-         JeJw==
+        d=google.com; s=20251104; t=1786568389; x=1787173189; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NDOAxgsJDN/bf6US/YQL19qlPBZqmv+z+N+sVZZyX2o=;
+        b=mIgsom4l1/eGaex5YvyE2+90uVQoeQZ6QAW2qDJ3VGDCctHFqcZHg8B6WgSXnRHdmb
+         q/I/Vr4AibFHXuXkaweQIyL5rYEXiij9MUawtAJEf+S1Cr9EYPPIyDWMyPWEQU2OCQDR
+         Wkqk1y9cP1r9f/yymsccEkEKt4RXVNvZ5HvGbh57vR8bWvUmWJn70c7nldGuYll5Dso8
+         cdE9r8LBQJ4ZwmwJzNNqv8EYR9Wwm7MAtckTWwcLqNMNSRxO90IljPojknAdxTTfYe5n
+         vrslKoGu36fkRubPaw3qdD9iSC5WnLM+W+7RCTwlJXSVsVqfBgRCKNKbZQYjgtn9bHrf
+         W/uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786568223; x=1787173023;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1786568389; x=1787173189;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=r90klb1IoKEwH1XH9nwO0D76Cq3lPCOQOI83WPY5Wsw=;
-        b=EJYfFl9V2Ha77xnQhWGAnWXoAxYWvgK6NMLRJ6t1wPzTJJIk39437lgI/+QEnMynXR
-         R7hsMt82DkOkCO53/Eu8GTMrOo2ZLl+pQ5P3Eq5oM99BrT0BvMYieZUHxE4hw/GPi2fg
-         yJcXUJmkPLvHYBi48BzHpNMywmjR5O5G3ecyHqJZZ1nDYR8k1cD9zjMWpS7DbmRIpwwu
-         eSyPZEBNplxOCn4kG45JijfyHWu9cf5+JIC9SdXB436T5dBQ2+mYJv0YHHvJbQbwz3Gf
-         YNIyu6Tnc7T0kh96OzI9zrZdLzKv+0qcSWtwUjOkOQraga+q8W2m7TbUcrhKpeuOLfhy
-         +gvQ==
-X-Gm-Message-State: AOJu0YyfCXwWhR+Iq2F8EuG812QoWjdIwIvXnxmYZazPZrssREkHnCaU
-	pjEvSHbW9d4436Wpc7aB6tqce9Opn7fjf5z68+1U4WSY7+uIOgW4GK/e0D6RlP7wj9eIi7hw+4w
-	wlPvYkF6493dsU+mMlFgfF/iIwgk5jc95f4ythdZ3
-X-Gm-Gg: AR+sD10P9yeRNmo1fTMnM6/oDlUcBWxywnULdl07ais+tkmM3RigMRw6knRYP7Isshv
-	PN/5IK1+PwmnXKtguf87w8reFZ7U/KSdzycIlSg3g/MlehVIz58hkE2CDwfHYFvjixXsOLtwejq
-	dnVnTg6ymVZTTH9o7flwUAg2aBdThrVPjZfSy0FjISDyz3GPzF6cmlJNyF0j9vG8WyMReoxLKEz
-	/WRpyQoyPY/Wy2DxXqOcVyr5wCHoapH+WA8XrmAUL/dcvtsSsHJW7hQYcfv84Eqq1YAucM4BX+w
-	02ZTF+dnLgJwsHMUXonhd2lPAX3iNJrlQcv6mKlp/LQ=
-X-Received: by 2002:a05:600c:3586:b0:499:7a15:fcec with SMTP id
- 5b1f17b1804b1-499821f5d09mr4364355e9.13.1786568222642; Wed, 12 Aug 2026
- 13:57:02 -0700 (PDT)
+        bh=NDOAxgsJDN/bf6US/YQL19qlPBZqmv+z+N+sVZZyX2o=;
+        b=rNC62jHZkfY5aQq83Gjftip7j4OmmhpSp9g8hc6ihznUApfYBuxSmFa0owLMLs+MmD
+         IuXxS4O+g5v5U94dnkZyehyul6T2kBQMeKnFv8HLfdYYDeVt3sTP78UEsJIKWL2sfxTH
+         Rh16tMJ0BcKU3jYdHjlp989RXZ9+88t3eESzxXrvd+CcHnpyTF/8C5cf/n49wKA8ae9s
+         B5q3kgOQa1rjoFrh3gi3PuASiXw+M6XSpZGo5MJVnqZbNMQ3LSaabzX6ASRHqKnWJucZ
+         a4Lk2gLKiZdyMKSM1Wftn6DtbUo9ch3MdeIPRz5EA2xzHM4qihwyIlwCAm0hNVReSXC5
+         FLnw==
+X-Forwarded-Encrypted: i=1; AHgh+RrkFz6Ky1MqMVYgcAqNeYrC66vPcccDUwWYCWSozO3jGgBzKIWfas5LPUPNlMIOaGmqRPfUC3A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkY7/bDP3W+cvRa/LuLQ6V/bwxeWsSzjHv0+SGm/M019CSVXs9
+	cfN476XxZcMA20YHkzdXINYaZbQ9xd7wQEEi9R3S3LDPBJUXfu1G4Zzx1b5UuLyxwXUTYPOctq0
+	IMOYvhsEJNp9cDw==
+X-Received: from qknry7.prod.google.com ([2002:a05:620a:9147:b0:934:aa76:abc4])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ae9:e919:0:b0:936:9fd4:e2bf with SMTP id af79cd13be357-936bfa9e9e8mr81194685a.37.1786568388785;
+ Wed, 12 Aug 2026 13:59:48 -0700 (PDT)
+Date: Wed, 12 Aug 2026 20:59:44 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CADWJPTsg5G21=hybo81+QHv0+g64d3a+6gGUaJSm1i7EttCUcw@mail.gmail.com>
- <20260619115905.051eb340@kernel.org> <CADWJPTus-1pXZZeYfGqJ1=OR_RPZ5Wq=H2tc1S0_tGi1fGFNEQ@mail.gmail.com>
- <20260804071657.03263c97@kernel.org>
-In-Reply-To: <20260804071657.03263c97@kernel.org>
-From: Sheena Mohan <sheenamo@google.com>
-Date: Wed, 12 Aug 2026 13:56:51 -0700
-X-Gm-Features: AUfX_mzbhKfV2aOV6sFzH-oIK9qDCNNMp5HH6q-Mv88U3SnnqzVnsHjTK_Iaa28
-Message-ID: <CADWJPTu9=k5y5WmEfdFiemhg+sRA0ZW5e5J_W_Wazrt+JKpMyg@mail.gmail.com>
-Subject: Re: [ANN] Google's Netdev-CI for IDPF and GVE
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	Eric Dumazet <edumazet@google.com>, pabeni@redhat.com, horms@kernel.org, 
-	Willem de Bruijn <willemb@google.com>, Max Yuan <maxyuan@google.com>, 
-	Pin-yen Lin <treapking@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Joshua Washington <joshwash@google.com>, Danny Gonzalez <digonzal@google.com>, 
-	David Decotigny <decot@google.com>, Brian Vazquez <brianvv@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260812205946.356185-1-edumazet@google.com>
+Subject: [PATCH net 0/2] inetpeer: harden tree sizing and address side-channel eviction
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
+	Michael Blunt <michaelbblunt@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 4, 2026 at 7:17=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> On Thu, 16 Jul 2026 16:15:35 -0700 Sheena Mohan wrote:
-> > Thank you Jakub. Just wanted to share that we are working on exposing
-> > devlink info for both GVE and IDPF drivers.
->
-> Hm, but please don't expose kernel version as running.
-> It will spam the aggregations which compare "platform changes"
-> with a different version every week for no real reason.
->
-> We know exactly which kernel was run for each test,
-> so it's also useless info.
-Thanks Jakub.  Device information for both GVE and IDPF is updated.
-Following your suggestion, we removed the kernel version from the reported =
-info.
+This series addresses a vulnerability in the inetpeer subsystem where an
+off-path adversary can manipulate garbage collection to bypass IP-keyed
+ICMP rate limits, and hardens inetpeer memory usage under pressure.
+
+The inetpeer rate limiting system stores peer entries in an RB-tree keyed
+deterministically by remote IP address. Because tree lookups walk the
+tree using lexicographical comparison (inetpeer_addr_cmp), an off-path
+attacker can predict the tree topology and the exact sequence of nodes
+traversed during lookups (the gc_stack candidate list). By combining
+predictable traversal with aggressive garbage collection triggered when
+the tree size exceeds inet_peer_threshold, an attacker can selectively
+force the eviction of targeted inet_peer nodes. When an evicted node is
+recreated on the next packet, its rate-limiting token bucket is reset to
+full capacity, creating a side-channel to bypass ICMP rate limits and
+probe for open UDP ports.
+
+- Patch 1 enforces a hard limit on inet_peer allocations at 2x
+  inet_peer_threshold to prevent unbounded slab memory growth if GC
+  cannot free entries, and ensures inet_peer_xrlim_allow() fails closed
+  (returns false) if peer allocation fails and returns NULL.
+
+- Patch 2 randomizes RB-tree node ordering using SipHash with a secret
+  boot-time key (inetpeer_hash_key), making tree layout and GC eviction
+  paths unpredictable to off-path attackers.
+
+Reported-by: Michael Blunt <michaelbblunt@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+
+Eric Dumazet (2):
+  inetpeer: enforce hard limit on tree size and fix NULL peer rate limit
+  inetpeer: randomize RB-tree node comparison using SipHash
+
+ include/net/inetpeer.h |  4 ++++
+ net/ipv4/inetpeer.c    | 43 +++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 42 insertions(+), 5 deletions(-)
+
+-- 
+2.55.0.691.gc56d675ccc-goog
+
