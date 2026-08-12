@@ -1,116 +1,155 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BE03290AA;
-	Wed, 12 Aug 2026 08:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED963FDC18
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786525132; cv=none; b=qVRHN48dh2D/W4d+AjmPbTEkESWcqiIHsH2zWLp6rTiuimuQCvCIC+Go+Cr01Q2W4OIIe6QkU+IlLelDSiQVAGLLbQen7F/97Ra+y/LJIE86gX5WyuwTBrePKgMSjeuZvj3DqCM6NAZiiiU3GvTrQLm5ue8WmJivgUcYuKLZIHU=
+	t=1786525819; cv=none; b=V3kJhKBy23S3jLshlmzoM55aINRiVmsriFDf9zxZgcoBxMm/oCBpDlv3XD7IOSIwn+5bp1Hrq8lTFzU4Dw5vwvgv66T6UUBm0FLYOfFsgSefz8fUlvp/XsYruv7nuVEE8FOBNeCggPnCjoRvkeQGIL9aDjakaCrSIXZpSyDaWM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786525132; c=relaxed/simple;
-	bh=TIUNcsdx7eirVf4HUBYkbx/VZpXBj7srvu6LEKhSZqc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LDe/4f9L8pKeO/TqYBYmlr9IptQhZiX4z6vCKtPiWo6DSrxWMW2d0bmlB0/SS8fNIQxoOQQY5DnoC/XmUh2cBR2fT5+pAm9TV1rtxM7oZ2y9GoiO75hdGyTsLBxCI+PvV11peD+C8aS/7x1tBJ7A+i3+VHWvUmJgtbuJ9RmnpUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ViE9QW38; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1786525819; c=relaxed/simple;
+	bh=n44If2VGgkicSXz24CfwY0BK5nNHU0rFHpHcfylBKlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TLSpFNYZlteHoVsHj9IUr5BCuTJ9WkOVvnrPOuHYfOtjtzNZrdp/5fbOPdzRG0rTH1+hxBqRyX7VVS8CWqLO4CNg82wLp7Tq/voh4xVyfcSNdi06SzJvAIx6exEWF80JluShPnjFTuyQBBAsp6htPI6MOLChQypReRWtrZExwaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hhVM/Su1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=es5RH944; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ViE9QW38"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67C612kX1934024;
-	Wed, 12 Aug 2026 01:58:10 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=TIUNcsdx7eirVf4HUBYkbx/VZ
-	pXBj7srvu6LEKhSZqc=; b=ViE9QW38ssvwfeSMmyChyuLPtXUCqGvPP1k+87YxD
-	kQUskq/GP2L8iXNPOnJZ4ZQFipJEAQDEMD/L198fWejlnjeOFHPWStfdFkb3RV1H
-	9gNhwwdrtIlZJIn8cdsV4OJF+7n6XPnsqVLnedJKpp6NsubtcFxxvDaDPr04axpk
-	vV0zC/q4Ao3C9rHhlglImB2ZGWzT+xRhsqZQbEXOiU+ifev/MD6tSP6Y6KFHahQf
-	FNid1PShSboatOkUkwMvXhcn4qBWsFkLhssp92f/Aog86yExMT54YSrmmFui4te9
-	btouor27AgBcAEQiky59Uw/LyIAO9twDhI7KARDLHMZyw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g0deh99fu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 01:58:09 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 12 Aug 2026 01:58:09 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 12 Aug 2026 01:58:09 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id B2C453F7077;
-	Wed, 12 Aug 2026 01:58:04 -0700 (PDT)
-Date: Wed, 12 Aug 2026 14:28:03 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
-        <davem@davemloft.net>, <edumazet@google.com>, <hawk@kernel.org>,
-        <john.fastabend@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <sdf@fomichev.me>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v7 net-next] octeontx2-pf: add mqprio bandwidth offload
- for NIX TX schedulers
-Message-ID: <anw1mz7NYdDbTAdN@rkannoth-OptiPlex-7090>
-References: <20260811085050.3212280-1-rkannoth@marvell.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hhVM/Su1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="es5RH944"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786525813;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6ru/bYOZf21mSsFe8HqKCz16SSQHB5XbOO+335H7uls=;
+	b=hhVM/Su1TnxNpjjifU9WKzdfBC8AJt/8jXQVZU1rVLwxe08UF/0XRCyKJ81sWHC3NMitSL
+	T/dpkiAEva6jUGhs5xEaEKALgPlrek67G7Rwuk5mT2lAJWvH4hkZZmJ5Wv4jaJGaxHguRB
+	mJh5HlxQJRVZKJG6pED+c9Hk/Z8MRls=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-619-mOWSzTqePYOTVkFYvuzT-g-1; Wed, 12 Aug 2026 05:10:12 -0400
+X-MC-Unique: mOWSzTqePYOTVkFYvuzT-g-1
+X-Mimecast-MFC-AGG-ID: mOWSzTqePYOTVkFYvuzT-g_1786525811
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-493bfc3b84aso3783405e9.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 02:10:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786525811; x=1787130611; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6ru/bYOZf21mSsFe8HqKCz16SSQHB5XbOO+335H7uls=;
+        b=es5RH944ybkfNHi0/id8EDtD/em5k2UFRQtRvuDw+zDaHhaDg2AXW5DfUhTnuvyz7Y
+         P71zObRqHmY3QV0wjUK+EH28lRoN3Vv/6U0PFPD6sjMVAFRipHnjtBNtgoWu0y73Z1Wj
+         /Oy00YgYxyXh6dd0cCX4FSdC7Hyf9FhdHgcPXm2JhqLBbA1X4dLDoo2oahQytr04XppC
+         pQEq+W3RlzgJtvYhbtQRNVUkH0cSnr7N3Wx1qVYSlUuNnWk6glxJHtmdkAkvrG+hR1kI
+         RAo9b2PQxV8Rku1T1XOlfVIEoDJGlQbYUlpIdPANhutbnieQcaIekPbN2ezMtXbLvlAD
+         SPiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786525811; x=1787130611;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6ru/bYOZf21mSsFe8HqKCz16SSQHB5XbOO+335H7uls=;
+        b=Gn9LIlwfpE70LvRZfpBVwQ0qainO6KRnRreALOb1uBH88Ef2SPBBsoD/l9iifEKSxk
+         LJ873zqbZUq8OTF/I2EFm9gRQqylbY/axQ3NJU+Gc0ePRpg6ME3+LZjZQWANBSFSxe9H
+         JpcV6LTSdaSM09S8UiD9kLuDttbYz+UYn6D3Pojv3xmfeeADP4ddoJp0lGzAoeLQ6nDv
+         lOjQFY4lnS/Qm0EKjHJ8lW6zmH6/01rZUC80yt1amCERJUmPXQuB2EzPqtZQmWB6xGYQ
+         H+lbYHL6IYDEBG1K1upuBuAdITw+mlXYzyAR88BPbcr7iiiazed4axEj+vUEe899LMW+
+         oVmw==
+X-Forwarded-Encrypted: i=1; AHgh+RrqGiOxtcFmY+yVp5fUa0q0aDBGgKDfou/2yH1mnFemaVsVLoERpP6OF8R/Y1i1fV3jzgUwb/Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5evhjVxe1oMEMhey0KcaCEjjHZjOZFEIhK3tmbxoc9yiiEuG2
+	/3F9yPDlb/6Y1HCmgkx6e+lSNZWWZe7MqWRmgwzOgWGdkI4Gttd3kxh0V7LFS5bcevIWwbJu0L+
+	iEV5bd4lqq2SiauahiOTDSAbe/nRMA9jdhwS47836xst4l4eRNP9wofAYog==
+X-Gm-Gg: AR+sD13AQeLofjW5dY2ADKwvuBJajZxlLO7VgB6/7BqnED1HcuuC1dFVO4D7DQPuHm8
+	TKRg3f0m8UwXbahKq9mbmp/l07+VdyHkV8RteMlmlgPx6PaaP+EhcgM749V5uGygsBkLq4GVCED
+	AEifswjtfHXCtdUZoSCJFpbKbw0m0QNk78WFvsfCV2hpIf5tGshALDlFcGLIeHv1Cp1qazWs/RU
+	Ty/qZ1/ayrgWl023iuxsmIsVT4wnEfvT+VIaTWFT6pwUI406JWAcGDtQ8qPjsQ6lmFCo9jsA2ya
+	8iGh1kas2f090GFhApdrhMYwHUrN0kqK9DctmnVSUPoGKf92QxJlXaZ8dX6m+1zmfNrIMCetPGp
+	XITjkIL9xdWr4PK5Xoyre/jFjR8wcHfsARnO5r7I5OA7vyfBuIXJI/f2jFglpSJGDbvX+swa4eE
+	0=
+X-Received: by 2002:a05:600c:5020:b0:496:bffb:fb7b with SMTP id 5b1f17b1804b1-4997c13420bmr47111545e9.10.1786525810729;
+        Wed, 12 Aug 2026 02:10:10 -0700 (PDT)
+X-Received: by 2002:a05:600c:5020:b0:496:bffb:fb7b with SMTP id 5b1f17b1804b1-4997c13420bmr47110615e9.10.1786525810309;
+        Wed, 12 Aug 2026 02:10:10 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997b34afe3sm42548405e9.2.2026.08.12.02.10.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Aug 2026 02:10:09 -0700 (PDT)
+Message-ID: <d98287c8-0925-4e70-8cb7-c5703d8145fa@redhat.com>
+Date: Wed, 12 Aug 2026 11:10:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260811085050.3212280-1-rkannoth@marvell.com>
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDA3MSBTYWx0ZWRfX+Jg+TtHWaTxv
- 9K027UpLieAUI+twNXcxJquFW2Xg8p3q9/qms9vSihQz3W12ywMRQ/f968FmjBH1XrmxdjVlzqP
- Z0JZYMtukfXOKNGJyZUT3jTrovZDS7U=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDA3MSBTYWx0ZWRfXxZQcRj125i62
- kfXUohNaNApXV1APFDdWIYGoDoXtj4mA90B+Y/H+QNmltJLucgeGoQR04UIvpcKJDiY0cUPf400
- t7+i2UTDkm0zL/ilphemgfolawN55ZSugrxi3WSjVH78Y5LeS3e0lHeerDJAKOaxy3m6irhCdDQ
- stLXACTHqP3BGgdnPZ4OOWcxp6vHNG2jr8jCLQ9VBis7bzGVD3jXmGwMcTNi5E33mwVUcOxW/0r
- OmcWKYmCH/409DZAzmdiYajxbB/onNgQ6TZSlrwSGABvoUcak9vih0/HjhmzyyN40BSnIlCTEld
- 7a+Gg5xByVoowU6QGckBZ+qGYszS3W5E2q2VydOgGN8vcUD7FubOIlCP7Hgo4CxhxxEiWTDw70s
- maNAvEFfSLo3KIc6lSxWKLx9jDGNHGNgVj7ASrcpcPIQ0B2qiGtUMeX4+NI55Yue3i2/JC4iIoz
- VgUzCxMmCsyKOETv/Fg==
-X-Authority-Analysis: v=2.4 cv=crirVV4i c=1 sm=1 tr=0 ts=6a7c35a1 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=9R54UkLUAAAA:8
- a=M5GUcnROAAAA:8 a=5TXRcTkNFt69AM2IH6YA:9 a=CjuIK1q_8ugA:10
- a=YTcpBFlVQWkNscrzJ_Dz:22 a=OBjm3rFKGHvpk9ecZwUJ:22 a=Oh551-UHZqmTy8JkqTUo:22
-X-Proofpoint-ORIG-GUID: hV50G04ClJnWhEVv3X9XYgipQN5tb4_G
-X-Proofpoint-GUID: hV50G04ClJnWhEVv3X9XYgipQN5tb4_G
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-12_02,2026-08-10_03,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mptcp v2] mptcp: restore full join state in syncookie
+ MP_JOIN reconstruction
+To: Harshit Varu <harshitvaru666@gmail.com>, netdev@vger.kernel.org
+Cc: mptcp@lists.linux.dev, matttbe@kernel.org, martineau@kernel.org,
+ security@kernel.org, stable@vger.kernel.org
+References: <20260811215135.87756-1-harshitvaru666@gmail.com>
+ <20260811222325.90426-1-harshitvaru666@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260811222325.90426-1-harshitvaru666@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2026-08-11 at 14:20:50, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> Add TC_SETUP_QDISC_MQPRIO handling to offload per-queue MDQ CIR/PIR
-> shaping for mqprio channel mode with TC_MQPRIO_SHAPER_BW_RATE. When
-> bandwidth offload is enabled, allocate one SMQ per non-QoS transmit
-> queue, parent all MDQs under TL4[0], and program min/max rates by
-> dividing each traffic class byte/s limit across its queues.
->
-> Setting up or tearing down the offload restarts the netdev via
-> ndo_stop()/ndo_open() to rebuild the TX scheduler hierarchy. That
-> clears carrier, tears down IRQ/NAPI and drops in-flight traffic; if
-> ndo_open() fails the interface is left administratively down. Offload
-> setup is rejected unless the interface is already running.
->
-> Reject incompatible configurations (HTB, PFC, XDP, SDP rep, missing
-> CIR+PIR support) and out-of-range rates. Validate queue mappings
-> against hw.non_qos_queues and reject per-TC rates smaller than the
-> queue count that integer division would truncate to zero. Track offload
-> state in mqprio_rate_limit instead of pfvf->flags to avoid races with
-> the mbox up-handler, skip spurious teardown on tc qdisc replace, and
-> clear all MDQ shapers before applying a new mapping so queues dropped
-> from a TC layout do not retain stale limits. Restore cached shapers
-> across routine netdev stop/open via otx2_mqprio_up().
+On 8/12/26 12:23 AM, Harshit Varu wrote:
+> mptcp_token_join_cookie_init_state() rebuilds the request socket for a
+> MP_JOIN 4th-ACK that was handled under SYN cookies, but it only restores
+> remote_nonce, local_nonce, backup, join_id, token and msk from the saved
+> cookie entry. local_id, request_bkup and thmac are never restored, even
+> though the SYN path saves local_id and computes the other two.
+> 
+> subflow_ulp_clone() then reads those three fields and copies them into the
+> joined subflow context (local_id, request_bkup, thmac). Because the
+> request-sock slab is SLAB_TYPESAFE_BY_RCU and not zeroed on allocation, the
+> values are stale bytes of previously freed request sockets, which an
+> off-path peer can influence by sending concurrent MP_JOIN SYNs. A corrupted
+> local_id breaks id-based path-manager bookkeeping, and a corrupted
+> request_bkup misclassifies the subflow in the packet scheduler's
+> backup/active selection.
+> 
+> Save and restore request_bkup and thmac as well, completing the state
+> restore.
+> 
+> Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
+> Cc: stable@vger.kernel.org
+> Assisted-by: opencode:deepseek-v4-flash
+> Signed-off-by: Harshit Varu <harshitvaru666@gmail.com>
+> ---
+>  net/mptcp/syncookies.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/net/mptcp/syncookies.c b/net/mptcp/syncookies.c
+> index 7f2252634..3c25ff627 100644
+> --- a/net/mptcp/syncookies.c
+> +++ b/net/mptcp/syncookies.c
+> @@ -27,7 +27,9 @@ struct join_entry {
+>  	u8 join_id;
+>  	u8 local_id;
+>  	u8 backup;
+> +	u8 request_bkup;
+>  	u8 valid;
+> +	u64 thmac;
 
-Will address sashiko issues in v8
+Is thmac used for passive flows after
+mptcp_token_join_cookie_init_state()? I think it's not. If so just init
+to 0 in mptcp_token_join_cookie_init_state (with a comment) and remove
+remove the new field from here.
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260811085050.3212280-1-rkannoth%40marvell.com
+Same for request_bkup, AFAICS both are used in syn_ack only.
 
-pw-bot: changes-requested
+The bottom line is that we don't want to increase `struct join_entry`
+size without good reasons.
+
+/P
+
