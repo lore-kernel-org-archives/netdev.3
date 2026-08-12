@@ -1,239 +1,156 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF90449B2B
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:31:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28D744780F
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786541464; cv=none; b=kTtV0MEf/YWTQfQndB1MfZV41mkskQcNHhijHg7NhvG/VgAbc33DPwhQFQTkF7CyRKEhjQMPIzxXg1hEdhTwe55qTQsZwEXKTlaklbKNV2+eUyrLmBIvn0ExBDCW5SapZD0XtyiXe/qG+4v/lYqDZhNl7D5As4jSFXAEUjO4w18=
+	t=1786541881; cv=none; b=FbXXtHBde9BNWXrJTCTFOC8Bmu3MfAg7ioUPbqShwFqsfNup8MeOvTU2LYW1iyNM0Lwcfw3k5VpgN3lcJICstLkVzIwgA84vfL5MJHk/0c9DXV/UlcKTobxbHEVZUwjRNlQ2BnfhWBzH8XlGkxdvavWJwe7njW3mH3YiRzc7RWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786541464; c=relaxed/simple;
-	bh=ICMnfMcH2LL3xN8p4YnFuCah6rwJig7AYg2KFmZFBLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BcIZ6ikstEfHxX+dswRVvbQhVUkssIn11yJAdxPVFb5uIVxAbnS8TW1+EwWrbdACnIs92vTZW4scapgwQtxuvjlZt2hgRrijMZv67E+tT/oEZkQA8AZXgq+0T1DYfeUThlPIo3UVo5HONnvAKM0Ea5ZKRnNKd/YtL3KI2jfCHUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LnVqs405; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1786541881; c=relaxed/simple;
+	bh=11RMDYJUIYD+TsCck0t7sWQ7c6gaTHukqlFF9/6jO6Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WLAUhrhB8A+uQUYhiA07AWSfvIj2UZnohQzv3NDFsaZ7CEjl4TRjKoBZ5/tkbbhcIWFvt0JVkOmgv05yL+7wghRYn3wboksWstdoemWSO7H+aKC1NBX7PCuw2Gi1eJLrYd+D6d0gKTHFp8ZBCyDuzyEG+BxyaY2o4eR4kHhty7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9DOl1K1; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LnVqs405"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84faf87d19dso1108408b3a.3
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:31:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9DOl1K1"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c15cb6f5c12so183760566b.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:37:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786541461; x=1787146261; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Uz+bfGVw3BN4xTVdoh1TluUgeBOBBwVoF8DrIGsXOfg=;
-        b=LnVqs4055hualI/8Vsx7uXP+D6qqabnTYVO7bmcaV/TDMKt/aa4IeZ1uDBhZTtcXT3
-         R0OKVYV/X35a6VynsI67hZjg7bLZ6aH8GPmte32Kheffmv1vaTu+cJR5xphZUEw7yv+C
-         EDBlLtLtqPEdvday56lhT0oTgtWn85o06yLpP/k8xHnO2tTDPE443Yq9gertDFHUQTCX
-         +y5Cb8TF4MB2U7bax7ia9qIwGqBnvE1CdboVdbMubL+obRU6mOEq5nYLSR7yjUjFNfnO
-         1z1L/w2xYSFIsA7FUFZH7gcAoWo51Vbp1RXPpfq8VOqlYsL0T1qjCXBLk2jrVnmoe1hm
-         qnlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786541461; x=1787146261;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1786541868; x=1787146668; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Uz+bfGVw3BN4xTVdoh1TluUgeBOBBwVoF8DrIGsXOfg=;
-        b=gl1M9WRkPgoQV4FPFy6Jymdb8sl2EWGrn011F4biy9Q37w3ZbkYtjuqX5LuO6XNrLV
-         Lc8+b0ltaGWz7wi7GrfyKA9L3wQhZUKXRe3X16nYRgVh11lwyurSeZQpeP7PmnTox8Ty
-         WCoKQxbeHWLw+aQ/TuQDaJ5/leSjf/BKXBC8rr4QcwgK4dud+79JJhok2Ig4uPdN7uXf
-         7Go7SFvVpc/Ej1Ls8Ml6m5mdGO66CNPdrD7dOqWbdQ66yP7blUdATO4HU8ZdEv6Q9sy5
-         BJOEK2ruQkInQJK0NWGOmbAewaeIXqh2zO/mSTvWTzmj9kiCzFvijzuky88PuCLwWjcs
-         MYzQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrTC6Q22lca9FLe+Bu3DyeZzx1aIUgI4V/Ut9r/BSIY473VGLwcxqL0W7zfykq+It1FFis7fTk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTe9LGhtfooolkJ9kM4JFiqJUZIPbjBDtZbOVZDf8cRHyebX1g
-	lj9IWy4UOYa1IwGgBjIydA0awfX/ambBpgORspm7CNoqGH/+KwmEx5Yr
-X-Gm-Gg: AR+sD10TcMCeZjoRGTjA7HxTo+y2lAp6H3N8BXjtf4SNMD7dSHd9FVe43wl0W0S246W
-	rGv9TKkcGU84M3FXZV/idokBVM0qz1SCfgJKAXuDZKDO+g5LpitqPAznw2sv1s/zoarFp12ZdDk
-	WIBbelEqRr9+EhQJB122AHOfSe+JnysIyOFk6uiD+nbaj+M+BBB26zL1qAUFtuHQE01N26DjbOJ
-	tKIdm6beNOGjf0klHVdmbbU0ChW0nkS4jm6ihV47wxbTadJEuD0WItJOH6GQAXz8sfyE+M0QVH2
-	5BQfOQ1iTTATbTetDDlveKVmBmdgrLsQVXwYTIuhFqkhrroTRryiy/QwFvXN1NjZR102KFYHA9d
-	Usiwwz1yC5kSoYGXC2tJkmWbDgDhwsL/YE877n5dJDY6bCDx3hPa0OGigof99ScdHMIDP+GqpyB
-	w710Oa0BMcJyjFqYSY8xnYgGZ01irDDucA+xEA7yh9QERIiW9a/xvbbzQq1zHZaI10Bg==
-X-Received: by 2002:a05:6a00:9515:b0:847:99bb:b6d8 with SMTP id d2e1a72fcca58-84fb553c24bmr5293712b3a.26.1786541460521;
-        Wed, 12 Aug 2026 06:31:00 -0700 (PDT)
-Received: from user ([2405:201:c052:b00b:f326:be2a:1bb0:bade])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84fb1ee8bdcsm1046727b3a.39.2026.08.12.06.30.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 06:30:59 -0700 (PDT)
-Date: Wed, 12 Aug 2026 19:00:25 +0530
-From: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-Cc: Malathi <malathi.a2000@gmail.com>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com" <syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH net-next v2] e100: fix
- shift-out-of-bounds in e100_eeprom_load()
-Message-ID: <anx1cdVq5D1vmjWC@user>
-References: <20260811050753.234931-1-malathi.a2000@gmail.com>
- <DS4PPF7551E655294090E40920DD86E03A7E5DC2@DS4PPF7551E6552.namprd11.prod.outlook.com>
+        bh=CTDH3ObcVsD8b2AHboEh6kuXwjIYw3SkFUNxdVGoj5g=;
+        b=N9DOl1K18yg0vkc9Oc2hHmc593PRxf5jjO6GHgj8xyQrR4weNZsdc425OSlZCz1doS
+         ulPv4k6xqFP+Bp52iw3Lwc9OjoyFTC0qCAWxvOr4VOrDWQJavNthQ+hhGeZBItMeakCj
+         I0Ceh3ARfrpJQHSzxuBP+XngSOvu/DIJ518FsSyAIk537NyUhlz9W6cm8rKTK8nPMhMM
+         oaKujEfxU8ajEVl7Vij3zYXZIsscy/bucVijsdBn3AiXOl7ge69WNDKVF/SJR0w1jCRj
+         NS/Svh8y024swt0to0+apdCptFtiJddjJ0kon/JekCnfUwCe0pdrw8cVN6VfvgcCrjvo
+         dW/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786541868; x=1787146668;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CTDH3ObcVsD8b2AHboEh6kuXwjIYw3SkFUNxdVGoj5g=;
+        b=hzVL+7ZelFY8ztkvWr/mD5i9MuV5vc9XrU5nLn1cQYDx7FqrN77mXrsAbNXovKIBvy
+         h7wlpncv4XsnGjddtkS4Jwv37G2kwfxL5wMXqAIp82qIDYWVAmb3CxPHZJbxPHoeP/Fc
+         i7boJY6OXvH+lDYGPSJPCDqzoabl8CGwgjSn5Bl1t645c8K6DBRYkj+R7NcTNifK9zRC
+         /m9QPguZ7jrCuRbtsXLJ26RxbpOEtIUfuQgBzC41koClf4AGeS4+D25u6/x+UGDgOOU4
+         G1j6OOxa1WNK8uQEMjRCrbmRt/3Ju08Fne6tk7ATUSnSMKbTFPiRkdj47/c9ZzjscCNT
+         1L6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RokLRo0hGQxy7B3R7m+DWRjTdBI9wv8sl47yrACo3Bpd9am+mvLkmlpsoNljGTbOymoSfas4MU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCx1wqHtuORZIKk0AkYAdGSr30kqiv9quFMxvM2Tt1DkfHROzp
+	m9VSf/Q5IHhfrVCtXnbD3ApEieCDBZvpfP0HbuVBIN2mZeQvuG9Oa8ma
+X-Gm-Gg: AR+sD13OOUdc4trJTb+WQx5KyiWvV2w/8b+PIZb2ueD76R2nhdjScWtTN8tVenuTKmF
+	pJzfZofdgKdrx/1HmgfyWiqGDwGtdRep9uF7x45wM4Bxmg/S+voBtoWHeu7FPUfklTwL2vcrotE
+	0JtaJly3/fDET1bOqtzZTka1UWx+e+iPAQthOJl46PKVof/J23x49ttXlgtAgNDiglHQGDmbWQS
+	OSzy0BycHTrr0q7TZuvVn7NB5BorO81P0DQF2Em0pjV4xOYRxT1ml8Wg1Q96fupzz6bZutv9uOY
+	SMNerZz4mTkv2B1OZwPkp+2QOgNzops2vA7wniA3ZF5ToDmPd3zsitPQiGD9j+oROORIYhC+7sl
+	GyDRiWC3gleZglFMhLGLMZhmlB/1fhqZx20ZG8BoxWrQYyfbV6/eHevBPWZReiSVrIDsoiWYtJg
+	V8Mhe1wUx0rHESMHnWW19/US7BCLM2R4JIFQIWhSRHrR6FAT8DV7Sri9loNTsh5HKcxmjdNjemZ
+	N8BjMIJIUOQwKiOZ3tY0WsyrWku8HZ67eLShMe9kcs0UBJqdBhqE+uCCWuJOz2X73xEt2tzxyhM
+	j/s7AfrYW/0ig8n2
+X-Received: by 2002:a17:907:1ca2:b0:c20:af9d:454a with SMTP id a640c23a62f3a-c20f3046604mr262300266b.16.1786541867962;
+        Wed, 12 Aug 2026 06:37:47 -0700 (PDT)
+Received: from [10.169.188.141] (82-132-212-67.dab.02.net. [82.132.212.67])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c20f0d30dafsm92165866b.2.2026.08.12.06.37.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Aug 2026 06:37:47 -0700 (PDT)
+Message-ID: <4f0685a2-562e-4b63-a6f8-9522ed5ff793@gmail.com>
+Date: Wed, 12 Aug 2026 14:37:38 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DS4PPF7551E655294090E40920DD86E03A7E5DC2@DS4PPF7551E6552.namprd11.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 2/2] net: tcp: block standard payload injection
+ into devmem skbs
+To: Eric Dumazet <edumazet@google.com>, Mina Almasry <almasrymina@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Willem de Bruijn <willemb@google.com>,
+ Kaiyuan Zhang <kaiyuanz@google.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dev@openvswitch.org,
+ "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>, Jason Xing <kerneljasonxing@gmail.com>,
+ Bobby Eshleman <bobbyeshleman@gmail.com>, Florian Westphal <fw@strlen.de>,
+ Bobby Eshleman <bobbyeshleman@meta.com>
+References: <20260811195405.3979177-1-almasrymina@google.com>
+ <20260811195405.3979177-2-almasrymina@google.com>
+ <CANn89iJ=CAaqT94xGWgaxcZHhcMVQmy7=0B3fmW4mjKUz1DjoQ@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CANn89iJ=CAaqT94xGWgaxcZHhcMVQmy7=0B3fmW4mjKUz1DjoQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 12, 2026 at 09:44:08AM +0000, Loktionov, Aleksandr wrote:
+On 8/12/26 13:01, Eric Dumazet wrote:
+> On Tue, Aug 11, 2026 at 9:54 PM Mina Almasry <almasrymina@google.com> wrote:
+>>
+>> Protect tcp_sendmsg_locked() from mistakenly appending non-zerocopy
+>> page fragments to unreadable devmem skbs. Create a new segment instead.
+>>
+>> Fixes: bd61848900bff ("net: devmem: Implement TX path")
+>> Cc: Pavel Begunkov <asml.silence@gmail.com>
+>> Cc: Stanislav Fomichev <sdf@fomichev.me>
+>> Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
+>> Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+>> Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>> Signed-off-by: Mina Almasry <almasrymina@google.com>
+>> ---
+>>   net/ipv4/tcp.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+>> index 455441f1b6949..186a36c698798 100644
+>> --- a/net/ipv4/tcp.c
+>> +++ b/net/ipv4/tcp.c
+>> @@ -1278,6 +1278,11 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+>>                  if (copy > msg_data_left(msg))
+>>                          copy = msg_data_left(msg);
+>>
+>> +               if (zc != MSG_ZEROCOPY && unlikely(!skb_frags_readable(skb))) {
 > 
-> 
-> > -----Original Message-----
-> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> > Of Malathi
-> > Sent: Tuesday, August 11, 2026 7:08 AM
-> > To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
-> > Przemyslaw <przemyslaw.kitszel@intel.com>
-> > Cc: netdev@vger.kernel.org; intel-wired-lan@lists.osuosl.org;
-> > kuba@kernel.org; pabeni@redhat.com; edumazet@google.com;
-> > andrew+netdev@lunn.ch; davem@davemloft.net; linux-
-> > kernel@vger.kernel.org; Malathi <malathi.a2000@gmail.com>;
-> > syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-> > Subject: [Intel-wired-lan] [PATCH net-next v2] e100: fix shift-out-of-
-> > bounds in e100_eeprom_load()
-> > 
-> > e100_eeprom_load() and e100_eeprom_save() start with an address length
-> > of 8 and call e100_eeprom_read() to auto-detect the real EEPROM
-> > address length. e100_eeprom_read() adjusts the length with
-> > 
-> > 	*addr_len -= (i - 16);
-> > 
-> > based on when the EEPROM drives a dummy zero onto EEDO. A
-> > malfunctioning or emulated device that drives EEDO low too early makes
-> > (i - 16) exceed the current length, underflowing the u16 addr_len to a
-> > large value such as 65529.
-> > 
-> > That value is then used as a shift count:
-> > 
-> > 	nic->eeprom_wc = 1 << addr_len;
-> > 
-> > which is undefined behaviour and additionally overflows the fixed-size
-> > nic->eeprom[256] cache.
-> > 
-> >   UBSAN: shift-out-of-bounds in
-> > drivers/net/ethernet/intel/e100.c:768:21
-> >   shift exponent 65529 is too large for 32-bit type 'int'
-> > 
-> > The same corrupted addr_len is also fed back into e100_eeprom_read()
-> > for every subsequent word, where it is used as a shift count again:
-> > 
-> > 	cmd_addr_data = ((op_read << *addr_len) | addr) << 16;
-> > 
-> > so validating the length only once at the caller is not enough.
-> > 
-> > Clamp the length in e100_eeprom_read() so the subtraction can never
-> > underflow the u16, and reject a zero or out-of-range length in
-> > e100_eeprom_load() and e100_eeprom_save() before using it. The EEPROM
-> > cache holds at most 256 words, so a valid address length is in [1, 8].
-> > 
-> > Reported-by: syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=e0abb1d45ac291ebebeb
-> > Signed-off-by: Malathi <malathi.a2000@gmail.com>
-> > ---
-> > v2:
-> >  - Drop the Fixes: tag and retarget to net-next; the underflow is only
-> >    reachable with malfunctioning or emulated hardware, so this is a
-> >    hardening change and not stable material.
-> >  - Clamp addr_len inside e100_eeprom_read() so the auto-detect
-> >    subtraction can never underflow the u16.  The corrupted length was
-> >    otherwise reused as a shift count for every subsequent word, so
-> >    validating it only once at the callers (as in v1) was not enough.
-> >  - Also reject a zero address length in e100_eeprom_load() and
-> >    e100_eeprom_save().
-> > 
-> >  drivers/net/ethernet/intel/e100.c | 17 ++++++++++++++++-
-> >  1 file changed, 16 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/ethernet/intel/e100.c
-> > b/drivers/net/ethernet/intel/e100.c
-> > index 29960762e64a..26a7c0aaa6e2 100644
-> > --- a/drivers/net/ethernet/intel/e100.c
-> > +++ b/drivers/net/ethernet/intel/e100.c
-> > @@ -744,7 +744,12 @@ static __le16 e100_eeprom_read(struct nic *nic,
-> > u16 *addr_len, u16 addr)
-> >  		 * complete address.  Use this to adjust addr_len. */
-> >  		ctrl = ioread8(&nic->csr->eeprom_ctrl_lo);
-> >  		if (!(ctrl & eedo) && i > 16) {
-> > -			*addr_len -= (i - 16);
-> > +			u16 len = i - 16;
-> > +
-> > +			if (len > *addr_len)
-> > +				*addr_len = 0;
-> > +			else
-> > +				*addr_len -= len;
-> >  			i = 17;
-> >  		}
-> > 
-> > @@ -765,6 +770,11 @@ static int e100_eeprom_load(struct nic *nic)
-> > 
-> >  	/* Try reading with an 8-bit addr len to discover actual addr
-> > len */
-> >  	e100_eeprom_read(nic, &addr_len, 0);
-> > +	if (!addr_len || addr_len > 8) {
-> > +		netif_err(nic, probe, nic->netdev,
-> > +			  "invalid EEPROM address length %u\n",
-> > addr_len);
-> > +		return -EINVAL;
-> > +	}
-> >  	nic->eeprom_wc = 1 << addr_len;
-> > 
-> >  	for (addr = 0; addr < nic->eeprom_wc; addr++) { @@ -791,6
-> > +801,11 @@ static int e100_eeprom_save(struct nic *nic, u16 start, u16
-> > count)
-> > 
-> >  	/* Try reading with an 8-bit addr len to discover actual addr
-> > len */
-> >  	e100_eeprom_read(nic, &addr_len, 0);
-> > +	if (!addr_len || addr_len > 8) {
-> > +		netif_err(nic, probe, nic->netdev,
-> > +			  "invalid EEPROM address length %u\n",
-> > addr_len);
-> > +		return -EINVAL;
-> > +	}
-> >  	nic->eeprom_wc = 1 << addr_len;
-> > 
-> >  	if (start + count >= nic->eeprom_wc)
-> > --
-> > 2.43.0
-> 
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Hi Aleksandr Loktionov,
+> This seems wrong, as @binding could be NULL or not ?
 
-could you please clarify something regarding this issue?
+I'd say it is *supposed* to be null as device memory without zero
+copy doesn't make sense, but it looks like that can happen if there
+is no NETIF_F_SG. How about rejecting it? It'd EFAULT somewhere in
+skb_copy_to_page_nocache() anyway.
 
-I submitted this code as part of the bug report on July 7 v1[1]
-and July 10 v2 [2] and we were already discussing it.
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 455441f1b694..f403830af65f 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1162,6 +1162,10 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+  					binding = NULL;
+  					goto out_err;
+  				}
++				if (zc != MSG_ZEROCOPY) {
++					err = -EOPNOTSUPP;
++					goto out_err;
++				}
+  			}
+  		}
+  	} else if (unlikely(msg->msg_flags & MSG_SPLICE_PAGES) && size) {
 
-Later on July 10, the same code lines were submitted again by her.
 
-I noticed that her submission was reviewed, even though i had already shared
-the same code earlier.
+> Also testing the condition right after a fresh skb was allocated is
+> adding unecessary cost.
 
-Could you please clarify why her submission was reviewed instead of the
-original one i submitted?
+FWIW, we can even remove all extra overhead with a new SKBFL flag and
+checking it together with likes of skb_zcopy_pure(), but IMHO it's
+better to be done on top if needed.
 
-I also sent you reply on v2 [2]. Could you please review that as well when you
-get a chance?
+-- 
+Pavel Begunkov
 
-I just want to understand how the submissions are being considered in this
-case and make sure the contribution timeline is clear.
-
-[1] https://lore.kernel.org/all/20260807145626.52692-1-pavankumaryalagada@gmail.com/T/
-[2] https://lore.kernel.org/all/20260810083355.21631-1-pavankumaryalagada@gmail.com/T/
-
-Thank you,
-Pavan
