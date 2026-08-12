@@ -1,96 +1,170 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51643ACF04;
-	Wed, 12 Aug 2026 13:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B23449B35
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786542081; cv=none; b=TTYuQedaYe72D06YAiacSzljpkPFSK71MrT8ZjawQjuLapQUzbfHYz+UyCRhsaBiser56FjbRe5D6NsLEAUQE+8VUM5woANRAqKpVt9TBmyJ4Ne9DEGrHArfrTM259k9QAtqsugpIygsfd7JBn2SXbV7c7jCB5kg9KkzklYfxRE=
+	t=1786542556; cv=none; b=uzY3iQox+AMOor74GhPpUol6z+f21Fr3mtTJQLisac9eTnnWrMJGraKyy9ibn8lPrKXRYT47oUFi7M9Z7Sd1+x+kO+JUdgNWxkjiekdY6QXEU+fOxAk6vAnSIDHgd8nvVhP42qwXEULaPj0FUX9I6wLS9nZYyQHuD1VHcsLacm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786542081; c=relaxed/simple;
-	bh=jdMxm6VOc2CDxbTzRbRwNeLpZCDzlr+TuHGjsca/scA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mV0IWj9neNQboumL2nmcWTW4cBolRVprbF3WnFUvZS/5wvZSgYrh0rTQsHqF7roCHJw/MJrrNmhmnIQoVpoGrAiVjAFTBtqiR+0oKdQ9dbGV6a/8Px3ZUhJU5SlHMy4iVMyS2aVCQCJmY0MppiTx2kkhpEJSk5LcdhkEItEUfLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VRB3ntXK; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786542556; c=relaxed/simple;
+	bh=JBovGLTQDNZvVB1kX5xGnBWZWunagAeDDllcGJP/3kI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ufGQZTGzZyu5sioH0prTmFBJoH9HIp2LMQw8Q/UvD0CGW7xEoO7GcdRyo32nStytZsvwD7NN3uUkiVwepExhhhD5xcxIoKrZTZgQHWsOoRcNsIu0ze0Yh71z39hrQAhBi4TpXhnwiyF0bOQtZuY+xtUqu/gz3yNycY4jJuH1zxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AmG6YmuO; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VRB3ntXK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=H5lzxPX1S6HpYAx8FiJBOcWaGdrknD9jTB0fM4YeOJI=; b=VRB3ntXKxHSKUahFaYeM9VTEWW
-	1BFu2pV6QwKJXewn8l1zT66jNoRc0Vmc0m8vyVM9zNKFGgGBgzf342cTyCkbdZzRKPXiJjX/t7PPf
-	C7iX9sGWZTwwVIGZY41psaCCVbzfiHH1/vf8b5533eRu4/3MRc7Bu53H9svDCwwakcps=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wu9CX-00HH5B-Cs; Wed, 12 Aug 2026 15:41:01 +0200
-Date: Wed, 12 Aug 2026 15:41:01 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Cc: netdev@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: Re: [PATCH net v1 1/2] net: phy: split phy_probe() error paths
-Message-ID: <46ae1474-5abd-4908-9955-a364ec3e2f99@lunn.ch>
-References: <20260812125127.106255-1-xuanqiang.luo@linux.dev>
- <20260812125127.106255-2-xuanqiang.luo@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AmG6YmuO"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cbe827e3cb4so937071a12.3
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:49:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786542554; x=1787147354; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=hstRaZBm6Ruysx0BcAFOKD/4xYhykDDvb4hgaRpnKSo=;
+        b=AmG6YmuOHCI6Q+fwYbQJmIBKdizCshFKVE+01tYyBTs0tjKCuD8PkkYaeYK92cDsqi
+         d5jA94Otu81nu2ISSKDWqINbSM34esrpuakgW1C5K2HaSMVs0yZ4zGWJ7n0j+t2lppW7
+         L1cx8NsTYkQNFm0xuORX6yoaYgS4D/ag6sM5s3NT6u7u/l1R84D/dUgV3IERUcLJ5lDk
+         zmh/xJvL1etWBQ/QBLtGfCOuEVIRuNJm6DQAHl7wExV7hPzoUHpYILD48QJHfmTFO7II
+         hDleHc5QB7immZGpSQl7Vmx+RNRopnFUOUfTQxVnQOa/jJMFdAIRmXxTW98l4DqUXR2Q
+         iFIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786542554; x=1787147354;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=hstRaZBm6Ruysx0BcAFOKD/4xYhykDDvb4hgaRpnKSo=;
+        b=dyEKNrtRmloSTyAhYhzldcyoC7rXnemNM2D15pz9l1s2jMONbL6f5a5OKVRMdWDEPD
+         ZdYJrkmK8Ewiww9+OfTFrgmNStwow0Q5q46ao+6FUZwRnvQRkEOTl4B1WdhG/STavRtb
+         Jepr1q0/dz30VY4AmJT5ekCDAUPXOMPHLstzqq6housPhQpUGoj90d/EOCWmJSWJAnmk
+         OOpl5wwEviaGwqEoFpk4vpIfNmsnnXCpjp2NYREZeYpfLmS8ttQIcUAiQFBAJLWYNlGj
+         fX/jR0X9QMiGkWclzfGxBrz3P7EI+BwcmaxbStD090Bhns8VugawjonCYmcx6KR/ioxH
+         4JlQ==
+X-Gm-Message-State: AOJu0Yx6p7OXKyXv3lU+QKnz9CWuL7qTI7qHNiPE+LdCj9qhy3oKeFuh
+	ReidGp8z6SerlDxi5jAwrzbpwZbyUzV1N9AaoIB4biPVEx7jLqaSTkf0
+X-Gm-Gg: AR+sD11c2VMjhmCN1YG0+UzW/f4NxbHJKFCMp5QKyekBq6xHP3H4ENSNs9Fo+LmjiqI
+	hbd1Px+vZ+nseCsIhbfhTpLcFhX+WKRQ2CAt2oxc9OQrgyuRH9O2K7FsfBofzYrgqu6xTKr8853
+	aZBQeVpBqDeZOpZAWAD21H4Is6cp+knsil8KNGJcd0/hJLfQFTntmzgVAsIN22Vvzljl8kxVSO1
+	V0y3csRFTEyFGhYeNYS4vUJIHhZQhfQkoI64mWP1jbCj3QpfOu957jpMKxSJpoQn9766maZNx84
+	v+P6gQ7F1GwEaLTK5JZfbkbiWUCEfhEbzIhnkKxlOuf4bWzYspzRRQL/ETVuyLOpkrz5/YHUm01
+	MhSnAzVPnuA8wMVlFmJG4g1/KSo9I6eHhsIUc8ZcOpKnQywgl/OpETDrOB+nHWN37trolF3SNDw
+	3gq31Dk926MQJvqvU/Rf6AHnP7ojh8XDZNBsbSlmPw/2ukCl7ourFl+if7Hs/e8LKDoi2C
+X-Received: by 2002:a05:6a21:694:b0:3bf:d0c8:2aa4 with SMTP id adf61e73a8af0-3cc3f5177e3mr6404225637.8.1786542553933;
+        Wed, 12 Aug 2026 06:49:13 -0700 (PDT)
+Received: from [127.0.1.1] ([2404:f801:8028:3:d079:2e5c:2c6d:3026])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31cf3624c6dsm15956350eec.4.2026.08.12.06.49.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 06:49:13 -0700 (PDT)
+From: Subasri S <subasris1210@gmail.com>
+Date: Wed, 12 Aug 2026 19:19:06 +0530
+Subject: [PATCH] netdevsim: update rxq->napi pointer during queue reset
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260812125127.106255-2-xuanqiang.luo@linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260812-net-netdevsim-v1-1-521a85e4fe91@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANF5fGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDC0Mj3bzUEhBOSS0rzszVTUxMMTM0MLAwNklJUQLqKShKTcusAJsXHVt
+ bCwD0G13kXwAAAA==
+To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Willem de Bruijn <willemb@google.com>, 
+ Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com, 
+ Subasri S <subasris1210@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786542548; l=3078;
+ i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
+ bh=JBovGLTQDNZvVB1kX5xGnBWZWunagAeDDllcGJP/3kI=;
+ b=9k7BLfuE5+3VxkFzwPNSm1+ERLTHfUaxtuaP65b2YkwFDdV5LKds77A3VQw9M8Mzcs3X0Mc+v
+ GYim/2OFa72D5J3/4gzNr8Fq6MPocKPuT6F5fcGc0uA5Y9gKB7tJQDp
+X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
+ pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
 
-On Wed, Aug 12, 2026 at 08:51:26PM +0800, Xuanqiang Luo wrote:
-> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> 
-> phy_probe() uses one cleanup path for failures at every initialization
-> stage. This runs cleanup for resources that have not been initialized
-> and leaves phy_setup_ports() relying on its caller to remove an SFP
-> upstream after a partial failure.
-> 
-> Make phy_setup_ports() unwind the SFP upstream before removing its ports.
-> Then split the phy_probe() cleanup so each failure path unwinds only the
-> resources that may have been initialized.
-> 
-> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> ---
->  drivers/net/phy/phy_device.c | 23 ++++++++++++++---------
->  1 file changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 0615228459ef4..f8e434daab66e 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -3556,6 +3556,9 @@ static int phy_setup_ports(struct phy_device *phydev)
->  	return 0;
->  
->  out:
-> +	sfp_bus_del_upstream(phydev->sfp_bus);
-> +	phydev->sfp_bus = NULL;
-> +
->  	phy_cleanup_ports(phydev);
->  	return ret;
+In netdevsim, when queue reset is performed using debugfs, it triggers
+these sequence of operations: nsim_queue_stop() -> nsim_queue_start()
+-> nsim_queue_mem_free(). nsim_queue_mem_free() frees the old
+nsim_rq struct which embeds the napi_struct. But the rxq->napi pointer
+in the struct netdev_rx_queue still points to the old nsim_rq's embedded
+napi_struct. So, any subsequent xsk_bind() which reads rxq->napi->napi_id
+after a queue reset is a use-after-free.
 
-This does not look correct. phy_sfp_probe() may fail, and you then
-call sfp_bus_del_upstream() on something which never happened.
+Add netif_queue_set_napi() calls to nsim_queue_stop() and
+nsim_queue_start() which clears the rxq->napi during stop
+and sets it to the new napi instance during start.
 
-Also, it is not obvious that sfp_bus_del_upstream() is the correct
-thing to do. You are trying to undo phy_sfp_probe() so i would expect
-you to call a function like phy_sfp_release().
+KASAN report:
 
-It also looks like phy_sfp_probe() does not correctly clean up on
-phy_setup_sfp_port() returning an error. But that is a different
-issue.
+Call Trace:
+ kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
+ xsk_bind+0x1582/0x16c0 net/xdp/xsk.c:1758
+ __sys_bind_socket net/socket.c:1920 [inline]
+ __sys_bind_socket net/socket.c:1912 [inline]
+ __sys_bind+0x1a9/0x260 net/socket.c:1951
 
-    Andrew
+Allocated by task 5622:
+ nsim_queue_alloc+0x3c/0x140 drivers/net/netdevsim/netdev.c:715
+ nsim_queue_init drivers/net/netdevsim/netdev.c:1012 [inline]
+ nsim_init_netdevsim drivers/net/netdevsim/netdev.c:1059 [inline]
+ nsim_create+0xb13/0x1420 drivers/net/netdevsim/netdev.c:1152
+ __nsim_dev_port_add+0x3ba/0x8f0 drivers/net/netdevsim/dev.c:1509
+ nsim_dev_port_add_all drivers/net/netdevsim/dev.c:1570 [inline]
+ nsim_drv_probe+0xdbd/0x13a0 drivers/net/netdevsim/dev.c:1731
+
+Freed by task 5659:
+ slab_free mm/slub.c:6377 [inline]
+ kfree+0x22b/0x6c0 mm/slub.c:6692
+ nsim_queue_mem_free+0xfe/0x190 drivers/net/netdevsim/netdev.c:796
+ netdev_rx_queue_reconfig+0x405/0x630 net/core/netdev_rx_queue.c:144
+ netdev_rx_queue_restart+0x8f/0xc0 net/core/netdev_rx_queue.c:183
+ nsim_qreset_write+0x2e3/0x410 drivers/net/netdevsim/netdev.c:887
+
+Reported-by: syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c06674caba265dc61d46
+Fixes: 5bc8e8dbef27 ("netdevsim: add queue management API support")
+Tested-by: syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com
+Signed-off-by: Subasri S <subasris1210@gmail.com>
+---
+ drivers/net/netdevsim/netdev.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 4e9d7e10b527..c18f9f540084 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -826,6 +826,8 @@ nsim_queue_start(struct net_device *dev, struct netdev_queue_config *qcfg,
+ 	}
+ 
+ 	ns->rq[idx] = qmem->rq;
++	netif_queue_set_napi(dev, idx, NETDEV_QUEUE_TYPE_RX,
++			     &ns->rq[idx]->napi);
+ 	napi_enable_locked(&ns->rq[idx]->napi);
+ 
+ 	return 0;
+@@ -838,6 +840,7 @@ static int nsim_queue_stop(struct net_device *dev, void *per_queue_mem, int idx)
+ 
+ 	netdev_assert_locked(dev);
+ 
++	netif_queue_set_napi(dev, idx, NETDEV_QUEUE_TYPE_RX, NULL);
+ 	napi_disable_locked(&ns->rq[idx]->napi);
+ 
+ 	if (ns->rq_reset_mode == 1) {
 
 ---
-pw-bot: cr
+base-commit: a59f57e2aa127c5354168d2ec4bac920df1be4f4
+change-id: 20260812-net-netdevsim-aad6100834dd
+
+Best regards,
+-- 
+Subasri S <subasris1210@gmail.com>
+
