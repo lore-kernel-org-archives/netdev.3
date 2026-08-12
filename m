@@ -1,255 +1,895 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013016.outbound.protection.outlook.com [40.107.159.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDED381E9C
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 02:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B8F370D7C
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 02:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786503128; cv=pass; b=Jekd/3EZVMyFyPRBOUankeaKnKmTejNVLALFw5j52irpDKgklIcM12562DjRoWnyM+6WSUh9H44DgLswSNusfecYlML59qPRi9/d9zfLJUcTT32G/migeME0tqkaM+1A07bxA1ZD9L3VN+qm/ySe9Ei5qOhUW639kMLhaJT4Ru8=
+	t=1786503377; cv=fail; b=FbREMHbnwT5iho3BoQ1eHVrJYJ/0WrZRLUN2Nt3+d+legBfOn8UL7RCvA1neUymwljXrKSmwVsUzAOmMA5xpCPdJxm1DTPOi/2yxT5LIWBP+WE4j0OfJ0E0QpDxDcV/DXhzrPP2Ro58Mzi9q7myW2MWhrRKWM9+i7xle+5KqxfU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786503128; c=relaxed/simple;
-	bh=Hb0oTZyNs2XNF8FYvwdiByW6WbpnUx0y3XGgr92vMsE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J/YHTS8wntsZak+dMfz17SSQ1Orl2B06pWWWjEmP7OOsmwM+PqcOGGBqtwbS1Fc3SQa0OLDOXOdY81OgkTCrUsdUNUdUr8q7BPr2ubOhrUAA17RZumzZRj4HuUlev+W+qgKPGsQho76kOFPoee4UiNPs318C+/gZDN8yqwkoa/k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SqYofKhZ; arc=pass smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786503377; c=relaxed/simple;
+	bh=q5AlhSiztFIa6xiyf3V1AGc5hXhvctZNQBNPatcR9/A=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ZxNFsr19xUXp2Zt6224GbBumNQl98t3IaY3FDtqBhtKjvEwMhcxgzyybuIKndIQ5i/CqjkaH1uVg3ll1l+VUeO5XLFpemitR205XsgdnVvW2Kp5aeioOgvaO3Ls00J60zDojd14B7KYfyn1fz7RltjbQeZVtrHiQ8T798rhJPvY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=U//Zhwvf; arc=fail smtp.client-ip=40.107.159.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SqYofKhZ"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aec6360133so370875e87.1
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 19:52:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786503125; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PHRsXyFyYKJS1NgueQ1IQWO8unDRiTfSEZulEbhMyJeoSbouTUs9KZeN6xTygDvy+b
-         bS5X1qgZz9cCWwLuHU1jC9hUc2lhMUTQYmXKf43qwkkX4WGxIZIN9gZta8z1kv7l74j6
-         A62qofTibp1e/0gIoZXFiyeoLfRYRn08hmYO5v1fvBI3Y+mhf67jhw7d+Zr9yT6MyEyr
-         IxEUJ0Es7tZ8tYMyXRAZ71WLLweIA7soOIOdxR/dDtp0yJTg9Q+Nku5UeZFj0poeYGy4
-         tq2GYHzfqddDJ6HRAo2p76Vwyc952u2mM29tjjwPrm2sqDLVYWf4LvCNa0Lg1fUWvFlI
-         DFgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XSzC2/gCgnszKPTbShHtlIGN1+pKUMruFRT6YmrOrr8=;
-        fh=FQGI6CJqlAVbU4+Vh/Cx9lsafOgDsCkRyeXekW6bcQI=;
-        b=rX+tgyb8gF3eJrAn1K1V3oS5Bmyn6XO+tRhDdIRtBnfBtfOrrdWO/yLGX7RDcCUMgE
-         0/lc2ZN3Bs7A8/XcK3QtO6qTnPImNdMDwNR+ad0OUtAE+msz1Lu8T2PobEJatXE4tFNE
-         i5wX13gqu5gl5a7ZOH53sxKl9AuQW0LZRHexOqO+uACt56ajg6t0cTHHALnz2rvUCWUJ
-         dDg03p9fSNCFbQczFy4NazWF0Q0M7yGkqaAVrMx8s3L45rK/5IRAXQTAEnMcPzas+Vg+
-         YmoEAkwHiV7U6YyOyvDOnu5M5P0uGj44pm8JNSw30PE3/rcfz/h0oLVvZp627SUtGuze
-         T3Ng==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786503125; x=1787107925; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XSzC2/gCgnszKPTbShHtlIGN1+pKUMruFRT6YmrOrr8=;
-        b=SqYofKhZQLDpjK7C99XDAAPY3dZhsG4Ax8bSQnhBksiebSK49pAFjvcfgixzB1DudY
-         vogc9ITiEhgwH99cIJOOWTMczkYxAHCs1vmgNK+8LXrDYh2ekvw+Rxieop5/VNf4Wec/
-         JYuMjjs+jO81Gw+mSBe17LfBANEOTBb6T7Hx2TcZtsS+Eil1EcIwQrDjBTFwFbx1Gi9e
-         CFJqlOfZP9IZkkgDbAMAXYiSMVb2YH4oxYAe5US03lma9s3mbog+S2qimYJNN3/5kD+F
-         45TCH5Nd5qeSb2xujfCjxEvqnmMBT7rXX2IwfI0iWJW9ZxP2Z0cjbOn8XWCoNQcvJxJt
-         zBjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786503125; x=1787107925;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XSzC2/gCgnszKPTbShHtlIGN1+pKUMruFRT6YmrOrr8=;
-        b=lmdE4PLkKaKQrFzljD4m9ehSuIWrJg1Z3d6cOvu+Avgv4JwFqD3q7SlSTtZOhjg3xr
-         VdX1hfcvcvCYzlxn3h73Cot6X+n5ayKZ+RJLveeHTDENqqxVCnvvoMhhFd+Ix6L/F49V
-         FBbsGbhyjW6rTy1rB/h5FzgHGnbBE2xgzKOZbxgvAQnDAgT9+jGyHCjP5R0e6DlVg1Yy
-         Hy6pcx8CHbIXRAnJ01GPzgRyMQYWt0e6lJ1GDv0VRIEJl1ScaWmTDTo7oE87nIPeBXpS
-         G313HrVkTT8Y2PDl55sAT0N/Ug5v+KNdYq2KXHsmXcdFsvHW9qQiJoQAXKltNIGx7++Q
-         YyfQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpSkCEeAcsHV3o+O+sCcF/mX/0+NxSuH5jNspug9OygRfpfWHGwQJYl/9b+Y0Xb29sNg3HyQkQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRl4Xzv/9Soyefq9+JTBBlYYxCDOgCEgGwWZCt/JlxV43QzoHK
-	lOyztOhCTyITAGEpSYZ9LEATY1YW1oZQrBvLJ1hqwyL+9z6+lK+yC8vRdjuQhXLDKktjumidzIu
-	km5zd2GXuI3UiTbUpn2b1gCeni+0lICw=
-X-Gm-Gg: AR+sD12vxR4afPgw82MtTzMAM4TVniy4fFogpfu7zyhTPXlTjJi+if2cpQ3u1OoOOSO
-	A0zGYXaGtE2Ynjp/W00LETkb+25i5qWrJnA2f+c2PS2UfUaW8e5NLAOTyV8KM36DmGhM7EooVWO
-	szw/vBY8jLuQ6pKxD4VvOcT/Leur+Zigl6vE2Po1h/O4P/A5WQnoCZ853mqp2vFEC/LIVb+z/IB
-	pQbRJpr721K4Fd9yp6tSmkG+Uos5o8vExhz8ARKdn+rPm/YnWutCd8XwOWoLjHs/VJkc57qqe56
-	RzChrQFVIfFp8BZiZCABGqvxn17RAlBd4kQJIH01akia6qnAC/dpOIeX+GOvv740crUcT7xjBNZ
-	n1cE/ISCQiJFf+LheWne653DnI2P6jZ2xnGPpgzHChtyckrNDgqeLFqhgptJ/TVfw
-X-Received: by 2002:a05:6512:1384:b0:5b1:537b:de9b with SMTP id
- 2adb3069b0e04-5b44e2ee1f6mr254351e87.19.1786503124448; Tue, 11 Aug 2026
- 19:52:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="U//Zhwvf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w/uGGFZJV/O4k+dpaOsumIMX7xKGTYHnOzdOxci8DooOauwq/QR9F+jq26RhCftPt0+UBgj5z5R/NDRo2dfUuZyENxc7yuOHjGxglab53k+lMHydKfEg5Mtskqn33uTCkuUGBHC6zZ1RDD4mCaT0tLeJ+Eu/UhAVM6FDPVkXgiQZOrY0MrRvzj6rkWsMY0/FXJROSSo7wk1/uKV5yD6uwnLwdIKA0VUsDX5H0iIaMf8JHi0IysipiJGvL3PBW6ih41vs04IsVIEiLL59E8mrO6XjP7HwkNRwl1aR+6IqFLajcEwQusZgSADbGjb1c+vZ27AoXxRF52gP4E+/hNEMSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2B5sA8lutaX1AGrVoy7Szz7e1naFkr8vkUqL6pKWJkk=;
+ b=J7HodD5ENE5zS5/y3YxPh3vZWj0GNuDPRKrPajCqnJ5pBtHXei+NrJ0QkHT41f9nW7zzXjCzEP/3FjWnN8GUgJomF280UxjpZGLqXS8K4E77nmXcnBX5Q8hh6FpkvTZn3EK4d7v0cakc7r5dtTdZaFD+rjGsITk52Vm6Gms0Uh9ccalpycO6yREmybdcaYWsivzw54u8GAuCBAuXar/4fnWEfizPBS9tZVOJ5bj7WmAUuPPqzMMN63ecIM0ahqJGXqNVU8iq8ahrmCEnQgKxHg6A/A47enoo5YOcDNvNkXc+/yG//NhiODZEWzEbPW60w1z5EvoFbjsVgeB/MCWyww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2B5sA8lutaX1AGrVoy7Szz7e1naFkr8vkUqL6pKWJkk=;
+ b=U//Zhwvf1gsjSMTZrkZAUxR3EcUBMJplZVf/lm9nb1kV2+cv0obj7Lp4MOZBcQ9eLD5GT49DFOEEX5FWgQZ2rBHZP5D+D/ewi1566pHr6m4Secl0nZL/1hqLfJJkMJoUDGPjbW5z2DhQXQKr6/8mMqJZTlXdM9IpeVkruJ9mVSH3KceGeHYJqPM+atrIy14bF7yUz7YabPOaQV0Dnbu4PuMyXYzXSF8//JfokH8od5Xf9pF+VGw0DrSpjEBba5TBeEUSliensfUYdgZUS+aIqXPtCS56TeS+yBnETmenukNCOZkT8aV3ZLvnmKvx18zMwiMtkA3/XcjEDnu0CMl63w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
+ DU4P189MB3498.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:5f2::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.11; Wed, 12 Aug 2026 02:56:09 +0000
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0339.001; Wed, 12 Aug 2026
+ 02:56:09 +0000
+From: Tung Nguyen <tung.quang.nguyen@est.tech>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	jmaloy@redhat.com,
+	horms@kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH net v12] tipc: fix NULL deref in tipc_named_node_up() on empty publication list
+Date: Wed, 12 Aug 2026 09:55:17 +0700
+Message-ID: <20260812025559.71701-1-tung.quang.nguyen@est.tech>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: KUZPR02CA0020.apcprd02.prod.outlook.com
+ (2603:1096:d10:31::19) To DU0P189MB1994.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:10:3a6::11)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6a6f9105.1aa927e4.17d4bf.001b.GAE@google.com> <6a721aed.9511d2ce.1fc5b9.0341.GAE@google.com>
- <CAL+tcoAR9WTmrFiM0GtWhtvgWX467vAD9fRRJ-Hds9Q346EB=w@mail.gmail.com>
- <94a00de5-6293-42bd-b7bc-5370ea16a3e3@redhat.com> <CAL+tcoDxLv8N+6n6NUkN6r-GtNvT4bWYCpZo1XkBjr2a_Qz+gg@mail.gmail.com>
- <21d4d5ed-572f-4e82-818f-78b50155390f@redhat.com>
-In-Reply-To: <21d4d5ed-572f-4e82-818f-78b50155390f@redhat.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Wed, 12 Aug 2026 10:51:25 +0800
-X-Gm-Features: AUfX_mzo6Ofm1XvORKS3lY3MllzkgWFiYv6a06XdFwhBu1ssQ_vWz1Xus8QPYJQ
-Message-ID: <CAL+tcoC-O6JjWOPi5wC+2R648avj64YYzQi9o2GVZGhzKvZjJg@mail.gmail.com>
-Subject: Re: [syzbot] [net?] WARNING in ipgre_xmit (2)
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: syzbot <syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com>, 
-	davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1P189MB1988:EE_|DU4P189MB3498:EE_
+X-MS-Office365-Filtering-Correlation-Id: b910470d-bc21-43be-7997-08def81d41f9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|23010399003|366016|1800799024|376014|7416014|11063799006|56012099006|10067099003|6133799003|3023799007|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	zpAJcahN/pVa86SAFeKVLPi3Swm30daQcTliOfLpnr8ev6gI4I+MAmmCGm8XH1qqWeWZfRbuh3Ob41OCVHAMrsTu5PiK0K+xesBOsUFLU/0y0LBwsud9vQe8iFsV3hmapNGRPtR3JxUin5VrU82UiDDVPQArCppa1M9Vjj3Ixsjd8ntWw2VCcGEQEni0CA0H/1q/seloAFP/s2oJRdGmthoBwk6DMVIOVoLAAqzWhFKs0DsKirNPBOFXSL/4HsZ62JjirQEtZaz+vwDsgDuJGZSi+R9eYfTYW2Az4bP2JP3OkGr+dzAmFybNytkDT41nJaR/iSksQGEAfDurUAQOdg6dSTtexSinLI7Q/Zqtismim/lFAgeOKvgyqRRBXwCokCrZ9V2xC7gQBuANCvyxLpjelODutwN/Qi2Hp0xz39mmJVdNrhYL3u1L/IPm9CwGcUC/KoUDKDrL+VqCgymxmJZLzYGjjAiShkXkyyBdRBHXYvEDfNS6qP0MhAOhOZOAZAKde0JajkQc+2FqE+PInT/U+R8rB12klaSXXhGuRLK4jSvL5tnWn0ti4naLOa35sYQuufGXkO8OjAkFgz4yZClPY4jbIwjQJwLd5AFxQd0XZYHk+vMy/Gov0F+/JL9LYXnGWRGmGOm7+mBUVoX3m8wbFJfefTAWA+DcG3KKAhI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(366016)(1800799024)(376014)(7416014)(11063799006)(56012099006)(10067099003)(6133799003)(3023799007)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?F0qgXalAdd/6KN4b1N3bJnTWs2teDTUxytz/5g7C6jjk7nCs6DnUh4NOqQem?=
+ =?us-ascii?Q?e3cFj9/Pj4ZUbWyltM8KDu7099nRylfn1lFUB/PTwxZ2HFP4QHzxnHB0KXVb?=
+ =?us-ascii?Q?XezCFuXmJPRxoOtMljJwHwZSAKUcN+vrnR7kisLxLljLghvAs5blDInDehkm?=
+ =?us-ascii?Q?Hv6i0oyJIMVam8TZGk5jZuKoPQfA4tBrvuYbANtM/7xKz3vduQCcBH8RnS4M?=
+ =?us-ascii?Q?1MbFLgjD9SYMd705YFyuKfU4QM7LtHqmzksxvCv3qZMgLDDF6rIHMkaD0np/?=
+ =?us-ascii?Q?NnLkQRJpUR8pW4kUKnaHy+kG8KUE3fG/2iqtAzKpxSdf6pmdEoW3C1tJBOS1?=
+ =?us-ascii?Q?jMZNmvJGZ+qGTUCKGGag1UIvzAg/ZaiM8/mGioSxrA/Z+FV955C/j/SEA4mK?=
+ =?us-ascii?Q?QUdczkf3TGyoD7T2XDvHODDcrLn+YOCaaYn09y8z1M3GaNDAm/mpmr9RHedK?=
+ =?us-ascii?Q?gY5sFfI0qPVyhLjAc7D0K6qwj5CdAgvucVuCN1pS4G4Ya6HbIMLzlPE9+Sbl?=
+ =?us-ascii?Q?bXVN721+BZN01MSn+2RUcdr0lO2LycTp33JD3ge7TUeSZq2IqSYO51fy502G?=
+ =?us-ascii?Q?q+KZO3ddJYj4MmO71fA37GzfigDbv0tENNhyyREjpJkifuAMboYtgqbqVp5f?=
+ =?us-ascii?Q?oOcE8G1ezfDN6inaq1LMO0j1CBUYy5iOhSp35RROJfLA7JUIwcqVz5x6TnJ+?=
+ =?us-ascii?Q?q6HmUC6feRYu0tT3biYImTxXjJefS8XaGUN5qeuG2LH/YIudXT49vTPSfazk?=
+ =?us-ascii?Q?76AgKRUzQYHXaY3a/7JB0JKgYUkq3lOzSGClFCRfoPHDN3px37yXhf/vEZec?=
+ =?us-ascii?Q?Z0qKxr6Cy7gBcQp69beh4By2WBxQs0cvW5ao2Qr+SXJLztVEsBS1WIxaojs6?=
+ =?us-ascii?Q?Gw8T6zzOVhLLXfshqSVcajgFEK2AbIFCWsIVrfZCpvB2VPxe/Pxcr1fwyexB?=
+ =?us-ascii?Q?ifkol0EDjM3wxH5ycmhHKs0oCZkYmCMQp4oSTdXqpXJeKk3n3ZAykvdoJWyo?=
+ =?us-ascii?Q?DcCExpmw/O7b33HCBZP/JaF+fAjQ5xxGZF9NJ13GF6AG01e+rDk7ak/B/xyf?=
+ =?us-ascii?Q?EdKu+pSK4MIY2F6YUCWPqLHIKf/D/NG7Lilh7TzUU3JiAs1TIzwtQoutgHHk?=
+ =?us-ascii?Q?aoFj4TB2Eo9gqXYUqDI9AWAQu0rAc/rcEP3jDYsbpTaQm5zDaTqcThYeaZcR?=
+ =?us-ascii?Q?lXTrU8RaOrUjyxbasNbQtFqXuuB6Pb/yXlkbYB9fry+Par1HRDfWHSMJPjTV?=
+ =?us-ascii?Q?XrbuTCY/eb6APq9LKlf5Q5W0Mz+Z5TsuvDR28O+UM976i+t0giQ2/am01wSc?=
+ =?us-ascii?Q?QQeeufkHyjcB9YPu4QYTZ3lHMIgBejhoKiglpux88WUV3gBR+nLmLL28VVBa?=
+ =?us-ascii?Q?rWkt1PVVxGcWOoAJSQnOJPNfhbdXcaUc/UmqpohnhjlfVmwyNNbzG6xHcvwk?=
+ =?us-ascii?Q?jI+JQDWhM08futa5wRxoTTmNDQdM18W1MGxdFDQc6otH/4er4LqotBWJvWXT?=
+ =?us-ascii?Q?QZ7VjMgZST/JZcVl2OW7RDjjo5BdGvpjbhMpV7EGBAk+7egpg6ctgTMFtX+Q?=
+ =?us-ascii?Q?AmfuTFrQRYxk96vNw3/JrJz1NEN/1LIYn18hRtR36e+0321S5DxAZib7eB7B?=
+ =?us-ascii?Q?7iaja/4maP5Y0biPQI2kOv3oJf8tddk0clR+rgRWhZRfLSbl4ZFfzIkJbSmr?=
+ =?us-ascii?Q?zBl9D6OzPUMdaIF7AtmfSr6F6hPgQS9kPga9P0b3KfE6/zU9Dum182KHzGEX?=
+ =?us-ascii?Q?h4LHu9WrdKDVy9oNqIQMjD8MUD/8KvIgW+v1j14TVHnWlf+pFeTgrDLtGL9f?=
+X-MS-Exchange-AntiSpam-MessageData-1: bUmBhs00iPkaScUzQCy+xW1HZbJI1vFZBP8=
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-Network-Message-Id: b910470d-bc21-43be-7997-08def81d41f9
+X-MS-Exchange-CrossTenant-AuthSource: DU0P189MB1994.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 02:56:09.1952
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QQQ7lZgWEJZOd5KKEyxexWq5FF5eEdzBHpb50uL0af95cgz+NqM3LiNQVkBcQ4ttF3waKKswXi6DUub+yMSRtUQQgbRQKsYlljHyBgebgPs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4P189MB3498
 
-On Tue, Aug 11, 2026 at 10:13=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wr=
-ote:
->
-> On 8/11/26 3:13 PM, Jason Xing wrote:
-> > On Mon, Aug 10, 2026 at 6:54=E2=80=AFPM Paolo Abeni <pabeni@redhat.com>=
- wrote:
-> >> On 8/9/26 8:03 AM, Jason Xing wrote:
-> >>> On Wed, Aug 5, 2026 at 1:05=E2=80=AFAM syzbot
-> >>> <syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com> wrote:
-> >>>>
-> >>>> syzbot has found a reproducer for the following issue on:
-> >>>>
-> >>>> HEAD commit:    848acc8ffe1b Merge tag 'fsverity-for-linus' of git:/=
-/git.k..
-> >>>> git tree:       upstream
-> >>>> console+strace: https://syzkaller.appspot.com/x/log.txt?x=3D178fb649=
-580000
-> >>>> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D4e38b15c=
-29e6a1d9
-> >>>> dashboard link: https://syzkaller.appspot.com/bug?extid=3Df16c1b285c=
-9f63994eec
-> >>>> compiler:       Debian clang version 22.1.8 (++20260613092233+e80bed=
-a6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-> >>>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1617be=
-32580000
-> >>>> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D11d113b9=
-580000
-> >>>>
-> >>>> Downloadable assets:
-> >>>> disk image: https://storage.googleapis.com/syzbot-assets/4949138dcfe=
-f/disk-848acc8f.raw.xz
-> >>>> vmlinux: https://storage.googleapis.com/syzbot-assets/31cc6fbe5b8a/v=
-mlinux-848acc8f.xz
-> >>>> kernel image: https://storage.googleapis.com/syzbot-assets/433919ca6=
-520/bzImage-848acc8f.xz
-> >>>>
-> >>>> IMPORTANT: if you fix the issue, please add the following tag to the=
- commit:
-> >>>> Reported-by: syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com
-> >>>>
-> >>>> ------------[ cut here ]------------
-> >>>> len > ((int)(~0U >> 1))
-> >>>> WARNING: ./include/linux/skbuff.h:2864 at pskb_may_pull_reason inclu=
-de/linux/skbuff.h:2864 [inline], CPU#1: syz-executor147/5638
-> >>>> WARNING: ./include/linux/skbuff.h:2864 at pskb_network_may_pull_reas=
-on include/linux/skbuff.h:3265 [inline], CPU#1: syz-executor147/5638
-> >>>> WARNING: ./include/linux/skbuff.h:2864 at pskb_inet_may_pull_reason =
-include/net/ip_tunnels.h:481 [inline], CPU#1: syz-executor147/5638
-> >>>> WARNING: ./include/linux/skbuff.h:2864 at pskb_inet_may_pull include=
-/net/ip_tunnels.h:486 [inline], CPU#1: syz-executor147/5638
-> >>>> WARNING: ./include/linux/skbuff.h:2864 at ipgre_xmit+0x958/0xcd0 net=
-/ipv4/ip_gre.c:658, CPU#1: syz-executor147/5638
-> >>>> Modules linked in:
-> >>>> CPU: 1 UID: 0 PID: 5638 Comm: syz-executor147 Not tainted syzkaller =
-#0 PREEMPT(full)
-> >>>> Hardware name: Google Google Compute Engine/Google Compute Engine, B=
-IOS Google 07/24/2026
-> >>>> RIP: 0010:pskb_may_pull_reason include/linux/skbuff.h:2864 [inline]
-> >>>> RIP: 0010:pskb_network_may_pull_reason include/linux/skbuff.h:3265 [=
-inline]
-> >>>> RIP: 0010:pskb_inet_may_pull_reason include/net/ip_tunnels.h:481 [in=
-line]
-> >>>> RIP: 0010:pskb_inet_may_pull include/net/ip_tunnels.h:486 [inline]
-> >>>> RIP: 0010:ipgre_xmit+0x958/0xcd0 net/ipv4/ip_gre.c:658
-> >>>> Code: 48 3b 84 24 80 00 00 00 0f 85 3b 01 00 00 31 c0 48 8d 65 d8 5b=
- 41 5c 41 5d 41 5e 41 5f 5d e9 3f 1a 78 01 cc e8 09 f5 6a f7 90 <0f> 0b 90 =
-e9 08 f8 ff ff 44 89 ff 44 89 e6 e8 b5 f6 6a f7 45 39 e7
-> >>>> RSP: 0018:ffffc900039af5e0 EFLAGS: 00010293
-> >>>> RAX: ffffffff8a5c1d67 RBX: 0000000000000000 RCX: ffff888079535d00
-> >>>> RDX: 0000000000000000 RSI: 00000000ffffff40 RDI: 0000000000000000
-> >>>> RBP: ffffc900039af6b0 R08: ffff888079535d00 R09: 0000000000000002
-> >>>> R10: 0000000000004888 R11: ffffffff8a5c1410 R12: ffff88807ecbc000
-> >>>> R13: dffffc0000000000 R14: ffff88807b7f2780 R15: 00000000ffffff40
-> >>>> FS:  0000555590a0a400(0000) GS:ffff88812504b000(0000) knlGS:00000000=
-00000000
-> >>>> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> >>>> CR2: 000055704428ded0 CR3: 00000000788f2000 CR4: 00000000003526f0
-> >>>> Call Trace:
-> >>>>  <TASK>
-> >>>>  __netdev_start_xmit include/linux/netdevice.h:5400 [inline]
-> >>>>  netdev_start_xmit include/linux/netdevice.h:5409 [inline]
-> >>>>  __dev_direct_xmit+0x4b6/0x730 net/core/dev.c:4942
-> >>>>  __xsk_generic_xmit net/xdp/xsk.c:1253 [inline]
-> >>>>  xsk_generic_xmit+0x2759/0x47b0 net/xdp/xsk.c:1309
-> >>>>  __xsk_sendmsg net/xdp/xsk.c:1363 [inline]
-> >>>>  xsk_sendmsg+0x482/0x810 net/xdp/xsk.c:1373
-> >>>>  sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
-> >>>>  __sock_sendmsg net/socket.c:790 [inline]
-> >>>>  ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
-> >>>>  ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
-> >>>>  __sys_sendmsg net/socket.c:2770 [inline]
-> >>>>  __do_sys_sendmsg net/socket.c:2775 [inline]
-> >>>>  __se_sys_sendmsg net/socket.c:2773 [inline]
-> >>>>  __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
-> >>>>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-> >>>>  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
-> >>>>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> >>>> RIP: 0033:0x7fc137b1b409
-> >>>> Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48=
- 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 =
-f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-> >>>> RSP: 002b:00007fffc9ef46d8 EFLAGS: 00000246 ORIG_RAX: 00000000000000=
-2e
-> >>>> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fc137b1b409
-> >>>> RDX: 0000000000000040 RSI: 0000200000000700 RDI: 0000000000000003
-> >>>> RBP: 0000000000000000 R08: 0000000080000000 R09: 0000000080000000
-> >>>> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> >>>> R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000003
-> >>>>  </TASK>
-> >>>>
-> >>>>
-> >>>> ---
-> >>>> If you want syzbot to run the reproducer, reply with:
-> >>>> #syz test: git://repo/address.git branch-or-commit-hash
-> >>>> If you attach or paste a git patch, syzbot will apply it before test=
-ing.
-> >>>>
-> >>>
-> >>> Please try this one instead. I'm not sure if the previous patch has
-> >>> the index problem...
-> >>>
-> >>> But the following patch can be applied in my tree.
-> >>>
-> >>> #syz test
-> >>
-> >> Please, do not cc the netdev ML for syzbot test patches. They may foul
-> >> PW and the KCI.
-> >
-> > I see. Sorry for that.
-> >
-> > But one more thing I have to ask is why the second attempt failed
-> > since I see no output from syzbot.
-> ? I read:
->
-> """
-> failed to apply patch:
-> error: corrupt patch at line 6
-> """
+User-space applications can bind a large number of service addresses to
+one or more sockets. Each binding of a local-scope service address inserts
+one entry (publication) into the TIPC name table. If the number of these
+publications exceeds TIPC_MAX_PUBL (65535), protocol service types
+(such as node state and link state) are no longer inserted into the name
+table. This causes two issues:
 
-That was from the first attempt.
+1. User-space applications subscribing to node or link up/down events
+   stop receiving notifications.
 
->
-> in last message from syzbot, and a similar one in reply to the previous
-> attempt. You can use git format/git send-email even for syzbot tests, to
-> avoid this kind of problems
+2. A NULL pointer dereference can occur if an address is assigned to a
+   node after no slot for a local publication is available:
 
-I see, let me try this. Thanks!
+   BUG: kernel NULL pointer dereference, address: 00000000000000d0
+   ...
+   CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.2.0-rc4-default+ #5 PREEMPT(full)
+   ...
+   RIP: 0010:tipc_named_node_up (./include/linux/skbuff.h:2251 net/tipc/name_distr.c:195 net/tipc/name_distr.c:221)
+   ...
+   Call Trace:
+   <IRQ>
+   tipc_node_write_unlock (net/tipc/node.c:428)
+   tipc_rcv (net/tipc/node.c:934 net/tipc/node.c:2189)
+   tipc_udp_recv (net/tipc/udp_media.c:389)
 
->
-> /P
->
+   Thread 1 (tipc_net_finalize) | Thread 2 (named_distribute)
+   -----------------------------|-----------------------------
+                                | ...
+                                | list_for_each_entry(publ, pls, binding_node) {
+                                | ...
+                                | __skb_queue_tail(list, skb);
+                                | ...
+                                | }
+                                | ...
+                                | hdr = buf_msg(skb_peek_tail(list));
+   ...                          |
+   tipc_nametbl_publish();      |
+
+   If 'tipc_nametbl_publish()' (Thread 1) fails or executes after
+   'named_distribute()' (Thread 2), list will be empty. As a result, NULL
+   is passed to 'buf_msg()', leading to a NULL pointer dereference.
+
+Fix the first issue by allowing protocol service types (node state, link state,
+and topology server) to be inserted into the name table unconditionally.
+
+Fix the second issue by checking for the node's self-address publication on each
+node-up or node-timeout event. If the publication does not exist, insert it into
+the name table and publish it to the other nodes. If the insertion fails due to
+a memory allocation error, force the node down and restart the insertion
+process.
+
+Fixes: a5e7ac5ce134 ("tipc: fix regression bug where node events are not being generated")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Tested-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+---
+v12: address sashiko's valid findings and 'make htmldocs' error.
+
+ net/tipc/core.c       |   3 +
+ net/tipc/core.h       |   6 ++
+ net/tipc/name_distr.c | 114 ++++++++++++++++++++++++++++++++-----
+ net/tipc/name_distr.h |   3 +-
+ net/tipc/name_table.c | 127 ++++++++++++++++++++++++++++++++++++++----
+ net/tipc/name_table.h |   6 +-
+ net/tipc/net.c        |  11 +++-
+ net/tipc/node.c       |  46 +++++++++++++--
+ net/tipc/node.h       |   1 +
+ net/tipc/socket.c     |   2 +-
+ 10 files changed, 282 insertions(+), 37 deletions(-)
+
+diff --git a/net/tipc/core.c b/net/tipc/core.c
+index 315975c3be81..0f1d3ddeae09 100644
+--- a/net/tipc/core.c
++++ b/net/tipc/core.c
+@@ -61,6 +61,9 @@ static int __net_init tipc_init_net(struct net *net)
+ 	tn->trial_addr = 0;
+ 	tn->addr_trial_end = 0;
+ 	tn->capabilities = TIPC_NODE_CAPABILITIES;
++	tn->nt_stop = false;
++	tn->nt_self_node_exist = false;
++	atomic_set(&tn->node_addr_set, 0);
+ 	INIT_WORK(&tn->work, tipc_net_finalize_work);
+ 	memset(tn->node_id, 0, sizeof(tn->node_id));
+ 	memset(tn->node_id_string, 0, sizeof(tn->node_id_string));
+diff --git a/net/tipc/core.h b/net/tipc/core.h
+index 9ce5f9ff6cc0..975b1d48186e 100644
+--- a/net/tipc/core.h
++++ b/net/tipc/core.h
+@@ -145,6 +145,12 @@ struct tipc_net {
+ 	struct work_struct work;
+ 	/* The numbers of work queues in schedule */
+ 	atomic_t wq_count;
++	/* Flag to indicate that the node's address is set */
++	atomic_t node_addr_set;
++	/* The name table has stopped working */
++	bool nt_stop;
++	/* Node's self address publication is available in the name table */
++	bool nt_self_node_exist;
+ };
+ 
+ static inline struct tipc_net *tipc_net(struct net *net)
+diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
+index ba4f4906e13b..060c42d8fda5 100644
+--- a/net/tipc/name_distr.c
++++ b/net/tipc/name_distr.c
+@@ -95,9 +95,7 @@ struct sk_buff *tipc_named_publish(struct net *net, struct publication *p)
+ 		list_add_tail_rcu(&p->binding_node, &nt->node_scope);
+ 		return NULL;
+ 	}
+-	write_lock_bh(&nt->cluster_scope_lock);
+ 	list_add_tail(&p->binding_node, &nt->cluster_scope);
+-	write_unlock_bh(&nt->cluster_scope_lock);
+ 	skb = named_prepare_buf(net, PUBLICATION, ITEM_SIZE, 0);
+ 	if (!skb) {
+ 		pr_warn("Publication distribution failure\n");
+@@ -121,9 +119,7 @@ struct sk_buff *tipc_named_withdraw(struct net *net, struct publication *p)
+ 	struct distr_item *item;
+ 	struct sk_buff *skb;
+ 
+-	write_lock_bh(&nt->cluster_scope_lock);
+ 	list_del(&p->binding_node);
+-	write_unlock_bh(&nt->cluster_scope_lock);
+ 	if (p->scope == TIPC_NODE_SCOPE)
+ 		return NULL;
+ 
+@@ -146,9 +142,14 @@ struct sk_buff *tipc_named_withdraw(struct net *net, struct publication *p)
+  * @dnode: node to be updated
+  * @pls: linked list of publication items to be packed into buffer chain
+  * @seqno: sequence number for this message
++ *
++ * Return:
++ * * 0          - Success
++ * * -ENOBUFS   - No buffer space is available
++ *
+  */
+-static void named_distribute(struct net *net, struct sk_buff_head *list,
+-			     u32 dnode, struct list_head *pls, u16 seqno)
++static int named_distribute(struct net *net, struct sk_buff_head *list,
++			    u32 dnode, struct list_head *pls, u16 seqno)
+ {
+ 	struct publication *publ;
+ 	struct sk_buff *skb = NULL;
+@@ -164,8 +165,9 @@ static void named_distribute(struct net *net, struct sk_buff_head *list,
+ 			skb = named_prepare_buf(net, PUBLICATION, msg_rem,
+ 						dnode);
+ 			if (!skb) {
++				__skb_queue_purge(list);
+ 				pr_warn("Bulk publication failure\n");
+-				return;
++				return -ENOBUFS;
+ 			}
+ 			hdr = buf_msg(skb);
+ 			msg_set_bc_ack_invalid(hdr, true);
+@@ -195,6 +197,82 @@ static void named_distribute(struct net *net, struct sk_buff_head *list,
+ 	hdr = buf_msg(skb_peek_tail(list));
+ 	msg_set_last_bulk(hdr);
+ 	msg_set_named_seqno(hdr, seqno);
++
++	return 0;
++}
++
++/**
++ * __tipc_named_distribute - build a list of publications need to be distributed
++ * @net: the associated network namespace
++ * @dnode: destination node
++ * @head: list of publications
++ *
++ * Return:
++ * * 0          - Success
++ * * -ENOBUFS   - No buffer space is available
++ *
++ */
++static int __tipc_named_distribute(struct net *net, u32 dnode,
++				   struct sk_buff_head *head)
++{
++	struct name_table *nt = tipc_name_table(net);
++	struct tipc_net *tn = tipc_net(net);
++
++	/* Name table has been deleted after namespace teardown or
++	 * TIPC module exit.
++	 */
++	if (unlikely(tn->nt_stop))
++		return 0;
++
++	/* Node's self address is not set yet */
++	if (!atomic_read(&tn->node_addr_set)) {
++		/* Defer the distribution to node's timer */
++		tipc_node_set_dist_bulk(net, dnode);
++		return 0;
++	}
++
++	if (tn->nt_self_node_exist)
++		goto distribute;
++
++	if (tipc_nametb_insert_self_node_pub(net))
++		return -ENOBUFS;
++
++	tn->nt_self_node_exist = true;
++
++distribute:
++	if (named_distribute(net, head, dnode,
++			     &nt->cluster_scope, nt->snd_nxt) == -ENOBUFS)
++		return -ENOBUFS;
++
++	return 0;
++}
++
++/**
++ * tipc_named_distribute - distribute all publications to specified node
++ * @net: the associated network namespace
++ * @dnode: destination node
++ *
++ * Return:
++ * * 0          - Success
++ * * -ENOBUFS   - No buffer space is available
++ *
++ */
++int tipc_named_distribute(struct net *net, u32 dnode)
++{
++	struct tipc_net *tn = tipc_net(net);
++	struct sk_buff_head head;
++	int rc = 0;
++
++	__skb_queue_head_init(&head);
++	spin_lock_bh(&tn->nametbl_lock);
++	rc = __tipc_named_distribute(net, dnode, &head);
++	spin_unlock_bh(&tn->nametbl_lock);
++	if (!rc && !skb_queue_empty(&head)) {
++		if (tipc_node_xmit(net, &head, dnode, 0) == -ENOBUFS)
++			rc = -ENOBUFS;
++	}
++
++	return rc;
+ }
+ 
+ /**
+@@ -202,25 +280,32 @@ static void named_distribute(struct net *net, struct sk_buff_head *list,
+  * @net: the associated network namespace
+  * @dnode: destination node
+  * @capabilities: peer node's capabilities
++ *
++ * Return:
++ * * 0          - Success
++ * * -ENOBUFS   - No buffer space is available
++ *
+  */
+-void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
++int tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
+ {
+ 	struct name_table *nt = tipc_name_table(net);
+ 	struct tipc_net *tn = tipc_net(net);
+ 	struct sk_buff_head head;
+-	u16 seqno;
++	int rc = 0;
+ 
+ 	__skb_queue_head_init(&head);
+ 	spin_lock_bh(&tn->nametbl_lock);
+ 	if (!(capabilities & TIPC_NAMED_BCAST))
+ 		nt->rc_dests++;
+-	seqno = nt->snd_nxt;
++
++	rc = __tipc_named_distribute(net, dnode, &head);
+ 	spin_unlock_bh(&tn->nametbl_lock);
++	if (!rc && !skb_queue_empty(&head)) {
++		if (tipc_node_xmit(net, &head, dnode, 0) == -ENOBUFS)
++			rc = -ENOBUFS;
++	}
+ 
+-	read_lock_bh(&nt->cluster_scope_lock);
+-	named_distribute(net, &head, dnode, &nt->cluster_scope, seqno);
+-	tipc_node_xmit(net, &head, dnode, 0);
+-	read_unlock_bh(&nt->cluster_scope_lock);
++	return rc;
+ }
+ 
+ /**
+@@ -416,5 +501,6 @@ void tipc_named_reinit(struct net *net)
+ 	list_for_each_entry_rcu(p, &nt->cluster_scope, binding_node)
+ 		p->sk.node = self;
+ 	nt->rc_dests = 0;
++	tn->nt_stop = false;
+ 	spin_unlock_bh(&tn->nametbl_lock);
+ }
+diff --git a/net/tipc/name_distr.h b/net/tipc/name_distr.h
+index c677f6f082df..2043096ae967 100644
+--- a/net/tipc/name_distr.h
++++ b/net/tipc/name_distr.h
+@@ -69,11 +69,12 @@ struct distr_item {
+ 
+ struct sk_buff *tipc_named_publish(struct net *net, struct publication *publ);
+ struct sk_buff *tipc_named_withdraw(struct net *net, struct publication *publ);
+-void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities);
++int tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities);
+ void tipc_named_rcv(struct net *net, struct sk_buff_head *namedq,
+ 		    u16 *rcv_nxt, bool *open);
+ void tipc_named_reinit(struct net *net);
+ void tipc_publ_notify(struct net *net, struct list_head *nsub_list,
+ 		      u32 addr, u16 capabilities);
++int tipc_named_distribute(struct net *net, u32 dnode);
+ 
+ #endif
+diff --git a/net/tipc/name_table.c b/net/tipc/name_table.c
+index 253c72d1366e..3bb0ce783dbd 100644
+--- a/net/tipc/name_table.c
++++ b/net/tipc/name_table.c
+@@ -329,7 +329,7 @@ static struct service_range *tipc_service_create_range(struct tipc_service *sc,
+ 
+ static bool tipc_service_insert_publ(struct net *net,
+ 				     struct tipc_service *sc,
+-				     struct publication *p)
++				     struct publication *p, int *err)
+ {
+ 	struct tipc_subscription *sub, *tmp;
+ 	struct service_range *sr;
+@@ -339,10 +339,12 @@ static bool tipc_service_insert_publ(struct net *net,
+ 	bool res = false;
+ 	u32 key = p->key;
+ 
+-	spin_lock_bh(&sc->lock);
+ 	sr = tipc_service_create_range(sc, p);
+-	if (!sr)
++	if (!sr) {
++		if (err)
++			*err = -ENOBUFS;
+ 		goto  exit;
++	}
+ 
+ 	first = list_empty(&sr->all_publ);
+ 
+@@ -353,6 +355,8 @@ static bool tipc_service_insert_publ(struct net *net,
+ 			pr_debug("Failed to bind duplicate %u,%u,%u/%u:%u/%u\n",
+ 				 p->sr.type, p->sr.lower, p->sr.upper,
+ 				 node, p->sk.ref, key);
++			if (err)
++				*err = -EEXIST;
+ 			goto exit;
+ 		}
+ 	}
+@@ -371,7 +375,6 @@ static bool tipc_service_insert_publ(struct net *net,
+ 	if (!res)
+ 		pr_warn("Failed to bind to %u,%u,%u\n",
+ 			p->sr.type, p->sr.lower, p->sr.upper);
+-	spin_unlock_bh(&sc->lock);
+ 	return res;
+ }
+ 
+@@ -490,8 +493,12 @@ struct publication *tipc_nametbl_insert_publ(struct net *net,
+ 	sc = tipc_service_find(net, ua);
+ 	if (!sc)
+ 		sc = tipc_service_create(net, ua);
+-	if (sc && tipc_service_insert_publ(net, sc, p))
++	spin_lock_bh(&sc->lock);
++	if (sc && tipc_service_insert_publ(net, sc, p, NULL)) {
++		spin_unlock_bh(&sc->lock);
+ 		return p;
++	}
++	spin_unlock_bh(&sc->lock);
+ 	kfree(p);
+ 	return NULL;
+ }
+@@ -760,24 +767,44 @@ void tipc_nametbl_build_group(struct net *net, struct tipc_group *grp,
+ /* tipc_nametbl_publish - add service binding to name table
+  */
+ struct publication *tipc_nametbl_publish(struct net *net, struct tipc_uaddr *ua,
+-					 struct tipc_socket_addr *sk, u32 key)
++					 struct tipc_socket_addr *sk,
++					 u32 key, int *err)
+ {
+ 	struct name_table *nt = tipc_name_table(net);
++	u32 max_user_pub = TIPC_MAX_PUBL - 1;
+ 	struct tipc_net *tn = tipc_net(net);
+ 	struct publication *p = NULL;
+ 	struct sk_buff *skb = NULL;
++	bool protocol_type = false;
+ 	u32 rc_dests;
+ 
++	if (ua->sr.type == TIPC_NODE_STATE || ua->sr.type == TIPC_LINK_STATE ||
++	    ua->sr.type == TIPC_TOP_SRV)
++		protocol_type = true;
++
+ 	spin_lock_bh(&tn->nametbl_lock);
++	if (protocol_type)
++		goto insert;
+ 
+-	if (nt->local_publ_count >= TIPC_MAX_PUBL) {
+-		pr_warn("Bind failed, max limit %u reached\n", TIPC_MAX_PUBL);
++	/* Reserve one entry for node state service type because it has cluster
++	 * scope and it is distributed in bulk. So, the maximum number of user's
++	 * publications is (TIPC_MAX_PUBL - 1).
++	 */
++	if (nt->local_publ_count >= max_user_pub) {
++		pr_warn("Bind failed, max limit %u reached\n", max_user_pub);
+ 		goto exit;
+ 	}
+ 
++insert:
+ 	p = tipc_nametbl_insert_publ(net, ua, sk, key);
+ 	if (p) {
+-		nt->local_publ_count++;
++		/* Not count node state, link state and topology server types
++		 * so that maximum nt->local_publ_count does not prevent
++		 * protocol service types from being inserted into the name
++		 * table.
++		 */
++		if (!protocol_type)
++			nt->local_publ_count++;
+ 		skb = tipc_named_publish(net, p);
+ 	}
+ 	rc_dests = nt->rc_dests;
+@@ -786,8 +813,81 @@ struct publication *tipc_nametbl_publish(struct net *net, struct tipc_uaddr *ua,
+ 
+ 	if (skb)
+ 		tipc_node_broadcast(net, skb, rc_dests);
++	else if (p && (p->scope == TIPC_CLUSTER_SCOPE) && err)
++		*err = -ENOBUFS;
+ 	return p;
++}
++
++/**
++ * tipc_nametb_insert_self_node_pub - insert publication of node's self address
++ * @net: network namespace
++ *
++ * Return:
++ * * 0          - Success
++ * * -ENOBUFS   - No buffer space is available
++ *
++ */
++int tipc_nametb_insert_self_node_pub(struct net *net)
++{
++	struct name_table *nt = tipc_name_table(net);
++	struct tipc_net *tn = tipc_net(net);
++	struct tipc_socket_addr sk;
++	struct service_range *sr;
++	struct tipc_service *sc;
++	bool sc_created = false;
++	struct publication *p;
++	struct tipc_uaddr ua;
++	int err = 0;
++
++	sk.ref = 0;
++	sk.node = tn->node_addr;
++	tipc_uaddr(&ua, TIPC_SERVICE_RANGE, TIPC_CLUSTER_SCOPE,
++		   TIPC_NODE_STATE, tn->node_addr, tn->node_addr);
++	sc = tipc_service_find(net, &ua);
++	if (!sc) {
++		sc = tipc_service_create(net, &ua);
++		if (!sc)
++			return -ENOBUFS;
++		sc_created = true;
++	}
++
++	spin_lock_bh(&sc->lock);
++	sr = tipc_service_find_range(sc, &ua);
++	/* 1. tipc_net_finalize_work() is not scheduled because of namespace
++	 *    teardown.
++	 * 2. Or tipc_net_finalize() ---> tipc_nametbl_publish() has failed
++	 *    to insert node self address publication into nt->cluster_scope
++	 *    due to memory allocation failure.
++	 * 3. Or tipc_net_finalize() ---> tipc_nametbl_publish() has not
++	 *    executed yet.
++	 */
++	if (!sr) {
++		p = tipc_publ_create(&ua, &sk, tn->node_addr);
++		if (!p)
++			goto error;
+ 
++		if (!tipc_service_insert_publ(net, sc, p, &err) &&
++		    (err == -ENOBUFS)) {
++			kfree(p);
++			goto error;
++		}
++
++		list_add_tail(&p->binding_node, &nt->cluster_scope);
++		goto exit;
++error:
++		if (sc_created) {
++			hlist_del_init_rcu(&sc->service_list);
++			spin_unlock_bh(&sc->lock);
++			kfree_rcu(sc, rcu);
++			return -ENOBUFS;
++		}
++
++		spin_unlock_bh(&sc->lock);
++		return -ENOBUFS;
++	}
++exit:
++	spin_unlock_bh(&sc->lock);
++	return 0;
+ }
+ 
+ /**
+@@ -810,7 +910,10 @@ void tipc_nametbl_withdraw(struct net *net, struct tipc_uaddr *ua,
+ 
+ 	p = tipc_nametbl_remove_publ(net, ua, sk, key);
+ 	if (p) {
+-		nt->local_publ_count--;
++		if (p->sr.type != TIPC_NODE_STATE &&
++		    p->sr.type != TIPC_LINK_STATE &&
++		    p->sr.type != TIPC_TOP_SRV)
++			nt->local_publ_count--;
+ 		skb = tipc_named_withdraw(net, p);
+ 		list_del_init(&p->binding_sock);
+ 		kfree_rcu(p, rcu);
+@@ -899,7 +1002,6 @@ int tipc_nametbl_init(struct net *net)
+ 
+ 	INIT_LIST_HEAD(&nt->node_scope);
+ 	INIT_LIST_HEAD(&nt->cluster_scope);
+-	rwlock_init(&nt->cluster_scope_lock);
+ 	tn->nametbl = nt;
+ 	spin_lock_init(&tn->nametbl_lock);
+ 	return 0;
+@@ -919,6 +1021,7 @@ static void tipc_service_delete(struct net *net, struct tipc_service *sc)
+ 	rbtree_postorder_for_each_entry_safe(sr, tmpr, &sc->ranges, tree_node) {
+ 		list_for_each_entry_safe(p, tmp, &sr->all_publ, all_publ) {
+ 			tipc_service_remove_publ(sr, &p->sk, p->key);
++			list_del(&p->binding_node);
+ 			kfree_rcu(p, rcu);
+ 		}
+ 		rb_erase_augmented(&sr->tree_node, &sc->ranges, &sr_callbacks);
+@@ -949,6 +1052,8 @@ void tipc_nametbl_stop(struct net *net)
+ 			tipc_service_delete(net, service);
+ 		}
+ 	}
++	tn->nt_stop = true;
++	tn->nt_self_node_exist = false;
+ 	spin_unlock_bh(&tn->nametbl_lock);
+ 
+ 	/* TODO: clear tn->nametbl, implement proper RCU rules ? */
+diff --git a/net/tipc/name_table.h b/net/tipc/name_table.h
+index 7ff6eeebaae6..e7a2c50f099c 100644
+--- a/net/tipc/name_table.h
++++ b/net/tipc/name_table.h
+@@ -97,7 +97,6 @@ struct publication {
+  * @cluster_scope: all local publications with cluster scope
+  *               - used by name_distr to send bulk updates to new nodes
+  *               - used by name_distr during re-init of name table
+- * @cluster_scope_lock: lock for accessing @cluster_scope
+  * @local_publ_count: number of publications issued by this node
+  * @rc_dests: destination node counter
+  * @snd_nxt: next sequence number to be used
+@@ -107,7 +106,6 @@ struct name_table {
+ 	struct hlist_head services[TIPC_NAMETBL_SIZE];
+ 	struct list_head node_scope;
+ 	struct list_head cluster_scope;
+-	rwlock_t cluster_scope_lock;
+ 	u32 local_publ_count;
+ 	u32 rc_dests;
+ 	u32 snd_nxt;
+@@ -126,13 +124,15 @@ bool tipc_nametbl_lookup_group(struct net *net, struct tipc_uaddr *ua,
+ void tipc_nametbl_build_group(struct net *net, struct tipc_group *grp,
+ 			      struct tipc_uaddr *ua);
+ struct publication *tipc_nametbl_publish(struct net *net, struct tipc_uaddr *ua,
+-					 struct tipc_socket_addr *sk, u32 key);
++					 struct tipc_socket_addr *sk,
++					 u32 key, int *err);
+ void tipc_nametbl_withdraw(struct net *net, struct tipc_uaddr *ua,
+ 			   struct tipc_socket_addr *sk, u32 key);
+ struct publication *tipc_nametbl_insert_publ(struct net *net,
+ 					     struct tipc_uaddr *ua,
+ 					     struct tipc_socket_addr *sk,
+ 					     u32 key);
++int tipc_nametb_insert_self_node_pub(struct net *net);
+ struct publication *tipc_nametbl_remove_publ(struct net *net,
+ 					     struct tipc_uaddr *ua,
+ 					     struct tipc_socket_addr *sk,
+diff --git a/net/tipc/net.c b/net/tipc/net.c
+index 7e65d0b0c4a8..7a2c1e67aca3 100644
+--- a/net/tipc/net.c
++++ b/net/tipc/net.c
+@@ -110,11 +110,14 @@ static void tipc_net_finalize(struct net *net, u32 addr);
+ 
+ int tipc_net_init(struct net *net, u8 *node_id, u32 addr)
+ {
++	struct tipc_net *tn = tipc_net(net);
++
+ 	if (tipc_own_id(net)) {
+ 		pr_info("Cannot configure node identity twice\n");
+ 		return -1;
+ 	}
+ 	pr_info("Started in network mode\n");
++	atomic_set(&tn->node_addr_set, 0);
+ 
+ 	if (node_id)
+ 		tipc_set_node_id(net, node_id);
+@@ -125,8 +128,8 @@ int tipc_net_init(struct net *net, u8 *node_id, u32 addr)
+ 
+ static void tipc_net_finalize(struct net *net, u32 addr)
+ {
+-	struct tipc_net *tn = tipc_net(net);
+ 	struct tipc_socket_addr sk = {0, addr};
++	struct tipc_net *tn = tipc_net(net);
+ 	struct tipc_uaddr ua;
+ 
+ 	tipc_uaddr(&ua, TIPC_SERVICE_RANGE, TIPC_CLUSTER_SCOPE,
+@@ -138,7 +141,11 @@ static void tipc_net_finalize(struct net *net, u32 addr)
+ 	tipc_named_reinit(net);
+ 	tipc_sk_reinit(net);
+ 	tipc_mon_reinit_self(net);
+-	tipc_nametbl_publish(net, &ua, &sk, addr);
++	atomic_set(&tn->node_addr_set, 1);
++	/* Redistribute bulk of publications via node-up event or node's timer
++	 * if tipc_nametbl_publish() fails.
++	 */
++	tipc_nametbl_publish(net, &ua, &sk, addr, NULL);
+ }
+ 
+ void tipc_net_finalize_work(struct work_struct *work)
+diff --git a/net/tipc/node.c b/net/tipc/node.c
+index 683a136e53ef..ca4a8fcca644 100644
+--- a/net/tipc/node.c
++++ b/net/tipc/node.c
+@@ -111,6 +111,7 @@ struct tipc_bclink_entry {
+  * @peer_net: peer's net namespace
+  * @peer_hash_mix: hash for this peer (FIXME)
+  * @crypto_rx: RX crypto handler
++ * @dist_bulk: flag to redistribute cluster-scope publications
+  */
+ struct tipc_node {
+ 	u32 addr;
+@@ -145,6 +146,7 @@ struct tipc_node {
+ #ifdef CONFIG_TIPC_CRYPTO
+ 	struct tipc_crypto *crypto_rx;
+ #endif
++	atomic_t dist_bulk;
+ };
+ 
+ /* Node FSM states and events:
+@@ -345,6 +347,15 @@ static struct tipc_node *tipc_node_find(struct net *net, u32 addr)
+ 	return node;
+ }
+ 
++void tipc_node_set_dist_bulk(struct net *net, u32 addr)
++{
++	struct tipc_node *node;
++
++	node = tipc_node_find(net, addr);
++	if (node)
++		atomic_set(&node->dist_bulk, 1);
++}
++
+ /* tipc_node_find_by_id - locate specified node object by its 128-bit id
+  * Note: this function is called only when a discovery request failed
+  * to find the node by its 32-bit id, and is not time critical
+@@ -393,6 +404,14 @@ static void tipc_node_write_unlock_fast(struct tipc_node *n)
+ 	write_unlock_bh(&n->lock);
+ }
+ 
++static void tipc_node_down(struct tipc_node *n)
++{
++	int bearer_id;
++
++	for (bearer_id = 0; bearer_id < MAX_BEARERS; bearer_id++)
++		tipc_node_link_down(n, bearer_id, false);
++}
++
+ static void tipc_node_write_unlock(struct tipc_node *n)
+ 	__releases(n->lock)
+ {
+@@ -402,6 +421,7 @@ static void tipc_node_write_unlock(struct tipc_node *n)
+ 	struct list_head *publ_list;
+ 	struct tipc_uaddr ua;
+ 	u32 bearer_id, node;
++	int rc = 0, err = 0;
+ 
+ 	if (likely(!flags)) {
+ 		write_unlock_bh(&n->lock);
+@@ -425,16 +445,24 @@ static void tipc_node_write_unlock(struct tipc_node *n)
+ 		tipc_publ_notify(net, publ_list, node, n->capabilities);
+ 
+ 	if (flags & TIPC_NOTIFY_NODE_UP)
+-		tipc_named_node_up(net, node, n->capabilities);
++		rc = tipc_named_node_up(net, node, n->capabilities);
+ 
+ 	if (flags & TIPC_NOTIFY_LINK_UP) {
+ 		tipc_mon_peer_up(net, node, bearer_id);
+-		tipc_nametbl_publish(net, &ua, &sk, sk.ref);
++		tipc_nametbl_publish(net, &ua, &sk, sk.ref, &err);
+ 	}
+ 	if (flags & TIPC_NOTIFY_LINK_DOWN) {
+ 		tipc_mon_peer_down(net, node, bearer_id);
+ 		tipc_nametbl_withdraw(net, &ua, &sk, sk.ref);
+ 	}
++
++	/* Memory allocation has failed. Bring the node down to start over bulk
++	 * distribution when the first link is up again.
++	 */
++	if (rc < 0)
++		tipc_node_down(n);
++	else if (err == -ENOBUFS)
++		tipc_node_link_down(n, bearer_id, false);
+ }
+ 
+ static void tipc_node_assign_peer_net(struct tipc_node *n, u32 hash_mixes)
+@@ -564,6 +592,7 @@ struct tipc_node *tipc_node_create(struct net *net, u32 addr, u8 *peer_id,
+ 	INIT_LIST_HEAD(&n->list);
+ 	INIT_LIST_HEAD(&n->publ_list);
+ 	INIT_LIST_HEAD(&n->conn_sks);
++	atomic_set(&n->dist_bulk, 0);
+ 	skb_queue_head_init(&n->bc_entry.namedq);
+ 	skb_queue_head_init(&n->bc_entry.inputq1);
+ 	__skb_queue_head_init(&n->bc_entry.arrvq);
+@@ -803,7 +832,8 @@ static void tipc_node_timeout(struct timer_list *t)
+ 	struct tipc_node *n = timer_container_of(n, t, timer);
+ 	struct tipc_link_entry *le;
+ 	struct sk_buff_head xmitq;
+-	int remains = n->link_cnt;
++	int remains = 0;
++	int dist_rc = 0;
+ 	int bearer_id;
+ 	int rc = 0;
+ 
+@@ -814,6 +844,9 @@ static void tipc_node_timeout(struct timer_list *t)
+ 		return;
+ 	}
+ 
++	if (atomic_xchg(&n->dist_bulk, 0))
++		dist_rc = tipc_named_distribute(n->net, n->addr);
++
+ #ifdef CONFIG_TIPC_CRYPTO
+ 	/* Take any crypto key related actions first */
+ 	tipc_crypto_timeout(n->crypto_rx);
+@@ -825,6 +858,7 @@ static void tipc_node_timeout(struct timer_list *t)
+ 	 */
+ 	tipc_node_read_lock(n);
+ 	n->keepalive_intv = 10000;
++	remains = n->link_cnt;
+ 	tipc_node_read_unlock(n);
+ 	for (bearer_id = 0; remains && (bearer_id < MAX_BEARERS); bearer_id++) {
+ 		tipc_node_read_lock(n);
+@@ -835,11 +869,13 @@ static void tipc_node_timeout(struct timer_list *t)
+ 			tipc_node_calculate_timer(n, le->link);
+ 			rc = tipc_link_timeout(le->link, &xmitq);
+ 			spin_unlock_bh(&le->lock);
+-			remains--;
++			if (dist_rc != -ENOBUFS)
++				remains--;
+ 		}
+ 		tipc_node_read_unlock(n);
+ 		tipc_bearer_xmit(n->net, bearer_id, &xmitq, &le->maddr, n);
+-		if (rc & TIPC_LINK_DOWN_EVT)
++		/* Force the node down in case the redistribution failed */
++		if ((rc & TIPC_LINK_DOWN_EVT) || (dist_rc == -ENOBUFS))
+ 			tipc_node_link_down(n, bearer_id, false);
+ 	}
+ 	mod_timer(&n->timer, jiffies + msecs_to_jiffies(n->keepalive_intv));
+diff --git a/net/tipc/node.h b/net/tipc/node.h
+index 154a5bbb0d29..0f777cfe7c01 100644
+--- a/net/tipc/node.h
++++ b/net/tipc/node.h
+@@ -128,4 +128,5 @@ int tipc_nl_node_set_key(struct sk_buff *skb, struct genl_info *info);
+ int tipc_nl_node_flush_key(struct sk_buff *skb, struct genl_info *info);
+ #endif
+ void tipc_node_pre_cleanup_net(struct net *exit_net);
++void tipc_node_set_dist_bulk(struct net *net, u32 addr);
+ #endif
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index d5d70eb230b5..6b83bdfc439c 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -2919,7 +2919,7 @@ static int tipc_sk_publish(struct tipc_sock *tsk, struct tipc_uaddr *ua)
+ 		return -EADDRINUSE;
+ 	skaddr.ref = tsk->portid;
+ 	skaddr.node = tipc_own_addr(net);
+-	p = tipc_nametbl_publish(net, ua, &skaddr, key);
++	p = tipc_nametbl_publish(net, ua, &skaddr, key, NULL);
+ 	if (unlikely(!p))
+ 		return -EINVAL;
+ 
+-- 
+2.43.0
+
