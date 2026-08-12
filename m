@@ -1,182 +1,109 @@
-Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8542B4B04B7
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 18:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786559863; cv=pass; b=TX2QFjBcKCUI8h82oH8aAinHZfAxBGEg8+hFKKH3fBHzEiEBCLufAyVb4zTmj7xyGPNnKZJj54F5TUsRw1bspuD13syTiH6fBMw15PziuS1eGjJFKWNYOAhK2ag0xRnVBdrost+W3hiBYx2CHd57w4yLdAdssLu2TQ5OAK3bka8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786559863; c=relaxed/simple;
-	bh=MoM3SUix+VxL4tI1A6QdAmDJIiPaAbH+OcVvVY++ClI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXXIpjtLfuGLQnKCrk29/O/oes/pl1SURQNm05Rg6MHlAOV0HZzvLh8a1htWa4NeCQTiEr6K+Q2kdQrYZwDTagSDM/Nzf+E7LsVqzbTXjlzu91garYsMuXFDWK2eV1owzyvOX8yRbkhFn865tT7tnKc58/+OBD2GnDpv5N3Vd5A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=P5ErwRZM; arc=pass smtp.client-ip=136.143.188.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA94038E8C9
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 18:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786559866; cv=none; b=Y98c16lKrZMiYKVND+oA96VkGmFWduMXFVfzOE4oKEIJeUBeJllTwAL3mLOkWdN92ayFkFGj+3U2DS40JfeS76z/St/V9QLzASOhYQIVwxtpLTozqgEj5AMB7/xHecKrvqG9JYwA/nDDMIpS5vheezsQq0jbQDxZZcHPRcQAdEw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786559866; c=relaxed/simple;
+	bh=eiB43M6RV0ZtwdWJtOZdf3pFwoJ9mOlgfQ1s5tJsXO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DkCyaVyXZoodcs3VQTL9MN/7LURGJLWo69SG5RPQeCPpMq+CVpVC9CdBlcnOeDlH+RdgIBGuMkiKJioSrj34LMuikuijO2z+hSkQei2dF3JK8C8ut59hWkyeRMHv9AhuGeaYGmOe4y3JlnuAbR+ZrhwyE1XkUcAorC7Mbnhx0fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=w53jgDsp; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="P5ErwRZM"
-ARC-Seal: i=1; a=rsa-sha256; t=1786559838; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=BPQMM0df0SiWXKoNaZwlwr1SA6rhRQptxg0+9hpj3vkr5yLrVQUoFBAEkE3eHEGIqkakED5qURGAbWqp6h0aInogverp6SYIiYpN36dRVmBguMDy+sdVvheFs6y2QGoSzEwjhjQ/tW24P7jPDk8+LB00VdZcpzwQENizMMDPUrI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1786559838; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=SJxqPj9zaGlWPM4nlGDQpIgEQMxyM7a2QhbaV9sOkHs=; 
-	b=J+xbO5PXwWZrirO+fQu5usz4Qqe7DDUSQRfdlnJdYW56rps8dBsjBQrbkYSaDig0nmqWLGDcFmvtNJeKhpgNPI2jsdysYRnOxymH8xn3Muie17OeUjNmPWgA4un/61bclxfT/5K4N1Kvo98DPgjswObNu8GUKVoHuC2cumpPfUc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=machnikowski.net;
-	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
-	dmarc=pass header.from=<maciek@machnikowski.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786559838;
-	s=zoho; d=machnikowski.net; i=maciek@machnikowski.net;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=SJxqPj9zaGlWPM4nlGDQpIgEQMxyM7a2QhbaV9sOkHs=;
-	b=P5ErwRZMA2qDvWsjaNDwfDsEGkEVKd8pPe4fcYah7GvsDuLaxYupibC3QE72KlRN
-	yo8QVkalGvcx8mruU3VEHQdnsvKJLq3FkznmaZXRZPgoPabarlPrVWXhmOry5XivlH3
-	XRX2q7baARE3lHf/47v8c/q3psZBKz0xdf/Vne/xxAHzAcXji+mOpKxgNFOzZvMBiSy
-	mi5kx8yfz8g3vhs/wz4T4ZGW7UnUv8P+HPPEHsOxzNnq56S1HvXDXvRF3Gu25cljqZe
-	pSWv/EyQzfy9CpErtnmh4vcMNkQ39KmhWOZGrRAQ6REPwp/r17m3cCkPE+KLnX2TcEu
-	nwFQhH0R1A==
-Received: by mx.zohomail.com with SMTPS id 1786559834821148.3306653841853;
-	Wed, 12 Aug 2026 11:37:14 -0700 (PDT)
-From: Maciek Machnikowski <maciek@machnikowski.net>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	maciek@machnikowski.net,
-	richardcochran@gmail.com,
-	milena.olech@intel.com,
-	willemdebruijn.kernel@gmail.com,
-	andrew@lunn.ch,
-	vadim.fedorenko@linux.dev,
-	horms@kernel.org
-Subject: [PATCH v8 net-next 1/3] ptp_mock: Expose ptp_clock_info to external drivers
-Date: Wed, 12 Aug 2026 20:37:06 +0200
-Message-ID: <20260812183708.312412-2-maciek@machnikowski.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260812183708.312412-1-maciek@machnikowski.net>
-References: <20260812183708.312412-1-maciek@machnikowski.net>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="w53jgDsp"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so1742097a91.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:37:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1786559864; x=1787164664; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jJc3qveMT97K6NIgVFVS4ssSY1dc+qhfAcx7owlBoP4=;
+        b=w53jgDspVUQdvC6Rou9fIyHz1vzGyEnO7yEk8IbiVk8+AwXZgLlV+90jP8OoyOtJ97
+         qnTYzNS5GRiPNGjsaZaQzZwx/7xi0MIk8q86vH0Z/acZKE6NoxpW/3hOIt2VmAHdiVUE
+         T7owKToqoAULDTP3NV5BNBf0GeHGE1MBj7BMVfftwiup6+GK6zanjqXH678NxJN02r9T
+         5iUpUTkwCKiARr7LAF+bVdpFzMBhyWltjD2Io+6LYeLhBQCA4jiAEFFY+6qhvmv8bKqw
+         nbHIG0YyfzZoYmqwunhISShhpqXO3TZkmY3/8Rv2dtPggG4HZ5TM/VW7OxXSgDPwW2vt
+         T2Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786559864; x=1787164664;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=jJc3qveMT97K6NIgVFVS4ssSY1dc+qhfAcx7owlBoP4=;
+        b=l9HhDkAneZGZG5bqGh5XYBnK5S33z79wOjOEGJAp60Dp7jS61Vf8di9s4GIimfehOv
+         lJW/eGt+/fl9tRq8+LupDfJZXJaXHz6q7nAL4Dpugwwgs7D/6qg3X4+jaG7jQbTBdDsl
+         hlAR/ccR7M7b5FVo46Q+2d0y8KOmCmxpu5ssTlFJpwC8diGrnjtsFw7sQhp3gpw5j1An
+         EwOKSQX7A7LxO8PP193ay8TCxFYfLqvW6O4HjIhsSu+CdOYvie0CGZ5geGv7cbgBpPZ0
+         eYW9bLH0fihC8ZtzDFiIiAQ7DXo+tdpXXbjBIkX/P8t+SO9I0ev6yFEQdzF6LlY8g4Ys
+         tuWQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp1pF1c/MYRJATdg85CSGb9oX3oTFHZbR7PUDQtQaa4YGAee1ostG/dy7WgpoOInTcd8LajNWo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6vmihZ2HTkIeZv+hcr2AczttfVpovFCXZcG+PEmQ/S3rFmJdG
+	Er9PMyfzjS2eGYDKJ56B8TKFyBKmFfMuh+3VDZ24v/ksaoHQeK7MHJV36+/3iZydG2I=
+X-Gm-Gg: AR+sD12EcnkhXJL1vA2V4dqxC6LJwrmj/WMs14bkf2CeOiLkINNp9dOs+yL9rsCKVUm
+	ye5rn+yalT58xHBr6L01UQfWZLMwrzbLyb4vxtAJpllUsiX+dlzwobSprS38VHm9D5qsyV/GLcF
+	b70nw0+1XKH8YZMngNPJKbIB5Jvv1PCI9Kvj/AgK6CaR7YrhUmwK2SQzUz/mv1YYQvVg/lS+Zcu
+	ismFjPLH22tsExCwpYKtGnXFZwOJUT5/V4r41DXvN1pjIoYsLFnkiz/Oa1ddQBjHZrb1Dp66Oue
+	ss/mbMLzvMpWF8vlrrdhPm6powkZUeVkBBNEVE7bEOm1wHE5Xe3Vhhc4z3vla5FF6sa1/qs67Tg
+	mq2vc7LMYu4cJbcWbH8qzRa0qR6rlwjfYX3qhijtJTNHhFKo4/gBEpwckYkBqSMpHM/OFb5JTHE
+	iBYUauMoHdpyLK5QvNjuSJL6hhAYwoGNyxXQWVpI4YIA==
+X-Received: by 2002:a17:90b:33c6:b0:37f:ed7e:7e42 with SMTP id 98e67ed59e1d1-3931e298274mr193559a91.14.1786559864270;
+        Wed, 12 Aug 2026 11:37:44 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4f::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931db13c3bsm67114a91.3.2026.08.12.11.37.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 11:37:43 -0700 (PDT)
+Date: Wed, 12 Aug 2026 11:37:42 -0700
+From: Joe Damato <joe@dama.to>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	andrew@lunn.ch, vadim.fedorenko@linux.dev
+Subject: Re: [PATCH net-next] ethtool: tsconfig: reject zero-valued tx_type
+ and rx_filter bitsets
+Message-ID: <any9dja3ZPSIJ/7H@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org, andrew@lunn.ch,
+	vadim.fedorenko@linux.dev
+References: <20260812162230.1837788-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812162230.1837788-1-kuba@kernel.org>
 
-Allow exposing the ptp_clock_info of the ptp_mock to the external drivers.
-Convert spinlocks to SLIS to allow gettime to be called from the netdevsim.
-This is a prerequisite for implementing ptp support on netdevsim.
+On Wed, Aug 12, 2026 at 09:22:30AM -0700, Jakub Kicinski wrote:
+> The ffs()/fls() guard in ethnl_set_tsconfig() was meant to enforce
+> that the user selects exactly one tx_type (and one rx_filter)
+> at a time (off / none are explicit types with non-zero values).
+> However, both ffs(0) and fls(0) return 0, so the guard passes
+> a zero-valued bitset through.
+> 
+> The subsequent ffs(req_tx_type) - 1 would produce -1, if user selected
+> no bit. net_hwtstamp_validate() catches the invalid -1 downstream,
+> but returns a generic error (-ERANGE) without telling the user
+> what went wrong. Return -EINVAL + extack instead.
+> 
+> Replace the ffs()/fls() comparison with a hweight32() == 1 check.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: andrew@lunn.ch
+> CC: vadim.fedorenko@linux.dev
+> ---
+>  net/ethtool/tsconfig.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 
-Co-developed-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Maciek Machnikowski <maciek@machnikowski.net>
----
- drivers/ptp/ptp_mock.c   | 26 ++++++++++++++++++--------
- include/linux/ptp_mock.h |  5 +++++
- 2 files changed, 23 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/ptp/ptp_mock.c b/drivers/ptp/ptp_mock.c
-index 4d66b6147121..7a4e5f3274a6 100644
---- a/drivers/ptp/ptp_mock.c
-+++ b/drivers/ptp/ptp_mock.c
-@@ -49,15 +49,16 @@ static u64 mock_phc_cc_read(struct cyclecounter *cc)
- static int mock_phc_adjfine(struct ptp_clock_info *info, long scaled_ppm)
- {
- 	struct mock_phc *phc = info_to_phc(info);
-+	unsigned long flags;
- 	s64 adj;
- 
- 	adj = (s64)scaled_ppm << MOCK_PHC_FADJ_SHIFT;
- 	adj = div_s64(adj, MOCK_PHC_FADJ_DENOMINATOR);
- 
--	spin_lock(&phc->lock);
-+	spin_lock_irqsave(&phc->lock, flags);
- 	timecounter_read(&phc->tc);
- 	phc->cc.mult = MOCK_PHC_CC_MULT + adj;
--	spin_unlock(&phc->lock);
-+	spin_unlock_irqrestore(&phc->lock, flags);
- 
- 	return 0;
- }
-@@ -65,10 +66,11 @@ static int mock_phc_adjfine(struct ptp_clock_info *info, long scaled_ppm)
- static int mock_phc_adjtime(struct ptp_clock_info *info, s64 delta)
- {
- 	struct mock_phc *phc = info_to_phc(info);
-+	unsigned long flags;
- 
--	spin_lock(&phc->lock);
-+	spin_lock_irqsave(&phc->lock, flags);
- 	timecounter_adjtime(&phc->tc, delta);
--	spin_unlock(&phc->lock);
-+	spin_unlock_irqrestore(&phc->lock, flags);
- 
- 	return 0;
- }
-@@ -78,10 +80,11 @@ static int mock_phc_settime64(struct ptp_clock_info *info,
- {
- 	struct mock_phc *phc = info_to_phc(info);
- 	u64 ns = timespec64_to_ns(ts);
-+	unsigned long flags;
- 
--	spin_lock(&phc->lock);
-+	spin_lock_irqsave(&phc->lock, flags);
- 	timecounter_init(&phc->tc, &phc->cc, ns);
--	spin_unlock(&phc->lock);
-+	spin_unlock_irqrestore(&phc->lock, flags);
- 
- 	return 0;
- }
-@@ -89,11 +92,12 @@ static int mock_phc_settime64(struct ptp_clock_info *info,
- static int mock_phc_gettime64(struct ptp_clock_info *info, struct timespec64 *ts)
- {
- 	struct mock_phc *phc = info_to_phc(info);
-+	unsigned long flags;
- 	u64 ns;
- 
--	spin_lock(&phc->lock);
-+	spin_lock_irqsave(&phc->lock, flags);
- 	ns = timecounter_read(&phc->tc);
--	spin_unlock(&phc->lock);
-+	spin_unlock_irqrestore(&phc->lock, flags);
- 
- 	*ts = ns_to_timespec64(ns);
- 
-@@ -171,5 +175,11 @@ void mock_phc_destroy(struct mock_phc *phc)
- }
- EXPORT_SYMBOL_GPL(mock_phc_destroy);
- 
-+struct ptp_clock_info *mock_phc_get_ptp_info(struct mock_phc *phc)
-+{
-+	return &phc->info;
-+}
-+EXPORT_SYMBOL_GPL(mock_phc_get_ptp_info);
-+
- MODULE_DESCRIPTION("Mock-up PTP Hardware Clock driver");
- MODULE_LICENSE("GPL");
-diff --git a/include/linux/ptp_mock.h b/include/linux/ptp_mock.h
-index 72eb401034d9..e33188dec2b7 100644
---- a/include/linux/ptp_mock.h
-+++ b/include/linux/ptp_mock.h
-@@ -16,6 +16,7 @@ struct mock_phc;
- struct mock_phc *mock_phc_create(struct device *dev);
- void mock_phc_destroy(struct mock_phc *phc);
- int mock_phc_index(struct mock_phc *phc);
-+struct ptp_clock_info *mock_phc_get_ptp_info(struct mock_phc *phc);
- 
- #else
- 
-@@ -33,6 +34,10 @@ static inline int mock_phc_index(struct mock_phc *phc)
- 	return -1;
- }
- 
-+static inline struct ptp_clock_info *mock_phc_get_ptp_info(struct mock_phc *phc)
-+{
-+	return NULL;
-+}
- #endif
- 
- #endif /* _PTP_MOCK_H_ */
--- 
-2.55.0
-
+Reviewed-by: Joe Damato <joe@dama.to>
