@@ -1,50 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9270370D56;
-	Wed, 12 Aug 2026 01:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFD436C9C2;
+	Wed, 12 Aug 2026 01:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786498874; cv=none; b=XT94tWwxmwuj1SkxDrNMVcQWSeRxW9EAX+f/Rp1tWmzoVcsnDqL0EWc2G5Qq9kc4b+02Mt+O3GB1rqQuFTFYO97KOsO/+0dFzaU+bUDBZ/EgwomaOoqcJ6VYAY8OFyZi32/OMtWDYKl3nZwZS4zCRqei4pNi/oLa6YluxUI+FUI=
+	t=1786498887; cv=none; b=g66QY8hT53Ism47IDtPc2Co+CYf+SWYx5g303rgqWyDgPwQ3GZaj2e7q/DsBJ/c3qpU3QVMGdptSs31Jq7P4IjxREO6PZQGHFxlMS4YRiQ7j6P421h7R+D7HFRMyGAlD+7tFCFTCgNgr5Vc6upDqdwboCYKsciOTNFG0T9cUOpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786498874; c=relaxed/simple;
-	bh=zgxQ1Dlh38HZOImSEfZiP36YJ9/wuYQvRevSX5EiaEA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlB6zMTde5Po+vkTtfmQ3rjTBOw+qhw16KQAL6rRCDaOtQLqhKGOhLXbwfNu8hxfaTsRIpouh9smisJ/UoWUnicjih4d3HlgUej9kaA93hPIltrcl+vNBs9Gh7YjYKft+FVYr8R1SqVJL9O1wD61Y625u4LtwxbSxAPOyMrWUQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SevL2kYI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786498887; c=relaxed/simple;
+	bh=dZeE+jyBKiUzaxYFgm2s0HuLbu6gB9T8dW3v0Z6rzbA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hMWAUu8q307rx71Wbo0Yj6ApQ9t2qyxHeQypVu7/0mtsRUJNQcHMMieZmUW8WEJ5ZpwP79vvWylpF+9rxeGdblp4ZFYJ2+bdTmyazA0axHfcAQwc3pv4CeY4EwX7zDB2jYD/7PCp7QqTqs1MTZCkTZ6KlP09pF7mSydS4MbSqHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N9b3T+oZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SevL2kYI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303FA1F000E9;
-	Wed, 12 Aug 2026 01:41:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N9b3T+oZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141A01F000E9;
+	Wed, 12 Aug 2026 01:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786498872;
-	bh=YDVhKIVRwhk7NjczVHRS/FNkLpxTfXl/HQj2fMs4j2Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SevL2kYIpXIZjiVE3tSj+IOFi2FHZbHglTBaVFaudEB1eTPrryPkV8Z9X6y7vAAjd
-	 eX0KPnk6el8K/5GIXaMRVTkjAaqwWCadkVTO52tbNhojCXs4RoKdlLhls47q0se2CJ
-	 fbDt65Xk3uvwxFgBNhwekCRUfX6bmWEgJqn0ZyD4bE/pOTjuWdyO+XKVi7vGhVdUwC
-	 qbO8QzvoonDC30WafEeLriT+NrKlSDdoMJvNrut37+u5MPFJ0XvcYWXsyj6vDsEDCg
-	 mDCMpaE++1scufoZYcOK34lRayCubtwTKWLI2LHVg2Pa5nHACTFCTWbwZXJzzHoJ1j
-	 A/LnExjoOXBWg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: fabio.porcedda@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	bjorn@mork.no,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dnlplm@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] net: usb: qmi_wwan: add Telit Cinterion FE990D50 composition
-Date: Tue, 11 Aug 2026 18:41:11 -0700
-Message-ID: <20260812014111.1680631-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260810103409.133796-1-fabio.porcedda@gmail.com>
-References: <20260810103409.133796-1-fabio.porcedda@gmail.com>
+	s=k20260515; t=1786498886;
+	bh=DMNa9VbXFgT+88cJzFRA4WPgYfBh4UlIJlaRgPKrJ5Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=N9b3T+oZPqSBCzRSJY7B+7WutMc2TKHsk9fhmBlJ1YZHtffUqcoqxAtSxKdbU1jy7
+	 d5v9sdgD0ayy9AaHiQ9HE9sFzvGEw0lD6L3lckCuLYw34hdkzxLQeHjr1WbhobB1fa
+	 2W9kCh0iotUuRFIt1fyRhhQ9+tR+N96dJzhuBgJ0tLDLd4b9hZpZYNyxerHHBNOBb4
+	 Ffg691PAtU9Zz1E05tqPiNWOdl44zWIKfkRPLHR2e9OHrxnB25Snb5kT36Swd1dVC+
+	 R1YcVQJGbj3Ob6xq/G4KpUkDmNYMWPSq7w+N2Rj6jTmEmC+E71ZdbnYKp5WdJRV/9r
+	 ZMp85ENN1VMGg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19A053809A3C;
+	Wed, 12 Aug 2026 01:40:43 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,57 +37,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3 0/7] mptcp: out-of-order queue pruning
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178649884163.1230679.9378736754022898187.git-patchwork-notify@kernel.org>
+Date: Wed, 12 Aug 2026 01:40:41 +0000
+References: 
+ <20260807-net-next-mptcp-oooq-pruning-v3-0-dbc1eb853cc3@kernel.org>
+In-Reply-To: 
+ <20260807-net-next-mptcp-oooq-pruning-v3-0-dbc1eb853cc3@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ yangang@kylinos.cn
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: usb: qmi_wwan: add Telit Cinterion FE990D50 composition
+Hello:
 
-Adds a qmi_wwan products[] entry for USB ID 1bc7:0991 interface 0, using
-the SET_DTR quirk, for the Telit Cinterion FE990D50 rmnet + tty + ADPL +
-adb composition.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-> index 94cdb61dca83d..147beaa61340d 100644
-> --- a/drivers/net/usb/qmi_wwan.c
-> +++ b/drivers/net/usb/qmi_wwan.c
-> @@ -1360,6 +1360,7 @@ static const struct usb_device_id products[] = {
->  	{QMI_FIXED_INTF(0x1bbb, 0x0203, 2)},	/* Alcatel L800MA */
->  	{QMI_FIXED_INTF(0x2357, 0x0201, 4)},	/* TP-LINK HSUPA Modem MA180 */
->  	{QMI_FIXED_INTF(0x2357, 0x9000, 4)},	/* TP-LINK MA260 */
-> +	{QMI_QUIRK_SET_DTR(0x1bc7, 0x0991, 0)}, /* Telit LE910C1-EUX */
-                                                   ^^^^^^^^^^^^^^^^^^
+On Fri, 07 Aug 2026 15:49:00 +0200 you wrote:
+> Under memory pressure, a pruning of the MPTCP-level OoO queue might be
+> required as last resort, to avoid too long recoveries, or even stalls.
+> Geliang and Gang managed to reproduce this behaviour, and Paolo
+> improved the situation thanks to the following patches:
+> 
+> - Patches 1-3: improve the MPTCP-level retransmission schema to make
+>   recoveries from memory pressure/after MPTCP-level drop significantly
+>   faster.
+> 
+> [...]
 
-[Severity: Low]
-Is the device name in this comment the intended one?  The subject line and
-the descriptor dump in the changelog both describe 1bc7:0991 as the
-FE990D50:
+Here is the summary with links:
+  - [net-next,v3,1/7] mptcp: move the retrans loop to a separate helper
+    https://git.kernel.org/netdev/net-next/c/789e6a844b51
+  - [net-next,v3,2/7] mptcp: move the stale logic out of retrans scheduler
+    https://git.kernel.org/netdev/net-next/c/6cafe51e0f98
+  - [net-next,v3,3/7] mptcp: let the retrans scheduler do its job
+    https://git.kernel.org/netdev/net-next/c/96d846e3e2a7
+  - [net-next,v3,4/7] mptcp: explicitly drop over memory limits
+    https://git.kernel.org/netdev/net-next/c/e0e4d56b0505
+  - [net-next,v3,5/7] mptcp: enforce hard limit on backlog flushing
+    https://git.kernel.org/netdev/net-next/c/b1224c4b40f6
+  - [net-next,v3,6/7] mptcp: avoid code duplication in __mptcp_move_skb()
+    https://git.kernel.org/netdev/net-next/c/996643574cc8
+  - [net-next,v3,7/7] mptcp: implemented OoO queue pruning
+    https://git.kernel.org/netdev/net-next/c/e468d371180d
 
-    P:  Vendor=1bc7 ProdID=0991 Rev=06.06
-    S:  Manufacturer=Telit Cinterion
-    S:  Product=FE990
-
-The comment looks like a copy of the next line, which is the entry for the
-real LE910C1-EUX at a different product ID and interface number:
-
->  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1031, 3)}, /* Telit LE910C1-EUX */
-
-drivers/usb/serial/option.c already labels the same product ID as the
-FE990D50 in option_ids[]:
-
-	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x0991, 0xff, 0xff, 0x30),	/* Telit FE990D50 (rmnet) */
-
-Would /* Telit FE990D50 */ be a better fit here, matching the existing
-naming for the rest of the family in this table (/* Telit FE990A */ for
-0x1080 and /* Telit FE990B */ for 0x10b0)?  As it stands, two entries for
-different hardware carry the same label, which makes it easy for a later
-addition to touch the wrong line.
-
-The match itself looks fine: interface 0 of 0x0991 has bInterfaceProtocol
-0x50, which none of the option.c filters (0x30, 0x40, 0x60) claim, so only
-the comment appears to need a change.
-
->  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1034, 2)}, /* Telit LE910C4-WWX */
->  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1037, 4)}, /* Telit LE910C4-WWX */
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
