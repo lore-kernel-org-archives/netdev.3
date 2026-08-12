@@ -1,370 +1,382 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405313242B8;
-	Wed, 12 Aug 2026 21:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9816948CD67;
+	Wed, 12 Aug 2026 21:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786569368; cv=none; b=jYDT8U/tJSQ/Q1VZ6FqUL9FRkl7fHhAu9XsX1PrjHw/iW6Tj5Ibap6EYuPotLl/Oups9ZF5euq5s+XyJWT+rOhx/uwTnkQDu8UbtiP2wYlNorp5f2TNOGvVqKBTEVPFAySBhKRKdmaBOUG8GUQM2/hgPwdWVZbrbAlYUaQaMbRk=
+	t=1786569954; cv=none; b=jS4N9hOeFFU4e5nfd87rLdiTaMFHcpS8USggtV4PStNaFgyO9gl+50tvz/piPJakKiQ0IOqnBKnrZrwnjARAERO8nNn6bWT28aKIL4v0WqKSbulbpvK/0Io1ygBtG7uCcRlZH67UXRADZjrsAsx0ubQAfbXNUNiFMS0KwoT+66E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786569368; c=relaxed/simple;
-	bh=XuTF2gflCD/gMT8ViBggEtA+76qOh1XTvpzHelGk8tA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sBqHbFvud5Ey0WelqRLvyxjtb6M9KCaqh83J4JPKOC7gL5J6RV71XnyChg4WxYFeIUKBiXfDNy/d+YsEdwK53Vh/eovLt/DEklKnIphXUVb4OSwpA+Tnh758lrmCtvXzVJPxjD0LxRr6tHgh2Hb1HDqnBl7ulXGFfYbilFi2cTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E58VqySM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786569954; c=relaxed/simple;
+	bh=KWDxFnVKJ8ZROr6nx/+vEOerTrPaQBhjxw74mSI2cZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KCg0GuCXWD/RRvAWQF8pJi1atfN8tAbPTAz3+sFiOwMr3RybUg5XQehEFevPH7kS9S7shhUm2HkGd105t8TNMfRb4i6Iq76QeemlmY/jsVv7lFOwMCxocLPASqe3rmymgnZlN6K79enUEAzTfx5AqEGoJNMpiyB3aitnwAcMUCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PjNBMbBt; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E58VqySM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2CD1F000E9;
-	Wed, 12 Aug 2026 21:16:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786569366;
-	bh=Jy+yY7ScNPTLI9GPqIPBBSp+vMzLO39xsKXyzQYJ99g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E58VqySMPVR3JY7HOTNGr9aKopdC/lyGXtSvQDmLeEvPWmMjbVUfelG4CWhcmWxtn
-	 2bHovtMMDJThTowpyek8S0i+tc0b6ncMVDblTqQ23iiglr3Z0fyKP0qc0aJm1QM/OY
-	 n52J3OD/J1sUCV817jRl7Sz1js835hjMmDRTPEExkqDiXgXvsnGhNNZgKfxWx7O08M
-	 fFdtsDOfEq7cNMUzcxFkpXuXJ5x00ORiLqfOPmZWVin+GpzY93COwrR1QarzO+4POW
-	 XLFIeSISNBKyGvbDbGY1G3Py9Ehvh9hVQW5YtSGZwsuTTrZPKSd2XruYcCFvIGNvNS
-	 YB9LOHBnjNflA==
-Date: Wed, 12 Aug 2026 16:16:05 -0500
-From: Rob Herring <robh@kernel.org>
-To: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
-Cc: Srinivas Neeli <srinivas.neeli@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Michal Simek <michal.simek@amd.com>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, git-dev@amd.com
-Subject: Re: [PATCH 01/20] dt-bindings: net: add Xilinx TSN Endpoint Ethernet
- MAC
-Message-ID: <20260812211605.GA984427-robh@kernel.org>
-References: <20260807104431.157230-1-nagadheeraj.rottela@amd.com>
- <20260807104431.157230-2-nagadheeraj.rottela@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PjNBMbBt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786569942; x=1818105942;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=KWDxFnVKJ8ZROr6nx/+vEOerTrPaQBhjxw74mSI2cZs=;
+  b=PjNBMbBtgRs9sVA6VXWkG+9mHmQVL56t23byZbPxobAR3F80iARN5H61
+   d+LZ4N2T7jIsi5bt+KFlcQQoO9GHySrA/wvTZLiMZa5vdcI7aHtfpqlZx
+   7tn/BpTaCdsQSDAJWJIRKakdL40SKeQqHKqHNAZEcn+PRmKyUHxbSMCtz
+   JXVVxUCKmXUWk5uFoaQQsAGDl+bdwiqi2/A2MC8E7lrPPPM42z8x3mnnz
+   kXmT0BVzo3mD4Up2JWvmG/YlN9Gu6HATXJbA70YhlqOend9gVHVapAtJL
+   57OQQVFR67Hqd1brl3n7MV3AAnfY1+VYCx5wWinc2CePgH3a/G/iVTD5i
+   A==;
+X-CSE-ConnectionGUID: Ye/voi2YRRy06HjiCbh8lg==
+X-CSE-MsgGUID: E8JUTPN0RkWXfyC/ZVybsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="97485505"
+X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
+   d="scan'208";a="97485505"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 14:25:36 -0700
+X-CSE-ConnectionGUID: fv5ihfYTT5i8VTlqUWgg6w==
+X-CSE-MsgGUID: uS+85Bf3Tde9wQ7BxJjr7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
+   d="scan'208";a="257546229"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa009.fm.intel.com with ESMTP; 12 Aug 2026 14:25:36 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Victor Raj <anthony.l.nguyen@intel.com>,
+	larysa.zaremba@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksander.lobakin@intel.com,
+	sridhar.samudrala@intel.com,
+	michal.swiatkowski@linux.intel.com,
+	maciej.fijalkowski@intel.com,
+	emil.s.tantilov@intel.com,
+	madhu.chittim@intel.com,
+	joshua.a.hay@intel.com,
+	jacob.e.keller@intel.com,
+	jayaprakash.shanmugam@intel.com,
+	jiri@resnulli.us,
+	horms@kernel.org,
+	corbet@lwn.net,
+	richardcochran@gmail.com,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	Samuel Salin <Samuel.salin@intel.com>
+Subject: [PATCH net-next v8 01/15] virtchnl: move virtchnl and virtchnl2 headers to 'include/linux/net/intel'
+Date: Wed, 12 Aug 2026 14:25:15 -0700
+Message-ID: <20260812212532.905873-2-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260812212532.905873-1-anthony.l.nguyen@intel.com>
+References: <20260812212532.905873-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807104431.157230-2-nagadheeraj.rottela@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 07, 2026 at 04:14:12PM +0530, Nagadheeraj Rottela wrote:
-> From: Srinivas Neeli <srinivas.neeli@amd.com>
-> 
-> Add a binding for the Xilinx TSN Endpoint Ethernet MAC IP. The
-> top-level node describes the IP wrapper, which owns the six shared
-> IP clocks and the xlnx,num-priorities parameter, and has two
-> children:
-> 
->   - xlnx,tsn-ep-mac: the endpoint MAC, owning the host-side DMA
->     channels (dmas / dma-names / tx-queues-config).
-> 
->   - xlnx,tsn-switch: the three-port Ethernet switch covering the
->     switch fabric and the two per-MAC register windows. The MDIO
->     controllers and PTP register blocks sit at fixed offsets inside
->     the per-MAC windows, accessed through the mdio-mac1 / mdio-mac2
->     children and per-MAC interrupt-names entries. Each external
->     port@N references its PHY through a phy-handle in the matching
->     mdio-mac<N> child.
-> 
-> Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
-> Co-developed-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
-> Signed-off-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
-> ---
->  .../net/xlnx,tsn-endpoint-ethernet-mac.yaml   | 343 ++++++++++++++++++
->  MAINTAINERS                                   |   7 +
->  2 files changed, 350 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
-> new file mode 100644
-> index 000000000000..00f52b7b623c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
-> @@ -0,0 +1,343 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/xlnx,tsn-endpoint-ethernet-mac.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Xilinx TSN Endpoint Ethernet MAC
-> +
-> +description:
-> +  TSN Endpoint Ethernet MAC IP implements IEEE 802.1 Time-Sensitive
-> +  Networking (TSN) standards and provides low-latency network connectivity
-> +  in either Endpoint-only or Bridged Endpoint configurations. In the
-> +  Bridged Endpoint mode, the IP integrates a three-port switch, with two
-> +  ports connected to the external network and one port connected to an
-> +  internal endpoint. It also supports GMII/RGMII interfaces for connection
-> +  to an external PHY, enabling full-duplex operation at 100 Mb/s and
-> +  1 Gb/s speeds.
-> +
-> +maintainers:
-> +  - Srinivas Neeli <srinivas.neeli@amd.com>
-> +  - Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: xlnx,tsn-endpoint-ethernet-mac-3.0
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: GTX clock for transmitter logic and RTC
-> +      - description: GTX 90-degree phase shifted clock for RGMII
-> +      - description: Host RX FIFO clock
-> +      - description: Host TX FIFO clock
-> +      - description: Reference clock for IDELAY control
-> +      - description: AXI-Lite register interface clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: gtx
-> +      - const: gtx90
-> +      - const: host_rxfifo
-> +      - const: host_txfifo
-> +      - const: ref
-> +      - const: s_axi
-> +
-> +  ranges: true
-> +
-> +  xlnx,num-priorities:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 2
-> +    maximum: 8
-> +    description:
-> +      Number of traffic classes (priorities) configured in the IP.
-> +      This is an IP configuration parameter that determines the number of
-> +      priority queues available for QoS scheduling. Traffic classes map to
-> +      IEEE 802.1Q priority levels (0-7).
+From: Victor Raj <victor.raj@intel.com>
 
-Vendor specific properties go after standard properties. See ordering 
-rules.
+virtchnl2 headers will be used by both idpf and ixd drivers, so they have
+to be moved to an include directory. On top of that, it would be useful to
+place all iavf headers together with other intel networking headers.
 
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 1
-> +
-> +patternProperties:
-> +  "^ep-mac@":
+Move abovementioned intel header files into 'include/linux/net/intel'.
 
-'^ethernet@[0-9a-f]+$'
+While at it, remove the self-include from iavf_types.h.
 
-> +    type: object
-> +    $ref: /schemas/net/ethernet-controller.yaml#
+Suggested-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Victor Raj <victor.raj@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ MAINTAINERS                                                   | 3 +--
+ drivers/net/ethernet/intel/i40e/i40e.h                        | 2 +-
+ drivers/net/ethernet/intel/i40e/i40e_common.c                 | 2 +-
+ drivers/net/ethernet/intel/i40e/i40e_prototype.h              | 2 +-
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h            | 2 +-
+ drivers/net/ethernet/intel/iavf/iavf.h                        | 2 +-
+ drivers/net/ethernet/intel/iavf/iavf_common.c                 | 2 +-
+ drivers/net/ethernet/intel/iavf/iavf_prototype.h              | 3 ++-
+ drivers/net/ethernet/intel/iavf/iavf_types.h                  | 4 +---
+ drivers/net/ethernet/intel/ice/ice.h                          | 2 +-
+ drivers/net/ethernet/intel/ice/ice_common.h                   | 2 +-
+ drivers/net/ethernet/intel/ice/ice_vf_lib.h                   | 2 +-
+ drivers/net/ethernet/intel/ice/virt/virtchnl.h                | 2 +-
+ drivers/net/ethernet/intel/idpf/idpf.h                        | 2 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h                   | 2 +-
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.h               | 2 +-
+ include/linux/{avf => net/intel}/virtchnl.h                   | 0
+ .../intel/idpf => include/linux/net/intel}/virtchnl2.h        | 0
+ .../idpf => include/linux/net/intel}/virtchnl2_lan_desc.h     | 0
+ 19 files changed, 17 insertions(+), 19 deletions(-)
+ rename include/linux/{avf => net/intel}/virtchnl.h (100%)
+ rename {drivers/net/ethernet/intel/idpf => include/linux/net/intel}/virtchnl2.h (100%)
+ rename {drivers/net/ethernet/intel/idpf => include/linux/net/intel}/virtchnl2_lan_desc.h (100%)
 
-Move unevaluatedProperties here.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e0e7fae5b92f..0f29ea109db5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13033,8 +13033,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue.git
+ F:	Documentation/networking/device_drivers/ethernet/intel/
+ F:	drivers/net/ethernet/intel/
+ F:	drivers/net/ethernet/intel/*/
+-F:	include/linux/avf/virtchnl.h
+-F:	include/linux/net/intel/*/
++F:	include/linux/net/intel/
+ 
+ INTEL ETHERNET PROTOCOL DRIVER FOR RDMA
+ M:	Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 83e780919ac9..1b6a8fbaa648 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -8,8 +8,8 @@
+ #include <linux/pci.h>
+ #include <linux/ptp_clock_kernel.h>
+ #include <linux/types.h>
+-#include <linux/avf/virtchnl.h>
+ #include <linux/net/intel/i40e_client.h>
++#include <linux/net/intel/virtchnl.h>
+ #include <net/devlink.h>
+ #include <net/pkt_cls.h>
+ #include <net/udp_tunnel.h>
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
+index 59f5c1e810eb..8dadfef2c09f 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_common.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
+@@ -1,10 +1,10 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright(c) 2013 - 2021 Intel Corporation. */
+ 
+-#include <linux/avf/virtchnl.h>
+ #include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <linux/etherdevice.h>
++#include <linux/net/intel/virtchnl.h>
+ #include <linux/pci.h>
+ #include "i40e_adminq_cmd.h"
+ #include "i40e_devids.h"
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_prototype.h b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
+index 26bb7bffe361..e3d57550090e 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_prototype.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
+@@ -5,7 +5,7 @@
+ #define _I40E_PROTOTYPE_H_
+ 
+ #include <linux/ethtool.h>
+-#include <linux/avf/virtchnl.h>
++#include <linux/net/intel/virtchnl.h>
+ #include "i40e_debug.h"
+ #include "i40e_type.h"
+ 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+index f558b45725c8..4e119c0502f3 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+@@ -4,7 +4,7 @@
+ #ifndef _I40E_VIRTCHNL_PF_H_
+ #define _I40E_VIRTCHNL_PF_H_
+ 
+-#include <linux/avf/virtchnl.h>
++#include <linux/net/intel/virtchnl.h>
+ #include <linux/netdevice.h>
+ #include "i40e_type.h"
+ 
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 050f8241ef5e..dc31202b2a94 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -27,6 +27,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/socket.h>
+ #include <linux/jiffies.h>
++#include <linux/net/intel/virtchnl.h>
+ #include <net/ip6_checksum.h>
+ #include <net/pkt_cls.h>
+ #include <net/pkt_sched.h>
+@@ -37,7 +38,6 @@
+ #include <net/net_shaper.h>
+ 
+ #include "iavf_type.h"
+-#include <linux/avf/virtchnl.h>
+ #include "iavf_txrx.h"
+ #include "iavf_fdir.h"
+ #include "iavf_adv_rss.h"
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_common.c b/drivers/net/ethernet/intel/iavf/iavf_common.c
+index 614a886bca99..277193a97d91 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_common.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_common.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright(c) 2013 - 2018 Intel Corporation. */
+ 
+-#include <linux/avf/virtchnl.h>
++#include <linux/net/intel/virtchnl.h>
+ #include <linux/bitfield.h>
+ #include "iavf_type.h"
+ #include "iavf_adminq.h"
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_prototype.h b/drivers/net/ethernet/intel/iavf/iavf_prototype.h
+index 7f9f9dbf959a..1b1f6ede3920 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_prototype.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_prototype.h
+@@ -4,9 +4,10 @@
+ #ifndef _IAVF_PROTOTYPE_H_
+ #define _IAVF_PROTOTYPE_H_
+ 
++#include <linux/net/intel/virtchnl.h>
++
+ #include "iavf_type.h"
+ #include "iavf_alloc.h"
+-#include <linux/avf/virtchnl.h>
+ 
+ /* Prototypes for shared code functions that are not in
+  * the standard function pointer structures.  These are
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_types.h b/drivers/net/ethernet/intel/iavf/iavf_types.h
+index a095855122bf..35d6d8fcca04 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_types.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_types.h
+@@ -4,9 +4,7 @@
+ #ifndef _IAVF_TYPES_H_
+ #define _IAVF_TYPES_H_
+ 
+-#include "iavf_types.h"
+-
+-#include <linux/avf/virtchnl.h>
++#include <linux/net/intel/virtchnl.h>
+ #include <linux/ptp_clock_kernel.h>
+ 
+ /* structure used to queue PTP commands for processing */
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index fc91b6665f90..db3c7015c56c 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -36,7 +36,7 @@
+ #include <linux/bpf.h>
+ #include <linux/btf.h>
+ #include <linux/auxiliary_bus.h>
+-#include <linux/avf/virtchnl.h>
++#include <linux/net/intel/virtchnl.h>
+ #include <linux/cpu_rmap.h>
+ #include <linux/dim.h>
+ #include <linux/gnss.h>
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.h b/drivers/net/ethernet/intel/ice/ice_common.h
+index 9f5344212195..d1d674ca644f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.h
++++ b/drivers/net/ethernet/intel/ice/ice_common.h
+@@ -5,13 +5,13 @@
+ #define _ICE_COMMON_H_
+ 
+ #include <linux/bitfield.h>
++#include <linux/net/intel/virtchnl.h>
+ 
+ #include "ice.h"
+ #include "ice_type.h"
+ #include "ice_nvm.h"
+ #include "ice_flex_pipe.h"
+ #include "ice_parser.h"
+-#include <linux/avf/virtchnl.h>
+ #include "ice_switch.h"
+ #include "ice_fdir.h"
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
+index 7a9c75d1d07c..fa436b3b1eac 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
+@@ -8,9 +8,9 @@
+ #include <linux/hashtable.h>
+ #include <linux/bitmap.h>
+ #include <linux/mutex.h>
++#include <linux/net/intel/virtchnl.h>
+ #include <linux/pci.h>
+ #include <net/devlink.h>
+-#include <linux/avf/virtchnl.h>
+ #include "ice_type.h"
+ #include "ice_flow.h"
+ #include "virt/fdir.h"
+diff --git a/drivers/net/ethernet/intel/ice/virt/virtchnl.h b/drivers/net/ethernet/intel/ice/virt/virtchnl.h
+index 71bb456e2d71..d11789b3ae1f 100644
+--- a/drivers/net/ethernet/intel/ice/virt/virtchnl.h
++++ b/drivers/net/ethernet/intel/ice/virt/virtchnl.h
+@@ -7,7 +7,7 @@
+ #include <linux/types.h>
+ #include <linux/bitops.h>
+ #include <linux/if_ether.h>
+-#include <linux/avf/virtchnl.h>
++#include <linux/net/intel/virtchnl.h>
+ #include "ice_vf_lib.h"
+ 
+ /* Restrict number of MAC Addr and VLAN that non-trusted VF can programmed */
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index ec1b75f039bb..984944bab28b 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -23,8 +23,8 @@ struct idpf_rss_data;
+ 
+ #include <linux/net/intel/iidc_rdma.h>
+ #include <linux/net/intel/iidc_rdma_idpf.h>
++#include <linux/net/intel/virtchnl2.h>
+ 
+-#include "virtchnl2.h"
+ #include "idpf_txrx.h"
+ #include "idpf_controlq.h"
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index 908dfa28674e..9103580c0a3d 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -5,6 +5,7 @@
+ #define _IDPF_TXRX_H_
+ 
+ #include <linux/dim.h>
++#include <linux/net/intel/virtchnl2_lan_desc.h>
+ 
+ #include <net/libeth/cache.h>
+ #include <net/libeth/types.h>
+@@ -13,7 +14,6 @@
+ #include <net/xdp.h>
+ 
+ #include "idpf_lan_txrx.h"
+-#include "virtchnl2_lan_desc.h"
+ 
+ #define IDPF_LARGE_MAX_Q			256
+ #define IDPF_MAX_Q				16
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+index 9b1c9c86f6ea..5f8ae8c5be20 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+@@ -4,7 +4,7 @@
+ #ifndef _IDPF_VIRTCHNL_H_
+ #define _IDPF_VIRTCHNL_H_
+ 
+-#include "virtchnl2.h"
++#include <linux/net/intel/virtchnl2.h>
+ 
+ #define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
+ #define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
+diff --git a/include/linux/avf/virtchnl.h b/include/linux/net/intel/virtchnl.h
+similarity index 100%
+rename from include/linux/avf/virtchnl.h
+rename to include/linux/net/intel/virtchnl.h
+diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2.h b/include/linux/net/intel/virtchnl2.h
+similarity index 100%
+rename from drivers/net/ethernet/intel/idpf/virtchnl2.h
+rename to include/linux/net/intel/virtchnl2.h
+diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2_lan_desc.h b/include/linux/net/intel/virtchnl2_lan_desc.h
+similarity index 100%
+rename from drivers/net/ethernet/intel/idpf/virtchnl2_lan_desc.h
+rename to include/linux/net/intel/virtchnl2_lan_desc.h
+-- 
+2.47.1
 
-> +    description:
-> +      Endpoint MAC sub-node. Provides the host-side data path through the
-> +      DMA channels described by its dmas / dma-names.
-> +    properties:
-> +      compatible:
-> +        const: xlnx,tsn-ep-mac
-> +
-> +      reg:
-> +        maxItems: 1
-> +
-> +      dmas:
-> +        minItems: 2
-> +        maxItems: 32
-> +
-> +      dma-names:
-> +        minItems: 2
-> +        maxItems: 32
-> +        items:
-> +          pattern: "^(tx|rx)_chan(1[0-5]|[0-9])$"
-> +        description: |
-> +          Names matching the entries in 'dmas', one per DMA channel and in
-> +          the same order. TX channel names use "tx_chan<N>" and RX channel
-> +          names use "rx_chan<N>", where N is 0..15. Example: "tx_chan0",
-> +          "tx_chan1", ..., "rx_chan0", "rx_chan1", ....
-> +
-> +      tx-queues-config:
-> +        type: object
-
-Move additionalProperties here.
-
-> +        description:
-> +          TX queue configuration node that maps IP priority queues to
-> +          DMA TX channels. The TSN IP supports multiple priority queues for
-> +          QoS scheduling, and each queue can be connected to a specific DMA
-> +          channel. This mapping defines which DMA TX channel is used to
-> +          transmit packets for each priority queue. For example, queue0
-> +          with xlnx,dma-channel-num set to 5 means priority queue 0 uses
-> +          tx_chan5 for data transfer.
-> +
-> +        patternProperties:
-> +          "^queue[0-7]$":
-> +            description:
-> +              Each subnode represents a priority queue. The
-> +              xlnx,dma-channel-num property specifies which DMA TX channel
-> +              (tx_chan0 to tx_chan15) is connected to this queue for
-> +              transmitting packets.
-> +            type: object
-
-Move additionalProperties here and then a blank line after.
-
-> +            properties:
-> +              xlnx,dma-channel-num:
-> +                $ref: /schemas/types.yaml#/definitions/uint32
-> +                description:
-> +                  DMA TX channel number connected to this priority queue.
-> +                minimum: 0
-> +                maximum: 15
-> +
-> +            required:
-> +              - xlnx,dma-channel-num
-> +
-> +            additionalProperties: false
-> +
-> +        additionalProperties: false
-> +
-> +    required:
-> +      - compatible
-> +      - reg
-> +      - dmas
-> +      - dma-names
-> +      - tx-queues-config
-> +
-> +    unevaluatedProperties: false
-> +
-> +  "^switch@":
-
-^switch@[0-9a-f]+$
-
-> +    type: object
-> +    $ref: /schemas/net/dsa/dsa.yaml#/$defs/ethernet-ports
-> +    description:
-> +      Three-port Ethernet switch sub-node. Contains the switch fabric
-> +      register window and the two per-MAC register windows; each per-MAC
-> +      window houses an MDIO controller and a PTP register block at fixed
-> +      offsets. The IP's per-MAC and PTP-timer interrupts are exposed here.
-> +
-> +    properties:
-> +      compatible:
-> +        const: xlnx,tsn-switch
-> +
-> +      reg:
-> +        items:
-> +          - description: Switch fabric register window
-> +          - description: MAC1 register window (includes MDIO and PTP)
-> +          - description: MAC2 register window (includes MDIO and PTP)
-> +
-> +      reg-names:
-> +        items:
-> +          - const: switch
-> +          - const: mac1
-> +          - const: mac2
-> +
-> +      interrupts:
-> +        maxItems: 7
-> +
-> +      interrupt-names:
-> +        items:
-> +          - const: ptp_rx_mac1
-> +          - const: ptp_tx_mac1
-> +          - const: mac_irq_mac1
-> +          - const: ptp_timer
-> +          - const: ptp_rx_mac2
-> +          - const: ptp_tx_mac2
-> +          - const: mac_irq_mac2
-> +
-> +      mdio-mac1:
-
-mdio-1
-
-> +        $ref: /schemas/net/mdio.yaml#
-> +        description:
-> +          MDIO bus controller for MAC1. Registers reside inside the mac1
-> +          reg-names window.
-> +        unevaluatedProperties: false
-> +
-> +      mdio-mac2:
-
-mdio-2
-
-> +        $ref: /schemas/net/mdio.yaml#
-> +        description:
-> +          MDIO bus controller for MAC2. Registers reside inside the mac2
-> +          reg-names window.
-> +        unevaluatedProperties: false
-> +
-> +      ethernet-ports:
-> +        type: object
-> +        additionalProperties: true
-> +
-> +        properties:
-> +          port@0:
-> +            type: object
-> +            additionalProperties: true
-> +            description:
-> +              CPU port. Wired internally to the ep-mac sibling.
-> +
-> +            properties:
-> +              reg:
-> +                const: 0
-> +
-> +              phy-mode:
-> +                const: internal
-> +
-> +        patternProperties:
-> +          "^port@[1-2]$":
-> +            type: object
-> +            additionalProperties: true
-> +            description:
-> +              External Ethernet port (port@1 is wired to MAC1, port@2 to
-> +              MAC2). Its PHY is reached through the corresponding
-> +              mdio-mac<N> bus.
-> +
-> +            properties:
-> +              phy-mode:
-> +                enum:
-> +                  - gmii
-> +                  - rgmii
-> +                  - rgmii-id
-> +
-> +    required:
-> +      - compatible
-> +      - reg
-> +      - reg-names
-> +      - interrupts
-> +      - interrupt-names
-> +
-> +    unevaluatedProperties: false
-> +
-> +additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - xlnx,num-priorities
-> +  - ranges
-> +  - '#address-cells'
-> +  - '#size-cells'
-> +
-> +examples:
-> +  - |
-> +    tsn_ip: tsn@80040000 {
-
-Drop unused labels.
-
-Rob
