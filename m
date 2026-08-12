@@ -1,180 +1,87 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42BA42376E
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 10:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AB8423A72;
+	Wed, 12 Aug 2026 10:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786530342; cv=none; b=YUzUnJSPaAMninr6bXy7+xNxustdL3PWby/EvlxUeNFLS2Kl+WCxPS2aBJAvNwszKccHvZEZHqiYX7ISgB+ij4d2ZFVQ0lkljWxdkR8ogdZ0BS12zjJcJqBhQhypz4yeufGbvWaQdCfEo2MMm4zdZGcUDabUe6RZSPHL4wSdKTI=
+	t=1786530363; cv=none; b=Tr7G9KuIxL4dq/YIGucU5k4PTkcnP26sEpTsdS4xkvsSzInys6zC3pkuDdQNz3FKkO/XFUOzGTMbzQGHvBA6XCTNPO2w1jXoIUJh94v3iWZpmdvu5vwpio0NUuTrMzEdb7YbJx4G6g+Gji7co7xc88JApxqTMKNKDk0y5Zi+rQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786530342; c=relaxed/simple;
-	bh=i3Z0c1eG4C8OKKyeR1gk2MEKerI8zwHefe/oxp0onkI=;
+	s=arc-20240116; t=1786530363; c=relaxed/simple;
+	bh=mbtp6fIcU/mYc0DgGgiAALICk+fmR6QcifEPVQRKLac=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dCrNeMib6uLb7OxanSlGFpAW7Dph2BUvtOK9OMoiOkTsVylldIA01aAvPcEtDCoY0l2e3a8LLxif/4B7/57a9DFN0gBYc6mginpM9rz8L5HSdcWeT4RJDvK5jatzovoqd0snvuxoEcOhRoqBlv9AraGN3KvJcymBOid858arZQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h9Joyu9d; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=YVGeTMGGraHwrObliCia1VeAtccpBALrIrm4dsR75UN+lxdHwoKDDLql2pB+DqvPqNzb0pKf7coJZfpq/1cU1snHSxu0wLH2bK+JDUNxZP8FXd+8D78h1yb6y5yWCritJ6Og6KFcmcU9ckz+YxjnX3pxXr9Ev3PeXhUwhfUXbFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=lSAcExCg; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h9Joyu9d"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so6423495e9.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 03:25:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786530339; x=1787135139; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oe8dRxLTv2e7yq5ZrL4Bpp0DEMKWFxsHcdUWwRLEBqs=;
-        b=h9Joyu9dOcAIUxpygvdwu2JC7m2/HgavgRCSGskufZGwxymLFZdrtjXP+t8kW7Ac37
-         0Le06jc8LA44+JEgj/KLfzxEeQA3+/IWMad4r2rGM40fNb7o4nXzdEq4pqdm+QADIMrE
-         3KULxaiy7rdl1c1YyDbzhG8mmoGiFYVJpicBCyzXM6W06CNB8PWRnsohQaTH/cUpw8UM
-         PTW71mGl8ecat+iyuZ1n7AmitmqIac8PvM74Ir2Tk8vocSgJr4RKw8O1gJ86dmM9Bx7L
-         XopDiVCi1hXoRPmhBkELajgwj/gtT1LcYXg5x+jBN/myrztqHmIyfPhTc9avDCmXtxgj
-         XKEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786530339; x=1787135139;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=oe8dRxLTv2e7yq5ZrL4Bpp0DEMKWFxsHcdUWwRLEBqs=;
-        b=BVktbghX8VmI+YKxTodVx79zeDBXcka5EOF/g8NroQBEY8eTD39cEwjWECTGOIw0tp
-         p6pWxCtld7GPMIpSss3xgZIUtEfFTwLA1mQ2feX6dExXmj39Ot/qAsVge6DwnEYfi56p
-         VLzSHoGNFRs/3H0J5bOP4gLRqZqw8IaCSAc7W0CvCml8GMO+PQARB2hdszHra7Hkn1nw
-         HtJwbdwdsALCvnlC1HBOQTMnyr2lxbHI0LVRrHXt1LuwKij3XtY605ggUckgKgHnigJa
-         tbz+lyQAFCRNMUzfEKmDyYjnnJyKENHoOlO9QZzk2Pi2839EkaiAKuqS+v3GqJHv/jWl
-         g56A==
-X-Forwarded-Encrypted: i=1; AHgh+RpjL6QEcWRhguT5ziEo241FSjEmyKwTePp057SZ6xnm9aisF73bbknrr0vutG/+rtyCBRTriaM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw66iOdvs5MWxJK9jHdbgLP6guT0f2IbwNmDKHpTHm+I+CeuP0o
-	NH1RB+Trq6k/bP1DlIayk9A7aV+t/3glNfCxY3oUiVaNZuBBc9AicE27
-X-Gm-Gg: AR+sD12/RR02REBzA1tTS2n+T4rPqildVBWhHZoAcEYr8p07t1Cl78XZOKPCFNK7tpz
-	xmIZ72gMBf6LMkm5Zc8Y574iODAU/8zl+XXbluA8i0Fw7qKEJE0sriLtMiILMJKSbYXHpRl7/L8
-	HYWA9a9PxsQAmQ/y4jJQX3K0Gxf6wZj6FGphxQcXzys6i5kawdnfPheimrtXIawxyD3HtW16wKB
-	OSAhMxNei9qXXlEooIE7xkzmEw+Ibbly88KsAdcm5Qhilcul8KuquDfCMdweukdFb7WN4yylDGP
-	krkLn8Q0DTC2RMXm5DidFAeu2/0A/grrEv0Fsz5sWdqlR8AqXJxIvwkK32jpklONr1GWqTvTnh1
-	Wdjco8PdtMc98Kq05Gyl9Inv0pqiUoRQLndE0diBUj/z148wAm3fCkzV/fZubF28fb6A8Jz5Ec6
-	DUWmwsr4DiI80mxzqjdC2R0aYfWGp3l2QIP9yhY0+mkVUdGxNi2OUHC6cmNhcm9L3gQTW2A/Kb6
-	Hs/Qivc1qYY6BMHz8lu
-X-Received: by 2002:a05:600c:5020:b0:496:bffb:fb7b with SMTP id 5b1f17b1804b1-4997c13420bmr54782195e9.10.1786530338799;
-        Wed, 12 Aug 2026 03:25:38 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48150bf412dsm6829626f8f.6.2026.08.12.03.25.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 03:25:38 -0700 (PDT)
-Date: Wed, 12 Aug 2026 12:25:36 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
-	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
-	pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org,
-	sdf.kernel@gmail.com, ameryhung@gmail.com, memxor@gmail.com,
-	jiayuan.chen@linux.dev
-Subject: Re: [PATCH bpf-next v5 1/5] net: Add connect_socket() helper
-Message-ID: <anxKICgNbziTLtsy@gmail.com>
-References: <20260807171532.125149-1-mahe.tardy@gmail.com>
- <20260807171532.125149-2-mahe.tardy@gmail.com>
- <CAAVpQUDcckytw4Y9S4mK8T75DniD+_=stL9BOo7Sp70OFAOjgA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="lSAcExCg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ZG4/tOtlMC158ODe2VldmC4AlBAtVsrwF/kxgDvALCk=; b=lSAcExCgkv7JFF8abjQmGTzinA
+	C710Oc8Y6zx5sUg3J3wph9WNA3perleERbT/7QyXOlDJ+vOvDl0dYqptiRwFxTx4QbaQUD9P3PtfD
+	fswMg+W32fvY5unwfZYf7ueE8y5c/gR/3qUPDlyblNMXTVwEXf2A9pOhpQxyxwH9T1kFKAHv1cL9A
+	LpMz4ifFP/QMGWevxjzdYWKVg8LWB37hOor51gXYNiLOvAi/KPla9B3UHY8dw7eYqt2S+/DOJbzYl
+	eB7L89MENlfWwc/JwqYXYlZ6IxtmM/NnZUq+IuPdzQnz1R08SvfEgkYKUITVdO3HfFQKZff5BWxrK
+	sLjBqlTA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wu69X-004HDL-1f;
+	Wed, 12 Aug 2026 10:25:43 +0000
+Date: Wed, 12 Aug 2026 03:25:38 -0700
+From: Breno Leitao <leitao@debian.org>
+To: David Heidelberg <david@ixit.cz>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, oe-linux-nfc@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, sdf.kernel@gmail.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH net-next 0/2] nfc: llcp: Move to .getsockopt_iter
+Message-ID: <anxJuZZ7w2x7tkBr@gmail.com>
+References: <20260708-getsockopt_phase3-v1-0-d8394f2fc554@debian.org>
+ <amtMjiKCFJGY6DAY@gmail.com>
+ <8536d413-a46c-4798-8feb-d4a0e0fa78c2@ixit.cz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAVpQUDcckytw4Y9S4mK8T75DniD+_=stL9BOo7Sp70OFAOjgA@mail.gmail.com>
+In-Reply-To: <8536d413-a46c-4798-8feb-d4a0e0fa78c2@ixit.cz>
+X-Debian-User: leitao
 
-On Mon, Aug 10, 2026 at 09:01:18PM -0700, Kuniyuki Iwashima wrote:
-> On Fri, Aug 7, 2026 at 10:15 AM Mahe Tardy <mahe.tardy@gmail.com> wrote:
-> >
-> > Add a helper that connects an existing socket while invoking the LSM
-> > hook. Reuse it in __sys_connect_file() to avoid duplicating the connect
-> > logic. Other socket operations have equivalent helpers that trigger the
-> > appropriate LSM hooks that can be reused, this one was the only one
-> > missing.
-> >
-> > Acked-by: Song Liu <song@kernel.org>
-> > Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
-> > ---
-> >  include/linux/socket.h |  2 ++
-> >  net/socket.c           | 32 ++++++++++++++++++--------------
-> >  2 files changed, 20 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/include/linux/socket.h b/include/linux/socket.h
-> > index 2a8d7b14f1d1..5a5eb1250103 100644
-> > --- a/include/linux/socket.h
-> > +++ b/include/linux/socket.h
-> > @@ -461,6 +461,8 @@ extern struct file *__sys_socket_file(int family, int type, int protocol);
-> >  extern int __sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
-> >  extern int __sys_bind_socket(struct socket *sock, struct sockaddr_storage *address,
-> >                              int addrlen);
-> > +int connect_socket(struct socket *sock, struct sockaddr_storage *addr,
-> > +                  int addrlen, int flags);
-> >  extern int __sys_connect_file(struct file *file, struct sockaddr_storage *addr,
-> >                               int addrlen, int file_flags);
-> >  extern int __sys_connect(int fd, struct sockaddr __user *uservaddr,
-> > diff --git a/net/socket.c b/net/socket.c
-> > index 63c69a0fa74e..8f18f124d92a 100644
-> > --- a/net/socket.c
-> > +++ b/net/socket.c
-> > @@ -2103,6 +2103,20 @@ SYSCALL_DEFINE3(accept, int, fd, struct sockaddr __user *, upeer_sockaddr,
-> >         return __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, 0);
-> >  }
-> >
-> > +int connect_socket(struct socket *sock, struct sockaddr_storage *address,
-> > +                  int addrlen, int flags)
-> > +{
-> > +       int err;
-> > +
-> > +       err = security_socket_connect(sock, (struct sockaddr *)address, addrlen);
-> > +       if (err)
-> > +               return err;
-> > +
-> > +       return READ_ONCE(sock->ops)->connect(sock,
-> > +                                   (struct sockaddr_unsized *)address,
-> > +                                   addrlen, flags);
+Hello David,
+
+On Tue, Aug 11, 2026 at 08:46:11PM +0200, David Heidelberg wrote:
+> On 30/07/2026 15:07, Breno Leitao wrote:
+> > On Wed, Jul 08, 2026 at 04:51:57AM -0700, Breno Leitao wrote:
+> > > Continue to convert the protocols to getsockopt_iter callback.
+> > 
+> > Hello David,
+> > 
+> > Have you had a chance to look at this change?
 > 
-> nit: indentation is weird, and
-
-agree, ran clang-format on it, should be better in the next revision.
-
+> Hello Breno,
 > 
-> > +}
-> > +
-> >  /*
-> >   *     Attempt to connect to a socket with the server address.  The address
-> >   *     is in user space so we verify it is OK and move it to kernel space.
-> > @@ -2119,23 +2133,13 @@ int __sys_connect_file(struct file *file, struct sockaddr_storage *address,
-> >                        int addrlen, int file_flags)
-> >  {
-> >         struct socket *sock;
-> > -       int err;
-> >
-> >         sock = sock_from_file(file);
-> > -       if (!sock) {
-> > -               err = -ENOTSOCK;
-> > -               goto out;
-> > -       }
-> > -
-> > -       err =
-> > -           security_socket_connect(sock, (struct sockaddr *)address, addrlen);
-> > -       if (err)
-> > -               goto out;
-> > +       if (!sock)
-> > +               return -ENOTSOCK;
-> >
-> > -       err = READ_ONCE(sock->ops)->connect(sock, (struct sockaddr_unsized *)address,
-> > -                                           addrlen, sock->file->f_flags | file_flags);
-> > -out:
-> > -       return err;
-> > +       return connect_socket(sock, address, addrlen,
-> > +                                   sock->file->f_flags | file_flags);
-> 
-> same here, otherwise looks good.
+> sadly I don't have it inside my mailbox nor archive.
 
-same answer.
+No worries, I see it in lore:
 
-> 
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+	https://lore.kernel.org/all/20260708-getsockopt_phase3-v1-0-d8394f2fc554@debian.org/
+
+> Can you send it again please?
+
+Sure, I am happy to resend.
+
+> Preferably in a week after another batch of fixes will land?
+
+Sorry, what fixes are those?
+
+Thanks
+--breno
