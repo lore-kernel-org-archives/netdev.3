@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8028A3AD524;
-	Wed, 12 Aug 2026 08:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED613C061C;
+	Wed, 12 Aug 2026 08:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786521863; cv=none; b=H8SUoSOkkRkI2/ppfvegrsOnu5RHFunfxKiRy60L4BnhDmIZugxLYXEuqIqe4YkewtpIMbcgxtYe660PMY6HKmAcChJ2buGVC4+g4Qp2NS7u85eachPpUB/xcaKjqKYBrY2wjNPYL4Q6zzmPUPlx3yXiJSYZYc5V5J2hIsIFc1U=
+	t=1786521865; cv=none; b=JFJLK3og6cpoDhFeRZjKmvWujHO/LpPo0BjbXNVxBk9CA2TFe6fXA7bBqF+wFcEMnjkzQ7fI6ZeKGqVbG+gvOly9J5JD9kS3o4DzIzG5e9aWwwPrj07eGgH0jONhJ3aUh8Z/N5AbiQ03BY8XZkP2kSMhNlO9Mki3/XKmAoBZtkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786521863; c=relaxed/simple;
-	bh=joni9XzQwNuJPkn1ceF3z5m1XVPePQq5v9OQq8pIo1I=;
+	s=arc-20240116; t=1786521865; c=relaxed/simple;
+	bh=PUb1W4dr05FmwWwVB5shM0WxbbnhxUsxwwSmKaMpego=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oGRYg1yhxCsggB73ap/vD3gqOqBTgSL3rcL70Kc6n5QFkVfTu6CSRKBu3jx45S/dts61TPGXD7QNwEWIRNmwxWLohGMPMNTMT/xQHIKuCSbFvkbM00ZJLPYpwEVFBqRa2Rd2yPlHD9BRyV8ZO4QuGZ7UAue+rtbldFn8w/IFejY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BjN8eoEx; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=Z3SGXoIL4m/pl9NRHbtia6Uwf1rA3LG0hFWyHdiPRGQB9MeORYsmN95qlYdSWg5Uos/LVvyHcul2macbOObqAfZfTFmPjRpFqo8o6O1rqfEKcLnyLnHehkHSZnFSpzQRBKp5aQDErnwJRqaRCP46krowI9x3jIxvOSaYyhfbD+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ifBlaWLG; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BjN8eoEx"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ifBlaWLG"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E87681A1571;
-	Wed, 12 Aug 2026 08:04:19 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 4D0741A15A2;
+	Wed, 12 Aug 2026 08:04:22 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BBF286045E;
-	Wed, 12 Aug 2026 08:04:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E8FB111C4C94B;
-	Wed, 12 Aug 2026 10:04:16 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 217A36045E;
+	Wed, 12 Aug 2026 08:04:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 19E0511C4C94E;
+	Wed, 12 Aug 2026 10:04:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786521858; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1786521861; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=HA6X4gblX3Ghg1RHXpshWd/MMZ6CrLk2WgmPgyBPVmk=;
-	b=BjN8eoExvpOTRfNWQLvVKtHyvMDMjvAtle+4haiTZrmzauMuSREWvlS8CYGTh8Xk50uHq8
-	SoiZkx5viiVkA2qnM6CLgxU2gorsE21mhTBLpILIvM067ed+wxT/pZq1PsZsPnNxF0w8r4
-	FXKT1x5LTw/bg/UOhBePo+qq1GUl/LdGD0kvOkdi15zrexrhJyqj8AO95tye7fA1VhRFp1
-	4jQC+QR91B9wS18wGAGNgI/nGfJELnMJrslP/EQ2MT7hZyxmmWoKS/QUINZDTt2taGDyig
-	65cf5KG4WpHC5P1KxkbmZu9dR0JGnorVzy6ij+SlooL3UILc+JFdOBdUo8xa3w==
+	bh=lUBS9ye9Sm+RZtv/z752hVj9dPz0hRLNdBO0zyGkF5g=;
+	b=ifBlaWLGwYnI0eR3ngvmUW/bXNwmSWIz/10zjuhV3Wct9pBWei/2zlRBD8Bd2aZEQqmmTX
+	GW/noo+aVdd/2FR6T6LP4Neyf8Q7pgi2JIyrn36Pv+X4TJkSxIgQuiR+naCy83vk4nX0sU
+	YACb5Z8SaYbZKDVvaoxJq4nur1QVV2Lub2qH3abW97XVxC/Sav03fhFlRhA5W/1J8d2LQy
+	OI6CAGyPHIlmNQArSjB62kVoAGFWcXHIJMahVFhEouW2Tr28t8Pg6oBqFLs3Ke6+nCzaKO
+	N0UuVY5h9E/zboQ5aFZs0bbIRrW7pwOcPFuMK/L4tD5HMuptdy4WChhtAAVpKw==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Wed, 12 Aug 2026 10:03:29 +0200
-Subject: [PATCH net-next v9 15/17] net: macb: read ISR inside bp->lock
- critical section
+Date: Wed, 12 Aug 2026 10:03:30 +0200
+Subject: [PATCH net-next v9 16/17] net: macb: use context swapping in
+ .set_ringparam()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260812-macb-context-v9-15-7ddbf5f715e0@bootlin.com>
+Message-Id: <20260812-macb-context-v9-16-7ddbf5f715e0@bootlin.com>
 References: <20260812-macb-context-v9-0-7ddbf5f715e0@bootlin.com>
 In-Reply-To: <20260812-macb-context-v9-0-7ddbf5f715e0@bootlin.com>
 To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
@@ -68,56 +68,379 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-The IRQ handler reads ISR register into the `status` stack variable.
-If empty, it early returns. Else, it grabs bp->lock and iterates on
-the status bits.
+ethtool_ops.set_ringparam() is implemented using the primitive close /
+update ring size / reopen sequence. Under memory pressure this does not
+fly: we free our buffers at close and cannot reallocate new ones at
+open. Also, it triggers a slow PHY reinit.
 
-We risk a race on spinlock acquire; status might have changed.
-Move the readl(ISR) inside the bp->lock critical section.
+Instead, exploit the new context mechanism and improve our sequence to:
+ - allocate a new context (including buffers) first
+ - if it fails, early return without any impact to the interface
+ - stop interface
+ - update global state (bp, netdev, etc)
+ - pass buffer pointers to the hardware
+ - start interface
+ - free old context.
 
-In practice, we protect ourselves from interpreting the same ISR status
-twice. To understand issues, read macb_interrupt() body and imagine
-each codepath being performed twice:
- - Two napi_schedule_irqoff() are idempotent *if fast enough*.
- - Two schedule_work(tx_error_task) are idempotent *if fast enough*.
- - Double increment of rx_overruns.
- - Two queue_work(hresp_err_bh_work) are idempotent *if fast enough*.
- - Two pm_wakeup_event() is safe.
+The HW disable sequence is inspired by macb_reset_hw() but avoids
+(1) setting NCR bit CLRSTAT and (2) clearing register PBUFRXCUT.
 
-One risk remains with spurious interrupts that would, in addition to
-taking excessive CPU time, also create lock contention. How bad is it?
-Probably not too bad.
+The HW re-enable sequence is inspired by macb_mac_link_up(), skipping
+over register writes which would be redundant (because values have not
+changed).
+
+The generic context swapping parts are isolated into helper functions
+macb_context_swap_start|end(), reusable by other operations (change_mtu,
+set_channels, etc).
+
+Introduce a new locking primitive (mac_cfg_lock mutex) to serialise swap
+with phylink MAC callbacks. Avoid stopping phylink to avoid a slow PHY
+retrain. We cannot sync to phylink ops using phydev->lock because it is
+not available in the SFP case. We cannot check link state using
+netif_carrier_ok() because we could race with its changes; so we use a
+redundant bp->link_up boolean that is mac_cfg_lock protected.
+
+AT91 EMAC is handled differently as their buffer management is separate
+and they don't do NAPI. They must never call swap_start/end(). Anyway
+they do not implement set_ringparam (-EOPNOTSUPP) so we are safe.
 
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/cadence/macb.h      |   8 ++
+ drivers/net/ethernet/cadence/macb_main.c | 190 ++++++++++++++++++++++++++++---
+ 2 files changed, 185 insertions(+), 13 deletions(-)
 
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index ed9bd58d2e26..35564f2ed662 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -1355,6 +1355,8 @@ struct macb {
+ 	struct macb_queue	queues[MACB_MAX_QUEUES];
+ 
+ 	spinlock_t		lock;
++	/* Serializes context swap against phylink MAC callbacks. */
++	struct mutex		mac_cfg_lock;
+ 	struct clk		*pclk;
+ 	struct clk		*hclk;
+ 	struct clk		*tx_clk;
+@@ -1415,6 +1417,12 @@ struct macb {
+ 	struct delayed_work	tx_lpi_work;
+ 	u32			tx_lpi_timer;
+ 
++	/* ISR must not drive NAPI & BH mechanisms. Protected by bp->lock. */
++	bool			ctx_swap;
++
++	/* Redundant to netif_carrier_ok(), but set under bp->mac_cfg_lock. */
++	bool			link_up;
++
+ 	u32	rx_intr_mask;
+ 
+ 	struct macb_pm_data pm_data;
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index d23a0d08c276..6d79663e42bf 100644
+index 6d79663e42bf..55c97f2035e7 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -2190,13 +2190,14 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
- 	bool hresp_err = false;
- 	u32 status;
+@@ -735,12 +735,26 @@ static void macb_mac_disable_tx_lpi(struct phylink_config *config)
+ 	struct macb *bp = netdev_priv(netdev);
+ 	unsigned long flags;
  
--	status = queue_readl(queue, ISR);
--
--	if (unlikely(!status))
--		return IRQ_NONE;
--
- 	spin_lock(&bp->lock);
++	mutex_lock(&bp->mac_cfg_lock);
++
+ 	cancel_delayed_work_sync(&bp->tx_lpi_work);
  
-+	status = queue_readl(queue, ISR);
-+	if (unlikely(!status)) {
-+		spin_unlock(&bp->lock);
-+		return IRQ_NONE;
+ 	spin_lock_irqsave(&bp->lock, flags);
+ 	bp->eee_active = false;
+ 	macb_tx_lpi_set(bp, false);
+ 	spin_unlock_irqrestore(&bp->lock, flags);
++
++	mutex_unlock(&bp->mac_cfg_lock);
++}
++
++static void macb_txp_lpi_initial_defer(struct macb *bp)
++{
++	lockdep_assert_held(&bp->mac_cfg_lock);
++
++	/* Defer initial LPI entry by 1 second after link-up per
++	 * IEEE 802.3az section 22.7a.
++	 */
++	mod_delayed_work(system_wq, &bp->tx_lpi_work, msecs_to_jiffies(1000));
+ }
+ 
+ static int macb_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
+@@ -750,15 +764,16 @@ static int macb_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
+ 	struct macb *bp = netdev_priv(netdev);
+ 	unsigned long flags;
+ 
++	mutex_lock(&bp->mac_cfg_lock);
++
+ 	spin_lock_irqsave(&bp->lock, flags);
+ 	bp->tx_lpi_timer = timer;
+ 	bp->eee_active = true;
+ 	spin_unlock_irqrestore(&bp->lock, flags);
+ 
+-	/* Defer initial LPI entry by 1 second after link-up per
+-	 * IEEE 802.3az section 22.7a.
+-	 */
+-	mod_delayed_work(system_wq, &bp->tx_lpi_work, msecs_to_jiffies(1000));
++	macb_txp_lpi_initial_defer(bp);
++
++	mutex_unlock(&bp->mac_cfg_lock);
+ 
+ 	return 0;
+ }
+@@ -772,6 +787,7 @@ static void macb_mac_config(struct phylink_config *config, unsigned int mode,
+ 	u32 old_ctrl, ctrl;
+ 	u32 old_ncr, ncr;
+ 
++	mutex_lock(&bp->mac_cfg_lock);
+ 	spin_lock_irqsave(&bp->lock, flags);
+ 
+ 	old_ctrl = ctrl = macb_or_gem_readl(bp, NCFGR);
+@@ -803,6 +819,7 @@ static void macb_mac_config(struct phylink_config *config, unsigned int mode,
+ 		macb_or_gem_writel(bp, NCR, ncr);
+ 
+ 	spin_unlock_irqrestore(&bp->lock, flags);
++	mutex_unlock(&bp->mac_cfg_lock);
+ }
+ 
+ static void macb_mac_link_down(struct phylink_config *config, unsigned int mode,
+@@ -814,6 +831,10 @@ static void macb_mac_link_down(struct phylink_config *config, unsigned int mode,
+ 	unsigned int q;
+ 	u32 ctrl;
+ 
++	mutex_lock(&bp->mac_cfg_lock);
++
++	bp->link_up = false;
++
+ 	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
+ 			queue_writel(queue, IDR,
+@@ -824,6 +845,8 @@ static void macb_mac_link_down(struct phylink_config *config, unsigned int mode,
+ 	macb_writel(bp, NCR, ctrl);
+ 
+ 	netif_tx_stop_all_queues(netdev);
++
++	mutex_unlock(&bp->mac_cfg_lock);
+ }
+ 
+ /* Use juggling algorithm to left rotate tx ring and tx skb array */
+@@ -932,8 +955,11 @@ static void macb_mac_link_up(struct phylink_config *config,
+ 	unsigned int q;
+ 	u32 ctrl;
+ 
++	mutex_lock(&bp->mac_cfg_lock);
+ 	spin_lock_irqsave(&bp->lock, flags);
+ 
++	bp->link_up = true;
++
+ 	ctrl = macb_or_gem_readl(bp, NCFGR);
+ 
+ 	ctrl &= ~(MACB_BIT(SPD) | MACB_BIT(FD));
+@@ -983,6 +1009,8 @@ static void macb_mac_link_up(struct phylink_config *config,
+ 	macb_writel(bp, NCR, ctrl | MACB_BIT(RE) | MACB_BIT(TE));
+ 
+ 	netif_tx_wake_all_queues(netdev);
++
++	mutex_unlock(&bp->mac_cfg_lock);
+ }
+ 
+ static struct phylink_pcs *macb_mac_select_pcs(struct phylink_config *config,
+@@ -2199,8 +2227,10 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+ 	}
+ 
+ 	while (status) {
+-		/* close possible race with dev_close */
+-		if (unlikely(!netif_running(netdev))) {
++		/* close possible race with dev_close, and with context-swap
++		 * teardown
++		 */
++		if (unlikely(!netif_running(netdev) || bp->ctx_swap)) {
+ 			queue_writel(queue, IDR, -1);
+ 			macb_queue_isr_clear(bp, queue, -1);
+ 			break;
+@@ -3105,6 +3135,134 @@ static void macb_configure_dma(struct macb *bp)
+ 	}
+ }
+ 
++static void macb_context_swap_start(struct macb *bp)
++{
++	struct macb_queue *queue;
++	unsigned long flags;
++	unsigned int q;
++	u32 ctrl;
++
++	mutex_lock(&bp->mac_cfg_lock);
++
++	/* We cannot mask IRQs because they'll get re-armed by BH. So instead we
++	 * signal to IRQ handler it shouldn't drive BH features and should
++	 * self-disarm.
++	 */
++	spin_lock_irqsave(&bp->lock, flags);
++	bp->ctx_swap = true;
++	spin_unlock_irqrestore(&bp->lock, flags);
++
++	/* Drain BH features. HW is still active and usable at this point but
++	 * IRQs are being ignored.
++	 */
++
++	cancel_work_sync(&bp->hresp_err_bh_work);
++
++	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
++		/* Must be done before NAPI is disabled. */
++		cancel_work_sync(&queue->tx_error_task);
++
++		napi_disable(&queue->napi_rx);
++		napi_disable(&queue->napi_tx);
 +	}
 +
- 	while (status) {
- 		/* close possible race with dev_close */
- 		if (unlikely(!netif_running(netdev))) {
++	/* Must be done after napi_tx is disabled. */
++	cancel_delayed_work_sync(&bp->tx_lpi_work);
++
++	/* Can finally disable software Tx; need to wait until napi_tx and
++	 * tx_error_task cannot be scheduled as either might wakeup Tx.
++	 */
++	netif_tx_disable(bp->netdev);
++
++	/* Now that everything is stopped, clear DQL. */
++	for (q = 0; q < bp->num_queues; ++q)
++		netdev_tx_reset_queue(netdev_get_tx_queue(bp->netdev, q));
++
++	/* Safe to call outside bp->lock because bp->ctx_swap ensures the IRQ
++	 * handling is a no-op and all BH features are disabled.
++	 *
++	 * Whether it fails or not we'll disable TE/RE next.
++	 * We were just trying to be nice.
++	 */
++	macb_halt_tx(bp);
++
++	spin_lock_irqsave(&bp->lock, flags);
++
++	ctrl = macb_readl(bp, NCR);
++	macb_writel(bp, NCR, ctrl & ~(MACB_BIT(RE) | MACB_BIT(TE)));
++
++	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
++		queue_writel(queue, IDR, -1);
++		queue_readl(queue, ISR);
++		macb_queue_isr_clear(bp, queue, -1);
++	}
++
++	macb_writel(bp, TSR, -1);
++	macb_writel(bp, RSR, -1);
++
++	spin_unlock_irqrestore(&bp->lock, flags);
++}
++
++static void macb_context_swap_end(struct macb *bp,
++				  struct macb_context *new_ctx)
++{
++	struct macb_context *old_ctx;
++	struct macb_queue *queue;
++	unsigned long flags;
++	unsigned int q;
++	u32 ctrl;
++
++	lockdep_assert_held(&bp->mac_cfg_lock);
++
++	/* Swap contexts & give buffer pointers to HW. */
++
++	old_ctx = bp->ctx;
++	bp->ctx = new_ctx;
++	macb_init_buffers(bp);
++
++	/* Start NAPI, HW Tx/Rx and software Tx. */
++
++	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
++		napi_enable(&queue->napi_rx);
++		napi_enable(&queue->napi_tx);
++	}
++
++	spin_lock_irqsave(&bp->lock, flags);
++
++	/* Re-arm normal interrupt processing before enabling IRQs. */
++	bp->ctx_swap = false;
++
++	macb_configure_dma(bp);
++
++	if (bp->link_up) {
++		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
++			queue_writel(queue, IER,
++				     bp->rx_intr_mask |
++				     MACB_TX_INT_FLAGS |
++				     MACB_BIT(HRESP));
++		}
++
++		ctrl = macb_readl(bp, NCR);
++		macb_writel(bp, NCR, ctrl | MACB_BIT(RE) | MACB_BIT(TE));
++	}
++
++	spin_unlock_irqrestore(&bp->lock, flags);
++
++	if (bp->link_up) {
++		netif_tx_wake_all_queues(bp->netdev);
++
++		if (bp->eee_active)
++			macb_txp_lpi_initial_defer(bp);
++	}
++
++	mutex_unlock(&bp->mac_cfg_lock);
++
++	/* Free old context. */
++
++	macb_free(old_ctx);
++	kfree(old_ctx);
++}
++
+ static void macb_init_hw(struct macb *bp)
+ {
+ 	u32 config;
+@@ -3829,9 +3987,10 @@ static int macb_set_ringparam(struct net_device *netdev,
+ 			      struct kernel_ethtool_ringparam *kernel_ring,
+ 			      struct netlink_ext_ack *extack)
+ {
++	unsigned int new_rx_size, new_tx_size;
+ 	struct macb *bp = netdev_priv(netdev);
+-	u32 new_rx_size, new_tx_size;
+-	unsigned int reset = 0;
++	bool running = netif_running(netdev);
++	struct macb_context *new_ctx;
+ 
+ 	if (bp->caps & MACB_CAPS_MACB_IS_EMAC)
+ 		return -EOPNOTSUPP;
+@@ -3853,16 +4012,20 @@ static int macb_set_ringparam(struct net_device *netdev,
+ 		return 0;
+ 	}
+ 
+-	if (netif_running(bp->netdev)) {
+-		reset = 1;
+-		macb_close(bp->netdev);
++	if (running) {
++		new_ctx = macb_context_alloc(bp, netdev->mtu,
++					     new_rx_size, new_tx_size);
++		if (IS_ERR(new_ctx))
++			return PTR_ERR(new_ctx);
++
++		macb_context_swap_start(bp);
+ 	}
+ 
+ 	bp->configured_rx_ring_size = new_rx_size;
+ 	bp->configured_tx_ring_size = new_tx_size;
+ 
+-	if (reset)
+-		macb_open(bp->netdev);
++	if (running)
++		macb_context_swap_end(bp, new_ctx);
+ 
+ 	return 0;
+ }
+@@ -6039,6 +6202,7 @@ static int macb_probe(struct platform_device *pdev)
+ 	}
+ 	spin_lock_init(&bp->lock);
+ 	spin_lock_init(&bp->stats_lock);
++	mutex_init(&bp->mac_cfg_lock);
+ 
+ 	/* setup capabilities */
+ 	macb_configure_caps(bp, macb_config);
 
 -- 
 2.55.0
