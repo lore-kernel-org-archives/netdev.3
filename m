@@ -1,114 +1,261 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A3E37E5CF
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:06:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186DD30C14A;
+	Wed, 12 Aug 2026 16:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786550769; cv=none; b=BrJnudtzTxPgZsEuP6iTqW015Li9e0F2sYa7CIQc8RF/L7gESuIYXVso22mZ/D7IKCkZmd2tAmizS9fSxNpozjncz4ACI4VCVHZS7RRmpueD0jFKnOxEFYc5AjInbW/OEHDpayonWYuZh3WkC+VpS0MsqwZbmiyIwZX7vjn+Ai8=
+	t=1786550807; cv=none; b=kw9NQrbe5fcgntjj+By797fkdGuEp6jqBTLg48KDParjJ3GuAlcuzyMskTCebK4V4Jj8O5zPUGrcb4NEXmQcqhdIbJFxmuXTqSTXjHPor5tXwFT2RqoBYf0APShvG66k5/EEOy9E6y8Ui61u1RnGyB0fBow65Sz1qdEBc6fHLYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786550769; c=relaxed/simple;
-	bh=0sLq+mb8NNIfQ6TWGK3tdYy1TSN+EMEiubeQ4dG/GCU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JErNxRjIDEfFCoEWy6nT3JL+emCQyaH+9Il/oK3kn2jcW7159vqsAItUr/NGp0lPIuEWdhpY/1iz6dvJNfOKg5OTczIUDxIQ1HP7iaNLhgYKSxgHOjgcU8+2bwu116HqKurAIuNTEWf6mlMWGRYbDKwhc6T4v1R4SPyTND7Q1WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BujEgxi3; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1786550807; c=relaxed/simple;
+	bh=FjRIs0zo/Kg90MRRkK33otsEN7zsR9TSjX9k04tBgPY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uqcSj6XQEVzYkKTUQkO6TBQD0N6DyoTA8YZKeF/IAyKjRbrmp4Pm+KC2Z9py5hXco87dRbA6Dj9JpZVQMYcyDlgqBcZ/l/8MVPl1zqrps/dj1RRzpRXedHxKmSDJjTw00LcRo7y2DqHE1mBX5Y8+fuqTgfex4MhvdDYC9G2g154=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ZHdi/B/W; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BujEgxi3"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 913D21A15C5;
-	Wed, 12 Aug 2026 16:06:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4F6F76045E;
-	Wed, 12 Aug 2026 16:06:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1AA1011C4D16B;
-	Wed, 12 Aug 2026 18:05:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786550758; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=AAf9WcD5U5rcXNEgPdOeLeYZObFyFgmjHwp/FwU/tAk=;
-	b=BujEgxi3vMH2rRdMlmQb5SiY7pt77mVWhPBJBrnPLt+D/KIsUHdLq6k8kYLeu1VAxM38+N
-	gInF92XmQKbM+6XRR8vizypUuIUGVN94flkcZnE+euU/RYFpJ70GDS+27vc8YGQj8gfT11
-	f7g7mH0HCHAkDfXRod1zoCTEBwx5O3nDbArY/e6rKnFQxDle1vFYbjT4RY68Q1o3EA1x0p
-	yWkvQBbaVMKAWf7e7JnskdyyoaB1JQe3Pjte1AEZalBRC6LWzCkQgHWfNhDJq1u54VOMfh
-	EAx0AmhqLf2KXY452RYIREmP/JiuR/KUZwCSBScrN6t5oL3bMhdYQFkpntGgOA==
-Message-ID: <a959dc2d-6f41-4c9b-9363-52c8edfcd85f@bootlin.com>
-Date: Wed, 12 Aug 2026 18:05:49 +0200
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ZHdi/B/W"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CDckgv2655505;
+	Wed, 12 Aug 2026 09:06:37 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=qBJ/MKOLo4AIyDgzJJbzQFd
+	4RHXXZJ4sFwZbtOhARG4=; b=ZHdi/B/WVZ5rvcTibQ/ipMcZBn80fLp08v5qSa7
+	NYfNDSvxOSM33rLkjLwiXSQWHeJ3rK2VBtbZn26Jv6seQhA3uasAKPFoKCLpi4gJ
+	GUXGjF3f56X93KCU7Ox5QYlsdM1rqt5sGuYP8YVtovBTtINxtIpqlzXoWUPJJBxV
+	48HP73o/szpbdspFFdyTkvj+yq2TuVYlBKkHQu5Lzr/nKz40YIpzIQddB6ilsw0u
+	hFvJqwpSlgCMlEXPI6GptJWYtFDomdvDbtBJTjGDZ32pk9DCFQA3fElZZ0WxVhBZ
+	TcNEMJkKxakaxoTihsMTZYSwBt/z16NNuv795clMiuCGjhQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4fyk1hrm1w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 09:06:36 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 12 Aug 2026 09:06:36 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 12 Aug 2026 09:06:35 -0700
+Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
+	by maili.marvell.com (Postfix) with ESMTP id E39CB3F7041;
+	Wed, 12 Aug 2026 09:06:31 -0700 (PDT)
+From: <nshettyj@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Naveen Mamindlapalli <naveenm@marvell.com>,
+        Nitin Shetty J
+	<nshettyj@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya
+	<gakula@marvell.com>,
+        Ratheesh Kannoth <rkannoth@marvell.com>,
+        "Subbaraya
+ Sundeep" <sbhatta@marvell.com>,
+        Bharat Bhushan <bbhushan2@marvell.com>,
+        "Andrew Lunn" <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next] octeontx2-pf: Add NIXLF error and poison interrupt handlers
+Date: Wed, 12 Aug 2026 21:36:26 +0530
+Message-ID: <20260812160627.3992050-1-nshettyj@marvell.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1 1/2] net: phy: split phy_probe() error paths
-To: Andrew Lunn <andrew@lunn.ch>, Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Cc: netdev@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, linux-kernel@vger.kernel.org,
- Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-References: <20260812125127.106255-1-xuanqiang.luo@linux.dev>
- <20260812125127.106255-2-xuanqiang.luo@linux.dev>
- <46ae1474-5abd-4908-9955-a364ec3e2f99@lunn.ch>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <46ae1474-5abd-4908-9955-a364ec3e2f99@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDEzMSBTYWx0ZWRfX5AfvN4GfNgT7
+ 90J/630tLdyTEhvaNtn8zmi/34Y53AUzTjSbtaLyZkAveboNgVlnsTVVhDDXmfrac4jhmxs7u7M
+ iyw9lmL+oWJoEdmUnglE9S+d6B2ZI2s=
+X-Proofpoint-ORIG-GUID: si8EcFieMX9HGPx-flzWcuU-LZnK2K8J
+X-Proofpoint-GUID: si8EcFieMX9HGPx-flzWcuU-LZnK2K8J
+X-Authority-Analysis: v=2.4 cv=EIQ2FVZC c=1 sm=1 tr=0 ts=6a7c9a0c cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=ByCdszm9PJ39elarfXsA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDEzMSBTYWx0ZWRfX/XiNSXSGVYKi
+ sc6NJzn+TT6YN3/8x29/wl7hCNSGF7lUEPirNWYkt4Fg/a88S4XXHrJ/it8bgEzcIg1rgifykH7
+ +2Z0MwWajpOXzMTu8h/elOz6jYPeL9jdZ+runCtaoismA5cWfXFV8sT27cwxF1SgKcEFXb1zd84
+ SuPZHMUrTG4lDijhNaVPqB/q7mzH8G+PuDIfsMt9peBtLFwQozIc+9R7pjcDxrbqibwCLB4lJbZ
+ /0YIL3hZlRVNLSlFW6v00OrbMBi/lrDTE9yfb71iW7rIByNIc33o614197sfYNNJxLojDKQ81mR
+ yNLJrPo7hNKSHbd7B9+Dg0NlKoXzNDrire/LDzu9NWU6pgyQg/r/QuT1vWxd/cCVpIgoz8nJ9b/
+ e0yTvA9im0rSGY16RNdtLD+qWTbRpnhgVXWEUK0CTQcHqUrCCAdni9v/gFRH34iewzC9/JJvRyi
+ zV7Zn1ywoKMWCcfqRvQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_04,2026-08-12_01,2025-10-01_01
 
-Hi,
+From: Naveen Mamindlapalli <naveenm@marvell.com>
 
-On 8/12/26 15:41, Andrew Lunn wrote:
-> On Wed, Aug 12, 2026 at 08:51:26PM +0800, Xuanqiang Luo wrote:
->> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->>
->> phy_probe() uses one cleanup path for failures at every initialization
->> stage. This runs cleanup for resources that have not been initialized
->> and leaves phy_setup_ports() relying on its caller to remove an SFP
->> upstream after a partial failure.
->>
->> Make phy_setup_ports() unwind the SFP upstream before removing its ports.
->> Then split the phy_probe() cleanup so each failure path unwinds only the
->> resources that may have been initialized.
->>
->> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->> ---
->>  drivers/net/phy/phy_device.c | 23 ++++++++++++++---------
->>  1 file changed, 14 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
->> index 0615228459ef4..f8e434daab66e 100644
->> --- a/drivers/net/phy/phy_device.c
->> +++ b/drivers/net/phy/phy_device.c
->> @@ -3556,6 +3556,9 @@ static int phy_setup_ports(struct phy_device *phydev)
->>  	return 0;
->>  
->>  out:
->> +	sfp_bus_del_upstream(phydev->sfp_bus);
->> +	phydev->sfp_bus = NULL;
->> +
->>  	phy_cleanup_ports(phydev);
->>  	return ret;
-> 
-> This does not look correct. phy_sfp_probe() may fail, and you then
-> call sfp_bus_del_upstream() on something which never happened.
-> 
-> Also, it is not obvious that sfp_bus_del_upstream() is the correct
-> thing to do. You are trying to undo phy_sfp_probe() so i would expect
-> you to call a function like phy_sfp_release().
+Register and handle the NIX LF error (NIX_LF_ERR_INT) and poison/RAS
+(NIX_LF_RAS) interrupt vectors, The handlers acknowledge the interrupt
+and log the status (ratelimited) to help debug NIX LF faults.
 
-I agree with having phy_sfp_release(), we have even more to do with phy SFP
-in the future with phy_port, this is less error prone.
+Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
+Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
+---
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 80 ++++++++++++++++++-
+ .../ethernet/marvell/octeontx2/nic/otx2_reg.h |  2 +
+ .../ethernet/marvell/octeontx2/nic/otx2_vf.c  |  2 +-
+ 3 files changed, 82 insertions(+), 2 deletions(-)
 
-> 
-> It also looks like phy_sfp_probe() does not correctly clean up on
-> phy_setup_sfp_port() returning an error. But that is a different
-> issue.
-
-In practise, this is cleaned in the phy_probe's "out" failure label,
-but indeed this is not pretty.
-
-Maxime
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index c995f2900859..61b0334d0b6e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1524,6 +1524,34 @@ irqreturn_t otx2_cq_intr_handler(int irq, void *cq_irq)
+ }
+ EXPORT_SYMBOL(otx2_cq_intr_handler);
+ 
++static irqreturn_t otx2_nixlf_err_intr_handler(int irq, void *data)
++{
++	struct otx2_nic *pf = data;
++	u64 regval;
++
++	/* Clear interrupt */
++	regval = otx2_read64(pf, NIX_LF_ERR_INT);
++	otx2_write64(pf, NIX_LF_ERR_INT, regval);
++
++	dev_err_ratelimited(pf->dev, "NIXLF Error Interrupt: 0x%llx\n", regval);
++
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t otx2_nixlf_poison_intr_handler(int irq, void *data)
++{
++	struct otx2_nic *pf = data;
++	u64 regval;
++
++	/* Clear interrupt */
++	regval = otx2_read64(pf, NIX_LF_RAS);
++	otx2_write64(pf, NIX_LF_RAS, regval);
++
++	dev_err_ratelimited(pf->dev, "NIXLF Poison Interrupt: 0x%llx\n", regval);
++
++	return IRQ_HANDLED;
++}
++
+ void otx2_disable_napi(struct otx2_nic *pf)
+ {
+ 	struct otx2_qset *qset = &pf->qset;
+@@ -2080,6 +2108,34 @@ int otx2_open(struct net_device *netdev)
+ 
+ 	otx2_set_cints_affinity(pf);
+ 
++	/* Register NIXLF error IRQ handler */
++	vec = pf->hw.nix_msixoff + NIX_LF_ERR_VEC;
++	irq_name = &pf->hw.irq_name[vec * NAME_SIZE];
++	snprintf(irq_name, NAME_SIZE, "%s-nixlf-err", pf->netdev->name);
++	err = request_irq(pci_irq_vector(pf->pdev, vec),
++			  otx2_nixlf_err_intr_handler, 0, irq_name, pf);
++	if (err) {
++		dev_err(pf->dev,
++			"RVUPF%d: IRQ registration failed for NIXLF ERR vector\n",
++			rvu_get_pf(pf->pdev, pf->pcifunc));
++		goto err_free_cints;
++	}
++	otx2_write64(pf, NIX_LF_ERR_INT_ENA_W1S, NIX_LF_ERR_INT_MASK);
++
++	/* Register NIXLF POISON interrupt handler */
++	vec = pf->hw.nix_msixoff + NIX_LF_POISON_VEC;
++	irq_name = &pf->hw.irq_name[vec * NAME_SIZE];
++	snprintf(irq_name, NAME_SIZE, "%s-nixlf-poison", pf->netdev->name);
++	err = request_irq(pci_irq_vector(pf->pdev, vec),
++			  otx2_nixlf_poison_intr_handler, 0, irq_name, pf);
++	if (err) {
++		dev_err(pf->dev,
++			"RVUPF%d: IRQ registration failed for NIXLF POISON vector\n",
++			rvu_get_pf(pf->pdev, pf->pcifunc));
++		goto err_free_errint;
++	}
++	otx2_write64(pf, NIX_LF_RAS_ENA_W1S, NIX_LF_RAS_MASK);
++
+ 	if (pf->flags & OTX2_FLAG_RX_VLAN_SUPPORT)
+ 		otx2_enable_rxvlan(pf, true);
+ 
+@@ -2132,6 +2188,16 @@ int otx2_open(struct net_device *netdev)
+ 	netif_tx_stop_all_queues(netdev);
+ 	netif_carrier_off(netdev);
+ 	pf->flags |= OTX2_FLAG_INTF_DOWN;
++	/* free NIXLF POISON irq */
++	vec = pci_irq_vector(pf->pdev,
++			     pf->hw.nix_msixoff + NIX_LF_POISON_VEC);
++	otx2_write64(pf, NIX_LF_RAS_ENA_W1C, NIX_LF_RAS_MASK);
++	free_irq(vec, pf);
++err_free_errint:
++	vec = pci_irq_vector(pf->pdev,
++			     pf->hw.nix_msixoff + NIX_LF_ERR_VEC);
++	otx2_write64(pf, NIX_LF_ERR_INT_ENA_W1C, NIX_LF_ERR_INT_MASK);
++	free_irq(vec, pf);
+ err_free_cints:
+ 	otx2_free_cints(pf, qidx);
+ 	vec = pci_irq_vector(pf->pdev,
+@@ -2171,6 +2237,18 @@ int otx2_stop(struct net_device *netdev)
+ 	/* Clear RSS enable flag */
+ 	pf->hw.rss_info.enable = false;
+ 
++	/* Cleanup NIXLF Poison IRQ */
++	vec = pci_irq_vector(pf->pdev,
++			     pf->hw.nix_msixoff + NIX_LF_POISON_VEC);
++	otx2_write64(pf, NIX_LF_RAS_ENA_W1C, NIX_LF_RAS_MASK);
++	free_irq(vec, pf);
++
++	/* Cleanup NIXLF Error IRQ */
++	vec = pci_irq_vector(pf->pdev,
++			     pf->hw.nix_msixoff + NIX_LF_ERR_VEC);
++	otx2_write64(pf, NIX_LF_ERR_INT_ENA_W1C, NIX_LF_ERR_INT_MASK);
++	free_irq(vec, pf);
++
+ 	/* Cleanup Queue IRQ */
+ 	vec = pci_irq_vector(pf->pdev,
+ 			     pf->hw.nix_msixoff + NIX_LF_QINT_VEC_START);
+@@ -3010,7 +3088,7 @@ int otx2_realloc_msix_vectors(struct otx2_nic *pf)
+ 	 * upto NIX vector offset.
+ 	 */
+ 	num_vec = hw->nix_msixoff;
+-	num_vec += NIX_LF_CINT_VEC_START + hw->max_queues;
++	num_vec += NIX_LF_POISON_VEC + 1;
+ 
+ 	otx2_disable_mbox_intr(pf);
+ 	pci_free_irq_vectors(hw->pdev);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
+index 1cd576fd09c5..c144fd2bbe51 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
+@@ -121,10 +121,12 @@
+ #define	NIX_LF_ERR_INT_W1S		(NIX_LFBASE | 0x228)
+ #define	NIX_LF_ERR_INT_ENA_W1C		(NIX_LFBASE | 0x230)
+ #define	NIX_LF_ERR_INT_ENA_W1S		(NIX_LFBASE | 0x238)
++#define	NIX_LF_ERR_INT_MASK		GENMASK_ULL(31, 0)
+ #define	NIX_LF_RAS			(NIX_LFBASE | 0x240)
+ #define	NIX_LF_RAS_W1S			(NIX_LFBASE | 0x248)
+ #define	NIX_LF_RAS_ENA_W1C		(NIX_LFBASE | 0x250)
+ #define	NIX_LF_RAS_ENA_W1S		(NIX_LFBASE | 0x258)
++#define	NIX_LF_RAS_MASK			GENMASK_ULL(10, 0)
+ #define	NIX_LF_SQ_OP_ERR_DBG		(NIX_LFBASE | 0x260)
+ #define	NIX_LF_MNQ_ERR_DBG		(NIX_LFBASE | 0x270)
+ #define	NIX_LF_SEND_ERR_DBG		(NIX_LFBASE | 0x280)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+index b022f52c6845..2a5630561b12 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+@@ -554,7 +554,7 @@ static int otx2vf_realloc_msix_vectors(struct otx2_nic *vf)
+ 	int num_vec, err;
+ 
+ 	num_vec = hw->nix_msixoff;
+-	num_vec += NIX_LF_CINT_VEC_START + hw->max_queues;
++	num_vec += NIX_LF_POISON_VEC + 1;
+ 
+ 	otx2vf_disable_mbox_intr(vf);
+ 	pci_free_irq_vectors(hw->pdev);
+-- 
+2.48.1
 
