@@ -1,194 +1,99 @@
-Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AB438E8C9
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 18:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786559888; cv=pass; b=nOuSEpKgYNPjSNyqB4mDCBKGhfkLv5kAGFywwRPWQmdYoQTGP9KGbMnJKyMLWMQjJtGR666XmLS+O9KjW31BXrkvmFH3hQLXo/rlCxijmywTZ/2MVZypBwKdAHB553+fItCxhmMyYTvsjVLCf/7f+2j6UgOTAB84c5AjGlFrOzM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786559888; c=relaxed/simple;
-	bh=CuJg1l7RtXFZdZwdjBqV9JpfxqmwDYZ79eGA43nf+Y8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9tq7gLiQ1PxVj1VFlLiAFFQLvrPCeQhqW6I8kSm6BtNRYsDaQstiElRfMpSbMwmGxf3IfCzjYsixtX8FW/NbVvVm7coq16EiMAAyylRrNf789aT3Zt0ptq8crYxOST64nCt6/GlF/VbpsqSqBagPi/hwwQ7EOLCfyzV870yJ54=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=Yj3Pj0sz; arc=pass smtp.client-ip=136.143.188.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71478395243
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 18:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786560050; cv=none; b=ODPLoNQNvna8RQxexeBaKTVzhzyHN+vNQ9+vsGJxuC9rzWPCQx8wxRSeQSvvHmh/Y2u6qjTAq1smXuj5diUIpC1tZnvC0tiFK6EWx/+rccqFtx0Ig2lZxNSYAz8mUaT6g++cPa4AZMv9cyelx5hqeFcySUS7BiEvZifdwbYqfl4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786560050; c=relaxed/simple;
+	bh=AJ0HFagxwXLhWGH0bMMMUlIBm8aIOuEXdITySVjzsno=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ac0m0KcbFEef6cPyLKii2KDS1hS9mlWRgnTIFHe+hIGLFMwNFyQ5fo5nDRpXsJPeQtE3dC27AwYmWfp19CWNyUEav+KbzaHz0xZisNSA7FI2uApIHFD8K686Yz/tTCpIenWeZq2eIti3aIKfFuGAEmO1srUpdQuIl2/xnq8S1SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=JxHPyft4; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="Yj3Pj0sz"
-ARC-Seal: i=1; a=rsa-sha256; t=1786559842; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=NFxF0EiPLb6C2C5K+WGxhSrMciDM7ibOD+U1m+FcdQsr59cB0LTeXRIulmK2HjbnxlXKTup4rNCXcLeN7YYSxNu7uf5ztiKdujhsWN9AULV9o5UDW8Ip7wIbnUga16wM33KsSVyPfrXfLBUzwkyMC6PqGGp6Y0FwnSgm8i204O4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1786559842; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=rV01DvtgjRlKAvr917RNjiUABzM1wyVnaD4kxhS6G4g=; 
-	b=KeXpYN3Pm979DcawivibzZ5YhTV2HDQxA6244eiJ8tolG+cjIknuA6aH4izYnffFoGbd07KK3QL7o7sFTSuyBE8Uf853WV/XYv96F6Y9eL74Nd0NUx5ImJm/YaWluUMCU+nlO895rFe/lrSGIIW7NRQWwI1cKLOQ0VVUa79pKL0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=machnikowski.net;
-	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
-	dmarc=pass header.from=<maciek@machnikowski.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786559842;
-	s=zoho; d=machnikowski.net; i=maciek@machnikowski.net;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=rV01DvtgjRlKAvr917RNjiUABzM1wyVnaD4kxhS6G4g=;
-	b=Yj3Pj0szNpSjqGoV0kfN/2tCA+4b7R/ccQO5/cOcmlQC0ImQKgh5eH5uQYAWcTkP
-	h3hfuyKqi3tajUu7737taUo85ecButsKc2XYUmroE9eRRSXfM5FRqw/JowtRm0xvkLh
-	E5kmASS7yRGOjY+xETaeIpUWoVnrbr9b8uFBReYBr8UuUYFgir5/ipRVdr4r5LZyEFm
-	3s3TXLXZdeCd9cLr6JunGJmcnWWDak0zzIBBWe7x/ZuL8gNrqccPQSBLpWvETb6DR57
-	B6nJCn7CPxGSYxM7s8eok8JTzKFEbAZ08TRDXBF8y90lYbp0cr00ShBz9dIbLntRtDS
-	e0Qi7BBGxA==
-Received: by mx.zohomail.com with SMTPS id 1786559838802675.9642172422022;
-	Wed, 12 Aug 2026 11:37:18 -0700 (PDT)
-From: Maciek Machnikowski <maciek@machnikowski.net>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	maciek@machnikowski.net,
-	richardcochran@gmail.com,
-	milena.olech@intel.com,
-	willemdebruijn.kernel@gmail.com,
-	andrew@lunn.ch,
-	vadim.fedorenko@linux.dev,
-	horms@kernel.org
-Subject: [PATCH v8 net-next 3/3] selftests: drivers/net: Implement ptp4l sync test using netdevsim
-Date: Wed, 12 Aug 2026 20:37:08 +0200
-Message-ID: <20260812183708.312412-4-maciek@machnikowski.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260812183708.312412-1-maciek@machnikowski.net>
-References: <20260812183708.312412-1-maciek@machnikowski.net>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="JxHPyft4"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ceaf8a1265so17409105ad.2
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:40:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1786560049; x=1787164849; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/r0/dZU9327lVW9vWBLzNVNNVeObkOD7Ru+Xu9UxYCw=;
+        b=JxHPyft4xlROG9XMIqAKsYFr6VfhrA4BUd+4aSqW79K64FcH5ZbQWNXQbGw3GiRCHE
+         ceo460PvN0k6m364nNzscXZVbadh+iwQRXLNvV9I54QOAtDYJGBIhJAn2UrxRFKukJDw
+         NwsGveaoC96eYJ35eE6afO0kI3Yw3MEfrMcpSr8JEWmXg2BlvG+yRFcQDmJL8nxLKfNj
+         NPRV7Pw//qqEfHNngv2DcHYS/uD6pAIDPO9YZrMa4sJEpkxhskDgYxT6lSw4wZmKhS98
+         fTg3iz9bUPCTygqiwXLZbiIVVPpcr7FabEbZlK/UYLO4HUPfiGtJ8DyFNaK++JUth2J8
+         PrjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786560049; x=1787164849;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/r0/dZU9327lVW9vWBLzNVNNVeObkOD7Ru+Xu9UxYCw=;
+        b=I1c9s7NAKV/ytbovOuVEg8/Uas0+W2zhDqOqai7QXLOzKoAH5IfZiyrgozLJnLz6Fe
+         zLHIkRvsrbXDKUwOTAa6/9HAP3uIsNIQWaT/XlnyGzlPZzgbquqEvH6OhNFQRD2plUR0
+         TES0DVq87XTdqb/NIa729JIdNurSC0c+aqjR8adWdVsH0V8ALAy7NBt/DNQNVXoBWBqu
+         3f/L9GeMzqtPA4yqyNfDrZicoTP1tWnECHQzNw+5PqRjIw11AFYls9qJAj6G6r+TNDu6
+         zkBbfhOGGXcy0pUPCX7P6G4OPjlaXlSjUYFY10sIFrhQmxxhWiRR9euG+TQ8ORA7J3iD
+         dxjA==
+X-Gm-Message-State: AOJu0YyKFGe6A1eRgrrIqU5CHzwPS3yxTS+RL3ES6lO7Hy++2KtIULgF
+	RO1hnUFYVg2AU/CMaxvK3n5u8jcHzwPE/s4lx/v2fvK3TKxhsYtaCBT3HqSp2Kl/zQ4=
+X-Gm-Gg: AR+sD10gCRFzu66+RxN+ZIBabbQLcqW6VVIoLvwxCiiaHfNmMZ9g991lUiyl7vicDwC
+	9CbctTrD4bhcvQSLYjFlGn7VxCgZ/t6LQI0OLsvlbNclCiKMKKhxaTcvhzZogogw5vvSe7h1eHM
+	ZRSIZ1JDBtdDPx7rzwfcJCWWcY40NIXUD++hieLGRGfs6OEMcHWBE/D+uATGhyjnwn8cf5+i6Y2
+	ul9gf8KwGfLc3rCgqP+7XIp4XNkXF9DYqsNuWjkNhjZNogo3eGm5uXt1qum7hDKUqbe/n+HuEIR
+	q7voQ6eRHKLZ0hGfcYmxMI5d+l8SA950ODkbCp6Ad7aKvikm32nn2iANaD4pP2eY3poYj9BfAqv
+	jo9t3d+L/msW7b1m/zAIWYfl8kRP5TrJn+vvIs/ztf1grMxRQxunlbWxwpQ+Uh3LfrADUdByM6O
+	SI0zBUzRxNHMBOqd5eajEebY1k84NTxeevIsucTLDWfw==
+X-Received: by 2002:a17:903:1d2:b0:2c9:bf82:dd11 with SMTP id d9443c01a7336-2d37d57393fmr130535ad.7.1786560048672;
+        Wed, 12 Aug 2026 11:40:48 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:40::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d37c413294sm593745ad.51.2026.08.12.11.40.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 11:40:48 -0700 (PDT)
+Date: Wed, 12 Aug 2026 11:40:47 -0700
+From: Joe Damato <joe@dama.to>
+To: Kai Kuang <kuangkai@kylinos.cn>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+	f.fainelli@gmail.com, linux-kernel@vger.kernel.org,
+	kk47yx@gmail.com
+Subject: Re: [PATCH net-next] net: dsa: drop explicit NULL comparisons
+Message-ID: <any+L0W4g9I+MrZ1@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, Kai Kuang <kuangkai@kylinos.cn>,
+	netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+	f.fainelli@gmail.com, linux-kernel@vger.kernel.org,
+	kk47yx@gmail.com
+References: <20260812060644.210997-1-kuangkai@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812060644.210997-1-kuangkai@kylinos.cn>
 
-Add PTP synchronization test using ptp4l and netdevsim.
-The test uses the NetDrvEpEnv to link a local netdevsim
-device to a remote endpoint, runs ptp4l as leader and follower
-on the two ends, and waits for the follower to report the
-synchronized state (s2).
+On Wed, Aug 12, 2026 at 02:06:44PM +0800, Kai Kuang wrote:
+> Replace explicit NULL comparisons with the boolean form to follow
+> the kernel coding style:
+> 
+>   dev->class != NULL  -> dev->class
+>   user_dev == NULL    -> !user_dev
+> 
+> No functional changes intended.
+> 
+> Signed-off-by: Kai Kuang <kuangkai@kylinos.cn>
+> ---
+>  net/dsa/dsa.c  | 2 +-
+>  net/dsa/user.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Signed-off-by: Maciek Machnikowski <maciek@machnikowski.net>
----
- tools/testing/selftests/drivers/net/Makefile |  1 +
- tools/testing/selftests/drivers/net/config   |  1 +
- tools/testing/selftests/drivers/net/ptp.py   | 82 ++++++++++++++++++++
- 3 files changed, 84 insertions(+)
- create mode 100755 tools/testing/selftests/drivers/net/ptp.py
-
-diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
-index d5bf4cb638a8..18bb7c693b69 100644
---- a/tools/testing/selftests/drivers/net/Makefile
-+++ b/tools/testing/selftests/drivers/net/Makefile
-@@ -19,6 +19,7 @@ TEST_PROGS := \
- 	netpoll_basic.py \
- 	ping.py \
- 	psp.py \
-+	ptp.py \
- 	queues.py \
- 	ring_reconfig.py \
- 	shaper.py \
-diff --git a/tools/testing/selftests/drivers/net/config b/tools/testing/selftests/drivers/net/config
-index b6989c7d3d9d..7be30a72e119 100644
---- a/tools/testing/selftests/drivers/net/config
-+++ b/tools/testing/selftests/drivers/net/config
-@@ -21,5 +21,6 @@ CONFIG_NET_SCH_INGRESS=y
- CONFIG_NET_SCH_PRIO=m
- CONFIG_PPP=y
- CONFIG_PPPOE=y
-+CONFIG_PTP_1588_CLOCK_MOCK=y
- CONFIG_VLAN_8021Q=m
- CONFIG_XDP_SOCKETS=y
-diff --git a/tools/testing/selftests/drivers/net/ptp.py b/tools/testing/selftests/drivers/net/ptp.py
-new file mode 100755
-index 000000000000..92a943dcbb06
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/ptp.py
-@@ -0,0 +1,82 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# By Maciek Machnikowski <maciek@machnikowski.net> (c) 2026,
-+
-+"""
-+Test suite for PTP sync using ptp4l.
-+
-+Start a ptp4l leader and follower and check that the follower locks onto the
-+leader (state s2)
-+"""
-+
-+import time
-+
-+from lib.py import (
-+    NetDrvEpEnv,
-+    bkg,
-+    fd_read_timeout,
-+    ksft_exit,
-+    ksft_pr,
-+    ksft_run,
-+    ksft_true,
-+)
-+
-+PTP4L_SYNC_TIMEOUT = 40
-+
-+
-+def _poll_follower_sync(follower, timeout):
-+    """Read the follower stdout pipe until ptp4l reports sync state s2.
-+
-+    Returns a tuple (synced, output) where output is the text read so far.
-+    """
-+    fd_file = follower.proc.stdout
-+    fd = fd_file.fileno()
-+    buf = b""
-+    deadline = time.monotonic() + timeout
-+    while time.monotonic() < deadline:
-+        if b" s2 " in buf:
-+            break
-+        if follower.proc.poll() is not None:
-+            chunk = fd_file.read()
-+            if chunk:
-+                buf += chunk
-+            break
-+        try:
-+            remaining = deadline - time.monotonic()
-+            buf += fd_read_timeout(fd, min(1, remaining))
-+        except TimeoutError:
-+            continue
-+    return b" s2 " in buf, buf.decode("utf-8", "replace")
-+
-+
-+def ptp_sync_test(cfg):
-+    """Verify ptp4l leader/follower synchronization reaches state s2."""
-+    cfg.require_cmd("ptp4l", remote=True)
-+
-+    leader_cmd = f"ptp4l -i {cfg.remote_ifname} -m -2"
-+    follower_cmd = f"ptp4l -i {cfg.ifname} -m -s -2"
-+
-+    with bkg(leader_cmd, host=cfg.remote), \
-+         bkg(follower_cmd) as follower:
-+        synced, output = _poll_follower_sync(follower, PTP4L_SYNC_TIMEOUT)
-+
-+    if synced:
-+        return
-+
-+    ksft_pr(f"ptp4l follower did not reach locked state (s2) within "
-+            f"{PTP4L_SYNC_TIMEOUT}s")
-+    tail = output.strip().split("\n")[-10:]
-+    ksft_pr("Follower log (last 10 lines): " + " | ".join(tail))
-+    ksft_true(False, "PTP sync timeout")
-+
-+
-+def main():
-+    """Run ksft tests."""
-+    with NetDrvEpEnv(__file__) as cfg:
-+        ksft_run([ptp_sync_test], args=(cfg, ))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.55.0
-
+Reviewed-by: Joe Damato <joe@dama.to>
