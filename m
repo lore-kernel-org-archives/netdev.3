@@ -1,57 +1,57 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B021367B73
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AAB319617
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786497077; cv=none; b=FIPTNjwS0PoNu+Xr4pPunqYWB4CSWYB4JG6C6px48Djv/5l/BZ9pw7Kmd1wmmmBxJnAe2SRnYQnA8FhAGXVAz3t9ChLNAJJ3B/72yVUbAoBg/dA/qDPPGMyvlt+Rul2TLQdLhrNdi7RUPazyBDRNBhfwDHjj+xdC4g0WAPb/at8=
+	t=1786497078; cv=none; b=W/+iTu8dxtQ9rOGzIzHXcPSmHQLLCTfyDyWnVaz0vjStnYUwGhd5HdydXFiiBBMmED9jCtu1+W+UMlNzGKUq4MmlKy7/llLO22Udr8HpPB/PV2Zsh77fKJyqqS+JcLNTjhpKttBAa2TFq1imicXrG/LQDkAfNQW20JcCwhrRgBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786497077; c=relaxed/simple;
-	bh=E+YwEDb5A2FHi7d1S5ev5ms0UZ8/6/vJchwiQ7hJjIA=;
+	s=arc-20240116; t=1786497078; c=relaxed/simple;
+	bh=HNYxBdyOh14kqgiYmhmFiuIu85oIFik1ZXi46cT5wHo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J+0K44/yG1GCnZwSjxJy7Bbvf0UPrVOvkpkyd5PROZld1ymAlXszaptLrzABiYieVdoHF6sSIg1T3FS0DsPu4TX+m4sI2dk4WRD5/At6nadMFdS5QmNHftu1yPV118VcGIcwzmxe77ltf0yQhqNBncggWceCdscaGUDpMrUudDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n4FtOUT6; arc=none smtp.client-ip=209.85.210.198
+	 To:Cc:Content-Type; b=YDoCk+MBdN+XsSjWeyq8J9H7CnVu2Fyu90E3Iz3eNuC5kpct3SNn6df79IRdeS5FamaOmLSOmsL4eLkixPAE9dskJSLV7Ua4Mm+pqKXy3qP8OSpxYkBHfcdKMEYuy2zGl/epN5UkSCKAJR46vfloWBQrDGCniRRNZMHkuFLg1bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sGeYK//K; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n4FtOUT6"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-848662cd2a1so531686b3a.2
-        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:11:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sGeYK//K"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38fcaa5f82cso453534a91.3
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 18:11:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786497071; x=1787101871; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786497074; x=1787101874; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=i0hzY3g44uXowAt0+2JMtC/O3POXajBplXpibjpOAL8=;
-        b=n4FtOUT6GAXAWHgdoEKG3KRSVDie3NrR1SIRREwyh7rmdHdwl2QXoRJCayWyuqb4ty
-         sUSCjbPy/OX3bBZU7e355LyD/+Dqz17q/scKwKV89Nw3LWJjwucaHMBpfNfvaSB4v7gI
-         juIOj2sHO/W53QB76dSkE2M4iD/yY3wfBC3iDZKqLw6FS9ExF6Zf/kf9QHfehoHaHer7
-         AX31y7FKi9nx0LFfyZ+YM/clQsK62mpEZYtPo9EMdjXiBq+lZ792fO4eeaCu6ZbDcFOG
-         opGvFr1zWR4XkA7rvvONd7whkZ+ZNRaPQhLyAd1oishSZv3rwU2UaEMlYiVeX3tQP6U7
-         2O9A==
+        bh=3M2OkRAFnIlxQQMdn0Hyw7w0AIFN/vFNTKvAHQz2U0I=;
+        b=sGeYK//KFQnjK04R3ksCYpzxKEZU9as3qcLOXPWo8RUuajY+LjCqSKXuxbe6Nvp4nr
+         rDbG1il5Jm+51vhA8cRkl1MwGQArVT8RceAZI/Z8Or1JJmceKm02k2e0uAAyQ8ljgMs8
+         vUlHYm/jeUwmb9JdrcmoV2gZ76kq9DgaHr+CMcSVE4fVnD3rj1+02Hb8J59C0BGWZtbv
+         mRC/d2kqw1AkkQseQNRxQ40yV0xOi14Tv5ONu4sKe3OtQKrgfNu5zQjIF/gJhojV31pQ
+         RuFaBwTKNsMP1ThrHukBdyoWAcE5ROM4VAuzSJlSp2xqkJmPcaBiXIZA8GsO8q+4vovE
+         t+lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786497071; x=1787101871;
+        d=1e100.net; s=20251104; t=1786497074; x=1787101874;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=i0hzY3g44uXowAt0+2JMtC/O3POXajBplXpibjpOAL8=;
-        b=F9kP9l4JBpqY2ZRfMY63d5OXktlanwMODRhOvfYEp9UnYU445GsirwLHaiQ7XjXy8V
-         ow0JFFLI6uQeKHhmQuMImByHdcZW1+Is1zuD8nYChwUjDxx14OiNOEgQffNiPQxLabdY
-         6w+g6s/txOFV01y4K9KakGqb2vDqawUf2n1NddvGoogYq7SXe7kGkOav5kNa9tr04Hey
-         20HdYHYH2hpstB/Rz2TwUy77W0sQXfIy9GbaHAn+a/NANSjKEk5s4IGnkFu67pJ8ynpU
-         zK+apKUpjvro6v4Pjt9Xs1A7l9CjXKoRP446d6J88rgDDW0QCo2cQ8jPbQqdWzItifes
-         5sdA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3VtB0Zn+W+QeJ6VuGsBqkHx2PY5f0+5JngPR9bfrzkAq0Q5Pr+ptnDOZDOSzVS3eY29KaXA4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjWquilAqG6fMFWmKmRZIGBL6W/ZVl8+iHFuqvQmBsnsG7A6FH
-	OWgxocKX4ts4ZO1vCUnpd1d1GCy1/zoczew/JvxcpZjgfaktop/zHNN3hqAfh76N+sKvsCt/gJo
-	Jb6Ttpw==
-X-Received: from dlb8.prod.google.com ([2002:a05:7022:608:b0:141:3f8:cbe2])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e291:b0:3c0:b55a:80ff
- with SMTP id adf61e73a8af0-3cc3f716297mr1026311637.24.1786497070311; Tue, 11
- Aug 2026 18:11:10 -0700 (PDT)
-Date: Tue, 11 Aug 2026 18:10:54 -0700
+        bh=3M2OkRAFnIlxQQMdn0Hyw7w0AIFN/vFNTKvAHQz2U0I=;
+        b=sjbfQ2NNnyAB3/KA92Qc+kipvBTu/++qutHymc8+04JS0AX8WbMcE7JYIjFkVNnEH6
+         yoib92Q8TLLu6PbruA4/Vhp63/m0Vt2ivcgAorurgRp+tj+ISL4QUy9Qh9Mw5PIz9syy
+         OKqYmpbaWRxx6zlndFfH/N8QlYHuJ+Vam1AGdKgKR2Ckp83yGtQlZJ6GM1gBL8zX3aeh
+         PJSHupuv5t31eHaOGF/JiSAr/IvuOjaz8sP8hZISMXhjwPsUHLY9CYu413PkPCL72m5I
+         qn2+mbNNBmiXIw8Oh7pm5A3HmjDUIlQqJ5xW2ib18HZfs4FgOsCrlCA8woo14pyjbbZ0
+         4rvQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6rgH+GzzapO/ayuXiQ+z9CFH9tgB0kT4zwG7TkGhppFIQ+S4xQbZ+vwht2g73qCJozupQCCA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzr8qQs9PWkOI0sBcT55nldlndfn9SHYi3WpD4fru8AxIZQrvKq
+	2+Q815hurZ39OyheWHa1uWkVrWdm+CiTbrj26cPi/0ipxsm+NVexzD05HuolCKG5Z7DIXm2brFh
+	esPHZSw==
+X-Received: from dloo28-n2.prod.google.com ([2002:a05:7023:a5c:20b0:139:d9c7:3cf4])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:580e:b0:38f:18f9:785
+ with SMTP id 98e67ed59e1d1-393012380femr1349300a91.8.1786497073970; Tue, 11
+ Aug 2026 18:11:13 -0700 (PDT)
+Date: Tue, 11 Aug 2026 18:10:55 -0700
 In-Reply-To: <20260812011056.902771-1-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260812011056.902771-1-surenb@google.com>
 X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260812011056.902771-5-surenb@google.com>
-Subject: [PATCH v5 4/5] binder: Remove mmap_lock fallback
+Message-ID: <20260812011056.902771-6-surenb@google.com>
+Subject: [PATCH v5 5/5] tcp: Remove mmap_lock fallback path
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
@@ -71,21 +71,27 @@ Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
 	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
 	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	surenb@google.com
+	surenb@google.com, syzbot@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 From: Dave Hansen <dave.hansen@linux.intel.com>
 
 Previously, the per-VMA locking could fail in the face of writers
-which necessitate a fallback to mmap_lock. The new
+which necessitates a fallback to mmap_lock. The new
 vma_start_read_unlocked() will wait for writers instead of failing.
 
 Use the new helper. Wait for writers. Remove the fallback to mmap_lock.
+The fallback removal does not affect NOMMU case because TCP_ZEROCOPY
+is gated on CONFIG_MMU.
+
+This really is a nice cleanup. It removes the need to pass the lock
+state back and forth to find_tcp_vma().
 
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Tested-by: syzbot@syzkaller.appspotmail.com
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
 Cc: Vlastimil Babka <vbabka@kernel.org>
@@ -102,129 +108,78 @@ Cc: David Ahern <dsahern@kernel.org>
 Cc: netdev@vger.kernel.org
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- drivers/android/binder/page_range.rs | 19 +++----------------
- drivers/android/binder_alloc.c       | 17 +++++------------
- rust/kernel/mm.rs                    | 27 +++++++++++++++++++++++++++
- 3 files changed, 35 insertions(+), 28 deletions(-)
+ net/ipv4/tcp.c | 31 +++++++++----------------------
+ 1 file changed, 9 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/=
-page_range.rs
-index e82a5523804f..f7ad88a0d806 100644
---- a/drivers/android/binder/page_range.rs
-+++ b/drivers/android/binder/page_range.rs
-@@ -439,22 +439,9 @@ unsafe fn use_page_slow(&self, i: usize) -> Result<()>=
- {
-         // workqueue.
-         let mm =3D MmWithUser::into_mmput_async(self.mm.mmget_not_zero().o=
-k_or(ESRCH)?);
-         {
--            let vma_read;
--            let mmap_read;
--            let vma =3D if let Some(ret) =3D mm.lock_vma_under_rcu(vma_add=
-r) {
--                vma_read =3D ret;
--                check_vma(&vma_read, self)
--            } else {
--                mmap_read =3D mm.mmap_read_lock();
--                mmap_read
--                    .vma_lookup(vma_addr)
--                    .and_then(|vma| check_vma(vma, self))
--            };
--
--            match vma {
--                Some(vma) =3D> vma.vm_insert_page(user_page_addr, &new_pag=
-e)?,
--                None =3D> return Err(ESRCH),
--            }
-+            let vma_read_guard =3D mm.vma_start_read_unlocked(vma_addr).ok=
-_or(ESRCH)?;
-+            let vma =3D check_vma(&vma_read_guard, self).ok_or(ESRCH)?;
-+            vma.vm_insert_page(user_page_addr, &new_page)?;
-         }
-=20
-         let inner =3D self.lock.lock();
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.=
-c
-index c13a588c37de..efa23f6b8360 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -259,21 +259,14 @@ static int binder_page_insert(struct binder_alloc *al=
-loc,
- 	struct vm_area_struct *vma;
- 	int ret =3D -ESRCH;
-=20
--	/* attempt per-vma lock first */
--	vma =3D lock_vma_under_rcu(mm, addr);
--	if (vma) {
--		if (binder_alloc_is_mapped(alloc))
--			ret =3D vm_insert_page(vma, addr, page);
--		vma_end_read(vma);
-+	vma =3D vma_start_read_unlocked(mm, addr);
-+	if (!vma)
- 		return ret;
--	}
-=20
--	/* fall back to mmap_lock */
--	mmap_read_lock(mm);
--	vma =3D vma_lookup(mm, addr);
--	if (vma && binder_alloc_is_mapped(alloc))
-+	if (binder_alloc_is_mapped(alloc))
- 		ret =3D vm_insert_page(vma, addr, page);
--	mmap_read_unlock(mm);
-+
-+	vma_end_read(vma);
-=20
- 	return ret;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 455441f1b694..62defe70f3ce 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2167,27 +2167,18 @@ static void tcp_zc_finalize_rx_tstamp(struct sock *=
+sk,
  }
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-index f4fa54616085..11466fb304df 100644
---- a/rust/kernel/mm.rs
-+++ b/rust/kernel/mm.rs
-@@ -186,6 +186,33 @@ pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> O=
-ption<VmaReadGuard<'_>> {
-         })
-     }
 =20
-+    /// Find the VMA covering 'address' and read-lock it.
-+    ///
-+    /// The fast path does not take mmap_lock. Waits for writers to finish=
- if the
-+    /// VMA is being modified by taking mmap_lock.
-+    /// Use when mmap_lock is not held, otherwise use vma_start_read_locke=
-d().
-+    /// Nothing prevents VMAs being unmapped/mapped before or after the VM=
-A is
-+    /// looked up, if a stronger guarantee is required, take an mmap_lock.
-+    ///
-+    /// Return: If a VMA exists which spans @address, return that VMA, rea=
-d-locked.
-+    /// If no VMA is mapped there or, very unlikely, a reference count ove=
-rflow
-+    /// occurred, return NULL.
-+    #[inline]
-+    pub fn vma_start_read_unlocked(&self, vma_addr: usize) -> Option<VmaRe=
-adGuard<'_>> {
-+        // SAFETY: We may invoke `vma_start_read_unlocked` because we know=
- this `mm` has non-zero
-+        // `mm_users`.
-+        let vma =3D unsafe { bindings::vma_start_read_unlocked(self.as_raw=
-(), vma_addr) };
-+        if vma.is_null() {
-+            return None;
-+        }
-+        Some(VmaReadGuard {
-+            // SAFETY: If `vma_start_read_unlocked` returns a non-null ptr=
-, then it points at a
-+            // valid vma. The vma is stable for as long as the vma read lo=
-ck is held.
-+            vma: unsafe { VmaRef::from_raw(vma) },
-+            _nts: NotThreadSafe,
-+        })
-+    }
+ static struct vm_area_struct *find_tcp_vma(struct mm_struct *mm,
+-					   unsigned long address,
+-					   bool *mmap_locked)
++					   unsigned long address)
+ {
+-	struct vm_area_struct *vma =3D lock_vma_under_rcu(mm, address);
++	struct vm_area_struct *vma =3D vma_start_read_unlocked(mm, address);
+=20
+-	if (vma) {
+-		if (vma->vm_ops !=3D &tcp_vm_ops) {
+-			vma_end_read(vma);
+-			return NULL;
+-		}
+-		*mmap_locked =3D false;
+-		return vma;
+-	}
++	if (!vma)
++		return NULL;
+=20
+-	mmap_read_lock(mm);
+-	vma =3D vma_lookup(mm, address);
+-	if (!vma || vma->vm_ops !=3D &tcp_vm_ops) {
+-		mmap_read_unlock(mm);
++	if (vma->vm_ops !=3D &tcp_vm_ops) {
++		vma_end_read(vma);
+ 		return NULL;
+ 	}
+-	*mmap_locked =3D true;
 +
-     /// Lock the mmap read lock.
-     #[inline]
-     pub fn mmap_read_lock(&self) -> MmapReadGuard<'_> {
+ 	return vma;
+ }
+=20
+@@ -2208,7 +2199,6 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 	u32 seq =3D tp->copied_seq;
+ 	u32 total_bytes_to_map;
+ 	int inq =3D tcp_inq(sk);
+-	bool mmap_locked;
+ 	int ret;
+=20
+ 	zc->copybuf_len =3D 0;
+@@ -2233,7 +2223,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 		return 0;
+ 	}
+=20
+-	vma =3D find_tcp_vma(current->mm, address, &mmap_locked);
++	vma =3D find_tcp_vma(current->mm, address);
+ 	if (!vma)
+ 		return -EINVAL;
+=20
+@@ -2315,10 +2305,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 						   zc, total_bytes_to_map);
+ 	}
+ out:
+-	if (mmap_locked)
+-		mmap_read_unlock(current->mm);
+-	else
+-		vma_end_read(vma);
++	vma_end_read(vma);
+ 	/* Try to copy straggler data. */
+ 	if (!ret)
+ 		copylen =3D tcp_zc_handle_leftover(zc, sk, skb, &seq, copybuf_len, tss);
 --=20
 2.55.0.691.gc56d675ccc-goog
 
