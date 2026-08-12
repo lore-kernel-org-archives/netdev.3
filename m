@@ -1,45 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973B116A956
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 00:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F2522576E
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 00:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786493367; cv=none; b=O/D/yYRpwopUzAl83B405mx/fzYQBHcRuzbKBFXFyGlhlt3ESTS/pQrkk/1dA6z0ckVozPKKHnwRvAM7ewHgv0XFUW9EG0NjcV8qyIiP4b9yFflsRTy7eWDiOu9y2lcMypp68vQ49aTzk2LSD2XV69lNT8z/GdqWnJME8R5/rJA=
+	t=1786493369; cv=none; b=SW8A3HWjh2UKyW3CjnLuCE+j5cQZ/5576KwWtWuo1e3zd6mwtFSXs4okCfnCk3SNhNkXzpzCwVfBxETrn/4iobFUL90uS0BWhRsAGCBgbFombSdMPeygbPlCXqinujWjZ6FOA0F5hqg1zq00/y23VPPbQyrPRMmpouUBLNtV4vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786493367; c=relaxed/simple;
-	bh=3Gx7QYG4XVhG/hKfrYfnsMEDrRer89o2YFIUzxs4VCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QQAkiCNKHNnRbp2IaNaR6jL8Hna1kKkybujFmxBIU2g/K+qERCgl3uIF2YP1SmwSyp4WhVVy/v1tdk/QYCOrYyKEttRFbLjyb1EfocfgQUDrwtCZhKdfrRAV2ieb5d/BdncF6rbULo3VwH2OAzkcanCaYxF9BC7X6IMKfsKB7Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XJ9Hgd1R; arc=none smtp.client-ip=198.175.65.18
+	s=arc-20240116; t=1786493369; c=relaxed/simple;
+	bh=4IsJ/JTk9wLbzg8Ix/CoBeYxkqlsqa74qb0nLl1RTFo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rCvPP1EZUZ06A/drbk1mKwsrFFmCXuj5YZcZeDKYw1WLTIC1oxXhjReW2Dwi3Ew0NHvqMRRd//1kSBQ4qnI6+4lN1YLH9LlXHOEHjcsZZvXGZZR/eUegyHp/AHc+xgxvx6p+Yarbra7EdELsvRm+iIhohSK2DuBdpNNpnVWAWmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=diW77lMm; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XJ9Hgd1R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="diW77lMm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786493365; x=1818029365;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3Gx7QYG4XVhG/hKfrYfnsMEDrRer89o2YFIUzxs4VCw=;
-  b=XJ9Hgd1RU6INcU7ohvVl6vqGc/gR20qLSNLDSbEa7IzJ/M83oBr9YTDy
-   Tkr+bu6SYEI95wrUgMqKEYV2HFAoWRpJGp0zCazbx5Op55lEu6btvMPGB
-   QNb/+bcBeALpZgVvBbTid7HmITUPh0CWf3l6ScVyi5d/qiDMVXT5xvXUu
-   SzVH3R8KQKqgEaw2BtLVY68Ofnl7nFgiuyoUxwgSJVnjLryI1OQ1No72a
-   YS5S3Z8PrSN23w4oQUHROSZtWiTEAwS0VsPp+jTWGKChK0SM6VA0LJHSW
-   S7cLpX/Dix/4FEB4HKdXVUUsK+ld7DPKWND0SxOB58hGp1ZCvNcKzjDjP
-   A==;
-X-CSE-ConnectionGUID: eDROlq4GS3CJUykRM537Mg==
-X-CSE-MsgGUID: EB97MJN2RJ6o+Yf/vuoUcA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="87110543"
+  t=1786493368; x=1818029368;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4IsJ/JTk9wLbzg8Ix/CoBeYxkqlsqa74qb0nLl1RTFo=;
+  b=diW77lMmNQO0eQy0g8rCcjICTTuhEI0GRLRr1kTXkCRK1WBb+j29xSof
+   yre/xGnY0hHVv/KHF1kvIzt4o11Ir158LkRniMpP+pGO7ZMb/XjBeuTLO
+   vVicSHeFdJDoYpIhCP/MjbG4bvEIAN1kib+kQAhD/4g3ksMlIAV3eK0qE
+   4P9V2f9ig1sUajfRzHanqjKjCH0SnO1AkLiM1HopyZg+Fj+I9Ijha/rjV
+   HjDECUyZTjn6zwvOBytyNCEM2oMDqrH4YWZj+z+m2iAe317oGrp0RAoLb
+   q2egfl7rG2jiwncp5pFI26N2fYFgXJ4s9k7rtLmIB6tLlijfKFdVz7L6B
+   w==;
+X-CSE-ConnectionGUID: l+P7g2TzQ0uHonGQYay0Pg==
+X-CSE-MsgGUID: OIiHawwzSMCjXQ9cItTLvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="87110551"
 X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="87110543"
+   d="scan'208";a="87110551"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
   by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 17:09:25 -0700
-X-CSE-ConnectionGUID: OUMNvxMvSlms6Ny2uK+Vzg==
-X-CSE-MsgGUID: +3+lqc/PR5+30Zu+7owMsQ==
+X-CSE-ConnectionGUID: zz+WECijQOSdzpawRp5PCg==
+X-CSE-MsgGUID: gHhvsELWR8aMoQ13SWzmsA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="263522971"
+   d="scan'208";a="263522974"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa007.jf.intel.com with ESMTP; 11 Aug 2026 17:09:24 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -49,19 +50,24 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+Cc: Przemyslaw Korba <przemyslaw.korba@intel.com>,
+	anthony.l.nguyen@intel.com,
 	aleksander.lobakin@intel.com,
 	konstantin.ilichev@intel.com,
 	richardcochran@gmail.com,
 	poros@redhat.com,
-	przemyslaw.korba@intel.com,
 	przemyslaw.kitszel@intel.com,
 	robert.malz@canonical.com,
-	willemb@google.com
-Subject: [PATCH net 0/4][pull request] Intel Wired LAN Driver Updates 2026-08-11 (ice, idpf)
-Date: Tue, 11 Aug 2026 17:09:13 -0700
-Message-ID: <20260812000918.220714-1-anthony.l.nguyen@intel.com>
+	willemb@google.com,
+	Simon Horman <horms@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH net 1/4] ice: fall back to SBQ when LL PHY timer interface times out
+Date: Tue, 11 Aug 2026 17:09:14 -0700
+Message-ID: <20260812000918.220714-2-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260812000918.220714-1-anthony.l.nguyen@intel.com>
+References: <20260812000918.220714-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,49 +76,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For ice:
-Przemyslaw Korba adds a fallback path to utilize sideband queue when the
-low-latency PHY timer writes time out, likely, due to NVM updates or EMP
-resets.
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-Petr Oros restores call to ice_clear_dflt_vsi() for the default VSI in
-ice_vsi_release() to ensure no stale rules are left in the device which
-can cause various issues.
+The low-latency (LL) PHY timer interface relies on a tight, atomic poll
+of the PF_SB_ATQBAL register with a 2ms timeout. After an NVM update /
+EMPR, FW may need significantly longer than 2ms to start responding to
+ATQBAL commands. The first PHY adjust or incval write issued by
+ice_ptp_rebuild_owner() fails with -ETIMEDOUT.
 
-Robert Malz breaks NVM reads to occur under separate lock requests as
-large combined NVM reads can cause the NVM lock to be held longer than
-maximum allowed time and be reclaimed by firmware.
+Fix this by falling back to the existing SBQ-based PHY register write
+path when LL times out. This makes sure PTP is initialized when FW takes
+longer than expected to come back online.
 
-For idpf:
-Willem de Bruijn fixes possible endian issue of descriptor by adding
-cpu_to_le32() call.
+Steps to reproduce:
+./nvmupdate64e -if devlink -f
+Update E810 card with nvmupdate64e, and observe dmesg errors:
+  Failed to write PHC increment value, status -110
+  PTP reset failed, error: -110 (-ETIMEDOUT)
 
-The following are changes since commit cba9ccb47e9fa4cc77692fb896cc5ab57a667882:
-  tipc: read le->link under the node lock in tipc_node_link_down()
-and are available in the git repository at:
-  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 100GbE
+Fixes: ef9a64c07294 ("ice: implement low latency PHY timer updates")
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 38 +++++++++++----------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
-Petr Oros (1):
-  ice: clear the default forwarding VSI rule when releasing a VSI
-
-Przemyslaw Korba (1):
-  ice: fall back to SBQ when LL PHY timer interface times out
-
-Robert Malz (1):
-  ice: acquire NVM lock around each flash read
-
-Willem de Bruijn (1):
-  idpf: add missing cpu_to_le32 in idpf_tx_splitq_build_flow_desc
-
- .../net/ethernet/intel/ice/devlink/devlink.c  | 32 ++-----
- drivers/net/ethernet/intel/ice/ice_ethtool.c  | 16 +---
- drivers/net/ethernet/intel/ice/ice_lib.c      |  3 +
- drivers/net/ethernet/intel/ice/ice_nvm.c      | 90 ++++++++++---------
- drivers/net/ethernet/intel/ice/ice_nvm.h      |  2 +-
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c   | 38 ++++----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  2 +-
- 7 files changed, 82 insertions(+), 101 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 8e5f97835954..3a41c711e751 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -4808,15 +4808,12 @@ static int ice_ptp_prep_phy_adj_ll_e810(struct ice_hw *hw, s32 adj)
+ 				       !FIELD_GET(REG_LL_PROXY_H_EXEC, val),
+ 				       10, REG_LL_PROXY_H_TIMEOUT_US, false, hw,
+ 				       REG_LL_PROXY_H);
+-	if (err) {
+-		ice_debug(hw, ICE_DBG_PTP, "Failed to prepare PHY timer adjustment using low latency interface\n");
+-		spin_unlock_irq(&params->atqbal_wq.lock);
+-		return err;
+-	}
+-
+ 	spin_unlock_irq(&params->atqbal_wq.lock);
+ 
+-	return 0;
++	if (err)
++		ice_debug(hw, ICE_DBG_PTP, "Failed to prepare PHY timer adjustment using low latency interface\n");
++
++	return err;
+ }
+ 
+ /**
+@@ -4837,8 +4834,12 @@ static int ice_ptp_prep_phy_adj_e810(struct ice_hw *hw, s32 adj)
+ 	u8 tmr_idx;
+ 	int err;
+ 
+-	if (hw->dev_caps.ts_dev_info.ll_phy_tmr_update)
+-		return ice_ptp_prep_phy_adj_ll_e810(hw, adj);
++	if (hw->dev_caps.ts_dev_info.ll_phy_tmr_update) {
++		err = ice_ptp_prep_phy_adj_ll_e810(hw, adj);
++		if (err != -ETIMEDOUT)
++			return err;
++		ice_debug(hw, ICE_DBG_PTP, "LL adj timed out, falling back to SBQ\n");
++	}
+ 
+ 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
+ 
+@@ -4901,15 +4902,12 @@ static int ice_ptp_prep_phy_incval_ll_e810(struct ice_hw *hw, u64 incval)
+ 				       !FIELD_GET(REG_LL_PROXY_H_EXEC, val),
+ 				       10, REG_LL_PROXY_H_TIMEOUT_US, false, hw,
+ 				       REG_LL_PROXY_H);
+-	if (err) {
+-		ice_debug(hw, ICE_DBG_PTP, "Failed to prepare PHY timer increment using low latency interface\n");
+-		spin_unlock_irq(&params->atqbal_wq.lock);
+-		return err;
+-	}
+-
+ 	spin_unlock_irq(&params->atqbal_wq.lock);
+ 
+-	return 0;
++	if (err)
++		ice_debug(hw, ICE_DBG_PTP, "Failed to prepare PHY timer increment using low latency interface\n");
++
++	return err;
+ }
+ 
+ /**
+@@ -4927,8 +4925,12 @@ static int ice_ptp_prep_phy_incval_e810(struct ice_hw *hw, u64 incval)
+ 	u8 tmr_idx;
+ 	int err;
+ 
+-	if (hw->dev_caps.ts_dev_info.ll_phy_tmr_update)
+-		return ice_ptp_prep_phy_incval_ll_e810(hw, incval);
++	if (hw->dev_caps.ts_dev_info.ll_phy_tmr_update) {
++		err = ice_ptp_prep_phy_incval_ll_e810(hw, incval);
++		if (err != -ETIMEDOUT)
++			return err;
++		ice_debug(hw, ICE_DBG_PTP, "LL incval timed out, falling back to SBQ\n");
++	}
+ 
+ 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
+ 	low = lower_32_bits(incval);
 -- 
 2.47.1
 
