@@ -1,188 +1,235 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012062.outbound.protection.outlook.com [52.101.43.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F124266B2
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 10:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786532102; cv=none; b=tWLd4n3vObwP4Ebf7f5ecuEnxXa0L79WdrniedYbW84iNKn7FL92FWpLL9oGdYqPODQVplRPB2pSHzoJjemBMcMUUmHKkPg8u57ESqs1rBK6uQ5JcFZnPV9YwxADlCOoIxsnqQ6+cNXBrbLTuSftL/+F9MCSYQXv8J0bBotQd9w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786532102; c=relaxed/simple;
-	bh=mkEMYvOBUBP9mf6ujt+QKJ5QLBLaIUpjlgZ/Ors3prw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fs/9iwIJ4UsjKGcqwn4yu32Mdtpy2exZDtlC3G7hE/ogri1LhKoEZp8JJLRKfN9ftHrceVLzaO2S8NTbOSGaXHe77FaIFAU+6L4X6AQKVviZ8bADKY2Bp7b6zln1FixaT9b/pVQDjbGLAR9XE4vQGr3sS/sw1HCGLubo+CJMSSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yjso+IZh; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA432E1EFC;
+	Wed, 12 Aug 2026 10:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786532322; cv=fail; b=mHIp1rP5Cj1dLbcv16eie0RCe/q0drKcZlk5TVJ/u4OVHnWcPFVTsyd/Pv//EVmKZO9Bz+vB4s6RbDN5l7MsmGd5QVzkrep6We1WZiZtyIR/WlhCiXPX8fwDBqcuh7aEmvk7ZHPGpawomILQmB2whefV1sOkT6rwxTVnPRIuuFo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786532322; c=relaxed/simple;
+	bh=GQTKpce9HYcLC0Uy5puEDiWuD5CTmsBS0M1/zS4WS9I=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dLUqRtajerYiHydSetZ63kcBeZcVhwL1ai+UUNrGYQqkVjKv4mmZQUL8wvV9p/614FLS2QvTW59HsN17DYh/LAPmyfjboQEOWjUrxGOmDpXOz2he4Ucva/KVikFStsJ4wCvG9KGeEOEfN8Kb6txh/QLbHZha+9dZSBs21NXGj04=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PDFOBIR8; arc=fail smtp.client-ip=52.101.43.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yjso+IZh"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49802c418b5so7045285e9.1
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 03:55:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786532099; x=1787136899; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TaYIQ7M4HH4um0m6rcSdrPMZwoKevqKb8one0oMaoa4=;
-        b=Yjso+IZhIFy+sY5mZynvoyBe1fN7/1wgxreJnAfd14UUXF1rfO+D6wJb3Hh/rizC1g
-         hgNDc0pUkWwAH7q3cgHcE7DTb/pC1F71O/aPdUQHgCJai1Kcegi6zCRFPCK3JwLxwz6n
-         gM1PVv1j0YyNexRyWOAVrOKcu0wmxTa5R6FPy5ATvnWPb2d9dDw00S88njf739HK3Rot
-         7SPxErqGp1A1dzqFjUYkmiEzgkPThPinILBspkPDCAEREW6sFAEcLbaPzD0io5eyLI97
-         xSwfI8CEbRY3E39qtKB2DGsy0YUmAeSr4+q0NiMBZRP0FBZlL5MA7NdRm6sLe0I69Dwf
-         eg3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786532099; x=1787136899;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=TaYIQ7M4HH4um0m6rcSdrPMZwoKevqKb8one0oMaoa4=;
-        b=g1TBJaaHUgTP0CuQVerMMBCPTmguifyTFWdUJHpDWT+o6bmw7vTB9JAhJ9f55ZQPTB
-         H4irYiXlL9ntDIujYiPCik6OnV89Nhgaa57X6y4vBIUs8CseXCdWHpiwMCRfV4qiV3rz
-         ImR3xAjdNxtseWOLc4e5UGur7SFvA5ukbwndtTD3h9jGlGSV2jv0m+QO3aRXoEYX4LJT
-         kl1shUXEbi22f9OadQsikJJLIZhFC7hfu/qz7Jkf0Ft9xcCu0OWQ8OAxq9fXX/rKPexa
-         wRF0YBdf+xKF8WRk4DQqV3gYpkVZge/YQDlK4rhGy5STytoWoD+LRzI2/fay1m2u1CCH
-         KedQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq7WhsQ2Q0Y4BitdQDBU6DKv4BbCAqNsqG2hkTunShZL1LA1PoZN8QVuIbxkAOYSbDQgi5cqo4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHukFjRhzVjKs/zhbohxHOXTIziAV0l+xx06pw4QTiR1Xy3uUz
-	+jkIDKbNpNqZQuoS3IOAalbY+mjE3iqvyKDOjpy7xNYfQzrOibRKNb18
-X-Gm-Gg: AR+sD11UyqajVnp54EwPuz1akNc+3ZrrCQxkOzr1XF+wDZc31sMiiD6X5PVb2qOSMNP
-	f+IGoss9XCwERjkYK+EpwcEA94oFLhJcmRC6i+Lmr+otishjb4wQu4yylkpIJnT2oju0T+HYMbc
-	jbMhPPIIM3zRuq8fdA0BXyLJF5CLmJqRP9NGudXPXt9h3cvOiLQ0reoRQSEMuQNtBwwMWcHyCSI
-	1AB0QTIfMMfBMfvVZzOsSjUME1Tw2tynYqR9Zp+OGNa3inDNfH98+8MZPfPlF2XzkMdJ7hTILLT
-	ING+JmvReevrnSwwwZVwm7HvmnYFiHangXGptFIDjGXTojnLoXLbNG/4YqdJOljgRuYNuP3ntyM
-	gbZnvBPeXhguBlM6Whd+ZLPAoYIJ+WDZQ4pwyGrGPpKSSMO1mEUvRFGGMl3uMOUijhLlGAXyYM3
-	tzgSVd0H36HBmwFzkkc6+PvNv7fsBqj5GJQQqfBpo8rQM0YINDC2e7qSDbJ5hZwRa76O8BaYHFi
-	A8A8DG1WjGppRnmSdzhW4bgiRPDId8=
-X-Received: by 2002:a05:600c:470d:b0:499:4d4d:822a with SMTP id 5b1f17b1804b1-4997c16007cmr42417015e9.17.1786532099258;
-        Wed, 12 Aug 2026 03:54:59 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48150d72141sm6559541f8f.36.2026.08.12.03.54.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 03:54:58 -0700 (PDT)
-Date: Wed, 12 Aug 2026 12:54:56 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
-	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
-	pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org,
-	sdf.kernel@gmail.com, ameryhung@gmail.com, memxor@gmail.com,
-	jiayuan.chen@linux.dev
-Subject: Re: [PATCH bpf-next v5 2/5] bpf: Add ksock kfuncs
-Message-ID: <anxRAIXU5lLOIo7O@gmail.com>
-References: <20260807171532.125149-1-mahe.tardy@gmail.com>
- <20260807171532.125149-3-mahe.tardy@gmail.com>
- <CAAVpQUDeiDOQa6i03juWO64vyz0TnFH6mqB_vNo0ZeqA0-otxw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PDFOBIR8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Kfr4+8IkG5MiC6H9Z3XpsjVk1eaKfTusa8GAmDcxXK/u4ZnNXViZuVhrzc9bW1geDK6kesRqe6sdr55xsnFbgpwv9G+sUfQmSmo8W6g40sSQYdkt3Rkr+bHddv+XyWPJX/jSq26zU6SMvbU5j/em4IwZ27NqCC0dLAt4nTrTN2jI+Ru5OZXaKPdgSjLLyg1du63bYywlIdifLjWgTllq8+Hj/iL+5fN9fmgvSWHzYXodSuqhr+Hl5OgoL8wI5yX4xMrfk2wdM/f4/6XXX+jMAQ4hXi1oeu2siC01BSZKaDjbJOKhw8r+/24OXL5rtE28Uk+RmGVpMWAWorTJGGvCoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WNdH3bB1Wa/kTZALR7lS5GnK5cwAdWS3aAYOG9SU4N4=;
+ b=LAP/yhMXy01yPk0305H6FK9x6Se7/mKBNDy2eOeejm3UxIlYs0KDu0T0Zi61NXb9Hu1f3qBYDLE1kkTub0ui3uavZ2sNMZZzyfW+eOkKhjEpZdLvWXfwU7y3j+Z8n0+SozQUF/MijybKsMWEsnal8thoc/tuc5QLf7R9JPBB4jVlsxSwxJck6Q257L9DOkJRdvQNRF5SSmXdvJbbEXNJYe/XYzuOND/6uAi9gFh9IwAQme6Svg2m17A0vh1gU7HLpL/wRV+XWRn4Sb1V9+RhOL9ca0CTnJFjUMJR9P6loDzrlqZUENiQSHeLR8EnJNksL/czRVim0waCpSbKeSaz3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WNdH3bB1Wa/kTZALR7lS5GnK5cwAdWS3aAYOG9SU4N4=;
+ b=PDFOBIR8uCh8NuV4kRkt/xFg5iis2whqzOxRzX2ITG1hWrGyyJ1iYOFtFbX+UTw++l1SOHsDMvhsmD9SLj1kF4VhwlCw8/l255CJyOgtfJwuBX6ys+hESmHQg64qAtkYLcyd0nSVQ749V/fQnz2ngq1svKN0f6Dpsgsu7lyAWhDjV/zqtBDDHiMmRFXXQUCO880GAwAijFiLshxROy4lbNsAukqETxHO+wd9HpdrU9gBrzX6a33rXuY1s1/5GfaAfAU7xrvQPMd9FdgubN97O6Uf3NPpNUI16+6IMhPKWf+GAeuQkrD0m5paSdkpRE75/5akskm5qhAJ47rg3W4amg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA0PR12MB7090.namprd12.prod.outlook.com (2603:10b6:806:2d5::16)
+ by PH8PR12MB7301.namprd12.prod.outlook.com (2603:10b6:510:222::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Wed, 12 Aug
+ 2026 10:58:33 +0000
+Received: from SA0PR12MB7090.namprd12.prod.outlook.com
+ ([fe80::de78:df30:c2e6:7adc]) by SA0PR12MB7090.namprd12.prod.outlook.com
+ ([fe80::de78:df30:c2e6:7adc%6]) with mapi id 15.21.0315.012; Wed, 12 Aug 2026
+ 10:58:29 +0000
+Message-ID: <84153a13-6990-43c6-8528-c8b56588496d@nvidia.com>
+Date: Wed, 12 Aug 2026 13:58:20 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next V2 1/5] net/mlx5: HWS, Print more details for bad
+ completion
+To: Simon Horman <horms@kernel.org>, Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Akiva Goldberger <agoldberger@nvidia.com>,
+ Alexei Lazar <alazar@nvidia.com>, Alex Vesker <valex@nvidia.com>,
+ Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Erez Shitrit <erezsh@nvidia.com>, Feng Liu <feliu@nvidia.com>,
+ Gal Pressman <gal@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>,
+ Kees Cook <kees@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>,
+ Parav Pandit <parav@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Shay Drory <shayd@nvidia.com>, Vlad Dogaru <vdogaru@nvidia.com>,
+ Yevgeny Kliteynik <kliteyn@nvidia.com>
+References: <20260810092630.3137666-1-tariqt@nvidia.com>
+ <20260810092630.3137666-2-tariqt@nvidia.com>
+ <20260811152538.GG51943@horms.kernel.org>
+Content-Language: en-US
+From: Tariq Toukan <tariqt@nvidia.com>
+In-Reply-To: <20260811152538.GG51943@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0175.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b7::12) To SA0PR12MB7090.namprd12.prod.outlook.com
+ (2603:10b6:806:2d5::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAVpQUDeiDOQa6i03juWO64vyz0TnFH6mqB_vNo0ZeqA0-otxw@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA0PR12MB7090:EE_|PH8PR12MB7301:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9a35c58-0e31-4a83-a805-08def860a43e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|366016|6133799003|10067099003|56012099006|4143699003|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	yGotkRYS6tpJVo2U84sUF2YvVBD0TfZoCj03RKJeawZ042CQm8VAvSG4HNDp/zPMNgkTkWYlFa2ccRVmFBN+a/xKHqyP3VEcgCyzNXHMMykKSN0qr/PhHuhFzS/A+qhOD8eBasgQQB9rOkOrbbvroyMJjBlaJDmjG0YwIsiomM4yqaFYNYx5CFgtdLsaHTSIvNaD7V80XBjRGprrwRuDnX9HFWWOUoA4dkkMsm8vFTC7drOm9H05tAbZGp6VgvYHmn8ibv6d/3NT2fQ0xSdPQ9hrinhbfb9l8v7xL3mz0qLluLXHt8UgmwnKjrZCSVp0DSuLZQ3of3O7kq7+PeellvRMQPcq/Fn11aXsT0GFH8G7DuqvtOtA3L0FjJsIPvBKT2xwQtmmz+xebayQDg1xpHOOtD/HuEQXHXXiINLG8vweGfxV0yT9zhduipVeA9VrJdAXz45FNu6VGkuGvUE8s9VY8Lbb91+IRqfjnwCp3cbJiW0UGmgwtsftY06JW+bAhLwtsdbKfm8a6ztTx5sZDeDsbv6266gp79MBG1ZhJ6PH1gI1ZFVvNc0+F+5Mnx0OC4H7eaxbHhbC0dMhYP+dI4MBHXl7Dh6xAVzNx2IRWWXh5apv+3sJ1QObxW/BiaAmzrJssrlm9CPXizo9YpOT+EOMYnaLPXmX2jr9JGHXHmI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB7090.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(366016)(6133799003)(10067099003)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eFAzUXZjd29BdUx5d1RhRThKbFBzUjYyS2lScGJOWkt6cGlTcWQxaFhpbHE4?=
+ =?utf-8?B?Sk1tQWI0QkF5SEd5Wm8zanRQa1orTE1JR0k1QzUwYWF6c1BHMnlkL0NKTlE3?=
+ =?utf-8?B?ejl4L3VpT05jVlVrRjI4VUdHTWMwemFGTG9KdlM4d1FMT0N2c3htVGtWVnpP?=
+ =?utf-8?B?ODlJczVoSDF4dUJuS0JaNUgrclBDajVjZzdjaVFwNVNCd3JZS1ZqNUZvTnE4?=
+ =?utf-8?B?QSs1czZxQmljNFpRNy9iQm90aUpOemovaTBLUDhRVlY5MlRJYWJ3aFJjMVJ6?=
+ =?utf-8?B?bnpBSXhJNk05T2xFdmZ2Q3psajIxOFVOZDNqeDRJUUVNMGdrbDdPR0VzdmVl?=
+ =?utf-8?B?a05Sb1VBV0JSK0hJanNXTHQ3TUlBazlaWXZhbWRJTzJYTXVuSHB3d3pyNEFZ?=
+ =?utf-8?B?blhIeUh6ekZva3lkN0xpb3k4ZGdVV2ZSZFhvUGw2YnNJSjRVUkNpN1lQcklE?=
+ =?utf-8?B?NXk0RERXRTVNejIzZTNFVk9wbGx2aWptTktwR2p5b2NpNGRLdll6MUQydHNk?=
+ =?utf-8?B?dDJ5OGRVaTRGQkVNb0gzcUxGMFY5Z3cyUTVPbG5jR3NDWmxGWlRLR3pscDRW?=
+ =?utf-8?B?WWNXQmQxaDdadEQ2TzlDWlRUSXN2dVBkK0VCM0lzOVk2T29TRFd6d1lJc3cv?=
+ =?utf-8?B?aGFrZlFkM1JGZTdjZzducmtLR3c3ZGdkNm5WdnNvVHRXZ2R5OFM2OFd4T2Jj?=
+ =?utf-8?B?V0hWdVkybVQzekYxbFIrY1ZQbS9HNFI2bDNJOUczOE5GbDQ3Ym8raHJpQ29O?=
+ =?utf-8?B?ZWp5aHFNTjFJVWxoNHVCeVhzeXB5dUNJSS9wMVVZa2VUTkxVemZKakRIZzBB?=
+ =?utf-8?B?a3VwRzhUZjRRb0tNcHBvd2N0MXV1cGJqaUozaU1SQW01aUxGTUJtb3RBL0ox?=
+ =?utf-8?B?R1AxUTdiamhlYklaN1hVNTlIVmVZOE91UG1uY05rekt2alVySEVvQXNMWjFE?=
+ =?utf-8?B?S3lXTHp3YVpDRWVva2FDc0VKb1ZFTUdOYTFMREc1RGhLdXJUZnVZamJIKzdt?=
+ =?utf-8?B?d0JnMDE3Unh4bDZDSGxJOUJOdW9iWE5kR1d1cXpYWFV4QXc3cG5QR01RRGhC?=
+ =?utf-8?B?RlpJZnZZcDJxcmZpZjBXTTdjcURDdkN3b0pLWVBLbUxvZTIyS1NoTDV2a1Z5?=
+ =?utf-8?B?amRIWjhyYWkwb09ac01Xb1lxRkdwV2tManFPa1pPT2V5NUxRTEkrQ2hsSWNn?=
+ =?utf-8?B?RE0ySlZQTWVNWU92eGpFa043RUpwS1BPV2srUUZrV284cUNmclZEZkw3N0ZD?=
+ =?utf-8?B?bEQzRVMzcXVpZ25aVEhpSFp0WFd2Q0luNkRSaGREVU0rc2JreDZqbWJyNGpL?=
+ =?utf-8?B?b25IRzlDZzczZVoxcjlxNVQ5SGZ1N2c0OTA5WG1sa1ZTdEN3SVhHOXV1M0xY?=
+ =?utf-8?B?ZU0vajVzWkt6MGZOby9FTS9GRGx3dTAzS3NJUDdBL2o3YTNiTkgra1k2eUxC?=
+ =?utf-8?B?QUNnTFlpL3I5V2ZLYjUyN1JFQnBsTVg1Um5jOTBQRE9BY2Erb0JlSlJDcE53?=
+ =?utf-8?B?UlRSSG9vL3JEUTdnT2Vaa21pc0VSVzB6bHZqNldOcGtVL0kyM3Z2aFpCN2FS?=
+ =?utf-8?B?K0ZCaEtQd3BYRWJ3eVlZUzI0eWg3NkVwcmZacUI0WGl0RmNkT1R6YzhnT1ZI?=
+ =?utf-8?B?UXlHZG5WM1c5UnBraTNxb1IxcitMMVR1VklWYWxyK2ZNendkSk9SMTVUcFF6?=
+ =?utf-8?B?bVNuZXdKV3FvcGRaTlBmQnVPMDdOaHdZWDF1bDBKSzVRLzZWRFR5R1UwM3hv?=
+ =?utf-8?B?Z3E3RzNJRjVDQmZTVFFpVmZac1FZWHhJZDNKYUZMK2tLM2czaXZoc3FyNUxH?=
+ =?utf-8?B?NmtlNTlWenhUWWJQZDdKUURWRjZrU0FBUkNSeUc1eVlLREN6NEpxcnFQNmJH?=
+ =?utf-8?B?WThSZWNsZVd2N1hzTUhJL0krWW9iLzZpTXRZMVRraVp0RVA3NmRTSit5MjlE?=
+ =?utf-8?B?a2RlRmZPT04yVmQ0R2k5VVVtRnhqYm8rQkw0ZG9FbENTMmoxRVc5Yi9pZ1NI?=
+ =?utf-8?B?SkpyWktQRkk5THRDdDZ2NUMvVDNxbXNjMlQyTnhlL0ZvcWUvSG1XWkVVUXZZ?=
+ =?utf-8?B?cmh6NEpuYXRXN05DWmMrdEhiRmZaMmFhYlVlbXV0alRMaFRvYmlabmF1a1ow?=
+ =?utf-8?B?dDlYWktlaFNyZEpOMW9MTzNxMkk0bnVLc1pKNDQ4ZHlqcFlYWTFJc05HRHIw?=
+ =?utf-8?B?TW1LSXNtc1VhNFIralNVbFlhYWJ0OEpwbXhnVVJodnRIRDcrRVNpUTBZKzZh?=
+ =?utf-8?B?ZXRweEsxdWdIK1hOaG1nUXpyNVZoTXJOeERDVERWeWdVSXUvL3JZNEF2Sk53?=
+ =?utf-8?Q?2HE5MbTTsoRIs94Rru?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9a35c58-0e31-4a83-a805-08def860a43e
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB7090.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 10:58:29.2199
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HHYIV4KFofEpCdboaukx8+FkkOPPto64SgcuQJxn2eFNUZpoiZq1gBcAphrC1kW7y9O/W3JwaGKVZMexHLSaPw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7301
 
-On Mon, Aug 10, 2026 at 09:24:38PM -0700, Kuniyuki Iwashima wrote:
-> On Fri, Aug 7, 2026 at 10:15 AM Mahe Tardy <mahe.tardy@gmail.com> wrote:
-> >
-> > Add BPF kfuncs that allow BPF LSM programs to create and use sockets for
-> > sending data. This provides a mechanism for BPF programs to emit
-> > telemetry. For this first patch set, it's restricted to SOCK_DGRAM
-> > socket types with IPPROTO_UDP protocol but could be easily extended to
-> > SOCK_STREAM and IPPROTO_TCP in the future.
-> >
-> > The API consists of five kfuncs:
-> >
-> >   bpf_ksock_create()   - Create a socket (sleepable)
-> >   bpf_ksock_connect()  - Connect socket to remote address (sleepable)
-> >   bpf_ksock_send()     - Send data through the socket (sleepable)
-> >   bpf_ksock_acquire()  - Acquire a reference to a socket context
-> >   bpf_ksock_release()  - Release a reference (cleanup via
-> >                          queue_rcu_work since sock_release sleeps)
-> >
 
-[...]
 
-> > +
-> > +/**
-> > + * struct bpf_ksock - refcounted BPF kernel socket context
-> > + * @sock:      The underlying kernel socket.
-> > + * @usage:     Reference counter.
-> > + * @rwork:     RCU work for deferred cleanup (sock_release may sleep).
-> > + */
-> > +struct bpf_ksock {
-> > +       struct socket *sock;
-> > +       refcount_t usage;
-> > +       struct rcu_work rwork;
-> > +};
-> > +
-> > +static void ksock_release_work_fn(struct work_struct *work)
-> > +{
-> > +       struct bpf_ksock *ks =
-> > +               container_of(to_rcu_work(work), struct bpf_ksock, rwork);
+On 11/08/2026 18:25, Simon Horman wrote:
+> On Mon, Aug 10, 2026 at 12:26:26PM +0300, Tariq Toukan wrote:
+>> From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+>>
+>> When polling for completion returned completion with error,
+>> parse some more details: QP number and WQE count.
+>> Also, extract all the long value-to-string if conditions
+>> to a short value-to-string functions: do it for rule
+>> resize state, rule status, and syndrome.
+>>
+>> Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+>> Reviewed-by: Erez Shitrit <erezsh@nvidia.com>
+>> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 > 
-> nit: if you need respin:
+> Overall this series looks good to me.
+> But the AI-generated review of this patch, pasted below, does seem relevant.
 > 
-> struct bpf_ksock *ks;
+
+Thanks.
+Yeah it seems relevant indeed.
+We'll handle.
+
+> ...
 > 
-> ks = container_of(to_rcu_work(work), struct bpf_ksock, rwork);
-
-sure!
-
+>> @@ -423,6 +445,15 @@ static void hws_send_engine_dump_error_cqe(struct mlx5hws_send_engine *queue,
+>>   			    "    rule 0x%08llx:  |--- syndrome = 0x%x\n",
+>>   			    HWS_PTR_TO_ID(rule),
+>>   			    err_cqe->syndrome);
+>> +		mlx5hws_err(ctx,
+>> +			    "    rule 0x%08llx:  |--- QPN = 0x%x\n",
+>> +			    HWS_PTR_TO_ID(rule),
+>> +			    be32_to_cpu(err_cqe->s_wqe_opcode_qpn) &
+>> +					0xffffff);
 > 
-> > +
-> > +       sock_release(ks->sock);
-> > +       kfree(ks);
-> > +}
-> > +
-
-[...]
-
-> > +__bpf_kfunc struct bpf_ksock *
-> > +bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
-> > +                int *err__uninit)
-> > +{
-> > +       struct bpf_ksock_create_opts opts_copy;
-> > +       struct bpf_ksock *ks;
-> > +       int err;
-> > +
-> > +       /*
-> > +        * sock_create() derives the network namespace, credentials, and cgroup
-> > +        * from current. Kernel threads, including BPF workqueue callbacks, do
-> > +        * not carry the context of the task that invoked the BPF program.
-> > +        */
-> > +       if (!bpf_ksock_has_user_task_context()) {
-> > +               err = -EOPNOTSUPP;
-> > +               goto err_out;
-> > +       }
-> > +
-> > +       if (!opts || opts__sz != sizeof(struct bpf_ksock_create_opts)) {
-> > +               err = -EINVAL;
-> > +               goto err_out;
-> > +       }
-> > +
-> > +       opts_copy = (struct bpf_ksock_create_opts){
-> > +               .family = READ_ONCE(opts->family),
+> AI-generated review text:
 > 
-> I'm not sure if we really want to care about such an arch, but
-> since you mentioned unaligned access in bpf_ksock_connect(),
-> is READ_OCNE() safe here ?
-
-To my understanding, there's no issue regarding alignement here since
-these four fields are __u8. The READ_ONCE is only used so that the
-compiler does not do smart things like moving load or reloading a field
-between time of check and time of use.
-
+>    Is this new QPN line printing something that the same function already
+>    dumps a few lines later?
 > 
+>    At the tail of hws_send_engine_dump_error_cqe() there is already:
 > 
-> > +               .type = READ_ONCE(opts->type),
-> > +               .protocol = READ_ONCE(opts->protocol),
-> > +               .reserved = READ_ONCE(opts->reserved),
-> > +       };
-> > +
+> 	mlx5hws_err(ctx,
+> 		    "    rule 0x%08llx:  |------------ qpn = 0x%06x\n",
+> 		    HWS_PTR_TO_ID(rule),
+> 		    be32_to_cpu(cqe->sop_drop_qpn) & 0xffffff);
+> 
+>    err_cqe is just a cast of the same cqe pointer, and both fields land on
+>    the same four bytes of the 64 byte CQE (include/linux/mlx5/device.h):
+> 
+> 	struct mlx5_err_cqe {
+> 		u8	rsvd0[32];	/* 0..31  */
+> 		__be32	srqn;		/* 32..35 */
+> 		u8	rsvd1[18];	/* 36..53 */
+> 		u8	vendor_err_synd;/* 54     */
+> 		u8	syndrome;	/* 55     */
+> 		__be32	s_wqe_opcode_qpn;/* 56..59 */
+> 		...
+> 	};
+> 	struct mlx5_cqe64 {
+> 		...
+> 		__be32	byte_cnt;	/* 44..47 */
+> 		__be32	timestamp_h;	/* 48..51 */
+> 		__be32	timestamp_l;	/* 52..55 */
+> 		__be32	sop_drop_qpn;	/* 56..59 */
+> 		...
+> 	};
+> 
+>    Same offset, same 0xffffff mask, so a single dump now reports the QP
+>    number twice, once as "QPN = 0x%x" and once as "qpn = 0x%06x", with
+>    different labels and widths.
+> 
+>    Would it make sense to drop the new QPN line, or at least align its label
+>    and width with the existing one, given the one-shot
+>    queue->error_cqe_printed guard is there to keep this dump compact?
+> 
+> Source: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810092630.3137666-1-tariqt%40nvidia.com
+> 
+>> +		mlx5hws_err(ctx,
+>> +			    "    rule 0x%08llx:  |--- WQE_CNT = 0x%04x\n",
+>> +			    HWS_PTR_TO_ID(rule),
+>> +			    (u32)be16_to_cpu(err_cqe->wqe_counter));
+>>   	}
+>>   
+>>   	mlx5hws_err(ctx,
+> 
+> ...
+> 
 
-[...]
