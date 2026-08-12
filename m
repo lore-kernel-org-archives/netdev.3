@@ -1,50 +1,53 @@
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9142D486634;
-	Wed, 12 Aug 2026 21:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786569316; cv=pass; b=Nzw9wGTZrSNW+tCuQgxmfsezulDRwdB6sIgdJkLOyGDJyxgFerU01zFlSbfXCILbi8/6b+iunztwc9wx9jUsPi0PiotOEiHfDlA57xsDGJaroHnq2xoqBfMrie1vuK2LxcBeROYP8PsR/Zs/C34y0Ms2znGLV4yJjYEHMuNb0cU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786569316; c=relaxed/simple;
-	bh=ohbLwvdIHJti+UGNkx3fB1kePNPBy33bhVCWWM8fCtQ=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405313242B8;
+	Wed, 12 Aug 2026 21:16:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786569368; cv=none; b=jYDT8U/tJSQ/Q1VZ6FqUL9FRkl7fHhAu9XsX1PrjHw/iW6Tj5Ibap6EYuPotLl/Oups9ZF5euq5s+XyJWT+rOhx/uwTnkQDu8UbtiP2wYlNorp5f2TNOGvVqKBTEVPFAySBhKRKdmaBOUG8GUQM2/hgPwdWVZbrbAlYUaQaMbRk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786569368; c=relaxed/simple;
+	bh=XuTF2gflCD/gMT8ViBggEtA+76qOh1XTvpzHelGk8tA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jLo/i/9fbmqyGGlqdkKGhgEycim7Aw/RPAkLuwDHIDNZ6jqaPGGVPaHxYkeRi5mFViRkF15DdLYXApj1rsHkEPqsYPQZnzhxsiQqc/J8DRLFXZSpL6YZKcxc7J1rYDHVnqhp8A9QafR9GXdhySWQYsqDENmj0LlB5RlmztrcHJE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=BupUEuKn; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
+	 Content-Type:Content-Disposition:In-Reply-To; b=sBqHbFvud5Ey0WelqRLvyxjtb6M9KCaqh83J4JPKOC7gL5J6RV71XnyChg4WxYFeIUKBiXfDNy/d+YsEdwK53Vh/eovLt/DEklKnIphXUVb4OSwpA+Tnh758lrmCtvXzVJPxjD0LxRr6tHgh2Hb1HDqnBl7ulXGFfYbilFi2cTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E58VqySM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="BupUEuKn"
-ARC-Seal: i=1; a=rsa-sha256; t=1786569309; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=IpkNhllMrOeY1Ki07ncjthuvxg5TC9XistcaVqxV8L7Z3N4Vjk/jMhBpc1hM+pocC/LjlUaBQ1aZUIGCpizv5+nZkrqhVRflQ4UQ0xnlIjYz7hAcNylPzGfQTIH/2OaVkUTW4CJsKkzgvw14QuP8IHJVCbJZ/uL16HZQLYE+rw0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1786569309; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=/wP24GqTbgu4Lf+JFa/mUy7/xcr+IkzHGTkcQgelCYU=; 
-	b=jtp8Z5aZp/nG7YEbZkf1GdpLUAVjWKu9CPp73aOn4wjPwf6f0aSppkyETACPAXm4l0HOX5Fsqth20lNfaERUrt6ipU0RZgVnVq0hS0jyb2H+uWYPqMgEU3VpRIC0XX3l3SED3Ntm/6Nljme72FJOxKHiSXBn3eUi/0FTeERYl6c=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ziyao.cc;
-	spf=pass  smtp.mailfrom=me@ziyao.cc;
-	dmarc=pass header.from=<me@ziyao.cc>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786569309;
-	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=/wP24GqTbgu4Lf+JFa/mUy7/xcr+IkzHGTkcQgelCYU=;
-	b=BupUEuKnbgc4OnZZGfawSDk2LJVm0YfHGR4jivFmEoT2LcDHw5QsqY6zRvM3ugwn
-	fuAw/tME1vXAenKY0SP9odBCrO++jO45pGrngDd4yCpnGnuc3O48KGEYBe6k0IswkcD
-	3WjL4jC7UBJMd4TiZgvg34CVXIbJu1+6sQ/OM/Q8=
-Received: by mx.zohomail.com with SMTPS id 1786569307490841.3412014312573;
-	Wed, 12 Aug 2026 14:15:07 -0700 (PDT)
-Date: Wed, 12 Aug 2026 21:14:56 +0000
-From: Yao Zi <me@ziyao.cc>
-To: Giuseppe Nespolino <g.nespolino@gmail.com>, Yao Zi <me@ziyao.cc>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: dwmac-motorcomm: RX dies after long s2idle, only wrapper
- SYS_RESET recovers
-Message-ID: <anziUH_cC1LXoB1x@pie>
-References: <CAKx9m6PywVwkirvkAtz144c-yg71c2+OcNYOTM4Bjtd8dF2PaA@mail.gmail.com>
- <CAKx9m6OsGKGKGxPnjwy8U-bDyvXVEK-dVNmvP0ZqSL-t2Exsgg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E58VqySM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2CD1F000E9;
+	Wed, 12 Aug 2026 21:16:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786569366;
+	bh=Jy+yY7ScNPTLI9GPqIPBBSp+vMzLO39xsKXyzQYJ99g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E58VqySMPVR3JY7HOTNGr9aKopdC/lyGXtSvQDmLeEvPWmMjbVUfelG4CWhcmWxtn
+	 2bHovtMMDJThTowpyek8S0i+tc0b6ncMVDblTqQ23iiglr3Z0fyKP0qc0aJm1QM/OY
+	 n52J3OD/J1sUCV817jRl7Sz1js835hjMmDRTPEExkqDiXgXvsnGhNNZgKfxWx7O08M
+	 fFdtsDOfEq7cNMUzcxFkpXuXJ5x00ORiLqfOPmZWVin+GpzY93COwrR1QarzO+4POW
+	 XLFIeSISNBKyGvbDbGY1G3Py9Ehvh9hVQW5YtSGZwsuTTrZPKSd2XruYcCFvIGNvNS
+	 YB9LOHBnjNflA==
+Date: Wed, 12 Aug 2026 16:16:05 -0500
+From: Rob Herring <robh@kernel.org>
+To: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+Cc: Srinivas Neeli <srinivas.neeli@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Michal Simek <michal.simek@amd.com>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, git-dev@amd.com
+Subject: Re: [PATCH 01/20] dt-bindings: net: add Xilinx TSN Endpoint Ethernet
+ MAC
+Message-ID: <20260812211605.GA984427-robh@kernel.org>
+References: <20260807104431.157230-1-nagadheeraj.rottela@amd.com>
+ <20260807104431.157230-2-nagadheeraj.rottela@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,131 +56,315 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAKx9m6OsGKGKGxPnjwy8U-bDyvXVEK-dVNmvP0ZqSL-t2Exsgg@mail.gmail.com>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.10.1.5.2/286.560.97
-X-ZohoMailClient: External
+In-Reply-To: <20260807104431.157230-2-nagadheeraj.rottela@amd.com>
 
-On Wed, Aug 12, 2026 at 05:02:49PM +0200, Giuseppe Nespolino wrote:
-> Answering my own question, since it turned out to be testable without a
-> suspend at all.
+On Fri, Aug 07, 2026 at 04:14:12PM +0530, Nagadheeraj Rottela wrote:
+> From: Srinivas Neeli <srinivas.neeli@amd.com>
 > 
-> On a healthy interface, writing 0 to OOB_WOL_CTRL (BAR0+0x1010) - clearing
-> the DIS bit, i.e. enabling OOB WOL - kills RX within a second:
+> Add a binding for the Xilinx TSN Endpoint Ethernet MAC IP. The
+> top-level node describes the IP wrapper, which owns the six shared
+> IP clocks and the xlnx,num-priorities parameter, and has two
+> children:
 > 
->   OOB=1 (healthy)                      ping   0% loss, rx-0 irq +39,
-> rx_packets +49
->   OOB=0                                ping 100% loss, rx-0 irq  +0,
-> rx_packets  +0
->   OOB=1 again                          ping 100% loss, rx-0 irq  +0,
-> rx_packets  +0
->   SYS_RESET + init + ip link down/up   ping   0% loss, rx-0 irq +35,
-> rx_packets +41
+>   - xlnx,tsn-ep-mac: the endpoint MAC, owning the host-side DMA
+>     channels (dmas / dma-names / tx-queues-config).
 > 
-> So the DIS bit is one-way: writing it back reads 1 but does not disarm an
-> engine that already armed. Only the SYS_RESET recovers. That's a one-writel
-> reproducer of the symptom, no suspend needed.
-
-This is quite unexpected. I found enabling OOB_WOL_CTRL blocks DMA
-interrupts because it's the default state after resetting, without
-clearing it, the MAC is non-operational.
-
-> It also explains why nothing driver-side helps after resume:
-> motorcomm_init() writes OOB_WOL_CTRL_DIS, the register reads 1, and it's a
-> no-op because the engine is already armed. Only the probe's
-> motorcomm_reset() tears it down.
-
-This makes sense.
-
-> Possible trigger: stmmac_pci_plat_suspend() calls
-> pci_wake_from_d3(pdev, true) unconditionally, even when WoL is off.
-
-Have you tested the idea? We always call pci_wake_from_d3(pdev, true) but
-from your description, broken RX only happens after s2idle is active for
-some time, right?
-
-> Caveat, because the two states are not identical: with OOB WOL enabled by
-> hand, CH0_STATUS reads 0x0 - fully quiesced, no events latched. In the
-> natural post-resume failure it was 0x4c5 with RI/RBU latched and packets
-> still landing in memory (RX descriptor OWN count dropping 512 -> 467). So
-> this proves OOB WOL blocks interrupt delivery and that the DIS bit is
-> irreversible, but not yet that OOB WOL is what arms across s2idle. I'll
-> check whether the engine is armed on the next natural occurrence.
-
-From my own testing, with OOB WOL enabled, both DMA TX and RX interrupts
-aren't delivered. So TX behavior when RX is broken might indicate what
-has happened.
-
-> Given this, the fix is probably narrower than what I suggested: either
-> don't enable PCI wake when WoL is off, or disarm OOB WOL properly on
-> resume - and if a reset is the only way to disarm it, that at least gives
-> the reset a documented reason. Tell me which direction you prefer and
-> I'll send a patch.
-
-I prefer the later, even disabling PCI wake works, we'll probably
-re-visit this when adding WoL support. Sadly I took a brief look across
-vendor's driver, and think there's no other way to disarm the OOB WOL.
-Performing a SYS_RESET might be okay since the stmmac core restores
-necessary hardware states.
-
-Anyway, please try figuring out state of the DIS bit when the problem
-occurs before sending the patch, which would be a strong reason to
-perform a reset in the resume hook.
-
-Best regards,
-Yao Zi
-
-> Giuseppe
+>   - xlnx,tsn-switch: the three-port Ethernet switch covering the
+>     switch fabric and the two per-MAC register windows. The MDIO
+>     controllers and PTP register blocks sit at fixed offsets inside
+>     the per-MAC windows, accessed through the mdio-mac1 / mdio-mac2
+>     children and per-MAC interrupt-names entries. Each external
+>     port@N references its PHY through a phy-handle in the matching
+>     mdio-mac<N> child.
 > 
-> Il giorno mer 12 ago 2026 alle ore 16:50 Giuseppe Nespolino
-> <g.nespolino@gmail.com> ha scritto:
-> >
-> > Hi Yao,
-> >
-> > On a Slimbook EVO15-A8 (YT6801, 1f0a:6801, kernel 7.0.0-28 Ubuntu)
-> > enp2s0 stops receiving after a long s2idle. 18-25 minutes reproduces
-> > it; 5s and 30s cycles never did.
-> > Link comes up at 1Gbps and the resume path logs nothing unusual.
-> >
-> > Measured while broken:
-> >
-> > - MAC is receiving: mmc_rx_framecount_gb climbing,
-> > mmc_rx_fifo_overflow 2585. netdev rx_packets and the rx-0 MSI-X count
-> > frozen.
-> > - MSIX_PBA (BAR0+0x1300) = 0, so the device isn't asserting anything.
-> > - CH0_STATUS = 0x4c5: RI/RBU/TI/TBU latched, NIS and AIS clear, with
-> > NIE/AIE set in CH0_INTR_ENA (0xd041).
-> > - All 512 RX descriptors in writeback format with sane lengths
-> > (64-1518), OWN=0. The DMA received them; nothing ever consumed them.
-> >
-> > Event bits latch and clear fine (W1C works, MGMT_INT_CTRL0 tracks it
-> > as a mirror), but the summary stage never asserts and no MSI-X is
-> > generated. RBU, the full ring and the FIFO overflow are all downstream
-> > of that.
-> >
-> > Ruled out with data: ASPM/remapping (PBA=0, MSI-X table intact, zero
-> > IOMMU faults), wrapper registers lost across D3 (all identical to a
-> > healthy baseline), unarmed ring, and MGMT_INT_CTRL0 needing an ack
-> > (status field is read-only).
-> >
-> > What recovers it: toggling SYS_RESET (0x152c bit31) plus
-> > motorcomm_init(), then ip link down/up. down/up alone does not - rings
-> > get rebuilt, IRQs re-requested, packets land in memory, still zero
-> > interrupts. I haven't yet isolated the reset from motorcomm_init().
-> >
-> > Which brings me to the question, since you know the chip: does
-> > clearing OOB_WOL_CTRL_DIS actually disarm an OOB WOL engine that
-> > already armed, or does that need the SYS_RESET? Your comment says OOB
-> > WOL blocks DMA interrupt
-> > delivery, which is exactly the symptom, and stmmac_pci_plat_suspend()
-> > enables PCI wake unconditionally even with WoL off - it is off here.
-> >
-> > I have a candidate fix (do the full motorcomm_reset() in
-> > motorcomm_resume() instead of only deasserting the MDIO/PHY reset) and
-> > I'm happy to send it, but if OOB WOL is the mechanism the right patch
-> > is probably narrower. Caveat: I validated reset + full open, not reset
-> > + the stmmac_resume path, so a patched module still needs testing.
-> >
-> > Happy to run any experiment on this hardware.
-> >
-> > Giuseppe
+> Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
+> Co-developed-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+> Signed-off-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+> ---
+>  .../net/xlnx,tsn-endpoint-ethernet-mac.yaml   | 343 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 350 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> new file mode 100644
+> index 000000000000..00f52b7b623c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> @@ -0,0 +1,343 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/xlnx,tsn-endpoint-ethernet-mac.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Xilinx TSN Endpoint Ethernet MAC
+> +
+> +description:
+> +  TSN Endpoint Ethernet MAC IP implements IEEE 802.1 Time-Sensitive
+> +  Networking (TSN) standards and provides low-latency network connectivity
+> +  in either Endpoint-only or Bridged Endpoint configurations. In the
+> +  Bridged Endpoint mode, the IP integrates a three-port switch, with two
+> +  ports connected to the external network and one port connected to an
+> +  internal endpoint. It also supports GMII/RGMII interfaces for connection
+> +  to an external PHY, enabling full-duplex operation at 100 Mb/s and
+> +  1 Gb/s speeds.
+> +
+> +maintainers:
+> +  - Srinivas Neeli <srinivas.neeli@amd.com>
+> +  - Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: xlnx,tsn-endpoint-ethernet-mac-3.0
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: GTX clock for transmitter logic and RTC
+> +      - description: GTX 90-degree phase shifted clock for RGMII
+> +      - description: Host RX FIFO clock
+> +      - description: Host TX FIFO clock
+> +      - description: Reference clock for IDELAY control
+> +      - description: AXI-Lite register interface clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: gtx
+> +      - const: gtx90
+> +      - const: host_rxfifo
+> +      - const: host_txfifo
+> +      - const: ref
+> +      - const: s_axi
+> +
+> +  ranges: true
+> +
+> +  xlnx,num-priorities:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 2
+> +    maximum: 8
+> +    description:
+> +      Number of traffic classes (priorities) configured in the IP.
+> +      This is an IP configuration parameter that determines the number of
+> +      priority queues available for QoS scheduling. Traffic classes map to
+> +      IEEE 802.1Q priority levels (0-7).
+
+Vendor specific properties go after standard properties. See ordering 
+rules.
+
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 1
+> +
+> +patternProperties:
+> +  "^ep-mac@":
+
+'^ethernet@[0-9a-f]+$'
+
+> +    type: object
+> +    $ref: /schemas/net/ethernet-controller.yaml#
+
+Move unevaluatedProperties here.
+
+> +    description:
+> +      Endpoint MAC sub-node. Provides the host-side data path through the
+> +      DMA channels described by its dmas / dma-names.
+> +    properties:
+> +      compatible:
+> +        const: xlnx,tsn-ep-mac
+> +
+> +      reg:
+> +        maxItems: 1
+> +
+> +      dmas:
+> +        minItems: 2
+> +        maxItems: 32
+> +
+> +      dma-names:
+> +        minItems: 2
+> +        maxItems: 32
+> +        items:
+> +          pattern: "^(tx|rx)_chan(1[0-5]|[0-9])$"
+> +        description: |
+> +          Names matching the entries in 'dmas', one per DMA channel and in
+> +          the same order. TX channel names use "tx_chan<N>" and RX channel
+> +          names use "rx_chan<N>", where N is 0..15. Example: "tx_chan0",
+> +          "tx_chan1", ..., "rx_chan0", "rx_chan1", ....
+> +
+> +      tx-queues-config:
+> +        type: object
+
+Move additionalProperties here.
+
+> +        description:
+> +          TX queue configuration node that maps IP priority queues to
+> +          DMA TX channels. The TSN IP supports multiple priority queues for
+> +          QoS scheduling, and each queue can be connected to a specific DMA
+> +          channel. This mapping defines which DMA TX channel is used to
+> +          transmit packets for each priority queue. For example, queue0
+> +          with xlnx,dma-channel-num set to 5 means priority queue 0 uses
+> +          tx_chan5 for data transfer.
+> +
+> +        patternProperties:
+> +          "^queue[0-7]$":
+> +            description:
+> +              Each subnode represents a priority queue. The
+> +              xlnx,dma-channel-num property specifies which DMA TX channel
+> +              (tx_chan0 to tx_chan15) is connected to this queue for
+> +              transmitting packets.
+> +            type: object
+
+Move additionalProperties here and then a blank line after.
+
+> +            properties:
+> +              xlnx,dma-channel-num:
+> +                $ref: /schemas/types.yaml#/definitions/uint32
+> +                description:
+> +                  DMA TX channel number connected to this priority queue.
+> +                minimum: 0
+> +                maximum: 15
+> +
+> +            required:
+> +              - xlnx,dma-channel-num
+> +
+> +            additionalProperties: false
+> +
+> +        additionalProperties: false
+> +
+> +    required:
+> +      - compatible
+> +      - reg
+> +      - dmas
+> +      - dma-names
+> +      - tx-queues-config
+> +
+> +    unevaluatedProperties: false
+> +
+> +  "^switch@":
+
+^switch@[0-9a-f]+$
+
+> +    type: object
+> +    $ref: /schemas/net/dsa/dsa.yaml#/$defs/ethernet-ports
+> +    description:
+> +      Three-port Ethernet switch sub-node. Contains the switch fabric
+> +      register window and the two per-MAC register windows; each per-MAC
+> +      window houses an MDIO controller and a PTP register block at fixed
+> +      offsets. The IP's per-MAC and PTP-timer interrupts are exposed here.
+> +
+> +    properties:
+> +      compatible:
+> +        const: xlnx,tsn-switch
+> +
+> +      reg:
+> +        items:
+> +          - description: Switch fabric register window
+> +          - description: MAC1 register window (includes MDIO and PTP)
+> +          - description: MAC2 register window (includes MDIO and PTP)
+> +
+> +      reg-names:
+> +        items:
+> +          - const: switch
+> +          - const: mac1
+> +          - const: mac2
+> +
+> +      interrupts:
+> +        maxItems: 7
+> +
+> +      interrupt-names:
+> +        items:
+> +          - const: ptp_rx_mac1
+> +          - const: ptp_tx_mac1
+> +          - const: mac_irq_mac1
+> +          - const: ptp_timer
+> +          - const: ptp_rx_mac2
+> +          - const: ptp_tx_mac2
+> +          - const: mac_irq_mac2
+> +
+> +      mdio-mac1:
+
+mdio-1
+
+> +        $ref: /schemas/net/mdio.yaml#
+> +        description:
+> +          MDIO bus controller for MAC1. Registers reside inside the mac1
+> +          reg-names window.
+> +        unevaluatedProperties: false
+> +
+> +      mdio-mac2:
+
+mdio-2
+
+> +        $ref: /schemas/net/mdio.yaml#
+> +        description:
+> +          MDIO bus controller for MAC2. Registers reside inside the mac2
+> +          reg-names window.
+> +        unevaluatedProperties: false
+> +
+> +      ethernet-ports:
+> +        type: object
+> +        additionalProperties: true
+> +
+> +        properties:
+> +          port@0:
+> +            type: object
+> +            additionalProperties: true
+> +            description:
+> +              CPU port. Wired internally to the ep-mac sibling.
+> +
+> +            properties:
+> +              reg:
+> +                const: 0
+> +
+> +              phy-mode:
+> +                const: internal
+> +
+> +        patternProperties:
+> +          "^port@[1-2]$":
+> +            type: object
+> +            additionalProperties: true
+> +            description:
+> +              External Ethernet port (port@1 is wired to MAC1, port@2 to
+> +              MAC2). Its PHY is reached through the corresponding
+> +              mdio-mac<N> bus.
+> +
+> +            properties:
+> +              phy-mode:
+> +                enum:
+> +                  - gmii
+> +                  - rgmii
+> +                  - rgmii-id
+> +
+> +    required:
+> +      - compatible
+> +      - reg
+> +      - reg-names
+> +      - interrupts
+> +      - interrupt-names
+> +
+> +    unevaluatedProperties: false
+> +
+> +additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - xlnx,num-priorities
+> +  - ranges
+> +  - '#address-cells'
+> +  - '#size-cells'
+> +
+> +examples:
+> +  - |
+> +    tsn_ip: tsn@80040000 {
+
+Drop unused labels.
+
+Rob
