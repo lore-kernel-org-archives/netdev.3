@@ -1,181 +1,274 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC5F3E95AB
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 12:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6E0432E80
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 12:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786537525; cv=none; b=fNsz/NBdIU26eijb49WyqBQ7jEHvktl9I/yjcNoXchshKCovYVMNMoSYJ7ueI034p6WytjAulvF6J0Ef7ErunrlxZcvRhQo6CTAg9Utjg7r/rP2tMRPTyuluJcrkhf8HZI99Gj/FkYL1ItS29WjSiC53YLERTcDyZX+0ZdUOjOU=
+	t=1786537723; cv=none; b=DzsU5PHgxQUOAmdlHjNBvS/F9ZeZoSMRrnixeGf63CW65FjE4ChfOMqbSueh1/g2G1dis7BLVeRm8Oy92SU+AXEuo3JJ5tDkRs8Afc9E7u8iZuf+WWy+nol1/VLLKfhVniubuYaqPtMdpuSLR5yivDMycDsQBfXpej7XuTaHj3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786537525; c=relaxed/simple;
-	bh=jQR0L8oGkvyT5FyhTV3i9J+AfBUo6dnE8gSuD/hs6Hs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CkUyE8+CgvplE9r3PnWYXL+EIuX0Uuv3nkCWG/b+PVfhUn/V7n5cdumeP1yizzA+fXr/2x0VRGSS6Ikbv9Ispn1tTjjFD/OHn535o2P3DIg/oCpFWLW4BAs0lA76pmBfoLd0dpm2Ft4rGBxymiEP7Jv9Clp4gno4a0tc8R3Vq2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=Kp88jdaF; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1786537723; c=relaxed/simple;
+	bh=88f9d2BUrgkhy3LVgpQwMbhrUIGdq9Oyss4iFvdVUbk=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=HuajVI+ZyVVQsMx2soHGyRurvY3/hDEzW9aFB0+nwqMKpxjvxZyNsdr8hq8N+DMYVdd8O4GcsUnxeV0EXIeynBDkHToRsOdkywuztupYZIXz6Tr3iPQa6geSwLWGe0CcDnyPP/K4tQmWOlefBD2/9zQrRmTm73HYCZF8KhkC378=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oR1x0rwz; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="Kp88jdaF"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51c04bf4711so9455931cf.2
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 05:25:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oR1x0rwz"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-81f3b227a4aso13616227b3.1
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 05:28:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1786537523; x=1787142323; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Djp33DZuJ5kk88PXRco/OjHqQCYStiOV5FS5/ccjyz4=;
-        b=Kp88jdaF7KtGyR0MBNaeh5USiNRL9NDulcayFoBoA3e/vhGb4hW00F0nApw+aA6hbn
-         gAOX+jf2qJ5uHhonKY0Vtc9TGnoQiid4ueuLLOS2kRfhBeDf7GFZwdFX53X27L8q8Zdd
-         Fj3gthJ+f5r68xJ1jagLAYr3t/MlPGJFZsFVnOpxTJGkjHuK2pDYKq9MU0doMcLPEkM3
-         pwC2KCdoJ4WZKkXhk8d2xcKNmLtqGf3yeyAeM1zDwY7jz+MUxr1NfxDZMGuQ+DUxKOsS
-         ZIQ0KDoljOn2mm5ZKwbqn4El4zt0ibnh0s340gErbec9+ySMt45vMR0LOfgcg2sCLch6
-         X7Mg==
+        d=gmail.com; s=20251104; t=1786537721; x=1787142521; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=0CjelUjNxSUEcr0ca3VFdthDgG/go9h4jG0ssyrUC9Y=;
+        b=oR1x0rwz74tkdNtZ/C107VdEIPp72gDBR6hIszckJ/Cen2QSVY6hnD8hRlEZ/ODpdY
+         S8VJsaJdNYt2ZC7FMh3r3KAk1wdJgFNpiFkFWkOm4+P3BRUpyv72EMFeicbz/BIAPQYV
+         1nWjpO/AMMC6EO6x/OpOZtKqkO7aGQ8FCjrRSvgFvsV1CneZix+Kp8LyP0bQX6aov76i
+         52/ctc8t3p829LRzwn5U/tKXphgT8JTf3uAlfWD7kLIEcZN3ZsAxdE822A526Bgsr7cr
+         LyNQXX/EcUsrd8Xk1/Uh4tq4AeTSzy5kqkzAEEQkj3l5kcCXvBxA8gAY1/4G7zzb1Sa6
+         q37A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786537523; x=1787142323;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Djp33DZuJ5kk88PXRco/OjHqQCYStiOV5FS5/ccjyz4=;
-        b=L6yLIAdH5JlMOv+fSwEfZtnuiGCMLNxYF3o55ZzwqKGlLpAvn+YIvE6cuwVwTXKGzt
-         J4XS7TGShC9L5UHuC32hHR5Spi3fd1y5eap1R714PiWNoWOYc8fcb5KRuo9CRYjWWMNH
-         0XS0D8qQLOa2uUA57B+kMi8RHfUtDwS5h9N8FtzMTr1ABmQZMoYs1LHwxs1FatlLbCqY
-         GOYemzeRddLSQetrXYEnGT3oiQP4PosBjMN9fZCnstPKGOVkN2AURIsCuzNEYz8RGV/m
-         eAc1no4I2MZtGWtFBGHYFgKn30J6Hzl7NFOlHx7M0BRGYhAGoazfbxpaWExdHcPPdQkd
-         QXbA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq0XT7AwUVkiggdQ4cLoL5Iy+uF8FjBiduQP01fOr1i3ltNic3ZgL+5t5Vl/6471gT5sTtFh6o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4SAPSJg2f3qnpBJ65/690Z2pZh5gtLcXljtnjj424V6Hcnxa9
-	AdhQ+ly7QQsNW851uMWn2fVmOw5biWRGGzCBpwafendnQbOIDfcTUu3ftpHyXwSx+XI=
-X-Gm-Gg: AR+sD10xX2UyoVMLlGuzZQ1YSepbj0h6hr8FqGH/Hsf+P+NYLeoC07bgpcFQrK01Gpk
-	ghBLO+sWoVJqaCGX532lY40Lf56tWsC0/Dv6bFGjgxpKCT477MyuEww+jmZvasLi7Aq9cYOnUOD
-	uvhrBGvVnlYAby1/67u7ZAKSTaq3Kf1eV1HSeydL8PF856AunRiEpXSsAqcV3tBKkMIpv3xvoKx
-	JMbc2ueMg6YOfmw8G22Wmx6cOFI7qIS9glU5P7T0bFs77WeEHDxHf09gMbxPYmLokJJPkaAKyJe
-	/9qreNaiaPWL01lF9pmo8S/sabGNZ1F4e6WUA3Jvz/+jnzYaCXaEkIrQo5AphqNLD41vL+2bOyU
-	HNOBKKVL+pPMeJCQrxKh5YnbjlsZlqSzel9TQVszw2enTwt6hCrEXO4TbzbwhcuIKC68wB1F046
-	h1+LXNG0GraB8Q4pg2r5sw8igev3Rp0Nb8Z2ksR4TI9KdTG8O6dMh/XWzEvnkL
-X-Received: by 2002:a05:622a:83:b0:517:8d24:64d8 with SMTP id d75a77b69052e-52d646edbedmr31554961cf.13.1786537522952;
-        Wed, 12 Aug 2026 05:25:22 -0700 (PDT)
-Received: from [172.22.22.28] ([73.62.185.64])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52d61dc9245sm16460631cf.25.2026.08.12.05.25.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Aug 2026 05:25:22 -0700 (PDT)
-Message-ID: <72848f5d-768a-4d06-82d1-1168cae8c5b6@riscstar.com>
-Date: Wed, 12 Aug 2026 07:25:21 -0500
+        d=1e100.net; s=20251104; t=1786537721; x=1787142521;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0CjelUjNxSUEcr0ca3VFdthDgG/go9h4jG0ssyrUC9Y=;
+        b=WbUx+lpZ7NjmQe1t8snwZbZzn++yhNEPGm6icfegDaPzxkGClWVKokfSe8U/YWUHFI
+         b3ByivLDkENuu2RLaXAZJO2Hv9d2uYCCx0DgFpkRi6Y3lKQgtiaqBVBP/cdsn/zo6OP6
+         VNHWOBcnIKer9ZipX6h8SIebEU3IECcslDtd15BlcdG1N3sCjTUT57Wtp7V9i3/YOYeb
+         XgEI7bBLseVkMq67hizaEkcVkpDdY8hETMxaCNGDBkcdhOPw1TJBTvzS1MMdIENrdvq2
+         6xmvoXxfp+WUF+iaAobUK5Mr7KXcOKgfAmjwsnHPNhwDZL2N/nwA0CibS9wyT9qRjQ7d
+         RKKA==
+X-Forwarded-Encrypted: i=1; AHgh+Rri1YaAYsdiKt0eXH81nQ2LG3tf7lwaM6fHgJ0qk+HVE92d+QZWMN+oX0j8uJQzw7Jv1KTIGW4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygAvhleY9/Gq6uwLZBRXHDHOplM1OvnXpm9EsY9UaAXVXCMA+A
+	66B5+OhRrMrEW0yMi3ow2VA+RSxlDAnNZ4to5q4JdFnTF18sJcrs+v8K
+X-Gm-Gg: AR+sD10xDTy2QUPh+rkP9+V8W/zkI5DJEnHWWEXbCd0bdzS25wnqD+RRk849Bcy7ycm
+	uBUkTwmGdtnSL89Qz/KEzB6rBaVY4/+2ePMh6/8dhcRTuxY1Miy3omBQCA/r6WG4DKcLh6B4ejT
+	NxWJPv7eFSS2E0vPUxk9HxSQzCE4TbH2MBmbQ7Rd1OdqmTLMv0ajrux8yspvpQtBHLWTXpenjUA
+	nZbrRMCgj6WEVX3whiATxIwe5Uq0OrZUxChoSjqaTudmdMnhldbljatdFtI5RCm2KjbilLGaWe9
+	G0sII3gE5WhBc2qwe2LX4fHNBgBN9I5EPvZdsQd3yrNBA2f2VC6kPNUkIi6noeZHw+xeXMDAX5r
+	78TDzbrGCmRDDaZFRbdB4i9+/HSg5ArlXvQoJAhJYSlJxGt/te+6ID9IZub8SLB5etdlKFQCQ1T
+	+OWU2kIV3sb0J6RpGJ0A4UbvrVCa8xdHJ21Fm28Ycc7GirnwvHUWlAAYgHReMmsHGxzfJVb2ceg
+	uwA2ByhduGaBuZ325ufydRK3O7OvTwlXnTp
+X-Received: by 2002:a05:690c:841:b0:7fd:a7b6:8d87 with SMTP id 00721157ae682-83109b146a9mr21194837b3.25.1786537720803;
+        Wed, 12 Aug 2026 05:28:40 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-830a34a1df3sm11762607b3.4.2026.08.12.05.28.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 05:28:40 -0700 (PDT)
+Date: Wed, 12 Aug 2026 08:28:39 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Joe Damato <joe@dama.to>, 
+ netdev@vger.kernel.org, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: andrew+netdev@lunn.ch, 
+ willemb@google.com, 
+ Joe Damato <joe@dama.to>, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.57d27685522a@gmail.com>
+In-Reply-To: <20260811184722.2612345-2-joe@dama.to>
+References: <20260811184722.2612345-1-joe@dama.to>
+ <20260811184722.2612345-2-joe@dama.to>
+Subject: Re: [PATCH net-next 1/2] net/packet: Reduce VLAN tag code duplication
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: stmmac: use dma_addr_t for DMA addresses
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Sashiko <sashiko-bot@kernel.org>
-References: <20260811192703.1765416-1-elder@riscstar.com>
- <65494f6d-50fe-4bdb-98d9-7150d9a4fc91@bootlin.com>
-Content-Language: en-US
-From: Alex Elder <elder@riscstar.com>
-In-Reply-To: <65494f6d-50fe-4bdb-98d9-7150d9a4fc91@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-On 8/12/26 2:23 AM, Maxime Chevallier wrote:
-> Hi Alex,
+Joe Damato wrote:
+> Reduce code duplication for VLAN tag extraction by factoring the
+> repeated code into a helper and using it.
 > 
-> On 8/11/26 21:27, Alex Elder wrote:
->> In jumbo_frm() (implemented in both "chain_mode.c" and "ring_mode.c"),
->> an unsigned integer local variable is used to hold the value returned
->> by dma_map_single().  On systems where a dma_addr_t is 64 bits, the
->> subsequent dma_mapping_error() check of the returned value operates
->> only on the low 32 bits (whose high bit won't be sign-extended).  In
->> this case, dma_mapping_error() would return 0 (no error) even if there
->> were one.
->>
->> Fix this in both spots by using a dma_addr_t for the local variable.
-> 
-> Thanks :)
-> 
-> I was wondering if it would silently hides another address size related
-> issue a little bit lower, as we now have :
-> 
->    dma_addr_t des2;
-> 
->    des2 = dma_map_single(...);
-> 
->    desc->des2 = cpu_to_le32(des2);
-> 
-> desc->des2 is __le32, so for 64 bit addresses we silently truncate the
-> address.
+> Signed-off-by: Joe Damato <joe@dama.to>
 
-I saw that too.  Everything is unsigned, and only the lower
-32 bits will be used, but I'd rather see the dma_addr_t
-explicitly converted to u32 before being passed to cpu_to_le32().
-This should work regardless of the size of dma_addr_t:
+Especially with the improving AI bots, we're getting even more fixes
+to PF_PACKET lately. Cleanup patches can block fix backports to stable.
+The bar for pure cleanup patches has to be high to warrant that.
 
-	desc->des2 = cpu_to_le32(lower_32_bits(des2));
+Plus, they add risk, if it is not trivial to review that they are NOOPs.
 
-I didn't look, but there could be other places where this occurs.
-Tell me if you'd like me to send another patch that does this
-(here and in any other spots I find.)
-> However I don't see how jumbo would work on 64-bits anyways as des3 is the next
-> chunk of the jumbo frame...
+Subjective, but not sure this one warrants the cost.
+
+> ---
+>  net/packet/af_packet.c | 95 +++++++++++++++++++++++-------------------
+>  1 file changed, 53 insertions(+), 42 deletions(-)
 > 
-> I think this is good as-is, so
-> 
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index 435756877aba..ee60dcc639ad 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -568,6 +568,27 @@ static u16 vlan_get_tci(const struct sk_buff *skb, struct net_device *dev)
+>  	return ntohs(vh->h_vlan_TCI);
+>  }
+>  
+> +static bool packet_get_vlan_tci_tpid(const struct sk_buff *skb,
+> +				     struct net_device *dev,
+> +				     u16 *tci, u16 *tpid)
+> +{
+> +	if (skb_vlan_tag_present(skb)) {
+> +		*tci = skb_vlan_tag_get(skb);
+> +		*tpid = ntohs(skb->vlan_proto);
+> +		return true;
+> +	}
+> +
+> +	if (unlikely(dev && eth_type_vlan(skb->protocol))) {
+> +		*tci = vlan_get_tci(skb, dev);
+> +		*tpid = ntohs(skb->protocol);
+> +		return true;
+> +	}
+> +
+> +	*tci = 0;
+> +	*tpid = 0;
+> +	return false;
+> +}
+> +
+>  static __be16 vlan_get_protocol_dgram(const struct sk_buff *skb)
+>  {
+>  	__be16 proto = skb->protocol;
+> @@ -997,20 +1018,19 @@ static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
+>  			struct tpacket3_hdr *ppd)
+>  {
+>  	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
+> +	struct net_device *dev = NULL;
+> +	u16 tci, tpid;
+>  
+> -	if (skb_vlan_tag_present(pkc->skb)) {
+> -		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
+> -		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
+> -		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> -	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
+> -		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
+> -		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
+> +	if (po->sk.sk_type == SOCK_DGRAM)
+> +		dev = pkc->skb->dev;
+> +
+> +	if (packet_get_vlan_tci_tpid(pkc->skb, dev, &tci, &tpid))
+>  		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
 
-Thank you.
+Does this change behavior, now setting tp_status also for the second
+branch, where previously the flags were not set?
 
-					-Alex
+> -	} else {
+> -		ppd->hv1.tp_vlan_tci = 0;
+> -		ppd->hv1.tp_vlan_tpid = 0;
+> +	else
+>  		ppd->tp_status = TP_STATUS_AVAILABLE;
+> -	}
+> +
+> +	ppd->hv1.tp_vlan_tci = tci;
+> +	ppd->hv1.tp_vlan_tpid = tpid;
+>  }
+>  
+>  static void prb_run_all_ft_ops(struct tpacket_kbdq_core *pkc,
+> @@ -2247,6 +2267,7 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+>  		       struct packet_type *pt, struct net_device *orig_dev)
+>  {
+>  	enum skb_drop_reason drop_reason = SKB_CONSUMED;
+> +	struct net_device *vlan_dev = NULL;
+>  	struct sock *sk = NULL;
+>  	struct packet_sock *po;
+>  	struct sockaddr_ll *sll;
+> @@ -2262,6 +2283,7 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+>  	__u32 ts_status;
+>  	unsigned int slot_id = 0;
+>  	int vnet_hdr_sz = 0;
+> +	u16 tci, tpid;
+>  
+>  	/* struct tpacket{2,3}_hdr is aligned to a multiple of TPACKET_ALIGNMENT.
+>  	 * We may add members to them until current aligned size without forcing
+> @@ -2436,18 +2458,12 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+>  		h.h2->tp_net = netoff;
+>  		h.h2->tp_sec = ts.tv_sec;
+>  		h.h2->tp_nsec = ts.tv_nsec;
+> -		if (skb_vlan_tag_present(skb)) {
+> -			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
+> -			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
+> -			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> -		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
+> -			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
+> -			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
+> +		if (sk->sk_type == SOCK_DGRAM)
+> +			vlan_dev = skb->dev;
+> +		if (packet_get_vlan_tci_tpid(skb, vlan_dev, &tci, &tpid))
+>  			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> -		} else {
+> -			h.h2->tp_vlan_tci = 0;
+> -			h.h2->tp_vlan_tpid = 0;
+> -		}
+> +		h.h2->tp_vlan_tci = tci;
+> +		h.h2->tp_vlan_tpid = tpid;
+>  		memset(h.h2->tp_padding, 0, sizeof(h.h2->tp_padding));
+>  		hdrlen = sizeof(*h.h2);
+>  		break;
+> @@ -3547,7 +3563,9 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+>  	}
+>  
+>  	if (packet_sock_flag(pkt_sk(sk), PACKET_SOCK_AUXDATA)) {
+> +		struct net_device *vlan_dev = NULL;
+>  		struct tpacket_auxdata aux;
+> +		u16 tci, tpid;
+>  
+>  		aux.tp_status = TP_STATUS_USER;
+>  		if (skb->ip_summed == CHECKSUM_PARTIAL)
+> @@ -3562,29 +3580,22 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+>  		aux.tp_snaplen = skb->len;
+>  		aux.tp_mac = 0;
+>  		aux.tp_net = skb_network_offset(skb);
+> -		if (skb_vlan_tag_present(skb)) {
+> -			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
+> -			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
+> -			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> -		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
+> +		rcu_read_lock();
+> +		if (unlikely(sock->type == SOCK_DGRAM &&
+> +			     !skb_vlan_tag_present(skb) &&
+> +			     eth_type_vlan(skb->protocol))) {
+>  			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
+> -			struct net_device *dev;
+>  
+> -			rcu_read_lock();
+> -			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
+> -			if (dev) {
+> -				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
+> -				aux.tp_vlan_tpid = ntohs(skb->protocol);
+> -				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> -			} else {
+> -				aux.tp_vlan_tci = 0;
+> -				aux.tp_vlan_tpid = 0;
+> -			}
+> -			rcu_read_unlock();
+> -		} else {
+> -			aux.tp_vlan_tci = 0;
+> -			aux.tp_vlan_tpid = 0;
+> +			vlan_dev = dev_get_by_index_rcu(sock_net(sk),
+> +							sll->sll_ifindex);
+>  		}
+> +		if (packet_get_vlan_tci_tpid(skb, vlan_dev, &tci, &tpid))
+> +			aux.tp_status |= TP_STATUS_VLAN_VALID |
+> +					 TP_STATUS_VLAN_TPID_VALID;
+> +		rcu_read_unlock();
+> +
+> +		aux.tp_vlan_tci = tci;
+> +		aux.tp_vlan_tpid = tpid;
+>  		put_cmsg(msg, SOL_PACKET, PACKET_AUXDATA, sizeof(aux), &aux);
+>  	}
+>  
+> -- 
+> 2.53.0-Meta
+> 
 
-> Maxime
-> 
->>
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Link: https://lore.kernel.org/linux-devicetree/20260606010122.21A211F00899@smtp.kernel.org/
->> Signed-off-by: Alex Elder <elder@riscstar.com>
->> ---
->>   drivers/net/ethernet/stmicro/stmmac/chain_mode.c | 3 ++-
->>   drivers/net/ethernet/stmicro/stmmac/ring_mode.c  | 3 ++-
->>   2 files changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
->> index fc04a23342cfc..ec25193d287bb 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
->> +++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
->> @@ -20,9 +20,10 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, struct sk_buff *skb,
->>   	unsigned int nopaged_len = skb_headlen(skb);
->>   	struct stmmac_priv *priv = tx_q->priv_data;
->>   	unsigned int entry = tx_q->cur_tx;
->> -	unsigned int bmax, buf_len, des2;
->> +	unsigned int bmax, buf_len;
->>   	unsigned int i = 1, len;
->>   	struct dma_desc *desc;
->> +	dma_addr_t des2;
->>   
->>   	desc = tx_q->dma_tx + entry;
->>   
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/ring_mode.c b/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
->> index 78fc6aa5bbe95..664d8cfb58cdc 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
->> +++ b/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
->> @@ -20,8 +20,9 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, struct sk_buff *skb,
->>   	unsigned int nopaged_len = skb_headlen(skb);
->>   	struct stmmac_priv *priv = tx_q->priv_data;
->>   	unsigned int entry = tx_q->cur_tx;
->> -	unsigned int bmax, len, des2;
->> +	unsigned int bmax, len;
->>   	struct dma_desc *desc;
->> +	dma_addr_t des2;
->>   
->>   	if (priv->extend_desc)
->>   		desc = (struct dma_desc *)(tx_q->dma_etx + entry);
->>
->> base-commit: 31397cf1819210bd63fa3d2c7d8c24f7c8667d99
-> 
 
