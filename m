@@ -1,86 +1,103 @@
-Received: from sender-op-o19.zoho.eu (sender-op-o19.zoho.eu [136.143.169.19])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B123328E6;
-	Wed, 12 Aug 2026 14:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786543695; cv=pass; b=oMrQFXmmaxvGYjbgZ2PL1c0BCRdHVHE1iivH9Yq1zH0OHQhI5jzYV+Kps1v2P2qYbgmbJqSKxmkKE/ft4CvHi3XIvDr0mBZu+WfwKN2/GZu34Tef+w1GrSWUlyQCsgAmKiA5Fr+1en/1TUZKKnbxPqgL0IKxCwUthrjP+423Mmo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786543695; c=relaxed/simple;
-	bh=ED8/Id9P39kmd/HPBrlkxLCZ3WweR8fEB58UhEUIfso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SkCmZUENbry+wu4LVOLAGo8Z39tiHyFUT437b7J/Kk7H5jPFfDHjVDTkWoFHAVQoHzLt8s77FxoSp91KbdbHzUcfD5aTXdeCeRTsVMadeFpdjbXYApD4TzGik2dEN+9G5MiTQy1v198JltFUbjQulmc/LQtQtP//jSRBeeUWBMc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl; spf=pass smtp.mailfrom=kempniu.pl; dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b=SiObeyYz; arc=pass smtp.client-ip=136.143.169.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kempniu.pl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A97B4582FC
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 14:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786543722; cv=none; b=L2g5AX3Z0sqJW901Opprvc5k6pfDmEuZNVnFnDaiP2zAawtHB80EHML5JP+GEyiAlLUbYM5+1X/eNAY9dM6CD4SyDXrOa1HT42smp7npunCi44CfmpqwLKWRFcLjK9UccS2OssXgD77tOWoeGBxBzRO2bC9wDsf5dDCsYKuibA0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786543722; c=relaxed/simple;
+	bh=44XfeALrVwsP5R/6anlBbm2mYqBy2A3GIfRvQT4WGZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qcd/z+9rS8ttjKNjz1jyFXmAIddmCyVKiJsiFQIQ/OiMcjjYoF26BHyn+5WvyL6Taz0sH9A38eI+fvh3NqsYP4YiwicBBjifJIlBeh8AqPLV9eS0UOwfK+9qEag7XoVfNWmW1w5RMByYjt9vK/hiK5j8aAtqsoOLeGlCbsVbdwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dfBfHwg/; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b="SiObeyYz"
-ARC-Seal: i=1; a=rsa-sha256; t=1786543673; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=fdl3LxpQwolOmeLMcKKGi9sHb4BVLcohVfrGJKAz7LBiu3+90bVW4g93dIHFVlOc6FaDERLzs6+56WdYn1tsx1fy9EdGw2fYqaBUp9c5xhkqFDSc6EUFfimgZog569PUi5kukaEM54WZ9E9XFDDDPivnyIm4HCFHKf3L+/kSNsc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1786543673; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=xt/PHOrNVQzQMJAzk0d6e0ED79WRzu+fLKRv8nOdiTA=; 
-	b=eSBA+vSUCrvSFz3KJ1efkXeFW8gIBQZlS01G6FjbbmVUhFyGqYIA2aPzIYv8+rLJAkdFD8bcXFDNWNJzEu+76Id2NPLhm21pFhjcj9U+401EwUifS56kBMPuUqXTyIOF/g65S4lZdBoi5QqdFNRKiTUEf9RomhvukTGe8cCuzXo=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=kempniu.pl;
-	spf=pass  smtp.mailfrom=kernel@kempniu.pl;
-	dmarc=pass header.from=<kernel@kempniu.pl>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786543673;
-	s=zmail; d=kempniu.pl; i=kernel@kempniu.pl;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
-	bh=xt/PHOrNVQzQMJAzk0d6e0ED79WRzu+fLKRv8nOdiTA=;
-	b=SiObeyYzCiNwlFjxh+Q1ObC962esYs2VfnaxlcFyanUF6icunAY8cWSxortM2fYX
-	PjJPFtz1uiKF6k2swfk3huJH2AQcrBTLZUeJLs6jz+TFMxDZHNsIVjDikuJPurSadW5
-	1NJQzua6q5n7r5sDgGVcHfv396/CkPr1j3tMcgaE=
-Received: by mx.zoho.eu with SMTPS id 1786543671884839.3312813793443;
-	Wed, 12 Aug 2026 16:07:51 +0200 (CEST)
-Date: Wed, 12 Aug 2026 16:07:50 +0200
-From: =?utf-8?B?TWljaGHFgiBLxJlwaWXFhA==?= <kernel@kempniu.pl>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: qca8k: Disable mgmt Ethernet for qca8327
-Message-ID: <anx-NixOL_6WVLlH@larwa.hq.kempniu.pl>
-References: <20260810061612.23745-1-kernel@kempniu.pl>
- <cc6d8243-e82b-4f1b-acf4-13ba6a74baaf@lunn.ch>
- <anw5OvAxKh3pnezZ@larwa.hq.kempniu.pl>
- <469e446d-36ab-45c7-9bf5-6e040747572b@lunn.ch>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dfBfHwg/"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 62EB61A15B6;
+	Wed, 12 Aug 2026 14:08:36 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2E7C86045E;
+	Wed, 12 Aug 2026 14:08:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A8A5911C4CF5E;
+	Wed, 12 Aug 2026 16:08:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1786543711; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=XBityMeKqjyowdclncFOnu3VU0emdWfgWBP0wAYzEhU=;
+	b=dfBfHwg/xTtwCKIqKwd6LzkSS7fZ2K9nMLgE4fMNGfMg0gHXnyWzjlg9RB0m/YIpasZRb7
+	wjzm05kYbHoV5COM9bUImVh4MFL+fs+ZmPeqe6pw8KBKbO7hqg3xOQNw3ZpTlWoGCGmvWJ
+	7jdEaauWKroly5iz/cE8P+HQcmQV3+5eJJ8pdTVLKSR+bCDE0qkvmiRkClbfVczb9Ftq4z
+	Tp2UrALb+ixnUULxtX03D0D53nyok21dsNwlP0X3mzWqczSI5oyC15HPb39l+ACCtRfJ2U
+	ZZ+ZGLEUBcvqaLuQbS0h1VZdC1kyU0g5dtk6mg+GhqU1jg5Qdk1LarYlUYBx/g==
+Message-ID: <96146485-03f4-4c82-bb4b-9338b6591b2f@bootlin.com>
+Date: Wed, 12 Aug 2026 16:08:24 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <469e446d-36ab-45c7-9bf5-6e040747572b@lunn.ch>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.11.1.5.2/286.510.57
-X-ZohoMailClient: External
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] net: stmmac: dwxgmac2: add XGMAC timestamp
+ interrupt support
+To: Zxyan Zhu <zxyan0222@gmail.com>,
+ "Nazle Asmade, Muhammad Nazim Amirul"
+ <muhammad.nazim.amirul.nazle.asmade@altera.com>
+Cc: mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ andrew+netdev@lunn.ch, richardcochran@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260810100221.9166-1-zxyan0222@gmail.com>
+ <b3d90606-781a-4055-8529-e68e22a45ce9@bootlin.com>
+ <20260812202027.976@gmail.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260812202027.976@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> > Could you please point me at the exact retry mechanism you had in mind,
-> > either the qca8k one or the Marvell equivalent?  I cannot see any in
-> > drivers/net/dsa/qca/qca8k-8xxx.c.  If I'm reading qca8k code correctly,
-> > when wait_for_completion_timeout() fails, its return value is just
-> > bubbled up the call chain.
++Nazim
+
+On 8/12/26 14:59, Zxyan Zhu wrote:
+> Hi Maxime,
 > 
-> With the mv88e6xxx code, if ethernet times out, i repeated the request
-> using MDIO. The code is not in mainline but a few users are using it.
+> On 8/12/26 5:10 PM, Maxime Chevallier wrote:
+>> If there's an interrupt storm, then this should probably be a fix for -net
+>> with a Fixes tag.
+> 
+> There is no interrupt storm. XGMAC_TSIE was never enabled before this
+> patch (XGMAC_INT_DEFAULT_EN was LPIIE | PMTIE only), and
+> dwxgmac2_host_irq_status() masks the status with the enable mask, so
+> XGMAC_INT_TSIS could never fire. The actual symptom is that
+> auxiliary-snapshot extts events were never reported -- a feature that
+> was never wired up, not a live interrupt storm.
 
-Ah, that way, okay.  It looks like every mgmt Ethernet function in qca8k
-has an MDIO fallback path, but I'll keep this in mind, thanks.
+Ah indeed, quite the opposite then.
 
-> At minimum, i would put a printk() there, and see if it happens.  It
-> could be unrelated to your problem...
+> 
+> So I'd like to keep this on net-next as a new feature rather than
+> retarget it to net.
 
-Ack, thanks.
+Yes makes sense indeed.
 
--- 
-Best regards,
-Michał Kępień
+Can you take a look at the sashiko-reported issues, it spots that this
+could interfere with the timestamping on agilex5 (another XGMAC platform) :
+
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810100221.9166-1-zxyan0222%40gmail.com
+
+Maybe there's some stuff that could be made more generic by moving them out
+of the socfpga code and putting it in the more generic timestamping code ?
+
+I don't have any xgmac boards to verify sashiko's claim though.
+
+> 
+> Thanks,
+> Zxyan
+> 
+
