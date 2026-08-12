@@ -1,277 +1,171 @@
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F0833D4F0
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 14:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.198
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009E833D4F0;
+	Wed, 12 Aug 2026 14:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786544582; cv=none; b=Km089kTa+NFa2GjSz0+3CI4GABsNRXeUWk6XoQy5Rm814eHIDRZ3Cz5wC57YTxBtdk1ZkLcepHDXn06pHFvRVRFndrRPLKjVC7IvxEG2wLgnvP88diQueovBOzvnNwr+8y/775aiToc9/KgmcJvEH3XAcQq4voEJCCHEZgNBJ+A=
+	t=1786544622; cv=none; b=Kt0AkI+Zh1Ow8qhY8QwuXgifR/ebsxbZysxq8X/58Kc44gNjAz083QiwRPi9Rlg4+doueKJWYQ6WAFwfvzuAyokiga2QmMO2qNWWf+LX/peWYWALEF6+zhCryJOsoJwgxkpKNMgI402q9VOaRbMZ8xAAEt5MPdQnCAjwymDPZVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786544582; c=relaxed/simple;
-	bh=FyqUY+AfTGlpkyso58r/SW8InChZGziWWDCRYubsSVs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mxJ7kM/EPEOpTx/JpXBFmebWahUtRAE0Rcw07WCDgp0pb1OU2FLOy5NuXUN8JwibeQS3+OX3qS5vQfaRkkNpgzK543CdCp5HlGtJHM94qCTw+OK0w0GF+gBKWU/H/kEc8Yw/kOaq38fhCnykzHfkw4LaTCErAhaL+6B78pK2BNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lfMI8Vnl; arc=none smtp.client-ip=209.85.160.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1786544622; c=relaxed/simple;
+	bh=DaPAjmxog5owAR2BES1Ti0cJEW7rLRp2Yo/7zXarSZI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=QCs0AEwEz+0oRH8oJPVscCCbOREK9+GYTX1mQIZ57QKgJShEWF5JDzkZWOx5Z9rpZ++euShJIlY1dHUVe6HnSnLgShwCTQbtOFYKQuW3BmmI/Wps0OsQmmHsPdiIeEL9SNq8nxpKYCBkO75JPBxuWPc6SP2Uwfbsp3cARuC4Tj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=d9K4BAH0; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=rNxS9Xp2; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lfMI8Vnl"
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-51c1c7f135bso17549961cf.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 07:23:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786544579; x=1787149379; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oJ48GcoLApm6K65tu+1RPm+pfiT7DLMVSMHPA1LbbHY=;
-        b=lfMI8Vnl6Mw2cB8FWe9KdV2FyVyL4eGacIDIRtoJbxM0LnpiVbqz1bVnJBBKXQHFVW
-         86+5hoq1VGfR2O75aE4rrKQ2Zvv/iSI3KvzggjkmEr83QKolCys0s4jkddXvipcvNN+O
-         PUkW0JNwdY0y0Iuk4cd5qKBzRYjLzQ32jfg+OuGIol907kFiBDtNZudsqVngD4gOg9IN
-         ATMkSP3wMvoI47E1fjJuWPzmZTLWmZA5eOx42c4PXt3fmSsm0rqHIQHSQhK5+lxl00nf
-         033qpqpXIaiqre7EnqYY8XG1geur9pEj1V0bfkPcbxZS/gtsfT2WMXHuTBPoBL8n8GrP
-         6NWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786544579; x=1787149379;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oJ48GcoLApm6K65tu+1RPm+pfiT7DLMVSMHPA1LbbHY=;
-        b=h7GROn6zV2T6YML0aUtDBGrNmcTdVH4zdCT54h37/Rv4Tdf/FKhA3RR/fo1cvLj4zd
-         SsFiYnlV5Id1h+1V0p5i0XE1enx/HXLIrSP4dUsMHYbq4cJycXTi7zk0+aBg/24z6x4l
-         mRchfBWICbsqr/rF7pQ5huiNxlfM4O4ap5TH/wanEU2SWhqe/3h3o9ov/tFOiH7UL/d4
-         Pj6Ef/Ik/tQLNwKIB1hAtjMEf8vfLtfbAnB9mSRzocpdRqlFxRSavACZU/Ek6T7wCWii
-         4WAoibAvbQFD/LlTLuIOWxbQfSCb6+6p5uEsEv0RvIpwffzpNQm1WrQwsrwZFneKFZ28
-         uMpg==
-X-Forwarded-Encrypted: i=1; AHgh+Rovsim8VSgrPKLZk9DxcCGssJh9u3Cd6X6ZHupGO6QKy2NP98/LN/ipWKRUh3HEe7LWMlOL7fk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsbvsoQaGUxmwGBkB6m35s3ja7BPD9tr2CrrS9ZOulkDkmZh9D
-	rB5HjqRne+Cn5WdboimWfqnQtkrPVdgLDuPM8BwfOa4SpPmZwiKVpQrptGibLxnyZ23pQCFclqd
-	2xHvC4gQUQJWbRA==
-X-Received: from qvhh1.prod.google.com ([2002:a05:6214:da1:b0:907:5e8a:6703])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:4819:b0:51c:2230:7efb with SMTP id d75a77b69052e-52d647f4609mr45991041cf.23.1786544579011;
- Wed, 12 Aug 2026 07:22:59 -0700 (PDT)
-Date: Wed, 12 Aug 2026 14:22:57 +0000
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="d9K4BAH0";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="rNxS9Xp2"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 67CEMuHM006037;
+	Wed, 12 Aug 2026 16:23:01 +0200
+Received: from lubuntu-18.04 (host-80-183-189-234.business.telecomitalia.it [80.183.189.234])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 72851122967;
+	Wed, 12 Aug 2026 16:22:51 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1786544571; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OuVP8jn+2IQuzgwsSZXa4qlpdqRw4iDgXUxpue/OBpA=;
+	b=d9K4BAH0H1Te43xsUyM+rk0ijrR/AI/imE5QpJyoHxk4MIcbYnD3dwuYRWRAA9eGhqFax6
+	5aZUubZzLza91/Bw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1786544571; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OuVP8jn+2IQuzgwsSZXa4qlpdqRw4iDgXUxpue/OBpA=;
+	b=rNxS9Xp2/9NYCs2VzZteEggRS7h6wl1CEENjzg5ezIKO4eLMLzXqWW4oMQUueemN7eRAXJ
+	BqXrQCjiUobTsT6Xs+wli7fAVYwG31MM+s/7g9q19836BvHLB635hE8vD3oT5SXwCC3OwA
+	keLvz53/K3FjWS/felaHtOxX4RMIMlA62XNY3s5BKduYVhoSHYHsRVh1pg3viDoieFrsyM
+	homntDN6hcHzYXmkfSiQhyCIcNLre+4hRZ/u4DmSu/ureCwb/dAMKMVVZIWUK1GA9LShGW
+	H5fGOrkiJBAruI+Eq9zodg5otcuzQhnQd7Y8sE5VPeHi8nt6Nfgm4/ZEZOTCoQ==
+Date: Wed, 12 Aug 2026 16:22:50 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: David Lee <david.lee@trailofbits.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, Kyle Zeng <kylebot@openai.com>,
+        "Dominik 'Disconnect3d' Czarnota" <dominik.czarnota@trailofbits.com>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>, horms@kernel.org,
+        stefano.salsano@uniroma2.it, dsahern@kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Andrea Mayer
+ <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net v3] ipv6: seg6: clear IPv4 control block on IPIP
+ decapsulation
+Message-Id: <20260812162250.71d6e1df06ee05fdc3fd5fe0@uniroma2.it>
+In-Reply-To: <20260810154732.850472-1-david.lee@trailofbits.com>
+References: <20260810154732.850472-1-david.lee@trailofbits.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260812142257.21283-1-edumazet@google.com>
-Subject: [PATCH v4 net-next] gre: fix ERSPAN o_flags race/corruption in xmit
- and fill_info
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-For IPv4 ERSPAN:
-In erspan_xmit(), the driver clears IP_TUNNEL_SEQ_BIT (for version 0)
-and IP_TUNNEL_KEY_BIT directly in the shared tunnel->parms.o_flags
-structure. Since transmit paths can run locklessly and concurrently,
-this leads to a data race.
+On Mon, 10 Aug 2026 15:47:31 +0000
+David Lee <david.lee@trailofbits.com> wrote:
 
-Furthermore, modifying tunnel->parms.o_flags permanently alters the
-tunnel configuration. To work around this, erspan_fill_info() (which
-reports config to userspace) was setting IP_TUNNEL_KEY_BIT back. If
-erspan_fill_info (running under RTNL) and erspan_xmit (running locklessly)
-race, erspan_xmit might see IP_TUNNEL_KEY_BIT set when it shouldn't,
-leading to GRE header corruption (injecting a key field into the ERSPAN
-GRE header).
+Thanks Kyle and David for the v3. The code looks good. What follows is
+about the commit message.
 
-Fix this by:
-1) Passing flags as an argument to __gre_xmit().
-2) Using local stack flags in ipgre_xmit(), gre_tap_xmit(), and erspan_xmit()
-   to prevent TOCTOU data races with concurrent configuration updates,
-   and passing them to __gre_xmit().
-3) Removing the racy modification of t->parms.o_flags in erspan_fill_info().
-4) Forcing IP_TUNNEL_KEY_BIT in the reported flags for ERSPAN locally
-   in ipgre_fill_info().
+I think the commit message is missing some information that the review
+needs now, and that anyone reading git log will need later, since this
+patch is Cc: stable.
 
-For IPv6 ERSPAN:
-ip6erspan_tunnel_xmit() was locklessly clearing IP_TUNNEL_KEY_BIT in
-t->parms.o_flags even though it does not use these flags for building
-the GRE header (it uses local flags). This permanently corrupts the
-configuration and races with ip6gre_fill_info() which reads it.
+> From: Kyle Zeng <kylebot@openai.com>
+> 
+> End.DX4 and End.DT4 decapsulate an IPv4 packet through
+> decap_and_validate() and send it directly to IPv4 routing. The inner
+> packet therefore bypasses ip_rcv_core(), which normally clears IPCB
+> before IPv4 interprets skb->cb.
+> 
+> The skb instead retains IP6CB data from the outer packet. IPv6
+> extension-header offsets overlap IPv4 option fields, so IPv4 can treat
+> those offsets as saved option metadata. __ip_options_echo() can then
+> copy beyond the allocation for saved options.
+> 
 
-Remove the redundant and racy modification.
-This should remove false sharing in a fast path.
+This says the offsets overlap, but not which stale field has to be
+non-zero for the copy to be attempted. IPCB->opt.optlen shares a byte
+with IP6CB->lastopt, and __ip_options_echo() returns before any copy
+when the optlen it is given is zero. What the outer packet has to look
+like for that byte to be non-zero, and whether the sender controls it,
+are not stated.
 
-Add const qualifiers in ipgre_fill_info(), erspan_fill_info()
-and ip6gre_fill_info() to clarify that these methods are not
-supposed to write any live parameters.
+> Separate End.DX4 and End.DT4 reproducers on the unpatched v7.2-rc5
+> kernel both produced:
+> 
+>   BUG: KASAN: slab-out-of-bounds in __ip_options_echo()
+>   Write of size 255
+> 
+> The End.DX4 trace passes through input_action_end_dx4_finish() and
+> input_action_end_dx4(), while the End.DT4 trace passes through
+> input_action_end_dt4().
+> 
 
-Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
-Fixes: ee496694b9ee ("ip_gre: do not report erspan version on GRE interface")
-Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
-v4: addressed sashiko's feedback.
-v3: https://lore.kernel.org/netdev/20260811095237.2314234-1-edumazet@google.com/
-v2: https://lore.kernel.org/netdev/20260720135132.3957146-1-edumazet@google.com/
+Pasting the call stack would show how __ip_options_echo() is reached.
 
- net/ipv4/ip_gre.c  | 42 +++++++++++++++++++++++-------------------
- net/ipv6/ip6_gre.c |  5 ++---
- 2 files changed, 25 insertions(+), 22 deletions(-)
+> When decap_and_validate() handles IPPROTO_IPIP, save the ingress
+> interface from IP6CB, clear IPCB, and restore the saved value. Doing
+> this in the common decapsulation path covers End.DX4, End.DT4, and
+> End.DT46's IPv4 arm.
+> 
+> Use IP6CB(skb)->iif rather than skb->skb_iif. These actions run after
+> l3mdev processing, which can replace skb_iif with the L3 master;
+> IP6CB iif still records the receiving interface set at IPv6 ingress.
+> 
+> Fixes: 891ef8dd2a8d ("ipv6: sr: implement additional seg6local actions")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> Co-developed-by: David Lee <david.lee@trailofbits.com>
+> Signed-off-by: David Lee <david.lee@trailofbits.com>
+> ---
+> Changes in v3:
+> - Clear IPCB in the common IPPROTO_IPIP decapsulation path so End.DX4,
+>   End.DT4, and End.DT46's IPv4 arm are covered.
+> - Preserve the ingress interface from IP6CB instead of skb->skb_iif,
+>   which can identify the VRF master after l3mdev processing.
+> - Update the Fixes tag to the commit that introduced End.DX4.
+> - Include the End.DX4 and End.DT4 KASAN evidence.
+> 
+> v2: https://lore.kernel.org/netdev/20260804094625.715305-1-david.lee@trailofbits.com/
+> v1: https://lore.kernel.org/all/20260731140832.567669-1-david.lee@trailofbits.com/ 
+> 
+>  net/ipv6/seg6_local.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 2b41e4c0dddd..95ea0b62729a 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -256,6 +256,13 @@ static bool decap_and_validate(struct sk_buff *skb, int proto)
+>  	if (iptunnel_pull_offloads(skb))
+>  		return false;
+>  
+> +	if (proto == IPPROTO_IPIP) {
+> +		int iif = IP6CB(skb)->iif;
+> +
+> +		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
+> +		IPCB(skb)->iif = iif;
+> +	}
+> +
+>  	return true;
+>  }
+>  
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 6a92607401e8aae5a10bd758820d37f51fd7a25b..82309efd417e0f1f6554e7028be8e05d769e932d 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -475,12 +475,9 @@ static int gre_rcv(struct sk_buff *skb)
- 
- static void __gre_xmit(struct sk_buff *skb, struct net_device *dev,
- 		       const struct iphdr *tnl_params,
--		       __be16 proto)
-+		       __be16 proto, const unsigned long *flags)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
--	IP_TUNNEL_DECLARE_FLAGS(flags);
--
--	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
- 
- 	/* Push GRE header. */
- 	gre_build_header(skb, tunnel->tun_hlen,
-@@ -653,6 +650,7 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- 			      struct net_device *dev)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
-+	IP_TUNNEL_DECLARE_FLAGS(flags);
- 	const struct iphdr *tnl_params;
- 
- 	if (!pskb_inet_may_pull(skb))
-@@ -688,11 +686,12 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- 		tnl_params = &tunnel->parms.iph;
- 	}
- 
--	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT,
--					      tunnel->parms.o_flags)))
-+	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
-+
-+	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT, flags)))
- 		goto free_skb;
- 
--	__gre_xmit(skb, dev, tnl_params, skb->protocol);
-+	__gre_xmit(skb, dev, tnl_params, skb->protocol, flags);
- 	return NETDEV_TX_OK;
- 
- free_skb:
-@@ -705,6 +704,7 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
- 			       struct net_device *dev)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
-+	IP_TUNNEL_DECLARE_FLAGS(flags);
- 	bool truncate = false;
- 	__be16 proto;
- 
-@@ -728,10 +728,12 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
- 		truncate = true;
- 	}
- 
-+	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
-+
- 	/* Push ERSPAN header */
- 	if (tunnel->erspan_ver == 0) {
- 		proto = htons(ETH_P_ERSPAN);
--		__clear_bit(IP_TUNNEL_SEQ_BIT, tunnel->parms.o_flags);
-+		__clear_bit(IP_TUNNEL_SEQ_BIT, flags);
- 	} else if (tunnel->erspan_ver == 1) {
- 		erspan_build_header(skb, ntohl(tunnel->parms.o_key),
- 				    tunnel->index,
-@@ -746,8 +748,8 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
- 		goto free_skb;
- 	}
- 
--	__clear_bit(IP_TUNNEL_KEY_BIT, tunnel->parms.o_flags);
--	__gre_xmit(skb, dev, &tunnel->parms.iph, proto);
-+	__clear_bit(IP_TUNNEL_KEY_BIT, flags);
-+	__gre_xmit(skb, dev, &tunnel->parms.iph, proto, flags);
- 	return NETDEV_TX_OK;
- 
- free_skb:
-@@ -760,6 +762,7 @@ static netdev_tx_t gre_tap_xmit(struct sk_buff *skb,
- 				struct net_device *dev)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
-+	IP_TUNNEL_DECLARE_FLAGS(flags);
- 
- 	if (!pskb_inet_may_pull(skb))
- 		goto free_skb;
-@@ -769,14 +772,15 @@ static netdev_tx_t gre_tap_xmit(struct sk_buff *skb,
- 		return NETDEV_TX_OK;
- 	}
- 
--	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT,
--					      tunnel->parms.o_flags)))
-+	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
-+
-+	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT, flags)))
- 		goto free_skb;
- 
- 	if (skb_cow_head(skb, dev->needed_headroom))
- 		goto free_skb;
- 
--	__gre_xmit(skb, dev, &tunnel->parms.iph, htons(ETH_P_TEB));
-+	__gre_xmit(skb, dev, &tunnel->parms.iph, htons(ETH_P_TEB), flags);
- 	return NETDEV_TX_OK;
- 
- free_skb:
-@@ -1560,12 +1564,15 @@ static size_t ipgre_get_size(const struct net_device *dev)
- 
- static int ipgre_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
--	struct ip_tunnel *t = netdev_priv(dev);
--	struct ip_tunnel_parm_kern *p = &t->parms;
-+	const struct ip_tunnel *t = netdev_priv(dev);
-+	const struct ip_tunnel_parm_kern *p = &t->parms;
- 	IP_TUNNEL_DECLARE_FLAGS(o_flags);
- 
- 	ip_tunnel_flags_copy(o_flags, p->o_flags);
- 
-+	if (t->erspan_ver != 0 && !t->collect_md)
-+		__set_bit(IP_TUNNEL_KEY_BIT, o_flags);
-+
- 	if (nla_put_u32(skb, IFLA_GRE_LINK, p->link) ||
- 	    nla_put_be16(skb, IFLA_GRE_IFLAGS,
- 			 gre_tnl_flags_to_gre_flags(p->i_flags)) ||
-@@ -1608,12 +1615,9 @@ static int ipgre_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 
- static int erspan_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
--	struct ip_tunnel *t = netdev_priv(dev);
-+	const struct ip_tunnel *t = netdev_priv(dev);
- 
- 	if (t->erspan_ver <= 2) {
--		if (t->erspan_ver != 0 && !t->collect_md)
--			__set_bit(IP_TUNNEL_KEY_BIT, t->parms.o_flags);
--
- 		if (nla_put_u8(skb, IFLA_GRE_ERSPAN_VER, t->erspan_ver))
- 			goto nla_put_failure;
- 
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index b843116e9b703c701a1a28a85569501d83ede21d..0b3f386b51a2d8c97e67472bcccc15285f7fc15a 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -964,7 +964,6 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 	if (skb_cow_head(skb, dev->needed_headroom ?: t->hlen))
- 		goto tx_err;
- 
--	__clear_bit(IP_TUNNEL_KEY_BIT, t->parms.o_flags);
- 	IPCB(skb)->flags = 0;
- 
- 	/* For collect_md mode, derive fl6 from the tunnel key,
-@@ -2115,8 +2114,8 @@ static size_t ip6gre_get_size(const struct net_device *dev)
- 
- static int ip6gre_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
--	struct ip6_tnl *t = netdev_priv(dev);
--	struct __ip6_tnl_parm *p = &t->parms;
-+	const struct ip6_tnl *t = netdev_priv(dev);
-+	const struct __ip6_tnl_parm *p = &t->parms;
- 	IP_TUNNEL_DECLARE_FLAGS(o_flags);
- 
- 	ip_tunnel_flags_copy(o_flags, p->o_flags);
--- 
-2.55.0.679.g6767b8d81c-goog
+IMHO, the commit message is worth a new revision.
 
+Thanks,
+
+Ciao,
+Andrea
