@@ -1,178 +1,199 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB049436BC9;
-	Wed, 12 Aug 2026 11:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0BA3B14D2
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786533530; cv=none; b=FnnWjsDQBtB+zUkSAhHKOyHWuP0hkbIjRCEp/a3hcOw1XMP+ViuTvcUjj99PSO3VHpVp0wYg2/VeExc4Y8yv1+UWwp8dccpzvKhrivhSXjb5adFBMvznu/96fRjRCsaiB6hvQXeU/XucA5cFXQhZ6NBwN+S4+yFLhY/xWg2w+6w=
+	t=1786534639; cv=none; b=Q2u1WkARwosRnSiozknXYPTjfdpZjdS9gkIqedMseJXt9Qje0fh5BpLpv9mbCcXG3opCYeP8MIcFI1DgHvYulmqfFdayCofi9AxorGE7DbhZYvnu7e+oMHbXolVnqbctmaH3GnID2SozMhg5glNj++/suQU/wKfXKFvZr5ahuMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786533530; c=relaxed/simple;
-	bh=/qWUVu4Bp+xrCFfV5lDFh1FyW63H3CQSlJmq+9G4ii8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m9qib8dtftm5054WxzWjeCCUKFm0umGsloDEHP+4MH+V/8W4kHVWPOK40m5zpgkZSvqdqM5SKx/Rv1XRmyv9CCRetm3tK4sP1H4bDvHgvzBFdic0lhSY4SlmC8Zw8E7GK74VauoqKwEnpdlq0w1rMEKqFTyYqwMowB5BVQThuK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=JDcNvNeN; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1786534639; c=relaxed/simple;
+	bh=CrTvb2kGHPK7+d0R14EHkHS3bKejDJlE1grVilZoGvY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g3nUiOHSUWqXJ0AVSc56R5JZ+JH7XoGDd+ImmouREjE8/ouEACpuej9qmxr3f+Nywnt9ETVoVcq8b3hyxqLT6GxNLj3nX4DI5gbOH8s7nuiaXQydg/lrod3vLoivwMKBFHXqI8jIpPr//Z9WDQj2lsXPT2mjQx1RGmQsA+o4bwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zw9Co8UR; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="JDcNvNeN"
-Received: from [172.16.124.192] (unknown [78.44.13.22])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id B3FA053405A5;
-	Wed, 12 Aug 2026 13:18:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1786533525;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/Ul2jKtraNQpi3ITKUkHD5JY/kubfNpWZjJBe/4vMH8=;
-	b=JDcNvNeNjcGwm6QvtaPVxW0FoYSVQhl0jxg/ENc34e8Rzc3h915cGI2+KfzS+XWtOSk74W
-	PkKsXvtITTEHponJW+2VTYbppgP7TX6wrZCIqRXhC7Qj/Nv714kU1ji2PXydoeSkd4A5us
-	XMCdHIiRuC9GOaWmor3LLWoXw0Eu0x8=
-Message-ID: <e9b0c679-6a50-48ba-8ce8-684bd4b5606b@ixit.cz>
-Date: Wed, 12 Aug 2026 13:18:33 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zw9Co8UR"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ceab75934dso11620715ad.2
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 04:37:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786534638; x=1787139438; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=awK1WKPMjKwqqW9lFazWbI/9bmuJ+2znKvkeY5ORX+M=;
+        b=Zw9Co8URzGv80bCltBNL7kV9DPRMt42wt4JR/36IvUUUPIoGBu6aCRJq1N3YvRMi0q
+         F3n9BrOvv6Gjy/eihZtoWdzBtRXUZOYSl7B5O+YGsImoG/NF81VelpZVmzxewlBy6rJ8
+         5/JjqoJTxpcV9MFIUUhQp3SLegk0DG6z/n+TGtSFgZETwoMQDi3fiHXBRScS7jIxslcq
+         Yq9IgOiPAOc2kWJuUb3Po2jWWMWubVF8k7EGkcetZhpMSKM8n6pQ6GclbUo5DZdfg+64
+         pdN8SOA9qyAGtOpqfrYoDD+AbGqtaz7b3XCQGE3RA2Q+NIemEj2YINyzWJMP0qjfFwME
+         hUlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786534638; x=1787139438;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=awK1WKPMjKwqqW9lFazWbI/9bmuJ+2znKvkeY5ORX+M=;
+        b=W+kSbutAOLSSKlOky970Ixcc4TROOyow7yjE4jJVFvbvOCQvS/oG8TOsdlp2w+7Lj7
+         YSuuh1xI42JHgLtYAjIWI8hymU9iuSqdf6Ak69HKKPklliR1GQOjTwWqeOM+BvhLcHOj
+         CLGo9R9eQsqLQQ5wTq61LvXwWOVX+wDQKzW7G7LQYVp863MpteXGYoHfCvcmxBzHxRrl
+         FOLnaFY8fu+NHPovz/VnGxHphZbucDoqt1eJR4xkCkxpatA7xHFFLfHh4z/dZkE8E/ft
+         FayXz/XPo0SH4gSLIMP5JL1tgPfStvjeV7Hng3u0jw7Pt252B8V2Q1fTL1Lx18bffJPm
+         ocBQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpcyLcwRLxfc0uQjeBXR6Czn2zC4qiE+WZbyEYYiBwS8PRT++6ooibyJKBkEK7WW19r+CjxSYQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVBIDTiieISOgpUXGcvVbSV2iOaMX/glUnthcTWhcoumbS0Cax
+	iEWg8qJe0kiaL4noTswXaRPa1oRSchJ9Y30u6YVPYXtNFeX5XyTdbfDq
+X-Gm-Gg: AR+sD13bj5xLoCO1m1hL8mX9yELejmDHfxtVszITEBN6ZA6tKnKIVYDYqJU2Hz10lfF
+	x7XxXE2e56xPhfO4nozjCejQ/UbyV0tClrYbfaPB164BPbU8LC2HxqDGv4KfbUaNrUSJZRaoYmL
+	I8bc6Fd7pByEHnwJX8OV8ap2BPg9QgJoqri6XC+uQ3T7YZYVMz0swHmDMc0HG4OH41z6QcTC4Dk
+	qAg0szrpWMSl5lTNqHWb/0ymllBIyssbmkWP/myy7x+3X+MfZaQObeCjlddHEvUsH1IlGFZLVjo
+	Ks/KhrMttHTpzCE2ttlneLduX6BF8uZNJyLWB2OYQz79f5/1ESgwmTz6HC7RrPTYN4htM5dckxQ
+	7//TrL11IlRNSlxTuPdaGFDhiCp2XzraT3C9l5Nd4y1VDTBDSPgeUXggd5ZoaQQBukpWk1yfNpJ
+	pTDYvWi1PRb96r6gsEieFFecLgK0eFz41bfdEnxdBxxS+IYYyn4TpmLKqmDaONlEU=
+X-Received: by 2002:a17:902:cecf:b0:2ca:f8ef:33e4 with SMTP id d9443c01a7336-2d3456e06damr50057335ad.17.1786534637562;
+        Wed, 12 Aug 2026 04:37:17 -0700 (PDT)
+Received: from TENCENT64.site ([103.7.29.106])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d35222e5b3sm4942125ad.74.2026.08.12.04.37.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 04:37:17 -0700 (PDT)
+From: Jun Yang <littleddfu@gmail.com>
+X-Google-Original-From: Jun Yang <junvyyang@tencent.com>
+To: Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>
+Cc: stable@vger.kernel.org,
+	Jun Yang <junvyyang@tencent.com>,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: bridge: mcast: don't truncate the port group walk on teardown
+Date: Wed, 12 Aug 2026 19:34:24 +0800
+Message-ID: <20260812113435.1854275-1-junvyyang@tencent.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/6] nfc: s3fwrn5: support the S3NRN4V variant
-To: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Bjorn Andersson <andersson@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Conor Dooley
- <conor.dooley@microchip.com>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, devicetree@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev
-References: <20260811220135.472380-1-jorijnvdgraaf@catcrafts.net>
- <20260811220135.472380-6-jorijnvdgraaf@catcrafts.net>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260811220135.472380-6-jorijnvdgraaf@catcrafts.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/08/2026 00:01, Jorijn van der Graaf wrote:
-> The S3NRN4V (e.g. on the Fairphone 6, SM7635) is a later part in the
-> Samsung NFC controller line this driver covers. It needs different
-> bring-up, selected with a new samsung,s3nrn4v compatible:
-> 
->   - It ships with working firmware, and its bootloader reports a
->     hardware version this driver has no flash base address for, so the
->     firmware download step is skipped. Its RF calibration data is
->     loaded with the proprietary DUAL_OPTION command (the HW and SW
->     blobs merged into a single stream) instead of the
->     START/SET/STOP_RFREG sequence. The upload is version-gated on
->     DUAL_OPTION GET_VER, matching the vendor stack: GET_VER reports
->     the chip's current calibration versions, and the push is skipped
->     when both match the blobs (each blob carries its version in its
->     last 16 bytes). post_setup runs on every device-up, so the
->     gate is what keeps the chip's calibration store from being rewritten
->     each time NFC is enabled.
-> 
->   - Its reference clock speed is configured with the single-byte FW_CFG
->     form, sent from the ->init hook, before CORE_RESET, in the same
->     order the vendor stack sends it. The vendor HAL uses the
->     single-byte form for this generation, and its vendor configuration
->     sets the selector to 0x11, which selects the 19.2 MHz reference.
->     Without this command the chip completes NCI initialization but
->     goes silent on RF_DISCOVER -- the command times out unanswered and
->     polling never starts (verified on hardware).
-> 
-> The calibration data is requested from a chip-scoped directory,
-> samsung/s3nrn4v/hwreg.bin and samsung/s3nrn4v/swreg.bin, rather than
-> the flat sec_s3fwrn5_rfreg.bin name the older parts use.
-> 
-> The variant is carried as match data by both the OF and the I2C device
-> id tables so the two match paths agree.
-> 
-> Existing S3FWRN5 / S3FWRN82 setups keep the firmware-download path and
-> the legacy rfreg sequence, unchanged.
-> 
-> Assisted-by: Claude:claude-opus-4-8
-> Assisted-by: Claude:claude-fable-5
-> Assisted-by: Claude:claude-opus-5
+__br_multicast_disable_port_ctx() and br_multicast_del_port() walk
+port->mglist with hlist_for_each_entry_safe(), which only guarantees that
+the *current* node may be removed by the loop body.
 
-I was going to make a joke about over-assisted stuff with two-lines of 
-Assisted-by before, but... :)
+The body is br_multicast_find_del_pg() -> br_multicast_del_pg(), and that
+deletes further port groups of the very same port. br_multicast_del_pg()
+drops the group's sources, and br_multicast_fwd_src_remove()
+(net/bridge/br_multicast.c:583) deletes the (S,G) port group installed on
+that same port; br_multicast_star_g_handle_mode() -> __fwd_del_star_excl()
+(net/bridge/br_multicast.c:330) deletes the automatically installed
+MDB_PG_FLAGS_STAR_EXCL entries, again on that same port. All of those sit
+on the same port->mglist.
 
-Here's my mental model:
+When one of them happens to be the node the iterator already latched as
+"next", hlist_del_init() clears its ->next, the walk sees NULL and stops.
+Every port group after it is silently left on the port. port->mglist is
+head-inserted, so this needs the cascade victim to be older than the (*,G)
+entry owning the source - a user-added, non-permanent (S,G) MDB entry added
+before the (*,G) join produces exactly that ordering.
 
-  - It's good to know that you used an LLM (hence Assisted-by).
-  - Someone may want to reproduce some generated code, so knowing which model was
-    used is useful.
-  - When you put THREE ;-) models there, I think it's getting a bit useless, as
-    we don't know which part was generated or adjusted by which model. At this
-    point, it feels somewhat pointless.
+Hitting it once truncates the disable walk in
+__br_multicast_disable_port_ctx() and once more truncates the flush in
+br_multicast_del_port(), so del_nbp() goes on to free the port with port
+groups still on port->mglist - and still linked in the bridge's mdb, with a
+dangling ->key.port. Any subsequent mdb dump reads the freed port:
 
-My recommendation would be to keep just one line for the model used for:
+  BUG: KASAN: slab-use-after-free in __mdb_fill_info+0x1191/0x1320
+  Read of size 8 at addr ffff88803065d008 by task bridge/9527
+   __mdb_fill_info+0x1191/0x1320
+   br_mdb_dump+0x594/0xe40
+   rtnl_mdb_dump+0x1cf/0x5d0
+  Freed by task 0:
+   kfree+0x265/0x740
+   kobject_put+0x212/0x6a0
+   rcu_core+0x5c6/0x1140
+  Last potentially related work creation:
+   __call_rcu_common.constprop.0+0xb7/0x9e0
+   br_del_if+0xdd/0x260
 
-a) the majority of the changes
-b) the last model used (at least for notable changes)
-c) the most powerful model doing the generation and/or review
+Don't rely on the pre-latched next pointer. br_multicast_del_port() deletes
+everything, so just take the current list head each round. The filtered
+walk in __br_multicast_disable_port_ctx() keeps its iterator but restarts
+whenever the latched node has left the list; port groups are only freed by
+the multicast GC work, which takes br->multicast_lock, so the node is still
+valid memory for that check.
 
-I personally don't mind either approach. There have been discussions about 
-dropping Assisted-by completely, but so far it makes sense to me to keep it, 
-just in moderation.
+Fixes: b08123684bd5 ("net: bridge: mcast: install S,G entries automatically based on reports")
+Cc: stable@vger.kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Assisted-by: tencentos-corvus-ai:kimi-k3
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
+---
+A KASAN reproducer for this issue is available if requested.
 
-Also, the patchset is shaping up nicely! :)
+ net/bridge/br_multicast.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-Thank you for your work,
-David
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 00aa9b2879d6..624dfca4066b 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -2065,12 +2065,17 @@ void br_multicast_del_port(struct net_bridge_port *port)
+ {
+ 	struct net_bridge *br = port->br;
+ 	struct net_bridge_port_group *pg;
+-	struct hlist_node *n;
+ 
+-	/* Take care of the remaining groups, only perm ones should be left */
++	/* Take care of the remaining groups, only perm ones should be left.
++	 * Deleting one can delete others on this same port->mglist, so
++	 * always restart from the head.
++	 */
+ 	spin_lock_bh(&br->multicast_lock);
+-	hlist_for_each_entry_safe(pg, n, &port->mglist, mglist)
++	while (!hlist_empty(&port->mglist)) {
++		pg = hlist_entry(port->mglist.first,
++				 struct net_bridge_port_group, mglist);
+ 		br_multicast_find_del_pg(br, pg);
++	}
+ 	spin_unlock_bh(&br->multicast_lock);
+ 	flush_work(&br->mcast_gc_work);
+ 	br_multicast_port_ctx_deinit(&port->multicast_ctx);
+@@ -2126,11 +2132,23 @@ static void __br_multicast_disable_port_ctx(struct net_bridge_mcast_port *pmctx)
+ 	struct hlist_node *n;
+ 	bool del = false;
+ 
+-	hlist_for_each_entry_safe(pg, n, &pmctx->port->mglist, mglist)
+-		if (!(pg->flags & MDB_PG_FLAGS_PERMANENT) &&
+-		    (!br_multicast_port_ctx_is_vlan(pmctx) ||
+-		     pg->key.addr.vid == pmctx->vlan->vid))
+-			br_multicast_find_del_pg(pmctx->port->br, pg);
++	/* br_multicast_find_del_pg() can delete further entries of this same
++	 * port->mglist, so the node latched in @n may be unlinked by the loop
++	 * body. Port groups are only freed by the GC work under multicast_lock,
++	 * so @n is still valid here; if it left the list, restart.
++	 */
++restart:
++	hlist_for_each_entry_safe(pg, n, &pmctx->port->mglist, mglist) {
++		if ((pg->flags & MDB_PG_FLAGS_PERMANENT) ||
++		    (br_multicast_port_ctx_is_vlan(pmctx) &&
++		     pg->key.addr.vid != pmctx->vlan->vid))
++			continue;
++
++		br_multicast_find_del_pg(pmctx->port->br, pg);
++
++		if (n && hlist_unhashed(n))
++			goto restart;
++	}
+ 
+ 	del |= br_ip4_multicast_rport_del(pmctx);
+ 	timer_delete(&pmctx->ip4_mc_router_timer);
+-- 
+2.55.0
 
-[...]
