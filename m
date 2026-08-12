@@ -1,245 +1,143 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010021.outbound.protection.outlook.com [52.101.84.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9229A3FDBF8
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786525867; cv=none; b=oHyuApwA0LwfJV/t8wtuFz/BJgD2RTEwH7riLp5loOhdQFJq7ifePe+CZ2K5GozVyDdDT0rA/O7QK0ag53b5J7vy1kQK1uNevMs7lSNc3+FQF9tYRS0j9XguQ3HT79BGRpbrNqpLysPmlPxvwVTWLP3MKAxcKvGi8HXlIC1zPew=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786525867; c=relaxed/simple;
-	bh=xJ0end2v3lOROAs4YCJxzthtHNHNOHB4Mu4bSkqPB/Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bNKPFuTvSZrG1wDa4jpUISxiW5e87/VNbr9eI76G5pKnff4T7o7XHcBBmdzz55MW4T6rH4Ey139mh9O4v1882UaH0rXzgyLztCG7kCaXtLzgEDVkAtkjD1nRsVbw6QsWCcfHQD8aB3ANUqQm61KSklK65zQSrrusqQ+enk4ADuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gNL6sxA3; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA2F3161BF;
+	Wed, 12 Aug 2026 09:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786525910; cv=fail; b=nvsU4sHwrMWo4an/ZszAMTDFomzekOmtm7yxsymuBTs6xfsEpKdx4arIT8FX0psfo5C9YRPHjDZBzIflUW3BaULwebFv61XCOBP1XfaRiB98rlqW8lkAsmlg3guV5jcvMeSWqKwrm/y5Q97rV9d4SidDjTc5cyGaoLFr2X3eVtU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786525910; c=relaxed/simple;
+	bh=jl/Ro1XMr/ihEIXqWfjp7L788eZdJmuA2tcJL4bUKeA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X2SPXQCLpDS1YWQvX37GwJiuArVZu2EN4F0B9OivwZ9SvYv9J1iWPUWgN2cgBf+mWgEkDFgizUUYN+mSSoGqwFGUUwcPe2CuSnrodMbhixCLljqswsa4kmRRRTvd4090CbGg8jw0nu561ci+3UHbQlROcGrGzG6x7SzbZUonbHc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=QUmqaBrZ; arc=fail smtp.client-ip=52.101.84.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gNL6sxA3"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 777C54E411D1;
-	Wed, 12 Aug 2026 09:10:58 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3C1BA6045E;
-	Wed, 12 Aug 2026 09:10:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DA17E11C4CA6C;
-	Wed, 12 Aug 2026 11:10:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786525853; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=fR/0/3r75v+yGcETdlibeuFDJ1BCATQCLysdpwrh1jA=;
-	b=gNL6sxA3B+IRcmagFuObaR94seeu7ukHGj5mkwtV3TpolLpK7uWRt+/NLgmPtq+R2qD0Qn
-	1FINO+d5RSmrwax08yrxcJ5bBPPuEs3bHsmCEdnqeeVj0LJ4sUdjj4jYD4US6gR5TCCGrt
-	w2JEdoZv1WwFtEqyxV1U3Z7L5OFS3h5SS0m2a1uNxfyaY8Xuvtm77GNs7aOOHl0FuLxsR+
-	WRmSJF+DZkH3NAwIf8jJ2nQTgyv4wMqHsZWwneCZmQTcGIAuIkNrQtkCuyMvP8R8aF2urS
-	q57zlWp2buAb6HzhoNHW7xvxm2FotSbYNsRZFRkpw9VMTbx7Sp9awszhA1vwog==
-Message-ID: <b3d90606-781a-4055-8529-e68e22a45ce9@bootlin.com>
-Date: Wed, 12 Aug 2026 11:10:45 +0200
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="QUmqaBrZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nwd0uGtPQsXdS3iQcWdBE8b34uw4bHDVpHO4kuiyXx6LhzhF8GuKGEqW4v5hIKwImJk7qg2S9Nopxtj2UaXMNoRyEdV2mZru+hKdyntI+jo568HH4LtTwCQnRd0VxXJYjNgeIJdsNAxATSkZSdIE/hFuO2em2ghCscRoC7KWR9diaCUVk+G324b+Nz4H7xcF4gegmUq9FUVG6hm6wJGzY+mHUN0ZiQkPP+gJadJWmX98EWnPSo48GSdWDy9+iqiwTlXbwf7pmjxz//TP0RGYIykv48qeNAT6BtAwFRapDR5vuQv5PkWmnN24sj6NDHFGy4vIstB2FPlhs/sf+r/wFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/gTroEd2apjAHO6GmbHDjeLW/t7FuVBKyQ+0qt0MmYI=;
+ b=aEAmrcbo/JW8NmXitlve18M1Sa8ajrA6rghxYMu26hfRutQ5zZ716rpWTy9HuYnvIz3FxdMK1++xSEZXMk1ElD9VMCRcXevmP6uu0QR6lHlgnKhL7BSSaVmV0PJahh7MN1WeE1jQC7j3PfGEqOuWM/HTnDmVL0e73NfWJdSb81M7Yh44lPDeOIyjeps+Y9Zp+dLFT8h1LL8GRSZqpPWSpGwIrjxjtKbGp5IwUQohxSf6XhEyYbHv5ATrw8aac5T+SaQO7fO6FKu96YWQ5klEAzBtG6NxLjV4GjsO89McUPKM3sW/Iau8kpjSJAVWv0WR2UDNrvZYBXZ+2pheaq2++w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.59) smtp.rcpttodomain=lunn.ch smtp.mailfrom=foss.st.com; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/gTroEd2apjAHO6GmbHDjeLW/t7FuVBKyQ+0qt0MmYI=;
+ b=QUmqaBrZfdO60yLsNwA9vAw1cN07XV6//sr7q5PYucOU3b/fHWLhAWqftcSUcTfpjsks13xvkrIFiRPiATUwTci7rVRiapxX6tNq65N5exB3ezrFcx0J5eD7Yl5KTOjPo9XQv/cd9eVM7hO9vkUq9aEW1/D5miVFbRzcwrsw8u8ie0L+6OwQQkprIlG8wIKrw2Y1EO4ioXFm0I0+fYbrHZtGqenFR9wL5HhMALEf9G2VW7HGW0Eln8ksm15b+b/SOFi3VOQrtKakvDsfklgW6cMCJY8BmmjH58ZFcSuHw4lif8t5T3mrKsgR1F5mF84iSc/IcoOCXOA5xKUO1+OcWw==
+Received: from AS4P192CA0018.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:5e1::7)
+ by BR2PR10MB992333.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:2c8:1c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Wed, 12 Aug
+ 2026 09:11:44 +0000
+Received: from AMS1EPF00000042.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5e1:cafe::9a) by AS4P192CA0018.outlook.office365.com
+ (2603:10a6:20b:5e1::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.13 via Frontend Transport; Wed,
+ 12 Aug 2026 09:11:44 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.59; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.59) by
+ AMS1EPF00000042.mail.protection.outlook.com (10.167.16.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.6 via Frontend Transport; Wed, 12 Aug 2026 09:11:43 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpo365.st.com
+ (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Wed, 12 Aug
+ 2026 11:17:13 +0200
+Received: from localhost (10.252.2.245) by STKDAG1NODE2.st.com (10.75.128.133)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Wed, 12 Aug
+ 2026 11:11:43 +0200
+From: Christophe Roullier <christophe.roullier@foss.st.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	"Alexandre Torgue" <alexandre.torgue@foss.st.com>, <linusw@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Christophe Roullier
+	<christophe.roullier@foss.st.com>
+CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: [net-next,PATCH v2 0/5] Some improve for STM32MP2X
+Date: Wed, 12 Aug 2026 11:11:17 +0200
+Message-ID: <20260812091122.566439-1-christophe.roullier@foss.st.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] net: stmmac: dwxgmac2: add XGMAC timestamp
- interrupt support
-To: Zxyan Zhu <zxyan0222@gmail.com>, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch, richardcochran@gmail.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260810100221.9166-1-zxyan0222@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260810100221.9166-1-zxyan0222@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS1EPF00000042:EE_|BR2PR10MB992333:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8c4031d-43d0-4195-4a2d-08def851ba9d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|23010399003|376014|7416014|18002099003|10067099003|921020|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	WjbjILSO5h7v6xnPB8dUl80zlbuLplnLnzEhgvdMveV6LkNiqlXgAYJUl7b4xb84B1VBcKRGaS02V8fuvMJ4kf6onbqqwT/O0p0WhyjzaD+nqZt2KTpWSp2Ad1BUNf6vlCRxPwOiaNuxye65aY0OoBCLQVW3Rw9isBzS6JKhJ0kViKAy5NHu8o5Kgbn8JfpI0xjB2ZZhZdz9HR6z4wFPLOAXqzckmySlP2V8Wsz2R7l7o6v6sW54OnXz70DZtzy30aOASHaEOMI1tz8lQ3fj03T/a9T+APXSluRmuRTEm/mKqLHFe/lRsKOn/lM8j0zhzWoxxbEJQfa5VGrZGxrdTIfu/WiS8rHm59I3SwspGPonV/3F7Yx67y9LRL3FuRVnnYrWO5UZRxZrk0Q5bt7gj09LBAFAmX/DhVQYObDAF+xhVaGtwG85N6MGj8aoaXoQidsdTWv/0lrSMtVlFhcjK02owPVOEMFefPO3+42HV1AhAI8vcfd5G/5Hsw4m/h7SA/1JX6n90nJwKBTRzO5f0e6OXOnUjK0Pwz+DzdmFD6Wq2DjeTKDdmOSjSQ41r/h7IdgJMZ0vZmy5jiWgdHNCqBEXNZFhkAyaeeNDlOp7sErBgCqDid6gG5hmPuNkpVwnQidQcqtI3PYuzYJIkfrOYdIunGJcu1xUVF4UXiUd6yXN2Gz2i0D8QqxQahZiWgV6DpdfIu7Q+Y+Sd8zXxzfOqqRw6i/PwzEM6nq56Ru1pOcgSNnHraiJXEvgr0ZZpZT0
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(23010399003)(376014)(7416014)(18002099003)(10067099003)(921020)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	IxqCgF4dZe0OOiv5Wl0b/o56bCaEWy3RKd30ONjS7KkfeCKGcbU0ct+L/FXswOaAAxVmGnprm/ZWm6j+8+AEQ+GsGRwcZlmYIRXcy36d3MrP6cnJa7Rxs7mwlQVLT7s3HSJnmjeM7dYRmO/A0lPDiMTBv+prNl2402kh5Q1NBd7QXMITKw8wnvVAcEzMZ1/Qk1Y+uvONX9qNkOTJvY3sAi7n0mzq+tG0bZrHUGrxZghONJOmoBaz5CV09gmnAZBuBPihm03O7SehfhADhuUk3wYUgdt39G7sn7apU4Tn38V9cnsj00NCaPbKCky8a5eIaVC4l+0xhnZxgL8ISrHEdtbyrg/fxykKnNxcCcITCbvvgg1Zei/Os6ZzMV+vrxUFqvbPbpCOoSW5hzuJZmbCHqx80gjsWpSh44UUfOGmwDE8bpXxTZTmFSQi7KEWfFxF
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 09:11:43.9264
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8c4031d-43d0-4195-4a2d-08def851ba9d
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF00000042.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR2PR10MB992333
 
-Hi,
+Add PHY Regu for MP23/MP25-DK
+Increase deassert value for PHY Reset for MP25-EV1
+Add support of phy-supply regulator
+Remove commit "net: stmmac: manage error case during stmmac_dvr_probe" 
+from my series to push in net-next networking tree
 
-On 8/10/26 12:02, Zxyan Zhu wrote:
-> DWXGMAC2 uses XGMAC_TIMESTAMP_STATUS at offset 0xd20, while the
-> generic stmmac PTP handler reads the dwmac4 offset GMAC_TIMESTAMP_STATUS
-> (0xb20).  Before this change, the DWXGMAC2 and DWXLGMAC2 hwif entries
-> used &stmmac_ptp, whose timestamp_interrupt callback read the wrong
-> register and whose config_hw_tstamping callback never enabled the
-> XGMAC timestamp interrupt (XGMAC_TSIE was not in XGMAC_INT_DEFAULT_EN).
-> As a result, auxiliary snapshot events were never reported on XGMAC
-> platforms.
-> 
-> Add a dedicated DWXGMAC2 timestamp interrupt handler that:
-> - reads XGMAC_TIMESTAMP_STATUS before checking
->   STMMAC_FLAG_EXT_SNAPSHOT_EN, so that the timestamp interrupt status is
->   cleared even when auxiliary snapshots are disabled
-> - derives the pending auxiliary snapshot count from the persistent
->   ATSNS field instead of the transient AUXTSTRIG status bit
-> - generates the corresponding PTP_CLOCK_EXTTS events
-> 
-> Also enable XGMAC_TSIE in XGMAC_INT_DEFAULT_EN and hook the new
-> handler into the DWXGMAC2 and DWXLGMAC2 hwif entries.
-> 
-> Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+v2: Add reviewed-by from Linus
+    Add missing commit to manage phy-supply property 
+    (yaml and glue support)
 
-If there's an interrupt storm, then this should probably be a fix for -net
-with a Fixes tag.
 
-Maxime
+Christophe Roullier (5):
+  dt-bindings: net: add phy-supply property for stm32
+  net: ethernet: stmmac: stm32: support the phy-supply regulator binding
+  arm64: dts: st: add 3v3 regulator to ethernet on stm32mp235f-dk
+  arm64: dts: st: add 3v3 regulator to ethernet on stm32mp257f-dk
+  arm64: dts: st: increase deassert of PHY reset in stm32mp257f-ev1
 
-> ---
-> v1: https://lore.kernel.org/netdev/20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com/
-> v2:
-> - reads XGMAC_TIMESTAMP_STATUS before checking
->   STMMAC_FLAG_EXT_SNAPSHOT_EN, so that the timestamp interrupt status is
->   cleared even when auxiliary snapshots are disabled.
-> - Drop the unnecessary (u64) cast in dwxgmac2_get_mac_tx_timestamp().
-> - Reword the changelog to describe the real problem: the generic handler
->   read the wrong register offset (0xb20 vs 0xd20) and the interrupt was
->   never enabled, so auxiliary snapshot reporting never worked on XGMAC.
-> - Update the comment to clarify that TXTSC is cleared by
->   XGMAC_TXTIMESTAMP_SEC, not by XGMAC_TIMESTAMP_STATUS.
-> ---
->  .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  2 +-
->  .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 43 +++++++++++++++++++
->  drivers/net/ethernet/stmicro/stmmac/hwif.c    |  4 +-
->  drivers/net/ethernet/stmicro/stmmac/hwif.h    |  1 +
->  .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 12 ++++++
->  .../net/ethernet/stmicro/stmmac/stmmac_ptp.h  |  1 +
->  6 files changed, 60 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> index 61b6d45a02f5..76e2860a9517 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> @@ -87,7 +87,7 @@
->  #define XGMAC_TSIE			BIT(12)
->  #define XGMAC_LPIIE			BIT(5)
->  #define XGMAC_PMTIE			BIT(4)
-> -#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE)
-> +#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE | XGMAC_TSIE)
->  #define XGMAC_Qx_TX_FLOW_CTRL(x)	(0x00000070 + (x) * 4)
->  #define XGMAC_PT			GENMASK(31, 16)
->  #define XGMAC_TFE			BIT(1)
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-> index f02b434bbd50..b849cebf9b29 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-> @@ -1154,6 +1154,49 @@ static int dwxgmac2_get_mac_tx_timestamp(struct mac_device_info *hw, u64 *ts)
->  	return 0;
->  }
->  
-> +void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv)
-> +{
-> +	u32 ts_status, pending_snapshots, acr_value, channel;
-> +	struct ptp_clock_event event;
-> +	unsigned long flags;
-> +	u64 ptp_time;
-> +	int i;
-> +
-> +	/* Read XGMAC_TIMESTAMP_STATUS to get the AUX snapshot
-> +	 * count.  This read also clears the TSIS bit in
-> +	 * XGMAC_INT_STATUS.
-> +	 * TX timestamp polling may have already cleared TSIS
-> +	 * and AUXTSTRIG, so rely on ATSNS instead.
-> +	 * TXTSC is cleared by XGMAC_TXTIMESTAMP_SEC, not by
-> +	 * this register, so there is no conflict.
-> +	 */
-> +	ts_status = readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
-> +
-> +	if (!(priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN))
-> +		return;
-> +
-> +	pending_snapshots = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, ts_status);
-> +	if (!pending_snapshots)
-> +		return;
-> +
-> +	acr_value = readl(priv->ptpaddr + PTP_ACR);
-> +	channel = FIELD_GET(PTP_ACR_MASK, acr_value);
-> +	if (!channel)
-> +		return;
-> +	channel = ilog2(channel);
-> +
-> +	for (i = 0; i < pending_snapshots; i++) {
-> +		read_lock_irqsave(&priv->ptp_lock, flags);
-> +		stmmac_get_ptptime(priv, priv->ptpaddr, &ptp_time);
-> +		read_unlock_irqrestore(&priv->ptp_lock, flags);
-> +
-> +		event.type = PTP_CLOCK_EXTTS;
-> +		event.index = channel;
-> +		event.timestamp = ptp_time;
-> +		ptp_clock_event(priv->ptp_clock, &event);
-> +	}
-> +}
-> +
->  static int dwxgmac2_flex_pps_config(void __iomem *ioaddr, int index,
->  				    struct stmmac_pps_cfg *cfg, bool enable,
->  				    u32 sub_second_inc, u32 systime_flags)
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-> index 511b0fd5e834..9718582b8480 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-> @@ -258,7 +258,7 @@ static const struct stmmac_hwif_entry {
->  		.dma = &dwxgmac210_dma_ops,
->  		.mac = &dwxgmac210_ops,
->  		.vlan = &dwxgmac210_vlan_ops,
-> -		.hwtimestamp = &stmmac_ptp,
-> +		.hwtimestamp = &dwxgmac2_ptp,
->  		.ptp = &stmmac_ptp_clock_ops,
->  		.mode = NULL,
->  		.tc = &dwmac510_tc_ops,
-> @@ -280,7 +280,7 @@ static const struct stmmac_hwif_entry {
->  		.dma = &dwxgmac210_dma_ops,
->  		.mac = &dwxlgmac2_ops,
->  		.vlan = &dwxlgmac2_vlan_ops,
-> -		.hwtimestamp = &stmmac_ptp,
-> +		.hwtimestamp = &dwxgmac2_ptp,
->  		.ptp = &stmmac_ptp_clock_ops,
->  		.mode = NULL,
->  		.tc = &dwmac510_tc_ops,
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> index e6317b94fff7..818ab3daa91c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> @@ -671,6 +671,7 @@ extern const struct stmmac_desc_ops ndesc_ops;
->  
->  extern const struct stmmac_hwtimestamp stmmac_ptp;
->  extern const struct stmmac_hwtimestamp dwmac1000_ptp;
-> +extern const struct stmmac_hwtimestamp dwxgmac2_ptp;
->  
->  extern const struct stmmac_mode_ops ring_mode_ops;
->  extern const struct stmmac_mode_ops chain_mode_ops;
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-> index b9a985fa772c..9d7d24259abd 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-> @@ -277,3 +277,15 @@ const struct stmmac_hwtimestamp dwmac1000_ptp = {
->  	.get_ptptime = dwmac1000_get_ptptime,
->  	.timestamp_interrupt = dwmac1000_timestamp_interrupt,
->  };
-> +
-> +const struct stmmac_hwtimestamp dwxgmac2_ptp = {
-> +	.config_hw_tstamping = config_hw_tstamping,
-> +	.init_systime = init_systime,
-> +	.config_sub_second_increment = config_sub_second_increment,
-> +	.config_addend = config_addend,
-> +	.adjust_systime = adjust_systime,
-> +	.get_systime = get_systime,
-> +	.get_ptptime = get_ptptime,
-> +	.timestamp_interrupt = dwxgmac2_timestamp_interrupt,
-> +	.hwtstamp_correct_latency = hwtstamp_correct_latency,
-> +};
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
-> index 3fe0e3a80e80..dade09614163 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
-> @@ -103,6 +103,7 @@ int dwmac1000_ptp_enable(struct ptp_clock_info *ptp,
->  
->  void dwmac1000_get_ptptime(void __iomem *ptpaddr, u64 *ptp_time);
->  void dwmac1000_timestamp_interrupt(struct stmmac_priv *priv);
-> +void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv);
->  
->  extern const struct ptp_clock_info stmmac_ptp_clock_ops;
->  extern const struct ptp_clock_info dwmac1000_ptp_clock_ops;
+ .../devicetree/bindings/net/stm32-dwmac.yaml  |  3 ++
+ arch/arm64/boot/dts/st/stm32mp235f-dk.dts     |  1 +
+ arch/arm64/boot/dts/st/stm32mp257f-dk.dts     |  1 +
+ arch/arm64/boot/dts/st/stm32mp257f-ev1.dts    |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-stm32.c | 51 ++++++++++++++++++-
+ 5 files changed, 56 insertions(+), 2 deletions(-)
+
+-- 
+2.43.0
 
