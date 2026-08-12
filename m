@@ -1,138 +1,108 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1EB468C05
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 14:51:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786546276; cv=pass; b=tLFUdq4FZMF1F5zajb+Ug5GP1KpCPKXHsYGHyClN5UbcDh4bB8E7lbGE7w+i15gBcsXn5cnvRySkOe8VAtJmj/SK6v0MVKzozJEjG6cjFRb1Y2KQEnnxpOtUX13MFXDVcXFgoz33WWyEsyI07AU6/aZW2RxpOEajmqKdlonjkus=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786546276; c=relaxed/simple;
-	bh=YV8lViX/Plx+pXmSAua3UM9oZhLBRYnDWBhiqxYz9FE=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JWtJ6IYq4b+DcIKZNaJxW0j5mPSvdn/j5fXPoxA4vilJ6mBdZY8/FSGPk7zRi8MadpmUaJlV0+alsd+cuBNBhRjWxAyOiooJprU9VWyAQtLppVJlpnLUUMKGYWMqdduS4MnmAWqNUXVpgn87rXYI2Ak5d5HBspMosyr2UXMA/Zw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PKBsZ20H; arc=pass smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCC046E01C;
+	Wed, 12 Aug 2026 14:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786546568; cv=none; b=AWx7jBXwmkqGmHAVwk1H2tibNLOHRumzBylLpi3p0MH4HUbMgAMFvomadxEXLtMTNmgOw0afUvs81k+Von4zBLOt/gsf+4+w9slxHV5ExlAchUPmHPZGur8Cop44G67V+xW5w5RgvHDBJ9OqpcXz6941SGhiY1o2//BF7i7Kruw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786546568; c=relaxed/simple;
+	bh=XwU0bkqFK5u0JeeJ9QM6jzdx9FHXDApFemobL+2NHNE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Z1QcnX9WiaChW1wFMKkPMiDjpL1btyUEAIlWcYyd79Mb84JYiiVtODS8Odluup+EYwN/CekSqhrLaMQ1GGKluDVK1KjAb5umK9sT4rII6xOtMRXTdHshRHuJT/uYv0haCM2AoDYdGS1TF34SLfewoqTN3YoHllfi4InekBickcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nf4PkM9j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PKBsZ20H"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47fe377a217so646799f8f.1
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 07:51:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786546270; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oEGfZHwvCPS6vJ21Ft0j+RGMGKLBHdYTKdJ/d2kR+uMhGkCDt8p/gI/KdUixF42LLd
-         f0OsBsk+EvJUqrCIKQ6w7HX7EvvH4eXQOIYifTfghSpMSDq/TG6/E/TUFL3OkFHx8SaO
-         mzKzcPcnVAIlt5GFjzEAkJ0ULB/xWw60qWEUIWK9P27dWDb+e84YB1vXATssOrusFlUi
-         46fygCwqAEUFcTFxTPyuYZKeRg8nwwVJcDZY2VHwujMxPA2aBv+KzaYHxc5C1kDNLGj0
-         4jl4guvC1omYC+ZKr+5pmcDFF9ZjBkP66eB8k/DkHsNsd6bc4x8wAFa8OJbIs0VzgfM7
-         IG3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=YV8lViX/Plx+pXmSAua3UM9oZhLBRYnDWBhiqxYz9FE=;
-        fh=GJDOkJGMPhVedBW4znRBBLZnIkPYpiu96hIit20RvTE=;
-        b=jWbFWkybVI7fxBe2oxv27vDl8M2hMLERWWoRKEi1X4CzZrOs9kqUM1okDYz1/DKdlb
-         Ma81RofD362HWCKB1JyWzpAHZ+m6X7iCe9QTuner49VJLswQL/zZyk/DkkCzTWFdEVXK
-         E21SumJGYCKDEy5KHjIJ/zzORncOZkLtKajoBxw2oiCr46q6oJnylqMaJekQkAb/H9IF
-         o1JJMyeqiYpL2DESng3OTyyI8jCRmS8ic23Aw3xc7U9fgaQVInAXMgt2rlDQvWps6ZGF
-         bo+ANns41NGXpXKz9PpYiz+swSfGnwWO2wyIWraNDgPSzHqbWiQlkIPOtHdYjFuk7kJy
-         zpTA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786546270; x=1787151070; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YV8lViX/Plx+pXmSAua3UM9oZhLBRYnDWBhiqxYz9FE=;
-        b=PKBsZ20Huw6ResiVJ8z/1MJMa786lbavy1n3vnzJ1K2UlNqYocgbFwOfO0sxvk8AxM
-         MeWb58efDZYcSscIDMxapaW7VoKggtV8QXRAwdFfWNX28lthEgHWi844vpOSKOk9//jE
-         cmyvPKpB+xXGZBq1FLtjQ2ij5K+XHMuM7QmBVnV1r/Y9Fk2+BATgX6DB2p7bsMCddSV4
-         fcgkU/WmrWdM2Zb2LMLcatdbBXdfjCsOjXcFbZpOhJhX4u2dSwwFk8L66yYLNC5BhuJQ
-         smluwR2WbwmSHi/rAssOAAf9/NOEFvzo9DJ27NxXPF7+q/9eNMSaDVeXBWXdtIT3bTg2
-         lZhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786546270; x=1787151070;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=YV8lViX/Plx+pXmSAua3UM9oZhLBRYnDWBhiqxYz9FE=;
-        b=BCOFX+F0x9R8d1LxW4hvzCS9NwRJIGU4wBA3JqyQDUmyZHuzdwrZ691srZHv5WdzDV
-         mrRGKJJDLdK/UFh5i8jDh3SgqkGpbOH+Dw3eOWon6w5pcwj95AzfemgiNpchZDcSmLhE
-         BJ4+jsyP+5Z0LfTqHM2g5oFw9PvOmkh+Tmmpmc/iI2vaqBeiv2m78qrfREB28RosOrDT
-         QPug2NDWgWve01l8XhiYsZrbRfDR6bL3+GZpclBSZeqAP4arGhIJaJ0sWUGCamfW1cHK
-         4eAh8yf4ZqDxoJxyct79OST6CaAwfpHfDSpFhFslJ0a6UovspsG8UMdyfjv8bMg56KuU
-         gDEA==
-X-Gm-Message-State: AOJu0YxBRPDIbk722hmjGQW3sMbUR0qgT2RBg+v8OKp2ibVnR+p7iuWw
-	sgWHe9f0mB090I5yjrI1iwrYhQcd1RXlH+p//mv+rXrb63sU4G/dmucT6beu31E+FTGIEwtd1cc
-	UV/Vh1qe2Cqs0ReuepXgVqbQpBLPR2nHIbl54wCQ=
-X-Gm-Gg: AR+sD10SlFVmSLWdLREYz6KF7hRJIT3zhpRV6yomenmazi/LU/q6zucPcH1EAiC78j0
-	LwupPxPigm1cGldblnSXNwg2O95b/CjEVsd51JWt6iMAS82da+p435LiM+yOETTfSzoxuNrOsL3
-	V0agEFlMBDOOngOB/jkimnoLwiqTL+FLn5xz4LRL/iDGJSsxX6YUdcyumS0wZ12Tvp1veHNqz0u
-	eM13I37egkG5+iWq5ZjlSWaKp1RPgI3OhDZpP+78G9VSqP1xLcV7kCGsSkOjPiJgNhQjLb4VXzN
-	As9aPpHrUV7FdBSqREA/2G5SJYq8K565fjcRU58Whq36m85HNbONf8omzYbrTwJqS9wAfRpRK+I
-	=
-X-Received: by 2002:a05:6000:1889:b0:47f:e877:641b with SMTP id
- ffacd0b85a97d-48152b15e25mr8190918f8f.11.1786546270318; Wed, 12 Aug 2026
- 07:51:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nf4PkM9j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110D51F00A3E;
+	Wed, 12 Aug 2026 14:55:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786546560;
+	bh=WXZl5udg7ZJph842UCypS8VHhdJZk88YovBys9phKz8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=nf4PkM9jHkD9ExE872jRVQkceON+pZYOx9IJDLu119Iybwt4DFe4MXulseLJZZix0
+	 SKsdP29LV7ty5z4KVlcSb8wL1yKL6mBvUIa5ihcHDggSuph0ZrH7ACBB/WjRZdPbiq
+	 O0BzUe/OOiieGqe8Yd+ERTAfzi7stpg4YmCr51ckhv5J56fgZwt9jXq36cL11X1BVk
+	 TVNaDCPw8Dlkqh1gy9o+x0uNX5z0SBoExkv7mjr8XOdkJpwhon0thK/m4trtI40Af+
+	 1OFiiM86RbJAV1JyUufYwJWiqpuH7r2ec+Yo7nD3CwZhrIgqNPc4vpw3P/Oam5mjCJ
+	 /1jiEXto6j0Bw==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Wed, 12 Aug 2026 16:55:36 +0200
+Subject: [PATCH net-next 01/11] mptcp: pm: add WARN_ON_ONCE guards on
+ extra_subflows underflow
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Giuseppe Nespolino <g.nespolino@gmail.com>
-Date: Wed, 12 Aug 2026 16:50:57 +0200
-X-Gm-Features: AUfX_mzbNEFQ4zo4qYOJ3xJDnsZmD76jlbVmb-nZb7voYa2wFF2rx70KHzeia9c
-Message-ID: <CAKx9m6PywVwkirvkAtz144c-yg71c2+OcNYOTM4Bjtd8dF2PaA@mail.gmail.com>
-Subject: dwmac-motorcomm: RX dies after long s2idle, only wrapper SYS_RESET recovers
-To: Yao Zi <me@ziyao.cc>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260812-net-next-mptcp-misc-feat-7-3-v1-1-1905a818f6cb@kernel.org>
+References: <20260812-net-next-mptcp-misc-feat-7-3-v1-0-1905a818f6cb@kernel.org>
+In-Reply-To: <20260812-net-next-mptcp-misc-feat-7-3-v1-0-1905a818f6cb@kernel.org>
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ Tao Cui <cuitao@kylinos.cn>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1686; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=7Sm0kvtxa0BRbbyBX9OkWC3GS3dAAOG3vCPCiXLOlWA=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLJqOovdEq95iMwt77dc6ss6s/5E2JU51aUzth9wOH7lq
+ XfKsRspHaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABOROsLI8O2u8rlf36YqVR1h
+ vMO39fO8dnXu3pkF/96oxehHLrJm+8/wP0731q1i669lnea+PFqr7Q6o+V3v3/flrJlRebnZeq5
+ YDgA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Hi Yao,
+From: Tao Cui <cuitao@kylinos.cn>
 
-On a Slimbook EVO15-A8 (YT6801, 1f0a:6801, kernel 7.0.0-28 Ubuntu)
-enp2s0 stops receiving after a long s2idle. 18-25 minutes reproduces
-it; 5s and 30s cycles never did.
-Link comes up at 1Gbps and the resume path logs nothing unusual.
+extra_subflows is a u8 counter that can underflow if a decrement races
+with or precedes an increment. While the recently fixed userspace PM
+subflow creation path eliminated the primary cause, add defensive
+WARN_ON_ONCE guards at both decrement sites to catch any remaining edge
+cases rather than silently wrapping to 255.
 
-Measured while broken:
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/pm.c       | 3 ++-
+ net/mptcp/protocol.h | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-- MAC is receiving: mmc_rx_framecount_gb climbing,
-mmc_rx_fifo_overflow 2585. netdev rx_packets and the rx-0 MSI-X count
-frozen.
-- MSIX_PBA (BAR0+0x1300) = 0, so the device isn't asserting anything.
-- CH0_STATUS = 0x4c5: RI/RBU/TI/TBU latched, NIS and AIS clear, with
-NIE/AIE set in CH0_INTR_ENA (0xd041).
-- All 512 RX descriptors in writeback format with sane lengths
-(64-1518), OWN=0. The DMA received them; nothing ever consumed them.
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index d1f73c3e39fa..8b68868255c5 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -670,7 +670,8 @@ void mptcp_pm_subflow_check_next(struct mptcp_sock *msk,
+ 	if (mptcp_pm_is_userspace(msk)) {
+ 		if (update_subflows) {
+ 			spin_lock_bh(&pm->lock);
+-			pm->extra_subflows--;
++			if (!WARN_ON_ONCE(pm->extra_subflows == 0))
++				pm->extra_subflows--;
+ 			spin_unlock_bh(&pm->lock);
+ 		}
+ 		return;
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index b3af3462bdd1..20627e12c113 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1254,7 +1254,8 @@ u8 mptcp_pm_get_limit_extra_subflows(const struct mptcp_sock *msk);
+ /* called under PM lock */
+ static inline void __mptcp_pm_close_subflow(struct mptcp_sock *msk)
+ {
+-	if (--msk->pm.extra_subflows < mptcp_pm_get_limit_extra_subflows(msk))
++	if (!WARN_ON_ONCE(msk->pm.extra_subflows == 0) &&
++	    --msk->pm.extra_subflows < mptcp_pm_get_limit_extra_subflows(msk))
+ 		WRITE_ONCE(msk->pm.accept_subflow, true);
+ }
+ 
 
-Event bits latch and clear fine (W1C works, MGMT_INT_CTRL0 tracks it
-as a mirror), but the summary stage never asserts and no MSI-X is
-generated. RBU, the full ring and the FIFO overflow are all downstream
-of that.
+-- 
+2.53.0
 
-Ruled out with data: ASPM/remapping (PBA=0, MSI-X table intact, zero
-IOMMU faults), wrapper registers lost across D3 (all identical to a
-healthy baseline), unarmed ring, and MGMT_INT_CTRL0 needing an ack
-(status field is read-only).
-
-What recovers it: toggling SYS_RESET (0x152c bit31) plus
-motorcomm_init(), then ip link down/up. down/up alone does not - rings
-get rebuilt, IRQs re-requested, packets land in memory, still zero
-interrupts. I haven't yet isolated the reset from motorcomm_init().
-
-Which brings me to the question, since you know the chip: does
-clearing OOB_WOL_CTRL_DIS actually disarm an OOB WOL engine that
-already armed, or does that need the SYS_RESET? Your comment says OOB
-WOL blocks DMA interrupt
-delivery, which is exactly the symptom, and stmmac_pci_plat_suspend()
-enables PCI wake unconditionally even with WoL off - it is off here.
-
-I have a candidate fix (do the full motorcomm_reset() in
-motorcomm_resume() instead of only deasserting the MDIO/PHY reset) and
-I'm happy to send it, but if OOB WOL is the mechanism the right patch
-is probably narrower. Caveat: I validated reset + full open, not reset
-+ the stmmac_resume path, so a patched module still needs testing.
-
-Happy to run any experiment on this hardware.
-
-Giuseppe
