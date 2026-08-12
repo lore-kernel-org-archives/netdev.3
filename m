@@ -1,90 +1,75 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4577C35F180;
-	Wed, 12 Aug 2026 01:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448FC2E719B;
+	Wed, 12 Aug 2026 01:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786498279; cv=none; b=GBzEoEARFQSfidOU+ZvAvvWIdSli/4cQ1h23MI6oknQkUl+gOjMX15Hnb4FmnUq7fxu/269wl+7JkYBUyRFvRKf7PcQUZVT/ntORBac3KjKi3riXyjiNGtAQy7Yg1p9xCUagpW2k8dYte4WhnuGEaa+V7DJM8Nrr6qisTrHACh8=
+	t=1786498472; cv=none; b=CM8RD5XPoHBmuFzxUvLl+wxCfElMixs6jPj4SwPgySFBHSC2QWqiGr5oEWbOCeogBB0FNLaVgvlgoLPTKjNB0ae+g1E6Ps5un/I76hoTfjgoQHoEZlWeofy3cQkY6M5a4Ug6uolQYWVh0g/Faiy/pnbo14s+MPfSA0PyXm0ESCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786498279; c=relaxed/simple;
-	bh=eb5NCY5bMC4d256bHcdostcP90LOUfDnXioDSecGz9w=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=CFCbGxhjFOONn74zoiTchVjnh0+gSEJt8h5MzY9LHHnO+LN/Q0uw3etKVNBUFSLFvPARSSWAPV5y6i8Jm+ujnvqCmCHAy0osyocmvMGC0l+6iWOar3HlHwhB7CHgXlXCsYdHWpBjN1QyqW3LqfEhddBdWHOg8O7gJaBEmZapDu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VavCS3un; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786498472; c=relaxed/simple;
+	bh=SeI9m/fxJGo+ncHiEvAY77kMvWhNF5jd1wCxH0Il0fg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bXKLPMBAqGQBVrjHg1aX3Mrt6X9IIIlNDRcL19SjBL8YZwb9eu0ccqlkftrtOkUJDcwOBBakenFQdsYn4DJeOz05zr7xzE5R6/flUkppZIoXbZjGiSbYmpjg5qmVaUIXmMM61qUfr+ra7XGwbj6R/6+S2dr2D4xElIGvUBtOXhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebKQc6hj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VavCS3un"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A491F00A3A;
-	Wed, 12 Aug 2026 01:31:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ebKQc6hj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBB31F00A3A;
+	Wed, 12 Aug 2026 01:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786498277;
-	bh=YfF+scVCwdFnE/RkUcVDb5S/LypZaPtc+WiAxbkhroI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VavCS3unZ2uO2e6bhcYE6WKxfmEh+IW6yHGfXRjVOrhZ3e3SYbLXkHoB2EQR8B/0y
-	 6oEwR8RZApHyNhjDBoOYI7H19+AAvVMZWHZNxd/YpvmJPnqQ4NiVl1DGV2ENue9myl
-	 BzMN4DxkWgsrOB0FDHqYVwHpULA9VyhIWurVJ97T4Ze/gxC1qxShc421Vhlm4Elvpv
-	 1Aci6J+PzJ0zPOhi8PfGMndyrm0v4nMdVJ1NrV2hXAy/9rjIolx/HXShUHpXg568/E
-	 CoXGfz0Xv3rXsjAw+krCMLNGkLik/+6pO0XXtQ5amtPzBD+2tbupwUMUmy/ZKLrIIm
-	 0froDAgC7cIOA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09E23809A3C;
-	Wed, 12 Aug 2026 01:30:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786498470;
+	bh=+P9AFmJLuCcrDWr80X+E8AP0t/nxQRMEiXVqhr9T2/Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ebKQc6hjvXbhBmahLlzlcEHg9vv34qd4YB3GFoTTr0N6n5re0e3xlukXoaTOvYgzx
+	 +rZ3lgRgWi9e40ypYh0WWz5mV2p84GKpsGBUznOrPP/T0eMnL8bB6zVCopnR6qyjs1
+	 GQTOM66M6oI9mxjlN6hS84zv5aisWp5KJQkqAsAw9qQydd8y57zM+S5vT8AGfKd+39
+	 c3AmOdGppQRzSZBxpiELisDZ1qt646RXwln0eSfC14XCK1NEP9giChWGFMnxX5hbR6
+	 LMfJwlJl19NdGUTFhvY2CjlxtXRjL3E9dgJHtWFglif0EXpz8wY5YrBCRaGnEAhLWE
+	 kDOz4ohiLxX7g==
+Date: Tue, 11 Aug 2026 20:34:30 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Andre Przywara <andre.przywara@arm.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>, linux-sunxi@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Liu Changjie <liucj1228@outlook.com>,
+	Eric Dumazet <edumazet@google.com>, Chen-Yu Tsai <wens@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Russell King <linux@armlinux.org.uk>,
+	Samuel Holland <samuel@sholland.org>,
+	Conor Dooley <conor+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>
+Subject: Re: [PATCH 3/6] dt-bindings: net: Maxio PHY: add PHY-ID for -Q2C
+ variant
+Message-ID: <178649846890.469780.9151201106387845136.robh@kernel.org>
+References: <20260803101452.2993721-1-andre.przywara@arm.com>
+ <20260803101452.2993721-4-andre.przywara@arm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next V5 0/2] devlink: add generic device max_sfs
- parameter
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178649823338.1227528.10215520546627944699.git-patchwork-notify@kernel.org>
-Date: Wed, 12 Aug 2026 01:30:33 +0000
-References: <20260806073037.3001886-1-tariqt@nvidia.com>
-In-Reply-To: <20260806073037.3001886-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- aleksandr.loktionov@intel.com, aleksander.lobakin@intel.com,
- akiyano@amazon.com, daniel.zahka@gmail.com, dsahern@kernel.org,
- gal@nvidia.com, jiri@nvidia.com, jiri@resnulli.us, corbet@lwn.net,
- leon@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, mbloch@nvidia.com, nikolay@nvidia.com,
- razor@blackwall.org, petrm@nvidia.com, przemyslaw.kitszel@intel.com,
- rkannoth@marvell.com, saeedm@nvidia.com, skhan@linuxfoundation.org,
- horms@kernel.org, vdumitrescu@nvidia.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803101452.2993721-4-andre.przywara@arm.com>
 
-Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 6 Aug 2026 10:30:35 +0300 you wrote:
-> Hi,
+On Mon, 03 Aug 2026 12:14:49 +0200, Andre Przywara wrote:
+> The Maxio MAE0621A PHY is out there in at least two variants: the
+> MAE0621A-Q3C chip, with the PHY-ID 0x7b744412, and the -Q2C variant,
+> identifying as 0x7b744411.
 > 
-> This series by Nikolay introduces a new generic devlink device
-> parameter, max_sfs, to control the number of light-weight NIC
-> subfunctions (SFs) that can be created on a device.
+> Allow both IDs to be used as the PHY compatible string, to potentially
+> avoid probing, which might fail due to unavailable resources (clock).
 > 
-> The first patch adds the generic devlink parameter and infrastructure
-> support.
-> The second patch implements support for the parameter in the mlx5
-> driver.
+> Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+> ---
+>  Documentation/devicetree/bindings/net/maxio,mae0621a.yaml | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> [...]
 
-Here is the summary with links:
-  - [net-next,V5,1/2] devlink: add generic device max_sfs parameter
-    https://git.kernel.org/netdev/net-next/c/26ba30221c03
-  - [net-next,V5,2/2] net/mlx5: implement max_sfs parameter
-    https://git.kernel.org/netdev/net-next/c/38c35fdd801e
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
