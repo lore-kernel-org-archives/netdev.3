@@ -1,112 +1,274 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E90357D1A
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 08:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F79D3B9DA1;
+	Wed, 12 Aug 2026 08:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786522754; cv=none; b=kBs4gZ02EpqOA3ZIqBtXfN/Tua/GQ7jqgUDtZ1KVLggT0qsI6L2md/KJ63ZdkmOJG53gGz39X2g31JtbW80LfjC8C9ccEUpJIKIVq579AvB7DPnMEyo3r+2JXEmt4DClfrRYxhKQ8rDQel/0WXuhVZn7fQXr3rBwv/J1jXvXBN8=
+	t=1786523359; cv=none; b=SUWRhg+icv22TS1lQ4DGsVJvziukoR/qTGf7EQ+b2mc3eIwO9U/bJMmiB6xY7WJ7b+n6uzRgK+QRl9y8oSQAgwGAZ6uUmHWL5fa0+2ZsFT9ZNz0flpGAd3ghFfiUb8OESdipzteBZduJOKuJS0FBH4TQjepPc3ZUpWo84uaiO5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786522754; c=relaxed/simple;
-	bh=bEOr01HocXDAqRG+q99yycPHud0SKzNFTdPYQ4BVHps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MigN6Lr7ZcqDTsHeK9Cd2ZijZ61UfKdUjHIBr1bbHUXee972HLys/EcX5e30F7y4OPrMWwy57BI7WxcWY6Gq2GxfnRRPiT811+OtoGnzWgwzN5+VyL6M5zZs4yqJwUyv1Ua9IyukIOv++83rQMuaCuFuJLYL0IHqhfcN5j/0AOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bnETKm5m; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786523359; c=relaxed/simple;
+	bh=mgzAf0nuQkhfg/k1OzYUFfLQEPPFuytuTMat2tNqldY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BRNRwAnUCSvjZ7ei9XArc0siBGONJBLXZLKldwXK81KlLUBJnZartgzZCwpU7NL/2BsvlIjhyS85THslzkUEaRhPbhbSft3XufAK2Uql/DMRHFmgS+lSvmQp+5Crd+l3DpMtE81ef1q+mmXWBPMRd1dCddNHce3pVbvDw0nbSBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l4G7JOIi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bnETKm5m"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c1712a04ddaso116656466b.2
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:19:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786522751; x=1787127551; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FuiaRqE2K+qZOLkd807fL363LSKM/Mttn0VBtRmG7WY=;
-        b=bnETKm5ms8WniZ7sJ7RXWvrUXkLGQx5J4FbrCBXQefSGuExYu5g4QMkEWQRDxhbOfh
-         mph1gT+fk5/CLHnxScPKwNbn4CGDUVFMX+Jf6Btnevlg5ie3gjVuf1qUYiv/bYXfSWWN
-         sVbygcCGZIEs2KMRl9KqKHe0Plgb4CA2mvu5Eekai7jeCqQC67UlgpI+F+XMt9AnUnzm
-         lJrcVzcdozvacyevTopiNXYI7K69yaEU56NkjRFtdeT2gfBiTUEkFj4kRaMGGI7omwvg
-         R6z6UI0XC29F5tVMJpc+/1uq9OYpztd6PTd6H8Jpr8qM1VDPP8gIdUqazADqaBqcZT8W
-         RMHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786522751; x=1787127551;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FuiaRqE2K+qZOLkd807fL363LSKM/Mttn0VBtRmG7WY=;
-        b=O5OGuUJnZuvT+tKMP/+NwufXduMXLeOg5RnLT8fa2C/DH0IhW8h6w3z4urXd2qOL/k
-         509ULTFhkUa3JNN3fGRIXf/t7PFXtOGbNwj9oRh8S0QHCGvHFtAudGtUUy9UDvVPz4j5
-         iznox/L+0MNOh5NhmYp/6hxizyQYpFtJWqk+njo7GXPeUGX+O+sSs8I4SqipGjP8qyFy
-         B7MJm8wPHxC6/YfKCw/Tx2RHOocEPZZ24KWDAt4vos1jdkOlcUHS6c/Gl6V5UUx9ZkW/
-         1napEUrMG1mmaWw4K0wF7h5gJro+vFJ2l1opDpGwFs4qqIq2ELjXRl9yv9L55CA4PK61
-         hzZg==
-X-Forwarded-Encrypted: i=1; AHgh+RqEa8VUL1iSXi88L1p5a4YPQtS0p1A4sMIP4AWz8faq7pZvKwRgRNP+ZX5X538pB7TTtc0rDuI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWrFTeEzfiIaUXeBqflAOOXJNM6E897bGq7SuxZKEQIi1W7PZv
-	z5wqvpko4NcLKdesipT/2m6JVaz9gYJQ9OSEP7Gd3ZGnT7idmbF+PpbB
-X-Gm-Gg: AR+sD12oHy6h9PPwaZfwoRVzAVhfnZfFTySSuJafRjB88sa+ieNGMLMFRHg19dAqt8G
-	ohCFVDQdtCFO3FpLlCaRnfoh4C6knF9+mHpQxK7/vIaU6S1bwja93Sq9kys+lSR1BHzrY+Tq53e
-	hA6etJrDHDC/3LWt0hWBEEpPc3tKOVfhA03M4aGYr1XZkyrGs9utTQoZcVwwz7wVQS0zYrd545i
-	cxP2OPL84EO0leVHoxfANYzBTqjf0tGoPqPgrhCDBjronvJGMrOL6BysmUXh8LpetGvqRSAw76o
-	QHXyYQaViIm3r9Sa00sHqKO9gK7W+3e0agDZ4gHxvc34uLKrycDJ2FfR+oV1QM8D1nBnzrBMQ+2
-	of11yfoXhK6LswbIoVkXU5Z/Nmdyydlk46++DHLZYmf5IKS7/PyTt2qk/eDibeBFnd4ECRTlydd
-	MJR5zAQIYT5wEjId0im//hFMiI893VhhcwConAabQjX5/5iMuaZqnyBxMsyEthkSrVJL26L5r0B
-	YGFj0exmYz0SB4HZw6V3T9VXPwFWFd9ilR9Qvlexigz+j0tpv/cxC7UdzMm1kuVXAsUQ7ffl68e
-	56H/cKE9FLV13m1WVTuqL2qBVjUUZIBKHAqZoyp6uH66db0fNFzWZIQmyePPojQZBe9yuCQMD1d
-	wDA==
-X-Received: by 2002:a17:907:3cc5:b0:c20:191e:89de with SMTP id a640c23a62f3a-c20f301112bmr170570066b.25.1786522750932;
-        Wed, 12 Aug 2026 01:19:10 -0700 (PDT)
-Received: from [192.168.100.51] (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c20f0acf633sm62154366b.42.2026.08.12.01.19.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Aug 2026 01:19:10 -0700 (PDT)
-Message-ID: <8a15a6d9-20b0-4fe2-b96e-9b9371eb1831@gmail.com>
-Date: Wed, 12 Aug 2026 10:19:09 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l4G7JOIi"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BAFCFC2BCB9;
+	Wed, 12 Aug 2026 08:29:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786523358;
+	bh=mgzAf0nuQkhfg/k1OzYUFfLQEPPFuytuTMat2tNqldY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=l4G7JOIi9TXTsJNNpY9lOff/8sfbqVcRPtHeOknEmR2AKyT8n1x4VGk48q/bJZFSU
+	 8lMbhrVrz6DXwHaGGCu32whKuhafjY5XMxYes5mSpzY3ScPjuh2WE7by75F15O6S1e
+	 MzI/GoxR/WatZfVmO22RJXpLcEeJDTDrlQ6b6WDI6OpcdMbdcIQr9tad8YYCCvrSdf
+	 M9A6FQpCEplFcx/+sHLyOWtH7R8dHjQ+AZ1VLmBtlWAmEjdz4rYT8rvoQGQXKtitIQ
+	 /hKa9kgpAmSqE4gGqYM8zyZOpAapNZWQFs28siqkLPY8OoqXWTP/V4UCUK8STZ+Axm
+	 h3Hpc7NNfYBUw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 979D5C5CFDB;
+	Wed, 12 Aug 2026 08:29:18 +0000 (UTC)
+From: Bochao Cao via B4 Relay <devnull+bochaolucky.gmail.com@kernel.org>
+Date: Wed, 12 Aug 2026 16:28:58 +0800
+Subject: [PATCH bpf-next v2] selftests/bpf: Track test_xdp_features DUT
+ processes
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] RDMA/core: Reject unregistering netdevs in
- ib_get_eth_speed
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>,
- linux-rdma@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzkaller-bugs@googlegroups.com,
- syzbot+5fe14f2ff4ccbace9a26@syzkaller.appspotmail.com
-References: <20260810133124.44513-1-krystianmkaniewski@gmail.com>
- <20260810113308.5db6937e@kernel.org> <20260810183902.GD507588@ziepe.ca>
- <de87c6a6-44c9-4b78-991b-ff858e21e806@gmail.com>
- <20260811163025.GM544626@ziepe.ca>
-Content-Language: en-US
-From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
-In-Reply-To: <20260811163025.GM544626@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260812-xdp-dut-process-lifecycle-gmail-v2-1-b03ef2aa1b97@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAMoufGoC/42OQQ6DIBBFr9LMutMAUaNd9R6NC4VBaVQIoNEY7
+ 16lF+jyzfw/b3YI5A0FeN528LSYYOx0grjfQPbN1BEadTIIJgpWshxX5VDNEZ23kkLAwWiSmxw
+ Iu7ExAxaqYK0ulVSaw3nFedJmTYY3tE7jRGuE+rcJc/shGS/Ble1NiNZv6ZmFp8bf3oUjxyyvy
+ kyddlHlrzR/SDtCfRzHF7hPg/HqAAAA
+X-Change-ID: 20260805-xdp-dut-process-lifecycle-gmail-6d60bf8dcdf1
+To: Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>
+Cc: Ihor Solodrai <ihor.solodrai@linux.dev>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
+ bpf@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Bochao Cao <bochaolucky@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786523357; l=6026;
+ i=bochaolucky@gmail.com; s=20260805; h=from:subject:message-id;
+ bh=pnFTax/Yu2UV2jh6eNQ9vvm+LoTOT+3qy7HlP2VL2dQ=;
+ b=yooaFasxTq0Yi1a20cpTr61x200gih6rk2OrmxxSihec40KiqUM5goKCyXzw3uL2oFQoK6jn3
+ 79q0Rn6BaRBDhz93vamJePCUkg7Cy3bvl1YlGPSiiHGW1NdSVEZ1s25
+X-Developer-Key: i=bochaolucky@gmail.com; a=ed25519;
+ pk=ZYp7O2eXSIrJ9YmKrl0iHDoulPYSG+1lzICsicAvld0=
+X-Endpoint-Received: by B4 Relay for bochaolucky@gmail.com/20260805 with
+ auth_id=920
+X-Original-From: Bochao Cao <bochaolucky@gmail.com>
+Reply-To: bochaolucky@gmail.com
 
-Thanks. I have sent v4 patch rebased on top of for-next branch just a 
-moment ago.
+From: Bochao Cao <bochaolucky@gmail.com>
 
-On 8/11/2026 6:30 PM, Jason Gunthorpe wrote:
-> On Tue, Aug 11, 2026 at 11:21:19AM +0200, Krystian Kaniewski wrote:
->> Thanks for your comments. It's my first contribution really, so I'm still
->> learning on how to do it properly.
->>
->> I'll do the requested changes by both of you.
->>
->> Should I rebase the v4 patch on top of any specific branches for rdma?
->>
->> I found "for-rc" branch while looking at
->> https://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma.git, would it be a
->> good target?
-> At this point the for-next branch is a better choice
->
-> Jason
+test_xdp_features.sh waits for any xdp_features listener to appear and
+uses pidof during cleanup. A concurrent test can therefore make another
+test proceed before its own DUT is ready, and cleanup kills every
+xdp_features process on the host. The readiness loop also has no timeout,
+so a DUT that exits before listening leaves the test hung indefinitely.
+
+Track one active DUT at a time, wait for ss to report that exact PID with
+a bounded retry loop, and reap it after each test. Consult the shell job
+table before signaling the DUT so a stale PID cannot target an unrelated
+process. On failure, terminate the shell job with SIGKILL and reap it so
+blocked I/O cannot hang cleanup. Install an EXIT trap and signal handlers
+so failure paths also remove network setup.
+
+Fixes: 4dba3e7852b7 ("selftests/bpf: introduce XDP compliance test tool")
+Closes: https://bugs.debian.org/1136522
+Signed-off-by: Bochao Cao <bochaolucky@gmail.com>
+---
+Tests:
+- bash -n tools/testing/selftests/bpf/test_xdp_features.sh
+- make -C tools/testing/selftests/bpf xdp_features
+- sudo tools/testing/selftests/bpf/test_xdp_features.sh
+- verified cleanup terminates a blocked DUT without affecting an unrelated process
+---
+Changes in v2:
+- Clarify that avoiding name-wide process matching, rather than dropping a dependency, is the motivation.
+- Track and reap one active DUT at a time instead of retaining historical PIDs.
+- Address PID reuse by signaling only the current Bash job during cleanup.
+- Use SIGKILL on failure cleanup so blocked DUT I/O cannot hang wait indefinitely.
+- Link to v1: https://patch.msgid.link/20260805-xdp-dut-process-lifecycle-gmail-v1-1-45984df8d295@gmail.com
+---
+ tools/testing/selftests/bpf/test_xdp_features.sh | 82 ++++++++++++++++++------
+ 1 file changed, 62 insertions(+), 20 deletions(-)
+
+diff --git a/tools/testing/selftests/bpf/test_xdp_features.sh b/tools/testing/selftests/bpf/test_xdp_features.sh
+index 0aa71c4455c0..35ce0d4e2418 100755
+--- a/tools/testing/selftests/bpf/test_xdp_features.sh
++++ b/tools/testing/selftests/bpf/test_xdp_features.sh
+@@ -8,6 +8,7 @@ readonly V0_IP6=2001:db8::11
+ readonly V1_IP6=2001:db8::1
+ 
+ ret=1
++dut_pid=""
+ 
+ setup() {
+ 	{
+@@ -30,77 +31,118 @@ setup() {
+ 	} > /dev/null 2>&1
+ }
+ 
++terminate_dut_server() {
++	[ -z "$dut_pid" ] && return
++
++	# Use the shell job instead of a PID which may have been reused.
++	if [ "$(jobs -pr %% 2> /dev/null)" = "$dut_pid" ]; then
++		kill -KILL %% 2> /dev/null || true
++	fi
++
++	wait "$dut_pid" 2> /dev/null || true
++	dut_pid=""
++}
++
+ cleanup() {
+-	ip link del v1 2> /dev/null
+-	ip netns del ${NS} 2> /dev/null
+-	[ "$(pidof xdp_features)" = "" ] || kill $(pidof xdp_features) 2> /dev/null
++	terminate_dut_server
++	ip link del v1 2> /dev/null || true
++	ip netns del "${NS}" 2> /dev/null || true
+ }
+ 
+ wait_for_dut_server() {
+-	while sleep 1; do
+-		ss -tlp | grep -q xdp_features
+-		[ $? -eq 0 ] && break
++	local i
++
++	for ((i = 0; i < 10; i++)); do
++		if [ "$(jobs -pr %% 2> /dev/null)" != "$dut_pid" ]; then
++			echo "xdp_features server $dut_pid exited before accepting connections" >&2
++			return 1
++		fi
++
++		if ss -tlp 2> /dev/null | grep -q "pid=$dut_pid,"; then
++			return 0
++		fi
++
++		sleep 1
+ 	done
++
++	echo "Timed out waiting for xdp_features server $dut_pid" >&2
++	return 1
++}
++
++start_dut_server() {
++	./xdp_features "$@" &
++	dut_pid=$!
++	wait_for_dut_server
++}
++
++reap_dut_server() {
++	local status=0
++
++	wait "$dut_pid" || status=$?
++	dut_pid=""
++	return "$status"
+ }
+ 
+ test_xdp_features() {
+ 	setup
+ 
+ 	## XDP_PASS
+-	./xdp_features -f XDP_PASS -D $V1_IP6 -T $V0_IP6 v1 &
+-	wait_for_dut_server
++	start_dut_server -f XDP_PASS -D $V1_IP6 -T $V0_IP6 v1
+ 	ip netns exec ${NS} ./xdp_features -t -f XDP_PASS \
+ 					   -D $V1_IP6 -C $V1_IP6 \
+ 					   -T $V0_IP6 v0
+ 	[ $? -ne 0 ] && exit
++	reap_dut_server
+ 
+ 	## XDP_DROP
+-	./xdp_features -f XDP_DROP -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1 &
+-	wait_for_dut_server
++	start_dut_server -f XDP_DROP -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1
+ 	ip netns exec ${NS} ./xdp_features -t -f XDP_DROP \
+ 					   -D ::ffff:$V1_IP4 \
+ 					   -C ::ffff:$V1_IP4 \
+ 					   -T ::ffff:$V0_IP4 v0
+ 	[ $? -ne 0 ] && exit
++	reap_dut_server
+ 
+ 	## XDP_ABORTED
+-	./xdp_features -f XDP_ABORTED -D $V1_IP6 -T $V0_IP6 v1 &
+-	wait_for_dut_server
++	start_dut_server -f XDP_ABORTED -D $V1_IP6 -T $V0_IP6 v1
+ 	ip netns exec ${NS} ./xdp_features -t -f XDP_ABORTED \
+ 					   -D $V1_IP6 -C $V1_IP6 \
+ 					   -T $V0_IP6 v0
+ 	[ $? -ne 0 ] && exit
++	reap_dut_server
+ 
+ 	## XDP_TX
+-	./xdp_features -f XDP_TX -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1 &
+-	wait_for_dut_server
++	start_dut_server -f XDP_TX -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1
+ 	ip netns exec ${NS} ./xdp_features -t -f XDP_TX \
+ 					   -D ::ffff:$V1_IP4 \
+ 					   -C ::ffff:$V1_IP4 \
+ 					   -T ::ffff:$V0_IP4 v0
+ 	[ $? -ne 0 ] && exit
++	reap_dut_server
+ 
+ 	## XDP_REDIRECT
+-	./xdp_features -f XDP_REDIRECT -D $V1_IP6 -T $V0_IP6 v1 &
+-	wait_for_dut_server
++	start_dut_server -f XDP_REDIRECT -D $V1_IP6 -T $V0_IP6 v1
+ 	ip netns exec ${NS} ./xdp_features -t -f XDP_REDIRECT \
+ 					   -D $V1_IP6 -C $V1_IP6 \
+ 					   -T $V0_IP6 v0
+ 	[ $? -ne 0 ] && exit
++	reap_dut_server
+ 
+ 	## XDP_NDO_XMIT
+-	./xdp_features -f XDP_NDO_XMIT -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1 &
+-	wait_for_dut_server
++	start_dut_server -f XDP_NDO_XMIT -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1
+ 	ip netns exec ${NS} ./xdp_features -t -f XDP_NDO_XMIT \
+ 					   -D ::ffff:$V1_IP4 \
+ 					   -C ::ffff:$V1_IP4 \
+ 					   -T ::ffff:$V0_IP4 v0
+ 	ret=$?
+-	cleanup
++	reap_dut_server
+ }
+ 
+ set -e
+-trap cleanup 2 3 6 9
++trap cleanup EXIT
++trap 'exit 129' HUP
++trap 'exit 130' INT
++trap 'exit 143' TERM
+ 
+ test_xdp_features
+ 
+
+---
+base-commit: 07cb86aa50816b070b99c89bf948762ef035a1f2
+change-id: 20260805-xdp-dut-process-lifecycle-gmail-6d60bf8dcdf1
+
+Best regards,
+--  
+Bochao Cao <bochaolucky@gmail.com>
+
+
