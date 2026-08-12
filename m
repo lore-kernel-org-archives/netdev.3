@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA144908C9;
-	Wed, 12 Aug 2026 21:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D7F48F843;
+	Wed, 12 Aug 2026 21:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786570043; cv=none; b=h+ur8oHTzgC3ZrWRMLRr5tfb5mlpKrIMRdwmt8Io9NoloAYxcleQ5RRMgtcoAwDFF/SkeDWr2GOIaqFNd+1q2e0ct8R82RjOnjfHFdzWKTCCMdf6hEVIFJI4oOE+N24c/Jm7WYwVLFABld9qE9LWJ+dJZBGh/s3j6Rb5VW305to=
+	t=1786570045; cv=none; b=e7Fu7llnglcrFiWVMVbb/aSo5/ofqSUYHPTg0c3aMXiV28MVZtno1fj9QzLbB+lUvMQObSZiZ3+Qc8o3XPPSvxx338sftcYp8idt9S/WkpwOllqx4BFvfEGRusngBN9pFiuEz8lblnRjwfURI1/UK7hozZkS9B3AhhXaXtFmp3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786570043; c=relaxed/simple;
-	bh=iivZzk/8+Lj3vGoWpFU1UgFI9t/lgraXeWsRjlvHsto=;
+	s=arc-20240116; t=1786570045; c=relaxed/simple;
+	bh=xPWU6A15255rg3AWJCN1NE53VQ3gUaGDvBsTInTMid0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jd10uKKRzgAY1t0x7el3L212AOBvIYAOCA/5y5eEE+bua2UH35qZraHlsTUASfdpfayfpxSyqVZ42k8pPU0wjfzLiPl7Xec2jgiIZ7QsjRtaTLZfHxZobts+P8z89RZ5ufRVAIekz3YvR7FZ9i5k9DEzdD6GtRxZry3bdRwddTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dMSTTUhm; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=akCE505DyFG0n3oa2QMIp64KuSEJTehnVDb+WYIyKsl5y9aMCNr9SRlO3K+dQUJVVFixc9WXPj8KFGqZ2gtr/sVlH15nRqLA5BxFGtZKPcRXnzGgysy4/XQLF5/qkcljJCvUNQz9MHcfZgH170wYyN/lK/qfcKyjtTgnX4/GR9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WnoQ2dBz; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dMSTTUhm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WnoQ2dBz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786570033; x=1818106033;
+  t=1786570012; x=1818106012;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=iivZzk/8+Lj3vGoWpFU1UgFI9t/lgraXeWsRjlvHsto=;
-  b=dMSTTUhm/E/zhXlUaYEluszywgHcme5H/gb24CMFRyuHjSJ4IW2PK/Ra
-   tFDMqeAfaP6JA8DkdWU3GCBdbmwCVsFoZysV7S7x1fHmWrjG95KOF/ury
-   PZWA/ZJvSbI9TNM51nY4ckANoXMDP2FMgIAYDzjXNDCIJbSWZO1jOx1hK
-   UfnqC5tOqX1Q8ub0kU4gohdJ2KgaKweJrelfa82dDDcLAC0sL11f2rL3u
-   oZvhZy6DR1KLWThUOIPV0hhUSp3+rtCfRNwUjO0R3wNPdObcGpK/V5DRH
-   sPa9fA3CZkSj9X6znw8OrSyv5/7udDCP3lmhiallZKnic6/BHMHZiC0cT
-   Q==;
-X-CSE-ConnectionGUID: pVZERiclRw+0lMRgY2S8kQ==
-X-CSE-MsgGUID: jFKhUiMgQtmgdWGGBjl8oQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="97485649"
+  bh=xPWU6A15255rg3AWJCN1NE53VQ3gUaGDvBsTInTMid0=;
+  b=WnoQ2dBzDE7lH9VQZZYe29Hoau+U7Y7XoOtf8c03QEqCx+qvZ9DUv9cz
+   SHuGOmMjWJVE/pG6ntJDAzHITvIVCwvtXIGofeBss1n4Go0i4u0EAcPmp
+   8p7Y2Yl66y6HRgCzibI0Xz/C27aQnTwACgo2DZP0+f4LehGjigR/BZjcA
+   hFzAyOFqpjH7OReGd4bvztHnIWlxbBIFF8mykGOkyNE4GjoPZqtAdD4aH
+   BDqCaObiQgxTX2OAHr3BaffhfBoGGuBGpB94h14aZ3WrCd0LTGk+RhZwJ
+   hLSJgWUAfMWBHOVln9aE9lFWh/EysJ4oVFQNwR/Fjxfn11gTi3mEjlbzQ
+   A==;
+X-CSE-ConnectionGUID: anTBCmRPTuKCnWqteQzK0Q==
+X-CSE-MsgGUID: c7t9hL8dS7yXEjvqzv6dfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="97485619"
 X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
-   d="scan'208";a="97485649"
+   d="scan'208";a="97485619"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 14:25:46 -0700
-X-CSE-ConnectionGUID: x83Vh3gcTXWVwzQUDyu65g==
-X-CSE-MsgGUID: +7u9m6SHTTekHuozQcNePQ==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 14:25:44 -0700
+X-CSE-ConnectionGUID: u2S1OffsSEeBJfgsfj2LVQ==
+X-CSE-MsgGUID: LM835Jy3TbCpv+djcBQMNg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; 
-   d="scan'208";a="257546272"
+   d="scan'208";a="257546263"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa009.fm.intel.com with ESMTP; 12 Aug 2026 14:25:45 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 12 Aug 2026 14:25:43 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,8 +50,8 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Amritha Nambiar <anthony.l.nguyen@intel.com>,
-	larysa.zaremba@intel.com,
+Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
+	anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
 	aleksander.lobakin@intel.com,
 	sridhar.samudrala@intel.com,
@@ -69,9 +69,9 @@ Cc: Amritha Nambiar <anthony.l.nguyen@intel.com>,
 	skhan@linuxfoundation.org,
 	linux-doc@vger.kernel.org,
 	Bharath R <Bharath.r@intel.com>
-Subject: [PATCH net-next v8 15/15] ixd: add devlink support
-Date: Wed, 12 Aug 2026 14:25:29 -0700
-Message-ID: <20260812212532.905873-16-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next v8 12/15] ixd: add basic driver framework for Intel(R) Control Plane Function
+Date: Wed, 12 Aug 2026 14:25:26 -0700
+Message-ID: <20260812212532.905873-13-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260812212532.905873-1-anthony.l.nguyen@intel.com>
 References: <20260812212532.905873-1-anthony.l.nguyen@intel.com>
@@ -83,385 +83,336 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Amritha Nambiar <amritha.nambiar@intel.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-Enable initial support for the devlink interface with the ixd driver. The
-ixd hardware is a single function PCIe device. So, the PCIe adapter gets
-its own devlink instance to manage device-wide resources or configuration.
+Add module register and probe functionality. Add the required support to
+register IXD PCI driver, as well as probe, remove and shutdown callbacks.
+Enable the PCI device and request to reserve the memory resources that will
+be used by the driver. Finally map the BAR0 address space.
 
-$ devlink dev show
-pci/0000:83:00.6
+For now, use devm_kzalloc() to allocate adapter, as it requires the least
+amount of code. In a later commit, it will be replaced with a devlink
+alternative.
 
-$ devlink dev info pci/0000:83:00.6
-pci/0000:83:00.6:
-  driver ixd
-  serial_number 00-a0-c9-ff-ff-23-45-67
-  versions:
-      fixed:
-        device.type MEV
-      running:
-        fw.mgmt.api 2.0
-
+Co-developed-by: Amritha Nambiar <amritha.nambiar@intel.com>
 Signed-off-by: Amritha Nambiar <amritha.nambiar@intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Tested-by: Bharath R <Bharath.r@intel.com>
 Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- Documentation/networking/devlink/index.rst   |  1 +
- Documentation/networking/devlink/ixd.rst     | 30 ++++++
- drivers/net/ethernet/intel/ixd/Kconfig       |  1 +
- drivers/net/ethernet/intel/ixd/Makefile      |  1 +
- drivers/net/ethernet/intel/ixd/ixd.h         |  2 +
- drivers/net/ethernet/intel/ixd/ixd_devlink.c | 99 ++++++++++++++++++++
- drivers/net/ethernet/intel/ixd/ixd_devlink.h | 50 ++++++++++
- drivers/net/ethernet/intel/ixd/ixd_lib.c     |  3 +
- drivers/net/ethernet/intel/ixd/ixd_main.c    | 14 ++-
- 9 files changed, 198 insertions(+), 3 deletions(-)
- create mode 100644 Documentation/networking/devlink/ixd.rst
- create mode 100644 drivers/net/ethernet/intel/ixd/ixd_devlink.c
- create mode 100644 drivers/net/ethernet/intel/ixd/ixd_devlink.h
+ .../device_drivers/ethernet/index.rst         |   1 +
+ .../device_drivers/ethernet/intel/ixd.rst     |  39 ++++++
+ drivers/net/ethernet/intel/Kconfig            |   2 +
+ drivers/net/ethernet/intel/Makefile           |   1 +
+ drivers/net/ethernet/intel/ixd/Kconfig        |  12 ++
+ drivers/net/ethernet/intel/ixd/Makefile       |   8 ++
+ drivers/net/ethernet/intel/ixd/ixd.h          |  28 +++++
+ drivers/net/ethernet/intel/ixd/ixd_lan_regs.h |  28 +++++
+ drivers/net/ethernet/intel/ixd/ixd_main.c     | 112 ++++++++++++++++++
+ 9 files changed, 231 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/intel/ixd.rst
+ create mode 100644 drivers/net/ethernet/intel/ixd/Kconfig
+ create mode 100644 drivers/net/ethernet/intel/ixd/Makefile
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd.h
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_main.c
 
-diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
-index 4745148fecf4..d4a83fdcff7f 100644
---- a/Documentation/networking/devlink/index.rst
-+++ b/Documentation/networking/devlink/index.rst
-@@ -87,6 +87,7 @@ parameters, info versions, and other features it supports.
-    ice
-    ionic
-    iosm
-+   ixd
-    ixgbe
-    kvaser_pciefd
-    kvaser_usb
-diff --git a/Documentation/networking/devlink/ixd.rst b/Documentation/networking/devlink/ixd.rst
+diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
+index 786a23c84b90..d9980c84487a 100644
+--- a/Documentation/networking/device_drivers/ethernet/index.rst
++++ b/Documentation/networking/device_drivers/ethernet/index.rst
+@@ -35,6 +35,7 @@ Contents:
+    intel/idpf
+    intel/igb
+    intel/igbvf
++   intel/ixd
+    intel/ixgbe
+    intel/ixgbevf
+    intel/i40e
+diff --git a/Documentation/networking/device_drivers/ethernet/intel/ixd.rst b/Documentation/networking/device_drivers/ethernet/intel/ixd.rst
 new file mode 100644
-index 000000000000..cba4f6f65013
+index 000000000000..1387626e5d20
 --- /dev/null
-+++ b/Documentation/networking/devlink/ixd.rst
-@@ -0,0 +1,30 @@
-+.. SPDX-License-Identifier: GPL-2.0
++++ b/Documentation/networking/device_drivers/ethernet/intel/ixd.rst
+@@ -0,0 +1,39 @@
++.. SPDX-License-Identifier: GPL-2.0+
 +
-+===================
-+ixd devlink support
-+===================
++==========================================================================
++iXD Linux* Base Driver for the Intel(R) Control Plane Function
++==========================================================================
 +
-+This document describes the devlink features implemented by the ``ixd``
-+device driver.
++Intel iXD Linux driver.
++Copyright(C) 2025 Intel Corporation.
 +
-+Info versions
-+=============
++.. contents::
 +
-+The ``ixd`` driver reports the following versions
++For questions related to hardware requirements, refer to the documentation
++supplied with your Intel adapter. All hardware requirements listed apply to use
++with Linux.
 +
-+.. list-table:: devlink info versions implemented
-+    :widths: 5 5 5 90
 +
-+    * - Name
-+      - Type
-+      - Example
-+      - Description
-+    * - ``device.type``
-+      - fixed
-+      - MEV
-+      - The hardware type for this device
-+    * - ``fw.mgmt.api``
-+      - running
-+      - 2.0
-+      - 2-digit version number (major.minor) of the communication channel
-+        (virtchnl) used by the device.
++Identifying Your Adapter
++========================
++For information on how to identify your adapter, and for the latest Intel
++network drivers, refer to the Intel Support website:
++http://www.intel.com/support
++
++
++Support
++=======
++For general information, go to the Intel support website at:
++http://www.intel.com/support/
++
++If an issue is identified with the released source code on a supported kernel
++with a supported adapter, email the specific information related to the issue
++to intel-wired-lan@lists.osuosl.org.
++
++
++Trademarks
++==========
++Intel is a trademark or registered trademark of Intel Corporation or its
++subsidiaries in the United States and/or other countries.
++
++* Other names and brands may be claimed as the property of others.
+diff --git a/drivers/net/ethernet/intel/Kconfig b/drivers/net/ethernet/intel/Kconfig
+index 288fa8ce53af..780f113986ea 100644
+--- a/drivers/net/ethernet/intel/Kconfig
++++ b/drivers/net/ethernet/intel/Kconfig
+@@ -398,4 +398,6 @@ config IGC_LEDS
+ 
+ source "drivers/net/ethernet/intel/idpf/Kconfig"
+ 
++source "drivers/net/ethernet/intel/ixd/Kconfig"
++
+ endif # NET_VENDOR_INTEL
+diff --git a/drivers/net/ethernet/intel/Makefile b/drivers/net/ethernet/intel/Makefile
+index 9a37dc76aef0..08b29f3b6801 100644
+--- a/drivers/net/ethernet/intel/Makefile
++++ b/drivers/net/ethernet/intel/Makefile
+@@ -19,3 +19,4 @@ obj-$(CONFIG_IAVF) += iavf/
+ obj-$(CONFIG_FM10K) += fm10k/
+ obj-$(CONFIG_ICE) += ice/
+ obj-$(CONFIG_IDPF) += idpf/
++obj-$(CONFIG_IXD) += ixd/
 diff --git a/drivers/net/ethernet/intel/ixd/Kconfig b/drivers/net/ethernet/intel/ixd/Kconfig
-index 2895f9723bdf..0a48b3bb7bc2 100644
---- a/drivers/net/ethernet/intel/ixd/Kconfig
-+++ b/drivers/net/ethernet/intel/ixd/Kconfig
-@@ -6,6 +6,7 @@ config IXD
- 	depends on PCI_MSI
- 	select LIBIE_CP
- 	select LIBIE_PCI
-+	select NET_DEVLINK
- 	help
- 	  This driver supports Intel(R) Control Plane PCI Function
- 	  of Intel E2100 and later IPUs and FNICs.
-diff --git a/drivers/net/ethernet/intel/ixd/Makefile b/drivers/net/ethernet/intel/ixd/Makefile
-index 90abf231fb16..03760a2580b9 100644
---- a/drivers/net/ethernet/intel/ixd/Makefile
-+++ b/drivers/net/ethernet/intel/ixd/Makefile
-@@ -8,5 +8,6 @@ obj-$(CONFIG_IXD) += ixd.o
- ixd-y := ixd_main.o
- ixd-y += ixd_ctlq.o
- ixd-y += ixd_dev.o
-+ixd-y += ixd_devlink.o
- ixd-y += ixd_lib.o
- ixd-y += ixd_virtchnl.o
-diff --git a/drivers/net/ethernet/intel/ixd/ixd.h b/drivers/net/ethernet/intel/ixd/ixd.h
-index 4c970031451a..2a09ccba13d5 100644
---- a/drivers/net/ethernet/intel/ixd/ixd.h
-+++ b/drivers/net/ethernet/intel/ixd/ixd.h
-@@ -15,6 +15,7 @@
-  * @init_task.init_work: Delayed initialization work
-  * @init_task.reset_retries: How many times to check, whether reset is completed
-  * @init_task.vc_retries: Number of retries to establish mailbox communication
-+ * @init_task.success: init_work completion status
-  * @mbx_task: Control queue Rx handling
-  * @xnm: virtchnl transaction manager
-  * @asq: Send control queue info
-@@ -30,6 +31,7 @@ struct ixd_adapter {
- 		struct delayed_work init_work;
- 		u8 reset_retries;
- 		u8 vc_retries;
-+		bool success;
- 	} init_task;
- 	struct delayed_work mbx_task;
- 	struct libie_ctlq_xn_manager *xnm;
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_devlink.c b/drivers/net/ethernet/intel/ixd/ixd_devlink.c
 new file mode 100644
-index 000000000000..828132db8323
+index 000000000000..5279cee2a050
 --- /dev/null
-+++ b/drivers/net/ethernet/intel/ixd/ixd_devlink.c
-@@ -0,0 +1,99 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2025, Intel Corporation. */
++++ b/drivers/net/ethernet/intel/ixd/Kconfig
+@@ -0,0 +1,12 @@
++# SPDX-License-Identifier: GPL-2.0-only
++# Copyright (C) 2025 Intel Corporation
 +
-+#include "ixd.h"
-+#include "ixd_devlink.h"
++config IXD
++	tristate "Intel(R) Control Plane Function Support"
++	depends on PCI_MSI
++	select LIBIE_PCI
++	help
++	  This driver supports Intel(R) Control Plane PCI Function
++	  of Intel E2100 and later IPUs and FNICs.
++	  It facilitates a centralized control over multiple IDPF PFs/VFs/SFs
++	  exposed by the same card.
+diff --git a/drivers/net/ethernet/intel/ixd/Makefile b/drivers/net/ethernet/intel/ixd/Makefile
+new file mode 100644
+index 000000000000..3849bc240600
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/Makefile
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: GPL-2.0-only
++# Copyright (C) 2025 Intel Corporation
 +
-+#define IXD_DEVLINK_INFO_LEN	128
++# Intel(R) Control Plane Function Linux Driver
++
++obj-$(CONFIG_IXD) += ixd.o
++
++ixd-y := ixd_main.o
+diff --git a/drivers/net/ethernet/intel/ixd/ixd.h b/drivers/net/ethernet/intel/ixd/ixd.h
+new file mode 100644
+index 000000000000..1b918c5d31cd
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/ixd.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright (C) 2025 Intel Corporation */
++
++#ifndef _IXD_H_
++#define _IXD_H_
++
++#include <linux/net/intel/libie/pci.h>
 +
 +/**
-+ * ixd_fill_dsn - Get the serial number for the ixd device
-+ * @adapter: adapter to query
-+ * @buf: storage buffer for the info request
++ * struct ixd_adapter - Data structure representing a CPF
++ * @hw: Device access data
 + */
-+static void ixd_fill_dsn(struct ixd_adapter *adapter, char *buf)
-+{
-+	u8 dsn[8];
-+
-+	/* Copy the DSN into an array in Big Endian format */
-+	put_unaligned_be64(pci_get_dsn(adapter->cp_ctx.mmio_info.pdev), dsn);
-+
-+	snprintf(buf, IXD_DEVLINK_INFO_LEN, "%8phD", dsn);
-+}
-+
-+/**
-+ * ixd_fill_device_name - Get the name of the underlying hardware
-+ * @adapter: adapter to query
-+ * @buf: storage buffer for the info request
-+ * @buf_size: size of the storage buffer
-+ */
-+static void ixd_fill_device_name(struct ixd_adapter *adapter, char *buf,
-+				 size_t buf_size)
-+{
-+	if (adapter->caps.device_type == cpu_to_le32(VIRTCHNL2_MEV_DEVICE))
-+		snprintf(buf, buf_size, "%s", "MEV");
-+	else
-+		snprintf(buf, buf_size, "%s", "UNKNOWN");
-+}
-+
-+/**
-+ * ixd_devlink_info_get - .info_get devlink handler
-+ * @devlink: devlink instance structure
-+ * @req: the devlink info request
-+ * @extack: extended netdev ack structure
-+ *
-+ * Callback for the devlink .info_get operation. Reports information about the
-+ * device.
-+ *
-+ * Return: zero on success or an error code on failure.
-+ */
-+static int ixd_devlink_info_get(struct devlink *devlink,
-+				struct devlink_info_req *req,
-+				struct netlink_ext_ack *extack)
-+{
-+	struct ixd_adapter *adapter = devlink_priv(devlink);
-+	char buf[IXD_DEVLINK_INFO_LEN];
-+	int err;
-+
-+	ixd_fill_dsn(adapter, buf);
-+	err = devlink_info_serial_number_put(req, buf);
-+	if (err)
-+		return err;
-+
-+	ixd_fill_device_name(adapter, buf, IXD_DEVLINK_INFO_LEN);
-+	err = devlink_info_version_fixed_put(req, "device.type", buf);
-+	if (err)
-+		return err;
-+
-+	snprintf(buf, sizeof(buf), "%u.%u",
-+		 adapter->vc_ver.major, adapter->vc_ver.minor);
-+
-+	return devlink_info_version_running_put(req,
-+						DEVLINK_INFO_VERSION_GENERIC_FW_MGMT_API,
-+						buf);
-+}
-+
-+static const struct devlink_ops ixd_devlink_ops = {
-+	.info_get = ixd_devlink_info_get,
++struct ixd_adapter {
++	struct libie_mmio_info hw;
 +};
 +
 +/**
-+ * ixd_adapter_alloc - Allocate devlink and return adapter pointer
-+ * @dev: the device to allocate for
++ * ixd_to_dev - Get the corresponding device struct from an adapter
++ * @adapter: PCI device driver-specific private data
 + *
-+ * Allocate a devlink instance for this device and return the private area as
-+ * the adapter structure.
-+ *
-+ * Return: adapter structure on success, NULL on failure
++ * Return: struct device corresponding to the given adapter
 + */
-+struct ixd_adapter *ixd_adapter_alloc(struct device *dev)
++static inline struct device *ixd_to_dev(struct ixd_adapter *adapter)
 +{
-+	struct devlink *devlink;
-+
-+	devlink = devlink_alloc(&ixd_devlink_ops, sizeof(struct ixd_adapter),
-+				dev);
-+	if (!devlink)
-+		return NULL;
-+
-+	return devlink_priv(devlink);
++	return &adapter->hw.pdev->dev;
 +}
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_devlink.h b/drivers/net/ethernet/intel/ixd/ixd_devlink.h
++
++#endif /* _IXD_H_ */
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h b/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
 new file mode 100644
-index 000000000000..b23a1b37aebc
+index 000000000000..fbb88929d0de
 --- /dev/null
-+++ b/drivers/net/ethernet/intel/ixd/ixd_devlink.h
-@@ -0,0 +1,50 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (c) 2025, Intel Corporation. */
++++ b/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright (C) 2025 Intel Corporation */
 +
-+#ifndef _IXD_DEVLINK_H_
-+#define _IXD_DEVLINK_H_
++#ifndef _IXD_LAN_REGS_H_
++#define _IXD_LAN_REGS_H_
 +
-+#include <net/devlink.h>
++/* Control Plane Function PCI ID */
++#define IXD_DEV_ID_CPF			0x1efe
++
++/* Control Queue (Mailbox) */
++#define PF_FW_MBX_REG_LEN		4096
++#define PF_FW_MBX			0x08400000
++
++/* Reset registers */
++#define PFGEN_RTRIG_REG_LEN		2048
++#define PFGEN_RTRIG			0x08407000	/* Device resets */
++
++/**
++ * struct ixd_bar_region - BAR region description
++ * @offset: BAR region offset
++ * @size: BAR region size
++ */
++struct ixd_bar_region {
++	resource_size_t offset;
++	resource_size_t size;
++};
++
++#endif /* _IXD_LAN_REGS_H_ */
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_main.c b/drivers/net/ethernet/intel/ixd/ixd_main.c
+new file mode 100644
+index 000000000000..75ee53152e61
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/ixd_main.c
+@@ -0,0 +1,112 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (C) 2025 Intel Corporation */
 +
 +#include "ixd.h"
++#include "ixd_lan_regs.h"
 +
-+struct ixd_adapter *ixd_adapter_alloc(struct device *dev);
++MODULE_DESCRIPTION("Intel(R) Control Plane Function Device Driver");
++MODULE_IMPORT_NS("LIBIE_PCI");
++MODULE_LICENSE("GPL");
 +
 +/**
-+ * ixd_devlink_free - teardown the devlink
-+ * @adapter: the adapter structure to free
-+ *
++ * ixd_remove - remove a CPF PCI device
++ * @pdev: PCI device being removed
 + */
-+static inline void ixd_devlink_free(struct ixd_adapter *adapter)
++static void ixd_remove(struct pci_dev *pdev)
 +{
-+	struct devlink *devlink = priv_to_devlink(adapter);
++	struct ixd_adapter *adapter = pci_get_drvdata(pdev);
 +
-+	devlink_free(devlink);
++	libie_pci_unmap_all_mmio_regions(&adapter->hw);
 +}
 +
 +/**
-+ * ixd_devlink_unregister - Unregister devlink for this adapter.
-+ * @adapter: the adapter structure to cleanup
-+ *
-+ * Init task must be completed or cancelled beforehand.
++ * ixd_shutdown - shut down a CPF PCI device
++ * @pdev: PCI device being shut down
 + */
-+static inline void ixd_devlink_unregister(struct ixd_adapter *adapter)
++static void ixd_shutdown(struct pci_dev *pdev)
 +{
-+	if (!adapter->init_task.success)
-+		return;
++	ixd_remove(pdev);
 +
-+	devlink_unregister(priv_to_devlink(adapter));
++	if (system_state == SYSTEM_POWER_OFF)
++		pci_set_power_state(pdev, PCI_D3hot);
 +}
 +
 +/**
-+ * ixd_devlink_register - Register devlink interface for this adapter
-+ * @adapter: pointer to ixd adapter structure to be associated with devlink
++ * ixd_iomap_regions - iomap PCI BARs
++ * @adapter: adapter to map memory regions for
 + *
-+ * Register the devlink instance associated with this adapter
++ * Returns: %0 on success, negative on failure
 + */
-+static inline void ixd_devlink_register(struct ixd_adapter *adapter)
++static int ixd_iomap_regions(struct ixd_adapter *adapter)
 +{
-+	devlink_register(priv_to_devlink(adapter));
++	const struct ixd_bar_region regions[] = {
++		{
++			.offset = PFGEN_RTRIG,
++			.size = PFGEN_RTRIG_REG_LEN,
++		},
++		{
++			.offset = PF_FW_MBX,
++			.size = PF_FW_MBX_REG_LEN,
++		},
++	};
++
++	for (int i = 0; i < ARRAY_SIZE(regions); i++) {
++		struct libie_mmio_info *mmio_info = &adapter->hw;
++		bool map_ok;
++
++		map_ok = libie_pci_map_mmio_region(mmio_info,
++						   regions[i].offset,
++						   regions[i].size);
++		if (!map_ok) {
++			dev_err(ixd_to_dev(adapter),
++				"Failed to map PCI device MMIO region\n");
++
++			libie_pci_unmap_all_mmio_regions(mmio_info);
++			return -EIO;
++		}
++	}
++
++	return 0;
 +}
 +
-+#endif /* _IXD_DEVLINK_H_ */
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_lib.c b/drivers/net/ethernet/intel/ixd/ixd_lib.c
-index 481edccc35ff..8311f7590666 100644
---- a/drivers/net/ethernet/intel/ixd/ixd_lib.c
-+++ b/drivers/net/ethernet/intel/ixd/ixd_lib.c
-@@ -3,6 +3,7 @@
- 
- #include "ixd.h"
- #include "ixd_ctlq.h"
-+#include "ixd_devlink.h"
- #include "ixd_virtchnl.h"
- 
- #define IXD_DFLT_MBX_Q_LEN 64
-@@ -151,6 +152,8 @@ void ixd_init_task(struct work_struct *work)
- 	err = ixd_vc_dev_init(adapter);
- 	if (!err) {
- 		adapter->init_task.vc_retries = 0;
-+		adapter->init_task.success = true;
-+		ixd_devlink_register(adapter);
- 		return;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_main.c b/drivers/net/ethernet/intel/ixd/ixd_main.c
-index 32046e4ba553..5db992d4f9fb 100644
---- a/drivers/net/ethernet/intel/ixd/ixd_main.c
-+++ b/drivers/net/ethernet/intel/ixd/ixd_main.c
-@@ -4,6 +4,7 @@
- #include "ixd.h"
- #include "ixd_ctlq.h"
- #include "ixd_lan_regs.h"
-+#include "ixd_devlink.h"
- 
- MODULE_DESCRIPTION("Intel(R) Control Plane Function Device Driver");
- MODULE_IMPORT_NS("LIBIE_CP");
-@@ -21,6 +22,8 @@ static void ixd_remove(struct pci_dev *pdev)
- 	/* Do not mix removal with (re)initialization */
- 	cancel_delayed_work_sync(&adapter->init_task.init_work);
- 
-+	ixd_devlink_unregister(adapter);
++/**
++ * ixd_probe - probe a CPF PCI device
++ * @pdev: corresponding PCI device
++ * @ent: entry in ixd_pci_tbl
++ *
++ * Returns: %0 on success, negative errno code on failure
++ */
++static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
++{
++	struct ixd_adapter *adapter;
++	int err;
 +
- 	/* Leave the device clean on exit */
- 	if (adapter->xnm)
- 		libie_ctlq_xn_shutdown(adapter->xnm);
-@@ -28,6 +31,7 @@ static void ixd_remove(struct pci_dev *pdev)
- 	ixd_deinit_dflt_mbx(adapter);
- 
- 	libie_pci_unmap_all_mmio_regions(&adapter->cp_ctx.mmio_info);
-+	ixd_devlink_free(adapter);
- }
- 
- /**
-@@ -92,7 +96,7 @@ static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	struct ixd_adapter *adapter;
- 	int err;
- 
--	adapter = devm_kzalloc(&pdev->dev, sizeof(*adapter), GFP_KERNEL);
-+	adapter = ixd_adapter_alloc(&pdev->dev);
- 	if (!adapter)
- 		return -ENOMEM;
- 
-@@ -101,13 +105,13 @@ static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	err = libie_pci_init_dev(pdev);
- 	if (err)
--		return err;
-+		goto free_adapter;
- 
- 	pci_set_drvdata(pdev, adapter);
- 
- 	err = ixd_iomap_regions(adapter);
- 	if (err)
--		return err;
-+		goto free_adapter;
- 
- 	INIT_DELAYED_WORK(&adapter->init_task.init_work,
- 			  ixd_init_task);
-@@ -118,6 +122,10 @@ static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			   IXD_INIT_TASK_DELAY_JIFFIES);
- 
- 	return 0;
++	adapter = devm_kzalloc(&pdev->dev, sizeof(*adapter), GFP_KERNEL);
++	if (!adapter)
++		return -ENOMEM;
++	adapter->hw.pdev = pdev;
++	INIT_LIST_HEAD(&adapter->hw.mmio_list);
 +
-+free_adapter:
-+	ixd_devlink_free(adapter);
-+	return err;
- }
- 
- static const struct pci_device_id ixd_pci_tbl[] = {
++	err = libie_pci_init_dev(pdev);
++	if (err)
++		return err;
++
++	pci_set_drvdata(pdev, adapter);
++
++	return ixd_iomap_regions(adapter);
++}
++
++static const struct pci_device_id ixd_pci_tbl[] = {
++	{ PCI_VDEVICE(INTEL, IXD_DEV_ID_CPF) },
++	{ }
++};
++MODULE_DEVICE_TABLE(pci, ixd_pci_tbl);
++
++static struct pci_driver ixd_driver = {
++	.name			= KBUILD_MODNAME,
++	.id_table		= ixd_pci_tbl,
++	.probe			= ixd_probe,
++	.remove			= ixd_remove,
++	.shutdown		= ixd_shutdown,
++};
++module_pci_driver(ixd_driver);
 -- 
 2.47.1
 
