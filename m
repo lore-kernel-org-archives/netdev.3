@@ -1,76 +1,79 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0D630C35F
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 22:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BFD40EBBE
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 22:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786572394; cv=none; b=Zs6pZnsgmLKblsijqWxCV8qUQ0M8hYLh76uWyVr91RrEKKWjkaPadOzMA2E0vhILm2U3HpROiOPVr4Vhnj7rv5/BzhzgjxLLIxM1ulbdDsl/eWdAtqEwQn3b13RpFOajOH80SSDq9ZlyH72ldMBaL9UyC9uCPZ8xZHrpiufLxiA=
+	t=1786572696; cv=none; b=N4Y6fStY9jwaSmelWa/DjT604U4jU0OFVvxXZ9eErdXUbfD0PpqQvesPDm/TtV9NG5Ur3m8SjD3Gkhk75+bPXfD0X2pG/nWv7OXHCWli0b2Kz2vQ+nbzg24vV5ddb2vCOMQP0xSZgqSl/bmURN5ukELzhbd36DgDzucE9lbubJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786572394; c=relaxed/simple;
-	bh=X7HIgkaLifJ7WbR8ThQH7BkEeoT/ljYKLvL7ifBOMv8=;
+	s=arc-20240116; t=1786572696; c=relaxed/simple;
+	bh=W/W3zvPMNBs7G76j3kOF1p094KPwTL9rIaA3xKhxAak=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eyeFXboHzEJkb78HchhPz/8r8I2d+Kby/oRvsUIw+u9K7XYfxnfKpY1wchWXQpShqbYuhxT5GcN8RyFeHiuRM5GWfr9ADgo+70wgKT3XPwa2ypI024vQPq3tvEICO6mvouUlZAdjXn9lgEcahEiNWYhN/4Ist6gqH8NKJDqJBE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pRDBZx4O; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=O2w/oMhAPd9GaaC97h/KEUokP1Se0A2otBtD/F6aH0YoNfFMmkzPUEaQBzmdYAd5mR67DbS0ydijpV3Tyok0y1LljoMmz2ubVQNigo7bornvFkBrs/7iQQRfGetY36BSwpwlrv/HxuFGwIDcXf8GxS5nPaPB54Pj4ffrKNxkR4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b1audKXP; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pRDBZx4O"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47f5d5dbf80so58649f8f.2
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 15:06:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b1audKXP"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cbb7926836eso101177a12.3
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 15:11:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786572391; x=1787177191; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786572694; x=1787177494; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=gycqGURb6RcPySIhCipoHXd74YJ+idCVrbRkPRx4R0g=;
-        b=pRDBZx4OVBCmbP0b854dJtDqNsxulP9UaPmxiFwY3dIOBfvNSqX+Y+Je5PW4L6aUoG
-         rMXPv4hzM9dnaODUI4zk+UP145EAzO3onwtze0RWXRuatu4bP1ErXk9bEJqbAz4JrHkx
-         iKRCWTVtR0T4voZiPvhVYrktlPA/MOhcbg4ByCpC7NIE4eECLMzWi80yZGgcmwaFXE5k
-         iZpOORVTEctkhzm9puMK9d8QgarS/Ce4+ewRtLGMABhXJPcxkMHOhCP6m9bZFcJUFjRa
-         TSXlTtNVZbTLkAOK2PPxhhjtZra6nWdM+91k13mRRDBAkiOIDNeAiGriB6QTKhlFPzou
-         bNLg==
+        bh=84UXfrTD07ipm4YJ6onVJzQAj8OjhirewXBuPuaWHiM=;
+        b=b1audKXPkNEsbprP/21dt8eCxWRxsYxa/GOozXuN5qGs32HUmVAgah8nnSlQiA9qt4
+         yemXEBo77/c9hmwW4V2CajXk8Vb3S6oF2DaLb3dluWA54Upnz7x/okW/fG5kSLn7tDrH
+         waGV7QElPGtLnMahXnqgsB8s23KGB7cK3MWrFol+p4ofEAPxjBC34xpCgPslOisc+jTP
+         nZEUIc+wZpuZoaVddHf3mJVlxf/vUPWLp8TWzub2px7FuZyhgI8GCTTdJhcFg7aesNV6
+         kUrqvuIqYe7gHs0dz6G81gU3E+7P3Eg/+GzQ5mn0QXxEp1tYc1U1A6arKPXsv+tgfATt
+         PqQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786572391; x=1787177191;
+        d=1e100.net; s=20251104; t=1786572694; x=1787177494;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gycqGURb6RcPySIhCipoHXd74YJ+idCVrbRkPRx4R0g=;
-        b=mkhWb/RH6fnGD3XiFXz/J/bWbNsnygn1p1ZuidBxu9BTjT2a87DnbHS4fUsRrfhZvO
-         ouH9p0YBJ8tuFN8JkJ+/2vPEbI5DyadwK3SRrcsx22P6970p5CD/8VBWd6ihujKytMoD
-         gmzinBj8I14XH0zTLZBDy8FLrmr0/6c4WO8D6TThqyUiDvYz5kmg9MDdERBf4Jx0HjtA
-         rEakxVqtx1/A3+dXoOInKjaY5tQcjLTC7y3i4OhfCum7l5TWYHU2KAp77p/WBP8k1z9L
-         ZmB47KG9Pj/hD163sWlq9qPOk8BkpBJ8wz/hXK3XMw4N246YYEz0GuFiXy4vnTLIACZg
-         IPmw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpi8xIkVKSt6KPkhNaCfYDqnoLHtVUZciJcFQZKJ1xHkM5xmzOAHXRO2RlJ//qmedmgjK0KHS8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI82m59o5rvUp315n/Fbq5jDhqjs+b81Sbqz90PofJyLXxcvBa
-	kVlPtlZd0mmgPTQr/XtwaHcUo3C9dAH2qssTgf9LsKvsXsdKavQRXwZx5HdZmg==
-X-Gm-Gg: AR+sD12GLA04j3ybcsSJUeKOYnwgx+Uvdh1mahfj9BuUC7tMF2Jheeb9T7/fTd3UxoM
-	FKc0GTY0rEVWASEUAaK0cVJ/ypX62ijvkoQI13o9ISgnLLsZjkaHkd1uBnebkH5jqrJB/IHQ95e
-	P9t9hSnjMPrTN2dRcN4uwXlVymer8WdSQPPBIZh0GF/Qtf5SJ0xDvZVkgcK6Yw0FnpmwRrHn0Jp
-	vgHR+u5xZhFK5cWLC+IFJMTC0R/OH4onPzWYlhwrJEHVFLFKXwSXK8xFk9F/FYtTGXemff62BkM
-	fsAG8vWvyeZ7H6xQNTq/AaPk2rfd9POPW0iQzmEhsuNt8dqkrBiQWBZG2RHBUB/XyFwcBJnEjir
-	mOysFiI46Crg7Kzert7HuRgEHRhx6RfJ0scfX1zn7+jay4JtSiJVCH6U7BvMdVo2/7RvRwcZY3S
-	fmZ1IpxDroK+t+nb5N6TPewB5sdmH8/ZeqtrtpLR0jbsNaQSif
-X-Received: by 2002:adf:e193:0:b0:47f:dfc1:6907 with SMTP id ffacd0b85a97d-4815a0005c0mr737263f8f.3.1786572391345;
-        Wed, 12 Aug 2026 15:06:31 -0700 (PDT)
-Received: from skbuf ([86.127.220.200])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5af6b3sm835849f8f.20.2026.08.12.15.06.29
+        bh=84UXfrTD07ipm4YJ6onVJzQAj8OjhirewXBuPuaWHiM=;
+        b=N/i/x83qThGAqaokv/NRfmV+jNf6GcRWT2v2+RYOXuk4jv5PnBXxl4LKf7o5EyqcNO
+         np167FnikY+MolFrBb+b1CQ5cjiS4PS4r63Tn8RohnAxicAte/kP4nGb0HNuD5Kl1HCb
+         KTCsg5oMseJuYxhv/wz38CIX8GzPQucrjvzWIFrBu/FP6ZeVdrk21/g3D8qM5cHvQ11m
+         tAjf4tHPoJ9K4/VXW6Yz/o4rCA8+Fvp1iFxTqw5oye3ebUSy7AnCAsL884FxMv7jQugF
+         cAq+HfuvW+wgEk7f4pU9ujIhM0G06hbJ0t1ufd175/J9FlbpNLzQ3s9lMW+AnIWhRsp3
+         TlvA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0gEqTwMqqfOUfMw50Z029rtaXmoNlpsrCW+PLRPP/ptQFLmH8UeqdYB1JF7MI5yXDkH5pp88=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy54hUefx8xybI72eWw+dVEoicUt3xEn2EWu1mhy/2/pcN1Cftf
+	qnvDofBAiEffLjzue+ZlMcKIc9OVPlRRfA92XL9lKc6IB2aYxdFsnbxsvqzLZpwSXw==
+X-Gm-Gg: AR+sD13MNQsKWTqM9RPQxji6iC0rHCGswAYF6U/Gu+VtYjQgyI0L8h4HZpvcXdQIUMR
+	PcTuNksxnB57/53UTafSWYMpoFwpssIulwWTVqNF+fTCJkaLXlcWo7IdiS59tdg8RmDv8iKLLxo
+	dsLhy6oM15QYueBaoD1s2kGxmIEUnisEoSgEC74I5Uhk9yteIk+RwqopHsTQXb1c8r1Jb81fZTK
+	fRG+t8xDkWzoled0OtF31CA5YglwShhLLFjfUIRdc6ed2STC2STfgznx9LOWsnX5vGSqsxipVTW
+	yE4W/6sbuLyCe8qjJpNxmZ4YrHPu561+3lQkKrpNOnOIA2WD8X1tsmh6A4uDE0A3Is25mcSEivr
+	dTbazqBbECxS2hsPIp1Jo9R+ba97TNRTuSKUEJI7oZK7Ai7V4bp/ebL4a6T8leOFONOlaLVsvOX
+	Xje6V23l0M98Oe67UgC6ITtD/rTe1dqzvdvFDPGu5MfgdHxQKsCX2brb57VN9xeHyPjJ1+VuKw/
+	u/YIag6qD+gyJmO1zZRN9g7pu0C5Q==
+X-Received: by 2002:a05:6a00:3923:b0:835:6388:655d with SMTP id d2e1a72fcca58-84fc6ce7c17mr1032589b3a.14.1786572693710;
+        Wed, 12 Aug 2026 15:11:33 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbef7109658sm202295a12.16.2026.08.12.15.11.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 15:06:30 -0700 (PDT)
-Date: Thu, 13 Aug 2026 01:06:27 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Semih Baskan <strst.gs@gmail.com>, florian.fainelli@broadcom.com,
-	andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vladimir.oltean@nxp.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
-Message-ID: <20260812220627.r6gesugv2q3s6x2o@skbuf>
-References: <20260805072641.402-1-strst.gs@gmail.com>
- <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
- <20260812205047.ojq2yyjtmoe5gjot@skbuf>
+        Wed, 12 Aug 2026 15:11:33 -0700 (PDT)
+Date: Wed, 12 Aug 2026 22:11:30 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v4 06/10] vfio: selftests: Allow drivers to specify
+ required region size
+Message-ID: <anzvkibgzTae9eV9@google.com>
+References: <0-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+ <6-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,44 +82,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260812205047.ojq2yyjtmoe5gjot@skbuf>
+In-Reply-To: <6-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
 
-On Wed, Aug 12, 2026 at 11:50:47PM +0300, Vladimir Oltean wrote:
-> 1. This looks implementable with some complexity isolated within the b53
->    driver:
->    - on any .port_fdb_add(), .port_fdb_del(), .port_mdb_add(), .port_mdb_del(),
->      compare the VID of the entry with the dev->vlan_enabled state.
->      - if VID != 0 and dev->vlan_enabled, or if VID == 0 and !dev->vlan_enabled,
->        commit the operation directly to the ARL, as is currently done
->      - if VID == 0 and !dev->vlan_enabled, or if VID != 0 and dev->vlan_enabled,
->        operate on a software list, allocating, deleting or modifying a
->        local representation of the ARL entry
->    - on vlan_filtering toggles from 0 to 1 or from 1 to 0, acquire
->      dev->arl_mutex and flush out all static and dynamic ARL entries
->      across the entire switch, commit the static ones from the software
->      list and clear the software list
->    - dev->vlan_enabled will probably need to be merged with
->      dev->vlan_filtering, since the vlan_enabled=1 vlan_filtering=0 case
->      is broken
+On 2026-08-12 11:59 AM, Jason Gunthorpe wrote:
+> Add a region_size field to struct vfio_pci_driver_ops so drivers can
+> declare how much DMA-mapped region they need. The mlx5 driver will need
+> ~18MB for firmware pages. Existing drivers pass in the sizeof their state
+> struct. Since drivers all use only their declared state we can use the
+> value directly and remove the SZ_2M hard coding.
+> 
+> Assisted-by: Claude:claude-opus-4.6
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Actually this algorithm is too simplistic as I specified it. In this sequence:
+...
 
-ip link add br0 type bridge vlan_filtering 0 && ip link set swp0 master br0
-bridge fdb add swp0 00:01:02:03:04:05 master static
-ip link set br0 type bridge vlan_filtering 1
-ip link set br0 type bridge vlan_filtering 0 # the 00:01:02:03:04:05 address would be lost here
+> diff --git a/tools/testing/selftests/vfio/lib/iova_allocator.c b/tools/testing/selftests/vfio/lib/iova_allocator.c
+> index 4a660f636f4972..c8075575e9131d 100644
+> --- a/tools/testing/selftests/vfio/lib/iova_allocator.c
+> +++ b/tools/testing/selftests/vfio/lib/iova_allocator.c
+> @@ -13,8 +13,10 @@
+>  
+>  #include <linux/iommufd.h>
+>  #include <linux/limits.h>
+> +#include <linux/log2.h>
+>  #include <linux/mman.h>
+>  #include <linux/overflow.h>
+> +#include <linux/sizes.h>
+>  #include <linux/types.h>
+>  #include <linux/vfio.h>
+>  
+> @@ -50,7 +52,8 @@ void iova_allocator_cleanup(struct iova_allocator *allocator)
+>  iova_t iova_allocator_alloc(struct iova_allocator *allocator, size_t size)
+>  {
+>  	VFIO_ASSERT_GT(size, 0, "Invalid size arg, zero\n");
+> -	VFIO_ASSERT_EQ(size & (size - 1), 0, "Invalid size arg, non-power-of-2\n");
+> +	/* Adjust the size to the allocator requirements */
+> +	size = max_t(u64, roundup_pow_of_two(size), getpagesize());
 
-Furthermore, the ARL is limited in size (1024, 2048 or 4096 entries),
-and we could mistakenly end up queuing more than we can commit.
+...
 
-I'm not yet sure what are reasonable amendments that would keep the
-complexity in check. Currently the most obvious would be to do a one-time
-allocation of dev->num_arl_bins * dev->num_arl_buckets, to always keep
-all entries in software, and only the active ones in hardware. But I
-need to think about this some more, as I'm aware OpenWrt typically
-doesn't operate with huge memory budgets.
+> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+> index 5e65434d2318b2..52b9c2a2bbb9b6 100644
+> --- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+> @@ -32,6 +32,9 @@ void vfio_pci_driver_probe(struct vfio_pci_device *device)
+>  			continue;
+>  
+>  		device->driver.ops = ops;
+> +
+> +		VFIO_ASSERT_NE(ops->region_size, 0);
+> +		device->driver.region.size = ops->region_size;
 
-I'm not sure that avoiding local copies is possible, because the ARL
-entries don't come from a single source - we have bridge FDB, bridge
-MDB, ndo_dflt_fdb_add(), dev->uc, dev->mc, dev->dev_addr, sometimes
-replicated per VLAN, etc. They all only converge at driver level.
+I'm seeing failures with the IGB driver with this series. I think it's
+coming from here. The region size needs to be page-aligned so that the
+IOMMU map/unmap calls can work?
+
+The size of struct igb is 0x20080 bytes which is not page-aligned. The
+size of struct mlx5st_device is 0x200D000, which is page-aligned, so
+that's probably why your Claude did not notice.
+
+# #  RUN           vfio_pci_driver_test.iommufd.send_msi ...
+# /usr/local/google/home/dmatlack/kernel/trees/review/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h:42:
+# Assertion Failure
+#
+#   Expression: __iommu_map(iommu, region) == 0
+#   Observed: 0xffffffffffffffea == 0
+#   [errno: 22 - Invalid argument]
+#
+# # send_msi: Test failed
+# #          FAIL  vfio_pci_driver_test.iommufd.send_msi
+# not ok 33 vfio_pci_driver_test.iommufd.send_msi
+
+Applying this on top fixes things and also avoids a potential overflow
+when doing the roundup_pow_of_two() in the allocator.
+
+diff --git a/tools/testing/selftests/vfio/lib/iova_allocator.c b/tools/testing/selftests/vfio/lib/iova_allocator.c
+index c8075575e913..66a160d4ff9d 100644
+--- a/tools/testing/selftests/vfio/lib/iova_allocator.c
++++ b/tools/testing/selftests/vfio/lib/iova_allocator.c
+@@ -52,8 +52,11 @@ void iova_allocator_cleanup(struct iova_allocator *allocator)
+ iova_t iova_allocator_alloc(struct iova_allocator *allocator, size_t size)
+ {
+ 	VFIO_ASSERT_GT(size, 0, "Invalid size arg, zero\n");
+-	/* Adjust the size to the allocator requirements */
+-	size = max_t(u64, roundup_pow_of_two(size), getpagesize());
++	VFIO_ASSERT_LT(size, rounddown_pow_of_two(SIZE_MAX),
++		       "Invalid size arg, too large (%lu)\n", size);
++
++	size = roundup_pow_of_two(size);
+
+ 	for (;;) {
+ 		struct iommu_iova_range *range;
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+index 96a940ea59b5..b31abfe2c7ff 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+@@ -36,7 +36,8 @@ void vfio_pci_driver_probe(struct vfio_pci_device *device)
+ 		device->driver.ops = ops;
+
+ 		VFIO_ASSERT_NE(ops->region_size, 0);
+-		device->driver.region.size = ops->region_size;
++		device->driver.region.size =
++			round_up(ops->region_size, getpagesize());
+ 	}
+ }
