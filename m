@@ -1,34 +1,34 @@
 Received: from mail.mdapi.ch (mail.mdapi.ch [31.3.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14792476078;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146E84746C8;
 	Wed, 12 Aug 2026 15:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.3.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786549636; cv=none; b=UsKmG8B6LELjXH7bNjuIvejbJx1mBEWtLaL9MV2b6XgxnXmUmxUafYZYO5vQ2aCtGj+s9HyWOSLM5fSAmukiQXo2FzilfczIkxEo8D3h/BdP6IwBc6ohPTS4HPVG07a1bLpi/Uf4QxJESWG8hg/LJUN9B/yvAdiM2CvXQs10tyc=
+	t=1786549636; cv=none; b=fsyEvwv4umLI+E7pfdeRp9SBNXjLi18iNp52RnOPcghzvCXKzvm1pu0J4Cba+YNxBkYr9nuAKcZ8cfsIecO7dKg4dRBPDm1L+EAJxH5FUcgqKP9vA75k5WeVTwVQPKzhaapV96yQxa0v+ifljTKoF9xpnDjJ+spu07r3AQ8i6GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786549636; c=relaxed/simple;
-	bh=xYij7cP4aMkKLMLz/KFRIFGJAYoimqbAB8pTryfke1E=;
+	bh=gvucimwkPlky5WPR/mJhkMtSVdyal08lqRwnxvaFSt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrV5apMXfLDCILVIA8Y3pZKKSKL1UoixQfvik+RmXBDZfbAswsmbOp9+++5Sn1mfPtwh+NwGZmeYA9RRK1fa932AY8iHBTiAOYEQin323l375pHnFCeLxq54CrbDuunPRFIdlFoo2A6kbKKNnrgA7V8uld+K2ihCPKSC1WLCfq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tillo.ch; spf=pass smtp.mailfrom=tillo.ch; dkim=pass (2048-bit key) header.d=tillo.ch header.i=@tillo.ch header.b=VTGyR2EK; arc=none smtp.client-ip=31.3.128.54
+	 MIME-Version; b=RKs6y29i1VxYASmyyeOg81DQGGcPWAakHo4NGMrkEswfsVEtzf01TgzAXbJAmk0PDdpTf9/ySNgm73Ev/2/qfq0yGqAXAsRAAZ4O7yH6YnP4SZqptOJH5n4kzRDc8SSSas/GDZtKrietVO7V5T/AwUPrnM7Kltiq/LEJFlkam/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tillo.ch; spf=pass smtp.mailfrom=tillo.ch; dkim=pass (2048-bit key) header.d=tillo.ch header.i=@tillo.ch header.b=ToIcrMZP; arc=none smtp.client-ip=31.3.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tillo.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tillo.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tillo.ch header.i=@tillo.ch header.b="VTGyR2EK"
+	dkim=pass (2048-bit key) header.d=tillo.ch header.i=@tillo.ch header.b="ToIcrMZP"
 From: Martino Dell'Ambrogio <tillo@tillo.ch>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tillo.ch; s=mail202603;
-	t=1786549629;
+	t=1786549630;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VvKESIbkwTEkD/xyFWfOzJ7l0WnKrLj1CBe9odDSTjE=;
-	b=VTGyR2EK4Y1ytBk7i2EWw83OW2JbNF5Rr1xPjMSYTBSKi86pwp1Uxqvchuth751fwhS446
-	A9zcjoMGdIAX9xdv5cOkb6wWpqev/GtHKmu2hlQZlkLH+RHG5ufQxKVCQtLfMKe4fy5owv
-	cgtXPlvMs9onIge4MH7i/QPj9iUgnekZTideP/KFqtq592a1pjq856pwUuj51tjxNMcmoq
-	EwdkvFbnecY0UV/VRvMqtJZf6W7aK2Ne+Poo8LeQQ0IxdHolIUygZ2ZT+CqBmDm8MPJhXY
-	8znJID2GsrwQHwltPJiYJ0BFJd218MYnZMJX0vJGAa6um03LM3JQlTAB0QVE6Q==
+	bh=a5DNA2j9LgophSFdTvr9ptz5iK62Pxe4CZ/O8iholho=;
+	b=ToIcrMZPBvFGxNnn9MU4znWUvtlSa/29yOJpkedi7dZQi2TQ4CGt0ZOitWdDfrb1LbPWP7
+	orV7DwwHwPL1HUU1iNVnk2N09FokIwGCbcHrNUbl2cfm7RrCw1AVOlcm3N4G9yBOEK4huH
+	9rhtqrYI9mY7JtfE38cTxXrkAG+1R5boA6BXR8J9z/L6wRSQ2jIHcatq7PfWWvS7j6FetX
+	qi9/NLKPrRTyVtDO9hq5kG0IIgwUZ+UX+jxeQKf9eoF0b1H/UL/efBCn+CoyudobxkhICv
+	tUUvgWPu6+djxJnSVGs1rIgVnW/i3i2Evn6dB5DWqJIIPxqD5YfAFUmpYOCc1g==
 To: netdev@vger.kernel.org
 Cc: Russell King <linux@armlinux.org.uk>,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -40,9 +40,9 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-kernel@vger.kernel.org,
 	Martino Dell'Ambrogio <tillo@tillo.ch>
-Subject: [PATCH net-next v3 1/2] net: sfp: allow prefix matching in quirk lookup
-Date: Wed, 12 Aug 2026 17:47:07 +0200
-Message-ID: <20260812154708.2201266-2-tillo@tillo.ch>
+Subject: [PATCH net-next v3 2/2] net: sfp: add quirks for OEM XGSPONST2001 and FS XGS-SFP-ONT-MACI
+Date: Wed, 12 Aug 2026 17:47:08 +0200
+Message-ID: <20260812154708.2201266-3-tillo@tillo.ch>
 In-Reply-To: <20260812154708.2201266-1-tillo@tillo.ch>
 References: <20260812154708.2201266-1-tillo@tillo.ch>
 Precedence: bulk
@@ -53,94 +53,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some clone SFP modules return EEPROM reads where the vendor PN field
-contains non-printable garbage past the trailing legitimate characters
-instead of the SFF-8472 mandated space padding. The current sfp_match()
-requires an exact full-field length match: sfp_strlen() returns 16 (no
-trailing spaces or NULs to strip), but strlen() of the quirk string is
-shorter, so the length comparison rejects the entry before strncmp() is
-even called and the quirk silently never applies.
+Cheap XGS-PON ONT sticks identifying as vendor "OEM", PN "XGSPONST2001"
+have broken TX_FAULT and LOS indicators (driven by the ONU serial
+passthrough wires) and need a longer T_START_UP than the SFF-8472
+default. The Fiberstore XGS-SFP-ONT-MACI MAC-mode ONT stick has the
+same ONT-class TX_FAULT/LOS wiring and startup behaviour. Apply the
+existing sfp_fixup_potron handler to both, which masks both signals
+and bumps T_START_UP to T_START_UP_BAD_GPON.
 
-Add a part_prefix_match flag to struct sfp_quirk and a
-SFP_QUIRK_F_PREFIX macro. When set, sfp_match() compares only strlen()
-leading bytes of the quirk part string, ignoring trailing field bytes.
-The vendor name comparison always stays exact. Existing exact-match
-quirks are unaffected (part_prefix_match defaults to false via zero-init
-in the existing SFP_QUIRK macros).
+The XGSPONST2001 returns the 12 legitimate PN characters followed by
+non-printable garbage on cold power-up reads (the same module reads
+back clean and space-padded after a warm reseat), which defeats
+exact-length matching precisely on the boot where the quirk must
+apply: the kernel honors the spurious TX_FAULT and the SFP state
+machine eventually disables the module. Match its part as a prefix
+using SFP_QUIRK_F_PREFIX.
 
-This patch only adds the mechanism; the first user is added by the
-following patch.
+The XGS-SFP-ONT-MACI PN is the product name (XGS-SFP-ONT-MAC-I)
+truncated at the 16-byte field width, so the field is fully occupied
+by legitimate characters and a plain exact-match SFP_QUIRK_F entry is
+correct.
 
 Signed-off-by: Martino Dell'Ambrogio <tillo@tillo.ch>
 ---
- drivers/net/phy/sfp.c | 23 ++++++++++++++++++-----
- drivers/net/phy/sfp.h |  1 +
- 2 files changed, 19 insertions(+), 5 deletions(-)
+ drivers/net/phy/sfp.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 508b6cc8e..15033cbf7 100644
+index 15033cbf7..2ec91466a 100644
 --- a/drivers/net/phy/sfp.c
 +++ b/drivers/net/phy/sfp.c
-@@ -516,6 +516,15 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
- 	{ .vendor = _v, .part = _p, .support = _s, .fixup = _f, }
- #define SFP_QUIRK_S(_v, _p, _s) SFP_QUIRK(_v, _p, _s, NULL)
- #define SFP_QUIRK_F(_v, _p, _f) SFP_QUIRK(_v, _p, NULL, _f)
-+/* Like SFP_QUIRK_F, but matches the part as a prefix; the vendor name
-+ * is still matched exactly. Use for modules whose EEPROM vendor PN
-+ * field reads back with garbage past the legitimate characters instead
-+ * of the SFF-8472-mandated space padding, so sfp_strlen can't trim the
-+ * field down to the legitimate length.
-+ */
-+#define SFP_QUIRK_F_PREFIX(_v, _p, _f) \
-+	{ .vendor = _v, .part = _p, .support = NULL, .fixup = _f, \
-+	  .part_prefix_match = true }
+@@ -557,6 +557,13 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK("FS", "GPON-ONU-34-20BI", sfp_quirk_2500basex,
+ 		  sfp_fixup_ignore_tx_fault),
  
- static const struct sfp_quirk sfp_quirks[] = {
- 	// Alcatel Lucent G-010S-P can operate at 2500base-X, but incorrectly
-@@ -629,13 +638,16 @@ static size_t sfp_strlen(const char *str, size_t maxlen)
- 	return size;
- }
- 
--static bool sfp_match(const char *qs, const char *str, size_t len)
-+static bool sfp_match(const char *qs, const char *str, size_t len, bool prefix)
- {
-+	size_t qs_len;
++	// Fiberstore XGS-SFP-ONT-MACI is a MAC-mode XGS-PON ONT stick with
++	// ONT-class serial-passthrough TX_FAULT/LOS wiring and slow startup;
++	// mask both signals and extend T_START_UP via the potron fixup. The
++	// PN is the product name (XGS-SFP-ONT-MAC-I) truncated at the 16-byte
++	// field width, so the field is fully occupied and matches exactly.
++	SFP_QUIRK_F("FS", "XGS-SFP-ONT-MACI", sfp_fixup_potron),
 +
- 	if (!qs)
- 		return true;
--	if (strlen(qs) != len)
-+	qs_len = strlen(qs);
-+	if (prefix ? qs_len > len : qs_len != len)
- 		return false;
--	return !strncmp(qs, str, len);
-+	return !strncmp(qs, str, qs_len);
- }
+ 	SFP_QUIRK_F("HALNy", "HL-GSFP", sfp_fixup_halny_gsfp),
  
- static const struct sfp_quirk *sfp_lookup_quirk(const struct sfp_eeprom_id *id)
-@@ -648,8 +660,9 @@ static const struct sfp_quirk *sfp_lookup_quirk(const struct sfp_eeprom_id *id)
- 	ps = sfp_strlen(id->base.vendor_pn, ARRAY_SIZE(id->base.vendor_pn));
- 
- 	for (i = 0, q = sfp_quirks; i < ARRAY_SIZE(sfp_quirks); i++, q++)
--		if (sfp_match(q->vendor, id->base.vendor_name, vs) &&
--		    sfp_match(q->part, id->base.vendor_pn, ps))
-+		if (sfp_match(q->vendor, id->base.vendor_name, vs, false) &&
-+		    sfp_match(q->part, id->base.vendor_pn, ps,
-+			      q->part_prefix_match))
- 			return q;
- 
- 	return NULL;
-diff --git a/drivers/net/phy/sfp.h b/drivers/net/phy/sfp.h
-index 879dff7af..19fe29d84 100644
---- a/drivers/net/phy/sfp.h
-+++ b/drivers/net/phy/sfp.h
-@@ -12,6 +12,7 @@ struct sfp_quirk {
- 	void (*support)(const struct sfp_eeprom_id *id,
- 			struct sfp_module_caps *caps);
- 	void (*fixup)(struct sfp *sfp);
-+	bool part_prefix_match;
- };
- 
- struct sfp_socket_ops {
+ 	SFP_QUIRK_F("H-COM", "SPP425H-GAB4", sfp_fixup_potron),
+@@ -617,6 +624,14 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_S("OEM", "SFP-2.5G-LH20-A", sfp_quirk_2500basex),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10G", sfp_fixup_rollball_cc),
++
++	// OEM XGSPONST2001 is an XGS-PON ONT stick with broken TX_FAULT and
++	// LOS indicators and slow startup, just like potron. On cold
++	// power-up the EEPROM vendor PN field reads back with non-printable
++	// garbage past the legitimate string instead of space padding, so
++	// match the part as a prefix.
++	SFP_QUIRK_F_PREFIX("OEM", "XGSPONST2001", sfp_fixup_potron),
++
+ 	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
+ 	SFP_QUIRK_F("Turris", "RTSFP-10", sfp_fixup_rollball),
+ 	SFP_QUIRK_F("Turris", "RTSFP-10G", sfp_fixup_rollball),
 -- 
 2.47.3
 
