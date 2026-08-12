@@ -1,196 +1,800 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CBB4302FC;
-	Wed, 12 Aug 2026 11:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786532981; cv=fail; b=lqfnRcclIzj2AA+YGrZkj1vfuAUhiQ6C9FUCdY6Sxj9jZzD99z5nSBBj+qqKM7m/c5vOyXdRlikZYTqxwWy1l6CKcTxqbizatVT39lUzTMrc1GwKCZ0SYD8g34XziD00kXekebjMz3Ty2rkLvEhcv08pnyxNvW92et9LQmq9VTw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786532981; c=relaxed/simple;
-	bh=GknXaxEPK8OkF5mDn5w7AvId6lxMiOZQVUxp1r7x2M4=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VddsHyEEL4QJyQ2GGskkaP7l02UnbhaOaCp3SW8pFeupyayIzn0r0LXkhPomKJcea1ZycLfiwYlhSNJm+oRVnxhKhKyUo79Qdx4tyVIa/PuHoez39AZVvHuciwbd+8FFxI3LGgsm3/y8jB0g4GUz72zg397JFsy5dsksw1mOsg8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hCWRHZHp; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200E74307AD;
+	Wed, 12 Aug 2026 11:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786533178; cv=none; b=mNarN0PA6V8t2M36guNn9hiwFpZXCloh+ntEyxOt7U+Mr8WgUQgCJet4tmU8R9A0ZMkldvTWeo98yjBqfe3oY54TQEcZxiw8qj0cJVBoC/0rGXBjAM0IlCoIM8toguPngfpbCkHFASLksGlMfXwf9rCThj6Wysft0/KqeoY542A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786533178; c=relaxed/simple;
+	bh=A0HGoRzxUz17bVoBYhdti1xcnNHdXIrY4argmVYUaQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UUbPiU1DarnYqOGDYUZfe7Q8f4ESBPBQ7i5hg/tFWf0Gkf1/Wt3gKIz/Mne+wwLhsS17KSg6bH3JTZEcxHc/Gr+YpUo0184olps4au3ic0gagK9QaHFsD0ls+bo5wyXcCAFq/YCJKfbjVkfTlJ/GI3+WY9PxeIj+OJE/9BC/9Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3W6+ICi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hCWRHZHp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786532979; x=1818068979;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=GknXaxEPK8OkF5mDn5w7AvId6lxMiOZQVUxp1r7x2M4=;
-  b=hCWRHZHpEA5R/sUSxyHTKZa10rkqdUll08Dpq6wO2W6LCTSz0BRaMtd4
-   fz7UNFPcaqyejcDnV8b5xdnokO1a12Ez6w9PK3z2OU4V/fuxwZ8EQ7JwF
-   Mr41yb2XHXmJ+MfB9p8oHmhOcOfai+pu23PZkHOCi1ZjDRTg+qEGf3Kfk
-   VrsZRnyUi4uWPnL8KAJnPKedUcQZnRDMqIDXZj6fh4MWxQCHzJMGHBuYK
-   qyCfx0iQpmUvkpNIeG3SER+QmfqJw27ZSfSbN6xZNffhncrrknnSSURtO
-   PwXd4PDfSJfG8BK+crTKsPL0FDxQYt5IKJaVMWaOiYk9YX0CQ+47IesQ+
-   w==;
-X-CSE-ConnectionGUID: 9tN/RalbQPOkK2pe8tbx2A==
-X-CSE-MsgGUID: Bxnpqd3vSnGMs6cM2D/5lQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="86041703"
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="86041703"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 04:09:38 -0700
-X-CSE-ConnectionGUID: kr4r+r+/QvO0oT4GGKU1eQ==
-X-CSE-MsgGUID: 7tjjTq+zR16S2ui0jzgd2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="261864585"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 04:09:37 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 12 Aug 2026 04:09:36 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 12 Aug 2026 04:09:36 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.11) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 12 Aug 2026 04:09:36 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AfEftQwDMR2xksue7q63+D3pE2D9at/V1hCn4ILQPoNDgL06Wz+qK3lDHyG07lknykln5nzfKO+4wijLmq5fDrgcuyzgYzPLdt0c25Sn4OccsA+bHoH3lUaNp8aCgQwu1nkJ7AOlMHwLtvrg3rHWlkIj4vov06Edpu+z5tEra9s/GWQKDnzBv3yjBRENuCWEh4UBBY8Tiw9ea8K4lDPfUqvFxBJJ5J7Yp2QrEUyIudURObj48jS3dJ06lZfcBrAX6+Jujcy8+ppaij6kLGn7Wnka4Nlv7aHr/YlRt5mlIZmAZscx8+TOZLYT9uHR1AIfEENvD95Pkdw+b8nIhsM7zA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OxMTD8BveI72rto9kYAEnn2Cy3pCgHVtC/tm+w+kQHM=;
- b=MrNsBxxP4k7kHu2sSIDF9HK7xw4uTc7rWXqIJp1gVDCRF/0rPR8mPkaBMd68TiApdSuJjvLExnD3mwVX0mlG7Z5PlM6ScaDcqtH8+fsYMIC2N1n2FLtiMrfUStwrA+gWQAAO1l7CMA9DsdmmY0oqr4mLa0C9SyGQwjf/a45Z9zCVe7HSOMpb9jIJRS0RoR7Mz4QZ61nbTqrtyFEvMSBlr1xJk2gOeWNifSHd10Kl7CJM1vy7krnkUEEaRv/HPXkgY/S0Y1oCYOr3A0kha4lyXjAC2Xr9tivx8FaioMZTiNonPSm2g1byKv8AdAk7hiK8vE3gfPyrgBA+AXcNZbU5Zw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by DS4PPF93A1BBECD.namprd11.prod.outlook.com (2603:10b6:f:fc02::3c) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.11; Wed, 12 Aug
- 2026 11:09:32 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c%4]) with mapi id 15.21.0315.011; Wed, 12 Aug 2026
- 11:09:32 +0000
-Message-ID: <4ef38557-8181-463b-a19c-1447d6ae10ab@intel.com>
-Date: Wed, 12 Aug 2026 13:05:56 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/3] xsk: honor XDP_TX_METADATA in zero-copy path
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-CC: <netdev@vger.kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <anthony.l.nguyen@intel.com>,
-	<przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>, <saeedm@nvidia.com>,
-	<tariqt@nvidia.com>, <mbloch@nvidia.com>, <maxime.chevallier@bootlin.com>,
-	<mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-	<horms@kernel.org>, <magnus.karlsson@intel.com>,
-	<maciej.fijalkowski@intel.com>, <sdf@fomichev.me>, <ast@kernel.org>,
-	<daniel@iogearbox.net>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
-	<alice.kernel@fastmail.im>, <dtatulea@nvidia.com>, <witu@nvidia.com>,
-	<martin.lau@kernel.org>, <yoong.siang.song@intel.com>,
-	<rohan.g.thomas@intel.com>, <intel-wired-lan@lists.osuosl.org>,
-	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <bpf@vger.kernel.org>,
-	<leon@kernel.org>
-References: <20260810184753.135756-1-sdf@fomichev.me>
- <20260810184753.135756-3-sdf@fomichev.me>
-Content-Language: en-US
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-In-Reply-To: <20260810184753.135756-3-sdf@fomichev.me>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DU2PR04CA0224.eurprd04.prod.outlook.com
- (2603:10a6:10:2b1::19) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3W6+ICi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E191F000E9;
+	Wed, 12 Aug 2026 11:12:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786533175;
+	bh=AAWHX2Ycwovcd7FSpL50AVTrhDnVSsLVfVf90rIVswA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=V3W6+ICiL+xU2yt0fuklLikWBE2Nzozz3Bu0g5efgeh1Wm7mxhOQ42+zXr425IcNp
+	 FNs+47ZDo3lUXWhPI2DfyhFePkboXbUv3tnx7NbkDTbM/oGdvtxqsba0d2ioJ4Hi6d
+	 kat8Yz5p3S/KCm3pcsoKgm5hOu32gzYHeSB1GnlvwEe2mnK0ywMryNHjgdImbPASRM
+	 P/vnb4s/vCwL7pC0jvzyAINeW4rBVZEref7PO6dd9nEtJwf32b2l4kvWHSSAoDSsxV
+	 Rbv08z75VI1ZAAcmP0HqxBnVSQ7hut40dgsGemu5vQ4CS4LlSQq9iPZgy/wwY2QOn2
+	 7wZZAzp5qfuqg==
+Date: Wed, 12 Aug 2026 12:12:48 +0100
+From: Lee Jones <lee@kernel.org>
+To: Ahmad Byagowi <ahmadexp@gmail.com>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
+	Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Peter Rosin <peda@lysator.liu.se>, Nam Tran <trannamatk@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC net-next v2 2/6] leds: rgb: Add IS32FL3207 controller driver
+Message-ID: <20260812111248.GH1072730@google.com>
+References: <20260803205011.1249-1-ahmadexp@gmail.com>
+ <20260803205011.1249-3-ahmadexp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|DS4PPF93A1BBECD:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b2cc319-81ee-48fe-7f86-08def8622f23
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: l6gIjv2e4kdjmX5KGkjP4KwdKy9M0wiHhoKkz2cFmbx2rwjf5wvL293lx9TGRodrb93LGM+87Y40xNmWFK7vJfQiXsRxjZUsx0f/ezYUHWObM+owbSyLdPkby33/+PDA9NNtraE1oWoBmdzr5kslM5ViFBBHxK6h9wOzf1LjX6aW06oc0A1IgWonahSn4M5HCx7E3JrP16I/nFdhac0KAUimJvvnjWdeCDuc0IZAOoLb93idb2SyOEIvxUOid30YNxmB3J17QiydreGeZAbCqMxHuo1GKeSTHkLp5dsjpdqeBdcnTAlMjfdx7cBuWa2tSHcRx0P45f/Z356Z2UotjVPjVAHfJZNPZGFNfNdiTzecG+X1soRY9CX+T1hJcobJDhDJsuNwCnOf9+Ha1ifV4WMjWGZH6r7wESxkPcswOUfVkI8eDHEqpRlYYOY/q05F5UVKXmoEbjUaUOVt7Y1Tc0bWTA7OuDzEIcdVVlPhatM6piSmYYLKD30MB3+hWcLVI4e5VGitgUai/rDm9BZ6/C3auFZmswH5Ofw/tWawVx/Zbzy3Bo6Q6WZNOtD6h5STXp1WIu45efY+trqNXGB8Kn1Dspfs9eztyH7I9hykXWbCHk69tfTg1rYIuuJyqVvHSOzorOsn6fUAjWgV6ptj5A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L01ZeWM3bFF2MWRnV3dPSVBsSm9HaEVUOXltZ3B4TWZ4WUhLVVF6TnFZRTIz?=
- =?utf-8?B?bFU1eDZRZWVjZXBtQ0FWbVpZcEpzeDU3Y21RZ0diNi9MS1hRck9mQjhQZTBO?=
- =?utf-8?B?ZGJMMk1xaFQrb3QzWUpGZHh6c0gyZGFoQTZqL1l3WUFqZ1dZNUE5TDhFdm4v?=
- =?utf-8?B?UU5GOWtGYlc0ZXJCbkJOQmZDTlg5ZnhBTTZWTWh0QWZ5L1Zwb1YvbUo4NG4v?=
- =?utf-8?B?WFVVU1dIWGNvRGxGOUVaalRheUdaR2NqUEJ3WUsvY01iTG9sRS9ZaGQ3SU1p?=
- =?utf-8?B?R1ZTTDBVNHJFdlF3M2JZMGlTT2dzdC84VlRpL3ZUZWhROTE0ZjhxT0J3RFU2?=
- =?utf-8?B?cytFMVdOWEZCMnQ2dlppOWZTYllkTkpvSEtLY0cxeFF0TVRJekZvRUJUNFBX?=
- =?utf-8?B?RHNkbE16Vi9uQkhsQkNlNDhlSWduVEJUOCtuNkxPbzI3Sk56a1ZyZ2g1MXZF?=
- =?utf-8?B?Vk80S0E5VVhFNkZBdjk2dDQvdkd4dzlGS3FnQmJmSjFucG5RSXdWS0ZjSWhW?=
- =?utf-8?B?NWxuTThRc0x5MmJhTUlHb3U3L3Nldmw5YW9zZVd0NVp5ZjRpbjFnYnNMMVRG?=
- =?utf-8?B?U2pxMmxwdXpMOGlXRHdjSG45SnVxWGJCMkxjcVdJNFdSMWxTeHlYSFhkazMy?=
- =?utf-8?B?aXZmWkkxRm1JWm1YQ0RQODNOTEtLWmFRWCtrVUgrblNTSUF2M2pkRnpXU3Qr?=
- =?utf-8?B?dmNEMFJkcFl6WTFoTHdoN1pEM0pwYlFJdHA0M3o3KzE5OHdUZWhzSVVvOUM4?=
- =?utf-8?B?Y3c5QW9qL2VzaE1OZVZTc3QvT0VuaHZoK2pWMzVzVGlFLzI1Yk4xb2hYazVT?=
- =?utf-8?B?MFdaVEsvS2lTYkl4VDllNDUwenl4dHQ4dE1RUmVMNi90Q2oySm40VGdQRFQ0?=
- =?utf-8?B?WEo0aDAvczREU1p2d3ZWaXNnYUJGNlpqem81d3JzMnQ2WlNKRUhZRjlLc3Bk?=
- =?utf-8?B?Zi9GTGhmNkJqVFVPeWwzWUFRQWpiOVBvazUzaTlNZG9welhCaGUyYzJKd1ho?=
- =?utf-8?B?N2xoYVpNTHdnMnVWTE14b0xERjEvNWpyMkNuaEpwSkhGMU9iem0raVByTlBa?=
- =?utf-8?B?eElyKzlYWm11cGppbnY5eUtuRWNHNTRvajRIcFFCMUVIU1p3NkQ3R0tPQ2dH?=
- =?utf-8?B?bWN6c1VUNTVacnQvUVd4Y0FUNjRnYTd0WU9oRzVkSWsxcUdVWnBxbjBjVmds?=
- =?utf-8?B?bGk2bTJkL1JObjNQUHlrZHg0dlVvcyt6NTV4bEtxQUR2Y29GcmJMVnJZejlQ?=
- =?utf-8?B?bDBZQ2lWUVhaVndnRjE5RG5zVnBER1YybTFncjN4Vjg5SDhzK2tKSWJWQXZa?=
- =?utf-8?B?emFid05iTVdmT0Q2RUNiODVKVFBoYTViYldiWTZoYmpFSkE4UDA2alV6K0E2?=
- =?utf-8?B?UG83M2hKVlZjd2FVN3RXMzlXWURpbkhlYTdQR3FiNkdOWGlwVk5xRWRrbzMz?=
- =?utf-8?B?UHZBM0FaOGRWSkxNbW15a1MwSGRyOXlkcEZ2dHVQRVBLSi9CV2kwQk92OEZZ?=
- =?utf-8?B?S2NnMWFsNkRCUVFVSlhJYkVJN1pLVHFHZ1BmVHBXU2l0aGRpZHE4QkJJNms0?=
- =?utf-8?B?VkNPYnJSWjMyL2E3dkZqdFYzT1JUUmdiNStxYjdtYWk4OTJyc1ZHSnB0eEdW?=
- =?utf-8?B?SjFrR2g1WXcyTjl3MWNFOExtREljeWJST005ZE8rMjZJdlJGVWNZN1lxalg2?=
- =?utf-8?B?ZG5haThZQlN4OFhZRjA4YmliZVpOY0c5QmwwYi9YcmhUSlBod2FKUU4xRnQz?=
- =?utf-8?B?VTZLeFhuVTkzbmlFbWtqdENFWkpkUjhDemVQTGcyY0JXL2QybFpyUVpkNi9q?=
- =?utf-8?B?ckxObkltMERhU0VEL1krRUliNFNiSjI5K2I0SVRRTzlJRXcxSVVFUzh3bjRV?=
- =?utf-8?B?ejFkQzE0Z0dUZWx4U0FwRlNzRnJwcnFGU1NHRXc0YS80bC9DbHBqQkxvY1VN?=
- =?utf-8?B?a2l5UWVDNUpLeHFrK05QRGs5SGVJTnE1TnlOUldHNVpSdGova1BPMiswZDNq?=
- =?utf-8?B?YzBpR01WVmhFc2hlVm5FWC9kOTNZYWhSek9aYklkcUVxTU9SZklxZjlIdnhu?=
- =?utf-8?B?OEFJenQvWSs3TCtaeGhNYUlodGxDcDBXVUxuTjhabUZISk1Mc3JxUTdIeGVq?=
- =?utf-8?B?U0d6Z2pCaUFkRU96R3pLN2tqeGNzQkVvU1ZTNXNjRVRBKzlXM1BRN3EvWUIy?=
- =?utf-8?B?ZC9oRVRpaXVHcnVkM292eGQwVEsva3ZZekN6eTNJcnZtdUNwVTgrdDJSYzgv?=
- =?utf-8?B?RVdMREx0NFo4b2VYb2FJcS9uNWJkZGRhTVFkRTloYlovQ3dCMVNqdXU1cksx?=
- =?utf-8?B?bW9KaUl1N3E4ME5BNmsyMEZTZjc4RVNxSWtYUjNrOGFXSjkvZFdyWUdsbmQ5?=
- =?utf-8?Q?XHqdye24J/6rBy+g=3D?=
-X-Exchange-RoutingPolicyChecked: kwErCMsccs3dECfZ7o6DmNMn7xSvM4FUB2G9QSul4T386EPKQsLWTvnCUwxg6o3oMI14Ub9uRBDQzTMxKcI/2JJP23Uy1WQalFim7SureKxASO0OQnY8bD57fbiDNaqXJAHvVrEGcoZ/zfUJY43IOq/NUqOsRKS1as9pt3YEV9IIlu5olABGYvLnWU+oqn2uxKObMwwqn/B4R33CA7SA4/BEB9I6K98qp1hA6X0Nr2hcbMqFh4sE16Ce7iYqyUyz6ACLe/9aituKnJcEBTbk5gKIjEN1y8YyP4WvUDgR4svUt8JMoQL9KKOAFj7Z3oZTyHaa8+0nCVi+lvOAFgRBZg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b2cc319-81ee-48fe-7f86-08def8622f23
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 11:09:31.8000
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: musezl18UM0zWpVIf/H+ktMR0YglL7YG73sCEIOTXT73ENT9tkE1oOhZ7b4LpvoXdtqcelb7B1/TqmK4zy9mr2echZzqiOSYDDTq0ysMpWI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF93A1BBECD
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803205011.1249-3-ahmadexp@gmail.com>
 
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-Date: Mon, 10 Aug 2026 11:47:52 -0700
+On Mon, 03 Aug 2026, Ahmad Byagowi wrote:
 
-> The zero-copy path reads TX metadata whenever the UMEM has metadata space,
-> even if the descriptor does not set XDP_TX_METADATA. Pass descriptor
-> options through the metadata helpers and ignore metadata unless the option
-> is set.
+> Add a generic I2C driver for the Lumissil IS32FL3207 18-channel
+> LED controller.
 > 
-> This does not change the existing per-WQE metadata handling for mlx5
-> MPWQEs, where the descriptor that starts a session configures offload state
-> shared by the batch. Supporting mixed metadata states within one MPWQE
-> requires a separate fix.
+> Expose individual and multicolor LEDs through the LED class. Use the
+> default 8-bit 62 kHz PWM mode, derive output current from RISET, and
+> enforce each output current limit with the scaling registers. Honor
+> initial brightness and retained shutdown state. Handle an optional
+> supply and enable GPIO, and serialize controller-wide update latches.
 > 
-> Fixes: 48eb03dd2630 ("xsk: Add TX timestamp and TX checksum offload support")
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
+> ---
+>  MAINTAINERS                        |   1 +
+>  drivers/leds/rgb/Kconfig           |  11 +
+>  drivers/leds/rgb/Makefile          |   1 +
+>  drivers/leds/rgb/leds-is32fl3207.c | 580 +++++++++++++++++++++++++++++
+>  4 files changed, 593 insertions(+)
+>  create mode 100644 drivers/leds/rgb/leds-is32fl3207.c
 
-Reviwed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Looking pretty good now - couple of nits.
 
-Thanks,
-Olek
+> diff --git "a/MAINTAINERS" "b/MAINTAINERS"
+> index 744296f1c..8f2386fd5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13833,6 +13833,7 @@ M:	Ahmad Byagowi <ahmadexp@gmail.com>
+>  L:	linux-leds@vger.kernel.org
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/leds/issi,is32fl3207.yaml
+> +F:	drivers/leds/rgb/leds-is32fl3207.c
+>  
+>  IT87 HARDWARE MONITORING DRIVER
+>  M:	Jean Delvare <jdelvare@suse.com>
+> diff --git "a/drivers/leds/rgb/Kconfig" "b/drivers/leds/rgb/Kconfig"
+> index 6e9ab5f60..c896be131 100644
+> --- a/drivers/leds/rgb/Kconfig
+> +++ b/drivers/leds/rgb/Kconfig
+> @@ -14,6 +14,17 @@ config LEDS_GROUP_MULTICOLOR
+>  	  To compile this driver as a module, choose M here: the module
+>  	  will be called leds-group-multicolor.
+>  
+> +config LEDS_IS32FL3207
+> +	tristate "LED support for ISSI IS32FL3207"
+> +	depends on I2C
+> +	select REGMAP_I2C
+> +	help
+> +	  Say Y here to include support for the Lumissil IS32FL3207
+> +	  18-channel I2C LED controller.
+> +
+> +	  To compile this driver as a module, choose M here: the module will
+> +	  be called leds-is32fl3207.
+> +
+>  config LEDS_KTD202X
+>  	tristate "LED support for KTD202x Chips"
+>  	depends on I2C
+> diff --git "a/drivers/leds/rgb/Makefile" "b/drivers/leds/rgb/Makefile"
+> index cc0f2df66..228923e8b 100644
+> --- a/drivers/leds/rgb/Makefile
+> +++ b/drivers/leds/rgb/Makefile
+> @@ -1,6 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  
+>  obj-$(CONFIG_LEDS_GROUP_MULTICOLOR)	+= leds-group-multicolor.o
+> +obj-$(CONFIG_LEDS_IS32FL3207)		+= leds-is32fl3207.o
+>  obj-$(CONFIG_LEDS_KTD202X)		+= leds-ktd202x.o
+>  obj-$(CONFIG_LEDS_LP5812)		+= leds-lp5812.o
+>  obj-$(CONFIG_LEDS_LP5860_CORE)		+= leds-lp5860-core.o
+> diff --git "a/drivers/leds/rgb/leds-is32fl3207.c" "b/drivers/leds/rgb/leds-is32fl3207.c
+> new file mode 100644
+> index 000000000..08843da96
+> --- /dev/null
+> +++ b/drivers/leds/rgb/leds-is32fl3207.c
+> @@ -0,0 +1,580 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ISSI IS32FL3207 LED controller driver
+> + *
+> + * Copyright 2026 Ahmad Byagowi
+
+Personal copyright?  Is this okay with ISSI?
+
+> + */
+> +
+> +#include <linux/bitmap.h>
+> +#include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/i2c.h>
+> +#include <linux/led-class-multicolor.h>
+> +#include <linux/math64.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/string.h>
+> +
+> +#include <dt-bindings/leds/common.h>
+> +
+> +#define IS32FL3207_NUM_CHANNELS		18
+> +#define IS32FL3207_MAX_BRIGHTNESS	255
+> +
+> +#define IS32FL3207_REG_CONTROL		0x00
+> +#define IS32FL3207_REG_PWM_LOW(channel)	(0x01 + 2 * (channel))
+> +#define IS32FL3207_REG_PWM_UPDATE	0x49
+> +#define IS32FL3207_REG_SCALING(channel)	(0x4a + (channel))
+> +#define IS32FL3207_REG_GLOBAL_CURRENT	0x6e
+> +#define IS32FL3207_REG_RESET		0x7f
+> +
+> +#define IS32FL3207_CONTROL_ENABLE	BIT(0)
+> +#define IS32FL3207_GLOBAL_CURRENT_MAX	0xff
+> +
+> +/* IOUT(MAX) in microamperes = 76,500,000 / RISET in ohms. */
+> +#define IS32FL3207_CURRENT_NUMERATOR	76500000ULL
+> +
+> +struct is32fl3207;
+
+No forward declarations.
+
+This should not be possible:
+
+chip->leds[i]->chip->leds[i]->chip->leds[i]->chip->leds[i]->[...]
+
+We usually use container_of()
+
+> +struct is32fl3207_led {
+> +	struct is32fl3207 *chip;
+> +	struct led_classdev *led_cdev;
+> +	union {
+> +		struct led_classdev cdev;
+> +		struct led_classdev_mc mcdev;
+> +	};
+> +	unsigned int channel;
+> +};
+> +
+> +struct is32fl3207 {
+> +	struct device *dev;
+> +	struct regmap *regmap;
+> +	struct gpio_desc *enable_gpio;
+> +	struct mutex lock; /* Serializes controller register updates. */
+> +	unsigned long channels[BITS_TO_LONGS(IS32FL3207_NUM_CHANNELS)];
+> +	u32 output_max_microamp;
+> +	unsigned int num_leds;
+> +	struct is32fl3207_led leds[] __counted_by(num_leds);
+> +};
+> +
+> +static int is32fl3207_parse_led_properties(struct is32fl3207 *chip,
+> +					   struct fwnode_handle *fwnode,
+> +					   unsigned int *max_brightness,
+> +					   unsigned int *brightness)
+> +{
+> +	enum led_default_state default_state;
+> +	u32 value;
+> +	int ret;
+> +
+> +	*max_brightness = IS32FL3207_MAX_BRIGHTNESS;
+> +	if (fwnode_property_present(fwnode, "max-brightness")) {
+> +		ret = fwnode_property_read_u32(fwnode, "max-brightness", &value);
+> +		if (ret)
+> +			return dev_err_probe(chip->dev, ret,
+> +					     "failed to read maximum brightness for %pfw\n",
+> +					     fwnode);
+> +		if (!value || value > IS32FL3207_MAX_BRIGHTNESS)
+> +			return dev_err_probe(chip->dev, -EINVAL,
+> +					     "invalid maximum brightness %u for %pfw\n",
+> +					     value, fwnode);
+> +
+> +		*max_brightness = value;
+> +	}
+> +
+> +	value = *max_brightness;
+> +	if (fwnode_property_present(fwnode, "default-brightness")) {
+> +		ret = fwnode_property_read_u32(fwnode, "default-brightness",
+> +					       &value);
+> +		if (ret)
+> +			return dev_err_probe(chip->dev, ret,
+> +					     "failed to read default brightness for %pfw\n",
+> +					     fwnode);
+> +		if (value > *max_brightness)
+> +			return dev_err_probe(chip->dev, -EINVAL,
+> +					     "invalid default brightness %u for %pfw\n",
+> +					     value, fwnode);
+> +	}
+> +
+> +	default_state = led_init_default_state_get(fwnode);
+> +	if (default_state == LEDS_DEFSTATE_KEEP)
+> +		return dev_err_probe(chip->dev, -EINVAL,
+> +				     "default state keep is not supported for %pfw\n",
+> +				     fwnode);
+> +
+> +	*brightness = default_state == LEDS_DEFSTATE_ON ? value : LED_OFF;
+
+Why not return brightness instead of passing around pointers to ints?
+
+> +	return 0;
+> +}
+> +
+> +static int is32fl3207_validate_component(struct is32fl3207 *chip,
+> +					 struct fwnode_handle *fwnode)
+> +{
+> +	static const char * const unsupported[] = {
+> +		"default-brightness",
+> +		"default-state",
+> +		"max-brightness",
+> +		"retain-state-shutdown",
+> +	};
+> +	unsigned int i;
+
+Put this in the for():
+
+for (int i = 0; ...
+
+Same for all of the others.
+
+> +
+> +	for (i = 0; i < ARRAY_SIZE(unsupported); i++)
+
+Put this in braces.
+
+I wonder if checkpatch.pl would pick this up?
+
+> +		if (fwnode_property_present(fwnode, unsupported[i]))
+> +			return dev_err_probe(chip->dev, -EINVAL,
+> +					     "%s is not supported for component %pfw\n",
+> +					     unsupported[i], fwnode);
+> +
+> +	return 0;
+> +}
+> +
+> +static int is32fl3207_write_channels(struct is32fl3207 *chip,
+> +				     const struct mc_subled *subleds,
+> +				     unsigned int num_channels)
+> +{
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	guard(mutex)(&chip->lock);
+> +
+> +	for (i = 0; i < num_channels; i++) {
+
+The number of channels that you write two always start at 0?
+
+> +		ret = regmap_write(chip->regmap,
+> +				   IS32FL3207_REG_PWM_LOW(subleds[i].channel),
+> +				   subleds[i].brightness);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return regmap_write(chip->regmap, IS32FL3207_REG_PWM_UPDATE, 0);
+> +}
+> +
+> +static int is32fl3207_brightness_set(struct led_classdev *cdev,
+> +				     enum led_brightness brightness)
+> +{
+> +	struct is32fl3207_led *led = container_of(cdev, struct is32fl3207_led,
+> +						     cdev);
+
+Use 100-chars everywhere.
+
+> +	struct mc_subled subled = {
+> +		.brightness = brightness,
+> +		.channel = led->channel,
+> +	};
+> +
+> +	return is32fl3207_write_channels(led->chip, &subled, 1);
+> +}
+> +
+> +static int is32fl3207_mc_brightness_set(struct led_classdev *cdev,
+> +					enum led_brightness brightness)
+> +{
+> +	struct led_classdev_mc *mcdev = lcdev_to_mccdev(cdev);
+> +	struct is32fl3207_led *led = container_of(mcdev, struct is32fl3207_led,
+> +						     mcdev);
+> +
+> +	led_mc_calc_color_components(mcdev, brightness);
+> +
+> +	return is32fl3207_write_channels(led->chip, mcdev->subled_info,
+> +					    mcdev->num_colors);
+> +}
+> +
+> +static int is32fl3207_configure_channel(struct is32fl3207 *chip,
+> +					struct fwnode_handle *fwnode,
+> +					unsigned int *channel)
+> +{
+> +	u64 scaling;
+> +	u32 max_microamp;
+> +	u32 reg;
+> +	int ret;
+> +
+> +	ret = fwnode_property_read_u32(fwnode, "reg", &reg);
+> +	if (ret)
+> +		return dev_err_probe(chip->dev, ret,
+> +				     "failed to read channel for %pfw\n", fwnode);
+> +
+> +	if (reg >= IS32FL3207_NUM_CHANNELS)
+> +		return dev_err_probe(chip->dev, -EINVAL,
+> +				     "channel %u is out of range\n", reg);
+> +
+> +	if (test_bit(reg, chip->channels))
+> +		return dev_err_probe(chip->dev, -EINVAL,
+> +				     "channel %u is used more than once\n", reg);
+> +
+> +	ret = fwnode_property_read_u32(fwnode, "led-max-microamp",
+> +				       &max_microamp);
+
+Odd wrap.
+
+> +	if (ret)
+> +		return dev_err_probe(chip->dev, ret,
+> +				     "failed to read current limit for channel %u\n",
+> +				     reg);
+> +
+> +	if (!max_microamp || max_microamp > chip->output_max_microamp)
+> +		return dev_err_probe(chip->dev, -EINVAL,
+> +				     "invalid current limit %u uA for channel %u\n",
+> +				     max_microamp, reg);
+> +
+> +	/* GCC is fixed at 0xff, so use each output's scaling register. */
+> +	scaling = div_u64((u64)max_microamp * 256 * 256,
+
+No magic numbers.  Define whatever these are so we don't have to guess.
+
+> +			  (u64)chip->output_max_microamp *
+> +			  IS32FL3207_GLOBAL_CURRENT_MAX);
+> +	if (!scaling)
+> +		return dev_err_probe(chip->dev, -EINVAL,
+> +				     "current limit %u uA is below channel %u resolution\n",
+> +				     max_microamp, reg);
+> +
+> +	scaling = min_t(u64, scaling, 0xff);
+
+Here as well and everywhere else you use raw values.
+
+> +	ret = regmap_write(chip->regmap, IS32FL3207_REG_SCALING(reg),
+> +			   (unsigned int)scaling);
+> +	if (ret)
+> +		return ret;
+> +
+> +	set_bit(reg, chip->channels);
+> +	*channel = reg;
+
+Return channel?
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int is32fl3207_register_single(struct is32fl3207 *chip,
+> +				      struct fwnode_handle *fwnode,
+> +				      struct is32fl3207_led *led)
+> +{
+> +	struct led_init_data init_data = {
+> +		.devicename = dev_name(chip->dev),
+> +		.devname_mandatory = true,
+> +		.fwnode = fwnode,
+> +	};
+> +	unsigned int max_brightness;
+> +	unsigned int brightness;
+> +	u32 color;
+> +	int ret;
+> +
+> +	ret = is32fl3207_parse_led_properties(chip, fwnode,
+> +					      &max_brightness, &brightness);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (fwnode_property_present(fwnode, "color")) {
+> +		ret = fwnode_property_read_u32(fwnode, "color", &color);
+> +		if (ret)
+> +			return dev_err_probe(chip->dev, ret,
+> +					     "failed to read color for %pfw\n",
+> +					     fwnode);
+
+No need to squash this together.  It's kinder of the eye if you '\n'.
+
+> +		if (color >= LED_COLOR_ID_MAX || color == LED_COLOR_ID_MULTI ||
+> +		    color == LED_COLOR_ID_RGB)
+> +			return dev_err_probe(chip->dev, -EINVAL,
+> +					     "invalid single LED color %u\n", color);
+> +	}
+> +
+> +	ret = is32fl3207_configure_channel(chip, fwnode, &led->channel);
+> +	if (ret)
+> +		return ret;
+
+'\n'
+
+> +	led->chip = chip;
+> +	led->led_cdev = &led->cdev;
+> +	led->cdev.brightness = brightness;
+> +	led->cdev.max_brightness = max_brightness;
+> +	led->cdev.brightness_set_blocking = is32fl3207_brightness_set;
+> +
+> +	ret = is32fl3207_brightness_set(&led->cdev, brightness);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_led_classdev_register_ext(chip->dev, &led->cdev, &init_data);
+> +}
+> +
+> +static int is32fl3207_register_multicolor(struct is32fl3207 *chip,
+> +					  struct fwnode_handle *fwnode,
+> +					  struct is32fl3207_led *led)
+> +{
+> +	struct led_init_data init_data = {
+> +		.devicename = dev_name(chip->dev),
+> +		.devname_mandatory = true,
+> +		.fwnode = fwnode,
+> +	};
+> +	struct mc_subled *subleds;
+> +	DECLARE_BITMAP(color_map, LED_COLOR_ID_MAX);
+> +	unsigned int max_brightness;
+> +	unsigned int brightness;
+> +	unsigned int count;
+> +	unsigned int i = 0;
+> +	u32 group_color;
+> +	u32 group_reg;
+> +	unsigned int first_channel = IS32FL3207_NUM_CHANNELS;
+> +	int ret;
+> +
+> +	ret = is32fl3207_parse_led_properties(chip, fwnode,
+> +					      &max_brightness, &brightness);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = fwnode_property_read_u32(fwnode, "color", &group_color);
+> +	if (ret)
+> +		return dev_err_probe(chip->dev, ret,
+> +				     "failed to read color for %pfw\n", fwnode);
+> +
+> +	if (group_color != LED_COLOR_ID_RGB &&
+> +	    group_color != LED_COLOR_ID_MULTI)
+> +		return dev_err_probe(chip->dev, -EINVAL,
+> +				     "invalid multicolor LED color %u\n", group_color);
+> +
+> +	ret = fwnode_property_read_u32(fwnode, "reg", &group_reg);
+> +	if (ret)
+> +		return dev_err_probe(chip->dev, ret,
+> +				     "failed to read group index for %pfw\n", fwnode);
+> +
+> +	count = fwnode_get_child_node_count(fwnode);
+> +	if (!count || count > LED_COLOR_ID_MAX)
+> +		return dev_err_probe(chip->dev, -EINVAL,
+> +				     "invalid component count %u for %pfw\n",
+> +				     count, fwnode);
+> +
+> +	subleds = devm_kcalloc(chip->dev, count, sizeof(*subleds), GFP_KERNEL);
+> +	if (!subleds)
+> +		return -ENOMEM;
+
+'\n'
+
+> +	bitmap_zero(color_map, LED_COLOR_ID_MAX);
+> +
+> +	fwnode_for_each_child_node_scoped(fwnode, child) {
+> +		u32 color;
+> +
+> +		ret = is32fl3207_validate_component(chip, child);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = fwnode_property_read_u32(child, "color", &color);
+> +		if (ret)
+> +			return dev_err_probe(chip->dev, ret,
+> +					     "failed to read color for %pfw\n",
+> +					     child);
+> +
+> +		if (color >= LED_COLOR_ID_MAX || color == LED_COLOR_ID_MULTI ||
+> +		    color == LED_COLOR_ID_RGB)
+> +			return dev_err_probe(chip->dev, -EINVAL,
+> +					     "invalid component color %u\n", color);
+
+'\n'
+
+> +		if (test_and_set_bit(color, color_map))
+> +			return dev_err_probe(chip->dev, -EINVAL,
+> +					     "component color %u is used more than once\n",
+> +					     color);
+> +
+> +		ret = is32fl3207_configure_channel(chip, child,
+> +						   &subleds[i].channel);
+> +		if (ret)
+> +			return ret;
+> +
+> +		subleds[i].color_index = color;
+> +		subleds[i].intensity = max_brightness;
+> +		subleds[i].max_intensity = 0;
+> +		first_channel = min(first_channel, subleds[i].channel);
+> +		i++;
+> +	}
+> +
+> +	if (group_reg != first_channel)
+> +		return dev_err_probe(chip->dev, -EINVAL,
+> +				     "group index %u does not match first channel %u\n",
+> +				     group_reg, first_channel);
+> +
+> +	led->chip = chip;
+> +	led->led_cdev = &led->mcdev.led_cdev;
+> +	led->mcdev.num_colors = count;
+> +	led->mcdev.subled_info = subleds;
+> +	led->mcdev.led_cdev.brightness = brightness;
+> +	led->mcdev.led_cdev.max_brightness = max_brightness;
+> +	led->mcdev.led_cdev.brightness_set_blocking =
+> +		is32fl3207_mc_brightness_set;
+> +
+> +	led_mc_calc_color_components(&led->mcdev, brightness);
+> +
+> +	ret = is32fl3207_write_channels(chip, subleds, count);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_led_classdev_multicolor_register_ext(chip->dev, &led->mcdev,
+> +						     &init_data);
+> +}
+> +
+> +static int is32fl3207_hw_init(struct is32fl3207 *chip)
+> +{
+> +	u8 scaling[IS32FL3207_NUM_CHANNELS];
+> +	u8 pwm[2 * IS32FL3207_NUM_CHANNELS] = { };
+
+36 Bytes of zeros that is never populated?
+
+> +	int ret;
+> +
+> +	ret = regmap_write(chip->regmap, IS32FL3207_REG_CONTROL,
+> +			   IS32FL3207_CONTROL_ENABLE);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_write(chip->regmap, IS32FL3207_REG_RESET, 0);
+> +	if (ret)
+> +		return ret;
+
+'\n'
+
+> +	usleep_range(200, 300);
+> +
+> +	ret = regmap_write(chip->regmap, IS32FL3207_REG_CONTROL,
+> +			   IS32FL3207_CONTROL_ENABLE);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_write(chip->regmap, IS32FL3207_REG_GLOBAL_CURRENT,
+> +			   IS32FL3207_GLOBAL_CURRENT_MAX);
+> +	if (ret)
+> +		return ret;
+> +
+> +	memset(scaling, 0xff, sizeof(scaling));
+> +	ret = regmap_bulk_write(chip->regmap, IS32FL3207_REG_SCALING(0),
+> +				scaling, sizeof(scaling));
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_bulk_write(chip->regmap, IS32FL3207_REG_PWM_LOW(0), pwm,
+> +				sizeof(pwm));
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_write(chip->regmap, IS32FL3207_REG_PWM_UPDATE, 0);
+> +}
+> +
+> +static void is32fl3207_disable(void *data)
+> +{
+> +	struct is32fl3207 *chip = data;
+> +
+> +	guard(mutex)(&chip->lock);
+
+'\n'
+
+> +	regmap_write(chip->regmap, IS32FL3207_REG_CONTROL, 0);
+> +	if (chip->enable_gpio)
+> +		gpiod_set_value_cansleep(chip->enable_gpio, 0);
+> +}
+> +
+> +static const struct regmap_config is32fl3207_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.max_register = IS32FL3207_REG_RESET,
+> +};
+> +
+> +static int is32fl3207_probe(struct i2c_client *client)
+> +{
+> +	struct device *dev = &client->dev;
+> +	struct is32fl3207 *chip;
+> +	unsigned int count;
+> +	unsigned int i = 0;
+> +	u32 riset_ohms;
+> +	int ret;
+> +
+> +	count = device_get_child_node_count(dev);
+> +	if (!count || count > IS32FL3207_NUM_CHANNELS)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "invalid LED count %u\n", count);
+> +
+> +	chip = devm_kzalloc(dev, struct_size(chip, leds, count), GFP_KERNEL);
+> +	if (!chip)
+> +		return -ENOMEM;
+> +
+> +	chip->dev = dev;
+> +	chip->num_leds = count;
+> +	i2c_set_clientdata(client, chip);
+> +
+> +	ret = device_property_read_u32(dev, "issi,riset-ohms", &riset_ohms);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to read RISET value\n");
+> +
+> +	if (riset_ohms < 2000)
+
+Another define, etc.
+
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "RISET value %u is below 2000 ohms\n",
+> +				     riset_ohms);
+> +
+> +	chip->output_max_microamp = div_u64(IS32FL3207_CURRENT_NUMERATOR,
+> +					    riset_ohms);
+> +	if (!chip->output_max_microamp)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "RISET value %u is too large\n", riset_ohms);
+> +
+> +	ret = devm_regulator_get_enable_optional(dev, "vcc");
+> +	if (ret && ret != -ENODEV)
+> +		return dev_err_probe(dev, ret, "failed to enable VCC regulator\n");
+> +
+> +	chip->enable_gpio = devm_gpiod_get_optional(dev, "enable",
+> +						    GPIOD_OUT_HIGH);
+> +	if (IS_ERR(chip->enable_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(chip->enable_gpio),
+> +				     "failed to get enable GPIO\n");
+> +
+> +	if (chip->enable_gpio)
+> +		usleep_range(1000, 2000);
+> +
+> +	chip->regmap = devm_regmap_init_i2c(client, &is32fl3207_regmap_config);
+> +	if (IS_ERR(chip->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(chip->regmap),
+> +				     "failed to allocate register map\n");
+> +
+> +	ret = devm_mutex_init(dev, &chip->lock);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_add_action_or_reset(dev, is32fl3207_disable, chip);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = is32fl3207_hw_init(chip);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to initialize controller\n");
+> +
+> +	device_for_each_child_node_scoped(dev, child) {
+> +		struct is32fl3207_led *led = &chip->leds[i];
+> +
+> +		if (fwnode_get_child_node_count(child))
+> +			ret = is32fl3207_register_multicolor(chip, child, led);
+> +		else
+> +			ret = is32fl3207_register_single(chip, child, led);
+> +		if (ret)
+> +			return ret;
+> +
+> +		i++;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void is32fl3207_shutdown(struct i2c_client *client)
+> +{
+> +	struct is32fl3207 *chip = i2c_get_clientdata(client);
+> +	bool retain_state = false;
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < chip->num_leds; i++)
+
+"Also, use braces when a loop contains more than a single simple statement"
+
+Goes for everywhere.  Make sure you run checkpatch.pl.
+
+> +		if (chip->leds[i].led_cdev->flags & LED_RETAIN_AT_SHUTDOWN) {
+> +			retain_state = true;
+> +			break;
+> +		}
+> +
+> +	if (!retain_state) {
+> +		is32fl3207_disable(chip);
+> +		return;
+> +	}
+> +
+> +	for (i = 0; i < chip->num_leds; i++) {
+> +		struct led_classdev *cdev = chip->leds[i].led_cdev;
+> +
+> +		if (cdev->flags & LED_RETAIN_AT_SHUTDOWN)
+> +			continue;
+
+'\n'
+
+> +		if (cdev->flags & LED_MULTI_COLOR)
+> +			is32fl3207_mc_brightness_set(cdev, LED_OFF);
+> +		else
+> +			is32fl3207_brightness_set(cdev, LED_OFF);
+> +	}
+> +}
+> +
+> +static const struct of_device_id is32fl3207_of_match[] = {
+> +	{ .compatible = "issi,is32fl3207" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, is32fl3207_of_match);
+> +
+> +static const struct i2c_device_id is32fl3207_id[] = {
+> +	{ .name = "is32fl3207" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, is32fl3207_id);
+> +
+> +static struct i2c_driver is32fl3207_driver = {
+> +	.driver = {
+> +		.name = "is32fl3207",
+> +		.of_match_table = is32fl3207_of_match,
+> +	},
+> +	.probe = is32fl3207_probe,
+> +	.shutdown = is32fl3207_shutdown,
+> +	.id_table = is32fl3207_id,
+> +};
+> +module_i2c_driver(is32fl3207_driver);
+> +
+> +MODULE_AUTHOR("Ahmad Byagowi <ahmadexp@gmail.com>");
+> +MODULE_DESCRIPTION("Lumissil IS32FL3207 LED controller driver");
+
+Lumissil != ISSI - so which is it?
+
+> +MODULE_LICENSE("GPL");
+> -- 
+> 2.50.1 (Apple Git-155)
+> 
+
+-- 
+Lee Jones
