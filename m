@@ -1,133 +1,116 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E383C584E
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 08:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786524963; cv=pass; b=EKlYVBNsscYM9SoMNYUgz58gOUe2r4Jzgfqi8yeYB6ByXlaSqOPj8816KIMsgAsRXjCqXcDRE5qVTecAigh7D9OBau0Obf61V+Wj3SUMxMmlHIuJtjwT8VEx4oQCTf27+l9B6F0GAOSW2wGb+2Ic3EITJ2/DjO67kIHW2q/XYAA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786524963; c=relaxed/simple;
-	bh=T47o19nBajxd3p0ACIKnx6C1FG4G9r6jP2ZaIp76pfw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cysJlQ/DVwqJG0eo0+5tGE76xobccxw3MnEJfDyyS4mkTz5eqEJlmLKFA7PnLfDynKXWMvgO6iA5jr+FUsBsymPEL0JwJdDkwFRNpljwCyzTvGtaL+64L59mE0IswgDs/4BwJKWI8P7sHq9vIH6IDmVRMXuoBcBRAknWu8YWBN8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VvTIVOqW; arc=pass smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BE03290AA;
+	Wed, 12 Aug 2026 08:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786525132; cv=none; b=qVRHN48dh2D/W4d+AjmPbTEkESWcqiIHsH2zWLp6rTiuimuQCvCIC+Go+Cr01Q2W4OIIe6QkU+IlLelDSiQVAGLLbQen7F/97Ra+y/LJIE86gX5WyuwTBrePKgMSjeuZvj3DqCM6NAZiiiU3GvTrQLm5ue8WmJivgUcYuKLZIHU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786525132; c=relaxed/simple;
+	bh=TIUNcsdx7eirVf4HUBYkbx/VZpXBj7srvu6LEKhSZqc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LDe/4f9L8pKeO/TqYBYmlr9IptQhZiX4z6vCKtPiWo6DSrxWMW2d0bmlB0/SS8fNIQxoOQQY5DnoC/XmUh2cBR2fT5+pAm9TV1rtxM7oZ2y9GoiO75hdGyTsLBxCI+PvV11peD+C8aS/7x1tBJ7A+i3+VHWvUmJgtbuJ9RmnpUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ViE9QW38; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VvTIVOqW"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c0c45c580so5023911cf.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:56:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786524961; cv=none;
-        d=google.com; s=arc-20260327;
-        b=beNpkwPAzvJhyvZTXtkLiw7y0L5Msklv9z+nmnjPta0/woUCbZneliVafeByfWpy3b
-         p+X/q5GG2S2wJWiNMWJHxVFdN+CJtwUOPBkkMrgAqUVfa2iqWqVOiB/PtlXY5WzXGhfR
-         NaR6F8gdlC+c973mbmUg447QcdMxM3YxD4oCKhTtPQc50neItupsKofEXONATbigBQ8G
-         v0vZZHZmcREFVx1kuKe0myp8hWQD2+WRXDWZTtW8HahofxA/SrTAazpUX6sLywBBIWM/
-         s5LlQmp/DkXFFGb0MtdxdG7xH/pGtdYoGoSkJ5mCixrQpEM1ZoV9CmtVKz0G01Z1d919
-         2AtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jUwXr+rZIPE4gfL0LfQClG7NcT5w6hgDoBAgrbWjs84=;
-        fh=qICNnB3IttTpKUwCjPdmg9n/J34Fqe09blsgRBMmxFA=;
-        b=JipZRpz/52MqwPT0lMn5pQJXaWgzVm6kSpYtLigfEhMNH2C+OmZ5/3FSSZQmQZnOvt
-         dZ/3KtxHtCbSzgqKJ/lFDYbrhzGon1k8/a3XMposo2rY8pXpN6p0pelIcF8lmVuwXVuI
-         XR5d6hF8K6KLSxr9TRKjImXOLbLQnJgmm2tpBBltnpCSsStc0p3ZkghF/RP+a+ssx9EK
-         vWLrlqoSKq3daRd4BhQ/aFRiPahrKkMx7YLga/w/nobp+ggGK7vCrSUaVbmBvkYiDx6n
-         iJgw0Nsb6wi7Jqo0Sogp2RUZgL4JzkNPiAg3lmsc8Eb2R9j7fZ6nO8pg8vxO8X2ohmxL
-         cj/w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786524961; x=1787129761; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jUwXr+rZIPE4gfL0LfQClG7NcT5w6hgDoBAgrbWjs84=;
-        b=VvTIVOqW1Rqrz+HbaqaAoBBvPYdqJxWoVBzE/IBUFFz3sbONLxrXODwy3/hS4DKHxB
-         lsVlWTyCxX5++RkEDhkjItswB8xzpqLyoFxUdxnAv7LYw+VuNFHxhdLylOLWdQr73CVw
-         IZnvrRl6dfdSKYXDvUOpn7GfgI7LIHJI0dU/AH8parK+6B8LxAtfOoJNGu7Zu3Mn7D87
-         Gtn8mPiSZN43/V6JXQzDX2MjNaV6qrQEM3t9NbvxotL9DeC8/QOgTT6EkLpsbg+igCyL
-         rDLNhSfkmeIxh7JZRskvttFfw54D8JrPF4dBoiYsXF7kA1kNsRC9mfcyF4U7dbMc2kyC
-         +52A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786524961; x=1787129761;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jUwXr+rZIPE4gfL0LfQClG7NcT5w6hgDoBAgrbWjs84=;
-        b=JqSJrgyTZN2dLHFL+ucjyXWy/Xw8ieaNu1KW3BZ3CgbS0kuP8hS4VC0XSmWyrF+l2H
-         L6F5NaOumYbuNTBytGvqW2JLH6tuQ30fWYDppZF/+QyDkryF1oBB/L77QhPfyH8aoelX
-         LFbtQ4m1NTlBbsagnLKe2kDkLPq8k/t1KSnhbhV8UxXpnevB/cYyMS7N6LJhK6cwW2U0
-         JuJo6/zcuiePkRHOcPw4zXJ4L3K+uY0M2/35zGNnv+DBQuSKGgq8RQvc3/UH6i8TBdVq
-         GsaemxD9Iv26g3E7E5L7ZKds/oV264bjs60vTEoA9jrVSGgvQ5x/5Ess7gYflm2tfKyR
-         11kA==
-X-Forwarded-Encrypted: i=1; AHgh+RrWOQQs8PPxf7t1SX6FOPDh98lAOzLiGtyN/l0dlIcbbU+Lr05my9ggj5Bjd9q+cruPT31/DeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcV2Nzj1YZ5f0EyiVhOaOZQLZqlm6NLMOgn7ipC2jC/K6OYiay
-	KwRlQiXEu2ZaHNMUJ91Xwun8+FkqnL10WQjCfW6bz4P75kVHPnmuW38zHZohNH3fsnzsf2gcBVD
-	3d5xNEmGm7mZas3HnKWPFvnCcGfDa9LyHOBGsheud
-X-Gm-Gg: AR+sD11u1aUAWiQGWohx5iHScQeaIsfgZSnx5YScuLpIl9+5MN+oTGxmH2C+YDOsn3q
-	hCVdaScRBzla9L3Sw+fRW7IzXkOPW/3suC0UxQZXrT0PWsNWQCV/gA0270q4eKpH4dz3DmVHZo5
-	Jk7KDN7LxdM0R884uV7gFULJdDkYYbjYQjU4TlgW8c04HHBVIOJkXaNfP+Gym/sSEP95bKSmqJ3
-	wi1XuOnMq7ghwWpZewFx0anKx6SIMAGW/yrYLCJFmPjEGgzyuYlYkji5l6Ck0DIr5v+S8DCCA12
-	G2athwzMPPukmVd53Z/6q5xmkhHNyuOtwR/D8H7c/2kLzfkzVBuLBj1WjHKgKz9ITZJ/ngU/0tt
-	H5ppHXl1xvVC0jte9nYBxHopn0CvBUUaBlSE2k0pwQPmW/wpDS+L8+VOf9bjWLqioonKL6/PMwt
-	+vGtE4I05QY0k1G5E=
-X-Received: by 2002:a05:622a:14d4:b0:517:8011:3a4d with SMTP id
- d75a77b69052e-52d648063dbmr27368051cf.20.1786524960853; Wed, 12 Aug 2026
- 01:56:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ViE9QW38"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67C612kX1934024;
+	Wed, 12 Aug 2026 01:58:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=TIUNcsdx7eirVf4HUBYkbx/VZ
+	pXBj7srvu6LEKhSZqc=; b=ViE9QW38ssvwfeSMmyChyuLPtXUCqGvPP1k+87YxD
+	kQUskq/GP2L8iXNPOnJZ4ZQFipJEAQDEMD/L198fWejlnjeOFHPWStfdFkb3RV1H
+	9gNhwwdrtIlZJIn8cdsV4OJF+7n6XPnsqVLnedJKpp6NsubtcFxxvDaDPr04axpk
+	vV0zC/q4Ao3C9rHhlglImB2ZGWzT+xRhsqZQbEXOiU+ifev/MD6tSP6Y6KFHahQf
+	FNid1PShSboatOkUkwMvXhcn4qBWsFkLhssp92f/Aog86yExMT54YSrmmFui4te9
+	btouor27AgBcAEQiky59Uw/LyIAO9twDhI7KARDLHMZyw==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g0deh99fu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Aug 2026 01:58:09 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 12 Aug 2026 01:58:09 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 12 Aug 2026 01:58:09 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id B2C453F7077;
+	Wed, 12 Aug 2026 01:58:04 -0700 (PDT)
+Date: Wed, 12 Aug 2026 14:28:03 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
+        <davem@davemloft.net>, <edumazet@google.com>, <hawk@kernel.org>,
+        <john.fastabend@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <sdf@fomichev.me>, <sgoutham@marvell.com>
+Subject: Re: [PATCH v7 net-next] octeontx2-pf: add mqprio bandwidth offload
+ for NIX TX schedulers
+Message-ID: <anw1mz7NYdDbTAdN@rkannoth-OptiPlex-7090>
+References: <20260811085050.3212280-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811095237.2314234-1-edumazet@google.com>
-In-Reply-To: <20260811095237.2314234-1-edumazet@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 12 Aug 2026 10:55:49 +0200
-X-Gm-Features: AUfX_mzGxqJVOavTuCjfhHsLo4By6nxgn2TWJI5gCQhH-4WiQvEUy1h_BwmzYIA
-Message-ID: <CANn89iLdtWLvwaHMk+dCxtidQf6Npfny6beFE3h4PVhWH9kadA@mail.gmail.com>
-Subject: Re: [PATCH v3 net-next] gre: fix ERSPAN o_flags race/corruption in
- xmit and fill_info
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260811085050.3212280-1-rkannoth@marvell.com>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDA3MSBTYWx0ZWRfX+Jg+TtHWaTxv
+ 9K027UpLieAUI+twNXcxJquFW2Xg8p3q9/qms9vSihQz3W12ywMRQ/f968FmjBH1XrmxdjVlzqP
+ Z0JZYMtukfXOKNGJyZUT3jTrovZDS7U=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDA3MSBTYWx0ZWRfXxZQcRj125i62
+ kfXUohNaNApXV1APFDdWIYGoDoXtj4mA90B+Y/H+QNmltJLucgeGoQR04UIvpcKJDiY0cUPf400
+ t7+i2UTDkm0zL/ilphemgfolawN55ZSugrxi3WSjVH78Y5LeS3e0lHeerDJAKOaxy3m6irhCdDQ
+ stLXACTHqP3BGgdnPZ4OOWcxp6vHNG2jr8jCLQ9VBis7bzGVD3jXmGwMcTNi5E33mwVUcOxW/0r
+ OmcWKYmCH/409DZAzmdiYajxbB/onNgQ6TZSlrwSGABvoUcak9vih0/HjhmzyyN40BSnIlCTEld
+ 7a+Gg5xByVoowU6QGckBZ+qGYszS3W5E2q2VydOgGN8vcUD7FubOIlCP7Hgo4CxhxxEiWTDw70s
+ maNAvEFfSLo3KIc6lSxWKLx9jDGNHGNgVj7ASrcpcPIQ0B2qiGtUMeX4+NI55Yue3i2/JC4iIoz
+ VgUzCxMmCsyKOETv/Fg==
+X-Authority-Analysis: v=2.4 cv=crirVV4i c=1 sm=1 tr=0 ts=6a7c35a1 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=9R54UkLUAAAA:8
+ a=M5GUcnROAAAA:8 a=5TXRcTkNFt69AM2IH6YA:9 a=CjuIK1q_8ugA:10
+ a=YTcpBFlVQWkNscrzJ_Dz:22 a=OBjm3rFKGHvpk9ecZwUJ:22 a=Oh551-UHZqmTy8JkqTUo:22
+X-Proofpoint-ORIG-GUID: hV50G04ClJnWhEVv3X9XYgipQN5tb4_G
+X-Proofpoint-GUID: hV50G04ClJnWhEVv3X9XYgipQN5tb4_G
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_02,2026-08-10_03,2025-10-01_01
 
-On Tue, Aug 11, 2026 at 11:52=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
- wrote:
+On 2026-08-11 at 14:20:50, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> Add TC_SETUP_QDISC_MQPRIO handling to offload per-queue MDQ CIR/PIR
+> shaping for mqprio channel mode with TC_MQPRIO_SHAPER_BW_RATE. When
+> bandwidth offload is enabled, allocate one SMQ per non-QoS transmit
+> queue, parent all MDQs under TL4[0], and program min/max rates by
+> dividing each traffic class byte/s limit across its queues.
 >
-> For IPv4 ERSPAN:
-> In erspan_xmit(), the driver clears IP_TUNNEL_SEQ_BIT (for version 0)
-> and IP_TUNNEL_KEY_BIT directly in the shared tunnel->parms.o_flags
-> structure. Since transmit paths can run locklessly and concurrently,
-> this leads to a data race.
+> Setting up or tearing down the offload restarts the netdev via
+> ndo_stop()/ndo_open() to rebuild the TX scheduler hierarchy. That
+> clears carrier, tears down IRQ/NAPI and drops in-flight traffic; if
+> ndo_open() fails the interface is left administratively down. Offload
+> setup is rejected unless the interface is already running.
 >
-> Furthermore, modifying tunnel->parms.o_flags permanently alters the
-> tunnel configuration. To work around this, erspan_fill_info() (which
-> reports config to userspace) was setting IP_TUNNEL_KEY_BIT back. If
-> erspan_fill_info (running under RTNL) and erspan_xmit (running locklessly=
-)
-> race, erspan_xmit might see IP_TUNNEL_KEY_BIT set when it shouldn't,
-> leading to GRE header corruption (injecting a key field into the ERSPAN
-> GRE header).
->
-> Fix this by:
-> 1) Passing flags as an argument to __gre_xmit().
-> 2) Using local flags in erspan_xmit() and passing them to __gre_xmit().
-> 3) Removing the racy modification of t->parms.o_flags in erspan_fill_info=
-().
-> 4) Forcing IP_TUNNEL_KEY_BIT in the reported flags for ERSPAN locally
->    in ipgre_fill_info().
+> Reject incompatible configurations (HTB, PFC, XDP, SDP rep, missing
+> CIR+PIR support) and out-of-range rates. Validate queue mappings
+> against hw.non_qos_queues and reject per-TC rates smaller than the
+> queue count that integer division would truncate to zero. Track offload
+> state in mqprio_rate_limit instead of pfvf->flags to avoid races with
+> the mbox up-handler, skip spurious teardown on tc qdisc replace, and
+> clear all MDQ shapers before applying a new mapping so queues dropped
+> from a TC layout do not retain stale limits. Restore cached shapers
+> across routine netdev stop/open via otx2_mqprio_up().
 
-It seems sashiko found one issue, a V4 is needed.
+Will address sashiko issues in v8
 
-https://sashiko.dev/#/patchset/20260811095237.2314234-1-edumazet%40google.c=
-om
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260811085050.3212280-1-rkannoth%40marvell.com
 
-pw-bot: cr
+pw-bot: changes-requested
