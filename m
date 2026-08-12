@@ -1,182 +1,183 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5D7423160
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 10:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786530740; cv=fail; b=Yd2W84iFH59wEllEwAc3iLjWFvgRwVqfH8odXK//pwOJAWmibgxFNBb3j03x+fHPcjPwThz+Pp2Fm2PDaK553gdTTuy7rStclobsFamdHuDVkBPOcaDoJjgIhwM6WCjQ5gko/Ek3snhvxSWyinyGKW0g6sYMLH625azTJYbs4F4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786530740; c=relaxed/simple;
-	bh=LWM2zf4UMBhJ3B3XH++5MRBtCGUd5WaKgC0NGCjYmJM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ey5ni9ZJYjZGYCTZFmpMLe5ndwhYIU9lbo6byzD1eVsC3Dqs8JeSuHS0X0FgiRMLbxLhy+ithqrq2xK3S3aIe7QY6jomFFE9AkQGK16oI3Df4m7K9ULCrorsjlHP74u6XPcfKLZUHON2/7/MjRWphksh8wbbjg5LcIkl3wqQbQo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jYIIEjWj; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C7141A51D;
+	Wed, 12 Aug 2026 10:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786530789; cv=none; b=UAO1MVMSSqphMRN/p+UO0nQzbtpn2ZggneDQoNpP7AJg8YA7GEgOyxVOgoaM9w2YTMk+xI9Slf+e3y96E7VOn3WtjqVuZT2psxwE3QfunGyuEOncMAptlRWNXRE1fX9MooncJ74h0fYEyhcRyqnjlPQQiOID183s5hxcxKUIyFE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786530789; c=relaxed/simple;
+	bh=3UGeB7PKAAMFR1upsojiOAEwzprjNjDh/kMwrcWpwrc=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=okojtVHf1Fj8DHPJgJfuusk+bNS+QjHxB/ZMh5Lq0Nsc+oel075Y7emzfQJf2IdgXHExIjm7eZGsZ/DeGJNuEk+LvRFs8lIBwlvMP59EQN7ZaOdNnuX/Lve0PAJP1CePsWuZoMNnerSC1wa/636BXo57uXAcAx38ZP/lSDZsICg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTmom6dH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jYIIEjWj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786530739; x=1818066739;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=LWM2zf4UMBhJ3B3XH++5MRBtCGUd5WaKgC0NGCjYmJM=;
-  b=jYIIEjWjcTKM6jZu3bKS4TOaMnLdoV+h3OnsuEmMTcQ8VaY0zHU2LzT1
-   MLHrHp/crISRP/YsKfKQb0SWZ4raYd7ZcgiorjDBxqbTr7KdS9AiKubep
-   FQxzLS/fDNrdebArVduPECWrkCkzFaQTMdf10n0Cimn55nDaOi058XTzu
-   eL6BSA83BjBSThWoWdscW9PbzcjbF6+9GeO/s2ajq4LxErVWIj7YMDT5I
-   hF2YopYHOONX91wuqRYiUfwegML9A5yrQt94U8BQUzzuskJzkBdwHz38/
-   fuB6g0XakwBPuVuG9tUMkUSoKx1sHDySId0369r6ci47ORinNbdY586SL
-   Q==;
-X-CSE-ConnectionGUID: 32YiBrf4SxCWb7eCv75QlA==
-X-CSE-MsgGUID: /rDHbSH4QlK3OXrVt1CLOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="112624489"
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="112624489"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 03:32:18 -0700
-X-CSE-ConnectionGUID: 6jP2gAdJT5KRuTfhu6v3fw==
-X-CSE-MsgGUID: eVSw4qeaShKng0t98+feeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="260289251"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 03:32:18 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 12 Aug 2026 03:32:17 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 12 Aug 2026 03:32:17 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.26)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 12 Aug 2026 03:32:17 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=df+JMjvUqZFyzTyEsJgMOTW6lYFmWWnk37dml43Ggj/1tNuh7aMCyI05fQlIV08Zjh0ErAkFmk14/ZD2Yu0mJtw7hzHfb/Jf2eBvDJtyMtkl8riwzcic5T/b2gSaD2Ea7TEqE6pP5wb39OQtrH+Qo22SFEK49ydSvjsgExcqRSBQPHroh8eZy1upZuqXtIbh0p54JcyxrqnD9ggm/aljkEeajE4af4HY8RKmdi32b4sKHTlM/rJWgo5jsFiF2gxqNDCAWqDTz54DyHQIQBSNVCzWwZUn2UcFHoyRr/EYqAkB92LZbjD14aBCNRrflYCUdYlwXb6+qCj6Zp84Lfl2ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LWM2zf4UMBhJ3B3XH++5MRBtCGUd5WaKgC0NGCjYmJM=;
- b=HWUl96YGQFwBUguQZqUBH+T0BkHtvm9TNLqH/vxZJX0Yy+f+h+XRtJmt58No+UbX0uZsu21dxEpn0MxRrkgyA1JBtCTsYC5qvXZKALuoCT83zHvuMNk2zEidk2FHHzZccLODsLdqQmYIbXUaANhPwcNH+YskebiAG6QjH9US7PfaosVr8FZauEQAihu8qoOYYCiurwYChwvd8iyzWi7BuJV+u3FRaw1ZMopwBNDSpfY9malNDWrGLJtnTgFgkVoyOutpgvelOhOzT8Pc7jbZZI9vRZN39Y+hx51IDU76se3BEPDAGVpD+TCTMlSZ/Kr+hhkEs+PNj+opLy8JXUEy7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
- by DS7PR11MB6247.namprd11.prod.outlook.com (2603:10b6:8:98::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Wed, 12 Aug
- 2026 10:32:14 +0000
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::7ac8:884c:5d56:9919%3]) with mapi id 15.21.0292.024; Wed, 12 Aug 2026
- 10:32:14 +0000
-From: "Rinitha, SX" <sx.rinitha@intel.com>
-To: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v1 6/6] ixgbe: take rtnl lock
- before ixgbe_reset() is called
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v1 6/6] ixgbe: take rtnl lock
- before ixgbe_reset() is called
-Thread-Index: AQHdCgYu/iJo3HcxaUiXXYNHdu5UbLaadbRA
-Date: Wed, 12 Aug 2026 10:32:14 +0000
-Message-ID: <IA1PR11MB62416E1ED1A43185467712378BDC2@IA1PR11MB6241.namprd11.prod.outlook.com>
-References: <20260702091553.57112-1-jedrzej.jagielski@intel.com>
- <20260702091553.57112-7-jedrzej.jagielski@intel.com>
-In-Reply-To: <20260702091553.57112-7-jedrzej.jagielski@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|DS7PR11MB6247:EE_
-x-ms-office365-filtering-correlation-id: 5bdaae1f-6efa-4040-43f4-08def85cf9e9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|4143699003|11063799006|38070700021|56012099006|10067099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: WJiNQ03r3Jgni0FUAoZieweFW9No/FjkS/Zuv0zxL9t/Gk3QonJH7kdPHwndnOylz8zzVe2jguJ8Zd5F4dhDe4OTGpJoW9VPQI3I95niM0mHaE12/eDvK1lUDkoYTjA7CRhUYTikm+T3/leye13NMFH3vWXZGCK8U3SYMTFq0jrBlK953L5zR/ybv4roEaLmn4hOG1DgTZp4oPOXszmBXiZjaKcNHsFqnu3DpS56yf6RLDAzwRlpqe3WpxZ/54En/KBzPUYvmOVALlrK2eV9fyE26AtmZFtQXT2uNwVAw300vSkforqq9j379fDpTNSLrzmZSWmo+MnZbDk0UKKF5mHTlcVA9MqiLJpjfLXxpqCJK9BVX+faVKUweeAiqltYYDhTRQkv7XUJhrV0qksqrDjIwF6gLg+tlU+186FZnxk8VEESQGpfjiUVHqT3a61NHU9j6R96rnDsAmOI8FrHw0b9WeKOwgUc61jYlOnW1BAwbCOPdBA7kI8iPMOR8sjkaPbzy8o2b7mkz/ouByK3jJTknco3I9bAiS77wGr6lukrBgmSXp0tkzn/T2c2oopI/v5FdHLgBOHbOAXarjkfagE4dSrwJApYLNZFSG0xyWIbHoz0gW83JAtBj8SwF0mtSo9Ht1Fzy8yn3dyUxr1oPDkLaDcYTUW3tiPZFxjCjovLqLOPonF7gRH4V5TJtKyY7DknqVcdmmX/T762D+PWVvLLbiBNpv9BAWDtfeN0Ukw=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(4143699003)(11063799006)(38070700021)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?mlxfl/GRqybZrNYLIHrcE5/4YvoHklfnDcuJSBFWqx3GugM8KtTF/WYRP1XD?=
- =?us-ascii?Q?+wNygEmKXyrTIvO7EhbrETC45kctsRUJSwaCMVENkzAFEwdWy0sV+3lSrG0a?=
- =?us-ascii?Q?Uj11sZTOIYWvw6bNkTkY1+nIQGRMqMAY0LcDgqyviVTTq/uSc/nAw5Av7QXH?=
- =?us-ascii?Q?rb0wdxNLKAt3PwbTa5W3R6XbhGPSdBWrqEGFBplFi4s7i1BF3RUSyt19Quqe?=
- =?us-ascii?Q?edzGock+JV/dG4QyZiAgot6Nqb7dZ/ffp3MhCAedYPjMwlhGjlMQUXuegDUm?=
- =?us-ascii?Q?UZELBEbbuuBwGuTY8FUbgOoJNMBmWO20hldvvaoVIXLCrhnitnLkryfP7OW3?=
- =?us-ascii?Q?aPRKYA0Y9E5NlnqJ+pNH88vVFpbXieS3fbHIHW2gG1WUKiFNVsh3Hu75+AXw?=
- =?us-ascii?Q?xhyk6SLPmBytKXuvrKIAqRVABGMU7gnhDod5Kp9o23IDiM+TCFyuNp7+93uP?=
- =?us-ascii?Q?roPr5MTxedHQgXuXa5j37rsHNPEQCJFiWlw13UXGAMdwBZGStGpsCXSzrUDT?=
- =?us-ascii?Q?m51CtBNJWzroe7a25VarXa/cBBUwzee2VlqqIetGbhx4870lN0uAIdTBsRBn?=
- =?us-ascii?Q?pDdHDnjVUCmQvcFB90GluiGS4wI8EeOSH3Sr/IL+5gB5b03/u7O6ecI5wJir?=
- =?us-ascii?Q?GJi5axbcJtGZhz3ZO/lGeKb7UrIPAPr+cmd2/KlRaU0ApnTUrzah8biMxBex?=
- =?us-ascii?Q?Ir/0kMWfHKdvKGBrYpERbsPm3tjngeJ05aRiohwOsm9zyGGhzHVhnmgZTBWr?=
- =?us-ascii?Q?q9YCtjy/2eRL2debvltangO00Sb0B/vxoqllfXQS2Z7obU04JJVpjJkeeDFe?=
- =?us-ascii?Q?lUzfEujGKtN5U4ZCQiDp1Q1lm9U908stpHIn2as/L9+5wTCyHdalgdAyxPX4?=
- =?us-ascii?Q?dc3ms7ntmUZ2CqVwM7pomvH8IJoOe/bUO6hiqiR9E6Ac9xPy/jiydy5L9XcT?=
- =?us-ascii?Q?LHth3b5Fg8P1thL3k2GMGUSOaUU3NbViyJ8SwhCN3zTQ4QS6zUxe8OT1mc7O?=
- =?us-ascii?Q?hOHe3d/O7qnw3KdFRmGbIeZtQ5n7XjgoB3Q24Lnil4yP3BAwFVZeOUkz60Es?=
- =?us-ascii?Q?OWBj8bv1SIJhOfPdP6XkFHoB5DjpUQCmXUV/T5J9p8/EBsqHP/nB/K+oVTKw?=
- =?us-ascii?Q?7QtU66usVIK0/hosyj61S+n4djKMKWOku+ThBkGfkA21EEM4O1Tigm3NNSt9?=
- =?us-ascii?Q?6zAsIVlkC476LU49kJ7KrWj7Zyx07J1OdA2ocl0QKMXgL70O5K/CD0aEhtRV?=
- =?us-ascii?Q?dzt7JpoRPvsuV5dQnXR9Pt3whoPvTkMFO+YNXcNH6Jim0wHmqepjvd58nh/X?=
- =?us-ascii?Q?0PRBvU1Aw4TGxpIpCpuBfth4xjZqEAI6jlBgrg4xfqieJISzCmXPQrqqlSNM?=
- =?us-ascii?Q?iUuXcDXicIz5HmvI3ma5AO0KGNfPC6tpEZLQBNtU66DcDb7TIod+5cnzQxDW?=
- =?us-ascii?Q?o3bVDojuLQfRlipGUDVRfeH9ROSqBzXUiHVgNhAmnjh6Pth8tOt3n+rNt8qT?=
- =?us-ascii?Q?boQ7rtQ+4EygL/drWxTNpF/fqjoq2NRuTFu4KYnfbyj1xz21yZkGWP9k2l30?=
- =?us-ascii?Q?WYLNK2TboQxBDyVc/gUZFkXqzPRueOnnP/5M6gQUSQe5nr1UDAZ+bTZSIGiZ?=
- =?us-ascii?Q?pWzll0hwF/yEiEvb6pj3JdBe3IUoHHqRjweW730Xd2NB1ZCv/krrPyP1myW8?=
- =?us-ascii?Q?vdMoKFfV46fw1sAZAAszmkS4V1L3Id/c2OxVCfH2csotlLHE?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTmom6dH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3E31F000E9;
+	Wed, 12 Aug 2026 10:33:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786530788;
+	bh=3+WoCbHc2PLdtgpAVd3CdDIq5WVqvr8xIvZhaRu3yBs=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=FTmom6dHxkc9GtNq//+8zoTqTV/0B2Z7vkGSDfX2Cp8TWqvyOLXGVitjznQmNABTf
+	 vxL5T2SZwoYd8dseUWraskMOGxSfBZjdmgfZ1ORdE0gaaxEXXec2WeDXlPu0gZ0aBR
+	 2E3CoV2yjWai1p7K+WBwCp3l8LlBU5kM9Dbe7Wjyfj6zNuQ62lFVv6wgktfw79D1rG
+	 1YO2g6n0IMGbLTc04oEDvd6dcbldAO4G1BVGw2ZUsVuWK45tJlUIBcnc97IzWGBY5M
+	 kh3VFLecocZ8DMXRKzw5GXRxqoiBREW8lsy0k4qEQr/HYgMn39V4odxAhB2G6VsHNC
+	 nTZNzaMcYiKUg==
+Content-Type: multipart/mixed; boundary="===============6867287178835379924=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: K+rB/RkSNljhSNCVRgm21YWwEr5xaAT2EJpcqA7X96in/B1Z2G+PWnWrIQok1zTFo9NGJ+ARq1s8ALJyoUroHbQVT4HR7agX68+j8ln3IEQ6+Zm6cxqss90LL8EzeFQvzBXUrxPUZQDVRVqOG9c3U8+E1N+lajglYXypI3sNW0+YJM3/p2+9pkCnZv7/62QEHXFkuJNngFDFE2fANhO/ZIv+3yWr3eWN8Rr8UwgW5ijngP721Z4oSqBngx3f7BOzly41L/YcX6P/qF6rv7cwIfGP6AB3tQWDMTYr4UTqewHc992pJrZrpJqNMF5hyKaJTrczOlh002JQsElg02X4PA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bdaae1f-6efa-4040-43f4-08def85cf9e9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2026 10:32:14.6194
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: veGCASvMZ9RZTL4EYLDv/mY94JkJ7t7U5yQcdp+w8xD71dRo4NTKzDCBDTyrk5uRVbDGCU1lsNOaJtyC+vQnRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6247
-X-OriginatorOrg: intel.com
+Message-Id: <7de271430891c4083ed76a28daa613175e04b0b0dc6e402646f22a026275eea5@mail.kernel.org>
+In-Reply-To: <20260812083115.73100-5-nhudson@akamai.com>
+References: <20260812083115.73100-5-nhudson@akamai.com>
+Subject: Re: [PATCH bpf-next v7 4/6] bpf: allow new DECAP flags and add guard rails
+From: bot+bpf-ci@kernel.org
+To: nhudson@akamai.com,bpf@vger.kernel.org,netdev@vger.kernel.org,willemb@google.com,martin.lau@linux.dev
+Cc: nhudson@akamai.com,mtottenh@akamai.com,aglasgal@akamai.com,daniel@iogearbox.net,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed, 12 Aug 2026 10:33:07 +0000 (UTC)
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of J=
-edrzej Jagielski
-> Sent: 02 July 2026 14:46
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; netdev@vger.kernel.or=
-g; Jagielski, Jedrzej <jedrzej.jagielski@intel.com>
-> Subject: [Intel-wired-lan] [PATCH iwl-next v1 6/6] ixgbe: take rtnl lock =
-before ixgbe_reset() is called
->
-> Previous commit introduced ixgbe_mac_addr_refresh which touches netdev st=
-ruct by updating mac addr. It should operate after taking rtnl lock.
-> One of the callers is ixgbe_reset(). Most of scenarios when ixgbe_reset()=
- is called met taking lock requirement, but there is a ixgbe_resume() path =
-which calls ixgbe_reset() -> ixgbe_mac_addr_refresh() without taking the lo=
-ck. So there is a risk of > race.
->
-> Move rtnl_lock() before ixgbe_reset() is called.
->
-> Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-> ---
-> drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
+--===============6867287178835379924==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+> commit e891bb72fdfdae2b71119ffb8be655bb3a4b26a7
+> Author: Nick Hudson <nhudson@akamai.com>
+> Date:   Wed Aug 12 09:31:13 2026 +0100
+>
+>     bpf: allow new DECAP flags and add guard rails
+>
+>     Add checks to require shrink-only decap, reject conflicting decap flag
+>     combinations, and verify removed length is sufficient for claimed header
+>     decapsulation.
+>
+>     Co-developed-by: Max Tottenham <mtottenh@akamai.com>
+>     Signed-off-by: Max Tottenham <mtottenh@akamai.com>
+>     Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
+>     Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
+>     Signed-off-by: Nick Hudson <nhudson@akamai.com>
+>     Reviewed-by: Willem de Bruijn <willemb@google.com>
+
+The changelog states this patch "Add checks to require shrink-only decap",
+but that check already exists in the parent commit. From e891bb72^:
+
+    if (flags & BPF_F_ADJ_ROOM_DECAP_MASK) {
+            if (!shrink)
+                    return -EINVAL;
+
+The diff confirms both the shrink check and the L3 pair check are context
+lines, not additions. What this patch actually does is extend the coverage
+of those pre-existing checks by widening BPF_F_ADJ_ROOM_DECAP_MASK to
+include the new L4 and IPXIP flags.
+
+Could the changelog be reworded to clarify this extends existing checks to
+the new flags, rather than implying it adds the shrink-only requirement?
+
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 89e516049c852..981b75941e7f7 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+
+[ ... ]
+
+> @@ -3827,6 +3836,8 @@ BPF_CALL_4(bpf_skb_adjust_room, struct sk_buff *, skb, s32, len_diff,
+>  	}
+>
+>  	if (flags & BPF_F_ADJ_ROOM_DECAP_MASK) {
+> +		u32 len_decap_min = 0;
+> +
+>  		if (!shrink)
+>  			return -EINVAL;
+>
+> @@ -3835,6 +3846,37 @@ BPF_CALL_4(bpf_skb_adjust_room, struct sk_buff *, skb, s32, len_diff,
+>  		    BPF_F_ADJ_ROOM_DECAP_L3_MASK)
+>  			return -EINVAL;
+>
+> +		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_MASK) ==
+> +		    BPF_F_ADJ_ROOM_DECAP_L4_MASK)
+> +			return -EINVAL;
+> +
+> +		if ((flags & BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK) ==
+> +		    BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)
+> +			return -EINVAL;
+> +
+> +		/* Reject mutually exclusive decap tunnel type flags. */
+> +		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_MASK) &&
+> +		    (flags & BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK))
+> +			return -EINVAL;
+> +
+> +		if (flags & BPF_F_ADJ_ROOM_DECAP_L4_MASK)
+> +			len_decap_min += bpf_skb_net_base_len(skb);
+> +
+> +		if (flags & BPF_F_ADJ_ROOM_DECAP_L4_UDP)
+> +			len_decap_min += sizeof(struct udphdr);
+> +
+> +		if (flags & BPF_F_ADJ_ROOM_DECAP_L4_GRE)
+> +			len_decap_min += sizeof(struct gre_base_hdr);
+> +
+> +		if (flags & BPF_F_ADJ_ROOM_DECAP_IPXIP4)
+> +			len_decap_min += sizeof(struct iphdr);
+> +
+> +		if (flags & BPF_F_ADJ_ROOM_DECAP_IPXIP6)
+> +			len_decap_min += sizeof(struct ipv6hdr);
+> +
+> +		if (len_diff_abs < len_decap_min)
+> +			return -EINVAL;
+> +
+
+Does this minimum-length check account for the mode parameter? The
+calculation assumes mode == BPF_ADJ_ROOM_MAC, but nothing constrains mode
+when DECAP flags are set.
+
+Earlier in this function, off is computed:
+
+    off = skb_mac_header_len(skb);
+    switch (mode) {
+    case BPF_ADJ_ROOM_NET:
+            off += bpf_skb_net_base_len(skb);
+            break;
+    case BPF_ADJ_ROOM_MAC:
+            break;
+
+In BPF_ADJ_ROOM_NET mode, the removal window starts after the outer L3
+header, so that header is not part of the len_diff_abs bytes being removed.
+
+Yet when an L4 decap flag is present, the check adds the outer L3 length
+unconditionally:
+
+    if (flags & BPF_F_ADJ_ROOM_DECAP_L4_MASK)
+            len_decap_min += bpf_skb_net_base_len(skb);
+
+Consider a tc program on an IPv4 outer packet calling:
+
+    bpf_skb_adjust_room(skb, -8, BPF_ADJ_ROOM_NET,
+                        BPF_F_ADJ_ROOM_DECAP_L4_UDP)
+
+to strip an 8-byte FOU/UDP tunnel header. This would compute len_decap_min
+= 20 + 8 = 28, so len_diff_abs (8) < len_decap_min (28) causes -EINVAL even
+though the request removes exactly the claimed header.
+
+The same mismatch applies to the IPXIP terms: in NET mode the outer IP
+header is outside the removal window entirely, yet
+BPF_F_ADJ_ROOM_DECAP_IPXIP4/6 requires 20/40 bytes to be removed.
+
+Should this either reject mode != BPF_ADJ_ROOM_MAC when
+BPF_F_ADJ_ROOM_DECAP_MASK is set, or make the bpf_skb_net_base_len() term
+conditional on mode == BPF_ADJ_ROOM_MAC?
+
+>  		if (flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV4)
+>  			len_min = sizeof(struct iphdr);
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31584739682
+--===============6867287178835379924==--
