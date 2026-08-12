@@ -1,136 +1,194 @@
-Received: from mail-43100.protonmail.ch (mail-43100.protonmail.ch [185.70.43.100])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECAD2BE034
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFF921D5B0
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786497729; cv=none; b=PhklGENqjitOOyZ0dFC9u4pCydTHIdQil5EAYLqk52ahHEcu9L2WK+nQFSWqbWxSYvv60yiPVcv8YXjfsWUeT8fkOnA+YmRyrgrlhDzWmdWTFYUgwww3RKUAeQ9dbfRaQy4qq8F9eBcX4WbiKCsgbqzs4CQa6DW3dipdA6YFW18=
+	t=1786497827; cv=none; b=eECH59K3LVUrr7TnyXA7bDJttU6Ryj6efwGkc+0ahSlEHEurKacTjOgsh0qhCR64gGmjJR99TxVlRdBJkKXawnCTH7sEaYh7YaLxuc6jcw2FzRCyZATL/svmYfR9KC5Nta1+NzRna0NzGCn0n2qHGO0MKNXYODU1A7Pg87d0SRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786497729; c=relaxed/simple;
-	bh=gYlhmSf4tROSUDcRrSPz3ee6KFj8d65GsOhOxvWSRDU=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=BfIjHubLIJqosR6FGW5cj1FzyEW4dc9/C6JJCNYOSXbFIWEf9/TRIADKlu5tn5K39DNIRqO8h6L/PKFLofDUvdYtxuGbF60haJuOMa0FqUeBY+iMVOVKG7S0ZmYfd/KmtUXuatkIeprU+e2djfiysXtPeQeq5FtQFH89Ka/Thhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=jqrA8Muy; arc=none smtp.client-ip=185.70.43.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1786497827; c=relaxed/simple;
+	bh=2Ic8nn1IjdeLMlFMkUBGlTSzq7P/pdhz3OTLOKObDQc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LsDnWj4uUcV5G1m8eZx6XLNqH/NMN7JFIum+EJghAIH9zb5TxlH9uV6IEtM4eL0KWTIz8fVvXXAgwxgQP6FbLC2njkhvjA7MsQWRAzx2eJerdCsPuV4W3I5Fe4b+xjLoJEDl3PfSw80mYXf0yunTRYtJDuiy9rqKWwOjM8aUT1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KQWdHd02; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="jqrA8Muy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1786497719; x=1786756919;
-	bh=OT5ODuDh76ExRBcS6W+voYYu/MlAm4v68AtFiiHdSrM=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=jqrA8MuyEw+5vpS6Nr7OPNcpEGwh+6Uw1oRtUr09GOQ+yO/nc7TILeJ+o7G/GEw/K
-	 BR3/PKBvpjsNxfmY6zV/EXvG6mH35/SAELUPSifo07KffG37iFXdwVsXdXC0pWa8dM
-	 TPB3Jci7ObANB4w6uViODt8D/jOjNzk7oVVU55eCUHgwDXYZF5OR1n4IgJH6Fnp5fj
-	 XDM7QNtNqCbXw+iusBN3eYhn5b6rTZzfiO3CJ/4zLimoYNyoMRT9egvOi92LPo9Hji
-	 QywBMAk/1dyKi13ePq9iob4g+ptGi2g4ZxSGDG8vuGQuAspJnXgUNmNJl7PUPAH334
-	 cGgLaSoA8ipZA==
-Date: Wed, 12 Aug 2026 01:21:53 +0000
-To: netdev@vger.kernel.org
-From: Asim Viladi Oglu Manizada <manizada@pm.me>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowangio@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net v3] net: tun: bound receive headroom
-Message-ID: <20260812012139.2134643-1-manizada@pm.me>
-Feedback-ID: 37265593:user:proton
-X-Pm-Message-ID: 1651772f322ce46d836dd22561d97ded9db0e281
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KQWdHd02"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=sL
+	m/oYLqe0SOnYjUJ8EtOecmT7yfbzQszZNvFCe2dIY=; b=KQWdHd029JwaLae0bR
+	ZCK5DMRLeKElzQKLSCcsRgIpzIhEO5rJMeZdU5Jta9PZmhwdZCoiqICATqYe6Nzy
+	24qqHv7QPNZCrZdfWLayA+7oNNgpcftUCx3Rqq/cAe/MHelj9I3350lcVdbTkCfO
+	+3v4s0CJVmn4uFIWawOKUvR6s=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgCHzfPwyntqj8OMKw--.32351S2;
+	Wed, 12 Aug 2026 09:22:57 +0800 (CST)
+From: Longjun Tang <lange_tang@163.com>
+To: mst@redhat.com,
+	kuba@kernel.org,
+	jasowangio@gmail.com
+Cc: xuanzhuo@linux.alibaba.com,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	tanglongjun@kylinos.cn,
+	lange_tang@163.com
+Subject: [PATCH] virtio_net: add rx-alloc-fail counter
+Date: Wed, 12 Aug 2026 09:22:54 +0800
+Message-Id: <20260812012254.27668-1-lange_tang@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgCHzfPwyntqj8OMKw--.32351S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZw1DGF15CF1UWF45WF4Uurg_yoWrurW8pr
+	43AasIyFWkXwn7JFWrKryUZr1Yywnayay3GFyag34I93W5Kr1FkF10gayYkF43AFZ5AF1U
+	Xw4vyrZxKayj9r7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRveH-UUUUU=
+X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC-hJolmp7yvKDdgAA3O
 
-tun_get_user() uses tun->align both as skb headroom and when choosing how
-much packet data to keep linear. OVS can propagate an oversized headroom
-request from another port to TUN or TAP.
+From: tanglongjun <tanglongjun@kylinos.cn>
 
-When align is larger than the usable space in a one-page skb head,
-SKB_MAX_HEAD(align) underflows and the result becomes negative when stored
-in good_linear. That value later wraps when assigned to the size_t linear
-variable, and tun_alloc_skb() can place skb->data outside the allocated
-head.
+Count buffer and skb allocation failures on the rx queue and
+report them via rx-alloc-fail in netdev qstats.
 
-Bound the headroom stored by TUN to the one-page skb-head budget and the
-largest non-sentinel 16-bit skb header offset. Leave one linear byte for
-raw TUN and a complete Ethernet header for TAP, including NET_IP_ALIGN.
+$ ./tools/net/ynl/ynltool/ynltool qstats show --json scope queue
+[{"ifname":"ens3",
+"ifindex":2,
+"queue-type":"rx",
+"queue-id":0,
+"rx":{"packets":3722,"bytes":374806,"alloc-fail":0}},
+{"ifname":"ens3",
+"ifindex":2,
+"queue-type":"tx",
+"queue-id":0,
+"tx":{"packets":622,"bytes":77495,"stop":0,"wake":0}}]
 
-Also pull the raw-TUN protocol byte and the TAP Ethernet header before
-accessing them, so these checks remain safe for nonlinear skbs supplied by
-other allocation paths.
-
-Fixes: eaea34b23c46 ("net/tun: implement ndo_set_rx_headroom")
-Cc: stable@vger.kernel.org
-Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
-Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Longjun Tang <tanglongjun@kylinos.cn>
 ---
-v3:
-- simplify the raw-TUN pull check and reject short packets with -EINVAL
-v2: https://lore.kernel.org/netdev/20260805084504.953162-1-manizada@pm.me/
-- bound tun->align instead of clamping good_linear to zero
-- derive the bound from the one-page head, 16-bit offset, and TUN/TAP
-  linear-header requirements
-- pull the raw-TUN protocol byte before reading it
-- make the TAP Ethernet-header pull unconditional
-v1: https://lore.kernel.org/netdev/20260721014117.2234892-1-manizada@pm.me/
+ drivers/net/virtio_net.c | 32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
- drivers/net/tun.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index fed9dfdfcc3b..5bbe3123979e 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1107,11 +1107,16 @@ static netdev_features_t tun_net_fix_features(struc=
-t net_device *dev,
- static void tun_set_headroom(struct net_device *dev, int new_hr)
- {
- =09struct tun_struct *tun =3D netdev_priv(dev);
-+=09size_t max_headroom;
-=20
--=09if (new_hr < NET_SKB_PAD)
--=09=09new_hr =3D NET_SKB_PAD;
-+=09max_headroom =3D min_t(size_t, SKB_MAX_HEAD(0), U16_MAX - 1);
-=20
--=09tun->align =3D new_hr;
-+=09if ((tun->flags & TUN_TYPE_MASK) =3D=3D IFF_TAP)
-+=09=09max_headroom -=3D ETH_HLEN + NET_IP_ALIGN;
-+=09else
-+=09=09max_headroom -=3D 1;
-+
-+=09tun->align =3D clamp_t(int, new_hr, NET_SKB_PAD, max_headroom);
- }
-=20
- static void
-@@ -1822,7 +1827,13 @@ static ssize_t tun_get_user(struct tun_struct *tun, =
-struct tun_file *tfile,
- =09switch (tun->flags & TUN_TYPE_MASK) {
- =09case IFF_TUN:
- =09=09if (tun->flags & IFF_NO_PI) {
--=09=09=09u8 ip_version =3D skb->len ? (skb->data[0] >> 4) : 0;
-+=09=09=09u8 ip_version;
-+
-+=09=09=09if (!pskb_may_pull(skb, 1)) {
-+=09=09=09=09err =3D -EINVAL;
-+=09=09=09=09goto drop;
-+=09=09=09}
-+=09=09=09ip_version =3D skb->data[0] >> 4;
-=20
- =09=09=09switch (ip_version) {
- =09=09=09case 4:
-@@ -1842,7 +1853,7 @@ static ssize_t tun_get_user(struct tun_struct *tun, s=
-truct tun_file *tfile,
- =09=09skb->dev =3D tun->dev;
- =09=09break;
- =09case IFF_TAP:
--=09=09if (frags && !pskb_may_pull(skb, ETH_HLEN)) {
-+=09=09if (!pskb_may_pull(skb, ETH_HLEN)) {
- =09=09=09err =3D -ENOMEM;
- =09=09=09drop_reason =3D SKB_DROP_REASON_HDR_TRUNC;
- =09=09=09goto drop;
---=20
-2.53.0
-
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 3e2a5876c6c8..f9d15c618d3b 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -125,6 +125,7 @@ struct virtnet_rq_stats {
+ 	u64_stats_t packets;
+ 	u64_stats_t bytes;
+ 	u64_stats_t drops;
++	u64_stats_t alloc_fail;
+ 	u64_stats_t xdp_packets;
+ 	u64_stats_t xdp_tx;
+ 	u64_stats_t xdp_redirects;
+@@ -173,8 +174,9 @@ static const struct virtnet_stat_desc virtnet_sq_stats_desc_qstat[] = {
+ };
+ 
+ static const struct virtnet_stat_desc virtnet_rq_stats_desc_qstat[] = {
+-	VIRTNET_RQ_STAT_QSTAT("packets", packets),
+-	VIRTNET_RQ_STAT_QSTAT("bytes",   bytes),
++	VIRTNET_RQ_STAT_QSTAT("packets",    packets),
++	VIRTNET_RQ_STAT_QSTAT("bytes",      bytes),
++	VIRTNET_RQ_STAT_QSTAT("alloc_fail", alloc_fail),
+ };
+ 
+ #define VIRTNET_STATS_DESC_CQ(name) \
+@@ -1917,8 +1919,10 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
+ 	}
+ 
+ 	skb = virtnet_build_skb(buf, buflen, xdp.data - buf, len);
+-	if (unlikely(!skb))
++	if (unlikely(!skb)) {
++		u64_stats_inc(&stats->alloc_fail);
+ 		goto err;
++	}
+ 
+ 	if (metasize)
+ 		skb_metadata_set(skb, metasize);
+@@ -1985,6 +1989,7 @@ static struct sk_buff *receive_small(struct net_device *dev,
+ 		return skb;
+ 	}
+ 
++	u64_stats_inc(&stats->alloc_fail);
+ err:
+ 	u64_stats_inc(&stats->drops);
+ 	page_pool_put_page(rq->page_pool, page, -1, true);
+@@ -2016,8 +2021,10 @@ static struct sk_buff *receive_big(struct net_device *dev,
+ 
+ 	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+ 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+-	if (unlikely(!skb))
++	if (unlikely(!skb)) {
++		u64_stats_inc(&stats->alloc_fail);
+ 		goto err;
++	}
+ 
+ 	return skb;
+ 
+@@ -2298,8 +2305,10 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
+ 	switch (act) {
+ 	case XDP_PASS:
+ 		head_skb = build_skb_from_xdp_buff(dev, vi, &xdp, xdp_frags_truesz);
+-		if (unlikely(!head_skb))
++		if (unlikely(!head_skb)) {
++			u64_stats_inc(&stats->alloc_fail);
+ 			break;
++		}
+ 
+ 		skb_mark_for_recycle(head_skb);
+ 		return head_skb;
+@@ -2414,8 +2423,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 	head_skb = page_to_skb(vi, rq, page, offset, len, truesize, headroom);
+ 	curr_skb = head_skb;
+ 
+-	if (unlikely(!curr_skb))
++	if (unlikely(!curr_skb)) {
++		u64_stats_inc(&stats->alloc_fail);
+ 		goto err_skb;
++	}
+ 
+ 	skb_mark_for_recycle(head_skb);
+ 	while (--num_buf) {
+@@ -2444,8 +2455,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 		truesize = mergeable_ctx_to_truesize(ctx);
+ 		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
+ 						    buf, len, truesize);
+-		if (!curr_skb)
++		if (!curr_skb) {
++			u64_stats_inc(&stats->alloc_fail);
+ 			goto err_skb;
++		}
+ 	}
+ 
+ 	ewma_pkt_len_add(&rq->mrg_avg_pkt_len, head_skb->len);
+@@ -2928,12 +2941,14 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
+ 
+ 	u64_stats_set(&stats.packets, packets);
+ 	if (rq->vq->num_free > min((unsigned int)budget, virtqueue_get_vring_size(rq->vq)) / 2) {
+-		if (!try_fill_recv(vi, rq, GFP_ATOMIC))
++		if (!try_fill_recv(vi, rq, GFP_ATOMIC)) {
+ 			/* We need to retry refilling in the next NAPI poll so
+ 			 * we must return budget to make sure the NAPI is
+ 			 * repolled.
+ 			 */
+ 			packets = budget;
++			u64_stats_inc(&stats.alloc_fail);
++		}
+ 	}
+ 
+ 	u64_stats_update_begin(&rq->stats.syncp);
+@@ -2948,6 +2963,7 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
+ 
+ 	u64_stats_add(&rq->stats.packets, u64_stats_read(&stats.packets));
+ 	u64_stats_add(&rq->stats.bytes, u64_stats_read(&stats.bytes));
++	u64_stats_add(&rq->stats.alloc_fail, u64_stats_read(&stats.alloc_fail));
+ 
+ 	u64_stats_update_end(&rq->stats.syncp);
+ 
+-- 
+2.51.0
 
