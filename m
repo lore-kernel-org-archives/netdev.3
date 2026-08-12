@@ -1,227 +1,361 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DB030FF30
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 07:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786518888; cv=pass; b=QSFeiZfspiTze+YebWRmV2GBmdDtPrYMVQ6KjSlpbbROBmQ3ObEGif13s3jhQ303YgzvqQvgOjYtlptGTeQsUGOasSlyidvC4j0N+xLjgE7PZNkv5aMI0j9P5XOWhbJg9TZCrTOQtwnKV/aSp1oEDqOKxSg6Wm5roBNetvFRmf4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786518888; c=relaxed/simple;
-	bh=8yIj+fU7+ebkWnB6DCGIy4Z4tYQnuuHz5Pa/zndnl7s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hKliTqrTceBV2u5q99NOcfSIXGn2/KJn+q558dbDU5FTuNsy6ekobkFtJQ4OvLUif28ks7O3JiRrAAbuLdMT56M9hEKmrKSQkmt7ASnZpBFhC4R6VPSrUItoFKp2rEpH7oZuaBivHnjogLKzi+1jx2KejSY+U2hFcPrSeOIkysc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fZqPG8E7; arc=pass smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F0935AC05;
+	Wed, 12 Aug 2026 07:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786518943; cv=none; b=GNV/QuzHQ/gbkzb+7EZJPNnGQPz5tl/nEJv37C9od6864qG5sixU/y/5gMgwAzRGmmcDlph1haOE9WovDb3RvaA1j6+rztrvlE2hfmq0bvQ2aYKy+nqbaic42/iF0y7YkcGY7gQ8vPHuRY+M6F+iTe0NCK/khNo1ygtkHMLYRGI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786518943; c=relaxed/simple;
+	bh=nfT96IomZZ4GSS26/IOLwQZi4WjSWb678Oi91uu2RMs=;
+	h=From:To:Cc:Subject:Content-Type:MIME-Version; b=f8VBXwTpSqjEgFuHEYoq/hh7oudrZUJLAbAqpdSKZ0EdqoAqQYOJiL7BOb1CKeemSk0c5yF9gqY7SQwvs2vnSX9NEzd7MiGgzX5RRyd8eZ5/+S4FGwmxgO+IMDqXM/jrK67CG+hr5T9qY4HE8tmc1KYbzjMxqJl2VITmCFL4+DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=iKZ+B3Ch; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZqPG8E7"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-821106b5b64so13437257b3.1
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 00:14:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786518886; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Zb76OXbZHhBuJCQ51yXYMvHl9luJxpdQRSlHNUVOXmindvpaPovtrLv4HGvfEcDsVI
-         H+ozIPQXHrV7xyXCN9QxCIDIFKiO0wmZ829cW5adCLyuZIxIh5Jk0kWWVJV4I2EJtXnp
-         wfwhow7nSaBAVP+seS0qRSZcSJMdBS6jHOCbMsAqLXwzcqq9cc/7aAL7yXex36DwEG4t
-         oL32tgWcUoR5iX/I6xzcoV7NYxQMEY+eGyDSXLGxYTMPaETYOWBGaove7ubz2XeEh5C5
-         W/Ci1DHE/j8vd8edAhmWXBfWWfwcSz0up1SeLvye1dswAVpZyinrOyKkr32pZQcWbcTP
-         n3mA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0oS2Anx9qjnNSCRt8nxzAUNRaQN4Cbf1YalJsErNRHE=;
-        fh=zW2i5opk8fNTcL4SRRXM+x4ukbh9kJCkrY/uXhJb4R0=;
-        b=faDJxXM+P/6D6O1h5TNChd5p9FORYu9gdUHdJPtPu9eSt1sf6P2X2h6XnBA2ifWN1N
-         mmJSSMMB1kO7Tvz+DXfEL7R7JWICirEYW/9ai9j6KB9ZeH2U/Nr6lfb4rZBIZEv3GNnA
-         VOpS3Z981rSH37ORpvige3CXnivfUKYLHGJfX5ETN4SWKD8KJkyv5f6Mj58Y+N2cEQbn
-         0eKFmd7+rXQiAt8gG6akqKR1ZVlBvU5+T8qX3VvUonQLe93gTXC/Pnk4IV/M90S70CFw
-         q0zDY323rjMQO6MdAcejEuc7ElOk7KWVkip5FMDvN/a74KF6FneKPjS/at3ob2IHZY4H
-         4isw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786518886; x=1787123686; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0oS2Anx9qjnNSCRt8nxzAUNRaQN4Cbf1YalJsErNRHE=;
-        b=fZqPG8E7jHPOgqkFXYKClEOHoxoLOTv68HXKEr7y6uY8VngWSf5Nl0Fn0m1y6Iif68
-         3yuPKIQQwUWfq9/d5rok4ZhhnFTknk1aiIYE3z5bOCiLnF7Msrs7ewITfJhf3/FWydBn
-         LmUWVLvddiDaFpKcJ9wTPVSIUNj80/0QAx/AtiW+kr34Co7sw0pT2qHbwXtzzDEYYGgs
-         nazIhDxaM8QpT6c7mD9GW+9xMI+T4iryphbSrJiz3yA2lum2SVfpeU5Uruh3AWf9Ikbk
-         jG+25ToN0k5qbL2fi7SAQ8zUkf4wFYyrUiPrDre15hsfX5B+fMFAT3x/iWAGs6/J+2CH
-         SdAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786518886; x=1787123686;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0oS2Anx9qjnNSCRt8nxzAUNRaQN4Cbf1YalJsErNRHE=;
-        b=SoqBX2T3qKxVab/5m7wPM0Gkt+yfIyF3SGLyO+WsGL0YGi4+O8XWkGT7qGiEE5liCV
-         lPVR40DvJhXrQI+OXaUKdk7/7gGs/NHO38vo75VubghTIKvmrWy4crWUGIqIdMtM1jqI
-         Roy+XCkfCQn7P5jIsOxFtgDeZPrA4wlZT1P+lW+s71WrjDkwls9l1WQfnNrBq6uFlbiY
-         uPv1X7+y/99m8rSAt6VOb1uA61pNG793bWpwDokg8UyZKnyXo0OOjtaBA4B0i0zZ2nFg
-         bQNEnqh+Xw6KrZhJ4rgIMf19PSTNBy3qedQ/4XnAu27Y2EAlxlD4kmbePi+BGTxZRZNb
-         yqUA==
-X-Forwarded-Encrypted: i=1; AHgh+RrHajmQvyknfxDxfPAJwAC4XfL/RD8wRC/pJVplnSzc1EMSCkI7k4jsSXyKSGbfhyy2pgNrFIU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHDumuyooQMmnyE5BSQbV+t7mHZ6atEFkMua7xKZ9dZRA2RDE5
-	Hb1GJolc+auMYYoxfAW4iUSHkDtbZJ04TE/nfdSeBu7zXTMJAZLiHbulBPOvR0X2x5rgcUI0el2
-	T7OVgYDQ6TC6ZojGrjq0fIk2ZbeM5cP4=
-X-Gm-Gg: AR+sD113LS1kysBXgmSB9z6D/LTvw+ZTj+SaaU2RbarKDp7ZRChpNJ7uB8nFk6heTxN
-	11fMngPD9EKtkVboV/DKAcAab3I9OPpXuDiNRkXd6/PQKGuIQUZssysu249mIR4Nbt+g+myIg/G
-	BaEhbBmRq9ruEQXMfjNhQZpEOYYHjsQD3snP0kHz18T3uVirOVu/Gif9INq3vXVaVywLxIK08z0
-	7X4nwcr8TYtPJ1rf05cn/F5W2MN/DhsrMCPmCe7/+rqEidWA/vwE+MaOmC9Ix8H4RpSQb/Bl0cG
-	SBoHmJrb6D7gk1Ac7cx8WCZSwOmb6InTlRSk4r1OHBJyIcn/62klUsKRfJNK8JpIFNE4agqmmYG
-	hAHNjAM562P/EHPyy6fvCHJFTnJtetm2WDvrsDbrjce3L0KCsgF/7nldNHwO9QsL1OW+fvC+8MX
-	zgoRStIzQa
-X-Received: by 2002:a05:690c:12:b0:826:dc54:403 with SMTP id
- 00721157ae682-8313f3b07eamr11594657b3.3.1786518886380; Wed, 12 Aug 2026
- 00:14:46 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="iKZ+B3Ch"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1786518926; h=From:To:Subject:Content-Type:MIME-Version;
+	bh=W+AwKLGAXhRy3dxES5Ug8BEsiVjHWw2YdO+KGajb6bc=;
+	b=iKZ+B3ChBuXfZ+ZmZG+szNJrfQIsBjlzENp/mcC32TEaYPI+QYGY16u0rZ2Xm2vadUxGyqDhxYPSIFrH0A9d2FBi+f+DUkJCDHvr5YFye6l0X8lwEZ6YZFHOKLDRF51iAcDpjyXHFLPEt8S9hLGtupf2J1Ra4BJ22v+9DST0OGE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R281e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=chuyf26@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X8qjPBn_1786518925;
+Received: from x31j07255.sqa.na131(mailfrom:Chuyf26@linux.alibaba.com fp:SMTPD_---0X8qjPBn_1786518925 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 12 Aug 2026 15:15:26 +0800
+From: Chuyf26 <Chuyf26@linux.alibaba.com>
+To: alibuda@linux.alibaba.com
+Cc: dust.li@linux.alibaba.com, sidraya@linux.ibm.com, mjambigi@linux.ibm.com,
+ tonylu@linux.alibaba.com, guwen@linux.alibaba.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [PATCH] net/smc: release the internal TCP sock on IPPROTO_SMC socket
+ creation failure
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806073119.387-1-strst.gs@gmail.com> <20260806073119.387-2-strst.gs@gmail.com>
- <20260806111523.gjlhjfmb526f2y4g@skbuf> <CAAsRjRnhdPJOCE5BwU7zUTJ0mtSYCOA3xLcF5ejZQT8OFjYiYQ@mail.gmail.com>
- <20260806124313.see74vgu4dlqqse7@skbuf> <CAAsRjR=RyiraYdLkOcHEagGKXK5+4zwQbT-Zq-1DwVkPiKUNpg@mail.gmail.com>
- <20260810120821.lykofvogbrn2y2ps@skbuf> <CAAsRjRn7qFWy4UBL8tWGQ9pBo5q3du4e=tU9gSKkSSd7K3RaDA@mail.gmail.com>
- <CAOiHx=n43MPXKxA7oxBjGh15pa4Uh5etxkPdrV+0GxACEnrRJA@mail.gmail.com> <20260811095828.xwb4nsmx74wtzjei@skbuf>
-In-Reply-To: <20260811095828.xwb4nsmx74wtzjei@skbuf>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Wed, 12 Aug 2026 09:14:35 +0200
-X-Gm-Features: AUfX_mzkfvOyuiOuclLCeZGZtgA04JfyKl1YYwamAXb2JdJLoC205bVdq3bmDHo
-Message-ID: <CAOiHx==tV_3qJppUJWoFtj6CNzUt=S4kAmGt_SsarsRruOEw7Q@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] net: dsa: let drivers offload 8021q uppers on
- standalone ports
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: Semih Baskan <strst.gs@gmail.com>, florian.fainelli@broadcom.com, andrew@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	vladimir.oltean@nxp.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <20260812071538.o7mdtMhZ1eOzDgQnKZduQfWlq0FhL7OCAPLjt9AA11w@z>
 
-On Tue, Aug 11, 2026 at 11:58=E2=80=AFAM Vladimir Oltean <olteanv@gmail.com=
-> wrote:
->
-> On Tue, Aug 11, 2026 at 09:44:37AM +0200, Jonas Gorski wrote:
-> > VLAN-unaware bridging does work on BCM5325 and BCM5365. The driver was
-> > originally written for this family (before upstream submission).
-> >
-> > There is a register bit that controls what happens when a VLAN-tagged
-> > frame is received for which no (valid) VLAN table entry exists.
-> > Default is drop.
-> >
-> > On BCM5325/5365, setting this bit makes the switch *forward* the frame
-> > regardless. This is why it works on those switches even with
-> > VLAN-aware mode enabled in hardware.
-> >
-> > On later generations, the bit's function changed to "redirect to CPU".
-> > Stand-alone ports still work there, but VLAN-unaware bridging does
-> > not. Everything goes to CPU, and the tag driver marks it erroneously
-> > as offloaded.
->
-> You need to be more specific, because I don't have a good grasp of the
-> various vc0/vc1/vc4/vc5 bits and specifically how they interact.
+IPPROTO_SMC sockets wrap an internal TCP sock ("clcsock"), which is
+created by smc_inet_init_sock() via smc_create_clcsk() from the
+proto->init hook of inet_create()/inet6_create(). When socket
+creation fails after proto->init has succeeded - for example when a
+cgroup BPF program attached to BPF_CGROUP_INET_SOCK_CREATE denies the
+socket - inet_create() calls sk_common_release(), which only invokes
+sk_prot->destroy if it is set. Neither smc_inet_prot nor
+smc_inet6_prot defines .destroy, and the sock destructor smc_destruct()
+returns early unless sk_state is SMC_CLOSED (it is SMC_INIT here), so
+the internal TCP sock is never released.
 
-I don't know that in detail either, and have to find some of this out
-by experimenting.
+As a result, every failing socket(AF_INET, SOCK_STREAM, IPPROTO_SMC)
+call leaks one tcp_sock. Any unprivileged task able to attach a
+deny-all BPF_CGROUP_INET_SOCK_CREATE program to its own cgroup (or a
+task confined by an LSM policy) can grow kernel memory unboundedly.
 
->
-> I *think* you are talking about bit VC5_DROP_VTABLE_MISS having
-> different behaviours when clear, because that's the only reasonable
-> interpretation of the code consistent with your explanation. Are we sure
-> there is no other bit which influences "if we don't drop VTABLE misses,
-> then what?"?
+Reproduced on v7.2-rc7: with a deny-all BPF_CGROUP_INET_SOCK_CREATE
+program attached, a loop of socket(AF_INET, SOCK_STREAM, IPPROTO_SMC)
+calls fails with EPERM and kmemleak reports one unreferenced tcp_sock
+object per call.
 
-If there is, I haven't found it. The register description sounds like
-there isn't:
+Add a .destroy hook to both IPPROTO_SMC protos that releases the
+clcsock via smc_clcsock_release(). That helper is safe here: it takes
+the clcsock_release_lock initialized by smc_sk_init() and skips a NULL
+clcsock, which is what smc_create_clcsk() leaves behind when creating
+the TCP sock fails. Also initialize clcsock to NULL at the start of
+smc_inet_init_sock(): the smc_sock slab is SLAB_TYPESAFE_BY_RCU, so
+recycled objects are not zeroed and stale memory must not be handed to
+sock_release().
 
-On BCM5325/65, this bit is described as
+The same behaviour is visible without any debugging option: on a
+plain kernel the slabinfo "TCP" active_objs count grows by one per
+failing socket() call and never shrinks.
 
-"This bit applies to ingress frames tagged with a VID not
-found in the VLAN table. If the DA is not found in the ARL
-table, this bit controls the what happens to the frame.
-0 =3D Ingress frame with VLAN table miss is flooded to all
-ports.
-1 =3D Ingress frame with VLAN table miss is dropped."
+With the fix, the same reproducer leaves no unreferenced objects in
+kmemleak and the "TCP" slabinfo count stays flat, and regular
+IPPROTO_SMC socket create/close cycles are unaffected
+(sk_common_release() from inet_release() also routes through the new
+.destroy, where the already-NULL clcsock is a no-op).
 
-On newer chips, this bit is described as
+Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
+Reported-by: Abaci <abaci@linux.alibaba.com>
+Assisted-by: abaci:qwen3.8-max
+Signed-off-by: Chuyf26 <Chuyf26@linux.alibaba.com>
+---
+ net/smc/smc_inet.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-"Frames with an invalid VID do not have a
-corresponding entry in the VLAN table.
-1 =3D Ingress frames with invalid VID are dropped.
-0 =3D Ingress frames with invalid VID are forwarded to
-the IMP port."
+diff --git a/net/smc/smc_inet.c b/net/smc/smc_inet.c
+index a94084b..b94a194 100644
+--- a/net/smc/smc_inet.c
++++ b/net/smc/smc_inet.c
+@@ -15,13 +15,16 @@
+=20
+ #include "smc_inet.h"
+ #include "smc.h"
++#include "smc_close.h"
+=20
+ static int smc_inet_init_sock(struct sock *sk);
++static void smc_inet_destroy_sock(struct sock *sk);
+=20
+ static struct proto smc_inet_prot =3D {
+ 	.name		=3D "INET_SMC",
+ 	.owner		=3D THIS_MODULE,
+ 	.init		=3D smc_inet_init_sock,
++	.destroy	=3D smc_inet_destroy_sock,
+ 	.hash		=3D smc_hash_sk,
+ 	.unhash		=3D smc_unhash_sk,
+ 	.release_cb	=3D smc_release_cb,
+@@ -68,6 +71,7 @@ static struct proto smc_inet6_prot =3D {
+ 	.name		=3D "INET6_SMC",
+ 	.owner		=3D THIS_MODULE,
+ 	.init		=3D smc_inet_init_sock,
++	.destroy	=3D smc_inet_destroy_sock,
+ 	.hash		=3D smc_hash_sk,
+ 	.unhash		=3D smc_unhash_sk,
+ 	.release_cb	=3D smc_release_cb,
+@@ -109,6 +113,14 @@ static struct inet_protosw smc_inet6_protosw =3D {
+ static int smc_inet_init_sock(struct sock *sk)
+ {
+ 	struct net *net =3D sock_net(sk);
++	struct smc_sock *smc =3D smc_sk(sk);
++
++	/*
++	 * The smc_sock slab is SLAB_TYPESAFE_BY_RCU and recycled objects
++	 * are not zeroed. .destroy may run even if .init never completed,
++	 * so make sure smc_clcsock_release() sees a valid clcsock.
++	 */
++	smc->clcsock =3D NULL;
+=20
+ 	/* init common smc sock */
+ 	smc_sk_init(net, sk, IPPROTO_SMC);
+@@ -116,6 +128,17 @@ static int smc_inet_init_sock(struct sock *sk)
+ 	return smc_create_clcsk(net, sk, sk->sk_family);
+ }
+=20
++static void smc_inet_destroy_sock(struct sock *sk)
++{
++	/*
++	 * If inet_create()/inet6_create() fail after .init has created the
++	 * internal TCP sock (e.g. rejected by a cgroup BPF program),
++	 * sk_common_release() ends up here. Release the TCP sock, otherwise
++	 * it leaks on every failed IPPROTO_SMC socket() call.
++	 */
++	smc_clcsock_release(smc_sk(sk));
++}
++
+ int __init smc_inet_init(void)
+ {
+ 	int rc;
+--=20
+2.43.5
 
-> Then I suppose the VC4_ING_VID_CHECK_MASK affects only what happens with
-> VLAN membership violations (i.e. VTABLE hit, but port not in VLAN). Thus
-> it does not influence the VC5_DROP_VTABLE_MISS=3Dfalse case, correct?
+Reproducer (no clang/bpftool needed, hand-assembled BPF via bpf(2));
+run as root on a cgroup-v2 system, needs CAP_BPF and CONFIG_CGROUP_BPF:
 
-Right. that's correct.
+  $ gcc -O2 -o smc_leak smc_leak.c
+  $ ./smc_leak 20000
 
->
-> If customizing/unifying the behaviour on VTABLE misses is a dead end,
-> could we consider an alternative? Some switches support having the
-> VTABLE enabled, but ignore the 802.1Q header from incoming packets
-> (thus, all packets get classified to the port PVID). Is there any bit
-> which achieves this in b53? What do VC0_VID_CHK_EN and VC0_VLAN_EN do
-> exactly? Does B53_VLAN_CTRL2 maybe have some useful hidden bits?
+It attaches a deny-all BPF_CGROUP_INET_SOCK_CREATE program to a fresh
+cgroup, enters it and loops socket(AF_INET, SOCK_STREAM, IPPROTO_SMC).
+Before this patch every call fails with EPERM and the slabinfo "TCP"
+active_objs count grows by ~1 per call (20004 for 20000 iterations,
+never shrinking); with this patch the count stays flat.
 
-Not to my knowledge. There is a bit to enable replacing the VID in
-VLAN tagged packets with the PVID (in VLAN Control 0), but presumably
-this would also rewrite the header.
+/* --- smc_leak.c --- */
+/*
+ * IPPROTO_SMC socket-creation leak reproducer (no clang/bpftool needed).
+ *
+ * 1. creates a cgroupv2 subgroup, loads a hand-assembled deny-all
+ *    BPF_CGROUP_INET_SOCK_CREATE prog via bpf(2), attaches it;
+ * 2. moves itself into that cgroup;
+ * 3. loops socket(AF_INET, SOCK_STREAM, IPPROTO_SMC);
+ * 4. prints slabinfo "TCP" delta and kmemleak report.
+ *
+ * Run as root on a cgroup-v2 system:
+ *   ./smc_leak 20000
+ * Expected on buggy kernel: every socket() fails with EPERM and leaks one
+ * TCP sock per call (slabinfo "TCP" active_objs grows by ~1 per iteration;
+ * with CONFIG_DEBUG_KMEMLEAK, unreferenced tcp_sock objects are reported).
+ * On a fixed kernel: no growth.
+ */
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/mount.h>
+#include <sys/socket.h>
+#include <sys/syscall.h>
+#include <linux/bpf.h>
+#include <stdint.h>
 
->
-> > But I didn't notice this until recently. Partially also because there
-> > is no kernel test for VLAN tagged forwarding on a vlan-unaware bridge,
-> > only for standalone ports. Everything saying OK with a vlan-unaware
-> > bridge made me think everything works as expected.
->
-> Good point. tools/testing/selftests/net/forwarding/bridge_vlan_unaware.sh
-> should definitely have a test for this condition.
->
-> > > The port-to-port part has been the same on everything measured. What
-> > > depends on the silicon is only whether the CPU gets a copy of the mis=
-s
-> > > frame. Three chips have data across these two threads:
-> > >
-> > >   - BCM53011 (bcm5301x, my RT-N18U): measured for the CPU direction.
-> > >     Every ingress-check setting (NO_ING_VID_CHK, VIO_FWD, VIO_TO_IMP,
-> > >     plus clearing the VC0 miss-drop bit) delivers 0 of 7; the frame d=
-ies
-> > >     at member-set resolution, not at admission. Whether a miss frame
-> > >     reaches the CPU at all depends on the IMP routing from the other
-> > >     subthread: with port 8 as IMP it does (indiscriminately), with th=
-e
-> > >     in-tree port 5 topology it never does for LAN-class ports.
-> >
-> > Only port 5 is an invalid configuration, so no wonder it breaks. The
-> > only valid configurations are port 8 or port 8 + 5, but not port 5
-> > only.
-> >
-> > >   - BCM63268 and BCM53115: Jonas measured exactly this case there.
-> > >     Standalone RX works even on a table miss, so the CPU copy exists,
-> > >     but forwarding between ports does not. That is the case you are
-> > >     asking about, on two other generations of this silicon.
-> >
-> > Note that BCM53115 also supports a dual IMP / CPU setup, and has the
-> > same limitations, so this isn't something new to BCM5301x. The only
-> > difference is that on BCM5301x the switch is embedded and has ports 5
-> > and 8 (and 7) hardwired to internal MACs, which led to the incorrect
-> > usage of (only) port 5 as CPU.
->
-> How badly broken are the configurations with only port 5 as CPU port?
-> Is other management traffic like STP also not delivered correctly?
+#ifndef IPPROTO_SMC
+#define IPPROTO_SMC 256
+#endif
 
-Yes. Anything that is supposed to be forwarded to IMP only is sent out
-via the main IMP / port 8, and since port 8 is disabled, it is just
-dropped. This presumably applies to all local multicast traffic.
+#define BPF_RAW(CODE, DST, SRC, OFF, IMM) ((struct bpf_insn){CODE, DST, SRC, =
+OFF, IMM})
 
-Anything that is flooded is fine, since the floodmasks have port 5 set.
+static int sys_bpf(int cmd, union bpf_attr *attr, unsigned int size)
+{
+	return syscall(__NR_bpf, cmd, attr, size);
+}
 
-Best regards,
-Jonas
+static int load_deny_prog(void)
+{
+	/* r0 =3D 0 (deny); exit */
+	struct bpf_insn insns[] =3D {
+		BPF_RAW(BPF_ALU64 | BPF_MOV | BPF_K, BPF_REG_0, 0, 0, 0),
+		BPF_RAW(BPF_JMP | BPF_EXIT, 0, 0, 0, 0),
+	};
+	union bpf_attr attr;
+	memset(&attr, 0, sizeof(attr));
+	attr.prog_type =3D BPF_PROG_TYPE_CGROUP_SOCK;
+	attr.insns =3D (uint64_t)(unsigned long)insns;
+	attr.insn_cnt =3D 2;
+	attr.license =3D (uint64_t)(unsigned long)"GPL";
+	int fd =3D sys_bpf(BPF_PROG_LOAD, &attr, sizeof(attr));
+	if (fd < 0)
+		perror("BPF_PROG_LOAD");
+	return fd;
+}
+
+static int attach_prog(int prog_fd, const char *cgpath)
+{
+	int cg_fd =3D open(cgpath, O_RDONLY | O_DIRECTORY);
+	if (cg_fd < 0) {
+		perror("open cgroup");
+		return -1;
+	}
+	union bpf_attr attr;
+	memset(&attr, 0, sizeof(attr));
+	attr.link_create.prog_fd =3D prog_fd;
+	attr.link_create.target_fd =3D cg_fd;
+	attr.link_create.attach_type =3D BPF_CGROUP_INET_SOCK_CREATE;
+	int fd =3D sys_bpf(BPF_LINK_CREATE, &attr, sizeof(attr));
+	if (fd < 0) {
+		perror("BPF_LINK_CREATE");
+		close(cg_fd);
+		return -1;
+	}
+	return fd;
+}
+
+static long tcp_active_objs(void)
+{
+	FILE *f =3D fopen("/proc/slabinfo", "r");
+	char line[256];
+	long objs =3D -1;
+
+	if (!f)
+		return -1;
+	while (fgets(line, sizeof(line), f)) {
+		char name[64];
+		long active;
+		if (sscanf(line, "%63s %ld", name, &active) =3D=3D 2 &&
+		    !strcmp(name, "TCP")) {
+			objs =3D active;
+			break;
+		}
+	}
+	fclose(f);
+	return objs;
+}
+
+static void kmemleak_scan(void)
+{
+	mkdir("/sys/kernel/debug", 0755);
+	mount("debugfs", "/sys/kernel/debug", "debugfs", 0, NULL);
+	FILE *f =3D fopen("/sys/kernel/debug/kmemleak", "w");
+	if (f) {
+		fputs("scan", f);
+		fclose(f);
+		sleep(3);
+		system("grep -c 'unreferenced object' /sys/kernel/debug/kmemleak 2>/dev/nul=
+l | sed 's/^/kmemleak unreferenced objects: /'");
+		system("head -60 /sys/kernel/debug/kmemleak 2>/dev/null");
+	} else {
+		printf("(kmemleak unavailable: %s)\n", strerror(errno));
+	}
+}
+
+int main(int argc, char **argv)
+{
+	const char *name =3D argc > 1 ? argv[1] : "smctest";
+	long iters =3D argc > 2 ? atol(argv[2]) : 20000;
+	char cgpath[256], path[280];
+	int prog_fd, link_fd;
+
+	if (access("/sys/fs/cgroup/cgroup.controllers", F_OK)) {
+		fprintf(stderr, "cgroup v2 required\n");
+		return 1;
+	}
+
+	snprintf(cgpath, sizeof(cgpath), "/sys/fs/cgroup/%s", name);
+	mkdir(cgpath, 0755);
+
+	prog_fd =3D load_deny_prog();
+	if (prog_fd < 0)
+		return 1;
+	link_fd =3D attach_prog(prog_fd, cgpath);
+	if (link_fd =3D=3D -1)
+		return 1;
+
+	snprintf(path, sizeof(path), "%s/cgroup.procs", cgpath);
+	FILE *f =3D fopen(path, "w");
+	if (!f) {
+		perror("open cgroup.procs");
+		return 1;
+	}
+	fprintf(f, "%d", getpid());
+	fclose(f);
+
+	long before =3D tcp_active_objs();
+	printf("TCP slab objs before: %ld\n", before);
+
+	long denied =3D 0, ok =3D 0, other =3D 0;
+	for (long i =3D 0; i < iters; i++) {
+		int fd =3D socket(AF_INET, SOCK_STREAM, IPPROTO_SMC);
+		if (fd >=3D 0) {
+			close(fd);
+			ok++;
+		} else if (errno =3D=3D EPERM) {
+			denied++;
+		} else {
+			if (!other)
+				printf("socket error: %s\n", strerror(errno));
+			other++;
+			break;
+		}
+	}
+	long after =3D tcp_active_objs();
+	printf("iterations=3D%ld denied(EPERM)=3D%ld ok=3D%ld other=3D%ld\n",
+	       iters, denied, ok, other);
+	printf("TCP slab objs after: %ld  (delta %+ld)\n", after, after - before);
+	if (denied && after - before > denied / 2)
+		printf("=3D> LEAK CONFIRMED: ~%ld TCP socks leaked on error path\n",
+		       after - before);
+
+	kmemleak_scan();
+
+	/* leave cgroup so it can be removed */
+	f =3D fopen("/sys/fs/cgroup/cgroup.procs", "w");
+	if (f) {
+		fprintf(f, "%d", getpid());
+		fclose(f);
+	}
+	if (link_fd >=3D 0)
+		close(link_fd);
+	rmdir(cgpath);
+	return 0;
+}
+/* --- end smc_leak.c --- */
