@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66CA263F4A;
-	Wed, 12 Aug 2026 01:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4577C35F180;
+	Wed, 12 Aug 2026 01:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786498278; cv=none; b=hfwZnjHIYMYW7T5UMg71as/O4JD/I5bBypeleARxGd3KJ0cCwo+NM5mu0Z9UC0o4BcEcWC5GAnEax16qg6ocTRCeoI+wQo1E89BF/SnfwDuQdZkIGSjAKWxS6CW6GCXnRwNuRwlJiqG+RTjH+wp7iXCRDPbWy5OdkpVU7jYPkQY=
+	t=1786498279; cv=none; b=GBzEoEARFQSfidOU+ZvAvvWIdSli/4cQ1h23MI6oknQkUl+gOjMX15Hnb4FmnUq7fxu/269wl+7JkYBUyRFvRKf7PcQUZVT/ntORBac3KjKi3riXyjiNGtAQy7Yg1p9xCUagpW2k8dYte4WhnuGEaa+V7DJM8Nrr6qisTrHACh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786498278; c=relaxed/simple;
-	bh=QgcAzhDRN66EaPsaaFD9Mg1Vd6L1RYe3kqE760yk8Ok=;
+	s=arc-20240116; t=1786498279; c=relaxed/simple;
+	bh=eb5NCY5bMC4d256bHcdostcP90LOUfDnXioDSecGz9w=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=P2QfbXyu5XBbAl1KrABzRaVQo3oAZOBJrc/9axqfNAEwHprppU/er/OCCsfYLHwfNVKnofNxoXDAgubtElRSsOT3/5BQ+w9Gi6rflvSbuS0xdob6MUfQDtHR3ftF/qov64hIm0ZBATz0fXvvY5VSVv3UETrd1DIn6y14dt5exg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kQ/g6IlZ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=CFCbGxhjFOONn74zoiTchVjnh0+gSEJt8h5MzY9LHHnO+LN/Q0uw3etKVNBUFSLFvPARSSWAPV5y6i8Jm+ujnvqCmCHAy0osyocmvMGC0l+6iWOar3HlHwhB7CHgXlXCsYdHWpBjN1QyqW3LqfEhddBdWHOg8O7gJaBEmZapDu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VavCS3un; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kQ/g6IlZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592831F000E9;
-	Wed, 12 Aug 2026 01:31:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VavCS3un"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A491F00A3A;
+	Wed, 12 Aug 2026 01:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786498276;
-	bh=dEcgLMceXilbaBz7ViJuMiSXMrTaYjxwjV+XhYroX/E=;
+	s=k20260515; t=1786498277;
+	bh=YfF+scVCwdFnE/RkUcVDb5S/LypZaPtc+WiAxbkhroI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kQ/g6IlZ66I3LLW3kn/xzGwUzdyLyFrSQpwzedDASAsjNMusXtpH/XQnZ/JyM8yKi
-	 v/kqpeM0KwU1PUc6dhZrF2ylapZs0+BoR1DrjgpMbED42X5BgKsl8RiT4k2GZEX+nw
-	 ZJnFHtxwM6rxL/5nREK5golAGJvkVVALjye2oME77UxI5ytpITFUHlc3eYKwmxHfID
-	 BCDUwYByQsdnag16CaMynZiltfqC38HakpFTHWMjavYajOZQqA95ZZUnp7622I3vtX
-	 F2OlGQGsUTqE7CU+EZUi/g8e7qB/OuPndz7tdix8CGNkigxOQXRglXyax7fxUaHQoE
-	 UWl9tHBc2IFmg==
+	b=VavCS3unZ2uO2e6bhcYE6WKxfmEh+IW6yHGfXRjVOrhZ3e3SYbLXkHoB2EQR8B/0y
+	 6oEwR8RZApHyNhjDBoOYI7H19+AAvVMZWHZNxd/YpvmJPnqQ4NiVl1DGV2ENue9myl
+	 BzMN4DxkWgsrOB0FDHqYVwHpULA9VyhIWurVJ97T4Ze/gxC1qxShc421Vhlm4Elvpv
+	 1Aci6J+PzJ0zPOhi8PfGMndyrm0v4nMdVJ1NrV2hXAy/9rjIolx/HXShUHpXg568/E
+	 CoXGfz0Xv3rXsjAw+krCMLNGkLik/+6pO0XXtQ5amtPzBD+2tbupwUMUmy/ZKLrIIm
+	 0froDAgC7cIOA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A0F3809A3C;
-	Wed, 12 Aug 2026 01:30:33 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09E23809A3C;
+	Wed, 12 Aug 2026 01:30:34 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,50 +37,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/5] net: selftests: adjustments to
- ipv6_flowlabel_mgr
+Subject: Re: [PATCH net-next V5 0/2] devlink: add generic device max_sfs
+ parameter
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178649823188.1227528.4185778051969675653.git-patchwork-notify@kernel.org>
-Date: Wed, 12 Aug 2026 01:30:31 +0000
-References: <20260807220942.421382-1-marcelomspessoto@gmail.com>
-In-Reply-To: <20260807220942.421382-1-marcelomspessoto@gmail.com>
-To: Marcelo Mendes Spessoto Junior <marcelomspessoto@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <178649823338.1227528.10215520546627944699.git-patchwork-notify@kernel.org>
+Date: Wed, 12 Aug 2026 01:30:33 +0000
+References: <20260806073037.3001886-1-tariqt@nvidia.com>
+In-Reply-To: <20260806073037.3001886-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ aleksandr.loktionov@intel.com, aleksander.lobakin@intel.com,
+ akiyano@amazon.com, daniel.zahka@gmail.com, dsahern@kernel.org,
+ gal@nvidia.com, jiri@nvidia.com, jiri@resnulli.us, corbet@lwn.net,
+ leon@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, mbloch@nvidia.com, nikolay@nvidia.com,
+ razor@blackwall.org, petrm@nvidia.com, przemyslaw.kitszel@intel.com,
+ rkannoth@marvell.com, saeedm@nvidia.com, skhan@linuxfoundation.org,
+ horms@kernel.org, vdumitrescu@nvidia.com
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri,  7 Aug 2026 19:09:37 -0300 you wrote:
-> The ipv6_flowlabel_mgr test file was lacking coverage for the
-> IPV6_FL_A_RENEW action, and the IPV6_FL_F_REMOTE and IPV6_FL_F_REFLECT
-> flags. The first two patches from this set aim to add a proper test
-> case for RENEW and REMOTE.
+On Thu, 6 Aug 2026 10:30:35 +0300 you wrote:
+> Hi,
 > 
-> The third patch was added to insert network namespace creation inside
-> the test suite, instead of relying on external wrapper scripts. This
-> change conforms to other net test implementations, such as
-> tools/testing/selftests/net/icmp_rfc4884.c, and it is important for
-> the fourth and fifth patches.
+> This series by Nikolay introduces a new generic devlink device
+> parameter, max_sfs, to control the number of light-weight NIC
+> subfunctions (SFs) that can be created on a device.
+> 
+> The first patch adds the generic devlink parameter and infrastructure
+> support.
+> The second patch implements support for the parameter in the mlx5
+> driver.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v3,1/5] selftests: net: test IPV6_FL_A_RENEW
-    https://git.kernel.org/netdev/net-next/c/bfad9937de98
-  - [net-next,v3,2/5] selftests: net: test IPV6_FL_F_REMOTE
-    https://git.kernel.org/netdev/net-next/c/39dd045c1514
-  - [net-next,v3,3/5] selftests: net: create own netns in ipv6_flowlabel_mgr
-    https://git.kernel.org/netdev/net-next/c/03df0d155ba1
-  - [net-next,v3,4/5] selftests: net: test IPV6_FL_F_REFLECT
-    https://git.kernel.org/netdev/net-next/c/b2690523a71f
-  - [net-next,v3,5/5] selftests: net: adopt harness for flow label mgr
-    https://git.kernel.org/netdev/net-next/c/b5d24f604506
+  - [net-next,V5,1/2] devlink: add generic device max_sfs parameter
+    https://git.kernel.org/netdev/net-next/c/26ba30221c03
+  - [net-next,V5,2/2] net/mlx5: implement max_sfs parameter
+    https://git.kernel.org/netdev/net-next/c/38c35fdd801e
 
 You are awesome, thank you!
 -- 
