@@ -1,232 +1,150 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897004570DA;
-	Wed, 12 Aug 2026 14:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509A8377EBC;
+	Wed, 12 Aug 2026 14:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786545875; cv=none; b=hp761l9WA92qqKMhhrf6HGQwE4Qq0YpXSht0m8Ipt3uMrHl9ll/qpEauAcqZFqhla3n/3KEgVtGFyVezlD3tVSmFyZavKOX55qGlD4fIdlmVKdxlRiyVdtaGnqQIK7hJ2PiwV1fvXxeTyuKu6HQPJZQ484x4OusF0Vtix1CFZjY=
+	t=1786546038; cv=none; b=NdCNYQtgcTdVwPLdhjGt+S9kk1RLRIqxNzGfXyCwKP5G5u2nZp7e36LeiEou1Rhy5fZCd703cut/gH/tzx4JfuT8NhpO1kGmzTOCvD8vqXhpUQVdJBG/Cb5gIHIaA5wO75gjynOg5jpOayrRpzCP591KiyPVeTI/2Qtim06qRzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786545875; c=relaxed/simple;
-	bh=KOxnVU4XsTxjrHiTBzYsMrKq0Z0mba5pmmuMt/CJCVQ=;
+	s=arc-20240116; t=1786546038; c=relaxed/simple;
+	bh=idFfQ1Np9CR7Be2S3SG7/hunKNDtOHIL0QF2bgyr2+g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R0Y7bn99rM/l9jicXSvBskX6p6YjLcVoTVLosqa4zwngk7H3WeJRQfiNcF4wYB/XUElD0ezEdEms4JoHz+pEojIS29BLrccdyNMHZKOxIdfeWArhlTXF0zDFSNox7DA0LxXDMR+bPYiXNcjpp1CUzNwY5hFwwNU7xn2BdkNlAuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ov7oNDEP; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=fcewEo1fOG8BIWoKRpV9HFSmsn9+sKbjddkh3Nud7lxH/yBboRoTve4/ecI4pfoMd/J/XXKgpNBQQnPD5XXUqqQXhv6Z894kg+PyFG/1jODqqlAQqNjru0ZEpEzWAX/2YysMWldIAnbFJkYa19lk+9sTMGkT31bZMdeuTtTNH0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y8n0Pcay; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ov7oNDEP"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67CE1RgS3686384;
-	Wed, 12 Aug 2026 14:44:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Nga4Iz
-	GXPEla/M65LkxkY2vFyiFXLjbUZl5bMU5LDYI=; b=Ov7oNDEP6hsN4R5bHdDEhO
-	g3IPijtjNtT+jGXRwKiNWcgr3H3gFiaLqYheKxFggwlwxpVL9DfgxeRNXb2ytpZS
-	yXxqZH1El1Y5tEgL352lYtZmHf2tf1x2PRyGOwD7JCtOT5koMVSC0c9Dh87jvveL
-	0apZKFeMS1IbJXMH9tBF6AX4ILLNbHhp8HQ+0vEXi2CfLpVVzVoyEUUFEjTb2tm9
-	OGAl5ww4l8C5DkKQKL4gTvQICkJF3bFM5ClU0BBHI/6ttY0BRB/LFRjys086aZ/A
-	HJuyKH93yaPage8sRRJyZ07RIWETXPdBkJtogeDgYaBxnpQd0jKPgO7O/CWvDuwg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvm9u15n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 14:44:32 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67CEfHbW032081;
-	Wed, 12 Aug 2026 14:44:31 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxh0gebdg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Aug 2026 14:44:31 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67CEiTdO44368220
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Aug 2026 14:44:29 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 42DB920043;
-	Wed, 12 Aug 2026 14:44:29 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F14B420040;
-	Wed, 12 Aug 2026 14:44:26 +0000 (GMT)
-Received: from [9.39.26.209] (unknown [9.39.26.209])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Aug 2026 14:44:26 +0000 (GMT)
-Message-ID: <5c80dd63-80bb-424b-894e-2f4ca3a5568b@linux.ibm.com>
-Date: Wed, 12 Aug 2026 20:14:25 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y8n0Pcay"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79981F000E9;
+	Wed, 12 Aug 2026 14:47:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786546037;
+	bh=n8ttIAcsLaVvlpTfKGqk/LRV0RbRzLGRHafBM6VGeh8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Y8n0PcaytkNKrTL3Njhih0pXxQHOMo6gU+PNKGlBq9r+1jXGfKylMQAkIfc8lqUtb
+	 +BDUk6t6e9fUIXgKzrB1LYqDntrE+ZMtqNkxxeiSmh283mbf3occBpGN9Tl5EOLzBJ
+	 zF5NGumSYMN3tSM4sscVLJ+IPuquQ9k5G+uH67k8QgAdVxg5D8LLzSe6sWh5kRBjHW
+	 zg1ZmiUg9rENg4CVVp2Z5FDiRlfWLLQ/YtKHzPnyD8KSpLcA9JVuUysbqvL7uIFpnb
+	 olb9Jd4wiSwHbL6meKQ4uSv85+3X6Rd0+96gVWVrt7RD8QIRJizZc0GmtBBqS7tWVx
+	 05FPQvfnEOE4Q==
+Message-ID: <dc89cede-57ef-448e-96f8-e8251d9007ec@kernel.org>
+Date: Wed, 12 Aug 2026 16:47:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net/smc: release the internal TCP sock on IPPROTO_SMC
- socket creation failure
-To: Chuyf26 <Chuyf26@linux.alibaba.com>, alibuda@linux.alibaba.com
-Cc: dust.li@linux.alibaba.com, mjambigi@linux.ibm.com,
-        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260812071543.C94FD349CD8@smtp.subspace.kernel.org>
-Content-Language: en-US
-From: Sidraya Jayagond <sidraya@linux.ibm.com>
-In-Reply-To: <20260812071543.C94FD349CD8@smtp.subspace.kernel.org>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next v3 7/7] mptcp: implemented OoO queue pruning
+Content-Language: fr
+To: Eric Dumazet <edumazet@google.com>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Gang Yan <yangang@kylinos.cn>
+References: <20260807-net-next-mptcp-oooq-pruning-v3-0-dbc1eb853cc3@kernel.org>
+ <20260807-net-next-mptcp-oooq-pruning-v3-7-dbc1eb853cc3@kernel.org>
+ <CANn89iL-rnJtxVxJEf3j0PX3X8A04vsf-XXQvb-_FyjMBBM5nw@mail.gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <CANn89iL-rnJtxVxJEf3j0PX3X8A04vsf-XXQvb-_FyjMBBM5nw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDExOSBTYWx0ZWRfXyp/3PN77Kjr7
- wR856fW4jJsM1evQCyZwKLpKWoE95arDekrKEyjk3pWQeG59dpDohSBaqm32eI/M1+GAWZ3EMo9
- iiX27hTXo/ME/q3QnPBJQF8Z1HoUrEx/Yww+nkOsa2I4uPSjieW3/ZlKfsgUuUs5rSXeN9oCHF2
- LxN1hKm0fwGgfdrZfbJp3Tw2na77jylm0NzEP/Hbymmhm+SeZat3F77BdTqPTC2iSzzbE/gdP90
- F5AvMqXR7d2nrg5pAncFQ90NM58VHJTAfFjNkvcABhl85POPgymZp9GnPMiNtkJ1SpSg7mtDASo
- csP56/rCa9pvb76wL7FKZ5lufrEcLrXwUzTNfaPFMRTrtqAHNoUOOu14x5ilt2QFnL6ynQp20qy
- yL9Rt/VilZha8GwCs6iFDwfUdQxkuMhXZPRWsvGD/713TU/IWj31L9e1zNmhvpGiD1Y/CX6Wcuc
- 4qZlxxaML9O525sGicA==
-X-Proofpoint-ORIG-GUID: u5JVFy_OFIhT4s3zXHMt0z5hH-H_608H
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDExOSBTYWx0ZWRfX+BrTQ0imPvgd
- nVDzOnJzx850iz3KbmwSBRFiwX1nTdd6NhReemWzRx18TW/K9AO3RPI2GGQTx0nToHLoPFDUG1L
- 3svJcEJM0ZSSpWKWffRkFgx7t42nBLY=
-X-Authority-Analysis: v=2.4 cv=IfK3n2qa c=1 sm=1 tr=0 ts=6a7c86d0 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=SRrdq9N9AAAA:8
- a=I6kgrEg1N8Mqh0EC74gA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: mlO8cGyNYYQjoNHCmfPvgqPvkIaWsQQe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-12_04,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
- lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608120119
+Content-Transfer-Encoding: 8bit
 
+Hi Eric,
 
+On 12/08/2026 13:39, Eric Dumazet wrote:
+> On Fri, Aug 7, 2026 at 3:50 PM Matthieu Baerts (NGI0)
+> <matttbe@kernel.org> wrote:
+>>
+>> From: Paolo Abeni <pabeni@redhat.com>
+>>
+>> When moving incoming skbs in the msk receive queue and the latter
+>> is above limits, prune it as needed quite alike what TCP is doing
+>> at the subflow level. The main difference relies in the stop condition:
+>> since MPTCP does not perform collapsing, it's better off dropping the
+>> bare minimum to fit the (newer) incoming packet.
+>>
+>> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+>> Tested-by: Gang Yan <yangang@kylinos.cn>
+>> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> ---
+>> v2:
+>>  - Uniform the new counter with the other OFO ones.
+>> v3:
+>>  - prune only for new data
+>>  - reorganize the code to follow more closely TCP
+>> ---
+> 
+> ...
+> 
+>> +
+>> +/* The stack can't drop packets for fallback socket at the msk level, or the
+>> + * stream will break.
+>> + */
+>> +static bool mptcp_can_ingest(const struct sock *sk)
+>> +{
+>> +       return unlikely(sk_rmem_alloc_get(sk) <= READ_ONCE(sk->sk_rcvbuf)) ||
+>> +                       __mptcp_check_fallback(mptcp_sk(sk));
+>> +}
+>> +
+> 
+> This unlikely() seems inverted.
 
-On 12/08/26 12:45 pm, Chuyf26 wrote:
-> IPPROTO_SMC sockets wrap an internal TCP sock ("clcsock"), which is
-> created by smc_inet_init_sock() via smc_create_clcsk() from the
-> proto->init hook of inet_create()/inet6_create(). When socket
-> creation fails after proto->init has succeeded - for example when a
-> cgroup BPF program attached to BPF_CGROUP_INET_SOCK_CREATE denies the
-> socket - inet_create() calls sk_common_release(), which only invokes
-> sk_prot->destroy if it is set. Neither smc_inet_prot nor
-> smc_inet6_prot defines .destroy, and the sock destructor smc_destruct()
-> returns early unless sk_state is SMC_CLOSED (it is SMC_INIT here), so
-> the internal TCP sock is never released.
-> 
-> As a result, every failing socket(AF_INET, SOCK_STREAM, IPPROTO_SMC)
-> call leaks one tcp_sock. Any unprivileged task able to attach a
-> deny-all BPF_CGROUP_INET_SOCK_CREATE program to its own cgroup (or a
-> task confined by an LSM policy) can grow kernel memory unboundedly.
-> 
-> Reproduced on v7.2-rc7: with a deny-all BPF_CGROUP_INET_SOCK_CREATE
-> program attached, a loop of socket(AF_INET, SOCK_STREAM, IPPROTO_SMC)
-> calls fails with EPERM and kmemleak reports one unreferenced tcp_sock
-> object per call.
-> 
-> Add a .destroy hook to both IPPROTO_SMC protos that releases the
-> clcsock via smc_clcsock_release(). That helper is safe here: it takes
-> the clcsock_release_lock initialized by smc_sk_init() and skips a NULL
-> clcsock, which is what smc_create_clcsk() leaves behind when creating
-> the TCP sock fails. Also initialize clcsock to NULL at the start of
-> smc_inet_init_sock(): the smc_sock slab is SLAB_TYPESAFE_BY_RCU, so
-> recycled objects are not zeroed and stale memory must not be handed to
-> sock_release().
-> 
-> The same behaviour is visible without any debugging option: on a
-> plain kernel the slabinfo "TCP" active_objs count grows by one per
-> failing socket() call and never shrinks.
-> 
-> With the fix, the same reproducer leaves no unreferenced objects in
-> kmemleak and the "TCP" slabinfo count stays flat, and regular
-> IPPROTO_SMC socket create/close cycles are unaffected
-> (sk_common_release() from inet_release() also routes through the new
-> .destroy, where the already-NULL clcsock is a no-op).
-> 
+Thank you, yes it is!
 
-The fix looks good, but I think the commit message is longer than needed
-and spends too much space on reproducer details and internal call path
-narration.
-I would trim the detailed reproducer/results text and most of the
-internal call path explanation, and keep it focused on the leak, the
-failure path, and why adding .destroy plus clcsock = NULL fixes the issue.
-If you want to keep the reproducer and validation details, please move
-those below `...` instead of keeping them in the main commit message body.
+Paolo already told me that before I sent the v3, but it looks like I was
+in an OoM state, and the pruning was a bit too aggressive on my side...
 
-Thank you,
-Sidraya
-> Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
-> Reported-by: Abaci <abaci@linux.alibaba.com>
-> Assisted-by: abaci:qwen3.8-max
-> Signed-off-by: Chuyf26 <Chuyf26@linux.alibaba.com>
-> ---
->  net/smc/smc_inet.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
-> 
-> diff --git a/net/smc/smc_inet.c b/net/smc/smc_inet.c
-> index a94084b..b94a194 100644
-> --- a/net/smc/smc_inet.c
-> +++ b/net/smc/smc_inet.c
-> @@ -15,13 +15,16 @@
->  
->  #include "smc_inet.h"
->  #include "smc.h"
-> +#include "smc_close.h"
->  
->  static int smc_inet_init_sock(struct sock *sk);
-> +static void smc_inet_destroy_sock(struct sock *sk);
->  
->  static struct proto smc_inet_prot = {
->  	.name		= "INET_SMC",
->  	.owner		= THIS_MODULE,
->  	.init		= smc_inet_init_sock,
-> +	.destroy	= smc_inet_destroy_sock,
->  	.hash		= smc_hash_sk,
->  	.unhash		= smc_unhash_sk,
->  	.release_cb	= smc_release_cb,
-> @@ -68,6 +71,7 @@ static struct proto smc_inet6_prot = {
->  	.name		= "INET6_SMC",
->  	.owner		= THIS_MODULE,
->  	.init		= smc_inet_init_sock,
-> +	.destroy	= smc_inet_destroy_sock,
->  	.hash		= smc_hash_sk,
->  	.unhash		= smc_unhash_sk,
->  	.release_cb	= smc_release_cb,
-> @@ -109,6 +113,14 @@ static struct inet_protosw smc_inet6_protosw = {
->  static int smc_inet_init_sock(struct sock *sk)
->  {
->  	struct net *net = sock_net(sk);
-> +	struct smc_sock *smc = smc_sk(sk);
-> +
-> +	/*
-> +	 * The smc_sock slab is SLAB_TYPESAFE_BY_RCU and recycled objects
-> +	 * are not zeroed. .destroy may run even if .init never completed,
-> +	 * so make sure smc_clcsock_release() sees a valid clcsock.
-> +	 */
-> +	smc->clcsock = NULL;
->  
->  	/* init common smc sock */
->  	smc_sk_init(net, sk, IPPROTO_SMC);
-> @@ -116,6 +128,17 @@ static int smc_inet_init_sock(struct sock *sk)
->  	return smc_create_clcsk(net, sk, sk->sk_family);
->  }
->  
-> +static void smc_inet_destroy_sock(struct sock *sk)
-> +{
-> +	/*
-> +	 * If inet_create()/inet6_create() fail after .init has created the
-> +	 * internal TCP sock (e.g. rejected by a cgroup BPF program),
-> +	 * sk_common_release() ends up here. Release the TCP sock, otherwise
-> +	 * it leaks on every failed IPPROTO_SMC socket() call.
-> +	 */
-> +	smc_clcsock_release(smc_sk(sk));
-> +}
-> +
->  int __init smc_inet_init(void)
->  {
->  	int rc;
+A follow-up patch will be sent soon.
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
