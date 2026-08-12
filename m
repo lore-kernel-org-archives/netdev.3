@@ -1,103 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E30439020C
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2438938F64E
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786551754; cv=none; b=JHzrQtXJPnKfkYifR1YwVVoP4EcOUMJ6wt6zEGcctJHf93xrBy4keV4v86iRhrKyzPnDo8U3rcIfzkaPM7oKc87a6yOgWKBv3cOi2qaaCtybNtXxg/B5oMCa+k+WmkthtsaiP0WNdJVI7ibmZNy41bxYrjcs7t+PVYOjMyFQuiE=
+	t=1786551763; cv=none; b=dGX1JHe0absYXuPdKiCB8D1ScJjyumvYJbII0FTF+Cm2YxqVzA3k+NtB3dSKuaHnQd8a0VwJd5UduwRbgoO+25OGB61ckkK1Ily9Pmmkh0OwBIBNudPUlyCWlrC5+upv5hdexUfG/Oqfn/bdUra68RB4m26scTfh9msxTrS/bpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786551754; c=relaxed/simple;
-	bh=WX+h646lZXfqeKCjGrMcRv13nAZgcSJtBQv236pEIk0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fkkwyDHI+Gf4sLP0vro0wAh0iuBU9H2eoZ098Hw2u9eK91KGkPihe5t7VbSCQ0qpVi9BXW4V52tYzIizHlKoJ/Gf9eLoahHe41WlVWgfkZMuqEqQto2ASratUt0OhsTfoaryh0nhSzcBIStweKCPIs0EXkhpXibEkOwbg8DZs8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QQBXafaf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786551763; c=relaxed/simple;
+	bh=D5928xH8M7VjsEUj8zk5iyDe9sgeDJ+UdCG9xIOVXq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Drpp8gpxZCNv6aXa9OrZl4QKh5MNsaEJBtL0l6ZAZBChIvfhej4233GsAVHPuzJ1Ow1f1fGBz/N20NvV5dSyU9qz/blnW46PC2JIeKy7xpguZSn8CdNDbYRk7R8N34PvEjRUNN22lG5dix4/u+Zfo72F/rTFPe0s0vO5ex1Y0e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0TMZ/jXQ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QQBXafaf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922661F000E9;
-	Wed, 12 Aug 2026 16:22:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786551752;
-	bh=3OG3rmu62sE1fRXq71e8Xa4G4+vdWfB0YF+LmjSMzkc=;
-	h=From:To:Cc:Subject:Date;
-	b=QQBXafafxC0bxYw6dXpIN6XG0zn5rwF05chBOWImCyiDB8Bq8EEHbS2KohPKGmYKv
-	 JD+Qv+9BSZWtPpCMWC98otrrzyZJOPAN+jiUvuxCy4B4Hvi1L4eWE8GnLtXI6u6GBQ
-	 /u1dYbn+aA6TWLACU2PaCSpT2ybrrVIKlPlSfdU856y9OvliPUjMFMdZvW1rrPxrCU
-	 p2FoeTrCUwQOa6JcCM0u94saFov/paZV63FytXcCmYgO25rjiMgs2BDX0E7epn2fjd
-	 xGw6xqWs51PetywUVAP1b11IBbDrZw7KafN2ofUD7AnWQY8SDj94b7OPZRzwcI41+x
-	 NhrrK2cl2Td3g==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	andrew@lunn.ch,
-	vadim.fedorenko@linux.dev
-Subject: [PATCH net-next] ethtool: tsconfig: reject zero-valued tx_type and rx_filter bitsets
-Date: Wed, 12 Aug 2026 09:22:30 -0700
-Message-ID: <20260812162230.1837788-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0TMZ/jXQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=D+hMCisx3VNzAgESo5e/Ggq2I0ERfe5oOq+lEEv6IrM=; b=0TMZ/jXQwnWeeWm3gDyTbgi8R8
+	XVnJomgSI8Z9232vgiJvW29JEcXMftIMueN4Q//P54wArmxN4+Mye8+ivIaPuOXe9vKPZNhVP11YC
+	PUeqglHtWdAl2hHIYt0VofAFV1TnPjQhbrU31nV6tbUXz0bqQZnvOql19oAaxvGWqB4Y=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wuBin-00HIlE-Ir; Wed, 12 Aug 2026 18:22:29 +0200
+Date: Wed, 12 Aug 2026 18:22:29 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	theo.lebrun@bootlin.com, conor.dooley@microchip.com,
+	charles.perry@microchip.com
+Subject: Re: [PATCH net-next v4 1/2] net: macb: Poll for link state changes
+ when using the internal PCS.
+Message-ID: <16ca48e8-c9d5-4df5-b955-024349730ae2@lunn.ch>
+References: <20260807201741.3275-2-nwhitehorn@pa.msu.edu>
+ <20260812015433.1687252-1-kuba@kernel.org>
+ <d130cf47-1d70-4345-b60a-795d463cb84a@pa.msu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d130cf47-1d70-4345-b60a-795d463cb84a@pa.msu.edu>
 
-The ffs()/fls() guard in ethnl_set_tsconfig() was meant to enforce
-that the user selects exactly one tx_type (and one rx_filter)
-at a time (off / none are explicit types with non-zero values).
-However, both ffs(0) and fls(0) return 0, so the guard passes
-a zero-valued bitset through.
+> I am a little reticent to include fixes to this pre-existing situation in
+> this patch unless it is unmergeable without doing so, especially given that
+> I think a full solution would be a substantially larger change, but if it is
+> needed, I would be happy to work on adding it.
+> -Nathan
 
-The subsequent ffs(req_tx_type) - 1 would produce -1, if user selected
-no bit. net_hwtstamp_validate() catches the invalid -1 downstream,
-but returns a generic error (-ERANGE) without telling the user
-what went wrong. Return -EINVAL + extack instead.
+The way WoL works has been changed in phylink recently. Many MAC
+drivers got it wrong, so we tried to make it easier by putting as much
+business logic as possible into phylink.
 
-Replace the ffs()/fls() comparison with a hweight32() == 1 check.
+So i would suggest you do a minimal fix for your issue, but also for
+net-next try to rework WoL to make full use of phylinks code. So two
+independent patchsets.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: andrew@lunn.ch
-CC: vadim.fedorenko@linux.dev
----
- net/ethtool/tsconfig.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
-index 24b64862011f..6be3aa5d4bc1 100644
---- a/net/ethtool/tsconfig.c
-+++ b/net/ethtool/tsconfig.c
-@@ -359,8 +359,10 @@ static int ethnl_set_tsconfig(struct ethnl_req_info *req_base,
- 		if (ret < 0)
- 			goto err_free_hwprov;
- 
--		/* Select only one tx type at a time */
--		if (ffs(req_tx_type) != fls(req_tx_type)) {
-+		/* Select exactly one tx type at a time */
-+		if (hweight32(req_tx_type) != 1) {
-+			NL_SET_BAD_ATTR(info->extack,
-+					tb[ETHTOOL_A_TSCONFIG_TX_TYPES]);
- 			ret = -EINVAL;
- 			goto err_free_hwprov;
- 		}
-@@ -380,8 +382,10 @@ static int ethnl_set_tsconfig(struct ethnl_req_info *req_base,
- 		if (ret < 0)
- 			goto err_free_hwprov;
- 
--		/* Select only one rx filter at a time */
--		if (ffs(req_rx_filter) != fls(req_rx_filter)) {
-+		/* Select exactly one rx filter at a time */
-+		if (hweight32(req_rx_filter) != 1) {
-+			NL_SET_BAD_ATTR(info->extack,
-+					tb[ETHTOOL_A_TSCONFIG_RX_FILTERS]);
- 			ret = -EINVAL;
- 			goto err_free_hwprov;
- 		}
--- 
-2.55.0
-
+	 Andrew
