@@ -1,35 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B6536B934;
-	Wed, 12 Aug 2026 01:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9270370D56;
+	Wed, 12 Aug 2026 01:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786498871; cv=none; b=f2FpxJN42pcM49CYd5v++daJXWCuvxwPew06ePkp8RZ7v45nidy7/ANsPHYYKk3sV7Lr1K0o2XyQDwmNuQ2+ujdiXncPdVOjju4DsWO+wQLi+Ifyh9V1olGixjkmEgmznveooTNsTVzUx/Ts2p1QJWwVK+glpSp1HgFwcM87NTo=
+	t=1786498874; cv=none; b=XT94tWwxmwuj1SkxDrNMVcQWSeRxW9EAX+f/Rp1tWmzoVcsnDqL0EWc2G5Qq9kc4b+02Mt+O3GB1rqQuFTFYO97KOsO/+0dFzaU+bUDBZ/EgwomaOoqcJ6VYAY8OFyZi32/OMtWDYKl3nZwZS4zCRqei4pNi/oLa6YluxUI+FUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786498871; c=relaxed/simple;
-	bh=DFEAgBcq9Rx5mQwy1+RNT0Zau6KfpE3zjnUkm1qTq0k=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=eK8G/Lg0kl1Ar2d51IjQIz3qTz3njH6w8Mkr7aOb3Jx+OHWN11SsRPiEOVLv+gJyENqloCK5DqN1vFV13ks/xclaVfBPC1HFTvd1T/ZDI10Dudk/Wfj7Wqg2NkvhVtTY3i1GsDRdqbnIiKHT1W2d0UqSwMbpR5pSVLknMOIzvaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXsy9fT0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786498874; c=relaxed/simple;
+	bh=zgxQ1Dlh38HZOImSEfZiP36YJ9/wuYQvRevSX5EiaEA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JlB6zMTde5Po+vkTtfmQ3rjTBOw+qhw16KQAL6rRCDaOtQLqhKGOhLXbwfNu8hxfaTsRIpouh9smisJ/UoWUnicjih4d3HlgUej9kaA93hPIltrcl+vNBs9Gh7YjYKft+FVYr8R1SqVJL9O1wD61Y625u4LtwxbSxAPOyMrWUQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SevL2kYI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXsy9fT0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3BE1F000E9;
-	Wed, 12 Aug 2026 01:41:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SevL2kYI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303FA1F000E9;
+	Wed, 12 Aug 2026 01:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786498869;
-	bh=DTqbF2gMTTrmR8Ocm1PWoYZeG+YyerThrsY5lc0u+D4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=jXsy9fT0E37J4raf4RXaAB1/vxZ/G3E98wm3MHrGBYQwL1rWtWVTzvXsdAY61IMkV
-	 O7/efAIQRxJuHbr5qZvyD3MCfpaAZ9JT/iMWSI7+DKhJiPQBeQasQ86VUNM1Tn9FUl
-	 rtGfO5bj6BKKfjlm1hRyRLqfjunQlNBN//BF+AGqHPCQjh0nb0AeezIKrzrSGXOhts
-	 raE9ZeYbi+AOC5NO86RxmxJ71U1imihVLPNbjmm8VkRS4MLW0M6DHuAbwb9d99SA6c
-	 LT6FyEvc8+Sv+j13xW0sCILYT5cofpgB/DaclOZhKLS0snsfCuJwCmooiirxpy9Gux
-	 wbZwcvyIiG1SA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09F73809A3C;
-	Wed, 12 Aug 2026 01:40:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786498872;
+	bh=YDVhKIVRwhk7NjczVHRS/FNkLpxTfXl/HQj2fMs4j2Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SevL2kYIpXIZjiVE3tSj+IOFi2FHZbHglTBaVFaudEB1eTPrryPkV8Z9X6y7vAAjd
+	 eX0KPnk6el8K/5GIXaMRVTkjAaqwWCadkVTO52tbNhojCXs4RoKdlLhls47q0se2CJ
+	 fbDt65Xk3uvwxFgBNhwekCRUfX6bmWEgJqn0ZyD4bE/pOTjuWdyO+XKVi7vGhVdUwC
+	 qbO8QzvoonDC30WafEeLriT+NrKlSDdoMJvNrut37+u5MPFJ0XvcYWXsyj6vDsEDCg
+	 mDCMpaE++1scufoZYcOK34lRayCubtwTKWLI2LHVg2Pa5nHACTFCTWbwZXJzzHoJ1j
+	 A/LnExjoOXBWg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: fabio.porcedda@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	bjorn@mork.no,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dnlplm@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: usb: qmi_wwan: add Telit Cinterion FE990D50 composition
+Date: Tue, 11 Aug 2026 18:41:11 -0700
+Message-ID: <20260812014111.1680631-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260810103409.133796-1-fabio.porcedda@gmail.com>
+References: <20260810103409.133796-1-fabio.porcedda@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +52,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/sched: cls_u32: skip hash tables in
- u32_bind_class()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178649882538.1230679.17797134796377555251.git-patchwork-notify@kernel.org>
-Date: Wed, 12 Aug 2026 01:40:25 +0000
-References: <1786089038-36366-1-git-send-email-zhangchangzhong@huawei.com>
-In-Reply-To: <1786089038-36366-1-git-send-email-zhangchangzhong@huawei.com>
-To: Zhang Changzhong <zhangchangzhong@huawei.com>
-Cc: xiyou.wangcong@gmail.com, davem@davemloft.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- weiyongjun1@huawei.com
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: usb: qmi_wwan: add Telit Cinterion FE990D50 composition
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Adds a qmi_wwan products[] entry for USB ID 1bc7:0991 interface 0, using
+the SET_DTR quirk, for the Telit Cinterion FE990D50 rmnet + tty + ADPL +
+adb composition.
 
-On Fri, 7 Aug 2026 15:50:38 +0800 you wrote:
-> u32_walk() enumerates both struct tc_u_hnode and struct tc_u_knode
-> through the walker callback. u32_bind_class() unconditionally casts the
-> passed fh to tc_u_knode and accesses &n->res, so when fh is actually a
-> tc_u_hnode, which has no tcf_result member, this results in a
-> slab-out-of-bounds read of res->classid in tc_cls_bind_class().
-> 
-> The issue can be reproduced with the following commands:
-> 
-> [...]
+> diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+> index 94cdb61dca83d..147beaa61340d 100644
+> --- a/drivers/net/usb/qmi_wwan.c
+> +++ b/drivers/net/usb/qmi_wwan.c
+> @@ -1360,6 +1360,7 @@ static const struct usb_device_id products[] = {
+>  	{QMI_FIXED_INTF(0x1bbb, 0x0203, 2)},	/* Alcatel L800MA */
+>  	{QMI_FIXED_INTF(0x2357, 0x0201, 4)},	/* TP-LINK HSUPA Modem MA180 */
+>  	{QMI_FIXED_INTF(0x2357, 0x9000, 4)},	/* TP-LINK MA260 */
+> +	{QMI_QUIRK_SET_DTR(0x1bc7, 0x0991, 0)}, /* Telit LE910C1-EUX */
+                                                   ^^^^^^^^^^^^^^^^^^
 
-Here is the summary with links:
-  - [net] net/sched: cls_u32: skip hash tables in u32_bind_class()
-    https://git.kernel.org/netdev/net/c/6d3724e616fa
+[Severity: Low]
+Is the device name in this comment the intended one?  The subject line and
+the descriptor dump in the changelog both describe 1bc7:0991 as the
+FE990D50:
 
-You are awesome, thank you!
+    P:  Vendor=1bc7 ProdID=0991 Rev=06.06
+    S:  Manufacturer=Telit Cinterion
+    S:  Product=FE990
+
+The comment looks like a copy of the next line, which is the entry for the
+real LE910C1-EUX at a different product ID and interface number:
+
+>  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1031, 3)}, /* Telit LE910C1-EUX */
+
+drivers/usb/serial/option.c already labels the same product ID as the
+FE990D50 in option_ids[]:
+
+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x0991, 0xff, 0xff, 0x30),	/* Telit FE990D50 (rmnet) */
+
+Would /* Telit FE990D50 */ be a better fit here, matching the existing
+naming for the rest of the family in this table (/* Telit FE990A */ for
+0x1080 and /* Telit FE990B */ for 0x10b0)?  As it stands, two entries for
+different hardware carry the same label, which makes it easy for a later
+addition to touch the wrong line.
+
+The match itself looks fine: interface 0 of 0x0991 has bInterfaceProtocol
+0x50, which none of the option.c filters (0x30, 0x40, 0x60) claim, so only
+the comment appears to need a change.
+
+>  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1034, 2)}, /* Telit LE910C4-WWX */
+>  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1037, 4)}, /* Telit LE910C4-WWX */
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
