@@ -1,867 +1,243 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E2331F9A0
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 18:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786557834; cv=pass; b=q73wAOussYbqfzzkqwIrvvOwN+HxjfjYP2YgaW5V5NZiIApNvrFnB2bmiY8WUbjg3FcQaXjZk6p8cfKZZKUqV4ATNaPmMH1B+6PsJvBGIwaPmfoiWvJDjX5S3xoLdCN7Rs5fcYc+VVCXR0IqqpT/yHPevcPZliSuvmyb0xLXCWg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786557834; c=relaxed/simple;
-	bh=vMBqYA3Oao/qwl9109IYFIB6zYQ2CzD4vUL8EX97KuQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fbtURUqRc7Yaebwh9mtQscTqkzl+3/YtOvIKKjaVaZXkknmeHCeK4YF9OCrf1sou/dyLrRxpWB5lva7ftqwdlZzHWkQUPwPGqvIwZnvYXNdFuU6k02sgqrgx98qp/WImQVzRenmV3aTokTYgSJpw2E6sQEAeP71DjrYY/cEvLEs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KTDpNRWh; arc=pass smtp.client-ip=74.125.224.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC2137756A
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 18:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.228
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786558343; cv=none; b=uDbNXaewQucFYkKk85VRSbel7ZUMRMBzk/zYzeX8Mk5cxsd96Nr9Mw57jeW31XtwPkYp7XWQwELmRJkqQFZj7/uCdh3vcY4MWpPNwkXx6u3hG3G6ADRbKUTTzKLKq5gB7YXJ1N5Y13+p0FOqlkJXJGVJe+IVzpfg0s8CO3J5t54=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786558343; c=relaxed/simple;
+	bh=Awuh55Dv2HbOa2GEwC1BBkM0lDLzmTCI2yjtGVJBDsw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bdt90hFkxBpu8rVwXKF28ekhznQBaxyBZPTahHTh6ExhOjTV71mRaRHoTslWMBTxnYRJpcFbORECuJiEeoZ8PAzjx2a4HqBagHCG47A4SfhnlgFXl6AtAlQ1/MK0tlc9s+hASOl/2fPtOF9rV38RS+5HYKSTLVErc1neXIuQo+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=R03a12vA; arc=none smtp.client-ip=209.85.214.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KTDpNRWh"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-668296d0ff3so2111749d50.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:03:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786557831; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EIOE120txuCCvfVAiXMf0/G/6aq2vyYo5KVi0NujIp41JZQRMPAxqolHQdUKFprFzi
-         691l+dOf1uXmBv/WATc6BFazOuiwayjw4Hdl30ViDvhMkeutWi/Icg8HbE5OSiGpLZIR
-         6GjypO8DR2F1jJzqJx6kCz24VtCzfuHTk+BfOdgJdSZjAGrp3wgquz+05qLgD/PlKkm7
-         f5v0pjaIdz5WsggmBdM1RZ3V+04VmeKj/Sb+7t5Rn2Z7Fxkd6ku2hyg5ECq4rMSumcnb
-         fLv7n9PWjiG+C3xqR59awJsOQaFAzFVz12VHTJby6ip1cgYdKivV+5hDPdeCslRnQydd
-         aqnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=P7XVgnowewWWodMJST6arhy1oa6jdr7HK7v90K5tB4E=;
-        fh=NIud/7RxlndxdGLvMIeTrhypnnZy3co2NHg948ECAK4=;
-        b=J8uIC/+KSpxqQfrW7BRb04rd8mUeTXEV+LfxmBILC/5xjVURK73hKIyOGrt8stgvVf
-         eJck2donieN8aBKjk4WI+fSAJ58ydODFqe0S60ysUV9spCEJ6DVFsagJQ79UE4wybOBb
-         z3CawDi8LAPNY+L3LMZl3981sd+lrLKX8sXjy40CPr4jeRARIqoSAjimq5JkSeY/YjRz
-         Z+0V7teoOMEufJx/s5VhJ1ygy0C3WMgV199T7WaOGgTdax8VXoPwbOCTzJr5XKIlkKeM
-         wVTdg/onLuIPi8h/W7SvuGVh2jej4o8VoVsfEp3IDP4vUhXxHQ+ffgOIg3hRgrnG6+NP
-         2xxg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786557831; x=1787162631; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=P7XVgnowewWWodMJST6arhy1oa6jdr7HK7v90K5tB4E=;
-        b=KTDpNRWhvkvX1RTM1O0Gyo6bVKrKobf0NMyNwTdc9J6qdg1yreGY/ntlB7jQRO4rSl
-         2Fyk9zEjQviOjCZBU9aTSPntX6YgIOSYV70JTgO+n3eXRHbIW+HYGjyCaf6C0zK4e96u
-         BT5RKseEgFu/IuYw5nrgpTSC2t3f3ssPoEqBc6JAVjbf/SetIx5O9DRuRMOGV7laWCGT
-         PbVVNej7gvnyyJQn7b8WU8T+QoRn70LXxZkTBtSb3b8ig1UB3HK3fD6AQw2UmkG1DpWP
-         0kNbflv0IZYSFKnKtpOBPikTpV2s5j7bGrBUGWomW3/fIrH1ER/6vweIE5Db10oJEGvh
-         UCGg==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="R03a12vA"
+Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso18283765ad.2
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:12:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786557831; x=1787162631;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=1e100.net; s=20251104; t=1786558341; x=1787163141;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=AB1gvl/F2OQfJ4MVQmK+MbDvhJbmpEg921BEgoITqH4=;
+        b=Q5lZizavBhP2m2L2S0I8Yu7NLGzXuLDaUe8JEDdheK5Juq3+LCUm6jpsHSZuaAVJ2x
+         xyPlL2QznMpwvaFuFR+PECrOZtlnEh53qHCz1kIWQKt8uFoWBKwzGCnGWXbqGGLrEnv0
+         gODe1dWF7jqar4OZwDFZeId4qUIAKTYVCl6/WVy9KQ4/zR2gyuRbC+8dJKniaIyR5lWc
+         Txb4XQE6J8oiX/VRKaYwtHovt00IlKNXxjHmuLozqxJz9DGWaNpQq3n/aHn3IWt8Yl7N
+         EblVCOmDYXbj2IjcGjqdeRDVfFAu/4kSi5sQSx+NDKmQ6dhtfCMZ8aeV3w5YgtolQ59O
+         QWpw==
+X-Forwarded-Encrypted: i=1; AHgh+RrzeMSloRM/KpgyEZ4rdUNdjiJ5JvM1p6Kb4WI7iDBKPj3XE0FxG5jVTbK9igUWXqFTexdzphs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQ6t80Xnk/yacu2PG/MsIWDTswU+nxbuAXO+EwtWLbzjpf5QQR
+	DstL2JcLq5vm4fKj5iMSwj5AosCCJwODz4x4N6CCNCFqnQHwIkHSQb1XtPGAA/i1gSE6Ik1e2kG
+	PurtbxgsaD9RWhaLw0biEWHEdOI+v1pW+NiYhHv+KMS+CpqASSKh4f5fmmD8fZpSuKrNNAzNbeb
+	4G0bCGuzzFFCJJBSTSj7+yUZjrqN/hxhdsLo32W9P5imIH/+8gucar6AhGspO1tClLcgQ0Tpjrk
+	hQ68Kt/vsvfus3H
+X-Gm-Gg: AR+sD12m3+kP+Tueh27bOgt/YVmI1IIi6irhqiNQLxT8nEgVH+Ih0OCLq58zzn0zYpV
+	5IMwsz/qXpjHnq0tY6b5Ua9zQJJjQ/NOhKUfZY+afEreYm28VWCCUGuEf+ZladjoXy8SbjFN8vH
+	K1VUK9bEQNedzLxBCex6yN3H9/A6eaxUuCj0YyfAWVw8ZzWJr/NhDzRtOiXVXI9Mlz0yOpzfqq/
+	DhkmLZAurttZYjFtKUK80DSWJAeixbAxDa1aSX50PkU3TfOZ4dUUcHCuVeUrhJMJdeZZn1kkiag
+	oXE8VCMyQwkxsH7w6kp2dpoNHXRb9+XY0e6x6zJxhhQgMCLFCA9iD6Ght6FR3plBXcm1IYC9W0O
+	W+XLNRQNC0lMubaujOZeQw37XVtAm1zxNy0pGJHVQBn6cbOBfveyg+D/XUiELzEFvgXQD+ezrO4
+	FKDr754seWNHJC5y0dFNFqGd+CLERXlK0O8BQEhAKZ
+X-Received: by 2002:a17:90b:268c:b0:37f:a915:1c29 with SMTP id 98e67ed59e1d1-3931e27b831mr42527a91.19.1786558341236;
+        Wed, 12 Aug 2026 11:12:21 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3931db1e79bsm1070a91.3.2026.08.12.11.12.20
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 12 Aug 2026 11:12:21 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-51c1c7f135bso21144221cf.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:12:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1786558340; x=1787163140; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=P7XVgnowewWWodMJST6arhy1oa6jdr7HK7v90K5tB4E=;
-        b=ULYgJmAGxzfFw+ewCphwea4So2pPP9aBYkF4TnHoe4+uHJimrOJpXaMsyaW9v8WDlg
-         blY3Bd4B3Ny4LGeTFwp3V/C88gg6yDH6BxPaZ3zqLbQoSSNRwVRE1lI6bZTlulAFB/zG
-         iG/H/hwkOo/yt6tC9HTk4sF7nW4iCmWp9zeNw6+JC5DXsdael6Yp7xVCU5h20mNMrTV2
-         O63QR4retRyHjNFPTJWoZM9bSQt9ml2P/E7B4VbqocptIQd6c/6n97qbZXZA9tcqhK0q
-         q/efEltvgbVCIAUOXk4FgYIO178rTWD4+vzvMFb/Icp893ilh9B3V9ViP06RhFKDiJby
-         AlYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpK3HGSi0JOrEV93DKaHoroPjx/2lkVk1c3n7B1EPOtVjdfzgAM+z51XJ/X8SnUwEHOC/LFnVc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw16sf9kViX4icgrpJcI70RGQtxbW9WB8aEDdiOQABsgXn4NOrf
-	BJdbP+ugxSmryqyU0HtxljMXLW/mlp3uEV62bVz6wCL7vFpK/iPd+m8v3yFx96hzJXEzYXJyOYd
-	J7Kn/Y3tfMuyi1TelFWe/z7NeDbCf5gs=
-X-Gm-Gg: AR+sD11OwgfNxXbVZhy5h3TmdKG7F/gFylK98a11x5DVcH3yTQJ11hFVfB5j4cgl3EM
-	HMgO9E3Ix7NQY7kW0vd+fl92g7ujiouFJqtGa3sV7DdTMBP33+CFYs1fFR2cONuUHEkwcDzafIg
-	46lzxTBRcmGdiew2giUqib8tWxRVZAS5qh8lN6QMSi5VrtNYoFASWh27l7KwtXvflR1jesz/AhG
-	gmOFAZvcoJeHUjyPbPnPWYYqMKJlxx/TtVZg8YlMRvvYKD4mecrw0jz7vvqQ3qLxSl7IsXBeOh2
-	bD4RwHbN76KOrDDqwPdDhHUcFD4oPRPdftTXM0z4CjCS
-X-Received: by 2002:a53:acd9:0:20b0:668:2553:a194 with SMTP id
- 956f58d0204a3-66c517f0122mr73148d50.45.1786557830590; Wed, 12 Aug 2026
- 11:03:50 -0700 (PDT)
+        bh=AB1gvl/F2OQfJ4MVQmK+MbDvhJbmpEg921BEgoITqH4=;
+        b=R03a12vAYFZJxtjeRI2/jEHvHAzHFU4EjVvc/7Gng5rWfiV1+rco043N07Qeoob+DS
+         9pUlcn4yQnIZpLT9jcHtqM8TLBOgWfCrh2AtpFWMM7u8eue45DWzxA7snBUip5occX5m
+         jWLOc9Wsk0nQXdC429Uga4wcLe1aLCPdEn3HU=
+X-Forwarded-Encrypted: i=1; AHgh+RoQzrIRfI63hlCq6EQ8clfl4dlm++XD7i02hTPapdmbTYREzYhMZlRUyBgMp1bfppkO8PJx9lw=@vger.kernel.org
+X-Received: by 2002:a05:622a:4d05:b0:51c:120a:91c1 with SMTP id d75a77b69052e-52d73c52ff0mr1191031cf.17.1786558339571;
+        Wed, 12 Aug 2026 11:12:19 -0700 (PDT)
+X-Received: by 2002:a05:622a:4d05:b0:51c:120a:91c1 with SMTP id d75a77b69052e-52d73c52ff0mr1190391cf.17.1786558339093;
+        Wed, 12 Aug 2026 11:12:19 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a6c2a05f3sm26630526d6.18.2026.08.12.11.12.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Aug 2026 11:12:18 -0700 (PDT)
+Message-ID: <aba2dbea-b127-4604-b5a3-7c6c70368fb1@broadcom.com>
+Date: Wed, 12 Aug 2026 11:12:16 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260706171918.317102-1-ameryhung@gmail.com> <20260706171918.317102-10-ameryhung@gmail.com>
- <DJY2SPXTF9HL.10SSKCT9OMMBV@etsalapatis.com>
-In-Reply-To: <DJY2SPXTF9HL.10SSKCT9OMMBV@etsalapatis.com>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Wed, 12 Aug 2026 11:03:38 -0700
-X-Gm-Features: AUfX_mwPheRiXTpmAlfGZw460NaxLoOP7uc_z26cGgqtCmoF8EfkfUj3WI8Vtlw
-Message-ID: <CAMB2axPVwvHZDkfgCmkY9K0fuzYv9Vq7ZZF565Qtx+FPEnGJeQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 09/15] bpf: Add infrastructure to support
- attaching struct_ops to cgroups
-To: Emil Tsalapatis <emil@etsalapatis.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
-	andrii@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com, memxor@gmail.com, 
-	martin.lau@kernel.org, shakeel.butt@linux.dev, roman.gushchin@linux.dev, 
-	kuniyu@google.com, kerneljasonxing@gmail.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net: dsa: let drivers offload 8021q uppers on
+ standalone ports
+To: Jonas Gorski <jonas.gorski@gmail.com>, Semih Baskan <strst.gs@gmail.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, andrew@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ vladimir.oltean@nxp.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260806073119.387-1-strst.gs@gmail.com>
+ <20260806073119.387-2-strst.gs@gmail.com>
+ <20260806111523.gjlhjfmb526f2y4g@skbuf>
+ <CAAsRjRnhdPJOCE5BwU7zUTJ0mtSYCOA3xLcF5ejZQT8OFjYiYQ@mail.gmail.com>
+ <20260806124313.see74vgu4dlqqse7@skbuf>
+ <CAAsRjR=RyiraYdLkOcHEagGKXK5+4zwQbT-Zq-1DwVkPiKUNpg@mail.gmail.com>
+ <20260810120821.lykofvogbrn2y2ps@skbuf>
+ <CAAsRjRn7qFWy4UBL8tWGQ9pBo5q3du4e=tU9gSKkSSd7K3RaDA@mail.gmail.com>
+ <CAOiHx=n43MPXKxA7oxBjGh15pa4Uh5etxkPdrV+0GxACEnrRJA@mail.gmail.com>
+ <20260811095828.xwb4nsmx74wtzjei@skbuf>
+ <CAAsRjRn0LNMspFCbi_7QMQsNPBhMXeAZfcvrc40k-Y87F7jHmA@mail.gmail.com>
+ <CAOiHx=mv9Ygywqbi9pR_K4vvu6tJtxdj9zObp_QB80wwV2zmCw@mail.gmail.com>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <CAOiHx=mv9Ygywqbi9pR_K4vvu6tJtxdj9zObp_QB80wwV2zmCw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Mon, Jul 13, 2026 at 11:21=E2=80=AFPM Emil Tsalapatis <emil@etsalapatis.=
-com> wrote:
->
-> On Mon Jul 6, 2026 at 1:19 PM EDT, Amery Hung wrote:
-> > From: Martin KaFai Lau <martin.lau@kernel.org>
-> >
-> > This patch adds necessary infrastructure to attach a struct_ops
-> > map to a cgroup. The initial need was to support migrating
-> > the legacy BPF_PROG_TYPE_SOCK_OPS to a struct_ops.
-> > Recently, there are other struct_ops use cases that
-> > need to attach struct_ops to a cgroup. For example,
-> > the recent BPF OOM and memcg discussion in LSFMMBPF 2026.
-> >
-> > The motivation is to create a consistent expectation
-> > for attaching struct_ops to cgroup instead of each subsystem
-> > creating its own infrastructure. This logic includes
-> > hierarchy expectation, ordering expectation,
-> > attachment API, and rcu gp.
-> >
-> > There is already an existing implementation for attaching
-> > multiple bpf progs to a cgroup. There are also tools
-> > built around it for querying. Attaching a struct_ops map
-> > (which is a group of bpf programs) could also adhere to
-> > a similar API and potentially reuse most of the existing
-> > implementation.
-> >
-> > A couple of ideas have been tried. One of them
-> > is to use mprog.c. In terms of the amount of changes,
-> > I eventually came to the same conclusion as in
-> > commit 120933984460 ("bpf: Implement mprog API on top of existing cgrou=
-p progs").
-> > I then shifted the focus to reusing the current
-> > {update,compute,activate,purge}_effective_progs() which has
-> > the main logic that implements the mprog API.
-> >
-> > Since then, I tried to add a 'struct cgroup *cgroup' member
-> > to the existing 'struct bpf_struct_ops_link' and link_create
-> > will create a 'struct bpf_struct_ops_link' object to be stored
-> > in the pl->link. This turns out to have more changes on
-> > both cgroup.c and bpf_struct_ops.c than I like.
-> >
-> > This patch directly reuses the 'struct bpf_cgroup_link' which
-> > cgroup.c already understands. Add 'struct bpf_map *map'
-> > to 'struct bpf_cgroup_link'. In the future, as more subsystems
-> > are extended by struct_ops, we may consider to make
-> > 'struct bpf_map *map' as a primary citizen of a link
-> > like 'struct bpf_prog *prog' and directly add
-> > 'struct bpf_map *map' to the generic 'struct bpf_link'.
-> >
-> > The pl->link could be the traditional 'prog' link or the
-> > new 'map' link. The places that need to handle them differently
-> > have already been refactored into the new prog_list_*() added in
-> > the earlier patch. In those new prog_list_*(), this patch will
-> > check "pl->link && pl->link->map", learn that it is a 'map' link
-> > and handle it correctly.
-> >
-> > The bpf_prog_array also needs to handle that its item can store
-> > the traditional 'prog' or it can store a struct_ops map.
-> > The places that need to handle them differently have also
-> > been refactored into the new bpf_cgroup_array_*() added
-> > in the earlier patch. The two differences are:
-> >   - different sentinel (dummy_bpf_prog in prog vs cfi_stub in struct_op=
-s)
-> >   - the array for struct_ops may need to go through different
-> >     rcu gp.
-> > The bpf_cgroup_array_*() functions use the cgroup_bpf_attach_type (ie a=
-type)
-> > to distinguish the array is storing prog or storing struct_ops map.
-> >
-> > This patch also implements a separate struct bpf_link_ops
-> > "cgroup_struct_ops_link_ops" to have a separate link_ops implementation
-> > that only handles the cgroup's struct_ops link.
-> >
-> > Questions:
-> > - Although this patch did not change it, it is not obvious to me how
-> >   the replace_effective_progs() and purge_effective_progs() handle
-> >   cases when there are existing BPF_F_PREORDER progs attached
-> >   in the hlist.
-> >
-> > Misc notes:
-> > - CGROUP_TCP_SOCK_OPS is added to the 'enum cgroup_bpf_attach_type'.
-> >   The actual implementation of the tcp_bpf_ops (a struct_ops)
-> >   will be added in the next patch.
-> >
-> > - free_after_mult_rcu_gp is added to 'struct bpf_struct_ops' such that
-> >   the bpf_prog_array can have a mix of sleepable and
-> >   non-sleepable prog in a struct_ops. This can tell
-> >   how the bpf_prog_array should be freed.
-> >
-> > - For a struct_ops that supports cgroup attachment, it does not need to
-> >   implement its own reg/unreg function. reg/unreg to a cgroup is
-> >   done by the common infrastructure added in this patch.
-> >
-> > - The cgroup's struct_ops link only supports BPF_F_ALLOW_MULTI.
-> >   This is enforced internally in cgroup_bpf_struct_ops_attach.
-> >   This should be consistent with the current prog's link
-> >   behavior in cgroup_bpf_link_attach.
-> >
-> >   In the future, we may allow each subsystem to choose differently.
-> >
-> > - A cgroup_atype member is added to 'struct bpf_struct_ops'.
-> >   When a subsystem struct_ops needs to support cgroup attachment,
-> >   it needs to add a value to 'enum cgroup_bpf_attach_type'
-> >   and then assign it to the newly added cgroup_atype member
-> >   in the bpf_struct_ops.
-> >
-> > - During LINK_CREATE in syscall, the patch uses the same
-> >   BPF_STRUCT_OPS (in attr->link_create.attach_type).
-> >   The bpf_struct_ops_link_create learns the map and
-> >   from the map it learns the st_ops. If the st_ops->cgroup_atype
-> >   is not 0, it will create a cgroup's link.
-> >
-> > - When a subsystem registers a struct_ops that supports cgroup
-> >   attachment, the struct_ops infrastructure will also ask the
-> >   cgroup infrastructure to remember a few things. This is done
-> >   by calling cgroup_bpf_struct_ops_register().
-> >
-> > Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-> > Signed-off-by: Amery Hung <ameryhung@gmail.com>
->
-> Hi Amery,
->
-> > ---
-> >  include/linux/bpf-cgroup-defs.h |   1 +
-> >  include/linux/bpf-cgroup.h      |  28 +++
-> >  include/linux/bpf.h             |  19 +-
-> >  include/uapi/linux/bpf.h        |   4 +-
-> >  kernel/bpf/bpf_struct_ops.c     |  29 +++
-> >  kernel/bpf/btf.c                |  23 +-
-> >  kernel/bpf/cgroup.c             | 375 ++++++++++++++++++++++++++++++--
-> >  kernel/bpf/syscall.c            |   1 +
-> >  tools/include/uapi/linux/bpf.h  |   4 +-
-> >  9 files changed, 463 insertions(+), 21 deletions(-)
-> >
-> > diff --git a/include/linux/bpf-cgroup-defs.h b/include/linux/bpf-cgroup=
--defs.h
-> > index c9e6b26abab6..0147b8bec973 100644
-> > --- a/include/linux/bpf-cgroup-defs.h
-> > +++ b/include/linux/bpf-cgroup-defs.h
-> > @@ -47,6 +47,7 @@ enum cgroup_bpf_attach_type {
-> >       CGROUP_INET6_GETSOCKNAME,
-> >       CGROUP_UNIX_GETSOCKNAME,
-> >       CGROUP_INET_SOCK_RELEASE,
-> > +     CGROUP_TCP_SOCK_OPS,
-> >       CGROUP_LSM_START,
-> >       CGROUP_LSM_END =3D CGROUP_LSM_START + CGROUP_LSM_NUM - 1,
-> >       MAX_CGROUP_BPF_ATTACH_TYPE
-> > diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-> > index 4d0cc65976a1..8a75a6cd7309 100644
-> > --- a/include/linux/bpf-cgroup.h
-> > +++ b/include/linux/bpf-cgroup.h
-> > @@ -100,6 +100,8 @@ struct bpf_cgroup_storage {
-> >  struct bpf_cgroup_link {
-> >       struct bpf_link link;
-> >       struct cgroup *cgroup;
-> > +     struct bpf_map *map;
-> > +     wait_queue_head_t wait_hup;
-> >  };
-> >
-> >  struct bpf_prog_list {
-> > @@ -110,6 +112,18 @@ struct bpf_prog_list {
-> >       u32 flags;
-> >  };
-> >
-> > +#define bpf_cgroup_struct_ops_foreach(var, item, cgrp, atype)         =
-       \
-> > +     for (item =3D rcu_dereference((cgrp)->bpf.effective[atype])->item=
-s;\
-> > +          ((var) =3D READ_ONCE(item->kdata));                         =
- \
-> > +          item++)
-> > +
-> > +static inline bool cgroup_bpf_is_struct_ops_atype(enum cgroup_bpf_atta=
-ch_type atype)
-> > +{
-> > +     return atype =3D=3D CGROUP_TCP_SOCK_OPS;
-> > +}
-> > +void cgroup_bpf_struct_ops_register(int atype, u32 type_id, void *cfi_=
-stubs, bool mult_trace);
-> > +int cgroup_bpf_struct_ops_attach(struct bpf_map *map, const union bpf_=
-attr *attr);
-> > +
-> >  void __init cgroup_bpf_lifetime_notifier_init(void);
-> >
-> >  int __cgroup_bpf_run_filter_skb(struct sock *sk,
-> > @@ -479,6 +493,20 @@ static inline int bpf_percpu_cgroup_storage_update=
-(struct bpf_map *map,
-> >       return 0;
-> >  }
-> >
-> > +static inline bool cgroup_bpf_is_struct_ops_atype(int atype)
-> > +{
-> > +     return false;
-> > +}
-> > +static inline void cgroup_bpf_struct_ops_register(int atype, u32 type_=
-id, void *cfi_stubs,
-> > +                                               bool mult_trace)
-> > +{
-> > +}
-> > +static inline int cgroup_bpf_struct_ops_attach(struct bpf_map *map,
-> > +                                            const union bpf_attr *attr=
-)
-> > +{
-> > +     return -EOPNOTSUPP;
-> > +}
-> > +
-> >  #define cgroup_bpf_enabled(atype) (0)
-> >  #define BPF_CGROUP_RUN_SA_PROG_LOCK(sk, uaddr, uaddrlen, atype, t_ctx)=
- ({ 0; })
-> >  #define BPF_CGROUP_RUN_SA_PROG(sk, uaddr, uaddrlen, atype) ({ 0; })
-> > diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> > index e371a4733135..df95ae690da5 100644
-> > --- a/include/linux/bpf.h
-> > +++ b/include/linux/bpf.h
-> > @@ -2100,11 +2100,18 @@ struct btf_member;
-> >   *      unloaded while in use.
-> >   * @name: The name of the struct bpf_struct_ops object.
-> >   * @func_models: Func models
-> > + * @cgroup_atype: A value in enum cgroup_bpf_attach_type for cgroup at=
-tachment.
-> > + *             0 means the struct_ops type does not support cgroup att=
-achment.
-> > + *             If cgroup_atype is non-zero, the @reg and @unreg must b=
-e NULL
-> > + *             because the attachment/detachment will be handled by th=
-e bpf core.
-> >   * @free_after_tasks_rcu_gp: Set to true if it needs the bpf core to w=
-ait for
-> >   *                           a tasks_rcu gp before freeing the struct_=
-ops map
-> >   *                           and its progs. It is unnecessary if the @=
-unreg
-> >   *                           has waited for the correct rcu gp or the =
-@unreg
-> >   *                           has ensured all struct_ops prog has finis=
-hed running.
-> > + * @free_after_mult_rcu_gp: Same as @free_after_tasks_rcu_gp but waiti=
-ng for
-> > + *                          both tasks_trace_rcu and regular rcu grace=
- period.
-> > + *                          It is usually needed if the struct_ops has=
- sleepable prog.
-> >   */
-> >  struct bpf_struct_ops {
-> >       const struct bpf_verifier_ops *verifier_ops;
-> > @@ -2123,7 +2130,9 @@ struct bpf_struct_ops {
-> >       struct module *owner;
-> >       const char *name;
-> >       struct btf_func_model func_models[BPF_STRUCT_OPS_MAX_NR_MEMBERS];
-> > +     int cgroup_atype;
-> >       bool free_after_tasks_rcu_gp;
-> > +     bool free_after_mult_rcu_gp;
-> >  };
-> >
-> >  /* Every member of a struct_ops type has an instance even a member is =
-not
-> > @@ -2258,6 +2267,7 @@ void *bpf_struct_ops_map_cfi_stubs(struct bpf_map=
- *map);
-> >  bool bpf_struct_ops_valid_to_reg(struct bpf_map *map);
-> >  int bpf_struct_ops_link_update_check(struct bpf_map *new_map, struct b=
-pf_map *old_map,
-> >                                    struct bpf_map *expected_old_map);
-> > +int bpf_struct_ops_map_cgroup_atype(struct bpf_map *map);
-> >
-> >  #ifdef CONFIG_NET
-> >  /* Define it here to avoid the use of forward declaration */
-> > @@ -2330,6 +2340,10 @@ static inline u32 bpf_struct_ops_kdata_map_id(vo=
-id *kdata)
-> >  {
-> >       return 0;
-> >  }
-> > +static inline int bpf_struct_ops_map_cgroup_atype(struct bpf_map *map)
-> > +{
-> > +     return 0;
-> > +}
-> >  static inline void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map)
-> >  {
-> >       return NULL;
-> > @@ -2519,7 +2533,10 @@ u64 bpf_event_output(struct bpf_map *map, u64 fl=
-ags, void *meta, u64 meta_size,
-> >   * since other cpus are walking the array of pointers in parallel.
-> >   */
-> >  struct bpf_prog_array_item {
-> > -     struct bpf_prog *prog;
-> > +     union {
-> > +             struct bpf_prog *prog;
-> > +             void *kdata;
-> > +     };
-> >       union {
-> >               struct bpf_cgroup_storage *cgroup_storage[MAX_BPF_CGROUP_=
-STORAGE_TYPE];
-> >               u64 bpf_cookie;
-> > diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-> > index c91b5a4bda03..c982801ec7db 100644
-> > --- a/include/uapi/linux/bpf.h
-> > +++ b/include/uapi/linux/bpf.h
-> > @@ -1756,7 +1756,7 @@ union bpf_attr {
-> >                       __u32   prog_cnt;
-> >                       __u32   count;
-> >               };
-> > -             __u32           :32;
-> > +             __u32           type_id;
-> >               /* output: per-program attach_flags.
-> >                * not allowed to be set during effective query.
-> >                */
-> > @@ -6818,6 +6818,8 @@ struct bpf_link_info {
-> >               } xdp;
-> >               struct {
-> >                       __u32 map_id;
-> > +                     __u32 :32;
-> > +                     __u64 cgroup_id;
-> >               } struct_ops;
-> >               struct {
-> >                       __u32 pf;
-> > diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-> > index 3d650a7e9f68..06d72cdca601 100644
-> > --- a/kernel/bpf/bpf_struct_ops.c
-> > +++ b/kernel/bpf/bpf_struct_ops.c
-> > @@ -13,6 +13,7 @@
-> >  #include <linux/btf_ids.h>
-> >  #include <linux/rcupdate_wait.h>
-> >  #include <linux/poll.h>
-> > +#include <linux/bpf-cgroup.h>
-> >
-> >  struct bpf_struct_ops_value {
-> >       struct bpf_struct_ops_common_value common;
-> > @@ -1076,6 +1077,11 @@ static struct bpf_map *bpf_struct_ops_map_alloc(=
-union bpf_attr *attr)
-> >               goto errout;
-> >       }
-> >
-> > +     if (st_ops_desc->st_ops->cgroup_atype && !(attr->map_flags & BPF_=
-F_LINK)) {
-> > +             ret =3D -EOPNOTSUPP;
-> > +             goto errout;
-> > +     }
-> > +
-> >       vt =3D st_ops_desc->value_type;
-> >       if (attr->value_size !=3D vt->size) {
-> >               ret =3D -EINVAL;
-> > @@ -1116,6 +1122,7 @@ static struct bpf_map *bpf_struct_ops_map_alloc(u=
-nion bpf_attr *attr)
-> >
-> >       mutex_init(&st_map->lock);
-> >       bpf_map_init_from_attr(map, attr);
-> > +     map->free_after_mult_rcu_gp =3D st_ops_desc->st_ops->free_after_m=
-ult_rcu_gp;
-> >       map->free_after_rcu_gp =3D true;
-> >
-> >       return map;
-> > @@ -1244,6 +1251,14 @@ void *bpf_struct_ops_map_kdata(struct bpf_map *m=
-ap)
-> >       return st_map->kvalue.data;
-> >  }
-> >
-> > +int bpf_struct_ops_map_cgroup_atype(struct bpf_map *map)
-> > +{
-> > +     struct bpf_struct_ops_map *st_map;
-> > +
-> > +     st_map =3D container_of(map, struct bpf_struct_ops_map, map);
-> > +     return st_map->st_ops_desc->st_ops->cgroup_atype;
-> > +}
-> > +
-> >  void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map)
-> >  {
-> >       struct bpf_struct_ops_map *st_map;
-> > @@ -1419,6 +1434,7 @@ int bpf_struct_ops_link_create(union bpf_attr *at=
-tr)
-> >       struct bpf_link_primer link_primer;
-> >       struct bpf_struct_ops_map *st_map;
-> >       struct bpf_map *map;
-> > +     int cgroup_atype;
-> >       int err;
-> >
-> >       map =3D bpf_map_get(attr->link_create.map_fd);
-> > @@ -1432,6 +1448,19 @@ int bpf_struct_ops_link_create(union bpf_attr *a=
-ttr)
-> >               goto err_out;
-> >       }
-> >
-> > +     cgroup_atype =3D st_map->st_ops_desc->st_ops->cgroup_atype;
-> > +     if (cgroup_atype) {
-> > +             err =3D cgroup_bpf_struct_ops_attach(map, attr);
-> > +             bpf_map_put(map);
-> > +             return err;
-> > +     }
-> > +
-> > +     if (memchr_inv(&attr->link_create.cgroup, 0, sizeof(attr->link_cr=
-eate.cgroup)) ||
-> > +         attr->link_create.target_fd) {
-> > +             err =3D -EINVAL;
-> > +             goto err_out;
-> > +     }
-> > +
-> >       link =3D kzalloc_obj(*link, GFP_USER);
-> >       if (!link) {
-> >               err =3D -ENOMEM;
-> > diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-> > index 64572f85edc8..d591f306ace5 100644
-> > --- a/kernel/bpf/btf.c
-> > +++ b/kernel/bpf/btf.c
-> > @@ -20,6 +20,7 @@
-> >  #include <linux/btf.h>
-> >  #include <linux/btf_ids.h>
-> >  #include <linux/bpf.h>
-> > +#include <linux/bpf-cgroup.h>
-> >  #include <linux/bpf_lsm.h>
-> >  #include <linux/skmsg.h>
-> >  #include <linux/perf_event.h>
-> > @@ -9836,6 +9837,7 @@ btf_add_struct_ops(struct btf *btf, struct bpf_st=
-ruct_ops *st_ops,
-> >                  struct bpf_verifier_log *log)
-> >  {
-> >       struct btf_struct_ops_tab *tab, *new_tab;
-> > +     int cgroup_atype;
-> >       int i, err;
-> >
-> >       tab =3D btf->struct_ops_tab;
-> > @@ -9847,8 +9849,10 @@ btf_add_struct_ops(struct btf *btf, struct bpf_s=
-truct_ops *st_ops,
-> >               btf->struct_ops_tab =3D tab;
-> >       }
-> >
-> > +     cgroup_atype =3D st_ops->cgroup_atype;
-> >       for (i =3D 0; i < tab->cnt; i++)
-> > -             if (tab->ops[i].st_ops =3D=3D st_ops)
-> > +             if (tab->ops[i].st_ops =3D=3D st_ops ||
-> > +                 (cgroup_atype && cgroup_atype =3D=3D tab->ops[i].st_o=
-ps->cgroup_atype))
-> >                       return -EEXIST;
-> >
-> >       if (tab->cnt =3D=3D tab->capacity) {
-> > @@ -9868,6 +9872,23 @@ btf_add_struct_ops(struct btf *btf, struct bpf_s=
-truct_ops *st_ops,
-> >       if (err)
-> >               return err;
-> >
-> > +     if (cgroup_atype) {
-> > +             if (!cgroup_bpf_is_struct_ops_atype(cgroup_atype) ||
->
-> Can we add a comment here as to why free_after_tasks_rcu_gp is always
-> invalid here (which IIUC is because it's
-> free_after_mult_rcu_gp)?
+On 8/12/26 00:24, Jonas Gorski wrote:
+> On Tue, Aug 11, 2026 at 3:19 PM Semih Baskan <strst.gs@gmail.com> wrote:
+>>
+>> Hi Vladimir,
+>>
+>>> Then I suppose the VC4_ING_VID_CHECK_MASK affects only what happens with
+>>> VLAN membership violations (i.e. VTABLE hit, but port not in VLAN). Thus
+>>> it does not influence the VC5_DROP_VTABLE_MISS=false case, correct?
+>>
+>> Correct, at least on bcm5301x, and this part is measured rather than
+>> read from documentation: with VC5_DROP_VTABLE_MISS clear, all three
+>> VC4_ING_VID_CHECK settings behave identically for a VTABLE miss (0 of
+>> 7 delivered in every combination, standalone RX probes from the
+>> measurements behind the cover letter). Whatever the check field
+>> controls happens independently of the miss path.
+>>
+>> One observation for the "is there another bit" question: on my
+>> BCM53011 the running value of VLAN_CTRL5 is 0x10. That is bit 4, which
+>> the driver never writes and has no name for. I do not know what it
+>> does, and it may simply be the bootloader default, but it is a bit in
+>> exactly the register you are asking about.
+> 
+> Assuming you mean VLAN_CTRL2, this bit is described for BCM5325 as
+> "When set to 1, GMRP,GVRP are checked by the
+> VLAN's forward map" with a default of 0.
+> 
+> Since other bits (sort of) match with their meanings, one could assume
+> it retained it, and now defaults to 1, but there is no guarantee for
+> that.
 
-This is because the dispatching macro,
-bpf_cgroup_struct_ops_foreach(), requires the caller to be in an RCU
-read-side critical section. Unlike bpf-tcp-cc, where rcu_read_lock()
-is taken inside the trampoline by __bpf_prog_enter() and the trailing
-trampoline insns run outside it, here the critical section encloses
-the whole trampoline call. Therefore a vanilla rcu gp is enough for
-both the kdata and the trampoline image.
+On Northstar, bit 4 in VLAN_CTRL5 is described as:
 
->
-> > +                 st_ops->reg || st_ops->unreg || st_ops->free_after_ta=
-sks_rcu_gp) {
-> > +                     bpf_struct_ops_desc_release(&tab->ops[btf->struct=
-_ops_tab->cnt]);
-> > +                     return -EINVAL;
-> > +             }
-> > +
-> > +             /* There is no need to unregister from cgroup when the
-> > +              * btf_free(). No struct_ops map and its cgroup link
-> > +              * can be created once its btf is gone.
-> > +              */
->
-> Network-style comment, should be regular kernel-style.
+EGRESS_DIR_FRM_BYPASS_TRUNK_EN: Egress directed frame bypass trunking 
+re-direction enable.
 
-Ack.
+1: egress directed frame from management port will bypass re-trunk 
+re-directed rule
+0: egress directed frame from management port will follow trunking 
+re-directed rule
 
->
-> In terms of the content: What happens if the struct_ops are in a module,
-> then we load/unload/reload? IIUC even if the signatures are identical,
-> the btf_id could be different so it's not like we can always reuse the
-> previous cgroup registration.
+> 
+>>
+>>> If customizing/unifying the behaviour on VTABLE misses is a dead end,
+>>> could we consider an alternative? Some switches support having the
+>>> VTABLE enabled, but ignore the 802.1Q header from incoming packets
+>>> (thus, all packets get classified to the port PVID). Is there any bit
+>>> which achieves this in b53? What do VC0_VID_CHK_EN and VC0_VLAN_EN do
+>>> exactly? Does B53_VLAN_CTRL2 maybe have some useful hidden bits?
+>>
+>> I cannot answer what the bits mean from documentation, but I can answer
+>> what they do on bcm5301x, measured just now with two external endpoints
+>> on two front ports of a vlan_filtering=0 bridge: neither of the two
+>> candidate bits gives that mode. With VC0_VID_CHK_EN cleared, and then
+>> with VC0_VID_HASH_VID cleared as well, tagged VID 100 frames still
+>> deliver 0 of 7 to the far port and 0 to the CPU, exactly as at the
+>> 0xe3 default, while untagged traffic keeps working in every state and
+>> the default restores cleanly. So on this chip the 802.1Q header keeps
+>> participating in classification as long as VC0_VLAN_EN is set, and
+>> clearing those two bits under it does not change that. Clearing
+>> VC0_VLAN_EN itself is
+>> the earlier thread: it works but costs the VID-keyed ARL. I have not
+>> probed VLAN_CTRL2 for undocumented bits; on my chip it reads 0x10.
 
-The information in struct_ops_{type_id, cfi_stubs, mult_rcu} is never
-reused across registration. Every load calls
-cgroup_bpf_struct_ops_register() and overwrites all three, so a reload
-always installs the new type_id and cfi_stubs.
+VC0_VID_CHK_EN is not defined on BCM5310X, however bits 6:5 are 
+VLAN_LEARN_MODE with 00: SVL and 01: IVL.
 
-Note that there was a bug in an earlier version where stale cfi_stubs
-could be dereferenced during query. It is fixed by the
-!cgroup_bpf_enabled(atype) check in __cgroup_bpf_query(), which
-returns before walking the effective array when nothing is attached.
+>>
+>>> How badly broken are the configurations with only port 5 as CPU port?
+>>> Is other management traffic like STP also not delivered correctly?
+>>
+>> It splits by the port's management class, measured on the RT-N18U
+>> earlier in the thread. BPDUs ingressing switch port 0 reach the CPU,
+>> because port 0 is WAN class and its traps go to IMP1, which is port 5.
+>> Management traps from the LAN class ports 1-4 go to IMP0, which is
+>> port 8, and are lost, because GMNGCFG has no "IMP1 only" encoding: the
+>> driver's OR of the field mask programs dual IMP mode and port 8 is
+>> down. So on the in-tree topology STP is broken on the four LAN ports
+>> and working on the one WAN port.
+> 
+> One thing you could try is to mark all ports as WAN ports. The
+> WAN_PORT_SEL register (page 0, offset 0x26, 16 bit) has a bitmask for
+> wan ports. It may allow delivery to IMP1, but the description of the
+> WAN port feature is also
+> 
+> "Select a port as a WAN port, then all that port’s traffic is
+> forwarded to the CPU port only. The non-
+> WAN port traffic from all other local ports does not flood to the WAN port."
+> 
+> So it may also isolate them from each other. Also out of curiosity,
+> can you wan port talk with non-wan talks in a bridge? Because the
+> description implies it should not.
 
->
-> > +             cgroup_bpf_struct_ops_register(cgroup_atype,
-> > +                                            tab->ops[btf->struct_ops_t=
-ab->cnt].type_id,
-> > +                                            st_ops->cfi_stubs,
-> > +                                            st_ops->free_after_mult_rc=
-u_gp);
-> > +     }
-> > +
-> >       btf->struct_ops_tab->cnt++;
-> >
-> >       return 0;
-> > diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-> > index 081d81de1816..745e826c9f61 100644
-> > --- a/kernel/bpf/cgroup.c
-> > +++ b/kernel/bpf/cgroup.c
-> > @@ -24,6 +24,29 @@
-> >  DEFINE_STATIC_KEY_ARRAY_FALSE(cgroup_bpf_enabled_key, MAX_CGROUP_BPF_A=
-TTACH_TYPE);
-> >  EXPORT_SYMBOL(cgroup_bpf_enabled_key);
-> >
-> > +static u32 struct_ops_type_id[MAX_CGROUP_BPF_ATTACH_TYPE];
-> > +static void *struct_ops_cfi_stubs[MAX_CGROUP_BPF_ATTACH_TYPE];
-> > +static bool struct_ops_mult_rcu[MAX_CGROUP_BPF_ATTACH_TYPE];
->
->
-> Can we make a struct out of those? Right now we're carrying them loose
-> into the module even though every index corresponds to a single
-> registered struct_oips.
-
-Sure, will do in v4.
-
->
-> > +
-> > +void cgroup_bpf_struct_ops_register(int atype, u32 type_id, void *cfi_=
-stubs, bool mult_rcu)
-> > +{
-> > +     struct_ops_type_id[atype] =3D type_id;
-> > +     struct_ops_cfi_stubs[atype] =3D cfi_stubs;
-> > +     struct_ops_mult_rcu[atype] =3D mult_rcu;
-> > +}
-> > +
-> > +static enum cgroup_bpf_attach_type find_atype_by_struct_ops_id(u32 typ=
-e_id)
-> > +{
-> > +     enum cgroup_bpf_attach_type atype;
-> > +
-> > +     for (atype =3D 0; atype < MAX_CGROUP_BPF_ATTACH_TYPE; atype++) {
-> > +             if (cgroup_bpf_is_struct_ops_atype(atype) &&
-> > +                 struct_ops_type_id[atype] =3D=3D type_id)
-> > +                     return atype;
-> > +     }
-> > +     return CGROUP_BPF_ATTACH_TYPE_INVALID;
-> > +}
-> > +
-> >  /*
-> >   * cgroup bpf destruction makes heavy use of work items and there can =
-be a lot
-> >   * of concurrent destructions.  Use a separate workqueue so that cgrou=
-p bpf
-> > @@ -306,6 +329,19 @@ static void bpf_cgroup_storages_link(struct bpf_cg=
-roup_storage *storages[],
-> >               bpf_cgroup_storage_link(storages[stype], cgrp, attach_typ=
-e);
-> >  }
-> >
-> > +static void cgroup_struct_ops_link_detach_wake(struct bpf_cgroup_link =
-*link, bool wake_poll)
-> > +{
-> > +     cgroup_put(link->cgroup);
-> > +     link->cgroup =3D NULL;
-> > +
-> > +     bpf_map_put(link->map);
-> > +     /* READ_ONCE in cgroup_struct_ops_link_poll */
-> > +     WRITE_ONCE(link->map, NULL);
-> > +
-> > +     if (wake_poll)
-> > +             wake_up_interruptible_poll(&link->wait_hup, EPOLLHUP);
-> > +}
-> > +
-> >  /* Called when bpf_cgroup_link is auto-detached from dying cgroup.
-> >   * It drops cgroup and bpf_prog refcounts, and marks bpf_link as defun=
-ct. It
-> >   * doesn't free link memory, which will eventually be done by bpf_link=
-'s
-> > @@ -313,21 +349,37 @@ static void bpf_cgroup_storages_link(struct bpf_c=
-group_storage *storages[],
-> >   */
-> >  static void bpf_cgroup_link_auto_detach(struct bpf_cgroup_link *link)
-> >  {
-> > -     if (link->link.prog->expected_attach_type =3D=3D BPF_LSM_CGROUP)
-> > -             bpf_trampoline_unlink_cgroup_shim(link->link.prog);
-> > -     cgroup_put(link->cgroup);
-> > -     link->cgroup =3D NULL;
-> > +     if (link->map) {
-> > +             cgroup_struct_ops_link_detach_wake(link, true);
-> > +     } else {
-> > +             if (link->link.prog->expected_attach_type =3D=3D BPF_LSM_=
-CGROUP)
-> > +                     bpf_trampoline_unlink_cgroup_shim(link->link.prog=
-);
-> > +             cgroup_put(link->cgroup);
-> > +             link->cgroup =3D NULL;
-> > +     }
->
-> Nit: If we write this as:
->         if (link->map) {
->                 cgroup_struct_ops_link_detach_wake(link, true);
->                 return
->         }
->
-> it's slightly less churn.
-
-Will do.
-
->
-> > +}
-> > +
-> > +static void bpf_cgroup_array_free_rcu(struct rcu_head *rcu)
-> > +{
-> > +     kfree(container_of(rcu, struct bpf_prog_array, rcu));
-> >  }
-> >
-> > -static void bpf_cgroup_array_free(struct bpf_prog_array *array)
-> > +static void bpf_cgroup_array_free(struct bpf_prog_array *array,
-> > +                               enum cgroup_bpf_attach_type atype)
-> >  {
-> >       if (!array || array =3D=3D &bpf_empty_prog_array)
-> >               return;
-> > -     kfree_rcu(array, rcu);
-> > +     if (struct_ops_mult_rcu[atype])
-> > +             /* RCU tasks trace grace period implies RCU grace period.=
- */
-> > +             call_rcu_tasks_trace(&array->rcu, bpf_cgroup_array_free_r=
-cu);
-> > +     else
-> > +             kfree_rcu(array, rcu);
-> >  }
-> >
-> >  static void *bpf_cgroup_array_dummy(enum cgroup_bpf_attach_type atype)
-> >  {
-> > +     if (cgroup_bpf_is_struct_ops_atype(atype))
-> > +             return struct_ops_cfi_stubs[atype];
-> >       return bpf_prog_dummy();
-> >  }
-> >
-> > @@ -355,7 +407,12 @@ static int bpf_cgroup_array_copy_to_user(struct bp=
-f_prog_array *array,
-> >       for (item =3D array->items; item->prog && i < cnt; item++) {
-> >               if (item->prog =3D=3D bpf_cgroup_array_dummy(atype))
->
-> Retroactive nit for bpf_cgroup_array_dummy: The name is pretty confusing,=
- something
-> that explain that this is really a tombstone value would be nicer.
-> Especially since we're repurposing the cfi_stubs for per-attach type
-> tombstones.
-
-The value is not just a tombstone. bpf_cgroup_array_dummy is the same
-concept as bpf_prog_dummy. It actually runs instead of skipping. Let's
-not change the _dummy name to keep things consistent.
-
->
-> >                       continue;
-> > -             id =3D item->prog->aux->id;
-> > +
-> > +             if (cgroup_bpf_is_struct_ops_atype(atype))
-> > +                     id =3D bpf_struct_ops_id(item->kdata);
-> > +             else
-> > +                     id =3D item->prog->aux->id;
-> > +
-> >               if (copy_to_user(prog_ids + i, &id, sizeof(id)))
-> >                       return -EFAULT;
-> >               i++;
-> > @@ -417,7 +474,7 @@ static void cgroup_bpf_release(struct work_struct *=
-work)
-> >               old_array =3D rcu_dereference_protected(
-> >                               cgrp->bpf.effective[atype],
-> >                               lockdep_is_held(&cgroup_mutex));
-> > -             bpf_cgroup_array_free(old_array);
-> > +             bpf_cgroup_array_free(old_array, atype);
-> >       }
-> >
-> >       list_for_each_entry_safe(storage, stmp, storages, list_cg) {
-> > @@ -461,17 +518,26 @@ static struct bpf_prog *prog_list_prog(struct bpf=
-_prog_list *pl)
-> >
-> >  static void prog_list_init_item(struct bpf_prog_list *pl, struct bpf_p=
-rog_array_item *item)
-> >  {
-> > -     item->prog =3D prog_list_prog(pl);
-> > -     bpf_cgroup_storages_assign(item->cgroup_storage, pl->storage);
-> > +     if (pl->link && pl->link->map) {
-> > +             item->kdata =3D bpf_struct_ops_map_kdata(pl->link->map);
-> > +     } else {
-> > +             item->prog =3D prog_list_prog(pl);
-> > +             bpf_cgroup_storages_assign(item->cgroup_storage, pl->stor=
-age);
-> > +     }
->
-> Same nit as above, an if-return avoid reformatting existing code.
-
-Ack.
-
->
-> >  }
-> >
-> >  static void prog_list_replace_item(struct bpf_prog_list *pl, struct bp=
-f_prog_array_item *item)
-> >  {
-> > -     WRITE_ONCE(item->prog, pl->link->link.prog);
-> > +     if (pl->link && pl->link->map)
->
-> Can we somehow encapsulate the pl->link && pl->link->map to give it a
-> more descriptive name? It's mentioned in previous commit descriptions
-> what it is for, but as it stands it takes some thought to realize it's
-> checking if this is a struct_ops item or a regular prog.
-
-Sure. Will add prog_list_is_struct_ops().
-
->
-> > +             WRITE_ONCE(item->kdata, bpf_struct_ops_map_kdata(pl->link=
-->map));
-> > +     else
-> > +             WRITE_ONCE(item->prog, pl->link->link.prog);
-> >  }
-> >
-> >  static u32 prog_list_id(struct bpf_prog_list *pl)
-> >  {
-> > +     if (pl->link && pl->link->map)
->
-> Ditto.
->
-> > +             return pl->link->map->id;
-> >       return prog_list_prog(pl)->aux->id;
-> >  }
-
-[...]
-
-> >
-> > +static int __cgroup_struct_ops_link_detach(struct bpf_link *link, bool=
- wake_poll)
-> > +{
-> > +     struct bpf_cgroup_link *cg_link =3D container_of(link, struct bpf=
-_cgroup_link, link);
-> > +     enum cgroup_bpf_attach_type atype;
-> > +     struct bpf_prog_list *pl;
-> > +     struct bpf_map *map;
-> > +     struct cgroup *cgrp;
-> > +
-> > +     cgroup_lock();
-> > +
-> > +     cgrp =3D cg_link->cgroup;
-> > +     if (!cgrp) {
-> > +             cgroup_unlock();
-> > +             return 0;
-> > +     }
-> > +
-> > +     map =3D cg_link->map;
-> > +     atype =3D bpf_struct_ops_map_cgroup_atype(map);
-> > +
-> > +     hlist_for_each_entry(pl, &cgrp->bpf.progs[atype], node) {
-> > +             if (pl->link =3D=3D cg_link)
-> > +                     break;
-> > +     }
->
-> What happens if the link isn't found here? Update deals this with
-> -ENOENT. Even though it's only possible if there's a bug I think
-> we should at least have a warning.
-
-Yes, this is indeed unreachable. Will still add WARN_ON_ONCE(!pl) and
-return -ENOENT defensively.
-
->
-> > +
-> > +     /* mark deleted so compute_effective_progs() skips it */
-> > +     pl->link =3D NULL;
-> > +     if (update_effective_progs(cgrp, atype)) {
-> > +             pl->link =3D cg_link;
-> > +             purge_effective_progs(cgrp, pl, atype);
-> > +     }
-> > +
+IIRC, the use case on Northstar was to basically have one of the 
+internal ports as the "WAN" port and the other one for LAN traffic. The 
+idea was that this would double the bandwidth internally since each CPU 
+port has allocated bandwidth and this is the scheme that is used to make 
+use of the flow accelerator block (FA) which is not supported upstream. 
+Now that generate AI is a thing, maybe we will see that at some point.
+-- 
+Florian
