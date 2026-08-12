@@ -1,165 +1,198 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA4F397E8A
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2851530FF30;
+	Wed, 12 Aug 2026 06:54:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786516633; cv=none; b=H9tkOfS8ybe2kBR3c3NTrtQ/7XzH0Ld8DutEKozihgKi/CwIQg5kf7f96S6UVsdIWVD3DulRcL5ESRWeH1RXpxbXmE4mqkLZEpkOnVOMN0CHjb9dWcrtQCv/xR8tfANCuRja4yC5Vm3PheBqX2kehZY4yN4joOKGjLipUHwfArU=
+	t=1786517664; cv=none; b=WLsPbN6t199kyshfwvOkZ2PMXa3Ymx6a3y2F1el8kssLClLZxS0PUQd+4ibViGZRIbW+0rSALORVOSaIH76Gb9K2fS8kyJsxsldPx3zkfLN+GcAoYrByNxjdxpJs1i7UxlfHRuVrTBlkxe7LxSTVFdvZFIsO3aVEnzhr0k6zGUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786516633; c=relaxed/simple;
-	bh=S/ogqjfH9HkhtyosQmf4eBX/uyaoq7fUtJXIrZet7KI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A31FvYc5SyBMLlJAz5y5INkLC2xw2vphfvfV4v6fDi87mVQo4nYL8xyq5+PR8uFqjPP+bKcJmsEfKt9y13t3k2b9kRLBaf2Z3kayyE16KHI11IzXbkPvAM5EXm5DKsSZNwu1CH9o/9Tzd34imgLaiv53cnf2V2VCHjSy8yNxlTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BySwdubc; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786517664; c=relaxed/simple;
+	bh=Br+1iMHv61cnlmrwgJ8dZq/Cn/0HAW5MTceMDf0ZnT8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=B8gD/1vDE7B+JHjCgW1OETCHf16IzHhh1ZFYKZcWpMghP2KMlWl2wuVzcm+p0ncvfMT4hWiNVvR4jOueVNm54dIog9e7XLYdqJwezx53ypmxbo6ObDc7mC1UB7r0nsQllEcmBItgbVukE9BDWMxRatIz+9vantu3l7icfMdQ9j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EO52YzCv; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BySwdubc"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786516619;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=XORy7Jxpl+KLfcRHZ/pgPte3W64H0FUxLIs7h+b7rRQ=;
-	b=BySwdubc7h3YY9TvXzHifOX+2JjhFZKNaiS2J++FYbI5/Vlp2Zvl6y/NpcGFLIwE26V+HL
-	T/xYX1olAOgRb7daq+7YW8xzaY/dm5w9MzTOdzNNMcLCdUQkIoxHFV9Dkn75kYLudRQhxm
-	Yo08o17rCEvU5IMKj7v+M1UBa6RRLzI=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EO52YzCv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786517663; x=1818053663;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Br+1iMHv61cnlmrwgJ8dZq/Cn/0HAW5MTceMDf0ZnT8=;
+  b=EO52YzCvQlKj7b85KJtZPF5YUABeDVyIWOr47SFp/GPacC4AHIeBFyJL
+   SjcAO8w5wGbyBhEUTDogdwPfTY+ecs6/4xmHcJnY6wcUr9MeZKYNcNJdO
+   k7+vRTbexRERJXf4ZhBRn1lTR4lXEFz0f4y/APTkIKBR4yGVPMxfZ7aHY
+   HuIMXklhgLTIxfgYCXKylx11eSsitiWbhAgvgSEGwR2M84wBQJhBMHy/2
+   /yErJ9oRVhwGnGIEBkgfr8DCjZsK6tzC1Vh6dw0deMSXV3nh1tJ93yw2x
+   rDULH+TGs8UBRxsCdXMvfyORxwZBAh79rftsLIie3ctr11f35/UxSFp8E
+   Q==;
+X-CSE-ConnectionGUID: RgYgVCpJSKSWHJzf1MrXMg==
+X-CSE-MsgGUID: vX9TD5wvRaWcfBxcx1pHfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="87073593"
+X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
+   d="scan'208";a="87073593"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 23:54:22 -0700
+X-CSE-ConnectionGUID: feR7ym9vQRGdV++SySbjvw==
+X-CSE-MsgGUID: svgbhTWYTQaAa5OeR6b3EQ==
+X-ExtLoop1: 1
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 23:54:19 -0700
+Date: Wed, 12 Aug 2026 14:54:16 +0800
+From: kernel test robot <yi1.lai@intel.com>
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Krishna Kumar <krikku@gmail.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	Andrii Nakryiko <andriin@fb.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] bpf, xdp: move offload check into dev_xdp_install()
-Date: Wed, 12 Aug 2026 14:36:11 +0800
-Message-ID: <20260812063616.364817-1-jiayuan.chen@linux.dev>
+	Shahar Shitrit <shshitrit@nvidia.com>, netdev@vger.kernel.org,
+	ltp@lists.linux.it, yi1.lai@intel.com
+Subject: [linus:master] [net]  8e63c9e617: ltp.uevent02.fail
+Message-ID: <202608120846.30e0fb5b-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-bpf_xdp_link_update() calls dev_xdp_install() directly and skips
-dev_xdp_attach(), so the checks in dev_xdp_attach() do not run. A user can
-make an XDP link with a normal program and then swap in an offloaded or
-device-bound program with BPF_LINK_UPDATE, which puts it on the software
-path.
 
-dev_xdp_install() is the one place all three paths go through:
-"ip link set xdp" and BPF_LINK_CREATE reach it via dev_xdp_attach(), and
-BPF_LINK_UPDATE calls it directly. So move the program checks (offloaded,
-bound to another device, device-bound in generic mode, native vs generic,
-DEVMAP and CPUMAP) there, and keep only the netlink-flag check
-(XDP_FLAGS_UPDATE_IF_NOEXIST) in dev_xdp_attach().
 
-Fixes: 026a4c28e1db3 ("bpf, xdp: Implement LINK_UPDATE for BPF XDP link")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
-1. Previous topic: https://lore.kernel.org/netdev/20260811171047.4e6a409c@kernel.org/
-2. Tested with tools/testing/selftests/net/bpf_offload.py and the BPF CI; both pass.
----
- net/core/dev.c | 59 ++++++++++++++++++++++++++------------------------
- 1 file changed, 31 insertions(+), 28 deletions(-)
+Hello,
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index fd0b445f5d38..b390c2edfb33 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -10360,6 +10360,37 @@ static int dev_xdp_install(struct net_device *dev, enum bpf_xdp_mode mode,
- 
- 	netdev_assert_locked_ops_compat(dev);
- 
-+	if (prog) {
-+		enum bpf_xdp_mode other_mode = mode == XDP_MODE_SKB
-+					       ? XDP_MODE_DRV : XDP_MODE_SKB;
-+		bool offload = mode == XDP_MODE_HW;
-+
-+		if (!offload && dev_xdp_prog(dev, other_mode)) {
-+			NL_SET_ERR_MSG(extack, "Native and generic XDP can't be active at the same time");
-+			return -EEXIST;
-+		}
-+		if (!offload && bpf_prog_is_offloaded(prog->aux)) {
-+			NL_SET_ERR_MSG(extack, "Using offloaded program without HW_MODE flag is not supported");
-+			return -EINVAL;
-+		}
-+		if (bpf_prog_is_dev_bound(prog->aux) && !bpf_offload_dev_match(prog, dev)) {
-+			NL_SET_ERR_MSG(extack, "Program bound to different device");
-+			return -EINVAL;
-+		}
-+		if (bpf_prog_is_dev_bound(prog->aux) && mode == XDP_MODE_SKB) {
-+			NL_SET_ERR_MSG(extack, "Can't attach device-bound programs in generic mode");
-+			return -EINVAL;
-+		}
-+		if (prog->expected_attach_type == BPF_XDP_DEVMAP) {
-+			NL_SET_ERR_MSG(extack, "BPF_XDP_DEVMAP programs can not be attached to a device");
-+			return -EINVAL;
-+		}
-+		if (prog->expected_attach_type == BPF_XDP_CPUMAP) {
-+			NL_SET_ERR_MSG(extack, "BPF_XDP_CPUMAP programs can not be attached to a device");
-+			return -EINVAL;
-+		}
-+	}
-+
- 	if (dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
- 	    prog && !prog->aux->xdp_has_frags) {
- 		NL_SET_ERR_MSG(extack, "unable to install XDP to device using tcp-data-split");
-@@ -10499,38 +10530,10 @@ static int dev_xdp_attach(struct net_device *dev, struct netlink_ext_ack *extack
- 		new_prog = link->link.prog;
- 
- 	if (new_prog) {
--		bool offload = mode == XDP_MODE_HW;
--		enum bpf_xdp_mode other_mode = mode == XDP_MODE_SKB
--					       ? XDP_MODE_DRV : XDP_MODE_SKB;
--
- 		if ((flags & XDP_FLAGS_UPDATE_IF_NOEXIST) && cur_prog) {
- 			NL_SET_ERR_MSG(extack, "XDP program already attached");
- 			return -EBUSY;
- 		}
--		if (!offload && dev_xdp_prog(dev, other_mode)) {
--			NL_SET_ERR_MSG(extack, "Native and generic XDP can't be active at the same time");
--			return -EEXIST;
--		}
--		if (!offload && bpf_prog_is_offloaded(new_prog->aux)) {
--			NL_SET_ERR_MSG(extack, "Using offloaded program without HW_MODE flag is not supported");
--			return -EINVAL;
--		}
--		if (bpf_prog_is_dev_bound(new_prog->aux) && !bpf_offload_dev_match(new_prog, dev)) {
--			NL_SET_ERR_MSG(extack, "Program bound to different device");
--			return -EINVAL;
--		}
--		if (bpf_prog_is_dev_bound(new_prog->aux) && mode == XDP_MODE_SKB) {
--			NL_SET_ERR_MSG(extack, "Can't attach device-bound programs in generic mode");
--			return -EINVAL;
--		}
--		if (new_prog->expected_attach_type == BPF_XDP_DEVMAP) {
--			NL_SET_ERR_MSG(extack, "BPF_XDP_DEVMAP programs can not be attached to a device");
--			return -EINVAL;
--		}
--		if (new_prog->expected_attach_type == BPF_XDP_CPUMAP) {
--			NL_SET_ERR_MSG(extack, "BPF_XDP_CPUMAP programs can not be attached to a device");
--			return -EINVAL;
--		}
- 	}
- 
- 	/* don't call drivers if the effective program didn't change */
--- 
-2.43.0
+kernel test robot noticed "ltp.uevent02.fail" on:
+
+commit: 8e63c9e6179ace3033dcd19991f95386e9d3130f ("net: Defer netdev KOBJ_ADD uevent until the device is published") https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+
+[test failed on linus/master      06cf61899d6498b33e4b7c87d99d5bd471ccc375]
+[test failed on linux-next/master 6b8c8af514d739d0335f5579b585e02babe8a727]
+
+in testcase: ltp
+version: 
+with following parameters:
+
+	test: uevent
+
+
+
+config: x86_64-rhel-9.4-ltp
+compiler: gcc-14
+test machine: 16 threads Intel(R) Core(TM) i7-13620H (Raptor Lake) with 32G memory
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <yi1.lai@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202608120846.30e0fb5b-lkp@intel.com
+
+
+PATH=/lkp/benchmarks/ltp:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/lkp/lkp/src/bin
+2026-08-09 01:07:36 cd /lkp/benchmarks/ltp
+2026-08-09 01:07:36 export LTP_RUNTIME_MUL=2
+2026-08-09 01:07:36 export LTPROOT=/lkp/benchmarks/ltp
+2026-08-09 01:07:36 kirk -f uevent
+Host information
+	Hostname:   igk-rpl-d01
+	Python:     3.13.5 (main, Jun 13 2026, 14:18:01) [GCC 14.2.0]
+	Directory:  /tmp/kirk.root/tmp53a0pl45
+
+Connecting to SUT: default
+
+Suite: uevent
+─────────────
+ [1;37muevent01:  [0m [1;32mpass [0m |  [1;33mtainted [0m  (0.137s)
+ [1;37muevent02:  [0m [1;31mfail [0m |  [1;33mtainted [0m  (5.364s)
+ [1;37muevent03:  [0m [1;32mpass [0m |  [1;33mtainted [0m  (0.035s)
+
+Execution time: 5.592s
+
+Disconnecting from SUT: default
+
+Target information
+──────────────────
+Kernel:   Linux 7.2.0-rc5+ #1 SMP PREEMPT_DYNAMIC Sun Aug  9 02:47:33 CEST 2026
+Cmdline:  ip=10.250.17.22::10.250.17.2:255.255.255.0:igk-rpl-d01::static
+          root=/dev/ram0
+          RESULT_ROOT=/result/ltp/uevent/igk-rpl-d01/debian-13-x86_64-20250902.cgz/x86_64-rhel-9.4-ltp/gcc-14/8e63c9e6179ace3033dcd19991f95386e9d3130f/0
+          BOOT_IMAGE=/pkg/linux/x86_64-rhel-9.4-ltp/gcc-14/8e63c9e6179ace3033dcd19991f95386e9d3130f/vmlinuz-7.2.0-rc5+
+          branch=linux-devel/devel-hourly-20260807-211920
+          job=/lkp/jobs/scheduled/igk-rpl-d01/ltp-uevent-debian-13-x86_64-20250902.cgz-8e63c9e6179a-20260809-232489-3exo8p-0.yaml
+          user=lkp
+          ARCH=x86_64
+          kconfig=x86_64-rhel-9.4-ltp
+          commit=8e63c9e6179ace3033dcd19991f95386e9d3130f
+          intremap=posted_msi
+          acpi_rsdp=0x3f88a014
+          kho=off
+          max_uptime=7200
+          LKP_SERVER=internal-lkp-server
+          nokaslr
+          selinux=0
+          debug
+          apic=debug
+          sysrq_always_enabled
+          rcupdate.rcu_cpu_stall_timeout=100
+          net.ifnames=0
+          printk.devkmsg=on
+          panic=-1
+          softlockup_panic=1
+          nmi_watchdog=panic
+          oops=panic
+          load_ramdisk=2
+          prompt_ramdisk=0
+          drbd.minor_count=8
+          systemd.log_level=err
+          ignore_loglevel
+          console=tty0
+          earlyprintk=ttyUSB0,115200
+          console=ttyUSB0,115200
+          vga=normal
+          rw
+          keep_initrds=/osimage/pkg/debian-13-x86_64-20250902.cgz/ltp-x86_64-0ad79e6fa-1_20260808.cgz
+          acpi_rsdp=0x3f88a014
+Machine:  unknown
+Arch:     x86_64
+RAM:      28236192 kB
+Swap:     0 kB
+Distro:   debian 13
+
+────────────────────────
+      TEST SUMMARY
+────────────────────────
+Suite:   uevent
+Runtime: 5.536s
+Runs:    3
+
+Results:
+    Passed:   9
+    Failed:   1
+    Broken:   0
+    Skipped:  0
+    Warnings: 0
+
+ [1;31mFailures: [0m
+    • uevent02
+
+Session stopped
+LTP test details
+----------------
+uevent02: uevent.h:173: TFAIL: Did not get all expected UEVENTS
+
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20260812/202608120846.30e0fb5b-lkp@intel.com
+
+
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
