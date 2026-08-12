@@ -1,115 +1,86 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+Received: from sender-op-o19.zoho.eu (sender-op-o19.zoho.eu [136.143.169.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9F2346774;
-	Wed, 12 Aug 2026 13:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786543194; cv=none; b=Sjqe29dwwiXuysvomiShqZIeTGTsHGRmSdaDHpzFGGV6sQyT5lkjGb1nmLBN9nqrx3COie2ife1Lyk2mB8aJF6r69oaKuZm3aNS9flTtZxK012v1fdymuB6uC+OnjS9bV/wWn8qqHw0gAsCgeI2eHdFEu7msW5R5vInCdGQoCBE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786543194; c=relaxed/simple;
-	bh=Jokbltb+zA1d6fucMN6E3Co3pWL6vfKPXBDjXPWTPzM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdEx/bS5fdfQZiKObJTK8F/ggO/OX1CgojufOJLxdfhc189tPgEo7ENBLQ/FwIoJPUSuWwPM7U151FscDWtpuO4L6c1rqE6+ni+U0G/IUbjHbbV0JivhPsNDL1GKwGnpaYkS49eRg/6xxwB4pIJGsv6HQA61ebA2dCygfvRp/LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=ln8OB5sN; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B123328E6;
+	Wed, 12 Aug 2026 14:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786543695; cv=pass; b=oMrQFXmmaxvGYjbgZ2PL1c0BCRdHVHE1iivH9Yq1zH0OHQhI5jzYV+Kps1v2P2qYbgmbJqSKxmkKE/ft4CvHi3XIvDr0mBZu+WfwKN2/GZu34Tef+w1GrSWUlyQCsgAmKiA5Fr+1en/1TUZKKnbxPqgL0IKxCwUthrjP+423Mmo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786543695; c=relaxed/simple;
+	bh=ED8/Id9P39kmd/HPBrlkxLCZ3WweR8fEB58UhEUIfso=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SkCmZUENbry+wu4LVOLAGo8Z39tiHyFUT437b7J/Kk7H5jPFfDHjVDTkWoFHAVQoHzLt8s77FxoSp91KbdbHzUcfD5aTXdeCeRTsVMadeFpdjbXYApD4TzGik2dEN+9G5MiTQy1v198JltFUbjQulmc/LQtQtP//jSRBeeUWBMc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl; spf=pass smtp.mailfrom=kempniu.pl; dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b=SiObeyYz; arc=pass smtp.client-ip=136.143.169.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kempniu.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="ln8OB5sN"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id C2642E8322B;
-	Wed, 12 Aug 2026 15:59:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1786543189;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jokbltb+zA1d6fucMN6E3Co3pWL6vfKPXBDjXPWTPzM=;
-	b=ln8OB5sN+K2EwgNKD68euK4sniTzTIs0kBq7Dc67GmkhSJ7wpm57ouRFLo66DF6Vt1HV1k
-	Ir1YoBvjXtsjTvFc61fm7ucZQ8HauwmA3aAdzaDMGGsWk2f8Pnc/n70rI2z24yDCcsM8ef
-	+UCaDFoh19yrOomPQi32L3gfL08bOjlVMQ8VZjcI8+c007NSuNgXz+yZiSXIhgaAJDoU3h
-	RQhdzXBBpc5CWjz7asWCmxBzYkbMXzmKd69LqhfkIOj2iySuXd2jvkFzbeVLivtsU9PUZM
-	Caj0a7K28RusxkY9+mveNH4vL5dd06woAXWgJasJHdmE5XyA7sXChKtEggpD+Q==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id gKh4YMMfSl2l; Wed, 12 Aug 2026 15:59:49 +0200 (CEST)
-Received: from p14sgen5.. (tmo-120-142.customers.d1-online.com [80.187.120.142])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Wed, 12 Aug 2026 15:59:48 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b="SiObeyYz"
+ARC-Seal: i=1; a=rsa-sha256; t=1786543673; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=fdl3LxpQwolOmeLMcKKGi9sHb4BVLcohVfrGJKAz7LBiu3+90bVW4g93dIHFVlOc6FaDERLzs6+56WdYn1tsx1fy9EdGw2fYqaBUp9c5xhkqFDSc6EUFfimgZog569PUi5kukaEM54WZ9E9XFDDDPivnyIm4HCFHKf3L+/kSNsc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1786543673; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=xt/PHOrNVQzQMJAzk0d6e0ED79WRzu+fLKRv8nOdiTA=; 
+	b=eSBA+vSUCrvSFz3KJ1efkXeFW8gIBQZlS01G6FjbbmVUhFyGqYIA2aPzIYv8+rLJAkdFD8bcXFDNWNJzEu+76Id2NPLhm21pFhjcj9U+401EwUifS56kBMPuUqXTyIOF/g65S4lZdBoi5QqdFNRKiTUEf9RomhvukTGe8cCuzXo=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=kempniu.pl;
+	spf=pass  smtp.mailfrom=kernel@kempniu.pl;
+	dmarc=pass header.from=<kernel@kempniu.pl>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786543673;
+	s=zmail; d=kempniu.pl; i=kernel@kempniu.pl;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
+	bh=xt/PHOrNVQzQMJAzk0d6e0ED79WRzu+fLKRv8nOdiTA=;
+	b=SiObeyYzCiNwlFjxh+Q1ObC962esYs2VfnaxlcFyanUF6icunAY8cWSxortM2fYX
+	PjJPFtz1uiKF6k2swfk3huJH2AQcrBTLZUeJLs6jz+TFMxDZHNsIVjDikuJPurSadW5
+	1NJQzua6q5n7r5sDgGVcHfv396/CkPr1j3tMcgaE=
+Received: by mx.zoho.eu with SMTPS id 1786543671884839.3312813793443;
+	Wed, 12 Aug 2026 16:07:51 +0200 (CEST)
+Date: Wed, 12 Aug 2026 16:07:50 +0200
+From: =?utf-8?B?TWljaGHFgiBLxJlwaWXFhA==?= <kernel@kempniu.pl>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: Re: [PATCH net v2 2/2] net: pse-pd: guard regulator ops against freed PI data during unregister
-Date: Wed, 12 Aug 2026 16:59:36 +0300
-Message-ID: <20260812135936.889119-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260810135233.4be3dc5d@kernel.org>
-References: <20260810135233.4be3dc5d@kernel.org>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: dsa: qca8k: Disable mgmt Ethernet for qca8327
+Message-ID: <anx-NixOL_6WVLlH@larwa.hq.kempniu.pl>
+References: <20260810061612.23745-1-kernel@kempniu.pl>
+ <cc6d8243-e82b-4f1b-acf4-13ba6a74baaf@lunn.ch>
+ <anw5OvAxKh3pnezZ@larwa.hq.kempniu.pl>
+ <469e446d-36ab-45c7-9bf5-6e040747572b@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <469e446d-36ab-45c7-9bf5-6e040747572b@lunn.ch>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.11.1.5.2/286.510.57
+X-ZohoMailClient: External
 
-On Mon, 10 Aug 2026 13:52:33 -0700 Jakub Kicinski wrote:
-> It'd be great if we can figure out the safe lifetime rules for pse-pd
-> from all entry points. Specifically the sysfs complaint on patch 1
-> (assuming it's real) makes the series seem like a bit of of a see-saw.
->
-> Let's get it reposted and take it from there?
+> > Could you please point me at the exact retry mechanism you had in mind,
+> > either the qca8k one or the Marvell equivalent?  I cannot see any in
+> > drivers/net/dsa/qca/qca8k-8xxx.c.  If I'm reading qca8k code correctly,
+> > when wait_for_completion_timeout() fails, its return value is just
+> > bubbled up the call chain.
+> 
+> With the mv88e6xxx code, if ethernet times out, i repeated the request
+> using MDIO. The code is not in mainline but a few users are using it.
 
-Thanks for the reviews, Kory.
+Ah, that way, okay.  It looks like every mgmt Ethernet function in qca8k
+has an MDIO fallback path, but I'll keep this in mind, thanks.
 
-Makes sense. Let me go through everything that still touches pcdev->pi
-once pse_controller_unregister() has started freeing it, so it's clear
-what the series covers and what it doesn't.
+> At minimum, i would put a printk() there, and see if it happens.  It
+> could be unrelated to your problem...
 
-The regulator ops (pse_pi_enable/disable/is_enabled) are the sysfs case.
-It's real: the PI regulators get registered before the controller, so on
-unbind the controller goes down first and pse_release_pis() frees
-pcdev->pi while the regulators are still live. is_enabled() is
-reachable over sysfs. Patch 2 is what handles this - it checks !pcdev->pi
-in those three ops and frees under the same lock. Patch 1 just does the
-reorder, so the two really need to be read together.
+Ack, thanks.
 
-The other one is of_pse_match_pi() from of_pse_control_get(). A consumer
-probing at the same time walks pse_controller_list and reads
-pcdev->pi[i].np. Problem is we free pi before list_del(), so the
-controller is still on the list with pi already gone. The series doesn't
-touch this yet. It's a one-liner really - move list_del() before the
-free. Then a lookup either sees a valid pi or doesn't find the controller
-at all, no NULL checks anywhere. I'd add that as a patch 3.
-
-Last two are pse_ethtool_get_status() and __pse_control_release(), from a
-consumer still holding a pse_control. They read pcdev->pi[psec->id] too,
-but here the real issue isn't pi, it's that the consumer can outlive the
-whole controller - of_pse_control_get() only takes a module ref, no
-device link - so a NULL check buys you nothing. That's pre-existing and
-not really something to fix in net. The notifier series I have for
-net-next [1] is what deals with it: the phy layer drops phydev->psec on
-unregister before pi is freed, and phy is the only pse_control user we
-have in tree.
-
-So for v3: patches 1 and 2 as they are with Kory's Reviewed-by, plus the
-small patch 3 for the list_del reorder, and I'll write all this up in the
-cover letter so the ethtool side is clearly left to [1].
-
-Sound ok before I send it out?
-
-[1] https://lore.kernel.org/netdev/20260630091125.3162481-1-github@szelinsky.de/
-
-Thanks,
-Carlo
+-- 
+Best regards,
+Michał Kępień
