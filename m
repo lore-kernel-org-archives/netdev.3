@@ -1,170 +1,210 @@
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAC73C584E
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 08:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7853876DF;
+	Wed, 12 Aug 2026 08:55:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786524889; cv=none; b=bgM76XVesahQuGjwe+UVK0okBmFOYeQY0NxvlzYAh4cvHV3pz+jU+Ib/wehqApWZZydhNXFwFU9TYze1QaZpzeRDq2PcA61IQBjudBxt+bMeJBo+hgTjCIdcrL/AYWA8TScqRZAra8mGfZYo0g1+b+/NocfeB60sWdIvfXBvg2Y=
+	t=1786524930; cv=none; b=WLNJyZ7UsqSmsMIOEzFx5xX9MWZcq23SzD5vze8JH1Lb/g475qG24oTvqtu3jSz9YT+GFDCRMl0XL4S6z1BnKGmawHekPABQrNZzfItKZjOjB+V+/xh3YgjgHC0MAdq+CXSJNcuLgnH/XEcR4gIedTFfGrv775Xrc8M1U0Zl7Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786524889; c=relaxed/simple;
-	bh=tE5akYm/0D5UPBwRUE4ayZR2N2EQweSn1OJl5iXnacA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=a5bqkjyT4kgKVWFyV2h+1XSxIBQbt28BdcLHA7JWiVCLcrocUtVRrrSESJhxql5fyzzTxcCt0jL7cfzVFbYYStt1CWU8uch9yjxIz7OYss1V7ROB5Krc9DuPxaGHiVQbcUXFIPVy2SsWODl/+w5YQt4s2TytCNH6/Yom++HPpoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JMSXlI5Q; arc=none smtp.client-ip=209.85.160.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1786524930; c=relaxed/simple;
+	bh=qeF3qzVD0a7yJfGxaupNzNTzHbIZrr6gK0tcQPX+O4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=hX4Be+nmrcuumZE5WfS+X5YrjzksPckj9d/BsCx5JWZ6UZL1Ahn7NKmO0j+enRApb3Z98RpCmNVebjVe/mEA3ZgjTMPolHnT29tr3dsfTEIUp8E7pSYzQ7ZiTMoJQsggSUYbsaytD4gLdBfxXnmDvckUyQkXvMAbS01Hn2yZeNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fINmhjFm; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JMSXlI5Q"
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51bf321d786so11912971cf.1
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:54:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786524887; x=1787129687; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G2yIReJQdSxVH3YkEZxwA5FjXcal/zbxQ/3Lm7eNqUI=;
-        b=JMSXlI5QhIkeqI1XAxVV3lBlYpl/jXSY/06RhMvtnuzHNDh8J2anTVvBsVDyDxEYPp
-         pxoqfArqFAR6nIyWiqYCUmki1KaVIpjvAbFvcw/ZNxrvJL6lnP1tZhHZcPxk5voTiueJ
-         pEjeaiqtKgUns6ADGvazKh6UGOL/9+RO/Ez5qbTzRPSHGIYRgxy3g6svMLZ7w5Uvbjz8
-         2W1DOhGcvCZxgDOiRvux6r171uI1t5z588ZqHdvcH+gRdtclsejF3g86G/h9+ogdw+yT
-         YZGNn7rU5EsW961Zi/gaUR78HlRXiGxs5zzXCbvyyHh3HaPz7igoH8jARDEve8ib1bF5
-         zmjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786524887; x=1787129687;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G2yIReJQdSxVH3YkEZxwA5FjXcal/zbxQ/3Lm7eNqUI=;
-        b=ZVW2i4SJmSftXEvRQjDN5m7liMFHkbtqAbX6Lz7nXiL50KNCVSl4uMIufQDI39fxhE
-         ojEZFdHdpm986xJmICjy5NdmBnf1HgB6VrBFg7NR8PIxOwmKdPdPH6dQl0YBjPFD1AWL
-         UkIKApE9YxgzCNLHDqtoNhmbMcsLRdMmGcJnS721MIX/gZiqAL607e0ur4dvnx6krV68
-         +jb/n3+5EwFuYgXPlRMFFTfcHjtqXTFRD3yXzQaB0ryhd8WeBADYQdYZosPO3QlmSCWN
-         lH0JwMyAXrxU4/apVrPm3CpJGGpO7yoqutdZfeusG/35JSvP732BFtKPXsflmyIBeWJ4
-         bWIA==
-X-Forwarded-Encrypted: i=1; AHgh+RpLH+T/Q4nrCYdV/Vm2SdI0rXZz/btqj1KRFvrG0buegNvwMWW0hOKQGdcnOOthqKpcAL1NspE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxshGtDq439FoeAEPCQgB3itQ+1WGaHtWQgFD67uXas0y1vgLV
-	AQRx6Q+l9nrMJWq3T9FHgyLtq856qis1BWi/yH4SnhiOpRnjtij8YYp1jQzlmz0H2/++IB+s55j
-	rIMIftGCgOT4ySw==
-X-Received: from qtqv13.prod.google.com ([2002:ac8:748d:0:b0:51b:fdcb:cfdc])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:2d5:b0:51b:cdc2:fb99 with SMTP id d75a77b69052e-52d647a2fbfmr24767891cf.24.1786524886549;
- Wed, 12 Aug 2026 01:54:46 -0700 (PDT)
-Date: Wed, 12 Aug 2026 08:54:40 +0000
-In-Reply-To: <20260812085440.3917924-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fINmhjFm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786524929; x=1818060929;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=qeF3qzVD0a7yJfGxaupNzNTzHbIZrr6gK0tcQPX+O4k=;
+  b=fINmhjFmtEsX5l3sRUkBWGpt1ZeE/rgYs8GRs9mgclMRycQeVgcASGvf
+   qUmrnlhUBrkKka2MvtX0wn0ktOWR7i5l0oBWQsMoZ5RsgzCmT/4UmSqdP
+   jf+DMmtEbjL9X+OJI5gD2ZxQB+ku5K9gu02hfzXxM2wicUuJ4lX7PtWXV
+   0uaQTnKZ8UX5/iMFNv9So0H4SFOrDclGshDiTfNDSrBi7FGzbq1+sajPc
+   j9XwTVXwBB+mWNYyKIJEIU1MGrrpEZiEV9qgOEkHGovzPB2Lno/Bpmsaw
+   g6yb2C0Dif/kojwiL0I3p+tnHFAxgjgYi18SHgNaiit0Ka50nebOJoBXJ
+   w==;
+X-CSE-ConnectionGUID: qBBbPuSAToOzQv/NsZD5Fg==
+X-CSE-MsgGUID: 5tYI7FcaSu+V51GIyRuG/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="97418385"
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="97418385"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 01:55:28 -0700
+X-CSE-ConnectionGUID: be5EyKfISrG/MS/g4yZZIg==
+X-CSE-MsgGUID: c5PIsKf9QLiv9p7wZij3rA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
+   d="scan'208";a="260963041"
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 01:55:24 -0700
+Date: Wed, 12 Aug 2026 16:55:20 +0800
+From: kernel test robot <yi1.lai@intel.com>
+To: Tristan Madani <tristmd@gmail.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	maheshb@google.com, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tristan Madani <tristan@talencesecurity.com>, yi1.lai@intel.com
+Subject: Re: [PATCH net v3] net: reduce XMIT_RECURSION_LIMIT under KASAN
+Message-ID: <202608121039.ca91f25a-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260812085440.3917924-1-edumazet@google.com>
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260812085440.3917924-4-edumazet@google.com>
-Subject: [PATCH net-next 3/3] net: add READ_ONCE()/WRITE_ONCE() annotations
- for dev->prio_tc_map
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727200454.4048141-1-tristmd@gmail.com>
 
-Concurrent fast-path readers access dev->prio_tc_map (e.g. via
-skb_tx_hash(), netdev_get_prio_tc_map(), and qdiscs) while writers
-update entries in dev->prio_tc_map or reset/clear the map via
-netdev_reset_tc() and netdev_unbind_sb_channel().
 
-Furthermore, memset() in netdev_reset_tc() and
-netdev_unbind_sb_channel() provides no guarantee of performing
-atomic word/byte stores.
+Hello,
 
-Add READ_ONCE() and WRITE_ONCE() annotations to netdev_get_prio_tc_map()
-and netdev_set_prio_tc_map(), replace memset() in dev.c with explicit
-WRITE_ONCE() loops, and update direct array accesses in qdiscs to use
-netdev_get_prio_tc_map().
+kernel test robot noticed "kselftests-bpf.net/forwarding fail" on:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- include/linux/netdevice.h  | 4 ++--
- net/core/dev.c             | 6 ++++--
- net/sched/sch_mqprio_lib.c | 3 ++-
- net/sched/sch_taprio.c     | 2 +-
- 4 files changed, 9 insertions(+), 6 deletions(-)
+commit: ef83ebe178d46ab0d26a906be5fcd654a488c730 ("[PATCH net v3] net: reduce XMIT_RECURSION_LIMIT under KASAN")
+url: https://github.com/intel-lab-lkp/linux/commits/Tristan-Madani/net-reduce-XMIT_RECURSION_LIMIT-under-KASAN/20260728-072802
+base: https://git.kernel.org/cgit/linux/kernel/git/davem/net.git bd0e9289e2642f6a5c54faad304ce0f41e926d22
+patch link: https://lore.kernel.org/all/20260727200454.4048141-1-tristmd@gmail.com/
+patch subject: [PATCH net v3] net: reduce XMIT_RECURSION_LIMIT under KASAN
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index db0002bd68f90fa4dd087edabc11549bc8ee0f66..de307c01d33eb8835bdbe32118c2fc086e53a51c 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2671,7 +2671,7 @@ static inline bool netif_elide_gro(const struct net_device *dev)
- static inline
- int netdev_get_prio_tc_map(const struct net_device *dev, u32 prio)
- {
--	return dev->prio_tc_map[prio & TC_BITMASK];
-+	return READ_ONCE(dev->prio_tc_map[prio & TC_BITMASK]);
- }
- 
- static inline
-@@ -2680,7 +2680,7 @@ int netdev_set_prio_tc_map(struct net_device *dev, u8 prio, u8 tc)
- 	if (tc >= READ_ONCE(dev->num_tc))
- 		return -EINVAL;
- 
--	dev->prio_tc_map[prio & TC_BITMASK] = tc & TC_BITMASK;
-+	WRITE_ONCE(dev->prio_tc_map[prio & TC_BITMASK], tc & TC_BITMASK);
- 	return 0;
- }
- 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 8ffae11d272e979bab5b64f4d912d3d97f738d48..d52285ac01a54fdafa63703f1af134e19d028ffd 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3124,7 +3124,8 @@ void netdev_reset_tc(struct net_device *dev)
- 	WRITE_ONCE(dev->num_tc, 0);
- 	for (i = 0; i < TC_MAX_QUEUE; i++)
- 		WRITE_ONCE(dev->tc_to_txq[i].combined, 0);
--	memset(dev->prio_tc_map, 0, sizeof(dev->prio_tc_map));
-+	for (i = 0; i <= TC_BITMASK; i++)
-+		WRITE_ONCE(dev->prio_tc_map[i], 0);
- }
- EXPORT_SYMBOL(netdev_reset_tc);
- 
-@@ -3172,7 +3173,8 @@ void netdev_unbind_sb_channel(struct net_device *dev,
- #endif
- 	for (i = 0; i < TC_MAX_QUEUE; i++)
- 		WRITE_ONCE(sb_dev->tc_to_txq[i].combined, 0);
--	memset(sb_dev->prio_tc_map, 0, sizeof(sb_dev->prio_tc_map));
-+	for (i = 0; i <= TC_BITMASK; i++)
-+		WRITE_ONCE(sb_dev->prio_tc_map[i], 0);
- 
- 	while (txq-- != &dev->_tx[0]) {
- 		if (txq->sb_dev == sb_dev)
-diff --git a/net/sched/sch_mqprio_lib.c b/net/sched/sch_mqprio_lib.c
-index b60e130c70781479eed0ea5a02d01197f03f4895..888935e34d4381f85aaf4c97cf9c4bacb93e13f1 100644
---- a/net/sched/sch_mqprio_lib.c
-+++ b/net/sched/sch_mqprio_lib.c
-@@ -105,7 +105,8 @@ void mqprio_qopt_reconstruct(struct net_device *dev, struct tc_mqprio_qopt *qopt
- 	int tc, num_tc = netdev_get_num_tc(dev);
- 
- 	qopt->num_tc = num_tc;
--	memcpy(qopt->prio_tc_map, dev->prio_tc_map, sizeof(qopt->prio_tc_map));
-+	for (tc = 0; tc <= TC_BITMASK; tc++)
-+		qopt->prio_tc_map[tc] = netdev_get_prio_tc_map(dev, tc);
- 
- 	for (tc = 0; tc < num_tc; tc++) {
- 		struct netdev_tc_txq res;
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 18fcb4e78456a2f74fa5d3465175d100a39575b4..39ac5b97aa3af83fe63ab5ff9173c39700f6bbb0 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1813,7 +1813,7 @@ static int taprio_mqprio_cmp(const struct net_device *dev,
- 	}
- 
- 	for (i = 0; i <= TC_BITMASK; i++)
--		if (dev->prio_tc_map[i] != mqprio->prio_tc_map[i])
-+		if (netdev_get_prio_tc_map(dev, i) != mqprio->prio_tc_map[i])
- 			return -1;
- 
- 	return 0;
+in testcase: kselftests-bpf
+version: 
+with following parameters:
+
+	group: net/forwarding
+        failed cases:
+		forwarding.custom_multipath_hash.sh
+		forwarding.vxlan_asymmetric.sh
+		forwarding.vxlan_asymmetric_ipv6.sh
+		forwarding.vxlan_symmetric.sh
+		forwarding.vxlan_symmetric_ipv6.sh
+
+
+config: x86_64-rhel-9.4-bpf
+compiler: gcc-14
+test machine: 16 threads Intel(R) Core(TM) i7-13620H (Raptor Lake) with 32G memory
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <yi1.lai@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202608121039.ca91f25a-lkp@intel.com
+
+
+KERNEL SELFTESTS: linux_headers_dir is /usr/src/linux-headers-x86_64-rhel-9.4-bpf-ef83ebe178d46ab0d26a906be5fcd654a488c730
+2026-08-04 22:51:54 sed -i s/default_timeout=45/default_timeout=300/ kselftest/runner.sh
+2026-08-04 22:51:54 make -j16 TARGETS=net/forwarding run_tests
+# timeout set to 0
+# selftests: net/forwarding: custom_multipath_hash.sh
+# TEST: ping                                                          [ OK ]
+# TEST: ping6                                                         [ OK ]
+# INFO: Running IPv4 custom multipath hash tests
+# TEST: Multipath hash field: Source IP (balanced)                    [ OK ]
+# INFO: Packets sent on path1 / path2: 6600 / 6001
+# TEST: Multipath hash field: Source IP (unbalanced)                  [ OK ]
+# INFO: Packets sent on path1 / path2: 0 / 12600
+# TEST: Multipath hash field: Destination IP (balanced)               [ OK ]
+# INFO: Packets sent on path1 / path2: 5950 / 6650
+# TEST: Multipath hash field: Destination IP (unbalanced)             [ OK ]
+# INFO: Packets sent on path1 / path2: 0 / 12600
+# TEST: Multipath hash field: Source port (balanced)                  [ OK ]
+# INFO: Packets sent on path1 / path2: 16505 / 16265
+# TEST: Multipath hash field: Source port (unbalanced)                [ OK ]
+# INFO: Packets sent on path1 / path2: 0 / 32771
+# TEST: Multipath hash field: Destination port (balanced)             [ OK ]
+# INFO: Packets sent on path1 / path2: 16504 / 16266
+# TEST: Multipath hash field: Destination port (unbalanced)           [ OK ]
+# INFO: Packets sent on path1 / path2: 32769 / 0
+# INFO: Running IPv6 custom multipath hash tests
+# TEST: Multipath hash field: Source IP (balanced)                    [ OK ]
+# INFO: Packets sent on path1 / path2: 6102 / 6500
+# TEST: Multipath hash field: Source IP (unbalanced)                  [ OK ]
+# INFO: Packets sent on path1 / path2: 12600 / 0
+# TEST: Multipath hash field: Destination IP (balanced)               [ OK ]
+# INFO: Packets sent on path1 / path2: 6100 / 6500
+# TEST: Multipath hash field: Destination IP (unbalanced)             [ OK ]
+# INFO: Packets sent on path1 / path2: 12600 / 0
+# TEST: Multipath hash field: Flowlabel (balanced)                    [FAIL]
+# 	Expected traffic to be balanced, but it is not
+# INFO: Packets sent on path1 / path2: 1 / 0
+# TEST: Multipath hash field: Flowlabel (unbalanced)                  [ OK ]
+# INFO: Packets sent on path1 / path2: 0 / 12600
+# TEST: Multipath hash field: Source port (balanced)                  [ OK ]
+# INFO: Packets sent on path1 / path2: 16422 / 16347
+# TEST: Multipath hash field: Source port (unbalanced)                [ OK ]
+# INFO: Packets sent on path1 / path2: 32771 / 0
+# TEST: Multipath hash field: Destination port (balanced)             [ OK ]
+# INFO: Packets sent on path1 / path2: 16422 / 16347
+# TEST: Multipath hash field: Destination port (unbalanced)           [ OK ]
+# INFO: Packets sent on path1 / path2: 32769 / 0
+not ok 17 selftests: net/forwarding: custom_multipath_hash.sh # exit=1
+
+# selftests: net/forwarding: vxlan_asymmetric.sh
+# RTNETLINK answers: File exists
+# RTNETLINK answers: File exists
+# TEST: ping: local->local vid 10->vid 20                             [ OK ]
+# TEST: ping: local->remote vid 10->vid 10                            [ OK ]
+# TEST: ping: local->remote vid 20->vid 20                            [ OK ]
+# TEST: ping: local->remote vid 10->vid 20                            [FAIL]
+# TEST: ping: local->remote vid 20->vid 10                            [FAIL]
+# INFO: deleting neighbours from vlan interfaces
+# TEST: ping: local->local vid 10->vid 20                             [ OK ]
+# TEST: ping: local->remote vid 10->vid 10                            [ OK ]
+# TEST: ping: local->remote vid 20->vid 20                            [ OK ]
+# TEST: ping: local->remote vid 10->vid 20                            [FAIL]
+# TEST: ping: local->remote vid 20->vid 10                            [FAIL]
+
+# selftests: net/forwarding: vxlan_asymmetric_ipv6.sh
+# TEST: ping6: local->local vid 10->vid 20                            [ OK ]
+# TEST: ping6: local->remote vid 10->vid 10                           [ OK ]
+# TEST: ping6: local->remote vid 20->vid 20                           [ OK ]
+# TEST: ping6: local->remote vid 10->vid 20                           [FAIL]
+# TEST: ping6: local->remote vid 20->vid 10                           [FAIL]
+# INFO: deleting neighbours from vlan interfaces
+# TEST: ping6: local->local vid 10->vid 20                            [ OK ]
+# TEST: ping6: local->remote vid 10->vid 10                           [ OK ]
+# TEST: ping6: local->remote vid 20->vid 20                           [ OK ]
+# TEST: ping6: local->remote vid 10->vid 20                           [FAIL]
+# TEST: ping6: local->remote vid 20->vid 10                           [FAIL]
+not ok 100 selftests: net/forwarding: vxlan_asymmetric_ipv6.sh # exit=1
+
+# selftests: net/forwarding: vxlan_symmetric.sh
+# RTNETLINK answers: File exists
+# RTNETLINK answers: File exists
+# TEST: ping: local->local vid 10->vid 20                             [ OK ]
+# TEST: ping: local->remote vid 10->vid 10                            [ OK ]
+# TEST: ping: local->remote vid 20->vid 20                            [ OK ]
+# TEST: ping: local->remote vid 10->vid 20                            [FAIL]
+# TEST: ping: local->remote vid 20->vid 10                            [FAIL]
+not ok 111 selftests: net/forwarding: vxlan_symmetric.sh # exit=1
+
+# timeout set to 0
+# selftests: net/forwarding: vxlan_symmetric_ipv6.sh
+# TEST: ping6: local->local vid 10->vid 20                            [ OK ]
+# TEST: ping6: local->remote vid 10->vid 10                           [ OK ]
+# TEST: ping6: local->remote vid 20->vid 20                           [ OK ]
+# TEST: ping6: local->remote vid 10->vid 20                           [FAIL]
+# TEST: ping6: local->remote vid 20->vid 10                           [FAIL]
+not ok 112 selftests: net/forwarding: vxlan_symmetric_ipv6.sh # exit=1
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20260812/202608121039.ca91f25a-lkp@intel.com
+
+
+
 -- 
-2.55.0.679.g6767b8d81c-goog
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
