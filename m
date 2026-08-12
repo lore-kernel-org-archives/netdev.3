@@ -1,198 +1,320 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2851530FF30;
-	Wed, 12 Aug 2026 06:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE3B30FF30
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786517664; cv=none; b=WLsPbN6t199kyshfwvOkZ2PMXa3Ymx6a3y2F1el8kssLClLZxS0PUQd+4ibViGZRIbW+0rSALORVOSaIH76Gb9K2fS8kyJsxsldPx3zkfLN+GcAoYrByNxjdxpJs1i7UxlfHRuVrTBlkxe7LxSTVFdvZFIsO3aVEnzhr0k6zGUE=
+	t=1786517754; cv=none; b=gF3vlQq4ccYyINnNgs5uU5x/XKaCpWwPI4UzG4OASQCVoOVIl15u7Qi3u5X5CECQB0IfNZCQaKtMzdoT5Dkc3GRDQ5Fovp0ElOIWoj9fzvttXwI60/74Ssf4xVHC1TAmFVeY93RHJGRUuRIyQbIkb3WrR4LtqdiXiEox31/b5x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786517664; c=relaxed/simple;
-	bh=Br+1iMHv61cnlmrwgJ8dZq/Cn/0HAW5MTceMDf0ZnT8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=B8gD/1vDE7B+JHjCgW1OETCHf16IzHhh1ZFYKZcWpMghP2KMlWl2wuVzcm+p0ncvfMT4hWiNVvR4jOueVNm54dIog9e7XLYdqJwezx53ypmxbo6ObDc7mC1UB7r0nsQllEcmBItgbVukE9BDWMxRatIz+9vantu3l7icfMdQ9j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EO52YzCv; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786517754; c=relaxed/simple;
+	bh=d+hGvlft1GXVevQ36GlNl9i4MU41Hi6k1dGK2AeP1qw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IoP0ZMu6lE4XCoH5qIzBk4Y/gkYFELbJ/yIACFK++os3f+Oia2GTsJH8WqqnMxaiWcOTICy4pv0xlc06jgscfotORTeHqFM9zrwKwOBUPYpBRBH+F4ZKqJnyr9ILaW8FqLP5acvXX/ecFCVavnvAzcr5gTxSisvZBjbtzZUhbwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=p8v48rQr; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EO52YzCv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786517663; x=1818053663;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Br+1iMHv61cnlmrwgJ8dZq/Cn/0HAW5MTceMDf0ZnT8=;
-  b=EO52YzCvQlKj7b85KJtZPF5YUABeDVyIWOr47SFp/GPacC4AHIeBFyJL
-   SjcAO8w5wGbyBhEUTDogdwPfTY+ecs6/4xmHcJnY6wcUr9MeZKYNcNJdO
-   k7+vRTbexRERJXf4ZhBRn1lTR4lXEFz0f4y/APTkIKBR4yGVPMxfZ7aHY
-   HuIMXklhgLTIxfgYCXKylx11eSsitiWbhAgvgSEGwR2M84wBQJhBMHy/2
-   /yErJ9oRVhwGnGIEBkgfr8DCjZsK6tzC1Vh6dw0deMSXV3nh1tJ93yw2x
-   rDULH+TGs8UBRxsCdXMvfyORxwZBAh79rftsLIie3ctr11f35/UxSFp8E
-   Q==;
-X-CSE-ConnectionGUID: RgYgVCpJSKSWHJzf1MrXMg==
-X-CSE-MsgGUID: vX9TD5wvRaWcfBxcx1pHfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="87073593"
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="87073593"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 23:54:22 -0700
-X-CSE-ConnectionGUID: feR7ym9vQRGdV++SySbjvw==
-X-CSE-MsgGUID: svgbhTWYTQaAa5OeR6b3EQ==
-X-ExtLoop1: 1
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 23:54:19 -0700
-Date: Wed, 12 Aug 2026 14:54:16 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Shahar Shitrit <shshitrit@nvidia.com>, netdev@vger.kernel.org,
-	ltp@lists.linux.it, yi1.lai@intel.com
-Subject: [linus:master] [net]  8e63c9e617: ltp.uevent02.fail
-Message-ID: <202608120846.30e0fb5b-lkp@intel.com>
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="p8v48rQr"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38dfe910e9dso730992a91.3
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 23:55:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1786517752; x=1787122552; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NJNNWT6iByUpyruOEy/sAQL0kaUqK3YMB0wE0k8+1dw=;
+        b=p8v48rQrdrgXLenNPv71GxsiABFbsJ49M8AWWM//qH9bbIMvr4HWSo+JQwqf47dbbr
+         2uQBGXJokwDZKpJGWNFNPn9A3S4yS7nSYBJKiuo0mudjmkJRwpKpZzxzsy0nZ7RBrMff
+         CMD2EXd9CxyHcC0VyRKBf1eWJqTxmM5/hkUeCTqBinqosog7XlSpxICa2BEBI4ONRZ9r
+         REwc8bdmXg2qF/TJwlNSaB8B1QWubZcOmPWpJ5vS0evXqGAJzsOjaAUuvNOCxmRgCaqY
+         P9F7SzMsctKOREjmdBEXHz6ronaZJdorwsPgQdSZjgXJm+LA02kHzbWcSmU7bPmdP0Fq
+         Q0Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786517752; x=1787122552;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NJNNWT6iByUpyruOEy/sAQL0kaUqK3YMB0wE0k8+1dw=;
+        b=B65DMy0RoyKdkxhNzNSKpEAUsZYVEYYYUlFOPVu2UCAEb/A/VfIv9GdX1dKa/5FXnK
+         Bm3TcNL+zaBbdJpqbV2q0izZiLqAONq4ohbQCuTazpXzoSz1ZNpvlFkZqaE8HsxmEX3Q
+         sjJv2rMFnwMnOH6ZRRZmHYoffUuREdLCLuMJZChz8LytRHcmB/1xVZ7P5LSC0eniFTXl
+         Mp8JVT/qp14gfCXzkMnUIs2jJx6yoOY1QI7Y1Qy7DWFeTLrLjrxSUMB65VGprHTY0o91
+         Nn1PjIv+Q9V2JoOMn8TNKVAoHg9tDwQa7iROsCpz6wTCUGdwR+wtN5uR51+hOaVe2t3E
+         Z5Xw==
+X-Gm-Message-State: AOJu0Yw1r71Qeq9R/kPrISNnNsHpy+H90fb7xwuVGJWP2IMkxmoYAAcR
+	8jg4L3yeMlK4pWY59/oRc7Fv0vTmMkBcn2ZRweqLF8lbSsWrh06CWp4abtzrFntffOSO7rYvON+
+	X6ZaD/f4Z
+X-Gm-Gg: AR+sD11A7IJMaYuARoabcrOq3/zL0IW8HxlogLP3jZwbduFbT+acMpdJ/hsS/0Qz8xJ
+	Qwc8gPK9o8qDYLnpd9UXxQOgWRWCOD19TF6dT0ZrJsUhB1J9mky2k+DSepgATSIoZQ+f1nqORMc
+	BtVFDbbakLzUJzvInay9sunOPEATtxKbyQCTsmdvXHp0nhOf6l009YZdinprCFPqpWEzsxY4dS6
+	ZHRyrwGhQfQhP+0WP/AIvwNN0/6e62ZrOV6IdEUlSl5MAg2scAj2KBWTf+3FANRrgiwaJM+msLX
+	8BTkeyqT4+ANlhAZdoXEXMniu9Pgs9vvFJWALcz1BkzrZRsA0vPxln2vJVPxVJFRlWn9RrizJmE
+	i5gdek+gCT4PZbBldd/85SAcRjI7GRtECVsAE9+wkVLu3e+Sp/nuZVN9PULqB/gj9NqCALnLmDn
+	lDtrnTxSNRyfgQWUEFiUDEzp25qB6awZNFXYn9Tm1oY7usD6XyPbgHb/MbPv3fgihaG/h1nQ==
+X-Received: by 2002:a17:90b:3f85:b0:38d:fda6:4873 with SMTP id 98e67ed59e1d1-393012c974amr3318496a91.10.1786517751853;
+        Tue, 11 Aug 2026 23:55:51 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392f8d00067sm2546980a91.12.2026.08.11.23.55.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 23:55:51 -0700 (PDT)
+From: Ren Wei <weir@nebusec.ai>
+To: netdev@vger.kernel.org,
+	mptcp@lists.linux.dev
+Cc: matttbe@kernel.org,
+	martineau@kernel.org,
+	geliang@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	kafai@fb.com,
+	daniel@iogearbox.net,
+	kylebot@openai.com,
+	david.lee@trailofbits.com,
+	vega@nebusec.ai,
+	caoruide123@gmail.com,
+	weir@nebusec.ai,
+	sashiko-bot@kernel.org
+Subject: [PATCH net v4 0/2] mptcp: fix request migration ownership
+Date: Wed, 12 Aug 2026 14:55:44 +0800
+Message-ID: <cover.1786497414.git.yuantan098@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
+From: Ruide Cao <caoruide123@gmail.com>
+
+Hi,
+
+TCP request migration clones pending requests with inet_reqsk_clone().
+Some MPTCP request fields carry ownership which cannot be transferred by
+a plain byte copy.
+
+For MP_JOIN requests, subflow_req->msk holds a socket reference.  The
+clone inherits the pointer without acquiring its own reference, so the
+original and cloned requests can drop the same reference.  Patch 1 lets
+the cloned request take an additional reference.
+
+For MP_CAPABLE requests, token_node belongs to the original request and
+is hashed in the token table.  Copying the node gives the clone invalid
+hash state, while concurrent request migration and RX processing can
+observe different owners in the ehash and token tables.  Patch 2 moves
+token-table ownership from the original request to the clone under the
+bucket lock, and makes token acceptance and destruction tolerate a token
+that has already been removed.
+
+--------------------
+Changes in v4:
+
+- Rebuilt the series from the final v3 patches.
+- Kept MP_JOIN and MP_CAPABLE ownership fixes on the MPTCP request clone
+  path, matching v3.
+- Replaced the TCP-only tcp_done()/inet_csk_prepare_forced_close()
+  failure path with MPTCP-specific clone teardown.
+- v3 link:
+  https://lore.kernel.org/all/cover.1785995291.git.caoruide123@gmail.com/
+
+Changes in v3:
+
+- Split MP_JOIN and MP_CAPABLE into two patches.
+- Reworked MP_CAPABLE token migration to happen during MPTCP request
+  cloning.
+- Made MP_CAPABLE accept/destroy paths tolerant of already moved or
+  removed request tokens.
+- Added a packetdrill MP_CAPABLE reproducer and decoded warning.
+- Dropped the redundant IPPROTO_TCP guard around the direct MPTCP clone
+  call, as request migration is TCP-only.
+- Based v3 on the latest net tree rather than the current mptcp_net-next
+  export, which has not yet merged commit a0ab2ba83e35 ("tcp: fix TFO
+  max_qlen accounting across reuseport migration") and therefore lacks
+  the overlapping inet_reqsk_clone() changes.
+- v2 link:
+  https://lore.kernel.org/all/40fd38e7a368e5b7bc9bc83364a32241f977d53f.1778404619.git.caoruide123@gmail.com/
+
+Changes in v2:
+
+- drop the generic request_sock clone callback
+- call MPTCP directly from inet_reqsk_clone() under the TCP protocol
+  check
+- keep cloned MP_JOIN requests holding an msk reference
+- clear raw-copied MP_CAPABLE token hash state in the clone
+- move MP_CAPABLE token ownership only after successful req migration
+- avoid exposing token internals to inet_connection_sock.c
+- update the commit message accordingly
+- v1 link:
+  https://lore.kernel.org/all/86e2514b533bf4d55d4aa2fdbf1404022e8c9430.1776149210.git.caoruide123@gmail.com/
+
+------------------------------
+
+// poc for MP_JOIN:
+
+// Minimal reproducer for a stale subflow_req->msk after reqsk migration.
+--tolerance_usecs=200000
+--non_fatal=packet
+
+`sysctl -q net.mptcp.enabled=1
+sysctl -q net.ipv4.tcp_migrate_req=1
+sysctl -q net.ipv4.tcp_synack_retries=1`
+
+// Listener A and the owning MPTCP connection.
++0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
++0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
++0     bind(3, ..., ...) = 0
++0     listen(3, 8) = 0
+
++0.0   <  addr[caddr0] > addr[saddr0]  S   0:0(0)         win 65535  <mss 1460, sackOK, TS val 1000 ecr 0,    nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
++0.0   >                               S.  0:0(0)  ack 1             <mss 1460, sackOK, TS val 1000 ecr 1000, nop, wscale 8, mpcapable v1 flags[flag_h] key[skey]>
++0.1   <                                .  1:1(0)  ack 1  win 256    <nop, nop, TS val 1000 ecr 1000, mpcapable v1 flags[flag_h] key[ckey=2, skey]>
++0     accept(3, ..., ...) = 4
+
+// Make the MPTCP socket fully established so it accepts MP_JOIN.
++0.1   <                               P.  1:3(2)  ack 1  win 256    <nop, nop, TS val 1001 ecr 1000, mpcapable v1 flags[flag_h] key[skey, ckey] mpcdatalen 2, nop, nop>
++0.0   >                                .  1:1(0)  ack 3             <nop, nop, TS val 1001 ecr 1001, dss dack8=3 dll=0 nocs>
+
+// Leave exactly one MP_JOIN request half-open.
++0.1   <  addr[caddr1] > addr[saddr0]  S   0:0(0)         win 65535  <mss 1460, sackOK, TS val 2000 ecr 0,    nop, wscale 8, mp_join_syn address_id=1 token=sha256_32(skey)>
++0.0   >                               S.  0:0(0)  ack 1             <mss 1460, sackOK, TS val 2000 ecr 2000, nop, wscale 8, mp_join_syn_ack address_id=0 sender_hmac=auto>
+
+// Listener B joins the reuseport group, then A is closed. The next request
+// timer clones and migrates the half-open MP_JOIN request to B.
++0.1   socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 5
++0     setsockopt(5, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0     setsockopt(5, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
++0     bind(5, ..., ...) = 0
++0     listen(5, 8) = 0
++0     close(3) = 0
+
+// Wait past the first SYN+ACK RTO, then release the owning MPTCP socket.
++1.5   setsockopt(4, SOL_SOCKET, SO_LINGER, {onoff=1, linger=0}, 8) = 0
++0     close(4) = 0
+
+// The migrated request expires on its next timer and its destructor uses msk.
++4.0   `true`
+
+------------------------------
+crash log of MP_JOIN
+[  280.449259] [      C0] BUG: KASAN: slab-use-after-free in subflow_req_destructor (net/mptcp/subflow.c:45)
+[  280.449417] [      C0] Write of size 4 at addr ff1100010e008d40 by task swapper/0/0
+[  280.449525] [      C0] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.2.0-rc5-00353-gc27e36054537 #10 PREEMPT(full)
+
+[  280.449637] [      C0] Call Trace:
+[  280.450422] [      C0]  subflow_req_destructor (net/mptcp/subflow.c:45)
+[  280.450504] [      C0]  subflow_v4_req_destructor (net/mptcp/subflow.c:694)
+[  280.450581] [      C0]  __reqsk_free (net/ipv4/inet_connection_sock.c:906)
+[  280.450681] [      C0]  reqsk_timer_handler (include/net/request_sock.h:137 net/ipv4/inet_connection_sock.c:1147)
+
+[  280.454937] [      C0] Allocated by task 10014:
+[  280.455381] [      C0]  sk_prot_alloc (net/core/sock.c:2246)
+[  280.455516] [      C0]  sk_clone (net/core/sock.c:2488)
+[  280.455611] [      C0]  mptcp_sk_clone_init (include/net/sock.h:1848 net/mptcp/protocol.c:3564)
+[  280.455683] [      C0]  subflow_syn_recv_sock (net/mptcp/subflow.c:883)
+[  280.455772] [      C0]  tcp_check_req (net/ipv4/tcp_minisocks.c:934)
+
+[  280.457177] [      C0] Freed by task 0:
+[  280.457603] [      C0]  slab_free_after_rcu_debug (include/linux/kasan.h:235 mm/slub.c:2677 mm/slub.c:6439)
+[  280.457688] [      C0]  rcu_core (kernel/rcu/tree.c:2645 kernel/rcu/tree.c:2897)
+
+[  280.458199] [      C0] Last potentially related work creation:
+[  280.458426] [      C0]  kmem_cache_free (mm/slub.c:2638 mm/slub.c:6377 mm/slub.c:6504)
+[  280.458518] [      C0]  __sk_destruct (net/core/sock.c:2289 net/core/sock.c:2391)
+[  280.458607] [      C0]  sk_destruct (net/core/sock.c:2419)
+[  280.458700] [      C0]  __sk_free (net/core/sock.c:2430)
+[  280.458793] [      C0]  sk_free (net/core/sock.c:2441)
+[  280.458885] [      C0]  mptcp_close (include/net/sock.h:2020 net/mptcp/protocol.c:3399)
+[  280.458969] [      C0]  inet_release (net/ipv4/af_inet.c:442)
+
+[  280.459536] [      C0] The buggy address belongs to the cache MPTCP of size 2968
+[  280.459593] [      C0] The buggy address is 128 bytes inside a freed 2968-byte region
 
 
-Hello,
 
-kernel test robot noticed "ltp.uevent02.fail" on:
+------------------------------
 
-commit: 8e63c9e6179ace3033dcd19991f95386e9d3130f ("net: Defer netdev KOBJ_ADD uevent until the device is published") https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+MP_CAPABLE packetdrill reproducer:
 
-[test failed on linus/master      06cf61899d6498b33e4b7c87d99d5bd471ccc375]
-[test failed on linux-next/master 6b8c8af514d739d0335f5579b585e02babe8a727]
+// Reproducer for MP_CAPABLE request token ownership during TCP req migration.
+//
+// The first listener owns the request created by the MP_CAPABLE SYN.  A second
+// SO_REUSEPORT listener is added only after that SYN, then the first listener is
+// closed.  The SYN+ACK retransmission timer migrates the request to the second
+// listener, and a later request timer destroys the migrated request.
+//
+// On a vulnerable kernel, inet_reqsk_clone() raw-copies token_node.  The clone
+// is not the token table owner, so destroying the migrated request triggers the
+// MPTCP token ownership bug.
+--tolerance_usecs=250000
 
-in testcase: ltp
-version: 
-with following parameters:
++0     `sysctl -q net.mptcp.enabled=1`
++0     `sysctl -q net.ipv4.tcp_migrate_req=1`
++0     `sysctl -q net.ipv4.tcp_synack_retries=2`
++0     `sysctl -q net.ipv4.tcp_timestamps=1`
++0     `sysctl -q kernel.panic_on_warn=0`
++0     `sysctl -q kernel.panic_on_oops=0`
++0     `ip tcp_metrics flush all >/dev/null 2>&1 || true`
++0     `tc qdisc replace dev tun0 root pfifo >/dev/null 2>&1 || true`
 
-	test: uevent
++0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
++0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
++0     getsockopt(3, SOL_TCP, TCP_IS_MPTCP, [1], [4]) = 0
++0     bind(3, ..., ...) = 0
++0     listen(3, 1) = 0
 
++0       <  S   0:0(0)         win 32792  <mss 1000, sackOK, nop, nop, nop, wscale 7, mpcapable v1 flags[flag_h] nokey>
++0       >  S.  0:0(0)  ack 1             <mss 1460, nop, nop, sackOK, nop, wscale 9, mpcapable v1 flags[flag_h] key[skey]>
 
++0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 4
++0     setsockopt(4, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0     setsockopt(4, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
++0     getsockopt(4, SOL_TCP, TCP_IS_MPTCP, [1], [4]) = 0
++0     bind(4, ..., ...) = 0
++0     listen(4, 1) = 0
 
-config: x86_64-rhel-9.4-ltp
-compiler: gcc-14
-test machine: 16 threads Intel(R) Core(TM) i7-13620H (Raptor Lake) with 32G memory
++0     close(3) = 0
 
-(please refer to attached dmesg/kmsg for entire log/backtrace)
+// Let the retransmission timer migrate the request to fd 4 and let the migrated
+// request expire.  On vulnerable kernels its raw-copied token_node is not the
+// token-table owner, so the request timer trips the token owner assertion.
++8.0   `true`
 
++0     close(4) = 0
 
+------------------------------
+decoded warning from MP_CAPABLE reproducer:
 
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <yi1.lai@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202608120846.30e0fb5b-lkp@intel.com
-
-
-PATH=/lkp/benchmarks/ltp:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/lkp/lkp/src/bin
-2026-08-09 01:07:36 cd /lkp/benchmarks/ltp
-2026-08-09 01:07:36 export LTP_RUNTIME_MUL=2
-2026-08-09 01:07:36 export LTPROOT=/lkp/benchmarks/ltp
-2026-08-09 01:07:36 kirk -f uevent
-Host information
-	Hostname:   igk-rpl-d01
-	Python:     3.13.5 (main, Jun 13 2026, 14:18:01) [GCC 14.2.0]
-	Directory:  /tmp/kirk.root/tmp53a0pl45
-
-Connecting to SUT: default
-
-Suite: uevent
-─────────────
- [1;37muevent01:  [0m [1;32mpass [0m |  [1;33mtainted [0m  (0.137s)
- [1;37muevent02:  [0m [1;31mfail [0m |  [1;33mtainted [0m  (5.364s)
- [1;37muevent03:  [0m [1;32mpass [0m |  [1;33mtainted [0m  (0.035s)
-
-Execution time: 5.592s
-
-Disconnecting from SUT: default
-
-Target information
-──────────────────
-Kernel:   Linux 7.2.0-rc5+ #1 SMP PREEMPT_DYNAMIC Sun Aug  9 02:47:33 CEST 2026
-Cmdline:  ip=10.250.17.22::10.250.17.2:255.255.255.0:igk-rpl-d01::static
-          root=/dev/ram0
-          RESULT_ROOT=/result/ltp/uevent/igk-rpl-d01/debian-13-x86_64-20250902.cgz/x86_64-rhel-9.4-ltp/gcc-14/8e63c9e6179ace3033dcd19991f95386e9d3130f/0
-          BOOT_IMAGE=/pkg/linux/x86_64-rhel-9.4-ltp/gcc-14/8e63c9e6179ace3033dcd19991f95386e9d3130f/vmlinuz-7.2.0-rc5+
-          branch=linux-devel/devel-hourly-20260807-211920
-          job=/lkp/jobs/scheduled/igk-rpl-d01/ltp-uevent-debian-13-x86_64-20250902.cgz-8e63c9e6179a-20260809-232489-3exo8p-0.yaml
-          user=lkp
-          ARCH=x86_64
-          kconfig=x86_64-rhel-9.4-ltp
-          commit=8e63c9e6179ace3033dcd19991f95386e9d3130f
-          intremap=posted_msi
-          acpi_rsdp=0x3f88a014
-          kho=off
-          max_uptime=7200
-          LKP_SERVER=internal-lkp-server
-          nokaslr
-          selinux=0
-          debug
-          apic=debug
-          sysrq_always_enabled
-          rcupdate.rcu_cpu_stall_timeout=100
-          net.ifnames=0
-          printk.devkmsg=on
-          panic=-1
-          softlockup_panic=1
-          nmi_watchdog=panic
-          oops=panic
-          load_ramdisk=2
-          prompt_ramdisk=0
-          drbd.minor_count=8
-          systemd.log_level=err
-          ignore_loglevel
-          console=tty0
-          earlyprintk=ttyUSB0,115200
-          console=ttyUSB0,115200
-          vga=normal
-          rw
-          keep_initrds=/osimage/pkg/debian-13-x86_64-20250902.cgz/ltp-x86_64-0ad79e6fa-1_20260808.cgz
-          acpi_rsdp=0x3f88a014
-Machine:  unknown
-Arch:     x86_64
-RAM:      28236192 kB
-Swap:     0 kB
-Distro:   debian 13
-
-────────────────────────
-      TEST SUMMARY
-────────────────────────
-Suite:   uevent
-Runtime: 5.536s
-Runs:    3
-
-Results:
-    Passed:   9
-    Failed:   1
-    Broken:   0
-    Skipped:  0
-    Warnings: 0
-
- [1;31mFailures: [0m
-    • uevent02
-
-Session stopped
-LTP test details
-----------------
-uevent02: uevent.h:173: TFAIL: Did not get all expected UEVENTS
+[  314.661418] [      C2] ------------[ cut here ]------------
+[  314.661636] [      C2] WARNING: net/mptcp/token.c:364 at mptcp_token_destroy_request+0x2b0/0x330, CPU#2: swapper/2/0
+[  314.661931] [      C2] CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 7.2.0-rc5-00353-gc27e36054537 #10 PREEMPT(full)
+[  314.662092] [      C2] RIP: 0010:mptcp_token_destroy_request (build/../net/mptcp/token.c:364 (discriminator 1))
+[  314.663001] [      C2] Call Trace:
+[  314.663043] [      C2]  <IRQ>
+[  314.663107] [      C2]  subflow_v4_req_destructor (build/../net/mptcp/subflow.c:694)
+[  314.663213] [      C2]  __reqsk_free (build/../net/ipv4/inet_connection_sock.c:906)
+[  314.663325] [      C2]  reqsk_timer_handler (build/../include/net/request_sock.h:137 build/../net/ipv4/inet_connection_sock.c:1147)
+[  314.663762] [      C2]  call_timer_fn (build/../kernel/time/timer.c:1748)
+[  314.668915] [      C2] ---[ end trace 0000000000000000 ]---
 
 
+Ruide Cao (2):
+  mptcp: hold MP_JOIN msk ref when cloning reqsk
+  mptcp: fix MP_CAPABLE token migration when cloning reqsk
 
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20260812/202608120846.30e0fb5b-lkp@intel.com
+ include/net/mptcp.h             |  7 ++++
+ net/ipv4/inet_connection_sock.c |  4 +++
+ net/mptcp/protocol.c            | 31 ++++++++++++++---
+ net/mptcp/protocol.h            |  4 ++-
+ net/mptcp/subflow.c             | 13 +++++++
+ net/mptcp/token.c               | 61 +++++++++++++++++++++++++++++----
+ net/mptcp/token_test.c          |  4 +--
+ 7 files changed, 109 insertions(+), 15 deletions(-)
 
-
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+-- 
+2.43.0
