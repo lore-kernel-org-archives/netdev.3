@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43727238D52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059EC234973
 	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 00:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786493371; cv=none; b=FtWuWullllB1X5zYS12KGTVCNULEPw+XcnT0AGaOqxeoOKVHCtOPRWbOY++TPDMnWX8eglIvEGH0scMohLIKmQJKFILGqGV7srTOrBa0zEN99UDf5uT96/uQePClKKfGeIyG+iBIN+XhQubyxKsgCEwz9BEG3cViHPuazg5l1nI=
+	t=1786493372; cv=none; b=DEgDc5+xsNcow3Yu534gWhsWe3mFOI5BbXTDlBQBGTwIfgjHc9z9xC4hKBoFldFZx65rYvFo75wIgrhCUuLnMdlDxUXQgbJeGvW17eXfgscp/No+gtR9eVSFBIdKiB1hRxO/n5FrTnuQ42P8bWjcTCnBOtLU6iOGkuyf3ZV8gAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786493371; c=relaxed/simple;
-	bh=+KEm/JE82H8s9fu2mfdlUhZiqY5aZ7cqAQiEgjgKT+8=;
+	s=arc-20240116; t=1786493372; c=relaxed/simple;
+	bh=ffliPaHt/4htF7z37vIJUzwc8MOTlfK/SvdlHymxuN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VG5it/00XvHXyK+TX7IaJJJ+1ICcMuZp0+VopJxWX4U0VmBkcoYCNmte+iyKVdk7LP8DEeuGi/NOx0FFi+ur9ayFI0vrl7we51+RIHCbfeDYb5CNZyOlkalHzMBzliMO8NAPHU7Jnb5Sg6kzp35035K6CWD5xTIAR/dHiom07bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W8nlnTzZ; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=a3uaJ565CPSwycqQHdZMuX7zgcYPXOszrrdXc7CIpPHj7IGJvO1kbibNJwyLhIsOACBpoBP8pDFeZYvS8EQOlQbdgKbjMO2sNDqvZsEpfegcJIRxc9mbLHBTaD9+CW5P3DWBW8dz9BS7uGKXOFwj2Hd6Kp8OmmCLI12vSitTFI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=On9wLqLG; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W8nlnTzZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="On9wLqLG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1786493371; x=1818029371;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+KEm/JE82H8s9fu2mfdlUhZiqY5aZ7cqAQiEgjgKT+8=;
-  b=W8nlnTzZU/zNdxeult9eIimYJbxTKjIJp2LbF6K9Wa6q29fTsxY8ULeq
-   ytY64Iyju4NxKrrTNqjACtqda+2mRDbJNHoLIQTrPr8tzOB26dYt9dqAF
-   0puEd/sTQrGngnqUvypDoL1fZiepkgT7/1c8ubUO9KnojZODtem3PciCf
-   BQQbsHNl/8TIyluK1crRiSqxfiK3eNFZb+02n7HU2WW0kYxTPv75roDFJ
-   tIFixDRU/1/EUcpS0aGoGfHDFbfBlT3+vo5eaqhNRfUgm312/a15OpTpd
-   rVN/ut/a11xJoBfwmyFtQR0x7jEkSRcfjHA3EXBHTta+YTFlVNrKvLT2H
-   w==;
-X-CSE-ConnectionGUID: ar1yvM6BQi+kteTjpJ7aDw==
-X-CSE-MsgGUID: 2wFSAXCfTwKHoLTQEItrQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="87110575"
+  bh=ffliPaHt/4htF7z37vIJUzwc8MOTlfK/SvdlHymxuN8=;
+  b=On9wLqLGO0YgzLuKw/h3SGA+EkT39y1ZAX9Ns9hQngWamSJKt/wTrL7T
+   w5+FRyR4AneAUtMZHwmBpAJ+DE66dkFee7lh89GrMcp1uOOi96k5mah2F
+   docG944g/ixFueC8S7hj7v0GuQ1eW+b9y4BTfIDbxJzDtQzse6eK0Fyyi
+   5/xb+GXzSd/18B75e9WuwYKcIA65vCpG+SnHfgskktVe5MQTn082IFOx2
+   1VKnFl6cp1wwBnaxhlfghRy/1CdkF5UF+3sHW86cA0HlW+1Zke6CUjzv/
+   de7xgMwEYqDsi/SxLySa0zK+6U6R5gRbBDI5nezUDmQYg/FcPNA2u0Lnw
+   g==;
+X-CSE-ConnectionGUID: GKR7VvevTaqhe1hJ+o3QTw==
+X-CSE-MsgGUID: hssJXAobTcGv0rWmHPVsbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="87110567"
 X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="87110575"
+   d="scan'208";a="87110567"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 17:09:26 -0700
-X-CSE-ConnectionGUID: Ty/XbQCyR6ekZfgcQCEdeQ==
-X-CSE-MsgGUID: l3TdkMvUSQi/32oWUhpJLQ==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2026 17:09:25 -0700
+X-CSE-ConnectionGUID: BEEoJoL3Qp2blqMNCxJKnw==
+X-CSE-MsgGUID: WnMINuVyTKiXfZGj/WRdKg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; 
-   d="scan'208";a="263522984"
+   d="scan'208";a="263522981"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa007.jf.intel.com with ESMTP; 11 Aug 2026 17:09:25 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,7 +50,7 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Willem de Bruijn <willemb@google.com>,
+Cc: Robert Malz <robert.malz@canonical.com>,
 	anthony.l.nguyen@intel.com,
 	aleksander.lobakin@intel.com,
 	konstantin.ilichev@intel.com,
@@ -58,12 +58,12 @@ Cc: Willem de Bruijn <willemb@google.com>,
 	poros@redhat.com,
 	przemyslaw.korba@intel.com,
 	przemyslaw.kitszel@intel.com,
-	robert.malz@canonical.com,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net 4/4] idpf: add missing cpu_to_le32 in idpf_tx_splitq_build_flow_desc
-Date: Tue, 11 Aug 2026 17:09:17 -0700
-Message-ID: <20260812000918.220714-5-anthony.l.nguyen@intel.com>
+	willemb@google.com,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH net 3/4] ice: acquire NVM lock around each flash read
+Date: Tue, 11 Aug 2026 17:09:16 -0700
+Message-ID: <20260812000918.220714-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260812000918.220714-1-anthony.l.nguyen@intel.com>
 References: <20260812000918.220714-1-anthony.l.nguyen@intel.com>
@@ -75,38 +75,356 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Willem de Bruijn <willemb@google.com>
+From: Robert Malz <robert.malz@canonical.com>
 
-idpf_tx_splitq_build_flow_desc performs a 32-bit store to &cmd_dtype
-to set the 8-bit cmd_dtype and zero the adjacent 3-byte timestamp
-field in a single operation.
+FW caps the NVM read lock at a maximum of 3000ms regardless of the timeout
+requested via ice_acquire_nvm(). ice_read_flat_nvm() splits a read into
+multiple ice_aq_read_nvm() commands, one per 4KB sector, all issued under a
+single lock taken by the caller. Reading a large region can exceed 3000ms,
+so FW reclaims the lock mid-read and the remaining commands might fail.
 
-Descriptors are in little endian. Add missing cpu_to_le32 and cast to
-__le32 to ensure the fields are written correctly also on big endian
-platforms.
+Move the lock acquire/release into ice_read_flat_nvm() so it brackets each
+individual ice_aq_read_nvm() command, ensuring the lock is never held
+across more than one FW read.
 
-Fixes: 1a49cf814fe1 ("idpf: add Tx timestamp flows")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+ice_release_nvm() issues its own AQ command and overwrites
+hw->adminq.sq_last_status, which some callers inspect after a failed read.
+Add an optional read_aq_err output parameter to ice_read_flat_nvm() to
+capture the failing read's AQ error before the release; callers that need
+it (ice_discover_flash_size() and the ethtool/devlink log paths) use it
+instead of sq_last_status, others pass NULL.
+
+Callers that previously took the lock around ice_read_flat_nvm(),
+ice_read_sr_word() or ice_read_flash_module() now call them without it.
+The now-redundant per-block locking in ice_devlink_nvm_snapshot() is
+dropped. ice_read_sr_word() is now a thin wrapper, so ice_read_sr_word_aq()
+is folded into it.
+
+Fixes: e94509906d6b ("ice: create function to read a section of the NVM and Shadow RAM")
+Signed-off-by: Robert Malz <robert.malz@canonical.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[TN] Note: The 'last_command' argument of ice_aq_read_nvm() is ignored by
+firmware; public documentation has not updated to reflect this yet.
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index c724d429a7aa..91ca75e45463 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -2408,7 +2408,7 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
- 				    struct idpf_tx_splitq_params *params,
- 				    u16 td_cmd, u16 size)
+ .../net/ethernet/intel/ice/devlink/devlink.c  | 32 ++-----
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  | 16 +---
+ drivers/net/ethernet/intel/ice/ice_nvm.c      | 90 ++++++++++---------
+ drivers/net/ethernet/intel/ice/ice_nvm.h      |  2 +-
+ 4 files changed, 58 insertions(+), 82 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+index 22b7d8e6bd9e..8c2b63eef82b 100644
+--- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
++++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+@@ -1890,27 +1890,18 @@ static int ice_devlink_nvm_snapshot(struct devlink *devlink,
+ 	 */
+ 	for (i = 0; i < num_blks; i++) {
+ 		u32 read_sz = min_t(u32, ICE_DEVLINK_READ_BLK_SIZE, left);
+-
+-		status = ice_acquire_nvm(hw, ICE_RES_READ);
+-		if (status) {
+-			dev_dbg(dev, "ice_acquire_nvm failed, err %d aq_err %d\n",
+-				status, hw->adminq.sq_last_status);
+-			NL_SET_ERR_MSG_MOD(extack, "Failed to acquire NVM semaphore");
+-			vfree(nvm_data);
+-			return -EIO;
+-		}
++		enum libie_aq_err read_aq_err = LIBIE_AQ_RC_OK;
+ 
+ 		status = ice_read_flat_nvm(hw, i * ICE_DEVLINK_READ_BLK_SIZE,
+-					   &read_sz, tmp, read_shadow_ram);
++					   &read_sz, tmp, read_shadow_ram,
++					   &read_aq_err);
+ 		if (status) {
+ 			dev_dbg(dev, "ice_read_flat_nvm failed after reading %u bytes, err %d aq_err %d\n",
+-				read_sz, status, hw->adminq.sq_last_status);
++				read_sz, status, read_aq_err);
+ 			NL_SET_ERR_MSG_MOD(extack, "Failed to read NVM contents");
+-			ice_release_nvm(hw);
+ 			vfree(nvm_data);
+ 			return -EIO;
+ 		}
+-		ice_release_nvm(hw);
+ 
+ 		tmp += read_sz;
+ 		left -= read_sz;
+@@ -1943,6 +1934,7 @@ static int ice_devlink_nvm_read(struct devlink *devlink,
+ 				struct netlink_ext_ack *extack,
+ 				u64 offset, u32 size, u8 *data)
  {
--	*(u32 *)&desc->flow.qw1.cmd_dtype = (u8)(params->dtype | td_cmd);
-+	*(__le32 *)&desc->flow.qw1.cmd_dtype = cpu_to_le32((u8)(params->dtype | td_cmd));
- 	desc->flow.qw1.rxr_bufsize = cpu_to_le16((u16)size);
- 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
++	enum libie_aq_err read_aq_err = LIBIE_AQ_RC_OK;
+ 	struct ice_pf *pf = devlink_priv(devlink);
+ 	struct device *dev = ice_pf_to_dev(pf);
+ 	struct ice_hw *hw = &pf->hw;
+@@ -1966,24 +1958,14 @@ static int ice_devlink_nvm_read(struct devlink *devlink,
+ 		return -ERANGE;
+ 	}
+ 
+-	status = ice_acquire_nvm(hw, ICE_RES_READ);
+-	if (status) {
+-		dev_dbg(dev, "ice_acquire_nvm failed, err %d aq_err %d\n",
+-			status, hw->adminq.sq_last_status);
+-		NL_SET_ERR_MSG_MOD(extack, "Failed to acquire NVM semaphore");
+-		return -EIO;
+-	}
+-
+ 	status = ice_read_flat_nvm(hw, (u32)offset, &size, data,
+-				   read_shadow_ram);
++				   read_shadow_ram, &read_aq_err);
+ 	if (status) {
+ 		dev_dbg(dev, "ice_read_flat_nvm failed after reading %u bytes, err %d aq_err %d\n",
+-			size, status, hw->adminq.sq_last_status);
++			size, status, read_aq_err);
+ 		NL_SET_ERR_MSG_MOD(extack, "Failed to read NVM contents");
+-		ice_release_nvm(hw);
+ 		return -EIO;
+ 	}
+-	ice_release_nvm(hw);
+ 
+ 	return 0;
  }
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 7eb380be7ed2..bf9a821c543b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -853,6 +853,7 @@ static int
+ ice_get_eeprom(struct net_device *netdev, struct ethtool_eeprom *eeprom,
+ 	       u8 *bytes)
+ {
++	enum libie_aq_err read_aq_err = LIBIE_AQ_RC_OK;
+ 	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	struct ice_hw *hw = &pf->hw;
+ 	struct device *dev;
+@@ -869,24 +870,15 @@ ice_get_eeprom(struct net_device *netdev, struct ethtool_eeprom *eeprom,
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+-	ret = ice_acquire_nvm(hw, ICE_RES_READ);
+-	if (ret) {
+-		dev_err(dev, "ice_acquire_nvm failed, err %d aq_err %s\n",
+-			ret, libie_aq_str(hw->adminq.sq_last_status));
+-		goto out;
+-	}
+-
+ 	ret = ice_read_flat_nvm(hw, eeprom->offset, &eeprom->len, buf,
+-				false);
++				false, &read_aq_err);
+ 	if (ret) {
+ 		dev_err(dev, "ice_read_flat_nvm failed, err %d aq_err %s\n",
+-			ret, libie_aq_str(hw->adminq.sq_last_status));
+-		goto release;
++			ret, libie_aq_str(read_aq_err));
++		goto out;
+ 	}
+ 
+ 	memcpy(bytes, buf, eeprom->len);
+-release:
+-	ice_release_nvm(hw);
+ out:
+ 	kfree(buf);
+ 	return ret;
+diff --git a/drivers/net/ethernet/intel/ice/ice_nvm.c b/drivers/net/ethernet/intel/ice/ice_nvm.c
+index 7e187a804dfa..21f3b615dbbf 100644
+--- a/drivers/net/ethernet/intel/ice/ice_nvm.c
++++ b/drivers/net/ethernet/intel/ice/ice_nvm.c
+@@ -53,17 +53,27 @@ int ice_aq_read_nvm(struct ice_hw *hw, u16 module_typeid, u32 offset,
+  * @length: (in) number of bytes to read; (out) number of bytes actually read
+  * @data: buffer to return data in (sized to fit the specified length)
+  * @read_shadow_ram: if true, read from shadow RAM instead of NVM
++ * @read_aq_err: if non-NULL, receives the AQ error status of the failing read
+  *
+  * Reads a portion of the NVM, as a flat memory space. This function correctly
+  * breaks read requests across Shadow RAM sectors and ensures that no single
+  * read request exceeds the maximum 4KB read for a single AdminQ command.
+  *
++ * FW caps the read lock at a maximum of 3000ms, so a read spanning multiple
++ * 4KB sectors cannot be done under a single lock without FW reclaiming it
++ * mid-read. The NVM lock is therefore acquired and released around each AQ
++ * read, so this function must be called without the lock held.
++ *
++ * Since ice_release_nvm() issues an AQ command that overwrites
++ * hw->adminq.sq_last_status, callers that need the failing read's AQ error
++ * must use @read_aq_err rather than inspecting sq_last_status afterwards.
++ *
+  * Returns a status code on failure. Note that the data pointer may be
+  * partially updated if some reads succeed before a failure.
+  */
+ int
+ ice_read_flat_nvm(struct ice_hw *hw, u32 offset, u32 *length, u8 *data,
+-		  bool read_shadow_ram)
++		  bool read_shadow_ram, enum libie_aq_err *read_aq_err)
+ {
+ 	u32 inlen = *length;
+ 	u32 bytes_read = 0;
+@@ -92,12 +102,30 @@ ice_read_flat_nvm(struct ice_hw *hw, u32 offset, u32 *length, u8 *data,
+ 
+ 		last_cmd = !(bytes_read + read_size < inlen);
+ 
++		status = ice_acquire_nvm(hw, ICE_RES_READ);
++		if (status) {
++			ice_debug(hw, ICE_DBG_NVM, "Failed to acquire NVM lock, err %d aq_err %s\n",
++				  status, libie_aq_str(hw->adminq.sq_last_status));
++			break;
++		}
++
+ 		status = ice_aq_read_nvm(hw, ICE_AQC_NVM_START_POINT,
+ 					 offset, read_size,
+ 					 data + bytes_read, last_cmd,
+ 					 read_shadow_ram, NULL);
+-		if (status)
++		if (status) {
++			/* Capture the read's AQ error before ice_release_nvm()
++			 * issues its own AQ command and overwrites
++			 * sq_last_status.
++			 */
++			if (read_aq_err)
++				*read_aq_err = hw->adminq.sq_last_status;
++
++			ice_release_nvm(hw);
+ 			break;
++		}
++
++		ice_release_nvm(hw);
+ 
+ 		bytes_read += read_size;
+ 		offset += read_size;
+@@ -177,14 +205,19 @@ int ice_aq_erase_nvm(struct ice_hw *hw, u16 module_typeid, struct ice_sq_cd *cd)
+ }
+ 
+ /**
+- * ice_read_sr_word_aq - Reads Shadow RAM via AQ
++ * ice_read_sr_word - Reads Shadow RAM word
+  * @hw: pointer to the HW structure
+  * @offset: offset of the Shadow RAM word to read (0x000000 - 0x001FFF)
+  * @data: word read from the Shadow RAM
+  *
+  * Reads one 16 bit word from the Shadow RAM using ice_read_flat_nvm.
++ *
++ * The NVM lock is acquired and released internally by ice_read_flat_nvm()
++ * around the FW read, so this function must be called without the lock held.
++ *
++ * Return: zero on success, or a negative error code on failure.
+  */
+-static int ice_read_sr_word_aq(struct ice_hw *hw, u16 offset, u16 *data)
++int ice_read_sr_word(struct ice_hw *hw, u16 offset, u16 *data)
+ {
+ 	u32 bytes = sizeof(u16);
+ 	__le16 data_local;
+@@ -194,7 +227,7 @@ static int ice_read_sr_word_aq(struct ice_hw *hw, u16 offset, u16 *data)
+ 	 * Shadow RAM sector restrictions necessary when reading from the NVM.
+ 	 */
+ 	status = ice_read_flat_nvm(hw, offset * sizeof(u16), &bytes,
+-				   (__force u8 *)&data_local, true);
++				   (__force u8 *)&data_local, true, NULL);
+ 	if (status)
+ 		return status;
+ 
+@@ -330,13 +363,8 @@ ice_read_flash_module(struct ice_hw *hw, enum ice_bank_select bank, u16 module,
+ 		return -EINVAL;
+ 	}
+ 
+-	status = ice_acquire_nvm(hw, ICE_RES_READ);
+-	if (status)
+-		return status;
+-
+-	status = ice_read_flat_nvm(hw, start + offset, &length, data, false);
+-
+-	ice_release_nvm(hw);
++	status = ice_read_flat_nvm(hw, start + offset, &length, data, false,
++				   NULL);
+ 
+ 	return status;
+ }
+@@ -418,27 +446,6 @@ ice_read_netlist_module(struct ice_hw *hw, enum ice_bank_select bank, u32 offset
+ 	return status;
+ }
+ 
+-/**
+- * ice_read_sr_word - Reads Shadow RAM word and acquire NVM if necessary
+- * @hw: pointer to the HW structure
+- * @offset: offset of the Shadow RAM word to read (0x000000 - 0x001FFF)
+- * @data: word read from the Shadow RAM
+- *
+- * Reads one 16 bit word from the Shadow RAM using the ice_read_sr_word_aq.
+- */
+-int ice_read_sr_word(struct ice_hw *hw, u16 offset, u16 *data)
+-{
+-	int status;
+-
+-	status = ice_acquire_nvm(hw, ICE_RES_READ);
+-	if (!status) {
+-		status = ice_read_sr_word_aq(hw, offset, data);
+-		ice_release_nvm(hw);
+-	}
+-
+-	return status;
+-}
+-
+ /**
+  * ice_get_pfa_module_tlv - Reads sub module TLV from NVM PFA
+  * @hw: pointer to hardware structure
+@@ -856,20 +863,18 @@ int ice_get_inactive_netlist_ver(struct ice_hw *hw, struct ice_netlist_info *net
+ static int ice_discover_flash_size(struct ice_hw *hw)
+ {
+ 	u32 min_size = 0, max_size = ICE_AQC_NVM_MAX_OFFSET + 1;
+-	int status;
+-
+-	status = ice_acquire_nvm(hw, ICE_RES_READ);
+-	if (status)
+-		return status;
++	int status = 0;
+ 
+ 	while ((max_size - min_size) > 1) {
++		enum libie_aq_err read_aq_err = LIBIE_AQ_RC_OK;
+ 		u32 offset = (max_size + min_size) / 2;
+ 		u32 len = 1;
+ 		u8 data;
+ 
+-		status = ice_read_flat_nvm(hw, offset, &len, &data, false);
++		status = ice_read_flat_nvm(hw, offset, &len, &data, false,
++					   &read_aq_err);
+ 		if (status == -EIO &&
+-		    hw->adminq.sq_last_status == LIBIE_AQ_RC_EINVAL) {
++		    read_aq_err == LIBIE_AQ_RC_EINVAL) {
+ 			ice_debug(hw, ICE_DBG_NVM, "%s: New upper bound of %u bytes\n",
+ 				  __func__, offset);
+ 			status = 0;
+@@ -880,7 +885,7 @@ static int ice_discover_flash_size(struct ice_hw *hw)
+ 			min_size = offset;
+ 		} else {
+ 			/* an unexpected error occurred */
+-			goto err_read_flat_nvm;
++			return status;
+ 		}
+ 	}
+ 
+@@ -888,9 +893,6 @@ static int ice_discover_flash_size(struct ice_hw *hw)
+ 
+ 	hw->flash.flash_size = max_size;
+ 
+-err_read_flat_nvm:
+-	ice_release_nvm(hw);
+-
+ 	return status;
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_nvm.h b/drivers/net/ethernet/intel/ice/ice_nvm.h
+index 63cdc6bdac58..e1d1a11f5ca4 100644
+--- a/drivers/net/ethernet/intel/ice/ice_nvm.h
++++ b/drivers/net/ethernet/intel/ice/ice_nvm.h
+@@ -19,7 +19,7 @@ int ice_aq_read_nvm(struct ice_hw *hw, u16 module_typeid, u32 offset,
+ 		    bool read_shadow_ram, struct ice_sq_cd *cd);
+ int
+ ice_read_flat_nvm(struct ice_hw *hw, u32 offset, u32 *length, u8 *data,
+-		  bool read_shadow_ram);
++		  bool read_shadow_ram, enum libie_aq_err *read_aq_err);
+ int
+ ice_get_pfa_module_tlv(struct ice_hw *hw, u16 *module_tlv, u16 *module_tlv_len,
+ 		       u16 module_type);
 -- 
 2.47.1
 
