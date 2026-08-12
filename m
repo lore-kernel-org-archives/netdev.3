@@ -1,52 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEE92989B5;
-	Wed, 12 Aug 2026 01:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BEE244667;
+	Wed, 12 Aug 2026 01:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786498726; cv=none; b=VzWRlwp8MDJBORVJ2jnYK8B+qZS9VX/UfW38oyE091cqjZBXtSkZv1OJb+Mh1vZTiR+ebRNNgc47X78omU8s2eIEJyP3ZaAs1uCOJ3sMmXLaYmd1IW9v3dEwt6EsrvcqxI7TzVMPHTcNKUtROdcoAhfs5XzzSi9NdKTXK3XLf6o=
+	t=1786498869; cv=none; b=QFBWf09Hb0oxdMYIcaDixKQfH15RgA3CJ49cd4ER67CHEAqj9zjvtKLR5352wEzOMhk6CufGgIwNHztCQq7FQOGvhT1kZOfrROjNPcPZMa9xQ0wkdJQnIeE0InGzx2WcqJZ7R3hxGQr6YtIOmtm7DLypDf+hzFXd/vtE7PzJeyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786498726; c=relaxed/simple;
-	bh=fQpjhdmWwJUlpZ5q5jtmk1QlTCFVj9P7x6ov8KAmCS8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cczzpbDbUgYBq8QhQKIzpzde/BSRu2mi5hfCxFYC0T6jsYO5BWw3YtKuTFzPeG7UFBeX1ICaUg1WrCCslFDc/vITv5xt5iuWTxXedadzmv4NrFlaQzSLe6bQA9z63/gAGzyf9EukSFMMzHrRgG9i6eIOkQNeq1O/vSxXcnaO214=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ihbtb1tB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786498869; c=relaxed/simple;
+	bh=T+qhZB/2uIcC3qhhu0w/MWaox+C4JaSiRTkN5hcG8lg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fPDWurWodITvD14OQ7EVqjLEqYhd38hHo82C4nFIGQdYJlDHphykDL/NEnwOXF1ztzvbpXZLEbH6gQ+sDPRI/ezNu8p1PZ/Z7lfiHfvufhrl4FYErN/i1Hp5VHF1p7571neSDA2yQMI8JSjMiUEIgf6xgL2WIRDSKFnLndgTXwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hTIN9dno; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ihbtb1tB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41791F000E9;
-	Wed, 12 Aug 2026 01:38:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hTIN9dno"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513371F000E9;
+	Wed, 12 Aug 2026 01:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786498725;
-	bh=JxWiKAIies8F+3LnLRQ3d21jloS1jkjTWQjD0d0fpl4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ihbtb1tBoD3b9MGCQbhbGBDrUX6GZZba2pPdyZ21FDXFZGqe0VblT/xC+dSynDwZ0
-	 V3TGxul1O9Joz4BS4nrBPvKPAzq43+G+pRqQu98kfmVli57SSBCao8xqW4ntcG5hYe
-	 5aWyeLoHpMbGTA477j6O3CyrvgmDDSnzMtjKQJPhN/GhRgyh3TmPRptVVCmOO/CdUJ
-	 oGdDWEqiJSe3rBcST24el/wgYr/pC1VZUSNurISRGX4lGKYZHYyk+qh1MciwD6iIti
-	 eWcjPviFtF9BgAYDuT2jNa+hLq6kWxpEv5q23GhW8Ht4NbKorBkHDBJKjrVV0yBJHH
-	 4tE98iH9mq97Q==
-From: Jakub Kicinski <kuba@kernel.org>
-To: tariqt@nvidia.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	ayal@nvidia.com,
-	gal@nvidia.com,
-	jiri@nvidia.com,
-	jiri@resnulli.us,
-	linux-kernel@vger.kernel.org,
-	osidi@nvidia.com,
-	horms@kernel.org
-Subject: Re: [PATCH net-next] devlink: prevent function configuration when port is active
-Date: Tue, 11 Aug 2026 18:38:43 -0700
-Message-ID: <20260812013843.1678838-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260810103245.3162004-1-tariqt@nvidia.com>
-References: <20260810103245.3162004-1-tariqt@nvidia.com>
+	s=k20260515; t=1786498868;
+	bh=ddCWUmVyP8hp0tbawAOd9Qc7YubzB/SsYlWmcDZsMOE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=hTIN9dnoaqm3i+uCoMXdmeKjxfdHstEjVyEhatr8J1aC0OUzjn2MHCQ29DH+2I2nL
+	 I7fKJuv2G3BIjYbIyPw7FMkxOmGLFdPncXRmSxZw/jIXtAeWKftqICxX0apPEHjdYT
+	 3uU65DGB7z/Ka7VriO9KAK7nmJjtNb3AJJ8t0zwVrtqr96g+2Eba2KMsewXVYn+ljq
+	 j/W2s766qNiR7irV9JkO7Wly8dTrMRZmFaVEVAIzq5EPHjHz7ydLzoZve7qPadr5ae
+	 jD4+Ho7SjhXuR7DLNPsgBY7GDDd4AddrkaPkuNR+CE8yt+rOYJ6jnGQLTAXjmXsJbO
+	 zFrYfEDP0YAig==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A0A3809A3C;
+	Wed, 12 Aug 2026 01:40:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,164 +37,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 01/13] netfilter: ipset: fix refcount race between
+ list:set GC and swap
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178649882389.1230679.84745710900451719.git-patchwork-notify@kernel.org>
+Date: Wed, 12 Aug 2026 01:40:23 +0000
+References: <20260810190621.894119-2-pablo@netfilter.org>
+In-Reply-To: <20260810190621.894119-2-pablo@netfilter.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-devlink: prevent function configuration when port is active
+Hello:
 
-This adds a check in devlink_port_function_validate() that queries the
-port function state for PCI_SF flavour ports and rejects the request with
--EINVAL when the function is active.  A few questions about the scope and
-the enforcement of the new rule below.
+This series was applied to netdev/net.git (main)
+by Pablo Neira Ayuso <pablo@netfilter.org>:
 
-> diff --git a/net/devlink/port.c b/net/devlink/port.c
-> index 1528f2d148dfc..6a9857bf79da1 100644
-> --- a/net/devlink/port.c
-> +++ b/net/devlink/port.c
-> @@ -708,7 +708,10 @@ static int devlink_port_function_validate(struct devlink_port *devlink_port,
->  					  struct netlink_ext_ack *extack)
->  {
->  	const struct devlink_port_ops *ops = devlink_port->ops;
-> +	enum devlink_port_fn_opstate opstate;
-> +	enum devlink_port_fn_state state;
->  	struct nlattr *attr;
-> +	int err;
->  
->  	if (tb[DEVLINK_PORT_FUNCTION_ATTR_HW_ADDR] &&
->  	    !ops->port_fn_hw_addr_set) {
-> @@ -721,6 +724,20 @@ static int devlink_port_function_validate(struct devlink_port *devlink_port,
->  				    "Function does not support state setting");
->  		return -EOPNOTSUPP;
->  	}
-> +	if (devlink_port->attrs.flavour == DEVLINK_PORT_FLAVOUR_PCI_SF &&
-> +	    ops->port_fn_state_get && !tb[DEVLINK_PORT_FN_ATTR_STATE]) {
+On Mon, 10 Aug 2026 21:06:09 +0200 you wrote:
+> From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+> 
+> __ip_set_put_byindex() resolved the index to a set pointer under RCU,
+> then took ip_set_ref_lock in __ip_set_put() to decrement set->ref.
+> ip_set_swap() holds that same lock while swapping both the ip_set_list
+> slots and the two sets' ref counters, so it can interleave between the
+> dereference and the lock acquisition, leaving the caller to decrement a
+> set whose reference already moved to the other index and hit
+> BUG_ON(set->ref == 0). list_set_gc() reaches this from timer softirq,
+> which the nfnl mutex does not serialize against swap: an expiring
+> list:set member calls list_set_del() -> ip_set_put_byindex() while
+> IPSET_CMD_SWAP runs on the referenced sets.
+> 
+> [...]
 
-[Severity: Medium]
-Can the new restriction be bypassed by including a state attribute in the
-same request?  The condition skips the state query whenever
-tb[DEVLINK_PORT_FN_ATTR_STATE] is present, regardless of the value being
-requested or of the port's current state.
+Here is the summary with links:
+  - [net,01/13] netfilter: ipset: fix refcount race between list:set GC and swap
+    https://git.kernel.org/netdev/net/c/0c8886827165
+  - [net,02/13] netfilter: bridge: release template ct on non-IP path
+    https://git.kernel.org/netdev/net/c/d45cc8020d7c
+  - [net,03/13] ipvs: add totalconns for dest
+    https://git.kernel.org/netdev/net/c/04d2feaed8d0
+  - [net,04/13] ipvs: properly update the overload flag on dest edit
+    https://git.kernel.org/netdev/net/c/8f843441c4e7
+  - [net,05/13] ipvs: separate destination availability state
+    https://git.kernel.org/netdev/net/c/cdcc4e46180d
+  - [net,06/13] netfilter: nf_conntrack: defer invalid log until after unlock
+    https://git.kernel.org/netdev/net/c/2d19b95c9723
+  - [net,07/13] netfilter: nfnetlink_log: wait for rcu grace period before freeing pernet state
+    https://git.kernel.org/netdev/net/c/33d1469b0124
+  - [net,08/13] ipvs: clear IPv4 options after rebasing tunnel ICMP errors
+    https://git.kernel.org/netdev/net/c/e0ba936287df
+  - [net,09/13] ipvs: revalidate ihl to prevent out-of-bounds access
+    https://git.kernel.org/netdev/net/c/d93660df4dd1
+  - [net,10/13] netfilter: nf_tables_offload: suppress WARN_ON_ONCE for ENOMEM in abort path
+    https://git.kernel.org/netdev/net/c/d02f59206434
+  - [net,11/13] netfilter: flowtable: publish GC-visible tuple last
+    https://git.kernel.org/netdev/net/c/2014ac62df9d
+  - [net,12/13] netfilter: ipset: fix list type element drift bug
+    https://git.kernel.org/netdev/net/c/4cbd69766b35
+  - [net,13/13] netfilter: ipset: let destroy callbacks adjust ext mem size
+    https://git.kernel.org/netdev/net/c/490937b88cb5
 
-devlink_port_function_set() then applies the parameters before the state,
-by design:
-
-	attr = tb[DEVLINK_PORT_FUNCTION_ATTR_HW_ADDR];
-	if (attr) {
-		err = devlink_port_function_hw_addr_set(port, attr, extack);
-	...
-	/* Keep this as the last function attribute set, so that when
-	 * multiple port function attributes are set along with state,
-	 * Those can be applied first before activating the state.
-	 */
-	attr = tb[DEVLINK_PORT_FN_ATTR_STATE];
-
-So for an already active mlx5 SF, a request such as
-
-	devlink port function set <sf> hw_addr XX:.. state active
-
-would run mlx5_devlink_port_fn_hw_addr_set() ->
-mlx5_eswitch_set_vport_mac() against the live function, and the state set
-afterwards is a no-op:
-
-drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c:mlx5_sf_state_set() {
-	...
-	if (state == mlx5_sf_to_devlink_state(sf->hw_state))
-		goto out;
-	...
-}
-
-The same applies to caps and max_io_eqs combined with state active, and to
-state inactive where the parameter is programmed while the function is
-still active.  Is the intent to also cover the "parameters plus state" case,
-for instance by checking the current state whenever any settable parameter
-attribute is present?
-
-[Severity: Low]
-Does this also change the result of a request that sets nothing at all?
-devlink_port_function_set() calls nla_parse_nested() and then
-devlink_port_function_validate() before it looks at whether any of
-tb[HW_ADDR], tb[CAPS], tb[MAX_IO_EQS] or tb[STATE] is present.
-
-For a zero-length DEVLINK_ATTR_PORT_FUNCTION nest every tb[] entry is NULL,
-so the new condition is true, ops->port_fn_state_get() is called (taking
-mlx5's sf_state_lock), and an active SF now returns -EINVAL.  Previously
-the function fell through every "if (attr)" block, sent the
-DEVLINK_CMD_PORT_NEW notification and returned 0.  Would keying the check
-on the presence of a settable attribute avoid that?
-
-[Severity: Low]
-The subject and the body say "prevent function configuration when port is
-active" and "Reject port function parameter changes when the port is
-active", but the check only applies to DEVLINK_PORT_FLAVOUR_PCI_SF.
-
-VF and PF function ports also expose a function admin state, for example
-mlx5_esw_pf_vf_dl_port_ops in
-drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c:
-
-	.port_fn_state_get = mlx5_devlink_pf_port_fn_state_get,
-	.port_fn_state_set = mlx5_devlink_pf_port_fn_state_set,
-
-and those keep the old behaviour.  Could the commit message (or a comment
-here) say that the rule is limited to subfunctions and why?
-
-> +		err = ops->port_fn_state_get(devlink_port, &state,
-> +					     &opstate, extack);
-> +		if (err)
-> +			return err;
-> +
-> +		if (state == DEVLINK_PORT_FN_STATE_ACTIVE) {
-
-[Severity: Medium]
-This turns requests that used to succeed into -EINVAL for every PCI_SF
-port.  Before this patch, hw_addr, roce and max_io_eqs could be set on an
-active SF: mlx5_devlink_port_fn_hw_addr_set() calls
-mlx5_eswitch_set_vport_mac() and mlx5_devlink_port_fn_max_io_eqs_set()
-has no active-state rejection of its own.
-
-Documentation/networking/devlink/devlink-port.rst still only recommends the
-ordering:
-
-	For subfunctions, this means user should configure port function
-	attribute before activating the port function.
-
-and documents max_io_eqs as settable for subfunctions without qualification.
-Should the documentation be updated to say the ordering is now mandatory and
-enforced with -EINVAL, and should the behaviour change be called out in the
-commit message?
-
-Since the policy lives in devlink core rather than in the driver, it also
-becomes the rule for every current and future driver registering
-DEVLINK_PORT_FLAVOUR_PCI_SF ports, including hardware that can change a
-parameter while the function is active.  Was that intended?
-
-> +			NL_SET_ERR_MSG(extack,
-> +				       "port function parameters can't be configured when port is up");
-> +			return -EINVAL;
-
-[Severity: Low]
-This isn't a bug, but the wording says "port is up" while the condition
-tests the function state DEVLINK_PORT_FN_STATE_ACTIVE, which user space
-and the documentation call active/inactive ("devlink port show" prints
-"state active").  Would "function state is active" map better onto what
-users can observe?
-
-Also, the sibling rejections in the same function are capitalised and use
-NL_SET_ERR_MSG_ATTR to point at the offending attribute:
-
-	NL_SET_ERR_MSG_ATTR(extack, tb[DEVLINK_PORT_FN_ATTR_STATE],
-			    "Function does not support state setting");
-
-The offending attribute (hw_addr, caps or max_io_eqs) is known here too,
-so could NL_SET_ERR_MSG_ATTR be used for consistency?
-
-> +		}
-> +	}
-> +
->  	attr = tb[DEVLINK_PORT_FN_ATTR_CAPS];
->  	if (attr) {
->  		struct nla_bitfield32 caps;
-
-[ ... ]
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
