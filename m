@@ -1,284 +1,243 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6543D1EB5E3;
-	Wed, 12 Aug 2026 09:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7491241A922
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786527859; cv=fail; b=dsql4hxPSs3573DBvsgz0Czx3Gbk45JmtU6nz4jzf3x2MCmadXgwdJHt6HR18CBEiLtfwH/OzqETesv34E03CfpOsN9UXiDqhgysngQxF167ijpjRnADVjk5/SXo4PKXO363Mv+g5TfFGWM5EgfijvOh+hDb4bzPTZMDJ83qc0s=
+	t=1786528384; cv=pass; b=iTnB3/owCQWtHQZb2Up+z+FhkWRwSt8RpQGM0wGINkltXdKGC8l3mFSyvSha0yHIMv2e3hZ3RJ5gb4RTVrcmAcFzyI6/5tSULH1yVrM+NIxdW/hzrqZkiV+7p/t86+RaVvvwUNX8/8tGwCpDduVSCBLbyPFIenVWGSh+X/2812I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786527859; c=relaxed/simple;
-	bh=ndpFxf91UpdPLjLVd51cw4Nnw726VWc1UVnskXxCqCw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=omxl5dCEOM7EtKNrYkHAm000SfyzNUdJnDUbJQe5t6sIVGpG7F1hFF7Wb6CJtBtH3D1dDvV/HlOBiO0rxfjag5NOJVomLwoVcIQr+jhPC4kp7pW9L+gPzG7V3PyT2iQy1xfyVWgMzFJxG9FMfIwUHJi3mxMJdeGPG9uZuYVDuW4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m7S/1FUo; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786528384; c=relaxed/simple;
+	bh=GviiAXQCeKyVlLjv4Qvp0vGh9kOh+vs0j3supeWSa4g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=deonBQNZ6ahUIUpR6HBZWxCxCLcreWd/GnYJCk3QdIuLm7qAh36duFHyM6/QbTzlEUZcOpyUL2HNDqL9MZQoOIl3pOs1RQAidleFRob8UVRhUw3MpiFZAbL15wCCwRUIEdoEYzhvO5ZPS0aXt0aqjFw6dedkT90Gs5m2Dk+Y4R4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZRXx+asg; arc=pass smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m7S/1FUo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786527857; x=1818063857;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ndpFxf91UpdPLjLVd51cw4Nnw726VWc1UVnskXxCqCw=;
-  b=m7S/1FUoZejyxta0CeS2BbP+SFMFSQU1VXnvLfP4iY/kzDioTYS+ZIPK
-   Pz4QK7ctfynuFUrj7JmhtP38ICVLBOx1sfzGP5fzTRI+nAgbkLNaPyx3k
-   Mk+44+FDC++VEht0B2sUEbBqwD9XuCCMBreYJrQT6AhhpC9pmnlnXFdwx
-   xY1qy/gidUmo4H76fsa33TR2UjuYpL39Wxb6LUK75BxxXob4ZJ+zwAIqH
-   Qpao+1uegtIIOuFyRzRO+OXyVVWxcnaf7XFRKGzLrtqs48VWfROHYMsKF
-   7cYzrZ2vTUk6vjHjEEZFP4xCMiT7gJu5vchBdlgN5RlYjNFZ0CSKo+xbY
-   w==;
-X-CSE-ConnectionGUID: /NIkS8/oTO21UtbXX5Ov3w==
-X-CSE-MsgGUID: 7f39GOmqQeSOwPFa335tCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="87097052"
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="87097052"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 02:44:16 -0700
-X-CSE-ConnectionGUID: wUIGUYCNREq0FNNn0yZdfA==
-X-CSE-MsgGUID: ASEOOR2aTYaST65hpEwfHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; 
-   d="scan'208";a="267093296"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 02:44:17 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 12 Aug 2026 02:44:16 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 12 Aug 2026 02:44:16 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.38)
- by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 12 Aug 2026 02:44:15 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SLqEAVgYu8IRw1PRkEibnpefn1S5ZqhDi1rKz02BjVGQSqdKr/3frI0LKW5nvSQ/SZmI5j5xNseuXslF8HjPv36FGQWZVdhq8WDpMVsn8sRw2UB5K6jpK9ql+AUf+guQbIHSHtvHshN9pD3uV9kPhqvtiVVQg2t1SoG3N70WPUdkUbwGRippyclZupI/pzIco72nH3KfIlZbuknp/Xvne6TEkzdMHCPmGgFl0NtAkWlXHdm2aBPzJe/ZFp+vK26K2ND0m0q7eXLE2ktd1rE5Nq6864ArrE48UgjQHbL976aer/W/l4T+MeNCf2fwKc8BRya83RTIYuBukYXylP/ZGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BjjC3b0FfCDs2JbEdl+10g1dJ6AGweGRByYC3j+OH9M=;
- b=crXpt6uduNEzR0p4cCnWwcXmQSlsRbpIJSky1Csu88fJyEWMefJvhLVXdEt+uivk5ljA2pRaQ36+FmZSdyXW7UxzPUMr7Vni2n6yR9TZ3W4Ft03eINaAUi+7RAi5vMQkZLMwPsLLnPzmP0Pvk2UbJkKAok2SDWgByKM5q6exoBCR4Qlc5nOFO9QrFra2J90T7YysuPweak7FmX5o1Kc0tftoYXmahci1ldMaoipKBJwM9K9ndUSbIf9RG6XOzh1robZQ5zWPMNxUqZAdM0gCC3u8cUznOJF00HeJuJ7sEzDQ3Fpb2kzqVdRn0huasIylXY6FeWJqIf0HyEEcuvMaoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
- (2603:10b6:f:fc02::31) by SA1PR11MB8596.namprd11.prod.outlook.com
- (2603:10b6:806:3b5::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Wed, 12 Aug
- 2026 09:44:08 +0000
-Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
- ([fe80::675:8a:9680:ad3f]) by DS4PPF7551E6552.namprd11.prod.outlook.com
- ([fe80::675:8a:9680:ad3f%6]) with mapi id 15.21.0315.011; Wed, 12 Aug 2026
- 09:44:08 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Malathi <malathi.a2000@gmail.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"edumazet@google.com" <edumazet@google.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com"
-	<syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com>
-Subject: RE: [Intel-wired-lan] [PATCH net-next v2] e100: fix
- shift-out-of-bounds in e100_eeprom_load()
-Thread-Topic: [Intel-wired-lan] [PATCH net-next v2] e100: fix
- shift-out-of-bounds in e100_eeprom_load()
-Thread-Index: AQHdKU985YbQcsKYr0O7p6vxeeVBNraaK43Q
-Date: Wed, 12 Aug 2026 09:44:08 +0000
-Message-ID: <DS4PPF7551E655294090E40920DD86E03A7E5DC2@DS4PPF7551E6552.namprd11.prod.outlook.com>
-References: <20260811050753.234931-1-malathi.a2000@gmail.com>
-In-Reply-To: <20260811050753.234931-1-malathi.a2000@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS4PPF7551E6552:EE_|SA1PR11MB8596:EE_
-x-ms-office365-filtering-correlation-id: 56228113-37ca-4ac4-e495-08def85641a2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|11063799006|56012099006|10067099003|22082099003|18002099003|38070700021;
-x-microsoft-antispam-message-info: DqiuG5x1gdkxokOPz85TcwYX7PQePhfdSRgnyZN4B8VXmQRRk8eKtodxBQUOxQDM+EDIwkpXsK5qdKcbif5CW9q/0vJDPBH6jQa+CWBaQ6OkhFDBl96OfuI/bHAzgMHqJjA06QHgX7c7bGm7zK2PgpJJXRJj6LPKkZqCY5dMICaPLjG1nM5dnLkabCQgekH4MUGtBoAwJG12Lcfd+8664H8WnvQ13BBEkzsRDazs4kRFP9XKj/x56kdvQRMpSjLSpg6uPATfULUNn3q7fHc+08t2wmywUFfbbMfGNUnly/wVMBYC+MLv3PksW5tSF2uVzw4Ao2G8maC5Kb7OWABz5VOjeNRrZGW/og5FtOiR6q/Xvw0hFAoPM15bYfV9CfuDdcG5h4yfgAQoUxWHiBb/chlVCW/nHVBevbag/c5fnZPRICoqR9Jn2K9mIjy5W5M8BMY75c2Ho60ZWePLAOilejMmecJB/PtLifuN17gMiXtZ82y1IerW/lqPlXKTSeQbvIb7ZRELdr1Gsvwstu5TbS+2l/iQYO4C4g/8dyFUZhEFIgQrcSk0oV7AXpQ2z40JUvHtKUBE+tPlEMgJulj1LUO3LckMzUU9pHUkeV03nT/hElmUztVO7cYGUTouUarXYSrbjU83Dq5Vn10qs5kvDWvWJVTvLPf7sx5LIwpUWW8=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPF7551E6552.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?nD+TUgDTVdo72GYVf7lvVPZiPj5kibpv3X0civHytf+BhScGe93d6lWLSgYa?=
- =?us-ascii?Q?5xxzmQNOWtxg4slgR/MdEfSREZXMPy6KiAgMWQMGRoB6TAdbbBX9UydqzBnX?=
- =?us-ascii?Q?810l09ThUql6Cuxzr82qMojfwHD9VFdHPssc7ChHaaN9Q99osF1VVzg29Gx0?=
- =?us-ascii?Q?bTn/sT4Jv0BVO21q0CsJISkLuPeOpgucyFHM3MUKrid5Vxg6iP54hUWcBABe?=
- =?us-ascii?Q?DzRyXPXFDACccjZS/0DrcyQynCTsajjoNok7d3u0/FHXP+XMYXJwWcjwKSgl?=
- =?us-ascii?Q?HtIVUPzTAE5Sn3ayPj6Ddt+VCy2bqfBy5aNCTL302s26DLuI7XUPiqhSOsI8?=
- =?us-ascii?Q?19bDUOrhVXJA2Rv4JXlSD5WgDbbwcoOI/CkwOIsnuioqTEs53dryPp4WnQ8a?=
- =?us-ascii?Q?s870dznRZDGFK51/iYTZOWocfiRhOlz1Fs5EfrKSZ2LdJ7W5YKfwVPGNE3Ps?=
- =?us-ascii?Q?xpgegqUrwQPeYeIzK3xDc+OE00fwltRUKYuVWik5IhUjvz8rGqJyszntjqn7?=
- =?us-ascii?Q?JNg7uZheSIrzpknR6dsMvCpvuCAEgPunQQNGYBMmgK+mmhQHZ8rQhQp2ZAlL?=
- =?us-ascii?Q?LCUcWEfWyrEG6u2imCSzg6J1oCWdtYI028iNZ5E+yosdvWB3bBWx17v36f+S?=
- =?us-ascii?Q?Ie8qdtVtsBZqXo8nOqIHkH+/oLj6zHABEh73ZGl9Fjcc/6JtgsCLPgH1Imr5?=
- =?us-ascii?Q?KCahplV8/zTU/OvpdUSYM8EJ+LyAnIw/JtWzsjW+G86e9Cn5RPIvz1uHDTf1?=
- =?us-ascii?Q?T7dC/6ohaVsFxQ/KR4M6H8GYgtOUHAf3x8hdlO0MHg5UEmHShNME2iecVdnQ?=
- =?us-ascii?Q?gqDRTaU4jh0ROkrx4vs41eSA2SBnGlyBR22QE91yAg6SO7abjlJ//MVn4qHp?=
- =?us-ascii?Q?H7YfOWLjsCkdmMNazX62r0PfOHMAdU8H1Mm9oqXJR10X2REQEUDgPp3YLwuJ?=
- =?us-ascii?Q?oEwniCq+hjXn8bjGY9wkCSIjKU7WIHQH8jC7ZlQ4CkM1DJo/yfT2uHBalW36?=
- =?us-ascii?Q?GIieS1cio9wwfSkkJg5A3b7I4oYLP1brwgbvQyeNBjeFzmXQtCbkdbP4kwLz?=
- =?us-ascii?Q?7f5XgXeQmMMZk56a9MYWG1siaM3gHaEHWGWR0ijmJw30jkk1Bf/NhJs8krv4?=
- =?us-ascii?Q?8OpMJw7Ggwo/j1qvfkTEoKjgPGHpk3jti8md6bd5THRkJllGn6v+dgcRsqEu?=
- =?us-ascii?Q?sm4GJxLGU9lZx0J9whxiupPa6wMvWJFM8JtjIrQw+o07ThYmiQQXFVpMegYk?=
- =?us-ascii?Q?yvx6F5BUy36yKoFprbk6fX2DpQavhgqp5U9066h6cFTskP0t4jKLKDqsIMIG?=
- =?us-ascii?Q?iIHXn060uCxR4SesuVwOhpXcvPp+pVbakK2V6v9x41+gGNq7EQlwpjDGgD6M?=
- =?us-ascii?Q?IFiS5h2m2qoS/d6USNBB/PcMI2sWyctGKaLVnVEX4I10H6G9RIVBclytNDbp?=
- =?us-ascii?Q?g/6JuSCsJhxqu8HYtlEJpqInEAnWGEh/cm9Qlyn+D+GNnKTJ2VIX1+F+nzEN?=
- =?us-ascii?Q?0Bl13K1dbdFW+VcQSnG30zPskIZgDWFZVHTP+MnhqDKXiVl+wtFdQM3XmfdP?=
- =?us-ascii?Q?iqF/8Ak6CXUCdsonyDf6OcJVCfnf6A+xAgZurS7LolxBfqQHim6hJaI5GZMz?=
- =?us-ascii?Q?KxspqK1OunjrADESLEEdggy71bWTsWVBRuzvfBkYgXfSRThyRJPBmI1kMBdh?=
- =?us-ascii?Q?v0yJq9MKvYdmTJ+xqTIuvPMySnzdUa7TOuGVIk1fdQnOjNPh3WBbhmzj7rik?=
- =?us-ascii?Q?Fr8HoZizfQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZRXx+asg"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8234e9ea616so15218497b3.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 02:53:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786528381; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ohnicrbs3ADrjSxLgbtf57RECzcC8C8G++3eVEo4oqMAqqE5tLG9UwXelY8HkrTCCU
+         QxXgVfRNLjtMG9FQaS2UZIgu4PSVPNzCWQS7YO4QA2OqUUBtrBV3Q+JCrVw4B2n6wUFR
+         tZfSi7GlkjFnZRTLgFNVzQD/VQqT/BIzIrP6yWCW639NfoQZ4Os97x61/deJzwG3hNEU
+         P9MaWowIQN8/KZedHGFAIOpi6aI6nLaEzBDejgWKOFFHQlG/WnNMy2+Zbe9PIdoRHEYn
+         Xl+ZUaA5w9uvT4o/OWsV9wjqZ7/3XAKSpD7alAtpm5wJeHCdmrGiQ2j4OM+7I91WhsJN
+         oqHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Hy3XuxXVi5+yvTsl+oaKWxSxrgq/fUyV8v4xP5CPFSE=;
+        fh=yNA/ZmquAYauC6N7NYRV3HyT5pQdGYX2MHXLuH7+RRw=;
+        b=QDwQCUHaR7bPZT7HaTSKM+iAuwQOdrYVThMeTrXublVTM3u3Mzr1JE3aBv67M2lWE6
+         vVLAcbI+Xz+nw1b5svb5MnqenHooXuCyexxRkXNSYMotd7vmvK+Fy4cE+RXIUKeYkqiY
+         M3CrWj90qy1oGNkpKxV3nH7EK79ybkK9NuEI9bNuZOGQpJoWuGddFsOzGFHiICYkCBus
+         vWNavVh7oSZ++/K+SagH+GUmo4TFBO+TFYCOlB6kY+KNYHH+WVD0u8F4iq1iD53mv+zS
+         ZyUEz91p7UFDByCYsgRLaMPyoA+XZklJqucAO6NRUoH+JhZ0njLP4cYSiXpDxEepp9OK
+         0G3A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786528381; x=1787133181; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Hy3XuxXVi5+yvTsl+oaKWxSxrgq/fUyV8v4xP5CPFSE=;
+        b=ZRXx+asgMdHD6A626DIBODyvCyddgg9D/z2h8QZIPPwMkjFLZGdwf0tPc3Nb452LcC
+         lu3yryQLj7CJpAFZn064iQk5ZFcYsfrh+uwzxR6cbi05bHvTDqPigd6Yw4bqSVmUusdJ
+         yfRf0XQpdby6rYjaIQ16nas2DlKVrPsZVp8ObrkL/bvUFrBtnvDxb4hcF8mQBBE2LYyU
+         Ik6l/EBpnixyrqXimTIro58UQHnd5dENStcQoFh5qyHbKyo0cESMjQARrjps7cpF59gt
+         JotaB8Cy2yzvRAqwOkIjbUTnx1PMsOrquKFVOhtyjDicWtt+WPklnViad9f4mG1wy53W
+         O9Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786528381; x=1787133181;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Hy3XuxXVi5+yvTsl+oaKWxSxrgq/fUyV8v4xP5CPFSE=;
+        b=AZin56SFggX3JDHKcgNHZJdg7Tk+zZnUiF/29jzApHjX+VUG1To0ydWOZTMlSLgRNY
+         7ZMGgjFEfDjZP+IxQROJzQKtw6L0NF3HV/8c/S9nI5JFNXyyd14cV5X3M1xpbbGLbpzh
+         6Imu41VABNAlUCm7Ef4eotOhpkG+SPtJYAd6Kwj1D93diPI1tXeQbwiUA01Q9LqBlohI
+         i4CW1AisHozklRGpa4kM+1BS8AmMgSY7/59fjsBmbSSwN/I81vfUGaGOD9Quo/udViC7
+         Bazi1FfQTMWeaw8rRqDZbMzik4nLhYXa5IBfbjrODP/sd9F+8cz7q+KumoPU2VaKQyMF
+         HNbg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrje/BzA1nmBqfMWn2WmU5pxQlphYOXkO1rVsVzkA6TONDy4ivIFhPbOE7HIjvY6+OUgrkdFb8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFK4h088b5ZxIVTTyvXcFr/yOP1VnKoiSqA9BmLrWb5BSrlfJb
+	MvgOF1GsJklS0N2FerEYnp+WQ/h2ZKZDOZrndT5Y08TFR0UzxozFE+CIeA+HLdPYNwN6EM8uKei
+	uWmH5IwjeEgNS+TaincH/69A3ZhdJuk4=
+X-Gm-Gg: AR+sD106wfR2DhWz6l7qeP4ro3k0tiTYyTbrEMM+MQssCYpQor6fdC+WYXveXon2gOa
+	wB0gnEPKVihJCQKVgjf7b9D2wRvzI5tXcs+okx6m18SHKupzLEige1/Z3isPTINSlc7NVOcu/AN
+	bsh1VpRplVdiG85rKL5/i7/6d+7wJCf+rUGEIUxeA23zkmd63FbkV5iBD+GfmVBORlvvn1RJ9aV
+	iIVffXe5k+Z44yO+kFatmq6ZctHc3yq2ceYVuG4Bt6+R/DsS+vBX1pNp6sBoK/WHA087BhznITD
+	cjTX3CnNEGDobeoQ976PSBmgJKZchqHvIuor9nqEjlUjTj7PeixfCTbXGw1a+/nZyOhCqPHiEBa
+	50KRvUA8MCgEM2P0zRoXbQQSZalya68LpG/LBCoYUGezOGKEm4SnOSH15mIY2l9VX4NYeKpXmSh
+	Lsh4M+O/jmZ4vqsdEEgJ0=
+X-Received: by 2002:a05:690c:6887:b0:80e:c332:1796 with SMTP id
+ 00721157ae682-83043d27ce3mr44086167b3.10.1786528381210; Wed, 12 Aug 2026
+ 02:53:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: EN01rybwUGarxVxnTO0p4mYhiP4bgOdwWuMu75sKT3E9956VjnYJVIVSwYfKdHYJw9v8bP5ARxCGUQu9PbLpILAysO6xvsGKKT6F29Ds6bzuXKW0h3gB6lpJ7n8ytfk1Qim0qUowWkGWZr9/vFdh5Q+mBGLj9E0XPdHsD2wTtU38sXWEozIHdNGfbl7LWKJCwensV0r3AC/M/Jr9apUlkkudHCnm5ptnirG6SUBxxibB5ishI9qVdcjcOwXyZDyjsqCtNaarumPR4DTvFfA+a3rih84eSZp5yz8DrPocPOAUxCF2rkEuVdDGAwHiVFyCwoeRjwUuZIYqWn5IihQA+A==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPF7551E6552.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56228113-37ca-4ac4-e495-08def85641a2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2026 09:44:08.4652
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tBSANZj0j+QRHGYFFuwKmt13n5T15BKWCQBogMt2Z+AYQPPGvXnlNwaZMTuVFXDpn4xLsRrlykiGR5/4Gfs6a+tYhKjo8KhOcNDJenSE0kM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8596
-X-OriginatorOrg: intel.com
+References: <20260806073119.387-1-strst.gs@gmail.com> <20260806073119.387-2-strst.gs@gmail.com>
+ <20260806111523.gjlhjfmb526f2y4g@skbuf> <CAAsRjRnhdPJOCE5BwU7zUTJ0mtSYCOA3xLcF5ejZQT8OFjYiYQ@mail.gmail.com>
+ <20260806124313.see74vgu4dlqqse7@skbuf> <CAAsRjR=RyiraYdLkOcHEagGKXK5+4zwQbT-Zq-1DwVkPiKUNpg@mail.gmail.com>
+ <20260810120821.lykofvogbrn2y2ps@skbuf> <CAAsRjRn7qFWy4UBL8tWGQ9pBo5q3du4e=tU9gSKkSSd7K3RaDA@mail.gmail.com>
+ <CAOiHx=n43MPXKxA7oxBjGh15pa4Uh5etxkPdrV+0GxACEnrRJA@mail.gmail.com>
+ <20260811095828.xwb4nsmx74wtzjei@skbuf> <CAAsRjRn0LNMspFCbi_7QMQsNPBhMXeAZfcvrc40k-Y87F7jHmA@mail.gmail.com>
+ <CAOiHx=mv9Ygywqbi9pR_K4vvu6tJtxdj9zObp_QB80wwV2zmCw@mail.gmail.com> <CAAsRjRnhN67bbyUQpo3iHNMiOK-7vUQFP1CaBrEydNc3jBAtsA@mail.gmail.com>
+In-Reply-To: <CAAsRjRnhN67bbyUQpo3iHNMiOK-7vUQFP1CaBrEydNc3jBAtsA@mail.gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Wed, 12 Aug 2026 11:52:49 +0200
+X-Gm-Features: AUfX_my22duhYvJiDEKujukDrGzjmafFAd8FfaWKzCOYTzNn5NUlqEP3VbqYAk4
+Message-ID: <CAOiHx=kDG_wDjUzcDAYB8yPF=DLMJkzh=QSseBB_p_M4pfa-wQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net: dsa: let drivers offload 8021q uppers on
+ standalone ports
+To: Semih Baskan <strst.gs@gmail.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, florian.fainelli@broadcom.com, andrew@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	vladimir.oltean@nxp.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Aug 12, 2026 at 11:21=E2=80=AFAM Semih Baskan <strst.gs@gmail.com> =
+wrote:
+>
+> Hi Jonas,
+>
+> On Wed, Aug 12, 2026 at 10:24 AM Jonas Gorski <jonas.gorski@gmail.com> wr=
+ote:
+> > > One observation for the "is there another bit" question: on my
+> > > BCM53011 the running value of VLAN_CTRL5 is 0x10. That is bit 4, whic=
+h
+> > > the driver never writes and has no name for. I do not know what it
+> > > does, and it may simply be the bootloader default, but it is a bit in
+> > > exactly the register you are asking about.
+> >
+> > Assuming you mean VLAN_CTRL2, this bit is described for BCM5325 as
+> > "When set to 1, GMRP,GVRP are checked by the
+> > VLAN's forward map" with a default of 0.
+>
+> I did mean VLAN_CTRL5; both registers happen to read 0x10 here.
+> Broadcom's published MDK definitions for BCM53010 [1] name both bits:
+>
+> VLAN_CTRL5 bit 4 is EGRESS_DIR_FRM_BYPASS_TRUNK_EN, a bypass for
+> trunking redirection of egress directed frames, unrelated to the miss
+> path. The same file gives DROP_VTABLE_MISS the exact text you quoted
+> for the newer chips (drop when set, forward to IMP when clear), and no
+> other option.
+>
+> For VLAN_CTRL2, bit 4 is documented as reserved on this chip; the
+> GMRP/GVRP forward map check you quote from BCM5325 moved to bit 5
+> (EN_GMRP_GVRP_V_FWDMAP), which reads 0 here. So the set bit is a
+> reserved default, not the retained BCM5325 function. The remaining
+> VLAN_CTRL2 fields are GMRP/GVRP untag handling and a v_fwdmap bypass
+> for the management port, so nothing in it changes ingress
+> classification.
+
+I copied the wrong line, bit 4 on BCM5325 is en_GMRP_GVRP_v_tagging /
+"When set to 1, GMRP,GVRP frames are tagged
+according to VLAN rule". Bit 5 is also the fwd map (I guess somewhere
+I did a 0-index / 1-index swap in my head), so no changes there.
+
+> The same file also names what b53 calls VC0_VID_CHK_EN and
+> VC0_VID_HASH_VID: one two bit field, VLAN_LEARN_MODE (00 SVL, 11 IVL,
+> 01 and 10 illegal settings). It selects how the ARL is hashed, not
+> how ingress frames are classified, which explains why clearing those
+> bits changed nothing in my measurement. (My intermediate test state
+> cleared only bit 6, which per this description is an illegal encoding;
+> the legal all clear SVL state behaved identically, so the conclusion
+> stands.) And the VID to PVID rewrite bits in VLAN_CTRL0 are documented
+> to act only on frames with VID 0, so on this chip they cannot reclassify
+> real tagged traffic; that rules out the last candidate for a tag-blind
+> mode here.
+
+I think the register description might be wrong here, because changing
+the VID to PVID for untagged packets is the default / expected
+behavior.
+
+The datasheet for switches I do have say it replaces it if the VID is not 0=
+:
+
+"1=3D
+=E2=80=A2 For a single-tag frame with VID not =3D 0, change
+the VID to PVID.
+=E2=80=A2 For a double-tag frame with outer VID not =3D 0,
+change outer VID to PVID.
+0 =3D No change for 1Q/ISP tag if VID is not 0."
 
 
+> > One thing you could try is to mark all ports as WAN ports. The
+> > WAN_PORT_SEL register (page 0, offset 0x26, 16 bit) has a bitmask for
+> > wan ports.
+>
+> I tried it today, and first read the register as is: WAN_PORT_SEL
+> reads 0x0000 on my BCM53011, three consistent reads. The kernel
+> driver never writes it on this generation (it uses offset 0x26 only
+> on BCM5325, as the protected port register there), so it has been
+> 0x0000 through every measurement I have reported in this thread.
+>
+> My earlier statement that BPDUs ingressing switch port 0 reach the CPU
+> was a counter attribution error. That probe read a +7 delta on the wan
+> netdev counter with no capture running (that image had no tcpdump),
+> while the BPDU source was a live bridge port on another router, a device
+> that also chatters IPv6 multicast. Today, with captures bracketing every
+> counter, BPDU class frames are delivered on none of the ports I probed:
+> crafted ones on lan2, on lan3 bridged and standalone, and on port 0,
+> plus real kernel STP hellos on port 0 itself, all zero, while the same
+> frames with a benign multicast destination deliver 10 of 10 to the CPU
+> on every port tried. So there is no WAN/LAN asymmetry and no special
+> port 0: with WAN_SELECT empty, everything trap classed aims at IMP0
+> exactly as the GMNGCFG text says, and IMP0 is down. Your description of
+> the port-5-only breakage was right, and it is worse than I previously
+> reported: STP delivery is dead on the WAN port too, not just the LAN
+> ports.
+>
+> Then the experiment you suggested, on the live system, volatile write
+> with a timed revert armed: WAN_PORT_SEL set to 0x000c, marking the
+> two ports that had my test endpoints (lan2/port 2, lan3/port 3),
+> leaving the management port alone.
+>
+> - No trap rescue appears: BPDUs into a WAN-marked port still deliver
+>   nothing, so the marking does not retarget the trap path at IMP1 on
+>   this topology.
+> - Isolation is exactly as the description implies: unicast between
+>   the two WAN-marked ports through the same vlan-unaware bridge went
+>   from 7/7 to 0/7, and even plain multicast to CPU delivery on the
+>   marked ports went from 10/10 to zero, consistent with "forwarded to
+>   the CPU port only" resolving to the dead IMP0 here.
+> - My management connection through a port I had not marked also
+>   dropped, and came back only when the timed revert fired. The
+>   effect is broader than the marked ports.
+>
+> > So it may also isolate them from each other. Also out of curiosity,
+> > can you wan port talk with non-wan talks in a bridge? Because the
+> > description implies it should not.
+>
+> The pair I could measure says no: the two WAN-marked ports in the same
+> bridge stopped talking to each other entirely, and on this port 5
+> topology they stopped talking to the CPU too. The BCM53010 text also
+> says port 5 can be selected as a WAN port only when IMP1 is disabled, so
+> the CPU port itself cannot be WAN marked on a topology like mine.
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> Of Malathi
-> Sent: Tuesday, August 11, 2026 7:08 AM
-> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
-> Przemyslaw <przemyslaw.kitszel@intel.com>
-> Cc: netdev@vger.kernel.org; intel-wired-lan@lists.osuosl.org;
-> kuba@kernel.org; pabeni@redhat.com; edumazet@google.com;
-> andrew+netdev@lunn.ch; davem@davemloft.net; linux-
-> kernel@vger.kernel.org; Malathi <malathi.a2000@gmail.com>;
-> syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-> Subject: [Intel-wired-lan] [PATCH net-next v2] e100: fix shift-out-of-
-> bounds in e100_eeprom_load()
->=20
-> e100_eeprom_load() and e100_eeprom_save() start with an address length
-> of 8 and call e100_eeprom_read() to auto-detect the real EEPROM
-> address length. e100_eeprom_read() adjusts the length with
->=20
-> 	*addr_len -=3D (i - 16);
->=20
-> based on when the EEPROM drives a dummy zero onto EEDO. A
-> malfunctioning or emulated device that drives EEDO low too early makes
-> (i - 16) exceed the current length, underflowing the u16 addr_len to a
-> large value such as 65529.
->=20
-> That value is then used as a shift count:
->=20
-> 	nic->eeprom_wc =3D 1 << addr_len;
->=20
-> which is undefined behaviour and additionally overflows the fixed-size
-> nic->eeprom[256] cache.
->=20
->   UBSAN: shift-out-of-bounds in
-> drivers/net/ethernet/intel/e100.c:768:21
->   shift exponent 65529 is too large for 32-bit type 'int'
->=20
-> The same corrupted addr_len is also fed back into e100_eeprom_read()
-> for every subsequent word, where it is used as a shift count again:
->=20
-> 	cmd_addr_data =3D ((op_read << *addr_len) | addr) << 16;
->=20
-> so validating the length only once at the caller is not enough.
->=20
-> Clamp the length in e100_eeprom_read() so the subtraction can never
-> underflow the u16, and reject a zero or out-of-range length in
-> e100_eeprom_load() and e100_eeprom_save() before using it. The EEPROM
-> cache holds at most 256 words, so a valid address length is in [1, 8].
->=20
-> Reported-by: syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3De0abb1d45ac291ebebeb
-> Signed-off-by: Malathi <malathi.a2000@gmail.com>
-> ---
-> v2:
->  - Drop the Fixes: tag and retarget to net-next; the underflow is only
->    reachable with malfunctioning or emulated hardware, so this is a
->    hardening change and not stable material.
->  - Clamp addr_len inside e100_eeprom_read() so the auto-detect
->    subtraction can never underflow the u16.  The corrupted length was
->    otherwise reused as a shift count for every subsequent word, so
->    validating it only once at the callers (as in v1) was not enough.
->  - Also reject a zero address length in e100_eeprom_load() and
->    e100_eeprom_save().
->=20
->  drivers/net/ethernet/intel/e100.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/e100.c
-> b/drivers/net/ethernet/intel/e100.c
-> index 29960762e64a..26a7c0aaa6e2 100644
-> --- a/drivers/net/ethernet/intel/e100.c
-> +++ b/drivers/net/ethernet/intel/e100.c
-> @@ -744,7 +744,12 @@ static __le16 e100_eeprom_read(struct nic *nic,
-> u16 *addr_len, u16 addr)
->  		 * complete address.  Use this to adjust addr_len. */
->  		ctrl =3D ioread8(&nic->csr->eeprom_ctrl_lo);
->  		if (!(ctrl & eedo) && i > 16) {
-> -			*addr_len -=3D (i - 16);
-> +			u16 len =3D i - 16;
-> +
-> +			if (len > *addr_len)
-> +				*addr_len =3D 0;
-> +			else
-> +				*addr_len -=3D len;
->  			i =3D 17;
->  		}
->=20
-> @@ -765,6 +770,11 @@ static int e100_eeprom_load(struct nic *nic)
->=20
->  	/* Try reading with an 8-bit addr len to discover actual addr
-> len */
->  	e100_eeprom_read(nic, &addr_len, 0);
-> +	if (!addr_len || addr_len > 8) {
-> +		netif_err(nic, probe, nic->netdev,
-> +			  "invalid EEPROM address length %u\n",
-> addr_len);
-> +		return -EINVAL;
-> +	}
->  	nic->eeprom_wc =3D 1 << addr_len;
->=20
->  	for (addr =3D 0; addr < nic->eeprom_wc; addr++) { @@ -791,6
-> +801,11 @@ static int e100_eeprom_save(struct nic *nic, u16 start, u16
-> count)
->=20
->  	/* Try reading with an 8-bit addr len to discover actual addr
-> len */
->  	e100_eeprom_read(nic, &addr_len, 0);
-> +	if (!addr_len || addr_len > 8) {
-> +		netif_err(nic, probe, nic->netdev,
-> +			  "invalid EEPROM address length %u\n",
-> addr_len);
-> +		return -EINVAL;
-> +	}
->  	nic->eeprom_wc =3D 1 << addr_len;
->=20
->  	if (start + count >=3D nic->eeprom_wc)
-> --
-> 2.43.0
+The description of GLOBAL_CONFIG / GC_FRM_MGMT_PORT_M says that
+"11=3DEnable Dual-IMP ports(both IMP0 and IMP1)   All traffic to CPU
+from LAN ports will be forwarded to IMP0; and All traffic from WAN
+ports will be forwarded to IMP1."
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+so I had the faint hope that making all ports WAN ports makes it trap
+to IMP1/5 instead of IMP0/8.
+
+But if it doesn't, and additionally isolates them, then this obviously
+won't work, and enabling port 8 as CPU port really is the only option.
+
+Thank you for the quick confirmation.
+
+Best regards,
+Jonas
