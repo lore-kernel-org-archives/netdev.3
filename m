@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5423B42FB
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 08:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF563B9922;
+	Wed, 12 Aug 2026 08:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786521859; cv=none; b=dVJvlUOlBMdgRv9b089K3oLrWJcz8/8iVNFnr2RVUOCPWKaca4gLMNieXPn3aOLPy8PR1t+3XsA5dKeSMrgjARk7FkF1dDqQFSU8Tl6s9gPfFLPttRVN4tYpMd7pfNUQMLjOztsp5UOGfxpWo97mNiiBKnQuQxOmfVrYbt0DLRE=
+	t=1786521860; cv=none; b=ufXhx81a6SwBXEPadnFbIHRXojJ6gekt705/FShnc8qCl0tMzcC+FiHE44VozLxpFxJdLCoLBNclrlsXVT4lSCMdosSANJQ9Mrjyw+Feb9cHPnpne+pgiTIcxOWLil38tqI/gTkpDsy2imwShjyAYqEtgSuJlgDjqt9/8vKnpeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786521859; c=relaxed/simple;
-	bh=7AsXl8lJbBWdWWyo4O+DB9JFzUUrFqzhUNJAuLWiaKI=;
+	s=arc-20240116; t=1786521860; c=relaxed/simple;
+	bh=aqb5wzUnjQiE92vTQG6HskaW9vJagCtBpTvw3msDOHM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=guD7PpmeUsrKnhN7a1rXU25it0XICLDihVNjhlcLX5QD2J+yNfiEN/qkzcZZABTzwpxc0YSq28IenpJFUykeLOmTG231ZhE9K6/trWmKLiLD9O5BlLs9iW1e2rEHbT2PDc8W0AQPEv5klkkLMXHFMPC+roiLXNFX1dpnmEGwKY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zjkd8wt6; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=fkHEvjeoRuPMlVRH1mRBgBpixUQV4mFKl+C4mFnbfalveqcGNMOIpkXwrZeHTTEBobEOnj2zw8e4PmFm+j8ON7xv3f/zqo4WTFvX/dPLvqClQAS9wJnKRKLkaDpFp3RsQkaMiHjtemvTjRlGfSf+rmayE7cXB034SIwTA8oQ1dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CeNMOylA; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zjkd8wt6"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CeNMOylA"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E11251A15A2;
-	Wed, 12 Aug 2026 08:04:15 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id C43D71A15AE;
+	Wed, 12 Aug 2026 08:04:17 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B5F786045E;
-	Wed, 12 Aug 2026 08:04:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A035A11C4C93D;
-	Wed, 12 Aug 2026 10:04:12 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 91E076045E;
+	Wed, 12 Aug 2026 08:04:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 03FA911C4C946;
+	Wed, 12 Aug 2026 10:04:14 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786521854; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1786521856; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=pnN0FpzhAapp0YqcypTgIGSwzpgSufOPcxH2pWEkLuQ=;
-	b=zjkd8wt6/Se2J+AcXhYHv1E3ZR2Rm+6aoPO4TGzwh4x8ne/ZqMQe7bAJ1pcebdUnWa0X95
-	jXE/U3iYSA+eMckrlcIbdQOdAIgFfHP6h26NNVab6xFpMrXbD8Otk6bDud5zuALqyG+Byf
-	TD/kMIVD+RKO9Im+38qNE3jBVmywnANyGTA2ue0g10xk7b2i2EVI6c2NGdvo9NBgJ701hG
-	4QcBZMxR+UK6RoVyOclGex0CeTsoN16se/R3puz6RLHtqj05frNAdtHe+gFeJB6IVC9RFC
-	KMNyg/SEaGIL4HH34bV33IjIVaHg9VN4Dbmxh/VPHp2DWAFYQ2nc7AUQ+3ggCQ==
+	bh=0ZUucWJM0ugD0v7uyorCqPnZmrLP4lvxGxWS5J58lyY=;
+	b=CeNMOylAcxF+s2VJGsuXoVeRa+AVD8PgPb6wRRH+Iwz7opSQPWBPkv0lywBPpDT3ha9KKr
+	4VqBU0sjzeX78q+evs9/MzJORE2sy7jnDe4sh2vr6iDg7XA1KupIpTqXKOUv9JF7GVxP0q
+	+ithCuA9e+NgPW51JKqBQgqzkAQnvfpPcWLvY08alN8AbHQ4mQW9b6z+ihbSDxSedituY7
+	975jQ5dY9WfkTQwHRYPbQRZcUOtRnmRYKqZLvUT/9vvcjtGjnhJ3htddpNjta3htfnrRnY
+	2UHhnMFwf9BfeL7D27ri/7qibyeElCoeF1klpmDivNYSrTddMWWZ+TleGWLLAg==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Wed, 12 Aug 2026 10:03:27 +0200
-Subject: [PATCH net-next v9 13/17] net: macb: introduce
- macb_context_alloc() helper
+Date: Wed, 12 Aug 2026 10:03:28 +0200
+Subject: [PATCH net-next v9 14/17] net: macb: move printk() calls out of
+ bp->lock critical section
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260812-macb-context-v9-13-7ddbf5f715e0@bootlin.com>
+Message-Id: <20260812-macb-context-v9-14-7ddbf5f715e0@bootlin.com>
 References: <20260812-macb-context-v9-0-7ddbf5f715e0@bootlin.com>
 In-Reply-To: <20260812-macb-context-v9-0-7ddbf5f715e0@bootlin.com>
 To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
@@ -68,99 +68,145 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-Move the context allocation sequence from inline macb_open() to its own
-helper function called macb_context_alloc(). All ops doing context
-swapping (set_ringparam, change_mtu, etc) will use this helper.
+printk() while bp->lock is acquired is dangerous if netconsole is active
+on the interface. In that setup, we might land in macb_poll_controller()
+-> macb_interrupt() -> spin_lock(&bp->lock) but bp->lock is already
+acquired.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+This is not an issue currently because macb_interrupt() first checks IRQ
+status, potentially early returns, then grabs lock. This early exit is
+expected in netpoll scenario.
+
+However if we came to reading the status inside the bp->lock critical
+section (as it should be to avoid races), then this would turn into a
+deadlock. And we will.
+
+Solution: move printk() calls out of the critical section, to ensure we
+can never netpoll under bp->lock's reign. Added benefit is a smaller
+and simpler atomic section.
+
+--
+
+In macb_tx_error_task(), defer netdev_err("halt tx timed out") call to
+after the critical section. Update the message to highlight it occurred
+in the past. Inherit the buffer exhaustion boolean variable name from
+the old code comment.
+
+In macb_tx_error_task(), defer the netdev_err("TX buffers exhausted
+mid-frame") call out of the loop. This also means it goes from
+1-per-error to 1-per-task-invocation.
+
+In IRQ handling, move HRESP error printing out of macb_interrupt_misc()
+into macb_interrupt(). Again, it means we dedup error reporting if
+status is read multiple times in a row with HRESP bit set. This is fine
+as from past instances I've seen, this message spams our log if it
+occurs.
+
+Notice we *ignore* debug printks; if you are debugging MACB maybe don't
+use netconsole...
+
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 55 +++++++++++++++++++++-----------
- 1 file changed, 36 insertions(+), 19 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index f0a4a9dcc460..5a4eb87f5a97 100644
+index 5a4eb87f5a97..d23a0d08c276 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -2868,6 +2868,36 @@ static int macb_alloc(struct macb_context *ctx)
- 	return -ENOMEM;
+@@ -1303,6 +1303,7 @@ static void macb_tx_error_task(struct work_struct *work)
+ 	struct macb_tx_skb *tx_skb;
+ 	struct macb_dma_desc *desc;
+ 	bool halt_timeout = false;
++	bool buggy_driver = false;
+ 	struct sk_buff *skb;
+ 	unsigned long flags;
+ 	unsigned int tail;
+@@ -1329,7 +1330,6 @@ static void macb_tx_error_task(struct work_struct *work)
+ 	 * macb/gem must be halted to write TBQP register
+ 	 */
+ 	if (macb_halt_tx(bp)) {
+-		netdev_err(bp->netdev, "BUG: halt tx timed out\n");
+ 		macb_writel(bp, NCR, macb_readl(bp, NCR) & (~MACB_BIT(TE)));
+ 		halt_timeout = true;
+ 	}
+@@ -1374,8 +1374,7 @@ static void macb_tx_error_task(struct work_struct *work)
+ 			 * those. Statistics are updated by hardware.
+ 			 */
+ 			if (ctrl & MACB_BIT(TX_BUF_EXHAUSTED))
+-				netdev_err(bp->netdev,
+-					   "BUG: TX buffers exhausted mid-frame\n");
++				buggy_driver = true;
+ 
+ 			desc->ctrl = ctrl | MACB_BIT(TX_USED);
+ 		}
+@@ -1412,7 +1411,14 @@ static void macb_tx_error_task(struct work_struct *work)
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+ 
+ 	spin_unlock_irqrestore(&bp->lock, flags);
++
+ 	napi_enable(&queue->napi_tx);
++
++	if (halt_timeout)
++		netdev_err(bp->netdev, "BUG: halt tx timed out, we ignored it\n");
++
++	if (buggy_driver)
++		netdev_err(bp->netdev, "BUG: TX buffers exhausted mid-frame\n");
  }
  
-+static struct macb_context *macb_context_alloc(struct macb *bp,
-+					       unsigned int mtu,
-+					       unsigned int rx_ring_size,
-+					       unsigned int tx_ring_size)
-+{
-+	struct macb_context *ctx;
-+	int err;
-+
-+	ctx = kzalloc_obj(*ctx);
-+	if (!ctx)
-+		return ERR_PTR(-ENOMEM);
-+
-+	ctx->info = &bp->info;
-+	ctx->rx_buffer_size = macb_rx_buffer_size(bp, mtu);
-+	ctx->rx_ring_size = rx_ring_size;
-+	ctx->tx_ring_size = tx_ring_size;
-+
-+	err = macb_alloc(ctx);
-+	if (err) {
-+		netdev_err(bp->netdev,
-+			   "Unable to allocate DMA memory (error %d)\n", err);
-+		kfree(ctx);
-+		return ERR_PTR(err);
-+	}
-+
-+	bp->macbgem_ops.mog_init_rings(ctx);
-+
-+	return ctx;
-+}
-+
- static void gem_init_rx_ring(struct macb_context *ctx, unsigned int q)
+ static bool ptp_one_step_sync(struct sk_buff *skb)
+@@ -2121,11 +2127,8 @@ static void gem_wol_interrupt(struct macb_queue *queue, u32 status)
+ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
  {
- 	struct macb_rxq *rxq = &ctx->rxq[q];
-@@ -3236,27 +3266,15 @@ static int macb_open(struct net_device *netdev)
- 	if (err < 0)
- 		return err;
+ 	struct macb *bp = queue->bp;
+-	struct net_device *netdev;
+ 	u32 ctrl;
  
--	bp->ctx = kzalloc_obj(*bp->ctx);
--	if (!bp->ctx) {
--		err = -ENOMEM;
-+	bp->ctx = macb_context_alloc(bp, netdev->mtu,
-+				     bp->configured_rx_ring_size,
-+				     bp->configured_tx_ring_size);
-+	if (IS_ERR(bp->ctx)) {
-+		err = PTR_ERR(bp->ctx);
-+		bp->ctx = NULL;
- 		goto pm_exit;
+-	netdev = bp->netdev;
+-
+ 	if (unlikely(status & (MACB_TX_ERR_FLAGS))) {
+ 		queue_writel(queue, IDR, MACB_TX_INT_FLAGS);
+ 		schedule_work(&queue->tx_error_task);
+@@ -2165,7 +2168,6 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
+ 
+ 	if (status & MACB_BIT(HRESP)) {
+ 		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+-		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
+ 		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
  	}
  
--	bp->ctx->info = &bp->info;
--
--	/* RX buffers initialization */
--	bp->ctx->rx_buffer_size = macb_rx_buffer_size(bp, netdev->mtu);
--	bp->ctx->rx_ring_size = bp->configured_rx_ring_size;
--	bp->ctx->tx_ring_size = bp->configured_tx_ring_size;
--
--	err = macb_alloc(bp->ctx);
--	if (err) {
--		netdev_err(netdev, "Unable to allocate DMA memory (error %d)\n",
--			   err);
--		goto free_ctx;
--	}
--
--	bp->macbgem_ops.mog_init_rings(bp->ctx);
- 	macb_init_buffers(bp);
+@@ -2185,6 +2187,7 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+ 	struct macb_queue *queue = dev_id;
+ 	struct macb *bp = queue->bp;
+ 	struct net_device *netdev = bp->netdev;
++	bool hresp_err = false;
+ 	u32 status;
  
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-@@ -3295,7 +3313,6 @@ static int macb_open(struct net_device *netdev)
- 		napi_disable(&queue->napi_tx);
+ 	status = queue_readl(queue, ISR);
+@@ -2231,15 +2234,22 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+ 			napi_schedule_irqoff(&queue->napi_tx);
+ 		}
+ 
+-		if (unlikely(status & MACB_INT_MISC_FLAGS))
++		if (unlikely(status & MACB_INT_MISC_FLAGS)) {
+ 			if (macb_interrupt_misc(queue, status))
+ 				break;
+ 
++			if (status & MACB_BIT(HRESP))
++				hresp_err = true;
++		}
++
+ 		status = queue_readl(queue, ISR);
  	}
- 	macb_free(bp->ctx);
--free_ctx:
- 	kfree(bp->ctx);
- 	bp->ctx = NULL;
- pm_exit:
+ 
+ 	spin_unlock(&bp->lock);
+ 
++	if (hresp_err)
++		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
++
+ 	return IRQ_HANDLED;
+ }
+ 
 
 -- 
 2.55.0
