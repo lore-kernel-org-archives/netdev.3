@@ -1,64 +1,82 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BAD21D591;
-	Wed, 12 Aug 2026 05:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F092253A1
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 05:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786512947; cv=none; b=sR7RBRimllNlDbgDjL/v1O8WfPrtxrHKY7deIfoIaNtbyK6+l6/pPeCFYSXIZSgyCyZ9U3ZcDzQhE/1KRSpwYd9GgRhuSAhUMng1/34f2zqPlea9Blkcu/03QgULBq1Klchx5+J4Y6Sta1D2NBHeHpJN7xuNEuh//SYMDYcZJJk=
+	t=1786513760; cv=none; b=iYhX5iaDxjhYc5rJQYjBMqi241pJvyXDp17WvLkF51+OVqJLD7LLVq97WplYklBJ2ElDTvpVcjGInnm2Hu9l6RHj+ZQN5N29xqpmVBD+DQGtZcH+tngCUhAFEEy/a5t/zh3I+iXHfHpA05kJ5CQZWf78k4Aj48utDM8r3ZLJ9jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786512947; c=relaxed/simple;
-	bh=dCKX9pyJbRqQmQb7npyQJDYRAijvgYPlqNwyA8Leimg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TGz2uxre4TvqRhuWtvTfMjSazYarZWTZ6/G5H1gHw7rGU5Zvs/62s9VB/eOiCHJQUxODmG/NVntyx779OYgz+ZfZleeCI+k5/Zzbi24OKLfZyeFetF8Bq19IHL+dyE1U/1JGgPcKKYLL40RqnW+o/PVulQe5mqVettvPGliWqfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=O3iOmlhc; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1786513760; c=relaxed/simple;
+	bh=Rk3SJ+6I1pG7JyhWaBjV13YDNTCGyEH+MHwqLBNszuM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cOTjq0X4wjcxAe1DH3UM9Eo1pHIGwcVAy7QH6ruHxw+TycnyAJyAATl30NCD27ftkplL4dsSZhvKT9hyabgodjQ849RpWWrtj/IDXrjyg65VYcf3eG/+RLfiW1q+kEvAnBWuI/9ytBF1meyM/K5HEB+tMoK3QxuejUdSyNgqOZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SHG7v44a; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="O3iOmlhc"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67C57QFG994930;
-	Tue, 11 Aug 2026 22:35:38 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=EEFZlOGGXTzLwgtc/uz7R7T
-	Y5JYojPRfe5j2EPtUZ48=; b=O3iOmlhc6zEPRB4SUv/Xr/XH9vpb/YDhYMGuPwJ
-	EyxOHoX8oQnfirUHfHmUtPOclWzMfyOyjr8AyCoMS6CIej0sT/u/XzvC/UwLcZXU
-	N9bP30zN1oJA5TwOpHrKfe0Zmj5gunR8ML94PCa0HhMw/iezOKIRckIxKGHTSkG8
-	6FWIS6ZUb03B/eufCawJtSdBFmpzdBj4/s/nA/XSpr4UHZDzBiz6I9mBcDwtN/Sp
-	tFBE5GUvIDSpMuPBxgTB0pP3XG0ZTfIpGevGkT0nIHVmvHtw8YBkJvpZJsLPFKz/
-	KKksd6va09XP+28Zv7+LuWjKPDkdC9F/ac29Qhmzm7A8+AA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g0deb0w8d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Aug 2026 22:35:38 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 11 Aug 2026 22:35:37 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 11 Aug 2026 22:35:37 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id 4B5273F7071;
-	Tue, 11 Aug 2026 22:35:33 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Satheesh Paul <psatheesh@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v2] octeontx2-af: Add mailbox to read default MCAM entry
-Date: Wed, 12 Aug 2026 11:05:22 +0530
-Message-ID: <20260812053523.3329305-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SHG7v44a"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49978908b35so4022075e9.0
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 22:49:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786513757; x=1787118557; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iZ1AxCPoNmmZ1LrnEeHkK+kSt/8EKPxv2MfaZqo0GaU=;
+        b=SHG7v44axkhoKa4A92tKXyOtbmkswqy61d6WwTCsr6BaQCoAN14P7H5dZMAfOEX/j/
+         93guZ5Fs6USMvZhYIS6nZA/x7tahzFZUgDmWGQ7srkZ0frue3ttAczGU5upHgGwZKojA
+         LGQOe9ujlmcN+uuwbuw76tBIuN5JuBVCwCl4rm9hOcvLyfJnUzqsCgu2rAOzgJz0bNSi
+         JShb2McCZsn1o8Kgtl9RMoSp3fjYNON/kwyzvOAGj0p29nO4/TV4jDnR5EHHZzNJ1MuK
+         dKPITaaImpPQYq9ynijjrdhI4Vh6Rz4GlMn+y3YweI356la+0E3aci2VrAREEeyH0BIm
+         IS+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786513757; x=1787118557;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iZ1AxCPoNmmZ1LrnEeHkK+kSt/8EKPxv2MfaZqo0GaU=;
+        b=n/MQROd0tfBwZkH1HJXZXuwmkjelypsTY5+Pkkp6Zm99qfQDNXuJ8oqxGWjv9e6TD5
+         HJWeQJ8WhWXGy75tLc3p9CR93hBDcxNZxWHZ1aQFZlZFd3exVWJ8z8Fxhg8Pu/ZAXr9M
+         hReCMvrDk2ZLY3wHpDjbLckO+tBGQ5dorLnvUhEQM6F9H5QxWOANibau6gpWh1+mBBdc
+         l5prTueENQUBaKW1JZwyN2Ch3caPmWrtMUeFKJ7aTvnOM6KTjgNrBL1AVMnfXW235eiC
+         IXRrHTzZWiMbQSKVr5K+eAg/s4KsFv5g9pHIHOk/65yOXS+5R1tjW9mZxMVKsY9tsmru
+         XgsQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rri0xjyjIKgMvDZqlxWc8p5UgY4NdCl/O6DzZ8LwHAO3CqFwOmgZzZwqadzrLdJOc9KPjsFoMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/WrtJNw96y4s1Fqokircd1HZkMJecYVYUlTJoY9CdNiDZqrG3
+	cDbLzeyvq80ZzfKXmrrMd/ePIEoZ/7wsqupBi3+ze3f67JXc+0twgegPSxNP7+Lo
+X-Gm-Gg: AR+sD12WsoCMXzYrnsOayqc/gqbDiGhOard28x4EjLYs77Hil4aWAmZRi8DEXFEWg0b
+	oc7yHOsIwhLbPUx3lgnJqdkjUFh7MxTZknUhWXTVaZK1W8yIE2XBcy9+oPX5xpHsaOkv2xHqe3w
+	2PiPRaQ8bN2YiMOBUgKGdEwKN/Rt15QyLOUqHQvH2DtcMgUmjNG7ebFnOL7em+qKdP5xr/uScQl
+	VXLBdik5j8YdAMk/53POwtAZoWfNr+MJtfYbtDmdpw2MmAIDhVkCHQCYqt4LHi5f1EuCajF8BSl
+	eIO7O2Rsy4BoMOTUmNm2VVpYAAl+78iUKg/Re7F88R9AK0BZ1sNTI/8V7orRPpTawEo1P6IRCjQ
+	eX7l3UBEfIC6QScR65pwCUn1PTwl8W4z6+mqyjlap/dNP63Nh+aVLSvpSC+HqMYisc8C48YpTGz
+	8OiBKowMrU+mAMJ74smu3kFAGtSU7eMTk7xa2Y1NThEA40WKdLB3pw/DA8OpgX5rp/ZtrFbY6Jy
+	uNV/rW4bPynMvF/yAs7c6Y+Kmdk32hrdnJ/vUKQWW79Xp4qlJK2RbqBrt/6o6TQnK/WZr3dfOfU
+	LOo=
+X-Received: by 2002:a05:600c:4314:b0:499:521d:bff1 with SMTP id 5b1f17b1804b1-4997c0e6fbdmr19442725e9.2.1786513756678;
+        Tue, 11 Aug 2026 22:49:16 -0700 (PDT)
+Received: from labdl-itc-sw01.tmt.telital.com ([2a01:7d0:4800:7:a04:488a:882a:de93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997c998f27sm17483405e9.15.2026.08.11.22.49.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 22:49:15 -0700 (PDT)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+X-Google-Original-From: Fabio Porcedda <Fabio.Porcedda@telit.com>
+To: =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	stable@vger.kernel.org,
+	Breno Leitao <leitao@debian.org>
+Subject: [PATCH v3] net: usb: qmi_wwan: add Telit Cinterion FE990D50 composition
+Date: Wed, 12 Aug 2026 07:49:11 +0200
+Message-ID: <20260812054911.447887-1-Fabio.Porcedda@telit.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,106 +84,80 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDA0MiBTYWx0ZWRfX/XiET5TYZjPG
- 1lFzOo7shKVK0S1CRsEBrCnf+mjHRlEF0bkdmB2cDtKLgzR7SKGTxxIxWn2yUW6h9Pc/LKTwrVv
- OSH7kT9m9Y9m5WNmWxQDOawgg3Zd6tg=
-X-Proofpoint-ORIG-GUID: PiNuzVbFqQBZofcgzQW0A12xX18N2_Cg
-X-Proofpoint-GUID: PiNuzVbFqQBZofcgzQW0A12xX18N2_Cg
-X-Authority-Analysis: v=2.4 cv=MJxQXsZl c=1 sm=1 tr=0 ts=6a7c062a cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=BKkIFbPduOxyNhHukjcA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDA0MiBTYWx0ZWRfXzQJ3oLt7Uibt
- D4/WcRuihiy7ScF+H3EkZxS3Z3LejKcv6rE8Ge9fYDKoaeWgNhn29ItlPAbaDEB+ur9sz5KSOj/
- RDs9nvIlVlDvLLVBb5swVAe8z1+ZKP+bSENvBE5Tt5z09MG9/k5lWOTtgNj1dM3mKGNq+2r/qL4
- vDXEWXEACo6x+T1AcfFXnkGGt44B6x4MYybAJoRuoiwq59jtAZjwER/hXaFr6Jdm6sKAe50wKxv
- Rdkt61U7kkJd8xRiIKUFm0pGCflKljq3Elrf/8+W8kPKjOhCH97B8cLnhfnT/viXf3PK8x3hffL
- JzjIky7o2Qe4bd8/DBWZFVoJl46BVWSO7fEz+jSvt+xtjmX9G30ptiBzeyYj7l753OAgIdfoy9E
- IB1l5B8MlOESO55RORsyLJnFIVREy8AZhfkeUOut8HGsyynjQR1CDw8chqiqMvYPjt6J6i+NApA
- nKwphdr7NWXOC3yKqwg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-12_01,2026-08-10_03,2025-10-01_01
 
-From: Satheesh Paul <psatheesh@marvell.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-Add support for reading the default unicast MCAM
-rule associated with a NIX LF on non-CN20K silicon.
+Add the followin Telit Cinterion FE990D50 composition:
 
-Signed-off-by: Satheesh Paul <psatheesh@marvell.com>
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
+0x0991: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + ADPL + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=06 Cnt=03 Dev#= 10 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=0991 Rev=06.06
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE990
+S:  SerialNumber=2aa802d2
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
 ---
+ Changes:
+v3:
+- Fix the comment about the composition
+- Add reviewed-by tag Breno Leitao 
 v2:
-- Added a CN20K guard to reject legacy default MCAM rule reads on CN20K.
-- Updated the commit message.
----
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  2 +
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 37 +++++++++++++++++++
- 2 files changed, 39 insertions(+)
+- https://lore.kernel.org/netdev/20260810103409.133796-1-fabio.porcedda@gmail.com/
+- Add stable@vger.kernel.org
+v1:
+- https://lore.kernel.org/netdev/20260810102840.125473-1-fabio.porcedda@gmail.com/
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index 73f743e4a83d..cece197d1074 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -309,6 +309,8 @@ M(NPC_MCAM_GET_DFT_RL_IDXS, 0x601e, npc_get_dft_rl_idxs,	\
- M(NPC_MCAM_GET_NPC_PFL_INFO, 0x601f, npc_get_pfl_info,		\
- 					msg_req,		\
- 					npc_get_pfl_info_rsp)	\
-+M(NPC_MCAM_READ_DEFAULT_RULE, 0x6021, npc_read_default_rule, msg_req,	\
-+					npc_mcam_read_base_rule_rsp)	\
- /* NIX mbox IDs (range 0x8000 - 0xFFFF) */				\
- M(NIX_LF_ALLOC,		0x8000, nix_lf_alloc,				\
- 				 nix_lf_alloc_req, nix_lf_alloc_rsp)	\
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index db27ea622f35..60922944675b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -4303,6 +4303,43 @@ int rvu_mbox_handler_npc_set_pkind(struct rvu *rvu, struct npc_set_pkind *req,
- 				      req->skip_size);
- }
- 
-+int rvu_mbox_handler_npc_read_default_rule(struct rvu *rvu,
-+					   struct msg_req *req,
-+					   struct npc_mcam_read_base_rule_rsp *rsp)
-+{
-+	struct npc_mcam *mcam = &rvu->hw->mcam;
-+	int index, blkaddr, nixlf, rc;
-+	u16 pcifunc = req->hdr.pcifunc;
-+	u8 intf, enable;
-+
-+	if (is_cn20k(rvu->pdev))
-+		return NPC_MCAM_INVALID_REQ;
-+
-+	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
-+	if (blkaddr < 0)
-+		return NPC_MCAM_INVALID_REQ;
-+
-+	rc = nix_get_nixlf(rvu, pcifunc, &nixlf, NULL);
-+	if (rc < 0)
-+		return rc;
-+
-+	/* Read the default ucast entry */
-+	mutex_lock(&mcam->lock);
-+	index = npc_get_nixlf_mcam_index(mcam, pcifunc, nixlf,
-+					 NIXLF_UCAST_ENTRY);
-+	if (index < 0) {
-+		mutex_unlock(&mcam->lock);
-+		return NIX_AF_ERR_AF_LF_INVALID;
-+	}
-+
-+	/* Read the mcam entry */
-+	npc_read_mcam_entry(rvu, mcam, blkaddr, index, &rsp->entry, &intf,
-+			    &enable);
-+	mutex_unlock(&mcam->lock);
-+
-+	return 0;
-+}
-+
- int rvu_mbox_handler_npc_read_base_steer_rule(struct rvu *rvu,
- 					      struct msg_req *req,
- 					      struct npc_mcam_read_base_rule_rsp *rsp)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 94cdb61dca83..8178a8758cd3 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1360,6 +1360,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x1bbb, 0x0203, 2)},	/* Alcatel L800MA */
+ 	{QMI_FIXED_INTF(0x2357, 0x0201, 4)},	/* TP-LINK HSUPA Modem MA180 */
+ 	{QMI_FIXED_INTF(0x2357, 0x9000, 4)},	/* TP-LINK MA260 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x0991, 0)}, /* Telit FE990D50 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1031, 3)}, /* Telit LE910C1-EUX */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1034, 2)}, /* Telit LE910C4-WWX */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1037, 4)}, /* Telit LE910C4-WWX */
 -- 
-2.48.1
+2.55.0
 
