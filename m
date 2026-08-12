@@ -1,73 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958BE31E822;
-	Wed, 12 Aug 2026 00:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D58131E822
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 00:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786495798; cv=none; b=El900kLS8qZO5w9GtnDDNgjJ8FKcCKKkxl3jlDL5r5+fcRaaj2f7BVddR71dokzs1flywHTRFIcvSgW+nYiyisxQkEtJ8Ntod75MwVgI6e4FJuSRjTX/MSKKfunWWifeOJfo0NqkujYn5NJMx41VWFWmhRlohzebEFkrhPX07Ww=
+	t=1786495851; cv=none; b=MiBYIB991TchpLLQ4hIoGNgDcOUOmc1zRY2FQefLOpF1RYmHRkWvetST43cF/DCkpE4bCRadk+YT+fNSUNVHdlphrNAa7dGA/irbGNGOUOpmBvEZcz9nnyUCqp34nqMfme3Be9QchF1XPKzTSIfim4VFmn0FFWfav6Yw7ULDDd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786495798; c=relaxed/simple;
-	bh=2VcDBJDVs+vmgNp+dB6XAk464SBGR8TgevStOPexpJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pHBa7J5Y7nnKDlgfywj4ZCPD5m9NbZvEXsBuLxKxLT23V+6StSCa7s0tDBa5aTZ36hanc/S0cEu8zRbBJhmpwKetkxodSk17/GtBQB+66phtT2jWjl8NzNrvfjWAD7b+xSfhHnbXMBMHyyJSW5fbAufK/wXBOflfCbmfSE8P9sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CD7NryQg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786495851; c=relaxed/simple;
+	bh=EDWqp01h0IqbZTCbvLld/HoO1D725jYGBGAqTNtAFy8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=O/BiMlkc5CpnDU21mHiDU2Qb2mgAcFDc4FrPv5lV2UwYRkMG8LeGq2bVMfEYYdihWleWgwMqeGfgJ+H5kR0HyKGW+nDl6PpS47UrQKryofJ0pcGGzqUVXk4TaFEINQ920GSTmh8FGZWX6X9ffiH7I9lXf4aFAxdGo21nw9thFE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=goXRt/OE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CD7NryQg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C624D1F000E9;
-	Wed, 12 Aug 2026 00:49:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="goXRt/OE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAF81F000E9;
+	Wed, 12 Aug 2026 00:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786495797;
-	bh=NlLZAfkHJWmL9wumUW0/LJMGJttCTHof7QERR7WPPxU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CD7NryQgS+EV2BLz4O1aNCvHbS/LgvaORj7VS4uTFBlO7P8hynfS4aR1nsdUFGhXk
-	 t8eapn+IgRbAobvA279hM2QaWr+QmU8gpHWW1inSXUzqcleuM7xKY1u29VmBuP40yH
-	 hvlzJdem4bX9XEaxAH//BmgXrtiqOZeXYCv7tOXOztduhf//hJLR0uAfDwLUy9QyQr
-	 pTjbLjNst8DTBzti3U6+3vTPDBIpugQbnVnMPlYLegDX2VZsiG58XBKYAf5YNmsjOP
-	 74OUFZlNDiARXVma+cWRU5S/xxwfCeRGDIQh+0W3OylmHShvFeRNBdvs/0zVTy3HpY
-	 8ryzKIIs3eMtw==
-Date: Tue, 11 Aug 2026 17:49:56 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Dinh Nguyen <dinguyen@kernel.org>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org
-Subject: Re: [PATCH] MAINTAINERS: update entry for socfpga dwmac and
- gmii/sgmii
-Message-ID: <20260811174956.55ba4e44@kernel.org>
-In-Reply-To: <20260810125415.1717893-1-dinguyen@kernel.org>
-References: <20260810125415.1717893-1-dinguyen@kernel.org>
+	s=k20260515; t=1786495850;
+	bh=AERHQee1PYYPeUfsIstylas6Z61xnFXh/9sDf2FFWPE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=goXRt/OESbyhFCSMV67zxVWRCE2I5YIfSRKYUDSCU8tzt5YRy5NW7Oav4Gt5cDJox
+	 OO62fpzUY0Xtej7YS+lTIEfOYTddIsH3b/IMBsERJ6DVuMwqzAPG2yAjbV/PqMPnWK
+	 n005h3UoEPDjbGs3Ur+8iuD813LfJGHePNADTQSGMGOy93g07JHEngsbAvrgqtchQ9
+	 K/O/cRps7Ge3KRbCmaCpJeaOqbIaVrwsXg4HBWfik+9xkXOp2CJZujmDg3SQczNcB4
+	 ZHmejPstXmUG24pbQC2t+eyf5r0DwUtIcyLenIIA2JU1EWYZU4PHCEiXyaGEY/YqSf
+	 l6FNAolYUB/lw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197F53809A35;
+	Wed, 12 Aug 2026 00:50:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] af_packet: Don't send zero-byte data in
+ tpacket_snd().
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178649580565.1217141.15269126551177731579.git-patchwork-notify@kernel.org>
+Date: Wed, 12 Aug 2026 00:50:05 +0000
+References: <20260810150447.1220864-1-edumazet@google.com>
+In-Reply-To: <20260810150447.1220864-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuniyu@google.com, willemb@google.com, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, syzbot+30b93b6845b19cc38581@syzkaller.appspotmail.com
 
-On Mon, 10 Aug 2026 07:54:15 -0500 Dinh Nguyen wrote:
-> Mathew Gerlach is no longer at Altera, so remove his entry as a
-> maintainer for the SoCFPGA DWMAC ethernet glue layer and the GMII/SGMII
-> dt-bindings files.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 10 Aug 2026 15:04:47 +0000 you wrote:
+> syzbot reported a WARNING in __dev_queue_xmit() triggered via tpacket_snd():
 > 
-> Maxime Chevalier has volunteered to maintain the dt-bindgings YAML files
-> as well.
+> skb_assert_len
+> WARNING: at include/linux/skbuff.h:2753 skb_assert_len
+> WARNING: at __dev_queue_xmit+0x21bc/0x4970 net/core/dev.c:4781
+> 
+> Call Trace:
+>  <TASK>
+>  dev_queue_xmit include/linux/netdevice.h:3448 [inline]
+>  packet_xmit+0x243/0x310 net/packet/af_packet.c:276
+>  tpacket_snd net/packet/af_packet.c:2907 [inline]
+>  packet_sendmsg+0x28d6/0x4eb0 net/packet/af_packet.c:3134
+> 
+> [...]
 
-While you respin - AI suggests spelling the name right in the commit
-msg:
+Here is the summary with links:
+  - [net] af_packet: Don't send zero-byte data in tpacket_snd().
+    https://git.kernel.org/netdev/net/c/6bcd76c134c5
 
-  A few small things in the changelog, and a process question.
-The names in the changelog do not match the names in the diff. The
-changelog says "Mathew Gerlach", but the removed lines say "Matthew
-Gerlach <matthew.gerlach@altera.com>". The changelog says "Maxime
-Chevalier", but the added lines say "Maxime Chevallier
-<maxime.chevallier@bootlin.com>". Could the spellings be fixed so that
-searching for either name finds this commit?
-There is also a typo: "dt-bindgings" should be "dt-bindings".
-On the process side, the patch moves both binding files under the
-"ARM/SOCFPGA DWMAC GLUE LAYER" entry maintained by Maxime Chevallier and
-rewrites the maintainers field of both YAML schemas to name him, but the
-only tag is Signed-off-by from the submitter. Should an Acked-by from
-Maxime Chevallier be recorded here to back up the "has volunteered"
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
