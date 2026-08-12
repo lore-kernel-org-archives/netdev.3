@@ -1,176 +1,112 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-op-o18.zoho.eu (sender-op-o18.zoho.eu [136.143.169.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CB93EFFA7
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786526691; cv=none; b=HzGP4LIwWXc5TcUEiuLxxgwvis/wNnCofs+jwO63Rm4cnLnNLElWcpJeECMLgxoBGv53g1Q7k/pNwMWE2cQMC9rtPICN1JmtPcXbssnAQqQ4mUGPBzawscfq2Ud1hlm2wnFoEtVbjz5vpNZL7CRr8OSrP4ZrjuUsU+I2G7CYwf0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786526691; c=relaxed/simple;
-	bh=xMZ9LKd7Y4IqdZ/gTTx7waSmUHvUp6ONCJSsGWAPp3k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FONzWujpy8nNH1Ag77ep2UQOyHuAuIxiqjTzOZNGs5FW1TsZuVNeIkNVpMuTx6TrTIUSvCSjhepMqfYj1WSHoWlGiamtCZV6EgeRL+5/333QTACcFGpwkxyfYENXTPYhj7JhgIDaC0IUlHEtDyVHrAu5Id5gleqb3GlKGLCKGNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G0G3eJh8; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847494028FA
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786526965; cv=pass; b=eQuxacpnk+KmZwyD7dwN7Z/AP8bBiTN+qYlE70eVZvGnq5b7BtoY0+nj2t7ST8Tk2kvrt6TaxJdmgY4xasxxPD8O7Aasdtp1LzKnrioKuXi/OmWezXRFRpsKC4MapBOJmiPhBVE9ZKcenwlDl8Ls4NEC/SSEMhlMDb+9ZzluTfs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786526965; c=relaxed/simple;
+	bh=op2l1FLGt1TCVPhlrqxM/EWn3MHAHSWjkNZFecV0qN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HMmoV7f91ua1L/F+w4mwv5C43uht5ayf+7vz0GCGnwJ2Nn/CcpH4Xo9rVvC7ENo3ZUBmESVLBu0nxg0+h87G7Q2JcmzLm0I+KWYPVEOP7QGRsUBBQl2XmGyWFPj/s6gJvE9h7b1H0h4k5SMHGucl8QnO684avhOegxzcEOX5MlU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl; spf=pass smtp.mailfrom=kempniu.pl; dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b=Q6RWkY4N; arc=pass smtp.client-ip=136.143.169.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kempniu.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G0G3eJh8"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-471eeac43bfso540029f8f.3
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 02:24:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786526688; x=1787131488; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SLJ77/vbQiJHKcovBSZ6qUF923u9W7YbSMMe93GKMVQ=;
-        b=G0G3eJh8n2DlTxiN0HbJmhwfo6jplBn3gf7coS5U0cKshI0btxxWzb/6leDI2Y8yRa
-         yqc+7U8I2fJpvJno6luoMO/EGKSGC/GPx+zq4gnFuzgWO1qytpu8qA9qXqfU81jDMTvO
-         5SRdhDeoY40xUze4BdyM3XeBfmnCSxyyC8xWwJ5anatp9A1Fk636JAqmFkkIwic0TvYV
-         vEd5+DZ8srx0uLllF93Ql37S0h+41vFA4/uvC2zIixr1S/GmwnJ9DfEu44/IRk297EKr
-         QFqe8dDRBXe8VFX7LD0kxlbByfcpJ8b2I3UH4WjCvrjp/RjJKMgvK54mk5k29Actlg45
-         xxew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786526688; x=1787131488;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SLJ77/vbQiJHKcovBSZ6qUF923u9W7YbSMMe93GKMVQ=;
-        b=TIk5LJX0AcSUB/UwODRXyMw9miuehXtfGO/3RtH3gHgggsKOKxIHzy3fAhIIdTfJuX
-         pMBfZ02qwOlgwLtZLJeeW1YvtJ5ZQWepwg5kpWYfK5UlbVOCt5XVW7kCxR/EQWQzxPQK
-         e1cKrfZY9LxUegwvh0ShzM2FhFMiQ4Kgvbd1ZfGzzwYsnvQHbzyY/p4zDCg3cUCD/0/J
-         l8LEj5qL9fKtzvFOsxxicCRV8tG6wuLpwvZ9VICjsMAlpprSNrSMSNjbpPwJjepoasK6
-         QHbdiXsAzsLKVwpM57YC/6Fj0VDqRR3v+DPwjMwct4W2WKMs0ebEfthIOrIqH/0aOUjG
-         BZlQ==
-X-Gm-Message-State: AOJu0YzO2Vn5U0Q3VJ20YQ+VOb1iC3DXUXscMOco+9jXR+BxKmwxRoUy
-	2IXIK9Lnkz4TrckeLUSZhDBcMcP/144U2u82qkP3xmEuFFaM4LntkW9Ka08OM/nI
-X-Gm-Gg: AR+sD10i/nkxpqAFp4RCGKmoF5BvHFPlKwCywzgKBzzU0SxDYMr+v/KVpdg12sZmaQL
-	vDL+vq2xSqeSZXgP19MpToBOIiUF+MleFwyrgH7f4hH9Hjkdk1PvpUJEfSKKd7fkK2+NRG5/b3c
-	irALe+YWasifjouQQg0HN3QnqSe2gCprz0fViLMin80+gX9Z8L4FTyNhNQsUNChpserJ3qLt77/
-	D98DuUTutZs7h1pfpwKmaf90RGcPcv7xIQ0dlCEznRNr9ndsiAeTp4/U4+wUp8vFfe5Q14TwVq/
-	i8mJ3OhJNMT3Q1qR9VVMPBwlrn0ZNUfuLt5QpNthzvkLhP/1ZjqAjkAUaOzALlJ8dxFmCE31UZO
-	wqsOxyMLx3M7qTuib7IU+8OhFfNqv4kOr+AZLTP2fTfr3qGuaB/GoCb9X0A0wgLXhgE/X4oAE4b
-	W7rgoQZS6I/tVkemO84UPSawA1HlMJue1dFjPWSrcD5KFnOGE7kbOed9VEo7enz18AioHdHVorQ
-	sSHszu6QDBj2YqjZJiweLVLFLtMmo1b2iAddvrQbA==
-X-Received: by 2002:a05:6000:400e:b0:47f:7964:9887 with SMTP id ffacd0b85a97d-4815290c662mr4271585f8f.25.1786526687523;
-        Wed, 12 Aug 2026 02:24:47 -0700 (PDT)
-Received: from fedora ([202.47.63.86])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815231c308sm5152338f8f.11.2026.08.12.02.24.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 02:24:46 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	oe-linux-nfc@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	david@ixit.cz,
-	snowwlake@icloud.com,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH net v4] nfc: nci: fix use of uninitialized memory in NFC-DEP general bytes
-Date: Wed, 12 Aug 2026 14:24:23 +0500
-Message-ID: <20260812092423.161497-1-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b="Q6RWkY4N"
+ARC-Seal: i=1; a=rsa-sha256; t=1786526014; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=KMnyFUeyPMxawtsNHeSJu7alaUKmoRYMKXIzyqsCGsQ2L/s9ENdrZkLxKDXOYikSEUQyibt2K6A+CY6ljNExArQcHpfFMTRcditte9A+2SmUQN/ba9w8C+DXbUa0nOP31OqYzmMLm1hemhrpHqZhR1/5uYFc4GYLlYg9SOAJZEM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1786526014; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=0nmYbD/TbyvKQvUJxO+sF++yI7bidrbQlbWZ84DkjGI=; 
+	b=R+BSQETslU143Bs/3z0tH4CdK74PRh37ZXduR2XrPJ9olRTo6MCvc9jY0esAyqw/NX/gZIYH855pxZNeGcBjfaU7lZ+70loV3z4OVcvEb8SmVitAk9QoPS6e6OVWYiOEJ+m2xPAZrU6M5snBoQfpcWDLT7rGaNg3FrQNa77f6RE=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=kempniu.pl;
+	spf=pass  smtp.mailfrom=kernel@kempniu.pl;
+	dmarc=pass header.from=<kernel@kempniu.pl>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786526014;
+	s=zmail; d=kempniu.pl; i=kernel@kempniu.pl;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
+	bh=0nmYbD/TbyvKQvUJxO+sF++yI7bidrbQlbWZ84DkjGI=;
+	b=Q6RWkY4NqNCma3TGIUhf7zdz/kOy48pz3SGak+RJBWJxpAdkLS/EOUZn41FFI6Bd
+	JXI13f6XYECr3hPy3qiXSGum10HQNI+kycnUFjReqDhqvLa0qO7iJg2JQ17d1qRfXDH
+	cLBzXCXHz3ZFsj+DSkp5X0iXbuv0J9VYs80Bgr3A=
+Received: by mx.zoho.eu with SMTPS id 1786526012586133.65842691258308;
+	Wed, 12 Aug 2026 11:13:32 +0200 (CEST)
+Date: Wed, 12 Aug 2026 11:13:30 +0200
+From: =?utf-8?B?TWljaGHFgiBLxJlwaWXFhA==?= <kernel@kempniu.pl>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: dsa: qca8k: Disable mgmt Ethernet for qca8327
+Message-ID: <anw5OvAxKh3pnezZ@larwa.hq.kempniu.pl>
+References: <20260810061612.23745-1-kernel@kempniu.pl>
+ <cc6d8243-e82b-4f1b-acf4-13ba6a74baaf@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <cc6d8243-e82b-4f1b-acf4-13ba6a74baaf@lunn.ch>
+X-ZM-MESSAGEID: 1786525177820015800
+X-ZohoMail-Sender: =?utf-8?B?TWljaGHFgiBLxJlwaWXFhA==?=
+X-ZM-MESSAGEID: 1786525783322015800
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.11.1.5.2/286.510.57
+X-ZohoMailClient: External
 
-nci_store_general_bytes_nfc_dep() derives the length of the NFC-DEP
-general bytes by subtracting the fixed general-bytes offset from the
-ATR length:
+Andrew,
 
-  atr_res_len - NFC_ATR_RES_GT_OFFSET   (poll, offset 15)
-  atr_req_len - NFC_ATR_REQ_GT_OFFSET   (listen, offset 14)
+First of all, after taking a closer look at this issue and the driver
+code, I realized that the approach I went with in the patch stemmed from
+my ignorance and that I submitted it too quickly - apologies about that.
 
-It never checks that the ATR is at least that long. When a
-RF_INTF_ACTIVATED_NTF reports an ATR shorter than the offset the
-subtraction is negative; because min_t() casts its arguments to __u8
-the negative value becomes large and is then capped at
-NFC_ATR_RES_GB_MAXSIZE / NFC_ATR_REQ_GB_MAXSIZE. remote_gb_len is thus
-set to up to 47/48 even though only atr_res_len/atr_req_len bytes of
-the on-stack atr_res/atr_req buffer were copied from the packet, and
-the following memcpy() reads the uninitialized remainder into
-ndev->remote_gb.
+> > While the qca8327 switch appears to support in-band mgmt Ethernet,
+> > prolonged use of that protocol (e.g. for polling link state) makes the
+> > device unstable: within minutes, ports randomly go down and no traffic
+> > is forwarded anymore.  The same issues do not occur when MDIO is used
+> > exclusively, so ensure mgmt Ethernet is not used on the qca8327.
+> 
+> Do you have time to narrow down the cause?
 
-Reject the notification with NCI_STATUS_RF_PROTOCOL_ERROR when the ATR
-is shorter than the general-bytes offset, rather than silently
-continuing. The return value is not decorative: in
-nci_rf_intf_activated_ntf_packet(), a non-OK status here skips
-nci_target_auto_activated(), is propagated as the completion status by
-nci_req_complete(), and skips nfc_tm_activated(). Silently continuing
-with remote_gb_len left at 0 would report the malformed activation as
-a successful one with empty general bytes quietly substituted in,
-rather than as the failure it is.
+Sure, I should be able to spare a few cycles on this in the upcoming
+weeks.
 
-This bug has two independent points of origin. The POLL-mode
-subtraction was introduced in commit 767f19ae698e ("NFC: Implement
-NCI dep_link_up and dep_link_down"), which is where remote_gb and
-remote_gb_len were first added. The LISTEN-mode subtraction did not
-exist until commit a99903ec4566 ("NFC: NCI: Handle Target mode
-activation"), which refactored the POLL-only code into the current
-nci_store_general_bytes_nfc_dep() and added LISTEN-mode support fresh.
-Both are tagged below.
+> I _think_ in band management is used for a few different
+> things. e.g. statistics, as you said, PHY polling etc. Rather than
+> turning everything off, could you try just doing PHY polling via MDIO,
+> but statistics via ethernet, and do an ethtool -S every so often to
+> see if you can trigger the problem.
 
-Fixes: 767f19ae698e ("NFC: Implement NCI dep_link_up and dep_link_down")
-Fixes: a99903ec4566 ("NFC: NCI: Handle Target mode activation")
-Cc: stable@vger.kernel.org
-Suggested-by: Lekë Hapçiu <snowwlake@icloud.com>
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
----
-v4: Return NCI_STATUS_RF_PROTOCOL_ERROR instead of silently breaking
-    out of the switch, matching the behavior independently proposed
-    by Lekë Hapçiu. The break left remote_gb_len at 0 but still fell
-    through to the function's final "return NCI_STATUS_OK", so a
-    malformed ATR was reported up the stack as a successful
-    activation instead of a failed one. Added a second Fixes tag:
-    767f19ae698e is where the POLL-mode subtraction was first
-    introduced in 2012, predating a99903ec4566 (2014), which only
-    introduced the LISTEN-mode branch.
-v3: Rebased onto current net.git for-next, requested by David
-    Heidelberg. The function moved and gained an unconditional
-    "remote_gb_len = 0" at entry (from commit 9c328f54741b, landed
-    after v2 was posted), which made v2's explicit zeroing inside the
-    short-ATR branch redundant, so this version drops it and only
-    adds the missing length checks.
-v2: Also zero remote_gb_len explicitly in the short-ATR branch so a
-    stale value from a previous activation doesn't survive into the
-    new session.
+Ack, I'll try that.
 
- net/nfc/nci/ntf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+> Could you also check if the management packets are getting lost? Look
+> at the results from wait_for_completion_timeout(), is it timing out?
 
-diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
-index c96512b..c2352ea 100644
---- a/net/nfc/nci/ntf.c
-+++ b/net/nfc/nci/ntf.c
-@@ -631,6 +631,9 @@ static int nci_store_general_bytes_nfc_dep(struct nci_dev *ndev,
- 	switch (ntf->activation_rf_tech_and_mode) {
- 	case NCI_NFC_A_PASSIVE_POLL_MODE:
- 	case NCI_NFC_F_PASSIVE_POLL_MODE:
-+		if (ntf->activation_params.poll_nfc_dep.atr_res_len <
-+		    NFC_ATR_RES_GT_OFFSET)
-+			return NCI_STATUS_RF_PROTOCOL_ERROR;
- 		ndev->remote_gb_len = min_t(__u8,
- 			(ntf->activation_params.poll_nfc_dep.atr_res_len
- 						- NFC_ATR_RES_GT_OFFSET),
-@@ -643,6 +646,9 @@ static int nci_store_general_bytes_nfc_dep(struct nci_dev *ndev,
- 
- 	case NCI_NFC_A_PASSIVE_LISTEN_MODE:
- 	case NCI_NFC_F_PASSIVE_LISTEN_MODE:
-+		if (ntf->activation_params.listen_nfc_dep.atr_req_len <
-+		    NFC_ATR_REQ_GT_OFFSET)
-+			return NCI_STATUS_RF_PROTOCOL_ERROR;
- 		ndev->remote_gb_len = min_t(__u8,
- 			(ntf->activation_params.listen_nfc_dep.atr_req_len
- 						- NFC_ATR_REQ_GT_OFFSET),
+Ack.
+
+> If so, is the retry mechanism working? When i added the Marvell
+> equivalent for in-band signalling i got the retry mechanism wrong, but
+> never noticed because i was not loosing packets.
+
+Could you please point me at the exact retry mechanism you had in mind,
+either the qca8k one or the Marvell equivalent?  I cannot see any in
+drivers/net/dsa/qca/qca8k-8xxx.c.  If I'm reading qca8k code correctly,
+when wait_for_completion_timeout() fails, its return value is just
+bubbled up the call chain.
+
+Thanks,
+
 -- 
-2.55.0
-
+Best regards,
+Michał Kępień
