@@ -1,290 +1,255 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11023086.outbound.protection.outlook.com [40.93.201.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE0F2BD587
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 02:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDED381E9C
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 02:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786502952; cv=fail; b=gZ50HZMeO1q3uGb/QXWM5uX6Qx1oK7y62RFAhB+ZCllbX5RPvyGXawV1AX9fq/P8qzwJqr6dgFTV8yoaHqyq2nerFiVlJzypNP80B1q+eluXeuOlKRMXX1lIDAzshWvbfORhH/uMQNTr8RS1tQhqjdBIhuoWBhTodHg9OdJ24Wk=
+	t=1786503128; cv=pass; b=Jekd/3EZVMyFyPRBOUankeaKnKmTejNVLALFw5j52irpDKgklIcM12562DjRoWnyM+6WSUh9H44DgLswSNusfecYlML59qPRi9/d9zfLJUcTT32G/migeME0tqkaM+1A07bxA1ZD9L3VN+qm/ySe9Ei5qOhUW639kMLhaJT4Ru8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786502952; c=relaxed/simple;
-	bh=TMrZkMqEX/+u07AYrn98LoA4q7CrDlbHuJ+fnwrcKeA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TLvWLQRzZRVIZBlRXrgR8pzvq3YPrnTi0VlLD1g13Nods35Wggsvoaho/ERE8uzUpUQKS0fRdgsbkvyylub2VUVpdfZpmN4uH4ZL83Xug+iEKS92oq25qqG3Yo0k3ce7anX4VzOhpG05KVeJDBexidC0YZ2qNTdc6czJbDg2GP8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu; spf=pass smtp.mailfrom=msu.edu; dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b=GRcxmzEz; arc=fail smtp.client-ip=40.93.201.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=msu.edu
+	s=arc-20240116; t=1786503128; c=relaxed/simple;
+	bh=Hb0oTZyNs2XNF8FYvwdiByW6WbpnUx0y3XGgr92vMsE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J/YHTS8wntsZak+dMfz17SSQ1Orl2B06pWWWjEmP7OOsmwM+PqcOGGBqtwbS1Fc3SQa0OLDOXOdY81OgkTCrUsdUNUdUr8q7BPr2ubOhrUAA17RZumzZRj4HuUlev+W+qgKPGsQho76kOFPoee4UiNPs318C+/gZDN8yqwkoa/k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SqYofKhZ; arc=pass smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b="GRcxmzEz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DR9ogzFcQ1hHoUmHI+4S0pcJLN9YJ3reapoJqOKURCohAMxsXjsEWWjELU556pPaA6Us1P+PoxB0G7ACa7+h2gIXb1m1WPbKl8YemQCmC5SoDwm+7RhAsqU8I04kRJpx7s5z+fsedkOQ8seENqvSnSU5ePSH1Xg3otEBK+shYyV4GinX2WfhQy+BV2cXqk87MjSwFpcSYzhKQffQAmSNcQpdhSKg+JB0hSQOJTJ+XPCA7bQN5Ktc1y0G0NSdQ/uq/1l+WhHMFEHBR1P1bx8kYaWQy2RFkhaZZK0I1D3oXKrcF32YIz9pW6VfehnlUhQiep0Cks1qANdLYMzpj4JP5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QufWCkCMd2T9gBasdgt0vIa0PycNVUEmXvkVox2ciGw=;
- b=RNuoeJSdhGhpLLBE25RHwHs/E+pWo3zGLh3Qc9dxnRDAJmoZ9V6URg04RuIy8hgeV6UwuqrhAjors3VwBPpp47ynQpexmHpSklQ6qmdMFQcpXa4J79smBiRIOD86UxCDdotVH09kwO/gAn3CsyBqn7TZIiShyfN6UB0i6EC3qDppRruDJyjHGzUozbKeeZlAxUfI2yVy6/oDT7sG1c3hTEO4F5Vr5eIBVtycUCdxo6+OTWFiVcJcY5crcwKDCpnoEfHPOiXBQZyekDiBZaHrs7qugl5WM0fBjGFoxe+ZSbSdJ/VAGE3QZ4G+bUWf03YU52pMhCfW7UvsNX2xf4uOlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=msu.edu; dmarc=pass action=none header.from=pa.msu.edu;
- dkim=pass header.d=pa.msu.edu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pa.msu.edu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QufWCkCMd2T9gBasdgt0vIa0PycNVUEmXvkVox2ciGw=;
- b=GRcxmzEzE0GUBiwHysygf72Cs/XklthkxDBk2z9xVhMzOfPdvNXH42Yi0Zd2npcp9+oyh/3LZq3/Zh/H2ff8VVCabd1vkfABPlqzyZICL/umuCcSp1xOuHeVAeNSCL2Fvqy7X8gJEshZPpXDzhrO74awTUPTwArmq48y5Gsysz0VKdIMmQcRxKGI7/H1Fzs87xYF8VqFppW0y3ydzo464zrwA19WQmj0/ZQdenIVk63C74iYxu9xtnD4POcRCZa035qbamH5KCSJgXcc5bvtA1RSavw/xWN2CsjVdtzG3FVgNHvZjnu85tyq2TnL3mvDt8HJWV7qYGLu9+Lcfi3VgA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=pa.msu.edu;
-Received: from SA0PR12MB4352.namprd12.prod.outlook.com (2603:10b6:806:9c::9)
- by BY5PR12MB4225.namprd12.prod.outlook.com (2603:10b6:a03:211::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.11; Wed, 12 Aug
- 2026 02:49:07 +0000
-Received: from SA0PR12MB4352.namprd12.prod.outlook.com
- ([fe80::3b33:a490:b19e:defe]) by SA0PR12MB4352.namprd12.prod.outlook.com
- ([fe80::3b33:a490:b19e:defe%6]) with mapi id 15.21.0292.024; Wed, 12 Aug 2026
- 02:49:07 +0000
-Message-ID: <d130cf47-1d70-4345-b60a-795d463cb84a@pa.msu.edu>
-Date: Tue, 11 Aug 2026 22:48:53 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 1/2] net: macb: Poll for link state changes
- when using the internal PCS.
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, theo.lebrun@bootlin.com,
- conor.dooley@microchip.com, charles.perry@microchip.com, andrew@lunn.ch
-References: <20260807201741.3275-2-nwhitehorn@pa.msu.edu>
- <20260812015433.1687252-1-kuba@kernel.org>
-Content-Language: en-US
-From: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
-Autocrypt: addr=nwhitehorn@pa.msu.edu; keydata=
- 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
-In-Reply-To: <20260812015433.1687252-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR14CA0055.namprd14.prod.outlook.com
- (2603:10b6:610:56::35) To DM6PR12MB4337.namprd12.prod.outlook.com
- (2603:10b6:5:2a9::12)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SqYofKhZ"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aec6360133so370875e87.1
+        for <netdev@vger.kernel.org>; Tue, 11 Aug 2026 19:52:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786503125; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PHRsXyFyYKJS1NgueQ1IQWO8unDRiTfSEZulEbhMyJeoSbouTUs9KZeN6xTygDvy+b
+         bS5X1qgZz9cCWwLuHU1jC9hUc2lhMUTQYmXKf43qwkkX4WGxIZIN9gZta8z1kv7l74j6
+         A62qofTibp1e/0gIoZXFiyeoLfRYRn08hmYO5v1fvBI3Y+mhf67jhw7d+Zr9yT6MyEyr
+         IxEUJ0Es7tZ8tYMyXRAZ71WLLweIA7soOIOdxR/dDtp0yJTg9Q+Nku5UeZFj0poeYGy4
+         tq2GYHzfqddDJ6HRAo2p76Vwyc952u2mM29tjjwPrm2sqDLVYWf4LvCNa0Lg1fUWvFlI
+         DFgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XSzC2/gCgnszKPTbShHtlIGN1+pKUMruFRT6YmrOrr8=;
+        fh=FQGI6CJqlAVbU4+Vh/Cx9lsafOgDsCkRyeXekW6bcQI=;
+        b=rX+tgyb8gF3eJrAn1K1V3oS5Bmyn6XO+tRhDdIRtBnfBtfOrrdWO/yLGX7RDcCUMgE
+         0/lc2ZN3Bs7A8/XcK3QtO6qTnPImNdMDwNR+ad0OUtAE+msz1Lu8T2PobEJatXE4tFNE
+         i5wX13gqu5gl5a7ZOH53sxKl9AuQW0LZRHexOqO+uACt56ajg6t0cTHHALnz2rvUCWUJ
+         dDg03p9fSNCFbQczFy4NazWF0Q0M7yGkqaAVrMx8s3L45rK/5IRAXQTAEnMcPzas+Vg+
+         YmoEAkwHiV7U6YyOyvDOnu5M5P0uGj44pm8JNSw30PE3/rcfz/h0oLVvZp627SUtGuze
+         T3Ng==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786503125; x=1787107925; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XSzC2/gCgnszKPTbShHtlIGN1+pKUMruFRT6YmrOrr8=;
+        b=SqYofKhZQLDpjK7C99XDAAPY3dZhsG4Ax8bSQnhBksiebSK49pAFjvcfgixzB1DudY
+         vogc9ITiEhgwH99cIJOOWTMczkYxAHCs1vmgNK+8LXrDYh2ekvw+Rxieop5/VNf4Wec/
+         JYuMjjs+jO81Gw+mSBe17LfBANEOTBb6T7Hx2TcZtsS+Eil1EcIwQrDjBTFwFbx1Gi9e
+         CFJqlOfZP9IZkkgDbAMAXYiSMVb2YH4oxYAe5US03lma9s3mbog+S2qimYJNN3/5kD+F
+         45TCH5Nd5qeSb2xujfCjxEvqnmMBT7rXX2IwfI0iWJW9ZxP2Z0cjbOn8XWCoNQcvJxJt
+         zBjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786503125; x=1787107925;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XSzC2/gCgnszKPTbShHtlIGN1+pKUMruFRT6YmrOrr8=;
+        b=lmdE4PLkKaKQrFzljD4m9ehSuIWrJg1Z3d6cOvu+Avgv4JwFqD3q7SlSTtZOhjg3xr
+         VdX1hfcvcvCYzlxn3h73Cot6X+n5ayKZ+RJLveeHTDENqqxVCnvvoMhhFd+Ix6L/F49V
+         FBbsGbhyjW6rTy1rB/h5FzgHGnbBE2xgzKOZbxgvAQnDAgT9+jGyHCjP5R0e6DlVg1Yy
+         Hy6pcx8CHbIXRAnJ01GPzgRyMQYWt0e6lJ1GDv0VRIEJl1ScaWmTDTo7oE87nIPeBXpS
+         G313HrVkTT8Y2PDl55sAT0N/Ug5v+KNdYq2KXHsmXcdFsvHW9qQiJoQAXKltNIGx7++Q
+         YyfQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpSkCEeAcsHV3o+O+sCcF/mX/0+NxSuH5jNspug9OygRfpfWHGwQJYl/9b+Y0Xb29sNg3HyQkQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRl4Xzv/9Soyefq9+JTBBlYYxCDOgCEgGwWZCt/JlxV43QzoHK
+	lOyztOhCTyITAGEpSYZ9LEATY1YW1oZQrBvLJ1hqwyL+9z6+lK+yC8vRdjuQhXLDKktjumidzIu
+	km5zd2GXuI3UiTbUpn2b1gCeni+0lICw=
+X-Gm-Gg: AR+sD12vxR4afPgw82MtTzMAM4TVniy4fFogpfu7zyhTPXlTjJi+if2cpQ3u1OoOOSO
+	A0zGYXaGtE2Ynjp/W00LETkb+25i5qWrJnA2f+c2PS2UfUaW8e5NLAOTyV8KM36DmGhM7EooVWO
+	szw/vBY8jLuQ6pKxD4VvOcT/Leur+Zigl6vE2Po1h/O4P/A5WQnoCZ853mqp2vFEC/LIVb+z/IB
+	pQbRJpr721K4Fd9yp6tSmkG+Uos5o8vExhz8ARKdn+rPm/YnWutCd8XwOWoLjHs/VJkc57qqe56
+	RzChrQFVIfFp8BZiZCABGqvxn17RAlBd4kQJIH01akia6qnAC/dpOIeX+GOvv740crUcT7xjBNZ
+	n1cE/ISCQiJFf+LheWne653DnI2P6jZ2xnGPpgzHChtyckrNDgqeLFqhgptJ/TVfw
+X-Received: by 2002:a05:6512:1384:b0:5b1:537b:de9b with SMTP id
+ 2adb3069b0e04-5b44e2ee1f6mr254351e87.19.1786503124448; Tue, 11 Aug 2026
+ 19:52:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4352:EE_|BY5PR12MB4225:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2382b94b-736c-4cc0-12df-08def81c3fa7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|786006|366016|376014|23010399003|1800799024|4143699003|56012099006|11063799006|5023799004|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	4edHbTbt75wD/HvZUfJ/kwM9Nb3k1oTJ8/yKsOEgLcnEOaYedXxfkJ1RISgATCsAVTUNd3sh8QFzBvST4Pj/qZDGBdjjHz7PuJjmMJfg0P8/DrlJBPTHowNgZ4L3z6QQH0tQuqzQfaX4UC9zuVbRvaRY2d5toN9VI8m7/b5ROmya8ckF7iLxDRQKbmvhH+oUZUoStZO4UB+mq1nxLueFpgBJWYLsNq/mWFoiS9QkVBriwxHtI2giN4RzEwkufGvtkjtGifFPR4lnhbX1fkBvobabcdb4//ASIOrMmD9noYioFYMvWY7oNgSdGwY56KHdy5VcU02tuNNTXRG1L9HdB0OksD5XIYsNLQrUkgHu3Os1uj3sPKeeA3/LlGYvGSoquhe4K2vGvx1D18ithGGZufzhs9ntKsgjNdewItCiU/NXt2Qe9ks8/WPl42X/gxrYlflMpKUCisyfV06gI+eUG26TJqfVecMZ5DGH7MaW6apahwauuonVXW1+AkxC0qy1Q1m6t6nY3Qc/B87d4Zpj6b0pdoHAhFhKwcSuh9br46QDhbKQbdFaaT3X0EtIlryO1A0k0vTOywV5R+fT9UDM9JHgRJiE7+vZIrIW6LhvGLKlmEW2RqhScnhI45yNdef1PpxOOx5ZjJ3QMjIWK91Mj1M0EJlWyqUHlTs8wMbtc+4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4352.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(786006)(366016)(376014)(23010399003)(1800799024)(4143699003)(56012099006)(11063799006)(5023799004)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MEJKU3ZERWhlRkptU0NGOXBJbXRIU1hiMk9RSVVISTRSYXR5ZndwRzI4eTkx?=
- =?utf-8?B?MFJycXZKSm16NkNvU1VIUmI1ZkJHMWEybHFHem5ERVNyYm5Db0oxa0ROeU04?=
- =?utf-8?B?NG1yWHJTRmVKNHFBeFBlMDEweEhUbS9nYUxBL2VWWjZBUG51UndBS3FENTI2?=
- =?utf-8?B?L0Q4YWYxNW9pT2Z0VnpnV1BaVXRKWkREaExNTGM4dWpCc2hvMXRoQWpLazZU?=
- =?utf-8?B?bWNici9ZZzVKUjJhR3cwN05meE5iRE1XZXFTYVNEMHc4ZmRIaklSUXdWWXRV?=
- =?utf-8?B?WDF4bDkxTjQ3QjJkWU1sRWUwTHNYK1c5STFOQm51Znp0K3Y5WmdYMm9QM0R5?=
- =?utf-8?B?d0ZjejFHZ2gwanJBeUVJQytlb2ZORmoyWUV0T2wvTkxGVTRVMk1VMEM1eFJq?=
- =?utf-8?B?MlhzMzJSUVFOQzAwSXpXdk91djhxUnZ0UTMrM0dzL2NUZWtSRnh1ZjNyQUI0?=
- =?utf-8?B?V3JjcTEvYVBuM3UxOWgrdGJmOUQxZkRXOThJQ2RJS2ZGc2NPb1VLblhERDBq?=
- =?utf-8?B?dmZVS2thUXFEQWUvWVJSaWtlMlZlVGRsaFgzR3BoZDJtc0Y1c2JtV21QdVFW?=
- =?utf-8?B?THdybitYbFpvNkkwQ2JlNUpzSXJKOFFvdlloeUk3UHNJcGJqSW52c05pYTNU?=
- =?utf-8?B?L2lYL3RYS1FyREI2OXByZ2wwOHdVcjNNVDRxVTlmbGtuUkJGZUUwTWtOY25X?=
- =?utf-8?B?MXhHenFTaDE0OWpWSEQzY3FmR0RNamovaHJ6QWRzUHQwalJjYTdGNzlCdzQx?=
- =?utf-8?B?UXY3c0lTdkJSUHFEeGJrcXhiMnUrS1c4NnJ6UUNNejBYdHIxTWJNZWNoN1U3?=
- =?utf-8?B?VFRwOTFPUmp1V3NaRW04VzBoM0Q5eXRWdHVUZUNHOXBPQmtFMU1NSUg1b2lr?=
- =?utf-8?B?MU9XWlVPajVRNUJXb0ZPa2JoRW5zbld5aTVNQTNTMmJxZzQxd1VOK0JWNkFI?=
- =?utf-8?B?aGV2NC9menUxc2pEWmJYQzZBVFZuZW14eFU3dHRMdlF0UUFuQVp0ZzA0TW11?=
- =?utf-8?B?MWdOVG1hekVUa1dwVG9tZ2tGMUY4a1d2dTZIQmJmZXg4ZmU0OHQ5VWVIWWJu?=
- =?utf-8?B?RTdubGtsQ1I1UDJFVG55aTY1VUdBbjdFQXJXdm1WbUdHem9uOStqOVdiQ0Ny?=
- =?utf-8?B?YmN0RmhzblRveUp4SWZDUkcxa3VLMjdHNmFLN1laTzNHTVRoOExIdDhoSExj?=
- =?utf-8?B?TlVZL2tnbUlHbkxKeXJmbkNHODc0OUZzL245alpTMC9tSVVPOFpScXdYQW52?=
- =?utf-8?B?d1VpcGxTVTNZK3NPWkt4K2FvMjJ0Ui9sYmxkWlRRV243RDNDUDVENTZZam1S?=
- =?utf-8?B?VDVOSUxqTUx3VjRVYmRYTlU4dHROMnRiS0F3MXQxYkR0ak81czFXQS9zM1hP?=
- =?utf-8?B?VFdJNVViZ1k2NlBVTDR3RmRWRVFKRVJEaUhXTy85QXhkd1lVU3pYQTNPYkJw?=
- =?utf-8?B?VXF1VjFMZ1IraUtaN2ZnbHZjdCtHU0F0UFpiVE9LdEJKWVhuM05XRnJFTUo5?=
- =?utf-8?B?enV0UXJpbFNTZFpqNVppc1oxNHVpbStxdS9ZM0NJSklLWVEreXhNTTYwZnJJ?=
- =?utf-8?B?em8wbVk3TGNTTUo1SGVsR0loaFBIRm8wc0hJd1kwbVY1amJhQ1U4NGZyU3Zs?=
- =?utf-8?B?TlVxRVY0YWREMjlpeUc1eDcrMndMYk13b0lLdDlpRk84RW16Y0tJaWJjN1Qv?=
- =?utf-8?B?K0o3RE90MUR2MG9wT3FLR20xS000TDFZa3VzNTlDYWdpQUYzanIwZXM5dTZs?=
- =?utf-8?B?U3lrTEdFUGx0dkxJU3gyWXJPcytOSVdxbGVDUjZSOVJmS2FzekdPa2FmNzBB?=
- =?utf-8?B?UkJZZHFsczdnb3l0WmRPby9IOWNQaklkMTAyeTVndFNVLy81b0dCdEUwRmpw?=
- =?utf-8?B?V2hzaUUyUDh5bnYvK1N4RVVjRVBsOVUrR2wvK3E4QWVnSVQ4WHZreXRZOExG?=
- =?utf-8?B?VERzaTNIcU5PZCthaEg5OWw5T1V3cy8wSmZNVWhNRkNkYmx6d3pmanFIV2pv?=
- =?utf-8?B?UHVlOUo4UFBLcCtBOW11Z3MrN0llSFVQOURkSjRoU3ljM3B2aUNZNzhEZUVO?=
- =?utf-8?B?dDdNTlEzOWR4WE5WcXY2QnBUYlJqV0ZwVzdob3NxSEw5eWhieWxxK3o2Tkgz?=
- =?utf-8?B?Q0FZK2FxVmdMUVowS2lzS05uOXdxZTBNU29ud1UrdzBtZG9SK0cxMnBwV1Vq?=
- =?utf-8?B?ajZHc3JCcnFXVDVyelh2U2dXR0JIZEpTZFlaaHFhRUlIVm8xUnp5ZnQ1cGl5?=
- =?utf-8?B?Si80YTIxTmluQnFtdFRyWmFlU1BscjJkNGcxQyszK0Y0bGNmSmk1czVCRVly?=
- =?utf-8?B?aVROUWw3Wi9PUTRRa3ljWEp0VXdtOS83YXUrSFJsclFoZWl4TVM2djBkWG5M?=
- =?utf-8?Q?EKNMVHMyYk75R1Ivv70HZpuDvoAkpR3oMjzBvf907D4Hg?=
-X-MS-Exchange-AntiSpam-MessageData-1: QDEXBZK/8y1rxA==
-X-OriginatorOrg: pa.msu.edu
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2382b94b-736c-4cc0-12df-08def81c3fa7
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4337.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 02:49:07.2758
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 22177130-642f-41d9-9211-74237ad5687d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EH6g4JHimIcTDB5MF9J0uk1fUu7lMSkoRti193zadr82IB8OqxO2jf0X89+hsGrt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4225
+References: <6a6f9105.1aa927e4.17d4bf.001b.GAE@google.com> <6a721aed.9511d2ce.1fc5b9.0341.GAE@google.com>
+ <CAL+tcoAR9WTmrFiM0GtWhtvgWX467vAD9fRRJ-Hds9Q346EB=w@mail.gmail.com>
+ <94a00de5-6293-42bd-b7bc-5370ea16a3e3@redhat.com> <CAL+tcoDxLv8N+6n6NUkN6r-GtNvT4bWYCpZo1XkBjr2a_Qz+gg@mail.gmail.com>
+ <21d4d5ed-572f-4e82-818f-78b50155390f@redhat.com>
+In-Reply-To: <21d4d5ed-572f-4e82-818f-78b50155390f@redhat.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Wed, 12 Aug 2026 10:51:25 +0800
+X-Gm-Features: AUfX_mzo6Ofm1XvORKS3lY3MllzkgWFiYv6a06XdFwhBu1ssQ_vWz1Xus8QPYJQ
+Message-ID: <CAL+tcoC-O6JjWOPi5wC+2R648avj64YYzQi9o2GVZGhzKvZjJg@mail.gmail.com>
+Subject: Re: [syzbot] [net?] WARNING in ipgre_xmit (2)
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: syzbot <syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com>, 
+	davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Aug 11, 2026 at 10:13=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wr=
+ote:
+>
+> On 8/11/26 3:13 PM, Jason Xing wrote:
+> > On Mon, Aug 10, 2026 at 6:54=E2=80=AFPM Paolo Abeni <pabeni@redhat.com>=
+ wrote:
+> >> On 8/9/26 8:03 AM, Jason Xing wrote:
+> >>> On Wed, Aug 5, 2026 at 1:05=E2=80=AFAM syzbot
+> >>> <syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com> wrote:
+> >>>>
+> >>>> syzbot has found a reproducer for the following issue on:
+> >>>>
+> >>>> HEAD commit:    848acc8ffe1b Merge tag 'fsverity-for-linus' of git:/=
+/git.k..
+> >>>> git tree:       upstream
+> >>>> console+strace: https://syzkaller.appspot.com/x/log.txt?x=3D178fb649=
+580000
+> >>>> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D4e38b15c=
+29e6a1d9
+> >>>> dashboard link: https://syzkaller.appspot.com/bug?extid=3Df16c1b285c=
+9f63994eec
+> >>>> compiler:       Debian clang version 22.1.8 (++20260613092233+e80bed=
+a6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> >>>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1617be=
+32580000
+> >>>> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D11d113b9=
+580000
+> >>>>
+> >>>> Downloadable assets:
+> >>>> disk image: https://storage.googleapis.com/syzbot-assets/4949138dcfe=
+f/disk-848acc8f.raw.xz
+> >>>> vmlinux: https://storage.googleapis.com/syzbot-assets/31cc6fbe5b8a/v=
+mlinux-848acc8f.xz
+> >>>> kernel image: https://storage.googleapis.com/syzbot-assets/433919ca6=
+520/bzImage-848acc8f.xz
+> >>>>
+> >>>> IMPORTANT: if you fix the issue, please add the following tag to the=
+ commit:
+> >>>> Reported-by: syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com
+> >>>>
+> >>>> ------------[ cut here ]------------
+> >>>> len > ((int)(~0U >> 1))
+> >>>> WARNING: ./include/linux/skbuff.h:2864 at pskb_may_pull_reason inclu=
+de/linux/skbuff.h:2864 [inline], CPU#1: syz-executor147/5638
+> >>>> WARNING: ./include/linux/skbuff.h:2864 at pskb_network_may_pull_reas=
+on include/linux/skbuff.h:3265 [inline], CPU#1: syz-executor147/5638
+> >>>> WARNING: ./include/linux/skbuff.h:2864 at pskb_inet_may_pull_reason =
+include/net/ip_tunnels.h:481 [inline], CPU#1: syz-executor147/5638
+> >>>> WARNING: ./include/linux/skbuff.h:2864 at pskb_inet_may_pull include=
+/net/ip_tunnels.h:486 [inline], CPU#1: syz-executor147/5638
+> >>>> WARNING: ./include/linux/skbuff.h:2864 at ipgre_xmit+0x958/0xcd0 net=
+/ipv4/ip_gre.c:658, CPU#1: syz-executor147/5638
+> >>>> Modules linked in:
+> >>>> CPU: 1 UID: 0 PID: 5638 Comm: syz-executor147 Not tainted syzkaller =
+#0 PREEMPT(full)
+> >>>> Hardware name: Google Google Compute Engine/Google Compute Engine, B=
+IOS Google 07/24/2026
+> >>>> RIP: 0010:pskb_may_pull_reason include/linux/skbuff.h:2864 [inline]
+> >>>> RIP: 0010:pskb_network_may_pull_reason include/linux/skbuff.h:3265 [=
+inline]
+> >>>> RIP: 0010:pskb_inet_may_pull_reason include/net/ip_tunnels.h:481 [in=
+line]
+> >>>> RIP: 0010:pskb_inet_may_pull include/net/ip_tunnels.h:486 [inline]
+> >>>> RIP: 0010:ipgre_xmit+0x958/0xcd0 net/ipv4/ip_gre.c:658
+> >>>> Code: 48 3b 84 24 80 00 00 00 0f 85 3b 01 00 00 31 c0 48 8d 65 d8 5b=
+ 41 5c 41 5d 41 5e 41 5f 5d e9 3f 1a 78 01 cc e8 09 f5 6a f7 90 <0f> 0b 90 =
+e9 08 f8 ff ff 44 89 ff 44 89 e6 e8 b5 f6 6a f7 45 39 e7
+> >>>> RSP: 0018:ffffc900039af5e0 EFLAGS: 00010293
+> >>>> RAX: ffffffff8a5c1d67 RBX: 0000000000000000 RCX: ffff888079535d00
+> >>>> RDX: 0000000000000000 RSI: 00000000ffffff40 RDI: 0000000000000000
+> >>>> RBP: ffffc900039af6b0 R08: ffff888079535d00 R09: 0000000000000002
+> >>>> R10: 0000000000004888 R11: ffffffff8a5c1410 R12: ffff88807ecbc000
+> >>>> R13: dffffc0000000000 R14: ffff88807b7f2780 R15: 00000000ffffff40
+> >>>> FS:  0000555590a0a400(0000) GS:ffff88812504b000(0000) knlGS:00000000=
+00000000
+> >>>> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> >>>> CR2: 000055704428ded0 CR3: 00000000788f2000 CR4: 00000000003526f0
+> >>>> Call Trace:
+> >>>>  <TASK>
+> >>>>  __netdev_start_xmit include/linux/netdevice.h:5400 [inline]
+> >>>>  netdev_start_xmit include/linux/netdevice.h:5409 [inline]
+> >>>>  __dev_direct_xmit+0x4b6/0x730 net/core/dev.c:4942
+> >>>>  __xsk_generic_xmit net/xdp/xsk.c:1253 [inline]
+> >>>>  xsk_generic_xmit+0x2759/0x47b0 net/xdp/xsk.c:1309
+> >>>>  __xsk_sendmsg net/xdp/xsk.c:1363 [inline]
+> >>>>  xsk_sendmsg+0x482/0x810 net/xdp/xsk.c:1373
+> >>>>  sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+> >>>>  __sock_sendmsg net/socket.c:790 [inline]
+> >>>>  ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
+> >>>>  ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+> >>>>  __sys_sendmsg net/socket.c:2770 [inline]
+> >>>>  __do_sys_sendmsg net/socket.c:2775 [inline]
+> >>>>  __se_sys_sendmsg net/socket.c:2773 [inline]
+> >>>>  __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+> >>>>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> >>>>  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+> >>>>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> >>>> RIP: 0033:0x7fc137b1b409
+> >>>> Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48=
+ 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 =
+f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
+> >>>> RSP: 002b:00007fffc9ef46d8 EFLAGS: 00000246 ORIG_RAX: 00000000000000=
+2e
+> >>>> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fc137b1b409
+> >>>> RDX: 0000000000000040 RSI: 0000200000000700 RDI: 0000000000000003
+> >>>> RBP: 0000000000000000 R08: 0000000080000000 R09: 0000000080000000
+> >>>> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> >>>> R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000003
+> >>>>  </TASK>
+> >>>>
+> >>>>
+> >>>> ---
+> >>>> If you want syzbot to run the reproducer, reply with:
+> >>>> #syz test: git://repo/address.git branch-or-commit-hash
+> >>>> If you attach or paste a git patch, syzbot will apply it before test=
+ing.
+> >>>>
+> >>>
+> >>> Please try this one instead. I'm not sure if the previous patch has
+> >>> the index problem...
+> >>>
+> >>> But the following patch can be applied in my tree.
+> >>>
+> >>> #syz test
+> >>
+> >> Please, do not cc the netdev ML for syzbot test patches. They may foul
+> >> PW and the KCI.
+> >
+> > I see. Sorry for that.
+> >
+> > But one more thing I have to ask is why the second attempt failed
+> > since I see no output from syzbot.
+> ? I read:
+>
+> """
+> failed to apply patch:
+> error: corrupt patch at line 6
+> """
 
+That was from the first attempt.
 
-On 8/11/26 21:54, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: macb: Poll for link state changes when using the internal PCS.
 >
-> This sets phylink_pcs.poll on the macb SGMII PCS so that phylink polls the
-> PCS for link state instead of relying on an onboard PHY, which is needed
-> for offboard transceivers such as SFPs.
->
->> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
->> index d394f1f43b68..c15a9c7e69d3 100644
->> --- a/drivers/net/ethernet/cadence/macb_main.c
->> +++ b/drivers/net/ethernet/cadence/macb_main.c
->> @@ -1025,6 +1025,7 @@ static int macb_mii_probe(struct net_device *dev)
->>   	struct macb *bp = netdev_priv(dev);
->>   
->>   	bp->phylink_sgmii_pcs.ops = &macb_phylink_pcs_ops;
->> +	bp->phylink_sgmii_pcs.poll = true;
-> [Severity: Medium]
-> Can this silently disarm Wake-on-LAN across a suspend?
->
-> Setting poll on the SGMII PCS makes phylink arm its periodic link_poll
-> timer, since macb also sets phylink_config.default_an_inband = true in
-> macb_mii_probe(), so cfg_link_an_mode ends up as MLO_AN_INBAND:
->
-> drivers/net/phy/phylink.c:phylink_pcs_poll_start() {
-> 	if (pl->pcs && pl->pcs->poll && pl->cfg_link_an_mode == MLO_AN_INBAND)
-> 		mod_timer(&pl->link_poll, jiffies + HZ);
-> }
->
-> That is reached from phylink_start() -> phylink_mac_initial_config() ->
-> phylink_major_config() -> phylink_pcs_poll_start().
->
-> The timer is only cancelled by phylink_stop() (timer_delete_sync of
-> pl->link_poll) or phylink_pcs_poll_stop(), but macb_suspend() skips
-> phylink_stop() entirely on the Wake-on-LAN path:
->
-> drivers/net/ethernet/cadence/macb_main.c:macb_suspend() {
-> 	...
-> 	/* Enable Receive engine */
-> 	macb_writel(bp, NCR, tmp | MACB_BIT(RE));
-> 	...
-> 	enable_irq_wake(bp->queues[0].irq);
-> 	}
-> 	...
-> 	if (!(bp->wol & MACB_WOL_ENABLED)) {
-> 		rtnl_lock();
-> 		phylink_stop(bp->phylink);
-> 		rtnl_unlock();
-> 	...
-> }
->
-> macb also does not use the Wake-on-LAN aware phylink_suspend(pl, true) /
-> phylink_resume() pair, so pl->phylink_disable_state stays 0 and
-> phylink_fixed_poll() keeps re-arming itself and queuing pl->resolve on
-> system_power_efficient_wq, which is not freezable.
->
-> If the poller then observes a PCS link change during the suspend window,
-> macb_mac_link_down() clears exactly the bit macb_suspend() just set:
->
-> drivers/net/ethernet/cadence/macb_main.c:macb_mac_link_down() {
-> 	/* Disable Rx and Tx */
-> 	ctrl = macb_readl(bp, NCR) & ~(MACB_BIT(RE) | MACB_BIT(TE));
-> 	macb_writel(bp, NCR, ctrl);
-> }
->
-> The WOL register and the queue-0 wake interrupt remain enabled, so the
-> driver still believes Wake-on-LAN is armed while the receive engine is off
-> and a magic packet or ARP frame can no longer be received.  Clocks stay on
-> here because macb_runtime_suspend() skips macb_clks_disable() when
-> device_may_wakeup(), so the register write does reach the MAC.
->
-> The opposite direction looks odd too: a poll-triggered macb_mac_link_up()
-> re-enables RE|TE and re-writes the per-queue IER with
-> bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP) after the RX queues
-> have been tied off or set to MACB_BIT(QUEUE_DISABLE) and NAPI has been
-> disabled, on an IRQ that is an armed system wake source.
->
-> phylink documents the intended behaviour for this case in
-> phylink_suspend():
->
-> 	/* We do not call mac_link_down() here as we want the
-> 	 * link to remain up to receive the WoL packets.
-> 	 */
->
-> Would switching macb_suspend()/macb_resume() to phylink_suspend(bp->phylink,
-> true) / phylink_resume(), or otherwise stopping the poller on the
-> Wake-on-LAN path, be preferable now that a periodic PCS poller exists?
+> in last message from syzbot, and a similar one in reply to the previous
+> attempt. You can use git format/git send-email even for syzbot tests, to
+> avoid this kind of problems
 
-I am really not sure, to be honest. This patch just copies the existing 
-logic for the fixed-link case, which also polls. I'm not sure things are 
-any different; if this does happen -- and I agree with your logic that 
-it could -- it would not be a new behavior.
+I see, let me try this. Thanks!
 
-I am a little reticent to include fixes to this pre-existing situation 
-in this patch unless it is unmergeable without doing so, especially 
-given that I think a full solution would be a substantially larger 
-change, but if it is needed, I would be happy to work on adding it.
--Nathan
-
--- 
-Nathan Whitehorn (he/him)
-Associate Professor
-Department of Physics and Astronomy
-Michigan State University
-Biomedical and Physical Sciences 3225
-East Lansing, MI 48824
-(517) 884-5563
-
-
+>
+> /P
+>
