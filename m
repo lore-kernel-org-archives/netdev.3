@@ -1,171 +1,123 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009E833D4F0;
-	Wed, 12 Aug 2026 14:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0AA3655F3
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 14:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786544622; cv=none; b=Kt0AkI+Zh1Ow8qhY8QwuXgifR/ebsxbZysxq8X/58Kc44gNjAz083QiwRPi9Rlg4+doueKJWYQ6WAFwfvzuAyokiga2QmMO2qNWWf+LX/peWYWALEF6+zhCryJOsoJwgxkpKNMgI402q9VOaRbMZ8xAAEt5MPdQnCAjwymDPZVQ=
+	t=1786545029; cv=none; b=uQOMeN+MgNcKKKD7iOsFOqr7+FQj0tLPVZuDPKrvipEd2DQGToXtz38LDXO8RJorxupPwFuFjr1alP9fFKLwwrmflfhbsTkV/A/1B88r6Lm2PZgnzmigWv2x+vOK+8psMDSUbmYbSYI4fyZ8vQEtVzF5i64/g++7EQLufGpflAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786544622; c=relaxed/simple;
-	bh=DaPAjmxog5owAR2BES1Ti0cJEW7rLRp2Yo/7zXarSZI=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=QCs0AEwEz+0oRH8oJPVscCCbOREK9+GYTX1mQIZ57QKgJShEWF5JDzkZWOx5Z9rpZ++euShJIlY1dHUVe6HnSnLgShwCTQbtOFYKQuW3BmmI/Wps0OsQmmHsPdiIeEL9SNq8nxpKYCBkO75JPBxuWPc6SP2Uwfbsp3cARuC4Tj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=d9K4BAH0; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=rNxS9Xp2; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1786545029; c=relaxed/simple;
+	bh=wcZettSTNfqOlFlLGgZdWldeIxZP1hJuwogqXfpzyUQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KWFwmJGsNOCT8RopdLuOpN9C/qUG0SFSShCeZ9lx7A/mn4UhaJ0z4lm0FumUDDFOyNlo4r5ZznoEYfh8IESj4BA+qY1Mozq4EwhnrH9zBmEShOUEt+1WN2T7Upcm5/jA7awnUKqO3FhWrEOaKpayO+F9xWvaage4agJ9GuQ68ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=PeCLprZl; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="d9K4BAH0";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="rNxS9Xp2"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 67CEMuHM006037;
-	Wed, 12 Aug 2026 16:23:01 +0200
-Received: from lubuntu-18.04 (host-80-183-189-234.business.telecomitalia.it [80.183.189.234])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 72851122967;
-	Wed, 12 Aug 2026 16:22:51 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1786544571; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OuVP8jn+2IQuzgwsSZXa4qlpdqRw4iDgXUxpue/OBpA=;
-	b=d9K4BAH0H1Te43xsUyM+rk0ijrR/AI/imE5QpJyoHxk4MIcbYnD3dwuYRWRAA9eGhqFax6
-	5aZUubZzLza91/Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1786544571; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OuVP8jn+2IQuzgwsSZXa4qlpdqRw4iDgXUxpue/OBpA=;
-	b=rNxS9Xp2/9NYCs2VzZteEggRS7h6wl1CEENjzg5ezIKO4eLMLzXqWW4oMQUueemN7eRAXJ
-	BqXrQCjiUobTsT6Xs+wli7fAVYwG31MM+s/7g9q19836BvHLB635hE8vD3oT5SXwCC3OwA
-	keLvz53/K3FjWS/felaHtOxX4RMIMlA62XNY3s5BKduYVhoSHYHsRVh1pg3viDoieFrsyM
-	homntDN6hcHzYXmkfSiQhyCIcNLre+4hRZ/u4DmSu/ureCwb/dAMKMVVZIWUK1GA9LShGW
-	H5fGOrkiJBAruI+Eq9zodg5otcuzQhnQd7Y8sE5VPeHi8nt6Nfgm4/ZEZOTCoQ==
-Date: Wed, 12 Aug 2026 16:22:50 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: David Lee <david.lee@trailofbits.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, Kyle Zeng <kylebot@openai.com>,
-        "Dominik 'Disconnect3d' Czarnota" <dominik.czarnota@trailofbits.com>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>, horms@kernel.org,
-        stefano.salsano@uniroma2.it, dsahern@kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Andrea Mayer
- <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net v3] ipv6: seg6: clear IPv4 control block on IPIP
- decapsulation
-Message-Id: <20260812162250.71d6e1df06ee05fdc3fd5fe0@uniroma2.it>
-In-Reply-To: <20260810154732.850472-1-david.lee@trailofbits.com>
-References: <20260810154732.850472-1-david.lee@trailofbits.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="PeCLprZl"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c197e7e4e94so190743266b.2
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 07:30:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1786545022; x=1787149822; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yMT7PPQ1ysktkS1cevhGzCC9k5h/+zORJkENpAoJdlM=;
+        b=PeCLprZl8gyFkTyhOYKuMgrdkwtGAmI0/gHeQGEEQZ5FZZ612v8xSUvkY01NPwTSTP
+         zo25TXQj4KHHHfXgcS3Kmyf6f8Wr0yuJh7bNClQJT0ZE89T4NVIpXlCGyYysy9z/Iz6g
+         qvxTrzYuT/w0ZLooNiy/KaJ16UTVrmqX/bQclMkyKWg25XX/BG9p0e42TgWk2iESoykA
+         vAYcWA7ep8N+1JWbboklcvcI2Xyoqa8xS3DGIreK4EV5Ar0kVxNzD29YNS3NgT+2gKBb
+         ErrooJZJW/QDDwIb5j6BcQLIeyolpe8YaRXKkkhLjG48bn7WuW9ToTmsmxRRp+p/f8MJ
+         3MAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786545022; x=1787149822;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yMT7PPQ1ysktkS1cevhGzCC9k5h/+zORJkENpAoJdlM=;
+        b=O6xJDZAovmIIpiia1kJtbNuMD+Kn0E53Ek6EMWXSwYgk8SYuYBEXb1dhwwlE9Z/3E3
+         34VNFtAAre1IuYTYewPvXz9O1EpwWUxAlleuYbZpyE66QatY32NscVar+soGz3NnMjIo
+         JHZzO0hEv42K3hbY4HwdKlXUdO+HSOko684ZBhiGmR5hfuzPVPbY9ThdNO8az6ZwWQvW
+         kZPKvjKfakdtZeRVSQjvH/vaPGXD6cg4Ul/JrxmwsP1ZTFqLGXfgY4IVtxLNDtH4Xfz8
+         okdIeMU8nPAS8vkJxX08w6NxHzyIpp1cEnBm8TOsUs73zGCjJD7a/JkRJc7eRtVhJGw0
+         h5MQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqeblcuy/GXjUJFoh3VOHP67nrLDM3KTxrdp4Y7E9JVb/tPoqsCptTPd6RS6vNT+KUn3H22//g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPT9HX1410Lf1og1fA8lVzmsVCwobYdAnf5iN3fVMidtmfdDtZ
+	Vau2JLoz7SGiflvHU0PWlPTrcUWxILYufuan5Lsd6Rv3f8vaVouFJu5RmsDwzO6haBc=
+X-Gm-Gg: AR+sD11zVKjh6nKSfgIgxXH3+svHT3mWRJ5J0lktjfen6NFIourVW0uf6HnEBX3JCle
+	zc0P+2mb3VB0EjE1o8IYupEEH5IkQi9fykv92rBxyvpc9GNyLVIukanMlLXnjYME2zRq2Xcy3+o
+	zGZuqZ4TxYbqhRboLgr/slMUKfhwY8sn/rt+fLR/Qmay/+mLDtzxRASH+bRUZTR5FX53PNqTIvm
+	oEiXf+bClPaVxcwfN4I1VlOyW7eAQjpQ/CqGz5JKO+7dYhgnMYHPnXymQx3yQuB/9rEks8mvhRq
+	AULoOt2C5EKQ1FCUKhbjtOKTRsy8hqdHD9/TiRBkOcIDoxZQ8XHiFwg/axkAfejeepaTaMI83J3
+	E+VGsXKCceibG6yp6jAEcP9FGVIX2hrfa/yU/fjGtZPzPgZ/zjnFsU3Rsu2sWzItR9TuRGtFZYy
+	FOx6hdx0O56TSzHZR5ZcvBHpgB3l3OHX4QdLPJPUvKronhncjyhEqO/GjGaNt7AM8GKuU/0PXDq
+	ZyS+EseisuJ43j18SSFu3JaxeCktR0=
+X-Received: by 2002:a17:907:1905:b0:c20:7557:d986 with SMTP id a640c23a62f3a-c20f2f042a1mr256702766b.13.1786545021983;
+        Wed, 12 Aug 2026 07:30:21 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a3769ad71bsm835132a12.14.2026.08.12.07.30.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Aug 2026 07:30:21 -0700 (PDT)
+Message-ID: <e4624ff2-53b5-4cfb-9c5b-aec34f7e7b3e@blackwall.org>
+Date: Wed, 12 Aug 2026 17:30:19 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] net: convert netdev_nl_sock bindings list to
+ xarray
+Content-Language: en-US, bg
+To: Shivaji Kant <shivajikant@google.com>, netdev@vger.kernel.org
+Cc: praan@google.com, Mina Almasry <almasrymina@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Kees Cook <kees@kernel.org>, David Carlier <devnexen@gmail.com>,
+ Yue Haibing <yuehaibing@huawei.com>, Daniel Borkmann <daniel@iogearbox.net>,
+ David Wei <dw@davidwei.uk>, Maoyi Xie <maoyixie.tju@gmail.com>,
+ linux-kernel@vger.kernel.org
+References: <20260811142958.160088-1-shivajikant@google.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260811142958.160088-1-shivajikant@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
 
-On Mon, 10 Aug 2026 15:47:31 +0000
-David Lee <david.lee@trailofbits.com> wrote:
-
-Thanks Kyle and David for the v3. The code looks good. What follows is
-about the commit message.
-
-I think the commit message is missing some information that the review
-needs now, and that anyone reading git log will need later, since this
-patch is Cc: stable.
-
-> From: Kyle Zeng <kylebot@openai.com>
+On 11/08/2026 17:29, Shivaji Kant wrote:
+> netdev_nl_sock previously used a struct list_head bindings to keep
+> track of active netdev netlink bindings, protected by a per-socket
+> struct mutex lock (priv->lock).
 > 
-> End.DX4 and End.DT4 decapsulate an IPv4 packet through
-> decap_and_validate() and send it directly to IPv4 routing. The inner
-> packet therefore bypasses ip_rcv_core(), which normally clears IPCB
-> before IPv4 interprets skb->cb.
+> Since list modifications and iterations are not concurrency-safe,
+> priv->lock was introduced to serialize operations on priv->bindings.
+> However, xarray manages its own internal locking (xa_lock) for store,
+> erase, and iteration operations.
 > 
-> The skb instead retains IP6CB data from the outer packet. IPv6
-> extension-header offsets overlap IPv4 option fields, so IPv4 can treat
-> those offsets as saved option metadata. __ip_options_echo() can then
-> copy beyond the allocation for saved options.
+> Convert bindings in struct netdev_nl_sock from struct list_head to
+> struct xarray and remove priv->lock. This simplifies the code by
+> removing explicit mutex locking in netdev_nl_bind_rx_doit(),
+> netdev_nl_bind_tx_doit(), and socket initialization/teardown functions.
 > 
-
-This says the offsets overlap, but not which stale field has to be
-non-zero for the copy to be attempted. IPCB->opt.optlen shares a byte
-with IP6CB->lastopt, and __ip_options_echo() returns before any copy
-when the optlen it is given is zero. What the outer packet has to look
-like for that byte to be non-zero, and whether the sender controls it,
-are not stated.
-
-> Separate End.DX4 and End.DT4 reproducers on the unpatched v7.2-rc5
-> kernel both produced:
-> 
->   BUG: KASAN: slab-out-of-bounds in __ip_options_echo()
->   Write of size 255
-> 
-> The End.DX4 trace passes through input_action_end_dx4_finish() and
-> input_action_end_dx4(), while the End.DT4 trace passes through
-> input_action_end_dt4().
-> 
-
-Pasting the call stack would show how __ip_options_echo() is reached.
-
-> When decap_and_validate() handles IPPROTO_IPIP, save the ingress
-> interface from IP6CB, clear IPCB, and restore the saved value. Doing
-> this in the common decapsulation path covers End.DX4, End.DT4, and
-> End.DT46's IPv4 arm.
-> 
-> Use IP6CB(skb)->iif rather than skb->skb_iif. These actions run after
-> l3mdev processing, which can replace skb_iif with the L3 master;
-> IP6CB iif still records the receiving interface set at IPv6 ingress.
-> 
-> Fixes: 891ef8dd2a8d ("ipv6: sr: implement additional seg6local actions")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> Co-developed-by: David Lee <david.lee@trailofbits.com>
-> Signed-off-by: David Lee <david.lee@trailofbits.com>
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
+> Signed-off-by: Shivaji Kant <shivajikant@google.com>
 > ---
-> Changes in v3:
-> - Clear IPCB in the common IPPROTO_IPIP decapsulation path so End.DX4,
->   End.DT4, and End.DT46's IPv4 arm are covered.
-> - Preserve the ingress interface from IP6CB instead of skb->skb_iif,
->   which can identify the VRF master after l3mdev processing.
-> - Update the Fixes tag to the commit that introduced End.DX4.
-> - Include the End.DX4 and End.DT4 KASAN evidence.
+> v1 -> v2:
+>    - Add explicit err_erase_dmabuf_bindings err label in net_devmem_bind_dmabuf()
+>      to align cleanup paths with the rest of the function (feedback from reviewer).
 > 
-> v2: https://lore.kernel.org/netdev/20260804094625.715305-1-david.lee@trailofbits.com/
-> v1: https://lore.kernel.org/all/20260731140832.567669-1-david.lee@trailofbits.com/ 
+> v1: https://lore.kernel.org/all/20260810065759.3735934-1-shivajikant@google.com/
 > 
->  net/ipv6/seg6_local.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>   include/net/netdev_netlink.h |  5 ++---
+>   net/core/devmem.c            | 14 +++++++++++---
+>   net/core/devmem.h            |  4 ++--
+>   net/core/netdev-genl.c       | 25 ++++++-------------------
+>   4 files changed, 21 insertions(+), 27 deletions(-)
 > 
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 2b41e4c0dddd..95ea0b62729a 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -256,6 +256,13 @@ static bool decap_and_validate(struct sk_buff *skb, int proto)
->  	if (iptunnel_pull_offloads(skb))
->  		return false;
->  
-> +	if (proto == IPPROTO_IPIP) {
-> +		int iif = IP6CB(skb)->iif;
-> +
-> +		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
-> +		IPCB(skb)->iif = iif;
-> +	}
-> +
->  	return true;
->  }
->  
 
-IMHO, the commit message is worth a new revision.
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-Thanks,
-
-Ciao,
-Andrea
