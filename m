@@ -1,55 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5442D37F727
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5720838F64E
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786551548; cv=none; b=I96gjUpIaBQAtfbBlVTuWEG3E5o07Hj9x8XIKzpjfj1Z5oXl0IbaQQwDcUrqTxml/3Pj/QFbbgaf+MZWEHdmhvwi8CJhMwSg2p+jwcLgh6BkmDTY7bN6YQJf6QyPPkKjA9BTEVCqBFw7AA8vprERf0fBsmFFVmdiri0FpvhTB3g=
+	t=1786551589; cv=none; b=U6hHv9GLcjHI8QXUvSj0HN5GA68Pde80jnUqh1GcPnx9V4P8D9VTQI+BRVBlJS9z4qTQ/3a8cPKimYm4fFODqwPZ2AweX9o6wmQsMdtbDU9WRV6KsRSns/7pFgXztI/w/Tdvi4zb4focM1WB6c/mFc+W9TY+Vxes8hovl53O2/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786551548; c=relaxed/simple;
-	bh=gd3cJnSHvAkxEx/3BimlROho8x1r8DhYtZ9afl/+2os=;
+	s=arc-20240116; t=1786551589; c=relaxed/simple;
+	bh=ODqUEGP6tsnL1ThwmZZC1AqV0iSvLOGuC+8v6XhyXbc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=azCt+FHSamIXuHBDeNFHJgM3/CVZS8IZ/CfmbxMZvK8flJfFKRg2CwCbBsgeigiHafERNAplA8JDogKMTgVCVM1CzmUbafgchNrUP+0uPuykDRDzGT3e3FSk1/NLlI5mDkaoAnhOYyJVir7duN6HSWcxWLeTLLLcrFlNccfMMRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E5OPbYq9; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=EJmEgTYtE8FHQLiy+30/9+n3Ot8w2BoaT2VqlqGr3nQ63cB8CCBImUHUJkDXH44IRqEeFWspPU2Srl5J9GEKMe7wG9BAAHQI/ggnoB7eaBwIuBZozYAPlbdx+z4WDl3m4aoV/0LDyfxhSHQ3i49DNvZ1z9r9djUZNl0E+eUaKXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KY9huG1n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E5OPbYq9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A2D1F00A3F
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:19:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KY9huG1n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F311F00ADB
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786551546;
-	bh=gd3cJnSHvAkxEx/3BimlROho8x1r8DhYtZ9afl/+2os=;
+	s=k20260515; t=1786551588;
+	bh=ODqUEGP6tsnL1ThwmZZC1AqV0iSvLOGuC+8v6XhyXbc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=E5OPbYq9dGd7i3ndWlaOMzQ1gPgi4bUMfbMdEnLcOxGH/rK2aTpPS560wFqL5o3vL
-	 YTGC6qTpZ/6MbsMHWV3t2ZN6gtRO61sRfcCqxgIbRvUq72AHyrc72eU+T6pPEji6oB
-	 9/MVfaZ9HSouJ7+MBMAgR0WBmNpUfXkVZ+x44L1wDyTKzL0TNIhc5c+VaK3gevtSeW
-	 b3oR1Lp7XpDy7EJuaHDRQ1pjEf96gXe6RY7/sG93+URGZgkwjY9zlsn0oh8ALwDU3l
-	 m3ktv3PfCRYw1Twj2HLNqOR0CgpMVdHe6bROGK3zYy/h8IU9L+M37sCX3aQ7Ey3/Hb
-	 MtW6DcVyuEblA==
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92e57a753f9so105539885a.2
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:19:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoTUvYJ09enop9vU8eU8t4Ihwfifd641xKqh1LbA8aUDMXCE4Ucqug13kPwpcGg77fIRtXdZIw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuSPTT7//gkwDQoLpiTWNoSkEY2lrgQ88l0XiuQipXG1FV6wi7
-	WRLVfWWAbVxYamOv5Vn6Ej9e0Ecx8DaLLj1YxK7RGBfN/j9rdd0pf55EqTmqNM+Eeic3MdaLDuk
-	qUaIzoG7D8kTRzrc/c2s/fHJub71tvaQ=
-X-Received: by 2002:a05:620a:2806:b0:92e:675e:8ede with SMTP id
- af79cd13be357-936b3abc728mr530936085a.13.1786551546021; Wed, 12 Aug 2026
- 09:19:06 -0700 (PDT)
+	b=KY9huG1nNoRnvpCqjTFQgjBSywJRL/pB7MU/dPm08hgYzoS+Ieb9E8cEOHa+kAN8r
+	 hpP7onJznN4TSYCa0plW4G+WA+o0rXCaPfAiuJJwCAz1jwRfjTaD0ZI16HxNNwR7xu
+	 CC8Gd3E/kSJJMeOsi0KqyQ91UsrvslciFSqeKc6I+n44zIh6ir2sZ/V1u/426WCfP+
+	 ppCHv+lJ/DixN+6mNR8pq9R0vPNKxmcp6q599RxrCVdQM+n0OSA0iSAd1hfj9WGU/R
+	 eWqjLhjj35tszhnwQiQiv6jEEQ8jjtLxe8FIVBk1DWKmZSwAmhDF5XZlfofUzXr6OR
+	 s18A7FxD7ICog==
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e7c6ec9dbso45766685a.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:19:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpC7DXpVfPiuOLntII3QgKsyREQYEOUYJb6UU5hrWJQZAoSyMxfMTJM4FdkYplAr1HKytslDq8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxkiux97bxDedB4ZSBdMXsnapT7g+eek8xEB+LjhNC95mfp9poI
+	bwS2IeTJ/w5jFd6tuUkM3bBcVy6Lix5+QkDGoOhRaRmiKPxKGFZ+F1aCZny6d0u0dO3zJ8196ZI
+	cBRP+vLYNuVKWDMQ+rqQoTrVVpngNbxc=
+X-Received: by 2002:a05:620a:1196:b0:934:9f6d:8a0f with SMTP id
+ af79cd13be357-936b3d3a56emr437784985a.36.1786551587351; Wed, 12 Aug 2026
+ 09:19:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260812154328.72834-1-mahe.tardy@gmail.com> <20260812154328.72834-5-mahe.tardy@gmail.com>
-In-Reply-To: <20260812154328.72834-5-mahe.tardy@gmail.com>
+References: <20260812154328.72834-1-mahe.tardy@gmail.com> <20260812154328.72834-3-mahe.tardy@gmail.com>
+In-Reply-To: <20260812154328.72834-3-mahe.tardy@gmail.com>
 From: Song Liu <song@kernel.org>
-Date: Wed, 12 Aug 2026 09:18:54 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW7J-xiABqCqF7f_tPm5wFxDWhS=dDQ-kxndOX4Lp7Hxgg@mail.gmail.com>
-X-Gm-Features: AUfX_mwifgA3oE2AlWFVHT72inhhp6xAcOjWVX1fkauZKHUPS4HghxJUypMuNz8
-Message-ID: <CAPhsuW7J-xiABqCqF7f_tPm5wFxDWhS=dDQ-kxndOX4Lp7Hxgg@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v6 4/5] selftests/bpf: Test forbidden
- bpf_ksock_send() LSM attach
+Date: Wed, 12 Aug 2026 09:19:35 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW5MrfNwV_gwvP=uCWop46vuahyR8oXJsX2Wp70SCB-+uQ@mail.gmail.com>
+X-Gm-Features: AUfX_myN21PcR5YwnQW31xiuSFAARvbx_9wPWczbCsBu5zLhf3mf8-CknypXsJs
+Message-ID: <CAPhsuW5MrfNwV_gwvP=uCWop46vuahyR8oXJsX2Wp70SCB-+uQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v6 2/5] bpf: Add ksock kfuncs
 To: Mahe Tardy <mahe.tardy@gmail.com>
 Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org, 
 	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com, 
@@ -63,15 +62,15 @@ Content-Transfer-Encoding: quoted-printable
 
 On Wed, Aug 12, 2026 at 8:43=E2=80=AFAM Mahe Tardy <mahe.tardy@gmail.com> w=
 rote:
+[...]
 >
-> The bpf_ksock_send() kfunc eventually calls security_socket_sendmsg(),
-> thus creating a possible recursion if a program calling the kfunc is
-> attached on that specific hook. A filter is added on the kfunc
-> registration to prevent that at load time from the verifier. This test
-> exercises that the verifier will reject such program on that attach
-> point.
+> In bpf_ksock_create(), we copy the arg values to avoid TOCTOU races
+> since the kfunc can sleep and the arg values could be stored in a map
+> that could be re-written by BPF progs or even userspace programs if the
+> map is mmaped.
 >
 > Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+> Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 > Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
 
 Acked-by: Song Liu <song@kernel.org>
