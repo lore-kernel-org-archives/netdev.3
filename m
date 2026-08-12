@@ -1,158 +1,112 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBBD372EDD
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 20:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0F03A8FE6;
+	Wed, 12 Aug 2026 20:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786567854; cv=none; b=lJqXd0y0IINQqi2X91LZ7EcRFW5WtHfa0+Ttc8Spe84rrvp/7xnX+VbjNHnraLigpWWHjAPRbiXN1xX3qb24lYwYSsKEfnsUdLn2zkBCBmhk+pugD3MxG/NkPKqCIllkpRGJI/E30zxT3zz0w7jeloPx/0aqhg4zrelJg4DlxUM=
+	t=1786568120; cv=none; b=SyqR4+pD39f+ruMhE6SfYX8N4v/uUQVLvwRI+HWwOCRD6i4UxP/eNaHthUMJjbHCJ66qBZAakmM1S5CJK0QJDU84QQatqWyhu01Wa3Zg9heBVohroxax9xBIsxta6+0UrcUleG75Oesdf4hkVpkMDV6gaMfoncOyigL6VZxF6Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786567854; c=relaxed/simple;
-	bh=+M/xEkAlBPQ/Dv4teFjbH8U9YOb3eHfDkarb54xmW3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GUQWsMWwOTrfeQKBlRIf/FRtsFpG1P3GpW5jl023Av78jNp88IqoxypbJQsDYr7NjkSWs8RyJ6fnghkDNItb8Wc+9g0mV1WFfxI2x8o23MRlRrqukZozXF6DOkCM0i2A59N1x1o0hlZdXBnw9/lsDdq15o69329tWdAhCvDd0dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S/KQBIv+; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S/KQBIv+"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4706f016316so72127f8f.3
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:50:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786567851; x=1787172651; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KGopkqV/DZXXVPCNEpwVFmRfIz4+rospFjEcMQiIhw4=;
-        b=S/KQBIv+FPssV4Ug9pRbr3Kd+6E+P006B4l8V6oJeL8yIC44VS/Tl0GiiBiHor+hQ+
-         tM++938WGXlpVheg+HAO8K3so4Euij0zB2vok1GEE8KJKl+7g365QtgqoY55s+NdF5Fe
-         IEgfi6cFwKAQKH6NK30CsTA00UTA/7akYIUDl260NuV02DKNaAXcXMFzFqXLyv4GUOt7
-         MhiryjV/B2w4YJ2dNiDYFflw1dneHAtPkqVYMWckmuyYQNfDW8MvHiCKsr7/xSzw7hig
-         k5TJ3kjg2GXi0kOaQpUxcWr+gf3Raj9U2KaUblpu6YIr+Tt1RM62DlhwGBCt7nHEH7Ne
-         Enyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786567851; x=1787172651;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KGopkqV/DZXXVPCNEpwVFmRfIz4+rospFjEcMQiIhw4=;
-        b=kFRcSNmdqY4HvVh20GZ+ehQMdr4BBf0XPki5Rf2ZC2rP7SDBJon1Tzs06Zn87OsBQ1
-         BUYA/7Pg9+dkhMinpneVq/UWHwdu7ZniN0PwxJUSMeBI9yRSLWtioJkaYwUh6wcQgOjG
-         Iq17dpmnFMXKiUCXbP82ltDZ0NM45uKsQU/9Mxw8VD6otVbKeoTSn1htT5WfGScGP8pv
-         ZxY6ojvCE3wPo7JqCfKrl1zB9xH1Q8hgC7bSeHouvsuU7F1XdKDhGZqIiRHFrEUDVIVu
-         Q9/J2j9T8+Id2tDjetzqxFW9UQDeW56C1V7JT96JJs7gL+2AUnBodx/zMthOY+syQ/TG
-         jOnQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr3X0M1tgbN10ZIEbLUnb6XcpL2C3hxJ/U8mC8V2zkMzbY0KpTtLGDapTbIcY5va62SNyNTewY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+rI0Pj3hluuERbnx52nTKSjPK5kQbevXoqiJntGk9iSD7hNxy
-	qLR74fejw9VxmLteAnL0TAuxEf7ZCyxhLVSzVZ9cGD6uojFEF+3OMf5p
-X-Gm-Gg: AR+sD10MRkEtvrQbuhjTnNx5M2slRlBwtkqV9+ADa+cLYqsQX1tW/VFsk5vFRhZqV+w
-	/9geCGSoyw/c3+p66u2bESwjF37RjVXccmwq//QZwZoqOcNwBgwQZ5NZOgK9bUaBg76s8p6Kkhz
-	4l+mEyX6JWdQ/ryqVU/X+OyWw1Ua8o5X4wkrOS7iPvHqK72K4mps7TXy2C4Dd7wARNENatk495n
-	O023zl26Hx3Nr4trA6BevkLnYeRhlnbwSir0AwSt0YJx+Ca6RpvtdHw10UGQZ0HFi4MNom6y9vC
-	7mkptGXzkJ+FCUalmAoU5sFpqGlCRSEzGtGwadPEamR0XhimGoeNMAms0SUsEWbVl/G9AF0JSQf
-	wtDbhQg2Xq1UGq9oqeAwCalehe5YlXgywpWgWGb2ddg7hDYWTw+I4mMZ8XQD0Krikvq3uKtlzbr
-	+QxtTMannesOpvYuWal7avp0H0rab6qhlkQ4O/PRu6MS9VRD5C
-X-Received: by 2002:a05:600c:1908:b0:493:bea7:6b67 with SMTP id 5b1f17b1804b1-49982653643mr210845e9.3.1786567851214;
-        Wed, 12 Aug 2026 13:50:51 -0700 (PDT)
-Received: from skbuf ([86.127.220.200])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981e2dc44sm18113245e9.2.2026.08.12.13.50.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 13:50:50 -0700 (PDT)
-Date: Wed, 12 Aug 2026 23:50:47 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Semih Baskan <strst.gs@gmail.com>, florian.fainelli@broadcom.com,
-	andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vladimir.oltean@nxp.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
-Message-ID: <20260812205047.ojq2yyjtmoe5gjot@skbuf>
-References: <20260805072641.402-1-strst.gs@gmail.com>
- <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
+	s=arc-20240116; t=1786568120; c=relaxed/simple;
+	bh=FrdqQ6kXNnNKfJVjZwswwcKEQOtgoDeMVrYYyQrDqpE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G2RQoc+vbOnhCIa3WaSsCZSuZsb58bPHCs8WyB4Mdb9lg9RZ8irj5fEiOrSvMsHE/l7T8asZOYiHHgGhrsKHt1P4OGA3NMcD9keZPtQL54OVgxXn+UNqlteDRzf3U0Dkutx6yKGZ8r2PdkMIgvmygDKuYNdvEwdiSEfNPKm8Vx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.helo=mail.mainlining.org; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.helo=mail.mainlining.org
+Message-ID: <b15b2687-0c2e-43b2-ac9e-78e04e77e065@mainlining.org>
+Date: Wed, 12 Aug 2026 23:54:41 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/33] Add support for Qualcomm Snapdragon SM7150 SoC and
+ Google Pixel 4a
+To: David Heidelberg <david@ixit.cz>, Jens Reidel <adrian@mainlining.org>,
+ Danila Tikhonov <danila@jiaxyga.com>, Miro Mraz <mraz.miro@seznam.cz>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-watchdog@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-mmc@vger.kernel.org,
+ netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
+ dmaengine@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+ linux-remoteproc@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ neil.armstrong@linaro.org, linux-hardening@vger.kernel.org,
+ linux@mainlining.org, Connor Mitchell <c.dog29@hotmail.com>
+References: <20250422-sm7150-upstream-v1-0-bf9a9081631d@jiaxyga.com>
+ <2ca2b774-fd7f-4612-b38d-f60e32ff6f9a@mainlining.org>
+ <283096ad-ae1b-42b8-8312-b192f735fc80@linaro.org>
+ <cce3fe36-322e-49ed-8928-3aef813faad7@ixit.cz>
+Content-Language: en-US
+From: Danila Tikhonov <danila@mainlining.org>
+In-Reply-To: <cce3fe36-322e-49ed-8928-3aef813faad7@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 05, 2026 at 09:44:51AM +0200, Jonas Gorski wrote:
-> Unfortunately what this does is break modifying ARL entries with VID
-> != 0, which is why I haven't added this.
-> 
-> While SVL is active, any ARL add/remove operations ignore the VID
-> field/register and force it to 0, making existing static ARL entries
-> with VID != 0 inaccessible, and any (static) ARL entries added will
-> have their VID set to 0, regardless what the software entry said.
-> 
-> This causes the ARL hardware table to go out of sync with the bridge
-> fdb/mdb software tables, and will lead to potentially hard to debug
-> network issues.
-> 
-> The options to remedy this are:
-> 
-> 1. keep track of all static fdb (and mdb) entries added to the
-> hardware table, so we "sync" it on switching vlan filtering on/off (or
-> find a way to do so without having a copy), or
-> 2. while vlan filtering is off, have static vlan table entries for all
-> possible VIDs, or
-> 3. use direct memory access registers to directly modify the ARL table
-> memory instead of going through default registers while SVL is
-> enabled.
-> 
-> Neither one is a quick and easy fix.
-> 
-> 1/2 make switching vlan filtering likely a costly operation (I test
-> implemented 2, and it takes several seconds for SPI connected switches
-> - not sure if this is acceptable). 3 requires knowing the in-memory
-> formats for each switch chip, which aren't publicly documented.
-> 
-> Best regards,
-> Jonas
+Hi David,
 
-I think the only reliable way to fix VLAN unaware mode in a way that's
-portable across all b53 variants is a variant of this patch: allow
-802.1Q mode to be disabled. Then we need to deal with the fallout caused
-by it upon the ARL.
+Thank you for your comment.
 
-1. This looks implementable with some complexity isolated within the b53
-   driver:
-   - on any .port_fdb_add(), .port_fdb_del(), .port_mdb_add(), .port_mdb_del(),
-     compare the VID of the entry with the dev->vlan_enabled state.
-     - if VID != 0 and dev->vlan_enabled, or if VID == 0 and !dev->vlan_enabled,
-       commit the operation directly to the ARL, as is currently done
-     - if VID == 0 and !dev->vlan_enabled, or if VID != 0 and dev->vlan_enabled,
-       operate on a software list, allocating, deleting or modifying a
-       local representation of the ARL entry
-   - on vlan_filtering toggles from 0 to 1 or from 1 to 0, acquire
-     dev->arl_mutex and flush out all static and dynamic ARL entries
-     across the entire switch, commit the static ones from the software
-     list and clear the software list
-   - dev->vlan_enabled will probably need to be merged with
-     dev->vlan_filtering, since the vlan_enabled=1 vlan_filtering=0 case
-     is broken
+On 12/08/2026 14:40, David Heidelberg wrote:
+>
+>
+> On 23/04/2025 09:26, Neil Armstrong wrote:
+>> Hi,
+>>
+>> On 23/04/2025 00:07, Jens Reidel wrote:
+>>> Hi everyone,
+>>>
+>>> apologies for the mess this created. Danila's mail provider 
+>>> ratelimited him halfway through sending the series and the attempt 
+>>> to re-try sending the second half an hour later ended up with a new 
+>>> message ID (I think due to not using --in-reply-to).
+>>> He asked me to let you know that this will be resolved later and the 
+>>> whole series will be re-sent once the problems are resolved.
+>>
+>> The b4 web submission is a great alternative when the mail provider 
+>> is rate limited:
+>> https://b4.docs.kernel.org/en/latest/contributor/send.html#web-endpoint
+>>
+>
+> I see people interested in moving Pixel 4a forward, but it seems this 
+> was never upstreamed? I looked at sm7150 repository [1] where I see 
+> FROMLIST, but these patches never arrived to the list and this series 
+> is from 2025.
+>
+> Should we expect v2 (re)based on recent tree?
+>
 
-2. I see bcm_sf2 has support for B53_JOIN_ALL_VLAN_EN; IIUC this
-   proposal is a soft emulation of that. Would it work though? 2 concerns:
-   - in b53_switch_chips[] I see not all switches have a full 4K VLAN table
-   - unless b53 has a feature equivalent to MV88E6XXX_G1_VTU_DATA_MEMBER_TAG_UNMODIFIED
-     rather than the port-wide vl->untag, the emulation would either push a
-     VLAN tag in originally untagged frames, or strip a VLAN tag from
-     previously VLAN tagged frames. Neither option fits the bill for
-     what vlan_filtering=0 semantics expect (ignore the tag).
+I'd definitely like to get back to upstreaming SM7150 and the devices
+based on it, but I don't think there's much value in continuing with
+this particular series as-is. A lot has changed in the kernel over the
+past year, which would require substantial changes throughout the series
+and would effectively force the maintainers to review it from scratch
+anyway.
 
-3. From a distance it doesn't sound bad, but I cannot comment on the
-   feasibility of this and the scalability across the 4 b53_arl_ops;
-   maybe Florian can.
+I'd also like to split the series up to avoid targeting such a large
+number of maintainers in a single submission. Hopefully, I'll be able to
+find some time to work on this in the near future.
 
-The big advantage of option #1 is that it shouldn't depend on any HW
-functionality which is only present on some silicon variants. I don't
-see any downside except for the higher SW complexity in the control path.
 
-We could also discuss falling back to software bridging for the
-vlan_filtering=0 case, but that penalizes the data path, so it would
-probably not be the option of choice.
+> Thanks
+> David
+>
+> [1] 
+> https://github.com/sm7150-mainline/linux/commit/7ea41523c678e94a7c048936052b5b1b1b109cdd
+>
+>> Neil
+>>
+>>>
+>>> Best regards,
+>>> Jens
+>>
+>>
+---
+Best regards,
+Danila
+
