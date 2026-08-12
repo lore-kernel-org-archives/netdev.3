@@ -1,149 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9708537DEB2;
-	Wed, 12 Aug 2026 13:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726D744C4E3
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 13:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786539652; cv=none; b=rxJNNMJjSE0b5rQSs52JKPU5vvpt+0teWRHFPACPkaMfFBm4XaCAW5lsJXOOgW5flhtdeSFCWOw5tSq9HTmxwe9ytHj20LsOcITPYnHMDrj5+dtMTMQVgEwmDhdI5oj++tVO0Sow1wpQlw+6RkmhzTKmwD6rjKWNjWudDeqU3NA=
+	t=1786540377; cv=none; b=bZLYVBqtM/tmR885TkQDLz6C9i+e0GsmhHn9t6TuTPfhskQRO6on4Zr7sq/jG9OI5ZkXvWc/HdqMSdppXPS0/7ULjZgv1VCzE+Tpn24JPdOwpTsBqXcAcofL0CVY+zHY3y9wv+Yq29D8nijLhinjZWIRoi7k/W5jfF/LTvoI+Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786539652; c=relaxed/simple;
-	bh=4pjMjnsZ/Qg8UECl5JV/JuhAkm7WItCwqnxb6uvtkiE=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=UUyI7m6FEMkVjtkKraSQZH8LWamS/qHElRcIVZ0n3KpHGCoyOljFw6+XSbr+WWrSI+Lo20inxzEZ4g45GeIF4HOc4t5gwK0LbEEu0lLHAS6fnp4VPAgDQw9EejxzDup3nm3P2oDaDzuyCkjjHd82EX1znr4p0Ibfr/3Cy0w7tfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FffySGyI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786540377; c=relaxed/simple;
+	bh=uR7tLD9tHL/cwz88WSK+sk6wlsliROfYasYpTO2rQBc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=skGrK+xikvAfZelpUpPTPc0huRllSVpbt4hWDab3jgF107t+N0P1AbwqrEqBoC2AGN6P/5KT2lJZi+oaNe3rVzA7xBdDhnG3jVz2+Ij9EFKZY/CrQSEuPxnrxtUjguXRy+piyJaqud1Tzzxpuur11iA6VZ12+j3I6G9xgJUQjvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rlSsSxAl; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FffySGyI"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id A369F1F000E9;
-	Wed, 12 Aug 2026 13:00:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786539650;
-	bh=NCMu+3q6YqqfW/6i+2U7S5vjkRbRMUU/YnD76ftW5kE=;
-	h=From:To:Cc:Subject:Date;
-	b=FffySGyIkheIIY5iCzMVLN0vx+sHolvNa635JAKF2+bIWfxNLYCnM5N6/t/zVmXrl
-	 P4FjxcPqEim5FJKdPZOp30+abkN9Bc58mcaBpFGdvONu7SMxZn+lrHJALgtDU0n5bL
-	 f3noR1SgFB30WibD2n6yQgiOcfrWU3SBHbfbCUtplA0fqDUtEWycIYKUXy1N9SBjXF
-	 TeYmL9X7HgOhMvlW607O4FVi/wOeRB0v6iyrQuyYyJ58dqBDe5QBtPk0CrGywRRncp
-	 jY1zIZvQy7RxK+mdEDFJYpAe4KST0BGSJdnRPaYhkXk8ElABXRGUJ05pt4d/EmCMlx
-	 vYjT61zJKXSdA==
-From: "syzbot" <syzbot@kernel.org>
-To: syzkaller-bugs@googlegroups.com, Bartosz Chronowski <immersa.bartosz.chronowski@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jon Maloy" <jmaloy@redhat.com>, "Jakub Kicinski" <kuba@kernel.org>, <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, <tipc-discussion@lists.sourceforge.net>, "Jon Maloy" <jon.maloy@ericsson.com>
-Cc: horms@kernel.org, linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Subject: [PATCH] tipc: defer local Nagle backlog xmit from receive path
-Message-ID: <631b75b4-d1e3-40ea-a129-5ed090f914bf@mail.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rlSsSxAl"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cf50c6f235so14511165ad.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 06:12:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786540375; x=1787145175; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/5wq8SjRQDnjDD/nj5u1RP7jbzgzqJw5MxXBBo8cxuA=;
+        b=rlSsSxAlG0gjWmCy1W5ZyiTTZX9LD5XFceMdtunowveKq50DOsfRxR/lPupGElkyUj
+         AvOpt+wSKnEqkpeSDdp3YX4bMNssgp2pzBQL4NPogLeRCPSdAdxlMwnvLNdqtQD76/5q
+         5MRVQjREDAoAwb4mKBbp63lXgeYXJQJ4D328cr6x+jHl2Y24wGrAyN+8XxbWRj9Ior0b
+         obT3V/GeAGAbb5KrkiriEpBa9k8n8NZx3ZWi75oZgFRN88akimyCFiUJbZ1nvOLaRk+a
+         96FrTBtICiEWbl394CjSxi0hDnYmw7CXoN2VCkmfdKcRwLT/09RjgAYAQrhvdJYDHqt2
+         RRuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786540375; x=1787145175;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/5wq8SjRQDnjDD/nj5u1RP7jbzgzqJw5MxXBBo8cxuA=;
+        b=DWV4mnCHFQDlSP/iPi/SywKTsndZ1KQdkJGPbUxQjAoo2XQq8gbws26q9giD0wBlLm
+         uPdnGP6SUsGUdsXMpc24u/dJ+VtSLfoCo1Q34PlJQ6JqwEx2RmY+BOe6upqJdOFba3BJ
+         jXZpqjiVSWD8GhI/Yy28OT8yE1DWBg++Icdbvk3IUOFKImTOk3z9otEIuK/7MaxeksHu
+         zw4XWPENSxCmwKbTHqXLRwS4Lyei/9YPqWCGUoqxgyzU0dkfU1zre//86JhAf4x0XRD6
+         1LU8onGppoWqyqWD3VG5RLaKvIzhcxXg9iML687M9SgIYZsI3eyuUw2tFyXX7ycitzps
+         zS5g==
+X-Gm-Message-State: AOJu0Yxdra4Jur9qyX59NeUK19AbuxL/qj0Csj+cTLKDL5WfgNZ5zrlg
+	HSLosXPjM4pXe7T2eZCH+SlvRlX0qZYTlCzaNZQMwIhzGsGaeuF3UH7n
+X-Gm-Gg: AR+sD10rqrwaqRDP5no2pYChBFvO8EBXqFeWYdrBmXeUJa7HK9c+4sUwPRjoQ5jdvTM
+	kD5dpaNiTmkp1sbwPsTiA/q+yHjETzQNg2zJvqlYPrt+x/3x1Uvs2eSjDY4iyeVAyUyX7Dy3fou
+	vasAXwN5EwOcs84UHB7VaznMPYfpUClAnwBy3x2tiRWRLMuwRKS/+0nVe8HF4XmCXr13xRDxqDr
+	FxWlymiQRfoe1y+YRKgSXY3plaFmo0krHBjwS6CaCZ9ArRh3ErcZNhqZH/WfNBlY3B+490vnUKz
+	UiLz2QJyxlttTDWDQOMQcN/1EUzEZradyJuL9I6ZkbSWEGwj7/qlQR3JwQ4B4ulXa0IZ0p2f/hW
+	VcHRPQh4plDVFujeIaEdmM3S+gY4PKpXBmB3rYTdptjJ6kh8ml0ybYQabsimZK6pAUvI9rW0MZe
+	cEZT5TekmBQerZtvU1TvCuGmacckXyRRhVGW6EOBtw0SVooxYc0GIS1lYpIie4qdjThIqTQIa/7
+	+OyEHHRYDdnOA==
+X-Received: by 2002:a17:90b:1b05:b0:38e:4cb:51f with SMTP id 98e67ed59e1d1-393012c841dmr4869497a91.11.1786540375411;
+        Wed, 12 Aug 2026 06:12:55 -0700 (PDT)
+Received: from ubuntu.. ([49.205.39.116])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-392f94d30f4sm3834159a91.14.2026.08.12.06.12.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 06:12:54 -0700 (PDT)
+From: Ajith P V <ajithpv.linux@gmail.com>
+To: tung.quang.nguyen@est.tech,
+	jmaloy@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Ajith P V <ajithpv.linux@gmail.com>
+Subject: [PATCH net-next v2] net: tipc: replace deprecated strcpy with strscpy
+Date: Wed, 12 Aug 2026 13:12:23 +0000
+Message-ID: <20260812131223.205450-1-ajithpv.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <GV1P189MB1988E14B7ED2564A4D8D0FFBC6DC2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References: <GV1P189MB1988E14B7ED2564A4D8D0FFBC6DC2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Date: Wed, 12 Aug 2026 13:00:49 +0000 (UTC)
 
-From: Bartosz Chronowski <immersa.bartosz.chronowski@gmail.com>
+The `strcpy()` function is deprecated and moving towards code-tree
+elimination. Replacing it with `strscpy()` fixes potential buffer
+overflow vectors by ensuring safe NULL-termination based on the
+destination buffer size limit [1][2].
 
-A local TIPC stream socket workload can trap a CPU in an endless receive
-loop. The resulting soft lockup can make the system unavailable.
+In `tipc_bearer_get_name()`, the 'name' parameter decays into a pointer,
+meaning `sizeof()` cannot capture the underlying array bounds directly.
+However, all parent callers allocate this buffer using the
+TIPC_MAX_BEARER_NAME macro.
 
-tipc_sk_push_backlog() can transmit delayed stream data while tipc_sk_rcv()
-holds a destination socket's sk_lock.slock. Own-node transmission enters
-tipc_sk_rcv() synchronously. A reply that reaches the ancestor socket
-cannot acquire the still-held lock, and tipc_sk_rcv() retries without
-consuming its input queue.
+Replace strcpy() with strscpy() using TIPC_MAX_BEARER_NAME as the
+explicit destination bound length.
 
-Pass the receive output queue to tipc_sk_push_backlog() from receive-side
-callers. Queue own-node output there so the enclosing receive path sends it
-after releasing the socket lock. Keep shutdown and remote-node transmission
-on the existing direct path, preserving remote link congestion handling.
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
+Link: https://github.com/KSPP/linux/issues/88 [2]
 
-Fixes: c0bceb97db9e ("tipc: add smart nagle feature")
-Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+10a41dc44eef71aa9450@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=10a41dc44eef71aa9450
-Link: https://syzkaller.appspot.com/ai_job?id=aa2dc129-33d3-42e7-bd0b-bf2198c9c9c2
-Signed-off-by: Bartosz Chronowski <immersa.bartosz.chronowski@gmail.com>
-
+Signed-off-by: Ajith P V <ajithpv.linux@gmail.com>
 ---
-diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-index e564341e0..33d744dc5 100644
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -156,7 +156,8 @@ static int tipc_sk_insert(struct tipc_sock *tsk);
- static void tipc_sk_remove(struct tipc_sock *tsk);
- static int __tipc_sendstream(struct socket *sock, struct msghdr *m, size_t dsz);
- static int __tipc_sendmsg(struct socket *sock, struct msghdr *m, size_t dsz);
--static void tipc_sk_push_backlog(struct tipc_sock *tsk, bool nagle_ack);
-+static void tipc_sk_push_backlog(struct tipc_sock *tsk, bool nagle_ack,
-+				 struct sk_buff_head *xmitq);
- static int tipc_wait_for_connect(struct socket *sock, long *timeo_p);
- 
- static const struct proto_ops packet_ops;
-@@ -560,7 +561,7 @@ static void __tipc_shutdown(struct socket *sock, int error)
- 					    !tsk_conn_cong(tsk)));
- 
- 	/* Push out delayed messages if in Nagle mode */
--	tipc_sk_push_backlog(tsk, false);
-+	tipc_sk_push_backlog(tsk, false, NULL);
- 	/* Remove pending SYN */
- 	__skb_queue_purge(&sk->sk_write_queue);
- 
-@@ -1267,8 +1268,10 @@ void tipc_sk_mcast_rcv(struct net *net, struct sk_buff_head *arrvq,
- 
- /* tipc_sk_push_backlog(): send accumulated buffers in socket write queue
-  *                         when socket is in Nagle mode
-+ * @xmitq: receive output queue, or NULL outside receive context
-  */
--static void tipc_sk_push_backlog(struct tipc_sock *tsk, bool nagle_ack)
-+static void tipc_sk_push_backlog(struct tipc_sock *tsk, bool nagle_ack,
-+				 struct sk_buff_head *xmitq)
- {
- 	struct sk_buff_head *txq = &tsk->sk.sk_write_queue;
- 	struct sk_buff *skb = skb_peek_tail(txq);
-@@ -1310,6 +1313,12 @@ static void tipc_sk_push_backlog(struct tipc_sock *tsk, bool nagle_ack)
- 		tsk->pkt_cnt += skb_queue_len(txq);
- 	tsk->snt_unacked += tsk->snd_backlog;
- 	tsk->snd_backlog = 0;
-+
-+	if (xmitq && in_own_node(net, dnode)) {
-+		skb_queue_splice_tail_init(txq, xmitq);
-+		return;
-+	}
-+
- 	rc = tipc_node_xmit(net, txq, dnode, tsk->portid);
- 	if (rc == -ELINKCONG)
- 		tsk->cong_link_cnt = 1;
-@@ -1367,7 +1376,7 @@ static void tipc_sk_conn_proto_rcv(struct tipc_sock *tsk, struct sk_buff *skb,
- 			goto exit;
- 
- 		was_cong = tsk_conn_cong(tsk);
--		tipc_sk_push_backlog(tsk, msg_nagle_ack(hdr));
-+		tipc_sk_push_backlog(tsk, msg_nagle_ack(hdr), xmitq);
- 		tsk->snt_unacked -= msg_conn_ack(hdr);
- 		if (tsk->peer_caps & TIPC_BLOCK_FLOWCTL)
- 			tsk->snd_win = msg_adv_win(hdr);
-@@ -2165,7 +2174,7 @@ static void tipc_sk_proto_rcv(struct sock *sk,
- 		smp_wmb();
- 		tsk->cong_link_cnt--;
- 		wakeup = true;
--		tipc_sk_push_backlog(tsk, false);
-+		tipc_sk_push_backlog(tsk, false, xmitq);
- 		break;
- 	case GROUP_PROTOCOL:
- 		tipc_group_proto_rcv(grp, &wakeup, hdr, inputq, xmitq);
-@@ -2256,7 +2265,7 @@ static bool tipc_sk_filter_connect(struct tipc_sock *tsk, struct sk_buff *skb,
- 		return false;
- 	case TIPC_ESTABLISHED:
- 		if (!skb_queue_empty(&sk->sk_write_queue))
--			tipc_sk_push_backlog(tsk, false);
-+			tipc_sk_push_backlog(tsk, false, xmitq);
- 		/* Accept only connection-based messages sent by peer */
- 		if (likely(con_msg && !err && pport == oport &&
- 			   pnode == onode)) {
+v2:
+  - Target net-next tree instead of standard net tree as requested by Tung Quang Nguyen.
+  - No code changes from v1.
 
+ net/tipc/bearer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-base-commit: 1590cf0329716306e948a8fc29f1d3ee87d3989f
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 05dcd2f9e887..951bb474c7d4 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -209,7 +209,7 @@ int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
+ 	if (!b)
+ 		return -EINVAL;
+ 
+-	strcpy(name, b->name);
++	strscpy(name, b->name, TIPC_MAX_BEARER_NAME);
+ 	return 0;
+ }
+ 
 -- 
-See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
-The person who has signed off on the patch is responsible for
-addressing comments.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+2.43.0
+
