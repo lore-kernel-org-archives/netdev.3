@@ -1,194 +1,64 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFF921D5B0
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 01:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A55D367B7E;
+	Wed, 12 Aug 2026 01:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786497827; cv=none; b=eECH59K3LVUrr7TnyXA7bDJttU6Ryj6efwGkc+0ahSlEHEurKacTjOgsh0qhCR64gGmjJR99TxVlRdBJkKXawnCTH7sEaYh7YaLxuc6jcw2FzRCyZATL/svmYfR9KC5Nta1+NzRna0NzGCn0n2qHGO0MKNXYODU1A7Pg87d0SRY=
+	t=1786497885; cv=none; b=NCLMMgOkhpKIFvXPnZHGpxD7YQnHn1aukixWpDheVA61m6vpJPu/XBRuKtmgfScNtj/llTYK5AXkmPrayEAiNfhQjErWBwrifw7JfEIsz1biYlK18esaD32ZJ8HLNfpUnHWAu0rQSLcrkYKQYBkPCJfR0qE/RvOQGB+ENvy2VLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786497827; c=relaxed/simple;
-	bh=2Ic8nn1IjdeLMlFMkUBGlTSzq7P/pdhz3OTLOKObDQc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LsDnWj4uUcV5G1m8eZx6XLNqH/NMN7JFIum+EJghAIH9zb5TxlH9uV6IEtM4eL0KWTIz8fVvXXAgwxgQP6FbLC2njkhvjA7MsQWRAzx2eJerdCsPuV4W3I5Fe4b+xjLoJEDl3PfSw80mYXf0yunTRYtJDuiy9rqKWwOjM8aUT1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KQWdHd02; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1786497885; c=relaxed/simple;
+	bh=SveaN1HI0Z840913k3VTUqX02Kyq/a4E5RTwYMevyZw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eggYkPQ4H6yMmrbWFxKQy99/12DGiX3SMaNBUJj6hy2CT0QZtkguWQwRGqTJI17l++DVqDBhJ2gKJ0Aq909Qr998bimz0Tf2g15yvhc5Nleu0/X+20ZmM8E2c5WoMGe7ZTzm+iTxQpWyR68Jm2ASi+Bd1Fr/5+hTIMStyERiwNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjtTe6m9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KQWdHd02"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=sL
-	m/oYLqe0SOnYjUJ8EtOecmT7yfbzQszZNvFCe2dIY=; b=KQWdHd029JwaLae0bR
-	ZCK5DMRLeKElzQKLSCcsRgIpzIhEO5rJMeZdU5Jta9PZmhwdZCoiqICATqYe6Nzy
-	24qqHv7QPNZCrZdfWLayA+7oNNgpcftUCx3Rqq/cAe/MHelj9I3350lcVdbTkCfO
-	+3v4s0CJVmn4uFIWawOKUvR6s=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgCHzfPwyntqj8OMKw--.32351S2;
-	Wed, 12 Aug 2026 09:22:57 +0800 (CST)
-From: Longjun Tang <lange_tang@163.com>
-To: mst@redhat.com,
-	kuba@kernel.org,
-	jasowangio@gmail.com
-Cc: xuanzhuo@linux.alibaba.com,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	tanglongjun@kylinos.cn,
-	lange_tang@163.com
-Subject: [PATCH] virtio_net: add rx-alloc-fail counter
-Date: Wed, 12 Aug 2026 09:22:54 +0800
-Message-Id: <20260812012254.27668-1-lange_tang@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjtTe6m9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB76F1F000E9;
+	Wed, 12 Aug 2026 01:24:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786497884;
+	bh=voFvltF8jBsPIVxNqb5s4DIV0IhP46ekD3snoqZ0KGw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SjtTe6m9koJJuC/Y6Ej9qfVpczBMDSP666CMSXlduSV3t9PAX9sw5ggNjgKlr9ALY
+	 GnEcx5IjYC7mdLTrI9gbfTdRNbqZZYWJR1aonaFZ1WRYlC0dmihU+oQtflz3JFEaBy
+	 63H18qqoF7NLflPA3pMYKGXAUukpTGL5PmR4jd0wCqPtJPbgwQHU+jXoKkdXZmyzk6
+	 ETfPMnovO6Ik72M6CoiYnu6PrBddKxK1ni91S3nKGFCh8thbWWbab2etn/GxHxCJBH
+	 lSoWtEb6QrZo3RWzRT3E0RArQC5qtya5MSqwBqB0x/7X24PYRe7xZp2b35Zu2942uI
+	 aktvTgnZCkr8A==
+Date: Tue, 11 Aug 2026 18:24:43 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Marcelo Mendes Spessoto Junior <marcelomspessoto@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/5] selftests: net: create own netns in
+ ipv6_flowlabel_mgr
+Message-ID: <20260811182443.3961ab0f@kernel.org>
+In-Reply-To: <20260807220942.421382-4-marcelomspessoto@gmail.com>
+References: <20260807220942.421382-1-marcelomspessoto@gmail.com>
+	<20260807220942.421382-4-marcelomspessoto@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgCHzfPwyntqj8OMKw--.32351S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZw1DGF15CF1UWF45WF4Uurg_yoWrurW8pr
-	43AasIyFWkXwn7JFWrKryUZr1Yywnayay3GFyag34I93W5Kr1FkF10gayYkF43AFZ5AF1U
-	Xw4vyrZxKayj9r7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRveH-UUUUU=
-X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC-hJolmp7yvKDdgAA3O
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: tanglongjun <tanglongjun@kylinos.cn>
+On Fri,  7 Aug 2026 19:09:40 -0300 Marcelo Mendes Spessoto Junior wrote:
+> diff --git a/tools/testing/selftests/net/ipv6_flowlabel.sh b/tools/testing/selftests/net/ipv6_flowlabel.sh
+> index cee95e252bee..2eeda39bf64c 100755
+> --- a/tools/testing/selftests/net/ipv6_flowlabel.sh
+> +++ b/tools/testing/selftests/net/ipv6_flowlabel.sh
+> @@ -8,7 +8,7 @@
+>  set -e
+>  
+>  echo "TEST management"
+> -./in_netns.sh ./ipv6_flowlabel_mgr
+> +./ipv6_flowlabel_mgr
 
-Count buffer and skb allocation failures on the rx queue and
-report them via rx-alloc-fail in netdev qstats.
-
-$ ./tools/net/ynl/ynltool/ynltool qstats show --json scope queue
-[{"ifname":"ens3",
-"ifindex":2,
-"queue-type":"rx",
-"queue-id":0,
-"rx":{"packets":3722,"bytes":374806,"alloc-fail":0}},
-{"ifname":"ens3",
-"ifindex":2,
-"queue-type":"tx",
-"queue-id":0,
-"tx":{"packets":622,"bytes":77495,"stop":0,"wake":0}}]
-
-Signed-off-by: Longjun Tang <tanglongjun@kylinos.cn>
----
- drivers/net/virtio_net.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 3e2a5876c6c8..f9d15c618d3b 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -125,6 +125,7 @@ struct virtnet_rq_stats {
- 	u64_stats_t packets;
- 	u64_stats_t bytes;
- 	u64_stats_t drops;
-+	u64_stats_t alloc_fail;
- 	u64_stats_t xdp_packets;
- 	u64_stats_t xdp_tx;
- 	u64_stats_t xdp_redirects;
-@@ -173,8 +174,9 @@ static const struct virtnet_stat_desc virtnet_sq_stats_desc_qstat[] = {
- };
- 
- static const struct virtnet_stat_desc virtnet_rq_stats_desc_qstat[] = {
--	VIRTNET_RQ_STAT_QSTAT("packets", packets),
--	VIRTNET_RQ_STAT_QSTAT("bytes",   bytes),
-+	VIRTNET_RQ_STAT_QSTAT("packets",    packets),
-+	VIRTNET_RQ_STAT_QSTAT("bytes",      bytes),
-+	VIRTNET_RQ_STAT_QSTAT("alloc_fail", alloc_fail),
- };
- 
- #define VIRTNET_STATS_DESC_CQ(name) \
-@@ -1917,8 +1919,10 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
- 	}
- 
- 	skb = virtnet_build_skb(buf, buflen, xdp.data - buf, len);
--	if (unlikely(!skb))
-+	if (unlikely(!skb)) {
-+		u64_stats_inc(&stats->alloc_fail);
- 		goto err;
-+	}
- 
- 	if (metasize)
- 		skb_metadata_set(skb, metasize);
-@@ -1985,6 +1989,7 @@ static struct sk_buff *receive_small(struct net_device *dev,
- 		return skb;
- 	}
- 
-+	u64_stats_inc(&stats->alloc_fail);
- err:
- 	u64_stats_inc(&stats->drops);
- 	page_pool_put_page(rq->page_pool, page, -1, true);
-@@ -2016,8 +2021,10 @@ static struct sk_buff *receive_big(struct net_device *dev,
- 
- 	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
- 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
--	if (unlikely(!skb))
-+	if (unlikely(!skb)) {
-+		u64_stats_inc(&stats->alloc_fail);
- 		goto err;
-+	}
- 
- 	return skb;
- 
-@@ -2298,8 +2305,10 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
- 	switch (act) {
- 	case XDP_PASS:
- 		head_skb = build_skb_from_xdp_buff(dev, vi, &xdp, xdp_frags_truesz);
--		if (unlikely(!head_skb))
-+		if (unlikely(!head_skb)) {
-+			u64_stats_inc(&stats->alloc_fail);
- 			break;
-+		}
- 
- 		skb_mark_for_recycle(head_skb);
- 		return head_skb;
-@@ -2414,8 +2423,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 	head_skb = page_to_skb(vi, rq, page, offset, len, truesize, headroom);
- 	curr_skb = head_skb;
- 
--	if (unlikely(!curr_skb))
-+	if (unlikely(!curr_skb)) {
-+		u64_stats_inc(&stats->alloc_fail);
- 		goto err_skb;
-+	}
- 
- 	skb_mark_for_recycle(head_skb);
- 	while (--num_buf) {
-@@ -2444,8 +2455,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 		truesize = mergeable_ctx_to_truesize(ctx);
- 		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
- 						    buf, len, truesize);
--		if (!curr_skb)
-+		if (!curr_skb) {
-+			u64_stats_inc(&stats->alloc_fail);
- 			goto err_skb;
-+		}
- 	}
- 
- 	ewma_pkt_len_add(&rq->mrg_avg_pkt_len, head_skb->len);
-@@ -2928,12 +2941,14 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
- 
- 	u64_stats_set(&stats.packets, packets);
- 	if (rq->vq->num_free > min((unsigned int)budget, virtqueue_get_vring_size(rq->vq)) / 2) {
--		if (!try_fill_recv(vi, rq, GFP_ATOMIC))
-+		if (!try_fill_recv(vi, rq, GFP_ATOMIC)) {
- 			/* We need to retry refilling in the next NAPI poll so
- 			 * we must return budget to make sure the NAPI is
- 			 * repolled.
- 			 */
- 			packets = budget;
-+			u64_stats_inc(&stats.alloc_fail);
-+		}
- 	}
- 
- 	u64_stats_update_begin(&rq->stats.syncp);
-@@ -2948,6 +2963,7 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
- 
- 	u64_stats_add(&rq->stats.packets, u64_stats_read(&stats.packets));
- 	u64_stats_add(&rq->stats.bytes, u64_stats_read(&stats.bytes));
-+	u64_stats_add(&rq->stats.alloc_fail, u64_stats_read(&stats.alloc_fail));
- 
- 	u64_stats_update_end(&rq->stats.syncp);
- 
--- 
-2.51.0
-
+Please send a follow up - remove this from ipv6_flowlabel.sh now and
+move it from TEST_GEN_FILES to TEST_GEN_PROGS in the makefile 
