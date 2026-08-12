@@ -1,110 +1,170 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2C841D12C;
-	Wed, 12 Aug 2026 11:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.244.194.184
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786535913; cv=none; b=h75LgX3JBj3xVcGOEsGdmNF2kTREC5vvJHmpUmE8bUigqUVrsDBAeZbIQDRzFGly91QBfVwkq5JLhJiQ7r3h8n2A/tQMb4AK3U8KV70lPn8lSqB3S7ptp0D1wW/83fBdZjSpIyiEFh9sfcB5qz+0LETYoB0X6fy93AbXNR4Ipm4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786535913; c=relaxed/simple;
-	bh=bvmb/TiVePQoacyNeg/EPqKiK1zhRGjv56Pw0yKl1ro=;
-	h=Message-ID:Date:MIME-Version:From:Subject:Cc:To:Content-Type; b=Si9X7Kq+7bXpGLLrOe0Vf00svyn5azLl2ZeJdOyUlDb8FcKTSK9Ps6zqrxhCiE4QR21o9QDzvq/m+YNbLOrQaMAyn08nk61f8YqVDAGMQpNPU+KZS2pPX2n/m68TjI0ohePBt1N5/wFKDryjWpWYIOQ5pB5y3TqFJbIVwpaKlYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=dGO+XS8p; arc=none smtp.client-ip=185.244.194.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D64C439346
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 12:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786536093; cv=pass; b=IczPvAt8VtCOfLvjT0II9ZipvNxmzSXbthTkhL9GR/zLhw9eaAzJ86H7zli+cEehFczEvnxUEZxCksJRfySLqrKPs4U0xzpB848my4Y26F5EmoetIHW7Ug/a9cEQOXJF+SwSO2LDjyqV/1SEvVbYwXK28LEz3P9sChGkKebMVY0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786536093; c=relaxed/simple;
+	bh=D7kEfX+CI2RqSJkgfysboNExrgMP90EA7UnWjJT1PY8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m5QzsRiPtR0smveUDI1VuUyVnVfY9ddQlfeKbI3jE3h1LVy44yDdNwaj2ffNwjjQbQk5b6zQrmH6dnJjTA17WPPaOlNW81RBF+eJiYT3kvu253rWuQPdexm5rZ9AO7WbqX6jYUsBFeQPoFdEfihxcWn+R9ZJfg3gRPTzXxeeKE8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cW4MkwPZ; arc=pass smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="dGO+XS8p"
-Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4hKn6y71pDz975C;
-	Wed, 12 Aug 2026 13:57:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1786535867;
-	bh=bvmb/TiVePQoacyNeg/EPqKiK1zhRGjv56Pw0yKl1ro=;
-	h=Date:From:Subject:Cc:To:From;
-	b=dGO+XS8pj4A9/os5e6AyArwGHyKLPUo3EmyqtG5lmEWNGAr2/LUeAZkdc2dIuLirH
-	 EoM4YhRh7hQeh79a8k6p0XRjA0M8zF0IPJmchegA2V9QK7g8H5FXW8ahS++JK5YUia
-	 kDmCa+l9NWZ13KanM7NNT8aczltPUsmbJ9dthgpPTspVMnl656CXHPrtm15hZl8a/Y
-	 uqSy6FzOclUlAmLNVyJ+f828dbIvWzQ8ljlpr3EXyM9OX8uZgF2T+w3N5VCgYNNOlG
-	 aGwHC3ZlxlshfUD4e94M+B8SxrFn2+YDIO4IBTHHoNB5W2yBmQ8HNXiYw4bm5Lr1Yb
-	 nT/MM1Fx/1ebQ==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4hKn6y6JDVz7xHY;
-	Wed, 12 Aug 2026 13:57:46 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hKn6x5YWHz8sZg;
-	Wed, 12 Aug 2026 13:57:45 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 7C2555F960;
-	Wed, 12 Aug 2026 13:57:40 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <7e66ca09-fa70-4a3c-948a-0c46b268655c@leemhuis.info>
-Date: Wed, 12 Aug 2026 13:57:38 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cW4MkwPZ"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-934944f2d22so61769785a.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 05:01:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786536091; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FmhZ852dLk4Xb5RduNe5WAgYojwaMIT8EPuux9UWw+gBjZBWgytDk/Mw5UlM4s1TqS
+         9gHrg11WDs2gwvZoaiyF4I/KbLy8/DjrGb7hNk/5l4m1c05TbwWgab4NriDcGtyjp6Am
+         6jSFMiTamyaCOq0wPDalViP+pdphHqTtEvmj/A3tTciMyFm9iIxpgwEGBS2AMCXseV48
+         zQbf3mz4OUgobb+RuRQyPqzD+AhaMoyA7TWY2FRfpbHe9cqBVuOcFArW+3pME4ThHWe9
+         CJL+zFs9c/J7oc49cVlOnGWDOzFq51yEiJlNwrQ02DuPTyJ49Het3Et8+jKfen/CyOKR
+         z9xA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Cvf99OK4rBI6XZDfh37Cy8Z/E6HsnQMat1Bf8688DNI=;
+        fh=eL94fSb/nqqm3kJjC1knKUO9G1BgCEcBb86k68wbxOw=;
+        b=MGWY2ytbuCrU/uu6fn7LIDKJLbhts4YLQiYQEqcURN1JcNMoqpu2+EO61ZC3Hx78/Y
+         NML5z+K9Kk/Jcbk3KH6qxgkd0tJZsrdWEkFM/b5e7X2qybMtbEMkURpb33ql09p1FD9u
+         n55LnwuvQybIlPE+HAB4qcBhNCMWdWm3gyk81cvDGqm3cts2aQxOa7CUMzpjoeRKNGxM
+         TRoabo6kwhgCXXmAU4o/jDCT653sy0j6FdTsCt3WcoC5pxLUIwMYD38iYf77DfoxBeoQ
+         1+7LsljQnZZSxdiiSUYAb1Lynqxr9nWXDZ1xRj2cHOF8adzeRv5h4iJQtEtf1UzQGltq
+         GllA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786536091; x=1787140891; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Cvf99OK4rBI6XZDfh37Cy8Z/E6HsnQMat1Bf8688DNI=;
+        b=cW4MkwPZ9qWDrJ5aVs3c12qUQGCcuCPFwmUTcftkZfp3tT4uCmn4MMtS/4ncj3Oc5R
+         v9D4sZBBtP4HKjmhjVez32sCU45d3HdhXZmlUVTIU2QammidYYPzV/7hIFCLv1d3m9od
+         YbUnnbBJH6PTIVRuz39yRGRriKIR3kDGScq/3YACZjp8Cgk9yT2KcYmjV2hDEy9N7ZbN
+         mFGzg334THg1nWFrrObTYnNq7uvpq56xMS0c/k2sH6SEMlpx91yrzFgfJUJK5TNI+rgA
+         1d/fAn2FumZt+ASDXo+tKed6xEbqCgsyjVOEoX5/wRwRt4trcGjjW8/alY2u2KgSy5Ut
+         dAFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786536091; x=1787140891;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Cvf99OK4rBI6XZDfh37Cy8Z/E6HsnQMat1Bf8688DNI=;
+        b=B2po3jYyZUKJ1b3gJQ8VcsV95SdUroTIwcuRHrJXExp7S9M+EA/bQZKR8/dFkPrKM8
+         3cCG92gko1GxkOQ351XWQBGjRA+mNM4u1ESkD7TA70igThw5ue1hkkjh8x0UwEY6oYZa
+         YVeddptxpGgl/2YkIWlMVAPTZHfCgR/maDbwW7ypNgZIhQrdxOTHxNQZhhL8RSHO6elJ
+         w45mTK2E2l39tV/EYTKS9yfPXo99m8cuuGWrsu9FGeENiapM8NMQB65Rm6Lu0sViBwqF
+         pg81LsU7gSv+PlH/qBM84JjDiIDvcr/Vep5wXBlta2ftuYZEKdvz9hSarJOd5s0oCqEC
+         rgRg==
+X-Forwarded-Encrypted: i=1; AHgh+RriLX70R3d+m/zrDAzREZTvDaNgQymPPrwSRHkMYM+q2DDfQmud0dgpA8Lq/obWIjQX7TU7nD8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuFZv7bbuWf6ZBOjnXFqIi7/JW1iJWEdFh/2xTu7j16+3pWF28
+	otMnBt0f7Mm1VkNQXT7S1PJch8/Z3YqUgquvb181flFrYFNC2ypNjUNc3u2Ypek9RNG+yQJ24iO
+	ffpCAa3qyrzf9PIKv68FzpvfG7WUAXdlutAYbQGFi
+X-Gm-Gg: AR+sD11bCYkva/z2o2idw1erSGBcg4rgcSYyILCzJDvvaBw00FbZkR7QwZEGDr9Zc5S
+	TI1XZMKyZ6X8M4RftrajXgM6Zo0Hn2waLu01pnMFI94B1178ptbGgIg+9PVqBBfZy4hEdSO0E3e
+	CTyZCQ/8GG/0xHrMD//iAtD7rBMn417E0OisRsMOGyrvAtFdrBCOyfAP9OmQtQpi+qb+ISWMzuj
+	e+HcHB9erMGy77f0Yeh6B3yMfIyhhLXx87oEpbZ4kuFXhvvZ/GWl4ndog3AWvqPA8GY5QtFPhK9
+	4kzrYal7raO6jqIvFkzN2i0ou28jLyc2NrVvpDpxtTRHsSkEiPJCj0u2Co2V7XuNvZf5ovf0aZE
+	J5kW0pAKDA6umxdVoCnGCP4c8mNGEFnzEVWi5HCZRQKtmZykQC5XclpOt16b6HKf8EDM5lmeU2v
+	djUkEdIoysuyhtI40WHjaRm4+AB7o3Lts=
+X-Received: by 2002:ac8:5a84:0:b0:51c:1e69:bcc9 with SMTP id
+ d75a77b69052e-52d6471a403mr36706331cf.12.1786536090346; Wed, 12 Aug 2026
+ 05:01:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-Subject: wifi fixes that might be good to have in 7.2 final
-Cc: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
- Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- LKML <linux-kernel@vger.kernel.org>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- netdev <netdev@vger.kernel.org>, Devin Wittmayer <lucid_duck@justthetip.ca>
-To: Eric Dumazet <edumazet@google.com>, "David S. Miller"
- <davem@davemloft.net>, Johannes Berg <johannes@sipsolutions.net>,
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <ryder.lee@mediatek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: 
- <178653586107.1439299.11653628339469674671@mxe9fb.netcup.net>
-X-Rspamd-Server: rspamd-worker-8404
-X-Rspamd-Queue-Id: 7C2555F960
-X-NC-CID: 1NwMoK8I3ZVzD21OQrVtGqKGwuDzwniGHhZtSLj/0tLP6qHZePQ=
+References: <20260811195405.3979177-1-almasrymina@google.com> <20260811195405.3979177-2-almasrymina@google.com>
+In-Reply-To: <20260811195405.3979177-2-almasrymina@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 12 Aug 2026 14:01:14 +0200
+X-Gm-Features: AUfX_mz7QZg_MXfNPlHeaggI6iIPiI9ZV-uzSis-gDFX8kzcAPhT2PwlsYdsuuE
+Message-ID: <CANn89iJ=CAaqT94xGWgaxcZHhcMVQmy7=0B3fmW4mjKUz1DjoQ@mail.gmail.com>
+Subject: Re: [PATCH net v3 2/2] net: tcp: block standard payload injection
+ into devmem skbs
+To: Mina Almasry <almasrymina@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Willem de Bruijn <willemb@google.com>, 
+	Kaiyuan Zhang <kaiyuanz@google.com>, Stanislav Fomichev <sdf@fomichev.me>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, dev@openvswitch.org, 
+	"David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
+	Ilya Maximets <i.maximets@ovn.org>, Jason Xing <kerneljasonxing@gmail.com>, 
+	Pavel Begunkov <asml.silence@gmail.com>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
+	Florian Westphal <fw@strlen.de>, Bobby Eshleman <bobbyeshleman@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi nt76, wifi driver and net maintainers, just a quick FYI:
+On Tue, Aug 11, 2026 at 9:54=E2=80=AFPM Mina Almasry <almasrymina@google.co=
+m> wrote:
+>
+> Protect tcp_sendmsg_locked() from mistakenly appending non-zerocopy
+> page fragments to unreadable devmem skbs. Create a new segment instead.
+>
+> Fixes: bd61848900bff ("net: devmem: Implement TX path")
+> Cc: Pavel Begunkov <asml.silence@gmail.com>
+> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
+> Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+> Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
+> ---
+>  net/ipv4/tcp.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index 455441f1b6949..186a36c698798 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -1278,6 +1278,11 @@ int tcp_sendmsg_locked(struct sock *sk, struct msg=
+hdr *msg, size_t size)
+>                 if (copy > msg_data_left(msg))
+>                         copy =3D msg_data_left(msg);
+>
+> +               if (zc !=3D MSG_ZEROCOPY && unlikely(!skb_frags_readable(=
+skb))) {
 
-I think it would be good if the following revert from Mikhail (CCed)
-could make it to 7.2, as the 7.2-rc regression it fixes was reported
-multiple times over the past few weeks -- at least seven times iirc:
+This seems wrong, as @binding could be NULL or not ?
+Also testing the condition right after a fresh skb was allocated is
+adding unecessary cost.
 
-Revert "wifi: mt76: Disable napi when removing device"
-https://lore.kernel.org/lkml/20260804120004.523934-1-mikhail.v.gavrilov@gmail.com/
-https://patchwork.kernel.org/project/linux-wireless/patch/20260804120004.523934-1-mikhail.v.gavrilov@gmail.com/
+> +                       tcp_mark_push(tp, skb);
+> +                       goto new_segment;
+> +               }
+> +
+>                 if (zc =3D=3D 0) {
+>                         bool merge =3D true;
+>                         int i =3D skb_shinfo(skb)->nr_frags;
+> --
+> 2.55.0.679.g6767b8d81c-goog
+>
 
-See that lore thread linked above for the details. The revert is sitting
-on the list for a week now afaics; there was an earlier attempt to fix
-this, but it was abandoned due to problems.
+What about instead:
 
-Note, as mentioned by Mikhail in that thread: that revert apparently
-reintroduces some WARNs which a separate patch is supposed to fix that
-Nicolas posted yesterday after coming back from vacation:
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 455441f1b694904172cfa1d8e7bac7076b60cb24..b4237d0e994d6f9d754d2167023=
+e3981a40b58f4
+100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1240,7 +1240,8 @@ int tcp_sendmsg_locked(struct sock *sk, struct
+msghdr *msg, size_t size)
 
-https://patchwork.kernel.org/project/linux-wireless/patch/20260810154923.32546-1-nicolas.cavallari@green-communications.fr/
+                trace_tcp_sendmsg_locked(sk, msg, skb, size_goal);
 
-Ciao, Thorsten
+-               if (copy <=3D 0 || !tcp_skb_can_collapse_to(skb)) {
++               if (copy <=3D 0 || !tcp_skb_can_collapse_to(skb) ||
++                   unlikely(skb_frags_readable(skb) !=3D !binding)) {
+                        bool first_skb;
 
-
-P.S.: I wonder if "wifi: mt76: mt7921: refactor regd update to fix
-recursive mutex deadlock") (which is as 1f83a8378eb26c in net-next /
-https://lore.kernel.org/linux-wireless/20260629083543.153564-1-jb.tsai@mediatek.com/
-) would be good to have in 7.2, too. From the description of the 7.2-rc
-regression Devin Wittmayer gave in
-https://lore.kernel.org/linux-wireless/20260804185118.19705-1-lucid_duck@justthetip.ca/
-it sounds a lot like it might be wise to have in 7.2. To quote:
-
-> [...] wpa_supplicant blocks while
-> holding the wiphy mutex, so NetworkManager, the cfg80211 workqueue and
-> new ssh sessions pile up behind it and the machine has to be reset
+ new_segment:
