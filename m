@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A16842A176
-	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBE84248C5
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 11:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786532519; cv=none; b=hANMXN6+wGqQ14Z9pTWapv66hKy6lQ6tvFw0NshaBUA3KnLDSWRgkg82Xbdg60ZtS5RWkZHGlKJTSAt5wbdLmNA1m4IEi8e/U+9/CT0atT28frbSrSNdDUvuFkLdqTTCGSGs+IDNaoOgWgtf+ejwNA04Vm5jNjSTtZQDr8Rku+4=
+	t=1786532520; cv=none; b=cEF4qAZx9bghvUf9jE3ILngHKRf9yxUKqgijeztbIR40wtFHd+7VhPIo1tJNCiVUX/u60K5X0QTPx8rqaAk8jGPUvATsDs6/RKUb67+vH2mabNl7LzqxUASR57O1yfdtaSpV5EfvNI4G2tRckov2LcroS0L9WexqREPMHwF9/KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786532519; c=relaxed/simple;
-	bh=TY7/aEt3ERxew+nhATYL/mM4RAbZlWlf0cZEtNrEHLQ=;
+	s=arc-20240116; t=1786532520; c=relaxed/simple;
+	bh=HYLe9ronDB+kuJCpdCZOS8shvlN9q/3mmbQJCssXgSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IOGSO6QHbuEAlA/pHVL8kM4JhaGBQBUGO5C3pU7hB4Wpawrn05p7NKxeoRidJcK6+GhPRR0iu+uwDvshhlDI03MoehNB7pGMvSiOuWH1WLrEUBPPcfKRUZ8oh3apgi/ZgH/XL0CuFo4Ly9R6REgCLpzBCfsovmABe5IS+KFh7Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=galnkVqm; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=lHG1aOS+0fE3XhKp1l7I08O3m0gOqbXUn3+I0zdAAY/fQ8VGLxjeNVMiASiFyLoxEj5cJY9nRhkgMBW6Dax9mEZHroD83B0eYHy/9sk6LLTgPCINQFIF95zpjrTTdGtppfZrklqrnNKBtfF5iDaB8ak7Lubyt9h3Lfy0DSjqp/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RkJ9IVMp; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="galnkVqm"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RkJ9IVMp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786532516;
+	s=mimecast20190719; t=1786532517;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2+Jic6K0goLi2dOYlF0OwhUdKxtk3nzcv3NzQkuAkKE=;
-	b=galnkVqmRlzzQwC3aW1Mhdz22XkQqF9t3TzYQ7eA5jaAuyY/SFvnl+2plpQKRnlOVFVfy5
-	2lel0V5dkrP53FXyC5M1sHpEYDJD18Z6cHTCcGQn+cU/oeL0QhWZTMyTlLH2cn/i7tzhDt
-	cQ8xR/saqcPYepBPft8RJxFY8lTe4QA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=CGmxxAt4PxBJW2Lvy2FaVW55+5g1MGk+v/NaheQ6VPs=;
+	b=RkJ9IVMpT0/7Sti7oH7o1Z3o7YHIeews1KmxtFrHlF1SRahY7eEB4hs7uLFePDrH71u3gt
+	hKXMsTZDechl8G7gL1AxhGMqvK6qDRYMtdoowi0Tez0nYAqB1cXmtXXI/pBbNMm3SdbMMp
+	ZL0VN/FbuQQjEv1aT96KO8vNNdYQu1Y=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-p_VnRwbEM1qfN6TfYxAdiQ-1; Wed,
- 12 Aug 2026 07:01:49 -0400
-X-MC-Unique: p_VnRwbEM1qfN6TfYxAdiQ-1
-X-Mimecast-MFC-AGG-ID: p_VnRwbEM1qfN6TfYxAdiQ_1786532508
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-491--MFATcolPPi8-VT8BhlAZg-1; Wed,
+ 12 Aug 2026 07:01:54 -0400
+X-MC-Unique: -MFATcolPPi8-VT8BhlAZg-1
+X-Mimecast-MFC-AGG-ID: -MFATcolPPi8-VT8BhlAZg_1786532512
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A0ED21800657;
-	Wed, 12 Aug 2026 11:01:47 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 73D501955BDD;
+	Wed, 12 Aug 2026 11:01:52 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.32.44])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 757D33002D28;
-	Wed, 12 Aug 2026 11:01:43 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4B8B01800605;
+	Wed, 12 Aug 2026 11:01:49 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -53,10 +53,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>
-Subject: [PATCH net v7 02/11] rxrpc: Fix sendmsg length
-Date: Wed, 12 Aug 2026 12:01:17 +0100
-Message-ID: <20260812110129.979970-3-dhowells@redhat.com>
+	stable@kernel.org
+Subject: [PATCH net v7 03/11] rxrpc: Fix packet encryption error handling
+Date: Wed, 12 Aug 2026 12:01:18 +0100
+Message-ID: <20260812110129.979970-4-dhowells@redhat.com>
 In-Reply-To: <20260812110129.979970-1-dhowells@redhat.com>
 References: <20260812110129.979970-1-dhowells@redhat.com>
 Precedence: bulk
@@ -66,88 +66,197 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-rxrpc_send_data() is given two data lengths (len and msg->msg_iter.count)
-and is inconsistent about how it uses them.  Fix this by using len in
-preference to msg->msg_iter.count.
+In rxrpc_send_data(), if ->secure_packet() returns an error, the code
+currently just jumps to out: and returns the error to the app on the
+assumption that any error returned by this is automatically fatal for the
+call, and may even have corrupted the transmission queue - but leaving it
+to userspace to deal with.  Nothing stops the application from retrying the
+sendmsg(), which will try to encrypt the buffer again, and might succeed
+with a corrupt buffer.
 
+Fix rxrpc_send_data() in the following ways:
+
+ (1) If -ENOMEM is returned, assume we never got as far as the encryption
+     and that the operation is retryable.  In which case, jump to
+     maybe_error_rewind and, if we've copied data into the last packet,
+     remove a byte from it so that we don't tell the caller that we've
+     completed the transmission phase.
+
+ (2) If any other error occurs, set the TX_ERROR flag on the call and
+     return that error directly; on all subsequent attempts to add data to
+     the call, return -EIO.  The app must then abort the call to get rid of
+     it (this allows the app to choose the abort code to use).
+
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Closes: https://sashiko.dev/#/patchset/20260702144919.172295-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
 cc: Eric Dumazet <edumazet@google.com>
 cc: "David S. Miller" <davem@davemloft.net>
 cc: Jakub Kicinski <kuba@kernel.org>
 cc: Paolo Abeni <pabeni@redhat.com>
 cc: Simon Horman <horms@kernel.org>
 cc: linux-afs@lists.infradead.org
-Fixes: 382d7974de31 ("RxRPC: Use iov_iter_count() in rxrpc_send_data() instead of the len argument")
+cc: stable@kernel.org
 ---
- net/rxrpc/sendmsg.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ fs/afs/rxrpc.c               | 24 ++++++++++------
+ include/trace/events/rxrpc.h |  1 +
+ net/rxrpc/ar-internal.h      |  1 +
+ net/rxrpc/sendmsg.c          | 53 ++++++++++++++++++++++++++++--------
+ 4 files changed, 59 insertions(+), 20 deletions(-)
 
+diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+index d82916657a3d..f3552a1bbc03 100644
+--- a/fs/afs/rxrpc.c
++++ b/fs/afs/rxrpc.c
+@@ -412,21 +412,27 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	msg.msg_controllen	= 0;
+ 	msg.msg_flags		= MSG_WAITALL | (call->write_iter ? MSG_MORE : 0);
+ 
+-	ret = rxrpc_kernel_send_data(call->net->socket, rxcall,
+-				     &msg, call->request_size,
+-				     afs_notify_end_request_tx);
+-	if (ret < 0)
+-		goto error_do_abort;
++	do {
++		ret = rxrpc_kernel_send_data(call->net->socket, rxcall, &msg,
++					     msg_data_left(&msg),
++					     afs_notify_end_request_tx);
++		if (ret < 0)
++			goto error_do_abort;
++	} while (msg_data_left(&msg) > 0);
+ 
+ 	if (call->write_iter) {
+ 		msg.msg_iter = *call->write_iter;
+ 		msg.msg_flags &= ~MSG_MORE;
+ 		trace_afs_send_data(call, &msg);
+ 
+-		ret = rxrpc_kernel_send_data(call->net->socket,
+-					     call->rxcall, &msg,
+-					     iov_iter_count(&msg.msg_iter),
+-					     afs_notify_end_request_tx);
++		do {
++			ret = rxrpc_kernel_send_data(call->net->socket,
++						     call->rxcall, &msg,
++						     msg_data_left(&msg),
++						     afs_notify_end_request_tx);
++			if (ret < 0)
++				goto error_do_abort;
++		} while (msg_data_left(&msg) > 0);
+ 		*call->write_iter = msg.msg_iter;
+ 
+ 		trace_afs_sent_data(call, &msg, ret);
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index 704a10de6670..8f3e3967885a 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -148,6 +148,7 @@
+ 	EM(rxrpc_eproto_wrong_security,		"wrong-sec")		\
+ 	EM(rxrpc_recvmsg_excess_data,		"recvmsg-excess")	\
+ 	EM(rxrpc_recvmsg_short_data,		"recvmsg-short")	\
++	EM(rxrpc_sendmsg_tx_error,		"tx-error")		\
+ 	E_(rxrpc_sendmsg_late_send,		"sendmsg-late")
+ 
+ #define rxrpc_call_poke_traces \
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 865f05fe37ab..a6f830c1621f 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -642,6 +642,7 @@ enum rxrpc_call_flag {
+ 	RXRPC_CALL_TX_LAST,		/* Last packet in Tx buffer (at rxtx_top) */
+ 	RXRPC_CALL_TX_ALL_ACKED,	/* Last packet has been hard-acked */
+ 	RXRPC_CALL_TX_NO_MORE,		/* No more data to transmit (MSG_MORE deasserted) */
++	RXRPC_CALL_TX_ERROR,		/* Terminal error; call needs abort */
+ 	RXRPC_CALL_SEND_PING,		/* A ping will need to be sent */
+ 	RXRPC_CALL_RETRANS_TIMEOUT,	/* Retransmission due to timeout occurred */
+ 	RXRPC_CALL_BEGAN_RX_TIMER,	/* We began the expect_rx_by timer */
 diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index 4c754f78ece9..626ef5778691 100644
+index 626ef5778691..7932442f33fb 100644
 --- a/net/rxrpc/sendmsg.c
 +++ b/net/rxrpc/sendmsg.c
-@@ -379,9 +379,9 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
+@@ -330,13 +330,6 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
+ 	bool more = msg->msg_flags & MSG_MORE;
+ 	int ret, copied = 0;
  
- 	ret = -EMSGSIZE;
- 	if (call->tx_total_len != -1) {
--		if (len - copied > call->tx_total_len)
-+		if (len > call->tx_total_len)
- 			goto maybe_error;
--		if (!more && len - copied != call->tx_total_len)
-+		if (!more && len != call->tx_total_len)
- 			goto maybe_error;
- 	}
+-	if (test_bit(RXRPC_CALL_TX_NO_MORE, &call->flags)) {
+-		trace_rxrpc_abort(call->debug_id, rxrpc_sendmsg_late_send,
+-				  call->cid, call->call_id, call->rx_consumed,
+-				  0, -EPROTO);
+-		return -EPROTO;
+-	}
+-
+ 	timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
  
-@@ -405,7 +405,7 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
- 			 * the security header is going to be in the padded
- 			 * region (enc blocksize), but the trailer is not.
- 			 */
--			remain = more ? INT_MAX : msg_data_left(msg);
-+			remain = more ? INT_MAX : len;
- 			txb = call->conn->security->alloc_txbuf(call, remain, sk->sk_allocation);
- 			if (!txb) {
- 				ret = -ENOMEM;
-@@ -416,8 +416,8 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
- 		_debug("append");
+ 	ret = rxrpc_wait_to_be_connected(call, &timeo);
+@@ -353,6 +346,19 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
+ 	sk_clear_bit(SOCKWQ_ASYNC_NOSPACE, sk);
  
- 		/* append next segment of data to the current buffer */
--		if (msg_data_left(msg) > 0) {
--			size_t copy = umin(txb->space, msg_data_left(msg));
-+		if (len > 0) {
-+			size_t copy = umin(txb->space, len);
- 
- 			_debug("add %zu", copy);
- 			if (!copy_from_iter_full(txb->data + txb->offset,
-@@ -428,6 +428,7 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
- 			txb->len += copy;
- 			txb->offset += copy;
- 			copied += copy;
-+			len -= copy;
- 			if (call->tx_total_len != -1)
- 				call->tx_total_len -= copy;
- 		}
-@@ -439,8 +440,8 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
- 
+ reload:
++	if (unlikely(test_bit(RXRPC_CALL_TX_NO_MORE, &call->flags))) {
++		trace_rxrpc_abort(call->debug_id, rxrpc_sendmsg_late_send,
++				  call->cid, call->call_id, call->rx_consumed,
++				  0, -EPROTO);
++		return -EPROTO;
++	}
++	if (unlikely(test_bit(RXRPC_CALL_TX_ERROR, &call->flags))) {
++		trace_rxrpc_abort(call->debug_id, rxrpc_sendmsg_tx_error,
++				  call->cid, call->call_id, call->rx_consumed,
++				  0, -EIO);
++		return -EIO;
++	}
++
+ 	txb = call->tx_pending;
+ 	call->tx_pending = NULL;
+ 	if (txb)
+@@ -441,12 +447,21 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
  		/* add the packet to the send queue if it's now full */
  		if (!txb->space ||
--		    (msg_data_left(msg) == 0 && !more)) {
--			if (msg_data_left(msg) == 0 && !more)
-+		    (len == 0 && !more)) {
-+			if (len == 0 && !more)
- 				txb->flags |= RXRPC_LAST_PACKET;
- 
+ 		    (len == 0 && !more)) {
+-			if (len == 0 && !more)
+-				txb->flags |= RXRPC_LAST_PACKET;
+-
++			/* Do any required crypto.  If this fails, it could
++			 * have corrupted the txbuf content with a partial
++			 * encrypt.  Assume that ENOMEM is retryable, but
++			 * everything else is terminal.
++			 */
  			ret = call->security->secure_packet(call, txb);
-@@ -449,7 +450,7 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
+-			if (ret < 0)
++			if (ret < 0) {
++				if (ret == -ENOMEM)
++					goto maybe_error_rewind;
++				set_bit(RXRPC_CALL_TX_ERROR, &call->flags);
+ 				goto out;
++			}
++
++			if (len == 0 && !more)
++				txb->flags |= RXRPC_LAST_PACKET;
  			rxrpc_queue_packet(rx, call, txb, notify_end_tx);
  			txb = NULL;
  		}
--	} while (msg_data_left(msg) > 0);
-+	} while (len > 0);
+@@ -464,6 +479,22 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
+ 	_leave(" = %d", call->error);
+ 	return call->error;
  
- success:
- 	ret = copied;
++maybe_error_rewind:
++	/* If we got a retryable error after copying all the supplied data into
++	 * the last packet, we need to rewind as much as we can so the caller
++	 * knows they need to retry the sendmsg.
++	 */
++	if (copied && !more && !len) {
++		unsigned int rewind_by = umin(copied, txb->len);
++
++		txb->space  += rewind_by;
++		txb->len    -= rewind_by;
++		txb->offset -= rewind_by;
++		copied      -= rewind_by;
++		if (call->tx_total_len != -1)
++			call->tx_total_len += rewind_by;
++		iov_iter_revert(&msg->msg_iter, rewind_by);
++	}
+ maybe_error:
+ 	if (copied) {
+ 		if (rxrpc_call_is_complete(call) &&
 
