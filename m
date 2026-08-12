@@ -1,61 +1,74 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F983242B8;
-	Wed, 12 Aug 2026 16:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0AB39020C
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786551889; cv=none; b=YMx6kqY57alwxRi0/cFtMmDUz54FbjgLGyG25bLHVaGBKO8NA1zirBqI2jctVF4BAbhRUDerIf/V8aQPkGfGupZmfZWbuDtQVyHwW8wkTRdyoDloBQSjwTPVhL9fTJ4mAbNQM53JlGkHBYOnmMh8/CkpzKlQXxqY4tbzodEBz+Y=
+	t=1786551939; cv=none; b=IBTXSlmlUOnPlcIX8IbNE4PF6A53tZkMs+Qi03/voYSLLmXzGX95UZZTSJdXf8Gpse4LyS1ImkU719PHraZw+CPSfmAsmOfiHCDOy7ny9WNzdhH++mcUAC+C33nTTyNoXUkiIWoBzgJhvbRpq05Ds7FkyQvmpHaywYvxgxm7TuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786551889; c=relaxed/simple;
-	bh=Sn0dsXQkcssb9VKP7BlJbZd8jE7fXnE+58sqQAZgtnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JeB70UUDXfzb0xOzzZ7ahpulaVJmUq+bwj/JxX5rzVdAxKoYeEE8Ep8lW5UfoVDcrG2XBevzxO3TEFzw6A58+rtrYi3Y3yF5TiNDFsnpxKX7qXh/qGWW7RHWW4mXqmdFunP3NCh8rATrPdrJgpAIFRQJ8yutoLQbeVGL8WDW54Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IP0US4iq; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786551939; c=relaxed/simple;
+	bh=TY3KWn1JzXr2UezWchebIm1iBX/Q2dvo2T3wp6pS4PM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O0Qf8+6/Cjg9uP5NZ3Lpo9Qy3HCYyRp9G+C451p/HhUSyN5DExu8N2VLE0XSyyZ8s2DAneLYJQJueN2a/R5xasEs42EDltZjw1/pHgOMRQYaHYE7MWZ+iifB/S4LqLlTC11fWJzVlb1inJhTvhvY2bDT8MKatIijYdSLZUa974Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZSwd3r4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IP0US4iq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RyZWpkhQR33tAnbvNrrh/rwLBd9Kc6IEPIDZNjj7Fms=; b=IP0US4iqEcczx3LsF6rlfbU9cl
-	EpitVMUqtwfdU2PlN+Bm9tpqoOCFlFkmnqrkrW5BYJG1W0vfQPfq8XRV1tbJuj1DGT/vYW85xIxBS
-	mgX57LFR+ZliTXB3gNfNcYgL7uoOXyj9wOr0XYpvrAy6bWUl1YBGrijRkyS6m+A8Ow6Y=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wuBky-00HInP-Bc; Wed, 12 Aug 2026 18:24:44 +0200
-Date: Wed, 12 Aug 2026 18:24:44 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kai Kuang <kuangkai@kylinos.cn>
-Cc: netdev@vger.kernel.org, olteanv@gmail.com, f.fainelli@gmail.com,
-	linux-kernel@vger.kernel.org, kk47yx@gmail.com
-Subject: Re: [PATCH net-next] net: dsa: drop explicit NULL comparisons
-Message-ID: <9f6ca3f8-de62-4f31-bb6f-f8b431c80935@lunn.ch>
-References: <20260812060644.210997-1-kuangkai@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZSwd3r4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6E21F000E9
+	for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 16:25:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786551938;
+	bh=TY3KWn1JzXr2UezWchebIm1iBX/Q2dvo2T3wp6pS4PM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=iZSwd3r4ss/DJI8uyg3ppdP/zhJcoCo1Wk8stKDqO4AEZeDXxMixlRSmDEedzjMLo
+	 BTPVfXLDFWh1LOIrNVrVD++1jMgt3116ayjR7htpfWwCxzUBTgDTXXW1uAenTGM9ev
+	 SUWNuuI7SQ/vyNDmwoLbG3UWevhP0++tBF3n4J+P02mB8BdS3Kk9gXAaYjclKlKnSZ
+	 dhqafPHak3XRQoNPDFCK7d02BhCMAZdIs0j7WQnDJ2xdbtO2R+F13+CZIl139Sfz3U
+	 kpcZ+DNaFk7hvDCSWK9zO/V/62lB5Iis5wtwuYN8tOyhpULHpzOzOn1nNon5qyss7q
+	 p1RbD5Og+3Cng==
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-930f4e5eed1so90955285a.2
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 09:25:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoVjKntPgK7qdKp/d7h6PPjk0bc2yGvx50yKhTUEfMJ8S9mzrNVMP7otuT8nA7eQFfMG6Tt5B4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlVa/UOm6WCwO0sWf4FvZVEyc7GzMEJP40nWhY5LvtWZ8HM/RJ
+	AqNHhlhFm3p0tnTfcXMPtWh2ZQ+dEy/+zg63BFGnLQLq7JNoVo1txeRcaIjUtbbrVLjEjQEq9c9
+	xMiQX8nk0ryp/z+IFtB7Somlzhuby/sw=
+X-Received: by 2002:a05:620a:43a6:b0:92e:9d63:a700 with SMTP id
+ af79cd13be357-936b3a20e63mr565881085a.9.1786551937034; Wed, 12 Aug 2026
+ 09:25:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260812060644.210997-1-kuangkai@kylinos.cn>
+References: <20260812154328.72834-1-mahe.tardy@gmail.com> <20260812154328.72834-6-mahe.tardy@gmail.com>
+In-Reply-To: <20260812154328.72834-6-mahe.tardy@gmail.com>
+From: Song Liu <song@kernel.org>
+Date: Wed, 12 Aug 2026 09:25:25 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW4A++FepX9LAR5scLh62fG0NH9oMQ0xwCEVS4=76PVA=Q@mail.gmail.com>
+X-Gm-Features: AUfX_mzWX7aTt3SMUKwJ9r74fq8ciEI7bBsIz1h7rTwgDeyK3eDA8B5ljxnBIlA
+Message-ID: <CAPhsuW4A++FepX9LAR5scLh62fG0NH9oMQ0xwCEVS4=76PVA=Q@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v6 5/5] selftests/bpf: Add ksock test for async
+ callback guard
+To: Mahe Tardy <mahe.tardy@gmail.com>
+Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org, 
+	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com, 
+	edumazet@google.com, john.fastabend@gmail.com, kuba@kernel.org, 
+	liamwisehart@meta.com, martin.lau@linux.dev, pabeni@redhat.com, 
+	netdev@vger.kernel.org, sdf.kernel@gmail.com, ameryhung@gmail.com, 
+	kuniyu@google.com, memxor@gmail.com, jiayuan.chen@linux.dev, 
+	Stanislav Fomichev <sdf@fomichev.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 12, 2026 at 02:06:44PM +0800, Kai Kuang wrote:
-> Replace explicit NULL comparisons with the boolean form to follow
-> the kernel coding style:
-> 
->   dev->class != NULL  -> dev->class
->   user_dev == NULL    -> !user_dev
-> 
-> No functional changes intended.
-> 
-> Signed-off-by: Kai Kuang <kuangkai@kylinos.cn>
+On Wed, Aug 12, 2026 at 8:43=E2=80=AFAM Mahe Tardy <mahe.tardy@gmail.com> w=
+rote:
+>
+> Because the kfuncs are going through LSM hooks, allowing their use via
+> workqueue callbacks would expose the wrong credentials. This test
+> ensures the kfunc are preventing any use from these contexts.
+>
+> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+> Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+Acked-by: Song Liu <song@kernel.org>
