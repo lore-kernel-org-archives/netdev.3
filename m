@@ -1,421 +1,103 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0772C360EC5;
-	Thu, 13 Aug 2026 07:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E2A36728F
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 07:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786606749; cv=none; b=djNqj9FfMOeqvxjjAw1dZmFB5svcOaahdqnz+WT6e0f0R1T4fSpSNu5A0WoUNKilosxgwcAyApDFXMvoFf+qk2tpYN5S8ewNt1W+JHA654pCyDjMTjbo6DelUcYznb0tORzo1Wu+SP3W/1tkB7VC1xDPKEy53ji0dd6oib770/M=
+	t=1786606830; cv=none; b=XVUUqfGolHGQpjT0pkf3WlvbzujuwM/APXLM8ET6j229/BKRgzPjEKDie0vQ3yufOYpBULC8R72GetHlRJIuNwiipR644rd95ksun+8XniOFYzFExyTDk1jRFyoIJK/aDq4dLK9uRyvVKX8iyEz+UQol9EZWdHU/ZEQb5lZQARg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786606749; c=relaxed/simple;
-	bh=EPHR+AtHOMAULJPphcCFhafzB8G1lObp6c0OS8anhCc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=uuCJ/AWEPJsZAAjAOghwfejmHIbjLVvZA7hdn+ogGvJyB10Ni6bh8p3fUwdqkOJMZdBvxHA0TNyl0RFqfIPbUAex/eOgFgfaUbvKm6i8sGKmurhP7rIE0qQXUfgXilQtgOQc12KHYyopUToJLVz9dDkYKaZ0tn+RGT8bza1vjDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=LnB8CoKl; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1786606830; c=relaxed/simple;
+	bh=lcy9GXzw+fVt6D5c66pluPLv/Njapm/Xrgbk1DH4ZoA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pN7DILY/Yd0WLmXYEOsiaXQ0QbZm2ir1r5oaHvjpjWFmSsMUBmZ91bTAXpUXn3PC8yvJPvXXaoGXPJP/ItGqLDkdDKlkG8u2fRt3jjGb5rvDKrL7RQhZc7Vq3FvPp9FsCrMm0cDv+Bhhn5bcaVGejS0zRkBZiLnVjAkfRSvCYUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=0v7QO0Ls; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="LnB8CoKl"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 67D7cTZp9118021, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1786606709;
-	bh=UeN899XMJ2sclugFZWtx2ZkqEMjXAF8sUoQwr+qQGuw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=LnB8CoKlrYo1PzEV2ZofNAWvjBtrEOS97VEg+4tYdmtd/kccEdVS4S1nJsUVtG7NN
-	 zvlTQC0pImJuXX9dm16l8WEO8IrjJ7rnAqOChTE9xYPVYh0VSvr6fB65uYP9vCJ9db
-	 3EWp/tvE1pRqYNrLOUuYCYLtmhtfWks5omKOu96lKQRrcqTst8TDCQYmjY2WAKapTn
-	 XT0LJ52jwxAZ7ftJ1lb001ZmMehJgn2tcgK+XI/ftT7lQqauf6K5B9fhZYWAbXHszY
-	 hwi+TaiDqiDp0KJ8r7Hwi/K6LmtUlM07eM0IWCkbVTwdiuI8jd9R8QqRIRZNE/byKR
-	 y/4b8ZcHsZkzQ==
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 67D7cTZp9118021
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 13 Aug 2026 15:38:29 +0800
-Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
- RS-EX-MBS3.realsil.com.cn (172.29.17.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 13 Aug 2026 15:38:28 +0800
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
- RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Thu,
- 13 Aug 2026 15:38:28 +0800
-From: Javen <javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="0v7QO0Ls"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ceb096e675so5741955ad.0
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 00:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1786606828; x=1787211628; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lcy9GXzw+fVt6D5c66pluPLv/Njapm/Xrgbk1DH4ZoA=;
+        b=0v7QO0LsRAvVF7rcH62iTbaf0XeiGYC0i1QpWKvIjrNDLxqy7Bc/qUCs86l9X4qd7j
+         uHC4OigI/n6aByycszm6biYMDljluxKBYWbFn1qc9S3pk0w+A9q94SqS5x58TO+X4T0h
+         px8QG7ibdspuF9KBFJCzdD16EefDqYLWpJ7eqw9UHsou9noGdBcL7MAkK/H1Jyw3zBoc
+         3GypvClj7I40PC0HdS/Ftu469b/NXxRgwNpAbpFxLh0HbTPD6MR0LGrPWNA1H9v1spoS
+         +vWoI+pVqUhLu9P4VDln6E1n4IH3iQSjw2QSZ6KMWC5e+6GJ3GFxQK/7YATXloyz65eT
+         KZ/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786606828; x=1787211628;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lcy9GXzw+fVt6D5c66pluPLv/Njapm/Xrgbk1DH4ZoA=;
+        b=FSWG88KZy3TPCDbHYCMiwKsVtxmCV7vuU9cy+Ps8kRYybRji0cECCW8RN0m+5K06db
+         fIZ0X4b4j78xhw2QvJ/O6RxlgDe1zQ+3Zve3x1gmFknXFtLMMz2O4AqdlRscNw3VfqBU
+         7rb4+GukBHqcwF7mAy3DOf/z0HaggU4R3TFl9Zvge/Oh82Ob4Ee6eOJetzb4w49fC1pa
+         IryMhd18ORwiwReBUr1Q6am1ARsFtGqoDzFdsCr9Y7zT4NuCXoRwvhmwCbTtwsUAuM42
+         kAzVXhrLPWtVaGzgcm6opRCqbRFj33hFZdItXZT3bLlVD7AaggKceBcnh+PrxaBTCOLl
+         vttA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq/z+thScZt2IIMd43yE9qFIYp746swgbNA7WhJNtqqb/YRXf+8W6RRBjycefvPrbIXdshgEgY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz53hPceQuXiFTY41dvQf/OWEI2ioti8RLa3EkLORLOQfwEfP/U
+	kgDDD068wG4CId51z2OuzU1iRxMmm3pjSlqt50xXIrcGYOYGRWFofCDMPRqa5LZW5CYgtxpX71Q
+	YCDVzozJkciItfHsKK0l/+UGbZ93Y/6zZ2tHYbeqy+avFgWenVtg=
+X-Gm-Gg: AR+sD10eqC5VRJD5XocciDh2+IiBuVxDt2peOKCMZPLGs/6m5QwdgVCFh6bK6wBRnHY
+	Q7q85rVuu+GgD0XspBvbNqlk+fP9plFW0sjxjUWlNH3mdK6vwdT7ufMeSiXmN9sa4A0Vu2PC29c
+	aIaWWxsVepEBzGarDBHFB+fZSyvSQCfiw8COgE9gvthPfeEqnU7ts+K5kaMrJFw3q9Klpa9nUbS
+	0F7YwLk0BvsCKtnczDtn3N8vVOjykc8Iz48p6IKfIynwOtIwf2RX9YwSiX9BAXede5Omn3rfDnh
+	thb8Y02UYlgkSsvPK8pctFUnWaTovdjxcuey3oVmjyHt9UHxvk/kvsIwXJnHlW78wU1WPuBBIxc
+	V28S3cd32ULeLkZrTiU54N40Sdd1YylzlufpW4QIM1IPwb94jK/ErxIDpzVMk2CHdwmsCzYj1VU
+	tM+AdxyOztpslgCXB41q2M9/Z3VcJIzYiGZrSBon7fjcBv+Ma6OfGJIDWoeupdI5gv2lfuYse5i
+	g==
+X-Received: by 2002:a05:6a20:cd96:b0:3c0:b766:74f4 with SMTP id adf61e73a8af0-3cc553f71d1mr5904764637.31.1786606827218;
+        Thu, 13 Aug 2026 00:40:27 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.128])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31ebcb6a9a3sm4648991eec.12.2026.08.13.00.40.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 00:40:26 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
 To: Jakub Kicinski <kuba@kernel.org>
-CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
-	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net-next v10 5/7] r8169: add support and enable rss
-Thread-Topic: [PATCH net-next v10 5/7] r8169: add support and enable rss
-Thread-Index: AQHdIu2gDXLqfLfCl06tBRR0CG+To7aXVS6AgARRfnA=
-Date: Thu, 13 Aug 2026 07:38:28 +0000
-Message-ID: <8c27bce593a34ebc94dec7577f96f758@realsil.com.cn>
-References: <20260803021305.488-1-javen_xu@realsil.com.cn>
-	<20260803021305.488-6-javen_xu@realsil.com.cn>
- <20260810143825.28a3d516@kernel.org>
-In-Reply-To: <20260810143825.28a3d516@kernel.org>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Cc: Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	keyong.sun@smartx.com,
+	netdev@vger.kernel.org,
+	dev@openvswitch.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] openvswitch: enable ops lock for internal ports
+Date: Thu, 13 Aug 2026 15:40:07 +0800
+Message-ID: <20260813074007.3669651-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260812164156.6bde8f4e@kernel.org>
+References: <20260812123003.3634034-1-wang.zhan@smartx.com> <20260812164156.6bde8f4e@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
->
->On Mon, 3 Aug 2026 10:13:03 +0800 javen wrote:
->> From: Javen Xu <javen_xu@realsil.com.cn>
->>
->> This patch adds support and enable rss for RTL8127.
->>
->> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
->> ---
->> Changes in v2:
->>  - some changes moved from Patch 2/7
->>
->> Changes in v3:
->>  - add struct rtl8169_rss_data. Allocate it dynamically when needed.
->>  - define rss_key as an u32 array
->>  - replace some magic bit numbers in rtl8169_set_rss_hash_opt() and
->>    rtl8125_set_rx_q_num()
->>  - use union to combine different rx descriptor, refactor struct
->> RxDesc
->>  - remove dead code from rtl8169_double_check_rss_support()
->>
->> Changes in v4:
->>  - rename macro definition, e.g R8127_MAX_IRQ to
->R8127_MAX_NUM_IRQVEC
->>  - change hw_supp_indir_tbl_entries type to unsigned int
->>  - change init_rx_desc_type type to enum
->>  - remove rtl_check_rss_support(), add helper function
->>    rtl_hw_support_rss()
->>  - remove hw_curr_isr_ver, use irq_nvecs to judge whether we should
->>    enable vector interrupt mapping, use tp->num_rx_ring to judge whether
->>    we should enable rss
->>  - remove function rtl8169_double_check_rss_support(), use
->>    rtl8169_set_rx_ring_num() to set num_rx_ring according to
->> tp->irq_nvecs
->>
->> Changes in v5:
->>  - no changes
->>
->> Changes in v6:
->>  - change rss_queue_num type from u8 to unsigned int
->>  - fix rx desc clear in rtl8169_rx_clear() for different desc type
->>  - clamping num_rx_ring with rounddown_pow_of_two()
->>
->> Changes in v7:
->>  - remove unused macro
->>  - change unfixed type in rtl8169_store_reta
->>
->> Changes in v8:
->>  - refill desc->addr when rx_desc reset
->>  - rtl8169_set_channels fixed in patch 7/7
->>
->> Changes in v9:
->>  - remove rtl8169_set_desc_dma_addr, only set desc dma addr for
->>    RX_DESC_TYPE_RSS desc
->>
->> Changes in v10:
->> - Change rss_key to u8 array and write rss_key_reg as u32 values.
->>    Use get_unaligned_le32() to keep behavior consistent on big-endian
->>    and little-endian
->> ---
->>  drivers/net/ethernet/realtek/r8169_main.c | 379
->> ++++++++++++++++++++--
->>  1 file changed, 346 insertions(+), 33 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/realtek/r8169_main.c
->> b/drivers/net/ethernet/realtek/r8169_main.c
->> index 31f6d0c2e3d1..4e571fcea092 100644
->> --- a/drivers/net/ethernet/realtek/r8169_main.c
->> +++ b/drivers/net/ethernet/realtek/r8169_main.c
->> @@ -88,6 +88,19 @@
->>  #define R8127_MAX_TX_QUEUES  8
->>  #define R8169_DEFAULT_RX_QUEUES      1
->>  #define R8169_MAX_TX_QUEUES  1
->> +#define R8127_MAX_NUM_IRQVEC 32
->> +#define R8127_MIN_NUM_IRQVEC 30
->> +#define R8169_IRQ_DEFAULT    1
->> +#define RTL_RSS_KEY_SIZE     40
->> +#define RSS_CPU_NUM_MASK     GENMASK(18, 16)
->> +#define RSS_HASH_MASK                GENMASK(10, 8)
->> +#define RTL_MAX_INDIRECTION_TABLE_ENTRIES 128
->> +#define RXS_RSS_UDP          BIT(27)
->> +#define RXS_RSS_IPV4         BIT(28)
->> +#define RXS_RSS_IPV6         BIT(29)
->> +#define RXS_RSS_TCP          BIT(30)
->> +#define RXS_RSS_L3_TYPE_MASK (RXS_RSS_IPV4 | RXS_RSS_IPV6) #define
->> +RXS_RSS_L4_TYPE_MASK (RXS_RSS_TCP | RXS_RSS_UDP)
->>
->>  #define OCP_STD_PHY_BASE     0xa400
->>
->> @@ -595,6 +608,20 @@ enum rtl_register_content {
->>  #define      ISRIMR_LINKCHG  BIT(29)
->>  #define      ISRIMR_TOK_Q0   BIT(8)
->>  #define      ISRIMR_ROK_Q0   BIT(0)
->> +#define RTL_DESC_TYPE_CTRL           0xd8
->> +#define RSS_KEY_REG                  0x4600
->> +#define RSS_INDIRECTION_TBL_REG              0x4700
->> +#define RSS_CTRL_TCP_IPV4_SUPP               BIT(0)
->> +#define RTL_DESC_TYPE_RSS            BIT(1)
->> +#define RSS_CTRL_IPV4_SUPP           BIT(1)
->> +#define RSS_CTRL_TCP_IPV6_SUPP               BIT(2)
->> +#define RSS_CTRL_IPV6_SUPP           BIT(3)
->> +#define RSS_CTRL_IPV6_EXT_SUPP               BIT(4)
->> +#define RSS_CTRL_TCP_IPV6_EXT_SUPP   BIT(5)
->> +#define      RX_RES_RSS                      BIT(22)
->> +#define      RX_RUNT_RSS                     BIT(21)
->> +#define      RX_CRC_RSS                      BIT(20)
->> +#define RTL_RX_Q_NUM_MASK            GENMASK(4, 2)
->>  };
->>
->>  enum rtl_desc_bit {
->> @@ -652,6 +679,11 @@ enum rtl_rx_desc_bit {
->>  #define RxProtoIP    (PID1 | PID0)
->>  #define RxProtoMask  RxProtoIP
->>
->> +#define      RX_UDPT_DESC_RSS        BIT(19)
->> +#define      RX_TCPT_DESC_RSS        BIT(18)
->> +#define      RX_UDPF_DESC_RSS        BIT(16) /* UDP/IP checksum failed =
-*/
->> +#define      RX_TCPF_DESC_RSS        BIT(15) /* TCP/IP checksum failed =
-*/
->> +
->>       IPFail          =3D (1 << 16), /* IP checksum failed */
->>       UDPFail         =3D (1 << 15), /* UDP/IP checksum failed */
->>       TCPFail         =3D (1 << 14), /* TCP/IP checksum failed */
->> @@ -673,9 +705,27 @@ struct TxDesc {
->>  };
->>
->>  struct RxDesc {
->> -     __le32 opts1;
->> -     __le32 opts2;
->> -     __le64 addr;
->> +     union {
->> +             /* RX_DESC_TYPE_DEFAULT */
->> +             struct {
->> +                     __le32 opts1;
->> +                     __le32 opts2;
->> +                     __le64 addr;
->> +             };
->> +
->> +             /* RX_DESC_TYPE_RSS */
->> +             struct {
->> +                     union {
->> +                             __le64 rss_addr;
->> +                             struct {
->> +                                     __le32 rss_info;
->> +                                     __le32 rss_result;
->> +                             } rss_dword;
->> +                     };
->> +                     __le32 rss_opts2;
->> +                     __le32 rss_opts1;
->> +             };
->> +     };
->>  };
->>
->>  struct ring_info {
->> @@ -747,6 +797,11 @@ enum rtl_dash_type {
->>       RTL_DASH_25_BP,
->>  };
->>
->> +enum rx_desc_type {
->> +     RX_DESC_TYPE_DEFAULT,
->> +     RX_DESC_TYPE_RSS,
->> +};
->> +
->>  struct rtl8169_rx_ring {
->>       u32 cur_rx;                                     /* Index of next R=
-x pkt. */
->>       u32 dirty_rx;                                   /* Index for recyc=
-ling. */
->> @@ -756,6 +811,12 @@ struct rtl8169_rx_ring {
->>       struct page *rx_databuff[NUM_RX_DESC];          /* Rx data buffers=
- */
->>  };
->>
->> +struct rtl8169_rss_data {
->> +     u8 rss_key[RTL_RSS_KEY_SIZE];
->> +     u8 rss_indir_tbl[RTL_MAX_INDIRECTION_TABLE_ENTRIES];
->> +     unsigned int hw_supp_indir_tbl_entries; };
->> +
->>  struct rtl8169_private {
->>       void __iomem *mmio_addr;        /* memory map physical address */
->>       struct pci_dev *pci_dev;
->> @@ -775,7 +836,9 @@ struct rtl8169_private {
->>       u16 tx_lpi_timer;
->>       u32 irq_mask;
->>       unsigned int hw_supp_num_rx_queues;
->> +     struct rtl8169_rss_data *rss_data;
->>       unsigned int irq_nvecs;
->> +     enum rx_desc_type init_rx_desc_type;
->>       struct clk *clk;
->>
->>       struct {
->> @@ -1605,6 +1668,11 @@ static bool rtl_dash_is_enabled(struct
->rtl8169_private *tp)
->>       }
->>  }
->>
->> +static bool rtl_hw_support_rss(struct rtl8169_private *tp) {
->> +     return tp->mac_version =3D=3D RTL_GIGA_MAC_VER_80; }
->> +
->>  static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private
->> *tp)  {
->>       switch (tp->mac_version) {
->> @@ -1906,9 +1974,20 @@ static inline u32 rtl8169_tx_vlan_tag(struct
->sk_buff *skb)
->>               TxVlanTag | swab16(skb_vlan_tag_get(skb)) : 0x00;  }
->>
->> -static void rtl8169_rx_vlan_tag(struct RxDesc *desc, struct sk_buff
->> *skb)
->> +static void rtl8169_rx_vlan_tag(struct rtl8169_private *tp,
->> +                             struct RxDesc *desc,
->> +                             struct sk_buff *skb)
->>  {
->> -     u32 opts2 =3D le32_to_cpu(desc->opts2);
->> +     u32 opts2;
->> +
->> +     switch (tp->init_rx_desc_type) {
->> +     case RX_DESC_TYPE_RSS:
->> +             opts2 =3D le32_to_cpu(desc->rss_opts2);
->> +             break;
->> +     default:
->> +             opts2 =3D le32_to_cpu(desc->opts2);
->> +             break;
->> +     }
->>
->>       if (opts2 & RxVlanTag)
->>               __vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
->> swab16(opts2 & 0xffff)); @@ -2736,17 +2815,27 @@ static void
->rtl_hw_reset(struct rtl8169_private *tp)
->>       rtl_loop_wait_low(tp, &rtl_chipcmd_cond, 100, 100);  }
->>
->> +static void rtl8169_init_rss(struct rtl8169_private *tp) {
->> +     for (int i =3D 0; i < tp->rss_data->hw_supp_indir_tbl_entries; i++=
-)
->> +             tp->rss_data->rss_indir_tbl[i] =3D
->> +ethtool_rxfh_indir_default(i, tp->num_rx_rings);
->> +
->> +     netdev_rss_key_fill(tp->rss_data->rss_key, RTL_RSS_KEY_SIZE); }
->> +
->>  static void rtl_setup_rx_params(struct rtl8169_private *tp)  {
->>       tp->num_rx_rings =3D 1;
->>       switch (tp->mac_version) {
->>       case RTL_GIGA_MAC_VER_80:
->>               tp->hw_supp_num_rx_queues =3D R8169_MAX_RX_QUEUES;
->> +             tp->rss_data->hw_supp_indir_tbl_entries =3D
->> + RTL_MAX_INDIRECTION_TABLE_ENTRIES;
->>               break;
->>       default:
->>               tp->hw_supp_num_rx_queues =3D R8169_DEFAULT_RX_QUEUES;
->>               break;
->>       }
->> +     tp->init_rx_desc_type =3D RX_DESC_TYPE_DEFAULT;
->>  }
->>
->>  static void rtl_request_firmware(struct rtl8169_private *tp) @@
->> -2871,6 +2960,58 @@ static void rtl_set_rx_max_size(struct rtl8169_priva=
-te
->*tp)
->>       RTL_W16(tp, RxMaxSize, R8169_RX_BUF_SIZE + 1);  }
->>
->> +static void rtl8169_store_rss_key(struct rtl8169_private *tp) {
->> +     u8 *rss_key =3D tp->rss_data->rss_key;
->> +     const u16 rss_key_reg =3D RSS_KEY_REG;
->> +
->> +     /* Write redirection table to HW */
->> +     for (int i =3D 0; i < RTL_RSS_KEY_SIZE; i +=3D sizeof(u32))
->> +             RTL_W32(tp, rss_key_reg + i, get_unaligned_le32(rss_key
->> + + i));
->
->you fetched packed word of the key with get_unaligned_le32()..
->
->> +}
->> +
->> +static void rtl8169_store_reta(struct rtl8169_private *tp) {
->> +     u8 *indir_tbl =3D tp->rss_data->rss_indir_tbl;
->> +     unsigned int i;
->> +
->> +     /* Write redirection table to HW */
->> +     for (i =3D 0; i < tp->rss_data->hw_supp_indir_tbl_entries; i +=3D =
-4) {
->> +             u32 reta =3D (u32)indir_tbl[i] |
->> +                        (u32)indir_tbl[i + 1] << 8 |
->> +                        (u32)indir_tbl[i + 2] << 16 |
->> +                        (u32)indir_tbl[i + 3] << 24;
->
->.. but the indir table you pack manually, why?
->
->> +             RTL_W32(tp, RSS_INDIRECTION_TBL_REG + i, reta);
->> +     }
->> +}
->> +
->> +static void rtl8169_set_rss_hash_opt(struct rtl8169_private *tp) {
->> +     u32 rss_ctrl;
->> +
->> +     rss_ctrl =3D FIELD_PREP(RSS_CPU_NUM_MASK,
->> + ilog2(tp->num_rx_rings));
->> +
->> +     /* Perform hash on these packet types */
->> +     rss_ctrl |=3D RSS_CTRL_TCP_IPV4_SUPP
->> +              | RSS_CTRL_IPV4_SUPP
->> +              | RSS_CTRL_IPV6_SUPP
->> +              | RSS_CTRL_IPV6_EXT_SUPP
->> +              | RSS_CTRL_TCP_IPV6_SUPP
->> +              | RSS_CTRL_TCP_IPV6_EXT_SUPP;
->
->| should be at the end of the lines
->
->> +     rss_ctrl |=3D FIELD_PREP(RSS_HASH_MASK,
->> +
->> + ilog2(tp->rss_data->hw_supp_indir_tbl_entries));
->> +
->> +     RTL_W32(tp, RSS_CTRL_8125, rss_ctrl); }
->> +
->> +static void rtl_set_rss_config(struct rtl8169_private *tp) {
->> +     rtl8169_set_rss_hash_opt(tp);
->> +     rtl8169_store_reta(tp);
->> +     rtl8169_store_rss_key(tp);
->> +}
->
->> +     /* enable rx descriptor type v4 and set queue num for rss*/
->
->nit: missing space at the end of the comment
->
->
->> -     nvecs =3D pci_alloc_irq_vectors(pdev, 1, 1, flags);
->> +     nvecs =3D pci_alloc_irq_vectors(pdev, get_min_irq_nvecs(tp),
->> + get_max_irq_nvecs(tp), flags);
->> +
->> +     if (nvecs < 0)
->> +             nvecs =3D pci_alloc_irq_vectors(pdev, 1, 1, flags);
->
->Why the two calls to pci_alloc_irq_vectors() ?
->It should select the best number of IRQs it can, so why not just call
->
->        pci_alloc_irq_vectors(pdev, 1, get_max_irq_nvecs(tp), flags);
->
+> Why are you sending this patch? Do you have an actual real life need
+> for unlocked get_drvinfo??
 
-Hardware limitation. When we try to enable rss, we should use new interrupt=
- mapping. New interrupt 0-7 is used for rx, 8-15 is used for tx, and linkch=
-g interrupt is fixed at 29. So the min irq number for RTL8127 to enable rss=
- is 30, not 1.
-I will add this explanation in the code.
+Yes. The use case is broader than unlocked get_drvinfo.
 
-Thanks,
-Javen
+We are trying to reduce cases where ovs-vswitchd gets blocked waiting for
+the global RTNL lock. In production we saw ovs-vswitchd repeatedly report
+"Unreasonably long" poll intervals. Tracing showed one OVS operation waiting
+about 500 ms for RTNL while node-exporter was collecting the speed of an
+mlx5 interface. The node-exporter process was CPU quota throttled, which
+stretched that RTNL hold time; mlx5 can make this easier to hit because some
+queries go through firmware/mailbox paths.
 
->note: please review the submission for unnecessarily going over 80 chars, =
-we
->still prefer <=3D80 lines in netdev
->
->>       if (nvecs < 0)
->>               return nvecs;
+netdev_linux_set_ol() is one OVS path that can take RTNL. With
+userspace-tso-enable, OVS uses this path to read ethtool feature information
+through ETHTOOL_GSSET_INFO, ETHTOOL_GSTRINGS and ETHTOOL_GFEATURES. For
+ovs-internal-port, these GET operations do not need RTNL, but currently take
+it because internal ports do not opt into per-device ops locking.
