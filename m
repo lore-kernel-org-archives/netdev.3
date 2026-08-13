@@ -1,44 +1,44 @@
-Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
+Received: from sender5-of-o54.zoho.com (sender5-of-o54.zoho.com [165.173.182.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7110B3EB0E9
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 22:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993523E8685
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 22:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786659674; cv=pass; b=pjfr+NfeZdw4b5HNvitVuWjdC6P3+Ip3BJ7x04iZunfaxskPH3fo6P33Lxv1OOJIGBWKn6HK2AZe/Lzsuj8OjJShLDBFkNp2TaBbrpx74ho4xsTJYyAJ8/vSX9SmWCI/nunp4pMls9hCILGhXY77Tf1PEaPsFebN1XJ3K27cvSU=
+	t=1786659685; cv=pass; b=iAjBehLJoZqd6YTmcGGm+DDm6ojYE19121X2mpgehsDTqBJ4WmzlB/J/nh2yslHPpxrCtD0IWW7ejD95ZG69BSAIMVtzTKfrM63bPVZCr/hiPCufQS1Qh6yNAJ49xCsQOH2lzWcupLDS1d32pApXvrX668GzH7A6lSi93x+GxmQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786659674; c=relaxed/simple;
-	bh=BjSUYR0SjxLT6B93689QJfHEdyRSYmoC0/BuQNyJfBU=;
+	s=arc-20240116; t=1786659685; c=relaxed/simple;
+	bh=JZxxV+sttVLVKkTjRCWJtGSLltG1nriJdWGoPs6sLDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWCmz9U7s2nItYyQ454bQya25DPz4D75Q4+CigokK6jOgvz3g8zoSyHcUqiEtDU0ByiVOQqzXLkIkz2E0gXY2J3uWRPuS7ro9wuCoJGJyVaLjYmQDDA4jI1rSb4GmxS7Yy3QNjkovn0g9OODU+KPpX779cIKIUnu3bX30RJg3uo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=gFp2T90p; arc=pass smtp.client-ip=136.143.188.54
+	 MIME-Version; b=l7Zxaf3XAmKcwhEtJbHZmH79wiQFRQkQEuZVsgjyOP8KmJGG6tqF+MYHKzfYZJARt3OdpOjuKXanZBG4w/V5D+jK5TFQIxO4/UU22fy7w3Wo+4cUTydLkJHQu8+W0jpICXKx/soLff9V90jJxApVi8DXTPea7z/xylIqynziiv8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=a/hukZcC; arc=pass smtp.client-ip=165.173.182.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="gFp2T90p"
-ARC-Seal: i=1; a=rsa-sha256; t=1786659635; cv=none; 
+	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="a/hukZcC"
+ARC-Seal: i=1; a=rsa-sha256; t=1786659637; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Jq8YZ0f3c4vo+lOGsYnJhan4C2j93PClX6uXLBMkUtIlZ7DcI4PKAxv5A6OvGClz8b80tYzp2sQ+wASlDCJuX4ElPC7uPf+4RcC1c+Abo/X2cAqjCsYCRJEMpUZj2FTTxiJKT1j6gyu79SB/4jTIDYzDFfobRmv3rEICGD7VbdQ=
+	b=nPZ7gokMmfley75/X0w7imp0/8TNHPZSm7b+IvI/R/IOOtsIwRk91HSn9iDcqHKPl5n5z5pk0FEUmZ2xBG3diZsv1r/TI09SgmlVDeVaR9n6Nho/iCAfSPebMR8ErvwxF165Od/iXhCwSrAsoC5RKArMyqmM3WZJH3kCT/6DpmY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1786659635; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=HVbokr9+ZgiIh+7TCw28jzGl6jcL1zNS4v216YJcELM=; 
-	b=MDwV65KslKbMZgP//eQJnNdK5lWNVnmrzyAMjZ8aNwWYFq3jFrkl9mMt/yoZzWxlonC0xHHfGzi1/NQdxoBZrK+bPSrneUcApuxzD4ah5G0VWpU2M2YP7ArPCDyshaoLF4g6ipVrAHalwRk1OZF0ZGE+gADwHSz80fFengEfcM0=
+	t=1786659637; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dcPQlaisPKUT/laURq5jklWbnDY8vId+pgQgNCuFyKA=; 
+	b=l5kJAQxFG/mEnr11P9hu8aOx1meQssB0adxd/MT+5xoUfX0vRygKv4BElgxslq3sckvhvMK+T4BPgt388HrLaUBXdDbLfPYwYM+Q/AjXsV+cR6v5fXtl/XCUhXcmeyQzGq9eSY4hH8bfaDen+9YtaFdv27bWwLkWkjjKvIPr+WM=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=machnikowski.net;
 	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
 	dmarc=pass header.from=<maciek@machnikowski.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786659635;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786659637;
 	s=zoho; d=machnikowski.net; i=maciek@machnikowski.net;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=HVbokr9+ZgiIh+7TCw28jzGl6jcL1zNS4v216YJcELM=;
-	b=gFp2T90pD6hWLwI+m9RY7MGL4u2LQ6/VESkCiuq4bpX+3b79v2xB1D17AF1lJ5BB
-	6AlPAS6iBTJl7v+u3MVsaUwYM8bVG8Q9NjLRa5A9v6GKMJRxF8hU0qF7m8246UP2kRz
-	V9NpA5ZYU7mbx+1sKqj4WInJvth/OYuLYUQyS7BZ/ivOyBpabQKfFZIDBaArg96hV0y
-	tOa1m2oSchyvl4rsnaczu+AeuYH+WuyiZk8DYrucnXErz28Q4H/X5kNtVdRMnZG86SQ
-	D6PkaisqOfTwc16LmRxVzbwTZyOeOQv/CTfGqBe0fi6GyWZGZQ+9Tkf2gDlO9PTk9+C
-	kd/Vf20UpA==
-Received: by mx.zohomail.com with SMTPS id 1786659631800887.6742952307078;
-	Thu, 13 Aug 2026 15:20:31 -0700 (PDT)
+	bh=dcPQlaisPKUT/laURq5jklWbnDY8vId+pgQgNCuFyKA=;
+	b=a/hukZcCx9+GqmlmAd5jnkIbGcapGhiF12rg+jp6odHSjFtbugqJqxGDtf9r0/T+
+	a8CXqYySEhDvCKMH/yl2VVEj/p8CRCqUuh7xqU7lBzirkYpAhqhSH9RfQFZVINhOiaK
+	HWNVOpf8j5NWjvTkGRyqiN47qCSXEsbyR9t6ONf0fP44ZqxK00eOeY6wfoiYqiNyNV+
+	QafJu2+YTRZ4ppHZ8qW5fX42XWNLq+50IMbp++q9Y+tH3sst7PDCFw6XW5TrcVdE99B
+	HUH16QM1MJv0P6NSGEXjIOwhKb8J4fxxNxp1ULTUoM+SUBAbgs6bDRo5QbT7OoSs9pg
+	tj+ttNwoFQ==
+Received: by mx.zohomail.com with SMTPS id 1786659633814724.6911001050515;
+	Thu, 13 Aug 2026 15:20:33 -0700 (PDT)
 From: Maciek Machnikowski <maciek@machnikowski.net>
 To: netdev@vger.kernel.org
 Cc: kuba@kernel.org,
@@ -49,9 +49,9 @@ Cc: kuba@kernel.org,
 	andrew@lunn.ch,
 	vadim.fedorenko@linux.dev,
 	horms@kernel.org
-Subject: [PATCH v9 net-next 2/3] netdevsim: Implement basic ptp support
-Date: Fri, 14 Aug 2026 00:20:22 +0200
-Message-ID: <20260813222023.2460-3-maciek@machnikowski.net>
+Subject: [PATCH v9 net-next 3/3] selftests: drivers/net: Implement ptp4l sync test using netdevsim
+Date: Fri, 14 Aug 2026 00:20:23 +0200
+Message-ID: <20260813222023.2460-4-maciek@machnikowski.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260813222023.2460-1-maciek@machnikowski.net>
 References: <20260813222023.2460-1-maciek@machnikowski.net>
@@ -64,214 +64,133 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 
-Add support for virtual timestamping inside the netdevsim driver.
-The implementation uses two attached ptp_mock clocks, reads the timestamps
-of the ones attached either to the netdevsim or its peer and returns
-timestamps using standard timestamps APIs.
+Add PTP synchronization test using ptp4l and netdevsim.
+The test uses the NetDrvEpEnv to link a local netdevsim
+device to a remote endpoint, runs ptp4l as leader and follower
+on the two ends, and waits for the follower to report the
+synchronized state (s2).
 
-This implementation enables running ptp4l on netdevsim adapters and
-introduces a new ptp selftest.
-
-Co-developed-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
 Signed-off-by: Maciek Machnikowski <maciek@machnikowski.net>
 ---
- drivers/net/netdevsim/ethtool.c   |  15 +++++
- drivers/net/netdevsim/netdev.c    | 107 ++++++++++++++++++++++++++++++
- drivers/net/netdevsim/netdevsim.h |   1 +
- 3 files changed, 123 insertions(+)
+ tools/testing/selftests/drivers/net/Makefile |  1 +
+ tools/testing/selftests/drivers/net/config   |  1 +
+ tools/testing/selftests/drivers/net/ptp.py   | 84 ++++++++++++++++++++
+ 3 files changed, 86 insertions(+)
+ create mode 100755 tools/testing/selftests/drivers/net/ptp.py
 
-diff --git a/drivers/net/netdevsim/ethtool.c b/drivers/net/netdevsim/ethtool.c
-index 025ea79879f3..24e7d5592e79 100644
---- a/drivers/net/netdevsim/ethtool.c
-+++ b/drivers/net/netdevsim/ethtool.c
-@@ -200,7 +200,22 @@ static int nsim_get_ts_info(struct net_device *dev,
- {
- 	struct netdevsim *ns = netdev_priv(dev);
- 
-+	ethtool_op_get_ts_info(dev, info);
-+	if (!ns->phc) {
-+		info->phc_index = -1;
-+		return 0;
-+	}
+diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
+index d5bf4cb638a8..18bb7c693b69 100644
+--- a/tools/testing/selftests/drivers/net/Makefile
++++ b/tools/testing/selftests/drivers/net/Makefile
+@@ -19,6 +19,7 @@ TEST_PROGS := \
+ 	netpoll_basic.py \
+ 	ping.py \
+ 	psp.py \
++	ptp.py \
+ 	queues.py \
+ 	ring_reconfig.py \
+ 	shaper.py \
+diff --git a/tools/testing/selftests/drivers/net/config b/tools/testing/selftests/drivers/net/config
+index b6989c7d3d9d..7be30a72e119 100644
+--- a/tools/testing/selftests/drivers/net/config
++++ b/tools/testing/selftests/drivers/net/config
+@@ -21,5 +21,6 @@ CONFIG_NET_SCH_INGRESS=y
+ CONFIG_NET_SCH_PRIO=m
+ CONFIG_PPP=y
+ CONFIG_PPPOE=y
++CONFIG_PTP_1588_CLOCK_MOCK=y
+ CONFIG_VLAN_8021Q=m
+ CONFIG_XDP_SOCKETS=y
+diff --git a/tools/testing/selftests/drivers/net/ptp.py b/tools/testing/selftests/drivers/net/ptp.py
+new file mode 100755
+index 000000000000..57ea77659b11
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/ptp.py
+@@ -0,0 +1,84 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# By Maciek Machnikowski <maciek@machnikowski.net> (c) 2026,
 +
- 	info->phc_index = mock_phc_index(ns->phc);
-+	if (info->phc_index < 0)
-+		return 0;
++"""
++Test suite for PTP sync using ptp4l.
 +
-+	info->so_timestamping |= SOF_TIMESTAMPING_TX_HARDWARE |
-+				 SOF_TIMESTAMPING_RX_HARDWARE |
-+				 SOF_TIMESTAMPING_RAW_HARDWARE;
++Start a ptp4l leader and follower and check that the follower locks onto the
++leader (state s2)
++"""
 +
-+	info->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
-+	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) | BIT(HWTSTAMP_FILTER_ALL);
- 
- 	return 0;
- }
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index 4e9d7e10b527..108f265a278a 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -30,6 +30,8 @@
- #include <net/rtnetlink.h>
- #include <net/udp_tunnel.h>
- #include <net/busy_poll.h>
-+#include <linux/ptp_clock_kernel.h>
-+#include <linux/timecounter.h>
- 
- #include "netdevsim.h"
- 
-@@ -122,12 +124,18 @@ static int nsim_forward_skb(struct net_device *tx_dev,
- 
- static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
- {
-+	struct skb_shared_hwtstamps shhwtstamps = {};
-+	struct ptp_clock_info *ptp_info_tx = NULL;
-+	struct ptp_clock_info *ptp_info_rx = NULL;
- 	struct netdevsim *ns = netdev_priv(dev);
-+	struct timespec64 tx_ts, rx_ts;
-+	struct sk_buff *skb_orig = skb;
- 	struct skb_ext *psp_ext = NULL;
- 	struct net_device *peer_dev;
- 	unsigned int len = skb->len;
- 	struct netdevsim *peer_ns;
- 	struct netdev_config *cfg;
-+	unsigned long flags;
- 	struct nsim_rq *rq;
- 	int rxq;
- 	int dr;
-@@ -164,6 +172,46 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		skb_linearize(skb);
- 
- 	skb_tx_timestamp(skb);
++import time
 +
-+	if (unlikely(READ_ONCE(peer_ns->tstamp_config.rx_filter) !=
-+		     HWTSTAMP_FILTER_NONE))
-+		ptp_info_rx = mock_phc_get_ptp_info(peer_ns->phc);
++from lib.py import (
++    NetDrvEpEnv,
++    bkg,
++    fd_read_timeout,
++    ksft_exit,
++    ksft_pr,
++    ksft_run,
++    ksft_true,
++)
 +
-+	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
-+	    READ_ONCE(ns->tstamp_config.tx_type) == HWTSTAMP_TX_ON)
-+		ptp_info_tx = mock_phc_get_ptp_info(ns->phc);
++PTP4L_SYNC_TIMEOUT = 40
 +
-+	if (unlikely(ptp_info_tx || ptp_info_rx)) {
-+		/* Sample both PHCs with IRQs off to keep the reads adjacent */
-+		local_irq_save(flags);
-+		if (ptp_info_tx)
-+			ptp_info_tx->gettime64(ptp_info_tx, &tx_ts);
-+		if (ptp_info_rx)
-+			ptp_info_rx->gettime64(ptp_info_rx, &rx_ts);
-+		local_irq_restore(flags);
 +
-+		/* If TX hardware timestamping is enabled report TX timestamp */
-+		if (ptp_info_tx) {
-+			shhwtstamps.hwtstamp = timespec64_to_ktime(tx_ts);
-+			skb_tstamp_tx(skb_orig, &shhwtstamps);
-+		}
++def _poll_follower_sync(follower, timeout):
++    """Read the follower stdout pipe until ptp4l reports sync state s2.
 +
-+		/* Unshare the skb, stamping it must not corrupt cloned copies
-+		 * and prevents returning single tstamp for Tx and Rx
-+		 */
-+		skb = skb_unshare(skb_orig, GFP_ATOMIC);
-+		if (unlikely(!skb)) {
-+			if (psp_ext)
-+				__skb_ext_put(psp_ext);
-+			goto out_drop_cnt;
-+		}
++    Returns a tuple (synced, output) where output is the text read so far.
++    The synchronized ptp4l log line looks like this:
++    ptp4l[18374.558]: master offset        844 s2 freq    +822 path delay       521
++    """
++    fd_file = follower.proc.stdout
++    fd = fd_file.fileno()
++    buf = b""
++    deadline = time.monotonic() + timeout
++    while time.monotonic() < deadline:
++        if b" s2 " in buf:
++            break
++        if follower.proc.poll() is not None:
++            chunk = fd_file.read()
++            if chunk:
++                buf += chunk
++            break
++        try:
++            remaining = deadline - time.monotonic()
++            buf += fd_read_timeout(fd, max(0, min(1, remaining)))
++        except TimeoutError:
++            continue
++    return b" s2 " in buf, buf.decode("utf-8", "replace")
 +
-+		/* If RX hardware timestamping is enabled report RX timestamp */
-+		if (ptp_info_rx)
-+			skb_hwtstamps(skb)->hwtstamp =
-+				timespec64_to_ktime(rx_ts);
-+	}
 +
- 	if (unlikely(nsim_forward_skb(dev, peer_dev,
- 				      skb, rq, psp_ext) == NET_RX_DROP))
- 		goto out_drop_cnt;
-@@ -185,6 +233,63 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return NETDEV_TX_OK;
- }
- 
-+static int nsim_set_ts_config(struct net_device *netdev,
-+			      struct kernel_hwtstamp_config *config,
-+			      struct netlink_ext_ack *extack)
-+{
-+	struct netdevsim *ns = netdev_priv(netdev);
-+	int rx_filter;
++def ptp_sync_test(cfg):
++    """Verify ptp4l leader/follower synchronization reaches state s2."""
++    cfg.require_cmd("ptp4l", remote=True)
 +
-+	if (!ns->phc)
-+		return -EOPNOTSUPP;
++    leader_cmd = f"ptp4l -i {cfg.remote_ifname} -m -2"
++    follower_cmd = f"ptp4l -i {cfg.ifname} -m -s -2"
 +
-+	switch (config->rx_filter) {
-+	case HWTSTAMP_FILTER_NONE:
-+		rx_filter = HWTSTAMP_FILTER_NONE;
-+		break;
-+	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
-+	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
-+	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
-+	case HWTSTAMP_FILTER_PTP_V2_EVENT:
-+	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
-+	case HWTSTAMP_FILTER_PTP_V2_SYNC:
-+	case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
-+	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
-+	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
-+	case HWTSTAMP_FILTER_NTP_ALL:
-+	case HWTSTAMP_FILTER_ALL:
-+		rx_filter = HWTSTAMP_FILTER_ALL;
-+		break;
-+	default:
-+		return -ERANGE;
-+	}
++    with bkg(leader_cmd, host=cfg.remote), \
++         bkg(follower_cmd) as follower:
++        synced, output = _poll_follower_sync(follower, PTP4L_SYNC_TIMEOUT)
 +
-+	switch (config->tx_type) {
-+	case HWTSTAMP_TX_OFF:
-+		WRITE_ONCE(ns->tstamp_config.tx_type, HWTSTAMP_TX_OFF);
-+		break;
-+	case HWTSTAMP_TX_ON:
-+		WRITE_ONCE(ns->tstamp_config.tx_type, HWTSTAMP_TX_ON);
-+		break;
-+	default:
-+		return -ERANGE;
-+	}
++    if synced:
++        return
 +
-+	WRITE_ONCE(ns->tstamp_config.rx_filter, rx_filter);
-+	config->rx_filter = rx_filter;
++    ksft_pr(f"ptp4l follower did not reach locked state (s2) within "
++            f"{PTP4L_SYNC_TIMEOUT}s")
++    tail = output.strip().split("\n")[-10:]
++    ksft_pr("Follower log (last 10 lines): " + " | ".join(tail))
++    ksft_true(False, "PTP sync timeout")
 +
-+	return 0;
-+}
 +
-+static int nsim_get_ts_config(struct net_device *netdev,
-+			      struct kernel_hwtstamp_config *config)
-+{
-+	struct netdevsim *ns = netdev_priv(netdev);
++def main():
++    """Run ksft tests."""
++    with NetDrvEpEnv(__file__) as cfg:
++        ksft_run([ptp_sync_test], args=(cfg, ))
++    ksft_exit()
 +
-+	*config = ns->tstamp_config;
-+	return 0;
-+}
 +
- static int nsim_set_rx_mode(struct net_device *dev,
- 			    struct netdev_hw_addr_list *uc,
- 			    struct netdev_hw_addr_list *mc)
-@@ -647,6 +752,8 @@ static const struct net_device_ops nsim_netdev_ops = {
- 	.ndo_vlan_rx_add_vid	= nsim_vlan_rx_add_vid,
- 	.ndo_vlan_rx_kill_vid	= nsim_vlan_rx_kill_vid,
- 	.net_shaper_ops		= &nsim_shaper_ops,
-+	.ndo_hwtstamp_get	= nsim_get_ts_config,
-+	.ndo_hwtstamp_set	= nsim_set_ts_config,
- };
- 
- static const struct net_device_ops nsim_vf_netdev_ops = {
-diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-index 64f77f93d937..5cdd1e294446 100644
---- a/drivers/net/netdevsim/netdevsim.h
-+++ b/drivers/net/netdevsim/netdevsim.h
-@@ -108,6 +108,7 @@ struct netdevsim {
- 	struct net_device *netdev;
- 	struct nsim_dev *nsim_dev;
- 	struct nsim_dev_port *nsim_dev_port;
-+	struct kernel_hwtstamp_config tstamp_config;
- 	struct mock_phc *phc;
- 	struct nsim_rq **rq;
- 
++if __name__ == "__main__":
++    main()
 -- 
 2.55.0
 
