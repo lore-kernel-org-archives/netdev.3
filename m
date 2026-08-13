@@ -1,87 +1,81 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4829742D757
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 21:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FB74746B7
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 21:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786657377; cv=none; b=UNKBjlz3FHCXpCfGTh4lxOGbrxDuh8G+dQEHkeQeNxIQFPxJKB7RYUXLuiLrpspo9nJIC3VsZxf0gxUt4z54Agb+ZjeX+XNe8Na1lutrYzRjYnEYIsOkneuKXJFeYlUbd2+dco3Mj1nK40RRuKwuzIefT2PCvtW5IFIFMx8k7V4=
+	t=1786658014; cv=none; b=cQn2hOVTVHavnfIvHgJa8oj54xlVzhb6WzOZj7UIr6VksOvRALO8nvYFqcdDsYE2ETjqq+QH/gmF8J0yR6jhFG41M+9mHV+o3FLq06pytDvex1+9WtIZ20f5wYJMCI+h1gjoPV2E3+ZmA6glMOkGSxc/Vdpf2OGmAo6N7NHS1Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786657377; c=relaxed/simple;
-	bh=huyJMFlfQJ3dOAsamBtnzGlfdRqKt9nhuuxDEDmUYRs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdl5Zf0HXouwaEM+Pc8tV4SmSQttuouU+7T2Kq+8tFcm+CNSsYFCixXbzV9a80yMsSmQOfDzn+r3x+3RC7lXcczXP+7ZJQRhUDRu6/PlX+NiHnIc/uSFWg+71rDNBT19l8In0kVAnP5gfnPZd5XloL8tsgIrdIscCVVzeK/+ysw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PYRDP2o2; arc=none smtp.client-ip=209.85.128.169
+	s=arc-20240116; t=1786658014; c=relaxed/simple;
+	bh=fYLwZrvNlQxGwlPI0UQmca6Rp4m8wQ6Bkf8LJPqH324=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FeY6jNn8cASpX1I7nEsi6DZ/EvJzMHs82WFa4X/QSBNtZa5mFjhB8pWMu9QYf0A7vNTHJ7cRAWGnXxWPxYIAYQN0gEZAc4gYsLYqPEDmp8Y9cznPtU9x96i2/FU2UXPTb/aJ09jYt6Miy0zgvKITYoi2VE251qD0nXepOvy9zGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcK4nnLA; arc=none smtp.client-ip=74.125.224.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PYRDP2o2"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-80c5cb9a888so4014767b3.3
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 14:42:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcK4nnLA"
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-66c70d1672cso482974d50.0
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 14:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786657375; x=1787262175; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=huyJMFlfQJ3dOAsamBtnzGlfdRqKt9nhuuxDEDmUYRs=;
-        b=PYRDP2o2CWjoB9buT3ASd6aSVMT8akCCHeSR/6oxwwaRcmcIApCKhk8WohvrnhZtsm
-         RvfpFAwaCTD1apwh8y0G8Yd0aZi/zezyLLug7YTucKkNqEAq4YagSFTZEzpWy62CqBJ5
-         eOCswou4YvRJlsKDMNmWKZrTN6R5LRPOdEm0/ZPvNsuk1MaC5TeNQHNoLcruGjVBRb7E
-         8ltvbH49n0xNcpHVRru7W9C+4KD32jSlz+75DOfq4J1xkiMY12fuM/ROc9NFZWM+MzC7
-         Eiadv8JLY8eQm9roU1uUuHZ+xm76J/u0lzDHUq2qUg496bciEy/BCQF3CbJYuJESo4ck
-         x0Hg==
+        d=gmail.com; s=20251104; t=1786658012; x=1787262812; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cPTXEYegZPPH2jkQqlfi+zU8F5mdAL4ScUHPzIFB1i4=;
+        b=bcK4nnLAToE/MFDRAU3Es48wA9EbUq8MoE31OpsRD6WD4haSk6YZNJ04e4BvjJ6guB
+         A+IxM8uHAO9GjGBCyL+b44lIHiNLGzk42teqJnD1LO9xGg811yX3zfIKBFjRBn2nUZWP
+         OgMdSJcSYarFZOCjM8RUtTUjmZvrPlWqbN/zxUij7TUudCXYvZCTL8jCxRBb2sKwnvsI
+         bvz61FJUhJa1cttS3gwQ84a1c+BWJf+5xV8CO0EnbHGqVeBGwxQguh2PbvHsgzL181W6
+         5dPAkzpkAiH07W/pXyLJxdxuU+Lqq2fBbelsuIiv6vkavL9uSgS1A12MoeIvylOaXnD6
+         5XSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786657375; x=1787262175;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=huyJMFlfQJ3dOAsamBtnzGlfdRqKt9nhuuxDEDmUYRs=;
-        b=FvVB/HSUDgYiJQpunVqXzfVA64JLDseNyQVswPDOfWZwbS03zVDdo4EaZrASy2ARQp
-         rXXZCbFVUOhrw+q1zLMHgBShDHlNTFMzYOa8shbKpDF+GS/eYksYCCxWsQXyVPv60R0g
-         f17Ykw0b2avQ3hNkNG3zCTuMm7qxCGQ/WpzxzGIxJrrCD8HBfkHuJgJuxio2rnWRm3VJ
-         GiB69EKbA+enDUDKx8e244q2MtrjqlF56lr/5sxNN5n/5CmcQxujDG0FAJnt9l02gWTP
-         OghyTbbRMKHZUhynINfLybO/IuotYHTcokViu+m2MkfHI0NJTRL8VSaC6ibtNVrcXkcD
-         6njg==
-X-Forwarded-Encrypted: i=1; AHgh+RpDWOcpPslXGQDkCLFJeeMSTPPXVa8l55wdg2qTxmsK6g4vX099I1I1/HVvfhFILrAmW95Tq4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU1I1rn3Aq4gpzrUJPm7of66MfnJ5t9q93M1HOO6lXTKAQ+ekZ
-	AYuXJrB34LaTEBf0Gk6Uf28cIBHEPLooDE4hqLYOOHak6aJKegaoZLT/
-X-Gm-Gg: AR+sD12jmQVptw8pqdQIhCa8HAmFzKRPTHfV3S3TBPl8aIp4BgwfLD0tnTVO6NArxZ1
-	K6vP7190kxjq4Egw9HYucHglIepYRjTUvKTnY4LGeSf84dUh2w7BsYFWVlBxQwHWFiahXPunSNf
-	5FG5zBzvRR9BI6HodOt4DXrOOhx23v98/BjQCP/e4KHs941EmUhzCVc8PUz1FmWoS9O7CnRC1bq
-	5jL/noIzKAl3igVQV2niFqdW5HsAZeUKIK3KfssYJyjMdN1BUkQh0dohXPdZaTOLmC/ao3ucGov
-	psWGBTO42WCJF/EsEKv1NlNag/LcmVqy/sgZWL/pTdryRL2Pb23e4Xgcua0L/1adOwBcr28CItA
-	q+ZIN4GnYe5qBim78y6dzkWBRq3+3fDbaFiUZ1LT/3S2eNAqi6oubX7SVG7an4uFUFiz1w9S2qg
-	sbFqmdXbc9cIsJGAutKmr791jhsHuHz1Lumzu+g4XKu89+IJ+13xebFtJRbUHIHJpMj4DAAubun
-	sqUnQ==
-X-Received: by 2002:a05:690c:e5d5:b0:814:7a54:3a93 with SMTP id 00721157ae682-83711836371mr5686327b3.23.1786657375206;
-        Thu, 13 Aug 2026 14:42:55 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786658012; x=1787262812;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cPTXEYegZPPH2jkQqlfi+zU8F5mdAL4ScUHPzIFB1i4=;
+        b=k3smdF/9Jn8ekIyqWsLzZxuIMwod4L+7Q1ftQU6HvnV30O0e3TD1nXsuyY25+c9Gio
+         z2ocw7D8s3tKaH0c1t54V2ud+I/uKFzQY9bBV9sa2bBgaO9c+XSzLS9Fk2GzA3uqsV7o
+         r5TkSnTfYayO3wTPJ+B7kL5C756x6B3Q3GRMZNcNDPHtI8VOcIR1o2fjVamfluc+DtGL
+         wfN33aNmgrMWdcq+1gQk1vn32GJyNdtTAFFa6UqBp5/jHAVvCo6W0v8alyi2E/lzdzUl
+         YnSZJoEfUNl4WqgGR3zck9SrMBV1Bgbusi1rN5PUJZ5CT0jB4XQRK8C/rRQtc9knKeNh
+         FKmg==
+X-Gm-Message-State: AOJu0YydQ/nXCdFEZ8EIvjcqATOpotiVcqc3zWjFHvG1l5XcIT5mbJX6
+	za8c1tIj+aiWkkV7XSNZ16e3lGxhN4On9Oud0qoyDwwZ1+qHIqzUwSMC
+X-Gm-Gg: AR+sD11NLdtwOy3X9Jy6qmItkFZj8woLiGSk2HMlwQSx3XDFo9JIc01DOS9RUg9QPg0
+	+4BM1K55B/Kom7U+9mttpCO7KVW8Ge+RSnbpdy1oL+4dC4Cd/X3HzPUUsRVHP+EvUcdwd6daL66
+	7d2L1XS8NvezfLID8/PvUZdqsnMosPaBRUBpFA1U07Qq/wD7rJlOk2Ed498zdrdQqsAMm6mzwu6
+	aLIPAkF8K4TpQv6Keh5SRlI6MDLG25qhLQvA1BQ7LxLB5+WZ7lJ3eXNGPHtUmv5KwIhAVJx4aHX
+	B89HwynNML73kmIUAXRYHnTNy/STk9gZFvtw4Lp2u1cpGdwfDP/W/0LT47GoO1dz8o+WwXql+bI
+	uSpD6VuYCCyrQr6TkX8njarm1aR4wCJx4s3SNr8/4ZcG2QNNE7a8yyUG7dA8rbk3jd2beBB9n+/
+	UZcESJwfVDfoILzw+3OWeEjA5Uuxyyv2h6eWZVTpzstL50L52I+fbrAx8zJ+DL1sBakP+G
+X-Received: by 2002:a05:690e:1c08:b0:664:dbd0:23b7 with SMTP id 956f58d0204a3-66c72b1cdedmr612953d50.9.1786658011698;
+        Thu, 13 Aug 2026 14:53:31 -0700 (PDT)
 Received: from mac.lan ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-836bb3ed2b5sm5069637b3.6.2026.08.13.14.42.54
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66c573c46d3sm1458852d50.10.2026.08.13.14.53.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 14:42:54 -0700 (PDT)
+        Thu, 13 Aug 2026 14:53:31 -0700 (PDT)
 From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: horms@kernel.org
-Cc: AutonomousCodeSecurity@microsoft.com,
-	blbllhy@gmail.com,
-	bpf@vger.kernel.org,
+To: magnus.karlsson@intel.com,
+	kerneljasonxing@gmail.com,
+	maciej.fijalkowski@intel.com,
+	sdf@fomichev.me,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kerneljasonxing@gmail.com,
 	kuba@kernel.org,
-	kys@microsoft.com,
-	linux-kernel@vger.kernel.org,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	netdev@vger.kernel.org,
 	pabeni@redhat.com,
-	sdf@fomichev.me,
-	tgopinath@linux.microsoft.com
-Subject: Re: [PATCH net v3] xsk: fix NULL pointer dereference in __xsk_rcv()
-Date: Thu, 13 Aug 2026 17:42:40 -0400
-Message-ID: <20260813214240.96466-1-blbllhy@gmail.com>
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	blbllhy@gmail.com
+Subject: [PATCH net v4] xsk: fix NULL pointer dereference in __xsk_rcv()
+Date: Thu, 13 Aug 2026 17:53:28 -0400
+Message-ID: <20260813215328.99311-1-blbllhy@gmail.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260810132505.769431-1-horms@kernel.org>
-References: <20260810132505.769431-1-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,34 +84,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Simon,
+In the __xsk_rcv() multi-buffer path, xsk_buff_alloc() is called in a
+loop without checking its return value. xsk_buff_can_alloc() only
+counts fill queue entries without validating their addresses, so it
+can succeed while xsk_buff_alloc() rejects all remaining entries and
+returns NULL.
 
-Thanks for the comments.
+  Oops: general protection fault, probably for non-canonical address
+   0xdffffc0000000000
+  KASAN: null-ptr-deref in range
+   [0x0000000000000000-0x0000000000000007]
+  RIP: 0010:__xsk_rcv+0x426/0xc20 (net/xdp/xsk.c:350)
+  Call Trace:
+   xsk_generic_rcv+0x26d/0x5f0
+   xdp_do_generic_redirect+0x3c5/0xcf0
+   do_xdp_generic+0x92f/0xe70
+   __netif_receive_skb_core.constprop.0+0xf7e/0x2b30
 
-Given the extra complexity of reusing the pool-global xskb_list here,
-including the locking/concurrency issues and the hidden implementation
-assumptions needed to reuse the existing frag helpers, I would prefer to
-go back to the v2 local-list implementation, which is correct, logically
-simpler, and easier to maintain.
+Fix this with a two-stage transaction. First allocate and stage all
+buffers required for the packet, recycling all staged buffers with
+xsk_buff_free() if any allocation fails. Only after this stage
+succeeds, copy the data, reserve the RX descriptors, and release the
+buffers in an error-free loop.
 
-@Jason, regarding your v2 memory leak concern:
+Fixes: 804627751b42 ("xsk: add support for AF_XDP multi-buffer on Rx path")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+---
+ net/xdp/xsk.c | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
-> It will cause a memory leak because the current xsk_xdp that is not
-> added to the local list will miss the chance to get freed? And the
-> empty list_node cannot be easily freed by xp_free()...
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 7855ee09c4b6..33475b180ea6 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -298,9 +298,11 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+ 	u32 frame_size = __xsk_pool_get_rx_frame_size(xs->pool);
+ 	void *copy_from = xsk_copy_xdp_start(xdp), *copy_to;
+ 	u32 from_len, meta_len, rem, num_desc;
+-	struct xdp_buff_xsk *xskb;
++	struct xdp_buff_xsk *xskb, *tmp;
+ 	struct xdp_buff *xsk_xdp;
++	LIST_HEAD(xsk_buffs);
+ 	skb_frag_t *frag;
++	u32 i;
+ 
+ 	from_len = xdp->data_end - copy_from;
+ 	meta_len = xdp->data - copy_from;
+@@ -343,23 +345,45 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+ 		frag =  &sinfo->frags[0];
+ 	}
+ 
++	for (i = 0; i < num_desc; i++) {
++		xsk_xdp = xsk_buff_alloc(xs->pool);
++		if (!xsk_xdp)
++			goto err_alloc;
++
++		xskb = container_of(xsk_xdp, struct xdp_buff_xsk, xdp);
++		if (unlikely(!list_empty(&xskb->list_node)))
++			goto err_alloc;
++
++		list_add_tail(&xskb->list_node, &xsk_buffs);
++	}
++
+ 	do {
+ 		u32 to_len = frame_size + meta_len;
+ 		u32 copied;
+ 
+-		xsk_xdp = xsk_buff_alloc(xs->pool);
++		xskb = list_first_entry(&xsk_buffs, struct xdp_buff_xsk,
++					list_node);
++		list_del_init(&xskb->list_node);
++		xsk_xdp = &xskb->xdp;
+ 		copy_to = xsk_xdp->data - meta_len;
+ 
+ 		copied = xsk_copy_xdp(copy_to, &copy_from, to_len, &from_len, &frag, rem);
+ 		rem -= copied;
+ 
+-		xskb = container_of(xsk_xdp, struct xdp_buff_xsk, xdp);
+ 		__xsk_rcv_zc_safe(xs, xskb, copied - meta_len,
+ 				  rem ? XDP_PKT_CONTD : 0);
+ 		meta_len = 0;
+ 	} while (rem);
+ 
+ 	return 0;
++
++err_alloc:
++	list_for_each_entry_safe(xskb, tmp, &xsk_buffs, list_node) {
++		list_del_init(&xskb->list_node);
++		xsk_buff_free(&xskb->xdp);
++	}
++	xs->rx_dropped++;
++	return -ENOMEM;
+ }
+ 
+ static bool xsk_tx_writeable(struct xdp_sock *xs)
+-- 
+2.52.0
 
-IIUC, it would not leak. The !list_empty(&xskb->list_node) case can only
-happen when fresh aligned-mode allocation returns the same xskb for a
-duplicated user Fill Ring address. In that case, the xskb has already
-been added to the local staging list by an earlier iteration, so the
-error path will walk that list, do list_del_init(), and then
-xsk_buff_free() can recycle it. For buffers returned from the free_list,
-in either aligned or unaligned mode, xsk_buff_alloc() already did
-list_del_init(). For fresh unaligned-mode allocations, xskb metadata
-comes from free_heads, so duplicated user addresses should not return the
-same in-list xskb.
-
-I'll prepare v4 based on the v2 local-list approach shortly.
-
-Thanks,
-Cen
