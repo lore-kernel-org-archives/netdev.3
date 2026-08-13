@@ -1,100 +1,176 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0A74779B0
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 18:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A412F7F13
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786647198; cv=none; b=EcBC2jdz0F8WaY2PpQaLdfMUpYkDrvgHcrAn9ZxA/eON/R6Uzy3E+tZ4JRrmsmufUSiRrrMqwP3ENU3GK6mr9zWR8/KVxhD06yXBAEbhi6RQaYZAQ5R2GEagCgXpM7zdpapOM44sdDp08VqaTgiu+xvRoto256/INZosAHmFZC0=
+	t=1786647831; cv=none; b=AKc+JXO1TghMV0ulBgT6s5jCz6wAKU24W9Qrc3LU2bEiTu2sEQ6clfiAXiSnYtD+2FhL337mZkLxExiVUJlz8O0DiUKFwCOX3NPqhczRa5m45w/2C87CcUmmikGnJ60UBAS2HolI4Y/L2PzS0s3FGh5UzZZk/cla0Qt5ZZFQbhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786647198; c=relaxed/simple;
-	bh=XR7g9p88J7Jv3lRFX16qn0UgWKl90nn7NX6TSsJRbhc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gvm1NPG9ddeSwLsfF6TPP3mdlaG4ht7bCFsGkuSUm9mkPVSj9jI0nfmCA4eG1pGIBEWs/RfEt8Edex6NCKKySe4IVSEhwYug30U8LpD2MtIkcP8WcPCp+Q//J7QzNXIiMl6ce2xXXJsIfIAeAicU7Ds0aJqo8WWzY96PTlgJcnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kUDH3LxN; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786647831; c=relaxed/simple;
+	bh=h4fLtGo7L69mVcw54e0Pb54zpPd24shJdWWvb7gIyyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uSXJejPp7yyeBUKkza+j5GgiaPA3BhmY4CBH60tdZTgRrGPmjZqS862vq+38PKApRU0GJSLw3pXXXsgKXb8ruNjqunIUsazZy/bQOFTn1Y/ferAB8F1Gmw/rcFu3epwJ8EWEptQLRxQeZGVBMYeiDwJWwFfG/xihkwSt+Lb+DY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=sA30iXCX; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=hSuRYtde; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kUDH3LxN"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4994d41ceb9so302975e9.2
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:53:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786647195; x=1787251995; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gYq6ARPSHDC079LDT6haspAFwms/8GstOieZE4K9c8g=;
-        b=kUDH3LxNVNLkB1Y4r/a9QwOdIy1qsapToogwB2wJdgyRKO3U+xS3PDJOP7ILDVc8e2
-         wjFqFmI1A291gFMwZeWv6mtFCwgAAWpil/A9ChPjAlRUQGrjmKszOD+3kv/b8d/vQhia
-         K83GR2AoYP4tgLkNU0wbrUSrOk4E19Mp9FnhhmiN/7nzrGFxWeepsLVf/L+HCmslv4P7
-         cOGHIBvSOVe2m/8FkVxNZMmIBeRRLbXHvW/L0Z04gHmIw/CgIN2mVw9FVSLlUNalDyMY
-         Pg7sDWqM+7wKSxU8atV/4UjKTUKXknKlQvuYgGbDKaOC7kuEHKWK7IfiRksl9zzrwH4I
-         cwsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786647195; x=1787251995;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gYq6ARPSHDC079LDT6haspAFwms/8GstOieZE4K9c8g=;
-        b=sF8tG31jyqiIaEMXu4WMUK1PK3bvg9H95g1e6dBPGO+hzESK4uw08AyjcfSaBvAZii
-         yqUQvUJTUJGpTbKffbk9m+l9ecpNlPogbvyLuffw6feLSjgqLUZ6SiwWnwPfCNHlZc+K
-         lCvr+3tZ0+Zq9xbkh7au6WCg+oWThwBd58VENPgiUo4h9jQmx2mciJels9+/Nnn6TaJy
-         3jgNgnTFpAKIsFzX7Z8pFuR1+/cLZLH+bpnnxkK60HmuBzxqOiN16F/WQAAFwL671aOV
-         eWuABIikPoftSs2uFqc5dGE6ad4vZJHlpfra2wgp28KTnEQ3kFqmSF4QWWT5833VdAuP
-         H5Sw==
-X-Gm-Message-State: AOJu0Yw476zNTWy+KcNAKdfSYhFVPjP4SU4bmHK5y4aWXmj08T4sY9gi
-	hIxrUphj/tJTrkF9CuihQiBox1FGF7JqH1v/9tcnfXEojUvHLwiw1U0k
-X-Gm-Gg: AR+sD12hbOfuYzW/soj6cSWoEKgAhJZWAtGTEvgtYlfVj1BrOTE7cOJcBtEd5ZBh2tv
-	hXTiV0xusBtg8ElwgNtJbGuUFsTtp/vJGzyyDCuaHgODr+kyfxdhRS6w1PYedvq/IbVZUDVyGGl
-	G8TO4cNDU+roUpngICikte19xLFerSxgeTEbiqfr44OTvzRxZ3TGIMVbJ8AziRbM9CbpoFfxBNx
-	7V9hNuMqwYVcvIYz/4R4jUCiF/m+ysLS6nkuq1L9jJ4FepLjjjfC2iLxJgvAGEKnwXRokEAKckR
-	QiuVGyBfUHdFsOYcJEi2NKH2g5EdBvAtnejGIbL6FH/Z/fnQYv+P9IvD+B5PcJqdk6EQf7fEydP
-	0zNdu5XdLQjTmSHjxU9g8fVk7SDuG7XS2XU21Mp1abVI+uUcrY5XpuDbHWy6FqKFpl+iHrDojVR
-	Mkm5YmJDiwEMGqPxVQcfcwfXUD3U9unHBMnMsaaEl88hwkR0+m
-X-Received: by 2002:a05:6000:402b:b0:481:3db3:8eb with SMTP id ffacd0b85a97d-4816072df98mr200797f8f.1.1786647195123;
-        Thu, 13 Aug 2026 11:53:15 -0700 (PDT)
-Received: from skbuf ([86.127.220.200])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2b1d90sm1434225f8f.22.2026.08.13.11.53.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 11:53:14 -0700 (PDT)
-Date: Thu, 13 Aug 2026 21:53:12 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: mv88e6xxx: Fix PCS link check on CMODE
- read error
-Message-ID: <20260813185312.ikljy4rqx6r2e7ci@skbuf>
-References: <20260813153131.3952970-1-ruoyuw560@gmail.com>
+	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="sA30iXCX";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="hSuRYtde"
+Authentication-Results: purelymail.com; auth=pass
+DKIM-Signature: a=rsa-sha256; b=sA30iXCXWlrQXllzr8GkR3qhzjT+hclWF8Uw2QVWa+3ehVo8fuuG9640Znfnk9Pzp3HC6GDx/mTV40xwzRu/k3GUOeu2Ppg/Xyhc7+Nck3R8+kNTJthxAQs36/K5nB605dFg97agccZqcRP9LD3UWNVYZ5C9213Uuzj59Nmwc8sWI4eH92ocSxvaOBxCDGX1tQuHz3QYg95FkyJZFRkpD9+VW4M9ImA7L4gKMfnzY7wy6pzgkXvukgIHuZyg8+1H3Xy718eq3F9dKAlvfGJkbCFZWcOoQqfv8PbMreY8XBmNSL1p1U2CaC39+XObntj0noJotNj1+ePH4lCyjOtR7Q==; s=purelymail3; d=tinyisr.com; v=1; bh=h4fLtGo7L69mVcw54e0Pb54zpPd24shJdWWvb7gIyyE=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=hSuRYtdev1Zd1tMy/7jBRWsW1ugClYYHqZNSZk6zgh+C+Q1tkMFmwoPgn8ccpr1dqvvlkmIuwhb3AZ4tmcoJ13Yeyj+3/OZiCmOrjcGJFrzHrEytARl5JTRJqBqNYI24eFPkWNYAtvrmK8JMCZipf+7WIuz1mgXCahSE6JjhuAL+HxwTetWZY1MCw/IMKFmqJkGKNX7XY6wGXllYM8dt+nfIIVoSVKHs6KJv5mA+9LiKwZUEBFo5IdhBwXpwgaN7fFPf77ZjcygES7dyZjr1e4rQKGklFCpB9qTZGjvgNotqkwisy5/yk7QxGCrItz9yRUXTJ3G1jYoO53t1AJxuNA==; s=purelymail3; d=purelymail.com; v=1; bh=h4fLtGo7L69mVcw54e0Pb54zpPd24shJdWWvb7gIyyE=; h=Feedback-ID:Received:From:To:Subject:Date;
+Feedback-ID: 99681:12517:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1221505461;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Thu, 13 Aug 2026 19:03:46 +0000 (UTC)
+From: Joris Vaisvila <joey@tinyisr.com>
+To: netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	olteanv@gmail.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Landen Chao <Landen.Chao@mediatek.com>,
+	DENG Qingfang <dqfext@gmail.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Joris Vaisvila <joey@tinyisr.com>
+Subject: [PATCH net-next v7 0/4] net: dsa: mt7628 embedded switch initial support
+Date: Thu, 13 Aug 2026 22:02:37 +0300
+Message-ID: <20260813190241.789323-1-joey@tinyisr.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813153131.3952970-1-ruoyuw560@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
+Content-Type: text/plain; charset=UTF-8
 
-On Thu, Aug 13, 2026 at 11:31:31PM +0800, Ruoyu Wang wrote:
-> mv88e6352_pcs_link_check() ignores errors returned by
-> port_get_cmode(). If the port status register read fails,
-> mv88e6352_port_get_cmode() returns without setting cmode. The link check
-> then compares an uninitialized value and may incorrectly treat the PCS
-> as active.
-> 
-> Save the return value and fail the link check after releasing the
-> register lock. marvell_c22_pcs_get_state() initializes the reported link
-> state to down before calling the check, so a read failure is handled
-> safely until a later poll succeeds.
-> 
-> This issue was found by a static analysis checker and confirmed by manual
-> source review.
-> 
-> Fixes: 85764555442f ("net: dsa: mv88e6xxx: convert 88e6352 to phylink_pcs")
-> Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
-> ---
+This patch series adds initial support for the MediaTek MT7628 Embedded
+Switch.
 
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+The driver implements the basic functionality required to operate the
+switch using DSA. The hardware provides five internal Fast Ethernet user
+ports and one Gigabit port connected internally to the CPU MAC.
+
+Bridge offloading is not yet supported, but due to the CPU to switch
+link being Gigabit and all the user ports being Fast Ethernet, software
+bridging is a practical solution for the initial driver.
+
+Tested on an MT7628NN-based board.
+
+Changes since v6:
+=09- added depends on HAS_IOMEM && (SOC_MT7620 || COMPILE_TEST) and
+=09  select REGMAP_MMIO to NET_DSA_MT7628 kconfig entry
+=09- added comment about all ports being disabled by reset in
+=09  port_enable function
+=09- added depends on SOC_MT7620 || COMPILE_TEST to MEDIATEK_FE_SOC_PHY
+=09  kconfig entry
+=09- added genphy suspend and resume features to mtk-fe-soc driver
+=09- rebased on net-next
+Link: https://lore.kernel.org/netdev/20260704105659.140970-1-joey@tinyisr.c=
+om/t/#u
+
+Changes since v5:=20
+=09- updated tag_mt7628 to kfree_skb() on error in receive path
+=09- removed Reviewed-by tags from tag_mt7628
+=09- removed mmio base pointer from mt7628_esw since it's only used to
+=09  initialize the regmap
+=09- rebased on net-next
+Link: https://lore.kernel.org/netdev/20260613181845.111877-1-joey@tinyisr.c=
+om/t/#u
+
+Changes since v4:
+=09mt7628 dsa driver:
+=09=09- updated mdiobus allocation to use ds->dev instead of esw->dev,
+=09=09  matching other DSA drivers (no functional change)
+=09mt7628 phy driver:
+=09=09- replaced phy_write() with phy_modify() when setting PHY init
+=09=09  bit (no functional change)
+=09mt7628 dt binding:
+=09=09- moved unevaluatedProperties after required block
+=09=09- removed blank line between compatible and reg in example
+Link: https://lore.kernel.org/netdev/20260608192948.289745-1-joey@tinyisr.c=
+om/t/#u
+
+Changes since v3:
+=09- rebased on latest net-next
+=09mt7628 dsa driver:
+=09=09- simplified vlan_add hardware vlan slot search
+=09=09- fixed vlan_del not removing vid from port pvid
+=09=09- separated mii_read/mii_write error handling from return
+=09=09  value parsing. Updated RD_DONE/WT_DONE bit checking
+=09=09  with clearer logic and a comment.
+=09=09- moved NET_DSA_MT7628 after NET_DSA_MT7530 in Kconfig
+=09=09- added missing reset return value checks in probe
+=09=09- fixed mt7628_switch_ops missing const specifier
+=09=09- removed mdio node parsing from of, as there is nothing
+=09=09  to configure
+=09mt7628 dt binding:
+=09=09- updated description to be more clear about port count
+=09=09- dropped optional mdio subnode. the switch does not
+=09=09  expose an external MDIO bus and all integrated PHY
+=09=09  access is handled by the driver.
+=09=09- removed unused switch0 label in example
+Link: https://lore.kernel.org/netdev/20260428185510.261521-1-joey@tinyisr.c=
+om/t/#u
+
+Changes since v2:
+=09- fix binding issues found in review
+=09- fix ignored dsa_tag_8021q_register return value
+=09- add switch teardown to clean up tag_8021q
+=09- fix ordering issue where mdio probe fail would leak tag_8021q
+Link: https://lore.kernel.org/netdev/20260330184017.766200-1-joey@tinyisr.c=
+om/t/#u
+
+Changes since v1:
+=09- changed port 6 phy-mode to internal
+=09- cleaned up tag_mt7628 rcv function and mask defines
+=09- fixed sorting error in drivers/net/dsa/ Kconfig and Makefile
+=09- fixed sorting error in net/dsa/ Kconfig and Makefile
+=09- fixed mt7628_mii_read/write return values on error
+Link: https://lore.kernel.org/netdev/20260326204413.3317584-1-joey@tinyisr.=
+com/t/#u
+
+Thanks,
+Joris
+
+Joris Vaisvila (4):
+  dt-bindings: net: dsa: add MT7628 ESW
+  net: phy: mediatek: add phy driver for MT7628 built-in Fast Ethernet
+    PHYs
+  net: dsa: initial MT7628 tagging driver
+  net: dsa: initial support for MT7628 embedded switch
+
+ .../bindings/net/dsa/mediatek,mt7628-esw.yaml |  96 +++
+ drivers/net/dsa/Kconfig                       |  10 +
+ drivers/net/dsa/Makefile                      |   1 +
+ drivers/net/dsa/mt7628.c                      | 652 ++++++++++++++++++
+ drivers/net/phy/mediatek/Kconfig              |  11 +-
+ drivers/net/phy/mediatek/Makefile             |   1 +
+ drivers/net/phy/mediatek/mtk-fe-soc.c         |  52 ++
+ include/net/dsa.h                             |   2 +
+ net/dsa/Kconfig                               |   6 +
+ net/dsa/Makefile                              |   1 +
+ net/dsa/tag_mt7628.c                          |  93 +++
+ 11 files changed, 924 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/mediatek,mt76=
+28-esw.yaml
+ create mode 100644 drivers/net/dsa/mt7628.c
+ create mode 100644 drivers/net/phy/mediatek/mtk-fe-soc.c
+ create mode 100644 net/dsa/tag_mt7628.c
+
+--=20
+2.55.0
+
