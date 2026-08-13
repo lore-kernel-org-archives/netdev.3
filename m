@@ -1,43 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241DC41E6DA
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDAC2BCF46
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786649572; cv=none; b=jWnbeMpJTfh2Cq+gqAxRUF3g+NlOqRRMVAJnIVz4nBKs7ez4Z6qbNwbPnjU4W98Bnti5RBpUtLV7Z42ZKkuhWKHuEEl3AXtraHITMb7zurbzLBAfxubkoPBoHYxESGeomqc7rS6hV+p+jDNZ+VowWO9Lpp+fPHCv4khGtjQX9dg=
+	t=1786649662; cv=none; b=KlEKp4zR5N7T+XzFkkovMU1H+47hfTprCs5a1eoFtBDDjrlp4atqD/0VI3PdjUvHIdR8oxW2/wgrZN1LV8IqlpbVHjUsAtbmNYu+v/FHLd+3H818k3gynwwisNdu5uOmslnLqUFGFR+UOxQeryGZXpmTthlU/RSCDhKa9RmRUt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786649572; c=relaxed/simple;
-	bh=t0LpZwrB7/9ku5AglNVqqj4SzJrz7THathjNDbiizAE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=miI70BySCUKVbDDLDSS0CX9sF5XWEyUcV4fR8PkMlW7Jc/mfg6MjNzjqOoJ9EFs2k/dPMnUeUGgrLTvDFrr8CKgPAq5LTdNuGcM6fzdNxZJg0OFO+AFvVjWmiJKryU3bXYK5u8PXFYrAueYNTp3RZ3SwbYT8K5XOKayKF5HGm0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7deszSP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786649662; c=relaxed/simple;
+	bh=rdM8JPLHYnjPIdq5ik7mhjIN2Q2rhBcNlhqYyfq+B/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M+C98K1IOcIPH38PX+2Z9YNotjUsYz8PkdLtmpukcY6YU44iFpOZCx3l2Ak27BYAnoPmyXipAa7QjKuGc1NQQE+AyBXTigmSxNunmJaLwdtkRKMswkd/vVgpMCIKPheJINkyWfxpEDx25BVmI8tF4SJuHRXwdQwWUmflushskOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KnVqBEWx; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7deszSP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9B71F00A3A;
-	Thu, 13 Aug 2026 19:32:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786649570;
-	bh=g/NxcBaUM6cLCmPYrH7dmSdZ+Qm5S/WN3XqGpa0b1mI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G7deszSP6l6/iU+g471cnLNtc3spShskbKyvGUz2vF5bZaYtwAXWI4hBt6fiL83zI
-	 MX1KFr5oOpXnRGI5nGeVW9T9Lb4GHcwiTs3vp4JyQ0LKXI8yG1Q2j+PTvtAXuPyUQo
-	 rvaXBLwCXHE3jVO1ffyZ1JhNQzZwjPPB9qSaXGKDVJK/GNxab6H8Dj40xWGP73llOI
-	 Y1OdvSLeqi2+NEpE1QNKm+NJSXNpQstW90GkrYlWE4SOkK0DCQS/aj5Adk6KJs28af
-	 O6aPS3f7F6x67ZpRjM9BWQdxHYCQmkqGPqCy2y6HdblJjFj2/83xIdImxMQjWjHvPV
-	 EKYCfcNl3RFXg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 2/2] eth: bnxt: preserve IRQ affinity across IRQ reallocation
-Date: Thu, 13 Aug 2026 12:32:48 -0700
-Message-ID: <20260813193248.2578626-3-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260813193248.2578626-1-kuba@kernel.org>
-References: <20260813193248.2578626-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KnVqBEWx"
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7e9dcf09efaso47812a34.2
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:34:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786649660; x=1787254460; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=x2VaWWslhpx0Xl2aEnKOCxt6NrW6Fpk6Sa9sJa7UQo8=;
+        b=KnVqBEWxjrCm7ZCrerYnDDVcVghK4uyGykddPhCmJxPTbCdyIqOP8dysVbh8GpZ+mA
+         0c0NY6W4RWEpY12P7MwaeRagPIJ43Y5+XEmx58RaUjiwg4uPZtZO3NuQWq9XADa/O+Y7
+         LfwOI+utywoJv7UYFyYo/U1umjRkStGKOJImKX0v3ACGYI+QY9tn22ti5SCpSFZo9TBS
+         ZHtl2MDYQiTNH3eygw88Aq7v/sfgPZ43Lfey4DikN787aKafr4EifJ2XdaANzt24uBqA
+         342ZnXnwymQaE+VdrCqxJfRput7ZNimF+TmzCV6Bh4QPgwsHmA64k4OzKFMeEGVPaQlx
+         mM8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786649660; x=1787254460;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x2VaWWslhpx0Xl2aEnKOCxt6NrW6Fpk6Sa9sJa7UQo8=;
+        b=kQ5biUH3dQf94/9H53S88KA47CYACYhhPmHfpqLsqW72PBE1Z0yK3msoDahCRtHNXS
+         gKmnaeJScdHsFm6WspAcBEodrl+IBS+8cmG7MWUUQ9hkygVsfuHgoRv/NWHfep60V6Og
+         kn98fcJGuGBA/mn4SjgMktdVQOQeAAyvVtF8F9xri6PLaw3QKwTo3rLLd4VEO6YueGSS
+         8MeNAqmBcv56QnbS1hZgP4QedK0eE1VNe3GgRlE02dkda5OGNbo2W791+NK6W2kYz7BR
+         KY0fvHrYobOEZd9imEN6H+qHDqA8A7hh52nE9jbg37VG8rynegiKyPMeNPfU23HQhTN8
+         8T4g==
+X-Forwarded-Encrypted: i=1; AHgh+RqwpfhgfUWKHld+ATNCWWDafDj8oqfXx+nTUnWG4HxBAFFsBU4vEsMTT8MH+YMSfCaTLsKGFQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx86b7S4BESu1bxYIIFhqgJgdfp6BwcHUc3atp9Lwl+20PiQ0cg
+	cQ7TJzJq6uqAk0Sp/kniaAYmXEOAJThkx92ZRe9lUz5D5sa+Iao6m5Lg
+X-Gm-Gg: AR+sD12B2hBuKsBHQejugfjJaH1rE5suyS3bBpFwLbENgAmoUPrUnfPMtu+OgQr34wt
+	QHlavq2LPus+gjrkXLknvO68L3KbtETAYiBS2x3FcpxkGX2G7OvyJLZwWSPp0b1ffhMzi/BU/sF
+	VUh/x7v+hcvIVlzzVmh+FRu4YCbPkSfLGqoZIhoxdeapNVwMgXFaGNhErSkV8ZnwHQZqQMoTiAW
+	wDOKET8nPLMIJIBKGXVAjkg1TC7FmuHflbTikHvCLa0pFKgFAI0RBnmDFTU4EsOPQkrX7FxqL9b
+	Lfx2zrGQ4Vl6N8oRjGCuPvoGhRDiE5Xkm6tZAdJ1Be9g0cc9KayRWs0pdJX/cjjDqKDWoD6Rac0
+	PNHHxEvPR1xutkYKCgfHlBlWyhZGgG7wh03dd/mgxFqSMOFfXjWgieaLY38n4iakGx9bNTPZomA
+	hklZ/Y30wSC7bABYY5vsGcd9kWXt5kkpAMRyW8PYbJPksrHVNJMExSmeSvZ8x4QA==
+X-Received: by 2002:a05:6830:388a:b0:7e9:d089:d7bf with SMTP id 46e09a7af769-7f3de64feffmr42902a34.4.1786649659881;
+        Thu, 13 Aug 2026 12:34:19 -0700 (PDT)
+Received: from localhost ([2a03:2880:21ff:44::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f3c974c65esm2916051a34.0.2026.08.13.12.34.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 12:34:19 -0700 (PDT)
+From: Wei Wang <weibunny.kernel@gmail.com>
+To: daniel.zahka@gmail.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Wei Wang <weibunny@fb.com>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH net] psp: use unrcu_pointer() for the cmpxchg() on netdev psp_dev
+Date: Thu, 13 Aug 2026 12:34:16 -0700
+Message-ID: <20260813193416.1544518-1-weibunny.kernel@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,273 +75,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Reconfiguring the rings frees the MSI-X vectors and allocates them
-again. The IRQ descriptors go away with them, so the affinity user
-space set is silently replaced by the driver's default NUMA spread.
-This is painful to deal with for user space as seemingly arbitrary
-NIC configuration changes lead to loss of configuration.
+From: Wei Wang <weibunny@fb.com>
 
-In NIPA (netdev CI) this results in the toeplitz test reporting:
+sparse reports:
 
-  Exception| net.lib.py.ksft.KsftFailEx: IRQ170 is not mapped to a single core: 0-31
+  net/psp/psp_nl.c:513:13: sparse: sparse: cast removes address space
+  '__rcu' of expression
 
-if the test run after another test which reconfigured the device.
-We configure the IRQ mapping at boot, but if the driver is not
-preserving the config - it gets lost.
+cmpxchg() returns typeof(*ptr) and its internal casts strip the __rcu
+annotation. Wrap it in unrcu_pointer(), the documented way to use an
+__rcu pointer with xchg() and friends.
 
-Record the affinity in the notifier and apply it when the IRQs are
-requested again. The notifier has to be registered unconditionally
-now, so far it was only installed when TPH was enabled. Drivers
-which let the core manage the affinity (idpf, ice, iavf via
-netif_set_affinity_auto()) work exactly like this,
-napi_restore_config() reapplies napi_config.affinity_mask on every
-napi_enable().
+This was introduced by commit 06c2dce2d0f6 ("psp: add new netlink cmd
+for dev-assoc and dev-disassoc").
 
-Note that the affinity is supposed to follow the NAPI / queue,
-same as the napi_config behavior in drivers mentioned above.
-If the user changes the affinity when the device is down -
-we will override it on up. That's expected, the IRQs are not
-associated with queues when device is down (no name, no entry
-in /proc/interrupts, no entry in netdev netlink).
+No functional change intended.
 
-map_idx is ulp_msix + i, so the slot shifts whenever RoCE takes
-or releases vectors and the mask would end up on a different ring.
-Key using the completion ring id, which maps to the NAPI instance.
-
-Note2: this restores the side effect fcf42409c6e1 ("bnxt_en: use
-irq_update_affinity_hint()") removed, but not the problem it was
-fixing. The complaint there was that reopening the device resets
-the affinity and can move an IRQ onto a CPU irqbalance was told
-to stay away from. We now replay what user space or irqbalance
-last asked for, the driver's own placement is only used for
-a ring nobody has configured.
-
-Note3: the combined irq_set_affinity_and_hint() looks like
-it may hide the failure from __irq_set_affinity(), but let's
-assume the IRQ maintainers know what their doing - either
-this can't happen or is intentional.
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202608080910.l9KvOH7O-lkp@intel.com/
+Signed-off-by: Wei Wang <weibunny@fb.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h | 11 ++-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 95 +++++++++++++++++------
- 2 files changed, 80 insertions(+), 26 deletions(-)
+ net/psp/psp_nl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index dc8ec5e5733e..ab894f8addef 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -1261,9 +1261,7 @@ struct bnxt_irq {
- 	irq_handler_t	handler;
- 	unsigned int	vector;
- 	u8		requested:1;
--	u8		have_cpumask:1;
- 	char		name[IFNAMSIZ + BNXT_IRQ_NAME_EXTRA];
--	cpumask_var_t	cpu_mask;
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index 43b066353c65..f91665748dde 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -533,7 +533,8 @@ int psp_nl_dev_assoc_doit(struct sk_buff *skb, struct genl_info *info)
+ 	}
  
- 	struct bnxt	*bp;
- 	int		msix_nr;
-@@ -2482,6 +2480,15 @@ struct bnxt {
- 	 pci_channel_offline((bp)->pdev))
- 
- 	struct bnxt_irq	*irq_tbl;
-+	/* IRQ affinity, indexed by completion ring. Kept across IRQ
-+	 * reallocation, the MSI-X vector index is not stable.
-+	 */
-+	cpumask_var_t		*ring_cpu_mask;
-+	/* Rings for which the mask above was configured from the outside,
-+	 * rather than being our own default placement.
-+	 */
-+	unsigned long		*ring_affinity_set;
-+	int			max_irqs;
- 	int			total_irqs;
- 	int			ulp_num_msix_want;
- 	u8			mac_addr[ETH_ALEN];
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d3531cd283a5..35795374a8dd 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11792,6 +11792,9 @@ static void bnxt_irq_affinity_notify(struct irq_affinity_notify *notify,
- 
- 	irq = container_of(notify, struct bnxt_irq, affinity_notify);
- 
-+	cpumask_copy(irq->bp->ring_cpu_mask[irq->ring_nr], mask);
-+	set_bit(irq->ring_nr, irq->bp->ring_affinity_set);
-+
- #ifdef CONFIG_RFS_ACCEL
- 	if (irq->bp->dev->rx_cpu_rmap && irq->ring_nr < irq->bp->rx_nr_rings) {
- 		int err;
-@@ -11807,8 +11810,6 @@ static void bnxt_irq_affinity_notify(struct irq_affinity_notify *notify,
- 	if (!irq->bp->tph_mode)
- 		return;
- 
--	cpumask_copy(irq->cpu_mask, mask);
--
- 	if (irq->ring_nr >= irq->bp->rx_nr_rings)
- 		return;
- 
-@@ -11850,10 +11851,6 @@ static void bnxt_register_irq_notifier(struct bnxt *bp, struct bnxt_irq *irq)
- 
- 	irq->bp = bp;
- 
--	/* Nothing to do if TPH is not enabled */
--	if (!bp->tph_mode)
--		return;
--
- 	/* Register IRQ affinity notifier */
- 	notify = &irq->affinity_notify;
- 	notify->irq = irq->vector;
-@@ -11863,6 +11860,41 @@ static void bnxt_register_irq_notifier(struct bnxt *bp, struct bnxt_irq *irq)
- 	irq_set_affinity_notifier(irq->vector, notify);
- }
- 
-+static int bnxt_alloc_ring_cpu_masks(struct bnxt *bp)
-+{
-+	int i;
-+
-+	bp->ring_cpu_mask = kzalloc_objs(*bp->ring_cpu_mask, bp->max_irqs);
-+	if (!bp->ring_cpu_mask)
-+		return -ENOMEM;
-+
-+	bp->ring_affinity_set = bitmap_zalloc(bp->max_irqs, GFP_KERNEL);
-+	if (!bp->ring_affinity_set)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < bp->max_irqs; i++)
-+		if (!zalloc_cpumask_var(&bp->ring_cpu_mask[i], GFP_KERNEL))
-+			return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static void bnxt_free_ring_cpu_masks(struct bnxt *bp)
-+{
-+	int i;
-+
-+	if (!bp->ring_cpu_mask)
-+		return;
-+
-+	for (i = 0; i < bp->max_irqs; i++)
-+		free_cpumask_var(bp->ring_cpu_mask[i]);
-+
-+	bitmap_free(bp->ring_affinity_set);
-+	bp->ring_affinity_set = NULL;
-+	kfree(bp->ring_cpu_mask);
-+	bp->ring_cpu_mask = NULL;
-+}
-+
- static void bnxt_free_irq(struct bnxt *bp)
- {
- 	struct bnxt_irq *irq;
-@@ -11877,13 +11909,7 @@ static void bnxt_free_irq(struct bnxt *bp)
- 		irq = &bp->irq_tbl[map_idx];
- 		if (irq->requested) {
- 			bnxt_release_irq_notifier(irq);
--
--			if (irq->have_cpumask) {
--				irq_update_affinity_hint(irq->vector, NULL);
--				free_cpumask_var(irq->cpu_mask);
--				irq->have_cpumask = 0;
--			}
--
-+			irq_update_affinity_hint(irq->vector, NULL);
- 			free_irq(irq->vector, bp->bnapi[i]);
- 		}
- 
-@@ -11925,9 +11951,9 @@ static int bnxt_request_irq(struct bnxt *bp)
- 		bp->tph_mode = PCI_TPH_ST_IV_MODE;
- 
- 	for (i = 0, j = 0; i < bp->cp_nr_rings; i++) {
-+		struct cpumask *cpu_mask = bp->ring_cpu_mask[i];
- 		int map_idx = bnxt_cp_num_to_irq_num(bp, i);
- 		struct bnxt_irq *irq = &bp->irq_tbl[map_idx];
--		unsigned int cpu_num;
- 		u16 tag;
- 
- 		if (IS_ENABLED(CONFIG_RFS_ACCEL) &&
-@@ -11946,19 +11972,24 @@ static int bnxt_request_irq(struct bnxt *bp)
- 
- 		netif_napi_set_irq_locked(&bp->bnapi[i]->napi, irq->vector);
- 		irq->requested = 1;
--
--		if (!zalloc_cpumask_var(&irq->cpu_mask, GFP_KERNEL))
--			continue;
--
--		irq->have_cpumask = 1;
- 		irq->msix_nr = map_idx;
- 		irq->ring_nr = i;
--		cpu_num = cpumask_local_spread(i, numa_node);
--		cpumask_set_cpu(cpu_num, irq->cpu_mask);
-+
-+		/* Reuse the mask recorded before the IRQs were freed. Nothing
-+		 * was recorded yet on the very first request, and the mask
-+		 * may have gone stale if the CPUs went offline in between.
-+		 */
-+		if (!test_bit(i, bp->ring_affinity_set) ||
-+		    !cpumask_intersects(cpu_mask, cpu_online_mask)) {
-+			clear_bit(i, bp->ring_affinity_set);
-+			cpumask_clear(cpu_mask);
-+			cpumask_set_cpu(cpumask_local_spread(i, numa_node),
-+					cpu_mask);
-+		}
- 
- 		/* Init ST table entry if we can get the mapping */
- 		if (!pcie_tph_get_cpu_st(bp->pdev, TPH_MEM_TYPE_VM,
--					 cpu_num, &tag)) {
-+					 cpumask_first(cpu_mask), &tag)) {
- 			pcie_tph_set_st_entry(bp->pdev, irq->msix_nr, tag);
- 			irq->tag = tag;
- 			irq->new_tag = tag;
-@@ -11966,10 +11997,19 @@ static int bnxt_request_irq(struct bnxt *bp)
- 
- 		bnxt_register_irq_notifier(bp, irq);
- 
--		rc = irq_update_affinity_hint(irq->vector, irq->cpu_mask);
-+		/* Only put the IRQ back where it was configured to be, our own
-+		 * placement is just a hint, the core spreads within
-+		 * irq_default_affinity which we know nothing about.
-+		 * Set after installing the notifier, if we race with the user
-+		 * it's better to overwrite than miss the notification.
-+		 */
-+		if (test_bit(i, bp->ring_affinity_set))
-+			rc = irq_set_affinity_and_hint(irq->vector, cpu_mask);
-+		else
-+			rc = irq_update_affinity_hint(irq->vector, cpu_mask);
- 		if (rc) {
- 			netdev_warn(bp->dev,
--				    "Update affinity hint failed, IRQ = %d\n",
-+				    "Setting IRQ affinity failed, IRQ = %d\n",
- 				    irq->vector);
- 			break;
- 		}
-@@ -16610,6 +16650,7 @@ static void bnxt_remove_one(struct pci_dev *pdev)
- 	bnxt_shutdown_tc(bp);
- 
- 	bnxt_clear_int_mode(bp);
-+	bnxt_free_ring_cpu_masks(bp);
- 	bnxt_hwrm_func_drv_unrgtr(bp);
- 	bnxt_free_hwrm_resources(bp);
- 	bnxt_hwmon_uninit(bp);
-@@ -17048,6 +17089,11 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	bp->msg_enable = BNXT_DEF_MSG_ENABLE;
- 	bnxt_set_max_func_irqs(bp, max_irqs);
- 
-+	bp->max_irqs = max_irqs;
-+	rc = bnxt_alloc_ring_cpu_masks(bp);
-+	if (rc)
-+		goto init_err_free;
-+
- 	if (bnxt_vf_pciid(bp->board_idx))
- 		bp->flags |= BNXT_FLAG_VF;
- 
-@@ -17297,6 +17343,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	bp->rss_indir_tbl = NULL;
- 
- init_err_free:
-+	bnxt_free_ring_cpu_masks(bp);
- 	free_netdev(dev);
- 	return rc;
- }
+ 	/* Check if device is already associated with a PSP device */
+-	if (cmpxchg(&assoc_dev->psp_dev, NULL, RCU_INITIALIZER(psd))) {
++	if (unrcu_pointer(cmpxchg(&assoc_dev->psp_dev, NULL,
++				  RCU_INITIALIZER(psd)))) {
+ 		NL_SET_ERR_MSG(info->extack,
+ 			       "Device already associated with a PSP device");
+ 		err = -EBUSY;
 -- 
-2.55.0
+2.53.0-Meta
 
