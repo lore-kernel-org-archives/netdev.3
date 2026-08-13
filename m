@@ -1,117 +1,102 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51E44779BB;
-	Thu, 13 Aug 2026 12:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78F047A860
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786624961; cv=none; b=BV2+/8a9OlrMsQF4WaZPogjDPeD9M5TI7ICU53I1dYLPhvvOlC+u7jlOCRLb6QK5W4R2aN5EeT5JfJcCNdMPc5qBfVWQ7Rsqs1zrShAg5LpyNyYgnNmsAFkuRBVbBUfS3tKc3hp4cLo+PP/h3hIdDghlCyZf6b5MxSr0eZ39EQ8=
+	t=1786624981; cv=none; b=n8d0AgvJ4XuKSPJ8Y662bNjT4ybfaIZ9T1hQ2OUAZoUv+k/eGwDvtcMev2lr4+DnU8INIdJMToUfrl8uOHEzIuYIRb6p9FZ2vw46OSKxoMT/GnwAwOofGMLMfeKs9XqmLe2lXL+gPY4ba1dv4WSrT/1G80fBaK/eSJb0VGOQWu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786624961; c=relaxed/simple;
-	bh=wtrEB0dSZ8WvgbCQfYmBsgvqWkqbCDvmoG661uoK+Wc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HzJiHI7wJaOt4eonJzVvQAFYa6J1JjDS5GnL1Y9c2XI1iUt+sjNZ9tFUAjJmJGMdo2s7ympAidjmgBez5czwVbDe46XQXoIbzEokZO/eViiB7Ff4Rliv4Q40cu/rVWrxFyVuRS4D9DTdgXLpP27a+c8m8h1WrjcdK7xPUxcAvn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=hI9e3dM+; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1786624981; c=relaxed/simple;
+	bh=N0fQrSQprVq8ZZK3dkggJbMek7GVADvke3ylM3SUo/s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mRxqt9baic2GsL+KV9gmCt8zUucrKWaJvQUGxflDOAtePNxTkRx16sNHkXRaRdzV8u3sMz047KudXXjVyosiW9353HFwWrzhXbKGt/6zLqXTAFco0aZcACHYkAVM23VWzMTSdcLpMpfYtRFO9tsII31lBi+J9GInS1ym1Ki6B84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N2EfPvZi; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="hI9e3dM+"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1wuUlR-0037N7-Ll; Thu, 13 Aug 2026 14:42:29 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=jgidj5xzOQzH00GHOr38xpiCZIBP3l5xJh2vMU5I0tM=; b=hI9e3dM+mOEikbtfiYLzvwxobS
-	Pw8CY3ltuxrQx5AVmKtO4U95ScAWbAxRDlxsh4xaRlGvxXtM1M4uW7u2IN6MTpw3gY4d2MuUZl5Vn
-	JYIoaBH8sAHxFZznMaOMja2yMZN81v5osdZAR35IY4Zys3P62uVL1BcMSOVCLEHCh8GpQU7RvcV7p
-	zUJzQXy/0TC9JtI7prk5s3hng1+MiL3ET6h96di0pg1FaxXN+aHWd52xDj08/iWo2ONlSuPXJow+g
-	ATNz3w5HLZvuXtSkYFxrox39VJU1N62v7+AoqI9pgTKe6KN+2gtrra/uAHWNrSvDoJy8Ov6vXbiAS
-	/70VCX4w==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1wuUlR-0000DT-2B; Thu, 13 Aug 2026 14:42:29 +0200
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1wuUlF-001YW5-V6;
-	Thu, 13 Aug 2026 14:42:18 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Date: Thu, 13 Aug 2026 14:42:00 +0200
-Subject: [PATCH bpf-next 2/2] bpf, sockmap: Use sock_hold() instead of
- refcount_inc_not_zero() in lookup
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N2EfPvZi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786624977; x=1818160977;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=N0fQrSQprVq8ZZK3dkggJbMek7GVADvke3ylM3SUo/s=;
+  b=N2EfPvZilDTsZj5OZNSady/cFEZg4z+yf2Sx9bIEP33+jiXAmd8IzveU
+   /RCJFS1tbMCxAlj9pd1y2oJkBPAxvTtByKwSpcsSsXBOceID+w3Ov0kQL
+   KyTCNV57rFlTdAlP7LICrUMh3KuH1TFY3LvCArP0kG+XgCcp/fejbcw1P
+   3sufPDrPcS6PFux4i3Oz4yc3SGmkzh9xiYrFixwwOzRp0Vpo1L8FvBZ22
+   buCvC9f5MJTxnkgdJmN2WKgLMLuTIBZpJD7RXa158urn6ImrWSHywqQjp
+   7Zvh6NI0p6h7POU9qarLSOEeyI1kvlapOAH+8ZMa+OiKb/cmYeMf/OKwm
+   Q==;
+X-CSE-ConnectionGUID: bAD/FyAASIGiNwB7iitVRg==
+X-CSE-MsgGUID: rFE0DjaeQzusGeMZEjyHuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="91071650"
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
+   d="scan'208";a="91071650"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 05:42:46 -0700
+X-CSE-ConnectionGUID: 7Dpk5IwvRBmApIqEiLkrwg==
+X-CSE-MsgGUID: HmIiRImsS1+EZKSLaBVF9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
+   d="scan'208";a="262177564"
+Received: from os-delivery.igk.intel.com ([10.102.18.218])
+  by orviesa006.jf.intel.com with ESMTP; 13 Aug 2026 05:42:44 -0700
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+To: netdev@vger.kernel.org
+Cc: anthony.l.nguyen@intel.com,
+	kuba@kernel.org,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	edumazet@google.com,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Subject: [PATCH net v2 0/3] net/sched: u32_change() fixes
+Date: Thu, 13 Aug 2026 14:22:39 +0200
+Message-Id: <20260813122242.1690024-1-jedrzej.jagielski@intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-sockmap-lookup-get-ref-v1-2-31f5d55f44ac@rbox.co>
-References: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
-In-Reply-To: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, 
- Ihor Solodrai <ihor.solodrai@linux.dev>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Jakub Sitnicki <jakub@cloudflare.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- Willem de Bruijn <willemb@google.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
 
-psock's hold on the looked up socket isn't dropped until sk_psock_drop() ->
-queue_rcu_work() -> sk_psock_destroy() runs, which happens only after the
-entry is unlinked and an RCU grace period elapses. Since the lookup runs
-under RCU, a non-NULL result guarantees sk_refcnt >= 1:
-refcount_inc_not_zero() can never fail here. Use sock_hold() instead.
+sorry for spam, previous series get treated as incomplete so resending
 
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- net/core/sock_map.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ALREADY ON NETDEV, SASHIKO RUN
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 9efbd8ca7db8..ca49bc7f8687 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -392,8 +392,8 @@ static void *sock_map_lookup(struct bpf_map *map, void *key)
- 	sk = __sock_map_lookup_elem(map, *(u32 *)key);
- 	if (!sk)
- 		return NULL;
--	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
--		return NULL;
-+	if (sk_is_refcounted(sk))
-+		sock_hold(sk);
- 	return sk;
- }
- 
-@@ -1218,8 +1218,8 @@ static void *sock_hash_lookup(struct bpf_map *map, void *key)
- 	sk = __sock_hash_lookup_elem(map, key);
- 	if (!sk)
- 		return NULL;
--	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
--		return NULL;
-+	if (sk_is_refcounted(sk))
-+		sock_hold(sk);
- 	return sk;
- }
- 
+This series fixes three bugs in cls_u32's u32_change() function:
+
+Patch 1 fixes u32_replace_hw_knode() being fed the wrong flags variable.
+Commit 695176bfe5de ("net_sched: refactor TC action init API") introduced
+a function parameter `flags` that shadowed the local variable previously
+set from TCA_U32_FLAGS. This caused tc_skip_sw() to always return false
+during offload, silently ignoring skip_sw/skip_hw attributes. This fix
+uncovered following 2 issues happening on u32_replace_hw_knode()
+failure.
+
+Patch 2 fixes a refcount leak of the linked hash table (n->ht_down) when
+creating a new filter and u32_replace_hw_knode() fails. The error path
+frees the node with kfree() but never drops the reference acquired by
+u32_set_parms(), leaking the tc_u_hnode.
+
+Patch 3 removes a spurious refcount_inc() in the update error path added
+by commit e8d3d78c19be ("net: sched: cls_u32: Undo refcount decrement in
+case update failed"). That commit misidentified an already-balanced
+refcount (incremented by u32_init_knode, decremented by u32_set_parms)
+as needing restoration on failure. The extra increment has no matching
+decrement, permanently elevating the hash table's refcount.
+
+Jedrzej Jagielski (3):
+  net/sched: cls_u32: feed u32_replace_hw_knode() with correct set of
+    flags
+  net/sched: cls_u32: fix linked hash table refcount leak
+  net/sched: cls_u32: remove erroneous refcount_inc()
+
+ net/sched/cls_u32.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
 -- 
-2.55.0
+2.31.1
 
