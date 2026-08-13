@@ -1,170 +1,126 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C5A3AEF54;
-	Thu, 13 Aug 2026 05:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550DB39936D
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 05:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786598074; cv=none; b=khrkx6MzwJMnYjtZqmxaHhBT/7iRDBpuuBgAUHXE7O5KwRhDvvRcE+edNAXDAabF5su7smTzhpOmFsgJfZJEfFhw+esymQMSF2zZ1aq8d0RGR0lrTztWYQmuIQGObd1xu3dnWHusOFmzS1rkJ8FTRu4L6a3Ks4PwRMpYdebyf9k=
+	t=1786599693; cv=none; b=bgcUeDu4CpL4o/i06imNS7r6+fKuZ0M+1Otz1cZftc6QmMWfNwZU3tGrWka7COMsZzx6TxwB0+QjjPg48wOsbw0jY4c0981Qrkr+ezsFqthu/Tmr+GJF4d/ZSY7tcvD94o25JC8OfdXcPWe2GfsWudKj1MLawBCJ0KQM245DVd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786598074; c=relaxed/simple;
-	bh=U359jvgB9lHxFvzrB10D/cY7D4DIMzHLKnRI9pPFbJI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EEEdVvwvq1av4pqe3T2fREi/+iilCamLFxO9ZHWOSH3p/lf0649JbY74NKugPUunS2naNVoqdwLk73h6hGlR0zQBKzA+jK+TkGb3Ttjsj1LjSQt5maTSVofewikYlPfVH1TOR5spuAT1vqTWo9VquZV9Wu1G4Fu1rwF+/RsMm6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=A+C/oUoy; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1786599693; c=relaxed/simple;
+	bh=FKWNBQ4L3P5B+nymClhtBWp5DG9BL1EK4lUObCqDNXw=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=XgpLUX6fvKKHuP22BdmUUlbOmJOnbjZ189jaqAKbJLB0V510hHmYf3or152DOl2Mfd3ExcpOLTSJVjXY/oBGD9OTdz0o9aFhsWTVPs+rT6gRyGLKZW3h1BblMMJgFCK7TB9fUwltdQVhvr3l/iw+ZH0mKoT3uDqjLQXrilmbIck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=WPwGfAMH; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="A+C/oUoy"
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D37hJ12061660;
-	Thu, 13 Aug 2026 05:13:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=RjoX7sKAdg7B6M+YOHHZVDhjBV3ZT
-	tvzwcbFoavO/n4=; b=A+C/oUoy1yFof8LfftD8EFxpN027HwjCCTUU/zY9M0GTG
-	LynotjE2cq6K5GbLXV+lZLqcB/7nAl1uDd9fWTBcBKy47X+nCy6FmYDVGzALjR5K
-	cdtMp078DAW6YXUWTJeQZPMKdmvkQHrs6suvdAQ0ies/etc+SMFoVZWD4L8liLSl
-	iXzXRqOpv3lv+oaBofR9U9tECw/RQRiRstVSrHXvIXofAnYKzuLBdx50/AQ3KBD+
-	Sn/vF0WT+yYblQimGMztN3/3j0OzHzCmS32wQE8hkVCyQnAHZ2TyW54Kr2fI+tYc
-	u8/2IpJi5rpI9i2tK+KlB4cyTn06Vs0qlIq1+nURQ==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fwvhe01m1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Aug 2026 05:13:16 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 67D55mpi027729;
-	Thu, 13 Aug 2026 05:13:16 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4fwtwsjwf7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Aug 2026 05:13:16 +0000 (GMT)
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 67D5DF9F008193;
-	Thu, 13 Aug 2026 05:13:15 GMT
-Received: from aakhoje-nft-test1.osdevelopmeniad.oraclevcn.com (aakhoje-nft-test1.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.248.219])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4fwtwsjwex-1;
-	Thu, 13 Aug 2026 05:13:15 +0000 (GMT)
-From: Anand Khoje <anand.a.khoje@oracle.com>
-To: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Abhijit Gangurde <abhijit.gangurde@amd.com>,
-        Shannon Nelson <sln@onemain.com>, Leon Romanovsky <leon@kernel.org>,
-        Eric Joyner <eric.joyner@amd.com>,
-        Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-        Kees Cook <kees@kernel.org>, Mohammad Heib <mheib@redhat.com>,
-        Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc: anand.a.khoje@oracle.com
-Subject: [PATCH net-next v2] net/ionic: avoid OOB TX partner lookup for hwstamp RXQ
-Date: Thu, 13 Aug 2026 05:13:15 +0000
-Message-ID: <20260813051315.430146-1-anand.a.khoje@oracle.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="WPwGfAMH"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4996f1ee4a4so10635715e9.2
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 22:41:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=doyensec.com; s=google; t=1786599689; x=1787204489; darn=vger.kernel.org;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Vd1ZVm9SVNzR9kTZ02Ls9IMCoVG4jSJzXtyP5bkoQRw=;
+        b=WPwGfAMHto9M0OX5KnFQzdJet29CY8wrUe7QTeDwu9qNq3SzPrfPDo8kQbaKHzKDQy
+         OPjyKNd3gmdhdoLhg07DDp9L6ZsfkKs+YsQDjLB853DRRXi2jxxk0V/qxTNCoCaCwtdj
+         BFewX8nQ/H/eKmAXsF/JdaC/PqqNzJS66k0cdKaFyW4VAHgrBvQQtgx2vb2OL/jn3yqK
+         mvnGxFmsLZtQphnKUDzrXY+8Z2aijsLEh+ZnVKwEp305RN6ik5wagEvYzJA3PbzjWGrO
+         t3lmbr8sN/uMaMYjqYbReFbKt9pSm60Joj03diJBGSGUzc3nZ4krec2scEbnDW+QmX82
+         M6ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786599689; x=1787204489;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Vd1ZVm9SVNzR9kTZ02Ls9IMCoVG4jSJzXtyP5bkoQRw=;
+        b=lwPJekzlrnFMUiuLnNpjVY62i5ZkDnYUtW/1zXbruuve1F/tAMvBwVAlEASiF6k16j
+         pdgPeUeWMd7LG57BcX1qVOx8vHIT3KX3p7sWHXtmgiNozOTA9wXWzH3jWS9g4m7Xt2pp
+         vwZGO0Biv/smvhx+lEjo6SxCsypQzJfeWfA5h7xudMxkhDB6s9v4D/vjIeZkb2jk7aFZ
+         BnYEUcJ1oSOhdlfrxloBMgbuKX7bwn0WwB2lJK9IdafuO5K6onqtfdkfiwwqbZl77CiF
+         JLlPh1v+WGikPnkbsNH8mlWD8Zeco3hCOjkvnmaYJKxE3jBQBLrf7boWXqgbFOmI/A1u
+         0/Wg==
+X-Gm-Message-State: AOJu0Yxc71GZOC7PC7QC0NZeB7l7cmjRmixLr8i9PethxxUS/2h0VDvW
+	cq63PyrIyGv+wxBHg1/mAyvu/ZfksgtoJmOJoIIZii7igOU7dIPnxRHtOZbh7XT+WE20GvpGiey
+	crvtHHO23EA==
+X-Gm-Gg: AR+sD10rc/rAdQ/cPKl9137+DNe+zc4Bp19r0wfK8WtoheXCMbKXscDP+sD2IqgNOi4
+	mQFmagTbuxsvhpG1TRDxMT0ei1NbUqi/4NQBOlhmKIaLKyHlACegnoqbaZLKL4Pmco6bQ+YrgAs
+	g5PqcvYceXWmeiy/bTUm+lJnWPEFsBCN5Q3Ce/13+rpYRzyUiyyXhoNBLKZ2JHxXUAiliCAhc/c
+	UAiSspVFpnuIW7BpSF5Axq1Z8NADyCTEx4Q9yRXV6IIlk8iTKa2L1QnDY7mAzUL43kyZ2uG5lli
+	M4Bkynbio1Jx1bQFihCjODTiDkRner5sj6XLlBijwImiftg+irwbeJ9rHN2EPyDgb0DUWzlNt2I
+	DfENgBzmkNeKawUx2mT5o0iDIdsqL3PZ8CyfzfUa88UH9AZxPT8NB4drqaae5soaVBghCTLXMDb
+	D6vtX0Pd18qsYMgMEP8XpmRpX3mRePF1d/5fOd6PM+XHrMTlEUL97nM+4mIDoKVpcMveBPuRYAR
+	PNsIm8/ckO/yUfmmUFQP+XCJd1pfDKiBnfXOgN019UJqQKfzSGCnWGw0NcBR6IvZPClDdUCFTTG
+	+1tlBwYmWVq9YLtH/MIAUg==
+X-Received: by 2002:a05:600c:4584:b0:496:bffb:fb7b with SMTP id 5b1f17b1804b1-499821c680amr25867245e9.10.1786599689499;
+        Wed, 12 Aug 2026 22:41:29 -0700 (PDT)
+Received: from smtpclient.apple (ip-88-212-19-42.antik.sk. [88.212.19.42])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981b6abbcsm39097775e9.15.2026.08.12.22.41.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 12 Aug 2026 22:41:28 -0700 (PDT)
+From: Norbert Szetei <norbert@doyensec.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-13_01,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
- malwarescore=0 phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2606160000 definitions=main-2608130033
-X-Proofpoint-ORIG-GUID: UFpWOBX7fWQiW0XTXSfV2xFXAafpASTj
-X-Proofpoint-GUID: UFpWOBX7fWQiW0XTXSfV2xFXAafpASTj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDAzNCBTYWx0ZWRfX52JmoUyyir8s
- PAbp0WpWnfNY69uVOpjWSxWgP9+oa8me4DQcS+cqV3HfyqJzSkvVM7qtvjWSJlEwHyQyeZMjuG1
- av97ACgQNktbpX/1oEnfMcmmq/UMvrvLq9SEzNAY/4q5cRAwRU542LuGojZQSq0eSExeQyL5vzI
- N2mbafhh7PjJ6/O9U9+wX9QCvJ+erN8//hjhEEfeuQCfGajg3ADYYO3reU3kmI4pm65mLtFKt7P
- EhpohGW1xhVw3pwmO20cdX+3xQkay06ZIO2Z3WAbDT3pDfb+GBVxGZvz9S1vYD0rV9S5h1cAnsX
- /oAYGvSHzL1TTUJvbkOAkGF0lLWHNnVZI6MU/vfNa/Abgfs88QpppKrb6qRLiuhaIjbsvJ9nZA8
- qAiu/XSX2fIuabcDJ7LwhBVytEaMN9lcUWJz7+d/8ERi/TAtbXZXS/k3paZUqsmQRmSlFMm4983
- hqcc0L3MPC4/bFZ4KC91d5m//ciccCzt8uV71nAs=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDAzNCBTYWx0ZWRfX3NzAoW1f6zRz
- NhzGwVB++mNI7A4IZN0CPl1RnEHgnBgshiEJ9UQXDXU0XPjK2P4Q4IIsx3iMMaMddN3GYIMlWqE
- VA+oIxOxBbxAsU6MZSCovpu8hVMo1r1B3VXl4hj7qRmJe6oUMz3O
-X-Authority-Analysis: v=2.4 cv=L/YtheT8 c=1 sm=1 tr=0 ts=6a7d526c b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=BqU2WV_vvsyTyxaotp0D:22 a=yPCof4ZbAAAA:8 a=vHwtaBK_cnxrrt37sGYA:9
- a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:12099
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: [PATCH net 0/2] net: don't strip zerocopy frag markers from a
+ forwarded skb
+Message-Id: <8063260C-05C9-4997-B9B6-2135063C4858@doyensec.com>
+Date: Thu, 13 Aug 2026 07:41:17 +0200
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Aaron Conole <aconole@redhat.com>,
+ Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Kuan-Ting Chen <h3xrabbit@gmail.com>,
+ Zoltan Kiss <zoltan.kiss@citrix.com>,
+ dev@openvswitch.org,
+ linux-kernel@vger.kernel.org
+To: netdev@vger.kernel.org
+X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
-The dedicated hardware timestamp RX queue is allocated with q->index
-equal to lif->ionic->nrxqs_per_lif. The normal txqcqs array only
-contains the regular queue pairs, so using that index to set rxq->partner
-can read one entry past txqcqs[] and then write through the derived
-pointer.
-Only link RX/TX partners for normal queue-pair indexes. Leave the hwstamp
-RX queue unpaired, and make the XDP_TX path abort cleanly if an RX queue
-has no TX partner.
+queue_userspace_packet() calls skb_tx_error() on the packet skb in its
+error path, but it only borrows that skb: on the OVS_ACTION_ATTR_USERSPACE
+action path do_execute_actions() ignores output_userspace()'s return value
+and keeps forwarding the same skb through the flow's remaining actions.
+skb_tx_error() completes the zerocopy uarg and clears SKBFL_ALL_ZEROCOPY,
+and with it SKBFL_SHARED_FRAG.
 
-Fixes: 8eeed8373e1c ("ionic: Add XDP_TX support")
-Signed-off-by: Anand Khoje <anand.a.khoje@oracle.com>
-Reviewed-by: Si-Wei Liu <si-wei.liu@oracle.com>
----
-v2:
- Fixed the Fixes tag.
+For a MSG_ZEROCOPY skb carrying page-cache frags, SKBFL_SHARED_FRAG is
+what makes esp_input() skb_cow_data() instead of taking the in-place AEAD
+path. Once it is stripped, a later local ESP delivery decrypts in place
+over pages the sender still shares with the page cache.
 
- drivers/net/ethernet/pensando/ionic/ionic_lif.c     | 14 ++++++++++++++
- drivers/net/ethernet/pensando/ionic/ionic_txrx.c    |  5 ++++-
- 2 files changed, 20 insertions(+), 1 deletion(-)
+Patch 1 moves the skb_tx_error() into the one path that does drop the
+packet, the "default" arm of ovs_dp_process_packet()'s switch(error).
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index fd3ee9820531..1822361e1070 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -920,9 +920,23 @@ static int ionic_lif_rxq_init(struct ionic_lif *lif, struct ionic_qcq *qcq)
- 	};
- 	int err;
- 
-+	q->partner = NULL;
-+
-+	/* Only normal RX queues have matching TX queue partners,
-+	 * skip partner pairing for hwstamp RX queue.
-+	 */
-+	if (q->index >= lif->nxqs)
-+		goto skip_partner;
-+
-+	if (WARN_ON_ONCE(!lif->txqcqs ||
-+	    q->index >= lif->ionic->ntxqs_per_lif ||
-+	    !lif->txqcqs[q->index]))
-+		return -EINVAL;
-+
- 	q->partner = &lif->txqcqs[q->index]->q;
- 	q->partner->partner = q;
- 
-+skip_partner:
- 	if (!lif->xdp_prog ||
- 	    (lif->xdp_prog->aux && lif->xdp_prog->aux->xdp_has_frags))
- 		ctx.cmd.q_init.flags |= cpu_to_le16(IONIC_QINIT_F_SG);
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-index 301ebee2fdc5..73998d61593 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-@@ -543,13 +543,18 @@ static bool ionic_run_xdp(struct ionic_rx_stats *stats,
- 		break;
- 
- 	case XDP_TX:
-+		txq = rxq->partner;
-+		if (unlikely(!txq)) {
-+			err = -EIO;
-+			break;
-+		}
-+
- 		xdpf = xdp_convert_buff_to_frame(&xdp_buf);
- 		if (!xdpf) {
- 			err = -ENOSPC;
- 			break;
- 		}
- 
--		txq = rxq->partner;
- 		nq = netdev_get_tx_queue(netdev, txq->index);
- 		__netif_tx_lock(nq, smp_processor_id());
- 		txq_trans_cond_update(nq);
+Patch 2 removes a second such strip, in skb_zerocopy(), which calls
+skb_tx_error() on its source when skb_orphan_frags() fails. A copy helper
+should not perform a destructive action on its source, and both callers
+already report the error on their own drop path. MSG_ZEROCOPY skbs cannot
+reach that one -- SKBFL_DONT_ORPHAN makes skb_orphan_frags() return early
+-- but producers that do not set that flag, such as af_packet's TX_RING
+path, can.
+
+Norbert Szetei (2):
+  openvswitch: only skb_tx_error() a packet we are about to drop
+  net: skbuff: don't skb_tx_error() the source skb in skb_zerocopy()
+
+ net/core/skbuff.c          | 5 ++---
+ net/openvswitch/datapath.c | 3 +--
+ 2 files changed, 3 insertions(+), 5 deletions(-)
+
 -- 
-2.47.3
+2.55.0
+
