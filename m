@@ -1,203 +1,202 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763CA31E85B
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 06:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786601842; cv=pass; b=V3Du6KF0nHCezEiny5MCHye9eDQ6JK/i+zvIEvkayrlQswuNDQKlSDD7yviZewHpRKnykodks9N56QG3MODg0XqDb05Z9fbuL0eeXMo9SL1eOCPP2ILeDxs2lt97HPCCkvo4ylYuvXAYHkjORSJmzyZ+wTQfMFFFTcZuAtLQi5w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786601842; c=relaxed/simple;
-	bh=CrCTv0dGIDD6zL2g6/3JW9pK1H8uJAm37KEpj0m+P+I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ND5wVHhjkbtNcfOPd8YpzrSvDiVKUp6B9MCr3+2yDllppNMO3i5kEihbVbvL78i/Q79kRwk0khirMF6D/AIWHGJ+CjeLMBCGQ198K3KPC+lhPq+cOUs4KIeem8rzH2QwcW+N4ldyIk+stCOXc1D9HpphP2Plr4omBHLf7O1NE14=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aWdKBSuD; arc=pass smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4E83B05A9;
+	Thu, 13 Aug 2026 06:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786602336; cv=none; b=MX/AZssF8EY0xOsaIg7bW2f03K2yGqRc3UWclb978o2XXol9bYz3JZKPJ5lrAe6P87R44Y4WoRcDTwQpVLqdvOAX6CExxhO1ycBQZvOMgBSfBA0HoZvVh+pG7RLrVpEhBeROzaPU5zma01N2hw2SccDcdGEdgWS37UQy3jUlrps=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786602336; c=relaxed/simple;
+	bh=svxibkFDugFYlu9QZQNXaO7VDzJlKkHSVEUzwQo4D9Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LqZQ44m7NnP0LAPvgbO0Dfd01n/caVygIc2/kYMP5+h8tkfQz+WJW6vTGAdV0ytmh4FfNyj3TXf5DXOFCPSgxu3wnOTriQX+iL2g5xRCoWmJ1VNzjtyVKpFoWxTuSC1TxjHjC3oeEk1hhfEI50UxLM+UW5mMK4Y5vczm4OHieAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gjn+ZrNz; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aWdKBSuD"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cab973140bso6331135ad.3
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 23:17:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786601841; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LD8paBw6xG1NOSImdUTVeIbob89ukPHkcuTzGgvAsWyl8TG3hJvqVMEqRZf+9V48gv
-         nA2L52fjDj4cKQSdwCrxhdez4kekbEfJMHQnfZEyEraUppJaobKIi9FOWvSOWic4grG5
-         s1A+H0VyYJz3HpE96Xjaw7CBSFOF4EACaAQbPcp7zS8gx7L4qJBODk+qgitGe5bb4y+K
-         PqbV640C2z5V8ouGqSUwAeHuw/S/tBWziI2sSvlsw7Kps1LTn+wiXAY7xTq/90PlxNqs
-         5Tah9NBHK5nb7rr5Le+RWT/qCWvElcXeDG9dhKDUgNFldu9ZEbejymzmtqu18e2cWqP8
-         GvlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ty4GS818ajmjq7oZICFT1h6LG0nyEUIaJwUwB2TBGqg=;
-        fh=0h8I/5YbATyWFBxqW+GJflN2nTMZ89l5CjT1LN+RqQw=;
-        b=pO0U9AegY86VEOkUgXc36PVPxh+kMq8bO3V/CqjsEXx9WvvacLrar5z3m2XTdVl1cE
-         41jVZsgFp1FTwckUJ1fpp+AGHLpKPCjGwwVPO3+PrHrGn6wteDev9Psc06x9fUYtdX8K
-         5HDF319zW+L4Hjh9wlILjqhrRL+eYKDwz5mUK4Jplf/FAju/reAG+Bh2/evdT5E9nmqH
-         CAl6+ztz3ow6v9YOJHRhNntOPxHWmfGPFJBkQRzYf0XSAkwYm9hJlN8RmUPH+b2I+13c
-         hEqXG7bKNt+VqO3NQFg+tvAAxK2qimAcDHgQQOJjrbP0WDNBpCF0pQO2ZENNcYtIfzGY
-         0HAg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786601841; x=1787206641; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ty4GS818ajmjq7oZICFT1h6LG0nyEUIaJwUwB2TBGqg=;
-        b=aWdKBSuDZVCatd+v7rK9ISS5V/uSsf7MC/8S4XqrzHtd0j7ZnrtWj+JPCCkycU4fPn
-         cmu5u40grSd6kN/UZhe9g4V2BW/RdGJo9G6u8iXBxEcUN+ENPNDBxpYU8aOj/ywsnVIP
-         sfBvSVWMU0IsgxjmbRKpV/4RClJlkvU6ynHewWzAcZzzfXFs6BH4o+/K+bg368+bOTk9
-         kApcFh/1UDIs3ji/BwZb1+ugdZ8iJlZS7fWeWubWP9zqnTuPr+xqFlD9UVGm9d55HYcL
-         0UzWlKkqWLVkjNhdEQrxqMIiG1Fa9Yk8BLihGqAMDf7l4Ie2lHurQsGGNOFHLpG1LJBg
-         QRhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786601841; x=1787206641;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ty4GS818ajmjq7oZICFT1h6LG0nyEUIaJwUwB2TBGqg=;
-        b=mAhHkvuw+x0e+CumLfBxb9+eG4c/SmITOidPIkRLUKFWLq0VYSmo1KWMpeX/qQtQKB
-         dvmrRw9MZlqof3w1XU0XHv4NRZ6k/3LYkjMNf8tJnNA16342reltWmd1F09QnDpzTYGf
-         z4ZZg33U9A7sS15ybWgnu6UnDXJ/mRjXi+rT5Hue+CbS2R3RU4B6jjs4NVNPo3yift5k
-         k6JqgROKwmV8PIzsBZ441a0cLPFaULHrdESS4bUAWG9WCxd6p9p+xjih9TrgCS+J/Ei7
-         5FMQzc6hQecXc0zVfaEprNV7KssgLCC8QNyrLTGVqOcVOC6HNJ6OWRx1Deo9o65JNDl0
-         2ipQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro17NiRkeeVFac2PXnpyohgsMV2kaQPP3yDkBbUfLgckg5hGuGPxOqlP6JpTbTREJLeHaY2eIw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq08R+ZpztB6kR16XQcFdUXdiMoieMfQXZwL/QqdPJjHsGa2Wo
-	Zkv1RuN3eJ0CanCBAWQVLpnMM2NHUri733pGZqt0mzNxJ7fBRAD+mYHbe3K2jGEN4T2j5pMKa2F
-	i6N9p+cQcZSEZ1Q6tJ3Kmk1rHTsWDEIvf3N1hafAa
-X-Gm-Gg: AR+sD10dSUGPU3pKxvjH6AoxcdG25foEJ6+AXoRe9PIObciD0j8esl0+VpfNcGPhu7o
-	00kTyBKXc82vPCj9YwcZRLmq3d1eW6c/BaXfEXZnlXeAvd/6E8AafCwPwBtLAUdOrBjDCEJi3u1
-	K7V/Nc6ziXXnE3byLgR6RKEV2x0CfLB9C3K0ZXVq6lhnbJPujRXGvCztyEuE74RW7PyMeGTySIK
-	EIq6rKFqHaFXYK7rPMYniJd6PB3zIp0kJn+c7hyq1VfXZtXT4syGYeC0CzD08zo9/hhIg06niV5
-	GECyWqupyvxZkqOzrc2a8ZtrBsuvvigVoUiWu4NQSUBKeQwpFDeVdbQo9FOokYxlUWYRxJKrLCq
-	WLlzmtB8ODYa5JeOt9QbNxlKLQXT/HtdC0CrVaKjvBMQQldIlekfEWqwP
-X-Received: by 2002:a05:6a20:94c9:b0:3c3:9070:96b3 with SMTP id
- adf61e73a8af0-3cc54f970fbmr4268114637.3.1786601840253; Wed, 12 Aug 2026
- 23:17:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gjn+ZrNz"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D61aWB1476562;
+	Thu, 13 Aug 2026 06:25:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=2bJFtk
+	7IHCxsJ0zcnv89FCN+lwd2doS7mdHj/JpuX8U=; b=gjn+ZrNzBVthdGKCFwvBoQ
+	66BDr2tO71ZfZww20yQyJJxjqQU8XFGf0KmU/dbTVoxp9JRsSlGS9f1r8KGs+bD0
+	gQSByg6P0H4NdUFaLJeLbvkgJlBxGleEAtk+XJPBO5+k/StlWQYFcuJcPAlRppeK
+	uR2fTLU5w4KShjFMPsTEU9DWfE0RnVdvJO0fGpGVkrvXXhdPycEs/lW6+atvjW1M
+	B30g505PyFlu8uSbMvcifnAgwJ/GIU/F8d8cxbRk2nQ+w2+BVULmcebDtwGZvRJG
+	fVQWzUwr9kAfQUr5Az7gBiPdjX0SR7Z6dkr14yjPoT2zthwz9XjOuEok67k2GjTQ
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvq9pgsr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 06:25:34 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67D6BIF7030873;
+	Thu, 13 Aug 2026 06:25:33 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfy9mk5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 06:25:33 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67D6PVFM44040568
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 06:25:31 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 61F4220043;
+	Thu, 13 Aug 2026 06:25:31 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AB89D20040;
+	Thu, 13 Aug 2026 06:25:29 +0000 (GMT)
+Received: from [9.123.7.41] (unknown [9.123.7.41])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Aug 2026 06:25:29 +0000 (GMT)
+Message-ID: <def186fb-0eb9-4751-9e39-64eaa4828759@linux.ibm.com>
+Date: Thu, 13 Aug 2026 11:55:28 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811022448.116235-1-kuniyu@google.com> <20260811165453.GA3163487@shredder>
- <CAAVpQUCiW3pPVBCXJjtpqmfkiX496YiMwjpQxx3R8oqpupLvCg@mail.gmail.com> <20260812080328.GA3281318@shredder>
-In-Reply-To: <20260812080328.GA3281318@shredder>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 12 Aug 2026 23:17:08 -0700
-X-Gm-Features: AUfX_mz8qrWfXAwr5ZYV8hOMzBNCZROK5ru-pDZUiXiPi6kn7ubbSa12ijXY2ws
-Message-ID: <CAAVpQUCRjG0Cs+wXZfzkV2EtGxRjS3N=9zOZ39efORMN8+MhCw@mail.gmail.com>
-Subject: Re: [PATCH v3 net-next 00/15] neighbour: Namespacify arp_tbl and nd_tbl.
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net/smc: release the internal TCP sock on IPPROTO_SMC
+ socket creation failure
+To: Chuyf26 <Chuyf26@linux.alibaba.com>, alibuda@linux.alibaba.com
+Cc: dust.li@linux.alibaba.com, mjambigi@linux.ibm.com,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-s390@vger.kernel.org
+References: <20260812071538.o7mdtMhZ1eOzDgQnKZduQfWlq0FhL7OCAPLjt9AA11w@z>
+ <5c80dd63-80bb-424b-894e-2f4ca3a5568b@linux.ibm.com>
+ <202608130604.67D5j4VU1508130@pps.reinject>
+Content-Language: en-US
+From: Sidraya Jayagond <sidraya@linux.ibm.com>
+In-Reply-To: <202608130604.67D5j4VU1508130@pps.reinject>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: SBYSLgurU5WTwC2xFrb2mxNAsoVTR5JY
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a7d635e cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=SRrdq9N9AAAA:8
+ a=VnNF1IyMAAAA:8 a=j67ANBCWoueUEsnO-3cA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA0MCBTYWx0ZWRfX+ycxAa8jrfqW
+ Sp2tffj7jiuZg/rSyhQQ9AfsnahFpIE8fguky9vpjztGPw98FXUsJp0LQijeWMJPleRR2QCJ01s
+ VmR1I97B4BnzOe2QyIMTajpd8SBLS//hJqJ8CuMiaRoDxpvPz9T9mb/wscX/W0criVCQyfhskYN
+ X5rLv8loCBPbxbwhavCTw5ZmbL6SJN+QUOR/GzvUVu/BFlwpta1bGHykE5eq91j0eMA49Aefa88
+ Woh2HuPphwFIwJCU7l4NVqzKVZRppnYANJxQ9alviXt5FSdkqZTVX+un/I6VTzzJbS9Ywv0yP1E
+ a9lhVGzaeQ8foyw8tu/20lrNofdPQwLGYDglGs8e0FmcHYq9oqXq6oJZp44wz3mGjw6smQ1GIeU
+ llRzJXwG/yWNJHGHuJJVNHXfwiwKvGqdsS3/8M3/vHW2vrypT8SLGiKVagBtrob/umtZYpQLfn7
+ tMHMlNmE0r8J8TU5Vdg==
+X-Proofpoint-ORIG-GUID: tooYW2aGgfQgEkQHhGN7pcdCTP5tWg6X
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDA0MCBTYWx0ZWRfX7RaF8vC1CwVw
+ moXmqWBWcwzgYxV2oR5XcKwrLSJ7/Mns/M0L7xXN41Mq3KFCFlJQWgahbTPySCeur9Fkys1wQdG
+ Wbk8c10C9PzPyiB3ELAYlMU3W9sJwT4=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_02,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608130040
 
-On Wed, Aug 12, 2026 at 1:03=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wr=
-ote:
->
-> On Tue, Aug 11, 2026 at 11:39:36AM -0700, Kuniyuki Iwashima wrote:
-> > On Tue, Aug 11, 2026 at 9:55=E2=80=AFAM Ido Schimmel <idosch@nvidia.com=
-> wrote:
-> > > Another thing worth a discussion is the policy regarding the initial
-> > > values in each namespace. With this patchset, new namespaces all get =
-the
-> > > same default values instead of inheriting from the initial namespace:
-> > >
-> > > # sysctl net.ipv4.neigh.default.gc_thresh1
-> > > net.ipv4.neigh.default.gc_thresh1 =3D 128
-> > > # sysctl -wq net.ipv4.neigh.default.gc_thresh1=3D129
-> > > # ip netns add ns1
-> > > # ip netns exec ns1 sysctl net.ipv4.neigh.default.gc_thresh1
-> > > net.ipv4.neigh.default.gc_thresh1 =3D 128
-> > >
-> > > Assuming that today people configure the initial namespace before
-> > > creating namespaces, changing the policy to inherit from the initial
-> > > namespace will probably result in fewer regression reports. There is =
-a
-> > > knob that controls this policy for other settings (see
-> > > devconf_inherit_init_net).
-> >
-> > I considered adding a new knob like tcp_chlid_ehash_entries to
-> > control the behaviour, but I was wondering if it might be rather
-> > confusing to people in the future that only GC attributes are inherited=
-.
-> > But I don't have strong preference here.
->
-> Why only GC attributes and not all the default parameters? IOW,
-> everything under /proc/sys/net/ipv{4,6}/neigh/default/. Something like
-> [1]. With it, I get:
->
-> # sysctl net.ipv4.neigh.default.gc_thresh1
-> net.ipv4.neigh.default.gc_thresh1 =3D 128
-> # sysctl net.ipv4.neigh.default.base_reachable_time_ms
-> net.ipv4.neigh.default.base_reachable_time_ms =3D 30000
-> # sysctl -wq net.ipv4.neigh.default.gc_thresh1=3D129
-> # sysctl -wq net.ipv4.neigh.default.base_reachable_time_ms=3D40000
-> # ip netns add ns1
-> # ip netns exec ns1 sysctl net.ipv4.neigh.default.gc_thresh1
-> net.ipv4.neigh.default.gc_thresh1 =3D 129
-> # ip netns exec ns1 sysctl net.ipv4.neigh.default.base_reachable_time_ms
-> net.ipv4.neigh.default.base_reachable_time_ms =3D 40000
->
-> I think that's closer to the existing behavior. We can add something
-> like net.core.neigh_inherit_init_net to make the policy configurable:
->
-> 0 - Use default values.
-> 1 - Inherit from initial network namespace. Default.
 
-Sounds good, I'll add sysctl and neigh_table_inherit() to patch 12.
 
-Thanks !
-
->
-> [1]
-> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-> index 07c62268fc3b..0b55baecc55c 100644
-> --- a/net/core/neighbour.c
-> +++ b/net/core/neighbour.c
-> @@ -1913,6 +1913,22 @@ static void neigh_table_clear(struct net *net, str=
-uct neigh_table *tbl)
->         neigh_table_put(tbl);
+On 13/08/26 11:34 am, Chuyf26 wrote:
+> IPPROTO_SMC sockets create an internal TCP sock ("clcsock") from the
+> proto->init hook. When socket creation fails after proto->init has
+> run - e.g. a cgroup BPF program attached to BPF_CGROUP_INET_SOCK_CREATE
+> denies the socket - sk_common_release() only invokes sk_prot->destroy
+> if it is set, but neither smc_inet_prot nor smc_inet6_prot defines it,
+> and smc_destruct() returns early unless sk_state is SMC_CLOSED. As a
+> result, every failing socket(AF_INET, SOCK_STREAM, IPPROTO_SMC) call
+> leaks one tcp_sock, so an unprivileged task able to attach a deny-all
+> BPF_CGROUP_INET_SOCK_CREATE program to its own cgroup can grow kernel
+> memory unboundedly.
+> 
+> Add a .destroy hook to both protos that releases the clcsock via
+> smc_clcsock_release(), which is safe here because it skips a NULL
+> clcsock under clcsock_release_lock. Also initialize clcsock to NULL
+> when setting the sock up: the smc_sock slab is SLAB_TYPESAFE_BY_RCU,
+> so recycled objects are not zeroed.
+> 
+> Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
+> Reported-by: Abaci <abaci@linux.alibaba.com>
+> Assisted-by: abaci:qwen3.8-max
+> Signed-off-by: Chuyf26 <Chuyf26@linux.alibaba.com>
+> ---
+>  net/smc/smc_inet.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+> 
+> diff --git a/net/smc/smc_inet.c b/net/smc/smc_inet.c
+> index a94084b..b94a194 100644
+> --- a/net/smc/smc_inet.c
+> +++ b/net/smc/smc_inet.c
+> @@ -15,13 +15,16 @@
+>  
+>  #include "smc_inet.h"
+>  #include "smc.h"
+> +#include "smc_close.h"
+>  
+>  static int smc_inet_init_sock(struct sock *sk);
+> +static void smc_inet_destroy_sock(struct sock *sk);
+>  
+>  static struct proto smc_inet_prot = {
+>  	.name		= "INET_SMC",
+>  	.owner		= THIS_MODULE,
+>  	.init		= smc_inet_init_sock,
+> +	.destroy	= smc_inet_destroy_sock,
+>  	.hash		= smc_hash_sk,
+>  	.unhash		= smc_unhash_sk,
+>  	.release_cb	= smc_release_cb,
+> @@ -68,6 +71,7 @@ static struct proto smc_inet6_prot = {
+>  	.name		= "INET6_SMC",
+>  	.owner		= THIS_MODULE,
+>  	.init		= smc_inet_init_sock,
+> +	.destroy	= smc_inet_destroy_sock,
+>  	.hash		= smc_hash_sk,
+>  	.unhash		= smc_unhash_sk,
+>  	.release_cb	= smc_release_cb,
+> @@ -109,6 +113,14 @@ static struct inet_protosw smc_inet6_protosw = {
+>  static int smc_inet_init_sock(struct sock *sk)
+>  {
+>  	struct net *net = sock_net(sk);
+> +	struct smc_sock *smc = smc_sk(sk);
+> +
+> +	/*
+> +	 * The smc_sock slab is SLAB_TYPESAFE_BY_RCU and recycled objects
+> +	 * are not zeroed. .destroy may run even if .init never completed,
+> +	 * so make sure smc_clcsock_release() sees a valid clcsock.
+> +	 */
+> +	smc->clcsock = NULL;
+>  
+>  	/* init common smc sock */
+>  	smc_sk_init(net, sk, IPPROTO_SMC);
+> @@ -116,6 +128,17 @@ static int smc_inet_init_sock(struct sock *sk)
+>  	return smc_create_clcsk(net, sk, sk->sk_family);
 >  }
->
-> +static void neigh_table_inherit(struct net *net, struct neigh_table *tbl=
-,
-> +                               int index)
+>  
+> +static void smc_inet_destroy_sock(struct sock *sk)
 > +{
-> +       const struct neigh_table *init_tbl =3D init_net.neigh_tables[inde=
-x];
-> +
-> +       if (net_eq(net, &init_net))
-> +               return;
-> +
-> +       tbl->gc_interval =3D READ_ONCE(init_tbl->gc_interval);
-> +       tbl->gc_thresh1 =3D READ_ONCE(init_tbl->gc_thresh1);
-> +       tbl->gc_thresh2 =3D READ_ONCE(init_tbl->gc_thresh2);
-> +       tbl->gc_thresh3 =3D READ_ONCE(init_tbl->gc_thresh3);
-> +
-> +       memcpy(tbl->parms.data, init_tbl->parms.data, sizeof(tbl->parms.d=
-ata));
+> +	/*
+> +	 * If inet_create()/inet6_create() fail after .init has created the
+> +	 * internal TCP sock (e.g. rejected by a cgroup BPF program),
+> +	 * sk_common_release() ends up here. Release the TCP sock, otherwise
+> +	 * it leaks on every failed IPPROTO_SMC socket() call.
+> +	 */
+> +	smc_clcsock_release(smc_sk(sk));
 > +}
 > +
->  int neigh_table_register(struct net *net, struct neigh_table *tbl, int i=
-ndex)
+>  int __init smc_inet_init(void)
 >  {
->         int err;
-> @@ -1923,6 +1939,9 @@ int neigh_table_register(struct net *net, struct ne=
-igh_table *tbl, int index)
->                 goto err;
->         }
->
-> +       /* Must be called before neigh_table_init(). */
-> +       neigh_table_inherit(net, tbl, index);
-> +
->         err =3D neigh_table_init(net, tbl);
->         if (err)
->                 goto free_table;
+>  	int rc;
+
+Thank you for fixing this.
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
