@@ -1,473 +1,115 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F03E3ACEE9;
-	Thu, 13 Aug 2026 17:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804863AFD1F
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 17:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786642998; cv=none; b=E3hz63D3soO/mwGUWq8+cHMsFAL5MSRwkFUrI2HzbjGdtsWEwHGd81aZ+rBzPITSZJKf3S0DNuiMO5E9ouNi58D4HQaFIs2KKEb/RvOb/xF4PSBjjw7zTDHvACHyv4AofOnW8H854fShZvsmHS0toK87tbclVScbylmJoJMtjIs=
+	t=1786643003; cv=none; b=VJnGi9w/UDoeHuoDcx1aTXUNMVf86hirdcmR7204GPHlg4R+lyy1Rk16VEKoP42IJoOWQ2vWm/eTLvhJRmsVvpaLr9cXWQQ7tO47m8oMn1bCLnBITxkxs+eID3H6RsYqR07wg/4tj0ppJG3YUvJHK3Vqag73sr/UHnUkw/ETUJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786642998; c=relaxed/simple;
-	bh=BlirB3Ds7K8TfuFe5tgq5R6vZXebtCIMNikENF55FSw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lvQF9xSfrMvcOuW7jukt7vMbU7oCqK1QIHv2Cz3SMo8xFicpTmZaZpE/PbhQfxJWroMr+lE6K5wDNvjQTN24K4Pqg5FRX2kQd0BsBLguPWFrzT3Fu01uh3gJphJrxptlZqp5/rm4glBPX/7kdmGJo1rnPkgJm6oUgF/o4AiSGxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id B39C520B7136; Thu, 13 Aug 2026 10:42:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B39C520B7136
-From: Long Li <longli@microsoft.com>
-To: Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	shradhagupta@linux.microsoft.com,
-	Simon Horman <horms@kernel.org>,
-	ernis@linux.microsoft.com,
-	stephen@networkplumber.org
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v7 6/7] net: mana: fix stale HWC response after command timeout
-Date: Thu, 13 Aug 2026 10:42:38 -0700
-Message-ID: <20260813174243.3044348-7-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260813174243.3044348-1-longli@microsoft.com>
-References: <20260813174243.3044348-1-longli@microsoft.com>
+	s=arc-20240116; t=1786643003; c=relaxed/simple;
+	bh=DKEME0Ur0oxvw24+YrseXOXTE5INJvcX9R04D8gPV9w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lhAeAls00zYcy51kBp2nq1K6qn81kwifM2dh3AMaR7ZmCUYmfWtAWEEPkZu5443m5Agk760x/8dE97fOKrfT85qIdj3oVqEh/feGaeAUqH3/yOVlLd78Zk5iXEfhNbvVqKk57goAm/N0aSUpVXndxgNzkf5DubO2/vjuNS3/GvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gehnvOZ4; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fBbZOcxG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gehnvOZ4";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fBbZOcxG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786643000;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ltp83lDQGxXs0k3gDMM4riDzDEKI2gvO/dw8tndTQwo=;
+	b=gehnvOZ4kVhfTStbYxeNdQ8y81T4ojsl7BVdrr8WxkX4lySt8kdxxlEQlJikUEsnLHXrdF
+	X45Xt2TGS/x0FG37KryDIOXivG15pDACKh3jyk4IQq3eHO6vOvOHDk8J7fgaWXr9Mk1F9q
+	qyW91vghBim8QDzjW3p6wxlTCNNA2UU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-348-c_hjRJlmP7ugFDpnt6TTSQ-1; Thu, 13 Aug 2026 13:43:18 -0400
+X-MC-Unique: c_hjRJlmP7ugFDpnt6TTSQ-1
+X-Mimecast-MFC-AGG-ID: c_hjRJlmP7ugFDpnt6TTSQ_1786642998
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4956c1655c3so898525e9.0
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 10:43:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786642997; x=1787247797; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ltp83lDQGxXs0k3gDMM4riDzDEKI2gvO/dw8tndTQwo=;
+        b=fBbZOcxGpwEs2PActMStb0qkwBerWfuChpIXofLXpo8IEWHpl46zLCxPxqXBxFQte4
+         xfUry1YzR10hULY+WxhpZ/1B+87zNwG0GIpsgohO920TadNY8KLifELCwW5KlTeCKXwU
+         va6uh1K9fFJ8mRYiS6183+Gg9AljCcbgdBFftKor5w30nmyrsBkMGS48pcjMEQYiEH7w
+         QcraFAxl9boHOTyR7fZsU76PBeMayiUE6ah1o77Tlxzd7V2JrvLoJqs6+QW6as/gLaKW
+         hJf+I3nWHrXaWuqACQe6+kq9L2VriEgObFPHlyJtmb9+w3JZSUn0WXQpaZ2e22K1gVBs
+         L+fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786642997; x=1787247797;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ltp83lDQGxXs0k3gDMM4riDzDEKI2gvO/dw8tndTQwo=;
+        b=T+4XV0GxOzLLHGDLBMTOyQ7ZiUlYEVQLBGiPrGqDqjVeSxhaj/yWO1bqvxnqsYkwT/
+         X6F39TauNooHqlIvO1JgGTgUNS3LCn4QsMQrk0D9fLQGe0ic/Y+RtswyjvT8gEQcCrvS
+         la7lhmhl1k3YeeIWVVFzUHiPqq/SADXjEv0eMAXJQ9rS6/6jSPH5OAABFlmzAP2YCwiW
+         Ngrdmhsg6F3JAJ/OMCnwGbcd+fN+ZK/ZdT9daAcILoCE8HFrksDdtxzR6TonVeYnL+r0
+         XWco9hYSSfRy/HanlwrgVKvhirn9ReL4IrIqG2MgAtXIECFgWvEHYRL2rGP+XFOQs1FM
+         Yrgg==
+X-Forwarded-Encrypted: i=1; AHgh+Roc2cv1qZnrKSJUPMyomATSLhAED8ccpuW/kKZUnazQdmCYRPr4V+2LR9/wCoQ+U8Un1CZfm7Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL8d/jvIkn5zbrPOUrcp8MMOV5wkFyeh+q8YLOAWkn7rzt2vup
+	uEty8fzchbvrVaYHE73e4Y5eugd5mdZ8S1ueIFRSBKIQ2sayQPAI5FUQY+fEr5lrwmPSzaAq7v8
+	hL+WCFROFmomaR06G5dvwVakCLgrX9Zyms3eyrbDh77zWFdt8NTNxvlOHWw==
+X-Gm-Gg: AR+sD10bpbuF3/59yv/o1TMDpFLtQJaB2X2X+AvkRbX5vcL7UkwHNuJMgh2UcLRtTOC
+	o5Qh2imTctITDBkcMNuaHhXqJdqerS8ZpV57QZhg3Uq0XR8zHtnRkAZswgrU1OxDuWPrnmYAEdm
+	aZJpflDBRT2v0X9bAzmdR6pm+3iHkG67xri8NW9cvi/TIhNWhMu2u2jxrVEOijaiJYabwfyBRi/
+	3T84oiA2jHhYVbk1WTpY2zWsVfy2KKQZCekkfZYjhs+Pl6Fuu4ZbdBZT3fVPZAEUGRMHoh3wA35
+	9biElGc2pKEiVnhqyCykOOMsr/Pqoiq7IcHv8eSH/gPA5i9vltHxXuzKiwnLRcsiRO+1E5Hgrum
+	c5gau2xGL4uw6S91b22z4kP+D4yGBqqR1AjnaFrRPwCTH/qaHElNB/MRQBRiYl5++wt9ewkbmfm
+	s=
+X-Received: by 2002:a05:600c:8714:b0:495:4d00:2fda with SMTP id 5b1f17b1804b1-49987935852mr2760795e9.2.1786642997578;
+        Thu, 13 Aug 2026 10:43:17 -0700 (PDT)
+X-Received: by 2002:a05:600c:8714:b0:495:4d00:2fda with SMTP id 5b1f17b1804b1-49987935852mr2760255e9.2.1786642997230;
+        Thu, 13 Aug 2026 10:43:17 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2005b0sm926256f8f.8.2026.08.13.10.43.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Aug 2026 10:43:16 -0700 (PDT)
+Message-ID: <41ae2a16-4437-4ad4-8daa-1f9cb9893c81@redhat.com>
+Date: Thu, 13 Aug 2026 19:43:15 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL] Networking for v7.2-rc8
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>
+References: <20260813152104.256382-1-pabeni@redhat.com>
+ <e5a958af-4144-46ab-915a-84fd2075d383@redhat.com>
+ <CAHk-=whhignRFf-8CJ4PTw74dX6rr9N+X-j37rcM6oUB-ZcZ1g@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CAHk-=whhignRFf-8CJ4PTw74dX6rr9N+X-j37rcM6oUB-ZcZ1g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-mana_hwc_send_request() freed the message slot (mana_hwc_put_msg_index)
-as soon as it timed out, while the command was still pending and
-caller_ctx.output_buf still pointed at the caller's buffer.  A late
-response then either memcpy()'d into that buffer from CQ interrupt context
-after the sender had returned, or completed the next request that reused
-the slot with stale data.
+On 8/13/26 6:42 PM, Linus Torvalds wrote:
+> On Thu, 13 Aug 2026 at 08:32, Paolo Abeni <pabeni@redhat.com> wrote:
+>>
+>> A revert for the blamed commit available here:
+> 
+> I took the pull and then applied the revert directly - I assume that
+> was your expectation.
+Thanks, I think that was the better option.
 
-Give each caller_ctx a spinlock, a refcount and an -EINPROGRESS sentinel
-(caller_ctx::error becomes int to hold the negative value):
-
-  - The sender publishes and clears output_buf under the slot lock;
-    handle_resp() takes the same lock and skips the copy once it is NULL,
-    so a late response can no longer write into a sender's buffer after
-    it has returned.
-  - Both references (sender and handle_resp) are taken up front in
-    mana_hwc_get_msg_index(), so an early response cannot drop the slot
-    under the sender, and a per-slot "responded" flag drops a duplicate
-    response.
-
-Responses are still correlated only by the reusable hwc_msg_id, so a
-response that arrives after its slot has been released and reused can
-still be delivered to the new owner; closing that fully needs a
-per-request identity and is left to a separate change.
-
-Replace the counting semaphore with a waitqueue + bitmap so a slot held
-past a timeout cannot deadlock admission.
-
-Ignore a device-reported zero hwc_timeout from both sources that feed it
-and keep the positive default.
-
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Signed-off-by: Long Li <longli@microsoft.com>
----
-Changes since v6:
-- Dropped the terminal "timed out" latch: it could stop teardown
-  commands from ever being posted to a slow device.  The core
-  stale-response fix (per-slot lock, refcount and "responded" flag) and
-  the wait-queue admission change are retained, and a timeout still
-  shortens later waits so teardown is still posted.
-- Softened the changelog; the msg_id reuse correlation gap is pre-existing
-  and noted as out of scope.
- .../net/ethernet/microsoft/mana/gdma_main.c   |   7 +-
- .../net/ethernet/microsoft/mana/hw_channel.c  | 186 ++++++++++++++----
- include/net/mana/hw_channel.h                 |  21 +-
- 3 files changed, 173 insertions(+), 41 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 02f901b2cb1faf4a34e6e3e53deebeeb056f528f..418e55aa033c3141f922fc7b38c9a44696dc9f0f 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -310,7 +310,12 @@ static int mana_gd_query_hwc_timeout(struct pci_dev *pdev, u32 *timeout_val)
- 	if (err || resp.hdr.status)
- 		return err ? err : -EPROTO;
- 
--	*timeout_val = resp.timeout_ms;
-+	/* A zero timeout would make every HWC command time out immediately
-+	 * and latch the channel (see the HWC_DATA_CFG_HWC_TIMEOUT handler).
-+	 * Ignore a zero from the device and keep the caller's positive value.
-+	 */
-+	if (resp.timeout_ms)
-+		*timeout_val = resp.timeout_ms;
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 88188523dcd4863b254451e77cb569c12c150033..b1269f7da0563a22c3cbe599df55572e36908139 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -6,25 +6,41 @@
- #include <net/mana/hw_channel.h>
- #include <linux/vmalloc.h>
- 
-+/* Acquire a free inflight message slot, waiting for one if all are in use. */
- static int mana_hwc_get_msg_index(struct hw_channel_context *hwc, u16 *msg_id)
- {
- 	struct gdma_resource *r = &hwc->inflight_msg_res;
- 	unsigned long flags;
- 	u32 index;
- 
--	down(&hwc->sema);
-+	for (;;) {
-+		spin_lock_irqsave(&r->lock, flags);
- 
--	spin_lock_irqsave(&r->lock, flags);
--
--	index = find_first_zero_bit(hwc->inflight_msg_res.map,
--				    hwc->inflight_msg_res.size);
-+		index = find_first_zero_bit(r->map, r->size);
-+		if (index < r->size) {
-+			struct hwc_caller_ctx *ctx;
- 
--	bitmap_set(hwc->inflight_msg_res.map, index, 1);
-+			ctx = &hwc->caller_ctx[index];
-+			reinit_completion(&ctx->comp_event);
-+			/* Take both references (sender + handle_resp) before
-+			 * publishing the slot, so an early response cannot free
-+			 * it under the sender.
-+			 */
-+			refcount_set(&ctx->refcnt, 2);
-+			ctx->responded = false;
-+			ctx->msg_id = index;
-+			ctx->error = -EINPROGRESS;
-+			/* Publish the slot last, after it is fully initialised. */
-+			bitmap_set(r->map, index, 1);
-+			spin_unlock_irqrestore(&r->lock, flags);
-+			break;
-+		}
-+		spin_unlock_irqrestore(&r->lock, flags);
- 
--	spin_unlock_irqrestore(&r->lock, flags);
-+		wait_event(hwc->msg_waitq, !bitmap_full(r->map, r->size));
-+	}
- 
- 	*msg_id = index;
--
- 	return 0;
- }
- 
-@@ -34,10 +50,17 @@ static void mana_hwc_put_msg_index(struct hw_channel_context *hwc, u16 msg_id)
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&r->lock, flags);
--	bitmap_clear(hwc->inflight_msg_res.map, msg_id, 1);
-+	bitmap_clear(r->map, msg_id, 1);
- 	spin_unlock_irqrestore(&r->lock, flags);
- 
--	up(&hwc->sema);
-+	wake_up(&hwc->msg_waitq);
-+}
-+
-+static void hwc_ctx_put(struct hw_channel_context *hwc,
-+			struct hwc_caller_ctx *ctx)
-+{
-+	if (refcount_dec_and_test(&ctx->refcnt))
-+		mana_hwc_put_msg_index(hwc, ctx->msg_id);
- }
- 
- static int mana_hwc_verify_resp_msg(const struct hwc_caller_ctx *caller_ctx,
-@@ -106,22 +129,34 @@ static void mana_hwc_handle_resp(struct hw_channel_context *hwc, u32 resp_len,
- 		resp_len = 0;
- 	}
- 
--	err = mana_hwc_verify_resp_msg(ctx, resp_msg, resp_len);
--	if (err)
--		goto out;
-+	spin_lock(&ctx->lock);
- 
--	ctx->status_code = resp_msg->status;
-+	/* Honour a response only while the sender owns the slot (output_buf
-+	 * published) and has not already been answered; otherwise drop it as
-+	 * premature, stale or duplicate without touching the refcount.
-+	 */
-+	if (!ctx->output_buf || ctx->responded) {
-+		spin_unlock(&ctx->lock);
-+		mana_hwc_post_rx_wqe(hwc->rxq, rx_req);
-+		return;
-+	}
-+	ctx->responded = true;
- 
--	memcpy(ctx->output_buf, resp_msg, resp_len);
--out:
-+	err = mana_hwc_verify_resp_msg(ctx, resp_msg, resp_len);
-+	if (!err) {
-+		ctx->status_code = resp_msg->status;
-+		memcpy(ctx->output_buf, resp_msg, resp_len);
-+	}
- 	ctx->error = err;
- 
--	/* Must post rx wqe before complete(), otherwise the next rx may
--	 * hit no_wqe error.
-+	/* Post RX WQE before completing — the next response may arrive
-+	 * immediately and needs a posted buffer.
- 	 */
- 	mana_hwc_post_rx_wqe(hwc->rxq, rx_req);
--
- 	complete(&ctx->comp_event);
-+	spin_unlock(&ctx->lock);
-+
-+	hwc_ctx_put(hwc, ctx);
- }
- 
- static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
-@@ -208,7 +243,9 @@ static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
- 
- 		switch (type) {
- 		case HWC_DATA_CFG_HWC_TIMEOUT:
--			hwc->hwc_timeout = val;
-+			/* Ignore a zero timeout; keep the positive default. */
-+			if (val)
-+				hwc->hwc_timeout = val;
- 			break;
- 
- 		case HWC_DATA_HW_LINK_CONNECT:
-@@ -695,7 +732,7 @@ static int mana_hwc_init_inflight_msg(struct hw_channel_context *hwc,
- {
- 	int err;
- 
--	sema_init(&hwc->sema, num_msg);
-+	init_waitqueue_head(&hwc->msg_waitq);
- 
- 	err = mana_gd_alloc_res_map(num_msg, &hwc->inflight_msg_res);
- 	if (err)
-@@ -725,8 +762,10 @@ static int mana_hwc_test_channel(struct hw_channel_context *hwc, u16 q_depth,
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	for (i = 0; i < q_depth; ++i)
-+	for (i = 0; i < q_depth; ++i) {
-+		spin_lock_init(&ctx[i].lock);
- 		init_completion(&ctx[i].comp_event);
-+	}
- 
- 	hwc->caller_ctx = ctx;
- 
-@@ -737,6 +776,7 @@ static int mana_hwc_establish_channel(struct gdma_context *gc, u16 *q_depth,
- 				      u32 *max_req_msg_size,
- 				      u32 *max_resp_msg_size)
- {
-+	/* Runs at init before the channel is used, so no locking is needed. */
- 	struct hw_channel_context *hwc = gc->hwc.driver_data;
- 	struct gdma_queue *rq = hwc->rxq->gdma_wq;
- 	struct gdma_queue *sq = hwc->txq->gdma_wq;
-@@ -989,13 +1029,19 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 	struct hwc_wq *txq = hwc->txq;
- 	struct gdma_req_hdr *req_msg;
- 	struct hwc_caller_ctx *ctx;
-+	unsigned long flags;
-+	bool drop_resp_ref;
- 	u32 dest_vrcq = 0;
- 	u32 dest_vrq = 0;
- 	u32 command;
-+	u32 status;
-+	u32 wait_ms;
- 	u16 msg_id;
- 	int err;
- 
--	mana_hwc_get_msg_index(hwc, &msg_id);
-+	err = mana_hwc_get_msg_index(hwc, &msg_id);
-+	if (err)
-+		return err;
- 
- 	tx_wr = &txq->msg_buf->reqs[msg_id];
- 
-@@ -1007,8 +1053,11 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 	}
- 
- 	ctx = hwc->caller_ctx + msg_id;
-+
-+	spin_lock_irqsave(&ctx->lock, flags);
- 	ctx->output_buf = resp;
- 	ctx->output_buflen = resp_len;
-+	spin_unlock_irqrestore(&ctx->lock, flags);
- 
- 	req_msg = (struct gdma_req_hdr *)tx_wr->buf_va;
- 	if (req)
-@@ -1024,43 +1073,104 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 		dest_vrcq = hwc->pf_dest_vrcq_id;
- 	}
- 
-+	/* The response-side reference (from get_msg_index) keeps the slot
-+	 * alive if hardware responds right after the doorbell.
-+	 */
- 	err = mana_hwc_post_tx_wqe(txq, tx_wr, dest_vrq, dest_vrcq, false);
- 	if (err) {
- 		dev_err(hwc->dev, "HWC: Failed to post send WQE: %d\n", err);
- 		goto out;
- 	}
- 
-+	wait_ms = hwc->hwc_timeout;
- 	if (!wait_for_completion_timeout(&ctx->comp_event,
--					 (msecs_to_jiffies(hwc->hwc_timeout)))) {
--		if (hwc->hwc_timeout != 0)
-+					 msecs_to_jiffies(wait_ms))) {
-+		if (wait_ms != 0)
- 			dev_err(hwc->dev, "Command 0x%x timed out: %u ms\n",
--				command, hwc->hwc_timeout);
-+				command, wait_ms);
-+
-+		/* Clear output_buf so a late response cannot write the caller's
-+		 * buffer, then check whether one already arrived
-+		 * (error != -EINPROGRESS).
-+		 */
-+		spin_lock_irqsave(&ctx->lock, flags);
-+		ctx->output_buf = NULL;
-+		err = ctx->error;
-+		status = ctx->status_code;
-+		spin_unlock_irqrestore(&ctx->lock, flags);
-+
-+		if (err != -EINPROGRESS) {
-+			/* A valid response raced in just after the timeout;
-+			 * the hardware is alive, so use it and keep the channel.
-+			 */
-+			hwc_ctx_put(hwc, ctx);
-+			goto check_status;
-+		}
-+
-+		err = -ETIMEDOUT;
-+
-+		/* No-wait teardown (hwc_timeout == 0) is expected to expire;
-+		 * just release the slot so the next teardown command can reuse
-+		 * it.
-+		 */
-+		if (wait_ms == 0)
-+			goto out;
- 
--		/* Reduce further waiting if HWC no response */
-+		/* Genuine timeout: shorten later waits so subsequent commands
-+		 * fail fast instead of each draining the full timeout.
-+		 */
- 		if (hwc->hwc_timeout > 1)
- 			hwc->hwc_timeout = 1;
- 
--		err = -ETIMEDOUT;
-+		/* Release the slot via out:; a late response no longer touches
-+		 * it, so the sender must drop the reference here.
-+		 */
- 		goto out;
- 	}
- 
--	if (ctx->error) {
--		err = ctx->error;
--		goto out;
--	}
-+	/* Clear output_buf and read the result under the lock; the slot may
-+	 * be reused after hwc_ctx_put().
-+	 */
-+	spin_lock_irqsave(&ctx->lock, flags);
-+	ctx->output_buf = NULL;
-+	err = ctx->error;
-+	status = ctx->status_code;
-+	spin_unlock_irqrestore(&ctx->lock, flags);
-+	hwc_ctx_put(hwc, ctx);
-+
-+check_status:
-+	if (err)
-+		goto done;
- 
--	if (ctx->status_code && ctx->status_code != GDMA_STATUS_MORE_ENTRIES) {
--		if (ctx->status_code == GDMA_STATUS_CMD_UNSUPPORTED) {
-+	if (status && status != GDMA_STATUS_MORE_ENTRIES) {
-+		if (status == GDMA_STATUS_CMD_UNSUPPORTED) {
- 			err = -EOPNOTSUPP;
--			goto out;
-+			goto done;
- 		}
-+
- 		if (command != MANA_QUERY_PHY_STAT)
- 			dev_err(hwc->dev, "Command 0x%x failed with status: 0x%x\n",
--				command, ctx->status_code);
-+				command, status);
- 		err = -EPROTO;
--		goto out;
-+		goto done;
- 	}
-+
-+	err = 0;
-+	goto done;
- out:
--	mana_hwc_put_msg_index(hwc, msg_id);
-+	/* Error, no-wait teardown, or timeout: drop the sender's and the
-+	 * response-side references.  Latch ->responded so a racing response
-+	 * is a no-op, and only drop the response-side ref if it has not.
-+	 */
-+	ctx = hwc->caller_ctx + msg_id;
-+	spin_lock_irqsave(&ctx->lock, flags);
-+	ctx->output_buf = NULL;
-+	drop_resp_ref = !ctx->responded;
-+	ctx->responded = true;
-+	spin_unlock_irqrestore(&ctx->lock, flags);
-+	if (drop_resp_ref)
-+		refcount_dec(&ctx->refcnt);
-+	hwc_ctx_put(hwc, ctx);
-+done:
- 	return err;
- }
-diff --git a/include/net/mana/hw_channel.h b/include/net/mana/hw_channel.h
-index 6e77163a06d8f2622430281647268c54939c4dc0..ceabdc6242573f13d1284a967ea73bc01698e37d 100644
---- a/include/net/mana/hw_channel.h
-+++ b/include/net/mana/hw_channel.h
-@@ -171,8 +171,24 @@ struct hwc_caller_ctx {
- 	void *output_buf;
- 	u32 output_buflen;
- 
--	u32 error; /* Linux error code */
-+	int error; /* Linux error code (negative errno or 0) */
- 	u32 status_code;
-+
-+	/* Protects output_buf against concurrent access from
-+	 * handle_resp() (CQ interrupt) and the sender timeout path.
-+	 */
-+	spinlock_t lock;
-+
-+	/* Tracks sender + handle_resp ownership.  The last put
-+	 * (refcount reaches 0) releases the bitmap slot.
-+	 */
-+	refcount_t refcnt;
-+	u16 msg_id;
-+
-+	/* Set by the first handle_resp(), or by the sender's timeout path,
-+	 * so a later or duplicate response is dropped.
-+	 */
-+	bool responded;
- };
- 
- struct hw_channel_context {
-@@ -193,8 +209,9 @@ struct hw_channel_context {
- 	struct hwc_wq *txq;
- 	struct hwc_cq *cq;
- 
--	struct semaphore sema;
- 	struct gdma_resource inflight_msg_res;
-+	/* Waitqueue for senders blocked on a full inflight bitmap. */
-+	wait_queue_head_t msg_waitq;
- 
- 	u32 pf_dest_vrq_id;
- 	u32 pf_dest_vrcq_id;
--- 
-2.43.0
+Paolo
 
