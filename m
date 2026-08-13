@@ -1,32 +1,33 @@
-Received: from mta0.migadu.com (out-18.mta0.migadu.com [91.218.175.18])
+Received: from mta1.migadu.com (out-135.mta1.migadu.com [95.215.58.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BCA47DFBA
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 13:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410FF47DFBA
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 13:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786627806; cv=none; b=LjeLf9z84/hgw82YM5zw7otIP1gqnOInMxV8g586Iz0OMT0kbrqo8i9EGbzsv8eb12vIINrNWwcapCohBhQUYkbi6gtZWfedUIqYgQMgIRMnA76znmytdKKY/oqHy3oVVu0278YwoLxIy0LHpIE/L1IbFIcS3C+/6wabDHAqslg=
+	t=1786627811; cv=none; b=kYGb7GUcMgrjNQAOOMjFN+VZz1v76o6Sz9o/afZyVsH7CHMdJD2YVz/ebzvm0FJso+aAmB7SR50kLC8rwnPrD9PQlXYZp8xEtKFDpszj1E+xnN+o8U0HDgei+Sd4Rtxm+OcGlQzLZh/YLJ6BBuY0bQ2fN0Jvmc0fn7EqCEVBcW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786627806; c=relaxed/simple;
-	bh=HAWYRcD4muE/GTJBGpnAWE09cM62VJnZG/b+f/Yg7FA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LQLLJS4SnXfhfkUZCud1K5SqGTAU7Bal8ZaTdl0SDCW2gKk24iz+vs6RuYV2nA9PObGpYP6bg7RcrlOkbWooOujAx3KRr8hJaJN0Kmu9OH/uNSYJwMgg86nNmagAJBe93DXfdWgkNMvk6LiIfKU5j95pPsAwNGKo2NhBwOUEbPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YDmFOL+O; arc=none smtp.client-ip=91.218.175.18
+	s=arc-20240116; t=1786627811; c=relaxed/simple;
+	bh=CL0N8elDQ4wwTZ4RkCqCpiUMNIVZK9/qKZ0kQM8xFgg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ohE/3HtSvkRaUgiyL5jYymYIMmeUGcf+INMg5CnJJ0fYF0TTigSrVIcv3wza8+5tILcMVG0FZRkcL31qO/y5VGChr42KSnRvqhICRfidNkwvnyZpMAUn0cCf8JX2SXwAyT04IZkmmYrow3jJWdOFGY3Pj0gyJAq/BWRaJ9SQLb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FaMopyxB; arc=none smtp.client-ip=95.215.58.135
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YDmFOL+O"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FaMopyxB"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=HAWYRcD4muE/GTJBGpnAWE09cM62VJnZG/b+f/Yg7FA=;
+DKIM-Signature: a=rsa-sha256; bh=CL0N8elDQ4wwTZ4RkCqCpiUMNIVZK9/qKZ0kQM8xFgg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786627803; v=1; x=1787232603;
- b=YDmFOL+OQhWXJ4EYIdv4uTX0N/ULQF2IASBOKEQaYx1K5J24jUQgOLBMPsIaRB1CQXOkDKmg
- ui8o/wynVpmjIM3vImEBLQ92YN023pdWsfrW1tNLET5TdAAesbaoz+1sWYDrFg7qKBxTejYUUIc
- YGNlZGx02inRR3CmGVlFLIHk=
+ t=1786627808; v=1; x=1787232608;
+ b=FaMopyxBWJhUH2slXW/Bh20t0m0FYV9yI+/MEwHZPDXuTmby24TY4BalAerAi4EoV1k6zeg2
+ yUZepPf2noy2/7MSODzJ+C3BTaf9H2qtO7dPh6c3or9YDkyXuhBTRSPLmhns9lARxzg4DmmqdE/
+ Irn8fjSip6XNn5v/0TIodxCE=
 X-Envelope-To: netdev@vger.kernel.org
 Received: from localhost.localdomain (116.128.244.171)
-	by smtp.migadu.com with ESMTPS id ff7f95da8e7537ab;
-	Thu, 13 Aug 2026 13:30:01 +0000
+	by smtp.migadu.com with ESMTPS id 88ccd6f65087217c;
+	Thu, 13 Aug 2026 13:30:08 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 To: netdev@vger.kernel.org,
@@ -40,10 +41,12 @@ Cc: hkallweit1@gmail.com,
 	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org,
 	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net v2 0/5] net: phy: fix cleanup after probe failure
-Date: Thu, 13 Aug 2026 21:29:40 +0800
-Message-ID: <20260813132946.116176-1-xuanqiang.luo@linux.dev>
+Subject: [PATCH net v2 1/5] net: phy: split phy_probe() error paths
+Date: Thu, 13 Aug 2026 21:29:41 +0800
+Message-ID: <20260813132946.116176-2-xuanqiang.luo@linux.dev>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260813132946.116176-1-xuanqiang.luo@linux.dev>
+References: <20260813132946.116176-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,61 +57,85 @@ Content-Transfer-Encoding: 8bit
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-phy_probe() initializes the PHY driver, ports, SFP upstream, and LEDs in
-stages. Its error paths do not always release only the resources acquired
-at each stage or restore the PHY device state.
+phy_probe() uses one cleanup path for failures at every initialization
+stage. This runs cleanup for resources that have not been initialized.
 
-Port setup also leaves SFP cleanup split between phy_sfp_probe(),
-phy_setup_ports(), and phy_probe(), and default port setup ignores errors
-from attaching the port to the PHY driver.
+Split the cleanup by initialization stage so each failure path unwinds
+only the resources that may have been initialized.
 
-This series makes each initialization layer own its cleanup.
-
-Patch 1 splits the phy_probe() cleanup by initialization stage.
-
-Patch 2 makes SFP and port setup unwind their resources in the required
-order.
-
-Patch 3 restores the PHY device state after probe failure.
-
-Patch 4 calls the PHY driver remove callback after later probe failures.
-
-Patch 5 propagates errors from default port setup.
-
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
-Changes:
-v2:
-  Patch 1:
-  - Limit this patch to splitting phy_probe() error paths, moving the SFP
-    teardown fixes to Patch 2.
+ drivers/net/phy/phy_device.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-  Patch 2 (new):
-  - makes SFP and port setup unwind their resources in the required order.
-  - Add phy_sfp_release() for complete SFP teardown instead of open-coding
-    sfp_bus_del_upstream(). (Andrew Lunn, Maxime Chevallier.)
-
-  Patch 3 (new):
-  - Restore PHY_DOWN and clear phydev->drv after probe failure.
-
-  Patch 4:
-  - Move the former Patch 2 to Patch 4; no functional changes.
-
-  Patch 5 (new):
-  - Propagate errors from default port setup.
-
-v1: https://lore.kernel.org/all/20260812125127.106255-1-xuanqiang.luo@linux.dev/
-
-Xuanqiang Luo (5):
-  net: phy: split phy_probe() error paths
-  net: phy: unregister SFP upstream before port cleanup
-  net: phy: restore device state after probe failure
-  net: phy: call driver remove when core initialization fails
-  net: phy: propagate errors from default port setup
-
- drivers/net/phy/phy_device.c | 77 +++++++++++++++++++++++++++---------
- 1 file changed, 58 insertions(+), 19 deletions(-)
-
-
-base-commit: f5bbbfec59b4e2fb7520a91de3df8a6174325d6a
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 0615228459ef4..c9976ffa7128c 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3681,7 +3681,7 @@ static int phy_probe(struct device *dev)
+ 	if (phydev->drv->probe) {
+ 		err = phydev->drv->probe(phydev);
+ 		if (err)
+-			goto out;
++			goto out_reset;
+ 	}
+ 
+ 	phy_disable_interrupts(phydev);
+@@ -3702,7 +3702,7 @@ static int phy_probe(struct device *dev)
+ 		err = genphy_read_abilities(phydev);
+ 
+ 	if (err)
+-		goto out;
++		goto out_reset;
+ 
+ 	if (!linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
+ 			       phydev->supported))
+@@ -3719,7 +3719,7 @@ static int phy_probe(struct device *dev)
+ 
+ 	err = phy_setup_ports(phydev);
+ 	if (err)
+-		goto out;
++		goto out_ports;
+ 
+ 	phy_advertise_supported(phydev);
+ 
+@@ -3728,7 +3728,7 @@ static int phy_probe(struct device *dev)
+ 	 */
+ 	err = genphy_c45_read_eee_adv(phydev, phydev->advertising_eee);
+ 	if (err)
+-		goto out;
++		goto out_ports;
+ 
+ 	/* Get the EEE modes we want to prohibit. */
+ 	of_set_phy_eee_broken(phydev);
+@@ -3781,20 +3781,22 @@ static int phy_probe(struct device *dev)
+ 	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev)) {
+ 		err = of_phy_leds(phydev);
+ 		if (err)
+-			goto out;
++			goto out_led_triggers;
+ 	}
+ 
+ 	return 0;
+ 
+-out:
++out_led_triggers:
++	if (!phydev->is_on_sfp_module)
++		phy_led_triggers_unregister(phydev);
++
++out_ports:
+ 	sfp_bus_del_upstream(phydev->sfp_bus);
+ 	phydev->sfp_bus = NULL;
+ 
+ 	phy_cleanup_ports(phydev);
+ 
+-	if (!phydev->is_on_sfp_module)
+-		phy_led_triggers_unregister(phydev);
+-
++out_reset:
+ 	/* Re-assert the reset signal on error */
+ 	phy_device_reset(phydev, 1);
+ 
 -- 
 2.43.0
+
