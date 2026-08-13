@@ -1,86 +1,60 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D703EEAC7
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 22:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786659663; cv=none; b=O0mS/WmQj2AP7Ttjhtyc07qm/WKhyAlNFa9yr5LZDtgLcHpBa0/yYLEVeweKknqIpUko7g/1D12mrUDMUm5WZfdSsXKNdsvG09tKbM2A8KldqTo4bp4MTbU+wWAC63UG2NMzvTMi+Mg4mAc2XHNaf3NCikmCPx6vDH2+5oAmKz8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786659663; c=relaxed/simple;
-	bh=QfaGrD5PK4T9fVP8DLGNnQwLAHh5R25DZ/Poef8hRPo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7110B3EB0E9
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 22:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786659674; cv=pass; b=pjfr+NfeZdw4b5HNvitVuWjdC6P3+Ip3BJ7x04iZunfaxskPH3fo6P33Lxv1OOJIGBWKn6HK2AZe/Lzsuj8OjJShLDBFkNp2TaBbrpx74ho4xsTJYyAJ8/vSX9SmWCI/nunp4pMls9hCILGhXY77Tf1PEaPsFebN1XJ3K27cvSU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786659674; c=relaxed/simple;
+	bh=BjSUYR0SjxLT6B93689QJfHEdyRSYmoC0/BuQNyJfBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkpkz61pnTVdXEfgfuSIrleB8NYHU7kNvNbgUHaA+2+lTY+PB2GcJcfsLp5jpG3lyMInitr+OEbdPwi/wFJBQ3G4zYFxtcz9syba13nDjoaQHqThMxLJOabYQRDN81EY7UaQllyI+qk3ItDfBaTsDIv7mry+/e2Q84tTgDybulg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lVoHl7Qr; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=YWCmz9U7s2nItYyQ454bQya25DPz4D75Q4+CigokK6jOgvz3g8zoSyHcUqiEtDU0ByiVOQqzXLkIkz2E0gXY2J3uWRPuS7ro9wuCoJGJyVaLjYmQDDA4jI1rSb4GmxS7Yy3QNjkovn0g9OODU+KPpX779cIKIUnu3bX30RJg3uo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=gFp2T90p; arc=pass smtp.client-ip=136.143.188.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lVoHl7Qr"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49553515a8bso6979365e9.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:20:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786659658; x=1787264458; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kciKuR8y+KyI5RgInUcoSau9Ylaam1ueLLu/72dbFbY=;
-        b=lVoHl7Qrk0chG5k7JaqeykR5NZAqGgThvgXjLWa2QkUwqubXaaFJnRgly0s21UrZPY
-         E+W7cl+wBrvLrFuYwMk/OArj+USfOsqfNVh6wYLA27xecvfwLhQG5Ex4X87ene+DBZx0
-         E9JhJbcKcyjKGUKtew8X98LgtSXbiXy2q346bzne1J9zZbAEZkii1M8rH7ki7bkWzF5C
-         IJCld8GXOqsls5zNwdhX+GnqdIgtJvacJDfn68DDdl8RRVxHJhYlVX26KaeNv2Lc1Ocb
-         W6s/V7jkfNtUw4FZ5iyX9lwkmzMljjhjDbDM9aTyxmX5J+/VMyV5k1Wzc+ZoHepn0dVu
-         r5RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786659658; x=1787264458;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kciKuR8y+KyI5RgInUcoSau9Ylaam1ueLLu/72dbFbY=;
-        b=VFtZ6rySnkmniYDwf952hUQxXx1ArtoEwL2J2B9MU6GT7QpYb8pc4cA84FZLLzr+eR
-         VqQKkZUJAVxtTbA0kH6BjXlLjlbd/ISEx4tLCK1i9NrWvwX4AYJJdyyf2QKmxStVagTO
-         l6Fpmte4xphjLFzu4ibYRbLiD63QGtPPejUGKtx3qoeNmlxo9jCIerq8WKGQIE6J8NqF
-         chpTehKpDvnFkC/iHVN4X6F9DCd7X8IVL+GOCuC2hAMu6MSYug8uLmEtBpGRTI7P3/NF
-         YmmjAKjkoDv5et5ovIg2YH3i/GA9FWUA//DDNBl6EH4zI5B8vD05WOBj2BXA3ivaoylJ
-         d/Tg==
-X-Gm-Message-State: AOJu0YzuVo+MU61AngoS1FfevlZFfBZRMR/JPDToIa4fs2ZJI2B7bkZS
-	o9yHYObNe1OnaUH4kz1WssQ3uvf2mDioI6gyOk6M1aGIb6Exg4xBZ/x9
-X-Gm-Gg: AR+sD12hOC6vKzY1+KlVfpGotqRlhe2rLaS+GBSFH5glw9fH0AshRY92Mtp6bs2Eo9m
-	MSLU4tuj93QtKxwXn9bkO/wBxoMyGlHpJmSkajwxL3MXsdEMWcYLoy6TdEYIT7tKSoyJQ7TM6Wd
-	WK/3+kbOKkrxybaPAND+7aWP9E5P5XbrF37KEmqy2m4lVr8rSsc3WCJYaN6oCi0NfY4DCKdewUr
-	+zp7p8FVUdb9Ue24GTvcIFeCHYdGn5CUCnfVwHXg0s5XHFNBPR4Xvykn+0i7xKZGVYWkq5gZ/wi
-	3dlURiKL5w8K/4eH/CwLo7amaMo+2qI4jDOElNSyYP9NxJBK/w7zXiVXuFeTXgIdvjH5kvfS3DJ
-	DpElcWTM0Is5Vyq4quSZp0eEd51EPQ9/tirqS7zBYYHRvpREn8RP/6D/2XI7U+8RxlX+cy6TQWo
-	nw9oB1S+YnOoicfstgodBoo4KwAjLPLBYdan8QVXacECmU5iKL8ky5CkdfA7mUqNg=
-X-Received: by 2002:a05:600c:a4d:b0:496:ca1f:a428 with SMTP id 5b1f17b1804b1-49987981e52mr19752265e9.19.1786659657964;
-        Thu, 13 Aug 2026 15:20:57 -0700 (PDT)
-Received: from builder ([2001:9e8:f11a:1316:be24:11ff:fe30:5d85])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981b0f4afsm112960065e9.5.2026.08.13.15.20.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 15:20:57 -0700 (PDT)
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daniel Golle <daniel@makrotopia.org>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Sander Vanheule <sander@svanheule.net>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>
-Subject: [PATCH net-next v14 4/4] net: pse-pd: realtek-pse-mcu: add UART transport
-Date: Thu, 13 Aug 2026 22:20:35 +0000
-Message-ID: <20260813222036.873930-5-jelonek.jonas@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260813222036.873930-1-jelonek.jonas@gmail.com>
-References: <20260813222036.873930-1-jelonek.jonas@gmail.com>
+	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="gFp2T90p"
+ARC-Seal: i=1; a=rsa-sha256; t=1786659635; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Jq8YZ0f3c4vo+lOGsYnJhan4C2j93PClX6uXLBMkUtIlZ7DcI4PKAxv5A6OvGClz8b80tYzp2sQ+wASlDCJuX4ElPC7uPf+4RcC1c+Abo/X2cAqjCsYCRJEMpUZj2FTTxiJKT1j6gyu79SB/4jTIDYzDFfobRmv3rEICGD7VbdQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1786659635; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=HVbokr9+ZgiIh+7TCw28jzGl6jcL1zNS4v216YJcELM=; 
+	b=MDwV65KslKbMZgP//eQJnNdK5lWNVnmrzyAMjZ8aNwWYFq3jFrkl9mMt/yoZzWxlonC0xHHfGzi1/NQdxoBZrK+bPSrneUcApuxzD4ah5G0VWpU2M2YP7ArPCDyshaoLF4g6ipVrAHalwRk1OZF0ZGE+gADwHSz80fFengEfcM0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=machnikowski.net;
+	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
+	dmarc=pass header.from=<maciek@machnikowski.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786659635;
+	s=zoho; d=machnikowski.net; i=maciek@machnikowski.net;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=HVbokr9+ZgiIh+7TCw28jzGl6jcL1zNS4v216YJcELM=;
+	b=gFp2T90pD6hWLwI+m9RY7MGL4u2LQ6/VESkCiuq4bpX+3b79v2xB1D17AF1lJ5BB
+	6AlPAS6iBTJl7v+u3MVsaUwYM8bVG8Q9NjLRa5A9v6GKMJRxF8hU0qF7m8246UP2kRz
+	V9NpA5ZYU7mbx+1sKqj4WInJvth/OYuLYUQyS7BZ/ivOyBpabQKfFZIDBaArg96hV0y
+	tOa1m2oSchyvl4rsnaczu+AeuYH+WuyiZk8DYrucnXErz28Q4H/X5kNtVdRMnZG86SQ
+	D6PkaisqOfTwc16LmRxVzbwTZyOeOQv/CTfGqBe0fi6GyWZGZQ+9Tkf2gDlO9PTk9+C
+	kd/Vf20UpA==
+Received: by mx.zohomail.com with SMTPS id 1786659631800887.6742952307078;
+	Thu, 13 Aug 2026 15:20:31 -0700 (PDT)
+From: Maciek Machnikowski <maciek@machnikowski.net>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	maciek@machnikowski.net,
+	richardcochran@gmail.com,
+	milena.olech@intel.com,
+	willemdebruijn.kernel@gmail.com,
+	andrew@lunn.ch,
+	vadim.fedorenko@linux.dev,
+	horms@kernel.org
+Subject: [PATCH v9 net-next 2/3] netdevsim: Implement basic ptp support
+Date: Fri, 14 Aug 2026 00:20:22 +0200
+Message-ID: <20260813222023.2460-3-maciek@machnikowski.net>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260813222023.2460-1-maciek@machnikowski.net>
+References: <20260813222023.2460-1-maciek@machnikowski.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,228 +62,216 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Add the serdev (UART) transport for the Realtek PSE MCU core. It registers
-the MCU as a serdev device and provides the send/recv callbacks the core
-uses to exchange the 12-byte frames, receiving asynchronously via the
-serdev receive_buf callback.
+Add support for virtual timestamping inside the netdevsim driver.
+The implementation uses two attached ptp_mock clocks, reads the timestamps
+of the ones attached either to the netdevsim or its peer and returns
+timestamps using standard timestamps APIs.
 
-The baud rate defaults to 19200 and can be overridden per board with the
-"current-speed" property.
+This implementation enables running ptp4l on netdevsim adapters and
+introduces a new ptp selftest.
 
-Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Co-developed-by: Milena Olech <milena.olech@intel.com>
+Signed-off-by: Milena Olech <milena.olech@intel.com>
+Signed-off-by: Maciek Machnikowski <maciek@machnikowski.net>
 ---
- drivers/net/pse-pd/Kconfig                |  11 ++
- drivers/net/pse-pd/Makefile               |   1 +
- drivers/net/pse-pd/realtek-pse-mcu-uart.c | 164 ++++++++++++++++++++++
- 3 files changed, 176 insertions(+)
- create mode 100644 drivers/net/pse-pd/realtek-pse-mcu-uart.c
+ drivers/net/netdevsim/ethtool.c   |  15 +++++
+ drivers/net/netdevsim/netdev.c    | 107 ++++++++++++++++++++++++++++++
+ drivers/net/netdevsim/netdevsim.h |   1 +
+ 3 files changed, 123 insertions(+)
 
-diff --git a/drivers/net/pse-pd/Kconfig b/drivers/net/pse-pd/Kconfig
-index 6d14c8832e8b..a0f2ae668c67 100644
---- a/drivers/net/pse-pd/Kconfig
-+++ b/drivers/net/pse-pd/Kconfig
-@@ -30,6 +30,17 @@ config PSE_REALTEK_MCU_I2C
- 	  PSE silicon is not accessed directly. To compile this driver as a
- 	  module, choose M here: the module will be called realtek-pse-mcu-i2c.
+diff --git a/drivers/net/netdevsim/ethtool.c b/drivers/net/netdevsim/ethtool.c
+index 025ea79879f3..24e7d5592e79 100644
+--- a/drivers/net/netdevsim/ethtool.c
++++ b/drivers/net/netdevsim/ethtool.c
+@@ -200,7 +200,22 @@ static int nsim_get_ts_info(struct net_device *dev,
+ {
+ 	struct netdevsim *ns = netdev_priv(dev);
  
-+config PSE_REALTEK_MCU_UART
-+	tristate "Realtek PSE MCU driver (UART transport)"
-+	depends on SERIAL_DEV_BUS
-+	select PSE_REALTEK_MCU
-+	help
-+	  Driver for the microcontroller (MCU) that fronts the PSE
-+	  hardware on various Realtek-based managed switches, attached
-+	  via UART. The MCU exposes a message-based protocol; the actual PSE
-+	  silicon is not accessed directly. To compile this driver as a
-+	  module, choose M here: the module will be called realtek-pse-mcu-uart.
++	ethtool_op_get_ts_info(dev, info);
++	if (!ns->phc) {
++		info->phc_index = -1;
++		return 0;
++	}
 +
- config PSE_REGULATOR
- 	tristate "Regulator based PSE controller"
- 	help
-diff --git a/drivers/net/pse-pd/Makefile b/drivers/net/pse-pd/Makefile
-index ef869bba5ed9..9cca5900fe34 100644
---- a/drivers/net/pse-pd/Makefile
-+++ b/drivers/net/pse-pd/Makefile
-@@ -5,6 +5,7 @@ obj-$(CONFIG_PSE_CONTROLLER) += pse_core.o
+ 	info->phc_index = mock_phc_index(ns->phc);
++	if (info->phc_index < 0)
++		return 0;
++
++	info->so_timestamping |= SOF_TIMESTAMPING_TX_HARDWARE |
++				 SOF_TIMESTAMPING_RX_HARDWARE |
++				 SOF_TIMESTAMPING_RAW_HARDWARE;
++
++	info->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
++	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) | BIT(HWTSTAMP_FILTER_ALL);
  
- obj-$(CONFIG_PSE_REALTEK_MCU) += realtek-pse-mcu-core.o
- obj-$(CONFIG_PSE_REALTEK_MCU_I2C) += realtek-pse-mcu-i2c.o
-+obj-$(CONFIG_PSE_REALTEK_MCU_UART) += realtek-pse-mcu-uart.o
- obj-$(CONFIG_PSE_REGULATOR) += pse_regulator.o
- obj-$(CONFIG_PSE_PD692X0) += pd692x0.o
- obj-$(CONFIG_PSE_SI3474) += si3474.o
-diff --git a/drivers/net/pse-pd/realtek-pse-mcu-uart.c b/drivers/net/pse-pd/realtek-pse-mcu-uart.c
-new file mode 100644
-index 000000000000..9baa17d8d31f
---- /dev/null
-+++ b/drivers/net/pse-pd/realtek-pse-mcu-uart.c
-@@ -0,0 +1,164 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
+ 	return 0;
+ }
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 4e9d7e10b527..108f265a278a 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -30,6 +30,8 @@
+ #include <net/rtnetlink.h>
+ #include <net/udp_tunnel.h>
+ #include <net/busy_poll.h>
++#include <linux/ptp_clock_kernel.h>
++#include <linux/timecounter.h>
+ 
+ #include "netdevsim.h"
+ 
+@@ -122,12 +124,18 @@ static int nsim_forward_skb(struct net_device *tx_dev,
+ 
+ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
++	struct skb_shared_hwtstamps shhwtstamps = {};
++	struct ptp_clock_info *ptp_info_tx = NULL;
++	struct ptp_clock_info *ptp_info_rx = NULL;
+ 	struct netdevsim *ns = netdev_priv(dev);
++	struct timespec64 tx_ts, rx_ts;
++	struct sk_buff *skb_orig = skb;
+ 	struct skb_ext *psp_ext = NULL;
+ 	struct net_device *peer_dev;
+ 	unsigned int len = skb->len;
+ 	struct netdevsim *peer_ns;
+ 	struct netdev_config *cfg;
++	unsigned long flags;
+ 	struct nsim_rq *rq;
+ 	int rxq;
+ 	int dr;
+@@ -164,6 +172,46 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		skb_linearize(skb);
+ 
+ 	skb_tx_timestamp(skb);
 +
-+#include <linux/cleanup.h>
-+#include <linux/completion.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/pse-pd/pse.h>
-+#include <linux/serdev.h>
-+#include <linux/spinlock.h>
-+#include <linux/string.h>
++	if (unlikely(READ_ONCE(peer_ns->tstamp_config.rx_filter) !=
++		     HWTSTAMP_FILTER_NONE))
++		ptp_info_rx = mock_phc_get_ptp_info(peer_ns->phc);
 +
-+#include "realtek-pse-mcu.h"
++	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
++	    READ_ONCE(ns->tstamp_config.tx_type) == HWTSTAMP_TX_ON)
++		ptp_info_tx = mock_phc_get_ptp_info(ns->phc);
 +
-+#define RTPSE_MCU_UART_BAUD_DEFAULT	19200
-+#define RTPSE_MCU_UART_TX_TIMEOUT	msecs_to_jiffies(100)
-+#define RTPSE_MCU_UART_RX_TIMEOUT	msecs_to_jiffies(RTPSE_MCU_RESPONSE_MAX_MS)
++	if (unlikely(ptp_info_tx || ptp_info_rx)) {
++		/* Sample both PHCs with IRQs off to keep the reads adjacent */
++		local_irq_save(flags);
++		if (ptp_info_tx)
++			ptp_info_tx->gettime64(ptp_info_tx, &tx_ts);
++		if (ptp_info_rx)
++			ptp_info_rx->gettime64(ptp_info_rx, &rx_ts);
++		local_irq_restore(flags);
 +
-+struct rtpse_mcu_uart {
-+	struct rtpse_mcu_ctrl pse;
-+	struct serdev_device *serdev;
-+	struct completion rx_done;
-+	spinlock_t rx_lock;		/* protects rx_buf and rx_len */
-+	size_t rx_len;
-+	u8 rx_buf[RTPSE_MCU_MSG_SIZE];
-+};
-+
-+#define to_rtpse_mcu_uart(p)  container_of(p, struct rtpse_mcu_uart, pse)
-+
-+/*
-+ * No framing is done here: a glitched frame costs one transaction, then
-+ * the next _send re-frames from rx_len 0. Resync works by returning count
-+ * (not take), dropping any overflow so serdev keeps no leftover to bleed
-+ * into the next frame.
-+ */
-+static size_t rtpse_mcu_uart_receive(struct serdev_device *serdev,
-+				     const u8 *buf, size_t count)
-+{
-+	struct rtpse_mcu_uart *ctx = serdev_device_get_drvdata(serdev);
-+	size_t take;
-+
-+	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
-+		take = min(count, sizeof(ctx->rx_buf) - ctx->rx_len);
-+		if (take) {
-+			memcpy(ctx->rx_buf + ctx->rx_len, buf, take);
-+			ctx->rx_len += take;
-+			if (ctx->rx_len == sizeof(ctx->rx_buf))
-+				complete(&ctx->rx_done);
++		/* If TX hardware timestamping is enabled report TX timestamp */
++		if (ptp_info_tx) {
++			shhwtstamps.hwtstamp = timespec64_to_ktime(tx_ts);
++			skb_tstamp_tx(skb_orig, &shhwtstamps);
 +		}
++
++		/* Unshare the skb, stamping it must not corrupt cloned copies
++		 * and prevents returning single tstamp for Tx and Rx
++		 */
++		skb = skb_unshare(skb_orig, GFP_ATOMIC);
++		if (unlikely(!skb)) {
++			if (psp_ext)
++				__skb_ext_put(psp_ext);
++			goto out_drop_cnt;
++		}
++
++		/* If RX hardware timestamping is enabled report RX timestamp */
++		if (ptp_info_rx)
++			skb_hwtstamps(skb)->hwtstamp =
++				timespec64_to_ktime(rx_ts);
 +	}
 +
-+	/* consume all to avoid desync/misalignment */
-+	return count;
-+}
-+
-+static const struct serdev_device_ops rtpse_mcu_uart_serdev_ops = {
-+	.receive_buf = rtpse_mcu_uart_receive,
-+	.write_wakeup = serdev_device_write_wakeup,
-+};
-+
-+static int rtpse_mcu_uart_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
+ 	if (unlikely(nsim_forward_skb(dev, peer_dev,
+ 				      skb, rq, psp_ext) == NET_RX_DROP))
+ 		goto out_drop_cnt;
+@@ -185,6 +233,63 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	return NETDEV_TX_OK;
+ }
+ 
++static int nsim_set_ts_config(struct net_device *netdev,
++			      struct kernel_hwtstamp_config *config,
++			      struct netlink_ext_ack *extack)
 +{
-+	struct rtpse_mcu_uart *ctx = to_rtpse_mcu_uart(pse);
-+	int written;
++	struct netdevsim *ns = netdev_priv(netdev);
++	int rx_filter;
 +
-+	/* clear any leftover rx state before transmitting */
-+	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
-+		reinit_completion(&ctx->rx_done);
-+		ctx->rx_len = 0;
++	if (!ns->phc)
++		return -EOPNOTSUPP;
++
++	switch (config->rx_filter) {
++	case HWTSTAMP_FILTER_NONE:
++		rx_filter = HWTSTAMP_FILTER_NONE;
++		break;
++	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
++	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
++	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
++	case HWTSTAMP_FILTER_PTP_V2_EVENT:
++	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
++	case HWTSTAMP_FILTER_PTP_V2_SYNC:
++	case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
++	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
++	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
++	case HWTSTAMP_FILTER_NTP_ALL:
++	case HWTSTAMP_FILTER_ALL:
++		rx_filter = HWTSTAMP_FILTER_ALL;
++		break;
++	default:
++		return -ERANGE;
 +	}
 +
-+	written = serdev_device_write(ctx->serdev, (const u8 *)req, sizeof(*req),
-+				      RTPSE_MCU_UART_TX_TIMEOUT);
-+	if (written < 0)
-+		return written;
-+	if (written != sizeof(*req))
-+		return -EIO;
++	switch (config->tx_type) {
++	case HWTSTAMP_TX_OFF:
++		WRITE_ONCE(ns->tstamp_config.tx_type, HWTSTAMP_TX_OFF);
++		break;
++	case HWTSTAMP_TX_ON:
++		WRITE_ONCE(ns->tstamp_config.tx_type, HWTSTAMP_TX_ON);
++		break;
++	default:
++		return -ERANGE;
++	}
++
++	WRITE_ONCE(ns->tstamp_config.rx_filter, rx_filter);
++	config->rx_filter = rx_filter;
 +
 +	return 0;
 +}
 +
-+static int rtpse_mcu_uart_recv(struct rtpse_mcu_ctrl *pse,
-+			       const struct rtpse_mcu_msg *req,
-+			       struct rtpse_mcu_msg *resp)
++static int nsim_get_ts_config(struct net_device *netdev,
++			      struct kernel_hwtstamp_config *config)
 +{
-+	struct rtpse_mcu_uart *ctx = to_rtpse_mcu_uart(pse);
++	struct netdevsim *ns = netdev_priv(netdev);
 +
-+	if (!wait_for_completion_timeout(&ctx->rx_done, RTPSE_MCU_UART_RX_TIMEOUT))
-+		return -ETIMEDOUT;
-+
-+	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
-+		if (ctx->rx_len != sizeof(*resp))
-+			return -EIO;
-+
-+		memcpy(resp, ctx->rx_buf, sizeof(*resp));
-+	}
++	*config = ns->tstamp_config;
 +	return 0;
 +}
 +
-+static const struct rtpse_mcu_transport_ops rtpse_mcu_uart_transport_ops = {
-+	.send = rtpse_mcu_uart_send,
-+	.recv = rtpse_mcu_uart_recv,
-+};
-+
-+static int rtpse_mcu_uart_probe(struct serdev_device *serdev)
-+{
-+	u32 speed = RTPSE_MCU_UART_BAUD_DEFAULT;
-+	struct device *dev = &serdev->dev;
-+	struct rtpse_mcu_uart *ctx;
-+	unsigned int baud;
-+	int ret;
-+
-+	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	ctx->serdev = serdev;
-+	ctx->pse.dev = dev;
-+	ctx->pse.pcdev.owner = THIS_MODULE;
-+	ctx->pse.transport = &rtpse_mcu_uart_transport_ops;
-+	init_completion(&ctx->rx_done);
-+	spin_lock_init(&ctx->rx_lock);
-+
-+	serdev_device_set_drvdata(serdev, ctx);
-+	serdev_device_set_client_ops(serdev, &rtpse_mcu_uart_serdev_ops);
-+
-+	ret = devm_serdev_device_open(dev, serdev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to open serdev\n");
-+
-+	fwnode_property_read_u32(dev_fwnode(dev), "current-speed", &speed);
-+
-+	baud = serdev_device_set_baudrate(serdev, speed);
-+	if (baud != speed)
-+		dev_warn(dev, "could not set baudrate %u, controller uses %u\n",
-+			 speed, baud);
-+
-+	serdev_device_set_flow_control(serdev, false);
-+
-+	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
-+	if (ret)
-+		dev_warn(dev, "could not set parity to none: %d\n", ret);
-+
-+	return rtpse_mcu_register(&ctx->pse);
-+}
-+
-+static const struct of_device_id rtpse_mcu_uart_of_match[] = {
-+	{ .compatible = "realtek,pse-mcu-gen1", .data = &rtpse_mcu_gen1_data },
-+	{ .compatible = "realtek,pse-mcu-gen2", .data = &rtpse_mcu_gen2_data },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, rtpse_mcu_uart_of_match);
-+
-+static struct serdev_device_driver rtpse_mcu_uart_driver = {
-+	.driver = {
-+		.name = "realtek-pse-mcu-uart",
-+		.of_match_table = rtpse_mcu_uart_of_match,
-+	},
-+	.probe  = rtpse_mcu_uart_probe,
-+};
-+module_serdev_device_driver(rtpse_mcu_uart_driver);
-+
-+MODULE_AUTHOR("Jonas Jelonek <jelonek.jonas@gmail.com>");
-+MODULE_DESCRIPTION("Realtek PSE MCU driver (UART transport)");
-+MODULE_LICENSE("GPL");
+ static int nsim_set_rx_mode(struct net_device *dev,
+ 			    struct netdev_hw_addr_list *uc,
+ 			    struct netdev_hw_addr_list *mc)
+@@ -647,6 +752,8 @@ static const struct net_device_ops nsim_netdev_ops = {
+ 	.ndo_vlan_rx_add_vid	= nsim_vlan_rx_add_vid,
+ 	.ndo_vlan_rx_kill_vid	= nsim_vlan_rx_kill_vid,
+ 	.net_shaper_ops		= &nsim_shaper_ops,
++	.ndo_hwtstamp_get	= nsim_get_ts_config,
++	.ndo_hwtstamp_set	= nsim_set_ts_config,
+ };
+ 
+ static const struct net_device_ops nsim_vf_netdev_ops = {
+diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
+index 64f77f93d937..5cdd1e294446 100644
+--- a/drivers/net/netdevsim/netdevsim.h
++++ b/drivers/net/netdevsim/netdevsim.h
+@@ -108,6 +108,7 @@ struct netdevsim {
+ 	struct net_device *netdev;
+ 	struct nsim_dev *nsim_dev;
+ 	struct nsim_dev_port *nsim_dev_port;
++	struct kernel_hwtstamp_config tstamp_config;
+ 	struct mock_phc *phc;
+ 	struct nsim_rq **rq;
+ 
 -- 
-2.53.0
+2.55.0
 
