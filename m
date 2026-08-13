@@ -1,136 +1,155 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CF643E9C9
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 10:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786615460; cv=pass; b=uUYQ7g991zcvhp/VC0w95IzuOsafPCXMcIoaP8FalwFJKubroTNDFgi0NBs8wfP/vs2JtdKAayKYf/brIWeLaBgrf/2qWYegLyJCQUJZCEiGZVRLPsyUDF5E8433etS2PZcWOIcA7LdSCWEyPQ2VNaTChjPbSw2CIjPc7Ys9MPI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786615460; c=relaxed/simple;
-	bh=izncAFina5udvh82qhiR9A/Ymo2QgJMmGzIkcJM+wME=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JPt/JDmOpuphN+WdZ5bULvCYWwAgrywjveQ/15n4mqr/efTmS6RoSggsZpOZtDkhxVHjOFYzzWQqx5eJD3hqN8zMW0zPicgqE1L6/l3fR6/vrA1ndW02N6wgw5ama0hzQhP7KLGugne6a7seEikluhcUaYPHjdNhKnW6unPJyPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NFHTrXRV; arc=pass smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48793A3E98
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 10:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786615697; cv=none; b=hqIGhrbh7IU+7q9TSrcTHDLMAouzi4oMumqATL/XhpC7njBvYVuITku46ROUkPtQybY2aGGnx7zKG5xMvM7whxUfHMZ7o7TFwI5uU67fLKDmhnBXQTYFCKe4OGQahRhjxB+6yILPrxnGlyIl/jek6UCrQMszS9ywFHhHryfo4g0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786615697; c=relaxed/simple;
+	bh=yojREoWSS25P76867Jlk+icKV4plToD2TgVLkPPDXc0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EdXOmNAl190YzS5Lr+CNRffKgvQvG2nmo5kyJHqNmLqSomULfDxlX8kg131zbJlYqfNor4ADTmlPkJuNyOHklxmTRyfBdqeeuphXaQN6P+LdthpcIRQ23EZqu7L1oBbB1Ce2RaCx8bXoKjm+4Inxjd98MQmIRUDZLOzaJ1kYveo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRct8DBZ; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NFHTrXRV"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cf49dc28ccso3654025ad.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 03:04:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786615457; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NjKZVFUY2IQ8ZOJF22SA4yklEKTQ+itv9+0ZkQFW5ZVxfwRK+v7iGSYK6W5iQrI9Qu
-         2EcD9XnpqlT4Db2/Uv7rfLBTH5dfcdO1WPuA5pioA4w2fKW+SkUbpQ2RRL+QVtKXSnnS
-         rNPrLTYkKT1KibaHlzYFRvVpZuLxJGmlfewG/xwtsMd78nqI9gVNAgRMiDr+kcdkhonO
-         TUSUfj5gjVOu3XMRjsYzYvmr/PAb/fAsrgpj/UTGGGHmbg/aonBVQRfE9gLS6DKlGJ0A
-         E9VJ1Y1aWcVn91dyb+vPEroQgB2pPqbtrQt28LAhR485/4EKKegiYUCyF37WT6bdiBqE
-         T0MQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tMciaZ/JSlG6Z7DNQJEd4FD/fd9CJYl/s1BR40smNTE=;
-        fh=hb07j90RU1AXYBuxdm9GchnX6qndwtkphXjZhrivCWc=;
-        b=ll0CwTIIqFdareclGfixCN9tUABM5zeMTuRxTmEih2fR845ouvJqGrWheMcZqXi5yp
-         sUlGOg74pNT4kVmNWdoyYHKIdtCQrOel5k0KgYsC9Zz+fBxTROuPIjo/eUjNqYS6wReS
-         dnQrRdexfyq+h2kwG4wRSDWdFYPjym7+rv9es3XAteP49ZILZLRxlxYrPzRTQm6AYeVw
-         zIfafIKEhK2L+NAWHC7dG0MUQx229NcdpkoeX2zfZWAePuBm+WbjqwbxbpO4ten9pyqY
-         cyfXPDxFgrCRry85XANVl811Pqy6VJ7Fj1ypHRgvvjdwYhHbzjWrPZBHpujZJKtF7XF0
-         DB2A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRct8DBZ"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ce7d2adef4so25016885ad.3
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 03:08:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786615457; x=1787220257; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tMciaZ/JSlG6Z7DNQJEd4FD/fd9CJYl/s1BR40smNTE=;
-        b=NFHTrXRVpZQTifaiiAeRhSGvfW/dP05MC4U1EuRQWVJr10hfFTND65+3+8jb93NkKj
-         pyVgNvfrsAHjJCQSlBnv74kIuyAGwTSHOr/dBTUV0FlXohKVfuehKEUbu+Xe3QIPOuZT
-         xyYOmMs01ckolTS4zDf1GolYHoz54YaFz1+Jivey5iRPUdra7EMw9Z/AYpSZUXI96EKd
-         3/FfoMhZEcw+UBCPoCbiwXXB7S4RQ9x13SiLR20aVLYVohDLsUPCpyg8prA+dVsmLDAw
-         h9GzD11ijNfTClaEZMVLRNH9dpACZ2webaPItG2U1BR+OiDQwMwbfXeiDxCLD+bWtAte
-         hzcQ==
+        d=gmail.com; s=20251104; t=1786615695; x=1787220495; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DWeu0BF/Yr8FpY4cMXEg/n8k8/uyCaL0DXpaXJPhx6M=;
+        b=NRct8DBZCb/+h5Lqglk1ruGmelKlusxlU1rECiMMhn9hOH1dxU/DR+Gfl8J6rIF0BB
+         eXo7N92+6rmq+f5yLHDEpl6mW3wvRWor2k42qhjtayy1wor4bqsELEeLo1Ig0+6hYmWL
+         yXonXMYggV0sEUvigfQThPV8sqp4XJ65d4HgwTn/gllCW9Y10CAdhSbwsoVG/8T0IcWK
+         jG8rYIGIDAuLTyRWaeQJJPVg2KDo/62A053uYMGgusNKX1u/kxiE7fjWh/+L8ror3q74
+         I7xJaE00F/ayFXGOTxBk+UJovtHemLMwQ+fXiwU+UFgrZypIqVxnvUVbqQXPBRSqCktk
+         RZ0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786615457; x=1787220257;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tMciaZ/JSlG6Z7DNQJEd4FD/fd9CJYl/s1BR40smNTE=;
-        b=jUO6jHVMBDJeYlXdvdxbSsxjsa3Q6g0V242TSI8relwK/pYLQxL2aUeGEqhjwQ5YdE
-         jJpxxsIOeJjpvpyvBAQ+qJEj2o1suHM0WR/UqfIeScIFi1RO5w0Han9XLr1+UzB4LQuw
-         wnOfuxE+fm07U3h50+dcVo4doLzfRdtJNbbbFyr+BLJyf5/zLEzp5axwT8LZ8iowWRIr
-         5h+0S82pXfdsIieCTGyDKbUuf1QuOrCbn7MstAR/iYr15Ae7Dr3X1PM9o1rv2UpwdBGM
-         9XEc29faVHGM/06FM30HK12fQOlBIU+e4dYSv5NQ6CEp6lKS/5twj6j94iUMOJMdHjFj
-         WziA==
-X-Forwarded-Encrypted: i=1; AHgh+Roc0vCo7mUUoTG4oYlzciEgFksl0jjXg0ZLZyj010sGOvUX6+PCo49f1cvh6ya+dIoFkTYHHc4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP2qHezfriFitJAsC1Dq5FwV4hJJbJ1fPP7fXvFxpQ8UvXjKlq
-	h3AJAWp9B+eUqKS4Jyicofd8MpQqu4TD/Q1xGDgDu/C/gnVF1/iMKE+6I+nQz9vSMcHvikDQZLN
-	wQC8RbzgDlKPKLT7D1bA129yhosQ+0v4=
-X-Gm-Gg: AR+sD10DrhQG1NmI/HnKXfxJP87DjktlU+qJ01UL55vHE73/CaPBCrvYhj3J61pX9LF
-	QAZ9atWV53jy/VN4X7y7/9lLCGcvm6N6U/byUgX1LE9ADi2cAjAJp7YzNUWxC+joogBg1IUmbJC
-	rSWOZMslDceD4zzLczu9nfOWNqUJhTMZ8HfFVLFObixcy3cY9UBZJHECp+JJmmD1VnIAEaPhzeI
-	2hOopAoAUAy0wgS/0f3E215H86S8A+qU04BjLa56F8oQx2TiwzV+U+Bmkm7tYo1yOpFtJHzj8kq
-	4bzFpToKzLMHCAU2vGK0b2aTdECGQPx8+IEaiWJRJ2IciFDWbXLTMHhVaOT55sKTbyLhK7EVNQ1
-	6ZBRRsIS/0eN3t9ySe1iAyU7uvzjUbqnjkUOAxhCKLDv9jPmB1tZvLoRAJL2H
-X-Received: by 2002:a17:903:19e6:b0:2cb:2b50:d9da with SMTP id
- d9443c01a7336-2d389b61bdemr35547795ad.3.1786615457444; Thu, 13 Aug 2026
- 03:04:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786615695; x=1787220495;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DWeu0BF/Yr8FpY4cMXEg/n8k8/uyCaL0DXpaXJPhx6M=;
+        b=W5wi+N2MIxmqsoJJkOUANT9YwpidPXJDOvh6pDIhDpZJIFGe7+ERClZHp78pW/KrnC
+         WeDTQejqZywKX3Thu+aOi7B3FZTw6ITHLkf8bt7mZKm791AXvTwnOBE0gDQka5Eey98q
+         1yTxQALoJtD0FBf5Z5K1QUsEUDNJa2a1SeHiwWARjSYizmPirmpB5oKtLRrkEExfqlGN
+         udmLwy7QldDexWI4Ru6TQG6ozlmtV8oa/NL2Waip5tFIXJFGizOVqRz9xa4kzAi4e8xy
+         jCmzfygLJ8H/Y1mt/RDtb3ODWQiPeyQ7vRXxa+yuKBtB/k+W+yQzzRQ+orrWih6f2ILB
+         Glcg==
+X-Forwarded-Encrypted: i=1; AHgh+RrX+Pv8PUZudmKj7yH1PujI6pL/UdJrFqnY4KKjmvc+4c0Jb56IMQjTp2B8FUScD8Q8M+tx4Ok=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLcANtbcYwWJCcvIa2Dv1Tlm5cbpHJGQszvRXSYpQdTdHjqpnZ
+	ZZe4YzTlWXjjIiI53q7LBELSmdOmCAc3GKw58J1AQGqwJx6YQi2lHvm4
+X-Gm-Gg: AR+sD11Jq8IBQaTXpxjHYRYTfR/cgj971DpbQihDI6TvGyYXCymjtaW6OHcoTQal2pK
+	bTl9mAHENgTpTLfOXQM7GUByWtluKwIPWNwTpvhfMFzUx8zZliUN9bcm8Wcm3aCW2d7Nn9kwldN
+	QxyiHx8AiPo+eX5tlQFU8LcHcYrxzWcHLxDw3YgLZpfqf2FoN4j/fqGuo0Q3wDWVUYuEu6biFlb
+	ek9hodEkhHFt6ny9Ic6lcjngjox8xW9oEFd30KkV338WgOyf1h2jdM6qVjMqpYsZNG21sXJyWhO
+	AjxIbgInQsgzdR5AVahgNQVERREqdE8DI38MgZuCpJHjXcZCiJszW59Oq6Qx7qTEcz0TILfQOLo
+	9hNZr+nUq8DfPGlZH62TG713LP1P/BdV7F/MExnt1VzFS9zHqwrImeZqhhqyx2xdOSqOEjY9NJT
+	cq+qvaOpUV+3MOa2a3Qz5RDYiOwIDue3WSrDwrXd9Jv+9oG0HnJAqPVDAkgQdcKQ2bPE9+M1Q=
+X-Received: by 2002:a17:90b:1f88:b0:38a:c3f:3b87 with SMTP id 98e67ed59e1d1-3931e26fbeamr6273227a91.12.1786615695066;
+        Thu, 13 Aug 2026 03:08:15 -0700 (PDT)
+Received: from c79ofce.localdomain ([103.165.85.242])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931dadc0f4sm1012244a91.2.2026.08.13.03.08.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 03:08:14 -0700 (PDT)
+From: Zhixing Chen <running910@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+	nic_swsd@realtek.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	Zhixing Chen <running910@gmail.com>
+Subject: [PATCH net-next] r8169: keep LED device name valid after setup
+Date: Thu, 13 Aug 2026 18:07:11 +0800
+Message-Id: <20260813100711.14724-1-running910@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811-fix-fops-owner-v10-0-7e71776f9dbe@linux.dev>
- <CANiq72=bhfofrbdf1qeA380-eWeKj5yXhC0NzaU_nbB9SpxYHA@mail.gmail.com>
- <DKNAS52KYWLD.M15VEC6U0F6R@kernel.org> <DKNDF3WD27GM.5VP6RBRXZBUS@garyguo.net>
- <CANiq72=SP_nT7Z6NSH-GT51-8hJ8qLUa07Cs+SarSFTO9Z7vUw@mail.gmail.com>
-In-Reply-To: <CANiq72=SP_nT7Z6NSH-GT51-8hJ8qLUa07Cs+SarSFTO9Z7vUw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 13 Aug 2026 12:04:04 +0200
-X-Gm-Features: AUfX_mxe0Lg9da-FioFXEgvJltaWUVJqtXi0b-R5y4sq5pbip1KqobICrYsDddk
-Message-ID: <CANiq72=Whd+u0cA88++KyeOQQrsBK+NqK-586jNX7L=_Ocixrw@mail.gmail.com>
-Subject: Re: [PATCH v10 00/10] Fix missing fops.owner in Rust DRM/misc abstractions
-To: Gary Guo <gary@garyguo.net>
-Cc: Danilo Krummrich <dakr@kernel.org>, Mark Brown <broonie@kernel.org>, Alvin Sun <alvin.sun@linux.dev>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
-	Rae Moar <raemoar63@gmail.com>, Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
-	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Igor Korotin <igor.korotin@linux.dev>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-modules@vger.kernel.org, driver-core@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 13, 2026 at 11:32=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Ok, done -- Danilo, I took your diff and converted it into a proper
-> commit, please double-check you are OK with the Signed-off-by:
->
->   ec6fcf8a175a ("rust: kernel: add `LocalModule` fallback for
-> `#[vtable]` `impl`s")
+rtl8168_setup_ldev() and rtl8125_setup_led_ldev() build the LED device
+name in a stack buffer and assign it to led_cdev->name.
 
-We also need an `allow(dead_code)` until we actually use it
-unconditionally: a2595ed13816 instead.
+The LED class device registration path reads led_cdev->name after it has
+been assigned, and struct led_classdev stores the name as part of the LED
+class device state. Do not keep a pointer to a setup function's stack
+buffer there.
 
-Cheers,
-Miguel
+Store the name in struct r8169_led_classdev instead, so it remains valid
+for the lifetime of the LED class device.
+
+Signed-off-by: Zhixing Chen <running910@gmail.com>
+---
+
+I noticed this while reviewing the r8169 driver code. The LED name is
+stored in led_cdev->name, but the current buffer lifetime does not match
+the LED class device lifetime.
+
+I have not seen a crash from this, but led_cdev->name points to a stack
+buffer after setup returns. Storing the name in the per-LED private object
+keeps the pointer lifetime aligned with the LED class device.
+
+---
+ drivers/net/ethernet/realtek/r8169_leds.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/realtek/r8169_leds.c b/drivers/net/ethernet/realtek/r8169_leds.c
+index 1999e81f0bca..5a2067be3095 100644
+--- a/drivers/net/ethernet/realtek/r8169_leds.c
++++ b/drivers/net/ethernet/realtek/r8169_leds.c
+@@ -31,6 +31,7 @@ struct r8169_led_classdev {
+ 	struct led_classdev led;
+ 	struct net_device *ndev;
+ 	int index;
++	char name[LED_MAX_NAME_SIZE];
+ };
+ 
+ #define lcdev_to_r8169_ldev(lcdev) container_of(lcdev, struct r8169_led_classdev, led)
+@@ -131,13 +132,12 @@ static void rtl8168_setup_ldev(struct r8169_led_classdev *ldev,
+ {
+ 	struct rtl8169_private *tp = netdev_priv(ndev);
+ 	struct led_classdev *led_cdev = &ldev->led;
+-	char led_name[LED_MAX_NAME_SIZE];
+ 
+ 	ldev->ndev = ndev;
+ 	ldev->index = index;
+ 
+-	r8169_get_led_name(tp, index, led_name, LED_MAX_NAME_SIZE);
+-	led_cdev->name = led_name;
++	r8169_get_led_name(tp, index, ldev->name, sizeof(ldev->name));
++	led_cdev->name = ldev->name;
+ 	led_cdev->hw_control_trigger = "netdev";
+ 	led_cdev->flags |= LED_RETAIN_AT_SHUTDOWN;
+ 	led_cdev->hw_control_is_supported = rtl8168_led_hw_control_is_supported;
+@@ -230,13 +230,12 @@ static void rtl8125_setup_led_ldev(struct r8169_led_classdev *ldev,
+ {
+ 	struct rtl8169_private *tp = netdev_priv(ndev);
+ 	struct led_classdev *led_cdev = &ldev->led;
+-	char led_name[LED_MAX_NAME_SIZE];
+ 
+ 	ldev->ndev = ndev;
+ 	ldev->index = index;
+ 
+-	r8169_get_led_name(tp, index, led_name, LED_MAX_NAME_SIZE);
+-	led_cdev->name = led_name;
++	r8169_get_led_name(tp, index, ldev->name, sizeof(ldev->name));
++	led_cdev->name = ldev->name;
+ 	led_cdev->hw_control_trigger = "netdev";
+ 	led_cdev->flags |= LED_RETAIN_AT_SHUTDOWN;
+ 	led_cdev->hw_control_is_supported = rtl8125_led_hw_control_is_supported;
+
+base-commit: f6057f06ef7afa9893ed33603f7917fa39d237b5
+-- 
+2.34.1
+
