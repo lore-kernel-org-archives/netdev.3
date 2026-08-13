@@ -1,151 +1,154 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086EF328B77;
-	Thu, 13 Aug 2026 07:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B0531F9B5
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 07:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786607015; cv=none; b=uxpiA72RnefDGSpVLE198yy+/ZnynSafiEMJvqDurjNxrUSJfRii6/HLTyHC44jLyP5VyJnzlFryKDSB+sPGMr+lcaTRXwTRDMzP9FSf/inqUwc62u/mrs1CDzZETma5ed2ro3Ba2KxxkgbJIMQI2unW/bJLVrMH4qVtAbOeuj0=
+	t=1786607403; cv=none; b=Rl3/0fO0sr7l+Sbxx5bn9dside66C0H0WwJD40p6mBkcKTIeCEuz4ma5z/1gEDnpk7I8I4Auy7rUj9rHcwysS6LeV3hf0vwxaCljwVQwHl49CEqKbLLw+G9cm+ZNWWNgsEAFp7v+HOo3LHgczktOIOgMH/f27XSo4EzgjUqFDFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786607015; c=relaxed/simple;
-	bh=a4YVlWFl709Eb8AQrJEmuuJjttVNj/1mZiX+yfWZG9w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gy0GER3IRwa+mrre9Zcfxl5vUffUHIrs2xRwezKGsOk8g2BpEXcKkug0JgiNtgzafnZaTV6ysqvs5ishgVe//Klc8fi1O4LaZl7BSXi9UL+xH1r1Ch9S7EyDaHaBpleiVROL+qsd7o8R+R07JdllsrgaBpzcTX5D751Ui0v8RhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MjJ+C/Em; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786607403; c=relaxed/simple;
+	bh=Z7PZv7lkF2f/2APsSytzL4xAa8qnNQPmEwjqQXtITU8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IZ0Vwzz8SY4tA4+jrOGP17KgjIRcyzXfspfaWSrEZZAgC2Ai77EiL153IEOCLzrfLMQmZ2p8gJfqWIsdwsoOsG+r2+GyJ5xZNyRWg7lGaNEtTD041kFMBWYfiUgEMfGSgPU0LBLpj4zJ8USfhfok84KgdnwznTjMJExOxhWi3oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SaGdyH7I; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MjJ+C/Em"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D61wue1430858;
-	Thu, 13 Aug 2026 07:43:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=FPhKMOovbs4yAYQc6W7yJ3HqLdyHsafJlCTmhwLRY
-	54=; b=MjJ+C/EmdwofNG4D2HEzQFrXhZDl8SHmsdVc8VRGur5hjH9AN2x9hm0Uu
-	UN2NY3lijPta9fjMWGnLsM2j8oddhHRhkesuRiYdysjTFP7ld+Q8wL+hVOaSf87G
-	bdaMgKCYiuSPhsGpe4+3vSLg8oNzVcNfYJU/HP7+2LHzpLHRozlcGlvs1NCKc/Ka
-	HMarlcKOi7MikRbkoBlZERPJcrcUX9veRXaAJsx0U5IJ3pKMls9VB4CrvmX04P7d
-	ZV/3AsQaJZCsRdHCFxB02kcvB30zjNU4EHay9jlx3BzvE0KbekNjuW6Bo40RsBLQ
-	MDX8D3OWXbFYSsxYm8Oee3Uj7aNYw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvp35v6n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Aug 2026 07:43:26 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67D7fGI8005035;
-	Thu, 13 Aug 2026 07:43:25 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfy9vnc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Aug 2026 07:43:25 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67D7hMRb30540164
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Aug 2026 07:43:22 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 37F282004B;
-	Thu, 13 Aug 2026 07:43:22 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F38FC20043;
-	Thu, 13 Aug 2026 07:43:21 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 13 Aug 2026 07:43:21 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 56341)
-	id DC1051612E0; Thu, 13 Aug 2026 09:43:21 +0200 (CEST)
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
-        hidayath@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, Mahanta Jambigi <mjambigi@linux.ibm.com>
-Subject: [PATCH net] net/smc: hash socket only after full initialisation in smc_sk_init()
-Date: Thu, 13 Aug 2026 09:43:15 +0200
-Message-ID: <20260813074315.554926-1-mjambigi@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SaGdyH7I"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so2954315e9.0
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 00:50:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786607398; x=1787212198; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=hvNjOb0PYgKb5i1b3A7SCqBWH5+crd0NIVMjDXNl+Sw=;
+        b=SaGdyH7IbKHKDesgDdNecgwmOOPw3M1q2imG1sofbWt7P3OBbajoDOgkb4KzTYW+lv
+         on7pCnVdfX6Cw4xqIS3DvKUK/OaeEp8ycIn+oPY1DahQxrcAmIjtG90+CMaevNgRpVLq
+         U2Y8eHz2UaQItRj/wMshp0ro1+vg6gQYF9K0oL8M1L8MvHPOyulj4HDqExLCvx995WJW
+         vKs8UcCqd76zGTbT1p17HJcVHW4oJOV16eu8tbqWcCAzZQmusfi3ZXfP/k5zqNNgVaBa
+         isRIPWdygYDSt7pDTd9idrtUDv+4DvSwEU5/L3ThRS3y8OGhjvOErz7fYuQ8TODbN8vn
+         3K7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786607398; x=1787212198;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hvNjOb0PYgKb5i1b3A7SCqBWH5+crd0NIVMjDXNl+Sw=;
+        b=njHt+FUjnhVFfBccloyoBHm7cYr7JzQ2d0OVeZfinHKQ8+YWFZILyNtjhwEjgWCFX9
+         2HPrjGmFPBZyoO263Qs2vMQiycdn+jwJu9LWIe5uNhFH8LLQvvgnstZLZR0rZd5ha+vn
+         mi62xzWy6XNz4/qQHlphmOAb59bz3rPN7AvFH7G2Z1ddYXMCxlQwqYAV7yeXW8zBEIdM
+         QV2KDXnCk6brvTM9AJn3pKgMzE8wZm0zcDq55aQMhcoQl1h6Mjg2/EQGiv/zBP+whX4x
+         6lG5hy12Lqbh+Mwx2TFC213djgzBtDKKR4/iiYXugqWBqxKWMOUAu9NA2s4pRK6aS/C1
+         X2rA==
+X-Gm-Message-State: AOJu0Yyeeo8xzjVzAKnMHPlPu6vK7Gc48wX/G65odT/4JyGbL5tx2+Ez
+	W2u2j7ayEB1AcoeZlJ4QJVcx8K5VI9qU03prMi/kyCB5Bd/GVpjaIl65
+X-Gm-Gg: AR+sD109/vKUyn3RV7dTBWFVgFyLUVsLcgL6ZIsbEntj2JKpsB8wLWjTKfd/O3o4jHW
+	RRhkuCbptuHIFF1IXxefV1beJCIlZ1qFDKuvVvypDyPqYjirrElX1p3fKa5ICB1YXEJCM7NL0DV
+	ILlSOLbZ1JiflfKG262rppMyqAhe9TvldATYywvuLpwvKdPqCNzs5lc+JfY/HaCBTbVN2zdABKx
+	YbIPp/vYmoIrs/NurIz/XpRBQAaE/YoVCjVZXtgjMH1boFuYzmu8gsaJkoFYhRC1GoE8q3N42K7
+	pjmYhHbxj71cGeEETBl4p/PUX3U+noPgYfbEylXDGCD4GUkm4c6qDTHDOeOlMQuDfF8zbHBknh4
+	gs7Etrh8PWvLDNyu+wVOlWNzMdt6mpo5kognRCSzkitzrYjpo2EIwLX+O67JYDtkSi4gUOQOHV1
+	IQ7R94h4z9VAWCQgdvyLWt8GppHQmU+6pBDDNOlfUM1O5dg9DHUkBYYfYegxIUOu8SXJJFPxOe3
+	q3l7Pe7klENzH7XSMvq6U6V0UC7YJTQelq617Tg
+X-Received: by 2002:a05:600c:3556:b0:499:621a:2ec2 with SMTP id 5b1f17b1804b1-49982154908mr48444985e9.3.1786607398055;
+        Thu, 13 Aug 2026 00:49:58 -0700 (PDT)
+Received: from INBSWN167928.ad.harman.com (bba-86-96-6-50.alshamil.net.ae. [86.96.6.50])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981b62894sm41936365e9.13.2026.08.13.00.49.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 00:49:57 -0700 (PDT)
+From: Abid Ali <dev.taqnialabs@gmail.com>
+Subject: [PATCH v3 0/3] fix the MTL fifo and DMA race condition
+Date: Thu, 13 Aug 2026 07:49:26 +0000
+Message-Id: <20260813-stmmac-rx-fifo-block-v3-0-738acbee55d9@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=AMtp2X5w c=1 sm=1 tr=0 ts=6a7d759f cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=-ibLmwfWAAAA:8 a=VnNF1IyMAAAA:8
- a=KdTQYx-huaeXBQr4oQUA:9 a=A6MkUVyZPcTV1i89ro0M:22
-X-Proofpoint-GUID: oDi_CjKzNQ4jV8TMfHBH-2yDRyNGNkkU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA1MSBTYWx0ZWRfX0q6ANZMqxhgr
- n6E9X0ydAm3CMCnICzNyyjac246WvSRymkfNJTbs5lsgXYM5Mznzn+UB7fEh696S+zi56cqvKJd
- ZxrS2QS5aR1tz65ThhM+OToNDCxhEMgZohq73p7e3oE/PlsFGrqkgZWf8+TLk0GVClrwlY1Reo9
- ceI6V9/WY41SP1PyR/7oleMrAn/6DO4eBLI6FBBNUWZuQmVGD94G2FRxMVZFC1uBtC9YN2ukB/r
- dF93xXwhfeW9vB1RyvS/LvYWJt8QbQg48oD1oPa4C+VUJqtZCFamnYYFzAc4i7yCl2vkGqRfrZn
- t/DtM+ci6lsPVGY7qDD3gADSDhIXu/tbzrRR/+CJxKMK8Gu3+R4ouWrIcYsip5b+8qT8lJc1AGq
- pTgaAJI6KQLrGMMesN7g3KVN1jajvbbEf/HArFcrq+a2314ILV/3AFSeLafbg0+6hB5enY9gRLb
- 87Ml5e6q2vORBQid6hA==
-X-Proofpoint-ORIG-GUID: 0TQjeYdrXLIJF6b0d_leJqwo4d_wtfwB
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDA1MSBTYWx0ZWRfX8ht0d/O88Slq
- X1mPstt44Eq6pAltQqdkSHGw6krsF0q5Ufh/H0PxN3Ldrrdmxtj49jVtlMh7ZkgKRgOluFnlnvG
- DqcSqoqbMaZDlH5GOK2PSzHK+D3ImJU=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-13_02,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0 bulkscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608130051
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAZ3fWoC/4XNSw6CMBSF4a2Qjr2mDyjgyH0YB31CI1DTkgZD2
+ LuFERPj8D/J/e6KognORHQrVhRMctH5KQe7FEj1YuoMOJ0bUUw5rimHOI+jUBAWsM56kINXLzC
+ 2alrFGttyifLpOxjrloN9PHP3Ls4+fI4viezrHzARIFBWQuK2lFxheu9G4Yar8iPawUTPSP0Do
+ TuiFSurWjOi8RnZtu0LADHXff0AAAA=
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Qingfang Deng <qingfang.deng@linux.dev>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Abid Ali <dev.taqnialabs@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786607395; l=2551;
+ i=dev.taqnialabs@gmail.com; s=20260425; h=from:subject:message-id;
+ bh=Z7PZv7lkF2f/2APsSytzL4xAa8qnNQPmEwjqQXtITU8=;
+ b=A/i3S1pHv+HZqfpzdWOkimYcHvIeLijiOg8jpxRANLAXbZaYQ+CFCLDTpOyt3sDYOrIBHwBqq
+ EdOnHUba2wtD4BaIprh0cCIrSDmD3rBdzL5cH6s2lE0GTfbjO4DLIvi
+X-Developer-Key: i=dev.taqnialabs@gmail.com; a=ed25519;
+ pk=4Syx51HH/MOySSUpi79M2ToLOdwt1yiNb338eKZBJNk=
 
-smc_sk_init() calls sk->sk_prot->hash(sk) before several fields are
-fully initialised: clcsock_release_lock, the saved clcsk_* callbacks,
-use_fallback/fallback_rsn, and conn.close_work.  Once hash() returns the
-socket is visible to concurrent hash walkers, which can then observe
-uninitialised state.
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: David S. Miller <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>
+To: Russell King <linux@armlinux.org.uk>
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: netdev@vger.kernel.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Abid Ali <dev.taqnialabs@gmail.com>
 
-Move hash(sk) to the end of smc_sk_init() so the socket is published
-only after it is fully constructed.
+Changes in v3:
+- v2 tried to fix the ordering in teardown path, but it still would
+  not follow the ideal flow mentioned in the databook. So have
+  seperated the patches to deal with the teardown and some findings
+  from sashiko.
 
-Fixes: d0e35656d834 ("net/smc: refactoring initialization of smc sock")
-Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
-Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+- "net: stmmac: enable MAC rx/tx after DMA start": reduced in scope,
+  now only moves the MAC enable after stmmac_start_all_dma() in
+  stmmac_hw_setup() and stmmac_xdp_open().
+  This is to handle the overflow scenario during bootup causing hang.
+  The teardown side in __stmmac_release() is no longer touched here.
+  This change could go independently fix the overflow hang at bootup.
+
+- Added "net: stmmac: xgmac: tear the datapath down in the documented
+  order": for ensuring ordered sequence is followed for teardown.
+
+- Added "net: stmmac: xgmac: decouple the MAC Rx/Tx enables from the
+  DMA ops": drops the global TE/RE writes from the per-channel XGMAC
+  DMA start/stop ops.
+
+- Link to v2: https://lore.kernel.org/r/20260727-stmmac-rx-fifo-block-v2-1-4dc3457d31d0@gmail.com
+
+Changes in v2:
+- Corrected the ordering in teardown for xdp at stmmac_xdp_release().
+- Link to v1: https://lore.kernel.org/r/20260726-stmmac-rx-fifo-block-v1-1-45ab094b6c02@gmail.com
+
 ---
-Found by syzbot while testing a diag dump patch that drops the hash
-read lock before calling mutex_lock(&smc->clcsock_release_lock).  That
-change made the uninitialised mutex reachable for the first time and
-triggered DEBUG_LOCKS_WARN_ON(lock->magic !=3D lock) immediately.
+Abid Ali (3):
+      net: stmmac: enable MAC rx/tx after DMA start
+      net: stmmac: xgmac: tear the datapath down in the documented order
+      net: stmmac: xgmac: decouple the MAC Rx/Tx enables from the DMA ops
 
-syzbot report:
-https://ci.syzbot.org/series/ab0d12fd-741a-4a0f-9f49-e52b84e94f4a
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h     |  8 ++
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 94 +++++++++++++++++++---
+ drivers/net/ethernet/stmicro/stmmac/hwif.h         | 17 ++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 85 ++++++++++++++-----
+ 4 files changed, 170 insertions(+), 34 deletions(-)
+---
+base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
+change-id: 20260726-stmmac-rx-fifo-block-ef589c38f96b
 
- net/smc/af_smc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Best regards,
+-- 
+Abid Ali <dev.taqnialabs@gmail.com>
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 00403175b740..5e7560417ec7 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -409,13 +409,13 @@ void smc_sk_init(struct net *net, struct sock *sk, =
-int protocol)
- 				      "sk_lock-AF_SMC", &smc_key);
- 	spin_lock_init(&smc->accept_q_lock);
- 	spin_lock_init(&smc->conn.send_lock);
--	sk->sk_prot->hash(sk);
- 	mutex_init(&smc->clcsock_release_lock);
- 	smc_init_saved_callbacks(smc);
- 	smc->limit_smc_hs =3D net->smc.limit_smc_hs;
- 	smc->use_fallback =3D false; /* assume rdma capability first */
- 	smc->fallback_rsn =3D 0;
- 	smc_close_init(smc);
-+	sk->sk_prot->hash(sk);
- }
-=20
- static struct sock *smc_sock_alloc(struct net *net, struct socket *sock,
---=20
-2.50.1
