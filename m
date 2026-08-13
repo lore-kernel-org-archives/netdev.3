@@ -1,96 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74ABA48CD5B;
-	Thu, 13 Aug 2026 17:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07B6484249;
+	Thu, 13 Aug 2026 17:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786640867; cv=none; b=sUa4PrANtPv4Kp4fzZrmpKpYWUlHwuIBdK25QZBvAI3aD5LpgBBpKkD6UaM0dKnMoo9ik7P+YFmc+EaE5r9WPvs8BJmNGq3htmRJ4R+NM997Ainhdn1Iy/Ry8AEVgA8rZ/NnZZajC4RdrdfQTf6dYqI8OFuUTs+8PHRnUS3qpvU=
+	t=1786641678; cv=none; b=ZRMPI5N5RpH7WAcfur5wJ/e9wO2q8c5RRBYdj5lX9maYGAQLpBNNRTcCG7w7JGhedZpAOC4ZySipqGo3IrHbX9AidDE6zniIb8CB6hSWK7Y/Q6C+tPfEB0otYERhtqGPm0KLzj7eS3rAt34DS+zRxI32qhJ1G/29rJOkBhl6dTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786640867; c=relaxed/simple;
-	bh=C9QwBrIM5q6k4hdVreq12DlUAvQG066COtPYSj38ois=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References; b=r4oCSGXc3vS2N7RruDGtPK5Uf/mrBx8iDriR6u6jGw8IWdotYIB77FC3gttO8j55gNdpS9NGwvOgtm7tjR1zgEzVYLoXZCve8OcoUmTfxE5Dq9dYEMWvPdWeK27SZONlFeqMODVI8NOOpPLENkcVrRONXE0DjkMkQIQf0PgAY5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l6/55D1p; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786641678; c=relaxed/simple;
+	bh=Mkidty/zRD+x27WcHPxXMrfSjcU9wppgFrqjf9p/0RQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fu6JmEh/bpCDHofYwwV//n1kgCXVk7AulZQpN62D7MCnQ/Zw8dwAMXE2cp/HdKrZUas/ZB8ddwKLYQBBWs+hFvryfqeSQr5TXdZjc7blbOUMr6fYLVnZZvZrrBm4eS1NlMcMmWVkSoBOvWLy/Nw95f+FN8118x7Thd1kMaQCShU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YIWuEi1+; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l6/55D1p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D464A1F000E9;
-	Thu, 13 Aug 2026 17:07:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786640866;
-	bh=PKRAeK+XaoOSz8i+k2Leco4J4jAfWktnkTRSqbkuLKM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=l6/55D1pW/RcwnNP2uahedYxgXA6SfshCx0z2EmsF/OjK7lXLkJYcVuMj32OgAtCk
-	 cyfxTg517dDPPDyBv37OY7J0Dg7H+yvt9uBSLsjahX6DCkiy861Q0UWxH3vrTipjOr
-	 z0VQcL+BxxHQ4uNYdk+pn+SRzhXykT+Rowb9iXDWol9mVH3MBnAPPT2f4iaP6WDJiY
-	 Veb4fyO4f+V0k0RVHbHdI+bEHuStwcwlDAgx/cZMRCWXHbKAVLXv0kzKb9POLlpUNB
-	 IpMV/QY2isVa888VI0683WHUztUubnxgHMP4QK3lVsvECdyF6rPzDM5jVY0yujlHZj
-	 /tF2Jc9UVdZsg==
-Date: Thu, 13 Aug 2026 07:07:45 -1000
-Message-ID: <acf9c9a19bbac2dd116869a181bb1dfe@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Hui Zhu <zhuhui@kylinos.cn>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, JP Kobryn <inwardvessel@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, KP Singh <kpsingh@kernel.org>,
- Tao Chen <chen.dylane@linux.dev>, Mykyta Yatsenko <yatsenko@meta.com>,
- Leon Hwang <leon.hwang@linux.dev>,
- Anton Protopopov <a.s.protopopov@gmail.com>,
- Amery Hung <ameryhung@gmail.com>, Tobias Klauser <tklauser@distanz.ch>,
- Eyal Birger <eyal.birger@gmail.com>, Rong Tao <rongtao@cestc.cn>,
- Hao Luo <haoluo@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Kees Cook <kees@kernel.org>, Jeff Xu <jeffxu@chromium.org>,
- mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
- Christian Brauner <brauner@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Brian Gerst <brgerst@gmail.com>,
- Masahiro Yamada <masahiroy@kernel.org>,
- Willem de Bruijn <willemb@google.com>,
- Jason Xing <kerneljasonxing@gmail.com>,
- Paul Chaignon <paul.chaignon@gmail.com>,
- Lance Yang <lance.yang@linux.dev>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Barry Song <baohua@kernel.org>,
- Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH bpf-next 2/4] bpf: add bpf_thread_wq kthread-backed
- workqueue with cgroup placement
-In-Reply-To: <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
-References: <cover.1786086076.git.zhuhui@kylinos.cn>
- <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YIWuEi1+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786641676; x=1818177676;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Mkidty/zRD+x27WcHPxXMrfSjcU9wppgFrqjf9p/0RQ=;
+  b=YIWuEi1+f8Hf5JhEgMhazoQ+c3a7Um84uEQZSPkHvAM2UnPM9oZ0xfhD
+   aFngRI8N6SaNxOBIoUhOzTXZvj2bGGM7ON2fCFKJxThHiTNUwI2PZtdo3
+   i8FlfT0nVybSyoNx4XQVju58fby+7E8mdcQLOJicGESIju6AeIq6egAgd
+   ut4qPwYG+xDII20FRtiCM+fA3GVnNwOObzkK47XRRvoDSZE9aNDx7WetY
+   o13ANgzdV6h/lWFGWondnCbLUhztT9YacjAUOkeYEcDsxe6+Ryosdc1yo
+   shdOj9mpPUZViHAcscZ5krhO7WAnBZ5FbDqcIBlv8RFGSkWqb49wzVuvv
+   Q==;
+X-CSE-ConnectionGUID: E5fWtnuATEGNWXxlptvv2Q==
+X-CSE-MsgGUID: C0pNClVZR3+4NvwIWsA+wg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="89743047"
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
+   d="scan'208";a="89743047"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 10:21:13 -0700
+X-CSE-ConnectionGUID: fkQBEffCRJievkpflTJP6A==
+X-CSE-MsgGUID: y5sJH6QgRc2ns20kGIimmw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
+   d="scan'208";a="263549106"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 13 Aug 2026 10:21:10 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wuZ75-00000000W0A-0mQw;
+	Thu, 13 Aug 2026 17:21:07 +0000
+Date: Fri, 14 Aug 2026 01:20:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>,
+	Allison Henderson <achender@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Santosh Shilimkar <santosh.shilimkar@oracle.com>,
+	Ka-Cheong Poon <ka-cheong.poon@oracle.com>,
+	Dan Carpenter <error27@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org, Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] rds: synchronize info callbacks with connection teardown
+Message-ID: <202608140151.MOvRf1jc-lkp@intel.com>
+References: <20260720184955.3008978-1-nicoyip.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720184955.3008978-1-nicoyip.dev@gmail.com>
 
-Hello, Hui.
+Hi Chengfeng,
 
-On Fri, Aug 07, 2026 at 03:01:50PM +0800, Hui Zhu wrote:
-> Introduce bpf_thread_wq, a new BPF embedded map field similar to
-> bpf_wq but backed by a dedicated kthread_worker instead of a system
-> workqueue. The worker kthread can be attached to a specific cgroup at
-> init time so BPF-deferred callbacks run under the resource limits of
-> the target cgroup.
+kernel test robot noticed the following build warnings:
 
-I find the name bpf_thread_wq unnecessarily confusing. The kernel
-counterpart is kthread_worker, not workqueue. Maybe name it
-bpf_kthread_worker?
+[auto build test WARNING on net/main]
+[also build test WARNING on linus/master horms-ipvs/master v7.2-rc7]
+[cannot apply to net-next/main next-20260812]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks.
+url:    https://github.com/intel-lab-lkp/linux/commits/Chengfeng-Ye/rds-synchronize-info-callbacks-with-connection-teardown/20260812-225931
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260720184955.3008978-1-nicoyip.dev%40gmail.com
+patch subject: [PATCH] rds: synchronize info callbacks with connection teardown
+config: mips-randconfig-r134-20260813 (https://download.01.org/0day-ci/archive/20260814/202608140151.MOvRf1jc-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 11.5.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260814/202608140151.MOvRf1jc-lkp@intel.com/reproduce)
 
--- 
-tejun
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608140151.MOvRf1jc-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> net/rds/info.c:83:9: sparse: sparse: cast removes address space '__rcu' of expression
+>> net/rds/info.c:83:9: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   net/rds/info.c:83:9: sparse:    void ( [noderef] __rcu * )( ... )
+   net/rds/info.c:83:9: sparse:    void ( * )( ... )
+   net/rds/info.c:84:9: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   net/rds/info.c:84:9: sparse:    void ( [noderef] __rcu * )( ... )
+   net/rds/info.c:84:9: sparse:    void ( * )( ... )
+   net/rds/info.c:96:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/rds/info.c:96:9: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   net/rds/info.c:96:9: sparse:    void ( [noderef] __rcu * )( ... )
+   net/rds/info.c:96:9: sparse:    void ( * )( ... )
+   net/rds/info.c:97:9: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   net/rds/info.c:97:9: sparse:    void ( [noderef] __rcu * )( ... )
+   net/rds/info.c:97:9: sparse:    void ( * )( ... )
+   net/rds/info.c:222:16: sparse: sparse: cast removes address space '__rcu' of expression
+   net/rds/info.c:222:16: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   net/rds/info.c:222:16: sparse:    void ( [noderef] __rcu * )( ... )
+   net/rds/info.c:222:16: sparse:    void ( * )( ... )
+
+vim +/__rcu +83 net/rds/info.c
+
+    75	
+    76	void rds_info_register_func(int optname, rds_info_func func)
+    77	{
+    78		int offset = optname - RDS_INFO_FIRST;
+    79	
+    80		BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
+    81	
+    82		spin_lock(&rds_info_lock);
+  > 83		BUG_ON(rcu_access_pointer(rds_info_funcs[offset]));
+    84		rcu_assign_pointer(rds_info_funcs[offset], func);
+    85		spin_unlock(&rds_info_lock);
+    86	}
+    87	EXPORT_SYMBOL_GPL(rds_info_register_func);
+    88	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
