@@ -1,157 +1,132 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-149.mta0.migadu.com [91.218.175.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEA8359A6B
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 20:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786653458; cv=fail; b=j0jrXReoHVMd6SgVPDunnZlrAG7zVtBRna/z799JSOfzXvSg9wfQSHGuTtAF+hUs1OIrLGM8AQhCVWk3lO4o2r8OHOyWitcvP+Zk9a3Gw+ol8hZfEEIKQOtIOgErnnBs8QQvlyOepwNVFtJpB2MApNDtDv3gG6hdlE2sMY+TS6o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786653458; c=relaxed/simple;
-	bh=WKn7LJUCOqqmXCqHvgyhPypEPtdtIhD0bSwun0ECrW8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D3huENb9BJQrSF69VB5XdSy+MjiCbHDzY7ptXX0BlIEsH7/wnnA+SDvuZV5NYmzj/i+cIYCE0O8lSrgtn7YFHFmOMGpnIKQ3Y/5HW/z+qraCXY7o0kc+v+NNVjS9V05gB9+EkGY+YYWB9NXOv6ulhga4ppFkcgJ/jS+HFHanPZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=TQbIO8gx; arc=fail smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC06142C4E4
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 20:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.149
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786653541; cv=none; b=jPXEXV1NVka1LProJYZ3SczLkgJo1CrvR+DDvQ6HWkJYNjwxXsxg/E+RNp1XDYMNOUg7CfxSMBy1dAZDJr4BUG6fWilsgB8rNesMTVJoJFIBJS1u2zqbiq1YjEgxq7L9T9RbaXLsTl/8U9oiAS2mnBLkUTongP2FMwb8t1bZxW8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786653541; c=relaxed/simple;
+	bh=J/cqrFo34DxjpIckiIhVGdYpU3y4RVByRXZ4/EApmjI=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LhL7ubVBQngCDo58mjs96xuudBqcpyqAHxGGGBbZCDIMgUt8wVjTIrdWrF0qqpftiIYP14zXSQwLvrSR1pSBoKzrJcWmGe3DXlzfMCw/gEo4ypMhor19hrBJapDLu5top4bdlB4jMcyDhhIfqEd39kTLVyNZ0WlaBv4c/5j6nRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=A64mWKH0; arc=none smtp.client-ip=91.218.175.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="TQbIO8gx"
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67DKLPIB1518500
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 13:37:36 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=KO2aHEHBeKqMMmDolDDbPPIcrGj4c1wmA8j7J
-	OmzMWI=; b=TQbIO8gxZiVy7VP4Yh6usZn1Cx/kY7yBATMdZpAg86MN0bmhF2S2h
-	gRYjABH1eh7oXzOlCf8PEU5c0TQNpWiwEeh37s6RBL7+uYOzBgYPOQpnFWwVf2fd
-	eXyE4O4NhslZjKTlJAhh+JbJe6D0sBjI+qbMnGg56ek9/P/umvmk2qL40uDC5eQ/
-	COtSr3Tl/8CwIGzz+VLH2d+10f2J3Zxn1JdhoRBDH0WLarM7dOvxeIgamvjRzbn5
-	g9xn/0CHE1rAmtnUFNvhTexF5VReEyrhCtBlxV/Uiokz/BQnyRjxf2TzdEJyOpaf
-	dqqqtHmYhZ+ZYoUvIyVqcSsGMDrayxYxQ==
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4g1as0c529-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 13:37:36 -0700 (PDT)
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c210c66672eso31195666b.2
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 13:37:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786653455; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UNu+H+/Ku0almKRawCfE1VOUi1Gzg6jyAbb59TWf3GQ1JM2FgedAQKEpWEEfGQk7A1
-         HMFJ8hIYXl/ZmFs3Is6AFlDwzKFANQp4HAF4N2eT/VzqiNDjWX5gsoaI0IvbMvCeXnMx
-         u/b4Y0eXgZaUeFRTp31qJ02I/a95CbRVES8Y/RlQGWKyyKPa8yeLYdCOJH7sSneR7RHk
-         BpatF3xasMFjk/dg2/sGfbFUfmsO25Eumb6pPbdVQzm6gVwVX18HPe27XnUf2F5Zy9Xa
-         rk6kidkq92arW6PFakgmg3+5hRgLxJhlHaLaz0BZzezBSdH53hydtwK7JF7mCw0Vdlg5
-         zgKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=c/BkL2KSLj1UiiUctd+YoFQolC+h9hCfh0AtIb6XLIg=;
-        fh=P/TvgljJbpQOhNJ/F0Fm9ettx9AKGvGy8NQFr5D53cg=;
-        b=RZzp6qbM+XFLbxSU46fKfMeC1swLeluvyarMjNvo4QLrTfF8MSvsqU6BvV6nEupQU/
-         vHqlYBj4gZzdclfEE/rpmjg9FcLpIr8/Jgtc7IhQFB3xnRJ0L1REIaB1NnY/9MI7Elyf
-         UDRgOEPSCjL0lCRNUe+xjWrs3pUJYV7pb0nOEu9iIF4qFIwKGoaxfX4KZBELXbXAr56F
-         VG3lSiJ1MDBWp3YNv+rUhJeO1cV0jS+OeSPuTu5JPRCq+D48fVOjr57Wf7NGYlwaDrWu
-         sLdBbYygSVOHbGCVwFyJH1F+P4gRurxX9HrkD1r0FX4jQuwUS9o5h3NE4Q/Ipu+aKVKx
-         2otA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786653455; x=1787258255;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c/BkL2KSLj1UiiUctd+YoFQolC+h9hCfh0AtIb6XLIg=;
-        b=POOxr9Oup9U+Sq1lcoITDPXeAcKOZUENUpQWNBTMCcabrc5daUdZp6NKoAmuw3D+8V
-         Guf4yFWUZtIJ/Q23KjQA1E+LZKy8pcNB2AmXzv19qA4DKzVBFi6gpndod3a6lOMB2nm8
-         lQbFVEkFlusazAes9oXsNGUS/4tparup3GprWIqmlPBWbsnwfaubHcsEffR3ZOMVMx3t
-         8aUB+ipzHD5XmE5gDEfqznwU5MqYxdYZDxZ4CSstJwXTrxTOrV41s4pAqP5NeN9N06vZ
-         qeY2t0SN5N22sXLSQfWHVOFpjh6fPH5Idgep/heuaFsmZjojHajmx9RWbLIMF7hoeSLg
-         jGyA==
-X-Forwarded-Encrypted: i=1; AHgh+RqoP0BjNj1xGsQnvzzo5UZNcVEEG6bXpoXgly7O2Ug7jS8ZntXBdw8er9uuFRNrHReGpjQTG0g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBpnaeIj4tugLLS0L6BEd/DAG17w6JzTvrUqy3nQR1AWywkqXt
-	AOvHqBoAXYtVTn+sytAbSRlzVBe5uDu26lHkZIgRH8BLOtk4NcCSeX0Q5hbx74v5wB7URycZ2VV
-	7d879vzn64jyJ/qk9PcTThMgPxHasM2SDfWlEwxGaqpTRxwHFIBRNR9pmjkGPIUc5nwtTsZgDWo
-	6gL+Q1UsAc7+1gn67ptBFviPCqHWM3mw==
-X-Gm-Gg: AR+sD119EDEOpog7HEmC7uOANYzMnoqApztLHZLLYO69ETbKyw7FutcVNnR1SW73dwR
-	gH7THkOM2cUEUitlSZPZgvdwd1QxqnRYoBaahWy63LDaAnRfMk2JY4glkCDxOrxYoG98S1IDRzK
-	RWUXZLwJr2l9tPem7Jy2y4TmpfYvd7igyP0GDjP5xnhthzCisG5txdDw==
-X-Received: by 2002:a17:906:9f8e:b0:c16:5f28:4575 with SMTP id a640c23a62f3a-c212a2664ecmr37359966b.31.1786653454859;
-        Thu, 13 Aug 2026 13:37:34 -0700 (PDT)
-X-Received: by 2002:a17:906:9f8e:b0:c16:5f28:4575 with SMTP id
- a640c23a62f3a-c212a2664ecmr37357866b.31.1786653454514; Thu, 13 Aug 2026
- 13:37:34 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="A64mWKH0"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=J/cqrFo34DxjpIckiIhVGdYpU3y4RVByRXZ4/EApmjI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786653536; v=1; x=1787258336;
+ b=A64mWKH0reZikuy1xOTj4sVW/ZZPZFz++JxXlOqrrHAgVEz6CZRcgnTD5UYgWhtzFaOv4+FL
+ Ij5eXxkemipK8bB3ARhYb7Dg5LOm6OHHNzB27QQ6AD1OyjA/K682ayjbeX8C2bRQX9wmXPUWACw
+ IXznQNBdwqfldWCMyW/3VuXc=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [192.168.1.24] (64.43.42.247)
+	by smtp.migadu.com with ESMTPS id f1c7837f6579f528;
+	Thu, 13 Aug 2026 20:38:56 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <72681461-21c8-4a87-ba75-d281894aea1d@linux.dev>
+Date: Thu, 13 Aug 2026 21:38:55 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813193416.1544518-1-weibunny.kernel@gmail.com> <522517bd-869c-442d-81c8-c0236563a925@gmail.com>
-In-Reply-To: <522517bd-869c-442d-81c8-c0236563a925@gmail.com>
-From: Wei Wang <weibunny@meta.com>
-Date: Thu, 13 Aug 2026 13:37:23 -0700
-X-Gm-Features: AUfX_myKHvwnx_wx4xdnb6f7wSncaRXt8qrBEwYu7i2TduFX_kyDziGu1E5NR1g
-Message-ID: <CADe0Y=sQ0e=snxJBd6kBz08eYR4BrX_9Xbr=XEHGVcXzybfQow@mail.gmail.com>
-Subject: Re: [PATCH net] psp: use unrcu_pointer() for the cmpxchg() on netdev psp_dev
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: Wei Wang <weibunny.kernel@gmail.com>, kuba@kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Wei Wang <weibunny@fb.com>, kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDE1MCBTYWx0ZWRfXzmsQtfwet1Ea
- d3/1BsR+7U4zfqgj+BINMO8l/RzZ1fnRxfSuDKJ3beZpuFV73w4ZdUoEb7ds2mDwrVlY8ATFQw+
- N9LEGl67rMVOHoegOQZEcNhQDS3BJhQ=
-X-Authority-Analysis: v=2.4 cv=GvVyPE1C c=1 sm=1 tr=0 ts=6a7e2b10 cx=c_pps
- a=jJvPsHQLKLf2UdvVr97r4g==:117 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=8elwO82fXORLTBIkMd32:22
- a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=pGLkceISAAAA:8 a=FOH2dFAWAAAA:8
- a=6MU5JDbc5_lXVzBpxg0A:9 a=QEXdDO2ut3YA:10 a=q7aydO1c4wibL4nb3gNS:22
-X-Proofpoint-GUID: 7nPeXmoJQdex05LO1C7qRSX_z-tQNC1G
-X-Proofpoint-ORIG-GUID: 7nPeXmoJQdex05LO1C7qRSX_z-tQNC1G
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDE1MCBTYWx0ZWRfX5UzXfl8wlesH
- P2Yhwtuz9YmFJHx1h/bVUeh0l6AYLx3D48GcKww9C9ZaYlVyEnRWbnrTSGL0FMcxnpkywhijlhw
- H4YSu2WSui7VxOhPRfJLVKlcFTezwjE3O81VlBIe0YO46cpnCe8DeeSAKjQbeqs1R2N4qX2ARXw
- jR93WC3V+ZDPEf5zdbKvESAMmd0/eBts/FGWiONpIpPEcqHyGbq1wYuRKkLDMkCKsN1rnDKzTfl
- Gyt/qdIzIfvpoZbMjQLfkOfALSl3OktxBxPdeIJ223IAnwyboeEk2+545TdsEXJoYyv91RRyzZb
- hr3UH2IaIt9zG4p9yL/rN0t48XgPa474Q/ztxLCCeiK7v6WY9OBWeAHuPR5hcZyZbbD464Ysdk6
- qSO8+eV435tcyRyFICPH79xCMuxI9Ve3d2zciiCbPp3Ppy3E22Cb4NxH+/XRNa998qsDwALqG6l
- 4h+U739dnCO+/5rTKGA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-13_06,2026-08-12_01,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: Re: [PATCH net-next v7 2/3] dpll: zl3073x: add channel ToD, phase
+ step and TIE operations
+To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: Petr Oros <poros@redhat.com>,
+ Chris du Quesnay <Chris.duQuesnay@microchip.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, Min Li <min.li@microchip.com>,
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+ linux-kernel@vger.kernel.org
+References: <20260811134700.1211010-1-ivecera@redhat.com>
+ <20260811134700.1211010-3-ivecera@redhat.com>
+ <452e52d5-c80a-498b-b12a-ab539ed9a2db@redhat.com>
+ <add0f48e-90a2-42c4-8445-754d85072e6e@linux.dev>
+ <00e79095-fc1c-47f5-8e7f-4e976f4954c8@redhat.com>
+Content-Language: en-US
+In-Reply-To: <00e79095-fc1c-47f5-8e7f-4e976f4954c8@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 13, 2026 at 12:57=E2=80=AFPM Daniel Zahka <daniel.zahka@gmail.c=
-om> wrote:
->
-> >
->
->
-> On 8/13/26 3:34 PM, Wei Wang wrote:
-> > From: Wei Wang <weibunny@fb.com>
-> >
-> > sparse reports:
-> >
-> >    net/psp/psp_nl.c:513:13: sparse: sparse: cast removes address space
-> >    '__rcu' of expression
-> >
-> > cmpxchg() returns typeof(*ptr) and its internal casts strip the __rcu
-> > annotation. Wrap it in unrcu_pointer(), the documented way to use an
-> > __rcu pointer with xchg() and friends.
-> >
-> > This was introduced by commit 06c2dce2d0f6 ("psp: add new netlink cmd
-> > for dev-assoc and dev-disassoc").
-> >
-> > No functional change intended.
-> >
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202608080910.l9KvOH7O-lkp=
-@intel.com/
-> > Signed-off-by: Wei Wang <weibunny@fb.com>
-> Commits targeting the net tree need a fixes tag.
+On 12/08/2026 12:00, Ivan Vecera wrote:
+> On 8/12/26 12:04 PM, Vadim Fedorenko wrote:
+>> On 12/08/2026 07:57, Ivan Vecera wrote:
+>>> Sashiko findings. Replies inline.
+>>>
+>>>  > Could a transient hardware error bring down the system here?
+>>>  >
+>>>  > If an I2C/SPI bus glitch causes the device to return 0xFF, the SEM
+>>>  > bit will be set and the CMD field will hit this default case. On
+>>>  > systems with panic_on_warn, using WARN_ON for validating external
+>>>  > hardware states turns recoverable bus errors into fatal kernel 
+>>> panics.
+>>>
+>>> The SEM-first check already handles the most common bus glitch (0x00
+>>> return). For 0xFF: the CMD field is only written by the driver, never
+>>> by firmware, so an unknown CMD with SEM set indicates either a bus
+>>> error or firmware misbehavior that warrants attention. The switch
+>>> structure with WARN_ON in the default case was requested by Vadim
+>>> in his v4 review. Systems that enable panic_on_warn accept this
+>>> trade-off.
+>>>
+>>>  > Will this sleep-based polling loop destroy the timestamp's precision?
+>>>  >
+>>>  > Should the postts be captured immediately after the trigger command
+>>>  > in zl3073x_chan_tod_ctrl() instead?
+>>>
+>>> The hardware latches the ToD value when it processes the command,
+>>> which completes when the semaphore clears. The post-timestamp must
+>>> be taken after the semaphore clears to guarantee the window contains
+>>> the actual latch event. Moving it before the wait would risk the
+>>> timestamp window not containing the latch moment.
+>>>
+>>>  > Could this loop exhaust its retries and return -EBUSY prematurely?
+>>>  >
+>>>  > The loop spins without an explicit wait [...] On fast SPI/I2C buses,
+>>>  > it will execute all 20 reads in a few milliseconds
+>>>
+>>> Testing on I2C at both 100 kHz and 400 kHz bus speeds shows that a
+>>> single iteration of the loop body (two ToD reads, each involving a
+>>> ready-wait, command write, second ready-wait and data reads) takes
+>>> approximately 17-19 ms regardless of bus speed. The iteration time
+>>> is dominated by the device's internal processing, not bus transfer
+>>> time. With 20 retries the budget is 340-380 ms, well beyond the
+>>> 20 ms margin window.
+>>>
+>>>  > Is it safe to use WARN_ON to validate user-controlled input?
+>>>  >
+>>>  > Since delta_ns originates from the clock_adjtime syscall's tx.offset
+>>>  > (via the adjphase PTP callback) [...]
+>>>
+>>> The PTP core already validates the input via getmaxphase, which
+>>> returns NSEC_PER_SEC - 1, rejecting values with magnitude >=
+>>> NSEC_PER_SEC before the driver callback is invoked. The WARN_ON is
+>>> a defensive check for a condition that should never be reached
+>>> through normal code paths, not user input validation.
+>>
+>> AFAIR, the general rule is not to write defensive code in kernel if 
+>> you know that the core has already validated inputs.
+> 
+> Yes, but this low-level helper zl3073x_chan_tie_write() is called from
+> multiple places and current code-paths are OK. But in future, if another
+> caller will be introduced or existing code will be refactored this WARN
+> immediately detects potential bug.
+> 
+> The same is also valid for WARN in zl3073x_chan_tod_ready_wait()... new
+> TOD command starts to be used but someone forget to update this function
+> accordingly.
 
-This is a sparse warning fix, my understanding is that it's not a
-functional fix and therefore should not use a Fixes tag. Please let me
-know if my understanding is wrong.
+That's a little bit weak and goes against "trust internal APIs". It's
+currently called from adjtime and adjphase callbacks, what do you expect
+to have in the future?
