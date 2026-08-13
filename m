@@ -1,146 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1910548A8C8
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDBA48CD75
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786635475; cv=none; b=tjWr9sscTcUzTyUmNP2b1aXzfCHIfM2Ke4QOrKaHhvhUOHtvLcj1DCo9tVnaLJGKjo5HWrTY1lPEO9Bpjq4W57WRmzzK/l5lvosAPeBeDySD2oJfMbAmMCsS4kPmXGdu/t/uy/VJ7emZCsrp+VM2pSQcuKMrlKFm7hHeEUTGN7o=
+	t=1786635643; cv=none; b=VUAuPvyJAW8U+LxYpYxqB/U75hJ71zmNCt14BfRyFqtNoLzQiefOCoc/nvdQVdz4ip7mLyn1wFGgqGB4e+AjdZwREZaGg/G77XYpw7Yp3BvzyyuowRYR5N9VDadc3fmKhtbqDg+5M19aW/os4af0Wso7Iu/aWYIH8FYSKSC7HnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786635475; c=relaxed/simple;
-	bh=Pcim93r8p9BWUMTNU5sRku0JTo0EJxl3tCFdWf72RAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SVoNQs6XdWlSE4pqbQqzkTrwgHJL1kRwmNWHKyGqHtzrx1kxJRyGb54SnHek+khyby0F7tPX1H2MWAtu+QRkz9W64ltl4oIwYPEdR5v6KPrBfUcr9uACWOgjeTAsaToNHp9QNk4VzXftd8mdZZC8krn//jvgwIlR/S2QqoIEhJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EUH7UBMo; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786635643; c=relaxed/simple;
+	bh=WtqsLzrgSjg/xVRfW9WfYBYpQ3bP/9ChUav4NHg7yVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g8emNRikOktIeBgHkdpRwz4BY6Soi+2ksJGJiycqON6HDYraE71F056ZqfWcu0SUqP0sJAF+hadRmN+dZEQnooSd3LdCJxJyESwcN12muM/l3LvC9S7tjKnvYOGa5ECaDm2/zRtWiaRrgpFPVlTatceMpIz2b7PxnmJVFyQGamU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dF8Cx924; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EUH7UBMo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786635457;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fdTNXPX7SsRWxcVYsxUY+cluxc5Mdj/SmHqdDXqVqeA=;
-	b=EUH7UBMohRgiiSZUcKYR7d2W1ljRQE00Opy0rTqUnt/m7aK+ZNQq2CUlv4bVdfpOe6fauP
-	t6nsEVXy8nLY43g3Sk1Oh5Z/x4aJr9f5Bs6ovx1hgykpQ8EVHMWESWToOndjaL+GLu5Rs6
-	UWNNxQS43TH9YZ2AsULspNccb7LBA+o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-diIi3B5DP6SAfMoGTVQI7w-1; Thu,
- 13 Aug 2026 11:36:39 -0400
-X-MC-Unique: diIi3B5DP6SAfMoGTVQI7w-1
-X-Mimecast-MFC-AGG-ID: diIi3B5DP6SAfMoGTVQI7w_1786635398
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AECDD1956045;
-	Thu, 13 Aug 2026 15:36:37 +0000 (UTC)
-Received: from [10.44.49.172] (unknown [10.44.49.172])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6BC943000239;
-	Thu, 13 Aug 2026 15:36:35 +0000 (UTC)
-Message-ID: <a13888d0-e1d7-4f3c-9b50-f99df3951459@redhat.com>
-Date: Thu, 13 Aug 2026 17:36:34 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dF8Cx924"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2caced6038eso15229725ad.0
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:40:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786635637; x=1787240437; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AcZvN96x3R8L9Ww6tvDjLJoxtHOJUhdmG67qkMsuoE8=;
+        b=dF8Cx924z63s7ot0bcNk24y7I0YPDSgB9NNaJVzHc9+3Yt/JGlCfFcrjl5hDlLMxTt
+         4MaEDpK12ekLLATLF+cwf3ufcrM029EuFcouefRhyELSWlu7wH6mDorsVx0fyKzD1NDS
+         LGD1Rj5ARKXA0ZtgpswP3jq3CN1QHKO38uyVtYfnr0GHaAlPvgJ11BoL71E1NFVq1LuX
+         7Qsi3yfCb3BPFwq+ZvxYOfzLVs6xDhks+uZtJKfEVVGuzn+W/57XaORu3wOspuM2F9cn
+         AMKxPhm7UYvvFASH+Wh2uWcq2oT74ZkNKGOAsz22bnmreYWkD7FnSH1W20QMhFCBLUGJ
+         x5bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786635637; x=1787240437;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AcZvN96x3R8L9Ww6tvDjLJoxtHOJUhdmG67qkMsuoE8=;
+        b=TVHpYKwg1sOQ7IOsldiKJhZR3wg9kWEQ1dfXYXOYHdycBjB4Z5dNx7Ur+qLdvtP9ek
+         qsT/Hmo2kQ97Vh5fYmqpN7/5S1EwNgLVMf8smtbqwIedLhRVh0sZLgu7/MnfmQyZQarV
+         hBsaoYiwStpRfPd6nZ4vD7Z1m60iNWCJfR13LmKGuTba+OcV7eD2HGqwDWCXh6y9eiIF
+         hl8fvTHzyZ9O2NiLzl6lGcSay7QvaEqAL94VgKbWY0rD9+ROErcF1xD8fbuCs83w8Lap
+         Dn50hTRmnKq4ZdstD7rLeelwDE6g/+st8Qov04b0gmVWEBahDeNVB4jffdrGa784ya6n
+         mifg==
+X-Forwarded-Encrypted: i=1; AHgh+RoCY4jzS40JXOlbqoSeBrrkR7MVwM9iyOjnlMurkJf/bqJywLkr4/dD1N90CpquX1TWR6rb52A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB4VHTVdODhp1CyN82EZCyUKEUOXTUk4JCi2+hZiRx5IwjemAE
+	EtYfSZAtzsEoSA/5V/NObyYYu3AU7Ir3hsSBT/FQ210s3MQ0N/ZcorhChZ2AYczxGlw3r5+6z+W
+	LMyAlqQ==
+X-Gm-Gg: AR+sD11Ex67+RsTRf0IrXRKKufVxGO0ALwCx9rmsvS5XdO37p+BKiwoDvRzq3lzIpfT
+	uyOl9Sr57FMQNGl1Rky0R95WGkRQse3qFj9OdOCLn9aSKcAnZDpkhM+Dfol6/wPcPJlFVZNA3zY
+	1GPACfHudQWW1D+Fsb7MNME6AdXGxk4jDMM3bnIIJjbl8meSBHps6HOfFD/dzSUuS0b3O/iz2oR
+	T4oSUaKloOz0FzOCf1VYsq7v2/TK81M1n/jaaWL8O5bZz7iH3vAkqJLc2PcXEx11dJC5ZAdIc+k
+	ZaU3/jxyMsKbgMp8R14v/ORS2W2reGJX7v42ClSoAB8ZdO5zj4bpGbkxlrR1HMmOVNjhhxqzvbf
+	uMRbv4BMR2NnqAf06RW2AxzJuzHN1WOIdF8ThrAw4oKJ5SxBD8RUxi3jV7QABfXpdcF3hqb8GJ1
+	opZKNpGyq9K7haRYhSD3hG+SPkcEudIBYEAP8APfmfbExWDhiCP1cQEGRdiPiX45kzxJmcyqkyF
+	CUDj1OQovsxEtu7nnc/MLQrnDpmobaSR5ruLdaZ
+X-Received: by 2002:a17:902:f64e:b0:2cf:70d2:da7c with SMTP id d9443c01a7336-2d37f77fdfemr84524235ad.12.1786635636542;
+        Thu, 13 Aug 2026 08:40:36 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d37c2000bbsm12399845ad.7.2026.08.13.08.40.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 08:40:35 -0700 (PDT)
+Date: Thu, 13 Aug 2026 15:40:32 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v4 08/10] vfio: selftests: Add mlx5 driver - HW init and
+ command interface
+Message-ID: <an3lcKmhXbRnDpRL@google.com>
+References: <0-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+ <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
+ <anzoiALsjiWrsZtl@google.com>
+ <20260812233207.GB730363@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] dpll: fix NULL deref in dpll_device_ops() during
- teardown race
-To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Michal Michalik <michal.michalik@intel.com>,
- Milena Olech <milena.olech@intel.com>, linux-kernel@vger.kernel.org
-References: <20260813140817.1051388-1-poros@redhat.com>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <20260813140817.1051388-1-poros@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812233207.GB730363@nvidia.com>
 
-On 8/13/26 4:08 PM, Petr Oros wrote:
-> When the last owner of a dpll device unregisters while a foreign driver
-> still holds a pin on it via dpll_pin_on_pin_register(), the dpll object
-> stays alive with an empty registration list. A pin notification queued
-> before the unregister (e.g. ice reacting to zl3073x_i2c removal) then
-> walks pin->dpll_refs into dpll_device_ops(), which trips the WARN_ON and
-> dereferences the missing registration. dpll_lock cannot help because the
-> notification work was queued before the unregistering driver took the
-> lock.
+On 2026-08-12 08:32 PM, Jason Gunthorpe wrote:
+> On Wed, Aug 12, 2026 at 09:41:28PM +0000, David Matlack wrote:
+> > On 2026-08-12 11:59 AM, Jason Gunthorpe wrote:
+> > > @@ -0,0 +1,108 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
+> > > +/*
+> > > + * mlx5 VFIO selftest driver - HW definitions
+> > > + *
+> > > + * Typed wrappers, constants, and helpers for programming mlx5 hardware
+> > > + * via the VFIO selftest framework.  Most HW constants and all MLX5_SET/GET
+> > > + * macros come from the kernel headers (mlx5_ifc.h, mlx5_ifc_macros.h).
+> > > + */
+> > > +#ifndef SELFTESTS_VFIO_MLX5_HW_H
+> > > +#define SELFTESTS_VFIO_MLX5_HW_H
+> > > +
+> > > +#include <linux/io.h>
+> > > +#include <linux/build_bug.h>
+> > > +#include <vdso/bits.h>
+> > > +
+> > > +#include "mlx5_ifc.h"
+> > > +#include "mlx5_ifc_macros.h"
+> > 
+> > I'm getting a compiler warning here when building with clang which is
+> > getting upgraded to error from -Werror.
 > 
-> Treat the empty registration list as a legitimate transient state. Make
-> dpll_priv() and dpll_device_ops() return NULL in that case and make
-> every pin netlink path that resolves a device from a pin skip such
-> dplls. dpll_cmd_pin_get_one() picks a ref with a live registration and
-> returns -ENODEV when there is none, the pin dumpit skips such a pin
-> instead of aborting the dump, dpll_msg_add_pin_dplls() and the
-> frequency, esync, reference sync and phase adjust set paths skip dead
-> refs, and dpll_pin_parent_device_set() validates the parent with
-> dpll_device_get_by_id(). dpll_pin_register() is the last caller that
-> dereferenced the device ops without a check, so move its frequency
-> monitor validation under dpll_lock and tolerate a missing registration
-> there as well.
+> I don't get that. My builds have -Wno-gnu-variable-sized-type-not-at-end
+> which comes from here:
 > 
-> The empty registration list is equivalent to a cleared DPLL_REGISTERED
-> mark, both transitions happen under dpll_lock in dpll_device_register()
-> and dpll_device_unregister(). A pin notification for a pin whose dplls
-> are all gone is now dropped with -ENODEV instead of crashing, all
-> callers in the core ignore that return value.
+> tools/testing/selftests/lib.mk:
 > 
->   WARNING: drivers/dpll/dpll_core.c:1092 at dpll_device_ops+0x24/0x40,
->   CPU#83: kworker/u576:3/23471
->   Modules linked in: ... ice ... zl3073x_i2c(-) ... zl3073x ...
->   Workqueue: ice_dpll_wq ice_dpll_pin_notify_work [ice]
->   RIP: 0010:dpll_device_ops+0x24/0x40
->   Call Trace:
->    <TASK>
->    dpll_cmd_pin_get_one+0x336/0x520
->    dpll_pin_event_send+0x82/0x140
->    dpll_pin_on_pin_unregister+0xbb/0x160
->    ice_dpll_pin_notify_work+0x1bc/0x1f0 [ice]
->    process_one_work+0x19e/0x370
->    worker_thread+0x1a6/0x310
->    kthread+0xe4/0x120
->    ret_from_fork+0x1a1/0x270
->    ret_from_fork_asm+0x1a/0x30
->    </TASK>
->   ---[ end trace 0000000000000000 ]---
->   BUG: kernel NULL pointer dereference, address: 0000000000000010
->   #PF: supervisor read access in kernel mode
->   #PF: error_code(0x0000) - not-present page
+> # gcc defaults to silence (off) for the following warnings, but clang defaults
+> # to the opposite. The warnings are not useful for the kernel itself, which is
+> # why they have remained disabled in gcc for the main kernel build. And it is
+> # only due to including kernel data structures in the selftests, that we get the
+> # warnings from clang. Therefore, disable the warnings for clang builds.
+> CFLAGS += -Wno-address-of-packed-member
+> CFLAGS += -Wno-gnu-variable-sized-type-not-at-end
 > 
-> Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
-> Signed-off-by: Petr Oros <poros@redhat.com>
-> ---
-> v2:
-> - guard every path that resolves a device from a pin, not only the
->    first ref in dpll_cmd_pin_get_one(); skip half-dead refs in
->    dpll_msg_add_pin_dplls() and the set paths, select a live
->    representative ref and turn the pin dumpit -ENODEV into a per pin
->    skip (Jakub)
-> - validate the parent device in dpll_pin_parent_device_set() via
->    dpll_device_get_by_id()
-> - guard the frequency monitor validation in dpll_pin_register() and
->    perform it under dpll_lock, it was the only remaining unchecked
->    dereference of the device ops
-> - drop patch 2/2, superseded by commit 32239d600236 ("dpll: fix stale
->    iteration in dpll_pin_on_pin_unregister()")
-> 
-> v1: https://lore.kernel.org/all/20260516191317.1005612-2-poros@redhat.com/
-> ---
->   drivers/dpll/dpll_core.c    | 24 +++++++++------
->   drivers/dpll/dpll_netlink.c | 59 ++++++++++++++++++++++++++++++++-----
->   2 files changed, 67 insertions(+), 16 deletions(-)
+> Why doesn't yours? Are you building it correctly?
 
-Tested on both branches net and net-next (after adjustment).
+Ah I see the problem. I was building with this command:
 
-Tested-by: Ivan Vecera <ivecera@redhat.com>
+  make CC=clang -C tools/testing/selftests/vfio
 
+But the correct way to build selftests with clang is to use:
+
+  make LLVM=1 -C tools/testing/selftests/vfio
+
+LLVM=1 triggers the conditional logic to add
+-Wno-gnu-variable-sized-type-not-at-end to CFLAGS and the build works.
