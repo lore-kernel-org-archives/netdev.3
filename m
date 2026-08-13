@@ -1,131 +1,178 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585333A872C
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 10:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786617563; cv=pass; b=bHXrj+L2k4//Pvqfdmjncy8ogLB8BEltQFs2bWEk6ijAvIJym6CzlJoILfg4rWsuFNtU3ZpbplqoMihreP94+tZEnFl6qPMbe+HAPy3ppIAsa4gqXzRLNkn0dkyOUomL4dLFAZoSukdXpUB7hqpGi4QEP3pfvUF0AAIEcgruVi4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786617563; c=relaxed/simple;
-	bh=LxN3GJXKtM1rE3GONf+cApOOqvprGn3a241qh/akkeg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iEaV265kUtScPpDfWze2RCL5kjqQ0hUQgsmwV8w9fJ2o9wJdV9Sse0ZA4+ZnlAkKOxerwpBrspe9vHdSDpROCIGm2s1QM0zQB2SKIkLB6B2V4iehJTeY5pihrEBDiH4wI9cKTu2IAhcMjoEANd45dFGXWCDNwjuHdvJPhAcfb5A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rodXrPwR; arc=pass smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD4E40862C;
+	Thu, 13 Aug 2026 10:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786617682; cv=none; b=HvvOF6UbyOSAUPyI3pOgxy560VyXfO2gCfFDhZz2C/OoujaE+8F5CnNN2D7NjnEaZKFkSPBFVgIa4TZCL6+mZK3lrbtSqRgXX5bnLyJ5YatDyth1cQlltTL+r2CR9GehEpnDg61MGFp32wqGDhOwirTb/PP8cfvcW4/oYgaISV4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786617682; c=relaxed/simple;
+	bh=40Hv8THBLGy9rCrzhYAdJjHwnEvnVqZko8YTkJjhKUw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l9tB07xfubkOP9CKY6Vd1X67NVxQMwq0eisWmJZkRcLIqxIUyCpQyNUvhPen7XY3wl/5xws/loWRaifHbSLJkpgXrq2zdMWmDf4CxpKqsXOJbkDw9++EGweRV+dy8LbrnyC+tGYy+GUWOY27mPLkjw/vCM3ZQG0iWg/OezVLh+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=g75u+Yyl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TgJ0qx0H; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rodXrPwR"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so2385065a91.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 03:39:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786617561; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Hn9CJ0tCBupEk7hr0IpS0Q7O/p2DBetXskmKjVFpg6d0SnsoJs0Qc+Tl7nljwdfZ8Q
-         4Ph7uaWVmwTLo0kOaFmweEbf1tPC3rhJdOcFJ7yS+lJAGMq9rP+kQLXU12IDhm0Vi/8R
-         ZPq9sV8ErshC0clMOWjRkAWKNBWiV2eWuj+e17dlTzit8909nmRtl3mxPLu7kEpLrGaJ
-         pluW/KEdJSXxg918vSeuT4sGR6EJ9OijIGVys4lKiYH8KBHd8waacegbmpqDDpITFMS5
-         SOI6yeaUSN2EmMUAswDmc+IxGcZ4kzIHI6Av/TInAVZE10Uiv8mD7HbtFLktTJLUM+m3
-         pIjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=uKpopVkmCHWz5eManD/zMgSNkvMZCZH28nRQJUqXhbU=;
-        fh=aX0wZT18i3ZynrZbfKQvdgS0mwC0xcB6XBM8fdFE2RY=;
-        b=j7LTSdA0sXcWN2Ms+H29oC1xMAbaLLQUXZYv+sZO+LtsfmeLgOXSRdDftQqZIEZGmn
-         LSO28f+gG2Su0z2h/9Ge79i3xYbsRm7HZS5+nGOM4W8/ff7ZNGyZpNV+r3xxsZw/ahWj
-         nbuCC+yN1NH4p5xma6fWr5TaZf3+8Ee4aFID0Kei2mKERrRJiJzkpFVbbDkjeV/rwj4J
-         9D6EeJP4b5n7wk91ANmqBniq9sDSyL4lzJB+TkvpCFB/m5WL/zjKR9lyH/St6WR0TbiW
-         6n41HoQT76zWPzIY8n0MCTknXRuo+5xTgN0WZ8r6QZtFLRdXyVg6PD1biqlp0ZGcYPaJ
-         QquA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786617561; x=1787222361; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uKpopVkmCHWz5eManD/zMgSNkvMZCZH28nRQJUqXhbU=;
-        b=rodXrPwRaqfRP340GscKJs6IZNvyq5E4yivYC3/nxvUBkV5XlGQjwBEfNTg6zRrklZ
-         4Q8sBN3F2m3xavoABAcaega0a+OnNUiNSRD4C+o4+YeitiL0VKXUIGlt7v36540h1D6N
-         QDPfUZaSn+1v+CsdQtc1Yjbla7sqmFw1pQ2VIUeUp1NWkqARNmoYNKHBtX2/6Jcl/wik
-         PUBFk+pV/tvYYj7BjhEJDtv3+mJFQ1qF5AXdpZhuY66xEyueLfcC+0CBw4mkbKCOxaHs
-         ggD2GH90CFqmSLwth2blgve7GZ+q/c8dL0CAJCdRL1mekfrD57yaGnDO/CMieh1bOl7O
-         U7kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786617561; x=1787222361;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=uKpopVkmCHWz5eManD/zMgSNkvMZCZH28nRQJUqXhbU=;
-        b=O2NzjDjyHnREuuXJreEXvYKAtsFEaKVHrtRniRm8qW9HR5amTfV4ghv9iS0YAN9YwO
-         NqQFtUSie65MTleJtL0TlJekOLn75XyBs4GMqYn1hZ7dBmeOFoYVg954bhBJeDFV1qj6
-         p0k4sfxnnC15rLTQQ4I4I2BYjSwP0t8c0D85nHmGs28T1jsPq01KOC7sMsm9+ohv0hOW
-         sz8joJQBFtoANLZtazmaGiD/Zf6AFOgXvukTXpYxB/b9msPn24c8oM+f84kTYJVCtjpv
-         B5TJ3IAzd9Qdug2Hc4G4dvTD8XjkzvtzlnlKtVeW86wQfWmZy6yBM5RN4fAJPEwpsyPi
-         xp/A==
-X-Forwarded-Encrypted: i=1; AHgh+Rqgq73Px0MBciob0AkfN/Ghxuvhe9+TQ/2Pgh8MhIEO3RaNo8QYp2WvAaLTXnHHH4qoYUbSbfo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0EZbyoaY5Kb7zRVjhiTJlQL938FqW/L9rsygPC5EviNnLnNDW
-	2bR7UJ5ZechiNtHTqoDzXWwSzmm2+gXWrUQavKkdqO5Rc2Mcf/7/pfVW1h0v6my8FqcQAkeYjyh
-	GT8AAaUA7F5tn4NBzILWWXz5qelai4yQ=
-X-Gm-Gg: AR+sD13If+oTWtqfHNeIBo6pm5UQjSKRRHFobfXxG+4gr+ZRs6MCCfx7cVlgZ5YFT6M
-	G8rL19q7kT4xWt9ETRIb6bvMC/DGwf5g2lpHjCLfSg+KGhmtsUk9DtLjsdLe8UbMD0UoGmQ2A8u
-	dynWAiZ8fpjnQWmYsjfVWkqB4hy4M8QcSLZolgORRJCLeWO2lafIoemcfqpnwMskm6miNX8X7h7
-	eAbgyUrcauf5KSU5w1i9MYRjX7eN3zp7EEXMviGcoyjc4GRtb9MdMkO59swd0BWKDFrlZ0Myb9C
-	f8V4v1j4ZtA6RN0B1Y6CtBXQFDuvBAU8IT0nnYL88fbAgg==
-X-Received: by 2002:a17:90a:c110:b0:392:c868:35af with SMTP id
- 98e67ed59e1d1-3931e2c17f2mr6330788a91.20.1786617561588; Thu, 13 Aug 2026
- 03:39:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="g75u+Yyl";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TgJ0qx0H"
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id EE6927A00FE;
+	Thu, 13 Aug 2026 06:41:18 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Thu, 13 Aug 2026 06:41:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1786617678;
+	 x=1786704078; bh=N+TbeFEDz7QDJaax9vmGb90pQEB+ILX8FqA7sEhjdog=; b=
+	g75u+Yyl6+AtYqOyto1M2doXLU9tyjrKg/fQEdyk2eXNsCNamznXfIuoSCAFVU7l
+	MWhX2nuWJO2DbxgFYAHSsiLhDW54ucBm8kBod8P+8uCmhL0iTDvhI5nphoPI6odf
+	nJeJcAKZvxF4Trxo58dhqu6irHnHTzZRfDpfgiaFyxnzcTx5oPsv9KicDneIqfbA
+	Q4ry1XwiaAjJmw+YtsIJxbQkDK9qx0YOgaUxuX5OSXSw9QcrI4ka9czLmIn1rSOZ
+	RSTCLlHcZTg8qMPICm8X19ErNIDj6fO0+Rtxo27xcKhn2m5CbmLLYnMTxxACk0FC
+	wBH07omZdnDr1zV+TRCB8A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786617678; x=
+	1786704078; bh=N+TbeFEDz7QDJaax9vmGb90pQEB+ILX8FqA7sEhjdog=; b=T
+	gJ0qx0HgMgXtKxCH3NOxBjw/WSjqlj08thdff1yR/TiXc8v5SoK/u9csSEHQqFTN
+	WEIhKycbJTa6wQsaAHMBnarfPsG9h9LhL1xlN0/08AF80BWfhwVHIKx6DsG+M6cF
+	T4Pz5u9iTit4x1s9FBv/FZ9x03ASYdnbk3LvO2KCnrpv47YLAt2+RVI5hpbpghRt
+	w1aS2I/JR+CLxRSwgDT9jpY3SzIj7jELtAEjQdmYFSRhOqjItnI2aZVTEUAOo0K1
+	fJpPvbNwOamSxNgBH44RTfC+DuM/5vCp8EiubXWRD8unT6vDa1LezaZ5k6ZKju+V
+	A8hmUD4I99S8EPlHUgSXw==
+X-ME-Sender: <xms:TZ99apyPQoMRNJATwLqKEJ6Nxp_Yjc82J8VDsc9wAfHo2u2CVqn8eA>
+    <xme:TZ99avzsmsHIcRHhkh4eaMBzI15K-X0g7R6uLrABeIqB35l-uyG6YLAGcX3VAs-Uj
+    Ex5gKKs-72QYCciGBNcJMU4iwWst6wF9Gsjug7mlxAA-AwDTrRe-50>
+X-ME-Received: <xmr:TZ99ahVaGzkIhyKD0uiPfJeVMu_O1RJRDuLO2eXUDVKGIAiLgCoIeYZnnmOeYirxyxeqjL_GuJw8qd-oXJWjfogDPEvWToA>
+X-ME-Proxy-Cause: dmFkZTGsHrBP9vRnPwQ+Uv/DigyeHPgHhztGSjPtRV7GXJrXZw/OmOVXsxMdRvAavoeMIl
+    6SFyaFtLzVFEDfoqFbWnz+5odpBmlN70IBWgxBTIKjJXG5hXyeGB6Zi5nFUOzSZqunrq7i
+    //Wb7Dcfx1xidAAth6Hy2jDXr1RqofbYepQ649FnqvDfdFNPOtM4JfoRBlMNr1uOUPW7uo
+    43DRGZ58fkb4100Qm+ur+SIiI9hrXS/xdcpXo3m2yO6Kq43XQH40pupLrFQ7WDkr9bRrMA
+    o+TlsAhalcKNur2CDtfsq04sG/DRWH0PRkdh4w5nJxbVn0nNDy82J/NCSVy2YzjgPTq8DN
+    6bIOPgiJmmK0GJq56FVhsAd5JRU1laa+rU9fg8VIv1ZHt9hamSGUd7Wdu9q9lpBB/EdPb+
+    EbLXCZ+gHKfvd4mF3ecxVCWOfPZqs3FdLNzZBEb/InsLCeoEU0toaYm1S9reXQ3uDnqvdw
+    j0342OTINZNYeqpu96XiFv95OcBWG3n9QsCM8gyEcXtFqgyIe8coEs75V2weW/cwXnKgvd
+    91pDHJk6DmC44OGt9ZCqd0dlhANG/qkMWzZWHTkPTgR0j9LkaEEA/Sn0Yue2ZTmMcIFIeS
+    4jMBQu2oqwjmT16YQ01TArddZ/AnWnUQO7hS+1II6Go1a9S06m8NdrgKBK4g
+X-ME-Proxy: <xmx:TZ99auSEmjJJj7ZNfI2LheUylG2uk3rOZxL3e-6k_bCyEPO9gSAXuA>
+    <xmx:TZ99ahRQTRO9uHVnHgoqn-Ce0KpckrYEpcLvQCWePkr8XdlzaJW0qA>
+    <xmx:TZ99aucDE3bnUpo7YFtDoBIWldQ_RtN5LazlL2ioUuwSkZyu0f6fsw>
+    <xmx:TZ99aveABQ51zOaK1dykATsMyT2Gj-Ot_WR4k8X4heSieW2SEyP0iw>
+    <xmx:Tp99alUjMJ2-epFYOZ23TpMG3HJvkhNLP2wPhoibsx4XEEU8J450N8q1>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 13 Aug 2026 06:41:16 -0400 (EDT)
+Date: Thu, 13 Aug 2026 12:41:14 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Cc: linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+	kuba@kernel.org, vadim.fedorenko@linux.dev, paul@pbarker.dev,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, richardcochran@gmail.com,
+	masaru.nagai.vx@renesas.com, luoxuanqiang@kylinos.cn
+Subject: Re: [PATCH net v4 0/2] net: ravb: fix PTP clock lifetime
+Message-ID: <20260813104114.GG2757863@ragnatech.se>
+References: <20260811103733.62599-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260805072641.402-1-strst.gs@gmail.com> <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
- <20260812205047.ojq2yyjtmoe5gjot@skbuf> <CAOiHx=kKoZrZp3=o1kpH5ueSvfc+QLSu0GF-noCa7LPQnSQbbQ@mail.gmail.com>
-In-Reply-To: <CAOiHx=kKoZrZp3=o1kpH5ueSvfc+QLSu0GF-noCa7LPQnSQbbQ@mail.gmail.com>
-From: Semih Baskan <strst.gs@gmail.com>
-Date: Thu, 13 Aug 2026 13:39:09 +0300
-X-Gm-Features: AUfX_mwTPb0Y0x3HgHHo33Ekg2exHaAljj80x6C4fQSZu0-MA_xhQlDOKYN0ZCg
-Message-ID: <CAAsRjRktfP0gM4qe0d7gtRg_oQXUu4FFh4Y9Zm+bRHL5Ow7hKw@mail.gmail.com>
-Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, florian.fainelli@broadcom.com, andrew@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	vladimir.oltean@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260811103733.62599-1-xuanqiang.luo@linux.dev>
 
-Hi Jonas,
+Hi Xuanqiang,
 
-On Thu, Aug 13, 2026 at 10:08 AM Jonas Gorski <jonas.gorski@gmail.com> wrote:
-> Right, that would be the quick workaround to allow functionality. We
-> just need to not mark them as forwarded, as DROP_VTABLE_MISS=0 will
-> have them sent to CPU already.
+Thanks for your work.
 
-On bcm5301x, miss frames reach the CPU only with port 8 as the sole
-management port.
+On 2026-08-11 18:37:31 +0800, Xuanqiang Luo wrote:
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> 
+> This series fixes RAVB PTP clock lifetime handling. It reports a cached PHC
+> index without accessing the clock pointer and drains PTP interrupts before
+> unregistering the clock.
+> 
+> Patch 1 caches the PHC index and handles registration failures.
+> 
+> Patch 2 detaches the clock with xchg() and drains the PTP IRQs before
+> unregistering it.
 
-All measured on the BCM53011, DROP_VTABLE_MISS=0 throughout:
+These patches are rather big change adding READ_ONCE() and WRITE_ONCE() 
+to avoid a LLM warning? Or have you hit a real issue? How have you 
+tested this work?
 
-- In-tree topology (port 5 as CPU): a tagged frame with a VID absent
-  from the VLAN table reaches no CPU port, 0 of 7. Already reported
-  in the offload series thread.
-- All three CPU ports enabled per the in-tree bcm-ns.dtsi, with
-  Rafal's V3 patches 1 and 2 applied so DSA prefers port 8, measured
-  yesterday: still 0 of 7. GMNGCFG reads 0xc2, dual IMP mode, and in
-  that mode the miss path delivers to no port at all; bringing the
-  port 5 conduit up or down changes nothing.
-- Port 8 as the ONLY enabled CPU port (FRM_MNGP=0b10): miss frames
-  are delivered to the CPU, indiscriminately.
+If you have a test-case could you share it? I have a pending series [1] 
+that cleans up the whole RAVB driver ptp management which have grown 
+rather organically. It have a small fix for the missing check of 
+registering the clock. Would it be possible for you to test your work 
+with that series too?
 
-So a software bridging fallback that relies on miss-to-CPU delivery
-works on chips like BCM63268/BCM53115, where you measured the CPU
-copy, but on bcm5301x it additionally requires either a single IMP DT
-(disabling ports 5 and 7, as the Netgear R8000 and Linksys Panamera
-do today) or driver code that forces FRM_MNGP to 0b10 when port 8
-is the conduit. Rafal's pending "ARM: dts: BCM5301X: Enable extra
-CPU ports for Netgear R8000" re-enables those two ports on the
-R8000. On the port 5 DTs it would receive nothing.
+1.  https://lore.kernel.org/all/20260811160200.2049987-1-niklas.soderlund%2Brenesas@ragnatech.se/
 
-Best regards,
-Semih
+> 
+> ---
+> Changes:
+> v4:
+>   - Rebase onto Linux 7.2-rc7.
+>   Patch 1:
+>   - Cache the PHC index separately instead of locking clock access.
+>     (Vadim Fedorenko)
+>   - Reword the subject and update the commit message for the cached PHC
+>     index approach.
+>   - Add Vadim Fedorenko's Reviewed-by tag.
+>   Patch 2:
+>   - Replace priv->lock serialization with PTP interrupt disabling and IRQ
+>     draining before unregistering the clock. (Vadim Fedorenko)
+>   - Use READ_ONCE() and WRITE_ONCE() for lockless clock pointer access and
+>     xchg() to detach the clock atomically.
+>   - Track the error and management IRQs and synchronize all IRQs that can
+>     invoke the PTP handler.
+>   - Update the commit message to describe the interrupt handler race and
+>     the new teardown sequence.
+> 
+> v3: https://lore.kernel.org/all/20260806095126.57803-1-xuanqiang.luo@linux.dev/
+>   Patch 1:
+>   - Omit Niklas Söderlund's Reviewed-by tag because the implementation he
+>     reviewed has changed.
+>   - Describe the NULL pointer dereference before the first open as the most
+>     likely failure mode in the commit message. (Jakub Kicinski, Sashiko)
+>   - Normalize PTP clock registration failures to NULL.
+>     (Jakub Kicinski, Sashiko)
+>   - Keep hardware timestamping capabilities independent of PHC
+>     availability. (Jakub Kicinski, Sashiko)
+>   Patch 2 (new):
+>   - Serialize PTP clock publication and access with priv->lock, and detach
+>     the clock before unregistering it. (Jakub Kicinski, Sashiko)
+> 
+> v2: https://lore.kernel.org/all/20260802090750.116215-1-xuanqiang.luo@linux.dev/
+>   - Only advertise hardware timestamping support when a PHC is available
+>     (Niklas Söderlund).
+> 
+> v1: https://lore.kernel.org/all/20260731063254.71260-1-xuanqiang.luo@linux.dev/
+> 
+> Xuanqiang Luo (2):
+>   net: ravb: avoid dereferencing an invalid PTP clock
+>   net: ravb: serialize PTP clock teardown
+> 
+>  drivers/net/ethernet/renesas/ravb.h      |  3 ++
+>  drivers/net/ethernet/renesas/ravb_main.c |  9 +++--
+>  drivers/net/ethernet/renesas/ravb_ptp.c  | 44 ++++++++++++++++++++----
+>  3 files changed, 47 insertions(+), 9 deletions(-)
+> 
+> 
+> base-commit: db2ddb87143519e20a95aa36c60b36107b736a58
+> -- 
+> 2.43.0
+
+-- 
+Kind Regards,
+Niklas Söderlund
