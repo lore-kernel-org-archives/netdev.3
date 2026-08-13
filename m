@@ -1,117 +1,202 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDAC2BCF46
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46507384232
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786649662; cv=none; b=KlEKp4zR5N7T+XzFkkovMU1H+47hfTprCs5a1eoFtBDDjrlp4atqD/0VI3PdjUvHIdR8oxW2/wgrZN1LV8IqlpbVHjUsAtbmNYu+v/FHLd+3H818k3gynwwisNdu5uOmslnLqUFGFR+UOxQeryGZXpmTthlU/RSCDhKa9RmRUt4=
+	t=1786649680; cv=none; b=SE58Z39H2TkBmbUBtNhmhIr2ulnPgltGcHo+4AqltDE1VBVQCNkC1LIIOIHbqPNRZB7fgQuFYrDZp37FeAu1XsMBANYdKqAfIQSQp9d4eJu14/B9XcyKNzfYNUn0ZIgbOEgJ/0BBhr4Iy+Se/eQwAHsw4Vmu00r7znSNsnKnOrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786649662; c=relaxed/simple;
-	bh=rdM8JPLHYnjPIdq5ik7mhjIN2Q2rhBcNlhqYyfq+B/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M+C98K1IOcIPH38PX+2Z9YNotjUsYz8PkdLtmpukcY6YU44iFpOZCx3l2Ak27BYAnoPmyXipAa7QjKuGc1NQQE+AyBXTigmSxNunmJaLwdtkRKMswkd/vVgpMCIKPheJINkyWfxpEDx25BVmI8tF4SJuHRXwdQwWUmflushskOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KnVqBEWx; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786649680; c=relaxed/simple;
+	bh=pszYivCzPET0xa1JnP+lRORaPl+hKmdl+WtEK02wUN0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ucGNYoaQ1R/R870I1mdaTPEMJljOJrqPFxvN1HPRdb12noE0pU9zP9TKpMz2NQNQ+kcq8D2DsLhnB9ypjZtjyLliClHbkfPTvUEz3JUNCteXjzrpjlro6syUg7Mj4NMjbj6AKA7PTS66XzeqXVVvApf1DO6lglEk1kJmksXMl0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SVnf3Clo; arc=none smtp.client-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KnVqBEWx"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7e9dcf09efaso47812a34.2
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:34:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SVnf3Clo"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38ce7fabf76so236951a91.2
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:34:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786649660; x=1787254460; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x2VaWWslhpx0Xl2aEnKOCxt6NrW6Fpk6Sa9sJa7UQo8=;
-        b=KnVqBEWxjrCm7ZCrerYnDDVcVghK4uyGykddPhCmJxPTbCdyIqOP8dysVbh8GpZ+mA
-         0c0NY6W4RWEpY12P7MwaeRagPIJ43Y5+XEmx58RaUjiwg4uPZtZO3NuQWq9XADa/O+Y7
-         LfwOI+utywoJv7UYFyYo/U1umjRkStGKOJImKX0v3ACGYI+QY9tn22ti5SCpSFZo9TBS
-         ZHtl2MDYQiTNH3eygw88Aq7v/sfgPZ43Lfey4DikN787aKafr4EifJ2XdaANzt24uBqA
-         342ZnXnwymQaE+VdrCqxJfRput7ZNimF+TmzCV6Bh4QPgwsHmA64k4OzKFMeEGVPaQlx
-         mM8g==
+        d=google.com; s=20251104; t=1786649678; x=1787254478; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=myMALrPmiftJzuMGzKXuNexYM0KxETCacC1JofGVCac=;
+        b=SVnf3CloULQ2tLCJ8A+kZdAFFJltHG/NTaSGIEmSvCd9M5spKK3aKXlbnRBPRwggG7
+         s6Z1eB8ll1uo7kto2Uj54+NjOmStMBcXZUuXDuyeRSMLM9CztUzbW6gnHGj1gzJp/GUg
+         IAou4BPjTQ9142zr1aUsd8HzyuNQYUe9E+LfDrm2VzW6t0df9t7gso5exyuV973iintN
+         W1xQgbQ1G9ct+NBi1iiKKPJ1+iL2imN95sn55kbOVj/yulk11Q01wG4X/QLuJCD1+iZs
+         Knt5+VjBrszH3G5rh1rwtEWP+5uravMzgpX3hcilbPXy1iXRuHGepoLNWYHm6Sxle0J9
+         JVuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786649660; x=1787254460;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x2VaWWslhpx0Xl2aEnKOCxt6NrW6Fpk6Sa9sJa7UQo8=;
-        b=kQ5biUH3dQf94/9H53S88KA47CYACYhhPmHfpqLsqW72PBE1Z0yK3msoDahCRtHNXS
-         gKmnaeJScdHsFm6WspAcBEodrl+IBS+8cmG7MWUUQ9hkygVsfuHgoRv/NWHfep60V6Og
-         kn98fcJGuGBA/mn4SjgMktdVQOQeAAyvVtF8F9xri6PLaw3QKwTo3rLLd4VEO6YueGSS
-         8MeNAqmBcv56QnbS1hZgP4QedK0eE1VNe3GgRlE02dkda5OGNbo2W791+NK6W2kYz7BR
-         KY0fvHrYobOEZd9imEN6H+qHDqA8A7hh52nE9jbg37VG8rynegiKyPMeNPfU23HQhTN8
-         8T4g==
-X-Forwarded-Encrypted: i=1; AHgh+RqwpfhgfUWKHld+ATNCWWDafDj8oqfXx+nTUnWG4HxBAFFsBU4vEsMTT8MH+YMSfCaTLsKGFQE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx86b7S4BESu1bxYIIFhqgJgdfp6BwcHUc3atp9Lwl+20PiQ0cg
-	cQ7TJzJq6uqAk0Sp/kniaAYmXEOAJThkx92ZRe9lUz5D5sa+Iao6m5Lg
-X-Gm-Gg: AR+sD12B2hBuKsBHQejugfjJaH1rE5suyS3bBpFwLbENgAmoUPrUnfPMtu+OgQr34wt
-	QHlavq2LPus+gjrkXLknvO68L3KbtETAYiBS2x3FcpxkGX2G7OvyJLZwWSPp0b1ffhMzi/BU/sF
-	VUh/x7v+hcvIVlzzVmh+FRu4YCbPkSfLGqoZIhoxdeapNVwMgXFaGNhErSkV8ZnwHQZqQMoTiAW
-	wDOKET8nPLMIJIBKGXVAjkg1TC7FmuHflbTikHvCLa0pFKgFAI0RBnmDFTU4EsOPQkrX7FxqL9b
-	Lfx2zrGQ4Vl6N8oRjGCuPvoGhRDiE5Xkm6tZAdJ1Be9g0cc9KayRWs0pdJX/cjjDqKDWoD6Rac0
-	PNHHxEvPR1xutkYKCgfHlBlWyhZGgG7wh03dd/mgxFqSMOFfXjWgieaLY38n4iakGx9bNTPZomA
-	hklZ/Y30wSC7bABYY5vsGcd9kWXt5kkpAMRyW8PYbJPksrHVNJMExSmeSvZ8x4QA==
-X-Received: by 2002:a05:6830:388a:b0:7e9:d089:d7bf with SMTP id 46e09a7af769-7f3de64feffmr42902a34.4.1786649659881;
-        Thu, 13 Aug 2026 12:34:19 -0700 (PDT)
-Received: from localhost ([2a03:2880:21ff:44::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f3c974c65esm2916051a34.0.2026.08.13.12.34.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 12:34:19 -0700 (PDT)
-From: Wei Wang <weibunny.kernel@gmail.com>
-To: daniel.zahka@gmail.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Wei Wang <weibunny@fb.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH net] psp: use unrcu_pointer() for the cmpxchg() on netdev psp_dev
-Date: Thu, 13 Aug 2026 12:34:16 -0700
-Message-ID: <20260813193416.1544518-1-weibunny.kernel@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1786649678; x=1787254478;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=myMALrPmiftJzuMGzKXuNexYM0KxETCacC1JofGVCac=;
+        b=dcn9hwd72d0P9aSY9ICr8zobRox7ISjY+/8+rTrpNJZ+FAWvk5Nr12CwZGPl33qCTn
+         5bmE+abDzPLq0U35BqaPbQuHdrB2SNtzlwJjTia/d7AJgwQZCalgvcgS93JL/XZJMNCW
+         mfIRsXZ2AOcg6MfRQwb8hAau/l29Mx4hvN57tbfuBwYD12smtM5jK6RX8MVw7OHrDyJE
+         5P0DIMW7LSkbX4DbbvBd4yGJJorByHK41R6agrF6y9nY+d5KwaS97rFhbPVktZ0M4Ie0
+         S0nkf2aniHlgFlH8orbswNXQeNbgwrpEWm2s2PZLjSutY2FBeSbZeseTGXOfF9FUP80e
+         m98w==
+X-Forwarded-Encrypted: i=1; AHgh+Rqrn2812WdQciGTNNNwaAyFOybWJ4ryHyUgxBMaxIeVt0qGmQ80misNNre51SbD7MJ//RSiZtc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo1IXGDL1uGqY+/LRiMwMwVRf/UN7bHQ1SRO0Av11L8lfJ25vr
+	q0WUbd8nh7VS/GBA6Nl4CUpFh6T24ifphbswPG4SZ7TzT+F+2z2+TEk3vuorqP1W1tpkXGLmofW
+	byppRNg==
+X-Received: from dybvt10.prod.google.com ([2002:a05:7301:78ca:b0:313:d014:d248])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b90:b0:37f:e177:f58
+ with SMTP id 98e67ed59e1d1-3933b874ba2mr305120a91.9.1786649677316; Thu, 13
+ Aug 2026 12:34:37 -0700 (PDT)
+Date: Thu, 13 Aug 2026 12:34:28 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260813193433.3318288-1-surenb@google.com>
+Subject: [PATCH v6 0/5] mm: Unconditional per-VMA locks and cleanups
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
+	david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
+	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Wei Wang <weibunny@fb.com>
+v2 version of this patchset [1] was written by Dave Hansen and per his
+request, I'm taking over this series.
 
-sparse reports:
+tl;dr: Make per-VMA locks available in all configs. Simplify some
+of the per-VMA lock users now that they can rely on them being
+always available.
 
-  net/psp/psp_nl.c:513:13: sparse: sparse: cast removes address space
-  '__rcu' of expression
+Binder and networking folks: Your code is the target of the cleanups.
+I'm cc'ing you now on v2 because there's emerging consensus on the mm
+side that the approach here is sane. I'm not quite sure how this pile
+would get merged, but ack/review tags would be appreciated if this
+looks good to you.
 
-cmpxchg() returns typeof(*ptr) and its internal casts strip the __rcu
-annotation. Wrap it in unrcu_pointer(), the documented way to use an
-__rcu pointer with xchg() and friends.
+Longer version:
 
-This was introduced by commit 06c2dce2d0f6 ("psp: add new netlink cmd
-for dev-assoc and dev-disassoc").
+When working on some x86 shadow stack code, it was a real pain to
+avoid causing recursive locking problems with mmap_lock. One way
+to avoid those was to avoid mmap_lock and use per-VMA locks instead.
+They are great, but they are not available in all configs which
+makes them unusable in generic code, or if you want to completely
+avoid mmap_lock.
 
-No functional change intended.
+Make per-VMA locks available in all configs. Right now, they are
+only available on select architectures when SMP and MMU are enabled.
+But all of the primitives that per-VMA locks are built on (RCU, maple
+trees, refcounts) work just fine without SMP or MMU.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202608080910.l9KvOH7O-lkp@intel.com/
-Signed-off-by: Wei Wang <weibunny@fb.com>
----
- net/psp/psp_nl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+The only real downside is that making VMAs a wee bit bigger on !MMU
+and !SMP builds.
 
-diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
-index 43b066353c65..f91665748dde 100644
---- a/net/psp/psp_nl.c
-+++ b/net/psp/psp_nl.c
-@@ -533,7 +533,8 @@ int psp_nl_dev_assoc_doit(struct sk_buff *skb, struct genl_info *info)
- 	}
- 
- 	/* Check if device is already associated with a PSP device */
--	if (cmpxchg(&assoc_dev->psp_dev, NULL, RCU_INITIALIZER(psd))) {
-+	if (unrcu_pointer(cmpxchg(&assoc_dev->psp_dev, NULL,
-+				  RCU_INITIALIZER(psd)))) {
- 		NL_SET_ERR_MSG(info->extack,
- 			       "Device already associated with a PSP device");
- 		err = -EBUSY;
--- 
-2.53.0-Meta
+The upside is much cleaner code, lower complexity and less #ifdeffery.
+
+Clean up a binder VMA locking site now that it can rely on per-VMA
+locks.
+
+Building on top of universally-available per-VMA locks, introduce a
+new helper. Since the new API does not require callers to have a
+fallback to mmap_lock, it's much easier to use. Callers can
+potentially replace this very common kernel idiom:
+
+	mmap_read_lock(mm);
+	vma =3D vma_lookup()
+	// fiddle with vma
+	mmap_read_unlock(mm);
+
+with:
+
+	vma =3D vma_start_read_unlocked(mm, address);
+	// fiddle with vma
+	vma_end_read(vma);
+
+Which avoids mmap_lock entirely in the fast path.
+
+Use that new API for another binder site and one in the TCP code.
+
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+Cc: Todd Kjos <tkjos@android.com>
+Cc: Christian Brauner <christian@brauner.io>
+Cc: Carlos Llamas <cmllamas@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org
+
+Changes since v5 [2]:
+Patch 2:
+- Removed dead code, per  Alice Ryhl
+- Rebased over mm-unstable
+
+Applies cleanly over mm-unstable
+
+[1] https://lore.kernel.org/all/20260610230409.A44D29FA@davehans-spike.ostc=
+.intel.com/
+[2] https://lore.kernel.org/all/20260812011056.902771-1-surenb@google.com/
+
+Dave Hansen (5):
+  mm: Make per-VMA locks available universally
+  binder: Make shrinker rely solely on per-VMA lock
+  mm: Add RCU-based VMA lookup helper that waits for writers
+  binder: Remove mmap_lock fallback
+  tcp: Remove mmap_lock fallback path
+
+ arch/arm/Kconfig                       |  1 -
+ arch/arm64/Kconfig                     |  1 -
+ arch/loongarch/Kconfig                 |  1 -
+ arch/powerpc/platforms/powernv/Kconfig |  1 -
+ arch/powerpc/platforms/pseries/Kconfig |  1 -
+ arch/riscv/Kconfig                     |  1 -
+ arch/s390/Kconfig                      |  1 -
+ arch/x86/Kconfig                       |  2 -
+ drivers/android/binder/page_range.rs   | 19 +-----
+ drivers/android/binder_alloc.c         | 63 +++++++----------
+ fs/proc/internal.h                     |  2 -
+ fs/proc/task_mmu.c                     | 93 -------------------------
+ include/linux/mm.h                     | 12 ----
+ include/linux/mm_types.h               |  8 +--
+ include/linux/mmap_lock.h              | 94 +++++++++++---------------
+ kernel/bpf/stackmap.c                  | 17 ++---
+ kernel/bpf/task_iter.c                 |  2 +-
+ kernel/fork.c                          |  2 -
+ mm/Kconfig                             | 12 ----
+ mm/Kconfig.debug                       |  1 -
+ mm/debug.c                             |  4 --
+ mm/init-mm.c                           |  2 -
+ mm/memory.c                            |  2 -
+ mm/mmap_lock.c                         | 61 ++++++++++-------
+ mm/pagewalk.c                          |  2 -
+ mm/rmap.c                              |  2 -
+ mm/userfaultfd.c                       | 61 ++---------------
+ net/ipv4/tcp.c                         | 31 +++------
+ rust/kernel/mm.rs                      | 57 ++++++++++------
+ tools/testing/vma/include/dup.h        |  5 +-
+ tools/testing/vma/vma_internal.h       |  1 -
+ 31 files changed, 166 insertions(+), 396 deletions(-)
+
+
+base-commit: f9ca2fa9ef7e9b39ec79a0596929d1a1f8704c5f
+--=20
+2.55.0.691.gc56d675ccc-goog
 
