@@ -1,184 +1,259 @@
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FB74746B7
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 21:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77383B8BD9
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 21:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786658014; cv=none; b=cQn2hOVTVHavnfIvHgJa8oj54xlVzhb6WzOZj7UIr6VksOvRALO8nvYFqcdDsYE2ETjqq+QH/gmF8J0yR6jhFG41M+9mHV+o3FLq06pytDvex1+9WtIZ20f5wYJMCI+h1gjoPV2E3+ZmA6glMOkGSxc/Vdpf2OGmAo6N7NHS1Ho=
+	t=1786658062; cv=none; b=ecaoPclnBw6g74TCJvOW2Mu9FP2Ea4OJ9HpUrmFVZ75feQ5QbS/cISQCk3BOnO+9qoJgQrXOCeNu83Oh38QfRHBvc2CSTy0TsKNPhc0k+mch2250SNZpOI8chelHpDpp4/oGPW47YTV2WNaE2f478BuISbS5a0e5QCk3N2iy420=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786658014; c=relaxed/simple;
-	bh=fYLwZrvNlQxGwlPI0UQmca6Rp4m8wQ6Bkf8LJPqH324=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FeY6jNn8cASpX1I7nEsi6DZ/EvJzMHs82WFa4X/QSBNtZa5mFjhB8pWMu9QYf0A7vNTHJ7cRAWGnXxWPxYIAYQN0gEZAc4gYsLYqPEDmp8Y9cznPtU9x96i2/FU2UXPTb/aJ09jYt6Miy0zgvKITYoi2VE251qD0nXepOvy9zGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcK4nnLA; arc=none smtp.client-ip=74.125.224.44
+	s=arc-20240116; t=1786658062; c=relaxed/simple;
+	bh=4dRDfp/kyPwf0LgyQHpXbx4TCvBGI49n8pG+S2ph1zw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=N8zpWhpUqxtnFNn26x2BLt7ZqEVwBgb33ChIJrJ10D9hwL11+4I1iqCwAJK6f8RPVCfLP0rE/KvBKYzzIFSTgv6qVyHpzpiVn6lvN9Z+QyeFmkithvGSsJvjo/TkU3XLxuAIvU9PCLnOOoL/VcduQxNoKM10+XxesptWuF9bTfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iX3ukOJu; arc=none smtp.client-ip=209.85.167.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcK4nnLA"
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-66c70d1672cso482974d50.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 14:53:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iX3ukOJu"
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-48a0ca07c38so198415b6e.2
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 14:54:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786658012; x=1787262812; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cPTXEYegZPPH2jkQqlfi+zU8F5mdAL4ScUHPzIFB1i4=;
-        b=bcK4nnLAToE/MFDRAU3Es48wA9EbUq8MoE31OpsRD6WD4haSk6YZNJ04e4BvjJ6guB
-         A+IxM8uHAO9GjGBCyL+b44lIHiNLGzk42teqJnD1LO9xGg811yX3zfIKBFjRBn2nUZWP
-         OgMdSJcSYarFZOCjM8RUtTUjmZvrPlWqbN/zxUij7TUudCXYvZCTL8jCxRBb2sKwnvsI
-         bvz61FJUhJa1cttS3gwQ84a1c+BWJf+5xV8CO0EnbHGqVeBGwxQguh2PbvHsgzL181W6
-         5dPAkzpkAiH07W/pXyLJxdxuU+Lqq2fBbelsuIiv6vkavL9uSgS1A12MoeIvylOaXnD6
-         5XSA==
+        d=gmail.com; s=20251104; t=1786658059; x=1787262859; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Gd42AGplC+/Rht4wVTsbu7hNJIC1tcUERjT9kA+1fFg=;
+        b=iX3ukOJuQbLcKv2J9x7LPq7G7mFwDkqPwWkjlymK1nT/ECd1Me6lTRYusHdao1i+7X
+         ZTbRiRD3tJKh69V23BSehNXC1bkBgAjndJ9x3mheqzDOG338d8iTNLna98v6+ftDjFQX
+         TW+QmTEdNrWT8IE2Pdj3gp7lPXaBECtaL5q66FCOfgloYKarY8ro4txRDe0+G+nvnLhw
+         6AgqioNiOrhcVvuwkDAWOD1RXsMEubzJab8HNalYVxm1qu9wnSDIzAOjtnIXEQmjrxpI
+         ah7h548hOj9IkBWt8FNosV9kd3dk3oX+0nvHX7xuSuytqXg7oEYp0mgjYIQk6ECVfqWb
+         zQ7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786658012; x=1787262812;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cPTXEYegZPPH2jkQqlfi+zU8F5mdAL4ScUHPzIFB1i4=;
-        b=k3smdF/9Jn8ekIyqWsLzZxuIMwod4L+7Q1ftQU6HvnV30O0e3TD1nXsuyY25+c9Gio
-         z2ocw7D8s3tKaH0c1t54V2ud+I/uKFzQY9bBV9sa2bBgaO9c+XSzLS9Fk2GzA3uqsV7o
-         r5TkSnTfYayO3wTPJ+B7kL5C756x6B3Q3GRMZNcNDPHtI8VOcIR1o2fjVamfluc+DtGL
-         wfN33aNmgrMWdcq+1gQk1vn32GJyNdtTAFFa6UqBp5/jHAVvCo6W0v8alyi2E/lzdzUl
-         YnSZJoEfUNl4WqgGR3zck9SrMBV1Bgbusi1rN5PUJZ5CT0jB4XQRK8C/rRQtc9knKeNh
-         FKmg==
-X-Gm-Message-State: AOJu0YydQ/nXCdFEZ8EIvjcqATOpotiVcqc3zWjFHvG1l5XcIT5mbJX6
-	za8c1tIj+aiWkkV7XSNZ16e3lGxhN4On9Oud0qoyDwwZ1+qHIqzUwSMC
-X-Gm-Gg: AR+sD11NLdtwOy3X9Jy6qmItkFZj8woLiGSk2HMlwQSx3XDFo9JIc01DOS9RUg9QPg0
-	+4BM1K55B/Kom7U+9mttpCO7KVW8Ge+RSnbpdy1oL+4dC4Cd/X3HzPUUsRVHP+EvUcdwd6daL66
-	7d2L1XS8NvezfLID8/PvUZdqsnMosPaBRUBpFA1U07Qq/wD7rJlOk2Ed498zdrdQqsAMm6mzwu6
-	aLIPAkF8K4TpQv6Keh5SRlI6MDLG25qhLQvA1BQ7LxLB5+WZ7lJ3eXNGPHtUmv5KwIhAVJx4aHX
-	B89HwynNML73kmIUAXRYHnTNy/STk9gZFvtw4Lp2u1cpGdwfDP/W/0LT47GoO1dz8o+WwXql+bI
-	uSpD6VuYCCyrQr6TkX8njarm1aR4wCJx4s3SNr8/4ZcG2QNNE7a8yyUG7dA8rbk3jd2beBB9n+/
-	UZcESJwfVDfoILzw+3OWeEjA5Uuxyyv2h6eWZVTpzstL50L52I+fbrAx8zJ+DL1sBakP+G
-X-Received: by 2002:a05:690e:1c08:b0:664:dbd0:23b7 with SMTP id 956f58d0204a3-66c72b1cdedmr612953d50.9.1786658011698;
-        Thu, 13 Aug 2026 14:53:31 -0700 (PDT)
-Received: from mac.lan ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66c573c46d3sm1458852d50.10.2026.08.13.14.53.30
+        d=1e100.net; s=20251104; t=1786658059; x=1787262859;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Gd42AGplC+/Rht4wVTsbu7hNJIC1tcUERjT9kA+1fFg=;
+        b=ZcQezSOAbqn5PloYbJPEPXFdvZ+6gvMf3qxs8jvthsg33DtEr0GnZQ87G+XNYcVDnP
+         DXd3OOIbmSLtIf1tEs8GoCpBL3RzIj7m0PrfB1RjBUCXbgH1rLDU0gxnHERITwkB7oUB
+         quUCRjAGbNq7rgWhNK0LtQeaRtpnlQRgK9ga2syoW9iRZJzJpj8wvXxzu57nMQ8mCRrb
+         eOsJxOdc69pQSxVQySMbww6hEpMol59pdmf72AO7oFE6fbBT7Z2yCXFQKmRUJZr2Ypvp
+         xv5L3f8WL+/u0sMkIesZffRKbYBXP6y6cI2stL6LVdW1kEaJkdm1C4nd42d1EROtgVu3
+         5NSw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrrir/e+MhdqWZf0+my7x0PNyifq3c9Y9EZtB9cG5pMNlLPqZVczGHINAy02sVJz90QjTZ3MPo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBAvov0zwcl9+0K63UBWrLbNZ8myZUgnEcrqhApY9hWTqcH9Kr
+	UH7+ZzBqtEHjp8kx6sh3gexIzESAwmVPgn+668Y9+qP69aOr3sk55FEF
+X-Gm-Gg: AR+sD137jMy2W1qt3tlvo5Ti+qwGG5n/fD3fEhEuuFHqeBSIaxX/IWcogUNg2n5y0Mf
+	lgvoCrqH48QMKgpTmHeA+W4rAmrYq280Hoqv+acHELMw8MFc9N/rPcG0dg2tvvVz3PBuvGtxp9k
+	ycB2jj07pIvufGsTYIBuKhAlwXAPrxt6mlZbWTDa2KKxyvwwTx1aQezN4zCw0EzUTVQOItZNK3l
+	Dy4igMMMGnkkf9ssSZkklUmw3IFv+v+gpKEKf0lZ9osijDEmfGnOsWVD6AfDcPHHdNAWo5pAzL2
+	8JKiLmQjWIfUbGRLb/g8vP6VDuv9+dRNgzdm24KrAicTCU50JnLaatAPj9o/IqG+JOhDsLVPUIi
+	EWJiJVe6j/GUSr/E3K8VxSU7CwPUaloqhEap57VaDNuveXx5ppPRZGZbzOQXSonvPaNZeLH5MS6
+	TWB74TGhelpLpouz3hN4H+SqMKd28MmThFKsAzh4rQmmZdoOYtRjXCdzyCndDBfwCu5I2yiugR8
+	G/XZaEIrFV8EFM1ok3LZ0nJRGcip5gEISU2noVYUvSSau9e3VTNDoJ+72zIRMPtbwa91bM+bhYg
+	kr2ZKRILeyPEzMnhY5u1ItxvgcGTT8hcwkqDPBk06XewNWDm7jeuiOzkjTBOFqWQRCqR7oTDfMK
+	IjizjdQIjD5bAZLqtSg==
+X-Received: by 2002:a05:6808:180b:b0:495:f85b:d08f with SMTP id 5614622812f47-4b241cf3cdfmr822588b6e.18.1786658059481;
+        Thu, 13 Aug 2026 14:54:19 -0700 (PDT)
+Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b22ccbcca5sm2813956b6e.2.2026.08.13.14.54.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 14:53:31 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: magnus.karlsson@intel.com,
-	kerneljasonxing@gmail.com,
-	maciej.fijalkowski@intel.com,
-	sdf@fomichev.me,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com
-Subject: [PATCH net v4] xsk: fix NULL pointer dereference in __xsk_rcv()
-Date: Thu, 13 Aug 2026 17:53:28 -0400
-Message-ID: <20260813215328.99311-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.52.0
+        Thu, 13 Aug 2026 14:54:18 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net-next v8 0/2] net: phy: add X-Powers AC200/AC300 EPHY
+ support
+Date: Thu, 13 Aug 2026 15:53:42 -0600
+Message-Id: <20260813-submit-acx00-of-dynamic-v1-v8-0-d2f1c52e87b4@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43QzW6DMAwH8Fepcp6nxPkg6WnvMfWQhKTNNMIED
+ FFVvHsD24FxQDtatn9/yw/Shy6FnpxPD9KFMfWpzaXQLyfibzZfA6S61AQpKqopQv/tmjSA9RO
+ l0Eao79k2ycPIwAhLa89kRI2kAF9diGla8XeSwwA5TAO5/HSK8xH8sNjL7C31Q9vd1ztGvm78R
+ sqjyJEDBY6eI6NWRZRv18amz1ffNmvQKLaUOqREoYyLGCshmOK4p+SWMoeULJSLlkUtmXao95T
+ aUIwdUqpQFNE4YyzHqPZU9X+qWigepTOsqmT951fzPD8BPr89kQwCAAA=
+X-Change-ID: 20260802-submit-acx00-of-dynamic-v1-94a0dc15f282
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ James Hilliard <james.hilliard1@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, 
+ "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>, 
+ Andre Przywara <andre.przywara@arm.com>, Chen-Yu Tsai <wens@kernel.org>, 
+ =?utf-8?q?Jernej_=C5=A0krabec?= <jernej.skrabec@gmail.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ linux-sunxi@lists.linux.dev, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
 
-In the __xsk_rcv() multi-buffer path, xsk_buff_alloc() is called in a
-loop without checking its return value. xsk_buff_can_alloc() only
-counts fill queue entries without validating their addresses, so it
-can succeed while xsk_buff_alloc() rejects all remaining entries and
-returns NULL.
+This submission contains only the networking binding and PHY driver and
+is intended for net-next. The AC200 I2C register provider was submitted
+separately for the MFD tree:
 
-  Oops: general protection fault, probably for non-canonical address
-   0xdffffc0000000000
-  KASAN: null-ptr-deref in range
-   [0x0000000000000000-0x0000000000000007]
-  RIP: 0010:__xsk_rcv+0x426/0xc20 (net/xdp/xsk.c:350)
-  Call Trace:
-   xsk_generic_rcv+0x26d/0x5f0
-   xdp_do_generic_redirect+0x3c5/0xcf0
-   do_xdp_generic+0x92f/0xe70
-   __netif_receive_skb_core.constprop.0+0xf7e/0x2b30
+  https://patch.msgid.link/20260811-submit-ac200-mfd-v7-0-8b06f552a4d7@gmail.com
 
-Fix this with a two-stage transaction. First allocate and stage all
-buffers required for the packet, recycling all staged buffers with
-xsk_buff_free() if any allocation fails. Only after this stage
-succeeds, copy the data, reserve the RX descriptors, and release the
-buffers in an error-free loop.
+Neither series has a compile-time dependency or required merge order.
+Their shared design point is the DT representation: the MDIO PHY-package
+node references the separately described AC200 I2C node for access to
+package-control registers.
 
-Fixes: 804627751b42 ("xsk: add support for AF_XDP multi-buffer on Rx path")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+The AC200 and AC300 contain compatible Fast Ethernet link PHYs which
+report the same Clause 22 identifier and use the same link-side register
+layout. The link endpoint is inaccessible until package-specific control
+registers have powered and configured it.
+
+Both variants are modeled as standard Ethernet PHY packages with one
+forced-ID link-PHY child. The package reg value is the link address.
+AC300's control range is a fixed package-relative offset of 16 and is
+accessed with the PHY package helpers. AC200 reaches its control registers
+through a phandle to the companion IC's I2C register interface.
+
+For AC200, the driver resolves the referenced I2C device, establishes a
+managed device link, and takes the supplier device lock before checking
+that the provider is fully bound and retrieving the regmap attached to
+that device. It waits for transient lock holders instead of treating lock
+contention as a missing dependency. The link then keeps the provider bound
+until the PHY consumer has unbound. This uses the generic device and
+regmap interfaces and supports multiple AC200 instances without syscon or
+a private cross-subsystem API.
+
+Fixed hardware uses an AC200- or AC300-specific package compatible.
+Systems which can contain either package use the ACx00 package compatible
+and one packed SID configuration field. Bits 3 through 0 carry the analog
+calibration, bit 8 selects AC300, and bit 9 selects its low-calibration
+tuning. The driver chooses the backend before acquiring any
+backend-specific resource.
+
+One xpowers-acx00 module binds the link child, joins the parent package and
+runs the selected backend. It manages the package supply, MII or RMII mode,
+vendor analog initialization and package state across suspend and resume.
+The common link implementation preserves automatic MDI/MDI-X and standard
+MAC-managed EEE advertisement while disabling only the vendor
+PHY-autonomous Intelligent EEE mode.
+
+The two patches add the AC200/AC300 PHY-package binding and combined PHY
+driver. Board Device Trees and optional PHY features remain outside this
+initial series.
+
+The AC200 portions build on earlier work by Jernej Skrabec and Andre
+Przywara:
+
+  https://github.com/jernejsk/linux-1/commits/ac200-v4
+
+Public AC200 and AC300 documentation is linked from:
+
+  https://linux-sunxi.org/AC200
+
+Validation completed for v8:
+
+  - dt_binding_check for the PHY-package schema;
+  - an x86_64 allmodconfig composite-object build with W=1;
+  - a built-in AC300-only configuration with I2C and MFD_SYSCON disabled,
+    built with W=1; and
+  - strict checkpatch checks with no errors and only the generic new-file
+    MAINTAINERS prompts.
+
+The final AC200 v8 path was hardware-tested on an H616 board through a
+clean Buildroot kernel, FIT, rootfs and SWU build with source overrides
+disabled. The resulting SWU was installed on the board. The provider
+reported revision 0x101 in package 1, the PHY resolved its regmap after
+establishing the supplier device link, and RMII negotiated a 100 Mbps
+full-duplex link. Eight MiB passed in each direction and 100 consecutive
+pings completed without loss both before and after the rebind stress
+tests.
+
+An administrative down/up cycle changed the package regulator consumer
+count from one to zero and back to one, then restored the same link mode.
+Five AC200 supplier unbind/rebind cycles each unbound the PHY consumer,
+recreated the device link and recovered the 100 Mbps full-duplex link and
+ping traffic.
+
+A separate 100-iteration test started each PHY bind while the AC200
+supplier was still inside its 40 ms probe delay and holding the supplier
+device lock. Every PHY bind waited for the supplier, recovered with the
+correct PHY ID and device-link relationships, and the final link came up
+at 100 Mbps full duplex without new warnings or probe errors.
+
+The AC300 results carry forward from v5. On the connected H616 board the
+driver selected AC300 without accessing the AC200 I2C path, negotiated a
+100 Mbps full-duplex RMII link, passed eight MiB in each direction and
+restored the regulator, package state and link across an administrative
+down/up cycle.
+
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- net/xdp/xsk.c | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+Changes in v8:
+- replace the AC200 supplier trylock/defer path with a blocking device lock
+- add Krzysztof's Reviewed-by tag to the PHY-package binding
+- rebase onto current net-next
+- Link to v7: https://patch.msgid.link/20260811-submit-acx00-of-dynamic-v1-v7-0-03f5b91775d5@gmail.com
 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 7855ee09c4b6..33475b180ea6 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -298,9 +298,11 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 	u32 frame_size = __xsk_pool_get_rx_frame_size(xs->pool);
- 	void *copy_from = xsk_copy_xdp_start(xdp), *copy_to;
- 	u32 from_len, meta_len, rem, num_desc;
--	struct xdp_buff_xsk *xskb;
-+	struct xdp_buff_xsk *xskb, *tmp;
- 	struct xdp_buff *xsk_xdp;
-+	LIST_HEAD(xsk_buffs);
- 	skb_frag_t *frag;
-+	u32 i;
- 
- 	from_len = xdp->data_end - copy_from;
- 	meta_len = xdp->data - copy_from;
-@@ -343,23 +345,45 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 		frag =  &sinfo->frags[0];
- 	}
- 
-+	for (i = 0; i < num_desc; i++) {
-+		xsk_xdp = xsk_buff_alloc(xs->pool);
-+		if (!xsk_xdp)
-+			goto err_alloc;
-+
-+		xskb = container_of(xsk_xdp, struct xdp_buff_xsk, xdp);
-+		if (unlikely(!list_empty(&xskb->list_node)))
-+			goto err_alloc;
-+
-+		list_add_tail(&xskb->list_node, &xsk_buffs);
-+	}
-+
- 	do {
- 		u32 to_len = frame_size + meta_len;
- 		u32 copied;
- 
--		xsk_xdp = xsk_buff_alloc(xs->pool);
-+		xskb = list_first_entry(&xsk_buffs, struct xdp_buff_xsk,
-+					list_node);
-+		list_del_init(&xskb->list_node);
-+		xsk_xdp = &xskb->xdp;
- 		copy_to = xsk_xdp->data - meta_len;
- 
- 		copied = xsk_copy_xdp(copy_to, &copy_from, to_len, &from_len, &frag, rem);
- 		rem -= copied;
- 
--		xskb = container_of(xsk_xdp, struct xdp_buff_xsk, xdp);
- 		__xsk_rcv_zc_safe(xs, xskb, copied - meta_len,
- 				  rem ? XDP_PKT_CONTD : 0);
- 		meta_len = 0;
- 	} while (rem);
- 
- 	return 0;
-+
-+err_alloc:
-+	list_for_each_entry_safe(xskb, tmp, &xsk_buffs, list_node) {
-+		list_del_init(&xskb->list_node);
-+		xsk_buff_free(&xskb->xdp);
-+	}
-+	xs->rx_dropped++;
-+	return -ENOMEM;
- }
- 
- static bool xsk_tx_writeable(struct xdp_sock *xs)
--- 
-2.52.0
+Changes in v7:
+- link to the separately submitted MFD v7 series:
+  https://patch.msgid.link/20260811-submit-ac200-mfd-v7-0-8b06f552a4d7@gmail.com
+- replace syscon publication and lookup with direct AC200 device/regmap lookup
+- require the referenced AC200 provider to be fully bound under its device lock
+- keep teardown ordered with the managed device link
+- rebase onto current net-next
+- Link to v6: https://patch.msgid.link/20260811-submit-acx00-of-dynamic-v1-v6-0-0229b99a32f6@gmail.com
+
+Changes in v6:
+- split the networking work from the independently mergeable MFD series
+- add the posting link for the separately submitted MFD series
+- remove the redundant explicit schema selector
+- describe the AC200 phandle in hardware terms and state its purpose
+- simplify the clock description and keep only the needed NVMEM dependency
+- reduce the binding examples to one
+- rebase onto current net-next
+- Link to v5: https://patch.msgid.link/20260809-submit-acx00-of-dynamic-v1-v5-0-bfa1f8518b28@gmail.com
+
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: James Hilliard <james.hilliard1@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+James Hilliard (2):
+      dt-bindings: net: x-powers: add AC200/AC300 EPHY packages
+      net: phy: add X-Powers AC200/AC300 EPHY driver
+
+ .../bindings/net/x-powers,acx00-ephy-package.yaml  | 154 ++++++
+ drivers/net/phy/Kconfig                            |  11 +
+ drivers/net/phy/Makefile                           |   1 +
+ drivers/net/phy/xpowers/Makefile                   |   3 +
+ drivers/net/phy/xpowers/ac200.c                    | 308 ++++++++++++
+ drivers/net/phy/xpowers/ac300.c                    | 387 +++++++++++++++
+ drivers/net/phy/xpowers/acx00.c                    | 536 +++++++++++++++++++++
+ drivers/net/phy/xpowers/acx00.h                    |  28 ++
+ 8 files changed, 1428 insertions(+)
+---
+base-commit: 3da8c3c8b8fa99505624b65ef590482f48e766b6
+change-id: 20260802-submit-acx00-of-dynamic-v1-94a0dc15f282
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
