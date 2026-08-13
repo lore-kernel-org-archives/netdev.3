@@ -1,234 +1,258 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0C13DFC8A
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786610318; cv=none; b=KuNgmvWuD7Nv/QJI/ZDjykA5Nkk0bVN2bXUm2xoYjQ9JfikFc/hhwEa91JQwjDSH+zRGtT+wBw5Kq8bSTixbLZtidFVdw7H7hsEnugihFJ+n6Zc98SJ6/N79U4KdkUTOZu93hws95Jt3WdP24JYtg2I0SuEd9VbqaV6bIdAC1TU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786610318; c=relaxed/simple;
-	bh=3A1TTzgx3HjDy337B7QEOqwQ54G9OEVp/xDl3QsWJGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lLYSrxvLUO3t8fFYX8bkI/2BWrCUlpKDQAlZ82QWK23/vi7olTuCr2uVFzERciBoeXKWEJxuJTWjIeoJughkYb69rtoJsHKzaPdYZR/j2n7gM7HBYug2oEmT3ZA7sQ2416N+viuKTjwUcNAzbcp58Q3gEWtIgpcOce/LJd8Oifc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VWX7d7kI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mKeS6Li6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95933397689;
+	Thu, 13 Aug 2026 08:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=60.244.123.138
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786610407; cv=fail; b=NvZaQtAapNXiDfDV7lpS/Ry59eKaUonW/KbfRxEqoK8DMCmJ5/fItgQqQLLV40VnoKn7ECZtld+zEY56Cx9UTbHmrQvXFGl/ju0KcGCukCiZeyZX9BSitXqTth15gxF2XmN3lnB9qwhAOd+TvqP+r1sUuviDt2ysqNC58QJePpI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786610407; c=relaxed/simple;
+	bh=8pZ6b1wV7oIPzjAYmAkmYTPaTMwh9jqg6RCbWQCeDSc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ANKnVUD+czp9HuXflYEs1fNCY8RsXrfEUjEPGtkBQL4vbL7e2CM1lJap7zFpGeqzCPubs3u5ENPVcq+5t6YexLVY6+tiE2RG4849f7UqaYhw7e8D+7933tvfpc9LhrWfbHS5I2XA7oRpQfmg0vId8cpEuPgCuI73cVNXwq0KTrI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=fUWXuKgz; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=CD15yUWS; arc=fail smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VWX7d7kI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mKeS6Li6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786610315;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=smAcv540nFYZlu+sSf+onJiRx1q/LBaPc+nj8Z/q0is=;
-	b=VWX7d7kI06grmSAQsoOeVpI+U7SJqINHFm6u9Q1xwsdY9GrYfJTB7jTFFe5i+uOBSppkv2
-	/iF31dIjSHAEdiuA6oObxYr1ujSFwtCtxy1ePsATd94nMd7a8nmwCetQFTR9ZCulTAQaRH
-	ZJjt69qzeChrdSsYliERx/Kau3JGx3U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-503-OIL9eGasPtWIx8tUZBe-bg-1; Thu, 13 Aug 2026 04:38:34 -0400
-X-MC-Unique: OIL9eGasPtWIx8tUZBe-bg-1
-X-Mimecast-MFC-AGG-ID: OIL9eGasPtWIx8tUZBe-bg_1786610313
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4996832e7b4so4641255e9.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 01:38:33 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="fUWXuKgz";
+	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="CD15yUWS"
+X-UUID: 8f9bb32296f211f1b1788b6acf885367-20260813
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=8pZ6b1wV7oIPzjAYmAkmYTPaTMwh9jqg6RCbWQCeDSc=;
+	b=fUWXuKgzX93W2QCKk7R8iHina7W8FCIFPXlVqzCluHGXAIxfBQNny6FB9INY+2bNDJByRERiCk/rlTn/03CfQ4wDhNvtX9POBhrvCrEDrKNkLcUoL6zHqGmN7+g0zTverdprsZuPnPr+ZSFPJzJtTmd/p9InJ12cBDovZd3IFSY=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:a775683f-91db-46b6-a3ab-49e81c64ad3c,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:b86dd4f1-0685-46a3-9cac-19d8f3a05ae7,B
+	ulkID:nil,BulkQuantity:0,SF:80|81|82|83|102|110|111|836|865|888|898,TC:-5,
+	Content:0|15|50|99,EDM:-3,IP:nil,URL:80|1,File:130,RT:0,Bulk:nil,QS:nil,BE
+	C:-1,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 8f9bb32296f211f1b1788b6acf885367-20260813
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
+	(envelope-from <zhaoping.shu@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 233368851; Thu, 13 Aug 2026 16:39:56 +0800
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 13 Aug 2026 16:39:55 +0800
+Received: from SI4PR04CU002.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Thu, 13 Aug 2026 16:39:54 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nrJZBaWKnIlc78I7+dRjfEAiNpJj+nekXDjhVN/4eqi4lEBiEERVnIOwhtd/LWejxKe18VZ/A7o/b8EaFW+LD6bK+trjlpwT3sAezDl3s0Cr6xVFrytQAxwIFHr0e0vFFP66AYUjkQWROdBk0218xB8NqZYWtVmIYIC85sTfnuclxeQgwL6R8vUC1oe0c4W2WNNPsUlC92lDEHTr3D5FMUWEYyM7QeSUDUtV/Razzle2QWW2+xN+NWEfn0/WfTWS9+kGtq638xbtRGQwW+JmH8AiR8UDbMBT7OV1Ql6529+K9GrLOsc0Lm54gODMlkKfQ8f87rFhF53NBr20tXBmCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8pZ6b1wV7oIPzjAYmAkmYTPaTMwh9jqg6RCbWQCeDSc=;
+ b=iSabiH7ZsST3aATBUWTvKTT+XTeMJZ3Ym45z+96aEnJSuC18BRhYrPCjoIzvUcLx3l65Fhl4EkRHQH4zMTo9MGE4GwJ7hkrHfeUb+HSKLtNzOLTGe2uk0HmTCrtAmTyw8/bylOH/4ktET+SrvJ6OINEnRyHvqFOM/WdHJB8rcVoSDEL+zPC7UW2HzkUM479N2Q+w3sWtOaIS2HM9HT3LOAbz0MZyDz3tAn0XjOIIpqnB0hGTjUSE7mWJB+RCi6ZVUWlhsrLqDw1CfQ2jjoqT/cxS34xySA7itTAMemogUkqoIi+0gf2xN6RuJUsD9PQtT4SHtgqxt0M/T4Rf1nls6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786610313; x=1787215113; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=smAcv540nFYZlu+sSf+onJiRx1q/LBaPc+nj8Z/q0is=;
-        b=mKeS6Li6vhYVZRLmQiueiPSg3+WmvX1XolOqnYY/XnSOZMmO8ybyMRbsAu9jYTBNSB
-         sK2SEQz3BsTJmFsAiCExo3xD26g8jEN1rgP931do2ud9lGVzg1TE+w/XzQkSK/ix4TLp
-         7Cc1IAXzM4dePfvx9mQlmMF3S/b7ATexi3AOqxg8aqodNWx9NRHv8ZgVSvdfK/J/3mfU
-         Cviz+dKvtIOkWVXHnAJyE2WyWJJ8vHh8qk1hqzRmebzye6pj4ixLYkLyJ3NKc0Oi2xKW
-         6sIEG7jqx90+1UNccja4/AzfNE5yiAiXEyA6XXm3Fs4v/Tby0O5/HRtA1WUTrbhtfLGD
-         qilw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786610313; x=1787215113;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=smAcv540nFYZlu+sSf+onJiRx1q/LBaPc+nj8Z/q0is=;
-        b=IDDxPxxmpfMVt1z2msk/CYInV0t8IdSC1Rd2s0sRD8e8cHwnltPFpLSbgsKOh8x8XV
-         SC65NlqkWCPP+474QeS90eWyAQpnjYGEX7+8K7Hahcj47/G1hOBxkTKIHpxL4DqBs7ok
-         nUNWK3lP3f7w6aZ44OGScOuSMjITQEzpGZ4nx6p6nr1ocQmFF35IFw1yH1ywSNg70g47
-         gcboIBgPn2IfrAbvUPf9uP3DFQ337Bto+SiNm5ED+MpmXMKs253b0EPLgwQ4WE6J6ktY
-         gFQ1f0ExUxNw5cbaz2kRT5dsuH1nAinDAJeQW6P8NHSxh5pFgy8qc/Pf+YM/r2cOKWq1
-         GEdA==
-X-Forwarded-Encrypted: i=1; AHgh+RpOE+gD43tIz22InzLgxU+QbAYSxskOLaICs9PS3n6gcZv0B0WGXte4M0Hm1YJIY6xGqVWu8a8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzREo9snla5l2oJsO7LpFNXAWf08GRIeyJKTynSmVuj4Cl1xtNw
-	nYv8Dd+0LvLrdA2Rggq01gZDhiF2MwWhWpU96etLMB19pdD6ZgArFDoy6omNnv/C8TAK7n+g8nJ
-	va8aBPH3mA3Op5GtMY38RC5yekG56aSoTu+IX1Q73M3mx6UddtfysIQjEzw==
-X-Gm-Gg: AR+sD122C37zuxfaRNAZroK4r9LyWEaxZEAJPuVGLHC+ryZVHZt+4yB9VKvqRJU6hGl
-	ITfvxVy6qkUeOatx3FPkHsXIsnX6BIb6I5I6Zof+BRZy9Svj/X7mfRGqYXtKBPvQKXEiZ7K2qQC
-	LDTJj3ncELwp3Sw1pU/HVusyGRjQD6xjg9WhNqWxULCzw16R4pmJ+FMzuE4c2oQB03Q5MHj72PC
-	xVl0ltIx0Uw7ocj4lr3WyI6L5kQw+M6ppgoFn6RkaV3c6ycpBr+Plj2KPqoDH2ajlyZUqjSmKad
-	TbQKfisJZAr2f/rcU7n/YB2fmkJp9P3VhlKQhZGEicYRvwvDKTZ9zHu/g2FYvMmbBZjVxmKjxhG
-	RRuGpHdbyyOqoO1hxFLNv0zMFlApjCQi1nzbzoJPns8rJP7pMfWnl
-X-Received: by 2002:a05:600d:6409:10b0:499:84fc:4548 with SMTP id 5b1f17b1804b1-49984fc45c0mr2857965e9.5.1786610312816;
-        Thu, 13 Aug 2026 01:38:32 -0700 (PDT)
-X-Received: by 2002:a05:600d:6409:10b0:499:84fc:4548 with SMTP id 5b1f17b1804b1-49984fc45c0mr2857405e9.5.1786610312345;
-        Thu, 13 Aug 2026 01:38:32 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981b62894sm46251145e9.13.2026.08.13.01.38.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 01:38:31 -0700 (PDT)
-Date: Thu, 13 Aug 2026 10:38:29 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Nguyen Dinh Phi <phind.uet@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] vsock: remove the now-unused rejected flag
-Message-ID: <an15JxACeo30Owo_@sgarzare-redhat>
-References: <20260810170935.2242314-1-phind.uet@gmail.com>
- <20260810170935.2242314-3-phind.uet@gmail.com>
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8pZ6b1wV7oIPzjAYmAkmYTPaTMwh9jqg6RCbWQCeDSc=;
+ b=CD15yUWSMyLZhIw1cRaGlme7ESFXHTFr1vanVGtKJhKRMI43ceeqN00irp/nTk3up9ep2xmabcAUAHcuZpu13SKqYrDZ/qB6Y5yk7AHFPMXL81xBLyDdiHEf84IN5zr0Xr+3JLBk+K0RD3WEEYzRUl8wYq52o3DXDuHK1cJRBAo=
+Received: from SG2PR03MB6635.apcprd03.prod.outlook.com (2603:1096:4:1df::6) by
+ TYZPR03MB8801.apcprd03.prod.outlook.com (2603:1096:405:a1::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.25; Thu, 13 Aug 2026 08:39:50 +0000
+Received: from SG2PR03MB6635.apcprd03.prod.outlook.com
+ ([fe80::d6a7:ad8b:c6ff:fce]) by SG2PR03MB6635.apcprd03.prod.outlook.com
+ ([fe80::d6a7:ad8b:c6ff:fce%6]) with mapi id 15.21.0315.014; Thu, 13 Aug 2026
+ 08:39:50 +0000
+From: =?utf-8?B?Wmhhb3BpbmcgU2h1ICjoiJLlj6zlubMp?= <Zhaoping.Shu@mediatek.com>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+	"sd@queasysnail.net" <sd@queasysnail.net>, "imv4bel@gmail.com"
+	<imv4bel@gmail.com>, "alice@isovalent.com" <alice@isovalent.com>,
+	"eilaimemedsnaimel@gmail.com" <eilaimemedsnaimel@gmail.com>,
+	=?utf-8?B?SFcgSGUgKOS9leS8nyk=?= <HW.He@mediatek.com>, "horms@kernel.org"
+	<horms@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+	<pabeni@redhat.com>, "edumazet@google.com" <edumazet@google.com>,
+	"willemdebruijn.kernel@gmail.com" <willemdebruijn.kernel@gmail.com>,
+	"willemb@google.com" <willemb@google.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "matthias.bgg@gmail.com"
+	<matthias.bgg@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"kuniyu@google.com" <kuniyu@google.com>, "ncardwell@google.com"
+	<ncardwell@google.com>
+CC: =?utf-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= <haijun.liu@mediatek.com>,
+	=?utf-8?B?WGlheXUgWmhhbmcgKOW8oOWkj+Wuhyk=?= <Xiayu.Zhang@mediatek.com>,
+	=?utf-8?B?TGFtYmVydCBXYW5nICjnjovkvJ8p?= <Lambert.Wang@mediatek.com>,
+	=?utf-8?B?SXZlbiBZYW5nICjpmLPlhYkp?= <Iven.Yang@mediatek.com>
+Subject: Re: [PATCH net v3] net: gro: Fix nesting of TCP GSO SKBs in
+  skb_gro_receive_list()
+Thread-Topic: [PATCH net v3] net: gro: Fix nesting of TCP GSO SKBs in
+  skb_gro_receive_list()
+Thread-Index: AQHdKsTRJTSvkpOzhkKxmMAGQeSLMrabQacAgABnaAA=
+Date: Thu, 13 Aug 2026 08:39:50 +0000
+Message-ID: <0e1f71c4417099399eda78fd2a082b2444e42af9.camel@mediatek.com>
+References: <20260813014056.160533-1-zhaoping.shu@mediatek.com>
+	 <willemdebruijn.kernel.1372b82f50882@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.1372b82f50882@gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SG2PR03MB6635:EE_|TYZPR03MB8801:EE_
+x-ms-office365-filtering-correlation-id: fd6c44f4-2c66-4e90-706a-08def916706e
+x-ld-processed: a7687ede-7a6b-4ef6-bace-642f677fbe31,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|38070700021|921020|6133799003|4143699003|10067099003|56012099006|11063799006|18002099003|22082099003;
+x-microsoft-antispam-message-info: VV8I3AOmF77RT6oQVoCQDtnq3xLbVyvhLLg53GiQK0OMVeINwO4O2OLXv3dsP/mBUT3c8fRO/yujTq+DSMfmVLRvkUGhtxli29x80+BZL1CvJuFRsq5/j+xbGCjWcMwLVgD2JlpYFmzwpvQIfyOx2sJwwIWjAbk3yX76RliJh56dBsAzcUkAkyd+PkgO8xae2n9rMle+oT2IZQ9qPMh6ZI7e35VDt5/3yZc+poJqzJEzZAugmZ24k1UvabD9uKrTvTigI8uEVhuQ8QeoL11kri0EmF5JbI4FWqIB8Ro0OX5XyccxPfKFDNF4lBZceFMbgH06qhdCTlEiB0Vv8dVFJ4OcikDXMWve3NmcGcn4t4j5Lyw82X/SBOmOVaC4nCj5AjGh1Yd0oAL8PfkkMlYwB5KMA4ClZlLl5kUwZKNDwWoOle7GuOh0fm9H3vn3q6Vy8FXgbujqI43RyzRtz2GIXAe/sGZdFV3mdm29eMGnWcdpyz0qgWYESmWXRBkX3AcuvZuvbOWmAhipVHPjSQkMvWHbmaDEN6AeC1uVzdatnjzyaRJ9Xpbg+v/Zom9jlPbCL/IrRlYIyoApdMVu4BaiVY2ANtnnoU2w6JH9CsWEjWV8oTqlt/67ZQgqFJep57/W6Frc38JkDb8T4cFAnUzGtytNhGhCG9ND1urF5nGnB7/LoJIDeTRKXIEt9BzyCfa/QB8v/uxLJtBYihc747SjfiVJEqnNZ89dC8TFVdar0TgbPHIujHSPTlN0jopFy+ia
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR03MB6635.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(38070700021)(921020)(6133799003)(4143699003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eXBYSXFvenhTUTV6K1E3eWFoeUNSelJPMklVVEhMeFJkdFlEREh0MENxSVI4?=
+ =?utf-8?B?Tm80aWhnZnN5alFvTW14akwvRUhZYkNSUm15ekFsTllXU1lVN0ExQm4rU05J?=
+ =?utf-8?B?eXJWUGFJWXVrUUxqeDlDLy8yM0lHUEl5UEtOcVp6QkpYUVQ5ZFhNYTJBYzJi?=
+ =?utf-8?B?L2lPM2xYc2kxMDR6WjlCWG1yVVB4N2VmWndwL2E1djAzKzE5ZUJQWTdZNDFK?=
+ =?utf-8?B?dm9MTlBjRWY4VkF3UVRUYmkreHB6RnZ0ZTNTd0ZpSTJVM09pWWQyNW5SSjRk?=
+ =?utf-8?B?QjArNWsyWXhSekQ3RTdJdWxlL1YwZGpQemZTeUtYb2xGbzBuRklHYUd4UzdL?=
+ =?utf-8?B?V1ZBNGZVN0E5Tm04SUhzWlhJQnVndG43OHVtd0kvaGM0WDR1YzFDM2RSdEQ1?=
+ =?utf-8?B?WUVTMXBHdFVJTFRhMnN5UjE5cVVJc0pvNlAvSXpMMXlTUzBJMmt0clFybGgz?=
+ =?utf-8?B?VkN2alMxS3dxTUlQeDQ2YUlvMWkvblJMb2ZnOVNqU0ZwcEptTHNwWHQ2aFNN?=
+ =?utf-8?B?UUdOR0ZncGRQTyt4Kys1aThHcXhoenRrSUN2RWFrTUFrcU1ZdXJ5S1ZTUWxE?=
+ =?utf-8?B?K3JFTHNTSUdyZFFMa1ArRzZnaGR3Mm9EQW15S21JZGk0ZFlDc1JXWUtmVFRs?=
+ =?utf-8?B?VzdLcmcrOHkwK09vb3NFSVJ6YTF1eStPZ3BOUGRvVldwT3FGRitrYmlxR1JI?=
+ =?utf-8?B?UUhGRHNvNXgxWE9zMXJJRmc5M1hxcVl1ZGJLUEVZS3Z1eVJ5U1JLR09zWEZF?=
+ =?utf-8?B?VU9Tek5KN1dOdnJ3SUcvcU5OTVc0SmN6eVBxa2MraGJTUHYxMUtSc2JDaVh5?=
+ =?utf-8?B?U3RXUTMwOU9FL0prMmhBTFV1cWN3aitPNG9HN0F4ckxnRXlnVnpUVkdFN1hR?=
+ =?utf-8?B?TExpcWhYZE5iUVR0cHljLzdQTmFoYXhBaHBtb2cyQ25xSDRkL3VQMXd1VUpv?=
+ =?utf-8?B?WDdXUEZWb3I4L1hoUmEzNEcreWV4QlIwcWZ6cHZEeUNOb28zQldUL3R4cnBy?=
+ =?utf-8?B?bi93STR1TmMvY1ZHTlFQb3oza2JIMjgyQTlYcEcyQzlKQWUwVHEyazRtWkhz?=
+ =?utf-8?B?QzRidDVxNVF3YXVsTSswckRMUEc2aHE1NjJPeFBtU0pXY1Q0VnQzeWQ1dktD?=
+ =?utf-8?B?MDd5U2ZIWHlQdUdId2lKR1JiZjdncVJEbWJSVXI3dnU5NDhiYWFGbitJL1RG?=
+ =?utf-8?B?bFNoR25NMURaanA0V2Y0cmxpZTFuczBDc3E3Nk1WK0s4b2tQcjZHd3BQSjQ0?=
+ =?utf-8?B?R0FwNDh0RlB4clMxd0VpT0tSTFpLTnJMYnhML1VpUDFQMkpsemw4bVUrM2pk?=
+ =?utf-8?B?azh4aEtDcGRRYmhsVURqVDJuTnRKaUphdTRhYVdkWkJRMlRXbnZHUUJEdFk5?=
+ =?utf-8?B?QjJlSlY1TWpvcEtnNjRLTkhiOFZEdVB4alV5bHhaWW43dmtFZFpValhhd3Ny?=
+ =?utf-8?B?b0xicm5GMkhLK0dtZDV6VmxxRTZNZGJrelQzK0FoOW1mU3NoTkJrUmtiNkE0?=
+ =?utf-8?B?NEhyS2x5MTEvb2l0cVRoc2hlVWl0QVdUdjRaUWh1VGZmTUJXVlZBS29WUGpY?=
+ =?utf-8?B?VzJmU0VvVXVnMkxjQ3crcC9lakhSeEt3bzBnazBPTEdHM3VlY1N5dDh1dmdJ?=
+ =?utf-8?B?T2dFb3pQSW1QRUpRS1hLQktMQzVsZlZ5bFpBcjhCbkJRcEhaTkdzcytlbWZ1?=
+ =?utf-8?B?TUNLbG9wNCtBc0Q5a2V5K0ZjWmV0eW50ZStoeFFoWEJRaERxMVdSZVdJeFBZ?=
+ =?utf-8?B?ZXZDM0FMWEhrZWJuS2pDeHB6cDlRbThsZGI0TUxsNVRlOFJ6SGxEU3F4N1k0?=
+ =?utf-8?B?NDNtcXRwUldpUnNUYTNseWV4QXdMdHdPcjkyZE81SFNwRlR2dVR3SDE2WVJP?=
+ =?utf-8?B?QWZEa3VvT2xBVlh1N3BjRGhDTzcvbWo2VENER3ZWcXVHY3U3UVRrY1FVNFM2?=
+ =?utf-8?B?anppRm9XdE9PMEk5TWYzM0M5TDByMTNMcmRtNHZyVFk2c3FVVzEvQXFMRFhW?=
+ =?utf-8?B?NlN3SFFPeHlCaitIWThmaHNaaVNPN1B6UURYUmpsZ0s5bGlXU2ppeUlRcDgy?=
+ =?utf-8?B?SnhKVldXL01lSmsvSWNmRFdPaFo1TVY4ZER4UWh0K3pIcWhscE0wZGwvNlFm?=
+ =?utf-8?B?VXByWDllNnRwUmZLaldUWGozVW9FckVjaGV1VnBKTWtZdk00VVU2ZTJDSjBo?=
+ =?utf-8?B?SzZtOE5YRUJFZStjWTV3azZnR3p3SDdhNTltUW1PckNGcDA4bEVweDcvWUZX?=
+ =?utf-8?B?VGNPOE9zV2lxbFV6UTZ4UjhVMk8zYnJHTHNNOWVqM0I0RVJaSGpTZzA4RW1S?=
+ =?utf-8?B?Zy93elc0UHVZVFhWVm5FbVdvaWVMZ1RLUWc5VGxERTZ1eGV5Sk53RlgwMDdP?=
+ =?utf-8?Q?N66PVBsHHETnT6UY=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C49832830DAF9C4FB36EE9C04CCB90F7@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260810170935.2242314-3-phind.uet@gmail.com>
+X-Exchange-RoutingPolicyChecked: pMn6QR6PQCYtTweLHPpfQHkNzh/atTAiS1lk9DpQP6eeBeUrnIwy7Pd2wAfkqtTFyH1BZ6mKeh+t7hLFGQxNta+Z3Z94sCW5nrF68L76iAq3JCKYZ4m2AKX3goYWPnKb6HkultDibiN3dzx0pPukJuYPN+mI6AbcKbXGQrjxxSsKcT42aZBaeuHNBCr0MXDAL1VpgdsykKVoA/P6BhxDZi7A8jNPuGf+Ph26n2LoNqQrpEyQOjpT0DzHlCO/yrMJT7sHOuIejopNcvwP3VrfKso4rebCk4RmNhjctxafkaSXheVxfzyfAjfK+Fh8f1TfdCPEWqcTk8DZZ1nnTL6r5w==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR03MB6635.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd6c44f4-2c66-4e90-706a-08def916706e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Aug 2026 08:39:50.3679
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: S9RZuDTESyWQh3GHZPOnA1J+KbMkJxVJHxwbJykWuIrYljeXVmz/07N8bQoITfDggRrVJHlYNoxRnp2PO2qizNtIAjvfatTepi5O8UQODiY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR03MB8801
+X-MTK: N
 
-On Tue, Aug 11, 2026 at 01:09:31AM +0800, Nguyen Dinh Phi wrote:
->After previous patch, the branch marking a socket rejected in
->vsock_accept() is unreachable, and nothing ever sets vsk->rejected
->elsewhere.
->
->Therefore, we can remove the `rejected` field from vsock_sock structure.
-
-I'd like to mention here that since commit d021c344051a ("VSOCK: 
-Introduce VM Sockets") where `rejected` was introduced, we didn't have 
-any path where sk_err is set on a listener socket, so that path was dead 
-since the beginning.
-
-The rest LGTM!
-
-Thanks,
-Stefano
-
->Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
->---
-> include/net/af_vsock.h   |  5 +----
-> net/vmw_vsock/af_vsock.c | 46 +++++++++++++---------------------------
-> 2 files changed, 16 insertions(+), 35 deletions(-)
->
->diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
->index 30046a3c20f7..3357ee62d10b 100644
->--- a/include/net/af_vsock.h
->+++ b/include/net/af_vsock.h
->@@ -52,13 +52,10 @@ struct vsock_sock {
-> 	 * The listening socket is the head for both lists.  Sockets created
-> 	 * for connection requests are placed in the pending list until they
-> 	 * are connected, at which point they are put in the accept queue list
->-	 * so they can be accepted in accept().  If accept() cannot accept the
->-	 * connection, it is marked as rejected so the cleanup function knows
->-	 * to clean up the socket.
->+	 * so they can be accepted in accept().
-> 	 */
-> 	struct list_head pending_links;
-> 	struct list_head accept_queue;
->-	bool rejected;
-> 	struct delayed_work connect_work;
-> 	struct delayed_work pending_work;
-> 	struct delayed_work close_work;
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index ff507761f472..b59890bbd217 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -38,10 +38,9 @@
->  * pending socket.  When that socket reaches the connected state, it is removed
->  * from the listener socket's pending list and enqueued in the listener
->  * socket's accept queue.  Callers of accept(2) will accept connected sockets
->- * from the listener socket's accept queue.  If the socket cannot be accepted
->- * for some reason then it is marked rejected.  Once the connection is
->- * accepted, it is owned by the user process and the responsibility for cleanup
->- * falls with that user process.
->+ * from the listener socket's accept queue. Once the connection is accepted,
->+ * it is owned by the user process and the responsibility for cleanup falls
->+ * with that user process.
->  *
->  * - It is possible that these pending sockets will never reach the connected
->  * state; in fact, we may never receive another packet after the connection
->@@ -49,9 +48,7 @@
->  * future, after some amount of time passes where a connection should have been
->  * established.  This function ensures that the socket is off all lists so it
->  * cannot be retrieved, then drops all references to the socket so it is cleaned
->- * up (sock_put() -> sk_free() -> our sk_destruct implementation).  Note this
->- * function will also cleanup rejected sockets, those that reach the connected
->- * state but leave it before they have been accepted.
->+ * up (sock_put() -> sk_free() -> our sk_destruct implementation).
->  *
->  * - Lock ordering for pending or accept queue sockets is:
->  *
->@@ -774,11 +771,10 @@ static void vsock_pending_work(struct work_struct *work)
->
-> 	if (vsock_is_pending(sk)) {
-> 		vsock_remove_pending(listener, sk);
->-	} else if (!vsk->rejected) {
->-		/* We are not on the pending list and accept() did not reject
->-		 * us, so we must have been accepted by our user process.  We
->-		 * just need to drop our references to the sockets and be on
->-		 * our way.
->+	} else {
->+		/* We are not on the pending list so we must have been accepted
->+		 * by our user process. We just need to drop our references to
->+		 * the sockets and be on our way.
-> 		 */
-> 		cleanup = false;
-> 		goto out;
->@@ -942,7 +938,6 @@ static struct sock *__vsock_create(struct net *net,
-> 	vsk->listener = NULL;
-> 	INIT_LIST_HEAD(&vsk->pending_links);
-> 	INIT_LIST_HEAD(&vsk->accept_queue);
->-	vsk->rejected = false;
-> 	vsk->sent_request = false;
-> 	vsk->ignore_connecting_rst = false;
-> 	WRITE_ONCE(vsk->peer_shutdown, 0);
->@@ -1912,26 +1907,15 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
-> 		lock_sock_nested(connected, SINGLE_DEPTH_NESTING);
-> 		vconnected = vsock_sk(connected);
->
->-		/* If the listener socket has received an error, then we should
->-		 * reject this socket and return.  Note that we simply mark the
->-		 * socket rejected, drop our reference, and let the cleanup
->-		 * function handle the cleanup; the fact that we found it in
->-		 * the listener's accept queue guarantees that the cleanup
->-		 * function hasn't run yet.
->-		 */
->-		if (err) {
->-			vconnected->rejected = true;
->-		} else {
->-			newsock->state = SS_CONNECTED;
->-			sock_graft(connected, newsock);
->+		newsock->state = SS_CONNECTED;
->+		sock_graft(connected, newsock);
->
->-			set_bit(SOCK_CUSTOM_SOCKOPT,
->-				&connected->sk_socket->flags);
->+		set_bit(SOCK_CUSTOM_SOCKOPT,
->+			&connected->sk_socket->flags);
->
->-			if (vsock_msgzerocopy_allow(vconnected->transport))
->-				set_bit(SOCK_SUPPORT_ZC,
->-					&connected->sk_socket->flags);
->-		}
->+		if (vsock_msgzerocopy_allow(vconnected->transport))
->+			set_bit(SOCK_SUPPORT_ZC,
->+				&connected->sk_socket->flags);
->
-> 		release_sock(connected);
-> 		sock_put(connected);
->-- 
->2.53.0
->
-
+T24gV2VkLCAyMDI2LTA4LTEyIGF0IDIyOjI5IC0wNDAwLCBXaWxsZW0gZGUgQnJ1aWpuIHdyb3Rl
+Og0KPiBFeHRlcm5hbCBlbWFpbCA6IFBsZWFzZSBkbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBh
+dHRhY2htZW50cyB1bnRpbA0KPiB5b3UgaGF2ZSB2ZXJpZmllZCB0aGUgc2VuZGVyIG9yIHRoZSBj
+b250ZW50Lg0KPiANCj4gDQo+IHpoYW9waW5nLnNodUAgd3JvdGU6DQo+ID4gRnJvbTogSFcgSGUg
+PGh3LmhlQG1lZGlhdGVrLmNvbT4NCj4gPiANCj4gPiBBIGRldmljZSBzdXBwb3J0cyBHUk9fSFcs
+IGFuZCB0aGUgZGV2aWNlIGRyaXZlciBlbmFibGVzIHRoZQ0KPiA+IE5FVElGX0ZfR1JPX0ZSQUdM
+SVNUIGZlYXR1cmUuIER1cmluZyBhIHRldGhlcmluZyB0ZXN0LA0KPiA+IHNrYl9ncm9fcmVjZWl2
+ZV9saXN0KCkgcmVhZ2dyZWdhdGVzIHRoZSBHU08gcGFja2V0LiBIb3dldmVyLA0KPiA+IHNrYl9z
+ZWdtZW50X2xpc3QoKSBjYW5ub3Qgc2VnbWVudCB0aGlzIHBhY2tldCBiYWNrIGludG8NCj4gPiB0
+aGUgb3JpZ2luYWwgcGFja2V0cywgd2hpY2ggbGVhZHMgdG8gSVAgZnJhZ21lbnRhdGlvbiBvciBw
+YWNrZXQNCj4gPiBkcm9wLg0KPiA+IA0KPiA+IFNjZW5hcmlvIChUZXRoZXJpbmcvRm9yd2FyZGlu
+Zyk6DQo+ID4gMS5Ecml2ZXIgc3VibWl0cyBhIHNpbmdsZSBUQ1AgcGFja2V0LCBQMS4gUDEgaXMg
+a2VwdCBpbiB0aGUNCj4gPiBncm9fbGlzdCBhcyB0aGUgZmlyc3QgcGFja2V0Lg0KPiA+IA0KPiA+
+IDIuIFRoZSBkcml2ZXIgc3VibWl0cyBhIFRDUCBHU08gc2tiLCBQMi4gUDIgaGFzIGFscmVhZHkg
+YWdncmVnYXRlZA0KPiA+IG11bHRpcGxlIFRDUCBwYWNrZXRzIGJ5IEhXX0dSTywgYW5kIGl0cyBu
+b24tbGluZWFyIGRhdGEgaXMgc3RvcmVkDQo+ID4gaW4NCj4gPiBmcmFnc1tdLg0KPiA+IA0KPiA+
+IDMuIFAxIGFuZCBQMiBtYXRjaCB0aGUgR1JPIHJ1bGVzLCBhbmQgc2luY2UgdGhlcmUgaXMgbm8g
+bG9jYWwNCj4gPiBzb2NrZXQsDQo+ID4gdGhleSBhcmUgYWdncmVnYXRlZCBieSBza2JfZ3JvX3Jl
+Y2VpdmVfbGlzdCgpLiBUaGUgcmVzdWx0aW5nIHNrYiwNCj4gPiBQMywgaGFzIGEgZnJhZ19saXN0
+IGVudHJ5IHRoYXQgc3RpbGwgY29udGFpbnMgZnJhZ3NbXToNCj4gPiBQMzogWyBMaW5lYXIgRGF0
+YSBdIC0+IGZyYWdfbGlzdCAtPiBbIExpbmVhciBEYXRhIF0NCj4gPiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICBbIGZyYWdbMV0gXQ0KPiA+ICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIFsgZnJhZ1syXSBdDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgLi4uDQo+ID4gNC4gTGF0ZXIsIHRjcDRfZ3NvX3NlZ21lbnQoKSBvciB0Y3A2
+X2dzb19zZWdtZW50KCkgY2FsbHMNCj4gPiBza2Jfc2VnbWVudF9saXN0KCkgdG8gc2VnbWVudCBQ
+My4gSG93ZXZlciwgc2tiX3NlZ21lbnRfbGlzdCgpIG9ubHkNCj4gPiBzZWdtZW50cyB0aGUgZW50
+cmllcyBpbiBmcmFnX2xpc3QuIEl0IGRvZXMgbm90IHNlZ21lbnQgdGhlIGZyYWdzW10NCj4gPiBp
+bnNpZGUgUDIsIHNvIFAzIGlzIG5vdCByZXN0b3JlZCB0byB0aGUgb3JpZ2luYWwgcGFja2V0cywg
+d2hpY2gNCj4gPiBsZWFkcw0KPiA+IHRvIElQIGZyYWdtZW50YXRpb24gb3IgcGFja2V0IGRyb3Ag
+aW4gdGhlIGZvbGxvd2luZyBwYXRoLg0KPiA+IA0KPiA+IFdoZW4gTkVUSUZfRl9HUk9fSFcgaXMg
+ZW5hYmxlZCwgZG8gbm90IHNldCBOQVBJX0dST19DQihza2IpLQ0KPiA+ID5pc19mbGlzdC4NCj4g
+PiBGYWxsIHRocm91Z2ggdG8gdGhlIHJlZ3VsYXIgc2tiX2dyb19yZWNlaXZlKCkgcGF0aCBpbnN0
+ZWFkIG9mDQo+ID4gc2tiX2dyb19yZWNlaXZlX2xpc3QoKS4NCj4gPiANCj4gPiBGaXhlczogOGQ5
+NWRjNDc0Zjg1ICgibmV0OiBhZGQgY29kZSBmb3IgVENQIGZyYWdsaXN0IEdSTyIpDQo+ID4gU2ln
+bmVkLW9mZi1ieTogSFcgSGUgPGh3LmhlQG1lZGlhdGVrLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5
+OiBaaGFvcGluZyBTaHUgPHpoYW9waW5nLnNodUBtZWRpYXRlay5jb20+DQo+ID4gLS0tDQo+ID4g
+WzJdOiANCj4gPiBodHRwczovL3VybGRlZmVuc2UuY29tL3YzL19faHR0cHM6Ly9wYXRjaHdvcmsu
+a2VybmVsLm9yZy9wYXRjaC8xNDcwNjAzMl9fOyEhQ1RSTktBOXdNZzBBUmJ3IWtpZ2IxNDctRzlF
+Z05xZFdNaGFRNDN1ZFlPdk45MFNHNmJWamVNLUd4VHNQbzNFMDdfdGJ5c3VvRWllc3pyNUNiQ3FU
+OTRBWXB0MWJfTTdWc2dOYVpjanRCU19BbllvJA0KPiA+IFsxXTogDQo+ID4gaHR0cHM6Ly91cmxk
+ZWZlbnNlLmNvbS92My9fX2h0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcGF0Y2gvMTQ3MDIy
+MDlfXzshIUNUUk5LQTl3TWcwQVJidyFraWdiMTQ3LUc5RWdOcWRXTWhhUTQzdWRZT3ZOOTBTRzZi
+VmplTS1HeFRzUG8zRTA3X3RieXN1b0VpZXN6cjVDYkNxVDk0QVlwdDFiX003VnNnTmFaY2p0dTBi
+UVBOSSQNCj4gPiAtLS0NCj4gPiAgbmV0L2lwdjQvdGNwX29mZmxvYWQuYyAgIHwgNyArKystLS0t
+DQo+ID4gIG5ldC9pcHY2L3RjcHY2X29mZmxvYWQuYyB8IDMgKystDQo+ID4gIDIgZmlsZXMgY2hh
+bmdlZCwgNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYgLS1n
+aXQgYS9uZXQvaXB2NC90Y3Bfb2ZmbG9hZC5jIGIvbmV0L2lwdjQvdGNwX29mZmxvYWQuYw0KPiA+
+IGluZGV4IDNiMWZkY2QzY2IyOS4uNjQxYzQ3ZmIxZWEyIDEwMDY0NA0KPiA+IC0tLSBhL25ldC9p
+cHY0L3RjcF9vZmZsb2FkLmMNCj4gPiArKysgYi9uZXQvaXB2NC90Y3Bfb2ZmbG9hZC5jDQo+ID4g
+QEAgLTM5NSw5ICszOTUsNiBAQCBzdGF0aWMgdm9pZCB0Y3A0X2NoZWNrX2ZyYWdsaXN0X2dybyhz
+dHJ1Y3QNCj4gPiBsaXN0X2hlYWQgKmhlYWQsIHN0cnVjdCBza19idWZmICpza2IsDQo+ID4gICAg
+ICAgc3RydWN0IG5ldCAqbmV0Ow0KPiA+ICAgICAgIGludCBpaWYsIHNkaWY7DQo+ID4gDQo+ID4g
+LSAgICAgaWYgKGxpa2VseSghKHNrYi0+ZGV2LT5mZWF0dXJlcyAmIE5FVElGX0ZfR1JPX0ZSQUdM
+SVNUKSkpDQo+ID4gLSAgICAgICAgICAgICByZXR1cm47DQo+ID4gLQ0KPiANCj4gSW50ZXJlc3Rp
+bmcgdGhhdCBpcHY0IGFuZCBpcHY2IGRpdmVyZ2UgaGVyZS4gTmljZSB0byB0cnkgdG8gbWFrZSB0
+aGVtDQo+IG1vcmUgYWxpa2UuDQo+IA0KPiA+ICAgICAgIHAgPSB0Y3BfZ3JvX2xvb2t1cChoZWFk
+LCB0aCk7DQo+ID4gICAgICAgaWYgKHApIHsNCj4gPiAgICAgICAgICAgICAgIE5BUElfR1JPX0NC
+KHNrYiktPmlzX2ZsaXN0ID0gTkFQSV9HUk9fQ0IocCktDQo+ID4gPmlzX2ZsaXN0Ow0KPiA+IEBA
+IC00MzAsNyArNDI3LDkgQEAgc3RydWN0IHNrX2J1ZmYgKnRjcDRfZ3JvX3JlY2VpdmUoc3RydWN0
+DQo+ID4gbGlzdF9oZWFkICpoZWFkLCBzdHJ1Y3Qgc2tfYnVmZiAqc2tiKQ0KPiA+ICAgICAgIGlm
+ICghdGgpDQo+ID4gICAgICAgICAgICAgICBnb3RvIGZsdXNoOw0KPiA+IA0KPiA+IC0gICAgIHRj
+cDRfY2hlY2tfZnJhZ2xpc3RfZ3JvKGhlYWQsIHNrYiwgdGgpOw0KPiA+ICsgICAgIGlmICh1bmxp
+a2VseSgoc2tiLT5kZXYtPmZlYXR1cmVzICYgTkVUSUZfRl9HUk9fRlJBR0xJU1QpICYmDQo+ID4g
+KyAgICAgICAgICAgICAgICAgICEoc2tiLT5kZXYtPmZlYXR1cmVzICYgTkVUSUZfRl9HUk9fSFcp
+KSkNCj4gDQo+IFdvdWxkIGl0IGJlIGJldHRlciB0byB0ZXN0IHNrYl9pc19nc28oc2tiKSBhbmQg
+b25seSBza2lwIGZyYWdsaXN0IEdSTw0KPiBmb3IgSFctR1JPIHNrYnMsIHJhdGhlciB0aGFuIGRp
+c2FibGluZyBpdCBmb3IgYWxsIHNrYnM/DQoNClllcywgZm9yIHRldGhlcmluZyBwYWNrZXRzLCBI
+Vy1HUk8gc2ticyBhcmUgYWdncmVnYXRlZCBieQ0Kc2tiX2dyb19yZWNlaXZlKCksIHdoaWxlIG90
+aGVycyBnbyB0aHJvdWdoIGZyYWdsaXN0IEdSTy4gSG93ZXZlciwgY2FyZQ0KbXVzdCBiZSB0YWtl
+biB0byBhdm9pZCBwYWNrZXRzIGFycml2aW5nIG91dCBvZiBvcmRlci4gSSB3aWxsIHdvcmsgb24N
+Cml0IGFuZCBzdWJtaXQgVjQuDQoNCj4gDQo+IElmIHRyZWF0aW5nIHRoZSBmZWF0dXJlcyBhcyBt
+dXR1YWxseSBleGNsdXNpdmUsIGFub3RoZXIgb3B0aW9uIHdvdWxkDQo+IGJlIHRvIHJlcGxhY2Ug
+dGhlc2UgZGF0YXBhdGggY2hlY2tzIHdpdGggZGlzYWJsaW5nIG9uZSBhdA0KPiBjb25maWd1cmF0
+aW9uDQo+IHRpbWUsIGluIG5ldGRldl9maXhfZmVhdHVyZXMuDQo+IA0KSWYgVjQgd29yayB3ZWxs
+LCB0aGVyZSB3aWxsIGJlIG5vIG5lZWQgdG8gY2hlY2sgbmV0ZGV2LT5mZWF0dXJlcy4NCkxpbnV4
+IGtlcm5lbCBHUk8gd2lsbCBiZSBtb3JlIHJvYnVzdCBhbmQgYWJsZSB0byBoYW5kbGUgc2NlbmFy
+aW9zDQp3aGVyZSBib3RoIE5FVElGX0ZfR1JPX0hXIGFuZCBORVRJRl9GX0dST19GUkFHTElTVCBh
+cmUgZW5hYmxlZC4NCg0K
