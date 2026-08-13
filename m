@@ -1,158 +1,164 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AD424DCF6
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DEC29BD8C
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786587674; cv=none; b=gdxzax7jFzzj6xRNeiHT8vPLroj1eDFAJXjlHE6l7LJMy4xQr/C+C2ntPAhPxhWN9hhk+FqYwx+EDuRyXfqy3vWa9hOmmEDjt8oo0sZGaWaAhoGu9j9o6Ri7CLGHO0h+UeoHYQM5PQxFvLFhmJxm0XAwYGQT+H/q8Q5OfCUU/ic=
+	t=1786587779; cv=none; b=GG8CcNtyDG3uCZJh/ZlOBqOKO52A7RWLcmIFQxdKKvgN+mZkFU+OiL+VwIyGvayqhmThynMJZDgRd450fraph5sMFUsQsLfcaCPDI7vzsyiSsC6gLUlUSm8aLPuD9kfa3I8MzYLE8wXPjyaCzTvr113c7o5GFChChaXrJFFzmhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786587674; c=relaxed/simple;
-	bh=uS9sWbpqDY7qVtQkvy/PC8zLLElz8q6kaRjwUGfvU7U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HX99okhDYvNsuxeog9t04JopjRQ5IQtaFtf38sPKC/qkp/lWtrX45WdeVY8nxg9WPFJEGVsPEyBAwMzHlfWkmUBr28hADgX/U7hGEc43T7+D/21urtP95dEMtCX4aXrt/5QJB+kPPwITouRu1+moATpnBKW1wggIzi0wJKrNBl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W0mbpK/j; arc=none smtp.client-ip=209.85.222.169
+	s=arc-20240116; t=1786587779; c=relaxed/simple;
+	bh=N0CDGf91ShSNx7NguKzYYvGCEE+SoDNyK4yIYae0qrs=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=i7/jcDxeqL2jdx5+gkJHA7LsAaFrWgvO3mVAhm0Q6aoLm2QBVqGqQSpKyngesioKPaM2oW2nflXR40Kzy2chNYXXclslyD5JlhlsS/fclOHlBgkC2wPcECeah0Xv5FsDgR/EWdqwS9Rzjp8jynGF7UjuEbAiDyGixOq3ZlSRous=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YahkbhiM; arc=none smtp.client-ip=209.85.128.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W0mbpK/j"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e6c4a867cso105826185a.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 19:21:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YahkbhiM"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-821106b5b64so10198407b3.1
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 19:22:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786587672; x=1787192472; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OQ0mOHVrQqy6gW071BjekeyZkSroC7y2i96KZ+jhet4=;
-        b=W0mbpK/jaV+KMTfBGpPRzEvB9DAoDlxyne+dQLwMj33MmMBTAktfw5ruGaizfyqutT
-         uHWFya/TUNipk6g6YJK53b20CbKwSdPaqEhK/shsZ07W5/E+6PYzOesFNPQEwFvIgWRU
-         9mwfV8w00rxf6v2W0i9xOo0ExB9MgUBoR7c3Yer3BWEBN2IP6ZQybui5aOoxmByiD0Wk
-         ErgQtHKu/L58ufbLtWFr3Jedtts9t5UoZ6eJIzOiwzOV5bD8dqiXnjE7O2bwA7Yu2z4O
-         vinWY5seT2zFj89XA58y91SIVmXPCXudJmQPj8uiRdtt6pI3axZ04CVay1QyUHBrMTTh
-         E7pA==
+        d=gmail.com; s=20251104; t=1786587776; x=1787192576; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=COmSqf8nOGF9mKdU2rDmrVyiOuyrEua4dYaRNW04464=;
+        b=YahkbhiMNxKoh532gMxgB/p45FBlZepvAdHT+SVv4Qx+FN26qo/otSXWYcKZsxMpqw
+         LRLEMMznWYQ520udd12SgyD4RruuYe19cL5xBE6jgQFES+4Y5sewPprBSpN8DHgGlu2y
+         b9fGUhx9ok+Z5ayhtSp/FVcYkAOY2bhtO1BMJL8LaOeODkxu292BRBs8v3H26MVKgSeB
+         DghC8lz27vDij7O2XNcV3GhA3fqAivCKhHWeCMUn/G5Xw2vSudtfM1z0yX8Ei+dM8Kgf
+         oixdKky2FSXJHeCAXw5eEc2r/qh+OTDSZMutevjo6FrKtSZjYdR3BGMWpoc65wW+0cGb
+         ceBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786587672; x=1787192472;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OQ0mOHVrQqy6gW071BjekeyZkSroC7y2i96KZ+jhet4=;
-        b=I9CCQLmXL8llfaiC10JTORN85pXl4ssq3jC1OAqjavtZ76Fc4BLZ++R2jPBzy0mW5M
-         WCeNmDlhiU72DDh97IzBwEbyr/khkhrz/rhgXNcWgEzhmtqYTgHOgnn5THCHDLVZaOgf
-         Gjbp4YGNWYkl8wssoSEsSys22FTBMleTugMtYaG00TG/1/KzUVCQS7320SsNqoKXExIQ
-         XWqzcBWNejKQ1CI0wVR8ZyoAjSOh5u/EbTNdslGGtj9/M3iKDWFJ0w1GthwmwvlMP3HU
-         HYctIS2CgIzsVg6I6f64PhYbVAvY7QyeLnF2UonJeFAUydtmllVN5ZtLgLACv2sP5L2J
-         MKlg==
-X-Forwarded-Encrypted: i=1; AHgh+RodmwTtc9jRrFyPwmQQL7+SEtM4B9cbgS6bqxsWQn7q3J0bzDyMuVoMPAo897Rjc/KI2ae8uN4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf3NWJ1VuNHe5hXKUHYNU0IBUc1MIiI9k72Z1P8PaldUCh5xED
-	dZFXcrH0x2hY+nG/1Zq04LQ8C/FtnCBAQLaYyC5btQ6MtK23vie4/z3E
-X-Gm-Gg: AR+sD10JN7koMm+yGEejELPHILNJa4r9dJ3ONDuyT8pPNMBmSJL3sHKA1+UpwEtHXgI
-	vkspKDMG0C1KCcboRNmg9/8mKZml/bsivl/5gI3EWz6iYiC9qHOlYNyB002SaWMb4HogfwnOpI9
-	EYjURzAceaTFXYxuv7bEngU7IEnLUe52nW8uEI8tRlW3bsHIC8XEE4LSPuZqrwgjSkaXrGdphJ6
-	8NN34HvhZd/5J6Y/05zvNQCf093yu7mZFPFsaLcgCrFV+DtsOEKqqhOKjZJPhmoGzG46Ulb+km8
-	CPiBTibiRnKV6ssmAmMVvm6wwIpVJEw2fZE5EKEPTs5o67cD3g7aIESwyR6FZuBytzCTxm3yN51
-	vCSVMjuNajor5WgimJ1pjcwMt4ywoSjbOzC2M08wWCy9gzAdGFnVaoRD4RHkIMJbpim0AGf2rwn
-	Pbp1sFg1Lvqf7zXHgwtUpC5PUEbvRcdaAz/2gEcwyL0iO90D6lOvMC5kg=
-X-Received: by 2002:a05:620a:479a:b0:936:587d:338c with SMTP id af79cd13be357-936bfb39800mr173250485a.37.1786587671878;
-        Wed, 12 Aug 2026 19:21:11 -0700 (PDT)
-Received: from beelink.. ([185.217.69.177])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-936c1b11d44sm45064185a.22.2026.08.12.19.21.07
+        d=1e100.net; s=20251104; t=1786587776; x=1787192576;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=COmSqf8nOGF9mKdU2rDmrVyiOuyrEua4dYaRNW04464=;
+        b=E1Ymyheh7LwbOUN44Ee3YCMPOy2Y2speROT5J9D28wD4/n5H3QQ7uLVWBxQX72E/MC
+         QffvwONl9Uj7Mt6UCd1IDzfUmp4OyE+gQC5981KR35rtg2KGhZeL9RCcUo7fGwLlW5uD
+         N3f7bqGe5j4t9UUfMLFrnmai5eNxWQMeIrW7Tm3Bi/9sZq+j7oUpXJ117wCcLyweDTcK
+         Mta+8ot+PrNvUC4kf3H8i3v67NNyoQQEpsLF9ylG54/uMPayD2ASMVcAk0793oe10OJ1
+         yGp+dEP6CwRGw1zmK0rgwxWUEfsOqopKzfdMHRLq6ozbdX2ZsjwixtbFiPInTTH7ITMx
+         VGLA==
+X-Gm-Message-State: AOJu0YxJsOgOE9LcxCIYDd5kE4Nsyk7FLJykej09m9OQYMF+QDNP7Q5G
+	GwVplb6NC4MOMmtNbGvPZMPzCjxayqi78th8oW6t7Zu8IN2++VN+9BLM
+X-Gm-Gg: AR+sD12gNAVY1AWfcoAlEbAP9heMpTMZGJ5JTad3gmJlP2SL4NlEn5zmnektDeEpKh1
+	Qsn3mWlsa2Jq9smSDn8N3wjya8b2u90LgkaryDHde5NtxPDMA6Zkdq0mNC70uJwfzabJqLqeTs5
+	bnXz63Hg0c9crPFgkm6Yn5ySAgkwHw9OIuXKOG9UiZEMGDQwJ6V43OdNOKxWMeWmXYP7LbdTDTR
+	QH5i7m4cvkPhu6PQZm7PcX7+bliBRxacGA0SInqHAO3T0h19Hi6hvZb7FYnX5eJ9YDdo6mN6Z9E
+	acmvH0QiRtLjty4r9mfyeJvTZLfECSosEFd1ZGpInl5iHmgUqQcGthfzVCdfAtkra9HdAH92ui4
+	lOTEb0x74Gv35kPhJCbgpSIg2RnCjQXsPoPxFX7vDhmHjuK2XCOKTQ1iQDlDzHHdwkjmnhaoPom
+	zKjLmjY6L9Rsd8QZSyuLBQ23vpgJ7tPCCjF7IPMBpaWS3INaUz0x4jwFPtZ8v4h3j0UcDYuq08Y
+	LMhrRwUF8+Wvnp5+jXAyV4qiOZ4mFWhrYo0
+X-Received: by 2002:a05:690c:385:b0:81e:f308:cfa3 with SMTP id 00721157ae682-83487fa7756mr9996857b3.14.1786587776591;
+        Wed, 12 Aug 2026 19:22:56 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-83465b080dfsm4775547b3.3.2026.08.12.19.22.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 19:21:10 -0700 (PDT)
-From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-To: Jeremy Kerr <jk@codeconstruct.com.au>,
-	Matt Johnston <matt@codeconstruct.com.au>
-Cc: davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-Subject: [PATCH] net: mctp: hold a reference to the route device in mctp_route_lookup()
-Date: Wed, 12 Aug 2026 23:21:02 -0300
-Message-ID: <20260813022102.2792032-1-qwe.aldo@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Wed, 12 Aug 2026 19:22:55 -0700 (PDT)
+Date: Wed, 12 Aug 2026 22:22:55 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Joe Damato <joe@dama.to>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ andrew+netdev@lunn.ch, 
+ willemb@google.com, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.1ea7511ccd4a1@gmail.com>
+In-Reply-To: <any6TenWsCUdIPvX@devvm20253.cco0.facebook.com>
+References: <20260811184722.2612345-1-joe@dama.to>
+ <20260811184722.2612345-2-joe@dama.to>
+ <willemdebruijn.kernel.57d27685522a@gmail.com>
+ <any6TenWsCUdIPvX@devvm20253.cco0.facebook.com>
+Subject: Re: [PATCH net-next 1/2] net/packet: Reduce VLAN tag code duplication
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-mctp_route_lookup() uses rt->dev without holding a reference on it.
-mctp_route_lookup_single() returns the route under RCU only, so the
-route's device can be torn down concurrently: mctp_dev_put() drops the
-last reference and synchronously kfree()s mdev->addrs.  mctp_dev_saddr()
-then reads rt->dev->addrs[0], giving a use-after-free reachable by an
-unprivileged local AF_MCTP user on the receive/forwarding path (no
-CAP_NET_RAW required):
+Joe Damato wrote:
+> On Wed, Aug 12, 2026 at 08:28:39AM -0400, Willem de Bruijn wrote:
+> > Joe Damato wrote:
+> > > Reduce code duplication for VLAN tag extraction by factoring the
+> > > repeated code into a helper and using it.
+> > > 
+> > > Signed-off-by: Joe Damato <joe@dama.to>
+> > 
+> > Especially with the improving AI bots, we're getting even more fixes
+> > to PF_PACKET lately. Cleanup patches can block fix backports to stable.
+> > The bar for pure cleanup patches has to be high to warrant that.
+> > 
+> > Plus, they add risk, if it is not trivial to review that they are NOOPs.
+> > 
+> > Subjective, but not sure this one warrants the cost.
+> 
+> OK. In that case, I'll mark the series as rejected below. I was also working
+> on a test for ORIGDEV because many, many years ago I got bit by unexpected
+> results mixing packet sockets with bonded interfaces.
+> 
+> But, I'll refrain from touching anything related to af_packet including tests
+> from now on.
 
-  BUG: KASAN: slab-use-after-free in mctp_route_lookup
-  Read of size 1 at addr ... by task mctp_uaf/...
-   mctp_route_lookup
-   mctp_pkttype_receive
-  Freed by task ...:
-   kfree
-   mctp_dev_put
-   mctp_dev_notify
+It only applies to pure code cleanups.
 
-In the same window mctp_dst_from_route() -> mctp_dev_hold() also
-increments a refcount that has already reached zero
-("refcount_t: addition on 0 ... mctp_dev_hold").
+> > > ---
+> > >  net/packet/af_packet.c | 95 +++++++++++++++++++++++-------------------
+> > >  1 file changed, 53 insertions(+), 42 deletions(-)
 
-This reintroduces the use-after-free class of CVE-2023-3439: the source
-address lookup was moved ahead of the point where the destination takes
-its device reference.
+As said it is a bit subjective (I did add a Reviewed-by to patch 2/2).
+And my opinion is just one. But this one to me makes the code less
+obvious, and no shorter.
 
-Take a reference with refcount_inc_not_zero() before touching rt->dev,
-skip a device that is already dead, and drop the reference once the
-destination has taken its own.
+But, the real point remains that the bar for cleanups is high to
+offset the dual risk of unintended side-effects, and especially
+complicating (security) fix backports.
 
-Fixes: 22cb45afd221 ("net: mctp: perform source address lookups when we populate our dst")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
----
-A reproducer is available on request.
+> > > 
+> > > diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> > > index 435756877aba..ee60dcc639ad 100644
+> > > --- a/net/packet/af_packet.c
+> > > +++ b/net/packet/af_packet.c
+> 
+> [...]
+> 
+> > > @@ -997,20 +1018,19 @@ static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
+> > >  			struct tpacket3_hdr *ppd)
+> > >  {
+> > >  	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
+> > > +	struct net_device *dev = NULL;
+> > > +	u16 tci, tpid;
+> > >  
+> > > -	if (skb_vlan_tag_present(pkc->skb)) {
+> > > -		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
+> > > -		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
+> > > -		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> > > -	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
+> > > -		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
+> > > -		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
+> > > +	if (po->sk.sk_type == SOCK_DGRAM)
+> > > +		dev = pkc->skb->dev;
+> > > +
+> > > +	if (packet_get_vlan_tci_tpid(pkc->skb, dev, &tci, &tpid))
+> > >  		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> > 
+> > Does this change behavior, now setting tp_status also for the second
+> > branch, where previously the flags were not set?
+> 
+> If you apply the patch to the tree and look at it, it'll be less confusing. It
+> looks weird because of what git generated, but as far as my reading of the
+> code goes, there is no behavior change.
 
- net/mctp/route.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 1f3dccbb7a..b19c63a569 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -998,14 +998,29 @@ int mctp_route_lookup(struct net *net, unsigned int dnet,
- 			mtu = mtu ?: rt->mtu;
- 
- 		if (rt->dst_type == MCTP_ROUTE_DIRECT) {
--			mctp_eid_t saddr = mctp_dev_saddr(rt->dev);
-+			mctp_eid_t saddr;
-+
-+			/* rt->dev may be going away concurrently: its last
-+			 * reference is dropped in mctp_dev_put(), which frees
-+			 * mdev->addrs that mctp_dev_saddr() reads, and
-+			 * mctp_dst_from_route() takes a reference on it.  Pin
-+			 * it before use, and skip a device that is already
-+			 * dead rather than resurrecting it.
-+			 */
-+			if (!refcount_inc_not_zero(&rt->dev->refs))
-+				break;
-+
-+			saddr = mctp_dev_saddr(rt->dev);
- 
- 			/* cannot do gateway-ed routes without a src  */
--			if (saddr == MCTP_ADDR_NULL && depth != 0)
-+			if (saddr == MCTP_ADDR_NULL && depth != 0) {
-+				mctp_dev_put(rt->dev);
- 				break;
-+			}
- 
- 			if (dst)
- 				mctp_dst_from_route(dst, daddr, saddr, mtu, rt);
-+			mctp_dev_put(rt->dev);
- 			rc = 0;
- 			break;
- 
--- 
-2.43.0
-
+I see what you mean, thanks.
