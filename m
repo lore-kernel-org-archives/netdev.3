@@ -1,117 +1,332 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25AF469857
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34853E49C6
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786619830; cv=none; b=kl2KdhBq9271Mybk3mlAPhHw5/FdzaDk1UxVxm2XCcnkmUV+VRJ9XfhWaH9BNTPFbUo8mCyUjIPmEBQwycMEK7YxzxTmAwxK1USClH4pAl4hAPhfapqthG/5ZavUxaGgJk7kPwvJ8Wi1Gx96zPG6Ps14tGTe8DeO1E/HyAIVOZc=
+	t=1786620052; cv=none; b=iGL9ZxJN37stB1RMwOEFZlG/pjWECvuKTLVJ3TEYVLN1+fMuaizftYMZ6Hkzkg4C/HgG4WTlWGOxEiFIr4Ci6sr3Hd/rgyYHHHNQV/T44bOolmdtMxdRO+JWSvtjiiQ6lDOBdRWEhspMb81LawoXeDneYYHlfMaVlTQNICj3AGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786619830; c=relaxed/simple;
-	bh=u797+pMmdUz57yJc4xnPqSsDEK6oX0EkjV3IS2C03L4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=F2XQ6ryPrf9SjulM7Li/daYJF91ERNdioYWBeCgUZ0X39b2wi+FcaLWNyH5E3LXW0vhHqzzfS2w+d75OrMUk0lu6HsmSBXA+Hy2O6TQaAZqCXyDIX3E+gAbHMr58ym9qM/Jyd8WlL7o8cHhM/HqRBBK8jYOS2gmUryQzJ3gWy68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EGXfXl2P; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=V73e9pr2; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786620052; c=relaxed/simple;
+	bh=309ZmjVPz5mgkiq/iuAYWpkubWoU29BzNrP5pOfXKDA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IfTNbMcIJ97BagY+ffqgRbOuuWfiZGF0iphGVZ7bXIaBFQqYyO0o56H1lGeJlVMhCfFY2VQTvGA8qFi1fA02+sfhmJQeZ5MDVIgjx2tMJf++vqsWLjy6OoKL4f3ojrrzV6oktlK++sbTYLf+sipnizJ1++SbUtf+GauYnlUybuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--maze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pDqemULj; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--maze.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EGXfXl2P";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="V73e9pr2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786619824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xMY/+66wnfUBfCQC7i9RuCgiWr7NlzzVZ+EQNegKcjA=;
-	b=EGXfXl2PtIlZ6QSEDjI0rnabK11OHH5iO+hmZdHxAYRWaqkPCa1Q3Fmw/4spfEn3nei0SR
-	nM+OnVJ5EUVR4y3FfegJwq0BsUVUtAr/cXfWddXVpc0oGd125VasEQmvS7YRKo7UM7ku2p
-	WtaSFNaSD4Xq2zmf48eqUJ1BZ5IPGV0=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-670-6RJmNnoMMbSUpbPla--ARg-1; Thu, 13 Aug 2026 07:16:53 -0400
-X-MC-Unique: 6RJmNnoMMbSUpbPla--ARg-1
-X-Mimecast-MFC-AGG-ID: 6RJmNnoMMbSUpbPla--ARg_1786619813
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93494527488so349047585a.3
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 04:16:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pDqemULj"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbeeaabcadfso770691a12.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 04:20:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786619813; x=1787224613; darn=vger.kernel.org;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+        d=google.com; s=20251104; t=1786620046; x=1787224846; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=xMY/+66wnfUBfCQC7i9RuCgiWr7NlzzVZ+EQNegKcjA=;
-        b=V73e9pr235hurvhKqGh9qzniJSk1YOKKTFU1DEevaQwwgFu9IImC7OfPDVTKoXd+xq
-         yHRb1wBGzWuRbDuEyf4x/C1LYTAFr+aGhhbRTZIifEkrKbzhmwVSYITMC93kfsId/n99
-         A+sfOKaocSVQYsj4u/tnFn/XDWmo8XRif63gAR5fM+w9kBqAuTRQ3fP+9729CV05NJyX
-         5WKxFjwkKAvUKbwXFaXa5W9h6xVzkraYg2xO6UjLhBOuK9+mcIkOLTYj4A4uE5BODZlt
-         l1ysQAOyOLpBzdcoHGNua7naSJYUNTFq2EKz+htzHlPJiqkr5Gr7zjss8DrMw2zLFemz
-         iGvw==
+        bh=+DTbEDzNAkDi7a4YLT3tc3XFoipA7stpV5ODIq5bMqk=;
+        b=pDqemULjKTwNOUUQJKGFodQIw5Ps12LW8Ck9gNh06Y2uF0Lh6nObcaoNs7nrvh/LK+
+         3Bkgp/oIUzMCiaHCz6vA2+h1vAOa4suYrECiEgooKf51MweNdUcn1LoLmk2u25ncyk9v
+         eb0GH++jggTVWtj5yCCQj0xEqFzp9SH1MPij2rWcIAt6dJFoMc2m2aJfXesZgr/1hvP0
+         C202L33zJRvVkwjHOxltWB31FSM/WcVPoCaVpYviwY3ZP/Z/+ylqUpNRkzvHKT//jUwh
+         mcS3oDC/qj4tzehcTLb3ASmfQ2QZwoYxBP7wwyWLi++UdU02KM/sP6RjgppjMRZKK8PP
+         vKxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786619813; x=1787224613;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=xMY/+66wnfUBfCQC7i9RuCgiWr7NlzzVZ+EQNegKcjA=;
-        b=VhXyVAOC67OkWOVZPiRlVO5IPPbZhEtfUs7L3CIjP/WY/i/LIKbNC2c/dqTW6Hpf9Z
-         ELycKhNcj8wPCOpw3CvdNXc9AbSsprPhaNNHG1o0cdY8YNdIlDqQF0u675T7GT0LWjH2
-         wSGGqh/IoCf5KuZb5icW2ID5HMIHnfoKOw+4/+XNQa/LpUSrY6/KkHqevvfzQb+NQ9kF
-         AC+tBoWJ3e+jzIGzONrvwWY6DMhKZfWyHZc9VuqLGdbgU79z2GviwxZWGwfDXgJFq9fN
-         Q6aKu8opl9QMXJsTOWzWnicSBxgIS6d4+xHOjCBnxlmJ9ZBFFWoE6jdd8HMCk5qwJFvo
-         4KaA==
-X-Gm-Message-State: AOJu0YygBZvhGIzkbJfFQ/X+lugYwL2qm3qKJfOcnm+AhNonXOABmEyN
-	O3aRgXvQRVCG9JinVigb0xNtLqTLe8EiF5c+KK19fFbFRUQLAuDvUir4HbPdkrTXMZGmGbrfFGI
-	ziW3CkNduK0cgpZlN4WEfSr4/G7oanQgPfL/1oyGxWWU0buQm1WR0MXdfhA==
-X-Gm-Gg: AR+sD13+Z75Jku9UbGKhe36Me2JXmjkYjdw5TrR6EdjrI78eUF9YTHNwaMCE6j5sbj6
-	IjcqD0QXIs8DPwqkZ35D1h/kozqn8ggPeK1XaMDPLiUKHV89a3tjSO12IfvvktuUlp6lbGJr1x/
-	hQtAwhqzU4a+jZ/NBXkgQ1w9rl7pxMzwXNJ8hFEYIJ67+FHVOSQ+acPR8f/CW2wwYP88K8yLgpn
-	T9woGhJkWc1uCigMV24qPC8GcdiCQPlThoH2UyuH1dlsSjF/zDV1o8Dp0EAQWnwVYFExZXCRfqu
-	NzCfBsVdys1G5CjVRuz455lS96fQV3gPctLmIRJZpjOMuD3aCv4p4+llOQO1guNJv9yuFSsCfU+
-	AmxsHUqSH6hsv3SlObEZTxros6Y/u
-X-Received: by 2002:a05:620a:2a0f:b0:92e:dddc:6588 with SMTP id af79cd13be357-936bfaeaf38mr444824685a.42.1786619812874;
-        Thu, 13 Aug 2026 04:16:52 -0700 (PDT)
-X-Received: by 2002:a05:620a:2a0f:b0:92e:dddc:6588 with SMTP id af79cd13be357-936bfaeaf38mr444819185a.42.1786619812432;
-        Thu, 13 Aug 2026 04:16:52 -0700 (PDT)
-Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-936c191baafsm125635485a.5.2026.08.13.04.16.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 04:16:52 -0700 (PDT)
-From: Aaron Conole <aconole@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org,  Eelco Chaudron <echaudro@redhat.com>,  "David
- S. Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,
-  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  Simon Horman <horms@kernel.org>,  dev@openvswitch.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: openvswitch: unexport ovs_vport_alloc/free
-In-Reply-To: <20260812122007.457136-1-i.maximets@ovn.org> (Ilya Maximets's
-	message of "Wed, 12 Aug 2026 14:20:06 +0200")
-References: <20260812122007.457136-1-i.maximets@ovn.org>
-Date: Thu, 13 Aug 2026 07:16:51 -0400
-Message-ID: <f7twltue0d8.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        d=1e100.net; s=20251104; t=1786620046; x=1787224846;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+DTbEDzNAkDi7a4YLT3tc3XFoipA7stpV5ODIq5bMqk=;
+        b=o+I1KtbtlQUoE/+wnZiOUSr/AG2EbO6tSEO6nEbLBQxhtQPT4KfJ9BnW/2wOcmd4d+
+         c1e01GKukbM9TSljwy/WmtZTXkIQLQSswIcizJEzdQOa4MUS5lu+2b9et7wVi+eQOQRA
+         LWlGr4ffWg5PUzpMB+Wl+wPzM718gwOjPie5qQf4YAMNVM9WFZCAKcBSs7b1auTlc68a
+         xyn6KhHeoT7FyWQULfbXJ27JjTze11OBfFkV5+MwVAkn0vz1d9GJ130nrm/KtfTyoq0C
+         Jicu6qvxVYq28t4txFfkvt0AoLPQOML3efPD/sjlchxGPYPSL0kePF1Z2LY0vEB5ElLl
+         niMg==
+X-Gm-Message-State: AOJu0YyPR1VKY82zhWSGJx5X+lve6vLGp3H3xGtPrsLC4x6M4tqCOGPJ
+	/aqXNaQ9VfXgU3ASxg3IhXY1stdX2R5Cc91iLwE47WoSo+5MRlXc8e5hf1yQP1e/xbNCXCOuEw=
+	=
+X-Received: from dlep8-n2.prod.google.com ([2002:a05:701b:4588:20b0:141:729:41df])
+ (user=maze job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a8f:b0:3c3:a3f4:5485
+ with SMTP id adf61e73a8af0-3cc54f9ccddmr6528786637.6.1786620045894; Thu, 13
+ Aug 2026 04:20:45 -0700 (PDT)
+Date: Thu, 13 Aug 2026 04:20:38 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260813112039.247862-1-maze@google.com>
+Subject: [PATCH bpf-next 1/2] bpf: Support cgroup {get,set}sockopt hooks for
+ compat syscalls
+From: "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>
+To: "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <zenczykowski@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>
+Cc: Linux Network Development Mailing List <netdev@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, BPF Mailing List <bpf@vger.kernel.org>, 
+	"=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ilya Maximets <i.maximets@ovn.org> writes:
+Currently, BPF cgroup socket option programs (BPF_PROG_TYPE_CGROUP_SOCKOPT)
+are skipped for 32-bit compat tasks on 64-bit kernels via explicit
+!compat checks in do_sock_setsockopt() and do_sock_getsockopt().
 
-> Since removal of the legacy tunnel port types, there are no more
-> users for these functions outside the main openvswitch module.
-> Functions to register vport_ops are also not exported.  Allocating
-> vports without operations doesn't make a lot of sense.
->
-> Highlighted by Sashiko as a follow up to the removal of the module
-> infrastructure.
->
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-> ---
->  net/openvswitch/vport.c | 2 --
->  1 file changed, 2 deletions(-)
->
+While this originally avoided issues with programs assuming native 64-bit
+sockopt structure layouts, completely bypassing BPF sockopt hooks allows
+32-bit binaries to bypass cgroup network policies and prevents BPF
+programs from managing sockopts for compat applications.
 
-Reviewed-by: Aaron Conole <aconole@redhat.com>
+Enable BPF cgroup sockopt hooks for compat syscalls by:
+1. Adding a read-only `is_compat` field to `struct bpf_sockopt` (and
+   `struct bpf_sockopt_kern`) which is 1 for compat syscalls and 0
+   otherwise.
+2. Passing the `compat` parameter through BPF_CGROUP_RUN_PROG_SETSOCKOPT
+   and BPF_CGROUP_RUN_PROG_GETSOCKOPT to populate `ctx.is_compat`.
+3. Removing the `!compat` guards in do_sock_setsockopt() and
+   do_sock_getsockopt().
+
+BPF programs can now inspect `ctx->is_compat` to handle any 32-bit vs
+64-bit layout differences for the very rare cases where it is needed.
+
+Behavioral Note for BPF Programs:
+  Previously, compat sockopt calls were completely invisible to BPF.
+  Now, attached BPF sockopt programs will run on compat calls.
+  For options with arch-dependent structures (e.g. SO_RCVTIMEO with 32-bit
+  vs 64-bit struct timeval), BPF programs must now check ctx->is_compat to
+  correctly parse/modify the buffer.
+  Due to 32-bit userspace being near dead and there being very few such
+  options that one would want to overwrite in eBpf, I'm judging this to
+  be acceptable (there's probably very few programs that would be affected)=
+.
+
+Signed-off-by: Maciej =C5=BBenczykowski <maze@google.com>
+---
+ include/linux/bpf-cgroup.h | 35 ++++++++++++++++++-----------------
+ include/linux/filter.h     |  1 +
+ include/uapi/linux/bpf.h   |  1 +
+ kernel/bpf/cgroup.c        |  9 +++++++--
+ net/socket.c               | 17 +++++++----------
+ 5 files changed, 34 insertions(+), 29 deletions(-)
+
+diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
+index 4d0cc65976a1..943eb023b52b 100644
+--- a/include/linux/bpf-cgroup.h
++++ b/include/linux/bpf-cgroup.h
+@@ -138,14 +138,15 @@ int __cgroup_bpf_run_filter_sysctl(struct ctl_table_h=
+eader *head,
+ 				   char **buf, size_t *pcount, loff_t *ppos,
+ 				   enum cgroup_bpf_attach_type atype);
+=20
+-int __cgroup_bpf_run_filter_setsockopt(struct sock *sock, int *level,
+-				       int *optname, sockptr_t optval,
+-				       int *optlen, char **kernel_optval);
++int __cgroup_bpf_run_filter_setsockopt(struct sock *sock, bool compat,
++				       int *level, int *optname,
++				       sockptr_t optval, int *optlen,
++				       char **kernel_optval);
+=20
+-int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
+-				       int optname, sockptr_t optval,
+-				       sockptr_t optlen, int max_optlen,
+-				       int retval);
++int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, bool compat,
++				       int level, int optname,
++				       sockptr_t optval, sockptr_t optlen,
++				       int max_optlen, int retval);
+=20
+ int __cgroup_bpf_run_filter_getsockopt_kern(struct sock *sk, int level,
+ 					    int optname, void *optval,
+@@ -376,21 +377,21 @@ static inline bool cgroup_bpf_sock_enabled(struct soc=
+k *sk,
+ 	__ret;								       \
+ })
+=20
+-#define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, level, optname, optval, optle=
+n,   \
+-				       kernel_optval)			       \
++#define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, compat, level, optname, optva=
+l,   \
++				       optlen, kernel_optval)		       \
+ ({									       \
+ 	int __ret =3D 0;							       \
+ 	if (cgroup_bpf_enabled(CGROUP_SETSOCKOPT) &&			       \
+ 	    cgroup_bpf_sock_enabled(sock, CGROUP_SETSOCKOPT))		       \
+-		__ret =3D __cgroup_bpf_run_filter_setsockopt(sock, level,	       \
+-							   optname, optval,    \
+-							   optlen,	       \
++		__ret =3D __cgroup_bpf_run_filter_setsockopt(sock, compat,       \
++							   level, optname,     \
++							   optval, optlen,     \
+ 							   kernel_optval);     \
+ 	__ret;								       \
+ })
+=20
+-#define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, level, optname, optval, optle=
+n,   \
+-				       max_optlen, retval)		       \
++#define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, compat, level, optname, optva=
+l,   \
++				       optlen, max_optlen, retval)	       \
+ ({									       \
+ 	int __ret =3D retval;						       \
+ 	if (cgroup_bpf_enabled(CGROUP_GETSOCKOPT) &&			       \
+@@ -400,7 +401,7 @@ static inline bool cgroup_bpf_sock_enabled(struct sock =
+*sk,
+ 					tcp_bpf_bypass_getsockopt,	       \
+ 					level, optname))		       \
+ 			__ret =3D __cgroup_bpf_run_filter_getsockopt(	       \
+-				sock, level, optname, optval, optlen,	       \
++				sock, compat, level, optname, optval, optlen,  \
+ 				max_optlen, retval);			       \
+ 	__ret;								       \
+ })
+@@ -504,11 +505,11 @@ static inline int bpf_percpu_cgroup_storage_update(st=
+ruct bpf_map *map,
+ #define BPF_CGROUP_RUN_PROG_SOCK_OPS(sock_ops) ({ 0; })
+ #define BPF_CGROUP_RUN_PROG_DEVICE_CGROUP(atype, major, minor, access) ({ =
+0; })
+ #define BPF_CGROUP_RUN_PROG_SYSCTL(head,table,write,buf,count,pos) ({ 0; }=
+)
+-#define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, level, optname, optval, \
++#define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, compat, level, optname, optva=
+l, \
+ 				       optlen, max_optlen, retval) ({ retval; })
+ #define BPF_CGROUP_RUN_PROG_GETSOCKOPT_KERN(sock, level, optname, optval, =
+\
+ 					    optlen, retval) ({ retval; })
+-#define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, level, optname, optval, optle=
+n, \
++#define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, compat, level, optname, optva=
+l, optlen, \
+ 				       kernel_optval) ({ 0; })
+=20
+ #endif /* CONFIG_CGROUP_BPF */
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 4a9bc6a848f2..5ab7d606aea5 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -1702,6 +1702,7 @@ struct bpf_sockopt_kern {
+ 	s32		level;
+ 	s32		optname;
+ 	s32		optlen;
++	s32		is_compat;
+ 	/* for retval in struct bpf_cg_run_ctx */
+ 	struct task_struct *current_task;
+ 	/* Temporary "register" for indirect stores to ppos. */
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index ffd96e8b920b..15f712b5b164 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -7616,6 +7616,7 @@ struct bpf_sockopt {
+ 	__s32	optname;
+ 	__s32	optlen;
+ 	__s32	retval;
++	__s32	is_compat;
+ };
+=20
+ struct bpf_pidns_info {
+diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+index 8fbc942a1cc3..910878e991a0 100644
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -2055,7 +2055,7 @@ static bool sockopt_buf_allocated(struct bpf_sockopt_=
+kern *ctx,
+ 	return ctx->optval !=3D buf->data;
+ }
+=20
+-int __cgroup_bpf_run_filter_setsockopt(struct sock *sk, int *level,
++int __cgroup_bpf_run_filter_setsockopt(struct sock *sk, bool compat, int *=
+level,
+ 				       int *optname, sockptr_t optval,
+ 				       int *optlen, char **kernel_optval)
+ {
+@@ -2065,6 +2065,7 @@ int __cgroup_bpf_run_filter_setsockopt(struct sock *s=
+k, int *level,
+ 		.sk =3D sk,
+ 		.level =3D *level,
+ 		.optname =3D *optname,
++		.is_compat =3D compat,
+ 	};
+ 	int ret, max_optlen;
+=20
+@@ -2146,7 +2147,7 @@ int __cgroup_bpf_run_filter_setsockopt(struct sock *s=
+k, int *level,
+ 	return ret;
+ }
+=20
+-int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
++int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, bool compat, int l=
+evel,
+ 				       int optname, sockptr_t optval,
+ 				       sockptr_t optlen, int max_optlen,
+ 				       int retval)
+@@ -2157,6 +2158,7 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *s=
+k, int level,
+ 		.sk =3D sk,
+ 		.level =3D level,
+ 		.optname =3D optname,
++		.is_compat =3D compat,
+ 		.current_task =3D current,
+ 	};
+ 	int orig_optlen;
+@@ -2705,6 +2707,9 @@ static u32 cg_sockopt_convert_ctx_access(enum bpf_acc=
+ess_type type,
+ 		else
+ 			*insn++ =3D CG_SOCKOPT_READ_FIELD(optlen);
+ 		break;
++	case offsetof(struct bpf_sockopt, is_compat):
++		*insn++ =3D CG_SOCKOPT_READ_FIELD(is_compat);
++		break;
+ 	case offsetof(struct bpf_sockopt, retval):
+ 		BUILD_BUG_ON(offsetof(struct bpf_cg_run_ctx, run_ctx) !=3D 0);
+=20
+diff --git a/net/socket.c b/net/socket.c
+index 63c69a0fa74e..f4549975f98b 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -2346,10 +2346,9 @@ int do_sock_setsockopt(struct socket *sock, bool com=
+pat, int level,
+ 	if (err)
+ 		goto out_put;
+=20
+-	if (!compat)
+-		err =3D BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock->sk, &level, &optname,
+-						     optval, &optlen,
+-						     &kernel_optval);
++	err =3D BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock->sk, compat, &level, &optname=
+,
++					     optval, &optlen,
++					     &kernel_optval);
+ 	if (err < 0)
+ 		goto out_put;
+ 	if (err > 0) {
+@@ -2447,8 +2446,7 @@ int do_sock_getsockopt(struct socket *sock, bool comp=
+at, int level,
+ 	if (err)
+ 		return err;
+=20
+-	if (!compat)
+-		copy_from_sockptr(&max_optlen, optlen, sizeof(int));
++	copy_from_sockptr(&max_optlen, optlen, sizeof(int));
+=20
+ 	ops =3D READ_ONCE(sock->ops);
+ 	if (level =3D=3D SOL_SOCKET) {
+@@ -2477,10 +2475,9 @@ int do_sock_getsockopt(struct socket *sock, bool com=
+pat, int level,
+ 		err =3D -EOPNOTSUPP;
+ 	}
+=20
+-	if (!compat)
+-		err =3D BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock->sk, level, optname,
+-						     optval, optlen, max_optlen,
+-						     err);
++	err =3D BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock->sk, compat, level, optname,
++					     optval, optlen, max_optlen,
++					     err);
+=20
+ 	return err;
+ }
+--=20
+2.55.0.691.gc56d675ccc-goog
 
