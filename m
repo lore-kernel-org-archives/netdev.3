@@ -1,138 +1,68 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6D83ED5C3
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 09:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786613785; cv=pass; b=WXyhtwP4wuT2dX1CXCzstm+Z13aOv50aY1hDujF/rGD0rCY5+rAKM5Vi8hycz35mSN5sE3InbUVFDXuHpry6rsk8xuVLHDmdnlecUQ3W4XqL37on/IvpairA/IbRgA2Zav0C+8GGoOLFOll3FNQpusOONyf+nTG9f6BMej/d8qY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786613785; c=relaxed/simple;
-	bh=I9h0QULojzau7syX2ptB1YiILa8mj5wKL7cDn/JLX6g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pFDkdcO0FI+TFruvzGgt4gQ4XrCDRRJoHU2m/pL8uX9MGQJltImoW57VyObCXQVZAQNZcBaPWIjxvdrd/3ZO4KSNjp1WgLpyWy2Olo1FEutaZWKxSVHAgQRzFj25ySyFUTLDj2Qn96ay//rgVxA1/cP4+yHdxBcNlurk9SMjBkU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hLY20tq3; arc=pass smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFFE4477F9;
+	Thu, 13 Aug 2026 09:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786613980; cv=none; b=rlavz32yG5TYiyTt4gx/IUrwOszOJPzcXOh8XrPuVotBZkgHbOL/wMlLostzDieh8LSfTkpsDFPEX2L69WTxnZvR10AEjkl5B9KG06KIODo6/sgYJuWvXEVma/MntWuIGtwdWjHonkAuGc2Ic6f5I8aW2tGJDldqj86gkPCB16I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786613980; c=relaxed/simple;
+	bh=L4XF8uNXcjv7VRkpB761vqjJh3OcVPeaLn6SeFuDq8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O2ZdUbdHx/E8HVbZtiPsco0eJMWcQaYqfR6llbrQxQDyzrYlslYfrtQNdysVFITk5v4GPUjPg2gFbcpDwkHkRS2pGmwj82csZVSmwyGVevgSlueiNX+oosfsCaNxJ1vCfSpVUQn7GmXgXf3ohdkhC8TTNs05aaTw39pTDLtIAGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFGByBLx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hLY20tq3"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cf110997efso5125415ad.2
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:36:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786613775; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HfdmYwCRPzUgn3VIdKwoe+FLUIawQ98LdaPWkSis8iYFwsqAV/hYFfUvHubv65C75D
-         8yWAkDBXZcASUVvaBu/NmMt2l3rPDkMZWXkGoMZtGwDsBqN3gLV3zPuMkX1KnHgHa8bW
-         UTAxqXTSdwkNo5CWZshcveorwZI/zJGq9ofU/gUrNEYPY+X39m6GS+KZxCYt6JXmVoXL
-         UKXplD7Kk22lxvpoLfpoqRNC5xHuGMVEawEmPPEFmPywIdFQST0ligKwylb94G7mVnAT
-         c5/zjpgqwn1Oky5z5KP9HuZxCFIrAMbTEFfJ9c1Cj6nDFxYqEqBPVt78Hvu2kFYN/Uh0
-         0/0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=I9h0QULojzau7syX2ptB1YiILa8mj5wKL7cDn/JLX6g=;
-        fh=5SMLTSJDXQ919/2zap4XkOpTN00SG5I7oaZVWfkWXKU=;
-        b=lEhqp8blHrIK8xk6NimnsQY0wRV2Z2Pb23Ysv3k4xYPZenlgStYI3zAsaAS3JYxwDA
-         YK9RTylZp4khlv+mNZ2xImxwWihrQQDUY8lUOJgcWXN03vKkrQS9QmmW3JsOHJR5nvpq
-         p4RnnDSS3u1yKY4RO6QRaUUUrmasP3To+My6nlCPRuqCmWoZKkQ6EDN9gzYojq4Ioi+O
-         UOVFf4JpymkOHNBjwOksp2j0un+Zzz+iwk7RKjqpbRF5uUoQUQ7I7hucHxSQN8jPDC5X
-         PODC0BbbYZu2/ShpiXM3pXSaPVnpdfwza05AjfzioMI45kcZNVa9PQJSVjKuhN2WfDQT
-         2fwg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786613775; x=1787218575; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=I9h0QULojzau7syX2ptB1YiILa8mj5wKL7cDn/JLX6g=;
-        b=hLY20tq3DTzgOPpU2TWFvqupEvw6BZf9j3keoSE+Gba2EpwLBOoPs3SQcPLdhbHOQd
-         av4LzjQ9lYk8iOzG7fbP90+/67JTKwJKjagYjTnyBsp7LINLmDMXAMkvWpmAAwVUvpVB
-         WOEJ5hPHiPAW5JflzYC087QtbgUj9OaqQKBUyQviZTqRro+AWpjLp6W2TORQUC3zlftH
-         x00J3FqT8MvEhq5XipmwYmYthJ2Z4yrlDkTn3YRtrL9UiuQjU016jZXv5tQqSGMfeB1W
-         CUN6JmXZU6P23klRsBB+8cEq/q+V2fmSeWpK4LPNLpfnOwggw5yl0cHmhsqlOKZT9DAk
-         1v2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786613775; x=1787218575;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=I9h0QULojzau7syX2ptB1YiILa8mj5wKL7cDn/JLX6g=;
-        b=AXsp0d4g60l5DSkLBBctenU8AyuNYdQUceJKQu3B+9QiGDjEImJCGULbjyffxi3SbI
-         I1XKwx7ibx1BQMqAlRkQY+zPpI6m7kjSD3G/K1cF3yvZwlhrQwanbCUbSl8CKkkBA0L0
-         iwgaWt+uzQtUzyBiz8sPxi035xrHyEYG2Bz2Qg8M3EIts55I9Icepyxhlqfk84Tyw9mJ
-         NU7G6VoX7NC1pu6bIWGRSC8jqP7jaaiBLgpdiBnv9IAtTE6hxWObb6cJORfxipuHrbJR
-         pl5/Rg/0hF8y5mGimzF6oWTUYN2h1I24nfDk840toS1sB1eCO4kZt2DSGo8hBp8rUTOB
-         ThbA==
-X-Forwarded-Encrypted: i=1; AHgh+RrRkzLM/nTt5T4Zp7q/7zEfslU6Sr2FTd+y7Cp8wi6/EBrrbirQAmwKACdilmPDF5MHF1un7JI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNhVHY4yBhbB74JaTjbDrCh8JJS5JTs/awD0h5DbzN2Lv5gGmD
-	ZJBQ8OdOEvPxtJ2vS3SatXTB2dgzUQKl24hN8P6dbi55mUmB5+xL4jSlOTjS3wNoZOdsajl9SqF
-	lU2WFF7CS+FN51OoQfh/Vv3zhTEcIZa0=
-X-Gm-Gg: AR+sD12p6kQJnQKaHZcj84XTdZBO857v6tazMqhUenYfLaf9VP7IIMwNytzFWScDe2r
-	qfibTFudkJf0yHNQZDyxqOuw70exb3qadnhb/jGWgIaz+a+N3TjF4lw+dK5iKk1F3C/0OyEtAlK
-	kQKgWr0cdyS+EZNVZlLEw2P1965MvSMP/OmUEmmXYGTuKBMizekcH0lVkVCE6qZgLtmZIfYUGu9
-	dNY/sbcOH/dXoQ8td+K0TjRvklPJmRyeIpp5tmkUmMh1SF8pvT1wXyVtg9koNRxSd+CqED1MFvW
-	wxhIF/Gdb5LVaV673lNwJUuk7kTRIlFcnzSGdws/zmd+/7JgwT97G7z3X4c1xPCLV5a6juDbZIP
-	xTBs8cqiG+PoEzt8an3AnLhi9P84Nsxo5wZkxlWSr5YPQPnZQ7sNCZuDqW9RnU2bB7xUo7Lo=
-X-Received: by 2002:a17:902:ea0b:b0:2c9:fbde:ab68 with SMTP id
- d9443c01a7336-2d389b9107fmr28401875ad.3.1786613775343; Thu, 13 Aug 2026
- 02:36:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFGByBLx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F31D1F000E9;
+	Thu, 13 Aug 2026 09:39:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786613978;
+	bh=6LOGg6GoL1PEr68ZyzKCZBBrW/+LY26NLdd/zdIlEio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AFGByBLxo8ncBrW8FPbGI2kmqNHkQqM0xT6KlHKTdM3/6jtyKKZrh7SDM+soWabIe
+	 ROxnPYLUCmlBuG3cVyLZupKnJOPe49rCv6np3nNZterB/AlFixfpmNrPidRfSR5XON
+	 ZOE0VG0yzwZefF4C1Uc8UQKuCAkXq9m8XQ5BWCOfYpVgo6Fj2eG6PodykimKuvdkl6
+	 RJ001P2GF8k8WzyZvCq60oOY4x6p+s3DZP70vrhM07iWMwwY6cxg3cQAHQ7cuxe9rE
+	 IVhK4BZlFZhEEG00+9UQ3gfhhP/OS/akLpL/9mcL/7fT/XJGu1SddCvbL5ykLCtszQ
+	 ROhFeNau9UEwQ==
+Date: Thu, 13 Aug 2026 10:39:33 +0100
+From: Simon Horman <horms@kernel.org>
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jianhao Xu <jianhao.xu@seu.edu.cn>
+Subject: Re: [PATCH net] net: ibm: emac: mal: fix NAPI locking
+Message-ID: <20260813093933.GC196815@horms.kernel.org>
+References: <20260811070813.377573-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811-fix-fops-owner-v10-0-7e71776f9dbe@linux.dev>
- <CANiq72=bhfofrbdf1qeA380-eWeKj5yXhC0NzaU_nbB9SpxYHA@mail.gmail.com> <DKNAS52KYWLD.M15VEC6U0F6R@kernel.org>
-In-Reply-To: <DKNAS52KYWLD.M15VEC6U0F6R@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 13 Aug 2026 11:36:01 +0200
-X-Gm-Features: AUfX_mydrO4nx0TADc_1KF-ELy8K1d4zi4yvOYINpS4bHvyjdnsvoZ1CepMueE4
-Message-ID: <CANiq72nR3K9d0Y--FyUm1yAkww2LaAuYQZ3yHXjYxxfztgMMYw@mail.gmail.com>
-Subject: Re: [PATCH v10 00/10] Fix missing fops.owner in Rust DRM/misc abstractions
-To: Danilo Krummrich <dakr@kernel.org>, Mark Brown <broonie@kernel.org>
-Cc: Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
-	Rae Moar <raemoar63@gmail.com>, Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
-	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Igor Korotin <igor.korotin@linux.dev>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-modules@vger.kernel.org, driver-core@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811070813.377573-1-runyu.xiao@seu.edu.cn>
 
-On Wed, Aug 12, 2026 at 11:53=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
->
-> This series has a semantic conflict with both the driver-core and the drm=
--rust
-> tree:
->
-> @Mark: When you merge driver-core-next after rust-next (which I think is =
-the
-> case) then you need to include the diff in [1] into the merge.
+On Tue, Aug 11, 2026 at 03:08:13PM +0800, Runyu Xiao wrote:
+> Since commit 413f0271f396 ("net: protect NAPI enablement with
+> netdev_lock()"), napi_enable() and napi_disable() take netdev_lock().
+> 
+> mal_register_commac() and mal_unregister_commac() call these helpers
+> while holding mal->lock with interrupts disabled. In the unregister
+> path, napi_disable() may also wait for polling to finish, while the poll
+> completion path takes mal->lock.
+> 
+> Take netdev_lock() before mal->lock, use the locked NAPI helpers, and
+> drop mal->lock before napi_disable_locked().
+> 
+> Fixes: 413f0271f396 ("net: protect NAPI enablement with netdev_lock()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 
-Mark: in case it helps to make it clearer and so you don't have to
-read much, that [1] diff still needs to be included (i.e. the rest of
-the discussion and the commit I added is independent).
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Thanks!
-
-Cheers,
-Miguel
