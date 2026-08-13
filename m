@@ -1,205 +1,116 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCE943F8AC
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA6F345CDA
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786609477; cv=none; b=PRyBF6/zzSU0pnwbcjG5Z5iqUbmmoPZj0ZFcKfjxXrZZIiRYq1AfhK9UAuOXdNHpXKSnN182S8hudtducW6R7CPsQp5dSmvRJmCG3ZIVSgsgklj+QdWvZ2oLO9MknsXGmf+S/DppzWcMdJ4pfsRhwEW2SjrFyvJxt1wityEtSyM=
+	t=1786609722; cv=none; b=awwaMEZnoQZRKqdW/Z8S/VDynBx79xewTWrmqL0nw4DloSps8sX8g3IgoopFb2Q9o4zUF7PgYMjGkdQpq0VJ/3d7cUo0+ANugcuLLVLpNGoJ36RnZten+G/dR8pFhUH+WSzcbI3pouFpfypHwaaTU8XPlnvoLOROytxJkGlQu5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786609477; c=relaxed/simple;
-	bh=ekNRTv/TL9qdTGaqKTU3xjKI2pnys6eRJiotTASXKJY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FUUqAIu/Wn/wRJMQFfniAfoLwdOpN/hsF1/0sKh+LBFDfD6a4hBlZbQSMGUavZvLj4WLnnraMhVhWCbMLmH5fye/4AOu3SYJED/g0PQDfmXEcbYMxQmPGJ1+hhEbmxbORcyXAOqYq4ag2JtZf/vHG0ZT6bEgq8MgQkW8aY9XhlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bdiFwwjH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=U0m8raFn; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786609722; c=relaxed/simple;
+	bh=aisUsUxNAGafcrLXuq8OxCnfSNUxmmGM6v2V7FNlw9g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lyr42XDG/rxD0BWELpCaWoaexlFuxzcgJscns3ta7KoFG7q8tdPEARD0xnAW+mARyTGZSVb/5bV+1G0MvBpxe+qyR3wn1e1CANCIkEnXjDpc4Ca8Fnw1hGzNSwwlCwkillKodYCwwbnzQM504F2Z5kDgClPxVj4Rx9InPCHQ110=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=01Lreqzu; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bdiFwwjH";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="U0m8raFn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786609475;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F7osRv4SiTFi2D7w5M5+xxh/Lfv3v0Z21SGPsrlY9PI=;
-	b=bdiFwwjHd+aN8/KVq6yrLVcu5XquWZPQrk+DFEXXPg8W/vAAw3zkT7j/E0R4MhdYBRz5jG
-	G+YNG5Ck/iGMuiJmZQlpP3/qb2yFM87998aiomp4t6iMS/GZ7pApeN3Rjxag7L1Ck5CFyG
-	nk3WBu5zy2WKbIhwR6TJtZMLtMk6Th8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-eYQLp6R8Pj2pcXuUaASMIA-1; Thu, 13 Aug 2026 04:24:31 -0400
-X-MC-Unique: eYQLp6R8Pj2pcXuUaASMIA-1
-X-Mimecast-MFC-AGG-ID: eYQLp6R8Pj2pcXuUaASMIA_1786609470
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f7039fa59so1510773f8f.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 01:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786609470; x=1787214270; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=F7osRv4SiTFi2D7w5M5+xxh/Lfv3v0Z21SGPsrlY9PI=;
-        b=U0m8raFn2jBF9BvOnb/zJEvOqiUAoe04r8zfEA76mHGC722BEKX9zI1sStipQ/YXP+
-         NZVY64gwe0aBRLkMsTyrtIk1cuUPhOEns4NrS6JFglXk5sH9gsg/EPFRjHELQrypWRX/
-         DdlOe9MUq4mlXmX/Vnwn32Hp07DBuOnJxs8VxEzXeEqwq/pwPkPzEKHZjVhcYkGmj5Cx
-         GJJayTCAp9zIP+/o8curx/UGeHuRAO1jcntz4UkU0Cu9cWGczb6BFitRZqPpWhEkePCN
-         aorv3WPaEX30AKORtWd2KHwcDHPncqyFSkTML0Uco6OyqdSBsXTBQhvc5QPEe68TIxgL
-         DgQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786609470; x=1787214270;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=F7osRv4SiTFi2D7w5M5+xxh/Lfv3v0Z21SGPsrlY9PI=;
-        b=ZQvEUaLq1PdFAH5y7SVPnegVvW4uMgbGglC3qQieb1nF0jbzBkONf7ZMREED8iNBzp
-         y0YRLgOKEKeHp8t8VITj0INt2qlE1WMYyhOavWmMHs2pV5VIZpC4t1iRUqf8vMemAYYv
-         9vpa2ap2KHuMm+VxVrHx1RGqJsag7/u51r48kRJ8niCd5DzbnDCX3xoQreY/SdFCepKY
-         GnnO+QlYMrcmDgKTsyKazdilIzEb4nz+PwmbKp8c/4+UnTqupxbUYrSHuDfb+HhFKUau
-         AIlGmZJv85yEcWetnzc05jtvC3QKfwVxhsDPsby36AD7pJIDSo1rdEBHm9+LMV4wdMYW
-         WcNQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8w4yv1Y9kDCh/eLdUeoUgrlSYZANEU1eW/F0B/Er/vLEoKU+mnpe5QbYXUlW+i+jNdrJN8o8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnUScRvdUqd5+XcpcwkMg/WvlLbKjSQUYq+WnuxlU6zaY2m7iM
-	8ePL9kfgyZGXkMThBWUchv84KHCEcK4GmkZ7/DuRtJ1BSEXZFjWtmEQvx4iAmeEAHk7/D/ljl9z
-	pZMkm/3k9KeIzxnoZKzMwZVw+Dvo2g1F+ojN2zE1Kd1kUPQUOh/YwY5d4Ww==
-X-Gm-Gg: AR+sD13Lx7u0sgq2XJu12Td6zKHvCSdRy3bxm8whwlq1FSnHUJZp2F71uBQ3WYX+bnU
-	kfkSiczAUxXmKx7UjTc/LMN9NoVWrVqqvcHMo1a9Zeu8S8AECLLM1smAAhMB4txWxzDs8aC1a3V
-	Hh7K6nSFytTHHrwZUTIl4AUSwmjKA1DS4G4CO16gH2Fktv1QQdEdy3xbJ5VxzUDFFNxXAOwJ8W0
-	GpyyTG+MfIn83J2A/NEXZzrxJH7a2weRKiygzxpAsVwUIi5W5nLJScLGyZ8+b+pXWzetsAFZl7q
-	9HLLr6w3miJLhZsMNkNXvYcOUUZC1UUssr7KbZ1HSwsHAuYdpfXNn/cm1upqU6/j/lrPB/ipzyj
-	+yJg3hYhx404AnSJrEqEKQceAuwPOa6glfgXhlmvQzgOISYfIz4Sm
-X-Received: by 2002:a05:600c:1c21:b0:495:6396:8b67 with SMTP id 5b1f17b1804b1-499821c335amr48238755e9.4.1786609470424;
-        Thu, 13 Aug 2026 01:24:30 -0700 (PDT)
-X-Received: by 2002:a05:600c:1c21:b0:495:6396:8b67 with SMTP id 5b1f17b1804b1-499821c335amr48237755e9.4.1786609469913;
-        Thu, 13 Aug 2026 01:24:29 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981b1063esm57093855e9.6.2026.08.13.01.24.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 01:24:29 -0700 (PDT)
-Date: Thu, 13 Aug 2026 10:24:02 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Nguyen Dinh Phi <phind.uet@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	George Zhang <georgezhang@vmware.com>, Dmitry Torokhov <dtor@vmware.com>, Andy King <acking@vmware.com>, 
-	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com, Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] vsock: don't check the listener's sk_err in
- vsock_accept()
-Message-ID: <an14GupikpFAtRHn@sgarzare-redhat>
-References: <20260810170935.2242314-1-phind.uet@gmail.com>
- <20260810170935.2242314-2-phind.uet@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="01Lreqzu"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2A8BB4E411E8;
+	Thu, 13 Aug 2026 08:28:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E6E16602B8;
+	Thu, 13 Aug 2026 08:28:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A209E11C4DAF2;
+	Thu, 13 Aug 2026 10:28:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1786609717; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=aisUsUxNAGafcrLXuq8OxCnfSNUxmmGM6v2V7FNlw9g=;
+	b=01LreqzuD/3vKjq1A+T/ZTUZbltDBHFGWjKRlHi5ZGMAY4FdEPNEdL5fSxCiK+6vUlPDPv
+	KjWdF1Spz692pYgMm1q3o6wbIHwtE3G6Yi1ixKcfd5cQ/Tw6MwfiZD5+3pN5gTuzLp2aXZ
+	SLJ+HhXJnA8YQF72mLCCmGBVe2OBXCxmK01HnXXuG4qeaYQ9DcRiNbaNO1zEiY0XB7JA7O
+	Xw+QDXT6AUdtc3dCizY5pEtm1jrxvztUyu1fx67zGmpfdKiK+oSib+lDJUVDJOJxUIad6Q
+	qL3udbbWQwmAPvC2CRqU79HeeuhLwWEB5nFAiuTZez7ub4Vc6i9KfY7GE/It3g==
+Date: Thu, 13 Aug 2026 10:28:31 +0200
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 2/2] net: pse-pd: guard regulator ops against
+ freed PI data during unregister
+Message-ID: <20260813102831.3a8f5aa4@kmaincent-XPS-13-7390>
+In-Reply-To: <20260812135936.889119-1-github@szelinsky.de>
+References: <20260810135233.4be3dc5d@kernel.org>
+	<20260812135936.889119-1-github@szelinsky.de>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260810170935.2242314-2-phind.uet@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Aug 11, 2026 at 01:09:30AM +0800, Nguyen Dinh Phi wrote:
->Syzbot reported an issue which can be reproduced with these steps:
->	r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
->	bind(r0, {VMADDR_CID_ANY, PORT})
->	connect(r0, {VMADDR_CID_LOCAL, PORT}) -> -1, EPROTO (self-connect)
->	listen(r0, backlog)                   -> 0
->	r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
->	connect(r1, {VMADDR_CID_LOCAL, PORT}) -> 0
->	accept(r0)                            -> -1, EPROTO (stale sk_err)
->
->Basically, it creates a socket (r0) and triggers a self-connect after
->binding it. This self-connect fails with EPROTO because it loops back
->to r0 while the socket is still in the TCP_SYN_SENT state, causing it
->to be incorrectly dispatched to the connecting-client path. The
->unexpected packet type encountered there sets sk_err to EPROTO.
->
->After that, it invokes a listen() call on the same socket. This
->listen() call succeeds because the kernel's listening path never
->inspects or clears sk_err. Then, a new socket (r1) is created as a
->normal client and connects to r0. However, vsock_accept() rejects this
->incoming connection because the listener's sk_err still holds the
->EPROTO error from the earlier failed self-connect.
->
->This rejection causes the child socket created for r1's connection to
->never be freed on virtio or hyperv transports; only the VMCI transport
->implements pending_work to revisit and clean up a rejected socket.
->
->For a non-blocking connect(), vsock_connect() may return -EINPROGRESS
->immediately, and vsock_connect_timeout() can later set sk->sk_err
->asynchronously.
->
->Since no vsock transport ever sets sk_err on a socket while it is in
->TCP_LISTEN state, checking it in vsock_accept() serves no purpose and
->only carries forward errors left behind by earlier, unrelated
->connection attempts on the same socket. Remove the checks so accept()
->no longer rejects valid incoming connections because of a stale
->error, which also avoids the resource leak described above.
->
->Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
->Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
->Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
->Suggested-by: Michal Luczaj <mhal@rbox.co>
->Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
->---
-> net/vmw_vsock/af_vsock.c | 10 +++-------
-> 1 file changed, 3 insertions(+), 7 deletions(-)
->
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index 622dbd046799..ff507761f472 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -1893,7 +1893,7 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
-> 	timeout = sock_rcvtimeo(listener, arg->flags & O_NONBLOCK);
->
-> 	while ((connected = vsock_dequeue_accept(listener)) == NULL &&
->-	       listener->sk_err == 0 && timeout != 0) {
->+		timeout != 0) {
-> 		prepare_to_wait(sk_sleep(listener), &wait, TASK_INTERRUPTIBLE);
-> 		release_sock(listener);
-> 		timeout = schedule_timeout(timeout);
->@@ -1906,12 +1906,6 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
-> 		}
-> 	}
->
->-	if (listener->sk_err) {
->-		err = -listener->sk_err;
->-	} else if (!connected) {
->-		err = -EAGAIN;
->-	}
->-
+On Wed, 12 Aug 2026 16:59:36 +0300
+Carlo Szelinsky <github@szelinsky.de> wrote:
 
-As I suggested in v4, please just add here:
-	if (!connected) {
-		err = -EAGAIN;
-	} else {
+> On Mon, 10 Aug 2026 13:52:33 -0700 Jakub Kicinski wrote:
+> > It'd be great if we can figure out the safe lifetime rules for pse-pd
+> > from all entry points. Specifically the sysfs complaint on patch 1
+> > (assuming it's real) makes the series seem like a bit of of a see-saw.
+> >
+> > Let's get it reposted and take it from there? =20
+>=20
+> Thanks for the reviews, Kory.
+>=20
+> Makes sense. Let me go through everything that still touches pcdev->pi
+> once pse_controller_unregister() has started freeing it, so it's clear
+> what the series covers and what it doesn't.
+>=20
+> The regulator ops (pse_pi_enable/disable/is_enabled) are the sysfs case.
+> It's real: the PI regulators get registered before the controller, so on
+> unbind the controller goes down first and pse_release_pis() frees
+> pcdev->pi while the regulators are still live. is_enabled() is
+> reachable over sysfs. Patch 2 is what handles this - it checks !pcdev->pi
+> in those three ops and frees under the same lock. Patch 1 just does the
+> reorder, so the two really need to be read together.
+>=20
+> The other one is of_pse_match_pi() from of_pse_control_get(). A consumer
+> probing at the same time walks pse_controller_list and reads
+> pcdev->pi[i].np. Problem is we free pi before list_del(), so the
+> controller is still on the list with pi already gone. The series doesn't
+> touch this yet. It's a one-liner really - move list_del() before the
+> free. Then a lookup either sees a valid pi or doesn't find the controller
+> at all, no NULL checks anywhere. I'd add that as a patch 3.
+>=20
+> Last two are pse_ethtool_get_status() and __pse_control_release(), from a
+> consumer still holding a pse_control. They read pcdev->pi[psec->id] too,
+> but here the real issue isn't pi, it's that the consumer can outlive the
+> whole controller - of_pse_control_get() only takes a module ref, no
+> device link - so a NULL check buys you nothing. That's pre-existing and
+> not really something to fix in net. The notifier series I have for
+> net-next [1] is what deals with it: the phy layer drops phydev->psec on
+> unregister before pi is freed, and phy is the only pse_control user we
+> have in tree.
+>=20
+> So for v3: patches 1 and 2 as they are with Kory's Reviewed-by, plus the
+> small patch 3 for the list_del reorder, and I'll write all this up in the
+> cover letter so the ethtool side is clearly left to [1].
+>=20
+> Sound ok before I send it out?
 
-I prefer the `goto`, but I understand that for a stable patch it might 
-affect too much code, so we can do that later as part of a cleanup.
-Anyway having the smallest block at the beginning of an `if/else` 
-statement greatly improves readability IMO.
+This sound good to me.
 
-The rest LGTM.
-
-Thanks,
-Stefano
-
-> 	if (connected) {
-> 		sk_acceptq_removed(listener);
->
->@@ -1941,6 +1935,8 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
->
-> 		release_sock(connected);
-> 		sock_put(connected);
->+	} else {
->+		err = -EAGAIN;
-> 	}
->
-> out:
->-- 
->2.53.0
->
-
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
