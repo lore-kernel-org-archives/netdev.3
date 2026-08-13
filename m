@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B501D3B0585
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241DC41E6DA
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786649571; cv=none; b=SgERgZz6HGHBopG3NgPv/R09KWtOiFF72ixgpcdeKjJfmZoWAEE1yFZk8L9cJ80N4X5R6ORoj1dZruJHnNCSy0ScX4aYC21AaXB9L3E/a+iAInKmLPI6Isl3qGlX8HBrn4iWSdVq85uE5RMfURvuui1xCmrN/rw+NiILzcs35Eo=
+	t=1786649572; cv=none; b=jWnbeMpJTfh2Cq+gqAxRUF3g+NlOqRRMVAJnIVz4nBKs7ez4Z6qbNwbPnjU4W98Bnti5RBpUtLV7Z42ZKkuhWKHuEEl3AXtraHITMb7zurbzLBAfxubkoPBoHYxESGeomqc7rS6hV+p+jDNZ+VowWO9Lpp+fPHCv4khGtjQX9dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786649571; c=relaxed/simple;
-	bh=xQaYHLFeqc1DCM++stFirzGYQuzETG1PtDFRtURS1MM=;
+	s=arc-20240116; t=1786649572; c=relaxed/simple;
+	bh=t0LpZwrB7/9ku5AglNVqqj4SzJrz7THathjNDbiizAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8esX2+ck9MWGZIgTxxzQU3+crZg4YZ36w1+IrxJYQ/ZMJBGWD45BoTJQHPnUfcOEXdxGZzoMs71v05CcubntfO/u9qMzNqcj/nBDi/WRpM6jBlP4oM9g/W3fTIgc5Vmu8RziKXtdvoo5srsQW6dOXQqyRNbirCaEyhgLV32EuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j45SC0iY; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=miI70BySCUKVbDDLDSS0CX9sF5XWEyUcV4fR8PkMlW7Jc/mfg6MjNzjqOoJ9EFs2k/dPMnUeUGgrLTvDFrr8CKgPAq5LTdNuGcM6fzdNxZJg0OFO+AFvVjWmiJKryU3bXYK5u8PXFYrAueYNTp3RZ3SwbYT8K5XOKayKF5HGm0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7deszSP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j45SC0iY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F1A1F00A3D;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7deszSP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9B71F00A3A;
 	Thu, 13 Aug 2026 19:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1786649570;
-	bh=WCC1wSKwKdnkxU6fdOR4O1TNbGcu/XiJcVC0o0s0Km0=;
+	bh=g/NxcBaUM6cLCmPYrH7dmSdZ+Qm5S/WN3XqGpa0b1mI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j45SC0iY+5D6bAr5FoO6ygrKSD1X3aJLx/Gt0jPrVGDjkO/sAsYGQK3ksNPRbO0ee
-	 MP+oGniDq6ncZy2jbKgA3CgUDFKXq2aajLaTqhRQaloBjZVx5WJNIlLbMgLYMV9CQO
-	 zZ3XRCphGSdCFK4n2y7bPwOkX3htejG7zeyj9ztrIMwPfRYy0j8+KVEXYe33ecUqHx
-	 4m7J9VkdbF8I0kXGEkpiWdA5GapxZEYzgbiAuuQnoITfM6BV7YkvxelMKlf95LYjeR
-	 uygaHnIjd3eGXsAF6ReYXDkozD72R5TlqR8Dn87uv4fpjNAnQWdUVcGLdsXcL2Zzyp
-	 IsyxV07LtBmyA==
+	b=G7deszSP6l6/iU+g471cnLNtc3spShskbKyvGUz2vF5bZaYtwAXWI4hBt6fiL83zI
+	 MX1KFr5oOpXnRGI5nGeVW9T9Lb4GHcwiTs3vp4JyQ0LKXI8yG1Q2j+PTvtAXuPyUQo
+	 rvaXBLwCXHE3jVO1ffyZ1JhNQzZwjPPB9qSaXGKDVJK/GNxab6H8Dj40xWGP73llOI
+	 Y1OdvSLeqi2+NEpE1QNKm+NJSXNpQstW90GkrYlWE4SOkK0DCQS/aj5Adk6KJs28af
+	 O6aPS3f7F6x67ZpRjM9BWQdxHYCQmkqGPqCy2y6HdblJjFj2/83xIdImxMQjWjHvPV
+	 EKYCfcNl3RFXg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
 	michael.chan@broadcom.com,
 	pavan.chebbi@broadcom.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 1/2] eth: bnxt: decrease indent in bnxt_init_int_mode()
-Date: Thu, 13 Aug 2026 12:32:47 -0700
-Message-ID: <20260813193248.2578626-2-kuba@kernel.org>
+Subject: [PATCH net-next 2/2] eth: bnxt: preserve IRQ affinity across IRQ reallocation
+Date: Thu, 13 Aug 2026 12:32:48 -0700
+Message-ID: <20260813193248.2578626-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260813193248.2578626-1-kuba@kernel.org>
 References: <20260813193248.2578626-1-kuba@kernel.org>
@@ -46,76 +46,273 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Handle the IRQ table allocation failure right away instead of
-wrapping the rest of the function in an if. Purely to make
-upcoming changes more readable.
+Reconfiguring the rings frees the MSI-X vectors and allocates them
+again. The IRQ descriptors go away with them, so the affinity user
+space set is silently replaced by the driver's default NUMA spread.
+This is painful to deal with for user space as seemingly arbitrary
+NIC configuration changes lead to loss of configuration.
 
-While refactoring, drop the init of rc which is not necessary.
+In NIPA (netdev CI) this results in the toeplitz test reporting:
 
-No functional changes.
+  Exception| net.lib.py.ksft.KsftFailEx: IRQ170 is not mapped to a single core: 0-31
+
+if the test run after another test which reconfigured the device.
+We configure the IRQ mapping at boot, but if the driver is not
+preserving the config - it gets lost.
+
+Record the affinity in the notifier and apply it when the IRQs are
+requested again. The notifier has to be registered unconditionally
+now, so far it was only installed when TPH was enabled. Drivers
+which let the core manage the affinity (idpf, ice, iavf via
+netif_set_affinity_auto()) work exactly like this,
+napi_restore_config() reapplies napi_config.affinity_mask on every
+napi_enable().
+
+Note that the affinity is supposed to follow the NAPI / queue,
+same as the napi_config behavior in drivers mentioned above.
+If the user changes the affinity when the device is down -
+we will override it on up. That's expected, the IRQs are not
+associated with queues when device is down (no name, no entry
+in /proc/interrupts, no entry in netdev netlink).
+
+map_idx is ulp_msix + i, so the slot shifts whenever RoCE takes
+or releases vectors and the mask would end up on a different ring.
+Key using the completion ring id, which maps to the NAPI instance.
+
+Note2: this restores the side effect fcf42409c6e1 ("bnxt_en: use
+irq_update_affinity_hint()") removed, but not the problem it was
+fixing. The complaint there was that reopening the device resets
+the affinity and can move an IRQ onto a CPU irqbalance was told
+to stay away from. We now replay what user space or irqbalance
+last asked for, the driver's own placement is only used for
+a ring nobody has configured.
+
+Note3: the combined irq_set_affinity_and_hint() looks like
+it may hide the failure from __irq_set_affinity(), but let's
+assume the IRQ maintainers know what their doing - either
+this can't happen or is intentional.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 36 +++++++++++------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h | 11 ++-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 95 +++++++++++++++++------
+ 2 files changed, 80 insertions(+), 26 deletions(-)
 
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index dc8ec5e5733e..ab894f8addef 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -1261,9 +1261,7 @@ struct bnxt_irq {
+ 	irq_handler_t	handler;
+ 	unsigned int	vector;
+ 	u8		requested:1;
+-	u8		have_cpumask:1;
+ 	char		name[IFNAMSIZ + BNXT_IRQ_NAME_EXTRA];
+-	cpumask_var_t	cpu_mask;
+ 
+ 	struct bnxt	*bp;
+ 	int		msix_nr;
+@@ -2482,6 +2480,15 @@ struct bnxt {
+ 	 pci_channel_offline((bp)->pdev))
+ 
+ 	struct bnxt_irq	*irq_tbl;
++	/* IRQ affinity, indexed by completion ring. Kept across IRQ
++	 * reallocation, the MSI-X vector index is not stable.
++	 */
++	cpumask_var_t		*ring_cpu_mask;
++	/* Rings for which the mask above was configured from the outside,
++	 * rather than being our own default placement.
++	 */
++	unsigned long		*ring_affinity_set;
++	int			max_irqs;
+ 	int			total_irqs;
+ 	int			ulp_num_msix_want;
+ 	u8			mac_addr[ETH_ALEN];
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 1e4944f3e606..d3531cd283a5 100644
+index d3531cd283a5..35795374a8dd 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11592,7 +11592,7 @@ static int bnxt_get_num_msix(struct bnxt *bp)
+@@ -11792,6 +11792,9 @@ static void bnxt_irq_affinity_notify(struct irq_affinity_notify *notify,
  
- static int bnxt_init_int_mode(struct bnxt *bp)
+ 	irq = container_of(notify, struct bnxt_irq, affinity_notify);
+ 
++	cpumask_copy(irq->bp->ring_cpu_mask[irq->ring_nr], mask);
++	set_bit(irq->ring_nr, irq->bp->ring_affinity_set);
++
+ #ifdef CONFIG_RFS_ACCEL
+ 	if (irq->bp->dev->rx_cpu_rmap && irq->ring_nr < irq->bp->rx_nr_rings) {
+ 		int err;
+@@ -11807,8 +11810,6 @@ static void bnxt_irq_affinity_notify(struct irq_affinity_notify *notify,
+ 	if (!irq->bp->tph_mode)
+ 		return;
+ 
+-	cpumask_copy(irq->cpu_mask, mask);
+-
+ 	if (irq->ring_nr >= irq->bp->rx_nr_rings)
+ 		return;
+ 
+@@ -11850,10 +11851,6 @@ static void bnxt_register_irq_notifier(struct bnxt *bp, struct bnxt_irq *irq)
+ 
+ 	irq->bp = bp;
+ 
+-	/* Nothing to do if TPH is not enabled */
+-	if (!bp->tph_mode)
+-		return;
+-
+ 	/* Register IRQ affinity notifier */
+ 	notify = &irq->affinity_notify;
+ 	notify->irq = irq->vector;
+@@ -11863,6 +11860,41 @@ static void bnxt_register_irq_notifier(struct bnxt *bp, struct bnxt_irq *irq)
+ 	irq_set_affinity_notifier(irq->vector, notify);
+ }
+ 
++static int bnxt_alloc_ring_cpu_masks(struct bnxt *bp)
++{
++	int i;
++
++	bp->ring_cpu_mask = kzalloc_objs(*bp->ring_cpu_mask, bp->max_irqs);
++	if (!bp->ring_cpu_mask)
++		return -ENOMEM;
++
++	bp->ring_affinity_set = bitmap_zalloc(bp->max_irqs, GFP_KERNEL);
++	if (!bp->ring_affinity_set)
++		return -ENOMEM;
++
++	for (i = 0; i < bp->max_irqs; i++)
++		if (!zalloc_cpumask_var(&bp->ring_cpu_mask[i], GFP_KERNEL))
++			return -ENOMEM;
++
++	return 0;
++}
++
++static void bnxt_free_ring_cpu_masks(struct bnxt *bp)
++{
++	int i;
++
++	if (!bp->ring_cpu_mask)
++		return;
++
++	for (i = 0; i < bp->max_irqs; i++)
++		free_cpumask_var(bp->ring_cpu_mask[i]);
++
++	bitmap_free(bp->ring_affinity_set);
++	bp->ring_affinity_set = NULL;
++	kfree(bp->ring_cpu_mask);
++	bp->ring_cpu_mask = NULL;
++}
++
+ static void bnxt_free_irq(struct bnxt *bp)
  {
--	int i, total_vecs, max, rc = 0, min = 1, ulp_msix, tx_cp, tbl_size;
-+	int i, total_vecs, max, rc, min = 1, ulp_msix, tx_cp, tbl_size;
+ 	struct bnxt_irq *irq;
+@@ -11877,13 +11909,7 @@ static void bnxt_free_irq(struct bnxt *bp)
+ 		irq = &bp->irq_tbl[map_idx];
+ 		if (irq->requested) {
+ 			bnxt_release_irq_notifier(irq);
+-
+-			if (irq->have_cpumask) {
+-				irq_update_affinity_hint(irq->vector, NULL);
+-				free_cpumask_var(irq->cpu_mask);
+-				irq->have_cpumask = 0;
+-			}
+-
++			irq_update_affinity_hint(irq->vector, NULL);
+ 			free_irq(irq->vector, bp->bnapi[i]);
+ 		}
  
- 	total_vecs = bnxt_get_num_msix(bp);
- 	max = bnxt_get_max_func_irqs(bp);
-@@ -11617,26 +11617,26 @@ static int bnxt_init_int_mode(struct bnxt *bp)
- 	if (pci_msix_can_alloc_dyn(bp->pdev))
- 		tbl_size = max;
- 	bp->irq_tbl = kzalloc_objs(*bp->irq_tbl, tbl_size);
--	if (bp->irq_tbl) {
--		for (i = 0; i < total_vecs; i++)
--			bp->irq_tbl[i].vector = pci_irq_vector(bp->pdev, i);
+@@ -11925,9 +11951,9 @@ static int bnxt_request_irq(struct bnxt *bp)
+ 		bp->tph_mode = PCI_TPH_ST_IV_MODE;
+ 
+ 	for (i = 0, j = 0; i < bp->cp_nr_rings; i++) {
++		struct cpumask *cpu_mask = bp->ring_cpu_mask[i];
+ 		int map_idx = bnxt_cp_num_to_irq_num(bp, i);
+ 		struct bnxt_irq *irq = &bp->irq_tbl[map_idx];
+-		unsigned int cpu_num;
+ 		u16 tag;
+ 
+ 		if (IS_ENABLED(CONFIG_RFS_ACCEL) &&
+@@ -11946,19 +11972,24 @@ static int bnxt_request_irq(struct bnxt *bp)
+ 
+ 		netif_napi_set_irq_locked(&bp->bnapi[i]->napi, irq->vector);
+ 		irq->requested = 1;
 -
--		bp->total_irqs = total_vecs;
--		/* Trim rings based upon num of vectors allocated */
--		rc = bnxt_trim_rings(bp, &bp->rx_nr_rings, &bp->tx_nr_rings,
--				     total_vecs - ulp_msix, min == 1);
--		if (rc)
--			goto msix_setup_exit;
+-		if (!zalloc_cpumask_var(&irq->cpu_mask, GFP_KERNEL))
+-			continue;
 -
--		tx_cp = bnxt_num_tx_to_cp(bp, bp->tx_nr_rings);
--		bp->cp_nr_rings = (min == 1) ?
--				  max_t(int, tx_cp, bp->rx_nr_rings) :
--				  tx_cp + bp->rx_nr_rings;
--
--	} else {
-+	if (!bp->irq_tbl) {
- 		rc = -ENOMEM;
- 		goto msix_setup_exit;
- 	}
+-		irq->have_cpumask = 1;
+ 		irq->msix_nr = map_idx;
+ 		irq->ring_nr = i;
+-		cpu_num = cpumask_local_spread(i, numa_node);
+-		cpumask_set_cpu(cpu_num, irq->cpu_mask);
 +
-+	for (i = 0; i < total_vecs; i++)
-+		bp->irq_tbl[i].vector = pci_irq_vector(bp->pdev, i);
-+
-+	bp->total_irqs = total_vecs;
-+	/* Trim rings based upon num of vectors allocated */
-+	rc = bnxt_trim_rings(bp, &bp->rx_nr_rings, &bp->tx_nr_rings,
-+			     total_vecs - ulp_msix, min == 1);
++		/* Reuse the mask recorded before the IRQs were freed. Nothing
++		 * was recorded yet on the very first request, and the mask
++		 * may have gone stale if the CPUs went offline in between.
++		 */
++		if (!test_bit(i, bp->ring_affinity_set) ||
++		    !cpumask_intersects(cpu_mask, cpu_online_mask)) {
++			clear_bit(i, bp->ring_affinity_set);
++			cpumask_clear(cpu_mask);
++			cpumask_set_cpu(cpumask_local_spread(i, numa_node),
++					cpu_mask);
++		}
+ 
+ 		/* Init ST table entry if we can get the mapping */
+ 		if (!pcie_tph_get_cpu_st(bp->pdev, TPH_MEM_TYPE_VM,
+-					 cpu_num, &tag)) {
++					 cpumask_first(cpu_mask), &tag)) {
+ 			pcie_tph_set_st_entry(bp->pdev, irq->msix_nr, tag);
+ 			irq->tag = tag;
+ 			irq->new_tag = tag;
+@@ -11966,10 +11997,19 @@ static int bnxt_request_irq(struct bnxt *bp)
+ 
+ 		bnxt_register_irq_notifier(bp, irq);
+ 
+-		rc = irq_update_affinity_hint(irq->vector, irq->cpu_mask);
++		/* Only put the IRQ back where it was configured to be, our own
++		 * placement is just a hint, the core spreads within
++		 * irq_default_affinity which we know nothing about.
++		 * Set after installing the notifier, if we race with the user
++		 * it's better to overwrite than miss the notification.
++		 */
++		if (test_bit(i, bp->ring_affinity_set))
++			rc = irq_set_affinity_and_hint(irq->vector, cpu_mask);
++		else
++			rc = irq_update_affinity_hint(irq->vector, cpu_mask);
+ 		if (rc) {
+ 			netdev_warn(bp->dev,
+-				    "Update affinity hint failed, IRQ = %d\n",
++				    "Setting IRQ affinity failed, IRQ = %d\n",
+ 				    irq->vector);
+ 			break;
+ 		}
+@@ -16610,6 +16650,7 @@ static void bnxt_remove_one(struct pci_dev *pdev)
+ 	bnxt_shutdown_tc(bp);
+ 
+ 	bnxt_clear_int_mode(bp);
++	bnxt_free_ring_cpu_masks(bp);
+ 	bnxt_hwrm_func_drv_unrgtr(bp);
+ 	bnxt_free_hwrm_resources(bp);
+ 	bnxt_hwmon_uninit(bp);
+@@ -17048,6 +17089,11 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	bp->msg_enable = BNXT_DEF_MSG_ENABLE;
+ 	bnxt_set_max_func_irqs(bp, max_irqs);
+ 
++	bp->max_irqs = max_irqs;
++	rc = bnxt_alloc_ring_cpu_masks(bp);
 +	if (rc)
-+		goto msix_setup_exit;
++		goto init_err_free;
 +
-+	tx_cp = bnxt_num_tx_to_cp(bp, bp->tx_nr_rings);
-+	bp->cp_nr_rings = (min == 1) ?
-+			  max_t(int, tx_cp, bp->rx_nr_rings) :
-+			  tx_cp + bp->rx_nr_rings;
-+
- 	return 0;
+ 	if (bnxt_vf_pciid(bp->board_idx))
+ 		bp->flags |= BNXT_FLAG_VF;
  
- msix_setup_exit:
+@@ -17297,6 +17343,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	bp->rss_indir_tbl = NULL;
+ 
+ init_err_free:
++	bnxt_free_ring_cpu_masks(bp);
+ 	free_netdev(dev);
+ 	return rc;
+ }
 -- 
 2.55.0
 
