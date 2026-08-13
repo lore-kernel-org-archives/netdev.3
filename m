@@ -1,76 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFC635202B;
-	Thu, 13 Aug 2026 05:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3803310645;
+	Thu, 13 Aug 2026 05:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786597221; cv=none; b=KyUuFovay9Fl0EHG//++FWtUfGmAiUm7/SrheNYdziJV4zi6CHi8q8OEXT9LG8llIhTAgwxosyfvoFLcAqxwdpMAEVuZzt4GqROuD06PIz2LtLQjDTPHKv8EWIKUQ2+2GGcLuajnOehAT9L2hbxwRDfLGxLwUUihHRDrj3rRKYU=
+	t=1786597499; cv=none; b=CBPG9YZJTI76b6AbDCjrZUzWNX1gjv1kZ+C17ET6I2prxS1npFoy88SfPd77zNbTMQ3ezewHvTLJPUWttVkWi0M3NkLqSdQzTHunOtNyQv+y7YpRLrw2Vy9hYU3iSYpfxVk9qzft3lN7iYGE3v3cKtiwY6TflcmgOBfcP1tcPo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786597221; c=relaxed/simple;
-	bh=X/xhT8NU2HEliEZaLWJNAyvStvS4f7Ev0OFfQlIAQNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DoBp3paTmzx9j+cU2eaxK9DZrzy8rhgtCBfrMwH4w1fUZlr7fB3D9IcAr9VBcfGbxrezdbew9Lv2sKHabrJdkPCVwAUeSXg/D7rb1Hk3H2r5ZoAUbjngV1UGQSmryBwV6Vfh9Wq5G5JmZC6SXDzSVDgZSgVEbmlBM0YZgeZYsLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNPUQMgZ; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNPUQMgZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9549F1F000E9;
-	Thu, 13 Aug 2026 05:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786597219;
-	bh=Zfjp3uqASrdxkYH3QywYeYmXZcUDPqkuBgcvRhWkUMk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MNPUQMgZ2hjY7x1xI6uy13/eksKlKxN6hh8EB/rpJ4ZDlURHk657jM0Rm7GrBs7aL
-	 qNrFYuzk3YiTGXN7x5U3urpBAVlh7cELTd6LDg214HWLRQZIFEU2I5SwLnWBieJQ3R
-	 2AGTb1UUYYiZPlFK7Z4CjeN+IKbxM5dW3hK6OmXZJv3Cq8Pou6KKIXbUPV0P/amjLt
-	 TYnqQNBfqpSubVpXlSQD4iKpjbJ6wwocTi5YAlj/7TMzz7S32lO8KERKgMxNWTBqUb
-	 +5+TwPtx+enZAwEUO+NzrlCO3fN0iZjuGyDp52oia9RIknDXB2BzuP81tTt3YahI6K
-	 Q8EjocMXli64A==
-Date: Thu, 13 Aug 2026 06:00:15 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Jassi Brar <jassisinghbrar@gmail.com>
-Cc: Adam Young <admiyo@amperemail.onmicrosoft.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Huisong Li <lihuisong@huawei.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jeremy Kerr <jk@codeconstruct.com.au>,
-	Matt Johnston <matt@codeconstruct.com.au>,
+	s=arc-20240116; t=1786597499; c=relaxed/simple;
+	bh=Y2sAgoKebfdL30NaqlJI9ZsjltsiIoCFzDIwO+7ma9k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k4FofuTC9Z5vJQopAMkKgC+2NGYnZqX9OvUGhWxDXZdENwZWahJkrhcas5pMdEa+VtcfP2+f2D0eJecmrqIvmhrenHOQPFSgz4dWN0mTyjmrm5WqsTcw5kkPsY4/uNX3kWTVWVvYZ489HcBeDQkayQRKcm+yWJGWBXmHjbS6Jsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id D3CCA20B7168; Wed, 12 Aug 2026 22:04:26 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D3CCA20B7168
+From: Long Li <longli@microsoft.com>
+To: Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v45 1/7] mailbox/pcc.c: shmem map/unmap startup/teardown
-Message-ID: <20260813-opal-salmon-of-promotion-0eff38@sudeepholla>
-References: <20260721175258.87600-1-admiyo@os.amperecomputing.com>
- <20260721175258.87600-2-admiyo@os.amperecomputing.com>
- <7089dd34-18e3-4b84-a01e-361a4ce6cc43@amperemail.onmicrosoft.com>
- <CABb+yY1R7E8WTv9wHMqu1JSA9p8oQXavncNLi7m0bWH52h68tA@mail.gmail.com>
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	shradhagupta@linux.microsoft.com,
+	Simon Horman <horms@kernel.org>,
+	ernis@linux.microsoft.com,
+	stephen@networkplumber.org
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 00/13] net: mana: reconfigure by replacing the queue set
+Date: Wed, 12 Aug 2026 22:04:05 -0700
+Message-ID: <20260813050418.2906468-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABb+yY1R7E8WTv9wHMqu1JSA9p8oQXavncNLi7m0bWH52h68tA@mail.gmail.com>
 
-On Tue, Aug 11, 2026 at 10:34:15AM -0700, Jassi Brar wrote:
-> On Fri, Jul 24, 2026 at 10:59 AM Adam Young
-> <admiyo@amperemail.onmicrosoft.com> wrote:
-> >
-> >
-> > This will have to be rebased on the changes to the base PCC layer,
-> > specifically to add the signature check.
-> >
-> At this point I would think you have Sudeep's ack on this change to the code?
-> 
+MANA reconfigures a port by destroying its queues and building them again.
+mana_detach() tears the whole queue set down, mana_attach() allocates a new
+one, and every path that changes a queue property does this: the ethtool
+channel, ring and private-flag setters, the MTU change and XDP attach.
 
-Not really, I had some generic feedback as this series has been very hard to
-track and review. My last response is here[1]
+If the second half fails there is nothing left to fall back to. The old
+queues are already gone, so the port stays down and the failure cannot be
+undone from userspace:
 
+  # ethtool -G ens1 rx 8192 tx 16384      # under memory pressure
+  netlink error: Cannot allocate memory
+  mana 7870:00:00.0 ens1: Failed to create 16 TX queues, -12
+  mana 7870:00:00.0 ens1: mana_attach failed: -12
+  # ip link show ens1
+  ... state DOWN
+
+On VM SKUs with no netvsc fallback interface this takes the VM off the
+network entirely, and it is reachable from an ordinary ethtool ring resize
+that happens to run when memory is tight.
+
+v1 [1] tried to recover after the fact: schedule a reset and retry
+mana_attach() with smaller values, falling back to the previous setting or
+to the defaults. Review pointed out that silently replacing a user's
+setting with a different one is the wrong behaviour, and that
+pre-allocating the resources and replacing the queue set looked feasible
+and should be investigated instead. This series does that, so there is no
+failure to recover from and no user setting to override.
+
+The model is to build the new queue set alongside the running one, publish
+it, then retire the old one.
+
+  carrier off -> netif_tx_disable -> swap the queue pointers -> update the
+  netdev queue counts -> reprogram RSS/steering -> reattach XDP ->
+  netif_tx_start_all_queues -> restore carrier
+
+Everything that can fail happens before anything is swapped. If allocation
+fails the running queues have not been touched at all: the ethtool call
+returns the error, the interface keeps forwarding traffic and the
+configuration is unchanged. If the swap itself fails, the previous set is
+put back and the port keeps running on it.
+
+Patch layout:
+
+  1     the queue-set allocate/publish/free helpers.
+  2-6   convert the five callers: ethtool channels, rings and private
+        flags, the MTU change and XDP attach.
+  7     the remaining detach/attach users are the TX-timeout reset handler
+        and suspend; make mana_detach() always finish its teardown so the
+        reset handler cannot leave a port permanently dead.
+  8-11  keep behaviour the swap model would otherwise change: per-queue
+        counters move into the port context so a rebuild no longer zeroes
+        the interface statistics, the EQ pool is shared across a swap
+        instead of being duplicated, EQs left idle by a reduction are
+        released, and a user-configured RSS indirection table survives a
+        rebuild.
+  12-13 stop rebuilding queues that do not change. A reduction keeps the
+        surviving queues and an increase keeps the existing ones, so
+        32 -> 8 channels destroys 24 queue pairs instead of building 8 and
+        destroying 32, and 4 -> 8 builds 4 instead of 8.
+
+Known trade-off, since it is deliberate: RX counters are now indexed by
+queue number in the port context, so during the window between steering
+moving to the new queues and the old ones being destroyed, both generations
+can update one slot. MANA is 64-bit only, so u64_stats_sync carries no
+seqcount and nothing can be corrupted; at worst a few increments are lost.
+Serialising them would put a lock in the per-packet receive path, and
+giving each set its own slots would make ndo_get_stats64() report a dip
+during a swap, which is the regression this is meant to remove.
+
+Testing, on Standard_D32ds_v6 (MANA) running Ubuntu 24.04:
+
+  - the failure above, made deterministic with fail_page_alloc: before the
+    series the port ends up down and unrecoverable; after it, ethtool
+    returns -ENOMEM, the ring sizes are unchanged, the link stays up and
+    traffic is uninterrupted.
+  - 33-case functional matrix over channel counts 1/2/4/8/32, ring sizes,
+    MTU, the private flag and XDP attach/detach across each, including
+    reconfiguration while the port is administratively down.
+  - XDP: all four verdicts exercised. PASS and TX across every
+    reconfiguration, DROP and REDIRECT verified by counter and by effect.
+    The program stays attached and RX keeps flowing across channel
+    shrink/grow, ring resize, MTU change and private-flag toggle, with
+    16.8 Gbit/s of received traffic running through the program while the
+    queue set is replaced underneath it.
+  - a queue-set allocation forced to fail while an XDP program is attached,
+    to exercise the unpublished-set teardown.
+  - no KASAN reports, BUGs or WARNs in any of the above.
+  - every patch builds with W=1 with no new warnings, checkpatch clean.
+
+[1] https://lore.kernel.org/netdev/20260711041415.3008868-1-dipayanroy@linux.microsoft.com/
+
+Dipayaan Roy (1):
+  net: mana: do not bail out of mana_detach on dealloc failure
+
+Long Li (12):
+  net: mana: add queue-set allocation and teardown helpers
+  net: mana: swap queue sets in mana_set_channels
+  net: mana: swap queue sets in mana_set_ringparam
+  net: mana: swap queue sets in mana_set_priv_flags
+  net: mana: swap queue sets in mana_change_mtu
+  net: mana: swap queue sets in mana_xdp_set
+  net: mana: keep per-queue statistics in the port context
+  net: mana: share the EQ pool across a queue-set swap
+  net: mana: release EQs left idle by a channel-count reduction
+  net: mana: keep a user-configured RSS table across a queue rebuild
+  net: mana: keep the surviving queues when the channel count is reduced
+  net: mana: keep the existing queues when the channel count is raised
+
+ .../net/ethernet/microsoft/mana/mana_bpf.c    |  110 +-
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 1433 +++++++++++++++--
+ .../ethernet/microsoft/mana/mana_ethtool.c    |  300 +++-
+ include/net/mana/gdma.h                       |   11 +-
+ include/net/mana/mana.h                       |  117 +-
+ 5 files changed, 1746 insertions(+), 225 deletions(-)
+
+
+base-commit: d67e5dbda22604d0fcde32fce58c65f88676e676
 -- 
-Regards,
-Sudeep
+2.43.0
 
-[1] https://lore.kernel.org/all/20260722-quantum-efficient-loris-adb10e@sudeepholla
