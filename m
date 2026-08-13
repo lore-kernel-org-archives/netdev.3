@@ -1,103 +1,151 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E2A36728F
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 07:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086EF328B77;
+	Thu, 13 Aug 2026 07:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786606830; cv=none; b=XVUUqfGolHGQpjT0pkf3WlvbzujuwM/APXLM8ET6j229/BKRgzPjEKDie0vQ3yufOYpBULC8R72GetHlRJIuNwiipR644rd95ksun+8XniOFYzFExyTDk1jRFyoIJK/aDq4dLK9uRyvVKX8iyEz+UQol9EZWdHU/ZEQb5lZQARg=
+	t=1786607015; cv=none; b=uxpiA72RnefDGSpVLE198yy+/ZnynSafiEMJvqDurjNxrUSJfRii6/HLTyHC44jLyP5VyJnzlFryKDSB+sPGMr+lcaTRXwTRDMzP9FSf/inqUwc62u/mrs1CDzZETma5ed2ro3Ba2KxxkgbJIMQI2unW/bJLVrMH4qVtAbOeuj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786606830; c=relaxed/simple;
-	bh=lcy9GXzw+fVt6D5c66pluPLv/Njapm/Xrgbk1DH4ZoA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pN7DILY/Yd0WLmXYEOsiaXQ0QbZm2ir1r5oaHvjpjWFmSsMUBmZ91bTAXpUXn3PC8yvJPvXXaoGXPJP/ItGqLDkdDKlkG8u2fRt3jjGb5rvDKrL7RQhZc7Vq3FvPp9FsCrMm0cDv+Bhhn5bcaVGejS0zRkBZiLnVjAkfRSvCYUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=0v7QO0Ls; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
+	s=arc-20240116; t=1786607015; c=relaxed/simple;
+	bh=a4YVlWFl709Eb8AQrJEmuuJjttVNj/1mZiX+yfWZG9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gy0GER3IRwa+mrre9Zcfxl5vUffUHIrs2xRwezKGsOk8g2BpEXcKkug0JgiNtgzafnZaTV6ysqvs5ishgVe//Klc8fi1O4LaZl7BSXi9UL+xH1r1Ch9S7EyDaHaBpleiVROL+qsd7o8R+R07JdllsrgaBpzcTX5D751Ui0v8RhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MjJ+C/Em; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="0v7QO0Ls"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ceb096e675so5741955ad.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 00:40:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1786606828; x=1787211628; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lcy9GXzw+fVt6D5c66pluPLv/Njapm/Xrgbk1DH4ZoA=;
-        b=0v7QO0LsRAvVF7rcH62iTbaf0XeiGYC0i1QpWKvIjrNDLxqy7Bc/qUCs86l9X4qd7j
-         uHC4OigI/n6aByycszm6biYMDljluxKBYWbFn1qc9S3pk0w+A9q94SqS5x58TO+X4T0h
-         px8QG7ibdspuF9KBFJCzdD16EefDqYLWpJ7eqw9UHsou9noGdBcL7MAkK/H1Jyw3zBoc
-         3GypvClj7I40PC0HdS/Ftu469b/NXxRgwNpAbpFxLh0HbTPD6MR0LGrPWNA1H9v1spoS
-         +vWoI+pVqUhLu9P4VDln6E1n4IH3iQSjw2QSZ6KMWC5e+6GJ3GFxQK/7YATXloyz65eT
-         KZ/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786606828; x=1787211628;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lcy9GXzw+fVt6D5c66pluPLv/Njapm/Xrgbk1DH4ZoA=;
-        b=FSWG88KZy3TPCDbHYCMiwKsVtxmCV7vuU9cy+Ps8kRYybRji0cECCW8RN0m+5K06db
-         fIZ0X4b4j78xhw2QvJ/O6RxlgDe1zQ+3Zve3x1gmFknXFtLMMz2O4AqdlRscNw3VfqBU
-         7rb4+GukBHqcwF7mAy3DOf/z0HaggU4R3TFl9Zvge/Oh82Ob4Ee6eOJetzb4w49fC1pa
-         IryMhd18ORwiwReBUr1Q6am1ARsFtGqoDzFdsCr9Y7zT4NuCXoRwvhmwCbTtwsUAuM42
-         kAzVXhrLPWtVaGzgcm6opRCqbRFj33hFZdItXZT3bLlVD7AaggKceBcnh+PrxaBTCOLl
-         vttA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/z+thScZt2IIMd43yE9qFIYp746swgbNA7WhJNtqqb/YRXf+8W6RRBjycefvPrbIXdshgEgY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz53hPceQuXiFTY41dvQf/OWEI2ioti8RLa3EkLORLOQfwEfP/U
-	kgDDD068wG4CId51z2OuzU1iRxMmm3pjSlqt50xXIrcGYOYGRWFofCDMPRqa5LZW5CYgtxpX71Q
-	YCDVzozJkciItfHsKK0l/+UGbZ93Y/6zZ2tHYbeqy+avFgWenVtg=
-X-Gm-Gg: AR+sD10eqC5VRJD5XocciDh2+IiBuVxDt2peOKCMZPLGs/6m5QwdgVCFh6bK6wBRnHY
-	Q7q85rVuu+GgD0XspBvbNqlk+fP9plFW0sjxjUWlNH3mdK6vwdT7ufMeSiXmN9sa4A0Vu2PC29c
-	aIaWWxsVepEBzGarDBHFB+fZSyvSQCfiw8COgE9gvthPfeEqnU7ts+K5kaMrJFw3q9Klpa9nUbS
-	0F7YwLk0BvsCKtnczDtn3N8vVOjykc8Iz48p6IKfIynwOtIwf2RX9YwSiX9BAXede5Omn3rfDnh
-	thb8Y02UYlgkSsvPK8pctFUnWaTovdjxcuey3oVmjyHt9UHxvk/kvsIwXJnHlW78wU1WPuBBIxc
-	V28S3cd32ULeLkZrTiU54N40Sdd1YylzlufpW4QIM1IPwb94jK/ErxIDpzVMk2CHdwmsCzYj1VU
-	tM+AdxyOztpslgCXB41q2M9/Z3VcJIzYiGZrSBon7fjcBv+Ma6OfGJIDWoeupdI5gv2lfuYse5i
-	g==
-X-Received: by 2002:a05:6a20:cd96:b0:3c0:b766:74f4 with SMTP id adf61e73a8af0-3cc553f71d1mr5904764637.31.1786606827218;
-        Thu, 13 Aug 2026 00:40:27 -0700 (PDT)
-Received: from localhost.localdomain ([23.148.204.128])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31ebcb6a9a3sm4648991eec.12.2026.08.13.00.40.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 00:40:26 -0700 (PDT)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	keyong.sun@smartx.com,
-	netdev@vger.kernel.org,
-	dev@openvswitch.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] openvswitch: enable ops lock for internal ports
-Date: Thu, 13 Aug 2026 15:40:07 +0800
-Message-ID: <20260813074007.3669651-1-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260812164156.6bde8f4e@kernel.org>
-References: <20260812123003.3634034-1-wang.zhan@smartx.com> <20260812164156.6bde8f4e@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MjJ+C/Em"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D61wue1430858;
+	Thu, 13 Aug 2026 07:43:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=FPhKMOovbs4yAYQc6W7yJ3HqLdyHsafJlCTmhwLRY
+	54=; b=MjJ+C/EmdwofNG4D2HEzQFrXhZDl8SHmsdVc8VRGur5hjH9AN2x9hm0Uu
+	UN2NY3lijPta9fjMWGnLsM2j8oddhHRhkesuRiYdysjTFP7ld+Q8wL+hVOaSf87G
+	bdaMgKCYiuSPhsGpe4+3vSLg8oNzVcNfYJU/HP7+2LHzpLHRozlcGlvs1NCKc/Ka
+	HMarlcKOi7MikRbkoBlZERPJcrcUX9veRXaAJsx0U5IJ3pKMls9VB4CrvmX04P7d
+	ZV/3AsQaJZCsRdHCFxB02kcvB30zjNU4EHay9jlx3BzvE0KbekNjuW6Bo40RsBLQ
+	MDX8D3OWXbFYSsxYm8Oee3Uj7aNYw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvp35v6n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 07:43:26 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67D7fGI8005035;
+	Thu, 13 Aug 2026 07:43:25 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfy9vnc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 07:43:25 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67D7hMRb30540164
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 07:43:22 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 37F282004B;
+	Thu, 13 Aug 2026 07:43:22 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F38FC20043;
+	Thu, 13 Aug 2026 07:43:21 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu, 13 Aug 2026 07:43:21 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 56341)
+	id DC1051612E0; Thu, 13 Aug 2026 09:43:21 +0200 (CEST)
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
+        hidayath@linux.ibm.com
+Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+        guwen@linux.alibaba.com, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, Mahanta Jambigi <mjambigi@linux.ibm.com>
+Subject: [PATCH net] net/smc: hash socket only after full initialisation in smc_sk_init()
+Date: Thu, 13 Aug 2026 09:43:15 +0200
+Message-ID: <20260813074315.554926-1-mjambigi@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=AMtp2X5w c=1 sm=1 tr=0 ts=6a7d759f cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=-ibLmwfWAAAA:8 a=VnNF1IyMAAAA:8
+ a=KdTQYx-huaeXBQr4oQUA:9 a=A6MkUVyZPcTV1i89ro0M:22
+X-Proofpoint-GUID: oDi_CjKzNQ4jV8TMfHBH-2yDRyNGNkkU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA1MSBTYWx0ZWRfX0q6ANZMqxhgr
+ n6E9X0ydAm3CMCnICzNyyjac246WvSRymkfNJTbs5lsgXYM5Mznzn+UB7fEh696S+zi56cqvKJd
+ ZxrS2QS5aR1tz65ThhM+OToNDCxhEMgZohq73p7e3oE/PlsFGrqkgZWf8+TLk0GVClrwlY1Reo9
+ ceI6V9/WY41SP1PyR/7oleMrAn/6DO4eBLI6FBBNUWZuQmVGD94G2FRxMVZFC1uBtC9YN2ukB/r
+ dF93xXwhfeW9vB1RyvS/LvYWJt8QbQg48oD1oPa4C+VUJqtZCFamnYYFzAc4i7yCl2vkGqRfrZn
+ t/DtM+ci6lsPVGY7qDD3gADSDhIXu/tbzrRR/+CJxKMK8Gu3+R4ouWrIcYsip5b+8qT8lJc1AGq
+ pTgaAJI6KQLrGMMesN7g3KVN1jajvbbEf/HArFcrq+a2314ILV/3AFSeLafbg0+6hB5enY9gRLb
+ 87Ml5e6q2vORBQid6hA==
+X-Proofpoint-ORIG-GUID: 0TQjeYdrXLIJF6b0d_leJqwo4d_wtfwB
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDA1MSBTYWx0ZWRfX8ht0d/O88Slq
+ X1mPstt44Eq6pAltQqdkSHGw6krsF0q5Ufh/H0PxN3Ldrrdmxtj49jVtlMh7ZkgKRgOluFnlnvG
+ DqcSqoqbMaZDlH5GOK2PSzHK+D3ImJU=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_02,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608130051
 
-> Why are you sending this patch? Do you have an actual real life need
-> for unlocked get_drvinfo??
+smc_sk_init() calls sk->sk_prot->hash(sk) before several fields are
+fully initialised: clcsock_release_lock, the saved clcsk_* callbacks,
+use_fallback/fallback_rsn, and conn.close_work.  Once hash() returns the
+socket is visible to concurrent hash walkers, which can then observe
+uninitialised state.
 
-Yes. The use case is broader than unlocked get_drvinfo.
+Move hash(sk) to the end of smc_sk_init() so the socket is published
+only after it is fully constructed.
 
-We are trying to reduce cases where ovs-vswitchd gets blocked waiting for
-the global RTNL lock. In production we saw ovs-vswitchd repeatedly report
-"Unreasonably long" poll intervals. Tracing showed one OVS operation waiting
-about 500 ms for RTNL while node-exporter was collecting the speed of an
-mlx5 interface. The node-exporter process was CPU quota throttled, which
-stretched that RTNL hold time; mlx5 can make this easier to hit because some
-queries go through firmware/mailbox paths.
+Fixes: d0e35656d834 ("net/smc: refactoring initialization of smc sock")
+Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+---
+Found by syzbot while testing a diag dump patch that drops the hash
+read lock before calling mutex_lock(&smc->clcsock_release_lock).  That
+change made the uninitialised mutex reachable for the first time and
+triggered DEBUG_LOCKS_WARN_ON(lock->magic !=3D lock) immediately.
 
-netdev_linux_set_ol() is one OVS path that can take RTNL. With
-userspace-tso-enable, OVS uses this path to read ethtool feature information
-through ETHTOOL_GSSET_INFO, ETHTOOL_GSTRINGS and ETHTOOL_GFEATURES. For
-ovs-internal-port, these GET operations do not need RTNL, but currently take
-it because internal ports do not opt into per-device ops locking.
+syzbot report:
+https://ci.syzbot.org/series/ab0d12fd-741a-4a0f-9f49-e52b84e94f4a
+
+ net/smc/af_smc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 00403175b740..5e7560417ec7 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -409,13 +409,13 @@ void smc_sk_init(struct net *net, struct sock *sk, =
+int protocol)
+ 				      "sk_lock-AF_SMC", &smc_key);
+ 	spin_lock_init(&smc->accept_q_lock);
+ 	spin_lock_init(&smc->conn.send_lock);
+-	sk->sk_prot->hash(sk);
+ 	mutex_init(&smc->clcsock_release_lock);
+ 	smc_init_saved_callbacks(smc);
+ 	smc->limit_smc_hs =3D net->smc.limit_smc_hs;
+ 	smc->use_fallback =3D false; /* assume rdma capability first */
+ 	smc->fallback_rsn =3D 0;
+ 	smc_close_init(smc);
++	sk->sk_prot->hash(sk);
+ }
+=20
+ static struct sock *smc_sock_alloc(struct net *net, struct socket *sock,
+--=20
+2.50.1
