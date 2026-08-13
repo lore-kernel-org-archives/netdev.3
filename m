@@ -1,118 +1,119 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58272E7635;
-	Thu, 13 Aug 2026 17:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C630E399CF5;
+	Thu, 13 Aug 2026 17:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786642864; cv=none; b=u75kYsU77zjKj62zirx7UFmbgW6zJH4glGFNdq9+2djw4HCMnHcp8gwOjSDVJfP9X6xdCotqMqwUq+Sa+Hss6BOM31eQusIALPWh8RRuUCXzNwA432mmLj8h4lQtuc7Bpa5xr8PKjhbou+ZCvEfzIaPpsSoO325VnkIYlq8GSRs=
+	t=1786642996; cv=none; b=dAz7zVMgz27RlztdXTH5G0347MyCS9nAO1BjTgDWAyh/vUgA+B9i6jd7TCTglonWnilLtp57IgGyUYmY9QPaof/9auVPZDoJQooT+lRHXq+DJXLx7tq/LpPoTo48hY5SbzyM6tRW1TyHXB3ZEcld3DTqGaasizDARs8ZoaRazEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786642864; c=relaxed/simple;
-	bh=7/oeYTMxCoxBfK83BCp14iQc3GFfOw8nWtzMxuTAzQs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IZUTBBzJ6f0KolkHg3jBpl5WKukFIIgeU/ylK8/bleijfYqXPbPNSaiv7RlApyW3RFkWYxFI1Xn1Mu7i8ksRyR0dZGGQj9vfB9E+cAF0xJal2/El82DME6zzg/ra9UNG4hXE34AQUsEfF2KNrD6TsI+HuTOmpGTzCsxQxEbth8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=oSezj7wW; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="oSezj7wW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1786642860;
-	bh=w+57DC0DHZxHGukFIsiXKemMlhPHWYNHA9Y1zP2QivQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oSezj7wW6N68kAPvA+mXeUrf6H8FzguMgosdjJR67+b2QzMf8PfLuTJav70AZNkIw
-	 ewF4hMZM1kLfSWNn+/5ehyUD4RZ1AQzAcrMJRPX0y269pSy7fJLhpWLtggNxJVD7VV
-	 YqJNaDoXAdocmz6WmRDcZZ+vhGv4nmdKJP88hst8UCqv3ns6feo9VIDhFhILROQsbN
-	 t40KLcYIMe0C75k2kCM+qExpCmg2JFvBmDE/LxKg3RmQiqsV0o4UARCIIOlC5QCMc2
-	 rOuKSDqvSA6rpmFaoDC8vmEHmP/bJ2keFg2C4nybcwFwpWKL5OCwrkVtM0fsjrlXR8
-	 DmpSXjrHx+UOQ==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 973D66007A;
-	Thu, 13 Aug 2026 19:41:00 +0200 (CEST)
-Date: Thu, 13 Aug 2026 19:40:58 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Joas Antonio <joasantonio108@gmail.com>
-Cc: horms@verge.net.au, ja@ssi.bg, fw@strlen.de, netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ipvs: fix integer overflow in ftp helper port/address
- parsing
-Message-ID: <an4BqnWDOxU29kUS@chamomile>
-References: <CAOCBhwHbcnuzP1fz=JLqeRA0xNU=QdqppeRy2y=wqhJR6k_VRQ@mail.gmail.com>
+	s=arc-20240116; t=1786642996; c=relaxed/simple;
+	bh=dsTNUTZVn7HGDPkUqmZ8lxZ2q4/FmqraJUZVIZBNF3M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nn5nx1bPkRCcz/c16BKHa5uLbu31ieSfinwt3FzeAGn/wJtGdXn9xwMEpFhGCfg6gFudMlpBWeXhCkG6i0dYWR9RqFyIu8ueAgaWrZiN4Mej70pVtURRs3+d/We3acY2IoqqX/mmMOJLgSLVRdPzo9Qw2sOh4olCsF0eRsiEtm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 64E3B20B7168; Thu, 13 Aug 2026 10:42:49 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 64E3B20B7168
+From: Long Li <longli@microsoft.com>
+To: Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	shradhagupta@linux.microsoft.com,
+	Simon Horman <horms@kernel.org>,
+	ernis@linux.microsoft.com,
+	stephen@networkplumber.org
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v7 0/7] net: mana: HW channel reliability and hardening fixes
+Date: Thu, 13 Aug 2026 10:42:32 -0700
+Message-ID: <20260813174243.3044348-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAOCBhwHbcnuzP1fz=JLqeRA0xNU=QdqppeRy2y=wqhJR6k_VRQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-You have to indicate what tree this is targetted to, [PATCH] itself
-goes to /dev/null. Please use [PATCH ipvs] instead.
+This series fixes a set of reliability and safety bugs in the MANA HW
+communication channel (HWC) and hardens the paths that consume
+device-supplied values.  The HWC bootstrap and RX data come from the PF,
+which is untrusted from a confidential-VM guest, so several of these are
+also hardening fixes against a malicious or buggy host.
 
-On Thu, Aug 13, 2026 at 01:59:30PM -0300, Joas Antonio wrote:
-> ip_vs_ftp_get_addrport() accumulates decimal digits into a __u16
-> (hport) and into unsigned char (p[]) without checking for overflow.
-> A crafted FTP PASV/EPSV response with an over-long port or address
-> octet wraps the value, so the helper configures the data connection
-> with a truncated port/address.
-> 
-> The netfilter conntrack FTP helper had the same defect, fixed in
-> commit 2b413fc689ba ("netfilter: nf_conntrack_ftp: avoid u16
-> overflows"). Apply the equivalent fix here: widen the port accumulator
-> to u32 and reject values above 65535, and reject address octets above
-> 255.
+Patch 1 reference-counts the CQs looked up from the EQ interrupt handler so
+a completion cannot race a concurrent CQ destroy.  Patches 2-3 fix an
+RQ/SQ size swap and a use-after-free of the HWC comp_buf during teardown.
+Patch 4 validates the lengths and indices taken from device DMA in the HWC
+RX path.  Patch 5 makes HWC teardown safe when a device stops responding.
+Patch 6 stops a stale/late HWC response from completing the wrong command
+after a timeout.  Patch 7 keeps max_num_cqs immutable once cq_table is
+allocated, so a later device event cannot inflate the bound past the
+allocation.
 
-Patch is garbled, mangled by MUA.
+The series has been build- and sparse-tested (C=2), and checkpatch is
+clean on every patch.
 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: CyberSecurityUP <joasantonio108@gmail.com>
+Changes since v6:
+- Patch 1: reworked from the lock-based scheme to lockless reference
+  counting per review feedback.  Dropped gc->cq_table_lock entirely;
+  lookups now take a reference under RCU (refcount_inc_not_zero) and the
+  CQ is freed with kfree_rcu(), publish/unpublish are lockless.  Reordered
+  mana_ib_destroy_cq() to detach the software callback before destroying
+  the hardware CQ, closing a CQ-id recycle window.  Retitled accordingly
+  ("reference-count CQs looked up from the EQ handler").
+- Patch 4: bound the RX slot index by msg_buf->num_reqs (the __counted_by
+  array bound) rather than the queue depth, and rate-limit the
+  device-triggered RX error messages.
+- Patch 5: the leak-on-teardown-failure branch now deregisters the HWC EQ
+  IRQ and unpublishes the CQ before returning, so no late EQE can reach the
+  leaked buffers.  Corrected the setup_active kerneldoc comment.
+- Patch 6: dropped the terminal "timed out" latch, which could stop
+  teardown commands from ever being posted to a slow device; the core
+  stale-response fix (per-slot lock/refcount/responded flag) and the
+  wait-queue admission change are retained, and the timeout still shortens
+  later waits so teardown is posted.
+- Patch 7: reject an out-of-range CQ id with a rate-limited error and
+  -EPROTO instead of WARN_ON(), since both operands are device-controlled
+  and WARN_ON() could panic a panic_on_warn guest.
+- Patches 2, 3: commit-message wording only; no code change.
 
-Use a real name in your Signed-off-by.
+The v6 posting is at:
+https://lore.kernel.org/netdev/20260811023823.2391255-1-longli@microsoft.com/
 
-> ---
->  net/netfilter/ipvs/ip_vs_ftp.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-> index b315c608f..9e3e005a8 100644
-> --- a/net/netfilter/ipvs/ip_vs_ftp.c
-> +++ b/net/netfilter/ipvs/ip_vs_ftp.c
-> @@ -102,7 +102,7 @@ static int ip_vs_ftp_get_addrport(char *data, char
-> *data_limit,
->   char *s, c;
->   unsigned char p[6];
->   char edelim;
-> - __u16 hport;
-> + __u32 hport;
->   int i = 0;
-> 
->   if (data_limit - data < plen) {
-> @@ -144,7 +144,11 @@ static int ip_vs_ftp_get_addrport(char *data,
-> char *data_limit,
->   return -1;
->   c = *data;
->   if (isdigit(c)) {
-> - p[i] = p[i]*10 + c - '0';
-> + unsigned int val = p[i] * 10 + c - '0';
-> +
-> + if (val > 255)
-> + return -1;
-> + p[i] = val;
->   } else if (c == ',' && i < 5) {
->   i++;
->   p[i] = 0;
-> @@ -222,6 +226,8 @@ static int ip_vs_ftp_get_addrport(char *data, char
-> *data_limit,
->   if (!isdigit(*s))
->   break;
->   hport = hport * 10 + *s - '0';
-> + if (hport > 65535)
-> + return -1;
->   }
->   if (s == data_limit || !hport || *s != edelim)
->   return -1;
-> --
-> 2.39.5 (Apple Git-154)
+Long Li (7):
+  net: mana: reference-count CQs looked up from the EQ handler
+  net: mana: fix HWC RQ/SQ buffer size swap
+  net: mana: free HWC comp_buf after destroying the EQ
+  net: mana: validate hardware-supplied values in the HWC RX path
+  net: mana: fix HWC teardown safety with setup_active flag and destroy
+    ordering
+  net: mana: fix stale HWC response after command timeout
+  net: mana: keep max_num_cqs immutable once cq_table is allocated
+
+ drivers/infiniband/hw/mana/cq.c               |  41 +-
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 111 ++++-
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 402 ++++++++++++++----
+ drivers/net/ethernet/microsoft/mana/mana_en.c |   8 +-
+ include/net/mana/gdma.h                       |  29 +-
+ include/net/mana/hw_channel.h                 |  34 +-
+ 6 files changed, 515 insertions(+), 110 deletions(-)
+
+
+base-commit: f1b3416ceaf7ca4cb5cbd986ee8fe3ffaeda2d48
+-- 
+2.43.0
+
