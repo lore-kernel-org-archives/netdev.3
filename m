@@ -1,139 +1,168 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.151.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDBA48CD75
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8438148C8D2
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.151.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786635643; cv=none; b=VUAuPvyJAW8U+LxYpYxqB/U75hJ71zmNCt14BfRyFqtNoLzQiefOCoc/nvdQVdz4ip7mLyn1wFGgqGB4e+AjdZwREZaGg/G77XYpw7Yp3BvzyyuowRYR5N9VDadc3fmKhtbqDg+5M19aW/os4af0Wso7Iu/aWYIH8FYSKSC7HnY=
+	t=1786636446; cv=none; b=KPkFiH43uDxEz2VlgtiHs138pJX0rjP+ktTUbWIuDhjCUClkSNnWAsDcGfEawSWMm0vBwf+ekHjTPLlcMjuoIwosHsVMGNuowKmgXjcjRQ0HZGHgNoqtD+1MG6SRMgPn/pieyipCAhS65IzrlNB6xWrU78AwTVZPe3GiOmSrAXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786635643; c=relaxed/simple;
-	bh=WtqsLzrgSjg/xVRfW9WfYBYpQ3bP/9ChUav4NHg7yVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g8emNRikOktIeBgHkdpRwz4BY6Soi+2ksJGJiycqON6HDYraE71F056ZqfWcu0SUqP0sJAF+hadRmN+dZEQnooSd3LdCJxJyESwcN12muM/l3LvC9S7tjKnvYOGa5ECaDm2/zRtWiaRrgpFPVlTatceMpIz2b7PxnmJVFyQGamU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dF8Cx924; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1786636446; c=relaxed/simple;
+	bh=7nJuOnvd/jcBTZNo5MFUfnM6mqKZ0NxwKMRCa01A/KE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=fYLRBsTrNKIQaciVgRLTcMilEJD3/87Z17sYl4KrBRvePCxxosDuLlCcBJTujtW0myxQEbnLo1RytLsaTBxZGNm7l9KE/ytqCuSzVrPFJGX3QRKGtZt31cLgTQq8ETmbjgemzNglEJwlqb8B08XHWe5sp2FS0oZbh+aozVmSmwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=RkXDMoM+; arc=none smtp.client-ip=170.10.151.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dF8Cx924"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2caced6038eso15229725ad.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:40:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786635637; x=1787240437; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AcZvN96x3R8L9Ww6tvDjLJoxtHOJUhdmG67qkMsuoE8=;
-        b=dF8Cx924z63s7ot0bcNk24y7I0YPDSgB9NNaJVzHc9+3Yt/JGlCfFcrjl5hDlLMxTt
-         4MaEDpK12ekLLATLF+cwf3ufcrM029EuFcouefRhyELSWlu7wH6mDorsVx0fyKzD1NDS
-         LGD1Rj5ARKXA0ZtgpswP3jq3CN1QHKO38uyVtYfnr0GHaAlPvgJ11BoL71E1NFVq1LuX
-         7Qsi3yfCb3BPFwq+ZvxYOfzLVs6xDhks+uZtJKfEVVGuzn+W/57XaORu3wOspuM2F9cn
-         AMKxPhm7UYvvFASH+Wh2uWcq2oT74ZkNKGOAsz22bnmreYWkD7FnSH1W20QMhFCBLUGJ
-         x5bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786635637; x=1787240437;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AcZvN96x3R8L9Ww6tvDjLJoxtHOJUhdmG67qkMsuoE8=;
-        b=TVHpYKwg1sOQ7IOsldiKJhZR3wg9kWEQ1dfXYXOYHdycBjB4Z5dNx7Ur+qLdvtP9ek
-         qsT/Hmo2kQ97Vh5fYmqpN7/5S1EwNgLVMf8smtbqwIedLhRVh0sZLgu7/MnfmQyZQarV
-         hBsaoYiwStpRfPd6nZ4vD7Z1m60iNWCJfR13LmKGuTba+OcV7eD2HGqwDWCXh6y9eiIF
-         hl8fvTHzyZ9O2NiLzl6lGcSay7QvaEqAL94VgKbWY0rD9+ROErcF1xD8fbuCs83w8Lap
-         Dn50hTRmnKq4ZdstD7rLeelwDE6g/+st8Qov04b0gmVWEBahDeNVB4jffdrGa784ya6n
-         mifg==
-X-Forwarded-Encrypted: i=1; AHgh+RoCY4jzS40JXOlbqoSeBrrkR7MVwM9iyOjnlMurkJf/bqJywLkr4/dD1N90CpquX1TWR6rb52A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB4VHTVdODhp1CyN82EZCyUKEUOXTUk4JCi2+hZiRx5IwjemAE
-	EtYfSZAtzsEoSA/5V/NObyYYu3AU7Ir3hsSBT/FQ210s3MQ0N/ZcorhChZ2AYczxGlw3r5+6z+W
-	LMyAlqQ==
-X-Gm-Gg: AR+sD11Ex67+RsTRf0IrXRKKufVxGO0ALwCx9rmsvS5XdO37p+BKiwoDvRzq3lzIpfT
-	uyOl9Sr57FMQNGl1Rky0R95WGkRQse3qFj9OdOCLn9aSKcAnZDpkhM+Dfol6/wPcPJlFVZNA3zY
-	1GPACfHudQWW1D+Fsb7MNME6AdXGxk4jDMM3bnIIJjbl8meSBHps6HOfFD/dzSUuS0b3O/iz2oR
-	T4oSUaKloOz0FzOCf1VYsq7v2/TK81M1n/jaaWL8O5bZz7iH3vAkqJLc2PcXEx11dJC5ZAdIc+k
-	ZaU3/jxyMsKbgMp8R14v/ORS2W2reGJX7v42ClSoAB8ZdO5zj4bpGbkxlrR1HMmOVNjhhxqzvbf
-	uMRbv4BMR2NnqAf06RW2AxzJuzHN1WOIdF8ThrAw4oKJ5SxBD8RUxi3jV7QABfXpdcF3hqb8GJ1
-	opZKNpGyq9K7haRYhSD3hG+SPkcEudIBYEAP8APfmfbExWDhiCP1cQEGRdiPiX45kzxJmcyqkyF
-	CUDj1OQovsxEtu7nnc/MLQrnDpmobaSR5ruLdaZ
-X-Received: by 2002:a17:902:f64e:b0:2cf:70d2:da7c with SMTP id d9443c01a7336-2d37f77fdfemr84524235ad.12.1786635636542;
-        Thu, 13 Aug 2026 08:40:36 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d37c2000bbsm12399845ad.7.2026.08.13.08.40.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 08:40:35 -0700 (PDT)
-Date: Thu, 13 Aug 2026 15:40:32 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	patches@lists.linux.dev
-Subject: Re: [PATCH v4 08/10] vfio: selftests: Add mlx5 driver - HW init and
- command interface
-Message-ID: <an3lcKmhXbRnDpRL@google.com>
-References: <0-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
- <8-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com>
- <anzoiALsjiWrsZtl@google.com>
- <20260812233207.GB730363@nvidia.com>
+	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="RkXDMoM+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
+	s=mimecast20250127; t=1786636435;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7nJuOnvd/jcBTZNo5MFUfnM6mqKZ0NxwKMRCa01A/KE=;
+	b=RkXDMoM+6eASflgEgTwn71DHeFyWcg32zI5biAIYNRfXW3AmGmzvu/P86/q8uVkjgGL0u/
+	Qxobe1cbQXojuX04Dag7kSBY81jOrBqI96k8LwKvCCeE2Ohr4Q785kfaxupaTHKx5bE46G
+	eEWyj2sJeWLkSsY1rvunFPrJo4ytJTEn0b25GATCxfymJfY519wPDNITsDuFBSSztqWOx5
+	qGyWUZ5nnQKaOF+cxkibP9ZYKp14rmHSZJVCmbiahL8x5O3LtNbvudmub7jcc3iLoIh7Pz
+	NcLgZ5cyf5xxryzzluA//MqMvPgHJ61a+o/obIbreJvJF3wygH+Yw7SACoVTdQ==
+Received: from MW6PR02CU001.outbound.protection.outlook.com
+ (mail-westus2azon11012063.outbound.protection.outlook.com [52.101.48.63])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id usb-mta-55-U4qr6RExMZ2fzPC-kk1SCg-1; Thu,
+ 13 Aug 2026 08:53:53 -0700
+X-MC-Unique: U4qr6RExMZ2fzPC-kk1SCg-1
+X-Mimecast-MFC-AGG-ID: U4qr6RExMZ2fzPC-kk1SCg_1786636432
+Received: from DM5PR02MB3369.namprd02.prod.outlook.com (2603:10b6:4:68::27) by
+ PH0PR02MB7544.namprd02.prod.outlook.com (2603:10b6:510:4d::24) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.15; Thu, 13 Aug 2026 15:53:50 +0000
+Received: from DM5PR02MB3369.namprd02.prod.outlook.com
+ ([fe80::a77f:334f:452d:2b3e]) by DM5PR02MB3369.namprd02.prod.outlook.com
+ ([fe80::a77f:334f:452d:2b3e%6]) with mapi id 15.21.0315.014; Thu, 13 Aug 2026
+ 15:53:49 +0000
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>, Parthiban
+ Veerasooran <parthiban.veerasooran@microchip.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Piergiorgio Beruto <Pier.Beruto@onsemi.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Andrew Lunn
+	<andrew@lunn.ch>
+Subject: RE: [PATCH net v6 1/4] net: ethernet: oa_tc6: Protect skb pointer
+ used by two different kernel instances
+Thread-Topic: [PATCH net v6 1/4] net: ethernet: oa_tc6: Protect skb pointer
+ used by two different kernel instances
+Thread-Index: AQHdKs/qH9kSA0y0qky/TWZL6h0yBLacGY3Q
+Date: Thu, 13 Aug 2026 15:53:49 +0000
+Message-ID: <DM5PR02MB3369B6A836C24C3DCE913F5683DB2@DM5PR02MB3369.namprd02.prod.outlook.com>
+References: <20260812-fix-race-condition-and-crash-v6-0-6cf90f4a271a@onsemi.com>
+ <20260812-fix-race-condition-and-crash-v6-1-6cf90f4a271a@onsemi.com>
+In-Reply-To: <20260812-fix-race-condition-and-crash-v6-1-6cf90f4a271a@onsemi.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM5PR02MB3369:EE_|PH0PR02MB7544:EE_
+x-ms-office365-filtering-correlation-id: bbc0a7d9-daea-4aab-c91e-08def9531120
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|38070700021|6133799003|10067099003|4143699003|56012099006|11063799006|5023799004|18002099003|22082099003
+x-microsoft-antispam-message-info: o/CFKot5pwhWrPJdKZQmXPKYqGvDWXih9o6qs8sntmrB4VEGAZk0JSs3Nb0ETkWaTCP0uDPuaLZkbNpCmm1964kibWPs6E01uTQ37b/HcOW8czVK6AOHeTwuDHwWYwquD19hrcNDNx3MMec/Bb0I0Uhn348lW8TBx04UY2t5OcShyhuC0qJbccg/n7V+bmTKqP8X9Q1x79/DlP7UaIY1UmWpnlsAmuI7m69/TzFmvrwBk/N9anev4ZecVfh+Apn/5kGSWbubA4DapZLhe+J7ZO6NSLuCTtiVDdxIANBtX7opFKryZEn/sXTtdcxDoZKPcfhXwb16WBMo1gVGOjCtyCFTQy7KBPxCQle+xaSeNfbVDJXO6EQZ4A/a9c5f9sD6c1syeg/qA2wBCYfaEEpCiOtIV4E5taasq20xypUgzA3EpMrOBKHjnomSAwitZHRdZ12n5ukEIhDNGWT9B1LvmvzNbrpnuTnHuCA6Ux51LqT9fNoOCTWqmJCFZqoyWjucHQLQ9hXtKWaD5b2bHABFuN1U8xUJA+87XQM8b94t9uxkNIigRBAMP/YjYWWilUGpZvlRzxmbOgKvnnJaLet92WQ2vswcqtQ2Jlj4dvnoKN4KhmwQXqq5M209G5jfnbgs7v9LtBzA1y/9nPoKWYkNqmozCZI+SYM/7n2zkD/tJOJZ4dLOFvvmyjHj8kOgNHJWG87DzArNheUkhdBDUpGZwGmHcmYApHkrHNMLrrCSjqQ=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR02MB3369.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(38070700021)(6133799003)(10067099003)(4143699003)(56012099006)(11063799006)(5023799004)(18002099003)(22082099003);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?V2hwcStISGozZkFPci9uUmk3dENxMUhaSHlZRkUwK2NLYzMzdGJVc0RjQ0Nm?=
+ =?utf-8?B?Nmk2UU1TcGFiTkRjbGpFWFVoRFN2VFNWSFM2NVhKS3lIRVoxeWhkYmMvSy9u?=
+ =?utf-8?B?a2xBQnRUVitqbUlmb05LeWtYb3pEOWxTQXBLSWNmYUU3Ri9Jd1BkUFU3eVo4?=
+ =?utf-8?B?WlFRbHhIYkZOcCsyaER1c0N1WlJmZTFqa2wzQWVmZ1lzR0lFQ0tNbzBlOGtT?=
+ =?utf-8?B?ZGZkQnV0ZitZQ1FJekhieEk1azBHMFBOVEhhQ1JaMlB5UVJOTk5xcmpBNE8z?=
+ =?utf-8?B?cEY1aHJHZHNZMHdISGFZSE50bFVxZlFuYVhOcHcxOGVBNnJNMW5nWGptbkJt?=
+ =?utf-8?B?Zm9SajNwdVBqMWhKUGRrbHovV2xOa2l6SUZ0clEraHQraU80SVR0d3pLSFVs?=
+ =?utf-8?B?ZHNVdFJxLzVRajFaaTVmUlhKaVdWMmVMa25ETDBncnA4OFZUczNrKzBPZWRu?=
+ =?utf-8?B?SXNXTjNIa0xuTkEzUFlwaklkWjh3LzJSY0w2VWxqYjVuYUsyNTk0ME0wSSto?=
+ =?utf-8?B?cWc0TTA2SjBxMCtPdVdNcE92a2x0YUUwZ0dMNlZLUm8rbndXY3NQU0g1U0gy?=
+ =?utf-8?B?aXNZMFFvbnJib0RLRHZsYXJ4WnpocUFyVXJIK3NJSHFNVEU4UnRKYW5NL1FQ?=
+ =?utf-8?B?UmZnWFJLMmc3d1NhV2VJYWFVN0RyaVA4TUF4R3BxbWhQZEZXTkpGTFlSUW9S?=
+ =?utf-8?B?SnZTVUQyVThqK2wwZ3dFRGEvYlg5eFl6WXRNaEU3dEcwSjcxd0pERGtKUWQw?=
+ =?utf-8?B?SmdhL0RIQ3N6NlpXc3RUSHgrTEtzNUFLL1BsQUtZOUgwdUkwZGpvcy9nVkMv?=
+ =?utf-8?B?YUZpZXNTWG1pczAyZENWeXgwZjE5YW4zZ0IxNVIyUXZuS0llMUVXbGpNVDlq?=
+ =?utf-8?B?OXI1S0ZISUVIVXVRc2tXVDV5UFVqcmpldFhiZkR6aVBWNW5LSzFOd2FlYkN6?=
+ =?utf-8?B?bWdtQk5wKzZReGp5SHVVblJhQ29JZ3pmL1ZGbEpBRUlnS21CMFE2a1FuczlO?=
+ =?utf-8?B?NHovT1hQZGlyM3JCWmp6Q0JGcEt3MTRYRThBczlsRllvMGJxLytScTFPZGZ1?=
+ =?utf-8?B?WWoyRGlxanhtRENKaGlocWFMVUJNR3ByaXpSQ0syMXEwU09sNWFRZ1haL29w?=
+ =?utf-8?B?amxmNW9MS0pJZ21tTWxnbTdxYUxqenpwcStpYnBlS3JNemp4OEZZa1lVOGQ5?=
+ =?utf-8?B?TnZ4YndoRTZLUXlmL0ZON1dOUmlHS0syMyt4aTczWWR3N2hOakV3Y2tYYURB?=
+ =?utf-8?B?L2xZUDdUK3piS1ZEd2d5UjlQY3JmMk93OHZBREptRUxjZ2VSUkt6VGxJNTE5?=
+ =?utf-8?B?M2N5YVR4NTVQVU42L0huY09VZnd6dmJSNmoxSzFKajcyaElDZEJkMkxsei9u?=
+ =?utf-8?B?LysxbFNyeFg0ejMxUm93cEFXOVpPanJzZ3V3ZERFc3d1ZlBaMitKWmxZK1dH?=
+ =?utf-8?B?Y3FNUXRyendPeTFFdEUzM0hFWWh4UXdaQ3NkZS9EN1ZrZ3NhTDlIdWwwR0Yv?=
+ =?utf-8?B?dDl1dGVuaXR3bzExWVBsVmM5V1VCU2hvdFRkSXNxRmUrNVptNzNQOWNGV2ZS?=
+ =?utf-8?B?b0JOd2J0V09pdk1weWdWL2FEdFNac29kZEIzOGpjSUpucjl6L0h2Nm5TdmZQ?=
+ =?utf-8?B?aTQ0ZWVEQkxHSGhVOUl4TFkxdTJRNmwwUCtJeDZmck9qVldnaGp6ZC9QTzlW?=
+ =?utf-8?B?S28rZTdhY21rOFNvMDZlWHYrZVNSODVlbG1md0RMaTZYYUY5ajluWjlaNkJz?=
+ =?utf-8?B?YzhSNmF5dmpVdk5MclN4UXJwV2gwZm1Zb0ppWno5Rk5EYjd3RjdEY3JpVGJG?=
+ =?utf-8?B?QUVyaU9FV1QrZ3hVUmpURDcyR1ZQb0F6YjNsdHZJMzdRSjZTZ2dNTy9yZ050?=
+ =?utf-8?B?Qis4WHBlNDRQWXYvaGpmNmgxRnZieldwMUpadnEvL0h0aXhqQms1SmRjYXUy?=
+ =?utf-8?B?aTlGYW1KUTl2QURxSzJ2SFB4N2l1SnBFMzNZTzVQUTJFTzIyOHdUNlVBRnFP?=
+ =?utf-8?B?NTNBOVN0N1RScUxTeDd1QUoxTWFuWWRDdHVaUkNHayt0TThzdVBQY3V1Y09h?=
+ =?utf-8?B?WGd0YUFLMW9mNXdFellDK1FGNDN2Sk9XRm1tdUJhMHoxb01la1RrV0JIdjFC?=
+ =?utf-8?B?OXVGVi9VbWlraHc3MWlkcFVwS2hNMW1zdkQzaUV6ZGpUSE5CUUoyQXYzU280?=
+ =?utf-8?B?aHZoK0lJM1NmR29nYXRxdXpQOFZUd1c3K1ZjRmNmbWs4UThIemF6d2hwWEpz?=
+ =?utf-8?B?NnNTbHJaV3NpNldSbDI1UEM5d2paeURqZDJGQURIZmNVNllNb3p5aGVMQTZL?=
+ =?utf-8?B?MmlETy9oMEJoSTZTeW1mc0NzSmsySlRGcWVWRFd2QTgzOW1VNUtCRFF2NlNq?=
+ =?utf-8?Q?+n+/4PBlOVjTMPmo=3D?=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260812233207.GB730363@nvidia.com>
+X-Exchange-RoutingPolicyChecked: ht0kUHgIjIGrJdkMd3PMAunXrGqCi5n+zsqV/BmWFCYdNoMbk7zqDgOrvvXuouPfsRdBkVM3V2T+gbHDzcsWRbMqpcHUh0zzoV9BGiztdbjxZuOWtZWxdzaVhEfV5L4FckrAHaj3Ys45xfuMaOWjiYnCuHpFmUU8jdzieJRWqe+hjzmP0FAhefzaPYQIComQfZtmeyOvSp2LD1+KZADSp0iILJjKzJtJXGc+6hh6SBiAaPj4JY2yVpgFETXnk128GSJX8l455dlXLF0hioIVfljpmh9I532qhkyd43Lvzy/eW3zVFhKM62Bk8EhE7L3+wDMAAt8ZeZhND/kmvV8xow==
+X-OriginatorOrg: onsemi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR02MB3369.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbc0a7d9-daea-4aab-c91e-08def9531120
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Aug 2026 15:53:49.7964
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KomISg3hpwqTXCM0lHUTXFHf8Klo98XhAxPaEWFUVEQShZCqoenujIzNPS4EbD5maakzvhMSVglAHR1vbaNtIWRk/yPemffwE17YVw4GVbU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB7544
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: XD-c2mgQzCVZw2hxRPFJHW5LhJK3hUxPejk88t7BJD4_1786636432
+X-Mimecast-Originator: onsemi.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On 2026-08-12 08:32 PM, Jason Gunthorpe wrote:
-> On Wed, Aug 12, 2026 at 09:41:28PM +0000, David Matlack wrote:
-> > On 2026-08-12 11:59 AM, Jason Gunthorpe wrote:
-> > > @@ -0,0 +1,108 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
-> > > +/*
-> > > + * mlx5 VFIO selftest driver - HW definitions
-> > > + *
-> > > + * Typed wrappers, constants, and helpers for programming mlx5 hardware
-> > > + * via the VFIO selftest framework.  Most HW constants and all MLX5_SET/GET
-> > > + * macros come from the kernel headers (mlx5_ifc.h, mlx5_ifc_macros.h).
-> > > + */
-> > > +#ifndef SELFTESTS_VFIO_MLX5_HW_H
-> > > +#define SELFTESTS_VFIO_MLX5_HW_H
-> > > +
-> > > +#include <linux/io.h>
-> > > +#include <linux/build_bug.h>
-> > > +#include <vdso/bits.h>
-> > > +
-> > > +#include "mlx5_ifc.h"
-> > > +#include "mlx5_ifc_macros.h"
-> > 
-> > I'm getting a compiler warning here when building with clang which is
-> > getting upgraded to error from -Werror.
-> 
-> I don't get that. My builds have -Wno-gnu-variable-sized-type-not-at-end
-> which comes from here:
-> 
-> tools/testing/selftests/lib.mk:
-> 
-> # gcc defaults to silence (off) for the following warnings, but clang defaults
-> # to the opposite. The warnings are not useful for the kernel itself, which is
-> # why they have remained disabled in gcc for the main kernel build. And it is
-> # only due to including kernel data structures in the selftests, that we get the
-> # warnings from clang. Therefore, disable the warnings for clang builds.
-> CFLAGS += -Wno-address-of-packed-member
-> CFLAGS += -Wno-gnu-variable-sized-type-not-at-end
-> 
-> Why doesn't yours? Are you building it correctly?
+UGFvbG8sIEFuZHJldyAob3IgYW55b25lIHdobyBrbm93cykNCg0KV2hhdCB0byBkbyBmb3IgdGhl
+IGZvbGxvd2luZyBlcnJvciBmb3IgbXkgc3VibWlzc2lvbiB0byB0aGUgbmV0IHJlcG8uICBJIHNl
+ZSB0aGUgZm9sbG93aW5nIGVycm9yIGluIHBhdGNod29yay4NCiAgICAgIkNvbmZsaWN0cyB3aXRo
+IHBlbmRpbmcvbmV0IHBhdGNoZXMgKG5ldC1uZXh0LTIwMjYtMDgtMTMtLTA2LTAwKTogZXJyb3I6
+IHBhdGNoIGZhaWxlZDogZHJpdmVycy9uZXQvZXRoZXJuZXQvb2FfdGM2LmM6NjkzIGVycm9yOiBk
+cml2ZXJzL25ldC9ldGhlcm5ldC9vYV90YzYuYzogcGF0Y2ggZG9lcyBub3QgYXBwbHkNCg0KQ29u
+ZmxpY3QgaXMgZHVlIHRvIHRoZSBjaGFuZ2VzIGluIHRoZSBzYW1lIGZpbGUsIHByb2JhYmx5IG92
+ZXJsYXBwaW5nLCBvbiBib3RoIHJlcG9zLiBIb3cgZG8gd2UgaGFuZGxlIHN1Y2ggc2NlbmFyaW9z
+PyBTaG91bGQgSSB3YWl0IGZvciBuZXQtbmV4dCBjaGFuZ2VzIHRvIGdldCBtZXJnZWQgdG8gbmV0
+Pw0KDQpGWUk6DQpodHRwczovL3BhdGNod29yay5rZXJuZWwub3JnL3Byb2plY3QvbmV0ZGV2YnBm
+L3BhdGNoLzIwMjYwODEyLWZpeC1yYWNlLWNvbmRpdGlvbi1hbmQtY3Jhc2gtdjYtMS02Y2Y5MGY0
+YTI3MWFAb25zZW1pLmNvbS8NCg0KU2luY2VyZWx5DQpTZWx2YQ0KDQo+IC0tLS0tT3JpZ2luYWwg
+TWVzc2FnZS0tLS0tDQo+IEZyb206IFNlbHZhbWFuaSBSYWphZ29wYWwgdmlhIEI0IFJlbGF5DQo+
+IDxkZXZudWxsK1NlbHZhbWFuaS5SYWphZ29wYWwub25zZW1pLmNvbUBrZXJuZWwub3JnPg0KPiBT
+dWJqZWN0OiBbUEFUQ0ggbmV0IHY2IDEvNF0gbmV0OiBldGhlcm5ldDogb2FfdGM2OiBQcm90ZWN0
+IHNrYiBwb2ludGVyIHVzZWQgYnkgdHdvDQo+IGRpZmZlcmVudCBrZXJuZWwgaW5zdGFuY2VzDQo+
+IA0KPiANCj4gVGhpcyBNZXNzYWdlIElzIEZyb20gYW4gRXh0ZXJuYWwgU2VuZGVyDQo+IFRoaXMg
+bWVzc2FnZSBjYW1lIGZyb20gb3V0c2lkZSB5b3VyIG9yZ2FuaXphdGlvbi4NCj4gDQo+IEZyb206
+IFNlbHZhbWFuaSBSYWphZ29wYWwgPFNlbHZhbWFuaS5SYWphZ29wYWxAb25zZW1pLmNvbT4NCj4g
+DQo+IFRocmVhZGVkIElSUSB1c2VzIHdhaXRpbmdfdHhfc2tiLiBUcmFuc21pdCBwYXRoIGFsc28g
+dXNlcyB0aGlzIHBvaW50ZXINCj4gd2l0aG91dCBhbnkgbXV0dWFsIGV4Y2x1c2lvbiBwcm90ZWN0
+aW9uLiBBcyBhIHJlc3VsdCwgaXQgbWlnaHQgbGVhayBza2INCj4gYnVmZmVyLCBwYXJ0aWN1bGFy
+bHkgaWYgdGhyZWFkZWQgSVJRIHNldHMgZGlzYWJsZV90cmFmZmljIHRydWUgYWZ0ZXINCj4gc3Rh
+cnRfeG1pdCBhbHJlYWR5IGNoZWNrZWQgYW5kIGZvdW5kIHRoYXQgZGlzYWJsZV90cmFmZmljIGJl
+aW5nIGZhbHNlLA0KPiBpZiB0aGV5IGhhcHBlbiB0byBydW4gb24gZGlmZmVyZW50IGNvcmVzLg0K
+PiANCg0K
 
-Ah I see the problem. I was building with this command:
-
-  make CC=clang -C tools/testing/selftests/vfio
-
-But the correct way to build selftests with clang is to use:
-
-  make LLVM=1 -C tools/testing/selftests/vfio
-
-LLVM=1 triggers the conditional logic to add
--Wno-gnu-variable-sized-type-not-at-end to CFLAGS and the build works.
