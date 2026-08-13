@@ -1,129 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1000746985A
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786620825; cv=none; b=Fvap+0hIwVfds/3776aloNjiJqJVxAbbf726umrFkNzQMY1vdDpSHu1oRiCaQL00Zqc7t8IzWEbVTww2Cr3xAHaqMOKpGpNvINMA/StQHVlQB+LipjPHXWPgCZYSUreI8h31Exmzw/dKCEHLEIT9fHb8DjD9vjMOxsy7baM/x3E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786620825; c=relaxed/simple;
-	bh=mIMg3GpGnjxCOF+x0X883SsbbzLGZeniRtVjG86VZ6k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F16TXPdiJynnkXQI0I+eGxRcn80AL/DQEW3mZeFkdwt58/8VgZmzj0HKEqWVjEmCydecEvUp6gssTLeQ5mx03NaD0Kq+mcI/tVvDNmYrzIsrBBzgLpHGJg43aRJGwRefSfmif4s1rlRo1f1+W+UwelxPhdO5Z9MLlpMBVWEAR08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HsAU3APF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=n2dirSnU; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF332366DA5
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786620902; cv=pass; b=bEGmrQhqs4Sx6ui27FfwXcZ9ZQ3+mxNCUW6BrOo1k+sRfobOH5CO92Rlfg3wJe8pGQPiFeJSbLf5OkZHByol2SbJfjewDWEHq0UliHj74reBuzLcd4Y9GEtCGHYS/LeHAAZwxgnZHDyJ/eB7AiUX0A2+Sgg5HTWTIj3LsiramYg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786620902; c=relaxed/simple;
+	bh=0dgpR5vjaXOxEpQo+Fn+JS7GUwziksGWhH1pTzHsS5U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h9XIfoHOBkAUnBEdU369zE6Q1n/4a2zHRDyd88YF/o0TAhQp+/D4dqjFm/0TZpOu9pWVZ8MPFH7yNGOGQp8JErtYqBbBDXOp0tTXZXLGIreh8i+nHOUb6yRFFYYHtLc5nang2Fjm6OZT46xTuisWK79VPwSwDHq3BGet7xoQuM8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IaIRuhnX; arc=pass smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HsAU3APF";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="n2dirSnU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786620823;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J2FrrsRU5V1HJtH9l/0Gbv9BbbcK3/MMcp3Hv+XyxFk=;
-	b=HsAU3APFdvUGLYba805rCEQ+UhMdhz5haYEs6vL9nvxtkGHhnrynp5f4GIIT+wQMvH1jQe
-	YZ0xXHQw6BVDhphnMiqKZ/dUbCXDoqfq8vOVRv57OKIhu6n7o9V03EuM1Y9YXZhBw6Kkhu
-	H7mSKczrNHo0EmGdpXkED1nR9z95o20=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-z9SP-4T0M5eRLmSHboev9w-1; Thu, 13 Aug 2026 07:33:38 -0400
-X-MC-Unique: z9SP-4T0M5eRLmSHboev9w-1
-X-Mimecast-MFC-AGG-ID: z9SP-4T0M5eRLmSHboev9w_1786620818
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f6e658363so438060f8f.3
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 04:33:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IaIRuhnX"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cacf197759so36541585ad.2
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 04:35:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786620900; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aVWIkxUZs/DrvuisfJWkFSiatfNmWF/EQrpjLc9EHDeAw1PSEWXa0RRqhJF157hdAD
+         G4eLWxLkvnvdXGSkr0Nid/yeotq9LKMy2j4wjyhrKTiMzVAwK19RMAxpYvs//v5gPONv
+         zckAaUzpuPmZI3BHIw/EzQQwjJlb/pd7oK4pHHe3Bl2njDJR24gVE5uu//povLneJ4nR
+         VW74y8AOFGSNn1fsIL2RhEZbV591XwTy6++0CVzICffyisvidqzK0eeywdy5QJ7pfSZ4
+         z6rveaTMKCBTuQ5x7nBGZJG7neBWnWhi7hy2J8V/vQ2f9k5J41jKvAJL2+BVtwvKmps9
+         mrwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Oq+U9LuakWCGNWv2uf9pOHjLrsNGk0YSFSuRL9miXUU=;
+        fh=R4b2Pb5GTIQfoFRUNd2g1yy6NbpWT79dkuNpUJm89aE=;
+        b=EhyuXHmuAvd4MEFIVdBE3W8Xxcl7PbH9m2Rpc09dU22LCU6ebeTTgNIs+vMjOSZ66I
+         3ujf0BURbViZe+uh5khmuXbgDWUiUjmFpChzFYay/gtPdo1YTPsFDZN4a6vA8jVsuxQB
+         MTLe+js5JTWzDcu/Y6oFLsvfpZt8ALxud7OZpbvRdVZCJQfMBAEQ5DjrXn1PlzlFmX2n
+         Yfeiepa2FhaVHTnkTpgDkE7zAroX0eFwWwRgPuDuLJjk8JTnHk9xE8NcuzgdColkMEOX
+         82ycsk8OWMYdmVjoivafyebI5qCNMWBZ3nYFG4Mz2KkuKeEwl4qGyCS6IhnWL8gtUfA+
+         CYbQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786620818; x=1787225618; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J2FrrsRU5V1HJtH9l/0Gbv9BbbcK3/MMcp3Hv+XyxFk=;
-        b=n2dirSnUQoZRAqVWgErMaBqjxhlekJ4yLzIlPX5fClwg63uwZvGRebHGAkwNnAbRyq
-         nwms+xp3O5rkBQwira3moxEHO49qe+rO2rZHKwkHhI4OO549YAGUKeaspJctKKXFAwmI
-         PfHirYm3QAXVTTSy8VN+i8qbUYVFh0ApiZsMtFUwmGpJsvN9WgcWTBhvL6C8zOG08W3X
-         xjFVgduzlXj84aFCIes/XcYZaHCb1GoorBF3bv1ijDjhzG7Z59AmgOETVy7ZRfy0pj3N
-         xfx0fQ3fKL4uGoJPVXYc4mm+5ji8eqVhdiYjv2thqmVFJnadNxlQbJpDj4A6MMYAgIvs
-         aO6g==
+        d=gmail.com; s=20251104; t=1786620900; x=1787225700; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Oq+U9LuakWCGNWv2uf9pOHjLrsNGk0YSFSuRL9miXUU=;
+        b=IaIRuhnXxzVG1aSJhGe37SLuJAEuujaABv6TB/xExT6zIvfKN2y+N8hz7XsBKZ+57k
+         tHRnwzAa2BSZEGoucynWENbeeTWVacY87xjp/CAyAWF5wPezN+ALXLvqqZtYmdWFZELF
+         90mUPv6J2zHPuCuEkVjfJJ42SELmJ8xINMDX0Ry35m+fb9kx11tvAoTvucB00icTFeIb
+         CoPLugzJZh94lV8oIuVaILy/Dq8J5DgEKrk7qM3yhiJ55Zs5KmsFTZnPofbBDIlDOYEH
+         S9+WmuDjh52oI2NyRqCDhBLAZEduIZ0MUATZg7gdPiNnIKvgUEpgAaEon+byIaCdl0Qj
+         5daw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786620818; x=1787225618;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=J2FrrsRU5V1HJtH9l/0Gbv9BbbcK3/MMcp3Hv+XyxFk=;
-        b=MJrOUB5oWCJ2l0L5NC/e4bY7xeUczqsaO8+aVd31MAyX2PiUrCzqM/Bkgr0Yv2zsjS
-         1MHuKknuBvZtLENbQ1P5MMYVnWIyX/VXjgWbfmd0cY0My0O8/wJESl8Xk4gPWgSfrJdE
-         U3PmvumA6TQJBA78Tg6kGdx94CVr0qmT87/H8SAcII9EYrekiJ3hTESDu/loK46/VpQF
-         TSovwMeWgWa8Z0xKYrZItX2DXF0dQDmPsnvK7v8V7N9t+CAud8rb55cYnJVMrY3Pczhn
-         LQX3TYGYLcPE069PC5faCzM/VpWSTpYEn1fRx99aNSpjklCAWWAb3z0bpd0aylagIMlV
-         8X4g==
-X-Forwarded-Encrypted: i=1; AHgh+RoJTTGP98w65kzK6cKD7m3EucOkngTSD5bqssUIyB+KgppJhuAjK9jM2XlvSkc6MCwoSsGJGUc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGh/eAcm3LQa5wDUz3W6tsmnQZjHEjRloUTvZ9PjVim7jVV4ip
-	jWTf9oyhNbWVedMMG7GEh3vzPSO99slMHF+EDwE3dExWXpcyL6TbCjmiFHfNWW662gERprJhFF7
-	ycjOSLYBwFPWLaXzz4gvrxOttuLJ/txHft/8bV/ejCf9YsW8oCPzgle/e+w==
-X-Gm-Gg: AR+sD112fLhA+n4SNJHP8jSFs1Rgk+PiUT0TITeth9vw8jvIfhXKimOXl2EuvkcBzz1
-	ziEMs1PIYV8Cylb9Irf64jzjK7AUjzJ3PxvGZ3LMbMd5upBbvs3FjLzYzMTZ84fsMBuyM4YinSf
-	h3X+/jSwKYyDDZeorAti9COOrcsYEOHSVMGbEfm71YCJO+8DpWnJIYJL80wSWGabqfj/iL9B1ck
-	IE4MN0GBazicGMDQiFwXnWjjOUGecQtm7Swqn9bx0NW/aENEa+S77Qz77DBjbPkyt34lfQvKXb+
-	4gPaHuGmX56M6kJDuNxQ3CLwHH7COIcxmyq1SQEJVtyOf3bGAo+iiRqD/8KYuXEM9NZ32KzDNuj
-	93B0HwH0IPpCFimxTjjO9aji2gk1SL724Aum/M4k8f7fd2/W8lm+F11OoK7l88arrUdy3yeBPrc
-	s=
-X-Received: by 2002:a05:6000:29c3:b0:481:5048:1b78 with SMTP id ffacd0b85a97d-48159ca613bmr5523978f8f.5.1786620817764;
-        Thu, 13 Aug 2026 04:33:37 -0700 (PDT)
-X-Received: by 2002:a05:6000:29c3:b0:481:5048:1b78 with SMTP id ffacd0b85a97d-48159ca613bmr5523905f8f.5.1786620817287;
-        Thu, 13 Aug 2026 04:33:37 -0700 (PDT)
-Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5af441sm6497140f8f.22.2026.08.13.04.33.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Aug 2026 04:33:36 -0700 (PDT)
-Message-ID: <4659a101-904b-43a7-acc0-012020887088@redhat.com>
-Date: Thu, 13 Aug 2026 13:33:34 +0200
+        d=1e100.net; s=20251104; t=1786620900; x=1787225700;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Oq+U9LuakWCGNWv2uf9pOHjLrsNGk0YSFSuRL9miXUU=;
+        b=EnS+/Ry5vDKC8fPVbGVH8+X+43Fq7KzYLrs6k58qGnJfRVRcXZv4T6FcbOzlHo3VlZ
+         1UezJqnBBlKawhusV2e6Ir/j6eJXFluGyqxY6lWl1tiwnHbZEM95g6go2SJNqhprmuCJ
+         +GjhB0pWRsubuhFLNJgB++UHtIXM2PQfLjsBjwUcuwg9rzfxvXOhsUb2D7gmEwVWUZYs
+         QSb52YdZOW4yP3v7GRrJ8e7TCIUDYjCbI2cQ+24VdtADx5v2KeLet4xnFaBOr6cIvrlu
+         2tpnzcnMFsmh9oWLf6P4oOSj3NILg8FXuKeosyW1b1u6wiX1FmO9FthHDcHbGdxo6Kq5
+         EtHA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr8GeVq6W/Vj2jD32IqSS6YUCSzAI9I8zpxMcKgYkm5zrnGla76HNyx9yZaJorfVwhpb9eOLH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuQUAeDTHFt3yFMyBJKRSDUkeCNAGysw5tGl+gkKh9kTXWnDmf
+	KwiQHAbYkAj1Ifqqw2wFGl0YjU1il5sFxQas6nc1YQ4paFgs0qxiRV61Vs1DffpcCXBxjHyyygL
+	gLf/w7o8PPKz9JUY8FInplM9vQr2elIw=
+X-Gm-Gg: AR+sD121YH4P4IbKaxluKnVdd09C+hlwjF0C1fyKMnAXZleNgqzzs4x3EOT6cHPzHQm
+	CYmNx85HBhfbs6vn7AOp69KacHHo36CoyGminG+vlRjeva7f6yxZV8URGlVVIQx1jYrvqlg9JJn
+	5Wf24OuF3FIIi3hmnv82WTPv+bvRafYWZ38uWttyxDrzXOB7aocExe0HTf93yZwHwIYEK/a7VSo
+	9HopbfZE1lW/iHLVxL/v5Yg14rm7YXKD4+FucSI3CkcUnMYB4dU6fkvKiex8pa6LFQiAUB4srfY
+	QKVpN5TWzIB9oDTtiWOhV59zDblQvexVg5di+rsOPY7tny2EKpn/kdBK
+X-Received: by 2002:a17:902:e80f:b0:2c9:ceb9:865b with SMTP id
+ d9443c01a7336-2d37ebccf8amr51028315ad.21.1786620900073; Thu, 13 Aug 2026
+ 04:35:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net/mlx5: rsc_dump and hv_vhca return NULL on
- create error
-To: Simon Horman <horms@kernel.org>, Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Eran Ben Elisha <eranbe@nvidia.com>, Feng Liu <feliu@nvidia.com>,
- Gal Pressman <gal@nvidia.com>, Kees Cook <kees@kernel.org>,
- Leon Romanovsky <leon@kernel.org>, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
- Michael Guralnik <michaelgur@nvidia.com>, Saeed Mahameed
- <saeedm@nvidia.com>, Shay Drori <shayd@nvidia.com>
-References: <20260811061637.3195320-1-tariqt@nvidia.com>
- <20260813092655.GB196815@horms.kernel.org>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260813092655.GB196815@horms.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260805072641.402-1-strst.gs@gmail.com> <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
+ <20260812205047.ojq2yyjtmoe5gjot@skbuf> <CAOiHx=kKoZrZp3=o1kpH5ueSvfc+QLSu0GF-noCa7LPQnSQbbQ@mail.gmail.com>
+In-Reply-To: <CAOiHx=kKoZrZp3=o1kpH5ueSvfc+QLSu0GF-noCa7LPQnSQbbQ@mail.gmail.com>
+From: Semih Baskan <strst.gs@gmail.com>
+Date: Thu, 13 Aug 2026 14:34:48 +0300
+X-Gm-Features: AUfX_mwRCzdZCEO4bZnEfhWmPktifeidXgeaT9O-Nbx0mhLx-3Jwdkeb-xoBbQw
+Message-ID: <CAAsRjRkDoUw+QYNr+Wb7B0hrMCtr3SFVxM5FVqcrgj_X1uceyQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, florian.fainelli@broadcom.com, andrew@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	vladimir.oltean@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/13/26 11:26 AM, Simon Horman wrote:
->> @@ -63,9 +63,9 @@ static inline void mlx5_hv_vhca_destroy(struct mlx5_hv_vhca *hv_vhca)
->>  {
->>  }
->>  
->> -static inline int mlx5_hv_vhca_init(struct mlx5_hv_vhca *hv_vhca)
->> +static inline void mlx5_hv_vhca_init(struct mlx5_hv_vhca *hv_vhca)
->>  {
->> -	return 0;
->> +	return;
->>  }
-> 
-> The AI-generated review on netdev-ai [1] points out that the
-> return; line is unnecessary and inconsistent with surrounding code.
+Hi Jonas,
 
-I'll remove the line when I'll apply the patch
+On Thu, Aug 13, 2026 at 10:08 AM Jonas Gorski <jonas.gorski@gmail.com> wrote:
+> There is also a (global) bit in VLAN_CTRL5 to configure something
+> similar to MV88E6XXX_G1_VTU_DATA_MEMBER_TAG_UNMODIFIED:
+>
+>  *     PRESV_NON1Q      - en_preserv_non_1q_frame: (default 0)
 
-/P
+Measured on the BCM53011: the bit preserves both frame types.
+Setup: vlan_filtering=1, VID 1 with the egress port dropped from
+the untag map, external endpoints on two front ports.
 
+- Bit clear (the running default): an untagged frame egresses tagged
+  VID 1, 12 of 12, and a priority tagged frame egresses tagged VID 1,
+  10 of 10.
+- Bit set: the same untagged frames egress untagged, 10 of 10, and
+  the same priority tagged frames egress with VID 0 preserved, 10 of
+  10.
+
+The description's untag-map=1 case for priority tagged frames
+measures differently: they also egress with VID 0 kept, 10 of 10,
+where the text says they would be untagged. So with the bit set the
+preservation of non 1Q frames is unconditional.
+
+Best regards,
+Semih
