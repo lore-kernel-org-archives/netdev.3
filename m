@@ -1,35 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-18.mta0.migadu.com [91.218.175.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A805047D46B;
-	Thu, 13 Aug 2026 13:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BCA47DFBA
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 13:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786626748; cv=none; b=OFBe81dy35akoK0I2vNJDDXJrRVYC2Ga8VZi4uQdpmgrukfAS5OYntzMLQtb/hOVz0OjGoR5QTdMkcc53ATNCUxai04f1tDAqUmIx9aut+zishxPkTvluQuxTpJjbDrRBuT8nURBo1gEmg+RJnlRTNaS1E4HzCMGW1wjkoofunk=
+	t=1786627806; cv=none; b=LjeLf9z84/hgw82YM5zw7otIP1gqnOInMxV8g586Iz0OMT0kbrqo8i9EGbzsv8eb12vIINrNWwcapCohBhQUYkbi6gtZWfedUIqYgQMgIRMnA76znmytdKKY/oqHy3oVVu0278YwoLxIy0LHpIE/L1IbFIcS3C+/6wabDHAqslg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786626748; c=relaxed/simple;
-	bh=n67e92akAaeYMhCPJCCKn+4fuFBLbUJkN/6jajwe2m8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gRSIETw9IrJ9vz6b42sNwij+JasvgSAItNbPyXvvhXpa5xMaC/wbezfPdA5oQIDQKO4nubHrILQ5uFcF/6WZxNGaTakxbJR+gm3snB1Ybfrvd13NuvI9sk7E57qqZ+PWpbuIrwmEIftAXxnNFBx1BNQtBuYV21VUgHbnu4xrjMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HlwRILKR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786627806; c=relaxed/simple;
+	bh=HAWYRcD4muE/GTJBGpnAWE09cM62VJnZG/b+f/Yg7FA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LQLLJS4SnXfhfkUZCud1K5SqGTAU7Bal8ZaTdl0SDCW2gKk24iz+vs6RuYV2nA9PObGpYP6bg7RcrlOkbWooOujAx3KRr8hJaJN0Kmu9OH/uNSYJwMgg86nNmagAJBe93DXfdWgkNMvk6LiIfKU5j95pPsAwNGKo2NhBwOUEbPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YDmFOL+O; arc=none smtp.client-ip=91.218.175.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HlwRILKR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F821F000E9;
-	Thu, 13 Aug 2026 13:12:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786626747;
-	bh=wUTerx84b7KLBWJwyknigTnBFqCAjupeE2IoPPpdlas=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HlwRILKRsK5V270vFNgGGSQJJjfXF8erHmd5vQzrrHW8uFbPIxWlI1mftK2VZQE4o
-	 1C+R17iZIcSBKwI+UTXE2IWYOYWaBDSsyHwxanwL9CW7/C1mDET2+NPBjdeq9ZPOgf
-	 GWmTU+Qkp9Bj4dOcevVp9egsmUIN92IpaUfyArwobjsQOhcWwz6UV/LnRKm2WTJH55
-	 W2ajMns/06LwfmxpdQG/IW4k/oe5dwBfy8k658brtcD057sJ9blTY3l/SmWORrZxeX
-	 axphqYDp3z9eMAYnHzojbPF7UFm1W++Y3Cs62XVk8LAlJ7Y5EYQCXbQzaIM92LbVIn
-	 raGQ8JIN20tMw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5690C380CFE8;
-	Thu, 13 Aug 2026 13:11:43 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YDmFOL+O"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=HAWYRcD4muE/GTJBGpnAWE09cM62VJnZG/b+f/Yg7FA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786627803; v=1; x=1787232603;
+ b=YDmFOL+OQhWXJ4EYIdv4uTX0N/ULQF2IASBOKEQaYx1K5J24jUQgOLBMPsIaRB1CQXOkDKmg
+ ui8o/wynVpmjIM3vImEBLQ92YN023pdWsfrW1tNLET5TdAAesbaoz+1sWYDrFg7qKBxTejYUUIc
+ YGNlZGx02inRR3CmGVlFLIHk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from localhost.localdomain (116.128.244.171)
+	by smtp.migadu.com with ESMTPS id ff7f95da8e7537ab;
+	Thu, 13 Aug 2026 13:30:01 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+To: netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	maxime.chevallier@bootlin.com
+Cc: hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: [PATCH net v2 0/5] net: phy: fix cleanup after probe failure
+Date: Thu, 13 Aug 2026 21:29:40 +0800
+Message-ID: <20260813132946.116176-1-xuanqiang.luo@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,46 +51,64 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/2] netconsole: replace target_list_lock by
- RCU on userdata hot path
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178662670188.2423866.14579955056749406829.git-patchwork-notify@kernel.org>
-Date: Thu, 13 Aug 2026 13:11:41 +0000
-References: <20260810-netcons-userdata-rcu-v3-0-f65557f769ce@debian.org>
-In-Reply-To: <20260810-netcons-userdata-rcu-v3-0-f65557f769ce@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- gustavold@gmail.com, asantostc@gmail.com, kernel-team@meta.com
 
-Hello:
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+phy_probe() initializes the PHY driver, ports, SFP upstream, and LEDs in
+stages. Its error paths do not always release only the resources acquired
+at each stage or restore the PHY device state.
 
-On Mon, 10 Aug 2026 02:36:10 -0700 you wrote:
-> I would like to move netconsole to use RCU on the hot path for
-> a while instead of target_list_lock. My goal is to have no lock on the
-> tx side at all and eventually drop CON_NBCON_ATOMIC_UNSAFE, if that is
-> possible [1].
-> 
-> Start removing target_list_lock on certain parts of the code. This patch
-> transforms the userdata array into a RCU-protected pointer, and uses the
-> dynamic mutex as the write lock.
-> 
-> [...]
+Port setup also leaves SFP cleanup split between phy_sfp_probe(),
+phy_setup_ports(), and phy_probe(), and default port setup ignores errors
+from attaching the port to the PHY driver.
 
-Here is the summary with links:
-  - [net-next,v3,1/2] netconsole: publish the userdata payload with RCU
-    https://git.kernel.org/netdev/net-next/c/a9560343d4e9
-  - [net-next,v3,2/2] selftests: netconsole: add a userdata torture test
-    https://git.kernel.org/netdev/net-next/c/3d2452c2fb2f
+This series makes each initialization layer own its cleanup.
 
-You are awesome, thank you!
+Patch 1 splits the phy_probe() cleanup by initialization stage.
+
+Patch 2 makes SFP and port setup unwind their resources in the required
+order.
+
+Patch 3 restores the PHY device state after probe failure.
+
+Patch 4 calls the PHY driver remove callback after later probe failures.
+
+Patch 5 propagates errors from default port setup.
+
+---
+Changes:
+v2:
+  Patch 1:
+  - Limit this patch to splitting phy_probe() error paths, moving the SFP
+    teardown fixes to Patch 2.
+
+  Patch 2 (new):
+  - makes SFP and port setup unwind their resources in the required order.
+  - Add phy_sfp_release() for complete SFP teardown instead of open-coding
+    sfp_bus_del_upstream(). (Andrew Lunn, Maxime Chevallier.)
+
+  Patch 3 (new):
+  - Restore PHY_DOWN and clear phydev->drv after probe failure.
+
+  Patch 4:
+  - Move the former Patch 2 to Patch 4; no functional changes.
+
+  Patch 5 (new):
+  - Propagate errors from default port setup.
+
+v1: https://lore.kernel.org/all/20260812125127.106255-1-xuanqiang.luo@linux.dev/
+
+Xuanqiang Luo (5):
+  net: phy: split phy_probe() error paths
+  net: phy: unregister SFP upstream before port cleanup
+  net: phy: restore device state after probe failure
+  net: phy: call driver remove when core initialization fails
+  net: phy: propagate errors from default port setup
+
+ drivers/net/phy/phy_device.c | 77 +++++++++++++++++++++++++++---------
+ 1 file changed, 58 insertions(+), 19 deletions(-)
+
+
+base-commit: f5bbbfec59b4e2fb7520a91de3df8a6174325d6a
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+2.43.0
