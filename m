@@ -1,147 +1,119 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DE1426D03
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5236942049C
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786648087; cv=none; b=mex3qIGEojxzMchkPtMLCdF3lzywXXpzzfcgc66DfevNnGbLBYN1FhF/u4vLVEDPaOC7i75IbHo++C/IYi4dgZjUXw/L+rgw0DsGfQAFLkWugL7ysJf/P/x92F/OeCxAQHO5z0tUp1/2lAND48GNfASS8FMACcIicJEG+ATAcRM=
+	t=1786648100; cv=none; b=Im5OpFzrhUV6GhxjS+5L4H2UdsCkwKAR3NYTSfskFF9pCP3ZOBVLD/uvUPdOGfCLFES6dZzeTHlUCXZgIAQ+xyJk8Fwag0GDEdsTbpGKeAuk6sPaQDfte/MFx5uaxUhficB377irTaX8chiDsVFEpCzhlm5p5X3WSIEhuBt7dtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786648087; c=relaxed/simple;
-	bh=Tud4eUO2xHdHMLanMzOvMuFiHkLGOKwIvvgYvzDmhMo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZupBZDmdZpQZlj4dEweSvzeeYrwjbn2dI+JyNpBPx/h4Kv1crAuu2ivph0qJ4vxvFADx4HajhckBFluwRQfh7+T6wXAhX8XsGAFfZYGAsRcIYD6l9++cQOOHsEXDH2zxCPaghasu+YCkNLbygexVM1Fqty9fokyKmOU+GWoKm3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i0mraj8O; arc=none smtp.client-ip=74.125.227.129
+	s=arc-20240116; t=1786648100; c=relaxed/simple;
+	bh=HZj+weV/1/7EoxP5W0AYiX97vOirYnjuweQQFbFN+8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YUgwIIg1WBGjG1BFkkOU/kj7F/4QVydP6ZwZ89+uPFdPfu6TcmeG1yavMk7YYoarVxVau6L01IrRhwxSCFsVqxgIuLhf9AisDTsWVO1Xr7FlscDF0yP/ayCEKPvrqg87rL7lFB+eiM8KMQygOlGVIPmeKL836MAjnkUrJL2/fEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YuMW+aWr; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i0mraj8O"
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-3810f0aba07so81048a91.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:08:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YuMW+aWr"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f611b3af9so10653f8f.3
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:08:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786648085; x=1787252885; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zjeV9JcXmMB5XUYPG/BDWWBwnse1nt9xQQ5l1gfrbe8=;
-        b=i0mraj8OoIpXvRPCdaHjRWZOBk8XJCEgEXrrV9Kp66o+mDLVdTDX3Dfx6GqufnBjus
-         J50flLwhn4toaNfny4l/1F+Egf1dieJUm4wq9HbAlyBWZqxC0aiK89nyzsKyIjZG4xiU
-         q0ac8I+77Z9ocgdTz2A9fh5QpoDpATSm3tppPmWenY7SQ/Dt0STR2gmlWxRyBRqbGgaZ
-         FSUziE5NaC4v94hWgr8/FY2NHztvqkr7fuXY6nun4Iv+hTAFQg2jo9NnxuuiFOblmXDK
-         xNhdrdIBVK41eobOY9FwEL55WDYivVAQEzkHaHpv+xGylYwQTY9YoQ2coMI67pbChBca
-         hpOQ==
+        d=gmail.com; s=20251104; t=1786648097; x=1787252897; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kw7FoD+bzLFhraFxvPfr1StE5DODuuLr8Azjhw6HlYE=;
+        b=YuMW+aWr8/2nl3/bvP/lixAjM9aiaTU4/ju/zvu5Z71Kyg8kfaOYkIZf6y/cP3OyvH
+         cy7no6kzVcWZ/DSIEZmcwwysOrHdh2yfuKwYBb5V8tNgfzgQpy7+hqVJSrrawRUlRuky
+         gUNG8atuukMLxFdowCudWmiM/x/HpkbZnYw1tJD8gYw5J46eWJp4aidlUJaXgK1lvV6S
+         BP/xUrL1Zu8p2PkkDqjVrnaA2oz3Kf+fP/Ye+DHpbnjjK6aLoAACww3qEftS2E7zaiCI
+         yQqc2Al3mZKvGBXxGo/em0VPL4K0ULaeJD7AJhgu1QiKk4hELN663jojPA1VrxsZCBpk
+         C34w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786648085; x=1787252885;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zjeV9JcXmMB5XUYPG/BDWWBwnse1nt9xQQ5l1gfrbe8=;
-        b=HCduMjMK013Wupi1C6klXgEpBM1JdX+iG8P2ZCVQJKhrS0wHARVHUEkNlPhp/oyebu
-         YtEK5bdXHL5law2bB5MDArmlvgi5toEiosmOF5ZkG4qebobiYo+GmO49o+pxmEjt60D6
-         w9Y3dEdSlDxjXxCljC6tk6I2UPRjyrr9u6MbIw5qfkBr8e5/GZrDI8aBvpT50PBPNk4j
-         aC7segx1UsPshUrKhGE70sMIb/icnIxinBWAHt4jWbE3mgIn+6iTj2gEM1/DzqxyBLBp
-         MJTrXva4wMjqW7cQVnK8PEYkwMBkYo0yg8Az3rwX/SwZzXZZ5L2ykVcoXszC1W4uEJW8
-         bZng==
-X-Gm-Message-State: AOJu0YwSzDiMzarzs95fulw/65MTsK9V2MmxSi3kj45z/4cI/XE82U2/
-	Ju8IMHaMSWn2RCZCIaHcCDdGbagSv/2EmDmZ8CS1CjSOj7qwX8LaeMbCRND9V7V6
-X-Gm-Gg: AR+sD105KQEz+pBeVsUjQ+lJg+4/JMoB4SCZW36GlB5Yh0muzO/vJvWbO0u4YEaolYK
-	MKJl8EFpjPy/rRpmW7qb8DAikssZoYgaJItAdg5sDq2gZAWjt9VJUrFCO5D8KhNTgmfaDjXvSB8
-	A75Gl0gl0nJi48M5Rficr3UyqbIjfGZLmDUGFVBJ57rsCWUgASPwOKUeIjzqwyshVh651z4SY0P
-	32LSKHgwH7fjH3t2vNCSLBfj5lYgcnQNSQSu4+8wBy408wneEbRUqrKSUFJGrFyERVbH2BweZRc
-	B5qqOiBhP96DUEgn0TWHRVHfu8C3V2f7ANs7qzq77eEJf4G+dJxFxtYxgdJHXQ1ksystWvyhlGb
-	HOpjBJQuAG9Bc//HfPhThbeNVVca0X4G47I2czU+M5UKV9unfJXqE1sAY74CJjtF/EYy506FbVj
-	I/rcWmJJ7e5IUpTUk0Um2GaMlBoJwHMv460M/O0GMNG5CbGG3lWA4KCA==
-X-Received: by 2002:a17:90b:2f0d:b0:38e:7268:220d with SMTP id 98e67ed59e1d1-3933ed5e238mr29902a91.20.1786648085014;
-        Thu, 13 Aug 2026 12:08:05 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:52::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39339fe280fsm485100a91.12.2026.08.13.12.08.04
+        d=1e100.net; s=20251104; t=1786648097; x=1787252897;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=kw7FoD+bzLFhraFxvPfr1StE5DODuuLr8Azjhw6HlYE=;
+        b=OT9TN9soNZm13C4BlLZTKbC8PAOjmiy7jytk3H9ynPuW3mLoj/TIH9MgIQxME7iRfn
+         puY5mjja0hOvU5U01kgeZj48f5W2UhbnCd2/mvPaIR/kzxqn9gjlhJGL1uMRG+h8P1u9
+         oOiLf93pdXjYt0HLs4oZByV1RcwuKTmEUKbiI7ILhUKr+SeIr9H/PdCu20wrnoz2hGk6
+         SkzOVEW5sVsrFFsD9EuIe4xUfyDARFsX+hUz5ZS2UCVds3/gtGXe27zTE1OZF8sSqiDi
+         CVzxJBLMKnl6Ts16RAPGvRILxjnLh001IRwIXSmrHH0Ce7Pyk/msyBgJVevMK9hNJ4UG
+         aH1Q==
+X-Forwarded-Encrypted: i=1; AHgh+RowsGZYQrYGjCc6FArLLYQVB68DuVdvpm9ACwZNavJIDUVkQdm0V2wmKEi3m7JRyhC8UJg1x84=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyym7N4l72MD8g8H3diU9iXoAS/m2BoV7ktisthmVb3nVUQnaPR
+	eHgasYmi72RU0SesphjUC0ZiLo5lErpoPT8Vi4dM5UlQite6nNqW8bsR
+X-Gm-Gg: AR+sD11KhVRtL0/3GMXAmER2C556HwA+FDWRmcAinPFq3NvQqHVjQkfY5s2lrx5njVS
+	8urPAX2+fOnV/scqxqIKZpthnC1EK488RDaXmSr7eH0jlynEZhBQd4F7CQEuOPmbbUfqQeSx5I1
+	GzqZN99VdVtNbdP+zetWPPh+P49PDGRsHLGYv3I/BX0pGn4cjzY0l1I77oOCiOpRnqALyo91U1w
+	G2tjKFFi/r+Bc1BoSwSGmoJahESytdXeYu8FYU4KfzkiOuP+QGJPVKxrXvCuqqwNSPCOLyTCnia
+	jrbkh0jMqq5haaZmoU8LufR4wmy61ODLmYubtGtONt5dMV/bWqrbaLrbnD2BDeIWxERQW2uxtbo
+	lFUICaLsVTRaxVO9xCwnEBe0mxxKpg5pYXhHH6nNafu/ITUhvhE4MWtrC5l7Vmw4LkxgA8O6Ahf
+	EEFdpHjh9RdHXU4PJxFoCfC1HiGjteFXStT8vC6u/61JP5i9MO
+X-Received: by 2002:a05:6000:1446:b0:47f:959f:d5e with SMTP id ffacd0b85a97d-481606984d0mr345336f8f.0.1786648097563;
+        Thu, 13 Aug 2026 12:08:17 -0700 (PDT)
+Received: from skbuf ([86.127.220.200])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2cd7ecsm1427509f8f.36.2026.08.13.12.08.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 12:08:04 -0700 (PDT)
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	maxime.chevallier@bootlin.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	aleksander.lobakin@intel.com,
-	horms@kernel.org,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	sdf@fomichev.me,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	witu@nvidia.com,
-	martin.lau@kernel.org,
-	yoong.siang.song@intel.com,
-	rohan.g.thomas@intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	bpf@vger.kernel.org,
-	leon@kernel.org
-Subject: [PATCH net v2 3/3] net: stmmac: skip queueMaxSDU check for AF_XDP
-Date: Thu, 13 Aug 2026 12:08:00 -0700
-Message-ID: <20260813190800.222527-4-sdf@fomichev.me>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260813190800.222527-1-sdf@fomichev.me>
-References: <20260813190800.222527-1-sdf@fomichev.me>
+        Thu, 13 Aug 2026 12:08:16 -0700 (PDT)
+Date: Thu, 13 Aug 2026 22:08:13 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Semih Baskan <strst.gs@gmail.com>
+Cc: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>, netdev@vger.kernel.org,
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	bcm-kernel-feedback-list@broadcom.com,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+Subject: Re: [PATCH V3 1/4 net] net: dsa: b53: deal with Northstar devices
+ using CPU port 5 or 7
+Message-ID: <20260813190813.63fjmjmciry6ubaf@skbuf>
+References: <20260812132755.32585-1-zajec5@gmail.com>
+ <CAAsRjRn4Pfv3LzQtVbeBzw49fN3Fk+M4JGwKkKq6pvo5Uk-fpQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAsRjRn4Pfv3LzQtVbeBzw49fN3Fk+M4JGwKkKq6pvo5Uk-fpQ@mail.gmail.com>
 
-Commit c5c3e1bfc9e0 ("net: stmmac: Offload queueMaxSDU from tc-taprio")
-was inspired by commit 92a0dcb8427d ("igc: offload queue max SDU from
-tc-taprio"), but the igc change does not apply the check to AF_XDP.
+On Thu, Aug 13, 2026 at 01:53:56PM +0300, Semih Baskan wrote:
+> With all three CPU ports enabled, GMNGCFG ends up in dual IMP mode
+> (0xc2 read back). In that mode a tagged frame whose VID is missing
+> from the VLAN table is delivered to no CPU port at all: an 8021q
+> upper on a standalone port receives 0 of 7 tagged probes, whether
+> the port 5 conduit is up or down. With port 8 as the only enabled
+> CPU port in the DT, where GMNGCFG reads 0b10, the same frames were
+> delivered. So the preferred CPU port alone does not revive
+> standalone 8021q uppers on DTs that enable all three ports.
+> 
+> The same effect touches 4/4: the R8000 today has ports 5 and 7
+> disabled, the single IMP configuration, and enabling them lands the
+> switch in dual IMP mode through the same driver path. If its switch
+> behaves like this BCM53011, standalone 8021q uppers on the R8000
+> stop receiving with 4/4 applied.
 
-xsk_tx_peek_desc() reserves a completion entry. Continuing without
-queuing or completing the descriptor leaves the AF_XDP rings imbalanced,
-so remove the check from the zero-copy path.
+Where is the code that configures this GMNGCFG register?
 
-The assumptions is that AF_XDP zero-copy traffic bypasses the qdisc, so
-taprio's queueMaxSDU check does not apply to this path.
+> On the RT-N18U the boot firmware provisions a MAC only for gmac0,
+> so gmac2 comes up with a random MAC and the bridge inherits it,
+> changing per boot.
 
-Fixes: c5c3e1bfc9e0 ("net: stmmac: Offload queueMaxSDU from tc-taprio")
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 -------
- 1 file changed, 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 62de03e65a90..4a82f4351303 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2710,13 +2710,6 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 		if (!xsk_tx_peek_desc(pool, &xdp_desc))
- 			break;
- 
--		if (priv->est && priv->est->enable &&
--		    priv->est->max_sdu[queue] &&
--		    xdp_desc.len > priv->est->max_sdu[queue]) {
--			priv->xstats.max_sdu_txq_drop[queue]++;
--			continue;
--		}
--
- 		tx_desc = stmmac_get_tx_desc(priv, tx_q, entry);
- 		dma_addr = xsk_buff_raw_get_dma(pool, xdp_desc.addr);
- 		meta = xsk_buff_get_metadata(pool, xdp_desc.addr,
--- 
-2.53.0-Meta
-
+In the previous version, Rafał included a patch so that gmac2 uses the
+same MAC address as gmac0. Is this better?
+https://lore.kernel.org/netdev/20260811193658.14304-2-zajec5@gmail.com/
