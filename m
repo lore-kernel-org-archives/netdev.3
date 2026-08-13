@@ -1,67 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E7F43B6D4
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E51836B93C
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786609375; cv=none; b=j96250cIYh+NMlzEmYd+U1SK9NTeyGHLuLHE7f9Uk6Vvd2VD5PUeDf2fswsC3at4uPcXNXJA2X0I/GLMWA25UMCRpzl/HH8Yj41XvpS/AXi/SDykNd8fk57b8/pVMQsEQllLo5r/H9V4cVOZfg9HjLxamLDwQbT6OccMopZzIg8=
+	t=1786609432; cv=none; b=PV4A0AZq3OKC7KMZCtJvDFpzgOXBCdwXQdLpAZvIdn5PqZvFNNakbebvAiZC4rhs2ve2kXTdof8sqX4qZ8CpgxcoUTy7LFMMHw7A2NKVsmAiwo3+Qp0WQzANZb3Af0hVBtFuFZ4BeCJaEfq1QDg05E6KTn9+tbzc5Vj2PenYQlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786609375; c=relaxed/simple;
-	bh=ufH+e66ZKDLiR/p5yTTn0dwbpGPytwbQwwdtwje203I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUg02w16dAxS5hwUvUII3w2qVbj7P2F97/UnBsFqv4MJK5sZt+RrIklS0PtMuOdV2gRm/VOs0Yhr9DLqdlQ0G2OciKelJfr4wmoiojX6C8ePHU9GA9lBI4sZi8f8CWbJzQmaTxCZ9sgvh4ustFRGLh9s75F+UOWP0X+ZS7OI0T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SOyKC2zu; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786609432; c=relaxed/simple;
+	bh=VBQD34twbTX/KlyyGFX8UI8SPcf2/piw6Ix5oQtjqZk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RYpYgr052YfiiJU9LLdsQQSx20joy2VsQm0b+238Ppf/s3MQs82DaMb2ixbzDA/aJwNr7IEEmjECIPPaA38e9EO7hGMXHC9nQRMlZpiGFEojhsOX90ZCpaMM+dH5OGpkO7At8wNRntfSfnrjzyHTODBYVkew48vzkaW6udlghWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JhE3An2l; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SOyKC2zu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786609373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qzc7A0H+LuzoGrsoEHxP9TNCNQHz6zDj0wB6rZ/NxjM=;
-	b=SOyKC2zupwZSFT3ZEQ22nSA9SFjnnvc4Nu+iKGlGXKg6bR+RMURgxxTGRvXJHSZYd1TUIK
-	fAviwo2lPznQN//8w166ApPnyHAb8CCbXrLCBA4csvav0r4JLldbiNUcZ0sBWnrZwvX9s3
-	fyarKa2FP6IEU3ezZdksmpxjEeMAVls=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-399-346GiGtfOHmuxEFLaE-1Hw-1; Thu,
- 13 Aug 2026 04:22:49 -0400
-X-MC-Unique: 346GiGtfOHmuxEFLaE-1Hw-1
-X-Mimecast-MFC-AGG-ID: 346GiGtfOHmuxEFLaE-1Hw_1786609367
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 14EB11800614;
-	Thu, 13 Aug 2026 08:22:47 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.120])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6AF27423;
-	Thu, 13 Aug 2026 08:22:42 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: daniel@makrotopia.org
-Cc: jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v10 3/5] net: dsa: mxl862xx: add devlink flash_update and info_get
-Date: Thu, 13 Aug 2026 10:22:33 +0200
-Message-ID: <20260813082233.71011-1-pabeni@redhat.com>
-In-Reply-To: <66aaa1b09b0f2e9e74a7274a878c6902e1aa2b9c.1786294649.git.daniel@makrotopia.org>
-References: <66aaa1b09b0f2e9e74a7274a878c6902e1aa2b9c.1786294649.git.daniel@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JhE3An2l"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cacb8416a1so22652015ad.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 01:23:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786609431; x=1787214231; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=j4dJ17/MmMP7lZvLg8mvMoTWvikj2SGroCwhkkBrmEE=;
+        b=JhE3An2lsMTw9rDtkNKrwma0uC/GGZ10dB3ABtGfOhL0AM3pAQWJKpXygr5SsBXXXC
+         PXtxMiu1VdE/06BRSgQxYOevjdAlzVahDQBAn1AM3UWQPrAAMC1Sx8PjFD4kRgQSCSgX
+         6FfvO1gVLQufjq8yqoSnyfqnHA93EvI9YBX5W9r7qyT/A2UZic6sQ3ka8AgW9rfSrPGT
+         Cyd+AhfCcSVxiojaPR0POilPHwEvt91BETFssLpf7vaGRHL4WF20CIcQlfCk9zwxyIm+
+         uIB83I0Hm7Ygigcpk3V297JF7UJyNhETa4gUfOEtuwkBThArwYWiDvcXXbxVWowWPvXF
+         ZeSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786609431; x=1787214231;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j4dJ17/MmMP7lZvLg8mvMoTWvikj2SGroCwhkkBrmEE=;
+        b=GbYk5IfPn1Kp3jT5forgzYGiZ0g8Y2njNDdA28YhWkijnK3v4e3RuYD4eO/8df4ajG
+         db1pZ9EgC/kWgqAsQ1aNDRd74O6oWJ/MTbjM0N0Kk5UkfH5HB1KRWTS1bfPFJPFjU6+2
+         qAbAJZfXuBhJWydmilncK9gmukOB0bFU9LhDwMmrwi9VtJOCjRJo4ENJAE4ZrTk++CK6
+         YBcGgwsRxbclIR0jTcEp1sLf2Td2icqxhmwf/936H0SdUaajZYTg5Bxu/5ryzN/josXK
+         TTtzzFFgGBGaE+25lZ1meF2rvOlsEiMj1by8VLQV2t8P8BvEgIKUmpjPkJIku8LvlF+1
+         E8HQ==
+X-Gm-Message-State: AOJu0Yy0Lz4bzrAgb3jHRo0WQnsoEqzYAuDMpVM05KWLMfcn2zSwmQGW
+	f0qhVKryG4J4P4Gtz3FZYQdZpM4a9dHr6cflvE28/JqQumccUuo04wsX
+X-Gm-Gg: AR+sD13b5SFCZ9bbV9fVf/GUJ6Ae1KPlwMS0UOKzNDJcrFkgQb1ciMbzr6hSFceqHsT
+	Igsb8TtTpC41a1YHCzylO4fYzYWFaGCK2WT+hKB5MP93a8YqDJUkWUBIcxt9ny6VOAm38I+Y1UH
+	rhZ8ZY7P3Rmn8IeJwoRnld0PE0zPCh8E0qknKG8NBLRqwTErI3Y6aYTgKV2lJ3SkgTZQelQna5W
+	Y5eGC3+PaAghUhnWeVzAtLzRTvYHEbgdJMwdAUKEBZksKDkRgix5OIUYPG2v/S6cEwtQPtpUk5Q
+	rfbv/EMdydq21jaMcPp4ZfyYG/ObKLI7K0R1uPyC+CwSr9CGWbm/hy0aYkZnzz4oOuqzFD4zQe0
+	+eqfhh+g+pg6IyEP5jOjYN3/hEzjAL7NhnCKH9d+jkQiYEvNy1WLqNuUaq2o2Klil53cmo+9DEc
+	mzk724yI7wi1AGKW57iCGsCUyyCAcecEJIUBWrkmc62ELZGR7lpI5CcnkHmTOV1fQHj6/DLM8=
+X-Received: by 2002:a17:90b:2e50:b0:37f:df85:272f with SMTP id 98e67ed59e1d1-3931e30bd44mr4997948a91.19.1786609430588;
+        Thu, 13 Aug 2026 01:23:50 -0700 (PDT)
+Received: from c79ofce.localdomain ([103.165.85.242])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931cecbf08sm2387592a91.12.2026.08.13.01.23.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 01:23:49 -0700 (PDT)
+From: Zhixing Chen <running910@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	Zhixing Chen <running910@gmail.com>
+Subject: [PATCH net-next] pptp: validate payload length before parsing PPP fields
+Date: Thu, 13 Aug 2026 16:22:47 +0800
+Message-Id: <20260813082247.31499-1-running910@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,78 +74,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/
+pptp_rcv_core() pulls the PPTP GRE header together with the payload length
+advertised by the header, then looks into the PPP payload for two special
+cases: allowing old-sequence LCP Echo packets and stripping the PPP
+address/control fields.
+
+Both checks read fixed PPP fields from the payload. Make sure the
+advertised payload length covers those fields before reading them, so
+malformed short payloads are rejected before their PPP contents are
+evaluated.
+
+This keeps the receive path within the declared PPTP payload boundary.
+
+Signed-off-by: Zhixing Chen <running910@gmail.com>
 ---
-Subject: net: dsa: mxl862xx: add devlink flash_update and info_get
 
-This commit implements runtime firmware upgrading for the MxL862xx switch
-using devlink dev flash. It transfers the firmware image over SB PDI,
-reboots the switch, and defers a device reprobe to re-initialize the driver
-using a workqueue.
+While testing PPTP stability and reviewing the PPTP driver code, I noticed
+that the receive path can reach the old-sequence LCP Echo check and the
+address/control field handling with an advertised payload length shorter
+than the PPP fields being inspected.
 
-> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
-> new file mode 100644
-> index 0000000000000..9799cf19d31a9
-> --- /dev/null
-> +++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+I exercised this path with malformed short PPTP GRE packets and confirmed
+that such packets can reach both checks. The test packets did not trigger a
+KASAN report in my setup, but my understanding is that the parser should
+not inspect bytes outside the declared PPTP payload when deciding how to
+handle PPP fields.
 
-[ ... ]
+This is intended as a small robustness improvement for malformed PPTP GRE
+packets.
 
-> +static void mxl862xx_reprobe_work_fn(struct work_struct *work)
-> +{
-> +	struct mxl862xx_reprobe *rp =
-> +		container_of(work, struct mxl862xx_reprobe, work.work);
-> +	struct device *dev = rp->dev;
-> +	bool bound;
-> +
-> +	device_lock(dev);
-> +	bound = !!dev_get_drvdata(dev);
-> +	device_unlock(dev);
-> +
-> +	if (!bound)
-> +		dev_dbg(dev, "reprobe skipped, device is gone\n");
-> +	else if (device_reprobe(dev))
+---
+ drivers/net/ppp/pptp.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-[Severity: High]
-Is there a race window here that can lead to a use-after-free of priv?
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index a797a0606f6b..708d8fb3a900 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -317,16 +317,18 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buff *skb)
+ 	payload = skb->data + headersize;
+ 	/* check for expected sequence number */
+ 	if (seq < opt->seq_recv + 1 || WRAPPED(opt->seq_recv, seq)) {
+-		if ((payload[0] == PPP_ALLSTATIONS) && (payload[1] == PPP_UI) &&
+-				(PPP_PROTOCOL(payload) == PPP_LCP) &&
+-				((payload[4] == PPP_LCP_ECHOREQ) || (payload[4] == PPP_LCP_ECHOREP)))
++		if (payload_len >= PPP_HDRLEN + 1 &&
++		    payload[0] == PPP_ALLSTATIONS && payload[1] == PPP_UI &&
++		    PPP_PROTOCOL(payload) == PPP_LCP &&
++		    (payload[4] == PPP_LCP_ECHOREQ || payload[4] == PPP_LCP_ECHOREP))
+ 			goto allow_packet;
+ 	} else {
+ 		opt->seq_recv = seq;
+ allow_packet:
+ 		skb_pull(skb, headersize);
+ 
+-		if (payload[0] == PPP_ALLSTATIONS && payload[1] == PPP_UI) {
++		if (payload_len >= 2 &&
++		    payload[0] == PPP_ALLSTATIONS && payload[1] == PPP_UI) {
+ 			/* chop off address/control */
+ 			if (skb->len < 3)
+ 				goto drop;
 
-If device_shutdown() runs after device_unlock() but before
-device_reprobe(), it can clear drvdata. When device_reprobe() subsequently
-runs, it triggers the driver remove() function, which returns early because
-drvdata is NULL, bypassing dsa_unregister_switch().
-
-However, because priv was allocated with devm_kzalloc() during probe:
-
-drivers/net/dsa/mxl862xx/mxl862xx.c:mxl862xx_probe() {
-    priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-    ...
-}
-
-the driver core will still run devres_release_all() and free priv. The DSA
-switch remains registered, and any subsequent access to it via devlink or
-netlink could dereference the freed priv pointer.
-
-> +		dev_err(dev, "reprobe failed; device left unbound\n");
-> +
-> +	put_device(dev);
-> +	kfree(rp);
-> +	module_put(THIS_MODULE);
-> +}
-
-[Severity: High]
-Can this cause a kernel panic if the module is unloaded concurrently?
-
-Calling module_put(THIS_MODULE) at the very end of a work item means the
-module reference count drops to zero before the function fully returns to
-the workqueue core.
-
-A concurrent rmmod can then proceed and unmap the module text section. If
-the worker thread is preempted or delayed, it will resume execution from
-unmapped memory during the function epilogue, leading to a fatal page fault.
+base-commit: f6057f06ef7afa9893ed33603f7917fa39d237b5
 -- 
-This is an AI-generated review.
+2.34.1
 
