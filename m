@@ -1,183 +1,113 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DBE33937F
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698B2325726
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786588187; cv=none; b=MdfhoPlrKcZllKPH0ATHRh05bYA9CFEmQ0T3qXd0U7ZRgGQhHUhiLPlnqBZla+NWqVBJCKwNEe965IxmhXbxxa46azf3fPsHti8dMy3B6LitlDBLDdiBoU3hcFvpc59w7Ca4bWU3p0wiqECG4Oq4bkH98ADTIy+gmF9pEdDK0u8=
+	t=1786589950; cv=none; b=AFy9uJUgpasq5RuaU8VuHWWgr96XvtT/xAea8JBNJNXxwTGWY5euOmgdedeIv8bZzb/556Zt4EtbT23aAchrguyL3UL0d/BM5N0DdcaRJJfS9EIVy7PUAnceqpfKnJfdcCFmUrfHZvAeq1r/nAAcPatCA1k1OLqnZvDSz5eC9u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786588187; c=relaxed/simple;
-	bh=HgaVcvjFh5t19JEzA/gHWyXxmDbDupg6zoy1y8nrNQg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=B61uunAkb1zYe6T6grvetb6fxURZEql0TioF47EoypBg5xI0PDikjaG5zJz4CEH6g8i1FqMpaYUUxEHUvLQYkrFKwCvkv6FBbO/08/r5YaTRnqPukJ2JT16eQNLLXV9QpOOKtWXZidFlbC7vAOzl2eox0MW8p7xN2d/4aGJ9BBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oNRZoAMx; arc=none smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786589950; c=relaxed/simple;
+	bh=SSIS66HuEe1Zon1uqQcO2mtIo5/d3TyQFLrQt7/aasU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=WeRkQoMx8LG6gvStdUV31poJPUUKP3eItqkzZ1toaKks9qlWnnqxLq0cChQp2NqcL4fBafRg9wcE/Ybv7leVuK9ivOOa83Bmf+a6Kor4SfkOO+B4iUpVOtjmSCEgAh39jLqKRFSa0xvdudA+7mwrPdRn64XpasimSw5t97zySOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WfngGjvI; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oNRZoAMx"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-66c2d726650so1393003d50.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 19:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786588184; x=1787192984; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cnmgta/wS6M8HYTbflNWe4vYMLIDSzI2C2egQNuOXpM=;
-        b=oNRZoAMxUVTPyV8TPcX25wkXr9y8CW6Qc+4T3ZAKBo5p8vjNALg9EzOVzI/5bHzfoy
-         MknvqgN8QONrVHsZcjtHzZpQZnob/e/t9XzvIdXhTaTXzX6845CXZi9JkK8ROX40roGi
-         5maRaFdkqU0t0wW5IxPEQ76K5+FtaTyupGiuMH79/0slyxO/BzMEHTSCOc0Q6mszZmrO
-         zJgUIwnpbpYg3bDJF2CmNQQIu+RTzee3ZTfQLlkFpEef5WaJTsJ5c4jau7senTj00I+u
-         4Uh1vxjGu8OdqXPIX9dhp9+zzKJaftYiJumA9ExIqtJ6MAuPXdp+pYUGwjX67TNMHbwa
-         28Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786588184; x=1787192984;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cnmgta/wS6M8HYTbflNWe4vYMLIDSzI2C2egQNuOXpM=;
-        b=kiZN7Sn40qQ42FcAXjVfFR5lA5vsX85AQYYyM7x+BEQ+NJD2QvEziEl3Kn1gQOg6zv
-         NIvmD1vi3+LS36gv8uzn0fh6UiF+RkTOByapqSC0ve5EnolE41djQ4N6bHsrCcdpvHKA
-         lndH+8u1/woyZtXV1Fr6rFik8WrtlhOt2AsFDVCDx86X1fLdPsKC6IYezEs+IQEnZ7Ka
-         uJQPm1F9qZEawu4IKyegG0PeZStEDwTMjDHPDfT5R30NhxYBSDQZN2okwENYfXlAK977
-         9KHI2APqpXxfNn5Wr58089FnAqm3JjKZ5g8RpxAmryz3QvmHuqrDhdgqnk7WGaimK0HN
-         HtgA==
-X-Forwarded-Encrypted: i=1; AHgh+Rovk4wKbzXCYF677rLWvCo8x3Xz+P2Tfan0NhXzhbITSU7Encf+9cGcDMKr+yeIpMOfvjJdKKI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK92RG5euStttdsSnlI2MDXqVkmnEf3KeftV0QTYyHmRg1cg/M
-	DnyAP2DTjoAlYPddLLibhm4phJfto/S22SnOYY32P0eVyB/dAElhwN4s
-X-Gm-Gg: AR+sD10pbVFCcCv9A/1MntT75d7TZeuJ0smQ0JKdHWRNbku2sM4uerTRkws24pdcAfJ
-	a1kQYzTHdrG6BneMO94LXepWBg4eSAvFFMLt0zBcuTE1+lg6ywkMX4Dw1jgkV/fWllTWTBe0x3h
-	9clSEsnPUl63Bc8exP+QX45YbExjY3B4aMizXWQD+qtiBfT7/Etga/rvN8/r/XcuhnU0g6+Qs+S
-	wsWtnN5NVoD9iVjMvqMX/6hxDPKzRtJ5ze9CRpdTdHTL1kc4pY9gHdKsmobh2bVE1pjVw3y7/u1
-	scH2ivScNurqtXkgsgZVHLf8Zxjp3ApXZUcLxmvnTT4ZsEzVD+5Nf8aJTZ+544WxEFs3Ux3w1gD
-	JtYApGMAIR2//35/LjJ2klGg/rCk4XsiZjC978rvlEZZWQecUuLiXaPeAWxrnPY+esu47s16bEy
-	MI+ZYVyshQn0M+pZwijsa7itigcdd3HKUg7SzGmiG25y5bnjhJzKn4onGKyHYR849gAobPu7w/O
-	V/EX96Rz9xqsjm8ZIfyrYNSC4rO4hhyYdG8R3GOaUComic=
-X-Received: by 2002:a05:690e:4288:10b0:66c:4be4:89ef with SMTP id 956f58d0204a3-66c514f1295mr1042206d50.14.1786588183813;
-        Wed, 12 Aug 2026 19:29:43 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8346f704851sm4472597b3.48.2026.08.12.19.29.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 19:29:42 -0700 (PDT)
-Date: Wed, 12 Aug 2026 22:29:42 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: zhaoping.shu@mediatek.com, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- ncardwell@google.com, 
- kuniyu@google.com, 
- matthias.bgg@gmail.com, 
- angelogioacchino.delregno@collabora.com, 
- willemb@google.com, 
- alice@isovalent.com, 
- sd@queasysnail.net, 
- eilaimemedsnaimel@gmail.com, 
- imv4bel@gmail.com, 
- hw.he@mediatek.com, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org
-Cc: haijun.liu@mediatek.com, 
- xiayu.zhang@mediatek.com, 
- lambert.wang@mediatek.com, 
- Iven.Yang@mediatek.com, 
- Zhaoping Shu <zhaoping.shu@mediatek.com>
-Message-ID: <willemdebruijn.kernel.1372b82f50882@gmail.com>
-In-Reply-To: <20260813014056.160533-1-zhaoping.shu@mediatek.com>
-References: <20260813014056.160533-1-zhaoping.shu@mediatek.com>
-Subject: Re: [PATCH net v3] net: gro: Fix nesting of TCP GSO SKBs in 
- skb_gro_receive_list()
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WfngGjvI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=SSIS66HuEe1Zon1uqQcO2mtIo5/d3TyQFLrQt7/aasU=; b=W
+	fngGjvIZBJijs+1D6XQCYYdUcDUsFg1nhTC7zPfu2XvNFgpi+2vAG2dtTOdVC4Zf
+	XKoiHY45mD/ElpH2509pm1M5PuH5abQ9eFnkZkc32CjAUHLc0z6h41aafzNj0DAm
+	8NxbNtn3y7MVD7S/MeLXmSYBlaFenkurG4vXD56cG0=
+Received: from lange_tang$163.com ( [116.128.244.169] ) by
+ ajax-webmail-wmsvr-40-137 (Coremail) ; Thu, 13 Aug 2026 10:58:22 +0800
+ (CST)
+Date: Thu, 13 Aug 2026 10:58:22 +0800 (CST)
+From: "Lange Tang" <lange_tang@163.com>
+To: "Jakub Kicinski" <kuba@kernel.org>
+Cc: "mst@redhat.com" <mst@redhat.com>, jasowangio@gmail.com,
+	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"Tang Longjun" <tanglongjun@kylinos.cn>
+Subject: Re:Re: [PATCH] virtio_net: add rx-alloc-fail counter
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+In-Reply-To: <20260812163427.3c44ac4d@kernel.org>
+References: <20260812012254.27668-1-lange_tang@163.com>
+ <20260812163427.3c44ac4d@kernel.org>
+X-NTES-SC: AL_Qu2TBPmTtkEr5CGeZekfmUgRg+c/XsK4svUj24VVOJF8jBLo6A8JQnRkJlbs3/yqDDGzqhK4cwpw1sRqYoZdTqY0juOokbaQF7IX3AcSQQnUuw==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Message-ID: <290bce53.25b3.19ff90e755a.Coremail.lange_tang@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:iSgvCgDX3xfPMn1qHcIwAA--.7607W
+X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC4g+552p9Ms-aOgAA35
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-zhaoping.shu@ wrote:
-> From: HW He <hw.he@mediatek.com>
-> 
-> A device supports GRO_HW, and the device driver enables the
-> NETIF_F_GRO_FRAGLIST feature. During a tethering test,
-> skb_gro_receive_list() reaggregates the GSO packet. However,
-> skb_segment_list() cannot segment this packet back into
-> the original packets, which leads to IP fragmentation or packet drop.
-> 
-> Scenario (Tethering/Forwarding):
-> 1.Driver submits a single TCP packet, P1. P1 is kept in the
-> gro_list as the first packet.
-> 
-> 2. The driver submits a TCP GSO skb, P2. P2 has already aggregated
-> multiple TCP packets by HW_GRO, and its non-linear data is stored in
-> frags[].
-> 
-> 3. P1 and P2 match the GRO rules, and since there is no local socket,
-> they are aggregated by skb_gro_receive_list(). The resulting skb,
-> P3, has a frag_list entry that still contains frags[]:
-> P3: [ Linear Data ] -> frag_list -> [ Linear Data ]
->                                     [ frag[1] ]
->                                     [ frag[2] ]
->                                     ...
-> 4. Later, tcp4_gso_segment() or tcp6_gso_segment() calls
-> skb_segment_list() to segment P3. However, skb_segment_list() only
-> segments the entries in frag_list. It does not segment the frags[]
-> inside P2, so P3 is not restored to the original packets, which leads
-> to IP fragmentation or packet drop in the following path.
-> 
-> When NETIF_F_GRO_HW is enabled, do not set NAPI_GRO_CB(skb)->is_flist.
-> Fall through to the regular skb_gro_receive() path instead of
-> skb_gro_receive_list().
-> 
-> Fixes: 8d95dc474f85 ("net: add code for TCP fraglist GRO")
-> Signed-off-by: HW He <hw.he@mediatek.com>
-> Signed-off-by: Zhaoping Shu <zhaoping.shu@mediatek.com>
-> ---
-> [2]: https://patchwork.kernel.org/patch/14706032
-> [1]: https://patchwork.kernel.org/patch/14702209
-> ---
->  net/ipv4/tcp_offload.c   | 7 +++----
->  net/ipv6/tcpv6_offload.c | 3 ++-
->  2 files changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-> index 3b1fdcd3cb29..641c47fb1ea2 100644
-> --- a/net/ipv4/tcp_offload.c
-> +++ b/net/ipv4/tcp_offload.c
-> @@ -395,9 +395,6 @@ static void tcp4_check_fraglist_gro(struct list_head *head, struct sk_buff *skb,
->  	struct net *net;
->  	int iif, sdif;
->  
-> -	if (likely(!(skb->dev->features & NETIF_F_GRO_FRAGLIST)))
-> -		return;
-> -
-
-Interesting that ipv4 and ipv6 diverge here. Nice to try to make them
-more alike.
-
->  	p = tcp_gro_lookup(head, th);
->  	if (p) {
->  		NAPI_GRO_CB(skb)->is_flist = NAPI_GRO_CB(p)->is_flist;
-> @@ -430,7 +427,9 @@ struct sk_buff *tcp4_gro_receive(struct list_head *head, struct sk_buff *skb)
->  	if (!th)
->  		goto flush;
->  
-> -	tcp4_check_fraglist_gro(head, skb, th);
-> +	if (unlikely((skb->dev->features & NETIF_F_GRO_FRAGLIST) &&
-> +		     !(skb->dev->features & NETIF_F_GRO_HW)))
-
-Would it be better to test skb_is_gso(skb) and only skip fraglist GRO
-for HW-GRO skbs, rather than disabling it for all skbs?
-
-If treating the features as mutually exclusive, another option would
-be to replace these datapath checks with disabling one at configuration
-time, in netdev_fix_features.
-
-
+CgpBdCAyMDI2LTA4LTEzIDA3OjM0OjI3LCAiSmFrdWIgS2ljaW5za2kiIDxrdWJhQGtlcm5lbC5v
+cmc+IHdyb3RlOgo+T24gV2VkLCAxMiBBdWcgMjAyNiAwOToyMjo1NCArMDgwMCBMb25nanVuIFRh
+bmcgd3JvdGU6Cj4+IEZyb206IHRhbmdsb25nanVuIDx0YW5nbG9uZ2p1bkBreWxpbm9zLmNuPgo+
+PiAKPj4gQ291bnQgYnVmZmVyIGFuZCBza2IgYWxsb2NhdGlvbiBmYWlsdXJlcyBvbiB0aGUgcngg
+cXVldWUgYW5kCj4+IHJlcG9ydCB0aGVtIHZpYSByeC1hbGxvYy1mYWlsIGluIG5ldGRldiBxc3Rh
+dHMuCj4KPllvdSBhcmUgbm90IHBsdW1iaW5nIHRoZSBuZXcgc3RhdCBpbnRvIHZpcnRuZXRfZ2V0
+X2Jhc2Vfc3RhdHMoKQo+VGhpcyBtYXkgYmUgYW4gZW50aXJlbHkgcmVhc29uYWJsZSBjaG9pY2Ug
+aWYgeW91IGNhbid0IC8gZG9uJ3QgCj53YW50IHRvIHJldGFpbiB0aGUgc3RhdHMgZm9yIHRoZSBl
+bnRpcmUgZGV2aWNlIChlLmcuIHdoZW4gcXVldWVzCj5nZXQgZGlzYWJsZWQpLiBCdXQgcGxlYXNl
+IGV4cGxhaW4gdGhlIGNob2ljZSBpbiB0aGUgY29tbWl0IG1zZy4KPgo+UGxlYXNlIGV4cGxhaW4g
+eW91ciBtb3RpdmF0aW9uIC8gd2hhdCBtYWRlIHlvdSB3cml0ZSB0aGlzIHBhdGNoLgo+VEJIIHRo
+ZSBwYXRjaGVzIGZyb20gS3lsaW5PUyBhZGRyZXNzZXMgYXJlIG9mdGVuIHNsb3Agc28gaXQgd291
+bGQKPmJlIHVzZWZ1bCB0byB1bmRlcnN0YW5kIHdoZXRoZXIgeW91ciBjaG9pY2VzIGhlcmUgYXJl
+IGd1aWRlZCBieQo+cHJvZHVjdGlvbiBleHBlcmllbmNlLCBvciBub3QuCgpJbiBteSB3b3JrLCBp
+IG9uY2UgZm91bmQgdGhhdCB0cnlfZmlsbF9yZWN2IHJldHVybmluZyBFTk9NRU0gbGVkIHRvCnRo
+ZSBxdWV1ZSBoYXZpbmcgbm8gYXZhaWxhYmxlIGRlc2NyaXB0b3JzLiBUbyBhZGRyZXNzIHRoaXMs
+IGkgd2FudGVkCnRvIHByb3ZpZGUgc29tZSBzdGF0cyB0byBpbmZvcm0gdXNlciB3aGVuIGl0IG9j
+Y3Vycy4gRm9ydHVuYXRlbHksIApyeC1hbGxvYy1mYWlsIGluIERvY3VtZW50YXRpb24vbmV0bGlu
+ay9zcGVjcy9uZXRkZXYueWFtbCBmaXQgdGhlIGJpbGwsCgpSZWdhcmRpbmcgd2h5IGkgZGlkbid0
+IGludG8gdmlydG5ldF9nZXRfYmFzZV9zdGF0cywgVEJIIGkgZGlkbid0IGdpdmUgaXQKbXVjaCB0
+aG91Z2h0LiBJZiB5b3UgdGhpbmsgaXQncyBuZWNlc3NhcnkgLGkgY2FuIGFkZCBpdCBpbiB0aGUg
+bmV4dCB2ZXJzaW9uLgoKCj5MYXN0IGJ1dCBub3QgbGVhc3QsIEFJIHN1Z2dlc3RzOgo+Cj4+IEBA
+IC0xOTE3LDggKzE5MTksMTAgQEAgc3RhdGljIHN0cnVjdCBza19idWZmICpyZWNlaXZlX3NtYWxs
+X3hkcChzdHJ1Y3QgbmV0X2RldmljZSAqZGV2LAo+PiAgCX0KPj4gIAo+PiAgCXNrYiA9IHZpcnRu
+ZXRfYnVpbGRfc2tiKGJ1ZiwgYnVmbGVuLCB4ZHAuZGF0YSAtIGJ1ZiwgbGVuKTsKPj4gLQlpZiAo
+dW5saWtlbHkoIXNrYikpCj4+ICsJaWYgKHVubGlrZWx5KCFza2IpKSB7Cj4+ICsJCXU2NF9zdGF0
+c19pbmMoJnN0YXRzLT5hbGxvY19mYWlsKTsKPj4gIAkJZ290byBlcnI7Cj4+ICsJfQo+PiAgCj4+
+ICAJaWYgKG1ldGFzaXplKQo+PiAgCQlza2JfbWV0YWRhdGFfc2V0KHNrYiwgbWV0YXNpemUpOwo+
+VGhlIGNvbW1pdCBtZXNzYWdlIHNheXMgdGhlIHBhdGNoIGNvdW50cyAiYnVmZmVyIGFuZCBza2Ig
+YWxsb2NhdGlvbgo+ZmFpbHVyZXMgb24gdGhlIHJ4IHF1ZXVlIiwgYW5kIHRoZSB1QVBJIGRlc2Ny
+aXB0aW9uIGluCj5Eb2N1bWVudGF0aW9uL25ldGxpbmsvc3BlY3MvbmV0ZGV2LnlhbWwgZm9yIHJ4
+LWFsbG9jLWZhaWwgc2F5cyAiTnVtYmVyIG9mCj50aW1lcyBza2Igb3IgYnVmZmVyIGFsbG9jYXRp
+b24gZmFpbGVkIG9uIHRoZSBSeCBkYXRhcGF0aCIuICBDYW4gc2V2ZXJhbAo+YWxsb2NhdGlvbiBm
+YWlsdXJlIHNpdGVzIG9uIHRoZSBzYW1lIGRhdGFwYXRoIHN0aWxsIGJlIG1pc3NlZD8KPkluIHRo
+aXMgc2FtZSBmdW5jdGlvbiB0aGUgZWFybGllciBidWZmZXIgYWxsb2NhdGlvbiBmYWlsdXJlIGlz
+IG5vdCBjb3VudGVkOgo+CXhkcF9wYWdlID0geGRwX2xpbmVhcml6ZV9wYWdlKGRldiwgcnEsICZu
+dW1fYnVmLCBwYWdlLAo+CQkJCSAgICAgIG9mZnNldCwgaGVhZGVyX29mZnNldCwKPgkJCQkgICAg
+ICAmdGxlbik7Cj4JaWYgKCF4ZHBfcGFnZSkKPgkJZ290byBlcnJfeGRwOwo+YW5kIHhkcF9saW5l
+YXJpemVfcGFnZSgpIHJldHVybnMgTlVMTCBleGFjdGx5IG9uIGFsbG9jYXRpb24gZmFpbHVyZToK
+PglwYWdlID0gcGFnZV9wb29sX2FsbG9jX3BhZ2VzKHJxLT5wYWdlX3Bvb2wsIEdGUF9BVE9NSUMp
+Owo+CWlmICghcGFnZSkKPgkJcmV0dXJuIE5VTEw7Cj5UaGUgbWVyZ2VhYmxlIFhEUCBwYXRoIGhh
+cyB0aGUgc2FtZSBzaGFwZSBpbiByZWNlaXZlX21lcmdlYWJsZV94ZHAoKToKPm1lcmdlYWJsZV94
+ZHBfZ2V0X2J1ZigpIHJldHVybnMgTlVMTCB3aGVuIGl0cyBwYWdlX3Bvb2xfYWxsb2NfcGFnZXMo
+KSBjYWxsCj5mYWlscywgYW5kIHRoYXQgZ29lcyB0byBlcnJfeGRwIGNvdW50aW5nIG9ubHkgeGRw
+X2Ryb3BzL2Ryb3BzLgo+VGhlIEFGX1hEUCByZWNlaXZlIHBhdGggaXMgbm90IGluc3RydW1lbnRl
+ZCBhdCBhbGwuICB4c2tfY29uc3RydWN0X3NrYigpLAo+Y2FsbGVkIGZyb20gdmlydG5ldF9yZWNl
+aXZlX3hza19zbWFsbCgpIGFuZCB2aXJ0bmV0X3JlY2VpdmVfeHNrX21lcmdlKCksCj5mYWlscyBs
+aWtlIHRoaXM6Cj4Jc2tiID0gbmFwaV9hbGxvY19za2IoJnJxLT5uYXBpLCBzaXplKTsKPglpZiAo
+dW5saWtlbHkoIXNrYikpIHsKPgkJeHNrX2J1ZmZfZnJlZSh4ZHApOwo+CQlyZXR1cm4gTlVMTDsK
+Pgl9Cj5hbmQgeHNrX2FwcGVuZF9tZXJnZV9idWZmZXIoKSBkcm9wcyB0aGUgcmVtYWluaW5nIGJ1
+ZmZlcnMgd2hlbgo+bmFwaV9hbGxvY19mcmFnKCkgb3IgdmlydG5ldF9za2JfYXBwZW5kX2ZyYWco
+KSBmYWlscywgYWdhaW4gd2l0aG91dAo+dG91Y2hpbmcgYWxsb2NfZmFpbC4KPlNvIHdpdGggYW4g
+WFNLIHBvb2wgYm91bmQgdG8gYSBxdWV1ZSwgb3Igd2l0aCBhbiBYRFAgcHJvZ3JhbSB0aGF0IG5l
+ZWRzCj5saW5lYXJpemF0aW9uLCBjYW4gcngtYWxsb2MtZmFpbCBzdGF5IGF0IDAgd2hpbGUgbWVt
+b3J5IHByZXNzdXJlIGlzCj5hY3R1YWxseSBjYXVzaW5nIHRoZSBkcm9wcz8KPi0tIAo+cHctYm90
+OiBjcgo=
