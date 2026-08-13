@@ -1,107 +1,81 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642F247CA65
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 13:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B91472F73;
+	Thu, 13 Aug 2026 13:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786626466; cv=none; b=a7jMoltH6oy8gWd+qZojnzHp7VByv8ZNeKrXsMyeAtBnKGEo2PxcSi3vZRash79Diort506fT25lrQagGVfNtXz+ojwldyyO/eLxyfndBuDARdrHSiTEqJpp+FVedGUyTHs2UjBwebjyxjdMW5n4eUmpGjIdwF8aEeHRZPOFnHs=
+	t=1786626621; cv=none; b=nb+iIDdNlzbDOmmnlYg4bZOgd3+jsIZWmmWx+upUtTALWqwJlY/FW8VkehX6xiVvUMEiQHhxoq4JJ2gJPmT7iTeyWclqUmy5up3wzG9cRIVLRyln9pjzZwWqBASFvOz3LC4F7zbsqHXiRUkrl97oDzDNb3+/TafzX5GfF5wKOgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786626466; c=relaxed/simple;
-	bh=PgCkBg+SaqY2ck5/bBDSS+1DtbuO8coJDwswlb7aiy8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mYmDNqf6Tx7g9AKLZ2i6dHrus7gbAH7sOvnjeLkQyPfPw/LBYViPVLwe8oyPlCkvF2CP0/Mq4f1fNR5iyRfbQUQhC2CkUlx+CFWjXDf8cRzojt+Zdnk+ZnUCG8WuEovkCFVi39IxifOEANBp0+95ERwCmyls4/Xu9UWkCQHpK8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EWcNec1z; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1786626621; c=relaxed/simple;
+	bh=EAuqKDJO0fiosKHSjj1Bt7yAT7PKeaQ6hwcjlR8Bs9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M9r/bUizz6z9ch7GbGGLwDKu/xWr8sGMFgrx2uVOH5rftwt0fzm80OIuzJ79NFy5ZrN2daCN4uehNwxKrLftV8DXDlsJAqrdsBRIMpypK2bZzP420s3vvO+dFn5xwjbLtlINNPIMw8OONuslNRbYmBUGClvtp6P9qq/x8aqtpHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXotiNnr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EWcNec1z"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4957eefd361so15763215e9.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 06:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786626463; x=1787231263; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fMxauQa/lOA4/+kENFd3ICiTI2KeojXJKd2HkM4Rljc=;
-        b=EWcNec1zcJYAmde1PZCkNdU1cZKydSyQN+a3KKI+2CXow72LAXSvzDW9boxiz5zFuD
-         NxR4xD+SZwVHvLuTMvjcliRS6cyLgkOiB6Wvxag5oP6ao4UO8Z3qkQAHq2HR4w8mcsRB
-         UnvUFCczQDFg/vRwVAvZ9UT/AfBP5R56hGPlqnKywwMt3vS80DK68VN+NIhy5L8/Bt22
-         z7Q+aVqcr7vACoC6Qi5/95f9EEunmqUdu/s5lLuiAH1YouBsHmXzBQ3eY5mhro+kIGRw
-         XU5oaRv9eZGQnI96hNxUqQv/H3Eh+kUMkPG5iuuO6htwC5S5Re6gD8gZA0b2PEi6o89w
-         ewwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786626463; x=1787231263;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fMxauQa/lOA4/+kENFd3ICiTI2KeojXJKd2HkM4Rljc=;
-        b=U5l/BHKtiEhUSa6yUIZFQvQR5XahfgKJxeiIF0MvlUgH4OkieAUUDwoQbDe+f1+5MP
-         S7QpL2K0qgJRE5edwjXnWzvPAUiwkEyTEWL3E4zKhtbHX+D1su0xUsTitXaqvzuWVuLB
-         O6NwuNHDJStsem4r442XyDwpgBwLOZtWLsJNBNKzlyTsosGIRPLUzNZmhFLiIpTHhf9/
-         tJfmVKLDMx72S6m5N8mECLPksQGPspjF2eDszTc4KKAut4lkrO5m0tc/gNdP9KXSnKiz
-         o56OjebgcfFOlchyhxMBIPsDjOuiR056FYAFWKO7l9jvhuUbQxPoZ0FV0YTcKZHMDyHL
-         PGHg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq9o6VbdWhvfIalDOW+f/P3TDY7IDifjUT1FW6+3kONhWDwPckXaozCG8c69sYfpmxhbWVfUwY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCYvdrf+AGAjjYJxrHC5Pq35xrc6brmQDoMc5z40SC/j2NwEBX
-	rqKyiEJUjdw40rzpcYQ1q2pC2zwQNYNZl+7Y/TSc7N1xlzdWJZACg8bZfZmg5cZRB08=
-X-Gm-Gg: AR+sD13I8HTBNc4tmx3Sv1AKRL36mbaHLRx1fF5UVyLjoVp1Kv8Wh3SjT50EolAt167
-	6drAORMd8VI46Yi3I7pebh7jRF0GdjTKjRKTMwATvok0PV2C3jSNWG+rbhtmEBW90879jTx4YvY
-	DxcnCr7AWEbjx2FJaDnWSl/fRYlxjerrrQOAUac20jiNVdKOarxv+Cqjv4O5DwQRPGY1PDQzG9R
-	qkuZJaPBQx2BTas2RMzJ2B40f8Y6CR0yJ87IeOCkOLiuJI3eVUVWBJoupY7XZRLWJkRs6EHRgpw
-	bW/Vsmgyh+ae25+yKPCDv+tQfgA0YEfr4+cvAwvj1UTq4S3bsYKkPubod+AnggiFs5RmtF/nlqo
-	ktYXoxBbv0d7ljkjzn5tqs0T2+AF7POImixuvWNAiPz/TTJfeq89TqLrl2DlHMva0m+k9Zk3kFk
-	03PAIiBRjrTHUmO0ZIqRvTB/nYbzeEIL3cwpl+NArWmbCZkq+/xWJjk1k1g+RdNw==
-X-Received: by 2002:a05:600c:b99:b0:499:7a5e:4c3f with SMTP id 5b1f17b1804b1-4998215a94fmr60223455e9.1.1786626462572;
-        Thu, 13 Aug 2026 06:07:42 -0700 (PDT)
-Received: from linux ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981abd6desm72030885e9.0.2026.08.13.06.07.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 06:07:42 -0700 (PDT)
-From: Marco Crivellari <marco.crivellari@suse.com>
-To: daniel@makrotopia.org
-Cc: andrew@lunn.ch,
-	dakr@kernel.org,
-	davem@davemloft.net,
-	driver-core@lists.linux.dev,
-	edumazet@google.com,
-	gregkh@linuxfoundation.org,
-	horms@kernel.org,
-	johannes.goede@oss.qualcomm.com,
-	kuba@kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	luiz.dentz@gmail.com,
-	marcel@holtmann.org,
-	miriam.rachel.korenblit@intel.com,
-	netdev@vger.kernel.org,
-	olteanv@gmail.com,
-	pabeni@redhat.com,
-	rafael@kernel.org,
-	Marco Crivellari <marco.crivellari@suse.com>
-Subject: Re: [RFC PATCH 1/4] driver core: add device_schedule_reprobe()
-Date: Thu, 13 Aug 2026 15:07:06 +0200
-Message-ID: <20260813130706.238544-1-marco.crivellari@suse.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <anpxXANMYTlOHbPo@makrotopia.org>
-References: <anpxXANMYTlOHbPo@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXotiNnr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7CF1F000E9;
+	Thu, 13 Aug 2026 13:10:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786626619;
+	bh=dw/YLbdmVxlibKcPRjBfsqF+6zRf21vIPW4FyAAyn5w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NXotiNnrnQjnNMPKSgLvCw9WRna6KKAr8r7g+P77Re1VkRTeiVLO3o0wDdMOKXaT4
+	 vXusTgJc6zaW7cGItixUL6zLQjH8Vk7LPywn57C8DAz1NvO6u2HQ2qw+7U0kXA1w8L
+	 RBHKsSOEbBs7eBHD9DOlNr2+RNBC+oP3fm1YtQmokXFZMTEVNonW7/NpqWHYMlwUTO
+	 NGHpAc/Q+VxNcQbC3qrxbkFuL3YYSMHNDxHvKtVNKXIxCvqIYZ0pNfs1MBQYaaX/5D
+	 hoMbxGKMTdjofubN3gJn6PvRA4rlVvf8iVuIdWnqZiuWjvjq217EqXe7rsE/1Sb/Ip
+	 kwRVUXMbDxwaw==
+Date: Thu, 13 Aug 2026 14:10:15 +0100
+From: Simon Horman <horms@kernel.org>
+To: fy15309206903@gmail.com
+Cc: Mika Westerberg <westeri@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3 0/2] net: thunderbolt: two fixes for the failed
+ bring-up path
+Message-ID: <20260813131015.GA265046@horms.kernel.org>
+References: <20260811-b4-tbnet-hopid-v3-0-9e75d1b51331@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811-b4-tbnet-hopid-v3-0-9e75d1b51331@gmail.com>
 
-Hi,
+On Tue, Aug 11, 2026 at 01:20:48PM +0000, Fan Ye via B4 Relay wrote:
+> Two separate defects reached through the same branch in
+> tbnet_connected_work(), found on an ASMedia ASM4242 host-to-host link
+> when the peer drops out while a connection is being brought up.
+> 
+>   1 releases the HopID the allocator handed out when it is not the one
+>     that was asked for.  Today it stays allocated for the rest of the
+>     XDomain connection.
+> 
+>   2 marks the connection down on the failure paths, so the next
+>     tbnet_tear_down() does not run a second teardown over work that was
+>     already undone: stopping rings that are already stopped, which is
+>     fatal under panic_on_warn, and handing back a HopID this connection
+>     never owned.
+> 
+> Patch 2 edits the lines patch 1 adds, so it has to come second.
+> 
+> Changes in v3:
+> - Cut both commit messages down after review; the code is unchanged
+>   apart from the comment on the new helper in patch 2, now one line.
+> - Link to v2: https://lore.kernel.org/netdev/20260810-b4-tbnet-hopid-v2-0-0eee557e75df@gmail.com/
 
-> +	queue_delayed_work(system_unbound_wq, &rp->work,
-> +			   msecs_to_jiffies(delay_ms));
+For the series:
 
-Please note that system_unbound_wq is deprecated. The new unbound
-workqueue is system_dfl_wq.
-
-
-Thanks!
+Reviewed-by: Simon Horman <horms@kernel.org>
 
