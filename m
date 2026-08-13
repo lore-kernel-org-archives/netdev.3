@@ -1,116 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F332447986F
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D627F451984
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786634053; cv=none; b=bPqnZsW3ysomsQxErOOsBsbnOTKYdyrISN8FC8BlNOu9ejknYstlaMA+cjyFSHO3mQryO7sTfZB/ptHUwN5SPhA9hnUBxjpE8zDnZijJIh1YS1L4pPdlxWKfGYkugFyYdfOCdGOoHOSTRJFLtGl5w6Cf3Zka6uWkdIyhkvEqG6w=
+	t=1786634244; cv=none; b=MZ2u1DIv0ac0XBd+qpCelY+0zWTcDtGvd31Z7CXmDuoRAeXZC0GHKIsYtoA8fI5BNUahrgIJ0JixV0SmfIoF2tsUc2VitKOU5+ngPqguydazLRNGRndjjRYJzhEq3aYi0v9QRvC0Xg+IwyOGNvWyAnavk6Mc6ahGBSPsUEX3Qzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786634053; c=relaxed/simple;
-	bh=un88YKHcR53iGfBRG6dbnRWdPeUCwPjWKePHdc3weXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mpXvjU4MZaYWWwlz1zDEX3ODl6ogzJESevmJHHMkHqTjWAEWRWbS2gMuiDtckFqD1wq1oT8tmSXujvtOlVrEAErLlY/lbkaDxzsgKr6g1Kh6xs1TMpZyYNQdLK4wNS+B0a1n+uTsSs7zKi43baQEcvgklPJIoDY5DJsXIo+jCG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6qG3+mF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786634244; c=relaxed/simple;
+	bh=TcYdCgjat4sRp3k/mgKPjBft55Zc7FekWHextFO9+2Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rrW6YgyMsGkPqQ7ZcNvpzI/A9oa5FszwKebas8BYwSXCb/t7k2XoGnng3D77+NREYKy7dHJ1rGloYyUjr2FkmiS+OQYcu3sM47VPT4Vkp4lakwKEieVAs5I+Ovf4b/kf/TFZd2GThx8xmVCP1YlXs29UgAKsgareeI/5rFtTlcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yja7gtuv; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6qG3+mF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB2C1F000E9;
-	Thu, 13 Aug 2026 15:14:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786634051;
-	bh=un88YKHcR53iGfBRG6dbnRWdPeUCwPjWKePHdc3weXE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=D6qG3+mFksYYYixpg4zLdtmRqrY9VHcaFdRSXc5XKBXTwaSqGD/8Oab4aB993xRXn
-	 i7fuTCXDKzevfa5t7RFqNqj3KGRIIXm//sDzp5ny17QTGyMEeu+rd6VBjsojbCyx4+
-	 GQsFpdhgG5A7NBOjet9obwaLXNXxfMDu8h0uqEqux4qjxE0mhfu9Kl0Uy1obWSVxpd
-	 sTR6n4CuS4OLwh+tsBd+UoFH00QwXM10E97aLZpdH7oTUNDA+R077P/TUgIjWrargo
-	 60oBuknL+FqZqPj8g8HSoelySf3wbwTohNlocKUslRRm+L+f0qszhmuu1yo7iwvs5h
-	 o4l89beeisqKg==
-Date: Thu, 13 Aug 2026 08:14:10 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- ttoukan.linux@gmail.com
-Subject: Re: MLX driver for host-to-ARM communication
-Message-ID: <20260813081410.5fdeceb1@kernel.org>
-In-Reply-To: <ba322fd3-9f91-4e2c-9000-12d473ecb249@nvidia.com>
-References: <ba322fd3-9f91-4e2c-9000-12d473ecb249@nvidia.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yja7gtuv"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=aTuhpX+B24zfJBOZMteUvwDbbBGDBfXX6kBD9sb1oN4=; b=yja7gtuv5KB9Zxt84kCKL0HBEF
+	KLd36il9rDZWA47sqGCe9SP8HSLpBlRsFjMsGUuZnePlpoAQKrY7c60UcJur/0e26MlJmJYalCmQc
+	NIemiLyIzAtkWIFwWhZoivKDojupBBwsPTLFWiEa4j5sVKlykVq1FLJjMZYo64crKGs4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wuXB7-00HRq6-FB; Thu, 13 Aug 2026 17:17:09 +0200
+Date: Thu, 13 Aug 2026 17:17:09 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Zhixing Chen <running910@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] r8169: keep LED device name valid after setup
+Message-ID: <b3d1aacb-8e7f-4ebb-b287-3dd09b02943e@lunn.ch>
+References: <20260813100711.14724-1-running910@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260813100711.14724-1-running910@gmail.com>
 
-On Thu, 13 Aug 2026 11:33:23 +0300 Tariq Toukan wrote:
-> Hi,
->=20
-> I plan to submit a patch series introducing a new minimalist MLX=20
-> host-to-ARM communication driver.
->=20
-> Could you confirm whether this series can be submitted in parallel with=20
-> our regular mlx5 feature patches without conflicting with the 15-patch=20
-> limit?
+On Thu, Aug 13, 2026 at 06:07:11PM +0800, Zhixing Chen wrote:
+> rtl8168_setup_ldev() and rtl8125_setup_led_ldev() build the LED device
+> name in a stack buffer and assign it to led_cdev->name.
+> 
+> The LED class device registration path reads led_cdev->name after it has
+> been assigned, and struct led_classdev stores the name as part of the LED
+> class device state. Do not keep a pointer to a setup function's stack
+> buffer there.
+> 
+> Store the name in struct r8169_led_classdev instead, so it remains valid
+> for the lifetime of the LED class device.
 
-Not really - is there a vendor that's submitting more patches just
-because they have more than one driver that you know of?
-Doesn't matter how you slice your code.
+led_classdev_register_ext() does make a copy of name, in order that it
+can mangle the name to fit the naming scheme. led-class.c only
+accesses led_cdev->name in led_classdev_register_ext(). So i think the
+current code is safe.
 
-If you have concerns about patch volume please me reminded that since
-you don't review much your patches get the time penalty for coming
-from a non-reviewer. Luckily Ido is reviewing a lot so at least you
-don't get the company penalty any more.
+However, it could become an issue in the future, if the LED core code
+ever changes.
 
-> It is to be placed in its own new directory:
-> drivers/net/ethernet/mellanox/mlx5/nodnic/
->=20
-> Find more details below [1].
->=20
-> Regards,
-> Tariq
->=20
->=20
-> [1]
-> net/mlx5: Introduce mlx5_nodnic driver for BF4 management PF
->=20
-> BlueField-4 no longer includes the RSHIM hardware that previous
-> BlueField generations relied on for host-to-ARM communication. In its
-> place, the firmware exposes two dedicated management PFs =E2=80=94 one fa=
-cing
-> the host side and one facing the ARM side =E2=80=94 and configures steeri=
-ng
-> rules to loop traffic between them, enabling host-to-ARM communication
-> through standard networking interfaces.
->=20
-> Add mlx5_nodnic, a lightweight driver for these management PFs.
-> NODNIC (No DRAM NIC) is a lightweight interface intended to allow
-> simple packet transmission for minimalistic drivers with a low memory
-> footprint. The driver communicates with the firmware through PCI
-> Vendor Specific Capability (VSC) =E2=80=94 reads and writes over PCI conf=
-ig
-> space, unlike mlx5_core which uses a DMA-based command interface.
->=20
-> Each management PF exposes a single SQ and a single RQ that share
-> one CQ. The interface configures two MSI-Xs: the data MSI-X fires
-> on CQEs, driving both TX and RX completions; the event MSI-X notifies
-> on port state changes, where the firmware brings the port up once both
-> the host and ARM sides have gone up.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-This will be nacked. We nacked multiple such drivers over the years.
-Most recent one not more than a year ago.
-
-If you model the device as a network node it should be reachable via
-the normal networking path. If it's a control channel - explicit
-control channel APIs should be built, rather than doing pretend
-networking.
-
-Every IPU vendor gets to this sort of design sooner or later because
-it's an easy hack when running a user space SDK. nVidia has clearly
-turned from upstream work to pushing your DOCA stack on all customers.
-No matter how many shameful lies y'all told about fwctl not being DOCA
-related. This is just a next step. But please commence your bullying
-campaign. What do I know, right?
+    Andrew
