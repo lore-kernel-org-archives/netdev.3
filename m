@@ -1,66 +1,66 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A35446BFC
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 10:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8D544A403
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 10:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786615886; cv=none; b=RP9893blUL+t24sooOTTPvfShUBk2e0aAGbvibmuUglP1pfeWJAMeRu5htzQQ48WVfxII1H6HN8a2A7eHTex3VDZ3rZgxOIHNMO/ZSkGEEKqqQzIUqFWFjim7V/nN4WjdsqrUFJgJrzIhDA6/g9IFYzJ5ZH3jEQtRWG3GT5rLb4=
+	t=1786616007; cv=none; b=OAe/48tS5Sl+kV6OSOlLPY6LeMHKpr7bXfAmMvwceU7UVw6uefRJ01CNZavgsd2GrJVnKM/cTGKznq58EkCxbRYb34kDzYvLTfATY13ilmBPSxLRURxdnSJwbzdfreh5YPsixHpP3TtEJpxXTlOOsVK5LORH9QRa2OHgeO7i8fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786615886; c=relaxed/simple;
-	bh=YgsUbLje683fmKSLiuc4F1nLOAKszh60ozLryAlB608=;
+	s=arc-20240116; t=1786616007; c=relaxed/simple;
+	bh=VNqAjouGl0DgXdxFLP6U0GGMMmgOOvcbRsPlNLCe8ak=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pa4WArnOj6Z8gUXslPCHaQi5D2kuC62WI/IP4QdbulhSDSNSzhyokvBRP2EuLzl7pPFI3B9uJsAwF35aOcWpswzAwR8aM7TDtGqzsQ/G3TKp0/o7GhlfXB0HA10d55wzBuaby3lesQZM/4E7MjiqC8ExDjsxkMC6rHcRZNjlD6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ris++Adz; arc=none smtp.client-ip=209.85.221.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=RhbMk7/M3OBG+vWV5JYR5TyNsnT02TgIGbkckwmQHgzrl+uUShuE84iJIrjwyde2+dca0npewpDkqB7F/TdHFqOyxYL13cxlg+mtRjwv//wZ/jG66eSXyNY14L+/gaBeyrZ2ZjrGLQY0d1c1Fz9Qt/yyUYA4c9WwSBve4sLkpkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jtbo/9XV; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ris++Adz"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47f84023916so1680668f8f.3
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 03:11:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jtbo/9XV"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so1853534f8f.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 03:13:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786615883; x=1787220683; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786616003; x=1787220803; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Vsc/t9j+f4tMpv+gJvijHu1ikwVWEPFOE/I17iet5V0=;
-        b=Ris++AdzYgTx1ErH+WXMNOophrhFN5gn7MYlc/ERrrFDb8xJbd64j8GPxkvqIIugos
-         ysNu95ddF5Fzt82HmfJpMACX8h6oq9loEOaCHUQZOXXcsZLJHG/H7rGTTWH1yObi84Qq
-         4/VHegPEgrDRcdL8u9OCo4z7S6GVjzZ6Q8cug6zd1lr53t/7sXAdFcN8zHmxM1qp44TP
-         TRhMW6JxtmednSFvMsIxiyNCNMiBfHgz2RUWSel0DgZ5xI/fgjPLEOIAR9+weLC9jFZo
-         b6JJnpGn5h2ynlhiynlEbxTZOq99Gb/mhKT9kFsQHQRlukBnpueavq7zPeUGgikszpeC
-         ygVQ==
+        bh=NrOZueBhFN0ZmDbFx88d1p3GnP8LNGEUfoQ4yi+QHNY=;
+        b=jtbo/9XV2tH0QR5G2RUxH9hE4YKvpr72lCsbmYeqgAH1nwWjhzyPBkoPmJLJpTTxhU
+         oBKrtsdvgtnlvywZgCf2Y1Xo/jPXfWMV/Q0k/pksbfd3L5NnJjAsUmVRGbpG71wOUX1q
+         Gzcx0ayx6pcFfpTbYuZNRrYiV+DInCvxOsikgbsTK21DTmwPXphSqmnmEa7Udbhk7PXc
+         3HU2I7AvZEC3Vhbn1WWtAkrxhdHQAYF8UVSOKJ1N2kbqqZfoij+D1uGxs52zP1TzWMXe
+         5MSi3M7uEsruXoNjhWzLNtPICbyh0eCbQkcS+Z5+E81Tq1s00W2oHtgaCE3r4S1y944+
+         rhHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786615883; x=1787220683;
+        d=1e100.net; s=20251104; t=1786616003; x=1787220803;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Vsc/t9j+f4tMpv+gJvijHu1ikwVWEPFOE/I17iet5V0=;
-        b=kq51EDBt+2MAOwYcBjTXE03Wdw6/qQaXkmCkBWUI6tmu79qYjl2LkNMWD4Q1pZO4yM
-         tMK1EuuSxXp2IO4HMavyy//KK+VPcWDKXJWyEqF1arkyps5ExxvZimt6AlqKprAOcMr1
-         kA1LKeFOhBe3q6o4lyCrS/ov4o78uM5g1mMU5ForTW/NBJjnSYY1N8eCuGAst4XbgYeR
-         P/Py8jXgSX0YJrGiOSejxLZsbMUcYw7JgvNdWqQFfg9fQxFgAwZuWBWLCcTJZeCFrkiZ
-         pqXl8IAqMqFA0s/uZ9iJCIlPjok/HND3SA5I5ce2SsXGwkb2n1yyGuHNEUVavWN/v8d6
-         MUYw==
-X-Forwarded-Encrypted: i=1; AHgh+Rra9x5yf32+MR7v6esBwiF07W4rmSiJb5WqX49A/ogxVTdqtC+fPgFgucAgbLEqmtn3ZRy93OM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzj/l0KtDAxUSVkfKa9G/lD8Ko5nWjLH4Z0R85wUDYBsCmKmtBO
-	yUEzI+oi8YsAtOXS3DuduVEgXm+kPlW1c2L6g2r4GgLLw3PMvqWP3MKH
-X-Gm-Gg: AR+sD13DTjzacg38osFmTeHaYQkrzWZQTFDsr37AHid7Jz68l4/4LACvtUO+ZFQHsT9
-	RTebX1aIzCXZ2wP24FeSc884fqT0QBCffEiGvSl+j1Gm7LLhhjrTxJapfuBPQxtIO5kp8WXU16I
-	WDqq/74FjSeXGVp/tpJRUBOtmkyK6DrW+7B0SrS64mnipZunjllmBKJWFFjZN1OKjeEPZiRiqg1
-	jZzru6tgG9iXpnXnwMj+khAI9LTSsgsZr1kog8bg/X0eWBbKp9TnZS96vmuADQc8+AiFlJ7PLXT
-	FKU0TjdtTCwFxjLTXzhV3uPWpNLbvk4ILgctwi/2oxvGZhabBhLBUZf2Rlkh0+47yzy1JdHwhNG
-	cWWLwoMuaqjohtqwuzBEcHUBZ0ef7Iyx4SwXjcP53zeopumAIcQFKQzHP+oYXrwcMgnOByLMvrt
-	jtvyTpuR3tN3Jj1+/mhx+KnRJloSnvlOIBmh8AXPrnDMSRG1fUsjW/mqs+UkhhegH7olam0S6fH
-	t8+wR/SVZaQwZECRNqi
-X-Received: by 2002:a05:6000:184a:b0:47f:eb80:ff42 with SMTP id ffacd0b85a97d-48159cbe26emr7265764f8f.4.1786615883005;
-        Thu, 13 Aug 2026 03:11:23 -0700 (PDT)
+        bh=NrOZueBhFN0ZmDbFx88d1p3GnP8LNGEUfoQ4yi+QHNY=;
+        b=mK3RE8TkWm0HoLiihPyruT+hs1LpbR38jT3IRRbNvPTs6QGAMtaVkNs5sZmIjmv04x
+         DoX3TMuqyj2zAU/X2HMzVkJcWVwXDOEYaJ0H+mQy29jHOqJAeHeO5qita/woG02XvXCn
+         V3QTrbBrdPAgRKuRJzp/YLzMdzQaG3rbvi+Z2Q3ZQbKEixh/QEME49O7i5E0d0FuzdZE
+         Rj00w6q2Ehgw8yVNT3XXTc4h55WpIPqK0dhXaLcJiz8PDyvOai59//Oa16zuBV0nRgYH
+         h63ljGqRajlK8++Eei+lBPGf90grP0hmr+kHN4DU2NofJCRbVEHyv9r3p2264h+MSzvE
+         IKNA==
+X-Forwarded-Encrypted: i=1; AHgh+RoUg5k1kqmVa2ZmxCcVwpL2Hp0uE+0/ol94jwUcE2ZzR2S4p99mCnqfImEbk0WVMl94WKDkdyY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxE9XuLkAYMlFuX8BbzZAYosl25Z9PtsLLV/uM+OyU0Qi1zirgJ
+	jRuaOzTeE+GDJg7nXvnVsrCGxPmJMTGzGgUctdP87VfwG+/DGHpSTSAh
+X-Gm-Gg: AR+sD13TpfT6O+cjHYd29F7COvkVHUptkmRIKg44rQTJkQgXBH2WNyQGURtOx6Ue0/g
+	Nnbl58OJ6xLQWOv51JOJBWbsN9AFPTO5BRQAWEGh6Sqfety82RiJ4hV5TEKBYvG87I1FBfiOX+E
+	dEBUzJ/wDK9GKzBRxARLAo3GXDvl5six5Bozr2GNIfSkXhqZIy6OLYuIivEOcQQS4k8VO12bD9p
+	noAqWCHNaloiH6IN1riVvNhX3EN7kvcOWoaTpp99W2fEBJnnqA0R1TPsupVm4E7CUll9jCdmi9h
+	AyKjeRbh8GEXBkhpNRvrcqkM4KLjgQnAeJoxOCRWgpd8sNgdANp6TyzP9oWrAyh59xuC+OWbCnv
+	X7JXkqz4nWmA/IMHM2ops5xOe7u8HjjR+13DVH6I39beAjnJ/IyeQXhexLvEyU1RQTUB5hV8xIs
+	gAu8NThCOV2N9jHR2IOVss6MUql6RlZex3e9p1jYa/mWqWqCCpC+nP9SKkNBlZrysHqsFgybo4x
+	gsTpMt/0Ebu8JQKvfy+
+X-Received: by 2002:a05:6000:1a8d:b0:481:5ba5:9927 with SMTP id ffacd0b85a97d-4815ba5a034mr4000236f8f.9.1786616002724;
+        Thu, 13 Aug 2026 03:13:22 -0700 (PDT)
 Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a56123asm5759067f8f.8.2026.08.13.03.11.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a56981csm5227397f8f.10.2026.08.13.03.13.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 03:11:22 -0700 (PDT)
-Date: Thu, 13 Aug 2026 12:11:19 +0200
+        Thu, 13 Aug 2026 03:13:22 -0700 (PDT)
+Date: Thu, 13 Aug 2026 12:13:20 +0200
 From: Mahe Tardy <mahe.tardy@gmail.com>
 To: bot+bpf-ci@kernel.org
 Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
@@ -72,10 +72,11 @@ Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
 	memxor@gmail.com, jiayuan.chen@linux.dev, sdf@fomichev.me,
 	martin.lau@kernel.org, yonghong.song@linux.dev, clm@meta.com,
 	ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next v6 1/5] net: Add connect_socket() helper
-Message-ID: <an2YR6g_9SPEaemw@gmail.com>
-References: <20260812154328.72834-2-mahe.tardy@gmail.com>
- <4a025fcdd177da13b51aa8042d59fa5d8e3a7c022bde50d5cf79c92ed3ad516a@mail.kernel.org>
+Subject: Re: [PATCH bpf-next v6 5/5] selftests/bpf: Add ksock test for async
+ callback guard
+Message-ID: <an2YwKV8qx1wXkcA@gmail.com>
+References: <20260812154328.72834-6-mahe.tardy@gmail.com>
+ <427cd292151a90f499819620700c9c582f1b63348d91d8727eee4200c268200e@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,33 +85,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4a025fcdd177da13b51aa8042d59fa5d8e3a7c022bde50d5cf79c92ed3ad516a@mail.kernel.org>
+In-Reply-To: <427cd292151a90f499819620700c9c582f1b63348d91d8727eee4200c268200e@mail.kernel.org>
 
-On Wed, Aug 12, 2026 at 05:25:37PM +0000, bot+bpf-ci@kernel.org wrote:
-> > Add a helper that connects an existing socket while invoking the LSM
-> > hook. Reuse it in __sys_connect_file() to avoid duplicating the connect
-> > logic. Other socket operations have equivalent helpers that trigger the
-> > appropriate LSM hooks that can be reused, this one was the only one
-> > missing.
+On Wed, Aug 12, 2026 at 05:25:40PM +0000, bot+bpf-ci@kernel.org wrote:
+> > diff --git a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
+> > new file mode 100644
+> > index 0000000000000..5b9c6cc303922
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
+> > @@ -0,0 +1,34 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/* Copyright (c) 2026 Isovalent */
+> > +
+> > +#include <unistd.h>
+> > +
+> > +#include "test_progs.h"
+> > +#include "ksock_wq.skel.h"
+> > +
+> > +void test_ksock_wq(void)
+> > +{
+> > +	LIBBPF_OPTS(bpf_test_run_opts, opts);
+> > +	struct ksock_wq *skel;
+> > +	int err;
+> > +
+> > +	skel = ksock_wq__open_and_load();
+> > +	if (!ASSERT_OK_PTR(skel, "ksock_wq open and load"))
+> > +		return;
+> > +
+> > +	err = bpf_prog_test_run_opts(
+> > +		bpf_program__fd(skel->progs.ksock_wq_start), &opts);
+> > +	if (!ASSERT_OK(err, "run ksock_wq_start"))
+> > +		goto out;
+> > +	if (!ASSERT_OK(opts.retval, "ksock_wq_start retval"))
+> > +		goto out;
+> > +
+> > +	while (!__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE))
+> > +		usleep(1000);
 > 
-> This isn't a bug, but could the changelog note which follow-up user needs
-> connect_socket() to be global (rather than static in net/socket.c), so the
-> new header declaration is justified within this patch?
+> What happens if the workqueue callback never runs or blocks? This loop is
+> unbounded, so the test would hang forever rather than failing. test_progs
+> has no per-test timeout, so a hang here would block the entire test run.
 > 
-> The changelog motivates the helper only by the in-file reuse, but on its own
-> that would not require a new global symbol: connect_socket() is declared in
-> include/linux/socket.h while its single caller is 26 lines below it in
-> net/socket.c. The actual consumer is the bpf_ksock_connect() kfunc added later
-> in the series, which the message does not mention, so a reader of this patch
-> alone cannot tell why the helper is not static.
+> Adding an iteration cap (e.g. a bounded retry count followed by an ASSERT
+> on callback_done) would turn a CI hang into a normal test failure. For
+> comparison, prog_tests/wq.c uses a bounded usleep(50) before asserting.
 
-Indeed if needed, this could be made more explicit. Currently it's
-implied that one helper was missing "for the next patches".
+Unsure how likely it is but it could be indeed improved in this way.
 
-> > Other socket operations have equivalent helpers that trigger the
-> > appropriate LSM hooks that can be reused, this one was the only one
-> > missing.
-
+> 
+> > +
+> > +	ASSERT_EQ(skel->bss->create_err, -EOPNOTSUPP,
+> > +		  "workqueue create rejected");
+> > +
+> > +out:
+> > +	ksock_wq__destroy(skel);
+> > +}
+> 
+> [ ... ]
 > 
 > 
 > ---
