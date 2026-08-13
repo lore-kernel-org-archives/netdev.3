@@ -1,63 +1,63 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0B5283FD4
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDC4335BBB
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786586751; cv=none; b=E09SOSwEMu7qwQ/roVZ/JRhW3xLfLjCqgDl3GbQrVbyO6S5JtThuTN0UjT1g6L2wSJiDUW1GaoXWVM4ehumkvQI/Yxhg27KBpDXtkIUoeXfpth79qNHhxOFdeh4YALR5DW1yoLdqqAtMbi5i4mkk9IiMoj5fkzBdMBV6Qd3CuZs=
+	t=1786586753; cv=none; b=bCy+Ak6h+1ipQkPJ8Vd2oBuEmLiVgmsqBVj39D+TY/V6YqheB5UPBovut5KUWNXRLodkUQKqqtfWPz3WuZwmQZDFP0BjCuUfwgIP6fIsyibNJNs235XXXJ883s+8tZfUmsHtP69Km1Sd2nysLRgDo2YkLmuwkzPknw/uLkFN0pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786586751; c=relaxed/simple;
-	bh=NoPPj/k0yECCRKXLnFs4jx/Bik3Ai3QGy+N2adexgMo=;
+	s=arc-20240116; t=1786586753; c=relaxed/simple;
+	bh=zec+55ab3YT0w77903VBswCAY9sd9YekVCua/TwHj8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOX/zPu2K5lphpWytPfmB/6sfpbg8+73pGpQ9wJwPJRd6bgVWW27kZFdc7iHY/IJgQVcjwuU0u7tw2jwwaLypezxWOjywEiLiZgBjrMsBBiujUSi6Cke1xZlSvBeXdMNBSAckc+O8z98OCJcTf2QXymKfjRSeZci9A1TJvT4z9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C4Daw2PT; arc=none smtp.client-ip=74.125.224.51
+	 MIME-Version; b=tNvtgbx1eWkMHJ+yRI9r8/hDJxZ3ANBom08sdftm7uIRrlqErS1BfphGsDT0dNvHhODvRkTZqGW10OoYFx3Xhxp5knLaWkqdlDtdAEy6rfyVCYcr9sx+1svLwFT/xego7VmGC536GdCmh90n/h3gVql7N5ncI/OcjUG2wpSBi+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z3N4nju4; arc=none smtp.client-ip=74.125.224.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C4Daw2PT"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-6688a2dceb8so1327386d50.3
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 19:05:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z3N4nju4"
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6688dfaed31so2313287d50.3
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 19:05:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786586749; x=1787191549; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786586750; x=1787191550; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=b5YS55MiGQgBtBAdGNTcMzlj9MAhTrxnG2CrzEUU4Dw=;
-        b=C4Daw2PTKLLXFNCf/q4S+3HYtepi4irYJFo054NEojE3F4iyhMC9tYf5mxJ1gBXFOC
-         UCEIiSoVqghQNCj/BUapePM5OqrJyG9Qv3OuvG3JKSkf7ae92UR/2agYeykWIvAJqaQP
-         gME25drOe6Xd5+nrzOQfdllTv03reJJMhRltVWNIj/0sY/TYDTrNXNQxkBuDGC4zMbf+
-         QUPQVV6yyG7sH5csZ0sVDrGGIVFaydBP/QzOwrk5Y0GDiFxx5O/2DpD3pqQFAsRm5zLl
-         NkBh5OLN35T6Z3r9Up0nVxMArPCCwQtYaIGXyvcgL3OSAE2Z4LNgSUu5bK8iMFk5xOgz
-         tnrw==
+        bh=Q5su3Sb+fRiGsTSCMy9qYdzylpcx583cxA2pyRChJkI=;
+        b=Z3N4nju4ORF9dgdqwZUQ6elu4r1sbdRBJaB9qm9uYLJnoRVmiithEX5nPWJCqsk+h+
+         Y98c9kSv7FnANPiGhn1RD7jicYmyQGJOG3f8jyFP0+dVrqjXytpj7VEyJaN0x8b7ZwVT
+         RIJpIX9tZi7x0flz9bSQEyypuiFx0o1LmmnNFAMrthuJ0Hvlf1q/y3RlqOk4YWTlAhSo
+         bKu6En7zQlXkBD8Rz0M9QuRxrjW5FJKNu89qm9HpzgLFVNh57ol/xQTXyQxtCyFEIzxg
+         G+pYs2tySKQBXWogiTpEtn8L8VYfAPHNSKEM0XDQgaDvkLL4ZFhSvSOzB2rqPjY7BnXS
+         Z1rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786586749; x=1787191549;
+        d=1e100.net; s=20251104; t=1786586750; x=1787191550;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=b5YS55MiGQgBtBAdGNTcMzlj9MAhTrxnG2CrzEUU4Dw=;
-        b=QSXq+PAOgYbh7Gb1w7r7dvUIpGFPnKQJ+KKFDH2wP5IA7i82Xs02YJmeYH1onYrK81
-         QedbQI4Jh7ifMUDfkDmUZZch7zNT/MPefS/H3Qq2YwJDc6LZ5LpFJSMRmzcmeYNLV3WI
-         ijGT//vwFg7i8OXeMcrDmtNKlRLchKYb+wdQhRmpavVY6Lco+k62ilfQz0P51M3NPyx9
-         3QfqNG29LfxEFfDWhpHAIa0LTP45mW5/RRAHuHkW7GBtcQXWejCq7ahG4drrK5UWcehG
-         1opNQaQLUbzS5UHMsDL2YlKcUAeGgkEZc6a5Fif3xmJMbRagP/6CCqWUuf7q0GzyxnNX
-         Pc1A==
-X-Gm-Message-State: AOJu0Yy+VpcbPnycQq0AZmJeSbqamOrKoWC1TVg3VhisJYvMKq/fxVhC
-	h11lhw7pFvrcSzb88azPcnUr/vNg6yzyyho6BGW8+F/zJalO81iJxS45Sf6NGQ==
-X-Gm-Gg: AR+sD10pdOzKQGN9XR7H5mxlfD5o+w/8WAOoyjcuse3EyuX9rp+eobmnjcB3N8C0fUU
-	5fcWyxMK1OIBNh7IuerfATgT5fO7f9R6rWJA9ekNt1LEEzybJJEKfRUCBxy1+eWdVVcfEDIyxga
-	V2eny4oegLmVrCXUOU2W2SYvvDwY+HDuWeuhqjLXA4g3lcMkNKO4ME3eowiLVWBXyN9iL0boOis
-	xRIs2Xu7R/hxeEOkQb4p5uvsiMYmE//Rwyeq6wmuW7f+IZgIdNNVtrotQODNaU8QmW0fyehYmcA
-	MJB/ae8BkW4+S8tuibZK+rseB8cbIta8Ps2SCC+Bz2R4nOKncanjiDaIGwmvRzvYbXyEPCwQHUi
-	ZojxNlyntqVEmwm5zZZbyNKkedTabskf7Pn46gU8cQpunvbqI0B7som8J3p4u0ITuAKdBGBmupm
-	EsePklCjoAljDjmeh7LsgMYSBYUtKosathQD3BZm/P04jR+1s5wXxARGInQFO+lof9ljK/jAu5y
-	V/1R4+ouhXZCI06HatF1AioZH8o0haEey69qSCrYzxZthJJQBGpAfQ1pzo=
-X-Received: by 2002:a05:690e:440c:b0:667:debe:48fe with SMTP id 956f58d0204a3-66c5181942amr859971d50.45.1786586748366;
-        Wed, 12 Aug 2026 19:05:48 -0700 (PDT)
+        bh=Q5su3Sb+fRiGsTSCMy9qYdzylpcx583cxA2pyRChJkI=;
+        b=KLUovVb4CQmxWS2kC7v3vfOaPJCmtF3Yajm8QlVn6QhkI0avoCEia0WSF1jxF/9ORt
+         w0/U1KVOkNRP+AkjtON4aRE41GK4sMeosiMg3KsKquPd46/Q9gaE4iiQFHABSClpgjkE
+         hWrUtRmBPubPxQLHry8lSSdvhbmxYGxpxEfn4hnx5tzVWRvSYc23jYWieuchubg4fhu9
+         UN1KPHzYj4OX1krSlKfHXea3saJ6mMI8UYZo7OpdM6cjoomU9C1DXeBF4gfZsVl2ghz+
+         JJBohrNsE83a5L/e+RLsfDDVV7OWteNOhWWeQFUtjNvjbuEl0teUiQ6lKsPidvDQ3h5L
+         1U6A==
+X-Gm-Message-State: AOJu0YwI1ggPlQVyc8eIKrSj3OfwYV1O7jlE/fMEDjxv0fSvXmu6AalS
+	S/qX8Tn+w4anG9HVu3mBHvlmrPp5CZkanlQUNJHyeUk/FAszuOOXp3odQWDcKA==
+X-Gm-Gg: AR+sD11W6HWaxMuEJgSH3yLxH3saUTvCLXRcGym7ozEf6sOd6AfjZUc4CqidbNT+PRR
+	OTgpjYGL3+rXpM4HZv4XbvzXzem+3tv1nwRWO85slm7ooLhdFwgtIjboG1mAwOatACOhRU9WZgY
+	CW67wdkt7Nw7uDjBBEkSiiFnVQcvcwzrVpADvPqy5B5iaIXcBe6dWsv7ktBDz4mKda20E8EFOeA
+	4t5QkxhLy8GtzLdZmHTJp+1q0qP1pp85kderMbMRqbaijgL7AqEP7LtsYQOdtKT+ZFHo6TvTUo5
+	EphJ2JNxud8crjdx/OgiFbZTWI14B9cIrNPYh/xnyqD3gJsZfHNdEe53w35ZU36Oc4AtRWabo7A
+	ekEE/M3uyYfp6w3MyUvGL3pb1gfjGWZHmCuxAFL5yKPF5g+c/1FLdY1OVUE/5Y5VND/bWC2SqfD
+	F5J8V7OGD9qQMvlONrbSfpdtFlYEtGPWFDvWok9XSRN4qlFRfRDIpB5UaTX+NfJ0vAJjy1czrQd
+	GztrVmCWCp9vHczi8vNKyKKbkpuSoZn+8Jbna3IMpF8GbA43vLjh/dAzYg=
+X-Received: by 2002:a53:c9cd:0:b0:662:89c8:4a62 with SMTP id 956f58d0204a3-66c514c07a5mr1028203d50.18.1786586750330;
+        Wed, 12 Aug 2026 19:05:50 -0700 (PDT)
 Received: from willemb.c.googlers.com.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66c56e74870sm226899d50.6.2026.08.12.19.05.47
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66c56e74870sm226899d50.6.2026.08.12.19.05.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 19:05:47 -0700 (PDT)
+        Wed, 12 Aug 2026 19:05:49 -0700 (PDT)
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -66,10 +66,13 @@ Cc: davem@davemloft.net,
 	pabeni@redhat.com,
 	horms@kernel.org,
 	andrew+netdev@lunn.ch,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next v6 1/6] net: rtnetlink: add pacing_offload_horizon attribute to net_device
-Date: Wed, 12 Aug 2026 22:03:56 -0400
-Message-ID: <20260813020529.3506539-2-willemdebruijn.kernel@gmail.com>
+	Willem de Bruijn <willemb@google.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Joshua A Hay <joshua.a.hay@intel.com>
+Subject: [PATCH net-next v6 3/6] idpf: support pacing offload
+Date: Wed, 12 Aug 2026 22:03:58 -0400
+Message-ID: <20260813020529.3506539-4-willemdebruijn.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
 In-Reply-To: <20260813020529.3506539-1-willemdebruijn.kernel@gmail.com>
 References: <20260813020529.3506539-1-willemdebruijn.kernel@gmail.com>
@@ -83,208 +86,342 @@ Content-Transfer-Encoding: 8bit
 
 From: Willem de Bruijn <willemb@google.com>
 
-The 'max_pacing_offload_horizon' field of 'struct net_device' represents
-the maximum pacing offload horizon supported by the device.
+If skb->tstamp is in the future, program this future delivery txtime
+in the transmit descriptor.
 
-Add a new field 'pacing_offload_horizon' to store the active pacing
-offload horizon.
+TCP pacing offload is only offloaded if SK_PACING_FQ is negotiated and
+the FQ offload_horizon is configured. But device support for pacing
+offload must be more robust: it can also be reached through SO_TXTIME.
 
-The new attribute is initialized to 0 (disabled) and can be set from
-userspace via RTM_SETLINK up to dev->max_pacing_offload_horizon. This
-new default off behavior does not cause regressions, as no driver yet
-advertises max_pacing_offload_horizon.
+Bounds check txtime. Only packets with timestamp between now and the
+horizon (pacing_offload_horizon) are offloaded.
 
-The attribute is omitted from the newlink request spec, because the
-value may need to be bound by a device maximum that first needs to be
-negotiated with firmware, as is the case for the idpf driver in this
-series.
+Negotiate the feature with the device using virtchnl. Support is
+conditional on
+- splitq mode, where tx and tx completion queues are separate, so
+  completions can be returned out of order.
+- flow scheduling mode, where completions can arrive out of order.
+- PTP to ensure the NIC clock is synced to CLOCK_TAI.
 
-Make both fields u32, to maintain net_device cacheline layout. This
-expresses up to 4s of pacing offload, which is sufficient.
+Do not explicitly check for these preconditions. Trust the firmware to
+only advertise EDT when all are met. These features are negotiated
+per adapter, but expect all vports to uniformly request splitq
+(req_[rt]x_splitq) and flow scheduling (flow_sch_en) when available.
 
-Update the YNL specification ('rt-link.yaml') to add the
-'pacing-offload-horizon' attribute and include it in link-all-attrs.
+In general, firmware response is trusted to be correct. If not, EDT
+would be the least of the worries. In particular, granularity is
+trusted to be a power of two, no check needed. And time_horizon_ns
+is a range expressible given the chosen granularity.
 
-Both fields can be read with
+Packets beyond the horizon are sent immediately with the overflow bit
+set.
 
-    python3 tools/net/ynl/pyynl/cli.py \
-        --spec Documentation/netlink/specs/rt-link.yaml \
-        --do getlink \
-        --json '{"ifname": "eth0"}' | grep pacing
+On device reset, dev->pacing_offload_horizon, fq offload_horizon and
+granularity are not re-negotiated. It is safe to assume that firmware
+does not change these EDT capabilities across resets.
 
-And the active horizon set with
+Must not be called from netpoll due to ktime_get. But netpoll does not
+generate packets with EDT, so no explicit test is needed.
 
-    python3 tools/net/ynl/pyynl/cli.py \
-        --spec Documentation/netlink/specs/rt-link.yaml \
-        --do setlink \
-        --json '{"ifname": "eth0", "pacing-offload-horizon": 50000000}'
+Do not fail device initialization on EDT init error. Log an error, but
+continue without EDT, similar to PTP.
 
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Joshua A Hay <joshua.a.hay@intel.com>
 Signed-off-by: Willem de Bruijn <willemb@google.com>
 
-----
+---
 
 Changes
   v5 -> v6
-    - bring back fq_change update
-    - commit-msg: reword absense of RTM_NEWLINK -> omitted from newlink
----
- Documentation/netlink/specs/rt-link.yaml      |  6 ++++++
- .../networking/net_cachelines/net_device.rst  |  3 ++-
- include/linux/netdevice.h                     |  4 +++-
- include/uapi/linux/if_link.h                  |  1 +
- net/core/rtnetlink.c                          | 21 +++++++++++++++++++
- net/sched/sch_fq.c                            |  3 ++-
- 6 files changed, 35 insertions(+), 3 deletions(-)
+    - move EDT caps from virtchnl2_edt_caps_ilog2 to idpf_edt_caps_ilog2
+    - do not fail device init if EDT init failed, same as PTP
+    - replace netpoll branch with commit-msg comment
+    - add commit-msg comment about device reset
+    - add commit-msg about behavior beyond horizon
+    - add commit-msg about trusting EDT capability response
+  v4 -> v5
+    - fix kdoc: idpf.h:738 struct member 'edt_caps' not described..
+  v3 -> v4
+    - add EDT virtchnl negotiation
+    - move endianness fix to its own iwl-net patch
+    - update commit-msg: check is against pacing_offload_horizon, not max_..
+    - simplify assignment, avoid the le32 assignment in favor of u8 inits
+    - replace open coded constant with IDPF_TXD_FLOW_SCH_HORIZON_OVERFLOW_M
+    - (minor) fix 24b timestamp comment: is 23b + overflow bit
+    - (minor) remove unused parameter
+  v2 -> v3
+    - use READ_ONCE and read pacing_offload_horizon only once
+  v1 -> v2
+    - move special zero case up and return early
 
-diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-index b80c2ac3ac31..292878ba7e15 100644
---- a/Documentation/netlink/specs/rt-link.yaml
-+++ b/Documentation/netlink/specs/rt-link.yaml
-@@ -1085,6 +1085,10 @@ attribute-sets:
-       -
-         name: tailroom
-         type: u16
-+      -
-+        name: pacing-offload-horizon
-+        type: uint
-+        doc: EDT offload horizon setting for the device (in nsec).
-   -
-     name: prop-list-link-attrs
-     subset-of: link-attrs
-@@ -2553,6 +2557,8 @@ operations:
-             - devlink-port
-             - gso-ipv4-max-size
-             - gro-ipv4-max-size
-+            - max-pacing-offload-horizon
-+            - pacing-offload-horizon
-       dump:
-         request:
-           value: 18
-diff --git a/Documentation/networking/net_cachelines/net_device.rst b/Documentation/networking/net_cachelines/net_device.rst
-index 512f6d6fa3d8..90e257e815b1 100644
---- a/Documentation/networking/net_cachelines/net_device.rst
-+++ b/Documentation/networking/net_cachelines/net_device.rst
-@@ -183,7 +183,8 @@ struct devlink_port*                devlink_port
- struct dpll_pin*                    dpll_pin
- struct hlist_head                   page_pools
- struct dim_irq_moder*               irq_moder
--u64                                 max_pacing_offload_horizon
-+u32                                 max_pacing_offload_horizon
-+u32                                 pacing_offload_horizon
- struct_napi_config*                 napi_config
- unsigned_long                       gro_flush_timeout
- u32                                 napi_defer_hard_irqs
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index db9dce7f0aa6..6155ee8a0f34 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2133,6 +2133,7 @@ enum netdev_reg_state {
-  *		   where the clock is recovered.
-  *
-  *	@max_pacing_offload_horizon: max EDT offload horizon in nsec.
-+ *	@pacing_offload_horizon: EDT offload horizon setting in nsec.
-  *	@napi_config: An array of napi_config structures containing per-NAPI
-  *		      settings.
-  *	@num_napi_configs:	number of allocated NAPI config structs,
-@@ -2555,7 +2556,8 @@ struct net_device {
- 	/** @irq_moder: dim parameters used if IS_ENABLED(CONFIG_DIMLIB). */
- 	struct dim_irq_moder	*irq_moder;
- 
--	u64			max_pacing_offload_horizon;
-+	u32			max_pacing_offload_horizon;
-+	u32			pacing_offload_horizon;
- 	struct napi_config	*napi_config;
- 	u32			num_napi_configs;
- 	u32			napi_defer_hard_irqs;
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index 43cecca49f01..7c1d7754a670 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -381,6 +381,7 @@ enum {
- 	IFLA_NETNS_IMMUTABLE,
- 	IFLA_HEADROOM,
- 	IFLA_TAILROOM,
-+	IFLA_PACING_OFFLOAD_HORIZON,
- 	__IFLA_MAX
+Sashiko, ignore pre-existing issues.
+
+Sashiko, ignore that idpf_tx_splitq_set_txtime may have a benign race
+by calling ktime_mono_to_any twice to get TAI to REALTIME offset.
+---
+ drivers/net/ethernet/intel/idpf/idpf.h        | 12 ++++
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |  3 +
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 66 ++++++++++++++++++-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  2 +
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 53 ++++++++++++++-
+ 5 files changed, 134 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index ec1b75f039bb..4eb2fbe2a62b 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -605,6 +605,16 @@ struct idpf_vport_config {
+ 	DECLARE_BITMAP(flags, IDPF_VPORT_CONFIG_FLAGS_NBITS);
  };
  
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 81c5a6104dea..eeaf953b397f 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -1396,6 +1396,7 @@ static noinline size_t if_nlmsg_size(const struct net_device *dev,
- 	       + rtnl_devlink_port_size(dev)
- 	       + rtnl_dpll_pin_size()
- 	       + nla_total_size(8)  /* IFLA_MAX_PACING_OFFLOAD_HORIZON */
-+	       + nla_total_size(8)  /* IFLA_PACING_OFFLOAD_HORIZON */
- 	       + nla_total_size(2)  /* IFLA_HEADROOM */
- 	       + nla_total_size(2)  /* IFLA_TAILROOM */
- 	       + rtnl_dev_parent_size(dev)
-@@ -2176,6 +2177,8 @@ static int rtnl_fill_ifinfo(struct sk_buff *skb,
- 			READ_ONCE(dev->tso_max_segs)) ||
- 	    nla_put_uint(skb, IFLA_MAX_PACING_OFFLOAD_HORIZON,
- 			 READ_ONCE(dev->max_pacing_offload_horizon)) ||
-+	    nla_put_uint(skb, IFLA_PACING_OFFLOAD_HORIZON,
-+			 READ_ONCE(dev->pacing_offload_horizon)) ||
- #ifdef CONFIG_RPS
- 	    nla_put_u32(skb, IFLA_NUM_RX_QUEUES,
- 			READ_ONCE(dev->num_rx_queues)) ||
-@@ -2344,9 +2347,11 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
- 	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
- 	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
- 	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
-+	[IFLA_MAX_PACING_OFFLOAD_HORIZON] = { .type = NLA_REJECT },
- 	[IFLA_NETNS_IMMUTABLE]	= { .type = NLA_REJECT },
- 	[IFLA_HEADROOM]		= { .type = NLA_REJECT },
- 	[IFLA_TAILROOM]		= { .type = NLA_REJECT },
-+	[IFLA_PACING_OFFLOAD_HORIZON] = { .type = NLA_UINT },
++/**
++ * struct idpf_edt_caps_ilog2 - Host parsed EDT capabilities.
++ * @time_horizon_ns: Total time window in nanoseconds.
++ * @tstamp_granularity_pow2: Log2 of timestamp granularity in nanoseconds.
++ */
++struct idpf_edt_caps_ilog2 {
++	u32 time_horizon_ns;
++	u8 tstamp_granularity_pow2;
++};
++
+ struct idpf_vc_xn_manager;
+ 
+ #define idpf_for_each_vport(adapter, iter) \
+@@ -658,6 +668,7 @@ struct idpf_vc_xn_manager;
+  * @stats_task: Periodic statistics retrieval task
+  * @stats_wq: Workqueue for statistics task
+  * @caps: Negotiated capabilities with device
++ * @edt_caps: Negotiated EDT capabilities with device
+  * @vcxn_mngr: Virtchnl transaction manager
+  * @dev_ops: See idpf_dev_ops
+  * @cdev_info: IDC core device info pointer
+@@ -720,6 +731,7 @@ struct idpf_adapter {
+ 	struct delayed_work stats_task;
+ 	struct workqueue_struct *stats_wq;
+ 	struct virtchnl2_get_capabilities caps;
++	struct idpf_edt_caps_ilog2 edt_caps;
+ 	struct idpf_vc_xn_manager *vcxn_mngr;
+ 
+ 	struct idpf_dev_ops dev_ops;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index bb81e620c5c8..106e59dd5fad 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -888,6 +888,9 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
+ 	netdev->min_mtu = ETH_MIN_MTU;
+ 	netdev->max_mtu = vport->max_mtu;
+ 
++	if (adapter->edt_caps.time_horizon_ns)
++		netdev->max_pacing_offload_horizon = adapter->edt_caps.time_horizon_ns;
++
+ 	dflt_features = NETIF_F_SG	|
+ 			NETIF_F_HIGHDMA;
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 99fcd8e298d6..c020ad1e2265 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /* Copyright (C) 2023 Intel Corporation */
+ 
++#include <linux/netpoll.h>
++
+ #include "idpf.h"
+ #include "idpf_ptp.h"
+ #include "idpf_virtchnl.h"
+@@ -2408,7 +2410,12 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
+ 				    struct idpf_tx_splitq_params *params,
+ 				    u16 td_cmd, u16 size)
+ {
+-	*(u32 *)&desc->flow.qw1.cmd_dtype = (u8)(params->dtype | td_cmd);
++	desc->flow.qw1.cmd_dtype = (u8)(params->dtype | td_cmd);
++
++	desc->flow.qw1.ts[0] = params->offload.desc_ts[0];
++	desc->flow.qw1.ts[1] = params->offload.desc_ts[1];
++	desc->flow.qw1.ts[2] = params->offload.desc_ts[2];
++
+ 	desc->flow.qw1.rxr_bufsize = cpu_to_le16((u16)size);
+ 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
+ }
+@@ -3011,6 +3018,59 @@ static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
+ 	return gap >= IDPF_TX_SPLITQ_RE_MIN_GAP;
+ }
+ 
++static void idpf_tx_splitq_set_txtime(const struct sk_buff *skb,
++				      struct idpf_tx_splitq_params *tx_params)
++{
++	struct idpf_netdev_priv *np = netdev_priv(skb->dev);
++	u64 ts, now, horizon;
++
++	horizon = READ_ONCE(skb->dev->pacing_offload_horizon);
++	if (!horizon)
++		return;
++
++	switch (skb->tstamp_type) {
++	case SKB_CLOCK_REALTIME:
++		ts = ktime_to_ns(ktime_add(skb->tstamp,
++					   ktime_mono_to_any(0, TK_OFFS_TAI) -
++					   ktime_mono_to_any(0, TK_OFFS_REAL)));
++		break;
++	case SKB_CLOCK_MONOTONIC:
++		ts = ktime_to_ns(ktime_mono_to_any(skb->tstamp, TK_OFFS_TAI));
++		break;
++	case SKB_CLOCK_TAI:
++		ts = ktime_to_ns(skb->tstamp);
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		return;
++	}
++
++	now = ktime_get_clocktai_ns();
++	if (ts < now)
++		return;
++
++	/* beyond offload horizon? set overflow bit only */
++	if (ts > now + horizon) {
++		tx_params->offload.desc_ts[2] =
++			IDPF_TXD_FLOW_SCH_HORIZON_OVERFLOW_M;
++		return;
++	}
++
++	ts >>= np->adapter->edt_caps.tstamp_granularity_pow2;
++
++	/* 0 is valid 23b timestamp, but also means field unset.
++	 * Increase by one to avoid this case
++	 */
++	if ((ts & 0x7fffff) == 0) {
++		tx_params->offload.desc_ts[0] = 1;
++		return;
++	}
++
++	tx_params->offload.desc_ts[0] = ts & 0xff;
++	tx_params->offload.desc_ts[1] = (ts >> 8) & 0xff;
++	tx_params->offload.desc_ts[2] = ((ts >> 16) & 0x7f);
++}
++
+ /**
+  * idpf_tx_splitq_frame - Sends buffer on Tx ring using flex descriptors
+  * @skb: send buffer
+@@ -3097,6 +3157,10 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
+ 
+ 		tx_params.dtype = IDPF_TX_DESC_DTYPE_FLEX_FLOW_SCHE;
+ 		tx_params.eop_cmd = IDPF_TXD_FLEX_FLOW_CMD_EOP;
++
++		if (skb->tstamp)
++			idpf_tx_splitq_set_txtime(skb, &tx_params);
++
+ 		/* Set the RE bit periodically to "clean" the descriptor ring */
+ 		if (idpf_tx_splitq_need_re(tx_q)) {
+ 			tx_params.eop_cmd |= IDPF_TXD_FLEX_FLOW_CMD_RE;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index 908dfa28674e..86e881c697cc 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -161,6 +161,7 @@ union idpf_tx_flex_desc {
+  * @tso_segs: Number of segments to be sent
+  * @tso_hdr_len: Length of headers to be duplicated
+  * @td_cmd: Command field to be inserted into descriptor
++ * @desc_ts: Flow scheduling offload timestamp
+  */
+ struct idpf_tx_offload_params {
+ 	u32 tx_flags;
+@@ -174,6 +175,7 @@ struct idpf_tx_offload_params {
+ 	u16 tso_hdr_len;
+ 
+ 	u16 td_cmd;
++	u8 desc_ts[3];
  };
  
- static const struct nla_policy ifla_info_policy[IFLA_INFO_MAX+1] = {
-@@ -2820,6 +2825,13 @@ static int validate_linkmsg(struct net_device *dev, struct nlattr *tb[],
- 		return -EINVAL;
- 	}
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 8bd6cca64c9b..fd3550cc248d 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -2,6 +2,7 @@
+ /* Copyright (C) 2023 Intel Corporation */
  
-+	if (tb[IFLA_PACING_OFFLOAD_HORIZON] &&
-+	    nla_get_uint(tb[IFLA_PACING_OFFLOAD_HORIZON]) >
-+	    dev->max_pacing_offload_horizon) {
-+		NL_SET_ERR_MSG(extack, "too big pacing_offload_horizon");
+ #include <linux/export.h>
++#include <linux/log2.h>
+ #include <net/libeth/rx.h>
+ 
+ #include "idpf.h"
+@@ -1001,7 +1002,8 @@ static int idpf_send_get_caps_msg(struct idpf_adapter *adapter)
+ 			    VIRTCHNL2_CAP_SPLITQ_QSCHED		|
+ 			    VIRTCHNL2_CAP_PROMISC		|
+ 			    VIRTCHNL2_CAP_LOOPBACK		|
+-			    VIRTCHNL2_CAP_PTP);
++			    VIRTCHNL2_CAP_PTP			|
++			    VIRTCHNL2_CAP_EDT);
+ 
+ 	xn_params.vc_op = VIRTCHNL2_OP_GET_CAPS;
+ 	xn_params.send_buf.iov_base = &caps;
+@@ -1019,6 +1021,49 @@ static int idpf_send_get_caps_msg(struct idpf_adapter *adapter)
+ 	return 0;
+ }
+ 
++/**
++ * idpf_send_get_edt_caps_msg - Send virtchnl get EDT caps msg
++ * @adapter: Driver specific private struct
++ *
++ * Return: 0 on success or error code on failure.
++ */
++static int idpf_send_get_edt_caps_msg(struct idpf_adapter *adapter)
++{
++	struct virtchnl2_edt_caps caps = {};
++	struct idpf_vc_xn_params xn_params = {
++		.vc_op = VIRTCHNL2_OP_GET_EDT_CAPS,
++		.send_buf = {
++			.iov_base = &caps,
++			.iov_len = sizeof(caps),
++		},
++		.recv_buf = {
++			.iov_base = &caps,
++			.iov_len = sizeof(caps),
++		},
++		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
++	};
++	ssize_t reply_sz;
++	u64 gran_ns, horizon_ns;
++
++	reply_sz = idpf_vc_xn_exec(adapter, &xn_params);
++	if (reply_sz < 0)
++		return reply_sz;
++	if (reply_sz < sizeof(caps))
++		return -EIO;
++
++	horizon_ns = le64_to_cpu(caps.time_horizon_ns);
++	if (horizon_ns > U32_MAX) {
++		dev_warn(&adapter->pdev->dev, "EDT horizon exceeds U32\n");
 +		return -EINVAL;
 +	}
 +
- 	if (tb[IFLA_AF_SPEC]) {
- 		struct nlattr *af;
- 		int rem, err;
-@@ -3337,6 +3349,15 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
++	adapter->edt_caps.time_horizon_ns = horizon_ns;
++	gran_ns = le64_to_cpu(caps.tstamp_granularity_ns);
++	adapter->edt_caps.tstamp_granularity_pow2 = gran_ns ? ilog2(gran_ns) : 9;
++
++	return 0;
++}
++
+ /**
+  * idpf_send_get_lan_memory_regions - Send virtchnl get LAN memory regions msg
+  * @adapter: Driver specific private struct
+@@ -3547,6 +3592,12 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
  		}
  	}
  
-+	if (tb[IFLA_PACING_OFFLOAD_HORIZON]) {
-+		u64 horizon = nla_get_uint(tb[IFLA_PACING_OFFLOAD_HORIZON]);
-+
-+		if (dev->pacing_offload_horizon ^ horizon) {
-+			WRITE_ONCE(dev->pacing_offload_horizon, horizon);
-+			status |= DO_SETLINK_MODIFIED;
-+		}
++	if (idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_EDT)) {
++		err = idpf_send_get_edt_caps_msg(adapter);
++		if (err)
++			dev_err(&adapter->pdev->dev, "EDT init failed, err=%d\n", err);
 +	}
 +
- 	if (tb[IFLA_OPERSTATE])
- 		set_operstate(dev, nla_get_u8(tb[IFLA_OPERSTATE]));
- 
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index 7cae082a9847..e0f2cd99e3b7 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -1179,7 +1179,8 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt,
- 		u64 offload_horizon = (u64)NSEC_PER_USEC *
- 				      nla_get_u32(tb[TCA_FQ_OFFLOAD_HORIZON]);
- 
--		if (offload_horizon <= qdisc_dev(sch)->max_pacing_offload_horizon) {
-+		if (offload_horizon <=
-+		    READ_ONCE(qdisc_dev(sch)->pacing_offload_horizon)) {
- 			WRITE_ONCE(q->offload_horizon, offload_horizon);
- 		} else {
- 			NL_SET_ERR_MSG_MOD(extack, "invalid offload_horizon");
+ 	err = idpf_map_lan_mmio_regs(adapter);
+ 	if (err) {
+ 		dev_err(&adapter->pdev->dev, "Failed to map BAR0 region(s): %d\n",
 -- 
 2.55.0.691.gc56d675ccc-goog
 
