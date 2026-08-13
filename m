@@ -1,47 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78F047A860
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933C947ACE3;
+	Thu, 13 Aug 2026 12:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786624981; cv=none; b=n8d0AgvJ4XuKSPJ8Y662bNjT4ybfaIZ9T1hQ2OUAZoUv+k/eGwDvtcMev2lr4+DnU8INIdJMToUfrl8uOHEzIuYIRb6p9FZ2vw46OSKxoMT/GnwAwOofGMLMfeKs9XqmLe2lXL+gPY4ba1dv4WSrT/1G80fBaK/eSJb0VGOQWu8=
+	t=1786624987; cv=none; b=VPj4MCc3aSzX+1+ZwjQXOc4sqQsr+WDPDbiBjhLXWCPNIbggeMEbHg/LdxVFjo1ogovS/zp51DjBtr57mGpd67cYJGydQtSvqnTwy5ZblYRmo2goPfpMVCILF0oOsphZm7/gsaNEm6PmddYuCAsG49jKaHUYwaxpq8fjgC+rr88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786624981; c=relaxed/simple;
-	bh=N0fQrSQprVq8ZZK3dkggJbMek7GVADvke3ylM3SUo/s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mRxqt9baic2GsL+KV9gmCt8zUucrKWaJvQUGxflDOAtePNxTkRx16sNHkXRaRdzV8u3sMz047KudXXjVyosiW9353HFwWrzhXbKGt/6zLqXTAFco0aZcACHYkAVM23VWzMTSdcLpMpfYtRFO9tsII31lBi+J9GInS1ym1Ki6B84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N2EfPvZi; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1786624987; c=relaxed/simple;
+	bh=Fjv0XXlK/v2sXYUVcKRr0/1FQ6LU5L1CN3DmJIk5v1g=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=V2MBuS8wg2at3lJato51tFASyWOsojX7X2sNJuffScxz7MliGNIQ7ul9cw1pe++gKfwndcKeUMTYRE+9vOaKqdwaqVZa4+Ti0BalcWpvONMuMsYKJk8eEqL30mRzbo32pojUocEyZOKCnZf0ZshrwUG4GkfP9iC0VsN6s5aE5oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=diMneu6w; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N2EfPvZi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="diMneu6w"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786624977; x=1818160977;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=N0fQrSQprVq8ZZK3dkggJbMek7GVADvke3ylM3SUo/s=;
-  b=N2EfPvZilDTsZj5OZNSady/cFEZg4z+yf2Sx9bIEP33+jiXAmd8IzveU
-   /RCJFS1tbMCxAlj9pd1y2oJkBPAxvTtByKwSpcsSsXBOceID+w3Ov0kQL
-   KyTCNV57rFlTdAlP7LICrUMh3KuH1TFY3LvCArP0kG+XgCcp/fejbcw1P
-   3sufPDrPcS6PFux4i3Oz4yc3SGmkzh9xiYrFixwwOzRp0Vpo1L8FvBZ22
-   buCvC9f5MJTxnkgdJmN2WKgLMLuTIBZpJD7RXa158urn6ImrWSHywqQjp
-   7Zvh6NI0p6h7POU9qarLSOEeyI1kvlapOAH+8ZMa+OiKb/cmYeMf/OKwm
-   Q==;
-X-CSE-ConnectionGUID: bAD/FyAASIGiNwB7iitVRg==
-X-CSE-MsgGUID: rFE0DjaeQzusGeMZEjyHuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="91071650"
+  t=1786624984; x=1818160984;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Fjv0XXlK/v2sXYUVcKRr0/1FQ6LU5L1CN3DmJIk5v1g=;
+  b=diMneu6w3LoZUbmGIGssl94EHCTIAondWhLcPHNUlO4N14a/eze12/E3
+   C/8tKFOqKvLmq4qGJxXiW7XOjHqgJ13ovNXy3tY8dSFCkmQuAWEBJyvvc
+   TtympdOdIA2PWZ5Mg8Y05FfvGW6P0aQCvj9H2qhbGTGvEu4GFG/9h6fka
+   PjZ7MccOUQ1SGgqvG+n01OmrVzapOa45s56moq+L3I7v6EdxwH5KhP7oz
+   vzVo7Tc3tlxpDaGorOPguf9s84WwS1AmxMQlXC1yhdMTRe/Ue6jxAjNxC
+   JpGGRRQ6m37Fk1cA2uSTOR/6K3mH/5VXxKSWLVUlQPDgICMg++pxi+eXK
+   A==;
+X-CSE-ConnectionGUID: JTuON4z6TI+rkmtg5oPqfw==
+X-CSE-MsgGUID: /VBjdp+nRfK3Gw2OK98XlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="91071655"
 X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
-   d="scan'208";a="91071650"
+   d="scan'208";a="91071655"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 05:42:46 -0700
-X-CSE-ConnectionGUID: 7Dpk5IwvRBmApIqEiLkrwg==
-X-CSE-MsgGUID: HmIiRImsS1+EZKSLaBVF9A==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 05:42:49 -0700
+X-CSE-ConnectionGUID: WUM8e399SHmb/bH/RtYSHA==
+X-CSE-MsgGUID: awNGtOheTq6jACrd/ctosg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
-   d="scan'208";a="262177564"
+   d="scan'208";a="262177569"
 Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by orviesa006.jf.intel.com with ESMTP; 13 Aug 2026 05:42:44 -0700
+  by orviesa006.jf.intel.com with ESMTP; 13 Aug 2026 05:42:46 -0700
 From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 To: netdev@vger.kernel.org
 Cc: anthony.l.nguyen@intel.com,
@@ -49,11 +50,17 @@ Cc: anthony.l.nguyen@intel.com,
 	jhs@mojatatu.com,
 	jiri@resnulli.us,
 	edumazet@google.com,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Subject: [PATCH net v2 0/3] net/sched: u32_change() fixes
-Date: Thu, 13 Aug 2026 14:22:39 +0200
-Message-Id: <20260813122242.1690024-1-jedrzej.jagielski@intel.com>
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	stable@vger.kernel.org,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH net v2 1/3] net/sched: cls_u32: feed u32_replace_hw_knode() with correct set of flags
+Date: Thu, 13 Aug 2026 14:22:40 +0200
+Message-Id: <20260813122242.1690024-2-jedrzej.jagielski@intel.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20260813122242.1690024-1-jedrzej.jagielski@intel.com>
+References: <20260813122242.1690024-1-jedrzej.jagielski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,41 +69,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-sorry for spam, previous series get treated as incomplete so resending
+Fix u32_change() to pass proper variable to u32_replace_hw_knode().
 
-ALREADY ON NETDEV, SASHIKO RUN
+When trying to offload u32 cmd by adding skip_sw attributes it gets
+ignored and it cannot be correctly processed by HW and tc_cls_u32_offload
+struct which is then passed to driver lacks skip_sw var enabled.
 
-This series fixes three bugs in cls_u32's u32_change() function:
+u32_replace_hw_knode is fed with the TCA_ACT_* flags (bits 16+)
+instead of TCA_CLS_* flags (bits 0-4) which actually stores the flags
+parsed by tc, so tc_skip_sw() always returns false. This leads to
+ignoring some of the attibutes which are meant to be configured on filter
+setup.
 
-Patch 1 fixes u32_replace_hw_knode() being fed the wrong flags variable.
-Commit 695176bfe5de ("net_sched: refactor TC action init API") introduced
-a function parameter `flags` that shadowed the local variable previously
-set from TCA_U32_FLAGS. This caused tc_skip_sw() to always return false
-during offload, silently ignoring skip_sw/skip_hw attributes. This fix
-uncovered following 2 issues happening on u32_replace_hw_knode()
-failure.
+None of the TCA_ACT_FLAGS_* is actually used within
+u32_replace_hw_knode(), so there is no point in passing them.
 
-Patch 2 fixes a refcount leak of the linked hash table (n->ht_down) when
-creating a new filter and u32_replace_hw_knode() fails. The error path
-frees the node with kfree() but never drops the reference acquired by
-u32_set_parms(), leaking the tc_u_hnode.
+Looks like commit 695176bfe5de ("net_sched: refactor TC action init API")
+shadowed the local flags variable which used to be set with
+nla_get_u32(tb[TCA_U32_FLAGS]) with the flags as the new function param
+while not replacing for none of the u32_replace_hw_knode() calls.
 
-Patch 3 removes a spurious refcount_inc() in the update error path added
-by commit e8d3d78c19be ("net: sched: cls_u32: Undo refcount decrement in
-case update failed"). That commit misidentified an already-balanced
-refcount (incremented by u32_init_knode, decremented by u32_set_parms)
-as needing restoration on failure. The extra increment has no matching
-decrement, permanently elevating the hash table's refcount.
+Cc: <stable@vger.kernel.org>
+Fixes: 695176bfe5de ("net_sched: refactor TC action init API")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+---
+ net/sched/cls_u32.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Jedrzej Jagielski (3):
-  net/sched: cls_u32: feed u32_replace_hw_knode() with correct set of
-    flags
-  net/sched: cls_u32: fix linked hash table refcount leak
-  net/sched: cls_u32: remove erroneous refcount_inc()
-
- net/sched/cls_u32.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
-
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index 8f30cc82181d..dc6e455e64ec 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -935,7 +935,7 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 
+ 		u32_bind_filter(tp, new, base, tb);
+ 
+-		err = u32_replace_hw_knode(tp, new, flags, extack);
++		err = u32_replace_hw_knode(tp, new, userflags, extack);
+ 		if (err) {
+ 			u32_unbind_filter(tp, new, tb);
+ 
+@@ -1161,7 +1161,7 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 		struct tc_u_knode __rcu **ins;
+ 		struct tc_u_knode *pins;
+ 
+-		err = u32_replace_hw_knode(tp, n, flags, extack);
++		err = u32_replace_hw_knode(tp, n, userflags, extack);
+ 		if (err)
+ 			goto errunbind;
+ 
 -- 
 2.31.1
 
