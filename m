@@ -1,92 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBE130569F;
-	Thu, 13 Aug 2026 12:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E87D3B27FA
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786625338; cv=none; b=iFuPp2strOrahcTSXoGQXi+IdA+mpK32YE6STlpZqe0GEGjYkggd4bqSh8lSeBzR72wIb3+hRW8Zt1Z44XHO2XUFTVBbpJN86Aa6VKWfx72CKEXThdhphBGEUKcDqQ2zIt9WhZuslx0X+8LhHs67Z3QHpS+sNmh63TFgemLVw6Q=
+	t=1786625428; cv=none; b=Dv8d8KdpaiYt064NtFug1nacdHHVnkZIBVp56WQor6iK4zhBq8AovB29Xq3HZXhH/Bp/DAx4QnDopgbnDRQ+3J/AvhjDNHijv7AyyfGLhzRbGHcR+kPjtRKeDfRsdMUz+ok1SmknFrErDE/710dCZwnHj6B+7X0GCJaLWqE8pys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786625338; c=relaxed/simple;
-	bh=1/bPw3W0cpITOAMWwJsZ/TTY/cOu/aksY5Eu79SxH+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CFyU1v1pyb4BGmOTjc5jjUuEAlj/0JATLSvL+C86Qae+/9Jl8tQnonL3J8zBaqsMSycCTkfKfUh8J7rLhA0cvOgCtecH0fCly7mjBwZqCcOpnKHbzwCSMtS7cnpq5JwSZYDcOvR4UuOk73A+nZhpptbwuiQmoNfXRYMxVFtB03s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxYAsBQi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786625428; c=relaxed/simple;
+	bh=RYDccI0QA6Um43ZF/VtKV08gHtakT3fB8+zdcL5JMrQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MnLCPGR8ve0x2+MLEPZgcq9EB6M03pfWWCXCZ1N6RFNaPjmo8kAyZHhjJT+jQ3dQg8Jff/1mOoPuDjJl3nv1tqntYZopRlUkO/c6nHkSElUmwBXB7U5lXciTdgQCPLsu6lUvOUaQjv+IRkWEJO4onWns8dB4SpkkREoLZFxa8Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=OSPM5xjh; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxYAsBQi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471931F000E9;
-	Thu, 13 Aug 2026 12:48:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786625336;
-	bh=XyfRPEPlqeXNRCr9zPbmFcASiinf6awaGaFpaTojyyY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SxYAsBQi8YFfTMjareRgIQmm5u7JA3S4q4/HpP19hbiK08fiX1TMOD7fo4JGuBBzn
-	 4WW868kvhqkFDiFz3D3T2Zoiut7BF2oMYBqzNTdsg7WqyoyEJaTAM03fEMhEabjgwZ
-	 cy//esWaQQtHMnDffrhJCGvSlxLz870wq0WN4VTFJEFETM4tCdB05VvfBVRXEK8BP0
-	 VOiBGZc8OvRfNONIvNWIUUm/fmAMkkfk/MMVxkVK4WjeKSrUEv6sjrrAbbCYKjFCP8
-	 46U5KxJBwqw7KLeCOZzD3mvL4B1PePLhelWb7N1o71LSmjpl7xa7h/Ne4cfgUopl22
-	 FNb8ZpkHmcZkg==
-Date: Thu, 13 Aug 2026 13:48:50 +0100
-From: Simon Horman <horms@kernel.org>
-To: Fan Gong <gongfan1@huawei.com>
-Cc: Teng Peisen <tengpeisen@huawei.com>, Wu Di <wudi234@huawei.com>,
-	netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	Chen Anwen <chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>,
-	Zhang Min <zhangmin548@huawei.com>, luosifu <luosifu@huawei.com>,
-	Xin Guo <guoxin09@huawei.com>, Zhou Shuai <zhoushuai28@huawei.com>,
-	Wu Like <wulike1@huawei.com>, Shi Jing <shijing34@huawei.com>
-Subject: Re: [PATCH net v04] hinic3: Fix skb linearization mismatch and drop
- skb when skb_checksum_help() failed
-Message-ID: <20260813124850.GD196815@horms.kernel.org>
-References: <78d8c61cab588240948eaddcb437d59add9f77ae.1786448013.git.tengpeisen@huawei.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="OSPM5xjh"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1wuUsw-00386E-BB; Thu, 13 Aug 2026 14:50:14 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=kpCtHQ+/mzrhCBz+fmEmw3Nc2og9BhxFGTg1aNX2/QE=; b=OSPM5xjhAuaX2Q+s5R6wrW4nLg
+	xppxhHi3QeHFcfF2G8zanCyFh6XRxQ3d/o2xh3xcPB58rZDp6778iWCTQaZzQ5bOV3lX9sFUlJ1xA
+	QvcmOPIvPL2jBx+jnjo/PgHHYJtTUunPJg9WplqItEt/PjpKXhOC1lNGahzhnE48iXwJ+d+E7jCWp
+	Gz0p7f1lFTQn32hB5r3Tchbzvl76bMtL8n0nLlKPNx9aefwj4+qVNdHGUrbhSEKj9HY1MiCHPo4wM
+	edf6LJT1reoQG78AkADcS/9RfUdGQfYZ/9RgEtkYVNui6dJCXSDE7azKWxvKIFDXnTMs1T+CuVlWI
+	ESwB6Mdg==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1wuUsq-0007jb-Hd; Thu, 13 Aug 2026 14:50:08 +0200
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1wuUsa-001ZG0-5l;
+	Thu, 13 Aug 2026 14:49:52 +0200
+Message-ID: <d14df8cf-4da5-42bb-a248-21b8d937ce63@rbox.co>
+Date: Thu, 13 Aug 2026 14:49:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78d8c61cab588240948eaddcb437d59add9f77ae.1786448013.git.tengpeisen@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v2 2/2] bpf: Unconditionally take socket references in
+ lookup helpers
+To: Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet
+ <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Willem de Bruijn <willemb@google.com>, Jiayuan Chen
+ <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Sashiko <sashiko-bot@kernel.org>
+References: <20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co>
+ <20260803-sockmap-lookup-tcp-leak-v2-2-306e025bfe66@rbox.co>
+ <875x1qyyyx.fsf@cloudflare.com>
+ <CAAVpQUBcDGX42Dyzo24U3iMKVyNajgOa5ZD7uX=DhSWf4Nb-qw@mail.gmail.com>
+ <87tsp88vl4.fsf@cloudflare.com>
+Content-Language: pl-PL, en-GB
+From: Michal Luczaj <mhal@rbox.co>
+In-Reply-To: <87tsp88vl4.fsf@cloudflare.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 11, 2026 at 07:43:59PM +0800, Fan Gong wrote:
-> Previously, hinic3_send_one_skb() cached the skb fragment count before
-> calling hinic3_tx_offload(). If hinic3_tx_csum() falls back to
-> skb_checksum_help() for unsupported tunnel packets, the skb may be
-> linearized. Continuing to build the TX descriptor with the stale
-> fragment count leads to a descriptor mismatch, which can trigger
-> out-of-bounds DMA reads or IOMMU faults.
+On 8/5/26 16:56, Jakub Sitnicki wrote:
+> On Tue, Aug 04, 2026 at 09:01 PM -07, Kuniyuki Iwashima wrote:
+>> On Tue, Aug 4, 2026 at 3:14 AM Jakub Sitnicki <jakub@cloudflare.com> wrote:
+>>>
+>>> On Mon, Aug 03, 2026 at 11:00 AM +02, Michal Luczaj wrote:
+>>>> Lookup helpers gate whether to acquire a socket reference on
+>>>> sk_is_refcounted(), a check re-evaluated at release. An established socket
+>>>> refcounted at acquire time can gain SOCK_RCU_FREE via
+>>>> connect(AF_UNSPEC)+listen() before release runs; the release-side re-check
+>>>> then reads sk_is_refcounted() == false and skips the put. The reference
+>>>> leaks.
+>>>>
+>>>> Make acquire and release unconditional and symmetric: always take a
+>>>> reference, always put it. Adapt sk_select_reuseport().
+>>>>
+>>>> Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+>>>> Fixes: 64d85290d79c ("bpf: Allow bpf_map_lookup_elem for SOCKMAP and SOCKHASH")
+>>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>>>> Closes: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.kernel.org/
+>>>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>>>> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+>>>> ---
+>>>> TC bpf_sk_assign() has the same issue; it takes a reference only when
+>>>> sk_is_refcounted() is true at assign time, but sock_pfree() (the skb
+>>>> destructor it installs) re-checks sk_is_refcounted() independently at
+>>>> release time. The same connect(AF_UNSPEC)+listen() transition leaks the
+>>>> socket here too. I'd welcome suggestions on the right way to handle this.
+>>>
+>>> Can we make this scenario unsupported?
+>>>
+>>> listen() could return EBUSY if called on a socket that is refcounted.
+>>>
+>>> WDYT?
+>>
+>> I discussed this kind of buggy rehash with Eric today.
+>>
+>> We can't make it unsupported although it's super unlikely
+>> that this is used by a real application.
 > 
-> Furthermore, the old code ignored the return value of skb_checksum_help(),
-> transmitting corrupted packets with incomplete checksums upon failure.
+> I'm just wondering why not?
 > 
-> Fix this by:
-> 1. Moving the hinic3_tx_offload() call before calculating 'num_sge' to
->    ensure the correct fragment count is used if the SKB is linearized.
-> 2. Propagating skb_checksum_help() errors and returning
->    HINIC3_TX_OFFLOAD_INVALID to properly drop the skb.
+> First I thought is was due to POSIX compatibility but POSIX seems to
+> define connect(AF_UNSPEC) only for connection-less sockets [1]:
 > 
-> Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
-> Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
-> Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
-> Co-developed-by: Wu Di <wudi234@huawei.com>
-> Signed-off-by: Wu Di <wudi234@huawei.com>
-> Signed-off-by: Fan Gong <gongfan1@huawei.com>
+> """
+> If he initiating socket is not connection-mode, then connect() shall set
+> the socket's peer address [...] If the sa_family member of address is
+> AF_UNSPEC, the socket's peer address shall be reset.
+> """
+> 
+> So if this is Linux-specific behavior (?) and we don't exect any users
+> to rely on it, why not change it and see if anyone complains?
+> 
+> Seems like wasted effort to try to make it work properly.
+> 
+> [1] https://man.archlinux.org/man/connect.3p
 
-Thanks,
+Patchwork does not list this series anymore, so I've picked only the
+cleanup/optimization patches and re-sent them targeting bpf-next:
+https://lore.kernel.org/bpf/20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co/
 
-I do think this change is fine as it addresses the issue described.
+thanks,
+Michal
 
-Reviewed-by: Simon Horman <horms@kernel.org>
 
-But you may want to consider some follow-up based on the AI-generated
-review of v1 that was forwarded by Jakub:
-
-https://lore.kernel.org/netdev/20260806162138.2749871-1-kuba@kernel.org/
-
-...
