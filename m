@@ -1,121 +1,214 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0568A476CF1
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 16:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786637006; cv=none; b=dAXD4QARZNPLJZcAtJMCoxe9CI//LkwGM8R31+EY/J0NqQgSSsYUKWiSYzGIVd1GpsHU7lE1jJiSNdEzHLcteUPuNXj+klS7m3Ym6563vDauteltxd9PXjOjquv58jdQUtGMsi8ZnLNzpfGm9n7fefjmBrMHxn0pgxoPE5c6JCE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786637006; c=relaxed/simple;
-	bh=tGW8H0Bs4+on5IqD0IFRAmnYT9RMnIJA3AouDvKF1Tc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DwMA0NRAA+o3lPExv/9SMRsXV+qpTwxn/F4rh/wh7qbPQAVRBBNhlrH+dk+lUCL4aEourR2N+NPONwCwjcjbYj/GIX95w3g1WcdXDBczr8kGQRT1GIX+VpfiuaV6X2V3NqkhlObDjKc9xkXBR++xcRp8TVUPXpqJaqWgXau5qJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=f8R6Esgv; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB151DE8AD
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 16:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786637055; cv=pass; b=DHk899eL4p7VMCAKMxU3p7wybZUznxGJ7eH+3V5N0AqgEZB1oMQw97xdIMun+k8GKcJAgzt8rPrNbEEGSiusOsiIOmHAmVO1yvsa2JsOVNtEjPURQBy0wOyCjOMZk6MVl62oIlL4ilXVREZbDnWN4q4JgQnzZavMc1JgCAFZYXM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786637055; c=relaxed/simple;
+	bh=Vjy16TF3iYfiUMwvlbZBdU1z3tOMwQwKJLy155OPgA0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T0VW5/18fz22uMT7d0iRKBuH6dP3ay5CT2aTYEVAtbV2vYR1dquw8eUTu/pOPAN/GqVBMMIRE+hZjyoiBD0jXD8Q1b4LwVdHmGpdq6JAj3oZDvjWW6CpZcnOg46h5KlS/bQ9GUva1XKySU2mnDpzVZrHauqwQVEaDFmauzt6AC0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X/hwbTYA; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="f8R6Esgv"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47f96c5b722so1271189f8f.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 09:03:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X/hwbTYA"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-529a1ee0e62so713921cf.2
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 09:04:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786637053; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pZE5AEFwhGjq0McunVJJz8Xm1gLTD+c0/RRBPOHAqawiLJy4In3NSfrUwypUXaIkeS
+         S3TOpOhsqKG6JaXkMeIz19BGr3iSZyvJ+ONPHTeK7Midkky58Ugu4+SjwNV0beI2RkoU
+         7NXzDQ5+qBXGpyurfMTzUHGNh8Jiak6s73mZ1iC7n2b51pjxLb/wG+MUltxeoVeQB3/0
+         Wi19u0BqvmsT6/AqX9qF2pi4xRfUYG7QRtI131UW/+GLsvSw6gQcA05H45Lg4LhUXwMT
+         99NwcEPjS2xxvIOIpWM9el0Wddyevj1HrHrFdSjkfASlnpa4EMyPC0/dfRrdeF8kJm+c
+         Cg+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qy/kcyQvveSYr5wHrbyhBZAEI4CKhUnX/Ix6lO1z2p4=;
+        fh=zw2Tf0vMtu3hAEFoJbDfCjU/V/Fceeopbv+cwPpkdHc=;
+        b=RogIdnvNM2TnUjOaJxpvNUn3Qt+URgal693s8jF6GcqJ5u8ZiKzXaYa+vvCnfAiqLe
+         KHyQaev5RAJr4HOeiI48Dt1hdcfObF7dVZaygrGiSi3BS3p8lpzb9Likj3qeIf4Y0XEp
+         DGOo1MhFHTzYqav7Nkkcaykft785KkbO7ziOmwFknqHY2fAqLpvYQKOVeJ2HqOURW4k+
+         KZpbFWdGBQjeVFHzjfZUTlNQIyMM1yKZr0FFQfN5L7WzwOWKF76jmta9dDbFMUjqZXF4
+         BzswqaqrsN3ztJZqdAbmiIWz/anryisZue8K/IDo/YgBOuawY2bposUQkONrmhanhT0L
+         FEGA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1786637003; x=1787241803; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HcIVgqoIjG/Kysz8GTxN+rZ67417oOITTJ2c+FLUd5U=;
-        b=f8R6Esgv9sLGkqh4etqsOgtRkxbWzUynkDmOqW/E7ROmm8v39vp/lXg45lSzd/5aW1
-         ADvkZs67NQ4vBpAs2dMfbK52CSaGDFp1lBmrZjaavxoI/TzNkCL0TnJeCWWuBoaEG1EW
-         iFgk+6R7OKlatmb3eak1cWwQ/ARJd8XCKKBUmgHD9Z3BU1McLQJYZD6RSemdiNtJz7gQ
-         6YVUtjWywbzDIWJMpptzBpjE6YYgtu++IJPNNRPUIU/jD3ezn5W8K3XWXhK86i4VRl0B
-         7PkptvT13fo1uaoZH0pZ1SrTOWAgMDT4IFfJgpbXg0b2udQ6TBzGW2ItO3lN7EA2XzIe
-         TqEA==
+        d=google.com; s=20251104; t=1786637053; x=1787241853; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qy/kcyQvveSYr5wHrbyhBZAEI4CKhUnX/Ix6lO1z2p4=;
+        b=X/hwbTYAT8FXfZgVX9z8Sp7Z7n9tzJMWzTnMr2t5dyuqaQvx1ZN/bhBHH+thrW51NA
+         esUSzENLSwTxU7OqUgDB7hvS7m+OXFyRLvTcej8peQbFX863QFmHD6ZN5OfZO7c5mPh3
+         pGGNfiumXGxc+RByFLbqC0Dswocxd4cdbIGtD6wF4gX9VWt2KPbpkzwy4/0dIbxq875g
+         RksgsVOYDjv0xuahlMKhyR0+ZT+44C547ZfrHJWe+shFnrw3M+dQ/AGrm3IrPm8NYOZV
+         /pXUH6i7itqKnvTxVmHG+3hHHdkrQX0gYel5vNQ2CkOPKxFSoBiPx0pkGLN6YCI+UrqZ
+         nK2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786637003; x=1787241803;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HcIVgqoIjG/Kysz8GTxN+rZ67417oOITTJ2c+FLUd5U=;
-        b=FlHaHXCfFe4zIjPJwfEouisN0VWFCf+FgziKOmml6ZyYLtmS6j6jRn1ncHlD5OnS7o
-         96Kane5uu/aoX3/uDIEtwDQnUX1i9DKNd5qUhWQpdADzXb5FNoxx1YqojZCNKQS59Nei
-         oQID7QmHufYxCc4LdzQ4vnkk7DfslwrkNJzj0E9se9ILk7kyga9K7qJivAOwOXphdGIY
-         twlFOxHxseJS0KemZ1tZUUESjTQ1OSgdtAiOeW/t/Z+rHohCO1biiHrOA+MOAToy9YZ9
-         HzhulMko05zhVJoyzh24wUT1NhQysm9qQ7v8mpCC2M3MvulPXlOVXTMD1gUtbpDgKWzI
-         lkVg==
-X-Forwarded-Encrypted: i=1; AHgh+Rom2AuMyTAAtcdLnkSjKrakzr/vB6xdWrW/f+8O2741jnINx+iaQ5qn9BzE0Z359t+1PSqRzSw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywlz3Fp8LlwpawfxjddAavWavHSMHkd8mb4+8flJMdZ3F8BuO+e
-	ZPTK3NRnzSH+xgcHffs1wEawcb66jzKuszkJWxspRSE6lXFNOfwnJ3SPtj/teFbfsL8=
-X-Gm-Gg: AR+sD122ECoeu6fMzMRtLMnAQQAG9l8cvbjxrsc8roo8M7ziyYs1VPZ4OpTQJXBXvtW
-	o/yp7xEDALJdCgyxDpc8q8PcV1QnLmbE6r/DrpAX8P6YjNdzT/tfLWzxRuv00B7Ufn0xF+RLDcU
-	opEuw4Uy0JJjqe4HIPAqWokbfHGFyMfxPhRydeWFmz5WnK0kDe/uk3cxu9h0RbGQ86qIt3qfDk0
-	n7oHHVyF4s8vgNfinotWdas0Qej/FGgW3ibQfLTN3D6Qj7ifWDj4KRDh82QkIbuQ/XF63H0WlWx
-	6U2rnNBIyZlCMuK2EX2EnrZQV6iZCWBnYLLb4lkiu+VEim3UGpAuecLnQ3Tfasl79+Y/HCcSLGm
-	SAW+AM2ExhG5Nx83NeW52x1wFPgueajFUcQ0iHaQ1syQi6RXQYabsSKLFNHTOKmCOSBh7g6s2Z4
-	fv6w3E/fNYPTNUPZSl7EnyXieIjXJBXCpnlTH16FnWiRVnarAkCjBIC1QS5GbmVS9S4QALyKeie
-	LTNKOn/lLj6aB4ssaM=
-X-Received: by 2002:a05:600c:8b16:b0:499:491e:4b0d with SMTP id 5b1f17b1804b1-499821ee720mr79051765e9.19.1786637002439;
-        Thu, 13 Aug 2026 09:03:22 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981b6abbcsm76682155e9.15.2026.08.13.09.03.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Aug 2026 09:03:21 -0700 (PDT)
-Message-ID: <4b095542-6656-467a-93ce-4a39c6c80c46@blackwall.org>
-Date: Thu, 13 Aug 2026 19:03:20 +0300
+        d=1e100.net; s=20251104; t=1786637053; x=1787241853;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qy/kcyQvveSYr5wHrbyhBZAEI4CKhUnX/Ix6lO1z2p4=;
+        b=sZRhgFKO1LGvd6NjfRTvnvY/CSDRtz6cTvRDUoyBrhlbrcMTMBvOqfN6VnW6krwezz
+         05GPoA9jUoXua3s+Ab74nUJ8V5qhQyc5u7Rx4eKw3JgvGcbD7SGxSKIkxkKCh8QWRmn9
+         GUKTLCIrlID2fBOmLXSO0pJHL8R2Dwb/DJI8iGqDlZlPCvv12IYSa9XHr7eprg4GT4W3
+         VUJMwAbfrop+KequneGI4Lq+EbA8To/ILDIkdvz+ILn/ogDngUzbUQR4s1QaVcGAfyOa
+         FszyxIJUgAsBym51Zk9CzbB4lK+UQ1OuWV/7k0qeeQ+Wc+DhFxf/LhR/9eErjQ3Vn9gp
+         V0hg==
+X-Gm-Message-State: AOJu0YzLn2HzhgioT728pl4d7twTaIilnzPZr7cHgfGHxpyQsrUh9A2i
+	wL/YDwFdmIs9XKoqX1RSY/Z8e0HAHAvWGUH2xk9gamsN4EfS/MwntMVek3+tQB4fzsKRIYfgUWu
+	JLOc4ayTe8XrkTn802aHpYuUpORnskQR9hkVRaN/h+/OVuBMa/CXQQyDq
+X-Gm-Gg: AR+sD13hapi0eZqG/pKKo/hPwpqJ3Y2lV76rgQChsMxJ6IeIsTNDt7kjX4FG0HcO0U7
+	WnTQW3/Ag6oW9N69TF2rjEWoFJoS4XQCF9PI/s4XnXiLUU7SI87THEr6C4KOuOFOMjszEHp1ZCB
+	KHYK0L7N18/e/XDPHc5nIQj6+eBzJ1eELAy5vrV0ni7zRR0ylYdf4mqQNP0+fdB/rqoqNukBvt4
+	nFxkXG2TbonJbtru6e1cm30JeG86O95BLy8Q4wPm4EisTxmnz0EXsWyatTaRkdeu/RCjMlk2jgJ
+	cgsxx4PjX+qX5tewDYr0KBkIiId6xAt1Z2MQdUOO9+Fok2h8o07FhNUFP0csjlNyE09n/6CT0Qc
+	+EGVBJFptjAP2DN0qfxV7TEZ9xNleD7xAPP+ppjaY+Ydr0An3lFd8DKvpXRRh7BZRNSih7IWd7/
+	LdGiW6uKW4OJ5GhQc=
+X-Received: by 2002:ac8:59cb:0:b0:528:3b9b:4f54 with SMTP id
+ d75a77b69052e-52d73befa50mr65332581cf.8.1786637052173; Thu, 13 Aug 2026
+ 09:04:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] bonding: initialize err for empty target lists
-Content-Language: en-US, bg
-To: Ruoyu Wang <ruoyuw560@gmail.com>, netdev@vger.kernel.org
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-References: <20260813153126.3952893-1-ruoyuw560@gmail.com>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260813153126.3952893-1-ruoyuw560@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260813020529.3506539-1-willemdebruijn.kernel@gmail.com>
+ <20260813020529.3506539-3-willemdebruijn.kernel@gmail.com>
+ <CANn89iK6O7ujR9zCJzd04MNLQoDi3mA+HWsR-hgQWYzLS3gZfw@mail.gmail.com> <CAF=yD-+Apef70K8n_=R5s5-+dyhYdiTLs1zACEr3=--_A47EeA@mail.gmail.com>
+In-Reply-To: <CAF=yD-+Apef70K8n_=R5s5-+dyhYdiTLs1zACEr3=--_A47EeA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 13 Aug 2026 18:04:00 +0200
+X-Gm-Features: AUfX_mwRDWobDF0uukXtIPFdBbxhN8fnEmwjwbt2S0c4NRHkak7k19p-TCMfqT0
+Message-ID: <CANn89iLDyr8uiB9dOUzSqsRbawa-xOoD8XcDUz5QYH5K0FoeEA@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 2/6] net_sched: sch_fq: clear past skb->tstamp
+ if offloading pacing
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch, 
+	Willem de Bruijn <willemb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 13/08/2026 18:31, Ruoyu Wang wrote:
-> Empty NLA_NESTED attributes are valid, and bonding uses them to clear
-> the ARP and NS target lists. When either target attribute is empty,
-> nla_for_each_nested() does not execute, so err retains an uninitialized
-> value before it is tested. The request can consequently return an
-> unpredictable error after clearing the targets.
-> 
-> Initialize err to zero so an empty target list completes successfully.
-> Non-empty lists still propagate errors from __bond_opt_set() unchanged.
-> 
-> This issue was found by a static analysis checker and confirmed by manual
-> source review.
-> 
-> Fixes: 4fb0ef585eb2 ("bonding: convert arp_ip_target to use the new option API")
-> Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
-> ---
->   drivers/net/bonding/bond_netlink.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-> index 4a11572f663d31..87d92d3cce4a88 100644
-> --- a/drivers/net/bonding/bond_netlink.c
-> +++ b/drivers/net/bonding/bond_netlink.c
-> @@ -220,7 +220,7 @@ static int bond_changelink(struct net_device *bond_dev, struct nlattr *tb[],
->   	struct bonding *bond = netdev_priv(bond_dev);
->   	struct bond_opt_value newval;
->   	int miimon = 0;
-> -	int err;
-> +	int err = 0;
->   
->   	if (!data)
->   		return 0;
+On Thu, Aug 13, 2026 at 6:02=E2=80=AFPM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> On Thu, Aug 13, 2026 at 1:13=E2=80=AFAM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > On Thu, Aug 13, 2026 at 4:05=E2=80=AFAM Willem de Bruijn
+> > <willemdebruijn.kernel@gmail.com> wrote:
+> > >
+> > > From: Willem de Bruijn <willemb@google.com>
+> > >
+> > > When hardware offload is enabled, FQ will forward packets to the
+> > > netdevice for pacing. The device has to test that skb->tstamp is
+> > > in the future.
+> > >
+> > > Avoid this cost for packets whose txtime has already passed, by
+> > > clearing skb->tstamp.
+> > >
+> > > Also clear slightly into the future, for EDT timestamps that are
+> > > so close to now that they fall within a reasonable normal Tx
+> > > latency. This slack is set to 400 nsec.
+> > >
+> > > Also disable timer drift logic when offload is enabled, because
+> > > time_next_packet can exceed now causing a negative value.
+> > >
+> > > Signed-off-by: Willem de Bruijn <willemb@google.com>
+> > >
+> > > ---
+> >
+> > > @@ -828,11 +837,16 @@ static struct sk_buff *fq_dequeue(struct Qdisc =
+*sch)
+> > >                  * f->time_next_packet was set when prior packet was =
+sent,
+> > >                  * and current time (@now) can be too late by tens of=
+ us.
+> > >                  */
+> > > -               if (f->time_next_packet)
+> > > +               if (f->time_next_packet && f->time_next_packet < now)
+> > >                         len -=3D min(len/2, now - f->time_next_packet=
+);
+> >
+> > IMO this part deserves a patch on its own.
+> >
+> > Using a variable adds no cost (compiler will generate the same code),
+> > but helps to understand what is going on?
+> >
+> > commit e51f3936aba0e5887cf5884b18ffa769dcb38523
+> > Author: Eric Dumazet <edumazet@google.com>
+> > Date:   Wed Jul 1 08:33:38 2026 +0000
+> >
+> >     net_sched: sch_fq: fix pacing delay underflow with pacing offload
+> >
+> >     When pacing offload is enabled (q->offload_horizon > 0),
+> >     FQ can dequeue packets early (now < f->time_next_packet).
+> >
+> >     In this case, the drift calculation (now - f->time_next_packet)
+> >     underflows to a large unsigned value.
+> >
+> >     min(len/2, now - f->time_next_packet) then evaluates to len/2,
+> >     incorrectly halving the pacing delay for the next packet.
+> >
+> >     Fix this by only applying drift compensation when now > f->time_nex=
+t_packet.
+> >
+> >     This bug was triggered when flow_max_rate was set on the qdisc
+> >     or for non EDT packets (packets with a zero skb->tstamp).
+> >
+> >     Fixes: f26080d47007 ("net_sched: sch_fq: add the ability to offload=
+ pacing")
+> >     Reported-by: Willem de Bruijn <willemb@google.com>
+> >     Signed-off-by: Eric Dumazet <edumazet@google.com>
+> >
+> > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> > index 7cae082a984721215b17fea2d094095155580dcb..f2a65a7a928d58385472859=
+21ce0b42c99a96ef4
+> > 100644
+> > --- a/net/sched/sch_fq.c
+> > +++ b/net/sched/sch_fq.c
+> > @@ -828,8 +828,12 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sc=
+h)
+> >                  * f->time_next_packet was set when prior packet was se=
+nt,
+> >                  * and current time (@now) can be too late by tens of u=
+s.
+> >                  */
+> > -               if (f->time_next_packet)
+> > -                       len -=3D min(len/2, now - f->time_next_packet);
+> > +               if (f->time_next_packet) {
+> > +                       s64 drift =3D now - f->time_next_packet;
+> > +
+> > +                       if (drift > 0)
+> > +                               len -=3D min_t(u64, len/2, drift);
+> > +               }
+> >                 f->time_next_packet =3D now + len;
+> >         }
+> >  out:
+>
+> Sounds good. Indeed clearer as an independent patch with its own
+> commit explanation.
+>
+> Do you want to send that separately now?
 
-Oh well, I've missed they can be empty. :)
-By the way you haven't CCed the Fixes commit author (me).
+No, just add it to the series, if a respin is needed.
 
-Thanks,
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+>
+> Else I will add it to the series. But that is likely to slip to the
+> next release, as the current revision conflicts with other idpf
+> changes queued for net.
+
+No worries, I do not think anyone is using pacing offload yet.
+
+Thanks.
