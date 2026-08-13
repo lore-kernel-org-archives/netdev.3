@@ -1,410 +1,158 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EFB481649
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 14:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786630112; cv=none; b=XcWhjr3MvTJTj2k5ayx3HTiM+g50C9caP1PzOMjz8/iTgf3rY/RoS47a+Ej3n8R/PJKPslFk5IX7BcHwxZYuiMqZ/jOpvYpxL1fD8O4YkR+wVD9NLPrwLGML+s8qeRzrHryMpXljv36cwJQ47Dwd3XMeVrlDl5qtCYRAY4AkEaM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786630112; c=relaxed/simple;
-	bh=/En5DnD0EZLtkwD/aoUkFEzvIJw01h38eZ2AXdEo9gc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fz8/elUnEqDTyHyZ8CDRa336RN1rxJxQGaEWMMuDYKv0CADDKI8cGlit7AQvnTKQXRrbZ9f3mQZtC2rubUspzdcct4FZ5yLTdW4+91Yz98KuaAAPqPilLJxAZxcj6drtzbND0i8C9buB38vKkhccSwWuF/gUnl3JfFqO2tcp0Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pionrc5F; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5A640DB42
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 14:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786631663; cv=pass; b=Y9EVsJJHf0DamaZeIc6NwfmOMZ4YMWkPcj/XIxXKze7rxbbllic7fy4ZTSb7G4b0lXr40jUWrHmugsbK7793PNwmybvsjFTuZwBIBUO8ft2brmDIOPNv1rvzuts5Vt2m/nQltWtGGKIrpCcfbmXXzdvupDOm2JZhHx5PGyRT9YA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786631663; c=relaxed/simple;
+	bh=Za2d8rQCkTQzJPexEt6S0cAe1smEKeIqmteIY8J7q4Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DWkH67EeW9mgDj4D3Nsmiu7SwEYajZswdej9XepPaUyJ1Q2+M9HARA0KGuxe5Q1VQ1YahRfPFF+dVEzVDh0yqk14g/iw6y2D+PIFPo24z4+EHg+AgacEyRfFZfgomAA5hQ6kkq16XXhAHNlYlsc4gwNPQTr/GRbt+BhjB0iJpEM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=foZsuLzG; arc=pass smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pionrc5F"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786630108;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VB8Lkwww6eX8JAvyMUZscYUTf+Xs+Xuwd153uzSvLHw=;
-	b=Pionrc5Fcln7IQlmY0hbEa1nqkPpdFH4uE/OpCGA27wWPf/4uckT9Q6kGaG/Nym7T7jhMS
-	OsR+Wp+URrBCMvnK9I+LdMooRbFTZpAypz0k82qBxl+rA/Fj829i4Up8WeKgooK0pBh7Et
-	Dgm/ZTblfbG0d47dKjd9M+5ZcyzGIng=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-QGL56DOpNOe5jtS5N-yeJA-1; Thu,
- 13 Aug 2026 10:08:25 -0400
-X-MC-Unique: QGL56DOpNOe5jtS5N-yeJA-1
-X-Mimecast-MFC-AGG-ID: QGL56DOpNOe5jtS5N-yeJA_1786630104
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6910B195608A;
-	Thu, 13 Aug 2026 14:08:23 +0000 (UTC)
-Received: from ShadowPeak.redhat.com (unknown [10.44.32.68])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8E6F530001A2;
-	Thu, 13 Aug 2026 14:08:20 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Michal Michalik <michal.michalik@intel.com>,
-	Milena Olech <milena.olech@intel.com>,
-	linux-kernel@vger.kernel.org,
-	ivecera@redhat.com
-Subject: [PATCH net v2] dpll: fix NULL deref in dpll_device_ops() during teardown race
-Date: Thu, 13 Aug 2026 16:08:17 +0200
-Message-ID: <20260813140817.1051388-1-poros@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="foZsuLzG"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4956242332dso111695e9.2
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 07:34:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786631660; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nT0F7ck2D90B3Wva3BkFA/x99w6+fXEg29W5XuDC7nOWYLLHx+FOX+Xq/RNpZLQMDe
+         4TLbmVd0pqI1bQu+gTIxHuALb1BdRq27g5xapEqlgnueQNVflT4hHUKgpvCpfHnpYv8H
+         3YkgNm6NnKug+Lr7THs+9RLqpQoaw24dfB3PvklP6rkiUxyr9PyN+ala9hwtz4ESamP8
+         vw2Wsjqvvn/F4FXWcSKdJ5hCq9cQm4SgQ1v1H2O+ohZmv1Dy7UCa04oDKQp34XTOFDyS
+         BWeCyUQWQVcmqZVcXEj1eIrkYGDFQ+D4Cjl0kUA1Jc7D+DbwoqmCud1P8/fJuvDjhcwf
+         znIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=+XN26PyxSdx1a68OANv50TWHMye4w8jJSd4is9pX5AI=;
+        fh=GJDOkJGMPhVedBW4znRBBLZnIkPYpiu96hIit20RvTE=;
+        b=ihJYocCLSYZ4Z/0/speBG2N+M1yeM2K8ndv44PVhR8SGB2x8ZsR9sJdfP6Q392qC8u
+         G+Kb/ZNoPnUIWI0w6/FvaqqjeFa8drySL84I9ur8+9e7akK7eFZdAE+ULoDTalzlM2Eq
+         2IrbzwYMFd7J7UzEMBVHT3a//IhyqmOSgZCLjRcH5DPxgKIF5f/dUhknbRnOsl+90M3w
+         9Bopss6lgcXt45EFBvHRVsWZmJPmQWMg9t9uUUziphb/0xivhFF9SFWnBkkfTUcqQ0Lt
+         bWMYQ0f/cLMwG9mZHiQkWRRfbzHLlIF5gHAZLLaJWnxhptm4H+9L8CZ6MXKnt49seSVQ
+         fjjQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786631660; x=1787236460; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+XN26PyxSdx1a68OANv50TWHMye4w8jJSd4is9pX5AI=;
+        b=foZsuLzGr5+QbVp5drShqo737HvxVMr4BABDuP8sXsCPTM7NKgq2DtMcqk3QmwzZIt
+         n+sRN0iCEr1yp8B9F0t+RIj9dwzi98+ZQ5xbNxBK4uhGwgSwfnAfjo+MJ8bVpEyt0PKV
+         dKEZsOYfirW9QXSqMDezchb+KFvoymfqCWUQaRz1xcirBHEpNc8jmeypE0V2htMD1HUF
+         X9goyck0+5VikRiFbK79avjefjF3Rm8SS593UfUFR1OXEXiWh3ZLkMGB29fo9tkJc4D5
+         K0R+91gosFVRluvrpg7iDUnszoSiC4U9uu6Pob/4J+wLKS3z4h3ETznrfeNyTHDndCet
+         N7Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786631660; x=1787236460;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=+XN26PyxSdx1a68OANv50TWHMye4w8jJSd4is9pX5AI=;
+        b=gakEh8NSdiJbEMDmdC0cZvpOnBZf2z4HyqDcvehMVwSG/lIW6DJtc4M5SPHXLrJuOA
+         rtSHgUeCjae0NQKT9iDnUd2RharGSz2Y9K5YMaL3tKIgUokQmjMVdoCxcUzCE9yQCGwB
+         4FLrcbbn5kJcgpb8hxguC6dzAx8pTGGkCj1XEjEfdl1RJnuWjQyxfGEbWIXIaqBbXSMN
+         EfMA9QXyfCjl7Cw4C8lK6Vd/S1Rn6TQxkKcGD75wz4+hTxI75Ms9cWkWJA3oMRhe+v9Q
+         wtiSV4RecP/bVkT1NFUzJyZHPXm/cHDfptFFC4xQrBTVkvGtJqcd6Xst6bjbJnu5fhEJ
+         GKsA==
+X-Gm-Message-State: AOJu0YwIX6Aj2j1FNk3vHyeiPzhLTdukjQ4Cgl7cY8My92q0yUJJd9Ad
+	XxTlw/TeERTLWn7mllMbghlqyA/qmlowZyqU1LndkHlsuLyonf3LItdVq3lpCppxuZ0sUmD2wqq
+	9Wx9NiXEacXUl2EgeupdbA2hxK6C+un4=
+X-Gm-Gg: AR+sD12sIdQasvy9o7+ultVBOoxWolUkyXGsq6Why4RTPuOCpdGkETSEuh3C/iFpEdC
+	rF0v9vea9rA0VDhaLCXyQh+XYwosaRR2fKEKH49Sf4Gq3WWoymt4uZ8sopPhKvQfu55tj1kbqjD
+	SuJML/UI17D86lQ6sBvk8fxLkVoJ4AYvishTGa4SScRxSgJjtZmuJv+GwsHaOct7lSgCVrwbSJw
+	OfD0irTRoARs5VOOa0pAS+Hl8qzR3sW0nIdnxQ84xAqc8TiiAQvT7RhdqfAS92YlnrZVVVgpSL7
+	s0XAwVK44rZHw9ZqYNypwUmiWJSy9Z2BR92/WuwSN2aknfJvwQFKhyrN+qCCFujoghj7k7BR3Y4
+	=
+X-Received: by 2002:a05:600c:3b9f:b0:499:4d4d:822a with SMTP id
+ 5b1f17b1804b1-499821d77f5mr71381615e9.17.1786631659743; Thu, 13 Aug 2026
+ 07:34:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <CAKx9m6PywVwkirvkAtz144c-yg71c2+OcNYOTM4Bjtd8dF2PaA@mail.gmail.com>
+ <CAKx9m6OsGKGKGxPnjwy8U-bDyvXVEK-dVNmvP0ZqSL-t2Exsgg@mail.gmail.com>
+ <anziUH_cC1LXoB1x@pie> <CAKx9m6OMQKufDpqGJewG1OyvZGBKGimSxxxGRDGWgFicSRoTGQ@mail.gmail.com>
+In-Reply-To: <CAKx9m6OMQKufDpqGJewG1OyvZGBKGimSxxxGRDGWgFicSRoTGQ@mail.gmail.com>
+From: Giuseppe Nespolino <g.nespolino@gmail.com>
+Date: Thu, 13 Aug 2026 16:34:08 +0200
+X-Gm-Features: AUfX_myULhKAzWIBTA4DYv5bRVfn5mOleoopu4YOkvbaRJTkKLQ9oD2jkfN7CzQ
+Message-ID: <CAKx9m6Myf7St+czv3i82dK2fs2WyAcx+B6r_zT1tLPs97SH3tg@mail.gmail.com>
+Subject: Re: dwmac-motorcomm: RX dies after long s2idle, only wrapper
+ SYS_RESET recovers
+To: Yao Zi <me@ziyao.cc>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-When the last owner of a dpll device unregisters while a foreign driver
-still holds a pin on it via dpll_pin_on_pin_register(), the dpll object
-stays alive with an empty registration list. A pin notification queued
-before the unregister (e.g. ice reacting to zl3073x_i2c removal) then
-walks pin->dpll_refs into dpll_device_ops(), which trips the WARN_ON and
-dereferences the missing registration. dpll_lock cannot help because the
-notification work was queued before the unregistering driver took the
-lock.
+DISCLAIMER: most of what I write in this message comes from AI-driven
+analysis, even though I manually tested the steps.
 
-Treat the empty registration list as a legitimate transient state. Make
-dpll_priv() and dpll_device_ops() return NULL in that case and make
-every pin netlink path that resolves a device from a pin skip such
-dplls. dpll_cmd_pin_get_one() picks a ref with a live registration and
-returns -ENODEV when there is none, the pin dumpit skips such a pin
-instead of aborting the dump, dpll_msg_add_pin_dplls() and the
-frequency, esync, reference sync and phase adjust set paths skip dead
-refs, and dpll_pin_parent_device_set() validates the parent with
-dpll_device_get_by_id(). dpll_pin_register() is the last caller that
-dereferenced the device ops without a check, so move its frequency
-monitor validation under dpll_lock and tolerate a missing registration
-there as well.
+Follow-up, with the TX measurement I owed you, and a correction to
+something I implied earlier.
 
-The empty registration list is equivalent to a cleared DPLL_REGISTERED
-mark, both transitions happen under dpll_lock in dpll_device_register()
-and dpll_device_unregister(). A pin notification for a pin whose dplls
-are all gone is now dropped with -ENODEV instead of crashing, all
-callers in the core ignore that return value.
+TX first. The bug reproduced again today; I forced 20 raw Ethernet frames
+out (AF_PACKET, EtherType 0x88b5, so no configuration change and no
+dependency on a working RX):
 
- WARNING: drivers/dpll/dpll_core.c:1092 at dpll_device_ops+0x24/0x40,
- CPU#83: kworker/u576:3/23471
- Modules linked in: ... ice ... zl3073x_i2c(-) ... zl3073x ...
- Workqueue: ice_dpll_wq ice_dpll_pin_notify_work [ice]
- RIP: 0010:dpll_device_ops+0x24/0x40
- Call Trace:
-  <TASK>
-  dpll_cmd_pin_get_one+0x336/0x520
-  dpll_pin_event_send+0x82/0x140
-  dpll_pin_on_pin_unregister+0xbb/0x160
-  ice_dpll_pin_notify_work+0x1bc/0x1f0 [ice]
-  process_one_work+0x19e/0x370
-  worker_thread+0x1a6/0x310
-  kthread+0xe4/0x120
-  ret_from_fork+0x1a1/0x270
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- ---[ end trace 0000000000000000 ]---
- BUG: kernel NULL pointer dereference, address: 0000000000000010
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
+  mmc_tx_framecount_gb   +20      frames really went out
+  netdev tx_packets      +20
+  tx-0 vector             +0
+  rx-0 vector             +0
 
-Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
-Signed-off-by: Petr Oros <poros@redhat.com>
----
-v2:
-- guard every path that resolves a device from a pin, not only the
-  first ref in dpll_cmd_pin_get_one(); skip half-dead refs in
-  dpll_msg_add_pin_dplls() and the set paths, select a live
-  representative ref and turn the pin dumpit -ENODEV into a per pin
-  skip (Jakub)
-- validate the parent device in dpll_pin_parent_device_set() via
-  dpll_device_get_by_id()
-- guard the frequency monitor validation in dpll_pin_register() and
-  perform it under dpll_lock, it was the only remaining unchecked
-  dereference of the device ops
-- drop patch 2/2, superseded by commit 32239d600236 ("dpll: fix stale
-  iteration in dpll_pin_on_pin_unregister()")
+TX interrupts aren't delivered either, matching what you saw with OOB WOL
+enabled. Register signature identical to the previous occurrence:
+OOB_WOL_CTRL 0x1, MGMT_INT_CTRL0 0x11, MSI-X vector 0 unmasked, and all
+512 RX descriptors written back with plausible lengths and OWN clear.
 
-v1: https://lore.kernel.org/all/20260516191317.1005612-2-poros@redhat.com/
----
- drivers/dpll/dpll_core.c    | 24 +++++++++------
- drivers/dpll/dpll_netlink.c | 59 ++++++++++++++++++++++++++++++++-----
- 2 files changed, 67 insertions(+), 16 deletions(-)
+Now the correction: the failure is intermittent, and I had been assuming it
+was deterministic for long suspends. With the pci_wake_from_d3() change
+loaded I went through three long s2idle cycles and only the third broke:
 
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index 43d51d942eadd3..a320eeb829ad28 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -876,19 +876,25 @@ int
- dpll_pin_register(struct dpll_device *dpll, struct dpll_pin *pin,
- 		  const struct dpll_pin_ops *ops, void *priv)
- {
-+	const struct dpll_device_ops *dev_ops;
- 	int ret;
- 
- 	if (WARN_ON(!ops) ||
- 	    WARN_ON(!ops->state_on_dpll_get) ||
- 	    WARN_ON(!ops->direction_get) ||
--	    WARN_ON(ops->measured_freq_get &&
--		    (!dpll_device_ops(dpll)->freq_monitor_get ||
--		     !dpll_device_ops(dpll)->freq_monitor_set)) ||
- 	    WARN_ON(ops->supported_ffo && !ops->ffo_get))
- 		return -EINVAL;
- 
- 	mutex_lock(&dpll_lock);
- 
-+	dev_ops = dpll_device_ops(dpll);
-+	if (WARN_ON(ops->measured_freq_get &&
-+		    (!dev_ops || !dev_ops->freq_monitor_get ||
-+		     !dev_ops->freq_monitor_set))) {
-+		ret = -EINVAL;
-+		goto out_unlock;
-+	}
-+
- 	/*
- 	 * For pins identified via firmware (pin->fwnode), allow registration
- 	 * even if the pin's (module, clock_id) differs from the target DPLL.
-@@ -1081,12 +1087,8 @@ EXPORT_SYMBOL_GPL(dpll_pin_ref_sync_pair_add);
- static struct dpll_device_registration *
- dpll_device_registration_first(struct dpll_device *dpll)
- {
--	struct dpll_device_registration *reg;
--
--	reg = list_first_entry_or_null((struct list_head *)&dpll->registration_list,
--				       struct dpll_device_registration, list);
--	WARN_ON(!reg);
--	return reg;
-+	return list_first_entry_or_null((struct list_head *)&dpll->registration_list,
-+					struct dpll_device_registration, list);
- }
- 
- void *dpll_priv(struct dpll_device *dpll)
-@@ -1094,6 +1096,8 @@ void *dpll_priv(struct dpll_device *dpll)
- 	struct dpll_device_registration *reg;
- 
- 	reg = dpll_device_registration_first(dpll);
-+	if (!reg)
-+		return NULL;
- 	return reg->priv;
- }
- 
-@@ -1102,6 +1106,8 @@ const struct dpll_device_ops *dpll_device_ops(struct dpll_device *dpll)
- 	struct dpll_device_registration *reg;
- 
- 	reg = dpll_device_registration_first(dpll);
-+	if (!reg)
-+		return NULL;
- 	return reg->ops;
- }
- 
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index afb31c0040382c..9e55745e33e4fa 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -66,6 +66,22 @@ static bool dpll_pin_available(struct dpll_pin *pin)
- 	return false;
- }
- 
-+static bool dpll_device_registered(struct dpll_device *dpll)
-+{
-+	return dpll_device_ops(dpll);
-+}
-+
-+static struct dpll_pin_ref *dpll_pin_first_registered_ref(struct dpll_pin *pin)
-+{
-+	struct dpll_pin_ref *ref;
-+	unsigned long i;
-+
-+	xa_for_each(&pin->dpll_refs, i, ref)
-+		if (dpll_device_registered(ref->dpll))
-+			return ref;
-+	return NULL;
-+}
-+
- /**
-  * dpll_msg_add_pin_handle - attach pin handle attribute to a given message
-  * @msg: pointer to sk_buff message to attach a pin handle
-@@ -656,6 +672,8 @@ dpll_msg_add_pin_dplls(struct sk_buff *msg, struct dpll_pin *pin,
- 	int ret;
- 
- 	xa_for_each(&pin->dpll_refs, index, ref) {
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		attr = nla_nest_start(msg, DPLL_A_PIN_PARENT_DEVICE);
- 		if (!attr)
- 			return -EMSGSIZE;
-@@ -700,9 +718,10 @@ dpll_cmd_pin_get_one(struct sk_buff *msg, struct dpll_pin *pin,
- 	int ret;
- 
- 	ref = dpll_pin_own_dpll_ref_first(pin);
-+	if (!ref || !dpll_device_registered(ref->dpll))
-+		ref = dpll_pin_first_registered_ref(pin);
- 	if (!ref)
--		ref = dpll_xa_ref_dpll_first(&pin->dpll_refs);
--	ASSERT_NOT_NULL(ref);
-+		return -ENODEV;
- 
- 	ret = dpll_msg_add_pin_handle(msg, pin);
- 	if (ret)
-@@ -1091,6 +1110,8 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 	}
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if ((!ops->frequency_set || !ops->frequency_get) &&
- 		    ref->dpll->module == pin->module &&
-@@ -1101,7 +1122,7 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 		}
- 	}
- 	ref = dpll_pin_own_dpll_ref_first(pin);
--	if (!ref) {
-+	if (!ref || !dpll_device_registered(ref->dpll)) {
- 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
- 		return -ENODEV;
- 	}
-@@ -1117,6 +1138,8 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 		return 0;
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if (!ops->frequency_set)
- 			continue;
-@@ -1138,6 +1161,8 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		if (ref == failed)
- 			break;
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if (!ops->frequency_set)
- 			continue;
-@@ -1163,6 +1188,8 @@ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
- 	int ret;
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if ((!ops->esync_set || !ops->esync_get) &&
- 		    ref->dpll->module == pin->module &&
-@@ -1173,7 +1200,7 @@ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
- 		}
- 	}
- 	ref = dpll_pin_own_dpll_ref_first(pin);
--	if (!ref) {
-+	if (!ref || !dpll_device_registered(ref->dpll)) {
- 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
- 		return -ENODEV;
- 	}
-@@ -1199,6 +1226,8 @@ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		void *pin_dpll_priv;
- 
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if (!ops->esync_set)
- 			continue;
-@@ -1224,6 +1253,8 @@ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
- 
- 		if (ref == failed)
- 			break;
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if (!ops->esync_set)
- 			continue;
-@@ -1262,7 +1293,7 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
- 		return -EINVAL;
- 	}
- 	ref = dpll_pin_own_dpll_ref_first(pin);
--	if (!ref) {
-+	if (!ref || !dpll_device_registered(ref->dpll)) {
- 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
- 		return -ENODEV;
- 	}
-@@ -1283,6 +1314,8 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
- 	if (state == old_state)
- 		return 0;
- 	xa_for_each(&pin->dpll_refs, i, ref) {
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if (!ops->ref_sync_set)
- 			continue;
-@@ -1307,6 +1340,8 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		if (ref == failed)
- 			break;
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if (!ops->ref_sync_set)
- 			continue;
-@@ -1500,6 +1535,8 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 	}
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if ((!ops->phase_adjust_set || !ops->phase_adjust_get) &&
- 		    ref->dpll->module == pin->module &&
-@@ -1509,7 +1546,7 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 		}
- 	}
- 	ref = dpll_pin_own_dpll_ref_first(pin);
--	if (!ref) {
-+	if (!ref || !dpll_device_registered(ref->dpll)) {
- 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
- 		return -ENODEV;
- 	}
-@@ -1526,6 +1563,8 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 		return 0;
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if (!ops->phase_adjust_set)
- 			continue;
-@@ -1550,6 +1589,8 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		if (ref == failed)
- 			break;
-+		if (!dpll_device_registered(ref->dpll))
-+			continue;
- 		ops = dpll_pin_ops(ref);
- 		if (!ops->phase_adjust_set)
- 			continue;
-@@ -1581,7 +1622,7 @@ dpll_pin_parent_device_set(struct dpll_pin *pin, struct nlattr *parent_nest,
- 		return -EINVAL;
- 	}
- 	pdpll_idx = nla_get_u32(tb[DPLL_A_PIN_PARENT_ID]);
--	dpll = xa_load(&dpll_device_xa, pdpll_idx);
-+	dpll = dpll_device_get_by_id(pdpll_idx);
- 	if (!dpll) {
- 		NL_SET_ERR_MSG(extack, "parent device not found");
- 		return -EINVAL;
-@@ -1873,6 +1914,10 @@ int dpll_nl_pin_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- 		ret = dpll_cmd_pin_get_one(skb, pin, cb->extack);
- 		if (ret) {
- 			genlmsg_cancel(skb, hdr);
-+			if (ret == -ENODEV) {
-+				ret = 0;
-+				continue;
-+			}
- 			break;
- 		}
- 		genlmsg_end(skb, hdr);
--- 
-2.54.0
+  13h52m   lease 6s after resume    fine
+  27min    lease 7s after resume    fine
+  31min    no lease                 broken
 
+The longest one was fine, so duration isn't a monotonic predictor either.
+With n=3 I can't distinguish a partial effect of that change from plain
+stochastic behaviour, so I'm claiming nothing for it - dropping it as a fix,
+and happy to send it separately as a cleanup if you want it.
+
+On the isolation I'd left open: motorcomm_init() on its own does not
+recover the controller, not even followed by a full ip link down/up (tx-0
++0, rx-0 +0 throughout). The SYS_RESET is the necessary part.
+
+But the reset alone isn't sufficient either, which answers the design
+question I asked you, so you needn't. Right after the SYS_RESET:
+
+  MGMT_INT_CTRL0   0x003f0000     mask field 0x3f, every source masked
+  INT_MODERATION   0x00000000
+
+reset + OOB_WOL_CTRL alone left interrupts dead; adding the
+MGMT_INT_CTRL0 = 0 unmask and INT_MODERATION recovered it immediately
+(tx-0 +16, rx-0 +220, DHCP completed). So the reset has to be followed by
+the motorcomm_init() that resume already calls - it can neither replace it
+nor be trimmed. What I can't separate is whether the OOB WOL clear or the
+unmask is the load-bearing half, since the reset does both.
+
+That makes the patch motorcomm_reset() plus the eFuse settle delay,
+inserted before the existing motorcomm_init() call in motorcomm_resume().
+
+Given the intermittency, waiting for natural occurrences is a poor way to
+validate it. Instead I'll inject the fault deterministically: arm OOB WOL
+by hand with the one writel, then suspend and resume, and check whether the
+patched resume hook brings it back. On the current driver it stays dead, so
+that gives a clean result per cycle instead of a coin flip. I'll keep
+counting natural cycles in the background too.
+
+Giuseppe
