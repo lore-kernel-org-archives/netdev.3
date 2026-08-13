@@ -1,186 +1,128 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916A344606E
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786611169; cv=pass; b=oNmrFHEMbi8zctxFZZ2/I0sBjPyJZwGAH+xMchEviathLIX9nM3cJHrV2PRgX/KwV0byvo1VEZTA5Zr6TsPzQ3ciBjpFA4l6K9zBITqlGUtNwZOhYSdPS3/DYSGWPCmqf7koJ10PjUes4xNrJdWPSwVh+WJPV5vjOgxOlAEctnk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786611169; c=relaxed/simple;
-	bh=OuHmCFJxSVJBidCXfFZYNZ0poOvLesgUedmmoEQ/ihE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O11N/NlyrQ2f45whvR3GAqYEPkKLfmruuIasVgwzPsQm5Xz4WIB+mHbb6qPEQk4OB6doTb8ABYUIXjZ7eIkVvxSLSzjZYXuO4MYI/B332hX8aGepjwaK5nCkwT+CqUmAW400oNtbAohbeXOI9SuNz0VGyWUcMpHaZp5T0zzTRYI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Ix45WXuQ; arc=pass smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF101442FAB;
+	Thu, 13 Aug 2026 08:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786611515; cv=none; b=dS45jqexl7anK0ZZr8DCffXmd/4fcVyS9vTSGI1KLmLHQbJM9XDBLmdDh3TnHqnSqZ4AtS6Ybp+CVUVj3+hq/7WbHZPN39yMAreYoIJmKoclvGHHnpL9+//xzjDhyaBwbASYTwypBXQTRa2jrA/dFKOSHm1xLrFbkAYYTAPidRw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786611515; c=relaxed/simple;
+	bh=ijWjaZII05Wuzz3cGoo4XXctJt9c8ypYrEz2YmjoFBI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GK2jvKGwW4kKKSGhbxNLERsHytaGJIucXSnTRP8ipp+UdcdBTIdz7l1gixJCrLGbEU62+OZrK5PAu63ZI6kzqnSNradQviWc+uxM68DFLS1xPZk+0xYZg5Xsq9ceqIyCiDxAZz0c2wmVWh/b1aDClV9y+NniekiiYHQrZQfmFsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=PSz5PR5/; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Ix45WXuQ"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-848743155bcso835329b3a.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 01:52:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786611167; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CW21Z1ATYJ40ToBkMbdru9rbqQ/pv4sNt9Zq9ew2YjJR1esn7BYrJGPb2CZYHjLk0J
-         at6KSd9mRyzoReWRImmX+0jbBJfLztDkPtrxbuGvv6+pEvzT8UjQAB5m9lmrdHbTvMSA
-         ZCdyIwOtrpLMzTp7PK1KzGqcCpP4wjNOZZlEVjIaZgP3AzrkCRhYYLi9jNzwbfrXHwiW
-         b7VuLfjHnbzT74+r9YMMAQwC057jKTrpVWjITGbZda7kfWI/jfmGCEfQxH1RWzZFke3r
-         3qQrGGUk1S1K5n7LNtwGoEmQygn7SdtarSrZZbF01S686dzqrnuOOE/mf6jCKcWkyuPK
-         BO5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eB8qHCkBqgdg5x5zWmXJ5QxdIBLGKfO7Oht3lf2tkAU=;
-        fh=q2D//7CfxJJM6RhNyZe2STe35AIgYQAmg+C1pwy1R2Q=;
-        b=YBc1gu4uthb/AKlFh6Zol/UpLCTFESu1bFrUKmU+hiUw0VZiFNSXIFh11PlRDp2iYL
-         4vVpUWr2VstSllT+w5KxT4xhxCUQsR8qgPmnNd+3Te6rDREYB7WpKtGnGi6KotSBmtG/
-         HyTNfUOiLXCWHcHCw9tOFK75oMR4ucM8BsVPRZwJzgwVN6qurVJVru7K8VONoYLd+nFc
-         3UN0BhE29T69UwG0EZH0zzrmFmRK4qmGZLuqZcmDhoomDwVla/oltmS1Zom1cql0OtuH
-         telWO/Z5NFoq0CZKou5D+0ZhOdsE1/8wiM5BSRX/eq/Umhw6hYB9tky6DVoN3ifdRzs6
-         ntMw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1786611167; x=1787215967; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eB8qHCkBqgdg5x5zWmXJ5QxdIBLGKfO7Oht3lf2tkAU=;
-        b=Ix45WXuQi1B/KzBzQq6pZrj+eyHx1usm9lNuBiLKjFNvbDFoTV4xcj4TbNeo8S2ZTG
-         n+lufhzd4Rw7YfYrFHqdPxqBuRp/bWVJUN2IV2gtv1msTmY3ZNOg4MfAkzmAqjFfnlSE
-         WqdoltD0oru+cDYDom9AFu8VNuOCeQrPAXUUI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786611167; x=1787215967;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eB8qHCkBqgdg5x5zWmXJ5QxdIBLGKfO7Oht3lf2tkAU=;
-        b=Krxyb6+0dtQVw3NgTMo1AFJK/zOgYSB/PSqQqBsLpbJMa8JUrfPMTv0eyTygPyusLa
-         q8BgBHKauvIvoT2i8ZjXSZcPR9gxxgeXe/HHgo6/Vov9DnLqzG07kFeK1MsURd7ZOgmM
-         6S7sV97TkyRRVdNemLaa1QVVmWPs0+elVLO45jE6xlvvv5kQK3DkQehwC/mU6zdy2vC7
-         xB6LMLuRD/PRaAWEja+gDjms/5J8yFsxGPmzLUfadPJ3ouxNZj1iOot228l2LrdUvlzz
-         8zczB/oU3vaiDVlzVimBIbVmmtW76HR7iS1LmfYxeJgi7zm016IqJki4vNxFonqWk+Wa
-         cunw==
-X-Gm-Message-State: AOJu0Yw5NcIPTVwsm94EB6aDYETI0M+zF78A9XTVgIxreQAr7c6ia0pD
-	RkWBHPBItNVV3Y7jPGzX1IsTd2ZfZpSqYvcv5Oe0vOqjQjq0wkiIoOoNXwpsRrzFIN+phTZBjjO
-	807X2dmxSHQC+kuof+bn8STHndmdEfT6LdruhWKKE2TlTecD7FrZTMA==
-X-Gm-Gg: AR+sD125Ni9D/xo5Po9kXs4Hn+0y2gCY/AQXzRREDX0Ecae1sV6HmdjkWhZIb9JZwh+
-	jF4NejUc/wDGh4OIafLsO5hmKz9x0hT7VBfY0/p/YqAIHWt/TOJhJ/ZS4eieDgHktd0zmFBd3tI
-	ssG9JeDxOEgAboVBTaTAhm2pBPQ6/Xz9oC5sBHcHOQI+HntAWbiHT+IwzMJrh69aWrka72MilWz
-	uqliRdp/zcHxp9NI51yLvPeH92VYJnUip4cDN4hDZ9Wa6A0Tg/EgRJyVk933KerSDs1MuNzf5go
-	AvLjvkgFPpdauqTC4v3V+ZfII3/dwQ9V7q4QIGO68Q==
-X-Received: by 2002:a05:6a00:1891:b0:845:c6fc:2821 with SMTP id
- d2e1a72fcca58-84fc6e04476mr4296840b3a.22.1786611166640; Thu, 13 Aug 2026
- 01:52:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="PSz5PR5/"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id EF5591F654;
+	Thu, 13 Aug 2026 08:58:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1786611504;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vn52oveGQUApmSOAJO7rTm4D0cNjN77XfbGI6cwt154=;
+	b=PSz5PR5/4p/7i7aGl9iMjshNQvALrdjfWPdKl4CHCz9/NxEpqKS996OvckPGQ0Gd50bqhd
+	Kza9bEASAlrvy/AZ8Jxr3EgqOhkib+/x25V8iZD4AN92rF+ygwoCz37XCyyRIQsn6OC1Wy
+	6sZ6Y3XbvV9lWhPkn9tVJrMC/fIi2B9ktpWb9vRfcJ3DFQRLvwmd62Al+ur+J33EgmLp5b
+	ycIcvhbKE79wRA51WR4wjB6HWNVsi6auRITLjdwNwQnjRCsjUlfhqkDSZDGhS1ucn0DC3z
+	O/9AXVB1KNkfHPk3tRMxvuEPmHzX7wuQfP+QsAcS8wHEKZzJi61ZOcY71dYQ7A==
+From: Arthur Crepin Leblond <arthur@marmottus.net>
+Subject: [PATCH net-next v5 0/3] w5100: restore GPIO-based link detection
+Date: Thu, 13 Aug 2026 10:58:13 +0200
+Message-Id: <20260813-wiznet-link-gpio-v5-0-ac8046f24413@marmottus.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260809094418.901607-1-jhs@mojatatu.com>
-In-Reply-To: <20260809094418.901607-1-jhs@mojatatu.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 13 Aug 2026 04:52:35 -0400
-X-Gm-Features: AUfX_mzYJSHQ81nk6K5CQtHRiM8w99otSWYBW2UKmO4T55DkFo0ZHPMcwhj5DCs
-Message-ID: <CAM0EoMm0xj=R4c+3yoBJyEDgNAmsaCospYT9jxVTTihJzSnvPg@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: cls_bpf: reject dev-bound programs bound
- to a different device
-To: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org, vega@nebusec.ai, 
-	Victor Nogueira <victor@mojatatu.com>, Jakub Kicinski <kuba@kernel.org>, Quentin Monnet <qmo@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACWHfWoC/4XNy07DMBAF0F+pvGaQ33G74j9QF44f7QB1KttNC
+ 1X+HSdsKhTEcjT3nnsnJWQMhew2d5LDiAWH1A71tCHuaNMhAPp2E065poZKuOJXChU+ML3D4Yw
+ DdFsdhXaeybglrXbOIeJtIV/JHE3hVsn+51Mu/VtwdRbn7BFLHfLnsj6ypfH30MiAQa+5jl7Gz
+ rn+5WTzaaj1Up5bcpkY+X8IBwqiZ54609Eo1BoiHhG9goiGKMG9tEwKQ1cR+YAwtoLIhkivYue
+ tMcqa38g0Td9JAzAgnwEAAA==
+X-Change-ID: 20260804-wiznet-link-gpio-796f36cd14f9
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Arthur Crepin Leblond <arthur@marmottus.net>
+X-Mailer: b4 0.15.2
+X-GND-Sasl: arthur@marmottus.net
+X-GND-Score: -100
+X-GND-Cause: dmFkZTGJcHHQN43ClLRAtjAJeEXENQ2NJW0/wlGToYOfPebkde+WB0NicxxmK0UCvjOiFUR/mB/BVcXf4eIjFrCvDQzXypzR9n3p3dJmQ5sNUrGI61uqygUeUZ+FdQ9CNAikAqJ89vdSlhI5DCtGRI4Ze1QVdMuEBfIXBAxzYqoW2rDf+stuBu/TZiu0SuTsMDZJNHUx+bIZvHHi5TyY85AgASYdR11BT0VA7lWorG2IlEJq6xw2XUKNXXUeYoZWUgkk68zqD1D3zXRBrCZnwqf6hCYlMmvTRODBn8Px6nRGZ4nlYVVim1mHPzNR1GkosvWtpEIloIJgU/bkZH8zbuWQEtDxs17KDOc0KuTjfRqCwKxdy6e3XhwAbfRldRnjCQ5uBu6lRYXpW7NEDx1cjwTJsWF4QFXjvvFSVwWbSVfO84YlafK72ohdGVJVfKpbRPTS+t36b0Ea5sFeZ07EoRzSxI6jWxRG0vQIR6BLBfsGj6XlI2x6TevmTaLfz6YQStr0sSzx22bosPuUO8lBmot18d3BS71FHQIddZEHHHHYBLkFQisCk+OW+AChPfDXDST42FlY0NOFwzCc+Vvt8KyYbHgXtGCPpAoHgmg2IRX0EiFWVabgVyywxRG4BxtHxbs5AOxPe8P3P1vojcgY5B7PIK42EvevhfHQkEuHOGZkyoyJQA
+X-GND-State: clean
 
-On Sun, Aug 9, 2026 at 5:44=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com> =
-wrote:
->
-> cls_bpf_prog_from_efd() obtained a SCHED_CLS program via
-> bpf_prog_get_type_dev() but never verified that a device-bound (offloaded=
-)
-> program's bound netdev matches the TC netdev the classifier is being
-> attached to. This let a program loaded with prog_ifindex for device A be
-> attached via cls_bpf + skip_sw to device B; deleting device A then
-> destroyed the program's offload state while it was still attached to
-> device B, triggering a netdevsim WARN (panic with panic_on_warn=3D1).
->
-> Mirror the XDP attach path (net/core/dev.c) and reject the attach with
-> -EINVAL when a dev-bound program's bound device does not match the
-> target device.
->
-> Fixes: 6c8dfe21c435 ("cls_bpf: allow attaching programs loaded for specif=
-ic device")
+Hi,
 
-Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
+In the previous version of the w5100 driver, the LINKLED pin could be
+wired to a GPIO to detect the link status changes via an interrupt.
+This only works on w5500 as it is the only one documenting its LINKLED
+pin to hold the link status (on w5100 the LINKLED pin is changing with
+RX/TX activity).
 
-cheers,
-jamal
+This series of patches is bringing back the link status detection on
+w5500 using the Link Status bit of the PHY Configuration Register.
+Additionally, the LINKLED pin can also be wired to detect link status
+changes and read the register in the interrupt handler.
 
-> Reported-by: vega@nebusec.ai
-> Tested-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> ---
->  net/sched/cls_bpf.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
->
-> diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
-> index 001d8c4ebfed..6d19155becc8 100644
-> --- a/net/sched/cls_bpf.c
-> +++ b/net/sched/cls_bpf.c
-> @@ -374,7 +374,8 @@ static int cls_bpf_prog_from_ops(struct nlattr **tb, =
-struct cls_bpf_prog *prog)
->  }
->
->  static int cls_bpf_prog_from_efd(struct nlattr **tb, struct cls_bpf_prog=
- *prog,
-> -                                u32 gen_flags, const struct tcf_proto *t=
-p)
-> +                                u32 gen_flags, const struct tcf_proto *t=
-p,
-> +                                struct netlink_ext_ack *extack)
->  {
->         struct bpf_prog *fp;
->         char *name =3D NULL;
-> @@ -388,6 +389,19 @@ static int cls_bpf_prog_from_efd(struct nlattr **tb,=
- struct cls_bpf_prog *prog,
->         if (IS_ERR(fp))
->                 return PTR_ERR(fp);
->
-> +       if (bpf_prog_is_dev_bound(fp->aux)) {
-> +               struct tcf_block *block =3D tp->chain->block;
-> +               struct net_device *dev;
-> +
-> +               dev =3D block->q ? qdisc_dev(block->q) : NULL;
-> +               if (!dev || !bpf_offload_dev_match(fp, dev)) {
-> +                       NL_SET_ERR_MSG(extack,
-> +                                      "Program is bound to a different d=
-evice");
-> +                       bpf_prog_put(fp);
-> +                       return -EINVAL;
-> +               }
-> +       }
-> +
->         if (tb[TCA_BPF_NAME]) {
->                 name =3D nla_memdup(tb[TCA_BPF_NAME], GFP_KERNEL);
->                 if (!name) {
-> @@ -492,7 +506,7 @@ static int cls_bpf_change(struct net *net, struct sk_=
-buff *in_skb,
->         prog->gen_flags =3D gen_flags;
->
->         ret =3D is_bpf ? cls_bpf_prog_from_ops(tb, prog) :
-> -               cls_bpf_prog_from_efd(tb, prog, gen_flags, tp);
-> +               cls_bpf_prog_from_efd(tb, prog, gen_flags, tp, extack);
->         if (ret < 0)
->                 goto errout_idr;
->
-> --
-> 2.34.1
->
+Arthur Crepin Leblond
+
+Signed-off-by: Arthur Crepin Leblond <arthur@marmottus.net>
+---
+Changes in v5:
+- Remove gpio/gpio.h include from DT example
+- Make the DT interrupts property dynamic from the compatible one
+- Fix DT bindings errors
+- Read the link status register only on w5500 instead of checking link_irq
+- Address sashiko review
+ - call netif_carrier_off on w5500 link status off in open
+ - enable/disable the link irq in open/stop
+ - enable/disable the link irq in resume/suspend
+ - handle link irq probe defer error
+ - register the netdev last
+- Link to v4: https://patch.msgid.link/20260811-wiznet-link-gpio-v4-0-4d5f7da885a8@marmottus.net
+
+Changes in v4:
+- Use directly an interrupt line instead of gpio -> irq
+- Update interrupts in DT bindings
+- Address sashiko reviews
+ - drop devm_ on request_threaded_irq to avoid use after free
+ - disable/enable the link_irq in the suspend/resume
+ - only call netif_carrier_on|off if the link interrupt is present
+- Link to v3: https://patch.msgid.link/20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net
+
+Changes in v3:
+- Change cover letter
+- Fix DT binding errors
+- Use the Link Status bit of the PHY Configuration Register
+- Use the LINKLED gpio binding for change detection only
+- Link to v2: https://patch.msgid.link/20260804-wiznet-link-gpio-v2-0-3b1d0c870f35@marmottus.net
+
+Changes in v2:
+- Convert device tree binding to YAML
+- Use devm_request_threaded_irq instead of request_any_context_irq
+- Use devm_gpiod_get_optional instead of gpiod_get_optional
+- Call dev_err_probe on gpiod_to_irq failure
+- Remove link_irq from priv
+- Use a fixed string for the IRQ name
+- Remove empty new lines
+- Link to v1: https://patch.msgid.link/20260804-wiznet-link-gpio-v1-1-b626fd4f7ccb@marmottus.net
+---
+Arthur Crepin Leblond (3):
+      dt-bindings: net: wiznet,w5100: convert to DT schema
+      dt-bindings: net: wiznet,w5100: add link status interrupt
+      w5100: detect carrier state using link status bit and optional interrupt
+
+ .../devicetree/bindings/net/wiznet,w5100.yaml      |  91 ++++++++++++++++
+ .../devicetree/bindings/net/wiznet,w5x00.txt       |  50 ---------
+ drivers/net/ethernet/wiznet/w5100.c                | 119 +++++++++++++++++++--
+ 3 files changed, 199 insertions(+), 61 deletions(-)
+
