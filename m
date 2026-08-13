@@ -1,37 +1,39 @@
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF101442FAB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF05843F8AC;
 	Thu, 13 Aug 2026 08:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786611515; cv=none; b=dS45jqexl7anK0ZZr8DCffXmd/4fcVyS9vTSGI1KLmLHQbJM9XDBLmdDh3TnHqnSqZ4AtS6Ybp+CVUVj3+hq/7WbHZPN39yMAreYoIJmKoclvGHHnpL9+//xzjDhyaBwbASYTwypBXQTRa2jrA/dFKOSHm1xLrFbkAYYTAPidRw=
+	t=1786611515; cv=none; b=IBgwdaXsQ2S8ErqzQbb2WLTXpVuduIjQEINVsFLE54xLZFjmXjPEUw29+Az7G5+dChRsTOT8+/0zoX4fZ15d5WujVyf4ROPM1qraym34dUGQEBHS7PVkdLgW9vO7SURrdG5y83i3pCGaRCceO0U1FHwtHYIf5JOrZHuMJqSC+WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786611515; c=relaxed/simple;
-	bh=ijWjaZII05Wuzz3cGoo4XXctJt9c8ypYrEz2YmjoFBI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GK2jvKGwW4kKKSGhbxNLERsHytaGJIucXSnTRP8ipp+UdcdBTIdz7l1gixJCrLGbEU62+OZrK5PAu63ZI6kzqnSNradQviWc+uxM68DFLS1xPZk+0xYZg5Xsq9ceqIyCiDxAZz0c2wmVWh/b1aDClV9y+NniekiiYHQrZQfmFsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=PSz5PR5/; arc=none smtp.client-ip=217.70.183.195
+	bh=eMGzuFewfGtIYN0C0eJpqu97B6dAblhN1cMCUugLcKo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=d7Cmg4akNnOtM9g6fFW6M2iDOLSzH/1LerNEN4JdR+oOiqSiUP9jFNpelw+hf7WlraV6MKvOWcs2PDQisMQSDJZl+VgrCtCDwWXLwCLOfIAbiF/aq6Ulrle019Y435q3Tn0SGPrrl7oS6wmTD3AmrB+SU3J2e1xyXynIrVA4ouI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=OPk0TrTV; arc=none smtp.client-ip=217.70.183.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="PSz5PR5/"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EF5591F654;
-	Thu, 13 Aug 2026 08:58:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="OPk0TrTV"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2356D1F6A9;
+	Thu, 13 Aug 2026 08:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1786611504;
+	s=gm1; t=1786611510;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vn52oveGQUApmSOAJO7rTm4D0cNjN77XfbGI6cwt154=;
-	b=PSz5PR5/4p/7i7aGl9iMjshNQvALrdjfWPdKl4CHCz9/NxEpqKS996OvckPGQ0Gd50bqhd
-	Kza9bEASAlrvy/AZ8Jxr3EgqOhkib+/x25V8iZD4AN92rF+ygwoCz37XCyyRIQsn6OC1Wy
-	6sZ6Y3XbvV9lWhPkn9tVJrMC/fIi2B9ktpWb9vRfcJ3DFQRLvwmd62Al+ur+J33EgmLp5b
-	ycIcvhbKE79wRA51WR4wjB6HWNVsi6auRITLjdwNwQnjRCsjUlfhqkDSZDGhS1ucn0DC3z
-	O/9AXVB1KNkfHPk3tRMxvuEPmHzX7wuQfP+QsAcS8wHEKZzJi61ZOcY71dYQ7A==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GOPI8QRTJRKE7q8uv8QbuoU2yJuWRYbi5nzp3r7Xbf0=;
+	b=OPk0TrTV0J5MWtCFld4ATX8O/6Ok4ciCHZ9ogoVIqaxCTC0i9Dek9qWJTqnpjKfOmOowvy
+	Xbq+Zdfmg5rdwyfQpFqsZ3GVJYnxy7U7ua+Qc9yAve0QmhLQftScffZjuzBuvf2/TrcIut
+	coU1d1c5e8zeMmYdlQ/gVLgQE6jmpgrdKMpP9G55FrnUIg7NIPTMfFnBH7nGMS3R5z2Gpe
+	FlKNZzvDq/ZvSFn8BLTpp31LVzI7KDrBT9+iWn1xIemaIQND1jxylMWewwGd+xlfNiO1Yc
+	EBQ9VmAAsk1fqWKdFP4EympRARRDqzDx/kvuU6vCRIKeYSUCe12TYF3PHAy4mw==
 From: Arthur Crepin Leblond <arthur@marmottus.net>
-Subject: [PATCH net-next v5 0/3] w5100: restore GPIO-based link detection
-Date: Thu, 13 Aug 2026 10:58:13 +0200
-Message-Id: <20260813-wiznet-link-gpio-v5-0-ac8046f24413@marmottus.net>
+Date: Thu, 13 Aug 2026 10:58:16 +0200
+Subject: [PATCH net-next v5 3/3] w5100: detect carrier state using link
+ status bit and optional interrupt
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,12 +42,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACWHfWoC/4XNy07DMBAF0F+pvGaQ33G74j9QF44f7QB1KttNC
- 1X+HSdsKhTEcjT3nnsnJWQMhew2d5LDiAWH1A71tCHuaNMhAPp2E065poZKuOJXChU+ML3D4Yw
- DdFsdhXaeybglrXbOIeJtIV/JHE3hVsn+51Mu/VtwdRbn7BFLHfLnsj6ypfH30MiAQa+5jl7Gz
- rn+5WTzaaj1Up5bcpkY+X8IBwqiZ54609Eo1BoiHhG9goiGKMG9tEwKQ1cR+YAwtoLIhkivYue
- tMcqa38g0Td9JAzAgnwEAAA==
-X-Change-ID: 20260804-wiznet-link-gpio-796f36cd14f9
+Message-Id: <20260813-wiznet-link-gpio-v5-3-ac8046f24413@marmottus.net>
+References: <20260813-wiznet-link-gpio-v5-0-ac8046f24413@marmottus.net>
+In-Reply-To: <20260813-wiznet-link-gpio-v5-0-ac8046f24413@marmottus.net>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -57,72 +56,290 @@ Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org,
 X-Mailer: b4 0.15.2
 X-GND-Sasl: arthur@marmottus.net
 X-GND-Score: -100
-X-GND-Cause: dmFkZTGJcHHQN43ClLRAtjAJeEXENQ2NJW0/wlGToYOfPebkde+WB0NicxxmK0UCvjOiFUR/mB/BVcXf4eIjFrCvDQzXypzR9n3p3dJmQ5sNUrGI61uqygUeUZ+FdQ9CNAikAqJ89vdSlhI5DCtGRI4Ze1QVdMuEBfIXBAxzYqoW2rDf+stuBu/TZiu0SuTsMDZJNHUx+bIZvHHi5TyY85AgASYdR11BT0VA7lWorG2IlEJq6xw2XUKNXXUeYoZWUgkk68zqD1D3zXRBrCZnwqf6hCYlMmvTRODBn8Px6nRGZ4nlYVVim1mHPzNR1GkosvWtpEIloIJgU/bkZH8zbuWQEtDxs17KDOc0KuTjfRqCwKxdy6e3XhwAbfRldRnjCQ5uBu6lRYXpW7NEDx1cjwTJsWF4QFXjvvFSVwWbSVfO84YlafK72ohdGVJVfKpbRPTS+t36b0Ea5sFeZ07EoRzSxI6jWxRG0vQIR6BLBfsGj6XlI2x6TevmTaLfz6YQStr0sSzx22bosPuUO8lBmot18d3BS71FHQIddZEHHHHYBLkFQisCk+OW+AChPfDXDST42FlY0NOFwzCc+Vvt8KyYbHgXtGCPpAoHgmg2IRX0EiFWVabgVyywxRG4BxtHxbs5AOxPe8P3P1vojcgY5B7PIK42EvevhfHQkEuHOGZkyoyJQA
+X-GND-Cause: dmFkZTFlHy9UV5KrcAc65cAqSIoL1v8G+Pp1OCsnNJtOtAHdcMzzR7eNxtFYxzCTgczprVKvWZcsfmFtYApGFrC7wMNZV0nbm+v/IXyxRNx39HGsW0l37FM8MVgcZ+v8fiEJy4Nb8hSr44Vet+Wb0ajorM36iW5plKoRZUQy7UTfDzIHeUjtmK3krVOg1kTHGAhIsKKsEH6oynLL/lj5iatNmm5CzeJLAr0rn2+VWg91cEL3qtI0vxVSvZjXvl6AE/4pOHDvoElCyg7FwhEg6RUWwZ7FlVx2Ijm5zDKevXgnPLvZggswCMez381ko/6lwMLAvynCJFA/mDREZ2egYgpoQKjGO21K047Xx6/u4kYBdm/+wrssRj0iiF3pIbH7hHrofYLU9PCLfa2pbdRUM0CiRKOb+MQQd/VIydVydg3GeLpjvhTxohf1b1K2G/kqSXJThxDpAVbwwkdKKlP4AsBrigHruQCKlhRat6NbKkBJH97oWmVWl/KtnCGSFW8/L76qRdgWCR4mrJoKRYUCHL/rMnh/CxLm0zTIgA3GkVPwbtSPHyU5nUetL8jNf/hDTEu3I6oPlaGukUwSrLkQQeA4ymz2mlHlRt95r70KjzoLqK32t/7k6AqsqL9GvMFVwHyYqJAjgRedgBWZY2/5iOw1b4JXfQ9aJv6VvqLeqDb2MChTcw
 X-GND-State: clean
 
-Hi,
+Detect the link status on the w5500 using the Link Status bit from the
+PHY Configuration register (PHYCFGR).
 
-In the previous version of the w5100 driver, the LINKLED pin could be
-wired to a GPIO to detect the link status changes via an interrupt.
-This only works on w5500 as it is the only one documenting its LINKLED
-pin to hold the link status (on w5100 the LINKLED pin is changing with
-RX/TX activity).
+On w5100/w5200, which lack this register, the link is always reported
+as up.
 
-This series of patches is bringing back the link status detection on
-w5500 using the Link Status bit of the PHY Configuration Register.
-Additionally, the LINKLED pin can also be wired to detect link status
-changes and read the register in the interrupt handler.
+Also add an optional interrupt, wired to the LINKLED pin of
+the w5500, to detect link status changes and read the PHYCFGR register.
 
-Arthur Crepin Leblond
+Make sure that the netdev is registered last in the probe function so
+no operation can be performed before the probing is finished.
+
+The w5500 interrupt is only enabled when the netdev is opened and
+disabled on stop. Same behavior for suspend/resume.
+
+Commit dacf281771a9 ("w5100: remove unused gpio link detection")
+dropped the link_gpio/link_irq handling on the grounds that no
+devicetree user passed a "link" gpio at the time and that it used the
+old gpio interface.
+This isn't a plain revert of that removal: link detection is now done
+using a second interrupt rather than a gpio with a documented DT binding.
 
 Signed-off-by: Arthur Crepin Leblond <arthur@marmottus.net>
 ---
-Changes in v5:
-- Remove gpio/gpio.h include from DT example
-- Make the DT interrupts property dynamic from the compatible one
-- Fix DT bindings errors
-- Read the link status register only on w5500 instead of checking link_irq
-- Address sashiko review
- - call netif_carrier_off on w5500 link status off in open
- - enable/disable the link irq in open/stop
- - enable/disable the link irq in resume/suspend
- - handle link irq probe defer error
- - register the netdev last
-- Link to v4: https://patch.msgid.link/20260811-wiznet-link-gpio-v4-0-4d5f7da885a8@marmottus.net
+ drivers/net/ethernet/wiznet/w5100.c | 119 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 108 insertions(+), 11 deletions(-)
 
-Changes in v4:
-- Use directly an interrupt line instead of gpio -> irq
-- Update interrupts in DT bindings
-- Address sashiko reviews
- - drop devm_ on request_threaded_irq to avoid use after free
- - disable/enable the link_irq in the suspend/resume
- - only call netif_carrier_on|off if the link interrupt is present
-- Link to v3: https://patch.msgid.link/20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net
+diff --git a/drivers/net/ethernet/wiznet/w5100.c b/drivers/net/ethernet/wiznet/w5100.c
+index 53d8dc642fbd..b5976d5e6c60 100644
+--- a/drivers/net/ethernet/wiznet/w5100.c
++++ b/drivers/net/ethernet/wiznet/w5100.c
+@@ -21,6 +21,7 @@
+ #include <linux/io.h>
+ #include <linux/ioport.h>
+ #include <linux/interrupt.h>
++#include <linux/property.h>
+ #include <linux/irq.h>
+ 
+ #include "w5100.h"
+@@ -124,6 +125,8 @@ MODULE_LICENSE("GPL");
+  */
+ #define W5500_SIMR		0x0018 /* Socket Interrupt Mask Register */
+ #define W5500_RTR		0x0019 /* Retry Time-value Register */
++#define W5500_PHYCFGR		0x002e /* PHY Configuration Register */
++#define   PHYCFGR_LNK		  0x01 /* Link status */
+ 
+ #define W5500_S0_REGS		0x10000
+ 
+@@ -154,6 +157,7 @@ struct w5100_priv {
+ 	u16 s0_rx_buf_size;
+ 
+ 	int irq;
++	int link_irq;
+ 
+ 	struct napi_struct napi;
+ 	struct net_device *ndev;
+@@ -345,6 +349,20 @@ static void w5500_memory_configure(struct w5100_priv *priv)
+ 	}
+ }
+ 
++static int w5500_get_phycfgr_lnk(struct net_device *ndev)
++{
++	struct w5100_priv *priv = netdev_priv(ndev);
++	int ret = w5100_read(priv, W5500_PHYCFGR);
++
++	if (ret < 0) {
++		netif_err(priv, link, ndev,
++			  "failed to read link status: %d\n", ret);
++		return 0;
++	}
++
++	return ret & PHYCFGR_LNK;
++}
++
+ static int w5100_hw_reset(struct w5100_priv *priv)
+ {
+ 	u32 rtr;
+@@ -414,6 +432,16 @@ static void w5100_get_drvinfo(struct net_device *ndev,
+ 		sizeof(info->bus_info));
+ }
+ 
++static u32 w5100_get_link(struct net_device *ndev)
++{
++	struct w5100_priv *priv = netdev_priv(ndev);
++
++	if (priv->ops->chip_id == W5500)
++		return w5500_get_phycfgr_lnk(ndev);
++
++	return 1;
++}
++
+ static u32 w5100_get_msglevel(struct net_device *ndev)
+ {
+ 	struct w5100_priv *priv = netdev_priv(ndev);
+@@ -616,6 +644,24 @@ static irqreturn_t w5100_interrupt(int irq, void *ndev_instance)
+ 	return IRQ_HANDLED;
+ }
+ 
++static irqreturn_t w5100_detect_link(int irq, void *ndev_instance)
++{
++	struct net_device *ndev = ndev_instance;
++	struct w5100_priv *priv = netdev_priv(ndev);
++
++	if (netif_running(ndev)) {
++		if (w5100_get_link(ndev)) {
++			netif_info(priv, link, ndev, "link is up\n");
++			netif_carrier_on(ndev);
++		} else {
++			netif_info(priv, link, ndev, "link is down\n");
++			netif_carrier_off(ndev);
++		}
++	}
++
++	return IRQ_HANDLED;
++}
++
+ static void w5100_setrx_work(struct work_struct *work)
+ {
+ 	struct w5100_priv *priv = container_of(work, struct w5100_priv,
+@@ -659,6 +705,15 @@ static int w5100_open(struct net_device *ndev)
+ 	w5100_hw_start(priv);
+ 	napi_enable(&priv->napi);
+ 	netif_start_queue(ndev);
++
++	if (priv->link_irq >= 0)
++		enable_irq(priv->link_irq);
++
++	if (priv->ops->chip_id != W5500 || w5500_get_phycfgr_lnk(ndev))
++		netif_carrier_on(ndev);
++	else
++		netif_carrier_off(ndev);
++
+ 	return 0;
+ }
+ 
+@@ -667,6 +722,10 @@ static int w5100_stop(struct net_device *ndev)
+ 	struct w5100_priv *priv = netdev_priv(ndev);
+ 
+ 	netif_info(priv, ifdown, ndev, "shutting down\n");
++
++	if (priv->link_irq >= 0)
++		disable_irq(priv->link_irq);
++
+ 	w5100_hw_close(priv);
+ 	netif_carrier_off(ndev);
+ 	netif_stop_queue(ndev);
+@@ -678,6 +737,7 @@ static const struct ethtool_ops w5100_ethtool_ops = {
+ 	.get_drvinfo		= w5100_get_drvinfo,
+ 	.get_msglevel		= w5100_get_msglevel,
+ 	.set_msglevel		= w5100_set_msglevel,
++	.get_link		= w5100_get_link,
+ 	.get_regs_len		= w5100_get_regs_len,
+ 	.get_regs		= w5100_get_regs,
+ };
+@@ -745,13 +805,21 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
+ 		break;
+ 	default:
+ 		err = -EINVAL;
+-		goto err_register;
++		goto err_wq;
+ 	}
+ 
+ 	priv->ndev = ndev;
+ 	priv->ops = ops;
+ 	priv->irq = irq;
+ 
++	priv->link_irq = ops->chip_id == W5500 ?
++			 fwnode_irq_get(dev_fwnode(dev), 1) : -ENODEV;
++	if (priv->link_irq == -EPROBE_DEFER) {
++		err = dev_err_probe(dev, priv->link_irq,
++				    "failed to get link irq\n");
++		goto err_wq;
++	}
++
+ 	ndev->netdev_ops = &w5100_netdev_ops;
+ 	ndev->ethtool_ops = &w5100_ethtool_ops;
+ 	netif_napi_add_weight(ndev, &priv->napi, w5100_napi_poll, 16);
+@@ -761,12 +829,8 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
+ 	 */
+ 	ndev->features |= NETIF_F_VLAN_CHALLENGED;
+ 
+-	err = register_netdev(ndev);
+-	if (err < 0)
+-		goto err_register;
+-
+ 	priv->xfer_wq = alloc_workqueue("%s", WQ_MEM_RECLAIM | WQ_PERCPU, 0,
+-					netdev_name(ndev));
++					dev_name(dev));
+ 	if (!priv->xfer_wq) {
+ 		err = -ENOMEM;
+ 		goto err_wq;
+@@ -795,21 +859,39 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
+ 	if (ops->may_sleep) {
+ 		err = request_threaded_irq(priv->irq, NULL, w5100_interrupt,
+ 					   IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+-					   netdev_name(ndev), ndev);
++					   dev_name(dev), ndev);
+ 	} else {
+ 		err = request_irq(priv->irq, w5100_interrupt,
+-				  IRQF_TRIGGER_LOW, netdev_name(ndev), ndev);
++				  IRQF_TRIGGER_LOW, dev_name(dev), ndev);
+ 	}
+ 	if (err)
+ 		goto err_hw;
+ 
++	if (priv->link_irq >= 0) {
++		err = request_threaded_irq(priv->link_irq, NULL,
++					   w5100_detect_link,
++					   IRQF_TRIGGER_RISING |
++					   IRQF_TRIGGER_FALLING |
++					   IRQF_ONESHOT | IRQF_NO_AUTOEN,
++					   "w5100-link", priv->ndev);
++		if (err < 0)
++			goto err_link_irq;
++	}
++
++	err = register_netdev(ndev);
++	if (err < 0)
++		goto err_register;
++
+ 	return 0;
+ 
++err_register:
++	if (priv->link_irq >= 0)
++		free_irq(priv->link_irq, ndev);
++err_link_irq:
++	free_irq(priv->irq, ndev);
+ err_hw:
+ 	destroy_workqueue(priv->xfer_wq);
+ err_wq:
+-	unregister_netdev(ndev);
+-err_register:
+ 	free_netdev(ndev);
+ 	return err;
+ }
+@@ -820,6 +902,13 @@ void w5100_remove(struct device *dev)
+ 	struct net_device *ndev = dev_get_drvdata(dev);
+ 	struct w5100_priv *priv = netdev_priv(ndev);
+ 
++	unregister_netdev(ndev);
++
++	if (priv->link_irq >= 0) {
++		free_irq(priv->link_irq, ndev);
++		priv->link_irq = -ENODEV;
++	}
++
+ 	w5100_hw_reset(priv);
+ 	free_irq(priv->irq, ndev);
+ 
+@@ -827,7 +916,6 @@ void w5100_remove(struct device *dev)
+ 	flush_work(&priv->restart_work);
+ 	destroy_workqueue(priv->xfer_wq);
+ 
+-	unregister_netdev(ndev);
+ 	free_netdev(ndev);
+ }
+ EXPORT_SYMBOL_GPL(w5100_remove);
+@@ -839,6 +927,9 @@ static int w5100_suspend(struct device *dev)
+ 	struct w5100_priv *priv = netdev_priv(ndev);
+ 
+ 	if (netif_running(ndev)) {
++		if (priv->link_irq >= 0)
++			disable_irq(priv->link_irq);
++
+ 		netif_carrier_off(ndev);
+ 		netif_device_detach(ndev);
+ 
+@@ -857,6 +948,12 @@ static int w5100_resume(struct device *dev)
+ 		w5100_hw_start(priv);
+ 
+ 		netif_device_attach(ndev);
++
++		if (priv->link_irq >= 0)
++			enable_irq(priv->link_irq);
++
++		if (priv->ops->chip_id != W5500 || w5500_get_phycfgr_lnk(ndev))
++			netif_carrier_on(ndev);
+ 	}
+ 	return 0;
+ }
 
-Changes in v3:
-- Change cover letter
-- Fix DT binding errors
-- Use the Link Status bit of the PHY Configuration Register
-- Use the LINKLED gpio binding for change detection only
-- Link to v2: https://patch.msgid.link/20260804-wiznet-link-gpio-v2-0-3b1d0c870f35@marmottus.net
-
-Changes in v2:
-- Convert device tree binding to YAML
-- Use devm_request_threaded_irq instead of request_any_context_irq
-- Use devm_gpiod_get_optional instead of gpiod_get_optional
-- Call dev_err_probe on gpiod_to_irq failure
-- Remove link_irq from priv
-- Use a fixed string for the IRQ name
-- Remove empty new lines
-- Link to v1: https://patch.msgid.link/20260804-wiznet-link-gpio-v1-1-b626fd4f7ccb@marmottus.net
----
-Arthur Crepin Leblond (3):
-      dt-bindings: net: wiznet,w5100: convert to DT schema
-      dt-bindings: net: wiznet,w5100: add link status interrupt
-      w5100: detect carrier state using link status bit and optional interrupt
-
- .../devicetree/bindings/net/wiznet,w5100.yaml      |  91 ++++++++++++++++
- .../devicetree/bindings/net/wiznet,w5x00.txt       |  50 ---------
- drivers/net/ethernet/wiznet/w5100.c                | 119 +++++++++++++++++++--
- 3 files changed, 199 insertions(+), 61 deletions(-)
+-- 
+2.55.0
 
