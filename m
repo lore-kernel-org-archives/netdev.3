@@ -1,95 +1,69 @@
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E673955D3
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 17:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142053AFAEA
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 17:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786643198; cv=none; b=UfoeO/mzM8jjfKlCldGqFAWtJs3reqeWcNVteWkBnY+eiC54zIT73dxGEI86QkyuT3wheKolfxf5XGrdrcgpMMVbLnin6gFjYFF+HJueqIjPLHUD6QB6KCV24WYRh00Jqy4Q6h030f6MfSiBTO9KiLBhqau/yuS86d103IvaKY8=
+	t=1786643240; cv=none; b=NBo2pcQLTgq1zpPOIQgP/gAXOcIEDW17hu3QjDi2erg7as58xJNYzP6uAn9+p+7uWg5vq54cNBt+AiYKdlumpdZ/yzy+dxqFUco84FXuH9LyyFerumKG4EavcKawUQ8cj7GXUQYPmlS63BnlrRbLdktGkpJ3+cJB1pS8AH9WdLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786643198; c=relaxed/simple;
-	bh=y1ZxZ6bn6iifQdN0di0FaK/JwoM3Lbyc9aGUXQBAQe8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TowcmLY/mcFPraYWp6cBFfAXJ0jtYeJe8+ClqipmTkSo6pwWODMpn6ZvPImFB3e6+1f/cVLTpNX6r9yxVipU82x2wevHFlfD9VussxU0XdQDhN9cM/rRv9WWjWcfOn8Xz64unMWz68OW4RM6UTe0v9AvNwiFtOFlZI3lrxhWF1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=s21+ADoX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EuJHqwsm; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1786643240; c=relaxed/simple;
+	bh=pWbFVB6hMHQbmXekH9w26NBkSZWrnle2Say6dxS8m1k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OpjzlDeIEDETNBqp5UfsAQ8Li3o6IJ2kyEOAjF6cVJJvSHwDXgQeSmnutk6Se901odfJI1MIfND0jdhY6wyVsBskYIO11t3LWHCYED5Te36o4OGcluHssLbpIEoYTWn2T6R13PY9DpgDBD0BMsvMZFcHA6oA+lrHACA+WdfH1aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nW1zBEJi; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="s21+ADoX";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EuJHqwsm"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 605E67A0136;
-	Thu, 13 Aug 2026 13:46:33 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 13 Aug 2026 13:46:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1786643193; x=
-	1786729593; bh=OBqN4oPX5k7jbNY262d25bd+fETZWpbs7QqzWSt7ZVs=; b=s
-	21+ADoX2RxiShRoW3ZRzZIwayKsiJ/hHAESwtmskXTTWUXdTJZEOsNWuwW/4984n
-	fz2y78QinwZAmG87iSJJk379yzAyqzpBNEk54Ce14Rl8/FVtYa0ENTIIvKzatMgq
-	pbUy5AuYp+ruyZljpZjz7mWw9FQPFg8fWCetm4DedWvHqtRz8Qo+I0M8DleBNTiN
-	KQNw8LToUvqV7Gqn/Ei4MawUUAMgBY8dJpkogi6wbtpaNxou5QiPu1iN6xmKTrLP
-	lM1/32i8C06z/jjeDUsluR4xKRPhYk2wH0T2ssvT+AxTtnw9OQHM3xwr0IJm4x8B
-	a1iWxG5ZWBbwCOKmpmDUQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786643193; x=1786729593; bh=O
-	BqN4oPX5k7jbNY262d25bd+fETZWpbs7QqzWSt7ZVs=; b=EuJHqwsmb1vE6GlBY
-	Ja2JnZvKKMyOJ0jvP62Mh1kIcXmwaLFv7sNty8iflAXypAivnjVLhyDex0Egrw2J
-	Ut2u+TloxOHyMSvdaJCwfDN1+Aw+VePYhUR20thaZ7uECLxJ9GCVJ705SykL8wwQ
-	OWVw0OttLAmBj6XdbCUlUWmaymx6mbAtNuPz0WmNykam5a2PHnLYfKEMPQeBkswr
-	8LiFKZjkB0GbNAJ51M7wrR9HhE9XEBIqdpMDkNPaTYhh/rIb7ygxlmilpwfreo2P
-	xvbR9bOzLN44ZdQ9Hv72pD5XQVPOCpHiUFTfbbhjsGs31XKiYvQa4hpwfZVhxL34
-	P7Dow==
-X-ME-Sender: <xms:-QJ-akA4hpR-wahkzv0thoCA-ltBO61rZ8dk88Xo2VKUu9cv_YTSlw>
-    <xme:-QJ-aiUTdtsSPqhaepB4V63fV8n5SZQcAYCO6Ratlwr0PTM49v_jFoiQqTJlz8UzV
-    kJKjnxmCWdcwltQPs4WNf_XMWofoSPBGckSccfpEeuC6DsHmftcXpc>
-X-ME-Received: <xmr:-QJ-auCI_F2FKAK9FcdTt6TXNgEjNKPLor60fBrxWKNuuV8-MgulBdxcNqo>
-X-ME-Proxy-Cause: dmFkZTFXctAct/qj/pWj57H0QMq77XwiOX5uPEMTQ0XsGVQzoCUvbPCvOJgbQOjbgOcx2s
-    RFyY4tQx0ICSsm68Vhku925KF4Bv2oZ0+3DfN9mH+3QT2CdHmbJx8H9jq3YtHGjMjz1Eqe
-    dG+JdFyU0T2HUcca0LFHWdQ/3FPmNcsrxmgZSNKZVWh5g4ZzD5nlzl38TxB5ch6cKl+Q3X
-    /KgFOvTrvOCxH9XMck87HvTgKkRiQeiKFAvEGEfssBJEpQcgcSRX6XzTPVurgcMrXMa4Sw
-    LvIqVjVyHtNQ3pCVeNQSwQjSCejtUAvRf8CP2VPFT8dUf88xemOoLvt8JCOKfx6nTzrnHD
-    ynFN4uqGN4N4szmcOh4LerWFhPqdyR+ZcLoHZaRc58mJUbgIROk+caIldt6MAWxgZmTZlP
-    anDtg2r603lpYMOnwD/ihWvY07AhzQH3DO37R+9VntwJuZEGVc24abfH9nbAcZTW6luALP
-    2xNyQF4RBH0/vjB3P8of68Ioeqx6utJB8T43aoeic5nV5jG8ZZleos6HkfiDsT/TGeJqIW
-    NSxAZd8ORTIUd1U3WpfZKlaDGo7fBcu1n6HBdsvH2Yc7b65yskyimrSiOhWqFLgEKCg9kw
-    KUTAGXXG6myXtycujNRUe+6EQxnrXJe6XudBhFBNDVDbVfQlpGOyhmC08OIg
-X-ME-Proxy: <xmx:-QJ-aneMKuq6VE8tifl3jNCA-aoa-lbxT2Auj5sjvFKKknVASkEC7A>
-    <xmx:-QJ-atorr9Fao__G0n79EJ8s18J1ZQhx12Yc174ZF794zOo2Xx7mzg>
-    <xmx:-QJ-agT41oLYyKcnOjM986ZhsKxyZASWD-DpNo87SuwADvTKqJehkw>
-    <xmx:-QJ-alUBnUrmcDqzu8Fli7coPk_rPoZL2DCjh9yzMd6NCPZ2LCywXA>
-    <xmx:-QJ-atWswKckS1oGslgMSgxGd4gyhOemHnPzIfA9Q2s7WUPqDZAaXBb7>
-Feedback-ID: i559e4809:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Aug 2026 13:46:32 -0400 (EDT)
-From: Alice Mikityanska <alice.kernel@fastmail.im>
-To: Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	netdev@vger.kernel.org,
-	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net-next v2 2/2] virtio-net: Ensure that TCP packets don't overflow gso_segs
-Date: Thu, 13 Aug 2026 20:46:13 +0300
-Message-ID: <20260813174613.2920246-3-alice.kernel@fastmail.im>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260813174613.2920246-1-alice.kernel@fastmail.im>
-References: <20260813174613.2920246-1-alice.kernel@fastmail.im>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nW1zBEJi"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47362928f65so83100f8f.2
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 10:47:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786643236; x=1787248036; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VnWj3Ci1OnIACJ3JVJqb73bM1HVRpMarLwyVRWGih30=;
+        b=nW1zBEJiLkjMlNvu6fnR6jCOJKdRSj46AkRsBok6qZqrSzwNmG6EzviX7y9Gm53NWd
+         8HK+yAhWxVbwm9CX3Cpq97oJtkdES0Efo29Rfq+e8gFg7tIRbVvXS2jtXIOoWKiwiG02
+         6dPUkGnRTLVzyHbOTik/LGYcEz7l/LvzkkL5o2Qzk7ZaVsrwumwxN+jF6JfEZisdbq7i
+         PP1fLsppm5PQWpAjUjJIqfSmp9HruI1xwjPfQj5O3LlNNS3XenNbfpjULR/PKcDKftOI
+         kPTT2HQbgqIRdlbqnwT0RrIuYzFXt4WY34IjwU3i88ls0g++7v1Xfr4WBMAvd4HpnHz+
+         yoPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786643236; x=1787248036;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VnWj3Ci1OnIACJ3JVJqb73bM1HVRpMarLwyVRWGih30=;
+        b=N+VxlN/cwNet1dTqlqt+eaqw2YpuZn7jxVV20WTGM4CWpRwMSMW2Z/lY2EMcy02z2g
+         dGgGZOiMcr12U5r1wR+BqHbO20+zfWXbNOK/ryRPfcVNWsCBZu8AqbWPRAKHac9xK9mm
+         lsrb+XZj6a9xeMssSw25SbXHA8IWPZsXDSCbAuar+4j6T/XA5hwTGyU/D+F4GYkgYm0Y
+         Cu/vRQ2LouzcwcvTN92zL4gAqfd/i8lcFcsXyVQZ8VYgNgUCtQeL5NRj2jycitXO2Ji7
+         AAPaPmKAnmpPgonoR1hzZwlNOd2z7oVUT+Az+qUPL1adC8h1SK3fW8d7sCo4dQvvXGI2
+         OpJA==
+X-Gm-Message-State: AOJu0YyaQ7B9DA8dxBwbVXVKyEfOtHBPtk6l+N39xm8iBSydEfC8aaxF
+	jtfG2Mp8iYvGYWiYXzC/McmIJPSbmRHihz+Liv6GAcFytnyLwwFcs3JEnWYfAQ==
+X-Gm-Gg: AR+sD10iW1ttlp+l/kQ82EGQuicKfRQFbUkCDV5tcQpCP+3xHda1mX60cjLCzkH18il
+	zZTuqZPObrcifGppmVUCH9Us+d022sd1HcO3Psh2JzpSpHzHYysCXukgKktT8ctaHWTuHfZkzGc
+	bmcX8aAbP0l8+FRmylpZYInbtPSfxuOr6YZZKEgoM9/v+8c/ChorlCE76qgJqRrwZaNxesHTfd3
+	frv9tvRd8uygZnFQrtewv08kM3i1yEl6oRjayopchgMsTV8QnxFNZt/fn6oGLoMQ0ee2hhJvDb8
+	NTC6l6ChaKkYHavrDfo7c6ZDQo0c2J7ij4G+qqAS8FY+xeliYqJ6jDDsU7Bcg4CaMS1Q10GV3ll
+	/XKehNb6+BJuZWjyLDHoq1h4pTCX1ZFao7FJ9dpoFQPtsr8Sg0gQYQr/+qFYttZWeS3+HQ2Injz
+	eAUbD+5QoQYTDq9dgnPasrgxP24sl665czBag5N9lNNkeN+8CFmx+JpqQAXHs0Z0JSWjrr
+X-Received: by 2002:adf:e193:0:b0:474:18d9:8371 with SMTP id ffacd0b85a97d-4815a011050mr11963406f8f.28.1786643235944;
+        Thu, 13 Aug 2026 10:47:15 -0700 (PDT)
+Received: from SurHub.localdomain ([102.218.51.180])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f21a068sm986132f8f.12.2026.08.13.10.47.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 10:47:15 -0700 (PDT)
+From: Abdifatah Suruur <suruurism@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	dwmw2@infradead.org,
+	Abdifatah Suruur <suruurism@gmail.com>
+Subject: [PATCH net] ptp: vmclock: prevent read-only mappings from becoming writable
+Date: Thu, 13 Aug 2026 20:47:07 +0300
+Message-ID: <20260813174707.14809-1-suruurism@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -98,47 +72,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alice Mikityanska <alice@isovalent.com>
+vmclock_miscdev_mmap() rejects writable mappings of the shared vmclock
+ABI page with -EROFS, but leaves VM_MAYWRITE set.  Userspace can map the
+page read-only and then upgrade it to writable with mprotect(), after
+which the guest can corrupt the host-written timekeeping data (sequence
+counter, UTC time, TSC offset) that the vmclock ABI defines as read-only.
 
-The user can specify any gso_size in a packet crafted with an AF_PACKET
-PACKET_VNET_HDR socket, even smaller than TCP_MIN_GSO_SIZE = 8. At the
-same time, GSO_MAX_SIZE = 8 * GSO_MAX_SEGS = 8 * 65535. When the user
-crafts a packet with gso_size < 8, there is a risk for partial GSO to
-overflow the 16-bit gso_segs field when dividing the SKB length by
-gso_size.
+Clear VM_MAYWRITE on the read-only path so the mapping cannot be
+upgraded, as i915 does for its read-only objects and as fixed in drm/vc4
+(CVE-2026-68445) and drm/panthor (CVE-2024-53071).
 
-Adjust gso_size of TCP packets to be at least TCP_MIN_GSO_SIZE = 8. Keep
-gso_size of UDP GSO packets, as gso_size=1 is valid and explicitly
-tested at tools/testing/selftests/net/tun.c:649.
+Reported-by: Abdifatah Suruur <suruurism@gmail.com>
 
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
+Fixes: 2050327242269 ("ptp: Add support for the AMZNC10C vmclock device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
+
 ---
- include/linux/virtio_net.h | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index f36d21b5bc19..c381b916c1b5 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -6,6 +6,7 @@
- #include <linux/ip.h>
- #include <linux/ipv6.h>
- #include <linux/udp.h>
-+#include <net/tcp.h>
- #include <uapi/linux/tcp.h>
- #include <uapi/linux/virtio_net.h>
+--- a/drivers/ptp/ptp_vmclock.c
++++ b/drivers/ptp/ptp_vmclock.c
+@@ -372,6 +372,12 @@
+ 	if ((vma->vm_flags & (VM_READ|VM_WRITE)) != VM_READ)
+ 		return -EROFS;
  
-@@ -179,6 +180,9 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
- 			if (skb->ip_summed == CHECKSUM_PARTIAL &&
- 			    skb->csum_offset != offsetof(struct tcphdr, check))
- 				return -EINVAL;
++	/*
++	 * Restrict the read-only mapping so it cannot be upgraded to
++	 * writable later with mprotect().
++	 */
++	vm_flags_clear(vma, VM_MAYWRITE);
 +
-+			BUILD_BUG_ON(TCP_MIN_GSO_SIZE * GSO_MAX_SEGS < GSO_MAX_SIZE);
-+			gso_size = max(gso_size, TCP_MIN_GSO_SIZE);
- 			break;
- 		}
+ 	if (vma->vm_end - vma->vm_start != PAGE_SIZE || vma->vm_pgoff)
+ 		return -EINVAL;
  
--- 
-2.55.0
-
