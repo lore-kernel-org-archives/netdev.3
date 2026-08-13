@@ -1,226 +1,185 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429B538F651;
-	Thu, 13 Aug 2026 05:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786597505; cv=none; b=dNy0Crh16pQBNm4VaNLec4CAxOd4+UJLJ0EV1r9vxS0JYCeIO858l3ehojodG9z+mkN1VQHgqYXbJtp5TLcYLKChaLjf9ClyO/NAlc9cvOPw41j2fncRXCFE4NKhG53keUOwa8528XHKFyzs9fNevwW95fHPolmKvu5r9VLea1I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786597505; c=relaxed/simple;
-	bh=xHJJj7mLPauJ/aixz6vMeUhRVI2XGJUdgTCl7y68hu0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmgjmGnH75tEEN9RrkAZe19yyJh5OD4rx5dkHw1JevGMGAxNJ9MdYFgM16Lnyk7qDvZDnQs34GESUhzs5/41L4nh/cdEkkUfH6Ft8/U6KlbIovqvanqI+KaH3rggE+oSWDTa6ZAzKeX6OSmcSJmYMpvsG9CLmaaAikHEs84tvg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 75CBC20B7017; Wed, 12 Aug 2026 22:04:34 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 75CBC20B7017
-From: Long Li <longli@microsoft.com>
-To: Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	shradhagupta@linux.microsoft.com,
-	Simon Horman <horms@kernel.org>,
-	ernis@linux.microsoft.com,
-	stephen@networkplumber.org
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 11/13] net: mana: keep a user-configured RSS table across a queue rebuild
-Date: Wed, 12 Aug 2026 22:04:16 -0700
-Message-ID: <20260813050418.2906468-12-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260813050418.2906468-1-longli@microsoft.com>
-References: <20260813050418.2906468-1-longli@microsoft.com>
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2FE38B7C3
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 05:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786598003; cv=pass; b=iyM9yS2nlNcEVGV2E6b8KLNB9LiNXfmKiEt25K9ql19OyzD6s+7lZtF/2MWK64llU+Z0DWBDTJ4RGnjSglML4dUYztMSFvkAYlXNiSAqZ+5MBNK7jkR2jsW2izdi4gvcmkGQtdHVpkdVvXiKoVBxC8Z2dQAdK0zmRHFHYX1Pmvc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786598003; c=relaxed/simple;
+	bh=jH269NUkneYji055jp93VCBiUHSr7s+k4kmOaLhCHds=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SyPaZ5/9myKgdi7x7IU/3Y3s/V7BNo1P9ZxzHmj6+mF1hKqETACPT1xzvR5TCCGwsCoPVTFbyiZoRU1P+D1oSaqrDYHVf0bJ9I6nSOE4zpfanJgt4Sn+UKuyhEgqzOAc4JPQL1ulKr7JGimHBK+PMDIXc2JMb7rAv4FoTcMrG0w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eQKPAb+G; arc=pass smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eQKPAb+G"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e5c9211d2so23794085a.1
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 22:13:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786597986; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Lj0pojRsspow7cjyg3giN25/xOcwr+40lwm574rOjnGZF/uiqADF1D86pX6dax4IQ8
+         AVrKpW9OmiQZwQC9Ne1ZZAuZylHenXI3tgr+eQd1hd2/8wea2dXqx0QtYXaO+Acg64Xa
+         fupGEpF2yxmRgiQmKJAAx0q8ZopaIIjuIb4Ln1Tq94lmL6ydgJlC1RLpWXDlasp0Ybac
+         ykuWX+N4jytszCcqtXDgEEBFG9EKd1aUVewCnOOobqOjnPGxaWn+rWgANBGZiSmJnyDG
+         wbH7XOiMfcegoCZaZbU3MR3PtywWrB813liAn8vKzRE/enWuVRsco8r5pgS0KTNjoZLh
+         eLBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uEtieVc9WSJ5PDHBcvuJibcDLApd92WXRwOLQpfbWq4=;
+        fh=zw2Tf0vMtu3hAEFoJbDfCjU/V/Fceeopbv+cwPpkdHc=;
+        b=kv5X3Zp8z07USQH+K+kjf+VPfD8a18eE2WRtp1tv/Q/i3lebHS5IPGPZcCRRbF/tfl
+         7LWmP88ZhxwQNCaoTxDGS1rk/X42MnyCT0b0PQ/XiBTUTHoKtoLttB637cRQOqhWHNce
+         gf5YPRzJVm5xQfviwep8uYnqLsLdCjFrl6c2mObJDlUQ0Tvx35ZDSGtQCPoBd2f8KCCR
+         oAJBcNyKJVtA+OfxFeII6ZLLJsR2slqBfFLApnNmDX09Me/19q25gOQVkticVC92GrLx
+         uN1dsyLayttlJ813zHOhczT7MgjD2zsIZ83aV5nTH+3irD/H8wNbZuvd0oIxOWnz+Fax
+         OO3w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786597986; x=1787202786; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uEtieVc9WSJ5PDHBcvuJibcDLApd92WXRwOLQpfbWq4=;
+        b=eQKPAb+GVppOHChuW44mb7eGSzBl88RR4yOq6j3EbmiuUbu1PDF6YuIBEYfKcetBC2
+         lTSqkGCsyw+cdiWg006WsKvwQ0FZSBgMnLeNXsgcwUJyfA3TEXFOR5XFK+v/9lt7PgN4
+         zld4ukdhz5/KTRNzQHO0K07do4fa6ePZ4GQWoDQkPSWPat/gi6LdgnHcvpGr4lnSex8P
+         EzDWssQ2YxZS/GhRLSLPsyr3k2byP0ZxkZ5hY2ll7GfzJo5yqloB4T6Q4GVMp4xUip3Z
+         HHU6I0yc7AwgnnXk/cTBW9y7uN1OC1PBdY8/Dk3CkLyf7WvxqwBTEDb7ut3N19yfGA2H
+         YKzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786597986; x=1787202786;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uEtieVc9WSJ5PDHBcvuJibcDLApd92WXRwOLQpfbWq4=;
+        b=H9ea9+kpxjdwSVbXJhVfz+44kiEJg9eOySGO8PR4DrOAsq7KQ+ADQLG+0C2aquS6CY
+         DEkxDiFBhersOT9xCM5dOmgqLnXoZsk1adX7x1zQmC5St8PFH5oSyOD3xCkha7Qsn81y
+         X4JUqH6no8vWkOvMsuMFpnD2uW/u9L/MCV7VTjkcKkNbpgshuDCU8lfjHenVMqRR7o+d
+         M4q+9bidOXt4+MKFFdl3ur0obgD1/eLgDHZxSGRVLsKd+J9vHhDkvdtXkcZpV3YIP8Al
+         Tx7PAEaBIhkheQdjh7KxofHwajfv+KfNQGKNDCDuzoB3PLYPN/4VAldi5VlqRWRITNRg
+         GxIw==
+X-Gm-Message-State: AOJu0YxsXNLJW6Ue+VFx6LaF7DEDCMQMtJSV/Naj/p4w0nHw519nysBd
+	q7NkHktcmhp2lr4bRXLIDFGYcIiSI7jisBJvj/IthqT4rfyvd5o2RNHPuxJWQ5LY7fXx9UV9i+Y
+	lXNAmIgfvEcAlgFT8eML0itKnX8hcJOt+2vzjEi5athIT0ktu4eqX21S33CQ=
+X-Gm-Gg: AR+sD102Y8T1Qzd9r0x1gtdaWOSMEGUzMTy6lTjM7x1Do3OBCLXwB83kmiDFYdlOAUP
+	WQx9HXFqOcgj1nSPkqeOOSqCnSsLzRqkfuAsxewBsmhYOTq0/thDZNemf66WiX2TKtjrsyisZYk
+	9zX/4ffs6tdwANWO+eof2ahfqLKO60+0kejAyV9I4WM9/UvCZeoMMKzuEVpmjJJ2G9dZXNnUKSM
+	xvqRjtTgPDasY38b++y579i5Y266j8hozBW+OP9A7mMY9Xk8C7glVbRWXngvRcyI1s2GaYVcCzT
+	VVIXX8DlzmOTKEh7HS7xcpvt7y2jEpfF9mzUYbNdEiJhXjWeB5eu9Yi+w+orDCw0Cvhf4U62j5Z
+	Q8/APdD+mpH/UXUzWc+Z0tpwq56orQJMLbYHk5d3nf/H5Wa9FF/PCm6cnfhzPov+iyI7/i9AnAv
+	ezAOQi5imTwJCRmyI=
+X-Received: by 2002:a05:620a:19a1:b0:930:a718:bafb with SMTP id
+ af79cd13be357-936bf8e9556mr236573185a.10.1786597985288; Wed, 12 Aug 2026
+ 22:13:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260813020529.3506539-1-willemdebruijn.kernel@gmail.com> <20260813020529.3506539-3-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20260813020529.3506539-3-willemdebruijn.kernel@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 13 Aug 2026 07:12:53 +0200
+X-Gm-Features: AUfX_my654oSCj8Jvfk9t6nV5AAv0jJoyfpxZTmlGpim3EaNPCSGd_HPp2788oY
+Message-ID: <CANn89iK6O7ujR9zCJzd04MNLQoDi3mA+HWsR-hgQWYzLS3gZfw@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 2/6] net_sched: sch_fq: clear past skb->tstamp
+ if offloading pacing
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch, 
+	Willem de Bruijn <willemb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A queue rebuild regenerates the RSS indirection table from the driver
-default, so a table the user installed with "ethtool -X" is silently
-replaced by any reconfiguration that rebuilds the queues.
+On Thu, Aug 13, 2026 at 4:05=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> From: Willem de Bruijn <willemb@google.com>
+>
+> When hardware offload is enabled, FQ will forward packets to the
+> netdevice for pacing. The device has to test that skb->tstamp is
+> in the future.
+>
+> Avoid this cost for packets whose txtime has already passed, by
+> clearing skb->tstamp.
+>
+> Also clear slightly into the future, for EDT timestamps that are
+> so close to now that they fall within a reasonable normal Tx
+> latency. This slack is set to 400 nsec.
+>
+> Also disable timer drift logic when offload is enabled, because
+> time_next_packet can exceed now causing a negative value.
+>
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
+>
+> ---
 
-Carry it over instead when the queue count is unchanged: the entries are
-queue indices, so they stay meaningful. A driver-generated table is
-still regenerated, and a table that cannot be honoured for the new queue
-count is reported to the core as lost - but only once the new set is
-actually live, so a failed reconfiguration does not clear
-IFF_RXFH_CONFIGURED on a port that kept its old queues.
+> @@ -828,11 +837,16 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch=
+)
+>                  * f->time_next_packet was set when prior packet was sent=
+,
+>                  * and current time (@now) can be too late by tens of us.
+>                  */
+> -               if (f->time_next_packet)
+> +               if (f->time_next_packet && f->time_next_packet < now)
+>                         len -=3D min(len/2, now - f->time_next_packet);
 
-Signed-off-by: Long Li <longli@microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 78 +++++++++++++++++--
- include/net/mana/mana.h                       |  7 ++
- 2 files changed, 80 insertions(+), 5 deletions(-)
+IMO this part deserves a patch on its own.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 7c43c2f9043ba591b58e4ee2211cf37da9fead36..6e77b59cfcf907f7e584625273972bf185501d20 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3496,6 +3496,38 @@ static void mana_rss_table_init(struct mana_port_context *apc)
- 			ethtool_rxfh_indir_default(i, apc->num_queues);
- }
- 
-+/* Whether @apc's indirection table can be carried to a set of @num_queues,
-+ * rather than rebuilt from the driver default.
-+ *
-+ * Only a user table ("ethtool -X") is kept; a driver one is rebuilt to spread
-+ * over the new count. ethtool_check_max_channel() already refuses a reduction
-+ * that leaves a user table pointing past the last queue, so the bounds check
-+ * below only guards rebuild paths that bypass ethtool.
-+ *
-+ * @lost reports a table that cannot be carried instead of calling
-+ * ethtool_rxfh_indir_lost() here, since the swap may still fail and leave the
-+ * port on queues where the table still applies. False when none was set.
-+ */
-+static bool mana_rss_table_keep(struct mana_port_context *apc,
-+				unsigned int num_queues, bool *lost)
-+{
-+	u32 i;
-+
-+	*lost = false;
-+
-+	if (!netif_is_rxfh_configured(apc->ndev))
-+		return false;
-+
-+	for (i = 0; i < apc->indir_table_sz; i++) {
-+		if (apc->indir_table[i] >= num_queues) {
-+			*lost = true;
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
- int mana_disable_vport_rx(struct mana_port_context *apc)
- {
- 	return mana_cfg_vport_steering(apc, TRI_STATE_FALSE, false, false,
-@@ -3766,6 +3798,7 @@ int mana_alloc_queues(struct net_device *ndev)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
- 	struct gdma_dev *gd = apc->ac->gdma_dev;
-+	bool indir_lost;
- 	int err;
- 
- 	err = mana_create_vport(apc, ndev);
-@@ -3811,7 +3844,18 @@ int mana_alloc_queues(struct net_device *ndev)
- 		goto destroy_rxq;
- 	}
- 
--	mana_rss_table_init(apc);
-+	/* Keep a user-configured RSS table across a rebuild; the entries are
-+	 * queue indices, so they stay meaningful as long as the queue count
-+	 * is unchanged. Only a driver-generated table is regenerated here.
-+	 *
-+	 * Nothing to roll back to here, so report the loss as soon as it is
-+	 * decided and keep the table and the core's view of it in step.
-+	 */
-+	if (!mana_rss_table_keep(apc, apc->num_queues, &indir_lost)) {
-+		if (indir_lost)
-+			ethtool_rxfh_indir_lost(ndev);
-+		mana_rss_table_init(apc);
-+	}
- 
- 	err = mana_config_rss(apc, TRI_STATE_TRUE, true, true);
- 	if (err) {
-@@ -4068,11 +4112,15 @@ static void mana_qset_snapshot(const struct mana_port_context *ctx,
- 	out->priv_flags		= ctx->priv_flags;
- 	out->mtu		= ctx->configured_mtu;
- 	out->bpf_prog		= ctx->bpf_prog;
-+
-+	/* A set taken from a live context has nothing pending; the builders
-+	 * set this after snapshotting if they had to drop the user's table.
-+	 */
-+	out->rxfh_indir_lost	= false;
- }
- 
--/* Install @qset's fields onto @ctx. The vport (port_handle,
-- * vport_use_count) and the port-level debugfs dir are deliberately not
-- * touched: they outlive any individual queue set.
-+/* The vport (port_handle, vport_use_count) and the port-level debugfs dir are
-+ * not touched: they outlive any individual queue set.
-  */
- static void mana_qset_install(struct mana_port_context *ctx,
- 			      const struct mana_qset *qset)
-@@ -4150,6 +4198,7 @@ int mana_alloc_qset(struct mana_port_context *apc,
- 		    struct mana_qset *out)
- {
- 	struct net_device *ndev = scratch->ndev;
-+	bool indir_lost;
- 	int err;
- 
- 	ASSERT_RTNL();
-@@ -4193,9 +4242,19 @@ int mana_alloc_qset(struct mana_port_context *apc,
- 	if (err)
- 		goto cleanup_rxq;
- 
--	mana_rss_table_init(scratch);
-+	/* Carry a user-configured RSS table over to the new set. The entries
-+	 * are queue indices, so mana_config_rss() in mana_publish_qset() maps
-+	 * them onto the new set's RX objects. A driver-generated table is
-+	 * rebuilt instead, so it covers every queue of the new set.
-+	 */
-+	if (mana_rss_table_keep(apc, num_queues, &indir_lost))
-+		memcpy(scratch->indir_table, apc->indir_table,
-+		       apc->indir_table_sz * sizeof(*apc->indir_table));
-+	else
-+		mana_rss_table_init(scratch);
- 
- 	mana_qset_snapshot(scratch, out);
-+	out->rxfh_indir_lost = indir_lost;
- 	return 0;
- 
- cleanup_rxq:
-@@ -4407,6 +4466,15 @@ int mana_publish_qset(struct mana_port_context *apc, struct mana_qset *newq,
- 	if (carrier_ok)
- 		netif_carrier_on(ndev);
- 
-+	/* The set that could not carry the user's indirection table is the one
-+	 * serving traffic now, so the table really is gone. Reporting it here
-+	 * rather than while the set was being built keeps a failed swap from
-+	 * clearing IFF_RXFH_CONFIGURED on a port that kept its old queues, and
-+	 * with them a table that is still valid and still programmed.
-+	 */
-+	if (newq->rxfh_indir_lost)
-+		ethtool_rxfh_indir_lost(ndev);
-+
- 	return 0;
- 
- rollback:
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 619c66f3c6192dd2988a1bba73e991df2a773923..0d7375adeb5366bbbb99a7faa931a8830f71ef10 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -731,6 +731,13 @@ struct mana_qset {
- 	 */
- 	int			mtu;
- 	struct bpf_prog		*bpf_prog;
-+
-+	/* The user's RSS indirection table could not be carried onto this set,
-+	 * so a default one was generated for it. mana_publish_qset() tells the
-+	 * core once this set is live; until then the port is still running on
-+	 * a set where the user's table applies.
-+	 */
-+	bool			rxfh_indir_lost;
- };
- 
- netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev);
--- 
-2.43.0
+Using a variable adds no cost (compiler will generate the same code),
+but helps to understand what is going on?
 
+commit e51f3936aba0e5887cf5884b18ffa769dcb38523
+Author: Eric Dumazet <edumazet@google.com>
+Date:   Wed Jul 1 08:33:38 2026 +0000
+
+    net_sched: sch_fq: fix pacing delay underflow with pacing offload
+
+    When pacing offload is enabled (q->offload_horizon > 0),
+    FQ can dequeue packets early (now < f->time_next_packet).
+
+    In this case, the drift calculation (now - f->time_next_packet)
+    underflows to a large unsigned value.
+
+    min(len/2, now - f->time_next_packet) then evaluates to len/2,
+    incorrectly halving the pacing delay for the next packet.
+
+    Fix this by only applying drift compensation when now > f->time_next_pa=
+cket.
+
+    This bug was triggered when flow_max_rate was set on the qdisc
+    or for non EDT packets (packets with a zero skb->tstamp).
+
+    Fixes: f26080d47007 ("net_sched: sch_fq: add the ability to offload pac=
+ing")
+    Reported-by: Willem de Bruijn <willemb@google.com>
+    Signed-off-by: Eric Dumazet <edumazet@google.com>
+
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index 7cae082a984721215b17fea2d094095155580dcb..f2a65a7a928d5838547285921ce=
+0b42c99a96ef4
+100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -828,8 +828,12 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+                 * f->time_next_packet was set when prior packet was sent,
+                 * and current time (@now) can be too late by tens of us.
+                 */
+-               if (f->time_next_packet)
+-                       len -=3D min(len/2, now - f->time_next_packet);
++               if (f->time_next_packet) {
++                       s64 drift =3D now - f->time_next_packet;
++
++                       if (drift > 0)
++                               len -=3D min_t(u64, len/2, drift);
++               }
+                f->time_next_packet =3D now + len;
+        }
+ out:
