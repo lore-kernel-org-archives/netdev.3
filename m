@@ -1,194 +1,129 @@
-Received: from mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17142BCF46
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1000746985A
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786620779; cv=none; b=ePuvCVgZMGYTyj8+YyhUCtfN5IWf/oY53SAzGcrv27n4vzjsXV39aa0x/qGSzRuMLMSDOANWLoYBS/Hc8N51EqkR7rTEV0+ZZBOoqEePe6uGOEpJo+PlT1a/3LuZQju7+J21BE/rGeD8iF4/HUkTZskKsLEDJhV+oWB/tdd0FnU=
+	t=1786620825; cv=none; b=Fvap+0hIwVfds/3776aloNjiJqJVxAbbf726umrFkNzQMY1vdDpSHu1oRiCaQL00Zqc7t8IzWEbVTww2Cr3xAHaqMOKpGpNvINMA/StQHVlQB+LipjPHXWPgCZYSUreI8h31Exmzw/dKCEHLEIT9fHb8DjD9vjMOxsy7baM/x3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786620779; c=relaxed/simple;
-	bh=cZkj5BPSYYoc5aDEyFKO1RL8X23y1PD207f7mnoVj0k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J2pRUWmZVqXsG1F7+7H7vmdJQBjXey07tPK0ON/ZlMZd2VRLHjuU/wzYjF/87KNtkyr5sujadxPyuyom2yXzkEWxV89VJd9xG+3ty1nz9InPU3PKoMbfUDUlLfnw+GmtiQ08S0mso/pGHJGOirVo+RG0E0SqcuWG6S/2Bqv0LYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nUo4vtEj; arc=none smtp.client-ip=95.215.58.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786620825; c=relaxed/simple;
+	bh=mIMg3GpGnjxCOF+x0X883SsbbzLGZeniRtVjG86VZ6k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F16TXPdiJynnkXQI0I+eGxRcn80AL/DQEW3mZeFkdwt58/8VgZmzj0HKEqWVjEmCydecEvUp6gssTLeQ5mx03NaD0Kq+mcI/tVvDNmYrzIsrBBzgLpHGJg43aRJGwRefSfmif4s1rlRo1f1+W+UwelxPhdO5Z9MLlpMBVWEAR08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HsAU3APF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=n2dirSnU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nUo4vtEj"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=cZkj5BPSYYoc5aDEyFKO1RL8X23y1PD207f7mnoVj0k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786620773; v=1; x=1787225573;
- b=nUo4vtEjQNJe1GYAwtSsoCEMjyl4ePBV88Ry+gsDBMw4oCCG220HHGh937wG9/xWRL5WcwJ0
- sY8WEGjYCIyzNjEaBch/FKDg7gGchMPdvNN/USUk3Y59FZ6T20rQMAJ2e/n1h1DEa/EZLk5N5eB
- jUoBGXVrKMCD9QfBtY3xgRAQ=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from localhost.localdomain (147.136.157.0)
-	by smtp.migadu.com with ESMTPS id 40f3c96585ea3264;
-	Thu, 13 Aug 2026 11:32:53 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Kenneth Lee <kennethbwlee@snu.ac.kr>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Krishna Kumar <krikku@gmail.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Martin Willi <martin@strongswan.org>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH net-next] net: xdp: don't assume an Ethernet header in generic XDP
-Date: Thu, 13 Aug 2026 19:32:24 +0800
-Message-ID: <20260813113229.381136-1-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HsAU3APF";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="n2dirSnU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786620823;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J2FrrsRU5V1HJtH9l/0Gbv9BbbcK3/MMcp3Hv+XyxFk=;
+	b=HsAU3APFdvUGLYba805rCEQ+UhMdhz5haYEs6vL9nvxtkGHhnrynp5f4GIIT+wQMvH1jQe
+	YZ0xXHQw6BVDhphnMiqKZ/dUbCXDoqfq8vOVRv57OKIhu6n7o9V03EuM1Y9YXZhBw6Kkhu
+	H7mSKczrNHo0EmGdpXkED1nR9z95o20=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-313-z9SP-4T0M5eRLmSHboev9w-1; Thu, 13 Aug 2026 07:33:38 -0400
+X-MC-Unique: z9SP-4T0M5eRLmSHboev9w-1
+X-Mimecast-MFC-AGG-ID: z9SP-4T0M5eRLmSHboev9w_1786620818
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f6e658363so438060f8f.3
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 04:33:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786620818; x=1787225618; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=J2FrrsRU5V1HJtH9l/0Gbv9BbbcK3/MMcp3Hv+XyxFk=;
+        b=n2dirSnUQoZRAqVWgErMaBqjxhlekJ4yLzIlPX5fClwg63uwZvGRebHGAkwNnAbRyq
+         nwms+xp3O5rkBQwira3moxEHO49qe+rO2rZHKwkHhI4OO549YAGUKeaspJctKKXFAwmI
+         PfHirYm3QAXVTTSy8VN+i8qbUYVFh0ApiZsMtFUwmGpJsvN9WgcWTBhvL6C8zOG08W3X
+         xjFVgduzlXj84aFCIes/XcYZaHCb1GoorBF3bv1ijDjhzG7Z59AmgOETVy7ZRfy0pj3N
+         xfx0fQ3fKL4uGoJPVXYc4mm+5ji8eqVhdiYjv2thqmVFJnadNxlQbJpDj4A6MMYAgIvs
+         aO6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786620818; x=1787225618;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=J2FrrsRU5V1HJtH9l/0Gbv9BbbcK3/MMcp3Hv+XyxFk=;
+        b=MJrOUB5oWCJ2l0L5NC/e4bY7xeUczqsaO8+aVd31MAyX2PiUrCzqM/Bkgr0Yv2zsjS
+         1MHuKknuBvZtLENbQ1P5MMYVnWIyX/VXjgWbfmd0cY0My0O8/wJESl8Xk4gPWgSfrJdE
+         U3PmvumA6TQJBA78Tg6kGdx94CVr0qmT87/H8SAcII9EYrekiJ3hTESDu/loK46/VpQF
+         TSovwMeWgWa8Z0xKYrZItX2DXF0dQDmPsnvK7v8V7N9t+CAud8rb55cYnJVMrY3Pczhn
+         LQX3TYGYLcPE069PC5faCzM/VpWSTpYEn1fRx99aNSpjklCAWWAb3z0bpd0aylagIMlV
+         8X4g==
+X-Forwarded-Encrypted: i=1; AHgh+RoJTTGP98w65kzK6cKD7m3EucOkngTSD5bqssUIyB+KgppJhuAjK9jM2XlvSkc6MCwoSsGJGUc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGh/eAcm3LQa5wDUz3W6tsmnQZjHEjRloUTvZ9PjVim7jVV4ip
+	jWTf9oyhNbWVedMMG7GEh3vzPSO99slMHF+EDwE3dExWXpcyL6TbCjmiFHfNWW662gERprJhFF7
+	ycjOSLYBwFPWLaXzz4gvrxOttuLJ/txHft/8bV/ejCf9YsW8oCPzgle/e+w==
+X-Gm-Gg: AR+sD112fLhA+n4SNJHP8jSFs1Rgk+PiUT0TITeth9vw8jvIfhXKimOXl2EuvkcBzz1
+	ziEMs1PIYV8Cylb9Irf64jzjK7AUjzJ3PxvGZ3LMbMd5upBbvs3FjLzYzMTZ84fsMBuyM4YinSf
+	h3X+/jSwKYyDDZeorAti9COOrcsYEOHSVMGbEfm71YCJO+8DpWnJIYJL80wSWGabqfj/iL9B1ck
+	IE4MN0GBazicGMDQiFwXnWjjOUGecQtm7Swqn9bx0NW/aENEa+S77Qz77DBjbPkyt34lfQvKXb+
+	4gPaHuGmX56M6kJDuNxQ3CLwHH7COIcxmyq1SQEJVtyOf3bGAo+iiRqD/8KYuXEM9NZ32KzDNuj
+	93B0HwH0IPpCFimxTjjO9aji2gk1SL724Aum/M4k8f7fd2/W8lm+F11OoK7l88arrUdy3yeBPrc
+	s=
+X-Received: by 2002:a05:6000:29c3:b0:481:5048:1b78 with SMTP id ffacd0b85a97d-48159ca613bmr5523978f8f.5.1786620817764;
+        Thu, 13 Aug 2026 04:33:37 -0700 (PDT)
+X-Received: by 2002:a05:6000:29c3:b0:481:5048:1b78 with SMTP id ffacd0b85a97d-48159ca613bmr5523905f8f.5.1786620817287;
+        Thu, 13 Aug 2026 04:33:37 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5af441sm6497140f8f.22.2026.08.13.04.33.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Aug 2026 04:33:36 -0700 (PDT)
+Message-ID: <4659a101-904b-43a7-acc0-012020887088@redhat.com>
+Date: Thu, 13 Aug 2026 13:33:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net/mlx5: rsc_dump and hv_vhca return NULL on
+ create error
+To: Simon Horman <horms@kernel.org>, Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Eran Ben Elisha <eranbe@nvidia.com>, Feng Liu <feliu@nvidia.com>,
+ Gal Pressman <gal@nvidia.com>, Kees Cook <kees@kernel.org>,
+ Leon Romanovsky <leon@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+ Michael Guralnik <michaelgur@nvidia.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, Shay Drori <shayd@nvidia.com>
+References: <20260811061637.3195320-1-tariqt@nvidia.com>
+ <20260813092655.GB196815@horms.kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260813092655.GB196815@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Kenneth Lee reported a bug [1]:
+On 8/13/26 11:26 AM, Simon Horman wrote:
+>> @@ -63,9 +63,9 @@ static inline void mlx5_hv_vhca_destroy(struct mlx5_hv_vhca *hv_vhca)
+>>  {
+>>  }
+>>  
+>> -static inline int mlx5_hv_vhca_init(struct mlx5_hv_vhca *hv_vhca)
+>> +static inline void mlx5_hv_vhca_init(struct mlx5_hv_vhca *hv_vhca)
+>>  {
+>> -	return 0;
+>> +	return;
+>>  }
+> 
+> The AI-generated review on netdev-ai [1] points out that the
+> return; line is unnecessary and inconsistent with surrounding code.
 
-  skb_vlan_push got skb with skb->data not at mac header (offset 14)
-  WARNING: net/core/skbuff.c:6474 at skb_vlan_push+0x5ec/0x8a0
-   ____bpf_skb_vlan_push net/core/filter.c:3239 [inline]
-   bpf_skb_vlan_push+0x216/0x8b0 net/core/filter.c:3229
-   bpf_prog_run_data_pointers+0x17c/0x240 include/linux/filter.h:917
-   tcf_bpf_act+0x31c/0x940 net/sched/act_bpf.c:50
-   tcf_action_exec+0x2c1/0x720 net/sched/act_api.c:1147
-   tcf_classify+0x6e4/0x1080 net/sched/cls_api.c:1860
-   tc_run+0x31c/0x5d0 net/core/dev.c:4411
-   sch_handle_ingress net/core/dev.c:4486 [inline]
-   __netif_receive_skb_core+0x141b/0x2ec0 net/core/dev.c:6054
+I'll remove the line when I'll apply the patch
 
-bpf_prog_run_generic_xdp() just assumes xdp->data is an Ethernet header:
-
-	eth = (struct ethhdr *)xdp->data;
-	orig_host = ether_addr_equal_64bits(eth->h_dest, skb->dev->dev_addr);
-	orig_bcast = is_multicast_ether_addr_64bits(eth->h_dest);
-	orig_eth_type = eth->h_proto;
-
-But an L3 device (ARPHRD_NONE, ARPHRD_TUNNEL, ...) has no L2 header at
-all - its mac_len is 0 and xdp->data is really the L3 header, so those
-orig_* values are garbage.
-
-When that garbage comparison says the header changed, we then do:
-
-	__skb_push(skb, ETH_HLEN);
-	skb->pkt_type = PACKET_HOST;
-	skb->protocol = eth_type_trans(skb, skb->dev);
-
-eth_type_trans() resets mac_header and pulls ETH_HLEN back, so skb->data
-does not move at all, but we now have mac_len == 0 while
-skb_mac_header(skb) == skb->data - ETH_HLEN.
-
-tc ingress relies on mac_len == skb->data - skb_mac_header(skb) to get
-skb->data onto the mac header, so __skb_push(skb, skb->mac_len) pushes
-nothing, the program runs with skb->data ETH_HLEN past the mac header,
-and bpf_skb_vlan_push() hits the WARN_ONCE above.  skb->protocol also
-ends up parsed from uninitialised headroom.
-
-So skip the Ethernet part entirely when the skb has no ETH_HLEN sized L2
-header.  The program still runs and its action is still returned.
-
-Refusing to attach XDP to L3 devices instead would not help: mac_len is a
-property of the skb, not of the netdev, so an ARPHRD_ETHER device can see
-mac_len == 0 too.
-
-[1]: https://lore.kernel.org/bpf/20260812043643.808295-1-kennethbwlee@snu.ac.kr/
-
-Fixes: 22b6034323fd ("net, xdp: Update pkt_type if generic XDP changes unicast MAC")
-Reported-by: Kenneth Lee <kennethbwlee@snu.ac.kr>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- net/core/dev.c | 42 ++++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index b390c2edfb33..5c395460854f 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5489,11 +5489,12 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
- {
- 	void *orig_data, *orig_data_end, *hard_start;
- 	struct netdev_rx_queue *rxqueue;
--	bool orig_bcast, orig_host;
-+	bool orig_bcast = false, orig_host = false;
-+	__be16 orig_eth_type = 0;
- 	u32 mac_len, frame_sz;
--	__be16 orig_eth_type;
- 	struct ethhdr *eth;
- 	u32 metalen, act;
-+	bool has_eth;
- 	int off;
- 
- 	/* The XDP program wants to see the packet starting at the MAC
-@@ -5519,10 +5520,21 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
- 
- 	orig_data_end = xdp->data_end;
- 	orig_data = xdp->data;
--	eth = (struct ethhdr *)xdp->data;
--	orig_host = ether_addr_equal_64bits(eth->h_dest, skb->dev->dev_addr);
--	orig_bcast = is_multicast_ether_addr_64bits(eth->h_dest);
--	orig_eth_type = eth->h_proto;
-+
-+	/* xdp->data only points at an Ethernet header if this skb actually
-+	 * carries one.  Devices with a different link layer (mac_len == 0
-+	 * for ARPHRD_NONE/TUNNEL/RAWIP/PPP/..., IPOIB_ENCAP_LEN for IPoIB)
-+	 * have nothing to inspect here, and must not have skb->mac_header
-+	 * relocated by the ETH_HLEN fixup below.
-+	 */
-+	has_eth = mac_len == ETH_HLEN;
-+	if (has_eth) {
-+		eth = (struct ethhdr *)xdp->data;
-+		orig_host = ether_addr_equal_64bits(eth->h_dest,
-+						    skb->dev->dev_addr);
-+		orig_bcast = is_multicast_ether_addr_64bits(eth->h_dest);
-+		orig_eth_type = eth->h_proto;
-+	}
- 
- 	act = bpf_prog_run_xdp(xdp_prog, xdp);
- 
-@@ -5554,14 +5566,16 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
- 		skb->data_len = 0;
- 
- 	/* check if XDP changed eth hdr such SKB needs update */
--	eth = (struct ethhdr *)xdp->data;
--	if ((orig_eth_type != eth->h_proto) ||
--	    (orig_host != ether_addr_equal_64bits(eth->h_dest,
--						  skb->dev->dev_addr)) ||
--	    (orig_bcast != is_multicast_ether_addr_64bits(eth->h_dest))) {
--		__skb_push(skb, ETH_HLEN);
--		skb->pkt_type = PACKET_HOST;
--		skb->protocol = eth_type_trans(skb, skb->dev);
-+	if (has_eth) {
-+		eth = (struct ethhdr *)xdp->data;
-+		if ((orig_eth_type != eth->h_proto) ||
-+		    (orig_host != ether_addr_equal_64bits(eth->h_dest,
-+							  skb->dev->dev_addr)) ||
-+		    (orig_bcast != is_multicast_ether_addr_64bits(eth->h_dest))) {
-+			__skb_push(skb, ETH_HLEN);
-+			skb->pkt_type = PACKET_HOST;
-+			skb->protocol = eth_type_trans(skb, skb->dev);
-+		}
- 	}
- 
- 	/* Redirect/Tx gives L2 packet, code that will reuse skb must __skb_pull
--- 
-2.43.0
+/P
 
