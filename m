@@ -1,43 +1,43 @@
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9560F3B9D84;
-	Thu, 13 Aug 2026 20:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BE33AA9F4;
+	Thu, 13 Aug 2026 20:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786651660; cv=none; b=tMMZW4BwgmSA+4poYgIbnZv1ggmamYMDCrh2D1kpUoXAcVhI1P6/bnop5R6UZ+J0TCqgg4uIIl3F5jf+TUkD5wv66T+4kmbkdDSxnMfTbV/z+rNTZuDqXq5B2ulJ2ksjLfagl7GyTbZEF6pX6tJAjofWuQfE+FTu7toOo2W7YWE=
+	t=1786651662; cv=none; b=A0Nau4FDFwAjxiDHjv/9gPDAIBqywGw59+cMt/Lut9YEVDHP74FmePOyVkbpZZi4f38/UCahrq/Ln5tNck0DlfGG4QfvQOxB9UP4jIs8v7y/XhzxOtFHSxETiXOHGlrXK2hr9D9StB3hy3GUpskmqgUQurDXY1941XhhKW1DPCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786651660; c=relaxed/simple;
-	bh=u3DHlTGWFgLMcs5qL2Q0i8KW5kYHW+fkh9Rin14ilkk=;
+	s=arc-20240116; t=1786651662; c=relaxed/simple;
+	bh=r2FzH+6sCsBe+vKb1AIjYlLVN30TTpHRYLC41l9NMZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyfgkTOl7pz4KKNtJBlvEseQGtLtM6mt5voE3dDQGXsfRlsjBaK3CJ3oFcfmQq6mOyQ1Zpn0DnuT60o4hs3oYa2bF5q+ohFNMMdwclBPsFxVX2/Z29o/+XTM0OUpWZVTPsKl/9Fkq+ZV6wZQdLfQXnnQjZ0Mns6gA/R5IjNhU4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=EvB23b45; arc=none smtp.client-ip=85.214.127.56
+	 MIME-Version; b=GrgQXR2JAbIrKOviZ8G7pqMULCQba+MmVLAzozBlxBUPXvt4kQzA0qwWyH/2mbbOUK5JZTvwRj6seAZ60ZsVhnnW3pF5JCsxMlk3gRfcLngraVZd820BETLLbvWfdK+9o/CJ/i8badtAu9YPoYRBWA2fbs6ncqP2XTlodEM8Jlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=Iby07OJg; arc=none smtp.client-ip=85.214.127.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="EvB23b45"
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="Iby07OJg"
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id E090DE838AA;
-	Thu, 13 Aug 2026 22:07:35 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id 91C88E838AC;
+	Thu, 13 Aug 2026 22:07:38 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1786651655;
+	s=mail; t=1786651658;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P9QcBwbciSMvTrnsWEgUvHaIM82H7XImwoRXFWGpk/g=;
-	b=EvB23b45kOAYnS3CBhWlQ7+BNR5Yvtvf14MqCxQcXHvPQ3VkUTrPEcK5GAqASD7zffeabP
-	0rP3SjMAeseK0ZY/NAtO+L6UBZUdwjINP2U657ZheWLTR/XJDyxVRYxisFMaYiKn+MJMqV
-	4a+dxKSilkDkIEnflM6f6iPSmLJXXngbxAV0kU5KkNHBcXea5I501mpGpxL26z4wy9R6f7
-	Xnwh0gi5R/msqr+kB6KoRisA3J5uWgZvyAKqifh6y3YieLv1CQhG6fJQum+m5s8xDA18uM
-	o0zlD5pGaln9tv5anndWG8zln2OzwmrCWX2Ym7NB4n7/3kEw+Mw+R4plUD0ytg==
+	bh=PXGNcgZRCvdWf27PIdvHS2QeS6Dxk20cF/pUf4vglEo=;
+	b=Iby07OJghCEFlq3VXoRZ5bWkyl0EIrlvpw/YAsEX5uHtDrCn++9ZVMRTYkkQojBfRn30mg
+	skMvUzI4I/J6iPEMcKJXCf8KrveRmAaSf3036YRHesTPmhd8Pf4foJGOupLaZzFJHRUXGi
+	thlMHnpVuN3L6trPfheINCb9cImgiimUy/RxUez+yKbjxIjNQpWwfT9U6XlnORCFX/w+8i
+	ZrT5EwOH6CdOHxCISsZlILcOiblR+ihUdXOpIOXydAyODDl/+dedx4ZfRd9PPvzvl3kM5A
+	cvRmVnvPcYxYtdIJ3WIR63J8ZPDhGsXSm+tyFI7n4XfZRkVydd4vkYts2Cwzbw==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id BqzJARCgtNM4; Thu, 13 Aug 2026 22:07:35 +0200 (CEST)
+ id anJEhpy2HcKf; Thu, 13 Aug 2026 22:07:38 +0200 (CEST)
 Received: from p14sgen5.. (163.6.106.80.static.otenet.gr [80.106.6.163])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Thu, 13 Aug 2026 22:07:34 +0200 (CEST)
+	Thu, 13 Aug 2026 22:07:37 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -51,9 +51,9 @@ Cc: Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net v3 1/3] net: pse-pd: stop async event sources before freeing PI data in unregister
-Date: Thu, 13 Aug 2026 23:06:51 +0300
-Message-ID: <20260813200653.980170-2-github@szelinsky.de>
+Subject: [PATCH net v3 2/3] net: pse-pd: guard regulator ops against freed PI data during unregister
+Date: Thu, 13 Aug 2026 23:06:52 +0300
+Message-ID: <20260813200653.980170-3-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260813200653.980170-1-github@szelinsky.de>
 References: <20260813200653.980170-1-github@szelinsky.de>
@@ -65,60 +65,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pse_controller_unregister() frees resources that its own asynchronous
-event sources are still using:
+The PSE PI regulators are devm-registered inside pse_controller_register(),
+which runs before devres_add() arms the controller's own release in
+devm_pse_controller_register(). On driver detach devres unwinds in LIFO
+order, so pse_controller_unregister() runs first and frees pcdev->pi via
+pse_release_pis(); the regulators are torn down afterwards.
 
- * The PI array (pcdev->pi) is freed by pse_release_pis() while the
-   threaded IRQ handler pse_isr() can still be running. pse_isr() walks
-   pcdev->pi[] (via pse_set_config_isr() and
-   regulator_notifier_call_chain() on pcdev->pi[i].rdev), so an interrupt
-   arriving before disable_irq() dereferences freed memory.
+When regulator_unregister() flushes a pending disable, the regulator core
+invokes pse_pi_disable(), which dereferences pcdev->pi[id] (directly and
+via _pse_pi_disable() -> pse_pi_deallocate_pw_budget()). At that point the
+PI array is already freed, so this is a use-after-free. pse_pi_enable()
+and pse_pi_is_enabled() dereference pcdev->pi[id] the same way and are
+reachable by any regulator consumer that keeps a handle across the
+teardown window.
 
- * pse_flush_pw_ds() runs before disable_irq() and drops the power domain
-   references, which can free pw_d->supply via __pse_pw_d_release().
-   A concurrent interrupt reaches that supply through
-   _pse_pi_disable() -> pse_pw_d_retry_power_delivery() ->
-   regulator_request_power_budget(pw_d->supply), another use-after-free.
+Clear pcdev->pi after freeing it and bail out of the three regulator ops
+that dereference it when it is NULL. Perform the kfree() and NULL store in
+pse_release_pis() under pcdev->lock, and read pcdev->pi under the same lock
+in the ops, so the NULL an op observes is authoritative even when the free
+runs concurrently on another CPU: the op either sees the live array or
+returns without touching freed memory.
 
- * cancel_work_sync(&pcdev->ntf_work) runs after pse_release_pis(), but
-   the notification worker reaches pcdev->pi too: pse_send_ntf_worker()
-   -> pse_control_put() -> __pse_control_release() dereferences
-   psec->pcdev->pi[psec->id].admin_state_enabled. Draining the worker
-   after the PI array is freed is therefore also a use-after-free.
-
-Reorder teardown so every asynchronous accessor is stopped first:
-disable the IRQ, drain the notification worker, and only then flush the
-power domains and release the PI array.
+The other three regulator ops (pse_pi_get_voltage(),
+pse_pi_get_current_limit(), pse_pi_set_current_limit()) do not dereference
+pcdev->pi and need no guard.
 
 Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
 Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- drivers/net/pse-pd/pse_core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/pse-pd/pse_core.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index a5e6d7b26b9f..6045b6c399c2 100644
+index 6045b6c399c2..21ccb5146616 100644
 --- a/drivers/net/pse-pd/pse_core.c
 +++ b/drivers/net/pse-pd/pse_core.c
-@@ -1114,11 +1114,15 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
-  */
- void pse_controller_unregister(struct pse_controller_dev *pcdev)
- {
--	pse_flush_pw_ds(pcdev);
--	pse_release_pis(pcdev);
-+	/* Stop the IRQ and notification worker before freeing what they
-+	 * reach: both touch pcdev->pi, and the IRQ also uses pw_d->supply
-+	 * that pse_flush_pw_ds() drops.
+@@ -144,7 +144,13 @@ static void pse_release_pis(struct pse_controller_dev *pcdev)
+ 		of_node_put(pcdev->pi[i].pairset[1].np);
+ 		of_node_put(pcdev->pi[i].np);
+ 	}
++	/* Free under the lock so the NULL store is authoritative against
++	 * the regulator ops that read pcdev->pi under pcdev->lock.
 +	 */
- 	if (pcdev->irq)
- 		disable_irq(pcdev->irq);
- 	cancel_work_sync(&pcdev->ntf_work);
-+	pse_flush_pw_ds(pcdev);
-+	pse_release_pis(pcdev);
- 	kfifo_free(&pcdev->ntf_fifo);
- 	mutex_lock(&pse_list_mutex);
- 	list_del(&pcdev->list);
++	mutex_lock(&pcdev->lock);
+ 	kfree(pcdev->pi);
++	pcdev->pi = NULL;
++	mutex_unlock(&pcdev->lock);
+ }
+ 
+ /**
+@@ -421,6 +427,11 @@ static int pse_pi_is_enabled(struct regulator_dev *rdev)
+ 
+ 	id = rdev_get_id(rdev);
+ 	mutex_lock(&pcdev->lock);
++	/* Controller may be unregistered (pcdev->pi freed) mid-teardown. */
++	if (!pcdev->pi) {
++		ret = -ENODEV;
++		goto out;
++	}
+ 	if (pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d)) {
+ 		ret = pcdev->pi[id].admin_state_enabled;
+ 		goto out;
+@@ -674,6 +685,11 @@ static int pse_pi_enable(struct regulator_dev *rdev)
+ 
+ 	id = rdev_get_id(rdev);
+ 	mutex_lock(&pcdev->lock);
++	/* Controller may be unregistered (pcdev->pi freed) mid-teardown. */
++	if (!pcdev->pi) {
++		mutex_unlock(&pcdev->lock);
++		return -ENODEV;
++	}
+ 	if (pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d)) {
+ 		/* Manage enabled status by software.
+ 		 * Real enable process will happen if a port is connected.
+@@ -702,15 +718,20 @@ static int pse_pi_enable(struct regulator_dev *rdev)
+ static int pse_pi_disable(struct regulator_dev *rdev)
+ {
+ 	struct pse_controller_dev *pcdev = rdev_get_drvdata(rdev);
+-	struct pse_pi *pi;
+ 	int id, ret;
+ 
+ 	id = rdev_get_id(rdev);
+-	pi = &pcdev->pi[id];
+ 	mutex_lock(&pcdev->lock);
++	/* Reached via the regulator core's deferred-disable flush after
++	 * pcdev->pi is freed on unregister.
++	 */
++	if (!pcdev->pi) {
++		mutex_unlock(&pcdev->lock);
++		return 0;
++	}
+ 	ret = _pse_pi_disable(pcdev, id);
+ 	if (!ret)
+-		pi->admin_state_enabled = 0;
++		pcdev->pi[id].admin_state_enabled = 0;
+ 
+ 	mutex_unlock(&pcdev->lock);
+ 	return 0;
 -- 
 2.43.0
 
