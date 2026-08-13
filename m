@@ -1,328 +1,167 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11021091.outbound.protection.outlook.com [52.101.57.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D6248A2BE
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786634483; cv=none; b=i8PUQwj+/xVHS8iNwJpdCgmYjfrcXWea1+1lCYAeMWBEjGMf1s82yh0m55ifo3Jgdiy/gHyCQaxfKVfGUGJt4bV/li+4dc6pmGh01lPIIovTQjmT4kv9iZj3BURiIy9KdBRRoGkxs6OiFJTy6gPRH4rrq+qroczb+OgoCBmsO/U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786634483; c=relaxed/simple;
-	bh=d3V5Hbd/KZt9N1OaPXtUgu8WevrOR6Kin5ffkNJUh/c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VoH2nf1cuKE0ZhgVoKmvCgwdA0GPMQEk8q6FDPwyuMiinWAPkN+9CusqHFCPwmZU52smOXGBt4zrzOqgzHeY6KFn7diPoYVEGw2VN8wllIp5A+ALuSpmdGCts38KY5+e3WNUF2qpa/5CM8v2UWDK0DKv+cAAfiAgJwPEG8gE5jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BbQSq8sv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C66486E6D
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.91
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786634670; cv=fail; b=B/cBzuPu6S24Q7QRDuXV8Ul+cGv8iSv/nn12go4JWlGa5WfL0YLRmtAxNMjQlML+yimh/t//XaTQ7W8p7VgigWgk77vRgSPf6itvLQuUk2CJoiSLdmYfiMay4v2OJy1htLwu8UEAZAUrAE7WtOw4Hl53TWtfHCRFDYBT9FdvmqA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786634670; c=relaxed/simple;
+	bh=IMDFpiT1f7fSjvz2MzSJno+46aharmFtOLmKB+SuAOE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dJ+gpYPXFV76oj7F5EZACeV+YxeQUpMjMJ3dO9+dBqwd7gzCfgyk7YGUnsCCLUXTwSaWm3JQ7xq1DQ4t3p4F+VC4PEIRBJxaoSLNCKq3WSeVJxX6XtJsewBRUYC5uNYqxjl0ok5MCKguw1pabJafnq2wmnh10N3u2roDdPirzxk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu; spf=pass smtp.mailfrom=msu.edu; dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b=Sjq7043b; arc=fail smtp.client-ip=52.101.57.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=msu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BbQSq8sv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786634480;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=T7qog77zbi17eAiUUuM+1tIPrWDtkLc5xZGsOWN2FLU=;
-	b=BbQSq8svbxMOWBAD3rlPG5exR7AMGI80nK3of+OSpukRU7dhXc4WY6ACszLxHfO11VqKE8
-	tGP8zmIGthKbVnXA8bwMHW2GoHNDMHv/E5b2SdP+A+ymyogQcIUYerZ5UKT/hHMn96mMaX
-	K8bJd3AdjMuhO3atebOnoroqyjTxdJU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-pZHyJjbWOvGYEHfUtxFqeg-1; Thu,
- 13 Aug 2026 11:21:14 -0400
-X-MC-Unique: pZHyJjbWOvGYEHfUtxFqeg-1
-X-Mimecast-MFC-AGG-ID: pZHyJjbWOvGYEHfUtxFqeg_1786634472
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA66B1800652;
-	Thu, 13 Aug 2026 15:21:12 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.120])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D612730001A2;
-	Thu, 13 Aug 2026 15:21:10 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: torvalds@linux-foundation.org
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Networking for v7.2-rc8
-Date: Thu, 13 Aug 2026 17:21:04 +0200
-Message-ID: <20260813152104.256382-1-pabeni@redhat.com>
+	dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b="Sjq7043b"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zGRrUDStd3AiCQOB0CAPeR8iw9vW3xdCemloMMbdzuRttKlDJv2cQwjNTzMaGXEnOWUf3PMqxMmVJknQwdDRENohrHq9mCrx7D5RtO+lfOdydQaSYrGo8ZijWxwYe765GYETjDgVePLBLhm/0whN976bjCjoqanCAU3Y0eo5kDVAiDFObGCNsbNEQrmz8lI0MuRtDr5HuV6K6ZGHOegQ/sQSqlWIDjBaZ5H08nAM8MWKSe5tm3M6quSfVd70l3qeXeN1pxd9DTg26QHBMsIxTbJ/rRBv5FT1DfMsg+dBSaR8bf82xL5lZPsXGsm5wpsmvxjjuXlrAIucfbi9bCN9Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0GZ419kLR85shMOyIjVoexsVhw8t2veWzVHJLUieuy8=;
+ b=zFsB4bmI+SCqSZ4xFcFlw3KaegezdGyslqCrAKr2v2ecM+gGf4UVr2okI8981RxTsQP/paPTq1HZlTOkaMVZ4Eoj/6rGnyRpmZnOovfrD9a81amZGd0yGyxYdXEiA8ihZ6RTMySDKhJkxIIzhODFEDeOZPuep1dG1vEDtDBJ5MeNDVPXZ752juOoH8FT7m9dffXdCpvfq3Uk/PDL/iZ4XgPVTB3tAcKnyP3qVSRUQ7wZQDN0JHCE7wzmuKaMznfOo2tyZ7EeMjs+0n7fQtJ0eB69ltkHy0LTfBe5FfHcsm6Sq3AAyVkbVUtu4LaSfe+r9l0zERxUgxekQFCf6N1Myw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=msu.edu; dmarc=pass action=none header.from=pa.msu.edu;
+ dkim=pass header.d=pa.msu.edu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pa.msu.edu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0GZ419kLR85shMOyIjVoexsVhw8t2veWzVHJLUieuy8=;
+ b=Sjq7043b+mpoE7l3aU62KZbZw7OAL6wbaUSFLmwqcDm4Ke34LcDu9T3YYDIEZWbYfQbiPQTqRBmKWiDJ5MBs+ttq99bjjqbpTJoo3UrJ0iaJGkEriwzSGEf4RnRLbb/VeY+KZCDJk0PjeP2xag2HHwNWT21jQkIqDI6gwBnAAFsnMl5oNCruRl2rMKhi0d0zf6pT/eDOI0PjuRtzMv7fbORl2fWTIeZCmaIfDp15RWc9ZYkA3PFG8IfR7WShmNssOG+zC+bK8pkfPETJT7VJtlvRWgkruqtfP8OemI3Y0J7X9nboujmZMSPxpG9leCS8H5TwUi354VV4YbmUtCDFTw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=pa.msu.edu;
+Received: from DM6PR12MB4337.namprd12.prod.outlook.com (2603:10b6:5:2a9::12)
+ by CH3PR12MB8995.namprd12.prod.outlook.com (2603:10b6:610:17e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.14; Thu, 13 Aug
+ 2026 15:24:22 +0000
+Received: from DM6PR12MB4337.namprd12.prod.outlook.com
+ ([fe80::b412:1b80:dfc:18c5]) by DM6PR12MB4337.namprd12.prod.outlook.com
+ ([fe80::b412:1b80:dfc:18c5%6]) with mapi id 15.21.0315.012; Thu, 13 Aug 2026
+ 15:24:22 +0000
+Message-ID: <4c8a403a-a86a-4369-81ec-130fb9b3aee3@pa.msu.edu>
+Date: Thu, 13 Aug 2026 11:24:20 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 1/2] net: macb: Poll for link state changes
+ when using the internal PCS.
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ theo.lebrun@bootlin.com, conor.dooley@microchip.com,
+ charles.perry@microchip.com
+References: <20260807201741.3275-2-nwhitehorn@pa.msu.edu>
+ <20260812015433.1687252-1-kuba@kernel.org>
+ <d130cf47-1d70-4345-b60a-795d463cb84a@pa.msu.edu>
+ <16ca48e8-c9d5-4df5-b955-024349730ae2@lunn.ch>
+Content-Language: en-US
+From: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
+In-Reply-To: <16ca48e8-c9d5-4df5-b955-024349730ae2@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR03CA0426.namprd03.prod.outlook.com
+ (2603:10b6:610:10e::10) To DM6PR12MB4337.namprd12.prod.outlook.com
+ (2603:10b6:5:2a9::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4337:EE_|CH3PR12MB8995:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3fc2592d-6ed7-47ff-d85b-08def94ef373
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|376014|23010399003|366016|786006|18002099003|22082099003|56012099006|4143699003|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	M+nb71GD2vpruknSlpBN1xl2YPeaAgECtEc2Dno8el21soGXgV+hvcTOvakOACVxz/TaeulOT3wdp0DmEnK/7Kig5KESochw3bnt998CxA6OERpv/c3JyKJ9fkTbwK6y0TUrjbsC3E17w/AoOpmMFfHFSeT4IR8Zq2LMdCx2tQwdgP0hC/vJqkTFuakgig3I0PA+G5pLSSHzroYpaeTsUprFHjOR61a0JjCywQNqR4Mc6alssyUjZZ6PYrbFapkADIYnjy6EssQ5LqDwz4fA2Kz6CLDk4qVSGOSRhlj6t6WqUqppF9Mf0igIBi2v8zNiQhXULnEihH5ObCH6mXna/LJYlnfzIoFGNlq5rAwiylFXCKvz2GEFQlLs9xTFbSCkd3wctk4ha394X8gBDneyTftbdkuAxxZ2RXJc2ds66GkY+H2L244/5jmN2Bk9ZeoDTOwXY3t3i5Ymto6WYEimbqXbS3PmlhrVZ22Ewt0zx9qcCgELPSc+zG1FCXOvFkf6d/AGZ51/57vZis29OoYmgzklOLv5Hf6A7cLQYYW47f3E5tKT5GJ89KlsXX+9zZjdaMfk40sHqP/kq770uSE7bKxUK/toPiotjPelzWpOJ+dVnH5cS5C6i8A8yb0zByEi+9a3LOBo1n5SuwZuum3pI0cnpvcpv0ZsnDefzly65ts=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4337.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(23010399003)(366016)(786006)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y1JRakpFcHhJZ1N1Z21hd3VjUEk5c0FZTjRVNExVYlJ6Vy9Dc0piZXROSWZl?=
+ =?utf-8?B?UjB2aXlDT3V1K1JQNmVqY3hZYlZralljeHBhdEVHS2l4Tmw5SDhlOVlRZDM4?=
+ =?utf-8?B?dzc2SHdjSTExNVJDdmFRbS82WXJzenZramNGSWxvaHNpZUtMd3NmOEh2VFRH?=
+ =?utf-8?B?T1gzL3VmUzlGN0YrOGVlQ0hteDJ1YXl5dXM1b21RSVhrZ2pBMWdZdjlWWUJm?=
+ =?utf-8?B?NGIwODIvcU1jbGVKM2tzdy8wQmZlRVBhMU1PdXY1c3RsZExHbWpNWTVuelZP?=
+ =?utf-8?B?c1pYdkVlQzNCRjFpWmh4QlVtZ2w5Yi9yOHBoU1p0T0pFSTYzYkZPajUzNGxr?=
+ =?utf-8?B?dGM2bXk2NWI1V2ZLQVZXc3JuUWROMGNwT2hsc0k3anIxK2haaThzcUJTUmZa?=
+ =?utf-8?B?amNYV1pqakpiNm9IRU1MakFmUWx6blRpTGFPZDdsTXRhN0RXNmh5Y3hxWHM5?=
+ =?utf-8?B?VjNKMjhobzJ1Q0xxWkhoV21iUmpYUTB6SUZLdlBOZWo1dGphS1lYOVhKQitQ?=
+ =?utf-8?B?WGJkTVNGd3piejdPaDl1bExwb3Vrd20zM2xQNWdIR0x0Vk1QcjhnLzFkQ00r?=
+ =?utf-8?B?a2ZWWGFnNkw0Uk9ieXZnc2owaGlTNDJJQzRSK05LWkJDaXVSRWZIcWQvY0Y5?=
+ =?utf-8?B?ZGFidXNhZE1yc2FQNHhmWFVPdFpRcVdJcTlhZUFoeTdIVUZ3YVRZc0ZaYVR1?=
+ =?utf-8?B?OSs1WU90c3ZJb0hLWmtmd1ZZc1NrdzVRbXg2aXNlQit2cGkxR0poQjBwUm1P?=
+ =?utf-8?B?aUJLeEpxS213eGRkWHFjczl1bmd3N2IyK1JuN2s4MFRXSGg0bFhwdGN5RXMz?=
+ =?utf-8?B?S3BXRU1vU2pvekluU0s1MzNlQXV3dnowTHJGOTcwSTZiemYxSSt1VGRQZjYr?=
+ =?utf-8?B?bUluZnhGN0lEd1Z2M1BtZFQ4TFlzOElyTTVqT0lhdXFQNGk1MjVsMjBTR2Js?=
+ =?utf-8?B?bFoyZGJIYkJ5ZnZPUW1HQUZaUytPZURrMFk0cG83Wjl4QnlLbGN0T2lBejda?=
+ =?utf-8?B?V1J0OElwM1NuTGlkNitXQlZuQVNld2RSaVNjdE9waTdIbDlZZU5US3U3UHA2?=
+ =?utf-8?B?dE9HTVMxeThOTnJmbFdsUFRCS2NBQ0ZBVXlNOXR5eTI5dkZ6N0RzcGdKVXlO?=
+ =?utf-8?B?MGJEQXp3bXJSVE1GbEptelRtNy9xM1U1K2hVYWloYXNuRmZZZ1RrNEJkQzJz?=
+ =?utf-8?B?eXJqYm4zMEprbGVwTnB5SUdtaWF4ZzV1OFJ1ZFNLNkNvY0ZyU2xIeHI4VWtB?=
+ =?utf-8?B?MHlxV1ppa2xBc2JQYWt2V2lxcWJWdXdya3N2K3hhMkhObGROeEV3Q2xiMlh3?=
+ =?utf-8?B?QXJEeXdzKzMzVkNnL0pQOHNjV0QrNDVqakdFdjlzN2FiRXp3OGU2NWpibFhW?=
+ =?utf-8?B?a1E2ZmM5b29XcUY4OG1DaHo3Y3RwM2Q0L3VRaW55OThvc3ozRzdVaGd6RTJD?=
+ =?utf-8?B?aXRnQitCUDByU3hwR0QyeER2U25mSjh4WkVWQzhMNzJuWUs2aWo0QzErUEl4?=
+ =?utf-8?B?MldKOGRwMjZWQUNwVTRRYVNteTlBZFFCRmQxamdQSjBGYUxEdnlxSEx5Sytx?=
+ =?utf-8?B?NTRRcXYwQ1Z2N1lLVEtQWHBVcHhmY0NJVFpCSWpGZnkrRzF4Wk9iV0tBKzl6?=
+ =?utf-8?B?Tnc5RitDMU9wTDFKWG5WUTRtckRyTEhhTWxDdWFOdmtad3BnL08vL0F1YXFV?=
+ =?utf-8?B?by9JV3k3akxlNW91U0p1T0grajY1N0hIdFN3cHN0RG8wVWY2NkxTdFJpazk5?=
+ =?utf-8?B?OHFEekNTYjJELzJjbUdxVDJRVnNyaEN4RGp4RVJRUCtZVUpzVGxrQWo4YVVv?=
+ =?utf-8?B?Y21rUWZtMU1mSVQwamdXZ1JaVWxmdnhQRWJFcFBlNkpGMWJuMkQ1eWcvejdY?=
+ =?utf-8?B?NzRabHU0R2JoeFY4b094bzFnbVJMdkl1TW1NcmZnU1NZWlArcGx5eG1QQU9u?=
+ =?utf-8?B?Wll4NmFLb1dmVVNueHc3RFZuZXNPcnZEZWF1UnhPUjVSRkgvdDV4SWsrQSsr?=
+ =?utf-8?B?L01zaXUxVTZnTUFRMUlyUGd0YVVRY21Cd3BUdTVkblVGZENCS1dxSHBOUjF3?=
+ =?utf-8?B?UzkwanRrSTQ3clJPVVRCOXE4aWJpRnFpTGUwb2Q4UnJzMjNWQVB1dFhDL0s2?=
+ =?utf-8?B?WGhmZG1WM01lYTdnN0k0cHVKTXhrVHVtUVpqSVlPTzRBbjR3WEpLSUx1QldI?=
+ =?utf-8?B?YVh4QmdtQ2xSSldHeU5HRGRETkl4NmFyekJKTkZ2N2JPNnR3M0pjSE04U2I0?=
+ =?utf-8?B?T25UTWJmRGh1OEhXVERleUpBVldPUk5qMmQ4azRXS0tnd3QzM0NSVmRZd3FE?=
+ =?utf-8?B?Y2pwZUtrNWlTVGNtU0UvQng4WlpGMUpCdWxUUjBGY0Z4eWZEbnFKdz09?=
+X-OriginatorOrg: pa.msu.edu
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fc2592d-6ed7-47ff-d85b-08def94ef373
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4337.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 15:24:22.3710
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 22177130-642f-41d9-9211-74237ad5687d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8fDbVQmNeqThCqksX3KVYNZVnF0RV1ktaIO44eZwWVqD5E07F+NawcRXZVNAOKS4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8995
 
-Hi Linus!
 
-The following changes since commit 315f4bd234b3b8a3ed3a71fd4c53b110cf373720:
 
-  Merge tag 'net-7.2-rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-08-06 11:39:20 -0700)
+On 8/12/26 12:22, Andrew Lunn wrote:
+>> I am a little reticent to include fixes to this pre-existing situation in
+>> this patch unless it is unmergeable without doing so, especially given that
+>> I think a full solution would be a substantially larger change, but if it is
+>> needed, I would be happy to work on adding it.
+>> -Nathan
+> The way WoL works has been changed in phylink recently. Many MAC
+> drivers got it wrong, so we tried to make it easier by putting as much
+> business logic as possible into phylink.
+>
+> So i would suggest you do a minimal fix for your issue, but also for
+> net-next try to rework WoL to make full use of phylinks code. So two
+> independent patchsets.
 
-are available in the Git repository at:
+Thanks, that sounds good to me. I'll post v5 in a few minutes.
+-Nathan
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.2-rc8
+>
+> 	 Andrew
 
-for you to fetch changes up to 9006c116dd111d457bf5d074990210f70a4ad2c8:
+-- 
+Nathan Whitehorn (he/him)
+Associate Professor
+Department of Physics and Astronomy
+Michigan State University
+Biomedical and Physical Sciences 3225
+East Lansing, MI 48824
+(517) 884-5563
 
-  l2tp: fix tunnel and session refcount leak on seq_file release (2026-08-13 11:49:31 +0200)
-
-----------------------------------------------------------------
-There is a known WiFi/mt76 regression, waiting for a complete fix that
-should land soonish.
-
-Including fixes from netfilter.
-
-Previous releases - regressions:
-
-  - tcp: fix icsk_ack.ato bitfield overflow
-
-  - af_unix: Unlink scc_entry in unix_del_edge().
-
-  - ipv4: fix use-after-free in fib_nhc_update_mtu()
-
-  - netfilter:
-    - ipset: fix refcount race between list:set GC and swap
-    - nf_tables_offload: suppress WARN_ON_ONCE for ENOMEM in abort path
-
-  - sched: act_ct: fix sk_buff leak when the header checks reject a packet
-
-  - sctp: clear new_transport when removing a peer
-
-  - dibs: correct freeing of dmb_clientid_arr
-
-  - ovpn: fix NULL dereference when killing missing key
-
-  - eth: veth: fix queue index used to wake the peer txq in veth_poll
-
-  - eth: ngbe: fix NULL pointer dereference in non-MSI-X interrupt enabling
-
-  - eth: gve: fix zero-length skb frag with header-split
-
-Previous releases - always broken:
-
-  - core: fix skb length accounting after generic XDP frag adjustment
-
-  - af_packet: don't send zero-byte data in tpacket_snd().
-
-  - eth: bnxt: avoid deadlock when canceling IRQ affinity notifier
-
-  - eth: ipvlan: inherit needed_headroom and needed_tailroom from phy_dev
-
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-----------------------------------------------------------------
-Alexandra Winter (1):
-      net/dibs: Correct freeing of dmb_clientid_arr
-
-Alexey Velichayshiy (1):
-      netfilter: nf_tables_offload: suppress WARN_ON_ONCE for ENOMEM in abort path
-
-Baul Lee (1):
-      vxlan: do not arm the ageing timer on a device that is down
-
-Chengfeng Ye (1):
-      ipv4: fix use-after-free in fib_nhc_update_mtu()
-
-Christoph Paasch (1):
-      mailmap: add entries for Christoph Paasch
-
-Chuck Lever (2):
-      net/tls: Fail tls_sw_splice_read() after a failed async decrypt
-      selftests: tls: cover splice after a failed decrypt
-
-Eric Dumazet (4):
-      ipvlan: inherit needed_headroom and needed_tailroom from phy_dev
-      macvlan: inherit needed_headroom and needed_tailroom from lowerdev
-      af_packet: Don't send zero-byte data in tpacket_snd().
-      l2tp: fix tunnel and session refcount leak on seq_file release
-
-Florian Westphal (3):
-      netfilter: nfnetlink_log: wait for rcu grace period before freeing pernet state
-      netfilter: ipset: fix list type element drift bug
-      netfilter: ipset: let destroy callbacks adjust ext mem size
-
-Hyunjung Ko (3):
-      net/sched: act_gact, act_police: range check the fallback control action
-      net/sched: act_ct: fix sk_buff leak when the header checks reject a packet
-      selftests: tc-testing: add act_ct test for malformed header handling
-
-Jakub Kicinski (10):
-      Merge branch 'fix-skb-length-accounting-after-xdp-frag-adjustment'
-      eth: bnxt: cancel IRQ notifier before freeing affinity mask
-      eth: bnxt: keep the aRFS rmap updated when TPH is enabled
-      eth: bnxt: decrease indent in bnxt_request_irq()
-      eth: bnxt: avoid deadlock when canceling IRQ affinity notifier
-      Merge branch 'eth-bnxt-fix-irq-notifier-bugs'
-      net: expect instance lock in netdev_queue_get_dma_dev()
-      Merge branch 'gve-bug-fixes-for-header-split-and-ptp'
-      Merge tag 'nf-26-08-10' of git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf
-      Merge tag 'ovpn-net-20260809' of https://github.com/OpenVPN/ovpn-net-next
-
-Jamal Hadi Salim (2):
-      net/sched: act_api: fix TOCTOU NULL deref on a->goto_chain
-      net/sched: cls_bpf: reject dev-bound programs bound to a different device
-
-Jiawen Wu (1):
-      net: ngbe: fix NULL pointer dereference in non-MSI-X interrupt enabling
-
-Jiayuan Chen (1):
-      tcp: fix icsk_ack.ato bitfield overflow
-
-Jonas Köppeler (1):
-      veth: fix queue index used to wake the peer txq in veth_poll
-
-Jordan Rhee (2):
-      gve: fix zero-length skb frag with header-split
-      gve: fix NULL dereference due to missing ptp adjfine
-
-Julian Anastasov (3):
-      ipvs: add totalconns for dest
-      ipvs: properly update the overload flag on dest edit
-      ipvs: revalidate ihl to prevent out-of-bounds access
-
-Jun Yang (1):
-      tipc: read le->link under the node lock in tipc_node_link_down()
-
-Jérémy Jean (2):
-      sctp: validate cookie AUTH state before use
-      netfilter: flowtable: publish GC-visible tuple last
-
-Koichiro Den (1):
-      NTB: ntb_netdev: Preserve RX queue depth on allocation failure
-
-Kuniyuki Iwashima (1):
-      af_unix: Unlink scc_entry in unix_del_edge().
-
-Kyle Zeng (1):
-      ipvs: clear IPv4 options after rebasing tunnel ICMP errors
-
-Oleksij Rempel (1):
-      net: phy: realtek: fix EEE advertisement write on the internal PHY MMD path
-
-Paolo Abeni (2):
-      Merge branch 'fix-wrong-transport_header-when-sending-vlan-tagged-frames'
-      Merge branch 'net-tls-fail-splice-after-a-failed-async-decrypt'
-
-Qing Ming (1):
-      sctp: clear new_transport when removing a peer
-
-Ralf Lici (4):
-      ovpn: fix NULL dereference when killing missing key
-      ovpn: finish crypto callback cleanup before peer release
-      ovpn: run deferred work on a module-owned workqueue
-      ovpn: defer key slot crypto freeing to workqueue
-
-Siddharth Vadapalli (1):
-      net: ethernet: ti: am65-cpsw-nuss: Fix port_id extraction from SRC TAG
-
-Sun Jian (2):
-      net: fix skb length accounting after generic XDP frag adjustment
-      veth: fix skb length accounting after XDP frag adjustment
-
-Wei Fang (2):
-      net: packet: fix wrong transport_header when sending VLAN-tagged frame
-      net: tap: fix wrong transport_header when sending VLAN-tagged frame
-
-Xiang Mei (Microsoft) (1):
-      netfilter: ipset: fix refcount race between list:set GC and swap
-
-Yizhou Zhao (1):
-      ipvs: separate destination availability state
-
-Yuxiang Yang (1):
-      sctp: fix use-after-free of cached ASCONF chunk
-
-Zhang Changzhong (1):
-      net/sched: cls_u32: skip hash tables in u32_bind_class()
-
-Zhiling Zou (1):
-      netfilter: bridge: release template ct on non-IP path
-
-Zihan Xi (1):
-      netfilter: nf_conntrack: defer invalid log until after unlock
-
- .mailmap                                           |   4 +
- drivers/dibs/dibs_loopback.c                       |   1 -
- drivers/dibs/dibs_main.c                           |  14 +--
- drivers/net/ethernet/broadcom/bnxt/bnxt.c          | 131 +++++++++++++-------
- drivers/net/ethernet/broadcom/bnxt/bnxt.h          |   3 +
- drivers/net/ethernet/google/gve/gve_ptp.c          |   6 +
- drivers/net/ethernet/google/gve/gve_rx_dqo.c       |   5 +
- drivers/net/ethernet/ti/am65-cpsw-nuss.c           |   2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c      |   4 +-
- drivers/net/ipvlan/ipvlan_main.c                   |   4 +
- drivers/net/macvlan.c                              |   4 +
- drivers/net/ntb_netdev.c                           |  15 +--
- drivers/net/ovpn/crypto.c                          |  26 ++--
- drivers/net/ovpn/crypto.h                          |   4 +-
- drivers/net/ovpn/crypto_aead.c                     |  19 ++-
- drivers/net/ovpn/crypto_aead.h                     |   1 -
- drivers/net/ovpn/io.c                              |  10 +-
- drivers/net/ovpn/main.c                            |  19 ++-
- drivers/net/ovpn/ovpnpriv.h                        |   4 +
- drivers/net/ovpn/peer.c                            |   8 +-
- drivers/net/ovpn/tcp.c                             |   9 +-
- drivers/net/phy/realtek/realtek_main.c             |   2 +-
- drivers/net/tap.c                                  |   3 +-
- drivers/net/veth.c                                 |  24 ++--
- drivers/net/vxlan/vxlan_core.c                     |   2 +-
- include/net/act_api.h                              |  19 +++
- include/net/ip_vs.h                                |  29 ++++-
- include/net/route.h                                |   2 +
- include/net/sctp/auth.h                            |   3 +
- include/uapi/linux/ip_vs.h                         |   6 -
- net/bridge/netfilter/nf_conntrack_bridge.c         |   1 +
- net/core/dev.c                                     |  10 +-
- net/core/netdev_queues.c                           |   2 +-
- net/ipv4/fib_semantics.c                           |  34 ++----
- net/ipv4/route.c                                   |  29 +++++
- net/ipv4/tcp_input.c                               |   6 +-
- net/ipv4/tcp_timer.c                               |   4 +-
- net/l2tp/l2tp_debugfs.c                            |   4 +
- net/l2tp/l2tp_ppp.c                                |  56 ++++++++-
- net/netfilter/ipset/ip_set_bitmap_gen.h            |   2 +-
- net/netfilter/ipset/ip_set_core.c                  |  19 ++-
- net/netfilter/ipset/ip_set_list_set.c              |  10 +-
- net/netfilter/ipvs/ip_vs_conn.c                    |  45 +++----
- net/netfilter/ipvs/ip_vs_core.c                    |  18 ++-
- net/netfilter/ipvs/ip_vs_ctl.c                     |  81 ++++++++++---
- net/netfilter/ipvs/ip_vs_dh.c                      |   4 +-
- net/netfilter/ipvs/ip_vs_lblc.c                    |   2 +-
- net/netfilter/ipvs/ip_vs_lblcr.c                   |   8 +-
- net/netfilter/ipvs/ip_vs_lc.c                      |   4 +-
- net/netfilter/ipvs/ip_vs_proto_sctp.c              |   2 -
- net/netfilter/ipvs/ip_vs_proto_tcp.c               |   2 -
- net/netfilter/ipvs/ip_vs_sync.c                    |   7 +-
- net/netfilter/ipvs/ip_vs_xmit.c                    |   7 +-
- net/netfilter/nf_conntrack_proto.c                 |   6 +
- net/netfilter/nf_conntrack_proto_sctp.c            |  12 +-
- net/netfilter/nf_conntrack_proto_tcp.c             | 132 ++++++++++++++-------
- net/netfilter/nf_flow_table_core.c                 |   7 +-
- net/netfilter/nf_log_syslog.c                      |   4 +-
- net/netfilter/nf_tables_offload.c                  |   2 +-
- net/netfilter/nfnetlink_log.c                      |  13 +-
- net/packet/af_packet.c                             |   7 +-
- net/sched/act_api.c                                |  10 +-
- net/sched/act_ct.c                                 |  29 ++++-
- net/sched/act_gact.c                               |   5 +
- net/sched/act_police.c                             |   6 +
- net/sched/cls_bpf.c                                |  18 ++-
- net/sched/cls_u32.c                                |   3 +
- net/sctp/associola.c                               |   7 +-
- net/sctp/auth.c                                    |  75 ++++++++++++
- net/sctp/sm_make_chunk.c                           |   3 +
- net/sctp/sm_statefuns.c                            |   6 +-
- net/tipc/node.c                                    |  15 ++-
- net/tls/tls_sw.c                                   |   5 +
- net/unix/garbage.c                                 |   1 +
- tools/testing/selftests/net/tls.c                  |  75 ++++++++++--
- .../selftests/tc-testing/tc-tests/actions/ct.json  |  40 +++++++
- 76 files changed, 894 insertions(+), 327 deletions(-)
 
