@@ -1,251 +1,195 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486E035677D
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 07:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786604914; cv=pass; b=jSbKu0Sx0q8w5m9UqRMC1S7wGuEm581jUhVF3JYmqEXAoW/heX5XKLoCvCEifSN/DmRQW1XDaq8Clyk11xKfdqO1DdSjjyg6BB6bSHI0x5iKhg0UhtQOAS0qptI4gscMpytFesQFGa4qKwof38wQINvcrO/8ukEqcaijrmVsTiM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786604914; c=relaxed/simple;
-	bh=46awZT8E2zv8bOlQCTpqiIH+LwlqiNmNMhYqXZT0TeQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nph8fTV1tKI1qFiiXMsHtGig4XBK/EClXlB/XHNLALfHdxcRSKIV4sATkfm3MCZ+fPKud3EmYRsRrewmsmNCVX8DEiqT2UFVV97jhyPZ2S8HP70DLoj/6jLUKai054eDiQltRxGlS5K7AqSrbE3ikt91B0OMUcPVWQoOL4f/uNY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A0hL0dOr; arc=pass smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C87438017;
+	Thu, 13 Aug 2026 07:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786605958; cv=none; b=A9+JBZ3OxLkvIZeR/SoJg+p2j7j/fo4j4Qx9+jlVNWscrbAihDEZTPEnDOYoBOU+CajcAWs+fiYNjKLaDAnnSMZr4Illrs8P/oH4XuiPBcP9HM1nIuIfHX/CzQry5uqn58LmEAoSx7A44uFs4DwJpEqcZRq7Q7ikojKLc7sS5UI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786605958; c=relaxed/simple;
+	bh=0WxHWJLAuilOYV2/LW0sMoSOR0K7QIaoMvozOaopVNo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aKKeCc2EANWjklHzMnf3xM5P0zIinrf34Hw1WqwVD1PqBUzBqm/UUp8xPIqe+UkzDD7i0xJ0bjz/f/kOfCqCF9TVOtLz56N5z3iYtl5wOher6+mgh3ls71mMKxhGid3qyJPyV3sw3E9XW+4iYoqNSVgZEsf0GWQ7wW6sGE+SuxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rF7Q9+aN; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A0hL0dOr"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-8228ed0081fso28144957b3.2
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 00:08:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786604912; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YGMW7T75kiHmmCJPzhaivUgCnSBNTEoyEodqTH8Zm3gg/PZmdZbDoz7tWnRdA3mBeJ
-         2p5oAdFWjkaiecgq21Tl0+owU/NiNA+CRPLQdY1ED02PPeKEMZwV7JR8OBE678Q5/k9T
-         JKxMkgNcs4mwVLadFcafUZ1mvLI27K83YP2UcgROLLBZCwvqHe90fFbRGD90poczWfcH
-         X6OzcNJSph0uq0zv3nyxMZ48m+5uYGScpHgytKeubkjbj+G1M2SYvhCZHqvEAvuYS8aF
-         ZHJlSTX1GHW6FvmQ+LZVa/zMKmvC2w1z8RIK5irvGfADl2ps0vyDLuytvC4AkZl1bN1Q
-         UGxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=v8vUh6BjgGAmaCtrUmLWflcg19rlAmLscYxvcl/wedI=;
-        fh=PthBCxsdbevL5V4S/gbGEENRQMtgdlBZWO8KS4eV/rE=;
-        b=GaxXyJyahdosWN+XPxaNjKA0CUqEuBxsKAAxLU+/8/QgKm6aWj7fq+jW/9H9FQm0nO
-         XOspGjY44tnf/dr8gtDyXiq/f4PXWn+tcTpkmqoCIJqHLbukqpo49gEi59QUi3qbqXZd
-         cLX57wGKnbpgUCho7x2qBq01tbxt45IMZ8Py7jtewPHdZghxnM1SmaftK04L8pS0c0Hm
-         HaxuQtGfjDnyPD76zrQAivM6gaXhxYVE41FYPoX9+8I3G8Uwsc5k++MwpbuUMzK6aiDH
-         XCMSksp3aRKcVVtQlIQdp8m9KvhQqSWX32pCWQ79G3ioOoBPjPVVYl4tvmOagt31rYVa
-         ISTQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786604912; x=1787209712; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v8vUh6BjgGAmaCtrUmLWflcg19rlAmLscYxvcl/wedI=;
-        b=A0hL0dOr3rTu0r5BIRG0+v5RQmeVlhzcrg2S7tYn4NncXDD5ik7pDuaqRbnD0Ixq1b
-         74og0WObitPNkjNiMaYo3lF+urZlY4nDTC7bEOabs3dMO8teYNBq5tUtbg62BWQRMQtd
-         wZ3AohxYrpbhxng0TvsdPBXXfCaJuK4gasEMkJxk89rfNnFn19s+APLqjQJYKJrA9ebd
-         1czJnYUctXFjvnUFYuy+liIhceRoXNAriNyktRXiI+hmUYQevC3GcpC47a0lPJGIerE5
-         0s/t90vwNk/E74OV9kXG3O5BF7gBvHkHod2ZIn624h/Trrt5SFhYjPWH3N1/QN1zl1Ws
-         +k0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786604912; x=1787209712;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v8vUh6BjgGAmaCtrUmLWflcg19rlAmLscYxvcl/wedI=;
-        b=pT6n1O0Bwl4EiKHO4q3IscnhvUop0MPjiqRwPBFLkNmeBpHm+CwPXClBC1U5eaqqGs
-         wKKBEFQe8K9NwU6T/ThxsB5u5j3o8asa+ikBRP+PdUYW5YUfc2ReSofWTR90aemU8p+f
-         dJ7bsOw6yY7ESY1uoMkMOxK4yqrb0tKtXKKUFZnmQZcg/u07hUUKlSAiQ5OJ0s41MiuJ
-         BBeXTiU9w54VlfFnJRhFDzDeQfknvw1EYZ/VjKNKFp91T75DrnOwHLruAhRG9+GL2ye7
-         0p/R1e3ApS+fTHrymsWC0lklrbjdNChIZ5uewYluL2FLmBa01iPBNz2ZmRVPfdF7l4KH
-         GCuw==
-X-Forwarded-Encrypted: i=1; AHgh+RoXexrrKheDzYsYYASxJVcSslPhlJiiLA40ruuqeOuOEDv9SG//tKh713Z7d70+rE+hRXa9Bk4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxzmC2fAtLNZ698WHdP3pL6z3kGMljVQge4CQNxJ3nAuoHWdEK
-	rrBlXhVKYYL2zmAq16zRl3tI0xP9eu32D2wFPtVlwYhTAMBgYSPU+KZAywCLSAnEWn1i+sf6RGb
-	EffWUtENNyR6Yx6SGYB1R7RfDwe71oC8=
-X-Gm-Gg: AR+sD12BhHBWvm9vmt6HDVC5sebKHRPszqVXngU+YG57cPn8sV2Yu80eH1ErU4MdwPn
-	CkSr6KGXMKM1w24ELNT3LO+8nb3fDeGBqz/tixW/mBsWJ2c2WVuhbrMCqF/Bv2CrYDIRGB+WHnl
-	QPtKU2jtQCrJrIy8j6CWA8E/D021m5QMR95gz7UsnqvTleE1PFUI5PNBT9GZjbUJ3SJW0GCh3hg
-	RGH/6UjaLH5I0peMlahrE3LcqbtQy7tIGVaQsOI2V8QGaW+3hYaqapMJwcISlIxYjE8Ir+D4UbL
-	PCaWe+IQX5JwO7UXkCbBq30YJs26EQz5W3mT7rBE+4La6qbgV1mcQykn03YSjFE5XVp2xNU2PQI
-	P9mekza7qYYk0xqhVcAo0j/M/9Y9Eue6WVAczJWs6X0wFggDTTpVXj34GUtOQiCoaJEWCS162SZ
-	JEGsllYIIQxJfL7y/nBuo=
-X-Received: by 2002:a05:690c:e193:10b0:81f:6503:701a with SMTP id
- 00721157ae682-83470f685c6mr14716037b3.9.1786604912011; Thu, 13 Aug 2026
- 00:08:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rF7Q9+aN"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D6277h423076;
+	Thu, 13 Aug 2026 07:25:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=uRGNDW
+	hr24TimW4oK5YLFACtLl2ev7T7RWig2O9sl8s=; b=rF7Q9+aNEYfUNGW3CmRqCX
+	/W15JXvVtHm+rnfeBOn8uaurWG75bK2XdkVxRmwzIdrBTthB1HHFa6KF1+wSU8UW
+	XHCF0qoli+TyLjk8ITDAynNKKRJB2lDndThbvJm09vtcn7efBAeGdsj4z8JJgZW6
+	OscPQApmnwa0nrUy1iPMqVr8eWvRBnPnw487nN+8Y4kBLu431gFjRKEX0Ma8Msls
+	KddFTZzrvKZk68+ynf4Jy9xAVtcy1f6Z0EcQt6ji3LtEMPeZQVR1sYxiECZBsazZ
+	j3m1jIoU5TLFTbB3qhrleCmsbPjozxGNwHPD70peP9GMz9ejnR2MXyVfEpRgcXrg
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fyb23y5rt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 07:25:38 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67D6uSiN016615;
+	Thu, 13 Aug 2026 07:25:37 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxhfy9tx4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 07:25:37 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67D7PZpi24314540
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 07:25:35 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5375758043;
+	Thu, 13 Aug 2026 07:25:35 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 96A465805E;
+	Thu, 13 Aug 2026 07:25:28 +0000 (GMT)
+Received: from [9.124.209.227] (unknown [9.124.209.227])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Aug 2026 07:25:28 +0000 (GMT)
+Message-ID: <c03c979f-825e-4600-9aa1-38fc1036c013@linux.ibm.com>
+Date: Thu, 13 Aug 2026 12:55:27 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260805072641.402-1-strst.gs@gmail.com> <CAOiHx==-d_nzO+TQO+4UD4GfoLSOBUyfLuO+hfj8rQ1if4sZ4A@mail.gmail.com>
- <20260812205047.ojq2yyjtmoe5gjot@skbuf>
-In-Reply-To: <20260812205047.ojq2yyjtmoe5gjot@skbuf>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Thu, 13 Aug 2026 09:08:21 +0200
-X-Gm-Features: AUfX_mxbF3J-dPJbPeLV-Td1N4YTILTWcE1befH5hegXv7eTnBdCPb_qXVZVHVc
-Message-ID: <CAOiHx=kKoZrZp3=o1kpH5ueSvfc+QLSu0GF-noCa7LPQnSQbbQ@mail.gmail.com>
-Subject: Re: [PATCH net] net: dsa: b53: be VLAN unaware when not filtering
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: Semih Baskan <strst.gs@gmail.com>, florian.fainelli@broadcom.com, andrew@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	vladimir.oltean@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot ci] Re: net/smc: fix clcsock and lgr/lnk races in
+ smc_diag dump path
+To: syzbot ci <syzbot+cia7ddf4f17dfab266@syzkaller.appspotmail.com>,
+        alibuda@linux.alibaba.com, andrew@lunn.ch, davem@davemloft.net,
+        dust.li@linux.alibaba.com, edumazet@google.com,
+        guwen@linux.alibaba.com, horms@kernel.org, kuba@kernel.org,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+        pasic@linux.ibm.com, sidraya@linux.ibm.com, tonylu@linux.alibaba.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <6a75f37d.b50370da.49fe0.001c.GAE@google.com>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <6a75f37d.b50370da.49fe0.001c.GAE@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=XqfK/1F9 c=1 sm=1 tr=0 ts=6a7d7172 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=-ibLmwfWAAAA:8 a=Oh2cFVv5AAAA:8 a=-ztMTYQJyvQxDNS25zoA:9
+ a=QEXdDO2ut3YA:10 a=A6MkUVyZPcTV1i89ro0M:22 a=7KeoIwV6GZqOttXkcoxL:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDA0NyBTYWx0ZWRfX3LFa1D9Pk+Ut
+ pKIP6OwpSXztx78uzh34BKc15FKpJ2Rsy3bJ+PNORjJFh8Yxo6CXqJSKLFppIX82ZXKSMLhiwTf
+ WacmJH+m11f36DPDBd2Y9gHS5J2i/lwB1ui6OBXBrp2j3RYven83t71nOxU0sLo/lr5rOgMpXkk
+ vo3sE3f2f3O8gYLxfHUw9XNC4SZrgLPPWmMzoru8yLSjXYoDRvABQXdVDttrszkmuNqrpDv19CU
+ sWfYMwGhOooudl17XlG+paseSSY2d2M1WH9TpHsuUPvnF2WarnNQZWObBo5hpV6E5sB1N9e7/fd
+ /nOwUHmf3CDf7QW0w37Xmxxi54jBVoPTMrb054LIu5SIZv7qcaDREO5C87lu3dpoIpAdVx70vDs
+ UvgvqUBRkIyNQm2OIXoudlr5yxRMflyI0lKXR48yAVoCWTrq+dzJlUeCCqBm1lTLb5HjOmO/86x
+ GMEgudyOy4oiwshSbyg==
+X-Proofpoint-ORIG-GUID: ecrSSeiCrI6JpB4BjMy1hoDZ5x7Qi3vg
+X-Proofpoint-GUID: 1l0aA0Et_vxTxcQjSMcc8oFukKNMbVaj
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDA0NyBTYWx0ZWRfX1prPcklBKVuX
+ NQ7Eu2QIjqicjHYBPxqWZG1Fwdi0cpf/ce34ZpU600XdlqOsir1c3c3bMWNX4+UmR61khlOcLcq
+ w3vlqorggATD2VN69DCZp0HM78zpjTY=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_02,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 clxscore=1011
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608130047
 
-Hi,
+On 07/08/26 8:32 pm, syzbot ci wrote:
+> syzbot ci has tested the following series
+> 
+> [v3] net/smc: fix clcsock and lgr/lnk races in smc_diag dump path
+> https://lore.kernel.org/all/20260807081606.3200128-1-mjambigi@linux.ibm.com
+> * [PATCH net v3] net/smc: fix clcsock and lgr/lnk races in smc_diag dump path
+> 
+> and found the following issue:
+> WARNING in smc_diag_dump_proto
+> 
+> Full report is available here:
+> https://ci.syzbot.org/series/ab0d12fd-741a-4a0f-9f49-e52b84e94f4a
+> 
+> ***
+> 
+> WARNING in smc_diag_dump_proto
+> 
+> tree:      net
+> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
+> base:      594d905195024b228c962627ae5ae7c17bd582a4
+> arch:      amd64
+> compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> config:    https://ci.syzbot.org/builds/0c4d246f-d098-4afe-b6bc-0f0ad52f55f8/config
+> syz repro: https://ci.syzbot.org/findings/fa5564b8-8db6-4f76-9d75-dbd796435d87/syz_repro
+> 
+> ------------[ cut here ]------------
+> DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+> WARNING: kernel/locking/mutex.c:625 at __mutex_lock_common kernel/locking/mutex.c:625 [inline], CPU#0: syz.0.161/6326
+> WARNING: kernel/locking/mutex.c:625 at __mutex_lock+0x12d8/0x1550 kernel/locking/mutex.c:821, CPU#0: syz.0.161/6326
 
-On Wed, Aug 12, 2026 at 10:50=E2=80=AFPM Vladimir Oltean <olteanv@gmail.com=
-> wrote:
->
-> On Wed, Aug 05, 2026 at 09:44:51AM +0200, Jonas Gorski wrote:
-> > Unfortunately what this does is break modifying ARL entries with VID
-> > !=3D 0, which is why I haven't added this.
-> >
-> > While SVL is active, any ARL add/remove operations ignore the VID
-> > field/register and force it to 0, making existing static ARL entries
-> > with VID !=3D 0 inaccessible, and any (static) ARL entries added will
-> > have their VID set to 0, regardless what the software entry said.
-> >
-> > This causes the ARL hardware table to go out of sync with the bridge
-> > fdb/mdb software tables, and will lead to potentially hard to debug
-> > network issues.
-> >
-> > The options to remedy this are:
-> >
-> > 1. keep track of all static fdb (and mdb) entries added to the
-> > hardware table, so we "sync" it on switching vlan filtering on/off (or
-> > find a way to do so without having a copy), or
-> > 2. while vlan filtering is off, have static vlan table entries for all
-> > possible VIDs, or
-> > 3. use direct memory access registers to directly modify the ARL table
-> > memory instead of going through default registers while SVL is
-> > enabled.
-> >
-> > Neither one is a quick and easy fix.
-> >
-> > 1/2 make switching vlan filtering likely a costly operation (I test
-> > implemented 2, and it takes several seconds for SPI connected switches
-> > - not sure if this is acceptable). 3 requires knowing the in-memory
-> > formats for each switch chip, which aren't publicly documented.
-> >
-> > Best regards,
-> > Jonas
->
-> I think the only reliable way to fix VLAN unaware mode in a way that's
-> portable across all b53 variants is a variant of this patch: allow
-> 802.1Q mode to be disabled. Then we need to deal with the fallout caused
-> by it upon the ARL.
->
-> 1. This looks implementable with some complexity isolated within the b53
->    driver:
->    - on any .port_fdb_add(), .port_fdb_del(), .port_mdb_add(), .port_mdb_=
-del(),
->      compare the VID of the entry with the dev->vlan_enabled state.
->      - if VID !=3D 0 and dev->vlan_enabled, or if VID =3D=3D 0 and !dev->=
-vlan_enabled,
->        commit the operation directly to the ARL, as is currently done
->      - if VID =3D=3D 0 and !dev->vlan_enabled, or if VID !=3D 0 and dev->=
-vlan_enabled,
->        operate on a software list, allocating, deleting or modifying a
->        local representation of the ARL entry
->    - on vlan_filtering toggles from 0 to 1 or from 1 to 0, acquire
->      dev->arl_mutex and flush out all static and dynamic ARL entries
->      across the entire switch, commit the static ones from the software
->      list and clear the software list
->    - dev->vlan_enabled will probably need to be merged with
->      dev->vlan_filtering, since the vlan_enabled=3D1 vlan_filtering=3D0 c=
-ase
->      is broken
+I have fixed this syzbot issue by submitting a separate fix. I also
+tested the fix by submitting the patch to syzbot & after that this issue
+is not seen anymore. One can see the test details with a fixed patch in
+below link. I'll send that patch separately to netdev shortly.
 
-You already found the issue with dropping the software entries; we
-need to keep them.
+https://ci.syzbot.org/series/ab0d12fd-741a-4a0f-9f49-e52b84e94f4a
 
-That said, maximum is 4k entries, and assuming an entry is 6 bytes mac
-+ 2 bytes vid + 2 bytes port (mask), it would still be just 40kB,
-which is nothing compared to the buffers wifi drivers tend to consume
-(e.g. IIRC ath12k requires a device with 512? MiB RAM). The switch
-memory itself is 64kB, which I would assume is the maximum we may ever
-need.
-
-The algorithm how the index is calculated is documented, so we could
-then just emulate the ARL table in software, and then even do
-collision checks, at least between static entries. Though we won't
-know if they collide with learned dynamic entries. Which makes me
-wonder, what's the expected priority here? Currently we reject adding
-a static entry if all bins are occupied by dynamic entries (unless a
-dynamic entry matches the static one).
-
-One (non) issue here is that BCM5325 and BCM5365 do not support
-hardware flushing, so flushing can only by done by deleting all
-entries individually. That being said, they are also the ones where
-VLAN-unaware bridging works already, so they wouldn't need it.
-
-> 2. I see bcm_sf2 has support for B53_JOIN_ALL_VLAN_EN; IIUC this
->    proposal is a soft emulation of that. Would it work though? 2 concerns=
-:
->    - in b53_switch_chips[] I see not all switches have a full 4K VLAN tab=
-le
-
-Funny enough, these are the same ones where DROP_VTABLE_MISS=3D0 floods
-instead of traps to IMP, so we don't need it for those.
-
->    - unless b53 has a feature equivalent to MV88E6XXX_G1_VTU_DATA_MEMBER_=
-TAG_UNMODIFIED
->      rather than the port-wide vl->untag, the emulation would either push=
- a
->      VLAN tag in originally untagged frames, or strip a VLAN tag from
->      previously VLAN tagged frames. Neither option fits the bill for
->      what vlan_filtering=3D0 semantics expect (ignore the tag).
-
-Modern b53 switches supports full 4k VLAN table entries, including 0
-and 4095. By using 0 as the VLAN for untagged frames and setting PVID
-to 0, we can leave all valid VIDs (1-4094) as tagged.
-
-There is also a (global) bit in VLAN_CTRL5 to configure something
-similar to MV88E6XXX_G1_VTU_DATA_MEMBER_TAG_UNMODIFIED:
-
- *     PRESV_NON1Q      - en_preserv_non_1q_frame: (default 0)When
-enabled, it preserves untagged frame as untagged frame at TX
-regardless of untag map in VLAN table, and preserves priority (802.1p)
-tagged frames as priority tagged frames at TX if untag map in VLAN
-Table is 0, but otherwise ntag priority tag.
-
-This is obviously incompatible with VLAN-aware bridges, but should be
-fine for VLAN-unaware ones.
-
->
-> 3. From a distance it doesn't sound bad, but I cannot comment on the
->    feasibility of this and the scalability across the 4 b53_arl_ops;
->    maybe Florian can.
-
-The main issue here is finding out the various in-memory formats, as
-they are not documented in the datasheets or public code. And there
-will likely be more than 4, as devices may have the same ARL access
-register layouts, but their in-memory layouts can differ (AFAICT
-bcm53115 and bcm53118 despite same generation/family have different
-layouts).
-
-Though it could be combined with 1. for those we don't have the layouts.
-
->
-> The big advantage of option #1 is that it shouldn't depend on any HW
-> functionality which is only present on some silicon variants. I don't
-> see any downside except for the higher SW complexity in the control path.
->
-> We could also discuss falling back to software bridging for the
-> vlan_filtering=3D0 case, but that penalizes the data path, so it would
-> probably not be the option of choice.
-
-Right, that would be the quick workaround to allow functionality. We
-just need to not mark them as forwarded, as DROP_VTABLE_MISS=3D0 will
-have them sent to CPU already.
-
-Best regards,
-Jonas
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 6326 Comm: syz.0.161 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+> RIP: 0010:__mutex_lock_common kernel/locking/mutex.c:625 [inline]
+> RIP: 0010:__mutex_lock+0x12df/0x1550 kernel/locking/mutex.c:821
+> Code: de 57 90 48 c1 e8 03 0f b6 04 18 84 c0 0f 85 47 02 00 00 83 3d 45 cc 83 04 00 75 13 48 8d 3d a8 1b 87 04 48 c7 c6 40 f7 ec 8b <67> 48 0f b9 3a 90 e9 75 ee ff ff 90 0f 0b 90 e9 48 f2 ff ff 90 0f
+> RSP: 0018:ffffc900068c6e40 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: dffffc0000000000 RCX: ffff888170ffd940
+> RDX: 0000000000000000 RSI: ffffffff8becf740 RDI: ffffffff905b2db0
+> RBP: ffffc900068c6fd0 R08: ffffffff9057de43 R09: 1ffffffff20afbc8
+> R10: dffffc0000000000 R11: fffffbfff20afbc9 R12: ffff8881b1006648
+> R13: 0000000000000000 R14: 1ffff92000d18ddc R15: 0000000000000000
+> FS:  00007f4dacd826c0(0000) GS:ffff88818d945000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000020000000e000 CR3: 0000000171350000 CR4: 00000000000006f0
+> Call Trace:
+>  <TASK>
+>  smc_diag_msg_common_fill net/smc/smc_diag.c:50 [inline]
+>  __smc_diag_dump net/smc/smc_diag.c:101 [inline]
+>  smc_diag_dump_proto+0x6d2/0x2620 net/smc/smc_diag.c:255
+>  smc_diag_dump+0x59/0xa0 net/smc/smc_diag.c:278
+>  netlink_dump+0x711/0xee0 net/netlink/af_netlink.c:2331
+>  __netlink_dump_start+0x589/0x7b0 net/netlink/af_netlink.c:2446
+>  netlink_dump_start include/linux/netlink.h:341 [inline]
+>  smc_diag_handler_dump+0x199/0x240 net/smc/smc_diag.c:293
+>  sock_diag_rcv_msg+0x4b0/0x5f0 net/core/sock_diag.c:-1
+>  netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+>  netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+>  netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
+>  netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+>  sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+>  __sock_sendmsg net/socket.c:790 [inline]
+>  ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
+>  ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+>  __sys_sendmsg net/socket.c:2770 [inline]
+>  __do_sys_sendmsg net/socket.c:2775 [inline]
+>  __se_sys_sendmsg net/socket.c:2773 [inline]
+>  __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f4dabf9e019
+> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007f4dacd82028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+> RAX: ffffffffffffffda RBX: 00007f4dac226090 RCX: 00007f4dabf9e019
+> RDX: 0000000000000600 RSI: 0000200000000540 RDI: 0000000000000003
+> RBP: 00007f4dac03500c R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f4dac226128 R14: 00007f4dac226090 R15: 00007ffe0de8ec98
