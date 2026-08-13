@@ -1,88 +1,123 @@
-Received: from mta1.migadu.com (out-46.mta1.migadu.com [95.215.58.46])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A952E3B1025
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 21:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4829742D757
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 21:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786656715; cv=none; b=IwKxU7vKETIedMxFjudlReERE86N/r5pOUXfJFYh5fl/vrj2q7wkyAFGEOTVxawDkM2WxEJa4qtMgFXsQPbS/n+LHBwUkCzCZY6nV75uztB1k7G29tSTQNTq+JDZWCVf0jPT6F8voKtvo1Isg9ucz4vQc/SSRSbQ2V6brwQ0Bfg=
+	t=1786657377; cv=none; b=UNKBjlz3FHCXpCfGTh4lxOGbrxDuh8G+dQEHkeQeNxIQFPxJKB7RYUXLuiLrpspo9nJIC3VsZxf0gxUt4z54Agb+ZjeX+XNe8Na1lutrYzRjYnEYIsOkneuKXJFeYlUbd2+dco3Mj1nK40RRuKwuzIefT2PCvtW5IFIFMx8k7V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786656715; c=relaxed/simple;
-	bh=6J8sP/C7V6GGg1p+KUp/a1yRHoCcDJDRcT0E3q+spIs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pVleNZlWfwXAlPjHrcVt5qgCwQmmjkzjXXV4Ndzhb0lSZJY9XZZdODNS3Xa+GT4IRAffPG5KcBzeFguzJkU03qwqpnnUQI6imv5jM0Fe8RkWLf4kXT9Io8ONpeaOfN1whAP7gJoXxylwXMGqO9w0yyl5XUqNuA7ledgvAD3yHHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aSCpHs1c; arc=none smtp.client-ip=95.215.58.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786657377; c=relaxed/simple;
+	bh=huyJMFlfQJ3dOAsamBtnzGlfdRqKt9nhuuxDEDmUYRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kdl5Zf0HXouwaEM+Pc8tV4SmSQttuouU+7T2Kq+8tFcm+CNSsYFCixXbzV9a80yMsSmQOfDzn+r3x+3RC7lXcczXP+7ZJQRhUDRu6/PlX+NiHnIc/uSFWg+71rDNBT19l8In0kVAnP5gfnPZd5XloL8tsgIrdIscCVVzeK/+ysw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PYRDP2o2; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aSCpHs1c"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=6J8sP/C7V6GGg1p+KUp/a1yRHoCcDJDRcT0E3q+spIs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786656707; v=1; x=1787261507;
- b=aSCpHs1cOBWwJF9DlbcK2KAw07k2L6RHx8ftuPtYpSnFVVHv2f5/40usQhQvkZm5gUWzFYqW
- 6fqkYHR7iK8il+ouSLiWgUTNtX/EqerYT7MpyCEZBb9UBy2iMJVMYat2rPOQ65e6eqa7AMfAx9m
- m8POXxOCmte/H68+O49R78YA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from [192.168.1.24] (64.43.42.247)
-	by smtp.migadu.com with ESMTPS id 005fb556f5729059;
-	Thu, 13 Aug 2026 21:31:46 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <038cb83b-ad8f-493c-b904-05bec353aaf4@linux.dev>
-Date: Thu, 13 Aug 2026 22:31:46 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PYRDP2o2"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-80c5cb9a888so4014767b3.3
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 14:42:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786657375; x=1787262175; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=huyJMFlfQJ3dOAsamBtnzGlfdRqKt9nhuuxDEDmUYRs=;
+        b=PYRDP2o2CWjoB9buT3ASd6aSVMT8akCCHeSR/6oxwwaRcmcIApCKhk8WohvrnhZtsm
+         RvfpFAwaCTD1apwh8y0G8Yd0aZi/zezyLLug7YTucKkNqEAq4YagSFTZEzpWy62CqBJ5
+         eOCswou4YvRJlsKDMNmWKZrTN6R5LRPOdEm0/ZPvNsuk1MaC5TeNQHNoLcruGjVBRb7E
+         8ltvbH49n0xNcpHVRru7W9C+4KD32jSlz+75DOfq4J1xkiMY12fuM/ROc9NFZWM+MzC7
+         Eiadv8JLY8eQm9roU1uUuHZ+xm76J/u0lzDHUq2qUg496bciEy/BCQF3CbJYuJESo4ck
+         x0Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786657375; x=1787262175;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=huyJMFlfQJ3dOAsamBtnzGlfdRqKt9nhuuxDEDmUYRs=;
+        b=FvVB/HSUDgYiJQpunVqXzfVA64JLDseNyQVswPDOfWZwbS03zVDdo4EaZrASy2ARQp
+         rXXZCbFVUOhrw+q1zLMHgBShDHlNTFMzYOa8shbKpDF+GS/eYksYCCxWsQXyVPv60R0g
+         f17Ykw0b2avQ3hNkNG3zCTuMm7qxCGQ/WpzxzGIxJrrCD8HBfkHuJgJuxio2rnWRm3VJ
+         GiB69EKbA+enDUDKx8e244q2MtrjqlF56lr/5sxNN5n/5CmcQxujDG0FAJnt9l02gWTP
+         OghyTbbRMKHZUhynINfLybO/IuotYHTcokViu+m2MkfHI0NJTRL8VSaC6ibtNVrcXkcD
+         6njg==
+X-Forwarded-Encrypted: i=1; AHgh+RpDWOcpPslXGQDkCLFJeeMSTPPXVa8l55wdg2qTxmsK6g4vX099I1I1/HVvfhFILrAmW95Tq4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwU1I1rn3Aq4gpzrUJPm7of66MfnJ5t9q93M1HOO6lXTKAQ+ekZ
+	AYuXJrB34LaTEBf0Gk6Uf28cIBHEPLooDE4hqLYOOHak6aJKegaoZLT/
+X-Gm-Gg: AR+sD12jmQVptw8pqdQIhCa8HAmFzKRPTHfV3S3TBPl8aIp4BgwfLD0tnTVO6NArxZ1
+	K6vP7190kxjq4Egw9HYucHglIepYRjTUvKTnY4LGeSf84dUh2w7BsYFWVlBxQwHWFiahXPunSNf
+	5FG5zBzvRR9BI6HodOt4DXrOOhx23v98/BjQCP/e4KHs941EmUhzCVc8PUz1FmWoS9O7CnRC1bq
+	5jL/noIzKAl3igVQV2niFqdW5HsAZeUKIK3KfssYJyjMdN1BUkQh0dohXPdZaTOLmC/ao3ucGov
+	psWGBTO42WCJF/EsEKv1NlNag/LcmVqy/sgZWL/pTdryRL2Pb23e4Xgcua0L/1adOwBcr28CItA
+	q+ZIN4GnYe5qBim78y6dzkWBRq3+3fDbaFiUZ1LT/3S2eNAqi6oubX7SVG7an4uFUFiz1w9S2qg
+	sbFqmdXbc9cIsJGAutKmr791jhsHuHz1Lumzu+g4XKu89+IJ+13xebFtJRbUHIHJpMj4DAAubun
+	sqUnQ==
+X-Received: by 2002:a05:690c:e5d5:b0:814:7a54:3a93 with SMTP id 00721157ae682-83711836371mr5686327b3.23.1786657375206;
+        Thu, 13 Aug 2026 14:42:55 -0700 (PDT)
+Received: from mac.lan ([136.55.173.105])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-836bb3ed2b5sm5069637b3.6.2026.08.13.14.42.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 14:42:54 -0700 (PDT)
+From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+To: horms@kernel.org
+Cc: AutonomousCodeSecurity@microsoft.com,
+	blbllhy@gmail.com,
+	bpf@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kerneljasonxing@gmail.com,
+	kuba@kernel.org,
+	kys@microsoft.com,
+	linux-kernel@vger.kernel.org,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	sdf@fomichev.me,
+	tgopinath@linux.microsoft.com
+Subject: Re: [PATCH net v3] xsk: fix NULL pointer dereference in __xsk_rcv()
+Date: Thu, 13 Aug 2026 17:42:40 -0400
+Message-ID: <20260813214240.96466-1-blbllhy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260810132505.769431-1-horms@kernel.org>
+References: <20260810132505.769431-1-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 3/3] dpll: zl3073x: add PTP clock support
-To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
- Chris du Quesnay <Chris.duQuesnay@microchip.com>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
- Min Li <min.li@microchip.com>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>, linux-kernel@vger.kernel.org
-References: <20260811134700.1211010-1-ivecera@redhat.com>
- <20260811134700.1211010-4-ivecera@redhat.com>
-Content-Language: en-US
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260811134700.1211010-4-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/08/2026 14:47, Ivan Vecera wrote:
-> Add PTP clock support for the ZL3073x DPLL driver. A PTP clock device
-> is registered for each DPLL channel regardless of the initial channel
-> state, providing gettimex64, settime64, adjtime, adjfine, adjphase
-> and getmaxphase callbacks.
-> 
-> Callback availability depends on the current channel state:
-> - adjfine: when NCO pin is connected (returns -EOPNOTSUPP otherwise)
-> - adjphase: available when tracking a reference, uses TIE write
-> - adjtime: always available and uses
->    * phase step for sub-second deltas when NCO pin is connected
->    * TIE write when tracking a reference
->    * plain ToD read-modify-write otherwise
-> - gettime/settime: always available
-> 
-> The adjtime callback splits multi-second adjustments into a ToD
-> read-modify-write for the seconds part and a sub-second mechanism
-> (phase step or TIE write) for the remainder. On partial failure
-> where seconds were already committed, success is returned to
-> prevent the PTP servo from retrying and applying seconds again.
-> 
-> All PTP callbacks are serialized by the existing per-DPLL zldpll->lock
-> mutex, which is also used by DPLL pin and device callbacks.
-> 
-> Reviewed-by: Petr Oros <poros@redhat.com>
-> Tested-by: Chris du Quesnay <Chris.duQuesnay@microchip.com>
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Hi Simon,
 
-It's a bit weird on formatting because of functions reordering.
-Anyways, main parts LGTM
+Thanks for the comments.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Given the extra complexity of reusing the pool-global xskb_list here,
+including the locking/concurrency issues and the hidden implementation
+assumptions needed to reuse the existing frag helpers, I would prefer to
+go back to the v2 local-list implementation, which is correct, logically
+simpler, and easier to maintain.
+
+@Jason, regarding your v2 memory leak concern:
+
+> It will cause a memory leak because the current xsk_xdp that is not
+> added to the local list will miss the chance to get freed? And the
+> empty list_node cannot be easily freed by xp_free()...
+
+IIUC, it would not leak. The !list_empty(&xskb->list_node) case can only
+happen when fresh aligned-mode allocation returns the same xskb for a
+duplicated user Fill Ring address. In that case, the xskb has already
+been added to the local staging list by an earlier iteration, so the
+error path will walk that list, do list_del_init(), and then
+xsk_buff_free() can recycle it. For buffers returned from the free_list,
+in either aligned or unaligned mode, xsk_buff_alloc() already did
+list_del_init(). For fresh unaligned-mode allocations, xskb metadata
+comes from free_heads, so duplicated user addresses should not return the
+same in-list xskb.
+
+I'll prepare v4 based on the v2 local-list approach shortly.
+
+Thanks,
+Cen
