@@ -1,60 +1,62 @@
-Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
+Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D95E3321A7
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EE4421EF4
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786648085; cv=none; b=YrXYEp1ELhb5t6DzU0iQEA9IdYhDNu+ICgAx1V94TQ5nJqNu80YLU5vJeyz/Rg9D+friw9U5deGpvhlqJHYpHP9lkCE/qcUZRI5EEOapPfZmp5nEj8hK1dBWoGttsZoAhNm5VyV6RWxfEVe3hvuuLLhcb5W7y5j4DS//wcpSesE=
+	t=1786648086; cv=none; b=nBQoaNTLexufyQ6W3uV8yMMk1FEGVb+O1pdKh/XU7dPrPdmmjBBB2T8pGrrABsmBwBU/KLgPDsC9Kl8sAKSUIJj3lR6wqO7niJGwgcW2hvlvVExnvFbK9J18qsCjploYFtaimn88nvlafCutIe8vyxugNYn5JKH3mUpQRz8jgI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786648085; c=relaxed/simple;
-	bh=kLTVFMDG9ofr+3bjhE0y0sSg0uRIn9xxlak7gnmQOSs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NNrJ3G3R6EEHsJbwRgrisThF0F5OoVKOrk61a6xiSy+vBljdVAEE/pkrruts6LMxUkH1jP4t2KzjvXHotoH6c7Y9laVH3YPWWzYBFU5wUwCZUdlE8JOcoNc8PyXpOpWawRQJV8IrdHlW9tok0Y9P1sndoipylkyb+dwnusoF6YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iB2YDucC; arc=none smtp.client-ip=74.125.227.132
+	s=arc-20240116; t=1786648086; c=relaxed/simple;
+	bh=h/yRTy+q/aTNWgdAyARpnxO02skNFXM6ZPvX24ue7RU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UB2+9yqVSPee6Qm+4a2LucJ/v/yygYCPU/uZCFNI3Y+L2FTJ+Id3cUhcwTqebkEWiErxHO3wMOq6wpDZ5yapUk6BpEgJImTkhjyQtL1VIOAxXv+dbMOjEBs8imtiCLtPp14nSydZqnVRAfwnxbGAmO6iIF8iq3Gy88CLIVJ/25A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BxxA8BdM; arc=none smtp.client-ip=74.125.227.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iB2YDucC"
-Received: by mail-pj2-f4.google.com with SMTP id d9443c01a7336-2cc80544c74so907015ad.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:08:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BxxA8BdM"
+Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-38f25802c19so74408a91.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:08:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786648082; x=1787252882; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VCh4FhUfWPAIY5oCHgOyENQTN+HS1fAJsuh3sXLGPjQ=;
-        b=iB2YDucCDHpD0H4rftrkQEpJlstR0r9YmowM1vfX4Fgr4oZSxYbBbcedTznuo8B5YP
-         2P3aD3n/qrYlDQfgg6w2SMoeteT827GdPV0jdQMpVM31OoYNA0tvZQUtjlXoLxAPe6Tj
-         CG8kqbO8K1IR1hRSDssaOjE53zkNZn0kw+C15YrdL8ZxBG3gkeDIe0ShIJc3e5I9KVPf
-         YKqU9sSGSVZFtT5R/6hTAzFeItcRhj+ykyiRD/HtzHW9w7U+0qO8EDXBwZtHAETjgjWn
-         Xbl0Lt7QhiJsDZOXgDsVV9io8zh6DjJYrCSRnn7PDlmdCXmi/RqOLV5L92Nv2VcxbnDP
-         Ob+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786648082; x=1787252882;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786648084; x=1787252884; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VCh4FhUfWPAIY5oCHgOyENQTN+HS1fAJsuh3sXLGPjQ=;
-        b=qVGom7UilVEuU0MfUSj2N8qi5o3ELKBznD9E/+1WT2cTY9Aql1IrZm2NPbI0iPv62S
-         cD5dTgSOKYJZtVcfn9n/Fz56GwoYG9vYpVkM+BPHqH1mqZUHYW+ONvihuYhpnrzSdIXa
-         E1hYzpBlafRVk+i95mGTLiUlJgru6qSF+MxpgU5ysbcVE28qjFUeuxfbhFxe2aLlZhdB
-         2aR9GwYPzLAdO/9Dv/8RYwrTMFmmGV3OElszlLDC+MP4/297G9zDLD1nVBi0XSw2U5Sf
-         R3jGlzCdWKw9UL3Kh9u0lNeiroS7vHR5LbMFL0gIA8aapq1uEaiX0QdfEMPzW4x1sa4B
-         l9Wg==
-X-Gm-Message-State: AOJu0YzdM+7kK2K45+HzYqb6+09kSzmM5teshqJkSK+v6/bzacnyRChV
-	YOpymUGgozPO8GhxtTDjAAv1ba5nfuBtoYPCHIP9cPPX+jW6wiueZ4MBwRTaIVZV
-X-Gm-Gg: AR+sD11LhxAQ6+ooSBSWpRB/2Sy77gtDTx+CYET7z3RFBX+rrHeQANXy3RLXOi6frwp
-	oBr19Nv4SOGU6CaziCTwFC1/pnSNO7kHwFucipWs9Gr4JR1CGqRFT/J17KUfnDuDUsCLzKAFXvm
-	a6ZTW4XRPr2ZW0kKqsQ4Ezg5WVn/bFO/GC2Q9/uX5CWjZrfLQNe/WLzx9/a+BCSVPoKjT9DCD/+
-	CK96cCRpfsiyRuxh4Xtl7k+e6wYfl1SSOgZf6A/Tm6AEzWOLisD+O3aGoMHuoQpG1keQ0D6YJIX
-	kk3oe63AmJU26WN2juzYKcj9JczNq1CwkQKMY/nx4uCjsdfRH0lzU4mH545ckBowNQLPXq47Pfx
-	zsHm5lP/tmkL3QNcidDaH6NhAWFYGT523udSILAex3N/q4niDLhge9UdYsFfORXhTuf9G13gwdH
-	zGab/O6PYObHUAQq15trklrFGW03dlAbwIaN7ntgPZFvVurTLmMQSfGQ==
-X-Received: by 2002:a17:903:1b66:b0:2cf:b68a:340 with SMTP id d9443c01a7336-2d3b0c43462mr1698315ad.10.1786648081499;
-        Thu, 13 Aug 2026 12:08:01 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:43::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3aeb78d20sm1310695ad.57.2026.08.13.12.08.00
+        bh=knHPZ2hqDlF6r7lICpyiSankCSnQUl1ZecmnK0yjr1w=;
+        b=BxxA8BdMs621XLpRrcXBmzwifHSG5UoNWkE9d1ppbJJmCvlcQNfzCILo6OtbA6/rpx
+         jJ7V++l+PCvsfceYjzSoimTKX7yYIkdD9yEuaMnaVYs9/hi5BNkb87TZqjZvj158xh81
+         wIOEKIyw76iRW9ZSbc9/QIWfKdc6dyurCA+4GSEfXYVou/n+GrfiF8GYO9EnVJW0I52e
+         ju2u0htng1cTYWMKi4WP0j2JIpMig2/Cyjuhlx5RatWq6t/q2MoCYgszSEoYUEsquZ3t
+         MwxWfn+m09MHQG+OfrMQAB+uVMnRZANMnrxjwfYRub97hHG/umOz9Oyp68nwtjxwcHub
+         ZAiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786648084; x=1787252884;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=knHPZ2hqDlF6r7lICpyiSankCSnQUl1ZecmnK0yjr1w=;
+        b=doX5/Zm8Mk0DB7i2eI0foK19gEHus84jbwwRguxMEIW3GT+ISJL+nd4l3X8IEnrDdk
+         yGeYGG+vx+nJvf2B3bdRCwYY1ScnSSJYHBOjQRdBBkqW60a3SFcRsR8zr49sZv0TCvMb
+         xYkCjovrI+7myQYoiyn4RjEq0c7+t0D3d6iaPZYezAid1S+INZBaszZ/42lcnvSzZwel
+         uVBlS0vP/S2eoGAPffqHsiLFPqXvsy2yonEf1HkYPXLVjiTuiSxqL5jBHqqGynOnZ4Us
+         YOKVAan6Tz9ElWHLREzVhpyWbtjMcHV2Z5FUdEAmslIM+ygjvLeL2Hbd63h0wTopCkJN
+         Q3Fg==
+X-Gm-Message-State: AOJu0YwfMkotw2UrRTVV3ssBfvuEMQIxubW6+agM4eTl5lch6xIWLxt9
+	Of7ry7S/fXRjgXNbD8Wy95UlN0azzC3y8frlRiBE5Xep79IYGa5hgjqHtCV5k4xD
+X-Gm-Gg: AR+sD10mlcwWcVJB87oDdjXfeI2y7XJF+i+w2V6YVdMuAr9Qw4k6Pzq0MpW2t0IRmP4
+	PHPIa7Msu0GMfrxat6GH/SbLuRhoAk1iadv/RZcOKSFrJOycd7D4McIuL5u+3owMXEYbV1D3+E/
+	hxARS42uEk6t9ntFGBfzt+vjkcC19iAd6cyI59pGA5Lb5evSYT5TwRPGWHCvGilRYRMOYcNovxZ
+	uv+y8HyrZZbyWkFcxmhuShnXmw8HLzQGwho5/KtJb0a5vixrgawrnayXHAGMMWGuSf9hg3Bxs+r
+	gg+p+8pDthbwWIgFU6IN+oEMwGIwG/fRyebLVyFeVFmJ5d8kAuNPDsk9U642yxK78hgLnvaeZ5Z
+	tQNThlQTuE1aWOOXtBJsf72z/pUqqom/vKtzdEFetXmE91lS7xdsvhevI826izXemDouRFi+yyh
+	FSsHhZr8CeoQcG/3GAu4S+A4E3IMoQ1U1XDedK2pcAcLjziLVqNY/w6g==
+X-Received: by 2002:a17:90a:da8f:b0:380:21b7:e727 with SMTP id 98e67ed59e1d1-3933b95e327mr167852a91.14.1786648083852;
+        Thu, 13 Aug 2026 12:08:03 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4c::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3931cf25e5dsm4535692a91.17.2026.08.13.12.08.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 12:08:00 -0700 (PDT)
+        Thu, 13 Aug 2026 12:08:03 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -91,10 +93,12 @@ Cc: davem@davemloft.net,
 	linux-arm-kernel@lists.infradead.org,
 	bpf@vger.kernel.org,
 	leon@kernel.org
-Subject: [PATCH net v2 0/3] xsk: pre-existing AF_XDP TX metadata fixes from Sashiko
-Date: Thu, 13 Aug 2026 12:07:57 -0700
-Message-ID: <20260813190800.222527-1-sdf@fomichev.me>
+Subject: [PATCH net v2 2/3] xsk: honor XDP_TX_METADATA in zero-copy path
+Date: Thu, 13 Aug 2026 12:07:59 -0700
+Message-ID: <20260813190800.222527-3-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260813190800.222527-1-sdf@fomichev.me>
+References: <20260813190800.222527-1-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -103,42 +107,208 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A few fixes to address pre-existing issues from Sashiko review.
+The zero-copy path reads TX metadata whenever the UMEM has metadata space,
+even if the descriptor does not set XDP_TX_METADATA. Pass descriptor
+options through the metadata helpers and ignore metadata unless the option
+is set.
 
-Notes on the feedback from net-next v1 posting [0]:
-- It correctly complains about ABI breakage for 32 bit systems, added
-  an explanation why I think we unlikely to have any 32 bit users with
-  launch time
-- mlx5 batching (pre existing) - I think my point in the comment still
-  stays (that we do not make it worse)
-- stmmac recycled descriptors (pre existing) - seems valid but I don't feel
-  confident sending a vibe-coded fix
-- stmmac queueMaxSDU vs taprio offload - don't think this is real but
-  we can fix separately later if it is (the existing issue with breaking
-  xsk seems more real)
+This does not fix the existing per-WQE metadata handling for mlx5 MPWQEs.
+Only the descriptor that starts a session passes through
+xsk_tx_metadata_request() and configures offload state shared by the batch.
+Metadata on descriptors joining an open session is therefore not validated
+and does not configure its requested offloads. In addition, a non-NULL
+metadata pointer from such a descriptor is treated as a timestamp
+completion request even when XDP_TXMD_FLAGS_TIMESTAMP is not set, so its
+metadata union can be overwritten with an unrequested timestamp. Fixing
+mixed metadata states within one MPWQE requires a separate change.
 
-v2:
-- target net, address clashiko feedback (mostly here and other commit
-  descriptions)
-
-0: from https://netdev-ai.bots.linux.dev/sashiko/#/message/20260810184753.135756-1-sdf%40fomichev.me
-
-Stanislav Fomichev (3):
-  xsk: align TX metadata layout across ABIs
-  xsk: honor XDP_TX_METADATA in zero-copy path
-  net: stmmac: skip queueMaxSDU check for AF_XDP
-
+Fixes: 48eb03dd2630 ("xsk: Add TX timestamp and TX checksum offload support")
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+---
  drivers/net/ethernet/intel/igc/igc_main.c     |  3 ++-
  .../ethernet/mellanox/mlx5/core/en/xsk/tx.c   |  2 +-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 10 ++-------
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |  3 ++-
  include/net/libeth/xsk.h                      |  2 +-
  include/net/xdp_sock_drv.h                    | 22 +++++++++++--------
  include/net/xsk_buff_pool.h                   |  3 ++-
- include/uapi/linux/if_xdp.h                   |  1 +
  net/xdp/xsk_buff_pool.c                       |  7 ++++--
- tools/include/uapi/linux/if_xdp.h             |  1 +
- 9 files changed, 28 insertions(+), 23 deletions(-)
+ 7 files changed, 26 insertions(+), 16 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 39043d8ca1bf..59067939a586 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -3074,7 +3074,8 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
+ 		olinfo_status = xdp_desc.len << IGC_ADVTXD_PAYLEN_SHIFT;
+ 
+ 		dma = xsk_buff_raw_get_dma(pool, xdp_desc.addr);
+-		meta = xsk_buff_get_metadata(pool, xdp_desc.addr);
++		meta = xsk_buff_get_metadata(pool, xdp_desc.addr,
++					     xdp_desc.options);
+ 		xsk_buff_raw_dma_sync_for_device(pool, dma, xdp_desc.len);
+ 		bi = &ring->tx_buffer_info[ntu];
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/tx.c
+index 3d19dad8f868..d194eeddd7b5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/tx.c
+@@ -99,7 +99,7 @@ bool mlx5e_xsk_tx(struct mlx5e_xdpsq *sq, unsigned int budget)
+ 		xdptxd.dma_addr = xsk_buff_raw_get_dma(pool, desc.addr);
+ 		xdptxd.data = xsk_buff_raw_get_data(pool, desc.addr);
+ 		xdptxd.len = desc.len;
+-		meta = xsk_buff_get_metadata(pool, desc.addr);
++		meta = xsk_buff_get_metadata(pool, desc.addr, desc.options);
+ 
+ 		xsk_buff_raw_dma_sync_for_device(pool, xdptxd.dma_addr, xdptxd.len);
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index a71f0df26378..62de03e65a90 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2719,7 +2719,8 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
+ 
+ 		tx_desc = stmmac_get_tx_desc(priv, tx_q, entry);
+ 		dma_addr = xsk_buff_raw_get_dma(pool, xdp_desc.addr);
+-		meta = xsk_buff_get_metadata(pool, xdp_desc.addr);
++		meta = xsk_buff_get_metadata(pool, xdp_desc.addr,
++					     xdp_desc.options);
+ 		xsk_buff_raw_dma_sync_for_device(pool, dma_addr, xdp_desc.len);
+ 
+ 		/* To return XDP buffer to XSK pool, we simple call
+diff --git a/include/net/libeth/xsk.h b/include/net/libeth/xsk.h
+index 5dcc0d7f65b7..a452b7828ce4 100644
+--- a/include/net/libeth/xsk.h
++++ b/include/net/libeth/xsk.h
+@@ -196,7 +196,7 @@ __libeth_xsk_xmit_fill_buf_md(const struct xdp_desc *xdesc,
+ 	struct libeth_xdp_tx_desc desc;
+ 	struct xdp_desc_ctx ctx;
+ 
+-	ctx = xsk_buff_raw_get_ctx(sq->pool, xdesc->addr);
++	ctx = xsk_buff_raw_get_ctx(sq->pool, xdesc->addr, xdesc->options);
+ 	desc = (typeof(desc)){
+ 		.addr	= ctx.dma,
+ 		__libeth_xdp_tx_len(xdesc->len),
+diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
+index b344789f5df8..d94aeb506379 100644
+--- a/include/net/xdp_sock_drv.h
++++ b/include/net/xdp_sock_drv.h
+@@ -240,6 +240,7 @@ static inline void *xsk_buff_raw_get_data(struct xsk_buff_pool *pool, u64 addr)
+  * xsk_buff_raw_get_ctx - get &xdp_desc context
+  * @pool: XSk buff pool desc address belongs to
+  * @addr: desc address (from userspace)
++ * @options: desc options (from userspace)
+  *
+  * Wrapper for xp_raw_get_ctx() to be used in drivers, see its kdoc for
+  * details.
+@@ -248,9 +249,9 @@ static inline void *xsk_buff_raw_get_data(struct xsk_buff_pool *pool, u64 addr)
+  * pointer, if it is present (initialized to %NULL otherwise).
+  */
+ static inline struct xdp_desc_ctx
+-xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
++xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr, u32 options)
+ {
+-	return xp_raw_get_ctx(pool, addr);
++	return xp_raw_get_ctx(pool, addr, options);
+ }
+ 
+ #define XDP_TXMD_FLAGS_VALID ( \
+@@ -318,18 +319,20 @@ xsk_tx_metadata_request(const struct xsk_buff_pool *pool,
+ }
+ 
+ static inline struct xsk_tx_metadata *
+-__xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data)
++__xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data,
++			unsigned int options)
+ {
+-	if (!pool->tx_metadata_len)
++	if (!pool->tx_metadata_len || !(options & XDP_TX_METADATA))
+ 		return NULL;
+ 
+ 	return data - pool->tx_metadata_len;
+ }
+ 
+ static inline struct xsk_tx_metadata *
+-xsk_buff_get_metadata(struct xsk_buff_pool *pool, u64 addr)
++xsk_buff_get_metadata(struct xsk_buff_pool *pool, u64 addr, u32 options)
+ {
+-	return __xsk_buff_get_metadata(pool, xp_raw_get_data(pool, addr));
++	return __xsk_buff_get_metadata(pool, xp_raw_get_data(pool, addr),
++				       options);
+ }
+ 
+ static inline void xsk_buff_dma_sync_for_cpu(struct xdp_buff *xdp)
+@@ -510,7 +513,7 @@ static inline void *xsk_buff_raw_get_data(struct xsk_buff_pool *pool, u64 addr)
+ }
+ 
+ static inline struct xdp_desc_ctx
+-xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
++xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr, u32 options)
+ {
+ 	return (struct xdp_desc_ctx){ };
+ }
+@@ -530,13 +533,14 @@ xsk_tx_metadata_request(const struct xsk_buff_pool *pool,
+ }
+ 
+ static inline struct xsk_tx_metadata *
+-__xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data)
++__xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data,
++			unsigned int options)
+ {
+ 	return NULL;
+ }
+ 
+ static inline struct xsk_tx_metadata *
+-xsk_buff_get_metadata(struct xsk_buff_pool *pool, u64 addr)
++xsk_buff_get_metadata(struct xsk_buff_pool *pool, u64 addr, u32 options)
+ {
+ 	return NULL;
+ }
+diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+index 2bb1d122b1bc..a7df573784fd 100644
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -154,7 +154,8 @@ struct xdp_desc_ctx {
+ 	struct xsk_tx_metadata *meta;
+ };
+ 
+-struct xdp_desc_ctx xp_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr);
++struct xdp_desc_ctx xp_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr,
++				   u32 options);
+ 
+ static inline dma_addr_t xp_get_dma(struct xdp_buff_xsk *xskb)
+ {
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index 78c14f106395..9d2d94f1fb75 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -763,6 +763,7 @@ EXPORT_SYMBOL(xp_raw_get_dma);
+  * xp_raw_get_ctx - get &xdp_desc context
+  * @pool: XSk buff pool desc address belongs to
+  * @addr: desc address (from userspace)
++ * @options: desc options (from userspace)
+  *
+  * Helper for getting desc's DMA address and metadata pointer, if present.
+  * Saves one call on hotpath and double calculation of the actual address.
+@@ -771,14 +772,16 @@ EXPORT_SYMBOL(xp_raw_get_dma);
+  * Return: new &xdp_desc_ctx struct containing desc's DMA address and metadata
+  * pointer, if it is present (initialized to %NULL otherwise).
+  */
+-struct xdp_desc_ctx xp_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
++struct xdp_desc_ctx xp_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr,
++				   u32 options)
+ {
+ 	struct xdp_desc_ctx ret;
+ 
+ 	addr = __xp_raw_get_addr(pool, addr);
+ 
+ 	ret.dma = __xp_raw_get_dma(pool, addr);
+-	ret.meta = __xsk_buff_get_metadata(pool, __xp_raw_get_data(pool, addr));
++	ret.meta = __xsk_buff_get_metadata(pool, __xp_raw_get_data(pool, addr),
++					   options);
+ 
+ 	return ret;
+ }
 -- 
 2.53.0-Meta
 
