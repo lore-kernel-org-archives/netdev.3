@@ -1,81 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B91472F73;
-	Thu, 13 Aug 2026 13:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A805047D46B;
+	Thu, 13 Aug 2026 13:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786626621; cv=none; b=nb+iIDdNlzbDOmmnlYg4bZOgd3+jsIZWmmWx+upUtTALWqwJlY/FW8VkehX6xiVvUMEiQHhxoq4JJ2gJPmT7iTeyWclqUmy5up3wzG9cRIVLRyln9pjzZwWqBASFvOz3LC4F7zbsqHXiRUkrl97oDzDNb3+/TafzX5GfF5wKOgw=
+	t=1786626748; cv=none; b=OFBe81dy35akoK0I2vNJDDXJrRVYC2Ga8VZi4uQdpmgrukfAS5OYntzMLQtb/hOVz0OjGoR5QTdMkcc53ATNCUxai04f1tDAqUmIx9aut+zishxPkTvluQuxTpJjbDrRBuT8nURBo1gEmg+RJnlRTNaS1E4HzCMGW1wjkoofunk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786626621; c=relaxed/simple;
-	bh=EAuqKDJO0fiosKHSjj1Bt7yAT7PKeaQ6hwcjlR8Bs9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M9r/bUizz6z9ch7GbGGLwDKu/xWr8sGMFgrx2uVOH5rftwt0fzm80OIuzJ79NFy5ZrN2daCN4uehNwxKrLftV8DXDlsJAqrdsBRIMpypK2bZzP420s3vvO+dFn5xwjbLtlINNPIMw8OONuslNRbYmBUGClvtp6P9qq/x8aqtpHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXotiNnr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786626748; c=relaxed/simple;
+	bh=n67e92akAaeYMhCPJCCKn+4fuFBLbUJkN/6jajwe2m8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=gRSIETw9IrJ9vz6b42sNwij+JasvgSAItNbPyXvvhXpa5xMaC/wbezfPdA5oQIDQKO4nubHrILQ5uFcF/6WZxNGaTakxbJR+gm3snB1Ybfrvd13NuvI9sk7E57qqZ+PWpbuIrwmEIftAXxnNFBx1BNQtBuYV21VUgHbnu4xrjMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HlwRILKR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXotiNnr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7CF1F000E9;
-	Thu, 13 Aug 2026 13:10:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HlwRILKR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F821F000E9;
+	Thu, 13 Aug 2026 13:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786626619;
-	bh=dw/YLbdmVxlibKcPRjBfsqF+6zRf21vIPW4FyAAyn5w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NXotiNnrnQjnNMPKSgLvCw9WRna6KKAr8r7g+P77Re1VkRTeiVLO3o0wDdMOKXaT4
-	 vXusTgJc6zaW7cGItixUL6zLQjH8Vk7LPywn57C8DAz1NvO6u2HQ2qw+7U0kXA1w8L
-	 RBHKsSOEbBs7eBHD9DOlNr2+RNBC+oP3fm1YtQmokXFZMTEVNonW7/NpqWHYMlwUTO
-	 NGHpAc/Q+VxNcQbC3qrxbkFuL3YYSMHNDxHvKtVNKXIxCvqIYZ0pNfs1MBQYaaX/5D
-	 hoMbxGKMTdjofubN3gJn6PvRA4rlVvf8iVuIdWnqZiuWjvjq217EqXe7rsE/1Sb/Ip
-	 kwRVUXMbDxwaw==
-Date: Thu, 13 Aug 2026 14:10:15 +0100
-From: Simon Horman <horms@kernel.org>
-To: fy15309206903@gmail.com
-Cc: Mika Westerberg <westeri@kernel.org>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3 0/2] net: thunderbolt: two fixes for the failed
- bring-up path
-Message-ID: <20260813131015.GA265046@horms.kernel.org>
-References: <20260811-b4-tbnet-hopid-v3-0-9e75d1b51331@gmail.com>
+	s=k20260515; t=1786626747;
+	bh=wUTerx84b7KLBWJwyknigTnBFqCAjupeE2IoPPpdlas=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=HlwRILKRsK5V270vFNgGGSQJJjfXF8erHmd5vQzrrHW8uFbPIxWlI1mftK2VZQE4o
+	 1C+R17iZIcSBKwI+UTXE2IWYOYWaBDSsyHwxanwL9CW7/C1mDET2+NPBjdeq9ZPOgf
+	 GWmTU+Qkp9Bj4dOcevVp9egsmUIN92IpaUfyArwobjsQOhcWwz6UV/LnRKm2WTJH55
+	 W2ajMns/06LwfmxpdQG/IW4k/oe5dwBfy8k658brtcD057sJ9blTY3l/SmWORrZxeX
+	 axphqYDp3z9eMAYnHzojbPF7UFm1W++Y3Cs62XVk8LAlJ7Y5EYQCXbQzaIM92LbVIn
+	 raGQ8JIN20tMw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5690C380CFE8;
+	Thu, 13 Aug 2026 13:11:43 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811-b4-tbnet-hopid-v3-0-9e75d1b51331@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3 0/2] netconsole: replace target_list_lock by
+ RCU on userdata hot path
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178662670188.2423866.14579955056749406829.git-patchwork-notify@kernel.org>
+Date: Thu, 13 Aug 2026 13:11:41 +0000
+References: <20260810-netcons-userdata-rcu-v3-0-f65557f769ce@debian.org>
+In-Reply-To: <20260810-netcons-userdata-rcu-v3-0-f65557f769ce@debian.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ gustavold@gmail.com, asantostc@gmail.com, kernel-team@meta.com
 
-On Tue, Aug 11, 2026 at 01:20:48PM +0000, Fan Ye via B4 Relay wrote:
-> Two separate defects reached through the same branch in
-> tbnet_connected_work(), found on an ASMedia ASM4242 host-to-host link
-> when the peer drops out while a connection is being brought up.
-> 
->   1 releases the HopID the allocator handed out when it is not the one
->     that was asked for.  Today it stays allocated for the rest of the
->     XDomain connection.
-> 
->   2 marks the connection down on the failure paths, so the next
->     tbnet_tear_down() does not run a second teardown over work that was
->     already undone: stopping rings that are already stopped, which is
->     fatal under panic_on_warn, and handing back a HopID this connection
->     never owned.
-> 
-> Patch 2 edits the lines patch 1 adds, so it has to come second.
-> 
-> Changes in v3:
-> - Cut both commit messages down after review; the code is unchanged
->   apart from the comment on the new helper in patch 2, now one line.
-> - Link to v2: https://lore.kernel.org/netdev/20260810-b4-tbnet-hopid-v2-0-0eee557e75df@gmail.com/
+Hello:
 
-For the series:
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+On Mon, 10 Aug 2026 02:36:10 -0700 you wrote:
+> I would like to move netconsole to use RCU on the hot path for
+> a while instead of target_list_lock. My goal is to have no lock on the
+> tx side at all and eventually drop CON_NBCON_ATOMIC_UNSAFE, if that is
+> possible [1].
+> 
+> Start removing target_list_lock on certain parts of the code. This patch
+> transforms the userdata array into a RCU-protected pointer, and uses the
+> dynamic mutex as the write lock.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v3,1/2] netconsole: publish the userdata payload with RCU
+    https://git.kernel.org/netdev/net-next/c/a9560343d4e9
+  - [net-next,v3,2/2] selftests: netconsole: add a userdata torture test
+    https://git.kernel.org/netdev/net-next/c/3d2452c2fb2f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
