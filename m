@@ -1,214 +1,239 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB151DE8AD
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 16:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D924908B7
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 16:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786637055; cv=pass; b=DHk899eL4p7VMCAKMxU3p7wybZUznxGJ7eH+3V5N0AqgEZB1oMQw97xdIMun+k8GKcJAgzt8rPrNbEEGSiusOsiIOmHAmVO1yvsa2JsOVNtEjPURQBy0wOyCjOMZk6MVl62oIlL4ilXVREZbDnWN4q4JgQnzZavMc1JgCAFZYXM=
+	t=1786637784; cv=pass; b=cYS+y+jpck5Wb4uVWjfQZDU6v0soa/J4GUj6TBbcRArwvelvYgbl8voQum0S3iHB1v92oM1nNTTcasZ3D7gue95XLSyKxARUMLKTUQ2NsCi55jO7miux6vyZqRTO9Em2MjUSqlNr4plwYcE3gHkA1ODmfmJQitUJ45lXPss9+Dw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786637055; c=relaxed/simple;
-	bh=Vjy16TF3iYfiUMwvlbZBdU1z3tOMwQwKJLy155OPgA0=;
+	s=arc-20240116; t=1786637784; c=relaxed/simple;
+	bh=yXT4hLGt7i769MHmM0jT0+BLhbDOMzT/s5tyqBFLnb8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T0VW5/18fz22uMT7d0iRKBuH6dP3ay5CT2aTYEVAtbV2vYR1dquw8eUTu/pOPAN/GqVBMMIRE+hZjyoiBD0jXD8Q1b4LwVdHmGpdq6JAj3oZDvjWW6CpZcnOg46h5KlS/bQ9GUva1XKySU2mnDpzVZrHauqwQVEaDFmauzt6AC0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X/hwbTYA; arc=pass smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=mqtRNtMxcTqqwC7zHE7YMMefvxowyN/VE18iP/d7nnKjEuKf6PqEvITzTP1DswYaSlcOjgnWsNBCt6VIxtpfOQeyOnbsIsJJiNtxUy76dQUEuw5J2OLMtmoesUm4qMNbRcta25IYY34VDboo6Gdej4FTO3MDPDb1QxUpO+tCV38=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/akhVTI; arc=pass smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X/hwbTYA"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-529a1ee0e62so713921cf.2
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 09:04:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786637053; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/akhVTI"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cbeeaac53a9so1865801a12.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 09:16:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786637779; cv=none;
         d=google.com; s=arc-20260327;
-        b=pZE5AEFwhGjq0McunVJJz8Xm1gLTD+c0/RRBPOHAqawiLJy4In3NSfrUwypUXaIkeS
-         S3TOpOhsqKG6JaXkMeIz19BGr3iSZyvJ+ONPHTeK7Midkky58Ugu4+SjwNV0beI2RkoU
-         7NXzDQ5+qBXGpyurfMTzUHGNh8Jiak6s73mZ1iC7n2b51pjxLb/wG+MUltxeoVeQB3/0
-         Wi19u0BqvmsT6/AqX9qF2pi4xRfUYG7QRtI131UW/+GLsvSw6gQcA05H45Lg4LhUXwMT
-         99NwcEPjS2xxvIOIpWM9el0Wddyevj1HrHrFdSjkfASlnpa4EMyPC0/dfRrdeF8kJm+c
-         Cg+Q==
+        b=lAAUQ+cuY+7m4W1VAYcGWzAbmjnZUIJDXY0gil8nqZiLiMewB1Et3VUGTaINycGsA3
+         No05f6EZuPK7sJ+eaa+mJO4EQST2xjDAQB3SJPZzER+quf5CtqoxIK5SyGgtCB1/yktO
+         noTt9e7Q1egjbubTWz5JQFG2nK4+hQVkrGatWPpRv87PYCFp8gf9niSDu7O6sB2bqxD3
+         7mPvC2BaOkxTDMkNDQHKWxF0Zsz2TdfwiH22I2+paenBAV679GpGcWj8LVW77NNja4yh
+         /opBHw4ekbljnI/SuXekOamyWTsz/DXrlwTaRzBZmdaOXfWzp/Q21txOKtEp3Po87ig4
+         5fiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=qy/kcyQvveSYr5wHrbyhBZAEI4CKhUnX/Ix6lO1z2p4=;
-        fh=zw2Tf0vMtu3hAEFoJbDfCjU/V/Fceeopbv+cwPpkdHc=;
-        b=RogIdnvNM2TnUjOaJxpvNUn3Qt+URgal693s8jF6GcqJ5u8ZiKzXaYa+vvCnfAiqLe
-         KHyQaev5RAJr4HOeiI48Dt1hdcfObF7dVZaygrGiSi3BS3p8lpzb9Likj3qeIf4Y0XEp
-         DGOo1MhFHTzYqav7Nkkcaykft785KkbO7ziOmwFknqHY2fAqLpvYQKOVeJ2HqOURW4k+
-         KZpbFWdGBQjeVFHzjfZUTlNQIyMM1yKZr0FFQfN5L7WzwOWKF76jmta9dDbFMUjqZXF4
-         BzswqaqrsN3ztJZqdAbmiIWz/anryisZue8K/IDo/YgBOuawY2bposUQkONrmhanhT0L
-         FEGA==;
+        bh=WKTV2ZTSUoxL0x2hN/gj5r+kKUiy8iekG3jkXHZrZMA=;
+        fh=ep6FBfCZQvhZvp5iweazYBMI/tXZAKfnV/TZGDpCbgs=;
+        b=Nn85hdLyT42FhCf1Jb0rzOVbBs2sjdRnfbDxZ1m3vxhQrBs97DzwIUSiakToJixfM9
+         GDlup6kmZrxvRXKe3u4L+kSbJnPP1J8OxVUVJb5bv7juFmVEOtCIQG8filRshhoiZzS2
+         4pvOqOhrHbJLbXX4Ik3Ae2G6yDQ3reeiMAnSyK5pQSssOEtytyMlF3Twy0QRu9ORPzLQ
+         7hB5jT5Gy/K6ccCKsDi2b+0Cn9fZncqgCPHDM0ow0uYZvH1HkEUG9mTDFqenkWjP00WJ
+         p6QMwkbZwZmdW4umGe7td2tXvGdKBvovygGF1ezCWjx2wSUzZuQxiCJP/p0dR5jVSr8G
+         9cfA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786637053; x=1787241853; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786637779; x=1787242579; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=qy/kcyQvveSYr5wHrbyhBZAEI4CKhUnX/Ix6lO1z2p4=;
-        b=X/hwbTYAT8FXfZgVX9z8Sp7Z7n9tzJMWzTnMr2t5dyuqaQvx1ZN/bhBHH+thrW51NA
-         esUSzENLSwTxU7OqUgDB7hvS7m+OXFyRLvTcej8peQbFX863QFmHD6ZN5OfZO7c5mPh3
-         pGGNfiumXGxc+RByFLbqC0Dswocxd4cdbIGtD6wF4gX9VWt2KPbpkzwy4/0dIbxq875g
-         RksgsVOYDjv0xuahlMKhyR0+ZT+44C547ZfrHJWe+shFnrw3M+dQ/AGrm3IrPm8NYOZV
-         /pXUH6i7itqKnvTxVmHG+3hHHdkrQX0gYel5vNQ2CkOPKxFSoBiPx0pkGLN6YCI+UrqZ
-         nK2Q==
+        bh=WKTV2ZTSUoxL0x2hN/gj5r+kKUiy8iekG3jkXHZrZMA=;
+        b=m/akhVTI5BJIly6i96PXCZntNCESth4cJId9UsP4qlyexrh2SIG4k9G3kC8TNS7f4r
+         CfegBSjnIMvZy4DnLHirwqtZVu1t2CQY5gmEj4pqfCfJgjTVTOSFGsGbecKfWzINR1Dm
+         /MQtPkdJnPYaNpJe3ZLJ2Lh/40E/1YdCucvYa1McLaCWxysmRArUP6jbAKrGMhayrIx6
+         YGI0RwJltJb0Oh2kg9lq1fHARRpF3ZX/jRBxx19mpA1zCDhucFoGeeRRuLMSVqjElwq/
+         O/gUmmdR3aT3v8CfSVvcss3vJRN212ifkr8u3sP8ygZrpqvyHv5hXz3GABMlMQn9XU1X
+         BYUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786637053; x=1787241853;
+        d=1e100.net; s=20251104; t=1786637779; x=1787242579;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qy/kcyQvveSYr5wHrbyhBZAEI4CKhUnX/Ix6lO1z2p4=;
-        b=sZRhgFKO1LGvd6NjfRTvnvY/CSDRtz6cTvRDUoyBrhlbrcMTMBvOqfN6VnW6krwezz
-         05GPoA9jUoXua3s+Ab74nUJ8V5qhQyc5u7Rx4eKw3JgvGcbD7SGxSKIkxkKCh8QWRmn9
-         GUKTLCIrlID2fBOmLXSO0pJHL8R2Dwb/DJI8iGqDlZlPCvv12IYSa9XHr7eprg4GT4W3
-         VUJMwAbfrop+KequneGI4Lq+EbA8To/ILDIkdvz+ILn/ogDngUzbUQR4s1QaVcGAfyOa
-         FszyxIJUgAsBym51Zk9CzbB4lK+UQ1OuWV/7k0qeeQ+Wc+DhFxf/LhR/9eErjQ3Vn9gp
-         V0hg==
-X-Gm-Message-State: AOJu0YzLn2HzhgioT728pl4d7twTaIilnzPZr7cHgfGHxpyQsrUh9A2i
-	wL/YDwFdmIs9XKoqX1RSY/Z8e0HAHAvWGUH2xk9gamsN4EfS/MwntMVek3+tQB4fzsKRIYfgUWu
-	JLOc4ayTe8XrkTn802aHpYuUpORnskQR9hkVRaN/h+/OVuBMa/CXQQyDq
-X-Gm-Gg: AR+sD13hapi0eZqG/pKKo/hPwpqJ3Y2lV76rgQChsMxJ6IeIsTNDt7kjX4FG0HcO0U7
-	WnTQW3/Ag6oW9N69TF2rjEWoFJoS4XQCF9PI/s4XnXiLUU7SI87THEr6C4KOuOFOMjszEHp1ZCB
-	KHYK0L7N18/e/XDPHc5nIQj6+eBzJ1eELAy5vrV0ni7zRR0ylYdf4mqQNP0+fdB/rqoqNukBvt4
-	nFxkXG2TbonJbtru6e1cm30JeG86O95BLy8Q4wPm4EisTxmnz0EXsWyatTaRkdeu/RCjMlk2jgJ
-	cgsxx4PjX+qX5tewDYr0KBkIiId6xAt1Z2MQdUOO9+Fok2h8o07FhNUFP0csjlNyE09n/6CT0Qc
-	+EGVBJFptjAP2DN0qfxV7TEZ9xNleD7xAPP+ppjaY+Ydr0An3lFd8DKvpXRRh7BZRNSih7IWd7/
-	LdGiW6uKW4OJ5GhQc=
-X-Received: by 2002:ac8:59cb:0:b0:528:3b9b:4f54 with SMTP id
- d75a77b69052e-52d73befa50mr65332581cf.8.1786637052173; Thu, 13 Aug 2026
- 09:04:12 -0700 (PDT)
+        bh=WKTV2ZTSUoxL0x2hN/gj5r+kKUiy8iekG3jkXHZrZMA=;
+        b=r9HueRkxcgEZ/gFJyIOKclSLTyrxyNE+Hy9TGpove5k9wV5LtxaJipM8V5I5wTBtau
+         uqh2ki/z5edbF2z8OK7FfI8AMJ8VHaeZ+2mtyXVxiUnFubiivrxmNttdxRaLpoBrCSMD
+         yL7zyN85KyNOeXVWuhNogPA6th+Ww+OwQLO5PfjBcaBNz8PXhU/gJNW/AEBWHXq6i9d5
+         X6VoWl8NRhWn3vqq+sarAlVi9vhBJS82YEEzLEkOBNoXVw7gKL4r0dcNDIPa783O1TLM
+         Lg19tr9mKF/UxrG9ZgzkAzIjfAu0/rEaA5VahXRlDadZ8/VrLmsi8B+KJRtcWWE4P4R8
+         PLjQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqbJrE+/hmPxf85W5gR+3+mmP44eJq3KrJjAR4oKs3LssVz6eGiHbaijyBCc7XDeLk0RbRK6NE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN5gCtN14EvIliM3Na0ateYKEI6VNpcQYMaTKprgbphWhHwlYR
+	eVvtLlx3OQTEQZ59sD4vNunHOPYrh9VD1GDRkZ0zJzAuA1r5zSb7nvqtCdGx0VIEE75EGyhQjKW
+	fVEr5ohHSD7rEmVKuQhf5jPn6LRBDbzo=
+X-Gm-Gg: AR+sD11VsPp8FvTP2jFXgoJAoFqY+uBLGZb4eDSgf3zGdQRf3RKYYETZjn7MdUkAbmb
+	lIhmbnPAKZ34JLcMcn+UBAd+rCtwnjoa5BLH3UVo+D2yiWfW+zyQ6yoviXRUZL+4g0NVV2JtQrA
+	lIvi5GDQcjZxyKWbbz+emGtr/Zs4oCWsBfLq8p2rBHb/svegp509Jnl3FOFrxrWJLn/5phhwRYR
+	FyGxfyAcWoHbwY5RUaRUwGyFon5CRlrHSiP3W1DIemMwvm8iZcpnIiUpmhA5VGbo5kwR/LZam7e
+	6s1RwJzaeTteeQnkvQCh8lYX3CsZuEj0IB/ozUGFeCoVo7RGlL7JAyIoQt1rqTwyEHJvnjQ7RKf
+	g6B8=
+X-Received: by 2002:a05:6a00:94f8:b0:848:4754:28e4 with SMTP id
+ d2e1a72fcca58-84fc6dd20d5mr7964377b3a.15.1786637778230; Thu, 13 Aug 2026
+ 09:16:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813020529.3506539-1-willemdebruijn.kernel@gmail.com>
- <20260813020529.3506539-3-willemdebruijn.kernel@gmail.com>
- <CANn89iK6O7ujR9zCJzd04MNLQoDi3mA+HWsR-hgQWYzLS3gZfw@mail.gmail.com> <CAF=yD-+Apef70K8n_=R5s5-+dyhYdiTLs1zACEr3=--_A47EeA@mail.gmail.com>
-In-Reply-To: <CAF=yD-+Apef70K8n_=R5s5-+dyhYdiTLs1zACEr3=--_A47EeA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 13 Aug 2026 18:04:00 +0200
-X-Gm-Features: AUfX_mwRDWobDF0uukXtIPFdBbxhN8fnEmwjwbt2S0c4NRHkak7k19p-TCMfqT0
-Message-ID: <CANn89iLDyr8uiB9dOUzSqsRbawa-xOoD8XcDUz5QYH5K0FoeEA@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 2/6] net_sched: sch_fq: clear past skb->tstamp
- if offloading pacing
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch, 
-	Willem de Bruijn <willemb@google.com>
+References: <20260813014056.160533-1-zhaoping.shu@mediatek.com>
+ <willemdebruijn.kernel.1372b82f50882@gmail.com> <0e1f71c4417099399eda78fd2a082b2444e42af9.camel@mediatek.com>
+In-Reply-To: <0e1f71c4417099399eda78fd2a082b2444e42af9.camel@mediatek.com>
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date: Thu, 13 Aug 2026 12:15:40 -0400
+X-Gm-Features: AUfX_mznkHuU-cF144mVumH8tZacn1_Y1N_Jk90APs0ZCVnzLy3r3jqX6yEARUw
+Message-ID: <CAF=yD-+AF1aW5D5H_QPKE1yxyU2wLxOmT8c2Fm4CJsPY=BjW-g@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: gro: Fix nesting of TCP GSO SKBs in skb_gro_receive_list()
+To: =?UTF-8?B?Wmhhb3BpbmcgU2h1ICjoiJLlj6zlubMp?= <Zhaoping.Shu@mediatek.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
+	"sd@queasysnail.net" <sd@queasysnail.net>, "imv4bel@gmail.com" <imv4bel@gmail.com>, 
+	"alice@isovalent.com" <alice@isovalent.com>, 
+	"eilaimemedsnaimel@gmail.com" <eilaimemedsnaimel@gmail.com>, =?UTF-8?B?SFcgSGUgKOS9leS8nyk=?= <HW.He@mediatek.com>, 
+	"horms@kernel.org" <horms@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>, 
+	"pabeni@redhat.com" <pabeni@redhat.com>, "edumazet@google.com" <edumazet@google.com>, 
+	"willemb@google.com" <willemb@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"kuniyu@google.com" <kuniyu@google.com>, "ncardwell@google.com" <ncardwell@google.com>, 
+	=?UTF-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= <haijun.liu@mediatek.com>, 
+	=?UTF-8?B?WGlheXUgWmhhbmcgKOW8oOWkj+Wuhyk=?= <Xiayu.Zhang@mediatek.com>, 
+	=?UTF-8?B?TGFtYmVydCBXYW5nICjnjovkvJ8p?= <Lambert.Wang@mediatek.com>, 
+	=?UTF-8?B?SXZlbiBZYW5nICjpmLPlhYkp?= <Iven.Yang@mediatek.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 13, 2026 at 6:02=E2=80=AFPM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
+On Thu, Aug 13, 2026 at 4:40=E2=80=AFAM Zhaoping Shu (=E8=88=92=E5=8F=AC=E5=
+=B9=B3)
+<Zhaoping.Shu@mediatek.com> wrote:
 >
-> On Thu, Aug 13, 2026 at 1:13=E2=80=AFAM Eric Dumazet <edumazet@google.com=
-> wrote:
+> On Wed, 2026-08-12 at 22:29 -0400, Willem de Bruijn wrote:
+> > External email : Please do not click links or open attachments until
+> > you have verified the sender or the content.
 > >
-> > On Thu, Aug 13, 2026 at 4:05=E2=80=AFAM Willem de Bruijn
-> > <willemdebruijn.kernel@gmail.com> wrote:
+> >
+> > zhaoping.shu@ wrote:
+> > > From: HW He <hw.he@mediatek.com>
 > > >
-> > > From: Willem de Bruijn <willemb@google.com>
+> > > A device supports GRO_HW, and the device driver enables the
+> > > NETIF_F_GRO_FRAGLIST feature. During a tethering test,
+> > > skb_gro_receive_list() reaggregates the GSO packet. However,
+> > > skb_segment_list() cannot segment this packet back into
+> > > the original packets, which leads to IP fragmentation or packet
+> > > drop.
 > > >
-> > > When hardware offload is enabled, FQ will forward packets to the
-> > > netdevice for pacing. The device has to test that skb->tstamp is
-> > > in the future.
+> > > Scenario (Tethering/Forwarding):
+> > > 1.Driver submits a single TCP packet, P1. P1 is kept in the
+> > > gro_list as the first packet.
 > > >
-> > > Avoid this cost for packets whose txtime has already passed, by
-> > > clearing skb->tstamp.
+> > > 2. The driver submits a TCP GSO skb, P2. P2 has already aggregated
+> > > multiple TCP packets by HW_GRO, and its non-linear data is stored
+> > > in
+> > > frags[].
 > > >
-> > > Also clear slightly into the future, for EDT timestamps that are
-> > > so close to now that they fall within a reasonable normal Tx
-> > > latency. This slack is set to 400 nsec.
+> > > 3. P1 and P2 match the GRO rules, and since there is no local
+> > > socket,
+> > > they are aggregated by skb_gro_receive_list(). The resulting skb,
+> > > P3, has a frag_list entry that still contains frags[]:
+> > > P3: [ Linear Data ] -> frag_list -> [ Linear Data ]
+> > >                                     [ frag[1] ]
+> > >                                     [ frag[2] ]
+> > >                                     ...
+> > > 4. Later, tcp4_gso_segment() or tcp6_gso_segment() calls
+> > > skb_segment_list() to segment P3. However, skb_segment_list() only
+> > > segments the entries in frag_list. It does not segment the frags[]
+> > > inside P2, so P3 is not restored to the original packets, which
+> > > leads
+> > > to IP fragmentation or packet drop in the following path.
 > > >
-> > > Also disable timer drift logic when offload is enabled, because
-> > > time_next_packet can exceed now causing a negative value.
+> > > When NETIF_F_GRO_HW is enabled, do not set NAPI_GRO_CB(skb)-
+> > > >is_flist.
+> > > Fall through to the regular skb_gro_receive() path instead of
+> > > skb_gro_receive_list().
 > > >
-> > > Signed-off-by: Willem de Bruijn <willemb@google.com>
-> > >
+> > > Fixes: 8d95dc474f85 ("net: add code for TCP fraglist GRO")
+> > > Signed-off-by: HW He <hw.he@mediatek.com>
+> > > Signed-off-by: Zhaoping Shu <zhaoping.shu@mediatek.com>
 > > > ---
+> > > [2]:
+> > > https://urldefense.com/v3/__https://patchwork.kernel.org/patch/147060=
+32__;!!CTRNKA9wMg0ARbw!kigb147-G9EgNqdWMhaQ43udYOvN90SG6bVjeM-GxTsPo3E07_tb=
+ysuoEieszr5CbCqT94AYpt1b_M7VsgNaZcjtBS_AnYo$
+> > > [1]:
+> > > https://urldefense.com/v3/__https://patchwork.kernel.org/patch/147022=
+09__;!!CTRNKA9wMg0ARbw!kigb147-G9EgNqdWMhaQ43udYOvN90SG6bVjeM-GxTsPo3E07_tb=
+ysuoEieszr5CbCqT94AYpt1b_M7VsgNaZcjtu0bQPNI$
+> > > ---
+> > >  net/ipv4/tcp_offload.c   | 7 +++----
+> > >  net/ipv6/tcpv6_offload.c | 3 ++-
+> > >  2 files changed, 5 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+> > > index 3b1fdcd3cb29..641c47fb1ea2 100644
+> > > --- a/net/ipv4/tcp_offload.c
+> > > +++ b/net/ipv4/tcp_offload.c
+> > > @@ -395,9 +395,6 @@ static void tcp4_check_fraglist_gro(struct
+> > > list_head *head, struct sk_buff *skb,
+> > >       struct net *net;
+> > >       int iif, sdif;
+> > >
+> > > -     if (likely(!(skb->dev->features & NETIF_F_GRO_FRAGLIST)))
+> > > -             return;
+> > > -
 > >
-> > > @@ -828,11 +837,16 @@ static struct sk_buff *fq_dequeue(struct Qdisc =
-*sch)
-> > >                  * f->time_next_packet was set when prior packet was =
-sent,
-> > >                  * and current time (@now) can be too late by tens of=
- us.
-> > >                  */
-> > > -               if (f->time_next_packet)
-> > > +               if (f->time_next_packet && f->time_next_packet < now)
-> > >                         len -=3D min(len/2, now - f->time_next_packet=
-);
+> > Interesting that ipv4 and ipv6 diverge here. Nice to try to make them
+> > more alike.
 > >
-> > IMO this part deserves a patch on its own.
+> > >       p =3D tcp_gro_lookup(head, th);
+> > >       if (p) {
+> > >               NAPI_GRO_CB(skb)->is_flist =3D NAPI_GRO_CB(p)-
+> > > >is_flist;
+> > > @@ -430,7 +427,9 @@ struct sk_buff *tcp4_gro_receive(struct
+> > > list_head *head, struct sk_buff *skb)
+> > >       if (!th)
+> > >               goto flush;
+> > >
+> > > -     tcp4_check_fraglist_gro(head, skb, th);
+> > > +     if (unlikely((skb->dev->features & NETIF_F_GRO_FRAGLIST) &&
+> > > +                  !(skb->dev->features & NETIF_F_GRO_HW)))
 > >
-> > Using a variable adds no cost (compiler will generate the same code),
-> > but helps to understand what is going on?
-> >
-> > commit e51f3936aba0e5887cf5884b18ffa769dcb38523
-> > Author: Eric Dumazet <edumazet@google.com>
-> > Date:   Wed Jul 1 08:33:38 2026 +0000
-> >
-> >     net_sched: sch_fq: fix pacing delay underflow with pacing offload
-> >
-> >     When pacing offload is enabled (q->offload_horizon > 0),
-> >     FQ can dequeue packets early (now < f->time_next_packet).
-> >
-> >     In this case, the drift calculation (now - f->time_next_packet)
-> >     underflows to a large unsigned value.
-> >
-> >     min(len/2, now - f->time_next_packet) then evaluates to len/2,
-> >     incorrectly halving the pacing delay for the next packet.
-> >
-> >     Fix this by only applying drift compensation when now > f->time_nex=
-t_packet.
-> >
-> >     This bug was triggered when flow_max_rate was set on the qdisc
-> >     or for non EDT packets (packets with a zero skb->tstamp).
-> >
-> >     Fixes: f26080d47007 ("net_sched: sch_fq: add the ability to offload=
- pacing")
-> >     Reported-by: Willem de Bruijn <willemb@google.com>
-> >     Signed-off-by: Eric Dumazet <edumazet@google.com>
-> >
-> > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-> > index 7cae082a984721215b17fea2d094095155580dcb..f2a65a7a928d58385472859=
-21ce0b42c99a96ef4
-> > 100644
-> > --- a/net/sched/sch_fq.c
-> > +++ b/net/sched/sch_fq.c
-> > @@ -828,8 +828,12 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sc=
-h)
-> >                  * f->time_next_packet was set when prior packet was se=
-nt,
-> >                  * and current time (@now) can be too late by tens of u=
-s.
-> >                  */
-> > -               if (f->time_next_packet)
-> > -                       len -=3D min(len/2, now - f->time_next_packet);
-> > +               if (f->time_next_packet) {
-> > +                       s64 drift =3D now - f->time_next_packet;
-> > +
-> > +                       if (drift > 0)
-> > +                               len -=3D min_t(u64, len/2, drift);
-> > +               }
-> >                 f->time_next_packet =3D now + len;
-> >         }
-> >  out:
+> > Would it be better to test skb_is_gso(skb) and only skip fraglist GRO
+> > for HW-GRO skbs, rather than disabling it for all skbs?
 >
-> Sounds good. Indeed clearer as an independent patch with its own
-> commit explanation.
->
-> Do you want to send that separately now?
+> Yes, for tethering packets, HW-GRO skbs are aggregated by
+> skb_gro_receive(), while others go through fraglist GRO. However, care
+> must be taken to avoid packets arriving out of order. I will work on
+> it and submit V4.
 
-No, just add it to the series, if a respin is needed.
+Oh right.
 
->
-> Else I will add it to the series. But that is likely to slip to the
-> next release, as the current revision conflicts with other idpf
-> changes queued for net.
+As long as the choice is only between fraglist GRO or not fraglist
+(rather than GRO or bypass GRO), it should not introduce any new
+reordering concerns.
 
-No worries, I do not think anyone is using pacing offload yet.
+But the decision cannot be made based on skb_is_gso(skb) of an
+arriving skb. Because when such a HW-GRO skb arrives a SW GRO context
+in fraglist mode may already have been opened, and it is too late to
+convert that to non-fraglist.
 
-Thanks.
+So essentially HW-GRO and fraglist are mutually exclusive.
+
+> >
+> > If treating the features as mutually exclusive, another option would
+> > be to replace these datapath checks with disabling one at
+> > configuration
+> > time, in netdev_fix_features.
+> >
+> If V4 work well, there will be no need to check netdev->features.
+> Linux kernel GRO will be more robust and able to handle scenarios
+> where both NETIF_F_GRO_HW and NETIF_F_GRO_FRAGLIST are enabled.
+
+What is your plan for v4?
